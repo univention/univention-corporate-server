@@ -4,20 +4,20 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2016-07-06 20:05+0200\n"
-"Last-Translator: Nicolas Ternisien <nicolas@bureau-cornavin.com>\n"
+"PO-Revision-Date: 2021-11-24 16:31+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0\n"
 
 #: modules/univention/directory/reports/document.py:84
 #, python-format
 msgid "Configuration error: File %r could not be opened."
-msgstr ""
+msgstr "Erreur de configuration : impossible d’ouvrir le fichier %r."
 
 #: modules/univention/directory/reports/filter.py:81
 msgid "Domain Group"
@@ -25,7 +25,7 @@ msgstr "Groupe du domaine"
 
 #: modules/univention/directory/reports/document.py:151
 msgid "Failed creating PDF file."
-msgstr ""
+msgstr "Échec de la création du fichier PDF."
 
 #: modules/univention/directory/reports/filter.py:82
 msgid "Local Group"
@@ -39,25 +39,25 @@ msgstr "Non"
 #: modules/univention/directory/reports/report.py:62
 #, python-format
 msgid "No %r report exists for the module %r."
-msgstr ""
+msgstr "Aucun rapport %r n’existe pour le module %r."
 
 #: modules/univention/directory/reports/report.py:59
 #, python-format
 msgid "No report for the specified module %r exists."
-msgstr ""
+msgstr "Aucun rapport n’existe pour le module spécifié %r."
 
 #: modules/univention/directory/reports/report.py:57
 msgid "Please specify a module."
-msgstr ""
+msgstr "Veuillez spécifier un module."
 
 #: modules/univention/directory/reports/report.py:61
 #, python-format
 msgid "The report %r does not exists or is misconfigured."
-msgstr ""
+msgstr "Le rapport %r n’existe pas ou est mal configuré."
 
 #: modules/univention/directory/reports/report.py:75
 msgid "The report could not be created."
-msgstr ""
+msgstr "Le rapport n’a pas pu être créé."
 
 #: modules/univention/directory/reports/filter.py:83
 msgid "Well-Known Group"

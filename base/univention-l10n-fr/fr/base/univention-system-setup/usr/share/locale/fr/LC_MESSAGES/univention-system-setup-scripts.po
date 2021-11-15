@@ -4,15 +4,15 @@ msgstr ""
 "Project-Id-Version: univention-system-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2017-05-28 17:29+0900\n"
-"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"PO-Revision-Date: 2021-12-08 17:50+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0\n"
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:106
 msgid "An error occurred while installing necessary software components."
@@ -22,11 +22,11 @@ msgstr ""
 
 #: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:80
 msgid "Backing up old SSL certificate"
-msgstr ""
+msgstr "Sauvegarde de l’ancien certificat SSL"
 
 #: usr/lib/univention-system-setup/scripts/setup-join.sh:306
 msgid "Configure"
-msgstr ""
+msgstr "Configurer"
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:42
 msgid "Configuring Active Directory connection"
@@ -34,7 +34,7 @@ msgstr "Configuration de la connexion Active Directory"
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:115
 msgid "Configuring Administrator account..."
-msgstr "Configuration du compte Administrateur..."
+msgstr "Configuration du compte Administrator…"
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:121
 msgid "Configuring DNS entries..."
@@ -77,9 +77,8 @@ msgid "Configuring time synchronization..."
 msgstr "Configuration de la synchronisation du temps..."
 
 #: usr/lib/univention-system-setup/scripts/35_timezone/10timezone:35
-#, fuzzy
 msgid "Configuring time zones"
-msgstr "Configuration des composants logiciels"
+msgstr "Configuration des fuseaux horaires"
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:139
 #, python-format
@@ -101,7 +100,7 @@ msgstr ""
 
 #: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:148
 msgid "Could not recreate SSL certificate for %s."
-msgstr ""
+msgstr "Impossible de recréer le certificat SSL pour %s."
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:155
 #, python-format
@@ -114,18 +113,15 @@ msgstr ""
 
 #: usr/lib/univention-system-setup/scripts/setup-join.sh:256
 msgid "Domain setup (this might take a while)"
-msgstr ""
+msgstr "Configuration du domaine (ceci peut prendre un certain temps)"
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:153
-#, fuzzy
 msgid "Failed to add the Administrator account to the Domain Admins group."
-msgstr ""
-"La définition du mot de passe administrateur UCS à partir du mot de passe "
-"administrateur Active Directory a échoué."
+msgstr "Impossible d’ajouter le compte Administrator au groupe Domain Admins."
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:147
 msgid "Failed to create the Administrator account in UCS."
-msgstr ""
+msgstr "Impossible de créer le compte Administrator dans UCS."
 
 #: umc/python/setup/setup_script.py:436
 #, python-format
@@ -134,31 +130,31 @@ msgstr "Échec de la récupération du paquetage pour le rôle %s"
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:151
 msgid "Failed to search for the well known SID."
-msgstr ""
+msgstr "Impossible de rechercher le SID connu."
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:145
 msgid ""
 "Failed to set the password of the UCS Administrator to the Active Directory "
 "Administrator password."
 msgstr ""
-"La définition du mot de passe administrateur UCS à partir du mot de passe "
-"administrateur Active Directory a échoué."
+"Échec de la définition du mot de passe pour le compte Administrator d’UCS à "
+"partir du mot de passe du compte d’administration d’Active Directory."
 
 #: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:121
 msgid "Generating SSL CA certificate."
-msgstr ""
+msgstr "Génération du certificat d’autorité de certification SSL."
 
 #: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:57
 msgid "Generating SSL certificate"
-msgstr ""
+msgstr "Génération du certificat SSL"
 
 #: usr/lib/univention-system-setup/scripts/10_basis/50uuid:54
 msgid "Generating UUID"
-msgstr ""
+msgstr "Génération de l’UUID"
 
 #: usr/lib/univention-system-setup/scripts/20_language/10language:35
 msgid "Generating locales"
-msgstr ""
+msgstr "Génération des paramètres régionaux"
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:134
 msgid "Join has been finished successfully."
@@ -166,7 +162,7 @@ msgstr "La jonction au domaine s'est terminé avec succès."
 
 #: usr/lib/univention-system-setup/scripts/setup-join.sh:262
 msgid "Preparing domain join"
-msgstr ""
+msgstr "Préparation de la jonction de domaine"
 
 #: usr/lib/univention-system-setup/scripts/05_role/10role:49
 msgid "Preparing package lists..."
@@ -174,11 +170,11 @@ msgstr "Préparation de la liste des paquetages..."
 
 #: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:146
 msgid "Recreate SSL certificate for %s"
-msgstr ""
+msgstr "Recréer un certificat SSL pour %s"
 
 #: usr/lib/univention-system-setup/scripts/setup-join.sh:168
 msgid "Recreating SSH keys"
-msgstr ""
+msgstr "Recréation de clés SSH"
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:131
 msgid "Registering LDAP service entry..."
@@ -193,46 +189,44 @@ msgid "Running Samba join script..."
 msgstr "Exécution du script de jonction Samba..."
 
 #: usr/lib/univention-system-setup/scripts/setup-join.sh:355
-#, fuzzy
 msgid "Running appliance scripts"
-msgstr "Exécution du script de jonction Samba..."
+msgstr "Exécution des scripts de l’Appliance"
 
 #: usr/lib/univention-system-setup/scripts/30_net/12gateway:35
 msgid "Setting IPv4 gateway"
-msgstr ""
+msgstr "Définition de la passerelle IPv4"
 
 #: usr/lib/univention-system-setup/scripts/30_net/13ipv6gateway:35
 msgid "Setting IPv6 gateway"
-msgstr ""
+msgstr "Définition de la passerelle IPv6"
 
 #: usr/lib/univention-system-setup/scripts/30_net/16forwarder:35
 msgid "Setting external name servers"
-msgstr ""
+msgstr "Définition des serveurs de noms externes"
 
 #: usr/lib/univention-system-setup/scripts/15_keyboard/10keyboard:35
 msgid "Setting keyboard layout"
-msgstr ""
+msgstr "Définition de la disposition du clavier"
 
 #: usr/lib/univention-system-setup/scripts/30_net/14nameserver:35
 msgid "Setting name server"
-msgstr ""
+msgstr "Définition du serveur de noms"
 
 #: usr/lib/univention-system-setup/scripts/30_net/11primary:42
-#, fuzzy
 msgid "Setting primary network interface"
-msgstr "Configuration des interfaces réseau IPvX"
+msgstr "Définition de l’interface réseau principale"
 
 #: usr/lib/univention-system-setup/scripts/30_net/18proxy:35
 msgid "Setting proxy"
-msgstr ""
+msgstr "Définition du proxy"
 
 #: usr/lib/univention-system-setup/scripts/10_basis/18root_password:37
 msgid "Setting root password"
-msgstr ""
+msgstr "Définition du mot de passe root"
 
 #: usr/lib/univention-system-setup/scripts/20_language/11default_locale:35
 msgid "Setting the default locale"
-msgstr ""
+msgstr "Définition des paramètres régionaux par défaut"
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:128
 msgid "Starting Active Directory connection service..."
@@ -248,6 +242,8 @@ msgstr ""
 msgid ""
 "The SSL certificate creation failed. The old certificates have been restored."
 msgstr ""
+"La création des certificats SSL a échoué. Les anciens certificats ont été "
+"restaurés."
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:141
 #, python-format
@@ -264,18 +260,21 @@ msgstr ""
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:149
 msgid "The sambaSID could not set for the Administrator account in UCS."
 msgstr ""
+"Le sambaSID n’a pas pu être défini pour le compte Administrator dans UCS."
 
 #: usr/lib/univention-system-setup/scripts/setup-join.sh:169
 msgid "This might take a moment..."
-msgstr ""
+msgstr "Ceci peut prendre un moment…"
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade:46
 msgid "This might take a while depending on the number of pending updates."
 msgstr ""
+"Ceci peut prendre un certain temps selon le nombre de mises à jour en "
+"attente."
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade:35
 msgid "Upgrading the system"
-msgstr ""
+msgstr "Mise à niveau du système"
 
 #~ msgid "Installing univention-welcome-screen"
 #~ msgstr "univention-welcome-screen en cours d'installation"

@@ -4,15 +4,15 @@ msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2016-06-20 22:01+0900\n"
-"Last-Translator: Sandrine Burriel <sandrine@bureau-cornavin.com>\n"
+"PO-Revision-Date: 2021-12-01 11:15+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: unicode\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0\n"
 
 #: modules/univention/admin/handlers/kerberos/kdcentry.py:121
 msgid "Basic settings"
@@ -31,12 +31,10 @@ msgid "Generate random password"
 msgstr "Générer un mot de passe aléatoire"
 
 #: modules/univention/admin/handlers/kerberos/kdcentry.py:54
-#, fuzzy
 msgid "KDC Entries"
-msgstr "Entrée KDC"
+msgstr "Entrées KDC"
 
 #: modules/univention/admin/handlers/kerberos/kdcentry.py:53
-#, fuzzy
 msgid "KDC Entry"
 msgstr "Entrée KDC"
 

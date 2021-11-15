@@ -4,15 +4,15 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2016-07-07 22:00+0100\n"
-"Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
+"PO-Revision-Date: 2021-12-08 17:46+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Poedit 3.0\n"
 
 #: umc/python/setup/__init__.py:485
 msgid "A domain name server needs to be specified."
@@ -28,7 +28,7 @@ msgstr ""
 
 #: umc/python/setup/__init__.py:508
 msgid "Active Directory"
-msgstr ""
+msgstr "Active Directory"
 
 #: umc/python/setup/network.py:704
 msgid "Bond-primary must exist in bond-slaves"
@@ -54,9 +54,7 @@ msgstr "Impossible d'utiliser le pont %r comme port de pont"
 #: umc/python/setup/network.py:700
 #, python-format
 msgid "Cannot use device %s: Device must be unconfigured"
-msgstr ""
-"Impossible d'utiliser le périphérique %s : le périphérique doit être "
-"déconfiguré"
+msgstr "Impossible d’utiliser l’appareil %s : l’appareil doit être déconfiguré"
 
 #: umc/python/setup/__init__.py:446
 msgid "Common name for the root SSL certificate"
@@ -73,14 +71,14 @@ msgstr "Le pays doit être un code pays constitué de 2 caractères."
 #: umc/python/setup/network.py:387
 #, python-format
 msgid "Device %(device)r is already in use by %(name)r"
-msgstr "Le périphérique %(device)r est déjà utilisé par %(name)r"
+msgstr "L’appareil %(device)r est déjà utilisé par %(name)r"
 
 #: umc/python/setup/network.py:695
 #, python-format
 msgid "Devices used in a bonding must be physical: %s is not"
 msgstr ""
-"Les périphériques utilisés dans un agrégat doivent être physiques : ce n'est "
-"pas le cas de %s"
+"Les appareils utilisés dans un agrégat doivent être physiques : ce n’est pas "
+"le cas de %s"
 
 #: umc/python/setup/__init__.py:472
 msgid "Domain name server"
@@ -97,6 +95,9 @@ msgid ""
 "During the check of the license status the following error occurred:\n"
 "{error}"
 msgstr ""
+"Lors de la vérification de l’état de la licence, l’erreur suivante s’est "
+"produite :\n"
+"{error}"
 
 #: umc/python/setup/__init__.py:444 umc/python/setup/__init__.py:445
 msgid "Email address"
@@ -157,7 +158,7 @@ msgstr "Mode d'agrégation de liens non valide : %r"
 #: umc/python/setup/network.py:334 umc/python/setup/network.py:606
 #, python-format
 msgid "Invalid device name: %r"
-msgstr "Nom de périphérique non valide : %r"
+msgstr "Nom d’appareil non valide : %r"
 
 #: umc/python/setup/__init__.py:537
 msgid ""
@@ -177,21 +178,21 @@ msgstr "Identifiant IPv6 par défaut manquant"
 
 #: umc/python/setup/network.py:686
 msgid "Missing device for bond-slaves"
-msgstr "Périphérique manquant pour les liens agrégés"
+msgstr "Appareil manquant pour les liens agrégés"
 
 #: umc/python/setup/network.py:597 umc/python/setup/network.py:691
 #: umc/python/setup/network.py:794
 #, python-format
 msgid "Missing device: %r"
-msgstr "Périphérique manquant : %r"
+msgstr "Appareil manquant: %r"
 
 #: umc/python/setup/network.py:379
 msgid "Multiple IPv4 addresses are not supported on this device."
-msgstr "Ce périphérique ne prend pas en charge des adresses IPv4 multiples."
+msgstr "Cet appareil ne prend pas en charge des adresses IPv4 multiples."
 
 #: umc/python/setup/checks/univention_join.py:61
 msgid "No UCS Primary Directory Node could be found at the address."
-msgstr ""
+msgstr "Aucun Primary Directory Node d’UCS n’a pu être trouvé à cette adresse."
 
 #: umc/python/setup/__init__.py:420
 msgid "No fully qualified domain name has been specified for the system."
@@ -219,7 +220,7 @@ msgstr ""
 
 #: umc/python/setup/__init__.py:94
 msgid "Request Timeout"
-msgstr ""
+msgstr "Expiration de la requête"
 
 #: umc/python/setup/__init__.py:439
 msgid "State"
@@ -243,24 +244,33 @@ msgid ""
 "The UCS version of the domain you are trying to join ({}) is lower than the "
 "local one ({}). This constellation is not supported."
 msgstr ""
+"La version d’UCS du domaine que vous essayez de rejoindre ({}) est "
+"inférieure à la version locale ({}). Cette constellation n’est pas prise en "
+"charge."
 
 #: umc/python/setup/util.py:1143
 msgid ""
 "The connection to the Active Directory server failed. Please recheck the "
 "address."
 msgstr ""
+"La connexion au serveur Active Directory a échoué. Veuillez revérifier "
+"l’adresse."
 
 #: umc/python/setup/util.py:1146
 msgid ""
 "The connection to the Active Directory server was refused. Please recheck "
 "the password."
 msgstr ""
+"La connexion au serveur Active Directory a été refusée. Veuillez revérifier "
+"le mot de passe."
 
 #: umc/python/setup/checks/univention_join.py:64
 msgid ""
 "The connection to the UCS Primary Directory Node was refused. Please recheck "
 "the password."
 msgstr ""
+"La connexion au Primary Directory Node d’UCS a été refusée. Veuillez "
+"revérifier le mot de passe."
 
 #: umc/python/setup/__init__.py:450
 #, python-format
@@ -275,8 +285,8 @@ msgid ""
 "The given user is not member of the Domain Admins group in Active Directory. "
 "This is a requirement for the Active Directory domain join."
 msgstr ""
-"L'utilisateur indiqué n'est pas membre du groupe des administrateurs du "
-"domaine dans Active Directory. C'est obligatoire pour rejoindre un domaine "
+"Le compte d’utilisation indiqué n’est pas membre du groupe Domain Admins "
+"dans Active Directory. Ceci est indispensable pour rejoindre le domaine "
 "Active Directory."
 
 #: umc/python/setup/__init__.py:407
@@ -287,6 +297,11 @@ msgid ""
 "UCS@school. The hostname cannot be changed after the installation of %s. It "
 "is recommended to shorten the hostname to maximal 13 characters."
 msgstr ""
+"Le nom d’hôte %s contient plus de 13 caractères. Il sera impossible "
+"d’installer un contrôleur de domaine compatible avec Active Directory (Samba "
+"4) ou UCS@school. Le nom d’hôte ne peut pas être modifié après "
+"l’installation de %s. Il est recommandé de raccourcir le nom d’hôte à un "
+"maximum de 13 caractères."
 
 #: umc/python/setup/__init__.py:401
 msgid ""
@@ -306,13 +321,13 @@ msgstr ""
 "La longueur du nom de domaine pleinement qualifié dépasse 63 caractères."
 
 #: umc/python/setup/checks/univention_join.py:90
-#, fuzzy, python-format
+#, python-format
 msgid "The license %s is not valid."
-msgstr "Le nom de domaine Windows n'est pas valide."
+msgstr "La licence %s n’est pas valide."
 
 #: umc/python/setup/__init__.py:469
 msgid "The primary network device must exist."
-msgstr "Le périphérique réseau principal doit exister."
+msgstr "L’appareil réseau principal doit exister."
 
 #: umc/python/setup/__init__.py:433
 msgid ""
@@ -337,6 +352,8 @@ msgid ""
 "The specified domain name is different to the %s domain name found via the "
 "configured DNS server: %s"
 msgstr ""
+"Le nom de domaine spécifié est différent du nom de domaine %s trouvé via le "
+"serveur DNS configuré : %s"
 
 #: umc/python/setup/__init__.py:528
 #, python-format
@@ -386,8 +403,8 @@ msgid ""
 "There is no device configured. At least one IPv4 or IPv6 address or DHCP or "
 "SLAAC has to be specified."
 msgstr ""
-"Aucun périphérique n'est configuré. Il faut au moins indiquer une adresse "
-"IPv4 ou IPv6, un DHCP ou un SLAAC."
+"Aucun appareil n’est configuré. Il faut au moins indiquer une adresse IPv4 "
+"ou IPv6 ou un DHCP ou un SLAAC."
 
 #: umc/python/setup/checks/univention_join.py:94
 #, python-brace-format
@@ -395,25 +412,29 @@ msgid ""
 "To install the {appliance_name} appliance it is necessary to have an "
 "activated UCS license on the Primary Directory Node."
 msgstr ""
+"Pour installer l’Appliance {appliance_name}, il faut avoir une licence d’UCS "
+"activée sur le Primary Directory Node."
 
 #: umc/python/setup/__init__.py:508
 msgid "UCS"
-msgstr ""
+msgstr "UCS"
 
 #: umc/python/setup/__init__.py:406
 #, python-format
 msgid "the %s appliance"
-msgstr ""
+msgstr "l’Appliance %s"
 
 #: umc/python/setup/__init__.py:404
 msgid "the UCS system"
-msgstr ""
+msgstr "le système UCS"
 
 #: umc/python/setup/checks/univention_join.py:35
 msgid ""
 "univention-join -checkPrerequisites reported a problem. Output of check:\n"
 "\n"
 msgstr ""
+"univention-join -checkPrerequisites a signalé un problème. Résultat de la "
+"vérification :\n"
 
 #~ msgid ""
 #~ "%s Appliance could not be joined because the license on the Primary "

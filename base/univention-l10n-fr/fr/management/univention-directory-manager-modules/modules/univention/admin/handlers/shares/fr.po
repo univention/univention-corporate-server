@@ -32,15 +32,15 @@ msgstr ""
 "Project-Id-Version: univention-admin-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2016-07-10 23:10+0100\n"
-"Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
+"PO-Revision-Date: 2021-12-07 13:08+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: unicode\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Poedit 3.0\n"
 
 #: modules/univention/admin/handlers/shares/share.py:678
 #, python-format
@@ -88,6 +88,8 @@ msgstr "Droits d'accès au répertoire racine exporté"
 #: modules/univention/admin/handlers/shares/share.py:462
 msgid "Additional NTACL elements for the base directory of Samba file shares."
 msgstr ""
+"Éléments NTACL supplémentaires pour l’annuaire de base des partages de "
+"fichiers Samba."
 
 #: modules/univention/admin/handlers/shares/printer.py:54
 msgid "Allow all users."
@@ -119,7 +121,7 @@ msgstr "Utilisateurs autorisés / interdits"
 
 #: modules/univention/admin/handlers/shares/share.py:461
 msgid "Append NTACLs for Samba file shares"
-msgstr ""
+msgstr "Ajouter des NTACL pour les partages de fichiers Samba"
 
 #: modules/univention/admin/handlers/shares/share.py:326
 msgid "Block size"
@@ -235,7 +237,8 @@ msgid ""
 "chapter in the manual for more information"
 msgstr ""
 "Exporter le partage en tant que racine MSDFS. Veuillez consulter le chapitre "
-"« Gestion des partages de fichiers » du manuel pour plus d'informations."
+"« Gestion des partages de fichiers » (« Fileshare management ») dans le "
+"manuel pour plus d’informations"
 
 #: modules/univention/admin/handlers/shares/share.py:318
 msgid "Fake oplocks"
@@ -261,6 +264,10 @@ msgid ""
 "windows-printer-driver-distribution-known-issues-and-workarounds/13387\" "
 "target=\"_blank\" rel=\"noreferrer noopener\">here</a>."
 msgstr ""
+"Pour plus d’informations sur la gestion des pilotes d’imprimante Windows et "
+"le dépannage, voir <a href=\"https://help.univention.com/t/overview-windows-"
+"printer-driver-distribution-known-issues-and-workarounds/13387\" target="
+"\"_blank\" rel=\"noreferrer noopener\">ici</a>."
 
 #: modules/univention/admin/handlers/shares/printer.py:145
 msgid "For the given groups printing is explicitly allowed or denied."
@@ -507,9 +514,8 @@ msgstr "Script preexec"
 #: modules/univention/admin/handlers/shares/printergroup.py:71
 #: modules/univention/admin/handlers/shares/printer.py:100
 #: modules/univention/admin/handlers/shares/print.py:65
-#, fuzzy
 msgid "Print server"
-msgstr "Partage d'imprimante"
+msgstr "Serveur d’impression"
 
 #: modules/univention/admin/handlers/shares/share.py:90
 #: modules/univention/admin/handlers/shares/share.py:91
@@ -517,9 +523,8 @@ msgid "Printable name"
 msgstr "Nom imprimable"
 
 #: modules/univention/admin/handlers/shares/printer.py:67
-#, fuzzy
 msgid "Printer"
-msgstr "Modèle d'imprimante"
+msgstr "Imprimante"
 
 #: modules/univention/admin/handlers/shares/printer.py:114
 msgid "Printer model"
@@ -535,14 +540,12 @@ msgid "Printer share"
 msgstr "Partage d'imprimante"
 
 #: modules/univention/admin/handlers/shares/printergroup.py:50
-#, fuzzy
 msgid "Printer share group"
-msgstr "Partage d'imprimante"
+msgstr "Groupe de partage d’imprimantes"
 
 #: modules/univention/admin/handlers/shares/printergroup.py:51
-#, fuzzy
 msgid "Printer share groups"
-msgstr "Partage d'imprimante : groupe d'imprimantes"
+msgstr "Groupes de partage d’imprimantes"
 
 #: modules/univention/admin/handlers/shares/printer.py:66
 msgid "Printer share: Printer"
@@ -553,14 +556,12 @@ msgid "Printer share: Printer group"
 msgstr "Partage d'imprimante : groupe d'imprimantes"
 
 #: modules/univention/admin/handlers/shares/print.py:49
-#, fuzzy
 msgid "Printer shares"
-msgstr "Partage d'imprimante"
+msgstr "Partages d’imprimante"
 
 #: modules/univention/admin/handlers/shares/printer.py:68
-#, fuzzy
 msgid "Printers"
-msgstr "Partage d'imprimante"
+msgstr "Imprimantes"
 
 #: modules/univention/admin/handlers/shares/share.py:154
 msgid "Redirect root user access to a non-privileged uid."
@@ -608,14 +609,12 @@ msgid "Security mode"
 msgstr "Mode de sécurité"
 
 #: modules/univention/admin/handlers/shares/share.py:59
-#, fuzzy
 msgid "Share directories"
-msgstr "Partage : répertoire"
+msgstr "Répertoires de partage"
 
 #: modules/univention/admin/handlers/shares/share.py:58
-#, fuzzy
 msgid "Share directory"
-msgstr "Partage : répertoire"
+msgstr "Répertoire de partage"
 
 #: modules/univention/admin/handlers/shares/share.py:184
 msgid ""
@@ -679,7 +678,7 @@ msgstr ""
 "hors ligne mettront en cache les fichiers de ce partage."
 
 #: modules/univention/admin/handlers/shares/share.py:303
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "This boolean option tells Samba whether to issue oplocks (opportunistic "
 "locks) to file open requests on this share. The oplock code can dramatically "
@@ -688,14 +687,14 @@ msgid ""
 "to disable this option for unreliable network environments (it is turned on "
 "by default in Windows Servers)."
 msgstr ""
-"Cette option booléenne indique à Samba si des oplocks (opportunistic locks "
-"ou verrouillages opportunistes) doivent être émis lors de demandes "
-"d'ouverture de fichiers de ce partage. Le code d'oplock peut améliorer "
-"considérablement (environ 30% ou plus) la vitesse d'accès aux fichiers sur "
-"des serveurs Samba. Cela permet aux clients de mettre les fichiers "
-"massivement en cache local et vous pouvez envisager de désactiver cette "
-"option pour les environnements réseaux peu fiables (elle est activée par "
-"défaut sur les serveurs Windows NT)."
+"Cette option booléenne indique à Samba s’il faut émettre des "
+"« oplocks » (« opportunistic locks », ou verrouillages opportunistes) lors "
+"des demandes d’ouverture de fichiers de ce partage. Le code d’oplock peut "
+"améliorer considérablement (environ 30% ou plus) la vitesse d’accès aux "
+"fichiers sur les serveurs Samba. Ceci permet aux clients de mettre "
+"massivement les fichiers en cache local ; vous pouvez envisager de "
+"désactiver cette option dans les environnements réseaux peu fiables (elle "
+"est activée par défaut sur les Serveurs Windows)."
 
 #: modules/univention/admin/handlers/shares/share.py:384
 msgid ""
@@ -773,7 +772,6 @@ msgstr ""
 "d'attente."
 
 #: modules/univention/admin/handlers/shares/share.py:256
-#, fuzzy
 msgid ""
 "This parameter controls what UNIX permission bits can be modified when an "
 "SMB client is manipulating the UNIX permission on a directory using the "
@@ -782,17 +780,15 @@ msgid ""
 "in this mask from being modified. Essentially, zero bits in this mask may be "
 "treated as a set of bits the user is not allowed to change."
 msgstr ""
-"Ce paramètre détermine quels bits de droits UNIX peuvent être modifiés "
-"lorsqu'un client Windows NT manipule les droits UNIX sur un répertoire au "
-"moyen de la boîte de dialogue de sécurité native de Windows NT. Ce paramètre "
-"est appliqué comme un masque (opération binaire AND) sur les bits de droits "
-"modifiés, ce qui empêche par conséquent de modifier tout bit ne faisant pas "
-"partie de ce masque. Essentiellement, les bits de ce masque ayant pour "
-"valeur zéro peuvent être vus comme un ensemble de bits que l'utilisateur "
-"n'est pas autorisé à modifier."
+"Ce paramètre détermine les bits de droits UNIX qui peuvent être modifiés "
+"lorsqu’un client SMB manipule les droits UNIX sur un répertoire au moyen de "
+"la boîte de dialogue de sécurité native de Windows. Ce paramètre est "
+"appliqué comme un masque (opération binaire AND) sur les bits de droits "
+"modifiés, empêchant ainsi de modifier tout bit non inclus dans ce masque. En "
+"substance, les bits de valeur 0 dans ce masque peuvent être vus comme un "
+"ensemble de bits que le client n’a pas le droit de modifier."
 
 #: modules/univention/admin/handlers/shares/share.py:272
-#, fuzzy
 msgid ""
 "This parameter controls what UNIX permission bits can be modified when an "
 "SMB client is manipulating the UNIX permission on a directory using the "
@@ -802,17 +798,16 @@ msgid ""
 "mask may be treated as a set of bits that, when modifying security on a "
 "directory, the user has always set to be 'on'."
 msgstr ""
-"Ce paramètre détermine quels bits de droits UNIX peuvent être modifiés "
-"lorsqu'un client Windows NT manipule les droits UNIX sur un répertoire au "
-"moyen de la boîte de dialogue de sécurité native de Windows NT. Ce paramètre "
-"est appliqué comme un masque (opération binaire OR) sur les bits de droits "
-"modifiés, ce qui force par conséquent à activer tout bit de ce masque que "
-"l'utilisateur a pu modifier. Essentiellement, les bits de ce masque ayant "
-"pour valeur 1 peuvent être vus comme un ensemble de bits qui, lorsque la "
-"sécurité sur un répertoire est modifiée, doivent toujours rester activés."
+"Ce paramètre détermine les bits de droits UNIX qui peuvent être modifiés "
+"lorsqu’un client SMB manipule les droits UNIX sur un répertoire au moyen de "
+"la boîte de dialogue de sécurité native de Windows. Ce paramètre est "
+"appliqué comme un masque (opération binaire OR) sur les bits de droits "
+"modifiés, forçant ainsi tout bit inclus dans ce masque à être activé dès "
+"qu’il a été modifié. En substance, les bits de valeur 1 dans ce masque "
+"peuvent être vus comme un ensemble de bits que le client active "
+"systématiquement dès qu’il modifie la sécurité d’un répertoire."
 
 #: modules/univention/admin/handlers/shares/share.py:248
-#, fuzzy
 msgid ""
 "This parameter controls what UNIX permission bits can be modified when an "
 "SMB client is manipulating the UNIX permission on a file using the native "
@@ -821,17 +816,15 @@ msgid ""
 "mask from being modified. Essentially, zero bits in this mask may be treated "
 "as a set of bits the user is not allowed to change."
 msgstr ""
-"Ce paramètre détermine quels bits de droits UNIX peuvent être modifiés "
-"lorsqu'un client Windows NT manipule les droits UNIX sur un fichier au moyen "
-"de la boîte de dialogue de sécurité native de Windows NT. Ce paramètre est "
-"appliqué comme un masque (opération binaire AND) sur les bits de droits "
-"modifiés, ce qui empêche par conséquent de modifier tout bit ne faisant pas "
-"partie de ce masque. Essentiellement, les bits de ce masque ayant pour "
-"valeur zéro peuvent être vus comme un ensemble de bits que l'utilisateur "
-"n'est pas autorisé à modifier."
+"Ce paramètre détermine les bits de droits UNIX qui peuvent être modifiés "
+"lorsqu’un client SMB manipule les droits UNIX sur un fichier au moyen de la "
+"boîte de dialogue de sécurité native de Windows. Ce paramètre est appliqué "
+"comme un masque (opération binaire AND) sur les bits de droits modifiés, "
+"empêchant ainsi de modifier tout bit non inclus dans ce masque. En "
+"substance, les bits de valeur 0 dans ce masque peuvent être vus comme un "
+"ensemble de bits que le client n’a pas le droit de modifier."
 
 #: modules/univention/admin/handlers/shares/share.py:264
-#, fuzzy
 msgid ""
 "This parameter controls what UNIX permission bits can be modified when an "
 "SMB client is manipulating the UNIX permission on a file using the native "
@@ -841,17 +834,16 @@ msgid ""
 "may be treated as a set of bits that, when modifying security on a file, the "
 "user has always set to be 'on'."
 msgstr ""
-"Ce paramètre détermine quels bits de droits UNIX peuvent être modifiés "
-"lorsqu'un client Windows NT manipule les droits UNIX sur un fichier au moyen "
-"de la boîte de dialogue de sécurité native de Windows NT. Ce paramètre est "
-"appliqué comme un masque (opération binaire OR) sur les bits de droits "
-"modifiés, ce qui force par conséquent à activer tout bit de ce masque que "
-"l'utilisateur a pu modifier. Essentiellement, les bits de ce masque ayant "
-"pour valeur 1 peuvent être vus comme un ensemble de bits qui, lorsque la "
-"sécurité sur un fichier est modifiée, doivent toujours rester activés."
+"Ce paramètre détermine les bits de droits UNIX qui peuvent être modifiés "
+"lorsqu’un client SMB manipule les droits UNIX sur un fichier au moyen de la "
+"boîte de dialogue de sécurité native de Windows. Ce paramètre est appliqué "
+"comme un masque (opération binaire OR) sur les bits de droits modifiés, "
+"forçant ainsi tout bit inclus dans ce masque à être activé dès qu’il a été "
+"modifié. En substance, les bits de valeur 1 dans ce masque peuvent être vus "
+"comme un ensemble de bits que le client active systématiquement dès qu’il "
+"modifie la sécurité d’un fichier."
 
 #: modules/univention/admin/handlers/shares/share.py:311
-#, fuzzy
 msgid ""
 "This parameter controls whether Samba supports level2 (read-only) oplocks on "
 "a share. Level2, or read-only oplocks allow SMB clients that have an oplock "
@@ -868,22 +860,22 @@ msgid ""
 "executables."
 msgstr ""
 "Ce paramètre détermine si Samba prend en charge les oplocks de niveau 2 "
-"(lecture seule) sur un partage. Les oplocks de niveau 2 permettent aux "
-"clients Windows NT ayant un oplock sur un fichier de passer d'un oplock en "
-"lecture-écriture à un oplock en lecture seule, lorsqu'un second client ouvre "
-"le fichier (au lieu de libérer tous les oplocks à une deuxième ouverture, "
-"comme c'est le cas avec les oplocks traditionnels, exclusifs). Cela permet à "
-"tous les clients ouvrant le fichier et prenant en charge les oplocks de "
-"niveau 2 de mettre en cache le fichier pour une lecture anticipée seulement "
-"(ainsi, ils ne peuvent pas mettre en cache des écritures ou des demandes de "
-"verrouillage) et d'améliorer les performances pour un grand nombre d'accès "
-"concurrents à des fichiers qui ne font pas l'objet de modifications "
-"fréquentes (par exemple les fichiers .EXE d'applications). Une fois que l'un "
+"(lecture seule) sur un partage. Les oplocks de niveau 2, ou oplocks en "
+"lecture seule, permettent aux clients SMB ayant un oplock sur un fichier de "
+"passer d’un oplock en lecture-écriture à un oplock en lecture seule "
+"lorsqu’un deuxième client ouvre le fichier (au lieu de libérer tous les "
+"oplocks à une deuxième ouverture, comme c’est le cas avec les oplocks "
+"exclusifs traditionnels). Ceci permet à tous les clients ouvrant le fichier "
+"et prenant en charge les oplocks de niveau 2 de mettre en cache le fichier "
+"pour une lecture anticipée seulement (ainsi, ils ne peuvent pas mettre en "
+"cache des écritures ni des demandes de verrouillage) et d’améliorer les "
+"performances pour les accès nombreux à des fichiers qui ne sont pas souvent "
+"modifiés (par exemple les fichiers .EXE d’applications). Une fois que l’un "
 "des clients ayant un oplock en lecture seule écrit dans le fichier, tous les "
-"clients sont notifiés (aucune réponse n'est nécessaire ou attendue), "
-"informés de passer leurs oplocks à \"aucun\" et de supprimer tout cache de "
-"lecture anticipée. Il est recommandé d'activer ce paramètre pour accélérer "
-"l'accès aux exécutables partagés."
+"clients sont notifiés (aucune réponse n’est nécessaire ni attendue) et priés "
+"de passer leurs oplocks à « aucun » et de supprimer tout cache de lecture "
+"anticipée. Il est recommandé d’activer ce paramètre pour accélérer l’accès "
+"aux exécutables partagés."
 
 #: modules/univention/admin/handlers/shares/share.py:240
 msgid ""
@@ -931,9 +923,10 @@ msgstr ""
 "principal par défaut pour tous les utilisateurs se connectant à ce service. "
 "Cette option est utile pour le partage de fichiers car elle garantit que "
 "tout accès aux fichiers du service utilisera le nom du groupe pour les "
-"vérifications des droits d'accès. Ainsi, en assignant les droits sur les "
-"fichiers et répertoires de ce service pour ce groupe, l'administrateur Samba "
-"peut autoriser ou restreindre le partage de ces fichiers."
+"vérifications des droits d’accès. Ainsi, en assignant les droits sur les "
+"fichiers et répertoires de ce service pour ce groupe, l’administrateur ou "
+"administratrice Samba peut autoriser ou restreindre le partage de ces "
+"fichiers."
 
 #: modules/univention/admin/handlers/shares/share.py:366
 msgid ""
@@ -980,8 +973,8 @@ msgid ""
 "Users who have write access to a file or directory are able to change the "
 "permissions "
 msgstr ""
-"Les utilisateurs qui ont accès en écriture à un fichier ou un répertoire "
-"peuvent en changer les droits."
+"Les comptes qui ont accès en écriture à un fichier ou répertoire peuvent en "
+"changer les permissions "
 
 #: modules/univention/admin/handlers/shares/share.py:199
 msgid "Users with write access may modify permissions"
@@ -1052,16 +1045,9 @@ msgstr "désactiver"
 msgid "documents"
 msgstr "documents"
 
-<<<<<<< HEAD
 #: modules/univention/admin/handlers/shares/printer.py:61
 msgid "https://docs.software-univention.de/manual-5.0.html#print::shares"
 msgstr "https://docs.software-univention.de/manual-5.0.html#print::shares"
-=======
-#: modules/univention/admin/handlers/shares/printer.py:60
-#, fuzzy
-msgid "https://docs.software-univention.de/manual-5.0.html#print::shares"
-msgstr "https://docs.software-univention.de/manual-4.4.html#print::shares"
->>>>>>> Bug #54029: Updated/Merged french translation package
 
 #: modules/univention/admin/handlers/shares/share.py:50
 msgid "manual"

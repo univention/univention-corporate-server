@@ -4,15 +4,15 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-quota\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2016-07-09 18:23+0100\n"
-"Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
+"PO-Revision-Date: 2021-12-10 13:34+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Poedit 3.0\n"
 
 #: umc/python/quota/tools.py:76
 #, python-format
@@ -29,16 +29,16 @@ msgstr "Impossible d'ouvrir %s"
 #: umc/python/quota/user.py:140
 #, python-format
 msgid "Could not remove the following user: %s"
-msgstr ""
+msgstr "Impossible de supprimer l’utilisateur suivant : %s"
 
 #: umc/python/quota/tools.py:181
-#, fuzzy, python-format
+#, python-format
 msgid "Device %r could not be found"
-msgstr "Le périphérique n'a pas pu être trouvé"
+msgstr "Le périphérique %r est introuvable"
 
 #: umc/python/quota/tools.py:132
 msgid "Device is not mounted"
-msgstr "Le périphérique n'est pas monté"
+msgstr "Le périphérique n’est pas monté"
 
 #: umc/python/quota/tools.py:74
 msgid "Expired"
@@ -46,11 +46,11 @@ msgstr "Expiré"
 
 #: umc/python/quota/tools.py:199
 msgid "Failed to activate quota support: "
-msgstr ""
+msgstr "Impossible d’activer la prise en charge des quotas : "
 
 #: umc/python/quota/tools.py:199
 msgid "Failed to deactivate quota support: "
-msgstr ""
+msgstr "Impossible de désactiver la prise en charge des quotas : "
 
 #: umc/python/quota/user.py:115
 #, python-format
@@ -83,7 +83,7 @@ msgstr "L'opération a réussi"
 
 #: umc/python/quota/tools.py:210
 msgid "Quota already en/disabled"
-msgstr "Quotas déjà activés / désactivés"
+msgstr "Quotas déjà activés/désactivés"
 
 #: umc/python/quota/tools.py:203
 msgid "Quota support successfully activated"
@@ -105,12 +105,12 @@ msgstr "Le redémarrage des services de quotas a échoué"
 #: umc/python/quota/user.py:160
 #, python-format
 msgid "The following partition is currently not mounted: %s"
-msgstr "La partition suivante n'est pas montée actuellement : %s"
+msgstr "La partition suivante n'est pas montée actuellement : %s"
 
 #: umc/python/quota/user.py:158
 #, python-format
 msgid "The following partition is mounted without quota support: %s"
-msgstr "La partition suivante est montée sans prise en charge des quotas : %s"
+msgstr "La partition suivante est montée sans prise en charge des quotas : %s"
 
 #: umc/python/quota/partition.py:89
 msgid "This partition is currently not mounted"

@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-l10n-fr
+fix:
+desc: |
+ This update addresses the following issue(s):
+ * The french translation package has been given
+   a comprehensive update to align it to the
+   current source code. All missing translation
+   strings have been added and all outdated ones
+   updated along with some general improvements of
+   existing translation strings.
+bug: [54029]

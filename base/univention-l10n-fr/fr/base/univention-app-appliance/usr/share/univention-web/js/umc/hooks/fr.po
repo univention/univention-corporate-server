@@ -4,20 +4,20 @@ msgstr ""
 "Project-Id-Version: univention-app-appliance\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2017-05-28 17:18+0900\n"
-"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"PO-Revision-Date: 2021-12-10 14:28+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0\n"
 
 #: usr/share/univention-web/js/umc/hooks/appliance.js:136
 #, javascript-format
 msgid "%s Appliance"
-msgstr ""
+msgstr "Application matérielle %s"
 
 #: usr/share/univention-web/js/umc/hooks/appliance.js:195
 #, javascript-format
@@ -38,5 +38,5 @@ msgstr "Aide aux premiers pas"
 msgid ""
 "Univention Management Console (UMC) for administrating users, computers, etc."
 msgstr ""
-"Console Univention Management Console (UMC) pour la gestion des "
-"utilisateurs, des ordinateurs, etc."
+"Univention Management Console (UMC) pour la gestion des utilisateurs et "
+"utilisatrices, des ordinateurs, etc."

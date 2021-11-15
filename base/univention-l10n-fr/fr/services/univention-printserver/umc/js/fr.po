@@ -4,15 +4,15 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-printers\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2016-07-04 20:04+0200\n"
-"Last-Translator: Nicolas Ternisien <nicolas@bureau-cornavin.com>\n"
+"PO-Revision-Date: 2021-12-10 14:10+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0\n"
 
 #: umc/js/printers/DetailPage.js:75 umc/js/printers/OverviewPage.js:133
 msgid "Activate"
@@ -32,7 +32,7 @@ msgstr "Annuler"
 
 #: umc/js/printers/DetailPage.js:120
 msgid "Cancel this job/these jobs"
-msgstr "Annuler cet(s) tâche(s)"
+msgstr "Annuler cette ou ces tâches"
 
 #: umc/js/printers/DetailPage.js:84 umc/js/printers/OverviewPage.js:149
 msgid "Deactivate"
@@ -40,7 +40,7 @@ msgstr "Désactiver"
 
 #: umc/js/printers/DetailPage.js:85
 msgid "Deactivate this printer"
-msgstr "Désactiver l'imprimante"
+msgstr "Désactiver l’imprimante"
 
 #: umc/js/printers/DetailPage.js:196 umc/js/printers/OverviewPage.js:71
 #: umc/js/printers/OverviewPage.js:120
@@ -70,15 +70,15 @@ msgstr "Administration des imprimantes"
 
 #: umc/js/printers/DetailPage.js:52
 msgid "Printer details"
-msgstr "Détails de l'imprimante"
+msgstr "Détails de l’imprimante"
 
 #: umc/js/printers/OverviewPage.js:70
 msgid "Printer name"
-msgstr "Nom de l'imprimante"
+msgstr "Nom de l’imprimante"
 
 #: umc/js/printers/DetailPage.js:137
 msgid "Refresh job list"
-msgstr "Actualiser la liste de tâches"
+msgstr "Actualiser la liste des tâches"
 
 #: umc/js/printers/OverviewPage.js:165
 msgid "Refresh printer list"
@@ -90,7 +90,7 @@ msgstr "Chercher la clé"
 
 #: umc/js/printers/OverviewPage.js:79
 msgid "Search..."
-msgstr "Chercher..."
+msgstr "Chercher…"
 
 #: umc/js/printers/DetailPage.js:193 umc/js/printers/OverviewPage.js:97
 msgid "Server"
@@ -120,14 +120,13 @@ msgid "View details"
 msgstr "Afficher les détails"
 
 #: umc/js/printers/DetailPage.js:51
-#, fuzzy
 msgid ""
 "You see the details of this printer and its print jobs. You can activate/"
 "deactivate the printer and cancel print jobs."
 msgstr ""
-"Vous consultez les détails de cette imprimante, ainsi que ses tâches "
-"d'impression. Vous pouvez activer / désactiver une imprimante, modifier son "
-"quota si celui-ci est activé, et annuler des tâches d'impression."
+"Vous voyez les détails de cette imprimante ainsi que ses tâches "
+"d’impression. Vous pouvez activer/désactiver l’imprimante et annuler des "
+"tâches d’impression."
 
 #: umc/js/printers/DetailPage.js:187 umc/js/printers/OverviewPage.js:110
 msgid "active"

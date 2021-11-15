@@ -6,15 +6,15 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2017-05-28 20:47+0900\n"
-"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"PO-Revision-Date: 2021-12-14 00:50+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0\n"
 
 #: src/univention/management/console/modules/sanitizers.py:136
 #, python-format
@@ -28,7 +28,7 @@ msgstr "%s ne peut être utilisé qu'avec « UPLOAD »"
 
 #: univention-management-console-web-server:589
 msgid "A hacking attempt was prevented."
-msgstr ""
+msgstr "Une tentative de piratage a été évitée."
 
 #: src/univention/management/console/protocol/session.py:512
 #, python-format
@@ -66,21 +66,21 @@ msgid ""
 "Check if enough hard disk space and free RAM is available on this server and "
 "on the Primary Directory Node or free some resources"
 msgstr ""
-"Veuillez vous assurer que suffisamment d'espace disque et de mémoire vive  "
-"sont disponibles sur ce serveur et sur le Primary Directory Node, ou libérez "
-"des ressources."
+"Vérifiez que ce serveur ainsi que le Primary Directory Node disposent de "
+"suffisamment d’espace disque et de RAM disponibles, sinon libérez des "
+"ressources"
 
 #: src/univention/management/console/error.py:126
 msgid ""
 "Check if enough hard disk space and free RAM is available on this server or "
 "free some resources"
 msgstr ""
-"Veuillez vous assurer que suffisamment d'espace disque et de mémoire sont "
-"disponibles sur ce serveur, ou libérez des ressources."
+"Vérifiez que ce serveur dispose de suffisamment d’espace disque et de RAM "
+"disponibles, sinon libérez des ressources"
 
 #: src/univention/management/console/error.py:152
 msgid "Check the SSL certificates, proxy and firewall settings"
-msgstr ""
+msgstr "Vérifiez les certificats SSL et les paramètres du proxy et du pare-feu"
 
 #: src/univention/management/console/pam.py:369
 #, python-format
@@ -102,6 +102,8 @@ msgid ""
 "Could not pick an identity provider. You can specify one via the query "
 "string parameter %(param)r from %(idps)r"
 msgstr ""
+"Impossible de choisir un fournisseur d’identité. Vous pouvez en spécifier un "
+"via le paramètre de chaîne de requête %(param)r parmi les %(idps)r"
 
 #: src/univention/management/console/base.py:269
 msgid ""
@@ -115,7 +117,7 @@ msgstr ""
 #: src/univention/management/console/error.py:147
 #, python-format
 msgid "Error message: %s"
-msgstr ""
+msgstr "Message d’erreur : %s"
 
 #: src/univention/management/console/protocol/definitions.py:74
 msgid "Error occurred during command processing"
@@ -158,6 +160,9 @@ msgid ""
 "In case the SSL certificates are expired or a recent renewal of the root SSL "
 "CA has been done, please consider http://sdb.univention.de/1183"
 msgstr ""
+"Si les certificats SSL ont expiré ou si un renouvellement récent de "
+"l’autorité de certification SSL racine a été effectué, veuillez tenir compte "
+"de http://sdb.univention.de/1183"
 
 #: src/univention/management/console/error.py:132
 #: src/univention/management/console/error.py:156
@@ -172,7 +177,7 @@ msgstr "Erreur interne"
 #: src/univention/management/console/base.py:374
 #, python-format
 msgid "Internal server error during \"%(command)s\"."
-msgstr ""
+msgstr "Erreur interne du serveur lors de « %(command)s »."
 
 #: src/univention/management/console/protocol/definitions.py:67
 msgid "Invalid command arguments"
@@ -183,9 +188,8 @@ msgid "Invalid length information"
 msgstr "Information de longueur invalide"
 
 #: src/univention/management/console/protocol/message.py:238
-#, fuzzy
 msgid "Invalid message header encoding."
-msgstr "Entête de message impossible à analyser"
+msgstr "Codage de l’en-tête de message invalide."
 
 #: src/univention/management/console/protocol/definitions.py:68
 msgid "Invalid or missing command options"
@@ -207,8 +211,8 @@ msgstr ""
 msgid ""
 "Make sure the kerberos service is functioning or inform an Administrator."
 msgstr ""
-"Veuillez vous assurer que le service « kerberos » fonctionne ou informez un "
-"administrateur le cas échéant."
+"Vérifiez que le service « kerberos » fonctionne ou informez un ou une "
+"responsable le cas échéant."
 
 #: src/univention/management/console/modules/sanitizers.py:347
 #, python-format
@@ -270,8 +274,8 @@ msgid ""
 "Please relogin to the Univention Management Console to see if the error "
 "persists."
 msgstr ""
-"Veuillez à nouveau vous authentifier sur Univention Management Console pour "
-"voir si l'erreur est toujours présente."
+"Veuillez à nouveau vous authentifier sur l’Univention Management Console "
+"pour voir si l’erreur est toujours présente."
 
 #: src/univention/management/console/modules/mixins.py:144
 msgid "Please wait for operation to finish"
@@ -283,6 +287,9 @@ msgid ""
 "Received an unsolicited SAML response. Please try to single sign on again by "
 "accessing /univention/saml/. Error message: %s"
 msgstr ""
+"Réception d’une réponse SAML non sollicitée. Veuillez réessayer de vous "
+"connecter via l’authentification unique en ouvrant /univention/saml/. "
+"Message d’erreur : %s"
 
 #: src/univention/management/console/error.py:130
 #: src/univention/management/console/error.py:154
@@ -312,17 +319,17 @@ msgstr "L'en-tête HTTP \"Referer\" doit commencer par \"/univention/\"."
 
 #: univention-management-console-web-server:629
 msgid "The SAML message is invalid for this service provider."
-msgstr ""
+msgstr "Le message SAML n’est pas valide pour ce fournisseur de services."
 
 #: univention-management-console-web-server:625
 #, python-format
 msgid "The SAML response contained a invalid signature: %s"
-msgstr ""
+msgstr "La réponse SAML contenait une signature invalide : %s"
 
 #: univention-management-console-web-server:609
-#, fuzzy, python-format
+#, python-format
 msgid "The SAML response could not be verified: %s"
-msgstr "La raison n'a pu être déterminée"
+msgstr "La réponse SAML n’a pas pu être vérifiée : %s"
 
 #: src/univention/management/console/base.py:249
 msgid ""
@@ -356,7 +363,7 @@ msgstr "Les étapes suivantes peuvent aider à résoudre ce problème :"
 #: univention-management-console-web-server:617
 #, python-format
 msgid "The identity provider reported a status error: %s"
-msgstr ""
+msgstr "Le fournisseur d’identité a signalé une erreur d’état : %s"
 
 #: src/univention/management/console/protocol/definitions.py:76
 msgid "The initialization of the module caused a fatal error"
@@ -374,10 +381,13 @@ msgid ""
 "misconfiguration and might be resolved by restarting the univention-"
 "management-console-web-server."
 msgstr ""
+"L’émetteur %r est maintenant connu du fournisseur de services SAML. Il "
+"s’agit probablement d’une erreur de configuration qui pourrait être résolue "
+"en redémarrant univention-management-console-web-server."
 
 #: univention-management-console-web-server:605
 msgid "The logout binding is not known."
-msgstr ""
+msgstr "La liaison de déconnexion n’est pas connue."
 
 #: src/univention/management/console/modules/sanitizers.py:504
 #, python-format
@@ -409,23 +419,21 @@ msgid "The new password could not be set."
 msgstr "Le nouveau mot de passe n'a pas pu être défini."
 
 #: src/univention/management/console/pam.py:78
-#, fuzzy
 msgid "The password contains parts of the full user name."
-msgstr "Le mot de passe doit comporter au moins %s caractères."
+msgstr "Le mot de passe contient des parties du nom d’utilisateur complet."
 
 #: src/univention/management/console/pam.py:77
-#, fuzzy
 msgid "The password contains user account name."
-msgstr "Le mot de passe est un palindrome."
+msgstr "Le mot de passe contient le nom du compte d’utilisateur."
 
 #: src/univention/management/console/pam.py:71
 msgid "The password does not contain enough different characters."
 msgstr "Le mot de passe ne contient pas suffisamment de caractères différents."
 
 #: src/univention/management/console/pam.py:76
-#, fuzzy
 msgid "The password does not meet the password complexity requirements."
-msgstr "Le mot de passe saisi ne correspond pas à l'actuel."
+msgstr ""
+"Le mot de passe ne répond pas aux exigences de complexité du mot de passe."
 
 #: src/univention/management/console/pam.py:72
 #: src/univention/management/console/pam.py:342
@@ -441,18 +449,16 @@ msgid "The password is based on a dictionary word."
 msgstr "Le mot de passe est tiré d'un mot du dictionnaire."
 
 #: src/univention/management/console/pam.py:66
-#, fuzzy
 msgid "The password is too long."
-msgstr "Le mot de passe est trop court."
+msgstr "Le mot de passe est trop long."
 
 #: src/univention/management/console/pam.py:65
 msgid "The password is too short."
 msgstr "Le mot de passe est trop court."
 
 #: src/univention/management/console/pam.py:75
-#, fuzzy
 msgid "The password is too similar to the old one."
-msgstr "Le mot de passe est trop simple."
+msgstr "Le mot de passe ressemble trop à l’ancien."
 
 #: src/univention/management/console/pam.py:67
 msgid "The password is too simple."
@@ -470,7 +476,7 @@ msgstr "Le mot de passe a déjà été utilisé."
 #: univention-management-console-web-server:597
 #, python-format
 msgid "The principal is unknown: %s"
-msgstr ""
+msgstr "Le commettant est inconnu : %s"
 
 #: src/univention/management/console/pam.py:335
 msgid "The reason could not be determined"
@@ -490,7 +496,7 @@ msgstr "La méthode HTTP demandée n'est pas autorisée sur cette ressource."
 #: univention-management-console-web-server:601
 #, python-format
 msgid "The requested SAML binding is not known: %s"
-msgstr ""
+msgstr "La liaison SAML demandée n’est pas connue : %s"
 
 #: src/univention/management/console/protocol/modserver.py:123
 #, python-format
@@ -503,6 +509,8 @@ msgid ""
 "The response lifetime has exceeded: %s. Please make sure the server times "
 "are in sync."
 msgstr ""
+"La durée de vie de la réponse a dépassé : %s. Assurez-vous que les horloges "
+"des serveurs sont synchronisées."
 
 #: src/univention/management/console/protocol/session.py:509
 #: src/univention/management/console/protocol/session.py:510
@@ -514,6 +522,8 @@ msgid ""
 "There is a configuration error in the service provider: No identity provider "
 "are set up for use."
 msgstr ""
+"Il existe une erreur de configuration dans le fournisseur de services : "
+"aucun fournisseur d’identité n’est configuré pour être utilisé."
 
 #: src/univention/management/console/protocol/session.py:511
 msgid "There is not enough free space on the server."

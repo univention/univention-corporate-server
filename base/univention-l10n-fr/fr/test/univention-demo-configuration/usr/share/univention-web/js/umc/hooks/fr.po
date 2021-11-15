@@ -4,34 +4,45 @@ msgstr ""
 "Project-Id-Version: univention-demo-configuration\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2021-11-26 12:57+0100\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
+"Language-Team: \n"
+"X-Generator: Poedit 3.0\n"
 
 #: usr/share/univention-web/js/umc/hooks/univention_demo.js:253
 msgid "Demo help"
-msgstr ""
+msgstr "Aide démo"
 
 #: usr/share/univention-web/js/umc/hooks/univention_demo.js:217
 msgid "Dummy entries to apps that could be installed on UCS"
 msgstr ""
+"Entrées factices pour les applications qui pourraient être installées sur "
+"UCS"
 
 #: usr/share/univention-web/js/umc/hooks/univention_demo.js:212
 msgid "The UCS web interface for administrating users, computers, etc."
 msgstr ""
+"L’interface web d’UCS pour l’administration des utilisatrices et "
+"utilisateurs, des ordinateurs, etc."
 
 #: usr/share/univention-web/js/umc/hooks/univention_demo.js:222
 msgid ""
 "This help screen can be displayed again via <i>Help</i> in the user menu"
 msgstr ""
+"Cet écran d’aide peut être affiché à nouveau via <i>Aide</i> dans le menu "
+"personnel"
 
 #: usr/share/univention-web/js/umc/hooks/univention_demo.js:264
 msgid ""
-"Welcome to the online demo of Univention Corporate Server (UCS). You are now"
-" on the start site of the UCS system. Click on \"System and domain "
+"Welcome to the online demo of Univention Corporate Server (UCS). You are "
+"now on the start site of the UCS system. Click on \"System and domain "
 "settings\" to start exploring the possibilities UCS offers."
 msgstr ""
+"Bienvenue dans la démo en ligne d’Univention Corporate Server (UCS). Vous "
+"êtes maintenant sur le site d’accueil du système UCS. Cliquez sur "
+"« Paramètres du système et du domaine » pour commencer à explorer les "
+"possibilités offertes par UCS."

@@ -5,15 +5,15 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-services\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2017-05-28 20:39+0900\n"
-"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"PO-Revision-Date: 2021-12-10 14:38+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0\n"
 
 #: umc/js/services.js:171
 msgid "Automatically"
@@ -45,28 +45,28 @@ msgstr "Valider"
 
 #: umc/js/services.js:112
 msgid "Please confirm to automatically start the following services: "
-msgstr "Veuillez confirmer le démarrage automatique des services suivants :"
+msgstr "Veuillez confirmer le démarrage automatique des services suivants : "
 
 #: umc/js/services.js:124
 msgid "Please confirm to manually start the following services: "
-msgstr "Veuillez confirmer le démarrage manuel des services suivants :"
+msgstr "Veuillez confirmer le démarrage manuel des services suivants : "
 
 #: umc/js/services.js:136
 msgid "Please confirm to never start the following services: "
 msgstr ""
-"Veuillez confirmer le fait de ne jamais démarrer les services suivants :"
+"Veuillez confirmer le fait de ne jamais démarrer les services suivants : "
 
 #: umc/js/services.js:99
 msgid "Please confirm to restart the following services: "
-msgstr "Veuillez confirmer le redémarrage des services suivants :"
+msgstr "Veuillez confirmer le redémarrage des services suivants : "
 
 #: umc/js/services.js:69
 msgid "Please confirm to start the following services: "
-msgstr "Veuillez confirmer le démarrage des services suivants :"
+msgstr "Veuillez confirmer le démarrage des services suivants : "
 
 #: umc/js/services.js:84
 msgid "Please confirm to stop the following services: "
-msgstr "Veuillez confirmer l'arrêt des services suivants :"
+msgstr "Veuillez confirmer l’arrêt des services suivants : "
 
 #: umc/js/services.js:94
 msgid "Restart"
@@ -118,6 +118,9 @@ msgid ""
 "connections to the Univention Management Console. It might be necessary for "
 "all users to login again."
 msgstr ""
+"Attention : l’arrêt des services Apache ou UMC interrompra toutes les "
+"connexions actuelles à l’Univention Management Console. Tous les "
+"utilisateurs et utilisatrices devront peut-être se reconnecter."
 
 #: umc/js/services.js:155
 msgid "running"

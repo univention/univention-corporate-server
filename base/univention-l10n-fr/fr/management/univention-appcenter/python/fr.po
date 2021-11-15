@@ -6,15 +6,15 @@ msgstr ""
 "Project-Id-Version: univention-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2017-05-28 18:37+0900\n"
-"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"PO-Revision-Date: 2021-11-12 11:33+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0\n"
 
 #: python/appcenter/utils.py:274
 #, python-format
@@ -32,16 +32,20 @@ msgstr "Une erreur s'est produite !"
 #: python/appcenter/exceptions.py:343
 msgid "An unexpected error occured before the installation started!"
 msgstr ""
+"Une erreur inattendue s’est produite avant le début de l’installation !"
 
 #: python/appcenter/exceptions.py:282
 msgid ""
 "LDAP connection refused. There may be an issue with the certificate of the "
 "LDAP server. Please also check the proxy and firewall settings, if any."
 msgstr ""
+"Connexion LDAP refusée. Il peut y avoir un problème avec le certificat du "
+"serveur LDAP. Veuillez également vérifier les paramètres du proxy et du pare-"
+"feu, le cas échéant."
 
 #: python/appcenter/settings.py:254
 msgid "Password"
-msgstr ""
+msgstr "Mot de passe"
 
 #: python/appcenter/app.py:1446 python/appcenter/install_checks.py:362
 #, python-format
@@ -94,13 +98,12 @@ msgstr ""
 "système. Vous pouvez trouver de l'aide à l'adresse %s."
 
 #: python/appcenter/exceptions.py:333
-#, fuzzy
 msgid ""
 "We are sorry for the inconvenience. Please help us to improve the App Center "
 "and the Apps by sending us the information below."
 msgstr ""
-"Nous sommes désolés de ce désagrément. Merci de nous aider à améliorer "
-"l'AppCenter et les Apps en nous transmettant les informations ci-dessous."
+"Nous sommes désolés de ce désagrément. Merci de nous aider à améliorer l’App "
+"Center et les Apps en nous transmettant les informations ci-dessous."
 
 #: python/appcenter/utils.py:288
 #, python-format

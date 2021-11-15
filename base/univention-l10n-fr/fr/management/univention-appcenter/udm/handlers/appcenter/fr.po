@@ -32,16 +32,16 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter 3.0.30-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2016-07-10 13:56+0100\n"
-"Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
+"PO-Revision-Date: 2021-12-14 11:43+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: unicode\n"
-"Generated-By: pygettext.py 1.5\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: udm/handlers/appcenter/app.py:206
 msgid "About"
@@ -53,16 +53,15 @@ msgstr "Définition de l'app"
 
 #: udm/handlers/appcenter/app.py:60
 msgid "App ID"
-msgstr "Id. de l'application"
+msgstr "ID de l’application"
 
 #: udm/handlers/appcenter/app.py:48 udm/handlers/appcenter/app.py:49
-#, fuzzy
 msgid "App Metadata"
-msgstr "Méta-données"
+msgstr "Métadonnées de l’App"
 
 #: udm/handlers/appcenter/app.py:47
 msgid "Appcenter: App Metadata"
-msgstr "App center : méta-données de l'application"
+msgstr "App Center : métadonnées de l’App"
 
 #: udm/handlers/appcenter/app.py:133
 msgid "Category"
@@ -70,11 +69,11 @@ msgstr "Catégorie"
 
 #: udm/handlers/appcenter/app.py:149
 msgid "Conflicting Apps"
-msgstr "Apps entrant en conflit"
+msgstr "Apps en conflit"
 
 #: udm/handlers/appcenter/app.py:155
 msgid "Conflicting System Packages"
-msgstr "Paquet de système en conflit"
+msgstr "Paquetages système en conflit"
 
 #: udm/handlers/appcenter/app.py:99
 msgid "Contact"
@@ -85,9 +84,8 @@ msgid "Default Packages"
 msgstr "Paquetages par défaut"
 
 #: udm/handlers/appcenter/app.py:167
-#, fuzzy
 msgid "Default Primary Node Packages"
-msgstr "Paquetages par défaut pour Primary Directory Node"
+msgstr "Paquetages par défaut du Primary Directory Node"
 
 #: udm/handlers/appcenter/app.py:198 udm/handlers/appcenter/app.py:199
 msgid "General"

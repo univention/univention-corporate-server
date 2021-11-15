@@ -4,15 +4,15 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-reboot\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2016-07-09 18:48+0100\n"
-"Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
+"PO-Revision-Date: 2021-12-07 12:53+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Poedit 3.0\n"
 
 #: umc/js/adtakeover.js:102
 msgid ""
@@ -79,11 +79,11 @@ msgstr ""
 
 #: umc/js/adtakeover.js:86
 msgid "Active Directory Administrator account"
-msgstr "Compte Administrateur Active Directory"
+msgstr "Compte d’administration d’Active Directory"
 
 #: umc/js/adtakeover.js:92
 msgid "Active Directory Administrator password"
-msgstr "Mot de passe Administrateur Active Directory"
+msgstr "Mot de passe du compte d’administration d’Active Directory"
 
 #: umc/js/adtakeover.js:127
 msgid "Completion of the Active Directory Takeover"

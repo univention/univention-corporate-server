@@ -33,15 +33,15 @@ msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2017-05-28 19:59+0900\n"
-"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"PO-Revision-Date: 2021-12-01 10:59+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: unicode\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0\n"
 
 #: modules/univention/admin/handlers/dhcp/pool.py:55
 msgid "A pool of dynamic addresses assignable to hosts."
@@ -200,48 +200,41 @@ msgid "DHCP Statements"
 msgstr "Déclarations DHCP"
 
 #: modules/univention/admin/handlers/dhcp/host.py:50
-#, fuzzy
 msgid "DHCP host"
-msgstr "DHCP : hôte"
+msgstr "Hôte DHCP"
 
 #: modules/univention/admin/handlers/dhcp/host.py:51
-#, fuzzy
 msgid "DHCP hosts"
-msgstr "DHCP : hôte"
+msgstr "Hôtes DHCP"
 
 #: modules/univention/admin/handlers/dhcp/__common.py:50
 msgid "DHCP options"
 msgstr "Options DHCP"
 
 #: modules/univention/admin/handlers/dhcp/pool.py:53
-#, fuzzy
 msgid "DHCP pool"
-msgstr "DHCP : groupe"
+msgstr "Pool DHCP"
 
 #: modules/univention/admin/handlers/dhcp/pool.py:54
-#, fuzzy
 msgid "DHCP pools"
-msgstr "DHCP : groupe"
+msgstr "Pools DHCP"
 
 #: modules/univention/admin/handlers/dhcp/server.py:51
-#, fuzzy
 msgid "DHCP server"
-msgstr "DHCP : serveur"
+msgstr "Serveur DHCP"
 
 #: modules/univention/admin/handlers/dhcp/server.py:76
 msgid "DHCP server description"
 msgstr "Description du serveur DHCP"
 
 #: modules/univention/admin/handlers/dhcp/server.py:52
-#, fuzzy
 msgid "DHCP servers"
-msgstr "DHCP : serveur"
+msgstr "Serveurs DHCP"
 
 #: modules/univention/admin/handlers/dhcp/service.py:49
 #: modules/univention/admin/handlers/dhcp/dhcp.py:57
-#, fuzzy
 msgid "DHCP service"
-msgstr "DHCP : service"
+msgstr "Service DHCP"
 
 #: modules/univention/admin/handlers/dhcp/service.py:73
 msgid "DHCP service description"
@@ -249,23 +242,20 @@ msgstr "Description du service DHCP"
 
 #: modules/univention/admin/handlers/dhcp/service.py:50
 #: modules/univention/admin/handlers/dhcp/dhcp.py:58
-#, fuzzy
 msgid "DHCP services"
-msgstr "DHCP : service"
+msgstr "Services DHCP"
 
 #: modules/univention/admin/handlers/dhcp/shared.py:74
 msgid "DHCP shared network description"
 msgstr "Description du réseau partagé DHCP"
 
 #: modules/univention/admin/handlers/dhcp/subnet.py:50
-#, fuzzy
 msgid "DHCP subnet"
-msgstr "DHCP : sous-réseau"
+msgstr "Sous-réseau DHCP"
 
 #: modules/univention/admin/handlers/dhcp/subnet.py:51
-#, fuzzy
 msgid "DHCP subnets"
-msgstr "DHCP : sous-réseau"
+msgstr "Sous-réseaux DHCP"
 
 #: modules/univention/admin/handlers/dhcp/host.py:49
 msgid "DHCP: Host"
@@ -349,7 +339,7 @@ msgstr "Réglages généraux"
 
 #: modules/univention/admin/handlers/dhcp/pool.py:102
 msgid "Globally enable or disable this pool."
-msgstr "Activer ou désactiver ce réservoir globalement"
+msgstr "Activer ou désactiver ce réservoir globalement."
 
 #: modules/univention/admin/handlers/dhcp/host.py:70
 msgid "Hardware address"
@@ -389,20 +379,17 @@ msgid "Service name"
 msgstr "Nom du service"
 
 #: modules/univention/admin/handlers/dhcp/sharedsubnet.py:50
-#, fuzzy
 msgid "Shared DHCP subnet"
-msgstr "DHCP : sous-réseau partagé"
+msgstr "Sous-réseau DHCP partagé"
 
 #: modules/univention/admin/handlers/dhcp/sharedsubnet.py:51
-#, fuzzy
 msgid "Shared DHCP subnets"
-msgstr "DHCP : sous-réseau partagé"
+msgstr "Sous-réseaux DHCP partagés"
 
 #: modules/univention/admin/handlers/dhcp/shared.py:50
 #: modules/univention/admin/handlers/dhcp/shared.py:51
-#, fuzzy
 msgid "Shared network"
-msgstr "Nom du réseau partagé"
+msgstr "Réseau partagé"
 
 #: modules/univention/admin/handlers/dhcp/shared.py:62
 msgid "Shared network name"
@@ -449,7 +436,7 @@ msgstr ""
 
 #: modules/univention/admin/handlers/dhcp/__common.py:197
 msgid "The subnet mask does not match the subnet."
-msgstr ""
+msgstr "Le masque de sous-réseau ne correspond pas au sous-réseau."
 
 #: modules/univention/admin/handlers/dhcp/service.py:51
 msgid "The top-level container for a DHCP configuration."

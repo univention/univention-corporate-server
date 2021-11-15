@@ -5,15 +5,15 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-updater\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2020-07-04 15:45+0200\n"
-"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"PO-Revision-Date: 2021-12-08 15:14+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0\n"
 
 #: umc/js/updater/UpdatesPage.js:507
 msgid "%(name)s: Version %(old)s can be updated to %(new)s"
@@ -118,7 +118,8 @@ msgstr "Mises à jour de l'App Center"
 
 #: umc/js/updater.js:211
 msgid "Are you sure to close the updater log view?"
-msgstr "Souhaitez-vous vraiment fermer l'affichage du journal de mise à jour ?"
+msgstr ""
+"Souhaitez-vous vraiment fermer l’affichage du journal des mises à jour ?"
 
 #: umc/js/updater/UpdatesPage.js:76
 msgid "Available system updates"
@@ -194,7 +195,7 @@ msgstr ""
 
 #: umc/js/updater/ProgressPage.js:258
 msgid "Finish updates"
-msgstr "Terminer mises à jour"
+msgstr "Terminer les mises à jour"
 
 #: umc/js/updater/ProgressPage.js:122
 msgid ""
@@ -381,11 +382,11 @@ msgstr ""
 "jour."
 
 #: umc/js/updater.js:76
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The update to %s failed. Please visit the %s for more information."
 msgstr ""
-"La version d'UCS en cours d'utilisation n'est plus maintenue. Pour plus "
-"d'informations, veuillez consulter %s."
+"La mise à jour vers %s a échoué. Pour plus d’informations, veuillez "
+"consulter le %s."
 
 #: umc/js/updater/UpdatesPage.js:121 umc/js/updater/UpdatesPage.js:586
 #, javascript-format
@@ -393,6 +394,8 @@ msgid ""
 "The update to %s failed. The log file /var/log/univention/updater.log may "
 "contain more information about this."
 msgstr ""
+"La mise à jour vers %s a échoué. Le fichier journal /var/log/univention/"
+"updater.log contient peut-être plus d’informations à ce sujet."
 
 #: umc/js/updater/UpdatesPage.js:504
 msgid "There are App Center updates available."
@@ -431,9 +434,8 @@ msgid "Update availability could not be checked."
 msgstr "Impossible de vérifier la disponibilité de mises à jour."
 
 #: umc/js/updater/UpdatesPage.js:362
-#, fuzzy
 msgid "Update failed"
-msgstr "La mise à jour d'UCS a échoué"
+msgstr "La mise à jour a échoué"
 
 #: umc/js/updater.js:355 umc/js/updater.js:460
 msgid "Update notes"
@@ -465,7 +467,7 @@ msgstr ""
 
 #: umc/js/updater/UpdatesPage.js:346
 msgid "View log file"
-msgstr ""
+msgstr "Afficher le fichier journal"
 
 #: umc/js/updater/UpdatesPage.js:200
 msgid "You may wait for the app to be released for the new UCS version."
@@ -476,7 +478,7 @@ msgstr ""
 #: umc/js/updater.js:72 umc/js/updater/UpdatesPage.js:121
 #: umc/js/updater/UpdatesPage.js:582
 msgid "a new UCS version"
-msgstr ""
+msgstr "une nouvelle version d’UCS"
 
 #: umc/js/updater/UpdatesPage.js:210
 msgid "no update available yet"

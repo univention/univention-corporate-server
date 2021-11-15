@@ -4,20 +4,19 @@ msgstr ""
 "Project-Id-Version: univention-web-js\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2019-09-20 15:14+0200\n"
-"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"PO-Revision-Date: 2021-12-17 11:15+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: js/widgets/MultiInput.js:703
-#, fuzzy
 msgid " (required)"
-msgstr "Rechargement d'UMC nécessaire"
+msgstr " (requis)"
 
 #: js/tools.js:1938
 msgid "\"${moduleName}\" module"
@@ -36,9 +35,9 @@ msgid "%(num)d entries of %(total)d selected"
 msgstr "%(num)d entrées sur %(total)d sélectionnées"
 
 #: js/widgets/Grid.js:1194
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d entries found"
-msgstr "Aucune entrée n'a été trouvée"
+msgstr "%d entrées trouvées"
 
 #: js/widgets/Form.js:654
 msgid "%s (%.1f%)"
@@ -69,14 +68,13 @@ msgid ""
 "<br>Currently opened modules may not work properly.<br>Do you want to reload "
 "the page?"
 msgstr ""
-"Il faut recharger Univention Management Console pour utiliser les nouveaux "
+"Il faut recharger l’Univention Management Console pour utiliser les nouveaux "
 "modules.<br>Les modules ouverts actuellement peuvent ne pas fonctionner "
 "convenablement.<br>Voulez-vous recharger la page ?"
 
 #: js/widgets/CookieBanner.js:58
-#, fuzzy
 msgid "Accept"
-msgstr "Accès"
+msgstr "Accepter"
 
 #: js/widgets/UnixAccessRights.js:98 js/widgets/UnixAccessRightsExtended.js:98
 msgid "Access"
@@ -84,11 +82,11 @@ msgstr "Accès"
 
 #: js/widgets/Calendar.js:205
 msgid "Action"
-msgstr ""
+msgstr "Action"
 
 #: js/widgets/Grid.js:970
 msgid "Actions"
-msgstr ""
+msgstr "Actions"
 
 #: js/widgets/MultiObjectSelect.js:98 js/widgets/MultiObjectSelect.js:324
 msgid "Add"
@@ -100,7 +98,7 @@ msgstr "Ajouter les objets"
 
 #: js/hooks/default_menu_entries.js:374
 msgid "Advantages of the Enterprise Edition"
-msgstr ""
+msgstr "Avantages de l’Enterprise Edition"
 
 #: js/tools.js:1188
 msgid "An assert statement failed"
@@ -119,7 +117,7 @@ msgstr ""
 
 #: js/widgets/ProgressBar.js:182
 msgid "An error occurred: "
-msgstr "Une erreur est survenue :"
+msgstr "Une erreur est survenue : "
 
 #: js/tools.js:687
 #, javascript-format
@@ -140,7 +138,7 @@ msgstr "Retour vers page d'accueil"
 
 #: js/hooks/default_menu_entries.js:353
 msgid "Buy support package"
-msgstr ""
+msgstr "Acheter un forfait d’assistance"
 
 #: js/tools.js:305 js/dialog.js:302 js/hooks/default_menu_entries.js:159
 #: js/widgets/Wizard.js:178 js/widgets/MultiObjectSelect.js:86
@@ -169,9 +167,8 @@ msgid "Confirmation"
 msgstr "Confirmation"
 
 #: js/widgets/CookieBanner.js:54
-#, fuzzy
 msgid "Cookie Settings"
-msgstr "Réglages utilisateur"
+msgstr "Paramètres de cookies"
 
 #: js/tools.js:779
 msgid "Could not fulfill the request."
@@ -187,15 +184,15 @@ msgstr "Impossible de traiter la requête."
 
 #: js/hooks/default_menu_entries.js:396
 msgid "Do not show this notification again"
-msgstr ""
+msgstr "Ne plus afficher cette notification"
 
 #: js/widgets/Calendar.js:186
 msgid "End"
-msgstr ""
+msgstr "Fin"
 
 #: js/widgets/Calendar.js:189
 msgid "Enter"
-msgstr ""
+msgstr "Entrer"
 
 #: js/hooks/default_menu_entries.js:230
 msgid "Feedback"
@@ -216,11 +213,11 @@ msgstr "Groupe"
 #: js/tools.js:897
 #, javascript-format
 msgid "HTTP Error %s"
-msgstr ""
+msgstr "Erreur HTTP %s"
 
 #: js/hooks/default_menu_entries.js:369
 msgid "Hard- and software certifications"
-msgstr ""
+msgstr "Certifications des matériels et logiciels"
 
 #: js/hooks/default_menu_entries.js:185
 msgid "Help"
@@ -232,7 +229,7 @@ msgstr "Masquer le message d'erreur du serveur"
 
 #: js/widgets/Calendar.js:183
 msgid "Home"
-msgstr ""
+msgstr "Accueil"
 
 #: js/tools.js:976
 msgid "Inform vendor"
@@ -307,7 +304,7 @@ msgstr ""
 
 #: js/widgets/Calendar.js:204
 msgid "Key"
-msgstr ""
+msgstr "Clé"
 
 #: js/menu/Menu.js:117 js/hooks/default_menu_entries.js:283
 #: js/widgets/LoginButton.js:41 js/widgets/LoginButton.js:54
@@ -321,7 +318,7 @@ msgstr "Se déconnecter"
 
 #: js/hooks/default_menu_entries.js:370
 msgid "Manufacturer warranty with product liability"
-msgstr ""
+msgstr "Garantie du fabricant et fiabilité du produit"
 
 #: js/menu/Menu.js:202
 msgid "Menu"
@@ -329,31 +326,31 @@ msgstr "Menu"
 
 #: js/widgets/Calendar.js:169
 msgid "Move between date cells"
-msgstr ""
+msgstr "Passer d’une cellule de date à l’autre"
 
 #: js/widgets/Calendar.js:184
 msgid "Move to first day in month"
-msgstr ""
+msgstr "Passer au premier jour du mois"
 
 #: js/widgets/Calendar.js:187
 msgid "Move to last day in month"
-msgstr ""
+msgstr "Passer au dernier jour du mois"
 
 #: js/widgets/Calendar.js:172
 msgid "Move to same day in next month"
-msgstr ""
+msgstr "Passer au même jour le mois suivant"
 
 #: js/widgets/Calendar.js:178
 msgid "Move to same day in next year"
-msgstr ""
+msgstr "Passer au même jour l’année suivante"
 
 #: js/widgets/Calendar.js:175
 msgid "Move to same day in previous month"
-msgstr ""
+msgstr "Passer au même jour le mois précédent"
 
 #: js/widgets/Calendar.js:181
 msgid "Move to same day in previous year"
-msgstr ""
+msgstr "Passer au même jour l’année précédente"
 
 #: js/widgets/MultiInput.js:78
 msgid "New entry"
@@ -368,16 +365,14 @@ msgid "No entries could be found"
 msgstr "Aucune entrée n'a été trouvée"
 
 #: js/widgets/NotificationsButton.js:261
-#, fuzzy
 msgid "No notifications"
-msgstr "Notifications"
+msgstr "Pas de notifications"
 
 #: js/dialog.js:98 js/dialog.js:145 js/dialog.js:171
 msgid "Notification"
 msgstr "Notifications"
 
 #: js/widgets/NotificationsButton.js:238 js/widgets/NotificationsButton.js:263
-#, fuzzy
 msgid "Notifications"
 msgstr "Notifications"
 
@@ -396,7 +391,7 @@ msgstr "Propriétaire"
 #: js/widgets/Calendar.js:171 js/widgets/Calendar.js:174
 #: js/widgets/Calendar.js:177 js/widgets/Calendar.js:180
 msgid "Page"
-msgstr ""
+msgstr "Page"
 
 #: js/widgets/Grid.js:250
 msgid "Please perform a search"
@@ -408,7 +403,7 @@ msgstr "Veuillez prendre une seconde pour fournir les informations suivantes :"
 
 #: js/hooks/default_menu_entries.js:375
 msgid "Prices and support"
-msgstr ""
+msgstr "Prix et assistance"
 
 #: js/widgets/UnixAccessRights.js:90 js/widgets/UnixAccessRightsExtended.js:90
 msgid "Read"
@@ -428,9 +423,8 @@ msgid "Remove"
 msgstr "Supprimer"
 
 #: js/widgets/MultiInput.js:561
-#, fuzzy
 msgid "Remove entry"
-msgstr "Nouvelle entrée"
+msgstr "Supprimer l’entrée"
 
 #: js/hooks/default_menu_entries.js:93
 msgid "Root certificate"
@@ -446,15 +440,15 @@ msgstr "Chercher un terme"
 
 #: js/widgets/MultiSelect.js:67
 msgid "Select all"
-msgstr ""
+msgstr "Tout sélectionner"
 
 #: js/widgets/ImageUploader.js:66
 msgid "Select file"
-msgstr ""
+msgstr "Sélectionner le fichier"
 
 #: js/widgets/Calendar.js:190
 msgid "Select the date"
-msgstr ""
+msgstr "Sélectionner la date"
 
 #: js/tools.js:930
 msgid "Send as email"
@@ -496,7 +490,7 @@ msgstr ""
 
 #: js/widgets/Calendar.js:189
 msgid "Space"
-msgstr ""
+msgstr "Espace"
 
 #: js/tools.js:787
 msgid "Specified locale is not available."
@@ -508,6 +502,10 @@ msgid ""
 "Edition. This license allows you to benefit from basic support services as "
 "well as individually bookable, additional support and professional services."
 msgstr ""
+"À partir de <b>290 euros/an</b>, vous pouvez acheter une Enterprise Edition "
+"d’UCS. Cette licence vous permet de bénéficier des services d’assistance de "
+"base ainsi que de services d’assistance et professionnels supplémentaires "
+"réservables individuellement."
 
 #: js/widgets/UnixAccessRightsExtended.js:105
 msgid "Sticky bit"
@@ -519,7 +517,7 @@ msgstr "Soumettre"
 
 #: js/hooks/default_menu_entries.js:367
 msgid "Support and Professional Services"
-msgstr ""
+msgstr "Assistance et services professionnels"
 
 #: js/hooks/default_menu_entries.js:139 js/hooks/default_menu_entries.js:162
 msgid "Switch language"
@@ -551,14 +549,12 @@ msgid "UMC reload required"
 msgstr "Rechargement d'UMC nécessaire"
 
 #: js/hooks/default_menu_entries.js:252
-#, fuzzy
 msgid "Univention Blog"
-msgstr "Aide Univention"
+msgstr "Blog d’Univention"
 
 #: js/hooks/default_menu_entries.js:217
-#, fuzzy
 msgid "Univention Forum \"Help\""
-msgstr "Aide Univention"
+msgstr "Forum d’aide d’Univention"
 
 #: js/hooks/default_menu_entries.js:204
 msgid "Univention Website"
@@ -566,7 +562,7 @@ msgstr "Site Internet Univention"
 
 #: js/hooks/default_menu_entries.js:368
 msgid "Up to 7 years of maintenance (LTS)"
-msgstr ""
+msgstr "Jusqu’à 7 ans de maintenance (LTS)"
 
 #: js/widgets/Uploader.js:99 js/widgets/MultiUploader.js:63
 #: js/widgets/InfoUploader.js:43
@@ -599,6 +595,9 @@ msgid ""
 "to guarantee an unrestricted service. By clicking on \"Accept\", you consent "
 "to the collection of information on this portal."
 msgstr ""
+"Nous utilisons des cookies pour vous fournir certaines fonctionnalités et "
+"pouvoir garantir un service sans restriction. En cliquant sur « Accepter », "
+"vous consentez à la collecte d’informations sur ce portail."
 
 #: js/tools.js:784
 msgid ""
@@ -638,6 +637,9 @@ msgid ""
 "thanks to certifications and manufacturer warranty you are legally secured "
 "when operating your IT infrastructure."
 msgstr ""
+"Vous pouvez prolonger la maintenance de votre version UCS jusqu’à 7 ans et "
+"grâce aux certifications et à la garantie du fabricant, vous êtes légalement "
+"assuré·e lors de l’exploitation de votre infrastructure IT."
 
 #: js/tools.js:2151
 msgid ""
@@ -645,6 +647,10 @@ msgid ""
 "problems when using this site. The supported Browsers are Firefox (>=60), "
 "Chrome (>=71), Edge (>=18), Safari (>=12)."
 msgstr ""
+"Votre navigateur est obsolète ! Vous pouvez rencontrer des problèmes de "
+"performance et d’autres problèmes lors de l’utilisation de ce site. Les "
+"navigateurs pris en charge sont Firefox (> = 60), Chrome (> = 71), Edge (> = "
+"18), Safari (> = 12)."
 
 #: js/tools.js:1013
 msgid "Your email address (optional)"
@@ -652,7 +658,7 @@ msgstr "Votre adresse de courriel (facultatif)"
 
 #: js/tools.js:780
 msgid "Your session has expired, please login again."
-msgstr "Votre session a expiré, veuillez vous identifier à nouveau."
+msgstr "Votre session a expiré, veuillez vous reconnecter."
 
 #: js/tools.js:920
 msgid "actual result"
@@ -675,14 +681,12 @@ msgid "https://www.univention.com/feedback/"
 msgstr "https://www.univention.com/feedback/"
 
 #: js/hooks/default_menu_entries.js:253
-#, fuzzy
 msgid "https://www.univention.com/news/blog-en/"
-msgstr "https://www.univention.com/"
+msgstr "https://www.univention.com/news/blog-en/"
 
 #: js/hooks/default_menu_entries.js:357 js/hooks/default_menu_entries.js:401
-#, fuzzy
 msgid "https://www.univention.com/products/prices-and-subscriptions/"
-msgstr "https://www.univention.com/feedback/"
+msgstr "https://www.univention.com/products/prices-and-subscriptions/"
 
 #: js/widgets/Grid.js:923
 msgid "more"

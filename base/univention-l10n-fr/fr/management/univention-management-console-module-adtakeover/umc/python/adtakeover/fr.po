@@ -4,15 +4,15 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-reboot\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2016-07-09 18:46+0100\n"
-"Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
+"PO-Revision-Date: 2021-12-07 12:16+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Poedit 3.0\n"
 
 #. i18n: The program "fping" failed.
 #: umc/python/adtakeover/takeover.py:2009
@@ -131,7 +131,7 @@ msgstr "Initialisation du processus à l'écoute de S4 Connector"
 
 #: umc/python/adtakeover/takeover.py:239
 msgid "Insufficient License."
-msgstr "Licence insuffisante"
+msgstr "Licence insuffisante."
 
 #: umc/python/adtakeover/takeover.py:586
 msgid "Internal Error: License check failed."
@@ -295,7 +295,7 @@ msgstr ""
 #: umc/python/adtakeover/takeover.py:1492
 msgid "The Active Directory domain join was not completed successfully yet."
 msgstr ""
-"La jonction au domaine Active Directory ne s'est pas encore terminé avec "
+"La jonction au domaine Active Directory ne s’est pas encore terminée avec "
 "succès."
 
 #: umc/python/adtakeover/takeover.py:227

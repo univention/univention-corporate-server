@@ -31,15 +31,15 @@ msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2021-05-26 13:49+0200\n"
-"Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
+"PO-Revision-Date: 2021-12-10 14:35+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: Français <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: unicode\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Poedit 3.0\n"
 
 #: modules/univention/admin/handlers/computers/domaincontroller_master.py:206
 #: modules/univention/admin/handlers/computers/domaincontroller_backup.py:206
@@ -75,19 +75,16 @@ msgstr "Enregistrement d'alias DNS"
 
 #: modules/univention/admin/handlers/computers/linux.py:273
 #: modules/univention/admin/handlers/computers/ubuntu.py:274
-#, fuzzy
 msgid "At least posix or kerberos is required."
-msgstr " Au moins POSIX ou Kerberos est nécessaire."
+msgstr "Au moins POSIX ou Kerberos est nécessaire."
 
 #: modules/univention/admin/handlers/computers/domaincontroller_backup.py:50
-#, fuzzy
 msgid "Backup Directory Node"
-msgstr "Ordinateur : Backup Directory Node"
+msgstr "Backup Directory Node"
 
 #: modules/univention/admin/handlers/computers/domaincontroller_backup.py:51
-#, fuzzy
 msgid "Backup Directory Nodes"
-msgstr "Ordinateur : Backup Directory Node"
+msgstr "Backup Directory Nodes"
 
 #: modules/univention/admin/handlers/computers/macos.py:216
 #: modules/univention/admin/handlers/computers/domaincontroller_master.py:243
@@ -173,9 +170,8 @@ msgid "Computer: macOS Client"
 msgstr "Ordinateur : client macOS"
 
 #: modules/univention/admin/handlers/computers/computer.py:52
-#, fuzzy
 msgid "Computers"
-msgstr "Ordinateur"
+msgstr "Ordinateurs"
 
 #: modules/univention/admin/handlers/computers/macos.py:231
 #: modules/univention/admin/handlers/computers/domaincontroller_master.py:257
@@ -214,7 +210,7 @@ msgstr "Service DHCP"
 #: modules/univention/admin/handlers/computers/memberserver.py:254
 #: modules/univention/admin/handlers/computers/domaincontroller_slave.py:253
 msgid "DNS Forward and Reverse Lookup Zone"
-msgstr "Zone de recherche DNS directe et inversée "
+msgstr "Zone de recherche DNS directe et inversée"
 
 #: modules/univention/admin/handlers/computers/macos.py:149
 #: modules/univention/admin/handlers/computers/macos.py:245
@@ -265,9 +261,8 @@ msgstr "Description"
 #: modules/univention/admin/handlers/computers/domaincontroller_master.py:78
 #: modules/univention/admin/handlers/computers/domaincontroller_backup.py:78
 #: modules/univention/admin/handlers/computers/domaincontroller_slave.py:78
-#, fuzzy
 msgid "Directory Node name"
-msgstr "Nom du serveur membre"
+msgstr "Nom du Directory Node"
 
 #: modules/univention/admin/handlers/computers/macos.py:103
 #: modules/univention/admin/handlers/computers/domaincontroller_master.py:104
@@ -283,14 +278,12 @@ msgid "Domain"
 msgstr "Domaine"
 
 #: modules/univention/admin/handlers/computers/trustaccount.py:53
-#, fuzzy
 msgid "Domain trust account"
-msgstr "Ordinateur : compte d'approbation de domaine"
+msgstr "Compte d’approbation de domaine"
 
 #: modules/univention/admin/handlers/computers/trustaccount.py:54
-#, fuzzy
 msgid "Domain trust accounts"
-msgstr "Ordinateur : compte d'approbation de domaine"
+msgstr "Compte d’approbation de domaine"
 
 #: modules/univention/admin/handlers/computers/macos.py:128
 #: modules/univention/admin/handlers/computers/domaincontroller_master.py:142
@@ -375,18 +368,16 @@ msgid "IP address"
 msgstr "Adresse IP"
 
 #: modules/univention/admin/handlers/computers/ipmanagedclient.py:54
-#, fuzzy
 msgid "IP client"
-msgstr "Nom du client géré par IP"
+msgstr "Client IP"
 
 #: modules/univention/admin/handlers/computers/ipmanagedclient.py:61
 msgid "IP client name"
 msgstr "Nom du client géré par IP"
 
 #: modules/univention/admin/handlers/computers/ipmanagedclient.py:55
-#, fuzzy
 msgid "IP clients"
-msgstr "Nom du client géré par IP"
+msgstr "Clients IP"
 
 #: modules/univention/admin/handlers/computers/windows.py:175
 msgid "Initialize password with hostname"
@@ -419,14 +410,12 @@ msgid "Kerberos principal"
 msgstr "Principal Kerberos"
 
 #: modules/univention/admin/handlers/computers/linux.py:51
-#, fuzzy
 msgid "Linux Computer"
-msgstr "Ordinateur"
+msgstr "Ordinateur Linux"
 
 #: modules/univention/admin/handlers/computers/linux.py:52
-#, fuzzy
 msgid "Linux Computers"
-msgstr "Ordinateur"
+msgstr "Ordinateurs Linux"
 
 #: modules/univention/admin/handlers/computers/macos.py:177
 #: modules/univention/admin/handlers/computers/domaincontroller_master.py:191
@@ -459,18 +448,16 @@ msgid "Machine Password"
 msgstr "Mot de passe de la machine"
 
 #: modules/univention/admin/handlers/computers/memberserver.py:50
-#, fuzzy
 msgid "Managed Node"
-msgstr "Nom du serveur membre"
+msgstr "Nœud géré"
 
 #: modules/univention/admin/handlers/computers/memberserver.py:78
 msgid "Managed Node name"
-msgstr "Nom du serveur membre"
+msgstr "Nom du nœud géré"
 
 #: modules/univention/admin/handlers/computers/memberserver.py:51
-#, fuzzy
 msgid "Managed Nodes"
-msgstr "Nom du serveur membre"
+msgstr "Nœuds gérés"
 
 #: modules/univention/admin/handlers/computers/trustaccount.py:60
 #: modules/univention/admin/handlers/computers/computer.py:60
@@ -512,7 +499,7 @@ msgstr "Réglages réseau "
 
 #: modules/univention/admin/handlers/computers/__base.py:297
 msgid "Open Univention Management Console on this computer"
-msgstr "Ouvrir la console Univention Management Console sur cet ordinateur"
+msgstr "Ouvrir l’Univention Management Console sur cet ordinateur"
 
 #: modules/univention/admin/handlers/computers/macos.py:92
 #: modules/univention/admin/handlers/computers/domaincontroller_master.py:93
@@ -563,14 +550,12 @@ msgid "Posix account"
 msgstr "Compte POSIX"
 
 #: modules/univention/admin/handlers/computers/domaincontroller_master.py:50
-#, fuzzy
 msgid "Primary Directory Node"
-msgstr "Ordinateur : Primary Directory Node"
+msgstr "Primary Directory Node"
 
 #: modules/univention/admin/handlers/computers/domaincontroller_master.py:51
-#, fuzzy
 msgid "Primary Directory Nodes"
-msgstr "Ordinateur : Primary Directory Node"
+msgstr "Primary Directory Nodes"
 
 #: modules/univention/admin/handlers/computers/macos.py:184
 #: modules/univention/admin/handlers/computers/domaincontroller_master.py:198
@@ -597,14 +582,12 @@ msgid "Relative ID"
 msgstr "Id. relatif"
 
 #: modules/univention/admin/handlers/computers/domaincontroller_slave.py:50
-#, fuzzy
 msgid "Replica Directory Node"
-msgstr "Ordinateur : Replica Directory Node"
+msgstr "Replica Directory Node"
 
 #: modules/univention/admin/handlers/computers/domaincontroller_slave.py:51
-#, fuzzy
 msgid "Replica Directory Nodes"
-msgstr "Ordinateur : Replica Directory Node"
+msgstr "Replica Directory Nodes"
 
 #: modules/univention/admin/handlers/computers/macos.py:135
 #: modules/univention/admin/handlers/computers/domaincontroller_master.py:149
@@ -660,14 +643,12 @@ msgid "Trust account"
 msgstr "Compte d'approbation"
 
 #: modules/univention/admin/handlers/computers/ubuntu.py:52
-#, fuzzy
 msgid "Ubuntu Computer"
-msgstr "Ordinateur"
+msgstr "Ordinateur Ubuntu"
 
 #: modules/univention/admin/handlers/computers/ubuntu.py:53
-#, fuzzy
 msgid "Ubuntu Computers"
-msgstr "Ordinateur"
+msgstr "Ordinateurs Ubuntu"
 
 #: modules/univention/admin/handlers/computers/macos.py:239
 #: modules/univention/admin/handlers/computers/domaincontroller_master.py:265
@@ -706,24 +687,20 @@ msgid "Unix home directory"
 msgstr "Répertoire personnel UNIX"
 
 #: modules/univention/admin/handlers/computers/windows_domaincontroller.py:51
-#, fuzzy
 msgid "Windows Domaincontroller"
-msgstr "Nom du contrôleur de domaine Windows"
+msgstr "Contrôleur de domaine Windows"
 
 #: modules/univention/admin/handlers/computers/windows_domaincontroller.py:52
-#, fuzzy
 msgid "Windows Domaincontrollers"
-msgstr "Nom du contrôleur de domaine Windows"
+msgstr "Contrôleurs de domaine Windows"
 
 #: modules/univention/admin/handlers/computers/windows.py:51
-#, fuzzy
 msgid "Windows Workstation/Server"
-msgstr "Nom du serveur ou de la station de travail Windows"
+msgstr "Station de travail ou serveur Windows"
 
 #: modules/univention/admin/handlers/computers/windows.py:52
-#, fuzzy
 msgid "Windows Workstations/Servers"
-msgstr "Nom du serveur ou de la station de travail Windows"
+msgstr "Stations de travail ou serveurs Windows"
 
 #: modules/univention/admin/handlers/computers/windows_domaincontroller.py:79
 msgid "Windows domaincontroller name"
@@ -754,14 +731,12 @@ msgid "additional start options"
 msgstr "options de démarrage supplémentaires"
 
 #: modules/univention/admin/handlers/computers/macos.py:50
-#, fuzzy
 msgid "macOS Client"
-msgstr "Ordinateur : client macOS"
+msgstr "Client macOS"
 
 #: modules/univention/admin/handlers/computers/macos.py:51
-#, fuzzy
 msgid "macOS Clients"
-msgstr "Ordinateur : client macOS"
+msgstr "Clients macOS"
 
 #~ msgid "Domain controller name"
 #~ msgstr "Nom du contrôleur de domaine"

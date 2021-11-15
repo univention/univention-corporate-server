@@ -4,15 +4,15 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2016-07-10 10:46+0100\n"
-"Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
+"PO-Revision-Date: 2021-12-07 12:46+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Poedit 3.0\n"
 
 #: umc/js/join/Grid.js:172
 #, javascript-format
@@ -37,9 +37,8 @@ msgid ""
 "<p>Please enter credentials of a user account with administrator rights to "
 "run the selected join scripts.</p>"
 msgstr ""
-"<p>Veuillez saisir les preuves d'identité d'un compte utilisateur qui a les "
-"droits d'administrateur permettant d'exécuter les scripts de jonction "
-"sélectionnés.</p>"
+"<p>Veuillez saisir les identifiants d’un compte avec des droits "
+"d’administration afin d’exécuter les scripts de jonction sélectionnés.</p>"
 
 #. i18n: %s is the "XXX module".
 #: umc/js/join.js:311
@@ -147,7 +146,7 @@ msgid ""
 "Not all installed components have been registered. Please visit the %s to "
 "register the remaining components."
 msgstr ""
-"Certains composants installés n'ont pas été enregistrés. Veuillez consulter "
+"Certains composants installés n’ont pas été enregistrés. Veuillez consulter "
 "la page %s pour enregistrer tous les composants restants."
 
 #: umc/js/join/Grid.js:172
@@ -174,15 +173,15 @@ msgstr "Mot de passe non valide"
 
 #: umc/js/join/Form.js:60
 msgid "Password of the domain administrator"
-msgstr "Mot de passe de l'administrateur du domaine"
+msgstr "Mot de passe de le compte d’administration du domaine"
 
 #: umc/js/join.js:107
 msgid ""
 "Please enter credentials of a user account with administrator rights to join "
 "the system."
 msgstr ""
-"Veuillez saisir les peuves d'identité d'un compte utilisateur qui a les "
-"droits d'administrateur permettant que le système rejoigne le domaine."
+"Veuillez saisir les identifiants d’un compte avec des droits "
+"d’administration afin que le système rejoigne le domaine."
 
 #: umc/js/join/Grid.js:91
 msgid "Rejoin"
@@ -240,7 +239,7 @@ msgstr "Les réglages DNS peuvent être ajustés dans les %s."
 
 #: umc/js/join.js:251
 msgid "The following join scripts will be executed: "
-msgstr "Les scripts de jonction suivants vont être exécutés :"
+msgstr "Les scripts de jonction suivants vont être exécutés : "
 
 #: umc/js/join/Form.js:66
 msgid "The hostname of the Primary Directory Node of the domain"
@@ -260,11 +259,11 @@ msgstr "Le mot de passe ne peut pas être vide."
 
 #: umc/js/join.js:469
 msgid "The username may not be empty."
-msgstr "Le nom d'utilisateur ne peut pas être vide."
+msgstr "L’identifiant ne peut pas être vide."
 
 #: umc/js/join/Form.js:54
 msgid "The username of the domain administrator"
-msgstr "Le nom d'utilisateur de l'administrateur du domaine"
+msgstr "L’identifiant du compte d’administration du domaine"
 
 #: umc/js/join.js:122
 msgid ""

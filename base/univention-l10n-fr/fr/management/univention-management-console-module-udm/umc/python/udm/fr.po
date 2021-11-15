@@ -4,15 +4,15 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2016-07-09 19:01+0100\n"
-"Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
+"PO-Revision-Date: 2021-12-10 14:38+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Poedit 3.0\n"
 
 #: umc/python/udm/__init__.py:362
 #, python-format
@@ -43,8 +43,8 @@ msgstr "Impossible d'analyser la licence depuis LDAP"
 msgid ""
 "Check the join status of this system by using the domain join UMC module"
 msgstr ""
-"Vérifiez l'état de jonction de ce système au domaine au moyen du module UMC "
-"de jonction du domaine"
+"Vérifiez l’état de jonction de ce système au domaine au moyen du module UMC "
+"d’intégration au domaine"
 
 #: umc/python/udm/udm_ldap.py:309
 #, python-format
@@ -83,8 +83,8 @@ msgid ""
 "If the problem persists please try to relogin into Univention Management "
 "Console."
 msgstr ""
-"Si le problème persiste, veuillez essayer de vous reconnecter à la console "
-"Univention Management Console."
+"Si le problème persiste, veuillez essayer de vous reconnecter à l’Univention "
+"Management Console."
 
 #: umc/python/udm/udm_ldap.py:277
 msgid "Install the latest software updates"
@@ -118,7 +118,7 @@ msgstr "L'objet LDAP n'existe pas."
 
 #: umc/python/udm/__init__.py:351
 msgid "License import failed: malformed LDIF."
-msgstr ""
+msgstr "Échec de l’importation de la licence : LDIF mal formé."
 
 #: umc/python/udm/tools.py:124
 msgid "License not found. During this session add and modify are disabled."
@@ -163,7 +163,6 @@ msgstr "Objets faisant référence à cet objet de stratégie"
 
 #. i18n: translattion for univention-directory-reports
 #: umc/python/udm/__init__.py:645
-#, fuzzy
 msgid "PDF Document"
 msgstr "Document PDF"
 
@@ -232,7 +231,7 @@ msgid ""
 "specifying more query parameters"
 msgstr ""
 "La requête que vous avez saisie a expiré. Veuillez affiner votre recherche "
-"en précisant davantage de critères de recherche."
+"en précisant davantage de critères de recherche"
 
 #: umc/python/udm/udm_ldap.py:351
 #, python-format
@@ -249,7 +248,7 @@ msgstr ""
 
 #: umc/python/udm/__init__.py:688
 msgid "The report does not exists. Please create a new one."
-msgstr ""
+msgstr "Le rapport n’existe pas. Veuillez en créer un nouveau."
 
 #: umc/python/udm/__init__.py:1309
 #, python-format

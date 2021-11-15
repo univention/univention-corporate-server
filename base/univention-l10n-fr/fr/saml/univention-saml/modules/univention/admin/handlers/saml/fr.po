@@ -11,15 +11,15 @@ msgstr ""
 "Project-Id-Version: 1.0.1-6\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2017-05-28 21:11+0900\n"
-"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"PO-Revision-Date: 2021-12-17 15:51+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:105
 msgid "A description of this service provider that can be shown to users"
@@ -28,10 +28,11 @@ msgstr ""
 "utilisateurs"
 
 #: modules/univention/admin/handlers/saml/idpconfig.py:66
-#, fuzzy
 msgid ""
 "A list of ldap attribute names that the IdP is allowed to fetch from LDAP"
-msgstr "Une liste d'attributs LDAP qui sont transmis au fournisseur de service"
+msgstr ""
+"Une liste des noms d'attributs LDAP que le fournisseur d’identité (IdP) est "
+"autorisé à récupérer via LDAP"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:99
 msgid "A list of ldap attributes that are transmitted to the service provider"
@@ -39,7 +40,7 @@ msgstr "Une liste d'attributs LDAP qui sont transmis au fournisseur de service"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:136
 msgid "A raw simplesamlphp service provider configuration."
-msgstr ""
+msgstr "Une configuration brute du fournisseur de service simplesamlphp."
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:168
 msgid "Additional configuration options"
@@ -59,7 +60,7 @@ msgstr ""
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:148
 msgid "Assertion lifetime"
-msgstr ""
+msgstr "Durée de vie de l’assertion"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:155
 msgid "Basic Settings"
@@ -67,7 +68,7 @@ msgstr "Réglages de base"
 
 #: modules/univention/admin/handlers/saml/idpconfig.py:57
 msgid "Config object identifier"
-msgstr ""
+msgstr "Identifiant d’objet de configuration"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:59
 msgid ""
@@ -84,7 +85,7 @@ msgstr "Description de ce fournisseur de service"
 #: modules/univention/admin/handlers/saml/serviceprovider.py:141
 #: modules/univention/admin/handlers/saml/serviceprovider.py:142
 msgid "Enable signed Logouts"
-msgstr ""
+msgstr "Activer la signature des requêtes de déconnexion"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:168
 #: modules/univention/admin/handlers/saml/serviceprovider.py:169
@@ -102,11 +103,11 @@ msgstr "Général"
 
 #: modules/univention/admin/handlers/saml/idpconfig.py:58
 msgid "IdP config object identifier"
-msgstr ""
+msgstr "Identifiant d’objet de configuration IdP"
 
 #: modules/univention/admin/handlers/saml/idpconfig.py:65
 msgid "LDAP attribute name"
-msgstr ""
+msgstr "Nom de l’attribut LDAP"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:98
 msgid "List of ldap attributes to transmit"
@@ -142,17 +143,15 @@ msgstr "Répondre à cette URL de fournisseur de service après connexion"
 #: modules/univention/admin/handlers/saml/idpconfig.py:39
 #: modules/univention/admin/handlers/saml/idpconfig.py:40
 msgid "SAML IdP configuration"
-msgstr ""
+msgstr "Configuration de l’IdP SAML"
 
 #: modules/univention/admin/handlers/saml/idpconfig.py:41
-#, fuzzy
 msgid "SAML IdP configurations"
-msgstr "Options de configuration supplémentaires"
+msgstr "Configurations d’IdP SAML"
 
 #: modules/univention/admin/handlers/saml/idpconfig.py:74
-#, fuzzy
 msgid "SAML identity provider settings"
-msgstr "Réglages de base du fournisseur de service SAML"
+msgstr "Réglages du fournisseur d’identité SAML"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:40
 #: modules/univention/admin/handlers/saml/serviceprovider.py:41
@@ -164,9 +163,8 @@ msgid "SAML service provider basic settings"
 msgstr "Réglages de base du fournisseur de service SAML"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:42
-#, fuzzy
 msgid "SAML service providers"
-msgstr "Fournisseur de service SAML"
+msgstr "Fournisseurs de service SAML"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:58
 msgid "Service provider activation status"
@@ -177,9 +175,8 @@ msgid "Service provider identifier"
 msgstr "Identifiant du fournisseur de service"
 
 #: modules/univention/admin/handlers/saml/idpconfig.py:73
-#, fuzzy
 msgid "Settings"
-msgstr "Réglages de base"
+msgstr "Réglages"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:124
 msgid "Single logout URL for this service provider"
@@ -206,17 +203,18 @@ msgid ""
 "be redirected to the URL upon successful authentication. Example: https://sp."
 "example.com/login"
 msgstr ""
-"URL(s) des points d'accès AssertionConsumerService pour ce fournisseur de "
-"service (SP). Les utilisateurs seront redirigés vers l'URL après une "
-"authentification réussie. Exemple : https://sp.exemple.com/login"
+"URL(s) des points d’accès AssertionConsumerService pour ce fournisseur de "
+"service (SP). Les utilisateurs et utilisatrices seront redirigé·es vers "
+"l’URL après une authentification réussie. Exemple : https://sp.exemple.com/"
+"login"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:86
 msgid ""
 "The name of the attribute which should be used as the value of the NameID, e."
 "g. uid"
 msgstr ""
-"Le nom de l'attribut qui doit être utilisé comme valeur pour le NameID, par "
-"exemple uid."
+"Le nom de l’attribut qui doit être utilisé comme valeur pour le NameID, par "
+"exemple uid"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:110
 msgid ""
@@ -228,7 +226,7 @@ msgstr ""
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:149
 msgid "The time in seconds how long one assertion is valid."
-msgstr ""
+msgstr "La durée de validité (en secondes) d’une assertion."
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:114
 msgid "URL to the service provider's privacy policy"
@@ -277,8 +275,8 @@ msgstr ""
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:135
 msgid "raw simplesaml SP config"
-msgstr ""
+msgstr "données brutes d’une configuration SP simplesaml"
 
 #: modules/univention/admin/handlers/saml/idpconfig.py:42
 msgid "univention simplesamlphp identity provider settings"
-msgstr ""
+msgstr "réglages du fournisseur d’identité simplesaml Univention"

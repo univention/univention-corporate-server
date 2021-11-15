@@ -1,3 +1,9 @@
+univention-l10n-fr (4.0.1-6) unstable; urgency=medium
+
+  * Bug #54029: Comprehensive update to translation package
+
+ -- Johannes <lohmer@univention.de>  Thu, 09 Dec 2021 17:06:30 +0200
+
 univention-l10n-fr (4.0.1-5) unstable; urgency=medium
 
   * Bug #42374: IP Managed Client -> IP Client

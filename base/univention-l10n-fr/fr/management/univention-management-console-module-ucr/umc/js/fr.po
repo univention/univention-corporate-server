@@ -6,15 +6,15 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-ucr\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2017-05-28 20:40+0900\n"
-"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"PO-Revision-Date: 2021-11-24 16:45+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0\n"
 
 #: umc/js/ucr.js:238
 msgid "Add"
@@ -52,7 +52,7 @@ msgstr "Catégorie à laquelle la variable UCR peut être associée"
 
 #: umc/js/ucr.js:107
 msgid "Default value (pattern)"
-msgstr ""
+msgstr "Valeur par défaut (modèle)"
 
 #: umc/js/ucr.js:260 umc/js/ucr.js:270
 msgid "Delete"
@@ -130,6 +130,8 @@ msgid ""
 "The default value of the UCR variable which is applied if the variable is "
 "not set. This might be a UCR pattern."
 msgstr ""
+"Valeur par défaut de la variable UCR qui est appliquée si la variable n’est "
+"pas définie. Il peut s’agir d’un modèle UCR."
 
 #: umc/js/ucr.js:81 umc/js/ucr.js:285
 msgid "UCR variable"

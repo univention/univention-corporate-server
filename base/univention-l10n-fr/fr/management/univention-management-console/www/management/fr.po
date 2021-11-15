@@ -3,13 +3,14 @@ msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2019-09-20 15:55+0200\n"
-"Last-Translator: Eric Bischoff <eric@workshop-chapina.com>\n"
+"PO-Revision-Date: 2021-12-10 14:37+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0\n"
 
 #: www/management/widgets/LicenseImportPage.js:48
 msgid ""
@@ -27,9 +28,9 @@ msgid ""
 "in the UCS manual. The manual as well as further important information are "
 "available via the following links:</p>"
 msgstr ""
-"<p>Les informations détaillées sur l'utilisation de Univention Management "
-"Console se trouvent dans le manuel d'UCS. Le manuel ainsi que d'autres "
-"informations importantes sont disponibles au travers des liens suivants :</p>"
+"<p>Les informations détaillées sur l’utilisation de l’Univention Management "
+"Console se trouvent dans le manuel d’UCS. Le manuel ainsi que d’autres "
+"informations importantes sont disponibles via les liens suivants :</p>"
 
 #: www/management/widgets/ActivationPage.js:65
 msgid ""
@@ -93,7 +94,6 @@ msgstr ""
 "fichier de licence qui vous a été transmis au cours de l'étape suivante.</p>"
 
 #: www/management/widgets/HelpPage.js:48
-#, fuzzy
 msgid ""
 "<ul><li><a href=\"https://docs.software-univention.de/\" target=\"_blank"
 "\">Online documentation</a></li><li><a href=\"https://wiki.univention.de/"
@@ -101,11 +101,11 @@ msgid ""
 "li><li><a href=\"https://www.univention.com/products/support/community-"
 "support/\" target=\"_blank\">Community and support</a></li></ul>"
 msgstr ""
-"<ul><li><a href=\"https://docs.software-univention.de/en/ucs.html\" target="
-"\"_blank\">Documentation en ligne</a></li><li><a href=\"https://wiki."
-"univention.de/index.php?title=Hauptseite\" target=\"_blank\">Wiki "
-"Univention</a></li><li><a href=\"https://www.univention.com/products/support/"
-"community-support/\" target=\"_blank\">Communauté et assistance</a></li></ul>"
+"<ul><li><a href=\"https://docs.software-univention.de/\" target=\"_blank"
+"\">Documentation en ligne</a></li><li><a href=\"https://wiki.univention.de/"
+"index.php?title=Hauptseite\" target=\"_blank\">Wiki Univention</a></"
+"li><li><a href=\"https://www.univention.com/products/support/community-"
+"support/\" target=\"_blank\">Communauté et assistance</a></li></ul>"
 
 #: www/management/main.js:796
 msgid "About UMC"
@@ -139,7 +139,7 @@ msgstr "Date d'expiration du certificat SSL racine"
 
 #: www/management/main.js:789
 msgid "Documentation and Support"
-msgstr ""
+msgstr "Documentation et Assistance"
 
 #: www/management/widgets/ActivationPage.js:51
 msgid "E-mail address"
@@ -190,7 +190,7 @@ msgstr "Certificat SSL racine"
 
 #: www/management/main.js:728
 msgid "Search"
-msgstr ""
+msgstr "Rechercher"
 
 #: www/management/main.js:1587
 #, javascript-format
@@ -219,13 +219,12 @@ msgstr ""
 "Le %(certificate)s expirera dans %(days)d jours et doit être renouvelé !"
 
 #: www/management/widgets/ActivationDialog.js:188
-#, fuzzy
 msgid ""
 "The activation of UCS failed. Please re-try to perform the activation again "
 "via the user menu in the top right."
 msgstr ""
-"Échec en activant UCS. Veuillez essayer à nouveau d'effectuer l'activation "
-"par le biais du menu utilisateur en haut à droite."
+"L’activation d’UCS a échoué. Veuillez réessayer d’effectuer l’activation via "
+"le menu personnel en haut à droite."
 
 #: www/management/widgets/ActivationDialog.js:148
 msgid ""

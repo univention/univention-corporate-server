@@ -6,25 +6,25 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2017-05-28 19:30+0900\n"
-"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"PO-Revision-Date: 2021-12-10 13:43+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0\n"
 
 #: umc/python/appcenter/__init__.py:358
 #, python-format
 msgid "%d Apps: Connecting to %s"
-msgstr ""
+msgstr "%d Apps : connexion à %s"
 
 #: umc/python/appcenter/__init__.py:305
-#, fuzzy, python-format
+#, python-format
 msgid "%d Apps: Running tests"
-msgstr "%s: exécution des tests"
+msgstr "%d Apps : exécution des tests"
 
 #: umc/python/appcenter/util.py:170
 #, python-format
@@ -36,14 +36,14 @@ msgstr ""
 "d'App Center. Veuillez réessayer ultérieurement."
 
 #: umc/python/appcenter/__init__.py:356
-#, fuzzy, python-format
+#, python-format
 msgid "%s: Connecting to %s"
-msgstr "%s: exécution des tests"
+msgstr "%s : connexion à %s"
 
 #: umc/python/appcenter/__init__.py:303
 #, python-format
 msgid "%s: Running tests"
-msgstr "%s: exécution des tests"
+msgstr "%s : exécution des tests"
 
 #: umc/python/appcenter/__init__.py:408
 msgid ""
@@ -70,7 +70,7 @@ msgstr "Impossible de trouver l'application pour %s"
 
 #: umc/python/appcenter/__init__.py:427
 msgid "Could not load suggestions."
-msgstr ""
+msgstr "Impossible de charger les suggestions."
 
 #: umc/python/appcenter/__init__.py:327
 #, python-format
@@ -120,17 +120,20 @@ msgstr ""
 #: umc/python/appcenter/__init__.py:225
 #, python-brace-format
 msgid "Problems connecting to {0} ({1}). Please update {0}!"
-msgstr ""
+msgstr "Problèmes de connexion à {0} ({1}). Veuillez mettre à jour {0} !"
 
 #: umc/python/appcenter/__init__.py:227
 msgid "Problems connecting to {} ({})."
-msgstr ""
+msgstr "Problèmes de connexion à {} ({})."
 
+# Englisch: "of the this host"
 #: umc/python/appcenter/__init__.py:228
 msgid ""
 "The App Center version of the this host ({}) is not compatible with the "
 "version of {} ({})"
 msgstr ""
+"La version de l’App Center sur cet hôte ({}) n’est pas compatible avec la "
+"version de {} ({})"
 
 #: umc/python/appcenter/sanitizers.py:55 umc/python/appcenter/sanitizers.py:59
 msgid "The credentials provided were not accepted."
@@ -193,7 +196,7 @@ msgstr "Impossible de démarrer le service Docker !"
 
 #: umc/python/appcenter/__init__.py:432
 msgid "Unexpected suggestions data."
-msgstr ""
+msgstr "Données de suggestions inattendues."
 
 #: umc/python/appcenter/__init__.py:329
 #, python-format
@@ -232,8 +235,8 @@ msgid ""
 "or disable the docker support in the AppCenter by setting appcenter/docker "
 "to false."
 msgstr ""
-"ou désactiver la prise en charge de Docker dans l'AppCenter en réglant à "
-"FALSE la valeur appcenter/docker."
+"ou désactiver la prise en charge de Docker dans l’App Center en réglant "
+"appcenter/docker sur « false »."
 
 #: umc/python/appcenter/__init__.py:914
 msgid "upgradable"

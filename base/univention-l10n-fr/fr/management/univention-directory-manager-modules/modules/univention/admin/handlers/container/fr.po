@@ -32,15 +32,15 @@ msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2016-07-10 21:04+0100\n"
-"Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
+"PO-Revision-Date: 2021-12-01 10:55+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: Français <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: unicode\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Poedit 3.0\n"
 
 #: modules/univention/admin/handlers/container/ou.py:78
 #: modules/univention/admin/handlers/container/cn.py:77
@@ -54,9 +54,8 @@ msgstr "Ajouter aux conteneurs DNS standard"
 
 #: modules/univention/admin/handlers/container/ou.py:108
 #: modules/univention/admin/handlers/container/cn.py:107
-#, fuzzy
 msgid "Add to standard Directory Node computer containers"
-msgstr "Ajouter aux conteneurs d'ordinateurs standard"
+msgstr "Ajouter aux conteneurs d’ordinateurs Directory Node standard"
 
 #: modules/univention/admin/handlers/container/ou.py:102
 #: modules/univention/admin/handlers/container/cn.py:101
@@ -110,9 +109,8 @@ msgid "Basic settings"
 msgstr "Réglages de base"
 
 #: modules/univention/admin/handlers/container/cn.py:50
-#, fuzzy
 msgid "Container"
-msgstr "Conteneur : domaine"
+msgstr "Conteneur"
 
 #: modules/univention/admin/handlers/container/cn.py:153
 msgid "Container description"
@@ -136,9 +134,8 @@ msgid "Container: Organisational Unit"
 msgstr "Conteneur : Unité d'Organisation"
 
 #: modules/univention/admin/handlers/container/cn.py:51
-#, fuzzy
 msgid "Containers"
-msgstr "Réglages des conteneurs"
+msgstr "Conteneurs"
 
 #: modules/univention/admin/handlers/container/dc.py:147
 msgid "DNS"
@@ -167,14 +164,12 @@ msgid "Description"
 msgstr "Description"
 
 #: modules/univention/admin/handlers/container/dc.py:55
-#, fuzzy
 msgid "Domain Container"
-msgstr "Conteneur : conteneur"
+msgstr "Conteneur de domaine"
 
 #: modules/univention/admin/handlers/container/dc.py:56
-#, fuzzy
 msgid "Domain Containers"
-msgstr "Conteneur : conteneur"
+msgstr "Conteneurs de domaine"
 
 #: modules/univention/admin/handlers/container/dc.py:143
 msgid "Domain container description"
@@ -213,14 +208,12 @@ msgid "Name"
 msgstr "Nom"
 
 #: modules/univention/admin/handlers/container/ou.py:51
-#, fuzzy
 msgid "Organisational Unit"
-msgstr "Conteneur : Unité d'Organisation"
+msgstr "Unité d’Organisation"
 
 #: modules/univention/admin/handlers/container/ou.py:52
-#, fuzzy
 msgid "Organisational Units"
-msgstr "Conteneur : Unité d'Organisation"
+msgstr "Unités d’Organisation"
 
 #: modules/univention/admin/handlers/container/ou.py:154
 msgid "Organisational unit description"

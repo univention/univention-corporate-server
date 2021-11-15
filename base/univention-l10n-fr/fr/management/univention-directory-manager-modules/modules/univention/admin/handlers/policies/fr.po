@@ -32,18 +32,17 @@ msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2021-04-22 21:27+0200\n"
-"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"PO-Revision-Date: 2021-12-17 14:07+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: unicode\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: modules/univention/admin/handlers/policies/policy.py:53
-#, fuzzy
 msgid ""
 "<p>Policies are objects that can be connected with other objects in the "
 "directory tree. Connected policies allow to define object properties in a "
@@ -53,16 +52,16 @@ msgid ""
 "de/manual-5.0.html#central:policies\" target=\"_blank\">online documentation "
 "for UCS</a>.</p>"
 msgstr ""
-"<p>Les stratégies sont des objets qui peuvent être connectés à d'autres objets "
-"dans l'arborescence des répertoires. Les stratégies connectées permettent de "
-"définir les propriétés des objets de manière uniforme. Les stratégies "
-"connectées à des conteneurs ou à des unités d'organisation sont héritées par "
-"tous les objets situés aux niveaux inférieurs.</p><p>Vous pouvez trouver "
-"davantage d'informations à ce sujet dans la <a href=\"https://docs.software-univention."
-"de/manual-5.0.html#central:policies\" target=\"_blank\">documentation en ligne "
-"d'UCS</a>.</p>"
+"<p>Les stratégies sont des objets qui peuvent être connectés à d’autres "
+"objets dans l’arborescence des répertoires. Les stratégies connectées "
+"permettent de définir les propriétés des objets de manière uniformisée. Les "
+"stratégies connectées à des conteneurs ou à des unités d’organisation sont "
+"héritées par tous les objets des niveaux inférieurs.</p><p>Vous trouverez "
+"plus d’informations à ce sujet dans la <a href=\"https://docs.software-"
+"univention.de/manual-5.0.html#central:policies\" target=\"_blank"
+"\">documentation en ligne d’UCS</a>.</p>"
 
-#: modules/univention/admin/handlers/policies/release.py:85
+#: modules/univention/admin/handlers/policies/release.py:89
 msgid "Activate release updates (Errata updates are activated by default)."
 msgstr ""
 "Activer les mises à niveau de version (les correctifs sont activés par "
@@ -77,11 +76,11 @@ msgstr "Incorporer les noms d'hôtes aux baux"
 #: modules/univention/admin/handlers/policies/dhcp_scope.py:73
 #: modules/univention/admin/handlers/policies/dhcp_scope.py:127
 msgid "Allow/Deny"
-msgstr "Autoriser / Interdire"
+msgstr "Autoriser/Interdire"
 
 #: modules/univention/admin/handlers/policies/dhcp_scope.py:127
 msgid "Allow/Deny/Ignore statements"
-msgstr "Déclarations Autoriser / Interdire / Ignorer"
+msgstr "Autoriser/Interdire/Ignorer les déclarations"
 
 #: modules/univention/admin/handlers/policies/umc.py:54
 msgid "Allowed UMC operation sets"
@@ -110,18 +109,16 @@ msgid "Automatic updates"
 msgstr "Mises à jour automatiques"
 
 #: modules/univention/admin/handlers/policies/release.py:68
-#, fuzzy
 msgid "Automatic updates policies"
-msgstr "Mises à jour automatiques"
+msgstr "Stratégies de mises à jour automatiques"
 
 #: modules/univention/admin/handlers/policies/release.py:67
-#, fuzzy
 msgid "Automatic updates policy"
-msgstr "Mises à jour automatiques"
+msgstr "Stratégie de mises à jour automatiques"
 
 #: modules/univention/admin/handlers/policies/admin_container.py:88
 msgid "Available Univention Directory Manager modules"
-msgstr "Modules Univention Directory Manager disponibles"
+msgstr "Modules d’Univention Directory Manager disponibles"
 
 #: modules/univention/admin/handlers/policies/dhcp_scope.py:55
 #: modules/univention/admin/handlers/policies/dhcp_scope.py:98
@@ -179,7 +176,7 @@ msgstr "Mises à jour des clients"
 
 #: modules/univention/admin/handlers/policies/registry.py:92
 msgid "Configuration Registry"
-msgstr "Registre de configuration"
+msgstr "Univention Configuration Registry"
 
 #: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:55
 #: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:102
@@ -212,78 +209,68 @@ msgid "DDNS updates"
 msgstr "Mises à jour DDNS"
 
 #: modules/univention/admin/handlers/policies/dhcp_scope.py:72
-#, fuzzy
 msgid "DHCP Allow/Deny policies"
-msgstr "Stratégie : autorisations / interdictions DHCP"
+msgstr "Stratégies d’autorisation/interdiction DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_scope.py:71
-#, fuzzy
 msgid "DHCP Allow/Deny policy"
-msgstr "Stratégie : autorisations / interdictions DHCP"
+msgstr "Stratégie d’autorisation/interdiction DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_boot.py:69
 msgid "DHCP Boot policies"
-msgstr ""
+msgstr "Stratégies de démarrage DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_boot.py:68
 msgid "DHCP Boot policy"
-msgstr ""
+msgstr "Stratégie de démarrage DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_dns.py:69
 msgid "DHCP DNS policies"
-msgstr ""
+msgstr "Stratégies DNS DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_dns.py:68
 msgid "DHCP DNS policy"
-msgstr ""
+msgstr "Stratégie DNS DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:75
-#, fuzzy
 msgid "DHCP Dynamic DNS policies"
-msgstr "Stratégie : DHCP DNS dynamique"
+msgstr "Stratégies de DNS dynamique DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:74
-#, fuzzy
 msgid "DHCP Dynamic DNS policy"
-msgstr "Stratégie : DHCP DNS dynamique"
+msgstr "Stratégie de DNS dynamique DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_netbios.py:70
-#, fuzzy
 msgid "DHCP NetBIOS policies"
-msgstr "Réglages généraux DHCP NetBIOS"
+msgstr "Stratégies NetBIOS DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_netbios.py:69
-#, fuzzy
 msgid "DHCP NetBIOS policy"
-msgstr "Stratégie : DHCP NetBIOS"
+msgstr "Stratégie NetBIOS DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_leasetime.py:115
 msgid "DHCP lease time"
 msgstr "Durée du bail DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_leasetime.py:70
-#, fuzzy
 msgid "DHCP lease time policies"
-msgstr "Durée du bail DHCP"
+msgstr "Stratégies de durée du bail DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_leasetime.py:69
-#, fuzzy
 msgid "DHCP lease time policy"
-msgstr "Durée du bail DHCP"
+msgstr "Stratégie de durée du bail DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_routing.py:104
 msgid "DHCP routing"
 msgstr "Routage DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_routing.py:68
-#, fuzzy
 msgid "DHCP routing policies"
-msgstr "Routage DHCP"
+msgstr "Stratégies de routage DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_routing.py:67
-#, fuzzy
 msgid "DHCP routing policy"
-msgstr "Routage DHCP"
+msgstr "Stratégie de routage DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_statements.py:74
 msgid "DHCP statement"
@@ -294,14 +281,12 @@ msgid "DHCP statements"
 msgstr "Déclarations DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_statements.py:73
-#, fuzzy
 msgid "DHCP statements policies"
-msgstr "Déclarations DHCP"
+msgstr "Stratégies de déclarations DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_statements.py:72
-#, fuzzy
 msgid "DHCP statements policy"
-msgstr "Déclarations DHCP"
+msgstr "Stratégie de déclarations DHCP"
 
 #: modules/univention/admin/handlers/policies/dhcp_dns.py:70
 msgid "DNS"
@@ -349,14 +334,12 @@ msgid "Desktop language"
 msgstr "Langue du bureau"
 
 #: modules/univention/admin/handlers/policies/desktop.py:68
-#, fuzzy
 msgid "Desktop policies"
-msgstr "Profil de bureau"
+msgstr "Stratégies de bureau"
 
 #: modules/univention/admin/handlers/policies/desktop.py:67
-#, fuzzy
 msgid "Desktop policy"
-msgstr "Profil de bureau"
+msgstr "Stratégie de bureau"
 
 #: modules/univention/admin/handlers/policies/desktop.py:55
 #: modules/univention/admin/handlers/policies/desktop.py:94
@@ -530,7 +513,7 @@ msgstr "Réglages généraux des paquetages des Replica Nodes"
 
 #: modules/univention/admin/handlers/policies/umc.py:106
 msgid "General UMC settings"
-msgstr "Réglages généraux UMC"
+msgstr "Réglages généraux d’UMC"
 
 #: modules/univention/admin/handlers/policies/registry.py:109
 msgid "General Univention Configuration Registry settings"
@@ -650,14 +633,12 @@ msgid "LDAP server"
 msgstr "Serveur LDAP"
 
 #: modules/univention/admin/handlers/policies/ldapserver.py:68
-#, fuzzy
 msgid "LDAP server policies"
-msgstr "Serveur LDAP"
+msgstr "Stratégies de serveur LDAP"
 
 #: modules/univention/admin/handlers/policies/ldapserver.py:67
-#, fuzzy
 msgid "LDAP server policy"
-msgstr "Serveur LDAP"
+msgstr "Stratégie de serveur LDAP"
 
 #: modules/univention/admin/handlers/policies/dhcp_leasetime.py:115
 msgid "Lease Time"
@@ -676,7 +657,7 @@ msgstr ""
 
 #: modules/univention/admin/handlers/policies/admin_container.py:53
 msgid "List of Univention Directory Manager modules"
-msgstr "Liste des modules Univention Directory Manager"
+msgstr "Liste des modules d’Univention Directory Manager"
 
 #: modules/univention/admin/handlers/policies/dhcp_netbios.py:92
 msgid "List of WINS servers listed in order of preference"
@@ -710,28 +691,24 @@ msgid "Maintenance"
 msgstr "Maintenance"
 
 #: modules/univention/admin/handlers/policies/maintenance.py:71
-#, fuzzy
 msgid "Maintenance policies"
-msgstr "Maintenance"
+msgstr "Stratégies de maintenance"
 
 #: modules/univention/admin/handlers/policies/maintenance.py:70
-#, fuzzy
 msgid "Maintenance policy"
-msgstr "Maintenance"
+msgstr "Stratégie de maintenance"
 
 #: modules/univention/admin/handlers/policies/maintenance.py:152
 msgid "Maintenance settings"
 msgstr "Réglages de maintenance"
 
 #: modules/univention/admin/handlers/policies/memberpackages.py:69
-#, fuzzy
 msgid "Managed Node packages policies"
-msgstr "Réglages généraux des paquetages des Managed Nodes"
+msgstr "Stratégies de paquetages des Managed Nodes"
 
 #: modules/univention/admin/handlers/policies/memberpackages.py:68
-#, fuzzy
 msgid "Managed Node packages policy"
-msgstr "Réglages généraux des paquetages des Managed Nodes"
+msgstr "Stratégie de paquetages des Managed Nodes"
 
 #: modules/univention/admin/handlers/policies/dhcp_leasetime.py:55
 #: modules/univention/admin/handlers/policies/dhcp_leasetime.py:96
@@ -780,14 +757,12 @@ msgid "NFS mounts"
 msgstr "Montages NFS"
 
 #: modules/univention/admin/handlers/policies/nfsmounts.py:68
-#, fuzzy
 msgid "NFS mounts policies"
-msgstr "Montages NFS"
+msgstr "Stratégies de montages NFS"
 
 #: modules/univention/admin/handlers/policies/nfsmounts.py:67
-#, fuzzy
 msgid "NFS mounts policy"
-msgstr "Montages NFS"
+msgstr "Stratégie de montages NFS"
 
 #: modules/univention/admin/handlers/policies/nfsmounts.py:89
 msgid "NFS shares to mount"
@@ -910,14 +885,12 @@ msgid "Passwords"
 msgstr "Mots de passe"
 
 #: modules/univention/admin/handlers/policies/pwhistory.py:69
-#, fuzzy
 msgid "Passwords policies"
-msgstr "Mots de passe"
+msgstr "Stratégies de mots de passe"
 
 #: modules/univention/admin/handlers/policies/pwhistory.py:68
-#, fuzzy
 msgid "Passwords policy"
-msgstr "Mots de passe"
+msgstr "Stratégie de mots de passe"
 
 #: modules/univention/admin/handlers/policies/maintenance.py:92
 msgid "Perform maintenance after system startup"
@@ -933,9 +906,8 @@ msgid "Ping check"
 msgstr "Vérification par ping"
 
 #: modules/univention/admin/handlers/policies/policy.py:50
-#, fuzzy
 msgid "Policies"
-msgstr "Stratégie"
+msgstr "Stratégies"
 
 #: modules/univention/admin/handlers/policies/policy.py:48
 #: modules/univention/admin/handlers/policies/policy.py:49
@@ -1008,7 +980,7 @@ msgstr "Stratégie : paquetages des Replica Nodes"
 
 #: modules/univention/admin/handlers/policies/pwhistory.py:67
 msgid "Policy: Passwords"
-msgstr "Stratégie : mots de passe "
+msgstr "Stratégie : mots de passe"
 
 #: modules/univention/admin/handlers/policies/printserver.py:65
 msgid "Policy: Print server"
@@ -1032,21 +1004,19 @@ msgstr "Stratégie : Univention Configuration Registry"
 
 #: modules/univention/admin/handlers/policies/admin_container.py:65
 msgid "Policy: Univention Directory Manager container settings"
-msgstr "Stratégie : réglages du conteneur Univention Directory Manager"
+msgstr "Stratégie : réglages du conteneur d’Univention Directory Manager"
 
 #: modules/univention/admin/handlers/policies/share_userquota.py:70
 msgid "Policy: User quota"
 msgstr "Stratégie : quotas d'utilisateur"
 
 #: modules/univention/admin/handlers/policies/masterpackages.py:69
-#, fuzzy
 msgid "Primary/Backup Node packages policies"
-msgstr "Réglages généraux des paquetages des Primary/Backup Nodes"
+msgstr "Stratégies de paquetages des Primary/Backup Nodes"
 
 #: modules/univention/admin/handlers/policies/masterpackages.py:68
-#, fuzzy
 msgid "Primary/Backup Node packages policy"
-msgstr "Réglages généraux des paquetages des Primary/Backup Nodes"
+msgstr "Stratégie de paquetages des Primary/Backup Nodes"
 
 #: modules/univention/admin/handlers/policies/printserver.py:53
 #: modules/univention/admin/handlers/policies/printserver.py:68
@@ -1055,14 +1025,12 @@ msgid "Print server"
 msgstr "Serveur d'impression"
 
 #: modules/univention/admin/handlers/policies/printserver.py:67
-#, fuzzy
 msgid "Print server policies"
-msgstr "Serveur d'impression"
+msgstr "Stratégies de serveur d’impression"
 
 #: modules/univention/admin/handlers/policies/printserver.py:66
-#, fuzzy
 msgid "Print server policy"
-msgstr "Serveur d'impression"
+msgstr "Stratégie de serveur d’impression"
 
 #: modules/univention/admin/handlers/policies/share_userquota.py:129
 msgid "Quota"
@@ -1091,14 +1059,12 @@ msgid "Release Version"
 msgstr "Version"
 
 #: modules/univention/admin/handlers/policies/slavepackages.py:69
-#, fuzzy
 msgid "Replica Node packages policies"
-msgstr "Réglages généraux des paquetages des Replica Nodes"
+msgstr "Stratégies de paquetages des Replica Nodes"
 
 #: modules/univention/admin/handlers/policies/slavepackages.py:68
-#, fuzzy
 msgid "Replica Node packages policy"
-msgstr "Réglages généraux des paquetages des Replica Nodes"
+msgstr "Stratégie de paquetages des Replica Nodes"
 
 #: modules/univention/admin/handlers/policies/repositoryserver.py:54
 #: modules/univention/admin/handlers/policies/repositoryserver.py:69
@@ -1107,14 +1073,12 @@ msgid "Repository server"
 msgstr "Serveur de dépôt"
 
 #: modules/univention/admin/handlers/policies/repositoryserver.py:68
-#, fuzzy
 msgid "Repository server policies"
-msgstr "Serveur de dépôt"
+msgstr "Stratégies de serveur de dépôt"
 
 #: modules/univention/admin/handlers/policies/repositoryserver.py:67
-#, fuzzy
 msgid "Repository server policy"
-msgstr "Serveur de dépôt"
+msgstr "Stratégie de serveur de dépôt"
 
 #: modules/univention/admin/handlers/policies/repositorysync.py:57
 #: modules/univention/admin/handlers/policies/repositorysync.py:72
@@ -1122,14 +1086,12 @@ msgid "Repository synchronisation"
 msgstr "Synchronisation des dépôts"
 
 #: modules/univention/admin/handlers/policies/repositorysync.py:71
-#, fuzzy
 msgid "Repository synchronisation policies"
-msgstr "Synchronisation des dépôts"
+msgstr "Stratégies de synchronisation des dépôts"
 
 #: modules/univention/admin/handlers/policies/repositorysync.py:70
-#, fuzzy
 msgid "Repository synchronisation policy"
-msgstr "Synchronisation des dépôts"
+msgstr "Stratégie de synchronisation des dépôts"
 
 #: modules/univention/admin/handlers/policies/repositorysync.py:132
 msgid "Repository synchronisation settings"
@@ -1227,8 +1189,8 @@ msgid ""
 "This number indicates after how many changes the user may reuse the old "
 "password again"
 msgstr ""
-"Ce nombre indique au bout de combien de changements l'utilisateur peut "
-"réutiliser un ancien mot de passe."
+"Ce nombre indique après combien de changements l’ancien mot de passe peut "
+"être réutilisé"
 
 #: modules/univention/admin/handlers/policies/registry.py:58
 msgid "UCR Variables"
@@ -1236,44 +1198,39 @@ msgstr "Variables UCR"
 
 #: modules/univention/admin/handlers/policies/umc.py:68
 msgid "UMC policies"
-msgstr ""
+msgstr "Stratégies UMC"
 
 #: modules/univention/admin/handlers/policies/umc.py:67
-#, fuzzy
 msgid "UMC policy"
-msgstr "Stratégie"
+msgstr "Stratégie UMC"
 
 #: modules/univention/admin/handlers/policies/registry.py:72
 msgid "Univention Configuration Registry"
 msgstr "Univention Configuration Registry"
 
 #: modules/univention/admin/handlers/policies/registry.py:71
-#, fuzzy
 msgid "Univention Configuration Registry policies"
-msgstr "Univention Configuration Registry"
+msgstr "Stratégies de Univention Configuration Registry"
 
 #: modules/univention/admin/handlers/policies/registry.py:70
-#, fuzzy
 msgid "Univention Configuration Registry policy"
-msgstr "Univention Configuration Registry"
+msgstr "Stratégie de Univention Configuration Registry"
 
 #: modules/univention/admin/handlers/policies/admin_container.py:68
 msgid "Univention Directory Manager container settings"
-msgstr "Réglages du conteneur Univention Directory Manager"
+msgstr "Réglages du conteneur d’Univention Directory Manager"
 
 #: modules/univention/admin/handlers/policies/admin_container.py:67
-#, fuzzy
 msgid "Univention Directory Manager container settings policies"
-msgstr "Réglages du conteneur Univention Directory Manager"
+msgstr "Stratégies de réglages de conteneur d’Univention Directory Manager"
 
 #: modules/univention/admin/handlers/policies/admin_container.py:66
-#, fuzzy
 msgid "Univention Directory Manager container settings policy"
-msgstr "Réglages du conteneur Univention Directory Manager"
+msgstr "Stratégie de réglages de conteneur d’Univention Directory Manager"
 
 #: modules/univention/admin/handlers/policies/admin_container.py:103
 msgid "Univention Directory Manager settings"
-msgstr "Réglages Univention Directory Manager"
+msgstr "Réglages d’Univention Directory Manager"
 
 #: modules/univention/admin/handlers/policies/dhcp_scope.py:54
 #: modules/univention/admin/handlers/policies/dhcp_scope.py:93
@@ -1302,20 +1259,18 @@ msgid "User quota"
 msgstr "Quota utilisateur"
 
 #: modules/univention/admin/handlers/policies/share_userquota.py:72
-#, fuzzy
 msgid "User quota policies"
-msgstr "Quota utilisateur"
+msgstr "Stratégies de quota d’utilisation"
 
 #: modules/univention/admin/handlers/policies/share_userquota.py:71
-#, fuzzy
 msgid "User quota policy"
-msgstr "Quota utilisateur"
+msgstr "Stratégie de quota d’utilisation"
 
 #: modules/univention/admin/handlers/policies/release.py:95
 msgid "Without specifying the most recent version will be used"
 msgstr "Si rien n'est indiqué, la version la plus récente sera utilisée"
 
-#: modules/univention/admin/handlers/policies/policy.py:49
+#: modules/univention/admin/handlers/policies/policy.py:52
 msgid "https://docs.software-univention.de/manual-5.0.html#central:policies"
 msgstr "https://docs.software-univention.de/manual-5.0.html#central:policies"
 

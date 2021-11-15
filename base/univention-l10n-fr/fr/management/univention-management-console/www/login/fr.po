@@ -4,15 +4,15 @@ msgstr ""
 "Project-Id-Version: univention-management-console-login\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2017-05-28 20:52+0900\n"
-"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"PO-Revision-Date: 2021-12-17 11:14+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: www/login/main.js:459
 msgid "Authentication required"
@@ -82,8 +82,7 @@ msgstr ""
 #: www/login/dialog.js:120
 msgid "Please login with a valid username and password."
 msgstr ""
-"Veuillez vous identifier avec un nom d'utilisateur et un mot de passe "
-"valides."
+"Veuillez vous connecter avec un identifiant et un mot de passe valides."
 
 #: www/login/LoginDialog.js:239
 msgid "Set password"
@@ -100,6 +99,8 @@ msgid ""
 "The <i>root</i> user neither has access to the domain administration nor to "
 "the App Center."
 msgstr ""
+"Le compte <i>root</i> n’a pas accès à l’administration du domaine ni à l’App "
+"Center."
 
 #: www/login/main.js:193
 msgid "The current session timed out. Please login again."
@@ -111,6 +112,8 @@ msgid ""
 "The default user to manage the domain is %s which has the same initial "
 "password as the <i>root</i> account."
 msgstr ""
+"Le compte par défaut pour gérer le domaine est %s, qui a le même mot de "
+"passe initial que le compte <i>root</i>."
 
 #: www/login/main.js:454
 msgid "This action requires you to supply your password."
@@ -137,11 +140,11 @@ msgstr ""
 #: www/login/dialog.js:122
 #, javascript-format
 msgid "Use the %s user for the initial system configuration."
-msgstr "Utiliser l'utilisateur %s pour la configuration initiale du système."
+msgstr "Utiliser l’identifiant %s pour la configuration initiale du système."
 
 #: www/login/LoginDialog.js:61 www/login/LoginDialog.js:242
 msgid "Username"
-msgstr "Nom d'utilisateur"
+msgstr "Identifiant"
 
 #~ msgid "The default username to manage the domain is %s."
 #~ msgstr "Le nom d'utilisateur par défaut pour gérer le domaine est %s."

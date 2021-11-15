@@ -32,29 +32,27 @@ msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2017-05-28 20:18+0900\n"
-"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"PO-Revision-Date: 2021-12-01 11:06+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: unicode\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0\n"
 
 #: modules/univention/admin/handlers/dns/alias.py:66
 msgid "Alias"
 msgstr "Alias"
 
 #: modules/univention/admin/handlers/dns/alias.py:54
-#, fuzzy
 msgid "Alias record"
-msgstr "DNS : enregistrement d'alias"
+msgstr "Enregistrement d’alias"
 
 #: modules/univention/admin/handlers/dns/alias.py:55
-#, fuzzy
 msgid "Alias records"
-msgstr "DNS : enregistrement d'alias"
+msgstr "Enregistrements d’alias"
 
 #: modules/univention/admin/handlers/dns/dns.py:58
 msgid "All DNS zones"
@@ -89,14 +87,12 @@ msgid "Contact person"
 msgstr "Personne à contacter"
 
 #: modules/univention/admin/handlers/dns/dns.py:59
-#, fuzzy
 msgid "DNS zone"
-msgstr "Toutes les zones DNS"
+msgstr "Zone DNS"
 
 #: modules/univention/admin/handlers/dns/dns.py:60
-#, fuzzy
 msgid "DNS zones"
-msgstr "Toutes les zones DNS"
+msgstr "Zones DNS"
 
 #: modules/univention/admin/handlers/dns/alias.py:53
 msgid "DNS: Alias record"
@@ -107,9 +103,8 @@ msgid "DNS: Forward lookup zone"
 msgstr "DNS : zone de recherche directe"
 
 #: modules/univention/admin/handlers/dns/host_record.py:50
-#, fuzzy
 msgid "DNS: Host Record"
-msgstr "DNS : enregistrement de type pointeur (PTR)"
+msgstr "DNS : enregistrement d’hôte"
 
 #: modules/univention/admin/handlers/dns/ptr_record.py:53
 msgid "DNS: Pointer record"
@@ -124,13 +119,12 @@ msgid "DNS: Service record"
 msgstr "DNS : enregistrement de service"
 
 #: modules/univention/admin/handlers/dns/txt_record.py:49
-#, fuzzy
 msgid "DNS: TXT Record"
-msgstr "Enregistrements TXT"
+msgstr "DNS : enregistrement TXT"
 
 #: modules/univention/admin/handlers/dns/ns_record.py:54
 msgid "Delegate a subzone to other nameservers."
-msgstr ""
+msgstr "Déléguer une sous-zone à d’autres serveurs de noms."
 
 #: modules/univention/admin/handlers/dns/reverse_zone.py:110
 #: modules/univention/admin/handlers/dns/forward_zone.py:110
@@ -139,17 +133,15 @@ msgstr "Intervalle d'expiration"
 
 #: modules/univention/admin/handlers/dns/ptr_record.py:80
 msgid "FQDNs must end with a dot."
-msgstr "Les FQDNs doivent se terminer par '.'"
+msgstr "Les FQDN doivent se terminer par un point."
 
 #: modules/univention/admin/handlers/dns/forward_zone.py:53
-#, fuzzy
 msgid "Forward lookup zone"
-msgstr "DNS : zone de recherche directe"
+msgstr "Zone de recherche directe"
 
 #: modules/univention/admin/handlers/dns/forward_zone.py:54
-#, fuzzy
 msgid "Forward lookup zones"
-msgstr "DNS : zone de recherche directe"
+msgstr "Zones de recherche directe"
 
 #: modules/univention/admin/handlers/dns/reverse_zone.py:133
 #: modules/univention/admin/handlers/dns/dns.py:76
@@ -164,9 +156,8 @@ msgid "General"
 msgstr "Général"
 
 #: modules/univention/admin/handlers/dns/ns_record.py:89
-#, fuzzy
 msgid "General NS record settings"
-msgstr "Réglages généraux des enregistrements TXT"
+msgstr "Réglages généraux des enregistrements NS"
 
 #: modules/univention/admin/handlers/dns/txt_record.py:88
 msgid "General TXT record settings"
@@ -197,14 +188,12 @@ msgid "General service record settings"
 msgstr "Réglages généraux des enregistrements de services"
 
 #: modules/univention/admin/handlers/dns/host_record.py:51
-#, fuzzy
 msgid "Host record"
-msgstr "Enregistrement de pointeur"
+msgstr "Enregistrement d’hôte"
 
 #: modules/univention/admin/handlers/dns/host_record.py:52
-#, fuzzy
 msgid "Host records"
-msgstr "Enregistrements de texte"
+msgstr "Enregistrements d’hôte"
 
 #: modules/univention/admin/handlers/dns/host_record.py:63
 msgid "Hostname"
@@ -276,9 +265,8 @@ msgid "Name server"
 msgstr "Serveur de noms"
 
 #: modules/univention/admin/handlers/dns/ns_record.py:79
-#, fuzzy
 msgid "Name servers"
-msgstr "Serveur de noms"
+msgstr "Serveurs de noms"
 
 #: modules/univention/admin/handlers/dns/reverse_zone.py:117
 #: modules/univention/admin/handlers/dns/forward_zone.py:117
@@ -311,9 +299,8 @@ msgid "Pointer record"
 msgstr "Enregistrement de pointeur"
 
 #: modules/univention/admin/handlers/dns/ptr_record.py:55
-#, fuzzy
 msgid "Pointer records"
-msgstr "Enregistrement de pointeur"
+msgstr "Enregistrements de pointeurs"
 
 #: modules/univention/admin/handlers/dns/reverse_zone.py:140
 #: modules/univention/admin/handlers/dns/forward_zone.py:158
@@ -323,7 +310,7 @@ msgstr "Informations relatives au serveur de noms principal"
 #: modules/univention/admin/handlers/dns/reverse_zone.py:96
 #: modules/univention/admin/handlers/dns/forward_zone.py:96
 msgid "Refresh interval"
-msgstr "Intervalle de rafraîchissement "
+msgstr "Intervalle de rafraîchissement"
 
 #: modules/univention/admin/handlers/dns/host_record.py:53
 msgid "Resolve the symbolic name to IP addresses."
@@ -348,14 +335,12 @@ msgid "Reverse address"
 msgstr "Adresse IP reverse"
 
 #: modules/univention/admin/handlers/dns/reverse_zone.py:53
-#, fuzzy
 msgid "Reverse lookup zone"
-msgstr "DNS : zone de recherche inversée"
+msgstr "Zone de recherche inversée"
 
 #: modules/univention/admin/handlers/dns/reverse_zone.py:54
-#, fuzzy
 msgid "Reverse lookup zones"
-msgstr "DNS : zone de recherche inversée"
+msgstr "Zones de recherche inversée"
 
 #: modules/univention/admin/handlers/dns/ptr_record.py:186
 msgid "Reverse zone and IP address are incompatible."
@@ -367,14 +352,12 @@ msgid "Serial number"
 msgstr "Numéro de série"
 
 #: modules/univention/admin/handlers/dns/srv_record.py:50
-#, fuzzy
 msgid "Service record"
-msgstr "DNS : enregistrement de service"
+msgstr "Enregistrement de service"
 
 #: modules/univention/admin/handlers/dns/srv_record.py:51
-#, fuzzy
 msgid "Service records"
-msgstr "DNS : enregistrement de service"
+msgstr "Enregistrements de service"
 
 #: modules/univention/admin/handlers/dns/reverse_zone.py:140
 #: modules/univention/admin/handlers/dns/reverse_zone.py:141
@@ -389,9 +372,8 @@ msgstr "Sous-réseau"
 
 #: modules/univention/admin/handlers/dns/txt_record.py:50
 #: modules/univention/admin/handlers/dns/txt_record.py:51
-#, fuzzy
 msgid "TXT record"
-msgstr "Enregistrements TXT"
+msgstr "Enregistrement TXT"
 
 #: modules/univention/admin/handlers/dns/forward_zone.py:176
 #: modules/univention/admin/handlers/dns/forward_zone.py:177
@@ -421,11 +403,10 @@ msgstr ""
 "réception du courrier pour ce nom DNS."
 
 #: modules/univention/admin/handlers/dns/ns_record.py:80
-#, fuzzy
 msgid "The FQDNs of the hosts serving the named zone."
 msgstr ""
-"Les noms de domaine pleinement qualifiés (FQDN) des serveurs traitant cette "
-"zone."
+"Les noms de domaine pleinement qualifiés (FQDN) des hôtes servant la zone "
+"nommée."
 
 #: modules/univention/admin/handlers/dns/reverse_zone.py:125
 #: modules/univention/admin/handlers/dns/forward_zone.py:125
@@ -470,13 +451,13 @@ msgid "The name of the host relative to the domain."
 msgstr "Le nom de l'hôte relativement au domaine."
 
 #: modules/univention/admin/handlers/dns/ns_record.py:65
-#, fuzzy
 msgid "The name of the subzone relative to the parent."
-msgstr "Le nom de l'hôte relativement au domaine."
+msgstr "Le nom de la sous-zone par rapport au parent."
 
 #: modules/univention/admin/handlers/dns/alias.py:82
 msgid "The name this alias points to. A FQDN must end with a dot."
-msgstr "Alias pour cet hôte. Les FQDNs doivent se terminer par '.'"
+msgstr ""
+"Le nom vers lequel pointe cet alias. Un FQDN doit se terminer par un point."
 
 #: modules/univention/admin/handlers/dns/reverse_zone.py:66
 msgid "The networks address in forward notation."

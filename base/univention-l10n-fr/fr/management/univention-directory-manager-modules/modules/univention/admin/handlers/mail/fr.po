@@ -32,15 +32,15 @@ msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2021-11-03 17:54+0100\n"
-"PO-Revision-Date: 2016-07-10 13:33+0100\n"
-"Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
+"PO-Revision-Date: 2021-12-01 11:19+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: unicode\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Poedit 3.0\n"
 
 #: modules/univention/admin/handlers/mail/folder.py:133
 #: modules/univention/admin/handlers/mail/folder.py:134
@@ -103,16 +103,16 @@ msgid ""
 "How many MB of emails can be stored in the shared folder (independent of the "
 "users that stored them)."
 msgstr ""
+"Combien de mégaoctets d’e-mails peuvent être stockés dans le dossier partagé "
+"(indépendamment des utilisatrices et utilisateurs qui les ont stockés)."
 
 #: modules/univention/admin/handlers/mail/folder.py:51
-#, fuzzy
 msgid "IMAP mail folder"
-msgstr "Réglages généraux du dossier de courriel IMAP"
+msgstr "Dossier de courriel IMAP"
 
 #: modules/univention/admin/handlers/mail/folder.py:52
-#, fuzzy
 msgid "IMAP mail folders"
-msgstr "Réglages généraux du dossier de courriel IMAP"
+msgstr "Dossiers de courriel IMAP"
 
 #: modules/univention/admin/handlers/mail/mail.py:51
 msgid "Mail"
@@ -137,9 +137,8 @@ msgid "Mail domain name"
 msgstr "Nom de domaine de courriel"
 
 #: modules/univention/admin/handlers/mail/domain.py:50
-#, fuzzy
 msgid "Mail domains"
-msgstr "Domaine de courrier électronique"
+msgstr "Domaines de courrier électronique"
 
 #: modules/univention/admin/handlers/mail/folder.py:50
 msgid "Mail folder (IMAP)"
@@ -151,11 +150,11 @@ msgstr "Serveur hébergeant le courriel"
 
 #: modules/univention/admin/handlers/mail/mail.py:52
 msgid "Mail object"
-msgstr ""
+msgstr "Objet courriel"
 
 #: modules/univention/admin/handlers/mail/mail.py:53
 msgid "Mail objects"
-msgstr ""
+msgstr "Objets courriels"
 
 #: modules/univention/admin/handlers/mail/lists.py:46
 #: modules/univention/admin/handlers/mail/lists.py:47
@@ -163,9 +162,8 @@ msgid "Mailing list"
 msgstr "Liste de diffusion"
 
 #: modules/univention/admin/handlers/mail/lists.py:48
-#, fuzzy
 msgid "Mailing lists"
-msgstr "Liste de diffusion"
+msgstr "Listes de diffusion"
 
 #: modules/univention/admin/handlers/mail/lists.py:76
 msgid "Members"
