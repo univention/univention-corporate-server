@@ -10,3 +10,4 @@ desc: |
  * Add "username map script" for use when samba is configured as
    domain member.
 bug: [54013]
+note: Additional information available at https://help.univention.com/t/18857
