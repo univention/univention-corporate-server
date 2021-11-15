@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: univention-group-membership-cache
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The package was added to provide a very fast user and group membership
+   cache.
+bug: [54068]

@@ -1,0 +1,3 @@
+src/univention/ldap_cache/*.py univention.ldap_cache
+src/univention/ldap_cache/cache/*.py univention.ldap_cache.cache
+src/univention/ldap_cache/cache/backend/*.py univention.ldap_cache.cache.backend
