@@ -6,8 +6,8 @@ src: postgresql-11
 fix: 11.14-0+deb10u1
 desc: |
  This update addresses the following issues:
- * postgresql-11 (CVE-2021-23214)
- * postgresql-11 (CVE-2021-23222)
+ * server processes unencrypted bytes from man-in-the-middle (CVE-2021-23214)
+ * libpq processes unencrypted bytes from man-in-the-middle (CVE-2021-23222)
 bug: [54056]
 cve:
 - CVE-2021-23214
