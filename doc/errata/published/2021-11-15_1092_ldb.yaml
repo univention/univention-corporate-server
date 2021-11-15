@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * Ldb source code has been adjusted to support new samba security patches.
 bug: [54014]
+erratum: 1092
+announced: 2021-11-15
