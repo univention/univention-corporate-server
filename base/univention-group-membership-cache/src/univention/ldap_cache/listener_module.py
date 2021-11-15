@@ -29,11 +29,20 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+from logging import getLogger
+
 from univention.ldap_cache.cache import get_cache
 from univention.listener.handler import ListenerModuleHandler
 
 
 class LdapCacheHandler(ListenerModuleHandler):
+	def __init__(self, *args, **kwargs):
+		super(LdapCacheHandler, self).__init__(*args, **kwargs)
+		cache_logger = getLogger('univention.ldap_cache')
+		cache_logger.setLevel(self.logger.level)
+		for handler in self.logger.handlers:
+			cache_logger.addHandler(handler)
+
 	def create(self, dn, new):
 		for shard in get_cache().get_shards_for_query(self._get_configuration().get_ldap_filter()):
 			shard.add_object((dn, new))

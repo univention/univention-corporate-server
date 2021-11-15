@@ -33,6 +33,7 @@ from univention.ldap_cache.log import debug
 from univention.ldap_cache.cache.plugins import Plugins
 from univention.ldap_cache.cache.backend.gdbm_cache import GdbmCaches as Caches, GdbmCache as Cache, GdbmShard as Shard
 #from univention.ldap_cache.cache.backend.lmdb_cache import LmdbCaches as Caches, LmdbCache as Cache, LmdbShard as Shard
+from univention.ldap_cache.cache.shard_config import shards_from_config
 
 
 class LowerValuesShard(Shard):
@@ -47,6 +48,8 @@ def get_cache():
 		caches = Caches()
 		for plugin in Plugins('univention.ldap_cache.cache.plugins'):
 			caches.add(plugin)
+		for klass in shards_from_config():
+			caches.add(klass)
 		get_cache._cache = caches
 	return get_cache._cache
 

@@ -33,22 +33,11 @@
 import logging
 
 
-LOG_FILE = '/var/log/univention/ldap-cache.log'
-
-
-logger = logging.getLogger('univention.ldap_cache')
-log_format = '%(process)6d %(asctime)s [%(levelname)8s]: %(message)s'
-log_format_time = '%y-%m-%d %H:%M:%S'
-formatter = logging.Formatter(log_format, log_format_time)
-handler = logging.FileHandler(LOG_FILE)
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-logger.setLevel(logging.DEBUG)
-
-
 def log(*msgs):
+	logger = logging.getLogger('univention.ldap_cache')
 	logger.info(*msgs)
 
 
 def debug(*msgs):
+	logger = logging.getLogger('univention.ldap_cache')
 	logger.debug(*msgs)

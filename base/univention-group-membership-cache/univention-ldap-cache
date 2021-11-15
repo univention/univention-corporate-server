@@ -36,11 +36,14 @@ import re
 from hashlib import md5
 from glob import glob
 import subprocess
-from argparse import ArgumentParser
+from argparse import ArgumentParser, SUPPRESS
 
 from univention.ldap_cache.cache import get_cache
+from univention.ldap_cache.cache.shard_config import add_shard_to_config, rm_shard_from_config
 
 listener_template = '''#!/usr/bin/python2.7
+from __future__ import absolute_import
+
 from univention.ldap_cache.listener_module import LdapCacheHandler
 
 name = {}
@@ -61,6 +64,14 @@ def _md5sum(value):
     m = md5()
     m.update(value)
     return m.hexdigest()
+
+
+def add_cache(args):
+    add_shard_to_config(args.db_name, args.single_value, args.key, args.value, args.ldap_filter)
+
+
+def rm_cache(args):
+    rm_shard_from_config(args.db_name, args.single_value, args.key, args.value, args.ldap_filter)
 
 
 def rebuild(args):
@@ -137,6 +148,22 @@ def main():
 
     subparser = subparsers.add_parser('create-listener-modules', description='Automatically creates listener modules that will eventually fill the cache (and removes unnecessary); restarts the univention-directory-listener. May be needed after shards are added to /removed from the cache', help='Create listener modules')
     subparser.set_defaults(func=create_listener_modules)
+
+    subparser = subparsers.add_parser('add-cache', description=SUPPRESS)
+    subparser.add_argument('db_name')
+    subparser.add_argument('--single-value', action='store_true')
+    subparser.add_argument('key')
+    subparser.add_argument('value')
+    subparser.add_argument('ldap_filter')
+    subparser.set_defaults(func=add_cache)
+
+    subparser = subparsers.add_parser('rm-cache', description=SUPPRESS)
+    subparser.add_argument('db_name')
+    subparser.add_argument('--single-value', action='store_true')
+    subparser.add_argument('key')
+    subparser.add_argument('value')
+    subparser.add_argument('ldap_filter')
+    subparser.set_defaults(func=rm_cache)
 
     args = parser.parse_args()
     args.func(args)

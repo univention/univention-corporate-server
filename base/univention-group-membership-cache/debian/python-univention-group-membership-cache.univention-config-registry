@@ -1,3 +1,0 @@
-Type: file
-File: etc/logrotate.d/univention-ldap-cache
-Variables: logrotate/.*
