@@ -17,6 +17,7 @@ Build-Depends:
  python-all-dev,
  python-debian,
  python-six,
+ python-typing,
  python3-all,
  python3-all-dev,
  python3-debian,

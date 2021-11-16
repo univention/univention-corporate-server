@@ -27,10 +27,13 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
-import os
+
 import inspect
+import os
+import types  # noqa F401
 from contextlib import contextmanager
 from six import reraise
+from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Optional, Tuple, Union, Type  # noqa F401
 
 import listener
 from univention.admin.uldap import access, position
@@ -48,11 +51,13 @@ class HandlerMetaClass(type):
 	Read handler configuration and invoke adapter.
 	"""
 	def __new__(cls, clsname, bases, attrs):
+		# type: (str, List[Type[Any]], Dict[str, str]) -> Any # Union[Type[Any], Type[ListenerModuleHandler]]
 		kls = super(HandlerMetaClass, cls).__new__(cls, clsname, bases, attrs)
-		if getattr(kls, '_is_listener_module', lambda: False)():
+		is_listener_module = getattr(kls, '_is_listener_module', lambda: False)
+		if is_listener_module():
 			kls.config = kls._get_configuration()
-			lm_module = inspect.getmodule(kls)
-			adapter_cls = kls._adapter_class
+			lm_module = inspect.getmodule(kls)  # type: Optional[types.ModuleType]
+			adapter_cls = kls._adapter_class  # type: Type[ListenerModuleAdapter]
 			for k, v in adapter_cls(kls.config).get_globals().items():
 				setattr(lm_module, k, v)
 		return kls
@@ -78,7 +83,7 @@ class ListenerModuleHandler(object):
 	)
 	_configuration_class = ListenerModuleConfiguration
 	_adapter_class = ListenerModuleAdapter
-	config = None
+	config = None  # type: Optional[ListenerModuleConfiguration]
 	ucr = listener.configRegistry
 
 	class Configuration(ListenerModuleConfiguration):
@@ -90,6 +95,7 @@ class ListenerModuleHandler(object):
 		pass
 
 	def __init__(self, *args, **kwargs):
+		# type: (*str, **str) -> None
 		"""
 		When subclassing, in __init__() first call must be:
 
@@ -101,9 +107,9 @@ class ListenerModuleHandler(object):
 			raise ListenerModuleConfigurationError('{}.config was not set by meta class.'.format(self.__class__.__name__))
 		self.logger = get_logger(self.config.get_name())
 		self.ucr.load()
-		self._lo = None
-		self._po = None
-		self._ldap_credentials = None
+		self._lo = None  # type: Optional[access]
+		self._po = None  # type: Optional[position]
+		self._ldap_credentials = None  # type: Optional[Dict[str, str]]
 		self.logger.debug('Starting with configuration: %r', self.config)
 		if not self.config.get_active():
 			self.logger.warn(
@@ -112,9 +118,12 @@ class ListenerModuleHandler(object):
 			)
 
 	def __repr__(self):
+		# type: () -> str
+		assert self.config
 		return '{}({})'.format(self.__class__.__name__, self.config.name)
 
 	def create(self, dn, new):
+		# type: (str, Dict[str, List[str]]) -> None
 		"""
 		Called when a new object was created.
 
@@ -124,6 +133,7 @@ class ListenerModuleHandler(object):
 		pass
 
 	def modify(self, dn, old, new, old_dn):
+		# type: (str, Dict[str, List[str]], Dict[str, List[str]], Optional[str]) -> None
 		"""
 		Called when an existing object was modified or moved.
 
@@ -139,6 +149,7 @@ class ListenerModuleHandler(object):
 		pass
 
 	def remove(self, dn, old):
+		# type: (str, Dict[str, List[str]]) -> None
 		"""
 		Called when an object was deleted.
 
@@ -148,6 +159,7 @@ class ListenerModuleHandler(object):
 		pass
 
 	def initialize(self):
+		# type: () -> None
 		"""
 		Called once when the Univention Directory Listener loads the module
 		for the first time or when a resync it triggered.
@@ -155,6 +167,7 @@ class ListenerModuleHandler(object):
 		pass
 
 	def clean(self):
+		# type: () -> None
 		"""
 		Called once when the Univention Directory Listener loads the module
 		for the first time or when a resync it triggered.
@@ -162,6 +175,7 @@ class ListenerModuleHandler(object):
 		pass
 
 	def pre_run(self):
+		# type: () -> None
 		"""
 		Called before create/modify/remove if either the Univention Directory
 		Listener has been restarted or when :py:meth:`post_run()` has run before.
@@ -171,6 +185,7 @@ class ListenerModuleHandler(object):
 		pass
 
 	def post_run(self):
+		# type: () -> None
 		"""
 		Called only, when no change happens for 15 seconds - for *any* listener
 		module.
@@ -182,6 +197,7 @@ class ListenerModuleHandler(object):
 	@staticmethod
 	@contextmanager
 	def as_root():
+		# type: () -> Iterator[None]
 		"""
 		Contextmanager to temporarily change the effective UID of the current
 		process to 0:
@@ -204,6 +220,7 @@ class ListenerModuleHandler(object):
 
 	@classmethod
 	def diff(cls, old, new, keys=None, ignore_metadata=True):
+		# type: (Dict[str, List[str]], Dict[str, List[str]], Optional[Iterable[str]], bool) -> Dict[str, Tuple[Optional[List[str]], Optional[List[str]]]]
 		"""
 		Find differences in old and new. Returns dict with keys pointing to old
 		and new values.
@@ -228,6 +245,7 @@ class ListenerModuleHandler(object):
 		return res
 
 	def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):
+		# type: (str, Dict[str, List[str]], Dict[str, List[str]], str, Optional[Type[BaseException]], Optional[BaseException], Optional[types.TracebackType]) -> None  # NoReturn
 		"""
 		Will be called for unhandled exceptions in create/modify/remove.
 
@@ -244,6 +262,7 @@ class ListenerModuleHandler(object):
 
 	@property
 	def lo(self):
+		# type: () -> access
 		"""
 		LDAP connection object.
 
@@ -253,6 +272,7 @@ class ListenerModuleHandler(object):
 		if not self._lo:
 			ldap_credentials = self._get_ldap_credentials()
 			if not ldap_credentials:
+				assert self.config
 				raise ListenerModuleRuntimeError(
 					'LDAP connection of listener module {!r} has not yet been initialized.'.format(self.config.get_name())
 				)
@@ -261,6 +281,7 @@ class ListenerModuleHandler(object):
 
 	@property
 	def po(self):
+		# type: () -> position
 		"""
 		Get a LDAP position object for the base DN (ldap/base).
 
@@ -272,6 +293,7 @@ class ListenerModuleHandler(object):
 		return self._po
 
 	def _get_ldap_credentials(self):
+		# type: () -> Optional[Dict[str, str]]
 		"""
 		Get the LDAP credentials received through setdata().
 
@@ -281,6 +303,7 @@ class ListenerModuleHandler(object):
 		return self._ldap_credentials
 
 	def _set_ldap_credentials(self, base, binddn, bindpw, host):
+		# type: (str, str, str, str) -> None
 		"""
 		Store LDAP connection credentials for use by :py:attr.`self.lo`. It is not
 		necessary to manually run this method. The listener will automatically
@@ -304,6 +327,7 @@ class ListenerModuleHandler(object):
 
 	@classmethod
 	def _get_configuration(cls):
+		# type: () -> ListenerModuleConfiguration
 		"""
 		Load configuration, optionally converting a plain Python class to a
 		:py:class:`ListenerModuleConfiguration` object. Set `cls._configuration_class` to
@@ -349,6 +373,7 @@ class ListenerModuleHandler(object):
 
 	@classmethod
 	def _is_listener_module(cls):
+		# type: () -> bool
 		"""
 		Is this a listener module?
 

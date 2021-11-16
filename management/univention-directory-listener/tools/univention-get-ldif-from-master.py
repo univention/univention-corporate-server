@@ -39,6 +39,7 @@ import logging
 import optparse
 import os
 import sys
+from typing import IO  # noqa F401
 
 import ldap
 import ldif
@@ -57,6 +58,7 @@ OIDS = set(replication.BUILTIN_OIDS) | set(('1.3.6.1.4.1.4203.666.11.1.4.2.12.1'
 
 # from replication.py
 def _update_schema(fp, attr):
+	# type: (IO[str], str) -> None
 		subschema = ldap.schema.SubSchema(attr)
 		for oid in replication.subschema_sort(subschema, ldap.schema.AttributeType):
 			if oid in OIDS:
@@ -72,6 +74,7 @@ def _update_schema(fp, attr):
 
 
 def update_schema(lo):
+	# type: (uldap.access) -> None
 	"""
 	update the ldap schema file
 	"""
@@ -89,6 +92,7 @@ def update_schema(lo):
 
 
 def create_ldif_from_master(lo, ldif_file, base, page_size):
+	# type: (uldap.access, str, str, int) -> None
 	"""
 	create ldif file from everything from lo
 	"""
@@ -150,6 +154,7 @@ def create_ldif_from_master(lo, ldif_file, base, page_size):
 
 
 def main():
+	# type: () -> None
 	usage = "usage: %prog [options]"
 	parser = optparse.OptionParser(usage=usage, description=__doc__)
 	parser.add_option("-l", "--ldif", action="store_true", help="Create LDIF file")

@@ -56,6 +56,7 @@ def setuid(uid):
 	"""
 	if isinstance(uid, string_types):
 		uid = pwd.getpwnam(uid)[2]
+	assert isinstance(uid, int)
 	os.seteuid(uid)
 
 

@@ -44,6 +44,7 @@ import univention.uldap as uldap
 
 
 def main():
+	# type: () -> None
 	usage = "usage: %prog [options]"
 	parser = optparse.OptionParser(usage=usage, description=__doc__)
 	parser.add_option("-f", "--filter", help="resync objects from master found by this filter. Default: (uid=<hostname>$)")

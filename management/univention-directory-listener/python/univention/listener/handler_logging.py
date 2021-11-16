@@ -39,15 +39,17 @@ additionally to the common `listener.log`.
 #
 
 from __future__ import absolute_import
-import os
+
 import grp
+import logging
+import os
 import pwd
 import stat
 import syslog
-import logging
-from logging.handlers import TimedRotatingFileHandler
 from collections import Mapping
+from logging.handlers import TimedRotatingFileHandler
 from six import string_types, text_type
+from typing import Any, Dict, IO, Optional, Type  # noqa F401
 
 import listener
 import univention.debug as ud
@@ -65,6 +67,7 @@ class UniFileHandler(TimedRotatingFileHandler):
 	:py:func:`get_listener_logger`.
 	"""
 	def _open(self):
+		# type: () -> IO[str]
 		stream = TimedRotatingFileHandler._open(self)
 		file_stat = os.fstat(stream.fileno())
 		listener_uid = pwd.getpwnam('listener').pw_uid
@@ -99,10 +102,12 @@ class ModuleHandler(logging.Handler):
 	)
 
 	def __init__(self, level=logging.NOTSET, udebug_facility=ud.LISTENER):
+		# type: (int, int) -> None
 		self._udebug_facility = udebug_facility
 		super(ModuleHandler, self).__init__(level)
 
 	def emit(self, record):
+		# type: (logging.LogRecord) -> None
 		msg = self.format(record)
 		if isinstance(msg, text_type):
 			msg = msg.encode('utf-8')
@@ -111,22 +116,30 @@ class ModuleHandler(logging.Handler):
 		ud.debug(self._udebug_facility, udebug_level, msg)
 
 
+__LF_D = '%(asctime)s %(levelname)-7s %(module)s.%(funcName)s:%(lineno)d  %(message)s'
+__LF_I = '%(asctime)s %(levelname)-7s %(message)s'
 FILE_LOG_FORMATS = dict(
-	DEBUG='%(asctime)s %(levelname)-7s %(module)s.%(funcName)s:%(lineno)d  %(message)s',
-	INFO='%(asctime)s %(levelname)-7s %(message)s'
+	NOTSET=__LF_D,
+	DEBUG=__LF_D,
+	INFO=__LF_I,
+	WARNING=__LF_I,
+	WARN=__LF_I,
+	ERROR=__LF_I,
+	CRITICAL=__LF_I,
 )
-for lvl in ['CRITICAL', 'ERROR', 'WARN', 'WARNING']:
-	FILE_LOG_FORMATS[lvl] = FILE_LOG_FORMATS['INFO']
-FILE_LOG_FORMATS['NOTSET'] = FILE_LOG_FORMATS['DEBUG']
 
+__LC_D = '%(asctime)s %(levelname)-7s %(module)s.%(funcName)s:%(lineno)d  %(message)s'
+__LC_I = '%(message)s'
+__LC_W = '%(levelname)-7s  %(message)s'
 CMDLINE_LOG_FORMATS = dict(
-	DEBUG='%(asctime)s %(levelname)-7s %(module)s.%(funcName)s:%(lineno)d  %(message)s',
-	INFO='%(message)s',
-	WARN='%(levelname)-7s  %(message)s'
+	NOTSET=__LC_D,
+	DEBUG=__LC_D,
+	INFO=__LC_I,
+	WARNING=__LC_W,
+	WARN=__LC_W,
+	ERROR=__LC_W,
+	CRITICAL=__LC_W,
 )
-for lvl in ['CRITICAL', 'ERROR', 'WARNING']:
-	CMDLINE_LOG_FORMATS[lvl] = CMDLINE_LOG_FORMATS['WARN']
-CMDLINE_LOG_FORMATS['NOTSET'] = CMDLINE_LOG_FORMATS['DEBUG']
 
 UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL = {
 	0: 'ERROR',
@@ -138,13 +151,14 @@ UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL = {
 
 LOG_DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
-_logger_cache = dict()
-_handler_cache = dict()
+_logger_cache = {}  # type: Dict[str, logging.Logger]
+_handler_cache = {}  # type: Dict[str, UniFileHandler]
 _ucr = ConfigRegistry()
 _ucr.load()
 
 
 def _get_ucr_int(ucr_key, default):
+	# type: (str, int) -> int
 	try:
 		return int(_ucr.get(ucr_key, default))
 	except ValueError:
@@ -159,6 +173,7 @@ listener_module_root_logger.setLevel(getattr(logging, _listener_debug_level_str)
 
 
 def get_logger(name, path=None):
+	# type: (str, Optional[str]) -> logging.Logger
 	"""
 	Get a logging instance. Caching wrapper for
 	:py:func:`get_listener_logger()`.
@@ -195,6 +210,7 @@ def get_logger(name, path=None):
 
 
 def calculate_loglevel(name):
+	# type: (str) -> str
 	"""
 	Returns the higher of `listener/debug/level` and `listener/module/<name>/debug/level`
 	which is the lower log level.
@@ -209,6 +225,7 @@ def calculate_loglevel(name):
 
 
 def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatter_kwargs=None):
+	# type: (str, str, Optional[str], Optional[Dict[str, Any]], Optional[Dict[str, Any]]) -> logging.Logger
 	"""
 	Get a logger object below the listener module root logger. The logger
 	will additionally log to the common `listener.log`.
@@ -272,7 +289,7 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
 		_logger.setLevel(level)
 
 	fmt = FILE_LOG_FORMATS[level]
-	fmt_kwargs = dict(cls=logging.Formatter, fmt=fmt, datefmt=LOG_DATETIME_FORMAT)
+	fmt_kwargs = dict(cls=logging.Formatter, fmt=fmt, datefmt=LOG_DATETIME_FORMAT)  # type: Dict[str, Any]
 	fmt_kwargs.update(formatter_kwargs)
 
 	if cache_key in _handler_cache:
@@ -281,7 +298,7 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
 		if getattr(logging, level) < _handler_cache[cache_key].level:
 			handler = _handler_cache[cache_key]
 			handler.setLevel(level)
-			formatter_cls = fmt_kwargs.pop('cls')
+			formatter_cls = fmt_kwargs.pop('cls')  # type: Type[logging.Formatter]
 			formatter = formatter_cls(**fmt_kwargs)
 			handler.setFormatter(formatter)
 	else:
@@ -289,7 +306,8 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
 		handler = UniFileHandler(filename=filename, when='W6', backupCount=60, **handler_kwargs)
 		handler.set_name(logger_name)
 		handler.setLevel(level)
-		formatter = fmt_kwargs.pop('cls')(**fmt_kwargs)
+		formatter_cls = fmt_kwargs.pop('cls')
+		formatter = formatter_cls(**fmt_kwargs)
 		handler.setFormatter(formatter)
 		_logger.addHandler(handler)
 		_handler_cache[cache_key] = handler
@@ -299,7 +317,7 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
 
 
 def _log_to_syslog(level, msg):
-	global __syslog_opened
+	# type: (int, str) -> None
 	if not __syslog_opened:
 		syslog.openlog('Listener', 0, syslog.LOG_SYSLOG)
 
@@ -307,4 +325,5 @@ def _log_to_syslog(level, msg):
 
 
 def info_to_syslog(msg):
+	# type: (str) -> None
 	_log_to_syslog(syslog.LOG_INFO, msg)

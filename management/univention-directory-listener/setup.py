@@ -27,9 +27,11 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
 import io
 from distutils.core import setup
 from email.utils import parseaddr
+
 from debian.changelog import Changelog
 from debian.deb822 import Deb822
 
@@ -44,10 +46,6 @@ setup(
 
 	packages=['', 'univention.listener'],
 	package_dir={'': 'python'},
-	package_data={
-		'': ['*.pyi'],
-		'univention.listener': ['*.pyi'],
-	},
 
 	name=dch.package,
 	version=dch.version.full_version,

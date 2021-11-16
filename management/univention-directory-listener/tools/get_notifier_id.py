@@ -74,6 +74,7 @@ def parse_args():
 
 
 def main():
+	# type: () -> None
 	"""Retrieve current Univention Directory Notifier transaction ID."""
 	options = parse_args()
 	try:
