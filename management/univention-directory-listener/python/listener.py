@@ -62,6 +62,7 @@ def setuid(uid):  # type: (Union[int, Text]) -> None
 	"""
 	if isinstance(uid, string_types):
 		uid = getpwnam(uid)[2]
+	assert isinstance(uid, int)
 	os.seteuid(uid)
 
 

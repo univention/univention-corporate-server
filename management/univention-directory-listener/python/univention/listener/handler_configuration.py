@@ -27,11 +27,17 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
-import string
+
 import inspect
+import string
+from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Type  # noqa F401
+
 import listener
 from univention.listener.handler_logging import get_logger
 from univention.listener.exceptions import ListenerModuleConfigurationError
+
+if TYPE_CHECKING:
+	from .handler import ListenerModuleHandler  # noqa F401
 
 
 listener.configRegistry.load()
@@ -60,14 +66,15 @@ class ListenerModuleConfiguration(object):
 	name = ''                     # (*) name of the listener module
 	description = ''              # (*) description of the listener module
 	ldap_filter = ''              # (*) LDAP filter, if matched will trigger the listener module
-	listener_module_class = None  # (**) class that implements the module
-	attributes = []               # only trigger module, if any of the listed attributes has changed
+	listener_module_class = None  # type: Type[ListenerModuleHandler] # (**) class that implements the module
+	attributes = []               # type: List[str] # only trigger module, if any of the listed attributes has changed
 	# (*) required
 	# (**) will be set automatically by the handlers metaclass
 
-	_mandatory_attributes = ('name', 'description', 'ldap_filter', 'listener_module_class')
+	_mandatory_attributes = ('name', 'description', 'ldap_filter', 'listener_module_class')  # type: Tuple[str, ...]
 
 	def __init__(self, *args, **kwargs):
+		# type: (*Any, **Any) -> None
 		_keys = self.get_configuration_keys()
 		for k, v in list(kwargs.items()):
 			if k in _keys:
@@ -76,12 +83,14 @@ class ListenerModuleConfiguration(object):
 		self._run_checks()
 
 	def __repr__(self):
+		# type: () -> str
 		return '{}({})'.format(
 			self.__class__.__name__,
 			', '.join('{}={!r}'.format(k, v) for k, v in self.get_configuration().items())
 		)
 
 	def _run_checks(self):
+		# type: () -> None
 		allowed_name_chars = string.ascii_letters + string.digits + ',.-_'
 
 		for attr in self._mandatory_attributes:
@@ -95,6 +104,7 @@ class ListenerModuleConfiguration(object):
 			raise ListenerModuleConfigurationError('Attribute "listener_module_class" must be a class.')
 
 	def get_configuration(self):
+		# type: () -> Dict[str, Any]
 		"""
 		Get the configuration of a listener module.
 
@@ -118,6 +128,7 @@ class ListenerModuleConfiguration(object):
 
 	@classmethod
 	def get_configuration_keys(cls):
+		# type: () -> List[str]
 		"""
 		List of known configuration keys. Subclasses can expand this to support
 		additional attributes.
@@ -134,6 +145,7 @@ class ListenerModuleConfiguration(object):
 		]
 
 	def get_name(self):
+		# type: () -> str
 		"""
 		:return: name of module
 		:rtype: str
@@ -141,6 +153,7 @@ class ListenerModuleConfiguration(object):
 		return self.name
 
 	def get_description(self):
+		# type: () -> str
 		"""
 		:return: description string of module
 		:rtype: str
@@ -148,6 +161,7 @@ class ListenerModuleConfiguration(object):
 		return self.description
 
 	def get_ldap_filter(self):
+		# type: () -> str
 		"""
 		:return: LDAP filter of module
 		:rtype: str
@@ -155,6 +169,7 @@ class ListenerModuleConfiguration(object):
 		return self.ldap_filter
 
 	def get_attributes(self):
+		# type: () -> List[str]
 		"""
 		:return: attributes of matching LDAP objects the module will be
 		notified about if changed
@@ -164,6 +179,7 @@ class ListenerModuleConfiguration(object):
 		return self.attributes
 
 	def get_listener_module_instance(self, *args, **kwargs):
+		# type: (*Any, **Any) -> ListenerModuleHandler
 		"""
 		Get an instance of the listener module.
 
@@ -172,9 +188,11 @@ class ListenerModuleConfiguration(object):
 		:return: instance of :py:class:`ListenerModuleHandler`
 		:rtype: ListenerModuleHandler
 		"""
-		return self.get_listener_module_class()(self, *args, **kwargs)
+		cls = self.get_listener_module_class()
+		return cls(self, *args, **kwargs)
 
 	def get_listener_module_class(self):
+		# type: () -> Type[ListenerModuleHandler]
 		"""
 		Get the class to instantiate for a listener module.
 
@@ -184,6 +202,7 @@ class ListenerModuleConfiguration(object):
 		return self.listener_module_class
 
 	def get_active(self):
+		# type: () -> bool
 		"""
 		If this listener module should run. Determined by the value of
 		`listener/module/<name>/deactivate`.
