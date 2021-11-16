@@ -41,8 +41,7 @@ from optparse import OptionParser
 
 def parse_args():
 	usage = '%prog [options] [master]'
-	desc = sys.modules[__name__].__doc__
-	parser = OptionParser(usage=usage, description=desc)
+	parser = OptionParser(usage=usage, description=__doc__)
 	parser.add_option(
 		'-m', '--master',
 		dest='master',
