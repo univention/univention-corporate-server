@@ -148,14 +148,15 @@ for d in $DIRS; do
 		# Run the backup.
 		#    --warning=no-file-ignored set to suppress "socket ignored" messages.
 		#    --warning=no-file-changed set to suppress "file changed as we read it" messages.
-		tar cjf ${WHERE}/samba4_${n}.${WHEN}.tar.bz2  $relativedirname \
+		tar cjf ${WHERE}/samba4_${n}.${WHEN}.tar.bz2 \
 			--exclude=smbd.tmp \
 			--exclude=\*.ldb \
 			--exclude=\*.tdb \
 			--warning=no-file-ignored \
 			--warning=no-file-changed \
 			--transform 's/.ldb.bak$/.ldb/' \
-			--transform 's/.tdb.bak$/.tdb/' 
+			--transform 's/.tdb.bak$/.tdb/' \
+			$relativedirname
 		Status=$?
 		if [ $Status -ne 0 -a $Status -ne 1 ]; then
 			# Ignore 1 - private dir is always changing.

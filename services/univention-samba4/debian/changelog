@@ -1,3 +1,9 @@
+univention-samba4 (9.0.6-6) unstable; urgency=medium
+
+  * Bug #53438: Fix for the tar command for backup script. 
+
+ -- Esteban Martinena <martinena@univention.de>  Tue, 16 Nov 2021 10:55:28 +0100
+
 univention-samba4 (9.0.6-5) unstable; urgency=medium
 
   * Bug #54013: Depend on Samba 4.13.13 and restart samba+bind9 on update
