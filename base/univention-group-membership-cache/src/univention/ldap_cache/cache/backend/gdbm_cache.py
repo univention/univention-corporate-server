@@ -53,6 +53,7 @@ class GdbmCache(LdapCache):
 	def _fix_permissions(self):
 		listener_uid = getpwnam('listener').pw_uid
 		os.chown(self.db_file, listener_uid, -1)
+		os.chmod(self.db_file, 0o640)
 
 	@contextmanager
 	def writing(self, writer=None):
