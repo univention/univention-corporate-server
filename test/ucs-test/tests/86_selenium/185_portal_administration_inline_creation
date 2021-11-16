@@ -26,7 +26,6 @@ def _add_german_text(chrome, text):
     chrome.enter_return()
     time.sleep(.1)
     chrome.enter_tab()
-    chrome.enter_tab()
     chrome.send_keys(text)
     chrome.enter_tab()
     chrome.enter_tab()
