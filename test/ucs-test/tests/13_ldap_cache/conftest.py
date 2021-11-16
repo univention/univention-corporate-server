@@ -14,6 +14,10 @@ def base_group(ucr, ldap_base):
 
 
 @pytest.fixture
+def dn_builtin_users(ldap_base):
+	return 'cn=Users,cn=Builtin,%s' % ldap_base
+
+@pytest.fixture
 def dn_domain_users(ucr, base_group):
 	return 'cn=%s,%s' % (custom_groupname('Domain Users', ucr), base_group,)
 

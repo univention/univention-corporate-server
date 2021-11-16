@@ -9,17 +9,18 @@ import pytest
 
 from univention.ldap_cache.frontend import groups_for_user, users_in_group
 
-def test_groups_for_user(udm, group1, group2, user1, dn_domain_users):
+def test_groups_for_user(udm, group1, group2, user1, dn_domain_users, dn_builtin_users):
     """
     Test if the groups for a user are returned correctly.
     """
     udm.modify_object('users/user', dn=user1, groups=[group1, group2], wait_for_replication=True)
     # cn=domain users,cn=groups is default created group
     result_groups = groups_for_user(user1)
+    if dn_builtin_users.lower() in result_groups: result_groups.remove(dn_builtin_users.lower())
     assert sorted(result_groups) == sorted([dn_domain_users.lower(), group1, group2])
 
 
-def test_groups_for_user_not_nested(udm, group1, group2, group3, user1, dn_domain_users):
+def test_groups_for_user_not_nested(udm, group1, group2, group3, user1, dn_domain_users, dn_builtin_users):
     """
     Test if the groups for a user are returned correctly.
     """
@@ -31,6 +32,7 @@ def test_groups_for_user_not_nested(udm, group1, group2, group3, user1, dn_domai
     result_groups = groups_for_user(user1, consider_nested_groups=False)
     assert sorted(result_groups) == sorted([dn_domain_users.lower(), group1])
     result_groups = groups_for_user(user1)
+    if dn_builtin_users.lower() in result_groups: result_groups.remove(dn_builtin_users.lower())
     assert sorted(result_groups) == sorted([dn_domain_users.lower(), group1, group2, group3])
 
 

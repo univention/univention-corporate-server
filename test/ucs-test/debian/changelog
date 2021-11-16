@@ -1,3 +1,10 @@
+ucs-test (9.0.7-76) unstable; urgency=medium
+
+  * Bug #54068: Make univention-group-membership-cache tests more robust wrt
+    samba groups
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Nov 2021 10:50:00 +0100
+
 ucs-test (9.0.7-75) unstable; urgency=medium
 
   * Bug #54068: Add tests for univention-group-membership-cache
