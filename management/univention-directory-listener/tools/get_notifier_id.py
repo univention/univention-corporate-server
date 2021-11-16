@@ -40,8 +40,7 @@ import sys
 
 
 def parse_args():
-	desc = sys.modules[__name__].__doc__
-	parser = argparse.ArgumentParser(description=desc)
+	parser = argparse.ArgumentParser(description=__doc__)
 	parser.add_argument('-m', '--master', help='LDAP Server address')
 	parser.add_argument(
 		'-s', '--schema',
