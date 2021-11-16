@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Listener
-"""Read LDAP from the Primary Directory Node and create LDIF file (and update local schema)"""
 #
 # Copyright 2004-2021 Univention GmbH
 #
@@ -31,14 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""Read LDAP from the Primary Directory Node and create LDIF file (and update local schema)"""
+
 from __future__ import print_function
 
-import io
-import sys
-import os
 import argparse
 import gzip
+import io
 import logging
+import os
+import sys
 
 import ldap
 import ldif
