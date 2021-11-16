@@ -51,7 +51,7 @@ usage () {
 	echo "  resync module1...     Resyncronize modules"
 	echo "  status                Show listener status"
 	echo "  modules               Show modules and their status"
-	exit ${1:-1}
+	exit "${1:-1}"
 }
 
 resync () {
@@ -72,22 +72,22 @@ resync () {
 }
 
 state () {
-	local rc state master_id local_id last_trans rv module_name module_file module_state
+	local rv state master_id local_id last_trans rv module_name module_file module_state
 
-	rv= state=$(systemctl show univention-directory-listener.service --property SubState --value)
+	rv='' state=$(systemctl show univention-directory-listener.service --property SubState --value)
 	systemctl is-active univention-directory-listener.service || rv="$FAIL"
 	printf 'Listener status:\n %s%s%s\n\n' "${rv:-$OKAY}" "$state" "$RSET"
 
-	rv= master_id=$(/usr/share/univention-directory-listener/get_notifier_id.py) || rv="$FAIL"
+	rv='' master_id=$(/usr/share/univention-directory-listener/get_notifier_id.py) || rv="$FAIL"
 	printf 'Current Notifier ID on "%s"\n %s%s%s\n\n' "$(ucr get ldap/master)" "${rv:-$OKAY}" "$master_id" "$RSET"
 
-	rv= local_id=$(cat /var/lib/univention-directory-listener/notifier_id) &&
+	rv='' local_id=$(cat /var/lib/univention-directory-listener/notifier_id) &&
 		[ -n "$local_id" ] &&
 		[ "$master_id" -eq "$local_id" ] ||
 		rv="$FAIL"
 	printf 'Last Notifier ID processed by local Listener:\n %s%s%s\n\n' "${rv:-$OKAY}" "$local_id" "$RSET"
 
-	rv= last_trans=$(tail -n1 /var/lib/univention-ldap/notify/transaction) &&
+	rv='' last_trans=$(tail -n1 /var/lib/univention-ldap/notify/transaction) &&
 		[ -n "$last_trans" ] &&
 		[ "${last_trans%% *}" -eq "$local_id" ] ||
 		rv="$FAIL"
@@ -108,14 +108,14 @@ modules () {
 			rv="$FAIL"
 		printf '%d\t%s\t%s%s%s\n' "$module_state" "$module_name" "${rv:-$OKAY}" "$module_file" "$RSET"
 	done
-	exit ${1:-0}
+	exit "${1:-0}"
 }
 
 if [ -t 1 ] && [ -n "${TERM:-}" ] && [ "$TERM" != dumb ]
 then
 	RSET=$(tput op 2>/dev/null) FAIL=$(tput setaf 1 2>/dev/null) OKAY=$(tput setaf 2 2>/dev/null) || :
 else
-	RSET= FAIL= OKAY=
+	RSET='' FAIL='' OKAY=''
 fi
 
 main "$@"
