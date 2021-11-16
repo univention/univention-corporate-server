@@ -1,16 +1,11 @@
 #!/bin/sh
+set -e -u
 
-PREVPATH=`dirname $0`
+for WAF in ../../buildtools/bin/waf buildtools/bin/waf
+do
+	[ -x "$WAF" ] &&
+		exec "$WAF" configure "$@"
+done
 
-if [ -f $PREVPATH/../../buildtools/bin/waf ]; then
-	WAF=../../buildtools/bin/waf
-elif [ -f $PREVPATH/buildtools/bin/waf ]; then
-	WAF=./buildtools/bin/waf
-else
-	echo "ldb: Unable to find waf"
-	exit 1
-fi
-
-cd . || exit 1
-$WAF configure "$@" || exit 1
-cd $PREVPATH
+echo "ldb: Unable to find waf" >&2
+exit 1
