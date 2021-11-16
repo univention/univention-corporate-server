@@ -32,8 +32,10 @@
 
 ## joinscript api: bindpwdfile
 
+# shellcheck disable=SC2034
 VERSION=1
 
+# shellcheck source=/dev/null
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -42,7 +44,7 @@ die () {
 	exit 1
 }
 have () {
-		command -v "$1" >/dev/null
+	command -v "$1" >/dev/null
 }
 
 eval "$(univention-config-registry shell)"
@@ -80,10 +82,10 @@ domaincontroller_master)
 	exit 0
 	;;
 domaincontroller_backup)
-	dn="cn=admin,$ldap_base" secret=/etc/ldap.secret
+	dn="cn=admin,${ldap_base:?}" secret=/etc/ldap.secret
 	;;
 *)
-	dn="$ldap_hostdn" secret=/etc/machine.secret
+	dn="${ldap_hostdn:?}" secret=/etc/machine.secret
 	;;
 esac
 
@@ -128,13 +130,14 @@ fake_replication () {
 
 	if [ ! -s /etc/ldap/rootpw.conf ]
 	then
+		# shellcheck source=/dev/null
 		. /usr/share/univention-lib/base.sh
 		echo "rootpw \"$(create_machine_password)\"" > /etc/ldap/rootpw.conf
 	fi
 	service slapd restart
 
 	# resync computer object
-	/usr/share/univention-directory-listener/resync-objects.py -f "uid=$hostname\$" -r
+	/usr/share/univention-directory-listener/resync-objects.py -f "uid=${hostname:?}\$" -r
 }
 
 # 1: fake listener initialization
@@ -157,6 +160,7 @@ then
 	# helper function to customize handler helper for fake initialization
 	# for each handler a function fake_NAME is called, if exists, see fake_replication
 	if [ -r "${listener_init_fake_helper:-}" ]; then
+		# shellcheck source=/dev/null
 		. "$listener_init_fake_helper"
 	fi
 
@@ -182,8 +186,8 @@ fi
 
 /usr/sbin/univention-directory-listener "$mode" \
 	-d "${listener_debug_level:-1}" \
-	-h "$ldap_master" \
-	-b "$ldap_base" \
+	-h "${ldap_master:?}" \
+	-b "${ldap_base:?}" \
 	-m /usr/lib/univention-directory-listener/system \
 	-c /var/lib/univention-directory-listener \
 	${write_translog:+-o} \
@@ -207,7 +211,7 @@ then
 	service slapd restart
 fi
 
-[ $exit_status = 0 ] ||
+[ "$exit_status" = 0 ] ||
 	die "Failed to start Listener"
 
 if [ -e "/var/lib/univention-directory-listener/handlers/replication" ]

@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-
+# shellcheck source=/dev/null
 . /etc/network/ucs-network-tools
 ucs_ignore_interface
 
