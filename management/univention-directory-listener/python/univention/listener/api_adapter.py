@@ -78,6 +78,7 @@ class ListenerModuleAdapter(object):
 		description = self.config.get_description()
 		filter_s = self.config.get_ldap_filter() if self.config.get_active() else '(objectClass=listenerModuleDeactivated)'
 		attributes = self.config.get_attributes()
+		priority = self.config.get_priority()
 		modrdn = 1
 		handler = self._handler
 		initialize = self._lazy_initialize
@@ -90,13 +91,14 @@ class ListenerModuleAdapter(object):
 			description=description,
 			filter=filter_s,
 			attributes=attributes,
+			priority=priority,
 			modrdn=modrdn,
 			handler=handler,
 			initialize=initialize,
 			clean=clean,
 			prerun=prerun,
 			postrun=postrun,
-			setdata=setdata
+			setdata=setdata,
 		)
 
 	def _setdata(self, key, value):
