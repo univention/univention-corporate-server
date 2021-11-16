@@ -178,6 +178,15 @@ class ListenerModuleConfiguration(object):
 		assert isinstance(self.attributes, list)
 		return self.attributes
 
+	def get_priority(self):
+		# type: () -> float
+		"""
+		:return: priority of the handler. Defines the order in which this module is executed inside the listener
+		:rtype: float
+		"""
+		priority = getattr(self, "priority", 50.0)
+		return float(priority)
+
 	def get_listener_module_instance(self, *args, **kwargs):
 		# type: (*Any, **Any) -> ListenerModuleHandler
 		"""
