@@ -12,6 +12,7 @@ main () {
 
 	udm settings/packages remove --dn "cn=test,cn=restricted,$BASE"
 }
+# shellcheck source=common.sh
 . "${0%/*}/common.sh"
 # BUG32685: Listener will switch to failed LDIF mode if called twice
 # * Failed LDIF:

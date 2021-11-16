@@ -23,4 +23,5 @@ check_tx () {
 	wait_listener
 	grep -x "[0-9]\+ ${dn} ${cmd}" <&4
 }
+# shellcheck source=common.sh
 . "${0%/*}/common.sh"

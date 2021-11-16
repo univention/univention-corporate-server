@@ -2,6 +2,7 @@
 ## desc: Create, modify, change-case unfiltered object
 ## bugs: [33594]
 main () {
+	# shellcheck disable=SC2119
 	ldapmodify <<__LDIF__
 dn: memberUid=test,cn=visible,$BASE
 changetype: add
@@ -13,6 +14,7 @@ __LDIF__
 	a="$(uuid "memberUid=test,cn=visible,$BASE")"
 
 	listener stop
+	# shellcheck disable=SC2119
 	ldapmodify <<__LDIF__
 dn: memberUid=test,cn=visible,$BASE
 changetype: modify
@@ -31,7 +33,8 @@ __LDIF__
 		check "memberUid=Test,cn=visible" "$a" "$a" m
 	fi
 
-	! ldapdelete "memberUid=test,cn=visible,$BASE"
+	neg ldapdelete "memberUid=test,cn=visible,$BASE"
 	ldapdelete "memberUid=Test,cn=visible,$BASE"
 }
+# shellcheck source=common.sh
 . "${0%/*}/common.sh"
