@@ -58,4 +58,5 @@ class LdapCacheHandler(ListenerModuleHandler):
 			shard.rm_object((dn, old))
 
 	class Configuration(ListenerModuleHandler.Configuration):
-		priority = 1
+		def get_priority(self):
+			return 2.0

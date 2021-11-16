@@ -137,6 +137,14 @@ def create_listener_modules(args):
         print('Removing', fname)
         os.unlink(fname)
     subprocess.call(['service', 'univention-directory-listener', 'restart'])
+    for fname in existing_listeners:
+        # also remove status "initialized" so that the listener may be added again in the future
+        # needs to be done after the listener is running again
+        listener_name = os.path.basename(fname)[:-3]
+        try:
+            os.unlink(os.path.join('/var/lib/univention-directory-listener/handlers/', listener_name))
+        except EnvironmentError:
+            pass
 
 
 def list_caches(args):

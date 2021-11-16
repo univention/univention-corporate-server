@@ -1,3 +1,9 @@
+univention-group-membership-cache (1.0.0-4) unstable; urgency=medium
+
+  * Bug #54068: Fix listener reinitialization
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Nov 2021 16:00:44 +0100
+
 univention-group-membership-cache (1.0.0-3) unstable; urgency=medium
 
   * Bug #54068: Fix file permissions
