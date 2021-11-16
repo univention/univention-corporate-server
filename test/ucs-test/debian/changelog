@@ -1,3 +1,9 @@
+ucs-test (10.0.6-73) unstable; urgency=medium
+
+  * Bug #53438: Added new test for samba4 backup 
+
+ -- Esteban Martinena <martinena@univention.de>  Thu, 18 Nov 2021 09:50:50 +0100
+
 ucs-test (10.0.6-72) unstable; urgency=medium
 
   * Bug #53565: fix 185_portal_administration_inline_creation

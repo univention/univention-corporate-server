@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: ucs-test
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Added test 51_samba4/65samba4_backup.py for samba4 backup.
+bug: [53438]
