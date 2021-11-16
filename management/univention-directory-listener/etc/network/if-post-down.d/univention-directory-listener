@@ -32,6 +32,7 @@
 
 [ -x /etc/init.d/univention-directory-listener ] || exit 0
 
+# shellcheck source=/dev/null
 . /etc/network/ucs-network-tools
 ucs_ignore_interface
 
