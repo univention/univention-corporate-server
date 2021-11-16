@@ -1,3 +1,10 @@
+univention-group-membership-cache (1.0.0-2) unstable; urgency=medium
+
+  * Bug #54068: Fix listener not removing items from cache
+  * Cleanup
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Nov 2021 10:12:40 +0100
+
 univention-group-membership-cache (1.0.0-1) unstable; urgency=low
 
   * Bug #54068: Initial Release
