@@ -40,6 +40,7 @@ See :file:`/usr/share/doc/univention-directory-listener/examples/` for examples.
 """
 
 from __future__ import absolute_import
+
 from univention.listener.api_adapter import ListenerModuleAdapter
 from univention.listener.handler_configuration import ListenerModuleConfiguration
 from univention.listener.handler import ListenerModuleHandler

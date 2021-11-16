@@ -33,6 +33,8 @@
 
 from __future__ import absolute_import
 
+from typing import Dict, List, Optional  # noqa F401
+
 import listener
 import univention.config_registry
 import univention.debug as ud
@@ -40,11 +42,11 @@ import univention.debug as ud
 name = 'ldap_server'
 description = 'Update upstream LDAP server list'
 filter = '(&(objectClass=univentionDomainController)(|(univentionServerRole=master)(univentionServerRole=backup)))'
-attributes = []
+attributes = []  # type: List[str]
 
 
 def handler(dn, new, old):
-	# type: (str, dict, dict) -> None
+	# type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]]) -> None
 	"""Handle change in LDAP."""
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
@@ -71,7 +73,7 @@ def handler(dn, new, old):
 
 
 def add_ldap_server(ucr, name, domain, role):
-	# type: (dict, str, str, str) -> None
+	# type: (Dict[str, str], str, str, str) -> None
 	"""Add LDAP server."""
 	ud.debug(ud.LISTENER, ud.INFO, 'LDAP_SERVER: Add ldap_server %s' % name)
 
@@ -98,7 +100,7 @@ def add_ldap_server(ucr, name, domain, role):
 
 
 def remove_ldap_server(ucr, name, domain, role):
-	# type: (dict, str, str, str) -> None
+	# type: (Dict[str, str], str, str, str) -> None
 	"""Remove LDAP server."""
 	ud.debug(ud.LISTENER, ud.INFO, 'LDAP_SERVER: Remove ldap_server %s' % name)
 

@@ -40,6 +40,7 @@ import io
 import logging
 import os
 import sys
+from typing import IO, Text  # noqa F401
 
 import ldap
 import ldif
@@ -58,6 +59,7 @@ OIDS = set(replication.BUILTIN_OIDS) | set(('1.3.6.1.4.1.4203.666.11.1.4.2.12.1'
 
 # from replication.py
 def _update_schema(fp, attr):
+	# type: (IO[Text], str) -> None
 	subschema = ldap.schema.SubSchema(attr)
 	for oid in replication.subschema_sort(subschema, ldap.schema.AttributeType):
 		if oid in OIDS:
@@ -73,6 +75,7 @@ def _update_schema(fp, attr):
 
 
 def update_schema(lo):
+	# type: (uldap.access) -> None
 	"""
 	update the ldap schema file
 	"""
@@ -90,6 +93,7 @@ def update_schema(lo):
 
 
 def create_ldif_from_master(lo, ldif_file, base, page_size):
+	# type: (uldap.access, str, str, int) -> None
 	"""
 	create ldif file from everything from lo
 	"""
@@ -140,6 +144,7 @@ def create_ldif_from_master(lo, ldif_file, base, page_size):
 
 
 def main():
+	# type: () -> None
 	parser = argparse.ArgumentParser(description=__doc__)
 	parser.add_argument("-l", "--ldif", action="store_true", help="Create LDIF file")
 	parser.add_argument("-s", "--schema", action="store_true", help="Update LDAP schema [%s]" % SCHEMA)
