@@ -275,9 +275,9 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
 		return _logger
 
 	if not isinstance(handler_kwargs, Mapping):
-		handler_kwargs = dict()
+		handler_kwargs = {}
 	if not isinstance(formatter_kwargs, Mapping):
-		formatter_kwargs = dict()
+		formatter_kwargs = {}
 
 	# The logger objects level must be the lowest of all handlers, or handlers
 	# with a higher level will not be able to log anything.
