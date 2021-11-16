@@ -7,6 +7,7 @@
 # 3. Run tests as often as needed:
 #    run-parts --verbose --regex '^test' doc.34355
 
+# shellcheck disable=SC2034
 BUG32685=false # move to selective
 BUG33594=true # modrdn delold=1
 BUG34355=false # modify+modrdn
@@ -120,7 +121,7 @@ on_error () {
 on_exit () {
 	local rv=$?
 	echo "***************************** EXIT $rv ********************************" >&2
-	[ 0 -ne $rv -a -t 0 ] && read -p "Hit key to continue with cleanup"
+	[ 0 -ne $rv ] && [ -t 0 ] && read -r -p "Hit key to continue with cleanup"
 	ldapsearch -b "$BASE" -s one '(&(objectClass=univentionPackageList)(cn=test*))' dn |
 		sed -ne 's/^dn: //p' |
 		ldapdelete
@@ -136,9 +137,9 @@ log_traceback () {
 	local -i i=0
 	local -i j=0
 	echo "Traceback (last called is first): " >&2
-	for ((i=${start}; i<${end}; i++))
+	for ((i=start; i<end; i++))
 	do
-		j=$(( $i - 1 ))
+		j=$(( i - 1 ))
 		echo "    ${FUNCNAME[$i]}() in ${BASH_SOURCE[$i]}:${BASH_LINENO[$j]}" >&2
 	done
 }
@@ -161,8 +162,9 @@ log_listener () {
 	echo "*** Listener log:" >&2
 	local date time proc _lp level _rp _co msg ts
 	END="$(date +%s)"
+	# shellcheck disable=SC2034
 	tail -n 1000 /var/log/univention/listener.log |
-	while IFS=' ' read date time proc _lp level _rp _co msg
+	while IFS=' ' read -r date time proc _lp level _rp _co msg
 	do
 		case "$proc" in
 		LISTENER) ;;
@@ -182,18 +184,20 @@ log_listener () {
 		'running handlers for '*) continue ;;
 		esac
 		ts="$(date -d "20${date:6:2}-${date:3:2}-${date:0:2} ${time}" +%s)"
-		[ "$START" -le "$ts" -a "$ts" -le "$END" ] &&
+		[ "$START" -le "$ts" ] && [ "$ts" -le "$END" ] &&
 			echo "${level}: ${msg}" >&2
 	done
 }
 
 check () {
-	local dn="$(_py_repr "${1},${BASE}")" old="${2:-.*}" new="${3:-.*}" cmd="${4-[amdrn]}"
+	local dn
+	dn="$(_py_repr "${1},${BASE}")" old="${2:-.*}" new="${3:-.*}" cmd="${4-[amdrn]}"
 	wait_listener
 	grep -x "dn=${dn} old=${old} new=${new} command=${cmd}" "$LOG"
 }
 neg () {
-	"$@" && return 1 || return 0
+	"$@" && return 1
+	return 0
 }
 _py_repr () {
 	python -c 'import sys,re;print re.sub(r"[][^\\.*$]", lambda m:"\\"+m.group(0), repr(sys.argv[1]))' "$1"

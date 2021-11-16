@@ -8,4 +8,5 @@ main () {
 	wait_listener
 	neg fgrep "cn=restricted,$BASE " "$LOG"
 }
+# shellcheck source=common.sh
 . "${0%/*}/common.sh"

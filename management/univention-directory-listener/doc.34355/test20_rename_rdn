@@ -3,6 +3,7 @@
 ## bugs: [33594]
 main () {
 	$BUG33594 && exit 0
+	# shellcheck disable=SC2119
 	ldapmodify <<__LDIF__
 dn: cn=test,cn=visible,$BASE
 changetype: add
@@ -20,9 +21,10 @@ __LDIF__
 		check "sn=test,cn=visible" "" "" m
 	fi
 
-	! udm settings/packages remove --dn "cn=test,cn=visible,$BASE"
+	neg udm settings/packages remove --dn "cn=test,cn=visible,$BASE"
 	udm settings/packages remove --dn "sn=test,cn=visible,$BASE"
 }
+# shellcheck source=common.sh
 . "${0%/*}/common.sh"
 # PROCESS: replication: rename from cn=test,cn=visible,dc=phahn,dc=dev to sn=test,cn=visible,dc=phahn,dc=dev
 # ERROR  : dn=sn=test,cn=visible,dc=phahn,dc=dev: Object class violation

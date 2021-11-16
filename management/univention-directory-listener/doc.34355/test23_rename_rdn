@@ -3,6 +3,7 @@
 ## bugs: [33594]
 main () {
 	$BUG33594 && exit 0
+	# shellcheck disable=SC2119
 	ldapmodify <<__LDIF__
 dn: cn=test,cn=visible,$BASE
 changetype: add
@@ -17,4 +18,5 @@ __LDIF__
 
 	udm settings/packages remove --dn "description=test,cn=visible,$BASE"
 }
+# shellcheck source=common.sh
 . "${0%/*}/common.sh"
