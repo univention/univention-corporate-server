@@ -27,4 +27,5 @@ main () {
 
 	udm settings/packages remove --dn "cn=test,cn=visible,$BASE"
 }
+# shellcheck source=common.sh
 . "${0%/*}/common.sh"

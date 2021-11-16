@@ -11,4 +11,5 @@ main () {
 	listener start
 	check "cn=test,cn=visible" "" - d
 }
+# shellcheck source=common.sh
 . "${0%/*}/common.sh"
