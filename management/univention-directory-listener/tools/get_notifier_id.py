@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Listener
-"""Read the notifier id from the DC master"""
-from __future__ import print_function
 #
 # Copyright 2004-2021 Univention GmbH
 #
@@ -32,9 +30,13 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""Read the notifier id from the DC master"""
+
+from __future__ import print_function
+
 import socket
-from optparse import OptionParser
 import sys
+from optparse import OptionParser
 
 
 def parse_args():

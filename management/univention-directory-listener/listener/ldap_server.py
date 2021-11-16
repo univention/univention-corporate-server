@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Listener
-"""listener script for setting ldap server."""
 #
 # Copyright 2004-2021 Univention GmbH
 #
@@ -30,11 +29,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""listener script for setting ldap server."""
+
 from __future__ import absolute_import
 
 import listener
 import univention.config_registry
-
 import univention.debug as ud
 
 name = 'ldap_server'

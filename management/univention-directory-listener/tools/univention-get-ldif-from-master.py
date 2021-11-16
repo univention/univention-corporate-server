@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Listener
-"""Read LDAP from the DC Master and create LDIF file (and update local schema)"""
 #
 # Copyright 2004-2021 Univention GmbH
 #
@@ -31,19 +30,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""Read LDAP from the DC Master and create LDIF file (and update local schema)"""
+
 from __future__ import print_function
-import univention.uldap as uldap
-import univention.config_registry
+
+import gzip
+import logging
+import optparse
+import os
+import sys
 
 import ldap
 import ldif
-import sys
-import os
-import optparse
-import gzip
-import logging
-
 from ldap.controls import SimplePagedResultsControl
+
+import univention.uldap as uldap
+import univention.config_registry
 
 sys.path.append("/usr/lib/univention-directory-listener/system/")
 import replication  # noqa: E402
