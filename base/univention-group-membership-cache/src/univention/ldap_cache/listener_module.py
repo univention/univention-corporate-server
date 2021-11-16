@@ -50,12 +50,12 @@ class LdapCacheHandler(ListenerModuleHandler):
 	def modify(self, dn, old, new, old_dn):
 		for shard in get_cache().get_shards_for_query(self._get_configuration().get_ldap_filter()):
 			if old_dn:
-				shard.delete((old_dn, old))
+				shard.rm_object((old_dn, old))
 			shard.add_object((dn, new))
 
 	def remove(self, dn, old):
 		for shard in get_cache().get_shards_for_query(self._get_configuration().get_ldap_filter()):
-			shard.delete((dn, old))
+			shard.rm_object((dn, old))
 
 	class Configuration(ListenerModuleHandler.Configuration):
 		priority = 1

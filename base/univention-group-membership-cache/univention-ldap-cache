@@ -37,7 +37,9 @@ from hashlib import md5
 from glob import glob
 import subprocess
 from argparse import ArgumentParser, SUPPRESS
+import sys
 
+from univention.uldap import getMachineConnection
 from univention.ldap_cache.cache import get_cache
 from univention.ldap_cache.cache.shard_config import add_shard_to_config, rm_shard_from_config
 
@@ -66,6 +68,26 @@ def _md5sum(value):
     return m.hexdigest()
 
 
+def _query_objects(query, attrs):
+    lo = getMachineConnection()
+    print('Querying', query, 'with', attrs)
+    return lo.search(query, attr=attrs)
+
+
+def _get_queries(caches, cache_names=None):
+    queries = {}
+    for name, cache in caches:
+        if cache_names is not None and name not in cache_names:
+            continue
+        for shard in cache.shards:
+            queries.setdefault(shard.ldap_filter, ([], set()))
+            shards, attrs = queries[shard.ldap_filter]
+            shards.append(shard)
+            attrs.add(shard.key)
+            attrs.add(shard.value)
+            attrs.update(shard.attributes)
+    return queries
+
 def add_cache(args):
     add_shard_to_config(args.db_name, args.single_value, args.key, args.value, args.ldap_filter)
 
@@ -75,13 +97,34 @@ def rm_cache(args):
 
 
 def rebuild(args):
-    get_cache().rebuild(args.cache_name or None)
+    caches = get_cache()
+    cache_names = args.cache_name
+    if not cache_names:
+        cache_names = sorted([x[0] for x in caches])
+    print('Rebuilding', cache_names)
+    for name, cache in caches:
+        if name in cache_names:
+            cache.clear()
+    for query, (_caches, attrs) in _get_queries(caches, cache_names).items():
+        print('Searching for', query)
+        attrs.discard('dn')
+        i = 0
+        for obj in _query_objects(query, attrs):
+            i += 1
+            if i % 1000 == 0:
+                print('\rProcessing object #', i)
+                sys.stdout.flush()
+            for shard in _caches:
+                shard.add_object(obj)
+        if i >= 1000:
+            print()
+        print('Added', i, 'objects')
 
 
 def create_listener_modules(args):
     listener_dir = '/usr/lib/univention-directory-listener/system/'
     existing_listeners = set(glob(os.path.join(listener_dir, 'ldap-cache-*')))
-    for query, (_caches, attrs) in get_cache().get_queries().items():
+    for query, (_caches, attrs) in _get_queries(get_cache()).items():
         attrs.discard('dn')
         attrs.discard('entryUUID')
         listener_name = 'ldap-cache-%s' % _md5sum(query)
@@ -98,7 +141,7 @@ def create_listener_modules(args):
 
 def list_caches(args):
     caches = get_cache()
-    for name, cache in caches._caches.items():
+    for name, cache in caches:
         if cache.single_value:
             print(name, '- stores one value per key')
         else:

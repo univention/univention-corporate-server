@@ -40,7 +40,7 @@ from univention.ldap_cache.log import log, debug
 
 
 class GdbmCaches(Caches):
-	def add_sub_cache(self, name, single_value):
+	def _add_sub_cache(self, name, single_value):
 		db_file = os.path.join(self._directory, '%s.db' % name)
 		debug('Using GDBM %s', name)
 		cache = GdbmCache(name, single_value)

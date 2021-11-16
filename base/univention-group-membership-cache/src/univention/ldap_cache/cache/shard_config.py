@@ -69,7 +69,7 @@ def _writing_config():
 		shards = []
 	yield shards
 	with open(CONFIG_FILE, 'w') as fd:
-		json.dump(shards, fd)
+		json.dump(shards, fd, sort_keys=True, indent=4)
 
 
 def add_shard_to_config(db_name, single_value, key, value, ldap_filter):

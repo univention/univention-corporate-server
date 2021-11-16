@@ -49,7 +49,7 @@ class LmdbCaches(Caches):
 		os.chown(os.path.join(db_directory, 'data.mdb'), listener_uid, -1)
 		os.chown(os.path.join(db_directory, 'lock.mdb'), listener_uid, -1)
 
-	def add_sub_cache(self, name, single_value):
+	def _add_sub_cache(self, name, single_value):
 		sub_db = self.env.open_db(name, dupsort=not single_value)
 		cache = LmdbCache(name, single_value)
 		cache.env = self.env

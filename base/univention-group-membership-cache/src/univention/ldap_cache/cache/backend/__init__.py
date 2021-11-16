@@ -29,17 +29,20 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from univention.uldap import getMachineConnection
 DB_DIRECTORY = '/usr/share/univention-group-membership-cache/caches'
 
 
-from univention.ldap_cache.log import log, debug
+from univention.ldap_cache.log import debug
 
 
 class Caches(object):
 	def __init__(self, db_directory=DB_DIRECTORY):
 		self._directory = db_directory
 		self._caches = {}
+
+	def __iter__(self):
+		for name, cache in self._caches.items():
+			yield name, cache
 
 	def get_shards_for_query(self, query):
 		ret = []
@@ -49,44 +52,8 @@ class Caches(object):
 					ret.append(shard)
 		return ret
 
-	def get_queries(self, cache_names=None):
-		queries = {}
-		for name, cache in self._caches.items():
-			if cache_names is not None and name not in cache_names:
-				continue
-			for shard in cache.shards:
-				queries.setdefault(shard.ldap_filter, ([], set()))
-				caches, attrs = queries[shard.ldap_filter]
-				caches.append(shard)
-				attrs.add(shard.key)
-				attrs.add(shard.value)
-				attrs.update(shard.attributes)
-		return queries
-
-	def rebuild(self, cache_names=None):
-		log('Rebuilding...')
-		for name, cache in self._caches.items():
-			if cache_names is None or name in cache_names:
-				cache.clear()
-		for query, (caches, attrs) in self.get_queries(cache_names).items():
-			attrs.discard('dn')
-			for obj in self._query_objects(query, attrs):
-				for shard in caches:
-					shard.add_object(obj)
-
-	def _query_objects(self, query, attrs):
-		lo = getMachineConnection()
-		log('Querying %s with %r', query, attrs)
-		return lo.search(query, attr=attrs)
-
 	def get_sub_cache(self, name):
 		return self._caches.get(name)
-
-	def load(self, name):
-		cache = self.get_sub_cache(name)
-		if cache:
-			return cache.load()
-		return {}
 
 	def add(self, klass):
 		if not klass.ldap_filter or not klass.value:
@@ -95,11 +62,11 @@ class Caches(object):
 		name = klass.db_name or klass.__name__
 		cache = self.get_sub_cache(name)
 		if cache is None:
-			cache = self.add_sub_cache(name, klass.single_value)
+			cache = self._add_sub_cache(name, klass.single_value)
 		cache.add_shard(klass)
 
-	def add_sub_cache(self, name, single_value):
-		raise NotImplementedError
+	def _add_sub_cache(self, name, single_value):
+		raise NotImplementedError()
 
 
 class Shard(object):
@@ -112,6 +79,14 @@ class Shard(object):
 
 	def __init__(self, cache):
 		self._cache = cache
+
+	def rm_object(self, obj):
+		try:
+			key = self.get_key(obj)
+		except ValueError:
+			return
+		debug('Removing %s', key)
+		self._cache.delete(key)
 
 	def add_object(self, obj):
 		try:

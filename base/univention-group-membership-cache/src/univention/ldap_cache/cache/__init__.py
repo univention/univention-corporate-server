@@ -35,11 +35,6 @@ from univention.ldap_cache.cache.backend.gdbm_cache import GdbmCaches as Caches,
 from univention.ldap_cache.cache.shard_config import shards_from_config
 
 
-class LowerValuesShard(Shard):
-	def get_values(self, obj):
-		values = super(LowerValuesShard, self).get_values(obj)
-		return [value.lower() for value in values]
-
 # Singleton pattern
 def get_cache():
 	if get_cache._cache is None:

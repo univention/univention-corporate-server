@@ -15,6 +15,7 @@ Package: univention-group-membership-cache
 Architecture: all
 Depends:
  python-univention-group-membership-cache (= ${source:Version}),
+ python-univention,
  ${misc:Depends},
 Description: UCS - Group cache
  This package holds a cache for user and group membership (including nested
@@ -30,7 +31,6 @@ Architecture: all
 Depends:
  python-gdbm,
  python-ldap,
- python-univention,
  ${python:Depends},
 Description: UCS - Group cache
  This package holds a cache for user and group membership (including nested
