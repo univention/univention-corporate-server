@@ -111,7 +111,7 @@ class ListenerModuleConfiguration(object):
 		:return: configuration of listener module
 		:rtype: dict
 		"""
-		res = dict()
+		res = {}
 		for key in self.get_configuration_keys():
 			getter = getattr(self, 'get_{}'.format(key), None)
 			if getter and callable(getter):
