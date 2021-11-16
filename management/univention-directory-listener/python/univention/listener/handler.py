@@ -231,11 +231,11 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 		:return: key -> (old[key], new[key]) mapping
 		:rtype: dict
 		"""
-		res = dict()
+		res = {}
 		if keys:
 			keys = set(keys)
 		else:
-			keys = set(old.keys()).union(set(new.keys()))
+			keys = set(old) | set(new)
 			if ignore_metadata:
 				keys.difference_update(cls._metadata_attributes)
 		for key in keys:
