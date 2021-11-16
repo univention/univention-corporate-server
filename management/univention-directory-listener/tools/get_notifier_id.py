@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Listener
-"""Read the notifier id from the Primary Directory Node"""
-from __future__ import print_function
 #
 # Copyright 2004-2021 Univention GmbH
 #
@@ -32,8 +30,12 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import socket
+"""Read the notifier id from the Primary Directory Node"""
+
+from __future__ import print_function
+
 import argparse
+import socket
 import sys
 
 
