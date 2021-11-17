@@ -37,10 +37,10 @@ from univention.ldap_cache.cache import get_cache
 
 def groups_for_user(user_dn, consider_nested_groups=True, cache=None):
 	user_dn = user_dn.lower()
-	_cache = get_cache()
 	if cache is None:
+		_cache = get_cache()
 		cache = _cache.get_sub_cache('uniqueMembers').load()
-		cache = dict((key, set(values)) for key, values in cache.items())
+		cache = dict((key, set(val.lower() for val in values)) for key, values in cache.items())
 	search_for_dns = [user_dn]
 	found = set()
 	while search_for_dns:
@@ -60,19 +60,19 @@ def users_in_group(group_dn, consider_nested_groups=True, readers=(None, None)):
 	cache = get_cache()
 	member_uid_cache, unique_member_cache = [cache.get_sub_cache(name) for name in ['memberUids', 'uniqueMembers']]
 	with member_uid_cache.reading(readers[0]) as member_uid_reader, unique_member_cache.reading(readers[1]) as unique_member_reader:
-		ret = []
-		uids = member_uid_cache.get(group_dn, member_uid_reader) or []
-		uids = set([uid.lower() for uid in uids])
+		ret = set()
 		members = unique_member_cache.get(group_dn, unique_member_reader)
 		if not members:
 			return []
+		uids = member_uid_cache.get(group_dn, member_uid_reader) or []
+		uids = set([uid.lower() for uid in uids])
 		for member in members:
 			rdn = explode_dn(member, 1)[0].lower()
 			if rdn in uids:
-				ret.append(member)
+				ret.add(member.lower())
 			elif '%s$' % rdn in uids:
 				continue
 			else:
 				if consider_nested_groups:
-					ret.extend(users_in_group(member, consider_nested_groups, readers=(member_uid_reader, unique_member_reader)))
-		return ret
+					ret.update(users_in_group(member, consider_nested_groups, readers=(member_uid_reader, unique_member_reader)))
+		return sorted(ret)

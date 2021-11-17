@@ -112,7 +112,7 @@ def rebuild(args):
         for obj in _query_objects(query, attrs):
             i += 1
             if i % 1000 == 0:
-                print('\rProcessing object #', i)
+                print('\rProcessing object #', i, end='')
                 sys.stdout.flush()
             for shard in _caches:
                 shard.add_object(obj)
