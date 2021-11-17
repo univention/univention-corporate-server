@@ -1,4 +1,4 @@
-ucs-test (9.0.7-76) unstable; urgency=medium
+ucs-test (9.0.7-77) unstable; urgency=medium
 
   * Bug #54068: Make univention-group-membership-cache tests more robust wrt
     samba groups

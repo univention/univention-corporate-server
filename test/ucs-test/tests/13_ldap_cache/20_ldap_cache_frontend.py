@@ -5,9 +5,9 @@
 ## packages:
 ##   - univention-group-membership-cache
 
-import pytest
 
 from univention.ldap_cache.frontend import groups_for_user, users_in_group
+
 
 def test_groups_for_user(udm, group1, group2, user1, dn_domain_users, dn_builtin_users):
     """
