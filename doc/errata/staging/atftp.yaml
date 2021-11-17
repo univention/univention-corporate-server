@@ -6,14 +6,14 @@ src: atftp
 fix: 0.7.git20120829-3.1~deb9u2
 desc: |
  This update addresses the following issues:
- * An exploitable denial of service vulnerability exists in the atftpd daemon
-   functionality of atftp 0.7.git20120829-3.1+b1. A specially crafted sequence
-   of RRQ-Multicast requests trigger an assert() call resulting in
-   denial-of-service. An attacker can send a sequence of malicious packets to
-   trigger this vulnerability. (CVE-2020-6097)
- * tftpd_file.c in atftp through 0.7.4 has a buffer overflow because
-   buffer-size handling does not properly consider the combination of data,
-   OACK, and other options. (CVE-2021-41054)
+ * An exploitable denial of service vulnerability exists in the atftpd daemon.
+   A specially crafted sequence of RRQ-Multicast requests trigger an
+   `assert()` call resulting in denial-of-service. An attacker can send a
+   sequence of malicious packets to trigger this vulnerability.
+   (CVE-2020-6097)
+ * tftpd_file.c has a buffer overflow because buffer-size handling does not
+   properly consider the combination of data, OACK, and other options.
+   (CVE-2021-41054)
 bug: [54077]
 cve:
 - CVE-2020-6097
