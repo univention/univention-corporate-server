@@ -3,7 +3,7 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: univention-dhcp
-fix:
+fix: 13.0.0-8A~4.4.0.202111171718
 desc: |-
  This update addresses the following issues:
  * Server password change now logs timestamps.

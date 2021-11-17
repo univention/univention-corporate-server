@@ -3,7 +3,7 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: univention-mail-dovecot
-fix:
+fix: 5.0.1-14A~4.4.0.202111171658
 desc: |-
  This update addresses the following issues:
  * Server password change now logs timestamps.
