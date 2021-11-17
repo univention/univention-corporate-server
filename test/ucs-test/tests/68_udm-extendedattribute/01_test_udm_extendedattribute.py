@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Create settings/extended_attribute
-## tags: [udm]
+## desc: test UDM settings/extended_attribute
+## tags: [udm, apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
@@ -9,18 +9,16 @@
 
 from __future__ import print_function
 
-import subprocess
 import os
+import subprocess
 
 import pytest
 
-from univention.config_registry import ConfigRegistry
+import univention.testing.strings as uts
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 from univention.testing import utils as testing_utils
 from univention.testing.umc import Client
-import univention.testing.strings as uts
-import univention.testing.utils as utils
-import univention.testing.udm as udm_test
-import univention.testing.ucr as ucr_test
 
 
 @pytest.fixture
@@ -110,7 +108,7 @@ class Test_UDMExtension(object):
 	def test_extended_attribute_singlevalue_set_during_object_creation(self, udm, properties):
 		"""Set settings/extended_attribute value during object creation"""
 
-		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
 		# create user object with extended attribute set
 		extended_attribute_value = uts.random_string()
@@ -146,7 +144,7 @@ class Test_UDMExtension(object):
 			'multivalue': '1'
 		}
 
-		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
 		# create user object and set extended attribute
 		extended_attribute_values = [uts.random_string(), uts.random_string()]
@@ -248,7 +246,7 @@ class Test_UDMExtension(object):
 	def test_extented_attribute_set_during_object_modification(self, udm, properties):
 		"""Set settings/extended_attribute value during object creation"""
 
-		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
 		user = udm.create_user()[0]
 		extended_attribute_value = uts.random_string()
@@ -270,7 +268,7 @@ class Test_UDMExtension(object):
 			'tabName': uts.random_name()
 		}
 
-		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
 		module_help_text = subprocess.Popen([udm.PATH_UDM_CLI_CLIENT, properties['module']], stdout=subprocess.PIPE).communicate()[0].decode('UTF-8')
 		assert properties['tabName'] in module_help_text, 'Could not find tab name of created settings/extended_attribute in module help'
@@ -357,7 +355,7 @@ class Test_UDMExtension(object):
 			'default': uts.random_string()
 		}
 
-		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
 		user = udm.create_user()[0]
 		utils.verify_ldap_object(user, {properties['ldapMapping']: [properties['default']]})
@@ -378,7 +376,7 @@ class Test_UDMExtension(object):
 			'default': uts.random_string()
 		}
 
-		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
 		user = udm.create_user()[0]
 		utils.verify_ldap_object(user, {properties['ldapMapping']: [properties['default']]})
@@ -398,7 +396,7 @@ class Test_UDMExtension(object):
 			'default': uts.random_string()
 		}
 
-		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
 		extended_attribute_value = uts.random_string()
 		user = udm.create_user(**{properties['CLIName']: extended_attribute_value})[0]
@@ -420,7 +418,7 @@ class Test_UDMExtension(object):
 			'default': uts.random_string()
 		}
 
-		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
 		extended_attribute_value = uts.random_string()
 		user = udm.create_user(**{properties['CLIName']: extended_attribute_value})[0]
@@ -539,7 +537,6 @@ class Test_UDMExtension(object):
 	@pytest.mark.tags('udm')
 	@pytest.mark.roles('domaincontroller_master')
 	@pytest.mark.exposure('careful')
-	@pytest.mark.xfail(reason='wrong version')
 	def test_extended_attribute_required_enforcement_multivalue(self, udm):
 		"""Check that required=True is enforced for multivalue extended attributes"""
 		# bugs: [31302]
@@ -565,11 +562,11 @@ class Test_UDMExtension(object):
 	@pytest.mark.tags('udm')
 	@pytest.mark.roles('domaincontroller_master')
 	@pytest.mark.exposure('careful')
-	@pytest.mark.xfail(reason='wrong version')
 	def test_extented_attribute_creation_with_default_value_not_allowed_by_syntax(self, udm):
 		"""Create settings/extented_attribute with a value for it's default which is not valid for it's syntax value"""
 		# versions:
 		#   3.2-0: skip
+		pytest.skip("Bug #31661 git:130ee3d0fe7af2129f37bef69264bde306716063")
 		with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
 			udm.create_object(
 				'settings/extended_attribute',
@@ -1019,7 +1016,7 @@ class %s(univention.admin.hook.simpleHook):
 			'deleteObjectClass': '1',
 			'mayChange': '1',
 		}
-		ea = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **ea_properties)
+		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **ea_properties)
 		udm.stop_cli_server()
 
 		ea_value = uts.random_string()
@@ -1045,7 +1042,7 @@ class %s(univention.admin.hook.simpleHook):
 			'objectClass': 'univentionFreeAttributes',
 			'editable': '1',
 		}
-		eo = udm.create_object('settings/extended_options', position=udm.UNIVENTION_CONTAINER, **eo_properties)
+		udm.create_object('settings/extended_options', position=udm.UNIVENTION_CONTAINER, **eo_properties)
 
 		group_dn, group_name = udm.create_group(options=['posix', eo_name])
 		utils.verify_ldap_object(group_dn, expected_attr={'objectClass': ['univentionFreeAttributes']}, strict=False)
@@ -1058,7 +1055,6 @@ class %s(univention.admin.hook.simpleHook):
 	@pytest.mark.tags('udm')
 	@pytest.mark.roles('domaincontroller_master')
 	@pytest.mark.exposure('careful')
-	@pytest.mark.xfail(reason='wrong version')
 	def test_extended_attribute_boolean_syntax(self, udm):
 		"""settings/extended_attribute with boolean syntax"""
 		# versions:
@@ -1074,7 +1070,7 @@ class %s(univention.admin.hook.simpleHook):
 			'objectClass': 'univentionFreeAttributes',
 			'ldapMapping': 'univentionFreeAttribute15'
 		}
-		extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
 		userA = udm.create_user(**{properties['CLIName']: '0'})[0]
 		userB = udm.create_user(**{properties['CLIName']: '1'})[0]
@@ -1103,7 +1099,7 @@ class %s(univention.admin.hook.simpleHook):
 				'ldapMapping': 'uid',
 				'disableUDMWeb': '1',
 			}
-			extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+			udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 			client = Client.get_test_connection()
 			layout = flatten(client.umc_command('udm/layout', [{"objectType": "users/user", "objectDN": None}], 'users/user').result)
 
@@ -1183,7 +1179,7 @@ class {hook_name}(univention.admin.hook.AttributeHook):
 			userB = udm.create_user(**{cli_name: 'FALSE'})[0]
 			utils.verify_ldap_object(userB, {attr_name: [b'no']})
 			with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
-				userC = udm.create_user(**{cli_name: 'INVALID'})[0]
+				udm.create_user(**{cli_name: 'INVALID'})[0]
 
 			udm.modify_object('users/user', dn=userB, **{cli_name: 'TRUE'})
 			utils.verify_ldap_object(userB, {attr_name: [b'yes']})
