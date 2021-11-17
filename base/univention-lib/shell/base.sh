@@ -288,4 +288,11 @@ custom_groupname() {
 	fi
 }
 
+#
+# Echo with timestamp
+#
+echowithtimestamp() {
+	echo "[$(date '+%F %T.%N')] $@"
+}
+
 # vim:set sw=4 ts=4 noet:

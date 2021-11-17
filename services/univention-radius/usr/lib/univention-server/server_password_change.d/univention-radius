@@ -31,12 +31,15 @@
 
 eval "$(univention-config-registry shell)"
 
+. /usr/share/univention-lib/base.sh
+
 if [ "$1" = "postchange" ] ; then
 	# update ldap query definitions
 	ucr commit /etc/freeradius/3.0/mods-available/ldap
 
 	# restart freeradius if already running
 	if [ -n "$(pidof freeradius)" ]; then
+		echowithtimestamp "restart freeradius after server password change"
 		systemctl restart freeradius
 	fi
 fi

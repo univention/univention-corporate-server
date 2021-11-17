@@ -31,10 +31,12 @@
 
 eval "$(univention-config-registry shell)"
 
+. /usr/share/univention-lib/base.sh
+
 if [ "$1" = "prechange" ] ; then
 	if /etc/init.d/postfix status | grep -q "is running" ; then
 		univention-config-registry set mail/postfix/stoppedbyserverpasswordchange=yes
-		echo "($(date '+%F %T.%N')) stopping postfix due to upcoming server password change" | logger -t "server-password-change"
+		echowithtimestamp "stopping postfix due to upcoming server password change" | logger -t "server-password-change"
 		/etc/init.d/postfix stop
 	fi
 fi
