@@ -1,3 +1,9 @@
+univention-server (14.0.0-18) unstable; urgency=medium
+
+  * Bug #54019: Added timestamp to logger output of server password change
+
+ -- Esteban Martinena <martinena@univention.de>  Wed, 17 Nov 2021 17:38:31 +0100
+
 univention-server (14.0.0-17) unstable; urgency=medium
 
   * Bug #53182: added timestamp to logger output of server password change
