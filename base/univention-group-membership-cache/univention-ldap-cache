@@ -70,6 +70,7 @@ def _md5sum(value):
 
 def _query_objects(query, attrs):
     lo = getMachineConnection()
+    attrs = [attr.encode('utf-8') for attr in attrs]
     print('Querying', query, 'with', attrs)
     return lo.search(query, attr=attrs)
 
