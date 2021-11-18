@@ -112,7 +112,7 @@ class ListenerModuleAdapter(object):
 		:param str value: credentials
 		"""
 		self._ldap_cred[key] = value
-		if set(self._ldap_cred) <= {'basedn', 'basedn', 'bindpw', 'ldapserver'}:
+		if set(self._ldap_cred) >= {'basedn', 'basedn', 'bindpw', 'ldapserver'}:
 			self._module_handler._set_ldap_credentials(
 				self._ldap_cred['basedn'],
 				self._ldap_cred['binddn'],
