@@ -6,6 +6,5 @@ src: univention-lib
 fix: 8.0.1-44A~4.4.0.202111171435
 desc: |-
  This update addresses the following issues:
- * Server password change now logs timestamps.
- * Added new shell library function `echowithtimestamp`.
+ * A new shell library function `echowithtimestamp` was added.
 bug: [54019]
