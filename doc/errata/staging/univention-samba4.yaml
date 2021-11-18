@@ -3,8 +3,8 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-samba4
-fix: 
+fix: 9.0.6-6A~5.0.0.202111181025
 desc: |
  This update addresses the following issues:
- * Backup command fixed
+ * univention-samba4-backup has been fixed
 bug: [53438]
