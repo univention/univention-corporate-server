@@ -9,3 +9,5 @@ desc: |
  * Make module execution order configurable by explicitly specifying a
    `priority`.
 bug: [54061]
+erratum: 1100
+announced: 2021-11-18
