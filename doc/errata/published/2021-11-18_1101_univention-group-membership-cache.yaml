@@ -9,3 +9,5 @@ desc: |
  * The package was added to provide a very fast user and group membership
    cache.
 bug: [54068]
+erratum: 1101
+announced: 2021-11-18
