@@ -97,6 +97,7 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'/var/log/univention/ucsschool-apis'
 		'/var/log/univention/ucsschool-id-connector'
 		'/var/log/univention/ucsschool-kelvin-rest-api'
+		'/var/log/univention/reload-service.log'
 		'/var/log/univention/updater.log'
 		'/var/log/univention/server_password_change.log'
 		'/var/log/univention/37check-ucr-templates-py3-migration-status.md'
