@@ -9,7 +9,6 @@ Build-Depends:
  python-ldap,
  python-univention,
  python-all,
- univention-directory-listener (>> 13.0.3-5),
 # python3-all,
 
 Package: univention-group-membership-cache
@@ -17,6 +16,7 @@ Architecture: all
 Depends:
  python-univention-group-membership-cache (= ${source:Version}),
  python-univention,
+ univention-directory-listener (>> 13.0.3-5),
  ${misc:Depends},
 Description: UCS - Group cache
  This package holds a cache for user and group membership (including nested
