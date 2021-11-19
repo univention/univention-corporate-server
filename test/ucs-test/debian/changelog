@@ -48,7 +48,7 @@ ucs-test (10.0.6-66) unstable; urgency=medium
 
 ucs-test (10.0.6-65) unstable; urgency=medium
 
-  * Bug #53343: New test 59_udm/15_test_univention_base_files_scripts.py
+  * Bug #53343: New test 01_base/16_test_univention_base_files_scripts.py
 
  -- Esteban Martinena <martinena@univention.de>  Tue, 02 Nov 2021 14:53:32 +0100
 
