@@ -88,7 +88,7 @@ Warnung: Diese Datei wurde automatisch generiert und kann durch
 assert asciify(WARNING_TEXT) == WARNING_TEXT, "Only ASCII allowed in WARNING_TEXT"
 
 
-def run_filter(template, directory, srcfiles=set(), opts=dict()):
+def run_filter(template, directory, srcfiles=set(), opts={}):
 	# type: (str, _UCR, Iterable[str], _OPT) -> bytes
 	"""
 	Process a template file: substitute variables.
@@ -710,7 +710,7 @@ class ConfigHandlers:
 				if version <= 1:
 					# version <= 1: _handlers[multifile] -> [handlers]
 					# version >= 2: _handlers[multifile] -> set([handlers])
-					self._handlers = dict(((k, set(v)) for k, v in self._handlers.items()))
+					self._handlers = {k: set(v) for k, v in self._handlers.items()}
 					# version <= 1: _files UNUSED
 					pickler.load()
 				self._subfiles = pickler.load()
@@ -937,7 +937,7 @@ class ConfigHandlers:
 
 		:param handlers: List of handlers.
 		"""
-		wanted = dict([(h.to_file, h) for h in handlers if isinstance(h, ConfigHandlerDiverting) and h.need_divert()])
+		wanted = {h.to_file: h for h in handlers if isinstance(h, ConfigHandlerDiverting) and h.need_divert()}
 		to_remove = set()  # type: Set[str]
 		# Scan for diversions done by UCR
 		with open('/var/lib/dpkg/diversions', 'r', encoding='utf-8') as div_file:
@@ -1096,7 +1096,7 @@ class ConfigHandlers:
 		for handler in pending_handlers:
 			handler(arg)
 
-	def commit(self, ucr, filelist=list()):
+	def commit(self, ucr, filelist=[]):
 		# type: (_UCR, Iterable[str]) -> None
 		"""
 		Call handlers to (re-)generate files.

@@ -34,7 +34,7 @@ def test_key_shell_escape_digits(line):
 	assert ucrm.key_shell_escape(line) == "_" + line
 
 
-@pytest.mark.parametrize("line", list(chr(o) for o in range(256) if chr(o) not in ucrm.VALID_CHARS))
+@pytest.mark.parametrize("line", [chr(o) for o in range(256) if chr(o) not in ucrm.VALID_CHARS])
 def test_key_shell_escape_replace(line):
 	assert ucrm.key_shell_escape(line) == "_"
 

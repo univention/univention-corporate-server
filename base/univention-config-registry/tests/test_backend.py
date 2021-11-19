@@ -195,7 +195,7 @@ class TestConfigRegistry(object):
 
 	def test_dict(self, ucrf):
 		"""Test merged items."""
-		assert dict(ucrf) == dict([('foo', 'LDAP'), ('bar', 'LDAP'), ('baz', 'NORMAL')])
+		assert dict(ucrf) == {'foo': 'LDAP', 'bar': 'LDAP', 'baz': 'NORMAL'}
 
 	def test_items(self, ucrf):
 		"""Test merged items."""

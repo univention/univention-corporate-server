@@ -128,7 +128,7 @@ def replog(ucr, var, old_value, value=None):
 			exception_occured()
 
 
-def handler_set(args, opts=dict(), quiet=False):
+def handler_set(args, opts={}, quiet=False):
 	# type: (List[str], Dict[str, Any], bool) -> None
 	"""
 	Set config registry variables in args.
@@ -178,7 +178,7 @@ def handler_set(args, opts=dict(), quiet=False):
 	_run_changed(ucr, changed, "" if quiet else 'W: %s is overridden by scope "%s"')
 
 
-def handler_unset(args, opts=dict()):
+def handler_unset(args, opts={}):
 	# type: (List[str], Dict[str, Any]) -> None
 	"""
 	Unset config registry variables in args.
@@ -264,7 +264,7 @@ def _ucr_from_opts(opts):
 	return ucr
 
 
-def handler_dump(args, opts=dict()):
+def handler_dump(args, opts={}):
 	# type: (List[str], Dict[str, Any]) -> Iterator[str]
 	"""
 	Dump all variables.
@@ -278,7 +278,7 @@ def handler_dump(args, opts=dict()):
 		yield line
 
 
-def handler_update(args, opts=dict()):
+def handler_update(args, opts={}):
 	# type: (List[str], Dict[str, Any]) -> None
 	"""
 	Update handlers.
@@ -294,7 +294,7 @@ def handler_update(args, opts=dict()):
 	_register_variable_default_values(ucr)
 
 
-def handler_commit(args, opts=dict()):
+def handler_commit(args, opts={}):
 	# type: (List[str], Dict[str, Any]) -> None
 	"""
 	Commit all registered templated files.
@@ -310,7 +310,7 @@ def handler_commit(args, opts=dict()):
 	handlers.commit(ucr, args)
 
 
-def handler_register(args, opts=dict()):
+def handler_register(args, opts={}):
 	# type: (List[str], Dict[str, Any]) -> None
 	"""
 	Register new `.info` file.
@@ -333,7 +333,7 @@ def handler_register(args, opts=dict()):
 	# handlers.commit((ucr, {}))
 
 
-def handler_unregister(args, opts=dict()):
+def handler_unregister(args, opts={}):
 	# type: (List[str], Dict[str, Any]) -> None
 	"""
 	Unregister old `.info` file.
@@ -351,7 +351,7 @@ def handler_unregister(args, opts=dict()):
 	_register_variable_default_values(ucr)
 
 
-def handler_filter(args, opts=dict()):
+def handler_filter(args, opts={}):
 	# type: (List[str], Dict[str, Any]) -> None
 	"""Run filter on STDIN to STDOUT."""
 	ucr = ConfigRegistry()
@@ -360,7 +360,7 @@ def handler_filter(args, opts=dict()):
 	stdout.write(run_filter(sys.stdin.read(), ucr, opts=opts))
 
 
-def handler_search(args, opts=dict()):
+def handler_search(args, opts={}):
 	# type: (List[str], Dict[str, Any]) -> Iterator[str]
 	"""
 	Search for registry variable.
@@ -434,7 +434,7 @@ def handler_search(args, opts=dict()):
 			yield variable_info_string(pattern, None, vinfo, details=details)
 
 
-def handler_get(args, opts=dict()):
+def handler_get(args, opts={}):
 	# type: (List[str], Dict[str, Any]) -> Iterator[str]
 	"""
 	Return config registry variable.
@@ -507,7 +507,7 @@ def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DE
 	return '\n'.join(info)
 
 
-def handler_info(args, opts=dict()):
+def handler_info(args, opts={}):
 	# type: (List[str], Dict[str, Any]) -> Iterator[str]
 	"""
 	Print variable info.
@@ -529,7 +529,7 @@ def handler_info(args, opts=dict()):
 			print(ex, file=sys.stderr)
 
 
-def handler_version(args, opts=dict()):
+def handler_version(args, opts={}):
 	# type: (List[str], Dict[str, Any]) -> NoReturn
 	"""
 	Print version info.
@@ -541,7 +541,7 @@ def handler_version(args, opts=dict()):
 	sys.exit(0)
 
 
-def handler_help(args, opts=dict(), out=sys.stdout):
+def handler_help(args, opts={}, out=sys.stdout):
 	# type: (List[str], Dict[str, Any], IO) -> None
 	"""
 	Print config registry command line usage.
@@ -653,7 +653,7 @@ def _register_variable_default_values(ucr):
 		if key not in default_variables:
 			defaults[key] = None
 
-	changed = dict((key, (old, new)) for key, (old, new) in _ucr.update(defaults).items() if old != new)
+	changed = {key: (old, new) for key, (old, new) in _ucr.update(defaults).items() if old != new}
 	_ucr.save()
 	ucr.load()
 	_run_changed(ucr, changed, 'I: %s will be set in scope "%s"')
@@ -810,7 +810,7 @@ def main(args):
 						sys.exit(1)
 
 		# Drop type
-		cmd_opts = dict(((key, value) for key, (typ, value) in cmd_opts.items()))
+		cmd_opts = {key: value for key, (typ, value) in cmd_opts.items()}
 
 		# action!
 		try:

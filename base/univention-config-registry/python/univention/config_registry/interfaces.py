@@ -49,11 +49,11 @@ except ImportError:  # pragma: no cover
 
 __all__ = ['RE_IFACE', 'forgiving', 'cmp_alnum', 'Interfaces']
 
-_SKIP = set((
+_SKIP = {
 	'interfaces/handler',
 	'interfaces/primary',
 	'interfaces/restart/auto',
-))
+}
 RE_IFACE = re.compile(r'''^
 		(?!(?:%s)$) # _SKIP
 		interfaces/ # prefix
