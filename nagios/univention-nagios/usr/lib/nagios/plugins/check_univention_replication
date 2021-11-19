@@ -152,11 +152,14 @@ class ReplicationCheck:
 		try:
 			notifier_id = get_notifier_id()
 		except NotifierCommunicationError as exc:
-			self.exit_with_status('CRITICAL', 'Error getting notifier ID: {!s}.'.format(exc), 0, 0)
+			self.exit_with_status('CRITICAL', 'Error getting remote notifier ID: {!s}.'.format(exc), 0, 0)
 
-		with open(LISTENERID_PATH, "r") as fp:
-			listener_id_s = fp.read().strip()
-		listener_id = int(listener_id_s)
+		try:
+			with open(LISTENERID_PATH, "r") as fp:
+				listener_id_s = fp.read().strip()
+			listener_id = int(listener_id_s)
+		except EnvironmentError as exc:
+			self.exit_with_status('CRITICAL', 'Error getting local notifier ID from file {!r}: {!s}.'.format(exc, LISTENERID_PATH), notifier_id, 0)
 
 		# DEBUG CODE
 		if len(pargs) == 2:
