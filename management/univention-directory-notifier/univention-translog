@@ -1235,10 +1235,10 @@ def prune_file(opt):
         log.info('Purging/keeping %d..%d..%d', translog.first, opt.trans, translog.last)
         if opt.trans <= translog.first:
             log.info('Already purged, nothing to do.')
-            raise Abort()
+            return
         if opt.trans >= translog.last:
             log.info('Nothing to purge.')
-            raise Abort()
+            return
         assert translog.first < opt.trans < translog.last
 
         with rewrite(opt.translog_file) as tmp, open(tmp, 'w') as new:
