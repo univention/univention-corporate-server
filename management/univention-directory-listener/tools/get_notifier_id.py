@@ -35,8 +35,9 @@
 from __future__ import print_function
 
 import argparse
-import socket
 import sys
+
+from univention.listener.tools import NotifierCommunicationError, get_notifier_id
 
 
 def parse_args():
@@ -73,18 +74,10 @@ def main():
 	"""Retrieve current Univention Directory Notifier transaction ID."""
 	options = parse_args()
 	try:
-		sock = socket.create_connection((options.master, 6669), 60.0)
-
-		sock.send(b'Version: 3\nCapabilities: \n\n')
-		sock.recv(100)
-
-		sock.send(b'MSGID: 1\n%s\n\n' % (options.cmd.encode('UTF-8'),))
-		notifier_result = sock.recv(100)
-
-		if notifier_result:
-			print("%s" % notifier_result.decode('UTF-8', 'replace').splitlines()[1])
-	except socket.error as ex:
-		print('Error: %s' % (ex,), file=sys.stderr)
+		notifier_id = get_notifier_id(host=options.master, cmd=options.cmd.encode('UTF-8'))
+		print(str(notifier_id))
+	except NotifierCommunicationError as exc:
+		print('Error: {}'.format(exc), file=sys.stderr)
 		sys.exit(1)
 
 

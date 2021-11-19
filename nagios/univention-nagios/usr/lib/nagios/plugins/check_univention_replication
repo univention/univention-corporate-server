@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Nagios
@@ -30,94 +30,98 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import commands
 import getopt
-import sys
-import pickle
 import os
+import pickle
+import sys
+
+from univention.listener.tools import NotifierCommunicationError, get_notifier_id
+
+
+PROGNAME = 'check_univention_replication'
+REVISION = '1.0'
+FAILED_LDIF_FN = '/var/lib/univention-directory-replication/failed.ldif'
+CACHEFN = '/var/lib/univention-nagios/check_univention_replication.cache'
+LISTENERID_PATH = '/var/lib/univention-directory-listener/notifier_id'
+STATE = {
+	'OK': 0,
+	'WARNING': 1,
+	'CRITICAL': 2,
+	'UNKNOWN': 3
+}
 
 
 class ReplicationCheck:
 
 	def __init__(self):
-		self.PROGNAME = 'check_univention_replication'
-		self.REVISION = '1.0'
-		self.FAILED_LDIF_FN = '/var/lib/univention-directory-replication/failed.ldif'
-		self.CACHEFN = '/var/lib/univention-nagios/check_univention_replication.cache'
-		self.PROG_GETNOTIFIERID = '/usr/share/univention-directory-listener/get_notifier_id.py'
-		self.PROG_GETLISTENERID = 'cat /var/lib/univention-directory-listener/notifier_id'
 		self.diff_warning = 0
 		self.diff_critical = 0
 		self.history_size = 0
 		self.verbose = 0
-
-		self.STATE = {
-			'OK': 0,
-			'WARNING': 1,
-			'CRITICAL': 2,
-			'UNKNOWN': 3
-		}
 		self.history = []
 
-	def print_revision(self):
-		print '%s: version %s' % (self.PROGNAME, self.REVISION)
+	@staticmethod
+	def print_revision():
+		print('%s: version %s' % (PROGNAME, REVISION))
 
-	def print_usage(self):
-		print 'Usage: %s [-v] [-w <cnt>] [-c <cnt>] [-n <cnt>]' % self.PROGNAME
-		print 'Usage: %s --help' % self.PROGNAME
-		print 'Usage: %s --version' % self.PROGNAME
+	@staticmethod
+	def print_usage():
+		print('Usage: %s [-v] [-w <cnt>] [-c <cnt>] [-n <cnt>]' % PROGNAME)
+		print('Usage: %s --help' % PROGNAME)
+		print('Usage: %s --version' % PROGNAME)
 
-	def print_help(self):
-		self.print_revision()
-		print ''
-		self.print_usage()
-		print ''
-		print ' -v        verbose debug output'
-		print ' -w <cnt>  WARNING if difference of transaction IDs is >= <cnt>'
-		print ' -c <cnt>  CRITICAL if difference of transaction IDs is >= <cnt>'
-		print ' -n <cnt>  CRITICAL if no change of transaction ID over last <cnt> checks'
+	@classmethod
+	def print_help(cls):
+		cls.print_revision()
+		print('')
+		cls.print_usage()
+		print('')
+		print(' -v        verbose debug output')
+		print(' -w <cnt>  WARNING if difference of transaction IDs is >= <cnt>')
+		print(' -c <cnt>  CRITICAL if difference of transaction IDs is >= <cnt>')
+		print(' -n <cnt>  CRITICAL if no change of transaction ID over last <cnt> checks')
 
 	def load_history(self):
-		if os.path.exists(self.CACHEFN) and os.stat(self.CACHEFN)[6] > 0:
+		if os.path.exists(CACHEFN) and os.stat(CACHEFN)[6] > 0:
 			try:
-				f = open(self.CACHEFN, 'r')
-				cnt = pickle.load(f)
-				for i in range(cnt):
-					nid = pickle.load(f)
-					lid = pickle.load(f)
-					self.history.append((nid, lid))
-				f.close()
+				with open(CACHEFN, 'rb') as fp:
+					cnt = pickle.load(fp)
+					for i in range(cnt):
+						nid = pickle.load(fp)
+						lid = pickle.load(fp)
+						self.history.append((nid, lid))
 
 				if self.verbose > 1:
-					print 'History loaded:', self.history
-			except:
+					print('History loaded:', self.history)
+			except Exception as exc:
 				if self.verbose > 1:
-					print 'Loading history failed!'
+					print('Loading history failed: {!s}'.format(exc))
 		else:
 			if self.verbose > 1:
-				print 'History not loaded!'
+				print('History not loaded!')
 
 	def save_history(self):
-		f = open(self.CACHEFN, 'w')
-		pickle.dump(len(self.history), f)
-		for i in range(len(self.history)):
-			pickle.dump(self.history[i][0], f)
-			pickle.dump(self.history[i][1], f)
+		with open(CACHEFN, 'wb') as fp:
+			pickle.dump(len(self.history), fp)
+			for i in range(len(self.history)):
+				pickle.dump(self.history[i][0], fp)
+				pickle.dump(self.history[i][1], fp)
 
 		if self.verbose > 1:
-			print 'History saved:', self.history
+			print('History saved:', self.history)
 
-	def exit_with_status(self, state, msg, nid, lid):
-		print '%s: %s (nid=%s lid=%s)' % (state, msg, nid, lid)
-		sys.exit(self.STATE[state])
+	@staticmethod
+	def exit_with_status(state, msg, nid, lid):
+		print('%s: %s (nid=%s lid=%s)' % (state, msg, nid, lid))
+		sys.exit(STATE[state])
 
 	def main(self):
 		# parse command line
 		try:
-			(opts, pargs) = getopt.getopt(sys.argv[1:], 'c:hn:vw:', ['help', 'version'])
-		except:
+			opts, pargs = getopt.getopt(sys.argv[1:], 'c:hn:vw:', ['help', 'version'])
+		except Exception:
 			self.print_usage()
-			sys.exit(self.STATE['UNKNOWN'])
+			sys.exit(STATE['UNKNOWN'])
 
 		# get command line data
 		for opt in opts:
@@ -127,7 +131,7 @@ class ReplicationCheck:
 					self.diff_critical = 0
 			elif opt[0] == '-h' or opt[0] == '--help':
 				self.print_help()
-				sys.exit(self.STATE['UNKNOWN'])
+				sys.exit(STATE['UNKNOWN'])
 			elif opt[0] == '-n':
 				self.history_size = int(opt[1])
 				if self.history_size < 1:
@@ -140,13 +144,19 @@ class ReplicationCheck:
 					self.diff_warning = 0
 			elif opt[0] == '--version':
 				self.print_revision()
-				sys.exit(self.STATE['UNKNOWN'])
+				sys.exit(STATE['UNKNOWN'])
 
 		self.load_history()
 
 		# get actual transaction id
-		notifier_id = commands.getoutput(self.PROG_GETNOTIFIERID)
-		listener_id = commands.getoutput(self.PROG_GETLISTENERID)
+		try:
+			notifier_id = get_notifier_id()
+		except NotifierCommunicationError as exc:
+			self.exit_with_status('CRITICAL', 'Error getting notifier ID: {!s}.'.format(exc), 0, 0)
+
+		with open(LISTENERID_PATH, "r") as fp:
+			listener_id_s = fp.read().strip()
+		listener_id = int(listener_id_s)
 
 		# DEBUG CODE
 		if len(pargs) == 2:
@@ -161,7 +171,7 @@ class ReplicationCheck:
 		self.save_history()
 
 		# CRITICAL if failed.ldif exists
-		if os.path.exists(self.FAILED_LDIF_FN):
+		if os.path.exists(FAILED_LDIF_FN):
 			self.exit_with_status('CRITICAL', 'failed.ldif exists', notifier_id, listener_id)
 
 		if notifier_id == listener_id:
@@ -191,7 +201,7 @@ class ReplicationCheck:
 						mindiff = diff
 
 			if self.verbose:
-				print 'minimal difference:', mindiff
+				print('minimal difference:', mindiff)
 
 			if self.diff_critical and self.diff_critical <= mindiff:
 				self.exit_with_status('CRITICAL',

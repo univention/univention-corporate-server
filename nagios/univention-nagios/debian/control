@@ -20,7 +20,7 @@ Depends:
  shell-univention-lib,
  univention-base-files,
  univention-config,
- univention-directory-listener,
+ univention-directory-listener (>= 14.0.5-6),
  univention-directory-manager-tools (>> 7.0.147),
  univention-nagios-common (= ${binary:Version}),
  ${misc:Depends},
