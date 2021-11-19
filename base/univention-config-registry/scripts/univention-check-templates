@@ -70,15 +70,14 @@ def main():
 
 def parse_cmdline():
 	# type: () -> Namespace
-	description = sys.modules[__name__].__doc__
-	parser = ArgumentParser(description=description)
+	parser = ArgumentParser(description=__doc__)
 	parser.add_argument(
 		'--md5',
-		action='store_false', default=True,
+		action='store_false',
 		help='Disable checking MD5 sums.')
 	parser.add_argument(
 		'--dpkg',
-		action='store_false', default=True,
+		action='store_false',
 		help='Disable checking for renamed files.')
 	parser.add_argument(
 		'--verbose', '-v',
