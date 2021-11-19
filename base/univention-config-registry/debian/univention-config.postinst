@@ -38,7 +38,8 @@ trigger () {
 		case "$1" in
 		/etc/univention/templates/info)
 			local info pkg state
-			for info in $(find /etc/univention/templates/info -name '*.info' -print)
+			find /etc/univention/templates/info -name '*.info' -print |
+			while read -r info
 			do
 				pkg=$(basename "$info" .info)
 				state=$(dpkg-query -W -f '${Status}' "$pkg") || continue
@@ -69,6 +70,7 @@ configure)
 	;;
 
 triggered)
+	# shellcheck disable=SC2086
 	trigger $2 # no quoting; split on $IFS
 	;;
 esac

@@ -4,7 +4,7 @@ nl=
 pending_nl=
 while ! "$eof"
 do
-	IFS= read line && nl='
+	IFS= read -r line && nl='
 ' || eof=true nl=
 	case "${line}" in
 	[\ \	]*)

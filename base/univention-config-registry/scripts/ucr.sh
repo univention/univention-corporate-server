@@ -1,3 +1,4 @@
+# shellcheck shell=sh
 # Univention Common Shell Library
 #
 # Copyright 2011-2021 Univention GmbH
