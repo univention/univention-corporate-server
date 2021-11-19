@@ -5,11 +5,10 @@
 0016-3: python/univention-config-registry:62
 0016-3: python/univention-config-registry:63
 0016-5: tests/test_handler.py
-# #!python, since they only use default modules
-0009-2: scripts/ldapsearch-wrapper
-0009-2: scripts/ldapsearch-decode64
 # Internal unit tests: no copyright, has_key, #!python
-0009-2:tests/unwrap/unwrap.py
+0009-2:tests/test_ldif.py
+0009-5:tests/test_ldif.py
+0010-2:tests/test_ldif.py
 0009-2:tests/test_info_tools.py
 0009-5:tests/test_info_tools.py
 0010-2:tests/test_info_tools.py
