@@ -21,6 +21,9 @@ from univention.testing import utils as testing_utils
 from univention.testing.umc import Client
 
 
+HOOKSPATH = '/usr/lib/python3/dist-packages/univention/admin/hooks.d/'
+
+
 @pytest.fixture
 def properties():
 	return {
@@ -41,20 +44,16 @@ def hook_name():
 @pytest.fixture
 def cleanup(hook_name):
 	yield
-	os.remove('/usr/lib/python3/dist-packages/univention/admin/hooks.d/%s.py' % hook_name)
-	os.remove('/tmp/%s_executed' % hook_name)
-
-
-@pytest.fixture
-def acc(fn_hook):
-	exit_cmd = ['/bin/rm', '-f', fn_hook]
-	with utils.AutoCallCommand(exit_cmd=exit_cmd) as acc_:
-		yield acc_
+	os.remove('%s%s.py' % (HOOKSPATH, hook_name))
+	try:
+		os.remove('/tmp/%s_executed' % hook_name)
+	except OSError:
+		pass
 
 
 @pytest.fixture
 def fn_hook():
-	return '/usr/lib/python3/dist-packages/univention/admin/hooks.d/{}.py'.format(hook_name)
+	return '%s%s.py' % (HOOKSPATH, hook_name)
 
 
 def flatten(layout):
@@ -586,7 +585,7 @@ class Test_UDMExtension(object):
 	@pytest.mark.exposure('careful')
 	def test_extented_attribute_ldap_addlist_hook(self, udm, hook_name, cleanup):
 		"""settings/extented_attribute LDAP addlist hook"""
-		with open('/usr/lib/python3/dist-packages/univention/admin/hooks.d/%s.py' % hook_name, 'w') as hook_module:
+		with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
 			hook_module.write("""
 import univention.admin
 import univention.admin.modules
@@ -627,7 +626,7 @@ class %s(univention.admin.hook.simpleHook):
 	@pytest.mark.exposure('careful')
 	def test_extented_attribute_ldap_pre_create_hook(self, udm, ucr, hook_name, cleanup):
 		"""settings/extented_attribute LDAP pre create hook"""
-		with open('/usr/lib/python3/dist-packages/univention/admin/hooks.d/%s.py' % hook_name, 'w') as hook_module:
+		with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
 			hook_module.write("""
 import univention.admin
 import univention.admin.modules
@@ -673,7 +672,7 @@ class %s(univention.admin.hook.simpleHook):
 	@pytest.mark.exposure('careful')
 	def test_extented_attribute_open_hook(self, udm, hook_name, cleanup):
 		"""settings/extented_attribute open hook"""
-		with open('/usr/lib/python3/dist-packages/univention/admin/hooks.d/%s.py' % hook_name, 'w') as hook_module:
+		with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
 			hook_module.write("""
 import univention.admin
 import univention.admin.modules
@@ -713,7 +712,7 @@ class %s(univention.admin.hook.simpleHook):
 	@pytest.mark.exposure('careful')
 	def test_extented_attribute_ldap_post_create_hook(self, udm, ucr, hook_name, cleanup):
 		"""settings/extented_attribute LDAP post create hook"""
-		with open('/usr/lib/python3/dist-packages/univention/admin/hooks.d/%s.py' % hook_name, 'w') as hook_module:
+		with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
 			hook_module.write("""
 import univention.admin
 import univention.admin.modules
@@ -759,7 +758,7 @@ class %s(univention.admin.hook.simpleHook):
 	@pytest.mark.exposure('careful')
 	def test_extented_attribute_ldap_post_modify_hook(self, udm, ucr, hook_name, cleanup):
 		"""settings/extented_attribute LDAP post modify hook"""
-		with open('/usr/lib/python3/dist-packages/univention/admin/hooks.d/%s.py' % hook_name, 'w') as hook_module:
+		with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
 			hook_module.write("""
 import univention.admin
 import univention.admin.modules
@@ -806,7 +805,7 @@ class %s(univention.admin.hook.simpleHook):
 	@pytest.mark.exposure('careful')
 	def test_extented_attribute_ldap_modlist_hook(self, udm, hook_name, cleanup):
 		"""settings/extented_attribute LDAP modlist hook"""
-		with open('/usr/lib/python3/dist-packages/univention/admin/hooks.d/%s.py' % hook_name, 'w') as hook_module:
+		with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
 			hook_module.write("""
 import univention.admin
 import univention.admin.modules
@@ -852,7 +851,7 @@ class %s(univention.admin.hook.simpleHook):
 	@pytest.mark.exposure('careful')
 	def test_extented_attribute_ldap_pre_modify_hook(self, udm, ucr, hook_name, cleanup):
 		"""settings/extented_attribute LDAP pre modify hook"""
-		with open('/usr/lib/python3/dist-packages/univention/admin/hooks.d/%s.py' % hook_name, 'w') as hook_module:
+		with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
 			hook_module.write("""
 import univention.admin
 import univention.admin.modules
@@ -899,7 +898,7 @@ class %s(univention.admin.hook.simpleHook):
 	@pytest.mark.exposure('careful')
 	def test_extented_attribute_ldap_pre_remove_hook(self, udm, ucr, hook_name, cleanup):
 		"""settings/extented_attribute LDAP pre remove hook"""
-		with open('/usr/lib/python3/dist-packages/univention/admin/hooks.d/%s.py' % hook_name, 'w') as hook_module:
+		with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
 			hook_module.write("""
 import univention.admin
 import univention.admin.modules
@@ -946,7 +945,7 @@ class %s(univention.admin.hook.simpleHook):
 	@pytest.mark.exposure('careful')
 	def test_extented_attribute_ldap_post_remove_hook(self, udm, ucr, hook_name, cleanup):
 		"""settings/extented_attribute LDAP post remove hook"""
-		with open('/usr/lib/python3/dist-packages/univention/admin/hooks.d/%s.py' % hook_name, 'w') as hook_module:
+		with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
 			hook_module.write("""
 import univention.admin
 import univention.admin.modules
@@ -1089,11 +1088,11 @@ class %s(univention.admin.hook.simpleHook):
 	def test_extended_attribute_hide_field(self, udm):
 		"""settings/extended_attribute with attribute hidden in UMC"""
 		# bugs: [43373]
-		for property in ('username', 'password'):
+		for prop in ('username', 'password'):
 			properties = {
 				'name': uts.random_name(),
 				'shortDescription': uts.random_string(),
-				'CLIName': property,
+				'CLIName': prop,
 				'module': 'users/user',
 				'objectClass': 'person',
 				'ldapMapping': 'uid',
@@ -1103,12 +1102,12 @@ class %s(univention.admin.hook.simpleHook):
 			client = Client.get_test_connection()
 			layout = flatten(client.umc_command('udm/layout', [{"objectType": "users/user", "objectDN": None}], 'users/user').result)
 
-			assert property not in layout, '%s is part of %r' % (property, layout,)
+			assert prop not in layout, '%s is part of %r' % (prop, layout,)
 
 	@pytest.mark.tags('udm', 'apptest')
 	@pytest.mark.roles('domaincontroller_master')
 	@pytest.mark.exposure('careful')
-	def test_extended_attribute_attributehook_value_mapping(self, udm, acc, hook_name, fn_hook):
+	def test_extended_attribute_attributehook_value_mapping(self, udm, cleanup, hook_name, fn_hook):
 		"""settings/extented_attribute LDAP modlist hook"""
 		cli_name = uts.random_string()
 		attr_name = 'univentionFreeAttribute15'
