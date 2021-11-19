@@ -45,12 +45,13 @@ then
 	# Remove /etc/univention/templates/info/univention-config-registry.info only after u-b-files is configured!
 	if [ -e /etc/univention/templates/info/univention-config-registry.info ]
 	then
-		[ -x /usr/sbin/univention-config-registry ] && univention-config-registry register univention-config-registry || true
+		univention-config-registry register univention-config-registry || true
 		mv /etc/univention/templates/info/univention-config-registry.info /etc/univention/templates/removed/ || true
 	fi
 
 	# Remove unneeded diversions for Subfiles
-	for subfile in $(sed -ne 's|^Subfile: |/|p' /etc/univention/templates/info/*.info)
+	sed -ne 's|^Subfile: |/|p' /etc/univention/templates/info/*.info |
+	while read -r subfile
 	do
 		dpkg-divert --local --rename --divert "$subfile.debian" --remove "$subfile" || true
 	done

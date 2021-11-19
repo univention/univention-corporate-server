@@ -31,18 +31,17 @@
 # <https://www.gnu.org/licenses/>.
 
 if [ $# -lt 2 ]
-	then
+then
 	echo
-	echo use jitter \<seconds\> \<command\> \[\<command\-options\>\]
+	echo 'use jitter <seconds> <command> [<command-options>]'
 	echo
-	echo sleeps for random time between 0 and \<seconds\> before exec of \<command\>
-	echo with given \<command\-options\>
+	echo 'sleeps for random time between 0 and <seconds> before exec of <command>'
+	echo 'with given <command-options>'
 	echo
-	exit 0
-	fi
+	exit 2
+fi >&2
 
-(( sec=$RANDOM % $1))
-sleep $sec
+sleep "$(( RANDOM % $1 ))"
 
 shift
 exec "$@"
