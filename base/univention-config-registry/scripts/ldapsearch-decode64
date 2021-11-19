@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
@@ -34,23 +34,34 @@
 
 from __future__ import print_function
 
-import base64
 import re
+from base64 import b64decode
 import sys
 
-regEx = re.compile('^([a-zA-Z0-9-]*):: (.*)')
+RE_B64 = re.compile(r'^([a-zA-Z0-9-]+):: (.*)')
 
-try:
-	line = sys.stdin.readline()
-	while line != '':
-		res = regEx.search(line)
-		if res:
-			try:
-				print('%s: %s' % (res.group(1), base64.decodestring(res.group(2))))
-			except Exception:
-				pass
-		else:
-			print(line, end='')
-		line = sys.stdin.readline()
-except Exception:
-	sys.stdout.flush()
+
+def main():
+	# type: () -> None
+	try:
+		decode()
+	except BrokenPipeError:
+		pass
+
+
+def decode():
+	# type: () -> None
+	for line in sys.stdin:
+		m = RE_B64.search(line)
+		if m:
+			attr, encoded = m.groups()
+			decoded = b64decode(encoded)
+			text = decoded.decode(errors='replace')
+			print("%s: %s" % (attr, text))
+			continue
+
+		print(line, end='')
+
+
+if __name__ == "__main__":
+	main()
