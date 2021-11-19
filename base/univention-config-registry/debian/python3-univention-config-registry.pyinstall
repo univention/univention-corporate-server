@@ -1,4 +1,5 @@
 python/univention/config_registry_info.py	univention
 python/univention/info_tools.py	univention
+python/univention/ldif.py	univention
 python/univention/service_info.py	univention
 python/univention/config_registry/*.py	univention.config_registry

@@ -18,8 +18,8 @@ run () {
 for file in *.in
 do
 	echo "===== $file ====="
-	run "$file" ../../scripts/ldapsearch-wrapper
-	run "$file" ./unwrap.py
+	run "$file" ../../python/univention/ldif.py
+	run "$file" ../../python/univention/ldif.py unwrap
 	run "$file" ./unwrap.sh
 	run "$file" ./unwrap.sed
 	run "$file" ./unwrap.sed2

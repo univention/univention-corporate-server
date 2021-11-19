@@ -1,7 +1,7 @@
 scripts/jitter usr/sbin/
 scripts/univention-ldapsearch usr/bin/
-scripts/ldapsearch-wrapper usr/bin/
-scripts/ldapsearch-decode64 usr/bin/
+usr/bin/ldapsearch-wrapper
+usr/bin/ldapsearch-decode64
 scripts/univention-check-templates usr/sbin/
 scripts/ucr.sh usr/share/univention-lib/
 python/univention-config-registry usr/sbin/
