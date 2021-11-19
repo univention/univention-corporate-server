@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
-"""Decode LDAP base64 encoded "key:: value" pairs read from standard input to standard output."""
 #
 # Copyright 2004-2021 Univention GmbH
 #
@@ -30,10 +29,14 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""Decode LDAP base64 encoded "key:: value" pairs read from standard input to standard output."""
+
 from __future__ import print_function
-import sys
-import re
+
 import base64
+import re
+import sys
 
 regEx = re.compile('^([a-zA-Z0-9-]*):: (.*)')
 

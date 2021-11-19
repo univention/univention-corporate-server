@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 #
 # Univention Configuration Registry
-"""
-List modified and not updated UCR templates.
-"""
 #
 # Copyright 2011-2021 Univention GmbH
 #
@@ -31,7 +28,13 @@ List modified and not updated UCR templates.
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""
+List modified and not updated UCR templates.
+"""
+
 from __future__ import print_function
+
 import os
 import sys
 from argparse import ArgumentParser, Namespace  # noqa F401
