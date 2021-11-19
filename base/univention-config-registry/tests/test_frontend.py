@@ -430,10 +430,10 @@ class TestMain(object):
 	@pytest.fixture
 	def handlers(self, mocker, reset):
 		"""Mock frontend handlers."""
-		h = dict(
-			(key, (mocker.patch("univention.config_registry.frontend.%s" % hdlr.__name__), args))
+		h = {
+			key: (mocker.patch("univention.config_registry.frontend.%s" % hdlr.__name__), args)
 			for (key, (hdlr, args)) in ucrfe.HANDLERS.items()
-		)
+		}
 		mocker.patch.dict(ucrfe.HANDLERS, h)
 		return h
 
