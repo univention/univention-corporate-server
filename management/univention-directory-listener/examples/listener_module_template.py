@@ -25,13 +25,13 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
 
 from __future__ import absolute_import
 from univention.listener import ListenerModuleHandler
 
 
 class ListenerModuleTemplate(ListenerModuleHandler):
+
 	class Configuration(object):
 		name = 'unique_name'
 		description = 'listener module description'

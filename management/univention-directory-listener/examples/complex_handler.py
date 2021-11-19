@@ -25,17 +25,15 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
 
 from __future__ import absolute_import
 from univention.listener import ListenerModuleHandler, ListenerModuleConfiguration
 
 
 class ComplexHandler(ListenerModuleHandler):
-	#
-	# For complex setups make the "Configuration" class a subclass of
-	# ListenerModuleConfiguration and overwrite its methods.
-	#
+
+	# For complex setups make the :py:class:`Configuration` a subclass of
+	# :py:class:`ListenerModuleConfiguration` and overwrite its methods.
 	class Configuration(ListenerModuleConfiguration):
 		name = 'my_listener_module'
 		description = 'a description'
@@ -52,11 +50,9 @@ class ComplexHandler(ListenerModuleHandler):
 			return ucr_setting and query_external_source
 
 	def __init__(self, listener_configuration, *args, **kwargs):
-		#
 		# The log level for messages that go to
-		# /var/log/univention/listener_modules/my_listener_module.log is set
-		# with the UCR variable listener/module/my_listener_module/debug/level
-		#
+		# :file:`/var/log/univention/listener_modules/my_listener_module.log` is set
+		# with the UCR variable `listener/module/my_listener_module/debug/level`.
 		super(ComplexHandler, self).__init__(listener_configuration, *args, **kwargs)
 		self.logger.info('ComplexHandler.__init__()')
 		self.logger.debug('DEBUG level message')
@@ -68,11 +64,9 @@ class ComplexHandler(ListenerModuleHandler):
 		self.logger.info('ComplexHandler.create() dn=%r', dn)
 
 	def modify(self, dn, old, new, old_dn):
-		#
 		# modify() will be called for both moves and modifies.
-		# If old_dn is set, a move happened.
+		# If `old_dn` is set, a move happened.
 		# Both DN an attributes can change during a move.
-		#
 		self.logger.info('ComplexHandler.modify() dn=%r', dn)
 		if old_dn:
 			self.logger.info('ComplexHandler.modify() this is (also) a MOVE, old_dn=%r', old_dn)
@@ -83,13 +77,11 @@ class ComplexHandler(ListenerModuleHandler):
 		)
 
 	def remove(self, dn, old):
-		#
 		# An exception is triggered here to showcase the error_handler feature.
-		#
 		self.logger.info('ComplexHandler.remove() dn=%r', dn)
-		fail = {}['fail']  # noqa: F841 # this will raise an Exception, which will be handled by self.error_handler
-		# The error handler will *not* return here. After all this is an
-		# unhandled exception.
+		raise Exception("fail")
+		# This will raise an :py:exception:`Exception`, which will be handled by :py:method:`error_handler`.
+		# The error handler will *not* return here. After all this is an unhandled exception.
 
 	def initialize(self):
 		super(ComplexHandler, self).initialize()
@@ -108,7 +100,7 @@ class ComplexHandler(ListenerModuleHandler):
 		self.logger.info('ComplexHandler.post_run()')
 
 	def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):
-		# exc_type, exc_value and exc_traceback can be examined for further
+		# `exc_type`, `exc_value` and `exc_traceback` can be examined for further
 		# information about the exception.
 		self.logger.exception(
 			'An error occurred in listener module %r. dn=%r old={%d keys...} new={%d keys...} command=%r',

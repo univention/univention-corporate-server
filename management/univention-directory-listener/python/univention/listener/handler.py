@@ -96,7 +96,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 	def __init__(self, *args, **kwargs):
 		# type: (*str, **str) -> None
 		"""
-		When subclassing, in __init__() first call must be:
+		When subclassing, in :py:method:`__init__()` first call must be:
 
 			super(.., self).__init__(*args, **kwargs)
 
