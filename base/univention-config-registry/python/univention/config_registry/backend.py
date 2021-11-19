@@ -313,12 +313,12 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
 		return len(merge)
 
 	@overload  # type: ignore
-	def get(self, key, default, getscope):  # pragma: no cover
+	def get(self, key, default, getscope):  # noqa F811 # pragma: no cover
 		# type: (str, _VT, Literal[True]) -> Union[Tuple[int, str], _VT]
 		pass
 
-	@overload  # noqa F811
-	def get(self, key, default=None):  # pragma: no cover
+	@overload
+	def get(self, key, default=None):  # noqa F811 # pragma: no cover
 		# type: (str, _VT) -> Union[str, _VT]
 		pass
 
@@ -347,8 +347,8 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
 		# type: () -> Dict[str, str]
 		pass
 
-	@overload  # noqa F811
-	def _merge(self, getscope):  # pragma: no cover
+	@overload
+	def _merge(self, getscope):  # noqa F811 # pragma: no cover
 		# type: (Literal[True]) -> Dict[str, Tuple[int, str]]
 		pass
 
@@ -392,8 +392,8 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
 		# type: () -> ItemsView[str, str]
 		pass
 
-	@overload  # noqa F811
-	def items(self, getscope):  # pragma: no cover
+	@overload
+	def items(self, getscope):  # noqa F811 # pragma: no cover
 		# type: (Literal[True]) -> ItemsView[str, Tuple[int, str]]
 		pass
 

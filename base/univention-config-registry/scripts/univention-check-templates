@@ -34,9 +34,10 @@ List modified and not updated UCR templates.
 from __future__ import print_function
 import os
 import sys
+from argparse import ArgumentParser, Namespace  # noqa F401
 from hashlib import md5
-from argparse import ArgumentParser
 from textwrap import dedent
+from typing import Iterator, Optional, Set, Tuple  # noqa F401
 
 from debian.deb822 import Deb822
 
@@ -46,6 +47,7 @@ K64 = 1 << 16
 
 
 def main():
+	# type: () -> int
 	opt = parse_cmdline()
 	modified = set()
 	if opt.dpkg:
@@ -64,6 +66,7 @@ def main():
 
 
 def parse_cmdline():
+	# type: () -> Namespace
 	description = sys.modules[__name__].__doc__
 	parser = ArgumentParser(description=description)
 	parser.add_argument(
@@ -82,6 +85,7 @@ def parse_cmdline():
 
 
 def check_find(verbose=False):
+	# type: (bool) -> Set[str]
 	modified = set()
 	for dirpath, dirnames, filenames in os.walk(PREFIX):
 		for filename in filenames:
@@ -98,8 +102,9 @@ def check_find(verbose=False):
 
 
 def check_md5(verbose=False):
-	modified = set()
-	original = set()
+	# type: (bool) -> Set[str]
+	modified = set()  # type: Set[str]
+	original = set()  # type: Set[str]
 	try:
 		for filepath, expected in iter_templates():
 			if filepath in original or filepath in modified:
@@ -121,6 +126,7 @@ def check_md5(verbose=False):
 
 
 def iter_templates():
+	# type: () -> Iterator[Tuple[str, str]]
 	with open('/var/lib/dpkg/status', 'r') as dpkg_status:
 		for pkg in Deb822.iter_paragraphs(dpkg_status, ["Conffiles"], use_apt_pkg=True):
 			try:
@@ -138,6 +144,7 @@ def iter_templates():
 
 
 def md5sum(filepath):
+	# type: (str) -> Optional[str]
 	digest = md5()
 	try:
 		with open(filepath, 'rb') as stream:

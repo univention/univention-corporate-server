@@ -35,6 +35,7 @@ import sys
 
 
 def main():
+	# type: () -> None
 	"""Unwrap LDIF."""
 	try:
 		line = sys.stdin.readline()
