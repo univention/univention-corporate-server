@@ -30,9 +30,20 @@
 #
 
 
-from ldap import explode_dn
-
 from univention.ldap_cache.cache import get_cache
+
+
+def explode_dn(dn):
+	"""We know that this is wrong in general. But to speed up things
+	we do not use explode_dn from ldap.
+	We use the knowledge about users/user, groups/group, computers/computer objects:
+	Their uid / cn must not contain a "," or a "=".
+	%timeit dn.split(",", 1)[0].split("=", 1)[1]
+	=> 300ns
+	%timeit ldap.explode_dn(dn, 1)[0]
+	=> 8µs
+	"""
+	return dn.split(",", 1)[0].split("=", 1)[1]
 
 
 def groups_for_user(user_dn, consider_nested_groups=True, cache=None):
@@ -67,7 +78,7 @@ def users_in_group(group_dn, consider_nested_groups=True, readers=(None, None)):
 		uids = member_uid_cache.get(group_dn, member_uid_reader) or []
 		uids = set([uid.lower() for uid in uids])
 		for member in members:
-			rdn = explode_dn(member, 1)[0].lower()
+			rdn = explode_dn(member).lower()
 			if rdn in uids:
 				ret.add(member.lower())
 			elif '%s$' % rdn in uids:

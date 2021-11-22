@@ -37,25 +37,38 @@ from univention.listener.handler import ListenerModuleHandler
 
 class LdapCacheHandler(ListenerModuleHandler):
 	def __init__(self, *args, **kwargs):
+		self._counter = 0
 		super(LdapCacheHandler, self).__init__(*args, **kwargs)
 		cache_logger = getLogger('univention.ldap_cache')
 		cache_logger.setLevel(self.logger.level)
 		for handler in self.logger.handlers:
 			cache_logger.addHandler(handler)
 
+	def _cleanup_cache_if_needed(self):
+		self._counter += 1
+		if self._counter % 1000 == 0:
+			for name, db in get_cache():
+				db.cleanup()
+
 	def create(self, dn, new):
+		self._cleanup_cache_if_needed()
 		for shard in get_cache().get_shards_for_query(self._get_configuration().get_ldap_filter()):
 			shard.add_object((dn, new))
 
 	def modify(self, dn, old, new, old_dn):
+		self._cleanup_cache_if_needed()
 		for shard in get_cache().get_shards_for_query(self._get_configuration().get_ldap_filter()):
-			if old_dn:
-				shard.rm_object((old_dn, old))
+			shard.rm_object((old_dn or dn, old))
 			shard.add_object((dn, new))
 
 	def remove(self, dn, old):
+		self._cleanup_cache_if_needed()
 		for shard in get_cache().get_shards_for_query(self._get_configuration().get_ldap_filter()):
 			shard.rm_object((dn, old))
+
+	def post_run(self):
+		self._counter = -1
+		self._cleanup_cache_if_needed()
 
 	class Configuration(ListenerModuleHandler.Configuration):
 		def get_priority(self):

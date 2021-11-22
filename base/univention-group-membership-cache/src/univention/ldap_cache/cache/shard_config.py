@@ -51,6 +51,7 @@ def shards_from_config():
 				class FromConfig(Shard):
 					db_name = data['db_name']
 					single_value = data['single_value']
+					reverse = data.get('reverse', False)
 					key = data['key']
 					value = data['value'].encode('utf-8')
 					ldap_filter = data['ldap_filter']
@@ -72,11 +73,12 @@ def _writing_config():
 		json.dump(shards, fd, sort_keys=True, indent=4)
 
 
-def add_shard_to_config(db_name, single_value, key, value, ldap_filter):
+def add_shard_to_config(db_name, single_value, reverse, key, value, ldap_filter):
 	with _writing_config() as shards:
 		shard_config = {
 			'db_name': db_name,
-			'single_value': single_value,
+			'single_value': single_value and not reverse,
+			'reverse': reverse,
 			'key': key,
 			'value': value,
 			'ldap_filter': ldap_filter,
@@ -85,12 +87,13 @@ def add_shard_to_config(db_name, single_value, key, value, ldap_filter):
 			shards.append(shard_config)
 
 
-def rm_shard_from_config(db_name, single_value, key, value, ldap_filter):
+def rm_shard_from_config(db_name, single_value, reverse, key, value, ldap_filter):
 	with _writing_config() as shards:
 		try:
 			shards.remove({
 				'db_name': db_name,
-				'single_value': single_value,
+				'single_value': single_value and not reverse,
+				'reverse': reverse,
 				'key': key,
 				'value': value,
 				'ldap_filter': ldap_filter,

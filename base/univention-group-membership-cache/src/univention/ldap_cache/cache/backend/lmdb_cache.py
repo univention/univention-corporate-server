@@ -79,6 +79,9 @@ class LmdbCache(LdapCache):
 		with self.env.begin(write=True) as writer:
 			writer.drop(self.sub_db, delete=False)
 
+	def cleanup(self):
+		pass
+
 	def delete(self, key, writer=None):
 		with self.writing(writer) as writer:
 			writer.delete(key)

@@ -62,7 +62,7 @@ class Caches(object):
 		name = klass.db_name or klass.__name__
 		cache = self.get_sub_cache(name)
 		if cache is None:
-			cache = self._add_sub_cache(name, klass.single_value)
+			cache = self._add_sub_cache(name, klass.single_value, klass.reverse)
 		cache.add_shard(klass)
 
 	def _add_sub_cache(self, name, single_value):
@@ -76,6 +76,7 @@ class Shard(object):
 	key = 'entryUUID'
 	value = None
 	attributes = []
+	reverse = False
 
 	def __init__(self, cache):
 		self._cache = cache
@@ -85,8 +86,9 @@ class Shard(object):
 			key = self.get_key(obj)
 		except ValueError:
 			return
+		values = self.get_values(obj)
 		debug('Removing %s', key)
-		self._cache.delete(key)
+		self._cache.delete(key, values)
 
 	def add_object(self, obj):
 		try:
@@ -98,7 +100,7 @@ class Shard(object):
 		if values:
 			self._cache.save(key, values)
 		else:
-			self._cache.delete(key)
+			self._cache.delete(key, [])
 
 	def _get_from_object(self, obj, attr):
 		if attr == 'dn':
@@ -116,9 +118,10 @@ class Shard(object):
 
 
 class LdapCache(object):
-	def __init__(self, name, single_value):
+	def __init__(self, name, single_value, reverse):
 		self.name = name
 		self.single_value = single_value
+		self.reverse = reverse
 		self.shards = []
 
 	def add_shard(self, shard_class):

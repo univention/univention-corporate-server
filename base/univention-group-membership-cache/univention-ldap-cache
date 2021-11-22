@@ -90,11 +90,17 @@ def _get_queries(caches, cache_names=None):
     return queries
 
 def add_cache(args):
-    add_shard_to_config(args.db_name, args.single_value, args.key, args.value, args.ldap_filter)
+    add_shard_to_config(args.db_name, args.single_value, args.reverse, args.key, args.value, args.ldap_filter)
 
 
 def rm_cache(args):
-    rm_shard_from_config(args.db_name, args.single_value, args.key, args.value, args.ldap_filter)
+    rm_shard_from_config(args.db_name, args.single_value, args.reverse, args.key, args.value, args.ldap_filter)
+
+
+def cleanup(args):
+    caches = get_cache()
+    for name, db in get_cache():
+        db.cleanup()
 
 
 def rebuild(args):
@@ -115,6 +121,7 @@ def rebuild(args):
             if i % 1000 == 0:
                 print('\rProcessing object #', i, end='')
                 sys.stdout.flush()
+                cleanup(args)
             for shard in _caches:
                 shard.add_object(obj)
         if i >= 1000:
@@ -133,7 +140,7 @@ def create_listener_modules(args):
         existing_listeners.discard(fname)
         print('Writing', fname, 'for', query)
         with open(fname, 'w') as fd:
-            fd.write(listener_template.format(repr(listener_name), repr(listener_name), ', '.join([cache.__class__.__name__ for cache in _caches]), repr(query), repr(sorted(attrs))))
+            fd.write(listener_template.format(repr(listener_name), repr(listener_name), ', '.join(sorted(set(cache.db_name for cache in _caches))), repr(query), repr(sorted(attrs))))
     for fname in existing_listeners:
         print('Removing', fname)
         os.unlink(fname)
@@ -151,14 +158,20 @@ def create_listener_modules(args):
 def list_caches(args):
     caches = get_cache()
     for name, cache in caches:
-        if cache.single_value:
-            print(name, '- stores one value per key')
-        else:
-            print(name, '- may store multiple values per key')
+        print(name)
         print(' The following objects store data:')
         for shard in cache.shards:
             print('  ', shard.ldap_filter)
-            print('    ', shard.key, '=>', shard.value)
+            if shard.reverse:
+                key = shard.value
+                value = '[{}]'.format(shard.key)
+            elif shard.single_value:
+                key = shard.key
+                value = '[{}]'.format(shard.value)
+            else:
+                key = shard.key
+                value = shard.value
+            print('    ', key, '=>', value)
 
 
 def query(args):
@@ -204,6 +217,7 @@ def main():
     subparser = subparsers.add_parser('add-cache', description=SUPPRESS)
     subparser.add_argument('db_name')
     subparser.add_argument('--single-value', action='store_true')
+    subparser.add_argument('--reverse', action='store_true')
     subparser.add_argument('key')
     subparser.add_argument('value')
     subparser.add_argument('ldap_filter')
@@ -212,10 +226,14 @@ def main():
     subparser = subparsers.add_parser('rm-cache', description=SUPPRESS)
     subparser.add_argument('db_name')
     subparser.add_argument('--single-value', action='store_true')
+    subparser.add_argument('--reverse', action='store_true')
     subparser.add_argument('key')
     subparser.add_argument('value')
     subparser.add_argument('ldap_filter')
     subparser.set_defaults(func=rm_cache)
+
+    subparser = subparsers.add_parser('cleanup', description='Over the time, the database may become polluted. Shrink all caches to their optimal size if possible.', help='Clean up cache')
+    subparser.set_defaults(func=cleanup)
 
     args = parser.parse_args()
     args.func(args)

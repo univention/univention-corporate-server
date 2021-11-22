@@ -40,10 +40,10 @@ from univention.ldap_cache.log import log, debug
 
 
 class GdbmCaches(Caches):
-	def _add_sub_cache(self, name, single_value):
+	def _add_sub_cache(self, name, single_value, reverse):
 		db_file = os.path.join(self._directory, '%s.db' % name)
 		debug('Using GDBM %s', name)
-		cache = GdbmCache(name, single_value)
+		cache = GdbmCache(name, single_value, reverse)
 		cache.db_file = db_file
 		self._caches[name] = cache
 		return cache
@@ -71,14 +71,23 @@ class GdbmCache(LdapCache):
 
 	def save(self, key, values):
 		with self.writing() as writer:
-			self.delete(key, writer)
-			if not values:
-				return
-			debug('%s - Saving %s %r', self.name, key, values)
-			if self.single_value:
-				writer[key] = values[0]
+			if self.reverse:
+				for value in values:
+					current = self.get(value, writer) or []
+					if key in current:
+						continue
+					debug('%s - Adding %s %r', self.name, value, key)
+					current.append(key)
+					writer[value] = json.dumps(current)
 			else:
-				writer[key] = json.dumps(values)
+				self.delete(key, values, writer)
+				if not values:
+					return
+				debug('%s - Saving %s %r', self.name, key, values)
+				if self.single_value:
+					writer[key] = values[0]
+				else:
+					writer[key] = json.dumps(values)
 
 	def clear(self):
 		log('%s - Clearing whole DB!', self.name)
@@ -86,13 +95,28 @@ class GdbmCache(LdapCache):
 		self._fix_permissions()
 		db.close()
 
-	def delete(self, key, writer=None):
+	def cleanup(self):
+		log('%s - Cleaning up DB', self.name)
+		with self.writing() as db:
+			db.reorganize()
+		self._fix_permissions()
+
+	def delete(self, key, values, writer=None):
 		debug('%s - Delete %s', self.name, key)
 		with self.writing(writer) as writer:
-			try:
-				del writer[key]
-			except KeyError:
-				pass
+			if self.reverse:
+				for value in values:
+					current = self.get(value, writer) or []
+					try:
+						current.remove(key)
+					except ValueError:
+						continue
+					writer[value] = json.dumps(current)
+			else:
+				try:
+					del writer[key]
+				except KeyError:
+					pass
 
 	def __iter__(self):
 		with self.reading() as reader:

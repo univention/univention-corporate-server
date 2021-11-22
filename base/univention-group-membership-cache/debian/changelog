@@ -1,3 +1,9 @@
+univention-group-membership-cache (1.0.0-8) unstable; urgency=medium
+
+  * Bug #54119: Add reverse caches
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 22 Nov 2021 14:59:07 +0100
+
 univention-group-membership-cache (1.0.0-7) unstable; urgency=medium
 
   * Bug #54068: Add listener version dependency
