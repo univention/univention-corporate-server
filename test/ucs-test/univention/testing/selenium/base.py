@@ -77,7 +77,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 	}
 
 	def __init__(self, language='en', host="", suppress_notifications=True):
-		# type: (str, str, bool, bool) -> None
+		# type: (str, str, bool) -> None
 		self._ucr = ucr_test.UCSTestConfigRegistry()
 		self._ucr.load()
 		self.browser = self.BROWSERS[os.environ.get('UCSTEST_SELENIUM_BROWSER', 'firefox')]
@@ -238,7 +238,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		time.sleep(1)
 
 	def do_login(self, username=None, password=None, without_navigation=False, language=None, check_successful_login=True):
-		# type: (Optional[str], Optional[str], bool, Optional[str]) -> None
+		# type: (Optional[str], Optional[str], bool, Optional[str], bool) -> None
 		if username is None:
 			username = self.umcLoginUsername
 		if password is None:

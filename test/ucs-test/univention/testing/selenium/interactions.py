@@ -171,7 +171,7 @@ class Interactions(object):
 		time.sleep(0.5)
 
 	def click_element(self, xpath, scroll_into_view=False, timeout=60, right_click=False):
-		# type: (str, bool, int) -> None
+		# type: (str, bool, float, bool) -> None
 		"""
 		Click on the element which is found by the given xpath.
 
@@ -225,7 +225,8 @@ class Interactions(object):
 		else:
 			raise ValueError('value of input {!r} does not contain previously entered value ({!r} != {!r})'.format(inputname, inputvalue, elem.get_property('value')))
 
-	def enter_input_combobox(self, inputname, inputvalue, with_click=True):  # type: (str, str) -> None
+	def enter_input_combobox(self, inputname, inputvalue, with_click=True):
+		# type: (str, str, bool) -> None
 		xpath = "//*[@role='combobox' and .//input[@name='{}']]//input[@role='textbox']".format(inputname)
 		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
 			self.get_all_enabled_elements
