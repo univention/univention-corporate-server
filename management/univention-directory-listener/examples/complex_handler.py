@@ -27,6 +27,10 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+
+from types import TracebackType
+from typing import Any, List, Mapping, Optional, Sequence, Type
+
 from univention.listener import ListenerModuleHandler, ListenerModuleConfiguration
 
 
@@ -39,17 +43,17 @@ class ComplexHandler(ListenerModuleHandler):
 		description = 'a description'
 		ldap_filter = '(objectClass=inetOrgPerson)'
 
-		def get_attributes(self):
+		def get_attributes(self) -> List[str]:
 			# do more complicated stuff than just setting the class variable...
 			return ['cn']
 
-		def get_active(self):
+		def get_active(self) -> bool:
 			ucr_setting = super(ComplexHandler.Configuration, self).get_active()
 			# check something in a database or network service
 			query_external_source = True
 			return ucr_setting and query_external_source
 
-	def __init__(self, listener_configuration, *args, **kwargs):
+	def __init__(self, listener_configuration: ListenerModuleConfiguration, *args: Any, **kwargs: Any) -> None:
 		# The log level for messages that go to
 		# :file:`/var/log/univention/listener_modules/my_listener_module.log` is set
 		# with the UCR variable `listener/module/my_listener_module/debug/level`.
@@ -60,10 +64,10 @@ class ComplexHandler(ListenerModuleHandler):
 		self.logger.warn('WARN level message')
 		self.logger.error('ERROR level message')
 
-	def create(self, dn, new):
+	def create(self, dn: str, new: Mapping[str, Sequence[bytes]]) -> None:
 		self.logger.info('ComplexHandler.create() dn=%r', dn)
 
-	def modify(self, dn, old, new, old_dn):
+	def modify(self, dn: str, old: Mapping[str, Sequence[bytes]], new: Mapping[str, Sequence[bytes]], old_dn: Optional[str]) -> None:
 		# modify() will be called for both moves and modifies.
 		# If `old_dn` is set, a move happened.
 		# Both DN an attributes can change during a move.
@@ -76,30 +80,39 @@ class ComplexHandler(ListenerModuleHandler):
 			self.diff(old, new, ignore_metadata=False)
 		)
 
-	def remove(self, dn, old):
+	def remove(self, dn: str, old: Mapping[str, Sequence[bytes]]) -> None:
 		# An exception is triggered here to showcase the error_handler feature.
 		self.logger.info('ComplexHandler.remove() dn=%r', dn)
 		raise Exception("fail")
 		# This will raise an :py:exception:`Exception`, which will be handled by :py:method:`error_handler`.
 		# The error handler will *not* return here. After all this is an unhandled exception.
 
-	def initialize(self):
+	def initialize(self) -> None:
 		super(ComplexHandler, self).initialize()
 		self.logger.info('ComplexHandler.initialize()')
 
-	def clean(self):
+	def clean(self) -> None:
 		super(ComplexHandler, self).clean()
 		self.logger.info('ComplexHandler.clean()')
 
-	def pre_run(self):
+	def pre_run(self) -> None:
 		super(ComplexHandler, self).pre_run()
 		self.logger.info('ComplexHandler.pre_run()')
 
-	def post_run(self):
+	def post_run(self) -> None:
 		super(ComplexHandler, self).post_run()
 		self.logger.info('ComplexHandler.post_run()')
 
-	def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):
+	def error_handler(
+		self,
+		dn: str,
+		old: Mapping[str, Sequence[bytes]],
+		new: Mapping[str, Sequence[bytes]],
+		command: str,
+		exc_type: Optional[Type[BaseException]],
+		exc_value: Optional[BaseException],
+		exc_traceback: Optional[TracebackType],
+	) -> None:
 		# `exc_type`, `exc_value` and `exc_traceback` can be examined for further
 		# information about the exception.
 		self.logger.exception(
