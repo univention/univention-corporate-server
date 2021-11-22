@@ -169,7 +169,7 @@ def random_date():  # type: () -> str
 	return '20%02d-%02d-%02d' % (randint(0, 99), randint(1, 12), randint(1, 27))
 
 
-def random_time(range_hour=(0, 23)):  # type: (Optional[Tuple[int]]) -> str
+def random_time(range_hour=(0, 23)):  # type: (Tuple[int, int]) -> str
 	return '%02d:%02d:%02d' % (randint(*range_hour), randint(0, 60), randint(0, 60))
 
 

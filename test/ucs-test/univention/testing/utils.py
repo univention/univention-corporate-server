@@ -41,7 +41,7 @@ import time
 import traceback
 from enum import IntEnum
 from types import TracebackType  # noqa F401
-from typing import IO, Any, Callable, Dict, Iterable, List, NoReturn, Optional, Sequence, Text, Tuple, Type, Union  # noqa F401
+from typing import IO, Any, Callable, Dict, Iterable, List, NoReturn, Optional, Sequence, Text, Tuple, Type, TypeVar, Union  # noqa F401
 
 import ldap
 import six
@@ -59,6 +59,9 @@ FIREWALL_INIT_SCRIPT = '/etc/init.d/univention-firewall'
 SLAPD_INIT_SCRIPT = '/etc/init.d/slapd'
 
 UCR = ConfigRegistry()
+
+
+_T = TypeVar("_T")
 
 
 class LDAPError(Exception):
@@ -119,7 +122,7 @@ class UCSTestDomainAdminCredentials(object):
 
 
 def get_ldap_connection(admin_uldap=False, primary=False):
-	# type: (Optional[bool], Optional[bool]) -> access
+	# type: (bool, bool) -> access
 	ucr = UCR
 	ucr.load()
 
@@ -148,7 +151,7 @@ def get_ldap_connection(admin_uldap=False, primary=False):
 
 
 def retry_on_error(func, exceptions=(Exception,), retry_count=20, delay=10):
-	# type: (Callable[[...], ...], Tuple[Type[Exception], ...], int, Union[float, int]) -> Any
+	# type: (Callable[..., _T], Tuple[Type[Exception], ...], int, float) -> _T
 	"""
 	This function calls the given function `func`.
 	If one of the specified `exceptions` is caught, `func` is called again until
@@ -178,12 +181,12 @@ def retry_on_error(func, exceptions=(Exception,), retry_count=20, delay=10):
 def verify_ldap_object(
 	baseDn,  # type: str
 	expected_attr=None,  # type: Optional[Dict[str, str]]
-	strict=True,  # type: Optional[bool]
-	should_exist=True,  # type: Optional[bool]
-	retry_count=20,  # type: Optional[int]
-	delay=10,  # type: Optional[float]
-	primary=False,  # type: Optional[bool]
-	pre_check=None,  # type: Optional[Callable[[...], ...]]
+	strict=True,  # type: bool
+	should_exist=True,  # type: bool
+	retry_count=20,  # type: int
+	delay=10,  # type: float
+	primary=False,  # type: bool
+	pre_check=None,  # type: Optional[Callable[..., None]]
 	pre_check_kwargs=None,  # type: Optional[Dict[str, Any]]
 ):  # type: (...) -> None
 	"""
@@ -226,7 +229,7 @@ def verify_ldap_object(
 
 
 def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True, primary=False):
-	# type: (str, Optional[Dict[str, str]], Optional[bool], Optional[bool], Optional[bool]) -> None
+	# type: (str, Optional[Dict[str, str]], bool, bool, bool) -> None
 	if expected_attr is None:
 		expected_attr = {}
 	try:
@@ -392,7 +395,7 @@ class AutoCallCommand(object):
 	"""  # noqa: E101
 
 	def __init__(self, enter_cmd=None, exit_cmd=None, stdout=None, stderr=None):
-		# type: (Optional[Sequence[str]], Optional[Sequence[str]], IO[str], IO[str]) -> None
+		# type: (Optional[Sequence[str]], Optional[Sequence[str]], Optional[IO[str]], Optional[IO[str]]) -> None
 		self.enter_cmd = None
 		if type(enter_cmd) in (list, tuple):
 			self.enter_cmd = enter_cmd
@@ -525,6 +528,7 @@ def wait_for(conditions=None, verbose=True):
 
 
 def wait_for_drs_replication(*args, **kwargs):
+	# type: (*Any, **Any) -> None
 	from univention.testing.ucs_samba import wait_for_drs_replication
 	return wait_for_drs_replication(*args, **kwargs)
 
@@ -651,7 +655,7 @@ def is_udp_port_open(port, ip=None):
 
 
 def is_port_open(port, hosts=None, timeout=60):
-	# type: (int, Optional[Iterable[str]], int) -> bool
+	# type: (int, Optional[Iterable[str]], float) -> bool
 	'''
 	check if port is open, if host == None check
 	hostname and 127.0.0.1
