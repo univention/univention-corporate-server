@@ -3,15 +3,18 @@
 ## exposure: dangerous
 ## packages: [univention-management-console-server]
 
-import pytest
 import json
 import socket
 import subprocess
 
+import pytest
+
+from univention.lib.umc import ConnectionError, ServiceUnavailable
+
 
 class Test_ServerDown_Messages(object):
 
-	def test_umc_webserver_down(self, Client, ServiceUnavailable):
+	def test_umc_webserver_down(self, Client):
 		try:
 			subprocess.call(['service', 'univention-management-console-web-server', 'stop'])
 			with pytest.raises(ServiceUnavailable) as exc:
@@ -21,7 +24,7 @@ class Test_ServerDown_Messages(object):
 		finally:
 			subprocess.call(['service', 'univention-management-console-web-server', 'start'])
 
-	def test_umc_server_down(self, Client, ServiceUnavailable):
+	def test_umc_server_down(self, Client):
 		try:
 			subprocess.call(['service', 'univention-management-console-server', 'stop'])
 			with pytest.raises(ServiceUnavailable) as exc:
@@ -38,7 +41,7 @@ class Test_ServerDown_Messages(object):
 		finally:
 			subprocess.call(['service', 'univention-management-console-server', 'start'])
 
-	def test_apache_down(self, Client, ConnectionError):
+	def test_apache_down(self, Client):
 		try:
 			subprocess.call(['service', 'apache2', 'stop'])
 			with pytest.raises(ConnectionError) as exc:
