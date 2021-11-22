@@ -8,6 +8,7 @@
 from __future__ import print_function
 
 import contextlib
+from typing import Dict, List  # noqa F401
 
 import pytest
 
@@ -39,7 +40,7 @@ reasons = {
 	REASON_PALINDROME: [],
 	REASON_DICTIONARY: ['chocolate'],
 	REASON_DIFFERENT_WORDS: ['ooooooooo'],
-}
+}  # type: Dict[str, List[str]]
 if samba4_installed:
 	reasons = {
 		REASON_TOO_SHORT: [],
@@ -66,11 +67,11 @@ def enabled_password_quality_checks(ucr):
 	lo.modify(dn, [('univentionPWQualityCheck', new, old)])
 
 
-@pytest.mark.parametrize('new_password,reason', [[y, reason] for reason, x in reasons.iteritems() for y in x])
+@pytest.mark.parametrize('new_password,reason', [[y, reason] for reason, x in reasons.items() for y in x])
 def test_password_changing_failure_reason(new_password, reason, udm, Client, random_string, ucr):
 	print('test_password_changing_failure_reason(%r, %r)' % (new_password, reason))
 	with enabled_password_quality_checks(ucr):
-		_test_password_changing_failure_reason(new_password, reason, udm, Client, random_string, Unauthorized)
+		_test_password_changing_failure_reason(new_password, reason, udm, Client, random_string)
 
 
 def _test_password_changing_failure_reason(new_password, reason, udm, Client, random_string):
