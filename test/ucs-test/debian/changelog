@@ -1,3 +1,9 @@
+ucs-test (10.0.6-74) unstable; urgency=medium
+
+  * Bug #40709: 60_umc.105_change_expired_password_fail_reason
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 25 Nov 2021 08:50:46 +0100
+
 ucs-test (10.0.6-73) unstable; urgency=medium
 
   * Bug #53438: Added new test for samba4 backup 
