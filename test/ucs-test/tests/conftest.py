@@ -139,26 +139,6 @@ def verify_udm_object():
 
 
 @pytest.fixture(scope='session')
-def ServiceUnavailable():
-	return univention.lib.umc.ServiceUnavailable
-
-
-@pytest.fixture(scope='session')
-def ConnectionError():
-	return univention.lib.umc.ConnectionError
-
-
-@pytest.fixture(scope='session')
-def Unauthorized():
-	return univention.lib.umc.Unauthorized
-
-
-@pytest.fixture(scope='session')
-def HTTPError():
-	return univention.lib.umc.HTTPError
-
-
-@pytest.fixture(scope='session')
 def random_string():
 	# type: () -> Callable[..., str]
 	"""

@@ -3,11 +3,14 @@
 ## exposure: dangerous
 ## packages: [univention-management-console-server]
 
-import pytest
 import copy
 from collections import defaultdict
-from univention.testing import utils, network
 from six.moves.http_client import HTTPConnection
+
+import pytest
+
+from univention.lib.umc import Unauthorized
+from univention.testing import utils, network
 
 
 class TestSecurityHeaders(object):
@@ -47,7 +50,7 @@ class TestSecurityHeaders(object):
 			assert expected in response.get_header("Content-Security-Policy")
 
 	@pytest.mark.xfail(reason='Bug #52940')
-	def test_ip_bound_to_session(self, Client, Unauthorized, ucr, restart_umc_server):
+	def test_ip_bound_to_session(self, Client, ucr, restart_umc_server):
 		client = Client('%s.%s' % (ucr.get('hostname'), ucr.get('domainname')))
 		client.ConnectionType = HTTPConnection  # workaround TLS hostname mismatch
 

@@ -7,10 +7,13 @@
 
 from __future__ import print_function
 
-import pytest
 import contextlib
-from univention.config_registry import ConfigRegistry
+
+import pytest
+
 from univention.admin.uldap import getAdminConnection
+from univention.config_registry import ConfigRegistry
+from univention.lib.umc import Unauthorized
 from univention.testing import utils
 
 samba4_installed = utils.package_installed('univention-samba4')
@@ -64,13 +67,13 @@ def enabled_password_quality_checks(ucr):
 
 
 @pytest.mark.parametrize('new_password,reason', [[y, reason] for reason, x in reasons.iteritems() for y in x])
-def test_password_changing_failure_reason(new_password, reason, udm, Client, random_string, Unauthorized, ucr):
+def test_password_changing_failure_reason(new_password, reason, udm, Client, random_string, ucr):
 	print('test_password_changing_failure_reason(%r, %r)' % (new_password, reason))
 	with enabled_password_quality_checks(ucr):
 		_test_password_changing_failure_reason(new_password, reason, udm, Client, random_string, Unauthorized)
 
 
-def _test_password_changing_failure_reason(new_password, reason, udm, Client, random_string, Unauthorized):
+def _test_password_changing_failure_reason(new_password, reason, udm, Client, random_string):
 	password = random_string()
 	userdn, username = udm.create_user(password=password, pwdChangeNextLogin=1)
 	client = Client(language='en-US')
