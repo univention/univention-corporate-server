@@ -289,7 +289,20 @@ To enforce this `ucs-test` by default refrains from running tests with an [#expo
 # Appendix
 
 ## Using pytest
-TBD…
+Since UCS 4.4-8 tests can directly use [pytest](http://pytest.org/).
+1. The file implementing the test must be executable and its name must have the suffix `.py`.
+2. The hash-bang-line should be `#!/usr/share/ucs-test/runner [/usr/bin/]py[.]test[-3]` followed by additional options for `pytest`.
+
+The following [markers](univention/testing/conftest.py) are supported:
+* use `@pytest.mark.tags('apptest')` to add single tags for tests
+* use `@pytest.mark.exposure('dangerous')` to mark single tests as safe/careful/dangerous
+* use `@pytest.mark.roles('domaincontroller_master','domaincontroller_backup')` and/or `@pytest.mark.roles_not('memberserver')` to exclude certain roles for some tests
+
+Several [fixtures](tests/conftest.py) are available:
+* `ucr` for a `function` and `ucs_session` for a `session` scoped instance UCR instance.
+* `server_role`, `ldap_base`, `ldap_master` to query those values from UCR.
+* `udm`, `selenium`, `lo` to get instances for testing UDM, UMC via Selenium, LDAP connection.
+* …
 
 ## Using selenium
 TBD…
