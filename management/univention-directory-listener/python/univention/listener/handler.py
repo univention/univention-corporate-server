@@ -33,7 +33,7 @@ import os
 import types  # noqa F401
 from contextlib import contextmanager
 from six import reraise, with_metaclass
-from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Optional, Tuple, Union, Type  # noqa F401
+from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Mapping, Optional, Sequence, Tuple, Type, Union  # noqa F401
 
 import listener
 from univention.admin.uldap import access, position
@@ -122,7 +122,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 		return '{}({})'.format(self.__class__.__name__, self.config.name)
 
 	def create(self, dn, new):
-		# type: (str, Dict[str, List[bytes]]) -> None
+		# type: (str, Mapping[str, Sequence[bytes]]) -> None
 		"""
 		Called when a new object was created.
 
@@ -132,7 +132,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 		pass
 
 	def modify(self, dn, old, new, old_dn):
-		# type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], Optional[str]) -> None
+		# type: (str, Mapping[str, Sequence[bytes]], Mapping[str, Sequence[bytes]], Optional[str]) -> None
 		"""
 		Called when an existing object was modified or moved.
 
@@ -148,7 +148,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 		pass
 
 	def remove(self, dn, old):
-		# type: (str, Dict[str, List[bytes]]) -> None
+		# type: (str, Mapping[str, Sequence[bytes]]) -> None
 		"""
 		Called when an object was deleted.
 
@@ -219,7 +219,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 
 	@classmethod
 	def diff(cls, old, new, keys=None, ignore_metadata=True):
-		# type: (Dict[str, List[bytes]], Dict[str, List[bytes]], Optional[Iterable[str]], bool) -> Dict[str, Tuple[Optional[List[bytes]], Optional[List[bytes]]]]
+		# type: (Mapping[str, Sequence[bytes]], Mapping[str, Sequence[bytes]], Optional[Iterable[str]], bool) -> Dict[str, Tuple[Optional[Sequence[bytes]], Optional[Sequence[bytes]]]]
 		"""
 		Find differences in old and new. Returns dict with keys pointing to old
 		and new values.
@@ -244,7 +244,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 		return res
 
 	def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):
-		# type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], str, Optional[Type[BaseException]], Optional[BaseException], Optional[types.TracebackType]) -> None  # NoReturn
+		# type: (str, Mapping[str, Sequence[bytes]], Mapping[str, Sequence[bytes]], str, Optional[Type[BaseException]], Optional[BaseException], Optional[types.TracebackType]) -> None  # NoReturn
 		"""
 		Will be called for unhandled exceptions in create/modify/remove.
 

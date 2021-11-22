@@ -29,7 +29,7 @@
 from __future__ import absolute_import
 
 import sys
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple  # noqa F401
+from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Optional, Sequence, Tuple  # noqa F401
 
 if TYPE_CHECKING:
 	from .handler_configuration import ListenerModuleConfiguration  # noqa F401
@@ -53,7 +53,7 @@ class ListenerModuleAdapter(object):
 		self.config = module_configuration
 		self._ldap_cred = {}  # type: Dict[str, str]
 		self._module_handler_obj = None  # type: Optional[ListenerModuleHandler]
-		self._saved_old = {}  # type: Dict[str, List[bytes]]
+		self._saved_old = {}  # type: Mapping[str, Sequence[bytes]]
 		self._saved_old_dn = None  # type: Optional[str]
 		self._rename = False
 		self._renamed = False
@@ -130,7 +130,7 @@ class ListenerModuleAdapter(object):
 		return self._module_handler_obj
 
 	def _handler(self, dn, new, old, command):
-		# type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], str) -> None
+		# type: (str, Mapping[str, Sequence[bytes]], Mapping[str, Sequence[bytes]], str) -> None
 		"""
 		Function called by listener when a LDAP object matching the filter is
 		created/modified/moved/deleted.

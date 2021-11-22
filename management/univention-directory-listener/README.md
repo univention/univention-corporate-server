@@ -44,19 +44,6 @@ class ListenerModuleTemplate(ListenerModuleHandler):
 		self.logger.debug('dn: %r', dn)
 ```
 
-## Static type checking new API code
-
-UCS 4.2 systems provide type information for static type checking using [mypy](http://mypy-lang.org/):
-
-```bash
-univention-install virtualenv libpython2.7-dev libpython3.4-dev
-virtualenv -p python3 --system-site-packages virtenv3_mypy
-. virtenv3_mypy/bin/activate
-(virtenv3_mypy) pip install -U mypy
-(virtenv3_mypy) mypy --py2 --ignore-missing-imports --follow-imports skip /usr/lib/python2.7/dist-packages//univention/listener/*
-(virtenv3_mypy) deactivate
-```
-
 ## Internals
 
 See [src/README.md](src/README.md) for implementation details.
