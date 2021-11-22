@@ -304,5 +304,20 @@ Several [fixtures](tests/conftest.py) are available:
 * `udm`, `selenium`, `lo` to get instances for testing UDM, UMC via Selenium, LDAP connection.
 * …
 
-## Using selenium
-TBD…
+## Using Selenium
+Since UCS 4.2-3 tests can use [Selenium](https://www.selenium.dev/) for browser based UMC testing.
+1. The test must be implemented in Python.
+2. The hash-bang-line shoule be `#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium-pytest` when using `pytest`.
+3. The hash-bang-line should be `#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium`.
+
+[univention.testing.selenium](univention/testing/selenium/base.py) provides several helper functions.
+See [86 selenium](tests/86_selenium/) for examples.
+
+```python
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium-pytest -s -l -v
+## desc: Test basic UMC login
+## exposure: safe
+def test_login(selenium):
+    selenium.do_login()
+    assert True
+```
