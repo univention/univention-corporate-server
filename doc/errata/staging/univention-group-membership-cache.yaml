@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: univention-group-membership-cache
+fix: 1.0.0-9A~4.4.0.202111230209
+desc: |
+ This update addresses the following issue(s):
+ * Now reverse caches are supported, too
+bug: [54119]
