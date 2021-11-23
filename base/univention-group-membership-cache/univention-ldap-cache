@@ -167,10 +167,10 @@ def list_caches(args):
                 value = '[{}]'.format(shard.key)
             elif shard.single_value:
                 key = shard.key
-                value = '[{}]'.format(shard.value)
+                value = shard.value
             else:
                 key = shard.key
-                value = shard.value
+                value = '[{}]'.format(shard.value)
             print('    ', key, '=>', value)
 
 

@@ -1,3 +1,9 @@
+univention-group-membership-cache (1.0.0-9) unstable; urgency=medium
+
+  * Bug #54119: Typo in list output
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 23 Nov 2021 02:07:49 +0100
+
 univention-group-membership-cache (1.0.0-8) unstable; urgency=medium
 
   * Bug #54119: Add reverse caches
