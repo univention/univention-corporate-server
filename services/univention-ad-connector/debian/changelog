@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.8-2) unstable; urgency=medium
+
+  * Bug #49867: Make number on retries of rejected changes configurable
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 23 Nov 2021 16:22:25 +0100
+
 univention-ad-connector (14.0.8-1) unstable; urgency=medium
 
   * Bug #53757: Skip sambaNTPassword sync if invalid
