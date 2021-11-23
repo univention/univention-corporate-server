@@ -1,4 +1,8 @@
+import subprocess
+
 import pytest
+
+from univention.ldap_cache.cache import get_cache as lib_get_cache
 
 from univention.lib.misc import custom_groupname
 from univention.testing.strings import random_name
@@ -53,3 +57,21 @@ def group3(udm, base_group):
 @pytest.fixture
 def group_with_users(udm, group1, user1, user2, user3):
 	udm.modify_object('groups/group', dn=group1, users=[user1, user2, user3], wait_for_replication=False)
+
+@pytest.fixture
+def get_cache():
+	yield lib_get_cache
+	lib_get_cache._cache = None
+
+@pytest.fixture
+def add_cache():
+	caches = []
+	def _add_cache(*cache):
+		subprocess.call(['/usr/share/univention-group-membership-cache/univention-ldap-cache', 'add-cache'] + list(cache))
+		subprocess.call(['/usr/share/univention-group-membership-cache/univention-ldap-cache', 'rebuild', cache[0]])
+		subprocess.call(['/usr/share/univention-group-membership-cache/univention-ldap-cache', 'create-listener-modules'])
+		caches.append(cache)
+	yield _add_cache
+	for cache in caches:
+		subprocess.call(['/usr/share/univention-group-membership-cache/univention-ldap-cache', 'rm-cache'] + list(cache))
+	subprocess.call(['/usr/share/univention-group-membership-cache/univention-ldap-cache', 'create-listener-modules'])

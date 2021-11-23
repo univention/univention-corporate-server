@@ -1,3 +1,9 @@
+ucs-test (9.0.7-79) unstable; urgency=medium
+
+  * Bug #54119: Test reverse cache
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 23 Nov 2021 00:41:47 +0100
+
 ucs-test (9.0.7-78) unstable; urgency=medium
 
   * Bug #54068: Make univention-group-membership-cache tests more robust wrt
