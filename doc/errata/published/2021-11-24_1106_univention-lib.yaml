@@ -8,3 +8,5 @@ desc: |-
  This update addresses the following issues:
  * A new shell library function `echowithtimestamp` was added.
 bug: [54019]
+erratum: 1106
+announced: 2021-11-24
