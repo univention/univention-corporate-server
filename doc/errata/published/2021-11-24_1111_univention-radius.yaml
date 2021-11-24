@@ -8,3 +8,5 @@ desc: |-
  This update addresses the following issues:
  * Server password change now logs timestamps.
 bug: [54019]
+erratum: 1111
+announced: 2021-11-24
