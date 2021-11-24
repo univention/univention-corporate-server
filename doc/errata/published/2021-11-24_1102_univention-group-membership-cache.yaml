@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The cache now supports caches with a reverse mapping.
 bug: [54119]
+erratum: 1102
+announced: 2021-11-24
