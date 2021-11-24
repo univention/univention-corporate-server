@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: univention-ldap
+fix: 15.0.3-5A~4.4.0.202111241817
+desc: |
+ This update addresses the following issue(s):
+ * The refint module is enabled in slapd. It enforces referential integrity
+   for the attribute uniqueMember.
+bug: [48956]
