@@ -279,8 +279,13 @@ Categories=service-ldap
 [ldap/overlay/lastbind/precision]
 Description[de]=Die Genauigkeit in Sekunden gibt an, ob das 'lastbind'-Overlay (siehe ldap/overlay/lastbind) das 'authTimestamp'-Attribut nach einer erfolgreichen Anmeldung aktualisiert. Wenn das 'authTimestamp'-Attribut nicht älter als der angegebene Wert ist, dann wird es nicht aktualisiert. Wenn die Variable nicht gesetzt ist, wird das 'authTimestamp'-Attribut bei jeder erfolgreichen Anmeldung aktualisiert. Nach dem Setzen dieser UCR-Variablen muss der "slapd"-Dienst neu gestartet werden, damit die Änderungen wirksam werden.
 Description[en]=The precision in seconds defines whether the 'lastbind' overlay (see ldap/overlay/lastbind) should update the 'authTimestamp' attribute after a successful bind. If the 'authTimestamp' attribute is not older than the given value, then it is not updated. If the variable is not set then the 'authTimestamp' attribute is updated on every successful bind. After setting this UCR variable the "slapd" service has to be restarted for the changes to take effect.
-
 Type=str
+Categories=service-ldap
+
+[ldap/refint]
+Description[de]=Bestimmt, ob das Modul refint geladen werden soll. Es erzwingt referentielle Integrität im Attribut uniqueMember. Wird nur auf dem DC Master ausgewertet.
+Description[en]=Whether or not the refint overlay should be enabled. It enforces referential integrity for the attribute uniqueMember. Only applies to the DC Master.
+Type=bool
 Categories=service-ldap
 
 [ldap/attributeoptions]
