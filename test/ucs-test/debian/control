@@ -308,6 +308,18 @@ Description: Test scripts for Nagios
  This package includes some scripts for testing the functionality of the
  Nagios.
 
+Package: ucs-test-directory-notifier
+Architecture: all
+Recommends:
+ ucs-test-framework,
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
+Description: Test scripts for univention directory notifier
+ This package includes some scripts for testing univention directory notifier.
+
 Package: ucs-test-udm-users
 Architecture: all
 Recommends:
