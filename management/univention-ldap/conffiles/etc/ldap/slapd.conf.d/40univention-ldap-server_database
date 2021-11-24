@@ -17,6 +17,9 @@ if configRegistry.get('ldap/database/type') == "mdb" and configRegistry.is_true(
 	if configRegistry.is_true('ldap/ppolicy/enabled', False):
 		ppolicy_default = 'cn=default,cn=ppolicy,cn=univention,%(ldap/base)s' % configRegistry
 		print('ppolicy_default\t"%s"' % configRegistry.get('ldap/ppolicy/default', ppolicy_default))
+if configRegistry.is_true('ldap/refint', True) and configRegistry.get('server/role') == 'domaincontroller_master':
+	print('overlay\t\trefint')
+	print('refint_attributes\t\tuniqueMember')
 if configRegistry.is_true('ldap/shadowbind', True):
 	print('overlay\t\tshadowbind')
 	if 'ldap/shadowbind/ignorefilter' in configRegistry:

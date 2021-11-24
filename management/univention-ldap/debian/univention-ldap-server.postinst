@@ -115,6 +115,11 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 13.0.3-5; 
 	ucr set ldap/shadowbind=false
 fi
 
+# set ldap/refint to false for updates  # TODO: enable, but not for now, i want to test it
+#if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 15.0.3-5; then
+#	ucr set ldap/refint=false
+#fi
+
 ucr set \
 	ldap/debug/level?none \
 	slapd/port?"7389,389" \
@@ -142,6 +147,7 @@ ucr set \
 	slapd/backup?true \
 	ldap/shadowbind?true \
 	ldap/shadowbind/ignorefilter?"(|(objectClass=univentionDomainController)(userPassword={KINIT}))" \
+	ldap/refint?true \
 	ldap/maxopenfiles?8192 # Bug #17705
 
 if [ "$1" = "configure" -a -z "$2" ]; then
