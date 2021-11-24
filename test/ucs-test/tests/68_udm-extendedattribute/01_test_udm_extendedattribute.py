@@ -44,7 +44,10 @@ def hook_name():
 @pytest.fixture
 def cleanup(hook_name):
 	yield
-	os.remove('%s%s.py' % (HOOKSPATH, hook_name))
+	try:
+		os.remove('%s%s.py' % (HOOKSPATH, hook_name))
+	except OSError:
+		pass
 	try:
 		os.remove('/tmp/%s_executed' % hook_name)
 	except OSError:
