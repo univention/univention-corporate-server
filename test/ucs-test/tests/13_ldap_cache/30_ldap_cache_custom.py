@@ -20,13 +20,13 @@ def test_custom_cache(udm, get_cache, add_cache, user1, user2):
 	add_cache('testcache', 'dn', 'sn', '(univentionObjectType=users/user)', '--single-value')
 	cache = get_cache()
 	testcache = cache.get_sub_cache('testcache')
-	assert testcache.get(user1.dn) == user1.props.lastname
-	assert testcache.get(user2.dn) == user2.props.lastname
+	assert testcache.get(user1.dn.lower()) == user1.props.lastname
+	assert testcache.get(user2.dn.lower()) == user2.props.lastname
 	new_lastname = random_name()
 	udm.modify_object('users/user', dn=user1.dn, lastname=new_lastname, wait_for_replication=False)
 	udm.modify_object('users/user', dn=user2.dn, lastname=new_lastname, wait_for_replication=True)
-	assert testcache.get(user1.dn) == new_lastname
-	assert testcache.get(user2.dn) == new_lastname
+	assert testcache.get(user1.dn.lower()) == new_lastname
+	assert testcache.get(user2.dn.lower()) == new_lastname
 
 
 def test_reverse_cache(udm, get_cache, add_cache, user1, user2):
@@ -39,14 +39,14 @@ def test_reverse_cache(udm, get_cache, add_cache, user1, user2):
 	add_cache('testcache', 'dn', 'sn', '(univentionObjectType=users/user)', '--reverse')
 	cache = get_cache()
 	testcache = cache.get_sub_cache('testcache')
-	assert testcache.get(user1.props.lastname) == [user1.dn]
-	assert testcache.get(user2.props.lastname) == [user2.dn]
+	assert testcache.get(user1.props.lastname) == [user1.dn.lower()]
+	assert testcache.get(user2.props.lastname) == [user2.dn.lower()]
 	new_lastname = random_name()
 	udm.modify_object('users/user', dn=user1.dn, lastname=new_lastname, wait_for_replication=False)
 	udm.modify_object('users/user', dn=user2.dn, lastname=new_lastname, wait_for_replication=True)
 	assert testcache.get(user1.props.lastname) == []
 	assert testcache.get(user2.props.lastname) == []
-	assert sorted(testcache.get(new_lastname)) == sorted([user1.dn, user2.dn])
+	assert sorted(testcache.get(new_lastname)) == sorted([user1.dn.lower(), user2.dn.lower()])
 
 
 def test_double_cache(udm, get_cache, add_cache, group1, user1):
@@ -60,11 +60,11 @@ def test_double_cache(udm, get_cache, add_cache, group1, user1):
 	add_cache('testcache', 'dn', 'cn', '(univentionObjectType=groups/group)')
 	cache = get_cache()
 	testcache = cache.get_sub_cache('testcache')
-	assert testcache.get(group1.dn) == [group1.props.name]
-	assert testcache.get(user1.dn) == [user1.props.username]
+        assert testcache.get(group1.dn.lower()) == [group1.props.name]
+	assert testcache.get(user1.dn.lower()) == [user1.props.username]
 	new_name = random_name()
 	new_dn = udm.modify_object('users/user', dn=user1.dn, username=new_name, wait_for_replication=False)
 	udm.remove_object('groups/group', dn=group1.dn, wait_for_replication=True)
-	assert testcache.get(group1.dn) is None
-	assert testcache.get(user1.dn) is None
-	assert testcache.get(new_dn) == [new_name]
+	assert testcache.get(group1.dn.lower()) is None
+	assert testcache.get(user1.dn.lower()) is None
+	assert testcache.get(new_dn.lower()) == [new_name]
