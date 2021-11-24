@@ -19,7 +19,6 @@ def test_translog_check():
 	subprocess.check_call([TRANSLOG_CMD, 'check'], stderr=subprocess.STDOUT)
 
 
-
 def test_translog_index():
 	subprocess.check_call([TRANSLOG_CMD, 'index'], stderr=subprocess.STDOUT)
 
