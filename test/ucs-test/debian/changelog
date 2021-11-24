@@ -1,3 +1,9 @@
+ucs-test (10.0.6-76) unstable; urgency=medium
+
+  * fixup! Bug #53538: move tests/ucs/68 to pytest: refactoring
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 02 Dec 2021 17:06:16 +0100
+
 ucs-test (10.0.6-75) unstable; urgency=medium
 
   * Bug #54015: Test homeshare access via NTLM auth
