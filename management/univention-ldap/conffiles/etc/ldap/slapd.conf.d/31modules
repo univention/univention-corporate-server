@@ -17,6 +17,8 @@ if configRegistry.is_true('ldap/shadowbind', True):
 	print('moduleload\tshadowbind.so')
 if configRegistry.is_true('ldap/overlay/lastbind', False):
 	print('moduleload\tlastbind.la')
+if configRegistry.is_true('ldap/refint', True) and configRegistry.get('server/role') == 'domaincontroller_master':
+	print('moduleload\trefint.so')
 if configRegistry.is_true('ldap/pw-bcrypt', False):
 	print('moduleload\tpw-bcrypt.so')
 @!@
