@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * univention-samba4-backup has been fixed
 bug: [53438]
+erratum: 159
+announced: 2021-11-24
