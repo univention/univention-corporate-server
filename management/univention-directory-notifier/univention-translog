@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # vim: set fileencoding=utf-8 filetype=python foldmethod=expr expandtab shiftwidth=4 tabstop=4 :
 """
 Univention Directory Notifier Transaction log admin commmand
@@ -82,7 +82,7 @@ class IndexHeader(Structure):
 
         The header is architecture dependant due to the use of `c_ulong`.
     """
-    MAGIC = 0x3395e0d4L
+    MAGIC = 0x3395e0d4
     _fields_ = [("magic", c_ulong)]
     _pack_ = 1
 
@@ -138,7 +138,7 @@ class Index(object):
             self.index = index = open(self.filename, 'wb+')
 
             header = IndexHeader(IndexHeader.MAGIC)
-            data = buffer(header)[:]  # type: ignore
+            data = memoryview(header)[:]  # type: ignore
             self.index.write(data)
 
             self.size = size = len(data)
@@ -196,7 +196,7 @@ class Index(object):
         self.seek(tid)
 
         entry = IndexEntry(True, offset)
-        data = buffer(entry)[:]  # type: ignore
+        data = memoryview(entry)[:]  # type: ignore
         self.index.write(data)
         self.log.debug("Transaction %d is %s and at position %d", tid, entry.valid, entry.offset)
 
@@ -591,7 +591,7 @@ def dump_index(opt):
         begin = opt.min
         end = min(opt.max or index.count, index.count)
         log.debug('Dumping index from [%d, %d] ...', begin, end)
-        for tid in xrange(begin, end + 1):
+        for tid in range(begin, end + 1):
             rec = index[tid]
             print('%8d[%c]: %d' % (tid, 'x' if rec.valid else ' ', rec.offset))
 
@@ -1387,7 +1387,7 @@ def parse_count(string):
     :raises ArgumentTypeError: if the string is valid.
     """
     try:
-        val = long(string)
+        val = int(string)
         if not 0 < val:
             raise ValueError
     except ValueError:
@@ -1425,7 +1425,7 @@ def parse_size(string):
     suffix = string.lstrip(".0123456789")
     try:
         unit, = suffix.rstrip("iIbB").upper() or ' '
-        scale = 1L << (10 * " KMGTPE".index(unit))
+        scale = 1 << (10 * " KMGTPE".index(unit))
     except ValueError:
         raise ArgumentTypeError("Invalid unit")
 
@@ -1437,7 +1437,7 @@ def parse_size(string):
     except ValueError:
         raise ArgumentTypeError("Invalid value")
 
-    return long(value * scale)
+    return int(value * scale)
 
 
 if __name__ == "__main__":

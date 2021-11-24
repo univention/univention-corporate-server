@@ -1,3 +1,10 @@
+univention-directory-notifier (14.0.5-4) unstable; urgency=medium
+
+  * Migrate univention-directory-notifier to Python 3.
+    In case nothing to be done while pruning, dont raise an exception
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Thu, 04 Nov 2021 17:04:48 +0100
+
 univention-directory-notifier (14.0.5-3) unstable; urgency=low
 
   * Bug #51911: Improve handling of invalid TID values like "<TransID>" and 0
