@@ -83,6 +83,8 @@ if [ ! -d /var/lib/univention-connector/ad ]; then
 	chown 0.0 /var/lib/univention-connector/ad
 fi
 
+sqlite3 "/etc/univention/connector/internal.sqlite" "ALTER TABLE 'AD rejected' ADD retry_count NUMBER DEFAULT 0;" 2>/dev/null || true
+
 /etc/init.d/univention-ad-connector crestart || true
 /etc/init.d/univention-directory-listener crestart || true
 
