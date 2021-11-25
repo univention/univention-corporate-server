@@ -14,7 +14,7 @@ Build-Depends:
 Package: univention-directory-notifier
 Architecture: any
 Depends:
- python-univention-lib (>= 1.0.25-1),
+ python3-univention-lib (>= 1.0.25-1),
  shell-univention-lib (>= 1.0.6),
  univention-base-files,
  univention-ldap-server (>= 14.0.2-35),
