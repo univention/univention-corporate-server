@@ -400,7 +400,6 @@ class Instance(Base):
 			fd.seek(max(os.stat(fd.name).st_size - size, 0))
 			return fd.read(size).decode('utf-8', 'replace')
 
-
 @sanitize(
 		username=StringSanitizer(required=True, minimum=1),
 		password=StringSanitizer(required=True, minimum=1),
