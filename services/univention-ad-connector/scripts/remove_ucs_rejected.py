@@ -62,6 +62,7 @@ def remove_ucs_rejected(ucs_dn):
 if __name__ == '__main__':
 	parser = ArgumentParser()
 	parser.add_argument("-c", "--configbasename", metavar="CONFIGBASENAME", default="connector")
+	parser.add_argument('dn')
 	options = parser.parse_args()
 
 	CONFIGBASENAME = options.configbasename
