@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-appcenter
+fix: 
+desc: |
+ This update addresses the following issue:
+ * Remove cache files to force a rebuild with the next access to the
+   cache.
+bug: [51986]

@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-69) unstable; urgency=medium
+
+  * Bug #51986: Race condition in App Center cache invalidation
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Thu, 25 Nov 2021 05:16:29 +0100
+
 univention-appcenter (9.0.2-68) unstable; urgency=medium
 
   * Bug #53803: fix error handling in docker.inspect_with_retry()

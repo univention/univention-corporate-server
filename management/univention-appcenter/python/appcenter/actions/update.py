@@ -94,6 +94,10 @@ class Update(UniventionAppAction):
 					ucr_save({app.ucr_upgrade_key: 'yes'})
 			self._update_local_files()
 
+		# remove cache files to force a rebuild with the next access to the cache.
+		for appcenter_cache in self._appcenter_caches(args):
+			appcenter_cache.clear_cache()
+
 	def _appcenter_caches(self, args):
 		if args.appcenter_server:
 			return [AppCenterCache(server=args.appcenter_server)]
