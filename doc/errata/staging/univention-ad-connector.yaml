@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-ad-connector
+fix: 14.0.8-2A~5.0.0.202111251704
+desc: |
+ This update addresses the following issue:
+ * UCS rejects are resynced only a certain amount of times.
+   This is configurable via a new ucr variable
+   connector/ad/max_retry_rejected. The default number of resyncs
+   is ten.
+bug: [54147]
