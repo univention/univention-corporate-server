@@ -76,6 +76,7 @@ def main():
 	configRegistry.load()
 
 	ad = univention.connector.ad.ad.main(configRegistry, CONFIGBASENAME)
+	max_retry_rejected = configRegistry.get('%s/ad/max_retry_rejected' % (CONFIGBASENAME,), 10)
 	try:
 		ad.init_ldap_connections()
 	except ldap.SERVER_DOWN as exc:
@@ -98,7 +99,7 @@ def main():
 
 	i = 1
 	print("\nAD rejected\n")
-	for id, dn in ad.list_rejected():
+	for id, dn, retry_count in ad.list_rejected():
 		found_rejected = True
 		print("%5d:    AD DN: %s" % (i, dn))
 		ucs_dn = ad.get_dn_by_con(dn)
@@ -106,6 +107,7 @@ def main():
 			print("         UCS DN: %s" % ucs_dn)
 		else:
 			print("         UCS DN: <not found>")
+		print("         tried: %s/%s times\n" % (retry_count, max_retry_rejected))
 		i += 1
 
 	if not found_rejected:
