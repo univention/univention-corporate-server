@@ -394,6 +394,8 @@ class ad(univention.connector.ucs):
 			ad_ldap_bindpw_file = _ucr['%s/ad/ldap/bindpw' % configbasename]
 			ad_ldap_certificate = _ucr.get('%s/ad/ldap/certificate' % configbasename)
 			listener_dir = _ucr['%s/ad/listener/dir' % configbasename]
+			max_retry_rejected = int(_ucr.get('%s/ad/max_retry_rejected' % configbasename, 10))
+
 		except KeyError as exc:
 			raise SystemExit('UCR variable %s is not set' % (exc,))
 
@@ -430,10 +432,11 @@ class ad(univention.connector.ucs):
 			ad_ldap_bindpw,
 			ad_ldap_certificate,
 			listener_dir,
+			max_retry_rejected,
 			**kwargs
 		)
 
-	def __init__(self, CONFIGBASENAME, property, configRegistry, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate, listener_dir, logfilename=None, debug_level=None):
+	def __init__(self, CONFIGBASENAME, property, configRegistry, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate, listener_dir, max_retry_rejected, logfilename=None, debug_level=None):
 		univention.connector.ucs.__init__(self, CONFIGBASENAME, property, configRegistry, listener_dir, logfilename, debug_level)
 
 		self.ad_ldap_host = ad_ldap_host
@@ -442,6 +445,7 @@ class ad(univention.connector.ucs):
 		self.ad_ldap_binddn = ad_ldap_binddn
 		self.ad_ldap_bindpw = ad_ldap_bindpw
 		self.ad_ldap_certificate = ad_ldap_certificate
+		self.max_retry_rejected = max_retry_rejected
 
 		if not self.config.has_section('AD'):
 			ud.debug(ud.LDAP, ud.INFO, "__init__: init add config section 'AD'")
@@ -1830,7 +1834,9 @@ class ad(univention.connector.ucs):
 		rejected = self._list_rejected()
 		print("Sync %s rejected changes from AD to UCS" % len(rejected))
 		sys.stdout.flush()
-		for change_usn, dn in rejected:
+		for change_usn, dn, retry_count in rejected:
+			if retry_count >= self.max_retry_rejected:
+				continue
 			ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs: Resync rejected dn: %s' % (dn))
 			try:
 				sync_successfull = False
@@ -1863,6 +1869,8 @@ class ad(univention.connector.ucs):
 						self._remove_rejected(change_usn)
 						self.__update_lastUSN(ad_object)
 						self._set_DN_for_GUID(elements[0][1]['objectGUID'][0], elements[0][0])
+					else:
+						self.save_rejected(ad_object)
 			except ldap.SERVER_DOWN:
 				raise
 			except Exception:
