@@ -397,7 +397,10 @@ class Instance(Base):
 		"""Returns the last 2MB of the join.log file"""
 		with open(LOGFILE, 'rb') as fd:
 			size = 2097152
-			fd.seek(max(os.stat(fd.name).st_size - size, 0))
+			try:
+				fd.seek(max(os.stat(fd.name).st_size - size, 0))
+			except IOError:
+				pass
 			return fd.read(size).decode('utf-8', 'replace')
 
 	@sanitize(

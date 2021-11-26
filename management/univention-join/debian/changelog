@@ -1,3 +1,9 @@
+univention-join (12.0.3-10) unstable; urgency=medium
+
+  * Bug #53941: fixup for log truncation
+
+ -- Jan Luttermann <luttermann@univention.de>  Fri, 26 Nov 2021 15:41:57 +0100
+
 univention-join (12.0.3-9) unstable; urgency=medium
 
   * Bug #53941: fixed the join log truncation in umc
