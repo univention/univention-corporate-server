@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.20-28) unstable; urgency=medium
+
+  * Bug #48956: When renaming computers and changing groups at once, take care
+    of updating uniqueMember and memberUid.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 26 Nov 2021 16:33:49 +0100
+
 univention-directory-manager-modules (14.0.20-27) unstable; urgency=medium
 
   * Bug #48956: When removing users and computers, group handling is now done

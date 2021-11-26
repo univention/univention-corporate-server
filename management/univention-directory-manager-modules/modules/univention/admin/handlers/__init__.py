@@ -2784,8 +2784,7 @@ class simpleComputer(simpleLdap):
 						self.__add_dns_reverse_object(self['name'], x, entry)
 
 		if self.__changes['name']:
-			ud.debug(ud.ADMIN, ud.INFO, 'simpleComputer: name has changed')
-			self.__update_groups_after_namechange()
+			ud.debug(ud.ADMIN, ud.INFO, 'simpleComputer: name has changed (post modify)')
 			self.__rename_dhcp_object(old_name=self.__changes['name'][0], new_name=self.__changes['name'][1])
 			self.__rename_dns_object(position=None, old_name=self.__changes['name'][0], new_name=self.__changes['name'][1])
 
@@ -3027,6 +3026,9 @@ class simpleComputer(simpleLdap):
 
 	def _ldap_pre_modify(self):
 		self.check_common_name_length()
+		if self.hasChanged('name'):
+			ud.debug(ud.ADMIN, ud.INFO, 'simpleComputer: name has changed (pre modify)')
+			self.__update_groups_after_namechange()
 
 	def _ldap_post_create(self):
 		for entry in self.__changes['dhcpEntryZone']['remove']:
