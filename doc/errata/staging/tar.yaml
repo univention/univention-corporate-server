@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: tar
+fix: 1.29b-1.1+deb9u1
+desc: |
+ This update addresses the following issue:
+ * Infinite read loop in sparse_dump_region function in sparse.c
+   (CVE-2018-20482)
+bug: [54171]
+cve:
+- CVE-2018-20482
