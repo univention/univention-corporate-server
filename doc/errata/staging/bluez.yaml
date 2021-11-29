@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: bluez
+fix: 5.43-2+deb9u5
+desc: |
+ This update addresses the following issues:
+ * bluez (CVE-2019-8921)
+ * bluez (CVE-2019-8922)
+ * memory leak in the SDP protocol (CVE-2021-41229)
+bug: [54168]
+cve:
+- CVE-2019-8921
+- CVE-2019-8922
+- CVE-2021-41229
