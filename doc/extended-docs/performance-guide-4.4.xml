@@ -223,7 +223,7 @@ slapadd -l ldif
 		after 15 seconds of inactivity in the &ucsUDL;. In
 		larger environments with a lot of group changes, this function should be
 		deactivated by setting the &ucsUCRV;
-		<envar>nss/group/invalidate_cache_on_changes</envar> to
+		<envar>nss/group/cachefile/invalidate_on_changes</envar> to
 		<literal>false</literal>. This setting takes effect immediately and does not
 		require a restart of the Univention Directory Listener.
 	</para>
