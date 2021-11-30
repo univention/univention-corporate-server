@@ -6,9 +6,12 @@ src: bluez
 fix: 5.43-2+deb9u5
 desc: |
  This update addresses the following issues:
- * bluez (CVE-2019-8921)
- * bluez (CVE-2019-8922)
- * memory leak in the SDP protocol (CVE-2021-41229)
+ * By crafting a malicious CSTATE, it is possible to trick the server into
+   returning more bytes than the buffer actually holds, resulting in leaking
+   arbitrary heap data. (CVE-2019-8921)
+ * Heap-based buffer overflow exists in `service_attr_req()` for SDP protocol
+   handling (CVE-2019-8922)
+ * Memory leak in the SDP protocol (CVE-2021-41229)
 bug: [54168]
 cve:
 - CVE-2019-8921
