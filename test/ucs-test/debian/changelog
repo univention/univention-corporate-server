@@ -1,3 +1,9 @@
+ucs-test (9.0.7-81) unstable; urgency=medium
+
+  * Bug #54014: Test homeshare access via NTLM auth
+
+ -- Arvid <requate@univention.de>  Tue, 30 Nov 2021 17:17:00 +0100
+
 ucs-test (9.0.7-80) unstable; urgency=medium
 
   * Bug #54119: Test reverse cache
