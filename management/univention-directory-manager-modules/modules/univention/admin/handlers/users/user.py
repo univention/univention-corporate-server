@@ -2159,13 +2159,6 @@ class object(univention.admin.handlers.simpleLdap):
 			ml.append(('sambaAcctFlags', old_flags, acctFlags.decode()))
 		return ml
 
-	def _ldap_pre_remove(self):
-		groupObjects = univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember=%s', [self.dn]))
-		if groupObjects:
-			uid = ldap.dn.str2dn(self.dn)[0][0][1]
-			for groupObject in groupObjects:
-				groupObject.fast_member_remove([self.dn], [uid], ignore_license=True)
-
 	def _ldap_post_remove(self):
 		self.alloc.append(('sid', self.oldattr['sambaSID'][0]))
 		self.alloc.append(('uid', self.oldattr['uid'][0]))
@@ -2173,6 +2166,12 @@ class object(univention.admin.handlers.simpleLdap):
 		if self['mailPrimaryAddress']:
 			self.alloc.append(('mailPrimaryAddress', self['mailPrimaryAddress']))
 		self._release_locks()
+
+		groupObjects = univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember=%s', [self.dn]))
+		if groupObjects:
+			uid = ldap.dn.str2dn(self.dn)[0][0][1]
+			for groupObject in groupObjects:
+				groupObject.fast_member_remove([self.dn], [uid], ignore_license=True)
 
 		admin_settings_dn = 'uid=%s,cn=admin-settings,cn=univention,%s' % (ldap.dn.escape_dn_chars(self['username']), self.lo.base)
 		# delete admin-settings object of user if it exists

@@ -3144,7 +3144,6 @@ class simpleComputer(simpleLdap):
 				if ipAddress:
 					univention.admin.allocators.release(self.lo, self.position, 'aRecord', ipAddress)
 
-	def _ldap_pre_remove(self):
 		# remove computer from groups
 		groups = copy.deepcopy(self['groups'])
 		if self.oldinfo.get('primaryGroup'):

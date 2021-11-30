@@ -1,10 +1,3 @@
-univention-directory-manager-modules (14.0.20-27) unstable; urgency=medium
-
-  * Bug #48956: When removing users and computers, group handling is now done
-    prior to the actual deletion.
-
- -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 25 Nov 2021 12:52:45 +0100
-
 univention-directory-manager-modules (14.0.20-26) unstable; urgency=medium
 
   * Bug #54017: Do not raise WrongObjectType during search()
