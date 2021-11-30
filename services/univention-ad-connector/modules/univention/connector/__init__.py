@@ -190,13 +190,15 @@ class configdb(object):
 
 	def set(self, section, option, value):
 		cmd = "INSERT OR REPLACE INTO '%s' (key, value) VALUES (?, ?);" % (section,)
+		val = [option, value]
 		if section == "AD rejected":
 			# update retry_count
-			cmd = "INSERT OR REPLACE INTO '%s' (key, value, retry_count) VALUES (?, ?, (SELECT retry_count FROM '%s' WHERE key = '%s' )+1);" % (section, section, option)
+			cmd = "INSERT OR REPLACE INTO '%s' (key, value, retry_count) VALUES (?, ?, (SELECT retry_count FROM '%s' WHERE key = ? )+1);" % (section, section)
+			val = [option, value, option]
 		for i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
-				cur.execute(cmd, [option, value])
+				cur.execute(cmd, val)
 				self._dbcon.commit()
 				cur.close()
 				return

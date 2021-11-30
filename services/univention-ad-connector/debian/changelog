@@ -1,4 +1,4 @@
-univention-ad-connector (14.0.8-2) unstable; urgency=medium
+univention-ad-connector (14.0.8-3) unstable; urgency=medium
 
   * Bug #49867: Make number on retries of rejected changes configurable
 
