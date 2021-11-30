@@ -187,7 +187,8 @@ def connect():
 				baseConfig['%s/ad/ldap/binddn' % CONFIGBASENAME],
 				ad_ldap_bindpw,
 				baseConfig['%s/ad/ldap/certificate' % CONFIGBASENAME],
-				baseConfig['%s/ad/listener/dir' % CONFIGBASENAME]
+				baseConfig['%s/ad/listener/dir' % CONFIGBASENAME],
+				int(baseConfig['%s/ad/max_retry_rejected' % CONFIGBASENAME]),
 			)
 			ad_init = True
 		except ldap.SERVER_DOWN:

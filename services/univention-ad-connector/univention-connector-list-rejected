@@ -150,6 +150,7 @@ def main():
 	#	print "Failed to read Connector-Config. This may happen if the connector is running."
 	#	sys.exit(1)
 
+	max_retry_rejected = configRegistry.get('%s/ad/max_retry_rejected' % CONFIGBASENAME, 10)
 	found_rejected = False
 	i = 1
 	print("\nUCS rejected\n")
@@ -166,7 +167,7 @@ def main():
 
 	i = 1
 	print("\nAD rejected\n")
-	for id, dn in ad.list_rejected():
+	for id, dn, retry_count in ad.list_rejected():
 		found_rejected = True
 		print("%5d:    AD DN: %s" % (i, univention.connector.ad.encode_attrib(dn)))
 		ucs_dn = univention.connector.ad.encode_attrib(ad.get_dn_by_con(dn))
@@ -174,6 +175,7 @@ def main():
 			print("         UCS DN: %s" % ucs_dn)
 		else:
 			print("         UCS DN: <not found>")
+		print("         tried %s/%s times\n" % (retry_count, max_retry_rejected))
 		i += 1
 
 	if not found_rejected:

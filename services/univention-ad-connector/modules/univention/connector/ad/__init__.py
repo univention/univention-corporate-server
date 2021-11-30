@@ -846,7 +846,7 @@ class ad(univention.connector.ucs):
 
 	range_retrieval_pattern = re.compile("^([^;]+);range=(\d+)-(\d+|\*)$")
 
-	def __init__(self, CONFIGBASENAME, property, baseConfig, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate, listener_dir, init_group_cache=True):
+	def __init__(self, CONFIGBASENAME, property, baseConfig, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate, listener_dir, init_group_cache=True, max_retry_rejected=10):
 
 		univention.connector.ucs.__init__(self, CONFIGBASENAME, property, baseConfig, listener_dir)
 
@@ -859,6 +859,7 @@ class ad(univention.connector.ucs):
 		self.ad_ldap_bindpw = ad_ldap_bindpw
 		self.ad_ldap_certificate = ad_ldap_certificate
 		self.baseConfig = baseConfig
+		self.max_retry_rejected = max_retry_rejected
 
 		self.open_ad()
 
@@ -2335,7 +2336,9 @@ class ad(univention.connector.ucs):
 		print("Sync %s rejected changes from AD to UCS" % len(rejected))
 		sys.stdout.flush()
 		if rejected:
-			for id, dn in rejected:
+			for id, dn, retry_count in rejected:
+				if retry_count >= self.max_retry_rejected:
+					continue
 				ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs: Resync rejected dn: %s' % (dn))
 				try:
 					sync_successfull = False
@@ -2368,6 +2371,8 @@ class ad(univention.connector.ucs):
 							self._remove_rejected(id)
 							self.__update_lastUSN(object)
 							self._set_DN_for_GUID(elements[0][1]['objectGUID'][0], elements[0][0])
+						else:
+							self.save_rejected(mapped_object)
 				except (ldap.SERVER_DOWN, SystemExit):
 					raise
 				except Exception:
