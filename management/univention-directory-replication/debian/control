@@ -17,7 +17,7 @@ Depends:
  python3-univention-debug,
  python3-univention-lib,
  shell-univention-lib,
- univention-directory-listener,
+ univention-directory-listener (>= 14.0.5-6),
  univention-ldap-server (>= 1.8),
  ${misc:Depends},
 Description: UCS - Directory replication

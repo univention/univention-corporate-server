@@ -231,7 +231,7 @@ static int handler_import(char *filename) {
 	PyErr_Clear();  // Silent error when attribute is not set
 
 	do { /* optional */
-		handler->priority = strcmp(filename, "replication.py") ? PRIORITY_DEFAULT : PRIORITY_MINIMUM;
+		handler->priority = PRIORITY_DEFAULT;
 		PyObject *var = PyObject_GetAttrString(handler->module, "priority");
 		if (!var)
 			break;
