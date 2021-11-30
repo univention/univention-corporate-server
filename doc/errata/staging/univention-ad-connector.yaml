@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-ad-connector
-fix: 14.0.8-2A~5.0.0.202111251704
+fix: 14.0.8-3A~5.0.0.202111300904
 desc: |
  This update addresses the following issue:
  * UCS rejects are resynced only a certain amount of times.
