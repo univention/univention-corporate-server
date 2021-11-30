@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
-## desc: "Access and list the content of the user homeshare"
+## desc: "Access and list the content of the user homeshare without Kerberos"
 ## exposure: safe
 ## packages:
 ##  - univention-samba | univention-samba4
