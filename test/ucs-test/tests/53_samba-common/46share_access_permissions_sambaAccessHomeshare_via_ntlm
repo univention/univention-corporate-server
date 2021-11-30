@@ -1,0 +1,61 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: "Access and list the content of the user homeshare"
+## exposure: safe
+## packages:
+##  - univention-samba | univention-samba4
+## tags: [skip_admember]
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+## - memberserver
+
+# shellcheck source=../../lib/user.sh
+. "$TESTLIBPATH/user.sh" || exit 137
+# shellcheck source=../../lib/shares.sh
+. "$TESTLIBPATH/shares.sh" || exit 137
+# shellcheck source=../../lib/random.sh
+. "$TESTLIBPATH/random.sh" || exit 137
+# shellcheck source=../../lib/samba.sh
+. "$TESTLIBPATH/samba.sh" || exit 137
+. /usr/share/univention-lib/ldap.sh || exit 137
+
+kdestroy || true # see Bug 52130
+
+listener_replication_sleep_seconds=1
+listener_replication_retry_max=30
+
+echo "## create user"
+SAMBA="true"
+MAIL="false"
+KERBEROS="true"
+PERSON="false"
+POSIX="true"
+
+username="$(user_randomname)"
+password=univention
+
+trap 'user_remove "$username";wait_for_replication_and_postrun;' INT TERM EXIT
+if ! user_create "$username"; then
+	fail_fast 1 "Could not create user $username."
+fi
+
+wait_for_replication_and_postrun
+
+if dpkg -s univention-samba4 2>&1 | grep "install ok installed" > /dev/null; then
+# force_drs_replication
+	wait_for_drs_replication "(sAMAccountName=$username)"
+fi
+
+admin_account="$(ucs_convertDN2UID "$tests_domainadmin_account")"
+
+echo "## access homeshare"
+output="$(smbclient -U "$username%$password" "//localhost/$username" -c "ls" 2>&1)"
+echo "$output" | grep -q "windows-profiles"
+if [ "$?" != 0 ]; then
+	fail_test 1 "Expected 'windows-profiles' in homeshare directory listing, but received: $output"
+fi
+
+
+exit "$RETVAL"
