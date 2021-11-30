@@ -43,6 +43,7 @@ Conflicts:
 Breaks:
  python-univention (<< 13),
  python-univention-directory-manager (<< 15),
+ univention-directory-replication (<< 13.0.2-3),
 Description: UCS - Directory Listener
  UCS Directory Listener is a client for the UCS
  Directory Notifier which calls Python handlers upon changes. By

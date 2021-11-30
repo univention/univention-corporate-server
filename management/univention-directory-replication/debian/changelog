@@ -1,3 +1,9 @@
+univention-directory-replication (13.0.2-3) unstable; urgency=low
+
+  * Bug #26089: make UDL module order execution definable
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 30 Nov 2021 13:45:35 +0100
+
 univention-directory-replication (13.0.2-2) unstable; urgency=medium
 
   * Bug #53430: fix applying of failed.ldif
