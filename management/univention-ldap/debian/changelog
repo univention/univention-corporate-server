@@ -1,3 +1,9 @@
+univention-ldap (16.0.7-6) unstable; urgency=medium
+
+  * Bug #48956: Fix linter
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 01 Dec 2021 08:39:33 +0100
+
 univention-ldap (16.0.7-5) unstable; urgency=medium
 
   * Bug #48956: Add refint module
