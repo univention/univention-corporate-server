@@ -11,3 +11,5 @@ desc: |
    `priority`.
 bug:
 - 26089
+erratum: 163
+announced: 2021-12-01
