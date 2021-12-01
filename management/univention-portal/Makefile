@@ -32,7 +32,7 @@
 build:
 	./frontend/process_vue_files.sh
 	npm set prefix=$$HOME/.node
-	npm install -g npm@latest
+	npm install -g npm@8.1.3
 	$$HOME/.node/bin/npm install -g yarn
 	cd frontend && $$HOME/.node/bin/yarn install
 	cd frontend && $$HOME/.node/bin/yarn build
