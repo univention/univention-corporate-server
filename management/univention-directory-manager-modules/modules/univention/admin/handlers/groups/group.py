@@ -395,7 +395,7 @@ class object(univention.admin.handlers.simpleLdap):
 		# return True if object has been modified
 		return bool(ml)
 
-	def fast_member_remove(self, memberdnlist, uidlist, ignore_license=False):
+	def fast_member_remove(self, memberdnlist, uidlist, ignore_license=False, _retry_on_attribute_error=True):
 		ml = []
 		uids = set()
 		members = set()
@@ -414,7 +414,14 @@ class object(univention.admin.handlers.simpleLdap):
 
 		if ml:
 			try:
-				return self.lo.modify(self.dn, ml, ignore_license=ignore_license)
+				try:
+					return self.lo.modify(self.dn, ml, exceptions=True, ignore_license=ignore_license)
+				except ldap.NO_SUCH_ATTRIBUTE:
+					# maybe this is the refint overlay:
+					# uniqueMember has already been removed. lets try again, probably with just memberUid...
+					if not _retry_on_attribute_error:
+						raise
+					return self.fast_member_remove(memberdnlist, uidlist, ignore_license=ignore_license, _retry_on_attribute_error=False)
 			except ldap.NO_SUCH_OBJECT:
 				raise univention.admin.uexceptions.noObject(self.dn)
 			except ldap.INSUFFICIENT_ACCESS:
