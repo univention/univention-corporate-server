@@ -193,7 +193,7 @@ class configdb(object):
 		val = [option, value]
 		if section == "AD rejected":
 			# update retry_count
-			cmd = "INSERT OR REPLACE INTO '%s' (key, value, retry_count) VALUES (?, ?, (SELECT retry_count FROM '%s' WHERE key = ? )+1);" % (section, section)
+			cmd = "INSERT OR REPLACE INTO '%s' (key, value, retry_count) VALUES (?, ?, COALESCE((SELECT retry_count FROM '%s' WHERE key = ? )+1),0);" % (section, section)
 			val = [option, value, option]
 		for i in [1, 2]:
 			try:
