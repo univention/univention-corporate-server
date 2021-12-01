@@ -20,7 +20,7 @@
             "anonymous": true,
             "description": {
                 "de_DE": "Zeigt eine \u00dcbersicht aller UCS Server in der Dom\u00e4ne", 
-                "en_US": "Provide an overview of all UCS server in the domain", 
+                "en_US": "Provide an overview of all UCS servers in the domain", 
                 "fr_FR": "Vue d'ensemble de tous les serveurs UCS du domaine"
             }, 
             "dn": "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", 

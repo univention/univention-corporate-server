@@ -138,8 +138,8 @@ property_descriptions = {
 		dontsearch=True,
 	),
 	'signLogouts': univention.admin.property(
-		short_description=_('Enable signed Logouts'),
-		long_description=_('Enable signed Logouts'),
+		short_description=_('Enable signed logouts'),
+		long_description=_('Enable signed logouts'),
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default="TRUE",
 		size='Two',

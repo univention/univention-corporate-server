@@ -119,7 +119,7 @@ class TestPortal:
 				"anonymous": True,
 				"description": {
 					"de_DE": u"Zeigt eine \xdcbersicht aller UCS Server in der Dom\xe4ne",
-					"en_US": u"Provide an overview of all UCS server in the domain",
+					"en_US": u"Provide an overview of all UCS servers in the domain",
 					"fr_FR": u"Vue d'ensemble de tous les serveurs UCS du domaine",
 				},
 				"dn": "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",

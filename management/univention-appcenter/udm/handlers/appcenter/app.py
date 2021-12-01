@@ -44,7 +44,7 @@ superordinate = 'settings/cn'
 default_containers = ['cn=apps,cn=univention']
 childs = True
 operations = ['add', 'edit', 'remove', 'search', 'move']
-short_description = _('Appcenter: App Metadata')
+short_description = _('App Center: App Metadata')
 object_name = _('App Metadata')
 object_name_plural = _('App Metadata')
 long_description = ''

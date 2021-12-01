@@ -217,7 +217,7 @@ define([
 
 		_createUserAttributesStep: function(data) {
 			if (!data.widget_descriptions.length) {
-				dialog.alert(_('There is no profile data data defined that you can edit'));
+				dialog.alert(_('There is no profile data defined that you can edit'));
 			}
 			this._userAttributesStep = put(this.steps, 'li.step div.stepLabel', _('Customize your profile'), '<');
 

@@ -56,7 +56,7 @@ if [ "$role" != "domaincontroller_master" ]; then
 		--append displayName='"en_US" "Server overview"' \
 		--append displayName='"de_DE" "Serverübersicht"' \
 		--append displayName='"fr_FR" "Vue d'"'"'ensemble de serveurs"' \
-		--append description='"en_US" "Provide an overview of all UCS server in the domain"' \
+		--append description='"en_US" "Provide an overview of all UCS servers in the domain"' \
 		--append description='"de_DE" "Zeigt eine Übersicht aller UCS Server in der Domäne"' \
 		--append description='"fr_FR" "Vue d'"'"'ensemble de tous les serveurs UCS du domaine"' \
 		--append link='"en_US" "/univention/server-overview/?header=try-hide"' \

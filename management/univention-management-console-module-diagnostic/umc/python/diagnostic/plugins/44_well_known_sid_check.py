@@ -72,7 +72,7 @@ class SIDMismatch(CheckError):
 		self.actual_sid = actual_sid
 
 	def __str__(self):
-		msg = _('User or group with name {name!r} has sid {actual_sid}, but should be {sid}.')
+		msg = _('User or group with name {name!r} has SID {actual_sid}, but should be {sid}.')
 		return msg.format(name=self.expected_name, actual_sid=self.actual_sid, sid=self.sid)
 
 

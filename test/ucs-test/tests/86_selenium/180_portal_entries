@@ -27,11 +27,11 @@ class UMCTester(object):
 			],
 			'domaincontroller_master_multi': [
 				(_('Administration'), _('System and domain settings'), _('Univention Management Console for admin­is­tra­ting the UCS domain and the local system'),),
-				(_('Administration'), _('Server overview'), _('Provide an overview of all UCS server in the domain'),),
+				(_('Administration'), _('Server overview'), _('Provide an overview of all UCS servers in the domain'),),
 			],
 			'domaincontroller_backup': [
 				(_('Administration'), _('System and domain settings'), _('Univention Management Console for admin­is­tra­ting the UCS domain and the local system'),),
-				(_('Administration'), _('Server overview'), _('Provide an overview of all UCS server in the domain'),),
+				(_('Administration'), _('Server overview'), _('Provide an overview of all UCS servers in the domain'),),
 			],
 			'domaincontroller_slave': [
 				(_('Administration'), _('System settings'), _('Univention Management Console for admin­is­tra­ting the local system'),),

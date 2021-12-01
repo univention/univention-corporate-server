@@ -138,21 +138,21 @@ define([
 			if (this.action === 'install') {
 				const headerText = this.apps.length === 1
 					? _('Installation of %s', this.apps[0].name)
-					: _('Installation of multiple apps');
+					: _('Installation of multiple Apps');
 				this.pages.forEach((page) => {
 					this.getPage(page.name).set('headerText', headerText)
 				});
 			} else if (this.action === 'upgrade') {
 				const headerText = this.apps.length === 1
 					? _('Upgrade of %s', this.apps[0].name)
-					: _('Upgrade of multiple apps');
+					: _('Upgrade of multiple Apps');
 				this.pages.forEach((page) => {
 					this.getPage(page.name).set('headerText', headerText)
 				});
 			} else {
 				const headerText = this.apps.length === 1
 					? _('Removal of %s', this.apps[0].name)
-					: _('Removal of multiple apps');
+					: _('Removal of multiple Apps');
 				this.pages.forEach((page) => {
 					this.getPage(page.name).set('headerText', headerText)
 				});

@@ -2,7 +2,7 @@
 <umc version="2.0">
 	<module id="serveroverview" version="1.0" python="3">
 		<name>Server overview</name>
-		<description>Provide an overview of all UCS server in the domain</description>
+		<description>Provide an overview of all UCS servers in the domain</description>
 		<keywords></keywords>
 		<command name="serveroverview/query" function="query" />
 	</module>

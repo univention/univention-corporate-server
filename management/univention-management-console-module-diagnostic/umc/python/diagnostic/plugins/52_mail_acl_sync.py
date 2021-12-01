@@ -232,7 +232,7 @@ def run(_umc_instance):
 	differences = list(all_differences(acl_class))
 	ed = ' '.join([
 		_('Found differences in the ACLs for IMAP shared folders between UDM and IMAP.'),
-		_('This is not necessarily a problem, if the the ACL got changed via IMAP.')
+		_('This is not necessarily a problem, if the ACL got changed via IMAP.')
 	])
 
 	modules = list()

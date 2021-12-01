@@ -214,14 +214,14 @@ property_descriptions = {
 	),
 	'userexpiry': univention.admin.property(
 		short_description=_('Account expiry date'),
-		long_description=_('Specifies the date from when the user is not allowed to login anymore. Enter date as "day.month.year".'),
+		long_description=_('Specifies the date from which the user is no longer allowed to log in. Enter date as "day.month.year".'),
 		syntax=univention.admin.syntax.date2,
 		dontsearch=True,
 		copyable=True,
 	),
 	'passwordexpiry': univention.admin.property(
 		short_description=_('Password expiry date'),
-		long_description=_('Specified the date from when the user must change his password. Enter date as "day.month.year".'),
+		long_description=_('Specified the date from which the user must change his password. Enter date as "day.month.year".'),
 		syntax=univention.admin.syntax.date,
 		editable=False,
 		dontsearch=True,
@@ -282,7 +282,7 @@ property_descriptions = {
 		prevent_umc_default_popup=True,
 	),
 	'unlockTime': univention.admin.property(
-		short_description=_('Lockout till'),
+		short_description=_('Lockout until'),
 		long_description=_('Shows the time when the account gets unlocked again according to policy.'),
 		syntax=univention.admin.syntax.string,  # see posixSecondsToLocaltimeDate
 		may_change=False,

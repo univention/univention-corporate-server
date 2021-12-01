@@ -155,7 +155,7 @@ property_descriptions = {
 	),
 	'tabAdvanced': univention.admin.property(
 		short_description=_('Tab with advanced settings'),
-		long_description=_('Put this extended attribute under "Advanced settings". No autonomous tab will be created'),
+		long_description=_('Puts this extended attribute under "Advanced settings". No autonomous tab will be created'),
 		syntax=univention.admin.syntax.boolean,
 	),
 	'overwriteTab': univention.admin.property(

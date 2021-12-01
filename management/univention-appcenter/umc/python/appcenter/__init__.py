@@ -407,7 +407,7 @@ class Instance(umcm.Base, ProgressMixin):
 		if docker_bridge_network_conflict():
 			msg = _('A conflict between the system network settings and the docker bridge default network has been detected.') + '\n\n'
 			msg += _('Please either configure a different network for the docker bridge by setting the UCR variable docker/daemon/default/opts/bip to a different network and restart the system,') + ' '
-			msg += _('or disable the docker support in the AppCenter by setting appcenter/docker to false.')
+			msg += _('or disable the docker support in the App Center by setting appcenter/docker to false.')
 			raise umcm.UMC_Error(msg)
 		if not docker_is_running():
 			MODULE.warn('Docker is not running! Trying to start it now...')

@@ -131,7 +131,7 @@ define([
 		}),
 		must_not_be_docker_if_docker_is_disabled: new Requirement({
 			reasonDescription: function() {
-				return _('The App uses a container technology while the App Center is configured to not not support it.');
+				return _('The App uses a container technology while the App Center is not configured to support it.');
 			},
 			solutionDescription: function() {
 				return _('You can configure the App Center to support it now. The service "docker" will be started.');

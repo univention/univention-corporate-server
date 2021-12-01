@@ -71,7 +71,7 @@ _('The password was already used.')
 _('The password does not contain enough different characters.')
 _('The password has expired and must be renewed.')
 _('The minimum password age is not reached yet.')
-_('Make sure the kerberos service is functioning or inform an Administrator.')
+_('Make sure the kerberos service is functioning or inform an administrator.')
 _('The password is too similar to the old one.')
 _('The password does not meet the password complexity requirements.')
 _('The password contains user account name.')
@@ -108,7 +108,7 @@ class PasswordChangeFailed(AuthenticationError):
 class PamAuth(object):
 
 	_known_errors = {
-		'Make sure the kerberos service is functioning or inform an Administrator.': [
+		'Make sure the kerberos service is functioning or inform an administrator.': [
 			'Unable to reach any changepw server  in realm %s'
 		],
 		'The password is too short.': [

@@ -366,7 +366,7 @@ define([
 			var message = '<ul style="list-style-position: inside; list-style-image: url(data:image/png;base64,' + tickImage + '); font-weight: bold; padding-left: 1em;">' +
 				'<li>' + _('Support and Professional Services') + '</li>' +
 				'<li>' + _('Up to 7 years of maintenance (LTS)') + '</li>' +
-				'<li>' + _('Hard- and software certifications') + '</li>' +
+				'<li>' + _('Hardware and software certifications') + '</li>' +
 				'<li>' + _('Manufacturer warranty with product liability') + '</li>' +
 			'</ul>' +
 			'<p>' + _('Starting at <b>290.- Euro/year</b> you can purchase a UCS Enterprise Edition. This license allows you to benefit from basic support services as well as individually bookable, additional support and professional services.') + '</p>' +

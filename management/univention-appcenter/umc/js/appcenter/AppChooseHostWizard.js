@@ -123,7 +123,7 @@ define([
 				if (!this.auto_installed.length) {
 					infoText = _('The following Apps are going to be installed.');
 				} else {
-					infoText = _('The following Apps where initially selected.');
+					infoText = _('The following Apps were initially selected.');
 				}
 				page.widgets.push({
 					type: Text,

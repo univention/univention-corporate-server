@@ -3,7 +3,7 @@
 	<module id="welcome" icon="welcome" priority="50" version="1.0" python="3">
 		<name>Welcome!</name>
 		<description>First steps after the installation</description>
-		<keywords>welcome, first steps</keywords>
+		<keywords>welcome,first steps</keywords>
 		<categories>
 			<category name="system"/>
 		</categories>

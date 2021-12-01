@@ -103,7 +103,7 @@ attributetype ( 1.3.6.1.4.1.10176.4200.1.15
 
 attributetype ( 1.3.6.1.4.1.10176.4200.1.16
 	NAME 'signLogouts'
-	DESC 'Set True to enable signed Logouts'
+	DESC 'Set True to enable signed logouts'
 	SINGLE-VALUE
 	EQUALITY booleanMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
