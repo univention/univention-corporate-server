@@ -79,8 +79,9 @@ Variables: ldap/pwd_scheme_kinit
 Variables: ldap/ppolicy
 Variables: ldap/shadowbind
 Variables: ldap/overlay/lastbind
-Variables: ldap/refint
 Variables: ldap/pw-bcrypt
+Variables: ldap/refint
+Variables: server/role
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
@@ -120,6 +121,7 @@ Variables: ldap/shadowbind/ignorefilter
 Variables: ldap/overlay/lastbind
 Variables: ldap/overlay/lastbind/precision
 Variables: ldap/refint
+Variables: server/role
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
