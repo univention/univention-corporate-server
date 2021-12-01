@@ -3090,33 +3090,52 @@ class simpleComputer(simpleLdap):
 		ud.debug(ud.ADMIN, ud.INFO, '__update_groups_after_namechange: olddn=%s' % olddn)
 		ud.debug(ud.ADMIN, ud.INFO, '__update_groups_after_namechange: newdn=%s' % newdn)
 
-		for group in self.info.get('groups', []):
-			ud.debug(ud.ADMIN, ud.INFO, '__update_groups_after_namechange: grp=%s' % (group,))
+		new_groups = set(self.info.get('groups', []))
+		old_groups = set(self.oldinfo.get('groups', []))
+		for group in new_groups | old_groups:
 
 			# Using the UDM groups/group object does not work at this point. The computer object has already been renamed.
 			# During open() of groups/group each member is checked if it exists. Because the computer object with "olddn" is missing,
 			# it won't show up in groupobj['hosts']. That's why the uniqueMember/memberUid updates is done directly via
 			# self.lo.modify()
 
-			oldUniqueMembers = self.lo.getAttr(group, 'uniqueMember')
-			newUniqueMembers = copy.deepcopy(oldUniqueMembers)
-			if olddn in newUniqueMembers:
-				newUniqueMembers.remove(olddn)
-			if newdn not in newUniqueMembers:
-				newUniqueMembers.append(newdn)
-
 			oldMemberUids = self.lo.getAttr(group, 'memberUid')
 			newMemberUids = copy.deepcopy(oldMemberUids)
-			if oldUid in newMemberUids:
-				newMemberUids.remove(oldUid)
-			if newUid not in newMemberUids:
-				newMemberUids.append(newUid)
+			if group in new_groups:
+				ud.debug(ud.ADMIN, ud.INFO, '__update_groups_after_namechange: changing memberUid in grp=%s' % (group,))
+				if oldUid in newMemberUids:
+					newMemberUids.remove(oldUid)
+				if newUid not in newMemberUids:
+					newMemberUids.append(newUid)
+				self.lo.modify(group, [('memberUid', oldMemberUids, newMemberUids)])
+			else:
+				ud.debug(ud.ADMIN, ud.INFO, '__update_groups_after_namechange: removing memberUid from grp=%s' % (group,))
+				if oldUid in oldMemberUids:
+					oldMemberUids = oldUid
+					newMemberUids = ''
+					self.lo.modify(group, [('memberUid', oldMemberUids, newMemberUids)])
 
-			self.lo.modify(group, [('uniqueMember', oldUniqueMembers, newUniqueMembers), ('memberUid', oldMemberUids, newMemberUids)])
-
-		for group in set(self.oldinfo.get('groups', [])) - set(self.info.get('groups', [])):
-			ud.debug(ud.ADMIN, ud.INFO, '__update_groups_after_namechange: removing from grp=%s' % (group,))
-			self.lo.modify(group, [('uniqueMember', olddn, b''), ('memberUid', oldUid, b''), ])
+			# we are doing the uniqueMember seperately because of a potential refint overlay that already changed the dn for us
+			oldUniqueMembers = self.lo.getAttr(group, 'uniqueMember')
+			newUniqueMembers = copy.deepcopy(oldUniqueMembers)
+			if group in new_groups:
+				ud.debug(ud.ADMIN, ud.INFO, '__update_groups_after_namechange: changing uniqueMember in grp=%s' % (group,))
+				if olddn in newUniqueMembers:
+					newUniqueMembers.remove(olddn)
+				if newdn not in newUniqueMembers:
+					newUniqueMembers.append(newdn)
+				self.lo.modify(group, [('uniqueMember', oldUniqueMembers, newUniqueMembers)])
+			else:
+				if olddn in oldUniqueMembers:
+					ud.debug(ud.ADMIN, ud.INFO, '__update_groups_after_namechange: removing uniqueMember from grp=%s' % (group,))
+					oldUniqueMembers = olddn
+					newUniqueMembers = b''
+					self.lo.modify(group, [('uniqueMember', oldUniqueMembers, newUniqueMembers)])
+				if newdn in oldUniqueMembers:
+					ud.debug(ud.ADMIN, ud.INFO, '__update_groups_after_namechange: removing uniqueMember from grp=%s' % (group,))
+					oldUniqueMembers = newdn
+					newUniqueMembers = b''
+					self.lo.modify(group, [('uniqueMember', oldUniqueMembers, newUniqueMembers)])
 
 	def update_groups(self):  # type: () -> None
 		if not self.hasChanged('groups') and not self.oldPrimaryGroupDn and not self.newPrimaryGroupDn:

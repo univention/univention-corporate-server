@@ -1586,6 +1586,10 @@ class object(univention.admin.handlers.simpleLdap):
 			if group and not case_insensitive_in_list(group, self.info.get('groups', [])) and group.lower() != self['primaryGroup'].lower():
 				grpobj = group_mod.object(None, self.lo, self.position, group)
 				grpobj.fast_member_remove([self.old_dn], [old_uid])
+				if self.dn != self.old_dn:
+					# we change our DN _before_ removing it from the group
+					# so if we changed it and if we use refint overlay, it already updated the uniqueMember of the group and we will not catch it with old_dn
+					grpobj.fast_member_remove([self.dn], [old_uid])
 
 		ud.debug(ud.ADMIN, ud.INFO, 'users/user: check groups in info[groups]')
 		for group in self.info.get('groups', []):
@@ -2177,11 +2181,9 @@ class object(univention.admin.handlers.simpleLdap):
 			self.alloc.append(('mailPrimaryAddress', self['mailPrimaryAddress']))
 		super(object, self)._ldap_post_remove()
 
-		groupObjects = univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format(u'uniqueMember=%s', [self.dn]))
-		if groupObjects:
-			uid = ldap.dn.str2dn(self.dn)[0][0][1]
-			for groupObject in groupObjects:
-				groupObject.fast_member_remove([self.dn], [uid], ignore_license=True)
+		for group in self.oldinfo.get('groups', []):
+			groupObject = univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
+			groupObject.fast_member_remove([self.dn], self.oldattr.get('uid', []), ignore_license=True)
 
 	def _move(self, newdn, modify_childs=True, ignore_license=False):
 		olddn = self.dn
