@@ -66,6 +66,7 @@ usage () {
 	echo "    KVM_MEMORY           - ram for the KVM instance (default: $kvm_memory)"
 	echo "    KVM_CPUS             - cpu's for the KVM instance (default: $kvm_cpus)"
 	echo "    KVM_LABEL_SUFFIX     - additional label for instance name (default: None)"
+	echo "    SOURCE_ISO           - an iso to mount (default: None)"
 	echo ""
 	echo "  ucs-*-create"
 	echo "    EXACT_MATCH          - if true, add -e (only look for exact matches in template names) option to ucs-kvm-create (default: $exact_match)"
@@ -184,6 +185,7 @@ declare -a env_vars=(
 	APP_ID
 	COMBINED_APP_ID
 	SCOPE
+	SOURCE_ISO
 )
 
 export CURRENT_AMI=${CURRENT_AMI:=$current_ami}
