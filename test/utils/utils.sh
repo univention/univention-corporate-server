@@ -502,9 +502,6 @@ activate_ucsschool_repositories () {
 			;;
 		scope|*)
 			activate_ucsschool_devel_scope || rv=$?
-			# workaround until UCS 5.0-0 is published
-			switch_to_test_app_center || rv=$?
-			# workaround end
 			;;
 	esac
 	univention-app info
