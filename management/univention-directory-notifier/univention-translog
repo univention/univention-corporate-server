@@ -53,7 +53,7 @@ from ldap.modlist import addModlist
 from univention.config_registry import ConfigRegistry
 
 try:
-    from typing import Any, BinaryIO, Dict, Iterator, List, Optional, Tuple, Type, NamedTuple  # noqa F401
+    from typing import Any, IO, Dict, Iterator, List, Optional, Tuple, Type, NamedTuple  # noqa F401
     from types import TracebackType  # noqa F401
     from argparse import Namespace  # noqa F401
     Transaction = NamedTuple("Transaction", [("tid", int), ("dn", str), ("command", str)])
@@ -113,7 +113,7 @@ class Index(object):
         # type: (str) -> None
         self.filename = filename + ".index"
         self.log = getLogger(__name__).getChild("Index")
-        self.index = None  # type: Optional[BinaryIO]
+        self.index = None  # type: Optional[IO[bytes]]
         self.size = 0
         self.count = 0
 
@@ -138,7 +138,7 @@ class Index(object):
             self.index = index = open(self.filename, 'wb+')
 
             header = IndexHeader(IndexHeader.MAGIC)
-            data = memoryview(header)[:]  # type: ignore
+            data = bytes(header)
             self.index.write(data)
 
             self.size = size = len(data)
@@ -196,7 +196,7 @@ class Index(object):
         self.seek(tid)
 
         entry = IndexEntry(True, offset)
-        data = memoryview(entry)[:]  # type: ignore
+        data = bytes(entry)
         self.index.write(data)
         self.log.debug("Transaction %d is %s and at position %d", tid, entry.valid, entry.offset)
 
@@ -239,7 +239,7 @@ class Translog(object):
         self.filename = filename
         self.index = index or Index(filename).__enter__()  # type: Index
         self.log = getLogger(__name__).getChild("Log")
-        self.translog = None  # type: Optional[BinaryIO]
+        self.translog = None  # type: Optional[IO[str]]
         self.size = 0
         self.first = 0
         self.last = 0
@@ -644,11 +644,11 @@ def add_transaction(opt, ld, rec):
 
     dn = "reqSession={.tid},{}".format(rec, opt.translog_base)
     modlist = addModlist({
-        "objectClass": ["auditObject"],
-        "reqStart": [opt.datetime],
-        "reqType": ["{.command}".format(rec)],
-        "reqSession": ["{.tid}".format(rec)],
-        "reqDN": ["{.dn}".format(rec)],
+        "objectClass": [b"auditObject"],
+        "reqStart": [opt.datetime.encode("utf-8")],
+        "reqType": ["{.command}".format(rec).encode("utf-8")],
+        "reqSession": ["{.tid}".format(rec).encode("utf-8")],
+        "reqDN": ["{.dn}".format(rec).encode("utf-8")],
     })
     try:
         log.debug("ldap_add(%s)", dn)
@@ -844,7 +844,7 @@ class CheckGeneric(object):
             self.fixit()
 
     def loop(self, stream):
-        # type: (BinaryIO) -> Iterator[Tuple[int, str, Transaction]]
+        # type: (IO[str]) -> Iterator[Tuple[int, str, Transaction]]
         """
         Loop over all lines in the stream.
 
@@ -1323,7 +1323,7 @@ def parse_args(args=None):
     parser.add_argument("--verbose", "-v", action="count", help="Increase verbosity", default=2)
     parser.add_argument("--dry-run", "-n", action="store_true", help="Do not modify anything")
     parser.add_argument("--datetime", "-d", help="Overwrite time-stamp for import [%(default)s]", default=strftime("%Y%m%d%H%M%SZ"))
-    subparsers = parser.add_subparsers(title="subcommands", description="valid subcommands")
+    subparsers = parser.add_subparsers(title="subcommands", description="valid subcommands", required=True, dest="command")
 
     parser_import = subparsers.add_parser("import", help="Import transaction file into LDAP")
     parser_import.add_argument("--index", "-i", action="store_false", help="Do not use index to find transactions")
@@ -1378,7 +1378,7 @@ def parse_args(args=None):
 
 
 def parse_count(string):
-    # type: (str) -> long
+    # type: (str) -> int
     """
     Parse count string.
 
@@ -1414,7 +1414,7 @@ def parse_percent(string):
 
 
 def parse_size(string):
-    # type: (str) -> long
+    # type: (str) -> int
     """
     Parse size string.
 
@@ -1424,8 +1424,8 @@ def parse_size(string):
     """
     suffix = string.lstrip(".0123456789")
     try:
-        unit, = suffix.rstrip("iIbB").upper() or ' '
-        scale = 1 << (10 * " KMGTPE".index(unit))
+        unit = suffix.upper().rstrip("IB") or ' '
+        scale = 1 << (10 * (" ", "K", "M", "G", "T", "P", "E").index(unit))
     except ValueError:
         raise ArgumentTypeError("Invalid unit")
 
