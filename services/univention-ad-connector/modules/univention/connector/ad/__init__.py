@@ -2337,6 +2337,7 @@ class ad(univention.connector.ucs):
 		sys.stdout.flush()
 		if rejected:
 			for id, dn, retry_count in rejected:
+				retry_count = retry_count or 0
 				if retry_count >= self.max_retry_rejected:
 					continue
 				ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs: Resync rejected dn: %s' % (dn))
