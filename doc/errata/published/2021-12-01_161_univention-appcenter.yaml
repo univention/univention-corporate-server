@@ -9,3 +9,5 @@ desc: |
  * Remove cache files to force a rebuild with the next access to the
    cache.
 bug: [51986]
+erratum: 161
+announced: 2021-12-01
