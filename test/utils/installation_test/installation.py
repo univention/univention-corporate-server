@@ -319,6 +319,7 @@ class UCSInstallation(object):
 		self.client.waitForText(self._['start_join'], timeout=self.timeout)
 		for i in range(2):
 			self.click(self._['hostname_primary'])
+			time.sleep(5)
 			self.client.keyPress('tab')
 			self._clear_input()
 			self.client.enterText(self.args.join_user)
