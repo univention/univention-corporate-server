@@ -10,3 +10,5 @@ desc: |
    the UMC-Server (or LDAP-Server) is now done correctly again after the
    validity of the SAML message expired.
 bug: [52888]
+erratum: 162
+announced: 2021-12-01
