@@ -514,7 +514,7 @@ def log(function=None, sensitives=None, customs=None, single_values=False):
 			return "%s__%s" % (var1, var2)
 
 	The above example will write two lines into the logfile for the
-	module (given that the the UCR variable *umc/module/debug/level*
+	module (given that the UCR variable *umc/module/debug/level*
 	is set to at least 3)::
 
 		<date>  MODULE      ( INFO    ) : my_func got: var1='value1', var2='value2'

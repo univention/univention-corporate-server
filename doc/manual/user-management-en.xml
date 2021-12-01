@@ -1282,7 +1282,7 @@ ucr set cron/delete_deregistered_accounts/command=\
 							defines the number of minutes after which the counter is reset. If an account gets automatically
 							unlocked after the lockout duration, the counter is not reset immediately, to keep the account
 							under strict monitoring for some time. During the time window between the end of the lockout
-							duration and the point when the the counter gets reset, a single attempt to log in with an
+							duration and the point when the counter gets reset, a single attempt to log in with an
 							incorrect password will lock the account immediately again.
 						</simpara>
 					</listitem>

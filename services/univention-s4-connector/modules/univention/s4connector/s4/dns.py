@@ -776,7 +776,7 @@ def s4_zone_msdcs_sync(s4connector, object):
 	soa = soaRecord.split(b' ')
 	serial = int(soa[2])
 
-	# lookup the the SOA record of the _msdcs sub-zone for the domainname zone
+	# lookup the SOA record of the _msdcs sub-zone for the domainname zone
 	msdcs_soa_obj = __get_s4_msdcs_soa(s4connector, domainZoneName)
 	if not msdcs_soa_obj:
 		return

@@ -65,7 +65,7 @@ class LicenseImport(ldif.LDIFParser):
 		except binascii.Error:
 			raise LicenseError(_("No license has been found."))
 
-		# there should be exactly one object in the the ldif file
+		# there should be exactly one object in the ldif file
 		if self.dncount == 0:
 			raise LicenseError(_("No license has been found."))
 		elif self.dncount > 1:

@@ -99,7 +99,7 @@ define([
 		},
 
 		/**
-		 * Checks if the the query string contains credentials
+		 * Checks if the query string contains credentials
 		 * for setting a new password.
 		 * True -Return a subpage to set a new password.
 		 * False - Return a subpage to request a new password.
