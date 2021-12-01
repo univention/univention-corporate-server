@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.20-29) unstable; urgency=medium
+
+  * Bug #48956: Make changing the uid / deleting / moving the object more
+    robust when refint overlay module is used in slapd
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 01 Dec 2021 08:36:45 +0100
+
 univention-directory-manager-modules (14.0.20-26) unstable; urgency=medium
 
   * Bug #54017: Do not raise WrongObjectType during search()
