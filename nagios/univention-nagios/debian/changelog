@@ -1,3 +1,9 @@
+univention-nagios (12.0.1-14) unstable; urgency=medium
+
+  * Bug #49291: free pages taken into account
+
+ -- Fabian Wilhelm <wilhelm@univention.de>  Thu, 02 Dec 2021 09:50:36 +0100
+
 univention-nagios (12.0.1-13) unstable; urgency=medium
 
   * Bug #51214: make UCR templates compatible to python3
