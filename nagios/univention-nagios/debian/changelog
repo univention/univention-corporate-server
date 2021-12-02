@@ -1,3 +1,9 @@
+univention-nagios (13.0.2-2) unstable; urgency=medium
+
+  * Bug #54186: free pages taken into account
+
+ -- Fabian Wilhelm <wilhelm@univention.de>  Thu, 02 Dec 2021 09:50:36 +0100
+
 univention-nagios (13.0.2-1) unstable; urgency=medium
 
   * Bug #52122: Remove univention-nagios-server
