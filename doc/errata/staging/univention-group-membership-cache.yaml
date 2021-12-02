@@ -1,11 +1,11 @@
 product: ucs
 release: "5.0"
 version: [0]
-scope: 
+scope: ucs_5.0-0-errata5.0-0
 src: univention-group-membership-cache
-fix: 
+fix: 2.0.0-1A~5.0.0.202112021726
 desc: |
  This update addresses the following issue(s):
  * The package was added to provide a very fast user and group membership
    cache.
-bug: [54068]
+bug: [54182]
