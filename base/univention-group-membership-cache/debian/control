@@ -46,7 +46,7 @@ Package: python3-univention-group-membership-cache
 Architecture: all
 Depends:
  python3-six,
- python-ldap,
+ python3-gdbm,
  python3-univention,
  ${python3:Depends},
 Description: UCS - Group cache
