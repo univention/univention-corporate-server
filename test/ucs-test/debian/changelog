@@ -1,3 +1,9 @@
+ucs-test (10.0.6-78) unstable; urgency=medium
+
+  * Bug #54068: Tests for ldap_cache
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 02 Dec 2021 21:43:21 +0100
+
 ucs-test (10.0.6-77) unstable; urgency=medium
 
   * fixup! Bug #53538: move tests/ucs/68 to pytest: refactoring
