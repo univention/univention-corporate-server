@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Create custom caches apart from group-membership
 ## roles-not: [basesystem]
 ## exposure: dangerous
