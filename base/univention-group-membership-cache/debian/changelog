@@ -1,3 +1,9 @@
+univention-group-membership-cache (2.0.0-1) unstable; urgency=medium
+
+  * Bug #54182: Port to UCS 5
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 02 Dec 2021 13:35:10 +0100
+
 univention-group-membership-cache (1.0.0-9) unstable; urgency=medium
 
   * Bug #54119: Typo in list output
