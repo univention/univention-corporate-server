@@ -39,7 +39,6 @@ import subprocess
 from argparse import ArgumentParser, SUPPRESS
 import sys
 
-import six
 from univention.uldap import getMachineConnection
 from univention.ldap_cache.cache import get_cache
 from univention.ldap_cache.cache.shard_config import add_shard_to_config, rm_shard_from_config
@@ -100,7 +99,6 @@ def rm_cache(args):
 
 
 def cleanup(args):
-    caches = get_cache()
     for name, db in get_cache():
         db.cleanup()
 
