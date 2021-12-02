@@ -1,3 +1,10 @@
+#!/usr/share/ucs-test/runner pytest
+## desc: Create custom caches apart from group-membership
+## roles-not: [basesystem]
+## exposure: dangerous
+## packages:
+##   - univention-group-membership-cache
+
 import subprocess
 from pathlib import Path
 import random
