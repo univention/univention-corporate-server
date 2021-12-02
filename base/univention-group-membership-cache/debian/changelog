@@ -1,0 +1,54 @@
+univention-group-membership-cache (1.0.0-9) unstable; urgency=medium
+
+  * Bug #54119: Typo in list output
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 23 Nov 2021 02:07:49 +0100
+
+univention-group-membership-cache (1.0.0-8) unstable; urgency=medium
+
+  * Bug #54119: Add reverse caches
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 22 Nov 2021 14:59:07 +0100
+
+univention-group-membership-cache (1.0.0-7) unstable; urgency=medium
+
+  * Bug #54068: Add listener version dependency
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 18 Nov 2021 15:49:57 +0100
+
+univention-group-membership-cache (1.0.0-6) unstable; urgency=medium
+
+  * Bug #54068: Fix attr encoding
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 17 Nov 2021 09:55:56 +0100
+
+univention-group-membership-cache (1.0.0-5) unstable; urgency=medium
+
+  * Bug #54068: Remove doublets in returning list
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 17 Nov 2021 09:23:10 +0100
+
+univention-group-membership-cache (1.0.0-4) unstable; urgency=medium
+
+  * Bug #54068: Fix listener reinitialization
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Nov 2021 16:00:44 +0100
+
+univention-group-membership-cache (1.0.0-3) unstable; urgency=medium
+
+  * Bug #54068: Fix file permissions
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Nov 2021 11:18:40 +0100
+
+univention-group-membership-cache (1.0.0-2) unstable; urgency=medium
+
+  * Bug #54068: Fix listener not removing items from cache
+  * Cleanup
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Nov 2021 10:12:40 +0100
+
+univention-group-membership-cache (1.0.0-1) unstable; urgency=low
+
+  * Bug #54068: Initial Release
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 08 Nov 2021 14:57:48 +0100
