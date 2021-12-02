@@ -1,3 +1,9 @@
+univention-directory-notifier (13.0.3-4) unstable; urgency=medium
+
+  * Bug #51911: Improve handling of invalid TID values like "<TransID>" and 0
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 02 Dec 2021 12:09:34 +0100
+
 univention-directory-notifier (13.0.3-3) unstable; urgency=medium
 
   * Bug #51804: call unset_listener_callback before unlocking the listener file.
