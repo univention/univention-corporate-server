@@ -29,10 +29,10 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-DB_DIRECTORY = '/usr/share/univention-group-membership-cache/caches'
-
-
 from univention.ldap_cache.log import debug
+
+
+DB_DIRECTORY = '/usr/share/univention-group-membership-cache/caches'
 
 
 class Caches(object):

@@ -41,8 +41,7 @@ def db_module(mocker):
 
 @pytest.fixture
 def backend(db_module):
-	module = import_module("univention.ldap_cache.cache.backend", "src/", "univention.ldap_cache.cache.backend",
-		use_installed=False)
+	module = import_module("univention.ldap_cache.cache.backend", "src/", "univention.ldap_cache.cache.backend", use_installed=False)
 	return module
 
 
