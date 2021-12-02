@@ -1,6 +1,13 @@
+univention-directory-manager-modules (15.0.11-27) unstable; urgency=medium
+
+  * Bug #48956: Make changing the uid / deleting / moving the object more
+    robust when refint overlay module is used in slapd
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 02 Dec 2021 22:23:05 +0100
+
 univention-directory-manager-modules (15.0.11-26) unstable; urgency=medium
 
- * Bug #53927: Fixed problem with ASCII encoding of krb5PrincipalName of computers 
+  * Bug #53927: Fixed problem with ASCII encoding of krb5PrincipalName of computers
 
  -- Esteban Martinena <martinena@univention.de>  Mon, 18 Oct 2021 12:26:29 +0200
 
