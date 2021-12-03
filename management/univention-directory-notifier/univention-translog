@@ -299,7 +299,7 @@ class Translog(object):
             rec = self.parse_line(line)
             assert last <= rec.tid, (last, rec.tid)
             if last < rec.tid:
-                self.log.warn("Index=%d < translog=%d entries", last, rec.tid)
+                self.log.warning("Index=%d < translog=%d entries", last, rec.tid)
             self.last = rec.tid
 
             self.translog.seek(0, SEEK_SET)
@@ -361,7 +361,7 @@ class Translog(object):
 
         rec = self.index[tid]
         if not rec.valid:
-            self.log.warn("Transaction %d is invalid", tid)
+            self.log.warning("Transaction %d is invalid", tid)
             raise IndexError(tid)
         pos = rec.offset
         self.log.debug("Seeking to transaction %d at position %d", tid, pos)
