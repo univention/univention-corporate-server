@@ -1126,6 +1126,48 @@ basic_setup_ucs_joined () {
 		/usr/sbin/univention-register-network-address || rv=1
 		service nscd restart || rv=1
 	fi
+
+	# fix samba/dns settings on samba DC's
+	# hacky approach, save the old ip addresses during template creation
+	# and fix dns settings until https://forge.univention.org/bugzilla/show_bug.cgi?id=54189
+	# is fixed
+	if [ -e /var/lib/samba/private/sam.ldb ]; then
+		local domain ldap_base old_ip ip binddn master old_ip_master
+		domain="$(ucr get domainname)"
+		ldap_base="$(ucr get ldap/base)"
+		old_ip="$(ucr get internal/kvm/template/old/ip)"
+		ip="$(ucr get interfaces/eth0/address)"
+		binddn="uid=Administrator,cn=users,$ldap_base"
+
+		if [ -n "$old_ip" ]; then
+			udm dns/host_record modify --binddn "$binddn" --bindpwd "$admin_password" \
+				--dn "relativeDomainName=ForestDnsZones,zoneName=$domain,cn=dns,$ldap_base" \
+				--append a="$ip" --remove a="$old_ip"
+			udm dns/host_record modify --binddn "$binddn" --bindpwd "$admin_password" \
+				--dn "relativeDomainName=DomainDnsZones,zoneName=$domain,cn=dns,$ldap_base" \
+				--append a="$ip" --remove a="$old_ip"
+			udm dns/host_record modify --binddn "$binddn" --bindpwd "$admin_password" \
+				--dn "relativeDomainName=gc._msdcs,zoneName=$domain,cn=dns,$ldap_base" \
+				--append a="$ip" --remove a="$old_ip"
+			udm dns/host_record modify --binddn "$binddn" --bindpwd "$admin_password" \
+				--dn "relativeDomainName=ucs-sso,zoneName=$domain,cn=dns,$ldap_base" \
+				--append a="$ip" --remove a="$old_ip"
+			udm dns/forward_zone modify --binddn "$binddn" --bindpwd "$admin_password" \
+				--dn "zoneName=$domain,cn=dns,$ldap_base" \
+				--remove a="$old_ip" --append a="$ip"
+		fi
+
+		if [ "$(ucr get server/role)" != "domaincontroller_master" ]; then
+			master="$(ucr get ldap/master)"
+			old_ip_master="$(dig +short "$master")"
+			if [ -n "$old_ip_master" ]; then
+				samba-tool dns update -U"Administrator%$admin_password" localhost samba.test primary A "$old_ip_master" "$masterip"
+				/etc/init.d/samba restart || rv=1
+			fi
+		fi
+
+	fi
+
 	return $rv
 }
 
