@@ -60,8 +60,9 @@ class GdbmCache(LdapCache):
 		if writer is not None:
 			yield writer
 		else:
+			if not os.path.exists(self.db_file):
+				self.clear()
 			writer = gdbm.open(self.db_file, 'csu')
-			self._fix_permissions()
 			try:
 				yield writer
 			finally:
@@ -91,9 +92,8 @@ class GdbmCache(LdapCache):
 
 	def clear(self):
 		log('%s - Clearing whole DB!', self.name)
-		db = gdbm.open(self.db_file, 'n')
+		gdbm.open(self.db_file, 'n').close()
 		self._fix_permissions()
-		db.close()
 
 	def cleanup(self):
 		log('%s - Cleaning up DB', self.name)
