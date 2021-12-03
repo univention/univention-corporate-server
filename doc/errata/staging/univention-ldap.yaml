@@ -10,4 +10,5 @@ desc: |
    UCR variable ldap/refint=true. It enforces referential integrity for the
    attribute uniqueMember. For updates, the module will not be enabled by
    default.
-bug: [48956]
+ * The file /etc/machine.secret.SAVE is no longer readable by everyone.
+bug: [48956, 49033]
