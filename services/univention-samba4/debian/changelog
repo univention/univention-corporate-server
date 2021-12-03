@@ -1,3 +1,10 @@
+univention-samba4 (8.0.0-37) unstable; urgency=medium
+
+  * Bug #51535: Fixed After Server-Password-Change samba process is not started 
+    due to Failed to listen on ::1:135
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Tue, 18 Jan 2022 13:52:32 +0100
+
 univention-samba4 (8.0.0-36) unstable; urgency=medium
 
   * Bug #54019: Added timestamp to logger output of server password change
