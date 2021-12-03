@@ -4,78 +4,33 @@ This directory holds files for creating ucs-kt-get (KVM) templates. With these
 templates you can easily set up UCS domains without
 provisioning/configuration.
 
-## Current templates
-
-- generic-unsafe - based on current DVD
-  - base template for standard test, basically a UCS appliance, not provisioned/joined
-- ucs-master|ucs-backup|ucs-slave|ucs-member - based on generic-unsafe
-  - master, backup, slave and member, all DHCP, domain: autotest.local, master is joined, all other systems provisioned (but not joined)
-  - example scenario with this template: ./utils/start-test.sh scenarios/base/ucs-master-backup.cfg
-- ucs-joined-master|ucs-joined-backup|ucs-joined-slave|ucs-joined-member
-  - master, backup, slave and member, all DHCP, domain: autotest.local, all systems joined
-  - example scenario with this template: ./utils/start-test.sh scenarios/base/ucs-master-backup-joined.cfg
-- ucs-school-singleserver-joined TODO - based on generic-unsafe
-- ucs-samba-env1-primary|ucs-samba-env1-replica - based on generic-unsafe
-  - primary and replica, both samba DS's (primary is S4 connector), all DHCP, domain: samba.test
-  - example scenario with this template: ./utils/start-test.sh scenarios/base/ucs-samba-primary-replica.cfg
+### generic-unsafe - based on current DVD
+- **Description:** base template for standard test, basically a UCS appliance, not provisioned/joined
+- **Example:** -
+- **Base template:** DVD
+### ucs-master|ucs-backup|ucs-slave|ucs-member
+- **Description:** master, backup, slave and member, all DHCP, domain: autotest.local, master is joined, all other systems provisioned (but not joined)
+- **Example:** scenarios/base/ucs-master-backup.cfg
+- **Base template:** generic-unsafe
+### ucs-joined-master|ucs-joined-backup|ucs-joined-slave|ucs-joined-member
+- **Description:**  master, backup, slave and member, all DHCP, domain: autotest.local, all systems joined
+- **Example:** scenarios/base/ucs-master-backup-joined.cfg
+- **Base template:** generic-unsafe
+### ucs-school-singleserver-joined TODO
+- **Description:** TODO
+- **Example:** TODO
+- **Base template:** TODO
+### ucs-samba-env1-primary|ucs-samba-env1-replica
+- **Description:** Primary and replica, both samba DS's (primary is S4 connector), all DHCP, domain: samba.test
+- **Example:** scenarios/base/ucs-samba-primary-replica.cfg
+- **Base template:** generic-unsafe
   
 ## Usage
+The normal use case is to use templates with a [ucs-kt-get](univention/dist/ucs-ec2-tools>)/start-test.sh. Some example cfg files can be found in [test/scenarios/base](../base/README.md)
 
-### Interactive
-
-- TODO ucs-kt-get -O Others ucs-joined-backup
-
-### With scenario file
-
-Create a scenario file for ucs-kvm-create and set **kvm_operating_system: Others** and **kvm_template: TEMPLATE_NAME**
-
-```
-[Global]
-
-# These settings can be overwritten by the instance
-logfile: autotest-ucs-joined-templates.log
-
-kvm_server: [ENV:KVM_BUILD_SERVER]
-kvm_user: [ENV:KVM_USER]
-kvm_dhcp: 1
-kvm_interface: eth0
-kvm_extra_label: ucs-joined-templates
-kvm_template: [ENV:KVM_TEMPLATE]
-kvm_ucsversion: [ENV:KVM_UCSVERSION]
-kvm_architecture: amd64
-
-recover: 2
-
-[master]
-kvm_template: ucs-joined-master
-kvm_operating_system: Others
-command1:
- . utils.sh && basic_setup
- . utils.sh && basic_setup_ucs_joined "[ENV:master_IP]"
- . utils.sh && import_license
- . utils.sh && add_tech_key_authorized_keys
-command2:
- . utils.sh && prepare_results
- LOCAL utils/utils-local.sh fetch-results "[ENV:master_IP]" master
-files:
- ~/ec2/license/license.secret /etc/
-
-[backup]
-kvm_template: ucs-joined-backup
-kvm_operating_system: Others
-command1:
- . utils.sh && basic_setup
- . utils.sh && basic_setup_ucs_joined "[ENV:master_IP]"
- . utils.sh && add_tech_key_authorized_keys
-command3:
- . utils.sh && prepare_results
- LOCAL utils/utils-local.sh fetch-results "[ENV:backup_IP]" backup
-```
-
-Start the scenario
 ```
 cd git/ucs/test
-DOCKER=true ./utils/start-test.sh /tmp/example.cfg
+DOCKER=true ./utils/start-test.sh scenarios/base/ucs-samba-env1-primary-replica.cfg
 ```
 
 ## Add new templates
