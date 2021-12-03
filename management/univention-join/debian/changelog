@@ -1,3 +1,10 @@
+univention-join (12.0.3-11) unstable; urgency=medium
+
+  * Bug #54191: Fixed file permissions for /etc/machine.secret and
+    /etc/machine.secret.SAVE
+
+ -- Fabian Wilhelm <wilhelm@univention.de>  Mon, 06 Dec 2021 09:22:55 +0100
+
 univention-join (12.0.3-10) unstable; urgency=medium
 
   * Bug #53941: fixup for log truncation

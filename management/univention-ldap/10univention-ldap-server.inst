@@ -173,6 +173,8 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			univention-config-registry set ldap/hostdn="cn=$hostname,cn=dc,cn=computers,$ldap_base"
 
 			if [ -e /etc/machine.secret ]; then
+				touch /etc/machine.secret.SAVE
+				chmod 600 /etc/machine.secret.SAVE
 				cat /etc/machine.secret >>/etc/machine.secret.SAVE
 			fi
 
