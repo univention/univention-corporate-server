@@ -1544,7 +1544,7 @@ def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connecti
 				elif store in obj:
 					id = obj[store]
 				elif store in obj.oldattr and obj.oldattr[store]:
-					id = obj.oldattr[store][0]
+					id = obj.oldattr[store][0].decode(*module.mapping.getEncoding(store))
 				else:
 					# no valid store object, ignore
 					MODULE.warn('LDAP_Search syntax %r: %r is no valid property for object %r - ignoring entry.' % (syntax.name, store, dn))
