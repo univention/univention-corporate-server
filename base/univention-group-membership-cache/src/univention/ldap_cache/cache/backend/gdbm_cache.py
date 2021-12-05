@@ -92,7 +92,7 @@ class GdbmCache(LdapCache):
 
 	def clear(self):
 		log('%s - Clearing whole DB!', self.name)
-		gdbm.open(self.db_file, 'n').close()
+		gdbm.open(self.db_file, 'nu').close()
 		self._fix_permissions()
 
 	def cleanup(self):
