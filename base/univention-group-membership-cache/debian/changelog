@@ -1,6 +1,12 @@
+univention-group-membership-cache (2.0.0-3) unstable; urgency=medium
+
+  * Bug #54182: Do not open in blocking mode
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 05 Dec 2021 21:24:50 +0100
+
 univention-group-membership-cache (2.0.0-2) unstable; urgency=medium
 
-  * Bug #54182: Fixing clear method of gdbm cache 
+  * Bug #54182: Fixing clear method of gdbm cache
 
  -- Esteban Martinena <martinena@univention.de>  Fri, 03 Dec 2021 18:53:29 +0100
 
