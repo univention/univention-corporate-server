@@ -1,6 +1,6 @@
 univention-join (11.0.1-35) unstable; urgency=medium
 
-  * Bug #49033: Fixed file permissions for /etc/machine.secret and /etc/machine.secret.SAVE 
+  * Bug #49033: Fixed file permissions for /etc/machine.secret.SAVE
 
  -- Fabian Wilhelm <wilhelm@univention.de>  Fri, 03 Dec 2021 11:01:19 +0100
 

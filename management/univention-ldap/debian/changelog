@@ -1,6 +1,6 @@
 univention-ldap (15.0.3-8) unstable; urgency=medium
 
-  * Bug #49033: Fixed file permissions for /etc/machine.secret.SAVE 
+  * Bug #49033: Fixed file permissions for /etc/machine.secret.SAVE
 
  -- Fabian Wilhelm <wilhelm@univention.de>  Fri, 03 Dec 2021 11:03:32 +0100
 
