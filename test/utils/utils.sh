@@ -1055,6 +1055,11 @@ sa_bug47030 () {
 	service amavis restart || true
 }
 
+sa_bug54194 () {
+	curl -s -k https://spamassassin.apache.org/updates/MIRRORED.BY -o /var/lib/spamassassin/3.004002/updates_spamassassin_org/MIRRORED.BY
+	sa-update
+}
+
 online_fsresize () {
 	# cloud-initramfs-growroot doesn't always work (bug #49337)
 	# Try on-line resizing
