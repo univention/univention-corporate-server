@@ -6,8 +6,8 @@ src: univention-config-registry
 fix: 15.0.7-14A~5.0.0.202111100923
 desc: |
  This update addresses the following issue:
- * `ucr commit` now prints a warning if a file is specified for which no template is
-   registered.
- * `UCR` now immediately closes file references when they are not used
-   anymore.
+ * `ucr commit` now prints a warning if a file is specified
+   for which no template is registered.
+ * UCR now immediately closes file references
+   when they are not used anymore.
 bug: [50010, 53811]
