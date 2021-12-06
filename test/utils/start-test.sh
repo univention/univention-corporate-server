@@ -17,6 +17,7 @@ kvm_template='generic-unsafe'
 kvm_build_server='lattjo.knut.univention.de'
 kvm_memory='2048M'
 kvm_cpus='1'
+kvm_label_suffix=''
 exact_match='false'
 ucsschool_release='scope'
 shutdown='false'
@@ -65,7 +66,7 @@ usage () {
 	echo "    KVM_BUILD_SERVER     - the KVM build server to use (default: $kvm_build_server)"
 	echo "    KVM_MEMORY           - ram for the KVM instance (default: $kvm_memory)"
 	echo "    KVM_CPUS             - cpu's for the KVM instance (default: $kvm_cpus)"
-	echo "    KVM_LABEL_SUFFIX     - additional label for instance name (default: None)"
+	echo "    KVM_LABEL_SUFFIX     - additional label for instance name (default: $kvm_label_suffix)"
 	echo "    SOURCE_ISO           - an iso to mount (default: None)"
 	echo ""
 	echo "  ucs-*-create"
@@ -200,6 +201,7 @@ export KVM_OLDUCSVERSION="${KVM_OLDUCSVERSION:=$old_release}"
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=$kvm_build_server}"
 export KVM_MEMORY="${KVM_MEMORY:=$kvm_memory}"
 export KVM_CPUS="${KVM_CPUS:=$kvm_cpus}"
+export KVM_LABEL_SUFFIX="${KVM_LABEL_SUFFIX:=$kvm_label_suffix}"
 export EXACT_MATCH="${EXACT_MATCH:=$exact_match}"
 export SHUTDOWN="${SHUTDOWN:=$shutdown}"
 export RELEASE_UPDATE="${release_update:=public}"
