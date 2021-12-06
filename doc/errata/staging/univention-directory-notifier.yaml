@@ -1,10 +1,10 @@
 product: ucs
-release: "5.0"
+release: '5.0'
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-directory-notifier
-fix: 14.0.5-5
+fix: 14.0.5-5A~5.0.0.202112061402
 desc: |
- This update addresses the following issue:
- * The package `univention-directory-notifier` has been migrated to Python 3.
+  This update addresses the following issue:
+  * The package `univention-directory-notifier` has been migrated to Python 3.
 bug: [53355]
