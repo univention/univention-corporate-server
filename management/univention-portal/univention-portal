@@ -454,7 +454,7 @@ def list_extensions():
 @click.argument("entry_dn")
 @click.option('--idps', '-i', multiple=True, default=[], help='List of IDPs to which the user has to belong in order to see the UCS Portal tile.')
 @click.option('--loa', '-l', type=click.Choice(['low', 'medium', 'high']), help='"Level of Assurance" the user has to use in order to see the UCS Portal tile. "LoA" is derived from the login mechanism used by the user')
-@click.option('--roles', '-r', multiple=True, default=[], type=click.Choice(['default', 'student', 'teacher']), help='List of roles to which the user has to belong in order to see the UCS Portal tile.')
+@click.option('--roles', '-r', multiple=True, default=[], type=click.Choice(['default', 'student', 'teacher', 'enotar']), help='List of roles to which the user has to belong in order to see the UCS Portal tile.')
 @click.option('--allow-anonymous/--disallow-anonymous', '-a/-d', help='Control over visibility of the UCS Portal tile for anonymous users.')
 @click.option('--remove', '-R', is_flag=True, help='Remove the entry for the specified dn.')
 def update_authinfo(entry_dn, roles, idps, loa, allow_anonymous, remove):
