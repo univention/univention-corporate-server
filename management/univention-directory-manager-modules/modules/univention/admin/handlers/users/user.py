@@ -2183,7 +2183,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		for group in self.oldinfo.get('groups', []):
 			groupObject = univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
-			groupObject.fast_member_remove([self.dn], self.oldattr.get('uid', []), ignore_license=True)
+			groupObject.fast_member_remove([self.dn], [x.decode('UTF-8') for x in self.oldattr.get('uid', [])], ignore_license=True)
 
 	def _move(self, newdn, modify_childs=True, ignore_license=False):
 		olddn = self.dn

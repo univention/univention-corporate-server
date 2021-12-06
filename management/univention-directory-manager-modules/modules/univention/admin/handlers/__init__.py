@@ -3112,7 +3112,7 @@ class simpleComputer(simpleLdap):
 				ud.debug(ud.ADMIN, ud.INFO, '__update_groups_after_namechange: removing memberUid from grp=%s' % (group,))
 				if oldUid in oldMemberUids:
 					oldMemberUids = oldUid
-					newMemberUids = ''
+					newMemberUids = b''
 					self.lo.modify(group, [('memberUid', oldMemberUids, newMemberUids)])
 
 			# we are doing the uniqueMember seperately because of a potential refint overlay that already changed the dn for us
