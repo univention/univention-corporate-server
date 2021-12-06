@@ -6,6 +6,6 @@ src: univention-join
 fix: 11.0.1-35A~4.4.0.202112031612
 desc: |
  This update addresses the following issue(s):
- * The file permissions of the /etc/machine.secret and /etc/machine.secret.SAVE 
+ * The file permissions of the /etc/machine.secret and /etc/machine.secret.SAVE
    files are now set before the files are written.
 bug: [49033]
