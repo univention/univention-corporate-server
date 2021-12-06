@@ -223,7 +223,7 @@ def verify_ldap_object(
 
 	return retry_on_error(
 		functools.partial(__verify_ldap_object, baseDn, expected_attr, strict, should_exist, primary),
-		(LDAPUnexpectedObjectFound, LDAPObjectNotFound, LDAPObjectValueMissing),
+		(LDAPUnexpectedObjectFound, LDAPObjectNotFound, LDAPObjectValueMissing, LDAPObjectUnexpectedValue),
 		retry_count,
 		delay)
 
