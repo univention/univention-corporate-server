@@ -391,7 +391,7 @@ class UCSInstallation(object):
 				self.click(self._['school_central'])
 			else:
 				raise NotImplementedError()
-			self.click(self._['next'])
+			self.move_to_next_and_click()
 
 	def bootmenu(self):
 		if self.text_is_visible('Univention Corporate Server Installer', timeout=120):
