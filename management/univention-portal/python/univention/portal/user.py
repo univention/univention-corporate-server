@@ -59,7 +59,9 @@ class User(object):
 		merged_args = self.args.get('linkedAccounts', self.args)
 		roles = set(merged_args.get('roles', []))
 		idps = set(merged_args.get('idps', []))
-		loa = merged_args.get('loa', ['low'])
+		loa = merged_args.get('loa', [])
+		if not loa:
+			loa = ['low']
 
 		def conditions():
 			yield not disallow_anonymous or not self.is_anonymous()
