@@ -18,24 +18,6 @@ from univention.appcenter.app_cache import Apps as FindApps
 from univention.appcenter.utils import call_process, get_local_fqdn
 
 
-def get_default_values(app):
-	from univention.appcenter.ini_parser import IniSectionAttribute
-	from univention.appcenter.settings import BoolSetting, FileSetting, IntSetting, ListSetting, PasswordFileSetting, PasswordSetting, StatusSetting, StringSetting, UDMListSetting
-	for kls in [StringSetting, IntSetting, BoolSetting, ListSetting, UDMListSetting, FileSetting, PasswordFileSetting, PasswordSetting, StatusSetting]:
-		if 'default_for_testing' not in kls._attrs:
-			attr = IniSectionAttribute()
-			attr.name = 'default_for_testing'
-			kls._attrs['default_for_testing'] = attr
-	app = FindApps().find(app)
-	app = FindApps().find_candidate(app) or app
-	ret = {}
-	for setting in app.get_settings():
-		value = setting.default_for_testing
-		if value is not None:
-			ret[setting.name] = setting.sanitize_value(app, value)
-	return ret
-
-
 class Apps(object):
 
 	def __init__(self):
@@ -124,7 +106,7 @@ class Apps(object):
 
 	def make_args(self, action, app):
 		host = get_local_fqdn()
-		settings = get_default_values(app)
+		settings = {}
 		return {
 			"action": action,
 			"auto_installed": [],
