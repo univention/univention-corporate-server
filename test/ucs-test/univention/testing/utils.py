@@ -39,6 +39,7 @@ import subprocess
 import sys
 import time
 import traceback
+from itertools import chain
 from enum import IntEnum
 from types import TracebackType  # noqa F401
 from typing import IO, Any, Callable, Dict, Iterable, List, NoReturn, Optional, Sequence, Text, Tuple, Type, TypeVar, Union  # noqa F401
@@ -188,6 +189,7 @@ def verify_ldap_object(
 	primary=False,  # type: bool
 	pre_check=None,  # type: Optional[Callable[..., None]]
 	pre_check_kwargs=None,  # type: Optional[Dict[str, Any]]
+	not_expected_attr=None,  # type: Optional[Dict[str, str]]
 ):  # type: (...) -> None
 	"""
 	Verify [non]existence and attributes of LDAP object.
@@ -203,12 +205,13 @@ def verify_ldap_object(
 	:param pre_check: function to execute before starting verification. Value should be a function object
 		like `utils.wait_for_replication`.
 	:param dict pre_check_kwargs: dict with kwargs to pass to `pre_check()` call
+	:param dict not_expected_attr: attributes and their values that the LDAP object is NOT expected to have
 	:return: None
 	:raises LDAPObjectNotFound: when no object was found at `baseDn`
 	:raises LDAPUnexpectedObjectFound: when an object was found at `baseDn`, but `should_exist=False`
 	:raises LDAPObjectValueMissing: when a value listed in `expected_attr` is missing in the LDAP object
 	:raises LDAPObjectUnexpectedValue: if `strict=True` and a multi-value attribute of the LDAP object
-		has more values than were listed in `expected_attr`
+		has more values than were listed in `expected_attr` or an `not_expected_attr` was found
 	:raises TypeError: if the value of `pre_check` is not a function object
 	"""
 	ucr = UCR
@@ -222,22 +225,24 @@ def verify_ldap_object(
 		pre_check(**(pre_check_kwargs or {}))
 
 	return retry_on_error(
-		functools.partial(__verify_ldap_object, baseDn, expected_attr, strict, should_exist, primary),
+		functools.partial(__verify_ldap_object, baseDn, expected_attr, strict, should_exist, primary, not_expected_attr),
 		(LDAPUnexpectedObjectFound, LDAPObjectNotFound, LDAPObjectValueMissing, LDAPObjectUnexpectedValue),
 		retry_count,
 		delay)
 
 
-def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True, primary=False):
+def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True, primary=False, not_expected_attr=None):
 	# type: (str, Optional[Dict[str, str]], bool, bool, bool) -> None
 	if expected_attr is None:
 		expected_attr = {}
+	if not_expected_attr is None:
+		not_expected_attr = {}
 	try:
 		dn, attr = get_ldap_connection(primary=primary).search(
 			filter='(objectClass=*)',
 			base=baseDn,
 			scope=ldap.SCOPE_BASE,
-			attr=expected_attr.keys()
+			attr=set(chain(expected_attr.keys(), not_expected_attr.keys()))
 		)[0]
 	except (ldap.NO_SUCH_OBJECT, IndexError):
 		if should_exist:
@@ -261,6 +266,15 @@ def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=T
 			difference = found_values - expected_values
 			if difference:
 				unexpected_values[attribute] = difference
+
+	for attribute, not_expected_values_ in not_expected_attr.items():
+		if strict and attribute in expected_attr.keys():
+			continue
+		found_values = set(attr.get(attribute, []))
+		not_expected_values = {x if isinstance(x, bytes) else x.encode('UTF-8') for x in not_expected_values_}
+		intersection = found_values.intersection(not_expected_values)
+		if intersection:
+			unexpected_values[attribute] = intersection
 
 	mixed = dict((key, (values_missing.get(key), unexpected_values.get(key))) for key in list(values_missing) + list(unexpected_values))
 	msg = u'DN: %s\n%s\n' % (

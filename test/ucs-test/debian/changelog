@@ -1,3 +1,9 @@
+ucs-test (10.0.6-80) unstable; urgency=medium
+
+  * Bug #54193: verify_ldap_object check not expected attr
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 06 Dec 2021 19:12:54 +0100
+
 ucs-test (10.0.6-79) unstable; urgency=medium
 
   * Bug #53717: Retry on LDAPunexpectedvalue too
