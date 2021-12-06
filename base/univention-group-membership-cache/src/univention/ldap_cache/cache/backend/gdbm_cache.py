@@ -39,6 +39,8 @@ from univention.ldap_cache.cache.backend import Caches, LdapCache, Shard, _s
 from univention.ldap_cache.log import log, debug
 
 
+MAX_FAIL_COUNT = 5
+
 class GdbmCaches(Caches):
 	def _add_sub_cache(self, name, single_value, reverse):
 		db_file = os.path.join(self._directory, '%s.db' % name)
@@ -50,6 +52,11 @@ class GdbmCaches(Caches):
 
 
 class GdbmCache(LdapCache):
+	def __init__(self, *args, **kwargs):
+		self.fail_count = 0
+		super(GdbmCache, self).__init__(*args, **kwargs)
+		log('%s - Recreating!', self.name)
+
 	def _fix_permissions(self):
 		listener_uid = getpwnam('listener').pw_uid
 		os.chown(self.db_file, listener_uid, -1)
@@ -96,9 +103,17 @@ class GdbmCache(LdapCache):
 		self._fix_permissions()
 
 	def cleanup(self):
-		log('%s - Cleaning up DB', self.name)
 		with self.writing() as db:
-			db.reorganize()
+			try:
+				db.reorganize()
+			except gdbm.error:
+				if self.fail_count > MAX_FAIL_COUNT:
+					raise
+				self.fail_count += 1
+				log('%s - Cleaning up DB FAILED %s times', self.name, self.fail_count)
+			else:
+				log('%s - Cleaning up DB WORKED', self.name)
+				self.fail_count = 0
 		self._fix_permissions()
 
 	def delete(self, key, values, writer=None):
