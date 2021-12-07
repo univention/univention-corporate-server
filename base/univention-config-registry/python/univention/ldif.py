@@ -46,6 +46,11 @@ __all__ = [
 	"ldif_normalize",
 ]
 
+try:
+	BrokenPipeError
+except NameError:  # pragma: no cover
+	BrokenPipeError = EnvironmentError
+
 RE_B64 = re.compile(r'^([a-zA-Z0-9-]+):: (.*)')
 
 
