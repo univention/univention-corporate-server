@@ -1,3 +1,9 @@
+univention-config-registry (15.0.7-17) unstable; urgency=low
+
+  * Bug #54208: Convert to Python 3
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 26 Jan 2022 17:55:29 +0100
+
 univention-config-registry (15.0.7-16) unstable; urgency=medium
 
   * Bug #20933: add get_int() for univention.config_registry.ConfigRegistry

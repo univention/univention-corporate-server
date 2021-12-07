@@ -1,4 +1,4 @@
-#!/usr/bin/pytest
+#!/usr/bin/pytest-3
 # vim:set fileencoding=utf-8:
 """Unit test for univention.config_registry.misc."""
 

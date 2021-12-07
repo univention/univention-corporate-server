@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """Unit test for :py:mod:`univention.config_registry_info`"""
 # pylint: disable-msg=C0103,E0611,R0904
 

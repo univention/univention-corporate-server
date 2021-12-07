@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """Unit test for univention.config_registry.filters."""
 # vim:set fileencoding=utf-8:
 
