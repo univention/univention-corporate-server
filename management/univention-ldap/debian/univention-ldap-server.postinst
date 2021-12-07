@@ -117,7 +117,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 13.0.3-5; 
 fi
 
 # set ldap/refint to false for updates
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 15.0.3-5; then
+if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 16.0.7-7; then
 	ucr set ldap/refint=false
 fi
 
