@@ -93,7 +93,11 @@ def pytest_runtest_setup(item):
 def check_tags(item):
 	tags_required = set(item.config.getoption("--ucs-test-tags-required") or [])
 	tags_prohibited = set(item.config.getoption("--ucs-test-tags-prohibited") or [])
-	tags = set(tag for mark in item.iter_markers(name="tags") for tag in mark.args) or set(item.config.getoption("--ucs-test-default-tags", []))
+	tags = {
+		tag
+		for mark in item.iter_markers(name="tags")
+		for tag in mark.args
+	} or set(item.config.getoption("--ucs-test-default-tags", []))
 
 	prohibited = tags & tags_prohibited
 	if prohibited:
@@ -107,15 +111,23 @@ def check_tags(item):
 def check_roles(item):
 	from univention.config_registry import ucr
 	from univention.testing.data import CheckRoles
-	roles_required = set(role for mark in item.iter_markers(name="roles") for role in mark.args)
-	roles_prohibited = set(role for mark in item.iter_markers(name="roles_not") for role in mark.args)
+	roles_required = {
+		role
+		for mark in item.iter_markers(name="roles")
+		for role in mark.args
+	}
+	roles_prohibited = {
+		role
+		for mark in item.iter_markers(name="roles_not")
+		for role in mark.args
+	}
 	overlap = roles_required & roles_prohibited
 	if overlap:
 		roles = roles_required - roles_prohibited
 	elif roles_required:
-		roles = set(roles_required)
+		roles = roles_required
 	else:
-		roles = set(CheckRoles.ROLES) - set(roles_prohibited)
+		roles = set(CheckRoles.ROLES) - roles_prohibited
 
 	if ucr['server/role'] not in roles:
 		pytest.skip('Wrong role: %s not in (%s)' % (ucr['server/role'], ','.join(roles)))
