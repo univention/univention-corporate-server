@@ -313,6 +313,7 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
+ python3-pytest,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Provides:

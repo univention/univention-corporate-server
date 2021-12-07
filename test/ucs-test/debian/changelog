@@ -1,3 +1,9 @@
+ucs-test (10.0.6-81) unstable; urgency=low
+
+  * Bug #53355: UDN translog tests
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 07 Dec 2021 08:31:15 +0100
+
 ucs-test (10.0.6-80) unstable; urgency=medium
 
   * Bug #54193: verify_ldap_object check not expected attr
