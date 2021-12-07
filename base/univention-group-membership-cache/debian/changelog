@@ -1,3 +1,9 @@
+univention-group-membership-cache (2.0.0-4) unstable; urgency=medium
+
+  * Bug #54182: Retry on reorganize
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 07 Dec 2021 11:48:19 +0100
+
 univention-group-membership-cache (2.0.0-3) unstable; urgency=medium
 
   * Bug #54182: Do not open in blocking mode
