@@ -1,3 +1,9 @@
+univention-base-files (9.0.3-6) unstable; urgency=medium
+
+  * Bug #54184: Confusing text in /etc/motd
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de  >  Mon, 06 Dec 2021 13:29:51 +0100
+
 univention-base-files (9.0.3-5) unstable; urgency=medium
 
   * Bug #53343: Replace of subprocess.Popen with subprocess.call in nfsmounts.py
