@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """Unit test for univention.config_registry.backend."""
 # vim:set fileencoding=utf-8:
 # pylint: disable-msg=C0103,E0611,R0904

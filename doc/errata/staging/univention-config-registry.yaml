@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-config-registry
+fix: 15.0.7-17
+desc: |
+ This update addresses the following issue:
+ * The remaining scripts have all been migrated to Python 3.
+bug: [54208]
