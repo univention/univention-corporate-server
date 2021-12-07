@@ -19,6 +19,7 @@ Build-Depends:
  python-pytest-cov,
  python-pytest-mock,
  python-pytest-timeout,
+ python-setuptools,
  python-six,
  python-typing,
  python-univention-debhelper,
@@ -31,6 +32,7 @@ Build-Depends:
  python3-pytest-cov,
  python3-pytest-mock,
  python3-pytest-timeout,
+ python3-setuptools,
  python3-six,
  python3-univention-debhelper,
 Standards-Version: 3.5.2
