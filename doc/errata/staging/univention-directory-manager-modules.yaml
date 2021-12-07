@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-directory-manager-modules
-fix: 15.0.11-27A~5.0.0.202112022225
+fix: 15.0.11-28A~5.0.0.202112061634
 desc: |
  This update addresses the following issue(s):
  * UDM can now handle environments where the refint module for uniqueMember

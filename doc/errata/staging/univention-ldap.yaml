@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-ldap
-fix: 16.0.7-7A~5.0.0.202112022211
+fix: 16.0.7-8A~5.0.0.202112071104
 desc: |
  This update addresses the following issue(s):
  * On a Primary, the refint module can now be enabled in slapd by setting the
