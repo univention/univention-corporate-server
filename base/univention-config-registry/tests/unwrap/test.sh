@@ -11,17 +11,18 @@ then
 fi
 errors=0
 run () {
-	local prog="$1" in="$2" out="${2%in}out"
-	"$prog" <"$in" | diff -y --suppress-common-lines - "$out" || { echo "-- $prog $in"; errors=$((errors +1)); }
+	local in="$1" out="${1%in}out"
+	shift
+	"$@" <"$in" | diff -y --suppress-common-lines - "$out" || { echo "-- $* $in"; errors=$((errors +1)); }
 }
 for file in *.in
 do
 	echo "===== $file ====="
-	run ../../scripts/ldapsearch-wrapper "$file"
-	run ./unwrap.py "$file"
-	run ./unwrap.sh "$file"
-	run ./unwrap.sed "$file"
-	run ./unwrap.sed2 "$file"
-	[ -x unwrap ] && run ./unwrap "$file"
+	run "$file" ../../scripts/ldapsearch-wrapper
+	run "$file" ./unwrap.py
+	run "$file" ./unwrap.sh
+	run "$file" ./unwrap.sed
+	run "$file" ./unwrap.sed2
+	[ -x unwrap ] && run "$file" ./unwrap
 done
 exit $errors
