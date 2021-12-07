@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-base-files
-fix: 
+fix: 9.0.3-6A~5.0.0.202112071429
 desc: |
  This update addresses the following issue(s):
  * Bug fixed, confusing text in /etc/motd
