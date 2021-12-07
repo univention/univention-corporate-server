@@ -14,6 +14,15 @@ group="$(random_chars)"
 
 info "Create group and a member for it"
 
+old="$(ucr get ldap/refint)"
+ucr set ldap/refint=false
+service slapd restart
+trap '
+ucr set ldap/refint="$old"
+service slapd restart
+' INT TERM EXIT
+
+
 udm groups/group create \
 	--position="cn=groups,$ldap_base" \
 	--set name="$group" \
