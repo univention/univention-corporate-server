@@ -45,7 +45,6 @@ static notify_cache_t *cache;
 static int entry_min_pos = 0;
 static int max_filled = 0;
 
-#define MAX(x,y) (((x)>(y))?(x):(y))
 
 int notifier_cache_init ( unsigned long max_id)
 {
@@ -63,7 +62,7 @@ int notifier_cache_init ( unsigned long max_id)
 		cache[i].command='n';
 	}
 
-	for ( i=MAX(max_id - (notifier_cache_size-1), 1); i <= max_id; i++) {
+	for ( i=max(max_id - (notifier_cache_size-1), 1); i <= max_id; i++) {
 		char *p, *pp;
 
 		buffer=notify_transcation_get_one_dn ( i );

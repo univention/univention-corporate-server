@@ -1,4 +1,4 @@
-univention-directory-notifier (13.0.3-4) unstable; urgency=medium
+univention-directory-notifier (13.0.3-5) unstable; urgency=medium
 
   * Bug #51911: Improve handling of invalid TID values like "<TransID>" and 0
 
