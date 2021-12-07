@@ -1,3 +1,9 @@
+ucs-test (10.0.6-84) unstable; urgency=medium
+
+  * Bug #54185: The test 52proofuniquemember required refint to be disabled
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 07 Dec 2021 20:06:16 +0100
+
 ucs-test (10.0.6-83) unstable; urgency=medium
 
   * Bug #54182: Fix ldap cache tests
