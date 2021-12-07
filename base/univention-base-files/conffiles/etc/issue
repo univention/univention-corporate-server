@@ -38,7 +38,7 @@ if role in ROLES:
 		print('Univention Management Console.')
 
 	print('')
-	print('You can log into the Univention Management Console - the principal tool to manage ')
+	print('You can log into the Univention Management Console - the main tool to manage ')
 	print('users, groups, etc. - using the "Administrator" account and the password selected ')
 	print('for the root user on the Primary Directory Node.')
 
