@@ -31,6 +31,9 @@
 # <https://www.gnu.org/licenses/>.
 
 export PYBUILD_NAME=univention-config-registry
+export PYBUILD_INSTALL_ARGS=--install-scripts=../univention-config/usr/bin/
+export PYBUILD_AFTER_INSTALL=$(RM) '{destdir}/{install_dir}/univention/__init__.py'
+export PYBUILD_AFTER_INSTALL_python2=$(RM) '{destdir}/{install_dir}/univention/__init__.py' '{destdir}/{install_dir}/univention/ldif.py'
 
 %:
 	dh $@ --with 'python2,python3'
@@ -46,7 +49,16 @@ override_dh_auto_configure-arch:
 	aclocal
 	autoconf
 	automake --add-missing
-	dh_auto_configure
+	dh_auto_configure --buildsystem autoconf
+
+override_dh_auto_configure-indep:
+	dh_auto_configure --buildsystem pybuild
+
+override_dh_auto_build-arch:
+	dh_auto_build --buildsystem autoconf
+
+override_dh_auto_build-indep:
+	dh_auto_build --buildsystem pybuild
 
 override_dh_auto_test-indep:
 	pytest
@@ -55,6 +67,12 @@ override_dh_auto_test-indep:
 
 override_dh_auto_test-arch:
 	$(MAKE) -C tests check
+
+override_dh_auto_install-arch:
+	dh_auto_install --buildsystem autoconf
+
+override_dh_auto_install-indep:
+	dh_auto_install --buildsystem pybuild
 
 version := $(shell dpkg-parsechangelog -SVersion)
 override_dh_installinit-indep:
