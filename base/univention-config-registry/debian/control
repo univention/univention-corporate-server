@@ -39,8 +39,6 @@ Standards-Version: 3.5.2
 
 Package: univention-config-registry
 Architecture: all
-Pre-Depends:
- dpkg (>= 1.15.7.2),
 Depends:
  univention-base-files,
  univention-base-packages,
@@ -59,9 +57,7 @@ Package: univention-config
 Architecture: all
 Depends:
  ldap-utils,
- python-debian,
  python3-debian,
- python-univention-config-registry (= ${source:Version}),
  python3-univention-config-registry (= ${source:Version}),
  ${misc:Depends},
  ${python:Depends},
@@ -158,8 +154,6 @@ Depends:
  python3-univention-debhelper,
  ${misc:Depends},
  ${python3:Depends},
-Provides:
- ${python3:Provides},
 Description: UCS - Python 3 interface to configuration registry
  This package includes the Python interface to the
  UCS configuration manager.

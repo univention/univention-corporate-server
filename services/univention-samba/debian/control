@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
+ python2,
  univention-config-dev (>= 15.0.3),
 Standards-Version: 3.5.2
 

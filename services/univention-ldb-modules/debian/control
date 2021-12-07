@@ -6,6 +6,7 @@ Build-Depends:
  debhelper,
  ldb-tools,
  libunivention-config-dev,
+ python,
  python3,
  samba-dev,
  univention-config-dev (>= 15.0.3),
