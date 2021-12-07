@@ -1,4 +1,4 @@
-univention-group-membership-cache (2.0.0-4) unstable; urgency=medium
+univention-group-membership-cache (2.0.0-5) unstable; urgency=medium
 
   * Bug #54182: Retry on reorganize
 
