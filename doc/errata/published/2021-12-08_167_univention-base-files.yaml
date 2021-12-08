@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * A confusing text in `/etc/motd` has been fixed.
 bug: [54184]
+erratum: 167
+announced: 2021-12-08
