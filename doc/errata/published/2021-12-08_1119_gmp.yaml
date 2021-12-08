@@ -11,3 +11,5 @@ desc: |
 bug: [54199]
 cve:
 - CVE-2021-43618
+erratum: 1119
+announced: 2021-12-08
