@@ -1,3 +1,9 @@
+univention-updater (15.0.3-72) unstable; urgency=medium
+
+  * Bug #54213: Adapt links and components for 5.0-1
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 08 Dec 2021 18:26:02 +0100
+
 univention-updater (15.0.3-71) unstable; urgency=medium
 
   * Bug #53954: prevent UCS@school upgrade with computerrooms
