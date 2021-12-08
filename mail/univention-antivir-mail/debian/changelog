@@ -1,3 +1,10 @@
+univention-antivir-mail (11.0.0-2) unstable; urgency=medium
+
+  * Bug #54070: resolved permission issues by changing the owner of
+    "/var/lib/clamav" to the clamav user 
+
+ -- Alexander Steffen <steffen@univention.de>  Fri, 17 Dec 2021 11:20:16 +0100
+
 univention-antivir-mail (11.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
