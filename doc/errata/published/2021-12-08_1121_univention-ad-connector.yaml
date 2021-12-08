@@ -10,3 +10,5 @@ desc: |
    configurable via a new UCR variable `connector/ad/max_retry_rejected`,
    which defaults to 10 tries.
 bug: [49867]
+erratum: 1121
+announced: 2021-12-08
