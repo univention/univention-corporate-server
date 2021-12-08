@@ -11,3 +11,5 @@ desc: |
    integrity for the attribute `uniqueMember`. For updates the module will not
    be enabled by default.
 bug: [54185]
+erratum: 174
+announced: 2021-12-08
