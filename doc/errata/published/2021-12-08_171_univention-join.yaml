@@ -9,3 +9,5 @@ desc: |
  * Viewing the `join.log` in UMC now shows the newest entries instead of the
    first 2MB only.
 bug: [53941]
+erratum: 171
+announced: 2021-12-08
