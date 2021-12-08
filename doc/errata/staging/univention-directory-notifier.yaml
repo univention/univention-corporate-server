@@ -6,13 +6,13 @@ src: univention-directory-notifier
 fix: 13.0.3-6A~4.4.0.202112080915
 desc: |
  This update addresses the following issue:
- *  The notifier aborts if the transaction ID issued by the OpenLDAP translog
-    overlay is not a valid integer.
+ * The notifier aborts if the transaction ID issued by the OpenLDAP translog
+   overlay is not a valid integer.
  * Restarting the systemd unit is now limited to 50 times in an observation
    window of 1000 seconds.
- * The script `univention-translog` recognizes the special values "<TransID>"
-    and "0" and is able to fix them.
+ * The script `univention-translog` recognizes the special values `<TransID>`
+   and `0` and is able to fix them.
  * The script `univention-translog` now also checks the file
-   "listener/listener.priv" if that exists.
+   `listener/listener.priv` if that exists.
  * Log messages of `univention-translog` have been improved.
 bug: [53821]
