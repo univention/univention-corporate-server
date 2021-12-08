@@ -9,3 +9,5 @@ desc: |
  * The Nagios plugin `check_univention_slapd_mdb_maxsize` now takes the number
    of free pages into account for checking the size of the LDAP database.
 bug: [49291]
+erratum: 1123
+announced: 2021-12-08
