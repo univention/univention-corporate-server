@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The package was added to provide a fast user and group membership cache.
 bug: [54182]
+erratum: 170
+announced: 2021-12-08
