@@ -5,10 +5,10 @@ scope: ucs_4.4-0-errata4.4-8
 src: univention-ldap
 fix: 15.0.3-8A~4.4.0.202112031619
 desc: |
- This update addresses the following issue(s):
- * On a Primary, the refint module can now be enabled in slapd by setting the
-   UCR variable ldap/refint=true. It enforces referential integrity for the
-   attribute uniqueMember. For updates, the module will not be enabled by
-   default.
- * The file /etc/machine.secret.SAVE is no longer readable by everyone.
+ This update addresses the following issues:
+ * On the Primary the LDAP server module `refint` can now be enabled by
+   setting the UCR variable `ldap/refint=true`. It enforces referential
+   integrity for the attribute `uniqueMember`. For updates the module will not
+   be enabled by default.
+ * The file `/etc/machine.secret.SAVE` is no longer readable by everyone.
 bug: [48956, 49033]
