@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-de-5.0-0">
+<book lang="de" id="releasenotes-de-5.0-1">
 	<bookinfo>
 		<title>UCS 5.0 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 5.0-0</subtitle>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 5.0-1</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,71 +44,16 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit &ucsUCS; 5.0-0 steht das fünfte Major Release für &ucsUCS; (UCS) zur Verfügung.
+			Mit &ucsUCS; 5.0-1 steht das fünfte Major Release für &ucsUCS; (UCS) zur Verfügung.
 			Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen.
 			Die wichtigsten Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-					Dieses neue Major &ucsUCS; Release basiert auf Debian 10.9 <wordasword>Buster</wordasword>.
-					Viele Pakete liegen in neuerer Version vor.
-					Einige Beispiele sind der Linux-Kernel (4.19), PostgreSQL (11), Python 3 (3.7) und Samba (4.13.7).
+					Dieses &ucsUCS; Release basiert auf Debian 10.9 <wordasword>Buster</wordasword>.
 			</para></listitem>
 			<listitem><para>
-					Das Portal wurde aktualisiert um die zentrale Anlaufstelle für &ucsUCS; Nutzer zu sein.
-					Apps und Webseiten lassen sich als <literal>frame</literal> im Portal einbinden (<literal>iframe</literal>).
-					Nutzer können dadurch schnell Apps öffnen und zwischen ihnen wechseln.
-					Organisationen können ihre Identität durch eine zentrale Seite stärken, auf der alle Apps zu finden sind.
-			</para></listitem>
-			<listitem><para>
-					Python ist die Sprache der Wahl für viele &ucsUCS; Komponenten, ein Großteil wurde migriert um auf Python 3.7 zu laufen.
-					Python 2.7 wird mit UCS 5.0 weiter unterstützt, wird aber zu UCS 5.1 entfernt.
-			</para></listitem>
-			<listitem><para>
-					Die &ucsUMC; ist jetzt in einem dunklen Design gehalten.
-					Ein helles Design wird mit einem Update nachgeliefert werden.
-			</para></listitem>
-			<listitem><para>
-					Die Systemrollen wurden umbenannt.
-					"&ucsMaster;" wurde umbenannt zu "&ucsPrimaryDN;", "&ucsBackup;" zu "&ucsBackupDN;", "&ucsSlave;" zu "&ucsReplicaDN;" und "&ucsMember;" zu "&ucsManagedNode;".
-					Dies ist noch nicht abgeschlossen, in diesem Release wurden die Dokumentation und <literal>UI-Texte</literal> angepasst.
-			</para></listitem>
-			<listitem><para>
-					Software-Installation erfolgt nun ausschließlich über das App Center.
-					Die Software-Auswahl während des Installationsprozesses eines &ucsUCS; Nodes wurde entfernt.
-			</para></listitem>
-			<listitem><para>
-					Es können jetzt mehrere Apps in einem Schritt über das App Center installiert werden.
-					Abhängigkeiten zwischen Apps werden automatisch aufgelöst indem mehrere Apps installiert werden, falls sie in der Domäne benötigt werden.
-					Die Funktion mehrere Apps zu installieren ersetzt die Software-Auswahl während des Installationsprozesses.
-			</para></listitem>
-			<listitem><para>
-					Ob ein &ucsUCS; bereit für ein Upgrade von 4.4 auf 5.0 ist, kann über das hier verlinkte <ulink url="https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-0">Skript</ulink> geprüft werden.
-					<package>univention-upgrade</package> wird das Upgrade nicht durchführen, wenn diese Tests nicht erfolgreich sind.
-					Eine ausführliche Anleitung zum Upgrade ist in <xref linkend="relnotes:prepare"/> zu finden.
-			</para></listitem>
-			<listitem><para>
-					Die Paketquellen wurden auf eine feste Anzahl von zwei reduziert, eine für das Release und eine für Errata-Updates.
-					Dadurch wird das Aktualisieren des <package>apt</package> Paket Metadaten-<literal>Caches</literal> beschleunigt, vor allem für spätere UCS 5 Releases.
-					Hierfür waren Änderungen am Paketdepot nötig, ein lokales UCS 4.x Paketdepot wird keine UCS 5.x Pakete ausliefern können, siehe auch <xref linkend="relnotes:localrepo"/>.
-			</para></listitem>
-			<listitem><para>
-					&ucsUCRV;n können jetzt einen Vorgabewert haben, welcher zurückgegeben wird falls die Variable nicht gesetzt ist.
-					Es ist zu beachten, dass noch nicht alle Pakete dieses Feature nutzen sondern Vorgabewerte teilweise direkt im <literal>Template</literal> definieren.
-			</para></listitem>
-			<listitem><para>
-					Der Linux-Kernel, inklusive der signierten UEFI <literal>secure boot</literal> Variante, welcher mit UCS 5 ausgeliefert wird, ist nun identisch zum Kernel in Debian.
-			</para></listitem>
-			<listitem><para>
-					Die &ucsUMC; hat ein neues <wordasword>Willkommensmodul</wordasword> erhalten, um Administratoren durch die ersten Schritte bei der Nutzung eines &ucsUCS; zu führen,
-					zum Beispiel durch das Anfordern einer Lizenz oder die Installation von Apps.
-			</para></listitem>
-			<listitem><para>
-					Für eine einheitlichere und einfachere Verwaltung von Diensten sind die Dienste <systemitem class="service">&ucsUDL;</systemitem>, <systemitem class="service">&ucsUDN;</systemitem> und <systemitem class="service">univention-dhcp</systemitem> von <package>runit</package>-Diensten zu nativen <package>systemd</package>-Diensten umgestellt worden.
-			</para></listitem>
-			<listitem><para>
-					Eine vollständige Liste von Änderungen und Verbesserungen in diesem Release findet sich in <xref linkend="relnotes:changelog"/> am Ende dieses Dokumentes.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -312,30 +257,6 @@
 			</para>
 		</section>
 
-		<section id="relnotes:samba">
-			<title>Änderungen in Samba</title>
-				<para>
-					Samba wurde auf die Version 4.13.7 aktualisiert und enthält auch den Patch für die Sicherheitslücke CVE-2021-20254 aus 4.13.8.
-					Weitere Details dazu und zu den folgenden Punkten sind im Changelog weiter unten aufgeführt.
-				</para>
-				<para>
-					Während des Updates auf UCS 5 konvertiert Samba die SAM-Datenbank auf ein neues Index-Format.
-					Da diese Operation transaktionsbasiert erfolgt, verdoppelt sich der Speicherbedarf der
-					<literal>sam.ldb</literal> Dateien temporär.
-					Standardmäßig verwendet Samba das TDB Datenbankformat als Backend, welches auf 4GB beschränkt ist.
-					Vor dem UCS Update wird geprüft, ob eine der fünf <wordasword>TDB-Dateien</wordasword> schon nahe oder über der halben maximalen Kapazität ist.
-					Falls das der Fall ist, wird das Update blockiert, um zu vermeiden,
-					dass nach dem Update die Services für Windows nicht funktionsfähig sind
-					und ein Link zu einem Migrationsleitfaden wird angezeigt.
-				</para>
-				<para>
-					Unterstützung für die SMB1 Protokollversion wurde deaktiviert, weil sie heutigen Sicherheitsanforderungen nicht genügt.
-				</para>
-				<para>
-					Unterstützung für <literal>DES</literal> Verschlüsselung von Kerberos-Schlüsseln wurde entfernt.
-				</para>
-		</section>
-
 		<section id="relnotes:defaultmasterpkg">
 			<title>Hinweise zu <foreignphrase>Default-Master-Paketen</foreignphrase></title>
 			<para>
@@ -359,7 +280,7 @@
 	<chapter id="relnotes:bootloader">
 		<title>Gleichzeitiger Betrieb von UCS und Debian auf UEFI Systemen</title>
 		<para>
-			Beginnend mit UCS 5.0-0 wird ein gleichzeitiger Betrieb von UCS und Debian auf einem UEFI System nicht unterstützt.
+			Beginnend mit UCS 5.0-1 wird ein gleichzeitiger Betrieb von UCS und Debian auf einem UEFI System nicht unterstützt.
 		</para>
 		<para>
 			Ursache hierfür ist der Bootloader GRUB von &ucsUCS;, der teilweise die gleichen Konfigurationsdateien wie Debian verwendet.
@@ -376,7 +297,7 @@
 		<title>Lokales Repository</title>
 
 		<para>
-			Dieser Abschnitt ist für Umgebungen relevant, in denen ein <ulink url="https://docs.software-univention.de/handbuch-4.4.html#software::createrepo">lokales Repository</ulink> eingerichtet ist.
+			Dieser Abschnitt ist für Umgebungen relevant, in denen ein <ulink url="https://docs.software-univention.de/handbuch-5.0.html#software::createrepo">lokales Repository</ulink> eingerichtet ist.
 			Die installierte (Major-)Version von UCS bestimmt welche Pakete ein lokales Repository bereitstellt.
 			Ein Repository das auf einem UCS Server in Version 4.x betrieben wird stellt nur Pakete bis zur Version UCS 4.x bereit, ein Repository auf einem UCS 5 Server stellt nur Pakete für UCS 5 und neuere Versionen bereit.
 			Um in einer Umgebung mit lokalem Repository Systeme auf UCS 5 zu aktualisieren, bestehen unter anderem die folgenden Möglichkeiten.
@@ -432,11 +353,11 @@
 		</para>
 		<screen><![CDATA[
 # download
-curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-0{.gpg,}
+curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-1{.gpg,}
 
 # verify and run script
-apt-key verify pre-update-checks-5.0-0{.gpg,} &&
-  bash pre-update-checks-5.0-0
+apt-key verify pre-update-checks-5.0-1{.gpg,} &&
+  bash pre-update-checks-5.0-1
 
 ...
 
@@ -538,7 +459,7 @@ Checking ldap_schema ...                          OK
 			Aufgeführt sind die Änderungen seit UCS <productnumber>4.4-8</productnumber>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-5.0-0.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-5.0-1.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 
 	<bibliography id="bibliography">
