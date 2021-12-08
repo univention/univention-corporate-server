@@ -72,4 +72,4 @@ If the package contains other Python or JavaScript files, `univention-l10n-build
 
 Translation package
 -------------------
-See [Chapter Translating UCS](https://docs.software-univention.de/developer-reference-4.4.html#chap:translation)
+See [Chapter Translating UCS](https://docs.software-univention.de/developer-reference-5.0.html#chap:translation)

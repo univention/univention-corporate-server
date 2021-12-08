@@ -1,6 +1,6 @@
 dn: univentionAppID=self-service_4.0,cn=self-service,cn=apps,cn=univention,dc=intranet,dc=example,dc=de
-univentionAppWebsite: [de] http://docs.software-univention.de/handbuch-4.4.html#user-management:password-changes-by-users:self-service
-univentionAppWebsite: [en] http://docs.software-univention.de/manual-4.4.html#user-management:password-changes-by-users:self-service
+univentionAppWebsite: [de] https://docs.software-univention.de/handbuch-5.0.html#user-management:password-changes-by-users:self-service
+univentionAppWebsite: [en] https://docs.software-univention.de/manual-5.0.html#user-management:password-changes-by-users:self-service
 objectClass: univentionApp
 objectClass: top
 objectClass: univentionObject

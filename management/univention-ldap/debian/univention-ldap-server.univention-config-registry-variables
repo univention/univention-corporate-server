@@ -187,8 +187,8 @@ Type=str
 Categories=service-ldap
 
 [ldap/database/mdb/envflags]
-Description[de]=Mit dieser Variable können detailliertere Einstellungen zum MDB Datenbank-Backend konfiguriert werden. Mehrere Werte werden durch Leerzeichen getrennt. Mögliche Werte sind  nosync, nometasync, writemap, mapasync und nordahead. Weiter eInmformationen sind im UCS Performance Guide unter <https://docs.software-univention.de/performance-guide-4.4.html> zu finden.
-Description[en]=This variable specifies flags for finer-grained control of the mdb database backend handling. Multiple attributes are separated by spaces. Possible values are nosync, nometasync, writemap, mapasync and nordahead. More details can be found in the UCS performance guide at <https://docs.software-univention.de/performance-guide-4.4.html>.
+Description[de]=Mit dieser Variable können detailliertere Einstellungen zum MDB Datenbank-Backend konfiguriert werden. Mehrere Werte werden durch Leerzeichen getrennt. Mögliche Werte sind  nosync, nometasync, writemap, mapasync und nordahead. Weiter eInmformationen sind im UCS Performance Guide unter <https://docs.software-univention.de/performance-guide-5.0.html> zu finden.
+Description[en]=This variable specifies flags for finer-grained control of the mdb database backend handling. Multiple attributes are separated by spaces. Possible values are nosync, nometasync, writemap, mapasync and nordahead. More details can be found in the UCS performance guide at <https://docs.software-univention.de/performance-guide-5.0.html>.
 Type=str
 Categories=service-ldap
 

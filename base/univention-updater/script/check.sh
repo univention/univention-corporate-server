@@ -793,7 +793,7 @@ update_check_adc_mapping () {  # Bug #52044
 		echo "         It needs to be reverted to the original and the adjusted mapping should be converted into a python file"
 		echo "         named /etc/univention/connector/ad/localmapping.py which must define a function named \"mapping_hook\""
 		echo "         which receives the original ad_mapping as argument and must return a (possibly customized) ad_mapping"
-		echo "         (See also https://docs.software-univention.de/manual-4.4.html#windows:groups:CustomMappings)."
+		echo "         (See also https://docs.software-univention.de/manual-5.0.html#windows:groups:CustomMappings)."
 		echo "         "
 		echo "         Please also note that the mapping code needs to be compatible with Python 3.7"
 		echo "         (See also https://docs.software-univention.de/developer-reference-5.0.html)."
