@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-nagios
 fix: 13.0.2-2A~5.0.0.202112031454
 desc: |
- This update addresses the following issues:
- * The nagios plugin check_univention_slapd_mdb_maxsize now
-   takes the number of free pages into account.
+ This update addresses the following issue:
+ * The Nagios plugin `check_univention_slapd_mdb_maxsize` now takes the number
+   of free pages into account for checking the size of the LDAP database.
 bug: [54186]
