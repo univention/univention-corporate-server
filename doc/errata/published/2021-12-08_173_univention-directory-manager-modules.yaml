@@ -9,3 +9,5 @@ desc: |
  * UDM can now handle environments where the module `refint` for the attribute
    `uniqueMember` has been enabled.
 bug: [54185]
+erratum: 173
+announced: 2021-12-08
