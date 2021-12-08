@@ -18,7 +18,7 @@ Categories=service-adcon
 
 [con.*/ad/max_retry_rejected]
 Description[de]=Die Anzahl der Versuche, die unternommen werden sollen, eine zurückgewiesene Änderung von AD nach UCS einzuspielen. Manuelles synchronisieren von Objekten kann über die Skripte /usr/share/univention-ad-connector/resync_object_from_ad.py ausgelöst werden. Ist die Variable ungesetzt, wird jede Änderung maximal 10 Mal synchronisiert.
-Description[en]=The number of attemps that are made to resync rejected changes from AD. You can manually resync those changes by using the scripts /usr/share/univention-ad-connector/resync_object_from_ad.py.If this variable is not set, each change will be resynced up to 10 times.
+Description[en]=The number of attemps that are made to resync rejected changes from AD. You can manually resync those changes by using the scripts /usr/share/univention-ad-connector/resync_object_from_ad.py. If this variable is not set, each change will be resynced up to 10 times.
 Type=int
 Categories=service-adcon
 
