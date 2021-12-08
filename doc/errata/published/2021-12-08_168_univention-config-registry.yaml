@@ -10,3 +10,5 @@ desc: |
    template is registered.
  * UCR now immediately closes file references when they are not used anymore.
 bug: [50010, 53811]
+erratum: 168
+announced: 2021-12-08
