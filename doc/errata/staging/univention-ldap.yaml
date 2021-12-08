@@ -5,9 +5,9 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-ldap
 fix: 16.0.7-8A~5.0.0.202112071104
 desc: |
- This update addresses the following issue(s):
- * On a Primary, the refint module can now be enabled in slapd by setting the
-   UCR variable ldap/refint=true. It enforces referential integrity for the
-   attribute uniqueMember. For updates, the module will not be enabled by
-   default.
+ This update addresses the following issue:
+ * On the Primary the LDAP server module `refint` can now be enabled by
+   setting the UCR variable `ldap/refint=true`. It enforces referential
+   integrity for the attribute `uniqueMember`. For updates the module will not
+   be enabled by default.
 bug: [54185]
