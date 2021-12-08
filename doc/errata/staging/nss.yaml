@@ -3,7 +3,7 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: nss
-fix: 2:3.26.2-1.1+deb9u3
+fix: 2:3.26.2-1.1+deb9u4
 desc: |
  This update addresses the following issue:
  * Memory corruption in decodeECorDsaSignature with DSA signatures (and
