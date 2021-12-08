@@ -6,8 +6,8 @@ src: openldap
 fix: 2.4.45+dfsg-1~bpo9+1A~4.4.0.202112020939
 desc: |
  This update addresses the following issue:
- * Check "listener/listener" file if getting last_id failed
- * Consistently write "<TransID>" if last_id could not be determined as all
- * Log error if "listener/listener" file cannot be written
- * Update "last_id" file atomically
+ * Check `listener/listener` file if getting last_id fails.
+ * Consistently write `<TransID>` if `last_id` could not be determined as all.
+ * Log error if `listener/listener` file cannot be written.
+ * Update `last_id` file atomically.
 bug: [41687]
