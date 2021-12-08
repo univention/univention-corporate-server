@@ -17,10 +17,11 @@ Type=int
 Categories=service-adcon
 
 [con.*/ad/max_retry_rejected]
-Description[de]=Die Anzahl der Versuche, die unternommen werden sollen, eine zurückgewiesene Änderung von AD nach UCS einzuspielen. Manuelles synchronisieren von Objekten kann über die Skripte /usr/share/univention-ad-connector/resync_object_from_ad.py ausgelöst werden. Ist die Variable ungesetzt, wird jede Änderung maximal 10 Mal synchronisiert.
-Description[en]=The number of attemps that are made to resync rejected changes from AD. You can manually resync those changes by using the scripts /usr/share/univention-ad-connector/resync_object_from_ad.py.If this variable is not set, each change will be resynced up to 10 times.
+Description[de]=Die Anzahl der Versuche, die unternommen werden sollen, eine zurückgewiesene Änderung von AD nach UCS einzuspielen. Manuelles synchronisieren von Objekten kann über die Skripte /usr/share/univention-ad-connector/resync_object_from_ad.py ausgelöst werden.
+Description[en]=The number of attemps that are made to resync rejected changes from AD to UCS. You can manually resync those changes by using the scripts /usr/share/univention-ad-connector/resync_object_from_ad.py.
 Type=int
 Categories=service-adcon
+Default=10
 
 [con.*/ad/ldap/port]
 Description[de]=Der TCP-Port, über den der LDAP-Dienst des Active Directory-Servers erreichbar ist.
