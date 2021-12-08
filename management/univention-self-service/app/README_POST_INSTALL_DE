@@ -1,6 +1,6 @@
 <p>Gratulation, die Self-Service-Module wurden installiert!</p>
 <ul>
 <li>Die Self-Service-Module sind für Benutzer über die <a href="/univention/portal/" target="_blank">UCS-Portal</a> erreichbar.</li>
-<li>Für die korrekte Funktion des Passwort-Resets über E-Mails muss die Konfiguration des lokalen Mailsystems geprüft werden. Das Mailsystem muss ausgehende E-Mails direkt oder über ein Mail-Relay zustellen. Nähere Hinweise zur <a href="https://docs.software-univention.de/handbuch-4.4.html#mail::serverconfig::relay" target="_blank">Konfiguration eines Mail-Relays</a> finden sich im UCS-Handbuch.</li>
+<li>Für die korrekte Funktion des Passwort-Resets über E-Mails muss die Konfiguration des lokalen Mailsystems geprüft werden. Das Mailsystem muss ausgehende E-Mails direkt oder über ein Mail-Relay zustellen. Nähere Hinweise zur <a href="https://docs.software-univention.de/handbuch-5.0.html#mail::serverconfig::relay" target="_blank">Konfiguration eines Mail-Relays</a> finden sich im UCS-Handbuch.</li>
 <li>Administratoren können die Benutzerkontaktdaten für einen Passwortreset im <a href="/univention/management/#module=udm:users/user:0:" target="_blank">Benutzer-Modul</a> der Univention Management Console bearbeiten.</li>
 </ul>

@@ -1,3 +1,9 @@
+univention-net-installer (13.0.2-2) unstable; urgency=medium
+
+  * Bug #54212: Adapt to UCS-5.0-1
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 08 Dec 2021 18:20:42 +0100
+
 univention-net-installer (13.0.2-1) unstable; urgency=medium
 
   * Bug #52283: migrate univention-net-installer to Python 3

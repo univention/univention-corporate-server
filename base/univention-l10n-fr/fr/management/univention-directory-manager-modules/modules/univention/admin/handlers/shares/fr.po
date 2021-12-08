@@ -1025,8 +1025,8 @@ msgid "documents"
 msgstr "documents"
 
 #: modules/univention/admin/handlers/shares/printer.py:61
-msgid "https://docs.software-univention.de/manual-4.4.html#print::shares"
-msgstr "https://docs.software-univention.de/manual-4.4.html#print::shares"
+msgid "https://docs.software-univention.de/manual-5.0.html#print::shares"
+msgstr "https://docs.software-univention.de/manual-5.0.html#print::shares"
 
 #: modules/univention/admin/handlers/shares/share.py:50
 msgid "manual"

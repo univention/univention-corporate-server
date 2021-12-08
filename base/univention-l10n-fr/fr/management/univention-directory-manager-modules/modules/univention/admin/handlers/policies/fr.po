@@ -58,7 +58,7 @@ msgstr ""
 "connectées à des conteneurs ou à des unités d'organisation sont héritées par "
 "tous les objets situés aux niveaux inférieurs.</p><p>Vous pouvez trouver "
 "davantage d'informations à ce sujet dans la <a href=\"https://docs.software-univention."
-"de/manual-4.4.html#central:policies\" target=\"_blank\">documentation en ligne "
+"de/manual-5.0.html#central:policies\" target=\"_blank\">documentation en ligne "
 "d'UCS</a>.</p>"
 
 #: modules/univention/admin/handlers/policies/release.py:85
@@ -1098,6 +1098,6 @@ msgid "Without specifying the most recent version will be used"
 msgstr "Si rien n'est indiqué, la version la plus récente sera utilisée"
 
 #: modules/univention/admin/handlers/policies/policy.py:49
-msgid "https://docs.software-univention.de/manual-4.4.html#central:policies"
-msgstr "https://docs.software-univention.de/manual-4.4.html#central:policies"
+msgid "https://docs.software-univention.de/manual-5.0.html#central:policies"
+msgstr "https://docs.software-univention.de/manual-5.0.html#central:policies"
 

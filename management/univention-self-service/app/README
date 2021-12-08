@@ -2,6 +2,6 @@
 <ul>
     <li><a href="/univention-self-service/#passwordchange" target="_blank">Change Password</a>: On this webpage users can change their password as long as they know their old password.</li>
     <li><a href="/univention-self-service/#passwordreset" target="_blank">Passwort Reset</a>: On this webpage users can reset their password by requesting a token to be sent to a previously registered contact address.</li>
-	<li>For proper working of the password reset via e-mail, the configuration of the local mail system has to be checked. It must be configured to deliver e-mails to external systems directly or via a relay host. Please consult the <a href="https://docs.software-univention.de/manual-4.4.html#mail::serverconfig::relay" target="_blank">UCS documentation for configuration of a mail relay host</a>.</li>
+	<li>For proper working of the password reset via e-mail, the configuration of the local mail system has to be checked. It must be configured to deliver e-mails to external systems directly or via a relay host. Please consult the <a href="https://docs.software-univention.de/manual-5.0.html#mail::serverconfig::relay" target="_blank">UCS documentation for configuration of a mail relay host</a>.</li>
 	<li>Administrators can set a user's password reset contact data in the <a href="/univention/management/#module=udm:users/user:0:" target="_blank">users module</a> of the Univention Management Console.</li>
 </ul>

@@ -3,8 +3,8 @@ UCS 2-4 Layout
 
 [UCS 5](layout5.md) uses a new layout.
 
-* [SDB 91](https://docs.software-univention.de/manual-4.4.html#computers::softwaremanagement::installsoftware)
-* [SDB 135](https://docs.software-univention.de/manual-4.4.html#software::configrepo)
+* [SDB 91](https://docs.software-univention.de/manual-5.0.html#computers::softwaremanagement::installsoftware)
+* [SDB 135](https://docs.software-univention.de/manual-5.0.html#software::configrepo)
 
 Assumptions
 -----------

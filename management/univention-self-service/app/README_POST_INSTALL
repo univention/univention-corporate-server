@@ -1,6 +1,6 @@
 <p>Congratulations, the Self Service Modules habe been installed!</p>
 <ul>
 <li>The self service modules are available via the <a href="/univention/portal/" target="_blank">UCS Portal</a>.</li>
-<li>For proper working of the password reset via e-mail, the configuration of the local mail system has to be checked. It must be configured to deliver e-mails to external systems directly or via a relay host. Please consult the <a href="https://docs.software-univention.de/manual-4.4.html#mail::serverconfig::relay" target="_blank">UCS documentation for configuration of a mail relay host</a>.</li>
+<li>For proper working of the password reset via e-mail, the configuration of the local mail system has to be checked. It must be configured to deliver e-mails to external systems directly or via a relay host. Please consult the <a href="https://docs.software-univention.de/manual-5.0.html#mail::serverconfig::relay" target="_blank">UCS documentation for configuration of a mail relay host</a>.</li>
 <li>Administrators can set a user's password reset contact data in the <a href="/univention/management/#module=udm:users/user:0:" target="_blank">users module</a> of the Univention Management Console.</li>
 </ul>
