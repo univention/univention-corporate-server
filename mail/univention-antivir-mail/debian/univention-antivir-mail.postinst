@@ -57,6 +57,8 @@ univention-config-registry set mail/antivir/amavis/autostart?"yes" \
 								clamav/freshclam/autostart?"yes" \
 								'mail/antispam/bodysizelimit?300'
 
+touch /var/lib/clamav/mirrors.dat
+chown -R clamav:clamav /var/lib/clamav
 # new installations
 if [ "$1" = "configure" -a -z "$2" ]; then
 	[ -e /var/lib/clamav/daily.cvd ] || cp /usr/share/univention-antivir-mail/daily.cvd /var/lib/clamav/
@@ -65,7 +67,6 @@ fi
 
 
 if [ "$1" = configure -a -n "$2" ]; then
-
 	if dpkg --compare-versions "$2" lt 6.0.0-4; then
 		# Bug 36928
 		mv /etc/cron.daily/amavisd-new /etc/univention/templates/removed/amavisd-new.cron.daily
