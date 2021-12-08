@@ -9,3 +9,5 @@ desc: |
  * The configuration of log rotation for the UDM REST API logfiles has been
    added.
 bug: [53986]
+erratum: 1122
+announced: 2021-12-08
