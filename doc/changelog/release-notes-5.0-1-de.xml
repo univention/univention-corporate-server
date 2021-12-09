@@ -44,7 +44,7 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit &ucsUCS; 5.0-1 steht das fünfte Major Release für &ucsUCS; (UCS) zur Verfügung.
+			Mit &ucsUCS; 5.0-1 steht das erste Point-Release für &ucsUCS; (UCS) 5.0 zur Verfügung.
 			Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen.
 			Die wichtigsten Änderungen im Überblick:
 		</para>
@@ -60,18 +60,6 @@
 
 	<chapter id="relnotes:update">
 		<title>Hinweise zum Update</title>
-		<para>
-			Voraussetzung für ein Update ist mindestens UCS <productnumber>4.4-8</productnumber> mit <u:erratum release="4.4-8">972</u:erratum>.
-			Erst dann wird das verfügbare Update angezeigt.
-			Generell wird empfohlen, vor dem Update zunächst auch alle weiteren Errata einzuspielen.
-		</para>
-		<para>
-			Falls das Update aus der &ucsUMC; heraus gestartet wird:
-			Vor der tatsächlichen Aktualisierung werden verschiedene Tests ausgeführt, z.B. ob alle installierten Apps auch für UCS <productnumber>5.0</productnumber> zur Verfügung stehen.
-			Zu diesem Zeitpunkt befindet sich das Webinterface bereits im Wartungsmodus und es wird lediglich ein Fortschrittsbalken angezeigt.
-			Falls ein Test fehlschlägt, wird das Update abgebrochen	und der Grund nach <filename>/var/log/univention/updater.log</filename> geschrieben.
-			Um sich diese Datei im Webinterface anzusehen, loggen	Sie sich in die &ucsUMC; ein, öffnen Sie das Modul <guimenu>Software-Aktualierung</guimenu> und klicken Sie auf "Log-Datei ansehen".
-		</para>
 		<para>
 			Während der Aktualisierung kann es zu temporären Ausfällen von Diensten innerhalb der Domäne kommen.
 			Aus diesem Grund sollte das Update innerhalb eines Wartungsfensters erfolgen.
@@ -100,187 +88,12 @@
 				Vorhandene 32-Bit UCS Systeme können nicht auf UCS 5 aktualisiert werden.
 			</para>
 		</section>
-
-		<section id="relnotes:removals">
-			<title>Entfernte Komponenten</title>
-			<para>
-				In UCS 5 wurden mehrere Integrationspakete entfernt.
-			</para>
-
-			<variablelist>
-				<varlistentry>
-					<term>&ucsUVMM;</term>
-					<term><package>src:univention-kvm-virtio</package></term>
-					<term><package>src:univention-novnc</package></term>
-					<term><package>src:univention-virtual-machine-manager-daemon</package></term>
-					<term><package>src:univention-virtual-machine-manager-node</package></term>
-					<term><package>src:univention-virtual-machine-manager-schema</package></term>
-					<listitem>
-						<simpara>
-							UCS 5 stellt keine grafische Benutzeroberfläche zum Betrieb virtueller Maschinen zur Verfügung,
-							aber unter UCS können weiterhin per KVM virtualisierte Systeme betrieben werden.
-							Ebenso kann UCS weiterhin virtualisiert auf verschiedenen <literal>Hypervisoren</literal> laufen.
-							Die Debian-Pakete  <package>libvirt</package> und <package>qemu</package> sind weiterhin verfügbar.
-							Das Update auf UCS 5 wird blockiert solange die Integrationspakete für UVMM nicht entfernt worden sind.
-							Alle LDAP-Objekte mit <literal>univentionObjectType</literal> vom Typ <classname>uvmm/profile</classname> und <classname>uvmm/info</classname> sollten entfernt werden.
-						</simpara>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
-					<term>Bacula</term>
-					<term><package>src:univention-bacula</package></term>
-					<listitem>
-						<simpara>
-							Die direkte Integration für Bacula Backup wurde entfernt.
-							Bacula und Bareos sind weiterhin als Debian Pakete und auch im App Center verfügbar.
-						</simpara>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
-					<term><package>src:univention-doc</package></term>
-					<listitem>
-						<simpara>
-							Die Python API Dokumentation ist jetzt <ulink url="https://docs.software-univention.de/ucs-python-api/">online</ulink> verfügbar.
-						</simpara>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
-					<term>MRTG</term>
-					<term><package>src:univention-mrtg</package></term>
-					<listitem>
-						<simpara>
-							MRTG wurde entfernt.
-							Als Ersatz wird eine vergleichbare Funktionalität durch die UCS Dashboard App abgedeckt.
-						</simpara>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
-					<term><package>src:univention-java</package></term>
-					<listitem>
-						<simpara>
-							Das Integrationspaket wurde entfernt.
-							Das von Debian bereitgestellte OpenJDK kann weiterhin verwendet und installiert werden über die Pakete <package>default-jre</package> oder <package>default-jdk</package>.
-						</simpara>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
-					<term>KDE</term>
-					<term><package>src:univention-kde</package></term>
-					<listitem>
-						<simpara>
-							Das Integrationspaket für das <literal>K Desktop Environment (KDE)</literal> wurde entfernt.
-							Die von Debian bereitgestellten Pakete sind weiterhin verfügbar.
-						</simpara>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
-					<term><package>src:univention-ftp</package></term>
-					<listitem>
-						<simpara>
-							Das Integrationspaket für FTP wurde entfernt.
-							Die von Debian bereitgestellten Pakete für <application>ProFTPd</application> und andere FTP-Server sind weiterhin verfügbar.
-						</simpara>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
-					<term>MySQL</term>
-					<term><package>src:univention-mysql</package></term>
-					<listitem>
-						<simpara>
-							Das Integrationspaket für MySQL wurde entfernt.
-							Es wurde durch MariaDB abgelöst.
-						</simpara>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
-					<term>PyKota</term>
-					<term><package>src:univention-printserver-quota</package></term>
-					<listitem>
-						<simpara>
-							Das <wordasword>Druck-Kontigent-System</wordasword> PyKota wurde entfernt, weil es <wordasword>upstream</wordasword> nicht mehr unterstützt ist.
-						</simpara>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
-					<term>DansGuardian</term>
-					<term><package>src:univention-dansguardian</package></term>
-					<listitem>
-						<simpara>
-							Die Unterstützung des <wordasword>Filterungssystems</wordasword> DansGuardian wurde eingestellt, weil es <wordasword>upstream</wordasword> nicht mehr gepflegt wird.
-						</simpara>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
-					<term>Samba 4 WINS</term>
-					<term><package>src:univention-samba4wins</package></term>
-					<listitem>
-						<simpara>
-							Unterstützung für Windows NT Domänen wurde von Samba abgekündigt.
-						</simpara>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
-					<term>Linux Kernel</term>
-					<term>GRUB</term>
-					<term><package>SHIM</package></term>
-					<term><package>src:univention-kernel-image</package></term>
-					<term><package>src:univention-kernel-image-signed</package></term>
-					<term><package>src:shim-signed</package></term>
-					<term><package>src:grub-efi-amd64-signed</package></term>
-					<listitem>
-						<simpara>
-							Debian unterstützt UEFI Secure Boot direkt selbst.
-							UCS spezifische Pakete wurden entfernt.
-							Der aktuelle Linux-Kernel für Debian wird automatisch durch das Paket <package>linux-image-amd64</package> installiert.
-							Die zugehörigen Header-Dateien können bei Bedarf über das Paket <package>linux-headers-amd64</package> installiert werden.
-						</simpara>
-					</listitem>
-				</varlistentry>
-			</variablelist>
-		</section>
-
-		<section id="relnotes:tls">
-			<title>Erhöhung der minimalen TLS Protokollversion</title>
-			<para>
-				Im Bereich Kryptographie erhöht sich die minimale TLS Protokollversion auf 1.2.
-				Für <literal>OpenSSL</literal> ist dies durch den Parameter <literal>MinProtocol</literal>
-				in <filename>/etc/ssl/openssl.cnf</filename> festgelegt.
-				Als Konsequenz sollten vor dem Update auf UCS 5.0 TLS Verbindungen zu
-				externen Systemen auf TLS 1.2 Unterstützung geprüft werden, weil sie sonst danach fehlschlagen können.
-				Dies betrifft AD-Connector Setups, die UCS mit Microsoft Server Versionen älter als
-				<literal>2012R2</literal> synchronisieren, falls sie dafür konfiguriert sind, eine verschlüsselte
-				Verbindung zu verwenden.
-				Zusätzlich ändert sich die Voreinstellung für den OpenSSL <literal>CipherString</literal>, der nun
-				auf <literal>DEFAULT@SECLEVEL=2</literal> angehoben ist.
-				Dies schränkt zusätzlich die nutzbaren Verfahren ein, insbesondere schließt es <literal>SHA1</literal> aus.
-				Z.B. unterstützt Windows Server 2012 in der Voreinstellung weniger Verfahren als Windows Server 2012R2.
-			</para>
-		</section>
-
-		<section id="relnotes:defaultmasterpkg">
-			<title>Hinweise zu <foreignphrase>Default-Master-Paketen</foreignphrase></title>
-			<para>
-				Apps wie <application>UCC</application> und <application>Open-Xchange</application> haben in der Vergangenheit spezielle Pakete für den &ucsPrimaryDN; und &ucsBackupDN; installiert um den LDAP-Server um Schemata und ACL-Regeln zu erweitern.
-				Diese Pakete werden nicht mehr benötigt, die Erweiterungen werden jetzt per &ucsUDL; verteilt.
-				Die Pakete sollten vor dem Upgrade entfernt werden um Inkompatibilitäten mit Python 3 zu vermeiden.
-				Bekannte inkompatible Pakete sind: <package>univention-corporate-client-schema</package>, <package>univention-ox-dependencies-master</package> und <package>univention-ox-directory-integration</package>.
-				Als Vorbereitung für das Upgrade wird das System auf inkompatible Pakete geprüft werden, siehe auch <xref linkend="relnotes:prepare"/>.
-			</para>
-		</section>
-
-		<section id="relnotes:joinscript-password">
-			<!-- Bug 31996 -->
-			<title>Hinweise zu Anmeldeinformationen, die an Join-Skripte übergeben werden</title>
-			<para>
-				Join-Skripte werden jetzt immer mit der sicheren Option <option>--bindpwdfile</option> ausgeführt, anstatt die Anmeldedaten direkt als Kommandozeilenoption zu übergeben.
-			</para>
-		</section>
 	</chapter>
 
 	<chapter id="relnotes:bootloader">
 		<title>Gleichzeitiger Betrieb von UCS und Debian auf UEFI Systemen</title>
 		<para>
-			Beginnend mit UCS 5.0-1 wird ein gleichzeitiger Betrieb von UCS und Debian auf einem UEFI System nicht unterstützt.
+			Beginnend mit UCS 5.0 wird ein gleichzeitiger Betrieb von UCS und Debian auf einem UEFI System nicht unterstützt.
 		</para>
 		<para>
 			Ursache hierfür ist der Bootloader GRUB von &ucsUCS;, der teilweise die gleichen Konfigurationsdateien wie Debian verwendet.
