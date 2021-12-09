@@ -8,5 +8,5 @@ desc: |
  This update addresses the following issue:
  * The dependency on `python-univention-ipcalc` has been fixed.
 bug: [53345]
-eratum: 107
+erratum: 107
 announced: 2021-09-29
