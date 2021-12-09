@@ -6,9 +6,9 @@ src: univention-s4-connector
 fix: 14.0.7-4A~5.0.0.202108252254
 desc: |
  This update addresses the following issue:
- * The script `/usr/share/univention-s4-connector/msgpo.py`
-   now supports the arguments --binddn and --bindpwdfile,
-   which have been accidently removed in UCS 5.0.
+ * The script `/usr/share/univention-s4-connector/msgpo.py` now supports the
+   arguments `--binddn` and `--bindpwdfile`, which have been accidentally
+   removed in UCS 5.0.
 bug: [53705]
 erratum: 78
 announced: 2021-09-01

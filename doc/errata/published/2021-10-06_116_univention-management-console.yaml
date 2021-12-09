@@ -6,8 +6,8 @@ src: univention-management-console
 fix: 12.0.12-16A~5.0.0.202110051222
 desc: |
  This update addresses the following issue:
- * The Caching settings of Univention Management Console have been enhanced
-   and relaxed to fix Caching issues after the upgrade to UCS 5.0.
+ * The cache settings of Univention Management Console have been enhanced
+   and relaxed to fix caching issues after the upgrade to UCS 5.0.
 bug: [53465]
 erratum: 116
 announced: 2021-10-06

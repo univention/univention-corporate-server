@@ -8,8 +8,7 @@ desc: |
  This update addresses the following issues:
  * Cache files are now verified using apt-key verify. This will allow us to
    update signature keys.
- * App settings were not applied correctly during the installation. This has
-   been fixed.
+ * App settings were not applied correctly during the installation.
 bug: [53526,53578]
 erratum: 51
 announced: 2021-07-21

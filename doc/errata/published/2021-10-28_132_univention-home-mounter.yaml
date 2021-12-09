@@ -6,7 +6,7 @@ src: univention-home-mounter
 fix: 11.0.1-2A~5.0.0.202110201114
 desc: |
  This update addresses the following issue:
- *  The package `univention-home-mounter` has been migrated to Python 3.
+ * The package `univention-home-mounter` has been migrated to Python 3.
 bug: [53344]
 erratum: 132
 announced: 2021-10-28

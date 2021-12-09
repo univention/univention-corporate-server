@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issues:
  * The label of required multi valued widgets is now highlighted if no value
    is set.
- * The UMC-Server is now capable to send responses with mimtetype
+ * The UMC-Server is now capable to send responses with mime-type
    `image/svg+xml`.
 bug: [53665, 53779]
 erratum: 104

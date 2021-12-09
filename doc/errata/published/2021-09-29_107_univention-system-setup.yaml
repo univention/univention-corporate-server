@@ -6,7 +6,7 @@ src: univention-system-setup
 fix: 13.0.3-35A~5.0.0.202109261332
 desc: |
  This update addresses the following issue:
- * The dependency on python-univention-ipcalc has been fixed.
+ * The dependency on `python-univention-ipcalc` has been fixed.
 bug: [53345]
-erratum: 107
+eratum: 107
 announced: 2021-09-29

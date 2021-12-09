@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-lib 
 fix: 9.0.11-5A~5.0.0.202107051055
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * ucs_registerLDAPExtension from the Univention shell function library
    now allows the option umcmessagecatalog. This option can be used to
    supply translation files in GNU message catalog format for the UMC.

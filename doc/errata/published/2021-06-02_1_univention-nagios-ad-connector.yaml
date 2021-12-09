@@ -6,7 +6,7 @@ src: univention-nagios-ad-connector
 fix: 9.0.0-2A~5.0.0.202105281118
 desc: |
  This update addresses the following issue:
- * The nagios check for univention-ad-connector reported
+ * The Nagios check for univention-ad-connector reported
    a false positive if multiple ad-connector instances
    were running. This has been fixed.
 bug: [53340]

@@ -7,7 +7,7 @@ fix: 13.0.3-31A~5.0.0.202105302335
 desc: |
  This update addresses the following issue:
  * The login message (message of the day) showed wrong versions
-   of supported browsers
+   of supported browsers.
 bug: [53244]
 erratum: 2
 announced: 2021-06-02

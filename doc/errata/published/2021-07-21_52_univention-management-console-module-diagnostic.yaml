@@ -7,7 +7,7 @@ fix: 6.0.0-13A~5.0.0.202107131648
 desc: |
  This update addresses the following issue:
  * The system diagnostic check no longer shows false positives when
-   a http-proxy is used.
+   a HTTP proxy is used.
 bug: [50620]
 erratum: 52
 announced: 2021-07-21

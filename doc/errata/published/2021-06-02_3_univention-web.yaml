@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-web
 fix: 4.0.1-29A~5.0.0.202105261419
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * A regression where a saved username in Firefox is entered into a wrong
    input field has been fixed.
 bug: [53310]

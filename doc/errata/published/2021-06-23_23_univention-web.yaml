@@ -6,8 +6,8 @@ src: univention-web
 fix: 4.0.1-36A~5.0.0.202106211715
 desc: |
  This update addresses the following issues:
- * A new UCR variable has been added to configure a theme for all UCS web
-   interfaces: ucs/web/theme. The dark theme is the default.
+ * A new UCR variable `ucs/web/theme` has been added to configure a theme for
+   all UCS web. The dark theme is the default.
  * A light theme for UCS web interfaces has been implemented.
 bug: [53307, 53390]
 erratum: 23

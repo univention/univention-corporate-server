@@ -10,14 +10,14 @@ desc: |
  * Notifications and tabs now have a counter in the header bar.
  * Notifications are shown in edit mode.
  * All notifications can now be removed at once.
- * Fix sizings in mobile mode.
+ * Fix sizing in mobile mode.
  * Improve portal header in mobile mode.
  * Improved form validations.
  * Edit modals cannot be closed when clicking the background; edit modals do
    not close before save has finished; new layer for loading animation.
  * Removed console.log messages.
  * Added indicator for folders exceeding 9 entries.
- * Manage tabindex for all components.
+ * Manage tabulator index for all components.
  * Cookie Banner now better fits the portal layout.
  * Various accessibility fixes, like aria attributes.
  * Various CSS fixes.

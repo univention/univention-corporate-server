@@ -6,7 +6,7 @@ src: univention-management-console-module-udm
 fix: 10.0.1-14A~5.0.0.202108290857
 desc: |
  This update addresses the following issue:
- * Rewriting properties of apps using App Options changed the original
+ * Rewriting properties of apps using App options changed the original
    options leading to follow up errors especially in the UDM REST API.
 bug: [53714]
 erratum: 76

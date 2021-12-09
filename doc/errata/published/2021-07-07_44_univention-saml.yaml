@@ -7,7 +7,7 @@ fix: 7.0.4-16A~5.0.0.202106301606
 desc: |
  This update addresses the following issue:
  * The Single-Sign-On login page was not affected by the ucs/web/theme
-   UCR variable. This has been fixed.
+   UCR variable.
 bug: [53533]
 erratum: 44
 announced: 2021-07-07

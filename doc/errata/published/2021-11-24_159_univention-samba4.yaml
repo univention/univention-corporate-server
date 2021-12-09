@@ -6,7 +6,7 @@ src: univention-samba4
 fix: 9.0.6-6A~5.0.0.202111181025
 desc: |
  This update addresses the following issues:
- * univention-samba4-backup has been fixed
+ * Functionality of `univention-samba4-backup` has been fixed.
 bug: [53438]
 erratum: 159
 announced: 2021-11-24

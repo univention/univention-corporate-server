@@ -7,7 +7,7 @@ fix: 14.0.5-3A~5.0.0.202111131922
 desc: |
  This update addresses the following issues:
  * Update Samba to 4.13.14 (effectively)
- * Add "username map script" for use when samba is configured as
+ * Add "username map script" for use when Samba is configured as
    domain member.
 bug: [54013]
 note: Additional information available at https://help.univention.com/t/18857

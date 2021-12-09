@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-self-service
 fix: 5.0.1-15A~5.0.0.202106261733
 desc: |
-  This update addresses the following issue(s):
+  This update addresses the following issue:
   * The descriptions of email related attributes have been improved.
 bug: [46080]
 erratum: 65

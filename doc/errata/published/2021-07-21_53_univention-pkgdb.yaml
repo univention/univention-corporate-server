@@ -6,7 +6,7 @@ src: univention-pkgdb
 fix: 13.0.1-9A~5.0.0.202105262354
 desc: |
  This update addresses the following issue:
- * The package univention-pkgdb has been migrated to Python 3.
+ * The package `univention-pkgdb` has been migrated to Python 3.
 bug: [51337]
 erratum: 53
 announced: 2021-07-21

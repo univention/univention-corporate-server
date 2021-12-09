@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issue:
  * The univention-directory-listener module listfilter.py did not respect
    the UCRV `mail/postfix/policy/listfilter/use_sasl_username=yes` when it
-   is executed with the `--test` option. This fix resolves that issue.
+   is executed with the `--test` option.
 bug: [53463]
 erratum: 39
 announced: 2021-06-30

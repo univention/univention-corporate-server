@@ -6,8 +6,7 @@ src: univention-radius
 fix: 7.0.1-2A~5.0.0.202108301220
 desc: |
  This update addresses the following issue:
- * Activate default configuration in
-   `/etc/freeradius/3.0/sites-available`.
+ * Activate default configuration in `/etc/freeradius/3.0/sites-available`.
 bug: [53712]
 erratum: 77
 announced: 2021-09-01

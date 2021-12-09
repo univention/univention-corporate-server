@@ -7,7 +7,7 @@ fix: 9.0.2-49A~5.0.0.202106070013
 desc: |
  This update addresses the following issues:
  * Installation of certain apps fails, if the app id exceeds a
-   certain limit in length
+   certain limit in length.
  * An error has been fixed opening certain Apps.
 bug: [53273, 53384]
 erratum: 9
