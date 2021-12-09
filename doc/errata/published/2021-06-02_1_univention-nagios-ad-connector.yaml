@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issue:
  * The Nagios check for univention-ad-connector reported
    a false positive if multiple ad-connector instances
-   were running. This has been fixed.
+   were running.
 bug: [53340]
 erratum: 1
 announced: 2021-06-02

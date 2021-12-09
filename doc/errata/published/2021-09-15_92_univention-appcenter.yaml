@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-0
 src: univention-appcenter
 fix: 9.0.2-67A~5.0.0.202109141203
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * The template `/usr/share/univention-portal/apps.json` was unused and has
    been removed.
  * Fixed a regression where the App installation failed if the App had certain
@@ -15,7 +15,7 @@ desc: |
  * The install dialog shows the errors of the installation and messages from
    the pre-install script if the installation has failed.
  * Configuring an App that shipped with certain configure scripts did not
-   work. This has been fixed.
+   work.
 bug: [53651, 53630, 53655, 53665, 53625, 53761]
 erratum: 92
 announced: 2021-09-15
