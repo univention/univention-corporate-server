@@ -128,7 +128,7 @@
 			</listitem>
 			<listitem>
 				<para>
-					The following updated packages from Debian Buster <productnumber>10.9</productnumber> are included (<u:bug>54218</u:bug>):
+					The following updated packages from Debian Buster <productnumber>10.11</productnumber> are included (<u:bug>54218</u:bug>):
 					<simplelist type="inline" id="_debian">
 						<member><package>ansible</package></member>
 						<member><package>apt</package></member>
