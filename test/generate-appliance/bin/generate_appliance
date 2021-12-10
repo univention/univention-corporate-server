@@ -58,6 +58,7 @@ import lxml.etree
 import VMDKstream
 
 WORKDIR = TEMPDIR = STOREDIR = None
+RE_INVALID = re.compile(r"""[][\t !"#$%&'()*./:;<=>?\\`{|}~]+-""")
 
 
 class File(object):
@@ -1375,18 +1376,9 @@ def parse_options():
 		if not os.path.isdir(options.tempdir):
 			parser.error('Tempdir %r is not a directory!')
 	if options.filename is None:
-		options.filename = options.product.replace(' ', '-')
-		if options.version is not None:
-			options.filename += '-' + options.version.replace(' ', '-')
-		# remove special characters
-		for char in '#! \t\\/$\'"();.`:*?{}[]<>|&~%=':
-			options.filename = options.filename.replace(char, '-')
-		# remove duplicate dashes
-		options.filename = '-'.join([x for x in options.filename.split('-') if x])
-	try:
-		options.source = open(options.source, 'rb')
-	except IOError as e:
-		parser.error(e)
+		fn = "-".join(p for p in [options.product, options.version] if p)
+		options.filename = RE_INVALID.sub('-', fn)
+
 	return options
 
 
