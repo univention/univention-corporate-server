@@ -320,20 +320,10 @@ class Target(object):
 	represents the process for creating a complete image for a platform
 	"""
 
+	default = True
+
 	def create(self, image, options):
 		raise NotImplementedError()
-
-	def __str__(self):
-		'''descriptive display name'''
-		raise NotImplementedError()
-
-	def __repr__(self):
-		'''input/typing friendly identifier'''
-		raise NotImplementedError()
-
-	@property
-	def is_default(self):
-		return True
 
 
 def encode_vmware_uuid(universally_unique_identifier):
@@ -452,12 +442,9 @@ def create_vmx(image_name, image_uuid, options):
 
 
 class VMware(Target):
-
-	def __str__(self):
-		return 'Zipped VMware®-compatible (VMDK based)'
-
-	def __repr__(self):
-		return 'vmware'
+	"""
+	Zipped VMware®-compatible (VMDK based)
+	"""
 
 	def create(self, image, options):
 		if options.no_target_specific_filename:
@@ -478,9 +465,6 @@ class VMware(Target):
 		pkzip = Pkzip(files)
 		shutil.copyfile(pkzip.path(), archive_name)
 		log('Generated "%s" appliance as\n  %s' % (self, archive_name))
-
-
-VMware = VMware()
 
 
 LICENSE = """The complete source code of Univention Corporate Server is provided
@@ -672,13 +656,10 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
 	return lxml.etree.tostring(envelope, encoding='UTF-8', xml_declaration=True, pretty_print=True)
 
 
-class Virtualbox(Target):
-
-	def __str__(self):
-		return 'VirtualBox OVA (VMDK based)'
-
-	def __repr__(self):
-		return 'ova-virtualbox'
+class OVA_Virtualbox(Target):
+	"""
+	VirtualBox OVA (VMDK based)
+	"""
 
 	def create(self, image, options):
 		image_name = '%s-virtualbox-disk1.vmdk' % (options.product,)
@@ -730,9 +711,6 @@ ddb.comment=""
 		ova = Tar(files)
 		shutil.copyfile(ova.path(), archive_name)
 		log('Generated "%s" appliance as\n  %s' % (self, archive_name))
-
-
-Virtualbox = Virtualbox()
 
 
 def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_used_size, options):
@@ -1054,13 +1032,10 @@ def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_
 	return lxml.etree.tostring(envelope, encoding='UTF-8', xml_declaration=True, pretty_print=True)
 
 
-class ESXi(Target):
-
-	def __str__(self):
-		return 'VMware ESXi OVA (VMDK based)'
-
-	def __repr__(self):
-		return 'ova-esxi'
+class OVA_ESXi(Target):
+	"""
+	VMware ESXi OVA (VMDK based)
+	"""
 
 	def create(self, image, options):
 		image_name = '%s-ESX-disk1.vmdk' % (options.product,)
@@ -1107,9 +1082,6 @@ ddb.virtualHWVersion = "7"
 		ova = Tar(files)
 		shutil.copyfile(ova.path(), archive_name)
 		log('Generated "%s" appliance as\n  %s' % (self, archive_name))
-
-
-ESXi = ESXi()
 
 
 def create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_size, part_size, url_lifetime):
@@ -1187,17 +1159,12 @@ def chunks(imagefile, chunksize):
 			break
 
 
-class EC2(Target):
+class EC2_EBS(Target):
+	"""
+	Amazon AWS EC2 AMI (EBS based) (HVM x64_64)
+	"""
 
-	def __str__(self):
-		return 'Amazon AWS EC2 AMI (EBS based) (HVM x64_64)'
-
-	def __repr__(self):
-		return 'ec2-ebs'
-
-	@property
-	def is_default(self):
-		return False
+	default = False
 
 	def create(self, image, options):
 		machine_name = options.product
@@ -1314,16 +1281,8 @@ class EC2(Target):
 				log('Could not generate image (%r, %r, %r)' % (self, ami.id, ami.state))
 
 
-EC2 = EC2()
-
-
 class Docker(Target):
-
-	def __str__(self):
-		return 'Docker Image (tgz)'
-
-	def __repr__(self):
-		return 'docker'
+	"""Docker Image (tgz)"""
 
 	def create(self, image, options):
 		archive_name = os.path.join(os.getcwd(), '%s-docker.tar' % (options.filename,))
@@ -1352,13 +1311,6 @@ class Docker(Target):
 		log('Generated "%s" appliance as\n  %s' % (self, archive_name))
 
 
-Docker = Docker()
-
-
-TARGETS = (VMware, Virtualbox, ESXi, Docker, EC2)
-assert len(frozenset(map(repr, TARGETS))) == len(TARGETS), 'target names not unique'
-
-
 def parse_options():
 	# type: () -> Namespace
 	parser = ArgumentParser(description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter)
@@ -1385,12 +1337,12 @@ def parse_options():
 		'-o', '--only', action='store_true',
 		help='ignore default selections, only create selected targets',
 	)
-	for target in TARGETS:
+	for target in Target.__subclasses__():
 		group.add_argument(
-			'--%r' % (target,),
+			'--%s' % (target.__name__.lower(),),
 			help='create "%s"%s"' % (
-				target,
-				' (selected by default)' if target.is_default else '',
+				(target.__doc__ or "").strip(),
+				' (selected by default)' if target.default else '',
 			),
 			action=BooleanOptionalAction,
 		)
@@ -1398,9 +1350,9 @@ def parse_options():
 	options = parser.parse_args()
 
 	options.choices = {
-		target
-		for target in TARGETS
-		if getattr(options, repr(target)) or target.is_default and not options.only
+		target()
+		for target in Target.__subclasses__()
+		if getattr(options, target.__name__.lower()) or target.default and not options.only
 	}
 
 	if len(options.choices) == 1:
