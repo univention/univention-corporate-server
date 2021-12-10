@@ -241,13 +241,6 @@ Checking ldap_schema ...                          OK
 	<chapter id="relnotes:packages">
 		<title>Notes on selected packages</title>
 
-		<section id="relnotes:network">
-			<title>Network configuration</title>
-			<para>
-				Support for <package>ifplugd</package> has been removed.
-			</para>
-		</section>
-
 		<section id="relnotes:usage">
 			<title>Collection of usage statistics</title>
 			<para>
@@ -297,7 +290,7 @@ Checking ldap_schema ...                          OK
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS <productnumber>4.4-8</productnumber>:
+			Listed are the changes since UCS <productnumber>5.0-0</productnumber>:
 		</para>
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-5.0-1.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
