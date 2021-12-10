@@ -93,7 +93,7 @@ WORKDIR = TEMPDIR = STOREDIR = None
 RE_INVALID = re.compile(r"""[][\t !"#$%&'()*./:;<=>?\\`{|}~]+-""")
 
 
-class File(object):
+class Lazy(object):
 	"""
 	base class for delayed file/image actions
 	"""
@@ -111,6 +111,19 @@ class File(object):
 
 		return newfun
 
+	def _create(self):
+		raise NotImplementedError()
+
+
+class File(Lazy):
+	"""
+	base class for delayed file/image actions
+	"""
+
+	def __init__(self):
+		Lazy.__init__(self)
+		self._path = ""
+
 	@staticmethod
 	def hashed(fun):
 		def newfun(self, *args, **kwargs):
@@ -123,8 +136,17 @@ class File(object):
 	def hash(self):
 		raise NotImplementedError()
 
-	def _create(self):
-		raise NotImplementedError()
+	@Lazy.lazy
+	def path(self):
+		return self._path
+
+	@Lazy.lazy
+	def size(self):
+		return os.stat(self._path).st_size
+
+	@Lazy.lazy
+	def used_size(self):
+		return os.stat(self._path).st_blocks * 512
 
 
 class Raw(File):
@@ -134,25 +156,12 @@ class Raw(File):
 
 	def __init__(self, inputfile):
 		self._inputfile = inputfile
-		self._path = None
 		File.__init__(self)
 
 	@property
 	@File.hashed
 	def hash(self):
 		return (Raw, self._inputfile)
-
-	@File.lazy
-	def path(self):
-		return self._path
-
-	@File.lazy
-	def size(self):
-		return os.stat(self._path).st_size
-
-	@File.lazy
-	def used_size(self):
-		return os.stat(self._path).st_blocks * 512
 
 	def _create(self):
 		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
@@ -174,21 +183,12 @@ class Vmdk(File):
 		assert isinstance(raw, Raw)
 		self._raw = raw
 		self._streamOptimized = streamOptimized
-		self._path = None
 		File.__init__(self)
 
 	@property
 	@File.hashed
 	def hash(self):
 		return (Vmdk, VMDKstream.image_descriptor_template, self._raw.hash, self._streamOptimized)
-
-	@File.lazy
-	def path(self):
-		return self._path
-
-	@File.lazy
-	def size(self):
-		return os.stat(self._path).st_size
 
 	def _create(self):
 		self._raw.path()
@@ -220,7 +220,6 @@ class Tar(File):
 			assert isinstance(source_file, File) or isinstance(source_file, str)
 		self._file_list = file_list
 		self._format = fileformat
-		self._path = None
 		File.__init__(self)
 
 	@property
@@ -232,10 +231,6 @@ class Tar(File):
 			return thing.hash
 
 		return (Tar, [(name, hashed(source_file)) for name, source_file in self._file_list])
-
-	@File.lazy
-	def path(self):
-		return self._path
 
 	def _create(self):
 		[source_file.path() for _, source_file in self._file_list if isinstance(source_file, File)]
@@ -270,7 +265,6 @@ class Pkzip(File):
 			if source_file is not None:
 				assert isinstance(source_file, File) or isinstance(source_file, str)
 		self._file_list = file_list
-		self._path = None
 		File.__init__(self)
 
 	@property
@@ -283,10 +277,6 @@ class Pkzip(File):
 				return hashlib.sha256(thing).hexdigest()
 			return thing.hash
 		return (Tar, [(name, hashed(source_file)) for name, source_file in self._file_list])
-
-	@File.lazy
-	def path(self):
-		return self._path
 
 	def _create(self):
 		[source_file.path() for _, source_file in self._file_list if isinstance(source_file, File)]
