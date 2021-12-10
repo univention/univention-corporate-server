@@ -51,9 +51,39 @@
 
 		<itemizedlist>
 			<listitem><para>
+					UCS 5 Design im hellen <foreignphrase>Theme</foreignphrase>. Wie zum Release von UCS 5.0-0 angekündigt, gibt es neben dem <foreignphrase>Dark Theme</foreignphrase> auch ein <foreignphrase>Light Theme</foreignphrase> für UCS 5.0. Nutzer des UCS Managementsystems können damit zwischen den beiden <foreignphrase>Themes</foreignphrase> umschalten.
+			</para></listitem>
+			<listitem><para>
+					Zeitgesteuerte Aktivierung von Benutzerkonten. UCS Administratoren können Benutzerkonten anlegen und mit Datum und Uhrzeit definieren, wann sie aktiviert werden. Das Anlegen von Benutzerkonten kann somit besser geplant werden und im Voraus erfolgen, ohne dass die Benutzerkonten gleich aktiv sind.
+			</para></listitem>
+			<listitem><para>
+					Zahlreiche Verbesserungen am UCS Portal. Nutzer des UCS Portals können sich an zahlreichen Verbesserung erfreuen. Nennenswert sind hier:
+					<itemizedlist>
+						<listitem><para>
+								Verbesserungen bei der Barrierefreiheit des Portals, zum Beispiel bei der Bedienung mit der Tastatur
+						</para></listitem>
+						<listitem><para>
+								Verbesserte Handhabung der Übersetzung in einem separaten Dialog, um den Bearbeitungsdialog zu "entschlacken"
+						</para></listitem>
+						<listitem><para>
+								Verbesserte Handhabung von Benachrichtigungen.
+						</para></listitem>
+						<listitem><para>
+								Anpassung des Cookie Banners an das Portal Layout.
+						</para></listitem>
+					</itemizedlist>
+			</para></listitem>
+			<listitem><para>
+					App Center: Zahlreiche Bugfixes in der Handhabung der <foreignphrase>App Settings</foreignphrase>.
+			</para></listitem>
+			<listitem><para>
+					Wizard zur Benutzerstellung: Anzeige von als benötigt markierten Attributen. Per UCR Variable kann konfiguriert werden, welche Benutzerattribute welche Standardwerte haben und bei der Erstellung eines Benutzerkontos sichtbar sind. Damit kann ein Administrator zum Beispiel festlegen, welche Parameter auf jeden Fall explizit beim Erstellen eines Benutzerkontos abgefragt werden und Werte enthalten müssen, z.B. die E-Mailadresse, die standardmäßig nicht erforderlich ist.
+			</para></listitem>
+			<listitem><para>
 					Dieses &ucsUCS; Release basiert auf Debian 10.11 <wordasword>Buster</wordasword>.
 			</para></listitem>
 			<listitem><para>
+					Diverse Security Updates wurden in UCS 5.0-1 integriert, bspw. für <application>Samba4</application>, OpenSSL, PHP und den Linux Kernel.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>

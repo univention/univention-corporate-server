@@ -504,9 +504,8 @@
 					Removed <classname>console.log</classname> messages (<u:bug>53385</u:bug>, <u:bug>53491</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Edit modals cannot be closed when clicking the background;
-					edit modals do not close before save has finished;
-					new layer for loading animation (<u:bug>53385</u:bug>, <u:bug>53491</u:bug>).
+					Edit <classname>modals</classname> cannot be closed when clicking the background;
+					New layer for loading animation (<u:bug>53385</u:bug>, <u:bug>53491</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Improved form validations (<u:bug>53385</u:bug>, <u:bug>53491</u:bug>).
@@ -560,7 +559,7 @@
 					Access to the &ucsUMC; has been repaired if the user is allowed to use only one UMC module which does not have a flavor (<u:bug>51659</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					SAML Logout's which are initiated by another service provider are now correctly handled (<u:bug>53436</u:bug>).
+					SAML logouts which are initiated by another service provider are now correctly handled (<u:bug>53436</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The new &ucsUCRV; <envar>umc/http/enforce-secure-cookie</envar> can be set to make cookies secure when using a HTTPS connection (<u:bug>51242</u:bug>).
