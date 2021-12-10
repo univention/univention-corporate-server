@@ -708,16 +708,15 @@ hostname=${rdn#cn=}
 
 if [ -n "$KerberosPasswd" ]; then
 		if [ -e /etc/machine.secret ]; then
-			touch /etc/machine.secret.SAVE
-			chmod 600 /etc/machine.secret.SAVE
 			cat /etc/machine.secret >>/etc/machine.secret.SAVE
 		fi
 
-		touch /etc/machine.secret
-		chmod 600 /etc/machine.secret
 		echo -n "$KerberosPasswd" >/etc/machine.secret
 		fromdos /etc/machine.secret
-
+		chmod 600 /etc/machine.secret
+		if [ -e /etc/machine.secret.SAVE ]; then
+			chmod 600 /etc/machine.secret.SAVE
+		fi
 	else
 		if [ -n "$res_message" ]; then
 			failed_message "$res_message"

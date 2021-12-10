@@ -1,9 +1,3 @@
-univention-ldap (16.0.7-9) unstable; urgency=medium
-
-  * Fixed file permissions for /etc/machine.secret and /etc/machine.secret.SAVE
-
- -- Fabian Wilhelm <wilhelm@univention.de>  Fri, 10 Dec 2021 15:09:05 +0100
-
 univention-ldap (16.0.7-8) unstable; urgency=medium
 
   * Bug #54185: Do not enable refint on updates
