@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
-	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
 	%extensions;
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
 	%entities;
 ]>
 <book lang="de" id="releasenotes-de-5.0-1">
@@ -42,42 +42,52 @@
 
 	<chapter id="relnotes:highlights">
 		<title>Release-Highlights</title>
-
 		<para>
 			Mit &ucsUCS; 5.0-1 steht das erste Point-Release für &ucsUCS; (UCS) 5.0 zur Verfügung.
 			Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen.
 			Die wichtigsten Änderungen im Überblick:
 		</para>
-
 		<itemizedlist>
 			<listitem><para>
-					UCS 5 Design im hellen <foreignphrase>Theme</foreignphrase>. Wie zum Release von UCS 5.0-0 angekündigt, gibt es neben dem <foreignphrase>Dark Theme</foreignphrase> auch ein <foreignphrase>Light Theme</foreignphrase> für UCS 5.0. Nutzer des UCS Managementsystems können damit zwischen den beiden <foreignphrase>Themes</foreignphrase> umschalten.
+					UCS 5 Design im hellen <foreignphrase>Theme</foreignphrase>.
+					Wie zum Release von UCS 5.0-0 angekündigt, gibt es neben dem <foreignphrase>Dark Theme</foreignphrase> auch ein <foreignphrase>Light Theme</foreignphrase> für UCS 5.0.
+					Nutzer des UCS Managementsystems können damit zwischen den beiden <foreignphrase>Themes</foreignphrase> umschalten.
 			</para></listitem>
 			<listitem><para>
-					Zeitgesteuerte Aktivierung von Benutzerkonten. UCS Administratoren können Benutzerkonten anlegen und mit Datum und Uhrzeit definieren, wann sie aktiviert werden. Das Anlegen von Benutzerkonten kann somit besser geplant werden und im Voraus erfolgen, ohne dass die Benutzerkonten gleich aktiv sind.
+					Zeitgesteuerte Aktivierung von Benutzerkonten.
+					UCS Administratoren können Benutzerkonten anlegen und mit Datum und Uhrzeit definieren, wann sie aktiviert werden.
+					Das Anlegen von Benutzerkonten kann somit besser geplant werden und im Voraus erfolgen, ohne dass die Benutzerkonten gleich aktiv sind.
+			</para></listitem>
+			<listitem>
+				<para>
+					Zahlreiche Verbesserungen am UCS Portal.
+					Nutzer des UCS Portals können sich an zahlreichen Verbesserung erfreuen.
+					Nennenswert sind hier:
+				</para>
+				<itemizedlist>
+					<listitem><para>
+							Verbesserungen bei der Barrierefreiheit des Portals, zum Beispiel bei der Bedienung mit der Tastatur
+					</para></listitem>
+					<listitem><para>
+							Verbesserte Handhabung der Übersetzung in einem separaten Dialog, um den Bearbeitungsdialog zu "entschlacken"
+					</para></listitem>
+					<listitem><para>
+							Verbesserte Handhabung von Benachrichtigungen.
+					</para></listitem>
+					<listitem><para>
+							Anpassung des Cookie Banners an das Portal Layout.
+					</para></listitem>
+				</itemizedlist>
+			</listitem>
+			<listitem><para>
+					App Center:
+					Zahlreiche Bugfixes in der Handhabung der <foreignphrase>App Settings</foreignphrase>.
 			</para></listitem>
 			<listitem><para>
-					Zahlreiche Verbesserungen am UCS Portal. Nutzer des UCS Portals können sich an zahlreichen Verbesserung erfreuen. Nennenswert sind hier:
-					<itemizedlist>
-						<listitem><para>
-								Verbesserungen bei der Barrierefreiheit des Portals, zum Beispiel bei der Bedienung mit der Tastatur
-						</para></listitem>
-						<listitem><para>
-								Verbesserte Handhabung der Übersetzung in einem separaten Dialog, um den Bearbeitungsdialog zu "entschlacken"
-						</para></listitem>
-						<listitem><para>
-								Verbesserte Handhabung von Benachrichtigungen.
-						</para></listitem>
-						<listitem><para>
-								Anpassung des Cookie Banners an das Portal Layout.
-						</para></listitem>
-					</itemizedlist>
-			</para></listitem>
-			<listitem><para>
-					App Center: Zahlreiche Bugfixes in der Handhabung der <foreignphrase>App Settings</foreignphrase>.
-			</para></listitem>
-			<listitem><para>
-					Wizard zur Benutzerstellung: Anzeige von als benötigt markierten Attributen. Per UCR Variable kann konfiguriert werden, welche Benutzerattribute welche Standardwerte haben und bei der Erstellung eines Benutzerkontos sichtbar sind. Damit kann ein Administrator zum Beispiel festlegen, welche Parameter auf jeden Fall explizit beim Erstellen eines Benutzerkontos abgefragt werden und Werte enthalten müssen, z.B. die E-Mailadresse, die standardmäßig nicht erforderlich ist.
+					Wizard zur Benutzerstellung:
+					Anzeige von als benötigt markierten Attributen.
+					Per UCR Variable kann konfiguriert werden, welche Benutzerattribute welche Standardwerte haben und bei der Erstellung eines Benutzerkontos sichtbar sind.
+					Damit kann ein Administrator zum Beispiel festlegen, welche Parameter auf jeden Fall explizit beim Erstellen eines Benutzerkontos abgefragt werden und Werte enthalten müssen, z.B. die E-Mailadresse, die standardmäßig nicht erforderlich ist.
 			</para></listitem>
 			<listitem><para>
 					Dieses &ucsUCS; Release basiert auf Debian 10.11 <wordasword>Buster</wordasword>.
@@ -104,7 +114,6 @@
 			<para>
 				In Umgebungen mit mehr als einem UCS-System muss die Update-Reihenfolge der UCS-Systeme beachtet werden:
 			</para>
-
 			<para>
 				Auf dem &ucsPrimaryDN; (frühere Bezeichnung: &ucsMaster;) wird die maßgebliche (authoritative) Version des LDAP-Verzeichnisdienstes vorgehalten, die an alle übrigen LDAP-Server der UCS-Domäne repliziert wird.
 				Da bei Release-Updates Veränderungen an den LDAP-Schemata auftreten können, muss der &ucsPrimaryDN; bei einem Release-Update immer als erstes System aktualisiert werden.
@@ -118,6 +127,7 @@
 				Vorhandene 32-Bit UCS Systeme können nicht auf UCS 5 aktualisiert werden.
 			</para>
 		</section>
+
 	</chapter>
 
 	<chapter id="relnotes:bootloader">
@@ -138,27 +148,30 @@
 
 	<chapter id="relnotes:localrepo">
 		<title>Lokales Repository</title>
-
 		<para>
 			Dieser Abschnitt ist für Umgebungen relevant, in denen ein <ulink url="https://docs.software-univention.de/handbuch-5.0.html#software::createrepo">lokales Repository</ulink> eingerichtet ist.
 			Die installierte (Major-)Version von UCS bestimmt welche Pakete ein lokales Repository bereitstellt.
 			Ein Repository das auf einem UCS Server in Version 4.x betrieben wird stellt nur Pakete bis zur Version UCS 4.x bereit, ein Repository auf einem UCS 5 Server stellt nur Pakete für UCS 5 und neuere Versionen bereit.
 			Um in einer Umgebung mit lokalem Repository Systeme auf UCS 5 zu aktualisieren, bestehen unter anderem die folgenden Möglichkeiten.
 			Zunächst muss ein lokaler UCS 5 Repository Server aufgesetzt werden.
-			<itemizedlist>
-				<listitem>
-					<para>
-						Ein neues UCS 5 System wird als &ucsPrimaryDN; von der DVD oder aus einem virtualisiertem Basisimage installiert.
-						Anschließend wird <ulink url="https://docs.software-univention.de/handbuch-5.0.html#software::createrepo">auf diesem System ein lokales Repository wie im UCS 5 Handbuch beschrieben</ulink> eingerichtet.</para>
-				</listitem>
-				<listitem>
-					<para>
-						Ein neues UCS 5 System wird als Systemrolle &ucsBackupDN;, &ucsReplicaDN; oder &ucsManagedNode; von der DVD oder aus einem virtualisiertem Basisimage installiert.
-						Im System-Setup ist auszuwählen, dass das System keiner Domäne beitritt.
-						Anschließend wird <ulink url="https://docs.software-univention.de/handbuch-5.0.html#software::createrepo">auf diesem System ein lokales Repository wie im UCS 5 Handbuch beschrieben</ulink> eingerichtet.
-						Nachdem der in der Domäne verwendet &ucsPrimaryDN; auf UCS 5 aktualisiert wurde, kann der UCS 5 Repository Server der Domäne über <command>univention-join</command> beitreten.</para>
-				</listitem>
-			</itemizedlist>
+		</para>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+					Ein neues UCS 5 System wird als &ucsPrimaryDN; von der DVD oder aus einem virtualisiertem Basisimage installiert.
+					Anschließend wird <ulink url="https://docs.software-univention.de/handbuch-5.0.html#software::createrepo">auf diesem System ein lokales Repository wie im UCS 5 Handbuch beschrieben</ulink> eingerichtet.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+					Ein neues UCS 5 System wird als Systemrolle &ucsBackupDN;, &ucsReplicaDN; oder &ucsManagedNode; von der DVD oder aus einem virtualisiertem Basisimage installiert.
+					Im System-Setup ist auszuwählen, dass das System keiner Domäne beitritt.
+					Anschließend wird <ulink url="https://docs.software-univention.de/handbuch-5.0.html#software::createrepo">auf diesem System ein lokales Repository wie im UCS 5 Handbuch beschrieben</ulink> eingerichtet.
+					Nachdem der in der Domäne verwendet &ucsPrimaryDN; auf UCS 5 aktualisiert wurde, kann der UCS 5 Repository Server der Domäne über <command>univention-join</command> beitreten.
+				</simpara>
+			</listitem>
+		</itemizedlist>
+		<para>
 			Um ein System in der Domäne auf UCS 5 zu aktualisieren, sollte der Server zunächst auf den aktuellsten Paketstand unter UCS 4.x aktualisiert werden.
 			Anschließend wird der vom System verwendete Repository Server durch das Ändern der &ucsUCRV; <envar>repository/online/server</envar> auf das lokale UCS 5 Repository gesetzt.
 			Das System kann nun über die &ucsUMC; oder über die Kommandozeile auf UCS 5 aktualisiert werden.
@@ -167,7 +180,6 @@
 
 	<chapter id="relnotes:prepare">
 		<title>Vorbereitung des Updates</title>
-
 		<para>
 			Manuell erstellter Python-Programmcode muss vor dem Update auf Kompatibilität mit Python 3.7 geprüft und entsprechend angepasst werden.
 			Das betrifft auch &ucsUCR; Templates, die Python-Code enthalten.
@@ -183,13 +195,11 @@
 			Für das Update sollte eine Anmeldung auf der lokalen Konsole des Systems mit dem Benutzer <systemitem class="username">root</systemitem> durchgeführt und das Update dort gestartet werden.
 			Alternativ kann das Update über &ucsUMC; durchgeführt werden.
 		</para>
-
 		<para>
 			Eine Remote-Aktualisierung über SSH wird nicht empfohlen, da dies beispielsweise bei Unterbrechung der Netzverbindung zum Abbruch des Update-Vorgangs und zu einer Beeinträchtigung des Systems führen kann.
 			Sollte dennoch eine Aktualisierung über eine Netzverbindung durchgeführt werden, ist sicherzustellen, dass das Update bei Unterbrechung der Netzverbindung trotzdem weiterläuft.
 			Hierfür können beispielsweise die Tools <command>tmux</command>, <command>screen</command> oder <command>at</command> eingesetzt werden, die auf allen UCS Systemrollen installiert sind.
 		</para>
-
 		<para>
 			Univention bietet ein Skript an, mit dem Probleme, die das Update des UCS Systems verhindern würden, schon vor dem Update erkannt werden können.
 			Dieses Skript kann vor dem Update manuell auf das System geladen und ausgeführt werden:
@@ -219,18 +229,14 @@ Checking ldap_schema ...                          OK
 
 	<chapter id="relnotes:post">
 		<title>Nachbereitung des Updates</title>
-
 		<para>
 			Nach dem Update müssen die neuen oder aktualisierten Join-Skripte ausgeführt werden.
 			Dies kann auf zwei Wegen erfolgen:
-			Entweder über das UMC-Modul <guimenu>Domänenbeitritt</guimenu> oder durch Aufruf des Befehls
-			<command>univention-run-join-scripts</command> als Benutzer <systemitem class="username">root</systemitem>.
+			Entweder über das UMC-Modul <guimenu>Domänenbeitritt</guimenu> oder durch Aufruf des Befehls <command>univention-run-join-scripts</command> als Benutzer <systemitem class="username">root</systemitem>.
 		</para>
-
 		<para>
 			Anschließend muss das UCS-System neu gestartet werden.
 		</para>
-
 	</chapter>
 
 	<chapter id="relnotes:packages">
@@ -263,31 +269,25 @@ Checking ldap_schema ...                          OK
 
 		<section id="relnotes:browsers">
 			<title>Empfohlene Browser für den Zugriff auf &ucsUMC;</title>
-
 			<para>
 				&ucsUMC; verwendet für die Darstellung der Web-Oberfläche zahlreiche JavaScript- und CSS-Funktionen.
 				Cookies müssen im Browser zugelassen sein.
 				Die folgenden Browser werden empfohlen:
 			</para>
-
 			<itemizedlist>
 				<listitem>
 					<para>Chrome ab Version 85</para>
 				</listitem>
-
 				<listitem>
 					<para>Firefox ab Version 78</para>
 				</listitem>
-
 				<listitem>
 					<para>Safari und Safari Mobile ab Version 13</para>
 				</listitem>
-
 				<listitem>
 					<para>Microsoft Edge ab Version 88</para>
 				</listitem>
 			</itemizedlist>
-
 			<para>
 				Mit älteren Browsern können Darstellungs- oder Performanceprobleme auftreten.
 			</para>
@@ -301,7 +301,6 @@ Checking ldap_schema ...                          OK
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
 			Aufgeführt sind die Änderungen seit UCS <productnumber>4.4-8</productnumber>:
 		</para>
-
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-5.0-1.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 
@@ -311,4 +310,4 @@ Checking ldap_schema ...                          OK
 	</bibliography>
 
 </book>
-<!-- vim:set ft=docbk ts=2 sw=2 noet: -->
+<!-- vim:set ft=docbk fdm=syntax fdl=1 ts=2 sw=2 noet: -->

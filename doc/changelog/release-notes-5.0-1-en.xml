@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
-	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
 	%extensions;
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
 	%entities;
 ]>
 <book lang="en" id="releasenotes-en-5.0-1">
@@ -42,50 +42,58 @@
 
 	<chapter id="relnotes:highlights">
 		<title>Release Highlights</title>
-
 		<para>
 			With &ucsUCS; 5.0-1, the first point release for &ucsUCS; (UCS) 5.0 is now available.
 			It provides several feature improvements and extensions, new properties as well as various improvements and bugfixes.
 			Here is an overview of the most important changes:
 		</para>
-
 		<itemizedlist>
-      <listitem><para>
-          UCS 5 light theme design. As announced with the release of UCS 5.0-0, in addition to the dark theme, there is also a light theme for UCS 5.0, allowing users of the UCS management system to switch between the two themes.
-      </para></listitem>
-      <listitem><para>
-          Scheduled user account activation. UCS administrators can create user accounts and define the date and time when they will be activated. User account creation can thus be better scheduled and done in advance without the user accounts being active right away.
-      </para></listitem>
-      <listitem><para>
-          Numerous improvements to the UCS Portal. Users of the UCS Portal can enjoy numerous improvement. Worth mentioning here are:
-          <itemizedlist>
-            <listitem><para>
-                Improvements in the accessibility of the portal, for example, in the operation with the keyboard.
-            </para></listitem>
-            <listitem><para>
-								Improved handling of translation in a separate dialog to <wordasword>declutter</wordasword> the editing dialog.
-            </para></listitem>
-            <listitem><para>
-                Improved handling of notifications.
-            </para></listitem>
-            <listitem><para>
-                The cookie banner layout has been adapted to match the portal layout.
-            </para></listitem>
-          </itemizedlist>
-      </para></listitem>
-      <listitem><para>
-          App Center: Several bugfixes in the handling of app settings.
-      </para></listitem>
-<listitem><para>
-          User creation wizard: display attributes marked as required. UCR variables can be used to configure which user attributes have which default values and are visible when a user account is created. This allows an administrator to specify, for example, which parameters must be explicitly set and contain values in any case when creating a user account, e.g. the email address, which is not required by default.
-      </para></listitem>
-      <listitem><para>
-          This &ucsUCS; release is based on Debian 10.11 <wordasword>Buster</wordasword>.
-      </para></listitem>
-      <listitem><para>
-          Various security updates have been integrated into UCS 5.0-1, for example for <application>Samba4</application>, OpenSSL, PHP and the Linux kernel.
-      </para></listitem>
-    </itemizedlist>
+			<listitem><para>
+					UCS 5 light theme design.
+					As announced with the release of UCS 5.0-0, in addition to the dark theme, there is also a light theme for UCS 5.0, allowing users of the UCS management system to switch between the two themes.
+			</para></listitem>
+			<listitem><para>
+					Scheduled user account activation.
+					UCS administrators can create user accounts and define the date and time when they will be activated.
+					User account creation can thus be better scheduled and done in advance without the user accounts being active right away.
+			</para></listitem>
+			<listitem>
+				<para>
+					Numerous improvements to the UCS Portal.
+					Users of the UCS Portal can enjoy numerous improvement.
+					Worth mentioning here are:
+				</para>
+				<itemizedlist>
+					<listitem><para>
+							Improvements in the accessibility of the portal, for example, in the operation with the keyboard.
+					</para></listitem>
+					<listitem><para>
+							Improved handling of translation in a separate dialog to <wordasword>declutter</wordasword> the editing dialog.
+					</para></listitem>
+					<listitem><para>
+							Improved handling of notifications.
+					</para></listitem>
+					<listitem><para>
+							The cookie banner layout has been adapted to match the portal layout.
+					</para></listitem>
+				</itemizedlist>
+			</listitem>
+			<listitem><para>
+					App Center:
+					Several bugfixes in the handling of app settings.
+			</para></listitem>
+			<listitem><para>
+					User creation wizard: display attributes marked as required.
+					UCR variables can be used to configure which user attributes have which default values and are visible when a user account is created.
+					This allows an administrator to specify, for example, which parameters must be explicitly set and contain values in any case when creating a user account, e.g. the email address, which is not required by default.
+			</para></listitem>
+			<listitem><para>
+					This &ucsUCS; release is based on Debian 10.11 <wordasword>Buster</wordasword>.
+			</para></listitem>
+			<listitem><para>
+					Various security updates have been integrated into UCS 5.0-1, for example for <application>Samba4</application>, OpenSSL, PHP and the Linux kernel.
+			</para></listitem>
+		</itemizedlist>
 	</chapter>
 
 	<chapter id="relnotes:update">
@@ -103,7 +111,6 @@
 			<para>
 				In environments with more than one UCS system, the update order of the UCS systems must be borne in mind:
 			</para>
-
 			<para>
 				The authoritative version of the LDAP directory service is maintained on the &ucsPrimaryDN; (formerly referred to as &ucsMaster;) and replicated to all the remaining LDAP servers of the UCS domain.
 				As changes to the LDAP schema can occur during release updates, the &ucsPrimaryDN; must always be the first system to be updated during a release update.
@@ -117,6 +124,7 @@
 				Existing 32 bit UCS systems cannot be updated to UCS 5.
 			</para>
 		</section>
+
 	</chapter>
 
 	<chapter id="relnotes:bootloader">
@@ -137,29 +145,30 @@
 
 	<chapter id="relnotes:localrepo">
 		<title>Local package repository</title>
-
 		<para>
 			This section is relevant for environments where a <ulink url="https://docs.software-univention.de/handbuch-5.0.html#software::createrepo">local repository</ulink> is set up.
 			The installed (major) version of UCS determines which packages a local repository provides.
 			A repository running on a UCS server with version 4.x will only provide packages up to UCS 4.x, a repository server running on UCS 5 will only provide packages for UCS 5 and newer versions.
 			To upgrade systems to UCS 5 in an environment with a local repository, the following are some of the options.
 			First, a local UCS 5 repository server must be set up.
-			<itemizedlist>
-				<listitem>
-					<para>
-						A new UCS 5 system is installed as a &ucsPrimaryDN; from the DVD or from a virtualized base image.
-						Then <ulink url="https://docs.software-univention.de/handbuch-5.0.html#software::createrepo">a local repository is set up on this system as described in the UCS 5 manual</ulink>.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						A new UCS 5 system is installed with the system role &ucsBackupDN;, &ucsReplicaDN; or &ucsManagedNode; from the DVD or from a virtualized base image.
-						In system setup, select that the system will not join a domain.
-						Then <ulink url="https://docs.software-univention.de/handbuch-5.0.html#software::createrepo">set up a local repository on this system as described in the UCS 5 manual</ulink>.
-						After the &ucsPrimaryDN; used in the domain is upgraded to UCS 5, the UCS 5 repository server can join the domain via <command>univention-join</command>.
-					</para>
-				</listitem>
-			</itemizedlist>
+		</para>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+					A new UCS 5 system is installed as a &ucsPrimaryDN; from the DVD or from a virtualized base image.
+					Then <ulink url="https://docs.software-univention.de/handbuch-5.0.html#software::createrepo">a local repository is set up on this system as described in the UCS 5 manual</ulink>.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+					A new UCS 5 system is installed with the system role &ucsBackupDN;, &ucsReplicaDN; or &ucsManagedNode; from the DVD or from a virtualized base image.
+					In system setup, select that the system will not join a domain.
+					Then <ulink url="https://docs.software-univention.de/handbuch-5.0.html#software::createrepo">set up a local repository on this system as described in the UCS 5 manual</ulink>.
+					After the &ucsPrimaryDN; used in the domain is upgraded to UCS 5, the UCS 5 repository server can join the domain via <command>univention-join</command>.
+				</simpara>
+			</listitem>
+		</itemizedlist>
+		<para>
 			To upgrade a system in the domain to UCS 5, the server should first be upgraded to the latest package level available for UCS 4.x.
 			Then the repository server used by the system is switched to the local UCS 5 repository by changing the &ucsUCRV; <envar>repository/online/server</envar>.
 			The system can now be upgraded to UCS 5 via the &ucsUMC; or via the command line.
@@ -168,7 +177,6 @@
 
 	<chapter id="relnotes:prepare">
 		<title>Preparation of update</title>
-
 		<para>
 			Manually crafted Python code needs to be checked for compatibility with Python 3.7 before the Update and adjusted accordingly.
 			This includes &ucsUCR; templates containing Python code.
@@ -180,12 +188,10 @@
 			A standard installation requires a minimum of 6-10 GB of disk space.
 			The update requires approximately 1-2 GB additional disk space to download and install the packages, depending on the size of the existing installation.
 		</para>
-
 		<para>
 			For the update, a login should be performed on the system's local console as user <systemitem class="username">root</systemitem>, and the update should be initiated there.
 			Alternatively, the update can be conducted using &ucsUMC;.
 		</para>
-
 		<para>
 			Remote updating via SSH is not recommended as this may result in the update procedure being canceled, e.g., if the network connection is interrupted.
 			In consequence, this can affect the system severely.
@@ -193,7 +199,6 @@
 			This can be achieved, e.g., using the tools <command>tmux</command>, <command>screen</command> and <command>at</command>.
 			These tools are installed on all UCS system roles by default.
 		</para>
-
 		<para>
 			Univention provides a script that checks for problems which would prevent the successful update of the system.
 			Prior to the update, this script can be downloaded and executed on the UCS system.
@@ -223,18 +228,14 @@ Checking ldap_schema ...                          OK
 
 	<chapter id="relnotes:post">
 		<title>Postprocessing of the update</title>
-
 		<para>
 			Following the update, new or updated join scripts need to be executed.
 			This can be done in two ways:
-			Either using the UMC module <guimenu>Domain join</guimenu> or by running the command
-			<command>univention-run-join-scripts</command> as user <systemitem class="username">root</systemitem>.
+			Either using the UMC module <guimenu>Domain join</guimenu> or by running the command <command>univention-run-join-scripts</command> as user <systemitem class="username">root</systemitem>.
 		</para>
-
 		<para>
 			Subsequently the UCS system needs to be restarted.
 		</para>
-
 	</chapter>
 
 	<chapter id="relnotes:packages">
@@ -267,31 +268,25 @@ Checking ldap_schema ...                          OK
 
 		<section id="relnotes:browsers">
 			<title>Recommended browsers for the access to &ucsUMC;</title>
-
 			<para>
 				&ucsUMC; uses numerous JavaScript and CSS functions to display the web interface.
 				Cookies need to be permitted in the browser.
 				The following browsers are recommended:
 			</para>
-
 			<itemizedlist>
 				<listitem>
 					<para>Chrome as of version 85</para>
 				</listitem>
-
 				<listitem>
 					<para>Firefox as of version 78</para>
 				</listitem>
-
 				<listitem>
 					<para>Safari and Safari Mobile as of version 13</para>
 				</listitem>
-
 				<listitem>
 					<para>Microsoft Edge as of version 88</para>
 				</listitem>
 			</itemizedlist>
-
 			<para>
 				Users running older browsers may experience display or performance issues.
 			</para>
@@ -304,7 +299,6 @@ Checking ldap_schema ...                          OK
 		<para>
 			Listed are the changes since UCS <productnumber>4.4-8</productnumber>:
 		</para>
-
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-5.0-1.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 
@@ -314,4 +308,4 @@ Checking ldap_schema ...                          OK
 	</bibliography>
 
 </book>
-<!-- vim:set ft=docbk ts=2 sw=2 noet: -->
+<!-- vim:set ft=docbk fdm=syntax fdl=1 ts=2 sw=2 noet: -->
