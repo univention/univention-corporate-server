@@ -1409,7 +1409,6 @@ def main():
 		source_image = Raw(options.source)
 		for choice in options.choices:
 			choice.create(source_image, options)
-		return os.EX_OK
 	finally:
 		log('Cleanup')
 		cmd = ('find', WORKDIR, '(', '-type', 'f', '-printf', '  %f\\n', '-o', '-true', ')', '-delete')
@@ -1417,4 +1416,4 @@ def main():
 
 
 if __name__ == "__main__":
-	sys.exit(main())
+	main()
