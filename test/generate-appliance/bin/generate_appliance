@@ -1,8 +1,6 @@
 #!/usr/bin/python2.7
 # coding: utf-8
 #
-# generate_appliance
-#  create virtual appliances for various virtualization systems from a single disk image
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -34,6 +32,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""
+create virtual appliances for various virtualization systems from a single disk image
+"""
+
 from __future__ import unicode_literals
 
 import argparse
@@ -49,7 +51,37 @@ import tarfile
 import tempfile
 import time
 import uuid
+from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, FileType, Namespace  # noqa F401
 from io import StringIO
+
+try:
+	from argparse import BooleanOptionalAction
+except ImportError:
+	from argparse import Action
+
+	# <https://github.com/python/cpython/blob/3.9/Lib/argparse.py#L862>
+	class BooleanOptionalAction(Action):  # type: ignore
+		def __init__(self, option_strings, dest, default=None, type=None, choices=None, required=False, help=None, metavar=None):
+			_option_strings = []
+			for option_string in option_strings:
+				_option_strings.append(option_string)
+
+				if option_string.startswith('--'):
+					option_string = '--no-' + option_string[2:]
+					_option_strings.append(option_string)
+
+			if help is not None and default is not None:
+				help += " (default: %(default)s)"
+
+			Action.__init__(self, option_strings=_option_strings, dest=dest, nargs=0, default=default, type=type, choices=choices, required=required, help=help, metavar=metavar)
+
+		def __call__(self, parser, namespace, values, option_string=None):
+			if option_string in self.option_strings:
+				setattr(namespace, self.dest, not option_string.startswith('--no-'))
+
+		def format_usage(self):
+			return ' | '.join(self.option_strings)
+
 
 import boto
 import boto.ec2
@@ -1328,53 +1360,57 @@ assert len(frozenset(map(repr, TARGETS))) == len(TARGETS), 'target names not uni
 
 
 def parse_options():
-	parser = argparse.ArgumentParser(description='create virtual appliances for various virtualization systems from a single disk image')
-	defaults = [('%r' % (target, ), True, ) for target in TARGETS if target.is_default]
-	parser.set_defaults(choices=defaults)
-	parser.add_argument('-s', '--source', help='source image (required)')
-	parser.add_argument('-m', '--memory-size', default=1024, type=int, help='size of virtual memory (MiB, default: %(default)s)')
-	parser.add_argument('-c', '--cpu-count', default=1, type=int, help='virtual CPU count (default: %(default)s)')
-	parser.add_argument('-f', '--filename', help='filename of appliance (default: derived from product)')
-	parser.add_argument('-n', '--no-target-specific-filename', default=False, help='do not append hypervisor target to filename of appliance. This is the default if only one target is chosen.')
-	parser.add_argument('-p', '--product', help='product name of appliance (default: %(default)s)', default='Univention Corporate Server (UCS)')
-	parser.add_argument('--product-url', help='product URL of appliance (default: %(default)s)', default='https://www.univention.com/products/ucs/')
-	parser.add_argument('-v', '--version', help='version string of appliance')
-	parser.add_argument('--vendor', help='vendor string of appliance (default: %(default)s)', default='Univention GmbH')
-	parser.add_argument('--vendor-url', help='vendor URL of appliance (default: %(default)s)', default='At least 2GB of RAM are required. https://www.univention.com/')
+	# type: () -> Namespace
+	parser = ArgumentParser(description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter)
+	parser.add_argument('-s', '--source', type=FileType("rb"), help='source image', required=True)
+	group = parser.add_argument_group("VM sizing")
+	group.add_argument('-m', '--memory-size', default=1024, type=int, help='size of virtual memory [MiB]')
+	group.add_argument('-c', '--cpu-count', default=1, type=int, help='virtual CPU count')
+	group = parser.add_argument_group("Output options")
+	group.add_argument('-f', '--filename', help='filename of appliance (default: derived from product)')
+	group.add_argument('-n', '--no-target-specific-filename', action="store_true", help='do not append hypervisor target to filename of appliance. This is the default if only one target is chosen.')
+	group = parser.add_argument_group("Metadata settings")
+	group.add_argument('-p', '--product', help='product name of appliance', default='Univention Corporate Server (UCS)')
+	group.add_argument('--product-url', help='product URL of appliance', default='https://www.univention.com/products/ucs/')
+	group.add_argument('-v', '--version', help='version string of appliance')
+	group.add_argument('--vendor', help='vendor string of appliance', default='Univention GmbH')
+	group.add_argument('--vendor-url', help='vendor URL of appliance', default='At least 2GB of RAM are required. https://www.univention.com/')
 	parser.add_argument('-t', '--tempdir', help='temporary directory to use')
-	parser.add_argument('--region', help='EC2 region to use (default %(default)s)', default='eu-west-1')
-	parser.add_argument('--bucket', help='S3 bucket to use (default %(default)s)', default='generate-appliance')
-	parser.add_argument(
-		'-o', '--only', action='store_const', dest='choices', const=[],
-		help='ignore default selections, only create selected targets (must be the first option)',
+	group = parser.add_argument_group("AWS settings")
+	group.add_argument('--region', help='EC2 region to use', default='eu-west-1')
+	group.add_argument('--bucket', help='S3 bucket to use', default='generate-appliance')
+
+	group = parser.add_argument_group("Targets")
+	group.add_argument(
+		'-o', '--only', action='store_true',
+		help='ignore default selections, only create selected targets',
 	)
 	for target in TARGETS:
-		helptext = 'create "%s"' % (target, )
-		if target.is_default:
-			helptext += ' (selected by default)'
-		parser.add_argument(
-			'--%r' % (target, ), help=helptext,
-			action='append_const', dest='choices',
-			const=('%r' % (target, ), True, )
+		group.add_argument(
+			'--%r' % (target,),
+			help='create "%s"%s"' % (
+				target,
+				' (selected by default)' if target.is_default else '',
+			),
+			action=BooleanOptionalAction,
 		)
-		parser.add_argument(
-			'--no-%r' % (target, ),
-			action='append_const', dest='choices',
-			const=('%r' % (target, ), False, )
-		)
+
 	options = parser.parse_args()
-	reverse = dict(('%r' % (target, ), target, ) for target in TARGETS)
-	options.choices = frozenset(
-		reverse[name] for (name, wanted) in dict(options.choices).items() if wanted
-	)
+
+	options.choices = {
+		target
+		for target in TARGETS
+		if getattr(options, repr(target)) or target.is_default and not options.only
+	}
+
 	if len(options.choices) == 1:
 		options.no_target_specific_filename = True
-	if options.source is None:
-		parser.error('source image is required')
+
 	if options.tempdir is not None:
 		options.tempdir = os.path.realpath(options.tempdir)
 		if not os.path.isdir(options.tempdir):
 			parser.error('Tempdir %r is not a directory!')
+
 	if options.filename is None:
 		fn = "-".join(p for p in [options.product, options.version] if p)
 		options.filename = RE_INVALID.sub('-', fn)
