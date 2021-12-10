@@ -242,13 +242,6 @@ Checking ldap_schema ...                          OK
 	<chapter id="relnotes:packages">
 		<title>Hinweise zum Einsatz einzelner Pakete</title>
 
-		<section id="relnotes:network">
-			<title>Netzwerkkonfiguration</title>
-			<para>
-				Die Unterstützung für <package>ifplugd</package> wurde entfernt.
-			</para>
-		</section>
-
 		<section id="relnotes:usage">
 			<title>Erfassung von Nutzungsstatistiken</title>
 			<para>
@@ -299,7 +292,7 @@ Checking ldap_schema ...                          OK
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS <productnumber>4.4-8</productnumber>:
+			Aufgeführt sind die Änderungen seit UCS <productnumber>5.0-0</productnumber>:
 		</para>
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-5.0-1.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
