@@ -129,6 +129,8 @@ PS4="+${C1}\${BASH_SOURCE}${C0}:${C2}\${LINENO}${C0}:${C1}\${FUNCNAME[0]}${C0}@$
 BASH_XTRACEFD=4
 set -x
 
+SELFDIR="$(readlink -f "$(dirname "$0")")"
+echo "SELFDIR=\"${SELFDIR}\"" >&3
 unset TMPDIR # Unset user-defines base-directroy for mktemp
 BASEDIR="$(mktemp -d -p /var/lib/ucs-test)"
 echo "BASEDIR=\"${BASEDIR}\"" >&3
@@ -587,7 +589,7 @@ mkpkg () { # Create Package files in ${1} for packages in ${2}. Optional argumen
 		cd "${OLDPWD}" || return $?
 	done
 
-	python ./create_releases_json.py "$REPODIR"
+	python "${SELFDIR}/create_releases_json.py" "$REPODIR"
 }
 
 compress () { # compress file: <Packages|Sources>
@@ -750,7 +752,7 @@ checkapt () { # Check for apt.source statement ${1}: [--mirror] [[--]source] [/p
 			binary-i386|binary-amd64) shift ; continue ;;
 			main) shift ; continue ;;
 			/*) # shellcheck disable=SC2046
-				set -- "$@" $(python ./split_repo_path.py "${REPODIR}" "${1}") && shift  # IFS
+				set -- "$@" $(python "${SELFDIR}/split_repo_path.py" "${REPODIR}" "${1}") && shift  # IFS
 				continue
 				;;
 			*) echo "Unknown ${1}" >&2 ; cat $files; return 2 ;;
@@ -870,7 +872,7 @@ checksrc () {  # check Sources.xz: <dist> <section> <mirror> [upstream]
 	local dist="$1" section="$2" dst="$3" src="${4:-}"
 	# shellcheck disable=SC2046
 	"${COMPRESS[0]%=*}" -dc <"${dst}/dists/${dist}/${section}/${COMPRESS[0]/*=/Sources}" |
-		sed -nrf ./dsc2files.sed |
+		sed -nrf "${SELFDIR}/dsc2files.sed" |
 		while IFS=$'\n' read -r fn
 		do
 			[ -f "${dst}/${fn}" ] || return $?
