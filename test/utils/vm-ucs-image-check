@@ -6,7 +6,7 @@
 set -u
 
 eval "$(ucr shell)"
-
+set -x
 exe="${0##*/}"
 report_only=true
 ready=true
