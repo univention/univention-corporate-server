@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: univention-management-console
+fix:
+desc: |
+ This update addresses the following issue(s):
+ * When being logged in via SAML a refresh of the SAML authentication at
+   the UMC-Server (or LDAP-Server) is now done correctly again after the
+   validity of the SAML message expired.
+bug: [54229]
