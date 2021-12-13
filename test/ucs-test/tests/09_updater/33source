@@ -16,7 +16,7 @@ RETVAL=110 # Test fehlgeschlagen
 
 setup_apache "${repoprefix}"
 
-mkpdir "${_version_version}-0" maintained "${ARCH}"
+mkpdir "${_version_version}-${_version_patchlevel}" maintained "${ARCH}"
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
 
