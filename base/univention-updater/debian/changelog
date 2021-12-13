@@ -1,3 +1,9 @@
+univention-updater (15.0.3-73) unstable; urgency=medium
+
+  * Bug #54213: Remove preup-checks from UCS5 for UCS 5.0-1
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 14 Dec 2021 14:02:54 +0100
+
 univention-updater (15.0.3-72) unstable; urgency=medium
 
   * Bug #54213: Adapt links and components for 5.0-1
