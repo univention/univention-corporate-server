@@ -45,7 +45,7 @@ mkpdir "${_version_version}--component/${compname}" maintained all "${ARCH}"  # 
 mkdeb "${pkgname}c" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 
-python2.7 create_releases_json.py "${REPODIR}" "${_version_version}-0" "${_version_version}-1"
+python2.7 create_releases_json.py "${REPODIR}" "${_version_version}-${_version_patchlevel}" "${_version_version}-1"
 
 cat <<-EOF >"${DIR}/../.htaccess"
 AuthType Basic

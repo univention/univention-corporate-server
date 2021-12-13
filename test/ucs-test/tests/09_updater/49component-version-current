@@ -18,7 +18,7 @@ compname="test${RANDOM}"
 
 setup_apache "${repoprefix}"
 
-mkpdir "${major}.${minor}-0" maintained "${ARCH}"  # 0 1
+mkpdir "${major}.${minor}-${_version_patchlevel}" maintained "${ARCH}"  # 0 1
 mkpkg "${DIR}" "${DIR_POOL}"
 
 mkpdir "${major}.${minor}--component/${compname}" maintained all "${ARCH}"  # 2 3
