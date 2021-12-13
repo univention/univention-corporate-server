@@ -19,7 +19,7 @@ TRANSLOG_CMD = '/usr/share/univention-directory-notifier/univention-translog'
 
 XFAIL_BACKUP = pytest.mark.xfail(
 	ucr["server/role"] == "domaincontroller_backup",
-	reason="Bug #54203: transaction.index incomlete on Backup",
+	reason="Bug #54203: transaction.index incomplete on Backup",
 )
 
 
