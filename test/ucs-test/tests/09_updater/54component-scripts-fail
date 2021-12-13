@@ -22,7 +22,7 @@ compname="test${RANDOM}"
 
 setup_apache "${repoprefix}"
 
-version1="${major}.${minor}-0"
+version1="${major}.${minor}-${_version_patchlevel}"
 mkpdir "${major}.${minor}-0" maintained "${ARCH}"  # 0 1
 # 0:dists/ucs500/main/binary-amd64/
 # 1:dists/errata500/main/binary-amd64/
@@ -40,8 +40,8 @@ mksh "${DIR}" preup postup
 declare -a BDIR=("${DIRS[@]}")
 
 minor+=1
-version2="${major}.${minor}-0"
-mkpdir "${major}.${minor}-0" maintained "${ARCH}"  # 4 5
+version2="${major}.${minor}-${_version_patchlevel}"
+mkpdir "${major}.${minor}-${_version_patchlevel}" maintained "${ARCH}"  # 4 5
 # 4:dists/ucs510/main/binary-amd64/
 # 5:dists/errata510/main/binary-amd64/
 mkdeb "${pkgname}" 2 "${ARCH}" "${DIR_POOL}"
@@ -57,7 +57,7 @@ mksh "${DIR}" --return 1 preup
 mksh "${DIR}" postup
 
 cat >"${SH_LOG}" <<__SH__
-${DIR}/preup.sh [0-9]\\+ pre ${major}.${minor}-0
+${DIR}/preup.sh [0-9]\\+ pre ${major}.${minor}-${_version_patchlevel}
 __SH__
 
 python2.7 create_releases_json.py "${REPODIR}" "$version1" "$version2"

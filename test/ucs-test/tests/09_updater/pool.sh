@@ -62,6 +62,7 @@ eval "$(univention-config-registry shell | sed -e 's/^/declare -r _/')"
 # shellcheck disable=SC2154,SC2034
 declare -i major="${_version_version%.*}"
 declare -i minor="${_version_version#*.}"
+declare -i patchlevel="${_version_patchlevel}"
 pkgname="test-$$-${RANDOM}"
 # shellcheck disable=SC2034
 repoprefix="univention-repository"
@@ -394,7 +395,7 @@ mkpdir () { # Create package directory ${dir}
 				suite='errata'
 				;;
 			[1-9]*([0-9]).+([0-9])--component/*)
-				versions+=("${1%--*}-0")
+				versions+=("${1%--*}-${patchlevel}")
 				component_versions+=("${1}")
 			;;
 			maintained|unmaintained) parts+=("${1}") ;;
