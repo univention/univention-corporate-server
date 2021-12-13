@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: python-babel
+fix: 2.6.0+dfsg.1-1+deb10u1
+desc: |
+ This update addresses the following issue:
+ * allows attackers to load arbitrary locale .dat files via directory
+   traversal leading to code execution (CVE-2021-42771)
+bug: [54242]
+cve:
+- CVE-2021-42771
