@@ -124,7 +124,7 @@ case "${UT_VERBOSE-}" in
 	"") exec 3>/dev/null 4>/dev/null ;;
 	?*) exec 3>&2 4>&2 ;;
 esac
-C0='' C1='' C2='' && [ -n "${TERM:-}" ] && C0=$'\e[0m' C1=$'\e[1;36m' C2=$'\e[1;35m'
+C0='' C1='' C2='' && [ -n "${TERM:-}" ] && tty -s <&4 && C0=$'\e[0m' C1=$'\e[1;36m' C2=$'\e[1;35m'
 PS4="+${C1}\${BASH_SOURCE}${C0}:${C2}\${LINENO}${C0}:${C1}\${FUNCNAME[0]}${C0}@${C2}\${SECONDS}${C0}: "
 BASH_XTRACEFD=4
 set -x
