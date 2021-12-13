@@ -118,6 +118,7 @@ check_mail () {
 }
 
 check_backup () {
+	[ ! -e /var/univention-backup ] && return 0
 	find /var/univention-backup -mindepth 1 -not -empty -print0 >"$tmp" || :
 	[ -s "$tmp" ] &&
 		issue "Backup exist" find /var/univention-backup -mindepth 1 -not -empty -delete
