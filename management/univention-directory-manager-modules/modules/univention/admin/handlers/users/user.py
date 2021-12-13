@@ -1074,6 +1074,18 @@ def unmapSambaKickoffTimeToUserexpiry(oldattr):
 		return time.strftime("%Y-%m-%d", time.gmtime(long(oldattr['sambaKickoffTime'][0]) + (3600 * 24)))
 
 
+def _mapUserExpiryToShadowExpire(userexpiry):
+	return u"%d" % long(time.mktime(time.strptime(userexpiry, "%Y-%m-%d")) / 3600 / 24 + 1)
+
+
+def _mapUserExpiryToKrb5ValidEnd(userexpiry):
+	return u"%s%s%s000000Z" % (userexpiry[0:4], userexpiry[5:7], userexpiry[8:10])
+
+
+def _mapUserExpiryToSambaKickoffTime(userexpiry):
+	return u"%d" % long(time.mktime(time.strptime(userexpiry, "%Y-%m-%d")))
+
+
 def unmapPasswordExpiry(oldattr):
 	if oldattr.get('shadowLastChange') and oldattr.get('shadowMax'):
 		shadow_max = int(oldattr['shadowMax'][0])
@@ -2022,7 +2034,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.hasChanged('userexpiry'):
 			sambaKickoffTime = b''
 			if self['userexpiry']:
-				sambaKickoffTime = b"%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")))
+				sambaKickoffTime = _mapUserExpiryToSambaKickoffTime(self['userexpiry']).encode("ASCII")
 				ud.debug(ud.ADMIN, ud.INFO, 'sambaKickoffTime: %s' % sambaKickoffTime)
 			old_sambaKickoffTime = self.oldattr.get('sambaKickoffTime', [b''])[0]
 			if old_sambaKickoffTime != sambaKickoffTime:
@@ -2033,7 +2045,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.hasChanged('userexpiry'):
 			krb5ValidEnd = u''
 			if self['userexpiry']:
-				krb5ValidEnd = u"%s%s%s000000Z" % (self['userexpiry'][0:4], self['userexpiry'][5:7], self['userexpiry'][8:10])
+				krb5ValidEnd = _mapUserExpiryToKrb5ValidEnd(self['userexpiry'])
 				ud.debug(ud.ADMIN, ud.INFO, 'krb5ValidEnd: %s' % krb5ValidEnd)
 			krb5ValidEnd = krb5ValidEnd.encode('ASCII')
 			old_krb5ValidEnd = self.oldattr.get('krb5ValidEnd', [b''])[0]
@@ -2049,7 +2061,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if self['disabled'] == '1' and self.hasChanged('disabled') and not self.hasChanged('userexpiry'):
 				shadowExpire = u'1'
 			elif self['userexpiry']:
-				shadowExpire = u"%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")) / 3600 / 24 + 1)
+				shadowExpire = _mapUserExpiryToShadowExpire(self['userexpiry'])
 			elif self['disabled'] == '1':
 				shadowExpire = u'1'
 			else:
@@ -2329,6 +2341,21 @@ class object(univention.admin.handlers.simpleLdap):
 				filter.transform_to_conjunction(univention.admin.filter.parse(u'(&(shadowExpire=1)(krb5KDCFlags=254))'))
 			elif filter.value == u'*':
 				filter.variable = u'uid'
+		elif filter.variable == 'userexpiry':
+			try:
+				userexpiry = property_descriptions['userexpiry'].syntax.parse(filter.value)
+			except univention.admin.uexceptions.valueError:
+				# allow to search for userexpiry=*
+				# TODO: should we allow to search for e.g. userexpiry=2021-* ?
+				userexpiry_filter = filter_format(u'(|(shadowExpire=%s)(krb5ValidEnd=%s)(sambaKickoffTime=%s))', [filter.value or '*', filter.value or '*', filter.value or '*'])
+				userexpiry_filter = userexpiry_filter.replace(filter_format('%s', ['*']), '*')
+			else:
+				userexpiry_filter = filter_format(u'(|(shadowExpire=%s)(krb5ValidEnd=%s)(sambaKickoffTime=%s))', [
+					_mapUserExpiryToShadowExpire(userexpiry),
+					_mapUserExpiryToKrb5ValidEnd(userexpiry),
+					_mapUserExpiryToSambaKickoffTime(userexpiry),
+				])
+			filter.transform_to_conjunction(univention.admin.filter.parse(userexpiry_filter))
 		elif filter.variable == u'locked':
 			if filter.value == u'1':
 				filter.transform_to_conjunction(univention.admin.filter.parse(u'(|(krb5KDCFlags:1.2.840.113556.1.4.803:=131072)(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ]))'))
