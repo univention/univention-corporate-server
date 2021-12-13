@@ -114,6 +114,9 @@
 							<package>postgresql-11</package> (<u:cve>2021-3677</u:cve> <u:cve>2021-23214</u:cve> <u:cve>2021-23222</u:cve>) (<u:bug>53898</u:bug> <u:bug>54056</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
+							<package>python-babel</package> (<u:cve>2021-20095</u:cve>) (<u:bug>54242</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
 							<package>samba</package> (<u:cve>2016-2124</u:cve> <u:cve>2020-17049</u:cve> <u:cve>2020-25717</u:cve> <u:cve>2020-25718</u:cve> <u:cve>2020-25719</u:cve> <u:cve>2020-25721</u:cve> <u:cve>2020-25722</u:cve> <u:cve>2021-3738</u:cve> <u:cve>2021-23192</u:cve>) (<u:bug>54013</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
@@ -132,6 +135,7 @@
 					The following updated packages from Debian Buster <productnumber>10.11</productnumber> are included (<u:bug>54218</u:bug>):
 					<simplelist type="inline" id="_debian">
 						<member><package>ansible</package></member>
+						<member><package>apache-log4j2</package></member>
 						<member><package>apt</package></member>
 						<member><package>aspell</package></member>
 						<member><package>atftp</package></member>
@@ -257,6 +261,7 @@
 						<member><package>user-mode-linux</package></member>
 						<member><package>velocity</package></member>
 						<member><package>webkit2gtk</package></member>
+						<member><package>wireshark</package></member>
 						<member><package>wml</package></member>
 						<member><package>wordpress</package></member>
 						<member><package>xen</package></member>
