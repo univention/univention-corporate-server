@@ -59,11 +59,9 @@ class User(object):
 		merged_args = self.args.get('linkedAccounts', self.args)
 		roles = set(merged_args.get('roles', []))
 		idps = set(merged_args.get('idps', []))
-		# loa is list() in keycloak, but string in portal
+		# FIXME: loa is list() in keycloak, but string in portal
 		# better fix keycloak mapper loa -> string
-		loa = merged_args.get('loa', [])
-		if not loa:
-			loa = ['low']
+		loa = merged_args.get('loa', ['low'])[0]
 
 		def conditions():
 			yield not disallow_anonymous or not self.is_anonymous()
@@ -72,5 +70,5 @@ class User(object):
 			if allowed_idps:
 				yield allowed_idps & idps
 			if allowed_loa:
-				yield levels_of_assurance.get(loa[0], 1) >= levels_of_assurance.get(allowed_loa if allowed_loa else None, 1)
+				yield levels_of_assurance.get(loa, 1) >= levels_of_assurance.get(allowed_loa, 1)
 		return all(conditions())
