@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.20-30) unstable; urgency=medium
+
+  * Bug #54017: Revert
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 14 Dec 2021 20:04:42 +0100
+
 univention-directory-manager-modules (14.0.20-29) unstable; urgency=medium
 
   * Bug #48956: Make changing the uid / deleting / moving the object more
