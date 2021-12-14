@@ -233,6 +233,9 @@ export default defineComponent({
         .includes(this.searchQuery.toLowerCase());
     },
     tileMatchesQuery(tile: Tile): boolean {
+      if (!this.searchQuery && tile.auth_info.allow_global_search) {
+        return false;
+      }
       const titleMatch = this.titleMatchesQuery(tile.title);
       const descriptionMatch = (tile as BaseTile).description ? this.descriptionMatchesQuery((tile as BaseTile).description as Description) : false;
       const keywordsMatch = (tile as BaseTile).keywords ? this.keywordsMatchesQuery((tile as BaseTile).keywords as Description) : false;
