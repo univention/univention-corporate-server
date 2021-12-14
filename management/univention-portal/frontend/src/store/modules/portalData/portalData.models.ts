@@ -51,6 +51,14 @@ export interface Tile {
   isFolder: boolean,
 }
 
+export interface AuthInfo {
+	roles: string[],
+	idps: string[],
+	loa: 'low' | 'medium' | 'high',
+	disallow_anonymous: boolean,
+	allow_global_search: boolean,
+}
+
 export interface BaseTile extends Tile {
   allowedGroups: string[],
   activated: boolean,
@@ -59,6 +67,7 @@ export interface BaseTile extends Tile {
   backgroundColor: string | null,
   description: Description,
   keywords: Keywords,
+  auth_info: AuthInfo,
   linkTarget: LinkTarget,
   originalLinkTarget: LinkTargetOrDefault,
   links: Link[],
@@ -94,6 +103,7 @@ export interface PortalEntry {
   backgroundColor: string | null,
   description: Description,
   keywords: Keywords,
+  auth_info: AuthInfo,
   linkTarget: LinkTargetOrDefault,
   links: Link[],
   logo_name: string | null,

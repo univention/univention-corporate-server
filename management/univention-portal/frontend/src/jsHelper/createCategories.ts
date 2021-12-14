@@ -66,6 +66,7 @@ function makeEntry(
       backgroundColor: entry.backgroundColor,
       description: entry.description,
       keywords: entry.keywords,
+      auth_info: entry.auth_info,
       links: entry.links,
       linkTarget: entry.linkTarget === 'useportaldefault' ? defaultLinkTarget : entry.linkTarget,
       originalLinkTarget: entry.linkTarget,
