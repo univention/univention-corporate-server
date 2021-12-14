@@ -87,7 +87,7 @@ production:
     - git fetch --no-tags origin
     - git reset --hard origin/master
     - rsync -av ../public/ ./
-    - git add -u
+    - git add -- .
     - git commit -m "Automatic doc deployment by GitLab commit $CI_COMMIT_SHA"
     - git push
   environment:
