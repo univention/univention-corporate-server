@@ -211,3 +211,19 @@ EOF
 		--data /tmp/appcenter-test.sh \
 		--data_type="join/pre-join"
 }
+
+add_pre_join_hook_to_install_from_test_repository () {
+	# activate test repository for school-replica join
+	cat <<-'EOF' >"/tmp/repo-test.sh"
+#!/bin/bash
+ucr set repository/online/server='updates-test.knut.univention.de'
+exit 0
+EOF
+	. /usr/share/univention-lib/ldap.sh && ucs_registerLDAPExtension \
+		--binddn "cn=admin,$(ucr get ldap/base)" \
+		--bindpwdfile=/etc/ldap.secret \
+		--packagename setrepo \
+		--packageversion "1.0" \
+		--data /tmp/repo-test.sh \
+		--data_type="join/pre-join"
+}
