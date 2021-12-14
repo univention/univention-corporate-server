@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: raptor2
+fix: 2.0.14-1+deb9u2
+desc: |
+ This update addresses the following issue:
+ * malformed input file can lead to a segfault due to an out of bounds array
+   access in raptor_xml_writer_start_element_common (CVE-2020-25713)
+bug: [54250]
+cve:
+- CVE-2020-25713
