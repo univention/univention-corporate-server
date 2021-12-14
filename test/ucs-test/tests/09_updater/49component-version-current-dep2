@@ -19,8 +19,8 @@ compname2="test2${RANDOM}"
 
 setup_apache "${repoprefix}"
 
-version1="${major}.${minor}-0"
-mkpdir "${major}.${minor}-0" maintained "${ARCH}"  # 0 1
+version1="${major}.${minor}-{_version_patchlevel}"
+mkpdir "${major}.${minor}-{_version_patchlevel}" maintained "${ARCH}"  # 0 1
 mkpkg "${DIR}" "${DIR_POOL}"
 
 mkpdir "${major}.${minor}--component/${compname1}" maintained all "${ARCH}"  # 2 3
@@ -34,8 +34,8 @@ mkpkg "${DIR}" "${DIR}"
 declare -a BDIR=("${DIRS[@]}")
 
 minor+=1
-version2="${major}.${minor}-0"
-mkpdir "${major}.${minor}-0" maintained "${ARCH}"  # 6 7
+version2="${major}.${minor}-${_version_patchlevel}"
+mkpdir "${major}.${minor}-${_version_patchlevel}" maintained "${ARCH}"  # 6 7
 mkpkg "${DIR}" "${DIR_POOL}"
 
 python2.7 create_releases_json.py "${REPODIR}" "$version1" "$version2"
