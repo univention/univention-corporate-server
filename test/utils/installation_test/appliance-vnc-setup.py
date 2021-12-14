@@ -119,8 +119,10 @@ class UCSSetup(UCSInstallation):
 		self.tab_to_next_and_enter(2)
 		time.sleep(10)
 		if role == 'slave':
-			self.client.keyPress('down')
+			#self.client.keyPress('down')
 			#self.next()
+			self.client.waitForText('Replica Directory Node', timeout=self.timeout)
+			self.client.mouseClickOnText('Replica Directory Node', timeout=self.timeout)
 			self.tab_to_next_and_enter(2)
 			self.click('Username')
 			self.client.enterText(self.args.join_user)
