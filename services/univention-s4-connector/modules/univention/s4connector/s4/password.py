@@ -539,14 +539,19 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdLastSet from S4 : %s" % pwdLastSet)
 
 	pwd_set = False
+	# search domain
+	res = s4connector.lo_s4.search(filter='(objectClass=domain)', attr=['pwdHistoryLength'])
+	pwdHistoryLength = int(res[0][1].get('pwdHistoryLength', [0])[0])
+	# search user
 	filter_expr = format_escaped('(objectSid={0!e})', objectSid)
-	res = s4connector.lo_s4.search(filter=filter_expr, attr=['unicodePwd', 'userPrincipalName', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])
+	res = s4connector.lo_s4.search(filter=filter_expr, attr=['unicodePwd', 'userPrincipalName', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd', 'ntPwdHistory'])
 	s4_search_attributes = res[0][1]
 
 	unicodePwd_attr = s4_search_attributes.get('unicodePwd', [None])[0]
 	dBCSPwd_attr = s4_search_attributes.get('dBCSPwd', [None])[0]
 	userPrincipalName_attr = s4_search_attributes.get('userPrincipalName', [None])[0]
 	supplementalCredentials = s4_search_attributes.get('supplementalCredentials', [None])[0]
+	ntPwdHistory = s4_search_attributes.get('ntPwdHistory', [b''])[0]
 	#msDS_KeyVersionNumber = s4_search_attributes.get('msDS-KeyVersionNumber', [0])[0]
 	# ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Password-Hash from S4: %s" % unicodePwd_attr)
 
@@ -591,6 +596,11 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 					else:
 						raise
 			if pwd_set and unicodePwd_new:
+				des_len = pwdHistoryLength * 16
+				ntPwdHistory_new = ntPwdHistory + unicodePwd_new
+				ntPwdHistory_new = ntPwdHistory_new[:des_len]
+
+				modlist.append((ldap.MOD_REPLACE, 'ntPwdHistory', ntPwdHistory_new))
 				modlist.append((ldap.MOD_REPLACE, 'unicodePwd', unicodePwd_new))
 	if ucsLMhash != s4LMhash:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: LM Hash S4: %r LM Hash UCS: %r" % (s4LMhash, ucsLMhash))
