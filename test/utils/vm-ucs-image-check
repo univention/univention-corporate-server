@@ -6,7 +6,7 @@
 set -u
 
 eval "$(ucr shell)"
-set -x
+
 exe="${0##*/}"
 report_only=true
 ready=true
@@ -160,7 +160,7 @@ check_ec2 () {
 	echo "I: EC2"
 	[ "${server_amazon:-}" = true ] ||
 		issue "UCRV server/amazon" ucr set server/amazon='true'
-	[ "${grub_generate_menu_lst:-}" = no ] ||
+	[ -z "${grub_generate_menu_lst:-}" ] ||
 		issue "generate-menu-lst is enabled" ucr set grub/generate-menu-lst='no'
 	[ -e /boot/grub/menu.lst ] &&
 		issue "menu.lst exists" rm -f /boot/grub/menu.lst*
