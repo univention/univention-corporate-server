@@ -49,6 +49,7 @@ export interface Tile {
   dn: string,
   title: Title,
   isFolder: boolean,
+  auth_info: AuthInfo,
 }
 
 export interface AuthInfo {
@@ -67,7 +68,6 @@ export interface BaseTile extends Tile {
   backgroundColor: string | null,
   description: Description,
   keywords: Keywords,
-  auth_info: AuthInfo,
   linkTarget: LinkTarget,
   originalLinkTarget: LinkTargetOrDefault,
   links: Link[],
