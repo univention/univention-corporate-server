@@ -6,8 +6,6 @@ src: univention-directory-manager-modules
 fix: 14.0.20-29A~4.4.0.202112010839
 desc: |
  This update addresses the following issue:
- * The UDM API does not raise WrongObjectType during the iteration over all
-   found objects in search().
  * UDM can now handle environments where the refint module for uniqueMember
    has been enabled.
-bug: [54017, 48956]
+bug: [48956]
