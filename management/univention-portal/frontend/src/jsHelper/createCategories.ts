@@ -138,13 +138,6 @@ export default function createCategories(
         title: category.display_name,
         dn: category.dn,
         virtual: category.virtual,
-        /*auth_info: {
-          roles: [],
-          idps: [],
-          loa: 'low',
-          disallow_anonymous: true,
-          allow_global_search: false,
-        },*/
         tiles,
       });
     } else {
