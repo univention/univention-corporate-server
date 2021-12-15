@@ -444,14 +444,14 @@ def handler_get(args, opts={}):
 	"""
 	ucr = ConfigRegistry()
 	ucr.load()
-	key = args[0]
-	value = ucr.get(key)
-	if value is None:
-		return
-	elif OPT_FILTERS['shell'][2]:
-		yield '%s: %s' % (key, value)
-	else:
-		yield value
+	for key in args:
+		value = ucr.get(key)
+		if value is None:
+			continue
+		elif OPT_FILTERS['shell'][2]:
+			yield '%s: %s' % (key, value)
+		else:
+			yield value
 
 
 def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DESCRIPTION):
