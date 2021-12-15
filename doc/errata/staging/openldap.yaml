@@ -10,4 +10,4 @@ desc: |
  * Consistently write `<TransID>` if `last_id` could not be determined as all.
  * Log error if `listener/listener` file cannot be written.
  * Update `last_id` file atomically.
-bug: [41687]
+bug: [53821]
