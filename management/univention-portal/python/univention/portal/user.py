@@ -61,7 +61,7 @@ class User(object):
 		idps = set(merged_args.get('idps', []))
 		# FIXME: loa is list() in keycloak, but string in portal
 		# better fix keycloak mapper loa -> string
-		loa = merged_args.get('loa', ['low'])[0]
+		loa = (merged_args.get('loa') or ['low'])[0]
 
 		def conditions():
 			yield not disallow_anonymous or not self.is_anonymous()
