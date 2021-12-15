@@ -9,3 +9,5 @@ desc: |
  * The file permissions of files `/etc/machine.secret.SAVE` are now set before
    the files are written.
 bug: [49033]
+erratum: 1126
+announced: 2021-12-15
