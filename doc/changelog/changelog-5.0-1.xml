@@ -102,6 +102,9 @@
 							<package>nettle</package> (<u:cve>2021-3580</u:cve> <u:cve>2021-20305</u:cve>) (<u:bug>53479</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
+							<package>nss</package> (<u:cve>2021-43527</u:cve>) (<u:bug>54197</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
 							<package>ntfs-3g</package> (<u:cve>2021-33285</u:cve> <u:cve>2021-33286</u:cve> <u:cve>2021-33287</u:cve> <u:cve>2021-33289</u:cve> <u:cve>2021-35266</u:cve> <u:cve>2021-35267</u:cve> <u:cve>2021-35268</u:cve> <u:cve>2021-35269</u:cve> <u:cve>2021-39251</u:cve> <u:cve>2021-39252</u:cve> <u:cve>2021-39253</u:cve> <u:cve>2021-39254</u:cve> <u:cve>2021-39255</u:cve> <u:cve>2021-39256</u:cve> <u:cve>2021-39257</u:cve> <u:cve>2021-39258</u:cve> <u:cve>2021-39259</u:cve> <u:cve>2021-39260</u:cve> <u:cve>2021-39261</u:cve> <u:cve>2021-39262</u:cve> <u:cve>2021-39263</u:cve>) (<u:bug>53771</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
@@ -289,6 +292,9 @@
 			<title>&ucsUCR;</title>
 			<itemizedlist>
 				<listitem><simpara>
+						<command>ucr commit</command> now prints a warning if a file is specified for which no template is registered (<u:bug>50010</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 						Always call the UCR module function <function>handler()</function> with a dictionary mapping variables to a 2-tuple containing the old and new value, even when <command>ucr commit</command> or <command>ucr register</command> are invoked (<u:bug>53424</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -297,6 +303,9 @@
 				<listitem><simpara>
 						Umlauts in UCR keys are allowed again, which was broken since UCS 5.0-1 (<u:bug>53742</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+						UCR now immediately closes file references when they are not used anymore (<u:bug>53811</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:basis:ucr:template">
@@ -304,6 +313,9 @@
 				<itemizedlist>
 					<listitem><simpara>
 							The package <package>univention-base-files</package> has been migrated to Python 3 (<u:bug>53343</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+							A confusing wording in <filename>/etc/motd</filename> has been fixed (<u:bug>54184</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
@@ -355,6 +367,9 @@
 					</simpara></listitem>
 					<listitem><simpara>
 							Make module execution order configurable by explicitly specifying a <property>priority</property> (<u:bug>26089</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+							The package <package>univention-directory-notifier</package> has been migrated to Python 3 (<u:bug>53355</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
 							The applying of a <filename>failed.ldif</filename> has been repaired, it was broken due to the Python 3 migration (<u:bug>53430</u:bug>).
@@ -697,6 +712,9 @@
 				<listitem><simpara>
 						Users/LDAP objects could not be created if the <classname>mspolicy</classname> password complexity criteria was configured due to the missing <property>displayname</property> (<u:bug>53339</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+						UDM can now handle environments where the module <filename>refint</filename> for the attribute <property>uniqueMember</property> has been enabled (<u:bug>54185</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -738,6 +756,9 @@
 				</simpara></listitem>
 				<listitem><simpara>
 						An encoding issue has been fixed, which prevented the UMC join module from executing join scripts (<u:bug>53181</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Viewing the <filename>join.log</filename> in UMC now shows the newest entries instead of the first 2 MB only (<u:bug>53941</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -967,6 +988,15 @@
 			</itemizedlist>
 		</section>
 
+		<section id="changelog:service:nagios">
+			<title>Nagios</title>
+			<itemizedlist>
+				<listitem><simpara>
+						The Nagios plugin <filename>check_univention_slapd_mdb_maxsize</filename> now takes the number of free pages into account for checking the size of the LDAP database (<u:bug>54186</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
 		<section id="changelog:service:apache">
 			<title>Apache</title>
 			<itemizedlist>
@@ -1093,6 +1123,10 @@
 				<listitem><simpara>
 						The Nagios check for <package>univention-ad-connector</package> reported a false positive if multiple ad-connector instances were running (<u:bug>53340</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+						UCS rejects are resynchronized only a certain amount of times.
+						This is configurable via a new &ucsUCRV; <envar>connector/ad/max_retry_rejected</envar>, which defaults to 10 tries (<u:bug>54147</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -1131,6 +1165,14 @@
 					Standard streams could be set to non inheritable within the daemon context.
 					Which means child process did not have any standard streams.
 					This made it impossible to use the UMC join module to join or rejoin a UCS server (<u:bug>53181</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+					The package <package>univention-group-membership-cache</package> has been added to provide a fast user and group membership cache (<u:bug>54182</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+					On the Primary the LDAP server module <filename>refint</filename> can now be enabled by setting the &ucsUCRV; <envar>ldap/refint=true</envar>.
+					It enforces referential integrity for the attribute <property>uniqueMember</property>.
+					For updates the module will not be enabled by default (<u:bug>54185</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
