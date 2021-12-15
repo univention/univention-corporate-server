@@ -34,48 +34,41 @@ eval "$(/usr/sbin/univention-config-registry --shell dump)"
 
 ## check for option -D to avoid "ldapsearch: -D previously specified"
 ## check for option -w to avoid "ldapsearch: -y incompatible with -w"
-declare -a args=()
-for arg in "$@"; do
-	if [ "$arg" = "-D" ] || [ "$arg" = "--binddn" ]; then
-		binddn_given=true
-		args+=("-D")
-	elif [ "$arg" = "-w" ] || [ "$arg" = "--bindpwd" ]; then
-		password_given=true
-		args+=("-w")
-	elif [ "$arg" = "--bindpwdfile" ]; then
-		password_given=true
-		args+=("-y")
-	else
-		args+=("$arg")
-	fi
+opt="$(getopt -o 'a:Ab:cE:F:l:Ls:S:tT:uz:Cd:D:e:f:h:H:IMnNO:o:p:P:QR:U:vVw:WxX:y:Y:Z' -l 'binddn:,bindpwd:,bindpwdfile:'-- "$@" || exit $?)"
+eval set -- "$opt"
+
+declare -a cmd=(ldapsearch -o ldif-wrap=no -ZZ) args=()
+binddn_given='' password_given=''
+while [ "$#" -ge 1 ]
+do
+	case "$1" in
+	-D|--binddn) binddn_given=true args+=("-D") ;;
+	-w|--bindpwd) password_given=true args+=("-w") ;;
+	-y|--bindpwdfile) password_given=true args+=("-y") ;;
+	--) break ;;
+	*) args+=("$1") ;;
+	esac
+	shift
 done
 
-do_search ()
-{
-	if [ -z "$binddn_given" ]; then
-		binddn="${ldap_binddn:-}"
-		if [ -z "$binddn" ]; then
-			binddn="${ldap_hostdn:-}"
-		fi
-		if [ -z "$password_given" ]; then
-			bindpw_file="/etc/machine.secret"
-			ldapsearch -o ldif-wrap=no -ZZ -D "$binddn" -y $bindpw_file "${args[@]}"
-		else
-			ldapsearch -o ldif-wrap=no -ZZ -D "$binddn" "${args[@]}"
-		fi
-	else
-		ldapsearch -o ldif-wrap=no -ZZ "${args[@]}"
-	fi
-}
+if [ -z "$binddn_given" ]
+then
+	: "${binddn:=${ldap_binddn:-}}"
+	: "${binddn:=${ldap_hostdn:?}}"
+	cmd+=(-D "$binddn")
+	[ -n "$password_given" ] ||
+		cmd+=(-y /etc/machine.secret)
+fi
 
 tempfile="$(mktemp)"
 trap 'rm -f "$tempfile"' EXIT
 
 retry=${ldap_client_retry_count:-10}
-for ((i=0;i<=retry;i++)); do
+for ((i=0;i<=retry;i++))
+do
 	[ "$i" -ge 1 ] && sleep 1
 	exec 3>&1
-	do_search 2>&1 1>&3 3<&- |
+	"${cmd[@]}" "${args[@]}" 2>&1 1>&3 3<&- |
 		tee "$tempfile" 1>&2 3<&-
 	ret=${PIPESTATUS[0]}
 	exec 3<&-
