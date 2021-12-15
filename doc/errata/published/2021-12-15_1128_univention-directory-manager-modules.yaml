@@ -9,3 +9,5 @@ desc: |
  * UDM can now handle environments where the refint module for uniqueMember
    has been enabled.
 bug: [48956]
+erratum: 1128
+announced: 2021-12-15
