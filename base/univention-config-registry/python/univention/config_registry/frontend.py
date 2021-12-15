@@ -274,8 +274,8 @@ def handler_dump(args, opts={}):
 	"""
 	ucr = ConfigRegistry()
 	ucr.load()
-	for line in str(ucr).split('\n'):
-		yield line
+	for kv in ucr.items():
+		yield "%s: %s" % kv
 
 
 def handler_update(args, opts={}):
