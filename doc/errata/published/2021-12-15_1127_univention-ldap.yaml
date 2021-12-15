@@ -12,3 +12,5 @@ desc: |
    be enabled by default.
  * The file `/etc/machine.secret.SAVE` is no longer readable by everyone.
 bug: [48956, 49033]
+erratum: 1127
+announced: 2021-12-15
