@@ -1,4 +1,4 @@
-univention-updater (15.0.3-73) unstable; urgency=medium
+univention-updater (15.0.3-74) unstable; urgency=medium
 
   * Bug #54213: Remove preup-checks from UCS5 for UCS 5.0-1
 

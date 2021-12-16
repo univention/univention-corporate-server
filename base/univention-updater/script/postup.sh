@@ -142,44 +142,6 @@ fi
 # Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
 service univention-firewall restart >&3 2>&3
 
-# Bug #51531: re-evaluate extensions startucsversion and enducsversion (always required)
-listener_modules="udm_extension"
-if [ "${server_role:-}" != "memberserver" ]; then
-	listener_modules="$listener_modules ldap_extension"
-fi
-# Bug #53711: "WARNING: The "blocking locks" option is deprecated" caused by shares created in UCS4.4
-if [ -e "/usr/lib/univention-directory-listener/system/samba-shares.py" ]; then
-	listener_modules+=" samba-shares"
-fi
-echo "running univention-directory-listener-ctrl resync $listener_modules"
-# shellcheck disable=SC2086
-/usr/sbin/univention-directory-listener-ctrl resync $listener_modules
-# Wait for listener module resync to finish
-wait_period=0
-while [ "$wait_period" -lt "300" ]; do
-	if [ -e "/var/lib/univention-directory-listener/handlers/ldap_extension" ]; then
-		ldap_ext_state=$(</var/lib/univention-directory-listener/handlers/ldap_extension)
-	elif [ "${server_role:-}" = "memberserver" ]; then
-		ldap_ext_state=3
-	else
-		ldap_ext_state=0
-	fi
-
-	if [ -e "/var/lib/univention-directory-listener/handlers/udm_extension" ]; then
-		udm_ext_state=$(</var/lib/univention-directory-listener/handlers/udm_extension)
-	else
-		udm_ext_state=0
-	fi
-
-	if [ "$ldap_ext_state" = "3" ] && [ "$udm_ext_state" = "3" ]; then
-		break
-	fi
-	sleep 1
-	wait_period=$((wait_period+1))
-done
-# Wait another 30 seconds for listener postrun, as ldap_extension restarts slapd
-sleep 30
-
 # run remaining joinscripts
 if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-run-join-scripts >&3 2>&3

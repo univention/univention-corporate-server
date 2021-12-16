@@ -131,46 +131,6 @@ if [ ! -d "$initrd_backup" ]; then
 fi
 mv /boot/*.bak /var/backups/univention-initrd.bak/ >/dev/null 2>&1
 
-# Bug #52923: disable fetchmail during update to prevent aborting update
-if dpkg -l univention-fetchmail 2>&3 | grep ^ii  >&3 ; then
-	if [ -z "$(ucr search "^fetchmail/autostart/update500$")" ] ; then
-		ucr set fetchmail/autostart/update500="$(ucr get fetchmail/autostart)" >&3
-	fi
-	ucr set fetchmail/autostart=no >&3 2>&3
-	service fetchmail stop  >&3 2>&3 || :
-fi
-
-# Bug #52974: disable libvirtd during update to prevent aborting update
-if dpkg -l libvirt-daemon 2>&3 | grep ^ii  >&3 ; then
-	for service in libvirtd virtlogd ; do
-		if [ -z "$(ucr search "^update/service/libvirt/${service:-}")" ] ; then
-			state="$(systemctl show ${service:-}.service | sed -nre 's/^UnitFileState=(.*)$/\1/p')"
-			echo "Status of ${service:-}.service: ${state:-}" >&3
-			ucr set "update/service/libvirt/${service:-}=${state:-}"  >&3 2>&3
-			systemctl stop "${service:-}.service" >&3 2>&3
-			systemctl mask "${service:-}.service" >&3 2>&3
-		fi
-	done
-fi
-
-# Bug #52790: Don't let postgresql@11-main.service start before migration
-if dpkg -l univention-postgresql 2>&3 | grep ^ii  >&3 ; then
-	ucr set postgres11/autostart=no
-	#       ^^ doesn't do anything yet as service does not yet exist
-	ln -s /dev/null /etc/systemd/system/postgresql@11-main.service
-	systemctl daemon-reload
-fi
-
-# Bug #53059: univention-mariadb is a dependency of univention-mysql
-# if univention-mysql was installed (e.g., App Center), it gets uninstalled
-# during the update to 5.0-0. This autoremoves univention-mariadb. But we need it
-# apt-mark manual always returns 0. even if not installed
-apt-mark manual univention-mariadb
-# Bug #46588: univention-postgresql may have been installed as a dependency.
-# If you removed this package again, the update to 5.0 may auto-remove univention-postgresql
-# but, for reasons yet unknown, postgresql-9.6 stays installed. This leaves the
-# database service ununsable. So keep it safe, keep univention-postgresql
-apt-mark manual univention-postgresql
 
 # set KillMode of atd service to process to save the children from getting killed
 # up to this point the updater process is a child of atd as well
