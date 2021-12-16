@@ -48,16 +48,15 @@ case "$1" in
 			fi
 		fi
 
-		# if [ -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.9-1 # upgrade
-		# then
-		# fi
-
-		# restart postgresql to load correct configfiles (Bug #27786)
-		if [ -x "/etc/init.d/postgresql" ]
+		if dpkg --compare-versions "${2:-}" lt-nl 12.0.2-2~ # upgrade
 		then
-			service postgresql restart
+			# Bug #54255: unset UCRV postgresql/autostart=no accidently set by 5.0-1 postup.sh
+			zgrep -qs '^2021-12-1[456] ..:..:..: set postgres11/autostart=no ' /var/log/univention/config-registry.replog* &&
+				ucr unset postgres11/autostart
 		fi
 
+		# restart postgresql to load correct configfiles (Bug #27786)
+			service postgresql restart
 		;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)

@@ -1,3 +1,9 @@
+univention-postgresql (12.0.2-2) unstable; urgency=low
+
+  * Bug #54255: Restart PostgreSQL after upgrade to UCS 5.0-1
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 16 Dec 2021 17:13:22 +0100
+
 univention-postgresql (12.0.2-1) unstable; urgency=medium
 
   * Bug #53034: For updates allow univention-postgresql-9.6 and
