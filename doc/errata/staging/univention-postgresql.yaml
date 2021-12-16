@@ -1,9 +1,9 @@
 product: ucs
 release: "5.0"
-version: [0]
-scope: ucs_5.0-0-errata5.0-0
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
 src: univention-postgresql
-fix: 12.0.2-2
+fix: 12.0.2-2A~5.0.0.202112161724
 desc: |
  This update addresses the following issue:
  * During the upgrade to UCS 5.0-1 PostgreSQL 11 might have been disabled by
