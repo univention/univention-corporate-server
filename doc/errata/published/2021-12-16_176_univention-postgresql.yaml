@@ -9,3 +9,5 @@ desc: |
  * During the upgrade to UCS 5.0-1 PostgreSQL 11 might have been disabled by
    setting the UCR variable `postgres11/autostart=no` by accident.
 bug: [54255]
+erratum: 176
+announced: 2021-12-16
