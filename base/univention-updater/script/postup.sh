@@ -158,44 +158,6 @@ ucr search --brief --non-empty '^repository/online/component/[1-4][.][0-9]+-[0-9
   cut -d: -f1 |
   xargs -r ucr unset
 
-# Bug #52923: switch back to old fetchmail/autostart status
-if [ -n "$(ucr search "^fetchmail/autostart/update500$")" ] ; then
-	eval "$(ucr shell fetchmail/autostart/update500)"
-	# shellcheck disable=SC2154
-	if [ -z "$fetchmail_autostart_update500" ] ; then
-		ucr unset fetchmail/autostart >&3 2>&3
-	else
-		ucr set fetchmail/autostart="$fetchmail_autostart_update500" >&3 2>&3
-	fi
-	ucr unset fetchmail/autostart/update500 >&3 2>&3
-	echo "Please note:" >&3
-	echo "The following fetchmail restart might fail if fetchmail is unconfigured." >&3
-	echo "This is usually no error." >&3
-	service fetchmail restart  >&3 2>&3 || :
-fi
-
-# Bug #52974: reenable libvirtd after update
-for service in libvirtd virtlogd ; do
-	state="$(ucr get "update/service/libvirt/${service:-}")"
-	if [ -n "${state:-}" ] ; then
-		if [ "${state:-}" = "masked" ] ; then
-			echo "${service:-}.service was masked prior to the update - doing nothing" >&3
-		else
-			echo "${service:-}.service was '$state' prior to the update" >&3
-			systemctl unmask "${service:-}.service" >&3 2>&3
-			if [ "${state:-}" = "disabled" ] ; then
-				systemctl disable "${service:-}.service" >&3 2>&3
-			elif [ "${state:-}" = "enabled" ] || [ "${state:-}" = "indirect" ] ; then
-				systemctl enable "${service:-}.service" >&3 2>&3
-				systemctl start "${service:-}.service" >&3 2>&3
-			else
-				echo "WARNING: unknown state of ${service:-}.service - doing nothing" >&3
-			fi
-		fi
-		ucr unset "update/service/libvirt/${service:-}" >&3 2>&3
-	fi
-done
-
 # Bug #52971: fix __pycache__ directory permissions
 find /usr/lib/python3/dist-packages/ -type d -not -perm 755 -name __pycache__ -exec chmod 755 {} \;
 
