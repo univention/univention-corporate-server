@@ -9,6 +9,7 @@ Build-Depends:
  python3-all,
  python3-dev,
  univention-config-dev (>= 15.0.3),
+ univention-l10n-dev (>= 7.0.1),
 Standards-Version: 3.5.2
 
 Package: univention-directory-manager-rest

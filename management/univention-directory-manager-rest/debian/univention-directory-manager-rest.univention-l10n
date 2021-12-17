@@ -1,0 +1,10 @@
+[
+	{
+		"input_files": [
+			"src/univention/admin/rest/.*\\.py"
+		],
+		"po_subdir": "src/univention/admin/rest/",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-directory-manager-rest.mo"
+	}
+]
