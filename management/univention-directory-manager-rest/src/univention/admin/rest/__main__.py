@@ -37,6 +37,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import os
+import atexit
 import time
 import locale
 import signal
@@ -57,16 +58,20 @@ from tornado.netutil import bind_sockets, bind_unix_socket
 from univention.management.console.config import ucr
 from univention.management.console.log import log_init, log_reopen, CORE
 from univention.lib.i18n import Locale
-from univention.admin.rest.shared_memory import Manager
+from univention.admin.rest.shared_memory import shared_memory
 
-shared_memory = Manager(parent='univention-directory-manager-rest-server')
+try:
+	from multiprocessing.util import _exit_function
+except ImportError:
+	_exit_function = None
+
 proctitle = getproctitle()
 
 
 class Server(object):
 
 	child_id = None
-	children = shared_memory.dict('Server.children')
+	children = shared_memory.dict()
 
 	def start(self, args):
 		if os.fork() > 0:
@@ -110,8 +115,13 @@ class Server(object):
 		signal.signal(signal.SIGINT, partial(self.signal_handler_stop, None))
 		signal.signal(signal.SIGHUP, self.signal_handler_reload)
 
+		# important!: make sure shared memory instances are created before fork() ing
+		import univention.admin.rest.module  # noqa: F401
+
 		# start mutliprocessing
 		if args.processes != 1:
+			if _exit_function is not None:
+				atexit.unregister(_exit_function)
 			self.socks = socks
 			try:
 				child_id = tornado.process.fork_processes(args.processes, 0)
@@ -152,13 +162,15 @@ class Server(object):
 
 	def signal_handler_stop(self, server, sig, frame):
 		if self.child_id is None:
-			CORE.info('stopping children: %r' % (list(self.children.values()),))
-			for pid in self.children.values():
+			try:
+				children_pids = list(self.children.values())
+			except Exception:  # multiprocessing failure
+				children_pids = []
+			CORE.info('stopping children: %r' % (children_pids,))
+			for pid in children_pids:
 				self.safe_kill(pid, sig)
-			shared_memory.shutdown()
 
-			from univention.admin.rest.module import shared_memory as sm
-			sm.shutdown()
+			shared_memory.shutdown()
 		else:
 			CORE.info('shutting down in one second')
 
@@ -192,6 +204,8 @@ class Server(object):
 			os.kill(pid, signo)
 		except EnvironmentError as exc:
 			CORE.error('Could not kill(%s) %s: %s' % (signo, pid, exc))
+		else:
+			os.waitpid(pid, os.WNOHANG)
 
 	@classmethod
 	def main(cls):
