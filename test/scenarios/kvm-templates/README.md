@@ -10,11 +10,11 @@ provisioning/configuration.
 - **Base template:** DVD
 ### ucs-master|ucs-backup|ucs-slave|ucs-member
 - **Description:** master, backup, slave and member, all DHCP, domain: autotest.local, master is joined, all other systems provisioned (but not joined)
-- **Example:** scenarios/base/ucs-master-backup.cfg
+- **Example:** [scenarios/base/ucs-master-backup.cfg](../base/ucs-master-backup.cfg)
 - **Base template:** generic-unsafe
 ### ucs-joined-master|ucs-joined-backup|ucs-joined-slave|ucs-joined-member
 - **Description:**  master, backup, slave and member, all DHCP, domain: autotest.local, all systems joined
-- **Example:** scenarios/base/ucs-master-backup-joined.cfg
+- **Example:** [scenarios/base/ucs-master-backup-joined.cfg](../base/ucs-master-backup-joined.cfg)
 - **Base template:** generic-unsafe
 ### ucs-school-singleserver-joined TODO
 - **Description:** TODO
@@ -22,11 +22,11 @@ provisioning/configuration.
 - **Base template:** TODO
 ### ucs-samba-env1-primary|ucs-samba-env1-replica
 - **Description:** Primary and replica, both samba DS's (primary is S4 connector), all DHCP, domain: samba.test
-- **Example:** scenarios/base/ucs-samba-primary-replica.cfg
+- **Example:** [scenarios/base/ucs-samba-env1-primary-replica.cfg](../base/ucs-samba-env1-primary-replica.cfg)
 - **Base template:** generic-unsafe
   
 ## Usage
-The normal use case is to use templates with a [ucs-kt-get](univention/dist/ucs-ec2-tools>)/start-test.sh. Some example cfg files can be found in [test/scenarios/base](../base/README.md)
+The normal use case is to start templates with start-test.sh. Some example cfg files can be found in [test/scenarios/base](../base/README.md)
 
 ```
 cd git/ucs/test
@@ -39,7 +39,7 @@ Templates are currently created via an ucs-kvm-create scenario file and a Jenkin
 
 ### New scenario file
 
-Add a new file to **ucs/test/scenarios/kvm-templates**. In this scenario you can add multiple systems, join systems, do whatever configurtion you need (install software, create users, ...). oA requirement is DHCP for all systems.
+Add a new file to **ucs/test/scenarios/kvm-templates**. In this scenario you can add multiple systems, join systems, do whatever configurtion you need (install software, create users, ...). A requirement is DHCP for all systems.
 
 To create the template add the following steps for every system in the scenario file:
 ```
