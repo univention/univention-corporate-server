@@ -290,7 +290,7 @@ class Server(tornado.web.RequestHandler):
 			if short_lang in cls.SOCKETS:
 				continue
 			cls.SOCKETS[short_lang] = sock
-			cls.PROCESSES[language] = subprocess.Popen(cmd + ['run'], stdout=sys.stdout, stderr=sys.stderr)
+			cls.PROCESSES[language] = subprocess.Popen(cmd, stdout=sys.stdout, stderr=sys.stderr)
 
 	@classmethod
 	def register_signal_handlers(cls):
