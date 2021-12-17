@@ -353,9 +353,10 @@ def test_group_removal(udm):
 @pytest.mark.exposure('careful')
 def test_group_posix_only(udm):
 	"""Create a group with posix option only"""
-
+	utils.stop_s4connector()
 	group = udm.create_group(options=['posix'])[0]
 	utils.verify_ldap_object(group, {'objectClass': ['top', 'posixGroup', 'univentionGroup', 'univentionObject']})
+	utils.start_s4connector()
 
 
 @pytest.mark.tags('udm')
