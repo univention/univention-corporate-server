@@ -40,6 +40,7 @@ import os
 import sys
 import json
 import signal
+import atexit
 import logging
 import argparse
 import subprocess
@@ -59,9 +60,13 @@ from tornado.netutil import bind_sockets, bind_unix_socket
 from univention.management.console.config import ucr
 import univention.lib.i18n
 import univention.debug as ud
-from univention.admin.rest.shared_memory import Manager
+from univention.admin.rest.shared_memory import shared_memory
 
-shared_memory = Manager(parent='univention-directory-manager-rest-gateway')
+try:
+	from multiprocessing.util import _exit_function
+except ImportError:
+	_exit_function = None
+
 proctitle = getproctitle()
 
 
@@ -75,7 +80,7 @@ class Server(tornado.web.RequestHandler):
 	"""
 
 	child_id = None
-	children = shared_memory.dict('Gateway.children')
+	children = shared_memory.dict()
 	PROCESSES = {}
 	SOCKETS = {}
 
@@ -214,6 +219,8 @@ class Server(tornado.web.RequestHandler):
 
 		# start mutliprocessing
 		if args.processes != 1:
+			if _exit_function is not None:
+				atexit.unregister(_exit_function)
 			cls.socks = socks
 			try:
 				child_id = tornado.process.fork_processes(args.processes, 0)
@@ -296,12 +303,17 @@ class Server(tornado.web.RequestHandler):
 	def signal_handler_stop(cls, sig, frame):
 		logger = logging.getLogger()
 		if cls.child_id is None:
-			logger.info('stopping children: %r', list(cls.children.values()))
-			for pid in cls.children.values():
+			try:
+				children_pids = list(cls.children.values())
+			except Exception:  # multiprocessing failure
+				children_pids = []
+			logger.info('stopping children: %r', children_pids)
+			for pid in children_pids:
 				cls.safe_kill(pid, sig)
 			logger.info('stopping subprocesses: %r', list(cls.PROCESSES.keys()))
 			for process in cls.PROCESSES.values():
 				cls.safe_kill(process.pid, sig)
+
 			shared_memory.shutdown()
 		else:
 			logger.info('shutting down')
@@ -319,3 +331,5 @@ class Server(tornado.web.RequestHandler):
 			os.kill(pid, signo)
 		except EnvironmentError as exc:
 			logging.getLogger().error('Could not kill(%s) %s: %s' % (signo, pid, exc))
+		else:
+			os.waitpid(pid, os.WNOHANG)

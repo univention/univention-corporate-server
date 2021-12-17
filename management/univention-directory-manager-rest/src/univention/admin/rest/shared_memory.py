@@ -27,3 +27,23 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+import json
+from multiprocessing import managers, Manager
+
+from setproctitle import getproctitle, setproctitle
+
+proctitle = getproctitle()
+setproctitle(proctitle + '   # multiprocessing manager')
+shared_memory = Manager()
+setproctitle(proctitle)
+
+
+class JsonEncoder(json.JSONEncoder):
+
+	def default(self, o):
+		if isinstance(o, managers.DictProxy):
+			return dict(o)
+		if isinstance(o, managers.ListProxy):
+			return list(o)
+		raise TypeError('Object of type {} is not JSON serializable'.format(type(o).__name__))

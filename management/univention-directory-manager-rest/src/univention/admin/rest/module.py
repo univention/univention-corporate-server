@@ -90,7 +90,7 @@ import univention.admin.modules as udm_modules
 import univention.admin.syntax as udm_syntax
 import univention.admin.types as udm_types
 from univention.config_registry import handler_set
-from univention.admin.rest.shared_memory import Manager
+from univention.admin.rest.shared_memory import shared_memory, JsonEncoder
 
 import univention.udm
 
@@ -109,8 +109,6 @@ MAX_WORKERS = ucr.get('directory/manager/rest/max-worker-threads', 35)
 
 if 422 not in tornado.httputil.responses:
 	tornado.httputil.responses[422] = 'Unprocessable Entity'  # Python 2 is missing this status code
-
-shared_memory = Manager()
 
 
 def add_sanitizers(type_, sanitizers):
@@ -367,7 +365,7 @@ class ResourceBase(object):
 	pool = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
 	requires_authentication = True
-	authenticated = shared_memory.dict('authenticated')
+	authenticated = shared_memory.dict()
 	authenticated_connections = {}
 
 	def force_authorization(self):
@@ -2327,7 +2325,7 @@ class FormBase(object):
 
 class Objects(FormBase, ReportingBase):
 
-	search_sessions = shared_memory.dict('search_sessions')
+	search_sessions = shared_memory.dict()
 
 	@sanitize_query_string(
 		position=DNSanitizer(required=False, default=None),
@@ -2574,14 +2572,22 @@ class ObjectsMove(Resource):
 		# FIXME: this can only move objects of the same object_type but should move everything
 		position = self.request.body_arguments['position']
 		dns = self.request.body_arguments['dn']  # TODO: validate: moveable, etc.
-		queue = Operations.queue.setdefault(self.request.user_dn, {})
-		status = {
-			'id': str(uuid.uuid4()),
+
+		status_id = str(uuid.uuid4())
+		status = shared_memory.dict()
+		status.update({
+			'id': status_id,
 			'finished': False,
 			'errors': False,
 			'moved': shared_memory.list(),
-		}
-		queue[status['id']] = status
+		})
+
+		try:
+			Operations.queue[self.request.user_dn]
+		except KeyError:
+			Operations.queue[self.request.user_dn] = shared_memory.dict()
+		Operations.queue[self.request.user_dn][status_id] = status
+
 		self.set_status(201)
 		self.set_header('Location', self.abspath('progress', status['id']))
 		self.finish()
@@ -2589,8 +2595,7 @@ class ObjectsMove(Resource):
 			for i, dn in enumerate(dns, 1):
 				module = get_module(object_type, dn, self.ldap_connection)
 				dn = yield self.pool.submit(module.move, dn, position)
-				# status['moved'].append(dn)
-				status['moved'] = status['moved'] + [dn]  # shared_memory!
+				status['moved'].append(dn)
 				status['description'] = _('Moved %d of %d objects. Last object was: %s.') % (i, len(dns), dn)
 				status['max'] = len(dns)
 				status['value'] = i
@@ -2954,13 +2959,21 @@ class Object(FormBase, Resource):
 
 	@tornado.gen.coroutine
 	def move(self, module, dn, position):
-		queue = Operations.queue.setdefault(self.request.user_dn, {})
 		status_id = str(uuid.uuid4())
-		status = queue.setdefault(status_id, {
+		status = shared_memory.dict()
+		status.update({
 			'id': status_id,
 			'finished': False,
 			'errors': False,
 		})
+
+		# Operations.queue[self.request.user_dn] = queue.copy()
+		try:
+			Operations.queue[self.request.user_dn]
+		except KeyError:
+			Operations.queue[self.request.user_dn] = shared_memory.dict()
+		Operations.queue[self.request.user_dn][status_id] = status
+
 		self.set_status(201)
 		self.set_header('Location', self.abspath('progress', status['id']))
 		self.add_caching(public=False, must_revalidate=True)
@@ -3475,7 +3488,7 @@ class PolicyResultContainer(PolicyResultBase):
 class Operations(Resource):
 	"""GET /udm/progress/$progress-id (get the progress of a started operation like move, report, maybe add/put?, ...)"""
 
-	queue = shared_memory.dict('queue')
+	queue = shared_memory.dict()
 
 	def get(self, progress):
 		progressbars = self.queue.get(self.request.user_dn, {})
