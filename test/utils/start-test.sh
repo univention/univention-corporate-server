@@ -86,6 +86,7 @@ usage () {
 	echo "    UCSSCHOOL_RELEASE    - ucs school release (default: $ucsschool_release)"
 	echo "    COMPONENT_VERSION    - update component? should indicate dev/released version of non ucs component (app, ...) (default: testing)"
 	echo "    SCOPE                - defines a extra apt repo/scope that can be included during the test (default: None)"
+	echo "	  TESTING              - indicates unreleased UCS version (e.g. testing)"
 	echo ""
 	echo "  ucs-test/fetch-results"
 	echo "    UCS_TEST_RUN         - if true, start ucs-test in utils/utils.sh::run_tests and copy log files from instance"
@@ -178,6 +179,7 @@ declare -a env_vars=(
 	SHUTDOWN
 	TARGET_VERSION
 	TERMINATE_ON_SUCCESS
+	TESTING
 	UCS_MINORRELEASE
 	UCSSCHOOL_RELEASE
 	TEST_GROUP
