@@ -73,11 +73,6 @@ class Server(object):
 	child_id = None
 	children = shared_memory.dict()
 
-	def start(self, args):
-		if os.fork() > 0:
-			os._exit(0)
-		self.run(args)
-
 	def run(self, args):
 		self.child_id = None
 		setproctitle(proctitle + '   # server')
@@ -218,17 +213,8 @@ class Server(object):
 		parser.add_argument('-p', '--port', help='Bind to a TCP port')
 		parser.add_argument('-c', '--processes', type=int, default=int(ucr.get('directory/manager/rest/processes', 1)), help='How many processes should be forked')
 
-		subparsers = parser.add_subparsers(title='actions', description='All available actions')
-
-		start_parser = subparsers.add_parser('start', description='Start the service')
-		start_parser.set_defaults(func=server.start)
-
-		run_parser = subparsers.add_parser('run', description='Start the service in foreground')
-		run_parser.set_defaults(func=server.run)
-
 		args = parser.parse_args()
-
-		args.func(args)
+		server.run(args)
 
 
 if __name__ == "__main__":
