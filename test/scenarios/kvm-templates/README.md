@@ -4,6 +4,19 @@ This directory holds files for creating ucs-kt-get (KVM) templates. With these
 templates you can easily set up UCS domains without
 provisioning/configuration.
 
+## Template Life cycle
+<details><summary>Click to expand</summary>
+
+1. Create Jenkins job for template
+1. Templates are stored in /mnt/omar/vmwares/kvm/single/Others (base template generic-unsafe in /mnt/omar/vmwares/kvm/single/UCS)
+1. Create example scenario file for template in [test/scenarios/base](../scenarios/base)
+1. Template is started via utils/start-test.sh
+1. Internally ucs-kt-get copies the template to /var/lib/libvirt/templates/ on the KVM server
+1. For the individual instances cow images are generated from the template
+1. Unused template are removed from the server
+
+</details>
+
 ### generic-unsafe - based on current DVD
 - **Description:** base template for standard test, basically a UCS appliance, not provisioned/joined
 - **Example:** -
