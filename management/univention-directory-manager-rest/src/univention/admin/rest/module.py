@@ -103,7 +103,7 @@ from univention.lib.i18n import Translation
 # TODO: loading the policies probably unnecessarily slows down things
 # TODO: create a own translation domain for this file
 
-_ = Translation('univention-management-console-module-udm').translate
+_ = Translation('univention-directory-manager-rest').translate
 
 MAX_WORKERS = ucr.get('directory/manager/rest/max-worker-threads', 35)
 
