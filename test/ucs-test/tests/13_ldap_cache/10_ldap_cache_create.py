@@ -63,7 +63,7 @@ def test_cache_group_rename(udm, group1, user1):
 
 def test_cache_user_rename(udm, group1, user1):
 	udm.modify_object('groups/group', dn=group1, users=[user1], wait_for_replication=False)
-	new_user_dn = udm.modify_object('users/user', dn=user1, set={'username': '%scopy' % ("other_"+random_name())}, wait_for_replication=True)
+	new_user_dn = udm.modify_object('users/user', dn=user1, set={'username': '%scopy' % ("other_" + random_name())}, wait_for_replication=True)
 
 	cache = get_cache()
 	data_uids = cache.get_sub_cache('memberUids').load()
