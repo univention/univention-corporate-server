@@ -539,12 +539,9 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdLastSet from S4 : %s" % pwdLastSet)
 
 	pwd_set = False
-	# search domain
-	res = s4connector.lo_s4.search(filter='(objectClass=domain)', attr=['pwdHistoryLength'])
-	pwdHistoryLength = int(res[0][1].get('pwdHistoryLength', [0])[0])
 	# search user
 	filter_expr = format_escaped('(objectSid={0!e})', objectSid)
-	res = s4connector.lo_s4.search(filter=filter_expr, attr=['unicodePwd', 'userPrincipalName', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd', 'ntPwdHistory'])
+	res = s4connector.lo_s4.search(filter=filter_expr, attr=['unicodePwd', 'userPrincipalName', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd', 'ntPwdHistory', 'msDS-ResultantPSO', 'msDS-PSOApplied'])
 	s4_search_attributes = res[0][1]
 
 	unicodePwd_attr = s4_search_attributes.get('unicodePwd', [None])[0]
@@ -552,9 +549,21 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 	userPrincipalName_attr = s4_search_attributes.get('userPrincipalName', [None])[0]
 	supplementalCredentials = s4_search_attributes.get('supplementalCredentials', [None])[0]
 	ntPwdHistory = s4_search_attributes.get('ntPwdHistory', [b''])[0]
-	#msDS_KeyVersionNumber = s4_search_attributes.get('msDS-KeyVersionNumber', [0])[0]
-	# ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Password-Hash from S4: %s" % unicodePwd_attr)
+	msDSPSOApplied = s4_search_attributes.get('msDS-PSOApplied', [None])[0]
+	msDSResultantPSO = s4_search_attributes.get('msDS-ResultantPSO', [None])[0]
 
+	# get pwdhistorylength
+	pwdHistoryLength = 0
+	if msDSPSOApplied:
+		res = s4connector.lo_s4.get(msDSPSOApplied.decode(), attr=['msDS-PasswordHistoryLength'])
+		pwdHistoryLength = int(res.get('msDS-PasswordHistoryLength', [0])[0])
+	elif msDSResultantPSO:
+		res = s4connector.lo_s4.get(msDSResultantPSO.decode(), attr=['msDS-PasswordHistoryLength'])
+		pwdHistoryLength = int(res.get('msDS-PasswordHistoryLength', [0])[0])
+	else:
+		res = s4connector.lo_s4.search(filter='(objectClass=domain)', attr=['pwdHistoryLength'])
+		pwdHistoryLength = int(res[0][1].get('pwdHistoryLength', [0])[0])
+		ud.debug(ud.LDAP, ud.ERROR, "password_sync_us_to_s4: pwdHistoryLength: %s" % pwdHistoryLength)
 	s4NThash = None
 	if unicodePwd_attr:
 		s4NThash = binascii.b2a_hex(unicodePwd_attr).upper()
