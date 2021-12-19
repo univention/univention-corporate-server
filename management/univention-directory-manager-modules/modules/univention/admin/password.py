@@ -256,7 +256,10 @@ def get_password_history(password, pwhistory, pwhlen):
 	2
 	"""
 	# create hash
-	if configRegistry.is_true('password/hashing/bcrypt'):
+	if password.startswith('{NT}'):
+		# hash set by connector
+		newpwhash = password
+	elif configRegistry.is_true('password/hashing/bcrypt'):
 		newpwhash = "{BCRYPT}%s" % (bcrypt_hash(password))
 	else:
 		newpwhash = crypt(password)
@@ -297,6 +300,11 @@ def password_already_used(password, pwhistory):
 			if linesplit[0] == '{BCRYPT}':
 				password_hash = line[len('{BCRYPT}'):]
 				if bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('ASCII')):
+					return True
+			elif linesplit[0] == '{NT}':
+				password_hash = line[len('{NT}$'):]
+				if password_hash == ntlm(password)[0]:
+					ud.debug(ud.ADMIN, ud.ERROR, '\nntlm(password) == [%s]' % (line))
 					return True
 			else:
 				password_hash = crypt(password, linesplit[1], linesplit[2])

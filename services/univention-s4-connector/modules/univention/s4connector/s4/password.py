@@ -760,6 +760,14 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 
 			# Append modification as well to modlist, to apply in one transaction
 			if modifyUserPassword:
+				userobject = s4connector.get_ucs_object(key, ucs_object['dn'])
+				pwhistoryPolicy = None
+				if userobject:
+					from univention.admin.password import get_password_history
+					pwhistoryPolicy = userobject.loadPolicyObject('policies/pwhistory')
+					pwhistory_length = int(pwhistoryPolicy['length'])
+					pwhistory_new = get_password_history('{NT}$' + ntPwd.decode(), pwhistory_ucs, pwhistory_length).encode()
+					modlist.append(('pwhistory', pwhistory_ucs, pwhistory_new))
 				modlist.append(('userPassword', userPassword_ucs, b'{K5KEY}'))
 		else:
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: No password change to sync to UCS")
