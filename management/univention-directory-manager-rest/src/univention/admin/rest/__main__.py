@@ -46,6 +46,7 @@ import argparse
 import random
 import traceback
 import logging
+import sys
 from multiprocessing import current_process
 from multiprocessing.managers import BaseManager, DictProxy, SyncManager
 from multiprocessing.util import _exit_function
@@ -101,10 +102,10 @@ class Server(object):
 		manager_data.start()
 		CORE.error("**** [{!r}] Started the data manager at address {!r}.".format(main_pid, manager_data.address))
 		the_dict_proxy_main_proc = manager_data.dict()
-		the_dict_proxy_main_proc["creator"] = main_pid
+		the_dict_proxy_main_proc[main_pid] = [str("main process")]
 		CORE.error("**** [{!r}] the_dict_proxy_main_proc: {}".format(main_pid, sorted_dict_s(the_dict_proxy_main_proc)))
 
-		class DictAccessManager(SyncManager): pass
+		class DictAccessManager(BaseManager): pass
 		DictAccessManager.register(str("get_the_dict"), callable=lambda: the_dict_proxy_main_proc, proxytype=DictProxy)
 		manager_access = DictAccessManager()
 		manager_access.start()
@@ -121,28 +122,28 @@ class Server(object):
 
 		# remove the SyncManagers exit functions from atexit in the forked processes. must be called only in the creators process
 		# in Python3 we can use atexit.unregister(), in Python2 we have to access a private variable
-		for func, targs, kargs in atexit._exithandlers[:]:
-			if func == _exit_function:# or func == SyncManager.join:
-				CORE.error("**** [{!r}] Removing MP.utils._exit_function() from atexit handlers.".format(my_pid))
-				atexit._exithandlers.remove((func, targs, kargs))
+		CORE.error("**** [{!r}] Removing MP.utils._exit_function() from atexit handlers...".format(my_pid))
+		if sys.version_info[0] == 3:
+			atexit.unregister(_exit_function)
+		else:
+			for func, targs, kargs in atexit._exithandlers[:]:
+				if func == _exit_function:# or func == SyncManager.join:
+					atexit._exithandlers.remove((func, targs, kargs))
 
 		# the authkey is the same for all processes, as they were forked()
 		manager2 = DictAccessManager(address=access_manager_address, authkey=current_process().authkey)
 		manager2.connect()
 		CORE.error("**** [{!r}] Connected to manager.".format(my_pid))
 		the_dict_proxy = manager2.get_the_dict()
-		the_dict_proxy[my_pid] = "not creator"
-		CORE.error("**** [{!r}] dict: {}".format(my_pid, sorted_dict_s(the_dict_proxy)))
+		the_dict_proxy[my_pid] = [str("worker")]
 
 		for _ in range(5):
-			other_key = random.choice(list(the_dict_proxy.keys()))
-			val = random.randint(0, 9)
+			val = random.randint(0, 1000)
 			sleep = random.uniform(0.0, 0.3)
-			CORE.error("**** [{!r}] found {}, writing {!r} to keys {!r} and {!r} and sleeping {:0.2f}s...".format(
-				my_pid, sorted_dict_s(the_dict_proxy), val, my_pid, other_key, sleep
-			))
-			the_dict_proxy[my_pid] = val
-			the_dict_proxy[other_key] = val
+			CORE.error("**** [{!r}] found {}, appending {!r} and sleeping {:0.2f}s...".format(
+					my_pid, sorted_dict_s(the_dict_proxy), val, sleep
+				))
+			the_dict_proxy[my_pid] = the_dict_proxy[my_pid] + [val]  # append does not seem to work...
 			time.sleep(sleep)
 		CORE.error("**** [{!r}] done. Result: di={}".format(my_pid, sorted_dict_s(the_dict_proxy)))
 
