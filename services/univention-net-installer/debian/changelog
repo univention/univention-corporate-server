@@ -1,3 +1,9 @@
+univention-net-installer (13.0.2-3) unstable; urgency=low
+
+  * Bug #54259: Add UCR to profile for network installation
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 20 Dec 2021 09:59:19 +0100
+
 univention-net-installer (13.0.2-2) unstable; urgency=medium
 
   * Bug #54212: Adapt to UCS-5.0-1
