@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: libssh2
+fix: 1.7.0-1+deb9u2
+desc: |
+ This update addresses the following issues:
+ * integer overflow in
+   kex_method_diffie_hellman_group_exchange_sha256_key_exchange in kex.c leads
+   to out-of-bounds write (CVE-2019-13115)
+ * integer overflow in SSH_MSG_DISCONNECT logic in packet.c (CVE-2019-17498)
+bug: [54261]
+cve:
+- CVE-2019-13115
+- CVE-2019-17498
