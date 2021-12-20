@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 #
 # Univention Nagios Plugin
 #  check slapd's/udl's mdb maxsize
@@ -85,7 +85,7 @@ for mdb_dir in files:
 		output = subprocess.check_output(['/usr/bin/mdb_stat', '-ef', mdb_dir], close_fds=True, env={'LC_ALL': 'C'})
 	except subprocess.CalledProcessError:
 		nagios_exit(STATE_CRITICAL, 'mdb_stat -ef %s failed' % (mdb_dir,))
-
+	output = output.decode("utf-8", "replace")
 	stat = dict(line.strip().lower().split(': ', 1) for line in output.splitlines() if ': ' in line)
 	try:
 		in_use = int((int(stat['number of pages used']) - int(stat['free pages'])) * 100 / int(stat['max pages']))

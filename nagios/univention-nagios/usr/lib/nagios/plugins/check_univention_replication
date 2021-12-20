@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Nagios
@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import commands
+import subprocess
 import getopt
 import sys
 import pickle
@@ -44,8 +44,8 @@ class ReplicationCheck:
 		self.REVISION = '1.0'
 		self.FAILED_LDIF_FN = '/var/lib/univention-directory-replication/failed.ldif'
 		self.CACHEFN = '/var/lib/univention-nagios/check_univention_replication.cache'
-		self.PROG_GETNOTIFIERID = '/usr/share/univention-directory-listener/get_notifier_id.py'
-		self.PROG_GETLISTENERID = 'cat /var/lib/univention-directory-listener/notifier_id'
+		self.PROG_GETNOTIFIERID = ['/usr/share/univention-directory-listener/get_notifier_id.py']
+		self.PROG_GETLISTENERID = ['cat', '/var/lib/univention-directory-listener/notifier_id']
 		self.diff_warning = 0
 		self.diff_critical = 0
 		self.history_size = 0
@@ -60,62 +60,72 @@ class ReplicationCheck:
 		self.history = []
 
 	def print_revision(self):
-		print '%s: version %s' % (self.PROGNAME, self.REVISION)
+		print('%s: version %s' % (self.PROGNAME, self.REVISION))
 
 	def print_usage(self):
-		print 'Usage: %s [-v] [-w <cnt>] [-c <cnt>] [-n <cnt>]' % self.PROGNAME
-		print 'Usage: %s --help' % self.PROGNAME
-		print 'Usage: %s --version' % self.PROGNAME
+		print('Usage: %s [-v] [-w <cnt>] [-c <cnt>] [-n <cnt>]' % self.PROGNAME)
+		print('Usage: %s --help' % self.PROGNAME)
+		print('Usage: %s --version' % self.PROGNAME)
 
 	def print_help(self):
 		self.print_revision()
-		print ''
+		print('')
 		self.print_usage()
-		print ''
-		print ' -v        verbose debug output'
-		print ' -w <cnt>  WARNING if difference of transaction IDs is >= <cnt>'
-		print ' -c <cnt>  CRITICAL if difference of transaction IDs is >= <cnt>'
-		print ' -n <cnt>  CRITICAL if no change of transaction ID over last <cnt> checks'
+		print('')
+		print(' -v        verbose debug output')
+		print(' -w <cnt>  WARNING if difference of transaction IDs is >= <cnt>')
+		print(' -c <cnt>  CRITICAL if difference of transaction IDs is >= <cnt>')
+		print(' -n <cnt>  CRITICAL if no change of transaction ID over last <cnt> checks')
 
 	def load_history(self):
 		if os.path.exists(self.CACHEFN) and os.stat(self.CACHEFN)[6] > 0:
 			try:
-				f = open(self.CACHEFN, 'r')
-				cnt = pickle.load(f)
-				for i in range(cnt):
-					nid = pickle.load(f)
-					lid = pickle.load(f)
-					self.history.append((nid, lid))
-				f.close()
+				with open(self.CACHEFN) as fd:
+					cnt = pickle.load(fd)
+					for i in range(cnt):
+						nid = pickle.load(fd)
+						lid = pickle.load(fd)
+						self.history.append((nid, lid))
 
 				if self.verbose > 1:
-					print 'History loaded:', self.history
-			except:
+					print('History loaded:', self.history)
+			except EOFError as err:
 				if self.verbose > 1:
-					print 'Loading history failed!'
+					print('Loading history failed!  EOF error: %s' % err)
+			except OSError as err:
+				if self.verbose > 1:
+					print('Loading history failed!  OS error: %s' % err)
 		else:
 			if self.verbose > 1:
-				print 'History not loaded!'
+				print('History not loaded!')
 
 	def save_history(self):
-		f = open(self.CACHEFN, 'w')
-		pickle.dump(len(self.history), f)
-		for i in range(len(self.history)):
-			pickle.dump(self.history[i][0], f)
-			pickle.dump(self.history[i][1], f)
-
+		try:
+			with open(self.CACHEFN, 'wb') as f:
+				pickle.dump(len(self.history), f)
+				for nid, lid in self.history:
+					pickle.dump(nid, f)
+					pickle.dump(lid, f)
+		except EOFError as err:
+			self.exit_with_status_msg('UNKNOWN', 'error while reading %s, EOF error: %s' % (self.CACHEFN, err))
+		except OSError as err:
+			self.exit_with_status_msg('UNKNOWN', 'error while reading %s, OS error: %s' % (self.CACHEFN, err))
 		if self.verbose > 1:
-			print 'History saved:', self.history
+			print('History saved:', self.history)
 
 	def exit_with_status(self, state, msg, nid, lid):
-		print '%s: %s (nid=%s lid=%s)' % (state, msg, nid, lid)
+		print('%s: %s (nid=%s lid=%s)' % (state, msg, nid, lid))
+		sys.exit(self.STATE[state])
+
+	def exit_with_status_msg(self, state, msg):
+		print('%s: %s' % (state, msg))
 		sys.exit(self.STATE[state])
 
 	def main(self):
 		# parse command line
 		try:
 			(opts, pargs) = getopt.getopt(sys.argv[1:], 'c:hn:vw:', ['help', 'version'])
-		except:
+		except getopt.GetoptError:
 			self.print_usage()
 			sys.exit(self.STATE['UNKNOWN'])
 
@@ -145,8 +155,17 @@ class ReplicationCheck:
 		self.load_history()
 
 		# get actual transaction id
-		notifier_id = commands.getoutput(self.PROG_GETNOTIFIERID)
-		listener_id = commands.getoutput(self.PROG_GETLISTENERID)
+		try:
+			result = subprocess.check_output(self.PROG_GETNOTIFIERID)
+			notifier_id = result.decode("utf-8", "replace").rstrip()
+		except subprocess.CalledProcessError:
+			self.exit_with_status_msg('CRITICAL', '%s failed' % ' '.join(self.PROG_GETNOTIFIERID))
+
+		try:
+			result = subprocess.check_output(self.PROG_GETLISTENERID)
+			listener_id = result.decode("utf-8", "replace").rstrip()
+		except subprocess.CalledProcessError:
+			self.exit_with_status_msg('CRITICAL', '%s failed' % " ".join(self.PROG_GETLISTENERID))
 
 		# DEBUG CODE
 		if len(pargs) == 2:
@@ -176,9 +195,7 @@ class ReplicationCheck:
 				if listener_id != lid:
 					change = 1
 			if change == 0 and beenequal == 0 and len(self.history) == self.history_size:
-				self.exit_with_status('CRITICAL',
-					'no change of listener transaction id for last %s checks' % len(self.history),
-					notifier_id, listener_id)
+				self.exit_with_status('CRITICAL', 'no change of listener transaction id for last %s checks' % len(self.history), notifier_id, listener_id)
 
 			# check if difference of nid and lid has been larger than given values
 			mindiff = None
@@ -191,16 +208,12 @@ class ReplicationCheck:
 						mindiff = diff
 
 			if self.verbose:
-				print 'minimal difference:', mindiff
+				print('minimal difference:', mindiff)
 
 			if self.diff_critical and self.diff_critical <= mindiff:
-				self.exit_with_status('CRITICAL',
-					'difference was >= %s over last %s checks' % (self.diff_critical, len(self.history)),
-					notifier_id, listener_id)
+				self.exit_with_status('CRITICAL', 'difference was >= %s over last %s checks' % (self.diff_critical, len(self.history)), notifier_id, listener_id)
 			if self.diff_warning and self.diff_warning <= mindiff:
-				self.exit_with_status('WARNING',
-					'difference was >= %s over last %s checks' % (self.diff_warning, len(self.history)),
-					notifier_id, listener_id)
+				self.exit_with_status('WARNING', 'difference was >= %s over last %s checks' % (self.diff_warning, len(self.history)), notifier_id, listener_id)
 
 		self.exit_with_status('OK', 'replication is in process', notifier_id, listener_id)
 
