@@ -1,9 +1,3 @@
-univention-nagios (12.0.1-15) unstable; urgency=medium
-
-  * Bug #50733: Diagnostic module for UCR notifier/protocol/version
-
- -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Mon, 20 Dec 2021 12:59:52 +0100
-
 univention-nagios (12.0.1-14) unstable; urgency=medium
 
   * Bug #49291: free pages taken into account
