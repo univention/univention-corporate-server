@@ -1,3 +1,9 @@
+univention-nagios (13.0.2-3) unstable; urgency=medium
+
+  * Bug #52258: Migrate from python2 to python3
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Mon, 20 Dec 2021 12:33:13 +0100
+
 univention-nagios (13.0.2-2) unstable; urgency=medium
 
   * Bug #54186: free pages taken into account
