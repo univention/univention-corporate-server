@@ -31,6 +31,7 @@ import App from '@/App.vue';
 import { store } from '@/store';
 import localize from '@/plugins/localize';
 import VueDOMPurifyHTML from 'vue-dompurify-html';
+import Particles from 'particles.vue3';
 
 import '@/assets/styles/style.styl';
 import addCustomStyles from '@/jsHelper/addCustomStyles';
@@ -58,6 +59,7 @@ const app = createApp(App)
         }
       },
     },
-  });
+  })
+  .use(Particles);
 
 const vm = app.mount('#app');

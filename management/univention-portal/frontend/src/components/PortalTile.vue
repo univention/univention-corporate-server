@@ -331,6 +331,10 @@ export default defineComponent({
     margin-bottom: calc(2 * var(--layout-spacing-unit))
     border: 0.2rem solid transparent
     box-sizing: border-box
+    transition: 0.2s ease-in-out
+    &:hover {
+      transform: scale(1.2);
+    }
 
     ~/:focus &
       border-color: var(--color-focus)

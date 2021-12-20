@@ -130,7 +130,35 @@ export default defineComponent({
   z-index: $zindex-3
   display: block
   pointer-events: none
+  animation: fadeIn 1s
+  -webkit-animation: fadeIn 1s
+  -moz-animation: fadeIn 1s
+  -o-animation: fadeIn 1s
+  -ms-animation: fadeIn 1s
+  @keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+  }
 
+  @-moz-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+  }
+
+  @-webkit-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+  }
+
+  @-o-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+  }
+
+  @-ms-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+  }
   @media $mqSmartphone
     bottom: unset;
     top: calc(3 * var(--layout-spacing-unit))

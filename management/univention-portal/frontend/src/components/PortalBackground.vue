@@ -30,7 +30,14 @@ License with the Debian GNU/Linux or Univention distribution in file
   <div
     class="portal__background"
     :style="backgroundImageStyle"
+  >
+  <Particles
+    id="particles"
+    :particlesInit="particlesInit"
+    :particlesLoaded="particlesLoaded"
+    :options="particlesConfig"
   />
+  </div>
 </template>
 
 <script lang="ts">
@@ -47,6 +54,107 @@ export default defineComponent({
       }
       return `background-image: url('${this.portal.portal.background}')`;
     },
+  },
+  setup() {
+    const particlesConfig = {
+      particles: {
+        number: {
+          value: 55,
+          density: {
+            enable: true,
+            value_area: 670,
+          },
+        },
+        fpsLimit: 60,
+        color: {
+          value: '#617f1f',
+        },
+        shape: {
+          type: 'circle',
+          stroke: {
+            width: 1,
+            color: '#617f1f',
+          },
+          polygon: {
+            nb_sides: 5,
+          },
+          image: {
+            src: 'img/github.svg',
+            width: 100,
+            height: 100,
+          },
+        },
+        opacity: {
+          value: 0.5,
+          random: true,
+          anim: {
+            enable: true,
+            speed: 0.4,
+            opacity_min: 0.3,
+            sync: false,
+          },
+        },
+        size: {
+          value: 2,
+          random: true,
+          anim: {
+            enable: true,
+            speed: 3,
+            size_min: 2,
+            sync: false,
+          },
+        },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: '#617f1f',
+          opacity: 0.33,
+          width: 1,
+        },
+        move: {
+          enable: true,
+          speed: 0.9,
+          direction: 'none',
+          random: true,
+          straight: false,
+          out_mode: 'bounce',
+          bounce: false,
+          attract: {
+            enable: false,
+            rotatex: 600,
+            rotatey: 1200,
+          },
+        },
+      },
+      interactivity: {
+        detect_on: 'window',
+        events: {
+          onhover: {
+            enable: true,
+            mode: 'bubble',
+          },
+          onclick: {
+            enable: false,
+            mode: 'push',
+          },
+          resize: true,
+        },
+        modes: {
+          bubble: {
+            distance: 120,
+            size: 5,
+            duration: 10,
+            opacity: 1,
+            speed: 1,
+          },
+          remove: {
+            particles_nb: 2,
+          },
+        },
+      },
+      retina_detect: false,
+    };
+    return { particlesConfig };
   },
 });
 </script>
