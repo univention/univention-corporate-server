@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Nagios
@@ -59,32 +59,32 @@ class FSMountCheck:
 		}
 
 	def print_revision(self):
-		print '%s: version %s' % (self.PROGNAME, self.REVISION)
+		print('%s: version %s' % (self.PROGNAME, self.REVISION))
 
 	def print_usage(self):
-		print 'Usage: %s [-v] [-w] [-c] [-a]' % self.PROGNAME
-		print 'Usage: %s --help' % self.PROGNAME
-		print 'Usage: %s --version' % self.PROGNAME
+		print('Usage: %s [-v] [-w] [-c] [-a]' % self.PROGNAME)
+		print('Usage: %s --help' % self.PROGNAME)
+		print('Usage: %s --version' % self.PROGNAME)
 
 	def print_help(self):
 		self.print_revision()
-		print ''
+		print('')
 		self.print_usage()
-		print ''
-		print ' -v        verbose debug output'
-		print ' -w        WARNING if a nfs share is not mounted'
-		print ' -c        CRITICAL if a nfs share is not mounted'
-		print ' -a        check also nfs shares with option "noauto"'
+		print('')
+		print(' -v        verbose debug output')
+		print(' -w        WARNING if a nfs share is not mounted')
+		print(' -c        CRITICAL if a nfs share is not mounted')
+		print(' -a        check also nfs shares with option "noauto"')
 
 	def exit_with_status(self, state, msg):
-		print '%s: %s' % (state, msg)
+		print('%s: %s' % (state, msg))
 		sys.exit(self.STATE[state])
 
 	def main(self):
 		# parse command line
 		try:
 			(opts, pargs) = getopt.getopt(sys.argv[1:], 'acvw', ['help', 'version'])
-		except:
+		except getopt.GetoptError:
 			self.print_usage()
 			sys.exit(self.STATE['UNKNOWN'])
 
@@ -112,9 +112,13 @@ class FSMountCheck:
 		state = 'UNKNOWN'
 
 		# read currently mounted filesystems
-		f = open(self.PROCMOUNTS, 'r')
-		mounts = f.read()
-		f.close()
+		try:
+			with open(self.PROCMOUNTS) as fd:
+				mounts = fd.read()
+		except EOFError as err:
+			self.exit_with_status('UNKNOWN', 'error while reading %s, EOF error: %s' % (self.PROCMOUNTS, err))
+		except OSError as err:
+			self.exit_with_status('UNKNOWN', 'error while reading %s, OS error: %s' % (self.PROCMOUNTS, err))
 		mountlist = {}
 
 		for line in mounts.splitlines():
@@ -125,9 +129,13 @@ class FSMountCheck:
 					mountlist[source] = (source, mntpoint, fstype, options)
 
 		# read desired mounted filesystemss
-		f = open(self.FSTAB, 'r')
-		fstab = f.read()
-		f.close()
+		try:
+			with open(self.FSTAB) as fd:
+				fstab = fd.read()
+		except EOFError as err:
+			self.exit_with_status('UNKNOWN', 'error while reading %s, EOF error: %s' % (self.FSTAB, err))
+		except OSError as err:
+			self.exit_with_status('UNKNOWN', 'error while reading %s, OS error: %s' % (self.FSTAB, err))
 		self.fstab = []
 
 		for line in fstab.splitlines():

@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Nagios
@@ -53,30 +53,30 @@ class SSLCertificateCheck:
 		}
 
 	def print_revision(self):
-		print '%s: version %s' % (self.PROGNAME, self.REVISION)
+		print('%s: version %s' % (self.PROGNAME, self.REVISION))
 
 	def print_usage(self):
-		print 'Usage: %s [-w <n>] [-c <n>]' % self.PROGNAME
-		print 'Usage: %s --help' % self.PROGNAME
-		print 'Usage: %s --version' % self.PROGNAME
+		print('Usage: %s [-w <n>] [-c <n>]' % self.PROGNAME)
+		print('Usage: %s --help' % self.PROGNAME)
+		print('Usage: %s --version' % self.PROGNAME)
 
 	def print_help(self):
 		self.print_revision()
-		print ''
+		print('')
 		self.print_usage()
-		print ''
-		print ' -w <n>   WARNING if ssl cert expires in <n> days'
-		print ' -c <n>   CRITICAL if ssl cert expires in <n> days'
+		print('')
+		print(' -w <n>   WARNING if ssl cert expires in <n> days')
+		print(' -c <n>   CRITICAL if ssl cert expires in <n> days')
 
 	def exit_with_status(self, state, msg):
-		print '%s: %s' % (state, msg)
+		print('%s: %s' % (state, msg))
 		sys.exit(self.STATE[state])
 
 	def main(self):
 		# parse command line
 		try:
 			(opts, pargs) = getopt.getopt(sys.argv[1:], 'ac:w:', ['help', 'version'])
-		except:
+		except getopt.GetoptError:
 			self.print_usage()
 			sys.exit(self.STATE['UNKNOWN'])
 
@@ -98,8 +98,7 @@ class SSLCertificateCheck:
 
 		_bc = ConfigRegistry()
 		_bc.load()
-
-		today = int(time.time()) / 60 / 60 / 24
+		today = int(time.time()) // 60 // 60 // 24
 		rootc = int(_bc.get("ssl/validity/root", -1))
 		hostc = int(_bc.get("ssl/validity/host", -1))
 
@@ -118,7 +117,7 @@ class SSLCertificateCheck:
 				state = 'WARNING'
 			else:
 				state = 'OK'
-			msg = "%s expires in %s days (warn@%s - crit@%s)" % (certType, diff, self.days_warning, self.days_critical)
+			msg = "%s expires in %d days (warn@%s - crit@%s)" % (certType, diff, self.days_warning, self.days_critical)
 		else:
 			msg = 'unable to determine expire date - ucr variables ssl/validity/host|root are not set'
 
