@@ -1,3 +1,9 @@
+ucs-test (10.0.6-90) unstable; urgency=medium
+
+  * Bug #54203: Fix partial import when index < notifier_cache_size - reactivate tests
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 20 Dec 2021 20:44:18 +0100
+
 ucs-test (10.0.6-89) unstable; urgency=medium
 
   * Bug #54220: Updater tests for 5.0-1

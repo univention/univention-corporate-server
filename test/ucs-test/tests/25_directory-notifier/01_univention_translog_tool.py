@@ -17,12 +17,6 @@ from univention.config_registry import ucr
 
 TRANSLOG_CMD = '/usr/share/univention-directory-notifier/univention-translog'
 
-XFAIL_BACKUP = pytest.mark.xfail(
-	ucr["server/role"] == "domaincontroller_backup",
-	reason="Bug #54203: transaction.index incomplete on Backup",
-)
-
-
 @pytest.mark.parametrize("cmd", [
 	"--verbose",
 ])
@@ -36,7 +30,7 @@ def test_translog_check_fail(cmd, capfd):
 @pytest.mark.parametrize("cmd", [
 	"--help",
 	"index",
-	pytest.param("lookup 1", marks=XFAIL_BACKUP),
+	pytest.param("lookup 1"),
 	"stat",
 	"ldap 1",
 ])
@@ -50,8 +44,8 @@ def test_translog_check(cmd, capfd):
 @pytest.mark.parametrize("cmd", [
 	pytest.param("check", marks=pytest.mark.xfail(reason="Bug #54204: ignores LDAP case rules")),
 	"prune 1",
-	pytest.param("-n -l load 1", marks=XFAIL_BACKUP),
-	pytest.param("-n -l import -m 1 -M 1", marks=XFAIL_BACKUP),
+	pytest.param("-n -l load 1"),
+	pytest.param("-n -l import -m 1 -M 1"),
 ])
 def test_translog_check_silent(cmd, capfd):
 	subprocess.check_call([TRANSLOG_CMD] + cmd.split())
