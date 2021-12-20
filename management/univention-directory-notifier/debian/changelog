@@ -1,3 +1,9 @@
+univention-directory-notifier (14.0.5-6) unstable; urgency=medium
+
+  * Bug #54203: Fix partial import when index < notifier_cache_size
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 20 Dec 2021 20:42:36 +0100
+
 univention-directory-notifier (14.0.5-5) unstable; urgency=medium
 
   * Bug #53355: Silence Python logging deprecation warning
