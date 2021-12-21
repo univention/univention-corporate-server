@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-09-25 01:15+0200\n"
+"POT-Creation-Date: 2021-12-21 13:59+0100\n"
 "PO-Revision-Date: 2020-07-04 15:50+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -1154,6 +1154,39 @@ msgstr "samba/interfaces enthält weder lo noch 127.0.0.1 noch 0.0.0.0."
 #: umc/python/diagnostic/plugins/53_package_status.py:30
 msgid "some"
 msgstr "einigen"
+
+#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:15
+msgid "Notifier protocol version is less than 3"
+msgstr "Die Notifier-Protokollversion ist geringer als 3"
+
+#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:16
+msgid ""
+"Starting with UCS 4.3-3 Errata 428, the minimum protocol version should be "
+"set to 3."
+msgstr ""
+"Ab UCS 4.3-3 Errata 428 sollte die minimale Protokollversion auf 3 angehoben "
+"sein."
+
+#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:19
+msgid "There is no version/version configured."
+msgstr "Die UCR-Variable version/version ist nicht konfiguriert."
+
+#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:20
+msgid "There is no version/patchlevel configured."
+msgstr "Die UCR-Variable version/patchlevel ist nicht konfiguriert."
+
+#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:21
+msgid "There is no version/erratalevel configured."
+msgstr "Die UCR-Variable version/erratalevel ist nicht konfiguriert."
+
+#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:22
+msgid "There is no notifier/protocol/version configured."
+msgstr "Die UCR-Variable notifier/protocol/version ist nicht konfiguriert."
+
+#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:23
+msgid "The value notifier/protocol/version has an invalid value."
+msgstr "Die UCR-Variable “notifier/protocol/version” hat einen ungültigen Wert"
+
 
 #~ msgid "All nameserver entries are ok."
 #~ msgstr "Alle Nameserver Einträge sind in Ordnung."
