@@ -20,6 +20,7 @@ version_err_msg = _('There is no version/version configured.')
 patchlevel_err_msg = _('There is no version/patchlevel configured.')
 erratalevel_err_msg = _('There is no version/erratalevel configured.')
 npversion_err_msg = _('There is no notifier/protocol/version configured.')
+int_cast_err_msg = _('The value notifier/protocol/version has an invalid value.')
 
 
 def run(_umc_instance):
@@ -43,7 +44,13 @@ def run(_umc_instance):
 		if not np_version:
 			MODULE.error(npversion_err_msg)
 			raise Critical(_(npversion_err_msg))
-		if int(np_version) < 3:
+		try:
+			np_version = int(np_version)
+		except ValueError:
+			MODULE.error(int_cast_err_msg)
+			raise Critical(int_cast_err_msg)
+
+		if np_version < 3:
 			MODULE.error(description)
 			raise Warning(description)
 

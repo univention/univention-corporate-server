@@ -1168,6 +1168,10 @@ msgstr "Es ist kein Gateway eingerichtet."
 msgid "There is no notifier/protocol/version configured."
 msgstr "Es ist kein Gateway eingerichtet."
 
+#: umc/python/diagnostic/plugins/61_version.py:23
+msgid "The value notifier/protocol/version has an invalid value."
+msgstr "Die UCR-Variable “notifier/protocol/version” hat einen ungültigen Wert"
+
 #~ msgid "Test again"
 #~ msgstr "Erneut testen"
 
