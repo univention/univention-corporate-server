@@ -80,7 +80,7 @@ class ReplicationCheck:
 	def load_history(self):
 		if os.path.exists(self.CACHEFN) and os.stat(self.CACHEFN)[6] > 0:
 			try:
-				with open(self.CACHEFN) as fd:
+				with open(self.CACHEFN, "wb") as fd:
 					cnt = pickle.load(fd)
 					for i in range(cnt):
 						nid = pickle.load(fd)
