@@ -1,3 +1,10 @@
+univention-management-console (12.0.12-20) unstable; urgency=medium
+
+  * Bug #54043: univention-management-console-dev must depend on
+    imagemagick AND inkscape (not OR)
+
+ -- Ildefonso González Sánchez <isanchez.extern@univention.de>  Tue, 21 Dec 2021 12:25:22 +0100
+
 univention-management-console (12.0.12-19) unstable; urgency=medium
 
   * Bug #52888: force re-authentication at UMC-Server when a new SAML
