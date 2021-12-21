@@ -36,6 +36,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <limits.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -57,7 +58,7 @@ NotifyId_t notify_last_id;
 
 long SCHEMA_ID;
 
-long long notifier_cache_size=1000;
+unsigned long long notifier_cache_size=1000;
 long long notifier_lock_count=100;
 long long notifier_lock_time=100;
 
@@ -149,6 +150,30 @@ int creating_pidfile(char *file)
 	return 0;
 }
 
+unsigned long long parse_ullong(char *str) {
+	char *endptr;
+
+	notifier_cache_size = strtoull(str, &endptr, 10);
+	if (strtoll(str, NULL, 10) > 0) { // can legitimately return 0, LONG_MAX, or LONG_MIN
+		errno = 0;
+		if ((errno == ERANGE && notifier_cache_size == ULLONG_MAX)
+				|| (errno != 0 && notifier_cache_size == 0)) {
+			perror("strtol");
+			exit(EXIT_FAILURE);
+		} else if (endptr != str + strlen(str)) {
+			fprintf(stderr, "Not all characters of the value given for option -C could be converted: %s\n", str);
+			exit(EXIT_FAILURE);
+		}
+	} else if (endptr == str) {
+			fprintf(stderr, "No digits were found: %s\n", str);
+			exit(EXIT_FAILURE);
+	} else {
+		printf("Error: Argument of -C can only be a positive number: %s\n", str);
+		exit(EXIT_FAILURE);
+	};
+	return notifier_cache_size;
+}
+
 int main(int argc, char* argv[])
 {
 
@@ -180,7 +205,7 @@ int main(int argc, char* argv[])
 				fprintf(stderr, "Ignoring deprecated option -%c\n", c);
 				break;
 			case 'C':
-				notifier_cache_size=atoll(optarg);
+				notifier_cache_size=parse_ullong(optarg);
 				break;
 			case 'L':
 				notifier_lock_count=atoll(optarg);

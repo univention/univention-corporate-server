@@ -1,4 +1,4 @@
-univention-directory-notifier (13.0.3-7) unstable; urgency=medium
+univention-directory-notifier (13.0.3-8) unstable; urgency=medium
 
   * Bug #53821: Fix partial import when index < notifier_cache_size
 
