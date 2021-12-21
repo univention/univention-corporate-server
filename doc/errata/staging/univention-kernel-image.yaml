@@ -1,9 +1,9 @@
 product: ucs
-release: "4.4"
+release: '4.4'
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
-src: linux
-fix: 4.9.290-1
+src: univention-kernel-image
+fix: 12.0.0-9A~4.4.0.202112211012
 desc: |
  This updates the Linux kernel to version 4.9.290, which addresses (among
  others) the following security issues:
@@ -52,7 +52,7 @@ desc: |
  * Heap buffer overflow in firedtv driver (CVE-2021-42739)
  * An array-index-out-bounds in detach_capi_ctr in drivers/isdn/capi/kcapi.c
    (CVE-2021-43389)
-note: This is the first of four parts.
+note: This is the forth of four parts.
 bug: [54260]
 cve:
 - CVE-2020-3702
