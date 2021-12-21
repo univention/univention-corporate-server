@@ -1,8 +1,14 @@
+univention-nagios (13.0.2-5) unstable; urgency=medium
+
+  * Bug #52258: Version bump
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Tue, 21 Dec 2021 14:47:52 +0100
+
 univention-nagios (13.0.2-4) unstable; urgency=medium
 
   * Bug #52258: Version bump
 
- -- Ivan Barbecho Delgado <delgado.extern@univention.de  >  Tue, 21 Dec 2021 12:49:44 +0100
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Tue, 21 Dec 2021 12:49:44 +0100
 
 univention-nagios (13.0.2-3) unstable; urgency=medium
 
