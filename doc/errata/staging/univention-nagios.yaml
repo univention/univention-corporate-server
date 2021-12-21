@@ -6,5 +6,5 @@ src: univention-nagios
 fix: 13.0.2-5A~5.0.0.202112211458
 desc: |-
   This update addresses the following issue:
-  * Migrate module univention-nagios from python2 to python3
+  * The Nagios plugins in univention-nagios-client have been converted to python3
 bug: [52258]
