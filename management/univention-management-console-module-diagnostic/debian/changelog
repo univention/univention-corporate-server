@@ -1,3 +1,12 @@
+univention-management-console-module-diagnostic (6.0.0-14) unstable; urgency=medium
+
+ * Bug #53969: univention-run-diagnostic-checks offers to run a group of
+   tests and also to exclude some of the tests. Option `-t list` has been
+   replaced by `-l/--list`. Argument parsing is now more strict:
+   `parse_known_args` is replaced by `parse_args`.
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Wed, 10 Nov 2021 05:11:54 +0100
+
 univention-management-console-module-diagnostic (6.0.0-13) unstable; urgency=medium
 
   * Bug #50620: eliminate false positives of system diagnostic check
