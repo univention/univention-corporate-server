@@ -45,19 +45,14 @@ class CLIClient(object):
 
 	@classmethod
 	def main(cls):
-		parser = argparse.ArgumentParser(description='Executes the diagnostic module checks', add_help=False)
-		parser.add_argument('-h', '--help', action='store_true', help='show this help message and exit')
-		parser.add_argument("--bindpwdfile", help='Path to a file that contains your password')
-		parser.add_argument("--username", help='Domain Admin username for Authentication')
-		args = parser.parse_known_args()[0]
+		parser = argparse.ArgumentParser(description='Executes the diagnostic module checks')
+		parser.add_argument('--bindpwdfile', help='Path to a file that contains your password')
+		parser.add_argument('--username', help='Domain Admin username for Authentication')
+		parser.add_argument('-l', '--list', action='store_true', help='List all available checks and exit')
+		parser.add_argument('-t', '--test', default=['all'], nargs='*', dest='checks', help='List of checks to run. Default is: all')
+		parser.add_argument('-s', '--skip', default=[], nargs='*', dest='skip_checks', help='List of checks to skip. Default is: []')
 
-		list_choices = ['all', 'list']
-		parser.add_argument(
-			"-t", dest='tests', choices=list_choices, nargs='+',
-			default='all', help='''Choose tests to run by using `-t
-			<testname>`, where <testname> can be any of the tests
-			from `-t list` or run `-t all` to execute all
-			diagnostic checks''')
+		args = parser.parse_args()
 
 		if args.help:
 			parser.print_help()
@@ -78,16 +73,28 @@ class CLIClient(object):
 			parser.error('Login failed: %s' % (exc.message,))
 
 		plugins = [plugin['id'] for plugin in client.umc_command('diagnostic/query').result]
-		list_choices += plugins
 
-		args = parser.parse_args()
-
-		if 'list' in args.tests:
-			print("\n\t".join(['Available tests:'] + plugins))
+		if 'list' in args.checks:
+			print("\n\t".join(['Available checks:'] + plugins))
 			sys.exit(0)
 
-		if 'all' in args.tests:
-			args.tests = plugins
+		if 'all' in args.checks:
+			args.checks = plugins
+		else:
+			missing_checks = set(args.checks) - set(plugins)
+			if missing_checks:
+				print('Error: following checks to perform were not found %r' % (missing_checks, ), file=sys.stderr)
+				sys.exit(1)
+
+		if args.skip_checks:
+			missing_skip_checks = set(args.skip_checks) - set(plugins)
+			if missing_skip_checks:
+				print('Error: following checks to skip were not found %r' % (missing_skip_checks,), file=sys.stderr)
+				sys.exit(1)
+
+			checks = list(set(plugins) - set(args.skip_checks))
+			checks.sort()
+			args.checks = checks
 
 		return cls(client, args).run()
 
@@ -96,7 +103,7 @@ class CLIClient(object):
 		self.args = args
 
 	def run(self):
-		responses = self.run_diagnostic_checks(self.args.tests)
+		responses = self.run_diagnostic_checks(self.args.checks)
 
 		exit_code = 0
 		print('\nYou can find the logging messages of the diagnostic modules at /var/log/univention/management-console-module-diagnostic.log\n')
