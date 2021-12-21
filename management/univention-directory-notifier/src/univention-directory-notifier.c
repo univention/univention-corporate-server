@@ -57,7 +57,7 @@ NotifyId_t notify_last_id;
 
 long SCHEMA_ID;
 
-long long notifier_cache_size=1000;
+unsigned long long notifier_cache_size=1000;
 long long notifier_lock_count=100;
 long long notifier_lock_time=100;
 
