@@ -3,7 +3,7 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: univention-management-console-module-diagnostic
-fix: 5.0.1-54A~4.4.0.202112211309
+fix: 5.0.1-55A~4.4.0.202112211520
 desc: |-
   This update addresses the following issue:
   * A diagnostic module has been added to check the UCR variable notifier/protocol/version
