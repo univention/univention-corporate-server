@@ -39,16 +39,17 @@
 #include "notify.h"
 
 
-extern long long notifier_cache_size;
+extern unsigned long long notifier_cache_size;
 
 static notify_cache_t *cache;
 static int entry_min_pos = 0;
 static int max_filled = 0;
 
+#define MIN(x,y) (((x)<(y))?(x):(y))
 
 int notifier_cache_init ( unsigned long max_id)
 {
-	int i;
+	unsigned int i;
 	int size;
 	int count = 0;
 	char *buffer;
@@ -62,7 +63,7 @@ int notifier_cache_init ( unsigned long max_id)
 		cache[i].command='n';
 	}
 
-	for ( i=max_id - (notifier_cache_size-1); i <= max_id; i++) {
+	for ( i=max_id - MIN(max_id, notifier_cache_size) + 1; i <= max_id; i++) {
 		char *p, *pp;
 
 		buffer=notify_transcation_get_one_dn ( i );
