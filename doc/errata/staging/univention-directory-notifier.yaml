@@ -3,7 +3,7 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: univention-directory-notifier
-fix: 13.0.3-6A~4.4.0.202112080915
+fix: 13.0.3-7A~4.4.0.202112211648
 desc: |
  This update addresses the following issue:
  * The notifier aborts if the transaction ID issued by the OpenLDAP translog
