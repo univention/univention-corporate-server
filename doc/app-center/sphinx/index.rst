@@ -1,5 +1,6 @@
+************
 Introduction
-============
+************
 
 This document is for app providers who want to place their product
 clearly visible for a broad, professional and growing user group. It
@@ -9,7 +10,7 @@ covers the steps on how to make the product available as an app for
 .. _introduction:start:
 
 What is |UCSAPPC|?
-------------------
+==================
 
 |UCSAPPC| is an ecosystem similar to the app stores known from mobile
 platforms like Apple or Google. It provides an infrastructure to build,
@@ -19,7 +20,7 @@ uses well-known technologies like `Docker <https://www.docker.com/>`__.
 .. _infrastructure:
 
 App Center infrastructure
--------------------------
+=========================
 
 The ecosystem consists of the following components:
 
