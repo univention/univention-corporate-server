@@ -11,7 +11,7 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 # import os
-# import sys
+import sys
 # sys.path.insert(0, os.path.abspath('.'))
 from datetime import date
 from sphinx.locale import _
@@ -23,6 +23,7 @@ project = 'Univention App Center for App Providers'
 copyright = '{}, Univention GmbH'.format(date.today().year)
 author = 'Univention GmbH'
 
+html_title = project
 
 # -- General configuration ---------------------------------------------------
 
@@ -30,6 +31,8 @@ author = 'Univention GmbH'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    "univention_sphinx_extension",
+    "sphinxcontrib.spelling",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -56,14 +59,7 @@ language = 'en'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 
-#html_theme_path = ["../",]
-#html_theme = 'sphinx_univention'
-
-html_theme = "sphinx_book_theme"
-html_theme_options = {
-    "extra_navbar": "",
-}
-#html_theme = "furo"
+html_theme = "univention_sphinx_book_theme"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -75,11 +71,10 @@ html_last_updated_fmt = "%d. %b %Y at %H:%m (UTC%z)"
 root_doc = "contents"
 
 rst_epilog = """
-.. include:: substitutions.rst
+.. include:: substitutions.txt
 """
 
 numfig = True
-
 numfig_format = {
     "figure": _("Figure %s"),
     "table": _("Table %s"),
@@ -87,3 +82,23 @@ numfig_format = {
     "section": _("Section %s"),
 }
 
+if "spelling" in sys.argv:
+    spelling_lang = "en_US"
+    spelling_show_suggestions = True
+    spelling_warning = True
+    spelling_word_list_filename = list()
+#    spelling_word_list_filename = ["spelling_wordlist"]
+
+
+tls_cacerts = {
+    "git.knut.univention.de": "../ucs-root-ca.crt",
+}
+
+latex_engine = 'lualatex'
+latex_show_pagerefs = True
+latex_show_urls = "footnote"
+latex_logo = "_static/univention_logo.pdf"
+latex_documents = [(root_doc, 'app-provider.tex', project, author, "manual", False)]
+latex_elements = {
+    "papersize": "a4paper",
+}
