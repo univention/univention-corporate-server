@@ -139,10 +139,22 @@ define([
 			if (umcConfig.anonymousMeta) {
 				deferred.resolve(tools.status());
 			} else {
-				require(['umc/json!/univention/get/meta?' + timestamp], lang.hitch(this, function(meta) {
-					lang.mixin(this._status, meta.result);
-					deferred.resolve(tools.status());
-				}));
+				require(['umc/dialog'], function(_dialog) {
+					// register the real umc/dialog module in the local scope
+					var dialog = _dialog;
+
+					var metaData = xhr.get('/univention/get/meta?' + timestamp, {timeout: 10000});
+
+					metaData.then(lang.hitch(this, function(meta) {
+						lang.mixin(this._status, meta.result);
+						deferred.resolve(tools.status());
+					}), function (err){
+						var message = _('Login call lasted too long. Please visit the <a href="https://help.univention.com/t/draft-login-call-lasted-too-long/19031">Help</a> to check for possible causes.');
+
+						dialog.warn(message);
+						deferred.reject('Timeout occurred');
+					});
+				});
 			}
 			return deferred.promise;
 		},
@@ -1207,7 +1219,7 @@ define([
 		 * @property {String} attribute -
 		 *    The name of the property that should be compared.
 		 *
-		 *    e.g. Set attribute to 'name' to sort this array after the 'name' property:  
+		 *    e.g. Set attribute to 'name' to sort this array after the 'name' property:
 		 * ```javascript
 		 * var arr = [{ 'id': 0, 'name': 'Bob' }, { 'id': 1, 'name': 'Alice' }];
 		 * ```
@@ -1227,20 +1239,20 @@ define([
 		 *    The [locales]{@link https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Collator#Syntax}
 		 *    parameter for the
 		 *    [Intl.Collator]{@link https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Collator}
-		 *    instance.  
+		 *    instance.
 		 *
 		 * @property {Object} [collatorOptions={ numeric: true }] -
 		 *    The [options]{@link https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Collator#Syntax}
 		 *    parameter for the
 		 *    [Intl.Collator]{@link https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Collator}
-		 *    instance.  
+		 *    instance.
 		 *
 		 * @property {Boolean} [ignoreCase=true] -
 		 *    If an
 		 *    [Intl.Collator]{@link https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Collator}
 		 *    instance is used then this option is ignored.
 		 *
-		 *    Whether the values are turned to lowercase before performing an ascii compare.  
+		 *    Whether the values are turned to lowercase before performing an ascii compare.
 		 *    Normal sorting uses ascii comparison which results in 'A-Za-z' sorting.
 		 */
 
@@ -1251,7 +1263,7 @@ define([
 		 *
 		 * @param {...(String|module:umc/tools~CmpSettings)} cmpSettings -
 		 *    The [CmpSettings]{@link module:umc/tools~CmpSettings} object defines how the objects in
-		 *    the array should be compared in order to sort them.  
+		 *    the array should be compared in order to sort them.
 		 *    If a string is passed as an argument then a [CmpSettings]{@link module:umc/tools~CmpSettings}
 		 *    object with its default values will be used and its 'attribute' property will be the passed string.
 		 *
@@ -1326,7 +1338,7 @@ define([
 		 * // be one single array.
 		 *
 		 * var compareFunction = cmpObjects('firstname', 'lastname');
-		 * // is equal to 
+		 * // is equal to
 		 * var compareFunction = cmpObjects(['firstname', 'lastname'])
 		 */
 		cmpObjects: function(/*...(String|CmpSettings)*/) {
@@ -1350,7 +1362,7 @@ define([
 
 				// validate passedCmpSettings
 				if (!lang.exists('attribute', passedCmpSettings) || typeof passedCmpSettings.attribute !== 'string') {
-					tools.assert(false, 
+					tools.assert(false,
 						'Wrong parameter for tools.cmpObjects().\n' +
 						'The parameter needs to be a string or an object containing the "attribute" property\n' +
 						'and the value of the "attribute" property has to be a string.\n' +
@@ -1445,7 +1457,7 @@ define([
 		// taken from: http://stackoverflow.com/a/9221063
 		_regIPv4:  /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))$/,
 		_regIPv6: /^((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?$/,
-		
+
 		_regFQDN: /^(?=.{1,254}$)((?=[a-z0-9-]{1,63}\.)[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}$/i,
 		_regHostname: /^(?=[a-z0-9-]{1,63}$)([a-z0-9]+(-[a-z0-9]+)*)+$/i,
 
@@ -1957,7 +1969,7 @@ define([
 		 * (https://www.w3.org/TR/WCAG/#contrast-minimum)
 		 *
 		 * @param {module:umc/tools~ColorLike} color1
-		 * Assumed background color  
+		 * Assumed background color
 		 * If color1 has an opacity then the contrast ratio cannot be correctly calculated since the background of color1 is not known.
 		 * You can define the background of color1 as additional arguments (see examples).
 		 *
@@ -1971,21 +1983,21 @@ define([
 		 * contrast('#fff', [0, 0, 0])
 		 * // -> 21
 		 *
-		 * The foreground color can have an opacity.  
+		 * The foreground color can have an opacity.
 		 * If so, it is blended blended with the background color before calculating the contrast ratio.
 		 * //
 		 * contrast('#fff', [0, 0, 0, 0.87])
 		 * // -> 16.10
 		 *
 		 * If the background color has an opacity then the contrast ratio cannot be correctly calculated.
-		 * In that case you have to pass an additional background that lies beneath color1.  
+		 * In that case you have to pass an additional background that lies beneath color1.
 		 * color1 will be blended with the additional background.
 		 * //
 		 * contrast('rgba(255, 255, 255, 0.5)', [0, 0, 0], 'rgb(228, 228, 30)')
 		 * // -> 17.87
 		 *
 		 * If the additional background also has an opacity then you have to
-		 * pass further backgrounds. The last additional background has to have an alpha of 1.  
+		 * pass further backgrounds. The last additional background has to have an alpha of 1.
 		 * //
 		 * contrast('rgba(255, 255, 255, 0.5)', [0, 0, 0], 'rgba(228, 228, 30, 0.8)', 'rgba(110, 110, 110, 0.3)', '#000')
 		 * // -> 14.95
@@ -2047,8 +2059,8 @@ define([
 		 * String or Array representing a color
 		 * @typedef {(String|Array)} ColorLike
 		 *
-		 * @description A String or an Array representing a color.  
-		 * The string must be a valid rgb, rgba, hsl, hsla or hex code (defining the alpha channel in the hex code is not supported).  
+		 * @description A String or an Array representing a color.
+		 * The string must be a valid rgb, rgba, hsl, hsla or hex code (defining the alpha channel in the hex code is not supported).
 		 * The Array must have the format [R, G, B] or [R, G, B, A] where R,G,B goes from 0 to 255 and A goes from 0 to 1.
 		 *
 		 * @example
@@ -2063,7 +2075,7 @@ define([
 		/**
 		 * @param {module:umc/tools~ColorLike} color
 		 * @description Return a dojo.Color Object from a [ColorLike]{@link module:umc/tools~ColorLike}
-		 * @returns {dojo.Color} 
+		 * @returns {dojo.Color}
 		 */
 		colorFromArbitrary: function(color /*ColorLike*/) {
 			if (color instanceof dojo.Color) {

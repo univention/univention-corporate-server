@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [0]
+scope: ucs_5.0-0-errata5.0-0
+src: univention-web
+fix:
+desc: |
+ This update addresses the following issue:
+ * In case of long-lasting login, message will be displayed to the user
+   containing the link where further help be found.
+bug: [54032]

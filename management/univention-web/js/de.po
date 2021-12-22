@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-21 14:13+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2021-12-22 11:34+0000\n"
 "PO-Revision-Date: 2020-09-05 16:27+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -13,7 +13,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
 
-#: js/tools.js:1939
+#: js/widgets/MultiInput.js:703
+#, fuzzy
+msgid " (required)"
+msgstr "Erneutes Laden der UMC notwendig"
+
+#: js/tools.js:1950
 msgid "\"${moduleName}\" module"
 msgstr "Modul \"${moduleName}\""
 
@@ -25,11 +30,11 @@ msgstr "%(label)s (Wiederholung)"
 msgid "%(label)s: %(message)s"
 msgstr "%(label)s: %(message)s"
 
-#: js/widgets/Grid.js:1251
+#: js/widgets/Grid.js:1189
 msgid "%(num)d entries of %(total)d selected"
 msgstr "%(num)d Einträge von %(total)d ausgewählt"
 
-#: js/widgets/Grid.js:1256
+#: js/widgets/Grid.js:1194
 #, javascript-format
 msgid "%d entries found"
 msgstr "%d Einträge gefunden"
@@ -43,7 +48,7 @@ msgstr ""
 msgid "%s loaded"
 msgstr "%s geladen"
 
-#: js/widgets/Grid.js:1253
+#: js/widgets/Grid.js:1191
 #, javascript-format
 msgid "1 entry of %d selected"
 msgstr "1 Eintrag von %d ausgewählt"
@@ -57,11 +62,11 @@ msgstr ""
 "gespeicherten Einstellung wird verloren gehen, da die Seite beim Ändern der "
 "Sprache neu geladen wird."
 
-#: js/tools.js:304
+#: js/tools.js:315
 msgid ""
-"A reload of the Univention Management Console is required to use new modules."
-"<br>Currently opened modules may not work properly.<br>Do you want to reload "
-"the page?"
+"A reload of the Univention Management Console is required to use new "
+"modules.<br>Currently opened modules may not work properly.<br>Do you want "
+"to reload the page?"
 msgstr ""
 "Es ist notwendig, die Univention Management Console neu zu laden, um neue "
 "Module benutzen zu können.<br>Momentan geöffnete Module funktionieren "
@@ -79,7 +84,7 @@ msgstr "Zugriff"
 msgid "Action"
 msgstr "Aktion"
 
-#: js/widgets/Grid.js:1113 js/widgets/Grid.js:1114
+#: js/widgets/Grid.js:970
 msgid "Actions"
 msgstr "Aktionen"
 
@@ -91,37 +96,38 @@ msgstr "Hinzufügen"
 msgid "Add objects"
 msgstr "Objekte hinzufügen"
 
-#: js/hooks/default_menu_entries.js:370
+#: js/hooks/default_menu_entries.js:374
 msgid "Advantages of the Enterprise Edition"
 msgstr "Vorteile der Enterprise Edition"
 
-#: js/tools.js:1189
+#: js/tools.js:1200
 msgid "An assert statement failed"
 msgstr "Ein Assert-Anweisung schlug fehl"
 
-#: js/tools.js:685 js/tools.js:987
+#: js/tools.js:696 js/tools.js:998
 msgid "An error occurred"
 msgstr "Ein Fehler ist aufgetreten: "
 
-#: js/tools.js:691
+#: js/tools.js:702
 msgid ""
 "An error occurred while connecting to the server, please try again later."
 msgstr ""
 "Ein Fehler trat während des Verbindungsaufbaus zum Server auf. Bitte "
 "versuchen Sie es später noch einmal."
 
-#: js/widgets/ProgressBar.js:186
+#: js/widgets/ProgressBar.js:182
 msgid "An error occurred: "
 msgstr "Ein Fehler ist aufgetreten: "
 
-#: js/tools.js:688
+#: js/tools.js:699
 #, javascript-format
 msgid ""
 "An unknown error with status code %s occurred while connecting to the "
 "server, please try again later."
 msgstr ""
 "Ein unbekannter Fehler mit Status-Code %s trat während des "
-"Verbindungsaufbaus zum Server auf. Bitte versuchen Sie es später noch einmal."
+"Verbindungsaufbaus zum Server auf. Bitte versuchen Sie es später noch "
+"einmal."
 
 #: js/widgets/Wizard.js:163
 msgid "Back"
@@ -131,12 +137,12 @@ msgstr "Zurück"
 msgid "Back to start site"
 msgstr "Zurück zur Startseite"
 
-#: js/hooks/default_menu_entries.js:349
+#: js/hooks/default_menu_entries.js:353
 msgid "Buy support package"
 msgstr "Support Paket kaufen"
 
-#: js/hooks/default_menu_entries.js:159 js/widgets/MultiObjectSelect.js:86
-#: js/widgets/Wizard.js:178 js/tools.js:306 js/dialog.js:306
+#: js/tools.js:317 js/dialog.js:302 js/hooks/default_menu_entries.js:159
+#: js/widgets/MultiObjectSelect.js:86 js/widgets/Wizard.js:178
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -152,12 +158,12 @@ msgstr "Zertifikate"
 msgid "Changing language"
 msgstr "Sprache wird geändert"
 
-#: js/hooks/default_menu_entries.js:380 js/widgets/Module.js:176
-#: js/tools.js:956
+#: js/tools.js:967 js/hooks/default_menu_entries.js:384
+#: js/widgets/Module.js:180
 msgid "Close"
 msgstr "Schließen"
 
-#: js/dialog.js:260 js/dialog.js:315
+#: js/dialog.js:255 js/dialog.js:311
 msgid "Confirmation"
 msgstr "Bestätigung"
 
@@ -165,19 +171,19 @@ msgstr "Bestätigung"
 msgid "Cookie Settings"
 msgstr "Cookie-Einstellungen"
 
-#: js/tools.js:780
+#: js/tools.js:791
 msgid "Could not fulfill the request."
 msgstr "Die Anfrage konnte nicht ausgeführt werden."
 
-#: js/widgets/Grid.js:1358
+#: js/widgets/Grid.js:1296
 msgid "Could not load search results"
 msgstr "Es konnten keine Sucheergebnisse geladen werden"
 
-#: js/tools.js:800
+#: js/tools.js:811
 msgid "Could not process the request."
 msgstr "Die Anfrage konnte nicht bearbeitet werden."
 
-#: js/hooks/default_menu_entries.js:392
+#: js/hooks/default_menu_entries.js:396
 msgid "Do not show this notification again"
 msgstr "Diese Benachrichtigung nicht erneut anzeigen"
 
@@ -193,7 +199,7 @@ msgstr "Enter"
 msgid "Feedback"
 msgstr "Feedback"
 
-#: js/widgets/ProgressBar.js:158
+#: js/widgets/ProgressBar.js:154
 msgid "Fetching information from the server failed!"
 msgstr "Das Holen von Informationen vom Server schlug fehl!"
 
@@ -205,12 +211,12 @@ msgstr "Fertigstellen"
 msgid "Group"
 msgstr "Gruppe"
 
-#: js/tools.js:898
+#: js/tools.js:909
 #, javascript-format
 msgid "HTTP Error %s"
 msgstr "HTTP Fehler %s"
 
-#: js/hooks/default_menu_entries.js:365
+#: js/hooks/default_menu_entries.js:369
 msgid "Hard- and software certifications"
 msgstr "Hard- und Softwarezertifizierungen"
 
@@ -218,7 +224,7 @@ msgstr "Hard- und Softwarezertifizierungen"
 msgid "Help"
 msgstr "Hilfe"
 
-#: js/tools.js:935
+#: js/tools.js:946
 msgid "Hide server error message"
 msgstr "Fehlernachricht des Servers ausblenden"
 
@@ -226,15 +232,15 @@ msgstr "Fehlernachricht des Servers ausblenden"
 msgid "Home"
 msgstr "Pos 1"
 
-#: js/tools.js:977
+#: js/tools.js:988
 msgid "Inform vendor"
 msgstr "Dem Hersteller melden"
 
-#: js/tools.js:412
+#: js/tools.js:423
 msgid "Information"
 msgstr "Hinweis"
 
-#: js/tools.js:998
+#: js/tools.js:1009
 msgid ""
 "Information about the error will be sent to the vendor along with some data "
 "about the operating system."
@@ -242,55 +248,57 @@ msgstr ""
 "Informationen zu diesem Fehler werden, zusammen mit Angaben über das "
 "Betriebssystem, an den Hersteller übermittelt."
 
-#: js/tools.js:797
-msgid "Internal UMC protocol error: The UMCP message body could not be parsed."
+#: js/tools.js:808
+msgid ""
+"Internal UMC protocol error: The UMCP message body could not be parsed."
 msgstr ""
 "Interner UMC-Protokoll-Fehler: Der UMCP-Message-Body konnte nicht geparst "
 "werden."
 
-#: js/tools.js:796
+#: js/tools.js:807
 msgid ""
 "Internal UMC protocol error: The UMCP message header could not be parsed."
 msgstr ""
 "Interner UMC-Protokoll-Fehler: Der UMCP-Message-Header konnte nicht geparst "
 "werden."
 
-#: js/tools.js:799
+#: js/tools.js:810
 msgid "Internal module error: An error occurred during command processing."
 msgstr ""
 "Interner Modul-Fehler: Ein Fehler trat während des Ausführens des Befehls "
 "auf."
 
-#: js/tools.js:801
+#: js/tools.js:812
 msgid ""
-"Internal module error: The initialization of the module caused a fatal error."
+"Internal module error: The initialization of the module caused a fatal "
+"error."
 msgstr ""
-"Interner Modul-Fehler: Die Initialisierung des Moduls erzeugte einen fatalen "
-"Fehler."
+"Interner Modul-Fehler: Die Initialisierung des Moduls erzeugte einen fatalen"
+" Fehler."
 
-#: js/tools.js:790
+#: js/tools.js:801
 msgid "Internal server error."
 msgstr "Interner Server-Fehler."
 
-#: js/tools.js:793
+#: js/tools.js:804
 msgid "Internal server error: Could not connect to the module process."
 msgstr ""
 "Interner Server-Fehler: Verbindung zum Modulprozess konnte nicht aufgebaut "
 "werden."
 
-#: js/tools.js:794
+#: js/tools.js:805
 msgid ""
-"Internal server error: The SSL server certificate is not trustworthy. Please "
-"check your SSL configurations."
+"Internal server error: The SSL server certificate is not trustworthy. Please"
+" check your SSL configurations."
 msgstr ""
 "Interner Server-Fehler: Das SSL-Server-Zertifikat ist nicht "
 "vertrauenswürdig. Bitte überprüfen Sie ihre SSL-Konfiguration."
 
-#: js/tools.js:792
+#: js/tools.js:803
 msgid "Internal server error: The module process died unexpectedly."
 msgstr "Interner Server-Fehler: Der Modulprozess wurde unerwartet beendet."
 
-#: js/tools.js:791
+#: js/tools.js:802
 msgid "Internal server error: The service is temporarily not available."
 msgstr "Interner Server-Fehler: Der Dienst ist momentan nicht erreichbar!"
 
@@ -298,21 +306,31 @@ msgstr "Interner Server-Fehler: Der Dienst ist momentan nicht erreichbar!"
 msgid "Key"
 msgstr "Taste"
 
-#: js/hooks/default_menu_entries.js:279 js/menu/Menu.js:118
-#: js/widgets/LoginButton.js:41 js/widgets/LoginButton.js:54
+#: js/hooks/default_menu_entries.js:283 js/widgets/LoginButton.js:41
+#: js/widgets/LoginButton.js:54 js/menu/Menu.js:117
 msgid "Login"
 msgstr "Anmelden"
 
-#: js/hooks/default_menu_entries.js:291 js/menu/Menu.js:119
-#: js/widgets/LoginButton.js:54
+#: js/tools.js:152
+msgid ""
+"Login call lasted too long. Please visit the <a "
+"href=\"https://help.univention.com/t/draft-login-call-lasted-too-"
+"long/19031\">Help</a> to check for possible causes."
+msgstr ""
+"Login-Anruf dauerte zu lange. Bitte besuchen Sie die <a "
+"href=\"https://help.univention.com/t/draft-login-call-lasted-too-"
+"long/19031\">Hilfe</a> bei der Suche nach möglichen Ursachen."
+
+#: js/hooks/default_menu_entries.js:295 js/widgets/LoginButton.js:54
+#: js/menu/Menu.js:118
 msgid "Logout"
 msgstr "Abmelden"
 
-#: js/hooks/default_menu_entries.js:366
+#: js/hooks/default_menu_entries.js:370
 msgid "Manufacturer warranty with product liability"
 msgstr "Herstellergarantie mit Produkthaftung"
 
-#: js/menu/Menu.js:205
+#: js/menu/Menu.js:202
 msgid "Menu"
 msgstr "Menü"
 
@@ -352,23 +370,19 @@ msgstr "Neuer Eintrag"
 msgid "Next"
 msgstr "Weiter"
 
-#: js/widgets/Grid.js:1260
+#: js/widgets/Grid.js:1198
 msgid "No entries could be found"
 msgstr "Es konnten keine Einträge gefunden werden"
 
-#: js/widgets/NotificationsButton.js:284
+#: js/widgets/NotificationsButton.js:261
 msgid "No notifications"
 msgstr "Keine Benachrichtigungen"
-
-#: js/widgets/MultiUploader.js:220
-msgid "No upload in progress"
-msgstr "Keine laufende Dateiübertragung"
 
 #: js/dialog.js:98 js/dialog.js:145 js/dialog.js:171
 msgid "Notification"
 msgstr "Benachrichtigung"
 
-#: js/widgets/NotificationsButton.js:261 js/widgets/NotificationsButton.js:286
+#: js/widgets/NotificationsButton.js:238 js/widgets/NotificationsButton.js:263
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
@@ -393,13 +407,13 @@ msgstr "Bild"
 msgid "Please perform a search"
 msgstr "Bitte führen Sie eine Suche aus"
 
-#: js/tools.js:918
+#: js/tools.js:929
 msgid "Please take a second to provide the following information:"
 msgstr ""
 "Bitte nehmen Sie sich einen Augenblick Zeit, um die folgenden Informationen "
 "bereitzustellen:"
 
-#: js/hooks/default_menu_entries.js:371
+#: js/hooks/default_menu_entries.js:375
 msgid "Prices and support"
 msgstr "Preise und Support"
 
@@ -407,20 +421,20 @@ msgstr "Preise und Support"
 msgid "Read"
 msgstr "Lesen"
 
-#: js/tools.js:312
+#: js/tools.js:323
 msgid "Reload"
 msgstr "Neu laden"
 
-#: js/tools.js:1010
+#: js/tools.js:1021
 msgid "Remarks (e.g. steps to reproduce) (optional)"
 msgstr "Bemerkungen (z.B. Schritte, den Fehler nachzustellen) (optional)"
 
-#: js/widgets/MultiObjectSelect.js:349 js/widgets/MultiUploader.js:65
-#: js/widgets/Uploader.js:115
+#: js/widgets/Uploader.js:115 js/widgets/MultiObjectSelect.js:349
+#: js/widgets/MultiUploader.js:66
 msgid "Remove"
 msgstr "Entfernen"
 
-#: js/widgets/MultiInput.js:559
+#: js/widgets/MultiInput.js:561
 msgid "Remove entry"
 msgstr "Eintrag entfernen"
 
@@ -448,19 +462,19 @@ msgstr "Datei auswählen"
 msgid "Select the date"
 msgstr "Das Datum auswählen"
 
-#: js/tools.js:931
+#: js/tools.js:942
 msgid "Send as email"
 msgstr "Als E-Mail senden"
 
-#: js/tools.js:994
+#: js/tools.js:1005
 msgid "Send to vendor"
 msgstr "An den Hersteller senden"
 
-#: js/tools.js:1021
+#: js/tools.js:1032
 msgid "Sending the information to the vendor failed"
 msgstr "Das Versenden der Informationen zum Hersteller ist fehlgeschlagen"
 
-#: js/tools.js:685
+#: js/tools.js:696
 msgid "Server error message:"
 msgstr "Fehlernachricht des Servers:"
 
@@ -468,15 +482,15 @@ msgstr "Fehlernachricht des Servers:"
 msgid "Setgid"
 msgstr "Setgid"
 
-#: js/tools.js:1002
+#: js/tools.js:1013
 msgid "Show error message"
 msgstr "Fehlermeldung anzeigen"
 
-#: js/tools.js:936
+#: js/tools.js:947
 msgid "Show server error message"
 msgstr "Fehlernachricht des Servers anzeigen"
 
-#: js/tools.js:397
+#: js/tools.js:408
 msgid ""
 "So far, the connection to the server could not be established after {time} "
 "seconds. This can be a normal behavior. In any case, the process will "
@@ -484,17 +498,18 @@ msgid ""
 msgstr ""
 "Gegenwärtig konnte die Verbindung zum Server seit {time} Sekunden nicht "
 "aufgebaut werden. Dies kann ein vorhergesehenes Verhalten sein. In jedem "
-"Fall wird der Prozess weiterhin versuchen die Verbindung wieder herzustellen."
+"Fall wird der Prozess weiterhin versuchen die Verbindung wieder "
+"herzustellen."
 
 #: js/widgets/Calendar.js:189
 msgid "Space"
 msgstr "Leertaste"
 
-#: js/tools.js:788
+#: js/tools.js:799
 msgid "Specified locale is not available."
 msgstr "Die angegebene Sprachdefinition ist nicht verfügbar."
 
-#: js/hooks/default_menu_entries.js:368
+#: js/hooks/default_menu_entries.js:372
 msgid ""
 "Starting at <b>290.- Euro/year</b> you can purchase a UCS Enterprise "
 "Edition. This license allows you to benefit from basic support services as "
@@ -508,11 +523,11 @@ msgstr ""
 msgid "Sticky bit"
 msgstr "Sticky bit"
 
-#: js/dialog.js:310
+#: js/dialog.js:306
 msgid "Submit"
 msgstr "Absenden"
 
-#: js/hooks/default_menu_entries.js:363
+#: js/hooks/default_menu_entries.js:367
 msgid "Support and Professional Services"
 msgstr "Support und Professional Services"
 
@@ -520,7 +535,7 @@ msgstr "Support und Professional Services"
 msgid "Switch language"
 msgstr "Sprache ändern"
 
-#: js/tools.js:1019
+#: js/tools.js:1030
 msgid "Thank you for your help"
 msgstr "Vielen Dank für Ihre Hilfe"
 
@@ -541,7 +556,7 @@ msgstr "Die Maximalgröße einer Datei ist %.1f MB."
 msgid "The passwords do not match, please retype again."
 msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 
-#: js/tools.js:303
+#: js/tools.js:314
 msgid "UMC reload required"
 msgstr "Erneutes Laden der UMC notwendig"
 
@@ -557,12 +572,12 @@ msgstr "Univention Forum \"Hilfe\""
 msgid "Univention Website"
 msgstr "Univention Webseite"
 
-#: js/hooks/default_menu_entries.js:364
+#: js/hooks/default_menu_entries.js:368
 msgid "Up to 7 years of maintenance (LTS)"
 msgstr "Bis zu 7 Jahre Maintenance (LTS)"
 
-#: js/widgets/InfoUploader.js:43 js/widgets/MultiUploader.js:62
-#: js/widgets/Uploader.js:99
+#: js/widgets/Uploader.js:99 js/widgets/MultiUploader.js:63
+#: js/widgets/InfoUploader.js:43
 msgid "Upload"
 msgstr "Hochladen"
 
@@ -570,19 +585,15 @@ msgstr "Hochladen"
 msgid "Uploading..."
 msgstr "Datenübertragung..."
 
-#: js/widgets/MultiUploader.js:246
+#: js/widgets/MultiUploader.js:241
 msgid "Uploading... %(current)d of %(total)d files remaining."
 msgstr "Dateiübertragung... %(current)d von %(total)d Dateien verbleiben."
-
-#: js/widgets/MultiUploader.js:243
-msgid "Uploads finished"
-msgstr "Dateiübertragung beendet"
 
 #: js/hooks/default_menu_entries.js:64
 msgid "User settings"
 msgstr "Benutzereinstellungen"
 
-#: js/tools.js:787
+#: js/tools.js:798
 msgid "Validation error"
 msgstr "Validierungsfehler"
 
@@ -592,16 +603,16 @@ msgstr "Warnung"
 
 #: js/widgets/CookieBanner.js:55
 msgid ""
-"We use cookies in order to provide you with certain functions and to be able "
-"to guarantee an unrestricted service. By clicking on \"Accept\", you consent "
-"to the collection of information on this portal."
+"We use cookies in order to provide you with certain functions and to be able"
+" to guarantee an unrestricted service. By clicking on \"Accept\", you "
+"consent to the collection of information on this portal."
 msgstr ""
 "Wir verwenden Cookies, um Ihnen bestimmte Funktionen bereitzustellen und "
-"einen uneingeschränkten Service gewährleisten zu können. Mit einem Klick auf "
-"\"Akzeptieren\" willigen Sie in die Erhebung von Informationen auf diesem "
+"einen uneingeschränkten Service gewährleisten zu können. Mit einem Klick auf"
+" \"Akzeptieren\" willigen Sie in die Erhebung von Informationen auf diesem "
 "Portal ein."
 
-#: js/tools.js:785
+#: js/tools.js:796
 msgid ""
 "Webfrontend error: The specified UMCP command arguments of the request are "
 "invalid."
@@ -609,7 +620,7 @@ msgstr ""
 "Webfrontend-Fehler: Die angegebenen UMCP-Befehl-Argumente der Anfrage sind "
 "nicht zulässig."
 
-#: js/tools.js:786
+#: js/tools.js:797
 msgid ""
 "Webfrontend error: The specified arguments for the UMCP module method are "
 "invalid or missing."
@@ -617,7 +628,7 @@ msgstr ""
 "Webfrontend-Fehler: Die angegebenen Argumente für die UMCP-Modul-Methode "
 "sind nicht zulässig oder fehlen."
 
-#: js/tools.js:784
+#: js/tools.js:795
 msgid "Webfrontend error: The specified request is unknown."
 msgstr "Webfrontend-Fehler: Die angegebene Anfrage ist nicht bekannt."
 
@@ -625,15 +636,15 @@ msgstr "Webfrontend-Fehler: Die angegebene Anfrage ist nicht bekannt."
 msgid "Write"
 msgstr "Schreiben"
 
-#: js/tools.js:782
+#: js/tools.js:793
 msgid "You are not authorized to perform this action."
 msgstr "Sie sind nicht authorisiert, diese Aktion durchzuführen."
 
-#: js/tools.js:1023
+#: js/tools.js:1034
 msgid "You can also send the information via mail:"
 msgstr "Sie können die Informationen auch per Mail schicken:"
 
-#: js/hooks/default_menu_entries.js:369
+#: js/hooks/default_menu_entries.js:373
 msgid ""
 "You can extend the maintenance for your UCS version to up to 7 years and "
 "thanks to certifications and manufacturer warranty you are legally secured "
@@ -643,7 +654,7 @@ msgstr ""
 "verlängern und sind dank Zertifizierungen und Herstellergarantie beim "
 "Betrieb Ihrer IT Infrastruktur rechtlich abgesichert."
 
-#: js/tools.js:2152
+#: js/tools.js:2163
 msgid ""
 "Your browser is outdated! You may experience performance issues and other "
 "problems when using this site. The supported Browsers are Firefox (>=60), "
@@ -653,19 +664,19 @@ msgstr ""
 "Geschwindigkeitseinbußen und andere Probleme auftreten. Die unterstützten "
 "Browser sind Firefox (>=60), Chrome (>=71), Edge (>=18), Safari (>=12)."
 
-#: js/tools.js:1014
+#: js/tools.js:1025
 msgid "Your email address (optional)"
 msgstr "Ihre E-Mail Adresse (optional)"
 
-#: js/tools.js:781
+#: js/tools.js:792
 msgid "Your session has expired, please login again."
 msgstr "Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an."
 
-#: js/tools.js:921
+#: js/tools.js:932
 msgid "actual result"
 msgstr "beobachtetes Ergebnis"
 
-#: js/tools.js:920
+#: js/tools.js:931
 msgid "expected result"
 msgstr "erwartetes Ergebnis"
 
@@ -685,49 +696,21 @@ msgstr "https://www.univention.de/produkt-feedback/"
 msgid "https://www.univention.com/news/blog-en/"
 msgstr "https://www.univention.de/news/blog-de/"
 
-#: js/hooks/default_menu_entries.js:353 js/hooks/default_menu_entries.js:397
+#: js/hooks/default_menu_entries.js:357 js/hooks/default_menu_entries.js:401
 msgid "https://www.univention.com/products/prices-and-subscriptions/"
 msgstr "https://www.univention.de/produkte/preise/"
 
-#: js/widgets/Grid.js:931 js/widgets/Grid.js:978 js/widgets/Grid.js:1113
-#: js/widgets/Grid.js:1114 js/widgets/Grid.js:1119 js/widgets/Grid.js:1120
+#: js/widgets/Grid.js:923
 msgid "more"
 msgstr "mehr"
 
-#: js/tools.js:919
+#: js/tools.js:930
 msgid "steps to reproduce the failure"
 msgstr "Schritte, um den Fehler zu reproduzieren"
 
-#: js/widgets/ProgressBar.js:188
+#: js/widgets/ProgressBar.js:184
 msgid "{number} errors occurred: "
 msgstr "{number} Fehler sind aufgetreten: "
-
-#~ msgid "Clear data"
-#~ msgstr "Daten leeren"
-
-#~ msgid "Clear image data"
-#~ msgstr "Bilddaten leeren"
-
-#~ msgid "Click for menu options"
-#~ msgstr "Klicken Sie für mehr Optionen"
-
-#~ msgid "Close all"
-#~ msgstr "Alle Schließen"
-
-#~ msgid "No message"
-#~ msgstr "Keine Nachricht"
-
-#~ msgid "No messages"
-#~ msgstr "Keine Benachrichtigungen"
-
-#~ msgid "OK"
-#~ msgstr "OK"
-
-#~ msgid "Search"
-#~ msgstr "Suchen"
-
-#~ msgid "Upload new image"
-#~ msgstr "Neues Bild hochladen"
 
 #~ msgid "%s: %s"
 #~ msgstr "%s: %s"
@@ -736,38 +719,38 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ msgstr "<b>Host</b> "
 
 #~ msgid ""
-#~ "<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Tell us you opinion!"
-#~ "</a></p>"
+#~ "<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Tell us you "
+#~ "opinion!</a></p>"
 #~ msgstr ""
 #~ "<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Sagen Sie uns Ihre "
 #~ "Meinung!</a></p>"
 
 #~ msgid ""
-#~ "<p><b>You have got mail!</b></p><p>A license file should have been sent "
-#~ "to your email address. Upload the license file from the email to activate "
-#~ "your UCS instance.</p>"
+#~ "<p><b>You have got mail!</b></p><p>A license file should have been sent to "
+#~ "your email address. Upload the license file from the email to activate your "
+#~ "UCS instance.</p>"
 #~ msgstr ""
-#~ "<p><b>Sie haben eine E-Mail erhalten!</b></p><p>Eine Lizenzdatei sollte "
-#~ "an Ihre E-Mail-Adresse geschickt worden sein. Laden Sie die Lizenzdatei "
-#~ "aus der E-Mail hier hoch, um Ihre UCS-Instanz zu aktivieren.</p>"
+#~ "<p><b>Sie haben eine E-Mail erhalten!</b></p><p>Eine Lizenzdatei sollte an "
+#~ "Ihre E-Mail-Adresse geschickt worden sein. Laden Sie die Lizenzdatei aus der"
+#~ " E-Mail hier hoch, um Ihre UCS-Instanz zu aktivieren.</p>"
 
 #~ msgid ""
 #~ "<p>Congratulations, you have successfully completed the configuration of "
-#~ "your Univention Corporate Server (UCS), and you have logged into "
-#~ "Univention Management Console (UMC). UMC is the central web application "
-#~ "for a comfortable system administration and domain management.</p><p>Are "
-#~ "you satisfied with the system configuration?</p>"
+#~ "your Univention Corporate Server (UCS), and you have logged into Univention "
+#~ "Management Console (UMC). UMC is the central web application for a "
+#~ "comfortable system administration and domain management.</p><p>Are you "
+#~ "satisfied with the system configuration?</p>"
 #~ msgstr ""
 #~ "<p>Herzlichen Glückwunsch, Sie haben die Einrichtung Ihres Univention "
 #~ "Corporate Servers (UCS) erfolgreich abgeschlossen und sind nun an der "
 #~ "Univention Management Console (UMC) angemeldet. UMC ist die zentrale "
-#~ "Webanwendung zur komfortablen Domänen- und Rechnerverwaltung in UCS.</"
-#~ "p><p>Waren Sie mit der Einrichtung des Systems zufrieden?</p>"
+#~ "Webanwendung zur komfortablen Domänen- und Rechnerverwaltung in "
+#~ "UCS.</p><p>Waren Sie mit der Einrichtung des Systems zufrieden?</p>"
 
 #~ msgid ""
-#~ "<p>Detailed usage information on Univention Management Console can be "
-#~ "found in the UCS manual. The manual as well as further important "
-#~ "information are available via the following links:</p>"
+#~ "<p>Detailed usage information on Univention Management Console can be found "
+#~ "in the UCS manual. The manual as well as further important information are "
+#~ "available via the following links:</p>"
 #~ msgstr ""
 #~ "<p>Detaillierte Informationen zur Verwendung der Univention Management "
 #~ "Console befinden sich im UCS-Handbuch. Das Handbuch und weitere wichtige "
@@ -775,55 +758,57 @@ msgstr "{number} Fehler sind aufgetreten: "
 
 #~ msgid ""
 #~ "<p>Details about the activation of a UCS license can be found in the <a "
-#~ "href=\"https://docs.software-univention.de/manual-%(version)s."
-#~ "html#central:license\" target=\"_blank\">UCS manual</a>.</p>"
+#~ "href=\"https://docs.software-"
+#~ "univention.de/manual-%(version)s.html#central:license\" "
+#~ "target=\"_blank\">UCS manual</a>.</p>"
 #~ msgstr ""
-#~ "<p>Details zur Aktivierung der UCS-Lizenz werden im <a href=\"https://"
-#~ "docs.software-univention.de/handbuch-%(version)s.html#central:license\" "
+#~ "<p>Details zur Aktivierung der UCS-Lizenz werden im <a "
+#~ "href=\"https://docs.software-"
+#~ "univention.de/handbuch-%(version)s.html#central:license\" "
 #~ "target=\"_blank\">UCS-Handbuch</a> beschrieben.</p>"
 
 #~ msgid ""
-#~ "<p>Leave the field empty to perform the activation at a later point in "
-#~ "time via the user menu in top right corner.</p>"
+#~ "<p>Leave the field empty to perform the activation at a later point in time "
+#~ "via the user menu in top right corner.</p>"
 #~ msgstr ""
-#~ "<p>Lassen Sie das Feld frei, um die Aktivierung zu einem späteren "
-#~ "Zeitpunkt über das Benutzermenü oben rechts durchzuführen.</p>"
+#~ "<p>Lassen Sie das Feld frei, um die Aktivierung zu einem späteren Zeitpunkt "
+#~ "über das Benutzermenü oben rechts durchzuführen.</p>"
 
 #~ msgid ""
 #~ "<p>On UCS evaluation systems, anonymous usage statistics are created by "
 #~ "default and sent to Univention. This allows to continuously adapt UCS to "
-#~ "suit the practical needs of its users.</p><p>The information consists of "
-#~ "UMC usage statistics and a one-time statistic on the hardware "
-#~ "configuration. Details about the usage statistics and about its "
-#~ "deactivation can be found in the <a href=\"https://docs.software-"
+#~ "suit the practical needs of its users.</p><p>The information consists of UMC"
+#~ " usage statistics and a one-time statistic on the hardware configuration. "
+#~ "Details about the usage statistics and about its deactivation can be found "
+#~ "in the <a href=\"https://docs.software-"
 #~ "univention.de/manual-%(version)s.html#central-management-umc:piwik\" "
-#~ "target=\"_blank\">UCS manual</a>.</p><p>Usage statistics are "
-#~ "automatically deactivated when importing a commercial license.</p>"
+#~ "target=\"_blank\">UCS manual</a>.</p><p>Usage statistics are automatically "
+#~ "deactivated when importing a commercial license.</p>"
 #~ msgstr ""
 #~ "<p>Auf UCS-Evaluationssystemen werden standardmäßig anonyme "
-#~ "Nutzungsstatistiken erzeugt und an Univention gesendet. Dies ermöglicht "
-#~ "es, UCS beständig an die konkreten Anwenderbedürfnisse anzupassen.</"
-#~ "p><p>Die Informationen umfassen zum einen UMC-Nutzungsstatistiken und zum "
-#~ "anderen einmalig grundlegende Informationen über die Hardware-"
-#~ "Konfiguration. Details zur Erfassung sowie zur Deaktivierung der "
-#~ "Statistiken werden im <a href=\"https://docs.software-univention.de/"
-#~ "handbuch-%(version)s.html#central-management-umc:piwik\" target=\"_blank"
-#~ "\">UCS-Handbuch</a> beschrieben.</p><p>Durch Einspielen einer Kauflizenz "
-#~ "werden die Nutzungsstatistiken automatisch deaktiviert.</p>"
+#~ "Nutzungsstatistiken erzeugt und an Univention gesendet. Dies ermöglicht es, "
+#~ "UCS beständig an die konkreten Anwenderbedürfnisse anzupassen.</p><p>Die "
+#~ "Informationen umfassen zum einen UMC-Nutzungsstatistiken und zum anderen "
+#~ "einmalig grundlegende Informationen über die Hardware-Konfiguration. Details"
+#~ " zur Erfassung sowie zur Deaktivierung der Statistiken werden im <a "
+#~ "href=\"https://docs.software-"
+#~ "univention.de/handbuch-%(version)s.html#central-management-umc:piwik\" "
+#~ "target=\"_blank\">UCS-Handbuch</a> beschrieben.</p><p>Durch Einspielen einer"
+#~ " Kauflizenz werden die Nutzungsstatistiken automatisch deaktiviert.</p>"
 
 #~ msgid ""
-#~ "<p>The license has been updated successfully.</p><p>You can now continue "
-#~ "to use UMC, all applications in the Univention App Center are now "
-#~ "available for installation on this system.</p>"
+#~ "<p>The license has been updated successfully.</p><p>You can now continue to "
+#~ "use UMC, all applications in the Univention App Center are now available for"
+#~ " installation on this system.</p>"
 #~ msgstr ""
-#~ "<p>Die Lizenz wurde erfolgreich aktualisiert.</p><p>Sie können nun mit "
-#~ "dem Einsatz von UMC fortfahren, alle Anwendungen des Univention App "
-#~ "Centers stehen dem System nun zur Installation zur Verfügung.</p>"
+#~ "<p>Die Lizenz wurde erfolgreich aktualisiert.</p><p>Sie können nun mit dem "
+#~ "Einsatz von UMC fortfahren, alle Anwendungen des Univention App Centers "
+#~ "stehen dem System nun zur Installation zur Verfügung.</p>"
 
 #~ msgid ""
-#~ "<p>The startup wizard has been completed now.</p><p>All listed "
-#~ "information can be accessed at any later point in time via the "
-#~ "application menu on the top right.</p>"
+#~ "<p>The startup wizard has been completed now.</p><p>All listed information "
+#~ "can be accessed at any later point in time via the application menu on the "
+#~ "top right.</p>"
 #~ msgstr ""
 #~ "<p>Der Begrüßungsassistent ist nun beendet.</p><p>Die hier aufgeführten "
 #~ "Informationen können zu einem späteren Zeitpunkt in dem Hilfe- sowie "
@@ -834,23 +819,24 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ "system to use the App Center. In the next step you can upload the license "
 #~ "file that has been sent to your email address.</p>"
 #~ msgstr ""
-#~ "<p>Sie können nun eine gültige E-Mail-Adresse angeben, um das UCS-System "
-#~ "für die Verwendung des App Centers freizuschalten. Im nächsten Schritt "
-#~ "können Sie die Lizenzdatei hochladen, die an Ihre E-Mail-Adresse gesendet "
-#~ "wird.</p>"
+#~ "<p>Sie können nun eine gültige E-Mail-Adresse angeben, um das UCS-System für"
+#~ " die Verwendung des App Centers freizuschalten. Im nächsten Schritt können "
+#~ "Sie die Lizenzdatei hochladen, die an Ihre E-Mail-Adresse gesendet wird.</p>"
 
 #~ msgid ""
-#~ "<ul><li><a href=\"https://docs.software-univention.de/\" target=\"_blank"
-#~ "\">Online documentation</a></li><li><a href=\"https://wiki.univention.de/"
-#~ "index.php?title=Hauptseite\" target=\"_blank\">Univention Wiki</a></"
-#~ "li><li><a href=\"https://www.univention.com/products/support/community-"
-#~ "support/\" target=\"_blank\">Community and support</a></li></ul>"
+#~ "<ul><li><a href=\"https://docs.software-univention.de/\" "
+#~ "target=\"_blank\">Online documentation</a></li><li><a "
+#~ "href=\"https://wiki.univention.de/index.php?title=Hauptseite\" "
+#~ "target=\"_blank\">Univention Wiki</a></li><li><a "
+#~ "href=\"https://www.univention.com/products/support/community-support/\" "
+#~ "target=\"_blank\">Community and support</a></li></ul>"
 #~ msgstr ""
-#~ "<ul><li><a href=\"https://docs.software-univention.de/\" target=\"_blank"
-#~ "\">Online-Dokumentation</a></li><li><a href=\"https://wiki.univention.de"
-#~ "\" target=\"_blank\">Univention Wiki</a></li><li><a href=\"https://www."
-#~ "univention.de/produkte/support/community-support/\" target=\"_blank"
-#~ "\">Community und Support</a></li></ul>"
+#~ "<ul><li><a href=\"https://docs.software-univention.de/\" "
+#~ "target=\"_blank\">Online-Dokumentation</a></li><li><a "
+#~ "href=\"https://wiki.univention.de\" target=\"_blank\">Univention "
+#~ "Wiki</a></li><li><a "
+#~ "href=\"https://www.univention.de/produkte/support/community-support/\" "
+#~ "target=\"_blank\">Community und Support</a></li></ul>"
 
 #~ msgid "About UMC"
 #~ msgstr "Über UMC"
@@ -859,8 +845,7 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ msgstr "Aktivieren"
 
 #~ msgid ""
-#~ "Activation is not possible. Please login as Administrator on the DC "
-#~ "master."
+#~ "Activation is not possible. Please login as Administrator on the DC master."
 #~ msgstr ""
 #~ "Aktivierung is nicht möglich. Bitte als Administrator auf dem DC Master "
 #~ "einloggen."
@@ -905,11 +890,23 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ msgid "Changing password failed"
 #~ msgstr "Passwortänderung fehlgeschlagen"
 
+#~ msgid "Clear data"
+#~ msgstr "Daten leeren"
+
+#~ msgid "Clear image data"
+#~ msgstr "Bilddaten leeren"
+
 #~ msgid "Clear selection"
 #~ msgstr "Auswahl aufheben"
 
+#~ msgid "Click for menu options"
+#~ msgstr "Klicken Sie für mehr Optionen"
+
 #~ msgid "Click to login"
 #~ msgstr "Klicken Sie um sich anzumelden"
+
+#~ msgid "Close all"
+#~ msgstr "Alle Schließen"
 
 #~ msgid "Close all notifications"
 #~ msgstr "Schließe alle Benachrichtigungen"
@@ -921,13 +918,12 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ "Could not pick an identity provider. You can specify one via the query "
 #~ "string parameter %(param)r from %(idps)r"
 #~ msgstr ""
-#~ "Konnte keinen Identity Provider auswählen. Sie können über den Query-"
-#~ "String-Parameter %(param)r einen der folgenden %(idps)r auswählen."
+#~ "Konnte keinen Identity Provider auswählen. Sie können über den Query-String-"
+#~ "Parameter %(param)r einen der folgenden %(idps)r auswählen."
 
 #~ msgid "Could not reach Identity provider for automatic single sign on."
 #~ msgstr ""
-#~ "Konnte den Identity Provider zum automatisch Single Sign-On nicht "
-#~ "erreichen."
+#~ "Konnte den Identity Provider zum automatisch Single Sign-On nicht erreichen."
 
 #~ msgid "Could not renew single sign on session."
 #~ msgstr "Konnte die Single Sign-On-Session nicht erneuern."
@@ -1006,8 +1002,17 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ msgid "New Password (retype)"
 #~ msgstr "Neues Passwort (wiederholen)"
 
+#~ msgid "No message"
+#~ msgstr "Keine Nachricht"
+
+#~ msgid "No messages"
+#~ msgstr "Keine Benachrichtigungen"
+
 #~ msgid "No object selected"
 #~ msgstr "Kein Objekt ausgewählt"
+
+#~ msgid "No upload in progress"
+#~ msgstr "Keine laufende Dateiübertragung"
 
 #~ msgid "No valid e-mail address."
 #~ msgstr "Keine gültige E-Mail-Adresse."
@@ -1021,6 +1026,9 @@ msgstr "{number} Fehler sind aufgetreten: "
 
 #~ msgid "Note"
 #~ msgstr "Hinweis"
+
+#~ msgid "OK"
+#~ msgstr "OK"
 
 #~ msgid "One time password"
 #~ msgstr "Einmalpasswort"
@@ -1056,6 +1064,9 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ msgid "SSL root certificate"
 #~ msgstr "SSL Wurzel-Zertifikat"
 
+#~ msgid "Search"
+#~ msgstr "Suchen"
+
 #~ msgid "Search query ›%s‹"
 #~ msgstr "Suchanfrage ›%s‹"
 
@@ -1075,20 +1086,19 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ msgstr "Single Sign-On"
 
 #~ msgid ""
-#~ "Single Sign On allows a user to login once and access multiple "
-#~ "applications seamlessly. For a safe implementation, it is necessary that "
-#~ "the names of the involved systems can be reached via DNS by the web "
-#~ "browser."
+#~ "Single Sign On allows a user to login once and access multiple applications "
+#~ "seamlessly. For a safe implementation, it is necessary that the names of the"
+#~ " involved systems can be reached via DNS by the web browser."
 #~ msgstr ""
 #~ "Single Sign On erlaubt es Benutzern eine Anmeldung durchzuführen und auf "
-#~ "verschiedene Applikationen nahtlos zuzugreifen. Für eine sichere "
-#~ "Umsetzung ist es erforderlich, dass die Namen der beteiligten Systeme via "
-#~ "DNS vom Webbrowser erreicht werden können."
+#~ "verschiedene Applikationen nahtlos zuzugreifen. Für eine sichere Umsetzung "
+#~ "ist es erforderlich, dass die Namen der beteiligten Systeme via DNS vom "
+#~ "Webbrowser erreicht werden können."
 
 #~ msgid "So far the authentication failed. Continuing nevertheless."
 #~ msgstr ""
-#~ "Bis jetzt schlug die Authentifizierung fehl. Nichtdestotrotz wird "
-#~ "weiterhin probiert."
+#~ "Bis jetzt schlug die Authentifizierung fehl. Nichtdestotrotz wird weiterhin "
+#~ "probiert."
 
 #~ msgid "Successfully renewed single sign on session."
 #~ msgstr "Single Sign-On Sitzung erfolgreich erneuert."
@@ -1130,20 +1140,20 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ msgstr "Der Identity Provider hat einen Status-Fehler gemeldet: %s"
 
 #~ msgid ""
-#~ "The import of the license failed. Check the integrity of the original "
-#~ "file given to you."
+#~ "The import of the license failed. Check the integrity of the original file "
+#~ "given to you."
 #~ msgstr ""
 #~ "Der Import der Lizenz schlug fehl. Überprüfen Sie die Integrität der "
 #~ "Originaldatei, die Ihnen zugestellt wurde."
 
 #~ msgid ""
-#~ "The issuer %r is now known to the SAML service provider. This is probably "
-#~ "a misconfiguration and might be resolved by restarting the univention-"
+#~ "The issuer %r is now known to the SAML service provider. This is probably a "
+#~ "misconfiguration and might be resolved by restarting the univention-"
 #~ "management-console-web-server."
 #~ msgstr ""
-#~ "Der Aussteller %r ist diesem SAML Service Provider nicht bekannt. Dies "
-#~ "ist wahrscheinlich eine Miskonfiguration und könnte durch einen Neustart "
-#~ "des univention-management-console-web-server behoben werden."
+#~ "Der Aussteller %r ist diesem SAML Service Provider nicht bekannt. Dies ist "
+#~ "wahrscheinlich eine Miskonfiguration und könnte durch einen Neustart des "
+#~ "univention-management-console-web-server behoben werden."
 
 #~ msgid "The license has been imported successfully."
 #~ msgstr "Die Lizenz wurde erfolgreich importiert."
@@ -1164,8 +1174,8 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ msgstr "Das System erlaubt das Ändern des Passwortes nicht"
 
 #~ msgid ""
-#~ "The system has not been joined into a domain so far. Please visit the %s "
-#~ "to join the system."
+#~ "The system has not been joined into a domain so far. Please visit the %s to "
+#~ "join the system."
 #~ msgstr ""
 #~ "Dieses System ist noch keiner Domäne beigetreten. Dies kann über das %s "
 #~ "durchgeführt werden."
@@ -1174,11 +1184,11 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ msgstr "The total cost was %.2f EUR!"
 
 #~ msgid ""
-#~ "There is a configuration error in the service provider: No identity "
-#~ "provider are set up for use."
+#~ "There is a configuration error in the service provider: No identity provider"
+#~ " are set up for use."
 #~ msgstr ""
-#~ "Der Service Provider ist fehlkonfiguriert: Keine Identity Provider sind "
-#~ "zur Benutzung eingerichtet."
+#~ "Der Service Provider ist fehlkonfiguriert: Keine Identity Provider sind zur "
+#~ "Benutzung eingerichtet."
 
 #~ msgid "There is no module available for the authenticated user %s."
 #~ msgstr "Für den angemeldeten Benutzer %s ist kein Modul verfügbar."
@@ -1188,12 +1198,12 @@ msgstr "{number} Fehler sind aufgetreten: "
 
 #~ msgid ""
 #~ "This network connection is not encrypted. All personal or sensitive data "
-#~ "will be transmitted in plain text. Please follow %s this link</a> to use "
-#~ "a secure SSL connection."
+#~ "will be transmitted in plain text. Please follow %s this link</a> to use a "
+#~ "secure SSL connection."
 #~ msgstr ""
 #~ "Die Netzwerkverbindung ist nicht verschlüsselt. Alle persönlichen und "
-#~ "sensiblen Daten werden im Klartext übertragen. Bitte verwenden Sie %s "
-#~ "diesen Link</a> für eine verschlüsselte SSL-Verbindung."
+#~ "sensiblen Daten werden im Klartext übertragen. Bitte verwenden Sie %s diesen"
+#~ " Link</a> für eine verschlüsselte SSL-Verbindung."
 
 #~ msgid "Tooltips"
 #~ msgstr "Tooltips"
@@ -1225,6 +1235,12 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ msgid "Upload license file..."
 #~ msgstr "Lizenzdatei hochladen..."
 
+#~ msgid "Upload new image"
+#~ msgstr "Neues Bild hochladen"
+
+#~ msgid "Uploads finished"
+#~ msgstr "Dateiübertragung beendet"
+
 #~ msgid "Usage statistics"
 #~ msgstr "Nutzungsstatistiken"
 
@@ -1244,11 +1260,11 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ msgstr "Willkommen bei Univention Management Console"
 
 #~ msgid ""
-#~ "Welcome to Univention Management Console. Please enter your domain "
-#~ "username and password for login."
+#~ "Welcome to Univention Management Console. Please enter your domain username "
+#~ "and password for login."
 #~ msgstr ""
-#~ "Willkommen bei Univention Management Console. Bitte geben Sie "
-#~ "Benutzername und Passwort Ihres Domänen-Kontos ein."
+#~ "Willkommen bei Univention Management Console. Bitte geben Sie Benutzername "
+#~ "und Passwort Ihres Domänen-Kontos ein."
 
 #~ msgid ""
 #~ "You may as well import the license file at a later point in time via the "
@@ -1273,11 +1289,10 @@ msgstr "{number} Fehler sind aufgetreten: "
 
 #~ msgid "umcOverviewHelpText"
 #~ msgstr ""
-#~ "Univention Management Console (UMC) ist eine flexible Webanwendung für "
-#~ "die Administration von UCS-basierten Systemen und Domänen. Je nach "
-#~ "Systemrolle, Voreinstellungen und Berechtigungen, finden Sie hier "
-#~ "umfangreiche Funktionen zur UCS-Domänenadministration und für die "
-#~ "Konfiguration dieses Servers."
+#~ "Univention Management Console (UMC) ist eine flexible Webanwendung für die "
+#~ "Administration von UCS-basierten Systemen und Domänen. Je nach Systemrolle, "
+#~ "Voreinstellungen und Berechtigungen, finden Sie hier umfangreiche Funktionen"
+#~ " zur UCS-Domänenadministration und für die Konfiguration dieses Servers."
 
 #~ msgid "umcOverviewTabTitle"
 #~ msgstr "Übersicht"
