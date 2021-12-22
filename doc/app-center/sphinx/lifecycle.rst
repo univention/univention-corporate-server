@@ -4,6 +4,8 @@
 App life cycle
 **************
 
+.. highlight:: console
+
 This chapter relates the life cycle of an app from the first app
 development, its life in the public to termination. The life cycle
 applies to the app overall and to every single version.
@@ -92,7 +94,7 @@ Test App Center
 Switch to the Test App Center Repository and test the app directly on
 the UCS system set up before.
 
-.. code-block:: console
+.. code-block::
 
    $ univention-install univention-appcenter-dev
    $ univention-app dev-use-test-appcenter
@@ -151,7 +153,7 @@ well. The App Center UMC module only allows the installation of the
 latest app version. To test an upgrade of the app, please go to the
 console and install a version explicitly:
 
-.. code-block:: console
+.. code-block::
 
    $ univention-app install myapp=1.0
                    
@@ -189,7 +191,7 @@ Deactivate the Test App Center
 
 To switch back to the productive App Center, please run:
 
-.. code-block:: console
+.. code-block::
 
    $ univention-app dev-use-test-appcenter --revert
                    
@@ -234,7 +236,7 @@ systems that are not the |UCSPRIMARYDN|.
 
 The test script can be manually tested.
 
-.. code-block:: console
+.. code-block::
 
    $ univention-install univention-appcenter-dev
    $ univention-app dev-use-test-appcenter
@@ -259,7 +261,7 @@ into what happened. With the following command the App Center will not
 throw away a failed app installation. The container is kept on the
 system.
 
-.. code-block:: console
+.. code-block::
 
    $ univention-app install myapp --do-not-revert
                    
@@ -267,7 +269,7 @@ system.
 For debugging or support cases it can be helpful to enter the app
 container. The following command opens a shell in the container.
 
-.. code-block:: console
+.. code-block::
 
    $ univention-app shell myapp
                    
@@ -275,7 +277,7 @@ container. The following command opens a shell in the container.
 If the container does not support a shell, the container can be entered
 with the plain Docker commands.
 
-.. code-block:: console
+.. code-block::
 
    $ CONTAINER="$(ucr get appcenter/apps/myapp/container)"
    $ docker exec "$CONTAINER" ...
@@ -284,7 +286,7 @@ with the plain Docker commands.
 To view the Docker logfiles for the app, please use the following
 command:
 
-.. code-block:: console
+.. code-block::
 
    $ univention-app logs $appid  # equivalent to docker logs $CONTAINER
                    
@@ -292,7 +294,7 @@ command:
 For multi container apps using Docker compose, those logging information
 can be viewed with:
 
-.. code-block:: console
+.. code-block::
 
    $ cd /var/lib/univention-appcenter/apps/$appid/compose
    $ docker-compose -p $appid logs
@@ -421,7 +423,7 @@ https://provider-portal.software-univention.de/appcenter-selfservice/univention-
 It requires Python 2.7 and cURL to run. For a list of available actions
 and their parameters, use the script's help:
 
-.. code-block:: console
+.. code-block::
 
    $ ./univention-appcenter-control --help
    $ ./univention-appcenter-control upload --help
@@ -429,7 +431,7 @@ and their parameters, use the script's help:
 
 The following examples show how the script can be used.
 
-.. code-block:: console
+.. code-block::
 
    # creates a new version based on the latest version of myapp
    $ ./univention-appcenter-control new-version 5.0/myapp
@@ -438,14 +440,14 @@ The following examples show how the script can be used.
    # Note: jq is an external tool: apt-get install jq
    # you may parse JSON without it, of course
    $ ./univention-appcenter-control get --json 5.0/myapp |
-   $ jq '._ini_vars.SupportedUCSVersions'
+   > jq '._ini_vars.SupportedUCSVersions'
 
    # creates version 2.0 of myapp based on the (formerly) latest version
    $ ./univention-appcenter-control new-version 5.0/myapp 5.0/myapp=2.0
 
    # sets the DockerImage of the new app
    $ ./univention-appcenter-control set 5.0/myapp=2.0 \
-   $ --json '{"DockerImage": "mycompany/myimage:2.0"}'
+   > --json '{"DockerImage": "mycompany/myimage:2.0"}'
 
    # copies myapp Version 1.0 from UCS 4.4 to UCS 5.0.
    $ ./univention-appcenter-control new-version 4.4/myapp=1.0 5.0/myapp=1.0
@@ -483,46 +485,62 @@ The following examples show how to run the steps with the upload
 interface. The examples assume that the password to the portal is stored
 in a password file which is given as parameter to the script:
 
-.. code-block:: console
+.. code-block::
 
-   $ APP_UPGRADE_FROM="12.1"
-   $ APP_VERSION="12.2"
-   $ UCS_MINOR="4.4"
-   $ MY_APP="myapp"
-   $ MY_USERNAME="my_username"
-   $ PWD_FILE="portal_password"
+    $ APP_UPGRADE_FROM="12.1"
+    $ APP_VERSION="12.2"
+    $ UCS_MINOR="4.4"
+    $ MY_APP="myapp"
+    $ MY_USERNAME="my_username"
+    $ PWD_FILE="portal_password"
 
-   # 1. Create a new version in the app provider portal
-   $ ./univention-appcenter-control new-version --username $MY_USERNAME --pwdfile $PWD_FILE $UCS_MINOR/$MY_APP $UCS_MINOR/$MY_APP=$APP_VERSION
+    # 1. Create a new version in the app provider portal
+    $ ./univention-appcenter-control new-version \
+    > --username $MY_USERNAME \
+    > --pwdfile $PWD_FILE \
+    > $UCS_MINOR/$MY_APP \
+    > $UCS_MINOR/$MY_APP=$APP_VERSION
 
+    ## First example for single container apps
+    # 2. Update the reference to the app Docker image
+    $ ./univention-appcenter-control set \
+    > --username $MY_USERNAME \
+    > --pwdfile $PWD_FILE \
+    > $UCS_MINOR/$MY_APP=$APP_VERSION \
+    > --json '{"DockerImage": "my_company/$MY_APP:$APP_VERSION"}'
 
-   ## First example for single container apps
+    # 3. Obtain the component id of the new app version.
+    # The command asumes the latest component is the new app.
+    $ COMPONENT=$(./univention-appcenter-control status \
+    > --username $MY_USERNAME \
+    > --pwdfile $PWD_FILE \
+    > $UCS_MINOR/$MY_APP | grep "COMPONENT" | tail -n 1 | cut -f 2 -d ':' | trim -d ' ')
 
-   # 2. Update the reference to the app's Docker image
-   $ ./univention-appcenter-control set --username $MY_USERNAME --pwdfile $PWD_FILE $UCS_MINOR/$MY_APP=$APP_VERSION --json '{"DockerImage": "my_company/$MY_APP:$APP_VERSION"}'
+    # 4. Send the email
+    $ SUBJECT="Regarding $UCS_MINOR/$MY_APP=$APP_VERSION ($COMPONENT)"
 
-   # 3. Obtain the component id of the new app version. The command asumes the latest component is the new app.
-   $ COMPONENT=$(./univention-appcenter-control status --username $MY_USERNAME --pwdfile $PWD_FILE $UCS_MINOR/$MY_APP | grep "COMPONENT" | tail -n 1 | cut -f 2 -d ':' | trim -d ' ')
+    ####
+    # Second example for multi container apps
+    # 2. Get app configuration data
 
-   # 3. Send the email
-   $ SUBJECT="Regarding $UCS_MINOR/$MY_APP=$APP_VERSION ($COMPONENT)"
+    $ ./univention-appcenter-control get \
+    > $UCS_MINOR/$MY_APP=$APP_VERSION \
+    > --json \
+    > --username $MY_USERNAME \
+    > --pwdfile $PWD_FILE > $MY_APP.json
 
+    # 3. Extract the compose content
+    $ cat $MY_APP.json | jq -r .compose > compose
 
-   ####
-   # Second example for multi container apps
-   # 2. Get app configuration data
+    # Edit the compose file accordingly. A custom script can help to automate this step.
+    # This script depends on the app and the compose file content
+    # Replace the "image: " lines and refer to the upstream Docker images and their respective tags
 
-   $ ./univention-appcenter-control get $UCS_MINOR/$MY_APP=$APP_VERSION --json --username $MY_USERNAME --pwdfile $PWD_FILE > $MY_APP.json
+    # 4. Upload altered compose file
+    $ ./univention-appcenter-control upload \
+    > --username $MY_USERNAME \
+    > --pwdfile $PWD_FILE \
+    > --non-interactive \
+    > $UCS_MINOR/$MY_APP=$APP_VERSION compose
 
-   # 3. Extract the compose content
-   $ cat $MY_APP.json | jq -r .compose > compose
-
-   # Edit the compose file accordingly. A custom script can help to automate this step.
-   # This script depends on the app and the compose file content
-   # Replace the "image: " lines and refer to the upstream Docker images and their respective tags
-
-   # 4. Upload altered compose file
-   $ ./univention-appcenter-control upload --username $MY_USERNAME --pwdfile $PWD_FILE --non-interactive $UCS_MINOR/$MY_APP=$APP_VERSION compose
-
-   # 5. Send the mail and with subject as described above
-
+    # 5. Send the mail and with subject as described above

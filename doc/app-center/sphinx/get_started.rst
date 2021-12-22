@@ -468,7 +468,7 @@ mechanics are:
    .. code-block:: yaml
 
       environment:
-          MY_KEY: @%@myapp/mysetting@%@
+          MY_KEY: "@%@myapp/mysetting@%@"
                               
 
    Note that App Settings are always added to the main service
@@ -481,7 +481,7 @@ mechanics are:
    .. code-block:: yaml
 
       environment:
-          MY_SECRET: @!@import uuid; print(uuid.uuid4())@!@
+          MY_SECRET: "@!@import uuid; print(uuid.uuid4())@!@"
                               
 
    Note that currently, you cannot access App Settings within the Python
