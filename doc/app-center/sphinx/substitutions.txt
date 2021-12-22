@@ -3,4 +3,5 @@
 .. |UCSUCR| replace:: Univention Configuration Registry
 .. |UCSUCRV| replace:: Univention Configuration Registry Variable
 .. |UCSUCRVs| replace:: Univention Configuration Registry Variables
-
+.. |UCSUMC| replace:: Univention Management Console
+.. |UCSPRIMARYDN| replace:: Primary Directory Node
