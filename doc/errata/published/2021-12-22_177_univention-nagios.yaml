@@ -9,3 +9,5 @@ desc: |-
   * The Nagios plugins in univention-nagios-client have been converted
     to python3
 bug: [52258]
+erratum: 177
+announced: 2021-12-22
