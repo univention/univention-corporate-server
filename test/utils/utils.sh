@@ -1057,8 +1057,6 @@ sa_bug54194 () {
 	sa-update
 }
 
-
-
 online_fsresize () {
 	# cloud-initramfs-growroot doesn't always work (bug #49337)
 	# Try on-line resizing
