@@ -68,7 +68,7 @@
 	"title_univention:RETYPE_MISMATCH": {
 		"de": "Passwort ändern fehlgeschlagen"
 	},
-	"desc_univention:RETYPE_MISMATCH": {
+	"descr_univention:RETYPE_MISMATCH": {
 		"de": "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 	},
 	"title_univention:PASSWORD_CHANGE_SUCCESS": {
