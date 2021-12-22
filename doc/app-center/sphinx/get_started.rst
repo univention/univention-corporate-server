@@ -1,7 +1,8 @@
 .. _get-started:
 
+***********
 Get Started
-===========
+***********
 
 This chapter describes the requirements and the steps to create an app
 for |UCSAPPC|. After reading this chapter an app provider will be able to
@@ -11,12 +12,12 @@ the Test App Center.
 .. _app-provider-needs:
 
 What does the app provider need?
---------------------------------
+================================
 
 .. _app-provider-needs:docker-image:
 
 Software in a Docker image
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------
 
 The software needs to be provided as a `Docker
 image <https://docs.docker.com/>`__. This is the easiest way to deploy
@@ -41,7 +42,7 @@ versions. It later allows updates for the apps.
 .. _app-provider-needs:portal-account:
 
 Account for App Provider Portal
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------
 
 The App Provider Portal is the app developer's place for self service
 for all the settings around the app.
@@ -69,7 +70,7 @@ for all the settings around the app.
 .. _app-provider-needs:help:
 
 Where to get help?
-~~~~~~~~~~~~~~~~~~
+------------------
 
 App providers that need technical help during their development process
 are invited to open a topic in `Univention
@@ -80,7 +81,7 @@ and the like.
 .. _create-app-with-docker:
 
 Create an app with a Docker image
----------------------------------
+=================================
 
 This section describes how to create the app in the App Provider Portal
 and use a Docker image. It focuses on a single container setup. For a
@@ -135,7 +136,7 @@ Docker app
 .. _create-app-with-docker:image:
 
 Docker image
-~~~~~~~~~~~~
+------------
 
 1. In the app go to the tab :guilabel:`Configuration`.
 
@@ -154,13 +155,13 @@ Docker image
 .. _create-app-with-docker:supported-ucs-version:
 
 Supported UCS versions
-~~~~~~~~~~~~~~~~~~~~~~
+----------------------
 
-Upon app creation the :guilabel:`UCS Version` has been specified. Please define
-the supported UCS version explicitly on the :guilabel:`Version` tab in the :guilabel:`Supported
-UCS versions` section.
+Upon app creation the *UCS Version* has been specified. Please define
+the supported UCS version explicitly on the :guilabel:`Version` tab in the
+:guilabel:`Supported UCS versions` section.
 
-Example: The app has been created for ``UCS Version`` ``4.4``. Two
+Example: The app has been created for *UCS Version* ``4.4``. Two
 entries for Supported UCS versions for App could be made: ``4.4-8`` and
 ``5.0-0``. This means that for the installation of the app UCS 4.4-8 or
 UCS 5.0-0 are required.
@@ -168,9 +169,9 @@ UCS 5.0-0 are required.
 .. _create-app-with-docker:description:
 
 Logo and description
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 
-On the app's Presentation tab please provide the display name and a
+On the app's :guilabel:`Presentation` tab please provide the display name and a
 description in English and German and logos for the software. Start with
 a short and a full description. It gives an impression on how it will
 look like during later testing.
@@ -187,7 +188,7 @@ the app presentation and notes on the translation, please take a look at
 .. _create-app-with-docker:volumes:
 
 Persistent data with volumes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------
 
 By default files created inside a container are stored in it, but they
 don't persist when the container is no longer running, removed or is
@@ -197,9 +198,9 @@ persisting data generated and used by Docker containers. A volume is a
 directory on the Docker host that is mounted inside the Docker
 container.
 
-To define volumes for the app, please activate them on the Overview tab
-in the Modules section with the option Docker app defines volumes. Then
-go to the Volumes tab. Add an entry for each volume and define the
+To define volumes for the app, please activate them on the :guilabel:`Overview` tab
+in the *Modules* section with the option :guilabel:`Docker app defines volumes`. Then
+go to the :guilabel:`Volumes` tab. Add an entry for each volume and define the
 directory or file path on the host in the first field and the
 destination in the container in the second field. Leave the second field
 empty for the same path.
@@ -215,14 +216,14 @@ Docker container
 .. _create-app-with-docker:web-interface:
 
 Web interface
-~~~~~~~~~~~~~
+-------------
 
 Many Docker apps expose a web interface to the outside world, e.g. via
 the port 8080. The App Center on UCS takes care to map this web
 interface from some relative link to this port and adds a reverse proxy
-configuration to the host's webserver configuration.
+configuration to the host's web server configuration.
 
-On the Web interface tab, enter the relative path and which ports should
+On the :guilabel:`Web interface` tab, enter the relative path and which ports should
 be proxied. For example, to map the container's ports 80 and 443 to
 ``/myapp``, the following settings have to be made:
 
@@ -236,22 +237,22 @@ HTTPS port of web application
    ``443``
 
 Supported protocols by the container's web interface
-   Select ``HTTP and HTTPS``, if both protocol schemes should be
+   Select :guilabel:`HTTP and HTTPS`, if both protocol schemes should be
    covered.
 
 .. _create-app-with-docker:ports:
 
 Ports
-~~~~~
+-----
 
 If the app needs to occupy ports on the host that need to be passed
 along to the container in order to work properly, they can be defined in
-the Ports section on the Web interface tab. A list of ports can be
+the *Ports* section on the :guilabel:`Web interface` tab. A list of ports can be
 defined that the Docker host shall exclusively acquire for the Docker
-container (Port to be acquired exclusively). Ports defined here cannot
+container (:guilabel:`Port to be acquired exclusively`). Ports defined here cannot
 be used by other services or other Docker containers on the UCS host. A
 second list can be defined for ports that should be forwarded from the
-host to the Docker container (Host port to be forwarded). Ports defined
+host to the Docker container (:guilabel:`Host port to be forwarded`). Ports defined
 here will build an implicit conflict list against other apps that want
 to use these ports.
 
@@ -267,40 +268,40 @@ Reference <https://docs.software-univention.de/developer-reference-5.0.html#misc
 .. _create-app-with-docker:database:
 
 Database
-~~~~~~~~
+--------
 
-Many applications need a relational database management system (*RDMS*)
+Many applications need a relational database management system (RDMS)
 somewhere in the environment to function properly. If the app needs such
 a database the App Center takes care of providing one directly to the
-Docker host. Activate Docker app needs database on the Overview tab in
-the Modules section and then go to the Database tab, where the
+Docker host. Activate :guilabel:`Docker app needs database` on the :guilabel:`Overview` tab in
+the *Modules* section and then go to the :guilabel:`Database` tab, where the
 appropriate settings can be made.
 
-In the Database section the settings for the database are defined.
+In the *Database* section the settings for the database are defined.
 MariaDB and PostgreSQL are supported. Database user, database name and
 the path to the password file can be specified. Upon installation of the
 app, the App Center installs the defined database on the Docker host,
 creates a database with the defined settings and saves the password in a
 file for later use.
 
-In the Database environment variables section, the mapping of the
+In the *Database environment variables* section, the mapping of the
 database settings to the environment variables in the container are
 defined. For example, if the container expects the database hostname in
-DATABASE_HOST, it has to be entered into the field Variable name for the
-database host. There are also fields for the database port, user,
+``DATABASE_HOST``, it has to be entered into the field :guilabel:`Variable name for the
+database host`. There are also fields for the database port, user,
 password, database name and the password file.
 
 .. _create-app-with-docker:environment:
 
 Environment
-~~~~~~~~~~~
+-----------
 
 Docker images usually receive environment variables when the container
 is started. The App Center supports to pass static configuration options
 to the container. Variables parameterized by |UCSUCRVs| are also
 supported. An environment file can look like the following example:
 
-::
+.. code-block:: ini
 
    LDAP_SERVER=@%@ldap/server@%@
    FQDN=@%@hostname@%@.@%@domainname@%@
@@ -308,13 +309,13 @@ supported. An environment file can look like the following example:
                    
 
 The content of the environment file can be entered in the App Provider
-portal on the Configuration tab in the field for Environment file for
-Docker container creation.
+portal on the :guilabel:`Configuration` tab in the field for :guilabel:`Environment file for
+Docker container creation`.
 
 .. _create-app-with-docker:compose:
 
 Create a Multi Container App
-----------------------------
+============================
 
 Starting with 345 |UCSAPPC| supports apps that consist of multiple Docker
 images. It uses `Docker
@@ -326,11 +327,11 @@ application. The supported compose file format version is 2.0.
 .. _create-app-with-docker:setup:
 
 Multi container setup
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
 
-In order to create a Multi Container App, go to the Configuration tab in
-the App Provider Portal, select Multi container app with Docker compose
-and enter the content of your ``docker-compose.yml`` file. A "flat" YAML
+In order to create a Multi Container App, go to the :guilabel:`Configuration` tab in
+the App Provider Portal, select :guilabel:`Multi container app with Docker compose`
+and enter the content of your :file:`docker-compose.yml` file. A "flat" YAML
 file must be used, because the implementation does currently not support
 references to other files like for example files that should be mounted
 inside a container or files listing environment variables.
@@ -343,7 +344,7 @@ the Docker setup. This comes in very handy when settings like for
 example the local LDAP server should be passed to a container via its
 environment variables.
 
-::
+.. code-block:: yaml
 
    [...]
    services:
@@ -361,10 +362,10 @@ The example above is an excerpt from a Docker compose file where
 environment variables are defined for a service. The values of the
 variables are set to the values of the given UCR variable. ``$appid``
 needs to be replaced manually by you app id. UCR variables are enclosed
-by ``@%@``. Please mind the double quotes.
+by ``@%@``. Please mind the double quotes in the example.
 
-You also need to define the Name of the "main" service within the
-docker-compose.yml below the Contents of the docker-compose.yml file.
+You also need to define the :guilabel:`Name of the "main" service within the
+docker-compose.yml` below the :guilabel:`Contents of the docker-compose.yml file`.
 
 In order to provide access to the application's web interface, please
 see :ref:`Web interface <create-app-with-docker:web-interface>`.
@@ -376,19 +377,18 @@ get forwarded from the host to the container, please see
 .. _create-app-with-docker:script-reference:
 
 Script execution reference
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------
 
-The App Center allows several scripts to be executed on the host and
-inside the container during installation (:ref:`Installation
-scripts <installation-scripts>`), uninstallation (:ref:`Uninstallation
-scripts <uninstallation-scripts>`) and upgrade (:ref:`Upgrade
-scripts <upgrade-scripts>`). Scripts run inside the container are run
-inside the container of the "main service".
+The App Center allows several scripts to be executed on the host and inside the
+container during :ref:`installation <installation-scripts>`,
+:ref:`uninstallation <uninstallation-scripts>` and :ref:`upgrade
+<upgrade-scripts>`. Scripts run inside the container are run inside the
+container of the "main service".
 
 .. _create-app-with-docker:compose-postprocessing:
 
 Post processing of Docker Compose file
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------------------
 
 Before a Multi Container App is started by the App Center, the
 ``docker-compose.yml`` is altered by the App Center with the following
@@ -434,7 +434,7 @@ changes:
 
 6. UCS provides a number of environment variables via the App Center,
    e.g. parameters for an LDAP connection. The necessary variables are
-   also written to ``docker-compose.yml`` in the ``environments``
+   also written to ``docker-compose.yml`` in the *environments*
    section.
 
 7. Furthermore, in the main service, as in Single Container Apps, all
@@ -465,7 +465,7 @@ mechanics are:
    More importantly, this includes the App settings in :ref:`App
    settings <app-settings>` defined by the App itself:
 
-   ::
+   .. code-block:: yaml
 
       environment:
           MY_KEY: @%@myapp/mysetting@%@
@@ -478,7 +478,7 @@ mechanics are:
 3. You can do Python scripting within the template, e.g. to read (and
    write) the content of specific files.
 
-   ::
+   .. code-block:: yaml
 
       environment:
           MY_SECRET: @!@import uuid; print(uuid.uuid4())@!@
@@ -490,7 +490,7 @@ mechanics are:
 .. _create-app-with-docker:finish:
 
 Finish multi container setup
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------
 
 As soon as all the technical settings are made, please see :ref:`App life
 cycle <app-lifecycle>` for the next steps and how to test the app.
