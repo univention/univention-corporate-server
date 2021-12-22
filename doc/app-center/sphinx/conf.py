@@ -70,6 +70,10 @@ html_theme_options = {
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+html_last_updated_fmt = "%d. %b %Y at %H:%m (UTC%z)"
+
+root_doc = "contents"
+
 rst_epilog = """
 .. include:: substitutions.rst
 """
