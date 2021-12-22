@@ -9,3 +9,5 @@ desc: |-
   * A diagnostic module has been added to check the UCR variable
     `notifier/protocol/version´.
 bug: [50733]
+erratum: 1130
+announced: 2021-12-22
