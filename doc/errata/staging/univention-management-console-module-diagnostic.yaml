@@ -6,5 +6,6 @@ src: univention-management-console-module-diagnostic
 fix: 5.0.1-55A~4.4.0.202112211520
 desc: |-
   This update addresses the following issue:
-  * A diagnostic module has been added to check the UCR variable notifier/protocol/version
+  * A diagnostic module has been added to check the UCR variable
+    `notifier/protocol/version´.
 bug: [50733]
