@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-directory-notifier
-fix: 14.0.5-6A~5.0.0.202112202048
+fix: 14.0.5-7A~5.0.0.202112231026
 desc: |
  This update addresses the following issue:
  * If the number of transaction was lower than 1000,
