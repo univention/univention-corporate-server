@@ -112,3 +112,9 @@ Description[de]=Wird diese Variable auf 'true' gesetzt, dann werden beim Anforde
 Description[en]=If this variable is set to 'true', reverse DNS lookup will be used in addition to forward DNS lookup to canonicalizing hostnames for use in service principal names. This may be undesirable for serices accessed via DNS alias. If the variable is unset the default of the MIT Kerberos library applies ('true').
 Type=str
 Categories=service-heimdal
+
+[kerberos/defaults/ticket_lifetime]
+Description[de]=Legt die Standardlebensdauer für anfängliche Ticketanfragen in Stunden fest.
+Description[en]=Sets the default lifetime for initial ticket requests, in hours.
+Type=int
+Categories=service-heimdal
