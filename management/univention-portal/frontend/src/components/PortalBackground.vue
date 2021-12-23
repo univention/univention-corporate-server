@@ -58,13 +58,13 @@ export default defineComponent({
         },
         fpsLimit: 60,
         color: {
-          value: '#d3dadb',
+          value: '#cbd2d3',
         },
         shape: {
           type: 'circle',
           stroke: {
             width: 1,
-            color: '#d3dadb',
+            color: '#cbd2d3',
           },
           polygon: {
             nb_sides: 5,
@@ -98,7 +98,7 @@ export default defineComponent({
         line_linked: {
           enable: true,
           distance: 150,
-          color: '#d3dadb',
+          color: '#cbd2d3',
           opacity: 0.33,
           width: 1,
         },
