@@ -72,8 +72,9 @@ def _query_objects(query, attrs):
 	lo = getMachineConnection()
 	try:
 		# Python 2: "unicode" is built-in
-		unicode
-		assert all([isinstance(x, str) for x in attrs])
+		if any(isinstance(attr, unicode) for attr in attrs):
+			attrs = [str(attr) for attr in attrs]
+		assert all([isinstance(x, str) for x in attrs]), 'attrs must be a list of strings '+str([str(type(x)) for x in attrs])
 	except NameError:
 		attrs = [attr.decode('utf-8') if isinstance(attr, bytes) else attr for attr in attrs]
 	print('Querying', query, 'with', attrs)

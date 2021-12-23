@@ -8,13 +8,13 @@ Build-Depends:
  dh-python,
  python-ldap,
  python-univention,
- python-all,
-# python3-all,
+ python-all
 
 Package: univention-group-membership-cache
 Architecture: all
 Depends:
  python-univention-group-membership-cache (= ${source:Version}),
+ python3-univention-group-membership-cache (= ${source:Version}),
  python-univention,
  univention-directory-listener (>> 13.0.3-5),
  ${misc:Depends},
@@ -44,19 +44,19 @@ Description: UCS - Group cache
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-#Package: python3-univention-group-membership-cache
-#Architecture: all
-#Depends:
-# python3-lmdb,
+Package: python3-univention-group-membership-cache
+Architecture: all
+Depends:
+ python3-gdbm,
 # python3-univention,
-# ${python3:Depends},
-#Description: UCS - Group cache
-# This package holds a cache for user and group membership (including nested
-# groups) so that software does not need to query the LDAP database.
-# .
-# This package provides the Python3 library.
-# .
-# It is part of Univention Corporate Server (UCS), an
-# integrated, directory driven solution for managing
-# corporate environments. For more information about UCS,
-# refer to: https://www.univention.de/
+ ${python3:Depends},
+Description: UCS - Group cache
+ This package holds a cache for user and group membership (including nested
+ groups) so that software does not need to query the LDAP database.
+ .
+ This package provides the Python3 library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/

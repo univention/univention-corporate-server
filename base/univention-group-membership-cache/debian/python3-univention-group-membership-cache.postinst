@@ -1,4 +1,4 @@
-#!/usr/bin/make -f
+#!/bin/sh
 #
 # Copyright 2021 Univention GmbH
 #
@@ -27,6 +27,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+#DEBHELPER#
 
-%:
-	dh $@ --with python2,python3
+mkdir -p /usr/share/univention-group-membership-cache/caches/
+chown listener:root /usr/share/univention-group-membership-cache/caches
+
+exit 0
