@@ -31,12 +31,12 @@ License with the Debian GNU/Linux or Univention distribution in file
     class="portal__background"
     :style="backgroundImageStyle"
   >
-  <Particles
-    id="particles"
-    :particlesInit="particlesInit"
-    :particlesLoaded="particlesLoaded"
-    :options="particlesConfig"
-  />
+    <Particles
+      id="particles"
+      :particlesInit="particlesInit"
+      :particlesLoaded="particlesLoaded"
+      :options="particlesConfig"
+    />
   </div>
 </template>
 
@@ -46,15 +46,6 @@ import { mapGetters } from 'vuex';
 
 export default defineComponent({
   name: 'PortalBackground',
-  computed: {
-    ...mapGetters({ portal: 'portalData/getPortal' }),
-    backgroundImageStyle(): string {
-      if (!this.portal.portal.background) {
-        return 'background-image: none';
-      }
-      return `background-image: url('${this.portal.portal.background}')`;
-    },
-  },
   setup() {
     const particlesConfig = {
       particles: {
@@ -155,6 +146,15 @@ export default defineComponent({
       retina_detect: false,
     };
     return { particlesConfig };
+  },
+  computed: {
+    ...mapGetters({ portal: 'portalData/getPortal' }),
+    backgroundImageStyle(): string {
+      if (!this.portal.portal.background) {
+        return 'background-image: none';
+      }
+      return `background-image: url('${this.portal.portal.background}')`;
+    },
   },
 });
 </script>
