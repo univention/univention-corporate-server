@@ -25,6 +25,7 @@ Variables: windows/wins-.*
 Variables: cups/server
 Variables: server/role
 Variables: interfaces/.*
+Variables: kerberos/defaults/ticket_lifetime
 
 Type: subfile
 Multifile: etc/samba/smb.conf

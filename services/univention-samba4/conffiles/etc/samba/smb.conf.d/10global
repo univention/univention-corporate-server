@@ -1,8 +1,11 @@
 @%@UCRWARNING=# @%@
 
 ; ---------------------<10global>------------------------
-[global]
 @!@
+if configRegistry.get('kerberos/defaults/ticket_lifetime'):
+    print('kdc:user ticket lifetime = %s' % configRegistry.get('kerberos/defaults/ticket_lifetime'))
+    print('')
+print('[global]')
 print('\tdebug level\t= %s' % configRegistry.get('samba/debug/level', 1))
 print('\tlogging\t\t= file')
 print('\tmax log size\t= %s\n' % configRegistry.get('samba/max_log_size', 0))
