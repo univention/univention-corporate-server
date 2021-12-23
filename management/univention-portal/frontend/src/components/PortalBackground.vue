@@ -90,7 +90,7 @@ export default defineComponent({
           random: true,
           anim: {
             enable: true,
-            speed: 3,
+            speed: 1,
             size_min: 2,
             sync: false,
           },
@@ -104,7 +104,7 @@ export default defineComponent({
         },
         move: {
           enable: true,
-          speed: 0.9,
+          speed: 0.3,
           direction: 'none',
           random: true,
           straight: false,
