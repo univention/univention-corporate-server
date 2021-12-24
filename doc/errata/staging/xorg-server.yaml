@@ -1,7 +1,7 @@
 product: ucs
 release: "5.0"
-version: [0]
-scope: ucs_5.0-0-errata5.0-0
+version: [0,1]
+scope: ucs_5.0-0-errata5.0-1
 src: xorg-server
 fix: 2:1.20.4-1+deb10u4
 desc: |
