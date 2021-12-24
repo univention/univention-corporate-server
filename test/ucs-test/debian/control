@@ -889,3 +889,19 @@ Provides:
 Description: Test the UDM HTTP API
  This package includes test to verify the functionality of utilities
  from the UDM HTTP API.
+
+Package: ucs-test-kerberos
+Architecture: all
+Recommends:
+ ucs-test-framework,
+Depends:
+ python3-pip,
+ python3-pytest,
+ ucs-test-libs (= ${source:Version}),
+ ucs-test-udm-users,
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
+Description: Test scripts for kerberos
+ This package includes some scripts for testing the functionality of the kerberos
+ domain.
