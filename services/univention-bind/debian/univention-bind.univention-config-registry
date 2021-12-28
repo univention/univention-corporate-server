@@ -8,6 +8,10 @@ Postinst: systemctl_daemon-reload.py
 Variables: dns/backend
 
 Type: file
+File: etc/systemd/system/univention-bind-ldap.service
+Variables: dns/timeout-start
+
+Type: file
 File: etc/bind/named.conf.proxy
 Variables: dns/forwarder1
 Variables: dns/forwarder2

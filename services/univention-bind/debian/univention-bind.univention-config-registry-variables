@@ -95,8 +95,8 @@ Type=bool
 Categories=service-bind
 
 [dns/timeout-start]
-Description[de]=Diese Variable konfiguriert die maximale Wartezeit in Sekunden für den Start des LDAP-Dienstes.
-Description[en]=This variable configures the maximum waiting time in seconds for the LDAP-Service to start.
+Description[de]=Diese Variable konfiguriert die maximale Wartezeit in Sekunden für den Start des DNS-Dienstes, der OpenLDAP als backend verwendet.
+Description[en]=This variable configures the maximum waiting time in seconds for the DNS-Service to start, which is using OpenLDAP as backend.
 Type=int
 Categories=service-bind
 
