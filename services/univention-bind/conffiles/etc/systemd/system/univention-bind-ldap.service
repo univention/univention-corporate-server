@@ -14,7 +14,11 @@ ExecReload=/usr/lib/univention-bind/ldap reload
 ExecStop=/usr/lib/univention-bind/ldap stop
 ExecStartPost=/usr/lib/univention-bind/ldap wait-for-startup
 Restart=on-failure
-TimeoutStartSec=@%@dns/timeout-start@%@
+@!@
+timeout=configRegistry.get("dns/timeout-start")
+if timeout:
+	print("TimeoutStartSec=%s" % timeout)
+@!@
 
 [Install]
 WantedBy=multi-user.target
