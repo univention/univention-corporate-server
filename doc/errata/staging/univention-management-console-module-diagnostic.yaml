@@ -3,7 +3,7 @@ release: "5.0"
 version: [0]
 scope: ucs_5.0-0-errata5.0-0
 src: univention-management-console-module-diagnostic
-fix:
+fix: 6.0.0-14A~5.0.0.202112290927
 desc: |
  This update addresses the following issue:
  * univention-run-diagnostic-checks now offers to run a group of tests
