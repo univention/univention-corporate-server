@@ -144,7 +144,8 @@ Architecture: all
 Depends:
  devscripts,
  gettext,
- imagemagick | inkscape,
+ imagemagick,
+ inkscape,
  librsvg2-bin,
  python-polib,
  python-univention-config-registry,
