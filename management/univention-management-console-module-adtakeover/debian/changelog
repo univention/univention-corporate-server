@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (7.0.2-5) unstable; urgency=medium
+
+  * Bug #54238 - adtakeover: FileNotFoundError: '/usr/bin/systemctl'
+
+ -- Ildefonso González Sánchez <isanchez.extern@univention.de>  Wed, 29 Dec 2021 18:22:37 +0100
+
 univention-management-console-module-adtakeover (7.0.2-4) unstable; urgency=medium
 
   * Bug #53466: fix AD takeover if AD contains mail or proxyAddresses
