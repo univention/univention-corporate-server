@@ -10,5 +10,4 @@ desc: |
    and also to exclude some of the tests.
  * A diagnostic module has been added to check the UCR variable
    notifier/protocol/version
-
 bug: [53969, 54264]
