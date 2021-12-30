@@ -8,4 +8,7 @@ desc: |
  This update addresses the following issue:
  * univention-run-diagnostic-checks now offers to run a group of tests
    and also to exclude some of the tests.
-bug: [53969]
+ * A diagnostic module has been added to check the UCR variable
+   notifier/protocol/version
+
+bug: [53969, 54264]
