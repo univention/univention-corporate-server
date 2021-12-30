@@ -155,7 +155,7 @@ if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
 		echo -n "Enter Primary Directory Node Password: "
 		read -s password
 		DCPWD=$(mktemp)
-		trap "rm -f '$DCPWD' /var/run/univention-join/binddn /var/run/univention-join/bindpwd" EXIT
+		trap "rm -f '$DCPWD' /var/run/univention-join/binddn /var/run/univention-join/bindpwd /var/run/univention-join/samba-authentication-file" EXIT
 		echo -n "$password" >>"$DCPWD"
 		echo ""
 		echo ""
@@ -240,7 +240,7 @@ fi
 # Save STDOUT to fd3, redirect to logfile
 exec 3>&1 >>/var/log/univention/join.log 2>&1
 
-joinscript_create_credentialfiles "$binddn" "$DCPWD"
+joinscript_create_credentialfiles "$binddn" "$DCPWD" "$DCACCOUNT"
 
 echo
 echo "univention-run-join-scripts started"

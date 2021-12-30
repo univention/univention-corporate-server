@@ -173,10 +173,10 @@ create_site() {
 	fi
 
 	try_server=$(ucr get $ucr_variable)
-	if ldbsearch -k no -U"$dcaccount"%"$bindpwd" -H "ldap://$try_server" -s base > /dev/null 2>&1; then
+	if ldbsearch -k no -A"$authenticationfile" -H "ldap://$try_server" -s base > /dev/null 2>&1; then
 		/usr/share/univention-samba4/scripts/univention-samba4-site-tool.py \
 				-H "ldap://$try_server" \
-				-U"$dcaccount"%"$bindpwd" \
+				-A"$authenticationfile" \
 				--site "$1" --createsite \
 				--ignore-exists
 	else
@@ -305,7 +305,7 @@ samba_domain_join() {
 	local samba_join_options
 	samba_join_options=("${@}")
 	samba_join_options+=( --kerberos=no )	## don't use kerberos for authentication during join
-	samba_join_options+=( -U"$dcaccount"%"$bindpwd" )
+	samba_join_options+=( -A"$authenticationfile" )
 	samba_join_options+=( --realm="$kerberos_realm" )
 	samba_join_options+=( --machinepass="$(cat /etc/machine.secret)" )
 
@@ -541,7 +541,7 @@ wait_until_dc_was_replicated_to_connector_dc() {
 
 	echo -n "Waiting for DRS replication: "
 	for((i=0;i<300;i++)); do
-		search_result="$(ldbsearch -H "ldap://$s4connector_dc" -U"${hostname}$"%"$(</etc/machine.secret)" "(&(objectClass=computer)(cn=${hostname}))" cn 2>/dev/null| sed -n 's/^cn: \(.*\)/\1/p')"
+		search_result="$(ldbsearch -H "ldap://$s4connector_dc" -A"$authenticationfile" "(&(objectClass=computer)(cn=${hostname}))" cn 2>/dev/null| sed -n 's/^cn: \(.*\)/\1/p')"
 		test -n "$search_result" && break
 		echo -n "."
 		sleep 1
@@ -707,7 +707,7 @@ unset SMB_CONF_PATH
 exit_on_slave_if_no_s4_connector_on_master_or_backup
 
 # parse credentials
-extract_binddn_bindpwd_bindpwdfile_dcaccount_from_args "$@"
+extract_binddn_bindpwd_bindpwdfile_dcaccount_authenticationfile_from_args "$@"
 
 configure_samba_role
 

@@ -191,7 +191,7 @@ run_join_scripts () {
 
 	LC_COLLATE="C"
 	joinscript_check_status_file
-	joinscript_create_credentialfiles "$binddn" "$DCPWD"
+	joinscript_create_credentialfiles "$binddn" "$DCPWD" "$DCACCOUNT"
 
 	if test -d "/usr/lib/univention-install/"; then
 		for i in /usr/lib/univention-install/*.{inst,uinst}; do

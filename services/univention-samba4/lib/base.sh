@@ -40,7 +40,7 @@ univention_samba4_is_ucr_false () { # test if UCS variable is "false"
     esac
 }
 
-extract_binddn_bindpwd_bindpwdfile_dcaccount_from_args() {
+extract_binddn_bindpwd_bindpwdfile_dcaccount_authenticationfile_from_args() {
 	## parse bind credentials from command line arguments into shell variables
 	while [ $# -gt 0 ]; do
 		case "$1" in
@@ -52,6 +52,10 @@ extract_binddn_bindpwd_bindpwdfile_dcaccount_from_args() {
 				bindpwdfile="${2:?missing bindpwdfile}"
 				shift 2 || exit 2
 				;;
+			"--authenticationfile")
+				authenticationfile="${2:?missing authenticationfile}"
+				shift 2 || exit 2
+				;;
 			*)
 				shift
 				;;
@@ -61,11 +65,11 @@ extract_binddn_bindpwd_bindpwdfile_dcaccount_from_args() {
 	test -n "$binddn" && dcaccount=$(ucs_convertDN2UID "$binddn" "$@")
 	test -z "$binddn" && binddn="cn=admin,$ldap_base"
 	test -z "$bindpwdfile" && bindpwdfile="/etc/ldap.secret"
-	test -z "$bindpwd" && bindpwd="$(< "$bindpwdfile")"
+	test -z "$authenticationfile" && authenticationfile="/var/run/univention-join/authentication-file"  #TODO: change to the correct path
 }
 
 assert_dcaccount_and_bindpwd() {
-	if [ -z "$dcaccount" ] ||  [ -z "$bindpwd" ]; then
+	if [ -z "$dcaccount" ] ||  [ -z "$bindpwdfile" ] ||  [ -z "$authenticationfile" ]; then
 		echo "Administrative credentials are needed to join to existing Samba4 domain. Please run:"
 		printf "\tunivention-run-join-scripts --ask-pass\n"
 		echo "to complete the domain join."

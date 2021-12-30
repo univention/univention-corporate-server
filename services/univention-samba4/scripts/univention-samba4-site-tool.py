@@ -74,6 +74,7 @@ parser.add_option("--modifysubnet", action="store_true", dest="modifysubnet")
 parser.add_option("--site", dest="site")
 parser.add_option("--sitelink", dest="sitelink")
 parser.add_option("--subnet", dest="subnet")
+parser.add_option("-A", "--authentication-file", dest="authentication_file", help="Get the credentials from a file")
 opts, args = parser.parse_args()
 
 if not opts.database_url:
@@ -102,7 +103,11 @@ if not (opts.createsitelink or opts.createsite or opts.createsubnet or opts.modi
 	parser.print_help()
 
 lp = sambaopts.get_loadparm()
-creds = credopts.get_credentials(lp)
+if opts.authentication_file:
+	creds = Credentials()
+	creds.parse_file(opts.authentication_file)
+else:
+	creds = credopts.get_credentials(lp)
 
 configRegistry = config_registry.ConfigRegistry()
 configRegistry.load()

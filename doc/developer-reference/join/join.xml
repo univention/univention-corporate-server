@@ -188,7 +188,7 @@
 								<term><literal>## joinscript api: nocredentials</literal></term>
 								<listitem>
 									<simpara>
-										The credentials will be stored in two files named <filename>/var/run/univention-join/binddn</filename> and <filename>/var/run/univention-join/bindpwd</filename>.
+										The credentials will be stored in three files named <filename>/var/run/univention-join/binddn</filename>, <filename>/var/run/univention-join/bindpwd</filename> and <filename>/var/run/univention-join/samba-authentication-file</filename>.
 										They exist only while <command>univention-join</command> or <command>univention-run-join-script</command> are running.
 										Each individual join script will be called with no extra options.
 									</simpara>
