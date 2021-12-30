@@ -1,3 +1,10 @@
+univention-bind (14.0.1-4) unstable; urgency=medium
+
+  * But#54108: Make univention-bind-ldap.service configurable with a 
+    UCRV dns/timeout-start.
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Thu, 30 Dec 2021 07:55:33 +0100
+
 univention-bind (14.0.1-3) unstable; urgency=medium
 
   * Bug #53182: Add timestamps to server_password_change log messages
