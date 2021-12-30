@@ -5,7 +5,11 @@ scope: ucs_5.0-0-errata5.0-1
 src: univention-bind
 fix: 14.0.1-4A~5.0.0.202112300807
 desc: |
- This update addresses the following issue(s):
- * The systemd unit univention-bind-ldap now
-   configurable with a UCRV dns/timeout-start
+ This update addresses the following issue:
+ * The UCR variable dns/timeout-start is now also considered
+   in the systemd unit univention-bind-ldap. This can be used
+   in cases where a large number of DNS zones slows down the
+   start of the DNS server bind. This only affects systems
+   which have dns/backend set to "ldap". i.e. systems that
+   are not configured as Samba/AD DC. 
 bug: [54108]
