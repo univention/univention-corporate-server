@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-bind
-fix: 
+fix: 14.0.1-4A~5.0.0.202112300807
 desc: |
  This update addresses the following issue(s):
  * The systemd unit univention-bind-ldap now
