@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-management-console-adtakeover
-fix: 
+fix: 7.0.2-5A~5.0.0.202112301204
 desc: |
  This update addresses the following issue:
  * On systems updated from UCS 4.4 the AD-Takeover could abort
