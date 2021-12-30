@@ -86,5 +86,15 @@ if [ "$1" = "localchange" ]; then
 	fi
 
 	echowithtimestamp "restart samba after server password change"
-	test -x /etc/init.d/samba && /etc/init.d/samba restart
+	if test -x /etc/init.d/samba; then
+		/etc/init.d/samba stop
+		sleep 5
+		pids=$(pgrep smbd)
+		if [ -n "$pids" ]; then
+			echowithtimestamp "found running smbd processes after stop was sent, sending kill signal"
+			pkill -9 -f /usr/sbin/smbd
+			/etc/init.d/samba stop
+		fi
+		/etc/init.d/samba start
+	fi
 fi
