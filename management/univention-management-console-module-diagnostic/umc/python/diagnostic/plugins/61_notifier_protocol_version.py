@@ -1,10 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import sys
-if sys.version_info.major == 2:
+try:
 	from distutils.version import LooseVersion as parse
-else:
+except ImportError:  # python 3
 	from packaging.version import parse
 from univention.management.console.config import ucr
 from univention.management.console.modules.diagnostic import Critical, MODULE, Warning
@@ -12,7 +11,7 @@ from univention.management.console.modules.diagnostic import Critical, MODULE, W
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
-title = _('Notifier protocol version is less than 3')
+title = _('Check security considerations of Notifier protocol version')
 description = _('Starting with UCS 4.3-3 Errata 428, the minimum protocol version should be set to 3.')
 run_descr = ['This can be checked by running: ucr get notifier/protocol/version']
 

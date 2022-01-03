@@ -1156,8 +1156,8 @@ msgid "some"
 msgstr "einigen"
 
 #: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:15
-msgid "Notifier protocol version is less than 3"
-msgstr "Die Notifier-Protokollversion ist geringer als 3"
+msgid "Check security considerations of Notifier protocol version"
+msgstr "Überprüfen Sie die Sicherheitsüberlegungen der Notifier-Protokollversion"
 
 #: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:16
 msgid ""
