@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: univention-directory-reports
+fix: 
+desc: |
+ This update addresses the following issue:
+ * The univention directory reports module allow a couple of new 
+   arguments.
+ * The argument --output-dir (-o) allow select the output report 
+   directory by the user.
+ * The argument --file-name (-f) allow select the output report file
+   name by the user.
+bug: [54153]
