@@ -3,7 +3,7 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: univention-directory-reports
-fix: 
+fix: 11.0.0-6A~4.4.0.202201101322
 desc: |
  This update addresses the following issue:
  * The univention directory reports module allow a couple of new 
