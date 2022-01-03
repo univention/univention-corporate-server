@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: libzip
+fix: 1.1.2-1.1+deb9u1
+desc: |
+ This update addresses the following issue:
+ * Memory allocation failure in _zip_cdir_grow function (CVE-2017-14107)
+bug: [54290]
+cve:
+- CVE-2017-14107
