@@ -1,3 +1,10 @@
+univention-samba4 (9.0.6-9) unstable; urgency=medium
+
+  * Bug #53100: Passes credentials with an authentication file to remove 
+    credentials in clear text
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Tue, 25 Jan 2022 09:38:08 +0100
+
 univention-samba4 (9.0.6-8) unstable; urgency=medium
 
   * Bug #54356: Fixed After Server-Password-Change samba process is not started 

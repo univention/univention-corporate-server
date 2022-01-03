@@ -1,0 +1,14 @@
+product: ucs
+release: '5.0'
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-samba4
+fix: 
+desc: |-
+  This update addresses the following issue:
+  * The joinscript of univention-samba4
+    used to pass the administrator password
+    in cleartext to other tools like ldbsearch.
+    To reduce the attack surface it now uses
+    an authentication file instead.
+bug: [53100]
