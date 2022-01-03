@@ -15,7 +15,7 @@ ExecStop=/usr/lib/univention-bind/ldap stop
 ExecStartPost=/usr/lib/univention-bind/ldap wait-for-startup
 Restart=on-failure
 @!@
-timeout=configRegistry.get("dns/timeout-start")
+timeout = configRegistry.get("dns/timeout-start")
 if timeout:
 	print("TimeoutStartSec=%s" % timeout)
 @!@
