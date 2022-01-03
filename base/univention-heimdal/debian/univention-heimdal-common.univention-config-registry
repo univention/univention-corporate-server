@@ -26,4 +26,4 @@ Variables: kerberos/defaults/rdns
 Variables: windows/domain
 Variables: domainname
 Variables: server/role
-Variables: kerberos/defaults/ticket_lifetime
+Variables: kerberos/defaults/ticket-lifetime
