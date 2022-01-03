@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.0-16) unstable; urgency=medium
+
+  *  Bug #54264: Fixup suggestions for Diagnostic module for UCR notifier/protocol/version
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Mon, 03 Jan 2022 11:56:43 +0100
+
 univention-management-console-module-diagnostic (6.0.0-15) unstable; urgency=medium
 
   * Bug #54264: Diagnostic module for UCR notifier/protocol/version
