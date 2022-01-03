@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: xorg-server
+fix: 2:1.19.2-1+deb9u9
+desc: |
+ This update addresses the following issues:
+ * SProcRenderCompositeGlyphs out-of-bounds access (CVE-2021-4008)
+ * SProcXFixesCreatePointerBarrier out-of-bounds access (CVE-2021-4009)
+ * SwapCreateRegister out-of-bounds access (CVE-2021-4011)
+bug: [54288]
+cve:
+- CVE-2021-4008
+- CVE-2021-4009
+- CVE-2021-4011
