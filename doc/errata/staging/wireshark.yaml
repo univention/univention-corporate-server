@@ -1,0 +1,28 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: wireshark
+fix: 2.6.20-0+deb9u2
+desc: |
+ This update addresses the following issues:
+ * MS-WSP dissector excessive memory consumption (CVE-2021-22207)
+ * DNP dissector crash (CVE-2021-22235)
+ * modbus dissector crash (CVE-2021-39921)
+ * C12.22 dissector crash (CVE-2021-39922)
+ * PNRP dissector large loop (CVE-2021-39923)
+ * bluetooth DHT dissector large loop (CVE-2021-39924)
+ * bluetooth SDP dissector crash (CVE-2021-39925)
+ * IEEE 802.11 dissector crash (CVE-2021-39928)
+ * bluetooth DHT dissector crash (CVE-2021-39929)
+bug: [54284]
+cve:
+- CVE-2021-22207
+- CVE-2021-22235
+- CVE-2021-39921
+- CVE-2021-39922
+- CVE-2021-39923
+- CVE-2021-39924
+- CVE-2021-39925
+- CVE-2021-39928
+- CVE-2021-39929
