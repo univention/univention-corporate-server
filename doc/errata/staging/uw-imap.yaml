@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: uw-imap
+fix: 8:2007f~dfsg-5+deb9u1
+desc: |
+ This update addresses the following issue:
+ * imap_open() allows running arbitrary shell commands via mailbox parameter
+   (CVE-2018-19518)
+bug: [54289]
+cve:
+- CVE-2018-19518
