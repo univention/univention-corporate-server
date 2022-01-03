@@ -113,7 +113,7 @@ Description[en]=If this variable is set to 'true', reverse DNS lookup will be us
 Type=str
 Categories=service-heimdal
 
-[kerberos/defaults/ticket_lifetime]
+[kerberos/defaults/ticket-lifetime]
 Description[de]=Legt die Standardlebensdauer für anfängliche Ticketanfragen in Stunden fest.
 Description[en]=Sets the default lifetime for initial ticket requests, in hours.
 Type=int

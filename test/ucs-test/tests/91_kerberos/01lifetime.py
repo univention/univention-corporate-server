@@ -12,14 +12,15 @@
 
 import os
 
+import pytest
+
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
-import pytest
 
 KRB5_PATH = "/etc/krb5.conf"
 SMB_PATH = "/etc/samba/smb.conf"
 VALUE = "50"
-key = "kerberos/defaults/ticket_lifetime"
+key = "kerberos/defaults/ticket-lifetime"
 
 
 def file_contain(file: str, text: str, no_exist_ignore: bool = True):
