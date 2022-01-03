@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: ruby2.3
+fix: 2.3.3-1+deb9u11
+desc: |
+ This update addresses the following issues:
+ * Regular Expression Denial of Service Vulnerability of Date Parsing Methods
+   (CVE-2021-41817)
+ * cookie prefix spoofing in CGI::Cookie.parse (CVE-2021-41819)
+bug: [54283]
+cve:
+- CVE-2021-41817
+- CVE-2021-41819
