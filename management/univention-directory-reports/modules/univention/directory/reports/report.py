@@ -2,7 +2,7 @@
 #
 # Univention Directory Reports
 #
-# Copyright 2017-2021 Univention GmbH
+# Copyright 2017-2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -46,11 +46,11 @@ class Report(object):
 		self.lo = lo
 		self.config = config or Config()
 
-	def create(self, module, report, objects):
+	def create(self, module, report, objects,  output=None):
 		"""Create a report of objects for the specified module in the specified report type format"""
 		connect(access=self.lo)
 		clear_cache()
-
+		print("output:  ", output)
 		template = self.config.get_report(module, report)
 		if template is None:
 			if not module:
@@ -65,8 +65,9 @@ class Report(object):
 		header = self.config.get_header(module, report, suffix)
 		footer = self.config.get_footer(module, report, suffix)
 		doc = Document(template, header=header, footer=footer)
-
-		tmpfile = doc.create_source(objects)
+		if output is None:
+			output = self.config.get_output_path()
+		tmpfile = doc.create_source(objects, output)
 		pdffile = tmpfile
 		func = {Document.TYPE_RML: doc.create_rml_pdf, Document.TYPE_LATEX: doc.create_pdf}.get(doc._type)
 		if func:

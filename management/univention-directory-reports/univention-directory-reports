@@ -4,7 +4,7 @@
 # Univention Reports
 #  Creates reports from LaTeX templates
 #
-# Copyright 2007-2021 Univention GmbH
+# Copyright 2007-2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -63,8 +63,8 @@ def dump_modules(cfg, module=None, out=sys.stdout):
 
 def main():
 	# important! set locale before importing
-	locale.setlocale(locale.LC_ALL, "")
-	translation.set_language()
+	locale.setlocale(locale.LC_ALL, locale.getdefaultlocale())
+	translation.set_language(locale.getdefaultlocale()[0])
 	from univention.directory.reports import Report, ReportError, Config
 
 	cfg = Config()
@@ -114,6 +114,10 @@ def main():
 		'-d', '--debug', action='store', type='int',
 		dest='debug', default=0,
 		help='if given than debugging is activated and set to the specified level')
+	parser.add_option(
+		'-o', '--output', action='store', type='string',
+		dest='output', default=None,
+		help='location of the output report file [%default]')
 
 	(options, args) = parser.parse_args()
 
@@ -147,7 +151,8 @@ def main():
 
 	report = Report(lo, config=cfg)
 	try:
-		filename = report.create(options.module, options.report, args)
+		filename = report.create(options.module, options.report, args, options.output )
+		print(filename)
 	except ReportError as exc:
 		print(_("Error: The %s report could not be created: %s") % (options.report, exc), file=sys.stderr)
 		sys.exit(1)

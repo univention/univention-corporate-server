@@ -1,3 +1,9 @@
+univention-directory-reports (11.0.0-6) unstable; urgency=medium
+
+  * Bug #54153: Location and name of directory reports is not configurable 
+
+ -- Ildefonso González Sánchez <isanchez.extern@univention.de>  Mon, 03 Jan 2022 14:38:03 +0100
+
 univention-directory-reports (11.0.0-5) unstable; urgency=medium
 
   * Bug #51094: make UCR templates compatible to python3
