@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: zziplib
+fix: 0.13.62-3.2~deb9u2
+desc: |
+ This update addresses the following issue:
+ * infinite loop via the return value of zzip_file_read() as used in
+   unzzip_cat_file() (CVE-2020-18442)
+bug: [54286]
+cve:
+- CVE-2020-18442
