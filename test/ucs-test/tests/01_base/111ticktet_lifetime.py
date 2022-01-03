@@ -7,7 +7,6 @@
 ## tags: []
 ## packages:
 ##  - univention-config
-##  - univention-samba4
 ## bugs: [52987]
 
 import os
@@ -16,6 +15,7 @@ import pytest
 
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
+from univention.testing.utils import package_installed
 
 KRB5_PATH = "/etc/krb5.conf"
 SMB_PATH = "/etc/samba/smb.conf"
@@ -58,6 +58,7 @@ def test_kerberos_lifetime(myucr):
 	assert value == 0
 
 
+@pytest.mark.skipif(not package_installed('univention-samba4'), reason='Missing software: univention-samba4')
 def test_samba_lifetime(myucr):
 	old_value = myucr.get(key, None)
 	value = -3
