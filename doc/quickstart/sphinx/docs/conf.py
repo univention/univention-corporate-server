@@ -33,9 +33,14 @@ html_title = project
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+<<<<<<< Updated upstream:doc/quickstart/sphinx/docs/conf.py
     "sphinx_copybutton",
     "sphinxcontrib.spelling",
     "univention_sphinx_extension",
+=======
+	"univention_sphinx_extension",
+	"sphinxcontrib.spelling",
+>>>>>>> Stashed changes:doc/app-center/sphinx/conf.py
 ]
 
 copybutton_prompt_text = r"\$ |MariaDB \[\(none\)\]> |.*\$ |    -> |> "
@@ -54,8 +59,18 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
+<<<<<<< Updated upstream:doc/quickstart/sphinx/docs/conf.py
 #
 html_theme = 'univention_sphinx_book_theme'
+=======
+
+#html_theme_path = ["../",]
+#html_theme = 'sphinx_univention'
+
+html_theme = "univention_sphinx_book_theme"
+
+#html_theme = "furo"
+>>>>>>> Stashed changes:doc/app-center/sphinx/conf.py
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -74,6 +89,7 @@ numfig_format = {
     "code-block": _("listing %s:"),
     "section": _("section %s:"),
 }
+<<<<<<< Updated upstream:doc/quickstart/sphinx/docs/conf.py
 
 
 if "spelling" in sys.argv:
@@ -81,3 +97,5 @@ if "spelling" in sys.argv:
     spelling_show_suggestions = True
     spelling_word_list_filename = ["spelling_wordlist"]
 
+=======
+>>>>>>> Stashed changes:doc/app-center/sphinx/conf.py

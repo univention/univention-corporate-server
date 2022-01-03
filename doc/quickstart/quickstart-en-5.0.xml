@@ -15,6 +15,8 @@
 <chapter id="quickstart:intro">
   <title>Introduction</title>
 
+.. TODO testimctestface
+
   <para>
 	Univention Corporate Server (UCS) is a server operating system based on Debian GNU/Linux with
 	integrated management system for the central administration of servers, services, clients,
@@ -48,11 +50,11 @@
 </chapter>
 
 <chapter id="quickstart:installation">
-  <title>Installation</title>
+  	?!title?!Installation?!title?!
 
   <para>
 	The installation is performed via a menu-driven installer and can be used both
-	interactively and completely profile-based <biblioref linkend="ext-doc-inst"/>.
+	  interactively and completely profile-based ?!help?!biblioref linkend="ext-doc-inst".
   </para>
 
   <para>
