@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issues:
  * Regular Expression Denial of Service Vulnerability of Date Parsing Methods
    (CVE-2021-41817)
- * cookie prefix spoofing in CGI::Cookie.parse (CVE-2021-41819)
+ * Cookie prefix spoofing in CGI::Cookie.parse (CVE-2021-41819)
 bug: [54283]
 cve:
 - CVE-2021-41817
