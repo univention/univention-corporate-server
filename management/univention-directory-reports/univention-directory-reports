@@ -115,13 +115,9 @@ def main():
 		dest='debug', default=0,
 		help='if given than debugging is activated and set to the specified level')
 	parser.add_option(
-		'-o', '--output-dir', action='store', type='string',
+		'-o', '--output', action='store', type='string',
 		dest='output', default=None,
 		help='location of the output report file [%default]')
-	parser.add_option(
-		'-f', '--file-name', action='store', type='string',
-		dest='output_name', default=None,
-		help='custom output report file name [%default]')
 
 	(options, args) = parser.parse_args()
 
@@ -155,7 +151,7 @@ def main():
 
 	report = Report(lo, config=cfg)
 	try:
-		filename = report.create(options.module, options.report, args, options.output, options.output_name)
+		filename = report.create(options.module, options.report, args, options.output )
 		print(filename)
 	except ReportError as exc:
 		print(_("Error: The %s report could not be created: %s") % (options.report, exc), file=sys.stderr)
