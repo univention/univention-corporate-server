@@ -1,3 +1,10 @@
+univention-samba4 (9.0.6-7) unstable; urgency=medium
+
+  * Bug #52987: Configure ticket lifetime with
+    kerberos/defaults/ticket-lifetime.
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Tue, 04 Jan 2022 08:02:14 +0100
+
 univention-samba4 (9.0.6-6) unstable; urgency=medium
 
   * Bug #53438: Fix for the tar command for backup script. 
