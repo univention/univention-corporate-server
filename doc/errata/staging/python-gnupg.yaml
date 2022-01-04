@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issues:
  * Improper sanitization of filenames allows for the display of fake status
    messages and the bypass of signature verification (CVE-2018-12020)
- * improper input validation in gnupg.GPG.encrypt() and gnupg.GPG.decrypt()
+ * Improper input validation in gnupg.GPG.encrypt() and gnupg.GPG.decrypt()
    (CVE-2019-6690)
 bug: [54287]
 cve:
