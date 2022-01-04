@@ -1,3 +1,9 @@
+univention-ssl (14.0.2-3) unstable; urgency=medium
+
+  * Bug #53296: UMC in Portal does not work with "apache2/force_https: yes" update subjAltNames  
+
+ -- Ildefonso González Sánchez <isanchez.extern@univention.de>  Tue, 04 Jan 2022 17:23:49 +0100
+
 univention-ssl (14.0.2-2) unstable; urgency=low
 
   * Bug #51776: Timeout SSL certificate download
