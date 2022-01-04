@@ -8,31 +8,27 @@ desc: |
  This update addresses the following issues:
  * iframe sandbox rules did not apply to XSLT stylesheets (CVE-2021-38503)
  * Use-after-free in file picker dialog (CVE-2021-38504)
- * Firefox could be coaxed into going into fullscreen mode without
+ * Firefox could be coaxed into going into full-screen mode without
    notification or warning (CVE-2021-38506)
  * Opportunistic Encryption in HTTP2 could be used to bypass the
    Same-Origin-Policy on services hosted on other ports (CVE-2021-38507)
- * Permission Prompt could be overlaid, resulting in user confusion and
+ * Permission prompt could be overlaid, resulting in user confusion and
    potential spoofing (CVE-2021-38508)
- * Javascript alert box could have been spoofed onto an arbitrary domain
+ * JavaScript alert box could have been spoofed onto an arbitrary domain
    (CVE-2021-38509)
- * Mozilla developers and community members reported memory safety bugs
-   present in Firefox 93 and Firefox ESR 91.2. Some of these bugs showed
-   evidence of memory corruption and we presume that with enough effort some
-   of these could have been exploited to run arbitrary code. This
-   vulnerability affects Firefox < 94, Thunderbird < 91.3, and Firefox ESR <
-   91.3. (CVE-2021-43534)
- * A use-after-free could have occured when an HTTP2 session object was
+ * Some memory safety bugs showed evidence of memory corruption and with
+   enough effort some of these could have been exploited to run arbitrary code
+   (CVE-2021-43534)
+ * A use-after-free could have occurred when an HTTP2 session object was
    released on a different thread, leading to memory corruption and a
-   potentially exploitable crash. This vulnerability affects Firefox < 93,
-   Thunderbird < 91.3, and Firefox ESR < 91.3. (CVE-2021-43535)
+   potentially exploitable crash (CVE-2021-43535)
  * URL leakage when navigating while executing asynchronous function
    (CVE-2021-43536)
  * Heap buffer overflow when using structured clone (CVE-2021-43537)
- * Missing fullscreen and pointer lock notification when requesting both
+ * Missing full-screen and pointer lock notification when requesting both
    (CVE-2021-43538)
  * GC rooting failure when calling wasm instance methods (CVE-2021-43539)
- * External protocol handler parameters were unescaped (CVE-2021-43541)
+ * External protocol handler parameters were un-escaped (CVE-2021-43541)
  * XMLHttpRequest error codes could have leaked the existence of an external
    protocol handler (CVE-2021-43542)
  * Bypass of CSP sandbox directive when embedding (CVE-2021-43543)
