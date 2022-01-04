@@ -3,7 +3,7 @@
 # Univention Directory Reports
 #  creates a report document
 #
-# Copyright 2007-2020 Univention GmbH
+# Copyright 2007-2021 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -82,18 +82,17 @@ class Document(object):
 			if not os.path.isfile(filename):
 				raise ReportError(_("Configuration error: File %r could not be opened.") % (filename,))
 
-	def __create_tempfile(self, output_path=None):
+	def __create_tempfile(self):
 		if self._type == Document.TYPE_LATEX:
 			suffix = '.src'
 		elif self._type == Document.TYPE_CSV:
 			suffix = '.csv'
 		else:
 			suffix = self._template.rsplit('.', 1)[1]
-		if output_path is not None and not os.path.exists(output_path):
-			os.makedirs(output_path)
-		fd, filename = tempfile.mkstemp(suffix, 'univention-directory-reports-', dir=output_path)
+		fd, filename = tempfile.mkstemp(suffix, 'univention-directory-reports-')
 		os.chmod(filename, 0o644)
 		os.close(fd)
+
 		return filename
 
 	def __append_file(self, fd, filename, obj=None):
@@ -105,9 +104,9 @@ class Document(object):
 		output = Output(tks, fd=fd)
 		output.write()
 
-	def create_source(self, objects=[], output_path=None):
+	def create_source(self, objects=[]):
 		"""Create report from objects (list of DNs)."""
-		tmpfile = self.__create_tempfile(output_path)
+		tmpfile = self.__create_tempfile()
 		admin.set_format(self._type)
 		parser = Parser(filename=self._template)
 		parser.tokenize()
