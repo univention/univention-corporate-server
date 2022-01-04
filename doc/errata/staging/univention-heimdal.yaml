@@ -1,0 +1,11 @@
+product: ucs
+release: '5.0'
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-heimdal
+fix:
+desc: |-
+  This update addresses the following issue(s):
+  * Bug #52987 Make configurable kerberos ticket
+    lifetime with kerberos/defaults/ticket-lifetime.
+bug: [52987]

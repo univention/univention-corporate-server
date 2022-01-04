@@ -1,3 +1,10 @@
+ucs-test (10.0.6-91) unstable; urgency=medium
+
+  * Bug #52987: Test to check that kerberos ticket lifetime is configured 
+    successfully with kerberos/defaults/ticket-lifetime.
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Tue, 04 Jan 2022 08:02:42 +0100
+
 ucs-test (10.0.6-90) unstable; urgency=medium
 
   * Bug #54203: Fix partial import when index < notifier_cache_size - reactivate tests

@@ -1,3 +1,10 @@
+univention-heimdal (13.0.3-3) unstable; urgency=medium
+
+  * Bug #52987: Configure kerberos ticket lifetime with
+    kerberos/defaults/ticket-lifetime.
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Tue, 04 Jan 2022 07:59:54 +0100
+
 univention-heimdal (13.0.3-2) unstable; urgency=medium
 
   * Bug #50648: Catch univention.password.CheckFailed in check_cracklib.py
