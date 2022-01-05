@@ -6,7 +6,7 @@ univention-bind (14.0.1-5) unstable; urgency=medium
 
 univention-bind (14.0.1-4) unstable; urgency=medium
 
-  * Bug #54108: Make univention-bind-ldap.service configurable with a 
+  * Bug #54108: Make univention-bind-ldap.service configurable with a
     UCRV dns/timeout-start.
 
  -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Thu, 30 Dec 2021 07:55:33 +0100
