@@ -3,7 +3,7 @@ release: "5.0"
 version: [0, 1]
 scope: ucs_5.0-0-errata5.0-1
 src: apache2
-fix: 2.4.38-3+deb10u7
+fix: 2.4.38-3+deb10u7A~5.0.0.202201051001
 desc: |
  This update addresses the following issues:
  * possible NULL dereference or SSRF in forward proxy configurations
