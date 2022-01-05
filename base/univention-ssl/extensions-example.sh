@@ -2,7 +2,8 @@ createHostExtensionsFile () {
 	local fqdn="$1"
 	local hostname=${fqdn%%.*}
 	local extFile=$(mktemp)
-  local ipaddr=`ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'`
+	. /usr/share/univention-lib/base.sh
+	local ipaddr=$(get_default_ip_address)
 	cat <<EOF >>"$extFile"
 extensions = myx509v3
 [ myx509v3 ]
