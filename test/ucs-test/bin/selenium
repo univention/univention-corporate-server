@@ -1,4 +1,7 @@
 #!/bin/sh
-
-PATH="$PATH:/usr/lib/chromium" UCSTEST_SELENIUM=local UCSTEST_SELENIUM_BROWSER=chrome /usr/bin/xvfb-run -e /dev/stderr /usr/bin/python3 "$@"
-exit $?
+PATH="$PATH:/usr/lib/chromium" \
+UCSTEST_SELENIUM=local \
+UCSTEST_SELENIUM_BROWSER=chrome \
+	exec /usr/bin/xvfb-run \
+		-e /dev/stderr \
+			/usr/bin/python3 "$@"
