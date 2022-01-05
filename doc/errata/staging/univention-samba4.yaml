@@ -5,7 +5,8 @@ scope: ucs_5.0-0-errata5.0-1
 src: univention-samba4
 fix: 9.0.6-7A~5.0.0.202201040825
 desc: |-
-  This update addresses the following issue(s):
-  * Bug #52987 Make configurable ticket lifetime
-    with kerberos/defaults/ticket-lifetime.
+  This update addresses the following issue:
+  * The kerberos ticket lifetime was made
+    configurable via UCR variable
+    kerberos/defaults/ticket-lifetime.
 bug: [52987]
