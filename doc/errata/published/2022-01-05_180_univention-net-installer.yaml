@@ -8,3 +8,5 @@ desc: |-
   This update addresses the following issue:
   * Add UCR packages to profile for network installation
 bug: [54259]
+erratum: 180
+announced: 2022-01-05
