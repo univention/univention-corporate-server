@@ -9,3 +9,5 @@ desc: |
  * univention-management-console-dev now depends on both
    imagemagick and inkscape.
 bug: [54043]
+erratum: 179
+announced: 2022-01-05
