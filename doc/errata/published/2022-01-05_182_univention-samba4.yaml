@@ -10,3 +10,5 @@ desc: |-
     configurable via UCR variable
     kerberos/defaults/ticket-lifetime.
 bug: [52987]
+erratum: 182
+announced: 2022-01-05
