@@ -11,5 +11,6 @@ desc: |
    in cases where a large number of DNS zones slows down the
    start of the DNS server bind. This only affects systems
    which have dns/backend set to "ldap". i.e. systems that
-   are not configured as Samba/AD DC.
+   are not configured as Samba/AD DC. After changing the
+   variable, a "systemctl daemon-reload" is required.
 bug: [54108]
