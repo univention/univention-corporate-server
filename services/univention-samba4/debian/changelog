@@ -1,3 +1,10 @@
+univention-samba4 (9.0.6-8) unstable; urgency=medium
+
+  * Bug #51535: Fixed After Server-Password-Change samba process is not started 
+    due to Failed to listen on ::1:135
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Tue, 18 Jan 2022 14:25:58 +0100
+
 univention-samba4 (9.0.6-7) unstable; urgency=medium
 
   * Bug #52987: Configure ticket lifetime with
