@@ -365,7 +365,6 @@ class ResourceBase(object):
 	pool = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
 	requires_authentication = True
-	authenticated = shared_memory.dict()
 	authenticated_connections = {}
 
 	def force_authorization(self):
@@ -395,7 +394,7 @@ class ResourceBase(object):
 
 	def parse_authorization(self, authorization):
 		if authorization in self.authenticated_connections:
-			(self.request.user_dn, self.request.username) = self.authenticated[authorization]
+			(self.request.user_dn, self.request.username) = shared_memory.authenticated[authorization]
 			(self.ldap_connection, self.ldap_position) = self.authenticated_connections[authorization]
 			if self.ldap_connection.whoami():
 				return  # the ldap connection is still valid and bound
@@ -416,7 +415,7 @@ class ResourceBase(object):
 		if username not in ('cn=admin',):
 			self._auth_check_allowed_groups()
 
-		self.authenticated[authorization] = (self.request.user_dn, self.request.username)
+		shared_memory.authenticated[authorization] = (self.request.user_dn, self.request.username)
 		self.authenticated_connections[authorization] = (self.ldap_connection, self.ldap_position)
 
 	def _auth_check_allowed_groups(self):
@@ -2325,8 +2324,6 @@ class FormBase(object):
 
 class Objects(FormBase, ReportingBase):
 
-	search_sessions = shared_memory.dict()
-
 	@sanitize_query_string(
 		position=DNSanitizer(required=False, default=None),
 		filter=LDAPFilterSanitizer(required=False, default=None, allow_none=True),
@@ -2452,7 +2449,7 @@ class Objects(FormBase, ReportingBase):
 		ctrls = {}
 		serverctrls = []
 		hashed = (self.request.user_dn, module.name, container or None, ldap_filter or None, superordinate or None, scope or None, hidden or None, items_per_page or None, by or None, reverse or None)
-		session = self.search_sessions.get(hashed, {})
+		session = shared_memory.search_sessions.get(hashed, {})
 		last_cookie = session.get('last_cookie', '')
 		current_page = session.get('page', 0)
 		page_ctrl = SimplePagedResultsControl(True, size=items_per_page, cookie=last_cookie)  # TODO: replace with VirtualListViewRequest
@@ -2473,10 +2470,10 @@ class Objects(FormBase, ReportingBase):
 				if control.controlType == SimplePagedResultsControl.controlType:
 					page_ctrl.cookie = control.cookie
 			if not page_ctrl.cookie:
-				self.search_sessions.pop(hashed, None)
+				shared_memory.search_sessions.pop(hashed, None)
 				break
 		else:
-			self.search_sessions[hashed] = {'last_cookie': page_ctrl.cookie, 'page': page}
+			shared_memory.search_sessions[hashed] = {'last_cookie': page_ctrl.cookie, 'page': page}
 			last_page = 0
 		raise tornado.gen.Return((objects, last_page))
 
@@ -2583,10 +2580,10 @@ class ObjectsMove(Resource):
 		})
 
 		try:
-			Operations.queue[self.request.user_dn]
+			shared_memory.queue[self.request.user_dn]
 		except KeyError:
-			Operations.queue[self.request.user_dn] = shared_memory.dict()
-		Operations.queue[self.request.user_dn][status_id] = status
+			shared_memory.queue[self.request.user_dn] = shared_memory.dict()
+		shared_memory.queue[self.request.user_dn][status_id] = status
 
 		self.set_status(201)
 		self.set_header('Location', self.abspath('progress', status['id']))
@@ -2967,12 +2964,12 @@ class Object(FormBase, Resource):
 			'errors': False,
 		})
 
-		# Operations.queue[self.request.user_dn] = queue.copy()
+		# shared_memory.queue[self.request.user_dn] = queue.copy()
 		try:
-			Operations.queue[self.request.user_dn]
+			shared_memory.queue[self.request.user_dn]
 		except KeyError:
-			Operations.queue[self.request.user_dn] = shared_memory.dict()
-		Operations.queue[self.request.user_dn][status_id] = status
+			shared_memory.queue[self.request.user_dn] = shared_memory.dict()
+		shared_memory.queue[self.request.user_dn][status_id] = status
 
 		self.set_status(201)
 		self.set_header('Location', self.abspath('progress', status['id']))
@@ -3488,10 +3485,8 @@ class PolicyResultContainer(PolicyResultBase):
 class Operations(Resource):
 	"""GET /udm/progress/$progress-id (get the progress of a started operation like move, report, maybe add/put?, ...)"""
 
-	queue = shared_memory.dict()
-
 	def get(self, progress):
-		progressbars = self.queue.get(self.request.user_dn, {})
+		progressbars = shared_memory.queue.get(self.request.user_dn, {})
 		if progress not in progressbars:
 			raise NotFound()
 		result = dict(progressbars[progress])
@@ -3499,7 +3494,7 @@ class Operations(Resource):
 			self.set_status(303)
 			self.add_header('Location', result['uri'])
 			self.add_link(result, 'self', result['uri'])
-			self.queue.get(self.request.user_dn, {}).pop(progress, {})
+			shared_memory.queue.get(self.request.user_dn, {}).pop(progress, {})
 		else:
 			self.set_status(301)
 			self.add_header('Location', self.urljoin(''))
