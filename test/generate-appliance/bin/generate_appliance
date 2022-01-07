@@ -51,6 +51,7 @@ import tarfile
 import tempfile
 import time
 import uuid
+from zipfile import ZipFile
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, FileType, Namespace  # noqa F401
 from io import BytesIO
 from typing import IO, Any, Callable, Dict, Iterator, List, Optional, Tuple, TypeVar, Union, cast
@@ -296,7 +297,7 @@ class Tar(File):
 
 class Pkzip(File):
 	def __init__(self, file_list):
-		# type: (List[Tuple[str, Union[None, File, bytes]]]) -> None
+		# type: (List[Tuple[str, Union[File, bytes]]]) -> None
 		for _, source_file in file_list:
 			if source_file is not None:
 				assert isinstance(source_file, File) or isinstance(source_file, bytes)
@@ -307,9 +308,7 @@ class Pkzip(File):
 	def hash(self):
 		# type: () -> Tuple[Any, ...]
 		def hashed(thing):
-			# type: (Union[None, File, bytes]) -> Any
-			if thing is None:
-				return None
+			# type: (Union[File, bytes]) -> Any
 			if isinstance(thing, bytes):
 				return hashlib.sha256(thing).hexdigest()
 			return thing.hash()
@@ -324,21 +323,12 @@ class Pkzip(File):
 		if not os.path.exists(store):
 			log('Creating PKZIP')
 			os.mkdir(store)
-			for name, source_file in self._file_list:
-				if source_file is None:
-					os.mkdir(os.path.join(TEMPDIR, name))
-				elif isinstance(source_file, bytes):
-					with open(os.path.join(TEMPDIR, name), 'wb') as f:
-						f.write(source_file)
-				else:
-					os.link(source_file.path(), os.path.join(TEMPDIR, name))
-			cmd = ['zip', target, ] + [name for name, _ in self._file_list]
-			subprocess.check_call(cmd, cwd=TEMPDIR, stdout=sys.stderr)
-			for name, source_file in reversed(self._file_list):
-				if source_file is None:
-					os.rmdir(os.path.join(TEMPDIR, name))
-				else:
-					os.unlink(os.path.join(TEMPDIR, name))
+			with ZipFile(target, mode="w") as archive:
+				for name, source_file in self._file_list:
+					if isinstance(source_file, bytes):
+						archive.writestr(name, source_file)
+					else:
+						archive.write(source_file.path(), name)
 		self._path = target
 		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
 
@@ -492,12 +482,12 @@ class VMware(Target):
 			raise IOError('Output file %r exists' % (archive_name,))
 		vmdk = Vmdk(image)
 		files = [
-			('%s/' % (options.product,), None),
+			('%s/' % (options.product,), b""),
 			('%s/%s.vmdk' % (options.product, options.product), vmdk),
 			('%s/%s.vmxf' % (options.product, options.product), create_vmxf(machine_uuid, options.product)),
 			('%s/%s.vmx' % (options.product, options.product), create_vmx(options.product, image_uuid, options)),
 			('%s/%s.vmsd' % (options.product, options.product), b""),
-		]  # type: List[Tuple[str, Union[None, File, bytes]]]
+		]  # type: List[Tuple[str, Union[File, bytes]]]
 		pkzip = Pkzip(files)
 		shutil.copyfile(pkzip.path(), archive_name)
 		log('Generated "%s" appliance as\n  %s' % (self, archive_name))
