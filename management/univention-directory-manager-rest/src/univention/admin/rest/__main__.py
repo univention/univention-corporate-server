@@ -71,7 +71,6 @@ proctitle = getproctitle()
 class Server(object):
 
 	child_id = None
-	children = shared_memory.dict()
 
 	def run(self, args):
 		self.child_id = None
@@ -94,6 +93,9 @@ class Server(object):
 		logger.setLevel(logging.INFO)
 		logger.addHandler(channel)
 
+		# start sharing memory (before fork, before first usage, after import)
+		shared_memory.start()
+
 		import univention.admin.modules as udm_modules
 		udm_modules.update()
 
@@ -109,9 +111,6 @@ class Server(object):
 		signal.signal(signal.SIGTERM, partial(self.signal_handler_stop, None))
 		signal.signal(signal.SIGINT, partial(self.signal_handler_stop, None))
 		signal.signal(signal.SIGHUP, self.signal_handler_reload)
-
-		# important!: make sure shared memory instances are created before fork() ing
-		import univention.admin.rest.module  # noqa: F401
 
 		# start mutliprocessing
 		if args.processes != 1:
@@ -133,7 +132,7 @@ class Server(object):
 		setproctitle(proctitle + '   # child %s' % (child_id,))
 		self.child_id = child_id
 		CORE.info('Started child %s' % (self.child_id,))
-		self.children[self.child_id] = os.getpid()
+		shared_memory.children[self.child_id] = os.getpid()
 		self.run_server(self.socks)
 
 	def run_server(self, socks):
@@ -158,7 +157,7 @@ class Server(object):
 	def signal_handler_stop(self, server, sig, frame):
 		if self.child_id is None:
 			try:
-				children_pids = list(self.children.values())
+				children_pids = list(shared_memory.children.values())
 			except Exception:  # multiprocessing failure
 				children_pids = []
 			CORE.info('stopping children: %r' % (children_pids,))
@@ -189,7 +188,7 @@ class Server(object):
 
 	def signal_handler_reload(self, signal, frame):
 		if self.child_id is None:
-			for pid in self.children.values():
+			for pid in shared_memory.children.values():
 				self.safe_kill(pid, signal)
 		ucr.load()
 		log_reopen()

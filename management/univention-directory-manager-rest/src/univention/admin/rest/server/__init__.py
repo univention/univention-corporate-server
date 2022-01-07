@@ -70,7 +70,7 @@ except ImportError:
 proctitle = getproctitle()
 
 
-class Server(tornado.web.RequestHandler):
+class Gateway(tornado.web.RequestHandler):
 	"""A server which acts as proxy to multiple processes in different languages
 
 	TODO: Implement authentication via PAM
@@ -80,7 +80,6 @@ class Server(tornado.web.RequestHandler):
 	"""
 
 	child_id = None
-	children = shared_memory.dict()
 	PROCESSES = {}
 	SOCKETS = {}
 
@@ -208,6 +207,9 @@ class Server(tornado.web.RequestHandler):
 		if args.unix_socket:
 			socks.append(bind_unix_socket(args.unix_socket))
 
+		# start sharing memory (before fork, before first usage, after import)
+		shared_memory.start()
+
 		# start sub processes for each required locale
 		try:
 			cls.start_processes(args.processes, args.port)
@@ -238,7 +240,7 @@ class Server(tornado.web.RequestHandler):
 		cls.child_id = child_id
 		logger = logging.getLogger()
 		logger.info('Started child %s', cls.child_id)
-		cls.children[cls.child_id] = os.getpid()
+		shared_memory.children[cls.child_id] = os.getpid()
 		cls.start_server(cls.socks)
 
 	@classmethod
@@ -304,7 +306,7 @@ class Server(tornado.web.RequestHandler):
 		logger = logging.getLogger()
 		if cls.child_id is None:
 			try:
-				children_pids = list(cls.children.values())
+				children_pids = list(shared_memory.children.values())
 			except Exception:  # multiprocessing failure
 				children_pids = []
 			logger.info('stopping children: %r', children_pids)

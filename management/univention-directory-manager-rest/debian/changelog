@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.2-4) unstable; urgency=medium
+
+  * Bug #50050: don't start SyncManager during python import
+
+ -- Florian Best <best@univention.de>  Fri, 07 Jan 2022 19:15:36 +0100
+
 univention-directory-manager-rest (10.0.2-3) unstable; urgency=medium
 
   * Bug #50050: support multiprocessing and shared memory
