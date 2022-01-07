@@ -1256,9 +1256,10 @@ class EC2_EBS(Target):
 			snapshot_id=snapshot.id,
 		)
 		# wait for image
-		amis = []
-		while not amis:
+		while True:
 			amis = [ami for ami in ec2.get_all_images(image_ids=[ami_id]) if ami.state != 'pending']
+			if amis:
+				break
 			time.sleep(32)  # TODO adaptive and jittery
 			# TODO: abort if no progress after some time?
 			log('.', False)
