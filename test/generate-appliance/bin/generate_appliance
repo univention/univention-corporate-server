@@ -52,7 +52,7 @@ import tempfile
 import time
 import uuid
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, FileType, Namespace  # noqa F401
-from io import StringIO
+from io import BytesIO
 
 try:
 	from argparse import BooleanOptionalAction
@@ -127,7 +127,7 @@ class File(Lazy):
 	def hashed(fun):
 		def newfun(self, *args, **kwargs):
 			ret = fun(self, *args, **kwargs)
-			return hashlib.sha256(repr(ret)).hexdigest()
+			return hashlib.sha256(repr(ret).encode("UTF-8")).hexdigest()
 
 		return newfun
 
@@ -227,7 +227,7 @@ ddb.virtualHWVersion = "11"'''
 class Tar(File):
 	def __init__(self, file_list, fileformat=tarfile.USTAR_FORMAT):
 		for _, source_file in file_list:
-			assert isinstance(source_file, File) or isinstance(source_file, str)
+			assert isinstance(source_file, File) or isinstance(source_file, bytes)
 		self._file_list = file_list
 		self._format = fileformat
 		File.__init__(self)
@@ -235,7 +235,7 @@ class Tar(File):
 	@File.hashed
 	def hash(self):
 		def hashed(thing):
-			if isinstance(thing, str):
+			if isinstance(thing, bytes):
 				return hashlib.sha256(thing).hexdigest()
 			return thing.hash()
 
@@ -252,8 +252,8 @@ class Tar(File):
 			archive = tarfile.TarFile(name=target, mode='w', format=self._format)
 			for name, source_file in self._file_list:
 				log('  %s' % (name,))
-				if isinstance(source_file, str):
-					handle = StringIO(source_file)
+				if isinstance(source_file, bytes):
+					handle = BytesIO(source_file)
 				else:
 					handle = open(source_file.path(), 'r')
 				info = tarfile.TarInfo(name)
@@ -272,7 +272,7 @@ class Pkzip(File):
 	def __init__(self, file_list):
 		for _, source_file in file_list:
 			if source_file is not None:
-				assert isinstance(source_file, File) or isinstance(source_file, str)
+				assert isinstance(source_file, File) or isinstance(source_file, bytes)
 		self._file_list = file_list
 		File.__init__(self)
 
@@ -281,7 +281,7 @@ class Pkzip(File):
 		def hashed(thing):
 			if thing is None:
 				return None
-			if isinstance(thing, str):
+			if isinstance(thing, bytes):
 				return hashlib.sha256(thing).hexdigest()
 			return thing.hash()
 		return (Tar, [(name, hashed(source_file)) for name, source_file in self._file_list])
@@ -297,8 +297,8 @@ class Pkzip(File):
 			for name, source_file in self._file_list:
 				if source_file is None:
 					os.mkdir(os.path.join(TEMPDIR, name))
-				elif isinstance(source_file, str):
-					with open(os.path.join(TEMPDIR, name), 'w') as f:
+				elif isinstance(source_file, bytes):
+					with open(os.path.join(TEMPDIR, name), 'wb') as f:
 						f.write(source_file)
 				else:
 					os.link(source_file.path(), os.path.join(TEMPDIR, name))
@@ -460,7 +460,7 @@ class VMware(Target):
 			('%s/%s.vmdk' % (options.product, options.product), vmdk),
 			('%s/%s.vmxf' % (options.product, options.product), create_vmxf(machine_uuid, options.product)),
 			('%s/%s.vmx' % (options.product, options.product), create_vmx(options.product, image_uuid, options)),
-			('%s/%s.vmsd' % (options.product, options.product), ""),
+			('%s/%s.vmsd' % (options.product, options.product), b""),
 		]
 		pkzip = Pkzip(files)
 		shutil.copyfile(pkzip.path(), archive_name)
