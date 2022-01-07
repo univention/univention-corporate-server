@@ -29,14 +29,35 @@
 # <https://www.gnu.org/licenses/>.
 
 import json
-from multiprocessing import managers, Manager
+from multiprocessing import managers
 
 from setproctitle import getproctitle, setproctitle
 
 proctitle = getproctitle()
-setproctitle(proctitle + '   # multiprocessing manager')
-shared_memory = Manager()
-setproctitle(proctitle)
+
+
+class _SharedMemory(managers.SyncManager):
+
+	children = {}
+	queue = {}
+	search_sessions = {}
+	authenticated = {}
+
+	def start(self, *args, **kwargs):
+		setproctitle(proctitle + '   # multiprocessing manager')
+		try:
+			super(_SharedMemory, self).start(*args, **kwargs)
+		finally:
+			setproctitle(proctitle)
+
+		# we must create the parent dictionary instance before forking but after python importing
+		self.children = self.dict()
+		self.queue = self.dict()
+		self.search_sessions = self.dict()
+		self.authenticated = self.dict()
+
+
+shared_memory = _SharedMemory()
 
 
 class JsonEncoder(json.JSONEncoder):
