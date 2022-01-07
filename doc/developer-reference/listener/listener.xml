@@ -924,7 +924,7 @@ univention-directory-listener-verify \
 					<para>
 						The UCS-specific overlay-module <filename>translog</filename> assigns the next transaction number.
 						It uses the file <filename>/var/lib/univention-ldap/last_id</filename> to keep track of the last transaction number.
-						As a fallback the transaction number of the last entry from the file <filename>/var/lib/univention-ldap/notify/transaction</filename> is used.
+						As a fallback the transaction number of the last entry from the file <filename>/var/lib/univention-ldap/listener/listener</filename> or <filename>/var/lib/univention-ldap/notify/transaction</filename> is used.
 						The module appends the transaction <abbrev>ID</abbrev>, <abbrev>DN</abbrev> and change type to the file <filename>/var/lib/univention-ldap/listener/listener</filename><footnote><simpara>Referred to as <varname>FILE_NAME_LISTENER</varname>, <varname>TRANSACTION_FILE</varname> in the source code</simpara></footnote>.
 					</para>
 				</step>
@@ -933,6 +933,7 @@ univention-directory-listener-verify \
 						The &ucsUDN; watches that file and waits until it becomes non empty.
 						The file is then renamed to <filename>/var/lib/univention-ldap/listener/listener.priv</filename><footnote><simpara>Referred to as <varname>FILE_NAME_NOTIFIER_PRIV</varname></simpara></footnote> and the original files is re-created empty.
 						The transactions from the renamed file are processed line-by-line and are appended to the file <filename>/var/lib/univention-ldap/notify/transaction</filename><footnote><simpara>Referred to as <varname>FILE_NAME_TF</varname> in the source code</simpara></footnote>, including the <abbrev>DN</abbrev>.
+						Since protocol version 3 the notifier also stores the same information within the LDAP server by creating the entry <uri>reqSession=<replaceable>ID</replaceable>,cn=translog</uri>.
 						After successful processing the renamed file is deleted.
 						For efficient access by transaction ID the index <filename>transaction.index</filename> is updated.
 					</para>
