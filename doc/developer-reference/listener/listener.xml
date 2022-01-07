@@ -777,6 +777,9 @@ def postrun() -> None:
 							But &ucsManagedNode; do not have a local LDAP server, so there the cache is needed.
 							Also note that the cache keeps track of the associated listener modules, which is not available from the LDAP.
 						</para>
+						<para>
+							It also contains the <ulink url="https://help.univention.com/t/howto-update-listener-cachemasterentry/13149" lang="">CacheMasterEntry</ulink>, which stores the notifier and schema ID.
+						</para>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
@@ -800,7 +803,7 @@ def postrun() -> None:
 					<term><filename>notifier_id</filename></term>
 					<listitem>
 						<para>
-							This file contains the last <firstterm>notifier ID</firstterm> read from the &ucsUDN;.
+							This legacy file contains the last <firstterm>notifier ID</firstterm> read from the &ucsUDN;.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -955,14 +958,15 @@ univention-directory-listener-verify \
 				</step>
 				<step>
 					<para>
-						The old state of the object is fetched from the local listener cache located in <filename class="directory">/var/lib/univention-directory-listener/cache/</filename>.
+						The old state of the object is fetched from the local <link linkend="listener:details:cache">listener cache</link> located in <filename class="directory">/var/lib/univention-directory-listener/cache/</filename>.
 					</para>
 				</step>
 				<step>
 					<para>
 						For each module it is checked, if either the old or new state of the object matches the <varname>filter</varname> and <varname>attributes</varname> specified in the corresponding Python variables.
 						If not, the module is skipped.
-						<filename>replication.py</filename> is always called first to guarantee that the data is available from the local LDAP server for all subsequent modules.
+						By default <filename>replication.py</filename> is always called first to guarantee that the data is available from the local LDAP server for all subsequent modules.
+						Since <u:erratum release="5.0-0">164</u:erratum> the order of how modules are called can be configured using the per module property <link linkend="udl:mod:priority">priority</link>.
 					</para>
 				</step>
 				<step>
@@ -989,7 +993,8 @@ univention-directory-listener-verify \
 				</step>
 				<step>
 					<para>
-						The transaction ID is written into the local file <filename>/var/lib/univention-directory-listener/notifier_id</filename>.
+						The transaction ID is written into the legacy local file <filename>/var/lib/univention-directory-listener/notifier_id</filename>.
+						It also is written into the <phrase>master record</phrase> of the listener cache.
 					</para>
 				</step>
 				<step>
@@ -1000,6 +1005,42 @@ univention-directory-listener-verify \
 				</step>
 			</procedure>
 		</section>
+
+		<section id="listener:details:schema">
+			<title>LDAP Schema handling
+				<indexterm><primary>LDAP</primary><secondary>Schema</secondary></indexterm>
+				<indexterm><primary>Listener</primary><secondary>Schema replication</secondary></indexterm>
+			</title>
+			<para>
+				The LDAP Schema is managed on the &ucsPrimaryDN;.
+				Extensions must be made available there first.
+				All other systems running LDAP replica download it from there using the &ucsUDN; / &ucsUDL; mechanism.
+			</para>
+			<procedure id="listener:schema:replication">
+				<step>
+					<para>On the &ucsPrimaryDN; the LDAP Schema is extracted by the script <filename>/etc/init.d/slapd</filename> on each start.
+					The MD5 hash is stored in <filename>/var/lib/univention-ldap/schema/md5</filename>.</para>
+				</step>
+				<step>
+					<para>On each change the counter in file <filename>/var/lib/univention-ldap/schema/id/id</filename> is incremented.</para>
+				</step>
+				<step>
+					<para>&ucsUDN; monitors that file and makes the value available over the network.
+					It can be queried by running <command>/usr/share/univention-directory-listener/get_notifier_id.py -s</command>.</para>
+				</step>
+				<step>
+					<para>&ucsUDL; retrieves the value during each transaction.
+					It is  stored in the local file <filename>/var/lib/univention-ldap/schema/id/id</filename> and in the <property>CacheMasterEntry</property> of the <link linkend="listener:details:cache">listener cache</link>.</para>
+				</step>
+				<step>
+					<para>On change the Listener downloads the current Schema from the LDAP server of the &ucsPrimaryDN;, saves it to the local schema file <filename>/var/lib/univention-ldap/schema.conf</filename> and restarts the local service <systemitem class="service">slapd</systemitem>.</para>
+				</step>
+				<step>
+					<para>The Listener then continues processing transactions.</para>
+				</step>
+			</procedure>
+		</section>
+
 		<section id="listener:python-migration">
 			<title>Python 3 Migration
 				<indexterm><primary>Python 3</primary><secondary>Migration</secondary></indexterm>
