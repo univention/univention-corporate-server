@@ -56,4 +56,7 @@ univention-portal add-umc-default
 univention-portal update
 systemctl restart univention-portal-server
 
+#configuration for portal when apache2/force_https is setting true
+ucr set apache2/force_https/exclude/request_uri/univention-portal=/univention/get
+
 exit 0

@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-portal
+fix:
+desc: |
+ This update addresses the following issue:
+ * univention-portal post-install configuration for https, when the
+   ucr registry "apache2/force_https" is setting to yes
+bug: [53296]
