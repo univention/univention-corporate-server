@@ -1,3 +1,10 @@
+univention-samba (14.0.5-4) unstable; urgency=medium
+
+  * Bug #54200: Revert username map script, not needed anymore due
+    the new samba patch
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 10 Jan 2022 20:46:21 +0100
+
 univention-samba (14.0.5-3) unstable; urgency=medium
 
   * Bug #54013: Configure username map script for nss_ldap
