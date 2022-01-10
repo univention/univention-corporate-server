@@ -28,6 +28,11 @@ UCS base appliance, setup as primary with, installation of ad connector, promote
 - **Templates:** ``
 - **Usage:** `DOCKER=true ./utils/start-test.sh scenarios/base/ucs-win2012.cfg`
 
+## ucs-primary-with-200000-users.cfg
+UCS pre-joined primary with 200000 user objects.
+- **Templates:** `[ucsver]_ucs-primary-with-200000-users`
+- **Usage:** `DOCKER=true ./utils/start-test.sh scenarios/base/ucs-primary-with-200000-users.cfg`
+
 ### to test
 - ucs-master-backup-joined.cfg
 - w2k19-ad-example-org.cfg
