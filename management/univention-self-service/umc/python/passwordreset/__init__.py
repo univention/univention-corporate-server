@@ -78,13 +78,11 @@ DEREGISTRATION_TIMESTAMP_FORMATTING = '%Y%m%d%H%M%SZ'
 
 if IS_SELFSERVICE_MASTER:
 	try:
-		from univention.management.console.modules.udm.syntax import widget
 		from univention.management.console.modules.udm.udm_ldap import UDM_Error, UDM_Module
 		from univention.udm import UDM, NoObject
 		from univention.admin.rest.client import UDM as UDMRest
 	except ImportError as exc:
 		MODULE.error('Could not load udm module: %s' % (exc,))
-		widget = None
 
 
 def forward_to_master(func):
@@ -435,7 +433,7 @@ class Instance(Base):
 				'readonly': not bool(prop.editable),
 				'multivalue': bool(prop.multivalue),
 			}
-			widget_description.update(widget(prop.syntax, widget_description))
+			widget_description.update(prop.syntax.get_widget_options(prop))
 			if 'udm' in widget_description['type']:
 				continue
 			if 'dynamicValues' in widget_description:

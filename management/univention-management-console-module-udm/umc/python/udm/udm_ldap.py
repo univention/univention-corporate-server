@@ -59,8 +59,6 @@ import univention.admin.syntax as udm_syntax
 import univention.admin.uexceptions as udm_errors
 import univention.admin.mapping as udm_mapping
 
-from univention.management.console.modules.udm.syntax import widget
-
 from ldap import LDAPError, NO_SUCH_OBJECT
 from ldap.filter import filter_format
 from ldap.dn import explode_dn
@@ -980,7 +978,7 @@ class UDM_Module(object):
 					item['default'] = default_group
 
 			# read UCR configuration
-			item.update(widget(prop.syntax, item))
+			item.update(prop.syntax.get_widget_options(prop))
 
 			if prop.nonempty_is_default and 'default' not in item:
 				# Some properties have an empty value as first item.

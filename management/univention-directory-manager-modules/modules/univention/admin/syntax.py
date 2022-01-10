@@ -185,6 +185,15 @@ def update_choices():
 		func()
 
 
+def _default_widget_options(syntax):
+	return {
+		'dynamicValues': 'udm/syntax/choices',
+		'dynamicOptions': {
+			'syntax': syntax.name,
+		},
+	}
+
+
 def is_syntax(syntax_obj, syntax_type):
 	# type: (Any, Type) -> bool
 	"""
@@ -282,6 +291,74 @@ class ISyntax(object):
 	def get_widget(cls, prop):
 		return cls.widget
 
+	def get_widget_options(self, udm_property):
+		widget_name = self.get_widget(udm_property)
+		if widget_name is None:
+			ud.debug(ud.ADMIN, ud.PROCESS, 'Could not convert UDM syntax %s' % (self,))
+			return {}
+
+		ud.debug(ud.ADMIN, ud.INFO, 'Find choices for syntax %s' % (self.name,))
+		descr = {'type': widget_name}
+
+		opts = self.get_widget_choices_options(udm_property)
+		if opts is None:  # TODO: move into Isyntax.get_widget_choices_options?
+			empty_value = [{'id': '', 'label': ''}] if getattr(self, 'empty_value', False) else []
+			opts = {
+				'staticValues': empty_value + [{'id': _[0], 'label': _[1], } for _ in getattr(self, 'choices', [])],
+			}
+		descr.update(opts)
+
+		if getattr(self, 'depends', None) is not None:
+			descr.setdefault('dynamicOptions', {})
+			descr['dynamicOptions']['$name$'] = self.depends
+			descr['depends'] = self.depends
+
+		def subsyntaxes(udm_property):
+			"""
+			Returns a list of dictionaries describing the sub types of a
+			complex syntax.
+			"""
+			udm_prop = copy.copy(udm_property)
+			udm_prop.multivalue = False
+
+			def subtypes_dict(item):
+				"""
+				Return a single sub type dictionary.
+				"""
+				label, subsyn = item
+				elem = subsyn().get_widget_options(udm_prop)
+				elem['size'] = subsyn.size
+				elem['label'] = label
+				return elem
+
+			return [subtypes_dict(_) for _ in getattr(self, 'subsyntaxes', [])]
+
+		subtypes = subsyntaxes(udm_property)
+		ud.debug(ud.ADMIN, ud.INFO, "Syntax %s has the following choices: %s" % (self.name, descr))
+		if subtypes:
+			ud.debug(ud.ADMIN, ud.INFO, "Syntax %s has the following sub-types: %s" % (self.name, subtypes))
+			descr['subtypes'] = subtypes
+		if descr['type'] == 'LinkList':
+			descr['multivalue'] = False
+		elif 'MultiObjectSelect' in descr['type']:
+			descr['multivalue'] = False
+		elif udm_property.multivalue and descr['type'] != 'MultiInput':
+			descr['subtypes'] = [{
+				'type': descr['type'],
+				'dynamicValues': descr.get('dynamicValues'),
+				'dynamicValuesInfo': descr.get('dynamicValuesInfo'),
+				'dynamicOptions': descr.get('dynamicOptions'),
+				'staticValues': descr.get('staticValues'),
+				'size': descr.get('size'),
+				'depends': descr.get('depends'),
+			}]
+			descr['type'] = 'MultiInput'
+
+		return descr
+
+	def get_widget_choices_options(self, udm_property):
+		return None
+
 
 class simple(ISyntax):
 	"""
@@ -377,6 +454,14 @@ class select(ISyntax):
 			choices.insert(0, ('', ''))
 
 		return choices
+
+	def get_widget_choices_options(self, udm_property):
+		opts = None
+		if self.depends:
+			opts = {
+				'dynamicValues': 'javascript:umc/modules/udm/callbacks:setDynamicValues',
+			}
+		return opts
 
 
 class combobox(select):
@@ -751,6 +836,14 @@ class UDM_Objects(ISyntax):
 			choices.insert(0, ('', ''))
 		return choices
 
+	def get_widget_choices_options(self, udm_property):
+		if udm_property.multivalue and len(self.udm_modules) == 1 and not self.simple:
+			return {'objectType': self.udm_modules[0]}
+
+		opts = _default_widget_options(self)
+		opts['dynamicValuesInfo'] = 'udm/syntax/choices/info'
+		return opts
+
 
 class UDM_Attribute(ISyntax):
 	"""
@@ -851,6 +944,11 @@ class UDM_Attribute(ISyntax):
 		if cls.empty_value:
 			choices.insert(0, ('', ''))
 		return choices
+
+	def get_widget_choices_options(self, udm_property):
+		opts = _default_widget_options(self)
+		opts['dynamicValuesInfo'] = 'udm/syntax/choices/info'
+		return opts
 
 
 class none(simple):
@@ -3246,6 +3344,9 @@ class ldapDn(simple):
 			for dn in result
 		], key=lambda x: x[1])
 
+	def get_widget_choices_options(self, udm_property):
+		return _default_widget_options(self)
+
 
 class UMC_OperationSet(UDM_Objects):
 	"""
@@ -3407,6 +3508,9 @@ class ldapDnOrNone(simple):
 		if self._re.match(text) is not None:
 			return text
 		raise univention.admin.uexceptions.valueError(_("Not a valid LDAP DN"))
+
+	def get_widget_choices_options(self, udm_property):
+		return _default_widget_options(self)
 
 
 class _ClassChoices(type):
@@ -4075,6 +4179,11 @@ class network(UDM_Objects):
 	description = _('Network')
 	label = '%(name)s'
 	empty_value = True
+
+	def get_widget_choices_options(self, udm_property):
+		opts = super(network, self).get_widget_choices_options(udm_property)
+		opts['onChange'] = 'javascript:umc/modules/udm/callbacks:setNetwork'
+		return opts
 
 
 class IP_AddressList(ipAddress, select):
@@ -5626,6 +5735,21 @@ class LDAP_Search(select):
 			choices.append({'id': '', 'label': ''})
 
 		return choices
+
+	def get_widget_choices_options(self, udm_property):
+		opts = _default_widget_options(self)
+		opts['dynamicOptions']['options'] = {
+			'syntax': self.name,
+			'filter': self.filter,
+			'viewonly': self.viewonly,
+			'base': getattr(self, 'base', ''),
+			'value': self.value,
+			'attributes': self.attributes,
+			'empty': self.addEmptyValue,
+			'empty_end': self.appendEmptyValue,
+		}
+		opts['sortDynamicValues'] = not self.appendEmptyValue
+		return opts
 
 
 class nfsShare(UDM_Objects):
