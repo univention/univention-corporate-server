@@ -6,5 +6,8 @@ src: samba
 fix: 2:4.13.13-1A~5.0.0.202201091710
 desc: |
  This update addresses the following issue:
- * TODO
+ * Symlink race error can allow directory creation outside of the exported share.
+ * Please see also https://help.univention.com/t/19188 for additional recommendations.
 bug: [54015]
+cve:
+ - CVE-2021-43566
