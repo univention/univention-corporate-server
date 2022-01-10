@@ -33,7 +33,7 @@ UCS pre-joined primary with 200000 user objects.
 - **Templates:** `[ucsver]_ucs-primary-with-200000-users`
 - **Usage:** `DOCKER=true ./utils/start-test.sh scenarios/base/ucs-primary-with-200000-users.cfg`
 
-### to test
+## to test
 - ucs-master-backup-joined.cfg
 - w2k19-ad-example-org.cfg
 - school.cfg
