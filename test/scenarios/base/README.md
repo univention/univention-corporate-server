@@ -1,6 +1,8 @@
 # Example cfg files
 Example cfg files for ucs-kt-get/start-test.sh to create various test environments. 
 
+[[_TOC_]]
+
 ## ucs-samba-env1-primary-replica.cfg
 Joined UCS primary and replica, both as samba DC's.
 - **Templates:** `[ucsver]_ucs-samba-env1-primary`, `[ucsver]_ucs-samba-env1-replica`
