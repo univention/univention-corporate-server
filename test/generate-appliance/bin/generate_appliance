@@ -279,18 +279,20 @@ class Tar(File):
 			archive = tarfile.TarFile(name=target, mode='w', format=self._format)
 			for name, source_file in self._file_list:
 				log('  %s' % (name,))
-				if isinstance(source_file, bytes):
-					handle = BytesIO(source_file)  # type: IO[bytes]
-				else:
-					handle = open(source_file.path(), 'r')
 				info = tarfile.TarInfo(name)
 				info.uname = info.gname = 'someone'
 				info.mode = stat.S_IRUSR | stat.S_IWUSR
-				handle.seek(0, os.SEEK_END)
-				info.size = handle.tell()
-				handle.seek(0, os.SEEK_SET)
+				if isinstance(source_file, bytes):
+					info.size = len(source_file)
+					handle = BytesIO(source_file)  # type: IO[bytes]
+				else:
+					info.size = source_file.size()
+					handle = open(source_file.path(), 'rb')
+
 				archive.addfile(info, handle)
+
 			archive.close()
+
 		self._path = target
 		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
 
