@@ -1,3 +1,9 @@
+ucs-test (9.0.7-83) unstable; urgency=medium
+
+  * Bug #54229: test saml message is updated in umc server process 
+
+ -- Fabian Wilhelm <wilhelm@univention.de>  Tue, 11 Jan 2022 15:12:04 +0100
+
 ucs-test (9.0.7-82) unstable; urgency=medium
 
   * Bug #48956: The test 52proofuniquemember required refint to be disabled
