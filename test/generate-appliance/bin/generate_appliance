@@ -87,7 +87,6 @@ import boto
 import boto.ec2
 import lxml.builder
 import lxml.etree
-import VMDKstream
 
 WORKDIR = TEMPDIR = STOREDIR = None
 RE_INVALID = re.compile(r"""[][\t !"#$%&'()*./:;<=>?\\`{|}~]+-""")
@@ -179,16 +178,37 @@ class Raw(File):
 
 
 class Vmdk(File):
-	def __init__(self, raw, streamOptimized=False):
+	DESCRIPTOR = '''# Description file created by VMDK stream converter
+version=1
+# Believe this is random
+CID=7e5b80a7
+# Indicates no parent
+parentCID=ffffffff
+createType="streamOptimized"
+# Extent description
+RDONLY #SECTORS# SPARSE "call-me-stream.vmdk"
+# The Disk Data Base
+#DDB
+ddb.adapterType = "lsilogic"
+# #SECTORS# / 63 / 255 rounded up
+ddb.geometry.cylinders = "#CYLINDERS#"
+ddb.geometry.heads = "255"
+ddb.geometry.sectors = "63"
+# Believe this is random
+ddb.longContentID = "8f15b3d0009d9a3f456ff7b28d324d2a"
+ddb.virtualHWVersion = "11"'''
+
+	def __init__(self, raw, image_descriptor, streamOptimized):
 		assert isinstance(raw, Raw)
 		self._raw = raw
+		self.image_descriptor = image_descriptor or self.DESCRIPTOR
 		self._streamOptimized = streamOptimized
 		File.__init__(self)
 
 	@property
 	@File.hashed
 	def hash(self):
-		return (Vmdk, VMDKstream.image_descriptor_template, self._raw.hash, self._streamOptimized)
+		return (Vmdk, self.image_descriptor, self._raw.hash, self._streamOptimized)
 
 	def _create(self):
 		self._raw.path()
@@ -198,17 +218,10 @@ class Vmdk(File):
 		if not os.path.exists(store):
 			os.mkdir(store)
 			output = os.path.join(TEMPDIR, 'image.vmdk')
-			if self._streamOptimized:
-				log('Creating VMDK (streamOptimized)')
-				# qemu-img 1.1 is broken
-				# cmd = ('qemu-img','convert','-f','raw','-O','vmdk','-o','subformat=streamOptimized', self._raw.path(), 'image.vmdk')
-				# subprocess.check_call(cmd, cwd=TEMPDIR)
-				# use VMDKstream instead
-				VMDKstream.convert_to_stream(self._raw.path(), output)
-			else:
-				log('Creating VMDK (monolithic)')
-				cmd = ('qemu-img', 'convert', '-p', '-f', 'raw', '-O', 'vmdk', '-o', 'subformat=monolithicSparse', self._raw.path(), 'image.vmdk')
-				subprocess.check_call(cmd, cwd=TEMPDIR, stdout=sys.stderr)
+			fmt = "streamOptimized" if self._streamOptimized else "monolithicSparse"
+			log('Creating VMDK (%s)' % (fmt,))
+			cmd = ('qemu-img', 'convert', '-p', '-f', 'raw', '-O', 'vmdk', '-o', 'subformat=%s' % (fmt,), self._raw.path(), 'image.vmdk')
+			subprocess.check_call(cmd, cwd=TEMPDIR, stdout=sys.stderr)
 			os.rename(output, target)
 		self._path = target
 		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
@@ -446,9 +459,10 @@ class VMware(Target):
 		image_uuid = uuid.uuid4()
 		if os.path.exists(archive_name):
 			raise IOError('Output file %r exists' % (archive_name,))
+		vmdk = Vmdk(image)
 		files = [
 			('%s/' % (options.product,), None),
-			('%s/%s.vmdk' % (options.product, options.product), Vmdk(image)),
+			('%s/%s.vmdk' % (options.product, options.product), vmdk),
 			('%s/%s.vmxf' % (options.product, options.product), create_vmxf(machine_uuid, options.product)),
 			('%s/%s.vmx' % (options.product, options.product), create_vmx(options.product, image_uuid, options)),
 			('%s/%s.vmsd' % (options.product, options.product), ""),
@@ -663,8 +677,8 @@ class OVA_Virtualbox(Target):
 		image_uuid = uuid.uuid4()
 		if os.path.exists(archive_name):
 			raise IOError('Output file %r exists' % (archive_name,))
-		# HACK: change image descriptor to expected format
-		VMDKstream.image_descriptor_template = """# Disk DescriptorFile
+		# change image descriptor to expected format
+		image_descriptor = """# Disk DescriptorFile
 version=1
 CID=4fd3c93e
 parentCID=ffffffff
@@ -695,9 +709,10 @@ ddb.comment=""
 			image_name, image.size(), image_uuid,
 			options,
 		)
+		vmdk = Vmdk(image, image_descriptor, streamOptimized=True)
 		files = [
 			(descriptor_name, descriptor),
-			(image_name, Vmdk(image, streamOptimized=True)),
+			(image_name, vmdk),
 		]
 		ova = Tar(files)
 		shutil.copyfile(ova.path(), archive_name)
@@ -1037,8 +1052,8 @@ class OVA_ESXi(Target):
 			archive_name = '%s-ESX.ova' % (options.filename,)
 		if os.path.exists(archive_name):
 			raise IOError('Output file %r exists' % (archive_name,))
-		# HACK: change image descriptor to expected format
-		VMDKstream.image_descriptor_template = """# Disk DescriptorFile
+		# change image descriptor to expected format
+		image_descriptor = """# Disk DescriptorFile
 version=1\x20
 CID=b9478e33\x20
 parentCID=ffffffff\x20
@@ -1061,14 +1076,15 @@ ddb.geometry.sectors="63"
 ddb.longContentID = "6c27be515acd422fbdb62c0afffffffe"
 ddb.virtualHWVersion = "7"
 """
+		vmdk = Vmdk(image, image_descriptor, streamOptimized=True)
 		descriptor = create_ovf_descriptor_esxi(
-			image_name, image.size(), Vmdk(image, streamOptimized=True).size(),
+			image_name, image.size(), vmdk.size(),
 			image.used_size(),
 			options,
 		)
 		files = [
 			(descriptor_name, descriptor),
-			(image_name, Vmdk(image, streamOptimized=True)),
+			(image_name, vmdk),
 		]
 		ova = Tar(files)
 		shutil.copyfile(ova.path(), archive_name)
