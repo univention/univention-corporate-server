@@ -7,9 +7,9 @@ fix: 2:4.13.13-1A~5.0.0.202201101954
 desc: |
  This update addresses the following issues:
  * Symlink race error can allow directory creation outside of
-   the exported share. (CVE-2021-43566)
- * Please see also https://help.univention.com/t/19188 for additiona
-   recommendations.
+   the exported share. Please see also
+   https://help.univention.com/t/19188
+   for additional recommendations. (CVE-2021-43566)
  * The access to homeshares via NTLM authentication on memberservers
    has been fixed.
 bug: [54015, 54200]
