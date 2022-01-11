@@ -4,6 +4,8 @@ This directory holds files for creating ucs-kt-get (KVM) templates. With these
 templates you can easily set up UCS domains without
 provisioning/configuration.
 
+_[TOC]_
+
 ## Template Life cycle
 <details><summary>Click to expand</summary>
 
@@ -17,10 +19,12 @@ provisioning/configuration.
 
 </details>
 
-### generic-unsafe - based on current DVD
+## Available templates
+
+### generic-unsafe
 - **Description:** base template for standard test, basically a UCS appliance, not provisioned/joined
 - **Example:** -
-- **Base template:** DVD
+- **Base template:** current DVD
 ### ucs-master|ucs-backup|ucs-slave|ucs-member
 - **Description:** master, backup, slave and member, all DHCP, domain: autotest.local, master is joined, all other systems provisioned (but not joined)
 - **Example:** [scenarios/base/ucs-master-backup.cfg](../base/ucs-master-backup.cfg)
@@ -36,6 +40,10 @@ provisioning/configuration.
 ### ucs-samba-env1-primary|ucs-samba-env1-replica
 - **Description:** Primary and replica, both samba DS's (primary is S4 connector), all DHCP, domain: samba.test
 - **Example:** [scenarios/base/ucs-samba-env1-primary-replica.cfg](../base/ucs-samba-env1-primary-replica.cfg)
+- **Base template:** generic-unsafe
+### primary-with-200000-users-kvm-template
+- **Description:** Primary with 200000 user objects and 200 groups, DHCP, FQDN: primary.ucs.test
+- **Example:** [scenarios/base/ucs-primary-with-200000-users.cfg](../base/ucs-primary-with-200000-users.cfg)
 - **Base template:** generic-unsafe
   
 ## Usage
