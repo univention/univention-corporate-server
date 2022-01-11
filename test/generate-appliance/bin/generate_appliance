@@ -316,9 +316,10 @@ class Target(object):
 		raise NotImplementedError()
 
 
-def encode_vmware_uuid(universally_unique_identifier):
-	encoded = ' '.join(re.findall('..', universally_unique_identifier.hex))
-	return encoded[:23] + '-' + encoded[24:]
+def encode_vmware_uuid(u):
+	# <https://kb.vmware.com/s/article/1880>
+	FMT = "-".join([" ".join(["{}{}"] * 8)] * 2)
+	return FMT.format(*u.hex)
 
 
 def create_vmxf(machine_uuid, image_name):
