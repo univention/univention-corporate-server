@@ -292,6 +292,26 @@ wait_for_replication () {
 	return 0
 }
 
+wait_for_process () {
+	local timeout=${1:-3600}
+	local steps=${2:-10}
+	local process_name=${3:?Missing process name}
+	local timestamp=$(date +"%s")
+	echo "Waiting for process '$process_name'..."
+	while ! pgrep -f "$process_name" >/dev/null; do
+		if [ $((timestamp+timeout)) -lt $(date +"%s") ]; then
+			echo "ERROR: process '$process_name' does not run."
+			return 1
+		fi
+		sleep $steps
+	done
+	return 0
+}
+
+wait_for_slapd () {
+  wait_for_process 600 1 /usr/sbin/slapd
+}
+
 wait_for_setup_process () {
 	local i
 	local setup_file="/var/www/ucs_setup_process_status.json"
