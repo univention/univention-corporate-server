@@ -62,13 +62,13 @@ To create the template add the following steps for every system in the scenario 
  SSH_DISCONNECT
  SERVER virsh event --domain "[replica_KVM_NAME]" --event lifecycle --timeout 120
  SOURCE ucs.ver
- SERVER ucs-kt-put -C single -O Others -c "[replica_KVM_NAME]" "[ucsver]_ucs-samba-replica_amd64"
+ SERVER ucs-kt-put -C single -O Others -c "[replica_KVM_NAME]" "[ucsver]_ucs-samba-replica_amd64" --remove-old-templates='[ENV:TARGET_VERSION]+e*_ucs-samba-replica_amd64.tar.gz' --keep-last-templates=1
 ```
 A naming convention is that the template name should start with the UCS version (including errata level, e.g. 5.0-0+e152). This is the first part in the example above.
 
 _replica_KVM_NAME_ is the name of the instance on the KVM server, _replica_ is the name of the section (hostname) in the scenario file and has to be replaced.
 
-At the end _ucs-kt-put_ is used to create the actual template, _-C single_ and _-O Others_ is the section for the template, _-c_ for compression the template, _[replica_KVM_NAME]_ is the name of the instance and _[ucsver]_ucs-samba-replica_amd64_ the name of the template.
+At the end _ucs-kt-put_ is used to create the actual template, _-C single_ and _-O Others_ is the section for the template, _-c_ for compression the template, _[replica_KVM_NAME]_ is the name of the instance and _[ucsver]_ucs-samba-replica_amd64_ the name of the template. To not fill up disk space _ucs-kt-put_ has a built in mechanism to remove old templates. With _--remove-old-templates_  a pattern for removing template files can be given and with _--keep-last-templates_ how many files should be kept (before creating the new template). In the example above only two versions of the template _5.0-0+e*_ucs-samba-replica_amd64.tar.gz_ are kept.
 
 In this example we create a template with the name _5.0-0+e152_ucs-samba-replica_amd64.tar.gz_.
 
