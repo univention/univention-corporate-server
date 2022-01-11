@@ -6,5 +6,6 @@ src: univention-samba
 fix: 14.0.5-4A~5.0.0.202201102049
 desc: |
  This update addresses the following issue:
- * The access to homeshares via NTLM authentication on memberservers has been fixed.
+ * The access to homeshares via NTLM authentication on memberservers
+   has been fixed.
 bug: [54200]
