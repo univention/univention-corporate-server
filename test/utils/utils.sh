@@ -271,9 +271,6 @@ wait_for_reboot () {
 	fi
 	# Wait a little bit more otherwise other services are not available
 	sleep 30
-	# stop kdm
-	[ -e /etc/init.d/kdm ] && /etc/init.d/kdm stop || true
-	service kdm stop || true
 	return $rv
 }
 
