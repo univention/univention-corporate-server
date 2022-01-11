@@ -6,7 +6,7 @@ src: univention-directory-notifier
 fix: 14.0.5-7A~5.0.0.202112231026
 desc: |
  This update addresses the following issue:
- * If the number of transaction was lower than 1000,
+ * If the number of transactions was lower than 1000,
    only a partial number of transactions has been
    imported during the join of a backup.
 bug: [54203]

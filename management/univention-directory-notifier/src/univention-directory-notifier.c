@@ -154,7 +154,7 @@ unsigned long long parse_ullong(char *str) {
 	char *endptr;
 
 	notifier_cache_size = strtoull(str, &endptr, 10);
-	if (strtoll(str, NULL, 10) > 0) { // can legitimately return 0, LONG_MAX, or LONG_MIN 
+	if (strtoll(str, NULL, 10) > 0) { // can legitimately return 0, LONG_MAX, or LONG_MIN
 		errno = 0;
 		if ((errno == ERANGE && notifier_cache_size == ULLONG_MAX)
 				|| (errno != 0 && notifier_cache_size == 0)) {
