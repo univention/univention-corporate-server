@@ -1,3 +1,9 @@
+ucs-test (9.0.7-84) unstable; urgency=medium
+
+  * Bug #54229: Add missing commit
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 12 Jan 2022 21:42:54 +0100
+
 ucs-test (9.0.7-83) unstable; urgency=medium
 
   * Bug #54229: test saml message is updated in umc server process 
