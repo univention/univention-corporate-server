@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: vim
+fix: 2:8.0.0197-4+deb9u4
+desc: |
+ This update addresses the following issues:
+ * Sets the group ownership of a .swp file to the editor's primary group
+   (CVE-2017-17087)
+ * users can execute arbitrary OS commands via scripting interfaces in the
+   rvim restricted mode (CVE-2019-20807)
+ * heap-based buffer overflow in utf_ptr2char() in mbyte.c (CVE-2021-3778)
+ * use-after-free in nv_replace() in normal.c (CVE-2021-3796)
+bug: [54326]
+cve:
+- CVE-2017-17087
+- CVE-2019-20807
+- CVE-2021-3778
+- CVE-2021-3796
