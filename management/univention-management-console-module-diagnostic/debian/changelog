@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.0-17) unstable; urgency=medium
+
+  * Bug #53306: fix python3 compatability of exception handling
+
+ -- Maximilian Janßen <janssen@univention.de>  Wed, 12 Jan 2022 16:58:50 +0100
+
 univention-management-console-module-diagnostic (6.0.0-16) unstable; urgency=medium
 
   *  Bug #54264: Fixup suggestions for Diagnostic module for UCR notifier/protocol/version

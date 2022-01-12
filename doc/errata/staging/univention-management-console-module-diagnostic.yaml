@@ -9,5 +9,7 @@ desc: |
  * univention-run-diagnostic-checks now offers to run a group of tests
    and also to exclude some of the tests.
  * A diagnostic module has been added to check the UCR variable
-   notifier/protocol/version
-bug: [53969, 54264]
+   notifier/protocol/version.
+ * The Python 3 compatability when handling exceptions in certain
+   diagnostic plugins has been corrected.
+bug: [53969, 54264, 53306]

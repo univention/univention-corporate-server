@@ -153,7 +153,7 @@ def check_existence_and_consistency():
 		except KeyError as error:
 			# If nothing is found, we search for an user/group with the
 			# (mapped) name and check if there is a SID mismatch.
-			yield SIDNotFound(error.message, mapped_name)
+			yield SIDNotFound(str(error), mapped_name)
 			try:
 				actual_sid = ldap_connection.get_by_name(mapped_name)
 			except KeyError:

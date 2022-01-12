@@ -51,7 +51,7 @@ run_descr = ['Checking S4-Connector rejects. Similar to running: univention-s4co
 
 class MissingConfigurationKey(KeyError):
 	def __str__(self):
-		return '{}: {}'.format(self.__class__.__name__, self.message)
+		return '{}: {}'.format(self.__class__.__name__, super().__str__())
 
 
 def get_s4_connector(configbasename='connector'):
@@ -95,8 +95,8 @@ def run(_umc_instance):
 		s4 = get_s4_connector()
 	except MissingConfigurationKey as error:
 		error_description = _('The UCR variable {variable!r} is unset, but necessary for the S4 Connector.')
-		MODULE.error(error_description.format(variable=error.message))
-		raise Critical(description=error_description.format(variable=error.message))
+		MODULE.error(error_description.format(variable=str(error)))
+		raise Critical(description=error_description.format(variable=str(error)))
 
 	ucs_rejects = list(get_ucs_rejected(s4))
 	s4_rejects = list(get_s4_rejected(s4))
