@@ -8,6 +8,8 @@ print('')
 if configRegistry.get('ldap/translogfile'):
 	print("overlay\t\ttranslog")
 	print("translog\t%s" % configRegistry['ldap/translogfile'])
+if configRegistry.is_true('ldap/translog-ignore-temporary'):
+	print("translog-ignore-temporary\ttrue")
 if configRegistry.is_true('ldap/k5pwd', True):
 	print("overlay\t\tk5pwd")
 if configRegistry.is_true('ldap/pwd_scheme_kinit', True):

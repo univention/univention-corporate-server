@@ -1,3 +1,9 @@
+univention-ldap (15.0.3-9) unstable; urgency=medium
+
+  * Bug #48626: Make configurable that ldap ignores temporary objects.
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 11 Feb 2022 14:06:07 +0100
+
 univention-ldap (15.0.3-8) unstable; urgency=medium
 
   * Bug #49033: Fixed file permissions for /etc/machine.secret.SAVE

@@ -12,6 +12,12 @@ Type=str
 Categories=service-ldap
 ReadOnly=yes
 
+[ldap/translog-ignore-temporary]
+Description[de]=Diese Variable kontrolliert, ob temporäre LDAP Objekte vom translog Modul verarbeitet werden sollen. Standardmäßig ist dies aktiviert. Nach der Änderung muss 'systemctl restart slapd' ausgeführt werden.
+Description[en]=This variable controls if temporary LDAP objects should be processed by the 'translog' module. By default it is enabled. After setting it 'systemctl restart slapd' must be executed.
+Type=bool
+Categories=service-ldap
+
 [slapd/port]
 Description[de]=Diese Variable konfiguriert die Ports, unter denen der LDAP-Server auf unverschlüsselte und TLS-gesicherte LDAP-Anfragen antwortet. Mehrere Ports müssen mit Komma getrennt werden. Ist die Variable nicht gesetzt, gilt 7389.
 Description[en]=This variable configures the ports used by the LDAP server for unencrypted and TLS-secured LDAP requests. Multiple ports need to be separated by commas. If the variable is unset, 7389 applies.

@@ -12,7 +12,7 @@ Architecture: all
 Recommends:
  univention-virtual-machine-manager-schema,
 Pre-Depends:
- slapd (>= 2.4.45+dfsg-1~bpo9+1A~4.4.0.202101261238),
+ slapd (>= 2.4.45+dfsg-1~bpo9+1A~4.4.0.202202111308),
  univention-ldap-client,
 Depends:
  bind9-host,

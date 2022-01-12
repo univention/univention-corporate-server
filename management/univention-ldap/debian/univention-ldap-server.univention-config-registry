@@ -32,6 +32,7 @@ Variables: ldap/index/sub
 Variables: ldap/index/approx
 Variables: ldap/replog
 Variables: ldap/translogfile
+Variables: ldap/translog-ignore-temporary
 Variables: ldap/timeout
 Variables: ldap/online/master
 Variables: ldap/threads
@@ -104,6 +105,7 @@ Variables: ldap/index/pres
 Variables: ldap/index/sub
 Variables: ldap/online/master
 Variables: ldap/translogfile
+Variables: ldap/translog-ignore-temporary
 Variables: ldap/k5pwd
 Variables: ldap/pwd_scheme_kinit
 Variables: ldap/threads
