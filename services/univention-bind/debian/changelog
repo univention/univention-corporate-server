@@ -1,3 +1,10 @@
+univention-bind (14.0.1-6) unstable; urgency=medium
+
+  * Bug #54108: Include info for reload systemctl service after 
+    change dns/timeout-start
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Wed, 12 Jan 2022 10:12:02 +0100
+
 univention-bind (14.0.1-5) unstable; urgency=medium
 
   * Bug #54108: Apply PEP-8 to univention-bind-ldap.service
