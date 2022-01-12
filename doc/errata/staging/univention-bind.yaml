@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-bind
-fix: 14.0.1-5A~5.0.0.202201040910
+fix: 14.0.1-6A~5.0.0.202201121445
 desc: |
  This update addresses the following issue:
  * The UCR variable dns/timeout-start is now also considered
