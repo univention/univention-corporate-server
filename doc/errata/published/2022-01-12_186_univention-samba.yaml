@@ -9,3 +9,5 @@ desc: |
  * The access to homeshares via NTLM authentication on memberservers
    has been fixed.
 bug: [54200]
+erratum: 186
+announced: 2022-01-12
