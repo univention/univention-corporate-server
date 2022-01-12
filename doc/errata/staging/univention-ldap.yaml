@@ -5,10 +5,15 @@ scope: ucs_5.0-0-errata5.0-1
 src: univention-ldap
 fix: 
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * A new LDAP attribute has been introduced with 5.0-1 erratum 100. As
    re-indexing is time consuming the decision was made to delay the indexing
    until 5.0-2 and not to do it via n errata update. Therefore, a manual fix
    for customers is available and the required steps are documented at
    <http://help.univention.com/t/19248>.
-bug: [54092]
+ * A new UCR variable "ldap/translog-ignore-temporary" has been created
+   to control if UDM temporary objects should be considered for replication
+   by the Listener/Notifier mechanism. This variable is applicable only to the
+   UCS Primary Directory Node. For new installations the default is "yes"
+   For updated UCS systems it will not be activated autoamtically.
+bug: [54092, 48626]

@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: openldap
+fix: 2.4.47+dfsg-3+deb10u6A~5.0.0.202201251313
+desc: |
+ This update addresses the following issues:
+ * The behavior of translog was modified to skip temporal grandchildren
+   objects. This behavior can be enabled or disabled with a UCR variable
+   "ldap/translog-ignore-temporary", this is added in the package
+   `univention-ldap`
+bug: [48626]
