@@ -10,3 +10,5 @@ desc: |
    only a partial number of transactions has been
    imported during the join of a backup.
 bug: [54203]
+erratum: 184
+announced: 2022-01-12
