@@ -16,3 +16,5 @@ desc: |
    `listener/listener.priv` if that exists.
  * Log messages of `univention-translog` have been improved.
 bug: [53821]
+erratum: 1149
+announced: 2022-01-12
