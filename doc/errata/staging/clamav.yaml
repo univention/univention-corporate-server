@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: clamav
+fix: 0.103.4+dfsg-0+deb9u1A~4.4.0.202201121248
+desc: |
+ This update addresses the following issues:
+ - Fix for Excel XLM parser infinite loop (CVE-2021-1252)
+ - Fix for PDF parser buffer over-read; possible crash (CVE-2021-1404)
+ - Fix for mail parser NULL-dereference crash (CVE-2021-1405)
+bug: [54330]
+cve:
+- CVE-2021-1252
+- CVE-2021-1404
+- CVE-2021-1405
