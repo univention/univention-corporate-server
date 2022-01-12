@@ -1,3 +1,9 @@
+univention-portal (4.0.5-72) unstable; urgency=medium
+
+  * Bug #53296: explicit use npm@8.1.3 to build the univention-portal package 
+
+ -- Ildefonso González Sánchez <isanchez.extern@univention.de>  Wed, 12 Jan 2022 10:31:31 +0100
+
 univention-portal (4.0.5-71) unstable; urgency=medium
 
   * Bug #53296: set configuration for univention portal using https  
