@@ -11,3 +11,5 @@ desc: |
  * Log error if `listener/listener` file cannot be written.
  * Update `last_id` file atomically.
 bug: [53821]
+erratum: 1150
+announced: 2022-01-12
