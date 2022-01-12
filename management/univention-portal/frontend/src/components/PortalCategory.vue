@@ -91,6 +91,7 @@
           :super-dn="dn"
           :title="tile.title"
           :description="tile.description"
+          :auth_info="tile.auth_info"
           :activated="tile.activated"
           :anonymous="tile.anonymous"
           :background-color="tile.backgroundColor"

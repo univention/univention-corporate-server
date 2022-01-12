@@ -75,7 +75,10 @@
       <span class="portal-tile__name">
         {{ $localized(title) }}
       </span>
-
+        <div v-if="LOA !== 'low'">
+          <div class="loa">LoA</div>
+          <div class="loa-value">{{ LOA }}</div>
+        </div>
       <div class="portal-tile__icon-bar">
         <icon-button
           v-if="!minified && editMode && showEditButtonWhileDragging"
@@ -124,7 +127,7 @@ import TabindexElement from '@/components/activity/TabindexElement.vue';
 import TileClick from '@/mixins/TileClick.vue';
 import Draggable from '@/mixins/Draggable.vue';
 
-import { Title, Description } from '@/store/modules/portalData/portalData.models';
+import { Title, Description, AuthInfo } from '@/store/modules/portalData/portalData.models';
 
 interface PortalTile {
   tileId: string,
@@ -189,6 +192,11 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    // @ts-ignore
+    auth_info: {
+      type: Object as PropType<AuthInfo>,
+      default: () => ({ loa: 'low' }),
+    },
   },
   data(): PortalTile {
     return {
@@ -244,6 +252,12 @@ export default defineComponent({
     },
     anchorTarget(): string {
       return this.linkTarget === 'newwindow' ? '_blank' : '';
+    },
+    LOA(): string {
+      return this.auth_info.loa ?? 'low';
+    },
+    LOAIcon(): string {
+      return `loa-${this.auth_info?.loa ?? 'low'}`;
     },
   },
   mounted() {
@@ -304,6 +318,34 @@ export default defineComponent({
 </script>
 
 <style lang="stylus">
+.portal-tile__root-element
+  .loa
+    visibility: hidden
+    pointer-events: none
+    background-color: rgba(140,167,144,1)
+    top: 0em
+    left: 8em
+    box-shadow: -0.1em 0.1em 0.3em rgba(20,30,20,1)
+    position: absolute
+    font-weight: bold
+    padding: 0.4em
+    z-index: 3
+    border-radius: 0.7em 0.7em
+    opacity: 0
+    transition: visibility 0s 0.5s, opacity 0.6s
+  .loa-value
+    visibility: hidden
+    pointer-events: none
+    left: 8em
+    background-color: rgba(110,137,114,1)
+    top: 0em
+    font-weight: bold
+    position: absolute
+    padding: 0.4em
+    z-index: 2
+    border-radius: 0.7em 0.7em
+    opacity: 0
+    transition: visibility 0s 0.5s, opacity 0.3s, left 1.5s, top 1.5s
 .portal-tile
   position: relative
   outline: 0
@@ -332,9 +374,8 @@ export default defineComponent({
     border: 0.2rem solid transparent
     box-sizing: border-box
     transition: 0.2s ease-in-out
-    &:hover {
-      transform: scale(1.2);
-    }
+    &:hover
+      transform: scale(1.2)
 
     ~/:focus &
       border-color: var(--color-focus)
@@ -355,7 +396,6 @@ export default defineComponent({
         bottom: 0;
         left: 0;
         z-index: $zindex-1;
-
   &__img
     width: 80%
     max-height: 80%
@@ -384,4 +424,15 @@ export default defineComponent({
 
   &__modal
     width: 650px
+.portal-tile__root-element:hover
+  .loa
+    visibility: visible
+    opacity: 1
+    transition: opacity 0.5s
+  .loa-value
+    visibility: visible
+    opacity: 1
+    left: 8.9em
+    top: -1.8em
+    transition: visibility 0.5s, opacity 1.2s, left 0.8s, top 0.8s
 </style>
