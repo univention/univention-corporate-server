@@ -1,3 +1,10 @@
+univention-management-console-module-diagnostic (6.0.0-18) unstable; urgency=medium
+
+  * Bug #53969: univention-run-diagnostic-checks fix check listing and
+    conflict between scheduled and skipped tests
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Thu, 13 Jan 2022 08:50:57 +0000
+
 univention-management-console-module-diagnostic (6.0.0-17) unstable; urgency=medium
 
   * Bug #53306: fix python3 compatability of exception handling
@@ -871,7 +878,7 @@ univention-management-console-module-diagnostic (2.0.0-2) unstable; urgency=low
 
 univention-management-console-module-diagnostic (2.0.0-1) unstable; urgency=low
 
-  * Bug #38137: added ssh_connection plugin 
+  * Bug #38137: added ssh_connection plugin
 
  -- Felix Botner <botner@univention.de>  Tue, 22 Sep 2015 14:40:30 +0200
 

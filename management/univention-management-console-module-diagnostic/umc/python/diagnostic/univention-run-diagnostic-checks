@@ -54,10 +54,6 @@ class CLIClient(object):
 
 		args = parser.parse_args()
 
-		if args.help:
-			parser.print_help()
-			sys.exit(0)
-
 		if not args.username:
 			args.username = input('Domain Admin Login: ')
 		args.password = None
@@ -72,29 +68,32 @@ class CLIClient(object):
 		except Unauthorized as exc:
 			parser.error('Login failed: %s' % (str(exc),))
 
-		plugins = [plugin['id'] for plugin in client.umc_command('diagnostic/query').result]
+		plugins = {plugin['id'] for plugin in client.umc_command('diagnostic/query').result}
+		checks = plugins if 'all' in args.checks else set(args.checks)
+		skip_checks = set(args.skip_checks)
 
-		if 'list' in args.checks:
-			print("\n\t".join(['Available checks:'] + plugins))
+		if args.list or 'list' in args.checks:
+			print("\n\t".join(['Available checks:'] + sorted(plugins)))
 			sys.exit(0)
 
-		if 'all' in args.checks:
-			args.checks = plugins
-		else:
-			missing_checks = set(args.checks) - set(plugins)
-			if missing_checks:
-				print('Error: following checks to perform were not found %r' % (missing_checks, ), file=sys.stderr)
+		missing_checks = sorted(checks - plugins)
+		if missing_checks:
+			print('Error: following checks to perform were not found %r' % (missing_checks, ), file=sys.stderr)
+			sys.exit(1)
+
+		missing_skip_checks = sorted(skip_checks - plugins)
+		if missing_skip_checks:
+			print('Error: following checks to skip were not found %r' % (missing_skip_checks,), file=sys.stderr)
+			sys.exit(1)
+
+		if 'all' not in args.checks:
+			conflicts = sorted(checks & skip_checks)
+			if conflicts:
+				print('Error: following checks are scheduled for both run and skip %r' % (conflicts,), file=sys.stderr)
 				sys.exit(1)
 
-		if args.skip_checks:
-			missing_skip_checks = set(args.skip_checks) - set(plugins)
-			if missing_skip_checks:
-				print('Error: following checks to skip were not found %r' % (missing_skip_checks,), file=sys.stderr)
-				sys.exit(1)
-
-			checks = list(set(plugins) - set(args.skip_checks))
-			checks.sort()
-			args.checks = checks
+		args.checks = sorted(checks - skip_checks)
+		print('Executing following checks: %r' % (args.checks,))
 
 		return cls(client, args).run()
 
