@@ -36,10 +36,17 @@ univention.admin.modules.update()
 
 BASE_FILTERS = {
     'users/user': '(&(univentionObjectType=users/user)(!(uidNumber=0))(!(univentionObjectFlag=functional))(%s))',
+    'dns/ptr_record': '(&(objectClass=dNSZone)(pTRRecord=*)(%s))',
+    'dhcp/host': '(&(objectClass=univentionDhcpHost)(%s))',
 }
 
 
 @pytest.mark.parametrize('module, property, udm_filter, expected_filter', [
+    ('dhcp/host', 'hwaddress', 'hwaddress=ethernet 22:4b:21:25:31:8a', 'dhcpHWAddress=ethernet 22:4b:21:25:31:8a'),
+    ('dhcp/host', 'hwaddress', 'dhcpHWAddress=ethernet 22:4b:21:25:31:8a', 'dhcpHWAddress=ethernet 22:4b:21:25:31:8a'),
+    ('dhcp/host', 'hwaddress', 'hwaddress=*', 'dhcpHWAddress=*'),
+    ('dns/ptr_record', 'ip', 'ip=*', 'relativeDomainName=*'),
+    ('dns/ptr_record', 'ip', 'ip=10.200.7.1', '|(&(zoneName=7.200.10.in-addr.arpa)(relativeDomainName=1))(&(zoneName=200.10.in-addr.arpa)(relativeDomainName=1.7))(&(zoneName=10.in-addr.arpa)(relativeDomainName=1.7.200))'),
     ('users/user', 'username', 'username=*', 'uid=*'),
     ('users/user', 'uidNumber', 'uidNumber=*', 'uidNumber=*'),
     ('users/user', 'gidNumber', 'gidNumber=*', 'gidNumber=*'),
@@ -176,7 +183,8 @@ def test_presence_filters(module, property, udm_filter, expected_filter):
     ('users/user', 'pwdChangeNextLogin', 'pwdChangeNextLogin=1', 'pwdChangeNextLogin=1'),  # FIXME
     ('users/user', 'pwdChangeNextLogin', 'pwdChangeNextLogin=0', 'pwdChangeNextLogin=0'),  # FIXME
     ('users/user', 'preferredLanguage', 'preferredLanguage=foo', 'preferredLanguage=foo'),
-    pytest.param('users/user', 'accountActivationDate', 'accountActivationDate=2006-06-09 02:43 Europe/Berlin', 'krb5ValidStart=20060609004300Z', marks=pytest.mark.xfail(reason='Bug #53830')),
+    ('users/user', 'accountActivationDate', 'accountActivationDate=2006-06-09 02:43 Europe/Berlin', 'krb5ValidStart=20060609004300Z'),
+    ('users/user', 'accountActivationDate', 'krb5ValidStart=20060609004300Z', 'krb5ValidStart=20060609004300Z'),
     pytest.param('users/user', 'lockedTime', 'lockedTime=foo', 'sambaBadPasswordTime=foo', marks=pytest.mark.xfail()),
     ('users/user', 'lockedTime', 'lockedTime=20220728135807Z', 'sambaBadPasswordTime=133034902870000000'),
     ('users/user', 'unlock', 'unlock=1', 'unlock=1'),  # FIXME: should raise invalidFilter
@@ -222,7 +230,8 @@ def test_presence_filters(module, property, udm_filter, expected_filter):
     ('users/user', 'homeShare', 'homeShare=foo', 'homeShare=foo'),
     ('users/user', 'homeSharePath', 'homeSharePath=foo', 'homeSharePath=foo'),
     ('users/user', 'sambaUserWorkstations', 'sambaUserWorkstations=foo', 'sambaUserWorkstations=foo'),
-    pytest.param('users/user', 'sambaLogonHours', 'sambaLogonHours=137', 'sambaLogonHours=000000000000000000000000000000000002000000', marks=pytest.mark.xfail(reason='Bug #53807')),
+    ('users/user', 'sambaLogonHours', 'sambaLogonHours=137', 'sambaLogonHours=000000000000000000000000000000000002000000'),
+    ('users/user', 'sambaLogonHours', 'sambaLogonHours=000000000000000000000000000000000002000000', 'sambaLogonHours=000000000000000000000000000000000002000000'),
     pytest.param('users/user', 'jpegPhoto', 'jpegPhoto=foo', 'jpegPhoto=foo', marks=pytest.mark.xfail()),
     pytest.param('users/user', 'userCertificate', 'userCertificate=foo', 'userCertificate;binary=foo', marks=pytest.mark.xfail()),
     ('users/user', 'certificateIssuerCountry', 'certificateIssuerCountry=foo', 'certificateIssuerCountry=foo'),  # FIXME:
@@ -246,6 +255,7 @@ def test_presence_filters(module, property, udm_filter, expected_filter):
     pytest.param('users/user', 'umcProperty', 'umcProperty=foo bar', 'univentionUMCProperty=foo=bar', marks=pytest.mark.xfail(reason='Bug #53808')),
     ('users/user', 'umcProperty', 'umcProperty=foo=bar', 'univentionUMCProperty=foo=bar'),
     ('users/user', 'serviceSpecificPassword', 'serviceSpecificPassword=foo', 'serviceSpecificPassword=foo'),  # FIXME:
+
 ])
 def test_udm_filter(module, property, udm_filter, expected_filter):
     check_expected_filter(module, property, udm_filter, expected_filter)
