@@ -1,3 +1,9 @@
+univention-directory-manager-modules (16.0.20) unstable; urgency=medium
+
+  * Bug #55604: fix searching for hwaddress of dhcp/host
+
+ -- Felix Botner <botner@univention.de>  Fri, 03 May 2024 08:38:32 +0200
+
 univention-directory-manager-modules (16.0.19) unstable; urgency=medium
 
   * Bug #57110: Add guardian role attributes
