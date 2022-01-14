@@ -56,8 +56,8 @@ strings = {
 	'finish': 'Fertigstellen',
 
 	'school_role': 'Serverrolle in der UCS@school',
-	'school_edu': 'Schulserver im Edukativnetz',
-	'school_adm': 'Schulserver im Verwaltungsnetz',
+	'school_edu': 'Edukativnetz',
+	'school_adm': 'Verwaltungsnetz',
 	'school_central': 'Zentraler Schulserver',
 
 	'samba4': 'Active Directory-kompatibler',
