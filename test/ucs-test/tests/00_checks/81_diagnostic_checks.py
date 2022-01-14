@@ -9,9 +9,13 @@ import subprocess
 import tempfile
 from univention.testing.umc import Client
 from univention.testing import utils
+from univention.testing.utils import package_installed
 
 # One would neeed a strong argument to skip any tests here, as it masks reals problems (See bug #50021)
 SKIPPED_TESTS = []
+# notifier protocol version only needs to be set if notifier is installed
+if not package_installed('univention-directory_notifier'):
+	SKIPPED_TESTS.append("61_notifier_protocol_version")
 
 
 def test_run_diagnostic_checks():
