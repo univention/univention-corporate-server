@@ -1,3 +1,10 @@
+ucs-test (10.0.6-92) unstable; urgency=medium
+
+  * Bug #54336: Ignore 61_notifier_protocol_version in tests if 
+    notifier not installed
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 14 Jan 2022 10:32:47 +0100
+
 ucs-test (10.0.6-91) unstable; urgency=medium
 
   * Bug #52987: Test to check that kerberos ticket lifetime is configured 
