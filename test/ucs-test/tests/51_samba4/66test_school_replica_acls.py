@@ -43,7 +43,7 @@ def lo(ucr):
 	return lo
 
 
-@pytest.fixture()
+@pytest.fixture
 def ldif(ucr):
 	def_admin = 'cn=Administrator,cn=users,%s' % (ucr.get('ldap/base'),)
 	attribute = 'description'
@@ -75,14 +75,13 @@ def test_group_modification(udm, ucr, lo, user1, ldif):
 		lo.modify(group_dn, (('memberUid', b'', username), ('uniqueMember', b'', user_dn)))
 
 
-@pytest.mark.parametrize('attr,rid', [('sambaSID', b'500'), ('sambaPrimaryGroupSID', b'512')])
+@pytest.mark.parametrize('attr,rid', [('sambaSID', b'-500'), ('sambaPrimaryGroupSID', b'-512')])
 def test_sid_modification(udm, ucr, lo, user1, ldif, attr, rid):
 	user_dn, username = user1
 	primary_ip = lo.search(filter='univentionObjectType=computers/domaincontroller_master', attr=['aRecord'])[0][1].get('aRecord')[0].decode('utf-8')
 	old_pgsid = lo.get(user_dn, [attr]).get(attr)[0]
-
 	# change rid of sid to resemble the default administrator attributes
-	new_pgsid = old_pgsid.split(b'-', -1)[0] + rid
+	new_pgsid = old_pgsid.rsplit(b'-', 1)[0] + rid
 
 	lo.modify(user_dn, ((attr, old_pgsid, new_pgsid),))
 	utils.wait_for_replication_and_postrun()
