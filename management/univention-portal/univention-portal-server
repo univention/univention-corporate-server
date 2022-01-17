@@ -122,6 +122,7 @@ class JsonHandler(PortalHandler):
 		answer["user_displayname"] = user.display_name
 		answer["auth_mode"] = portal.auth_mode(self)
 		answer["may_edit_portal"] = portal.may_be_edited(user)
+		answer["loa"] = (user.args.get('loa') or ['low'])[0]
 		self.write(answer)
 
 

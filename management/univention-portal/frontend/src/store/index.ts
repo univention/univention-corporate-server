@@ -129,6 +129,15 @@ const actions = {
             authMode: portal.auth_mode,
           },
         });
+        const loas = {
+          high: 'Ihre Authorisierungsstufe ist: hoch',
+          medium: 'Ihre Authorisierungsstufe ist: mittel',
+        };
+        if (loas[portal.loa]) {
+          dispatch('notifications/addNotification', {
+            title: loas[portal.loa],
+          }, { root: true });
+        }
         resolve(portal);
       }
     })
