@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.2-5) unstable; urgency=medium
+
+  * Bug #54347: return the entryUUID and DN after object creation
+
+ -- Florian Best <best@univention.de>  Mon, 17 Jan 2022 13:28:17 +0100
+
 univention-directory-manager-rest (10.0.2-4) unstable; urgency=medium
 
   * Bug #50050: don't start SyncManager during python import

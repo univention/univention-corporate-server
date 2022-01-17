@@ -69,6 +69,7 @@ import ldap
 from ldap.filter import filter_format
 from ldap.dn import explode_rdn
 from ldap.controls import SimplePagedResultsControl
+from ldap.controls.readentry import PostReadControl
 from ldap.controls.sss import SSSRequestControl
 import xml.etree.cElementTree as ET
 import xml.dom.minidom
@@ -2517,11 +2518,19 @@ class Objects(FormBase, ReportingBase):
 		"""Create a {} object."""
 		obj = Object(self.application, self.request)
 		obj.ldap_connection, obj.ldap_position = self.ldap_connection, self.ldap_position
-		obj = yield obj.create(object_type)
+		serverctrls = [PostReadControl(True, ['entryUUID'])]
+		response = {}
+		obj = yield obj.create(object_type, serverctrls=serverctrls, response=response)
 		self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
 		self.set_status(201)
 		self.add_caching(public=False, must_revalidate=True)
-		self.content_negotiation({})
+
+		uuid = _get_post_read_entry_uuid(response)
+
+		self.content_negotiation({
+			'dn': obj.dn,
+			'uuid': uuid,
+		})
 
 	def _options(self, object_type):
 		result = {}
@@ -2800,11 +2809,20 @@ class Object(FormBase, Resource):
 
 		obj = yield self.pool.submit(module.get, dn)
 		if not obj:
-			obj = yield self.create(object_type, dn)
+			serverctrls = [PostReadControl(True, ['entryUUID'])]
+			response = {}
+
+			obj = yield self.create(object_type, dn, serverctrls=serverctrls, response=response)
 			self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
 			self.set_status(201)
 			self.add_caching(public=False, must_revalidate=True)
-			self.content_negotiation({})
+
+			uuid = _get_post_read_entry_uuid(response)
+
+			self.content_negotiation({
+				'dn': obj.dn,
+				'uuid': uuid,
+			})
 			return
 
 		self.set_metadata(obj)
@@ -2859,7 +2877,7 @@ class Object(FormBase, Resource):
 		raise Finish()
 
 	@tornado.gen.coroutine
-	def create(self, object_type, dn=None):
+	def create(self, object_type, dn=None, **kwargs):
 		module = self.get_module(object_type)
 		container = self.request.body_arguments['position']
 		superordinate = self.request.body_arguments['superordinate']
@@ -2884,7 +2902,7 @@ class Object(FormBase, Resource):
 		if dn and not self.ldap_connection.compare_dn(dn, obj._ldap_dn()):
 			self.raise_sanitization_error('dn', _('Trying to create an object with wrong RDN.'))
 
-		dn = yield self.pool.submit(self.handle_udm_errors, obj.create)
+		dn = yield self.pool.submit(self.handle_udm_errors, obj.create, **kwargs)
 		raise tornado.gen.Return(obj)
 
 	@tornado.gen.coroutine
@@ -2894,12 +2912,12 @@ class Object(FormBase, Resource):
 		yield self.pool.submit(self.handle_udm_errors, obj.modify)
 		raise tornado.gen.Return(obj)
 
-	def handle_udm_errors(self, action):
+	def handle_udm_errors(self, action, *args, **kwargs):
 		try:
 			exists_msg = None
 			error = None
 			try:
-				return action()
+				return action(*args, **kwargs)
 			except udm_errors.objectExists as exc:
 				exists_msg = 'dn: %s' % (exc.args[0],)
 				error = exc
@@ -3720,6 +3738,15 @@ def _map_try(values, func, exceptions):
 
 def _map_normalized_dn(dns):
 	return _map_try(dns, lambda dn: ldap.dn.dn2str(ldap.dn.str2dn(dn)), Exception)
+
+
+def _get_post_read_entry_uuid(response):
+	for c in response.get('ctrls', []):
+		if c.controlType == PostReadControl.controlType:
+			uuid = c.entry['entryUUID'][0]
+			if isinstance(uuid, bytes):  # starting with python-ldap 4.0
+				uuid = uuid.decode('ASCII')
+			return uuid
 
 
 class Application(tornado.web.Application):

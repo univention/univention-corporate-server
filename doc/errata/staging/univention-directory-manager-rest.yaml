@@ -7,4 +7,6 @@ fix:
 desc: |
  This update addresses the following issue:
  * The UDM REST API now support multiprocessing.
-bug: [50050]
+ * The entryUUID and DN of newly created objects are now contained in the
+   response.
+bug: [50050, 54347]
