@@ -425,7 +425,7 @@ class access(object):
 
 	@_fix_reconnect_handling
 	def get(self, dn, attr=[], required=False):
-		# type: (str, List[str], bool) -> Dict[str, List[str]]
+		# type: (str, List[str], bool) -> Dict[str, List[bytes]]
 		"""
 		Return multiple attributes of a single LDAP object.
 
@@ -434,7 +434,7 @@ class access(object):
 		:type attr: list[str]
 		:param bool required: Raise an exception instead of returning an empty dictionary.
 		:returns: A dictionary mapping the requested attributes to a list of their values.
-		:rtype: dict[str, list[str]]
+		:rtype: dict[str, list[bytes]]
 		:raises ldap.NO_SUCH_OBJECT: If the LDAP object is not accessible.
 		"""
 		if dn:
@@ -457,7 +457,7 @@ class access(object):
 		:param str attr: The attribute to fetch.
 		:param bool required: Raise an exception instead of returning an empty dictionary.
 		:returns: A list of values.
-		:rtype: list[str]
+		:rtype: list[bytes]
 		:raises ldap.NO_SUCH_OBJECT: If the LDAP object is not accessible.
 
 		.. warning:: the attribute name is currently case sensitive and must be given as in the LDAP schema
@@ -476,7 +476,7 @@ class access(object):
 
 	@_fix_reconnect_handling
 	def search(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
-		# type: (str, str, str, List[str], bool, bool, int, int, Optional[List[ldap.controls.LDAPControl]], Optional[Dict[str, ldap.controls.LDAPControl]]) -> List[Tuple[str, Dict[str, List[str]]]]
+		# type: (str, str, str, List[str], bool, bool, int, int, Optional[List[ldap.controls.LDAPControl]], Optional[Dict[str, ldap.controls.LDAPControl]]) -> List[Tuple[str, Dict[str, List[bytes]]]]
 		"""
 		Perform LDAP search and return values.
 
@@ -493,7 +493,7 @@ class access(object):
 		:type serverctrls: list[ldap.controls.LDAPControl]
 		:param dict response: An optional dictionary to receive the server controls of the result.
 		:returns: A list of 2-tuples (dn, values) for each LDAP object, where values is a dictionary mapping attribute names to a list of values.
-		:rtype: list[tuple[str, dict[str, list[str]]]]
+		:rtype: list[tuple[str, dict[str, list[bytes]]]]
 		:raises ldap.NO_SUCH_OBJECT: Indicates the target object cannot be found.
 		:raises ldap.INAPPROPRIATE_MATCHING: Indicates that the matching rule specified in the search filter does not match a rule defined for the attribute's syntax.
 		"""

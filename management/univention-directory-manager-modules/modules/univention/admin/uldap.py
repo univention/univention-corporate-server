@@ -624,7 +624,7 @@ class access(object):
 		return self.lo.get(dn, attr, required)
 
 	def getAttr(self, dn, attr, required=False, exceptions=False):
-		# type: (str, str, bool, bool) -> List[str]
+		# type: (str, str, bool, bool) -> List[bytes]
 		"""
 		Return a single attribute of a single LDAP object.
 
@@ -633,7 +633,7 @@ class access(object):
 		:param bool required: Raise an exception instead of returning an empty dictionary.
 		:param bool exceptions: Ignore.
 		:returns: A list of values.
-		:rtype: list[str]
+		:rtype: list[bytes]
 		:raises ldap.NO_SUCH_OBJECT: If the LDAP object is not accessible.
 		"""
 		return self.lo.getAttr(dn, attr, required)
