@@ -1,0 +1,39 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: firefox-esr
+fix: 91.5.0esr-1~deb9u1
+desc: |
+ This update addresses the following issues:
+
+ * 91.5.0esr-1~deb9u1 (Wed, 12 Jan 2022 10:04:51 +0100) * Backport to stretch.
+ * Iframe sandbox bypass with XSLT (CVE-2021-4140)
+ * Race condition when playing audio files (CVE-2022-22737)
+ * Heap-buffer-overflow in blendGaussianBlur (CVE-2022-22738)
+ * Missing throttling on external protocol launch dialog (CVE-2022-22739)
+ * Use-after-free of ChannelEventQueue::mOwner (CVE-2022-22740)
+ * Browser window spoof using fullscreen mode (CVE-2022-22741)
+ * Out-of-bounds memory access when inserting text in edit mode
+   (CVE-2022-22742)
+ * Browser window spoof using fullscreen mode (CVE-2022-22743)
+ * Leaking cross-origin URLs through securitypolicyviolation event
+   (CVE-2022-22745)
+ * Crash when handling empty pkcs7 sequence (CVE-2022-22747)
+ * Spoofed origin on external protocol launch dialog (CVE-2022-22748)
+ * Memory safety bugs fixed in Firefox 96 and Firefox ESR 91.5
+   (CVE-2022-22751)
+bug: [54343]
+cve:
+- CVE-2021-4140
+- CVE-2022-22737
+- CVE-2022-22738
+- CVE-2022-22739
+- CVE-2022-22740
+- CVE-2022-22741
+- CVE-2022-22742
+- CVE-2022-22743
+- CVE-2022-22745
+- CVE-2022-22747
+- CVE-2022-22748
+- CVE-2022-22751
