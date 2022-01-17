@@ -1,3 +1,10 @@
+univention-s4-connector (14.0.7-8) unstable; urgency=medium
+
+  * Bug #53012: update unix2s4 and s42unix date functions provider for fully
+    dates synchronization between LDAP and Samba/LDAP
+
+ -- Ildefonso González Sánchez <isanchez@univention.de>  Mon, 17 Jan 2022 14:55:06 +0100
+
 univention-s4-connector (14.0.7-7) unstable; urgency=medium
 
   * Bug #53182: Add timestamps to server_password_change log messages

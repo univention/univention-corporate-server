@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-s4-connector
+fix:
+desc: |
+ This update addresses the following issue:
+ * The discrepancy of one day between the expiry in UCS and Samba
+   has been removed.
+bug: [53012]
