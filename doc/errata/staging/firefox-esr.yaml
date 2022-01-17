@@ -6,34 +6,31 @@ src: firefox-esr
 fix: 91.5.0esr-1~deb10u1
 desc: |
  This update addresses the following issues:
- * Iframe sandbox bypass with XSLT (CVE-2021-4140)
+ * iframe sandbox bypass with XSLT (CVE-2021-4140)
  * iframe sandbox rules did not apply to XSLT stylesheets (CVE-2021-38503)
  * Use-after-free in file picker dialog (CVE-2021-38504)
- * Firefox could be coaxed into going into fullscreen mode without
+ * Firefox could be coaxed into going into full-screen mode without
    notification or warning (CVE-2021-38506)
- * Opportunistic Encryption in HTTP2 could be used to bypass the
+ * Opportunistic encryption in HTTP2 could be used to bypass the
    Same-Origin-Policy on services hosted on other ports (CVE-2021-38507)
- * Permission Prompt could be overlaid, resulting in user confusion and
+ * Permission prompt could be overlaid, resulting in user confusion and
    potential spoofing (CVE-2021-38508)
- * Javascript alert box could have been spoofed onto an arbitrary domain
+ * JavaScript alert box could have been spoofed onto an arbitrary domain
    (CVE-2021-38509)
- * Mozilla developers and community members reported memory safety bugs
-   present in Firefox 93 and Firefox ESR 91.2. Some of these bugs showed
-   evidence of memory corruption and we presume that with enough effort some
-   of these could have been exploited to run arbitrary code. This
-   vulnerability affects Firefox < 94, Thunderbird < 91.3, and Firefox ESR <
-   91.3. (CVE-2021-43534)
- * A use-after-free could have occured when an HTTP2 session object was
+ * Mozilla developers and community members reported memory safety bugs. Some
+   of these bugs showed evidence of memory corruption and we presume that with
+   enough effort some of these could have been exploited to run arbitrary
+   code. (CVE-2021-43534)
+ * A use-after-free could have occurred when an HTTP2 session object was
    released on a different thread, leading to memory corruption and a
-   potentially exploitable crash. This vulnerability affects Firefox < 93,
-   Thunderbird < 91.3, and Firefox ESR < 91.3. (CVE-2021-43535)
+   potentially exploitable crash. (CVE-2021-43535)
  * URL leakage when navigating while executing asynchronous function
    (CVE-2021-43536)
  * Heap buffer overflow when using structured clone (CVE-2021-43537)
- * Missing fullscreen and pointer lock notification when requesting both
+ * Missing full-screen and pointer lock notification when requesting both
    (CVE-2021-43538)
  * GC rooting failure when calling wasm instance methods (CVE-2021-43539)
- * External protocol handler parameters were unescaped (CVE-2021-43541)
+ * External protocol handler parameters were un-escaped (CVE-2021-43541)
  * XMLHttpRequest error codes could have leaked the existence of an external
    protocol handler (CVE-2021-43542)
  * Bypass of CSP sandbox directive when embedding (CVE-2021-43543)
@@ -41,19 +38,18 @@ desc: |
  * Cursor spoofing could overlay user interface when native cursor is zoomed
    (CVE-2021-43546)
  * Race condition when playing audio files (CVE-2022-22737)
- * Heap-buffer-overflow in blendGaussianBlur (CVE-2022-22738)
+ * Heap-buffer-overflow in `blendGaussianBlur` (CVE-2022-22738)
  * Missing throttling on external protocol launch dialog (CVE-2022-22739)
- * Use-after-free of ChannelEventQueue::mOwner (CVE-2022-22740)
- * Browser window spoof using fullscreen mode (CVE-2022-22741)
+ * Use-after-free of `ChannelEventQueue::mOwner` (CVE-2022-22740)
+ * Browser window spoof using full-screen mode (CVE-2022-22741)
  * Out-of-bounds memory access when inserting text in edit mode
    (CVE-2022-22742)
- * Browser window spoof using fullscreen mode (CVE-2022-22743)
- * Leaking cross-origin URLs through securitypolicyviolation event
+ * Browser window spoof using full-screen mode (CVE-2022-22743)
+ * Leaking cross-origin URLs through `securitypolicyviolation` event
    (CVE-2022-22745)
  * Crash when handling empty pkcs7 sequence (CVE-2022-22747)
  * Spoofed origin on external protocol launch dialog (CVE-2022-22748)
- * Memory safety bugs fixed in Firefox 96 and Firefox ESR 91.5
-   (CVE-2022-22751)
+ * Memory safety bugs (CVE-2022-22751)
 bug: [54345]
 cve:
 - CVE-2021-4140
