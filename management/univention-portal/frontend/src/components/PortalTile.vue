@@ -75,9 +75,9 @@
       <span class="portal-tile__name">
         {{ $localized(title) }}
       </span>
-        <div v-if="LOA !== 'low'">
-          <div class="loa">LoA</div>
-          <div class="loa-value">{{ LOA }}</div>
+        <div v-if="LOA !== 'low'" class="loa-wrapper">
+          <span class="loa">LoA</span>
+          <span class="loa-value">{{ LOA }}</span>
         </div>
       <div class="portal-tile__icon-bar">
         <icon-button
@@ -319,33 +319,35 @@ export default defineComponent({
 
 <style lang="stylus">
 .portal-tile__root-element
+  .loa-wrapper
+    pointer-events: none
+    position: absolute
+    left: 7.5em
+    top: 1em
+    z-index: 3
+    opacity: 0
+    visibility: hidden
   .loa
     visibility: hidden
-    pointer-events: none
-    background-color: rgba(140,167,144,1)
-    top: 0em
-    left: 8em
-    box-shadow: -0.1em 0.1em 0.3em rgba(20,30,20,1)
-    position: absolute
+    background-color: rgba(80,107,84,1)
+    border-radius: 0.7em 0em 0em 0.7em
+    z-index: 4
+    border-right: 0.1em solid rgba(255,255,255,1)
     font-weight: bold
-    padding: 0.4em
-    z-index: 3
-    border-radius: 0.7em 0.7em
+    padding: 0.4em 0.7em
     opacity: 0
+    box-shadow: 0em 0em 0.3em rgba(20,30,20,1)
     transition: visibility 0s 0.5s, opacity 0.6s
   .loa-value
     visibility: hidden
-    pointer-events: none
-    left: 8em
     background-color: rgba(110,137,114,1)
-    top: 0em
+    border-radius: 0em 0.7em 0.7em 0em
+    z-index: 4
+    padding: 0.4em 0.7em
     font-weight: bold
-    position: absolute
-    padding: 0.4em
-    z-index: 2
-    border-radius: 0.7em 0.7em
     opacity: 0
-    transition: visibility 0s 0.5s, opacity 0.3s, left 1.5s, top 1.5s
+    box-shadow: 0.1em 0em 0.3em rgba(20,30,20,1)
+    transition: visibility 0s 0.5s, opacity 0.6s
 .portal-tile
   position: relative
   outline: 0
@@ -425,6 +427,10 @@ export default defineComponent({
   &__modal
     width: 650px
 .portal-tile__root-element:hover
+  .loa-wrapper
+    opacity: 1
+    visibility: visible
+    transition: opacity 0.5s
   .loa
     visibility: visible
     opacity: 1
@@ -432,7 +438,5 @@ export default defineComponent({
   .loa-value
     visibility: visible
     opacity: 1
-    left: 8.9em
-    top: -1.8em
-    transition: visibility 0.5s, opacity 1.2s, left 0.8s, top 0.8s
+    transition: opacity 0.5s
 </style>
