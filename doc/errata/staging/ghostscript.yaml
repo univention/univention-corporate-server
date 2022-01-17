@@ -6,12 +6,10 @@ src: ghostscript
 fix: 9.26a~dfsg-0+deb9u8
 desc: |
  This update addresses the following issues:
- * Ghostscript GhostPDL 9.50 through 9.53.3 has a use-after-free in
-   sampled_data_sample (called from sampled_data_continue and interp).
-   (CVE-2021-45944)
- * Ghostscript GhostPDL 9.50 through 9.54.0 has a heap-based buffer overflow
-   in sampled_data_finish (called from sampled_data_continue and interp).
-   (CVE-2021-45949)
+ * Use-after-free in `sampled_data_sample` (called from
+   `sampled_data_continue` and `interp`). (CVE-2021-45944)
+ * Heap-based buffer overflow in `sampled_data_finish` `(called` from
+   sampled_data_continue and `interp`). (CVE-2021-45949)
 bug: [54344]
 cve:
 - CVE-2021-45944
