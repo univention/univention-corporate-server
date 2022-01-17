@@ -8,8 +8,8 @@ desc: |
  This update addresses the following issues:
  * Use-after-free in `sampled_data_sample` (called from
    `sampled_data_continue` and `interp`). (CVE-2021-45944)
- * Heap-based buffer overflow in `sampled_data_finish` `(called` from
-   sampled_data_continue and `interp`). (CVE-2021-45949)
+ * Heap-based buffer overflow in `sampled_data_finish` (called from
+   `sampled_data_continue` and `interp`). (CVE-2021-45949)
 bug: [54344]
 cve:
 - CVE-2021-45944
