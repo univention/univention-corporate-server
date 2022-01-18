@@ -3,7 +3,7 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: univention-group-membership-cache
-fix:
+fix: 1.0.0-10A~4.4.0.202201181537
 desc: |
  This update addresses the following issue(s):
  * The upgrade to 5.0 of membership cache will now works
