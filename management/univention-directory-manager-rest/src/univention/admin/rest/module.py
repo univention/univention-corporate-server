@@ -43,6 +43,7 @@ import json
 import logging
 import operator
 import os
+import pickle
 import re
 import traceback
 import uuid
@@ -442,7 +443,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
         if status_code >= 500:
             _traceback = None
             if not isinstance(exc, (UDM_Error, UMC_Error)):
-                _traceback = ''.join(traceback.format_exception(etype, exc, etraceback))
+                _traceback = getattr(exc, 'traceback', None) or ''.join(traceback.format_exception(etype, exc, etraceback))
             response['error']['traceback'] = _traceback if self.application.settings.get("serve_traceback", True) else None
 
         # backwards compatibility :'-(
@@ -2054,7 +2055,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
                 self.raise_sanitization_errors([('properties', property_name), _('The property "%(name)s" is required.') % {'name': property_name}] for property_name in exc.missing_properties)
             self.raise_sanitization_error('dn', str(UDM_Error(exc)))
         except (udm_errors.invalidOperation, udm_errors.invalidChild) as exc:
-            self.raise_sanitization_error('dn', str(UDM_Error(exc)))  # TODO: invalidOperation and invalidChild should be 403 Forbidden
+            self.raise_sanitization_error('dn', str(UDM_Error(exc)))  # TODO: invalidOperation and invalidChild should be 403 Forbidden  # TOOD: should be position on move
         except udm_errors.alreadyUsedInSubtree as exc:
             self.raise_sanitization_error('position', str(UDM_Error(exc)))
         except udm_errors.invalidDhcpEntry as exc:
@@ -2287,8 +2288,8 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         try:
             dn = await self.pool_submit(self.handle_udm_errors, module.move, dn, position)
         except Exception:
-            status['errors'] = True
-            status['traceback'] = traceback.format_exc()  # FIXME: error handling
+            status['exception'] = pickle.dumps(exc)
+            status['traceback'] = traceback.format_exc()
             raise
         else:
             status['uri'] = self.urljoin(quote_dn(dn))
@@ -2874,6 +2875,10 @@ class Operations(Resource):
         if progress not in progressbars:
             raise NotFound()
         result = dict(progressbars[progress])
+        if result.get('exception'):
+            exc = pickle.loads(result.pop('exception'))
+            exc.traceback = result.pop('traceback')
+            raise exc
         if result.get('uri'):
             self.set_status(303)
             self.add_header('Location', result['uri'])
