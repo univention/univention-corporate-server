@@ -3760,8 +3760,8 @@ class Application(tornado.web.Application):
 	def __init__(self, **kwargs):
 		#module_type = '([a-z]+)'
 		module_type = '(%s)' % '|'.join(re.escape(mod) for mod in Modules.mapping)
-		object_type = '([a-z]+/[a-z_]+)'
-		policies_object_type = '(policies/[a-z_]+)'
+		object_type = '([a-z_-]+/[a-z_-]+)'
+		policies_object_type = '(policies/[a-z_-]+)'
 		dn = '((?:[^/]+%s.+%s)?%s)' % (self.multi_regex('='), self.multi_regex(','), self.multi_regex(ucr['ldap/base']),)
 		# FIXME: with that dn regex, it is not possible to have urls like (/udm/$dn/foo/$dn/) because ldap-base at the end matches the last dn
 		# Note: the ldap base is part of the url to support "/" as part of the DN. otherwise we can use: '([^/]+(?:=|%3d|%3D)[^/]+)'
