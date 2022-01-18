@@ -33,10 +33,13 @@ from pwd import getpwnam
 from contextlib import contextmanager
 import json
 
-import gdbm
+from six.moves import dbm_gnu as gdbm
 
-from univention.ldap_cache.cache.backend import Caches, LdapCache, Shard
+from univention.ldap_cache.cache.backend import Caches, LdapCache, Shard, _s
 from univention.ldap_cache.log import log, debug
+
+
+MAX_FAIL_COUNT = 5
 
 
 class GdbmCaches(Caches):
@@ -50,6 +53,11 @@ class GdbmCaches(Caches):
 
 
 class GdbmCache(LdapCache):
+	def __init__(self, *args, **kwargs):
+		self.fail_count = 0
+		super(GdbmCache, self).__init__(*args, **kwargs)
+		log('%s - Recreating!', self.name)
+
 	def _fix_permissions(self):
 		listener_uid = getpwnam('listener').pw_uid
 		os.chown(self.db_file, listener_uid, -1)
@@ -60,8 +68,9 @@ class GdbmCache(LdapCache):
 		if writer is not None:
 			yield writer
 		else:
+			if not os.path.exists(self.db_file):
+				self.clear()
 			writer = gdbm.open(self.db_file, 'csu')
-			self._fix_permissions()
 			try:
 				yield writer
 			finally:
@@ -91,14 +100,22 @@ class GdbmCache(LdapCache):
 
 	def clear(self):
 		log('%s - Clearing whole DB!', self.name)
-		db = gdbm.open(self.db_file, 'n')
+		gdbm.open(self.db_file, 'nu').close()
 		self._fix_permissions()
-		db.close()
 
 	def cleanup(self):
 		log('%s - Cleaning up DB', self.name)
 		with self.writing() as db:
-			db.reorganize()
+			try:
+				db.reorganize()
+			except gdbm.error:
+				if self.fail_count > MAX_FAIL_COUNT:
+					raise
+				self.fail_count += 1
+				log('%s - Cleaning up DB FAILED %s times', self.name, self.fail_count)
+			else:
+				log('%s - Cleaning up DB WORKED', self.name)
+				self.fail_count = 0
 		self._fix_permissions()
 
 	def delete(self, key, values, writer=None):
@@ -120,10 +137,10 @@ class GdbmCache(LdapCache):
 
 	def __iter__(self):
 		with self.reading() as reader:
-			key = reader.firstkey()
+			key = _s(reader.firstkey())
 			while key is not None:
 				yield key, self.get(key, reader)
-				key = reader.nextkey(key)
+				key = _s(reader.nextkey(key))
 
 	def get(self, key, reader=None):
 		with self.reading(reader) as reader:
@@ -132,9 +149,9 @@ class GdbmCache(LdapCache):
 			except KeyError:
 				return None
 			if self.single_value:
-				return value
+				return _s(value)
 			elif value:
-				return json.loads(value)
+				return _s(json.loads(value))
 
 	def load(self):
 		debug('%s - Loading', self.name)

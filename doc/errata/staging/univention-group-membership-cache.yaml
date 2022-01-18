@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: univention-group-membership-cache
+fix:
+desc: |
+ This update addresses the following issue(s):
+ * The upgrade to 5.0 of membership cache will now works
+   in the lapse of time between the initial upgrade and the 
+   update to the last errata.
+bug: [54206]

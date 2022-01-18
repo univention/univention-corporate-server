@@ -29,10 +29,10 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-DB_DIRECTORY = '/usr/share/univention-group-membership-cache/caches'
-
-
 from univention.ldap_cache.log import debug
+
+
+DB_DIRECTORY = '/usr/share/univention-group-membership-cache/caches'
 
 
 class Caches(object):
@@ -108,12 +108,12 @@ class Shard(object):
 		return obj[1].get(attr, [])
 
 	def get_values(self, obj):
-		return self._get_from_object(obj, self.value)
+		return _s(self._get_from_object(obj, self.value))
 
 	def get_key(self, obj):
 		values = self._get_from_object(obj, self.key)
 		if values:
-			return values[0].lower()
+			return _s(values[0]).lower()
 		raise ValueError(self.key)
 
 
@@ -126,3 +126,20 @@ class LdapCache(object):
 
 	def add_shard(self, shard_class):
 		self.shards.append(shard_class(self))
+
+
+def _s(input):
+	if isinstance(input, (list, tuple)):
+		res = []
+		for n in input:
+			if isinstance(n, bytes):
+				res.append(n.decode('utf-8'))
+			elif isinstance(list, tuple):
+				res.append(_s(n))
+			else:
+				res.append(n)
+	elif isinstance(input, bytes):
+		res = input.decode('utf-8')
+	else:
+		res = input
+	return res

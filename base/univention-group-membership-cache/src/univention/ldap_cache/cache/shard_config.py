@@ -53,7 +53,7 @@ def shards_from_config():
 					single_value = data['single_value']
 					reverse = data.get('reverse', False)
 					key = data['key']
-					value = data['value'].encode('utf-8')
+					value = data['value']
 					ldap_filter = data['ldap_filter']
 				ret.append(FromConfig)
 			except (TypeError, KeyError) as exc:
