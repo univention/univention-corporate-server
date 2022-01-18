@@ -3,7 +3,7 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: univention-samba4
-fix:
+fix: 8.0.0-37A~4.4.0.202201181413
 desc: |
  This update addresses the following issue(s):
  * After Server password changed the samba process
