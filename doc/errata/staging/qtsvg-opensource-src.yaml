@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: qtsvg-opensource-src
+fix: 5.7.1~20161021-2.1+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Out of bounds read in function QRadialFetchSimd from crafted svg file
+   (CVE-2021-3481)
+ * out-of-bounds write may lead to DoS (CVE-2021-45930)
+bug: [54351]
+cve:
+- CVE-2021-3481
+- CVE-2021-45930
