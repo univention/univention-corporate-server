@@ -250,6 +250,7 @@ COMMON_EXCEPTIONS = (
 	E("univention.admin.uexceptions.uidAlreadyUsed: .*", ['in sync_to_ucs'], 53749),
 	E(r"IOError: \[Errno 2\] No such file or directory: u'/etc/ucsschool-import/(postgres|django_key).secret'", ['gunicorn'], 53750),
 	E("ImportError: Error accessing LDAP via machine account: {'desc': 'Invalid credentials'}", ['univention-directory-listener/system/ucsschool-s4-branch-site.py']),
+	E("ldap.CONSTRAINT_VIOLATION: .*unique index violation on objectSid"),
 	# Tracebacks caused by specific bugs:
 	E(r'^ldap\.NO_SUCH_OBJECT: .*', [r'quota\.py'], 52765),
 	E(r'.*OperationalError.*FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py', '_wrap_pool_connect'], 51671),

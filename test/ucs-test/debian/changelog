@@ -1,4 +1,4 @@
-ucs-test (10.0.6-94) unstable; urgency=medium
+ucs-test (10.0.6-95) unstable; urgency=medium
 
   * Bug #43775: Test that ucs-school-replicas don't have the right to create
     Samba4 Administrators
