@@ -2803,11 +2803,17 @@ class Object(FormBase, Resource):
 	def put(self, object_type, dn):
 		"""Modify or move the {} object {}."""
 		dn = unquote_dn(dn)
-		module = get_module(object_type, dn, self.ldap_connection)
+		module = self.get_module(object_type)
 		if not module:
 			raise NotFound(object_type)
 
-		obj = yield self.pool.submit(module.get, dn)
+		try:
+			obj = yield self.pool.submit(module.get, dn)
+		except UDM_Error as exc:
+			if not isinstance(exc.exc, udm_errors.noObject):
+				raise
+			obj = None
+
 		if not obj:
 			serverctrls = [PostReadControl(True, ['entryUUID'])]
 			response = {}

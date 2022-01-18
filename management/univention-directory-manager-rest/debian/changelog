@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.2-6) unstable; urgency=medium
+
+  * Bug #54347: fix creation of object via PUT request
+
+ -- Florian Best <best@univention.de>  Tue, 18 Jan 2022 09:37:59 +0100
+
 univention-directory-manager-rest (10.0.2-5) unstable; urgency=medium
 
   * Bug #54347: return the entryUUID and DN after object creation
