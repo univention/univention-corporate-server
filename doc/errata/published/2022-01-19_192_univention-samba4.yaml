@@ -10,3 +10,5 @@ desc: |
    cases. The script to restart Samba was fixed to ensure the service is
    restarted successfully.
 bug: [54356]
+erratum: 192
+announced: 2022-01-19
