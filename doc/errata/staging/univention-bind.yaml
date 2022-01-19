@@ -6,11 +6,10 @@ src: univention-bind
 fix: 14.0.1-6A~5.0.0.202201121445
 desc: |
  This update addresses the following issue:
- * The UCR variable dns/timeout-start is now also considered
-   in the systemd unit univention-bind-ldap. This can be used
-   in cases where a large number of DNS zones slows down the
-   start of the DNS server bind. This only affects systems
-   which have dns/backend set to "ldap". i.e. systems that
-   are not configured as Samba/AD DC. After changing the
-   variable, a "systemctl daemon-reload" is required.
+ * The UCR variable `dns/timeout-start` is now also considered in the systemd
+   unit `univention-bind-ldap`. This can be used in cases where a large number
+   of DNS zones slows down the start of the DNS server bind. This only affects
+   systems which have `dns/backend` set to `ldap`. i.e. systems that are not
+   configured as Samba/AD DC. After changing the variable, running `systemctl
+   daemon-reload` once is required.
 bug: [54108]
