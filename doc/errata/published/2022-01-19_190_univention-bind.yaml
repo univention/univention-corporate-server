@@ -13,3 +13,5 @@ desc: |
    configured as Samba/AD DC. After changing the variable, running `systemctl
    daemon-reload` once is required.
 bug: [54108]
+erratum: 190
+announced: 2022-01-19
