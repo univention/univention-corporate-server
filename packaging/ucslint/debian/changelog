@@ -1,3 +1,9 @@
+ucslint (8.0.0-22) unstable; urgency=low
+
+  * Bug #51546: Stop checking copyright year
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 19 Jan 2022 15:47:37 +0100
+
 ucslint (8.0.0-21) unstable; urgency=low
 
   * Bug #51316: Ignore more files
