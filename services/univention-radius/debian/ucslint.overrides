@@ -1,0 +1,4 @@
+# no Copyright for tests
+0010-2: modules/univention/__init__.py
+0010-2: tests/test_mschapv2.py
+0010-2: tests/test_utils.py

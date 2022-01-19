@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 export PYBUILD_NAME=univention-radius
+export PYBUILD_AFTER_INSTALL=$(RM) '{destdir}/{install_dir}/univention/__init__.py'
 
 override_dh_fixperms:
 	dh_fixperms

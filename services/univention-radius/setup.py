@@ -43,7 +43,7 @@ dsc = Deb822(io.open('debian/control', 'r', encoding='utf-8'))
 realname, email_address = parseaddr(dsc['Maintainer'])
 
 setup(
-    packages=['univention.radius'],
+    packages=['univention', 'univention.radius'],
     package_dir={'': 'modules'},
     description='Univention Radius',
 

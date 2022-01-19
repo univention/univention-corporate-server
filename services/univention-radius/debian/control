@@ -8,8 +8,12 @@ Build-Depends:
  dh-python,
  python-all,
  python-debian,
+ python-passlib,
+ python-pytest,
  python3-all,
  python3-debian,
+ python3-passlib,
+ python3-pytest,
  univention-config-dev (>= 15.0.3),
 
 Package: univention-radius

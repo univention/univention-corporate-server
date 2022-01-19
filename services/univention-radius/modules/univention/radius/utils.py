@@ -1,10 +1,8 @@
-#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
-# Univention RADIUS 802.1X
-#  helper functions for RFC 2759
+# Univention RADIUS
 #
-# Copyright (C) 2012-2021 Univention GmbH
+# Copyright (C) 2022 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -32,27 +30,26 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import hashlib
-import passlib.crypto.des
+import codecs
+
+import six
 
 
-def md4(data):
-	md = hashlib.new('md4')
-	md.update(data)
-	return md.digest()
+def decode_stationId(stationId):
+	if not stationId:
+		return None
+	stationId = stationId.lower()
+	# remove all non-hex characters, so different formats may be decoded
+	# e.g. 11:22:33:44:55:66 or 1122.3344.5566 or 11-22-33-44-55-66 or ...
+	stationId = ''.join(c for c in stationId if c in '0123456789abcdef')
+	stationId = codecs.decode(stationId, 'hex')
+	return ':'.join(codecs.encode(six.int2byte(byte), 'hex').decode('ASCII') for byte in six.iterbytes(stationId))
 
 
-def DesEncrypt(data, key):
-	return passlib.crypto.des.des_encrypt_block(key, data)
-
-
-def HashNtPasswordHash(passwordhash):
-	return md4(passwordhash)
-
-
-def ChallengeResponse(challenge, passwordhash):
-	z_password_hash = passwordhash.ljust(21, b'\0')
-	response = DesEncrypt(challenge, z_password_hash[0:7])
-	response += DesEncrypt(challenge, z_password_hash[7:14])
-	response += DesEncrypt(challenge, z_password_hash[14:21])
-	return response
+def parse_username(username):
+	'''convert username from host/-format to $-format if required'''
+	if not username.startswith('host/'):
+		return username
+	username = username.split('/', 1)[1]  # remove host/
+	username = username.split('.', 1)[0]  # remove right of '.'
+	return username + '$'

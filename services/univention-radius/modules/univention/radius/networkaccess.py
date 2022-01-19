@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 #
 # Univention RADIUS
-#  NTLM-Authentication program
 #
 # Copyright (C) 2012-2021 Univention GmbH
 #
@@ -35,11 +34,12 @@ import os
 import codecs
 import logging
 
-import six
 from ldap.filter import filter_format
 import univention.uldap
 from ldap import SERVER_DOWN
 import univention.config_registry
+
+from .utils import decode_stationId, parse_username
 
 SAMBA_ACCOUNT_FLAG_DISABLED = 'D'
 SAMBA_ACCOUNT_FLAG_LOCKED = 'L'
@@ -53,26 +53,6 @@ def convert_network_access_attr(attributes):
 def convert_ucs_debuglevel(ucs_debuglevel):
 	logging_debuglevel = [logging.ERROR, logging.WARN, logging.INFO, logging.INFO, logging.DEBUG][max(0, min(4, ucs_debuglevel))]
 	return logging_debuglevel
-
-
-def decode_stationId(stationId):
-	if not stationId:
-		return None
-	stationId = stationId.lower()
-	# remove all non-hex characters, so different formats may be decoded
-	# e.g. 11:22:33:44:55:66 or 1122.3344.5566 or 11-22-33-44-55-66 or ...
-	stationId = ''.join(c for c in stationId if c in '0123456789abcdef')
-	stationId = codecs.decode(stationId, 'hex')
-	return ':'.join(codecs.encode(six.int2byte(byte), 'hex').decode('ASCII') for byte in six.iterbytes(stationId))
-
-
-def parse_username(username):
-	'''convert username from host/-format to $-format if required'''
-	if not username.startswith('host/'):
-		return username
-	username = username.split('/', 1)[1]  # remove host/
-	username = username.split('.', 1)[0]  # remove right of '.'
-	return username + '$'
 
 
 def get_ldapConnection():
