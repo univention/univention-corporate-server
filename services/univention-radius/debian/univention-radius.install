@@ -1,5 +1,6 @@
 clients.conf.example etc/freeradius/3.0/
 usr/
+univention-radius-ntlm-auth-suidwrapper	usr/bin/
 80univention-radius.inst usr/lib/univention-install/
 20univention-radius.uinst usr/lib/univention-uninstall
 listener/* usr/lib/univention-directory-listener/system/

@@ -1,7 +1,6 @@
 #!/usr/bin/make -f
 #
 # Univention RADIUS 802.1X
-#  makefile
 #
 # Copyright (C) 2011-2021 Univention GmbH
 #
@@ -31,12 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-build: usr/bin/univention-radius-ntlm-auth-suidwrapper
-
-usr/bin/univention-radius-ntlm-auth-suidwrapper: univention-radius-ntlm-auth-suidwrapper.c
-	cc univention-radius-ntlm-auth-suidwrapper.c -o usr/bin/univention-radius-ntlm-auth-suidwrapper
+build: univention-radius-ntlm-auth-suidwrapper
 
 clean:
-	rm -f usr/bin/univention-radius-ntlm-auth-suidwrapper
+	$(RM) univention-radius-ntlm-auth-suidwrapper
 
 .PHONY: clean build
