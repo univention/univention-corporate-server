@@ -1,4 +1,4 @@
-univention-portal (4.0.5-72) unstable; urgency=medium
+univention-portal (4.0.5-73) unstable; urgency=medium
 
   * Bug #53296: explicit use npm@8.1.3 to build the univention-portal package 
 

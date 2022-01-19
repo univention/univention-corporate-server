@@ -6,6 +6,7 @@ src: univention-portal
 fix: 4.0.5-72A~5.0.0.202201121121
 desc: |
  This update addresses the following issue:
- * univention-portal post-install configuration for https, when the
-   ucr registry "apache2/force_https" is setting to yes
+ * Necessary requests have been excluded from
+   apache2/force_https, so that the portal tiles
+   in the UMC are shown, even if https is forced.
 bug: [53296]
