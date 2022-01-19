@@ -2,10 +2,10 @@ E:0010-2: 34univention-management-console-server.inst: file contains no copyrigh
 E:0010-2: conffiles/etc/cron.daily/univention-ssl-validity: file contains no copyright text block
 E:0010-4: make-certificates.sh: cannot find copyright line containing year
 E:0010-5: debian/copyright: file is missing
-W:0010-3: debian/postinst: copyright line seems to be outdated
-W:0010-3: debian/postinst: copyright line seems to be outdated
-W:0010-3: debian/postrm: copyright line seems to be outdated
-W:0010-3: debian/postrm: copyright line seems to be outdated
-W:0010-3: debian/rules: copyright line seems to be outdated
-W:0010-3: univention-certificate-check-validity: copyright line seems to be outdated
-W:0010-3: univention-certificate: copyright line seems to be outdated
+I:0010-3: debian/postinst: copyright line seems to be outdated
+I:0010-3: debian/postinst: copyright line seems to be outdated
+I:0010-3: debian/postrm: copyright line seems to be outdated
+I:0010-3: debian/postrm: copyright line seems to be outdated
+I:0010-3: debian/rules: copyright line seems to be outdated
+I:0010-3: univention-certificate-check-validity: copyright line seems to be outdated
+I:0010-3: univention-certificate: copyright line seems to be outdated

@@ -55,7 +55,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		return {
 			'0010-1': (uub.RESULT_WARN, 'failed to open file'),
 			'0010-2': (uub.RESULT_ERROR, 'file contains no copyright text block'),
-			'0010-3': (uub.RESULT_WARN, 'copyright is outdated'),
+			'0010-3': (uub.RESULT_INFO, 'copyright is outdated'),
 			'0010-4': (uub.RESULT_ERROR, 'cannot find copyright line containing year'),
 			'0010-5': (uub.RESULT_ERROR, 'file debian/copyright is missing'),
 			'0010-6': (uub.RESULT_WARN, 'debian/copyright is not machine-readable DEP-5'),
