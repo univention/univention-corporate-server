@@ -5,9 +5,8 @@ scope: ucs_5.0-0-errata5.0-1
 src: univention-samba4
 fix: 9.0.6-8A~5.0.0.202201181446
 desc: |-
-  This update addresses the following issue:
-  * After Server password changed the samba process
-    did not start due to Failed to listen on ::1:135.
-    It is fixed to make sure that the service was 
-    restarted successfully.
+ This update addresses the following issue:
+ * During a server password change the samba process was not restarted
+   in some cases. The script to restart samba was fixed to ensure the
+   the service is restarted successfully.
 bug: [54356]
