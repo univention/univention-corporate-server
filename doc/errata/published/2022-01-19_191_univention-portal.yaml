@@ -9,3 +9,5 @@ desc: |
  * Some requests have been excluded from `apache2/force_https`, so that the
    portal tiles in the UMC are shown even if https is forced.
 bug: [53296]
+erratum: 191
+announced: 2022-01-19
