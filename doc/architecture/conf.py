@@ -20,7 +20,7 @@ from sphinx.locale import _
 # -- Project information -----------------------------------------------------
 
 release = "0.0.1"
-project = "Univention Corporate Server architecture {}".format(release)
+project = "Univention Corporate Server Architecture {}".format(release)
 copyright = '{}, Univention GmbH'.format(date.today().year)
 author = 'Univention GmbH'
 language = 'en'
