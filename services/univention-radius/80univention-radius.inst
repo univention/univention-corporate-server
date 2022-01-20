@@ -120,7 +120,7 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 	--set shortDescription='NAS type' \
 	--set translationShortDescription='"de_DE" "NAS-Typ"' \
 	--set longDescription='This option tells RADIUS which Network Access Server (NAS) specific method to use to query the NAS for simultaneous use. Default is "other".' \
-	--set translationLongDescription='"de_DE" "Diese Option gibt RADIUS vor, welche Network Access Server (NAS) spezifische Methode bei gleichzeitigen Anfragen an das NAS verwendet werden soll. Der Default ist other."' \
+	--set translationLongDescription='"de_DE" "Diese Option gibt RADIUS vor, welche Network Access Server (NAS) spezifische Methode bei gleichzeitigen Anfragen an den NAS verwendet werden soll. Der Default ist other."' \
 	--set tabAdvanced=0 \
 	--set tabName='RADIUS' \
 	--set tabPosition=3 \

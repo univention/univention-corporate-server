@@ -51,7 +51,7 @@ Depends:
 Provides:
  ${python:Provides},
 Description: UCS - RADIUS Python 2 modules
- This package contains Python 2 module for the RADIUS
+ This package contains Python 2 modules for the RADIUS
  integration.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -68,7 +68,7 @@ Depends:
  ${misc:Depends},
  ${python3:Depends},
 Description: UCS - RADIUS Python 3 modules
- This package contains Python 2 module for the RADIUS
+ This package contains Python 3 modules for the RADIUS
  integration.
  .
  It is part of Univention Corporate Server (UCS), an
