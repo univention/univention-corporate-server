@@ -39,13 +39,11 @@ override_dh_fixperms:
 	chmod u+s debian/univention-radius/usr/bin/univention-radius-ntlm-auth-suidwrapper
 
 override_dh_auto_clean:
-	make clean
+	$(MAKE) clean
 	dh_auto_clean
-	rm -f debian/univention-radius.conffiles
 
 override_dh_auto_build:
-	# Build suid wrapper
-	make build
+	$(MAKE) build
 	dh_auto_build
 
 %:
