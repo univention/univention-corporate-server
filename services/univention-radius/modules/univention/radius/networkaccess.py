@@ -128,9 +128,10 @@ class NetworkAccess(object):
 
 	def build_access_dict(self, ldap_result):
 		# type: (List[Tuple[str, Dict[str, List[bytes]]]]) -> Dict[str, bool]
-		access_dict = dict()
-		for (dn, attributes) in ldap_result:
-			access_dict[dn] = convert_network_access_attr(attributes)
+		access_dict = {
+			dn: convert_network_access_attr(attributes)
+			for (dn, attributes) in ldap_result
+		}
 		return access_dict
 
 	def get_user_network_access(self, uid):
