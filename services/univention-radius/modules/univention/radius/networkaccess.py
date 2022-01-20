@@ -102,8 +102,8 @@ class NetworkAccess(object):
 		self.configRegistry.load()
 		self.whitelisting = self.configRegistry.is_true('radius/mac/whitelisting')
 		self._setup_logger(loglevel, logfile)
-		self.logger.debug('Given username: "{}"'.format(username))
-		self.logger.debug('Given stationId: "{}"'.format(stationId))
+		self.logger.debug('Given username: %r', username)
+		self.logger.debug('Given stationId: %r', stationId)
 
 	def _setup_logger(self, loglevel, logfile):  # type: (Optional[int], Optional[str]) -> None
 		if loglevel is not None:
@@ -124,7 +124,7 @@ class NetworkAccess(object):
 			log_formatter = logging.Formatter('%(levelname)10s: [user={}; mac={}] %(message)s'.format(self.username, self.mac_address))
 		log_handler.setFormatter(log_formatter)
 		self.logger.addHandler(log_handler)
-		# self.logger.info("Loglevel set to: {}".format(ucs_debuglevel))
+		# self.logger.info("Loglevel set to: %s", ucs_debuglevel)
 
 	def build_access_dict(self, ldap_result):
 		# type: (List[Tuple[str, Dict[str, List[bytes]]]]) -> Dict[str, bool]
