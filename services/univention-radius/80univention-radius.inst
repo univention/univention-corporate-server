@@ -120,8 +120,8 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 	--set CLIName='univentionRadiusClientType' \
 	--set shortDescription='NAS type' \
 	--set translationShortDescription='"de_DE" "NAS-Typ"' \
-	--set longDescription='This option tells RADIUS which NAS-specific method to use to query the NAS for simultaneous use. Default is "other".' \
-	--set translationLongDescription='"de_DE" "Diese Option gibt RADIUS vor, welche NAS-spezifische Methode bei gleichzeitigen Anfragen an das NAS verwendet werden soll. Der Default ist other."' \
+	--set longDescription='This option tells RADIUS which Network Access Server (NAS) specific method to use to query the NAS for simultaneous use. Default is "other".' \
+	--set translationLongDescription='"de_DE" "Diese Option gibt RADIUS vor, welche Network Access Server (NAS) spezifische Methode bei gleichzeitigen Anfragen an das NAS verwendet werden soll. Der Default ist other."' \
 	--set tabAdvanced=0 \
 	--set tabName='RADIUS' \
 	--set tabPosition=3 \
@@ -276,7 +276,7 @@ if joinscript_check_specific_version_executed 1 ; then
 		--set longDescription='Allow access via RADIUS (e.g. via IEEE 802.1x) for this computer.' \
 		--set translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (z.B. über IEEE 802.1x) für diesen Computer erlaubt werden."' || exit "$?"
 	udm settings/extended_attribute modify "$@" \
-		--dn "cn=networkAccessComputers,cn=custom attributes,cn=univention,$ldap_base" \
+		--dn "cn=networkAccessGroups,cn=custom attributes,cn=univention,$ldap_base" \
 		--set groupName="RADIUS supplicant" \
 		--set translationGroupName='"de_DE" "RADIUS-Supplicant"' \
 		--set groupPosition=1 \
