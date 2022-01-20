@@ -1,5 +1,5 @@
 ****************************************
-Univention Corporate Server architecture
+Univention Corporate Server Architecture
 ****************************************
 
 Local build
@@ -49,9 +49,10 @@ Build the documentation:
 1. Run the static build: ``make html`` or run a live server: ``make livehtml``.
 #. Open http://localhost:8000 in your browser.
 
-Contribution
-============
+To build the documentation with the make target interface known from the other UCS documentation, run::
 
-If you miss a topic in this guide, please add the content in a separate branch
-and create a merge request.
+    make check install DESTDIR=../public
 
+The ``check`` target runs the checks *linkcheck* and *spelling*. The
+``install`` target builds the HTML files and PDF file. The HTML files and the
+PDF for publishing can the be found in ``../public/html``.

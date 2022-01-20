@@ -9,6 +9,11 @@ Welcome to Univention Corporate Server architecture!
    :hidden:
 
    index
-   glossary
-   indices
+
+.. only:: html
+
+   .. toctree::
+
+      glossary
+      indices
 
