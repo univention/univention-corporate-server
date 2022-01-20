@@ -1,12 +1,12 @@
 product: ucs
-release: "5.0"
+release: '5.0'
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-radius
-fix: 7.0.1-4
+fix: 7.0.1-4A~5.0.0.202201201939
 desc: |
- This update addresses the following issue:
- * Updating an old RADIUS installation will now correctly update the
-   description for the extended attributes `networkAccessGroups` and
-   `NetworkAccessComputers`.
+  This update addresses the following issue:
+  * Updating an old RADIUS installation will now correctly update the
+    description for the extended attributes `networkAccessGroups` and
+    `NetworkAccessComputers`.
 bug: [54341]
