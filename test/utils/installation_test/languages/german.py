@@ -40,7 +40,7 @@ strings = {
 	'warning_no_domain': 'Keine Domäne',
 	'no_dc_dns': 'Unter der Adresse des DNS-Servers',
 	'no_dc_dns_adapt': 'Einstellungen anpassen',
-	'preferred_dns': 'Bevorzugter DNS-Server',
+	'preferred_dns': 'Bevorzugter',
 	'repositories_not_reachable': 'nicht erreicht werden',
 	'join_domain': 'Einer bestehenden UCS-Domäne',
 	'start_join': 'Domänenbeitritt am Ende',
