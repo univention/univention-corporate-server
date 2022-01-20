@@ -106,8 +106,6 @@ class NetworkAccess(object):
 		self.logger.debug('Given stationId: "{}"'.format(stationId))
 
 	def _setup_logger(self, loglevel, logfile):  # type: (Optional[int], Optional[str]) -> None
-		self.configRegistry = univention.config_registry.ConfigRegistry()
-		self.configRegistry.load()
 		if loglevel is not None:
 			ucs_debuglevel = loglevel
 		else:
