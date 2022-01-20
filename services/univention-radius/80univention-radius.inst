@@ -32,23 +32,22 @@
 
 ## joinscript api: bindpwdfile
 
+# shellcheck disable=SC2034
 VERSION=3
+# shellcheck source=/dev/null
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
 ucs_addServiceToLocalhost 'RADIUS' "$@"
 
-mkdir -p /etc/freeradius/ssl
-chmod 2755 /etc/freeradius/ssl
-cp "/etc/univention/ssl/$(hostname)/private.key" /etc/freeradius/ssl/private.key
-cp "/etc/univention/ssl/$(hostname)/cert.pem" /etc/freeradius/ssl/cert.pem
+install -o freerad -g freerad -m 2775  -d /etc/freeradius/ssl
+install -o freerad -g freerad -m 0400 "/etc/univention/ssl/$(hostname)/private.key" /etc/freeradius/ssl/private.key
+install -o freerad -g freerad -m 0444 "/etc/univention/ssl/$(hostname)/cert.pem" /etc/freeradius/ssl/cert.pem
 openssl dhparam -out /etc/freeradius/ssl/dh 1024
-chgrp freerad /etc/freeradius/ssl/private.key
-chgrp freerad /etc/freeradius/ssl/cert.pem
-chmod 440 /etc/freeradius/ssl/private.key
-chmod 444 /etc/freeradius/ssl/cert.pem /etc/freeradius/ssl/dh
+chmod 444 /etc/freeradius/ssl/dh
 
 ucs_registerLDAPExtension "$@" \
 	--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \

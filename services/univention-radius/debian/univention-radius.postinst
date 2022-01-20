@@ -80,6 +80,7 @@ case "$1" in
 		;;
 esac
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/base.sh
 call_joinscript 80univention-radius.inst
 

@@ -35,11 +35,15 @@ if [ -d "$sslbase/ucsCA" ] ; then
 	exit 0
 fi
 
+# shellcheck source=/dev/null
 . /usr/share/univention-ssl/make-certificates.sh
 
 TMPDIR="$(mktemp -d -t setupCA.XXXXXXXXXX)"
+# shellcheck disable=SC2064
 trap "rm -rf '$TMPDIR'" 0               # EXIT
+# shellcheck disable=SC2064
 trap "rm -rf '$TMPDIR'; exit 1" 2       # INT
+# shellcheck disable=SC2064
 trap "rm -rf '$TMPDIR'; exit 1" 1 15    # HUP TERM
 
 [ ! -e "$sslbase/dh" ] && openssl dhparam -out "$TMPDIR/dh" 1024 && chmod 444 "$TMPDIR/dh"
