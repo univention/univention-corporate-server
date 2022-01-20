@@ -30,13 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import os
 import codecs
 import logging
+import os
+from typing import Dict, List, Optional, Tuple  # noqa F401
 
-from ldap.filter import filter_format
-import univention.uldap
 from ldap import SERVER_DOWN
+from ldap.filter import filter_format
+
+import univention.uldap
 import univention.config_registry
 
 from .utils import decode_stationId, parse_username
@@ -47,15 +49,18 @@ DISALLOWED_SAMBA_ACCOUNT_FLAGS = frozenset((SAMBA_ACCOUNT_FLAG_DISABLED, SAMBA_A
 
 
 def convert_network_access_attr(attributes):
+	# type: (Dict[str, List[bytes]]) -> bool
 	return b'1' in attributes.get('univentionNetworkAccess', [])
 
 
 def convert_ucs_debuglevel(ucs_debuglevel):
+	# type: (int) -> int
 	logging_debuglevel = [logging.ERROR, logging.WARN, logging.INFO, logging.INFO, logging.DEBUG][max(0, min(4, ucs_debuglevel))]
 	return logging_debuglevel
 
 
 def get_ldapConnection():
+	# type: () -> univention.uldap.access
 	try:
 		# try ldap/server/name, then each of ldap/server/addition
 		return univention.uldap.getMachineConnection(ldap_master=False, reconnect=False)
@@ -67,6 +72,7 @@ def get_ldapConnection():
 class NetworkAccessError(Exception):
 
 	def __init__(self, msg):
+		# type: (str) -> None
 		self.msg = msg
 
 
@@ -113,7 +119,7 @@ class NetworkAccess(object):
 		self.logger = logging.getLogger('radius-ntlm')
 		self.logger.setLevel(debuglevel)
 		if logfile is not None:
-			log_handler = logging.FileHandler(logfile)
+			log_handler = logging.FileHandler(logfile)  # type: logging.Handler
 			log_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)10s: [pid={}; user={}; mac={}] %(message)s'.format(os.getpid(), self.username, self.mac_address))
 		else:
 			log_handler = logging.StreamHandler()
@@ -123,26 +129,32 @@ class NetworkAccess(object):
 		# self.logger.info("Loglevel set to: {}".format(ucs_debuglevel))
 
 	def build_access_dict(self, ldap_result):
+		# type: (List[Tuple[str, Dict[str, List[bytes]]]]) -> Dict[str, bool]
 		access_dict = dict()
 		for (dn, attributes) in ldap_result:
 			access_dict[dn] = convert_network_access_attr(attributes)
 		return access_dict
 
 	def get_user_network_access(self, uid):
+		# type: (str) -> Dict[str, bool]
 		users = self.ldapConnection.search(filter=filter_format('(uid=%s)', (uid, )), attr=['univentionNetworkAccess'])
 		return self.build_access_dict(users)
 
 	def get_station_network_access(self, mac_address):
+		# type: (str) -> Dict[str, bool]
 		stations = self.ldapConnection.search(filter=filter_format('(macAddress=%s)', (mac_address, )), attr=['univentionNetworkAccess'])
 		return self.build_access_dict(stations)
 
 	def get_groups_network_access(self, dn):
+		# type: (str) -> Dict[str, bool]
 		groups = self.ldapConnection.search(filter=filter_format('(uniqueMember=%s)', (dn, )), attr=['univentionNetworkAccess'])
 		return self.build_access_dict(groups)
 
 	def evaluate_ldap_network_access(self, access, level=''):
+		# type: (Dict[str, bool], str) -> bool
 
 		def format_network_access_msg(dn, policy):
+			# type: (str, bool) -> str
 			if policy:
 				return level + 'ALLOW %r' % (dn, )
 			return level + 'DENY %r' % (dn, )
@@ -161,11 +173,13 @@ class NetworkAccess(object):
 		return policy
 
 	def check_proxy_filter_policy(self):
+		# type: () -> bool
 		'''Dummy function for UCS@school'''
 		self.logger.debug('UCS@school RADIUS support is not installed')
 		return False
 
 	def check_network_access(self):
+		# type: () -> bool
 		result = self.get_user_network_access(self.username)
 		if not result:
 			self.logger.info('Login attempt with unknown username')
@@ -179,6 +193,7 @@ class NetworkAccess(object):
 		return policy
 
 	def check_station_whitelist(self):
+		# type: () -> bool
 		if not self.whitelisting:
 			self.logger.debug('MAC filtering is disabled by radius/mac/whitelisting.')
 			return True
@@ -198,6 +213,7 @@ class NetworkAccess(object):
 		return policy
 
 	def getNTPasswordHash(self):
+		# type: () -> bytes
 		'stationId may be None if it was not supplied to the program'
 		if not (self.check_proxy_filter_policy() or self.check_network_access()):
 			raise UserNotAllowedError('User is not allowed to authenticate via RADIUS')

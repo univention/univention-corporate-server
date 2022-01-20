@@ -38,6 +38,7 @@ Depends:
  python-ldap,
  python-passlib,
  python-univention (>= 12.0.0-5),
+ python-typing,
  ${misc:Depends},
  ${python:Depends},
 Provides:

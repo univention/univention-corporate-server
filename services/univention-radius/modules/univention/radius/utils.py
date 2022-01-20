@@ -36,6 +36,7 @@ import six
 
 
 def decode_stationId(stationId):
+	# type: (str) -> str
 	if not stationId:
 		return None
 	stationId = stationId.lower()
@@ -47,6 +48,7 @@ def decode_stationId(stationId):
 
 
 def parse_username(username):
+	# type: (str) -> str
 	'''convert username from host/-format to $-format if required'''
 	if not username.startswith('host/'):
 		return username

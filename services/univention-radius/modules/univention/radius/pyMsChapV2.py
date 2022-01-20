@@ -37,20 +37,24 @@ import passlib.crypto.des
 
 
 def md4(data):
+	# type: (bytes) -> bytes
 	md = hashlib.new('md4')
 	md.update(data)
 	return md.digest()
 
 
 def DesEncrypt(data, key):
+	# type: (bytes, bytes) -> bytes
 	return passlib.crypto.des.des_encrypt_block(key, data)
 
 
 def HashNtPasswordHash(passwordhash):
+	# type: (bytes) -> bytes
 	return md4(passwordhash)
 
 
 def ChallengeResponse(challenge, passwordhash):
+	# type: (bytes, bytes) -> bytes
 	z_password_hash = passwordhash.ljust(21, b'\0')
 	response = DesEncrypt(challenge, z_password_hash[0:7])
 	response += DesEncrypt(challenge, z_password_hash[7:14])

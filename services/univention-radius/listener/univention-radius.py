@@ -35,6 +35,8 @@
 from __future__ import absolute_import
 
 import subprocess
+from typing import Dict, List, Optional  # noqa F401
+
 from univention.listener.handler import ListenerModuleHandler
 
 
@@ -49,14 +51,16 @@ class AppListener(ListenerModuleHandler):
 		name = 'univention-radius'
 		description = 'Listener module for univention-radius'
 		ldap_filter = '(objectClass=univentionHost)'
-		attributes = []
+		attributes = []  # type: List[str]
 
 	def create(self, dn, new):
+		# type: (str, Dict[str, List[bytes]]) -> None
 		if b'univentionRadiusClient' in new.get('objectClass', []):
 			self.run_update = True
 			self.logger.info('config update triggered')
 
 	def modify(self, dn, old, new, old_dn):
+		# type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], Optional[str]) -> None
 		# only update the file, if relevant
 		if old_dn:
 			self.run_update = True
@@ -73,11 +77,13 @@ class AppListener(ListenerModuleHandler):
 				self.logger.info('config update triggered')
 
 	def remove(self, dn, old):
+		# type: (str, Dict[str, List[bytes]]) -> None
 		if b'univentionRadiusClient' in old.get('objectClass', []):
 			self.run_update = True
 			self.logger.info('config update triggered')
 
 	def post_run(self):
+		# type: () -> None
 		if self.run_update:
 			self.run_update = False
 			with self.as_root():

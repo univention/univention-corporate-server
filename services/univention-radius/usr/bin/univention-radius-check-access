@@ -40,6 +40,7 @@ from univention.radius.networkaccess import NetworkAccessError
 
 
 def main():
+	# type: () -> int
 	parser = argparse.ArgumentParser(description='Check network access for a user and/or MAC address')
 	parser.add_argument('--username', required=True)
 	parser.add_argument('--station-id')

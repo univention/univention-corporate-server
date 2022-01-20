@@ -47,6 +47,7 @@ LOGFIILE = '/var/log/univention/radius_ntlm_auth.log'
 
 
 def main():
+	# type: () -> int
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--request-nt-key', action='store_true', required=True)
 	parser.add_argument('--username', required=True)
