@@ -150,19 +150,12 @@ class NetworkAccess(object):
 
 	def evaluate_ldap_network_access(self, access, level=''):
 		# type: (Dict[str, bool], str) -> bool
-
-		def format_network_access_msg(dn, policy):
-			# type: (str, bool) -> str
-			if policy:
-				return level + 'ALLOW %r' % (dn, )
-			return level + 'DENY %r' % (dn, )
-
 		short_circuit = not self.logger.isEnabledFor(logging.DEBUG)
 		policy = any(access.values())
 		if short_circuit and policy:
 			return policy
-		for dn in access.keys():
-			self.logger.debug(format_network_access_msg(dn, access[dn]))
+		for dn, pol in access.items():
+			self.logger.debug("%s%s %r", level, 'ALLOW' if pol else 'DENY', dn)
 			parents_access = self.get_groups_network_access(dn)
 			if self.evaluate_ldap_network_access(parents_access, level=level + '-> '):
 				policy = True
