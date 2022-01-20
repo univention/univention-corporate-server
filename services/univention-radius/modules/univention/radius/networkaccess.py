@@ -212,7 +212,7 @@ class NetworkAccess(object):
 
 	def getNTPasswordHash(self):
 		# type: () -> bytes
-		'stationId may be None if it was not supplied to the program'
+		'stationId may be not supplied to the program'
 		if not (self.check_proxy_filter_policy() or self.check_network_access()):
 			raise UserNotAllowedError('User is not allowed to authenticate via RADIUS')
 		if not self.check_station_whitelist():

@@ -30,21 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import codecs
-
-import six
-
 
 def decode_stationId(stationId):
 	# type: (str) -> str
-	if not stationId:
-		return None
-	stationId = stationId.lower()
-	# remove all non-hex characters, so different formats may be decoded
-	# e.g. 11:22:33:44:55:66 or 1122.3344.5566 or 11-22-33-44-55-66 or ...
-	stationId = ''.join(c for c in stationId if c in '0123456789abcdef')
-	stationId = codecs.decode(stationId, 'hex')
-	return ':'.join(codecs.encode(six.int2byte(byte), 'hex').decode('ASCII') for byte in six.iterbytes(stationId))
+	norm = "".join(c for c in stationId.lower() if c in "0123456789abcdef")
+	return ":".join(norm[i:i + 2] for i in range(0, 12, 2))
 
 
 def parse_username(username):
