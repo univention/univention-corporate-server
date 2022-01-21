@@ -385,7 +385,7 @@ nochange)
 	;;
 postchange)
 	# restart daemon after password was changed
-	deb-systemd-invoke my-daemon restart
+	deb-systemd-invoke restart my-daemon
 	;;
 esac
 				]]></programlisting>
