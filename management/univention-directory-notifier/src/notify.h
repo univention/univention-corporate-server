@@ -56,7 +56,6 @@ typedef struct notify_entry {
 	char *dn;						/* the dn */
 
 	char command;					/* (m)odify, (d)elete, (a)dd */
-	struct notify_entry *next;		/* next entry */
 
 } NotifyEntry_t;
 
@@ -69,11 +68,6 @@ typedef struct {
 void notify_init ( Notify_t *notify );
 int  notify_transaction_get_last_notify_id ( Notify_t *notify, NotifyId_t *notify_id );
 char* notify_transcation_get_one_dn ( unsigned long last_known_id );
-
-void notify_entry_init ( NotifyEntry_t *entry );
-void notify_entry_free(NotifyEntry_t *entry );
-
-char* notify_entry_to_string(NotifyEntry_t entry ) ;
 
 void notify_schema_change_callback(int sig, siginfo_t *si, void *data);
 void notify_listener_change_callback(int sig, siginfo_t *si, void *data);
