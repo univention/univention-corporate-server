@@ -504,6 +504,31 @@ activate_ucsschool_devel_scope () {
 		"$component=enabled"
 }
 
+activate_idbroker_devel_scope () {
+	local component="repository/online/component/idbroker_DEVEL"
+	ucr set "$component/description=Development version of UCS idbroker" \
+		"$component/version=current" \
+		"$component/server=${FTP_SCHEME}://updates-test.${FTP_DOM}/" \
+		"$component=enabled"
+}
+
+activate_idbroker_repositories () {
+	local rv=0
+	case "${IDBROKER_RELEASE:-$UCSSCHOOL_RELEASE}" in
+		appcenter.test)
+			switch_to_test_app_center || rv=$?
+			;;
+		public)
+			;;
+		scope|*)
+			activate_idbroker_devel_scope || rv=$?
+			;;
+	esac
+	univention-app info
+	return $rv
+}
+
+
 ucsschool_scope_enabled () {
 	[ "${UCSSCHOOL_RELEASE:-scope}" = "scope" ]
 }
