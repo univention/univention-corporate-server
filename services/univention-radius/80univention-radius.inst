@@ -43,7 +43,7 @@ joinscript_init
 
 ucs_addServiceToLocalhost 'RADIUS' "$@"
 
-install -o root -g freerad -m 2775  -d /etc/freeradius/ssl
+install -o root -g freerad -m 2755  -d /etc/freeradius/ssl
 install -o root -g freerad -m 0440 "/etc/univention/ssl/$(hostname)/private.key" /etc/freeradius/ssl/private.key
 install -o root -g freerad -m 0444 "/etc/univention/ssl/$(hostname)/cert.pem" /etc/freeradius/ssl/cert.pem
 openssl dhparam -out /etc/freeradius/ssl/dh 1024
