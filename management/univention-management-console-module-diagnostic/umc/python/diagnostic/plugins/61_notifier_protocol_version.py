@@ -28,6 +28,10 @@ def run(_umc_instance):
 	ucs_version = ucr.get('version/version')
 	ucs_patchlevel = ucr.get('version/patchlevel')
 	ucs_erratalevel = ucr.get('version/erratalevel')
+	server_role = ucr.get('server/role')
+
+	if server_role not in ('domaincontroller_master', 'domaincontroller_backup'):
+		return
 
 	if not ucs_version:
 		MODULE.error(version_err_msg)
