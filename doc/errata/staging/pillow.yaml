@@ -1,0 +1,19 @@
+product: ucs
+release: "5.0"
+version: [0, 1]
+scope: ucs_5.0-0-errata5.0-1
+src: pillow
+fix: 5.4.1-2+deb10u3
+desc: |
+ This update addresses the following issues:
+ * improperly initializes ImagePath.Path in path_getbbox() in path.c
+   (CVE-2022-22815)
+ * buffer over-read during initialization of ImagePath.Path in path_getbbox()
+   in path.c (CVE-2022-22816)
+ * PIL.ImageMath.eval allows evaluation of arbitrary expressions
+   (CVE-2022-22817)
+bug: [54366]
+cve:
+- CVE-2022-22815
+- CVE-2022-22816
+- CVE-2022-22817
