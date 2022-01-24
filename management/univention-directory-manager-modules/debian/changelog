@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.11-30) unstable; urgency=medium
+
+  * Bug #54297: memberuid is missing after updating group users
+
+ -- Ildefonso González Sánchez <isanchez@univention.de>  Mon, 31 Jan 2022 11:19:37 +010
+
 univention-directory-manager-modules (15.0.11-29) unstable; urgency=medium
 
   * Bug #54029: Update French translation

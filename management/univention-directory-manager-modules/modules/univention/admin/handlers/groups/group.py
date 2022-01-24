@@ -549,7 +549,6 @@ class object(univention.admin.handlers.simpleLdap):
 				memberUidRemove = [x.encode('UTF-8') for x in memberUidRemove]
 				ml.append(('memberUid', memberUidRemove, ''))
 
-			memberUidAdd = list(set(memberUidAdd) - set(oldMemberUids))
 			if memberUidAdd:
 				memberUidAdd = [x.encode('UTF-8') for x in memberUidAdd]
 				ml.append(('memberUid', '', memberUidAdd))
