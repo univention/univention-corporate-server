@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: samba
+fix: 2:4.13.13-1A~5.0.0.202201242102
+desc: |
+ This update addresses the following issues:
+ * Samba not recognizing some SIDs as valid caused crashes
+   of the Microsoft Windows Explorer when opening the security tab
+   on a share or file where such SIDs are found in the ACLs. The
+   previously applied patch has been accidentally dropped in the
+   UCS5 version of Samba.
+bug: [53629]
