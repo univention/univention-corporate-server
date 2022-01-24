@@ -3,7 +3,7 @@ release: '5.0'
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-radius
-fix: 7.0.1-4A~5.0.0.202201210910
+fix: 7.0.1-4A~5.0.0.202201240936
 desc: |
   This update addresses the following issue:
   * Updating an old RADIUS installation will now correctly update the
