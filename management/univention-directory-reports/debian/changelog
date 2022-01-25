@@ -1,6 +1,6 @@
 univention-directory-reports (12.0.1-2) unstable; urgency=medium
 
-  * Bug #54153: Location of directory reports  and name is configurable  
+  * Bug #54153: Location of directory reports  and name is configurable
 
  -- Ildefonso González Sánchez <isanchez.extern@univention.de>  Wed, 12 Jan 2022 14:03:04 +0100
 
