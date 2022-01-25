@@ -31,7 +31,7 @@ Depends:
  shell-univention-lib (>= 9.0.11-9),
  univention-config (>= 15),
  univention-directory-manager-tools (>= 13.0.21-21),
- univention-join (>= 12.0.3-10),
+ univention-join (>= 12.0.3-11),
  univention-samba-local-config,
  univention-samba4-sysvol-sync (= ${binary:Version}),
  winbind,

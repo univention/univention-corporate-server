@@ -1,6 +1,6 @@
 univention-join (12.0.3-11) unstable; urgency=medium
 
-  * Bug #53100: Passes credentials with an authentication file to remove 
+  * Bug #53100: Passes credentials with an authentication file to remove
     credentials in clear text
 
  -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Tue, 25 Jan 2022 14:12:36 +0100
