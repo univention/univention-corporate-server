@@ -36,16 +36,16 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1429"
-     inkscape:window-height="1080"
+     inkscape:window-width="1916"
+     inkscape:window-height="975"
      id="namedview49"
      showgrid="false"
      inkscape:zoom="1.8628304"
-     inkscape:cx="125.28234"
-     inkscape:cy="100.21634"
-     inkscape:window-x="253"
-     inkscape:window-y="546"
-     inkscape:window-maximized="0"
+     inkscape:cx="125.2463"
+     inkscape:cy="121.7127"
+     inkscape:window-x="2"
+     inkscape:window-y="103"
+     inkscape:window-maximized="1"
      inkscape:current-layer="svg2" />
   <defs
      id="defs4">
@@ -105,23 +105,20 @@
   <path
      style="display:inline;overflow:visible;visibility:visible;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:url(#Arrow1Mstart);marker-end:url(#Arrow1Mend);enable-background:accumulate"
      id="path4634"
-     inkscape:connection-end="#g2681"
      inkscape:connection-start="#g2531"
-     d="M 99.633617,274.51005 155.29269,245.70058"
+     d="M 99.633617,206.51005 155.29269,177.70058"
      inkscape:connector-curvature="0" />
   <path
      style="display:inline;overflow:visible;visibility:visible;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:url(#Arrow1Mstart);marker-end:url(#Arrow1Mend);enable-background:accumulate"
      id="path2594"
      inkscape:connection-end="#g2559"
-     inkscape:connection-start="#g2681"
-     d="m 193.29299,245.70058 -5.14219,28.80947"
+     d="m 193.29299,177.70058 -5.14219,28.80947"
      inkscape:connector-curvature="0" />
   <path
      style="display:inline;overflow:visible;visibility:visible;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:url(#Arrow1Mstart);marker-end:url(#Arrow1Mend);enable-background:accumulate"
      id="path2596"
      inkscape:connection-end="#g2569"
-     inkscape:connection-start="#g2681"
-     d="m 239.14104,245.70058 55.80736,28.80947"
+     d="m 239.14104,177.70058 55.80736,28.80947"
      inkscape:connector-curvature="0" />
   <g
      id="g2614"
@@ -148,7 +145,7 @@
   </g>
   <g
      id="g2531"
-     transform="translate(-93.25723,54.176385)">
+     transform="translate(-93.25723,-13.823615)">
     <rect
        style="display:inline;overflow:visible;visibility:visible;fill:#ffff99;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.10082078;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
        id="rect3327"
@@ -175,7 +172,7 @@
   </g>
   <g
      id="g2559"
-     transform="translate(33.260257,54.176385)">
+     transform="translate(33.260257,-13.823615)">
     <rect
        style="display:inline;overflow:visible;visibility:visible;fill:#ffff99;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.10082078;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
        id="rect2561"
@@ -202,7 +199,7 @@
   </g>
   <g
      id="g2569"
-     transform="translate(185.90591,54.176385)">
+     transform="translate(185.90591,-13.823615)">
     <rect
        style="display:inline;overflow:visible;visibility:visible;fill:#ffff99;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.10082078;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
        id="rect2571"
@@ -231,19 +228,12 @@
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11px;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
      xml:space="preserve"
      id="text2630"
-     y="296.86349"
+     y="228.86349"
      x="260.61359"><tspan
        style="text-align:center;text-anchor:middle"
        id="tspan2634"
-       y="296.86349"
+       y="228.86349"
        x="260.61359">.....</tspan></text>
-  <path
-     style="display:inline;overflow:visible;visibility:visible;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:url(#Arrow1Mstart);marker-end:url(#Arrow1Mend);enable-background:accumulate"
-     id="path2657"
-     inkscape:connection-end="#g2681"
-     inkscape:connection-start="#g2614"
-     d="M 197.16109,177.26742 V 202.3579"
-     inkscape:connector-curvature="0" />
   <g
      id="g2659"
      transform="translate(94.934217,-45.811986)" />
@@ -281,33 +271,6 @@
      inkscape:connection-start="#g2614"
      d="M 197.16109,92.108745 V 43.936305"
      inkscape:connector-curvature="0" />
-  <g
-     id="g2681"
-     transform="translate(45.080995,-17.975774)">
-    <rect
-       style="display:inline;overflow:visible;visibility:visible;fill:#ffff99;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.10082078;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
-       id="rect2683"
-       y="220.88412"
-       x="79.665504"
-       ry="7.1767855"
-       rx="7.176785"
-       height="42.241859"
-       width="144.82918" />
-    <text
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11px;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       xml:space="preserve"
-       id="text2685"
-       y="239.23088"
-       x="152.14186"><tspan
-         style="font-weight:bold;text-align:center;text-anchor:middle"
-         id="tspan2687"
-         y="239.23088"
-         x="152.14186">UMC server</tspan><tspan
-         style="text-align:center;text-anchor:middle"
-         id="tspan2689"
-         y="252.98088"
-         x="152.14186">UMC Python API</tspan></text>
-  </g>
   <text
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11px;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
      xml:space="preserve"
@@ -325,30 +288,16 @@
   <text
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11px;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
      xml:space="preserve"
-     id="text2837-4"
-     y="192.83287"
-     x="204.32408"><tspan
-       style="font-weight:normal;text-align:start;text-anchor:start"
-       id="tspan2839-4"
-       y="192.83287"
-       x="204.32408">UMCP 2.0 (TCP)</tspan><tspan
-       style="font-weight:normal;text-align:start;text-anchor:start"
-       id="tspan2841-3"
-       y="206.58287"
-       x="204.32408" /></text>
-  <text
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11px;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-     xml:space="preserve"
      id="text2837-4-0"
-     y="257.97559"
+     y="189.97559"
      x="263.3241"><tspan
        style="font-weight:normal;text-align:start;text-anchor:start"
        id="tspan2839-4-7"
-       y="257.97559"
-       x="263.3241">UMCP 2.0 (UNIX socket)</tspan><tspan
+       y="189.97559"
+       x="263.3241">HTTP (UNIX socket)</tspan><tspan
        style="font-weight:normal;text-align:start;text-anchor:start"
        id="tspan2841-3-8"
-       y="271.72559"
+       y="203.72559"
        x="263.3241" /></text>
   <g
      transform="translate(94.934217,-24.45957)"
@@ -376,7 +325,6 @@
   <path
      style="display:inline;overflow:visible;visibility:visible;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:url(#Arrow1Mstart-3);marker-end:url(#Arrow1Mend-7);enable-background:accumulate"
      id="path2657-3"
-     inkscape:connection-end="#g2681"
      inkscape:connection-start="#g2614"
      d="M 195.40158,122.25272 V 147.3432"
      inkscape:connector-curvature="0" />
