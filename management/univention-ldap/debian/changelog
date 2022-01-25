@@ -1,3 +1,4932 @@
+univention-ldap (16.0.7-9) unstable; urgency=medium
+
+  * Bug #54092: added krb5ValidStart to ..ldap-config.postinst and
+    ldap_setup_index. Added advisory yaml. 
+
+ -- Alexander Steffen <steffen@univention.de>  Wed, 19 Jan 2022 12:56:52 +0100
+
+univention-ldap (16.0.7-8) unstable; urgency=medium
+
+  * Bug #54185: Do not enable refint on updates
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 07 Dec 2021 11:03:07 +0100
+
+univention-ldap (16.0.7-7) unstable; urgency=medium
+
+  * Bug #48956: Disable refint overlay for updates
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 02 Dec 2021 21:57:53 +0100
+
+univention-ldap (16.0.7-6) unstable; urgency=medium
+
+  * Bug #48956: Fix linter
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 01 Dec 2021 08:39:33 +0100
+
+univention-ldap (16.0.7-5) unstable; urgency=medium
+
+  * Bug #48956: Add refint module
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 24 Nov 2021 18:16:09 +0100
+
+univention-ldap (16.0.7-4) unstable; urgency=medium
+
+  * Bug #53532: UMC translation file registration
+
+ -- Christian Castens <castens@univention.de>  Mon, 05 Jul 2021 10:21:07 +0200
+
+univention-ldap (16.0.7-3) unstable; urgency=medium
+
+  * Bug #53192: Add presence index for some DNS attributes
+
+ -- Arvid <requate@univention.de>  Tue, 11 May 2021 14:59:26 +0200
+
+univention-ldap (16.0.7-2) unstable; urgency=medium
+
+  * Bug 51482: Remove PyKota print quota support
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 22 Apr 2021 21:14:24 +0200
+
+univention-ldap (16.0.7-1) unstable; urgency=medium
+
+  * Bug #52280: migrate scripts to Python 3
+
+ -- Florian Best <best@univention.de>  Tue, 23 Feb 2021 13:04:41 +0100
+
+univention-ldap (16.0.6-1) unstable; urgency=medium
+
+  * Bug #34003: fix performance of 25univention-ldap-server_local-schema
+
+ -- Florian Best <best@univention.de>  Thu, 11 Feb 2021 10:41:09 +0100
+
+univention-ldap (16.0.5-1) unstable; urgency=medium
+
+  * Bug #52693: added ldap/pw-bcrypt for bcrypt module
+
+ -- Felix Botner <botner@univention.de>  Tue, 02 Feb 2021 21:03:49 +0100
+
+univention-ldap (16.0.4-3) unstable; urgency=medium
+
+  * Bug #52696: sha512 hashes for cn=admin and backup
+
+ -- Felix Botner <botner@univention.de>  Thu, 28 Jan 2021 13:06:32 +0100
+
+univention-ldap (16.0.4-2) unstable; urgency=low
+
+  * Bug #45205: readd LDAP attribute for email forwarding setting
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 26 Nov 2020 11:28:47 +0100
+
+univention-ldap (16.0.4-1) unstable; urgency=medium
+
+  * Bug #43687: use systemctl instead of init.d to restart UDL
+
+ -- Sebastian Lobinger <lobinger@univention.de>  Thu, 19 Nov 2020 19:14:01 +0100
+
+univention-ldap (16.0.3-1) unstable; urgency=medium
+
+  * Bug #39167: Setting the default mdb maxsize to 4GB
+
+ -- Jan Luttermann <luttermann@univention.de>  Wed, 18 Nov 2020 19:15:03 +0100
+
+univention-ldap (16.0.2-1) unstable; urgency=medium
+
+  * Bug #43686: use systemctl to start stop or restart univention-directory-listener
+
+ -- Sebastian Lobinger <lobinger@univention.de>  Fri, 13 Nov 2020 11:15:37 +0100
+
+univention-ldap (16.0.1-5) unstable; urgency=medium
+
+  * Bug #51765: setting max_age ucr variable
+
+ -- Jan Luttermann <luttermann@univention.de>  Wed, 04 Nov 2020 09:54:40 +0100
+
+univention-ldap (16.0.1-4) unstable; urgency=medium
+
+  * Bug #42374: Explain new wording in UCR variable description
+
+ -- Arvid <requate@univention.de>  Mon, 05 Oct 2020 17:26:59 +0200
+
+univention-ldap (16.0.1-3) unstable; urgency=medium
+
+  * Bug #42374: Wording fixes
+
+ -- Arvid <requate@univention.de>  Mon, 05 Oct 2020 16:21:08 +0200
+
+univention-ldap (16.0.1-2) unstable; urgency=medium
+
+  * Bug #42374: Some additional fixes
+
+ -- Arvid <requate@univention.de>  Tue, 29 Sep 2020 14:19:27 +0200
+
+univention-ldap (16.0.1-1) unstable; urgency=medium
+
+  * Bug #42374: Wording - Master -> Primary; Slave -> Replica
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 25 Sep 2020 01:31:16 +0200
+
+univention-ldap (16.0.1-0) unstable; urgency=medium
+
+  * Bug #51640: fix joinscript credentials for univention-ldapsearch
+
+ -- Florian Best <best@univention.de>  Fri, 18 Sep 2020 14:34:34 +0200
+
+univention-ldap (16.0.0-5) unstable; urgency=low
+
+  * Bug #31048: Remove cn=admin-settings,cn=univention
+  * Bug #47949: Remove cn=admin-settings,cn=users,cn=policies
+  * Bug #42334: Remove replog code fragments
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 18 Sep 2020 14:34:33 +0200
+
+univention-ldap (16.0.0-2) unstable; urgency=medium
+
+  * Bug #51422: Ensure /etc/ldap/slapd.conf is the used ldap config
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 18 Sep 2020 14:34:32 +0200
+
+univention-ldap (16.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS 5: Version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 18 Sep 2020 14:34:31 +0200
+
+univention-ldap (15.0.1-1) unstable; urgency=medium
+
+  * Bug #51676: start slapd after ldap_setup_index so joinscript is executed
+  	with started ldap server
+
+ -- Florian Best <best@univention.de>  Fri, 18 Sep 2020 14:34:30 +0200
+
+univention-ldap (15.0.0-41) unstable; urgency=medium
+
+  * Bug #51676: make ppolicy allow users to change their own password
+
+ -- Arvid <requate@univention.de>  Fri, 18 Sep 2020 14:06:04 +0200
+
+univention-ldap (15.0.0-40) unstable; urgency=medium
+
+  * Bug #42182: add univentionShareSambaBaseDirAppendACL to share
+
+ -- Tobias Wenzel <wenzel@univention.de>  Tue, 9 Sep 2020 08:42:01 +0200
+
+univention-ldap (15.0.0-39) unstable; urgency=medium
+
+  * Bug #51029: make UCR templates python3-compatible
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 27 Mar 2020 10:44:03 +0100
+
+univention-ldap (15.0.0-38) unstable; urgency=medium
+
+  * Bug #49700: increase default for ldap/overlay/lastbind/precision
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 03 Mar 2020 16:20:01 +0100
+
+univention-ldap (15.0.0-37) unstable; urgency=medium
+
+  * Bug #49700: adjust lastbind UCR variable descriptions +
+    adjust default for ldap/overlay/lastbind/precision
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 28 Feb 2020 12:07:34 +0100
+
+univention-ldap (15.0.0-36) unstable; urgency=medium
+
+  * Bug #49700: univention_lastbind.py is not only installed
+    on master and backup servers via the new univention-ldap-config-master
+    binary package; + lastbind ext attr now uses GeneralizedTimeOrderingMatch
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 26 Feb 2020 14:22:44 +0100
+
+univention-ldap (15.0.0-35) unstable; urgency=medium
+
+  * Bug #49700: add ucr variables to configure slapo-lastbind
+    overlay and added univention_lastbind.py
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 24 Feb 2020 15:14:25 +0100
+
+univention-ldap (15.0.0-34) unstable; urgency=medium
+
+  * Bug #50616: Mention this bug in the init script
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Dec 2019 11:20:07 +0100
+
+univention-ldap (15.0.0-33) unstable; urgency=medium
+
+  * Bug #50616: Readjust pgrep pattern; systemctl daemon-reload to avoid
+    warning message
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 12 Dec 2019 10:00:13 +0100
+
+univention-ldap (15.0.0-32) unstable; urgency=medium
+
+  * Bug #50616: The init script now looks for an already running process only
+    below parent pid 1 specifically. This allows another process "slapd" to be
+    run in a container
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 11 Dec 2019 15:40:06 +0100
+
+univention-ldap (15.0.0-31) unstable; urgency=medium
+
+  * Bug #50481: set_handler_message in postrun
+
+ -- Felix Botner <botner@univention.de>  Mon, 18 Nov 2019 10:30:42 +0100
+
+univention-ldap (15.0.0-30) unstable; urgency=medium
+
+  * Bug #50481: set_handler_message in postrun
+
+ -- Felix Botner <botner@univention.de>  Thu, 14 Nov 2019 13:39:25 +0100
+
+univention-ldap (15.0.0-29) unstable; urgency=medium
+
+  * Bug #50481: set_handler_message in postrun
+
+ -- Felix Botner <botner@univention.de>  Thu, 14 Nov 2019 12:57:09 +0100
+
+univention-ldap (15.0.0-28) unstable; urgency=medium
+
+  * Bug #50481: set_handler_message in postrun
+
+ -- Felix Botner <botner@univention.de>  Thu, 14 Nov 2019 12:38:19 +0100
+
+univention-ldap (15.0.0-27) unstable; urgency=medium
+
+  * Bug #50481: reverted last commit, use set_handler_message from
+    univention.lib in ldap extension listener
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Nov 2019 17:04:08 +0100
+
+univention-ldap (15.0.0-26) unstable; urgency=medium
+
+  * Bug #50481: added univentionListenerMessage
+
+ -- Felix Botner <botner@univention.de>  Mon, 11 Nov 2019 13:05:10 +0100
+
+univention-ldap (15.0.0-25) unstable; urgency=low
+
+  * Bug #46649: add objectClass "top" to container cn=dns,$LDAP_BASE
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 26 Sep 2019 10:52:46 +0200
+
+univention-ldap (15.0.0-24) unstable; urgency=medium
+
+  * Bug #50205: Update links from UCS 4.x-y to UCS 4.4-2
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 20 Sep 2019 14:32:29 +0200
+
+univention-ldap (15.0.0-23) unstable; urgency=medium
+
+  * Bug #49734: split ACL's of DC Slave into 60- and 70- UCR template
+
+ -- Florian Best <best@univention.de>  Mon, 26 Aug 2019 11:48:08 +0200
+
+univention-ldap (15.0.0-22) unstable; urgency=medium
+
+  * Bug #48698: Fix user visible spelling errors
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 08 Aug 2019 05:46:39 +0200
+
+univention-ldap (15.0.0-21) unstable; urgency=medium
+
+  * Bug #49387: allow further groups via UCR to acceess the cn=monitor
+    backend
+  * Bug #49386: make it possible to disable creation of policies/ldapserver
+  	object
+
+ -- Florian Best <best@univention.de>  Mon, 01 Jul 2019 12:14:35 +0200
+
+univention-ldap (15.0.0-20) unstable; urgency=low
+
+  * Bug #49505: Unlimited page size for UDN translog
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 05 Jun 2019 18:57:38 +0200
+
+univention-ldap (15.0.0-19) unstable; urgency=medium
+
+  * Bug #45318: make target="_blank" for portal entries configurable
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 27 May 2019 10:21:52 +0200
+
+univention-ldap (15.0.0-18) unstable; urgency=medium
+
+  * Bug #46919: add comments to postinst
+
+ -- Florian Best <best@univention.de>  Wed, 20 Mar 2019 10:24:05 +0100
+
+univention-ldap (15.0.0-17) unstable; urgency=medium
+
+  * Bug #46919: add default containers for DC computers
+
+ -- Florian Best <best@univention.de>  Mon, 18 Mar 2019 14:37:18 +0100
+
+univention-ldap (15.0.0-16) unstable; urgency=medium
+
+  * Bug #46919: add default containers for DC computers
+
+ -- Florian Best <best@univention.de>  Mon, 18 Mar 2019 14:02:34 +0100
+
+univention-ldap (15.0.0-15) unstable; urgency=low
+
+  * Bug #48971: Fix regression in translog setup
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 12 Mar 2019 16:56:33 +0100
+
+univention-ldap (15.0.0-14) unstable; urgency=medium
+
+  * Bug #48801: Add univentionDataType to default LDAP index
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Mar 2019 12:17:15 +0100
+
+univention-ldap (15.0.0-12) unstable; urgency=medium
+
+  * Bug #41213: Adjust variable description wording for ldap/monitor
+
+ -- Arvid Requate <requate@univention.de>  Thu, 21 Feb 2019 14:36:59 +0100
+
+univention-ldap (15.0.0-11) unstable; urgency=medium
+
+  * Bug #41213: Variable description for ldap/monitor
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 21 Feb 2019 12:54:37 +0100
+
+univention-ldap (15.0.0-10) unstable; urgency=medium
+
+  * Bug #48546: Enhance user guidance in portal
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 20 Feb 2019 13:13:11 +0100
+
+univention-ldap (15.0.0-9) unstable; urgency=low
+
+  * Bug #41213: cn=monitor backend for statistical information
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 20 Feb 2019 12:45:45 +0100
+
+univention-ldap (15.0.0-8) unstable; urgency=medium
+
+  * Bug #48642: Merge UDN protocol 3
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 18 Feb 2019 15:17:44 +0100
+
+univention-ldap (15.0.0-7) unstable; urgency=medium
+
+  * Bug #48621: implement app tabs
+
+ -- Florian Best <best@univention.de>  Wed, 13 Feb 2019 13:57:12 +0100
+
+univention-ldap (15.0.0-6) unstable; urgency=medium
+
+  * Bug #43515: Subfile belongs to univention-ldap-server
+
+ -- Arvid Requate <requate@univention.de>  Tue, 05 Feb 2019 17:05:45 +0100
+
+univention-ldap (15.0.0-5) unstable; urgency=medium
+
+  * Bug #48530: resync listener module ldap_extension to fix missing LDAP ACLs
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 24 Jan 2019 18:06:49 +0100
+
+univention-ldap (15.0.0-4) unstable; urgency=medium
+
+  * Bug #46969: bindpwdfile support
+
+ -- Felix Botner <botner@univention.de>  Fri, 21 Dec 2018 12:04:37 +0100
+
+univention-ldap (15.0.0-3) unstable; urgency=medium
+
+  * Bug #43515: Allow access to cn=config only via LDAPI for now
+
+ -- Arvid Requate <requate@univention.de>  Wed, 19 Dec 2018 15:28:45 +0100
+
+univention-ldap (15.0.0-2) unstable; urgency=medium
+
+  * Bug #43515: Only print config entry if ldap/hostdn exists 
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 17 Dec 2018 14:13:48 +0100
+
+univention-ldap (15.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:37 +0100
+
+univention-ldap (14.0.2-33) unstable; urgency=medium
+
+  * Bug #43515: Only print config entry if ldap/hostdn exists
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 17 Dec 2018 11:00:59 +0100
+
+univention-ldap (14.0.2-32) unstable; urgency=medium
+
+  * Bug #43515: Enabled database config in openldap
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 14 Dec 2018 12:51:48 +0100
+
+univention-ldap (14.0.2-31) unstable; urgency=medium
+
+  * Bug #48091: removed @univentionPortalCategory in portal acl's
+
+ -- Felix Botner <botner@univention.de>  Thu, 22 Nov 2018 16:51:56 +0100
+
+univention-ldap (14.0.2-30) unstable; urgency=low
+
+  * Bug #47944: update dependencies
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 19 Nov 2018 14:57:26 +0100
+
+univention-ldap (14.0.2-28) unstable; urgency=medium
+
+  * Bug #47944: rename LDAP attributes for UDM module rename from
+    settings/code to settings/data
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 12 Oct 2018 16:01:30 +0200
+
+univention-ldap (14.0.2-27) unstable; urgency=low
+
+  * Bug #47944: add attributes for "package" and "packageversion"
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 12 Oct 2018 14:02:28 +0200
+
+univention-ldap (14.0.2-26) unstable; urgency=medium
+
+  * Bug #47944: Add univentionCode schema
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Wed, 10 Oct 2018 13:50:45 +0200
+
+univention-ldap (14.0.2-25) unstable; urgency=low
+
+  * Bug #48102: Fix spelling mistake
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 07 Nov 2018 07:21:36 +0100
+
+univention-ldap (14.0.2-24) unstable; urgency=low
+
+  * Fix generating DH parameter file (Bug #47974)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 15 Oct 2018 14:23:49 +0200
+
+univention-ldap (14.0.2-20) unstable; urgency=medium
+
+  * Bug #47869: fix UCR variable description
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 02 Oct 2018 11:17:23 +0200
+
+univention-ldap (14.0.2-19) unstable; urgency=medium
+
+  * Bug #47243: Add custom portal categories
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 10 Sep 2018 12:19:43 +0200
+
+univention-ldap (14.0.2-18) unstable; urgency=medium
+
+  * Bug #43442: Allow to customize portal with static pages
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 29 Aug 2018 18:46:41 +0200
+
+univention-ldap (14.0.2-17) unstable; urgency=medium
+
+  * Bug #47196: Adjust default ldap/debug/level from 0 to "none"
+    to log critical errors
+
+ -- Arvid Requate <requate@univention.de>  Tue, 10 Jul 2018 12:41:10 +0200
+
+univention-ldap (14.0.2-16) unstable; urgency=medium
+
+  * Bug #47246: added ldap/attributeoptions for slapd.conf
+    (new default is "entry-,lang-" instead of "entry-")
+
+ -- Felix Botner <botner@univention.de>  Fri, 29 Jun 2018 11:52:54 +0200
+
+univention-ldap (14.0.2-15) unstable; urgency=medium
+
+  * Bug #46288: fix userPrimaryGroupPreset LDAP syntax
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Apr 2018 11:54:24 +0200
+
+univention-ldap (14.0.2-14) unstable; urgency=medium
+
+  * Bug #46117: Revert locking for dn
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 02 Mar 2018 17:10:57 +0100
+
+univention-ldap (14.0.2-13) unstable; urgency=medium
+
+  * Bug #46117: Add temporary container for locking dn(s)
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 02 Mar 2018 15:43:55 +0100
+
+univention-ldap (14.0.2-12) unstable; urgency=low
+
+  * Bug #46102: remove deprecated package dependency
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 27 Feb 2018 17:26:42 +0100
+
+univention-ldap (14.0.2-11) unstable; urgency=medium
+
+  * Bug #46270: Add ldap attribute for portal entry user groups (2)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 11 Feb 2018 02:53:11 +0100
+
+univention-ldap (14.0.2-10) unstable; urgency=medium
+
+  * Bug #46270: Add ldap attribute for portal entry user groups
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 10 Feb 2018 16:49:21 +0100
+
+univention-ldap (14.0.2-9) unstable; urgency=medium
+
+  * Bug #46270: Add ldap attribute for portal entries ordering
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 09 Feb 2018 20:19:43 +0100
+
+univention-ldap (14.0.2-8) unstable; urgency=medium
+
+  * Bug #46066: version bump
+
+ -- Felix Botner <botner@univention.de>  Mon, 05 Feb 2018 12:54:53 +0100
+
+univention-ldap (14.0.2-7) unstable; urgency=medium
+
+  * Bug #46066: added univention-ldap-overlay-memberof to
+    univention-ldap-server
+
+ -- Felix Botner <botner@univention.de>  Thu, 18 Jan 2018 17:51:43 +0100
+
+univention-ldap (14.0.2-6) unstable; urgency=medium
+
+  * Bug #45996: Revert Syntax and Matchingrule change in Kerberos schema
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 Jan 2018 11:44:02 +0100
+
+univention-ldap (14.0.2-5) unstable; urgency=medium
+
+  * Bug #45996: Fix TypeError: unsupported operand type(s)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Jan 2018 16:39:18 +0100
+
+univention-ldap (14.0.2-4) unstable; urgency=medium
+
+  * Bug #45996: Fix UnboundLocalError
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Jan 2018 15:05:56 +0100
+
+univention-ldap (14.0.2-3) unstable; urgency=medium
+
+  * Bug #45996: improve --reindex changes in scripts/ldap_setup_index
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Jan 2018 23:49:34 +0100
+
+univention-ldap (14.0.2-2) unstable; urgency=medium
+
+  * Bug #45996: New --reindex option for scripts/ldap_setup_index
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Jan 2018 18:41:12 +0100
+
+univention-ldap (14.0.2-1) unstable; urgency=medium
+
+  * Bug #45996: Update krb5-kdc.schema to Heimdal 7.1
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Jan 2018 16:17:00 +0100
+
+univention-ldap (14.0.1-1) unstable; urgency=medium
+
+  * Use service instead of invoke-rc.d since systemd policy layer
+    prevents starting services in a chroot environment (Bug #45905)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Dec 2017 22:08:07 +0100
+
+univention-ldap (14.0.0-4) unstable; urgency=medium
+
+  * Revert GNUTLS changes (Bug #45870)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 14 Dec 2017 15:55:23 +0100
+
+univention-ldap (14.0.0-3) unstable; urgency=medium
+
+  * Make GNUTLS default TLSCipherSuite similar to OpenSSL (Bug #45870)
+  * New UCR variable ldap/tls/priority for GNUTLS
+  * Warn if ldap/tls/ciphersuite has been set manually
+  * slapd ignores TLSDHParamFile for GNUTLS, so comment it out for now
+
+ -- Arvid Requate <requate@univention.de>  Wed, 13 Dec 2017 16:31:02 +0100
+
+univention-ldap (14.0.0-2) unstable; urgency=medium
+
+  * Convert TLSCipherSuite from OpenSSL to GNUTLS (Bug #45870)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 13 Dec 2017 13:12:36 +0100
+
+univention-ldap (14.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:26 +0100
+
+univention-ldap (13.0.7-20) unstable; urgency=low
+
+  * Bug #37976: Fix description for UCRV 'ldap/acl/read/anonymous'.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 26 Sep 2017 11:37:43 +0200
+
+univention-ldap (13.0.7-19) unstable; urgency=medium
+
+  * Bug #11800: fix ucslint postinst
+
+ -- Florian Best <best@univention.de>  Wed, 30 Aug 2017 13:01:09 +0200
+
+univention-ldap (13.0.7-18) unstable; urgency=medium
+
+  * Bug #11800: restart slapd during this upgrade in postinst
+
+ -- Florian Best <best@univention.de>  Wed, 30 Aug 2017 12:57:00 +0200
+
+univention-ldap (13.0.7-17) unstable; urgency=medium
+
+  * Bug #11800: prevent access to uid=root; revert previous changes
+
+ -- Florian Best <best@univention.de>  Tue, 22 Aug 2017 14:36:43 +0200
+
+univention-ldap (13.0.7-16) unstable; urgency=medium
+
+  * Bug #11800: fix syntax error
+
+ -- Florian Best <best@univention.de>  Thu, 03 Aug 2017 15:57:31 +0200
+
+univention-ldap (13.0.7-15) unstable; urgency=medium
+
+  * Bug #38554: fix shell-univention-lib dependency
+
+ -- Lukas Oyen <oyen@univention.de>  Thu, 03 Aug 2017 15:37:48 +0200
+
+univention-ldap (13.0.7-14) unstable; urgency=medium
+
+  * Bug #11800: enforce uniqueness on uid's specified in ldap/unique/uid
+
+ -- Florian Best <best@univention.de>  Thu, 03 Aug 2017 12:02:16 +0200
+
+univention-ldap (13.0.7-13) unstable; urgency=medium
+
+  * Bug #38554: u-ldap: call clean_old_backups in u-ldap-backup
+
+ -- Lukas Oyen <oyen@univention.de>  Wed, 02 Aug 2017 18:16:54 +0200
+
+univention-ldap (13.0.7-12) unstable; urgency=medium
+
+  * Bug #44909: index univentionUDMPropertyCopyable more carefully: If a DC
+  	Slave doesn't have the attribute yet the upgrade failed
+
+ -- Florian Best <best@univention.de>  Fri, 30 Jun 2017 13:35:48 +0200
+
+univention-ldap (13.0.7-11) unstable; urgency=medium
+
+  * Bug #1567: add attribute univentionUDMPropertyCopyable
+
+ -- Florian Best <best@univention.de>  Tue, 20 Jun 2017 18:36:22 +0200
+
+univention-ldap (13.0.7-10) unstable; urgency=low
+
+  * Bug #42249: rename mailForwardAddress property
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 02 Jun 2017 13:47:07 +0200
+
+univention-ldap (13.0.7-9) unstable; urgency=low
+
+  * Bug #42249: rename mailForwardAddress property
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 02 Jun 2017 13:18:06 +0200
+
+univention-ldap (13.0.7-8) unstable; urgency=low
+
+  * support UTF-8 in email aliases
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 29 May 2017 16:02:32 +0200
+
+univention-ldap (13.0.7-7) unstable; urgency=medium
+
+  * Bug #44697: Allow to change the font color of the portal page
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 26 May 2017 13:33:14 +0200
+
+univention-ldap (13.0.7-6) unstable; urgency=medium
+
+  * Bug #42249: add support for virtual mail aliases
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 26 Apr 2017 11:13:08 +0200
+
+univention-ldap (13.0.7-5) unstable; urgency=medium
+
+  * Bug #43520: Remove incorrect ACL dependencies from univention-ldap-server
+    (in fact, univention-server-* have these dependencies)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Mar 2017 15:22:22 +0200
+
+univention-ldap (13.0.7-4) unstable; urgency=medium
+
+  * Bug #43520: Make ACLs depend on univention-ldap-server instead
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Mar 2017 14:38:08 +0200
+
+univention-ldap (13.0.7-3) unstable; urgency=medium
+
+  * Bug #43520: Adjust dependencies for LDAP schema data and ACLs
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Mar 2017 11:38:32 +0200
+
+univention-ldap (13.0.7-2) unstable; urgency=medium
+
+  * Bug #44118: invoke-rc.d doesn't work with the one-shot samba.service
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 Mar 2017 20:13:01 +0200
+
+univention-ldap (13.0.7-1) unstable; urgency=medium
+
+  * portal.schema: Added EQUALITY and SUBSTR for
+    univentionPortalCSSBackground (Bug #44019)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 27 Mar 2017 15:29:28 +0200
+
+univention-ldap (13.0.6-2) unstable; urgency=medium
+
+  * Bug #44032: revert
+
+ -- Florian Best <best@univention.de>  Fri, 24 Mar 2017 11:58:48 +0100
+
+univention-ldap (13.0.6-1) unstable; urgency=medium
+
+  * Bug #44032: add missing "$@" for univention-ldapsearch in joinscript
+
+ -- Florian Best <best@univention.de>  Fri, 24 Mar 2017 11:29:15 +0100
+
+univention-ldap (13.0.5-6) unstable; urgency=medium
+
+  * Bug #42235: Add schema extensions for portal logo and CSS background
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Mar 2017 03:41:12 +0100
+
+univention-ldap (13.0.5-5) unstable; urgency=low
+
+  * Bug #43470: Handle UCRV */autostart through systemd
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 15 Mar 2017 08:52:56 +0100
+
+univention-ldap (13.0.5-4) unstable; urgency=low
+
+  * Bug #43645: db5.3
+
+ -- Felix Botner <botner@univention.de>  Mon, 13 Mar 2017 18:09:39 +0100
+
+univention-ldap (13.0.5-3) unstable; urgency=low
+
+  * Bug #43689: Drop legacy univention-bind packages
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 09 Mar 2017 09:16:57 +0100
+
+univention-ldap (13.0.5-2) unstable; urgency=low
+
+  * Bug #36215: updated ldap/shadowbind/ignorefilter
+
+ -- Felix Botner <botner@univention.de>  Mon, 06 Mar 2017 12:01:18 +0100
+
+univention-ldap (13.0.5-1) unstable; urgency=medium
+
+  * Bug #43312: remove uidNumber=0 ACL's as they are covered by the constraint
+
+ -- Florian Best <best@univention.de>  Fri, 03 Mar 2017 16:52:43 +0100
+
+univention-ldap (13.0.4-2) unstable; urgency=medium
+
+  * Bug #42175: Change filename
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 02 Mar 2017 17:57:16 +0100
+
+univention-ldap (13.0.4-1) unstable; urgency=medium
+
+  * Bug #42175: ACLs for Portal Entries
+
+ -- Florian Best <best@univention.de>  Thu, 02 Mar 2017 14:59:54 +0100
+
+univention-ldap (13.0.3-9) unstable; urgency=medium
+
+  * Bug #42175: ACLs for Portal Entries
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 01 Mar 2017 02:13:41 +0100
+
+univention-ldap (13.0.3-8) unstable; urgency=low
+
+  * Bug #43313: Adjust slapd.service to use pidfile
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 27 Feb 2017 16:28:36 +0100
+
+univention-ldap (13.0.3-7) unstable; urgency=medium
+
+  * Bug #42175: Schema for Portal / Portal Entries
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 27 Feb 2017 09:47:52 +0100
+
+univention-ldap (13.0.3-6) unstable; urgency=low
+
+  * Bug #36215: disable ldap/shadowbind during update
+
+ -- Felix Botner <botner@univention.de>  Tue, 21 Feb 2017 14:30:38 +0100
+
+univention-ldap (13.0.3-5) unstable; urgency=low
+
+  * Bug #43523: revert
+
+ -- Felix Botner <botner@univention.de>  Mon, 20 Feb 2017 12:06:27 +0100
+
+univention-ldap (13.0.3-4) unstable; urgency=low
+
+  * Bug #43523: added ldap/acl/read/regex
+
+ -- Felix Botner <botner@univention.de>  Mon, 20 Feb 2017 11:39:05 +0100
+
+univention-ldap (13.0.3-3) unstable; urgency=medium
+
+  * Remove hardcoded sleep (Bug #43450)
+  * Do not signal failure if daemon is already running (Bug #43450)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 31 Jan 2017 18:59:38 +0100
+
+univention-ldap (13.0.3-2) unstable; urgency=medium
+
+  * Bug #43312: fix regex in constraint
+
+ -- Florian Best <best@univention.de>  Tue, 17 Jan 2017 13:42:37 +0100
+
+univention-ldap (13.0.3-1) unstable; urgency=medium
+
+  * Bug #43312: add constraint for value=0 on attribute uidNumber / gidNumber
+
+ -- Florian Best <best@univention.de>  Mon, 16 Jan 2017 14:28:17 +0100
+
+univention-ldap (13.0.2-1) unstable; urgency=medium
+
+  * Bug #41797: add add_content_acl on configuration
+
+ -- Florian Best <best@univention.de>  Fri, 13 Jan 2017 18:55:46 +0100
+
+univention-ldap (13.0.1-1) unstable; urgency=medium
+
+  * Replace the graceful-restart and graceful-stop with restart and stop
+    in order to get the first UCS 4.2 preview tests working (Bug #43329)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Jan 2017 06:13:05 +0100
+
+univention-ldap (13.0.0-12) unstable; urgency=medium
+
+  * Bug #32557: allow attribute dhcpStatements at dhcpPool (dhcp/pool)
+
+ -- Florian Best <best@univention.de>  Fri, 06 Jan 2017 12:12:31 +0100
+
+univention-ldap (13.0.0-11) unstable; urgency=medium
+
+  * Bug #42103: enhance pam_unix password change configuration
+
+ -- Florian Best <best@univention.de>  Fri, 14 Oct 2016 14:00:47 +0200
+
+univention-ldap (13.0.0-10) unstable; urgency=low
+
+  * Bug #41281 Bug #38679:: added defaults and description
+
+ -- Felix Botner <botner@univention.de>  Wed, 07 Sep 2016 09:22:17 +0200
+
+univention-ldap (13.0.0-9) unstable; urgency=low
+
+  * Bug #41281: added ldap/index/quickmode for slapindex quick mode
+
+ -- Felix Botner <botner@univention.de>  Mon, 05 Sep 2016 18:01:56 +0200
+
+univention-ldap (13.0.0-8) unstable; urgency=low
+
+  * Bug #36215: added shadowbind overlay, fixed ucr registration
+
+ -- Felix Botner <botner@univention.de>  Mon, 05 Sep 2016 13:37:34 +0200
+
+univention-ldap (13.0.0-7) unstable; urgency=low
+
+  * Bug #36215: added shadowbind overlay
+
+ -- Felix Botner <botner@univention.de>  Mon, 05 Sep 2016 13:32:31 +0200
+
+univention-ldap (13.0.0-6) unstable; urgency=low
+
+  * Bug #39307: added ldap/client/timelimit and ldap/client/timeout
+
+ -- Felix Botner <botner@univention.de>  Wed, 24 Aug 2016 09:32:46 +0200
+
+univention-ldap (13.0.0-5) unstable; urgency=low
+
+  * Bug #41648: wrap index lines
+
+ -- Felix Botner <botner@univention.de>  Tue, 23 Aug 2016 10:24:41 +0200
+
+univention-ldap (13.0.0-4) unstable; urgency=low
+
+  * Bug #39307: added ldap/client/network_timeout
+
+ -- Felix Botner <botner@univention.de>  Tue, 23 Aug 2016 09:33:15 +0200
+
+univention-ldap (13.0.0-3) unstable; urgency=low
+
+  * Bug #38679: added UCR template for cron.d/univention-ldap-server
+
+ -- Felix Botner <botner@univention.de>  Tue, 23 Aug 2016 09:31:52 +0200
+
+univention-ldap (13.0.0-2) unstable; urgency=low
+
+  * Bug #34873: added ldap/limits
+
+ -- Felix Botner <botner@univention.de>  Tue, 23 Aug 2016 09:28:50 +0200
+
+univention-ldap (13.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:56:31 +0200
+
+univention-ldap (12.1.6-31) unstable; urgency=low
+
+  * Bug #33993: new i386 default for ldap/database/mdb/maxsize
+
+ -- Felix Botner <botner@univention.de>  Mon, 25 Jul 2016 15:42:19 +0200
+
+univention-ldap (12.1.6-30) unstable; urgency=medium
+
+  * Bug #41715: reallow posixAccount for univentionWindows objects
+
+ -- Florian Best <best@univention.de>  Fri, 15 Jul 2016 10:41:53 +0200
+
+univention-ldap (12.1.6-29) unstable; urgency=medium
+
+  * Bug #41715: Bug #41180: revert adding add_content_acl to slapd.conf
+
+ -- Florian Best <best@univention.de>  Fri, 15 Jul 2016 09:53:21 +0200
+
+univention-ldap (12.1.6-28) unstable; urgency=medium
+
+  * Bug #41715: allow explicit write access to cn=samba children
+
+ -- Florian Best <best@univention.de>  Mon, 11 Jul 2016 17:10:33 +0200
+
+univention-ldap (12.1.6-27) unstable; urgency=medium
+
+  * Bug #41180: remove write access to pseudo-attribute 'entry' of
+  	cn=admin-settings,cn=univention
+
+ -- Florian Best <best@univention.de>  Wed, 06 Jul 2016 15:31:31 +0200
+
+univention-ldap (12.1.6-26) unstable; urgency=medium
+
+  * Bug #41715: restrict specific ACL's to specific object classes
+  * Bug #41180: Add content rule to 'univentionAdminUserSettings' and
+  	'univentionAdminGlobalSettings'
+
+ -- Florian Best <best@univention.de>  Wed, 06 Jul 2016 12:43:55 +0200
+
+univention-ldap (12.1.6-25) unstable; urgency=medium
+
+  * Bug #41180: restrict also creation of cn=admin-settings entries
+
+ -- Florian Best <best@univention.de>  Fri, 01 Jul 2016 12:36:19 +0200
+
+univention-ldap (12.1.6-24) unstable; urgency=low
+
+  * Bug #33993: triple check slapd restart in init script
+
+ -- Felix Botner <botner@univention.de>  Tue, 28 Jun 2016 13:30:55 +0200
+
+univention-ldap (12.1.6-23) unstable; urgency=medium
+
+  * Bug #41179: restrict access to own object classes
+  * Bug #41180: restrict access to uid=*,cn=admin-settings to
+  	objects with univentionAdminUserSettings object class
+
+ -- Florian Best <best@univention.de>  Fri, 24 Jun 2016 12:10:30 +0200
+
+univention-ldap (12.1.6-22) unstable; urgency=low
+
+  * Bug #40575: Kill OpenLDAP slapd during upgrade
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 04 Feb 2016 07:28:44 +0100
+
+univention-ldap (12.1.6-21) unstable; urgency=low
+
+  * Bug #38051: Kill OpenLDAP slapd for initial setup during domain (re-)join
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 03 Feb 2016 13:43:49 +0100
+
+univention-ldap (12.1.6-20) unstable; urgency=low
+
+  * fix typo (Bug #38091)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 02 Feb 2016 10:31:59 +0100
+
+univention-ldap (12.1.6-19) unstable; urgency=low
+
+  * add missing $@ (Bug #38091)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 02 Feb 2016 09:39:15 +0100
+
+univention-ldap (12.1.6-18) unstable; urgency=low
+
+  * ignore DCs without FQDN (Bug #38091)
+  * add master to ldap/server/addition
+  * create and attach ldap server policy only once
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 02 Feb 2016 09:15:05 +0100
+
+univention-ldap (12.1.6-17) unstable; urgency=low
+
+  * compact udm call, fix typo (Bug #38091)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 01 Feb 2016 18:07:09 +0100
+
+univention-ldap (12.1.6-16) unstable; urgency=low
+
+  * fix accidental deletion (Bug #38091)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 01 Feb 2016 13:00:24 +0100
+
+univention-ldap (12.1.6-15) unstable; urgency=low
+
+  * add missing $@ (Bug #38091)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 01 Feb 2016 11:49:05 +0100
+
+univention-ldap (12.1.6-14) unstable; urgency=low
+
+  * When creating/modifying the LDAP server policy and the UCR policy, take
+    into account all DC master and DC backup (Bug #38091)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 01 Feb 2016 11:41:35 +0100
+
+univention-ldap (12.1.6-13) unstable; urgency=low
+
+  * Add message catalog to LDAP schema of UDM hook and UDM syntax (Bug #35840)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 19 Jan 2016 10:57:19 +0100
+
+univention-ldap (12.1.6-12) unstable; urgency=low
+
+  * Bug #38051: Move cn=config on all server roles
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 12 Jan 2016 10:49:32 +0100
+
+univention-ldap (12.1.6-11) unstable; urgency=low
+
+  * Bug #38051: Initialize LDAP only on master
+  * Bug #39866: Force ldap/index/* to defaults during join
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 11 Jan 2016 15:36:11 +0100
+
+univention-ldap (12.1.6-10) unstable; urgency=low
+
+  * Version bump to rebuild code of 12.1.6-9 (Bug #39866)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 11 Jan 2016 15:11:40 +0100
+
+univention-ldap (12.1.6-9) unstable; urgency=low
+
+  * Bug #39866: Fix debug message output
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 08 Jan 2016 15:24:11 +0100
+
+univention-ldap (12.1.6-8) unstable; urgency=low
+
+  * Bug #39866: Delay adding univentionAppID to equality search index
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 08 Jan 2016 09:29:28 +0100
+
+univention-ldap (12.1.6-7) unstable; urgency=low
+
+  * Bug #40031: Fix shell escaping
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Jan 2016 18:12:04 +0100
+
+univention-ldap (12.1.6-6) unstable; urgency=low
+
+  * Bug #39866: Add univentionAppID to equality search index
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Jan 2016 15:46:41 +0100
+
+univention-ldap (12.1.6-5) unstable; urgency=low
+
+  * fix duplicate UCR key appending in policy, quoting, line continuation
+    (Bug #38091)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 28 Dec 2015 10:23:36 +0100
+
+univention-ldap (12.1.6-4) unstable; urgency=low
+
+  * Bug #39884: Add printerModel to substring search index
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 11 Dec 2015 18:19:20 +0100
+
+univention-ldap (12.1.6-3) unstable; urgency=low
+
+  * do not use UCR policy on slaves by default (Bug #38091)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 30 Nov 2015 16:46:47 +0100
+
+univention-ldap (12.1.6-2) unstable; urgency=low
+
+  * add missing '$@' to join script (Bug #38091)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 30 Nov 2015 16:05:03 +0100
+
+univention-ldap (12.1.6-1) unstable; urgency=low
+
+  * Create default LDAP server policy and UCR policy with LDAP servers on
+    dc master and dc backups for dc slaves and member server to use. Version
+    of join script is not raised to not modify existing installations
+    (Bug #38091).
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 30 Nov 2015 15:49:37 +0100
+
+univention-ldap (12.1.5-1) unstable; urgency=medium
+
+  * Grant access to univentionOperatingSystem and
+    univentionOperatingSystemVersion by self (Bug #39915)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Nov 2015 20:26:54 +0100
+
+univention-ldap (12.1.4-1) unstable; urgency=medium
+
+  * Consider ldap/acl/read/ips in entry,uid ACL which was modified for
+    SASL (Bug #39877)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Nov 2015 15:16:32 +0100
+
+univention-ldap (12.1.3-1) unstable; urgency=medium
+
+  * Bug #39719: Reduce grace time for /etc/init.d/slapd graceful-stop
+
+ -- Arvid Requate <requate@univention.de>  Wed, 04 Nov 2015 17:04:48 +0100
+
+univention-ldap (12.1.2-1) unstable; urgency=medium
+
+  * ldap_extension.py: restart slapd only if it runs (Bug #39683)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Oct 2015 16:36:02 +0100
+
+univention-ldap (12.1.1-3) unstable; urgency=low
+
+  * Bug #32443: update packages for settings/packages
+
+ -- Felix Botner <botner@univention.de>  Thu, 08 Oct 2015 18:40:28 +0200
+
+univention-ldap (12.1.1-2) unstable; urgency=low
+
+  * Bug #38774: Remove confirmation prompt in non-interactive script
+    univention-backup2master.
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 01 Sep 2015 16:13:50 +0200
+
+univention-ldap (12.1.1-1) unstable; urgency=medium
+
+  * Bug #29482: fix permissions for SASL bind via kerberos (GSSAPI) and SAML
+
+ -- Florian Best <best@univention.de>  Tue, 01 Sep 2015 14:12:23 +0200
+
+univention-ldap (12.1.0-1) unstable; urgency=medium
+
+  * Bug #39178: version bump
+
+ -- Florian Best <best@univention.de>  Tue, 25 Aug 2015 13:58:04 +0200
+
+univention-ldap (12.0.0-1) unstable; urgency=medium
+
+  * Bug #39178: add saml to sasl-regexp
+
+ -- Florian Best <best@univention.de>  Wed, 19 Aug 2015 10:50:37 +0200
+
+univention-ldap (11.0.12-9) unstable; urgency=low
+
+  * Bug #38584: Remove DHCP policy references
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 07 Jul 2015 16:59:28 +0200
+
+univention-ldap (11.0.12-8) unstable; urgency=low
+
+  * Bug #38685: Make SSL/TLS ciphers configurable
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 06 Jul 2015 08:30:17 +0200
+
+univention-ldap (11.0.12-7) unstable; urgency=medium
+
+  * Bug #36255: add attribute ldapFilter to policy schema
+
+ -- Florian Best <best@univention.de>  Fri, 05 Jun 2015 17:32:45 +0200
+
+univention-ldap (11.0.12-6) unstable; urgency=medium
+
+  * Remove diversion introduced in errata3.2-5 for Bug #38488
+    (Bug #38566)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 19 May 2015 16:49:19 +0200
+
+univention-ldap (11.0.12-5) unstable; urgency=medium
+
+  * Fix version check in univention-ldap-server.postinst (Bug #38107)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 20 Apr 2015 07:16:52 +0200
+
+univention-ldap (11.0.12-4) unstable; urgency=medium
+
+  * Upgrade to UCS Core Edition (Bug #38107)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 19 Apr 2015 20:27:16 +0200
+
+univention-ldap (11.0.12-3) unstable; urgency=low
+
+  * Bug #28331: added default (1) for univentionSamba4pwdProperties in base.ldif 
+
+ -- Felix Botner <botner@univention.de>  Mon, 13 Apr 2015 12:27:10 +0200
+
+univention-ldap (11.0.12-1) unstable; urgency=low
+
+  * Bug #28331: added univentionSamba4pwdProperties for oc sambaDomain  
+
+ -- Felix Botner <botner@univention.de>  Thu, 26 Mar 2015 16:49:23 +0100
+
+univention-ldap (11.0.11-2) unstable; urgency=medium
+
+  * Bug #35775: allow all attributes from person, organizationalPerson and
+  	inetOrgPerson in user templates
+
+ -- Florian Best <best@univention.de>  Wed, 14 Jan 2015 11:41:15 +0100
+
+univention-ldap (11.0.11-1) unstable; urgency=low
+
+  * Bug #37448 LDAP: New FFPU license
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 06 Jan 2015 13:04:39 +0100
+
+univention-ldap (11.0.10-2) unstable; urgency=medium
+
+  * Bug #36979: Add msNTSecurityDescriptor
+
+ -- Arvid Requate <requate@univention.de>  Mon, 24 Nov 2014 19:34:07 +0100
+
+univention-ldap (11.0.10-1) unstable; urgency=medium
+
+  * Added ldap/database/mdb/envflags to the subfile register
+    (Bug #36725)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 15 Nov 2014 12:54:37 +0100
+
+univention-ldap (11.0.9-1) unstable; urgency=medium
+
+  * Added ldap/database/mdb/envflags (Bug #36725)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 15 Nov 2014 12:48:08 +0100
+
+univention-ldap (11.0.8-1) unstable; urgency=medium
+
+  * Added univentionUDMOptionModule to the slapd eq index. It is
+    used by ucs-school import via python API (Bug #36671)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Nov 2014 20:13:01 +0100
+
+univention-ldap (11.0.7-7) unstable; urgency=medium
+
+  * Add UCR description for ldap/ppolicy (Bug #31907)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 30 Oct 2014 17:30:14 +0100
+
+univention-ldap (11.0.7-6) unstable; urgency=medium
+
+  * Fix typo (Bug #31907)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 21 Oct 2014 20:33:04 +0200
+
+univention-ldap (11.0.7-5) unstable; urgency=medium
+
+  * Grant DCs write access to sambaAcctFlags (Bug #31907)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 21 Oct 2014 18:46:10 +0200
+
+univention-ldap (11.0.7-4) unstable; urgency=medium
+
+  * Get rid of 'rootdn is always granted unlimited privileges' messages
+    on DC Master (Bug #31907)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 21 Oct 2014 17:32:42 +0200
+
+univention-ldap (11.0.7-3) unstable; urgency=medium
+
+  * Only allow activation of the ppolicy overlay in case backend is mdb
+    (Bug #31907)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 21 Oct 2014 17:13:32 +0200
+
+univention-ldap (11.0.7-2) unstable; urgency=medium
+
+  * Remove scalix.schema (Bug #28693)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 20 Oct 2014 15:14:11 +0200
+
+univention-ldap (11.0.7-1) unstable; urgency=medium
+
+  * added new LDAP indices for shadowMax and shadowExpire
+    (Bug #35088, #36215)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 16 Oct 2014 15:38:14 +0200
+
+univention-ldap (11.0.6-10) unstable; urgency=medium
+
+  * Bug #31907: We need *some* rootdn to be set for ppolicy,
+    also in case of ldap/server/type=slave and ldap/online/master=no
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Oct 2014 16:17:10 +0200
+
+univention-ldap (11.0.6-9) unstable; urgency=medium
+
+  * Bug #31907: Improve readability of rootdn configuration in slapd.conf
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Oct 2014 16:12:19 +0200
+
+univention-ldap (11.0.6-8) unstable; urgency=medium
+
+  * Bug #31907: Revert change of version 11.0.6-2:
+    Keep ACLs for cn=admin, still required by smb.conf on backup+slaves
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Oct 2014 16:10:54 +0200
+
+univention-ldap (11.0.6-7) unstable; urgency=medium
+
+  * Bug #31907: Don't load the ppolicy overlay by default.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Oct 2014 13:12:21 +0200
+
+univention-ldap (11.0.6-6) unstable; urgency=medium
+
+  * Bug #31907: Reduce pwdFailureCountInterval to 15 minutes
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Oct 2014 15:29:59 +0200
+
+univention-ldap (11.0.6-5) unstable; urgency=medium
+
+  * Bug #31907: Don't configure pwdLockoutDuration, automatic unlocking
+    is impossible with the current udm method of account locking.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Oct 2014 12:12:48 +0200
+
+univention-ldap (11.0.6-4) unstable; urgency=medium
+
+  * Bug #31907: Work around ITS#4025
+
+ -- Arvid Requate <requate@univention.de>  Mon, 13 Oct 2014 14:43:19 +0200
+
+univention-ldap (11.0.6-3) unstable; urgency=low
+
+  * Bug #31907: Fix UCS standard DN for the "ppolicy_default" LDAP object
+
+ -- Arvid Requate <requate@univention.de>  Fri, 10 Oct 2014 13:33:25 +0200
+
+univention-ldap (11.0.6-2) unstable; urgency=medium
+
+  * Bug #31907: Remove ACLs for cn=admin, obsoleted by "rootdn" setting
+
+ -- Arvid Requate <requate@univention.de>  Thu, 09 Oct 2014 21:48:03 +0200
+
+univention-ldap (11.0.6-1) unstable; urgency=medium
+
+  * Always load the ppolicy schema (Bug #31907)
+  * Load the ppolicy overlay by default (unless UCR ldap/ppolicy=no)
+  * Activate the ppolicy configuration only if ldap/ppolicy/enable=yes
+  * Configure a UCS standard DN for the "ppolicy_default" LDAP object
+  * Make the "ppolicy_default" DN configurable via ldap/ppolicy/default
+  * Increment joinscript version to 5
+  * Create LDAP container cn=ppolicy,cn=univention
+  * Predefine useful settings for ppolicy at LDAP object "ppolicy_default"
+  * Configure standard "rootdn" for the main ldap database, required for
+    several internal ACL checks.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 09 Oct 2014 21:28:32 +0200
+
+univention-ldap (11.0.5-2) unstable; urgency=medium
+
+  * Configure default eq index for univentionInventoryNumber (Bug #34262)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 08 Oct 2014 11:16:12 +0200
+
+univention-ldap (11.0.5-1) unstable; urgency=medium
+
+  * Change default matching rule for univentionInventoryNumber to
+    caseIgnoreMatch (Bug #34262)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 07 Oct 2014 13:05:15 +0200
+
+univention-ldap (11.0.4-1) unstable; urgency=low
+
+  * db5.1 for bdb backend (Bug #35697)
+
+ -- Felix Botner <botner@univention.de>  Wed, 01 Oct 2014 11:50:10 +0200
+
+univention-ldap (11.0.3-1) unstable; urgency=medium
+
+  * Call samba-ad-dc init script instead of samba4 (Bug #35319)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Aug 2014 21:21:32 +0200
+
+univention-ldap (11.0.2-1) unstable; urgency=medium
+
+  * Create /var/run/slapd directory if it does not exist (Bug #35143)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 22 Aug 2014 08:29:55 +0200
+
+univention-ldap (11.0.1-1) unstable; urgency=medium
+
+  * Create /var/run/slapd directory if it does not exist (Bug #35143)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 22 Aug 2014 07:18:57 +0200
+
+univention-ldap (11.0.0-4) unstable; urgency=low
+
+  * added ldap/sasl/secprops/maxssf (Bug #35513)
+
+ -- Felix Botner <botner@univention.de>  Wed, 06 Aug 2014 10:58:48 +0200
+
+univention-ldap (11.0.0-3) unstable; urgency=low
+
+  * fixed template (Bug #34994) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Jul 2014 11:54:12 +0200
+
+univention-ldap (11.0.0-2) unstable; urgency=low
+
+  * new default backend mdb (Bug #34994) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Jul 2014 11:46:00 +0200
+
+univention-ldap (11.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35143) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 11 Jul 2014 14:25:59 +0200
+
+univention-ldap (10.0.17-39) unstable; urgency=low
+
+  * Fixed typo in control file (Bug #35093)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Jul 2014 08:57:24 +0200
+
+univention-ldap (10.0.17-38) unstable; urgency=low
+
+  * Depend on the current slapd version (Bug #35093)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Jul 2014 08:54:05 +0200
+
+univention-ldap (10.0.17-37) unstable; urgency=low
+
+  * UCS in AD domain update (Bug #35093)
+    [ Arvid Requate ]
+     * Support pwd_scheme_kinit (Bug #34091)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Jul 2014 08:41:42 +0200
+
+univention-ldap (10.0.17-36) unstable; urgency=low
+
+  * New share-userquota binary attribute:
+    Reapply quota on every login (Bug #33174)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 26 Jun 2014 11:59:47 +0200
+
+univention-ldap (10.0.17-35) unstable; urgency=low
+
+  * Fix subtree scope of ACL for cn=computers (Bug #34554)  
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Jun 2014 17:26:07 +0200
+
+univention-ldap (10.0.17-34) unstable; urgency=low
+
+  * Add entryUUID to LDAP index (Bug #34815)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 15 May 2014 14:36:43 +0200
+
+univention-ldap (10.0.17-33) unstable; urgency=medium
+
+  * Adjust slapd init file (Bug #34440):
+  * Log db recover output to /var/log/messages
+  * Log action timestamp and parent process to /var/log/messages
+  * Improve readability of log output
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 May 2014 19:11:24 +0200
+
+univention-ldap (10.0.17-32) unstable; urgency=medium
+
+  * Make ldap_extension listener log slapd restarts at PROCESS level
+    (Bug #34440)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 May 2014 16:47:05 +0200
+
+univention-ldap (10.0.17-31) unstable; urgency=medium
+
+  * Make ldap_extension listener log slapd restarts at WARN level (Bug #34440)
+  * If bdb check calls fail then check if another /etc/init.d/slapd is running
+  * Don't hide output of check_subschema 
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 May 2014 16:41:30 +0200
+
+univention-ldap (10.0.17-30) unstable; urgency=medium
+
+  * Remove gentlehup option from slapd.conf again (Bug #34440)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 May 2014 14:35:51 +0200
+
+univention-ldap (10.0.17-29) unstable; urgency=medium
+
+  * Improve pgrep pattern (Bug #34440)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 May 2014 10:31:47 +0200
+
+univention-ldap (10.0.17-28) unstable; urgency=medium
+
+  * Adjust slapd init file (Bug #34440):
+  * Don't use killall to avoid killing the init script itself
+  * Don't pgrep by name to avoid detecting the init script itself
+  * Fix db4.8_recover removing the bdb environment files (see man for "-e")
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 May 2014 10:11:53 +0200
+
+univention-ldap (10.0.17-27) unstable; urgency=medium
+
+  * Fix bashism (Bug #34440)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 May 2014 19:41:48 +0200
+
+univention-ldap (10.0.17-26) unstable; urgency=medium
+
+  * Adjust slapd init file (Bug #34440)
+  * Don't pass --pidfile for --start --test action, fails if file is invalid
+  * Don't pass --pidfile for --start action, is ignored anyway
+  * Don't pass --pidfile & --exec for stop action as --exec gets ignored then
+  * Run stop --pidfile first and retry with stop --exec if slapd still runs
+  * Don't sleep and hope, rather send a final KILL signal if slapd still runs
+  * Output the retry/refused messages of start-stop-daemon --stop -v
+  * log debug output to syslog in case db_stat fails
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 May 2014 19:31:47 +0200
+
+univention-ldap (10.0.17-25) unstable; urgency=medium
+
+  * activate gentlehup in slapd.conf (Bug #34440)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 May 2014 17:21:32 +0200
+
+univention-ldap (10.0.17-24) unstable; urgency=low
+
+  * Sort schema files by name (Bug #34406)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 11 Apr 2014 08:52:45 +0200
+
+univention-ldap (10.0.17-23) unstable; urgency=medium
+
+  * Turn well-known-sid-name-mapping.d hook into python code (Bug #33890)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 22 Jan 2014 16:11:39 +0100
+
+univention-ldap (10.0.17-22) unstable; urgency=medium
+
+  * remove shebang from python script (Bug #33890)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 22 Jan 2014 16:06:33 +0100
+
+univention-ldap (10.0.17-21) unstable; urgency=medium
+
+  * Turn well-known-sid-name-mapping.d hook into python code (Bug #33890)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 22 Jan 2014 15:49:09 +0100
+
+univention-ldap (10.0.17-20) unstable; urgency=medium
+
+  * Register UCR users/default/.* (Bug #33890)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 21 Jan 2014 16:26:10 +0100
+
+univention-ldap (10.0.17-19) unstable; urgency=medium
+
+  * Restore accidentally removed msgpo.schema (Bug #33936)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 21 Jan 2014 13:23:41 +0100
+
+univention-ldap (10.0.17-18) unstable; urgency=medium
+
+  * Make local schema inclusion code detect includes made by template
+    subfiles (Bug #33962)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 21 Jan 2014 12:47:51 +0100
+
+univention-ldap (10.0.17-17) unstable; urgency=medium
+
+  * Remove mswmi.schema (Bug #33936)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 21 Jan 2014 11:53:05 +0100
+
+univention-ldap (10.0.17-16) unstable; urgency=medium
+
+  * Inculde mswmi.schema by default
+  * Fix schema syntax (Bug #33936)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Jan 2014 16:09:25 +0100
+
+univention-ldap (10.0.17-15) unstable; urgency=medium
+
+  * mswmi.schema (33936 #33937)
+  * Add msGPOWQLFilter to msgpo.schema (Bug #33961)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Jan 2014 14:26:56 +0100
+
+univention-ldap (10.0.17-14) unstable; urgency=medium
+
+  * Add copyright header (Bug #33890)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Jan 2014 16:44:44 +0100
+
+univention-ldap (10.0.17-13) unstable; urgency=medium
+
+  * Add well-known-sid-name-mapping.d/univention-ldap-server.sh (Bug #33890)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Jan 2014 16:40:48 +0100
+
+univention-ldap (10.0.17-12) unstable; urgency=medium
+
+  * Make the default name of the Administrator account configurable
+  * use custom_groupname and custom_username from univention-lib
+    (Bug #33890)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Jan 2014 16:38:19 +0100
+
+univention-ldap (10.0.17-11) unstable; urgency=low
+
+  * Bug #33704: Change UCR policy attribute encoding from ASCII to UTF-8
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 07 Jan 2014 16:58:59 +0100
+
+univention-ldap (10.0.17-10) unstable; urgency=medium
+
+  * Cover all possible index combinations (Bug #33430)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 19 Dec 2013 15:12:48 +0100
+
+univention-ldap (10.0.17-9) unstable; urgency=low
+
+  * fixed small typo in 10univention-ldap-server.inst (Bug #33645) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 11 Dec 2013 10:30:54 +0100
+
+univention-ldap (10.0.17-8) unstable; urgency=low
+
+  * Rename UCR variables (Bug #33645)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 05 Dec 2013 15:40:31 +0100
+
+univention-ldap (10.0.17-7) unstable; urgency=low
+
+  * ucslint in its current version dislikes whitespace in UCR variables,
+    add ucslint.overrides for this (Bug #33645)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 04 Dec 2013 17:26:05 +0100
+
+univention-ldap (10.0.17-6) unstable; urgency=low
+
+  * Make standard AD group names configurable via UCR (Bug #33645)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 04 Dec 2013 17:06:00 +0100
+
+univention-ldap (10.0.17-5) unstable; urgency=low
+
+  * backup2master: transfer roles before removing the old master
+    account from samba4 (Bug #33382)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 14 Nov 2013 15:04:21 +0100
+
+univention-ldap (10.0.17-4) unstable; urgency=low
+
+  * Only set call mark_active on the DC master, avoiding unnecessary
+    LDAP connections (Bug #32392)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Oct 2013 12:43:58 +0200
+
+univention-ldap (10.0.17-3) unstable; urgency=low
+
+  * Revert last change (Bug #32411)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 Oct 2013 12:27:58 +0200
+
+univention-ldap (10.0.17-2) unstable; urgency=low
+
+  * Add replication access for UCS@school DC Slaves (Bug #32411)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 21 Oct 2013 11:16:11 +0200
+
+univention-ldap (10.0.17-1) unstable; urgency=low
+
+  * init.d/slapd: tempfile, boolean (Bug #31989)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Oct 2013 16:46:33 +0200
+
+univention-ldap (10.0.16-3) unstable; urgency=low
+
+  * Fixed syntax errors in ACL config (Bug #31305)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Oct 2013 20:35:37 +0200
+
+univention-ldap (10.0.16-2) unstable; urgency=low
+
+  * Fix missing double termination in access by dn.regex clause (Bug #31305)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 Oct 2013 17:40:04 +0200
+
+univention-ldap (10.0.16-1) unstable; urgency=low
+
+  * Don't allow cration of objects with uidNumber=0 below cn=computers
+  * Don't authorize dn.onelevel="cn=dc,cn=computers" for modifications
+    involving attribute uidNumber=0.
+  * Don't allow creation of posixAccounts below cn=idmap,cn=univention
+    (Bug #31305)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 Oct 2013 17:29:07 +0200
+
+univention-ldap (10.0.15-2) unstable; urgency=low
+
+  * Added support for custom NFS share options (Bug #18708)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 16 Oct 2013 13:52:13 +0200
+
+univention-ldap (10.0.15-1) unstable; urgency=low
+
+  * Move pseudo group creation from base.ldif to samba4 join script
+    (Bug #32461)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 13 Oct 2013 21:42:07 +0200
+
+univention-ldap (10.0.14-1) unstable; urgency=low
+
+  * Add support for icons, umc module definition and translation files         
+    to univentionUDMModule (Bug #32409)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 10 Oct 2013 21:39:29 +0200
+
+univention-ldap (10.0.13-1) unstable; urgency=low
+
+  * Set univentionGroupType for default groups (Bug #32461)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Oct 2013 19:57:40 +0200
+
+univention-ldap (10.0.12-1) unstable; urgency=low
+
+  * Remove default s3 / s4 groups from base.ldif (Bug #32461)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Oct 2013 17:12:55 +0200
+
+univention-ldap (10.0.11-1) unstable; urgency=low
+
+  * Added attribute univentionGroupType which will be synced with the S4
+    attribute groupType (Bug #32767)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Oct 2013 11:35:26 +0200
+
+univention-ldap (10.0.10-33) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30946)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 24 Sep 2013 09:06:54 +0200
+
+univention-ldap (10.0.10-32.1) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30946)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 20 Sep 2013 12:08:45 +0200
+
+univention-ldap (10.0.10-32) unstable; urgency=low
+
+  * The ldap_extension listener should not perform udm modify
+    operations on server/role != dc_master (Bug #32411).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 18 Sep 2013 13:51:14 +0200
+
+univention-ldap (10.0.10-31) unstable; urgency=low
+
+  * univention-ldap-server now depends on python-univention-lib
+    due to the ldap_extension listener.
+    (Bug #32411, Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 16 Sep 2013 15:32:10 +0200
+
+univention-ldap (10.0.10-30) unstable; urgency=low
+
+  * merge settings_ldap* listeners to ldap_extension
+    to avoid repeated slapd restart + waiting for activation
+  * use new python library module univention.lib.ldap_extension
+    (Bug #32411, Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 16 Sep 2013 14:53:55 +0200
+
+univention-ldap (10.0.10-29) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30946)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 13 Sep 2013 14:14:29 +0200
+
+univention-ldap (10.0.10-28) unstable; urgency=low
+
+  * Fix default for old packageversion (Bug #32411, Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 12 Sep 2013 21:29:27 +0200
+
+univention-ldap (10.0.10-27) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30946)
+     Remove categories file, already present in univention-base-files
+     Fix variable registration (Bug #23901)
+     Remove UCR variable description for ldap/server/name and ldap/master, already
+     covered in univention-base-files
+     Remove UCR variable description for ldap/replog, it's obsolete (Bug #32569)
+     Mark ldap/translogfile and ldap/server/type as ReadOnly, they are handled
+     through tools
+     Remove the UCR variable description for ldap/page-results, already removed
+     in 5.0.0-1
+     Remove UCR variable description for ldap/schema/export, see #32569
+     Remove UCR variable description for ldap/k5pwd, see #32569
+     Remove UCR variable description for ldap/acl/slavepdc, see #32569
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 12 Sep 2013 09:43:47 +0200
+
+univention-ldap (10.0.10-26) unstable; urgency=low
+
+  * call udm.update_modules each time in listener handler
+    (Bug #32411, Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 11 Sep 2013 14:11:30 +0200
+
+univention-ldap (10.0.10-25) unstable; urgency=low
+
+  * crestart listener in postinst and postrm (Bug #32411, Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 05 Sep 2013 19:07:10 +0200
+
+univention-ldap (10.0.10-24) unstable; urgency=low
+
+  * rename subdir "python" to "listener" (Bug #32411, Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 05 Sep 2013 18:42:22 +0200
+
+univention-ldap (10.0.10-23) unstable; urgency=low
+
+  * New objectClass univentionUDMModule (Bug #32410)
+  * New objectClass univentionUDMHook
+  * New objectClass univentionUDMSyntax
+  * Move common attributes to new objectClass univentionObjectMetadata
+  * Make filename LDAP attributes caseExact.*Match
+  * Generalize wording in settings/ldap* (Bug #32411, Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 05 Sep 2013 18:39:23 +0200
+
+univention-ldap (10.0.10-22) unstable; urgency=low
+
+  * Fix cut+paste error (Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 04 Sep 2013 19:02:56 +0200
+
+univention-ldap (10.0.10-21) unstable; urgency=low
+
+  * Let settings_ldapacl write ACL data and restart slapd also
+    on domaincontroller_slave(Bug #32411)
+  * Fix Debian version comparison
+  * Don't keep a backlog of failed udm operations in settings/ldap*
+  * Make univentionUCSVersionEnd exclusive 
+
+ -- Arvid Requate <requate@univention.de>  Wed, 04 Sep 2013 13:55:34 +0200
+
+univention-ldap (10.0.10-20) unstable; urgency=low
+
+  * Add package version check to settings_ldap* (Bug #32411, Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 03 Sep 2013 19:39:46 +0200
+
+univention-ldap (10.0.10-19) unstable; urgency=low
+
+  * install settings_ldapacl (Bug #32411)
+  * install renamed file (Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 02 Sep 2013 19:59:18 +0200
+
+univention-ldap (10.0.10-18) unstable; urgency=low
+
+  * settings_ldapacl.py writes a backlink file now (Bug #32411)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 02 Sep 2013 19:23:52 +0200
+
+univention-ldap (10.0.10-17) unstable; urgency=low
+
+  * Minor fixes in settings_ldapacl.py (Bug #32411)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 02 Sep 2013 19:03:20 +0200
+
+univention-ldap (10.0.10-16) unstable; urgency=low
+
+  * Minor fixes in ldap_acl.py (Bug #32411)
+  * Rename Listener ldap_acl to settings_ldapacl
+  * Rename Listener ldap_schema to settings_ldapschema (Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 02 Sep 2013 18:51:34 +0200
+
+univention-ldap (10.0.10-15) unstable; urgency=low
+
+  * Add UCS Version check to ldap_acl.py (Bug #32411)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 02 Sep 2013 17:17:35 +0200
+
+univention-ldap (10.0.10-14) unstable; urgency=low
+
+  * New listener module ldap_acl.py (Bug #32411)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 02 Sep 2013 16:51:04 +0200
+
+univention-ldap (10.0.10-13) unstable; urgency=low
+
+  * trivial fix (Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 02 Sep 2013 14:53:11 +0200
+
+univention-ldap (10.0.10-12) unstable; urgency=low
+
+  * further improvements from initial tests (Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 02 Sep 2013 14:47:58 +0200
+
+univention-ldap (10.0.10-11) unstable; urgency=low
+
+  * feedback from initial tests (Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 02 Sep 2013 13:46:28 +0200
+
+univention-ldap (10.0.10-10) unstable; urgency=low
+
+  * fix undefined variable in conditional branch (Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 30 Aug 2013 15:26:32 +0200
+
+univention-ldap (10.0.10-9) unstable; urgency=low
+
+  * validate schema in listener module ldap_schema.py (Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 30 Aug 2013 10:06:41 +0200
+
+univention-ldap (10.0.10-7) unstable; urgency=low
+
+  * Syntax fixes for listener module ldap_schema.py (Bug #31801)
+  * Compressed schema data
+  * Conditional slapd restart
+
+ -- Arvid Requate <requate@univention.de>  Fri, 30 Aug 2013 09:24:10 +0200
+
+univention-ldap (10.0.10-5) unstable; urgency=low
+
+  * New listener module ldap_schema.py (Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 29 Aug 2013 19:52:15 +0200
+
+univention-ldap (10.0.10-4) unstable; urgency=low
+
+  * Make univentionLDAPExtensionPackage* single valued for version
+    comparisons
+  * create containers ldapschema and ldapacl on master (Bug #32391)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 29 Aug 2013 16:07:28 +0200
+
+univention-ldap (10.0.10-3) unstable; urgency=low
+
+  * fix typo in univention-ldap-extension.schema (Bug #32391)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 29 Aug 2013 14:32:49 +0200
+
+univention-ldap (10.0.10-2) unstable; urgency=low
+
+  * reorder attributes in univention-ldap-extension.schema (Bug #32391)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 29 Aug 2013 14:20:28 +0200
+
+univention-ldap (10.0.10-1) unstable; urgency=low
+
+  * Add univention-ldap-extension.schema (Bug #32391)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 29 Aug 2013 13:19:02 +0200
+
+univention-ldap (10.0.9-7) unstable; urgency=low
+
+  * univention-ldap-backup now creates a separate logfile during the backup
+    process in /var/univention-backup (Bug #31997) 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 28 Aug 2013 10:49:12 +0200
+
+univention-ldap (10.0.9-6) unstable; urgency=low
+
+  * backup2master: Fix removal of NTDS DNS alias (Bug #27893)
+  * backup2master: Fix removal of dns service account
+
+ -- Arvid Requate <requate@univention.de>  Mon, 19 Aug 2013 18:35:02 +0200
+
+univention-ldap (10.0.9-5) unstable; urgency=low
+
+  * backup2master: remove dns service account of old master in samba4
+    (Bug #27893)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Aug 2013 19:07:32 +0200
+
+univention-ldap (10.0.9-4) unstable; urgency=low
+
+  * Increase joinscript version to remove port 7389 from SRV record if
+    Samba 4 DCs are present during update (Bug #29462)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 22 Jul 2013 15:34:28 +0200
+
+univention-ldap (10.0.9-3) unstable; urgency=low
+
+  * Fix subtree scope of ACL for cn=computers (Bug #29421)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 18 Jul 2013 19:05:52 +0200
+
+univention-ldap (10.0.9-2) unstable; urgency=low
+
+  * Fix mandatory '$'-termination escape in LDAP regex ACLs (Bug #29421)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 18 Jul 2013 17:09:08 +0200
+
+univention-ldap (10.0.9-1) unstable; urgency=low
+
+  * Improve LDAP regex ACLs (Bug #29421)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 17 Jul 2013 19:18:10 +0200
+
+univention-ldap (10.0.8-1) unstable; urgency=low
+
+  * Remove Samba4 related objects during backup2master (Bug #27893)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 17 Jul 2013 17:31:46 +0200
+
+univention-ldap (10.0.7-1) unstable; urgency=low
+
+  * Add graceful-restart and graceful-stop functionality to init script
+    (Bug #31998)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 17 Jul 2013 15:04:39 +0200
+
+univention-ldap (10.0.6-1) unstable; urgency=low
+
+  * Allow substring search for univentionShareHost (Bug #31208)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Jul 2013 09:48:37 +0200
+
+univention-ldap (10.0.5-1) unstable; urgency=low
+
+  * Use getLDAPURIs from python-univention-lib (Bug #19753)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Jul 2013 07:23:34 +0200
+
+univention-ldap (10.0.4-1) unstable; urgency=low
+
+  * Set ldap/server/port by default to 7389 (Bug #26888)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Jul 2013 14:56:36 +0200
+
+univention-ldap (10.0.3-3) unstable; urgency=low
+
+  * Wait for named and exit on failure (Bug #29462)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Jul 2013 20:24:03 +0200
+
+univention-ldap (10.0.3-2) unstable; urgency=low
+
+  * Remove port 7389 from SRV record if Samba 4 DCs are present during
+    join (Bug #29462)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Jul 2013 19:57:52 +0200
+
+univention-ldap (10.0.3-1) unstable; urgency=low
+
+  * Don't register SRV record for port 7389 if Samba 4 DCs are present
+    (Bug #29462)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Jul 2013 18:53:48 +0200
+
+univention-ldap (10.0.2-1) unstable; urgency=low
+
+  * Exit with error and display slapschema output when slapd initscript
+    could not start slapd (Bug #23055)
+  * Updated copyright
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 01 Jul 2013 11:32:40 +0200
+
+univention-ldap (10.0.1-1) unstable; urgency=low
+
+  * also replace kerberos/adminserver in back2master (Bug #31077)
+
+ -- Felix Botner <botner@univention.de>  Fri, 14 Jun 2013 12:31:09 +0200
+
+univention-ldap (10.0.0-1) unstable; urgency=low
+
+  * replaced makepasswd with create_machine_password (Bug #31281)
+  * bump version for UCS 3.2
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 12:20:51 +0200
+
+univention-ldap (9.0.28-1) unstable; urgency=low
+
+  * added new attribute univentionObjectFlag to objectclass univentionObject (Bug #31165)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 15 May 2013 19:58:18 +0200
+
+univention-ldap (9.0.27-2) unstable; urgency=low
+
+  * Removed description of ucr-variable 'ldap/server/additional'
+    in file 'debian/univention-ldap-client.univention-config-registry-variables' (Bug #24507)
+
+ -- Liam Schwez <lschwez@micke.knut.univention.de>  Wed, 15 May 2013 08:36:56 +0200
+
+univention-ldap (9.0.27-1) unstable; urgency=low
+
+  * improved logging for univention-backup2master (Bug #29085) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 22 Mar 2013 14:24:02 +0100
+
+univention-ldap (9.0.26-1) unstable; urgency=low
+
+  * added ou to recommended_ldap_index_sub (Bug #29509)
+
+ -- Felix Botner <botner@univention.de>  Thu, 21 Mar 2013 12:21:39 +0100
+
+univention-ldap (9.0.25-1) unstable; urgency=low
+
+  * Added support for uninstallation of packages, including a schema
+    registration (Bug #30596)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Mar 2013 07:51:59 +0100
+
+univention-ldap (9.0.24-1) unstable; urgency=low
+
+  * added 
+     - aRecord
+     - associatedDomain
+     - employeeNumber
+     - macAddress
+     - name
+     - pTRRecord
+     - relativeDomainName
+     - univentionInventoryNumber
+     - univentionOperatingSystem
+     - univentionSyntaxDescription
+     - univentionUDMPropertyLongDescription
+     - univentionUDMPropertyShortDescription 
+    to ldap/index/sub (UMC default search) (Bug #29509)
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Mar 2013 15:18:25 +0100
+
+univention-ldap (9.0.23-1) unstable; urgency=low
+
+  * improved logging for univention-backup2master (Bug #29085) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 05 Mar 2013 14:00:40 +0100
+
+univention-ldap (9.0.22-1) unstable; urgency=low
+
+  * fix legacy path of samba-tool so fsmo roles transfer works again
+    (Bug #29508)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 Jan 2013 16:22:29 +0100
+
+univention-ldap (9.0.21-1) unstable; urgency=low
+
+  * backup2master: Set correct forward_zone and reverse_zone nameserver
+    if there is more than one backup controller (Bug #29242)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 03 Jan 2013 16:42:48 +0100
+
+univention-ldap (9.0.20-1) unstable; urgency=low
+
+  * Re-added ldap/database/bdb/set_flags with the autoremove flag
+    (Bug #29474)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Nov 2012 20:28:41 +0100
+
+univention-ldap (9.0.19-1) unstable; urgency=low
+
+  * Re-change univentionLicenseUniventionDesktops to
+    univentionLicenseuniventionDesktops (Bug #29079)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Nov 2012 14:18:21 +0100
+
+univention-ldap (9.0.18-1) unstable; urgency=low
+
+  * New attribute univentionPrinterUseClientDriver (Bug #27340)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Nov 2012 14:01:47 +0100
+
+univention-ldap (9.0.17-2) unstable; urgency=low
+
+  * version bump; Bug #28074
+
+ -- Florian Best <best@univention.de>  Mon, 22 Oct 2012 16:29:59 +0200
+
+univention-ldap (9.0.17-1) unstable; urgency=low
+
+  * allow modifications of UMC settings only on the LDAP master; Bug #28074
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 22 Oct 2012 14:31:49 +0200
+
+univention-ldap (9.0.16-1) unstable; urgency=low
+
+  * backup2master: only remove old ldap master dn from
+    thinclient policies if the related module exists
+    (Bug #27617)
+
+
+ -- Lukas Walter <walter@univention.de>  Tue, 16 Oct 2012 15:42:08 +0200
+
+univention-ldap (9.0.15-1) unstable; urgency=low
+
+  * grant write access to users' UMC property attributes; Bug #28074
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 12 Oct 2012 14:21:28 +0200
+
+univention-ldap (9.0.14-1) unstable; urgency=low
+
+  * Create kerberos principal for ldap in 10univention-ldap-server.inst
+    (Bug #28379)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 12 Oct 2012 13:51:13 +0200
+
+univention-ldap (9.0.13-1) unstable; urgency=low
+
+  * added attribute univentionUMCProperty to univentionPerson; Bug #28074
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 11 Oct 2012 16:17:37 +0200
+
+univention-ldap (9.0.12-1) unstable; urgency=low
+
+  * 10univention-ldap-server.inst: ignore existing default
+    network
+  * 10univention-ldap-server.inst: only perform udm commands
+    which need /var/lib/univention-ldap/root.secret if the
+    file exists
+  (Bug #27753)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 11 Oct 2012 11:06:49 +0200
+
+univention-ldap (9.0.11-1) unstable; urgency=low
+
+  * ignore existing settings/packages objects in
+    join script 10univention-ldap-server.inst
+    (Bug #27753)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 11 Oct 2012 10:25:11 +0200
+
+univention-ldap (9.0.10-1) unstable; urgency=low
+
+  * abort join script on failing udm call (Bug #27753)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 10 Oct 2012 13:15:01 +0200
+
+univention-ldap (9.0.9-1) unstable; urgency=low
+
+  * Added FFPU license in version 2 (Bug #28186)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Oct 2012 15:23:36 +0200
+
+univention-ldap (9.0.8-1) unstable; urgency=low
+
+  * Use keyID instead of customerID (Bug #28186)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Oct 2012 06:51:05 +0200
+
+univention-ldap (9.0.7-1) unstable; urgency=low
+
+  * added mailAlternativeAddress attribute to univentionGroup oc
+    (Bug #27871)
+
+ -- Felix Botner <botner@univention.de>  Thu, 04 Oct 2012 11:40:00 +0200
+
+univention-ldap (9.0.6-1) unstable; urgency=low
+
+  * Added license v2 (Bug #28186)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 Sep 2012 12:14:20 +0200
+
+univention-ldap (9.0.5-1) unstable; urgency=low
+
+  * added objectClass "univentionLinuxClient" to
+    ldap schema (Bug #27587)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 17 Sep 2012 16:26:44 +0200
+
+univention-ldap (9.0.4-1) unstable; urgency=low
+
+  * added 'sambaMinPwdLength: 8' to base.ldif (Bug #21262)
+
+ -- Tobias Peters <peters@univention.de>  Wed, 12 Sep 2012 16:41:51 +0200
+
+univention-ldap (9.0.3-2) unstable; urgency=low
+
+  * Write Computers with a upper 'C' (Bug #20334)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 05 Sep 2012 08:37:05 +0200
+
+univention-ldap (9.0.3-1) unstable; urgency=low
+
+  * Added group DC Slave Hosts to the group Computers (Bug #20334)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 05 Sep 2012 08:23:23 +0200
+
+univention-ldap (9.0.2-1) unstable; urgency=low
+
+  * Add UCR variable descriptions (Bug #28134)
+  * Remove setting unused ldap/database/bdb/set_flags.
+  * Remove interfaces/* from UCR variable triggers (Bug #26058)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 12:10:34 +0200
+
+univention-ldap (9.0.1-1) unstable; urgency=low
+
+  * fix include for rootpw.conf: include statements in slapd.conf are usually
+    not quoted, otherwise slapd.postinst tries to open '"/etc/ldap/rootpw.conf"'
+    (Bug #27992)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 23 Jul 2012 18:27:35 +0200
+
+univention-ldap (8.0.91-1) unstable; urgency=low
+
+  * added objectClass "univentionUbuntuClient" to
+    ldap schema (Bug #27581)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 12 Jul 2012 13:57:02 +0200
+
+univention-ldap (8.0.90-1) unstable; urgency=low
+
+  * fix handling multiple servers in ldap/server/addition (Bug #27050) 
+
+ -- Arvid Requate <requate@univention.de>  Tue, 10 Jul 2012 14:58:59 +0200
+
+univention-ldap (8.0.89-1) unstable; urgency=low
+
+  * Force the fsmo seize command (Bug #26986)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 Jul 2012 13:40:50 +0200
+
+univention-ldap (8.0.88-1) unstable; urgency=low
+
+  * backup2master: move Samba 4 roles to the new ldap master (Bug #26986)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 Jul 2012 13:11:33 +0200
+
+univention-ldap (8.0.87-1) unstable; urgency=low
+
+  * Cleanup backup2master: Bug #5774
+    * remove options -r, -c and -d
+    * support SRV records with multi locations for one host
+    * cleanup some messages
+    * check if old DC master was a IMAP server and change the user mail
+      attributes or print a warning
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 Jul 2012 08:49:41 +0200
+
+univention-ldap (8.0.86-5) unstable; urgency=low
+
+  * univention-backup2master: Removed svn:keywords property.
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Thu, 05 Jul 2012 13:15:09 +0200
+
+univention-ldap (8.0.86-4) unstable; urgency=low
+
+  * univention-backup2master (Bug #26211): The changing of attributes
+    in resolve_reference() is done differently now. The new attribute
+    is first appended and after this, the old attribute is removed.
+    Only udm module shares/share is still changed with --set because
+    its attribute host can occur only once.
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Tue, 03 Jul 2012 14:39:22 +0200
+
+univention-ldap (8.0.86-3) unstable; urgency=low
+
+  * univention-backup2master (Bug #5774):
+    When resolving references to old master, removal of DNs is
+    offered (again), but only for udm module shares/share.
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Fri, 29 Jun 2012 15:42:08 +0200
+
+univention-ldap (8.0.86-2) unstable; urgency=low
+
+  * univention-backup2master (Bug #10038):
+    Any bind9 that might be running shall be restarted.
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Fri, 29 Jun 2012 14:46:18 +0200
+
+univention-ldap (8.0.86-1) unstable; urgency=low
+
+  * univention-backup2master (Bug #5774):
+    Changed interactive prompting to comply with established rules.
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Fri, 29 Jun 2012 11:28:56 +0200
+
+univention-ldap (8.0.85-3) unstable; urgency=low
+
+  * univention-ldap-server.postrm: Do not remove subdirectories
+    belonging to package univention-directory-notifier (Bug #26269).
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Wed, 27 Jun 2012 12:07:44 +0200
+
+univention-ldap (8.0.85-2) unstable; urgency=low
+
+  * univention-ldap-server.postrm: Removal of directories under
+    /var/lib/univention-ldap/ shall be decided in advance on a
+    case-by-case basis and not at run-time of the script.
+    (Bug #26269)
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Wed, 27 Jun 2012 10:42:59 +0200
+
+univention-ldap (8.0.85-1) unstable; urgency=low
+
+  * univention-ldap-server.postrm: Upon "purge" remove
+    subdirectories under /var/lib/univention-ldap/
+    only if they belong to package univention-ldap-server.
+    Leave subdirectories belonging to no one or to other
+    packages untouched (Bug #26269).
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Wed, 27 Jun 2012 09:45:38 +0200
+
+univention-ldap (8.0.84-3) unstable; urgency=low
+
+  * univention-backup2master:
+    apt-get is now invoked with option -y to avoid interactivity
+    (Bug #14568).
+    
+  * univention-backup2master:
+    The function resolve_reference does not offer to remove LDAP
+    entries any more (Bug #10038).
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Tue, 26 Jun 2012 13:55:47 +0200
+
+univention-ldap (8.0.84-2) unstable; urgency=low
+
+  * univention-backup2master (Bug #27144):
+    If the server possess no attribute univentionObjectType in LDAP,
+    then the attribute univentionObjectType will be added to the
+    objectClass univentionObject if necessary.
+  * univention-backup2master:
+    Added new function consider_termination.
+    At run-time of this script, any premature termination (ctrl-c)
+    will now be caught by a trap handler. The user can choose to
+    really terminate (being warned about the incomplete DC master)
+    or to continue with the script.
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Tue, 26 Jun 2012 10:23:54 +0200
+
+univention-ldap (8.0.84-1) unstable; urgency=low
+
+  * Consider dns/register/srv_records/kerberos and /ldap UCR variables
+    to avoid the DNS registration (Bug #27708)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 24 Jun 2012 10:21:52 +0200
+
+univention-ldap (8.0.83-2) unstable; urgency=low
+
+  * reverted last commit (Bug #27016) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 14 Jun 2012 11:19:15 +0200
+
+univention-ldap (8.0.83-1) unstable; urgency=low
+
+  * new default "yes" for ldap/acl/user/password/change (Bug #27016) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 13 Jun 2012 09:02:21 +0200
+
+univention-ldap (8.0.82-3) unstable; urgency=low
+
+  * univention-backup2master (Bug #14568):
+    Added replacement of package univention-server-backup with
+    package univention-server-master
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Wed, 30 May 2012 07:59:38 +0200
+
+univention-ldap (8.0.82-2) unstable; urgency=low
+
+  * univention-backup2master (Bug #5774):
+    Added some error checking; added options -h -f -w to the script.
+    Changes suggested by Philip after review.
+    New options -c -d -v allow check and dry-run without actually converting
+    to master. This helps when searching for LDAP references to old master.
+    New option -r allows to change share references interactively.
+    Added safety check for number of parameters of function resolve_reference;
+    corrected second parameter when using resolve_reference during conversion.
+  * univention-backup2master (Bug #10038):
+    Use function resolve_reference with module dns/forward_zone.
+  * univention-backup2master (Bug #16789):
+    changed script so that it also changes references in LDAP to
+    the old LDAP master for module dns/reverse_zone.
+  * univention-backup2master (Bug #27144):
+    changed script so that it also changes univentionObjectType to
+    computers/domaincontroller_master for the new master.
+  * univention-backup2master (Bug #26211):
+    Change old master in udm module policies/thinclient.
+    Special case udm module shares/share: warn if changed path already exists.
+    Blank characters in DNs are now handled correctly.
+    Access to udm module dns/srv_record needs special command line options.
+    Extended function resolve_reference.
+    Remove the reference to old master from krb5PrincipalName for LDAP access.
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Tue, 29 May 2012 10:41:14 +0200
+
+univention-ldap (8.0.82-1) unstable; urgency=low
+
+  * Added displayName and msGPOUserExtensionNames to GPOs (Bug #26926)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 May 2012 08:54:33 +0200
+
+univention-ldap (8.0.81-5) unstable; urgency=low
+
+  * Remove version dependency to acl packages (Bug #26926)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 May 2012 16:49:31 +0200
+
+univention-ldap (8.0.81-4) unstable; urgency=low
+
+  * fix trailing dots in log_action_msg (Bug #23962)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 May 2012 18:22:06 +0200
+
+univention-ldap (8.0.81-3) unstable; urgency=low
+
+  * Fix db4.8_stat home path (Bug #23962)
+  * another minor log_action message fix
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 May 2012 18:09:44 +0200
+
+univention-ldap (8.0.81-2) unstable; urgency=low
+
+  * space/tab mix cleanup (Bug #23962)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 May 2012 17:35:33 +0200
+
+univention-ldap (8.0.81-1) unstable; urgency=low
+
+  * Check that slapd is not running before starting bdb recover
+  * Run db4.8_stat without acquiring shared region mutexes
+  * Issue a warning if db4.8_stat finds stale locks (Bug #23962)
+  * Fix error message in case bdb_open fails in db4.8_stat (Bug #23962)
+  * Improve log_action message formatting
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 May 2012 17:18:21 +0200
+
+univention-ldap (8.0.80-1) unstable; urgency=low
+
+  * Added version dependency to ldap-config and acl packages
+    (Bug #26926)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 30 Apr 2012 14:57:48 +0200
+
+univention-ldap (8.0.79-1) unstable; urgency=low
+
+  * Added a schema file for MS group policy objects (Bug #26926)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Apr 2012 10:39:37 +0200
+
+univention-ldap (8.0.78-1) unstable; urgency=low
+
+  * Added a new attribute to disable an UDM property in UDM/UMC
+    (Bug #26921)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Apr 2012 06:56:17 +0200
+
+univention-ldap (8.0.77-1) unstable; urgency=low
+
+  * Set SRV priority to 100 for ldap and kerberos in backup2master
+    (Bug #24935)
+  * Reconfigure S4 connector in backup2master (Bug #25398)
+  * Do some cleanup in backup2master (Bug #26048)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 08 Feb 2012 09:24:30 +0100
+
+univention-ldap (8.0.76-1) unstable; urgency=low
+
+  * univentionSyntaxViewOnly is an optional attribute now; Bug #25039
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 01 Dec 2011 09:43:36 +0100
+
+univention-ldap (8.0.75-1) unstable; urgency=low
+
+  * Set set_lk_max_objects, set_lk_max_locks and set_lk_max_lockers in
+    DB_CONFIG by default to 9000 (Bug #24791)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Nov 2011 14:19:16 +0100
+
+univention-ldap (8.0.74-1) unstable; urgency=low
+
+  * Added Windows Hosts to Authenticated Users to give all Windows
+    clients read permissions to the GPOs (Bug #24288)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Nov 2011 10:29:58 +0100
+
+univention-ldap (8.0.73-1) unstable; urgency=low
+
+  * removed convert_univentionMailSharedFolderDeliveryAddress from
+    postinst (Bug #24503)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 18 Nov 2011 10:43:54 +0100
+
+univention-ldap (8.0.72-1) unstable; urgency=low
+
+  * removed mailRelay from univention-backup2master (Bug #24693)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 17 Nov 2011 14:52:02 +0100
+
+univention-ldap (8.0.71-2) unstable; urgency=low
+
+  * Except udm check for univention-ldap-server.postinst (Bug #24288)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Nov 2011 16:01:52 +0100
+
+univention-ldap (8.0.71-1) unstable; urgency=low
+
+  * Added well known groups (Bug #24288)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Nov 2011 15:00:04 +0100
+
+univention-ldap (8.0.70-2) unstable; urgency=low
+
+  * call convert_univentionMailSharedFolderDeliveryAddress only on DC
+    master (Bug #24503) 
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 11 Nov 2011 12:41:09 +0100
+
+univention-ldap (8.0.70-1) unstable; urgency=low
+
+  * added convert_univentionMailSharedFolderDeliveryAddress (Bug #24503)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 11 Nov 2011 11:23:14 +0100
+
+univention-ldap (8.0.69-1) unstable; urgency=low
+
+  * fixed OID collision between univentionUserTemplate and
+    univentionShareHost (Bug #24421)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 07 Nov 2011 13:42:08 +0100
+
+univention-ldap (8.0.68-1) unstable; urgency=low
+
+  * Added univention-virtual-machine-manager-schema to univention-ldap-
+    server recommends (Bug #22722)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Nov 2011 11:05:35 +0100
+
+univention-ldap (8.0.67-1) unstable; urgency=low
+
+  * Fixed typo in license.schema (Bug #24339)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Nov 2011 21:00:39 +0100
+
+univention-ldap (8.0.66-1) unstable; urgency=low
+
+  * Added univentionLicensePhysicalServers,
+    univentionLicenseServerInstances, univentionLicenseThinClients and
+    univentionLicenseVirtualDesktops to license.schema (Bug #24339)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Nov 2011 20:12:29 +0100
+
+univention-ldap (8.0.65-1) unstable; urgency=low
+
+  * added univentionSyntaxAddEmptyValue to univention-syntax.schema (Bug #24245)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 01 Nov 2011 12:30:01 +0100
+
+univention-ldap (8.0.64-1) unstable; urgency=low
+
+  * support aAAARecord for univentionHost (Bug #15687)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 01 Nov 2011 11:02:56 +0100
+
+univention-ldap (8.0.63-1) unstable; urgency=low
+
+  * support IPv6 in join script (Bug #23942)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 31 Oct 2011 15:02:27 +0100
+
+univention-ldap (8.0.62-1) unstable; urgency=low
+
+  * Adjust to slapd downgrade (Bug #22879)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 29 Oct 2011 09:03:52 +0200
+
+univention-ldap (8.0.61-1) unstable; urgency=low
+
+  * Give admin and Administrator access to * at the beginning. This
+    improves the LDAP performance (Bug #22879)
+  * Removed LDAP ACLs for user uid=root
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 28 Oct 2011 16:26:35 +0200
+
+univention-ldap (8.0.60-1) unstable; urgency=low
+
+  * removed Recommends dependency to univention-legacy-kolab-schema (Bug #23788)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 28 Oct 2011 09:47:18 +0200
+
+univention-ldap (8.0.59-1) unstable; urgency=low
+
+  * Added univentionSamba4SID for s3 / s4 migration (Bug #24225)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 27 Oct 2011 17:17:04 +0200
+
+univention-ldap (8.0.58-1) unstable; urgency=low
+
+  * added Recommends dependency to univention-legacy-kolab-schema (Bug #23788)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 27 Oct 2011 10:18:18 +0200
+
+univention-ldap (8.0.57-1) unstable; urgency=low
+
+  * re-added univentionDefaultKolabHomeServer to univention-ldap and 
+    removed transition schema file form kolab legacy package (Bug #23483)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 26 Oct 2011 17:31:53 +0200
+
+univention-ldap (8.0.56-1) unstable; urgency=low
+
+  * Set ldap/master/port in univention-ldap-client.postinst (Bug #24200)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 26 Oct 2011 15:35:21 +0200
+
+univention-ldap (8.0.55-1) unstable; urgency=low
+
+  * Depend on a slapd version with k5pwd (Bug #15062)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 26 Oct 2011 14:41:54 +0200
+
+univention-ldap (8.0.54-1) unstable; urgency=low
+
+  * Don't restart slapd in univention-ldap-config.postinst during
+    the update . This breaks the slapd for a while beacuase the
+    configuration of the slapd is not yet complete (Bug #23342)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 26 Oct 2011 08:08:29 +0200
+
+univention-ldap (8.0.53-3) unstable; urgency=low
+
+  * Added dependency to univention-directory-manager-tools (Bug #23342)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 15:36:03 +0200
+
+univention-ldap (8.0.53-2) unstable; urgency=low
+
+  * Added displayName and gecos to the user template (Bug #21157)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 09:40:23 +0200
+
+univention-ldap (8.0.53-1) unstable; urgency=low
+
+  * Added displayName and gecos to the user template (Bug #21157)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 08:31:32 +0200
+
+univention-ldap (8.0.52-1) unstable; urgency=low
+
+  * Removed pre dependency to univention-join to avoid a dependency
+    cycle. Moved univention-pam from Depends to Recommends (Bug #24159)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 Oct 2011 07:37:55 +0200
+
+univention-ldap (8.0.51-4) unstable; urgency=low
+
+  * fixed ucslint warning; Bug #22668
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 23 Oct 2011 21:25:19 +0200
+
+univention-ldap (8.0.51-2) unstable; urgency=low
+
+  * fixed typo in ucslint override for slapd init script; Bug #23494
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 23 Oct 2011 20:56:38 +0200
+
+univention-ldap (8.0.51-1) unstable; urgency=low
+
+  * changed OIDs of UMC object to avoid conflicts; Bug #23494
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 23 Oct 2011 20:42:17 +0200
+
+univention-ldap (8.0.50-3) unstable; urgency=low
+
+  * Fix dependencies on u-c (Bug #22668)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:21 +0200
+
+univention-ldap (8.0.50-2) unstable; urgency=low
+
+  * updated postinst (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 19 Oct 2011 17:57:21 +0200
+
+univention-ldap (8.0.50-1) unstable; urgency=low
+
+  * add LDAP attributes for extensions of the extended; Bug #23988
+  * Make univentionInventoryNumber searchable; Bug #24103
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 19 Oct 2011 08:55:45 +0200
+
+univention-ldap (8.0.49-1) unstable; urgency=low
+
+  * added firewall settings (Bug #23577)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Oct 2011 15:19:06 +0200
+
+univention-ldap (8.0.48-1) unstable; urgency=low
+
+  * Set priority for SRV record _ldap._tcp to 100 (Bug #24088)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Oct 2011 10:55:22 +0200
+
+univention-ldap (8.0.47-1) unstable; urgency=low
+
+  * Added new overlay module k5pwd (Bug #15062)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Oct 2011 17:38:10 +0200
+
+univention-ldap (8.0.46-1) unstable; urgency=low
+
+  * Start slapd before starting bind9 (Bug #24080)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Oct 2011 16:22:25 +0200
+
+univention-ldap (8.0.45-1) unstable; urgency=low
+
+  * Fixed sed expressions in 10univention-ldap-server.inst (Bug #24074)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 16 Oct 2011 14:04:13 +0200
+
+univention-ldap (8.0.44-1) unstable; urgency=low
+
+  * Make ucslint happy (Bug #24074)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 16 Oct 2011 11:49:26 +0200
+
+univention-ldap (8.0.43-1) unstable; urgency=low
+
+  * The LDAP objects Administrator and default network are now created
+    in the LDAP server join script instead of the installer script
+    (Bug #24074)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 16 Oct 2011 11:26:50 +0200
+
+univention-ldap (8.0.42-1) unstable; urgency=low
+
+  * add attributes and object classes for new UMC UDM modules; Bug #23494
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 12 Oct 2011 19:01:22 +0200
+
+univention-ldap (8.0.41-1) unstable; urgency=low
+
+  * Listen on ipv4 and ipv6 interfaces (Bug #23942)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 12 Oct 2011 10:35:03 +0200
+
+univention-ldap (8.0.40-1) unstable; urgency=low
+
+  * Removed dependency to eth0 (Bug #10825)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Oct 2011 08:31:07 +0200
+
+univention-ldap (8.0.39-3) unstable; urgency=low
+
+  * Remove references to now obsolete univention-admin-nagios packages (Bug #9698)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 04 Oct 2011 10:54:47 +0200
+
+univention-ldap (8.0.39-2) unstable; urgency=low
+
+  * removed attribute univentionDefaultMailHomeServer from
+    univention-default.schema (Bug #23483)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 30 Sep 2011 14:46:58 +0200
+
+univention-ldap (8.0.39-1) unstable; urgency=low
+
+  * removed attribute univentionDefaultMailHomeServer from
+    univention-default.schema (Bug #23483)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 29 Sep 2011 21:40:44 +0200
+
+univention-ldap (8.0.38-2) unstable; urgency=low
+
+  * Remove the policy container cn=windowsinstallations since univention-windows-installer
+    is being removed in UCS 3.0 (Bug #17625)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 29 Sep 2011 10:40:00 +0200
+
+univention-ldap (8.0.38-1) unstable; urgency=low
+
+  * add substring search to attribute printerModel; Bug #23646
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 21 Sep 2011 09:13:46 +0200
+
+univention-ldap (8.0.37-1) unstable; urgency=low
+
+  * Merge patches from UCS 2.4-3
+   [ Felix Botner ]
+    * added univentionSambaPrivilegeList attribute Bug #2619
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 15:46:30 +0200
+
+univention-ldap (8.0.36-1) unstable; urgency=low
+
+  * create basic objects for domaincontroller_master during join only
+    if last executed joinscript version is 0 (Bug #23720)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Sep 2011 15:46:43 +0200
+
+univention-ldap (8.0.35-1) unstable; urgency=low
+
+  * use port 7389 in ldap service record (Bug #23231)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 19 Sep 2011 18:40:11 +0200
+
+univention-ldap (8.0.34-2) unstable; urgency=low
+
+  * Shell quoting cleanup (Bug #22112)
+  * Use univention-join helper.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 15 Sep 2011 08:58:25 +0200
+
+univention-ldap (8.0.34-1) unstable; urgency=low
+
+  * Update DHCP-LDAP-schema (Bug #22112)
+    +IPv6-Attribute
+    ±/dhcpHWAddress/s/IA5/Directory/ (Bug #15211)
+    +/dhcpService#dhcpPrimaryDN/s/MUST/MAY/
+    +/dhcpServer#dhcpServiceDN/s/MUST/MAY/
+  * Update Univention-DHCP-LDAP-schema
+    ±univentionDhcpService SUP dhcpService
+    ±univentionDhcpPool SUP dhcpPool
+    ±univentionuniventionDhcpSubnet SUP dhcpSubnet + uDhcpBroadcastAddress
+    ±univentionDhcpHost SUP dhcpHost + dhcpHWAddress + uDhcpFixedAddress
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Sep 2011 10:42:50 +0200
+
+univention-ldap (8.0.33-1) unstable; urgency=low
+
+  * Start slapd after creating the index (Bug #23588)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Sep 2011 14:57:58 +0200
+
+univention-ldap (8.0.32-1) unstable; urgency=low
+
+  * add service entry (Bug #2136)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 08 Sep 2011 20:54:09 +0200
+
+univention-ldap (8.0.31-2) unstable; urgency=low
+
+  * updated list of default LDAP indices (Bug #23483)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 06 Sep 2011 12:19:42 +0200
+
+univention-ldap (8.0.31-1) unstable; urgency=low
+
+  * corrected objectclass univentionMailSharedFolder (Bug #22369)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 05 Sep 2011 16:05:25 +0200
+
+univention-ldap (8.0.30-1) unstable; urgency=low
+
+  * Correct syntax and matching rules for univentionOperatingSystem and
+    univentionOperatingSystemVersion (Bug #23477)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 02 Sep 2011 06:57:29 +0200
+
+univention-ldap (8.0.29-1) unstable; urgency=low
+
+  * Added univentionOperatingSystem and univentionOperatingSystemVersion
+    (Bug #23477)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 01 Sep 2011 19:48:35 +0200
+
+univention-ldap (8.0.28-2) unstable; urgency=low
+
+  * fixed mail.schema (Bug #23483)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 01 Sep 2011 16:38:52 +0200
+
+univention-ldap (8.0.28-1) unstable; urgency=low
+
+  * fixed mail.schema (Bug #23483)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 01 Sep 2011 16:21:38 +0200
+
+univention-ldap (8.0.27-1) unstable; urgency=low
+
+  * extended objectclass univentionMail (Bug #23483)
+  * added object classes univentionMailSharedFolder and univentionMailList
+  * took over objectclass univentionMailDomainname from legacy package
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 01 Sep 2011 13:53:49 +0200
+
+univention-ldap (8.0.26-1) unstable; urgency=low
+
+  * removed "alias" from default approx ldap index (Bug #22436)
+  * remove "kolabHomeServer" and "alias" from ldap indices during update
+    to UCS 3.0-0 if automatic index rebuild is enabled (Bug #22436)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 01 Sep 2011 11:30:48 +0200
+
+univention-ldap (8.0.25-1) unstable; urgency=low
+
+  * transferred kolab related files to univention-kolab-schema (Bug #22436)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 31 Aug 2011 14:56:10 +0200
+
+univention-ldap (8.0.24-1) unstable; urgency=low
+
+  * Added attribute univentionServerRole to objectclass
+    univentionWindows (Bug #23162)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Aug 2011 07:52:18 +0200
+
+univention-ldap (8.0.23-1) unstable; urgency=low
+
+  * fix base.ldif (Bug #23111)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 10 Aug 2011 15:53:42 +0200
+
+univention-ldap (8.0.22-1) unstable; urgency=low
+
+  * use machine account for ldapsearch (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Aug 2011 13:20:01 +0200
+
+univention-ldap (8.0.21-1) unstable; urgency=low
+
+  * Restrict anonymous bind by default (Bug #17519)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 04 Aug 2011 08:46:09 +0200
+
+univention-ldap (8.0.20-1) unstable; urgency=low
+
+  * add univentionObjectType (Bug #23111)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 04 Aug 2011 13:35:54 +0200
+
+univention-ldap (8.0.19-1) unstable; urgency=low
+
+  * Fixed typo while setting ldap/translogfile (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Aug 2011 16:21:50 +0200
+
+univention-ldap (8.0.18-1) unstable; urgency=low
+
+  * register ldap/acl/read/anonymous and ldap/acl/read/ips with
+    60univention-ldap-server_acl-slave (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Jul 2011 15:34:06 +0200
+
+univention-ldap (8.0.17-1) unstable; urgency=low
+
+  * Move cn=config.ldif to cn=config.ldif.DISABLED in join script to
+    disable cn=config backend (Bug #22468)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Jul 2011 10:27:39 +0200
+
+univention-ldap (8.0.16-1) unstable; urgency=low
+
+  * Re-added univention-newsid to dependencies (Bug #23017)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Jul 2011 07:19:42 +0200
+
+univention-ldap (8.0.15-1) unstable; urgency=low
+
+  * Fixed bashisms (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Jul 2011 06:56:47 +0200
+
+univention-ldap (8.0.14-1) unstable; urgency=low
+
+  * avoid trailing newline in machine.secret (Bug #14186)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Jul 2011 14:53:44 +0200
+
+univention-ldap (8.0.13-1) unstable; urgency=low
+
+  * set ldap/master/port?7389 for domaincontroller_master in
+    univention-ldap-server.postinst (Bug #20026)
+  * fix typos of 8.0.8-1
+
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Jul 2011 14:02:33 +0200
+
+univention-ldap (8.0.12-2) unstable; urgency=low
+
+  * changed dependencies (Bug #22431)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 13 Jul 2011 17:24:20 +0200
+
+univention-ldap (8.0.12-1) unstable; urgency=low
+
+  * removed dependency to univention-newsid (Bug #23017)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 13 Jul 2011 12:44:26 +0200
+
+univention-ldap (8.0.11-1) unstable; urgency=low
+
+  * fixed bashisms (Bug #23005)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 12 Jul 2011 18:37:44 +0200
+
+univention-ldap (8.0.10-1) unstable; urgency=low
+
+  * Use ldapi:/// interface for searching the schema because anonymous
+    bind is disabled by default (Bug #17519)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 07 Jul 2011 07:03:38 +0200
+
+univention-ldap (8.0.9-1) unstable; urgency=low
+
+  * Added some more ucr descriptions (Bug #20026)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 07 Jun 2011 09:36:53 +0200
+
+univention-ldap (8.0.8-1) unstable; urgency=low
+
+  * OpenLDAP / Samba 4 network port configuration (Bug #20026)
+    * By default in UCS 3.0 the slapd daemon will listen on port 7389 and 389
+      for ldap and 7636 and 636 for ldaps. Whether Samba 4 will be installed
+      the slapd daemon will only listen to 7389 and 7636 because Samba 4 must
+      listen to 389 and 636. Added slapd/port and slapd/port/ldaps to configure
+      this.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 25 May 2011 15:01:11 +0200
+
+univention-ldap (8.0.7-3) unstable; urgency=low
+
+  * add eth0 address to fallback set of allowed peers for anonymous
+    search in 60univention-ldap-server_acl-slave
+  * remove obsolete and unmaintained legacy UCR template subfile
+    60univention-ldap-server_acl (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 01 Jun 2011 18:44:09 +0200
+
+univention-ldap (8.0.7-2) unstable; urgency=low
+
+  * add local interface ips to ldap/acl/read/ips in postinst (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 01 Jun 2011 00:08:35 +0200
+
+univention-ldap (8.0.7-1) unstable; urgency=low
+
+  * add eth0/address to list of default peernames allowed to do
+    anonymous read (Bug #17519)
+  * fix peername.ip syntax. The other option would be to use
+    peername.regex="IP=127.0.0.1:*", because the exact port is unknown
+
+ -- Arvid Requate <requate@univention.de>  Mon, 30 May 2011 16:17:42 +0200
+
+univention-ldap (8.0.6-1) unstable; urgency=low
+
+  * unregister subfile 70univention-ldap-server_acl-master-end from
+    univention-ldap-server, it's part of univention-ldap-acl-master
+    (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 30 May 2011 15:09:39 +0200
+
+univention-ldap (8.0.5-1) unstable; urgency=low
+
+  * slapd 2.4 reads DB_CONFIG into olcDbConfig attribute, which unfortunately
+    has been chosen as IA5String, so there must not be any non-IA5 chars in
+    those files. (broken in 8.0.1-1 fixed again for Bug #22468)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 May 2011 12:03:57 +0200
+
+univention-ldap (8.0.4-1) unstable; urgency=low
+
+  * Some install adjustments (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 May 2011 12:05:25 +0200
+
+univention-ldap (8.0.3-1) unstable; urgency=low
+
+  * Removed copyright block from slapd init (Bug #21705)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 May 2011 15:09:30 +0200
+
+univention-ldap (8.0.2-5) unstable; urgency=low
+
+  * add missing credentials to join script to make ucslint happy (Bug #21705)
+  * adjust formatting of join script to improve readability
+
+ -- Arvid Requate <requate@univention.de>  Tue, 17 May 2011 09:57:39 +0200
+
+univention-ldap (8.0.2-4) unstable; urgency=low
+
+  * add copyright to init script to make ucslint happy (Bug #21705)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 16 May 2011 19:07:00 +0200
+
+univention-ldap (8.0.2-3) unstable; urgency=low
+
+  * update dependency to db4.8 (Bug #22468)
+  * Adjust init script dbX.Y_recover check (Bug #21705)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 16 May 2011 17:34:29 +0200
+
+univention-ldap (8.0.2-2) unstable; urgency=low
+
+  * control anonymous bind also on slaves and for standard attributes
+    (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 12 May 2011 20:09:25 +0200
+
+univention-ldap (8.0.2-1) unstable; urgency=low
+
+  * ACL controlling anonymous bind (Bug #17519)
+  * register subfile 70univention-ldap-server_acl-master-end
+
+ -- Arvid Requate <requate@univention.de>  Tue, 10 May 2011 08:08:18 +0200
+
+univention-ldap (8.0.1-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22431):
+    * Bump version for UCS 3.0
+    * Replace univention-baseconfig with univention-config-registry
+    * Replace static UCR header in the UCR templates with '@%@UCRWARNING=#
+      @%@'
+    * Removed no longer used univention-ldap-server.preinst
+    * Removed old transition code from postinst files
+    * Update copyright to 2011
+    * Update to debhelper 7
+  * Use slapcat for dumping the ldap backup (Bug #20215)
+  * Set ldap/idetimeout by default to 360 seconds (Bug #17706)
+  * Set ldap/maxopenfiles to 8192 (Bug #21640)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 May 2011 09:06:14 +0200
+
+univention-ldap (7.0.20-1) unstable; urgency=low
+
+  * added attributes "zoneName", "relativeDomainName" and "name" to ldap
+    indices (Bug #22020)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 30 Mar 2011 10:17:19 +0200
+
+univention-ldap (7.0.19-2) unstable; urgency=low
+
+  * call eval "$(ucr shell)" in postinst (Bug #21711)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 17 Mar 2011 15:27:31 +0100
+
+univention-ldap (7.0.19-1) unstable; urgency=low
+
+  * call fix_primary_group_membership of
+    univention-directory-manager-tools (Bug #21782)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 17 Mar 2011 15:09:11 +0100
+
+univention-ldap (7.0.18-1) unstable; urgency=low
+
+  * call fix_primary_group_membership of
+    univention-directory-manager-tools (Bug #21711)
+  * added dependency to 
+  	univention-directory-manager-tools (>>6.0.110)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 08 Mar 2011 14:09:24 +0100
+
+univention-ldap (7.0.17-1) unstable; urgency=low
+
+  * fixed typo (univention-prinquota) in join script 
+    10univention-ldap-server.inst and replace value
+    in settings/packages during update (Bug #21187)
+
+ -- Felix Botner <botner@univention.de>  Mon, 07 Mar 2011 12:03:58 +0100
+
+univention-ldap (7.0.16-2) unstable; urgency=low
+
+  * Rename univentionUDMPropertyValue{Not,}Editable to fix default (Bug #21643)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Feb 2011 11:16:57 +0100
+
+univention-ldap (7.0.16-1) unstable; urgency=low
+
+  * Ticket#: 2010121410001136
+    - Add support for defining options via LDAP (Bug #21644)
+    - Add support for editable=False properties (Bug #21643)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Feb 2011 08:30:25 +0100
+
+univention-ldap (7.0.15-1) unstable; urgency=low
+
+  * add full width extended attributes (Bug #21623)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 21 Feb 2011 14:29:03 +0100
+
+univention-ldap (7.0.14-1) unstable; urgency=low
+
+  * added registration and description of ldap/online/master (Bug #20789)
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Feb 2011 15:18:58 +0100
+
+univention-ldap (7.0.13-1) unstable; urgency=low
+
+  * do not include updateref on slave slapd configuration
+    if ldap/online/master is set and not true (Bug #20789)
+
+ -- Felix Botner <botner@univention.de>  Thu, 27 Jan 2011 13:32:02 +0100
+
+univention-ldap (7.0.12-1) unstable; urgency=low
+
+  * Added a new property for extended attributes which allows to add an
+    empty value (Bug #20432)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Jan 2011 08:16:35 +0100
+
+univention-ldap (7.0.11-2) unstable; urgency=low
+
+  * Fix descriptions of network schema (Bug #21082)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 11 Jan 2011 12:29:20 +0100
+
+univention-ldap (7.0.11-1) unstable; urgency=low
+
+  * Added hsync, vrefresh and displaysize for secondary display (Bug #21108)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 05 Jan 2011 09:44:12 +0100
+
+univention-ldap (7.0.10-1) unstable; urgency=low
+
+  * Added write access for DC Slaves to shadowLastChange, otherwise a
+    user can't change his password on a slave pdc when he have a
+    password expiry interval. (Bug #20239)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 Nov 2010 06:27:02 +0100
+
+univention-ldap (7.0.9-1) unstable; urgency=low
+
+  * added write access for DC slaves to shadowMax and krb5PasswordEnd (Bug #20239)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 22 Nov 2010 17:05:52 +0100
+
+univention-ldap (7.0.8-1) unstable; urgency=low
+
+  * added univentionShareGid,univentionShareSambaName,
+    univentionShareWriteable,secretary to ldap/index/eq
+    Bug #19609 #20156
+
+ -- Felix Botner <botner@univention.de>  Thu, 30 Sep 2010 15:26:30 +0200
+
+univention-ldap (7.0.7-2) unstable; urgency=low
+
+  * undone previous change Bug #19865
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Sep 2010 16:52:24 +0200
+
+univention-ldap (7.0.7-1) unstable; urgency=low
+
+  * made univentionWindowsReinstall world wide readable Bug #19865
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Sep 2010 16:31:29 +0200
+
+univention-ldap (7.0.6-1) unstable; urgency=low
+
+  * added pwQualityCheck to control password quality checks. Bug #14943
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Jul 2010 20:30:04 +0200
+
+univention-ldap (7.0.5-1) unstable; urgency=low
+
+  * added ldap attribute for resolution of the secondary display in dual
+    monitor setups. Bug #12124
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Jul 2010 15:49:18 +0200
+
+univention-ldap (7.0.4-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 30 Jun 2010 09:31:09 +0200
+
+univention-ldap (7.0.3-2) unstable; urgency=low
+
+  * Add four new attributes to control dual monitor setups
+    (Bug #12124)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 24 Jun 2010 16:47:31 +0200
+
+univention-ldap (7.0.3-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 13:45:06 +0200
+
+univention-ldap (7.0.2-1) unstable; urgency=low
+
+  * fix error with "cn" or "ou" ldap/base (Bug #16874)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 27 May 2010 16:40:34 +0200
+
+univention-ldap (7.0.1-1) unstable; urgency=low
+
+  * enable max file handles to be configured via UCR (Bug #17705)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 27 May 2010 14:14:03 +0200
+
+univention-ldap (7.0.0-1) unstable; urgency=low
+
+  * version bump for UCS 2.4
+  * use reverse instead of network from univention-ipcalc for adding/editing reverse zone 
+  * use fqdn with . at the and as nameserver for creating dns zone Bug #17413
+  * use email address syntax for contact address in dns zone Bug #18461
+
+ -- Felix Botner <botner@univention.de>  Fri, 21 May 2010 14:51:55 +0200
+
+univention-ldap (6.0.0-2) unstable; urgency=low
+
+  * ldap/index/autorebuild: handle special 'none' value in ldap/index/* (Bug #6700)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 17 May 2010 10:08:45 +0200
+
+univention-ldap (6.0.0-1) unstable; urgency=low
+
+  * bumped version for UCS 2.4 Bug #17954
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 May 2010 13:30:51 +0200
+
+univention-ldap (5.0.21-1) unstable; urgency=low
+
+  * merged changes for allowed email groups/users (Bug #17954)
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 May 2010 12:51:13 +0200
+
+univention-ldap (5.0.20-1) unstable; urgency=low
+
+  * add attributetype univentionLicenseOEMProduct (Bug #18212)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Apr 2010 19:41:46 +0200
+
+univention-ldap (5.0.19-2) unstable; urgency=low
+
+  * register ldap/replog for init script (Bug #9847)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 23 Apr 2010 17:52:05 +0200
+
+univention-ldap (5.0.19-1) unstable; urgency=low
+
+  * merge recommended values into UCR:ldap/index/* instead of
+    replacing the current values (Bug #6700)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 19 Apr 2010 12:09:42 +0200
+
+univention-ldap (5.0.18-1) unstable; urgency=low
+
+  * added sambaSIDList and sambaGroupType to ldap/index/eq, Bug #17232
+
+ -- Tim Petersen <petersen@univention.de>  Mon, 22 Mar 2010 09:49:27 +0100
+
+univention-ldap (5.0.17-1) unstable; urgency=low
+
+  * replaced pam_heimdal.so with pam_krb5.so, Bug #17901
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 18 Mar 2010 11:21:27 +0100
+
+univention-ldap (5.0.16-1) unstable; urgency=low
+
+  * changed description for unattended installation in univention.schema, Bug #13244
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 18 Mar 2010 08:37:27 +0100
+
+univention-ldap (5.0.15-1) unstable; urgency=low
+
+  * added univentionServerInstallationOption to univention.schema, Bug #13244
+
+ -- Tim Petersen <petersen@univention.de>  Wed, 10 Mar 2010 15:53:27 +0100
+
+univention-ldap (5.0.14-8) unstable; urgency=low
+
+  * touch schema.conf file on LDAP-slaves to avoid slapadd error message
+    (Bug #9987)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Mar 2010 11:49:27 +0100
+
+univention-ldap (5.0.14-7) unstable; urgency=low
+
+  * register slapd.conf for ldap/base and ldap/hostdn in
+    univention-ldap-acl-slave (Bug #17613)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Mar 2010 11:30:15 +0100
+
+univention-ldap (5.0.14-6) unstable; urgency=low
+
+  * configure obsolete replogfile only if ldap/replog is set
+    (Bug #9847 and Bug #16261)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Mar 2010 11:03:32 +0100
+
+univention-ldap (5.0.14-5) unstable; urgency=low
+
+  * typo fixed 'matichingRuleUse' (Bug #12294)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Mar 2010 10:26:20 +0100
+
+univention-ldap (5.0.14-4) unstable; urgency=low
+
+  * avoid 'set -e' trouble in postinst (Bug #6700)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Mar 2010 09:42:15 +0100
+
+univention-ldap (5.0.14-3) unstable; urgency=low
+
+  * add description for UCR:ldap/index/autorebuild (Bug #6700)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Mar 2010 18:31:10 +0100
+
+univention-ldap (5.0.14-2) unstable; urgency=low
+
+  * update UCR:ldap/index/* and run slapindex if ldap/index/autorebuild
+    is not set to something other than yes or true (Bug #6700)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Mar 2010 17:03:27 +0100
+
+univention-ldap (5.0.14-1) unstable; urgency=low
+
+  * added ldap indices, Bug #17232
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 09 Mar 2010 11:33:35 +0100
+
+univention-ldap (5.0.13-1) unstable; urgency=low
+
+  * fixed typo in schema/mail.schema Bug #17226 
+
+ -- Felix Botner <botner@univention.de>  Mon, 11 Jan 2010 17:07:35 +0100
+
+univention-ldap (5.0.12-1) unstable; urgency=low
+
+  * updated copyright Bug #17222
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:46:50 +0100
+
+univention-ldap (5.0.11-1) unstable; urgency=low
+
+  * fixed typo in schema/mail.schema Bug #17226
+
+ -- Felix Botner <botner@univention.de>  Tue, 05 Jan 2010 14:27:27 +0100
+
+univention-ldap (5.0.10-1) unstable; urgency=low
+
+  * restrict access to attributes sambaClearTextPassword and
+    sambaPreviousClearTextPassword (Bug #16795)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 30 Dec 2009 15:43:06 +0100
+
+univention-ldap (5.0.9-1) unstable; urgency=low
+
+  * Eval server/role before restarting on domaincontroller_master. (Bug #7811)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 28 Dec 2009 09:48:47 +0100
+
+univention-ldap (5.0.8-1) unstable; urgency=low
+
+  * fixed typo "opnessh-server" (Bug #12301)
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 17 Dec 2009 12:07:18 +0100
+
+univention-ldap (5.0.7-5) unstable; urgency=low
+
+  * fix missing quote (Bug #16547)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 30 Nov 2009 16:39:18 +0100
+
+univention-ldap (5.0.7-3) unstable; urgency=low
+
+  * more robust fallback for determine_bdb_version logic (Bug #16547)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 30 Nov 2009 16:23:41 +0100
+
+univention-ldap (5.0.7-2) unstable; urgency=low
+
+  * more robust determine_bdb_version logic (Bug #16547)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 30 Nov 2009 16:18:39 +0100
+
+univention-ldap (5.0.7-1) unstable; urgency=low
+
+  * added ucr policy container (Bug: #9969)
+
+ -- Felix Botner <botner@univention.de>  Wed, 30 Sep 2009 11:21:51 +0200
+
+univention-ldap (5.0.6-1) unstable; urgency=low
+
+  * changed syntax of attribute dhcpHWAddress to "DirectoryString" and
+    added substring matching ability (Bug: #15211)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 28 Sep 2009 11:05:22 +0200
+
+univention-ldap (5.0.5-1) unstable; urgency=low
+
+  * added automountInformation to ldap/index/sub and ldap/index/pres (Bug: #9321)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 22 Sep 2009 15:06:19 +0200
+
+univention-ldap (5.0.4-2) unstable; urgency=low
+
+  * birthday attribute for "univentionPerson" objclass (Bug: #15119) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 16 Sep 2009 14:28:24 +0200
+
+univention-ldap (5.0.4-1) unstable; urgency=low
+
+  * add univentionXAutoDetect to object class
+    univentionPolicyXConfiguration. Bug #9132
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 28 Jul 2009 11:43:39 +0200
+
+univention-ldap (5.0.3-1) unstable; urgency=low
+
+  * add LDAP attribute for Xorg auto detection flag to schemata
+    definition. Bug #9132
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 27 Jul 2009 13:12:16 +0200
+
+univention-ldap (5.0.2-1) unstable; urgency=low
+
+  * add substring matching rules to printer protocol uri, printer share name
+    and print spool host (Bug #3169)
+
+ -- Arvid Requate <requate@univention.de>  Wed,  8 Jul 2009 16:00:01 +0200
+
+univention-ldap (5.0.1-1) unstable; urgency=low
+
+  * provide new UCR category service-ldap (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 07:13:59 +0200
+
+univention-ldap (5.0.0-13) unstable; urgency=low
+
+  * add LDAP attributes for extended attributes to LDAP index (eq, pres)
+    (Bug #14976)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  7 Jul 2009 11:15:04 +0200
+
+univention-ldap (5.0.0-12) unstable; urgency=low
+
+  * Make init scripts LSB-compliant (Bug #14421)
+
+ -- Moritz Mühlenhoff <jmm@visdalen.knut.univention.de>  Fri, 12 Jun 2009 14:41:18 +0200
+
+univention-ldap (5.0.0-11) unstable; urgency=low
+
+  * adjust default ldap/cachesize not only on UCS DC master (for Bug #14554)
+  * adjust version check in postinst to match version shipped with UCS 2.2-2
+
+ -- Arvid Requate <requate@univention.de>  Tue,  2 Jun 2009 10:20:08 +0200
+
+univention-ldap (5.0.0-10) unstable; urgency=low
+
+  * determine version of db_recover that back-bdb.so was linked against,
+    to avoid silent bdb update by db4.7_recover, causing slapd 2.3 to fail
+    (Bug #14411)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 19 May 2009 20:00:16 +0200
+
+univention-ldap (5.0.0-9) unstable; urgency=low
+
+  * remove reference replica.conf template (Bug #14411)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 May 2009 11:57:49 +0200
+
+univention-ldap (5.0.0-8) unstable; urgency=low
+
+  * remove reference replica.conf (Bug #14411)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 May 2009 11:23:10 +0200
+
+univention-ldap (5.0.0-7) unstable; urgency=low
+
+  * remove references to slurpd (replica.conf), support for it was removed
+    in OpenLDAP 2.4 (Bug #14411)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 May 2009 10:12:20 +0200
+
+univention-ldap (5.0.0-6) unstable; urgency=low
+
+  * remove ldbm config options, ldbm was removed in OpenLDAP 2.4 (Bug #14411)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 May 2009 09:56:51 +0200
+
+univention-ldap (5.0.0-5) unstable; urgency=low
+
+  * slapd 2.4 reads DB_CONFIG into olcDbConfig attribute, which unfortunately
+  * has been chosen as IA5String, so there must not be any non-IA5 chars in
+  * those files. (Bug #14411)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 15 May 2009 17:50:39 +0200
+
+univention-ldap (5.0.0-4) unstable; urgency=low
+
+  * ldap/cachesize for back_bdb counts entries, adjust to a more moderate value
+  * if ldap/cachesize shows the old high default, adjust it while upgrading
+  * new UCR variable ldap/idlcachesize?20000 (slapd default is 0) (Bug #14411)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 15 May 2009 15:00:43 +0200
+
+univention-ldap (5.0.0-3) unstable; urgency=low
+
+  * OpenLDAP 2.4-15 is build with db4.7, so we must use db4.7-util (Bug #14411)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 15 May 2009 11:27:48 +0200
+
+univention-ldap (5.0.0-2) unstable; urgency=low
+
+  * the schemacheck option has been removed, schemacheck is default (Bug #14411)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 15 May 2009 10:37:51 +0200
+
+univention-ldap (5.0.0-1) unstable; urgency=low
+
+  * page_result_disabled.patch was removed in UCS 2.0,
+    OpenLDAP 2.4 does not allow option page-results
+    remove the option and UCR Key ldap/page-results (Bug #14411)
+  * Version bump for UCS 2.3 (Bug #14412)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 12 May 2009 11:21:51 +0200
+
+univention-ldap (4.0.6-1) unstable; urgency=low
+
+  * added new attribute to univentionUDMProperty class (Bug: #1381)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 05 May 2009 17:21:12 +0200
+
+univention-ldap (4.0.5-1) unstable; urgency=low
+
+  * added new objectclass univentionFreeAttributes with 20 unassigned
+    customer LDAP attributes (Bug: #5569)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 29 Apr 2009 17:57:34 +0200
+
+univention-ldap (4.0.4-1) unstable; urgency=low
+
+  * added schema for univentionUDMProperty (Bug #5570)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 21 Apr 2009 12:19:00 +0200
+
+univention-ldap (4.0.3-2) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Mar 2009 13:47:37 +0100
+
+univention-ldap (4.0.3-1) unstable; urgency=low
+
+  * fixed utf-8 encoding in the ucr description text. Part of Bug #13147
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 20:35:14 +0100
+
+univention-ldap (4.0.2-3) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 09:10:25 +0100
+
+univention-ldap (4.0.2-2) unstable; urgency=low
+
+  * ldap/acl/nestedgroups: Support of nested groups in the ACL
+    interpretation. Bug #13147
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 Feb 2009 07:25:28 +0100
+
+univention-ldap (4.0.1-2) unstable; urgency=low
+
+  * Include samba.schema from Samba 3.2.0 providing new objectclass
+    sambaTrustedDomainPassword  (for Bug #11406)
+
+ -- Arvid Requate <requate@univention.de>  Mon,  9 Feb 2009 14:04:17 +0100
+
+univention-ldap (4.0.1-1) unstable; urgency=low
+
+  * copy the CAcert file to /var/www during the backup2master act. Bug
+    #11110
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Feb 2009 10:20:26 +0100
+
+univention-ldap (3.0.13-2) unstable; urgency=low
+
+  * added missing file: schema/univention-directory.schema. Closes Bug #12642
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 21 Dec 2008 12:14:50 +0100
+
+univention-ldap (3.0.13-1) unstable; urgency=low
+
+  * added schema for mail routing and canonical maps, Bug #12642
+  * added schema for meta directory extension, Bug #12642
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 21 Dec 2008 12:07:15 +0100
+
+univention-ldap (3.0.12-5) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Thu,  4 Dec 2008 11:23:05 +0100
+
+univention-ldap (3.0.12-4) unstable; urgency=low
+
+  * changed deprecated attr to attrs. Bug #11518
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed,  3 Dec 2008 10:04:31 +0100
+
+univention-ldap (3.0.12-3) unstable; urgency=low
+
+  * change EQUALITY and SYNTAX to allow utf8 for some string attributes in shares.schema (Bug #7573)
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Tue,  2 Dec 2008 18:17:24 +0100
+
+univention-ldap (3.0.12-2) unstable; urgency=low
+
+  * new autostart test in init script 
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue, 28 Oct 2008 14:03:09 +0100
+
+univention-ldap (3.0.12-1) unstable; urgency=low
+
+  * removed unused libnss-ldap connffile
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  6 Aug 2008 15:19:10 +0200
+
+univention-ldap (3.0.11-1) unstable; urgency=low
+
+  * don't fail the upgrade process if Administrator is already member of
+    Domain Users
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Jul 2008 07:55:54 +0200
+
+univention-ldap (3.0.10-1) unstable; urgency=low
+
+  * added LDAP attribute for custom settings for samba share objects
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 09 Jul 2008 17:57:54 +0200
+
+univention-ldap (3.0.9-2) unstable; urgency=low
+
+  * Added Administrator to Domain Users. This is needed for the ltspd,
+    otherwise Administrator couldn't use USB devices in his thin client
+    session
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Jul 2008 09:07:21 +0200
+
+univention-ldap (3.0.9-1) unstable; urgency=low
+
+  * added LDAP attributes for the samba attributes 'dos filemode' and 'hide
+    unreadable'
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 19 Jun 2008 14:03:07 +0200
+
+univention-ldap (3.0.8-1) unstable; urgency=low
+
+  * added univentionKolabSharedFolderType to object class univentionKolabSharedFolder
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 02 Jul 2008 14:35:30 +0200
+
+univention-ldap (3.0.7-1) unstable; urgency=low
+
+  * added mailAlternativeAddress and univentionKolabSharedFolderDeliveryAddress
+    to object class univentionKolabSharedFolder
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 26 Jun 2008 15:10:45 +0200
+
+univention-ldap (3.0.6-1) unstable; urgency=low
+
+  * added mailPrimaryAddress to univentionKolabSharedFolder
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 26 Jun 2008 13:50:29 +0200
+
+univention-ldap (3.0.5-1) unstable; urgency=low
+
+  * the DCs need access to the sambaDomain object
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Jun 2008 10:57:51 +0200
+
+univention-ldap (3.0.4-1) unstable; urgency=low
+
+  * allow a windows client join against the samba pdc on a DC Slave
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Jun 2008 10:27:02 +0200
+
+univention-ldap (3.0.3-1) unstable; urgency=low
+
+  * added ucr variable ldap/idletimeout
+  * added ucr variable libnss/idle/timelimit for the idle_timelimit in
+    libnss-ldap.conf
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Jun 2008 08:03:05 +0200
+
+univention-ldap (3.0.2-1) unstable; urgency=low
+
+  * added homeDirectory to the index
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Jun 2008 07:48:05 +0200
+
+univention-ldap (3.0.1-3) unstable; urgency=low
+
+  * revert change 3.0.1-2 as this breaks replication to servers without this attribute option
+
+ -- Arvid Requate <arequate@omar.knut.univention.de>  Tue, 24 Jun 2008 16:02:16 +0200
+
+univention-ldap (3.0.1-2) unstable; urgency=low
+
+  * add 'hexentry-' attribute tagging option
+
+ -- Arvid Requate <requate@univention.de>  Tue, 24 Jun 2008 12:12:10 +0200
+
+univention-ldap (3.0.1-1) unstable; urgency=low
+
+  * update the samba schema to Samba 3.0.30
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Jun 2008 11:09:29 +0200
+
+univention-ldap (2.4.11-5) unstable; urgency=low
+
+  * version increase for built
+
+ -- Arvid Requate <requate@univention.de>  Fri, 13 Jun 2008 13:02:00 +0200
+
+univention-ldap (2.4.11-4) unstable; urgency=low
+
+  * put slapd.pid and slapd.args back into /var/run/slapd
+  * enforce conditional restart on non-master-servers
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Apr 2008 12:02:10 +0200
+
+univention-ldap (2.4.11-3) unstable; urgency=low
+
+  * Prevent univention-ldap-acl-master from diverting slapd.conf before
+    slapd configures
+
+ -- Arvid Requate <requate@univention.de>  Wed, 23 Jan 2008 11:21:11 +0100
+
+univention-ldap (2.4.11-2) unstable; urgency=low
+
+  * set ldap/translogfile after converting the dc backup to the dc
+    master
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  5 Dec 2007 19:34:24 +0100
+
+univention-ldap (2.4.10-1) unstable; urgency=low
+
+  * fix admin-settings permissions
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Nov 2007 14:45:54 +0100
+
+univention-ldap (2.4.8-1) unstable; urgency=low
+
+  * only the user herself and cn=admin may access the user's admin settings
+    object 
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 19 Nov 2007 11:40:01 +0100
+
+univention-ldap (2.4.7-1) unstable; urgency=low
+
+  * provide access to admin settings objects for cn=admin 
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 16 Nov 2007 12:01:16 +0100
+
+univention-ldap (2.4.6-3) unstable; urgency=low
+
+  * Config Registry is run in the preinst, so we need to declare a pre-dependency
+    on it instead of a dependency.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 14 Nov 2007 15:46:48 +0100
+
+univention-ldap (2.4.6-2) unstable; urgency=low
+
+  * Fix postinst
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 12 Nov 2007 15:24:38 +0100
+
+univention-ldap (2.4.6-1) unstable; urgency=low
+
+  * fix access rights to own admin settings object 
+
+ -- Andreas Büsching <buesching@univention.de>  Fri,  9 Nov 2007 15:58:22 +0100
+
+univention-ldap (2.4.5-11) unstable; urgency=low
+
+  * Add some alternate depends on transition packages.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  9 Nov 2007 14:09:19 +0100
+
+univention-ldap (2.4.5-10) unstable; urgency=low
+
+  * Move Nagios transition code into preinst
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  9 Nov 2007 08:32:57 +0100
+
+univention-ldap (2.4.5-9) unstable; urgency=low
+
+  * Fix comparison.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  8 Nov 2007 17:50:59 +0100
+
+univention-ldap (2.4.5-8) unstable; urgency=low
+
+  * move the provide and replace of univention-admin-nagios from python-
+    univention-directory-manager to univention-ldap-config
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  8 Nov 2007 07:43:13 +0100
+
+univention-ldap (2.4.5-7) unstable; urgency=low
+
+  * Correct Config registry descriptions.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  5 Nov 2007 13:42:42 +0100
+
+univention-ldap (2.4.5-6) unstable; urgency=low
+
+  * The old Nagios schema definition was marked as a conffile, so it's kept even
+    though univention-admin-nagios is in removed state. Remove the schema manually
+    and the nagios info file manually during upgrades.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  5 Nov 2007 11:46:36 +0100
+
+univention-ldap (2.4.5-5) unstable; urgency=low
+
+  * Add a versioned depend on the conflict against univention-admin-nagios, since
+    it provides this nowadays
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  1 Nov 2007 17:28:47 +0100
+
+univention-ldap (2.4.5-4) unstable; urgency=low
+
+  * Drop alternative dependency on univention-admin-tools-2005, it's now
+    provided by univention-directory-manager-tools
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  1 Nov 2007 17:02:13 +0100
+
+univention-ldap (2.4.5-3) unstable; urgency=low
+
+  * Update Config Registry descriptions
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 31 Oct 2007 11:16:53 +0100
+
+univention-ldap (2.4.5-2) unstable; urgency=low
+
+  * added conflict to univention-admin-nagios
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 31 Oct 2007 10:08:31 +0100
+
+univention-ldap (2.4.5-1) unstable; urgency=low
+
+  * slurpd uses the replog/replog file instead of replog-slurpd/replog
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 23 Oct 2007 13:45:26 +0200
+
+univention-ldap (2.4.4-1) unstable; urgency=low
+
+  * really restart the slapd during the upgrade
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  1 Oct 2007 10:18:49 +0200
+
+univention-ldap (2.4.3-2) unstable; urgency=low
+
+  * migrate printer acl patchs from UCS 1.3-2
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 26 Sep 2007 15:07:39 +0200
+
+univention-ldap (2.4.3-1) unstable; urgency=low
+
+  * redirect output from slapadd to the join.log
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Aug 2007 09:09:20 +0200
+
+univention-ldap (2.4.2-1) unstable; urgency=low
+
+  * renamed /etc/univention/ssl/udsCA to /etc/univention/ssl/ucsCA
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 22 Aug 2007 14:38:35 +0200
+
+univention-ldap (2.4.1-1) unstable; urgency=low
+
+  * migrate webaccess patches from UCS 1.3-2 management scope
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Aug 2007 15:25:55 +0200
+
+univention-ldap (2.3.1-2) unstable; urgency=low
+
+  * Adapt to Univention Directory/Notifier/Replication
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  8 Aug 2007 14:32:47 +0200
+
+univention-ldap (2.3.1-1) unstable; urgency=low
+
+  * added objectclass univentionPolicyRegistry and attribute
+    univentionRegistry with attributeoptions entry-
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  8 Aug 2007 09:36:59 +0200
+
+univention-ldap (2.2.8-2) unstable; urgency=low
+
+  * more wording change univention-config-registry and univention-
+    baseconfig
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 09:45:44 +0200
+
+univention-ldap (2.2.8-1) unstable; urgency=low
+
+  * add version number to join scripts
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  2 Aug 2007 09:08:10 +0200
+
+univention-ldap (2.2.7-5) unstable; urgency=low
+
+  * fix variables file
+
+ -- Janis Meybohm <meybohm@univention.de>  Fri, 27 Jul 2007 13:40:12 +0200
+
+univention-ldap (2.2.7-4) unstable; urgency=low
+
+  * added descriptions for config registry variables, moved ldap
+    variables to categorie LDAP
+
+ -- Janis Meybohm <meybohm@univention.de>  Fri, 27 Jul 2007 13:30:51 +0200
+
+univention-ldap (2.2.7-3) unstable; urgency=low
+
+  * added descriptions for config registry variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 26 Jul 2007 15:13:17 +0200
+
+univention-ldap (2.2.7-2) unstable; urgency=low
+
+  * add service description to package
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 25 Jul 2007 13:02:25 +0200
+
+univention-ldap (2.2.7-1) unstable; urgency=low
+
+  * add Configuration Registry variable ldap/autostart to control start type
+    of slapd
+  * add service description
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 25 Jul 2007 09:45:16 +0200
+
+univention-ldap (2.2.6-1) unstable; urgency=low
+
+  * added nagios.schema to slapd.conf.d/
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 23 Jul 2007 15:44:44 +0200
+
+univention-ldap (2.2.5-1) unstable; urgency=low
+
+  * the translog overlay module should write the changes to the file
+    /var/lib/univention-ldap/listener/listener
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 23 Jul 2007 15:15:06 +0200
+
+univention-ldap (2.2.4-7) unstable; urgency=low
+
+  * modified PackageLists for Policies 
+
+ -- Bastian Neumann <neumann@univention.de>  Fri, 20 Jul 2007 10:25:06 +0200
+
+univention-ldap (2.2.4-6) unstable; urgency=low
+
+  * Add a new Univention Config Registry variable ldap/schema/export
+    which if set to "true" or "yes" exports the current LDAP schema used by
+    slapd through HTTP.
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 19 Jul 2007 15:24:26 +0200
+
+univention-ldap (2.2.4-5) unstable; urgency=low
+
+  * changed computers/client to computers/managedclient
+
+ -- Tobias Scherer <scherer@univention.de>  Tue, 17 Jul 2007 15:57:48 +0200
+
+univention-ldap (2.2.4-4) unstable; urgency=low
+
+  * fixed typo in slapd.conf template
+
+ -- Bastian Neumann <neumann@univention.de>  Wed, 11 Jul 2007 16:28:01 +0200
+
+univention-ldap (2.2.4-3) unstable; urgency=low
+
+  * set dependency to univention-directory-manager-tools instead of
+    univention-admin-tools 
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 09 Jul 2007 16:46:32 +0200
+
+univention-ldap (2.2.4-2) unstable; urgency=low
+
+  * added descriptions for default container in univention-admin 
+
+ -- Bastian Neumann <neumann@univention.de>  Wed, 20 Jun 2007 13:14:14 +0200
+
+univention-ldap (2.2.4-1) unstable; urgency=low
+
+  * import failed.ldif after starting the ldap server
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 20 Jun 2007 10:21:58 +0200
+
+univention-ldap (2.2.3-6) unstable; urgency=low
+
+  * added translation.ldif for updating old base.ldif containers
+  * added update mechanism 
+  * added german and english Descriptions for default containers
+
+ -- Bastian Neumann <neumann@univention.de>  Tue, 19 Jun 2007 16:14:31 +0200
+
+univention-ldap (2.2.3-5) unstable; urgency=low
+
+  * call exit 0 at the end of the postinst scripts
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Jun 2007 12:53:31 +0200
+
+univention-ldap (2.2.3-4) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 15:29:33 +0200
+
+univention-ldap (2.2.3-3) unstable; urgency=low
+
+  * importing failed.ldif during slapd start
+  * creating /var/run/ldapi link
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 12 Jun 2007 15:17:08 +0200
+
+univention-ldap (2.2.3-2) unstable; urgency=low
+
+  * fixed a typo in debian/postinst
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  5 Jun 2007 12:52:10 +0200
+
+univention-ldap (2.2.3-1) unstable; urgency=low
+
+  * create default policy container for printservers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  1 Jun 2007 13:57:49 +0200
+
+univention-ldap (2.2.2-1) unstable; urgency=low
+
+  * the path to the ldapi socket changed
+  * don't switch the output from slapadd to /dev/null
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 31 May 2007 16:34:13 +0200
+
+univention-ldap (2.2.1-1) unstable; urgency=low
+
+  * remove the german description from the standard container
+  * remove the description from the sambaDomainName object
+  * use the fqdn for the certificate name
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 31 May 2007 14:49:13 +0200
+
+univention-ldap (2.2.0-3) unstable; urgency=low
+
+  * added German Translation for Standard Container Description 
+
+ -- Bastian Neumann <bastian@billy.knut.univention.de>  Thu, 24 May 2007 13:42:51 +0200
+
+univention-ldap (2.2.0-2) unstable; urgency=low
+
+  * added Description for Standard Container 
+
+ -- Bastian Neumann <bastian@billy.knut.univention.de>  Thu, 24 May 2007 13:26:17 +0200
+
+univention-ldap (2.2.0-1) unstable; urgency=low
+
+  * added all policy containers to the default containers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 17 May 2007 10:09:25 +0200
+
+univention-ldap (2.1.0-1) unstable; urgency=low
+
+  * added baseconfig variable to configure transactions log overlay module
+    (Patch from Janis)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 May 2007 13:11:52 +0200
+
+univention-ldap (2.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 May 2007 11:53:55 +0200
+
+univention-ldap (1.43-19) unstable; urgency=low
+
+  * use UTF-8 string type for location attribute of univentionPrinter objectclass 
+
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 20 Dec 2006 09:41:38 +0100
+
+univention-ldap (1.43-18) unstable; urgency=low
+
+  * convert old shadowMax values
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  7 Dec 2006 16:32:11 +0100
+
+univention-ldap (1.43-17) unstable; urgency=low
+
+  * added new samba ldap schema from upstream package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  6 Dec 2006 15:51:05 +0100
+
+univention-ldap (1.43-16) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 30 Nov 2006 09:04:11 +0100
+
+univention-ldap (1.43-15) unstable; urgency=low
+
+  * converted univentionSyntaxLDAPAttribute to a multi-value attribute
+
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 27 Nov 2006 11:41:47 +0100
+
+univention-ldap (1.43-14) unstable; urgency=low
+
+  * install the scalix schema
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 18 Nov 2006 14:49:32 +0100
+
+univention-ldap (1.43-13) unstable; urgency=low
+
+  * use a separate attribute for the navigation attributes
+  univentionAdminListBrowseAttributes
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 17 Nov 2006 13:17:58 +0100
+
+univention-ldap (1.43-12) unstable; urgency=low
+
+  * support for user configured search results inthe wizard and the browse
+    results
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 16 Nov 2006 12:13:28 +0100
+
+univention-ldap (1.43-10) unstable; urgency=low
+
+  * add scalix scheme
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu, 16 Nov 2006 09:42:08 +0100
+
+univention-ldap (1.43-9) unstable; urgency=low
+
+  * add object classes and attributes needed for scalix integration
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed, 15 Nov 2006 09:33:30 +0100
+
+univention-ldap (1.43-8) unstable; urgency=low
+
+  * added univentionPolicyReference to index
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 14 Nov 2006 09:47:49 +0100
+
+univention-ldap (1.43-7) unstable; urgency=low
+
+  * add sambaMungedDial attribute to univentionUserTemplate
+
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 13 Nov 2006 16:50:25 +0100
+
+univention-ldap (1.43-6) unstable; urgency=low
+
+  * added zoneName to the substring index
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Oct 2006 12:07:51 +0200
+
+univention-ldap (1.43-5) unstable; urgency=low
+
+  * added sambaAcctFlags to the index
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Oct 2006 11:54:39 +0200
+
+univention-ldap (1.43-4) unstable; urgency=low
+
+  * added attribute univentionKolabDisableSieve to univention-kolab2.schema
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Oct 2006 17:31:02 +0200
+
+univention-ldap (1.43-3) unstable; urgency=low
+
+  * add attribute univentionSyntaxViewOnly. If true the assoziated attribute
+    is not stored with the LDAP object but displayed as a list of buttons
+
+ -- Andreas BÃŒsching <buesching@univention.de>  Fri, 13 Oct 2006 16:34:39 +0200
+
+univention-ldap (1.43-1) unstable; urgency=low
+
+  * add a new schema file containing the object class and attributes for a
+    generic syntax definition
+
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 12 Oct 2006 11:20:55 +0200
+
+univention-ldap (1.42-37) unstable; urgency=low
+
+  * Fix ACLs to re-allow changes to shadowLastChange
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 31 Aug 2006 11:01:22 +0200
+
+univention-ldap (1.42-36) unstable; urgency=low
+
+  * Relax ACLs, so that shadowLastChange is publicly visible.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 24 Aug 2006 14:57:24 +0200
+
+univention-ldap (1.42-35) unstable; urgency=low
+
+  * Fix schema ID
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 24 Aug 2006 14:56:53 +0200
+
+univention-ldap (1.42-34) unstable; urgency=low
+
+  * New object class to store servers for Sun Ray authentication data
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  7 Aug 2006 14:36:25 +0200
+
+univention-ldap (1.42-33) unstable; urgency=low
+
+  * now depends univention-admin-tools-2005 (>>0.44-16)
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 27 Jul 2006 16:53:20 +0200
+
+univention-ldap (1.42-32) unstable; urgency=low
+
+  * added depends univention-admin-tools (>>0.46-76) | univention-admin-
+    tools-2005 (>>0.44-15)
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 27 Jul 2006 16:30:37 +0200
+
+univention-ldap (1.42-31) unstable; urgency=low
+
+  * move some internal tools from /usr/sbin to /usr/share
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Jul 2006 09:51:45 +0200
+
+univention-ldap (1.42-27) unstable; urgency=low
+
+  * Add attributes to the NFS object class to define sub tree checking.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 28 Jun 2006 10:09:05 +0200
+
+univention-ldap (1.42-26) unstable; urgency=low
+
+  * Add attributes to the NFS object class to define root squashing and valid
+    hosts allowed for mounts.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 27 Jun 2006 16:09:43 +0200
+
+univention-ldap (1.42-25) unstable; urgency=low
+
+  * add automountInformation to default Index
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 23 Jun 2006 11:29:44 +0200
+
+univention-ldap (1.42-24) unstable; urgency=low
+
+  * KDE profiles can be stored in a multi value field as well
+
+ -- Moritz Muehlenhoff <jmm@univention.de>  Wed, 21 Jun 2006 13:47:17 +0200
+
+univention-ldap (1.42-23) unstable; urgency=low
+
+  * added associatedDomain to DC Master ldap object
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  6 Jun 2006 09:04:59 +0200
+
+univention-ldap (1.42-19) unstable; urgency=low
+
+  * added LDAP ACLs for nested groups 
+
+ -- Lars Rehe <lars@anton.knut.univention.de>  Mon, 22 May 2006 14:15:05 +0200
+
+univention-ldap (1.42-18) unstable; urgency=low
+
+  * allow changes for kolabInvitationPolicy for authorized users if kolab2-changes are enabled in baseconfig
+
+ -- Ingo Steuwer <steuwer@univention.de>  Sun,  7 May 2006 17:48:54 +0200
+
+univention-ldap (1.42-15) unstable; urgency=low
+
+  * univention-ldap-config predepends on slapd to be sure that schema-changes are not interrupting a slapd-update
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 28 Apr 2006 16:14:01 +0200
+
+univention-ldap (1.42-14) unstable; urgency=low
+
+  * added baseconfig variable ldap/page-results to disable the ldap control
+  PageResults needed for buggy solaris 9 ldap client
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 27 Apr 2006 08:49:17 +0200
+
+univention-ldap (1.42-13) unstable; urgency=low
+
+  * add `userOptionsPreset' attribute to user templates
+
+ -- Martin Kuehl <kuehl@univention.de>  Tue, 11 Apr 2006 16:31:59 +0200
+
+univention-ldap (1.42-11) unstable; urgency=low
+
+  * depend on univention-admin-tools or univention-admin-tools-2005
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 Apr 2006 15:27:38 +0200
+
+univention-ldap (1.42-10) unstable; urgency=low
+
+  * create `admin-settings' container for default-{users,admins}
+
+ -- Martin Kuehl <kuehl@univention.de>  Wed,  5 Apr 2006 11:26:06 +0200
+
+univention-ldap (1.42-9) unstable; urgency=low
+
+  * create `default-users' and `default-admins' admin-settings policies is
+    necessary.
+
+ -- Martin Kuehl <kuehl@univention.de>  Tue,  4 Apr 2006 17:19:31 +0200
+
+univention-ldap (1.42-8) unstable; urgency=low
+
+  * add acls to allow users to create and edit their own
+    admin-settings-override container
+
+ -- Martin Kuehl <kuehl@univention.de>  Thu, 30 Mar 2006 15:06:50 +0200
+
+univention-ldap (1.42-6) unstable; urgency=low
+
+  * ignore index attributes named 'none'
+
+ -- Wolf Wiegand <wolf@anton.knut.univention.de>  Tue,  7 Mar 2006 17:29:47 +0100
+
+univention-ldap (1.42-5) unstable; urgency=low
+
+  * increased version number for build system needs 
+
+ -- Wolf Wiegand <wolf@anton.knut.univention.de>  Tue,  7 Mar 2006 15:22:50 +0100
+
+univention-ldap (1.42-4) unstable; urgency=low
+
+  * only use approx-indeces with new installations 
+
+ -- Wolf Wiegand <wolf@anton.knut.univention.de>  Tue,  7 Mar 2006 15:20:44 +0100
+
+univention-ldap (1.42-3) unstable; urgency=low
+
+  * add support for approx-indeces in slapd.conf-template 
+
+ -- Wolf Wiegand <wolf@anton.knut.univention.de>  Tue,  7 Mar 2006 09:57:26 +0100
+
+univention-ldap (1.42-2) unstable; urgency=low
+
+  * fix dns-record updating for "univention-admin" and "-repository"
+
+ -- Martin Kuehl <kuehl@univention.de>  Thu,  2 Mar 2006 11:16:39 +0100
+
+univention-ldap (1.42-1) unstable; urgency=low
+
+  * ensure replication log isn't world readable
+  * increase version number (just to be sure)
+
+ -- Martin Kuehl <kuehl@univention.de>  Wed,  1 Mar 2006 10:22:23 +0100
+
+univention-ldap (1.41-32) unstable; urgency=low
+
+  * add `univentionInstallationReboot' attribute to policy schema
+
+ -- Martin Kuehl <kuehl@univention.de>  Wed, 15 Feb 2006 16:21:31 +0100
+
+univention-ldap (1.41-31) unstable; urgency=low
+
+  * merge UGS-Features
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 11 Jan 2006 10:40:10 +0100
+
+univention-ldap (1.40-7) unstable; urgency=low
+
+  * new schema for inventory number
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 17 Jan 2006 18:01:50 +0100
+
+univention-ldap (1.40-6) unstable; urgency=low
+
+  * add attribute univentionXVideoRam to object univentionPolicyXConfiguration
+    to store the amount of RAM of a graphics board
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 17 Nov 2005 09:02:53 +0100
+
+univention-ldap (1.40-5) unstable; urgency=low
+
+  * restart slapd on update of univention-ldap-config
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 19 Oct 2005 13:38:32 +0200
+
+univention-ldap (1.40-3) unstable; urgency=low
+
+  * ldapi interface changed
+
+ -- Stefan Gohmann <gohmman@univention.de>  Thu,  6 Oct 2005 11:01:33 +0200
+
+univention-ldap (1.40-2) unstable; urgency=low
+
+  * Switched to python 2.4 (support for older versions has been dropped)
+
+ -- Alexander Reelsen <reelsen@univention.de>  Mon, 19 Sep 2005 14:42:42 +0200
+
+univention-ldap (1.40-1) unstable; urgency=low
+
+  * OpenLDAP 2.2
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 15 Sep 2005 16:16:33 +0200
+
+univention-ldap (1.38) unstable; urgency=low
+
+  * added support for samba account policies 
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu, 25 Aug 2005 09:48:19 +0200
+
+univention-ldap (1.37) unstable; urgency=low
+
+  * added objectclass univentionMacOSClient
+  * fixed Bug which removed DB_CONFIG
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 24 Aug 2005 13:25:51 +0200
+
+univention-ldap (1.36) unstable; urgency=low
+
+  * added mail quota support in policy.schema
+  * avoid named timeouts during join
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 18 Aug 2005 12:03:36 +0200
+
+univention-ldap (1.35) unstable; urgency=low
+
+  * disallow sambaPasswordHistory anonymous read 
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 May 2005 08:31:07 +0200
+
+univention-ldap (1.34) unstable; urgency=low
+
+  * support multiple LDAP server, ldap/server/name and ldap/server/addition
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 Mar 2005 08:05:04 +0100
+
+univention-ldap (1.33) unstable; urgency=low
+
+  * ACL Bugfix make sambaSID readable
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Mar 2005 09:17:32 +0100
+
+univention-ldap (1.32) unstable; urgency=low
+
+  * ACL bugfix for Memberserver samba join
+  * added ldap-attributes to custom-attribute-schema
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 11 Mar 2005 13:06:42 +0100
+
+univention-ldap (1.31) unstable; urgency=low
+
+  * added writeList schema entry for shares
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu,  3 Mar 2005 10:59:16 +0100
+
+univention-ldap (1.30) unstable; urgency=low
+
+  * added idmap container for sid <-> uid mapping
+  * added displaySize schema-entries for xfree-policy
+  * added printer schema-entries 
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri,  4 Feb 2005 11:02:13 +0100
+
+univention-ldap (1.29) unstable; urgency=low
+
+  * set bdb as default
+  * optimize default indices
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri,  3 Dec 2004 13:39:16 +0100
+
+univention-ldap (1.28) unstable; urgency=low
+
+  * memberserver must their password change
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  1 Dec 2004 13:21:49 +0100
+
+univention-ldap (1.27) unstable; urgency=low
+
+  * added conflict with specific version of univention-5250 and
+    univention-5250-powerterm
+
+ -- Sven Dreyer <dreyer@univention.de>  Tue, 23 Nov 2004 17:09:11 +0100
+
+univention-ldap (1.26) unstable; urgency=low
+
+  * added as400 schema 
+
+ -- Sven Dreyer <dreyer@univention.de>  Fri, 15 Oct 2004 14:18:20 +0200
+
+univention-ldap (1.25) unstable; urgency=low
+
+  * added schema extensions for policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Oct 2004 13:04:29 +0200
+
+univention-ldap (1.24) unstable; urgency=low
+
+  * added univentionDhcpSharedSubnet objectclass
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 11 Oct 2004 08:50:53 +0200
+
+univention-ldap (1.23) unstable; urgency=low
+
+  * dependency tests
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 23 Sep 2004 10:24:40 +0200
+
+univention-ldap (1.22) unstable; urgency=low
+
+  * template.schema extended to reflect changes in univention-admin-tools 
+  * Add four new license attributes for maximum number of accounts,
+    clients, groupware accounts and UCS managed clients.
+
+ -- Arne Brix <arne@anton.knut.univention.de>  Thu, 12 Aug 2004 15:31:48 +0200
+
+univention-ldap (1.21) unstable; urgency=low
+
+  * added mail.schema
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  5 Aug 2004 19:43:41 +0200
+
+univention-ldap (1.20) unstable; urgency=low
+
+  * fixed initscript path statements 
+
+ -- Sven Dreyer <dreyer@univention.de>  Fri, 30 Jul 2004 10:55:23 +0200
+
+univention-ldap (1.19) unstable; urgency=low
+
+  * added /usr/sbin/univention-ldap-backup 
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Jul 2004 07:03:27 +0200
+
+univention-ldap (1.18) unstable; urgency=low
+
+  * added courier schema 
+
+ -- Sven Dreyer <dreyer@univention.de>  Tue, 18 May 2004 17:42:28 +0200
+
+univention-ldap (1.17) unstable; urgency=low
+
+  * solaris support, added:
+		objectClass: nisDomainObject
+		objectClass: domainRelatedObject
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 May 2004 17:53:56 +0200
+
+univention-ldap (1.16) unstable; urgency=low
+
+  * added univentionAuthServer
+  * set wins support in univention-backup2master
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 May 2004 13:16:04 +0200
+
+univention-ldap (1.15) unstable; urgency=low
+
+  * on slave ldap server include generated schema file
+  * add proper package descriptions
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Apr 2004 07:44:10 +0200
+
+univention-ldap (1.14) unstable; urgency=low
+
+  * move pam config to univention-pam
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 25 Apr 2004 11:10:29 +0200
+
+univention-ldap (1.13) unstable; urgency=low
+
+  * default shares and printers directory
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 24 Apr 2004 12:05:47 +0200
+
+univention-ldap (1.12) unstable; urgency=low
+
+  * merged with HEAD
+  * re-added uid=root,cn=users,... to ACLs
+  * added default groups for dc master & dc backup, memberserver and client
+  * set ldap/hostdn on dc master
+  * allow umlaute krb5PrincipalName
+  * added group cn=Computers
+  * change ACL, set ldapi:/// to the top
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Apr 2004 06:47:45 +0200
+
+univention-ldap (1.11) unstable; urgency=low
+
+  * added cron job for LDAP backup 
+
+ -- Sven Dreyer <dreyer@univention.de>  Tue, 30 Mar 2004 18:11:55 +0200
+
+univention-ldap (1.10) unstable; urgency=low
+
+  * merged printer schema from HEAD
+  * added delete custom attribute object class value
+  * added windowsinstallation policy path to base.ldif
+  * allow container umlaute
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Mar 2004 14:55:37 +0200
+
+univention-ldap (1.9) unstable; urgency=low
+
+  * remove univentionServerReinstall from clients must values
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 16 Mar 2004 11:33:13 +0100
+
+univention-ldap (1.7) unstable; urgency=low
+
+  * remove rootbinddn from pam_ldap.conf
+  * start ldaps:///
+  * use pam_krb5 for passwd and authentication
+  * use pam_heimdal for passwd and pam_krb5 for auth
+  * remove cn=admin from slave ACLs
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat,  6 Mar 2004 13:06:16 +0100
+
+univention-ldap (1.7) unstable; urgency=low
+
+  * added cron job for LDAP backup 
+
+ -- Sven Dreyer <dreyer@univention.de>  Tue, 30 Mar 2004 18:12:25 +0200
+
+univention-ldap (1.6) unstable; urgency=low
+
+  * Depend on univention-admin-tools instead of univention-admin-modules.
+  * Remove obsolete univention-ldap binary-package.
+  * Add LDAP attributes for more Samba options in share.schema.
+  * Remove PAM configuration from package.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Wed, 17 Mar 2004 13:54:31 +0100
+
+univention-ldap (1.5) unstable; urgency=low
+
+  * removed hardcoded ucs-mackup and olb.de from univention-backup2master
+  * activate TLS for nss_ldap
+  * don't use nss_ldap before joined
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Jan 2004 16:41:49 +0100
+
+univention-ldap (1.4) unstable; urgency=low
+
+  * cleaned up pam config
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 27 May 2003 15:57:23 +0200
+
+univention-ldap (1.3) unstable; urgency=low
+
+  * use new notify/listen infrastructure
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 27 May 2003 15:57:23 +0200
+
+univention-ldap (1.2) unstable; urgency=low
+
+  * new versioning scheme 
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 20 May 2003 13:33:41 +0200
+
+univention-ldap (0.5) unstable; urgency=low
+
+  * use OpenLDAP 2.1
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 20 Mar 2003 16:46:23 +0100
+
+univention-ldap (0.4) unstable; urgency=low
+
+  * include operational attributes in search for old and new entries.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 14 Mar 2003 17:53:16 +0100
+
+univention-ldap (0.3) unstable; urgency=low
+
+  * Contains schema and base.ldif entries for Samba-Groups.
+
+ -- Arne Brix <brix@univention.de>  Mon,  10 Mar 2003 08:35:20 +0200
+
+univention-ldap (0.2) unstable; urgency=low
+
+  * Contains group and user templates used by univention-admin now.
+
+ -- Thomas Krebs <krebs@univention.de>  Mon,  8 Oct 2001 11:17:36 +0200
+
+univention-ldap (0.1) unstable; urgency=low
+
+  * Setting HOST is configured no
+
+ -- Thomas Krebs <krebs@univention.de>  Wed, 29 Aug 2001 14:29:13 +0200
+
+univention-ldap (0.01) unstable; urgency=low
+
+  * Initial release.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Wed,  1 Aug 2001 13:58:44 +0200
+univention-ldap (16.0.7-8ubuntu1) UNRELEASED; urgency=medium
+
+  * 
+
+ -- Alexander Steffen <steffen@univention.de>  Wed, 19 Jan 2022 12:56:52 +0100
+
 univention-ldap (16.0.7-8) unstable; urgency=medium
 
   * Bug #54185: Do not enable refint on updates
