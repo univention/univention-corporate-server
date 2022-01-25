@@ -3,7 +3,7 @@
 # Univention Directory Reports
 #  creates a report document
 #
-# Copyright 2007-2021 Univention GmbH
+# Copyright 2007-2022 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -79,6 +79,7 @@ class Document(object):
 			files = (self._template, )
 		else:
 			files = tuple()
+
 		for filename in files:
 			if not os.path.isfile(filename):
 				raise ReportError(_("Configuration error: File %r could not be opened.") % (filename,))

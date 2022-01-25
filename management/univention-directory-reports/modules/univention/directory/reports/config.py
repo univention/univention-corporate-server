@@ -3,7 +3,7 @@
 # Univention Directory Reports
 #  write an interpreted token structure to a file
 #
-# Copyright 2007-2021 Univention GmbH
+# Copyright 2007-2022 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -46,6 +46,7 @@ class Config(ConfigParser):
 		self._oldHeader = defaults.get('header', None)
 		self._oldFooter = defaults.get('footer', None)
 		self.default_report_name = defaults.get('report', None)
+		self.default_report_dir = defaults.get('output_dir', None)
 		self._reports = {}
 
 		# get the language, defaults to English if nothing is set
@@ -136,3 +137,7 @@ class Config(ConfigParser):
 		if not report:
 			return None
 		return self._guess_path(report[1], report[2])
+
+	def get_output_dir(self):
+		if self.default_report_dir and os.path.exists(self.default_report_dir):
+			return self.default_report_dir

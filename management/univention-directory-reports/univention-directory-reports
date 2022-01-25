@@ -4,7 +4,7 @@
 # Univention Reports
 #  Creates reports from LaTeX templates
 #
-# Copyright 2007-2021 Univention GmbH
+# Copyright 2007-2022 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -32,6 +32,9 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
+import os.path
+import shutil
 import sys
 import locale
 from optparse import OptionParser
@@ -114,6 +117,12 @@ def main():
 		'-d', '--debug', action='store', type='int',
 		dest='debug', default=0,
 		help='if given than debugging is activated and set to the specified level')
+	parser.add_option(
+		'--output-dir', action='store',
+		help='location of the output report file')
+	parser.add_option(
+		'--output-name', action='store',
+		help='custom output report file name')
 
 	(options, args) = parser.parse_args()
 
@@ -131,6 +140,11 @@ def main():
 		print(_("Error: no DNs specified on command line"), file=sys.stderr)
 		sys.exit(2)
 
+	if options.output_name and options.output_name != os.path.basename(options.output_name):
+		parser.print_usage(sys.stderr)
+		print(_("Error: invalid output_name not allowed characters ['/'] "), file=sys.stderr)
+		sys.exit(2)
+
 	# FIXME: why is start_tls=0 used here?
 	if options.user and options.password:
 		lo = univention.admin.uldap.access(host=options.server, base=options.base, binddn=options.user, bindpw=options.password, start_tls=0)
@@ -146,11 +160,21 @@ def main():
 			sys.exit(1)
 
 	report = Report(lo, config=cfg)
+
 	try:
 		filename = report.create(options.module, options.report, args)
 	except ReportError as exc:
 		print(_("Error: The %s report could not be created: %s") % (options.report, exc), file=sys.stderr)
 		sys.exit(1)
+
+	if not options.output_dir:
+		options.output_dir = cfg.get_output_dir() or '/tmp'
+	if not options.output_name:
+		options.output_name = os.path.basename(filename)
+	if not os.path.exists(options.output_dir):
+		os.makedirs(options.output_dir, exist_ok=True)
+	output_report = os.path.join(options.output_dir, options.output_name)
+	filename = shutil.move(filename, output_report)
 
 	print(_('The %s has been created: %s') % (options.report, filename))
 
