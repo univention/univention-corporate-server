@@ -18,7 +18,6 @@ python API for modules are described.
       :maxdepth: 3
 
       architecture
-      protocol
       core_api
       module_api
       http
@@ -30,6 +29,5 @@ python API for modules are described.
       :maxdepth: 3
 
       architecture
-      protocol
       http
       packaging

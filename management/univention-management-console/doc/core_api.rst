@@ -2,6 +2,25 @@
 UMC server
 ==========
 
+-----------
+Server core
+-----------
+
+.. automodule:: univention.management.console.server
+	:members:
+	:undoc-members:
+	:show-inheritance:
+
+.. automodule:: univention.management.console.resource
+	:members:
+	:undoc-members:
+	:show-inheritance:
+
+.. automodule:: univention.management.console.resources
+	:members:
+	:undoc-members:
+	:show-inheritance:
+
 ---------
 Resources
 ---------
@@ -40,11 +59,6 @@ Helper functions
 ----------------
 
 .. automodule:: univention.management.console.config
-	:members:
-	:undoc-members:
-	:show-inheritance:
-
-.. automodule:: univention.management.console.tools
 	:members:
 	:undoc-members:
 	:show-inheritance:
