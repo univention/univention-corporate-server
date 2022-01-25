@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-config-registry
-fix: 
+fix: 15.0.7-16A~5.0.0.202201260941
 desc: |
  This update addresses the following issue:
  * The Python-API of Univention Config Registry has been extended to
