@@ -31,4 +31,4 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-exec python3 -m univention.management.console.protocol.server "$@"
+exec python3 -m univention.management.console.server "$@"

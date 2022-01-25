@@ -31,10 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""This module provides a class for an UMC module server. it is based on
-the UMC server class
-:class:`~univention.management.console.protocol.server.Server`.
-"""
+"""This module provides a class for an UMC module server"""
 
 import os
 import re
@@ -42,6 +39,7 @@ import sys
 import json
 import signal
 import base64
+import tempfile
 import traceback
 import logging
 import threading
@@ -61,8 +59,6 @@ from .definitions import MODULE_ERR_INIT_FAILED, SUCCESS
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr, get_int
 from univention.management.console.error import BadRequest
-from univention.management.console.protocol.session import TEMPUPLOADDIR
-from univention.management.console.protocol.server import _upload_manager
 
 from univention.lib.i18n import Translation
 
@@ -73,8 +69,32 @@ except ImportError:
 
 _ = Translation('univention.management.console').translate
 
-if 422 not in tornado.httputil.responses:
-	tornado.httputil.responses[422] = 'Unprocessable Entity'  # Python 2 is missing this status code
+TEMPUPLOADDIR = '/var/tmp/univention-management-console-frontend'
+
+
+class UploadManager(dict):
+	"""Store file uploads in temporary files so that module processes can access them"""
+
+	def add(self, request_id, store):
+		with tempfile.NamedTemporaryFile(prefix=request_id, dir=TEMPUPLOADDIR, delete=False) as tmpfile:
+			tmpfile.write(store['body'])
+		self.setdefault(request_id, []).append(tmpfile.name)
+
+		return tmpfile.name
+
+	def cleanup(self, request_id):
+		if request_id in self:
+			filenames = self[request_id]
+			for filename in filenames:
+				if os.path.isfile(filename):
+					os.unlink(filename)
+			del self[request_id]
+			return True
+
+		return False
+
+
+_upload_manager = UploadManager()
 
 
 class ModuleServer(object):

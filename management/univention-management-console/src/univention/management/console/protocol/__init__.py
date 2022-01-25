@@ -31,6 +31,5 @@
 # <https://www.gnu.org/licenses/>.
 
 from .message import *  # noqa: F403,F401
-#from .session import *  # noqa: F403,F401
 from .definitions import *  # noqa: F403,F401
 from .modserver import *  # noqa: F403,F401
