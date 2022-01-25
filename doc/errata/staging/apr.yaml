@@ -6,7 +6,8 @@ src: apr
 fix: 1.5.2-5+deb9u1
 desc: |
  This update addresses the following issue:
- * Out-of-bounds array deref in apr_time_exp*() functions (CVE-2017-12613)
+ * Out-of-bounds array dereference in functions `apr_time_exp*()`
+   (CVE-2017-12613)
 bug: [54372]
 cve:
 - CVE-2017-12613
