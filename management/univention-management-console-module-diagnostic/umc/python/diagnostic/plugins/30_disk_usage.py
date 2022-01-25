@@ -48,7 +48,7 @@ run_descr = ['Checks if enough free disk space is available']
 
 def mount_points():
 	for dp in psutil.disk_partitions():
-		if dp.mountpoint != '/var/lib/docker/overlay':
+		if dp.mountpoint != '/var/lib/docker/overlay' and 'iso' not in dp.fstype:
 			yield dp.mountpoint
 
 
