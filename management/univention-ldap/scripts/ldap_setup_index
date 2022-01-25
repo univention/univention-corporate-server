@@ -321,6 +321,7 @@ RECOMMENDED_LDAP_INDEX = {
         'givenName',
         'homeDirectory',
         'krb5PrincipalName',
+        'krb5ValidStart',
         'macAddress',
         'mail',
         'mailAlternativeAddress',
