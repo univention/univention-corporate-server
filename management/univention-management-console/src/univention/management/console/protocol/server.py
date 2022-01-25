@@ -57,7 +57,6 @@ from tornado.netutil import bind_sockets
 import tornado
 from concurrent.futures import ThreadPoolExecutor
 
-from univention.management.console.protocol.message import Request
 from univention.management.console.protocol.session import Resource, Auth, Upload, Command, UCR, Meta, Info, Modules, Categories, UserPreferences, Hosts, Set, SetPassword, SetLocale, SetUserPreferences
 from univention.management.console.log import CORE, log_init, log_reopen
 from univention.management.console.config import ucr, get_int
@@ -104,6 +103,7 @@ class UMCP_Dispatcher(object):
 
 
 class UploadManager(dict):
+	"""Store file uploads in temporary files so that module processes can access them"""
 
 	def add(self, request_id, store):
 		with tempfile.NamedTemporaryFile(prefix=request_id, dir=TEMPUPLOADDIR, delete=False) as tmpfile:
@@ -128,6 +128,7 @@ _upload_manager = UploadManager()
 
 
 class User(object):
+	# TODO: merge with other user class
 
 	__slots__ = ('sessionid', 'username', 'password', 'saml', '_timeout', '_timeout_id')
 
@@ -181,9 +182,9 @@ class User(object):
 
 	def on_logout(self):
 		self.disconnect_timer()
-		if SAMLBase.SP and self.saml:
+		if SAMLResource.SP and self.saml:
 			try:
-				SAMLBase.SP.local_logout(decode_name_id(self.saml.name_id))
+				SAMLResource.SP.local_logout(decode_name_id(self.saml.name_id))
 			except Exception as exc:  # e.g. bsddb.DBNotFoundError
 				CORE.warn('Could not remove SAML session: %s' % (exc,))
 
@@ -204,6 +205,7 @@ class User(object):
 
 
 class SAMLUser(object):
+	"""SAML specific user information"""
 
 	__slots__ = ('message', 'username', 'session_end_time', 'name_id')
 
@@ -217,6 +219,7 @@ class SAMLUser(object):
 
 
 class SamlError(HTTPError):
+	"""Errors caused during SAML authentication"""
 
 	def __init__(self, _=_):
 		self._ = _
@@ -298,6 +301,7 @@ class SamlError(HTTPError):
 
 
 class Application(TApplication):
+	"""The tornado application with all UMC resources"""
 
 	def __init__(self, **kwargs):
 		tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console')
@@ -333,6 +337,7 @@ class Application(TApplication):
 
 
 class Index(Resource):
+	"""Redirect to correct path when bypassing gateway"""
 
 	def get(self):
 		self.redirect('/univention/', status=305)
@@ -342,6 +347,7 @@ class Index(Resource):
 
 
 class Logout(Resource):
+	"""Logout a user"""
 
 	def get(self, **kwargs):
 		user = self.get_user()
@@ -362,6 +368,7 @@ class Nothing(Resource):
 
 
 class SessionInfo(Resource):
+	"""Get information about the current session"""
 
 	def get(self):
 		info = {}
@@ -378,6 +385,7 @@ class SessionInfo(Resource):
 
 
 class GetIPAddress(Resource):
+	"""Get the most likely IP address of the client"""
 
 	def get(self):
 		try:
@@ -534,7 +542,8 @@ class CPCommand(Resource):
 #		return self.get()
 
 
-class SAMLBase(Resource):
+class SAMLResource(Resource):
+	"""Base class for all SAML resources"""
 
 	SP = None
 	identity_cache = '/var/cache/univention-management-console/saml.bdb'
@@ -544,7 +553,8 @@ class SAMLBase(Resource):
 	outstanding_queries = {}
 
 
-class SamlMetadata(SAMLBase):
+class SamlMetadata(SAMLResource):
+	"""Get the SAML XML Metadata"""
 
 	def get(self):
 		metadata = create_metadata_string(self.configfile, None, valid='4', cert=None, keyfile=None, mid=None, name=None, sign=False)
@@ -552,7 +562,8 @@ class SamlMetadata(SAMLBase):
 		self.finish(metadata)
 
 
-class SamlACS(SAMLBase):
+class SamlACS(SAMLResource):
+	"""SAML attribute consuming service (or Single Sign On redirection)"""
 
 	@property
 	def sp(self):
@@ -736,12 +747,14 @@ class SamlACS(SAMLBase):
 
 
 class SamlIframeACS(SamlACS):
+	"""Passive SAML authentication via hidden iframe"""
 
 	def get(self):
 		self.do_single_sign_on(is_passive='true', relay_state='iframe-passive')
 
 
 class SamlSingleLogout(SamlACS):
+	"""SAML Single Logout by IDP"""
 
 	def get(self, *args, **kwargs):  # single logout service
 		binding, message, relay_state = self._get_saml_message()
@@ -773,6 +786,7 @@ class SamlSingleLogout(SamlACS):
 
 
 class SamlLogout(SamlACS):
+	"""Initiate SAML Logout at the IDP"""
 
 	def get(self):
 		user = self.get_user()
@@ -810,6 +824,7 @@ class SamlLogout(SamlACS):
 
 
 class Server(object):
+	"""univention-management-console-server"""
 
 	def __init__(self):
 		self.parser = ArgumentParser()
