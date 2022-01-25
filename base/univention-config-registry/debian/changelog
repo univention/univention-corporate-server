@@ -1,3 +1,10 @@
+univention-config-registry (15.0.7-16) unstable; urgency=medium
+
+  * Bug #20933: add get_int() for univention.config_registry.ConfigRegistry
+    and include dependencies of python-typing
+
+ -- Ildefonso González Sánchez <isanchez.extern@univention.de>  Thu, 30 Dec 2021 17:34:42 +0100
+
 univention-config-registry (15.0.7-14) unstable; urgency=medium
 
   * Bug #50010: Not all handlers have to_file attribute, collect missing

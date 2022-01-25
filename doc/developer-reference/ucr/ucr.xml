@@ -92,6 +92,7 @@ esac
 							It returns 0 (success) for the values <simplelist type="inline"><member>"1"</member><member>"yes"</member><member>"on"</member><member>"true"</member><member>"enable"</member><member>"enabled"</member></simplelist>, 1 for the negated values <simplelist type="inline"><member>"0"</member><member>"no"</member><member>"off"</member><member>"false"</member><member>"disable"</member><member>"disabled"</member></simplelist>.
 							For all other values it returns a value of 2 to indicate inappropriate usage.
 						</para>
+
 						<example id="ucr:true">
 							<title>Use of <command>is_ucr_true</command></title>
 							<programlisting><![CDATA[
@@ -312,9 +313,16 @@ handler_set(['foo=bar', 'baz?42'])
 handler_unset(['foo', 'bar'])
 				]]></programlisting>
 			</example>
+			<example id="ucr:python:get_int">
+				<title>Getting integer values from &ucsUCRV;s in Python</title>
+				<programlisting><![CDATA[
+from univention.config_registry import ucr
+print(ucr.get_int("key"))
+print(ucr.get_int("key", 10))
+				]]></programlisting>
+			</example>
 		</section>
 	</section>
-
 	<section id="ucr:conf">
 		<title>Configuration files</title>
 		<para>

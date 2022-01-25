@@ -2,7 +2,7 @@
 #
 #  main configuration registry classes
 #
-# Copyright 2004-2021 Univention GmbH
+# Copyright 2004-2022 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -59,7 +59,7 @@ try:
 	_T = TypeVar('_T', bound='ReadOnlyConfigRegistry')
 	_VT = TypeVar('_VT')
 except ImportError:  # pragma: no cover
-	def overload(f):
+	def overload(f):  # type ignore
 		pass
 
 __all__ = ['StrictModeException', 'exception_occured', 'SCOPE', 'ConfigRegistry']
@@ -341,6 +341,30 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
 				value = self._eval_default(value)
 			return (reg, value) if getscope else value
 		return default
+
+	@overload
+	def get_int(self, key):  # noqa F811 # pragma: no cover
+		# type: (str) -> Optional[int]
+		pass
+
+	@overload  # type: ignore
+	def get_int(self, key, default):  # noqa F811 # pragma: no cover
+		# type: (str, _VT) -> Union[int, _VT]
+		pass
+
+	def get_int(self, key, default=None):  # noqa F811
+		# type: (str, Optional[_VT]) -> Union[int, _VT, None]
+		"""
+		Return registry value as int.
+
+		:param key: UCR variable name.
+		:param default: Default value when the UCR variable is not set.
+		:returns: the registry value or the default.
+		"""
+		try:
+			return int(self[key])  # type: ignore
+		except (KeyError, TypeError, ValueError):
+			return default
 
 	@overload
 	def _merge(self):  # pragma: no cover

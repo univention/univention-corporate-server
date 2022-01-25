@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-config-registry
+fix: 
+desc: |
+ This update addresses the following issue:
+ * The Python-API of Univention Config Registry has been extended to
+   offer a method `get_int()`, that can be used to avoid receiving a
+   string, when an integer is required. If the value of the requested
+   UCR variable is not a number, the default value is returned
+   verbatim instead.
+bug: [20933]

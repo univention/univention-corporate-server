@@ -118,6 +118,25 @@ class TestConfigRegistry(object):
 		ucr0['foo'] = 'bar'
 		assert ucr0.get('foo') == 'bar'
 
+	def test_get_int(self, ucr0):
+		"""Test set ucr.get(key)."""
+		ucr0['foo'] = '4'
+		assert ucr0.get_int('foo') == 4
+
+	@pytest.mark.parametrize("value,default,expected", [
+		(10, None, 10),
+		(10, 20, 10),
+		(10, "string", 10),
+		("string", 10, 10),
+		("10", "20", 10),
+		("string", None, None),
+		("string", "10", "10")
+	])
+	def test_get_int_string(self, value, default, expected, ucr0):
+		"""Test set ucr.get_int(key, default)."""
+		ucr0['foo'] = value
+		assert ucr0.get_int('foo', default) == expected
+
 	def test_empty_get(self, ucr0):
 		"""Test empty ucr.get(key)."""
 		ucr0['foo'] = ''
