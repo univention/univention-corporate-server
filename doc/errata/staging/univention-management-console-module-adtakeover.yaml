@@ -6,7 +6,7 @@ src: univention-management-console-adtakeover
 fix: 7.0.2-5A~5.0.0.202112301204
 desc: |
  This update addresses the following issue:
- * On systems updated from UCS 4.4 the AD-Takeover could abort
-   with a traceback because the systemctl command was not found
-   under the path specified in the Python code. This has been fixed.
+ * On systems updated from UCS 4.4 the AD-Takeover could abort with a
+   traceback because the `systemctl` command was not found under the path
+   specified in the Python code.
 bug: [54238]
