@@ -278,7 +278,7 @@ systemctl restart apache2 \
     univention-management-console-server
 		  </programlisting>
 		  The number of instances to configure depends on the workload and the server system. As a general rule of thumb
-		  these should not be higher as the machines CPU cores. Good throughput values had resulted in tests with the following combinations:
+		  these should not be higher than the machines CPU cores. Good throughput values had resulted in tests with the following combinations:
 		  <itemizedlist>
 			  <listitem><para>6 CPU cores: <literal>umc/http/processes=3</literal> and <literal>umc/server/processes=3</literal></para></listitem>
 			  <listitem><para>16 CPU cores: <literal>umc/http/processes=15</literal> and <literal>umc/server/processes=15</literal></para></listitem>
@@ -475,7 +475,7 @@ ucr mail/dovecot/limits/imap-login/service_count=0
 	</section>
 
 	<section id="udm-rest-api">
-		<title>UDM REST API vertical performance scaling</title>
+		<title>UDM REST API performance scaling</title>
 		<para>
 			A single &ucsUDM; REST API instance does not use multiple CPU cores by design, therefore it can be beneficial to start
 			multiple instances.
@@ -483,8 +483,8 @@ ucr mail/dovecot/limits/imap-login/service_count=0
 			Afterwards the &ucsUDM; REST API needs to be restarted via
 			<programlisting language="sh">systemctl restart univention-directory-manager-rest</programlisting>.
 			The number of instances to configure depends on the workload and the server system. As a general rule of thumb
-			these should not be higher as the machines CPU cores. With <literal>directory/manager/rest/processes=0</literal>
-			the available CPU core is used as number of processes.
+			these should not be higher than the machines CPU cores. With <literal>directory/manager/rest/processes=0</literal>
+			all available CPU cores are used.
 		</para>
 	</section>
 
