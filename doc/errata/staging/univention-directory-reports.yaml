@@ -6,8 +6,7 @@ src: univention-directory-reports
 fix: 12.0.1-2A~5.0.0.202201260958
 desc: |
  This update addresses the following issue:
- * The univention directory reports module allow a couple of new
-   arguments. The argument --output-dir allow select the output
-   report directory by the user. The argument --output-name allow
-   select the output report file name by the user.
+ * The script univention-directory-reports now offers two new options:
+   The option --output-dir allows specification of the output directory
+   and --output-name allows to specify the file name of the report.
 bug: [54153]
