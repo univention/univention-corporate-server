@@ -3,15 +3,12 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-ldap
-fix:
+fix: 
 desc: |
- This update addresses the following issue(s):
- * A new LDAP attribute has been introduced with 5.0-1 errata100.
-   As reindexing is time consuming the decision was made to release
-   the updated indexing with 5.0-2 and not via errata updates.
-   Therefore, a manual fix for customers has been published. Visit
-   
-   http://help.univention.com/t/19248
-   
-   for a detailed guide of this manual fix.
+ This update addresses the following issue:
+ * A new LDAP attribute has been introduced with 5.0-1 erratum 100. As
+   re-indexing is time consuming the decision was made to delay the indexing
+   until 5.0-2 and not to do it via n errata update. Therefore, a manual fix
+   for customers is available and the required steps are documented at
+   <http://help.univention.com/t/19248>.
 bug: [54092]
