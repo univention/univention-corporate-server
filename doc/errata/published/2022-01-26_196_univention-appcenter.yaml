@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * Make the check regarding network conflicts with docker more robust.
 bug: [54082]
+erratum: 196
+announced: 2022-01-26
