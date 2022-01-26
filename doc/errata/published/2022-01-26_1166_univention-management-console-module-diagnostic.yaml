@@ -10,3 +10,5 @@ desc: |
    without `univention-directory-notifier` and therefore no longer produces
    false positive results.
 bug: [54365]
+erratum: 1166
+announced: 2022-01-26
