@@ -12,3 +12,5 @@ desc: |
    UCR variable is not a number, the default value is returned
    verbatim instead.
 bug: [20933]
+erratum: 197
+announced: 2022-01-26
