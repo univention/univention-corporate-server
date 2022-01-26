@@ -3241,7 +3241,7 @@ class ObjectAdd(FormBase, Resource):
 		meta_layout['layout'].append('')
 		self.add_form_element(form, '', _('Create %s') % (module.object_name,), type='submit')
 
-		form = self.add_form(result, action=self.request.full_url(), method='GET', id='position', layout='position')  # FIXME: preserve query string
+		form = self.add_form(result, action=self.urljoin(''), method='GET', id='position', layout='position')  # FIXME: preserve query string
 		self.add_form_element(form, 'position', position or '', element='select', options=sorted(({'value': x, 'label': ldap_dn2path(x)} for x in module.get_default_containers()), key=lambda x: x['label'].lower()))
 		self.add_form_element(form, '', _('Select position'), type='submit')
 		position_layout = [{'label': _('Container'), 'description': "The container in which the LDAP object shall be created.", 'layout': ['position', '']}]
