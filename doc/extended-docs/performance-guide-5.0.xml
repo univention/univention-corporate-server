@@ -473,6 +473,21 @@ ucr mail/dovecot/limits/imap-login/service_count=0
 			To distribute the load of the login processes evenly between CPU cores, <envar>mail/dovecot/limits/imap-login/process_min_avail</envar> should be set to the number of CPU cores in the system.
 		</para>
 	</section>
+
+	<section id="udm-rest-api">
+		<title>UDM REST API vertical performance scaling</title>
+		<para>
+			A single &ucsUDM; REST API instance does not use multiple CPU cores by design, therefore it can be beneficial to start
+			multiple instances.
+			By setting the &ucsUCRV; <envar>directory/manager/rest/processes</envar> the number of processes can be increased.
+			Afterwards the &ucsUDM; REST API needs to be restarted via
+			<programlisting language="sh">systemctl restart univention-directory-manager-rest</programlisting>.
+			The number of instances to configure depends on the workload and the server system. As a general rule of thumb
+			these should not be higher as the machines CPU cores. With <literal>directory/manager/rest/processes=0</literal>
+			the available CPU core is used as number of processes.
+		</para>
+	</section>
+
 </chapter>
 
 	<bibliography id="bibliography">

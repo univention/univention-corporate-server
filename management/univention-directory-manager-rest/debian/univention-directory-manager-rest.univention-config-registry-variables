@@ -47,7 +47,7 @@ Default=9979
 Categories=service-udm
 
 [directory/manager/rest/processes]
-Description[de]=Anzahl paralleler Prozesse, die gestartet werden. Durch den Wert 0 werden die Anzahl an Prozessorkernen verwendet.
+Description[de]=Anzahl paralleler Prozesse, die gestartet werden. Durch den Wert 0 wird die Anzahl an Prozessorkernen verwendet.
 Description[en]=Number of parallel processes that are started. The value 0 starts a processs for each CPU core.
 Type=int
 Default=1

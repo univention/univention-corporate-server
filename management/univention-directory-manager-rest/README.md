@@ -3,7 +3,7 @@ Architecture
 
 The UDM REST API starts one gateway process and one subprocess for all possible languages.
 All HTTP requests are forwarded to the language specific process by evaluating the `Accept-Language` header.
-Each main process also starts another subprocess for sharing memory between those processes.
+Each main process also starts another subprocess for sharing memory between those processes via a `multiprocessing.SyncManager`.
 
 UDM currently translates strings at python import time which makes it impossible to use two languages in one process.
 
