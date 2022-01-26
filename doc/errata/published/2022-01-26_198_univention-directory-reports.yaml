@@ -10,3 +10,5 @@ desc: |
    The option --output-dir allows specification of the output directory
    and --output-name allows to specify the file name of the report.
 bug: [54153]
+erratum: 198
+announced: 2022-01-26
