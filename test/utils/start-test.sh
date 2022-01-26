@@ -276,6 +276,8 @@ if "$docker"; then
 		do
 			echo "$env_var=${!env_var}"
 		done
+		# pass all variable with prefix UCS_ENV_
+		env | grep ^UCS_ENV_
 		# get aws credentials
 		sed -rne '/^\[Credentials\]/,${/^\[Credentials\]/d;s/^ *(aws_(secret_)?access_key(_id)?) *= *(.*)/\U\1\E=\4/p;/^\[/q}' ~/.boto
 		echo "AWS_DEFAULT_REGION=eu-west-1"
