@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.2-7) unstable; urgency=medium
+
+  * Bug #50050: document UCR variable and use UCR default layer
+
+ -- Florian Best <best@univention.de>  Wed, 26 Jan 2022 19:58:15 +0100
+
 univention-directory-manager-rest (10.0.2-6) unstable; urgency=medium
 
   * Bug #54347: fix creation of object via PUT request

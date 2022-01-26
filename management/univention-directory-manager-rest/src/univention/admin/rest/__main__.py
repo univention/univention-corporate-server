@@ -206,11 +206,11 @@ class Server(object):
 		server = cls()
 
 		parser = argparse.ArgumentParser()
-		parser.add_argument('-d', '--debug', type=int, default=int(ucr.get('directory/manager/rest/debug/level', 2)), help='debug level')
+		parser.add_argument('-d', '--debug', type=int, default=ucr.get_int('directory/manager/rest/debug/level'), help='debug level')
 		parser.add_argument('-l', '--language', default='C', help='The process locale')
 		parser.add_argument('-s', '--unix-socket', help='Bind to a UNIX socket')
 		parser.add_argument('-p', '--port', help='Bind to a TCP port')
-		parser.add_argument('-c', '--processes', type=int, default=int(ucr.get('directory/manager/rest/processes', 1)), help='How many processes should be forked')
+		parser.add_argument('-c', '--processes', type=int, default=ucr.get_int('directory/manager/rest/processes'), help='How many processes should be forked')
 
 		args = parser.parse_args()
 		server.run(args)

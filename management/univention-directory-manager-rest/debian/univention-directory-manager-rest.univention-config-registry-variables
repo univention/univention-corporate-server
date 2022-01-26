@@ -2,6 +2,7 @@
 Description[de]=Der Detailgrad der Logmeldungen in /var/log/univention/directory-manager-rest.log. Mögliche Werte: 0-4/99 (0: nur Fehlermeldungen bis 4: alle Debugausgaben, mit 99 werden auch sensible Daten wie Klartext-Passwörter protokolliert).
 Description[en]=The verbosity of log messages in /var/log/univention/directory-manager-rest.log. Possible values: 0-4/99 (0: only error messages to 4: all debug statements, with = 99 sensitive data like cleartext passwords is logged as well).
 Type=int
+Default=2
 Categories=service-udm
 
 [directory/manager/rest/authorized-groups/.*]
@@ -14,28 +15,40 @@ Categories=service-udm
 Description[de]=Definiert ob eine Authentifizierung beim Zugriff auf "http(s)://FQDN/univention/udm/schema/*" und "univention/udm/openapi.json" notwendig ist. Nach dem Setzen dieser Variable muss der Dienst durch "service univention-directory-manager-rest restart" neu gestartet werden. Ist die Variable nicht gesetzt, dann ist keine Authentifizierung notwendig.
 Description[en]=Defines whether authentication is necessary when accessing "http(s)://FQDN/univention/udm/schema/*" and "univention/udm/openapi.json". After setting this variable the service has to be restarted by running "service univention-directory-manager-rest restart".
 Type=bool
+Default=true
 Categories=service-udm
 
 [directory/manager/rest/show-tracebacks]
 Description[de]=Definiert, ob Tracebacks in Fehlerfällen dem Benutzer angezeigt werden.
 Description[en]=Defines whether tracebacks are shown to the user in error cases.
 Type=bool
+Default=true
 Categories=service-udm
 
 [directory/manager/rest/autostart]
 Description[de]=Definiert, den Autostart der Univention Directory Manager REST Schnittstelle.
 Description[en]=Defines the autostart of the Univention Directory Manager REST interface
-Type=str
+Type=bool
+Default=true
 Categories=service-udm
 
 [directory/manager/rest/server/address]
-Description[de]=Auf diesem Netzwerk-Interface wartet der UDM-REST-API-Server auf Anfragen. Ist die Variable nicht gesetzt, gilt "127.0.0.1".
-Description[en]=The UDM REST API server is listening on this network interface. If the variable is unset, "127.0.0.1" applies.
+Description[de]=Auf diesem Netzwerk-Interface wartet der UDM-REST-API-Server auf Anfragen.
+Description[en]=The UDM REST API server is listening on this network interface.
 Type=str
+Default=127.0.0.1
 Categories=service-udm
 
 [directory/manager/rest/server/port]
-Description[de]=Auf diesem Port wartet der UDM-REST-API-Server auf Anfragen. Ist die Variable nicht gesetzt, gilt 9979.
-Description[en]=The UDM REST API server is listening on this port. If the variable is unset, 9979 applies.
+Description[de]=Auf diesem Port wartet der UDM-REST-API-Server auf Anfragen.
+Description[en]=The UDM REST API server is listening on this port.
 Type=int
+Default=9979
+Categories=service-udm
+
+[directory/manager/rest/processes]
+Description[de]=Anzahl paralleler Prozesse, die gestartet werden. Durch den Wert 0 werden die Anzahl an Prozessorkernen verwendet.
+Description[en]=Number of parallel processes that are started. The value 0 starts a processs for each CPU core.
+Type=int
+Default=1
 Categories=service-udm

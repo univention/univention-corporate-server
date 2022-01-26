@@ -179,10 +179,10 @@ class Gateway(tornado.web.RequestHandler):
 	def main(cls):
 		parser = argparse.ArgumentParser(prog='%s -m univention.admin.rest.server' % (sys.executable,))
 		parser.add_argument('-d', '--debug', type=int, default=2)
-		parser.add_argument('-p', '--port', help='Bind to a TCP port (%(default)s)', type=int, default=int(ucr.get('directory/manager/rest/server/port', 9979)))
-		parser.add_argument('-i', '--interface', help='Bind to specified interface address (%(default)s)', default=ucr.get('directory/manager/rest/server/address', '127.0.0.1'))
+		parser.add_argument('-p', '--port', help='Bind to a TCP port (%(default)s)', type=int, default=ucr.get_int('directory/manager/rest/server/port'))
+		parser.add_argument('-i', '--interface', help='Bind to specified interface address (%(default)s)', default=ucr['directory/manager/rest/server/address'])
 		parser.add_argument('-s', '--unix-socket', help='Bind to specified UNIX socket')
-		parser.add_argument('-c', '--processes', type=int, default=int(ucr.get('directory/manager/rest/processes', 1)), help='How many processes should be forked')
+		parser.add_argument('-c', '--processes', type=int, default=ucr.get_int('directory/manager/rest/processes'), help='How many processes should be forked')
 		args = parser.parse_args()
 
 		setproctitle(proctitle + '   # gateway main')
