@@ -3,16 +3,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-09-18 15:37+0200\n"
-"PO-Revision-Date: 2020-09-05 16:27+0200\n"
+"POT-Creation-Date: 2021-12-22 11:33+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: js/tools.js:1718
+#: js/widgets/MultiInput.js:703
+msgid " (required)"
+msgstr ""
+
+#: js/tools.js:1950
 msgid "\"${moduleName}\" module"
 msgstr ""
 
@@ -20,325 +24,397 @@ msgstr ""
 msgid "%(label)s (retype)"
 msgstr ""
 
-#: js/widgets/Form.js:625
+#: js/widgets/Form.js:662
 msgid "%(label)s: %(message)s"
 msgstr ""
 
-#: js/widgets/Grid.js:900
+#: js/widgets/Grid.js:1189
 msgid "%(num)d entries of %(total)d selected"
 msgstr ""
 
-#: js/widgets/Form.js:617
+#: js/widgets/Grid.js:1194
+#, javascript-format
+msgid "%d entries found"
+msgstr ""
+
+#: js/widgets/Form.js:654
 msgid "%s (%.1f%)"
 msgstr ""
 
-#: js/widgets/Form.js:605 js/widgets/Form.js:621
+#: js/widgets/Form.js:642 js/widgets/Form.js:658
 #, javascript-format
 msgid "%s loaded"
 msgstr ""
 
-#: js/widgets/Grid.js:905
+#: js/widgets/Grid.js:1191
 #, javascript-format
 msgid "1 entry of %d selected"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:124
+#: js/hooks/default_menu_entries.js:157
 msgid ""
 "<b>Warning</b>: The current session with all opened modules and unsaved "
 "settings gets lost and a page reload is done when switching the language."
 msgstr ""
 
-#: js/tools.js:275
+#: js/tools.js:315
 msgid ""
-"A reload of the Univention Management Console is required to use new modules."
-"<br>Currently opened modules may not work properly.<br>Do you want to reload "
-"the page?"
+"A reload of the Univention Management Console is required to use new "
+"modules.<br>Currently opened modules may not work properly.<br>Do you want "
+"to reload the page?"
 msgstr ""
 
-#: js/widgets/UnixAccessRights.js:98 js/widgets/UnixAccessRightsExtended.js:98
+#: js/widgets/CookieBanner.js:58
+msgid "Accept"
+msgstr ""
+
+#: js/widgets/UnixAccessRightsExtended.js:98 js/widgets/UnixAccessRights.js:98
 msgid "Access"
 msgstr ""
 
-#: js/widgets/MultiObjectSelect.js:135 js/widgets/MultiObjectSelect.js:303
+#: js/widgets/Calendar.js:205
+msgid "Action"
+msgstr ""
+
+#: js/widgets/Grid.js:970
+msgid "Actions"
+msgstr ""
+
+#: js/widgets/MultiObjectSelect.js:98 js/widgets/MultiObjectSelect.js:324
 msgid "Add"
 msgstr ""
 
-#: js/widgets/MultiObjectSelect.js:79
+#: js/widgets/MultiObjectSelect.js:257
 msgid "Add objects"
 msgstr ""
 
-#: js/tools.js:1091
+#: js/hooks/default_menu_entries.js:374
+msgid "Advantages of the Enterprise Edition"
+msgstr ""
+
+#: js/tools.js:1200
 msgid "An assert statement failed"
 msgstr ""
 
-#: js/tools.js:645 js/tools.js:927
+#: js/tools.js:696 js/tools.js:998
 msgid "An error occurred"
 msgstr ""
 
-#: js/tools.js:651
+#: js/tools.js:702
 msgid ""
 "An error occurred while connecting to the server, please try again later."
 msgstr ""
 
-#: js/widgets/ProgressBar.js:177
+#: js/widgets/ProgressBar.js:182
 msgid "An error occurred: "
 msgstr ""
 
-#: js/tools.js:648
+#: js/tools.js:699
 #, javascript-format
 msgid ""
 "An unknown error with status code %s occurred while connecting to the "
 "server, please try again later."
 msgstr ""
 
-#: js/widgets/Wizard.js:162
+#: js/widgets/Wizard.js:163
 msgid "Back"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:198
+#: js/hooks/default_menu_entries.js:267
 msgid "Back to start site"
 msgstr ""
 
-#: js/dialog.js:288 js/hooks/default_menu_entries.js:126
-#: js/widgets/MultiObjectSelect.js:124 js/widgets/Wizard.js:177
-#: js/tools.js:277
+#: js/hooks/default_menu_entries.js:353
+msgid "Buy support package"
+msgstr ""
+
+#: js/tools.js:317 js/dialog.js:302 js/hooks/default_menu_entries.js:159
+#: js/widgets/MultiObjectSelect.js:86 js/widgets/Wizard.js:178
 msgid "Cancel"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:90
+#: js/hooks/default_menu_entries.js:107
 msgid "Certificate revocation list"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:75
+#: js/hooks/default_menu_entries.js:81
 msgid "Certificates"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:133
+#: js/hooks/default_menu_entries.js:166
 msgid "Changing language"
 msgstr ""
 
-#: js/widgets/Uploader.js:121
-msgid "Clear data"
-msgstr ""
-
-#: js/widgets/ImageUploader.js:51
-msgid "Clear image data"
-msgstr ""
-
-#: js/menu/Button.js:55
-msgid "Click for menu options"
-msgstr ""
-
-#: js/widgets/LoginButton.js:52 js/widgets/LoginButton.js:63
-msgid "Click to login"
-msgstr ""
-
-#: js/widgets/Module.js:230 js/tools.js:904
+#: js/tools.js:967 js/hooks/default_menu_entries.js:384
+#: js/widgets/Module.js:180
 msgid "Close"
 msgstr ""
 
-#: js/dialog/NotificationDropDownButton.js:197
-msgid "Close all"
-msgstr ""
-
-#: js/dialog.js:242 js/dialog.js:297
+#: js/dialog.js:255 js/dialog.js:311
 msgid "Confirmation"
 msgstr ""
 
-#: js/tools.js:736
+#: js/widgets/CookieBanner.js:54
+msgid "Cookie Settings"
+msgstr ""
+
+#: js/tools.js:791
 msgid "Could not fulfill the request."
 msgstr ""
 
-#: js/widgets/Grid.js:997
+#: js/widgets/Grid.js:1296
 msgid "Could not load search results"
 msgstr ""
 
-#: js/tools.js:756
+#: js/tools.js:811
 msgid "Could not process the request."
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:175
+#: js/hooks/default_menu_entries.js:396
+msgid "Do not show this notification again"
+msgstr ""
+
+#: js/widgets/Calendar.js:186
+msgid "End"
+msgstr ""
+
+#: js/widgets/Calendar.js:189
+msgid "Enter"
+msgstr ""
+
+#: js/hooks/default_menu_entries.js:230
 msgid "Feedback"
 msgstr ""
 
-#: js/widgets/ProgressBar.js:149
+#: js/widgets/ProgressBar.js:154
 msgid "Fetching information from the server failed!"
 msgstr ""
 
-#: js/widgets/Wizard.js:173
+#: js/widgets/Wizard.js:174
 msgid "Finish"
 msgstr ""
 
-#: js/widgets/UnixAccessRights.js:78 js/widgets/UnixAccessRightsExtended.js:78
+#: js/widgets/UnixAccessRightsExtended.js:78 js/widgets/UnixAccessRights.js:78
 msgid "Group"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:150
+#: js/tools.js:909
+#, javascript-format
+msgid "HTTP Error %s"
+msgstr ""
+
+#: js/hooks/default_menu_entries.js:369
+msgid "Hard- and software certifications"
+msgstr ""
+
+#: js/hooks/default_menu_entries.js:185
 msgid "Help"
 msgstr ""
 
-#: js/tools.js:883
+#: js/tools.js:946
 msgid "Hide server error message"
 msgstr ""
 
-#: js/tools.js:918
+#: js/widgets/Calendar.js:183
+msgid "Home"
+msgstr ""
+
+#: js/tools.js:988
 msgid "Inform vendor"
 msgstr ""
 
-#: js/tools.js:375
+#: js/tools.js:423
 msgid "Information"
 msgstr ""
 
-#: js/tools.js:938
+#: js/tools.js:1009
 msgid ""
 "Information about the error will be sent to the vendor along with some data "
 "about the operating system."
 msgstr ""
 
-#: js/tools.js:753
-msgid "Internal UMC protocol error: The UMCP message body could not be parsed."
+#: js/tools.js:808
+msgid ""
+"Internal UMC protocol error: The UMCP message body could not be parsed."
 msgstr ""
 
-#: js/tools.js:752
+#: js/tools.js:807
 msgid ""
 "Internal UMC protocol error: The UMCP message header could not be parsed."
 msgstr ""
 
-#: js/tools.js:755
+#: js/tools.js:810
 msgid "Internal module error: An error occurred during command processing."
 msgstr ""
 
-#: js/tools.js:757
+#: js/tools.js:812
 msgid ""
-"Internal module error: The initialization of the module caused a fatal error."
+"Internal module error: The initialization of the module caused a fatal "
+"error."
 msgstr ""
 
-#: js/tools.js:746
+#: js/tools.js:801
 msgid "Internal server error."
 msgstr ""
 
-#: js/tools.js:749
+#: js/tools.js:804
 msgid "Internal server error: Could not connect to the module process."
 msgstr ""
 
-#: js/tools.js:750
+#: js/tools.js:805
 msgid ""
-"Internal server error: The SSL server certificate is not trustworthy. Please "
-"check your SSL configurations."
+"Internal server error: The SSL server certificate is not trustworthy. Please"
+" check your SSL configurations."
 msgstr ""
 
-#: js/tools.js:748
+#: js/tools.js:803
 msgid "Internal server error: The module process died unexpectedly."
 msgstr ""
 
-#: js/tools.js:747
+#: js/tools.js:802
 msgid "Internal server error: The service is temporarily not available."
 msgstr ""
 
-#: js/widgets/LoginButton.js:60
-msgid "Logged in as <i>%(username)s</i>"
+#: js/widgets/Calendar.js:204
+msgid "Key"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:210
+#: js/hooks/default_menu_entries.js:283 js/widgets/LoginButton.js:41
+#: js/widgets/LoginButton.js:54 js/menu/Menu.js:117
 msgid "Login"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:222
+#: js/tools.js:152
+msgid ""
+"Login call lasted too long. Please visit the <a "
+"href=\"https://help.univention.com/t/draft-login-call-lasted-too-"
+"long/19031\" target=\"_blank\">Help</a> to check for possible causes."
+msgstr ""
+
+#: js/hooks/default_menu_entries.js:295 js/widgets/LoginButton.js:54
+#: js/menu/Menu.js:118
 msgid "Logout"
 msgstr ""
 
-#: js/menu/Menu.js:141
+#: js/hooks/default_menu_entries.js:370
+msgid "Manufacturer warranty with product liability"
+msgstr ""
+
+#: js/menu/Menu.js:202
 msgid "Menu"
 msgstr ""
 
-#: js/widgets/MultiInput.js:439
+#: js/widgets/Calendar.js:169
+msgid "Move between date cells"
+msgstr ""
+
+#: js/widgets/Calendar.js:184
+msgid "Move to first day in month"
+msgstr ""
+
+#: js/widgets/Calendar.js:187
+msgid "Move to last day in month"
+msgstr ""
+
+#: js/widgets/Calendar.js:172
+msgid "Move to same day in next month"
+msgstr ""
+
+#: js/widgets/Calendar.js:178
+msgid "Move to same day in next year"
+msgstr ""
+
+#: js/widgets/Calendar.js:175
+msgid "Move to same day in previous month"
+msgstr ""
+
+#: js/widgets/Calendar.js:181
+msgid "Move to same day in previous year"
+msgstr ""
+
+#: js/widgets/MultiInput.js:78
 msgid "New entry"
 msgstr ""
 
-#: js/widgets/Wizard.js:168
+#: js/widgets/Wizard.js:169
 msgid "Next"
 msgstr ""
 
-#: js/widgets/Grid.js:902
+#: js/widgets/Grid.js:1198
 msgid "No entries could be found"
 msgstr ""
 
-#: js/dialog/NotificationDropDownButton.js:86
-#: js/dialog/NotificationDropDownButton.js:93
-msgid "No message"
+#: js/widgets/NotificationsButton.js:261
+msgid "No notifications"
 msgstr ""
 
-#: js/dialog/NotificationDropDownButton.js:196
-msgid "No messages"
-msgstr ""
-
-#: js/widgets/MultiUploader.js:219
-msgid "No upload in progress"
-msgstr ""
-
-#: js/dialog.js:97 js/dialog.js:130 js/dialog.js:154
-#: js/dialog/NotificationDropDownButton.js:85
-#: js/dialog/NotificationDropDownButton.js:90
+#: js/dialog.js:98 js/dialog.js:145 js/dialog.js:171
 msgid "Notification"
 msgstr ""
 
-#: js/dialog/NotificationSnackbar.js:291
-msgid "OK"
+#: js/widgets/NotificationsButton.js:238 js/widgets/NotificationsButton.js:263
+msgid "Notifications"
 msgstr ""
 
-#: js/dialog.js:133
+#: js/dialog.js:148
 msgid "Ok"
 msgstr ""
 
-#: js/widgets/UnixAccessRights.js:79 js/widgets/UnixAccessRightsExtended.js:79
+#: js/widgets/UnixAccessRightsExtended.js:79 js/widgets/UnixAccessRights.js:79
 msgid "Others"
 msgstr ""
 
-#: js/widgets/UnixAccessRights.js:77 js/widgets/UnixAccessRightsExtended.js:77
+#: js/widgets/UnixAccessRightsExtended.js:77 js/widgets/UnixAccessRights.js:77
 msgid "Owner"
 msgstr ""
 
-#: js/widgets/Grid.js:164
+#: js/widgets/Calendar.js:171 js/widgets/Calendar.js:174
+#: js/widgets/Calendar.js:177 js/widgets/Calendar.js:180
+msgid "Page"
+msgstr ""
+
+#: js/widgets/Grid.js:250
 msgid "Please perform a search"
 msgstr ""
 
-#: js/tools.js:866
+#: js/tools.js:929
 msgid "Please take a second to provide the following information:"
 msgstr ""
 
-#: js/widgets/UnixAccessRights.js:90 js/widgets/UnixAccessRightsExtended.js:90
+#: js/hooks/default_menu_entries.js:375
+msgid "Prices and support"
+msgstr ""
+
+#: js/widgets/UnixAccessRightsExtended.js:90 js/widgets/UnixAccessRights.js:90
 msgid "Read"
 msgstr ""
 
-#: js/tools.js:283
+#: js/tools.js:323
 msgid "Reload"
 msgstr ""
 
-#: js/tools.js:950
+#: js/tools.js:1021
 msgid "Remarks (e.g. steps to reproduce) (optional)"
 msgstr ""
 
-#: js/widgets/MultiUploader.js:136 js/widgets/MultiObjectSelect.js:326
+#: js/widgets/Uploader.js:115 js/widgets/MultiObjectSelect.js:349
+#: js/widgets/MultiUploader.js:66
 msgid "Remove"
 msgstr ""
 
-#: js/widgets/MultiInput.js:596
+#: js/widgets/MultiInput.js:561
 msgid "Remove entry"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:81
+#: js/hooks/default_menu_entries.js:93
 msgid "Root certificate"
 msgstr ""
 
-#: js/widgets/SearchForm.js:86
-msgid "Search"
-msgstr ""
-
-#: js/widgets/MultiObjectSelect.js:111
+#: js/widgets/MultiObjectSelect.js:164
 msgid "Search results:"
 msgstr ""
 
-#: js/widgets/LiveSearch.js:66
+#: js/widgets/LiveSearch.js:45
 msgid "Search term"
 msgstr ""
 
@@ -346,19 +422,27 @@ msgstr ""
 msgid "Select all"
 msgstr ""
 
-#: js/tools.js:879
+#: js/widgets/ImageUploader.js:66
+msgid "Select file"
+msgstr ""
+
+#: js/widgets/Calendar.js:190
+msgid "Select the date"
+msgstr ""
+
+#: js/tools.js:942
 msgid "Send as email"
 msgstr ""
 
-#: js/tools.js:934
+#: js/tools.js:1005
 msgid "Send to vendor"
 msgstr ""
 
-#: js/tools.js:961
+#: js/tools.js:1032
 msgid "Sending the information to the vendor failed"
 msgstr ""
 
-#: js/tools.js:645
+#: js/tools.js:696
 msgid "Server error message:"
 msgstr ""
 
@@ -366,48 +450,63 @@ msgstr ""
 msgid "Setgid"
 msgstr ""
 
-#: js/tools.js:942
+#: js/tools.js:1013
 msgid "Show error message"
 msgstr ""
 
-#: js/tools.js:884
+#: js/tools.js:947
 msgid "Show server error message"
 msgstr ""
 
-#: js/tools.js:360
+#: js/tools.js:408
 msgid ""
 "So far, the connection to the server could not be established after {time} "
 "seconds. This can be a normal behavior. In any case, the process will "
 "continue to establish the connection."
 msgstr ""
 
-#: js/tools.js:744
+#: js/widgets/Calendar.js:189
+msgid "Space"
+msgstr ""
+
+#: js/tools.js:799
 msgid "Specified locale is not available."
+msgstr ""
+
+#: js/hooks/default_menu_entries.js:372
+msgid ""
+"Starting at <b>290.- Euro/year</b> you can purchase a UCS Enterprise "
+"Edition. This license allows you to benefit from basic support services as "
+"well as individually bookable, additional support and professional services."
 msgstr ""
 
 #: js/widgets/UnixAccessRightsExtended.js:105
 msgid "Sticky bit"
 msgstr ""
 
-#: js/dialog.js:292
+#: js/dialog.js:306
 msgid "Submit"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:113 js/hooks/default_menu_entries.js:129
+#: js/hooks/default_menu_entries.js:367
+msgid "Support and Professional Services"
+msgstr ""
+
+#: js/hooks/default_menu_entries.js:139 js/hooks/default_menu_entries.js:162
 msgid "Switch language"
 msgstr ""
 
-#: js/tools.js:959
+#: js/tools.js:1030
 msgid "Thank you for your help"
 msgstr ""
 
-#: js/widgets/Uploader.js:184
+#: js/widgets/Uploader.js:234
 msgid ""
 "The following files cannot be uploaded because they exceed the maximum file "
 "size:"
 msgstr ""
 
-#: js/widgets/Uploader.js:186
+#: js/widgets/Uploader.js:236
 #, javascript-format
 msgid "The maximum size of a file is %.1f MB."
 msgstr ""
@@ -416,149 +515,144 @@ msgstr ""
 msgid "The passwords do not match, please retype again."
 msgstr ""
 
-#: js/tools.js:274
+#: js/tools.js:314
 msgid "UMC reload required"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:190
+#: js/hooks/default_menu_entries.js:252
 msgid "Univention Blog"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:169
+#: js/hooks/default_menu_entries.js:217
 msgid "Univention Forum \"Help\""
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:163
+#: js/hooks/default_menu_entries.js:204
 msgid "Univention Website"
 msgstr ""
 
-#: js/widgets/InfoUploader.js:43 js/widgets/MultiUploader.js:110
-#: js/widgets/Uploader.js:120
+#: js/hooks/default_menu_entries.js:368
+msgid "Up to 7 years of maintenance (LTS)"
+msgstr ""
+
+#: js/widgets/Uploader.js:99 js/widgets/MultiUploader.js:63
+#: js/widgets/InfoUploader.js:43
 msgid "Upload"
 msgstr ""
 
-#: js/widgets/ImageUploader.js:50
-msgid "Upload new image"
-msgstr ""
-
-#: js/widgets/Uploader.js:321
+#: js/widgets/Uploader.js:372
 msgid "Uploading..."
 msgstr ""
 
-#: js/widgets/MultiUploader.js:245
+#: js/widgets/MultiUploader.js:241
 msgid "Uploading... %(current)d of %(total)d files remaining."
 msgstr ""
 
-#: js/widgets/MultiUploader.js:242
-msgid "Uploads finished"
-msgstr ""
-
-#: js/hooks/default_menu_entries.js:58
+#: js/hooks/default_menu_entries.js:64
 msgid "User settings"
 msgstr ""
 
-#: js/tools.js:743
+#: js/tools.js:798
 msgid "Validation error"
 msgstr ""
 
-#: js/dialog.js:110
+#: js/dialog.js:113
 msgid "Warning"
 msgstr ""
 
-#: js/tools.js:741
+#: js/widgets/CookieBanner.js:55
+msgid ""
+"We use cookies in order to provide you with certain functions and to be able"
+" to guarantee an unrestricted service. By clicking on \"Accept\", you "
+"consent to the collection of information on this portal."
+msgstr ""
+
+#: js/tools.js:796
 msgid ""
 "Webfrontend error: The specified UMCP command arguments of the request are "
 "invalid."
 msgstr ""
 
-#: js/tools.js:742
+#: js/tools.js:797
 msgid ""
 "Webfrontend error: The specified arguments for the UMCP module method are "
 "invalid or missing."
 msgstr ""
 
-#: js/tools.js:740
+#: js/tools.js:795
 msgid "Webfrontend error: The specified request is unknown."
 msgstr ""
 
-#: js/widgets/UnixAccessRights.js:94 js/widgets/UnixAccessRightsExtended.js:94
+#: js/widgets/UnixAccessRightsExtended.js:94 js/widgets/UnixAccessRights.js:94
 msgid "Write"
 msgstr ""
 
-#: js/tools.js:738
+#: js/tools.js:793
 msgid "You are not authorized to perform this action."
 msgstr ""
 
-#: js/tools.js:963
+#: js/tools.js:1034
 msgid "You can also send the information via mail:"
 msgstr ""
 
-#: js/tools.js:954
+#: js/hooks/default_menu_entries.js:373
+msgid ""
+"You can extend the maintenance for your UCS version to up to 7 years and "
+"thanks to certifications and manufacturer warranty you are legally secured "
+"when operating your IT infrastructure."
+msgstr ""
+
+#: js/tools.js:2163
+msgid ""
+"Your browser is outdated! You may experience performance issues and other "
+"problems when using this site. The supported Browsers are Firefox (>=60), "
+"Chrome (>=71), Edge (>=18), Safari (>=12)."
+msgstr ""
+
+#: js/tools.js:1025
 msgid "Your email address (optional)"
 msgstr ""
 
-#: js/tools.js:737
+#: js/tools.js:792
 msgid "Your session has expired, please login again."
 msgstr ""
 
-#: js/tools.js:869
+#: js/tools.js:932
 msgid "actual result"
 msgstr ""
 
-#: js/tools.js:868
+#: js/tools.js:931
 msgid "expected result"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:171
+#: js/hooks/default_menu_entries.js:218
 msgid "https://help.univention.com/"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:165
+#: js/hooks/default_menu_entries.js:205
 msgid "https://www.univention.com/"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:185
+#: js/hooks/default_menu_entries.js:239
 msgid "https://www.univention.com/feedback/"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:192
+#: js/hooks/default_menu_entries.js:253
 msgid "https://www.univention.com/news/blog-en/"
 msgstr ""
 
-#: js/widgets/Grid.js:742
+#: js/hooks/default_menu_entries.js:357 js/hooks/default_menu_entries.js:401
+msgid "https://www.univention.com/products/prices-and-subscriptions/"
+msgstr ""
+
+#: js/widgets/Grid.js:923
 msgid "more"
 msgstr ""
 
-#: js/tools.js:867
+#: js/tools.js:930
 msgid "steps to reproduce the failure"
 msgstr ""
 
-#: js/widgets/ProgressBar.js:179
+#: js/widgets/ProgressBar.js:184
 msgid "{number} errors occurred: "
 msgstr ""
-
-#~ msgid "umcFeedbackUrl"
-#~ msgstr "https://www.univention.com/feedback/"
-
-#~ msgid "umcLogoTitle"
-#~ msgstr "Website Univention GmbH"
-
-#~ msgid "umcLogoUrl"
-#~ msgstr "https://www.univention.de/"
-
-#~ msgid "umcOverviewHeader"
-#~ msgstr "Overview"
-
-#~ msgid "umcOverviewHelpText"
-#~ msgstr ""
-#~ "Univention Management Console (UMC) is  the central tool for web-based "
-#~ "administration of the UCS domain. Depending on system role, default "
-#~ "settings and  permissions, you find extensive functions for the "
-#~ "administration of  your UCS domain and for the configuration of this "
-#~ "server."
-
-#~ msgid "umcOverviewTabTitle"
-#~ msgstr "Overview"
-
-#~ msgid "umcUserInfo"
-#~ msgstr "<b>User</b> %(username)s"

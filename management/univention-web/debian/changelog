@@ -1,6 +1,14 @@
+univention-web (4.0.1-44) unstable; urgency=medium
+
+  * Bug #54032: In case login is not finished within 10 seconds, warning
+    message is displayed to the user with link to the help page with
+    common reasons.
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Tue, 14 Dec 2021 13:24:02 +0100
+
 univention-web (4.0.1-43) unstable; urgency=medium
 
-  * Adjust styling for tabs. 
+  * Adjust styling for tabs.
 
  -- Johannes Keiser <keiser@univention.de>  Tue, 26 Oct 2021 09:36:54 +0200
 
