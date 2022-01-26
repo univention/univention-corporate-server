@@ -10,3 +10,5 @@ desc: |
     description for the extended attributes `networkAccessGroups` and
     `NetworkAccessComputers`.
 bug: [54341]
+erratum: 199
+announced: 2022-01-26
