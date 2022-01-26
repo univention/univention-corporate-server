@@ -1,3 +1,10 @@
+univention-appcenter (9.0.2-70) unstable; urgency=medium
+
+  * Bug #54082: Use `address` instead of `network` while checking network
+    interface conflicts regarding Docker.
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Tue, 18 Jan 2022 05:23:12 +0000
+
 univention-appcenter (9.0.2-69) unstable; urgency=medium
 
   * Bug #51986: Race condition in App Center cache invalidation
@@ -633,7 +640,7 @@ univention-appcenter (8.0.11-121) unstable; urgency=medium
 
 univention-appcenter (8.0.11-120) unstable; urgency=medium
 
-  * Bug #50967: listener-converter now gets called by systemd service 
+  * Bug #50967: listener-converter now gets called by systemd service
 
  -- Toni Uwe Roehmeyer <roehmeyer@univention.de>  Fri, 13 Mar 2020 16:23:12 +0100
 
@@ -733,7 +740,7 @@ univention-appcenter (8.0.11-105) unstable; urgency=medium
 
 univention-appcenter (8.0.11-104) unstable; urgency=medium
 
-  * Bug #50771: added AppInstallDialog 
+  * Bug #50771: added AppInstallDialog
 
  -- Johannes Keiser <keiser@univention.de>  Tue, 04 Feb 2020 10:37:36 +0100
 
@@ -1692,7 +1699,7 @@ univention-appcenter (7.0.2-37) unstable; urgency=medium
 
 univention-appcenter (7.0.2-36) unstable; urgency=medium
 
-  * Bug #47931: Don't handle streams in no_umc_restart 
+  * Bug #47931: Don't handle streams in no_umc_restart
 
  -- Jens Pelzetter <jpelzett@tossberg.knut.univention.de>  Wed, 07 Nov 2018 12:34:06 +0100
 
@@ -3106,7 +3113,7 @@ univention-appcenter (6.0.1-37) unstable; urgency=medium
 
 univention-appcenter (6.0.1-36) unstable; urgency=low
 
-  * Bug #41801: ignore "host" objects without serverRole in  
+  * Bug #41801: ignore "host" objects without serverRole in
     Domain.get_appcenter_hosts()
 
  -- Felix Botner <botner@univention.de>  Thu, 23 Feb 2017 14:57:20 +0100
@@ -3961,7 +3968,7 @@ univention-appcenter (5.0.20-17) unstable; urgency=medium
 
 univention-appcenter (5.0.20-16) unstable; urgency=medium
 
-  * Bug #40827: removed the properties for app appliances in 
+  * Bug #40827: removed the properties for app appliances in
     univention-appcenter. App appliance specific properties
     are moved to app-appliance-branding package
 
@@ -3996,7 +4003,7 @@ univention-appcenter (5.0.20-12) unstable; urgency=medium
 
 univention-appcenter (5.0.20-11) unstable; urgency=medium
 
-  * Bug #40827: added attribute to created app object from ini file 
+  * Bug #40827: added attribute to created app object from ini file
 
  -- Johannes Keiser <keiser@univention.de>  Wed, 02 Mar 2016 18:40:38 +0100
 
@@ -4527,14 +4534,14 @@ univention-appcenter (5.0.14-11) unstable; urgency=medium
 
 univention-appcenter (5.0.14-10) unstable; urgency=low
 
-  * Bug #39524: fixed the Carousel widget not displaying correctly when the 
+  * Bug #39524: fixed the Carousel widget not displaying correctly when the
     same youtube video is stated more then once
 
  -- Johannes Keiser <keiser@univention.de>  Mon, 02 Nov 2015 18:37:46 +0100
 
 univention-appcenter (5.0.14-9) unstable; urgency=low
 
-  * Bug #39665: adjusted text layout for the AppDetailsPage 
+  * Bug #39665: adjusted text layout for the AppDetailsPage
 
  -- Johannes Keiser <keiser@univention.de>  Mon, 02 Nov 2015 18:24:55 +0100
 
@@ -4863,7 +4870,7 @@ univention-appcenter (5.0.6-61) unstable; urgency=medium
 
 univention-appcenter (5.0.6-60) unstable; urgency=low
 
-  * Bug #39524: added function to embed youtube videos in the 
+  * Bug #39524: added function to embed youtube videos in the
     AppDetailsPage gallery and added transition for gallery resizing
 
  -- Johannes Keiser <keiser@univention.de>  Thu, 22 Oct 2015 19:01:46 +0200
@@ -4994,7 +5001,7 @@ univention-management-console-module-appcenter (5.0.6-41) unstable; urgency=medi
 
 univention-management-console-module-appcenter (5.0.6-40) unstable; urgency=low
 
-  * Bug #39199: fixed port checking 
+  * Bug #39199: fixed port checking
 
  -- Felix Botner <botner@univention.de>  Tue, 20 Oct 2015 10:11:34 +0200
 
@@ -5025,7 +5032,7 @@ univention-management-console-module-appcenter (5.0.6-36) unstable; urgency=low
 
 univention-management-console-module-appcenter (5.0.6-35) unstable; urgency=low
 
-  * Bug #39199: check ports hard requirement 
+  * Bug #39199: check ports hard requirement
 
  -- Felix Botner <botner@univention.de>  Mon, 19 Oct 2015 17:34:02 +0200
 
@@ -5088,13 +5095,13 @@ univention-management-console-module-appcenter (5.0.6-26) unstable; urgency=low
 
 univention-management-console-module-appcenter (5.0.6-25) unstable; urgency=low
 
-  * Bug #39524: include svg images 
+  * Bug #39524: include svg images
 
  -- Johannes Keiser <keiser@univention.de>  Fri, 16 Oct 2015 13:02:24 +0200
 
 univention-management-console-module-appcenter (5.0.6-24) unstable; urgency=low
 
-  Bug #39524: 
+  Bug #39524:
   * Added a Gallery to show multiple images
   * Added svg images for the gallery
   * Adjusted layout of the 'Details' titlepane slightly
@@ -5350,7 +5357,7 @@ univention-management-console-module-appcenter (5.0.4-24) unstable; urgency=low
 
 univention-management-console-module-appcenter (5.0.4-23) unstable; urgency=low
 
-  * Bug #38233: Add support for @%@ucr@%@ in appcenter README files 
+  * Bug #38233: Add support for @%@ucr@%@ in appcenter README files
 
  -- Felix Botner <botner@univention.de>  Thu, 17 Sep 2015 15:30:40 +0200
 
@@ -6425,7 +6432,7 @@ univention-management-console-module-appcenter (3.0.50-2) unstable; urgency=low
 
 univention-management-console-module-appcenter (3.0.50-1) unstable; urgency=low
 
-  * Switch to official appcenter for release (Bug #32217) 
+  * Switch to official appcenter for release (Bug #32217)
 
  -- Erik Damrose <damrose@univention.de>  Fri, 15 Nov 2013 15:11:15 +0100
 
