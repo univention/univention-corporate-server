@@ -6,6 +6,6 @@ src: univention-web
 fix:
 desc: |
  This update addresses the following issue:
- * In case of long-lasting login, message will be displayed to the user
-   containing the link where further help be found.
+ * In case of long-lasting a login, a message will be displayed to the user
+   containing the link where further help can be found.
 bug: [54032]
