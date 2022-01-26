@@ -2,10 +2,10 @@ product: ucs
 release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
-src: univention-antivir-mail 
+src: univention-antivir-mail
 fix: 11.0.0-2A~5.0.0.202112171136
 desc: |
- This update addresses the following issue(s):
- * Fixed a bug where antivirus-signatures could not get updated properly
-   on fresh installations. This got fixed.
+ This update addresses the following issue:
+ * A bug where antivirus signatures could not get updated properly on fresh
+   installations has been fixed.
 bug: [54070]
