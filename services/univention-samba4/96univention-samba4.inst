@@ -305,7 +305,7 @@ samba_domain_join() {
 	local samba_join_options
 	samba_join_options=("${@}")
 	samba_join_options+=( --kerberos=no )	## don't use kerberos for authentication during join
-	samba_join_options+=( -A"$authenticationfile" )
+	samba_join_options+=( -U"$dcaccount"%"$bindpwd" )
 	samba_join_options+=( --realm="$kerberos_realm" )
 	samba_join_options+=( --machinepass="$(cat /etc/machine.secret)" )
 

@@ -55,6 +55,7 @@ import ldb
 import samba.getopt
 from samba.auth import system_session
 from univention import config_registry
+from samba import credentials
 
 
 parser = optparse.OptionParser("$prog [options] <host>")
@@ -104,7 +105,7 @@ if not (opts.createsitelink or opts.createsite or opts.createsubnet or opts.modi
 
 lp = sambaopts.get_loadparm()
 if opts.authentication_file:
-	creds = Credentials()
+	creds = credentials.Credentials()
 	creds.parse_file(opts.authentication_file)
 else:
 	creds = credopts.get_credentials(lp)

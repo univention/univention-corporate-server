@@ -1,3 +1,10 @@
+univention-samba4 (9.0.6-10) unstable; urgency=medium
+
+  * Bug #53100: Revert changes in samba-tool domain no accept
+    authentication file
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Wed, 26 Jan 2022 11:05:18 +0100
+
 univention-samba4 (9.0.6-9) unstable; urgency=medium
 
   * Bug #53100: Passes credentials with an authentication file to remove 
