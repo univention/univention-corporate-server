@@ -43,7 +43,7 @@ ansible_register_idps_setup () {
 	openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj "/CN=id-broker" -keyout id-broker.key -out id-broker.cert
 	curl -k "https://ucs-sso.$traeger1_domain/simplesamlphp/saml2/idp/metadata.php" > schools_saml_IDP/traeger1_metadata.xml
 	curl -k "https://ucs-sso.$traeger2_domain/simplesamlphp/saml2/idp/metadata.php" > schools_saml_IDP/traeger2_metadata.xml
-	printf "register_idps:\n  - alias: traeger1\n    path: schools_saml_IDP/traeger1_metadata.xml\n  - alias: traeger2\n    path: schools_saml_IDP/traeger2_metadata.xml\n" > schools_saml_IDP/idps.yml
+	printf "register_idps:\n  - alias: traeger1\n    ucsschoolSourceUID: IDBROKER-traeger1\n    path: schools_saml_IDP/traeger1_metadata.xml\n  - alias: traeger2\n    ucsschoolSourceUID: IDBROKER-traeger2\n    path: schools_saml_IDP/traeger2_metadata.xml\n" > schools_saml_IDP/idps.yml
 	return $rv
 }
 
