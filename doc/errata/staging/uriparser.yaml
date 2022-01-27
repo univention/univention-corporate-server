@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: uriparser
+fix: 0.8.4-1+deb9u4
+desc: |
+ This update addresses the following issue:
+ * Invalid free operations in uriFreeUriMembers and uriMakeOwner
+   (CVE-2021-46141)
+bug: [54389]
+cve:
+- CVE-2021-46141
