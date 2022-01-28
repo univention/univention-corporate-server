@@ -182,7 +182,7 @@ class DovecotACL(ACL):
 				else identifier.replace('group=', '', 1) if identifier.startswith('group=') \
 				else identifier
 			udm_right = next(udm_right for (udm_right, dovecot_rights) in cls.DOVECOT_RIGHT_TRANSLATION if rights.issuperset(dovecot_rights))
-			merged.setdefault(acl_type, dict())[udm_id] = udm_right
+			merged.setdefault(acl_type, {})[udm_id] = udm_right
 		return cls(merged.get('user', {}), merged.get('group', {}))
 
 	@staticmethod

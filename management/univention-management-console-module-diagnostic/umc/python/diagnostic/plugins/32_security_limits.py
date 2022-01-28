@@ -12,7 +12,7 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 suggested_max_open_files = 32808
 
 title = _('Security limits exceeded')
-#(Samba often uses too many opened file descriptors')
+# (Samba often uses too many opened file descriptors')
 description = '\n'.join([
 	_('The security limits (e.g. for max_open_files) are currently not configured properly.'),
 	_('This can cause several different serious problems (e.g. the login at samba servers may be impossible, file operations (copy, move) on shares can fail, etc.)'),
