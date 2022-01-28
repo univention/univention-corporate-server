@@ -1,5 +1,11 @@
 univention-l10n (7.0.1-2) unstable; urgency=medium
 
+  * Bug #54029 fixed univention-ucs-translation-build-package
+
+ -- Johannes Lohmer <lohmer@univention.de>  Fri, 28 Jan 2022 19:12:22 +0100
+
+univention-l10n (7.0.1-2) unstable; urgency=medium
+
   * Bug #53565: Allow .ts and .vue files to be found by the debhelper
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Jul 2021 12:14:38 +0200
