@@ -38,4 +38,11 @@
 . /usr/share/univention-lib/base.sh
 call_joinscript 20univention-ldap-config-master.inst
 
+eval "$(univention-config-registry shell)"
+
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "16.0.7-12"; then
+	udm settings/extended_attribute modify --dn "cn=lastbind,cn=custom attributes,cn=univention,$ldap_base" \
+		--append translationShortDescription='"fr_FR" "Horodatage de la dernière connexion réussie"'
+fi
+
 exit 0

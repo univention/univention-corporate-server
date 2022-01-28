@@ -47,6 +47,7 @@ udm settings/extended_attribute create "$@" \
 	--set module="users/user" \
 	--set shortDescription="Timestamp of the last successful login" \
 	--append translationShortDescription='"de_DE" "Zeitstempel der letzten erfolgreichen Anmeldung"' \
+	--append translationShortDescription='"fr_FR" "Horodatage de la dernière connexion réussie"' \
 	--set objectClass="univentionPerson" \
 	--set ldapMapping="univentionAuthTimestamp" \
 	--set syntax="string" \
