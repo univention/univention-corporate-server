@@ -53,8 +53,10 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set tabPosition=1 \
 	--set shortDescription="Some Extended Attribute" \
 	--set longDescription="A description for the extended attribute" \
-	--set translationShortDescription='"de_DE" "Ein erweitertes Attribut"' \
-	--set translationLongDescription='"de_DE" "Eine Beschreibung für das erweiterte Attribut"' \
+	--append translationShortDescription='"de_DE" "Ein erweitertes Attribut"' \
+	--append translationShortDescription='"fr_FR" "Un attribut étendu"' \
+	--append translationLongDescription='"de_DE" "Eine Beschreibung für das erweiterte Attribut"' \
+	--append translationLongDescription='"fr_FR" "Une description pour l’attribut étendu"' \
 	--set objectClass=univentionFreeAttributes  \
 	--set syntax=string \
 	--set mayChange=1 \
