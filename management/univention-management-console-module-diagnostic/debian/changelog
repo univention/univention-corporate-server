@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.0-22) unstable; urgency=medium
+
+  * Bug #53341; fix string formatting of error message in 41_samba_tool_showrepl.py
+
+ -- Maximilian Janßen <janssen@univention.de>  Fri, 28 Jan 2022 17:30:37 +0100
+
 univention-management-console-module-diagnostic (6.0.0-21) unstable; urgency=medium
 
   * Bug #49353: added condition to ignore mounted iso images in diagnostics check

@@ -14,4 +14,6 @@ desc: |
    plugins has been corrected.
  * Mounted ISO images are no longer included in the disk usage diagnostic
    plugin.
-bug: [53969, 54264, 53306, 49353]
+ * A diagnostic warning for the samba replication status will now be formatted
+   properly.
+bug: [53969, 54264, 53306, 49353, 53341]
