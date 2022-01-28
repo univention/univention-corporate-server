@@ -57,12 +57,10 @@ univention-config-registry set mail/antivir/amavis/autostart?"yes" \
 								clamav/freshclam/autostart?"yes" \
 								'mail/antispam/bodysizelimit?300'
 
-touch /var/lib/clamav/mirrors.dat
-chown -R clamav:clamav /var/lib/clamav
 # new installations
 if [ "$1" = "configure" -a -z "$2" ]; then
-	[ -e /var/lib/clamav/daily.cvd ] || cp /usr/share/univention-antivir-mail/daily.cvd /var/lib/clamav/
-	[ -e /var/lib/clamav/main.cvd ] || cp /usr/share/univention-antivir-mail/main.cvd /var/lib/clamav/
+	[ -e /var/lib/clamav/daily.cvd ] || install -o clamav -g clamav -m 0644 /usr/share/univention-antivir-mail/daily.cvd /var/lib/clamav/
+	[ -e /var/lib/clamav/main.cvd ] || install -o clamav -g clamav -m 0644 /usr/share/univention-antivir-mail/main.cvd /var/lib/clamav/
 fi
 
 
