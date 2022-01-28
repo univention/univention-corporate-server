@@ -1,3 +1,9 @@
+univention-mail-canonical-maps (8.0.0-2) unstable; urgency=medium
+
+  * Bug #54029: Update French translation
+
+ -- Johannes Lohmer <lohmer@univention.de> Fri, 14 Jan 2022 16:35:26 +0100
+
 univention-mail-canonical-maps (8.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
