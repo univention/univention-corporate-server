@@ -54,12 +54,15 @@ else
 		--set name="UniventionDovecotUserQuota" \
 		--set CLIName="mailUserQuota" \
 		--set shortDescription="Mail quota (MB)" \
-		--set translationShortDescription='"de_DE" "E-Mail-Quota (MB)"' \
+		--append translationShortDescription='"de_DE" "E-Mail-Quota (MB)"' \
+		--append translationShortDescription='"fr_FR" "Quota de courrier (Mo)"' \
 		--set longDescription="Mail quota for the user in megabytes (0=no quota)" \
-		--set translationLongDescription='"de_DE" "E-Mail-Quota des Benutzers in Megabytes (0=kein Quota)"' \
+		--append translationLongDescription='"de_DE" "E-Mail-Quota des Benutzers in Megabytes (0=kein Quota)"' \
+		--append translationLongDescription='"fr_FR" "Quota de courrier pour l’utilisateur ou utilisatrice, en mégaoctets (0 = pas de quota)"' \
 		--set tabAdvanced=1 \
 		--set tabName="Mail" \
-		--set translationTabName='"de_DE" "Mail"' \
+		--append translationTabName='"de_DE" "Mail"' \
+		--append translationTabName='"fr_FR" "Courrier"' \
 		--set module="users/user" \
 		--set syntax=integer \
 		--set default=0 \
@@ -72,7 +75,8 @@ else
 		--set deleteObjectClass=0 \
 		--set overwriteTab=0 \
 		--set groupName="Advanced settings" \
-		--set translationGroupName='"de_DE" "Erweiterte Einstellungen"' \
+		--append translationGroupName='"de_DE" "Erweiterte Einstellungen"' \
+		--append translationGroupName='"fr_FR" "Réglages avancés"' \
 		--set fullWidth=1 \
 		--set tabPosition=4 || die
 fi
