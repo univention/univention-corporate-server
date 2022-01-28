@@ -1,0 +1,56 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-portal\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2022-01-21 16:22+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: frontend/src/store/modules/portalData/index.ts:595
+msgid "Categories could not be re-sorted"
+msgstr ""
+
+#: frontend/src/jsHelper/createUserMenu.ts:57
+#: frontend/src/jsHelper/createUserMenu.ts:64
+msgid "Change password"
+msgstr ""
+
+#: frontend/src/store/modules/portalData/index.ts:657
+msgid "Entered edit mode"
+msgstr ""
+
+#: frontend/src/store/modules/portalData/index.ts:549
+#: frontend/src/store/modules/portalData/index.ts:570
+#: frontend/src/store/modules/portalData/index.ts:580
+msgid "Entries could not be re-sorted"
+msgstr ""
+
+#: frontend/src/store/modules/portalData/index.ts:602
+msgid "Entries successfully re-sorted"
+msgstr ""
+
+#: frontend/src/store/modules/portalData/index.ts:662
+msgid "Left edit mode"
+msgstr ""
+
+#: frontend/src/store/modules/user/index.ts:66
+msgid "Logged in as \"%(username)s\""
+msgstr ""
+
+#: frontend/src/store/modules/user/index.ts:71
+msgid "Not logged in"
+msgstr ""
+
+#: frontend/src/store/modules/portalData/index.ts:225
+msgid "Portal Menu"
+msgstr ""
+
+#: frontend/src/store/modules/portalData/index.ts:234
+msgid "User Menu"
+msgstr ""

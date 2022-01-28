@@ -3,77 +3,76 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2016-07-10 10:42+0100\n"
-"Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
+"PO-Revision-Date: 2021-12-08 12:55+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Poedit 3.0\n"
 
-#: umc/python/join/__init__.py:399 umc/python/join/__init__.py:450
+#: umc/python/join/__init__.py:411 umc/python/join/__init__.py:461
 msgid "A join process is already running."
-msgstr "Un processus de jonction est déjà en cours d'exécution."
+msgstr "Un processus de jonction est déjà en cours d’exécution."
 
-#: umc/python/join/__init__.py:430 umc/python/join/__init__.py:483
+#: umc/python/join/__init__.py:442 umc/python/join/__init__.py:494
 #, python-format
 msgid "An unexpected error occurred: %s"
-msgstr "Une erreur inattendue s'est produite : %s"
+msgstr "Une erreur inattendue s’est produite : %s"
 
-#: umc/python/join/__init__.py:464
+#: umc/python/join/__init__.py:475
 msgid "Authentication"
 msgstr "Authentification"
 
-#: umc/python/join/__init__.py:407 umc/python/join/__init__.py:454
+#: umc/python/join/__init__.py:419 umc/python/join/__init__.py:465
 msgid ""
 "Currently, software is being installed or uninstalled. Join scripts should "
 "not be run right now."
 msgstr ""
-"Un logiciel est actuellement en cours d'installation ou de désinstallation. "
-"Ce n'est pas le bon moment pour exécuter des scripts de jonction."
+"Un logiciel est actuellement en cours d’installation ou de désinstallation. "
+"Ce n’est pas le bon moment pour exécuter des scripts de jonction."
 
-#: umc/python/join/__init__.py:411
+#: umc/python/join/__init__.py:423
 msgid "Domain join"
-msgstr "Jonction de domaine"
+msgstr "Intégration au domaine"
 
-#: umc/python/join/__init__.py:324
+#: umc/python/join/__init__.py:336
 #, python-format
 msgid "Error: %s"
 msgstr "Erreur : %s"
 
-#: umc/python/join/__init__.py:231
+#: umc/python/join/__init__.py:243
 #, python-format
 msgid "Executing join script %s"
 msgstr "Exécution du script de jonction %s"
 
-#: umc/python/join/__init__.py:230
+#: umc/python/join/__init__.py:242
 msgid "Executing join scripts"
 msgstr "Exécution de scripts de jonction en cours"
 
-#: umc/python/join/__init__.py:107
+#: umc/python/join/__init__.py:111
 msgid "Initializing"
 msgstr "Initialisation en cours"
 
-#: umc/python/join/__init__.py:403
-msgid "Invalid server role! A Primary Directory Node can not be joined."
+#: umc/python/join/__init__.py:415
+msgid "Invalid server role! A Primary Directory Node cannot be joined."
 msgstr ""
-"Rôle serveur non valide ! Un Primary Directory Node ne peut pas "
-"rejoindre un domaine."
+"Rôle serveur invalide ! Un Primary Directory Node ne peut pas être rejoint."
 
-#: umc/python/join/__init__.py:75
+#: umc/python/join/__init__.py:79
 msgid ""
 "No DNS record for the Primary Directory Node was found. This might be a "
 "problem with the configured DNS server. Please make sure the DNS settings "
 "are correct."
 msgstr ""
-"Aucun enregistrement DNS n'a été trouvé pour le Primary Directory Node. "
-"Cela peut être dû à un problème avec le serveur DNS configuré. "
-"Veuillez vous assurer que les réglages DNS sont corrects."
+"Aucun enregistrement DNS n'a été trouvé pour le Primary Directory Node. Cela "
+"peut être dû à un problème avec le serveur DNS configuré. Veuillez vous "
+"assurer que les réglages DNS sont corrects."
 
-#: umc/python/join/__init__.py:258
+#: umc/python/join/__init__.py:270
 msgid ""
 "Some join scripts could not be executed. More details can be found in the "
 "log file <i>/var/log/univention/join.log</i>.<br/>Please retry to execute "
@@ -84,35 +83,35 @@ msgstr ""
 "join.log</i>. <br/>Veuillez tenter d'exécuter à nouveau les scripts de "
 "jonction après avoir résolu tout conflit."
 
-#: umc/python/join/__init__.py:95
+#: umc/python/join/__init__.py:99
 msgid "The entered FQDN is not a valid value"
 msgstr ""
-"La valeur saisie pour le nom de domaine pleinement qualifié (FQDN) n'est pas "
-"valide."
+"Le nom saisi pour le nom de domaine pleinement qualifié (FQDN) n’est pas "
+"valide"
 
-#: umc/python/join/__init__.py:78
+#: umc/python/join/__init__.py:82
 msgid ""
 "The lookup of the Primary Directory Node record timed out. There might be a "
 "problem with the configured DNS server. Make sure the DNS server is up and "
 "running or check the DNS settings."
 msgstr ""
-"Expiration du délai pour la recherche de l'enregistrement du Primary Directory Node. "
-"Il se peut qu'il y ait un problème avec le serveur DNS "
-"configuré. Assurez-vous que le serveur DNS fonctionne correctement ou "
-"vérifiez les réglages DNS."
+"Expiration du délai pour la recherche de l’enregistrement du Primary "
+"Directory Node. Il y a peut-être un problème avec le serveur DNS configuré. "
+"Assurez-vous que le serveur DNS fonctionne correctement ou vérifiez les "
+"réglages DNS."
 
-#: umc/python/join/__init__.py:219
+#: umc/python/join/__init__.py:231
 #, python-format
 msgid ""
 "The system join process could not be completed:<br/><br/><i>%s</i><br/><br/> "
 "More details can be found in the log file <i>/var/log/univention/join.log</"
 "i>.<br/>Please retry after resolving any conflicting issues."
 msgstr ""
-"Le processus de jonction de système n'a pas pu être mené à bien : <br/><br/"
-"><i>%s</i><br/><br/>. Vous pourrez trouver davantage de détails dans le "
-"fichier journal <i>/var/log/univention/join.log</i>. <br/>Veuillez réessayer "
-"après avoir résolu tout conflit."
+"Le processus de jonction du système n’a pas pu s’achever :<br/><br/><i>%s</"
+"i><br/><br/> Vous trouverez plus de détails dans le fichier journal <i>/var/"
+"log/univention/join.log</i>.<br/>Veuillez réessayer après avoir résolu les "
+"éventuels problèmes de conflits."
 
-#: umc/python/join/__init__.py:425 umc/python/join/__init__.py:478
+#: umc/python/join/__init__.py:437 umc/python/join/__init__.py:489
 msgid "finished..."
-msgstr "terminé..."
+msgstr "terminé…"

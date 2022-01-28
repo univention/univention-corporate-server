@@ -1,3 +1,9 @@
+univention-self-service (5.0.1-16) unstable; urgency=medium
+
+  * Bug #54029: Update French translation
+
+ -- Johannes Lohmer <lohmer@univention.de> Fri, 14 Jan 2022 16:35:26 +0100
+
 univention-self-service (5.0.1-15) unstable; urgency=medium
 
   * Bug #46080: renamed e-mail related attribute descriptions

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-pkgdb\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
 "PO-Revision-Date: 2017-05-23 22:18+0100\n"
 "Last-Translator: Nicolas Ternisien <nicolas@workshop-chapina.com>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
@@ -40,15 +40,11 @@ msgstr "État du paquetage"
 msgid "Package version"
 msgstr "Version du paquetage"
 
-#: umc/js/pkgdb/SearchForm.js:73 umc/js/pkgdb/SearchForm.js:85
+#: umc/js/pkgdb/SearchForm.js:74 umc/js/pkgdb/SearchForm.js:87
 msgid "Pattern"
 msgstr "Motif"
 
-#: umc/js/pkgdb/SearchForm.js:93
-msgid "Search"
-msgstr "Chercher"
-
-#: umc/js/pkgdb.js:46
+#: umc/js/pkgdb.js:50
 msgid "Search UCS systems"
 msgstr "Chercher des systèmes UCS"
 
@@ -56,7 +52,7 @@ msgstr "Chercher des systèmes UCS"
 msgid "Search for:"
 msgstr "Chercher :"
 
-#: umc/js/pkgdb.js:52
+#: umc/js/pkgdb.js:57
 msgid "Search software packages"
 msgstr "Chercher des paquetages logiciels"
 
@@ -72,3 +68,5 @@ msgstr "Rôle système"
 msgid "UCS version"
 msgstr "Version UCS"
 
+#~ msgid "Search"
+#~ msgstr "Chercher"

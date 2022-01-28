@@ -4,83 +4,75 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-services\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2017-05-28 20:39+0900\n"
-"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
+"PO-Revision-Date: 2021-12-10 14:38+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0\n"
 
-#: umc/js/services.js:165
+#: umc/js/services.js:171
 msgid "Automatically"
 msgstr "Automatiquement"
 
-#: umc/js/services.js:243
+#: umc/js/services.js:245
 msgid "Cancel"
 msgstr "Annuler"
 
-#: umc/js/services.js:110 umc/js/services.js:121 umc/js/services.js:132
-msgid "Could not change start type of the following services: "
-msgstr "Impossible de modifier le type de démarrage des services suivants :"
-
-#: umc/js/services.js:170
+#: umc/js/services.js:176
 msgid "Description"
 msgstr "Description"
 
-#: umc/js/services.js:163
+#: umc/js/services.js:169
 msgid "Manually"
 msgstr "Manuellement"
 
-#: umc/js/services.js:141
+#: umc/js/services.js:147
 msgid "Name"
 msgstr "Nom"
 
-#: umc/js/services.js:161
+#: umc/js/services.js:167
 msgid "Never"
 msgstr "Jamais"
 
-#: umc/js/services.js:227
+#: umc/js/services.js:247
 msgid "OK"
 msgstr "Valider"
 
-#: umc/js/services.js:109
+#: umc/js/services.js:112
 msgid "Please confirm to automatically start the following services: "
-msgstr "Veuillez confirmer le démarrage automatique des services suivants :"
+msgstr "Veuillez confirmer le démarrage automatique des services suivants : "
 
-#: umc/js/services.js:120
+#: umc/js/services.js:124
 msgid "Please confirm to manually start the following services: "
-msgstr "Veuillez confirmer le démarrage manuel des services suivants :"
+msgstr "Veuillez confirmer le démarrage manuel des services suivants : "
 
-#: umc/js/services.js:131
+#: umc/js/services.js:136
 msgid "Please confirm to never start the following services: "
 msgstr ""
-"Veuillez confirmer le fait de ne jamais démarrer les services suivants :"
+"Veuillez confirmer le fait de ne jamais démarrer les services suivants : "
 
-#: umc/js/services.js:97
+#: umc/js/services.js:99
 msgid "Please confirm to restart the following services: "
-msgstr "Veuillez confirmer le redémarrage des services suivants :"
+msgstr "Veuillez confirmer le redémarrage des services suivants : "
 
 #: umc/js/services.js:69
 msgid "Please confirm to start the following services: "
-msgstr "Veuillez confirmer le démarrage des services suivants :"
+msgstr "Veuillez confirmer le démarrage des services suivants : "
 
-#: umc/js/services.js:83
+#: umc/js/services.js:84
 msgid "Please confirm to stop the following services: "
-msgstr "Veuillez confirmer l'arrêt des services suivants :"
+msgstr "Veuillez confirmer l’arrêt des services suivants : "
 
-#: umc/js/services.js:92
+#: umc/js/services.js:94
 msgid "Restart"
 msgstr "Redémarrer"
 
-#: umc/js/services.js:98
-msgid "Restarting the following services failed: "
-msgstr "Échec du redémarrage des services suivants :"
-
-#: umc/js/services.js:194
+#: umc/js/services.js:200
 msgid "Search..."
 msgstr "Rechercher..."
 
@@ -88,37 +80,29 @@ msgstr "Rechercher..."
 msgid "Start"
 msgstr "Démarrer"
 
-#: umc/js/services.js:106
+#: umc/js/services.js:109
 msgid "Start automatically"
 msgstr "Démarrer automatiquement"
 
-#: umc/js/services.js:117
+#: umc/js/services.js:121
 msgid "Start manually"
 msgstr "Démarrer manuellement"
 
-#: umc/js/services.js:128
+#: umc/js/services.js:133
 msgid "Start never"
 msgstr "Ne jamais démarrer"
 
-#: umc/js/services.js:156
+#: umc/js/services.js:162
 msgid "Start type"
 msgstr "Type de démarrage"
 
-#: umc/js/services.js:70
-msgid "Starting the following services failed: "
-msgstr "Échec du démarrage des services suivants :"
-
-#: umc/js/services.js:144
+#: umc/js/services.js:150
 msgid "Status"
 msgstr "État"
 
-#: umc/js/services.js:78
+#: umc/js/services.js:79
 msgid "Stop"
 msgstr "Arrêter"
-
-#: umc/js/services.js:84
-msgid "Stopping the following services failed: "
-msgstr "Échec de l'arrêt des services suivants :"
 
 #: umc/js/services.js:57
 msgid ""
@@ -128,11 +112,32 @@ msgstr ""
 "Ce module affiche les services du système, ainsi que leur état actuel. Ces "
 "services peuvent être configurés, démarrés et arrêtés."
 
-#: umc/js/services.js:149
+#: umc/js/services.js:240
+msgid ""
+"Warning: Stopping apache or UMC services will interrupt all current "
+"connections to the Univention Management Console. It might be necessary for "
+"all users to login again."
+msgstr ""
+"Attention : l’arrêt des services Apache ou UMC interrompra toutes les "
+"connexions actuelles à l’Univention Management Console. Tous les "
+"utilisateurs et utilisatrices devront peut-être se reconnecter."
+
+#: umc/js/services.js:155
 msgid "running"
 msgstr "lancé"
 
-#: umc/js/services.js:151
+#: umc/js/services.js:157
 msgid "stopped"
 msgstr "arrêté"
 
+#~ msgid "Could not change start type of the following services: "
+#~ msgstr "Impossible de modifier le type de démarrage des services suivants :"
+
+#~ msgid "Restarting the following services failed: "
+#~ msgstr "Échec du redémarrage des services suivants :"
+
+#~ msgid "Starting the following services failed: "
+#~ msgstr "Échec du démarrage des services suivants :"
+
+#~ msgid "Stopping the following services failed: "
+#~ msgstr "Échec de l'arrêt des services suivants :"

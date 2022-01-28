@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-lib\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
 "PO-Revision-Date: 2016-07-10 15:20+0100\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
@@ -15,19 +15,18 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: umc/python/lib/server.py:97
+#: umc/python/lib/server.py:101
 msgid "System could not reboot"
 msgstr "Impossible de redémarrer le système"
 
-#: umc/python/lib/server.py:109
+#: umc/python/lib/server.py:112
 msgid "System could not shutdown"
 msgstr "Impossible d'arrêter le système"
 
-#: umc/python/lib/server.py:92
+#: umc/python/lib/server.py:96
 msgid "The system will now be restarted"
 msgstr "Le système va maintenant redémarrer"
 
-#: umc/python/lib/server.py:104
+#: umc/python/lib/server.py:107
 msgid "The system will now be shut down"
 msgstr "Le système va maintenant être arrêté"
-

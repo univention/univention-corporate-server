@@ -1,0 +1,30 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-welcome-screen\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
+"PO-Revision-Date: 2021-11-24 11:57+0100\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
+"Language-Team: \n"
+"X-Generator: Poedit 3.0\n"
+
+#: univention-welcome-screen:121
+msgid "Navigate to the following address:"
+msgstr "Rendez-vous à l’adresse suivante :"
+
+#: univention-welcome-screen:120
+msgid "Open a browser window"
+msgstr "Ouvrez une fenêtre de votre navigateur"
+
+#: univention-welcome-screen:122
+msgid "Open the web management interface"
+msgstr "Ouvrez l’interface de gestion en ligne"
+
+#: univention-welcome-screen:119
+msgid "Press any key to open text console"
+msgstr "Appuyez sur une touche quelconque pour ouvrir la console de texte"

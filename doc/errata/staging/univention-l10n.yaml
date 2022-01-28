@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-l10n
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Bugs in the l10n template files were updated to fix
+   the creation and update process of language packages.
+bug: [54029]

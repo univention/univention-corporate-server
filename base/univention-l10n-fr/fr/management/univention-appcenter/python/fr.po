@@ -4,19 +4,19 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-appcenter\n"
-"Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2017-05-28 18:37+0900\n"
-"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
+"PO-Revision-Date: 2021-11-12 11:33+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0\n"
 
-#: python/appcenter/utils.py:260
+#: python/appcenter/utils.py:274
 #, python-format
 msgid ""
 "%s could not be downloaded. This seems to be a problem with the App Center "
@@ -25,24 +25,29 @@ msgstr ""
 "Impossible de télécharger %s. Il semble que le problème soit lié au serveur "
 "d'App Center. Veuillez réessayer ultérieurement."
 
-#: python/appcenter/actions/__init__.py:60
+#: python/appcenter/exceptions.py:332
 msgid "An error occurred!"
 msgstr "Une erreur s'est produite !"
 
-#: python/appcenter-docker/docker.py:63
-#, python-format
-msgid "Error while contacting Docker registry server %s"
-msgstr "Erreur lors du contact du service d'enregistrement Docker %s"
+#: python/appcenter/exceptions.py:343
+msgid "An unexpected error occured before the installation started!"
+msgstr ""
+"Une erreur inattendue s’est produite avant le début de l’installation !"
 
-#: python/appcenter-docker/docker.py:73
-msgid "Manifest checksum mismatch"
-msgstr "Différences dans la somme de contrôle du manifeste"
+#: python/appcenter/exceptions.py:282
+msgid ""
+"LDAP connection refused. There may be an issue with the certificate of the "
+"LDAP server. Please also check the proxy and firewall settings, if any."
+msgstr ""
+"Connexion LDAP refusée. Il peut y avoir un problème avec le certificat du "
+"serveur LDAP. Veuillez également vérifier les paramètres du proxy et du pare-"
+"feu, le cas échéant."
 
-#: python/appcenter-docker/actions/docker_install.py:92
-msgid "Setup script failed!"
-msgstr "Le script d'installation a échoué"
+#: python/appcenter/settings.py:254
+msgid "Password"
+msgstr "Mot de passe"
 
-#: python/appcenter/app.py:1266
+#: python/appcenter/app.py:1446 python/appcenter/install_checks.py:362
 #, python-format
 msgid ""
 "The application needs a %(needs)s-bit operating system. This server is "
@@ -51,16 +56,16 @@ msgstr ""
 "L'application a besoin d'un système d'exploitation %(needs)s bits. Le "
 "serveur est exécuté sur un système d'exploitation %(has)s bits."
 
-#: python/appcenter/actions/__init__.py:66
+#: python/appcenter/exceptions.py:338
 msgid "The docker container could not be started!"
 msgstr "Le conteneur Docker n'a pas pu être lancé !"
 
-#: python/appcenter/utils.py:265 python/appcenter/utils.py:282
+#: python/appcenter/utils.py:279 python/appcenter/utils.py:296
 #, python-format
 msgid "There is a problem with the certificate of the App Center server %s."
 msgstr "Il y a un problème avec le certificat du serveur d'App Center %s."
 
-#: python/appcenter/utils.py:284
+#: python/appcenter/utils.py:298
 msgid ""
 "There was a problem with the HTTP response of the server (BadStatusLine). "
 "Please try again later."
@@ -68,13 +73,13 @@ msgstr ""
 "Un problème est survenu au niveau de la réponse HTTP du serveur "
 "(BadStatusLine). Veuillez réessayer ultérieurement."
 
-#: python/appcenter/utils.py:262
+#: python/appcenter/utils.py:276
 msgid "This is a problem with the App Center server. Please try again later."
 msgstr ""
 "Ce problème provient du serveur d'App Center. Veuillez réessayer "
 "ultérieurement."
 
-#: python/appcenter/utils.py:278
+#: python/appcenter/utils.py:292
 #, python-format
 msgid ""
 "This is probably due to the DNS settings of your server. You may find help "
@@ -83,7 +88,7 @@ msgstr ""
 "Ceci est probablement lié aux réglages DNS de votre serveur. Vous pouvez "
 "trouver de l'aide à l'adresse %s."
 
-#: python/appcenter/utils.py:275
+#: python/appcenter/utils.py:289
 #, python-format
 msgid ""
 "This may be a problem with the firewall or proxy of your system. You may "
@@ -92,15 +97,15 @@ msgstr ""
 "Le problème provient peut-être du pare-feu ou du serveur mandataire de votre "
 "système. Vous pouvez trouver de l'aide à l'adresse %s."
 
-#: python/appcenter/actions/__init__.py:61
+#: python/appcenter/exceptions.py:333
 msgid ""
-"We are sorry for the inconvenience. Please help us to improve the AppCenter "
+"We are sorry for the inconvenience. Please help us to improve the App Center "
 "and the Apps by sending us the information below."
 msgstr ""
-"Nous sommes désolés de ce désagrément. Merci de nous aider à améliorer "
-"l'AppCenter et les Apps en nous transmettant les informations ci-dessous."
+"Nous sommes désolés de ce désagrément. Merci de nous aider à améliorer l’App "
+"Center et les Apps en nous transmettant les informations ci-dessous."
 
-#: python/appcenter/utils.py:274
+#: python/appcenter/utils.py:288
 #, python-format
 msgid ""
 "https://docs.software-univention.de/manual-%s.html#ip-config:"
@@ -109,8 +114,16 @@ msgstr ""
 "https://docs.software-univention.de/manual-%s.html#ip-config:"
 "Web_proxy_for_caching_and_policy_management__virus_scan"
 
-#: python/appcenter/utils.py:277
+#: python/appcenter/utils.py:291
 #, python-format
 msgid "https://docs.software-univention.de/manual-%s.html#networks:dns"
 msgstr "https://docs.software-univention.de/manual-%s.html#networks:dns"
 
+#~ msgid "Error while contacting Docker registry server %s"
+#~ msgstr "Erreur lors du contact du service d'enregistrement Docker %s"
+
+#~ msgid "Manifest checksum mismatch"
+#~ msgstr "Différences dans la somme de contrôle du manifeste"
+
+#~ msgid "Setup script failed!"
+#~ msgstr "Le script d'installation a échoué"

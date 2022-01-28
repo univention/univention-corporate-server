@@ -37,6 +37,7 @@ a2ensite univention-portal.conf
 . /usr/share/univention-lib/all.sh
 create_logfile /var/log/univention/portal.log "root:adm" 640
 
+eval "$(ucr shell)"
 
 if [ "$1" = "configure" ]; then
 	chmod 700 /var/cache/univention-portal
@@ -58,5 +59,15 @@ systemctl restart univention-portal-server
 
 #configuration for portal when apache2/force_https is setting true
 ucr set apache2/force_https/exclude/request_uri/univention-portal?/univention/get
+
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "4.0.5-74"; then
+	univention-directory-manager portals/entry modify --dn "cn=univentionforum,cn=entry,cn=portals,cn=univention,$ldap_base" \
+		--append displayName='"fr_FR" "Forum Univention (Aide)"' \
+		--append description='"fr_FR" "Forum Univention (Aide)"' \
+	univention-directory-manager portals/category modify --dn "cn=domain-service,cn=category,cn=portals,cn=univention,$ldap_base" \
+		--append displayName='"fr_FR" "Applications"'
+	univention-directory-manager portals/category modify --dn "cn=domain-admin,cn=category,cn=portals,cn=univention,$ldap_base" \
+		--append displayName='"fr_FR" "Administration"'
+fi
 
 exit 0

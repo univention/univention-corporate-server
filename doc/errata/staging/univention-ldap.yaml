@@ -16,4 +16,5 @@ desc: |
    by the Listener/Notifier mechanism. This variable is applicable only to the
    UCS Primary Directory Node. For new installations the default is "yes"
    For updated UCS systems it will not be activated autoamtically.
-bug: [54092, 48626]
+ * The french translations of UDM extended attributes have been updated.
+bug: [54092, 48626, 54029]

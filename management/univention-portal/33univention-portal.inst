@@ -128,8 +128,10 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--set name=univentionforum \
 		--append displayName="\"en_US\" \"Univention Forum (Help)\"" \
 		--append displayName="\"de_DE\" \"Univention Forum (Hilfe)\"" \
+		--append displayName="\"fr_FR\" \"Forum Univention (Aide)\"" \
 		--append description="\"en_US\" \"Univention Forum (Help)\"" \
 		--append description="\"de_DE\" \"Univention Forum (Hilfe)\"" \
+		--append description="\"fr_FR\" \"Forum Univention (Aide)\"" \
 		--append link='"en_US" "https://help.univention.com"' \
 		--set linkTarget=newwindow || die
 	univention-directory-manager portals/entry create "$@" --ignore_exists \
@@ -233,7 +235,8 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--append entries="cn=login-ucs,cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--append entries="cn=login-saml,cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--append displayName='"en_US" "Applications"' \
-		--append displayName='"de_DE" "Applikationen"' || die
+		--append displayName='"de_DE" "Applikationen"' \
+		--append displayName='"fr_FR" "Applications"' || die
 
 	# create admin category
 	univention-directory-manager portals/category create "$@" --ignore_exists \
@@ -241,7 +244,8 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--set name=domain-admin \
 		--append entries="cn=umc-domain,cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--append displayName='"en_US" "Administration"' \
-		--append displayName='"de_DE" "Verwaltung"' || die
+		--append displayName='"de_DE" "Verwaltung"' \
+		--append displayName='"fr_FR" "Administration"' || die
 
 	## CERTIFICATE SUBMENU
 	univention-directory-manager portals/entry create "$@" --ignore_exists \

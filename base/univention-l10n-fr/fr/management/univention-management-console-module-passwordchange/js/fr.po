@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-passwordchange\n"
-"Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
 "PO-Revision-Date: 2017-05-28 20:39+0900\n"
 "Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
@@ -14,32 +14,32 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: js/passwordchange.js:76 js/passwordchange.js:77 js/passwordchange.js:84
+#: js/passwordchange.js:77 js/passwordchange.js:78 js/passwordchange.js:84
+#: js/passwordchange.js:93
 msgid "Change password"
 msgstr "Changer le mot de passe"
 
-#: js/passwordchange.js:65
-#, python-format
+#: js/passwordchange.js:66
+#, javascript-format
 msgid "Change the password of user \"%s\":"
 msgstr "Changer le mot de passe de l'utilisateur \"%s\" :"
 
-#: js/passwordchange.js:55
+#: js/passwordchange.js:56
 msgid "Error changing password"
 msgstr "Erreur lors du changement du mot de passe"
 
-#: js/passwordchange.js:74
+#: js/passwordchange.js:75
 msgid "New password"
 msgstr "Nouveau mot de passe"
 
-#: js/passwordchange.js:53
+#: js/passwordchange.js:54
 msgid "OK"
 msgstr "OK"
 
-#: js/passwordchange.js:69
+#: js/passwordchange.js:70
 msgid "Old password"
 msgstr "Ancien mot de passe"
 
-#: js/passwordchange.js:49
+#: js/passwordchange.js:50
 msgid "The password has been changed successfully."
 msgstr "Le mot de passe a été modifié avec succès."
-

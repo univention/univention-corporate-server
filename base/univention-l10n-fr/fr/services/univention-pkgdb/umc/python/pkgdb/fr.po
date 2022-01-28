@@ -4,20 +4,24 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-pkgdb\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2016-07-06 09:28+0100\n"
-"Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
+"PO-Revision-Date: 2021-11-26 12:04+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Poedit 3.0\n"
 
 #: umc/python/pkgdb/__init__.py:171
 msgid "All properties"
 msgstr "Toutes les propriétés"
+
+#: umc/python/pkgdb/__init__.py:174
+msgid "Backup Directory Node"
+msgstr "Backup Directory Node"
 
 #: umc/python/pkgdb/__init__.py:194
 msgid "Config files only"
@@ -44,22 +48,6 @@ msgstr ""
 "Impossible d'établir une connexion à la base de données.\n"
 "\n"
 "%s"
-
-#: umc/python/pkgdb/__init__.py:180
-msgid "Deinstall"
-msgstr "Désinstaller"
-
-#: umc/python/pkgdb/__init__.py:174
-msgid "Backup Directory Node"
-msgstr "Backup Directory Node"
-
-#: umc/python/pkgdb/__init__.py:173
-msgid "Primary Directory Node"
-msgstr "Primary Directory Node"
-
-#: umc/python/pkgdb/__init__.py:175
-msgid "Replica Directory Node"
-msgstr "Replica Directory Node"
 
 #: umc/python/pkgdb/__init__.py:191
 msgid "Half-configured"
@@ -101,6 +89,10 @@ msgstr "Installé"
 msgid "Inventory date"
 msgstr "Date d'inventaire"
 
+#: umc/python/pkgdb/__init__.py:176
+msgid "Managed Node"
+msgstr "Serveur membre"
+
 #: umc/python/pkgdb/__init__.py:205
 msgid ""
 "Maybe the PostgreSQL server is not running.\n"
@@ -108,10 +100,6 @@ msgid ""
 msgstr ""
 "Le serveur PostgreSQL n'est peut-être pas démarré.\n"
 "Il peut être lancé avec le module UMC « Services du système »."
-
-#: umc/python/pkgdb/__init__.py:176
-msgid "Managed Node"
-msgstr "Serveur membre"
 
 #: umc/python/pkgdb/__init__.py:182 umc/python/pkgdb/__init__.py:189
 msgid "Not installed"
@@ -129,6 +117,10 @@ msgstr "Nom du paquetage"
 msgid "Package state"
 msgstr "État du paquetage"
 
+#: umc/python/pkgdb/__init__.py:173
+msgid "Primary Directory Node"
+msgstr "Primary Directory Node"
+
 #: umc/python/pkgdb/__init__.py:181
 msgid "Purge"
 msgstr "Éliminer"
@@ -136,6 +128,10 @@ msgstr "Éliminer"
 #: umc/python/pkgdb/__init__.py:185
 msgid "Reinstall required"
 msgstr "Réinstallation nécessaire"
+
+#: umc/python/pkgdb/__init__.py:175
+msgid "Replica Directory Node"
+msgstr "Replica Directory Node"
 
 #: umc/python/pkgdb/__init__.py:165
 msgid "Selection state"
@@ -165,6 +161,10 @@ msgstr "La version d'UCS est supérieure à"
 msgid "UCS Version is lower than"
 msgstr "La version d'UCS est inférieure à"
 
+#: umc/python/pkgdb/__init__.py:180
+msgid "Uninstall"
+msgstr "Désinstaller"
+
 #: umc/python/pkgdb/__init__.py:192
 msgid "Uninstalled"
 msgstr "Désinstallé"
@@ -172,3 +172,6 @@ msgstr "Désinstallé"
 #: umc/python/pkgdb/__init__.py:190
 msgid "Unpacked"
 msgstr "Extrait du paquetage"
+
+#~ msgid "Deinstall"
+#~ msgstr "Désinstaller"

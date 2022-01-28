@@ -31,33 +31,55 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.99\n"
-"Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2017-05-28 19:42+0900\n"
-"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
+"PO-Revision-Date: 2021-12-10 13:44+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.0\n"
 
-#: modules/univention/admin/syntax.py:2967
+#: modules/univention/admin/syntax.py:4892
 #, python-format
 msgid "\"%s\" is not a Univention Admin Module."
 msgstr "« %s » n'est pas un module d'administation Univention."
 
-#: modules/univention/admin/syntax.py:2285
+#: modules/univention/admin/syntax.py:3880
 #, python-format
 msgid "%(name)s (%(path)s on %(host)s)"
 msgstr "%(name)s (%(path)s sur %(host)s)"
 
-#: modules/univention/admin/syntax.py:975
+#: modules/univention/admin/syntax.py:1646
+msgid ""
+"A group name must start and end with a letter, number or underscore. In "
+"between additionally spaces, dashes and dots are allowed."
+msgstr ""
+"La valeur ne doit contenir que des chiffres, des lettres et des points."
+
+#: modules/univention/admin/syntax.py:2467
+#: modules/univention/admin/syntax.py:2497
+msgid ""
+"A host name or FQDN must start and end with a letter or number. In between "
+"additionally dashes, dots and underscores are allowed."
+msgstr ""
+"La valeur ne doit contenir que des chiffres, des lettres et des points."
+
+#: modules/univention/admin/syntax.py:5894
+msgid ""
+"A mailing list name must start and end with a letter, number or underscore. "
+"In between additionally spaces, dashes and dots are allowed."
+msgstr ""
+"La valeur ne doit contenir que des chiffres, des lettres et des points."
+
+#: modules/univention/admin/syntax.py:1678
 msgid "A path must begin with \"/\"!"
 msgstr "Un chemin doit commencer par un « / » !"
 
-#: modules/univention/admin/syntax.py:1379
+#: modules/univention/admin/syntax.py:2360
 msgid ""
 "A subnet for reverse lookup consists of the first 1-3 octets of an IPv4 "
 "address (example: \"192.168.0\") or of the first 1 to 31 nibbles of an "
@@ -65,333 +87,315 @@ msgid ""
 "(example: \"2001:0db8:010\" for \"2001:db8:100::/24\")"
 msgstr ""
 "Un sous-réseau, pour une recherche inversée, est constitué des 1 à 3 "
-"premiers octets d'une adresse IPv4 (par exemple « 192.168.0 ») ou des "
-"1 à 31 premiers nibbles d'une adresse IPv6 étendue (y compris les zéros "
-"non significatifs et sans substitution du type :: , par exemple "
-"« 2001:0db8:010 » pour « 2001:db8:100::/24 »)"
+"premiers octets d'une adresse IPv4 (par exemple « 192.168.0 ») ou des 1 à 31 "
+"premiers nibbles d'une adresse IPv6 étendue (y compris les zéros non "
+"significatifs et sans substitution du type :: , par exemple « 2001:0db8:010 "
+"» pour « 2001:db8:100::/24 »)"
 
-#: modules/univention/admin/syntax.py:1858
+#: modules/univention/admin/syntax.py:3239
 msgid "Above primary display"
 msgstr "Au-dessus de l'affichage principal"
 
-#: modules/univention/admin/syntax.py:1712
-#: modules/univention/admin/syntax.py:1716
-#: modules/univention/admin/syntax.py:1720
-#: modules/univention/admin/syntax.py:1724
+#: modules/univention/admin/syntax.py:2978
+#: modules/univention/admin/syntax.py:2987
+#: modules/univention/admin/syntax.py:2996
+#: modules/univention/admin/syntax.py:3005
 msgid "Access right"
 msgstr "Droit d'accès"
 
-#: modules/univention/admin/syntax.py:2911
+#: modules/univention/admin/syntax.py:4705
 msgid "Add machines to domain"
 msgstr "Ajouter des machines au domaine"
 
-#: modules/univention/admin/syntax.py:2918
+#: modules/univention/admin/syntax.py:4712
 msgid "Add users and groups to the domain"
 msgstr "Ajouter des utilisateurs et des groupes au domaine"
 
-#: modules/univention/admin/syntax.py:1609
+#: modules/univention/admin/syntax.py:2817
 msgid "Address"
 msgstr "Adresse"
 
-#: modules/univention/admin/syntax.py:2243
+#: modules/univention/admin/syntax.py:3815
 msgid "Alias"
 msgstr "Alias"
 
-#: modules/univention/admin/syntax.py:1683
+#: modules/univention/admin/syntax.py:2936
 msgid "All"
 msgstr "Tous"
 
-#: modules/univention/admin/syntax.py:3037
-msgid "All Clients"
-msgstr "Tous les clients"
-
-#: modules/univention/admin/syntax.py:3238
-msgid "All disabled"
-msgstr "Tous les désactivés"
-
-#: modules/univention/admin/syntax.py:207
-#: modules/univention/admin/syntax.py:294
-#: modules/univention/admin/syntax.py:317
+#: modules/univention/admin/syntax.py:321
+#: modules/univention/admin/syntax.py:499
+#: modules/univention/admin/syntax.py:541
 msgid "An empty value is not allowed"
 msgstr "Une valeur vide n'est pas autorisée"
 
-#: modules/univention/admin/syntax.py:1691
+#: modules/univention/admin/uexceptions.py:430
+msgid "An object with the name already exists in the subtree position"
+msgstr ""
+"Un objet portant le nom existe déjà dans la position de la sous-arborescence"
+
+#: modules/univention/admin/syntax.py:2947
 msgid "Anyone"
 msgstr "N'importe qui"
 
-#: modules/univention/admin/syntax.py:1681
+#: modules/univention/admin/syntax.py:2934
 msgid "Append"
 msgstr "Ajouter"
 
-#: modules/univention/admin/syntax.py:2704
+#: modules/univention/admin/syntax.py:4424
 msgid "April"
 msgstr "Avril"
 
-#: modules/univention/admin/nagios.py:69
+#: modules/univention/admin/nagios.py:66
 msgid "Assigned Nagios services"
 msgstr "Services Nagios assignés"
 
-#: modules/univention/admin/syntax.py:2708
+#: modules/univention/admin/syntax.py:4428
 msgid "August"
 msgstr "Août"
 
-#: modules/univention/admin/uexceptions.py:105
+#: modules/univention/admin/uexceptions.py:113
 msgid "Authentication Failed."
 msgstr "Échec de l'authentification."
 
-#: modules/univention/admin/uldap.py:332 modules/univention/admin/uldap.py:334
-#: modules/univention/admin/uldap.py:343 modules/univention/admin/uldap.py:345
-#: modules/univention/admin/uldap.py:352
+#: modules/univention/admin/uldap.py:475 modules/univention/admin/uldap.py:477
+#: modules/univention/admin/uldap.py:493 modules/univention/admin/uldap.py:495
+#: modules/univention/admin/uldap.py:508
 msgid "Authentication failed"
 msgstr "Échec de l'authentification"
 
-#: modules/univention/admin/syntax.py:2339
+#: modules/univention/admin/syntax.py:3995
 msgid "Auto"
 msgstr "Automatique"
 
-#: modules/univention/admin/syntax.py:2914
+#: modules/univention/admin/syntax.py:4708
 msgid "Back up files and directories"
 msgstr "Sauvegarder les fichiers et répertoires"
 
-#: modules/univention/admin/syntax.py:1859
+#: modules/univention/admin/syntax.py:4728
+msgid "Backup Directory Node"
+msgstr "Backup Directory Node"
+
+#: modules/univention/admin/syntax.py:3240
 msgid "Below primary display"
 msgstr "En-dessous de l'affichage principal"
 
-#: modules/univention/admin/locking.py:79
-#: modules/univention/admin/locking.py:96
-#: modules/univention/admin/locking.py:118
+#: modules/univention/admin/types.py:400
+#, python-format
+msgid "Binary data have invalid encoding (expected: %s)."
+msgstr "Les données binaires ont un codage invalide (attendu : %s)."
+
+#: modules/univention/admin/syntax.py:5624
+msgid "Black"
+msgstr "Noir"
+
+#: modules/univention/admin/locking.py:102
+#: modules/univention/admin/locking.py:119
+#: modules/univention/admin/locking.py:152
 #, python-format
 msgid "Can not modify lock time of %r."
 msgstr "Impossible de modifier la durée de verrouillage de %r."
 
-#: modules/univention/admin/uexceptions.py:243
+#: modules/univention/admin/uexceptions.py:251
 msgid "Cannot overwrite a fixed attribute."
 msgstr "Impossible d'écraser un attribut fixe."
 
-#: modules/univention/admin/uexceptions.py:406
+#: modules/univention/admin/uexceptions.py:410
 msgid "Circular group dependency detected: "
-msgstr "Dépendance circulaire de groupe détectée :"
+msgstr "Dépendance de groupe circulaire détectée : "
 
-#: modules/univention/admin/syntax.py:1540
+#: modules/univention/admin/syntax.py:2598
 msgid "City"
 msgstr "Ville"
 
-#: modules/univention/admin/syntax.py:1656
+#: modules/univention/admin/syntax.py:2896
 msgid "Command pattern"
 msgstr "Motif de la commande"
 
-#: modules/univention/admin/uexceptions.py:101
+#: modules/univention/admin/uexceptions.py:109
 msgid "Could not acquire lock."
 msgstr "Impossible d'obtenir le verrou."
 
-#: modules/univention/admin/modules.py:381
+#: modules/univention/admin/modules.py:498
 msgid "Custom"
 msgstr "Personnalisé"
 
-#: modules/univention/admin/syntax.py:2262
+#: modules/univention/admin/syntax.py:3846
 msgid "DHCP Entry"
 msgstr "Entrée DHCP"
 
-#: modules/univention/admin/syntax.py:2278
+#: modules/univention/admin/syntax.py:3867
 msgid "DHCP option"
 msgstr "Option DHCP"
 
-#: modules/univention/admin/uexceptions.py:203
+#: modules/univention/admin/uexceptions.py:211
 msgid "DHCP server name already used: "
-msgstr "Le nom du serveur DHCP est déjà utilisé :"
+msgstr "Le nom du serveur DHCP est déjà utilisé : "
 
-#: modules/univention/admin/syntax.py:2249
-#: modules/univention/admin/syntax.py:2258
+#: modules/univention/admin/syntax.py:3825
+#: modules/univention/admin/syntax.py:3841
 msgid "DHCP service"
 msgstr "Service DHCP"
 
-#: modules/univention/admin/syntax.py:2224
+#: modules/univention/admin/syntax.py:3783
 msgid "DNS Entry"
 msgstr "Enregistrement DNS"
 
-#: modules/univention/admin/syntax.py:2242
+#: modules/univention/admin/syntax.py:3814
 msgid "DNS Entry Alias"
 msgstr "Enregistrement DNS d'alias"
 
-#: modules/univention/admin/syntax.py:2231
+#: modules/univention/admin/syntax.py:3794
 msgid "DNS Entry Reverse"
 msgstr "Enregistrement DNS inverse"
 
-#: modules/univention/admin/uexceptions.py:398
+#: modules/univention/admin/uexceptions.py:402
 msgid "DNS Forward Zone entry required to assign Nagios services!"
 msgstr ""
 "L'enregistrement DNS de zone de transmission (forward zone) est nécessaire "
 "pour assigner les services Nagios !"
 
-#: modules/univention/admin/uexceptions.py:171
+#: modules/univention/admin/uexceptions.py:179
 msgid "DNS alias is already in use."
 msgstr "L'alias DNS est déjà utilisé."
 
-#: modules/univention/admin/syntax.py:2209
-#: modules/univention/admin/syntax.py:2225
-#: modules/univention/admin/syntax.py:2243
+#: modules/univention/admin/syntax.py:3736
+#: modules/univention/admin/syntax.py:3784
+#: modules/univention/admin/syntax.py:3815
 msgid "DNS forward zone"
 msgstr "Zone de transmission DNS"
 
-#: modules/univention/admin/syntax.py:2216
-#: modules/univention/admin/syntax.py:2232
+#: modules/univention/admin/syntax.py:3750
+#: modules/univention/admin/syntax.py:3795
 msgid "DNS reverse zone"
 msgstr "Zone DNS inversée"
 
-#: modules/univention/admin/syntax.py:2712
+#: modules/univention/admin/syntax.py:5911
+msgid "Date"
+msgstr "Date"
+
+#: modules/univention/admin/types.py:431
+msgid "Date does not match format \"%Y-%m-%d\"."
+msgstr "La date ne correspond pas au format « %Y-%m-%d »."
+
+#: modules/univention/admin/types.py:495
+msgid "Datetime does not match format \"%Y-%m-%dT%H:%M:%S\"."
+msgstr ""
+"La date et l’heure ne correspondent pas au format « %Y-%m-%dT%H:%M:%S »."
+
+#: modules/univention/admin/syntax.py:4432
 msgid "December"
 msgstr "Décembre"
 
-#: modules/univention/admin/uexceptions.py:207
+#: modules/univention/admin/uexceptions.py:215
 msgid "Default Kolab home server does not exist"
 msgstr "Le serveur Kolab par défaut n'existe pas"
 
-#: modules/univention/admin/uexceptions.py:211
+#: modules/univention/admin/uexceptions.py:219
 msgid "Default primary group does not exist"
 msgstr "Le groupe principal par défaut n'existe pas"
 
-#: modules/univention/admin/syntax.py:3309
-#: modules/univention/admin/syntax.py:3407
+#: modules/univention/admin/syntax.py:5373
+#: modules/univention/admin/syntax.py:5654
 msgid "Description"
 msgstr "Description"
 
-#: modules/univention/admin/syntax.py:3335
+#: modules/univention/admin/syntax.py:5428
 msgid "Destination"
 msgstr "Destination"
 
-#: modules/univention/admin/syntax.py:3047
-#: modules/univention/admin/syntax.py:3060
-msgid "Disabled"
-msgstr "Désactivé"
-
-#: modules/univention/admin/syntax.py:3027
-msgid "Disconnect"
-msgstr "Déconnecter"
-
-#: modules/univention/admin/syntax.py:3403
+#: modules/univention/admin/syntax.py:5647
 msgid "Display Name"
-msgstr "Nom à l'affichage"
+msgstr "Nom affiché"
 
-#: modules/univention/admin/syntax.py:2877
+#: modules/univention/admin/syntax.py:4627
 msgid "Domain Group"
 msgstr "Groupe du domaine"
 
-#: modules/univention/admin/syntax.py:2889
+#: modules/univention/admin/syntax.py:4642
 msgid "Domain local (Type: Security)"
 msgstr "Domaine local (type : sécurité)"
 
-#: modules/univention/admin/syntax.py:2927
-msgid "Backup Directory Node"
-msgstr "Backup Directory Node"
-
-#: modules/univention/admin/syntax.py:2926
-msgid "Primary Directory Node"
-msgstr "Primary Directory Node"
-
-#: modules/univention/admin/syntax.py:2928
-msgid "Replica Directory Node"
-msgstr "Replica Directory Node"
-
-#: modules/univention/admin/syntax.py:3309
+#: modules/univention/admin/syntax.py:5373
 msgid "Driver"
 msgstr "Pilote"
 
-#: modules/univention/admin/uexceptions.py:319
+#: modules/univention/admin/types.py:540
+msgid "Duplicated entries."
+msgstr "Entrées dupliquées."
+
+#: modules/univention/admin/uexceptions.py:323
 msgid "During this session add and modify are disabled"
 msgstr "L'ajout et la modification sont désactivés au cours de cette session"
 
-#: modules/univention/admin/uexceptions.py:247
+#: modules/univention/admin/uexceptions.py:255
 msgid "Dynamic BOOTP leases are not compatible with failover."
 msgstr ""
 "Les baux BOOTP dynamiques ne sont pas compatibles avec le basculement en cas "
 "de panne."
 
-#: modules/univention/admin/nagios.py:49
+#: modules/univention/admin/nagios.py:52
 msgid "Email address of Nagios contacts"
 msgstr "Adresse électronique des contacts Nagios"
 
-#: modules/univention/admin/policy.py:104
+#: modules/univention/admin/policy.py:101
 msgid "Empty attribute"
 msgstr "Attribut vide"
 
-#: modules/univention/admin/syntax.py:1005
+#: modules/univention/admin/syntax.py:1730
 msgid "Empty password not allowed!"
 msgstr "Un mot de passe vide n'est pas autorisé !"
 
-#: modules/univention/admin/uexceptions.py:363
+#: modules/univention/admin/uexceptions.py:367
 msgid "Empty printer groups are not possible."
 msgstr "Des groupes d'imprimantes vides sont impossibles."
 
-#: modules/univention/admin/syntax.py:3051
-msgid "Enabled: Input: off, Message: off"
-msgstr "Activé : entrée : non, message : non"
-
-#: modules/univention/admin/syntax.py:3050
-msgid "Enabled: Input: off, Message: on"
-msgstr "Activé : entrée : non, message : oui"
-
-#: modules/univention/admin/syntax.py:3049
-msgid "Enabled: Input: on, Message: off"
-msgstr "Activé : entrée : oui, message : non"
-
-#: modules/univention/admin/syntax.py:3048
-msgid "Enabled: Input: on, Message: on"
-msgstr "Activé : entrée : oui, message : oui"
-
-#: modules/univention/admin/syntax.py:3062
-msgid "Enabled: No Call Back"
-msgstr "Activé : aucun rappel"
-
-#: modules/univention/admin/syntax.py:3061
-msgid "Enabled: Set by Caller"
-msgstr "Activé : défini par l'appelant"
-
-#: modules/univention/admin/syntax.py:3456
+#: modules/univention/admin/syntax.py:5717
 #, python-format
 msgid "Error: %(text)s - %(exc)s"
 msgstr "Erreur : %(text)s - %(exc)s"
 
-#: modules/univention/admin/syntax.py:1577
+#: modules/univention/admin/syntax.py:2767
 msgid "Ethernet"
 msgstr "Ethernet"
 
-#: modules/univention/admin/policy.py:75
+#: modules/univention/admin/policy.py:78
 msgid "Excluded object class"
 msgstr "Classe d'objet exclue"
 
-#: modules/univention/admin/syntax.py:1522
+#: modules/univention/admin/syntax.py:2560
 msgid "Extension"
 msgstr "Extension"
 
-#: modules/univention/admin/syntax.py:1577
+#: modules/univention/admin/syntax.py:2768
 msgid "FDDI"
 msgstr "FDDI"
 
-#: modules/univention/admin/syntax.py:508
+#: modules/univention/admin/syntax.py:938
 msgid "Failed to convert PNG file into JPEG format."
 msgstr "Échec de la conversion du fichier PNG au format JPEG."
 
-#: modules/univention/admin/syntax.py:2349
-#: modules/univention/admin/syntax.py:2357
-#: modules/univention/admin/syntax.py:2364
+#: modules/univention/admin/syntax.py:4013
+#: modules/univention/admin/syntax.py:4035
+#: modules/univention/admin/syntax.py:4052
 msgid "False"
 msgstr "Faux"
 
-#: modules/univention/admin/syntax.py:2702
+#: modules/univention/admin/syntax.py:4422
 msgid "February"
 msgstr "Février"
 
-#: modules/univention/admin/syntax.py:871
+#: modules/univention/admin/syntax.py:1496
 msgid "Field must only contain ASCII characters!"
 msgstr "Le champ ne doit contenir que des caractères ASCII !"
 
-#: modules/univention/admin/syntax.py:412
+#: modules/univention/admin/syntax.py:743
 #, python-format
 msgid "Filename must not contain slashes: %s"
 msgstr "Le nom du fichier ne peut pas contenir de barres obliques : %s"
 
-#: modules/univention/admin/syntax.py:1178
-#: modules/univention/admin/syntax.py:1203
+#: modules/univention/admin/syntax.py:1973
+#: modules/univention/admin/syntax.py:2027
 msgid "First address"
 msgstr "Première adresse"
 
@@ -399,257 +403,266 @@ msgstr "Première adresse"
 msgid "Fixed attribute"
 msgstr "Attribut fixe"
 
-#: modules/univention/admin/syntax.py:2916
+#: modules/univention/admin/syntax.py:5502
+msgid "Footer"
+msgstr "Pied de page"
+
+#: modules/univention/admin/syntax.py:4710
 msgid "Force shutdown from a remote system"
 msgstr "Forcer l'arrêt d'un système distant"
 
-#: modules/univention/admin/syntax.py:2897
+#: modules/univention/admin/syntax.py:4667
 msgid "Fri"
 msgstr "Ven"
 
-#: modules/univention/admin/syntax.py:2724
+#: modules/univention/admin/syntax.py:4447
 msgid "Friday"
 msgstr "Vendredi"
 
-#: modules/univention/admin/syntax.py:2195
+#: modules/univention/admin/syntax.py:3712
 msgid "From known-hosts pool"
 msgstr "Depuis un réservoir d'hôtes connus"
 
-#: modules/univention/admin/syntax.py:1423
+#: modules/univention/admin/syntax.py:2414
 msgid "Full domain name must be between 1 and 253 characters long!"
 msgstr "Le nom de domaine complet doit comporter entre 1 et 253 caractères !"
 
-#: modules/univention/admin/syntax.py:1469
+#: modules/univention/admin/syntax.py:2463
 msgid "Full name must not be all numeric!"
 msgstr "Le nom complet ne peut pas être exclusivement numérique !"
 
-#: modules/univention/admin/syntax.py:571
+#: modules/univention/admin/syntax.py:1102
+#: modules/univention/admin/syntax.py:1114
 msgid "GNU message catalog"
 msgstr "Catalogue de messages GNU"
 
-#: modules/univention/admin/syntax.py:2891
+#: modules/univention/admin/syntax.py:4644
 msgid "Global (Type: Distribution)"
 msgstr "Global (type : distribution)"
 
-#: modules/univention/admin/syntax.py:2887
+#: modules/univention/admin/syntax.py:4640
 msgid "Global (Type: Security)"
 msgstr "Global (type : sécurité)"
 
-#: modules/univention/admin/syntax.py:1716
-#: modules/univention/admin/syntax.py:1724
-#: modules/univention/admin/syntax.py:3284
-#: modules/univention/admin/syntax.py:3288
+#: modules/univention/admin/syntax.py:2987
+#: modules/univention/admin/syntax.py:3005
+#: modules/univention/admin/syntax.py:5319
+#: modules/univention/admin/syntax.py:5331
 msgid "Group"
 msgstr "Groupe"
 
-#: modules/univention/admin/syntax.py:3013
-msgid "Groupware Account"
-msgstr "Compte du collecticiel"
-
-#: modules/univention/admin/syntax.py:3284
-#: modules/univention/admin/syntax.py:3288
-#: modules/univention/admin/syntax.py:3292
+#: modules/univention/admin/syntax.py:5319
+#: modules/univention/admin/syntax.py:5331
+#: modules/univention/admin/syntax.py:5343
 msgid "Hard limit (pages)"
 msgstr "Limite dure (pages)"
 
-#: modules/univention/admin/syntax.py:1671
+#: modules/univention/admin/syntax.py:2921
 msgid "IMAP"
 msgstr "IMAP"
 
-#: modules/univention/admin/syntax.py:2225
-#: modules/univention/admin/syntax.py:2232
-#: modules/univention/admin/syntax.py:2259
+#: modules/univention/admin/syntax.py:3784
+#: modules/univention/admin/syntax.py:3795
+#: modules/univention/admin/syntax.py:3842
 msgid "IP address"
 msgstr "Adresse IP"
 
-#: modules/univention/admin/uexceptions.py:394
+#: modules/univention/admin/uexceptions.py:398
 msgid "IP address entry required to assign Nagios services!"
 msgstr ""
 "Un enregistrement d'adresse IP est nécessaire pour assigner les services "
 "Nagios !"
 
-#: modules/univention/admin/uexceptions.py:167
+#: modules/univention/admin/uexceptions.py:175
 msgid "IP address is already in use."
 msgstr "L'adresse IP est déjà utilisée."
 
-#: modules/univention/admin/syntax.py:3466
+#: modules/univention/admin/syntax.py:5730
 msgid "Ignore this object in standard UDM modules"
 msgstr "Ignorer cet objet dans les modules UDM standards"
 
-#: modules/univention/admin/syntax.py:1191
-#: modules/univention/admin/syntax.py:1195
+#: modules/univention/admin/syntax.py:1988
+#: modules/univention/admin/syntax.py:1993
 msgid "Illegal range"
 msgstr "Intervalle invalide"
 
-#: modules/univention/admin/syntax.py:3007
+#: modules/univention/admin/syntax.py:4944
 msgid "Immediately"
 msgstr "Immédiatement"
 
-#: modules/univention/admin/uexceptions.py:73
+#: modules/univention/admin/uexceptions.py:74
 msgid "Information provided is not sufficient."
 msgstr "Les informations fournies ne sont pas suffisantes."
 
-#: modules/univention/admin/syntax.py:387
+#: modules/univention/admin/syntax.py:692
 #, python-format
 msgid "Invalid UCS version: %s"
 msgstr "Version UCS invalide : %s"
 
-#: modules/univention/admin/syntax.py:399
+#: modules/univention/admin/syntax.py:721
 #, python-format
 msgid "Invalid character in debian package version: %s"
 msgstr "Caractère invalide dans la version du paquetage Debian : %s"
 
-#: modules/univention/admin/uexceptions.py:347
+#: modules/univention/admin/syntax.py:3918
+msgid "Invalid choice."
+msgstr "Choix invalide."
+
+#: modules/univention/admin/uexceptions.py:351
 msgid "Invalid combination of options."
 msgstr "Combinaison d'options invalide."
 
-#: modules/univention/admin/syntax.py:3360
-msgid "Invalid syntax"
-msgstr "Syntaxe invalide"
+#: modules/univention/admin/mapping.py:555
+#: modules/univention/admin/mapping.py:595
+#, python-format
+msgid "Invalid encoding for %s"
+msgstr "Codage invalide pour %s"
 
-#: modules/univention/admin/uexceptions.py:383
+#: modules/univention/admin/types.py:640
+msgid "Invalid format for SambaLogonHours."
+msgstr "Format invalide pour SambaLogonHours."
+
+#: modules/univention/admin/uexceptions.py:387
 #, python-format
 msgid "Invalid syntax in default value. Check these templates: %s."
 msgstr "Syntaxe invalide pour la valeur par défaut. Vérifiez ces modèles : %s."
 
-#: modules/univention/admin/uexceptions.py:89
+#: modules/univention/admin/uexceptions.py:97
 msgid "Invalid syntax."
 msgstr "Syntaxe invalide."
 
-#: modules/univention/admin/syntax.py:144
-#: modules/univention/admin/syntax.py:198
-#: modules/univention/admin/syntax.py:312
+#: modules/univention/admin/syntax.py:5450
+#, python-format
+msgid "Invalid syntax: %s > %s"
+msgstr "Syntaxe invalide : %s > %s"
+
+#: modules/univention/admin/syntax.py:227
+#: modules/univention/admin/syntax.py:308
+#: modules/univention/admin/syntax.py:535
 msgid "Invalid value"
 msgstr "Valeur invalide"
 
-#: modules/univention/admin/syntax.py:2701
+#: modules/univention/admin/syntax.py:4421
 msgid "January"
 msgstr "Janvier"
 
-#: modules/univention/admin/syntax.py:2707
+#: modules/univention/admin/syntax.py:4427
 msgid "July"
 msgstr "Juillet"
 
-#: modules/univention/admin/syntax.py:2706
+#: modules/univention/admin/syntax.py:4426
 msgid "June"
 msgstr "Juin"
 
-#: modules/univention/admin/syntax.py:3014
-msgid "Kerberos Principal"
-msgstr "Principal Kerberos"
+#: modules/univention/admin/syntax.py:2076
+msgid "Keep e-mails and forward a copy"
+msgstr "Conserver les e-mails et transférer une copie"
 
-#: modules/univention/admin/syntax.py:3241
-msgid "Kerberos disabled"
-msgstr "Kerberos est désactivé"
-
-#: modules/univention/admin/syntax.py:1504
+#: modules/univention/admin/syntax.py:2526
 msgid "Key"
 msgstr "Clé"
 
-#: modules/univention/admin/uexceptions.py:57
+#: modules/univention/admin/uexceptions.py:58
 msgid "LDAP Error"
 msgstr "Erreur LDAP"
 
-#: modules/univention/admin/policy.py:118
+#: modules/univention/admin/policy.py:112
 msgid "LDAP filter"
 msgstr "Filtre LDAP"
 
-#: modules/univention/admin/syntax.py:1426
+#: modules/univention/admin/syntax.py:2417
 msgid "Labels must be between 1 and 63 characters long!"
 msgstr "Les étiquettes doivent comporter entre 1 et 63 caractères !"
 
-#: modules/univention/admin/syntax.py:3215
-#: modules/univention/admin/syntax.py:3220
-#: modules/univention/admin/syntax.py:3224
-#: modules/univention/admin/syntax.py:3228
-#: modules/univention/admin/syntax.py:3232
-#: modules/univention/admin/syntax.py:3403
-#: modules/univention/admin/syntax.py:3407
+#: modules/univention/admin/syntax.py:5184
+#: modules/univention/admin/syntax.py:5193
+#: modules/univention/admin/syntax.py:5200
+#: modules/univention/admin/syntax.py:5207
+#: modules/univention/admin/syntax.py:5214
+#: modules/univention/admin/syntax.py:5647
+#: modules/univention/admin/syntax.py:5654
+#: modules/univention/admin/syntax.py:5662
 msgid "Language code (e.g. en_US)"
 msgstr "Code de langue (ex. : fr_FR)"
 
-#: modules/univention/admin/syntax.py:3210
+#: modules/univention/admin/syntax.py:5176
 msgid "Language code must be in format \"xx_XX\"!"
 msgstr "Le code de langue doit suivre le format « xx_XX » !"
 
-#: modules/univention/admin/syntax.py:1179
-#: modules/univention/admin/syntax.py:1204
+#: modules/univention/admin/syntax.py:1974
+#: modules/univention/admin/syntax.py:2028
 msgid "Last address"
 msgstr "Dernière adresse"
 
-#: modules/univention/admin/syntax.py:1856
+#: modules/univention/admin/syntax.py:3237
 msgid "Left of primary display"
 msgstr "À gauche de l'affichage principal"
 
-#: modules/univention/admin/syntax.py:2890
+#: modules/univention/admin/syntax.py:5511
+msgid "Link"
+msgstr "Lien"
+
+#: modules/univention/admin/syntax.py:4643
 msgid "Local (Type: Distribution)"
 msgstr "Local (type : distribution)"
 
-#: modules/univention/admin/syntax.py:2886
+#: modules/univention/admin/syntax.py:4639
 msgid "Local (Type: Security)"
 msgstr "Local (type : sécurité)"
 
-#: modules/univention/admin/syntax.py:2878
+#: modules/univention/admin/syntax.py:4628
 msgid "Local Group"
 msgstr "Groupe local"
 
-#: modules/univention/admin/syntax.py:571
+#: modules/univention/admin/syntax.py:5511
+msgid "Locale"
+msgstr "Paramètres régionaux"
+
+#: modules/univention/admin/syntax.py:1102
 msgid "Locale subdir name"
 msgstr "Nom du sous-répertoire du paramètre régional"
 
-#: modules/univention/admin/syntax.py:3254
-msgid "Lock POSIX/LDAP only"
-msgstr "Verrouiller uniquement POSIX / LDAP"
-
-#: modules/univention/admin/syntax.py:3253
-msgid "Lock Windows/Kerberos only"
-msgstr "Verrouiller uniquement Windows / Kerberos"
-
-#: modules/univention/admin/syntax.py:3252
-msgid "Lock all login methods"
-msgstr "Verrouiller toutes les méthodes d'authentification"
-
-#: modules/univention/admin/syntax.py:2260
+#: modules/univention/admin/syntax.py:3843
 msgid "MAC address"
 msgstr "Adresse MAC"
 
-#: modules/univention/admin/syntax.py:3018
-msgid "Mail Account"
-msgstr "Compte de courriel"
-
-#: modules/univention/admin/syntax.py:1509
+#: modules/univention/admin/syntax.py:2538
 msgid "Mail server"
 msgstr "Serveur de courriel"
 
-#: modules/univention/admin/syntax.py:2912
+#: modules/univention/admin/syntax.py:4706
 msgid "Manage auditing and security log"
 msgstr "Gérer les journaux de vérification et de sécurité"
 
-#: modules/univention/admin/syntax.py:2919
+#: modules/univention/admin/syntax.py:4713
 msgid "Manage disk shares"
 msgstr "Gérer les partages de disques"
 
-#: modules/univention/admin/syntax.py:2917
+#: modules/univention/admin/syntax.py:4711
 msgid "Manage printers"
 msgstr "Gérer les imprimantes"
 
-#: modules/univention/admin/syntax.py:2703
+#: modules/univention/admin/syntax.py:4730
+msgid "Managed Node"
+msgstr "Managed Node"
+
+#: modules/univention/admin/syntax.py:4423
 msgid "March"
 msgstr "Mars"
 
-#: modules/univention/admin/syntax.py:3464
+#: modules/univention/admin/syntax.py:5728
 msgid "Mark this object as hidden"
 msgstr "Marquer cet objet comme masqué"
 
-#: modules/univention/admin/syntax.py:3465
+#: modules/univention/admin/syntax.py:5729
 msgid "Mark this object as temporary"
 msgstr "Marquer cet objet comme temporaire"
 
-#: modules/univention/admin/syntax.py:2705
+#: modules/univention/admin/syntax.py:4425
 msgid "May"
 msgstr "Mai"
 
-#: modules/univention/admin/syntax.py:3375
+#: modules/univention/admin/syntax.py:5475
 msgid ""
 "May only contain letters (except umlauts), digits, space as well as the "
 "characters # ! $ % & | ^ . ~ _ -. Has to begin with a letter or digit and "
@@ -660,428 +673,451 @@ msgstr ""
 "commencer par une lettre ou un chiffre et ne doit pas se terminer par un "
 "espace."
 
-#: modules/univention/admin/syntax.py:2929
-msgid "Memberserver"
-msgstr "Serveur membre"
+#: modules/univention/admin/syntax.py:5662
+msgid "Message that is shown to anonymous visitors when the portal is empty"
+msgstr "Message affiché pour les visites anonymes lorsque le portail est vide"
 
-#: modules/univention/admin/syntax.py:241
-msgid "Missing argument"
-msgstr "Valeur manquante"
+#: modules/univention/admin/syntax.py:368
+#, python-format
+msgid "Missing argument: %s > %s"
+msgstr "Argument manquant : %s > %s"
 
-#: modules/univention/admin/syntax.py:1420
+#: modules/univention/admin/syntax.py:2411
 msgid "Missing value!"
 msgstr "Valeur manquante !"
 
-#: modules/univention/admin/syntax.py:2897
+#: modules/univention/admin/syntax.py:4663
 msgid "Mon"
 msgstr "Lun"
 
-#: modules/univention/admin/syntax.py:2720
+#: modules/univention/admin/syntax.py:4443
 msgid "Monday"
 msgstr "Lundi"
 
-#: modules/univention/admin/uldap.py:505
+#: modules/univention/admin/uldap.py:830
 msgid "Moving children is not supported."
 msgstr "Il n'est pas possible de déplacer les enfants."
 
-#: modules/univention/admin/syntax.py:3196
+#: modules/univention/admin/types.py:558
+#, python-format
+msgid "Must have at least %d values."
+msgstr "Doit avoir au moins %d valeurs."
+
+#: modules/univention/admin/syntax.py:5147
 msgid "NFS share"
 msgstr "Partage NFS"
 
-#: modules/univention/admin/nagios.py:85
+#: modules/univention/admin/nagios.py:79
 msgid "Nagios Notification Settings"
 msgstr "Réglages des notifications Nagios"
 
-#: modules/univention/admin/nagios.py:81
+#: modules/univention/admin/nagios.py:75
 msgid "Nagios Service Settings"
 msgstr "Réglages du service Nagios"
 
-#: modules/univention/admin/nagios.py:85
+#: modules/univention/admin/nagios.py:79
 msgid "Nagios notification"
 msgstr "Notification Nagios"
 
-#: modules/univention/admin/nagios.py:81
+#: modules/univention/admin/nagios.py:75
 msgid "Nagios services"
 msgstr "Services Nagios"
 
-#: modules/univention/admin/nagios.py:98
+#: modules/univention/admin/nagios.py:92
 msgid "Nagios support"
 msgstr "Assistance Nagios"
 
-#: modules/univention/admin/syntax.py:2277
+#: modules/univention/admin/syntax.py:3864
+#: modules/univention/admin/syntax.py:5511
 msgid "Name"
 msgstr "Nom"
 
-#: modules/univention/admin/uexceptions.py:414
+#: modules/univention/admin/uexceptions.py:418
 msgid ""
 "Need a primary group with samba option to create a user with samba option"
 msgstr ""
 "Un groupe principal avec l'option Samba est nécessaire pour créer un "
 "utilisateur avec une telle option"
 
-#: modules/univention/admin/syntax.py:2184
+#: modules/univention/admin/syntax.py:3695
 msgid "Network"
 msgstr "Réseau"
 
-#: modules/univention/admin/uexceptions.py:331
+#: modules/univention/admin/uexceptions.py:335
 msgid "Network and IP range are incompatible."
 msgstr "Le réseau et la plage d'IP sont incompatibles."
 
-#: modules/univention/admin/uexceptions.py:187
+#: modules/univention/admin/syntax.py:5631
+#: modules/univention/admin/syntax.py:5639
+msgid "New tab"
+msgstr "Nouvel onglet"
+
+#: modules/univention/admin/uexceptions.py:195
 msgid "Next IP address not found."
 msgstr "Adresse IP suivante non trouvée."
 
-#: modules/univention/admin/syntax.py:2333
-#: modules/univention/admin/syntax.py:2341
+#: modules/univention/admin/syntax.py:3985
+#: modules/univention/admin/syntax.py:3997
 msgid "No"
 msgstr "Non"
 
-#: modules/univention/admin/syntax.py:3006
+#: modules/univention/admin/syntax.py:4943
 msgid "No Reboot"
 msgstr "Pas de redémarrage"
 
-#: modules/univention/admin/syntax.py:1678
+#: modules/univention/admin/syntax.py:2931
 msgid "No access"
 msgstr "Pas d'accès"
 
-#: modules/univention/admin/uexceptions.py:251
+#: modules/univention/admin/uexceptions.py:259
 msgid "No license found."
 msgstr "Pas de licence trouvée."
 
-#: modules/univention/admin/uexceptions.py:49
+#: modules/univention/admin/uexceptions.py:50
 msgid "No such object."
 msgstr "Objet demandé non trouvé."
 
-#: modules/univention/admin/uexceptions.py:77
+#: modules/univention/admin/uexceptions.py:82
 msgid "No such property."
 msgstr "Propriété demandée non trouvée."
 
-#: modules/univention/admin/syntax.py:402
+#: modules/univention/admin/syntax.py:724
 #, python-format
 msgid "Non-integer epoch in debian package version: %s"
 msgstr "Version du paquetage Debian avec une ère non entière : %s"
 
-#: modules/univention/admin/syntax.py:3237
-#: modules/univention/admin/syntax.py:3251
-msgid "None"
-msgstr "Aucun"
-
-#: modules/univention/admin/syntax.py:556
+#: modules/univention/admin/syntax.py:1042
 #, python-format
 msgid "Not Base64 encoded GNU message catalog (.mo) data: %s"
 msgstr ""
 "Pas des données de catalogues de messages (« .mo ») au format Base64 : %s"
 
-#: modules/univention/admin/syntax.py:531
+#: modules/univention/admin/syntax.py:989
 #, python-format
 msgid "Not Base64 encoded XML data: %s"
 msgstr "Pas des données XML au format Base64 : %s"
 
-#: modules/univention/admin/syntax.py:2371
+#: modules/univention/admin/syntax.py:4067
 msgid "Not OK"
 msgstr "Incorrect"
 
-#: modules/univention/admin/syntax.py:433
-#: modules/univention/admin/syntax.py:448
-#: modules/univention/admin/syntax.py:463
-#: modules/univention/admin/syntax.py:475
-#: modules/univention/admin/syntax.py:525
-#: modules/univention/admin/syntax.py:542
-#: modules/univention/admin/syntax.py:554
+#: modules/univention/admin/syntax.py:792
+#: modules/univention/admin/syntax.py:828
+#: modules/univention/admin/syntax.py:857
+#: modules/univention/admin/syntax.py:880
+#: modules/univention/admin/syntax.py:983
+#: modules/univention/admin/syntax.py:1012
+#: modules/univention/admin/syntax.py:1040
 #, python-format
 msgid "Not a valid Base64 string: %s"
 msgstr "Chaîne de caractères Base64 invalide : %s"
 
-#: modules/univention/admin/syntax.py:1352
-#: modules/univention/admin/syntax.py:1370
+#: modules/univention/admin/syntax.py:2284
+#: modules/univention/admin/syntax.py:2335
 msgid "Not a valid Date"
 msgstr "Date invalide"
 
-#: modules/univention/admin/syntax.py:2137
+#: modules/univention/admin/syntax.py:3609
 msgid "Not a valid FQDN"
 msgstr "Nom pleinement qualifié (FQDN) invalide"
 
-#: modules/univention/admin/syntax.py:1053
-#: modules/univention/admin/syntax.py:1065
-#: modules/univention/admin/syntax.py:1193
+#: modules/univention/admin/syntax.py:1791
+#: modules/univention/admin/syntax.py:1814
+#: modules/univention/admin/syntax.py:1990
 msgid "Not a valid IP address!"
 msgstr "Adresse IP invalide !"
 
-#: modules/univention/admin/syntax.py:287
-#: modules/univention/admin/syntax.py:1646
-#: modules/univention/admin/syntax.py:1736
+#: modules/univention/admin/syntax.py:483
+#: modules/univention/admin/syntax.py:2878
+#: modules/univention/admin/syntax.py:3034
 msgid "Not a valid LDAP DN"
 msgstr "Nom distingué LDAP invalide"
 
-#: modules/univention/admin/syntax.py:1762
+#: modules/univention/admin/syntax.py:3125
 msgid "Not a valid LDAP search filter"
 msgstr "Filtre de recherche LDAP invalide"
 
-#: modules/univention/admin/syntax.py:1248
+#: modules/univention/admin/syntax.py:2949
+msgid "Not a valid e-mail address"
+msgstr "Adresse électronique invalide"
+
+#: modules/univention/admin/syntax.py:2102
 msgid "Not a valid email address!"
 msgstr "Adresse électronique invalide !"
 
-#: modules/univention/admin/syntax.py:1235
+#: modules/univention/admin/syntax.py:1078
 msgid ""
-"Not a valid email address! (No \"@\"-character to separate local-part and "
-"domain-part)"
+"Not a valid filename for umcmessagecatalog. It must match \"$language-"
+"$moduleid.mo\" (e.g. \"de-udm-foo.mo\")"
 msgstr ""
-"Adresse électronique invalide ! (pas de caractère « @ » séparant la partie "
-"locale du domaine)"
+"Le nom de fichier n’est pas valide pour umcmessagecatalog. Il doit "
+"correspondre au modèle « $language-$moduleid.mo » (par exemple « fr-udm-foo."
+"mo »)"
 
-#: modules/univention/admin/syntax.py:1104
+#: modules/univention/admin/syntax.py:1859
 msgid "Not a valid hostname or IP address!"
 msgstr "Nom d'hôte ou adresse IP invalide !"
 
-#: modules/univention/admin/syntax.py:565
+#: modules/univention/admin/syntax.py:1062
 #, python-format
 msgid "Not a valid locale subdir name: %s"
 msgstr "Nom de sous-répertoire de paramètre régional invalide : %s"
 
-#: modules/univention/admin/syntax.py:1150
-#: modules/univention/admin/syntax.py:1163
+#: modules/univention/admin/syntax.py:1892
+#: modules/univention/admin/syntax.py:1924
 msgid "Not a valid netmask!"
 msgstr "Masque réseau invalide !"
 
-#: modules/univention/admin/syntax.py:1173
+#: modules/univention/admin/syntax.py:1944
 msgid "Not a valid network!"
 msgstr "Réseau invalide !"
 
-#: modules/univention/admin/syntax.py:1552
-#: modules/univention/admin/syntax.py:1566
+#: modules/univention/admin/syntax.py:2621
+#: modules/univention/admin/syntax.py:2649
 msgid "Not a valid time format"
 msgstr "Format de date et d'heure invalide"
 
-#: modules/univention/admin/uexceptions.py:239
+#: modules/univention/admin/uexceptions.py:247
 msgid "Not all needed information was entered."
 msgstr "Certaines informations nécessaires n'ont pas été saisies."
 
-#: modules/univention/admin/syntax.py:1227
+#: modules/univention/admin/syntax.py:2067
 msgid "Not an absolute path!"
 msgstr "N'est pas un chemin absolu !"
 
-#: modules/univention/admin/syntax.py:2711
+#: modules/univention/admin/syntax.py:4431
 msgid "November"
 msgstr "Novembre"
 
-#: modules/univention/admin/syntax.py:2370
+#: modules/univention/admin/syntax.py:4066
 msgid "OK"
 msgstr "Valider"
 
-#: modules/univention/admin/policy.py:51
+#: modules/univention/admin/policy.py:56
 msgid "Object"
 msgstr "Objet"
 
-#: modules/univention/admin/uexceptions.py:45
+#: modules/univention/admin/uexceptions.py:46
 msgid "Object exists."
 msgstr "L'objet existe."
 
-#: modules/univention/admin/syntax.py:2710
+#: modules/univention/admin/syntax.py:4430
 msgid "October"
 msgstr "Octobre"
 
-#: modules/univention/admin/uexceptions.py:375
+#: modules/univention/admin/uexceptions.py:379
 msgid "Only existing groups are allowed."
 msgstr "Seuls les groupes existants sont autorisés."
 
-#: modules/univention/admin/uexceptions.py:379
+#: modules/univention/admin/uexceptions.py:383
 msgid "Only existing users are allowed."
 msgstr "Seuls les utilisateurs existants sont autorisés."
 
-#: modules/univention/admin/uexceptions.py:371
+#: modules/univention/admin/uexceptions.py:375
 msgid "Only printer objects can be members of a printer group."
 msgstr ""
 "Seuls les objets imprimantes peuvent faire partie du groupe des imprimantes."
 
-#: modules/univention/admin/syntax.py:953
+#: modules/univention/admin/syntax.py:1624
 msgid "Only the first letter of the username may be uppercase!"
 msgstr "Seule la première lettre du nom d'utilisateur peut être en majuscule !"
 
-#: modules/univention/admin/syntax.py:1656
+#: modules/univention/admin/syntax.py:2896
 msgid "Option Pattern"
 msgstr "Motif de l'option"
 
-#: modules/univention/admin/uexceptions.py:343
+#: modules/univention/admin/uexceptions.py:347
 msgid "Overlapping IP ranges"
 msgstr "Chevauchement de plages d'IP"
 
-#: modules/univention/admin/syntax.py:1672
+#: modules/univention/admin/syntax.py:2922
 msgid "POP3"
 msgstr "POP3"
-
-#: modules/univention/admin/syntax.py:3017
-msgid "POSIX Account"
-msgstr "Compte POSIX"
-
-#: modules/univention/admin/syntax.py:3245
-msgid "POSIX and Kerberos disabled"
-msgstr "POSIX et Kerberos désactivés"
-
-#: modules/univention/admin/syntax.py:3242
-msgid "POSIX disabled"
-msgstr "POSIX désactivé"
 
 #: modules/univention/admin/nagios.py:59
 msgid "Parent hosts"
 msgstr "Hôtes parents"
 
-#: modules/univention/admin/uexceptions.py:323
+#: modules/univention/admin/uexceptions.py:327
 msgid "Password has been used before. Please choose a different one."
 msgstr "Ce mot de passe a déjà été utilisé. Veuillez en choisir un autre."
 
-#: modules/univention/admin/uexceptions.py:351
 #: modules/univention/admin/uexceptions.py:355
+#: modules/univention/admin/uexceptions.py:359
 msgid "Password policy error: "
-msgstr "Erreur de la stratégie de mots de passe :"
+msgstr "Erreur de stratégie de mot de passe : "
 
-#: modules/univention/admin/syntax.py:978
+#: modules/univention/admin/syntax.py:1681
 #, python-format
 msgid "Path may not start with \"%s\" !"
 msgstr "Le chemin ne peut pas commencer par « %s » !"
 
-#: modules/univention/admin/uexceptions.py:53
+#: modules/univention/admin/uexceptions.py:54
 msgid "Permission denied."
 msgstr "Droit refusé."
 
-#: modules/univention/admin/syntax.py:3015
-msgid "Personal Information"
-msgstr "Informations personnelles"
-
-#: modules/univention/admin/syntax.py:1545
+#: modules/univention/admin/syntax.py:2610
 msgid "Port"
 msgstr "Port"
 
-#: modules/univention/admin/syntax.py:1680
+#: modules/univention/admin/syntax.py:5574
+msgid "Portal Category"
+msgstr "Catégorie de portail"
+
+#: modules/univention/admin/syntax.py:5545
+#: modules/univention/admin/syntax.py:5574
+msgid "Portal Entry"
+msgstr "Entrée de portail"
+
+#: modules/univention/admin/syntax.py:5591
+msgid "Portal entries can not be added to an empty category"
+msgstr ""
+"Les entrées de portail ne peuvent pas être ajoutées à une catégorie vide"
+
+#: modules/univention/admin/syntax.py:5511
+msgid "Position"
+msgstr "Position"
+
+#: modules/univention/admin/syntax.py:2933
 msgid "Post"
 msgstr "Envoyer"
 
-#: modules/univention/admin/syntax.py:1540
+#: modules/univention/admin/syntax.py:2598
 msgid "Postal code"
 msgstr "Code postal"
 
-#: modules/univention/admin/syntax.py:3038
-msgid "Previously used Client"
-msgstr "Client précédemment utilisé"
+#: modules/univention/admin/syntax.py:4727
+msgid "Primary Directory Node"
+msgstr "Primary Directory Node"
 
-#: modules/univention/admin/syntax.py:2174
-#: modules/univention/admin/syntax.py:2179
+#: modules/univention/admin/syntax.py:3676
+#: modules/univention/admin/syntax.py:3687
 msgid "Primary Group"
 msgstr "Groupe principal"
 
-#: modules/univention/admin/uexceptions.py:367
+#: modules/univention/admin/uexceptions.py:371
 msgid ""
 "Printer groups with quota support can only have members with quota support."
 msgstr ""
 "Les groupes d'imprimantes gérant des quotas ne peuvent avoir que des membres "
 "gérant ces mêmes quotas."
 
-#: modules/univention/admin/syntax.py:1509
-#: modules/univention/admin/syntax.py:1545
+#: modules/univention/admin/syntax.py:2538
+#: modules/univention/admin/syntax.py:2610
 msgid "Priority"
 msgstr "Priorité"
 
-#: modules/univention/admin/uexceptions.py:163
+#: modules/univention/admin/uexceptions.py:171
 msgid "Prohibited username."
 msgstr "Nom d'utilisateur interdit."
 
-#: modules/univention/admin/syntax.py:1522
-#: modules/univention/admin/syntax.py:3335
+#: modules/univention/admin/syntax.py:2559
+#: modules/univention/admin/syntax.py:5428
 msgid "Protocol"
 msgstr "Protocole"
 
-#: modules/univention/admin/syntax.py:3347
+#: modules/univention/admin/syntax.py:5442
 msgid "Protocol and destination have to be specified."
 msgstr "Le protocole et la destination doivent être précisés."
 
-#: modules/univention/admin/syntax.py:1679
+#: modules/univention/admin/syntax.py:4952
+msgid "Public key infrastructure account"
+msgstr "Compte d’infrastructure à clés publiques"
+
+#: modules/univention/admin/syntax.py:2932
 msgid "Read"
 msgstr "Lecture"
 
-#: modules/univention/admin/policy.py:60
+#: modules/univention/admin/syntax.py:2075
+msgid "Redirect all e-mails to forward addresses"
+msgstr "Rediriger tous les e-mails vers des adresses de transfert"
+
+#: modules/univention/admin/syntax.py:4729
+msgid "Replica Directory Node"
+msgstr "Replica Directory Node"
+
+#: modules/univention/admin/policy.py:66
 msgid "Required object class"
 msgstr "Classe d'objet nécessaire"
 
-#: modules/univention/admin/syntax.py:3028
-msgid "Reset"
-msgstr "Réinitialiser"
-
-#: modules/univention/admin/syntax.py:2915
+#: modules/univention/admin/syntax.py:4709
 msgid "Restore files and directories"
 msgstr "Restaurer les fichiers et répertoires"
 
-#: modules/univention/admin/syntax.py:1857
+#: modules/univention/admin/syntax.py:3238
 msgid "Right of primary display"
 msgstr "À droite de l'affichage principal"
 
-#: modules/univention/admin/syntax.py:3016
-msgid "Samba Account"
-msgstr "Compte Samba"
+#: modules/univention/admin/syntax.py:5630
+#: modules/univention/admin/syntax.py:5638
+msgid "Same tab"
+msgstr "Même onglet"
 
-#: modules/univention/admin/syntax.py:2897
+#: modules/univention/admin/syntax.py:4668
 msgid "Sat"
 msgstr "Sam"
 
-#: modules/univention/admin/syntax.py:2725
+#: modules/univention/admin/syntax.py:4448
 msgid "Saturday"
 msgstr "Samedi"
 
-#: modules/univention/admin/syntax.py:2709
+#: modules/univention/admin/syntax.py:4429
 msgid "September"
 msgstr "Septembre"
 
-#: modules/univention/admin/syntax.py:1545
+#: modules/univention/admin/syntax.py:2610
 msgid "Server"
 msgstr "Serveur"
 
-#: modules/univention/admin/syntax.py:1522
+#: modules/univention/admin/syntax.py:2558
 msgid "Service"
 msgstr "Service"
 
-#: modules/univention/admin/syntax.py:3397
+#: modules/univention/admin/syntax.py:5524
 msgid "Shown in category \"Administration\""
 msgstr "Affiché dans la catégorie « Administration »"
 
-#: modules/univention/admin/syntax.py:3398
+#: modules/univention/admin/syntax.py:5525
 msgid "Shown in category \"Installed services\""
 msgstr "Affiché dans la catégorie « Services installés »"
 
-#: modules/univention/admin/syntax.py:3284
-#: modules/univention/admin/syntax.py:3288
-#: modules/univention/admin/syntax.py:3292
+#: modules/univention/admin/syntax.py:5319
+#: modules/univention/admin/syntax.py:5331
+#: modules/univention/admin/syntax.py:5343
 msgid "Soft limit (pages)"
 msgstr "Limite douce (pages)"
 
-#: modules/univention/admin/syntax.py:936
+#: modules/univention/admin/syntax.py:1588
 msgid "Spaces are not allowed in the username!"
 msgstr "Les espaces ne sont pas autorisés dans le nom d'utilisateur !"
 
-#: modules/univention/admin/syntax.py:1540
+#: modules/univention/admin/syntax.py:2598
 msgid "Street"
 msgstr "Rue"
 
-#: modules/univention/admin/syntax.py:2897
+#: modules/univention/admin/syntax.py:4662
 msgid "Sun"
 msgstr "Dim"
 
-#: modules/univention/admin/syntax.py:2726
+#: modules/univention/admin/syntax.py:4449
 msgid "Sunday"
 msgstr "Dimanche"
 
-#: modules/univention/admin/syntax.py:2913
+#: modules/univention/admin/syntax.py:4707
 msgid "Take ownership of files or other objects"
 msgstr "Prendre le contrôle sur les fichiers ou d'autres objets"
 
-#: modules/univention/admin/syntax.py:3215
+#: modules/univention/admin/syntax.py:5184
 msgid "Text"
 msgstr "Texte"
 
-#: modules/univention/admin/uexceptions.py:159
+#: modules/univention/admin/uexceptions.py:167
 msgid "The AD group type can not be changed from domain local to global."
 msgstr ""
 "Le type de groupe AD ne peut pas être modifié d'un domaine local vers un "
 "global."
 
-#: modules/univention/admin/uexceptions.py:147
+#: modules/univention/admin/uexceptions.py:155
 msgid ""
 "The AD group type can not be changed from domain local to universal, because "
 "the group has another domain local group as member."
@@ -1090,13 +1126,13 @@ msgstr ""
 "universel, car le groupe contient un autre groupe de domaine local en tant "
 "que membre."
 
-#: modules/univention/admin/uexceptions.py:155
+#: modules/univention/admin/uexceptions.py:163
 msgid "The AD group type can not be changed from global to domain local."
 msgstr ""
 "Le type de groupe AD ne peut pas être modifié d'un domaine global vers un "
 "local."
 
-#: modules/univention/admin/uexceptions.py:143
+#: modules/univention/admin/uexceptions.py:151
 msgid ""
 "The AD group type can not be changed from global to universal, because the "
 "group is member of another global group."
@@ -1104,13 +1140,13 @@ msgstr ""
 "Le type de groupe AD ne peut pas être modifié de global vers universel, car "
 "le groupe est membre d'un autre groupe global."
 
-#: modules/univention/admin/uexceptions.py:135
+#: modules/univention/admin/uexceptions.py:143
 msgid "The AD group type can not be changed from type local to any other type."
 msgstr ""
 "Le type de groupe AD ne peut pas être modifié d'un type local vers un autre "
 "type."
 
-#: modules/univention/admin/uexceptions.py:151
+#: modules/univention/admin/uexceptions.py:159
 msgid ""
 "The AD group type can not be changed from universal to global, because the "
 "group has another universal group as member."
@@ -1118,11 +1154,11 @@ msgstr ""
 "Le type de groupe AD ne peut pas être modifié d'universel à global, car le "
 "groupe contient en tant que membre un autre groupe universel."
 
-#: modules/univention/admin/uexceptions.py:139
+#: modules/univention/admin/uexceptions.py:147
 msgid "The AD group type can not be changed to type local."
 msgstr "Le type de groupe AD ne peut pas être modifié vers un type local."
 
-#: modules/univention/admin/uexceptions.py:175
+#: modules/univention/admin/uexceptions.py:183
 msgid ""
 "The DHCP entry for this host should contain the zone DN, the IP address and "
 "the MAC address."
@@ -1130,11 +1166,11 @@ msgstr ""
 "L'entrée DHCP pour cet hôte doit contenir le ND de zone, l'adresse IP et "
 "l'adresse MAC."
 
-#: modules/univention/admin/uexceptions.py:227
+#: modules/univention/admin/uexceptions.py:235
 msgid "The DHCP entry was not found."
 msgstr "Entrée DHCP non trouvée."
 
-#: modules/univention/admin/uexceptions.py:179
+#: modules/univention/admin/uexceptions.py:187
 msgid ""
 "The DNS alias entry for this host should contain the zone name, the alias "
 "zone container DN and the alias."
@@ -1142,11 +1178,11 @@ msgstr ""
 "L'enregistrement d'alias DNS pour cet hôte doit contenir le nom de la zone, "
 "le ND du conteneur de la zone de l'alias et l'alias lui-même."
 
-#: modules/univention/admin/uexceptions.py:231
+#: modules/univention/admin/uexceptions.py:239
 msgid "The DNS entry was not found"
 msgstr "Enregistrement DNS non trouvé"
 
-#: modules/univention/admin/uexceptions.py:402
+#: modules/univention/admin/uexceptions.py:406
 msgid ""
 "The DNS forward entry could not be created. Please remove existing alias "
 "records or comparable DNS objects with the same name as this host from the "
@@ -1156,34 +1192,38 @@ msgstr ""
 "les enregistrements d'alias et autres objets DNS de même genre existants "
 "qui  ont un nom identique à cet hôte dans la zone de transmission."
 
-#: modules/univention/admin/uexceptions.py:235
+#: modules/univention/admin/uexceptions.py:243
 msgid ""
 "The FQDN of this object is too long, it must have less than 64 characters."
 msgstr ""
 "Le FQDN de cet objet est trop long, il doit se composer de moins de 64 "
 "caractères."
 
-#: modules/univention/admin/uexceptions.py:339
+#: modules/univention/admin/uexceptions.py:343
 msgid "The IP range contains its broadcast address. That is not permitted!"
 msgstr "La plage d'IP contient son adresse de diffusion. C'est interdit !"
 
-#: modules/univention/admin/uexceptions.py:335
+#: modules/univention/admin/uexceptions.py:339
 msgid "The IP range contains its network address. That is not permitted!"
 msgstr "La plage d'IP contient son adresse réseau. C'est interdit !"
 
-#: modules/univention/admin/uexceptions.py:195
+#: modules/univention/admin/types.py:366
+msgid "The LDAP DN is invalid."
+msgstr "Le nom distingué (DN) LDAP n’est pas valide."
+
+#: modules/univention/admin/uexceptions.py:203
 msgid "The MAC address is already in use."
 msgstr "L'adresse MAC est déjà utilisée."
 
-#: modules/univention/admin/allocators.py:159
-#: modules/univention/admin/allocators.py:190
-#: modules/univention/admin/locking.py:98
 #: modules/univention/admin/locking.py:121
+#: modules/univention/admin/locking.py:155
+#: modules/univention/admin/allocators.py:161
+#: modules/univention/admin/allocators.py:203
 #, python-format
 msgid "The attribute %r could not get locked."
 msgstr "L'attribut %r n'a pas pu être verrouillé."
 
-#: modules/univention/admin/syntax.py:1253
+#: modules/univention/admin/syntax.py:2127
 #, python-format
 msgid ""
 "The domain part of the following mail addresses is not in list of configured "
@@ -1192,7 +1232,7 @@ msgstr ""
 "La partie domaine des adresses électroniques suivantes n'est pas dans la "
 "liste configurée des domaines de courriel : %s"
 
-#: modules/univention/admin/syntax.py:1285
+#: modules/univention/admin/syntax.py:2162
 #, python-format
 msgid ""
 "The domain part of the primary mail address is not in list of configured "
@@ -1201,53 +1241,45 @@ msgstr ""
 "La partie domaine de l'adresse électronique principale n'est pas dans la "
 "liste configurée des domaines de courriel : %s"
 
-#: modules/univention/admin/uexceptions.py:131
+#: modules/univention/admin/uexceptions.py:139
 msgid "The gidNumber is already in use as a uidNumber"
 msgstr "Le « gidNumber » est déjà utilisé comme un « uidNumber »"
 
-#: modules/univention/admin/uexceptions.py:191
+#: modules/univention/admin/uexceptions.py:199
 msgid "The given IP address is not within the range of the selected network"
 msgstr "L'adresse IP donnée n'est pas dans la plage du réseau sélectionné"
 
-#: modules/univention/admin/syntax.py:1301
+#: modules/univention/admin/syntax.py:2196
 msgid "The given date does not conform to iso8601, example: \"2009-01-01\"."
 msgstr ""
 "La date donnée ne suit pas le format ISO 6801, par exemple « 2009-01-01 »."
 
-#: modules/univention/admin/uexceptions.py:123
+#: modules/univention/admin/uexceptions.py:131
 msgid "The groupname is already in use"
 msgstr "Le nom de groupe est déjà utilisé"
 
-#: modules/univention/admin/uexceptions.py:121
+#: modules/univention/admin/uexceptions.py:129
 msgid "The groupname is already in use as groupname or as username"
 msgstr ""
 "Le nom de groupe est déjà utilisé comme nom de groupe ou nom d'utilisateur"
 
 #: modules/univention/admin/uexceptions.py:267
-msgid ""
-"The license check is disabled. You are using the GPL version without any "
-"support or maintenance by Univention."
-msgstr ""
-"La vérification de la licence est désactivée. Vous utilisez la version GPL, "
-"qui ne comprend pas l'assistance ou la maintenance d'Univention."
-
-#: modules/univention/admin/uexceptions.py:259
 msgid "The license is expired."
 msgstr "La licence a expiré."
 
-#: modules/univention/admin/uexceptions.py:263
+#: modules/univention/admin/uexceptions.py:271
 msgid "The license is invalid for the current base DN."
 msgstr "La licence n'est pas valable pour le ND de base actuel."
 
-#: modules/univention/admin/uexceptions.py:255
+#: modules/univention/admin/uexceptions.py:263
 msgid "The license is invalid."
 msgstr "La licence n'est pas valable."
 
-#: modules/univention/admin/uexceptions.py:199
+#: modules/univention/admin/uexceptions.py:207
 msgid "The mail address is already in use."
 msgstr "L'adresse électronique est déjà utilisée."
 
-#: modules/univention/admin/syntax.py:1386
+#: modules/univention/admin/syntax.py:2375
 msgid ""
 "The name of a reverse zone for IPv4 consists of the reversed subnet address "
 "followed by .in-addr.arpa (example: \"0.168.192.in-addr.arpa\") or for IPv6 "
@@ -1259,7 +1291,11 @@ msgstr ""
 "ou pour IPv6 en sections suivies par « .ip6.arpa » (exemple : "
 "« 0.0.0.0.0.0.1.0.8.b.d.0.1.0.0.2.ip6.arpa »)"
 
-#: modules/univention/admin/syntax.py:1627
+#: modules/univention/admin/uexceptions.py:422
+msgid "The object type of this object differs from the specified object type."
+msgstr "Le type de cet objet diffère du type d’objet spécifié."
+
+#: modules/univention/admin/syntax.py:2848
 #, python-format
 msgid ""
 "The package \"%s\" can not be removed as it would uninstall necessary "
@@ -1268,75 +1304,80 @@ msgstr ""
 "Le paquetage « %s » ne peut pas être supprimé car cela provoquerait la "
 "désinstallation de composants indispensables."
 
-#: modules/univention/admin/uexceptions.py:327
-msgid "The password is to short, at least 8 character!"
-msgstr ""
-"Le mot de passe est trop court, il doit contenir au moins 8 caractères !"
-
-#: modules/univention/admin/syntax.py:995
+#: modules/univention/admin/syntax.py:1709
 #, python-format
 msgid "The password is too short, at least %d characters needed."
 msgstr ""
 "Le mot de passe est trop court, il doit contenir au moins %d caractères."
 
-#: modules/univention/admin/uexceptions.py:183
+#: modules/univention/admin/uexceptions.py:331
+msgid "The password is too short, at least 8 character!"
+msgstr ""
+"Le mot de passe est trop court, il doit contenir au moins 8 caractères !"
+
+#: modules/univention/admin/uexceptions.py:191
 msgid "The provided DNS information are invalid."
 msgstr "Les informations DNS fournies sont invalides."
 
-#: modules/univention/admin/uexceptions.py:116
+#: modules/univention/admin/uexceptions.py:124
 msgid "The relative ID (SAMBA) is already in use."
 msgstr "L'id. relatif (Samba) est déjà utilisé."
 
-#: modules/univention/admin/uexceptions.py:223
+#: modules/univention/admin/uexceptions.py:231
 msgid "The requested group not be found."
 msgstr "Groupe demandé non trouvé."
 
-#: modules/univention/admin/syntax.py:1535
+#: modules/univention/admin/syntax.py:2587
 msgid ""
 "The reversed host name for IPv4 consists of the reversed host address "
 "(example: \"4.3\") or for IPv6 in nibble format (example: "
 "\"8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0\")."
 msgstr ""
 "Le nom d'hôte inversé pour IPv4 est constitué de l'adresse inversée de "
-"l'hôte (par exemple « 4.3 ») ou, pour IPv6, de l'adresse au format "
-"nibble (par exemple « 8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0 »)."
+"l'hôte (par exemple « 4.3 ») ou, pour IPv6, de l'adresse au format nibble "
+"(par exemple « 8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0 »)."
 
-#: modules/univention/admin/uexceptions.py:69
+#: modules/univention/admin/uexceptions.py:70
 msgid "The specified size limit for the LDAP search has been exceeded."
 msgstr "La limite de taille donnée pour la recherche LDAP a été dépassée."
 
-#: modules/univention/admin/uexceptions.py:65
+#: modules/univention/admin/uexceptions.py:66
 msgid "The specified timeout for the LDAP search has been exceeded."
 msgstr "Le délai donné pour la recherche LDAP a été dépassé."
 
-#: modules/univention/admin/uexceptions.py:127
+#: modules/univention/admin/uexceptions.py:135
 msgid "The uidNumber is already in use as a gidNumber"
 msgstr "Le « uidNumber » est déjà utilisé comme un « gidNumber »"
 
-#: modules/univention/admin/uexceptions.py:112
+#: modules/univention/admin/uexceptions.py:120
 msgid "The username is already in use"
 msgstr "Le nom d'utilisateur est déjà utilisé"
 
-#: modules/univention/admin/uexceptions.py:110
+#: modules/univention/admin/uexceptions.py:118
 msgid "The username is already in use as username or as groupname"
 msgstr ""
 "Le nom d'utilisateur est déjà utilisé comme nom d'utilisateur ou nom de "
 "groupe"
 
-#: modules/univention/admin/syntax.py:344
+#: modules/univention/admin/syntax.py:581
+#: modules/univention/admin/syntax.py:608
 #, python-format
 msgid "The value must not be longer than %d characters."
 msgstr "La valeur ne doit pas dépasser les %d caractères."
 
-#: modules/univention/admin/uldap.py:181
+#: modules/univention/admin/uldap.py:245
 msgid "There was no LDAP base specified."
 msgstr "Aucune base LDAP précisée."
 
-#: modules/univention/admin/uexceptions.py:215
-msgid "This is a primary group"
-msgstr "C'est un groupe principal"
+#: modules/univention/admin/uexceptions.py:426
+msgid "There was no valid kerberos realm found."
+msgstr "Aucun domaine Kerberos valide n’a été trouvé."
 
-#: modules/univention/admin/syntax.py:1585
+#: modules/univention/admin/uexceptions.py:223
+msgid "This is a primary group."
+msgstr "C’est un groupe principal."
+
+#: modules/univention/admin/syntax.py:2795
 msgid ""
 "This is not a valid MAC address (valid examples are 86:f5:d1:f5:6b:3e, 86-f5-"
 "d1-f5-6b-3e, 86f5d1f56b3e, 86f5.d1f5.6b3e)"
@@ -1344,154 +1385,175 @@ msgstr ""
 "Adresse MAC invalide (quelques exemples valides : 86:f5:d1:f5:6b:3e, 86-f5-"
 "d1-f5-6b-3e, 86f5d1f56b3e, 86f5.d1f5.6b3e)"
 
-#: modules/univention/admin/syntax.py:1038
+#: modules/univention/admin/syntax.py:1766
 msgid "This is not a valid hostname."
 msgstr "Ce nom d'hôte est invalide."
 
-#: modules/univention/admin/syntax.py:3467
+#: modules/univention/admin/syntax.py:5731
 msgid "This object is related to a Docker App container"
 msgstr "Cet objet est lié à un conteneur d'App Docker"
 
-#: modules/univention/admin/uexceptions.py:359
+#: modules/univention/admin/syntax.py:5732
+msgid "This object is synchronized from Active Directory"
+msgstr "Cet objet est synchronisé à partir d’Active Directory"
+
+#: modules/univention/admin/uexceptions.py:363
 msgid "This operation is not allowed on this object."
 msgstr "Cette opération n'est pas autorisée sur cet objet."
 
-#: modules/univention/admin/policy.py:119
+#: modules/univention/admin/policy.py:113
 msgid "This policy applies only to objects which matches this LDAP filter."
 msgstr ""
-"La stratégie s'applique uniquement aux objets correspondant à ce filtre "
-"LDAP."
+"La stratégie s'applique uniquement aux objets correspondant à ce filtre LDAP."
 
-#: modules/univention/admin/syntax.py:2897
+#: modules/univention/admin/syntax.py:4666
 msgid "Thu"
 msgstr "Jeu"
 
-#: modules/univention/admin/syntax.py:2723
+#: modules/univention/admin/syntax.py:4446
 msgid "Thursday"
-msgstr "jeudi"
+msgstr "Jeudi"
 
-#: modules/univention/admin/uexceptions.py:390
+#: modules/univention/admin/syntax.py:5911
+msgid "Time"
+msgstr "Horaire"
+
+#: modules/univention/admin/types.py:462
+msgid "Time does not match format \"%H:%M:%S\"."
+msgstr "L’horaire ne correspond pas au format « %H:%M:%S »."
+
+#: modules/univention/admin/uexceptions.py:394
 msgid "Timeperiod Object still in use!"
 msgstr "Objet de période de temps déjà utilisé !"
 
-#: modules/univention/admin/syntax.py:1577
+#: modules/univention/admin/syntax.py:5911
+msgid "Timezone"
+msgstr "Fuseau horaire"
+
+#: modules/univention/admin/syntax.py:2769
 msgid "Token-Ring"
 msgstr "Token Ring"
 
-#: modules/univention/admin/uexceptions.py:315
+#: modules/univention/admin/uexceptions.py:319
 msgid "Too many DVS clients"
 msgstr "Trop de clients DVS"
 
-#: modules/univention/admin/uexceptions.py:311
+#: modules/univention/admin/uexceptions.py:315
 msgid "Too many DVS users"
 msgstr "Trop d'utilisateurs DVS"
 
-#: modules/univention/admin/uexceptions.py:283
+#: modules/univention/admin/uexceptions.py:287
 msgid "Too many client accounts"
 msgstr "Trop de comptes clients"
 
-#: modules/univention/admin/uexceptions.py:307
+#: modules/univention/admin/uexceptions.py:311
 msgid "Too many corporate clients"
 msgstr "Trop de clients d'entreprise"
 
-#: modules/univention/admin/uexceptions.py:287
+#: modules/univention/admin/uexceptions.py:291
 msgid "Too many desktop accounts"
 msgstr "Trop de comptes de bureau"
 
-#: modules/univention/admin/uexceptions.py:291
+#: modules/univention/admin/uexceptions.py:295
 msgid "Too many groupware accounts"
 msgstr "Trop de comptes de collecticiel"
 
-#: modules/univention/admin/uexceptions.py:303
+#: modules/univention/admin/uexceptions.py:307
 msgid "Too many managed clients"
 msgstr "Trop de clients gérés"
 
-#: modules/univention/admin/uexceptions.py:299
+#: modules/univention/admin/uexceptions.py:303
 msgid "Too many servers"
 msgstr "Trop de serveurs"
 
-#: modules/univention/admin/uexceptions.py:279
+#: modules/univention/admin/uexceptions.py:283
 msgid "Too many user accounts"
 msgstr "Trop de comptes d'utilisateur"
 
-#: modules/univention/admin/uexceptions.py:295
+#: modules/univention/admin/uexceptions.py:299
 msgid "Too many users"
 msgstr "Trop d'utilisateurs"
 
-#: modules/univention/admin/syntax.py:3232
+#: modules/univention/admin/syntax.py:5214
 msgid "Translated group name"
 msgstr "Nom du groupe traduit"
 
-#: modules/univention/admin/syntax.py:3224
+#: modules/univention/admin/syntax.py:5200
 msgid "Translated long description"
 msgstr "Description détaillée traduite"
 
-#: modules/univention/admin/syntax.py:3220
+#: modules/univention/admin/syntax.py:5193
 msgid "Translated short description"
 msgstr "Brève description traduite"
 
-#: modules/univention/admin/syntax.py:3228
+#: modules/univention/admin/syntax.py:5207
 msgid "Translated tab name"
 msgstr "Nom de l'onglet traduit"
 
-#: modules/univention/admin/syntax.py:2348
-#: modules/univention/admin/syntax.py:2356
-#: modules/univention/admin/syntax.py:2363
+#: modules/univention/admin/syntax.py:4012
+#: modules/univention/admin/syntax.py:4034
+#: modules/univention/admin/syntax.py:4051
 msgid "True"
 msgstr "Vrai"
 
-#: modules/univention/admin/syntax.py:2897
+#: modules/univention/admin/syntax.py:4664
 msgid "Tue"
 msgstr "Mar"
 
-#: modules/univention/admin/syntax.py:2721
+#: modules/univention/admin/syntax.py:4444
 msgid "Tuesday"
 msgstr "Mardi"
 
-#: modules/univention/admin/syntax.py:1609
+#: modules/univention/admin/syntax.py:2817
 msgid "Type"
 msgstr "Type"
 
-#: modules/univention/admin/syntax.py:2987
+#: modules/univention/admin/syntax.py:4913
 msgid "UDM module"
 msgstr "Module UDM"
 
-#: modules/univention/admin/syntax.py:2892
+#: modules/univention/admin/syntax.py:1114
+msgid "UMCMessageCatalogFilename"
+msgstr "UMCMessageCatalogFilename"
+
+#: modules/univention/admin/syntax.py:4645
 msgid "Universal (Type: Distribution)"
 msgstr "Universel (type : distribution)"
 
-#: modules/univention/admin/syntax.py:2888
+#: modules/univention/admin/syntax.py:4641
 msgid "Universal (Type: Security)"
 msgstr "Universel (type : sécurité)"
 
-#: modules/univention/admin/syntax.py:1712
-#: modules/univention/admin/syntax.py:1720
-#: modules/univention/admin/syntax.py:3292
+#: modules/univention/admin/syntax.py:5637
+msgid "Use default of portal"
+msgstr "Utiliser le réglage par défaut du portail"
+
+#: modules/univention/admin/syntax.py:2978
+#: modules/univention/admin/syntax.py:2996
+#: modules/univention/admin/syntax.py:5343
 msgid "User"
 msgstr "Utilisateur"
 
-#: modules/univention/admin/syntax.py:940
-#: modules/univention/admin/syntax.py:958
-msgid ""
-"Username must only contain numbers, letters and dots, and may not be 'admin'!"
+#: modules/univention/admin/syntax.py:1593
+#: modules/univention/admin/syntax.py:1629
+msgid "Username must only contain numbers, letters and dots!"
 msgstr ""
-"Le nom d'utilisateur ne doit contenir que des chiffres, des lettres et des "
-"points et ne peut être « admin » !"
+"L’identifiant ne doit contenir que des chiffres, des lettres et des points !"
 
-#: modules/univention/admin/syntax.py:1504
-#: modules/univention/admin/syntax.py:2277
-#: modules/univention/admin/syntax.py:3077
+#: modules/univention/admin/syntax.py:2526
+#: modules/univention/admin/syntax.py:3864
+#: modules/univention/admin/syntax.py:5002
 msgid "Value"
 msgstr "Valeur"
 
-#: modules/univention/admin/syntax.py:1777
+#: modules/univention/admin/syntax.py:3146
 msgid ""
 "Value consists of two integer numbers separated by a \"-\" (e.g. \"30-70\")"
 msgstr ""
 "La valeur se compose de deux nombres entiers séparés par un « - » (ex. : "
 "« 30-70 »)"
 
-#: modules/univention/admin/syntax.py:1772
+#: modules/univention/admin/syntax.py:3138
 msgid ""
 "Value consists of two integer numbers separated by an \"x\" (e.g. "
 "\"1024x768\")"
@@ -1499,41 +1561,23 @@ msgstr ""
 "La valeur se compose de deux nombres entiers séparés par un « x » (ex. : "
 "« 1024x768 »)"
 
-#: modules/univention/admin/uexceptions.py:93
+#: modules/univention/admin/syntax.py:5583
+msgid "Value has to be in valid json format"
+msgstr "La valeur doit être dans un format json valide"
+
+#: modules/univention/admin/uexceptions.py:101
 msgid "Value is required."
 msgstr "La valeur est requise."
 
-#: modules/univention/admin/uexceptions.py:85
+#: modules/univention/admin/uexceptions.py:93
 msgid "Value may not change."
 msgstr "La valeur ne peut être modifiée."
 
-#: modules/univention/admin/syntax.py:970
+#: modules/univention/admin/syntax.py:1673
 msgid "Value may not contain double quotes (\")!"
 msgstr "La valeur ne peut contenir de guillemets (« \" ») !"
 
-#: modules/univention/admin/syntax.py:990
-msgid ""
-"A group name must start and end with a letter, number or underscore. In "
-"between additionally spaces, dashes and dots are allowed."
-msgstr ""
-"La valeur ne doit contenir que des chiffres, des lettres et des points."
-
-#: modules/univention/admin/syntax.py:997
-msgid ""
-"A mailing list name must start and end with a letter, number or underscore. "
-"In between additionally spaces, dashes and dots are allowed."
-msgstr ""
-"La valeur ne doit contenir que des chiffres, des lettres et des points."
-
-#: modules/univention/admin/syntax.py:1506
-#: modules/univention/admin/syntax.py:1536
-msgid ""
-"A host name or FQDN must start and end with a letter or number. In between "
-"additionally dashes, dots and underscores are allowed."
-msgstr ""
-"La valeur ne doit contenir que des chiffres, des lettres et des points."
-
-#: modules/univention/admin/syntax.py:3305
+#: modules/univention/admin/syntax.py:5366
 msgid ""
 "Value may not contain other than numbers, letters, underscore (\"_\") and "
 "minus (\"-\")!"
@@ -1541,23 +1585,23 @@ msgstr ""
 "La valeur ne doit contenir que des chiffres, des lettres, des tirets bas "
 "(« _ ») et des traits d'union (« - »)"
 
-#: modules/univention/admin/syntax.py:703
+#: modules/univention/admin/syntax.py:1313
 msgid "Value may not contain whitespace or exclamation mark !"
 msgstr "La valeur ne doit pas contenir d'espaces ou de points d'exclamation !"
 
-#: modules/univention/admin/syntax.py:637
+#: modules/univention/admin/syntax.py:1224
 msgid "Value must be 0 or 1"
 msgstr "La valeur doit être 0 ou 1"
 
-#: modules/univention/admin/syntax.py:515
+#: modules/univention/admin/syntax.py:945
 msgid "Value must be Base64 encoded jpeg."
 msgstr "La valeur doit être un JPEG au format Base64."
 
-#: modules/univention/admin/syntax.py:609
+#: modules/univention/admin/syntax.py:1163
 msgid "Value must be a number!"
 msgstr "La valeur doit être un nombre !"
 
-#: modules/univention/admin/syntax.py:679
+#: modules/univention/admin/syntax.py:1288
 msgid ""
 "Value must be an integer followed by one of GB,MB,KB,B or nothing (equals B)!"
 msgstr ""
@@ -1565,18 +1609,25 @@ msgstr ""
 "« Go »), « MB » (pour « Mo »), « KB » (pour « Ko »), « B » (pour octet) ou "
 "de rien (équivalent à « B ») !"
 
-#: modules/univention/admin/syntax.py:452
-#: modules/univention/admin/syntax.py:529
+#: modules/univention/admin/syntax.py:832
+#: modules/univention/admin/syntax.py:987
 #, python-format
 msgid "Value must be bzip2 compressed and Base64 encoded: %s"
-msgstr "La valeur doit être une archive au format Base64 compressée par bzip2 : %s"
+msgstr ""
+"La valeur doit être une archive au format Base64 compressée par bzip2 : %s"
 
-#: modules/univention/admin/syntax.py:437
+#: modules/univention/admin/syntax.py:796
 #, python-format
 msgid "Value must be gzip compressed and Base64 encoded: %s"
-msgstr "La valeur doit être une archive au format Base64 compressée par gzip : %s"
+msgstr ""
+"La valeur doit être une archive au format Base64 compressée par gzip : %s"
 
-#: modules/univention/admin/syntax.py:781
+#: modules/univention/admin/types.py:202
+#, python-format
+msgid "Value must be of type %s not %s."
+msgstr "La valeur doit être de type %s et non %s."
+
+#: modules/univention/admin/syntax.py:1397
 msgid ""
 "Value must not contain anything other than digits, letters or dots, must be "
 "at least 2 characters long, and start and end with a digit or letter!"
@@ -1585,7 +1636,7 @@ msgstr ""
 "des points, doit se composer d'au moins 2 caractères, et doit démarrer et "
 "finir par un chiffre ou une lettre !"
 
-#: modules/univention/admin/syntax.py:832
+#: modules/univention/admin/syntax.py:1450
 msgid ""
 "Value must not contain anything other than digits, letters, dots or spaces, "
 "must be at least 2 characters long, and start and end with a digit or letter!"
@@ -1594,7 +1645,7 @@ msgstr ""
 "des points ou des espaces, doit se composer d'au moins 2 caractères, et doit "
 "démarrer et finir par un chiffre ou une lettre !"
 
-#: modules/univention/admin/syntax.py:852
+#: modules/univention/admin/syntax.py:1471
 msgid ""
 "Value must not contain anything other than digits, letters, dots, brackets, "
 "slash, plus, or minus!"
@@ -1602,7 +1653,7 @@ msgstr ""
 "La valeur ne doit pas contenir autre chose que des chiffres, des lettres, "
 "des points, des accolades, des barres obliques, des plus ou des moins !"
 
-#: modules/univention/admin/syntax.py:924
+#: modules/univention/admin/syntax.py:1551
 msgid ""
 "Value must not contain anything other than digits, letters, dots, dash or "
 "underscore, must be at least 2 characters long, must start and end with a "
@@ -1613,171 +1664,324 @@ msgstr ""
 "caractères, doit démarrer et finir par un chiffre ou une lettre, et ne peut "
 "pas être « admin » !"
 
-#: modules/univention/admin/uexceptions.py:97
+#: modules/univention/admin/syntax.py:2705
+#, python-format
+msgid "Value out of bounds (%d - %d seconds)"
+msgstr "Valeur hors des limites (%d – %d secondes)"
+
+#: modules/univention/admin/uexceptions.py:105
 msgid "Values do not match."
 msgstr "Les valeurs ne correspondent pas."
 
-#: modules/univention/admin/syntax.py:3077
+#: modules/univention/admin/syntax.py:5002
 msgid "Variable"
 msgstr "Variable"
 
-#: modules/univention/admin/syntax.py:3389
+#: modules/univention/admin/syntax.py:5612
 msgid "Visible for Admins only"
-msgstr "Visible uniquement par les administrateurs"
+msgstr "Visible uniquement par les comptes d’administration"
 
-#: modules/univention/admin/syntax.py:3390
+#: modules/univention/admin/syntax.py:5613
 msgid "Visible for authenticated users"
-msgstr "Visible par les utilisateurs authentifiés"
+msgstr "Visible par les comptes d’utilisation authentifiés"
 
-#: modules/univention/admin/syntax.py:3391
+#: modules/univention/admin/syntax.py:5614
 msgid "Visible for everyone"
-msgstr "Visible par tous"
+msgstr "Visible par tout le monde"
 
-#: modules/univention/admin/syntax.py:2897
+#: modules/univention/admin/syntax.py:4665
 msgid "Wed"
 msgstr "Mer"
 
-#: modules/univention/admin/syntax.py:2722
+#: modules/univention/admin/syntax.py:4445
 msgid "Wednesday"
 msgstr "Mercredi"
 
-#: modules/univention/admin/syntax.py:1545
+#: modules/univention/admin/syntax.py:2610
 msgid "Weighting"
 msgstr "Pondération"
 
-#: modules/univention/admin/syntax.py:2879
+#: modules/univention/admin/syntax.py:4629
 msgid "Well-Known Group"
 msgstr "Groupe connu"
 
-#: modules/univention/admin/syntax.py:3244
-msgid "Windows and Kerberos disabled"
-msgstr "Windows et Kerberos désactivés"
+#: modules/univention/admin/syntax.py:5623
+msgid "White"
+msgstr "Blanc"
 
-#: modules/univention/admin/syntax.py:3243
-msgid "Windows and POSIX disabled"
-msgstr "Windows et POSIX désactivés"
-
-#: modules/univention/admin/syntax.py:3240
-msgid "Windows disabled"
-msgstr "Windows désactivé"
-
-#: modules/univention/admin/syntax.py:1682
+#: modules/univention/admin/syntax.py:2935
 msgid "Write"
 msgstr "Écriture"
 
-#: modules/univention/admin/syntax.py:2332
-#: modules/univention/admin/syntax.py:2340
+#: modules/univention/admin/syntax.py:3984
+#: modules/univention/admin/syntax.py:3996
 msgid "Yes"
 msgstr "Oui"
 
-#: modules/univention/admin/syntax.py:2243
+#: modules/univention/admin/syntax.py:3815
 msgid "Zone of existing host record"
 msgstr "Zone d'un enregistrement d'hôte existant"
 
-#: modules/univention/admin/syntax.py:2378
+#: modules/univention/admin/syntax.py:4082
 msgid "ad-hoc"
 msgstr "ad hoc"
 
-#: modules/univention/admin/syntax.py:2700
-#: modules/univention/admin/syntax.py:2719
-#: modules/univention/admin/syntax.py:2733
-#: modules/univention/admin/syntax.py:2771
-#: modules/univention/admin/syntax.py:2831
+#: modules/univention/admin/syntax.py:4420
+#: modules/univention/admin/syntax.py:4442
+#: modules/univention/admin/syntax.py:4459
+#: modules/univention/admin/syntax.py:4500
+#: modules/univention/admin/syntax.py:4566
 msgid "all"
 msgstr "tous"
 
-#: modules/univention/admin/syntax.py:2298
-#: modules/univention/admin/syntax.py:2324
+#: modules/univention/admin/syntax.py:3896
+#: modules/univention/admin/syntax.py:3964
 msgid "allow"
 msgstr "autoriser"
 
-#: modules/univention/admin/syntax.py:2954
+#: modules/univention/admin/syntax.py:4773
 msgid "asynchronous"
 msgstr "asynchrone"
 
-#: modules/univention/admin/syntax.py:732
+#: modules/univention/admin/syntax.py:5877
+msgid "cisco"
+msgstr "cisco"
+
+#: modules/univention/admin/syntax.py:5878
+msgid "computone"
+msgstr "computone"
+
+#: modules/univention/admin/syntax.py:1347
 msgid "contacts"
 msgstr "contacts"
 
-#: modules/univention/admin/syntax.py:1561
+#: modules/univention/admin/syntax.py:2635
 msgid "days"
 msgstr "jours"
 
-#: modules/univention/admin/syntax.py:2299
-#: modules/univention/admin/syntax.py:2325
+#: modules/univention/admin/syntax.py:3897
+#: modules/univention/admin/syntax.py:3965
 msgid "deny"
 msgstr "refuser"
 
-#: modules/univention/admin/syntax.py:731
+#: modules/univention/admin/syntax.py:1346
 msgid "events"
 msgstr "évènements"
 
-#: modules/univention/admin/syntax.py:1560
+#: modules/univention/admin/syntax.py:2634
 msgid "hours"
 msgstr "heures"
 
-#: modules/univention/admin/syntax.py:2300
+#: modules/univention/admin/syntax.py:3898
 msgid "ignore"
 msgstr "ignorer"
 
-#: modules/univention/admin/syntax.py:2379
+#: modules/univention/admin/syntax.py:4083
 msgid "interim"
 msgstr "provisoire"
 
-#: modules/univention/admin/syntax.py:735
+#: modules/univention/admin/syntax.py:1350
 msgid "journals"
 msgstr "journaux"
 
-#: modules/univention/admin/syntax.py:730
+#: modules/univention/admin/syntax.py:5880
+msgid "juniper"
+msgstr "juniper"
+
+#: modules/univention/admin/syntax.py:5879
+msgid "livingston"
+msgstr "livingston"
+
+#: modules/univention/admin/syntax.py:1345
 msgid "mails"
 msgstr "courriels"
 
-#: modules/univention/admin/syntax.py:1559
+#: modules/univention/admin/syntax.py:5881
+msgid "max40xx"
+msgstr "max40xx"
+
+#: modules/univention/admin/syntax.py:2633
 msgid "minutes"
 msgstr "minutes"
 
-#: modules/univention/admin/syntax.py:2380
+#: modules/univention/admin/syntax.py:382
+#, python-format
+msgid "missing argument %s"
+msgstr "argument manquant %s"
+
+#: modules/univention/admin/syntax.py:5882
+msgid "multitech"
+msgstr "multitech"
+
+#: modules/univention/admin/syntax.py:5883
+msgid "netserver"
+msgstr "netserver"
+
+#: modules/univention/admin/syntax.py:4084
 msgid "none"
 msgstr "aucun"
 
-#: modules/univention/admin/syntax.py:231
+#: modules/univention/admin/syntax.py:360
+#: modules/univention/admin/syntax.py:5586
 msgid "not enough arguments"
 msgstr "pas assez de paramètres"
 
-#: modules/univention/admin/syntax.py:734
+#: modules/univention/admin/syntax.py:1349
 msgid "notes"
 msgstr "remarques"
 
-#: modules/univention/admin/syntax.py:2388
+#: modules/univention/admin/syntax.py:4095
 msgid "off"
 msgstr "non"
 
-#: modules/univention/admin/syntax.py:2387
+#: modules/univention/admin/syntax.py:4094
 msgid "on"
 msgstr "oui"
 
-#: modules/univention/admin/syntax.py:2987
+#: modules/univention/admin/syntax.py:5876
+msgid "other"
+msgstr "autre"
+
+#: modules/univention/admin/syntax.py:5884
+msgid "pathras"
+msgstr "pathras"
+
+#: modules/univention/admin/syntax.py:5885
+msgid "patton"
+msgstr "patton"
+
+#: modules/univention/admin/syntax.py:5886
+msgid "portslave"
+msgstr "portslave"
+
+#: modules/univention/admin/syntax.py:4913
 msgid "property"
 msgstr "propriété"
 
-#: modules/univention/admin/syntax.py:1558
+#: modules/univention/admin/syntax.py:2632
 msgid "seconds"
 msgstr "secondes"
 
-#: modules/univention/admin/syntax.py:2953
+#: modules/univention/admin/syntax.py:4772
 msgid "synchronous"
 msgstr "synchrone"
 
-#: modules/univention/admin/syntax.py:733
+#: modules/univention/admin/syntax.py:1348
 msgid "tasks"
 msgstr "tâches"
 
-#: modules/univention/admin/syntax.py:233
-#: modules/univention/admin/syntax.py:3350
+#: modules/univention/admin/syntax.py:5887
+msgid "tc"
+msgstr "tc"
+
+#: modules/univention/admin/syntax.py:362
+#: modules/univention/admin/syntax.py:5445
+#: modules/univention/admin/syntax.py:5588
 msgid "too many arguments"
 msgstr "trop de paramètres"
 
-#: modules/univention/admin/syntax.py:729
+#: modules/univention/admin/syntax.py:1344
 msgid "undefined"
 msgstr "non défini"
 
+#: modules/univention/admin/syntax.py:5888
+msgid "usrhiper"
+msgstr "usrhiper"
+
+#~ msgid "All Clients"
+#~ msgstr "Tous les clients"
+
+#~ msgid "All disabled"
+#~ msgstr "Tous les désactivés"
+
+#~ msgid "Disabled"
+#~ msgstr "Désactivé"
+
+#~ msgid "Disconnect"
+#~ msgstr "Déconnecter"
+
+#~ msgid "Enabled: Input: off, Message: off"
+#~ msgstr "Activé : entrée : non, message : non"
+
+#~ msgid "Enabled: Input: off, Message: on"
+#~ msgstr "Activé : entrée : non, message : oui"
+
+#~ msgid "Enabled: Input: on, Message: off"
+#~ msgstr "Activé : entrée : oui, message : non"
+
+#~ msgid "Enabled: Input: on, Message: on"
+#~ msgstr "Activé : entrée : oui, message : oui"
+
+#~ msgid "Enabled: No Call Back"
+#~ msgstr "Activé : aucun rappel"
+
+#~ msgid "Enabled: Set by Caller"
+#~ msgstr "Activé : défini par l'appelant"
+
+#~ msgid "Groupware Account"
+#~ msgstr "Compte du collecticiel"
+
+#~ msgid "Kerberos Principal"
+#~ msgstr "Principal Kerberos"
+
+#~ msgid "Kerberos disabled"
+#~ msgstr "Kerberos est désactivé"
+
+#~ msgid "Lock POSIX/LDAP only"
+#~ msgstr "Verrouiller uniquement POSIX / LDAP"
+
+#~ msgid "Lock Windows/Kerberos only"
+#~ msgstr "Verrouiller uniquement Windows / Kerberos"
+
+#~ msgid "Lock all login methods"
+#~ msgstr "Verrouiller toutes les méthodes d'authentification"
+
+#~ msgid "Mail Account"
+#~ msgstr "Compte de courriel"
+
+#~ msgid "None"
+#~ msgstr "Aucun"
+
+#~ msgid ""
+#~ "Not a valid email address! (No \"@\"-character to separate local-part and "
+#~ "domain-part)"
+#~ msgstr ""
+#~ "Adresse électronique invalide ! (pas de caractère « @ » séparant la "
+#~ "partie locale du domaine)"
+
+#~ msgid "POSIX Account"
+#~ msgstr "Compte POSIX"
+
+#~ msgid "POSIX and Kerberos disabled"
+#~ msgstr "POSIX et Kerberos désactivés"
+
+#~ msgid "POSIX disabled"
+#~ msgstr "POSIX désactivé"
+
+#~ msgid "Personal Information"
+#~ msgstr "Informations personnelles"
+
+#~ msgid "Previously used Client"
+#~ msgstr "Client précédemment utilisé"
+
+#~ msgid "Reset"
+#~ msgstr "Réinitialiser"
+
+#~ msgid "Samba Account"
+#~ msgstr "Compte Samba"
+
+#~ msgid ""
+#~ "The license check is disabled. You are using the GPL version without any "
+#~ "support or maintenance by Univention."
+#~ msgstr ""
+#~ "La vérification de la licence est désactivée. Vous utilisez la version "
+#~ "GPL, qui ne comprend pas l'assistance ou la maintenance d'Univention."
+
+#~ msgid "Windows and Kerberos disabled"
+#~ msgstr "Windows et Kerberos désactivés"
+
+#~ msgid "Windows and POSIX disabled"
+#~ msgstr "Windows et POSIX désactivés"
+
+#~ msgid "Windows disabled"
+#~ msgstr "Windows désactivé"

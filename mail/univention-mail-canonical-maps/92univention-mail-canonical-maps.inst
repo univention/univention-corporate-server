@@ -52,10 +52,13 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set objectClass='univentionMailCanonicalMaps' \
 	--set shortDescription='address mapping for mail recipient enabled' \
 	--set longDescription='This checkbox enables the address mapping in recipient fields (To & CC) of processed mails.' \
-	--set translationShortDescription='"de_DE" "Adressmapping für Mail-Empfänger aktiviert"' \
-	--set translationLongDescription='"de_DE" "Diese Auswahlbox aktiviert das Adressmapping für die Empfängerangaben (An: & CC:) von lokal verarbeiteten Mails."' \
+	--append translationShortDescription='"de_DE" "Adressmapping für Mail-Empfänger aktiviert"' \
+	--append translationShortDescription='"fr_FR" "redirection activée pour les destinataires"' \
+	--append translationLongDescription='"de_DE" "Diese Auswahlbox aktiviert das Adressmapping für die Empfängerangaben (An: & CC:) von lokal verarbeiteten Mails."' \
+	--append translationLongDescription='"fr_FR" "Cette case active la redirection pour les champs de destinataires (À: et CC:) des courriers traités."' \
 	--set tabName='Mail' \
-	--set translationTabName='"de_DE" "Mail"' \
+	--append translationTabName='"de_DE" "Mail"' \
+	--append translationTabName='"fr_FR" "Courrier"' \
 	--set overwriteTab='0' \
 	--set valueRequired='0' \
 	--set CLIName='mailCanonicalRecipientRewriteEnabled' \
@@ -69,7 +72,8 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set doNotSearch='0' \
 	--set hook='None' \
 	--set groupName='Canonical maps' \
-	--set translationGroupName='"de_DE" "Canonical Maps"' \
+	--append translationGroupName='"de_DE" "Canonical Maps"' \
+	--append translationGroupName='"fr_FR" "Tables canoniques"' \
 	--set groupPosition=2 || die
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
@@ -80,10 +84,13 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set objectClass='univentionMailCanonicalMaps' \
 	--set shortDescription='address mapping for mail sender enabled' \
 	--set longDescription='This checkbox enables the address mapping in sender fields (From) of processed mails.' \
-	--set translationShortDescription='"de_DE" "Adressmapping für Mail-Absender aktiviert"' \
-	--set translationLongDescription='"de_DE" "Diese Auswahlbox aktiviert das Adressmapping für die Absenderangaben (Von:) von lokal verarbeiteten Mails."' \
+	--append translationShortDescription='"de_DE" "Adressmapping für Mail-Absender aktiviert"' \
+	--append translationShortDescription='"fr_FR" "redirection activée pour les émetteurs"' \
+	--append translationLongDescription='"de_DE" "Diese Auswahlbox aktiviert das Adressmapping für die Absenderangaben (Von:) von lokal verarbeiteten Mails."' \
+	--append translationLongDescription='"fr_FR" "Cette case active la redirection pour les champs d’émetteurs (De:) des courriers traités."' \
 	--set tabName='Mail' \
-	--set translationTabName='"de_DE" "Mail"' \
+	--append translationTabName='"de_DE" "Mail"' \
+	--append translationTabName='"fr_FR" "Courrier"' \
 	--set overwriteTab='0' \
 	--set valueRequired='0' \
 	--set CLIName='mailCanonicalSenderRewriteEnabled' \
@@ -97,7 +104,8 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set doNotSearch='0' \
 	--set hook='None' \
 	--set groupName='Canonical maps' \
-	--set translationGroupName='"de_DE" "Canonical Maps"' \
+	--append translationGroupName='"de_DE" "Canonical Maps"' \
+	--append translationGroupName='"fr_FR" "Tables canoniques"' \
 	--set groupPosition=2 || die
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
@@ -108,10 +116,13 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set objectClass='univentionMailCanonicalMaps' \
 	--set shortDescription='Internal primary mail address' \
 	--set longDescription='Internal mail address where public mail addresses will be mapped to' \
-	--set translationShortDescription='"de_DE" "Interne Haupt-Mailadresse"' \
-	--set translationLongDescription='"de_DE" "Auf diese interne Mailadresse werden die öffentlichen Mailadressen abgebildet."' \
+	--append translationShortDescription='"de_DE" "Interne Haupt-Mailadresse"' \
+	--append translationShortDescription='"fr_FR" "Adresse e-mail interne principale"' \
+	--append translationLongDescription='"de_DE" "Auf diese interne Mailadresse werden die öffentlichen Mailadressen abgebildet."' \
+	--append translationLongDescription='"fr_FR" "Adresse e-mail interne sur laquelle les adresses e-mail publiques seront redirigées."' \
 	--set tabName='Mail' \
-	--set translationTabName='"de_DE" "Mail"' \
+	--append translationTabName='"de_DE" "Mail"' \
+	--append translationTabName='"fr_FR" "Courrier"' \
 	--set overwriteTab='0' \
 	--set valueRequired='0' \
 	--set CLIName='mailCanonicalInternalPrimaryMailAddress' \
@@ -125,7 +136,8 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set doNotSearch='0' \
 	--set hook='None' \
 	--set groupName='Canonical maps' \
-	--set translationGroupName='"de_DE" "Canonical Maps"' \
+	--append translationGroupName='"de_DE" "Canonical Maps"' \
+	--append translationGroupName='"fr_FR" "Tables canoniques"' \
 	--set groupPosition=2 || die
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
@@ -136,10 +148,13 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set objectClass='univentionMailCanonicalMaps' \
 	--set shortDescription='Public primary mail address' \
 	--set longDescription='Public mail address where internal mail addresses will be mapped to' \
-	--set translationShortDescription='"de_DE" "Öffentliche Haupt-Mailadresse"' \
-	--set translationLongDescription='"de_DE" "Auf diese öffentliche Mailadresse werden die internen Mailadressen abgebildet."' \
+	--append translationShortDescription='"de_DE" "Öffentliche Haupt-Mailadresse"' \
+	--append translationShortDescription='"fr_FR" "Adresse e-mail publique principale"' \
+	--append translationLongDescription='"de_DE" "Auf diese öffentliche Mailadresse werden die internen Mailadressen abgebildet."' \
+	--append translationLongDescription='"fr_FR" "Adresse e-mail publique sur laquelle les adresses e-mail internes seront redirigées."' \
 	--set tabName='Mail' \
-	--set translationTabName='"de_DE" "Mail"' \
+	--append translationTabName='"de_DE" "Mail"' \
+	--append translationTabName='"fr_FR" "Courrier"' \
 	--set overwriteTab='0' \
 	--set valueRequired='0' \
 	--set CLIName='mailCanonicalPublicPrimaryMailAddress' \
@@ -153,7 +168,8 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set doNotSearch='0' \
 	--set hook='None' \
 	--set groupName='Canonical maps' \
-	--set translationGroupName='"de_DE" "Canonical Maps"' \
+	--append translationGroupName='"de_DE" "Canonical Maps"' \
+	--append translationGroupName='"fr_FR" "Tables canoniques"' \
 	--set groupPosition=2 || die
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
@@ -164,10 +180,13 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set objectClass='univentionMailCanonicalMaps' \
 	--set shortDescription='Alternative internal mail addresses' \
 	--set longDescription='Alternative internal mail addresses that will be used besides the internal primary address.' \
-	--set translationShortDescription='"de_DE" "Zusätzliche interne Mailadressen"' \
-	--set translationLongDescription='"de_DE" "Zusätzliche interne Mailadressen, die neben der internen Haupt-Mailadresse verwendet werden."' \
+	--append translationShortDescription='"de_DE" "Zusätzliche interne Mailadressen"' \
+	--append translationShortDescription='"fr_FR" "Adresses e-mail internes alternatives"' \
+	--append translationLongDescription='"de_DE" "Zusätzliche interne Mailadressen, die neben der internen Haupt-Mailadresse verwendet werden."' \
+	--append translationLongDescription='"fr_FR" "Adresses e-mail internes supplémentaires qui seront utilisées à côté de l’adresse e-mail interne principale."' \
 	--set tabName='Mail' \
-	--set translationTabName='"de_DE" "Mail"' \
+	--append translationTabName='"de_DE" "Mail"' \
+	--append translationTabName='"fr_FR" "Courrier"' \
 	--set overwriteTab='0' \
 	--set valueRequired='0' \
 	--set CLIName='mailCanonicalInternalAlternativeMailAddress' \
@@ -181,7 +200,8 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set doNotSearch='0' \
 	--set hook='None' \
 	--set groupName='Canonical maps' \
-	--set translationGroupName='"de_DE" "Canonical Maps"' \
+	--append translationGroupName='"de_DE" "Canonical Maps"' \
+	--append translationGroupName='"fr_FR" "Tables canoniques"' \
 	--set groupPosition=2 || die
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
@@ -192,10 +212,13 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set objectClass='univentionMailCanonicalMaps' \
 	--set shortDescription='Alternative public mail addresses' \
 	--set longDescription='Alternative public mail addresses that will be used besides the public primary address.' \
-	--set translationShortDescription='"de_DE" "Zusätzliche öffentliche Mailadressen"' \
-	--set translationLongDescription='"de_DE" "Zusätzliche öffentliche Mailadressen, die neben der öffentlichen Haupt-Mailadresse verwendet werden."' \
+	--append translationShortDescription='"de_DE" "Zusätzliche öffentliche Mailadressen"' \
+	--append translationShortDescription='"fr_FR" "Adresses e-mail publiques alternatives"' \
+	--append translationLongDescription='"de_DE" "Zusätzliche öffentliche Mailadressen, die neben der öffentlichen Haupt-Mailadresse verwendet werden."' \
+	--append translationLongDescription='"fr_FR" "Adresses e-mail publiques supplémentaires qui seront utilisées à côté de l’adresse e-mail publique principale."' \
 	--set tabName='Mail' \
-	--set translationTabName='"de_DE" "Mail"' \
+	--append translationTabName='"de_DE" "Mail"' \
+	--append translationTabName='"fr_FR" "Courrier"' \
 	--set overwriteTab='0' \
 	--set valueRequired='0' \
 	--set CLIName='mailCanonicalPublicAlternativeMailAddress' \
@@ -209,7 +232,8 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set doNotSearch='0' \
 	--set hook='None' \
 	--set groupName='Canonical maps' \
-	--set translationGroupName='"de_DE" "Canonical Maps"' \
+	--append translationGroupName='"de_DE" "Canonical Maps"' \
+	--append translationGroupName='"fr_FR" "Tables canoniques"' \
 	--set groupPosition=2 || die
 
 

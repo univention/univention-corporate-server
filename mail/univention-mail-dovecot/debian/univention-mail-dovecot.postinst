@@ -50,6 +50,8 @@ OLD_SSL_PARAMS_FILE=/var/lib/dovecot/ssl-parameters.dat
 DEPRECATED_UCRV_DH=mail/dovecot/ssl/dh_parameters_length
 DEPRECATED_UCRV_REGEN=mail/dovecot/ssl/parameters_regenerate
 
+eval "$(univention-config-registry shell)"
+
 generate_small_dh_params_in_the_foreground () {
 	echo "Generating small DH parameters ($DH_PARAMS_SIZE_SMALL bit) for a quick start right now:"
   openssl dhparam $DH_PARAMS_SIZE_SMALL > "$DH_PARAMS_FILE"
@@ -184,5 +186,13 @@ then
 fi
 
 call_joinscript 82univention-mail-dovecot.inst
+
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "6.0.3-6"; then
+	udm settings/extended_attribute modify --dn "cn=UniventionDovecotUserQuota,cn=custom attributes,cn=univention,$ldap_base" \
+		--append translationShortDescription='"fr_FR" "Quota de courrier (Mo)"' \
+		--append translationLongDescription='"fr_FR" "Quota de courrier pour l’utilisateur ou utilisatrice, en mégaoctets (0 = pas de quota)"' \
+		--append translationTabName='"fr_FR" "Courrier"' \
+		--append translationGroupName='"fr_FR" "Réglages avancés"'
+fi
 
 exit 0

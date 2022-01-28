@@ -4,73 +4,74 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2016-07-10 13:58+0100\n"
-"Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
+"PO-Revision-Date: 2021-12-07 12:54+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Poedit 3.0\n"
 
-#: umc/js/diagnostic.js:120
+#: umc/js/diagnostic.js:122
 msgid "\"%(module)s - %(flavor)s\" Module (as Administrator)"
-msgstr "Module « %(module)s - %(flavor)s » (en tant qu'Administrateur)"
+msgstr "Module « %(module)s - %(flavor)s » (en tant qu’Administrator)"
 
-#: umc/js/diagnostic.js:207
+#: umc/js/diagnostic.js:223
 msgid "Analyzing for problems..."
-msgstr "Analyse des problèmes..."
+msgstr "Recherche de problèmes…"
 
 #: umc/js/diagnostic.js:60
 msgid "Conflict: "
-msgstr "Conflit :"
+msgstr "Conflit : "
 
 #: umc/js/diagnostic.js:59
 msgid "Critical: "
-msgstr "Grave :"
+msgstr "Critique : "
 
-#: umc/js/diagnostic.js:278
+#: umc/js/diagnostic.js:296
 #, javascript-format
 msgid "Diagnosis of \"%s\" was successful"
 msgstr "Le diagnostic de « %s » a réussi"
 
-#: umc/js/diagnostic.js:184
+#: umc/js/diagnostic.js:200
 msgid ""
 "If the system is able to automatically repair found problems it offers the "
 "function as additional buttons. "
 msgstr ""
 "Si le système est en mesure de réparer automatiquement les problèmes "
-"trouvés, ces fonctions apparaîtront sous la forme de boutons supplémentaires."
+"détectés, il propose cette fonctionnalité sous forme de boutons "
+"supplémentaires. "
 
-#: umc/js/diagnostic.js:206 umc/js/diagnostic.js:310
+#: umc/js/diagnostic.js:222 umc/js/diagnostic.js:331
 msgid "No problems could be detected."
-msgstr "Aucun problème trouvé."
+msgstr "Aucun problème détecté."
 
-#: umc/js/diagnostic.js:185
+#: umc/js/diagnostic.js:201
 msgid ""
 "Otherwise the problems can be solved manually with help of the displayed "
 "links to articles by using the linked UMC modules. "
 msgstr ""
-"Sinon , les problèmes peuvent être résolus manuellement à l'aide des liens "
-"pointant vers des articles affichés, en utilisant les modules UMC associés."
+"Sinon, les problèmes peuvent être résolus manuellement à l’aide des liens "
+"vers les articles indiqués en utilisant les modules UMC correspondants. "
 
 #: umc/js/diagnostic.js:62
 msgid "Problem repaired: "
-msgstr "Problème réparé"
+msgstr "Problème réparé : "
 
 #: umc/js/diagnostic.js:64
 msgid "Problem: "
-msgstr "Problème :"
+msgstr "Problème : "
 
-#: umc/js/diagnostic.js:188
+#: umc/js/diagnostic.js:204
 msgid "Run system diagnosis"
 msgstr "Lancer un diagnostic système"
 
-#: umc/js/diagnostic.js:266
+#: umc/js/diagnostic.js:283
 msgid "Running full diagnosis..."
-msgstr "Exécution d'un diagnostic complet..."
+msgstr "Exécution d’un diagnostic complet…"
 
 #: umc/js/diagnostic.js:63
 msgid "Success: "
@@ -80,10 +81,9 @@ msgstr "Succès : "
 msgid "Warning: "
 msgstr "Avertissement : "
 
-#: umc/js/diagnostic.js:183
+#: umc/js/diagnostic.js:199
 msgid ""
 "Within this module the system can be analyzed for various known problems. "
 msgstr ""
-"Le système peut être analysé au travers de ce module à la recherche de "
-"problèmes répertoriés."
-
+"Ce module peut analyser votre système pour y détecter divers problèmes "
+"éventuels répertoriés. "

@@ -30,76 +30,76 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: python-univention-connector-s4\n"
-"Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2016-07-07 20:34+0100\n"
-"Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2021-11-03 17:54+0100\n"
+"PO-Revision-Date: 2021-12-10 14:12+0100\n"
+"Last-Translator: Nicolas Sidi <nicolas.sidi@mailbox.org>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Poedit 3.0\n"
 
-#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:84
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:73
 msgid "A bitmask of printer attributes."
 msgstr "Un masque de bits des attributs de l'imprimante."
 
-#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:125
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:94
 msgid "Basic settings"
 msgstr "Réglages de base"
 
-#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:63
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:62
 msgid "Description"
 msgstr "Description"
 
-#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:73
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:67
 msgid "Display name"
 msgstr "Nom d'affichage"
 
-#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:125
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:94
 msgid "General"
 msgstr "Général"
 
-#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:53
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:55
 msgid "Name"
 msgstr "Nom"
 
-#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:83
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:72
 msgid "Print attributes"
 msgstr "Attributs d'impression"
 
-#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:130
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:99
 msgid "Printer connection settings"
 msgstr "Réglages de la connexion à l'imprimante"
 
-#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:93
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:77
 msgid "Printer name"
 msgstr "Nom de l'imprimante"
 
-#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:103
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:82
 msgid "Server name"
 msgstr "Nom du serveur"
 
-#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:47
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:44
 msgid "Settings: MS Print Connection Policy"
 msgstr "Réglages : stratégie MS de connexion à l'imprimante"
 
-#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:94
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:78
 msgid "The display name of an attached printer."
 msgstr "Le nom d'affichage d'une imprimante branchée."
 
-#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:104
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:83
 msgid "The name of a server."
 msgstr "Le nom du serveur."
 
-#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:114
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:88
 msgid "The universal naming convention name for shared volumes and printers."
 msgstr ""
 "Le nom selon la convention de nommage universelle pour les volumes et les "
-"imprimantes partagés."
+"imprimantes partagé·es."
 
-#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:113
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:87
 msgid "UNC name"
 msgstr "Nom UNC"
