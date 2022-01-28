@@ -1,3 +1,0 @@
-Type: script
-Script: ucr-l10n-fr
-Variables: ucs/web/overview/entries/.*/(link|description|label)$

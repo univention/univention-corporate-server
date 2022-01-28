@@ -37,8 +37,6 @@
 build:
 
 include all_targets.mk
-ALL_TARGETS += $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/ucr-variables.mo
-$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/ucr-variables.mo: fr/ucr-variables.po
 .PHONY: install
 install: $(ALL_TARGETS)
 
