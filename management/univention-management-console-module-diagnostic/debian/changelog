@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.0-21) unstable; urgency=medium
+
+  * Bug #49353: added condition to ignore mounted iso images in diagnostics check
+
+ -- Alexander Steffen <steffen@univention.de>  Fri, 28 Jan 2022 11:38:50 +0100
+
 univention-management-console-module-diagnostic (6.0.0-20) unstable; urgency=medium
 
   * Bug #54336: skip 61_notifier_protocol_version test on memberserver
