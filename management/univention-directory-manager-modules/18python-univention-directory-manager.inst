@@ -64,9 +64,11 @@ univention-directory-manager settings/extended_attribute create "$@" \
 	--set name=objectFlag \
 	--set CLIName=objectFlag \
 	--set shortDescription="Univention object flag" \
-	--set translationShortDescription='"de_DE" "Univention Objekt-Flag"' \
+	--append translationShortDescription='"de_DE" "Univention Objekt-Flag"' \
+	--append translationShortDescription='"fr_FR" "Drapeau d’objet Univention"' \
 	--set longDescription="Define flags for an object" \
-	--set translationLongDescription='"de_DE" "Flags an Objekten definieren"' \
+	--append translationLongDescription='"de_DE" "Flags an Objekten definieren"' \
+	--append translationLongDescription='"fr_FR" "Définir des drapeaux pour un objet"' \
 	--set syntax=ObjectFlag \
 	--set mayChange=1 \
 	--set objectClass=univentionObject \

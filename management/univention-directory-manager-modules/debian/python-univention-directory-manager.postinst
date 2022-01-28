@@ -63,4 +63,10 @@ stop_udm_cli_server
 
 call_joinscript 18python-univention-directory-manager.inst
 
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "15.0.11-29"; then
+	univention-directory-manager settings/extended_attribute modify --dn "cn=objectFlag,cn=custom attributes,cn=univention,$ldap_base" \
+		--append translationShortDescription='"fr_FR" "Drapeau d’objet Univention"' \
+		--append translationLongDescription='"fr_FR" "Définir des drapeaux pour un objet"'
+fi
+
 exit 0

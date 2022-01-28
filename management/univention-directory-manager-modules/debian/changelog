@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.11-29) unstable; urgency=medium
+
+  * Bug #54029: Update French translation
+
+ -- Johannes Lohmer <lohmer@univention.de> Fri, 14 Jan 2022 16:35:26 +0100
+
 univention-directory-manager-modules (15.0.11-28) unstable; urgency=medium
 
   * Bug #54185: Fix Py3 issues for the refint handling of UDM
