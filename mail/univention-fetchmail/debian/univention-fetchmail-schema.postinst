@@ -38,4 +38,43 @@ eval "$(univention-config-registry shell)"
 
 call_joinscript 92univention-fetchmail-schema.inst
 
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "13.0.1-3"; then
+
+	univention-directory-manager settings/extended_attribute modify \
+		--dn "cn=UniventionFetchmail-User-Server,cn=mail,cn=custom attributes,cn=univention,$ldap_base" \
+		--append translationShortDescription='"fr_FR" "Serveur de courrier externe"' \
+		--append translationLongDescription='"fr_FR" "Les e-mails seront récupérés depuis ce serveur externe."' \
+		--append translationTabName='"fr_FR" "Récupération du courrier externe"'
+
+	univention-directory-manager settings/extended_attribute modify \
+		--dn "cn=UniventionFetchmail-User-Protocol,cn=mail,cn=custom attributes,cn=univention,$ldap_base" \
+		--append translationShortDescription='"fr_FR" "Protocole"' \
+		--append translationLongDescription='"fr_FR" "Protocole à utiliser pour la récupération du courrier"' \
+		--append translationTabName='"fr_FR" "Récupération du courrier externe"'
+
+	univention-directory-manager settings/extended_attribute modify \
+		--dn "cn=UniventionFetchmail-User-Username,cn=mail,cn=custom attributes,cn=univention,$ldap_base" \
+		--append translationShortDescription='"fr_FR" "Identifiant"' \
+		--append translationLongDescription='"fr_FR" "Identifiant pour le serveur de courrier externe"' \
+		--append translationTabName='"fr_FR" "Récupération du courrier externe"'
+
+	univention-directory-manager settings/extended_attribute modify \
+		--dn "cn=UniventionFetchmail-User-Password,cn=mail,cn=custom attributes,cn=univention,$ldap_base" \
+		--append translationShortDescription='"fr_FR" "Mot de passe"' \
+		--append translationLongDescription='"fr_FR" "Mot de passe pour le serveur de courrier externe"' \
+		--append translationTabName='"fr_FR" "Récupération du courrier externe"'
+
+	univention-directory-manager settings/extended_attribute modify \
+		--dn "cn=UniventionFetchmail-User-UseSSL,cn=mail,cn=custom attributes,cn=univention,$ldap_base" \
+		--append translationShortDescription='"fr_FR" "Chiffrer la connexion (SSL/TLS)"' \
+		--append translationLongDescription='"fr_FR" "Active une connexion sécurisée (SSL/TLS) pour la récupération du courrier."' \
+		--append translationTabName='"fr_FR" "Récupération du courrier externe"'
+
+	univention-directory-manager settings/extended_attribute modify \
+		--dn "cn=UniventionFetchmail-User-KeepMailOnServer,cn=mail,cn=custom attributes,cn=univention,$ldap_base" \
+		--append translationShortDescription='"fr_FR" "Conserver les e-mails sur le serveur"' \
+		--append translationLongDescription='"fr_FR" "Si cette option est activée, les e-mails récupérés ne sont pas supprimés du serveur."' \
+		--append translationTabName='"fr_FR" "Récupération du courrier externe"'
+fi
+
 exit 0
