@@ -1,12 +1,12 @@
 univention-ldap (16.0.7-11) unstable; urgency=medium
 
-  * Bug #48687: adjust pre-dependency to new slapd version
+  * Bug #48626: adjust pre-dependency to new slapd version
 
  -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Fri, 28 Jan 2022 12:13:03 +0100
 
 univention-ldap (16.0.7-10) unstable; urgency=medium
 
-  * Bug #48687: Make configurable that ldap ignore temporary objects.
+  * Bug #48626: Make configurable that ldap ignore temporary objects.
 
  -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Wed, 25 Jan 2022 13:37:47 +0100
 
