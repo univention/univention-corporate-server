@@ -75,22 +75,27 @@ udm settings/extended_options create "$@" --ignore_exists \
 	--set editable=1 \
 	--set shortDescription="RADIUS Authenticator" \
 	--set longDescription="Enables the RADIUS authenticator configuration options for e.g. access points or network access servers (NAS)." \
-	--set translationShortDescription='"de_DE" "RADIUS-Authenticator"' \
-	--set translationLongDescription='"de_DE" "Aktiviert die RADIUS-Authenticator-Optionen für z.B. Accesspoints oder Network Access Server (NAS)"' || die
+	--append translationShortDescription='"de_DE" "RADIUS-Authenticator"' \
+	--append translationShortDescription='"fr_FR" "Authentificateur RADIUS"' \
+	--append translationLongDescription='"de_DE" "Aktiviert die RADIUS-Authenticator-Optionen für z.B. Accesspoints oder Network Access Server (NAS)"' \
+	--append translationLongDescription='"fr_FR" "Active les options de configurations de l’authentificateur RADIUS, par exemple pour les points d’accès sans fil ou les serveurs d’accès au résau (NAS : Network Access Server)"' || die
 
 udm settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=custom attributes,cn=univention,$ldap_base" \
 	--set name='univentionRadiusClientSharedSecret' \
 	--set CLIName='univentionRadiusClientSharedSecret' \
 	--set shortDescription='Shared secret' \
-	--set translationShortDescription='"de_DE" "Gemeinsamer, geheimer Schlüssel (Shared secret)"' \
+	--append translationShortDescription='"de_DE" "Gemeinsamer, geheimer Schlüssel (Shared secret)"' \
+	--append translationShortDescription='"fr_FR" "Secret partagé"' \
 	--set longDescription='Shared secret that is used for communication between RADIUS client and RADIUS server' \
-	--set translationLongDescription='"de_DE" "Gemeinsamer, geheimer Schlüssel, der für die Kommunikation zwischen RADIUS-Client und RADIUS-Server verwendet wird."' \
+	--append translationLongDescription='"de_DE" "Gemeinsamer, geheimer Schlüssel, der für die Kommunikation zwischen RADIUS-Client und RADIUS-Server verwendet wird."' \
+	--append translationLongDescription='"fr_FR" "Secret partagé utilisé pour la communication entre le client RADIUS et le serveur RADIUS"' \
 	--set tabAdvanced=0 \
 	--set tabName='RADIUS' \
 	--set tabPosition=1 \
 	--set groupName="RADIUS authenticator" \
-	--set translationGroupName='"de_DE" "RADIUS-Authenticator"' \
+	--append translationGroupName='"de_DE" "RADIUS-Authenticator"' \
+	--append translationGroupName='"fr_FR" "Authentificateur RADIUS"' \
 	--set groupPosition=2 \
 	--set options="radiusAuthenticator" \
 	--set module=computers/domaincontroller_backup \
@@ -118,14 +123,17 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 	--set name='univentionRadiusClientType' \
 	--set CLIName='univentionRadiusClientType' \
 	--set shortDescription='NAS type' \
-	--set translationShortDescription='"de_DE" "NAS-Typ"' \
+	--append translationShortDescription='"de_DE" "NAS-Typ"' \
+	--append translationShortDescription='"fr_FR" "Type de NAS"' \
 	--set longDescription='This option tells RADIUS which Network Access Server (NAS) specific method to use to query the NAS for simultaneous use. Default is "other".' \
-	--set translationLongDescription='"de_DE" "Diese Option gibt RADIUS vor, welche Network Access Server (NAS) spezifische Methode bei gleichzeitigen Anfragen an den NAS verwendet werden soll. Der Default ist other."' \
+	--append translationLongDescription='"de_DE" "Diese Option gibt RADIUS vor, welche Network Access Server (NAS) spezifische Methode bei gleichzeitigen Anfragen an das NAS verwendet werden soll. Der Default ist other."' \
+	--append translationLongDescription='"fr_FR" "Cette option indique à RADIUS la méthode spécifique au NAS devant être employée avec celui-ci pour les requêtes simultanées. La valeur par défaut est "other".' \
 	--set tabAdvanced=0 \
 	--set tabName='RADIUS' \
 	--set tabPosition=3 \
 	--set groupName="RADIUS authenticator" \
-	--set translationGroupName='"de_DE" "RADIUS-Authenticator"' \
+	--append translationGroupName='"de_DE" "RADIUS-Authenticator"' \
+	--append translationGroupName='"fr_FR" "Authentificateur RADIUS"' \
 	--set groupPosition=2 \
 	--set options="radiusAuthenticator" \
 	--set module=computers/domaincontroller_backup \
@@ -153,14 +161,17 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 	--set name='univentionRadiusClientVirtualServer' \
 	--set CLIName='univentionRadiusClientVirtualServer' \
 	--set shortDescription='Virtual server' \
-	--set translationShortDescription='"de_DE" "Virtueller Server"' \
+	--append translationShortDescription='"de_DE" "Virtueller Server"' \
+	--append translationShortDescription='"fr_FR" "Serveur virtuel"' \
 	--set longDescription='RADIUS clients can also be tied to a virtual server. Just insert the name of the virtual server.' \
-	--set translationLongDescription='"de_DE" "RADIUS-Clients können fest mit einem virtuellen Server verknüpft werden, der hier angegeben werden kann."' \
+	--append translationLongDescription='"de_DE" "RADIUS-Clients können fest mit einem virtuellen Server verknüpft werden, der hier angegeben werden kann."' \
+	--append translationLongDescription='"fr_FR" "Les clients RADIUS peuvent également être reliés à un serveur virtuel. Indiquez simplement le nom du serveur virtuel."' \
 	--set tabAdvanced=0 \
 	--set tabName='RADIUS' \
 	--set tabPosition=5 \
 	--set groupName="RADIUS authenticator" \
-	--set translationGroupName='"de_DE" "RADIUS-Authenticator"' \
+	--append translationGroupName='"de_DE" "RADIUS-Authenticator"' \
+	--append translationGroupName='"fr_FR" "Authentificateur RADIUS"' \
 	--set groupPosition=2 \
 	--set options="radiusAuthenticator" \
 	--set module=computers/domaincontroller_backup \
@@ -188,14 +199,17 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 	--set name='networkAccessComputers' \
 	--set CLIName='networkAccess' \
 	--set shortDescription='Allow network access' \
-	--set translationShortDescription='"de_DE" "Netzwerkzugriff erlaubt"' \
+	--append translationShortDescription='"de_DE" "Netzwerkzugriff erlaubt"' \
+	--append translationShortDescription='"fr_FR" "Autoriser l’accès au réseau"' \
 	--set longDescription='Allow access via RADIUS (e.g. via IEEE 802.1x) for this computer.' \
-	--set translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (z.B. über IEEE 802.1x) für diesen Computer erlaubt werden."' \
+	--append translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (z.B. über IEEE 802.1x) für diesen Computer erlaubt werden."' \
+	--append translationLongDescription='"fr_FR" "Autoriser l’accès via RADIUS (par exemple via IEEE 802.1x) pour cet ordinateur."' \
 	--set tabAdvanced=0 \
 	--set tabName='RADIUS' \
 	--set tabPosition=1 \
 	--set groupName="RADIUS supplicant" \
-	--set translationGroupName='"de_DE" "RADIUS-Supplicant"' \
+	--append translationGroupName='"de_DE" "RADIUS-Supplicant"' \
+	--append translationGroupName='"fr_FR" "Demandeur RADIUS"' \
 	--set groupPosition=1 \
 	--set module=computers/domaincontroller_backup \
 	--set module=computers/domaincontroller_master \
@@ -222,14 +236,17 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 	--set name='networkAccessGroups' \
 	--set CLIName='networkAccess' \
 	--set shortDescription='Allow network access' \
-	--set translationShortDescription='"de_DE" "Netzwerkzugriff erlaubt"' \
+	--append translationShortDescription='"de_DE" "Netzwerkzugriff erlaubt"' \
+	--append translationShortDescription='"fr_FR" "Autoriser l’accès au réseau"' \
 	--set longDescription='Allow access via RADIUS (e.g. via IEEE 802.1x) for members of this group.' \
-	--set translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (z.B. über IEEE 802.1x) für Mitglieder dieser Gruppe erlaubt werden."' \
+	--append translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (z.B. über IEEE 802.1x) für Mitglieder dieser Gruppe erlaubt werden."' \
+	--append translationLongDescription='"fr_FR" "Autoriser l’accès via RADIUS (par exemple via IEEE 802.1x) pour les membres de ce groupe."' \
 	--set tabAdvanced=0 \
 	--set tabName='RADIUS' \
 	--set tabPosition=1 \
 	--set groupName="RADIUS supplicant" \
-	--set translationGroupName='"de_DE" "RADIUS-Supplicant"' \
+	--append translationGroupName='"de_DE" "RADIUS-Supplicant"' \
+	--append translationGroupName='"fr_FR" "Demandeur RADIUS"' \
 	--set groupPosition=1 \
 	--set module=groups/group \
 	--set syntax=boolean \
@@ -247,9 +264,11 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 	--set name='networkAccessUsers' \
 	--set CLIName='networkAccess' \
 	--set shortDescription='Allow network access' \
-	--set translationShortDescription='"de_DE" "Netzwerkzugriff erlaubt"' \
+	--append translationShortDescription='"de_DE" "Netzwerkzugriff erlaubt"' \
+	--append translationShortDescription='"fr_FR" "Autoriser l’accès au réseau"' \
 	--set longDescription='Allow access via RADIUS (802.1x) for this user.' \
-	--set translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (802.1x) für diesen Benutzer erlaubt werden."' \
+	--append translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (802.1x) für diesen Benutzer erlaubt werden."' \
+	--append translationLongDescription='"fr_FR" "Autoriser l’accès via RADIUS (802.1x) pour cet utilisateur ou utilisatrice."' \
 	--set tabAdvanced=0 \
 	--set tabName='RADIUS' \
 	--set tabPosition=1 \
@@ -270,17 +289,21 @@ if joinscript_check_specific_version_executed 1 ; then
 	udm settings/extended_attribute modify "$@" \
 		--dn "cn=networkAccessComputers,cn=custom attributes,cn=univention,$ldap_base" \
 		--set groupName="RADIUS supplicant" \
-		--set translationGroupName='"de_DE" "RADIUS-Supplicant"' \
+		--append translationGroupName='"de_DE" "RADIUS-Supplicant"' \
+		--append translationGroupName='"fr_FR" "Demandeur RADIUS"' \
 		--set groupPosition=1 \
 		--set longDescription='Allow access via RADIUS (e.g. via IEEE 802.1x) for this computer.' \
-		--set translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (z.B. über IEEE 802.1x) für diesen Computer erlaubt werden."' || exit "$?"
+		--append translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (z.B. über IEEE 802.1x) für diesen Computer erlaubt werden."' \
+		--append translationLongDescription='"fr_FR" "Autoriser l’accès via RADIUS (par exemple via IEEE 802.1x) pour cet ordinateur."' || exit "$?"
 	udm settings/extended_attribute modify "$@" \
 		--dn "cn=networkAccessGroups,cn=custom attributes,cn=univention,$ldap_base" \
 		--set groupName="RADIUS supplicant" \
-		--set translationGroupName='"de_DE" "RADIUS-Supplicant"' \
+		--append translationGroupName='"de_DE" "RADIUS-Supplicant"' \
+		--append translationGroupName='"fr_FR" "Demandeur RADIUS"' \
 		--set groupPosition=1 \
 		--set longDescription='Allow access via RADIUS (e.g. via IEEE 802.1x) for members of this group.' \
-		--set translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (z.B. über IEEE 802.1x) für Mitglieder dieser Gruppe erlaubt werden."' || exit "$?"
+		--append translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (z.B. über IEEE 802.1x) für Mitglieder dieser Gruppe erlaubt werden."' \
+		--append translationLongDescription='"fr_FR" "Autoriser l’accès via RADIUS (par exemple IEEE 802.1x) pour les membres de ce groupe."' || exit "$?"
 fi
 
 # Bug #25935: only on domaincontroller slave:
