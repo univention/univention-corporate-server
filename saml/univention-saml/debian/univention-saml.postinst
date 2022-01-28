@@ -30,6 +30,8 @@
 # shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
+eval "$(ucr shell)"
+
 case "$1" in
 configure)
 
@@ -105,5 +107,20 @@ abort-upgrade|abort-remove|abort-deconfigure)
 	exit 1
 	;;
 esac
+
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "7.0.4-18"; then
+
+	udm settings/extended_attribute modify --dn "cn=serviceprovider,cn=custom attributes,cn=univention,$ldap_base" \
+		--append translationTabName='"fr_FR" "Compte"' \
+		--append translationGroupName='"fr_FR" "Réglages SAML"' \
+		--append translationShortDescription='"fr_FR" "Activer l’utilisateur ou l’utilisatrice pour les fournisseurs de services suivants"' \
+		--append translationLongDescription='"fr_FR" "Permettre à l’utilisateur ou à l’utilisatrice d’utiliser les fournisseurs de services spécifiés"'
+
+	udm settings/extended_attribute modify --dn "cn=serviceprovidergroup,cn=custom attributes,cn=univention,$ldap_base" \
+		--append translationTabName='"fr_FR" "Général"' \
+		--append translationGroupName='"fr_FR" "Réglages SAML"' \
+		--append translationShortDescription='"fr_FR" "Activer le groupe pour les fournisseurs de services suivants"' \
+		--append translationLongDescription='"fr_FR" "Permettre au groupe d’utiliser les fournisseurs de services spécifiés"'
+fi
 
 exit 0

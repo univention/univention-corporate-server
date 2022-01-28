@@ -1,3 +1,9 @@
+univention-saml (7.0.4-18) unstable; urgency=medium
+
+  * Bug #54029: Update French translation
+
+ -- Johannes Lohmer <lohmer@univention.de> Fri, 14 Jan 2022 16:35:26 +0100
+
 univention-saml (7.0.4-17) unstable; urgency=medium
 
   * Bug #53723: Add case insensitive comparisons for LDAP attributes to
