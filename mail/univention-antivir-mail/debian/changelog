@@ -1,3 +1,9 @@
+univention-antivir-mail (11.0.0-3) unstable; urgency=medium
+
+  * Bug #54070: refactored previous solution, due to decrepated filehandling 
+
+ -- Alexander Steffen <steffen@univention.de>  Fri, 28 Jan 2022 14:34:42 +0100
+
 univention-antivir-mail (11.0.0-2) unstable; urgency=medium
 
   * Bug #54070: resolved permission issues by changing the owner of
