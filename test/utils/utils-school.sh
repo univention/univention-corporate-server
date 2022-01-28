@@ -125,7 +125,8 @@ install_mv_idm_gw_receiver_ext_attrs () {
     --set tabPosition=9 \
     --set groupName="IDM Gateway" \
     --set groupPosition="1" \
-    --set translationGroupName='"de_DE" "IDM Gateway"' \
+    --append translationGroupName='"de_DE" "IDM Gateway"' \
+    --append translationGroupName='"fr_FR" "Passerelle IDM"' \
     --set syntax=string \
     --set default="" \
     --set multivalue=0 \
@@ -153,7 +154,8 @@ install_mv_idm_gw_receiver_ext_attrs () {
     --set tabPosition=9 \
     --set groupName="IDM Gateway" \
     --set groupPosition="2" \
-    --set translationGroupName='"de_DE" "IDM Gateway"' \
+    --append translationGroupName='"de_DE" "IDM Gateway"' \
+    --append translationGroupName='"fr_FR" "Passerelle IDM"' \
     --set syntax=string \
     --set default="" \
     --set multivalue=0 \
