@@ -1,3 +1,9 @@
+univention-demo-configuration (8.0.0-10) unstable; urgency=medium
+
+  * Bug #54029: updated french translation
+
+ -- Johannes Lohmer <lohmer@univention.de>  Fri, 28 Jan 2022 19:20:53 +0100
+
 univention-demo-configuration (8.0.0-9) unstable; urgency=medium
 
   * Bug #53251: Typo

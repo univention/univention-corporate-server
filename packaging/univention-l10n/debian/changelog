@@ -1,4 +1,4 @@
-univention-l10n (7.0.1-2) unstable; urgency=medium
+univention-l10n (7.0.1-3) unstable; urgency=medium
 
   * Bug #54029 fixed univention-ucs-translation-build-package
 
