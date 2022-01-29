@@ -103,7 +103,7 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "7.0.1-5"; then
 	
 	udm settings/extended_attribute modify --dn "cn=univentionRadiusClientType,cn=custom attributes,cn=univention,$ldap_base" \
 		--append translationShortDescription='"fr_FR" "Type de NAS"' \
-		--append translationLongDescription='"fr_FR" "Cette option indique à RADIUS la méthode spécifique au NAS devant être employée avec celui-ci pour les requêtes simultanées. La valeur par défaut est "other".' \
+		--append translationLongDescription='"fr_FR" "Cette option indique à RADIUS la méthode spécifique au NAS devant être employée avec celui-ci pour les requêtes simultanées. La valeur par défaut est »other«".' \
 		--append translationGroupName='"fr_FR" "Authentificateur RADIUS"'
 	
 	udm settings/extended_attribute modify --dn "cn=univentionRadiusClientVirtualServer,cn=custom attributes,cn=univention,$ldap_base" \
