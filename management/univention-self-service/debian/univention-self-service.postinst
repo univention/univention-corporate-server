@@ -44,7 +44,7 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "5.0.1-16"; then
 	--append translationLongDescription='"fr_FR" "Lors de la réinitialisation du mot de passe, un e-mail est envoyé à l’adresse spécifiée. La réinitialisation du mot de passe par e-mail est disponible pour les utilisateurs et utilisatrices uniquement si elle a été activée et configurée par l’administrateur ou l’administratrice."' \
 	--append translationTabName='"fr_FR" "Réinitialisation du mot de passe"'
 
-	univention-directory-manager portals/entry motify --dn "cn=self-service-my-profile,cn=entry,cn=portals,cn=univention,$ldap_base" \
+	univention-directory-manager portals/entry modify --dn "cn=self-service-my-profile,cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--append displayName='"fr_FR" "Mon profil"' \
 		--append description='"fr_FR" "Gérer le profil"'
 

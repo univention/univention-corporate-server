@@ -1,3 +1,9 @@
+univention-self-service (5.0.1-17) unstable; urgency=medium
+
+  * Bug #54029: fix typo
+
+ -- Florian Best <best@univention.de>  Sat, 29 Jan 2022 11:16:04 +0100
+
 univention-self-service (5.0.1-16) unstable; urgency=medium
 
   * Bug #54029: Update French translation
