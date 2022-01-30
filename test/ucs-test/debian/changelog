@@ -1,3 +1,9 @@
+ucs-test (10.0.6-96) unstable; urgency=medium
+
+  * Bug #53012: Test userexpiry offset between ucs and samba
+
+ -- Julia Bremer <bremer@univention.de>  Sun, 30 Jan 2022 12:39:48 +0100
+
 ucs-test (10.0.6-95) unstable; urgency=medium
 
   * Bug #43775: Test that ucs-school-replicas don't have the right to create
