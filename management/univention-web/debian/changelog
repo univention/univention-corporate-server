@@ -1,3 +1,9 @@
+univention-web (4.0.1-45) unstable; urgency=medium
+
+  * Bug #54032: Fix timeout handling
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 30 Jan 2022 17:05:04 +0100
+
 univention-web (4.0.1-44) unstable; urgency=medium
 
   * Bug #54032: In case login is not finished within 10 seconds, warning

@@ -139,22 +139,20 @@ define([
 			if (umcConfig.anonymousMeta) {
 				deferred.resolve(tools.status());
 			} else {
-				require(['umc/dialog'], function(_dialog) {
-					// register the real umc/dialog module in the local scope
-					var dialog = _dialog;
-
-					var metaData = xhr.get('/univention/get/meta?' + timestamp, {timeout: 10000});
-
-					metaData.then(lang.hitch(this, function(meta) {
+				tools.umcpCommand('get/meta?' + timestamp, undefined, undefined, undefined, undefined, {timeout: 10000}).then(
+					lang.hitch(this, function(meta) {
 						lang.mixin(this._status, meta.result);
 						deferred.resolve(tools.status());
-					}), function (err){
-						var message = _('Login call lasted too long. Please visit the <a href="https://help.univention.com/t/draft-login-call-lasted-too-long/19031">Help</a> to check for possible causes.');
+					}), function (err) {
+						require(['umc/dialog'], function(_dialog) {
+							// register the real umc/dialog module in the local scope
+							var dialog = _dialog;
 
-						dialog.warn(message);
-						deferred.reject('Timeout occurred');
+							var message = _('Login call lasted too long. Please visit the <a href="https://help.univention.com/t/draft-login-call-lasted-too-long/19031" target="_blank">Help</a> to check for possible causes.');
+							dialog.warn(message);
+							deferred.reject('Timeout occurred');
+						});
 					});
-				});
 			}
 			return deferred.promise;
 		},
@@ -559,6 +557,7 @@ define([
 				var call = xhr.post(url, {
 					data: body,
 					handleAs: 'json',
+					timeout: (args && args.timeout) ? args.timeout : null,
 					headers: lang.mixin({
 						'Accept-Language': i18nTools.defaultLang(),
 						'Accept': 'application/json; q=1.0, text/html; q=0.3; */*; q=0.1',
