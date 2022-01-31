@@ -11,4 +11,15 @@ desc: |
    patch was accidentally dropped with UCS 5.0 and has been re-applied.
  * The Samba LDAP server process could suffer from a segmentation fault
    in case the LDAP controls paged results or virtual list view are used.
-bug: [53629, 54278]
+ * A vulnerability was fixed which allows remote attackers to execute
+   arbitrary code as root on affected Samba installations that use the VFS
+   module vfs_fruit. The module is by default not activated in UCS.
+   (CVE-2021-44142)
+ * Checks in the Samba AD DC to prevent aliased SPNs could be bypassed, giving
+   users who can write to an account's servicePrincipalName attribute the
+   ability to impersonate services. (CVE-2022-0336)
+bug: [53629,54278,54369]
+cve:
+- CVE-2021-44142
+- CVE-2022-0336
+
