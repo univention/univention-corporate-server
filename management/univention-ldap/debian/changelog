@@ -10,6 +10,12 @@ univention-ldap (16.0.7-14) unstable; urgency=medium
 
  -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Mon, 31 Jan 2022 09:03:45 +0100
 
+univention-ldap (16.0.7-13) unstable; urgency=medium
+
+  * Bug #54395: Add univentionRadiusPassword attribute
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 31 Jan 2022 02:34:26 +0100
+
 univention-ldap (16.0.7-12) unstable; urgency=medium
 
   * Bug #54029: Update French translation
