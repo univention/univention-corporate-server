@@ -12,6 +12,6 @@ desc: |
    `notifier/protocol/version`.
  * The Python 3 compatibility when handling exceptions in certain diagnostic
    plugins has been corrected.
- * The system diagnosis in UMC will not check the available for ISO images
-   anymore, which previously lead to thrown warnings.
+ * Mounted ISO images are no longer included in the disk usage diagnostic
+   plugin.
 bug: [53969, 54264, 53306, 49353]
