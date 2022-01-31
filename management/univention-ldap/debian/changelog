@@ -1,3 +1,9 @@
+univention-ldap (16.0.7-13) unstable; urgency=medium
+
+  * Bug #48626: Fixed up only set ucr ldap/translog-ignore-temporary on master
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Mon, 31 Jan 2022 09:03:45 +0100
+
 univention-ldap (16.0.7-12) unstable; urgency=medium
 
   * Bug #54029: Update French translation

@@ -82,11 +82,7 @@ eval "$(univention-config-registry shell)"
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-config-registry set ldap/translogfile?"/var/lib/univention-ldap/listener/listener"
-	if [ "$1" = "configure" ]; then
-		if [ -z "$2" ]; then  ## fresh installation
-			univention-config-registry set ldap/translog-ignore-temporary?"yes"
-		fi
-	fi
+	univention-config-registry set ldap/translog-ignore-temporary?"yes"
 fi
 
 # configure lastbind

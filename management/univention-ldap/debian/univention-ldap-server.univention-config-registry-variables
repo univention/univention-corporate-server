@@ -16,7 +16,6 @@ ReadOnly=yes
 Description[de]=Diese Variable kontrolliert, ob temporäre LDAP Objekte vom translog Modul verarbeitet werden sollen. Standardmäßig ist dies aktiviert. Nach der Änderung muss 'systemctl restart slapd' ausgeführt werden.
 Description[en]=This variable controls if temporary LDAP objects should be processed by 'translog' Modul. By default it is enabled. After setting it 'systemctl restart slapd' must be executed.
 Type=bool
-Default=True
 Categories=service-ldap
 
 [slapd/port]
