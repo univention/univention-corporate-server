@@ -2,7 +2,7 @@ univention-ldap (16.0.7-12) unstable; urgency=medium
 
   * Bug #54029: Update French translation
 
- -- Johannes Lohmer <lohmer@univention.de> Fri, 14 Jan 2022 16:35:26 +0100
+ -- Johannes Lohmer <lohmer@univention.de>  Fri, 28 Jan 2022 16:35:26 +0100
 
 univention-ldap (16.0.7-11) unstable; urgency=medium
 
