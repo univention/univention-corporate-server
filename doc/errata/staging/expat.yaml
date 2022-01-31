@@ -1,0 +1,34 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: expat
+fix: 2.2.0-2+deb9u4
+desc: |
+ This update addresses the following issues:
+ * Large number of prefixed XML attributes on a single tag can crash libexpat
+   (CVE-2021-45960)
+ * Integer overflow in doProlog in xmlparse.c (CVE-2021-46143)
+ * Integer overflow in addBinding in xmlparse.c (CVE-2022-22822)
+ * Integer overflow in build_model in xmlparse.c (CVE-2022-22823)
+ * Integer overflow in defineAttribute in xmlparse.c (CVE-2022-22824)
+ * Integer overflow in lookup in xmlparse.c (CVE-2022-22825)
+ * Integer overflow in nextScaffoldPart in xmlparse.c (CVE-2022-22826)
+ * Integer overflow in storeAtts in xmlparse.c (CVE-2022-22827)
+ * Expat (aka libexpat) before 2.4.4 has a signed integer overflow in
+   XML_GetBuffer, for configurations with a nonzero XML_CONTEXT_BYTES.
+   (CVE-2022-23852)
+ * Expat (aka libexpat) before 2.4.4 has an integer overflow in the doProlog
+   function. (CVE-2022-23990)
+bug: [54398]
+cve:
+- CVE-2021-45960
+- CVE-2021-46143
+- CVE-2022-22822
+- CVE-2022-22823
+- CVE-2022-22824
+- CVE-2022-22825
+- CVE-2022-22826
+- CVE-2022-22827
+- CVE-2022-23852
+- CVE-2022-23990
