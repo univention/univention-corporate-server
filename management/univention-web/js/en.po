@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-12-22 11:33+0000\n"
+"POT-Creation-Date: 2022-01-31 09:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -16,7 +16,7 @@ msgstr ""
 msgid " (required)"
 msgstr ""
 
-#: js/tools.js:1950
+#: js/tools.js:1947
 msgid "\"${moduleName}\" module"
 msgstr ""
 
@@ -57,11 +57,11 @@ msgid ""
 "settings gets lost and a page reload is done when switching the language."
 msgstr ""
 
-#: js/tools.js:315
+#: js/tools.js:312
 msgid ""
-"A reload of the Univention Management Console is required to use new "
-"modules.<br>Currently opened modules may not work properly.<br>Do you want "
-"to reload the page?"
+"A reload of the Univention Management Console is required to use new modules."
+"<br>Currently opened modules may not work properly.<br>Do you want to reload "
+"the page?"
 msgstr ""
 
 #: js/widgets/CookieBanner.js:58
@@ -92,15 +92,15 @@ msgstr ""
 msgid "Advantages of the Enterprise Edition"
 msgstr ""
 
-#: js/tools.js:1200
+#: js/tools.js:1197
 msgid "An assert statement failed"
 msgstr ""
 
-#: js/tools.js:696 js/tools.js:998
+#: js/tools.js:693 js/tools.js:995
 msgid "An error occurred"
 msgstr ""
 
-#: js/tools.js:702
+#: js/tools.js:699
 msgid ""
 "An error occurred while connecting to the server, please try again later."
 msgstr ""
@@ -109,7 +109,7 @@ msgstr ""
 msgid "An error occurred: "
 msgstr ""
 
-#: js/tools.js:699
+#: js/tools.js:696
 #, javascript-format
 msgid ""
 "An unknown error with status code %s occurred while connecting to the "
@@ -128,8 +128,8 @@ msgstr ""
 msgid "Buy support package"
 msgstr ""
 
-#: js/tools.js:317 js/dialog.js:302 js/hooks/default_menu_entries.js:159
-#: js/widgets/MultiObjectSelect.js:86 js/widgets/Wizard.js:178
+#: js/hooks/default_menu_entries.js:159 js/widgets/MultiObjectSelect.js:86
+#: js/widgets/Wizard.js:178 js/tools.js:314 js/dialog.js:302
 msgid "Cancel"
 msgstr ""
 
@@ -145,8 +145,8 @@ msgstr ""
 msgid "Changing language"
 msgstr ""
 
-#: js/tools.js:967 js/hooks/default_menu_entries.js:384
-#: js/widgets/Module.js:180
+#: js/hooks/default_menu_entries.js:384 js/widgets/Module.js:180
+#: js/tools.js:964
 msgid "Close"
 msgstr ""
 
@@ -158,7 +158,7 @@ msgstr ""
 msgid "Cookie Settings"
 msgstr ""
 
-#: js/tools.js:791
+#: js/tools.js:788
 msgid "Could not fulfill the request."
 msgstr ""
 
@@ -166,7 +166,7 @@ msgstr ""
 msgid "Could not load search results"
 msgstr ""
 
-#: js/tools.js:811
+#: js/tools.js:808
 msgid "Could not process the request."
 msgstr ""
 
@@ -198,7 +198,7 @@ msgstr ""
 msgid "Group"
 msgstr ""
 
-#: js/tools.js:909
+#: js/tools.js:906
 #, javascript-format
 msgid "HTTP Error %s"
 msgstr ""
@@ -211,7 +211,7 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-#: js/tools.js:946
+#: js/tools.js:943
 msgid "Hide server error message"
 msgstr ""
 
@@ -219,59 +219,57 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: js/tools.js:988
+#: js/tools.js:985
 msgid "Inform vendor"
 msgstr ""
 
-#: js/tools.js:423
+#: js/tools.js:420
 msgid "Information"
 msgstr ""
 
-#: js/tools.js:1009
+#: js/tools.js:1006
 msgid ""
 "Information about the error will be sent to the vendor along with some data "
 "about the operating system."
 msgstr ""
 
-#: js/tools.js:808
-msgid ""
-"Internal UMC protocol error: The UMCP message body could not be parsed."
+#: js/tools.js:805
+msgid "Internal UMC protocol error: The UMCP message body could not be parsed."
 msgstr ""
 
-#: js/tools.js:807
+#: js/tools.js:804
 msgid ""
 "Internal UMC protocol error: The UMCP message header could not be parsed."
 msgstr ""
 
-#: js/tools.js:810
+#: js/tools.js:807
 msgid "Internal module error: An error occurred during command processing."
 msgstr ""
 
-#: js/tools.js:812
+#: js/tools.js:809
 msgid ""
-"Internal module error: The initialization of the module caused a fatal "
-"error."
+"Internal module error: The initialization of the module caused a fatal error."
 msgstr ""
 
-#: js/tools.js:801
+#: js/tools.js:798
 msgid "Internal server error."
 msgstr ""
 
-#: js/tools.js:804
+#: js/tools.js:801
 msgid "Internal server error: Could not connect to the module process."
 msgstr ""
 
-#: js/tools.js:805
+#: js/tools.js:802
 msgid ""
-"Internal server error: The SSL server certificate is not trustworthy. Please"
-" check your SSL configurations."
+"Internal server error: The SSL server certificate is not trustworthy. Please "
+"check your SSL configurations."
 msgstr ""
 
-#: js/tools.js:803
+#: js/tools.js:800
 msgid "Internal server error: The module process died unexpectedly."
 msgstr ""
 
-#: js/tools.js:802
+#: js/tools.js:799
 msgid "Internal server error: The service is temporarily not available."
 msgstr ""
 
@@ -279,20 +277,20 @@ msgstr ""
 msgid "Key"
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:283 js/widgets/LoginButton.js:41
-#: js/widgets/LoginButton.js:54 js/menu/Menu.js:117
+#: js/hooks/default_menu_entries.js:283 js/menu/Menu.js:117
+#: js/widgets/LoginButton.js:41 js/widgets/LoginButton.js:54
 msgid "Login"
 msgstr ""
 
-#: js/tools.js:152
+#: js/tools.js:144
 msgid ""
-"Login call lasted too long. Please visit the <a "
-"href=\"https://help.univention.com/t/draft-login-call-lasted-too-"
-"long/19031\" target=\"_blank\">Help</a> to check for possible causes."
+"Login call lasted too long. Please visit the <a href=\"https://help."
+"univention.com/t/draft-login-call-lasted-too-long/19031\", target=\"_blank"
+"\">Help</a> to check for possible causes."
 msgstr ""
 
-#: js/hooks/default_menu_entries.js:295 js/widgets/LoginButton.js:54
-#: js/menu/Menu.js:118
+#: js/hooks/default_menu_entries.js:295 js/menu/Menu.js:118
+#: js/widgets/LoginButton.js:54
 msgid "Logout"
 msgstr ""
 
@@ -377,7 +375,7 @@ msgstr ""
 msgid "Please perform a search"
 msgstr ""
 
-#: js/tools.js:929
+#: js/tools.js:926
 msgid "Please take a second to provide the following information:"
 msgstr ""
 
@@ -389,15 +387,15 @@ msgstr ""
 msgid "Read"
 msgstr ""
 
-#: js/tools.js:323
+#: js/tools.js:320
 msgid "Reload"
 msgstr ""
 
-#: js/tools.js:1021
+#: js/tools.js:1018
 msgid "Remarks (e.g. steps to reproduce) (optional)"
 msgstr ""
 
-#: js/widgets/Uploader.js:115 js/widgets/MultiObjectSelect.js:349
+#: js/widgets/MultiObjectSelect.js:349 js/widgets/Uploader.js:115
 #: js/widgets/MultiUploader.js:66
 msgid "Remove"
 msgstr ""
@@ -430,19 +428,19 @@ msgstr ""
 msgid "Select the date"
 msgstr ""
 
-#: js/tools.js:942
+#: js/tools.js:939
 msgid "Send as email"
 msgstr ""
 
-#: js/tools.js:1005
+#: js/tools.js:1002
 msgid "Send to vendor"
 msgstr ""
 
-#: js/tools.js:1032
+#: js/tools.js:1029
 msgid "Sending the information to the vendor failed"
 msgstr ""
 
-#: js/tools.js:696
+#: js/tools.js:693
 msgid "Server error message:"
 msgstr ""
 
@@ -450,15 +448,15 @@ msgstr ""
 msgid "Setgid"
 msgstr ""
 
-#: js/tools.js:1013
+#: js/tools.js:1010
 msgid "Show error message"
 msgstr ""
 
-#: js/tools.js:947
+#: js/tools.js:944
 msgid "Show server error message"
 msgstr ""
 
-#: js/tools.js:408
+#: js/tools.js:405
 msgid ""
 "So far, the connection to the server could not be established after {time} "
 "seconds. This can be a normal behavior. In any case, the process will "
@@ -469,7 +467,7 @@ msgstr ""
 msgid "Space"
 msgstr ""
 
-#: js/tools.js:799
+#: js/tools.js:796
 msgid "Specified locale is not available."
 msgstr ""
 
@@ -496,7 +494,7 @@ msgstr ""
 msgid "Switch language"
 msgstr ""
 
-#: js/tools.js:1030
+#: js/tools.js:1027
 msgid "Thank you for your help"
 msgstr ""
 
@@ -515,7 +513,7 @@ msgstr ""
 msgid "The passwords do not match, please retype again."
 msgstr ""
 
-#: js/tools.js:314
+#: js/tools.js:311
 msgid "UMC reload required"
 msgstr ""
 
@@ -535,8 +533,8 @@ msgstr ""
 msgid "Up to 7 years of maintenance (LTS)"
 msgstr ""
 
-#: js/widgets/Uploader.js:99 js/widgets/MultiUploader.js:63
-#: js/widgets/InfoUploader.js:43
+#: js/widgets/InfoUploader.js:43 js/widgets/Uploader.js:99
+#: js/widgets/MultiUploader.js:63
 msgid "Upload"
 msgstr ""
 
@@ -552,7 +550,7 @@ msgstr ""
 msgid "User settings"
 msgstr ""
 
-#: js/tools.js:798
+#: js/tools.js:795
 msgid "Validation error"
 msgstr ""
 
@@ -562,24 +560,24 @@ msgstr ""
 
 #: js/widgets/CookieBanner.js:55
 msgid ""
-"We use cookies in order to provide you with certain functions and to be able"
-" to guarantee an unrestricted service. By clicking on \"Accept\", you "
-"consent to the collection of information on this portal."
+"We use cookies in order to provide you with certain functions and to be able "
+"to guarantee an unrestricted service. By clicking on \"Accept\", you consent "
+"to the collection of information on this portal."
 msgstr ""
 
-#: js/tools.js:796
+#: js/tools.js:793
 msgid ""
 "Webfrontend error: The specified UMCP command arguments of the request are "
 "invalid."
 msgstr ""
 
-#: js/tools.js:797
+#: js/tools.js:794
 msgid ""
 "Webfrontend error: The specified arguments for the UMCP module method are "
 "invalid or missing."
 msgstr ""
 
-#: js/tools.js:795
+#: js/tools.js:792
 msgid "Webfrontend error: The specified request is unknown."
 msgstr ""
 
@@ -587,11 +585,11 @@ msgstr ""
 msgid "Write"
 msgstr ""
 
-#: js/tools.js:793
+#: js/tools.js:790
 msgid "You are not authorized to perform this action."
 msgstr ""
 
-#: js/tools.js:1034
+#: js/tools.js:1031
 msgid "You can also send the information via mail:"
 msgstr ""
 
@@ -602,26 +600,26 @@ msgid ""
 "when operating your IT infrastructure."
 msgstr ""
 
-#: js/tools.js:2163
+#: js/tools.js:2160
 msgid ""
 "Your browser is outdated! You may experience performance issues and other "
 "problems when using this site. The supported Browsers are Firefox (>=60), "
 "Chrome (>=71), Edge (>=18), Safari (>=12)."
 msgstr ""
 
-#: js/tools.js:1025
+#: js/tools.js:1022
 msgid "Your email address (optional)"
 msgstr ""
 
-#: js/tools.js:792
+#: js/tools.js:789
 msgid "Your session has expired, please login again."
 msgstr ""
 
-#: js/tools.js:932
+#: js/tools.js:929
 msgid "actual result"
 msgstr ""
 
-#: js/tools.js:931
+#: js/tools.js:928
 msgid "expected result"
 msgstr ""
 
@@ -649,7 +647,7 @@ msgstr ""
 msgid "more"
 msgstr ""
 
-#: js/tools.js:930
+#: js/tools.js:927
 msgid "steps to reproduce the failure"
 msgstr ""
 
