@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: samba
+fix: 2:4.10.18-1A~4.4.0.202201311035
+desc: |
+ This update addresses the following issues:
+ * The Samba LDAP server process could suffer from a segmentation fault
+   in case the LDAP controls paged results or virtual list view are used.
+bug: [54397]
