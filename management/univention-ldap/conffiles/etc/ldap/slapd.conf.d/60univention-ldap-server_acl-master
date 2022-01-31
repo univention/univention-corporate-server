@@ -68,4 +68,16 @@ print('access to attrs=univentionOperatingSystem,univentionOperatingSystemVersio
 print('    by self %s' % (usr))
 print('    by * none break')
 print('')
+
+print('access to attrs=univentionOperatingSystem,univentionOperatingSystemVersion')
+print('    by self %s' % (usr))
+print('    by * none break')
+print('')
 @!@
+
+access to attrs=univentionRadiusPassword
+    by set="user/univentionObjectType & [computers/domaincontroller_master]" read
+    by set="user/univentionObjectType & [computers/domaincontroller_backup]" read
+    by set="user/univentionObjectType & [computers/domaincontroller_slave]" read
+    by set="user/univentionObjectType & [computers/memberserver]" read
+    by * none

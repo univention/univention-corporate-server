@@ -77,6 +77,11 @@ attributetype ( 1.3.6.1.4.1.10176.100 NAME 'univentionUMCProperty'
 	EQUALITY caseExactMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
+attributetype ( 1.3.6.1.4.1.10176.101 NAME 'univentionRadiusPassword'
+	DESC 'Service specific password for Radius'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
 # Attribute to store the youngest authTimestamp (see slapo-lastbind) attribute from multiple LDAP servers.
 # Used by univention-lastbind.py
 attributetype ( 1.3.6.1.4.1.10176.17 NAME 'univentionAuthTimestamp'
@@ -92,7 +97,7 @@ objectclass ( 1.3.6.1.4.1.10176.8 NAME 'univentionPerson'
 	SUP top AUXILIARY
 	MAY ( quotablocksoft $ quotablockhard $ quotafilesoft $ quotafilehard $
 	      temporary $ virtual $ univentionBirthday $ univentionUMCProperty $
-	      univentionAuthTimestamp )
+	      univentionAuthTimestamp $ univentionRadiusPassword )
 	)
 
 attributetype ( 1.3.6.1.4.1.10176.9.1.1 NAME 'univentionGroupType'
