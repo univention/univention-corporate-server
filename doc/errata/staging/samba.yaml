@@ -3,10 +3,12 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: samba
-fix: 2:4.13.13-1A~5.0.0.202201242102
+fix: 2:4.13.13-1A~5.0.0.202201310946
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * Opening the security tab in Microsoft Windows Explorer on shares or files
    containing some SIDs considered invalid by Samba caused Samba to crash. The
    patch was accidentally dropped with UCS 5.0 and has been re-applied.
-bug: [53629]
+ * The Samba LDAP server process could suffer from a segmentation fault
+   in case the LDAP controls paged results or virtual list view are used.
+bug: [53629, 54278]
