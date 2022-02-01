@@ -148,3 +148,8 @@ Description[en]=Activates further authentication modules for users. If left unde
 Type=str
 Categories=service-radius
 
+[radius/use-service-specific-password]
+Description[de]=Ermöglicht die Verwendung von dienstspezifischen Passwörtern. Dieses Passwort wird im Attribut univentionRadiusPassword gespeichert. Wenn kein dienstspezifisches Kennwort festgelegt ist, schlägt die Authentifizierung fehl, da nicht auf das Standardkennwort zurückgefallen wird.
+Description[en]=Enables the use of service specific passwords. This password stored in the univentionRadiusPassword attribute. If no service specific password is set, the authentication will fail as there is no fallback to the standart password.
+Type=bool
+Categories=service-radius
