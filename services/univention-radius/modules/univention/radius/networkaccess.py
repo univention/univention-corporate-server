@@ -100,6 +100,7 @@ class NetworkAccess(object):
 		self.ldapConnection = get_ldapConnection()
 		self.configRegistry = univention.config_registry.ConfigRegistry()
 		self.configRegistry.load()
+		self.use_ssp = self.configRegistry.is_true('radius/use-service-specific-password')
 		self.whitelisting = self.configRegistry.is_true('radius/mac/whitelisting')
 		self._setup_logger(loglevel, logfile)
 		self.logger.debug('Given username: %r', username)
@@ -213,11 +214,13 @@ class NetworkAccess(object):
 			raise MacNotAllowedError('stationId is denied, because it is not whitelisted')
 		# user is authorized to authenticate via RADIUS, retrieve NT-password-hash from LDAP and return it
 		self.logger.info('User is allowed to use RADIUS')
-		result = self.ldapConnection.search(filter=filter_format('(uid=%s)', (self.username, )), attr=['sambaNTPassword', 'sambaAcctFlags'])
+
+		pwd_attr = 'univentionRadiusPassword' if self.use_ssp else 'sambaNTPassword'
+		result = self.ldapConnection.search(filter=filter_format('(uid=%s)', (self.username, )), attr=[pwd_attr, 'sambaAcctFlags'])
 		try:
-			nt_password_hash = codecs.decode(result[0][1]['sambaNTPassword'][0], 'hex')
+			nt_password_hash = codecs.decode(result[0][1][pwd_attr][0], 'hex')
 		except (IndexError, KeyError, TypeError):
-			raise NoHashError('No valid NT-password-hash found. Check the "sambaNTPassword" attribute of the user.')
+			raise NoHashError('No valid NT-password-hash found. Check the "%s" attribute of the user.' % (pwd_attr,))
 		sambaAccountFlags = frozenset(result[0][1]['sambaAcctFlags'][0].decode('UTF-8'))
 		if sambaAccountFlags & DISALLOWED_SAMBA_ACCOUNT_FLAGS:
 			raise UserDeactivatedError('Account is deactivated')
