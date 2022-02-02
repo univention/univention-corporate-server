@@ -40,7 +40,6 @@ import re
 import stat
 
 import univention.debug as ud
-
 from listener import SetUID, configRegistry, run
 
 name = 'nagios-client'

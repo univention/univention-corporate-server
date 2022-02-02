@@ -30,13 +30,16 @@
 #
 from __future__ import absolute_import
 
-import listener
-import univention.debug as ud
-import re
-import univention.config_registry
-import univention.uldap
 import os
+import re
+
 from six.moves import cPickle as pickle
+
+import listener
+import univention.config_registry
+import univention.debug as ud
+import univention.uldap
+
 try:
 	from typing import Dict, Iterable, List, Optional  # noqa: F401
 except ImportError:

@@ -36,18 +36,19 @@
 
 from __future__ import absolute_import
 
-import listener
 import os
 import time
-import univention.debug as ud
 
 import ldb
-from samba.ndr import ndr_pack
+from samba.auth import system_session
 from samba.dcerpc import security
 from samba.idmap import IDmapDB
-from samba.auth import system_session
+from samba.ndr import ndr_pack
 from samba.param import LoadParm
 from samba.provision import setup_idmapdb
+
+import listener
+import univention.debug as ud
 
 name = 'samba4-idmap'
 description = 'Update local IDmap entries'
@@ -328,12 +329,14 @@ def handler(dn, new, old, operation):
 
 
 if __name__ == '__main__':
-	from argparse import ArgumentParser
-	import sys
-	from univention.config_registry import ConfigRegistry
-	import subprocess
-	from ldif import LDIFParser
 	import io
+	import subprocess
+	import sys
+	from argparse import ArgumentParser
+
+	from ldif import LDIFParser
+
+	from univention.config_registry import ConfigRegistry
 
 	parser = ArgumentParser()
 	parser.add_argument(

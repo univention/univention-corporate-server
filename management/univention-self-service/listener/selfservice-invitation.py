@@ -34,9 +34,10 @@
 
 from __future__ import absolute_import
 
+import os
+
 import listener
 import univention.debug as ud
-import os
 
 # pwdChangeNextLogin=1 should be set, this is either shadowMax=1 or shadowLastChange=0
 name = 'selfservice-invitation'

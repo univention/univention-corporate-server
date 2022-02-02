@@ -121,7 +121,6 @@ from __future__ import absolute_import
 import listener
 from univention.mail.dovecot_shared_folder import DovecotSharedFolderListener
 
-
 listener.configRegistry.load()
 fqdn = '{}.{}'.format(listener.configRegistry['hostname'].lower(), listener.configRegistry['domainname'].lower())
 

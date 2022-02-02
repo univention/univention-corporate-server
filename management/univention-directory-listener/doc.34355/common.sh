@@ -74,6 +74,7 @@ setup_listener () {
 	[ -f "$LMODUL/printusers.py" ] && return
 	cat >>"$LMODUL/printusers.py" <<__PY__
 from __future__ import absolute_import
+
 import listener
 
 name = 'printusers'

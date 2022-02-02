@@ -36,12 +36,13 @@
 
 from __future__ import absolute_import
 
-import listener
 import os
 import time
 from subprocess import call
 
 import ldap.dn
+
+import listener
 import univention.debug as ud
 
 hostname = listener.configRegistry['hostname']

@@ -34,9 +34,10 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+
 import listener
-import univention.debug as ud
 import univention.config_registry
+import univention.debug as ud
 
 name = 'cups-pdf'
 description = 'Manage Samba share for CUPS pdf printer'

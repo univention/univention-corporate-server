@@ -35,9 +35,10 @@
 
 from __future__ import absolute_import
 
-from listener import SetUID
-import univention.debug as ud
 import tdb
+
+import univention.debug as ud
+from listener import SetUID
 
 SAMBA_PRIVILEGES = {
 	b"SeMachineAccountPrivilege": {"number": 16, "index": 0},

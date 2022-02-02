@@ -35,11 +35,11 @@
 
 from __future__ import absolute_import
 
-from listener import SetUID
 import univention.config_registry as ucr
-import univention.pkgdb
 import univention.debug as ud
+import univention.pkgdb
 import univention.uldap
+from listener import SetUID
 
 name = 'pkgdb-watch'
 description = 'watches the availability of the software monitor service'

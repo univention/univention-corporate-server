@@ -35,12 +35,12 @@
 
 from __future__ import absolute_import
 
-import listener
-
-from univention.config_registry import handler_set, handler_unset
-import univention.debug as ud
 import os
 import subprocess
+
+import listener
+import univention.debug as ud
+from univention.config_registry import handler_set, handler_unset
 
 name = 'umc-service-providers'
 description = 'Manage umc/saml/trusted/sp/* variable'

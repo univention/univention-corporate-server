@@ -41,28 +41,26 @@
 # 2. Primary is degraded to Replica
 #    use existing database
 
-from __future__ import print_function, absolute_import
+from __future__ import absolute_import, print_function
 
-import listener
-
+import base64
 import os
+import re
+import smtplib
+import subprocess
+import sys
+import time
+from errno import ENOENT
+from typing import Optional
+
 import ldap
 import ldap.schema
 # import ldif as ldifparser since the local module already uses ldif as variable
 import ldif as ldifparser
-import re
-import time
-import base64
-import subprocess
-import smtplib
-import sys
-from errno import ENOENT
-from typing import Optional
-
 from six.moves.email_mime_text import MIMEText
 
+import listener
 import univention.debug as ud
-
 
 name = 'replication'
 description = 'LDAP Replica Node replication'

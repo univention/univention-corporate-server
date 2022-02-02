@@ -34,12 +34,14 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
-import listener
-import os
-import json
-import pwd
+
 import grp
+import json
+import os
+import pwd
 import shutil
+
+import listener
 
 name = 'univention-saml-groups'
 description = 'Write SAML enabled groups to json file, to be read by the services metadata.php'

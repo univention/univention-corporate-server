@@ -34,10 +34,11 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
-import listener
-import subprocess
-import os.path
 
+import os.path
+import subprocess
+
+import listener
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
 
 name = 'univention-saml-servers'

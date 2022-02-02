@@ -35,11 +35,13 @@
 
 from __future__ import absolute_import
 
-import listener
 import os
-import univention.debug as ud
 from textwrap import dedent
+
 from six.moves.urllib_parse import urljoin
+
+import listener
+import univention.debug as ud
 
 name = 'serverinstallerpxe'
 description = 'PXE configuration for the Server installer'

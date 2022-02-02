@@ -35,11 +35,12 @@
 
 from __future__ import absolute_import
 
+import os
+import subprocess
+
 import listener
 import univention.debug as ud
 import univention.lib.ldap_extension as ldap_extension
-import os
-import subprocess
 
 name = 'ldap_extension'
 description = 'Configure LDAP schema and ACL extensions'

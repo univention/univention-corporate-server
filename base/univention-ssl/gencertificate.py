@@ -36,14 +36,15 @@
 
 from __future__ import absolute_import
 
-from listener import configRegistry, setuid, unsetuid
 import grp
 import os
-from shutil import rmtree
+import subprocess
 from errno import ENOENT
+from shutil import rmtree
 
 import univention.debug as ud
-import subprocess
+from listener import configRegistry, setuid, unsetuid
+
 try:
 	from typing import Dict, List, Optional  # noqa: F401
 except ImportError:

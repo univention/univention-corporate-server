@@ -36,11 +36,12 @@
 
 from __future__ import absolute_import
 
-import listener
 import os
 import pwd
-import univention.debug as ud
 from subprocess import call
+
+import listener
+import univention.debug as ud
 
 server_role = listener.configRegistry['server/role']
 

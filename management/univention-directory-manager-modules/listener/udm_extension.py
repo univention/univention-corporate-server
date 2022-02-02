@@ -34,21 +34,20 @@
 
 from __future__ import absolute_import
 
-import os
 import bz2
+import os
 import subprocess
 
 import apt
 
 import listener
-
-import univention.debug as ud
-import univention.admin.uldap as udm_uldap
 import univention.admin.modules as udm_modules
 import univention.admin.uexceptions as udm_errors
-from univention.lib.ucs import UCS_Version
-from univention.lib.umc_module import UMC_ICON_BASEDIR, imagecategory_of_buffer, default_filename_suffix_for_mime_type
+import univention.admin.uldap as udm_uldap
+import univention.debug as ud
 from univention.lib.ldap_extension import safe_path_join
+from univention.lib.ucs import UCS_Version
+from univention.lib.umc_module import UMC_ICON_BASEDIR, default_filename_suffix_for_mime_type, imagecategory_of_buffer
 
 name = 'udm_extension'
 description = 'Handle UDM module, hook and syntax extensions'

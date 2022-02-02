@@ -36,9 +36,10 @@
 from __future__ import absolute_import
 
 import os
-from listener import configRegistry, SetUID
 import subprocess
+
 import univention.debug as ud
+from listener import SetUID, configRegistry
 
 name = 'pkgdb'
 description = 'Package-Database'

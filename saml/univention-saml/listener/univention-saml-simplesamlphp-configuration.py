@@ -34,16 +34,16 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
-import listener
 
-import os
 import glob
+import os
 import os.path
 import xml.etree.ElementTree
+from subprocess import PIPE, Popen
 from tempfile import NamedTemporaryFile
 from typing import Text
-from subprocess import Popen, PIPE
 
+import listener
 import univention.debug as ud
 
 

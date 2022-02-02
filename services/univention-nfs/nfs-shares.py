@@ -36,11 +36,12 @@
 
 from __future__ import absolute_import
 
-import listener
 import os
 import re
+
 from six.moves import cPickle as pickle
 
+import listener
 import univention.debug as ud
 import univention.lib.listenerSharePath
 from univention.config_registry.interfaces import Interfaces

@@ -33,22 +33,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
-from __future__ import print_function
+from __future__ import absolute_import, print_function
 
-from listener import SetUID, configRegistry, run
 import os
 import re
 import subprocess
-import univention.debug as ud
-import univention.lib.listenerSharePath
 
 from six.moves import cPickle as pickle
 from six.moves.urllib_parse import quote
 
+import univention.debug as ud
+import univention.lib.listenerSharePath
+from listener import SetUID, configRegistry, run
 # for the ucr commit below in postrun we need ucr configHandlers
 from univention.config_registry import configHandlers
 from univention.config_registry.interfaces import Interfaces
+
 ucr_handlers = configHandlers()
 ucr_handlers.load()
 

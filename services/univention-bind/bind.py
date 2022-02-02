@@ -40,15 +40,18 @@ configuration directory (should-state) and reload/restart as appropriate.
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
-import listener
-import os
-import subprocess
-import univention.debug as ud  # pylint: disable-msg=E0611
-import time
+
 import errno
-import signal
 import grp
+import os
+import signal
+import subprocess
+import time
+
 from six.moves.urllib_parse import quote
+
+import listener
+import univention.debug as ud  # pylint: disable-msg=E0611
 
 name = 'bind'
 description = 'Update BIND zones'

@@ -35,9 +35,9 @@
 
 from __future__ import absolute_import
 
-import listener
 import subprocess
 
+import listener
 from univention.config_registry import ConfigRegistry, handler_set
 
 name = 'univention-admin-diary-backend'

@@ -36,13 +36,16 @@
 
 from __future__ import absolute_import
 
-from six.moves import cPickle as pickle
-import listener
 import os
-import time
 import shutil
-import univention.debug as ud
 import subprocess
+import time
+
+from six.moves import cPickle as pickle
+
+import listener
+import univention.debug as ud
+
 try:
 	from typing import Dict, List, Optional, Tuple  # noqa: F401
 except ImportError:

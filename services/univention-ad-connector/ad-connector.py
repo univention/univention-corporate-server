@@ -35,13 +35,17 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
-import listener
-from six.moves import cPickle as pickle
-import time
+
 import os
-import univention.debug as ud
 import shutil
 import subprocess
+import time
+
+from six.moves import cPickle as pickle
+
+import listener
+import univention.debug as ud
+
 try:
 	from typing import Dict, List, Optional, Tuple  # noqa: F401
 except ImportError:

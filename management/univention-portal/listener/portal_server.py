@@ -35,9 +35,8 @@ from __future__ import absolute_import
 
 import subprocess
 
-import univention.debug as ud
-
 import listener
+import univention.debug as ud
 
 name = 'portal_server'
 description = 'Tell portal server to refresh when something important changed'

@@ -44,11 +44,13 @@ def create_listener_module_for_computer(computer_name):
 	fd = open(filename, 'w')
 	fd.write('''
 from __future__ import absolute_import
+
+import univention.debug as ud
+
 modrdn = "1"
 name="%(computer_name)s-test"
 description="%(computer_name)s"
 filter="(cn=%(computer_name)s)"
-import univention.debug as ud
 
 def handler(dn, new, old, command):
 	if command == 'r':

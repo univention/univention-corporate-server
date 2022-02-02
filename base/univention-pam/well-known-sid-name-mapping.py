@@ -39,12 +39,13 @@ from __future__ import absolute_import
 import os
 import os.path
 
-import listener
 import six
 from six.moves import cPickle as pickle
+
+import listener
+import univention.config_registry
 import univention.debug as ud
 import univention.lib.s4
-import univention.config_registry
 
 name = "well-known-sid-name-mapping"
 description = "map user and group names for well known sids"

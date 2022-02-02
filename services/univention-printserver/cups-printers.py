@@ -35,17 +35,19 @@
 
 from __future__ import absolute_import
 
-import listener
 import os
-import time
 import pipes
 import subprocess
-import univention.debug as ud
+import time
+
+from ldap.dn import str2dn
+
+import listener
 import univention.config_registry
+import univention.debug as ud
 # for the ucr commit below in postrun we need ucr configHandlers
 from univention.config_registry import configHandlers
 from univention.config_registry.interfaces import Interfaces
-from ldap.dn import str2dn
 
 ucr_handlers = configHandlers()
 ucr_handlers.load()

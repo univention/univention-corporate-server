@@ -36,20 +36,21 @@
 
 from __future__ import absolute_import
 
+import os
+
 import ldap
 from ldap.filter import filter_format
 from six.moves import cPickle as pickle
-import os
+
 try:
 	from typing import Dict, List, Optional, Tuple  # noqa: F401
 except ImportError:
 	pass
 
+import listener
 import univention.debug as ud
 import univention.lib.policy_result
 import univention.uldap
-
-import listener
 
 name = 'quota'
 description = 'Dump quota settings into a cache directory'

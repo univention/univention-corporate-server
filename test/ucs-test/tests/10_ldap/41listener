@@ -26,6 +26,7 @@ ucstest="ucstest_$(random_chars)"
 listener="/usr/lib/univention-directory-listener/system/$ucstest.py"
 cat >"$listener" <<__HERE__
 import listener
+
 description = 'set up a new handler (with an new uid entry in tmp-file) for listener'
 name = 'ucstest'
 filter = '(objectClass=posixAccount)'

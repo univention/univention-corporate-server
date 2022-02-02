@@ -19,8 +19,10 @@
 ucstest="ucstest_$(random_chars)"
 listener="/usr/lib/univention-directory-listener/system/$ucstest.py"
 cat >"$listener" <<__HERE__
-import listener
 import sys
+
+import listener
+
 description = 'Test Python 3 StdIO flush'
 name = 'ucstest'
 filter = '(cn=$ucstest)'

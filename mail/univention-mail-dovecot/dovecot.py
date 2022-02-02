@@ -37,11 +37,11 @@
 from __future__ import absolute_import
 
 import os
+
 from six.moves import cPickle as pickle
 
 import listener
 from univention.mail.dovecot import DovecotListener
-
 
 name = 'dovecot'
 description = 'manage imap folders'
