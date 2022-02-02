@@ -1,3 +1,10 @@
+univention-l10n-fr (4.0.1-7) unstable; urgency=medium
+
+  * Bug #54029: Added l10n-fr join script to activate univention-
+    portal/udm/fr.mo
+
+ -- Johannes Lohmer <lohmer@univention.de>  Wed, 02 Feb 2022 13:34:01 +0100
+
 univention-l10n-fr (4.0.1-6) unstable; urgency=medium
 
   * Bug #54029: Comprehensive update to translation package

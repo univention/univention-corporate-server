@@ -6,6 +6,7 @@ Build-Depends:
  debhelper,
  univention-config-dev (>= 15.0.3),
  univention-management-console-dev (>= 12.0.2),
+ univention-join-dev (>= 12),
 Standards-Version: 3.8.2
 
 Package: univention-l10n-fr

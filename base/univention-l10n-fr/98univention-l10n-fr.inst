@@ -1,6 +1,9 @@
-#!/usr/bin/make -f
+#!/bin/bash
 #
-# Copyright 2016-2021 Univention GmbH
+# Univention l10n fr
+#  join script
+#
+# Copyright 2022 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -27,5 +30,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-%:
-	dh $@ --with ucr,univention-join
+## joinscript api: bindpwdfile
+
+VERSION=1
+
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
+
+eval "$(ucr shell ldap/base)"
+
+udm settings/udm_module modify "$@" --ignore_not_exists \
+	--dn "cn=portals/portal,cn=udm_module,cn=univention,$ldap_base" \
+	--append messagecatalog="fr $(base64 /usr/lib/univention-portal/udm/fr.mo)" || die
+
+joinscript_save_current_version
+
+exit 0
