@@ -9,3 +9,5 @@ desc: |
  * A bug where antivirus signatures could not get updated properly on fresh
    installations has been fixed.
 bug: [54070]
+erratum: 201
+announced: 2022-02-02
