@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-l10n-fr
-fix: 4.0.1-6A~5.0.0.202201281928
+fix: 4.0.1-7A~5.0.0.202202021429
 desc: |
  This update addresses the following issue(s):
  * The french translation package has been given
