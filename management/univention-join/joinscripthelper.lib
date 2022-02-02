@@ -307,8 +307,10 @@ joinscript_log_error() {
 	echo "__JOINERR__:FAILED: $0"
 }
 
-# 1 binddn, 2 bindpwdfile, 3 samba-authentication-file create join credential files /var/run/univention-join/binddn, /var/run/univention-join/bindpwd and /var/run/univention-join/samba-authentication-file
 joinscript_create_credentialfiles () {
+	local authenticationfile
+	authenticationfile="/var/run/univention-join/samba-authentication-file"
+
 	mkdir -p /var/run/univention-join
 	chmod 700 /var/run/univention-join
 	touch /var/run/univention-join/binddn
@@ -317,9 +319,9 @@ joinscript_create_credentialfiles () {
 	touch /var/run/univention-join/bindpwd
 	chmod 600 /var/run/univention-join/bindpwd
 	cp "$2" /var/run/univention-join/bindpwd
-	touch /var/run/univention-join/samba-authentication-file
-    chmod 600 /var/run/univention-join/samba-authentication-file
-    echo -e "username=${3}\npassword=$(</var/run/univention-join/bindpwd)" > /var/run/univention-join/samba-authentication-file
+	touch "$authenticationfile" \
+	&& chmod 600 "$authenticationfile" \
+	&& echo -e "username=${3}\npassword=$(</var/run/univention-join/bindpwd)" > "$authenticationfile" || die
 }
 
 # remove join credential files
