@@ -1,4 +1,4 @@
-univention-web (4.0.2-45) unstable; urgency=medium
+univention-web (4.0.2-46) unstable; urgency=medium
 
   * Bug #54032: In case login is not finished within 10 seconds, warning
     message is displayed to the user with link to the help page with

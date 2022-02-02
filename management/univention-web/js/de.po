@@ -15,7 +15,7 @@ msgstr ""
 
 #: js/widgets/MultiInput.js:703
 msgid " (required)"
-msgstr "(erforderlich)"
+msgstr " (erforderlich)"
 
 #: js/tools.js:1947
 msgid "\"${moduleName}\" module"

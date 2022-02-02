@@ -139,7 +139,7 @@ define([
 			if (umcConfig.anonymousMeta) {
 				deferred.resolve(tools.status());
 			} else {
-				let longLoadEvent = setTimeout(function () {
+				var longLoadEvent = setTimeout(function () {
 					require(['umc/dialog'], function(_dialog) {
 						var message = _('Login call lasted too long. Please visit the <a href="https://help.univention.com/t/draft-login-call-lasted-too-long/19031", target="_blank">Help</a> to check for possible causes.');
 						_dialog.warn(message);
