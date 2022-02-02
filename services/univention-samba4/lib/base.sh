@@ -66,7 +66,7 @@ extract_binddn_bindpwd_bindpwdfile_dcaccount_authenticationfile_from_args() {
 	test -z "$binddn" && binddn="cn=admin,$ldap_base"
 	test -z "$bindpwdfile" && bindpwdfile="/etc/ldap.secret"
 	test -z "$bindpwd" && bindpwd="$(< "$bindpwdfile")"
-	test -z "$authenticationfile" && authenticationfile="/var/run/univention-join/authentication-file"  #TODO: change to the correct path
+	test -z "$authenticationfile" && authenticationfile="/var/run/univention-join/samba-authentication-file"
 }
 
 assert_dcaccount_and_bindpwd() {
