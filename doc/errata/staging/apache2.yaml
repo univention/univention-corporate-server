@@ -6,7 +6,7 @@ src: apache2
 fix: 2.4.25-3+deb9u12A~4.4.8.202202021239
 desc: |
  This update addresses the following issues:
- * possible NULL dereference or SSRF in forward proxy configurations
+ * Possible NULL dereference or SSRF in forward proxy configurations
    (CVE-2021-44224)
  * mod_lua: possible buffer overflow when parsing multipart content
    (CVE-2021-44790)
