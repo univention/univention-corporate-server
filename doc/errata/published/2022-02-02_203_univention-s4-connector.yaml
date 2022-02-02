@@ -9,3 +9,5 @@ desc: |
  * The user expiry was off by one day between UCS and Samba. This discrepancy
    has been removed.
 bug: [53012]
+erratum: 203
+announced: 2022-02-02
