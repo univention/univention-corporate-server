@@ -11,3 +11,5 @@ bug: [54406]
 ignore:
  - release+scope.consistent
  - version.scope
+erratum: 1172
+announced: 2022-02-02
