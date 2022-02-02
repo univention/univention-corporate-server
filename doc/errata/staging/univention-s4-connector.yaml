@@ -6,7 +6,6 @@ src: univention-s4-connector
 fix: 14.0.7-8A~5.0.0.202201281022
 desc: |
  This update addresses the following issue:
- * The user expiry was off by one day between
-   UCS and Samba. This discrepancy has been
-   removed.
+ * The user expiry was off by one day between UCS and Samba. This discrepancy
+   has been removed.
 bug: [53012]
