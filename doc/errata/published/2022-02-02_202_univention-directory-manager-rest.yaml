@@ -12,3 +12,5 @@ desc: |
  * The `entryUUID` and `dn` of newly created objects are now included in the
    response.
 bug: [50050, 54347]
+erratum: 202
+announced: 2022-02-02
