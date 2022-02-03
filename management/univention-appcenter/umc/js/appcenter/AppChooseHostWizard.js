@@ -59,6 +59,7 @@ define([
 
 		needsToBeShown: null,
 		_chooseHostsNeedsToBeShown: null,
+		autoValidate: true,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
