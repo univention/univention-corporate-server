@@ -9,7 +9,6 @@
 import ldap
 import pytest
 import subprocess
-import passlib.hash
 
 from univention.config_registry import handler_set as ucr_set
 
