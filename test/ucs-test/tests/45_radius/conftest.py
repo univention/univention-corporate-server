@@ -7,6 +7,7 @@ from univention.config_registry import handler_unset as ucr_unset
 
 import pytest
 
+
 @pytest.fixture(scope="session")
 def rad_user(udm_session, ucr_session):
 	old_ucr = ucr_session.get('radius/use-service-specific-password', None)
