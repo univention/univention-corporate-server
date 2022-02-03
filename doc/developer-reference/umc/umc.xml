@@ -92,7 +92,7 @@
 			</varlistentry>
 		</variablelist>
 		<para>
-			Further details, examples and a complete API documentation for Python Notifier can be found at the <ulink url="https://github.com/crunchy-github/python-notifier">website of Python Notifier</ulink>.
+			Further details, examples and a complete API documentation for Python Notifier can be found at the <ulink url="https://github.com/univention/python-notifier">website of Python Notifier</ulink>.
 		</para>
 	</section>
 	<section id="umc:umcp2">
