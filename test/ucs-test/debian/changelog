@@ -1,3 +1,9 @@
+ucs-test (10.1.6-97) unstable; urgency=medium
+
+  * REVERT BEFORE MERGE: Increase version number
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 03 Feb 2022 17:03:47 +0100
+
 ucs-test (10.0.6-96) unstable; urgency=medium
 
   * Bug #53012: Test userexpiry offset between ucs and samba
