@@ -1,3 +1,9 @@
+univention-samba4 (9.0.6-11) unstable; urgency=medium
+
+  * Bug #53100: Fix path of samba-authentication-file
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Thu, 03 Feb 2022 14:59:23 +0100
+
 univention-samba4 (9.0.6-10) unstable; urgency=medium
 
   * Bug #53100: Revert changes in samba-tool domain no accept
