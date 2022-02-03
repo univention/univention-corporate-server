@@ -2,7 +2,7 @@ univention-fetchmail (13.0.1-3) unstable; urgency=low
 
   * Bug #54029: Update French translation
 
- -- Johannes Lohmer <lohmer@univention.de> Fri, 14 Jan 2022 16:35:26 +0100
+ -- Johannes Lohmer <lohmer@univention.de>  Fri, 14 Jan 2022 16:35:26 +0100
 
 univention-fetchmail (13.0.1-2) unstable; urgency=low
 
