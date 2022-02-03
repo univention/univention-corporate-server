@@ -100,6 +100,13 @@
 		<para>
 			This protocol is used by the UMC server for external clients and between the UMC server and its UMC module processes.
 		</para>
+		<warning>
+			<para>
+				UMCP is deprecated and will be removed in the nearer future.
+				The protocol elements are described here for completeness and not for use.
+				Always use the HTTP interface instead!
+			</para>
+		</warning>
 		<section id="umc:umcp2:flow">
 			<title>Data flow</title>
 			<para>
@@ -957,9 +964,8 @@ Description: ...
 				]]></programlisting>
 		<para>
 			By adjusting the XML definition of the module it can be specified that it is executed via Python 3.
-		</para>
 			The attribute <replaceable>python="3"</replaceable> has to be added to the &lt;module&gt; tag:
-
+		</para>
 				<programlisting language="xml"><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
