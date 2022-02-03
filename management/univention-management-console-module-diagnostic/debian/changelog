@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.0-23) unstable; urgency=medium
+
+  * Bug #54264: Adjust title and translation of diagnostic module
+
+ -- Arvid <requate@univention.de>  Thu, 03 Feb 2022 23:10:52 +0100
+
 univention-management-console-module-diagnostic (6.0.0-22) unstable; urgency=medium
 
   * Bug #53341; fix string formatting of error message in 41_samba_tool_showrepl.py

@@ -11,7 +11,7 @@ from univention.management.console.modules.diagnostic import Critical, MODULE, W
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
-title = _('Check security considerations of Notifier protocol version')
+title = _('Check of the protocol version of the Univention Directory Notifier')
 description = _('Starting with UCS 4.3-3 Errata 428, the minimum protocol version should be set to 3.')
 run_descr = ['This can be checked by running: ucr get notifier/protocol/version']
 
