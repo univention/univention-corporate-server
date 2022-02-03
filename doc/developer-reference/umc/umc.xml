@@ -925,5 +925,50 @@ POST http://192.0.2.31/univention/command/udm/query HTTP/1.1
 		<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="module-disable.xml" parse="text"/></programlisting>
 	</section>
 
+	<section id="umc:module:python-migration">
+		<title>Python 3 Migration
+			<indexterm><primary>Python 3</primary><secondary>Migration</secondary></indexterm>
+		</title>
+		<para>
+			&ucsUMC; modules and the Python API for them support both Python 2 and Python 3.
+			The code of &ucsUMC; modules has to be migrated to Python 3.
+			There is nothing UMC specific regarding the implementation.
+		</para>
+		<para>
+			To include Python 3 modules for a &ucsUMC; Debian package the <filename>debian/control</filename> has to be adjusted:
+			The <literal>Provides</literal> entry in package section has to contain <literal>${python3:Provides}</literal> for Python 3 and <literal>${python:Provides}</literal> for Python 2.
+<!-- FIXME phahn 2022-02
+This is all wrong because there is no "python3:Provides" in Debian and leads to `dpkg-genctrol` printing a warning:
+| substitution variable ${python3:Provides} used, but is not defined
+packaging/univention-l10n/univention/l10n/umc.py UMC_Module.python_versions must be fixed first to get rid of this requirement.
+Even "python:Provides" was only ever required for Python **modules** (compiled C code) and used by `pysupport`, which was replaced by `dh-python`.
+-->
+			Additionally the <literal>Depends</literal> entry should contain <literal>${python3:Depends}</literal>.
+		</para>
+				<programlisting><![CDATA[
+Package: univention-management-console-module-...
+Architecture: all
+Depends:
+ python3-foo,
+ ${python3:Depends},
+Provides:
+ ${python3:Provides},
+Description: ...
+				]]></programlisting>
+		<para>
+			By adjusting the XML definition of the module it can be specified that it is executed via Python 3.
+		</para>
+			The attribute <replaceable>python="3"</replaceable> has to be added to the &lt;module&gt; tag:
+
+				<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="..." priority="50" version="1.0" python="3">
+		...
+	</module>
+</umc>
+				]]></programlisting>
+	</section>
+
 </chapter>
 <!-- vim:set ft=docbk ts=2 sw=2 noet: -->
