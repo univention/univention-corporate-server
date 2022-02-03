@@ -126,14 +126,14 @@ class ReplicationProblem(Exception):
 
 class InboundReplicationProblem(ReplicationProblem):
 	def __str__(self):
-		msg = _('Inbound {nc}: error during DRS replication from {source} ({estring})')
+		msg = _('Inbound {nc!r}: error during DRS replication from {source} ({estring})')
 		source = self._parse_ntds_dn(self.neighbour.source_dsa_obj_dn)
 		return msg.format(nc=self.neighbour.naming_context_dn, source=source, estring=self.estring)
 
 
 class OutboundReplicationProblem(ReplicationProblem):
 	def __str__(self):
-		msg = _('Outbound {nc}: error during DRS replication to {source} ({estring})')
+		msg = _('Outbound {nc!r}: error during DRS replication to {source} ({estring})')
 		source = self._parse_ntds_dn(self.neighbour.source_dsa_obj_dn)
 		return msg.format(nc=self.neighbour.naming_context_dn, source=source, estring=self.estring)
 
