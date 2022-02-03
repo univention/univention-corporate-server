@@ -1,12 +1,12 @@
 product: ucs
-release: "5.0"
+release: '5.0'
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-ldb-modules
-fix: 8.0.0-6
+fix: 8.0.0-6A~5.0.0.202202031157
 desc: |
- This update addresses the following issue:
- * Several memory and open file descriptor leaks have been fixed. An error
-   restarting Samba during during package installation has been fixed. The
-   build system for the package has been cleaned up.
+  This update addresses the following issue:
+  * Several memory and open file descriptor leaks have been fixed. An error
+    restarting Samba during during package installation has been fixed. The
+    build system for the package has been cleaned up.
 bug: [48823]
