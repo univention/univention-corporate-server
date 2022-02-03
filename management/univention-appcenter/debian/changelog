@@ -1,3 +1,10 @@
+univention-appcenter (9.0.2-71) unstable; urgency=medium
+
+  * Bug #53523: If target hosts selection during application install is
+    empty, prevent further actions.
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Thu, 03 Feb 2022 08:05:04 +0100
+
 univention-appcenter (9.0.2-70) unstable; urgency=medium
 
   * Bug #54082: Use `address` instead of `network` while checking network
