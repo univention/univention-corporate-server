@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-samba4
-fix: 9.0.6-10A~5.0.0.202201270739
+fix: 9.0.6-11A~5.0.0.202202031504
 desc: |
  This update addresses the following issue:
  * The joinscript of `univention-samba4` did pass the credentials in clear
