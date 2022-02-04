@@ -23,9 +23,9 @@ generate-config:
       --yaml .gitlab-ci/base-deb.yml
       --out generated-config-deb.yml
       --skip src:python-notifier
-	  --auto-select-packages
-	  --parent-branch origin/5.0-1
-	  --feature-branch $CI_COMMIT_REF_NAME
+      --auto-select-packages
+      --parent-branch origin/5.0-1
+      --feature-branch $CI_COMMIT_REF_NAME
   artifacts:
     paths:
       - generated-config-doc.yml
