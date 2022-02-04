@@ -1,0 +1,91 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-lib\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2022-02-04 13:03+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /home/phahn/REPOS/ucs/base/univention-lib/python/package_manager.py:1106
+msgid "Autoremove failed"
+msgstr ""
+
+#: /home/phahn/REPOS/ucs/base/univention-lib/python/package_manager.py:1017
+msgid "Could not initialize package manager."
+msgstr ""
+
+#: /home/phahn/REPOS/ucs/base/univention-lib/python/package_manager.py:1100
+#, python-format
+msgid "Deleting unneeded %s"
+msgstr ""
+
+#: /home/phahn/REPOS/ucs/base/univention-lib/python/package_manager.py:1063
+msgid "Error: "
+msgstr ""
+
+#: /home/phahn/REPOS/ucs/base/univention-lib/python/package_manager.py:966
+msgid "Failed to install"
+msgstr ""
+
+#: /home/phahn/REPOS/ucs/base/univention-lib/python/package_manager.py:491
+#: /home/phahn/REPOS/ucs/base/univention-lib/python/package_manager.py:705
+msgid "Failed to lock"
+msgstr ""
+
+#: /home/phahn/REPOS/ucs/base/univention-lib/python/package_manager.py:971
+msgid "Failed to uninstall"
+msgstr ""
+
+#: /home/phahn/REPOS/ucs/base/univention-lib/python/package_manager.py:700
+#: /home/phahn/REPOS/ucs/base/univention-lib/python/package_manager.py:952
+msgid "Fetching failed"
+msgstr ""
+
+#: /home/phahn/REPOS/ucs/base/univention-lib/python/package_manager.py:1087
+msgid "Further information regarding this error:"
+msgstr ""
+
+#: /home/phahn/REPOS/ucs/base/univention-lib/python/package_manager.py:741
+msgid "No such package"
+msgstr ""
+
+#. i18n: "using it" refers to the "package manager"
+#: /home/phahn/REPOS/ucs/base/univention-lib/python/package_manager.py:1077
+msgid ""
+"Probably another process is currently using it or the package sources are "
+"corrupt. Please try again later."
+msgstr ""
+
+#: /home/phahn/REPOS/ucs/base/univention-lib/python/package_manager.py:1074
+msgid ""
+"Some package conflicts could not be resolved. This was probably caused by "
+"packages with \"hold\" state."
+msgstr ""
+
+#: /home/phahn/REPOS/ucs/base/univention-lib/python/package_manager.py:1080
+msgid "The package sources are probably corrupt."
+msgstr ""
+
+#: /home/phahn/REPOS/ucs/base/univention-lib/python/package_manager.py:1083
+msgid ""
+"The sources.list entries could be repaired by executing the following "
+"commands as root on this server:"
+msgstr ""
+
+#: /home/phahn/REPOS/ucs/base/univention-lib/python/package_manager.py:1072
+msgid "There is no free hard disk space left on the device."
+msgstr ""
+
+#: /home/phahn/REPOS/ucs/base/univention-lib/python/package_manager.py:871
+msgid "Untrusted origin"
+msgstr ""
+
+#: /home/phahn/REPOS/ucs/base/univention-lib/python/package_manager.py:1062
+msgid "Warning: "
+msgstr ""
