@@ -13,7 +13,7 @@ generate-config:
     - when: always
   image:
     # original: "name: $BUILD" ==> changed this to a specific hash to test the new deb-builder
-    name: docker-registry.knut.univention.de/knut/deb-builder:257c7d5c14eef95ab6a17378de457d0226acc8ae
+    name: docker-registry.knut.univention.de/knut/deb-builder:cb4cb3d823fa11e5b85593e774546ba5cfde5b59
     entrypoint: [""]
   script:
     - .gitlab-ci/build-ci
