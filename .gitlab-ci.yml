@@ -12,7 +12,8 @@ generate-config:
   rules:
     - when: always
   variables:
-    GIT_DEPTH: 100
+    GIT_DEPTH: 150
+    GIT_FETCH_EXTRA_FLAGS: remote/origin/5.0-1 --prune
   image:
     # original: "name: $BUILD" ==> changed this to a specific hash to test the new deb-builder
     name: docker-registry.knut.univention.de/knut/deb-builder:425f8dc6dff9213c3efd3a36f3e9f8d3de464a58
@@ -21,6 +22,7 @@ generate-config:
     - .gitlab-ci/build-ci
     - echo $CI_COMMIT_SHA
     - echo $CI_COMMIT_BEFORE_SHA
+    - git branch -a
     - >
       deb-builder
       --yaml .gitlab-ci/base.yml
