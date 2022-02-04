@@ -56,7 +56,7 @@ servers.
 
 .. _quick-systemrole:
 
-.. figure:: images/systemrole-en.png
+.. figure:: images/systemrole.png
    
    Selecting the domain setup
 
@@ -123,7 +123,7 @@ also .)
 
 .. _quick-ucs-portal:
 
-.. figure:: images/ucs-portal-en.png
+.. figure:: images/ucs-portal.png
 
    Illustration of the portal page on the &ucsPrimaryDN; with all domain wide available applications
 
@@ -147,7 +147,7 @@ interface |UCSUDM| .
 
 .. _quick-umc-overview:
 
-.. figure:: images/umc-modules-en.png
+.. figure:: images/umc-modules.png
 
    Modules in the UMC
 
@@ -173,7 +173,7 @@ Management Console:
 
 .. _quick-appcenter:
 
-.. figure:: images/appcenter-en.png
+.. figure:: images/appcenter.png
 
    Subsequent installation of UCS components
 
@@ -196,7 +196,7 @@ updated when the UCR variables registered on them are changed.
 
 .. _quick-ucr:
 
-.. figure:: images/ucr-en.png
+.. figure:: images/ucr.png
 
    Managing |UCSUCR| variables
 
