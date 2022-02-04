@@ -17,8 +17,8 @@ generate-config:
     entrypoint: [""]
   script:
     - .gitlab-ci/build-ci
-	- echo $CI_COMMIT_REF_SHA
-	- echo $CI_COMMIT_REF_BEFORE_SHA
+    - echo $CI_COMMIT_REF_SHA
+    - echo $CI_COMMIT_REF_BEFORE_SHA
     - >
       deb-builder
       --yaml .gitlab-ci/base.yml
