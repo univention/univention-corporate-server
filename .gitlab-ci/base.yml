@@ -16,6 +16,7 @@ variables:
   GIT_SUBMODULE_STRATEGY: none
   GIT_DEPTH: "3"
   DOC: docker-registry.knut.univention.de/docbook
+  SPHINX_DOC: docker-registry.knut.univention.de/sphinx
   DEB: docker-registry.knut.univention.de/phahn/ucs-debbase:$ucs
   LINT: docker-registry.knut.univention.de/ucslint
   BUILD: docker-registry.knut.univention.de/knut/deb-builder

@@ -6,20 +6,35 @@ exec >generated-config-doc.yml
 cat "${0%/*}/base.yml"
 cat "${0%/*}/base-doc.yml"
 
-for make in doc/*/Makefile
-do
-	[ -f "$make" ] || continue
-	path="${make%/Makefile}"
-	pkg="${path##*/}"
+doc_job () { # <extends> [<suffix>]
 	echo
-	echo "build ${pkg}:"
+	echo "build ${pkg}${2:+ "$2"}:"
 	echo '  variables:'
 	echo "    base: $path"
-	echo '  extends: .doc'
+	echo "  extends: ${1:?extends}"
 	echo '  rules:'
 	echo '    - if: "$CI_COMMIT_MESSAGE =~ /skip-doc/ || $pipeline =~ /skip-doc/"'
 	echo '      when: never'
 	echo '    - if: "$CI_COMMIT_MESSAGE =~ /force-doc/ || $pipeline =~ /force-doc/"'
 	echo '    - changes:'
 	echo "      - ${path}/**/*"
+}
+
+for make in doc/*/Makefile
+do
+	[ -f "$make" ] || continue
+	path="${make%/Makefile}"
+	pkg="${path##*/}"
+
+	# Automatically detect Sphinx or Docbook
+	if [ -f "${path}/conf.py" ] # Use Sphinx's conf.py as hint to Sphinx
+	then
+		doc_job '.sphinx-html' html
+		doc_job '.sphinx-pdf' pdf
+		doc_job '.sphinx-linkcheck' linkcheck
+		doc_job '.sphinx-spelling' spelling
+	elif [ -f "${path}/Makefile" ]
+	then
+		doc_job '.doc'
+    fi
 done
