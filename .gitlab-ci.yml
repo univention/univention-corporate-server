@@ -147,10 +147,12 @@ deb-pipeline:
 
 smoketest:
   stage: smoketest
-  image: docker-registry.knut.univention.de/phahn/ucs-minbase:501
+  image: docker-registry.knut.univention.de/phahn/ucs-debbase:501
   script:
     - hostname -f || true
     - pwd || true
+	- ls -la || true
+	- lsb_release -r || true
     - /usr/sbin/univention-upgrade --non-interactive || true
     - cat /etc/apt/sources.list.d/*
   rules:
