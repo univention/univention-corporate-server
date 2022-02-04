@@ -151,8 +151,8 @@ smoketest:
   script:
     - hostname -f || true
     - pwd || true
-	- ls -la || true
-	- lsb_release -r || true
+    - ls -la || true
+    - lsb_release -r || true
     - /usr/sbin/univention-upgrade --non-interactive || true
     - cat /etc/apt/sources.list.d/*
   rules:
