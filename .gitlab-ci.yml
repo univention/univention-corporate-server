@@ -147,7 +147,7 @@ deb-pipeline:
 
 smoketest:
   stage: smoketest
-  image: univention-repository.knut.univention.de/phahn/ucs-minbase:501
+  image: docker-registry.knut.univention.de/phahn/ucs-minbase:501
   script:
     - univention-upgrade --non-interactive
     - cat /etc/apt/sources.list.d/*
