@@ -8,6 +8,7 @@ Build-Depends:
  python-all,
  python3-all,
  python3-dev,
+ python3-univention (>> 13.0.2-7),
  univention-config-dev (>= 15.0.3),
  univention-l10n-dev (>= 7.0.1),
 Standards-Version: 3.5.2

@@ -11,6 +11,8 @@ import pytest
 import subprocess
 
 from univention.config_registry import handler_set as ucr_set
+from univention.admin.rest.client import UDM
+from univention.admin.rest.client import BadRequest
 
 
 def radius_auth(username, password):
@@ -24,6 +26,28 @@ def radius_auth(username, password):
 		'0',
 		'testing123',
 	])
+
+
+def request_new_password(ucr, user_dn, service="radius"):
+	uri = 'http://localhost/univention/udm/'
+	udm = UDM.http(uri, 'Administrator', 'univention')
+	obj = udm.get('users/user').get(user_dn)
+	return obj.generate_service_specific_password(service)
+
+
+def test_udm_rest(ucr, udm_session, rad_user):
+	dn, name, password = rad_user
+	new_password = request_new_password(ucr, dn)
+	ucr_set(['radius/use-service-specific-password=true'])
+	with pytest.raises(subprocess.CalledProcessError):
+		radius_auth(name, password)
+	radius_auth(name, new_password)
+
+
+def test_udm_rest_invalid_service(ucr, udm_session, rad_user):
+	dn, name, password = rad_user
+	with pytest.raises(BadRequest):
+		request_new_password(ucr, dn, service="testtest")
 
 
 # Check if radius auth works with userpassword, when ssp is disabled
