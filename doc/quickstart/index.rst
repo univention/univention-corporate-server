@@ -125,7 +125,8 @@ also .)
 
 .. figure:: images/ucs-portal.png
 
-   Illustration of the portal page on the &ucsPrimaryDN; with all domain wide available applications
+   Illustration of the portal page on the |UCSPRIMARYDN| with all domain wide
+   available applications
 
 On each start site of a UCS system, there is an entry :guilabel:`System and
 domain settings` in the section :guilabel:`Administration` (or :guilabel:`System
