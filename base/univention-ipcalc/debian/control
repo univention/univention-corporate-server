@@ -2,7 +2,7 @@ Source: univention-ipcalc
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Standards-Version: 3.5.3
+Standards-Version: 3.5.2
 Build-Depends:
  debhelper,
  dh-python,
