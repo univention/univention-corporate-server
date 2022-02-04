@@ -26,6 +26,7 @@ stages:
     - apt-get -q --assume-yes build-dep .
     - find -exec touch -m -h -c -d "@${SOURCE_DATE_EPOCH:-$(dpkg-parsechangelog -STimestamp)}" {} +
   script:
+    - dch -D unstable --vendor Univention -v "$(dpkg-parsechangelog -S version)"A "🏗️ with ❤️ by Univention"
     - dpkg-buildpackage -uc -us -b --jobs-try=auto
     - cd $CI_PROJECT_DIR
     - .gitlab-ci/aptly-upload ${base}_*.changes
