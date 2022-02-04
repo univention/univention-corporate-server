@@ -92,6 +92,7 @@ import univention.admin.syntax as udm_syntax
 import univention.admin.types as udm_types
 from univention.config_registry import handler_set
 from univention.admin.rest.shared_memory import shared_memory, JsonEncoder
+from univention.password import password_config, generate_password
 
 import univention.udm
 
@@ -1091,6 +1092,7 @@ class Relations(Resource):
 			'license-request': 'Request a new UCS Core Edition license',
 			'license-check': 'Check if the license limits are reached',
 			'license-import': 'Import a new license in LDIF format',
+			'service-specific-password': 'Generate a new service specific password',
 		}
 		self.add_caching(public=True, must_revalidate=True)
 		result = {}
@@ -2100,6 +2102,7 @@ class Properties(Resource):
 			prop.setdefault('identifies', False)
 			prop.setdefault('searchable', False)
 			prop.setdefault('multivalue', False)
+			prop.setdefault('show_in_lists', True)
 		return dict((prop['id'], prop) for prop in properties if not prop['id'].startswith('$'))
 
 
@@ -2662,6 +2665,9 @@ class Object(FormBase, Resource):
 		if obj.has_property('jpegPhoto'):
 			self.add_link(props, 'udm:user-photo', self.urljoin(quote_dn(obj.dn), 'properties/jpegPhoto.jpg'), type='image/jpeg', title=_('User photo'))
 
+		if module.name == 'users/user':
+			self.add_link(props, 'udm:service-specific-password', self.urljoin(quote_dn(obj.dn), 'service-specific-password'), title=_('Generate a new service specific password'))
+
 		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation(props)
 
@@ -2744,9 +2750,9 @@ class Object(FormBase, Resource):
 		values = {}
 		if properties:
 			if '*' not in properties:
-				values = dict((key, value) for (key, value) in obj.info.items() if key in properties)
+				values = dict((key, value) for (key, value) in obj.info.items() if (key in properties) and obj.descriptions[key].show_in_lists)
 			else:
-				values = dict((key, obj[key]) for key in obj.descriptions if add or obj.has_property(key))
+				values = dict((key, obj[key]) for key in obj.descriptions if (add or obj.has_property(key)) and obj.descriptions[key].show_in_lists)
 
 			for passwd in module.password_properties:
 				values[passwd] = None
@@ -3694,6 +3700,35 @@ univentionObjectType: settings/license
 		self.content_negotiation({'message': _('The license was imported successfully.')})
 
 
+class ServiceSpecificPassword(Resource):
+
+	@sanitize_body_arguments(
+		service=StringSanitizer(required=True),
+	)
+	@tornado.gen.coroutine
+	def post(self, dn):
+		object_type = 'users/user'
+		module = get_module(object_type, dn, self.ldap_connection)
+		if module is None:
+			raise NotFound(object_type, dn)
+
+		service_type = self.get_body_argument('service')
+
+		cfg = password_config(service_type)
+		new_password = generate_password(**cfg)
+
+		obj = yield self.pool.submit(module.get, dn)
+		obj['serviceSpecificPassword'] = {'service': service_type, 'password': new_password}
+
+		try:
+			yield self.pool.submit(obj.modify)
+		except udm_errors.valueError as exc:
+			# ValueError raised if Service is not supported
+			raise HTTPError(400, str(exc))
+		result = {'service': service_type, 'password': new_password}
+		self.content_negotiation(result)
+
+
 def decode_properties(module, obj, properties):
 	for key, value in properties.items():
 		prop = module.get_property(key)
@@ -3807,6 +3842,7 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/properties/%s/default" % (object_type, property_), DefaultValue),
 			(r"/udm/networks/network/%s/next-free-ip-address" % (dn,), NextFreeIpAddress),
 			(r"/udm/progress/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", Operations),
+			(r"/udm/users/user/%s/service-specific-password" % (dn,), ServiceSpecificPassword),
 			# TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
 		], default_handler_class=Nothing, **kwargs)
 
