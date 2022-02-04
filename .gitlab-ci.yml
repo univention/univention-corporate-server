@@ -30,8 +30,8 @@ generate-config:
       --out generated-config-deb.yml
       --skip src:python-notifier
       --auto-select-packages
-      --parent-branch 5.0-1
-      --feature-branch $CI_COMMIT_REF_NAME
+      --parent-branch remotes/origin/5.0-1
+      --feature-branch remotes/origin/$CI_COMMIT_REF_NAME
   artifacts:
     paths:
       - generated-config-doc.yml
