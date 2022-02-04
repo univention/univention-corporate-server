@@ -13,7 +13,7 @@ generate-config:
     - when: always
   variables:
     GIT_DEPTH: 150
-    GIT_FETCH_EXTRA_FLAGS: remotes/origin/5.0-1 --prune
+    GIT_FETCH_EXTRA_FLAGS: 5.0-1 --prune
   image:
     # original: "name: $BUILD" ==> changed this to a specific hash to test the new deb-builder
     name: docker-registry.knut.univention.de/knut/deb-builder:425f8dc6dff9213c3efd3a36f3e9f8d3de464a58
