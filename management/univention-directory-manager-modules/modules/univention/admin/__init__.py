@@ -224,7 +224,7 @@ class property:
 		default=None,  # type: Optional[Union[str, Union[bool, int], Tuple[str, List[str]], Tuple[Callable, List[str], Any]]]
 		prevent_umc_default_popup=False,  # type: bool
 		dontsearch=False,  # type: bool
-		show_in_lists=False,  # type: bool
+		show_in_lists=True,  # type: bool
 		editable=True,  # type: bool
 		configObjectPosition=None,  # type: None
 		configAttributeName=None,  # type: None
@@ -254,7 +254,7 @@ class property:
 		:param default: The default value for the property when a new object is created.
 		:param prevent_umc_default_popup: `True` to prevent a pop-up dialog in |UMC| when the default value is not set.
 		:param dontsearch: `True` to prevent searches using the property.
-		:param show_in_lists: UNUSED?
+		:param show_in_lists: `False` to prevent it from being shown in the CLI.
 		:param editable: `False` prevents the property from being modified by the user; it still can be modified by code.
 		:param configObjectPosition: UNUSED?
 		:param configAttributeName: UNUSED?
