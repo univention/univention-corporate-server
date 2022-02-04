@@ -1,6 +1,7 @@
 stages:
   - prepare
   - build
+  - smoketest
 
 include:
   - template: 'Workflows/Branch-Pipelines.gitlab-ci.yml'
@@ -143,3 +144,13 @@ deb-pipeline:
       - artifact: generated-config-deb.yml
         job: generate-config
     strategy: depend
+
+smoketest:
+  stage: smoketest
+  image: univention-repository.knut.univention.de/phahn/ucs-minbase:501
+  script:
+    - univention-upgrade --non-interactive
+    - cat /etc/apt/sources.list.d/*
+  rules:
+    - when: manual
+      allow_failure: true
