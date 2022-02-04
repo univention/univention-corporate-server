@@ -149,8 +149,8 @@ smoketest:
   stage: smoketest
   image: docker-registry.knut.univention.de/phahn/ucs-minbase:501
   script:
-    - hostname -f || true
-	- pwd || true
+    - "hostname -f || true
+    - pwd || true
     - /usr/sbin/univention-upgrade --non-interactive || true
     - cat /etc/apt/sources.list.d/*
   rules:
