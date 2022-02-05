@@ -3694,6 +3694,35 @@ univentionObjectType: settings/license
 		self.content_negotiation({'message': _('The license was imported successfully.')})
 
 
+class ServiceSpecificPassword(Resource):
+
+	@sanitize_body_arguments(
+		service=StringSanitizer(required=True),
+	)
+	@tornado.gen.coroutine
+	def post(self, dn):
+		object_type = 'users/user'
+		module = get_module(object_type, dn, self.ldap_connection)
+		if module is None:
+			raise NotFound(object_type, dn)
+
+		service_type = self.get_body_argument('service')
+		# placeholder for password generation
+		import random
+		import string
+		new_password = ''.join(random.choices(string.ascii_uppercase + string.digits, k=20))
+
+		obj = yield self.pool.submit(module.get, dn)
+		obj['serviceSpecificPassword'] = {'service': service_type, 'password': new_password}
+
+		try:
+			yield self.pool.submit(obj.modify)
+		except udm_errors.unsupportedService:
+			raise HTTPError(400, _('Service %s does not support service specific passwords') % (service_type,))
+		result = {'service': service_type, 'password': new_password}
+		self.content_negotiation(result)
+
+
 def decode_properties(module, obj, properties):
 	for key, value in properties.items():
 		prop = module.get_property(key)
@@ -3807,6 +3836,7 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/properties/%s/default" % (object_type, property_), DefaultValue),
 			(r"/udm/networks/network/%s/next-free-ip-address" % (dn,), NextFreeIpAddress),
 			(r"/udm/progress/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", Operations),
+			(r"/udm/users/user/%s/service-specific-password" % (dn,), ServiceSpecificPassword),
 			# TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
 		], default_handler_class=Nothing, **kwargs)
 
