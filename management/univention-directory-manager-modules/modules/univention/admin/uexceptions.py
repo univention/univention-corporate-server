@@ -428,3 +428,7 @@ class noKerberosRealm(base):
 
 class alreadyUsedInSubtree(base):
 	message = _('An object with the name already exists in the subtree position')
+
+
+class unsupportedService(base):
+	message = _('Service %s does not support service specific passwords')
