@@ -225,6 +225,7 @@ class property:
 		prevent_umc_default_popup=False,  # type: bool
 		dontsearch=False,  # type: bool
 		show_in_lists=True,  # type: bool
+		cli_enabled=True,  # type: bool
 		editable=True,  # type: bool
 		configObjectPosition=None,  # type: None
 		configAttributeName=None,  # type: None
@@ -285,6 +286,7 @@ class property:
 		self.prevent_umc_default_popup = prevent_umc_default_popup
 		self.dontsearch = dontsearch
 		self.show_in_lists = show_in_lists
+		self.cli_enabled = cli_enabled
 		self.editable = editable
 		self.configObjectPosition = configObjectPosition
 		self.configAttributeName = configAttributeName
