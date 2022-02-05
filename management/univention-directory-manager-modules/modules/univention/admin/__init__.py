@@ -256,6 +256,7 @@ class property:
 		:param prevent_umc_default_popup: `True` to prevent a pop-up dialog in |UMC| when the default value is not set.
 		:param dontsearch: `True` to prevent searches using the property.
 		:param show_in_lists: `False` to prevent it from being shown in the CLI.
+		:param cli_enabled: `True` to be able to set the attribute in the CLI.
 		:param editable: `False` prevents the property from being modified by the user; it still can be modified by code.
 		:param configObjectPosition: UNUSED?
 		:param configAttributeName: UNUSED?

@@ -48,6 +48,7 @@ import pytz
 import six
 from ldap.filter import filter_format
 import tzlocal
+import passlib.hash
 from M2Crypto import X509
 
 import univention.admin
@@ -733,6 +734,14 @@ property_descriptions = {
 		dontsearch=True,
 		multivalue=True,
 		copyable=True,
+	),
+	'serviceSpecificPassword': univention.admin.property(
+		short_description=_('Service Specific Password'),
+		long_description=_('Virtual attribute to set different Service Specific Passwords via UDM'),
+		syntax=univention.admin.syntax.string,
+		dontsearch=True,
+		show_in_lists=False,
+		cli_enabled=False,
 	),
 }
 
@@ -1784,10 +1793,11 @@ class object(univention.admin.handlers.simpleLdap):
 		ml = self._modlist_krb5_valid_end(ml)
 		ml = self._modlist_shadow_expire(ml)
 		ml = self._modlist_mail_forward(ml)
-		ml = self._modlist_univention_person(ml)
 		ml = self._modlist_home_share(ml)
 		ml = self._modlist_samba_sid(ml)
 		ml = self._modlist_primary_group(ml)
+		ml = self._modlist_service_specific_password(ml)
+		ml = self._modlist_univention_person(ml)
 
 		return ml
 
@@ -2106,7 +2116,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _modlist_univention_person(self, ml):
 		# make sure that univentionPerson is set as objectClass when needed
-		if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday')) and b'univentionPerson' not in self.oldattr.get('objectClass', []):
+		if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday', 'serviceSpecificPassword')) and b'univentionPerson' not in self.oldattr.get('objectClass', []):
 			ml.append(('objectClass', b'', b'univentionPerson'))  # TODO: check if exists already
 		return ml
 
@@ -2183,6 +2193,18 @@ class object(univention.admin.handlers.simpleLdap):
 		new_flags = acctFlags.decode().encode('ASCII')
 		if old_flags != new_flags:
 			ml.append(('sambaAcctFlags', old_flags, new_flags))
+		return ml
+
+	def _modlist_service_specific_password(self, ml):
+		new_password = self.info.get('serviceSpecificPassword', None)
+		if new_password:
+			service = new_password.get('service', None)
+			password = new_password.get('password', None)
+			if service != 'radius':
+				raise univention.admin.uexceptions.valueError(_('Service does not support service specific passwords'), property='serviceSpecificPassword')
+			if service:
+				nt = passlib.hash.nthash.hash(password).upper().encode('ASCII')
+				ml.append(('univentionRadiusPassword', self.oldattr.get('univentionRadiusPassword', [b'']), [nt]))
 		return ml
 
 	def _ldap_post_remove(self):
