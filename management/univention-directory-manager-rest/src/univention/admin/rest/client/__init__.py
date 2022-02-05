@@ -566,3 +566,8 @@ class Object(Client):
 		self.hal = copy.deepcopy(obj.hal)
 		self.etag = obj.etag
 		self.last_modified = obj.last_modified
+
+	def generate_service_specific_password(self, service):
+		uri = self.client.get_relation(self.hal, 'udm:service-specific-password')['href']
+		response = self.client.make_request('POST', uri, data={"service": service})
+		return response.data.get('password', None)
