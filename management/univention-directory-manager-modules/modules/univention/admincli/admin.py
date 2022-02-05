@@ -601,6 +601,8 @@ def _doit(arglist):
 
 			for mod, (properties, options) in information.items():
 				if name in properties:
+					if not properties[name].cli_enabled:
+						continue
 					if properties[name].multivalue:
 						input.setdefault(name, [])
 						if value:
@@ -614,6 +616,8 @@ def _doit(arglist):
 			name, delim, value = val.partition('=')
 			for mod, (properties, options) in information.items():
 				if name in properties:
+					if not properties[name].cli_enabled:
+						continue
 					if properties[name].multivalue:
 						append.setdefault(name, [])
 						if value:
@@ -628,6 +632,8 @@ def _doit(arglist):
 			value = value or None
 			for mod, (properties, options) in information.items():
 				if name in properties:
+					if not properties[name].cli_enabled:
+						continue
 					if properties[name].multivalue:
 						if value is None:
 							remove[name] = value
