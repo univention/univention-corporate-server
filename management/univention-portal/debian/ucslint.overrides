@@ -1,2 +1,3 @@
 0004-16: conffiles/usr/lib/univention-portal/config/config.json
 0009-3: univention-portal
+0006-2: debian/univention-portal.postinst
