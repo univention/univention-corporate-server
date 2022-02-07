@@ -11,6 +11,8 @@ generate-config:
   stage: prepare
   rules:
     - when: always
+  tags:
+    - dm-s
   variables:
     GIT_DEPTH: 150
     # besides the feature branch also fetch the main branch "5.0-1"
@@ -41,6 +43,8 @@ generate-config:
 prepare aptly:
   stage: prepare
   interruptible: false
+  tags:
+    - dm-s
   rules:
     - when: always
   image:
