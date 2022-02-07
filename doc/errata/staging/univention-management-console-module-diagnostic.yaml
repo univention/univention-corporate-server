@@ -16,4 +16,6 @@ desc: |
    plugin.
  * A diagnostic warning for the samba replication status will now be formatted
    properly.
-bug: [53969, 54264, 53306, 49353, 53341]
+ * Disk usage checks will now handle log level evaluations of UCR variable
+   `ldap/debug/level` correctly.
+bug: [53969, 54264, 53306, 49353, 53341, 49354]

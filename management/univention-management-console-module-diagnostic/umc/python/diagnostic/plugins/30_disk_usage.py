@@ -82,7 +82,6 @@ def high_log_levels():
 		is_high('directory/manager/cmd/debug/level', 0),
 		is_high('dns/debug/level', 0),
 		is_high('dns/dlz/debug/level', 0),
-		is_high('ldap/debug/level', 0),
 		is_high('listener/debug/level', 2),
 		is_high('mail/postfix/ldaptable/debuglevel', 0),
 		is_high('notifier/debug/level', 1),
@@ -100,7 +99,8 @@ def high_log_levels():
 		is_on('saml/idp/log/debug/enabled'),
 		is_on('pdate/check/boot/debug'),
 		is_on('update/check/cron/debug'),
-		lambda ucr: ucr.get('apache2/loglevel', 'warn') in ('notice', 'info', 'debug')
+		lambda ucr: ucr.get('apache2/loglevel', 'warn') in ('notice', 'info', 'debug'),
+		lambda ucr: ucr.get('ldap/debug/level', 'none') not in ('none', '0')
 	)
 
 	configRegistry = univention.config_registry.ConfigRegistry()
