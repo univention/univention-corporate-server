@@ -63,7 +63,7 @@ ucr set apache2/force_https/exclude/request_uri/univention-portal?/univention/ge
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "4.0.5-74"; then
 	univention-directory-manager portals/entry modify --dn "cn=univentionforum,cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--append displayName='"fr_FR" "Forum Univention (Aide)"' \
-		--append description='"fr_FR" "Forum Univention (Aide)"' \
+		--append description='"fr_FR" "Forum Univention (Aide)"'
 	univention-directory-manager portals/category modify --dn "cn=domain-service,cn=category,cn=portals,cn=univention,$ldap_base" \
 		--append displayName='"fr_FR" "Applications"'
 	univention-directory-manager portals/category modify --dn "cn=domain-admin,cn=category,cn=portals,cn=univention,$ldap_base" \
