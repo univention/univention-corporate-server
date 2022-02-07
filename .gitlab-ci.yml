@@ -13,7 +13,7 @@ generate-config:
     - when: always
   variables:
     GIT_DEPTH: 150
-	# besides the feature branch also fetch the main branch "5.0-1"
+    # besides the feature branch also fetch the main branch "5.0-1"
     GIT_FETCH_EXTRA_FLAGS: 5.0-1 --prune
   image:
     # original: "name: $BUILD" ==> changed this to a specific hash to test the new deb-builder
