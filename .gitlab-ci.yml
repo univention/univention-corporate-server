@@ -14,8 +14,13 @@ generate-config:
   tags:
     - dm-s
   variables:
+    # fetch the last 150 commits (default is 50)
+    # https://docs.gitlab.com/ee/ci/runners/configure_runners.html#shallow-cloning
     GIT_DEPTH: 150
-    # besides the feature branch also fetch the main branch "5.0-1"
+    # the feature branch is automatically fetched by git/gitlab. The following GIT_FETCH_EXTRA_FLAGS
+    # removed the --quiet option and adds the reference for the main branch "5.0-1" that shall also
+    # be fetched.
+    # https://docs.gitlab.com/ee/ci/runners/configure_runners.html#git-fetch-extra-flags
     GIT_FETCH_EXTRA_FLAGS: 5.0-1 --prune
   image:
     # original: "name: $BUILD" ==> changed this to a specific hash to test the new deb-builder
