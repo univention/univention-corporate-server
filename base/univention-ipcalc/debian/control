@@ -1,7 +1,7 @@
 Source: univention-ipcalc
 Section: univention
 Priority: optional
-Maintainer: Univention GmbH TEST2 <packages@univention.de>
+Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.2
 Build-Depends:
  debhelper,
