@@ -2100,6 +2100,7 @@ class Properties(Resource):
 			prop.setdefault('identifies', False)
 			prop.setdefault('searchable', False)
 			prop.setdefault('multivalue', False)
+			prop.setdefault('show_in_lists', True)
 		return dict((prop['id'], prop) for prop in properties if not prop['id'].startswith('$'))
 
 
@@ -2744,9 +2745,9 @@ class Object(FormBase, Resource):
 		values = {}
 		if properties:
 			if '*' not in properties:
-				values = dict((key, value) for (key, value) in obj.info.items() if key in properties)
+				values = dict((key, value) for (key, value) in obj.info.items() if (key in properties) and obj.descriptions[key].show_in_lists)
 			else:
-				values = dict((key, obj[key]) for key in obj.descriptions if add or obj.has_property(key))
+				values = dict((key, obj[key]) for key in obj.descriptions if (add or obj.has_property(key)) and obj.descriptions[key].show_in_lists)
 
 			for passwd in module.password_properties:
 				values[passwd] = None
