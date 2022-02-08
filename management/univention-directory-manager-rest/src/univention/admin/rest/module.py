@@ -3407,7 +3407,7 @@ class PropertyChoices(Resource):
 
 
 class PolicyResultBase(Resource):
-	"""get the possible policies of the policy-type for user objects located at the containter"""
+	"""get the possible policies of the policy-type for user objects located at the container"""
 
 	@run_on_executor(executor='pool')
 	def _get(self, object_type, policy_type, dn, is_container=False):
