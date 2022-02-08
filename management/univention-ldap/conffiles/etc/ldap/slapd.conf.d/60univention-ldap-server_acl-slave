@@ -1,6 +1,10 @@
-authz-regexp
-    uid=([^,]*),cn=(gssapi|saml),cn=auth
-    ldap:///@%@ldap/base@%@??sub?uid=$1
+@!@
+from six.moves.urllib.parse import quote
+print('authz-regexp')
+print('    uid=([^,]*),cn=(gssapi|saml),cn=auth')
+print('    ldap:///%s??sub?uid=$1' % (quote(ldap_base, safe=''),))
+print('')
+@!@
 
 # allow authentication
 access to attrs=userPassword
@@ -11,11 +15,17 @@ access to attrs=userPassword,krb5Key,sambaNTPassword,sambaLMPassword,sambaPwdLas
    by sockname="PATH=/var/run/slapd/ldapi" read
 @!@
 from univention.lib.misc import custom_groupname
+from ldap.dn import escape_dn_chars
+
+
+def escape(string):
+	return string.replace('\\', '\\\\').replace('"', '\\"')
+
 
 groups_default_domainadmins = custom_groupname('Domain Admins')
 ldap_base = configRegistry['ldap/base']
-print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" read' % (groups_default_domainadmins, ldap_base))
+print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" read' % (escape(escape_dn_chars(groups_default_domainadmins), escape(ldap_base)))
 
 if configRegistry['ldap/hostdn']:
-	print('   by dn.base="%s" read' % configRegistry['ldap/hostdn'])
+	print('   by dn.base="%s" read' % escape(configRegistry['ldap/hostdn']))
 @!@   by * none

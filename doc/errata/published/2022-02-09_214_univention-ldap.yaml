@@ -21,6 +21,8 @@ desc: |
    This variable is applicable only to the UCS Primary Directory Node.
    By default is will be set to "yes" during package instllation and update.
  * The french translation of UDM extended attributes has been updated.
-bug: [54092, 48626, 54029]
+ * URL's, configuration file strings and regular expressions are now
+   correctly escaped in the `slapd.conf` configuration file.
+bug: [54092, 48626, 54029, 39345]
 erratum: 214
 announced: 2022-02-09
