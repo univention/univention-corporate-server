@@ -5,9 +5,11 @@ Domain concept
 
 .. index::
    single: user
+   pair: group; user group
    single: identity management; system
    single: service
    single: trust context
+   single: domain; service
 
 The domain concept is the most important concept in an IT environment operated
 with Univention Corporate Server (UCS). It allows administrators to map their

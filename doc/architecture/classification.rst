@@ -64,6 +64,12 @@ that is distributed as Debian package.
 Identity management
 ===================
 
+.. index::
+   single: identity management; definition
+   pair: maintenance effort; identity management
+   single: service
+   single: user
+
 The most important functional pillar of UCS is identity management.
 
 Simplified, an IT environment consists of services and users. Services offer
