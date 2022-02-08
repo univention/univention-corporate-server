@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: samba
+fix: 2:4.13.13-1A~5.0.0.202202081641
+desc: |
+ This update addresses the following issue:
+ * Paged LDAP searches combined with Arbitratry Name Resolution (anr)
+   could cause a use after free error in the LDB module stack of the
+   Samba/AD sam.ldb. This has been fixed.
+bug: [54425]
