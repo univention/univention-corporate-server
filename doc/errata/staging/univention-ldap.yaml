@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-ldap
-fix: 16.0.7-14A~5.0.0.202202011154
+fix: 16.0.7-15A~5.0.0.202202081250
 desc: |
  This update addresses the following issues:
  * A new LDAP attribute has been introduced with 5.0-1 erratum 100. As
