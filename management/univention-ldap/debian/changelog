@@ -1,3 +1,9 @@
+univention-ldap (16.0.7-15) unstable; urgency=medium
+
+  * Bug #54092: removed code from postinst due to errata policies
+
+ -- Alexander Steffen <steffen@univention.de>  Tue, 08 Feb 2022 12:23:03 +0100
+
 univention-ldap (16.0.7-14) unstable; urgency=medium
 
   * Bug #48626: Fixed up only set ucr ldap/translog-ignore-temporary on master

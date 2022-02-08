@@ -51,44 +51,6 @@ then
 	fi
 fi
 
-# Bug #54092: add krb5ValidStart to eq index.
-if [ -x /etc/init.d/slapd ] &&
-	[ -x /usr/share/univention-ldap/ldap_setup_index ] &&
-	[ -e /var/univention-join/joined ] &&
-	[ "$1" = configure ] &&
-	dpkg --compare-versions "$2" lt 13.0.7-11~ &&
-	! ucr get ldap/index/eq | tr , '\n' | grep -Fxq krb5ValidStart &&
-	univention-ldapsearch -LLL -o ldif-wrap=no -b cn=Subschema -s base attributeTypes | grep -Fq "NAME 'krb5ValidStart'"
-then
-	if pidof slapd >/dev/null 2>/dev/null
-	then
-		deb-systemd-invoke stop slapd
-		/usr/share/univention-ldap/ldap_setup_index --add-eq krb5ValidStart
-		deb-systemd-invoke start slapd
-	else
-		/usr/share/univention-ldap/ldap_setup_index --add-eq krb5ValidStart
-	fi
-fi
-
-# Bug #54092: add krb5ValidStart to eq index.
-if [ -x /etc/init.d/slapd ] &&
-	[ -x /usr/share/univention-ldap/ldap_setup_index ] &&
-	[ -e /var/univention-join/joined ] &&
-	[ "$1" = configure ] &&
-	dpkg --compare-versions "$2" lt 13.0.7-11~ &&
-	! ucr get ldap/index/eq | tr , '\n' | grep -Fxq krb5ValidStart &&
-	univention-ldapsearch -LLL -o ldif-wrap=no -b cn=Subschema -s base attributeTypes | grep -Fq "NAME 'krb5ValidStart'"
-then
-	if pidof slapd >/dev/null 2>/dev/null
-	then
-		deb-systemd-invoke stop slapd
-		/usr/share/univention-ldap/ldap_setup_index --add-eq krb5ValidStart
-		deb-systemd-invoke start slapd
-	else
-		/usr/share/univention-ldap/ldap_setup_index --add-eq krb5ValidStart
-	fi
-fi
-
 if [ "$1" = "configure" -a -z "$2" ]; then
 	if test -x /etc/init.d/slapd; then
 		# start on Primary, slapd may be down by schema-conflicts which are cleared by a new slapd.conf-template
