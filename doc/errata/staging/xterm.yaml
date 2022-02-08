@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: xterm
+fix: 327-2+deb9u3
+desc: |
+ This update addresses the following issue:
+ * Buffer overflow in set_sixel in graphics_sixel.c (CVE-2022-24130)
+bug: [54428]
+cve:
+- CVE-2022-24130
