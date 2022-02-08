@@ -1,5 +1,6 @@
 .. _debian-faq-pkg-basics: https://www.debian.org/doc/manuals/debian-faq/pkg-basics.en.html
 .. _debian-ref-package-mngmt: https://www.debian.org/doc/manuals/debian-reference/ch02.en.html
+.. _w-certificate-authority: https://en.wikipedia.org/wiki/Certificate_authority
 .. _w-deb-file-format: https://en.wikipedia.org/wiki/Deb_(file_format)
 .. _w-debian: https://en.wikipedia.org/wiki/Debian
 .. _w-openldap: https://en.wikipedia.org/wiki/OpenLDAP
