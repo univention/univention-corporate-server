@@ -5,11 +5,12 @@
 ## roles: [domaincontroller_master]
 ## packages: [python3-univention]
 
+import string
 import pytest
 
 import univention.config_registry
-from univention.password import Check, CheckFailed
 from univention.testing import ucr as _ucr, udm as _udm
+from univention.password import Check, CheckFailed, password_config, generate_password
 
 
 class Password(object):
@@ -287,3 +288,361 @@ class Test_PasswordPolicyCheck_with_mandatory_classes(object):
 	def test_not_conforming_to_cracklib_with_mandatory_classes(self, pwc_with_cracklib_mandatory_character_classes, password_not_conforming_to_cracklib_with_mandatory_UpperLowerDigitOther, existing_username):
 		with pytest.raises(CheckFailed):
 			pwc_with_cracklib_mandatory_character_classes.check(password_not_conforming_to_cracklib_with_mandatory_UpperLowerDigitOther)
+
+
+@pytest.fixture(scope='class')
+def password_config_default():
+	cfg = password_config()
+	yield cfg
+
+
+@pytest.fixture(scope='class')
+def password_radius_config():
+	cfg = password_config('radius')
+	yield cfg
+
+
+def password_stats(cfg, password):
+	"""
+	Calculate password stats based on given configuration
+	"""
+	special_characters = string.punctuation
+	forbidden_characters = cfg.get('forbidden', '')
+	digits = 0
+	lower = 0
+	other = 0
+	upper = 0
+	forbidden = 0
+
+	for c in password:
+		if '0' <= c <= '9':
+			digits += 1
+		elif 'a' <= c <= 'z':
+			lower += 1
+		elif 'A' <= c <= 'Z':
+			upper += 1
+		elif c in special_characters:
+			other += 1
+		elif c in forbidden_characters:
+			forbidden += 1
+
+	return {'digits': digits, 'lower': lower, 'other': other, 'upper': upper, 'forbidden': forbidden}
+
+
+def match_password_complexity(cfg, password):
+	"""
+	Test if given password matches complexity criteria.
+	"""
+	if not password or set(password) <= set(string.whitespace):
+		return False
+
+	stats = password_stats(cfg, password)
+	digits = stats['digits']
+	lowercase = stats['lower']
+	special = stats['other']
+	uppercase = stats['upper']
+	forbidden = stats['forbidden']
+
+	return 0 == forbidden and digits >= cfg['digits'] and lowercase >= cfg['lower'] and special >= cfg['other'] and uppercase >=  cfg['upper']
+
+class TestPasswordConfigDefaults(object):
+
+	def test_digit_count(self, password_config_default):
+		assert password_config_default['digits'] == 6
+
+	def test_lowercase_count(self, password_config_default):
+		assert password_config_default['lower'] == 6
+
+	def test_special_count(self, password_config_default):
+		assert password_config_default['other'] == 0
+
+	def test_uppercase(self, password_config_default):
+		assert password_config_default['upper'] == 6
+
+	def test_min_length(self, password_config_default):
+		assert password_config_default['min_length'] == 24
+
+	def test_special_characters(self, password_config_default):
+		assert password_config_default['forbidden'] == ''
+
+
+class TestPasswordConfigDigitCount(object):
+
+	def test_none(self):
+		with pytest.raises(TypeError):
+			generate_password({'digits': None, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6})
+
+	def test_negative(self):
+		with pytest.raises(ValueError, match="Number of digit_count, lowercase, uppercase.*"):
+			generate_password({'digits': -1, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6})
+
+	def test_empty_string(self):
+		with pytest.raises(ValueError, match="invalid literal for int()*"):
+			generate_password({'digits': '', 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6})
+
+	def test_zero(self):
+		digit_count = 0
+		cfg = {'digits': digit_count, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6}
+		pwd = generate_password(cfg)
+
+		assert (password_stats(cfg, pwd)['digits'] == digit_count)
+
+	def test_positive_number(self):
+		digit_count = 3
+		cfg = {'digits': digit_count, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6}
+		pwd = generate_password(cfg)
+
+		assert (password_stats(cfg, pwd)['digits'] >= digit_count)
+
+	def test_valid_string(self):
+		digit_count = "3"
+		cfg = {'digits': digit_count, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6}
+		pwd = generate_password(cfg)
+
+		assert (password_stats(cfg, pwd)['digits'] >= int(digit_count))
+
+
+class TestPasswordConfigLowerCaseCount(object):
+
+	def test_none(self):
+		with pytest.raises(TypeError):
+			generate_password({'digits': 1, 'lower': None, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6})
+
+	def test_negative(self):
+		with pytest.raises(ValueError, match="Number of digit_count, lowercase, uppercase.*"):
+			generate_password({'digits': 1, 'lower': -1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6})
+
+	def test_empty_string(self):
+		with pytest.raises(ValueError, match="invalid literal for int()*"):
+			generate_password({'digits': 1, 'lower': '', 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6})
+
+	def test_zero(self):
+		lowercase_count = 0
+		cfg = {'digits': 1, 'lower': lowercase_count, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6}
+		pwd = generate_password(cfg)
+
+		assert (password_stats(cfg, pwd)['lower'] == lowercase_count)
+
+	def test_positive_number(self):
+		lowercase_count = 3
+		cfg = {'digits': 1, 'lower': lowercase_count, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6}
+		pwd = generate_password(cfg)
+
+		assert (password_stats(cfg, pwd)['lower'] >= lowercase_count)
+
+	def test_valid_string(self):
+		lowercase_count = "3"
+		cfg = {'digits': 1, 'lower': lowercase_count, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6}
+		pwd = generate_password(cfg)
+
+		assert (password_stats(cfg, pwd)['lower'] >= int(lowercase_count))
+
+
+class TestPasswordConfigSpecialCharacterCount(object):
+
+	def test_none(self):
+		with pytest.raises(TypeError):
+			generate_password({'digits': 1, 'lower': 1, 'other': None, 'upper': 1, 'forbidden': None, 'min_length': 6})
+
+	def test_negative(self):
+		with pytest.raises(ValueError, match="Number of digit_count, lowercase, uppercase.*"):
+			generate_password({'digits': 1, 'lower': 1, 'other': -1, 'upper': 1, 'forbidden': None, 'min_length': 6})
+
+	def test_empty_string(self):
+		with pytest.raises(ValueError, match="invalid literal for int()*"):
+			generate_password({'digits': 1, 'lower': 1, 'other': '', 'upper': 1, 'forbidden': None, 'min_length': 6})
+
+	def test_empty_pool(self):
+		with pytest.raises(ValueError, match="There are 1 special characters requested but special characters pool.*"):
+			cfg = {'digits': 1, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': string.punctuation, 'min_length': 6}
+			generate_password(cfg)
+
+	def test_zero(self):
+		special_count = 0
+		cfg = {'digits': 1, 'lower': 1, 'other': special_count, 'upper': 1, 'forbidden': None, 'min_length': 6}
+		pwd = generate_password(cfg)
+
+		assert (password_stats(cfg, pwd)['other'] == special_count)
+
+	def test_positive_number(self):
+		special_count = 3
+		cfg = {'digits': 1, 'lower': 1, 'other': special_count, 'upper': 1, 'forbidden': None, 'min_length': 6}
+		pwd = generate_password(cfg)
+
+		assert (password_stats(cfg, pwd)['other'] >= special_count)
+
+	def test_valid_string(self):
+		special_count = "3"
+		cfg = {'digits': 1, 'lower': 1, 'other': special_count, 'upper': 1, 'forbidden': None, 'min_length': 6}
+		pwd = generate_password(cfg)
+
+		assert (password_stats(cfg, pwd)['other'] >= int(special_count))
+
+
+class TestPasswordConfigUpperCaseCount(object):
+
+	def test_none(self):
+		with pytest.raises(TypeError):
+			generate_password({'digits': 1, 'lower': 1, 'other': 1, 'upper': None, 'forbidden': None, 'min_length': 6})
+
+	def test_negative(self):
+		with pytest.raises(ValueError, match="Number of digit_count, lowercase, uppercase.*"):
+			generate_password({'digits': 1, 'lower': 1, 'other': 1, 'upper': -1, 'forbidden': None, 'min_length': 6})
+
+	def test_empty_string(self):
+		with pytest.raises(ValueError, match="invalid literal for int()*"):
+			generate_password({'digits': 1, 'lower': 1, 'other': 1, 'upper': '', 'forbidden': None, 'min_length': 6})
+
+	def test_zero(self):
+		uppercase_count = 0
+		cfg = {'digits': 1, 'lower': 1, 'other': 1, 'upper': uppercase_count, 'forbidden': None, 'min_length': 6}
+		pwd = generate_password(cfg)
+
+		assert (password_stats(cfg, pwd)['upper'] == uppercase_count)
+
+	def test_positive_number(self):
+		uppercase_count = 0
+		cfg = {'digits': 1, 'lower': 1, 'other': 1, 'upper': uppercase_count, 'forbidden': None, 'min_length': 6}
+		pwd = generate_password(cfg)
+
+		assert (password_stats(cfg, pwd)['upper'] >= uppercase_count)
+
+	def test_valid_string(self):
+		uppercase_count = "3"
+		cfg = {'digits': 1, 'lower': 1, 'other': 1, 'upper': uppercase_count, 'forbidden': None, 'min_length': 6}
+		pwd = generate_password(cfg)
+
+		assert (password_stats(cfg, pwd)['upper'] >= int(uppercase_count))
+
+
+class TestPasswordConfigMinimalLength(object):
+
+	def test_none(self):
+		with pytest.raises(TypeError):
+			generate_password({'digits': 1, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': None})
+
+	def test_negative(self):
+		with pytest.raises(ValueError, match="Minimal length must be greater than zero"):
+			generate_password({'digits': 1, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': -1})
+
+	def test_zero(self):
+		with pytest.raises(ValueError, match="Minimal length must be greater than zero"):
+			generate_password({'digits': 1, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 0})
+
+	def test_empty_string(self):
+		with pytest.raises(ValueError, match="invalid literal for int()*"):
+			generate_password({'digits': 1, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': ''})
+
+	def test_negative_string(self):
+		with pytest.raises(ValueError, match="Minimal length must be greater than zero"):
+			generate_password({'digits': 1, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': "-1"})
+
+	def test_zero_string(self):
+		with pytest.raises(ValueError, match="Minimal length must be greater than zero"):
+			generate_password({'digits': 1, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': "0"})
+
+	def test_insufficient_length(self):
+		with pytest.raises(ValueError, match="Calculated minimal length: 10 can not be greater than given minimal: 9"):
+			generate_password({'digits': 1, 'lower': 2, 'other': 3, 'upper': 4, 'forbidden': None, 'min_length': 9})
+
+		with pytest.raises(ValueError, match="Calculated minimal length: 9 can not be greater than given minimal: 8"):
+			generate_password({'digits': 0, 'lower': 2, 'other': 3, 'upper': 4, 'forbidden': None, 'min_length': 8})
+
+		with pytest.raises(ValueError, match="Calculated minimal length: 8 can not be greater than given minimal: 7"):
+			generate_password({'digits': 1, 'lower': 0, 'other': 3, 'upper': 4, 'forbidden': None, 'min_length': 7})
+
+		with pytest.raises(ValueError, match="Calculated minimal length: 7 can not be greater than given minimal: 6"):
+			generate_password({'digits': 1, 'lower': 2, 'other': 0, 'upper': 4, 'forbidden': None, 'min_length': 6})
+
+		with pytest.raises(ValueError, match="Calculated minimal length: 6 can not be greater than given minimal: 5"):
+			generate_password({'digits': 1, 'lower': 2, 'other': 3, 'upper': 0, 'forbidden': None, 'min_length': 5})
+
+
+class TestPasswordConfigExhaustedAvailableCharacterPool(object):
+
+	def test_exhausted_pool(self):
+		with pytest.raises(ValueError, match="All available characters are excluded by.*"):
+			generate_password({'digits': 1, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': string.printable, 'min_length': 6})
+
+
+class TestRandomPasswordGenerator(object):
+	iter_count = 100
+
+	def test_all_digits(self):
+		cfg = {'digits': 3, 'lower': 0, 'other': 0, 'upper': 0, 'forbidden': None, 'min_length': 12}
+		pwd = generate_password(cfg)
+
+		assert match_password_complexity(cfg, pwd)
+		assert password_stats(cfg, pwd)['digits'] == len(pwd)
+
+	def test_all_digits_exclude_zero_and_one(self):
+		cfg = {'digits': 3, 'lower': 0, 'other': 0, 'upper': 0, 'forbidden': '01', 'min_length': 12}
+
+		for _ in range(0, self.iter_count):
+			pwd = generate_password(cfg)
+
+			assert match_password_complexity(cfg, pwd)
+			assert "0" not in pwd
+			assert "1" not in pwd
+
+	def test_all_lowercase(self):
+		cfg = {'digits': 0, 'lower': 3, 'other': 0, 'upper': 0, 'forbidden': None, 'min_length': 12}
+		pwd = generate_password(cfg)
+
+		assert match_password_complexity(cfg, pwd)
+		assert password_stats(cfg, pwd)['lower'] == len(pwd)
+
+	def test_all_lowercase_exclude_a_and_b(self):
+		cfg = {'digits': 0, 'lower': 3, 'other': 0, 'upper': 0, 'forbidden': 'ab', 'min_length': 12}
+
+		for _ in range(0, self.iter_count):
+			pwd = generate_password(cfg)
+
+			assert match_password_complexity(cfg, pwd)
+			assert "a" not in pwd
+			assert "b" not in pwd
+
+	def test_all_specials(self):
+		cfg = {'digits': 0, 'lower': 0, 'other': 3, 'upper': 0, 'forbidden': None, 'min_length': 12}
+		pwd = generate_password(cfg)
+
+		assert password_stats(cfg, pwd)['other'] == len(pwd)
+
+	def test_all_specials_exclude_pound_and_braces(self):
+		cfg = {'digits': 0, 'lower': 0, 'other': 3, 'upper': 0, 'forbidden': '#()', 'min_length': 12}
+
+		for _ in range(0, self.iter_count):
+			pwd = generate_password(cfg)
+
+			assert match_password_complexity(cfg, pwd)
+			assert "#" not in pwd
+			assert "(" not in pwd
+			assert ")" not in pwd
+
+	def test_all_uppercase(self):
+		cfg = {'digits': 0, 'lower': 0, 'other': 0, 'upper': 3, 'forbidden': None, 'min_length': 12}
+		pwd = generate_password(cfg)
+
+		assert match_password_complexity(cfg, pwd)
+		assert password_stats(cfg, pwd)['upper'] == len(pwd)
+
+	def test_all_uppercase_exclude_cap_a_and_cap_b(self):
+		cfg = {'digits': 0, 'lower': 0, 'other': 0, 'upper': 3, 'forbidden': 'AB', 'min_length': 12}
+
+		for _ in range(0, self.iter_count):
+			pwd = generate_password(cfg)
+
+			assert match_password_complexity(cfg, pwd)
+			assert "A" not in pwd
+			assert "B" not in pwd
+
+	def test_radius_password_generate(self):
+		cfg = password_config('radius')
+		pwd = generate_password(cfg)
+
+		assert password_stats(cfg, pwd)['other'] == 0
+		assert "0" not in pwd
+		assert "O" not in pwd
+		assert "l" not in pwd
+		assert "1" not in pwd
+		assert "I" not in pwd

@@ -29,7 +29,9 @@
 
 import cracklib
 import os
+from random import SystemRandom
 import re
+import string
 import univention.uldap
 import univention.debug as ud
 import univention.config_registry as ucr
@@ -188,3 +190,110 @@ class Check(object):
 #	pwdCheck = univention.password.Check(univention.uldap.getMachineConnection(), None)
 #	self.enableQualityCheck = True
 #	pwdCheck.check('univention')
+
+
+def password_config(scope=None):
+	"""
+	Read password configuration options from UCR.
+
+	:param scope: UCR scope in which password configuration options are searched for. Default is None.
+	:type scope: :class:`str`
+
+	:return: Password configuration options.
+	:rtype: :class:`dict`
+	"""
+	scope = '/%s' % scope if scope else ''
+	return {
+		'digits': int(ucr.ucr['password%s/quality/credit/digits' % scope] or 6),
+		'lower':  int(ucr.ucr['password%s/quality/credit/lower' % scope] or 6),
+		'other': int(ucr.ucr['password%s/quality/credit/other' % scope] or 0),
+		'upper': int(ucr.ucr['password%s/quality/credit/upper' % scope] or 6),
+		'forbidden': ucr.ucr['password%s/quality/forbidden/chars' % scope] or ('0Ol1I' if scope else ''),
+		'min_length': int(ucr.ucr['password%s/quality/length/min' % scope] or 24),
+	}
+
+
+def generate_password(config):
+	"""
+	Generate random password.
+
+	:param config: Password configuration options.
+	:type config: :class:`dict`
+
+	:return: Randomly generated password.
+	:rtype: :class:`str`
+
+	:raises TypeError: In case invalid UCR configuration value type.
+	:raises ValueError: In case any password quality precondition fails.
+	"""
+	if config and not isinstance(config, dict):
+		raise ValueError('Invalid configuration object passed to random password generator')
+
+	# take default configuration dictionary and update the values with passed ones (if any)
+	cfg = password_config()
+	cfg.update(config or {})
+
+	digit_count = int(cfg.get('digits'))
+	lowercase_count = int(cfg.get('lower'))
+	special_count = int(cfg.get('other'))
+	uppercase_count = int(cfg.get('upper'))
+	min_length = int(cfg.get('min_length'))
+	special_characters = string.punctuation
+	forbidden_chars = cfg.get('forbidden', '')
+	exclude_characters = ''.join(set((forbidden_chars + string.whitespace) if forbidden_chars else string.whitespace))
+
+	if 0 > digit_count or 0 > lowercase_count or 0 > special_count or 0 > uppercase_count:
+		raise ValueError('Number of digit_count, lowercase, uppercase or special_count characters can not be negative')
+	elif 1 > min_length:
+		raise ValueError('Minimal length must be greater than zero')
+
+	calculated_min_length = digit_count + lowercase_count + special_count + uppercase_count
+	if calculated_min_length > min_length:
+		raise ValueError('Calculated minimal length: %s can not be greater than given minimal: %s' % (calculated_min_length, min_length,))
+
+	available_chars = set(string.printable) - set(string.whitespace) - set(exclude_characters)
+	if not available_chars:
+		raise ValueError('All available characters are excluded by: %r', (exclude_characters,))
+
+	rnd = SystemRandom()
+
+	if exclude_characters:
+		digits = ''.join(set(string.digits) - set(exclude_characters))
+		ascii_lowercase = ''.join(set(string.ascii_lowercase) - set(exclude_characters))
+		ascii_uppercase = ''.join(set(string.ascii_uppercase) - set(exclude_characters))
+		special_characters = ''.join(set(special_characters) - set(exclude_characters)) if special_characters else ''
+	else:
+		digits = string.digits
+		ascii_lowercase = string.ascii_lowercase
+		ascii_uppercase = string.ascii_uppercase
+		special_characters = special_characters or ''
+
+	if special_count and not special_characters:
+		raise ValueError('There are %s special characters requested but special characters pool is set to be empty' % (special_count,))
+
+	random_list = []
+	while True:
+		if 0 < len(ascii_lowercase):
+			random_list.extend([rnd.choice(ascii_lowercase) for _ in range(lowercase_count)])
+			if len(random_list) >= min_length:
+				break
+
+		if 0 < len(digits):
+			random_list.extend([rnd.choice(digits) for _ in range(digit_count)])
+			if len(random_list) >= min_length:
+				break
+
+		if 0 < len(ascii_uppercase):
+			random_list.extend([rnd.choice(ascii_uppercase) for _ in range(uppercase_count)])
+			if len(random_list) >= min_length:
+				break
+
+		if 0 < len(special_characters):
+			random_list.extend([rnd.choice(special_characters) for _ in range(special_count)])
+			if len(random_list) >= min_length:
+				break
+
+	rnd.shuffle(random_list)
+	res = ''.join(random_list)
+
+	return res
