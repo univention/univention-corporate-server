@@ -53,7 +53,6 @@ import univention.admin.objects
 import univention.admin.syntax
 import univention.admin.uexceptions as udm_errors
 from univention.admin.uldap import getMachineConnection
-from univention.admin.rest.client import UDM
 from univention.management.console.modules import Base
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
@@ -81,6 +80,7 @@ if IS_SELFSERVICE_MASTER:
 		from univention.management.console.modules.udm.syntax import widget
 		from univention.management.console.modules.udm.udm_ldap import UDM_Error, UDM_Module
 		from univention.udm import UDM, NoObject
+		from univention.admin.rest.client import UDMRest
 	except ImportError as exc:
 		MODULE.error('Could not load udm module: %s' % (exc,))
 		widget = None
@@ -317,7 +317,7 @@ class Instance(Base):
 		dn, username = self.auth(username, password)
 		MODULE.error('set_service_specific_passwords(): Setting {} password for {}'.format(password_type, username))
 		if password_type == 'radius' and ucr.is_true('radius/use-service-specific-password'):
-			udm = UDM.http('https://%s.%s/univention/udm/' % (ucr.get('hostname'), ucr.get('domainname')), 'cn=admin', open('/etc/ldap.secret').read())
+			udm = UDMRest.http('https://%s.%s/univention/udm/' % (ucr.get('hostname'), ucr.get('domainname')), 'cn=admin', open('/etc/ldap.secret').read())
 			user_obj = udm.get('users/user').get(dn)
 			service_specific_password = user_obj.generate_service_specific_password('radius')
 		else:
