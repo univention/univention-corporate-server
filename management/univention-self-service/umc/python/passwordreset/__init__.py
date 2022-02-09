@@ -52,6 +52,8 @@ from univention.lib.umc import Client, HTTPError, ConnectionError, Unauthorized
 import univention.admin.objects
 import univention.admin.syntax
 import univention.admin.uexceptions as udm_errors
+from univention.admin.uldap import getMachineConnection
+from univention.admin.rest.client import UDM
 from univention.management.console.modules import Base
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
@@ -271,6 +273,58 @@ class Instance(Base):
 				lo, po = get_machine_connection()
 				univention.admin.modules.init(lo, po, self._usersmod)
 		return self._usersmod
+
+	@forward_to_master
+	@sanitize(
+		username=StringSanitizer(required=True, minimum=1),
+		password=StringSanitizer(required=True, minimum=1))
+	@simple_response
+	def get_service_specific_passwords(self, username, password):
+		"""
+		Get users (possible) service specific passwords.
+
+		:return: list of dicts with users ssp
+		"""
+		if ucr.is_false('umc/self-service/service-specific-passwords/backend/enabled') or \
+			not ucr.is_true('radius/use-service-specific-password'):  # TODO - once we have more than one type, this should change
+			msg = _('Service specific passwords were disabled via the Univention Configuration Registry.')
+			MODULE.error('get_service_specific_passwords(): {}'.format(msg))
+			raise UMC_Error(msg)
+		dn, username = self.auth(username, password)
+		ret = []
+		if ucr.is_true('radius/use-service-specific-password'):
+			ldap_connection, ldap_position = getMachineConnection()
+			radius_passwords = ldap_connection.get(dn, attr=['univentionRadiusPassword']).get('univentionRadiusPassword', [])
+			ret.append({'type': 'radius', 'set': len(radius_passwords)})
+		return ret
+
+	@forward_to_master
+	@sanitize(
+		username=StringSanitizer(required=True, minimum=1),
+		password=StringSanitizer(required=True, minimum=1),
+		password_type=StringSanitizer(required=True, minimum=1))
+	@simple_response
+	def set_service_specific_passwords(self, username, password, password_type):
+		'''
+		Set a new service specific password.
+
+		:return: The password in cleartext
+		'''
+		if ucr.is_false('umc/self-service/service-specific-passwords/backend/enabled'):
+			msg = _('Service specific passwords were disabled via the Univention Configuration Registry.')
+			MODULE.error('get_service_specific_passwords(): {}'.format(msg))
+			raise UMC_Error(msg)
+		dn, username = self.auth(username, password)
+		MODULE.error('set_service_specific_passwords(): Setting {} password for {}'.format(password_type, username))
+		if password_type == 'radius' and ucr.is_true('radius/use-service-specific-password'):
+			udm = UDM.http('https://%s.%s/univention/udm/' % (ucr.get('hostname'), ucr.get('domainname')), 'cn=admin', open('/etc/ldap.secret').read())
+			user_obj = udm.get('users/user').get(dn)
+			service_specific_password = user_obj.generate_service_specific_password('radius')
+		else:
+			msg = _('Service specific passwords were disabled for "%s".') % password_type
+			MODULE.error('get_service_specific_passwords(): {}'.format(msg))
+			raise UMC_Error(msg)
+		return {'password': service_specific_password}
 
 	@forward_to_master
 	@sanitize(

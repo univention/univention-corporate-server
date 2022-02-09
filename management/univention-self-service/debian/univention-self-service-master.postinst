@@ -34,4 +34,6 @@
 
 systemctl try-restart univention-directory-listener
 
+/usr/share/univention-self-service/univention-setup-self-service-portal-links --no-update
+
 exit 0
