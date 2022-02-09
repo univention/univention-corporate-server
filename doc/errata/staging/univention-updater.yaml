@@ -2,8 +2,8 @@ product: ucs
 release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
-src: 
-fix: 
+src: univention-updater
+fix: 15.0.3-75A~5.0.0.202202091136
 desc: |
  This update addresses the following issue(s):
  * App updates invoked by univention-upgrade will now work correctly.
