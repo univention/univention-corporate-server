@@ -308,7 +308,7 @@ def do_app_updates(options: Namespace, checkForUpdates: bool, silent: bool) -> O
         if interactive and not readcontinue('\nDo you want to upgrade %s [Y|n]?' % app.name):
             continue
         success &= bool(app_upgrade.call_safe(
-            app=app,
+            app=[app],
             noninteractive=not interactive,
             username=options.username,
             pwdfile=options.pwdfile.name if options.pwdfile else None,
