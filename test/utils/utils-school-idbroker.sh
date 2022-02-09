@@ -29,7 +29,7 @@
 
 set -x
 
-ansible_register_idps_setup () {
+ansible_preperation () {
 	local traeger1_domain="${1:?missing traeger1_domain}"
 	local traeger2_domain="${2:?missing traeger2_domain}"
 	local repo_user="${3:?missing repo_user}"
@@ -39,11 +39,20 @@ ansible_register_idps_setup () {
 		--password="$(< "$repo_password_file")" -r -l 10 \
 		"https://service.software-univention.de/apt/00342/docs/keycloak/" || rv=$?
 	cd service.software-univention.de/keycloak || rv=$?
-	printf "[keycloak]\nlocalhost\n" > hosts.ini
-	openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj "/CN=id-broker" -keyout id-broker.key -out id-broker.cert
+	# check the jenkins-data repo for the following files
+	cp /root/hosts.ini hosts.ini
+	cp /root/idps.yml schools_saml_IDP/idps.yml
+	cp /root/clients.yml clients.yml
+	cp /root/id-broker-TESTING.cert id-broker.cert
+	cp /root/id-broker-TESTING.key id-broker.key
+	source id-broker-secrets.sh
+	sed -i "s/BETTERMARKS_CLIENT_SECRET/$BETTERMARKS_CLIENT_SECRET/g" clients.yml
+	sed -i "s/UTA_CLIENT_SECRET/$UTA_CLIENT_SECRET/g" clients.yml
+	sed -i "s/UTA_REDIRECT/https:\/\/$(hostname -f)\/univention-test-app\/authorize/g" clients.yml
+	sed -i "s/keycloak_user: admin/keycloak_user: $KC_ADMIN_USER/g" keycloak.yml
+	sed -i "s/keycloak_password: admin/keycloak_password: $KC_ADMIN_PASS" keycloak.yml
 	curl -k "https://ucs-sso.$traeger1_domain/simplesamlphp/saml2/idp/metadata.php" > schools_saml_IDP/traeger1_metadata.xml
 	curl -k "https://ucs-sso.$traeger2_domain/simplesamlphp/saml2/idp/metadata.php" > schools_saml_IDP/traeger2_metadata.xml
-	printf "register_idps:\n  - alias: traeger1\n    ucsschoolSourceUID: IDBROKER-traeger1\n    path: schools_saml_IDP/traeger1_metadata.xml\n  - alias: traeger2\n    ucsschoolSourceUID: IDBROKER-traeger2\n    path: schools_saml_IDP/traeger2_metadata.xml\n" > schools_saml_IDP/idps.yml
 	return $rv
 }
 
