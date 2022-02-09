@@ -9,3 +9,5 @@ desc: |
  * Bugs in the l10n template files were updated to fix the creation and
    update process of language packages.
 bug: [54029]
+erratum: 208
+announced: 2022-02-09
