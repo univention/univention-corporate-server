@@ -597,6 +597,4 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data)
 	unlink(FILE_NAME_NOTIFIER_PRIV);
 	free(line);
 	fclose_lock(&file);
-
-	return;
 }
