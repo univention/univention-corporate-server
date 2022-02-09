@@ -153,3 +153,45 @@ Description[de]=Ermöglicht die Verwendung von dienstspezifischen Passwörtern. 
 Description[en]=Enables the use of service specific passwords. This password stored in the univentionRadiusPassword attribute. If no service specific password is set, the authentication will fail as there is no fallback to the standard password.
 Type=bool
 Categories=service-radius
+
+[password/radius/quality/credit/digits]
+Description[de]=Ist die Option 'RADIUS-Passwort-Qualitätsprüfung' für einen Benutzer aktiviert, werden für Passwortänderungen in Samba, Univention Management Console und Kerberos zusätzliche Prüfungen vorgenommen, die auch eine Wörterbuchprüfung beinhalten. Diese Variable konfiguriert die minimale Anzahl von Zahlen, die in dem neuen Passwort vorkommen muss.
+Description[en]=If the option 'RADIUS password quality check' is activated for a user, additional checks - including dictionary checks - are performed for password changes in Samba, Univention Management Console and Kerberos. This variable configures the minimum number of digits in the new password.
+Type=int
+Default=6
+Categories=service-radius
+
+[password/radius/quality/credit/lower]
+Description[de]=Ist die Option 'RADIUS-Passwort-Qualitätsprüfung' für einen Benutzer aktiviert, werden für Passwortänderungen in Samba, Univention Management Console und Kerberos zusätzliche Prüfungen vorgenommen, die auch eine Wörterbuchprüfung beinhalten. Diese Variable konfiguriert die minimale Anzahl von Kleinbuchstaben, die in dem neuen Passwort vorkommen muss.
+Description[en]=If the option 'RADIUS password quality check' is activated for a user, additional checks - including dictionary checks - are performed for password changes in Samba, Univention Management Console and Kerberos. This variable configures the minimum number of lower case letters that must be met for a new password.
+Type=int
+Default=6
+Categories=service-radius
+
+[password/radius/quality/credit/other]
+Description[de]=Ist die Option 'RADIUS-Passwort-Qualitätsprüfung' für einen Benutzer aktiviert, werden für Passwortänderungen in Samba, Univention Management Console und Kerberos zusätzliche Prüfungen vorgenommen, die auch eine Wörterbuchprüfung beinhalten. Diese Variable konfiguriert die Mindestanzahl von Zeichen in dem neuen Passwort, die keine Buchstaben oder Ziffern sind.
+Description[en]=If the option 'RADIUS password quality check' is activated for a user, additional checks - including dictionary checks - are performed for password changes in Samba, Univention Management Console and Kerberos. This variable configures the minimum number of characters in the new password which are neither letters nor digits.
+Type=int
+Default=0
+Categories=service-radius
+
+[password/radius/quality/credit/upper]
+Description[de]=Ist die Option 'RADIUS-Passwort-Qualitätsprüfung' für einen Benutzer aktiviert, werden für Passwortänderungen in Samba, Univention Management Console und Kerberos zusätzliche Prüfungen vorgenommen, die auch eine Wörterbuchprüfung beinhalten. Diese Variable konfiguriert die minimale Anzahl von Grossbuchstaben, die in dem neuen Passwort vorkommen muss.
+Description[en]=If the option 'RADIUS password quality check' is activated for a user, additional checks - including dictionary checks - are performed for password changes in Samba, Univention Management Console and Kerberos. This variable configures the minimum number of upper case letters that must be met for a new password.
+Type=int
+Default=6
+Categories=service-radius
+
+[password/radius/quality/forbidden/chars]
+Description[de]=Ist die Option 'RADIUS-Passwort-Qualitätsprüfung' für einen Benutzer aktiviert, werden für Passwortänderungen in Samba, Univention Management Console und Kerberos zusätzliche Prüfungen vorgenommen, die auch eine Wörterbuchprüfung beinhalten. Wenn eines der hier angegeben Zeichen Teil des Passworts ist, so wird das Passwort abgelehnt.
+Description[en]=If the option 'RADIUS password quality check' is activated for a user, additional checks - including dictionary checks - are performed for password changes in Samba, Univention Management Console and Kerberos. If one of the characters specified here is part of the new password, the password will be rejected.
+Type=str
+Default=0Ol1I
+Categories=service-radius
+
+[password/radius/quality/length/min]
+Description[de]=Bei RADIUS-Passwortänderungen via Portalseite, Univention Management Console, Univention Directory Manager und Kerberos (ohne Samba/AD) kann geprüft werden ob das neue Passwort eine Minimallänge haben muss. Der Wert dafür kann über zwei Wege definiert werden. Über diese UCR-Variable lässt auf dem lokalen Server die Minimallänge vorgeben. Dieser Wert greift bei Passwortänderungen an Benutzerkonten, für die nicht per UDM Policy (Objekt-Typ policies/pwhistory) eine andere Mindestlänge definiert worden ist. Per Default ist diese Variable nicht gesetzt. Falls eine 'Passwort-Qualitätsprüfung' per UDM Policy aktiviert ist, dann fordert python-cracklib eine Mindestlänge von 4. In Samba/AD Domänen gibt es zusätzlich die Active Directory 'domain passwordsettings' über die eine minimale Passwortlänge konfiguriert werden kann, die bei Passwortänderungen via Samba, Kerberos und Windows Clients geprüft wird.
+Description[en]=When changing RADIUS passwords via Portal page, Univention Management Console, Univention Directory Manager and Kerberos (without Samba/AD) UCS can check if the new password has a minimal length. The minimal length for this check can be defined in two ways. This UCR variable can be used to define the value locally per server. This value applies to all accounts which are not subject to a more specific UDM policy (object type policies/pwhistory), which can be used to override the value defined via this UCR variable. If 'Password quality check' is activated via UDM Policy, then python-cracklib demands a minimal length of 4 characters. In Samba/AD domains there are the additional Active Directory 'domain passwordsettings' which can be used to configure a minimal password length, that is checked when changing passwords via Samba, Kerberos and Windows Clients.
+Type=int
+Default=24
+Categories=service-radius
