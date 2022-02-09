@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2022-01-31 09:38+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2017-09-18 15:37+0200\n"
+"PO-Revision-Date:  2022-01-31 09:38+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "Language: en\n"
@@ -654,3 +654,30 @@ msgstr ""
 #: js/widgets/ProgressBar.js:184
 msgid "{number} errors occurred: "
 msgstr ""
+
+
+#~ msgid "umcFeedbackUrl"
+#~ msgstr "https://www.univention.com/feedback/"
+
+#~ msgid "umcLogoTitle"
+#~ msgstr "Website Univention GmbH"
+
+#~ msgid "umcLogoUrl"
+#~ msgstr "https://www.univention.de/"
+
+#~ msgid "umcOverviewHeader"
+#~ msgstr "Overview"
+
+#~ msgid "umcOverviewHelpText"
+#~ msgstr ""
+#~ "Univention Management Console (UMC) is  the central tool for web-based "
+#~ "administration of the UCS domain. Depending on system role, default "
+#~ "settings and  permissions, you find extensive functions for the "
+#~ "administration of  your UCS domain and for the configuration of this "
+#~ "server."
+
+#~ msgid "umcOverviewTabTitle"
+#~ msgstr "Overview"
+
+#~ msgid "umcUserInfo"
+#~ msgstr "<b>User</b> %(username)s"
