@@ -193,7 +193,7 @@ int main(int argc, char* argv[])
 
 		switch (c) {
 			case 'F':
-				foreground = 1;
+				foreground += 1;
 				break;
 			case 'd':
 				debug = atoi(optarg);
@@ -228,7 +228,7 @@ int main(int argc, char* argv[])
 		daemon(1,1);
 	}
 
-	univention_debug_init("/var/log/univention/notifier.log",1,1);
+	univention_debug_init(foreground >= 2 ? "stderr" : "/var/log/univention/notifier.log", UV_DEBUG_FLUSH, UV_DEBUG_FUNCTION);
 	univention_debug_set_level(UV_DEBUG_TRANSFILE, debug);
 
 	if ( creating_pidfile("/var/run/udsnotifier.pid") != 0 )
