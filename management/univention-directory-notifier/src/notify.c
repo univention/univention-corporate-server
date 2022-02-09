@@ -577,6 +577,7 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data)
 		parse_results = parse_transaction_line(&entry, line);
 		if (parse_results!=1) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "ABORTING EXECUTION: Invalid transaction ID for line %s of file %s", line, FILE_NAME_NOTIFIER_PRIV);
+			free(entry.dn);
 			free(line);
 			fclose_lock(&file);
 			abort();
