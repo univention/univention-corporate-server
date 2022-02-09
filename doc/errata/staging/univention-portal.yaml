@@ -5,6 +5,6 @@ scope: ucs_5.0-0-errata5.0-1
 src: univention-portal
 fix: 4.0.5-74A~5.0.0.202202071247
 desc: |
- This update addresses the following issue(s):
- * The french translation of UDM portal attributes have been updated.
+ This update addresses the following issue:
+ * The french translation of UDM portal attributes has been updated.
 bug: [54029]
