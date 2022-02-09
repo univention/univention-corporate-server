@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The french translation of UDM extended attributes has been updated.
 bug: [54029]
+erratum: 210
+announced: 2022-02-09
