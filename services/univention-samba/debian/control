@@ -5,7 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  dh-python,
- python2,
+ python,
  univention-config-dev (>= 15.0.3),
 Standards-Version: 3.5.2
 
