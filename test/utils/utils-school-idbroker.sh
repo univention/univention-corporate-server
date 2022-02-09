@@ -139,35 +139,34 @@ create_id_connector_school_authority_config () {
 }
 
 create_school_users_classes () {
-  local tr="${1:?missing traegernum}"
-  local ou1="${tr}ou1"
-  local ou2="${tr}ou2"
+  local ou1="ou1"
+  local ou2="ou2"
 
   /usr/share/ucs-school-import/scripts/create_ou "$ou1"
   /usr/share/ucs-school-import/scripts/create_ou "$ou2"
-  i=1; python -m ucsschool.lib.models create --name "${tr}-stud${i}"  --set firstname "Traeger${i}" --set lastname "Student${i}" --set password univention --school DEMOSCHOOL Student
-  i=1; python -m ucsschool.lib.models create --name "${tr}-teach${i}" --set firstname "Traeger${i}" --set lastname "Teacher${i}" --set password univention --school DEMOSCHOOL Teacher
-  i=2; python -m ucsschool.lib.models create --name "${tr}-stud${i}"  --set firstname "Traeger${i}" --set lastname "Student${i}" --set password univention --school DEMOSCHOOL --append schools DEMOSCHOOL --append schools "$ou1" Student
-  i=2; python -m ucsschool.lib.models create --name "${tr}-teach${i}" --set firstname "Traeger${i}" --set lastname "Teacher${i}" --set password univention --school DEMOSCHOOL --append schools DEMOSCHOOL --append schools "$ou1" Teacher
-  i=3; python -m ucsschool.lib.models create --name "${tr}-stud${i}"  --set firstname "Traeger${i}" --set lastname "Student${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Student
-  i=3; python -m ucsschool.lib.models create --name "${tr}-teach${i}" --set firstname "Traeger${i}" --set lastname "Teacher${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Teacher
+  i=1; python -m ucsschool.lib.models create --name "stud${i}"  --set firstname "Traeger${i}" --set lastname "Student${i}" --set password univention --school DEMOSCHOOL Student
+  i=1; python -m ucsschool.lib.models create --name "teach${i}" --set firstname "Traeger${i}" --set lastname "Teacher${i}" --set password univention --school DEMOSCHOOL Teacher
+  i=2; python -m ucsschool.lib.models create --name "stud${i}"  --set firstname "Traeger${i}" --set lastname "Student${i}" --set password univention --school DEMOSCHOOL --append schools DEMOSCHOOL --append schools "$ou1" Student
+  i=2; python -m ucsschool.lib.models create --name "teach${i}" --set firstname "Traeger${i}" --set lastname "Teacher${i}" --set password univention --school DEMOSCHOOL --append schools DEMOSCHOOL --append schools "$ou1" Teacher
+  i=3; python -m ucsschool.lib.models create --name "stud${i}"  --set firstname "Traeger${i}" --set lastname "Student${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Student
+  i=3; python -m ucsschool.lib.models create --name "teach${i}" --set firstname "Traeger${i}" --set lastname "Teacher${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Teacher
   python -m ucsschool.lib.models modify --dn "cn=DEMOSCHOOL-Democlass,cn=klassen,cn=schueler,cn=groups,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
-    --append users "uid=${tr}-stud1,cn=schueler,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
-    --append users "uid=${tr}-stud2,cn=schueler,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
-    --append users "uid=${tr}-teach1,cn=lehrer,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
-    --append users "uid=${tr}-teach2,cn=lehrer,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" SchoolClass
+    --append users "uid=stud1,cn=schueler,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
+    --append users "uid=stud2,cn=schueler,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
+    --append users "uid=teach1,cn=lehrer,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
+    --append users "uid=teach2,cn=lehrer,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" SchoolClass
   python -m ucsschool.lib.models create SchoolClass \
     --name "${ou1}-1a" \
     --school "$ou1" \
-    --append users "uid=${tr}-stud2,cn=schueler,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
-    --append users "uid=${tr}-stud3,cn=schueler,cn=users,ou=${ou1},$(ucr get ldap/base)" \
-    --append users "uid=${tr}-teach2,cn=lehrer,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
-    --append users "uid=${tr}-teach3,cn=lehrer,cn=users,ou=${ou1},$(ucr get ldap/base)"
+    --append users "uid=stud2,cn=schueler,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
+    --append users "uid=stud3,cn=schueler,cn=users,ou=${ou1},$(ucr get ldap/base)" \
+    --append users "uid=teach2,cn=lehrer,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
+    --append users "uid=teach3,cn=lehrer,cn=users,ou=${ou1},$(ucr get ldap/base)"
   python -m ucsschool.lib.models create SchoolClass \
     --name "${ou2}-1a" \
     --school "$ou2" \
-    --append users "uid=${tr}-stud3,cn=schueler,cn=users,ou=${ou1},$(ucr get ldap/base)" \
-    --append users "uid=${tr}-teach3,cn=lehrer,cn=users,ou=${ou1},$(ucr get ldap/base)"
+    --append users "uid=stud3,cn=schueler,cn=users,ou=${ou1},$(ucr get ldap/base)" \
+    --append users "uid=teach3,cn=lehrer,cn=users,ou=${ou1},$(ucr get ldap/base)"
 }
 
 # vim:set filetype=sh ts=4:
