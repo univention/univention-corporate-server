@@ -319,7 +319,7 @@ class Instance(Base):
 			# TODO
 			service_specific_password = 'abc123'
 		else:
-			msg = _('Service specific passwords were disabled for "%s".' % password_type)
+			msg = _('Service specific passwords were disabled for "%s".') % password_type
 			MODULE.error('get_service_specific_passwords(): {}'.format(msg))
 			raise UMC_Error(msg)
 		return {'password': service_specific_password}

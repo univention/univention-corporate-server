@@ -9,3 +9,4 @@ Type: module
 Module: self-service-links.py
 Variables: umc/self-service/.*/backend/enabled
 Variables: umc/self-service/profiledata/enabled
+Variables: server/role

@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# self-servic-acl
-#  config registry module to update self-service ACLs
-#
-# Copyright 2019-2021 Univention GmbH
+# Copyright 2022 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -31,6 +28,7 @@
 # <https://www.gnu.org/licenses/>.
 
 from univention.udm import UDM, NoObject
+
 
 def handler(configRegistry, changes):
 	if configRegistry.get('server/role', None) != "domaincontroller_master":
