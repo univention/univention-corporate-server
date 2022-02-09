@@ -334,24 +334,22 @@ msgstr ""
 "UMC-Modul :guilabel:`Software-Aktualisierung` installiert werden."
 
 #: ../../index.rst:166
-#, fuzzy
 msgid ""
 "Additional software, like for example the Active Directory Connection, "
 "can be installed using the Univention App Center in the Univention "
 "Management Console:"
 msgstr ""
-"Weitere Software-Pakete können über das UCSUMC-Modul Univention App "
-"Center installiert werden:"
+"Weitere Software, wie zum Beispiel die Active Directory Verbindung, "
+"kann über das Univention App Center in der Univention Management "
+"Console installiert werden:"
 
 #: ../../index.rst:170
-#, fuzzy
 msgid ""
 "Additional UCS software can be installed/removed using the category "
 ":guilabel:`UCS components`."
 msgstr ""
-"Weitere UCS-Software, wie zum Beispiel die Active Directory-Verbindung, "
-"kann über die Kategorie UCS-Komponenten nachträglich installiert oder "
-"entfernt werden."
+"Weitere UCS-Software, kann nachträglich über die Kategorie "
+"UCS-Komponenten installiert oder entfernt werden."
 
 #: ../../index.rst:173
 msgid ""
@@ -360,7 +358,7 @@ msgid ""
 "also be installed through the App Center."
 msgstr ""
 "Lösungen von Drittanbietern (z.B. verschiedene Groupwarelösungen) und "
-"UCS-kompatible Zusatzprodukte (z.B. UCS@school für den Schuleinsatz) "
+"UCS-kompatible Zusatzprodukte (z.B. `UCS@school` für den Schuleinsatz) "
 "können ebenfalls über das App Center installiert werden."
 
 #: ../../index.rst:181
