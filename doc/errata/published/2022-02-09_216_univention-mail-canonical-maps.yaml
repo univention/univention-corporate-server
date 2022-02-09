@@ -10,3 +10,5 @@ desc: |
 bug: [54029]
 ignore:
  - maintained.unchanged
+erratum: 216
+announced: 2022-02-09
