@@ -28,25 +28,26 @@ stages:
 .sphinx-html:
   extends: .sphinx-doc
   script:
-    - make -C $base html
-    - rsync -av --delete $base/_build/html/ $CI_PROJECT_DIR/public
+    - make -C $base -e SPHINXOPTS="-D language='$language'" -e BUILDDIR="_build/$language" html
+    - mkdir -p $CI_PROJECT_DIR/public/$language
+    - rsync -av --delete $base/_build/$language/html/ $CI_PROJECT_DIR/public/$language
 
 .sphinx-pdf:
   extends: .sphinx-doc
   script:
-    - make -C $base latexpdf
-    - mkdir -p $CI_PROJECT_DIR/public
-    - cp $base/_build/latex/*.pdf $CI_PROJECT_DIR/public
+    - make -C $base -e SPHINXOPTS="-D language='$language'" -e BUILDDIR="_build/$language" latexpdf
+    - mkdir -p $CI_PROJECT_DIR/public/$language
+    - cp $base/_build/$language/latex/*.pdf $CI_PROJECT_DIR/public/$language
 
 .sphinx-linkcheck:
   extends: .sphinx-doc
   script:
-    - make -C $base linkcheck
+    - make -C $base -e SPHINXOPTS="-D language='$language'" -e BUILDDIR="_build/$language" linkcheck
 
 .sphinx-spelling:
   extends: .sphinx-doc
   script:
-    - sphinx-build -M spelling "$base" "$base"/_build -W --keep-going
+    - sphinx-build -M spelling "$base" "$base"/_build/"$language" -D language="$language" -W --keep-going
 
 # The child pipeline needs at minimum one job to run - otherwise the sub-pipeline fails
 webframe:
