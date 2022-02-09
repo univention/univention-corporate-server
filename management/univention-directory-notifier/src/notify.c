@@ -194,26 +194,24 @@ static void notify_dump_to_files( Notify_t *notify, NotifyEntry_t *entry)
 		goto error;
 	}
 
-		long offset = ftell(notify->tf);
-		int len = snprintf(buffer, sizeof(buffer), "%ld %s %c\n", entry->notify_id.id, entry->dn, entry->command);
-		if (len >= sizeof(buffer)) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "buffer too small");
-			abort();
-		}
+	long offset = ftell(notify->tf);
+	int len = snprintf(buffer, sizeof(buffer), "%ld %s %c\n", entry->notify_id.id, entry->dn, entry->command);
+	if (len >= sizeof(buffer)) {
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "buffer too small");
+		abort();
+	}
 
-		index_set(index, entry->notify_id.id, offset);
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "want to write to transaction file; id=%ld", entry->notify_id.id);
-		if (fallocate(fileno(notify->tf), FALLOC_FL_KEEP_SIZE, offset, len) == -1 && (errno != ENOSYS) && (errno != EOPNOTSUPP)) {
-			perror("Failed fallocate(tf)");
-			abort();
-		}
-		if (fprintf(notify->tf, "%s", buffer) != len) {
-			perror("Failed fprintf(tf)");
-			abort();
-		}
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "wrote to transaction file; id=%ld; dn=%s, cmd=%c", entry->notify_id.id, entry->dn, entry->command);
-
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "wrote to transaction file; close");
+	index_set(index, entry->notify_id.id, offset);
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "want to write to transaction file; id=%ld", entry->notify_id.id);
+	if (fallocate(fileno(notify->tf), FALLOC_FL_KEEP_SIZE, offset, len) == -1 && (errno != ENOSYS) && (errno != EOPNOTSUPP)) {
+		perror("Failed fallocate(tf)");
+		abort();
+	}
+	if (fprintf(notify->tf, "%s", buffer) != len) {
+		perror("Failed fprintf(tf)");
+		abort();
+	}
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "wrote to transaction file; id=%ld; dn=%s, cmd=%c", entry->notify_id.id, entry->dn, entry->command);
 
 error:
 	if (index)
