@@ -92,6 +92,8 @@ import univention.admin.syntax as udm_syntax
 import univention.admin.types as udm_types
 from univention.config_registry import handler_set
 from univention.admin.rest.shared_memory import shared_memory, JsonEncoder
+from univention.password import password_config, generate_password
+
 
 import univention.udm
 
@@ -3708,10 +3710,9 @@ class ServiceSpecificPassword(Resource):
 			raise NotFound(object_type, dn)
 
 		service_type = self.get_body_argument('service')
-		# placeholder for password generation
-		import random
-		import string
-		new_password = ''.join(random.choices(string.ascii_uppercase + string.digits, k=20))
+
+		cfg = password_config('radius')
+		new_password = generate_password(cfg)
 
 		obj = yield self.pool.submit(module.get, dn)
 		obj['serviceSpecificPassword'] = {'service': service_type, 'password': new_password}
