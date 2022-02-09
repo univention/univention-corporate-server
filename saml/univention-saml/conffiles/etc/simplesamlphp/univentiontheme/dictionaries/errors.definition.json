@@ -10,7 +10,7 @@ def get_selfservice_definitions():
 
 	def get_descr_account_unverified():
 		variable = 'saml/idp/selfservice/account-verification/error-descr'
-		fallback = '<span>You must <a href="/univention/self-service/#page=verifyaccount">verify your account</a> before you can login.</span>'
+		fallback = '<span>You must <a href="/univention/selfservice/#/selfservice/verifyaccount">verify your account</a> before you can login.</span>'
 		return configRegistry.get(variable + '/en', configRegistry.get(variable, fallback))
 
 

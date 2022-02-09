@@ -38,6 +38,17 @@ univention-config-registry set \
 	"umc/web/hooks/univention-self-service?passwordreset" \
 	"umc/login/links/forgot_your_password/enabled?true"
 
+if ! ucr get portal/paths | tr , '\n' | grep -qe '^ \?/univention/selfservice/$'; then
+	echo "Adding /univention/selfservice/ to the portal configuration"
+	ucr set portal/paths="$(ucr get portal/paths), /univention/selfservice/"
+	if [ ! -e "/usr/lib/univention-portal/config/selfservice.json" ]; then
+		echo "{\"selfservice_portal_dn\":\"cn=self-service,cn=portal,cn=portals,cn=univention,$(ucr get ldap/base)\"}" > /usr/lib/univention-portal/config/selfservice.json
+	fi
+	univention-portal add-selfservice-default
+	univention-portal update
+	systemctl restart univention-portal-server apache2
+fi
+
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "5.0.1-16"; then
 	univention-directory-manager settings/extended_attribute modify --dn "cn=Univention-CanonicalRecipientRewriteEnable,cn=canonical-maps,cn=custom attributes,cn=univention,$ldap_base" \
 	--append translationShortDescription='"fr_FR" "Adresse e-mail pour la réinitialisation du mot de passe"' \

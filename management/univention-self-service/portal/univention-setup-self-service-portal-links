@@ -1,0 +1,146 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+#
+# Copyright 2022 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+
+import os
+from argparse import ArgumentParser, Namespace
+from base64 import b64encode
+from typing import List, Dict, Optional
+
+from univention.config_registry import ucr
+from univention.udm import UDM, NoObject
+from univention.udm.binary_props import Base64BinaryProperty
+
+udm = UDM.machine().version(3)
+
+portals = udm.get('portals/portal')
+categories = udm.get('portals/category')
+entries = udm.get('portals/entry')
+
+
+def create_self_service_portal(args: Namespace, categories: List[str]) -> None:
+	try:
+		portal = portals.get_by_id('self-service')
+		print('Found', portal.dn)
+		if args.no_update:
+			print('... skipping')
+			return
+	except NoObject:
+		portal = portals.new()
+		print('Creating new portal')
+		portal.props.name = 'self-service'
+	portal.props.displayName = {'en_US': 'Self Service'}
+	portal.props.categories = categories
+	portal.props.showUmc = False
+	portal.props.defaultLinkTarget = 'samewindow'
+	portal.save()
+	print('Saved', portal.dn)
+
+
+def create_self_service_category(args: Namespace, name: str, display_name: Dict[str, str], entries: List[str]) -> str:
+	try:
+		category = categories.get_by_id(name)
+		print('Found', category.dn)
+		if args.no_update:
+			print('... skipping')
+			return category.dn
+	except NoObject:
+		category = categories.new()
+		print('Creating new category')
+		category.props.name = name
+	category.props.displayName = display_name
+	category.props.entries = entries
+	category.save()
+	print('Saved', category.dn)
+	return category.dn
+
+
+def create_self_service_entry(args: Namespace, name: str, page: str, ucr_name: str, anonymous: bool, display_name: Dict[str, str], description: Optional[Dict[str, str]] = None) -> str:
+	try:
+		entry = entries.get_by_id(name)
+		print('Found', entry.dn)
+		if args.no_update:
+			print('... skipping')
+			return entry.dn
+	except NoObject:
+		entry = entries.new()
+		print('Creating new entry')
+		entry.props.name = name
+	entry.props.displayName = display_name
+	entry.props.description = description or display_name
+	entry.props.linkTarget = 'samewindow'
+	icon_file = '/usr/share/univention-self-service/backend/icons/%s.png' % page
+	if os.path.exists(icon_file):
+		with open(icon_file, 'rb') as fd:
+			icon_content_bytes = fd.read()
+			icon_content = b64encode(icon_content_bytes).decode('utf-8')
+			entry.props.icon = Base64BinaryProperty('icon', icon_content)
+	entry.props.activated = ucr.is_true(ucr_name)
+	entry.props.anonymous = anonymous
+	entry.props.link = [{'locale': 'en_US', 'value': '#/selfservice/%s' % page}]
+	entry.save()
+	print('Saved', entry.dn)
+	try:
+		portal = udm.get('portals/portal').get('cn=domain,cn=portal,cn=portals,cn=univention,%s' % (ucr.get('ldap/base')))
+	except NoObject:
+		print('... but no standard portal found')
+	else:
+		if entry.dn not in portal.props.userLinks:
+			portal.props.userLinks.append(entry.dn)
+			portal.save()
+			print('... added to', portal.dn)
+	return entry.dn
+
+
+def main(args: Namespace) -> None:
+	categories = [
+		create_self_service_category(args, 'self-service-profile', {'en_US': 'User Profile', 'de_DE': 'Benutzerprofil'}, [
+			create_self_service_entry(args, 'self-service-my-profile', 'profile', 'umc/self-service/profiledata/enabled', False, display_name={'en_US': 'My Profile', 'de_DE': 'Mein Profil'}, description={'en_US': 'Manage profile', 'de_DE': 'Profil verwalten'}),
+		]),
+		create_self_service_category(args, 'self-service-password', {'en_US': 'Passwords', 'de_DE': 'Passwörter'}, [
+			'cn=self-service-password-change,cn=entry,cn=portals,cn=univention,%s' % ucr.get('ldap/base'),
+			create_self_service_entry(args, 'self-service-protect-account', 'protectaccount', 'umc/self-service/protect-account/backend/enabled', False, display_name={'en_US': 'Protect your account', 'de_DE': 'Kontozugang schützen'}),
+			create_self_service_entry(args, 'self-service-password-forgotten', 'passwordforgotten', 'umc/self-service/passwordreset/backend/enabled', True, display_name={'en_US': 'Password forgotten', 'de_DE': 'Passwort vergessen'}),
+			create_self_service_entry(args, 'self-service-service-specific-passwords', 'servicespecificpasswords', 'umc/self-service/service-specific-passwords/backend/enabled', False, display_name={'en_US': 'Password Wireless LAN', 'de_DE': 'WLAN-Passwort'}),
+		]),
+		create_self_service_category(args, 'self-service-new-account', {'en_US': 'New Account', 'de_DE': 'Neues Konto'}, [
+			create_self_service_entry(args, 'self-service-create-account', 'createaccount', 'umc/self-service/account-registration/backend/enabled', True, display_name={'en_US': 'Create an account', 'de_DE': 'Konto erstellen'}),
+			create_self_service_entry(args, 'self-service-verify-account', 'verifyaccount', 'umc/self-service/account-verification/backend/enabled', True, display_name={'en_US': 'Account verification', 'de_DE': 'Kontoverifizierung'}),
+		]),
+	]  # type: List[str]
+
+	create_self_service_portal(args, categories)
+
+
+if __name__ == '__main__':
+	parser = ArgumentParser(description='Creates or updates all portals/entry objects for the self service')
+	parser.add_argument('--no-update', action='store_true', help='Whether or not to skip portals/entry objects when they already exist')
+	args = parser.parse_args()
+	main(args)
