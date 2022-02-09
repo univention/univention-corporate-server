@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
+ dh-python,
  python2,
  univention-config-dev (>= 15.0.3),
 Standards-Version: 3.5.2
@@ -51,6 +52,7 @@ Depends:
  python-six,
  python3-six,
  ${misc:Depends},
+ ${python:Depends},
 Breaks:
  univention-samba4 (<< 1.0.118-2),
 Description: UCS - UCR Extensions for configuration of local shares
