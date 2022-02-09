@@ -19,7 +19,7 @@ available at https://docs.software-univention.de/.
 
 The installation DVD can be downloaded from the Univention website at
 https://www.univention.com/downloads/ucs-download/iso-installation-image/.
-The installation DVD is only available for the host architecture amd64
+The installation DVD is only available for the host architecture *amd64*
 (64-bit). It has support for the Unified Extensible Firmware
 Interface-Standard (UEFI) including SecureBoot.
 
@@ -97,7 +97,7 @@ least eight characters long and is also set as the password for the user
 *Administrator* during the installation of the
 first UCS system (|UCSPRIMARYDN|).
 
-An autopartitioning feature can be used during the installation which
+An auto-partitioning feature can be used during the installation which
 creates an LVM volume group on the first hard drive by default.
 
 The installed software components can be adapted later at any time and
@@ -171,7 +171,7 @@ Management Console:
   :guilabel:`UCS components`.
 
 - Third-party software (e.g. various groupware solutions) and UCS-compatible
-  addon products (e.g. `UCS@school` for school deployment can also be installed
+  add-on products (e.g. `UCS@school` for school deployment can also be installed
   through the App Center.
 
 .. _quick-appcenter:
