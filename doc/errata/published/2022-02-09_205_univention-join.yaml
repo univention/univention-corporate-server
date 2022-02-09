@@ -10,3 +10,5 @@ desc: |
    text to other tools like `ldbsearch` as command line arguments. To reduce
    the attack surface it now uses a file instead.
 bug: [53100]
+erratum: 205
+announced: 2022-02-09
