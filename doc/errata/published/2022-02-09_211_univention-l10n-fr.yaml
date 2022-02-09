@@ -11,3 +11,5 @@ desc: |
    been added and all outdated ones updated along with some general
    improvements of existing translation strings.
 bug: [54029]
+erratum: 211
+announced: 2022-02-09
