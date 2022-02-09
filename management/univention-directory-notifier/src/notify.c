@@ -176,7 +176,7 @@ static int parse_transaction_line(NotifyEntry_t* entry, char* line)
 	size_t size = last_space_p - first_space_p - 1;
 	entry->command = last_space_p[1];
 	entry->dn = strndup(first_space_p + 1, size);
-	return sscanf(line, "%ld", &(entry->notify_id.id));
+	return sscanf(line, "%ld", &(entry->notify_id.id)) == 1 && entry->notify_id.id > 0 && entry->dn;
 }
 
 static void notify_dump_to_files( Notify_t *notify, NotifyEntry_t *entry)
@@ -194,7 +194,6 @@ static void notify_dump_to_files( Notify_t *notify, NotifyEntry_t *entry)
 		goto error;
 	}
 
-	if (entry->dn != NULL && entry->notify_id.id >= 0) {
 		long offset = ftell(notify->tf);
 		int len = snprintf(buffer, sizeof(buffer), "%ld %s %c\n", entry->notify_id.id, entry->dn, entry->command);
 		if (len >= sizeof(buffer)) {
@@ -213,9 +212,6 @@ static void notify_dump_to_files( Notify_t *notify, NotifyEntry_t *entry)
 			abort();
 		}
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "wrote to transaction file; id=%ld; dn=%s, cmd=%c", entry->notify_id.id, entry->dn, entry->command);
-	} else {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "entry->dn == NULL; id=%ld", entry->notify_id.id);
-	}
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "wrote to transaction file; close");
 
@@ -288,15 +284,6 @@ reopen:
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "ldap_sasl_interactive_bind_s(): %s", ldap_err2string(rc));
 			abort();
 		}
-	}
-
-	if (!trans->dn) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Not writing entry with no DN to LDAP");
-		return;
-	}
-	if (!trans->notify_id.id){
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Not writing entry with no ID to LDAP");
-		return;
 	}
 
 	char dn[44]; // strlen("reqSession=%ld,cn=translog") + strlen(ULONG_MAX)
@@ -565,11 +552,9 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data)
 
 	char *line = NULL;
 	size_t len = 0;
-	int parse_results;
 	while (getline(&line, &len, file) != -1) {
-		parse_results = parse_transaction_line(&entry, line);
-		if (parse_results!=1) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "ABORTING EXECUTION: Invalid transaction ID for line %s of file %s", line, FILE_NAME_NOTIFIER_PRIV);
+		if (!parse_transaction_line(&entry, line)) {
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "ABORTING EXECUTION: Invalid transaction line %s of file %s", line, FILE_NAME_NOTIFIER_PRIV);
 			free(entry.dn);
 			free(line);
 			fclose_lock(&file);
