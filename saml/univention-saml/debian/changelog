@@ -1,3 +1,9 @@
+univention-saml (7.0.4-20) unstable; urgency=medium
+
+  * Bug #54556: Change self-service links
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 15 Mar 2022 21:12:17 +0100
+
 univention-saml (7.0.4-19) unstable; urgency=low
 
   * Bug #54268: fix German translation ID
