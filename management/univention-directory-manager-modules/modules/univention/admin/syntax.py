@@ -359,6 +359,22 @@ class ISyntax(object):
 	def get_widget_choices_options(self, udm_property):
 		return None
 
+	@classmethod
+	def get_object_property_filter(cls, object_property, object_property_value):
+		"""Get a LDAP filter for a certain property
+
+		>>> ISyntax.get_object_property_filter('foo', 'bar')
+		'foo=bar'
+		>>> ISyntax.get_object_property_filter('foo', 'bar*')
+		'(|(foo=bar*)(foo=bar))'
+		"""
+		# TODO: do LDAP escaping here, instead of in layer above
+		ret = '%s=%s' % (object_property, object_property_value)
+		no_substring_value = object_property_value.strip('*')
+		if no_substring_value and no_substring_value != object_property_value:
+			ret = '(|(%s)(%s=%s))' % (ret, object_property, no_substring_value)
+		return ret
+
 
 class simple(ISyntax):
 	"""
@@ -638,7 +654,48 @@ class complex(ISyntax):
 		]
 
 
-class UDM_Objects(ISyntax):
+class _UDMObjectOrAttribute(object):
+
+	@classmethod
+	def _append_hidden_filter(cls, module, ret):
+		if module is None or module.property_descriptions.get('objectFlag') is None:
+			return ret
+		hidden_filter = '!(objectFlag=hidden)'
+		if ret:
+			if not ret.startswith('('):
+				ret = '(%s)' % ret
+			return '(&(%s%s)' % (hidden_filter, ret)
+		return hidden_filter
+
+	@classmethod
+	def _create_ldap_filter(cls, options, module=None):
+		if cls.depends and cls.depends not in options:
+			return None
+
+		if callable(cls.udm_filter):
+			filter_s = cls.udm_filter(options)
+		else:
+			filter_s = cls.udm_filter % options
+
+		object_property = options.get('property')
+		object_property_value = options.get('value')
+		if object_property and object_property_value:
+			prop = module.property_descriptions.get(object_property)
+			syn = prop.syntax if prop else cls
+			property_filter_s = syn.get_object_property_filter(object_property, object_property_value)
+			if not options.get('hidden', True):
+				property_filter_s = cls._append_hidden_filter(module, property_filter_s)
+			if property_filter_s and not property_filter_s.startswith('('):
+				# make sure that the LDAP filter is wrapped in brackets
+				property_filter_s = '(%s)' % property_filter_s
+			if filter_s and not filter_s.startswith('('):
+				# make sure that the LDAP filter is wrapped in brackets
+				filter_s = '(%s)' % filter_s
+			filter_s = '(&%s%s)' % (property_filter_s, filter_s)
+		return filter_s
+
+
+class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
 	"""
 	Base class to lookup selectable items from |LDAP| entries using their |DN|.
 
@@ -780,7 +837,7 @@ class UDM_Objects(ISyntax):
 				module = univention.admin.modules.get(udm_module)
 				if not module:
 					continue
-				filter_s = _create_ldap_filter(cls, options, module)
+				filter_s = cls._create_ldap_filter(options, module)
 				if filter_s is not None:
 					objs = module.lookup(None, lo, filter_s, **module_search_options)
 					choices.extend(map_choices(objs))
@@ -789,7 +846,7 @@ class UDM_Objects(ISyntax):
 				module = univention.admin.modules.get(udm_module)
 				if not module:
 					continue
-				filter_s = _create_ldap_filter(cls, options, module)
+				filter_s = cls._create_ldap_filter(options, module)
 				if filter_s is not None:
 					if filter_s and not filter_s.startswith('('):
 						filter_s = '(%s)' % filter_s
@@ -845,7 +902,7 @@ class UDM_Objects(ISyntax):
 		return opts
 
 
-class UDM_Attribute(ISyntax):
+class UDM_Attribute(ISyntax, _UDMObjectOrAttribute):
 	"""
 	Base class to lookup selectable items from |LDAP| entries using attribute values.
 
@@ -928,7 +985,7 @@ class UDM_Attribute(ISyntax):
 			obj = module.object(None, lo, None, options[cls.depends])
 			choices = map_choice(obj)
 		else:
-			filter_s = _create_ldap_filter(cls, options, module)
+			filter_s = cls._create_ldap_filter(options, module)
 			if filter_s is not None:
 				objs = module.lookup(None, lo, filter_s, sizelimit=sizelimit)
 				for element in map(map_choice, filter(filter_choice, objs)):

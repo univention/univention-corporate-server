@@ -80,7 +80,7 @@ from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
 from univention.management.console.ldap import get_user_connection, get_machine_connection
 from univention.management.console.modules.udm.udm_ldap import get_module, UDM_Module, ldap_dn2path, container_modules, UDM_Error
-from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, ObjectDoesNotExist, NoIpLeft, _object_property_filter
+from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, ObjectDoesNotExist, NoIpLeft
 from univention.management.console.modules.udm.tools import check_license, LicenseError, LicenseImport as LicenseImporter, dump_license
 from univention.management.console.modules.sanitizers import MultiValidationError, ValidationError, DictSanitizer, StringSanitizer, ListSanitizer, IntegerSanitizer, ChoicesSanitizer, DNSanitizer, EmailSanitizer, LDAPSearchSanitizer, Sanitizer, BooleanSanitizer
 from univention.management.console.error import UMC_Error, LDAP_ServerDown, LDAP_ConnectionFailed, UnprocessableEntity
@@ -2366,7 +2366,7 @@ class Objects(FormBase, ReportingBase):
 		items_per_page = self.request.decoded_query_arguments['limit']
 
 		if not ldap_filter:
-			filters = filter(None, [(_object_property_filter(module, attribute or property_ or None, value, hidden)) for attribute, value in self.request.decoded_query_arguments['query'].items()])
+			filters = filter(None, [(module._object_property_filter(attribute or property_ or None, value, hidden)) for attribute, value in self.request.decoded_query_arguments['query'].items()])
 			if filters:
 				ldap_filter = six.text_type(univention.admin.filter.conjunction('&', [univention.admin.filter.parse(fil) for fil in filters]))
 

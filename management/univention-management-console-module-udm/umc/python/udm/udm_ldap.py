@@ -659,7 +659,7 @@ class UDM_Module(object):
 		if attribute in [None, 'None'] and filter:
 			filter_s = str(filter)
 		else:
-			filter_s = _object_property_filter(self, attribute, value, hidden)
+			filter_s = self._object_property_filter(attribute, value, hidden)
 
 		MODULE.info('Searching for LDAP objects: container = %s, filter = %s, superordinate = %s' % (container, filter_s, superordinate))
 		result = None
@@ -842,11 +842,10 @@ class UDM_Module(object):
 
 	@property
 	def default_search_attrs(self):
-		ret = []
-		for key, prop in getattr(self.module, 'property_descriptions', {}).items():
-			if prop.include_in_default_search:
-				ret.append(key)
-		return ret
+		return [
+			key for key, prop in self.module.property_descriptions.items()
+			if prop.include_in_default_search
+		]
 
 	def obj_description(self, obj):
 		description = None
@@ -1147,6 +1146,31 @@ class UDM_Module(object):
 			return self.module.mapping
 		return udm_mapping.mapping()
 
+	def _object_property_filter(self, object_property, object_property_value, show_hidden=True):
+		if object_property in [None, 'None']:
+			ret = ''
+			if object_property_value not in [None, '*']:
+				# TODO: filter_format() here (but allow "foo*bar") instead of in layer above
+				ret = '(|%s)' % ''.join('(%s=%s)' % (attr, object_property_value) for attr in self.default_search_attrs)
+		else:
+			prop = self.module.property_descriptions.get(object_property)
+			syn = prop.syntax if prop else udm_syntax.ISyntax
+			ret = syn.get_object_property_filter(object_property, object_property_value)
+
+		if not show_hidden:
+			ret = self._append_hidden_filter(ret)
+		return ret
+
+	def _append_hidden_filter(self, ret):
+		if self.module is None or self.module.property_descriptions.get('objectFlag') is None:
+			return ret
+		hidden_filter = '!(objectFlag=hidden)'
+		if ret:
+			if not ret.startswith('('):
+				ret = '(%s)' % ret
+			return '(&(%s%s)' % (hidden_filter, ret)
+		return hidden_filter
+
 
 def container_modules():
 	containers = []
@@ -1252,58 +1276,6 @@ def list_objects(container, object_type=None, ldap_connection=None, ldap_positio
 				MODULE.error('Could not load object %r (%r) exception: %s' % (dn, module.module, traceback.format_exc()))
 
 
-def _object_property_filter(module, object_property, object_property_value, show_hidden=True):
-	if object_property in [None, 'None'] and module is not None:
-		default_search_attrs = module.default_search_attrs
-		if default_search_attrs and object_property_value not in [None, '*']:
-			ret = '(|%s)' % ''.join('(%s=%s)' % (attr, object_property_value) for attr in default_search_attrs)
-		else:
-			ret = ''
-	else:
-		ret = ''
-		prop = module.module.property_descriptions.get(object_property)
-		if prop and issubclass(prop.syntax if inspect.isclass(prop.syntax) else type(prop.syntax), (udm_syntax.IStates, udm_syntax.boolean)):
-			ret = prop.syntax.get_object_property_filter(object_property, object_property_value)
-		if not ret:
-			ret = '%s=%s' % (object_property, object_property_value)
-			no_substring_value = object_property_value.strip('*')
-			if no_substring_value and no_substring_value != object_property_value:
-				ret = '(|(%s)(%s=%s))' % (ret, object_property, no_substring_value)
-	if module is not None:
-		hidden_flag_attribute = 'objectFlag'
-		has_hidden_flag = module.get_property(hidden_flag_attribute) is not None
-		if has_hidden_flag and not show_hidden:
-			if ret:
-				if not ret.startswith('('):
-					ret = '(%s)' % ret
-				ret = '(&(!(%s=hidden))%s)' % (hidden_flag_attribute, ret)
-			else:
-				ret = '!(%s=hidden)' % hidden_flag_attribute
-	return ret
-
-
-def _create_ldap_filter(syn, options, module=None):
-	if syn.depends and syn.depends not in options:
-		return None
-	if callable(syn.udm_filter):
-		filter_s = syn.udm_filter(options)
-	else:
-		filter_s = syn.udm_filter % options
-	if options.get('objectProperty') and options.get('objectPropertyValue'):
-		if filter_s and not filter_s.startswith('('):
-			# make sure that the LDAP filter is wrapped in brackets
-			filter_s = '(%s)' % filter_s
-		object_property = options.get('objectProperty')
-		object_property_value = options.get('objectPropertyValue')
-		show_hidden = options.get('hidden', True)
-		property_filter_s = _object_property_filter(module, object_property, object_property_value, show_hidden)
-		if property_filter_s and not property_filter_s.startswith('('):
-			# make sure that the LDAP filter is wrapped in brackets
-			property_filter_s = '(%s)' % property_filter_s
-		filter_s = '(&%s%s)' % (property_filter_s, filter_s)
-	return filter_s
-
-
 LDAP_ATTR_RE = re.compile(r'^%\(([^)]*)\)s$')  # '%(username)s' -> 'username'
 
 
@@ -1343,7 +1315,7 @@ def info_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
 			module = UDM_Module(udm_module, ldap_connection=ldap_connection, ldap_position=ldap_position)
 			if module.module is None:
 				continue
-			filter_s = _create_ldap_filter(syn, options, module)
+			filter_s = syn._create_ldap_filter(options or {}, module)
 			if filter_s is not None:
 				try:
 					size += len(module.search(filter=filter_s, simple=not syn.use_objects))
@@ -1360,6 +1332,11 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
 	options['sizelimit'] = int(ucr.get('directory/manager/web/sizelimit', '2000') or 2000)
 	if '$dn$' in options:
 		options['dn'] = options.pop('$dn$')
+
+	if 'objectProperty' in options:
+		options['property'] = options.pop('objectProperty')
+	if 'objectPropertyValue' in options:
+		options['value'] = options.pop('objectPropertyValue')
 
 	try:
 		if isinstance(syn, udm_syntax.LDAP_Search):
