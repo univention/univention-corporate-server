@@ -22,3 +22,5 @@ desc: |
    By default is will be set to "yes" during package instllation and update.
  * The french translation of UDM extended attributes has been updated.
 bug: [54092, 48626, 54029]
+erratum: 214
+announced: 2022-02-09
