@@ -69,7 +69,7 @@ static FILE* fopen_lock(const char *name, const char *type)
 	int fd;
 
 	if ((file = fopen(name, type)) == NULL) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR Could not open file [%s]\n", name);
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR Could not open file [%s]", name);
 		return NULL;
 	}
 
@@ -78,10 +78,10 @@ static FILE* fopen_lock(const char *name, const char *type)
 		int rc = lockf(fd, F_TLOCK, 0);
 		if (!rc)
 			break;
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Could not get lock for file [%s]; count=%d\n", name, count);
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Could not get lock for file [%s]; count=%d", name, count);
 		count++;
 		if (count > notifier_lock_count) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not get lock for file [%s]; exit\n", name);
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not get lock for file [%s]; exit", name);
 			exit(0);
 		}
 		usleep(notifier_lock_time);
@@ -98,7 +98,7 @@ static FILE* fopen_dotlockfile(const char *name)
 	snprintf( buf, sizeof(buf), "%s.lock", name );
 
 	if ((file = fopen_lock(buf, "a")) == NULL) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR Could not open lock file [%s]\n", buf);
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR Could not open lock file [%s]", buf);
 		return NULL;
 	}
 
@@ -121,7 +121,7 @@ static FILE* fopen_with_lockfile(const char *name, const char *type, FILE **l_fi
 	}
 
 	if ((file = fopen(name, type)) == NULL) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR Could not open file [%s]\n", name);
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR Could not open file [%s]", name);
 
 		int l_fd = fileno(*l_file);
 		lockf(l_fd, F_ULOCK, 0);
@@ -186,11 +186,11 @@ static void notify_dump_to_files( Notify_t *notify, NotifyEntry_t *entry)
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK from dump_to_files");
 	if ((notify->tf = fopen_with_lockfile(FILE_NAME_TF, "a", &(notify->l_tf))) == NULL) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR on open tf\n");
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR on open tf");
 		goto error;
 	}
 	if ((index = index_open(FILE_NAME_TF_IDX)) == NULL) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to open index\n");
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to open index");
 		goto error;
 	}
 
@@ -379,7 +379,7 @@ int notify_transaction_get_last_notify_id ( Notify_t *notify, NotifyId_t *notify
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK from notify_transaction_get_last_notify_id");
 	if ((notify->tf = fopen_with_lockfile(FILE_NAME_TF, "r", &(notify->l_tf))) == NULL) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to lock notify_id\n");
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to lock notify_id");
 		notify_id->id = 0;
 		return -1;
 	}
@@ -423,11 +423,11 @@ char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK from notify_transcation_get_one_dn");
 	if ((notify.tf = fopen_with_lockfile(FILE_NAME_TF, "r", &(notify.l_tf))) == NULL) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to lock tf\n");
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to lock tf");
 		return NULL;
 	}
 	if ( ( index = index_open(FILE_NAME_TF_IDX) ) == NULL ) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to open index\n");
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to open index");
 		goto error;
 	}
 
@@ -444,7 +444,7 @@ char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 			sscanf(buffer, "%ld", &id);
 			if (id == last_known_id) {
 				found = true;
-				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Found (get_one_dn, index) %ld",id);
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Found (get_one_dn, index) %ld", id);
 			}
 		}
 	}
@@ -463,7 +463,7 @@ char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 
 			if ( id == last_known_id ) {
 				found = true;
-				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Found (get_one_dn) %ld",id);
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Found (get_one_dn) %ld", id);
 				break;
 			}
 
@@ -545,7 +545,7 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data)
 	}
 
 	if ( ( file = fopen_lock (FILE_NAME_NOTIFIER_PRIV, "r+") ) == NULL ) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not open %s\n", FILE_NAME_NOTIFIER_PRIV);
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not open %s", FILE_NAME_NOTIFIER_PRIV);
 	}
 
 	char *line = NULL;

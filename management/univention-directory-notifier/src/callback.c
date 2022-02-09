@@ -101,7 +101,7 @@ int data_on_connection(int fd, callback_remove_handler remove)
 
 	ioctl(fd, FIONREAD, &nread);
 
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "new connection data = %d\n",nread);
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "new connection data = %d", nread);
 
 	if(nread == 0)
 	{
@@ -135,7 +135,7 @@ int data_on_connection(int fd, callback_remove_handler remove)
 	while ( get_network_line(p, network_line) ) {
 
 		if ( strlen(network_line) > 0 ) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "line = [%s]",network_line);
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "line = [%s]", network_line);
 		}
 
 
@@ -202,7 +202,7 @@ int data_on_connection(int fd, callback_remove_handler remove)
 
 			id=strtoul(&(network_line[strlen("GET_DN ")]), NULL, 10);
 
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "id: %ld",id);
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "id: %ld", id);
 
 			if ( id <= notify_last_id.id) {
 
@@ -236,7 +236,7 @@ int data_on_connection(int fd, callback_remove_handler remove)
 
 					snprintf(string, sizeof(string), "MSGID: %ld\n%s\n\n",msg_id,dn_string);
 
-					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "--> %d: [%s]",fd, string);
+					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "--> %d: [%s]", fd, string);
 					rc = send(fd, string, strlen(string), 0);
 					free(dn_string);
 					if (rc < 0)
@@ -300,7 +300,7 @@ int data_on_connection(int fd, callback_remove_handler remove)
 
 			snprintf(string, sizeof(string), "MSGID: %ld\n%ld\n\n",msg_id,SCHEMA_ID);
 
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "--> %d: [%s]",fd, string);
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "--> %d: [%s]", fd, string);
 			rc = send(fd, string, strlen(string), 0);
 			if (rc < 0)
 				goto failed;

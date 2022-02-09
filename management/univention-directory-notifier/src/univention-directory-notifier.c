@@ -140,7 +140,7 @@ int creating_pidfile(char *file)
 	FILE *fd;
 
 	if( (fd = fopen(file, "w")) == NULL) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Can't open pidfile \"%s\"",file);
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Can't open pidfile \"%s\"", file);
 	return -1;
 	}
 
@@ -240,12 +240,12 @@ int main(int argc, char* argv[])
 	notify_init ( &notify );
 
 	if ( notify_transaction_get_last_notify_id ( &notify, &notify_last_id )  != 0 ) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Error notify_transaction_get_last_notify_id\n");
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Error notify_transaction_get_last_notify_id");
 	}
 
 
 	/* DEBUG */
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Last transaction id = %ld\n",notify_last_id.id);
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Last transaction id = %ld", notify_last_id.id);
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Fill cache");
 	notifier_cache_init(notify_last_id.id);

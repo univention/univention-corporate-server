@@ -187,7 +187,7 @@ int network_client_set_next_id( int fd, unsigned long id )
 	{
 		if ( tmp->fd == fd )
 		{
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Set next ID for fd %d to %ld\n",fd,id);
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Set next ID for fd %d to %ld", fd, id);
 			tmp->next_id=id;
 			tmp->notify=1;
 			break;
@@ -206,7 +206,7 @@ int network_client_set_msg_id( int fd, unsigned long msg_id )
 	{
 		if ( tmp->fd == fd )
 		{
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Set msg ID for fd %d to %ld\n",fd,msg_id);
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Set msg ID for fd %d to %ld", fd, msg_id);
 			tmp->msg_id=msg_id;
 			break;
 		}
@@ -224,7 +224,7 @@ int network_client_set_version( int fd, int version )
 	{
 		if ( tmp->fd == fd )
 		{
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Set version for fd %d to %d\n",fd,version);
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Set version for fd %d to %d", fd,version);
 			tmp->version=version;
 			break;
 		}
@@ -313,7 +313,7 @@ int network_client_main_loop ( )
 {
 	fd_set testfds;
 
-	univention_debug( UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Starting main loop\n");
+	univention_debug( UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Starting main loop");
 	/* create listener socket */
 
 	FD_ZERO(&readfds);
@@ -352,6 +352,8 @@ int network_client_main_loop ( )
 		check_callbacks();
 	}
 
+	univention_debug( UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Ending main loop");
+
 	return terminate;
 }
 
@@ -359,12 +361,12 @@ int network_client_dump ( )
 {
 	NetworkClient_t *tmp = network_client_first;
 
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "------------------------------\n");
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "------------------------------");
 	while ( tmp != NULL ) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Listener fd = %d\n",tmp->fd);
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Listener fd = %d", tmp->fd);
 		tmp = tmp->next;
 	}
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "------------------------------\n");
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "------------------------------");
 	return 0;
 }
 
@@ -401,7 +403,7 @@ int network_client_check_clients ( unsigned long last_known_id )
 
 					snprintf(string, sizeof(string), "MSGID: %ld\n%s\n\n",tmp->msg_id,dn_string);
 
-					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "--> %d: [%s]",tmp->fd, string);
+					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "--> %d: [%s]", tmp->fd, string);
 					rc = send(tmp->fd, string, strlen(string), 0);
 					free(dn_string);
 					if (rc < 0) {
@@ -430,11 +432,11 @@ int network_client_all_write ( unsigned long id, char *buf, long l_buf)
 		return 0;
 	}
 
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "l=%ld, --> [%s]",l_buf,buf);
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "l=%ld, --> [%s]", l_buf, buf);
 
 	while ( tmp != NULL ) {
 		if ( tmp->notify ) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d\n",tmp->fd);
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d", tmp->fd);
 			if ( tmp->next_id == id ) {
 				memset(string, 0, 8192 );
 				switch (tmp->version) {
@@ -450,7 +452,7 @@ int network_client_all_write ( unsigned long id, char *buf, long l_buf)
 						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "v%d not implemented fd=%d", tmp->version, tmp->fd);
 						continue;
 				}
-				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d[%s]\n",tmp->fd, string);
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d[%s]", tmp->fd, string);
 				rc = send(tmp->fd, string, strlen(string), 0);
 				if (rc < 0) {
 					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Failed send(%d), closing.", tmp->fd);
@@ -463,7 +465,7 @@ int network_client_all_write ( unsigned long id, char *buf, long l_buf)
 				tmp->msg_id=0;
 			}
 		} else {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Ignore Listener fd = %d\n",tmp->fd);
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Ignore Listener fd = %d", tmp->fd);
 		}
 		tmp = tmp->next;
 	}
