@@ -17,3 +17,5 @@ desc: |
    This variable is applicable only to the UCS Primary Directory Node.
    The package `univention-ldap-server` activates this variable by default.
 bug: [48626]
+erratum: 209
+announced: 2022-02-09
