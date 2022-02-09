@@ -4,15 +4,14 @@
 # for Univention Corporate Server package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Quick start guide for Univention Corporate Server \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-04 14:44+0100\n"
-"PO-Revision-Date: 2022-02-04 15:00+0100\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2022-02-09 14:14+0100\n"
+"PO-Revision-Date: 2022-02-09 14:20+0100\n"
+"Last-Translator: Nico Gulden <gulden@univention.de>\n"
+"Language-Team: GERMAN <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -45,10 +44,10 @@ msgid ""
 " at https://docs.software-univention.de/."
 msgstr ""
 "Dieser Quickstart-Guide stellt eine Kurzanleitung zur Inbetriebnahme und "
-"für erste Schritte mit UCS dar. Einige Funktionen von UCS werden hier "
-"nur kurz erwähnt und dann in weiterer Dokumentation beschrieben. Die "
-"Dokumentation zu UCS kann unter "
-"https://docs.software-univention.de/ abgerufen werden."
+"für erste Schritte mit UCS dar. Einige Funktionen von UCS werden hier nur"
+" kurz erwähnt und dann in weiterer Dokumentation beschrieben. Die "
+"Dokumentation zu UCS kann unter https://docs.software-univention.de/ "
+"abgerufen werden."
 
 #: ../../index.rst:20
 msgid ""
@@ -58,11 +57,10 @@ msgid ""
 "amd64 (64-bit). It has support for the Unified Extensible Firmware "
 "Interface-Standard (UEFI) including SecureBoot."
 msgstr ""
-"Die UCS-Installations-DVD steht unter "
-"https://www.univention.de/download/ucs-download/ zum Download "
-"bereit. Die Installations-DVD ist nur für die Rechnerarchitektur amd64 "
-"(64 Bit) verfügbar. Sie unterstützt den Unified Extensible Firmware "
-"Interface-Standard (UEFI) inkl. SecureBoot."
+"Die UCS-Installations-DVD steht unter https://www.univention.de/download"
+"/ucs-download/ zum Download bereit. Die Installations-DVD ist nur für die"
+" Rechnerarchitektur amd64 (64 Bit) verfügbar. Sie unterstützt den Unified"
+" Extensible Firmware Interface-Standard (UEFI) inkl. SecureBoot."
 
 #: ../../index.rst:26
 msgid ""
@@ -71,9 +69,8 @@ msgid ""
 "/ucs-download/preinstalled-vm-images/."
 msgstr ""
 "Alternativ können auch vorinstallierte VMware und VirtualBox-Images "
-"verwendet werden. Diese stehen unter "
-"https://www.univention.de/download/ucs-download/vorinstallierte-vm-images/ "
-"zum Download bereit."
+"verwendet werden. Diese stehen unter https://www.univention.de/download"
+"/ucs-download/vorinstallierte-vm-images/ zum Download bereit."
 
 #: ../../index.rst:30
 msgid ""
@@ -82,8 +79,8 @@ msgid ""
 "installation are 1 GB memory and 8 GB hard drive space."
 msgstr ""
 "Je nach geplantem Einsatzzweck und der Benutzeranzahl variieren die "
-"Systemanforderungen sehr stark. Mindestanforderungen für die "
-"Installation sind 1 GB Arbeitsspeicher und 8 GB Festplattenspeicher."
+"Systemanforderungen sehr stark. Mindestanforderungen für die Installation"
+" sind 1 GB Arbeitsspeicher und 8 GB Festplattenspeicher."
 
 #: ../../index.rst:38
 msgid "Installation"
@@ -92,13 +89,14 @@ msgstr "Installation"
 #: ../../index.rst:40
 msgid ""
 "The installation is performed via a menu-driven installer and can be used"
-" both interactively and completely profile-based ."
+" both interactively and completely profile-based, see the `Extended "
+"installation documentation <ext-doc-inst_>`_."
 msgstr ""
 "Die Installation erfolgt per menügeführtem Installer und kann sowohl "
-"interaktiv, als auch vollständig profilbasiert "
-"@@biblioref@@linkend=\"ext-doc-inst\"/> durchgeführt werden."
+"interaktiv, als auch vollständig profilbasiert durchgeführt werden, siehe"
+" dazu die `Extended installation documentation <ext-doc-inst_>`_."
 
-#: ../../index.rst:43
+#: ../../index.rst:44
 msgid ""
 "The system language, keyboard layout and time zone can be selected in "
 "accordance with local requirements."
@@ -106,7 +104,7 @@ msgstr ""
 "Die Systemsprache, die Tastaturbelegung und die Zeitzone können je nach "
 "lokalen Anforderungen gewählt werden."
 
-#: ../../index.rst:46
+#: ../../index.rst:47
 msgid ""
 "A valid network configuration should be set during the installation. If, "
 "for example, a gateway and a name server are specified, but the name "
@@ -125,14 +123,14 @@ msgstr ""
 "Gateway anzugeben. Die Netzkonfiguration kann auch über DHCP erfolgen. "
 "Sofern bereits ein Nameserver im lokalen Netzwerk vorhanden ist, sollte "
 "dieser verwendet werden. Werden später weitere UCS-Systeme in der Domäne "
-"installiert, sollte der |UCSPRIMARYDN| und ggf. vorhandene |UCSBACKUPDN|\ s "
-"als Nameserver eingetragen werden. "
+"installiert, sollte der |UCSPRIMARYDN| und ggf. vorhandene "
+"|UCSBACKUPDN|\\ s als Nameserver eingetragen werden. "
 
-#: ../../index.rst:61
+#: ../../index.rst:62
 msgid "Selecting the domain setup"
 msgstr "Auswahl der Domäneneinstellungen"
 
-#: ../../index.rst:63
+#: ../../index.rst:64
 msgid ""
 "During installation, the system can be used for various purposes which "
 "can only be configured at this point in the setup process."
@@ -141,47 +139,47 @@ msgstr ""
 "konfiguriert werden, die nur an dieser Stelle des Einrichtungsprozesses "
 "vorgenommen werden können."
 
-#: ../../index.rst:66
+#: ../../index.rst:67
 msgid ""
 "The system is to be the first system in a new UCS domain and it is "
 "implicitly configured with the system role |UCSPRIMARYDN|."
 msgstr ""
-"Das System soll das erste System für eine eigene UCS-Domäne werden und es wird "
-"implizit als Systemrolle |UCSPRIMARYDN| aufgesetzt."
+"Das System soll das erste System für eine eigene UCS-Domäne werden und es"
+" wird implizit als Systemrolle |UCSPRIMARYDN| aufgesetzt."
 
-#: ../../index.rst:69
+#: ../../index.rst:70
 msgid ""
 "The system can be joined into an existing Active Directory domain.  "
 "Select this option if UCS should not create a new domain. UCS then takes "
 "on the role of an Active Directory member server."
 msgstr ""
 "Das System kann einer vorhandenen Active Directory Domäne beitreten. "
-"Wählen Sie diese Option, wenn UCS keine eigene Domäne aufbauen soll. "
-"UCS übernimmt die Rolle eines Mitglieds in einer AD-Domäne."
+"Wählen Sie diese Option, wenn UCS keine eigene Domäne aufbauen soll. UCS "
+"übernimmt die Rolle eines Mitglieds in einer AD-Domäne."
 
-#: ../../index.rst:73
+#: ../../index.rst:74
 msgid "All other systems are joining the UCS domain when they are installed."
-msgstr ""
-"Alle weiteren Systeme treten bei Ihrer Installation der UCS-Domäne "
-"bei."
+msgstr "Alle weiteren Systeme treten bei Ihrer Installation der UCS-Domäne bei."
 
-#: ../../index.rst:75
-msgid "An overview of the other different system roles can be found in ."
+#: ../../index.rst:76
+msgid ""
+"An overview of the other different system roles can be found in [#ucs-"
+"systemrole]_."
 msgstr ""
 "Eine Übersicht über die verschiedenen weiteren Systemrollen findet sich "
-"in @@biblioref linkend=\"ad-takeover\"."
+"in [#ucs-systemrole]_."
 
-#: ../../index.rst:77
+#: ../../index.rst:78
 msgid ""
 "With UCS and the *Active Directory Takeover* an existing Active Directory"
 " domain can be migrated completely to UCS. For information on how to set "
-"up the UCS system for this scenario, see ."
+"up the UCS system for this scenario, see [#ad-takeover]_."
 msgstr ""
-"Mit UCS und der App Active Directory Takeover kann eine bestehende "
-"Active Directory Domäne vollständig nach UCS migriert werden. Wie das "
-"UCS-System dafür aufgesetzt wird, lesen Sie in . "
+"Mit UCS und der App Active Directory Takeover kann eine bestehende Active"
+" Directory Domäne vollständig nach UCS migriert werden. Wie das UCS-"
+"System dafür aufgesetzt wird, lesen Sie in [#ad-takeover]_."
 
-#: ../../index.rst:81
+#: ../../index.rst:83
 msgid ""
 "In the subsequent course of the installation, the fully qualified host "
 "name, under which the computer should be accessible in the network, is "
@@ -201,26 +199,22 @@ msgid ""
 msgstr ""
 "Im weiteren Verlauf der Installation wird bei einem |UCSPRIMARYDN| der "
 "vollqualifizierte Rechnername eingetragen, unter dem der Rechner im "
-"Netzwerk erreichbar sein soll. Hier kann als Domänenname auch ein "
-"lokaler Name verwendet werden, z.B. "
-"``firma.intranet``. (Wenn das "
-"System etwa als Mailserver verwendet werden soll, können die Maildomänen "
-"unabhängig vom Domänennamen verwendet werden). Wenn also beispielsweise "
-"das Rechnersystem "
-"*mailserver* in der "
-"DNS-Domäne ``firma.intranet`` "
-"in Betrieb genommen werden soll, ist als vollständiger Rechnername "
-"``mailserver.firma.intranet`` "
-"einzutragen. Die *LDAP-Basis* wird auf Basis des vollständigen "
-"Rechnernamens vorgeschlagen und muss nur in Ausnahmefällen angepasst "
-"werden. Bei allen anderen Systemrollen reicht es in der Regel nur den "
-"Rechnernamen anzugeben. Der Domänenname wird während des Domänenbeitritt "
-"vom |UCSPRIMARYDN| bezogen. Das Passwort muss mindestens acht Zeichen "
-"umfassen und wird bei der Installation des ersten UCS-Systems "
-"(|UCSPRIMARYDN|) auch als Passwort für den *Administrator*-Benutzer "
-"gesetzt. "
+"Netzwerk erreichbar sein soll. Hier kann als Domänenname auch ein lokaler"
+" Name verwendet werden, z.B. ``firma.intranet``. (Wenn das System etwa "
+"als Mailserver verwendet werden soll, können die Maildomänen unabhängig "
+"vom Domänennamen verwendet werden). Wenn also beispielsweise das "
+"Rechnersystem *mailserver* in der DNS-Domäne ``firma.intranet`` in "
+"Betrieb genommen werden soll, ist als vollständiger Rechnername "
+"``mailserver.firma.intranet`` einzutragen. Die *LDAP-Basis* wird auf "
+"Basis des vollständigen Rechnernamens vorgeschlagen und muss nur in "
+"Ausnahmefällen angepasst werden. Bei allen anderen Systemrollen reicht es"
+" in der Regel nur den Rechnernamen anzugeben. Der Domänenname wird "
+"während des Domänenbeitritt vom |UCSPRIMARYDN| bezogen. Das Passwort muss"
+" mindestens acht Zeichen umfassen und wird bei der Installation des "
+"ersten UCS-Systems (|UCSPRIMARYDN|) auch als Passwort für den "
+"*Administrator*-Benutzer gesetzt. "
 
-#: ../../index.rst:98
+#: ../../index.rst:100
 msgid ""
 "An autopartitioning feature can be used during the installation which "
 "creates an LVM volume group on the first hard drive by default."
@@ -229,7 +223,7 @@ msgstr ""
 "die standardmäßig die erste Festplatte im System als LVM Volume Group "
 "nutzt. "
 
-#: ../../index.rst:101
+#: ../../index.rst:103
 msgid ""
 "The installed software components can be adapted later at any time and "
 "subsequently installed from the Univention App Center."
@@ -237,7 +231,7 @@ msgstr ""
 "Die installierten Software-Komponenten können später jederzeit angepasst "
 "und aus dem Univention App Center nachinstalliert werden."
 
-#: ../../index.rst:104
+#: ../../index.rst:106
 msgid ""
 "After confirming the configuration settings the installation is "
 "initiated. Once completed, the system must be restarted. The further "
@@ -246,14 +240,14 @@ msgid ""
 msgstr ""
 "Nach Bestätigung der Einstellungen startet die Installation. Nach "
 "Abschluss der Installation muss das System neu gestartet werden. "
-"Anschließend erfolgt die weitere Konfiguration über die UCSUMC (UMC). "
-"Sie wird im folgenden Kapitel beschrieben."
+"Anschließend erfolgt die weitere Konfiguration über die UCSUMC (UMC). Sie"
+" wird im folgenden Kapitel beschrieben."
 
-#: ../../index.rst:113
+#: ../../index.rst:115
 msgid "UCS web interface"
 msgstr "UCS Web-Oberfläche"
 
-#: ../../index.rst:115
+#: ../../index.rst:117
 msgid ""
 "The web interface of an installed UCS system is directly available via "
 "its IP address (``https://server_ip`` or ``http://server_ip``, HTTPS is "
@@ -262,27 +256,27 @@ msgid ""
 "the domain. For all other system roles, the start site consists of an "
 "overview of all locally installed applications. (View as well as the "
 "partitioning of entries can be customized in a very flexible manner, see "
-"also .)"
+"also [#ucs-portal]_.)"
 msgstr ""
-"Die Weboberfläche eines installierten UCS-Systems ist direkt unter "
-"seiner IP-Adresse erreichbar (``https://server_ip`` oder ``http://server_ip``, HTTPS wird "
-"empfohlen). Standardmäßig ist auf einem |UCSPRIMARYDN| als Startseite eine "
-"Portalseite eingerichtet, die alle in der Domäne installierten "
-"Applikationen und Dienste auflistet. Auf allen anderen Systemrollen "
-"beinhaltet die Startseite einen Überblick über die lokal installierten "
-"Applikationen. (Darstellung und genaue Aufteilung der Einträge können "
-"nachträglich sehr flexibel angepasst werden, siehe auch "
-"@@biblioref@@linkend=\"ucs-portal\"/>.)"
+"Die Weboberfläche eines installierten UCS-Systems ist direkt unter seiner"
+" IP-Adresse erreichbar (``https://server_ip`` oder ``http://server_ip``, "
+"HTTPS wird empfohlen). Standardmäßig ist auf einem |UCSPRIMARYDN| als "
+"Startseite eine Portalseite eingerichtet, die alle in der Domäne "
+"installierten Applikationen und Dienste auflistet. Auf allen anderen "
+"Systemrollen beinhaltet die Startseite einen Überblick über die lokal "
+"installierten Applikationen. (Darstellung und genaue Aufteilung der "
+"Einträge können nachträglich sehr flexibel angepasst werden, siehe auch "
+"[#ucs-portal]_."
 
-#: ../../index.rst:128
+#: ../../index.rst:130
 msgid ""
-"Illustration of the portal page on the &ucsPrimaryDN; with all domain "
+"Illustration of the portal page on the |UCSPRIMARYDN| with all domain "
 "wide available applications"
 msgstr ""
 "Ansicht der Portalseite des |UCSPRIMARYDN| mit den in der Domäne "
 "verfügbaren Applikationen"
 
-#: ../../index.rst:130
+#: ../../index.rst:133
 msgid ""
 "On each start site of a UCS system, there is an entry :guilabel:`System "
 "and domain settings` in the section :guilabel:`Administration` (or "
@@ -299,12 +293,10 @@ msgstr ""
 "verweist. |UCSUMC| ist das zentrale Werkzeug zur webbasierten "
 "Administration einer UCS-Domäne. Je nach Installations- und "
 "Systemrollenauswahl sind auf einem UCS-System unterschiedliche Module "
-"verfügbar. Die Anmeldung erfolgt als Benutzer "
-"``Administrator`` mit dem "
-"während der Installation vergebenen Passwort für den Benutzer "
-"``root``"
+"verfügbar. Die Anmeldung erfolgt als Benutzer ``Administrator`` mit dem "
+"während der Installation vergebenen Passwort für den Benutzer ``root``"
 
-#: ../../index.rst:139
+#: ../../index.rst:142
 msgid ""
 "For administrating UCS, the LDAP directory is the central component of a "
 "UCS domain. In the LDAP, domain wide information such as the users, "
@@ -313,27 +305,27 @@ msgid ""
 "either completely or selectively. The UMC modules which edit the LDAP "
 "directory directly can be accessed only on the |UCSPRIMARYDN| via "
 "|UCSUMC|. Furthermore, they can also be controlled using the command line"
-" interface |UCSUDM| ."
+" interface |UCSUDM|, see [#ucs-udm]_."
 msgstr ""
 "Für die Verwaltung von UCS ist das LDAP-Verzeichnis der zentrale "
 "Bestandteil einer UCS-Domäne. Im LDAP werden alle domänenweiten "
 "Informationen gespeichert, z.B. Benutzer, Gruppen oder Rechnerkonten. "
 "Diese Informationen werden, je nach Einstellung, komplett oder selektiv "
-"auf die anderen Directory Nodes in der Domäne repliziert. Die "
-"UMC-Module, die direkt das LDAP-Verzeichnis bearbeiten, können nur auf "
-"dem |UCSPRIMARYDN| über |UCSUMC| aufgerufen werden. Sie lassen sich darüber "
-"hinaus auch mit dem Kommandozeilen-Interface |UCSUDM| bedienen "
-"@@biblioref@@linkend=\"ucs-udm\"/>."
+"auf die anderen Directory Nodes in der Domäne repliziert. Die UMC-Module,"
+" die direkt das LDAP-Verzeichnis bearbeiten, können nur auf dem "
+"|UCSPRIMARYDN| über |UCSUMC| aufgerufen werden. Sie lassen sich darüber "
+"hinaus auch mit dem Kommandozeilen-Interface |UCSUDM| bedienen, siehe "
+"[#ucs-udm]_."
 
-#: ../../index.rst:152
+#: ../../index.rst:155
 msgid "Modules in the UMC"
 msgstr "Module in der UMC"
 
-#: ../../index.rst:158
+#: ../../index.rst:161
 msgid "UCS updates / Installing additional software"
 msgstr "UCS-Updates / Installation weiterer Software"
 
-#: ../../index.rst:160
+#: ../../index.rst:163
 msgid ""
 "UCS updates can be installed in the UMC module :guilabel:`Software "
 "update`."
@@ -341,7 +333,7 @@ msgstr ""
 "UCS-Updates (Sicherheits-Updates und kritische Bugfixes) können über das "
 "UMC-Modul :guilabel:`Software-Aktualisierung` installiert werden."
 
-#: ../../index.rst:163
+#: ../../index.rst:166
 #, fuzzy
 msgid ""
 "Additional software, like for example the Active Directory Connection, "
@@ -351,17 +343,17 @@ msgstr ""
 "Weitere Software-Pakete können über das UCSUMC-Modul Univention App "
 "Center installiert werden:"
 
-#: ../../index.rst:167
+#: ../../index.rst:170
 #, fuzzy
 msgid ""
 "Additional UCS software can be installed/removed using the category "
 ":guilabel:`UCS components`."
 msgstr ""
-"Weitere UCS-Software, wie zum Beispiel die Active "
-"Directory-Verbindung, kann über die Kategorie UCS-Komponenten "
-"nachträglich installiert oder entfernt werden."
+"Weitere UCS-Software, wie zum Beispiel die Active Directory-Verbindung, "
+"kann über die Kategorie UCS-Komponenten nachträglich installiert oder "
+"entfernt werden."
 
-#: ../../index.rst:170
+#: ../../index.rst:173
 msgid ""
 "Third-party software (e.g. various groupware solutions) and UCS-"
 "compatible addon products (e.g. `UCS@school` for school deployment can "
@@ -371,15 +363,15 @@ msgstr ""
 "UCS-kompatible Zusatzprodukte (z.B. UCS@school für den Schuleinsatz) "
 "können ebenfalls über das App Center installiert werden."
 
-#: ../../index.rst:178
+#: ../../index.rst:181
 msgid "Subsequent installation of UCS components"
 msgstr "Nachträgliche Installation von UCS-Komponenten"
 
-#: ../../index.rst:184
+#: ../../index.rst:187
 msgid "Configuration management using Univention Configuration Registry"
 msgstr "Konfigurationsmanagement mit Univention Configuration Registry"
 
-#: ../../index.rst:186
+#: ../../index.rst:189
 msgid ""
 "Univention Configuration Registry is the central tool for managing the "
 "local system configuration of a UCS system. Settings are specified in a "
@@ -396,7 +388,7 @@ msgstr ""
 "Konfigurationsdateien generiert. Ein direktes Editieren der "
 "Konfigurationsdateien ist nur in Ausnahmefällen nötig."
 
-#: ../../index.rst:193
+#: ../../index.rst:196
 msgid ""
 "|UCSUCR| variables are managed via the |UCSUMC| module "
 ":guilabel:`Univention Configuration Registry`. Configuration files are "
@@ -408,15 +400,15 @@ msgstr ""
 "Veränderung der für sie registrierten UCR-Variablen automatisch "
 "aktualisiert."
 
-#: ../../index.rst:201
+#: ../../index.rst:204
 msgid "Managing |UCSUCR| variables"
 msgstr "Verwaltung von |UCSUCR|-Variablen"
 
-#: ../../index.rst:207
+#: ../../index.rst:210
 msgid "Clients"
 msgstr "Clients"
 
-#: ../../index.rst:209
+#: ../../index.rst:212
 msgid ""
 "In addition to the UCS systems, a UCS domain can also integrate different"
 " clients. The following clients are supported:"
@@ -424,57 +416,56 @@ msgstr ""
 "Eine UCS-Domäne kann neben UCS-Systemen auch verschiedene Clients "
 "integrieren. Die folgenden Clients werden unterstützt:"
 
-#: ../../index.rst:212
+#: ../../index.rst:215
 msgid ""
 "Microsoft Windows clients can join an AD-compatible Windows domain "
 "provided by the *Active Directory compatible domain controller* component"
 " (implemented using the software Samba). Further information on setting "
-"up Samba and the domain join of Windows clients can be found in the UCS "
-"manual ."
+"up Samba and the domain join of Windows clients can be found in [#ucs-"
+"winjoin]_."
 msgstr ""
 "Microsoft Windows-Clients können einer AD-kompatiblen Windows-Domäne "
 "beitreten, die durch die Komponente *Active Directory-kompatibler "
-"Domänencontroller* (umgesetzt durch die Software Samba) "
-"bereitgestellt wird. Weitere Informationen zur Einrichtung von Samba "
-"und dem Domänenbeitritt von Windows-Clients findet sich im "
-"UCS-Handbuch @@biblioref ."
+"Domänencontroller* (umgesetzt durch die Software Samba) bereitgestellt "
+"wird. Weitere Informationen zur Einrichtung von Samba und dem "
+"Domänenbeitritt von Windows-Clients findet sich in [#ucs-winjoin]_."
 
-#: ../../index.rst:217
+#: ../../index.rst:220
 msgid ""
 "macOS systems are also integrated via a Samba-based, AD-compatible "
 "Windows domain. Further information on setting up Samba and the domain "
-"join can be found in the UCS manual ."
+"join can be found in [#ucs-macjoin]_."
 msgstr ""
-"macOS-Systeme werden ebenfalls über eine AD-kompatible Windows-Domäne "
-"auf Basis von Samba integriert. Weitere Informationen zur Einrichtung "
-"von Samba und dem Domänenbeitritt findet sich im UCS-Handbuch "
-"@@biblioref@@linkend=\"ucs-macjoin\"/>."
+"macOS-Systeme werden ebenfalls über eine AD-kompatible Windows-Domäne auf"
+" Basis von Samba integriert. Weitere Informationen zur Einrichtung von "
+"Samba und dem Domänenbeitritt findet sich im UCS Handbuch\\ [#ucs-"
+"macjoin]_."
 
-#: ../../index.rst:221
+#: ../../index.rst:224
 msgid ""
-"Ubuntu systems and other Linux distributions like Debian, SUSE or Red Hat"
-" can also be integrated into the domain ."
+"Ubuntu systems\\ [#ubuntu-join]_ and other Linux distributions like "
+"Debian, SUSE or Red Hat can also be integrated into the domain, see "
+"[#integrate-other-linux]_."
 msgstr ""
-"Ubuntu-Systeme @@biblioref@@linkend=\"ubuntu-join\"/> und andere "
-"Linux-Distributionen wie Debian, SUSE oder Red Hat können ebenfalls "
-"in die Domäne integriert werden ."
+"Ubuntu-Systeme\\ [#ubuntu-join]_ und andere Linux-Distributionen wie Debian, SUSE oder Red "
+"Hat können ebenfalls in die Domäne integriert werden, siehe [#integrate-other-linux]_."
 
-#: ../../index.rst:228
+#: ../../index.rst:231
 msgid "Further expansion of the domain"
 msgstr "Weiterer Ausbau der Domäne"
 
-#: ../../index.rst:230
+#: ../../index.rst:233
 msgid ""
 "This quickstart guide only provides an entry into UCS. UCS is very "
 "scalable, additional services can simply be installed on additional "
-"systems. This domain join is described in ."
+"systems. This domain join is described in [#ucs-join]_."
 msgstr ""
 "Dieser Quickstart Guide beschreibt nur einen Einsteig in UCS. UCS ist "
 "sehr skalierbar, weitere Dienste können einfach auf weiteren Systemen "
 "installiert werden. Der Domänenbeitritt weiterer UCS-Systeme ist in "
-"@@biblioref@@linkend=\"ucs-join\"/> beschrieben."
+"[#ucs-join]_ beschrieben."
 
-#: ../../index.rst:234
+#: ../../index.rst:237
 msgid ""
 "UCS offers various additional services which are covered by the UCS "
 "license and which can be integrated at a later point in time:"
@@ -483,39 +474,43 @@ msgstr ""
 "durch die UCS-Lizenz bereits abgedeckt sind und zu einem späteren "
 "Zeitpunkt integriert werden können, z.B. "
 
-#: ../../index.rst:237
-msgid "Single-sign-on with web services using a SAML identity provider"
+#: ../../index.rst:240
+msgid ""
+"Single-sign-on with web services using a SAML identity provider, see "
+"[#domain-saml]_."
 msgstr ""
-"Single Sign On mit Webdiensten über einen SAML Identity Providers "
-"@@biblioref@@linkend=\"domain-saml\"/> "
-
-#: ../../index.rst:239
-msgid "IP management using DHCP"
-msgstr "IP-Management mit DHCP @@biblioref@@linkend=\"ucs-dhcp\"/>"
-
-#: ../../index.rst:241
-msgid "Web proxy for caching and policy management / virus scan"
-msgstr "Web-Proxy für Caching und Policy Management/Virenscan @@biblioref@@linkend=\"ucs-proxy\"/>"
+"Single Sign On mit Webdiensten über einen SAML Identity Providers siehe "
+"[#domain-saml]_."
 
 #: ../../index.rst:243
+msgid "IP management using DHCP, see [#ucs-dhcp]_."
+msgstr "IP-Management mit DHCP, siehe [#ucs-dhcp]_."
+
+#: ../../index.rst:245
+msgid ""
+"Web proxy for caching and policy management / virus scan, see [#ucs-"
+"proxy]_."
+msgstr "Web-Proxy für Caching und Policy Management/Virenscan siehe [#ucs-proxy]_."
+
+#: ../../index.rst:247
 msgid "Hybrid cloud setups"
 msgstr "Hybride Cloudumgebungen"
 
-#: ../../index.rst:249
+#: ../../index.rst:253
 msgid "Further information"
 msgstr "Weitere Informationen"
 
-#: ../../index.rst:251
+#: ../../index.rst:255
 msgid "|UCSUCS| provides comprehensive documentation:"
 msgstr "|UCSUCS| ist umfangreich dokumentiert:"
 
-#: ../../index.rst:253
-msgid "The primary source of information on UCS is the UCS manual ."
-msgstr ""
-"Primäre Dokumentationsquelle zu UCS ist das Handbuch "
-"@@biblioref@@linkend=\"ucs-handbuch\"/>."
+#: ../../index.rst:257
+msgid ""
+"The primary source of information on UCS is the UCS manual\\ [#ucs-"
+"handbuch]_."
+msgstr "Primäre Dokumentationsquelle zu UCS ist das Handbuch\\ [#ucs-handbuch]_."
 
-#: ../../index.rst:255
+#: ../../index.rst:259
 msgid ""
 "Further documentation for advanced scenarios can be found in the extended"
 " documentation. The various documents are linked at https://docs"
@@ -525,28 +520,143 @@ msgstr ""
 "erweiterten Dokumentation zu finden. Die verschiedenen Dokumente sind "
 "unter https://docs.software-univention.de/ verlinkt."
 
-#: ../../index.rst:259
+#: ../../index.rst:263
 msgid ""
 "The `Univention Wiki <https://wiki.univention.de/>`_) contains several "
 "HOWTOs and hands-on tips."
 msgstr ""
-"Im `Univention Wiki <https://wiki.univention.de/>`_) finden sich "
-"u.a. verschiedene HOWTOs und Praxis-Tipps."
+"Im `Univention Wiki <https://wiki.univention.de/>`_) finden sich u.a. "
+"verschiedene HOWTOs und Praxis-Tipps."
 
-#: ../../index.rst:262
+#: ../../index.rst:266
 msgid ""
 "Answers to frequently asked questions can be found in the `support and "
 "knowledge database (SDB) <https://help.univention.com/c/knowledge-"
 "base/supported/>`_)."
 msgstr ""
 "Antworten auf häufig gestellte Fragen gibt es in der `Support und "
-"Knowledge Base (SDB) <https://help.univention.com/c/knowledge-base/supported/>`_) "
-"zu finden."
+"Knowledge Base (SDB) <https://help.univention.com/c/knowledge-"
+"base/supported/>`_) zu finden."
 
-#: ../../index.rst:266
+#: ../../index.rst:270
 msgid ""
 "Questions on UCS can be asked at `Univention Help "
 "<https://help.univention.com/>`_."
 msgstr ""
 "Fragen zu UCS können auch im `Univention Forum "
-"<https://help.univention.com/>`_ gestellt werden.
+"<https://help.univention.com/>`_ gestellt werden"
+
+#: ../../index.rst:274
+msgid "References"
+msgstr "Referenzen"
+
+#: ../../index.rst:275
+msgid ""
+"`UCS Manual - System roles <https://docs.software-"
+"univention.de/manual-5.0.html#systemrollen>`_"
+msgstr ""
+"`UCS Handbuch - Systemrollen <https://docs.software-"
+"univention.de/handbuch-5.0.html#systemrollen>`_"
+
+#: ../../index.rst:276
+msgid ""
+"`Migrating an Active Directory domain to UCS using Univention AD Takeover"
+" <https://docs.software-"
+"univention.de/manual-5.0.html#windows:adtakeover>`_"
+msgstr ""
+"`Migration einer Active Directory-Domäne zu UCS mit Univention AD "
+"Takeover <https://docs.software-"
+"univention.de/handbuch-5.0.html#windows:adtakeover>`_"
+
+#: ../../index.rst:279
+msgid ""
+"`UCS manual - Portal page as central view on the UCS domain <https://docs"
+".software-univention.de/manual-5.0.html#central:portal>`_"
+msgstr ""
+"`UCS Handbuch - Portalseite als zentrale Sicht auf die UCS-Domäne "
+"<https://docs.software-univention.de/handbuch-5.0.html#central:portal>`_"
+
+#: ../../index.rst:280
+msgid ""
+"`Command line interface of domain management (Univention Directory "
+"Manager) <https://docs.software-"
+"univention.de/manual-5.0.html#central:udm>`_"
+msgstr ""
+"`UCS Handbuch - Kommandozeilenschnittstelle der Domänenverwaltung "
+"(Univention Directory Manager) <https://docs.software-"
+"univention.de/handbuch-5.0.html#central:udm>`_"
+
+#: ../../index.rst:282
+msgid ""
+"`UCS Manual - Windows domain joins <https://docs.software-"
+"univention.de/manual-5.0.html#windows-domaenenbeitritt>`_"
+msgstr ""
+"`UCS Handbuch - Windows-Domänenbeitritt <https://docs.software-"
+"univention.de/handbuch-5.0.html#windows-domaenenbeitritt>`_"
+
+#: ../../index.rst:284
+msgid ""
+"`UCS Manual - Mac OS X domain joins <https://docs.software-"
+"univention.de/manual-5.0.html#joining-macos>`_"
+msgstr ""
+"`UCS Handbuch - Mac OS X Domänenbeitritt <https://docs.software-"
+"univention.de/handbuch-5.0.html#joining-macos>`_"
+
+#: ../../index.rst:285
+msgid ""
+"`Integration of Ubuntu clients into a UCS domain <https://docs.software-"
+"univention.de/domain-5.0.html#ext-dom-ubuntu>`_"
+msgstr ""
+"`Integration of Ubuntu clients into a UCS domain <https://docs.software-"
+"univention.de/domain-5.0.html#ext-dom-ubuntu>`_"
+
+#: ../../index.rst:286
+msgid ""
+"`Integration of Linux/Unix systems into a UCS domain <https://docs"
+".software-univention.de/domain-5.0.html#ext-dom-unix>`_"
+msgstr ""
+"`Integration of Linux/Unix systems into a UCS domain <https://docs"
+".software-univention.de/domain-5.0.html#ext-dom-unix>`_"
+
+#: ../../index.rst:287
+msgid ""
+"`UCS Manual - How UCS systems join domains <https://docs.software-"
+"univention.de/manual-5.0.html#linux-domaenenbeitritt>`_"
+msgstr ""
+"`UCS Handbuch - Domänenbeitritt von UCS-Systemen <https://docs.software-"
+"univention.de/handbuch-5.0.html#linux-domaenenbeitritt>`_"
+
+#: ../../index.rst:288
+msgid ""
+"`SAML identity provider <https://docs.software-"
+"univention.de/manual-5.0.html#domain:saml>`_"
+msgstr ""
+"`SAML identity provider <https://docs.software-"
+"univention.de/handbuch-5.0.html#domain:saml>`_"
+
+#: ../../index.rst:289
+msgid ""
+"`UCS manual - IP assignment via DHCP <https://docs.software-"
+"univention.de/manual-5.0.html#module:dhcp:dhcp>`_"
+msgstr ""
+"`UCS Handbuch - IP-Vergabe über DHCP <https://docs.software-"
+"univention.de/handbuch-5.0.html#module:dhcp:dhcp>`_"
+
+#: ../../index.rst:290
+msgid ""
+"`UCS manual - Web proxy for caching and policy management / virus scan "
+"<https://docs.software-univention.de/manual-5.0.html#ip-"
+"config:Web_proxy_for_caching_and_policy_management__virus_scan>`_"
+msgstr ""
+"`UCS Handbuch - Web-Proxy für Caching und Policy Management/Virenscan "
+"<https://docs.software-univention.de/handbuch-5.0.html#ip-config:Web-"
+"Proxy_fuer_Caching_und_Policy_Management_Virenscan>`_"
+
+#: ../../index.rst:293
+msgid ""
+"`Univention Corporate Server - Manual for users and administrators "
+"<https://docs.software-univention.de/manual-5.0.html>`_"
+msgstr ""
+"`Univention Corporate Server - Handbuch für Benutzer und Administratoren "
+"<https://docs.software-univention.de/handbuch-5.0.html>`_"
+
