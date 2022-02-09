@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-web
-fix: 4.0.2-46A~5.0.0.202202021730
+fix: 4.0.2-47A~5.0.0.202202092308
 desc: |
  This update addresses the following issue:
  * In case of a long-lasting login, a message will be displayed to the user
