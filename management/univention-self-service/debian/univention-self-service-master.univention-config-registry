@@ -4,3 +4,8 @@ Variables: self-service/ldap_attributes
 Variables: umc/self-service/profiledata/enabled
 Variables: ldap/base
 Variables: server/role
+
+Type: module
+Module: self-service-links.py
+Variables: umc/self-service/.*/backend/enabled
+Variables: umc/self-service/profiledata/enabled

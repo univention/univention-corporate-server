@@ -1,0 +1,51 @@
+#!/usr/bin/python3
+
+from base64 import b64encode
+
+from univention.config_registry import ConfigRegistry
+from univention.udm import UDM, NoObject
+
+ucr = ConfigRegistry().load()
+
+udm = UDM.machine().version(3)
+
+entries = udm.get('portals/entry')
+
+
+def create_self_service_entry(name, page, ucr_name, anonymous, display_name, description=None):
+	try:
+		entry = entries.get_by_id(name)
+		print('Found', entry.dn)
+	except NoObject:
+		entry = entries.new()
+		print('Creating new entry')
+		entry.props.name = name
+	entry.props.displayName = display_name
+	entry.props.description = description or display_name
+	entry.props.linkTarget = 'samewindow'
+	#icon_content_bytes = open('/usr/share/univention-self-service/www/icons/password.png', 'rb').read()
+	#icon_content = b64encode(icon_content_bytes).decode('utf-8')
+	#if not entry.props.icon:
+	#	entry.props.icon = icon_content_bytes
+	#entry.props.icon.encoded = icon_content
+	entry.props.activated = ucr.is_true(ucr_name)
+	entry.props.anonymous = anonymous
+	entry.props.link = [{'locale': 'en_US', 'value': '#/selfservice/%s' % page}]
+	entry.save()
+	print('Saved', entry.dn)
+	try:
+		portal = udm.get('portals/portal').get('cn=domain,cn=portal,cn=portals,cn=univention,%s' % (ucr.get('ldap/base')))
+	except NoObject:
+		print('... but no standard portal found')
+	else:
+		if entry.dn not in portal.props.userLinks:
+			portal.props.userLinks.append(entry.dn)
+			portal.save()
+			print('... added to', portal.dn)
+
+create_self_service_entry('self-service-my-profile', 'profile', 'umc/self-service/profiledata/enabled', False, display_name={'en_US': 'My Profile', 'de_DE': 'Mein Profil'}, description={'en_US': 'Manage profile', 'de_DE': 'Profil verwalten'})
+create_self_service_entry('self-service-protect-account', 'protectaccount', 'umc/self-service/protect-account/backend/enabled', False, display_name={'en_US': 'Protect your account', 'de_DE': 'Kontozugang schützen'})
+create_self_service_entry('self-service-password-forgotten', 'passwordforgotten', 'umc/self-service/passwordreset/backend/enabled', True, display_name={'en_US': 'Password forgotten', 'de_DE': 'Passwort vergessen'})
+create_self_service_entry('self-service-create-account', 'createaccount', 'umc/self-service/account-registration/backend/enabled', True, display_name={'en_US': 'Create an account', 'de_DE': 'Konto erstellen'})
+create_self_service_entry('self-service-verify-account', 'verifyaccount', 'umc/self-service/account-verification/backend/enabled', True, display_name={'en_US': 'Account verification', 'de_DE': 'Kontoverifizierung'})
+create_self_service_entry('self-service-service-specific-passwords', 'servicespecificpasswords', 'umc/self-service/service-specific-passwords/backend/enabled', False, display_name={'en_US': 'Password Wireless LAN', 'de_DE': 'WLAN-Passwort'})

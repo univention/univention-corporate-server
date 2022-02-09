@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-04-21 19:31+0200\n"
+"POT-Creation-Date: 2022-02-08 17:42+0100\n"
 "PO-Revision-Date: 2013-09-12 11:31+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -15,10 +15,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: hook/passwordreset.js:66 hook/passwordreset.js:83
+#: hook/passwordreset.js:70 hook/passwordreset.js:87
 msgid "Forgot your password?"
 msgstr "Passwort vergessen?"
 
-#: hook/passwordreset.js:57
+#: hook/passwordreset.js:58
 msgid "Protect your account"
 msgstr "Kontozugang schützen"
