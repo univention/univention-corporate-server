@@ -53,6 +53,7 @@ import univention.admin.objects
 import univention.admin.syntax
 import univention.admin.uexceptions as udm_errors
 from univention.admin.uldap import getMachineConnection
+from univention.admin.rest.client import UDM
 from univention.management.console.modules import Base
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
@@ -316,8 +317,9 @@ class Instance(Base):
 		dn, username = self.auth(username, password)
 		MODULE.error('set_service_specific_passwords(): Setting {} password for {}'.format(password_type, username))
 		if password_type == 'radius' and ucr.is_true('radius/use-service-specific-password'):
-			# TODO
-			service_specific_password = 'abc123'
+			udm = UDM.http('https://%s.%s/univention/udm/' % (ucr.get('hostname'), ucr.get('domainname')), 'cn=admin', open('/etc/ldap.secret').read())
+			user_obj = udm.get('users/user').get(dn)
+			service_specific_password = user_obj.generate_service_specific_password('radius')
 		else:
 			msg = _('Service specific passwords were disabled for "%s".') % password_type
 			MODULE.error('get_service_specific_passwords(): {}'.format(msg))

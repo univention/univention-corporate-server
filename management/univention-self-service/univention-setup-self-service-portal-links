@@ -29,6 +29,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from argparse import ArgumentParser
 from base64 import b64encode
 
 from univention.config_registry import ConfigRegistry
@@ -41,10 +42,12 @@ udm = UDM.machine().version(3)
 entries = udm.get('portals/entry')
 
 
-def create_self_service_entry(name, page, ucr_name, anonymous, display_name, description=None):
+def create_self_service_entry(args, name, page, ucr_name, anonymous, display_name, description=None):
 	try:
 		entry = entries.get_by_id(name)
 		print('Found', entry.dn)
+		if args.no_update:
+			print('... skipping')
 	except NoObject:
 		entry = entries.new()
 		print('Creating new entry')
@@ -73,9 +76,17 @@ def create_self_service_entry(name, page, ucr_name, anonymous, display_name, des
 			print('... added to', portal.dn)
 
 
-create_self_service_entry('self-service-my-profile', 'profile', 'umc/self-service/profiledata/enabled', False, display_name={'en_US': 'My Profile', 'de_DE': 'Mein Profil'}, description={'en_US': 'Manage profile', 'de_DE': 'Profil verwalten'})
-create_self_service_entry('self-service-protect-account', 'protectaccount', 'umc/self-service/protect-account/backend/enabled', False, display_name={'en_US': 'Protect your account', 'de_DE': 'Kontozugang schützen'})
-create_self_service_entry('self-service-password-forgotten', 'passwordforgotten', 'umc/self-service/passwordreset/backend/enabled', True, display_name={'en_US': 'Password forgotten', 'de_DE': 'Passwort vergessen'})
-create_self_service_entry('self-service-create-account', 'createaccount', 'umc/self-service/account-registration/backend/enabled', True, display_name={'en_US': 'Create an account', 'de_DE': 'Konto erstellen'})
-create_self_service_entry('self-service-verify-account', 'verifyaccount', 'umc/self-service/account-verification/backend/enabled', True, display_name={'en_US': 'Account verification', 'de_DE': 'Kontoverifizierung'})
-create_self_service_entry('self-service-service-specific-passwords', 'servicespecificpasswords', 'umc/self-service/service-specific-passwords/backend/enabled', False, display_name={'en_US': 'Password Wireless LAN', 'de_DE': 'WLAN-Passwort'})
+def main(args):
+	create_self_service_entry(args, 'self-service-my-profile', 'profile', 'umc/self-service/profiledata/enabled', False, display_name={'en_US': 'My Profile', 'de_DE': 'Mein Profil'}, description={'en_US': 'Manage profile', 'de_DE': 'Profil verwalten'})
+	create_self_service_entry(args, 'self-service-protect-account', 'protectaccount', 'umc/self-service/protect-account/backend/enabled', False, display_name={'en_US': 'Protect your account', 'de_DE': 'Kontozugang schützen'})
+	create_self_service_entry(args, 'self-service-password-forgotten', 'passwordforgotten', 'umc/self-service/passwordreset/backend/enabled', True, display_name={'en_US': 'Password forgotten', 'de_DE': 'Passwort vergessen'})
+	create_self_service_entry(args, 'self-service-create-account', 'createaccount', 'umc/self-service/account-registration/backend/enabled', True, display_name={'en_US': 'Create an account', 'de_DE': 'Konto erstellen'})
+	create_self_service_entry(args, 'self-service-verify-account', 'verifyaccount', 'umc/self-service/account-verification/backend/enabled', True, display_name={'en_US': 'Account verification', 'de_DE': 'Kontoverifizierung'})
+	create_self_service_entry(args, 'self-service-service-specific-passwords', 'servicespecificpasswords', 'umc/self-service/service-specific-passwords/backend/enabled', False, display_name={'en_US': 'Password Wireless LAN', 'de_DE': 'WLAN-Passwort'})
+
+
+if __name__ == '__main__':
+	parser = ArgumentParser()
+	parser.add_argument('--no-update', action='store_true')
+	args = parser.parse_args()
+	main(args)
