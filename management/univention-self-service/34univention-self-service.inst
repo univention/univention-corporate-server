@@ -69,52 +69,6 @@ univention-config-registry set \
 	"self-service/backend-server?$MASTER" \
 	self-service/web/enabled?yes
 
-udm portals/entry create --ignore_exists "$@" \
-	--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
-	--set name="self-service" \
-	--set activated="TRUE" \
-	--append displayName='"en_US" "Change password"' \
-	--append displayName='"de_DE" "Passwort ändern"' \
-	--append displayName='"fr_FR" "Changer le mot de passe"' \
-	--append link='"en_US" "'"https://${hostname}.${domainname}/univention/self-service/?header=try-hide#page=passwordchange"'"' \
-	--append description='"en_US" "Self Service modules (change and recover passwords)"' \
-	--append description='"de_DE" "Self-Service-Module (Passwort ändern und zurücksetzen)"' \
-	--append description='"fr_FR" "Module de libre-service (changer et réinitialiser des mots de passe)"' \
-	--set icon="$(base64 /usr/share/univention-self-service/www/icons/key.svg)" || die
-
-udm portals/category modify --ignore_not_exists "$@" \
-	--dn "cn=domain-service,cn=category,cn=portals,cn=univention,$ldap_base" \
-	--append entries="cn=self-service,cn=entry,cn=portals,cn=univention,$ldap_base"
-
-univention-directory-manager portals/entry create "$@" --ignore_exists \
-	--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
-	--set name=self-service-my-profile \
-	--append displayName="\"en_US\" \"My Profile\"" \
-	--append displayName="\"de_DE\" \"Mein Profil\"" \
-	--append displayName="\"fr_FR\" \"Mon profil\"" \
-	--append description="\"en_US\" \"Manage profile\"" \
-	--append description="\"de_DE\" \"Profil verwalten\"" \
-	--append description="\"fr_FR\" \"Gérer le profil\"" \
-	--append link='"en_US" "'"https://${hostname}.${domainname}/univention/self-service/?header=try-hide#page=profiledata"'"' \
-	--set icon="$(base64 /usr/share/univention-self-service/www/icons/password.png)" || die
-
-univention-directory-manager portals/entry create "$@" --ignore_exists \
-	--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
-	--set name=self-service-protect-account \
-	--append displayName="\"en_US\" \"Protect your account\"" \
-	--append displayName="\"de_DE\" \"Kontozugang schützen\"" \
-	--append displayName="\"fr_FR\" \"Protéger votre compte\"" \
-	--append description="\"en_US\" \"Protect your account\"" \
-	--append description="\"de_DE\" \"Kontozugang schützen\"" \
-	--append description="\"fr_FR\" \"Protéger votre compte\"" \
-	--append link='"en_US" "'"https://${hostname}.${domainname}/univention/self-service/?header=try-hide#page=setcontactinformation"'"' \
-	--set icon="$(base64 /usr/share/univention-self-service/www/icons/password.png)" || die
-
-univention-directory-manager "portals/portal" modify --ignore_not_exists "$@" \
-	--dn="cn=domain,cn=portal,cn=portals,cn=univention,$ldap_base" \
-	--append userLinks="cn=self-service-my-profile,cn=entry,cn=portals,cn=univention,$ldap_base" \
-	--append userLinks="cn=self-service-protect-account,cn=entry,cn=portals,cn=univention,$ldap_base" || die
-
 joinscript_save_current_version
 
 exit 0
