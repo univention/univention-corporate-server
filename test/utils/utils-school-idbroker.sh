@@ -72,4 +72,39 @@ register_idbroker_as_sp_in_ucs () {
 
 }
 
+add_bettermarks_app_portal_link () {
+	local rv=0
+	udm settings/portal_entry create \
+		--position "cn=portal,cn=univention,$(ucr get ldap/base)" \
+		--set activated=TRUE \
+		--set authRestriction=anonymous \
+		--set category=service \
+		--set description="en_US \"bettermarks is an adaptive learning system for maths\"" \
+		--set displayName="en_US \"bettermarks\"" \
+		--set link="https://acc.bettermarks.com/auth/univention/DE_univention" \
+		--set linkTarget=useportaldefault \
+		--set name=univention-test-app \
+		--set portal="cn=ucsschool_demo_portal,cn=portal,cn=univention,$(ucr get ldap/base)" \
+		--set icon="$(base64 bettermarks-logo.svg)" || rv=$?
+}
+
+add_test_app_portal_link () {
+	local broker_fqdn="${1:?missing broker_fqdn}"
+	local keycloak_identifier="${2:?missing keycloak_identifier=}"
+	local rv=0
+	udm settings/portal_entry create \
+		--position "cn=portal,cn=univention,$(ucr get ldap/base)" \
+		--set activated=TRUE \
+		--set authRestriction=anonymous \
+		--set category=service \
+		--set description="en_US \"Test app to check oauth login and tokens\"" \
+		--set displayName="en_US \"Test oauth\"" \
+		--set link="https://$broker_fqdn/univention-test-app?kc_idp_hint=$keycloak_identifier" \
+		--set linkTarget=useportaldefault \
+		--set name=univention-test-app \
+		--set portal="cn=ucsschool_demo_portal,cn=portal,cn=univention,$(ucr get ldap/base)" \
+		--set icon="$(base64 oidc-logo.svg)" || rv=$?
+	return $rv
+}
+
 # vim:set filetype=sh ts=4:
