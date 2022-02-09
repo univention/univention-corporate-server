@@ -6,14 +6,13 @@
 ## join: true
 ## exposure: dangerous
 
-import json
 import ldap
-import urllib
 import pytest
-import requests
 import subprocess
 
 from univention.config_registry import handler_set as ucr_set
+from univention.admin.rest.client import UDM
+from univention.admin.rest.client import BadRequest
 
 
 def radius_auth(username, password):
@@ -29,16 +28,11 @@ def radius_auth(username, password):
 	])
 
 
-def request_new_password(ucr, user_dn, service={"service": "radius"}):
-	dn = urllib.parse.quote_plus(user_dn)
-	headers = {"Accept": "application/json", "Content-Type": "application/json"}
-	#TODO: not do it via Administrator
-	auth = (ucr.get("users/default/administrator", "Administrator"), ucr.get("tests/domainadmin/pwd"))
-	resp = requests.post("https://localhost/univention/udm/users/user/%s/service-specific-password" % (dn,), auth=auth, json=service, headers=headers, verify=False)
-	if not resp.ok:
-		print(resp.text)
-		raise AssertionError("Received Error %s" % (resp.text,))
-	return json.loads(resp.text).get('password')
+def request_new_password(ucr, user_dn, service="radius"):
+	uri = 'http://localhost/univention/udm/'
+	udm = UDM.http(uri, 'Administrator', 'univention')
+	obj = udm.get('users/user').get(user_dn)
+	return obj.generate_service_specific_password(service)
 
 
 def test_udm_rest(ucr, udm_session, rad_user):
@@ -52,8 +46,8 @@ def test_udm_rest(ucr, udm_session, rad_user):
 
 def test_udm_rest_invalid_service(ucr, udm_session, rad_user):
 	dn, name, password = rad_user
-	with pytest.raises(AssertionError):
-		request_new_password(ucr, dn, service={"service": "testtest"})
+	with pytest.raises(BadRequest):
+		request_new_password(ucr, dn, service="testtest")
 
 
 # Check if radius auth works with userpassword, when ssp is disabled
