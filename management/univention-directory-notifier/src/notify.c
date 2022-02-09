@@ -591,7 +591,6 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data)
 		notify_last_id.id = entry.notify_id.id;
 		network_client_all_write(entry.notify_id.id, line, strlen(line));
 		free(entry.dn);
-		entry.dn = NULL;
 	}
 
 	unlink(FILE_NAME_NOTIFIER_PRIV);
