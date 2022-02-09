@@ -1,115 +1,93 @@
 msgid ""
 msgstr ""
-"Content-Type: text/plain; charset=UTF-8\n"
-"MIME-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-15 16:37+0100\n"
 "Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 
-msgid "A new license has been requested and sent to your email address."
-msgstr "Eine neue Lizenz wurde angefordert und an Ihre E-Mail Adresse gesendet."
+#: module.py:171
+msgid "Not a \"dict\""
+msgstr "Ist kein \"dict\""
 
+#: module.py:174
+msgid "Has more than the allowed keys"
+msgstr "Hat mehr Schlüssel als erlaubt"
+
+#: module.py:287 module.py:318
 #, python-format
-msgid "Add %s"
-msgstr "%s hinzufügen"
+msgid "The property %(name)s has an invalid value: %(details)s"
+msgstr "Die Eigenschaft %(name)s hat einen ungültigen Wert: %(details)s"
 
-msgid "Advanced settings"
-msgstr "Erweiterte Einstellungen"
-
+#: module.py:309
 #, python-format
-msgid "All %s types"
-msgstr "Alle %s Typen"
+msgid "The %(module)s module has no property %(name)s."
+msgstr "Das Modul %(module)s besitzt keine Eigenschaft %(name)s."
 
-msgid "All link relations"
-msgstr "Alle Link-Beziehungen"
-
-msgid "All modules"
-msgstr "Alle Module"
-
-msgid "All object types"
-msgstr "Alle Objekttypen"
-
-msgid "Apps & Options"
-msgstr "Apps & Optionen"
-
-msgid "Ascending"
-msgstr "Aufsteigend"
-
-msgid "CSV Report"
-msgstr "CSV-Report"
-
-msgid "Cannot parse License from LDAP"
-msgstr "Konnte die Lizenz nicht vom LDAP einlesen"
-
-msgid "Check license status"
-msgstr "Lizenz-Status prüfen"
-
-msgid "Click to edit the inherited properties of the policy"
-msgstr "Klick, um die vererbten Eigenschaften der Richtlinie zu bearbeiten"
-
-msgid "Container"
-msgstr "Container"
-
+#: module.py:348
 #, python-format
-msgid "Copy %s"
-msgstr "%s kopieren"
+msgid "The ldap base is invalid. Use %(details)s."
+msgstr "Die LDAP-Basis ist ungültig. Benutze %(details)s."
 
+#: module.py:491
 #, python-format
-msgid "Could not request a license from Univention: %s"
-msgstr "Konnte keine Lizenz von Univention anfordern: %s"
+msgid "Invalid JSON document: %r"
+msgstr "Ungültiges JSON-Dokuments: %r"
 
-#, python-format
-msgid "Create %s"
-msgstr "%s erstellen"
-
-#, python-format
-msgid "Create %s report"
-msgstr "%s-Report erstellen"
-
-#, python-format
-msgid "Create a %s"
-msgstr "Ein %s erstellen"
-
-msgid "Defaults"
-msgstr "Standardwerte"
-
-msgid "Descending"
-msgstr "Absteigend"
-
-msgid "Direction"
-msgstr "Richtung"
-
-msgid "E-Mail address"
-msgstr "E-Mail Adresse"
-
-#, python-format
-msgid "Failed to set service specific password. Error: %s"
-msgstr ""
-"Das Setzen des Service spezifischen Passwortes ist fehlgeschlagen. Error: %s"
-
-msgid "Fill template values"
-msgstr "Template Werte ausfüllen"
-
-msgid "First page"
-msgstr "Erste Seite"
-
-#, python-format
-msgid "Generation a service password failed. Error: %s"
-msgstr ""
-"Die Generierung des service spezifischen Passwortes ist fehlgeschlagen. "
-"Error: %s"
-
-#, python-format
-msgid "Generation of the service specific password failed. Error: %s"
-msgstr ""
-"Die Generierung des Service spezifischen Passwortes ist fehlgeschlagen. "
-"Error: %s"
-
+#: module.py:641 module.py:892
 #, python-format
 msgid "HTTP-Error %d: %s"
 msgstr ""
 
-msgid "Has more than the allowed keys"
-msgstr "Hat mehr Schlüssel als erlaubt"
+#: module.py:710
+msgid "This form requires JavaScript enabled!"
+msgstr "Dieses Formular benötigt aktivieres JavaScript."
 
+#: module.py:870
+#, python-format
+msgid "Request argument \"%s\" %s\n"
+msgstr "Request-Argument \"%s\" %s\n"
+
+#: module.py:872
+#, python-format
+msgid "Query string \"%s\": %s\n"
+msgstr "Query string \"%s\": %s\n"
+
+#: module.py:1098
+msgid "Link relations"
+msgstr "Link-Beziehungen"
+
+#: module.py:1099 module.py:1778 module.py:1825 module.py:2542 module.py:2678
+#: module.py:3190 module.py:3300
+msgid "All modules"
+msgstr "Alle Module"
+
+#: module.py:1780
+#, python-format
+msgid "All %s types"
+msgstr "Alle %s Typen"
+
+#: module.py:1792
+msgid "UCS license"
+msgstr "UCS Lizenz"
+
+#: module.py:1793
+msgid "LDAP base"
+msgstr "LDAP-Basis"
+
+#: module.py:1794
+msgid "All link relations"
+msgstr "Alle Link-Beziehungen"
+
+#: module.py:1813
+msgid "All object types"
+msgstr "Alle Objekttypen"
+
+#: module.py:2127
+msgid "Meta information"
+msgstr "Metainformationen"
+
+#: module.py:2132
 msgid ""
 "Here you can activate the user for one of the installed apps. The user can "
 "then log on to the app and use it."
@@ -117,50 +95,23 @@ msgstr ""
 "Hier können Sie den Benutzer für eine der installierten Apps aktivieren. Der "
 "Benutzer kann sich anschließend an der App anmelden und sie nutzen."
 
-#, python-format
-msgid "If-Match %s does not match entity tag(s) %s."
-msgstr "If-Match %s passt nicht zu entity tag(s) %s."
+#: module.py:2132
+msgid "Apps & Options"
+msgstr "Apps & Optionen"
 
-#, python-format
-msgid "If-None-Match %s does not match entity tag(s) %s."
-msgstr "If-None-Match %s passt nicht zu entity tag(s) %s."
+#: module.py:2133
+msgid "Advanced settings"
+msgstr "Erweiterte Einstellungen"
 
-msgid "If-Unmodified-Since does not match Last-Modified."
-msgstr "If-Unmodified-Since passt nicht zu Last-Modified."
+#: module.py:2143
+msgid "Properties inherited from policies"
+msgstr "von Richtlinien geerbte Eigenschaften"
 
-msgid "Import license"
-msgstr "Lizenz importieren"
+#: module.py:2144
+msgid "Policies"
+msgstr "Richtlinien"
 
-#, python-format
-msgid "Importing the license failed: %s."
-msgstr "Importieren der Lizenz fehlgeschlagen: %s."
-
-#, python-format
-msgid "Importing the license failed: LDAP error: %s."
-msgstr "Importing der Lizenz fehlgeschlagen: LDAP-Fehler: %s."
-
-msgid "Include hidden objects"
-msgstr "Versteckte Objekte anzeigen"
-
-#, python-format
-msgid "Invalid JSON document: %r"
-msgstr "Ungültiges JSON-Dokuments: %r"
-
-msgid "LDAP base"
-msgstr "LDAP-Basis"
-
-msgid "Last page"
-msgstr "Letzte Seite"
-
-msgid "License file (ldif format)"
-msgstr "Lizenz-Datei (LDIF Format)"
-
-msgid "Limit"
-msgstr "Limit"
-
-msgid "Link relations"
-msgstr "Link-Beziehungen"
-
+#: module.py:2146
 msgid ""
 "List of all object properties that are inherited by policies. The values "
 "cannot be edited directly. By clicking on \"Create new policy\", a new tab "
@@ -176,194 +127,321 @@ msgstr ""
 "\"bearbeiten\" die gesetzte Richtlinie in einem neuen Reiter geöffnet und "
 "bearbeitet werden."
 
-msgid "Meta information"
-msgstr "Metainformationen"
+#: module.py:2174
+msgid "PDF Document"
+msgstr "PDF-Dokument"
 
-msgid "Modify"
-msgstr "Bearbeiten"
+#: module.py:2175
+msgid "CSV Report"
+msgstr "CSV-Report"
 
+#: module.py:2398
+msgid "First page"
+msgstr "Erste Seite"
+
+#: module.py:2400
+msgid "Previous page"
+msgstr "Voherige Seite"
+
+#: module.py:2402
+msgid "Next page"
+msgstr "Nächste Seite"
+
+#: module.py:2404
+msgid "Last page"
+msgstr "Letzte Seite"
+
+#: module.py:2409
 #, python-format
-msgid "Modify %s"
-msgstr "%s bearbeiten"
+msgid "Create %s report"
+msgstr "%s-Report erstellen"
 
+#: module.py:2412
 #, python-format
 msgid "Modify %s (multi edit)"
 msgstr "%s bearbeiten (Mehrfachbearbeitung)"
 
-#, python-format
-msgid "Modify, move or remove this %s"
-msgstr "Erstellen, verschieben oder löschen dieses %s"
-
-msgid "Move"
-msgstr "Verschieben"
-
+#: module.py:2416
 #, python-format
 msgid "Move %s"
 msgstr "%s verschieben"
 
-#, python-format
-msgid "Moved %d of %d objects. Last object was: %s."
-msgstr "%d von %d Objekte verschoben. Letztes Objekt war: %s."
-
-msgid "Next free IP address"
-msgstr "Nächste freie IP-Adresse"
-
-msgid "Next page"
-msgstr "Nächste Seite"
-
-msgid "No photo set"
-msgstr "Kein Foto gesetzt"
-
-msgid "Not a \"dict\""
-msgstr "Ist kein \"dict\""
-
-#, python-format
-msgid "Object exists: %s: %s"
-msgstr "Objekt existiert: %s: %s"
-
-msgid "Object type tree"
-msgstr "Objekt-Typ Baum"
-
-#. #-#-#-#-#  ours (univention-directory-manager-rest)  #-#-#-#-#
-#. i18n: translation for univention-directory-reports
-msgid "PDF Document"
-msgstr "PDF-Dokument"
-
-msgid "Perform a cleanup"
-msgstr "Cleanup ausführen"
-
-msgid "Policies"
-msgstr "Richtlinien"
-
-msgid "Policy DN"
-msgstr "Richtlinien DN"
-
-msgid "Policy result"
-msgstr "Richtlinien-Auswertung"
-
-msgid "Previous page"
-msgstr "Voherige Seite"
-
-msgid "Properties inherited from policies"
-msgstr "von Richtlinien geerbte Eigenschaften"
-
-msgid "Property"
-msgstr "Eigenschaft"
-
-#, python-format
-msgid "Query string \"%s\": %s\n"
-msgstr "Query string \"%s\": %s\n"
-
-msgid "Remove"
-msgstr "Entfernen"
-
-msgid "Remove referring objects"
-msgstr "Referenzierte Objekte entfernen"
-
-msgid "Remove the object"
-msgstr "Das Objekt entfernen"
-
-#, python-format
-msgid "Request argument \"%s\" %s\n"
-msgstr "Request-Argument \"%s\" %s\n"
-
-msgid "Request new license"
-msgstr "Neue Lizenz anfordern"
-
-msgid "Search"
-msgstr "Suchen"
-
-msgid "Search for"
-msgstr "Suche nach"
-
+#: module.py:2418 module.py:2552
 #, python-format
 msgid "Search for %s"
 msgstr "Suche nach %s"
 
+#: module.py:2418 module.py:2442
+msgid "Search"
+msgstr "Suchen"
+
+#: module.py:2422
 msgid "Search in"
 msgstr "Suche in"
 
-msgid "Search scope"
-msgstr "Such-Scope"
+#: module.py:2425
+msgid "Superordinate"
+msgstr "Superordinate"
 
+#: module.py:2427
+msgid "Defaults"
+msgstr "Standardwerte"
+
+#: module.py:2428
+msgid "Property"
+msgstr "Eigenschaft"
+
+#: module.py:2429
+msgid "Search for"
+msgstr "Suche nach"
+
+#: module.py:2429
 msgid "Search value (e.g. *)"
 msgstr "Suchwert (z.B. *)"
 
-msgid "Select position"
-msgstr "Position auswählen"
+#: module.py:2430
+msgid "Search scope"
+msgstr "Such-Scope"
 
+#: module.py:2431
+msgid "Include hidden objects"
+msgstr "Versteckte Objekte anzeigen"
+
+#: module.py:2435
+msgid "Limit"
+msgstr "Limit"
+
+#: module.py:2436
 msgid "Selected page"
 msgstr "Ausgewählte Seite"
 
-#, python-format
-msgid "Service %s does not support service specific passwords"
-msgstr "Service %s unterstützt keine Service spezifischen Passwörter"
-
-#, python-format
-msgid "Service %s does not support service specific passwords. Error: %s"
-msgstr "Service %s unterstützt keine Service spezifischen Passwörter. Error: %s"
-
+#: module.py:2437
 msgid "Sort by"
 msgstr "Sortieren nach"
 
+#: module.py:2438
+msgid "Ascending"
+msgstr "Aufsteigend"
+
+#: module.py:2438
+msgid "Descending"
+msgstr "Absteigend"
+
+#: module.py:2438
+msgid "Direction"
+msgstr "Richtung"
+
+#: module.py:2555 module.py:2556
+#, python-format
+msgid "Create a %s"
+msgstr "Ein %s erstellen"
+
+#: module.py:2561
+msgid "Object type tree"
+msgstr "Objekt-Typ Baum"
+
+#: module.py:2607
+#, python-format
+msgid "Moved %d of %d objects. Last object was: %s."
+msgstr "%d von %d Objekte verschoben. Letztes Objekt war: %s."
+
+#: module.py:2662
+msgid "Next free IP address"
+msgstr "Nächste freie IP-Adresse"
+
+#: module.py:2665
+msgid "User photo"
+msgstr "Benutzerfoto"
+
+#: module.py:2668
+msgid "Generate a new service specific password"
+msgstr "Generiert ein neues Service spezifisches Passwort"
+
+#: module.py:2696
 #, python-format
 msgid "Sub object types of %s"
 msgstr "Unter Objekt-Typen von %s"
 
-msgid "Superordinate"
-msgstr "Superordinate"
+#: module.py:2705
+#, python-format
+msgid "Modify, move or remove this %s"
+msgstr "Erstellen, verschieben oder löschen dieses %s"
 
+#: module.py:2914
+msgid "Trying to create an object with wrong RDN."
+msgstr "Versuch eom Objekt mit falscher RDN zu erstellen."
+
+#: module.py:2951
+#, python-format
+msgid "Object exists: %s: %s"
+msgstr "Objekt existiert: %s: %s"
+
+#: module.py:3064
+msgid "If-Unmodified-Since does not match Last-Modified."
+msgstr "If-Unmodified-Since passt nicht zu Last-Modified."
+
+#: module.py:3083
+#, python-format
+msgid "If-None-Match %s does not match entity tag(s) %s."
+msgstr "If-None-Match %s passt nicht zu entity tag(s) %s."
+
+#: module.py:3091
+#, python-format
+msgid "If-Match %s does not match entity tag(s) %s."
+msgstr "If-Match %s passt nicht zu entity tag(s) %s."
+
+#: module.py:3168
+#, python-format
+msgid "Add %s"
+msgstr "%s hinzufügen"
+
+#: module.py:3179
 msgid "Template"
 msgstr "Vorlage"
 
-#, python-format
-msgid "The %(module)s module has no property %(name)s."
-msgstr "Das Modul %(module)s besitzt keine Eigenschaft %(name)s."
+#: module.py:3182
+msgid "Fill template values"
+msgstr "Template Werte ausfüllen"
 
+#: module.py:3208
+msgid "The container where the object is going to be created in"
+msgstr "Der Container in dem die Objekte erstellt werden sollen"
+
+#: module.py:3210 module.py:3328
+msgid "Policy result"
+msgstr "Richtlinien-Auswertung"
+
+#: module.py:3247
+#, python-format
+msgid "Create %s"
+msgstr "%s erstellen"
+
+#: module.py:3251
+msgid "Select position"
+msgstr "Position auswählen"
+
+#: module.py:3252
+msgid "Container"
+msgstr "Container"
+
+#: module.py:3269
+#, python-format
+msgid "Copy %s"
+msgstr "%s kopieren"
+
+#: module.py:3304
+msgid "Modify"
+msgstr "Bearbeiten"
+
+#: module.py:3309 module.py:3313
+msgid "Remove"
+msgstr "Entfernen"
+
+#: module.py:3309
+msgid "Remove the object"
+msgstr "Das Objekt entfernen"
+
+#: module.py:3311
+msgid "Perform a cleanup"
+msgstr "Cleanup ausführen"
+
+#: module.py:3311
+msgid "e.g. temporary objects, locks, etc."
+msgstr "z.B. temporäre Objekte, Locks, etc."
+
+#: module.py:3312
+msgid "Remove referring objects"
+msgstr "Referenzierte Objekte entfernen"
+
+#: module.py:3312
+msgid "e.g. DNS or DHCP references of a computer"
+msgstr "z.B. DNS oder DHCP Referenzen eines Computers"
+
+#: module.py:3318
+msgid "Move"
+msgstr "Verschieben"
+
+#: module.py:3327 module.py:3377
+msgid "Policy DN"
+msgstr "Richtlinien DN"
+
+#: module.py:3340 module.py:3341
 #, python-format
 msgid "The %s \"%s\" is part of the Active Directory domain."
 msgstr "Die %s \"%s\" ist Teil einer Active Directory Domäne."
 
-msgid "The container where the object is going to be created in"
-msgstr "Der Container in dem die Objekte erstellt werden sollen"
+#: module.py:3351
+msgid "Upload user photo"
+msgstr "Benutzerfoto hochladen"
 
+#: module.py:3372
+msgid "No photo set"
+msgstr "Kein Foto gesetzt"
+
+#: module.py:3387
 #, python-format
-msgid "The ldap base is invalid. Use %(details)s."
-msgstr "Die LDAP-Basis ist ungültig. Benutze %(details)s."
+msgid "Modify %s"
+msgstr "%s bearbeiten"
 
-msgid "The license is valid."
-msgstr "Die Lizenz ist gültig."
+#: module.py:3477
+msgid "Click to edit the inherited properties of the policy"
+msgstr "Klick, um die vererbten Eigenschaften der Richtlinie zu bearbeiten"
 
-msgid "The license was imported successfully."
-msgstr "Die Lizenz wurder erfolgreich importiert."
+#: module.py:3557
+msgid "Cannot parse License from LDAP"
+msgstr "Konnte die Lizenz nicht vom LDAP einlesen"
 
-#, python-format
-msgid "The property %(name)s has an invalid value: %(details)s"
-msgstr "Die Eigenschaft %(name)s hat einen ungültigen Wert: %(details)s"
-
-msgid "This form requires JavaScript enabled!"
-msgstr "Dieses Formular benötigt aktivieres JavaScript."
-
+#: module.py:3570
 msgid ""
 "This seems to be a problem with the license server. Please try again later."
 msgstr ""
 "Die deutet auf ein Problem mit dem Lizenzserver hin. Bitte versuchen Sie es "
 "später erneut."
 
-msgid "Trying to create an object with wrong RDN."
-msgstr "Versuch eom Objekt mit falscher RDN zu erstellen."
+#: module.py:3575
+#, python-format
+msgid "Could not request a license from Univention: %s"
+msgstr "Konnte keine Lizenz von Univention anfordern: %s"
 
-msgid "UCS license"
-msgstr "UCS Lizenz"
+#: module.py:3580
+msgid "A new license has been requested and sent to your email address."
+msgstr ""
+"Eine neue Lizenz wurde angefordert und an Ihre E-Mail Adresse gesendet."
 
-msgid "Upload user photo"
-msgstr "Benutzerfoto hochladen"
+#: module.py:3586
+msgid "The license is valid."
+msgstr "Die Lizenz ist gültig."
 
-msgid "User photo"
-msgstr "Benutzerfoto"
+#: module.py:3599
+msgid "Check license status"
+msgstr "Lizenz-Status prüfen"
 
-msgid "e.g. DNS or DHCP references of a computer"
-msgstr "z.B. DNS oder DHCP Referenzen eines Computers"
+#: module.py:3604
+msgid "E-Mail address"
+msgstr "E-Mail Adresse"
 
-msgid "e.g. temporary objects, locks, etc."
-msgstr "z.B. temporäre Objekte, Locks, etc."
+#: module.py:3605
+msgid "Request new license"
+msgstr "Neue Lizenz anfordern"
+
+#: module.py:3608
+msgid "License file (ldif format)"
+msgstr "Lizenz-Datei (LDIF Format)"
+
+#: module.py:3609
+msgid "Import license"
+msgstr "Lizenz importieren"
+
+#: module.py:3692
+#, python-format
+msgid "Importing the license failed: LDAP error: %s."
+msgstr "Importing der Lizenz fehlgeschlagen: LDAP-Fehler: %s."
+
+#: module.py:3696
+#, python-format
+msgid "Importing the license failed: %s."
+msgstr "Importieren der Lizenz fehlgeschlagen: %s."
+
+#: module.py:3699
+msgid "The license was imported successfully."
+msgstr "Die Lizenz wurder erfolgreich importiert."
