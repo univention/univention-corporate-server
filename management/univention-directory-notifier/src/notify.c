@@ -184,10 +184,6 @@ static void notify_dump_to_files( Notify_t *notify, NotifyEntry_t *entry)
 	char buffer[2048];
 	FILE *index = NULL;
 
-	if (entry == NULL)
-		return;
-
-
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK from dump_to_files");
 	if ((notify->tf = fopen_with_lockfile(FILE_NAME_TF, "a", &(notify->l_tf))) == NULL) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR on open tf\n");
@@ -267,9 +263,6 @@ static void notify_dump_to_ldap(NotifyEntry_t *trans) {
 		.sa_handler = SIG_IGN,
 		.sa_flags = 0,
 	};
-
-	if (trans == NULL)
-		return;
 
 	// libldap uses liblber uses write() on the SOCKET to slapd, which raises SIGPIPE when slapd closes the socket due to a timeout.
 	sigaction(SIGPIPE, &act, &oldact);
