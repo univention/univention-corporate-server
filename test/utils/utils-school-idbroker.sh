@@ -107,4 +107,67 @@ add_test_app_portal_link () {
 	return $rv
 }
 
+create_id_connector_school_authority_config () {
+  local provisioning_fqdn="${1:?missing provisioning_fqdn}"
+  local config_name="${2:?missing config_name}"
+  local username="${3:?missing username}"
+  local password="${4:?missing password}"
+
+  token="$(curl -s -X POST https://$provisioning_fqdn/ucsschool/apis/auth/token \
+    -H "Content-Type:application/x-www-form-urlencoded" \
+    -d "username=$username" \
+    -d "password=$password" \
+    | python -c "import json, sys; print(json.loads(sys.stdin.read())['access_token'])" \
+    )"
+  curl -X POST "https://$provisioning_fqdn/ucsschool-id-connector/api/v1/school_authorities" \
+    -H "accept: application/json" \
+    -H "Authorization: Bearer $token" \
+    -H "Content-Type: application/json" \
+    -d "{
+      \"name\": \"$config_name\",
+      \"active\": true,
+      \"url\": \"https://$provisioning_fqdn/\",
+      \"plugins\": [\"id_broker-users\", \"id_broker-groups\"],
+      \"plugin_configs\": {
+          \"id_broker\": {
+              \"password\": \"$password\",
+              \"username\": \"$username\",
+              \"version\": 1
+          }
+      }
+  }"
+}
+
+create_school_users_classes () {
+  local tr="${1:?missing traegernum}"
+  local ou1="${tr}ou1"
+  local ou2="${tr}ou2"
+
+  /usr/share/ucs-school-import/scripts/create_ou "$ou1"
+  /usr/share/ucs-school-import/scripts/create_ou "$ou2"
+  i=1; python -m ucsschool.lib.models create --name "${tr}-stud${i}"  --set firstname "Traeger${i}" --set lastname "Student${i}" --set password univention --school DEMOSCHOOL Student
+  i=1; python -m ucsschool.lib.models create --name "${tr}-teach${i}" --set firstname "Traeger${i}" --set lastname "Teacher${i}" --set password univention --school DEMOSCHOOL Teacher
+  i=2; python -m ucsschool.lib.models create --name "${tr}-stud${i}"  --set firstname "Traeger${i}" --set lastname "Student${i}" --set password univention --school DEMOSCHOOL --append schools DEMOSCHOOL --append schools "$ou1" Student
+  i=2; python -m ucsschool.lib.models create --name "${tr}-teach${i}" --set firstname "Traeger${i}" --set lastname "Teacher${i}" --set password univention --school DEMOSCHOOL --append schools DEMOSCHOOL --append schools "$ou1" Teacher
+  i=3; python -m ucsschool.lib.models create --name "${tr}-stud${i}"  --set firstname "Traeger${i}" --set lastname "Student${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Student
+  i=3; python -m ucsschool.lib.models create --name "${tr}-teach${i}" --set firstname "Traeger${i}" --set lastname "Teacher${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Teacher
+  python -m ucsschool.lib.models modify --dn "cn=DEMOSCHOOL-Democlass,cn=klassen,cn=schueler,cn=groups,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
+    --append users "uid=${tr}-stud1,cn=schueler,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
+    --append users "uid=${tr}-stud2,cn=schueler,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
+    --append users "uid=${tr}-teach1,cn=lehrer,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
+    --append users "uid=${tr}-teach2,cn=lehrer,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" SchoolClass
+  python -m ucsschool.lib.models create SchoolClass \
+    --name "${ou1}-1a" \
+    --school "$ou1" \
+    --append users "uid=${tr}-stud2,cn=schueler,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
+    --append users "uid=${tr}-stud3,cn=schueler,cn=users,ou=${ou1},$(ucr get ldap/base)" \
+    --append users "uid=${tr}-teach2,cn=lehrer,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
+    --append users "uid=${tr}-teach3,cn=lehrer,cn=users,ou=${ou1},$(ucr get ldap/base)"
+  python -m ucsschool.lib.models create SchoolClass \
+    --name "${ou2}-1a" \
+    --school "$ou2" \
+    --append users "uid=${tr}-stud3,cn=schueler,cn=users,ou=${ou1},$(ucr get ldap/base)" \
+    --append users "uid=${tr}-teach3,cn=lehrer,cn=users,ou=${ou1},$(ucr get ldap/base)"
+}
+
 # vim:set filetype=sh ts=4:
