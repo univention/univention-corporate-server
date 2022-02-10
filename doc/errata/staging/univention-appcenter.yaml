@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-appcenter
-fix: 
+fix: 9.0.2-71A~5.0.0.202202101206
 desc: |
  This update addresses the following issue:
  * Validate choose installation target hosts form.
