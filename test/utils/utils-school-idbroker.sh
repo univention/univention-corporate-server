@@ -39,7 +39,7 @@ ansible_preperation () {
 	ssh-keygen -t rsa -b 4096 -f /root/.ssh/id_rsa -q -N ""
 	cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 	ssh -o "StrictHostKeyChecking=accept-new" localhost true
-	# Downlaod ansible scripts
+	# Download ansible scripts
 	wget -e robots=off --cut-dirs=3 -np -R "index.html*" --user "$repo_user" \
 		--password="$(< "$repo_password_file")" -r -l 10 \
 		"https://service.software-univention.de/apt/00342/docs/keycloak/" || rv=$?
