@@ -122,7 +122,7 @@ add_test_app_portal_link () {
 		--set category=service \
 		--set description="en_US \"Test app to check oauth login and tokens\"" \
 		--set displayName="en_US \"Test oauth\"" \
-		--set link="https://$broker_fqdn/univention-test-app?kc_idp_hint=$keycloak_identifier" \
+		--set link="https://$broker_fqdn/univention-test-app/?kc_idp_hint=$keycloak_identifier" \
 		--set linkTarget=useportaldefault \
 		--set name=univention-test-app \
 		--set portal="cn=ucsschool_demo_portal,cn=portal,cn=univention,$(ucr get ldap/base)" \
@@ -131,16 +131,17 @@ add_test_app_portal_link () {
 }
 
 create_id_connector_school_authority_config () {
-  local provisioning_fqdn="${1:?missing provisioning_fqdn}"
-  local config_name="${2:?missing config_name}"
-  local username="${3:?missing username}"
-  local password="${4:?missing password}"
+  local domain_admin_password="${1:?missing domain_admin_password}"
+  local provisioning_fqdn="${2:?missing provisioning_fqdn}"
+  local config_name="${3:?missing config_name}"
+  local username="${4:?missing username}"
+  local password="${5:?missing password}"
 
   token="$(curl -s -X POST "https://$(hostname -f)/ucsschool-id-connector/api/token" \
     -H "accept: application/json" \
     -H "Content-Type:application/x-www-form-urlencoded" \
     -d "username=Administrator" \
-    -d "password=univention" \
+    -d "password=$domain_admin_password" \
     | python -c "import json, sys; print(json.loads(sys.stdin.read())['access_token'])" \
     )"
   curl -X POST "https://$(hostname -f)/ucsschool-id-connector/api/v1/school_authorities" \
