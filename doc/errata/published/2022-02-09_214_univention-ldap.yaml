@@ -16,11 +16,11 @@ desc: |
    by the OpenLDAP `translog` overlay which feeds the Listener/Notifier.
    This reduces the number of replication transactions during creation of
    users and groups significantly. As a result it increases the replication
-   performance and reduces the rate at which the cn=translog LMDB backend
+   performance and reduces the rate at which the `cn=translog` LMDB backend
    database gets filled.
    This variable is applicable only to the UCS Primary Directory Node.
-   By default is will be set to "yes" during package instllation and update.
- * The french translation of UDM extended attributes has been updated.
+   By default is will be set to `yes` during package installation and update.
+ * The French translation of UDM extended attributes has been updated.
 bug: [54092, 48626, 54029]
 erratum: 214
 announced: 2022-02-09

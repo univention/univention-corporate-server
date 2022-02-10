@@ -6,7 +6,7 @@ src: univention-l10n-fr
 fix: 4.0.1-7A~5.0.0.202202021429
 desc: |
  This update addresses the following issue:
- * The french translation package has been given a comprehensive update to
+ * The French translation package has been given a comprehensive update to
    align it to the current source code. All missing translation strings have
    been added and all outdated ones updated along with some general
    improvements of existing translation strings.

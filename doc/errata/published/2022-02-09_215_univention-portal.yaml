@@ -6,7 +6,7 @@ src: univention-portal
 fix: 4.0.5-74A~5.0.0.202202071247
 desc: |
  This update addresses the following issue:
- * The french translation of UDM portal attributes has been updated.
+ * The French translation of UDM portal attributes has been updated.
 bug: [54029]
 erratum: 215
 announced: 2022-02-09
