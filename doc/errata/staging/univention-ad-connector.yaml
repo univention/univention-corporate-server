@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: univention-ad-connector
+fix: 13.0.0-66A~4.4.0.202202101840
+desc: |
+ This update addresses the following issue:
+ * The default for resynchronization of rejected
+   changes from AD has been set to 10 instead of 0.
+bug: [54432]
