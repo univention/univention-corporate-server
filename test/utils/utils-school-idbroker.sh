@@ -50,12 +50,12 @@ ansible_preperation () {
 	cp /root/clients.yml clients.yml
 	cp /root/id-broker-TESTING.cert id-broker.cert
 	cp /root/id-broker-TESTING.key id-broker.key
-	source id-broker-secrets.sh
+	source /root/id-broker-secrets.sh
 	sed -i "s/BETTERMARKS_CLIENT_SECRET/$BETTERMARKS_CLIENT_SECRET/g" clients.yml
 	sed -i "s/UTA_CLIENT_SECRET/$UTA_CLIENT_SECRET/g" clients.yml
 	sed -i "s/UTA_REDIRECT/https:\/\/$(hostname -f)\/univention-test-app\/authorize/g" clients.yml
 	sed -i "s/keycloak_user: admin/keycloak_user: $KC_ADMIN_USER/g" keycloak.yml
-	sed -i "s/keycloak_password: admin/keycloak_password: $KC_ADMIN_PASS" keycloak.yml
+	sed -i "s/keycloak_password: admin/keycloak_password: $KC_ADMIN_PASS/g" keycloak.yml
 	curl -k "https://ucs-sso.$traeger1_domain/simplesamlphp/saml2/idp/metadata.php" > schools_saml_IDP/traeger1_metadata.xml
 	curl -k "https://ucs-sso.$traeger2_domain/simplesamlphp/saml2/idp/metadata.php" > schools_saml_IDP/traeger2_metadata.xml
 	return $rv
@@ -104,7 +104,7 @@ add_bettermarks_app_portal_link () {
 		--set displayName="en_US \"bettermarks\"" \
 		--set link="https://acc.bettermarks.com/auth/univention/DE_univention" \
 		--set linkTarget=useportaldefault \
-		--set name=univention-test-app \
+		--set name=bettermarks \
 		--set portal="cn=ucsschool_demo_portal,cn=portal,cn=univention,$(ucr get ldap/base)" \
 		--set icon="$(base64 bettermarks-logo.svg)" || rv=$?
 }
