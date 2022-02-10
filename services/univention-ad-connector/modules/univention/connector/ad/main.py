@@ -188,7 +188,7 @@ def connect():
 				ad_ldap_bindpw,
 				baseConfig['%s/ad/ldap/certificate' % CONFIGBASENAME],
 				baseConfig['%s/ad/listener/dir' % CONFIGBASENAME],
-				max_retry_rejected = int(baseConfig.get('%s/ad/max_retry_rejected' % CONFIGBASENAME, 0)),
+				max_retry_rejected=int(baseConfig.get('%s/ad/max_retry_rejected' % CONFIGBASENAME, 10)),
 			)
 			ad_init = True
 		except ldap.SERVER_DOWN:

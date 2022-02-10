@@ -1,3 +1,9 @@
+univention-ad-connector (13.0.0-67) unstable; urgency=medium
+
+  * Bug #54432: Set default resyncs to 10, as it is documented
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 10 Feb 2022 18:36:04 +0100
+
 univention-ad-connector (13.0.0-66) unstable; urgency=medium
 
   * Bug #54147: Hold rejected from AD after ~10 tries
