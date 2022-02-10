@@ -434,6 +434,8 @@ install_ucs_test () {
 	wait_for_repo_server || return 1
 	install_with_unmaintained ucs-test || return 1
 	install_selenium || install_selenium
+	pip3 install pytest
+	pip install pytest
 	# The AD Member Jenkins tests sometimes have network problems, so executing it twice.
 }
 
