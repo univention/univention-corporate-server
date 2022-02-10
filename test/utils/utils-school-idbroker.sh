@@ -35,6 +35,11 @@ ansible_preperation () {
 	local repo_user="${3:?missing repo_user}"
 	local repo_password_file="${4:?missing repo_password_file}"
 	local rv=0
+	# Setup passwordless ssh login for ansible
+	ssh-keygen -t rsa -b 4096 -f /root/.ssh/id_rsa -q -N ""
+	cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+	ssh -o "StrictHostKeyChecking=accept-new" localhost true
+	# Downlaod ansible scripts
 	wget -e robots=off --cut-dirs=3 -np -R "index.html*" --user "$repo_user" \
 		--password="$(< "$repo_password_file")" -r -l 10 \
 		"https://service.software-univention.de/apt/00342/docs/keycloak/" || rv=$?
@@ -53,6 +58,13 @@ ansible_preperation () {
 	sed -i "s/keycloak_password: admin/keycloak_password: $KC_ADMIN_PASS" keycloak.yml
 	curl -k "https://ucs-sso.$traeger1_domain/simplesamlphp/saml2/idp/metadata.php" > schools_saml_IDP/traeger1_metadata.xml
 	curl -k "https://ucs-sso.$traeger2_domain/simplesamlphp/saml2/idp/metadata.php" > schools_saml_IDP/traeger2_metadata.xml
+	return $rv
+}
+
+ansible_run_keycloak_configuration () {
+	local rv=0
+	cd service.software-univention.de/keycloak || rv=$?
+	/usr/local/bin/ansible-playbook -i hosts.ini keycloak.yml || rv=$?
 	return $rv
 }
 
