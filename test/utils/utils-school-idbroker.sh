@@ -134,13 +134,14 @@ create_id_connector_school_authority_config () {
   local username="${3:?missing username}"
   local password="${4:?missing password}"
 
-  token="$(curl -s -X POST https://$provisioning_fqdn/ucsschool/apis/auth/token \
+  token="$(curl -s -X POST "https://$(hostname -f)/ucsschool-id-connector/api/token" \
+    -H "accept: application/json" \
     -H "Content-Type:application/x-www-form-urlencoded" \
-    -d "username=$username" \
-    -d "password=$password" \
+    -d "username=Administrator" \
+    -d "password=univention" \
     | python -c "import json, sys; print(json.loads(sys.stdin.read())['access_token'])" \
     )"
-  curl -X POST "https://$provisioning_fqdn/ucsschool-id-connector/api/v1/school_authorities" \
+  curl -X POST "https://$(hostname -f)/ucsschool-id-connector/api/v1/school_authorities" \
     -H "accept: application/json" \
     -H "Authorization: Bearer $token" \
     -H "Content-Type: application/json" \
