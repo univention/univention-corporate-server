@@ -69,6 +69,7 @@ import univention.admin.modules as udm_modules
 import univention.admin.filter as udm_filter
 import univention.admin.objects
 from univention.admincli import license_check
+from univention.config_registry.frontend import ucr_update
 import univention.lib
 import univention.lib.s4
 import univention.config_registry
@@ -1740,12 +1741,15 @@ class AD_Takeover_Finalize(object):
 				guess_netmask = self.ucr["interfaces/%s/netmask" % self.primary_interface]
 				guess_broadcast = self.ucr["interfaces/%s/broadcast" % self.primary_interface]
 				run_and_output_to_log(["/usr/share/univention-updater/disable-apache2-umc"], log.debug)
-				run_and_output_to_log([
-					"univention-config-registry", "set",
-					"interfaces/%s/address=%s" % (new_interface_ucr, self.ad_server_ip),
-					"interfaces/%s/network=%s" % (new_interface_ucr, guess_network),
-					"interfaces/%s/netmask=%s" % (new_interface_ucr, guess_netmask),
-					"interfaces/%s/broadcast=%s" % (new_interface_ucr, guess_broadcast)], log.debug)
+				update = {
+					"interfaces/%s/address" % (new_interface_ucr): self.ad_server_ip,
+					"interfaces/%s/network" % (new_interface_ucr):  guess_network,
+					"interfaces/%s/netmask" % (new_interface_ucr): guess_netmask,
+					"interfaces/%s/broadcast" % (new_interface_ucr): guess_broadcast
+				}
+				log.info("Updating UCR with the following network data: %s" % (update))
+				ucr_update(self.ucr, update)
+
 				samba_interfaces = self.ucr.get("samba/interfaces")
 				if self.ucr.is_true("samba/interfaces/bindonly") and samba_interfaces:
 					run_and_output_to_log(["univention-config-registry", "set", "samba/interfaces=%s %s" % (samba_interfaces, new_interface)], log.debug)
@@ -1765,11 +1769,16 @@ class AD_Takeover_Finalize(object):
 
 			if new_interface:
 				run_and_output_to_log(["/usr/share/univention-updater/disable-apache2-umc"], log.debug)
-				run_and_output_to_log([
-					"univention-config-registry", "set",
-					"interfaces/%s/ipv6/default/address=%s" % (new_interface_ucr, self.ad_server_ip),
-					"interfaces/%s/ipv6/default/prefix=%s" % (new_interface_ucr, guess_broadcast),
-					"interfaces/%s/ipv6/acceptRA=false"], log.debug)
+
+				guess_broadcast = self.ucr["interfaces/%s/ipv6/default/broadcast" % self.primary_interface]
+				update = {
+					"interfaces/%s/ipv6/default/address" % (new_interface_ucr): self.ad_server_ip,
+					"interfaces/%s/ipv6/default/prefix" % (new_interface_ucr): guess_broadcast,
+					"interfaces/%s/ipv6/acceptRA": "false"
+				}
+				log.info("Updating UCR with the following IPv6 network data: %s" % (update))
+				ucr_update(self.ucr, update)
+
 				samba_interfaces = self.ucr.get("samba/interfaces")
 				if self.ucr.is_true("samba/interfaces/bindonly") and samba_interfaces:
 					run_and_output_to_log(["univention-config-registry", "set", "samba/interfaces=%s %s" % (samba_interfaces, new_interface)], log.debug)

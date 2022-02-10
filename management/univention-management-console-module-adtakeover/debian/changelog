@@ -1,3 +1,10 @@
+univention-management-console-module-adtakeover (7.0.2-6) unstable; urgency=medium
+
+  * Bug #54359: use `ucr_update` to apply network changes when creating
+    IP alias
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Tue, 18 Jan 2022 05:24:06 +0000
+
 univention-management-console-module-adtakeover (7.0.2-5) unstable; urgency=medium
 
   * Bug #54238 - adtakeover: FileNotFoundError: '/usr/bin/systemctl'
@@ -242,13 +249,13 @@ univention-management-console-module-adtakeover (3.0.0-4) unstable; urgency=medi
 
 univention-management-console-module-adtakeover (3.0.0-3) unstable; urgency=low
 
-  * Bug #39222: claim_FSMO_roles before Removing ad server/dns takeover 
+  * Bug #39222: claim_FSMO_roles before Removing ad server/dns takeover
 
  -- Felix Botner <botner@univention.de>  Wed, 04 Nov 2015 16:19:54 +0100
 
 univention-management-console-module-adtakeover (3.0.0-2) unstable; urgency=medium
 
-  * Bug #39723: Add fping as dependency 
+  * Bug #39723: Add fping as dependency
 
  -- Arvid Requate <requate@univention.de>  Tue, 03 Nov 2015 11:41:39 +0100
 
