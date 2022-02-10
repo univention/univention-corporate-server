@@ -1743,7 +1743,7 @@ class AD_Takeover_Finalize(object):
 				run_and_output_to_log(["/usr/share/univention-updater/disable-apache2-umc"], log.debug)
 				update = {
 					"interfaces/%s/address" % (new_interface_ucr): self.ad_server_ip,
-					"interfaces/%s/network" % (new_interface_ucr):  guess_network,
+					"interfaces/%s/network" % (new_interface_ucr): guess_network,
 					"interfaces/%s/netmask" % (new_interface_ucr): guess_netmask,
 					"interfaces/%s/broadcast" % (new_interface_ucr): guess_broadcast
 				}
