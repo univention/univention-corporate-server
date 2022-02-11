@@ -67,6 +67,7 @@ usage () {
 	echo "    KVM_MEMORY           - ram for the KVM instance (default: $kvm_memory)"
 	echo "    KVM_CPUS             - cpu's for the KVM instance (default: $kvm_cpus)"
 	echo "    KVM_LABEL_SUFFIX     - additional label for instance name (default: $kvm_label_suffix)"
+	echo "    KVM_KEYPAIR_PASSPHRASE - ssh key password, also used as a fallback password for the ssh connection"
 	echo "    SOURCE_ISO           - an iso to mount (default: None)"
 	echo ""
 	echo "  ucs-*-create"
@@ -189,6 +190,7 @@ declare -a env_vars=(
 	COMBINED_APP_ID
 	SCOPE
 	SOURCE_ISO
+	KVM_KEYPAIR_PASSPHRASE
 )
 
 export CURRENT_AMI=${CURRENT_AMI:=$current_ami}
