@@ -1,0 +1,24 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: firefox-esr
+fix: 91.6.0esr-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ * firefox-esr (CVE-2022-22754)
+ * firefox-esr (CVE-2022-22756)
+ * firefox-esr (CVE-2022-22759)
+ * firefox-esr (CVE-2022-22760)
+ * firefox-esr (CVE-2022-22761)
+ * firefox-esr (CVE-2022-22763)
+ * firefox-esr (CVE-2022-22764)
+bug: [54442]
+cve:
+- CVE-2022-22754
+- CVE-2022-22756
+- CVE-2022-22759
+- CVE-2022-22760
+- CVE-2022-22761
+- CVE-2022-22763
+- CVE-2022-22764
