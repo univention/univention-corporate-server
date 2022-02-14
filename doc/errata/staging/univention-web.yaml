@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-web
+fix:
+desc: |
+ This update addresses the following issue(s):
+ * The ceckboxes in grids are now rendered in the correct state while
+   scrolling.
+bug: [54451]

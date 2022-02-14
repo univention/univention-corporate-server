@@ -764,6 +764,7 @@ define([
 						domClass.add(cell, 'dgrid-selector');
 						var checkbox = new CheckBox({
 							'class': 'umcGridRowSelectorCheckBox',
+							value: selected,
 						});
 						// FIXME since not all entries are rendered at once old rows are destroyed and new rows
 						// are created when scrolling. Atm the checkbox widgets stay in memory until the whole grid is

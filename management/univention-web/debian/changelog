@@ -1,3 +1,10 @@
+univention-web (4.0.2-53) unstable; urgency=medium
+
+  * Bug #54451: fix checkboxes in Grid not being rendered correctly when
+    scrolling
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 10 Nov 2022 16:48:47 +0100
+
 univention-web (4.0.2-52) unstable; urgency=medium
 
   * Bug #55107: expose /usr/share/univention-web/themes to enable the
