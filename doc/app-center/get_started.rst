@@ -20,9 +20,9 @@ Software in a Docker image
 --------------------------
 
 The software needs to be provided as a `Docker
-image <https://docs.docker.com/>`__. This is the easiest way to deploy
+image <https://docs.docker.com/>`_. This is the easiest way to deploy
 software in |UCSAPPC|. It is also recommended to publish the Docker
-container to `Docker hub <https://hub.docker.com/>`__. This makes
+container to `Docker hub <https://hub.docker.com/>`_. This makes
 referencing the image later much easier and simplifies the development
 and test cycle during development.
 
@@ -72,11 +72,11 @@ for all the settings around the app.
 Where to get help?
 ------------------
 
-App providers that need technical help during their development process
-are invited to open a topic in `Univention
-Forum <https://help.univention.com/c/apps/dev>`__. The dedicated section
-:guilabel:`App Development` is for all questions around app development, debugging
-and the like.
+App providers that need technical help during their development process are
+invited to open a topic in `Univention Forum
+<https://help.univention.com/c/apps/dev>`_. The dedicated section :guilabel:`App
+Development` is for all questions around app development, debugging and the
+like.
 
 .. _create-app-with-docker:
 
@@ -94,7 +94,8 @@ Multi Container App <create-app-with-docker:compose>`.
 
    Add new App
 
-1. In the App Provider Portal select :menuselection:`Favorites --> Apps` or :menuselection:`Software --> Apps`.
+1. In the App Provider Portal select :menuselection:`Favorites --> Apps` or
+   :menuselection:`Software --> Apps`.
 
 2. Click on :guilabel:`Add new app` and provide the following settings.
 
@@ -118,7 +119,7 @@ UCS version
    available on. Simply start with the latest available UCS version.
    It can also be started with the oldest maintained UCS version to
    cover the broadest user base of UCS. See the `UCS maintenance
-   cycle <https://wiki.univention.de/index.php/Maintenance_Cycle_for_UCS>`__
+   cycle <https://wiki.univention.de/index.php/Maintenance_Cycle_for_UCS>`_
    for an overview of the maintained UCS version. In either case it
    is recommended to specify the supported UCS versions explicitly
    (see :ref:`Supported UCS
@@ -193,7 +194,7 @@ Persistent data with volumes
 By default files created inside a container are stored in it, but they
 don't persist when the container is no longer running, removed or is
 exchanged with a newer version. As solution Docker offers
-`volumes <https://docs.docker.com/storage/volumes/>`__, a mechanism for
+`volumes <https://docs.docker.com/storage/volumes/>`_, a mechanism for
 persisting data generated and used by Docker containers. A volume is a
 directory on the Docker host that is mounted inside the Docker
 container.
@@ -263,7 +264,7 @@ With the port definition the App Center also takes care to open them in
 the UCS firewall. If additional firewall rules for ports are needed,
 they can be defined in the app join script. Please refer to the `Network
 Packet Filter section in the UCS Development
-Reference <https://docs.software-univention.de/developer-reference-5.0.html#misc:nacl>`__.
+Reference <https://docs.software-univention.de/developer-reference-5.0.html#misc:nacl>`_.
 
 .. _create-app-with-docker:database:
 
@@ -298,7 +299,7 @@ Environment
 
 Docker images usually receive environment variables when the container
 is started. The App Center supports to pass static configuration options
-to the container. Variables parameterized by |UCSUCRVs| are also
+to the container. Variables parameterized by |UCSUCRV|\ s are also
 supported. An environment file can look like the following example:
 
 .. code-block:: ini
@@ -319,7 +320,7 @@ Create a Multi Container App
 
 Starting with 345 |UCSAPPC| supports apps that consist of multiple Docker
 images. It uses `Docker
-Compose <https://docs.docker.com/compose/overview/>`__, a tool for
+Compose <https://docs.docker.com/compose/overview/>`_, a tool for
 defining and running multi-container Docker applications. The heart of
 such applications is a YAML file that configures all services for the
 application. The supported compose file format version is 2.0.
@@ -338,7 +339,7 @@ inside a container or files listing environment variables.
 
 |UCSUCR|, UCR for short, is the central tool for managing the local system
 configuration of UCS (see `Manual for users and
-administrators <https://docs.software-univention.de/manual-5.0.html#computers:Administration_of_local_system_configuration_with_Univention_Configuration_Registry>`__).
+administrators <https://docs.software-univention.de/manual-5.0.html#computers:Administration_of_local_system_configuration_with_Univention_Configuration_Registry>`_).
 Settings from UCR can be used in the Docker compose file to parameterize
 the Docker setup. This comes in very handy when settings like for
 example the local LDAP server should be passed to a container via its
@@ -399,7 +400,7 @@ changes:
    changed to point to the Docker Images in the Univention Docker
    Registry. All Docker Images from published apps are copied to the
    Univention Docker Registry to be independent of
-   `hub.docker.com <https://hub.docker.com>`__. This is the only server-side
+   `hub.docker.com <https://hub.docker.com>`_. This is the only server-side
    change to the Docker Compose file.
 
 2. The ``docker-compose.yml`` is itself a UCR template. As such, it will
@@ -419,11 +420,11 @@ changes:
    continue to exist. If the same port is defined in the portal and in
    ``docker-compose.yml``, the configuration in the App Provider Portal
    takes precedence. For example, if ``docker-compose.yml`` states that
-   port 4500 is provided externally as port 4500, but the portal defines
-   that this port is to be used as 6500, ``docker-compose.yml`` will be
-   modified to map port 4500 to 6500 on the host.
+   port ``4500`` is provided externally as port ``4500``, but the portal defines
+   that this port is to be used as ``6500``, ``docker-compose.yml`` will be
+   modified to map port ``4500`` to ``6500`` on the host.
 
-5. If ``docker-compose.yml`` specifies that port 80 or 443 should be
+5. If ``docker-compose.yml`` specifies that port ``80`` or ``443`` should be
    opened to the outside and the App Configuration specifies that these
    ports should be used by the App Center for the web interface, the App
    Center will define a port on the fly in ``docker-compose.yml``. This
@@ -451,10 +452,11 @@ that no longer matches 100% of the App Provider's input. The modified
 
 .. rubric:: UCR Template docker-compose file
 
-As stated above, the ``docker-compose.yml`` is a UCR template. This
-means that you are able to match the file to the environment of the
-Docker host. The contains more about UCR templates, but the core
-mechanics are:
+As stated above, the ``docker-compose.yml`` is a UCR template. This means that
+you are able to match the file to the environment of the Docker host. The
+`Univention Developer Reference
+<https://docs.software-univention.de/developer-reference-5.0.html>`_ contains
+more about UCR templates, but the core mechanics are:
 
 1. Although every ``docker-compose.yml`` is a UCR template, you may not
    notice it: Where no specific tags are used, the very content is used.
@@ -496,4 +498,3 @@ As soon as all the technical settings are made, please see :ref:`App life
 cycle <app-lifecycle>` for the next steps and how to test the app.
 For app presentation in the App Center please see :ref:`App
 presentation <app-presentation>`.
-

@@ -35,7 +35,7 @@ local instance of |UCSUCR| (UCS). To setup your UCS environment the best
 practice is to download one of the UCS virtual machine images and use
 VirtualBox or VMware (see :ref:`Download UCS <testing:download>`). After
 the installation, `activate the
-system <https://docs.software-univention.de/manual-5.0.html#central:license>`__
+system <https://docs.software-univention.de/manual-5.0.html#central:license>`_
 and copy your SSH key to the UCS system to save typing the password on
 each remote console login. Finally, activate the Test App Center (see
 :ref:`Test App Center <testing:test-app-center>`). With that status it is
@@ -73,7 +73,7 @@ Download UCS
 ------------
 
 Download UCS to get a copy of UCS free of charge from the `Univention
-website <https://www.univention.com/downloads/ucs-download/>`__. Choose
+website <https://www.univention.com/downloads/ucs-download/>`_. Choose
 an ISO image or a pre-installed virtual machine image for various
 virtualization hypervisors, like for example VMware (ESXi and
 Workstations), VirtualBox and KVM.
@@ -83,8 +83,9 @@ Workstations), VirtualBox and KVM.
 Initial UCS setup
 -----------------
 
-Please refer to the for the first steps about installation and initial
-setup.
+Please refer to the `Quickstart Guide for Univention Corporate Server
+<https://docs.software-univention.de/quickstart-en-5.0.html>`_ for the first
+steps about installation and initial setup.
 
 .. _testing:test-app-center:
 
@@ -120,16 +121,16 @@ app from there.
 
 The following points are mandatory for the App to be published:
 
--  The App has to install without user interaction. Exceptions are
+*  The App has to install without user interaction. Exceptions are
    configuration parameters obtained via App Settings (see :ref:`App
    settings <app-settings>`).
 
--  The App may not negatively impact UCS' core services.
+* The App may not negatively impact UCS' core services.
 
--  The App has to uninstall without leaving any remainders that
+*  The App has to uninstall without leaving any remainders that
    interfere with UCS' core services.
 
--  The app is working with the UCS versions that are configured as
+*  The app is working with the UCS versions that are configured as
    Supported UCS version (see :ref:`Supported UCS
    versions <create-app-with-docker:supported-ucs-version>`).
 
@@ -171,16 +172,16 @@ The following list gives an idea what the app provider should test
 before the app is approved for release or update. The list cannot cover
 all possible items, but mentions what is missed repeatedly.
 
--  Integration with UCS identity management: Does the login with
+*  Integration with UCS identity management: Does the login with
    activated users work? Will the login be blocked for users that are
    not activated for the app?
 
--  Environment with proxy: How does the app behave when a proxy is
+*  Environment with proxy: How does the app behave when a proxy is
    configured in the UCS environment? Does the app take the proxy
    settings into account? Does the app work as expected? Is the
    networking still working properly for the app?
 
--  Description and documentation: Are the texts consistent in content?
+*  Description and documentation: Are the texts consistent in content?
    Can they be understood easily? Is the description of technical steps
    complete and correct, especially path and file names?
 
@@ -211,7 +212,7 @@ It is run together with the automatic app tests in the Univention test
 infrastructure and will be executed after the app has been installed
 during those tests.
 
-On successful tests, the script has to end with exit code 0.
+On successful tests, the script has to end with exit code ``0``.
 ``--binddn`` and ``--bindpwdfile`` are passed, so that the command line
 interface of UDM can be used easily. Here is an example:
 
@@ -230,7 +231,7 @@ interface of UDM can be used easily. Here is an example:
 
 For certain tests user credentials for access to the directory service
 are needed. They are passed with the parameters ``binddn`` and
-``bindpwd``. In many cases the user Administrator is used. The
+``bindpwd``. In many cases the user *Administrator* is used. The
 Administrator credentials are only important for UDM calls on UCS
 systems that are not the |UCSPRIMARYDN|.
 
