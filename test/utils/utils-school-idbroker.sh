@@ -195,4 +195,42 @@ create_school_users_classes () {
     --append users "uid=teach3,cn=lehrer,cn=users,ou=${ou1},$(ucr get ldap/base)"
 }
 
+# install letsencrypt and copy certificate files from local
+setup_letsencrypt () {
+
+	# only for EC2
+	test "$KVM_BUILD_SERVER" = "EC2" ||  return 0
+
+	local admin_password="${1:?missing admin_password}"
+	local domains="${2:?missing domains}"
+	local password_file
+
+	password_file="$(mktemp)"
+	echo "$admin_password" > "$password_file"
+
+	univention-app install "letsencrypt" --noninteractive --username="Administrator" --pwdfile="$password_file" || return 1
+	cp /root/letsencrypt/domain.key /root/letsencrypt/account.key /root/letsencrypt/signed_chain.crt /root/letsencrypt/domain.csr /etc/univention/letsencrypt/ || return 1
+	ucr set \
+		letsencrypt/domains="$domains" \
+		apache2/ssl/certificate="/etc/univention/letsencrypt/signed_chain.crt" \
+		apache2/ssl/key="/etc/univention/letsencrypt/domain.key"
+
+	# special setup for keycloak and ucs-sso vhosts
+	if [ "$(hostname)" = "traeger1" ] || [ "$(hostname)" = "traeger2" ]; then
+		ucr set \
+			saml/apache2/ssl/certificate="/etc/univention/letsencrypt/signed_chain.crt" \
+			saml/apache2/ssl/key="/etc/univention/letsencrypt/domain.key"
+	elif [ "$(hostname)" = "kc1" ]; then
+		ucr set --forced \
+			apache2/vhosts/login.kc1.broker0.dev.univention-id-broker.com/443/ssl/certificate="/etc/univention/letsencrypt/signed_chain.crt" \
+			apache2/vhosts/login.kc1.broker0.dev.univention-id-broker.com/443/ssl/key="/etc/univention/letsencrypt/domain.key"
+	fi
+
+
+	service apache2 restart || return 1
+
+	return 0
+}
+
+
 # vim:set filetype=sh ts=4:
