@@ -4,7 +4,7 @@
 Classification in the IT world
 ******************************
 
-To comprehend the architecture of Univention Corporate Server (UCS) it is
+To comprehend the architecture of Univention Corporate Server (UCS), it is
 important to understand the origin and where it is located in the world of
 information technology (IT).
 
@@ -45,12 +45,9 @@ APT, see the `Debian package management chapter in the Debian reference
 <debian-ref-package-mngmt_>`_.
 
 Univention distributes most packages from Debian GNU/Linux for the *amd64*
-architecture without changes for UCS. This includes the GNU/Linux kernel offered
-by Debian and about xx% of the packages.
-
-.. TODO Ask SME: For some rough statistics
-   TODO Ask SME: How many packages do we copy from Debian? How many of them are changed by Univention? Do we copy all packages?
-   TODO Ask SME: How many packages are added by Univention?
+architecture without changes for UCS. This includes the GNU/Linux kernel and
+over 98% unchanged packages. Univention uses the default services from the
+Debian distribution and delivers custom configurations for UCS.
 
 In the following circumstances, Univention builds and maintains derived
 packages:
@@ -60,6 +57,8 @@ packages:
 
 Additionally, Univention develops own software responsible for UCS functionality
 that is distributed as Debian package.
+
+Nevertheless, UCS doesn't include packages from the Debian games section.
 
 Identity management
 ===================
@@ -111,10 +110,11 @@ hardware, various software and network components. It is the foundation of an
 organization's technology system and drives the organization's success.
 
 UCS provides important infrastructure services to create an IT network
-infrastructure and connect IT components. For example UCS assigns addresses with
-DHCP and resolves hostnames with DNS, and much more. Administrators manage
-various IT components in their IT environment, like different kind of hosts,
-clients and printers.
+infrastructure and connect IT components. For example UCS assigns addresses to
+computers and other network components through `DHCP <w-dhcp_>`_ and resolves
+hostnames through `DNS <w-dns_>`_, and much more.  Administrators manage various
+IT components in their IT environment, like different kind of hosts, clients and
+printers.
 
 .. TODO  Enable, once the services section is written.
    """For more information about the different infrastructure services in UCS, see

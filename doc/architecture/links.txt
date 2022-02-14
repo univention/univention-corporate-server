@@ -4,5 +4,7 @@
 .. _w-certificate-authority: https://en.wikipedia.org/wiki/Certificate_authority
 .. _w-deb-file-format: https://en.wikipedia.org/wiki/Deb_(file_format)
 .. _w-debian: https://en.wikipedia.org/wiki/Debian
+.. _w-dhcp: https://en.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol
+.. _w-dns: https://en.wikipedia.org/wiki/Domain_Name_System
 .. _w-openldap: https://en.wikipedia.org/wiki/OpenLDAP
 .. _w-samba: https://en.wikipedia.org/wiki/Samba_(software)

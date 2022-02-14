@@ -49,7 +49,7 @@ central database called domain database registers all objects, like for example
 user identities, computer systems, printers and file shares. See figure
 :ref:`fig-concepts-domain-database` for a graphical interpretation. The database
 stores the objects in a hierarchical tree-like structure. One or more central
-systems store the central database and are called domain controller.
+systems store the central database and are called domain node.
 
 .. _fig-concepts-domain-database:
 
