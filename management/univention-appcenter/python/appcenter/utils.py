@@ -46,6 +46,8 @@ import ssl
 from hashlib import md5, sha256
 import socket
 from locale import getlocale
+from logging import Logger  # noqa F401
+from typing import TYPE_CHECKING, Any, Container, Dict, Iterable, List, Mapping, Optional, Sequence, Text, Tuple, Type, TypeVar, Union  # noqa F401
 
 from six.moves.configparser import RawConfigParser, ParsingError
 from six.moves import urllib_request, http_client
@@ -59,6 +61,12 @@ from univention.config_registry import interfaces
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.ucr import ucr_get, ucr_keys
 
+if TYPE_CHECKING:
+	from univention.appcenter.app import App  # noqa F401
+
+_ConfigParser = TypeVar("_ConfigParser", bound=RawConfigParser)
+_T = TypeVar("_T")
+
 # "global" translation for univention-appcenter
 # also provides translation for univention-appcenter-docker etc
 _ = Translation('univention-appcenter').translate
@@ -68,6 +76,7 @@ utils_logger = get_base_logger().getChild('utils')
 
 
 def read_ini_file(filename, parser_class=RawConfigParser):
+	# type: (str, Type[_ConfigParser]) -> _ConfigParser
 	parser = parser_class()
 	try:
 		with open(filename, 'r') as f:
@@ -86,6 +95,7 @@ def read_ini_file(filename, parser_class=RawConfigParser):
 
 
 def docker_bridge_network_conflict():
+	# type: () -> bool
 	docker0_net = ipaddress.IPv4Network(u'%s' % (ucr_get('docker/daemon/default/opts/bip', '172.17.42.1/16'),), False)
 	for name, iface in interfaces.Interfaces().ipv4_interfaces:
 		if 'address' in iface and 'netmask' in iface:
@@ -96,6 +106,7 @@ def docker_bridge_network_conflict():
 
 
 def app_is_running(app):
+	# type: (Union[App, str]) -> Optional[bool]
 	from univention.appcenter.app_cache import Apps
 	if isinstance(app, string_types):
 		app = Apps().find(app)
@@ -116,10 +127,12 @@ def app_is_running(app):
 
 
 def docker_is_running():
+	# type: () -> bool
 	return call_process(['invoke-rc.d', 'docker', 'status']).returncode == 0
 
 
 def app_ports():
+	# type: () -> List[Tuple[ str, int, int]]
 	'''Returns a list for ports of an App:
 	[(app_id, container_port, host_port), ...]'''
 	ret = []
@@ -134,6 +147,7 @@ def app_ports():
 
 
 def app_ports_with_protocol():
+	# type: () -> List[Tuple[ str, int, int, str]]
 	'''Returns a list for ports of an App:
 	[(app_id, container_port, host_port, protocol), ...]'''
 	ret = []
@@ -149,6 +163,7 @@ class NoMorePorts(Exception):
 
 
 def currently_free_port_in_range(lower_bound, upper_bound, blacklist):
+	# type: (int, int, Container[int]) -> int
 	for port in range(lower_bound, upper_bound):
 		if port in blacklist:
 			continue
@@ -164,29 +179,35 @@ def currently_free_port_in_range(lower_bound, upper_bound, blacklist):
 
 
 def generate_password():
+	# type: () -> str
 	return get_sha256(str(uuid4()) + str(time.time()))
 
 
 def underscore(value):
+	# type: (str) -> Optional[str]
 	if value:
 		return re.sub('([a-z])([A-Z])', r'\1_\2', value).lower()
 
 
 def capfirst(value):
+	# type: (str) -> Optional[str]
 	if value:
 		return value[0].upper() + value[1:]
 
 
 def camelcase(value):
+	# type: (str) -> Optional[str]
 	if value:
 		return ''.join(capfirst(part) for part in value.split('_'))
 
 
 def shell_safe(value):
+	# type: (str) -> Optional[str]
 	return underscore(key_shell_escape(value))
 
 
 def mkdir(directory):
+	# type: (str) -> None
 	if os.path.exists(directory):
 		return
 	parent, child = os.path.split(directory)
@@ -196,11 +217,13 @@ def mkdir(directory):
 
 
 def rmdir(directory):
+	# type: (str) -> None
 	if os.path.exists(directory):
 		shutil.rmtree(directory)
 
 
 def call_process2(cmd, logger=None, env=None, cwd=None):
+	# type: (Sequence[str], Optional[Logger], Optional[Mapping[str, str]], Optional[str]) -> Tuple[int, str]
 	if logger is None:
 		logger = utils_logger
 	# make sure we log strings only
@@ -229,6 +252,7 @@ def call_process2(cmd, logger=None, env=None, cwd=None):
 
 
 def call_process(args, logger=None, env=None, cwd=None):
+	# type: (Sequence[str], Optional[Logger], Optional[Mapping[str, str]], Optional[str]) -> Any
 	process = Popen(args, stdout=PIPE, stderr=PIPE, bufsize=1, close_fds=True, env=env, cwd=cwd)
 	if logger is not None:
 		if cwd:
@@ -261,12 +285,14 @@ def call_process(args, logger=None, env=None, cwd=None):
 
 
 def call_process_as(user, args, logger=None, env=None):
+	# type: (str, Sequence[str], Optional[Logger], Optional[Mapping[str, str]]) -> Any
 	args = list2cmdline(args)
 	args = ['/bin/su', '-', user, '-c', args]
 	return call_process(args, logger, env)
 
 
 def verbose_http_error(exc):
+	# type: (Exception) -> str
 	strerror = ''
 	if hasattr(exc, 'getcode'):
 		code = exc.getcode()
@@ -332,6 +358,7 @@ urlopen._opener_installed = False
 
 
 def get_md5(content):
+	# type: (bytes) -> str
 	m = md5()
 	if isinstance(content, string_types):
 		content = content.encode('utf-8')
@@ -340,12 +367,14 @@ def get_md5(content):
 
 
 def get_md5_from_file(filename):
+	# type: (str) -> Optional[str]
 	if os.path.exists(filename):
 		with open(filename, 'rb') as f:
 			return get_md5(f.read())
 
 
 def get_sha256(content):
+	# type: (bytes) -> str
 	m = sha256()
 	if isinstance(content, string_types):
 		content = content.encode('utf-8')
@@ -354,12 +383,14 @@ def get_sha256(content):
 
 
 def get_sha256_from_file(filename):
+	# type: (str) -> Optional[str]
 	if os.path.exists(filename):
 		with open(filename, 'rb') as f:
 			return get_sha256(f.read())
 
 
 def get_current_ram_available():
+	# type: () -> float
 	''' Returns RAM currently available in MB, excluding Swap '''
 	# return (psutil.avail_phymem() + psutil.phymem_buffers() + psutil.cached_phymem()) / (1024*1024) # psutil is outdated. re-enable when methods are supported
 	# implement here. see http://code.google.com/p/psutil/source/diff?spec=svn550&r=550&format=side&path=/trunk/psutil/_pslinux.py
@@ -375,6 +406,7 @@ def get_current_ram_available():
 
 
 def get_free_disk_space():
+	# type: () -> Optional[float]
 	''' Returns disk space currently free in MB'''
 	docker_path = '/var/lib/docker'
 	try:
@@ -395,6 +427,7 @@ def get_free_disk_space():
 
 
 def flatten(list_of_lists):
+	# type: (Iterable[Any]) -> List[Any]
 	# return [item for sublist in list_of_lists for item in sublist]
 	# => does not work well for strings in list
 	ret = []
@@ -407,12 +440,14 @@ def flatten(list_of_lists):
 
 
 def unique(sequence):
+	# type: (Iterable[_T]) -> List[_T]
 	# uniquifies any list; preserves ordering
 	seen = set()
 	return [val for val in sequence if val not in seen and not seen.add(val)]
 
 
 def get_locale():
+	# type: () -> str
 	# returns currently set locale: de_AT.UTF-8 -> de
 	# may return None if not set (i.e. 'C')
 	locale = getlocale()[0]
@@ -422,6 +457,7 @@ def get_locale():
 
 
 def gpg_verify(filename):
+	# type: (str) -> Tuple[int, str]
 	cmd = (
 		'apt-key',
 		'verify',
@@ -434,20 +470,24 @@ def gpg_verify(filename):
 
 
 def get_local_fqdn():
+	# type: () -> str
 	return '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 
 
 def get_server():
+	# type: () -> str
 	from univention.appcenter.app_cache import default_server
 	return default_server()
 
 
 def container_mode():
+	# type: () -> bool
 	'''returns True if this system is a container'''
 	return bool(ucr_get('docker/container/uuid'))
 
 
 def send_information(action, app=None, status=200, value=None):
+	# type: (str, Optional[App], int, str) -> None
 	app_id = app and app.id
 	utils_logger.debug('send_information: action=%s app=%s value=%s status=%s' % (action, app_id, value, status))
 
@@ -455,7 +495,7 @@ def send_information(action, app=None, status=200, value=None):
 	url = '%s/postinst' % server
 
 	uuid = '00000000-0000-0000-0000-000000000000'
-	system_uuid = '00000000-0000-0000-0000-000000000000'
+	system_uuid = '00000000-0000-0000-0000-000000000000'  # type: Optional[str]
 	if not app or app.notify_vendor:
 		uuid = ucr_get('uuid/license', uuid)
 		system_uuid = ucr_get('uuid/system', system_uuid)
@@ -486,6 +526,7 @@ def send_information(action, app=None, status=200, value=None):
 
 
 def find_hosts_for_master_packages():
+	# type: () -> List[Tuple[str, bool]]
 	from univention.appcenter.udm import get_machine_connection, search_objects
 	lo, pos = get_machine_connection()
 	hosts = []
@@ -504,12 +545,13 @@ def find_hosts_for_master_packages():
 
 
 def resolve_dependencies(apps, action):
+	# type: (List[App], str) -> List[App]
 	from univention.appcenter.app_cache import Apps
 	from univention.appcenter.udm import get_machine_connection
 	lo, pos = get_machine_connection()
 	utils_logger.info('Resolving dependencies for %s' % ', '.join(app.id for app in apps))
 	apps_with_their_dependencies = []
-	depends = {}
+	depends = {}  # type: Dict[int, List[int]]
 	checked = []
 	apps = apps[:]
 	if action == 'remove':
