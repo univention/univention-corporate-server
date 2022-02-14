@@ -36,6 +36,7 @@ extensions = [
     "sphinxcontrib.spelling",
     "univention_sphinx_extension",
     "sphinx_last_updated_by_git",
+    "sphinxcontrib.inkscapeconverter",
 ]
 
 root_doc = "contents"
