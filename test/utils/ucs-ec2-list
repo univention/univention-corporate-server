@@ -18,6 +18,7 @@ declare -a cmd=(
 	-it
 	-v "$(pwd):/test"
 	-v ~/ec2:/root/ec2:ro
+	--network host
 	--dns '192.168.0.124'
 	--dns '192.168.0.97'
 	--dns-search 'knut.univention.de'
