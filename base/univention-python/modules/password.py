@@ -198,23 +198,51 @@ def password_config(scope=None):
 	:return: Password configuration options.
 	:rtype: :class:`dict`
 	"""
-	scope = '/%s' % scope if scope else ''
-	return {
-		'digits': int(ucr.ucr['password%s/quality/credit/digits' % scope] or 6),
-		'lower':  int(ucr.ucr['password%s/quality/credit/lower' % scope] or 6),
-		'other': int(ucr.ucr['password%s/quality/credit/other' % scope] or 0),
-		'upper': int(ucr.ucr['password%s/quality/credit/upper' % scope] or 6),
-		'forbidden': ucr.ucr['password%s/quality/forbidden/chars' % scope] or ('0Ol1I' if scope else ''),
-		'min_length': int(ucr.ucr['password%s/quality/length/min' % scope] or 24),
+	default_cfg = {
+		'digits': int(ucr.ucr.get('password/quality/credit/digits', 6)),
+		'lower': int(ucr.ucr.get('password/quality/credit/lower', 6)),
+		'other': int(ucr.ucr.get('password/quality/credit/other', 0)),
+		'upper': int(ucr.ucr.get('password/quality/credit/upper', 6)),
+		'forbidden': ucr.ucr.get('password/quality/forbidden/chars', ''),
+		'min_length': int(ucr.ucr.get('password/quality/length/min', 24)),
 	}
 
+	if scope:
+		cfg = {
+			'digits': int(ucr.ucr.get('password/%s/quality/credit/digits' % scope) or default_cfg.get('digits')),
+			'lower': int(ucr.ucr.get('password/%s/quality/credit/lower' % scope) or default_cfg.get('lower')),
+			'other': int(ucr.ucr.get('password/%s/quality/credit/other' % scope) or default_cfg.get('other')),
+			'upper': int(ucr.ucr.get('password/%s/quality/credit/upper' % scope) or default_cfg.get('upper')),
+			'forbidden': ucr.ucr.get('password/%s/quality/forbidden/chars' % scope, default_cfg.get('forbidden')) or '0Ol1I',
+			'min_length': int(ucr.ucr.get('password/%s/quality/length/min' % scope) or default_cfg.get('min_length')),
+		}
+	else:
+		cfg = default_cfg
 
-def generate_password(config):
+	return cfg
+
+
+def generate_password(digits=6, lower=6, other=0, upper=6, forbidden='', min_length=24):
 	"""
-	Generate random password.
+	Generate random password using given parameters. Whitespaces are implicitly forbidden.
 
-	:param config: Password configuration options.
-	:type config: :class:`dict`
+	:param digits: Minimal number of digits in generated password.
+	:type digits: :class:`int`
+
+	:param lower: Minimal number of lowercase ASCII letters in generated password.
+	:type lower: :class:`int`
+
+	:param other: Minimal number of special characters in generated password.
+	:type other: :class:`int`
+
+	:param upper: Minimal number of uppercase ASCII letters in generated password.
+	:type upper: :class:`int`
+
+	:param forbidden: Forbidden characters in generated password.
+	:type forbidden: :class:`str`
+
+	:param min_length: Minimal length of generated password.
+	:type min_length: :class:`int`
 
 	:return: Randomly generated password.
 	:rtype: :class:`str`
@@ -222,34 +250,23 @@ def generate_password(config):
 	:raises TypeError: In case invalid UCR configuration value type.
 	:raises ValueError: In case any password quality precondition fails.
 	"""
-	if config and not isinstance(config, dict):
-		raise ValueError('Invalid configuration object passed to random password generator')
-
-	# take default configuration dictionary and update the values with passed ones (if any)
-	cfg = password_config()
-	cfg.update(config or {})
-
-	digit_count = int(cfg.get('digits'))
-	lowercase_count = int(cfg.get('lower'))
-	special_count = int(cfg.get('other'))
-	uppercase_count = int(cfg.get('upper'))
-	min_length = int(cfg.get('min_length'))
+	digit_count = int(digits)
+	lowercase_count = int(lower)
+	special_count = int(other)
+	uppercase_count = int(upper)
+	min_length = int(min_length)
 	special_characters = string.punctuation
-	forbidden_chars = cfg.get('forbidden', '')
+	forbidden_chars = forbidden or ''
 	exclude_characters = ''.join(set((forbidden_chars + string.whitespace) if forbidden_chars else string.whitespace))
 
 	if 0 > digit_count or 0 > lowercase_count or 0 > special_count or 0 > uppercase_count:
-		raise ValueError('Number of digit_count, lowercase, uppercase or special_count characters can not be negative')
-	elif 1 > min_length:
-		raise ValueError('Minimal length must be greater than zero')
-
-	calculated_min_length = digit_count + lowercase_count + special_count + uppercase_count
-	if calculated_min_length > min_length:
-		raise ValueError('Calculated minimal length: %s can not be greater than given minimal: %s' % (calculated_min_length, min_length,))
+		raise ValueError('Number of digits, lower, upper or other characters can not be negative')
+	elif 0 >= digit_count + lowercase_count + special_count + uppercase_count:
+		raise ValueError('At least one from the: digits, lower, upper or other characters must be positive number')
 
 	available_chars = set(string.printable) - set(string.whitespace) - set(exclude_characters)
 	if not available_chars:
-		raise ValueError('All available characters are excluded by: %r', (exclude_characters,))
+		raise ValueError('All available characters are excluded by the rule: %r', (exclude_characters,))
 
 	rnd = SystemRandom()
 
@@ -264,30 +281,42 @@ def generate_password(config):
 		ascii_uppercase = string.ascii_uppercase
 		special_characters = special_characters or ''
 
-	if special_count and not special_characters:
-		raise ValueError('There are %s special characters requested but special characters pool is set to be empty' % (special_count,))
+	pools = []  # list of tuples in form: (characters_type_pool, characters_type_count)
+	if 0 < digit_count:
+		if digits:
+			pools.append((digits, digit_count))
+		else:
+			raise ValueError('There are %s digits requested but digits pool is empty' % (digit_count,))
+
+	if 0 < lowercase_count:
+		if ascii_lowercase:
+			pools.append((ascii_lowercase, lowercase_count))
+		else:
+			raise ValueError('There are %s lowercase characters requested but lowercase pool is empty' % (lowercase_count,))
+
+	if 0 < uppercase_count:
+		if ascii_uppercase:
+			pools.append((ascii_uppercase, uppercase_count))
+		else:
+			raise ValueError('There are %s uppercase characters requested but uppercase pool is empty' % (uppercase_count,))
+
+	if 0 < special_count:
+		if special_characters:
+			pools.append((special_characters, special_count))
+		else:
+			raise ValueError('There are %s special characters requested but special characters pool is empty' % (special_count,))
 
 	random_list = []
 	while True:
-		if 0 < len(ascii_lowercase):
-			random_list.extend([rnd.choice(ascii_lowercase) for _ in range(lowercase_count)])
-			if len(random_list) >= min_length:
-				break
+		if len(random_list) >= min_length:
+			break
 
-		if 0 < len(digits):
-			random_list.extend([rnd.choice(digits) for _ in range(digit_count)])
-			if len(random_list) >= min_length:
-				break
+		for pool in pools:
+			for c in range(pool[1]):
+				random_list.append(rnd.choice(pool[0]))
 
-		if 0 < len(ascii_uppercase):
-			random_list.extend([rnd.choice(ascii_uppercase) for _ in range(uppercase_count)])
-			if len(random_list) >= min_length:
-				break
-
-		if 0 < len(special_characters):
-			random_list.extend([rnd.choice(special_characters) for _ in range(special_count)])
-			if len(random_list) >= min_length:
-				break
+				if len(random_list) >= min_length:
+					break
 
 	rnd.shuffle(random_list)
 	res = ''.join(random_list)
