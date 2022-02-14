@@ -312,7 +312,7 @@ class ISyntax(object):
 
 		if getattr(self, 'depends', None) is not None:
 			descr.setdefault('dynamicOptions', {})
-			descr['dynamicOptions']['$name$'] = self.depends
+			descr['dynamicOptions']['$depends$'] = self.depends
 			descr['depends'] = self.depends
 
 		def subsyntaxes(udm_property):

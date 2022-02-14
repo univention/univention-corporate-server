@@ -995,7 +995,7 @@ class Instance(Base, ProgressMixin):
 			options = request.options
 			options.pop('allow_asterisks', None)  # internal option
 			options['dependencies'] = {}
-			dependency_name = options.get('$name$')
+			dependency_name = options.get('$depends$')
 			if options.get(dependency_name):
 				options['dependencies'] = {dependency_name: options.pop(dependency_name)}
 

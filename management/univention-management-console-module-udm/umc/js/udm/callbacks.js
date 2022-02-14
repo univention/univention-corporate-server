@@ -53,17 +53,17 @@ define([
 
 	return {
 		setDynamicValues: function(dict) {
-			// return the list specified by the property '$name$'
+			// return the list specified by the property '$depends$'
 			// make sure that elements do not exist twice
 			var tmpMap = {};
-			var list =  array.filter(dict[dict.$name$], function(ival) {
+			var list =  array.filter(dict[dict.$depends$], function(ival) {
 				if (!(ival in tmpMap)) {
 					tmpMap[ival] = true;
 					return true;
 				}
 				return false;
 			});
-			if ( dict.$name$ == 'dnsEntryZoneForward' ) {
+			if ( dict.$depends$ == 'dnsEntryZoneForward' ) {
 				list = array.map( list, function( item ) {
 					return tools.explodeDn( item[ 0 ], true )[ 0 ];
 				} );
