@@ -96,6 +96,7 @@ register_idbroker_as_sp_in_ucs () {
 }
 
 add_bettermarks_app_portal_link () {
+	local keycloak_identifier="${1:?missing keycloak_identifier=}"
 	local rv=0
 	udm settings/portal_entry create \
 		--position "cn=portal,cn=univention,$(ucr get ldap/base)" \
@@ -104,7 +105,7 @@ add_bettermarks_app_portal_link () {
 		--set category=service \
 		--set description="en_US \"bettermarks is an adaptive learning system for maths\"" \
 		--set displayName="en_US \"bettermarks\"" \
-		--set link="https://acc.bettermarks.com/auth/univention/DE_univention" \
+		--set link="https://acc.bettermarks.com/auth/univention/DE_univention/?kc_idp_hint=$keycloak_identifier" \
 		--set linkTarget=useportaldefault \
 		--set name=bettermarks \
 		--set portal="cn=ucsschool_demo_portal,cn=portal,cn=univention,$(ucr get ldap/base)" \
