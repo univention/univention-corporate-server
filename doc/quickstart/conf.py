@@ -89,7 +89,7 @@ latex_elements = {
 }
 
 # Sitemap, see https://github.com/jdillard/sphinx-sitemap
-html_baseurl = 'http://https://docs.software-univention.de/quickstart/en/5.0'
+html_baseurl = f'docs.software-univention.de/quickstart/{language}/{release}'
 
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-figure_language_filename
 figure_language_filename = "{root}-{language}{ext}"
