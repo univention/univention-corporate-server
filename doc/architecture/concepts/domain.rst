@@ -20,8 +20,10 @@ Simplified, an IT environment consists of systems and users. Systems offer
 services that provide functionality. Users use functionality. A domain is a form
 of a computer network. It incorporates one or more systems and users into one
 single trust context. The domain offers special services called domain services
-to systems and users. The following figure shows the relationship between the
-actors systems, services and users.
+to systems and users. The figure :ref:`fig-concepts-domain-systems-users` shows
+the relationship between the actors systems, services and users.
+
+.. _fig-concepts-domain-systems-users:
 
 .. figure:: /images/Systems-and-users-in-domain.*
 
@@ -44,9 +46,12 @@ administration.
 
 All the objects in a domain need to be managed and organized. In a domain a
 central database called domain database registers all objects, like for example
-user identities, computer systems, printers and file shares. The database
+user identities, computer systems, printers and file shares. See figure
+:ref:`fig-concepts-domain-database` for a graphical interpretation. The database
 stores the objects in a hierarchical tree-like structure. One or more central
 systems store the central database and are called domain controller.
+
+.. _fig-concepts-domain-database:
 
 .. figure:: /images/Domain-database.*
 
