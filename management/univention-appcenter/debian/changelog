@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-72) unstable; urgency=medium
+
+  * Bug #54452: Download/uncompress to temporary directory
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 14 Feb 2022 19:06:18 +0100
+
 univention-appcenter (9.0.2-71) unstable; urgency=medium
 
   * Bug #53523: If target hosts selection during application install is
