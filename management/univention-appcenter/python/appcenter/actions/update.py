@@ -105,15 +105,15 @@ class Update(UniventionAppAction):
 		# type: (Namespace) -> List[AppCenterCache]
 		if args.appcenter_server:
 			return [AppCenterCache(server=args.appcenter_server)]
-		else:
-			ret = []
-			servers = set()
-			for appcenter_cache in Apps().get_appcenter_caches():
-				server = appcenter_cache.get_server()
-				if server not in servers:
-					servers.add(server)
-					ret.append(appcenter_cache)
-			return ret
+
+		ret = []
+		servers = set()
+		for appcenter_cache in Apps().get_appcenter_caches():
+			server = appcenter_cache.get_server()
+			if server not in servers:
+				servers.add(server)
+				ret.append(appcenter_cache)
+		return ret
 
 	def _app_caches(self, args):
 		# type: (Namespace) -> Iterator[AppCenterCache]
@@ -196,31 +196,31 @@ class Update(UniventionAppAction):
 		filenames = [] if ucr_is_false('appcenter/index/verify') else ['all.tar.gpg']
 		if filenames and not self._download_files(app_cache, filenames):
 			return False
-		else:
-			appcenter_host = app_cache.get_server()
-			if appcenter_host.startswith('https'):
-				appcenter_host = 'http://%s' % appcenter_host[8:]
 
-			cache_dir = app_cache.get_cache_dir()
-			tmp_file = os.path.join(cache_dir, '.tmp.tar')
-			all_tar_file = os.path.join(cache_dir, '.all.tar')
-			all_tar_url = '%s/meta-inf/%s/all.tar.zsync' % (appcenter_host, app_cache.get_ucs_version())
-			self.log('Downloading "%s"...' % all_tar_url)
-			if self._subprocess(['zsync', all_tar_url, '-q', '-o', tmp_file, '-i', all_tar_file], cwd=cache_dir).returncode:
-					# fallback: download all.tar.gz without zsync. some proxys have difficulties with it, including:
-					#   * Range requests are not supported
-					#   * HTTP requests are altered
-					self.warn('Downloading the App archive via zsync failed. Falling back to download it directly.')
-					self.warn('For better performance, try to make zsync work for "%s". The error may be caused by a proxy altering HTTP requests' % all_tar_url)
-					self._download_files(app_cache, ['all.tar.gz'])
-					# files are always downloaded with their filename prepended by '.'
-					tgz_file = os.path.join(cache_dir, '.all.tar.gz')
-					self._uncompress_archive(app_cache, tgz_file)
+		appcenter_host = app_cache.get_server()
+		if appcenter_host.startswith('https'):
+			appcenter_host = 'http://%s' % appcenter_host[8:]
 
-			self._verify_file(cache_dir)
+		cache_dir = app_cache.get_cache_dir()
+		tmp_file = os.path.join(cache_dir, '.tmp.tar')
+		all_tar_file = os.path.join(cache_dir, '.all.tar')
+		all_tar_url = '%s/meta-inf/%s/all.tar.zsync' % (appcenter_host, app_cache.get_ucs_version())
+		self.log('Downloading "%s"...' % all_tar_url)
+		if self._subprocess(['zsync', all_tar_url, '-q', '-o', tmp_file, '-i', all_tar_file], cwd=cache_dir).returncode:
+			# fallback: download all.tar.gz without zsync. some proxys have difficulties with it, including:
+			#   * Range requests are not supported
+			#   * HTTP requests are altered
+			self.warn('Downloading the App archive via zsync failed. Falling back to download it directly.')
+			self.warn('For better performance, try to make zsync work for "%s". The error may be caused by a proxy altering HTTP requests' % all_tar_url)
+			self._download_files(app_cache, ['all.tar.gz'])
+			# files are always downloaded with their filename prepended by '.'
+			tgz_file = os.path.join(cache_dir, '.all.tar.gz')
+			self._uncompress_archive(app_cache, tgz_file)
 
-			self._extract_archive(app_cache)
-			return True
+		self._verify_file(cache_dir)
+
+		self._extract_archive(app_cache)
+		return True
 
 	@possible_network_error
 	def _download_file(self, base_url, filename, cache_dir, etag, ucs_version=None):
