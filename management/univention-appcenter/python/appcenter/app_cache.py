@@ -227,8 +227,11 @@ class AppCache(_AppCache):
 		cache_file = self.get_cache_file()
 		if cache_file:
 			try:
-				with open(cache_file, 'w') as fd:
+				tmp_file = cache_file + ".tmp"
+				with open(tmp_file, 'w') as fd:
 					dump([app.attrs_dict() for app in self._cache], fd, indent=2)
+
+				os.rename(tmp_file, cache_file)
 				cache_modified = self._cache_modified()
 			except (EnvironmentError, TypeError):
 				return False
