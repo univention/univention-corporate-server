@@ -34,6 +34,7 @@ ansible_preperation () {
 	local traeger2_domain="${2:?missing traeger2_domain}"
 	local repo_user="${3:?missing repo_user}"
 	local repo_password_file="${4:?missing repo_password_file}"
+	local keycloak_password="${5:?missing keycloak_password}"
 	local rv=0
 	# Setup passwordless ssh login for ansible
 	ssh-keygen -t rsa -b 4096 -f /root/.ssh/id_rsa -q -N ""
@@ -54,7 +55,7 @@ ansible_preperation () {
 	sed -i "s/BETTERMARKS_CLIENT_SECRET/$BETTERMARKS_CLIENT_SECRET/g" clients.yml
 	sed -i "s/UTA_CLIENT_SECRET/$UTA_CLIENT_SECRET/g" clients.yml
 	sed -i "s/UTA_REDIRECT/https:\/\/$(hostname -f)\/univention-test-app\/authorize/g" clients.yml
-	sed -i "s/keycloak_password: admin/keycloak_password: $UCS_ENV_PASSWORD/g" keycloak.yml
+	sed -i "s/keycloak_password: admin/keycloak_password: $keycloak_password/g" keycloak.yml
 	sed -i "s/CLIENT_SECRET=CLIENT_SECRET/CLIENT_SECRET=$UTA_CLIENT_SECRET/g" /etc/univention-test-app.conf
 	sed -i "s/ID_BROKER_KEYCLOAK_FQDN=ID_BROKER_KEYCLOAK_FQDN/ID_BROKER_KEYCLOAK_FQDN=$(hostname -f)/g" /etc/univention-test-app.conf
 	curl -k "https://ucs-sso.$traeger1_domain/simplesamlphp/saml2/idp/metadata.php" > schools_saml_IDP/traeger1_metadata.xml
