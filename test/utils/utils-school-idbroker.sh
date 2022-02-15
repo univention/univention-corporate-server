@@ -80,7 +80,7 @@ register_idbroker_as_sp_in_ucs () {
 	udm saml/idpconfig modify \
 		--dn "id=default-saml-idp,cn=univention,$(ucr get ldap/base)" \
 		--append LdapGetAttributes=entryUUID
- 	curl -k "https://$broker_fqdn/auth/realms/ID-Broker/broker/traeger1/endpoint/descriptor" > metadata.xml
+	curl -k "https://$broker_fqdn/auth/realms/ID-Broker/broker/$keycloak_identifier/endpoint/descriptor" > metadata.xml
 	udm saml/serviceprovider create \
 		--position "cn=saml-serviceprovider,cn=univention,$(ucr get ldap/base)" \
 		--set serviceProviderMetadata="$(cat metadata.xml)" \
