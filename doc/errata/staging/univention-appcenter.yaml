@@ -6,7 +6,7 @@ src: univention-appcenter
 fix: 9.0.2-72A~5.0.0.202202141913
 desc: |
  This update addresses the following issue:
- * Validate choose installation target hosts form.
+ * Validate the form when choosing the installation host.
  * A race condition was fixed, that caused apps to lose their installation
-   status
+   status.
 bug: [53523,54452]
