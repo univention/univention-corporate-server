@@ -120,7 +120,7 @@ Join script
 
 The joinscript :file:`inst` is executed on the UCS host system after the
 Docker container is configured. Please refer to the `Developer
-Reference <https://docs.software-univention.de/developer-reference-5.0.html#chap:join>`_
+Reference <univention-dev-reference-join_>`_
 about how to write a join script. In principle a join script is a script
 that runs after the installation of an app and it has write access to
 the LDAP directory service. If it runs successfully, the join script may
@@ -211,7 +211,7 @@ Join script functions
    extend LDAP objects with new attributes. The file will be copied to the
    Docker host's :file:`/usr/share/univention-appcenter/apps/APPID/APPID.schema`
    during installation. See the `LDAP documentation
-   <http://www.openldap.org/doc/admin24/schema.html>`_ for the syntax of a
+   <openldap-docs-schema_>`_ for the syntax of a
    schema file.
 
    If an official object identifier (OID) namespace is needed, Univention can
@@ -328,7 +328,7 @@ Unjoin script
 
 The unjoin script :file:`uinst` is executed on the UCS host system after the
 Docker container is removed. See the `Univention Developer Reference
-<https://docs.software-univention.de/developer-reference-5.0.html>`_ for how to write an unjoin script.
+<univention-dev-reference_>`_ for how to write an unjoin script.
 It should revert most (if not all) changes done in the join script. With
 the notable exception of schema registration. An LDAP schema extension
 should never be removed once it was registered.
@@ -652,7 +652,7 @@ Certificates
 
 UCS provides a certificate infrastructure for secure communication
 protocols. See `SSL certificate
-management <https://docs.software-univention.de/manual-5.0.html#domain:ssl>`_
+management <ucs-manual-domain-ssl_>`_
 in the UCS manual.
 
 Apps may need access to the UCS certificate infrastructure or need to be

@@ -8,7 +8,7 @@ logos, screenshots and videos. The contents are part of the app
 configuration. They are shown to the UCS system administrator in the App
 Center UMC module in UCS and to users on the Univention website in the
 `App
-Catalog <https://www.univention.com/products/univention-app-center/app-catalog/>`_.
+Catalog <univention-app-catalog_>`_.
 
 All changes are made in the App Provider portal. They need to be saved
 by pressing the button :guilabel:`Save`. Then a release can be requested via the
@@ -216,7 +216,7 @@ Recommended Apps Badge
 
 Apps can be awarded with different badges and are therefore especially
 highlighted in the App Center. One of those badges is the `"Recommended
-Apps" <https://www.univention.com/products/univention-app-center/app-catalog/?recommended_app=1>`_
+Apps" <univention-app-catalog-recommended_>`_
 award for the use in professional environments. Apps with the
 "Recommended Apps" award meet the below listed quality criteria. The
 functional scope of the software solution is not evaluated. The award is

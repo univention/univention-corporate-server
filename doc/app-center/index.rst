@@ -15,7 +15,7 @@ What is |UCSAPPC|?
 |UCSAPPC| is an ecosystem similar to the app stores known from mobile
 platforms like Apple or Google. It provides an infrastructure to build,
 deploy and run enterprise applications on |UCSUCS| (UCS). The App Center
-uses well-known technologies like `Docker <https://www.docker.com/>`_.
+uses well-known technologies like `Docker <docker_>`_.
 
 .. _infrastructure:
 
@@ -41,7 +41,7 @@ The App Center Module on UCS
 
 The App Catalog
    presents the app portfolio on the `Univention
-   website <https://www.univention.com/products/univention-app-center/app-catalog/>`_.
+   website <univention-app-catalog_>`_.
 
 The App Provider Portal
    is the self-service portal for app

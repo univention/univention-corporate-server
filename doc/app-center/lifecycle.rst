@@ -35,7 +35,7 @@ local instance of |UCSUCR| (UCS). To setup your UCS environment the best
 practice is to download one of the UCS virtual machine images and use
 VirtualBox or VMware (see :ref:`Download UCS <testing:download>`). After
 the installation, `activate the
-system <https://docs.software-univention.de/manual-5.0.html#central:license>`_
+system <ucs-manual-license_>`_
 and copy your SSH key to the UCS system to save typing the password on
 each remote console login. Finally, activate the Test App Center (see
 :ref:`Test App Center <testing:test-app-center>`). With that status it is
@@ -73,7 +73,7 @@ Download UCS
 ------------
 
 Download UCS to get a copy of UCS free of charge from the `Univention
-website <https://www.univention.com/downloads/ucs-download/>`_. Choose
+website <ucs-download_>`_. Choose
 an ISO image or a pre-installed virtual machine image for various
 virtualization hypervisors, like for example VMware (ESXi and
 Workstations), VirtualBox and KVM.
@@ -84,7 +84,7 @@ Initial UCS setup
 -----------------
 
 Please refer to the `Quickstart Guide for Univention Corporate Server
-<https://docs.software-univention.de/quickstart-en-5.0.html>`_ for the first
+<ucs-quickstart_>`_ for the first
 steps about installation and initial setup.
 
 .. _testing:test-app-center:
@@ -419,8 +419,7 @@ within other scripts. In such cases username and password should be
 stored in separate files (no new line at the end) that are passed as
 parameters.
 
-The scripts needs to be downloaded from
-https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-control.
+The scripts needs to be `downloaded <univention-provider-portal-script_>`_.
 It requires Python 2.7 and cURL to run. For a list of available actions
 and their parameters, use the script's help:
 

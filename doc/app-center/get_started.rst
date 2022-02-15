@@ -20,9 +20,9 @@ Software in a Docker image
 --------------------------
 
 The software needs to be provided as a `Docker
-image <https://docs.docker.com/>`_. This is the easiest way to deploy
+image <docker-docs_>`_. This is the easiest way to deploy
 software in |UCSAPPC|. It is also recommended to publish the Docker
-container to `Docker hub <https://hub.docker.com/>`_. This makes
+container to `Docker hub <docker-hub_>`_. This makes
 referencing the image later much easier and simplifies the development
 and test cycle during development.
 
@@ -49,7 +49,7 @@ for all the settings around the app.
 
 1. To start building the app, an account for the App Provider Portal is
    needed. Please `request a personal
-   account <https://www.univention.com/products/univention-app-center/for-solution-providers/>`__
+   account <univention-portal-account-request_>`_
    on the Univention website and provide some context about the intended
    app.
 
@@ -57,7 +57,7 @@ for all the settings around the app.
    sent.
 
 3. Afterwards the login can be performed at the `App Provider
-   Portal <https://provider-portal.software-univention.de/univention-management-console/>`__.
+   Portal <univention-provider-portal_>`_.
 
 4. After the login, the :guilabel:`Apps` module needs to be opened to work on the
    app.
@@ -74,7 +74,7 @@ Where to get help?
 
 App providers that need technical help during their development process are
 invited to open a topic in `Univention Forum
-<https://help.univention.com/c/apps/dev>`_. The dedicated section :guilabel:`App
+<univention-forum-apps_>`_. The dedicated section :guilabel:`App
 Development` is for all questions around app development, debugging and the
 like.
 
@@ -119,7 +119,7 @@ UCS version
    available on. Simply start with the latest available UCS version.
    It can also be started with the oldest maintained UCS version to
    cover the broadest user base of UCS. See the `UCS maintenance
-   cycle <https://wiki.univention.de/index.php/Maintenance_Cycle_for_UCS>`_
+   cycle <ucs-maintenance-cycle_>`_
    for an overview of the maintained UCS version. In either case it
    is recommended to specify the supported UCS versions explicitly
    (see :ref:`Supported UCS
@@ -194,7 +194,7 @@ Persistent data with volumes
 By default files created inside a container are stored in it, but they
 don't persist when the container is no longer running, removed or is
 exchanged with a newer version. As solution Docker offers
-`volumes <https://docs.docker.com/storage/volumes/>`_, a mechanism for
+`volumes <docker-docs-volumes_>`_, a mechanism for
 persisting data generated and used by Docker containers. A volume is a
 directory on the Docker host that is mounted inside the Docker
 container.
@@ -264,7 +264,7 @@ With the port definition the App Center also takes care to open them in
 the UCS firewall. If additional firewall rules for ports are needed,
 they can be defined in the app join script. Please refer to the `Network
 Packet Filter section in the UCS Development
-Reference <https://docs.software-univention.de/developer-reference-5.0.html#misc:nacl>`_.
+Reference <univention-dev-reference-nacl_>`_.
 
 .. _create-app-with-docker:database:
 
@@ -320,7 +320,7 @@ Create a Multi Container App
 
 Starting with 345 |UCSAPPC| supports apps that consist of multiple Docker
 images. It uses `Docker
-Compose <https://docs.docker.com/compose/overview/>`_, a tool for
+Compose <docker-compose-docs_>`_, a tool for
 defining and running multi-container Docker applications. The heart of
 such applications is a YAML file that configures all services for the
 application. The supported compose file format version is 2.0.
@@ -339,7 +339,7 @@ inside a container or files listing environment variables.
 
 |UCSUCR|, UCR for short, is the central tool for managing the local system
 configuration of UCS (see `Manual for users and
-administrators <https://docs.software-univention.de/manual-5.0.html#computers:Administration_of_local_system_configuration_with_Univention_Configuration_Registry>`_).
+administrators <ucs-manual-computers-ucr_>`_).
 Settings from UCR can be used in the Docker compose file to parameterize
 the Docker setup. This comes in very handy when settings like for
 example the local LDAP server should be passed to a container via its
@@ -400,7 +400,7 @@ changes:
    changed to point to the Docker Images in the Univention Docker
    Registry. All Docker Images from published apps are copied to the
    Univention Docker Registry to be independent of
-   `hub.docker.com <https://hub.docker.com>`_. This is the only server-side
+   `hub.docker.com <docker-hub_>`_. This is the only server-side
    change to the Docker Compose file.
 
 2. The ``docker-compose.yml`` is itself a UCR template. As such, it will
@@ -455,7 +455,7 @@ that no longer matches 100% of the App Provider's input. The modified
 As stated above, the ``docker-compose.yml`` is a UCR template. This means that
 you are able to match the file to the environment of the Docker host. The
 `Univention Developer Reference
-<https://docs.software-univention.de/developer-reference-5.0.html>`_ contains
+<univention-dev-reference_>`_ contains
 more about UCR templates, but the core mechanics are:
 
 1. Although every ``docker-compose.yml`` is a UCR template, you may not

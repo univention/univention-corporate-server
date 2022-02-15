@@ -136,7 +136,7 @@ background in bootsplash & welcome screen*. For a black background,
 simply define ``#000000``. A gradient can for example be defined with
 ``linear-gradient(to bottom, #345279 0%, #1d2c41 100%)``. For more
 information on how to use a gradient, see `CSS linear-gradient()
-function on w3schools <https://www.w3schools.com/csSref/func_linear-gradient.asp>`_.
+function on w3schools <css-linear-gradient_>`_.
 
 .. figure:: /images/Appliance_Branding_Bootsplash.png
    :alt: Boot splash
