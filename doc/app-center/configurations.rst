@@ -8,18 +8,13 @@ during the installation and configuration of the app. The scripts are
 described below. They can be edited in the app in the App Provider
 portal in the following sections:
 
--  Scripts AR Join & unjoin script
-
--  Scripts AR Scripts called before App Center action on apps
-
--  Scripts AR Scripts for data store and restore ``store_data``,
-   ``restore_data_before_setup``, ``restore_data_after_setup``
-
--  Scripts AR Setup script
-
--  Scripts AR Configure scripts. (``configure``)
-
--  Scripts AR Configure scripts. (``configure_host``)
+* Scripts → Join & unjoin script
+* Scripts → Scripts called before App Center action on apps
+* Scripts → Scripts for data store and restore (:file:`store_data`,
+  :file:`restore_data_before_setup`, :file:`restore_data_after_setup`)
+* Scripts → Setup script
+* Scripts → Configure scripts. (:file:`configure`)
+* Scripts → Configure scripts. (:file:`configure_host`)
 
 .. _installation-scripts:
 
@@ -41,7 +36,7 @@ found in the following sections.
 Script called before installation to verify that App may be installed
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The ``preinst`` script is executed on the UCS host system before the app
+The :file:`preinst` script is executed on the UCS host system before the app
 is initialized, even before the app image is downloaded. Its purpose is
 to check whether installation will be successful or not. Any exit code
 other than 0 will result in cancellation of the installation process.
@@ -64,9 +59,9 @@ against.
 Docker script restore_data_before_setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The life cycle script ``restore_data_before_setup`` is executed inside
-the Docker container before the ``setup`` script is run. Its purpose is
-to restore the data which has been stored by the ``store_data`` script.
+The life cycle script :file:`restore_data_before_setup` is executed inside
+the Docker container before the :file:`setup` script is run. Its purpose is
+to restore the data which has been stored by the :file:`store_data` script.
 The parameters are the *appid*, the app version and a filename for error
 logging.
 
@@ -75,11 +70,11 @@ logging.
 Docker script setup
 ~~~~~~~~~~~~~~~~~~~
 
-The life cycle script ``setup`` is executed inside the Docker container.
+The life cycle script :file:`setup` is executed inside the Docker container.
 It is the heart of the initial app configuration and typically used to
 make environment specific settings to the container or apply certain
 changes that require the container environment. If the script fails
-(exit code != 0) the installation is aborted.
+(``exit code != 0``) the installation is aborted.
 
 The parameters given to the script are the *appid*, the app version, a
 filename for error logging and the username and credentials for the
@@ -90,9 +85,9 @@ Administrator user.
 Docker script restore_data_after_setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The life cycle script ``restore_data_after_setup`` is executed inside
-the Docker container after the ``setup`` script is run. Its purpose is
-to restore the data which has been stored by the ``store_data`` script.
+The life cycle script :file:`restore_data_after_setup` is executed inside
+the Docker container after the :file:`setup` script is run. Its purpose is
+to restore the data which has been stored by the :file:`store_data` script.
 The parameters are the *appid*, the app version and a filename for error
 logging.
 
@@ -101,10 +96,10 @@ logging.
 Settings script run on Docker host
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The settings script ``configure_host`` is executed on the Docker host
-after the ``restore_data_after_setup`` script is run. Its purpose is to
+The settings script :file:`configure_host` is executed on the Docker host
+after the :file:`restore_data_after_setup` script is run. Its purpose is to
 make environment specific settings on the UCS host regarding the app.
-The parameters are the app action ``install``, the app version, a
+The parameters are the app action :file:`install`, the app version, a
 filename for error logging and the locale.
 
 .. _installation:configure:
@@ -112,10 +107,10 @@ filename for error logging and the locale.
 Settings script run in Docker container
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The settings script ``configure`` is executed inside the Docker
-container after the ``configure_host`` script. Its purpose is to make
+The settings script :file:`configure` is executed inside the Docker
+container after the :file:`configure_host` script. Its purpose is to make
 environment specific settings in the app container. The parameters are
-the app action ``install``, the *appid*, the app version and a filename
+the app action :file:`install`, the *appid*, the app version and a filename
 for error logging.
 
 .. _installation:joinscript:
@@ -123,9 +118,9 @@ for error logging.
 Join script
 ~~~~~~~~~~~
 
-The joinscript ``inst`` is executed on the UCS host system after the
+The joinscript :file:`inst` is executed on the UCS host system after the
 Docker container is configured. Please refer to the `Developer
-Reference <https://docs.software-univention.de/developer-reference-5.0.html#chap:join>`__
+Reference <https://docs.software-univention.de/developer-reference-5.0.html#chap:join>`_
 about how to write a join script. In principle a join script is a script
 that runs after the installation of an app and it has write access to
 the LDAP directory service. If it runs successfully, the join script may
@@ -151,16 +146,16 @@ apps. They require the following line in the script:
 
 Furthermore, this call provides access to the following variables:
 
-$APP
+``$APP``
    app id
 
-$APP_VERSION
+``$APP_VERSION``
    app version
 
-$SERVICE
+``$SERVICE``
    app name
 
-$CONTAINER
+``$CONTAINER``
    Docker container id
 
 .. _installation:joinscript:functions:
@@ -168,65 +163,69 @@ $CONTAINER
 Join script functions
 ^^^^^^^^^^^^^^^^^^^^^
 
-``joinscript_add_simple_app_system_user`` adds a domain wide user to the
-LDAP directory that is not a real Domain User and offers an
-authentication account. It can be used as bind user for the app to
-connect to the LDAP directory. The password will be stored on the Docker
-Host at ``/etc/$APP.secret``. The DN will be
-``uid=$APP-systemuser,cn=users,$ldap_base``.
+``joinscript_add_simple_app_system_user``
+   Adds a domain wide user to the LDAP directory that is not a real Domain User
+   and offers an authentication account. It can be used as bind user for the app
+   to connect to the LDAP directory. The password will be stored on the Docker
+   Host at :file:`/etc/$APP.secret`. The DN will be
+   ``uid=$APP-systemuser,cn=users,$ldap_base``.
 
-.. code:: sh
-
-   joinscript_add_simple_app_system_user "$@" --set mailPrimaryAddress=...
+   .. code:: sh
+   
+      joinscript_add_simple_app_system_user "$@" --set mailPrimaryAddress=...
                        
+``joinscript_container_is_running``
+   Returns whether or not the Docker container is currently running. 
 
-``joinscript_container_is_running`` returns whether or not the Docker
-container is currently running. 0: Yes, 1: No. Can be used in an if
-statement.
+   * 0: Yes
+   * 1: No
 
-.. code:: sh
+   Can be used in an if statement.
 
-   joinscript_container_is_running || die "Container is not running"
+   .. code:: sh
+   
+      joinscript_container_is_running || die "Container is not running"
                        
+``joinscript_run_in_container``
+   Runs one command inside the container. Returns the return code of the command.
 
-``joinscript_run_in_container`` runs one command inside the container.
-Returns the return code of the command.
-
-.. code:: sh
-
-   joinscript_run_in_container service myapp restart ||
-   die "Could not restart the service"
+   .. code:: sh
+   
+      joinscript_run_in_container service myapp restart ||
+      die "Could not restart the service"
                        
+``joinscript_container_file``
+   Prints the absolute path for the Docker host for the filename given inside
+   the container.
 
-``joinscript_container_file`` prints the absolute path for the Docker
-host for the filename given inside the container.
-
-.. code:: sh
-
-   FILENAME="$(joinscript_container_file "/opt/$APP/my.cnf")"
+   .. code:: sh
+   
+      FILENAME="$(joinscript_container_file "/opt/$APP/my.cnf")"
                        
+``joinscript_container_file_touch``
+   Creates a file inside the container.  Directories are created along the way.
+   Prints the resulting filename just like "joinscript_container_file".
 
-``joinscript_container_file_touch`` creates a file inside the container.
-Directories are created along the way. Prints the resulting filename
-just like "joinscript_container_file".
+``joinscript_register_schema``
+   Registers a LDAP schema file semi automatically. The schema file allows to
+   extend LDAP objects with new attributes. The file will be copied to the
+   Docker host's :file:`/usr/share/univention-appcenter/apps/APPID/APPID.schema`
+   during installation. See the `LDAP documentation
+   <http://www.openldap.org/doc/admin24/schema.html>`_ for the syntax of a
+   schema file.
 
-``joinscript_register_schema`` registers a LDAP schema file semi
-automatically. The schema file allows to extend LDAP objects with new
-attributes. The file will be copied to the Docker host's
-``/usr/share/univention-appcenter/apps/APPID/APPID.schema`` during
-installation. See the `LDAP
-documentation <http://www.openldap.org/doc/admin24/schema.html>`__ for
-the syntax of a schema file. If an official object identifier (OID)
-namespace is needed, Univention can provide one. It is important to note
-that shipping the schema file alone is not enough. It has to be
-registered with the mentioned function in the join script. The schema
-file content can be provided in the App Provider portal on the Identity
-management tab in the User rights management section, in the field for
-Schema extension for LDAP.
+   If an official object identifier (OID) namespace is needed, Univention can
+   provide one. It is important to note that shipping the schema file alone is
+   not enough. It has to be registered with the mentioned function in the join
+   script.
 
-.. code:: sh
+   The schema file content can be provided in the App Provider portal on the
+   :guilabel:`Identity management` tab in the *User rights management* section, in the field
+   for *Schema extension for LDAP*.
 
-   joinscript_register_schema "$@"
+   .. code:: sh
+   
+      joinscript_register_schema "$@"
                        
 
 .. _installation:joinscript:boilerplate:
@@ -272,7 +271,7 @@ found in the following sections.
 Script called before uninstalling to verify that App may be removed
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The ``prerm`` script is executed on the UCS host system. Its purpose is
+The :file:`prerm` script is executed on the UCS host system. Its purpose is
 to check the prerequisites for an uninstallation and abort if they are
 not met. For example, the prerm may fail if other software still depends
 on it. Any exit code other than 0 will result in cancellation of the
@@ -289,8 +288,8 @@ administrator.
 Settings script run on Docker host
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The settings script ``configure_host`` is executed on the Docker host
-after the ``prerm`` script is run. Its purpose is to make environment
+The settings script :file:`configure_host` is executed on the Docker host
+after the :file:`prerm` script is run. Its purpose is to make environment
 specific settings on the UCS host during the removal of the app. The
 parameters are the app action ``remove``, the app version, a filename
 for error logging and the locale.
@@ -300,8 +299,8 @@ for error logging and the locale.
 Settings script run in Docker container
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The settings script ``configure`` is executed inside the Docker
-container after the ``configure_host`` script. Its purpose is to make
+The settings script :file:`configure` is executed inside the Docker
+container after the :file:`configure_host` script. Its purpose is to make
 environment specific settings in the app container before it is removed.
 The parameters are the app action ``remove``, the *appid*, the app
 version and a filename for error logging.
@@ -311,13 +310,13 @@ version and a filename for error logging.
 Docker script store_data
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-The life cycle script ``store_data`` is required if data exists in the
+The life cycle script :file:`store_data` is required if data exists in the
 container which should not be removed when the container is replaced
 with a new container or if the app is uninstalled. The script is not
 required if all the data is stored outside of the container for example
 in a database or a mapped volume. It is executed inside the Docker
 container and it should copy the relevant data to
-``/var/lib/univention-appcenter/apps/$APPID/data/``. Afterwards, the
+:file:`/var/lib/univention-appcenter/apps/$APPID/data/`. Afterwards, the
 data can be restored by one of the ``restore_data*`` scripts. The
 parameters are the *appid*, the app version and a filename for error
 logging.
@@ -327,8 +326,9 @@ logging.
 Unjoin script
 ~~~~~~~~~~~~~
 
-The unjoin script ``uinst`` is executed on the UCS host system after the
-Docker container is removed. See the for how to write an unjoin script.
+The unjoin script :file:`uinst` is executed on the UCS host system after the
+Docker container is removed. See the `Univention Developer Reference
+<https://docs.software-univention.de/developer-reference-5.0.html>`_ for how to write an unjoin script.
 It should revert most (if not all) changes done in the join script. With
 the notable exception of schema registration. An LDAP schema extension
 should never be removed once it was registered.
@@ -356,7 +356,7 @@ the scripts themselves can be found in the following sections.
 Script called before upgrade to verify that App may be upgraded
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The ``preinst`` script is executed on the UCS host system before the app
+The :file:`preinst` script is executed on the UCS host system before the app
 upgrade is initialized, even before the Docker image is downloaded. Its
 purpose is to check whether the requirements for the upgrade are
 fulfilled. Any exit code other than 0 will result in cancellation of the
@@ -374,13 +374,13 @@ messages can thus be passed to the administrator.
 Docker script store_data
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-The life cycle script ``store_data`` is required if data exists in the
+The life cycle script :file:`store_data` is required if data exists in the
 container which should not be removed when it is replaced with a new
 container or if the app is uninstalled. It is not required if all the
 data is stored outside the container for example in a database or a
 mapped volume. The script is executed inside the Docker container and it
 should copy the relevant data to
-``/var/lib/univention-appcenter/apps/$APPID/data/``. Afterwards, the
+:file:`/var/lib/univention-appcenter/apps/$APPID/data/`. Afterwards, the
 data can be restored by one of the ``restore_data*`` scripts when they
 are executed in the new container.
 
@@ -389,19 +389,19 @@ are executed in the new container.
 Docker script restore_data_before_setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The life cycle script ``restore_data_before_setup`` is executed inside
-the Docker container before the ``setup`` script is run. Its purpose is
-to restore the data which has been stored by the ``store_data`` script.
+The life cycle script :file:`restore_data_before_setup` is executed inside
+the Docker container before the :file:`setup` script is run. Its purpose is
+to restore the data which has been stored by the :file:`store_data` script.
 
 .. _upgrade:setup:
 
 Docker script setup
 ~~~~~~~~~~~~~~~~~~~
 
-The life cycle script ``setup`` is executed inside the Docker container.
+The life cycle script :file:`setup` is executed inside the Docker container.
 It is used to make environment specific settings to the new container or
 apply certain changes that require the container environment. If the
-script fails (exit code != 0) the upgrade is aborted.
+script fails (``exit code != 0``) the upgrade is aborted.
 
 The parameters given to the script are the *appid*, the app version, a
 filename for error logging and the username and credentials for the
@@ -412,9 +412,9 @@ Administrator user.
 Docker script restore_data_after_setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The life cycle script ``restore_data_after_setup`` is executed inside
-the Docker container after the ``setup`` script is run. Its purpose is
-to restore the data which has been stored by the ``store_data`` script
+The life cycle script :file:`restore_data_after_setup` is executed inside
+the Docker container after the :file:`setup` script is run. Its purpose is
+to restore the data which has been stored by the :file:`store_data` script
 in the old container.
 
 .. _upgrade:configure_host:
@@ -422,8 +422,8 @@ in the old container.
 Settings script run on Docker host
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The settings script ``configure_host`` is executed on the Docker host
-after the ``restore_data_after_setup`` script is run. Its purpose is to
+The settings script :file:`configure_host` is executed on the Docker host
+after the :file:`restore_data_after_setup` script is run. Its purpose is to
 make environment specific settings on the UCS host regarding the app
 during the upgrade. The parameters are the app action ``upgrade``, the
 app version, a filename for error logging and the locale.
@@ -433,8 +433,8 @@ app version, a filename for error logging and the locale.
 Settings script run in Docker container
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The settings script ``configure`` is executed inside the Docker
-container after the ``configure_host`` script is run. Its purpose is to
+The settings script :file:`configure` is executed inside the Docker
+container after the :file:`configure_host` script is run. Its purpose is to
 make environment specific settings in the app container during the
 upgrade. The parameters are the app action ``upgrade``, the *appid*, the
 app version and a filename for error logging.
@@ -444,7 +444,7 @@ app version and a filename for error logging.
 Join Script
 ~~~~~~~~~~~
 
-Finally, the join script ``inst`` is called to end the upgrade. With an
+Finally, the join script :file:`inst` is called to end the upgrade. With an
 updated join script changes can be made to the environment that require
 the necessary execution permissions or access to the UCS directory
 service. When a join script should run during the upgrade, please keep
@@ -482,8 +482,8 @@ An example for an App settings dialog is in
 
    App settings example
 
-The App settings can be defined on the tab Advanced in the section App
-settings in the App Provider Portal.
+The App settings can be defined on the tab :guilabel:`Advanced` in the section *App
+settings* in the App Provider Portal.
 
 .. _app-settings:scripts:
 
@@ -491,13 +491,13 @@ React on App settings
 ~~~~~~~~~~~~~~~~~~~~~
 
 The settings are saved inside the Docker container in the file
-``/etc/univention/base.conf`` in the format *key: value*. After the
+:file:`/etc/univention/base.conf` in the format *key: value*. After the
 settings are changed, two scripts are executed. First, the script
-``configure_host``. This script is run on the Docker host. Second, the
-script ``configure`` is executed. It is executed inside the Docker
+:file:`configure_host`. This script is run on the Docker host. Second, the
+script :file:`configure` is executed. It is executed inside the Docker
 container. In the App Provider Portal, the path of the script can be
-given (Configure scripts) or the script code can be uploaded (Path to
-script inside the container (absolute)).
+given (*Configure scripts*) or the script code can be uploaded (*Path to
+script inside the container (absolute)*).
 
 .. _app-settings:reference:
 
@@ -505,7 +505,7 @@ App settings configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The App settings are defined in the ini format. The definition can be
-done in the field Settings that can be used to configure the app. ini
+done in the field *Settings* that can be used to configure the app ini
 file format. One ini file can contain several settings.
 
 The name of a setting is the name of the section in the ini file, for
@@ -521,81 +521,81 @@ It is recommended to use the app ID as a prefix to prevent collisions.
 The type of the attribute is defined with the keyword *Type*. The
 following types are supported:
 
-String
+``String``
    A standard input field with no restrictions. This is used by default.
 
-Int
+``Int``
    A number field which is validated accordingly.
 
-Bool
+``Bool``
    A checkbox. The value ``true`` or ``false`` is set.
 
-List
+``List``
    A widget that lets the user choose from a predefined set of values.
 
-Password
+``Password``
    A password input.
 
-.. note::
+   .. note::
 
-   The content will be stored as clear text value inside the Docker container.
+      The content will be stored as clear text value inside the Docker container.
 
-File
+``File``
    An upload widget. The content is stored directly in a file according
    to the definition of the setting.
 
-PasswordFile
+``PasswordFile``
    As a File, but shown as a password input.
 
-Status
+``Status``
    A read-only settings that is actually meant as a feedback channel for
    the user. This does not render a widget, but instead just writes a
    text with whatever was written into this variable. Writing to it is
    up to the App Provider (e.g., by using the configure script).
 
-The attribute Description is used to define the description of the
+The attribute ``Description`` is used to define the description of the
 setting. It is shown next to the widget so that the user knows what to
-do with this form. It can be localized by also defining Description[de]
+do with this form. It can be localized by also defining ``Description[de]``
 and so on.
 
-The attribute Group can be used to group settings. All settings sharing
+The attribute ``Group`` can be used to group settings. All settings sharing
 one group will be put under that label. The default group is
-``Settings``. It is also possible to localize it for example Group[de].
+``Settings``. It is also possible to localize it for example ``Group[de]``.
 
-The attribute Show can be used to define when the setting should be
+The attribute ``Show`` can be used to define when the setting should be
 shown. By default the setting attribute is shown when the app is up and
 running. It is also possible to show the setting attribute during the
 installation. The following values are possible ``Install``,
 ``Upgrade``, ``Remove`` and ``Settings``. It is possible to specify more
 than one value which must be separated by comma.
 
-The attribute ShowReadOnly can be used in the same way as Show. The
+The attribute ``ShowReadOnly`` can be used in the same way as ``Show``. The
 difference is that the value is not changeable.
 
-The attribute InitialValue can be used during the installation. If no
+The attribute ``InitialValue`` can be used during the installation. If no
 value for this attribute was given during the installation, the defined
 value is set.
 
-The attribute Required can be used to define if this setting has to be
+The attribute ``Required`` can be used to define if this setting has to be
 set or not.
 
-The attribute Scope is used to specify if the value is set inside the
+The attribute ``Scope`` is used to specify if the value is set inside the
 Docker container (``inside``), on the Docker host (``outside``) or on
 both (``inside, outside``). The default is ``inside``. Values in the
-scope ``inside`` can be referenced in the ``docker-compose.yml`` for
+scope ``inside`` can be referenced in the :file:`docker-compose.yml` for
 multi container apps just like |UCSUCRVs| (see :ref:`Post processing of Docker
 Compose file <create-app-with-docker:compose-postprocessing>` for an
 example).
 
-The attributes Labels and Values are used if a type List is defined. The
-attribute Labels defines the values shown to the user and the attribute
-Values defines the values which are stored. The lists are comma
+The attributes ``Labels`` and ``Values`` are used if a type List is defined. The
+attribute ``Labels`` defines the values shown to the user and the attribute
+``Values`` defines the values which are stored. The lists are comma
 separated and should have the same size. If a comma is necessary inside
-a label or value, it can be escaped with a \\.
+a label or value, it can be escaped with a ``\\``.
 
-The attribute Filename can be used to define the absolute path where the
-file should be stored. This attribute is needed in case the types File
-or PasswordFile are used.
+The attribute ``Filename`` can be used to define the absolute path where the
+file should be stored. This attribute is needed in case the types ``File``
+or ``PasswordFile`` are used.
 
 .. _app-settings:examples:
 
@@ -642,7 +642,7 @@ These are two more advanced settings
                    
 
 The first of these two settings will upload a file to
-``/opt/myapp/license`` inside the container. The second will save
+:file:`/opt/myapp/license` inside the container. The second will save
 *myapp/list: value2* (or another value) inside the container and on the
 Docker host. Both settings will be shown before the installation. On the
 App settings page, the list setting will be read-only.
@@ -652,13 +652,13 @@ Certificates
 
 UCS provides a certificate infrastructure for secure communication
 protocols. See `SSL certificate
-management <https://docs.software-univention.de/manual-5.0.html#domain:ssl>`__
+management <https://docs.software-univention.de/manual-5.0.html#domain:ssl>`_
 in the UCS manual.
 
 Apps may need access to the UCS certificate infrastructure or need to be
 aware of changes to the certificates. Starting with 91 the |UCSAPPC|
 provides a simple way to manage certificates inside an app. The script
-update-certificates is executed on the UCS host automatically during the
+``update-certificates`` is executed on the UCS host automatically during the
 installation and upgrade of apps (but can also be executed manually) and
 provides apps a simple way to gain access to certificates and to react
 to changes to certificates.
@@ -674,22 +674,22 @@ to changes to certificates.
 
 What happens with ``update-certificates``?
 
--  The UCS root CA certificate is copied to
-   ``/usr/local/share/ca-certificates/ucs.crt`` inside the container.
+* The UCS root CA certificate is copied to
+  ``/usr/local/share/ca*certificates/ucs.crt`` inside the container.
 
--  update-ca-certificates is executed in the Docker container, if it
-   exists, to update the CA certificate list.
+* update-ca-certificates is executed in the Docker container, if it
+  exists, to update the CA certificate list.
 
--  The UCS root CA certificate is copied to
-   ``/etc/univention/ssl/ucsCA/CAcert.pem`` inside the container.
+* The UCS root CA certificate is copied to
+  ``/etc/univention/ssl/ucsCA/CAcert.pem`` inside the container.
 
--  The Docker host UCS certificate is copied to
-   ``/etc/univention/ssl/docker-host-certificate/{cert.perm,private.key}``
-   and
-   ``/etc/univention/ssl/$FQDN_DOCKER_HOST/{cert.perm,private.key}``.
+* The Docker host UCS certificate is copied to
+  ``/etc/univention/ssl/docker*host-certificate/{cert.perm,private.key}``
+  and
+  ``/etc/univention/ssl/$FQDN_DOCKER_HOST/{cert.perm,private.key}``.
 
-Every app can define a update_certificates script. In the app provider
-portal it can be added on the tab Advanced in the section Certificates.
+Every app can define a ``update_certificates`` script. In the app provider
+portal it can be added on the tab :guilabel:`Advanced` in the section *Certificates*.
 
 Example:
 
@@ -713,12 +713,12 @@ written locally and then uploaded with the following command:
 Mail integration
 ----------------
 
-|UCSUCS| (UCS) provides a complete mailstack with the Mailstack app in the
+|UCSUCS| (UCS) provides a complete mailstack with the *Mailstack* app in the
 App Center. It includes Postfix as *MTA* for SMTP and Dovecot for IMAP.
 If the app relies on an existing mail infrastructure, it is one option
 to use the mailstack app and require its installation in the UCS domain.
 This can be configured for the app in the App Provider portal on the
-Version tab in the section Required apps by adding the Mailserver app
+:guilabel:`Version` tab in the section *Required apps* by adding the *Mailserver* app
 and setting ``Installed in domain``. With this configuration the App
 Center on the system administrator's UCS system will check, if the
 *Mailserver* app is installed somewhere in the domain and asks the
@@ -760,23 +760,23 @@ following.
 
 IMAP:
 
--  TLS
+* TLS
 
--  Port 143
+* Port 143
 
--  Authentication is possible for domain users with a primary mail
-   address.
+* Authentication is possible for domain users with a primary mail
+  address.
 
--  The user's uid or the primary mail address are both valid for
-   authentication.
+* The user's uid or the primary mail address are both valid for
+  authentication.
 
 SMTP:
 
--  TLS
+* TLS
 
--  Port 587 (submission) for authentication
+* Port 587 (submission) for authentication
 
--  Mechanism Login or Mechanism Plain
+* Mechanism Login or Mechanism Plain
 
 .. _mail-integration:with-docker-apps:
 
@@ -801,8 +801,8 @@ installed <installation:preinst>`. Example:
 
 To map SMTP and/or IMAP ports from the container to the host to be able
 to use the Docker host as IMAP/SMTP server exclusive ports for the
-container have to be set to the relevant ports (e.g. 110, 143, 993, 995,
-587, 25, 465, 4190 for pop3(s), imap(s), smtp(s), submission and sieve).
+container have to be set to the relevant ports (e.g. ``110``, ``143``, ``993``, ``995``,
+``587``, ``25``, ``465``, ``4190`` for *POP3(S)*, *IMAP(S)*, *SMTP(S)*, submission and sieve).
 See :ref:`Ports <create-app-with-docker:ports>` on how to set an exclusive
 port.
 
@@ -821,8 +821,8 @@ Use local mail on Docker host
 With a stopped Postfix on the Docker host, mail can no longer be
 delivered locally. If that is a problem, the following setup can help.
 
-Install the extremely simple MTA ssmtp and configure this MTA to use the
-localhost (our Docker container is listening on localhost:25).
+Install the *extremely simple MTA* :program:`ssmtp` and configure this MTA to use the
+``localhost`` (our Docker container is listening on ``localhost:25``).
 
 .. code:: sh
 
@@ -832,7 +832,7 @@ localhost (our Docker container is listening on localhost:25).
 
 Now configure Postfix in the Docker container to deliver mails from the
 Docker host locally by adding the FQDN of the Docker host to
-mydestination:
+``mydestination``:
 
 .. code:: sh
 
@@ -853,17 +853,17 @@ To avoid naming collisions, the App's FQDN should reference the Docker
 Host's FQDN, e.g, ``myapp.ucs-primary.domain.tld``. UCS can do the
 following to allow this scenario to work as smooth as possible:
 
--  Add a dedicated FQDN for the App and make it known to the internal
-   DNS. That means that the new FQDN is an alias for the actual FQDN of
-   the Docker host.
+* Add a dedicated FQDN for the App and make it known to the internal
+  DNS. That means that the new FQDN is an alias for the actual FQDN of
+  the Docker host.
 
--  Generate a certificate for this FQDN. Technically, a wildcard
-   certificate is created.
+* Generate a certificate for this FQDN. Technically, a wildcard
+  certificate is created.
 
--  Generate a virtual host for Apache with that new FQDN. Thus, requests
-   to that FQDN will be handled by the *VHost*. The skeleton
-   configuration can be easily extended by writing a configuration file
-   that is then included in the *VHost* entry.
+* Generate a virtual host for Apache with that new FQDN. Thus, requests
+  to that FQDN will be handled by the *VHost*. The skeleton
+  configuration can be easily extended by writing a configuration file
+  that is then included in the *VHost* entry.
 
 For this to work, this snippet can be used in the join script (:ref:`Join
 script <installation:joinscript>`):
@@ -881,9 +881,9 @@ script <installation:joinscript>`):
                    
 
 This will create the following entry in
-``/etc/apache2/sites-available/univention-vhosts.conf``
+:file:`/etc/apache2/sites-available/univention-vhosts.conf`
 
-.. code:: sh
+.. code:: apache
 
    # Virtual Host for myapp.ucs-primary.domain.tld/443
    <IfModule mod_ssl.c>
@@ -901,9 +901,6 @@ This will create the following entry in
        SSLCACertificateFile /etc/univention/ssl/ucsCA/CAcert.pem
    </VirtualHost>
    </IfModule>
-               
-
-..
 
 .. note::
 
@@ -923,9 +920,9 @@ Firewall
 --------
 
 This section describes how the local Univention Firewall based on
-iptables is changed by apps and how it can be customized. Docker
+:program:`iptables` is changed by apps and how it can be customized. Docker
 containers have access to the Docker host. And the Docker containers can
-be made available for external clients with Ports redirection settings
+be made available for external clients with *Ports redirection* settings
 (see :ref:`Ports <create-app-with-docker:ports>`).
 
 If MariaDB or PostgreSQL are used as database, those ports will be
@@ -937,19 +934,18 @@ This can be done in the join script (section :ref:`Join
 script <installation:joinscript>`). In the example the port 6644 is
 opened for TCP and UDP:
 
-::
+.. code-block:: sh
 
-   univention-config-registry set \
-       "security/packetfilter/package/$APP/tcp/6644/all=ACCEPT" \
-       "security/packetfilter/package/$APP/tcp/6644/all/en=$APP" \
-       "security/packetfilter/package/$APP/udp/6644/all=ACCEPT" \
-       "security/packetfilter/package/$APP/udp/6644/all/en=$APP"
+   $ univention-config-registry set \
+   > "security/packetfilter/package/$APP/tcp/6644/all=ACCEPT" \
+   > "security/packetfilter/package/$APP/tcp/6644/all/en=$APP" \
+   > "security/packetfilter/package/$APP/udp/6644/all=ACCEPT" \
+   > "security/packetfilter/package/$APP/udp/6644/all/en=$APP"
 
-   systemctl try-restart univention-firewall
+   $ systemctl try-restart univention-firewall
            
 
 Please also add corresponding ``ucr unset`` commands in the unjoin
 script so that the firewall rules will be removed when the app is
 removed from the system (section :ref:`Unjoin
 script <uninstallation:unjoin>`).
-
