@@ -456,12 +456,14 @@ def get_locale():
 	return locale
 
 
-def gpg_verify(filename):
-	# type: (str) -> Tuple[int, str]
+def gpg_verify(filename, signature=None):
+	# type: (str, Optional[str]) -> Tuple[int, str]
+	if signature is None:
+		signature = filename + '.gpg'
 	cmd = (
 		'apt-key',
 		'verify',
-		filename + '.gpg',
+		signature,
 		filename,
 	)
 	p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
