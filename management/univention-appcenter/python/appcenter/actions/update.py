@@ -74,12 +74,13 @@ class Update(UniventionAppAction):
 			mkdir(app_cache.get_cache_dir())
 			if self._extract_local_archive(app_cache):
 				something_changed = True
+
 		for appcenter_cache in self._appcenter_caches(args):
 			# download meta files like index.json
 			mkdir(appcenter_cache.get_cache_dir())
 			if self._download_supra_files(appcenter_cache):
-				appcenter_cache.clear_cache()
 				something_changed = True
+
 		for app_cache in self._app_caches(args):
 			# try it one more time (ucs.ini may have changed)
 			mkdir(app_cache.get_cache_dir())
@@ -87,8 +88,8 @@ class Update(UniventionAppAction):
 				something_changed = True
 			# download apps based on meta files
 			if self._download_apps(app_cache):
-				app_cache.clear_cache()
 				something_changed = True
+
 		if something_changed and not args.just_get_cache:
 			apps_cache = Apps()
 			for app in apps_cache.get_all_locally_installed_apps():
@@ -96,10 +97,6 @@ class Update(UniventionAppAction):
 				if app < newest_app:
 					ucr_save({app.ucr_upgrade_key: 'yes'})
 			self._update_local_files()
-
-		# remove cache files to force a rebuild with the next access to the cache.
-		for appcenter_cache in self._appcenter_caches(args):
-			appcenter_cache.clear_cache()
 
 	def _appcenter_caches(self, args):
 		# type: (Namespace) -> List[AppCenterCache]
