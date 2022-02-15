@@ -16,8 +16,8 @@ Create an app appliance
 -----------------------
 
 To create an appliance, select an app version that has already been
-published and activate the Create App appliance checkbox on the
-Appliance tab. If the solution needs a minimum size of memory, please
+published and activate the :guilabel:`Create App appliance` checkbox on the
+:guilabel:`Appliance` tab. If the solution needs a minimum size of memory, please
 specify the needed mega bytes.
 
 .. _appliance:additional-software:
@@ -26,7 +26,7 @@ Additional software
 ~~~~~~~~~~~~~~~~~~~
 
 If the appliance should include additional apps, please specify them in
-the Additional software section.
+the *Additional software* section.
 
 .. _appliance:customize-setup-wizard:
 
@@ -76,7 +76,7 @@ modules ``Users``, ``Groups`` and ``App Center`` listed here.
 Appliance build
 ~~~~~~~~~~~~~~~
 
-As soon as the settings are made, Save, click the Approve for release
+As soon as the settings are made, :guilabel:`Save`, click the :guilabel:`Approve for release`
 button and provide a custom message to let the Univention team know that
 an appliance is ready to be build. This will create a ticket which helps
 to keep the communication in one place.
@@ -115,7 +115,7 @@ Boot loader
 ~~~~~~~~~~~
 
 The background color can be configured for the boot loader. Please
-define in the Primary color setting.
+define in the *Primary color* setting.
 
 .. figure:: /images/Appliance_Branding_Bootloader.png
    :alt: Boot loader
@@ -128,15 +128,15 @@ Boot splash
 ~~~~~~~~~~~
 
 The boot splash can have a custom background and a logo. The logo is
-defined in Logo for the bootsplash during system boot. Please provide a
+defined in *Logo for the bootsplash during system boot*. Please provide a
 SVG file and mind the recommendations in :ref:`Logos <logos>`.
 
-The background color is defined in CSS definition of the appliance
-background in bootsplash & welcome screen. For a black background,
+The background color is defined in *CSS definition of the appliance
+background in bootsplash & welcome screen*. For a black background,
 simply define ``#000000``. A gradient can for example be defined with
 ``linear-gradient(to bottom, #345279 0%, #1d2c41 100%)``. For more
 information on how to use a gradient, see `CSS linear-gradient()
-function on w3schools <https://www.w3schools.com/csSref/func_linear-gradient.asp>`__.
+function on w3schools <https://www.w3schools.com/csSref/func_linear-gradient.asp>`_.
 
 .. figure:: /images/Appliance_Branding_Bootsplash.png
    :alt: Boot splash
@@ -149,16 +149,16 @@ System setup wizard
 ~~~~~~~~~~~~~~~~~~~
 
 The system setup wizard allows several slots to be customized. In the
-Configuration section in the App Provider Portal, the Appliance name
+*Configuration* section in the App Provider Portal, the ``Appliance name``
 (the word "appliance" is automatically appended) can be set. It controls
-the heading in the system setup wizard. The Logo for the first page of
-the setup wizard shows up on the first page of the system setup wizard.
+the heading in the system setup wizard. The *Logo for the first page of
+the setup wizard* shows up on the first page of the system setup wizard.
 
-In the Branding section, the logo on the top left can be changed with
-the Logo for header in setup wizard setting. The Primary color controls
+In the *Branding* section, the logo on the top left can be changed with
+the *Logo for header in setup wizard* setting. The *Primary color* controls
 the background color of the UMC header.
 
-The Secondary color is used as color for smaller graphical elements
+The *Secondary color* is used as color for smaller graphical elements
 throughout the setup wizard (see :ref:`appliance:branding:umc-branding-figure`).
 
 .. _appliance:branding:setup-wizard-figure:
@@ -185,12 +185,12 @@ The welcome screen is shown after the appliance setup has been finished
 and also every time the appliance is started. It offers information on
 how the user can access the appliance. It uses settings like the
 Appliance name and the CSS definition of the appliance background. The
-Logo for the welcome screen needs to be a SVG file that is slightly
+*Logo for the welcome screen* needs to be a SVG file that is slightly
 wider than high and which has the fonts converted to paths. Please mind
 the recommendations in :ref:`Logos <logos>`.
 
 Depending on the character of the welcome screen background (bright or
-dark), the Font color for welcome screen should be either set to
+dark), the *Font color for welcome screen* should be either set to
 ``White`` or ``Black``.
 
 .. _appliance:branding:portal-page:
@@ -199,9 +199,9 @@ Portal page
 ~~~~~~~~~~~
 
 The branding of the portal page is independent from the other sections.
-The Title for the UCS portal page in the appliance can be defined and it
-can be configured if the font color shall be black or white. The Logo
-for the portal page controls which logo shall be set in the first tile
+The *Title for the UCS portal page in the appliance* can be defined and it
+can be configured if the font color shall be black or white. The *Logo
+for the portal page* controls which logo shall be set in the first tile
 on the portal page. The background can either consist of a background
 image or a background color or a background color gradient as described
 in :ref:`Boot splash <appliance:branding:bootsplash>`.
@@ -210,4 +210,3 @@ in :ref:`Boot splash <appliance:branding:bootsplash>`.
    :alt: Appliance portal page
 
    Appliance portal page
-
