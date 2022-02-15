@@ -182,10 +182,10 @@ class Update(UniventionAppAction):
 
 	def _download_apps(self, app_cache):
 		# type: (AppCenterCache) -> bool
-		filenames = []
-		if not ucr_is_false('appcenter/index/verify'):
-			filenames = ['all.tar.gpg']
-		if not filenames or self._download_files(app_cache, filenames):
+		filenames = [] if ucr_is_false('appcenter/index/verify') else ['all.tar.gpg']
+		if filenames and not self._download_files(app_cache, filenames):
+			return False
+		else:
 			appcenter_host = app_cache.get_server()
 			if appcenter_host.startswith('https'):
 				appcenter_host = 'http://%s' % appcenter_host[8:]
@@ -217,7 +217,6 @@ class Update(UniventionAppAction):
 				raise
 			self._extract_archive(app_cache)
 			return True
-		return False
 
 	@possible_network_error
 	def _download_file(self, base_url, filename, cache_dir, etag, ucs_version=None):
