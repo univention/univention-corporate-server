@@ -1,12 +1,12 @@
 product: ucs
-release: "5.0"
+release: '5.0'
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-appcenter
-fix: 9.0.2-72A~5.0.0.202202141913
+fix: 9.0.2-72A~5.0.0.202202151205
 desc: |
- This update addresses the following issue:
- * Validate the form when choosing the installation host.
- * A race condition was fixed, that caused apps to lose their installation
-   status.
-bug: [53523,54452]
+  This update addresses the following issue:
+  * Validate the form when choosing the installation host.
+  * A race condition was fixed, that caused apps to lose their installation
+    status.
+bug: [53523, 54452]
