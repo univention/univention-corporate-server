@@ -283,8 +283,8 @@ class Update(UniventionAppAction):
 		return self._extract_archive(app_cache)
 
 	def _uncompress_archive(self, app_cache, local_archive):
-		"""`gunzip` in Python"""
 		# type: (AppCenterCache, str) -> bool
+		"""`gunzip` in Python"""
 		try:
 			with gzip_open(local_archive, 'rb') as zipped_file:
 				archive_content = zipped_file.read()
@@ -297,8 +297,8 @@ class Update(UniventionAppAction):
 			return True
 
 	def _extract_archive(self, app_cache):
-		"""`tar xf` in "Python" """
 		# type: (AppCenterCache) -> None
+		"""`tar xf` in "Python" """
 		cache_dir = app_cache.get_cache_dir()
 		self.debug('Extracting archive in %s' % cache_dir)
 		self._purge_old_cache(cache_dir)
