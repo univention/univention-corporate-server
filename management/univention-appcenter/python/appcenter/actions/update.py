@@ -171,14 +171,25 @@ class Update(UniventionAppAction):
 		self._save_etags(cache, present_etags)
 		return updated
 
-	def _verify_file(self, fname):
+	def _verify_file(self, cache_dir):
 		# type: (str) -> None
-		if not ucr_is_false('appcenter/index/verify'):
-			(rc, gpg_error) = gpg_verify(fname)
-			if rc:
-				if gpg_error:
-					self.fatal(gpg_error)
-				raise UpdateSignatureVerificationFailed(fname)
+		if ucr_is_false('appcenter/index/verify'):
+			return
+
+		fname = os.path.join(cache_dir, ".tmp.tar")
+		sname = os.path.join(cache_dir, ".all.tar.gpg")
+
+		(rc, gpg_error) = gpg_verify(fname, sname)
+		if not rc:
+			return
+
+		if gpg_error:
+			self.fatal(gpg_error)
+
+		os.unlink(fname)
+		os.unlink(sname)
+
+		raise UpdateSignatureVerificationFailed(fname)
 
 	def _download_apps(self, app_cache):
 		# type: (AppCenterCache) -> bool
@@ -206,15 +217,8 @@ class Update(UniventionAppAction):
 					tgz_file = os.path.join(cache_dir, '.all.tar.gz')
 					self._uncompress_archive(app_cache, tgz_file)
 
-			try:
-				self._verify_file(tmp_file)
-			except UpdateSignatureVerificationFailed:
-				# we remove this file
-				# 1. to not "accidentally" use it (although this should not happen, as it is only extracted in the next line)
-				# 2. to signal the app center to download it again in the next run
-				os.unlink(tmp_file)
-				os.unlink(tmp_file + '.gpg')
-				raise
+			self._verify_file(cache_dir)
+
 			self._extract_archive(app_cache)
 			return True
 
