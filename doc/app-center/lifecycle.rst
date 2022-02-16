@@ -284,7 +284,7 @@ with the plain Docker commands.
    $ docker exec "$CONTAINER" ...
                    
 
-To view the Docker logfiles for the app, please use the following
+To view the Docker log files for the app, please use the following
 command:
 
 .. code-block::
@@ -301,7 +301,7 @@ can be viewed with:
    $ docker-compose -p $appid logs
                    
 
-Important logfiles on the UCS host for debugging are:
+Important log files on the UCS host for debugging are:
 
 *  :file:`/var/log/univention/appcenter.log`
 *  :file:`/var/log/univention/management-console-module-appcenter.log`

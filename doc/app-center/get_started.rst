@@ -463,7 +463,7 @@ more about UCR templates, but the core mechanics are:
    So if your file does not need any of the features mentioned below,
    just use your plain ``docker-compose.yml``.
 
-2. You can add specific values of the Config Registry into your file.
+2. You can add specific values of the configuration registry into your file.
    More importantly, this includes the App settings in :ref:`App
    settings <app-settings>` defined by the App itself:
 

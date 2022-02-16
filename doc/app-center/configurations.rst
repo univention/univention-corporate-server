@@ -253,10 +253,10 @@ own join script.
                        
 .. _uninstallation-scripts:
 
-Uninstallation scripts
-----------------------
+Uninstall scripts
+-----------------
 
-During the uninstallation of an app, various scripts are called. Please
+During the process to uninstall an app, various scripts are called. Please
 see the overview below about the involved scripts and the parameters
 they are called with. More information on the scripts themselves can be
 found in the following sections.
@@ -272,10 +272,10 @@ Script called before uninstalling to verify that App may be removed
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The :file:`prerm` script is executed on the UCS host system. Its purpose is
-to check the prerequisites for an uninstallation and abort if they are
-not met. For example, the prerm may fail if other software still depends
-on it. Any exit code other than 0 will result in cancellation of the
-uninstallation process. The given parameters are the LDAP bind DN of the
+to check the prerequisites to uninstall an app or abort if they are
+not met. For example, the ``prerm`` may fail if other software still depends
+on it. Any exit code other than ``0`` will result in cancellation of the
+uninstall process. The given parameters are the LDAP bind DN of the
 Administrator account and its password, the version of the app that
 should be uninstalled/removed, the locale and an error log file for log
 output. Error messages in the passed error log file will be passed to
@@ -713,10 +713,10 @@ written locally and then uploaded with the following command:
 Mail integration
 ----------------
 
-|UCSUCS| (UCS) provides a complete mailstack with the *Mailstack* app in the
+|UCSUCS| (UCS) provides a complete mail stack with the *Mailstack* app in the
 App Center. It includes Postfix as *MTA* for SMTP and Dovecot for IMAP.
 If the app relies on an existing mail infrastructure, it is one option
-to use the mailstack app and require its installation in the UCS domain.
+to use the mail stack app and require its installation in the UCS domain.
 This can be configured for the app in the App Provider portal on the
 :guilabel:`Version` tab in the section *Required apps* by adding the *Mailserver* app
 and setting ``Installed in domain``. With this configuration the App
@@ -755,7 +755,7 @@ service IMAP and sets the FQDN of this host as IMAP, SMTP and SIEVE
 server for the app. This is a good default and may not be correct for
 some setups.
 
-The best practice mail settings when the UCS mailstack is used, are the
+The best practice mail settings when the UCS mail stack is used, are the
 following.
 
 IMAP:
