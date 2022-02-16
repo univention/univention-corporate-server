@@ -10,3 +10,5 @@ desc: |
   * A race condition was fixed, that caused apps to lose their installation
     status.
 bug: [53523, 54452]
+erratum: 224
+announced: 2022-02-16
