@@ -261,7 +261,10 @@ int main(int argc, char* argv[])
 
 	int terminate = network_client_main_loop();
 
+	notifier_cache_free();
+
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Normal exit");
+	univention_debug_exit();
 
 	if (terminate) {
 		signal(terminate, SIG_DFL);
