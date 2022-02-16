@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # dump data stored in memcache for request limit
@@ -31,10 +31,12 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
 import socket
 import datetime
 import re
 import sys
+
 from univention.management.console.config import ucr
 
 socket_file = "/var/lib/univention-self-service-passwordreset-umc/memcached.socket"
@@ -48,29 +50,29 @@ limit_user_day = ucr.get("umc/self-service/passwordreset/limit/per_user/day", 0)
 
 so = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 so.connect(socket_file)
-so.sendall("stats items STAT items:0:number 0 END\r\n")
-text = ""
+so.sendall(b"stats items STAT items:0:number 0 END\r\n")
+
+text = b""
 while True:
 	data = so.recv(1024)
 	if not data:
 		break
 	else:
-		text += str(data)
-		if "END" in data:
+		text += data
+		if b"END" in data:
 			break
-
-lines = text.split("\r\n")
-entries = dict()
-reg = re.compile(r'^ITEM (.*) \[.*; (.*) .*\]$')
+lines = text.split(b"\r\n")
+entries = {}
+reg = re.compile(b'^ITEM (.*) \\[.*; (.*) .*\\]$')
 for line in lines:
-	parts = line.split(":")
+	parts = line.split(b":")
 	if len(parts) >= 3:
 		slab = parts[1]
 	else:
 		continue
-	so.sendall("stats cachedump {} 200000 ITEM views.decorators.cache.cache_header..cc7d9 [6 b; 1256056128 s] END\r\n".format(slab))
+	so.sendall(b"stats cachedump %s 200000 ITEM views.decorators.cache.cache_header..cc7d9 [6 b; 1256056128 s] END\r\n" % (slab,))
 	data = so.recv(1024)
-	cachelines = data.split("\r\n")
+	cachelines = data.split(b"\r\n")
 	for line in cachelines:
 		regmatch = reg.match(line)
 		if regmatch:
@@ -78,11 +80,11 @@ for line in lines:
 			if key not in entries:
 				ts = int(tsstr)
 				expdate = datetime.datetime.utcfromtimestamp(ts)
-				so.sendall("get {}\r\n".format(key))
+				so.sendall(b"get %s\r\n" % (key,))
 				data = so.recv(1024)
-				text = data.split("\r\n")
-				entries[key] = (text[1], expdate)
-so.sendall("quit\r\n")
+				text = data.split(b"\r\n")
+				entries[key] = (text[1].decode('UTF-8'), expdate)
+so.sendall(b"quit\r\n")
 so.close()
 
 keys = sorted(entries.keys())

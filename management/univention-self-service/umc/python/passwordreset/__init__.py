@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -989,7 +989,7 @@ class Instance(Base):
 			get_user_connection(binddn=binddn, bindpw=password)
 		except (udm_errors.authFail, IndexError):
 			raise ServiceForbidden()
-		return binddn, userdict["uid"][0]
+		return binddn, userdict["uid"][0].decode('utf-8')
 
 	def authenticate_user(self, username=None, password=None):
 		"""Check if the user is already authenticated (via UMC/SAML login) or use the credentials provided via the form."""
@@ -1065,7 +1065,7 @@ class Instance(Base):
 		except (EnvironmentError, KeyError):
 			raise UMC_Error(_('The configuration of the password reset service is not complete. The UCR variables "ad/reset/username" and "ad/reset/password" need to be set properly. Please inform an administrator.'), status=500)
 		process = Popen(['samba-tool', 'user', 'setpassword', '--username', reset_username, '--password', reset_password, '--filter', filter_format('samaccountname=%s', (username,)), '--newpassword', password, '-H', ldb_url], stdout=PIPE, stderr=STDOUT)
-		stdouterr = process.communicate()[0]
+		stdouterr = process.communicate()[0].decode('utf-8', 'replace')
 
 		if stdouterr:
 			MODULE.process('samba-tool user setpassword: %s' % (stdouterr,))
@@ -1118,7 +1118,7 @@ class Instance(Base):
 		# get groups
 		try:
 			filter_s = filter_format("(|(uid=%s)(mailPrimaryAddress=%s))", (username, username))
-			userdn = ldap_connection.search(filter=filter_s)[0][0]
+			userdn = ldap_connection.searchDn(filter=filter_s)[0]
 			groups_dns = self.get_groups(userdn)
 			for group_dn in list(groups_dns):
 				groups_dns.extend(self.get_nested_groups(group_dn))
@@ -1212,7 +1212,7 @@ class Instance(Base):
 				_, userdict = users[0]
 			except IndexError:
 				return email
-			username = userdict["uid"][0]
+			username = userdict["uid"][0].decode('utf-8')
 			self.memcache.set("e2u:{}".format(email), username, 300)
 
 		return username

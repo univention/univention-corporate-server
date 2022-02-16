@@ -9,6 +9,7 @@ Build-Depends:
  python-all,
  python-polib,
  python3-all,
+ python3-polib,
  univention-config-dev (>= 15.0.3),
  univention-join-dev,
  univention-l10n-dev (>= 7.0.1),
@@ -23,6 +24,8 @@ Depends:
  univention-join,
  univention-self-service-passwordreset-umc,
  ${misc:Depends},
+ ${python:Depends},
+ ${python3:Depends},
 Description: Univention Self Service
  This package contains the password self service module that
  allows users to reset their password without administrator
@@ -56,12 +59,17 @@ Depends:
  memcached,
  python-psycopg2,
  python-pylibmc,
+ python3-psycopg2,
+ python3-pylibmc,
  shell-univention-lib,
  univention-config,
  univention-join,
  ${misc:Depends},
- ${python3:Depends},
  ${python:Depends},
+ ${python3:Depends},
+Provides:
+ ${python:Provides},
+ ${python3:Provides},
 Description: Password reset module for Univention Self Service.
  This package contains a UMC module that is the backend for the
  univention-self-service-passwordreset-frontend package. It must be
@@ -76,7 +84,10 @@ Package: univention-self-service-invitation
 Architecture: all
 Depends:
  python-six,
+ python3-six,
  ${misc:Depends},
+ ${python:Depends},
+ ${python3:Depends},
 Description: Invitation module for Univention Self Service.
  This package contains a listener and a daemon for the
  invitation functionality of the Univention Self Service.

@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-self-service
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The package univention-self-service has been migrated to Python 3.
+   The UMC module will still be executed via Python 2 until UCS 5.0-2
+   due to possible custom plugins for sending the password recovery tokens.
+   Customers need to provide their custom plugins for Python 3 until then.
+bug: [54029]

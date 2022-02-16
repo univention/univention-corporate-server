@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Send a token to a user using a text message service.
@@ -64,7 +64,7 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 			raise ValueError("SendSMS: UCR umc/self-service/passwordreset/sms/command must contain the path to the program to execute.")
 
 		self.country_code = self.ucr.get("umc/self-service/passwordreset/sms/country_code")
-		if not unicode(self.country_code).isnumeric():
+		if not self.country_code.isdigit():
 			raise ValueError("SendSMS: UCR umc/self-service/passwordreset/sms/country_code must contain a number.")
 		self.read_sms_secret()
 
@@ -135,6 +135,7 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 		print("Starting external program {}...".format(self.cmd))
 		cmd_proc = subprocess.Popen(self.cmd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		cmd_out, cmd_err = cmd_proc.communicate()
+		cmd_out, cmd_err = cmd_out.decode('UTF-8', 'replace'), cmd_err.decode('UTF-8', 'replace')
 		cmd_exit = cmd_proc.wait()
 
 		if cmd_out:

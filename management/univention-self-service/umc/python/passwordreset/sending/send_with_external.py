@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Send a token to a user by email.
@@ -111,6 +111,7 @@ class SendWithExternal(UniventionSelfServiceTokenEmitter):
 		self.log("Starting external program {}...".format(self.cmd))
 		cmd_proc = subprocess.Popen(self.cmd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		cmd_out, cmd_err = cmd_proc.communicate()
+		cmd_out, cmd_err = cmd_out.decode('UTF-8', 'replace'), cmd_err.decode('UTF-8', 'replace')
 		cmd_exit = cmd_proc.wait()
 
 		if cmd_out:

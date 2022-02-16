@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Copyright 2019-2021 Univention GmbH
@@ -36,7 +36,7 @@ import logging
 import sys
 
 import six
-import ldap.filter
+from ldap.filter import filter_format
 
 import univention.lib.umc
 import univention.config_registry
@@ -87,7 +87,7 @@ class Invitation(object):
 
 	def is_valid_user(self, username):
 		# check if users exists and has univentionPasswordSelfServiceEmail
-		l_filter = 'uid={}'.format(ldap.filter.escape_filter_chars(username))
+		l_filter = filter_format('uid=%s', (username,))
 		self.logger.debug('checking ldap with filter {}'.format(l_filter))
 		res = self.lo.search(l_filter)
 		if len(res) == 1:

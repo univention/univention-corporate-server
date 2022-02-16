@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Send a token to a user by email.
@@ -32,7 +32,7 @@
 
 import os.path
 import smtplib
-import urllib
+from six.moves.urllib_parse import quote
 from email.mime.nonmultipart import MIMENonMultipart
 from email.utils import formatdate
 import email.charset
@@ -92,8 +92,8 @@ class VerifyEmail(UniventionSelfServiceTokenEmitter):
 		link = "https://{fqdn}/univention/self-service/#page=verifyaccount".format(fqdn=frontend_server)
 		tokenlink = "https://{fqdn}/univention/self-service/#page=verifyaccount&token={token}&username={username}&method={method}".format(
 			fqdn=frontend_server,
-			username=urllib.quote(self.data["username"]),
-			token=urllib.quote(self.data["token"]),
+			username=quote(self.data["username"]),
+			token=quote(self.data["token"]),
 			method=self.send_method(),
 		)
 
