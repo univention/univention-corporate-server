@@ -227,6 +227,7 @@ int data_on_connection(int fd, callback_remove_handler remove)
 						close(fd);
 						FD_CLR(fd, &readfds);
 						remove(fd);
+						free(network_packet);
 
 						return 0;
 					}
@@ -335,6 +336,7 @@ int data_on_connection(int fd, callback_remove_handler remove)
 	}
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "END Package");
+	free(network_packet);
 
 
 	network_client_dump ();
@@ -347,6 +349,7 @@ close:
 	close(fd);
 	FD_CLR(fd, &readfds);
 	remove(fd);
+	free(network_packet);
 	return 0;
 }
 
