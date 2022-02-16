@@ -293,6 +293,22 @@ void check_callbacks()
 		notify_listener_change_callback ( 0, NULL, NULL);
 	}
 }
+
+static int terminate = 0;
+
+static void sig_stop(int sig) {
+	terminate = sig;
+}
+
+static void setup_signal_handler() {
+	struct sigaction action = {
+		.sa_handler = sig_stop,
+	};
+	sigaction(SIGINT, &action, NULL);
+	sigaction(SIGQUIT, &action, NULL);
+	sigaction(SIGTERM, &action, NULL);
+}
+
 int network_client_main_loop ( )
 {
 	fd_set testfds;
@@ -303,8 +319,10 @@ int network_client_main_loop ( )
 	FD_ZERO(&readfds);
 	FD_SET(server_socketfd_listener, &readfds);
 
+	setup_signal_handler();
+
 	/* main loop */
-	while(1) {
+	while (!terminate) {
 		int fd;
 
 		testfds = readfds;
@@ -334,7 +352,7 @@ int network_client_main_loop ( )
 		check_callbacks();
 	}
 
-	return 0;
+	return terminate;
 }
 
 int network_client_dump ( )
