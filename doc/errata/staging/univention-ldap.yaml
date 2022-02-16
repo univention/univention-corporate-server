@@ -6,13 +6,13 @@ src: univention-ldap
 fix: 15.0.3-9A~4.4.0.202202161136
 desc: |
  This update addresses the following issue:
- * A new UCR variable `ldap/translog-ignore-temporary` has been created
-   to control if UDM temporary objects should be considered for replication
-   by the OpenLDAP `translog` overlay which feeds the Listener/Notifier.
-   This reduces the number of replication transactions during creation of
-   users and groups significantly. As a result it increases the replication
-   performance and reduces the rate at which the cn=translog LMDB backend
-   database gets filled.
+ * A new UCR variable `ldap/translog-ignore-temporary` has been created to
+   control if UDM temporary objects should be considered for replication by
+   the OpenLDAP `translog` overlay which feeds the Listener/Notifier. This
+   reduces the number of replication transactions during creation of users and
+   groups significantly. As a result it increases the replication performance
+   and reduces the rate at which the LMDB backend database `cn=translog` gets
+   filled.
    This variable is applicable only to the UCS Primary Directory Node.
-   By default is will be set to "yes" during package instllation and update.
+   By default is will be set to `yes` during package installation and update.
 bug: [54446]
