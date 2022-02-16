@@ -2581,8 +2581,10 @@ class ObjectsMove(Resource):
 		try:
 			shared_memory.queue[self.request.user_dn]
 		except KeyError:
-			shared_memory.queue[self.request.user_dn] = shared_memory.dict()
-		shared_memory.queue[self.request.user_dn][status_id] = status
+			shared_memory.queue[self.request.user_dn] = {}
+		stat = shared_memory.queue[self.request.user_dn]
+		stat[status_id] = status
+		shared_memory.queue[self.request.user_dn] = stat
 
 		self.set_status(201)
 		self.set_header('Location', self.abspath('progress', status['id']))
@@ -2967,8 +2969,10 @@ class Object(FormBase, Resource):
 		try:
 			shared_memory.queue[self.request.user_dn]
 		except KeyError:
-			shared_memory.queue[self.request.user_dn] = shared_memory.dict()
-		shared_memory.queue[self.request.user_dn][status_id] = status
+			shared_memory.queue[self.request.user_dn] = {}
+		stat = shared_memory.queue[self.request.user_dn]
+		stat[status_id] = status
+		shared_memory.queue[self.request.user_dn] = stat
 
 		self.set_status(201)
 		self.set_header('Location', self.abspath('progress', status['id']))
