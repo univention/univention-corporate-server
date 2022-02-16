@@ -19,3 +19,5 @@ desc: |
  * Disk usage checks will now handle log level evaluations of UCR variable
    `ldap/debug/level` correctly.
 bug: [53969, 54264, 53306, 49353, 53341, 49354]
+erratum: 225
+announced: 2022-02-16
