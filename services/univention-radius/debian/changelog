@@ -1,3 +1,9 @@
+univention-radius (7.0.1-7) unstable; urgency=medium
+
+  * Bug #54461: fix copy-paste artefact in .postinst
+
+ -- Johannes Lohmer <lohmer@univention.de>  Wed, 16 Feb 2022 12:09:28 +0100
+
 univention-radius (7.0.1-6) unstable; urgency=medium
 
   * Bug #54029: fix typo

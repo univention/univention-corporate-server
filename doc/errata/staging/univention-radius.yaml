@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-radius
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * An error while adding the french translation
+   to an extended_attribute during the package update
+   has been fixed.
+bug: [54461]
