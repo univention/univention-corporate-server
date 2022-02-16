@@ -113,33 +113,22 @@ int network_client_add ( int fd, callback_handler handler, int notify)
 
 	if ( tmp == NULL ) {
 		tmp = malloc ( sizeof(NetworkClient_t) );
-
 		tmp->fd = fd;
-
 		tmp->handler = handler;
-
 		tmp->notify = notify;
 		tmp->next_id = 0;
-
 		tmp->next = NULL;
 		network_client_first = tmp;
-
 	} else {
 		while(tmp->next != NULL) tmp = tmp->next;
 
 		tmp->next = malloc ( sizeof(NetworkClient_t) );
-
 		tmp = tmp->next;
-
 		tmp->fd = fd;
-
 		tmp->handler = handler;
-
 		tmp->notify = notify;
 		tmp->next_id = 0;
-
 		tmp->next = NULL;
-
 	}
 	tmp->version = PROTOCOL_UNKNOWN;
 
@@ -156,7 +145,6 @@ int network_client_del ( int fd )
 	if( tmp->fd == fd )
 	{
 		network_client_first=tmp->next;
-
 		free(tmp);
 	}
 	else
@@ -167,9 +155,7 @@ int network_client_del ( int fd )
 			if ( tmp1->fd == fd )
 			{
 				tmp->next=tmp1->next;
-
 				free(tmp1);
-
 				break;
 			}
 			tmp=tmp1;
@@ -337,7 +323,6 @@ int network_client_main_loop ( )
 			exit(1);
 		}
 
-
 		for(fd=0; fd < FD_SETSIZE; fd++) {
 			if( FD_ISSET(fd,&testfds)) {
 				NetworkClient_t *tmp;
@@ -390,23 +375,18 @@ int network_client_check_clients ( unsigned long last_known_id )
 
 				/* try to read from cache */
 				if ( (dn_string = notifier_cache_get(tmp->next_id)) == NULL ) {
-
 					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld not found in cache", tmp->next_id);
-
 					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld get one dn", tmp->next_id);
 
 					/* read from transaction file, because not in cache */
 					if( (dn_string=notify_transcation_get_one_dn ( tmp->next_id )) == NULL ) {
-
 						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld failed ", tmp->next_id);
 						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%d closed, read from transaction file failed ", tmp->fd);
 						/* TODO: maybe close connection? */
-
 					}
 				}
 
 				if ( dn_string != NULL ) {
-
 					snprintf(string, sizeof(string), "MSGID: %ld\n%s\n\n",tmp->msg_id,dn_string);
 
 					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "--> %d: [%s]", tmp->fd, string);
@@ -428,6 +408,7 @@ int network_client_check_clients ( unsigned long last_known_id )
 	}
 	return 0;
 }
+
 int network_client_all_write ( unsigned long id, char *buf, long l_buf)
 {
 	NetworkClient_t *tmp = network_client_first;
@@ -478,4 +459,3 @@ int network_client_all_write ( unsigned long id, char *buf, long l_buf)
 
 	return rc;
 }
-

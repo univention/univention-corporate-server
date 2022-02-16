@@ -393,13 +393,10 @@ int notify_transaction_get_last_notify_id ( Notify_t *notify, NotifyId_t *notify
 	if ( c == -1 || c == 255 ) {
 		/* empty file */
 		notify_id->id = 0;
-
 	} else if ( ftell(notify->tf) == 1) {
-
 		/* only one entry */
 		fseek( notify->tf, 0, SEEK_SET);
 		fscanf(notify->tf, "%ld",& (notify_id->id));
-
 	} else {
 		fscanf(notify->tf, "%ld",& (notify_id->id));
 	}
@@ -419,7 +416,6 @@ char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 	bool found = false;
 	FILE *index = NULL;
 	size_t pos;
-
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK from notify_transcation_get_one_dn");
 	if ((notify.tf = fopen_with_lockfile(FILE_NAME_TF, "r", &(notify.l_tf))) == NULL) {
@@ -503,7 +499,6 @@ void notify_schema_change_callback(int sig, siginfo_t *si, void *data)
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "NEW Schema ID = %ld", SCHEMA_ID);
 
 	fclose(file);
-
 }
 
 void notify_listener_change_callback(int sig, siginfo_t *si, void *data)

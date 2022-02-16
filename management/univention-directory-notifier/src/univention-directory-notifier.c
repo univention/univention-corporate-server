@@ -45,8 +45,6 @@
 #include <unistd.h>
 #include <sys/ipc.h>
 
-
-
 #include <univention/debug.h>
 
 #include "notify.h"
@@ -80,11 +78,11 @@ static int LISTENER_CALLBACK = 0;
 
 void set_schema_callback ( int sig, siginfo_t *si, void *data)
 {
-	    SCHEMA_CALLBACK = 1;
+	SCHEMA_CALLBACK = 1;
 }
 void set_listener_callback ( int sig, siginfo_t *si, void *data)
 {
-	    LISTENER_CALLBACK = 1;
+	LISTENER_CALLBACK = 1;
 }
 
 int get_schema_callback ()
@@ -98,11 +96,11 @@ int get_listener_callback ()
 
 void unset_schema_callback ()
 {
-	    SCHEMA_CALLBACK = 0;
+	SCHEMA_CALLBACK = 0;
 }
 void unset_listener_callback ()
 {
-	    LISTENER_CALLBACK = 0;
+	LISTENER_CALLBACK = 0;
 }
 
 void create_callback_schema()
@@ -176,10 +174,8 @@ unsigned long long parse_ullong(char *str) {
 
 int main(int argc, char* argv[])
 {
-
 	int foreground = 0;
 	int debug = 0;
-
 
 	SCHEMA_ID=0;
 
@@ -243,7 +239,6 @@ int main(int argc, char* argv[])
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Error notify_transaction_get_last_notify_id");
 	}
 
-
 	/* DEBUG */
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Last transaction id = %ld", notify_last_id.id);
 
@@ -272,5 +267,3 @@ int main(int argc, char* argv[])
 	}
 	return 0;
 }
-
-

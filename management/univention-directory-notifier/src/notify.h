@@ -44,26 +44,19 @@
 #define FILE_NAME_TF_IDX "/var/lib/univention-ldap/notify/transaction.index"
 
 typedef struct {
-
 	unsigned long id;
-
 } NotifyId_t;
 
 typedef struct notify_entry {
-
 	NotifyId_t notify_id;			/* cookie for this entry */
-
 	char *dn;						/* the dn */
-
 	char command;					/* (m)odify, (d)elete, (a)dd */
-
 } NotifyEntry_t;
 
 typedef struct {
 	FILE *tf;						/* transaction file, for notifier action */
 	FILE *l_tf;
 } Notify_t;
-
 
 void notify_init ( Notify_t *notify );
 int  notify_transaction_get_last_notify_id ( Notify_t *notify, NotifyId_t *notify_id );
