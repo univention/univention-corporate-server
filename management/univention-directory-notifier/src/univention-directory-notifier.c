@@ -259,10 +259,14 @@ int main(int argc, char* argv[])
 	notify_listener_change_callback ( 0, NULL, NULL);
 	notify_schema_change_callback ( 0, NULL, NULL);
 
-	network_client_main_loop( );
+	int terminate = network_client_main_loop();
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Normal exit");
 
+	if (terminate) {
+		signal(terminate, SIG_DFL);
+		kill(getpid(), terminate);
+	}
 	return 0;
 }
 
