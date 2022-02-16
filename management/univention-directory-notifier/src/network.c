@@ -354,6 +354,12 @@ int network_client_main_loop ( )
 
 	univention_debug( UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Ending main loop");
 
+	network_client_del(server_socketfd_listener);
+	close(server_socketfd_listener);
+
+	while (network_client_first)
+		network_client_del(network_client_first->fd);
+
 	return terminate;
 }
 
