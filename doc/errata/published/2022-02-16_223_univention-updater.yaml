@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * App updates invoked by `univention-upgrade` will now work correctly.
 bug: [53666]
+erratum: 223
+announced: 2022-02-16
