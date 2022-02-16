@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Copyright 2020-2021 Univention GmbH
@@ -31,6 +31,7 @@
 
 import sys
 import pytest
+from six import get_method_self
 
 
 @pytest.fixture
@@ -43,7 +44,7 @@ def mocked_conn(mocker, lo, pos):
 	mocker.patch.object(umc_ldap, '_getMachineConnection', return_value=[lo, pos])
 	mocker.patch.object(umc_ldap, '_getAdminConnection', return_value=[lo, pos])
 	yield
-	umc_ldap.machine_connection.im_self.__dict__['_LDAP__ldap_connections'].clear()
+	get_method_self(umc_ldap.machine_connection).__dict__['_LDAP__ldap_connections'].clear()
 
 
 @pytest.fixture

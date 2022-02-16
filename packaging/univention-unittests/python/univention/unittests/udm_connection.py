@@ -71,7 +71,7 @@ class MockedAccess(MagicMock):
 			res.append(dn)
 		return res
 
-	def modify(self, dn, changes, exceptions=False, ignore_license=0, serverctrls=None, response=None):
+	def modify(self, dn, changes, exceptions=False, ignore_license=0, serverctrls=None, response=None, rename_callback=None):
 		self.database.modify(dn, changes)
 
 	def get(self, dn, attr=[], required=False, exceptions=False):
@@ -102,4 +102,7 @@ class MockedPosition(object):
 		return get_domain()
 
 	def getDomainConfigBase(self):
+		return 'cn=univention,%s' % self.getDomain()
+
+	def getBase(self):
 		return 'cn=univention,%s' % self.getDomain()

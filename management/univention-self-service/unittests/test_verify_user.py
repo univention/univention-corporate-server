@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Copyright 2020-2021 Univention GmbH
@@ -60,7 +60,7 @@ def jobst(ldap_database):
 
 
 def assert_user_password(user, password):
-	ldap_password = user.attrs["userPassword"][0][7:]
+	ldap_password = user.attrs["userPassword"][0][7:].decode('ASCII')
 	assert compare_password(password, ldap_password)
 
 
@@ -77,19 +77,19 @@ def test_meta_password():
 def test_udm_set_password_standard(selfservice_instance, mocked_conn, jobst):
 	selfservice_instance.udm_set_password("jobst", "S3cr3t!!!", email_verified=False)
 	assert_user_password(jobst, "S3cr3t!!!")
-	assert jobst.attrs["univentionPasswordRecoveryEmailVerified"] == ["FALSE"]
+	assert jobst.attrs["univentionPasswordRecoveryEmailVerified"] == [b"FALSE"]
 
 
 def test_udm_set_password_verified(selfservice_instance, mocked_conn, jobst):
 	selfservice_instance.udm_set_password("jobst", "S3cr3t!!!", email_verified=True)
 	assert_user_password(jobst, "S3cr3t!!!")
-	assert jobst.attrs["univentionPasswordRecoveryEmailVerified"] == ["TRUE"]
+	assert jobst.attrs["univentionPasswordRecoveryEmailVerified"] == [b"TRUE"]
 
 
 def test_udm_set_password_verified_admember(selfservice_instance, mocked_conn, jobst):
 	selfservice_instance.udm_set_password("jobst", "S3cr3t!!!", email_verified=True)
 	assert_user_password(jobst, "S3cr3t!!!")
-	assert jobst.attrs["univentionPasswordRecoveryEmailVerified"] == ["TRUE"]
+	assert jobst.attrs["univentionPasswordRecoveryEmailVerified"] == [b"TRUE"]
 
 
 def test_reset_password_with_email(mocker, mocked_conn, verify_ucr, selfservice_instance, umc_request):
