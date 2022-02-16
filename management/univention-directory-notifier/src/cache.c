@@ -103,36 +103,27 @@ void notifier_cache_free() {
 
 int notifier_cache_add(unsigned long id, char *dn, char cmd)
 {
-
 	if ( dn == NULL ) {
 		return 0;
 	}
 
 	if ( max_filled < (notifier_cache_size-1) ) {
-
 		max_filled += 1;
 
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Added to cache pos %d, id %ld", max_filled, id);
 
 		cache[max_filled].id = id;
-
 		cache[max_filled].dn = malloc ( ( strlen(dn) + 1 ) * sizeof(char) );
-
 		strcpy ( cache[max_filled].dn, dn );
 
 		cache[max_filled].command = cmd;
-
 	} else {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Added to cache pos %d, id %ld", entry_min_pos, id);
 
 		cache[entry_min_pos].id = id;
-
 		free(cache[entry_min_pos].dn);
-
 		cache[entry_min_pos].dn = malloc ( ( strlen(dn) + 1 ) * sizeof(char) );
-
 		strcpy ( cache[entry_min_pos].dn, dn );
-
 		cache[entry_min_pos].command = cmd;
 
 		if ( entry_min_pos < (notifier_cache_size-1) ) {
@@ -161,6 +152,4 @@ char* notifier_cache_get(unsigned long id)
 	}
 
 	return NULL;
-
 }
-

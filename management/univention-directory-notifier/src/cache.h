@@ -47,4 +47,3 @@ int notifier_cache_add(unsigned long id, char *dn, char cmd);
 char* notifier_cache_get(unsigned long id);
 
 #endif
-

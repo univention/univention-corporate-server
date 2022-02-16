@@ -45,20 +45,13 @@ enum network_protocol {
 
 typedef struct network_client {
 	int fd;
-
 	callback_handler handler;
-
 	int notify;
-
 	enum network_protocol version;
-
 	unsigned long next_id;
-
 	unsigned long msg_id;
-
 	struct network_client *next;
-
-}NetworkClient_t;
+} NetworkClient_t;
 
 int network_create_socket( int port );
 
@@ -79,4 +72,3 @@ int network_client_check_clients ( unsigned long last_known_id ) ;
 extern enum network_protocol network_procotol_version;
 
 #endif
-
