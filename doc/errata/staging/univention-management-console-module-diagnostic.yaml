@@ -14,7 +14,7 @@ desc: |
    plugins has been corrected.
  * Mounted ISO images are no longer included in the disk usage diagnostic
    plugin.
- * A diagnostic warning for the samba replication status will now be formatted
+ * A diagnostic warning for the Samba replication status will now be formatted
    properly.
  * Disk usage checks will now handle log level evaluations of UCR variable
    `ldap/debug/level` correctly.
