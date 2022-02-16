@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The remaining scripts have all been migrated to Python 3.
 bug: [54208]
+erratum: 221
+announced: 2022-02-16
