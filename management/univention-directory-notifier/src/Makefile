@@ -29,7 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 #
-CFLAGS := -Wall -g -D_FILE_OFFSET_BITS=64
+CFLAGS += -Wall -pedantic
 LDADD := -luniventiondebug
 NOTIFIER_LDADD = $(LDADD) -lldap
 DUMP_LDADD = $(LDADD)
