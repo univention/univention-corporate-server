@@ -41,7 +41,7 @@ typedef struct {
 } notify_cache_t;
 
 int	notifier_cache_init ( unsigned long max_id);
-
+void notifier_cache_free();
 int notifier_cache_add(unsigned long id, char *dn, char cmd);
 
 char* notifier_cache_get(unsigned long id);

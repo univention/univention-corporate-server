@@ -93,6 +93,14 @@ int notifier_cache_init ( unsigned long max_id)
 	return 0;
 }
 
+void notifier_cache_free() {
+	int i;
+	for (i = 0; i < notifier_cache_size; i++)
+		free(cache[i].dn);
+	free(cache);
+	cache = NULL;
+}
+
 int notifier_cache_add(unsigned long id, char *dn, char cmd)
 {
 
