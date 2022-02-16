@@ -7,6 +7,6 @@ fix: 13.0.0-66A~4.4.0.202202101840
 desc: |
  This update addresses the following issue:
  * The value for resynchronization of rejected changes from AD was fixed to
-   use the documented default of 10 retries instead of 0, if the UCRv
+   use the documented default of 10 retries instead of 0, if the UCR variable
    `connector/ad/max_retry_rejected` is not set.
 bug: [54432]
