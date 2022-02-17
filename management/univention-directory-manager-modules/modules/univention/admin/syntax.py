@@ -5923,6 +5923,9 @@ class ActivationDateTimeTimezone(DateTimeTimezone):
 	subsyntax_names = ('activation-date', 'activation-time', 'activation-timezone')
 
 
+class MailDomains(UDM_Objects):
+    udm_modules = ('mail/domain', )
+
 class UDM_Syntax(combobox):
 	"""
 	Syntax class for Extended Attributes.

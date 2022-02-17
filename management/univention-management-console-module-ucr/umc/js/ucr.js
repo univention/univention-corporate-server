@@ -49,12 +49,15 @@ define([
 	"umc/widgets/SearchBox",
 	"umc/widgets/TextBox",
 	"umc/widgets/Text",
+	"umc/widgets/SuggestionBox",
+	"umc/widgets/MailBox",
+	"umc/widgets/MailBox2",
 	"umc/widgets/HiddenInput",
 	"umc/widgets/ComboBox",
 	"umc/widgets/Tooltip",
 	"umc/i18n!umc/modules/ucr",
 	"xstyle/css!./ucr.css"
-], function(declare, lang, kernel, array, aspect, has, entities, Dialog, _TextBoxMixin, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, SearchBox, TextBox, Text, HiddenInput, ComboBox, Tooltip, _) {
+], function(declare, lang, kernel, array, aspect, has, entities, Dialog, _TextBoxMixin, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, SearchBox, TextBox, Text, SuggestionBox, MailBox, MailBox2, HiddenInput, ComboBox, Tooltip, _) {
 
 	var _DetailDialog = declare([Dialog, StandbyMixin], {
 		_form: null,
@@ -317,6 +320,18 @@ define([
 				size: 'Half',
 				'class': 'umcTextBoxOnBody'
 			}, {
+				type: MailBox,
+				name: 'foo',
+				label: _( 'Email' ),
+				'class': 'umcTextBoxOnBody',
+				dynamicValues: 'udm/syntax/choices',
+				dynamicOptions: { syntax: 'MailDomains' },
+			}, {
+				type: MailBox2,
+				name: 'bar',
+				label: _( 'Email' ),
+				'class': 'umcTextBoxOnBody'
+			}, {
 				type: ComboBox,
 				name: 'key',
 				value: 'all',
@@ -328,7 +343,6 @@ define([
 					{ id: 'value', label: _( 'Value' ) },
 					{ id: 'description', label: _( 'Description' ) }
 				],
-				size: 'Half',
 				'class': 'umcTextBoxOnBody'
 			}, {
 				type: SearchBox,
@@ -345,7 +359,7 @@ define([
 				region: 'nav',
 				hideSubmitButton: true,
 				widgets: widgets,
-				layout: [[ 'category', 'key', 'pattern' ]]
+				layout: [[ 'foo', 'bar' ]]
 			});
 			this._searchForm.on('search', lang.hitch(this._grid, 'filter'));
 
