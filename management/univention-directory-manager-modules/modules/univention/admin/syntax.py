@@ -429,7 +429,9 @@ class complex(ISyntax):
 
 	@classmethod
 	def get_widget(cls, prop):
-		return 'MultiInput' if prop.multivalue else 'ComplexInput'
+		return cls.widget if prop.multivalue else cls.widget_multivalue
+	widget = 'MultiInput'
+	widget_multivalue = 'ComplexInput'
 	widget_default_search_pattern = None
 
 	@classmethod
@@ -572,10 +574,12 @@ class UDM_Objects(ISyntax):
 	"""By default with `True` create Python UDM instance for each LDAP entry. With `False` only work with the LDAP attribute data."""
 
 	widget_default_search_pattern = ''
+	widget = 'umc/modules/udm/ComboBox'
+	widget_advanced_multivalue = 'umc/modules/udm/MultiObjectSelect'
 
 	@classmethod
 	def get_widget(cls, prop):
-		return 'umc/modules/udm/MultiObjectSelect' if prop.multivalue and len(cls.udm_modules) == 1 and not cls.simple else 'umc/modules/udm/ComboBox'
+		return cls.widget_advanced_multivalue if prop.multivalue and len(cls.udm_modules) == 1 and not cls.simple else cls.widget
 
 	@property
 	def type_class(self):
@@ -3640,9 +3644,6 @@ class GroupDN(UDM_Objects):
 	udm_modules = ('groups/group', )
 	use_objects = False
 
-	@classmethod
-	def get_widget(cls, prop):
-		return 'umc/modules/udm/MultiObjectSelect' if prop.multivalue and len(cls.udm_modules) == 1 and not cls.simple else 'umc/modules/udm/ComboBox'
 	widget_default_search_pattern = []
 
 
@@ -3744,10 +3745,6 @@ class PortalComputer(UDM_Objects):
 
 	widget = 'umc/modules/udm/MultiObjectSelect'
 	widget_default_search_pattern = False
-
-	@classmethod
-	def get_widget(cls, prop):
-		return cls.widget
 
 
 class IComputer_FQDN(UDM_Objects):
@@ -5728,11 +5725,7 @@ class PortalEntrySelection(complex):
 	subsyntaxes = [(_('Portal Entry'), PortalEntries)]
 	subsyntax_names = ('portal-entry',)
 
-	@classmethod
-	def get_widget(cls, prop):
-		return cls.widget
-
-	widget = 'umc/modules/udm/PortalContent'
+	widget = widget_multivalue = 'umc/modules/udm/PortalContent'
 	widget_default_search_pattern = None
 
 
