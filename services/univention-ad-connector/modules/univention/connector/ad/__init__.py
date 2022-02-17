@@ -413,6 +413,7 @@ class ad(univention.connector.ucs):
 						new_ca.write(b''.join(ca.readlines()))
 
 				ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, new_ca_filename)
+				ldap.set_option(ldap.OPT_X_TLS_NEWCTX, 0)
 			else:
 				ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 

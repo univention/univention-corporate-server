@@ -1,3 +1,11 @@
+univention-ad-connector (14.0.8-6) unstable; urgency=medium
+
+  * Bug #54408: add OPT_X_TLS_NEWCTX option for TLS encrypted
+    LDAP connections. This has become a requirement for
+    python-ldap-3.3.0 (and higher)
+
+ -- Christian Castens <castens@univention.de>  Thu, 17 Feb 2022 13:46:59 +0100
+
 univention-ad-connector (14.0.8-5) unstable; urgency=medium
 
   * Bug #49867: Make number on retries of rejected changes configurable

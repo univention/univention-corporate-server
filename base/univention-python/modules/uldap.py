@@ -354,6 +354,7 @@ class access(object):
 
 		if ca_certfile:
 			self.lo.set_option(ldap.OPT_X_TLS_CACERTFILE, ca_certfile)
+			self.lo.set_option(ldap.OPT_X_TLS_NEWCTX, 0)
 
 		if self.protocol.lower() != 'ldaps':
 			if self.start_tls == 1:
@@ -984,6 +985,7 @@ class access(object):
 
 			if self.ca_certfile:
 				lo_ref.set_option(ldap.OPT_X_TLS_CACERTFILE, self.ca_certfile)
+			        lo_ref.set_option(ldap.OPT_X_TLS_NEWCTX, 0)
 
 			if self.start_tls == 1:
 				try:

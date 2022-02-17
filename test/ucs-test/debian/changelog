@@ -1,3 +1,10 @@
+ucs-test (10.0.6-98) unstable; urgency=medium
+
+  * Bug #54408: added OPT_X_TLS_NEWCTX option for LDAPS connections.
+    This has become a requirement since python-ldap-3.3.0
+
+ -- Christian Castens <castens@univention.de>  Thu, 17 Feb 2022 13:44:57 +0100
+
 ucs-test (10.0.6-97) unstable; urgency=medium
 
   * Bug #54297: memberuid is mission after updating group users with same uid

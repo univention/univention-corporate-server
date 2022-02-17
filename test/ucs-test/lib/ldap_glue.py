@@ -62,6 +62,7 @@ class LDAPConnection(object):
 			self.lo = ldap.initialize(uri="ldap://%s:%s" % (self.host, self.port))
 			if self.ca_file:
 				ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, self.ca_file)
+				ldap.set_option(ldap.OPT_X_TLS_NEWCTX, 0)
 			if use_starttls:
 				self.lo.start_tls_s()
 		except Exception:
