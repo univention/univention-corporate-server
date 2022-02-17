@@ -1,4 +1,4 @@
-univention-python (13.0.2-5) unstable; urgency=medium
+univention-python (13.0.2-6) unstable; urgency=medium
 
   * Bug #54408: add OPT_X_TLS_NEWCTX option for TLS encrypted
     LDAP connections. This has become a requirement for
