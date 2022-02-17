@@ -77,13 +77,14 @@ for line in lines:
 		regmatch = reg.match(line)
 		if regmatch:
 			key, tsstr = regmatch.groups()
+			key = key.decode('ASCII')
 			if key not in entries:
 				ts = int(tsstr)
 				expdate = datetime.datetime.utcfromtimestamp(ts)
-				so.sendall(b"get %s\r\n" % (key,))
+				so.sendall(b"get %s\r\n" % (key.encode('ASCII'),))
 				data = so.recv(1024)
 				text = data.split(b"\r\n")
-				entries[key] = (text[1].decode('UTF-8'), expdate)
+				entries[key] = (text[1].decode('ISO8859-1'), expdate)
 so.sendall(b"quit\r\n")
 so.close()
 
