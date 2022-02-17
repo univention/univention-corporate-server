@@ -3,7 +3,7 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: univention-ldap
-fix: 15.0.3-9A~4.4.0.202202161136
+fix: 15.0.3-10A~4.4.0.202202172044
 desc: |
  This update addresses the following issue:
  * A new UCR variable `ldap/translog-ignore-temporary` has been created to
