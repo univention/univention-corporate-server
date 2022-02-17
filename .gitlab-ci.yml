@@ -6,6 +6,11 @@ include:
   - template: 'Workflows/Branch-Pipelines.gitlab-ci.yml'
   - local: '/.gitlab-ci/base.yml'
 
+variables:
+  pipeline:
+    value: ""
+    description: "Skip or force jobs: '(skip|force)-(doc|lint|build)'"
+
 generate-config:
   stage: prepare
   rules:

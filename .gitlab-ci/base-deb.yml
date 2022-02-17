@@ -17,15 +17,21 @@ stages:
   stage: build
   image: $DEB
   before_script:
+    - echo -e "\e[0Ksection_start:$(date +%s):prep[collapsed=true]\r\e[0KPreparing build environment"
     - echo man-db man-db/auto-update boolean false | debconf-set-selections
     - echo 'path-exclude /etc/univention/templates/info/*.info' > /etc/dpkg/dpkg.cfg.d/no-ucr
     - install -m644 .gitlab-ci/git.pref /etc/apt/preferences.d/10git.pref
     - echo "deb [trusted=yes] $APT/$CI_COMMIT_REF_SLUG git main" >"/etc/apt/sources.list.d/$CI_COMMIT_REF_SLUG.list"
     - apt-get -qq update
+    - echo -e "\e[0Ksection_end:$(date +%s):prep\r\e[0K"
     - cd $base
+    - echo -e "\e[0Ksection_start:$(date +%s):build_dep[collapsed=true]\r\e[0KInstalling build dependencies"
     - apt-get -q --assume-yes build-dep .
+    - echo -e "\e[0Ksection_end:$(date +%s):build_dep\r\e[0K"
     - find -exec touch -m -h -c -d "@${SOURCE_DATE_EPOCH:-$(dpkg-parsechangelog -STimestamp)}" {} +
   script:
+    - echo -e "\e[0Ksection_start:$(date +%s):build\r\e[0KBuilding binary package"
     - dpkg-buildpackage -uc -us -b --jobs-try=auto
+    - echo -e "\e[0Ksection_end:$(date +%s):build\r\e[0K"
     - cd $CI_PROJECT_DIR
     - .gitlab-ci/aptly-upload ${base}_*.changes
