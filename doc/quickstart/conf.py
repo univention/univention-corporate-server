@@ -56,7 +56,12 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
+pdf_doc_base = "quickstart"
+
 html_theme = 'univention_sphinx_book_theme'
+html_context = {
+    "pdf_download_filename" : f"{pdf_doc_base}.pdf",
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -83,7 +88,7 @@ latex_engine = 'lualatex'
 latex_show_pagerefs = True
 latex_show_urls = "footnote"
 latex_logo = "_static/univention_logo.pdf"
-latex_documents = [(root_doc, 'quickstart.tex', "", author, "manual", False)]
+latex_documents = [(root_doc, f'{pdf_doc_base}.tex', "", author, "manual", False)]
 latex_elements = {
     "papersize": "a4paper",
 }
