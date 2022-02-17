@@ -18,14 +18,13 @@ reference to further documentation. The documentation on UCS is
 available at https://docs.software-univention.de/.
 
 The installation DVD can be downloaded from the Univention website at
-https://www.univention.com/downloads/ucs-download/iso-installation-image/.
+https://www.univention.com/downloads/download-ucs.
 The installation DVD is only available for the host architecture *amd64*
 (64-bit). It has support for the Unified Extensible Firmware
 Interface-Standard (UEFI) including SecureBoot.
 
-Alternatively preinstalled images for VMware and VirtualBox can be used.
-These are available for download at
-https://www.univention.com/downloads/ucs-download/preinstalled-vm-images/.
+Alternatively preinstalled images for VMware and VirtualBox can be used from the
+same download page.
 
 The system requirements vary considerably depending on the intended
 purpose and the number of users. The minimum requirements for the
@@ -260,12 +259,12 @@ Further information
   documentation. The various documents are linked at
   https://docs.software-univention.de/.
 
-- The `Univention Wiki <https://wiki.univention.de/>`_) contains several
+- The `Univention Wiki <https://wiki.univention.de/index.php/Main_Page>`_) contains several
   HOWTOs and hands-on tips.
 
 - Answers to frequently asked questions can be found in the `support and
   knowledge database (SDB)
-  <https://help.univention.com/c/knowledge-base/supported/>`_).
+  <https://help.univention.com/c/knowledge-base/supported/48>`_).
 
 - Questions on UCS can be asked at `Univention Help
   <https://help.univention.com/>`_.
