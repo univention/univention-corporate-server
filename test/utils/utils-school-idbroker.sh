@@ -123,7 +123,7 @@ add_test_app_portal_link () {
 		--set category=service \
 		--set description="en_US \"Test app to check oauth login and tokens\"" \
 		--set displayName="en_US \"Test oauth\"" \
-		--set link="https://$broker_fqdn/univention-test-app/?kc_idp_hint=$keycloak_identifier" \
+		--set link="https://$broker_fqdn/univention-test-app/?kc_idp_hint=$keycloak_identifier&pkce=y" \
 		--set linkTarget=useportaldefault \
 		--set name=univention-test-app \
 		--set portal="cn=ucsschool_demo_portal,cn=portal,cn=univention,$(ucr get ldap/base)" \
