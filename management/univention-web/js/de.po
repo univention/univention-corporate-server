@@ -13,6 +13,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
 
+msgid "mail@example.org"
+msgstr "mail@beispiel.de"
+
 #: js/widgets/MultiInput.js:703
 msgid " (required)"
 msgstr " (erforderlich)"
