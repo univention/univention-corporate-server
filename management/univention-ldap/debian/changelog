@@ -1,4 +1,4 @@
-univention-ldap (15.0.3-9) unstable; urgency=medium
+univention-ldap (15.0.3-10) unstable; urgency=medium
 
   * Bug #48626: Make configurable that ldap ignores temporary objects.
 
