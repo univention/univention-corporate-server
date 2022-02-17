@@ -752,7 +752,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
 	key = 'dn'
 	"""Either 'dn' or the |UDM| property name enclosed in %()s to use as the value for this syntax class."""
 	label = None  # type: Optional[str]
-	"""The |UDM| property name, which is used as the displayed value."""
+	"""The |UDM| property name enclosed in %()s, which is used as the displayed value."""
 	regex = re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')  # type: Optional[Pattern]
 	"""Regular expression for validating the values."""
 	static_values = None  # type: Optional[Sequence[Tuple[str, str]]]
@@ -2625,7 +2625,7 @@ class emailAddressTemplate(emailAddress):
 	pass
 
 
-class emailAddressValidDomain(emailAddress):
+class emailAddressValidDomain(UDM_Objects, emailAddress):
 	"""
 	Syntax class for an e-mail address in one of the registered e-mail domains.
 
@@ -2641,6 +2641,23 @@ class emailAddressValidDomain(emailAddress):
 	"""
 	name = 'emailAddressValidDomain'
 	errMsgDomain = _("The domain part of the following mail addresses is not in list of configured mail domains: %s")
+
+	type_class = univention.admin.types.EMailAddressType
+
+	udm_modules = ('mail/domain',)
+	key = '%(name)s'
+	label = '%(name)s'
+	simple = True
+	empty_value = False
+	regex = re.compile('[^ ]+@[^ ]+')
+	error_message = _("Not a valid email address!")
+
+	widget_default_search_pattern = '*@*'
+	search_widget = 'MailBox'
+
+	@classmethod
+	def get_widget(cls, prop):
+		return 'MailBox'
 
 	@classmethod
 	def checkLdap(self, lo, mailaddresses):
