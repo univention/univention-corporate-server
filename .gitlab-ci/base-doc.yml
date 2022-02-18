@@ -29,13 +29,13 @@ stages:
   extends: .sphinx-doc
   script:
     - make -C $base html
-    - mkdir -p $CI_PROJECT_DIR/public
     - rsync -av --delete $base/_build/html/ $CI_PROJECT_DIR/public
 
 .sphinx-pdf:
   extends: .sphinx-doc
   script:
     - make -C $base latexpdf
+    - mkdir -p $CI_PROJECT_DIR/public
     - cp $base/_build/latex/*.pdf $CI_PROJECT_DIR/public
 
 .sphinx-linkcheck:
