@@ -1,3 +1,9 @@
+ucs-test (10.0.6-99) unstable; urgency=medium
+
+  * Bug #51327: migrated self-service tests to Python 3
+
+ -- Johannes Lohmer <lohmer@univention.de>  Wed, 23 Feb 2022 14:53:09 +0100
+
 ucs-test (10.0.6-98) unstable; urgency=medium
 
   * Bug #54408: added OPT_X_TLS_NEWCTX option for LDAPS connections.

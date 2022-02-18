@@ -70,7 +70,7 @@ def capture_mails(timeout=5):
 			fcntl.fcntl(self.socket.fileno(), fcntl.F_SETFD, fcntl.fcntl(self.socket.fileno(), fcntl.F_GETFD) | fcntl.FD_CLOEXEC)
 			self.data = []
 
-		def process_message(self, peer, mailfrom, rcpttos, data):
+		def process_message(self, peer, mailfrom, rcpttos, data, **kwargs):
 			print(('receiving email with length=', len(data)))
 			self.data.append(data)
 
@@ -78,7 +78,7 @@ def capture_mails(timeout=5):
 
 		def __init__(self):
 			print('Starting mail server')
-			self.smtp = Mail(('', 25), '')
+			self.smtp = Mail(('localhost', 25), '')
 			self.thread = Thread(target=asyncore.loop, kwargs={'timeout': timeout})
 			self.thread.start()
 
