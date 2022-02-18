@@ -185,6 +185,7 @@ COMMON_EXCEPTIONS = (
 	E('ImportError: No module named client', ['univention-directory-listener/system/faillog.py', 'univention-directory-listener/system/udm_extension.py', 'univention-directory-listener/system/portal_groups.py', 'univention-directory-listener/system/app_attributes.py'], (53290, 53862)),
 	E("AttributeError: 'ConfigRegistry' object has no attribute '_walk'", ['univention-directory-listener/system/nfs-shares.py'], (53291, 53862)),
 	E("AttributeError: 'module' object has no attribute 'localization'", ['univention-directory-listener/system/app_attributes.py'], 53862),
+	E("ConnectionRefusedError: \[Errno 111\] Connection refused", ['univention-self-service-invitation'], 53670),
 	E("univention.lib.umc.ConnectionError: .*Could not send request.*Connection refused", ['univention-self-service-invitation'], 53670),
 
 	# updater test cases:
