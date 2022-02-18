@@ -260,7 +260,7 @@ def _add_umc(name: str, json_content: Dict):
 
 def _add_selfservice(name: str, json_content: Dict):
 	portal_def = {
-		"class": "SelfServicePortal",
+		"class": "Portal",
 		"kwargs": {
 			"authenticator": {
 				"class": "UMCAuthenticator",
@@ -271,23 +271,6 @@ def _add_selfservice(name: str, json_content: Dict):
 							"cache_file": {
 								"type": "static",
 								"value": "/var/cache/univention-portal/groups.json",
-							},
-							"reloader": {
-								"class": "GroupsReloaderLDAP",
-								"kwargs": {
-									"binddn": {"key": "hostdn", "type": "config"},
-									"cache_file": {
-										"type": "static",
-										"value": "/var/cache/univention-portal/groups.json",
-									},
-									"ldap_base": {"key": "ldap_base", "type": "config"},
-									"ldap_uri": {"key": "ldap_uri", "type": "config"},
-									"password_file": {
-										"type": "static",
-										"value": "/etc/machine.secret",
-									},
-								},
-								"type": "class",
 							},
 						},
 						"type": "class",
@@ -302,7 +285,18 @@ def _add_selfservice(name: str, json_content: Dict):
 				"kwargs": {
 					"cache_file": {
 						"type": "static",
-						"value": "/var/cache/univention-portal/portal.json",
+						"value": "/var/cache/univention-portal/selfservice.json",
+					},
+					"reloader": {
+						"class": "PortalReloaderUDM",
+						"kwargs": {
+							"cache_file": {
+								"type": "static",
+								"value": "/var/cache/univention-portal/selfservice.json",
+							},
+							"portal_dn": {"key": "selfservice_portal_dn", "type": "config"},
+						},
+						"type": "class",
 					},
 				},
 				"type": "class",
