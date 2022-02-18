@@ -2,13 +2,12 @@ product: ucs
 release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
-src: univention-management-console-module-udm
+src: univention-directory-manager-rest
 fix: 
 desc: |
- This update addresses the following issues:
- * A UMC operation set enabling the creation of UDM Reports was added.
+ This update addresses the following issue(s):
  * The logic for mapping UDM syntax classes to UMC frontend widgets has been
    moved into the UDM syntax classes.
    The logic to get the dynamic choices for a UDM syntax has been moved into
    the UDM syntax classes.
-bug: [5410, 938762]
+bug: [38762]

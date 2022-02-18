@@ -3,11 +3,15 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-directory-manager-modules
-fix: 15.0.11-42A~5.0.0.202204131139
+fix: 
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * Changing the case of name or email attributes will not be prevented by
    the locking anymore.
  * A crash during accessing a user with multiple user certificates has been
    repaired.
-bug: [52760, 54617]
+ * The logic for mapping UDM syntax classes to UMC frontend widgets has been
+   moved into the UDM syntax classes.
+   The logic to get the dynamic choices for a UDM syntax has been moved into
+   the UDM syntax classes.
+bug: [52760, 54617, 38762]
