@@ -142,7 +142,6 @@ apps. They require the following line in the script:
 .. code:: sh
 
    . /usr/share/univention-appcenter/joinscripthelper.sh
-                       
 
 Furthermore, this call provides access to the following variables:
 
@@ -171,11 +170,11 @@ Join script functions
    ``uid=$APP-systemuser,cn=users,$ldap_base``.
 
    .. code:: sh
-   
+
       joinscript_add_simple_app_system_user "$@" --set mailPrimaryAddress=...
-                       
+
 ``joinscript_container_is_running``
-   Returns whether or not the Docker container is currently running. 
+   Returns whether or not the Docker container is currently running.
 
    * 0: Yes
    * 1: No
@@ -183,25 +182,25 @@ Join script functions
    Can be used in an if statement.
 
    .. code:: sh
-   
+
       joinscript_container_is_running || die "Container is not running"
-                       
+
 ``joinscript_run_in_container``
    Runs one command inside the container. Returns the return code of the command.
 
    .. code:: sh
-   
+
       joinscript_run_in_container service myapp restart ||
       die "Could not restart the service"
-                       
+
 ``joinscript_container_file``
    Prints the absolute path for the Docker host for the filename given inside
    the container.
 
    .. code:: sh
-   
+
       FILENAME="$(joinscript_container_file "/opt/$APP/my.cnf")"
-                       
+
 ``joinscript_container_file_touch``
    Creates a file inside the container.  Directories are created along the way.
    Prints the resulting filename just like "joinscript_container_file".
@@ -224,9 +223,8 @@ Join script functions
    for *Schema extension for LDAP*.
 
    .. code:: sh
-   
+
       joinscript_register_schema "$@"
-                       
 
 .. _installation:joinscript:boilerplate:
 
@@ -250,7 +248,7 @@ own join script.
 
    joinscript_save_current_version
    exit 0
-                       
+
 .. _uninstallation-scripts:
 
 Uninstall scripts
@@ -514,7 +512,6 @@ example
 .. code:: ini
 
    [myapp/mysetting]
-                       
 
 It is recommended to use the app ID as a prefix to prevent collisions.
 
@@ -610,7 +607,6 @@ This is a minimal settings definition:
    Type = String
    Description = This is the description of the setting
    Description[de] = Das ist die Beschreibung der Einstellung
-                   
 
 These are two more advanced settings
 
@@ -624,7 +620,6 @@ These are two more advanced settings
    Show = Install, Settings
    Group = License and List
    Group[de] = Lizenz und Liste
-                   
 
 .. code:: ini
 
@@ -639,7 +634,6 @@ These are two more advanced settings
    Scope = inside, outside
    Group = License and List
    Group[de] = Lizenz und Liste
-                   
 
 The first of these two settings will upload a file to
 :file:`/opt/myapp/license` inside the container. The second will save
@@ -670,7 +664,6 @@ to changes to certificates.
 
    # update app "my-app"
    univention-app update-certificates my-app
-               
 
 What happens with ``update-certificates``?
 
@@ -699,7 +692,6 @@ Example:
    # cat the UCS root CA to the app's root CA chain
    cat /etc/univention/ssl/ucsCA/CAcert.pem >> /opt/my-app/ca-bundle.crt
    service my-app-daemon restart
-               
 
 The script has to be uploaded via the upload API (section :ref:`App Provider
 Portal upload interface <upload-interface>`). The script should be
@@ -708,7 +700,6 @@ written locally and then uploaded with the following command:
 .. code:: sh
 
    ./univention-appcenter-control upload --username $your-username 5.0/myapp=1.0 update_certificates
-               
 
 Mail integration
 ----------------
@@ -748,7 +739,6 @@ example what should be included in the Join Script:
      joinscript_run_in_container my-app-setup --config sieve="$mailserver"
    fi
    ...
-               
 
 The snipped searches the UCS LDAP directory for the host with the
 service IMAP and sets the FQDN of this host as IMAP, SMTP and SIEVE
@@ -797,7 +787,6 @@ installed <installation:preinst>`. Example:
    # stop imap/smtp on docker host
    systemctl stop postfix dovecot
    ucr set postfix/autostart=no dovecot/autostart=no
-                       
 
 To map SMTP and/or IMAP ports from the container to the host to be able
 to use the Docker host as IMAP/SMTP server exclusive ports for the
@@ -828,7 +817,6 @@ Install the *extremely simple MTA* :program:`ssmtp` and configure this MTA to us
 
    univention-install --yes ssmtp
    # add mailhub=localhost:25 in to /etc/ssmtp/ssmtp.conf
-                   
 
 Now configure Postfix in the Docker container to deliver mails from the
 Docker host locally by adding the FQDN of the Docker host to
@@ -837,7 +825,6 @@ Docker host locally by adding the FQDN of the Docker host to
 .. code:: sh
 
    ucr set mail/postfix/mydestination="\$myhostname, localhost.\$mydomain, localhost, $DOCKER_HOST_NAME"
-                   
 
 .. _subdomains:
 
@@ -878,7 +865,6 @@ script <installation:joinscript>`):
    systemctl reload apache2
    nscd -i hosts  # only needed if the new fqdn should be used immediately by the system
    systemctl reload bind9  # same here
-                   
 
 This will create the following entry in
 :file:`/etc/apache2/sites-available/univention-vhosts.conf`
@@ -943,7 +929,6 @@ opened for TCP and UDP:
    > "security/packetfilter/package/$APP/udp/6644/all/en=$APP"
 
    $ systemctl try-restart univention-firewall
-           
 
 Please also add corresponding ``ucr unset`` commands in the unjoin
 script so that the firewall rules will be removed when the app is

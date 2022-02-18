@@ -105,7 +105,7 @@ App ID
    should only use small capitals, dashes and numbers. Please do not
    include version strings in here.
 
-App name 
+App name
    is the name of the app. It is used to display the app
    on the overview pages. This attribute can be changed any time.
 
@@ -307,7 +307,6 @@ supported. An environment file can look like the following example:
    LDAP_SERVER=@%@ldap/server@%@
    FQDN=@%@hostname@%@.@%@domainname@%@
    HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
-                   
 
 The content of the environment file can be entered in the App Provider
 portal on the :guilabel:`Configuration` tab in the field for :guilabel:`Environment file for
@@ -357,7 +356,6 @@ environment variables.
            LDAP_BaseDN: "@%@ldap/base@%@"
            LDAP_Authentication_UserDN: "@%@appcenter/apps/$appid/hostdn@%@"
        [...]
-                   
 
 The example above is an excerpt from a Docker compose file where
 environment variables are defined for a service. The values of the
@@ -471,7 +469,6 @@ more about UCR templates, but the core mechanics are:
 
       environment:
           MY_KEY: "@%@myapp/mysetting@%@"
-                              
 
    Note that App Settings are always added to the main service
    automatically. But this allows adding them to other containers and
@@ -484,7 +481,6 @@ more about UCR templates, but the core mechanics are:
 
       environment:
           MY_SECRET: "@!@import uuid; print(uuid.uuid4())@!@"
-                              
 
    Note that currently, you cannot access App Settings within the Python
    script.

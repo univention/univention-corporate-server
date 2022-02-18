@@ -104,7 +104,6 @@ container, this script can be called accordingly, e.g.
 
    #/bin/sh
    /usr/sbin/app-connector
-                       
 
 .. _provision:push:mechanism:
 
@@ -234,7 +233,6 @@ but should clarify the idea.
        },
        "udm_object_type": "users/user"
    }
-                       
 
 Authentication
 --------------

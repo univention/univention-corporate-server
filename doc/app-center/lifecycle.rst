@@ -99,7 +99,6 @@ the UCS system set up before.
 
    $ univention-install univention-appcenter-dev
    $ univention-app dev-use-test-appcenter
-                   
 
 .. _testing:install:
 
@@ -157,7 +156,6 @@ console and install a version explicitly:
 .. code-block::
 
    $ univention-app install myapp=1.0
-                   
 
 Afterwards, go back to the App Center UMC module. There, the app should
 show up with the update symbol indicating the availability of an update.
@@ -195,7 +193,6 @@ To switch back to the productive App Center, please run:
 .. code-block::
 
    $ univention-app dev-use-test-appcenter --revert
-                   
 
 .. _testing:automation-for-providers:
 
@@ -227,7 +224,6 @@ interface of UDM can be used easily. Here is an example:
      --set myappActivated=TRUE
    sleep 10
    curl http://localhost/myapp/login ...
-                   
 
 For certain tests user credentials for access to the directory service
 are needed. They are passed with the parameters ``binddn`` and
@@ -248,7 +244,6 @@ The test script can be manually tested.
    > my-app \
    > --binddn "$DN" \
    > --bindpwd "$BINDPWD"
-                   
 
 .. _testing:debugging:
 
@@ -265,7 +260,6 @@ system.
 .. code-block::
 
    $ univention-app install myapp --do-not-revert
-                   
 
 For debugging or support cases it can be helpful to enter the app
 container. The following command opens a shell in the container.
@@ -273,7 +267,6 @@ container. The following command opens a shell in the container.
 .. code-block::
 
    $ univention-app shell myapp
-                   
 
 If the container does not support a shell, the container can be entered
 with the plain Docker commands.
@@ -282,7 +275,6 @@ with the plain Docker commands.
 
    $ CONTAINER="$(ucr get appcenter/apps/myapp/container)"
    $ docker exec "$CONTAINER" ...
-                   
 
 To view the Docker log files for the app, please use the following
 command:
@@ -290,7 +282,6 @@ command:
 .. code-block::
 
    $ univention-app logs $appid  # equivalent to docker logs $CONTAINER
-                   
 
 For multi container apps using Docker compose, those logging information
 can be viewed with:
@@ -299,7 +290,6 @@ can be viewed with:
 
    $ cd /var/lib/univention-appcenter/apps/$appid/compose
    $ docker-compose -p $appid logs
-                   
 
 Important log files on the UCS host for debugging are:
 
@@ -427,7 +417,6 @@ and their parameters, use the script's help:
 
    $ ./univention-appcenter-control --help
    $ ./univention-appcenter-control upload --help
-               
 
 The following examples show how the script can be used.
 
@@ -460,7 +449,6 @@ The following examples show how the script can be used.
    # somewhere in the ini file. Note: This may overwrite the logo for other
    # version using the same logo name, too.
    $ ./univention-appcenter-control upload 5.0/myapp=1.0 myapp.svg
-               
 
 The script can also be used to automate the creation of a new app
 version for an app update. The generics steps are the following:
