@@ -338,5 +338,3 @@ class Gateway(tornado.web.RequestHandler):
 			os.kill(pid, signo)
 		except EnvironmentError as exc:
 			logging.getLogger().error('Could not kill(%s) %s: %s' % (signo, pid, exc))
-		else:
-			os.waitpid(pid, os.WNOHANG)

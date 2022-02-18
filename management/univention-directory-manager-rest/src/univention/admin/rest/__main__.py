@@ -203,8 +203,6 @@ class Server(object):
 			os.kill(pid, signo)
 		except EnvironmentError as exc:
 			CORE.error('Could not kill(%s) %s: %s' % (signo, pid, exc))
-		else:
-			os.waitpid(pid, os.WNOHANG)
 
 	@classmethod
 	def main(cls):

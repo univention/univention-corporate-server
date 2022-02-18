@@ -4,6 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
+KillMode=process
 # ugly hack until StandardOutput or StandardError to file:YOUR_ABSPATH_FILENAME is supported
 ExecStart=/bin/bash -ce "exec /usr/bin/python2.7 -m univention.admin.rest.server >> /var/log/univention/directory-manager-rest.log 2>&1"
 #ExecStart=/usr/bin/python2.7 -m univention.admin.rest.server
