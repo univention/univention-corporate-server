@@ -39,7 +39,46 @@ ucr = ConfigRegistry().load()
 
 udm = UDM.machine().version(3)
 
+portals = udm.get('portals/portal')
+categories = udm.get('portals/category')
 entries = udm.get('portals/entry')
+
+
+def create_self_service_portal(args, categories):
+	try:
+		portal = portals.get_by_id('self-service')
+		print('Found', portal.dn)
+		if args.no_update:
+			print('... skipping')
+			return
+	except NoObject:
+		portal = portals.new()
+		print('Creating new portal')
+		portal.props.name = 'self-service'
+	portal.props.displayName = {'en_US': 'Self Service'}
+	portal.props.categories = categories
+	portal.props.showUmc = False
+	portal.props.defaultLinkTarget = 'samewindow'
+	portal.save()
+	print('Saved', portal.dn)
+
+
+def create_self_service_category(args, name, display_name, entries):
+	try:
+		category = categories.get_by_id(name)
+		print('Found', category.dn)
+		if args.no_update:
+			print('... skipping')
+			return category.dn
+	except NoObject:
+		category = categories.new()
+		print('Creating new category')
+		category.props.name = name
+	category.props.displayName = display_name
+	category.props.entries = entries
+	category.save()
+	print('Saved', category.dn)
+	return category.dn
 
 
 def create_self_service_entry(args, name, page, ucr_name, anonymous, display_name, description=None):
@@ -48,6 +87,7 @@ def create_self_service_entry(args, name, page, ucr_name, anonymous, display_nam
 		print('Found', entry.dn)
 		if args.no_update:
 			print('... skipping')
+			return entry.dn
 	except NoObject:
 		entry = entries.new()
 		print('Creating new entry')
@@ -74,15 +114,28 @@ def create_self_service_entry(args, name, page, ucr_name, anonymous, display_nam
 			portal.props.userLinks.append(entry.dn)
 			portal.save()
 			print('... added to', portal.dn)
+	return entry.dn
 
 
 def main(args):
-	create_self_service_entry(args, 'self-service-my-profile', 'profile', 'umc/self-service/profiledata/enabled', False, display_name={'en_US': 'My Profile', 'de_DE': 'Mein Profil'}, description={'en_US': 'Manage profile', 'de_DE': 'Profil verwalten'})
-	create_self_service_entry(args, 'self-service-protect-account', 'protectaccount', 'umc/self-service/protect-account/backend/enabled', False, display_name={'en_US': 'Protect your account', 'de_DE': 'Kontozugang schützen'})
-	create_self_service_entry(args, 'self-service-password-forgotten', 'passwordforgotten', 'umc/self-service/passwordreset/backend/enabled', True, display_name={'en_US': 'Password forgotten', 'de_DE': 'Passwort vergessen'})
-	create_self_service_entry(args, 'self-service-create-account', 'createaccount', 'umc/self-service/account-registration/backend/enabled', True, display_name={'en_US': 'Create an account', 'de_DE': 'Konto erstellen'})
-	create_self_service_entry(args, 'self-service-verify-account', 'verifyaccount', 'umc/self-service/account-verification/backend/enabled', True, display_name={'en_US': 'Account verification', 'de_DE': 'Kontoverifizierung'})
-	create_self_service_entry(args, 'self-service-service-specific-passwords', 'servicespecificpasswords', 'umc/self-service/service-specific-passwords/backend/enabled', False, display_name={'en_US': 'Password Wireless LAN', 'de_DE': 'WLAN-Passwort'})
+	categories = []
+
+	entries = []
+	entries.append(create_self_service_entry(args, 'self-service-my-profile', 'profile', 'umc/self-service/profiledata/enabled', False, display_name={'en_US': 'My Profile', 'de_DE': 'Mein Profil'}, description={'en_US': 'Manage profile', 'de_DE': 'Profil verwalten'}))
+	categories.append(create_self_service_category(args, 'self-service-profile', {'en_US': 'User Profile', 'de_DE': 'Benutzerprofil'}, entries))
+
+	entries = []
+	entries.append(create_self_service_entry(args, 'self-service-protect-account', 'protectaccount', 'umc/self-service/protect-account/backend/enabled', False, display_name={'en_US': 'Protect your account', 'de_DE': 'Kontozugang schützen'}))
+	entries.append(create_self_service_entry(args, 'self-service-password-forgotten', 'passwordforgotten', 'umc/self-service/passwordreset/backend/enabled', True, display_name={'en_US': 'Password forgotten', 'de_DE': 'Passwort vergessen'}))
+	entries.append(create_self_service_entry(args, 'self-service-service-specific-passwords', 'servicespecificpasswords', 'umc/self-service/service-specific-passwords/backend/enabled', False, display_name={'en_US': 'Password Wireless LAN', 'de_DE': 'WLAN-Passwort'}))
+	categories.append(create_self_service_category(args, 'self-service-password', {'en_US': 'Passwords', 'de_DE': 'Passwörter'}, entries))
+
+	entries = []
+	entries.append(create_self_service_entry(args, 'self-service-create-account', 'createaccount', 'umc/self-service/account-registration/backend/enabled', True, display_name={'en_US': 'Create an account', 'de_DE': 'Konto erstellen'}))
+	entries.append(create_self_service_entry(args, 'self-service-verify-account', 'verifyaccount', 'umc/self-service/account-verification/backend/enabled', True, display_name={'en_US': 'Account verification', 'de_DE': 'Kontoverifizierung'}))
+	categories.append(create_self_service_category(args, 'self-service-new-account', {'en_US': 'New Account', 'de_DE': 'Neues Konto'}, entries))
+
+	create_self_service_portal(args, categories)
 
 
 if __name__ == '__main__':

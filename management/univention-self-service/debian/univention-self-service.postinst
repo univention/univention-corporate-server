@@ -41,9 +41,13 @@ univention-config-registry set \
 if ! ucr get portal/paths | tr , '\n' | grep -Fxq /univention/selfservice/; then
 	echo "Adding /univention/selfservice/ to the portal configuration"
 	ucr set portal/paths="$(ucr get portal/paths), /univention/selfservice/"
+	if [ ! -e "/usr/lib/univention-portal/config/selfservice.json" ]; then
+		echo "{\"selfservice_portal_dn\":\"cn=self-service,cn=portal,cn=portals,cn=univention,$(ucr get ldap/base)\"}" > /usr/lib/univention-portal/config/selfservice.json
+	fi
+	univention-portal add-selfservice-default
+	univention-portal update
 	service univention-portal-server restart
 	service apache2 restart
-	univention-portal add-selfservice-default
 fi
 
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "5.0.1-16"; then

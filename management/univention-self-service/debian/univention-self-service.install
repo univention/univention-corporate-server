@@ -1,6 +1,5 @@
 delete_deregistered_accounts.py usr/share/univention-self-service/
 www/ usr/share/univention-self-service/
-portal/selfservice_portal.py usr/lib/python3/dist-packages/univention/portal/extensions/
 hook/*js usr/share/univention-web/js/umc/hooks
 icons/*.png usr/share/univention-self-service/www/icons
 icons/*.svg usr/share/univention-self-service/www/icons
