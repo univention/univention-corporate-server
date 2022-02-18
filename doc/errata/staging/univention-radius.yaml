@@ -6,7 +6,7 @@ src: univention-radius
 fix: 7.0.1-7A~5.0.0.202202181709
 desc: |
  This update addresses the following issue(s):
- * An error while adding the french translation
-   to an extended_attribute during the package update
+ * An error while adding the French translation
+   to an extended attribute during the package update
    has been fixed.
 bug: [54461]
