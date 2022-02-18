@@ -91,11 +91,6 @@ if "spelling" in sys.argv:
     # Warnings may come up by sphinx-last-updated-by-git. Shall be suppressed in spelling job
     suppress_warnings = ['git.too_shallow']
 
-
-tls_cacerts = {
-    "git.knut.univention.de": "../ucs-root-ca.crt",
-}
-
 latex_engine = 'lualatex'
 latex_show_pagerefs = True
 latex_show_urls = "footnote"
