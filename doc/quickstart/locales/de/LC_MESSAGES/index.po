@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Quick start guide for Univention Corporate Server \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-02-17 15:51+0100\n"
-"PO-Revision-Date: 2022-02-17 15:52+0100\n"
+"PO-Revision-Date: 2022-02-18 11:25+0100\n"
 "Last-Translator: Nico Gulden <gulden@univention.de>\n"
 "Language-Team: GERMAN <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -123,7 +123,7 @@ msgstr ""
 "Sofern bereits ein Nameserver im lokalen Netzwerk vorhanden ist, sollte "
 "dieser verwendet werden. Werden später weitere UCS-Systeme in der Domäne "
 "installiert, sollte der |UCSPRIMARYDN| und gegebenenfalls vorhandene "
-"|UCSBACKUPDN|\\ s als Nameserver eingetragen werden. "
+"|UCSBACKUPDN|\\ s als Nameserver eingetragen werden."
 
 #: ../../index.rst:61
 msgid "Selecting the domain setup"
@@ -211,7 +211,7 @@ msgstr ""
 "während des Domänenbeitritt vom |UCSPRIMARYDN| bezogen. Das Passwort muss"
 " mindestens acht Zeichen umfassen und wird bei der Installation des "
 "ersten UCS-Systems (|UCSPRIMARYDN|) auch als Passwort für den "
-"*Administrator*-Benutzer gesetzt. "
+"*Administrator*-Benutzer gesetzt."
 
 #: ../../index.rst:99
 msgid ""
@@ -220,7 +220,7 @@ msgid ""
 msgstr ""
 "Während der Installation kann eine automatisch Partitionierung verwendet "
 "werden, die standardmäßig die erste Festplatte im System als LVM Volume "
-"Group nutzt. "
+"Group nutzt."
 
 #: ../../index.rst:102
 msgid ""
@@ -293,7 +293,7 @@ msgstr ""
 "Administration einer UCS-Domäne. Je nach Installations- und "
 "Systemrollenauswahl sind auf einem UCS-System unterschiedliche Module "
 "verfügbar. Die Anmeldung erfolgt als Benutzer ``Administrator`` mit dem "
-"während der Installation vergebenen Passwort für den Benutzer ``root``"
+"während der Installation vergebenen Passwort für den Benutzer ``root``."
 
 #: ../../index.rst:141
 msgid ""
@@ -470,7 +470,7 @@ msgid ""
 msgstr ""
 "Darüber hinaus bietet UCS eine Vielfalt von weiteren Komponenten, die "
 "durch die UCS-Lizenz bereits abgedeckt sind und zu einem späteren "
-"Zeitpunkt integriert werden können, z.B. "
+"Zeitpunkt integriert werden können, zum Beispiel:"
 
 #: ../../index.rst:239
 msgid ""
@@ -542,7 +542,7 @@ msgid ""
 "<https://help.univention.com/>`_."
 msgstr ""
 "Fragen zu UCS können auch im `Univention Forum "
-"<https://help.univention.com/>`_ gestellt werden"
+"<https://help.univention.com/>`_ gestellt werden."
 
 #: ../../index.rst:273
 msgid "References"
