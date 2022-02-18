@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-radius
-fix: 
+fix: 7.0.1-7A~5.0.0.202202181709
 desc: |
  This update addresses the following issue(s):
  * An error while adding the french translation
