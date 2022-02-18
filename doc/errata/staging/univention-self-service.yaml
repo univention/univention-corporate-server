@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-self-service
-fix: 5.0.1-18A~5.0.0.202202171644
+fix: 5.0.1-18A~5.0.0.202202181706
 desc: |
  This update addresses the following issue(s):
  * The package univention-self-service has been migrated to Python 3.
