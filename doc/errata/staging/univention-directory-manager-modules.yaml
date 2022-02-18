@@ -16,4 +16,6 @@ desc: |
    the UDM syntax classes.
  * Syntax classes can now depend on another UDM property and restrict its
    choices based on that.
-bug: [52760, 54617, 38762, 53843]
+ * The available mail domains are now suggested when entering values for the
+   `mailPrimaryAddress` of users/user obects.
+bug: [52760, 54617, 38762, 53843, 54467]
