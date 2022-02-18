@@ -115,6 +115,30 @@ def add_umc_default(update: bool):
 		success("{} written".format(portals_json))
 
 
+@cli.command("add-selfservice-default")
+@click.option("--update/--dont-update", default=False)
+def add_selfservice_default(update: bool):
+	changed = False
+	json_content = read_portals_json()
+
+	# /univention/selfservice/
+	selfservice_name = "selfservice"
+	if selfservice_name in json_content:
+		if update:
+			warn("Overwriting existing {}".format(selfservice_name))
+			_add_selfservice(selfservice_name, json_content)
+			changed = True
+		else:
+			info("{} already exists".format(selfservice_name))
+	else:
+		_add_selfservice(selfservice_name, json_content)
+		changed = True
+
+	if changed:
+		write_portals_json(json_content)
+		success("{} written".format(portals_json))
+
+
 def _add_default(name: str, json_content: Dict):
 	portal_def = {
 		"class": "Portal",
@@ -225,6 +249,68 @@ def _add_umc(name: str, json_content: Dict):
 				"class": "PathScorer",
 				"kwargs": {
 					"path": {"value": "/univention/umc", "type": "static"},
+					"fallback_score": {"value": 0.5, "type": "static"},
+				},
+				"type": "class"},
+		},
+		"type": "class",
+	}
+	json_content[name] = portal_def
+
+
+def _add_selfservice(name: str, json_content: Dict):
+	portal_def = {
+		"class": "SelfServicePortal",
+		"kwargs": {
+			"authenticator": {
+				"class": "UMCAuthenticator",
+				"kwargs": {
+					"group_cache": {
+						"class": "GroupFileCache",
+						"kwargs": {
+							"cache_file": {
+								"type": "static",
+								"value": "/var/cache/univention-portal/groups.json",
+							},
+							"reloader": {
+								"class": "GroupsReloaderLDAP",
+								"kwargs": {
+									"binddn": {"key": "hostdn", "type": "config"},
+									"cache_file": {
+										"type": "static",
+										"value": "/var/cache/univention-portal/groups.json",
+									},
+									"ldap_base": {"key": "ldap_base", "type": "config"},
+									"ldap_uri": {"key": "ldap_uri", "type": "config"},
+									"password_file": {
+										"type": "static",
+										"value": "/etc/machine.secret",
+									},
+								},
+								"type": "class",
+							},
+						},
+						"type": "class",
+					},
+					"umc_session_url": {"key": "umc_session_url", "type": "config"},
+					"auth_mode": {"key": "auth_mode", "type": "config"},
+				},
+				"type": "class",
+			},
+			"portal_cache": {
+				"class": "PortalFileCache",
+				"kwargs": {
+					"cache_file": {
+						"type": "static",
+						"value": "/var/cache/univention-portal/portal.json",
+					},
+				},
+				"type": "class",
+			},
+			"scorer": {
+				"class": "PathScorer",
+				"kwargs": {
+					"path": {"value": "/univention/selfservice", "type": "static"},
 					"fallback_score": {"value": 0.5, "type": "static"},
 				},
 				"type": "class"},
