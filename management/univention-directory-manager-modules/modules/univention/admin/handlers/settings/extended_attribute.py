@@ -132,6 +132,7 @@ property_descriptions = {
 		short_description=_("Do not show this extended attribute in the UMC"),
 		long_description=_('The extended attribute is not shown in the UMC. It can only be used from the UDM CLI or the Python interface'),
 		syntax=univention.admin.syntax.boolean,
+		size='Two',
 	),
 	'tabName': univention.admin.property(
 		short_description=_('Tab name'),
@@ -172,6 +173,7 @@ property_descriptions = {
 		short_description=_('Span both columns'),
 		long_description=_('The layout element used to represent this extended attribute in the UMC spans both columns'),
 		syntax=univention.admin.syntax.boolean,
+		size='Two',
 	),
 	'ldapMapping': univention.admin.property(
 		short_description=_('LDAP attribute'),
@@ -205,6 +207,7 @@ property_descriptions = {
 		short_description=_('Remove object class if the attribute is removed'),
 		long_description=_('If possible, the LDAP object class is removed when this extended attribute gets unset'),
 		syntax=univention.admin.syntax.boolean,
+		size='Two',
 	),
 	'module': univention.admin.property(
 		short_description=_('Modules to be extended'),
@@ -236,6 +239,7 @@ property_descriptions = {
 		short_description=_('Exclude from UMC search'),
 		long_description=_('Values of this extended attribute are not available for searching in the UMC'),
 		syntax=univention.admin.syntax.boolean,
+		size='Two',
 	),
 	'copyable': univention.admin.property(
 		short_description=_('Copyable'),
