@@ -1,2 +1,2 @@
 univention-self-service-register-acl usr/sbin
-univention-setup-self-service-portal-links usr/share/univention-self-service
+portal/univention-setup-self-service-portal-links usr/share/univention-self-service
