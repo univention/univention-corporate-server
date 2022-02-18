@@ -1,3 +1,10 @@
+univention-web (4.0.2-50) unstable; urgency=medium
+
+  * Bug #38762: make MultiInput handle all types of widgets and fix
+    _SelectMixin to not transform staticValues into null
+
+ -- Florian Best <best@univention.de>  Fri, 22 Apr 2022 01:19:39 +0200
+
 univention-web (4.0.2-49) unstable; urgency=medium
 
   * Bug #53678: don't display domain components of path in reverse

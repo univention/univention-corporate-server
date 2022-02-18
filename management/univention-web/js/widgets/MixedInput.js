@@ -156,21 +156,12 @@ define([
 			when(deferredOrValues, lang.hitch(this, '_setValues'));
 		},
 
-		_setValues: function(values) {
-			// guess the form widget type based on the result that we get
-			//   array      -> ComboBox
-			//   true/false -> CheckBox
-			//   otherwise  -> TextBox
-			var newWidgetClass = 'umc/widgets/TextBox';
-			if (values instanceof Array) {
-				newWidgetClass = 'umc/widgets/ComboBox';
-			}
-			else if (true === values || false === values || 'true' == values || 'false' == values) {
-				newWidgetClass = 'umc/widgets/CheckBox';
-			}
+		setWidget: function(type) {
+			// set the widget. should be called in dynamicValues()
+			type = type.indexOf('/') >= 0 ? type : 'umc/widgets/' + type
 
 			// destroy old widget in case the type has changed and create a new one
-			if (this._widget && this._widget.declaredClass != newWidgetClass.replace(/\//g, '.')) {
+			if (this._widget && this._widget.declaredClass != type.replace(/\//g, '.')) {
 				// destroy widget
 				this._widget.destroy();
 				this._widget = null;
@@ -179,9 +170,9 @@ define([
 			// check whether we need to create a new widget
 			if (!this._widget) {
 				// create the new widget according to its type
-				var WidgetClass = require(newWidgetClass);
+				var WidgetClass = require(type);
 				if (!WidgetClass) {
-					throw new Error('MixedInput: Could not instantiate the class ' + newWidgetClass);
+					throw new Error('MixedInput: Could not instantiate the class ' + type);
 				}
 				this._widget = this.own(new WidgetClass(this._userProperties))[0];
 				this.set('content', this._widget);
@@ -191,7 +182,12 @@ define([
 					this._set(name, newVal);
 				})));
 			}
+		},
 
+		_setValues: function(values) {
+			if (!this._widget) {
+				this.setWidget('TextBox');
+			}
 			// set the indicated values
 			if (this._widget._setDynamicValues) {
 				// clear all values and set the dynamic values, they don't need to be reloaded

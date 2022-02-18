@@ -1034,8 +1034,18 @@ define([
 				'class': 'umcTextBoxOnBody',
 				inlineLabel: _objectPropertyInlineLabelText(),
 				dynamicValues: lang.hitch(this, function(options) {
-					var moduleCache = cache.get(this.moduleFlavor);
-					return moduleCache.getValues(this._searchForm.getWidget('objectType').get('value'), options.objectProperty);
+					var widget = this._searchForm.getWidget('objectProperty');
+					var searchWidget = this._searchForm.getWidget('objectPropertyValue');
+					var item = array.filter(widget.getAllItems(), function(iitem) { return widget.get('value') === iitem.id; })[0] || {};
+					searchWidget.setWidget(item.search_widget || 'TextBox');
+					if (searchWidget._widget.getAllItems) {
+						if (item.dynamicValues) {
+							var func = tools.stringOrFunction(item.dynamicValues, this.umcpCommand);
+							return func(item.dynamicOptions || {});
+						}
+						return item.staticValues;
+					}
+					return item.default_search_pattern;
 				}),
 				umcpCommand: umcpCmd,
 				depends: 'objectProperty',

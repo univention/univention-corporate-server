@@ -293,6 +293,9 @@ class ISyntax(object):
 	widget = None
 	"""The corresponding widget which is used in UMC"""
 
+	search_widget = 'TextBox'
+	"""The corresponding widget which is used in UMC when searching for values of this property"""
+
 	widget_default_search_pattern = '*'
 	"""The default search pattern for this syntax. String render as TextBox, lists render as ComboBox with the possible choices, booleans render as CheckBox"""
 
@@ -445,7 +448,7 @@ class select(ISyntax):
 	type_class = univention.admin.types.StringType  # type: Optional[Type[univention.admin.types.TypeHint]]
 
 	widget = 'ComboBox'
-	widget_default_search_pattern = []
+	search_widget = 'ComboBox'
 
 	depends = None  # type: Optional[str]
 	"""The name of another |UDM| property this syntax depends on."""
@@ -510,7 +513,7 @@ class combobox(select):
 	"""
 
 	widget = 'SuggestionBox'
-	widget_default_search_pattern = []
+	search_widget = 'SuggestionBox'
 
 	@classmethod
 	def parse(cls, text):
@@ -531,7 +534,7 @@ class MultiSelect(ISyntax):
 	# FIXME: type_class
 
 	widget = 'MultiSelect'
-	widget_default_search_pattern = []
+	search_widget = 'ComboBox'
 
 	@classmethod
 	def parse(self, value):
@@ -1729,6 +1732,7 @@ class boolean(simple):
 	type_class = univention.admin.types.BooleanType
 
 	widget = 'CheckBox'
+	search_widget = 'CheckBox'
 	widget_default_search_pattern = False
 
 	@classmethod
@@ -4077,7 +4081,12 @@ class GroupDN(UDM_Objects):
 	udm_modules = ('groups/group', )
 	use_objects = False
 
-	widget_default_search_pattern = []
+	search_widget = 'ComboBox'
+
+	def get_widget_choices_options(self, udm_property):
+		opts = _default_widget_options(self)
+		opts.update(super(GroupDN, self).get_widget_choices_options(udm_property))
+		return opts
 
 
 class GroupDNOrEmpty(GroupDN):
@@ -4177,6 +4186,7 @@ class PortalComputer(UDM_Objects):
 	use_objects = False
 
 	widget = 'umc/modules/udm/MultiObjectSelect'
+	search_widget = 'CheckBox'
 	widget_default_search_pattern = False
 
 
@@ -4658,6 +4668,7 @@ class TrueFalseUp(IStates):
 	)
 	type_class = univention.admin.types.BooleanType
 	widget = 'CheckBox'
+	search_widget = 'CheckBox'
 	widget_default_search_pattern = False
 
 
@@ -4675,6 +4686,7 @@ class OkOrNot(IStates):
 	)
 	type_class = univention.admin.types.BooleanType
 	widget = 'CheckBox'
+	search_widget = 'CheckBox'
 	widget_default_search_pattern = False
 
 
@@ -5673,7 +5685,7 @@ class LDAP_Search(select):
 		if cls is LDAP_Search:
 			return 'umc/modules/udm/LinkList' if getattr(cls, 'viewonly', False) else 'ComboBox'
 		return select.get_widget(prop)
-	widget_default_search_pattern = []
+	search_widget = 'ComboBox'
 
 	def __init__(self, syntax_name=None, filter=None, attribute=[], base='', value='dn', viewonly=False, addEmptyValue=False, appendEmptyValue=False):
 		"""Creates an syntax object providing a list of choices defined
@@ -6010,6 +6022,7 @@ class locked(boolean):
 	"""
 
 	widget = 'umc/modules/udm/LockedCheckBox'
+	search_widget = 'CheckBox'
 	widget_default_search_pattern = False
 
 	@classmethod

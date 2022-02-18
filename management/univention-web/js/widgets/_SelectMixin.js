@@ -180,10 +180,12 @@ define([
 					return true;
 				}
 
-				if (  value  instanceof Array && value.length == 1 ) {
-					entry[ attr ] = value[ 0 ];
+				if (value instanceof Array && value.length == 1) {
+					entry[attr] = value[0];
+				} else if (value instanceof Array && attr == 'staticValues') {
+					entry[attr] = value;
 				} else {
-					entry[ attr ] = null;
+					entry[attr] = null;
 				}
 			}, this );
 

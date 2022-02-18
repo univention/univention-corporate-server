@@ -458,7 +458,7 @@ class UDM_Module(object):
 		for key, prop in getattr(self.module, 'property_descriptions', {}).items():
 			if key == property_name:
 				value = prop.syntax.widget_default_search_pattern
-				if isinstance(value, (list, tuple)):
+				if prop.syntax.search_widget in ('ComboBox', 'SuggestionBox'):
 					value = read_syntax_choices(prop.syntax, ldap_connection=ldap_connection, ldap_position=ldap_position)
 				return value
 
@@ -943,6 +943,8 @@ class UDM_Module(object):
 				'options': copy.deepcopy(prop.options),
 				'readonly': not bool(prop.editable),
 				'searchable': not prop.dontsearch,
+				'default_search_pattern': prop.syntax.widget_default_search_pattern,
+				'search_widget': prop.syntax.search_widget,
 				'multivalue': bool(prop.multivalue),
 				'identifies': bool(prop.identifies),
 				'threshold': prop.threshold,
