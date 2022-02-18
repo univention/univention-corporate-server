@@ -21,7 +21,7 @@ stages:
   artifacts:
     paths:
       - $base/_build
-      - public
+      - $CI_PROJECT_DIR/public
     reports:
       codequality: $base/codeclimate.json
 
@@ -29,13 +29,14 @@ stages:
   extends: .sphinx-doc
   script:
     - make -C $base html
-    - rsync -av --delete $base/_build/html/ public
+    - mkdir -p $CI_PROJECT_DIR/public
+    - rsync -av --delete $base/_build/html/ $CI_PROJECT_DIR/public
 
 .sphinx-pdf:
   extends: .sphinx-doc
   script:
     - make -C $base latexpdf
-    - cp $base/_build/latexpdf/*.pdf public/
+    - cp $base/_build/latex/*.pdf $CI_PROJECT_DIR/public
 
 .sphinx-linkcheck:
   extends: .sphinx-doc
