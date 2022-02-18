@@ -14,4 +14,6 @@ desc: |
    moved into the UDM syntax classes.
    The logic to get the dynamic choices for a UDM syntax has been moved into
    the UDM syntax classes.
-bug: [52760, 54617, 38762]
+ * Syntax classes can now depend on another UDM property and restrict its
+   choices based on that.
+bug: [52760, 54617, 38762, 53843]
