@@ -52,10 +52,11 @@ object_name = _('IMAP mail folder')
 object_name_plural = _('IMAP mail folders')
 long_description = ''
 
-ldap_search_maildomain = univention.admin.syntax.LDAP_Search(
-	filter='(objectClass=univentionMailDomainname)',
-	attribute=['mail/domain: name'],
-	value='mail/domain: name')
+
+class MailDomain(univention.admin.syntax.UDM_Attribute):
+	udm_module = 'mail/domain'
+	attribute = 'name'
+
 
 options = {
 	'default': univention.admin.option(
@@ -78,7 +79,7 @@ property_descriptions = {
 	'mailDomain': univention.admin.property(
 		short_description=_('Mail domain'),
 		long_description='',
-		syntax=ldap_search_maildomain,
+		syntax=getattr(univention.admin.syntax, 'MailDomain', MailDomain),
 		include_in_default_search=True,
 		required=True,
 		may_change=False,

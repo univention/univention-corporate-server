@@ -2162,6 +2162,11 @@ class primaryEmailAddressValidDomain(emailAddressValidDomain):
 	errMsgDomain = _("The domain part of the primary mail address is not in list of configured mail domains: %s")
 
 
+class MailDomain(UDM_Attribute):
+	udm_module = 'mail/domain'
+	attribute = 'name'
+
+
 class iso8601Date(simple):
 	"""
 	A date of the format:
