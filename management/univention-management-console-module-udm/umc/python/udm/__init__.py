@@ -53,7 +53,7 @@ from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_Error
 from univention.management.console.modules.decorators import simple_response, sanitize, multi_response, prevent_xsrf_check, allow_get_request
 from univention.management.console.modules.sanitizers import (
-	Sanitizer, LDAPSearchSanitizer, EmailSanitizer, ChoicesSanitizer,
+	Sanitizer, SearchSanitizer, EmailSanitizer, ChoicesSanitizer,
 	ListSanitizer, StringSanitizer, DictSanitizer, BooleanSanitizer,
 	DNSanitizer
 )
@@ -141,7 +141,7 @@ class ObjectPropertySanitizer(StringSanitizer):
 		StringSanitizer.__init__(self, **args)
 
 
-class PropertySearchSanitizer(LDAPSearchSanitizer):
+class PropertySearchSanitizer(SearchSanitizer):
 
 	def _sanitize(self, value, name, further_arguments):
 		object_type = further_arguments.get('objectType')
@@ -606,7 +606,7 @@ class Instance(Base, ProgressMixin):
 			scope = request.options.get('scope', 'sub')
 			hidden = request.options.get('hidden')
 			fields = (set(request.options.get('fields', []) or []) | set([objectProperty])) - set(['name', 'None'])
-			result = module.search(container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden)
+			result = module.search(container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden, allow_asterisks=USE_ASTERISKS)
 			if result is None:
 				return []
 
@@ -938,7 +938,7 @@ class Instance(Base, ProgressMixin):
 
 	@sanitize(
 		syntax=StringSanitizer(required=True),
-		key=LDAPSearchSanitizer(use_asterisks=False),
+		key=SearchSanitizer(use_asterisks=False),
 	)
 	@simple_response
 	def syntax_choices_key(self, syntax, key):
@@ -973,7 +973,7 @@ class Instance(Base, ProgressMixin):
 		return info_syntax_choices(syntax, ldap_connection=lo, ldap_position=po)
 
 	@sanitize(
-		objectPropertyValue=LDAPSearchSanitizer(),
+		objectPropertyValue=SearchSanitizer(),
 		objectProperty=ObjectPropertySanitizer(),
 		syntax=StringSanitizer(required=True)
 	)
@@ -991,7 +991,9 @@ class Instance(Base, ProgressMixin):
 			syntax = _get_syntax(request.options['syntax'])
 			if syntax is None:
 				return
-			return read_syntax_choices(syntax, request.options, ldap_connection=ldap_connection, ldap_position=ldap_position)
+			options = request.options
+			options.pop('allow_asterisks', None)  # internal option
+			return read_syntax_choices(syntax, options, ldap_connection=ldap_connection, ldap_position=ldap_position)
 
 		thread = notifier.threads.Simple('SyntaxChoice', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()

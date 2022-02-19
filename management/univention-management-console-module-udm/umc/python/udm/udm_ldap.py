@@ -60,7 +60,7 @@ import univention.admin.uexceptions as udm_errors
 import univention.admin.mapping as udm_mapping
 
 from ldap import LDAPError, NO_SUCH_OBJECT
-from ldap.filter import filter_format
+from ldap.filter import filter_format, escape_filter_chars
 from ldap.dn import explode_dn
 from functools import reduce
 
@@ -649,7 +649,7 @@ class UDM_Module(object):
 			MODULE.warn('Failed to modify LDAP object %s: %s: %s' % (obj.dn, e.__class__.__name__, str(e)))
 			UDM_Error(e).reraise()
 
-	def search(self, container=None, attribute=None, value=None, superordinate=None, scope='sub', filter='', simple=False, simple_attrs=None, hidden=True, serverctrls=None, response=None):
+	def search(self, container=None, attribute=None, value=None, superordinate=None, scope='sub', filter='', simple=False, simple_attrs=None, hidden=True, serverctrls=None, response=None, allow_asterisks=True):
 		"""Searches for LDAP objects based on a search pattern"""
 		ldap_connection, ldap_position = self.get_ldap_connection()
 		if container == 'all':
@@ -659,7 +659,7 @@ class UDM_Module(object):
 		if attribute in [None, 'None'] and filter:
 			filter_s = str(filter)
 		else:
-			filter_s = self._object_property_filter(attribute, value, hidden)
+			filter_s = self._object_property_filter(attribute, value, hidden, allow_asterisks)
 
 		MODULE.info('Searching for LDAP objects: container = %s, filter = %s, superordinate = %s' % (container, filter_s, superordinate))
 		result = None
@@ -1146,16 +1146,17 @@ class UDM_Module(object):
 			return self.module.mapping
 		return udm_mapping.mapping()
 
-	def _object_property_filter(self, object_property, object_property_value, show_hidden=True):
+	def _object_property_filter(self, object_property, object_property_value, show_hidden=True, allow_asterisks=True):
 		if object_property in [None, 'None']:
 			ret = ''
 			if object_property_value not in [None, '*']:
-				# TODO: filter_format() here (but allow "foo*bar") instead of in layer above
-				ret = '(|%s)' % ''.join('(%s=%s)' % (attr, object_property_value) for attr in self.default_search_attrs)
+				ret = '(|%s)' % ''.join(filter_format('(%s=%s)', (attr, object_property_value)) for attr in self.default_search_attrs)
+				if allow_asterisks:
+					ret = ret.replace(escape_filter_chars('*'), '*')
 		else:
 			prop = self.module.property_descriptions.get(object_property)
 			syn = prop.syntax if prop else udm_syntax.ISyntax
-			ret = syn.get_object_property_filter(object_property, object_property_value)
+			ret = syn.get_object_property_filter(object_property, object_property_value, allow_asterisks=allow_asterisks)
 
 		if not show_hidden:
 			ret = self._append_hidden_filter(ret)
@@ -1297,7 +1298,7 @@ def search_syntax_choices_by_key(syn, key, ldap_connection, ldap_position):
 			match = LDAP_ATTR_RE.match(syn.key)
 			if match:
 				attr = match.groups()[0]
-				options = {'objectProperty': attr, 'objectPropertyValue': key}
+				options = {'objectProperty': attr, 'objectPropertyValue': key, 'allow_asterisks': False}
 				return read_syntax_choices(syn, options, ldap_connection=ldap_connection, ldap_position=ldap_position)
 
 	MODULE.warn('Syntax %r: No fast search function' % syn.name)
@@ -1337,6 +1338,8 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
 		options['property'] = options.pop('objectProperty')
 	if 'objectPropertyValue' in options:
 		options['value'] = options.pop('objectPropertyValue')
+	# only for syntax_choices_key
+	options['allow_asterisks'] = options.pop('allow_asterisks', True)
 
 	try:
 		if isinstance(syn, udm_syntax.LDAP_Search):
