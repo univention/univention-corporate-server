@@ -5433,6 +5433,12 @@ class LDAP_Search(select):
 	"""
 	FILTER_PATTERN = '(&(objectClass=univentionSyntax)(cn=%s))'
 
+	base = ''
+	value = 'dn'
+	viewonly = False
+	addEmptyValue = False
+	appendEmptyValue = False
+
 	@classmethod
 	def get_widget(cls, prop):
 		if cls is LDAP_Search:
@@ -5464,20 +5470,25 @@ class LDAP_Search(select):
 		:param appendEmptyValue: Same as addEmptyValue but added at the end.
 			Used to automatically choose an existing entry in frontend.
 		"""
-		self.syntax = syntax_name
+		self.name = self.__class__.__name__
+
+	def __new__(cls, syntax_name=None, filter=None, attribute=[], base='', value='dn', viewonly=False, addEmptyValue=False, appendEmptyValue=False):
+		props = {
+			'syntax': syntax_name,
+			'viewonly': viewonly,
+			'addEmptyValue': addEmptyValue,
+			'appendEmptyValue': appendEmptyValue,
+		}
 		if filter is not None:
 			# programmatically
-			self.syntax = None
-			self.filter = filter
-			self.attributes = attribute
-			self.base = base
-			self.value = value
-
-		self.choices = []
-		self.name = self.__class__.__name__
-		self.viewonly = viewonly
-		self.addEmptyValue = addEmptyValue
-		self.appendEmptyValue = appendEmptyValue
+			props.update({
+				'syntax': None,
+				'filter': filter,
+				'attributes': attribute,
+				'base': base,
+				'value': value,
+			})
+		return super(LDAP_Search, cls).__new__(type(cls.__name__, (cls,), props))
 
 	@classmethod
 	def parse(self, text):
@@ -5487,6 +5498,8 @@ class LDAP_Search(select):
 		"""Loads an LDAP_Search object from the LDAP directory. If no
 		syntax name is given the object is expected to be created with
 		the required settings programmatically."""
+
+		self = type(self)
 
 		if not self.syntax:
 			# programmatically
@@ -5526,7 +5539,7 @@ class LDAP_Search(select):
 		try:
 			syn = cls(options['syntax'], options['filter'], options['attributes'], options['base'], options['value'], options['viewonly'], options['empty'], options['empty_end'])
 		except KeyError:
-			syn = cls()
+			syn = cls
 
 		return syn._get_choices(lo, options)
 
