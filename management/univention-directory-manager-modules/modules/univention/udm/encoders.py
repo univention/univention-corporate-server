@@ -34,15 +34,19 @@ En/Decoders for object properties.
 """
 
 from __future__ import absolute_import, unicode_literals
+
 import sys
 import six
 import datetime
 import time
 import lazy_object_proxy
+
 from .binary_props import Base64BinaryProperty, Base64Bzip2BinaryProperty
 from .udm import UDM
 from .utils import UDebug
 from .exceptions import NoObject, UnknownModuleType
+
+import univention.admin.modules
 from univention.admin.uexceptions import valueInvalidSyntax
 from univention.admin.syntax import sambaGroupType
 
@@ -377,6 +381,40 @@ class DnListPropertyEncoder(BaseEncoder):
 	@property
 	def udm(self):
 		return self._udm
+
+
+class PoliciesEncoder(BaseEncoder):
+	static = False
+
+	def __init__(self, property_name=None, connection=None, api_version=None, module_name=None, *args, **kwargs):
+		assert connection is not None, 'Argument "connection" must not be None.'
+		assert api_version is not None, 'Argument "api_version" must not be None.'
+		super(PoliciesEncoder, self).__init__(property_name, *args, **kwargs)
+		self._udm = UDM(connection, api_version)
+		self.module_name = module_name
+
+	def decode(self, value=None):
+		policies = {}
+		policy_modules = univention.admin.modules.policyTypes(self.module_name)
+		if not policy_modules and self._udm.get(self.module_name)._orig_udm_module.childs:  # container, which allows every policy-type
+			policy_modules = [x for x in univention.admin.modules.modules if x.startswith('policies/') and x != 'policies/policy']
+
+		for policy_module in policy_modules:
+			policies.setdefault(policy_module, [])
+
+		for policy_dn in value or []:
+			policy_module = self._udm.obj_by_dn(policy_dn)._udm_module.name
+			if policy_module not in policies:
+				continue
+			policies[policy_module].append(policy_dn)
+
+		return policies
+
+	def encode(self, value=None):
+		if value:
+			return [y for x in value.values() for y in x]
+		else:
+			return []
 
 
 class CnameListPropertyEncoder(DnListPropertyEncoder):

@@ -30,4 +30,6 @@ desc: |
    for user objects. As the attribute is not part of the equality and presence
    index it caused performance problems in larger environments when searching
    for users in the Univention Management Console.
-bug: [20235, 42080, 55279, 55096, 55394, 54064, 55413, 54568, 55412]
+ * The Simple UDM API provides policies references as mapping in version 3 to
+   conform with the UDM REST API responses.
+bug: [20235, 42080, 55279, 55096, 55394, 54064, 55413, 54568, 55412, 50167]
