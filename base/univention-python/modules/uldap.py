@@ -427,8 +427,8 @@ class access(object):
         return self.__recode_attribute(attr, val)
 
     @_fix_reconnect_handling
-    def get(self, dn, attr=[], required=False):
-        # type: (str, List[str], bool) -> Dict[str, List[bytes]]
+    def get(self, dn, attr=[], required=False, ldap_filter=None):
+        # type: (str, List[str], bool, Optional[str]) -> Dict[str, List[bytes]]
         """
         Return multiple attributes of a single LDAP object.
 
@@ -436,13 +436,14 @@ class access(object):
         :param attr: The list of attributes to fetch.
         :type attr: list[str]
         :param bool required: Raise an exception instead of returning an empty dictionary.
+        :param ldap_filter: additional |LDAP| filter
         :returns: A dictionary mapping the requested attributes to a list of their values.
         :rtype: dict[str, list[bytes]]
         :raises ldap.NO_SUCH_OBJECT: If the LDAP object is not accessible.
         """
         if dn:
             try:
-                result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', attr)
+                result = self.lo.search_s(dn, ldap.SCOPE_BASE, ldap_filter or '(objectClass=*)', attr)
                 return self.__decode_entry(result[0][1])
             except (ldap.NO_SUCH_OBJECT, LookupError):
                 pass
@@ -556,16 +557,17 @@ class access(object):
         return [x[0] for x in self.search(filter, base, scope, ['dn'], unique, required, timeout, sizelimit, serverctrls, response)]
 
     @_fix_reconnect_handling
-    def getPolicies(self, dn, policies=None, attrs=None, result=None, fixedattrs=None):
-        # type: (str, List[str], Dict[str, List[Any]], Any, Any) -> Dict[str, Dict[str, Any]]
+    def getPolicies(self, dn, policies=None, attrs=None, result=None, fixedattrs=None, ldap_filter=None):
+        # type: (str, List[str], Dict[str, List[Any]], Any, Any, Optional[str]) -> Dict[str, Dict[str, Any]]
         """
         Return |UCS| policies for |LDAP| entry.
 
         :param str dn: The distinguished name of the |LDAP| entry.
-        :param list policies: List of policy object classes...
+        :param list policies: List of policy DNs...
         :param dict attrs: |LDAP| attributes. If not given, the data is fetched from LDAP.
         :param result: UNUSED!
         :param fixedattrs: UNUSED!
+        :param ldap_filter: additional |LDAP| filter
         :returns: A mapping of policy names to
         """
         if attrs is None:
@@ -593,12 +595,12 @@ class access(object):
             obj_dn = dn
             while True:
                 for policy_dn in policies or []:
-                    self._merge_policy(policy_dn, obj_dn, object_classes, merged)
+                    self._merge_policy(policy_dn, obj_dn, object_classes, merged, ldap_filter)
                 dn = self.parentDn(dn) or ''
                 if not dn:
                     break
                 try:
-                    parent = self.get(dn, attr=['univentionPolicyReference'], required=True)
+                    parent = self.get(dn, attr=['univentionPolicyReference'], required=True, ldap_filter=ldap_filter)
                 except ldap.NO_SUCH_OBJECT:
                     break
                 policies = [x.decode('utf-8') for x in parent.get('univentionPolicyReference', [])]
@@ -608,8 +610,8 @@ class access(object):
             "getPolicies: result: %s" % merged)
         return merged
 
-    def _merge_policy(self, policy_dn, obj_dn, object_classes, result):
-        # type: (str, str, Set[bytes], Dict[str, Dict[str, Any]]) -> None
+    def _merge_policy(self, policy_dn, obj_dn, object_classes, result, ldap_filter=None):
+        # type: (str, str, Set[bytes], Dict[str, Dict[str, Any]], Optional[str]) -> None
         """
         Merge policies into result.
 
@@ -617,8 +619,9 @@ class access(object):
         :param obj_dn: Distinguished name of the LDAP object.
         :param set object_classes: the set of object classes of the LDAP object.
         :param list result: A mapping, into which the policy is merged.
+        :param ldap_filter: additional |LDAP| filter
         """
-        pattrs = self.get(policy_dn)
+        pattrs = self.get(policy_dn, ldap_filter=ldap_filter)
         if not pattrs:
             return
 

@@ -602,7 +602,7 @@ class access(object):
         """
         return univention.uldap.access.compare_dn(a, b)
 
-    def get(self, dn, attr=[], required=False, exceptions=False):
+    def get(self, dn, attr=[], required=False, exceptions=False, ldap_filter=None):
         # type: (str, List[str], bool, bool) -> Dict[str, List[bytes]]
         """
         Return multiple attributes of a single LDAP object.
@@ -611,11 +611,12 @@ class access(object):
         :param attr: The list of attributes to fetch.
         :param bool required: Raise an exception instead of returning an empty dictionary.
         :param bool exceptions: Ignore.
+        :param ldap_filter: additional |LDAP| filter
         :returns: A dictionary mapping the requested attributes to a list of their values.
         :rtype: dict[str, list[str]]
         :raises ldap.NO_SUCH_OBJECT: If the LDAP object is not accessible.
         """
-        return self.lo.get(dn, attr, required)
+        return self.lo.get(dn, attr, required, ldap_filter)
 
     def getAttr(self, dn, attr, required=False, exceptions=False):
         # type: (str, str, bool, bool) -> List[bytes]
@@ -718,8 +719,8 @@ class access(object):
         except ldap.LDAPError as msg:
             raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
-    def getPolicies(self, dn, policies=None, attrs=None, result=None, fixedattrs=None):
-        # type: (str, Optional[List[str]], Optional[Dict[str, List[Any]]], Any, Any) -> Dict[str, Dict[str, Any]]
+    def getPolicies(self, dn, policies=None, attrs=None, result=None, fixedattrs=None, ldap_filter=None):
+        # type: (str, Optional[List[str]], Optional[Dict[str, List[Any]]], Any, Any, Optional[str]) -> Dict[str, Dict[str, Any]]
         """
         Return |UCS| policies for |LDAP| entry.
 
@@ -731,7 +732,7 @@ class access(object):
         :returns: A mapping of policy names to
         """
         ud.debug(ud.ADMIN, ud.INFO, 'getPolicies modules dn %s result' % dn)
-        return self.lo.getPolicies(dn, policies, attrs, result, fixedattrs)
+        return self.lo.getPolicies(dn, policies, attrs, result, fixedattrs, ldap_filter)
 
     def add(self, dn, al, exceptions=False, serverctrls=None, response=None):
         # type: (str, List[Tuple[str, Any]], bool, Optional[List[ldap.controls.LDAPControl]], Optional[Dict]) -> None
