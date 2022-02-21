@@ -1,3 +1,11 @@
+univention-directory-notifier (14.0.5-8) unstable; urgency=medium
+
+  * Bug #49868: listener/listener.priv is now processed in smaller chunks,
+    Skip all transactions which are < notify_last_id as they
+    already have been appended successfully
+
+ -- Esteban Martinena <martinena@univention.de>  Mon, 21 Feb 2022 06:00:50 +0100
+
 univention-directory-notifier (14.0.5-7) unstable; urgency=medium
 
   * Bug #54203: Fix partial import when index < notifier_cache_size
