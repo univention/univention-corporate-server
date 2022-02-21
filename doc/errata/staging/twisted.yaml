@@ -1,0 +1,18 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: twisted
+fix: 16.6.0-2+deb9u1
+desc: |
+ This update addresses the following issues:
+ * HTTP request smuggling when presented with two Content-Length headers
+   (CVE-2020-10108)
+ * HTTP request smuggling when presented with a Content-Length and a chunked
+   Transfer-Encoding header (CVE-2020-10109)
+ * secret exposure in cross-origin redirects (CVE-2022-21712)
+bug: [54471]
+cve:
+- CVE-2020-10108
+- CVE-2020-10109
+- CVE-2022-21712
