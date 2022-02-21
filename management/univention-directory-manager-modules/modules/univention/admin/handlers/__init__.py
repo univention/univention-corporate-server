@@ -1864,7 +1864,7 @@ class simpleLdap(object):
 			# is not set. In that case we don't want to map the '*' to a different value.
 			pass
 		else:
-			filter.value = mapping.mapValueDecoded(key, filter.value)
+			filter.value = mapping.mapValueDecoded(key, filter.value, encoding_errors='ignore')
 
 		if isinstance(filter.value, (list, tuple)) and filter.value:
 			# complex syntax
