@@ -16,4 +16,5 @@ desc: |
    in a multithreaded context.
  * It is now possible to search for the user expiry date of `users/user`
    objects.
-bug: [54402, 54085, 53581, 54150]
+ * Searching with patterns containing umlauts is possible again.
+bug: [54402, 54085, 53581, 54150, 53975]
