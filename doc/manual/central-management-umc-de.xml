@@ -2037,7 +2037,7 @@ univention-directory-reports -m users/user -l
         HTTPS abgesichert sind.
     </para>
     <para>
-        Die Let's Encrypt App in Univention App Center bietet eine weitgehend
+        Die Let's Encrypt App im Univention App Center bietet eine weitgehend
         automatisierte Integration des acme-tiny Let's Encrypt Clients in UCS.
         Unterstützte Dienste in UCS sind der Apache Webserver, der Postfix SMTP
         Mailserver und der Dovecot IMAP Mailserver.
