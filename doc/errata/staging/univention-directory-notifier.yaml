@@ -1,0 +1,11 @@
+product: ucs
+release: '5.0'
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-directory-notifier
+fix:
+desc: |
+ This update addresses the following issue(s):
+ * A problem when disk is full and logs get filled
+   with error messages.
+bug: [49868]
