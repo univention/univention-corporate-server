@@ -515,7 +515,7 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
 	_default_containers = {}
 
 	class Meta:
-		supported_api_versions = [0, 1, 2]
+		supported_api_versions = [0, 1, 2, 3]
 		suitable_for = ['*/*']
 
 	def __init__(self, name, connection, api_version):
