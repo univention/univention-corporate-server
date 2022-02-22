@@ -7,17 +7,20 @@
     <modal-dialog
       v-if="isActive"
       ref="dialog"
+      modal-level="selfservice2"
       :i18n-title-key="title"
       class="dialog--selfservice"
+      role="alertdialog"
       @cancel="cancel"
-      @keydown.tab="onTab"
     >
-      <p
-        v-for="(error, idx) in errors"
-        :key="idx"
-      >
-        {{ error }}
-      </p>
+      <template #description>
+        <p
+          v-for="(error, idx) in errors"
+          :key="idx"
+        >
+          {{ error }}
+        </p>
+      </template>
       <form>
         <footer>
           <button
@@ -68,15 +71,20 @@ export default defineComponent({
     CLOSE(): string {
       return _('Close');
     },
+    descriptionId(): string {
+      return `${this.$.uid}-description`;
+    },
   },
   methods: {
     cancel(): void {
       this.errors = [];
       this.givenTitle = '';
+      this.$store.dispatch('activity/setLevel', 'selfservice');
       // @ts-ignore TODO
       this.promiseResolve();
     },
     showError(message: string | string[], title = ''): Promise<undefined> {
+      this.$store.dispatch('activity/setLevel', 'selfservice2');
       this.givenTitle = title;
       if (Array.isArray(message)) {
         this.errors = [];
@@ -94,20 +102,6 @@ export default defineComponent({
         // @ts-ignore TODO
         this.promiseResolve = resolve;
       });
-    },
-    onTab(evt): void {
-      const els = (this.$refs.dialog as typeof ModalDialog).$el.querySelectorAll('button:not([tabindex="-1"]), [href]:not([tabindex="-1"]), input:not([tabindex="-1"]), select:not([tabindex="-1"]), textarea:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])');
-      const firstEl = els[0];
-      const lastEl = els[els.length - 1];
-      if (document.activeElement === firstEl && evt.shiftKey) {
-        evt.preventDefault();
-        lastEl.focus();
-        return;
-      }
-      if (document.activeElement === lastEl && !evt.shiftKey) {
-        evt.preventDefault();
-        firstEl.focus();
-      }
     },
   },
 });

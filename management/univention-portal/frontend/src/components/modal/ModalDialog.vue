@@ -29,10 +29,16 @@ License with the Debian GNU/Linux or Univention distribution in file
 <template>
   <section
     class="dialog"
+    role="dialog"
+    aria-modal="true"
+    :aria-labelledby="labelledbyId"
+    :aria-describedby="describedbyId"
     @keydown.esc="cancel()"
   >
-    <header class="dialog__header">
-      <h3>
+    <header
+      class="dialog__header"
+    >
+      <h3 :id="labelledbyId">
         <span v-if="i18nTitleKey">
           {{ I18N_TITLE_KEY }}
         </span>
@@ -48,6 +54,12 @@ License with the Debian GNU/Linux or Univention distribution in file
         @click="cancel()"
       />
     </header>
+    <div
+      v-if="describedbyId"
+      :id="describedbyId"
+    >
+      <slot name="description" />
+    </div>
     <slot />
   </section>
 </template>
@@ -89,6 +101,16 @@ export default defineComponent({
     },
     CANCEL(): string {
       return _('Cancel');
+    },
+    labelledbyId(): string {
+      return `${this.$.uid}-labelledby`;
+    },
+    describedbyId(): string | null {
+      const children = this.$slots.description?.();
+      if (children === undefined || children.length === 0) {
+        return null;
+      }
+      return `${this.$.uid}-describedby`;
     },
   },
   methods: {

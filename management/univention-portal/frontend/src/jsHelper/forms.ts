@@ -45,13 +45,15 @@ export interface WidgetDefinition {
   name: string,
   label: string,
   ariaLabel?: string,
-  invalidMessage?: string,
+  invalidMessage?: string | { all: string, values: string[] },
   required?: boolean,
   readonly?: boolean,
   options?: OptionsDefinition[],
   validators?: Validator[],
   index?: number,
   subtypes?: WidgetDefinition[],
+  tabindex?: number,
+  disabled?: boolean,
 }
 
 export function isEmpty(widget, value): boolean {

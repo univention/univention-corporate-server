@@ -30,16 +30,16 @@
   <site
     :title="TITLE"
     :subtitle="SUBTITLE"
-    :ucr-var-for-frontend-enabling="'umc/self-service/profiledata/enabled'"
   >
     <my-form
       ref="loginForm"
       v-model="loginValues"
-      :widgets="loginWidgets"
+      :widgets="loginWidgetsWithTabindex"
     >
       <footer v-if="!attributesLoaded">
         <button
           type="submit"
+          :tabindex="tabindex"
           @click.prevent="onContinue"
         >
           {{ CONTINUE }}
@@ -50,18 +50,20 @@
       v-if="attributesLoaded"
       ref="attributesForm"
       v-model="attributeValues"
-      :widgets="attributeWidgets"
+      :widgets="attributeWidgetsWithTabindex"
     >
       <footer>
         <button
           type="button"
-          @click="onCancel"
+          :tabindex="tabindex"
+          @click="close"
         >
-          {{ CANCEL }}
+          {{ CLOSE }}
         </button>
         <button
           ref="saveButton"
           type="submit"
+          :tabindex="tabindex"
           class="primary"
           @click.prevent="onSave"
         >
@@ -84,17 +86,17 @@ import isEqual from 'lodash.isequal';
 import { umc, umcCommand } from '@/jsHelper/umc';
 import _ from '@/jsHelper/translate';
 import MyForm from '@/components/forms/Form.vue';
-import { validateAll, initialValue, isValid, allValid } from '@/jsHelper/forms';
+import { validateAll, initialValue, isValid, allValid, WidgetDefinition } from '@/jsHelper/forms';
 import Site from '@/views/selfservice/Site.vue';
 import ErrorDialog from '@/views/selfservice/ErrorDialog.vue';
+import activity from '@/jsHelper/activity';
 
 interface Data {
-  loginWidgets: any[],
-  loginValues: any,
-  attributeWidgets: any[],
-  attributeValues: any,
-  origFormValues: any,
-  showModal: boolean,
+  loginWidgets: WidgetDefinition[],
+  loginValues: Record<string, string>,
+  attributeWidgets: WidgetDefinition[],
+  attributeValues: Record<string, string>,
+  origFormValues: Record<string, string>,
 }
 
 export default defineComponent({
@@ -127,12 +129,12 @@ export default defineComponent({
       attributeWidgets: [],
       attributeValues: {},
       origFormValues: {},
-      showModal: false,
     };
   },
   computed: {
     ...mapGetters({
       userState: 'user/userState',
+      activityLevel: 'activity/level',
     }),
     TITLE(): string {
       return _('Profile');
@@ -149,8 +151,8 @@ export default defineComponent({
     CONTINUE(): string {
       return _('Continue');
     },
-    CANCEL(): string {
-      return _('Cancel');
+    CLOSE(): string {
+      return _('Close');
     },
     SAVE(): string {
       return _('Save');
@@ -167,9 +169,23 @@ export default defineComponent({
     errorDialog(): typeof ErrorDialog {
       return this.$refs.errorDialog as typeof ErrorDialog;
     },
+    tabindex(): number {
+      return activity(['selfservice'], this.activityLevel);
+    },
+    loginWidgetsWithTabindex(): WidgetDefinition[] {
+      return this.loginWidgets.map((widget) => {
+        widget.tabindex = this.tabindex;
+        return widget;
+      });
+    },
+    attributeWidgetsWithTabindex(): WidgetDefinition[] {
+      return this.attributeWidgets.map((widget) => {
+        widget.tabindex = this.tabindex;
+        return widget;
+      });
+    },
   },
   mounted() {
-    this.showModal = true;
     if (this.userState?.username) {
       this.loginValues.username = this.userState.username ? this.userState.username : null;
       this.loginWidgets[0].disabled = true;
@@ -188,7 +204,21 @@ export default defineComponent({
       });
       this.loadAttributes();
     },
-    onCancel() {
+    resetToLogin() {
+      this.attributeWidgets = [];
+      this.attributeValues = {};
+      this.loginWidgets.forEach((widget) => {
+        widget.disabled = false;
+      });
+      this.loginValues = {
+        username: '',
+        password: '',
+      };
+      this.$nextTick(() => {
+        this.loginForm.focusFirstInteractable();
+      });
+    },
+    close() {
       this.$router.push({ name: 'portal' });
     },
     onSave() {
@@ -326,7 +356,7 @@ export default defineComponent({
         .catch((error) => {
           this.errorDialog.showError(error.message)
             .then(() => {
-              this.onCancel();
+              this.resetToLogin();
             });
         })
         .finally(() => {

@@ -35,19 +35,17 @@
     <modal-dialog
       ref="dialog"
       :i18n-title-key="title"
+      modal-level="selfservice"
       class="dialog--selfservice"
       @cancel="cancel"
-      @keydown.tab="onTab"
     >
-      <div>{{ subtitle }}</div>
-      <self-service-disabled
-        v-if="!frontendEnabled"
-      />
-      <div
-        :class="{
-          'selfservice--hidden': !frontendEnabled
-        }"
+      <template
+        v-if="subtitle"
+        #description
       >
+        {{ subtitle }}
+      </template>
+      <div>
         <slot />
       </div>
     </modal-dialog>
@@ -60,16 +58,13 @@ import { defineComponent } from 'vue';
 
 import ModalWrapper from '@/components/modal/ModalWrapper.vue';
 import ModalDialog from '@/components/modal/ModalDialog.vue';
-import SelfServiceDisabled from '@/views/selfservice/SelfServiceDisabled.vue';
 import { mapGetters } from 'vuex';
-import { isTrue } from '@/jsHelper/ucr';
 
 export default defineComponent({
   name: 'Site',
   components: {
     ModalDialog,
     ModalWrapper,
-    SelfServiceDisabled,
   },
   props: {
     title: {
@@ -77,10 +72,6 @@ export default defineComponent({
       required: true,
     },
     subtitle: {
-      type: String,
-      required: true,
-    },
-    ucrVarForFrontendEnabling: {
       type: String,
       default: '',
     },
@@ -90,43 +81,27 @@ export default defineComponent({
       metaData: 'metaData/getMeta',
       initialLoadDone: 'getInitialLoadDone',
     }),
-    frontendEnabled(): boolean {
-      if (this.ucrVarForFrontendEnabling === '') {
-        return true;
-      }
-      return isTrue(this.metaData[this.ucrVarForFrontendEnabling]);
-    },
   },
   mounted() {
-    this.$store.dispatch('modal/disableBodyScrolling');
+    this.$store.dispatch('activity/setLevel', 'selfservice');
+    document.body.classList.add('body--has-selfservice');
   },
   unmounted() {
-    // TODO restore previous state instead of enabling
-    this.$store.dispatch('modal/enableBodyScrolling');
+    this.$store.dispatch('activity/setLevel', 'portal');
+    document.body.classList.remove('body--has-selfservice');
   },
   methods: {
     cancel() {
       this.$router.push({ name: 'portal' });
-    },
-    onTab(evt): void {
-      const els = (this.$refs.dialog as typeof ModalDialog).$el.querySelectorAll('button:not([tabindex="-1"]), [href]:not([tabindex="-1"]), input:not([tabindex="-1"]), select:not([tabindex="-1"]), textarea:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])');
-      const firstEl = els[0];
-      const lastEl = els[els.length - 1];
-      if (document.activeElement === firstEl && evt.shiftKey) {
-        evt.preventDefault();
-        lastEl.focus();
-        return;
-      }
-      if (document.activeElement === lastEl && !evt.shiftKey) {
-        evt.preventDefault();
-        firstEl.focus();
-      }
     },
   },
 });
 </script>
 
 <style lang="stylus">
+body.body--has-selfservice
+  overflow: hidden
+
 .modal-wrapper--selfservice
   padding: calc(4 * var(--layout-spacing-unit)) 0
   overflow: auto
@@ -150,9 +125,4 @@ export default defineComponent({
   form main
     max-height: unset
     padding: 0
-
-.selfservice--hidden
-  opacity: 0
-  pointer-events: none
-  display: fixed
 </style>

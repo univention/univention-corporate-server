@@ -12,6 +12,7 @@
       <input
         :id="`${name}--${option.id}`"
         type="radio"
+        :tabindex="tabindex"
         name="radio-input"
         :value="option.id"
         class="radio-box__input"
@@ -45,6 +46,10 @@ export default defineComponent({
     name: {
       type: String,
       required: true,
+    },
+    tabindex: {
+      type: Number,
+      default: 0,
     },
   },
   emits: ['update:modelValue'],

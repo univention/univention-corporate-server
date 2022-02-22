@@ -29,18 +29,17 @@
 <template>
   <site
     :title="TITLE"
-    subtitle=""
-    :ucr-var-for-frontend-enabling="'umc/self-service/account-registration/frontend/enabled'"
   >
     <my-form
       v-if="formWidgets.length > 0"
       ref="form"
       v-model="formValues"
-      :widgets="formWidgets"
+      :widgets="formWidgetsWithTabindex"
     >
       <footer>
         <button
           type="submit"
+          :tabindex="tabindex"
           class="primary"
           @click.prevent="submit"
         >
@@ -63,6 +62,8 @@ import Site from '@/views/selfservice/Site.vue';
 import MyForm from '@/components/forms/Form.vue';
 import ErrorDialog from '@/views/selfservice/ErrorDialog.vue';
 import { allValid, validateAll, WidgetDefinition } from '@/jsHelper/forms';
+import activity from '@/jsHelper/activity';
+import { mapGetters } from 'vuex';
 
 interface Data {
   formValues: Record<string, string>,
@@ -83,6 +84,9 @@ export default defineComponent({
     };
   },
   computed: {
+    ...mapGetters({
+      activityLevel: 'activity/level',
+    }),
     TITLE(): string {
       return _('Create an account');
     },
@@ -94,6 +98,15 @@ export default defineComponent({
     },
     errorDialog(): typeof ErrorDialog {
       return this.$refs.errorDialog as typeof ErrorDialog;
+    },
+    tabindex(): number {
+      return activity(['selfservice'], this.activityLevel);
+    },
+    formWidgetsWithTabindex(): WidgetDefinition[] {
+      return this.formWidgets.map((widget) => {
+        widget.tabindex = this.tabindex;
+        return widget;
+      });
     },
   },
   mounted() {

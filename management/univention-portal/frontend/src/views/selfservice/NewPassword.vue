@@ -30,16 +30,16 @@
   <site
     :title="TITLE"
     :subtitle="SUBTITLE"
-    :ucr-var-for-frontend-enabling="'umc/self-service/passwordreset/frontend/enabled'"
   >
     <my-form
       ref="form"
       v-model="formValues"
-      :widgets="formWidgets"
+      :widgets="formWidgetsWithTabindex"
     >
       <footer>
         <button
           type="submit"
+          :tabindex="tabindex"
           class="primary"
           @click.prevent="submit"
         >
@@ -62,6 +62,8 @@ import Site from '@/views/selfservice/Site.vue';
 import MyForm from '@/components/forms/Form.vue';
 import { validateAll, isEmpty, WidgetDefinition } from '@/jsHelper/forms';
 import ErrorDialog from '@/views/selfservice/ErrorDialog.vue';
+import activity from '@/jsHelper/activity';
+import { mapGetters } from 'vuex';
 
 interface FormData {
   username: string,
@@ -132,6 +134,9 @@ export default defineComponent({
     };
   },
   computed: {
+    ...mapGetters({
+      activityLevel: 'activity/level',
+    }),
     TITLE(): string {
       return _('Set new password');
     },
@@ -143,6 +148,15 @@ export default defineComponent({
     },
     form(): typeof MyForm {
       return this.$refs.form as typeof MyForm;
+    },
+    tabindex(): number {
+      return activity(['selfservice'], this.activityLevel);
+    },
+    formWidgetsWithTabindex(): WidgetDefinition[] {
+      return this.formWidgets.map((widget) => {
+        widget.tabindex = this.tabindex;
+        return widget;
+      });
     },
   },
   mounted() {

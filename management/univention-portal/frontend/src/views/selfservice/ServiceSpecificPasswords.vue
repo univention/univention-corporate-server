@@ -30,7 +30,6 @@
   <guarded-site
     :title="TITLE"
     :subtitle="SUBTITLE"
-    :ucr-var-for-frontend-enabling="'umc/self-service/service-specific-passwords/frontend/enabled'"
     path="passwordreset/get_service_specific_passwords"
     :guarded-widgets="[]"
     :submit-label-after-loaded="SUBMIT_LABEL_AFTER_LOADED"

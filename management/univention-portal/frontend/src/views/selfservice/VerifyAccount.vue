@@ -29,18 +29,17 @@
 <template>
   <site
     :title="TITLE"
-    subtitle=""
-    :ucr-var-for-frontend-enabling="'umc/self-service/account-verification/frontend/enabled'"
   >
     <my-form
       ref="form"
       v-model="formValues"
-      :widgets="formWidgets"
+      :widgets="formWidgetsWithTabindex"
     >
       <footer>
         <button
           v-if="formValues.token"
           type="submit"
+          :tabindex="tabindex"
           class="primary"
           @click.prevent="verifyAccount"
         >
@@ -49,6 +48,7 @@
         <button
           v-else
           type="submit"
+          :tabindex="tabindex"
           @click.prevent="requestNewToken"
         >
           {{ REQUEST_NEW_TOKEN }}
@@ -70,6 +70,8 @@ import { validateAll, WidgetDefinition } from '@/jsHelper/forms';
 import { umcCommandWithStandby } from '@/jsHelper/umc';
 import MyForm from '@/components/forms/Form.vue';
 import ErrorDialog from '@/views/selfservice/ErrorDialog.vue';
+import { mapGetters } from 'vuex';
+import activity from '@/jsHelper/activity';
 
 interface FormData {
   username: string,
@@ -114,6 +116,9 @@ export default defineComponent({
     };
   },
   computed: {
+    ...mapGetters({
+      activityLevel: 'activity/level',
+    }),
     TITLE(): string {
       return _('Account verification');
     },
@@ -128,6 +133,15 @@ export default defineComponent({
     },
     errorDialog(): typeof ErrorDialog {
       return this.$refs.errorDialog as typeof ErrorDialog;
+    },
+    tabindex(): number {
+      return activity(['selfservice'], this.activityLevel);
+    },
+    formWidgetsWithTabindex(): WidgetDefinition[] {
+      return this.formWidgets.map((widget) => {
+        widget.tabindex = this.tabindex;
+        return widget;
+      });
     },
   },
   mounted() {

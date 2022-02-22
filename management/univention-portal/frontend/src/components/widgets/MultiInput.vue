@@ -30,6 +30,7 @@
       </div>
       <icon-button
         icon="trash"
+        :tabindex="tabindex"
         :has-button-style="true"
         :aria-label-prop="REMOVE_BUTTON_LABEL(valIdx)"
         :data-test="`multi-input-remove-entry-button-${valIdx}`"
@@ -42,6 +43,7 @@
     </div>
     <icon-button
       icon="plus"
+      :tabindex="tabindex"
       :has-button-style="true"
       :aria-label-prop="addButtonLabel"
       data-test="multi-input-add-entry-button"
@@ -102,6 +104,10 @@ export default defineComponent({
           values: [],
         };
       },
+    },
+    tabindex: {
+      type: Number,
+      default: 0,
     },
   },
   emits: ['update:modelValue'],
@@ -170,6 +176,7 @@ export default defineComponent({
       }
       return {
         ...type,
+        tabindex: this.tabindex,
         ariaLabel: labelScreenReader,
         invalidMessage: message ?? '',
       };

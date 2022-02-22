@@ -31,7 +31,6 @@
     ref="guardedSite"
     :title="TITLE"
     :subtitle="SUBTITLE"
-    :ucr-var-for-frontend-enabling="'umc/self-service/passwordreset/frontend/enabled'"
     path="passwordreset/get_reset_methods"
     :password-needed="false"
     :guarded-widgets="widgets"
