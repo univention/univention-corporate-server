@@ -1,5 +1,3 @@
-18python-univention-directory-manager.inst	usr/lib/univention-install/
-listener/*.py	usr/lib/univention-directory-listener/system/
 modules/univention/admin/*.py	usr/lib/python2.7/dist-packages/univention/admin/
 modules/univention/admin/handlers/*.py	usr/lib/python2.7/dist-packages/univention/admin/handlers/
 modules/univention/admin/handlers/computers/*.py	usr/lib/python2.7/dist-packages/univention/admin/handlers/computers/

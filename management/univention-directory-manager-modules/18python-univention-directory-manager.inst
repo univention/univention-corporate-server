@@ -35,8 +35,11 @@
 
 ## joinscript api: bindpwdfile
 
+# shellcheck disable=SC2034
 VERSION=4
+# shellcheck disable=SC1091
 . /usr/share/univention-join/joinscripthelper.lib
+# shellcheck disable=SC1091
 . /usr/share/univention-lib/all.sh
 joinscript_init
 
@@ -61,6 +64,7 @@ for i in $modules; do
 	mods="$mods --append module=$i"
 done
 
+# shellcheck disable=SC1112,SC2086,SC2154
 univention-directory-manager settings/extended_attribute create "$@" \
 	--ignore_exists \
 	--position "cn=custom attributes,cn=univention,$ldap_base" \

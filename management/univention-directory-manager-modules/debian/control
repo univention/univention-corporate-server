@@ -42,7 +42,6 @@ Build-Depends:
  python3-univention-lib,
  python3-univention-license,
  univention-config-dev (>= 15.0.3),
- univention-directory-listener,
  univention-l10n-dev (>= 7.0.1),
 
 Package: python-univention-directory-manager
@@ -128,8 +127,6 @@ Depends:
  shell-univention-lib,
  ${misc:Depends},
  ${python3:Depends},
-Provides:
- ${python3:Provides},
 Breaks:
  python3-univention-directory-manager (<< 15.0.12-1),
 Replaces:
@@ -152,8 +149,6 @@ Depends:
  shell-univention-lib,
  ${misc:Depends},
  ${python3:Depends},
-Provides:
- ${python3:Provides},
 Breaks:
  python-univention-directory-manager-cli (<< 15.0.12-1),
 Replaces:
@@ -173,6 +168,10 @@ Depends:
  python-univention-directory-manager (= ${binary:Version}),
  python3-univention-directory-manager (= ${binary:Version}),
  ${misc:Depends},
+Replaces:
+ python-univention-directory-manager (<< 15.0.11-31),
+Breaks:
+ python-univention-directory-manager (<< 15.0.11-31),
 Description: UCS - Command-line based administration tools
  This package contains command-line based programs to
  manage UCS.

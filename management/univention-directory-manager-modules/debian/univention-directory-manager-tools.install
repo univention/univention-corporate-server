@@ -1,4 +1,6 @@
+18python-univention-directory-manager.inst	usr/lib/univention-install/
 etc/bash_completion.d/univention-directory-manager	etc/bash_completion.d/
+listener/*.py	usr/lib/univention-directory-listener/system/
 scripts/change_srv_priority.py	usr/share/univention-directory-manager-tools/
 scripts/check_group_recursion	usr/share/univention-directory-manager-tools/
 scripts/convert-user-base64-photos	usr/share/univention-directory-manager-tools/
