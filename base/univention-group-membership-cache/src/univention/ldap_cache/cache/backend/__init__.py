@@ -144,6 +144,12 @@ class LdapCache(object):
 		# type: (Type[Shard]) -> None
 		self.shards.append(shard_class(self))
 
+	def delete(self, key: str, writer: Any = None) -> None:
+		raise NotImplementedError()
+
+	def save(self, key: str, values: Any) -> None:
+		raise NotImplementedError()
+
 
 def _s(input):
 	# type: (Any) -> Any
