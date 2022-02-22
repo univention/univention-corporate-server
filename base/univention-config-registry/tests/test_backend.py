@@ -78,7 +78,7 @@ class TestConfigRegistry(object):
 
 		assert tmpucr.exists()
 
-	@pytest.mark.parametrize("path",["/", "/does/not/exist"])
+	@pytest.mark.parametrize("path", ["/", "/does/not/exist"])
 	def test_create_error(self, path, tmpdir):
 		with pytest.raises(SystemExit):
 			ConfigRegistry(path)
