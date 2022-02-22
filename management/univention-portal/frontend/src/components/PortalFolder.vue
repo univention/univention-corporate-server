@@ -61,7 +61,7 @@
         :class="{ 'portal-folder__thumbnails--in-modal': inModal }"
       >
         <div
-          v-for="(tile, index) in tiles"
+          v-for="(tile, index) in filteredTiles"
           :key="tile.id"
           :class="`portal-folder__thumbnail ${isMoreThanFiveOrTen(index)}`"
         >
@@ -110,7 +110,7 @@
         v-if="editMode && !inModal && showEditButtonWhileDragging"
         icon="edit-2"
         class="portal-folder__edit-button icon-button--admin"
-        :aria-label-prop="translateEditFolder"
+        :aria-label-prop="EDIT_FOLDER"
         @click="editFolder"
       />
       <icon-button
@@ -141,7 +141,7 @@ import PortalTile from '@/components/PortalTile.vue';
 import Draggable from '@/mixins/Draggable.vue';
 import IconButton from '@/components/globals/IconButton.vue';
 import TileAdd from '@/components/admin/TileAdd.vue';
-import { Title, Tile } from '@/store/modules/portalData/portalData.models';
+import { Title, Tile, Description, BaseTile } from '@/store/modules/portalData/portalData.models';
 import _ from '@/jsHelper/translate';
 import { mapGetters } from 'vuex';
 
@@ -190,6 +190,8 @@ export default defineComponent({
   computed: {
     ...mapGetters({
       lastDir: 'dragndrop/getLastDir',
+      searchQuery: 'search/searchQuery',
+
     }),
     hasTiles(): boolean {
       return this.tiles.length > 0;
@@ -216,11 +218,17 @@ export default defineComponent({
     isOpened(): string {
       return this.inModal ? 'div' : 'button';
     },
-    translateEditFolder(): string {
-      return _('Edit folder');
+    EDIT_FOLDER(): string {
+      return _('Edit Folder: %(folder)s', { folder: this.$localized(this.title) });
     },
     MOVE_FOLDER(): string {
-      return _('Move folder');
+      return _('Move Folder: %(folder)s', { folder: this.$localized(this.title) });
+    },
+    filteredTiles(): Tile[] {
+      if (this.tiles.filter((tile) => this.tileMatchesQuery(tile)).length === 0) {
+        return this.tiles;
+      }
+      return this.tiles.filter((tile) => this.tileMatchesQuery(tile));
     },
   },
   mounted() {
@@ -284,6 +292,19 @@ export default defineComponent({
       // MOBILE ZOOM DEFAULT: 100 - 150
       // BROWSER ZOOM WCAG2.1 AA: 200
       return !!browserZoomLevel && browserZoomLevel >= 200;
+    },
+    titleMatchesQuery(title: Title): boolean {
+      return this.$localized(title).toLowerCase()
+        .includes(this.searchQuery.toLowerCase());
+    },
+    descriptionMatchesQuery(description: Description): boolean {
+      return this.$localized(description).toLowerCase()
+        .includes(this.searchQuery.toLowerCase());
+    },
+    tileMatchesQuery(tile: Tile): boolean {
+      const titleMatch = this.titleMatchesQuery(tile.title);
+      const descriptionMatch = this.descriptionMatchesQuery((tile as BaseTile).description);
+      return titleMatch || descriptionMatch;
     },
   },
 });

@@ -30,6 +30,7 @@ License with the Debian GNU/Linux or Univention distribution in file
   <modal-wrapper
     :is-active="loadingState"
     :modal-level="2"
+    class="modal-wrapper--loading"
   >
     <div
       class="loading-overlay"
@@ -69,6 +70,9 @@ export default defineComponent({
 </script>
 
 <style lang="stylus">
+.modal-wrapper--loading.modal-wrapper--isVisible
+  z-index: $zindex-10
+
 .loading-overlay
   width: 2rem
   height: 2rem

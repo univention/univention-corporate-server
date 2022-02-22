@@ -31,12 +31,15 @@
     <screen-reader-announcer />
     <portal-background />
     <portal-header />
-    <portal-error v-if="errorContentType" />
+    <portal-error
+      v-if="errorContentType"
+      :error-type="undefined"
+    />
     <region
       v-if="!errorContentType"
       v-show="!activeTabIndex"
       id="portalCategories"
-      role="main"
+      :aria-role="portalRole"
       class="portal-categories"
     >
       <portal-category
@@ -90,6 +93,7 @@
     <portal-modal
       :modal-level="2"
     />
+    <router-view />
     <loading-overlay />
   </div>
 </template>
@@ -113,9 +117,6 @@ import PortalToolTip from 'components/PortalToolTip.vue';
 import ScreenReaderAnnouncer from '@/components/globals/ScreenReaderAnnouncer.vue';
 import PortalError from '@/components/globals/PortalError.vue';
 import LoadingOverlay from '@/components/globals/LoadingOverlay.vue';
-
-import { Category } from '@/store/modules/portalData/portalData.models';
-import createCategories from '@/jsHelper/createCategories';
 
 export default defineComponent({
   name: 'Portal',
@@ -152,6 +153,9 @@ export default defineComponent({
     },
     isSecondModalActive(): boolean {
       return this.getModalState('secondLevelModal');
+    },
+    portalRole(): string {
+      return this.editMode ? 'application' : '';
     },
   },
   methods: {

@@ -28,7 +28,7 @@
  */
 import { PortalModule, RootState } from '@/store/root.models';
 import { ActionContext } from 'vuex';
-import { PortalBaseLayout, PortalLayout } from '@/store/modules/portalData/portalData.models';
+import { PortalBaseLayout, PortalLayout, Title } from '@/store/modules/portalData/portalData.models';
 
 export interface DraggedItem {
   layoutId: string,
@@ -37,6 +37,7 @@ export interface DraggedItem {
   originalLayout: null | {layout: PortalLayout, baseLayout: PortalBaseLayout},
   lastDir: 'left' | 'right' | 'up' | 'down',
   isWindowMouseListenerSet: boolean,
+  title: string,
 }
 export type DragType = 'mouse' | 'keyboard';
 export interface DraggedItemDragCopy {
@@ -59,6 +60,7 @@ const dragndrop: PortalModule<DraggedItem> = {
     originalLayout: null,
     lastDir: 'left',
     isWindowMouseListenerSet: false,
+    title: '',
   },
 
   mutations: {

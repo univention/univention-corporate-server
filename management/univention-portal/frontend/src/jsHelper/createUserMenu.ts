@@ -52,21 +52,25 @@ function changePasswordCallback(tileClick) {
     name: 'ChangePassword',
     stubborn: true,
   }).then((values) => {
+    tileClick.$store.dispatch('activateLoadingState');
     changePassword(values.oldPassword, values.newPassword).then((response) => {
       tileClick.$store.dispatch('notifications/addSuccessNotification', {
         title: _('Change password'),
         description: response.data.message,
       });
       tileClick.$store.dispatch('modal/hideAndClearModal');
+      tileClick.$store.dispatch('deactivateLoadingState');
     }, (error) => {
       console.error('Error while changing password', error);
       tileClick.$store.dispatch('notifications/addErrorNotification', {
         title: _('Change password'),
       });
       tileClick.$store.dispatch('modal/hideAndClearModal');
+      tileClick.$store.dispatch('deactivateLoadingState');
       return changePasswordCallback(tileClick);
     });
   }, () => {
+    tileClick.$store.dispatch('deactivateLoadingState');
     tileClick.$store.dispatch('modal/hideAndClearModal');
   });
 }

@@ -28,10 +28,9 @@
 -->
 <template>
   <div class="image-upload">
-    <label>{{ label }}</label>
     <div
       class="image-upload__canvas"
-      :data-test="`imageUploadCanvas--${label}`"
+      :data-test="`imageUploadCanvas--${extraLabel}`"
       @dragenter.prevent=""
       @dragover.prevent=""
       @drop.prevent="drop"
@@ -40,7 +39,7 @@
       <img
         v-if="modelValue"
         :src="modelValue"
-        :data-test="`imagePreview--${label}`"
+        :data-test="`imagePreview--${extraLabel}`"
         alt=""
       >
       <div
@@ -57,13 +56,13 @@
         ref="file_input"
         class="image-upload__file-input"
         type="file"
-        :data-test="`imageUploadFileInput--${label}`"
+        :data-test="`imageUploadFileInput--${extraLabel}`"
         @change="upload"
       >
       <button
         type="button"
         :tabindex="tabindex"
-        :data-test="`imageUploadButton--${label}`"
+        :data-test="`imageUploadButton--${extraLabel}`"
         @click.prevent="startUpload"
       >
         <portal-icon
@@ -78,7 +77,7 @@
         type="button"
         :tabindex="tabindex"
         :disabled="!modelValue"
-        :data-test="`imageRemoveButton--${label}`"
+        :data-test="`imageRemoveButton--${extraLabel}`"
         @click.prevent="remove"
       >
         <portal-icon
@@ -86,7 +85,7 @@
         />
         {{ REMOVE }}
         <span class="sr-only sr-only-mobile">
-          {{ label }}
+          {{ extraLabel }}
         </span>
       </button>
     </footer>
@@ -104,12 +103,12 @@ interface ImageUploadData {
 }
 
 export default defineComponent({
-  name: 'ImageUpload',
+  name: 'ImageUploader',
   components: {
     PortalIcon,
   },
   props: {
-    label: {
+    extraLabel: {
       type: String,
       required: true,
     },
@@ -120,6 +119,14 @@ export default defineComponent({
     tabindex: {
       type: Number,
       default: 0,
+    },
+    forAttrOfLabel: {
+      type: String,
+      required: true,
+    },
+    invalidMessageId: {
+      type: String,
+      required: true,
     },
   },
   emits: ['update:modelValue'],
@@ -139,7 +146,7 @@ export default defineComponent({
       return _('Remove');
     },
     IMAGE_UPLOAD_STATE(): string {
-      return `${this.label}, ${this.hasImage}`;
+      return `${this.extraLabel}, ${this.hasImage}`;
     },
     hasImage(): string {
       return this.modelValue ? this.fileName : _('no file selected');

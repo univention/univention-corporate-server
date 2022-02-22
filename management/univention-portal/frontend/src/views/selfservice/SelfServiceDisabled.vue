@@ -1,5 +1,5 @@
 <!--
-  Copyright 2021-2022 Univention GmbH
+  Copyright 2021 Univention GmbH
 
   https://www.univention.de/
 
@@ -27,25 +27,43 @@
   <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <span
-    aria-hidden="true"
-  > *
-  </span>
-  <span class="sr-only sr-only-mobile">
-    {{ REQUIRED }}
-  </span>
+  <div class="self-service-disabled">
+    <h1 class="self-service-disabled__title">
+      {{ TITLE }}
+    </h1>
+    <p class="self-service-disabled__text">
+      {{ TEXT }}
+    </p>
+  </div>
 </template>
-
 <script lang="ts">
 import { defineComponent } from 'vue';
 import _ from '@/jsHelper/translate';
 
 export default defineComponent({
-  name: 'PortalTile',
+  name: 'SelfServiceDisabled',
   computed: {
-    REQUIRED(): string {
-      return _('required');
+    TITLE(): string {
+      return _('This service is disabled');
     },
+    TEXT(): string {
+      return _('If you have problems using the self service instance, please contact your system administrator.');
+    },
+  },
+  mounted() {
+    this.$store.dispatch('activity/setMessage', `${this.TITLE}. ${this.TEXT}`);
   },
 });
 </script>
+<style lang="stylus">
+.self-service-disabled
+  position: relative
+  display: flex
+  flex-direction: column
+
+  @media $mqSmartphone
+    margin-left: 1em
+
+  &__title
+    margin-bottom: 0
+</style>

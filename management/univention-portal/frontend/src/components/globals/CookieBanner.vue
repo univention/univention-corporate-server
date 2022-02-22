@@ -96,7 +96,7 @@ export default defineComponent({
   methods: {
     setCookies(): void {
       const cookieValue = 'do-not-change-me';
-      setCookie(this.cookieName, cookieValue);
+      setCookie(this.cookieName, cookieValue, '/');
       this.dismissCookieBanner();
     },
     dismissCookieBanner(): void {

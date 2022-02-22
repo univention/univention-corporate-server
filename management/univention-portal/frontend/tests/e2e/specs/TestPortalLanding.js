@@ -58,9 +58,11 @@ describe('Test Portal Landing', () => {
 
   it('Mouseover is working', () => {
     // Mouseover tooltip?
-    cy.get('.portal-category .portal-tile').first().trigger('mouseenter');
+    cy.get('.portal-category .portal-tile').first()
+      .trigger('mouseenter');
     cy.get('[data-test="portal-tooltip"]').contains('ownCloud');
-    cy.get('.portal-category .portal-tile').first().trigger('mouseleave');
+    cy.get('.portal-category .portal-tile').first()
+      .trigger('mouseleave');
     cy.get('[data-test="portal-tooltip"]').should('not.exist');
   });
   it('Headerbuttons become green', () => {
@@ -86,15 +88,15 @@ describe('Test Portal Landing', () => {
   });
   it('General a11y test', () => {
     cy.injectAxe();
-    cy.checkA11y('body', 
-    {
-      runOnly: {
-        type: 'tag',
-        values: ['wcag21aa'],
-      }
-    },
-    cy.terminalLog, {
-      skipFailures: true
-    });
+    cy.checkA11y('body',
+      {
+        runOnly: {
+          type: 'tag',
+          values: ['wcag21aa'],
+        },
+      },
+      cy.terminalLog, {
+        skipFailures: true,
+      });
   });
 });

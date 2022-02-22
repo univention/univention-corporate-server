@@ -134,6 +134,20 @@ const draggableMixin = {
         return;
       }
 
+      if (evt) {
+        const draggedElement = evt.srcElement;
+        const dragClone = draggedElement.cloneNode(true);
+        document.body.appendChild(dragClone);
+        dragClone.style.transform = 'rotate(0)';
+        dragClone.style.position = 'absolute';
+        dragClone.style.left = '-10000px';
+        dragClone.id = 'dragndropCloneNode';
+        if (dragClone.children[2]) {
+          dragClone.removeChild(dragClone.children[2]);
+        }
+        evt.dataTransfer.setDragImage(dragClone, 75, 75);
+      }
+
       this.$store.dispatch('dragndrop/startDragging', {
         layoutId: this.layoutId,
         draggedType: this.draggedType(),
@@ -168,6 +182,8 @@ const draggableMixin = {
         evt?.preventDefault();
         evt?.stopImmediatePropagation();
       }
+      const clone = document.getElementById('dragndropCloneNode');
+      clone?.remove();
       this.$store.dispatch('dragndrop/cancelDragging');
     },
   },

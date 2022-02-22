@@ -32,59 +32,11 @@ License with the Debian GNU/Linux or Univention distribution in file
     class="change-password"
     @cancel="cancel"
   >
-    <form
-      @submit.prevent="finish"
+    <my-form
+      ref="form"
+      v-model="formValues"
+      :widgets="formWidgets"
     >
-      <label for="oldPassword">
-        {{ OLD_PASSWORD }}
-        <input-error-message
-          :display-condition="!oldPasswordSet && submitButtonClicked"
-          :error-message="OLD_PASSWORD_ERROR_MESSAGE"
-        />
-      </label>
-      <input
-        id="oldPassword"
-        ref="oldPassword"
-        v-model="oldPassword"
-        name="old-password"
-        type="password"
-        class="change-password__input"
-      >
-      <label for="newPassword">
-        {{ NEW_PASSWORD }}
-        <input-error-message
-          :display-condition="!newPasswordSet && submitButtonClicked"
-          :error-message="NEW_PASSWORD_ERROR_MESSAGE"
-        />
-      </label>
-      <input
-        id="newPassword"
-        ref="newPassword"
-        v-model="newPassword"
-        name="new-password"
-        type="password"
-        class="change-password__input"
-      >
-      <label for="newPasswordRetype">
-        {{ NEW_PASSWORD }}
-        ({{ RETYPE }})
-        <input-error-message
-          :display-condition="!newPassword2Set && submitButtonClicked"
-          :error-message="RETYPE_ERROR_MESSAGE"
-        />
-        <input-error-message
-          :display-condition="!newPasswordsMatch && submitButtonClicked"
-          :error-message="MATCH_NEW_PASSWORD_ERROR_MESSAGE"
-        />
-      </label>
-      <input
-        id="newPasswordRetype"
-        ref="newPassword2"
-        v-model="newPassword2"
-        name="new-password-retype"
-        type="password"
-        class="change-password__input"
-      >
       <footer>
         <button
           type="button"
@@ -99,109 +51,92 @@ License with the Debian GNU/Linux or Univention distribution in file
           {{ CHANGE_PASSWORD }}
         </button>
       </footer>
-    </form>
+    </my-form>
   </modal-dialog>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { setInvalidity } from '@/jsHelper/tools';
 import _ from '@/jsHelper/translate';
-
+import MyForm from '@/components/forms/Form.vue';
 import ModalDialog from '@/components/modal/ModalDialog.vue';
-import InputErrorMessage from '@/components/forms/InputErrorMessage.vue';
+import { allValid, isEmpty, validateAll } from '@/jsHelper/forms';
 
 interface ChangePasswordData {
-    oldPassword: string,
-    newPassword: string,
-    newPassword2: string,
-    submitButtonClicked: boolean,
+  formWidgets: any[],
+  formValues: any,
 }
 
 export default defineComponent({
   name: 'ChangePassword',
   components: {
+    MyForm,
     ModalDialog,
-    InputErrorMessage,
   },
   data(): ChangePasswordData {
     return {
-      oldPassword: '',
-      newPassword: '',
-      newPassword2: '',
-      submitButtonClicked: false,
+      formWidgets: [{
+        type: 'PasswordBox',
+        name: 'oldPassword',
+        label: _('Old password'),
+        validators: [(widget, value) => (
+          isEmpty(widget, value) ? _('Please enter your old password') : ''
+        )],
+      }, {
+        type: 'PasswordBox',
+        name: 'newPassword',
+        label: _('New password'),
+        validators: [(widget, value) => (
+          isEmpty(widget, value) ? _('Please enter your new password') : ''
+        )],
+      }, {
+        type: 'PasswordBox',
+        name: 'newPasswordRetype',
+        label: _('New password (retype)'),
+        validators: [(widget, value) => (
+          isEmpty(widget, value) ? _('Please confirm your new password') : ''
+        ), (widget, value) => {
+          // @ts-ignore TODO
+          if (this.formValues.newPassword !== value) {
+            return _('The new passwords do not match');
+          }
+          return '';
+        }],
+      }],
+      formValues: {
+        oldPassword: '',
+        newPassword: '',
+        newPasswordRetype: '',
+      },
     };
   },
   computed: {
-    OLD_PASSWORD(): string {
-      return _('Old password');
-    },
-    OLD_PASSWORD_ERROR_MESSAGE(): string {
-      return _('Please enter your old password');
-    },
-    NEW_PASSWORD(): string {
-      return _('New password');
-    },
-    NEW_PASSWORD_ERROR_MESSAGE(): string {
-      return _('Please enter your new password');
-    },
-    RETYPE(): string {
-      return _('retype');
-    },
-    RETYPE_ERROR_MESSAGE(): string {
-      return _('Please confirm your new password.');
-    },
     CANCEL(): string {
       return _('Cancel');
     },
     CHANGE_PASSWORD(): string {
       return _('Change password');
     },
-    MATCH_NEW_PASSWORD_ERROR_MESSAGE(): string {
-      return _('The new passwords do not match');
-    },
-    oldPasswordSet(): boolean {
-      return !!this.oldPassword;
-    },
-    newPasswordSet(): boolean {
-      return !!this.newPassword;
-    },
-    newPassword2Set(): boolean {
-      return !!this.newPassword2;
-    },
-    newPasswordsMatch(): boolean {
-      return this.newPassword === this.newPassword2;
-    },
   },
   mounted(): void {
-    (this.$refs.oldPassword as HTMLElement).focus();
+    // @ts-ignore TODO
+    this.$refs.form.focusFirstInteractable();
   },
   methods: {
     finish() {
-      this.submitButtonClicked = true;
-      setInvalidity(this, 'oldPassword', !this.oldPasswordSet);
-      setInvalidity(this, 'newPassword', !this.newPasswordSet);
-      setInvalidity(this, 'newPassword2', !this.newPasswordsMatch);
-      const everythingIsCorrect = this.oldPasswordSet && this.newPasswordSet && this.newPasswordsMatch;
-      if (!everythingIsCorrect) {
-        if (!this.oldPasswordSet) {
-          (this.$refs.oldPassword as HTMLElement).focus();
-        } else if (!this.newPasswordSet) {
-          (this.$refs.newPassword as HTMLElement).focus();
-        } else if (!this.newPassword2Set || !this.newPasswordsMatch) {
-          (this.$refs.newPassword2 as HTMLElement).focus();
-        }
+      validateAll(this.formWidgets, this.formValues);
+      if (!allValid(this.formWidgets)) {
+        // @ts-ignore TODO
+        this.$refs.form.focusFirstInvalid();
         return;
       }
       this.$store.dispatch('modal/resolve', {
         level: 1,
-        oldPassword: this.oldPassword,
-        newPassword: this.newPassword,
+        oldPassword: this.formValues.oldPassword,
+        newPassword: this.formValues.newPassword,
       });
     },
     cancel() {
-      // for second modal purpose
-      // this.$store.dispatch('modal/hideAndClearModal', 2);
       this.$store.dispatch('modal/hideAndClearModal');
     },
   },
@@ -209,8 +144,6 @@ export default defineComponent({
 </script>
 <style lang="stylus">
 .change-password
-
-    &__input
-      width: 100%
-
+  input
+    width: 100%
 </style>

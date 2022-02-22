@@ -106,6 +106,7 @@
           @keydown.space.exact="menuClickAction($event, index, item)"
           @keydown.right.exact.prevent="hasSubmenu(item) ? toggleMenu(index) : null"
           @keydown.esc="closeNavigation"
+          @clickAction="closeNavigation"
         />
         <template v-if="hasSubmenu(item)">
           <region
@@ -127,6 +128,7 @@
               @keydown.space.exact.prevent="toggleMenu()"
               @keydown.left.exact="toggleMenu()"
               @keydown.esc="closeNavigation"
+              @clickAction="closeNavigation"
             />
             <div
               v-for="(subItem, subindex) in item.subMenu"
@@ -146,6 +148,7 @@
                 :is-subitem="true"
                 class="portal-sidenavigation__menu-subItem"
                 @keydown.esc="closeNavigation"
+                @clickAction="closeNavigation"
               />
             </div>
           </region>
@@ -173,7 +176,6 @@ import _ from '@/jsHelper/translate';
 
 import Region from '@/components/activity/Region.vue';
 import MenuItem from '@/components/navigation/MenuItem.vue';
-import SubMenuItem from '@/components/navigation/SubMenuItem.vue';
 import PortalIcon from '@/components/globals/PortalIcon.vue';
 import TileClick from '@/mixins/TileClick.vue';
 
@@ -195,7 +197,6 @@ export default defineComponent({
   components: {
     PortalIcon,
     MenuItem,
-    SubMenuItem,
     Region,
   },
   mixins: [
@@ -268,6 +269,7 @@ export default defineComponent({
     },
     async startEditMode(): Promise<void> {
       await this.$store.dispatch('portalData/setEditMode', true);
+      (this.$refs.editModeButton as HTMLElement).blur();
       this.$store.dispatch('navigation/setActiveButton', '');
       this.$store.dispatch('tabs/setActiveTab', 0);
     },
@@ -309,13 +311,9 @@ export default defineComponent({
 <style lang="stylus">
 $userRow = 6rem
 .portal-sidenavigation
-  height: calc(100vh - (var(--portal-header-height) + 0.5rem))
+  height: 100%
   display: flex
   flex-direction: column
-
-  @media $mqSmartphone
-    height: 100%
-    overflow-y: auto
 
   &__link
     padding: 1em 0 1em 20px
@@ -389,9 +387,9 @@ $userRow = 6rem
     border-bottom: 4px solid var(--bgc-content-body)
 
   &__menu
-    margin: 0
-    margin-bottom: auto
-    padding-left: 0
+    flex: 1 1 auto
+    overflow-y: auto
+    overflow-x: hidden
 
   &__menu-item
     margin-left: 0
@@ -428,10 +426,6 @@ $userRow = 6rem
 
   &__fade-left-right
     animation-name: fadeInLeft
-
-  &__submenu
-    height: 'calc(%s - (%s + %s) - %s - %s)' % (100vh var(--portal-header-height) 0.5rem $userRow 3rem)
-    overflow-y: auto
 
 // keyframes
 @keyframes fadeInLeft {

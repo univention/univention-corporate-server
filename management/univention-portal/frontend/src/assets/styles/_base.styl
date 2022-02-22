@@ -84,22 +84,52 @@ input, select
     outline-style: none
     box-shadow: none
 
-  &[invalid]
-    border-color: var(--bgc-error)
+  &[invalid],
+  &[aria-invalid=true]
+    border-color: var(--font-color-error)
 
   &[disabled]
     cursor: var(--cursor-disabled)
     color: var(--font-color-contrast-low)
 
+  &[type="radio"]
+    height: 1rem
+    width: @height
+    margin-right: var(--layout-spacing-unit)
+    appearance: none
+    border-radius: 100%
+    padding: 0 !important
+    display: flex
+
+    &:focus,
+    &:focus:checked
+      border-color: var(--color-focus)
+    &:checked
+      border-color: var(--color-accent)
+
+    &:checked:after
+      display: block;
+      content: '';
+      border-radius: 100%;
+      height: 0.6rem;
+      width: @height
+      top: 5px;
+      left: 5px;
+      margin: auto;
+      background: var(--color-accent)
+
 fieldset
   border: 0
   padding: 0
-  margin-top: calc(3 * var(--layout-spacing-unit))
 
 select
   cursor: pointer
   appearance: none
   position: relative
+  background-image: var(--select-arrow)
+  background-repeat: no-repeat
+  background-size: 1rem
+  background-position: 98% center
 
 legend, label, div.label
   display: block
@@ -112,40 +142,40 @@ legend, label, div.label
     margin-top: calc(1 * var(--layout-spacing-unit))
     font-size: var(--font-size-4)
 
-  input[type=checkbox]
-    background-color: var(--bgc-inputfield-on-container)
-    display: inline-block
-    height: var(--font-size-3)
-    width: var(--font-size-3)
-    padding: 0 !important
-    margin: 4px
-    margin-right: var(--layout-spacing-unit)
-    margin-left: 0
-    border: 2px solid var(--font-color-contrast-low)
-    border-radius: 2px
-    background-color: var(--bgc-inputfield-on-container)
+input[type=checkbox]
+  background-color: var(--bgc-inputfield-on-container)
+  display: inline-block
+  height: var(--font-size-3)
+  width: var(--font-size-3)
+  padding: 0 !important
+  margin: 4px
+  margin-right: var(--layout-spacing-unit)
+  margin-left: 0
+  border: 2px solid var(--font-color-contrast-low)
+  border-radius: 2px
+  background-color: var(--bgc-inputfield-on-container)
+  cursor: pointer
+  appearance: none
+  &:focus,
+  &:focus:checked
+    border-color: var(--color-focus)
+  &:checked
+    border-color: var(--color-accent)
+
+  & + span
+    vertical-align: top
     cursor: pointer
-    appearance: none
-    &:focus,
-    &:focus:checked
-      border-color: var(--color-focus)
-    &:checked
-      border-color: var(--color-accent)
 
-    & + span
-      vertical-align: top
-      cursor: pointer
-
-    &:checked:after
-      content: "✓"
-      display: block
-      width: 100%
-      height: 100%
-      line-height: 111%
-      font-size: 0.7rem
-      font-weight: bold
-      text-align: center
-      color: var(--color-accent)
+  &:checked:after
+    content: "✓"
+    display: block
+    width: 100%
+    height: 100%
+    line-height: 111%
+    font-size: 0.7rem
+    font-weight: bold
+    text-align: center
+    color: var(--color-accent)
 
 // --------------
 // global classes
