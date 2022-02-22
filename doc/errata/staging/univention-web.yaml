@@ -6,6 +6,7 @@ src: univention-web
 fix: 4.0.2-47A~5.0.0.202202092308
 desc: |
  This update addresses the following issue:
- * In case of a long-lasting login, a message will be displayed to the user
-   containing the link where further help can be found.
+ * In case of a long-lasting login, certain UMC modules do not work properly.
+   If this happens, a message will be displayed to the user containing a link
+   where further help can be found.
 bug: [54032]
