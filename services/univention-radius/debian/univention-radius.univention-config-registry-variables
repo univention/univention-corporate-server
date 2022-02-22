@@ -149,49 +149,49 @@ Type=str
 Categories=service-radius
 
 [radius/use-service-specific-password]
-Description[de]=Ermöglicht die Verwendung von dienstspezifischen Passwörtern. Dieses Passwort wird im Attribut univentionRadiusPassword gespeichert. Wenn kein dienstspezifisches Kennwort festgelegt ist, schlägt die Authentifizierung fehl, da nicht auf das Standardkennwort zurückgefallen wird.
-Description[en]=Enables the use of service specific passwords. This password stored in the univentionRadiusPassword attribute. If no service specific password is set, the authentication will fail as there is no fallback to the standard password.
+Description[de]=Ermöglicht die Verwendung von dienstspezifischen Passwörtern. Dieses Passwort wird im Attribut univentionRadiusPassword eines Benutzers gespeichert. Wenn kein dienstspezifisches Kennwort festgelegt ist, schlägt die Authentifizierung fehl, da nicht auf das Standardkennwort zurückgefallen wird.
+Description[en]=Enables the use of service specific passwords. This password stored in the univentionRadiusPassword attribute of a user. If no service specific password is set, the authentication will fail as there is no fallback to the standard password.
 Type=bool
 Categories=service-radius
 
 [password/radius/quality/credit/digits]
-Description[de]=
-Description[en]=If the option 'Service specific password' is enabled for RADIUS, this variable configures the minimum number of digits in the new password.
+Description[de]=Wenn 'radius/use-service-specific-password' angeschaltet ist, bestimmt diese Variable die minimale Anzahl an Ziffern bei einem neuen Passwort.
+Description[en]=If 'radius/use-service-specific-password' is enabled, this variable configures the minimum number of digits in the new password.
 Type=int
 Default=6
 Categories=service-radius
 
 [password/radius/quality/credit/lower]
-Description[de]=
-Description[en]=If the option 'Service specific password' is enabled for RADIUS, this variable configures the minimum number of lower case letters that must be met for a new password.
+Description[de]=Wenn 'radius/use-service-specific-password' angeschaltet ist, bestimmt diese Variable die minimale Anzahl an Kleinbuchstaben bei einem neuen Passwort.
+Description[en]=If 'radius/use-service-specific-password' is enabled, this variable configures the minimum number of lower case letters in the new password.
 Type=int
 Default=6
 Categories=service-radius
 
 [password/radius/quality/credit/other]
-Description[de]=
-Description[en]=If the option 'Service specific password' is enabled for RADIUS, this variable configures the minimum number of characters in the new password which are neither letters nor digits.
+Description[de]=Wenn 'radius/use-service-specific-password' angeschaltet ist, bestimmt diese Variable die minimale Anzahl an Zeichen, die weder Buchstaben noch Ziffern sind, bei einem neuen Passwort.
+Description[en]=If 'radius/use-service-specific-password' is enabled, this variable configures the minimum number of characters in the new password which are neither letters nor digits.
 Type=int
 Default=0
 Categories=service-radius
 
 [password/radius/quality/credit/upper]
-Description[de]=
-Description[en]=If the option 'Service specific password' is enabled for RADIUS, this variable configures the minimum number of upper case letters that must be met for a new password.
+Description[de]=Wenn 'radius/use-service-specific-password' angeschaltet ist, bestimmt diese Variable die minimale Anzahl an Großbuchstaben bei einem neuen Passwort.
+Description[en]=If 'radius/use-service-specific-password' is enabled, this variable configures the minimum number of upper case letters in the new password.
 Type=int
 Default=6
 Categories=service-radius
 
 [password/radius/quality/forbidden/chars]
-Description[de]=
-Description[en]=If the option 'Service specific password' is enabled for RADIUS, characters specified here would not be part of the new password.
+Description[de]=Wenn 'radius/use-service-specific-password' angeschaltet ist, bestimmt diese Variable, welche Zeichen bei einem neuen Passwort nicht erlaubt sind.
+Description[en]=If 'radius/use-service-specific-password' is enabled, characters specified here would not be part of the new password.
 Type=str
 Default=0Ol1I
 Categories=service-radius
 
 [password/radius/quality/length/min]
-Description[de]=
-Description[en]=If the option 'Service specific password' is enabled for RADIUS, this variable configures the minimum length of the new password.
+Description[de]=Wenn 'radius/use-service-specific-password' angeschaltet ist, bestimmt diese Variable die minimale Länge bei einem neuen Passwort.
+Description[en]=If 'radius/use-service-specific-password' is enabled, this variable configures the minimum length of the new password.
 Type=int
 Default=24
 Categories=service-radius
