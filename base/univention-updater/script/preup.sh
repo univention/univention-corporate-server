@@ -143,7 +143,7 @@ esac
 
 # autoremove before the update
 if ! is_ucr_true update50/skip/autoremove; then
-	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >&3 2>&3
+	DEBIAN_FRONTEND=noninteractive apt-get -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages autoremove >&3 2>&3
 fi
 
 [ -f /etc/apt/preferences.d/99ucs500.pref ] ||

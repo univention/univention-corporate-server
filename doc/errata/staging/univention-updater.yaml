@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-updater
+fix: 
+desc: |
+ This update addresses the following issue:
+ * apt-get --force-yes option is deprecated and replaced with:
+   --allow-unauthenticated --allow-downgrades --allow-remove-essential
+   --allow-change-held-packages
+bug: [48891]

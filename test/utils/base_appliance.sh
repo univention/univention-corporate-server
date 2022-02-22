@@ -43,13 +43,13 @@ check_returnvalue ()
 
 install_vmware_packages ()
 {
-	univention-install -y --force-yes open-vm-tools
+	univention-install -y --assume-yes open-vm-tools
 }
 
 install_virtualbox_packages ()
 {
 	ucr set repository/online/unmaintained="yes"
-	univention-install -y --force-yes virtualbox-guest-x11
+	univention-install -y --assume-yes virtualbox-guest-x11
 	ucr set repository/online/unmaintained="no"
 }
 
@@ -57,7 +57,7 @@ install_activation_packages ()
 {
 	if "$1"
 	then
-		univention-install -y --force-yes univention-system-activation
+		univention-install -y --assume-yes univention-system-activation
 		ucr set --force auth/sshd/user/root=yes
 		ucr set appliance/activation/enabled=true
 	else
@@ -270,7 +270,7 @@ if [ "$close_fds" = "TRUE" ]; then
 	exec 1> /dev/null
 	exec 2> /dev/null
 fi
-\$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages || die
+\$update_commands_install -y --assume-yes -o="APT::Get::AllowUnauthenticated=1;" $packages || die
 univention-app register --do-it ${ucsversion}/${app}=${version}
 
 uid="\$(custom_username Administrator)"
@@ -687,8 +687,8 @@ uninstall_packages ()
 	# if upgraded, u-basesystem will be installed by postup.sh
 	state="$(dpkg --get-selections univention-basesystem 2>/dev/null | awk '{print $2}')"
 	if [ "$state" = "install" ]; then
-		apt-get purge -y --force-yes univention-basesystem
-		apt-get -y --force-yes autoremove
+		apt-get purge -y --assume-yes univention-basesystem
+		apt-get -y --assume-yes autoremove
 	fi
 
 	univention-prune-kernels -v
@@ -740,7 +740,7 @@ __EOF__
 	/usr/lib/univention-system-setup/scripts/setup-join.sh 2>&1 | tee /var/log/univention/setup.log
 	echo "root:univention" | chpasswd
 	# We still need u-s-s-boot, so reinstall it
-	univention-install -y --force-yes --reinstall univention-system-setup-boot
+	univention-install -y --assume-yes --reinstall univention-system-setup-boot
 
 	register_app_components "$main_app"
 
@@ -755,7 +755,7 @@ __EOF__
 			packages="$(get_app_attr "${app}" DefaultPackages) $(get_app_attr "${app}" DefaultPackagesMaster)"
 			if [ -n "$packages" ]; then
 				# shellcheck disable=SC2154,SC2086
-				$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages
+				$update_commands_install -y --assume-yes -o="APT::Get::AllowUnauthenticated=1;" $packages
 			fi
 			univention-run-join-scripts
 		fi
@@ -794,7 +794,7 @@ setup_appliance ()
 
 	uninstall_packages
 
-	univention-install -y --force-yes --reinstall univention-system-setup-boot
+	univention-install -y --assume-yes --reinstall univention-system-setup-boot
 
 	# shrink appliance image size
 	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
@@ -1116,7 +1116,7 @@ install_appreport ()
 		repository/online/component/appreport/version="4.0"
 	cat >/usr/lib/univention-system-setup/appliance-hooks.d/install-appreport <<__EOF__
 #!/bin/sh
-univention-install -y --force-yes univention-appreport
+univention-install -y --assume-yes univention-appreport
 __EOF__
 	chmod +x /usr/lib/univention-system-setup/appliance-hooks.d/install-appreport
 }

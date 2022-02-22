@@ -195,8 +195,7 @@ install_packages()
 
     chroot "${rootfs}" apt-get update
     if [ -n "${packages}" ]; then
-        # shellcheck disable=SC2086
-        chroot "${rootfs}" apt-get install --force-yes -y --no-install-recommends ${packages}
+        chroot "${rootfs}" apt-get install --assume-yes -y --no-install-recommends ${packages}
     fi
 }
 

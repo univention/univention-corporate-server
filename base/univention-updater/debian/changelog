@@ -1,3 +1,9 @@
+univention-updater (15.0.3-76) unstable; urgency=medium
+
+  * Bug #48891: apt-get --force-yes option is deprecated
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Tue, 22 Feb 2022 05:41:07 +0100
+
 univention-updater (15.0.3-75) unstable; urgency=medium
 
   * Bug #53666: fix app updates invoked by univention-upgrade

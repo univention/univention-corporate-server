@@ -38,7 +38,7 @@ die () {
 	exit 1
 }
 install () {
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install "$@" >&3 2>&3
+	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages install "$@" >&3 2>&3
 }
 reinstall () {
 	install --reinstall "$@"
@@ -87,7 +87,7 @@ basesystem) die "The server role '$server_role' is not supported anymore with UC
 esac
 
 if ! is_ucr_true update50/skip/autoremove; then
-	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >&3 2>&3
+	DEBIAN_FRONTEND=noninteractive apt-get -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages autoremove >&3 2>&3
 fi
 
 # removes temporary sources list (always required)
