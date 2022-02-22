@@ -1,3 +1,9 @@
+univention-config-registry (15.0.7-18) unstable; urgency=low
+
+  * Bug #54476: Adapt to Linux kernel API change open(O_EXCL): EISDIR->EEXIST
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 22 Feb 2022 09:16:53 +0100
+
 univention-config-registry (15.0.7-17) unstable; urgency=low
 
   * Bug #54208: Convert to Python 3

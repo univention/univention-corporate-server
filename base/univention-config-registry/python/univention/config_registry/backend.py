@@ -638,10 +638,11 @@ class _ConfigRegistry(dict):
 			reg_file = os.open(self.file, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
 			os.close(reg_file)
 		except EnvironmentError as ex:
-			if ex.errno != errno.EEXIST:
-				msg = "E: file '%s' does not exist and could not be created"
-				print(msg % (self.file,), file=sys.stderr)
-				exception_occured()
+			if ex.errno == errno.EEXIST and not os.path.isdir(self.file):
+				return
+			msg = "E: could not create file '%s': %s" % (self.file, ex)
+			print(msg, file=sys.stderr)
+			exception_occured()
 
 	def _save_file(self, filename):
 		# type: (str) -> None

@@ -78,9 +78,10 @@ class TestConfigRegistry(object):
 
 		assert tmpucr.exists()
 
-	def test_create_error(self, tmpdir):
+	@pytest.mark.parametrize("path",["/", "/does/not/exist"])
+	def test_create_error(self, path, tmpdir):
 		with pytest.raises(SystemExit):
-			ConfigRegistry("/")
+			ConfigRegistry(path)
 
 	def test_load(self, ucr0):
 		"""Load is fluent"""

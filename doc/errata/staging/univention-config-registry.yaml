@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-config-registry
+fix: 15.0.7-18
+desc: |
+ This update addresses the following issue:
+ * Adapted the code due to a Linux kernel API change in v5.7-rc1~128, where
+   `open(O_EXCL)` now returns `EEXIST` instead of `EISDIR`.
+bug: [54476]
