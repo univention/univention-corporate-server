@@ -38,7 +38,7 @@ univention-config-registry set \
 	"umc/web/hooks/univention-self-service?passwordreset" \
 	"umc/login/links/forgot_your_password/enabled?true"
 
-if ! ucr get portal/paths | tr , '\n' | grep -Fxq /univention/selfservice/; then
+if ! ucr get portal/paths | tr , '\n' | grep -qe '^ \?/univention/selfservice/$'; then
 	echo "Adding /univention/selfservice/ to the portal configuration"
 	ucr set portal/paths="$(ucr get portal/paths), /univention/selfservice/"
 	if [ ! -e "/usr/lib/univention-portal/config/selfservice.json" ]; then
