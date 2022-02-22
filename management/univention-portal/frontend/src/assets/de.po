@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: phoenixportal\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2022-02-11 12:55+0100\n"
+"POT-Creation-Date: 2022-02-22 15:07+0100\n"
 "PO-Revision-Date: 2021-02-18 00:49+0100\n"
 "Last-Translator: Dirk Wiesenthal <wiesenthal@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -456,7 +456,7 @@ msgstr "Info"
 msgid "Internal name"
 msgstr "Interner Name"
 
-#: src/jsHelper/forms.ts:258
+#: src/jsHelper/forms.ts:260
 msgid ""
 "Internal name must not contain anything other than digits, letters or dots, "
 "must be at least 2 characters long, and start and end with a digit or "
@@ -606,7 +606,7 @@ msgstr "Passwort vergessen"
 msgid ""
 "Please add it to your device now. You will not be able to see it again."
 msgstr ""
-"Bitte hinterlegen Sie es jetzt auf Ihrem Gerät. Das Password wird nicht noch"
+"Bitte hinterlegen Sie es jetzt auf Ihrem Gerät. Das Passwort wird nicht noch"
 " einmal angezeigt."
 
 #: src/tmp/ts/src/views/selfservice/PasswordForgotten.vue:39
@@ -793,7 +793,7 @@ msgstr "Diese URL existiert nicht (mehr)."
 msgid "This service is disabled"
 msgstr "Diese Seite wurde abgeschaltet"
 
-#: src/jsHelper/forms.ts:139
+#: src/jsHelper/forms.ts:141
 msgid "This value is required"
 msgstr "Dieser Wert ist erforderlich"
 

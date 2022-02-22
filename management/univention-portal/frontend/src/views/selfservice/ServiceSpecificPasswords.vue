@@ -130,6 +130,7 @@ export default defineComponent({
 .service-specific-passwords__hint
   margin: calc(2 * var(--layout-spacing-unit))
   pre
+    overflow-x: auto
     padding: calc(2 * var(--layout-spacing-unit))
     background-color: var(--bgc-inputfield-on-container)
 </style>
