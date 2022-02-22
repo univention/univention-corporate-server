@@ -80,7 +80,7 @@ if IS_SELFSERVICE_MASTER:
 		from univention.management.console.modules.udm.syntax import widget
 		from univention.management.console.modules.udm.udm_ldap import UDM_Error, UDM_Module
 		from univention.udm import UDM, NoObject
-		from univention.admin.rest.client import UDMRest
+		from univention.admin.rest.client import UDM as UDMRest
 	except ImportError as exc:
 		MODULE.error('Could not load udm module: %s' % (exc,))
 		widget = None
