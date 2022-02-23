@@ -1,0 +1,22 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: expat
+fix: 2.2.6-2+deb10u3
+desc: |
+ This update addresses the following issues:
+ * malformed 2- and 3-byte UTF-8 sequences can lead to arbitrary code
+   execution (CVE-2022-25235)
+ * namespace-separator characters in "xmlns[:prefix]" attribute values can
+   lead to arbitrary code execution (CVE-2022-25236)
+ * stack exhaustion in doctype parsing (CVE-2022-25313)
+ * integer overflow in copyString() (CVE-2022-25314)
+ * integer overflow in storeRawNames() (CVE-2022-25315)
+bug: [54480]
+cve:
+- CVE-2022-25235
+- CVE-2022-25236
+- CVE-2022-25313
+- CVE-2022-25314
+- CVE-2022-25315
