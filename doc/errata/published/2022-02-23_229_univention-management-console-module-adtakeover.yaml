@@ -12,3 +12,5 @@ desc: |
  * Invalid (empty) UCR network interface configuration lead to network
    failure during AD Takeover.
 bug: [54238,54359]
+erratum: 229
+announced: 2022-02-23
