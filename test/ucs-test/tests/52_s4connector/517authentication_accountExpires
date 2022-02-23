@@ -1,0 +1,95 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: "Create an UCS-User modify expiration date and validate connection"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/udm.sh
+. "$TESTLIBPATH/udm.sh" || exit 137
+# shellcheck source=../../lib/random.sh
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+UDM_users_user_username="$(random_chars)"
+UDM_users_user_lastname="$(random_chars)"
+UDM_users_user_password="U$(random_chars)123"
+UDM_users_user_firstname="$(random_chars)"
+AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
+UCS_DN="uid=$UDM_users_user_username,CN=users,$(ad_get_base)"
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+## Cleanup
+cleanup () {
+  #remove
+  udm_remove "users/user" || fail_test 110
+  ad_wait_for_synchronization; fail_bool 0 110
+  ad_exists "${AD_DN}"; fail_bool 1 110
+  udm_exists "users/user"; fail_bool 1 110
+  #restore
+  systemctl stop univention-s4-connector
+  connector_mapping_restore
+  ad_set_sync_mode "$SYNCMODE"
+  systemctl start univention-s4-connector
+}
+
+
+trap cleanup EXIT
+
+section "Create user account: "
+
+udm_create "users/user" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+udm_exists "users/user"; fail_bool 0 110
+ad_exists "${AD_DN}"; fail_bool 0 110
+
+section "Trying authentication: SAMBA-KERBEROS-LDAP_UCS_BIND"
+
+HOST="$(ucr get connector/s4/ldap/host)"
+smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 0 110
+ldapsearch -D "$UCS_DN" -w "${UDM_users_user_password}" &>/dev/null; fail_bool 0 110
+echo "${UDM_users_user_password}" | kinit --password-file=STDIN "${UDM_users_user_username}" ; fail_bool 0 110
+
+section "Expire user account: LDAP_SAMBA --> LDAP_UCS"
+
+EXPIRED_DATE="$((($(date +%s) + 11644473600) * 10000000))"
+ad_set_attribute "$AD_DN" "accountExpires" "${EXPIRED_DATE}" || fail_test 20
+ad_wait_for_synchronization; fail_bool 0 110
+
+section "Trying authentication second time: SAMBA-KERBEROS-LDAP_UCS_BIND"
+
+smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 1 110
+echo "${UDM_users_user_password}" | kinit --password-file=STDIN "${UDM_users_user_username}"; fail_bool 1 110
+ldapsearch -D "$UCS_DN" -w "${UDM_users_user_password}" >/dev/null && fail_test 110
+
+section "Revert user account changes: LDAP_SAMBA"
+
+EXPIRED_DATE=$((($(date +%s -d "+20 day") + 11644473600) * 10000000))
+ad_set_attribute "$AD_DN" "accountExpires" "${EXPIRED_DATE}" || fail_test 20
+ad_wait_for_synchronization; fail_bool 0 110
+
+section "Trying authentication three time: SAMBA-KERBEROS-LDAP_UCS_BIND"
+
+smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 0 110
+echo "${UDM_users_user_password}" | kinit --password-file=STDIN "${UDM_users_user_username}" ; fail_bool 0 110
+ldapsearch -D "$UCS_DN" -w "${UDM_users_user_password}" >/dev/null; fail_bool 0 100
+
+section "Expire user account: LDAP_UCS --> LDAP_SAMBA"
+
+TOMORROW="$(date -d '+1 day' '+%Y-%m-%d')"
+udm "users/user" modify --dn "$UCS_DN" --set userexpiry="${TOMORROW}" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+section "Trying authentication three time: SAMBA-KERBEROS-LDAP_UCS_BIND"
+
+smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 0 110
+echo "${UDM_users_user_password}" | kinit --password-file=STDIN "${UDM_users_user_username}" ; fail_bool 0 110
+ldapsearch -D "$UCS_DN" -w "${UDM_users_user_password}" >/dev/null; fail_bool 0 110
+
+exit "$RETVAL"
