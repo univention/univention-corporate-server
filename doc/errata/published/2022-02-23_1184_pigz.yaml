@@ -13,3 +13,5 @@ ignore:
 - maintained.unchanged
 - version.scope
 maintained: true
+erratum: 1184
+announced: 2022-02-23
