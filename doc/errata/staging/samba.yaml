@@ -6,7 +6,7 @@ src: samba
 fix: 2:4.10.18-1A~4.4.0.202202081719
 desc: |
  This update addresses the following issue:
- * Paged LDAP searches combined with Arbitratry Name Resolution (anr)
-   could cause a use after free error in the LDB module stack of the
-   Samba/AD sam.ldb. This has been fixed.
+ * Paged LDAP searches combined with Arbitrary Name Resolution (anr) could
+   cause a use after free error in the LDB module stack of the Samba/AD
+   `sam.ldb`.
 bug: [54430]
