@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.3-0
+src: pigz
+fix: 2.3.4-1
+desc: |
+ This update addresses the following issue:
+ * Move to maintained
+bug: [54485]
+ignore:
+- release+scope.consistent
+- maintained.unchanged
+- version.scope
+maintained: true
