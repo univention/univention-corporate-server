@@ -9,3 +9,5 @@ desc: |
  * An error while adding the French translation to an extended attribute
    during the package update has been fixed.
 bug: [54461]
+erratum: 230
+announced: 2022-02-23
