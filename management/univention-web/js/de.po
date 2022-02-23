@@ -313,7 +313,7 @@ msgid ""
 "univention.com/t/draft-login-call-lasted-too-long/19031\", target=\"_blank"
 "\">Help</a> to check for possible causes."
 msgstr ""
-"Die Login-Anforderung dauerte zu lange. Bitte besuchen Sie die <a href=\"https://help."
+"Der Login dauerte zu lange. Bitte besuchen Sie die <a href=\"https://help."
 "univention.com/t/draft-login-call-lasted-too-long/19031\" target=\"_blank"
 "\">Hilfe</a> bei der Suche nach möglichen Ursachen."
 

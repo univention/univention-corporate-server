@@ -1,3 +1,9 @@
+univention-web (4.0.2-48) unstable; urgency=medium
+
+  * Bug #54032: Minor translation adjustment
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 23 Feb 2022 10:16:39 +0100
+
 univention-web (4.0.2-47) unstable; urgency=medium
 
   * Bug #54032: In case login is not finished within 10 seconds, warning
