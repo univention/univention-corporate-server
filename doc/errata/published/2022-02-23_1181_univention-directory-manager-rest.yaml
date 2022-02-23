@@ -11,3 +11,5 @@ desc: |
    performance guide at
    https://docs.software-univention.de/performance-guide-4.4.html#udm-rest-api
 bug: [53669]
+erratum: 1181
+announced: 2022-02-23
