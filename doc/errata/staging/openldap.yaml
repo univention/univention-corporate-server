@@ -7,12 +7,11 @@ fix: 2.4.45+dfsg-1~bpo9+1A~4.4.0.202202111308
 desc: |
  This update addresses the following issues:
  * The behavior of the `translog` overlay was modified to skip grandchildren
-   of the `cn=temporary,cn=univention` container.
-   This new behavior can be controlled by the UCR variable
-   `ldap/translog-ignore-temporary`.
+   of the `cn=temporary,cn=univention` container. This new behavior can be
+   controlled by the UCR variable `ldap/translog-ignore-temporary`.
    This reduces the number of replication transactions during creation of
    users and groups significantly. As a result it increases the replication
-   performance and reduces the rate at which the cn=translog LMDB backend
+   performance and reduces the rate at which the `cn=translog` LMDB backend
    database gets filled.
    This variable is applicable only to the UCS Primary Directory Node.
    The package `univention-ldap-server` activates this variable by default.
