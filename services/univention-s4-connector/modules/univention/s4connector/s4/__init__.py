@@ -240,12 +240,12 @@ def encode_s4_resultlist(s4_resultlist):
 
 def unix2s4_time(l):
 	d = 116444736000000000  # difference between 1601 and 1970
-	return int(calendar.timegm(time.strptime(l, "%Y-%m-%d")) - 86400) * 10000000 + d  # AD stores end of day in accountExpires
+	return int(calendar.timegm(time.strptime(l, "%Y-%m-%d"))) * 10000000 + d  # AD stores end of day in accountExpires
 
 
 def s42unix_time(l):
 	d = 116444736000000000  # difference between 1601 and 1970
-	return time.strftime("%Y-%m-%d", time.gmtime((l - d) / 10000000 + 86400))  # shadowExpire treats day of expiry as exclusive
+	return time.strftime("%Y-%m-%d", time.gmtime((l - d) / 10000000))  # shadowExpire treats day of expiry as exclusive
 
 
 def samba2s4_time(l):
