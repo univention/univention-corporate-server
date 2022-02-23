@@ -11,3 +11,5 @@ desc: |
    sending the password recovery tokens. Customers need to provide their
    custom plugins for Python 3 until then.
 bug: [51327]
+erratum: 232
+announced: 2022-02-23
