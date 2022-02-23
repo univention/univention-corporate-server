@@ -11,3 +11,5 @@ desc: |
    connections, the option `OPT_X_TLS_NEWCTX` will be necessary for future UCS
    versions.
 bug: [54408]
+erratum: 235
+announced: 2022-02-23
