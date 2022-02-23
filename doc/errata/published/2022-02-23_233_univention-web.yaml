@@ -10,3 +10,5 @@ desc: |
    If this happens, a message will be displayed to the user containing a link
    to <https://help.univention.com/t/6413>.
 bug: [54032]
+erratum: 233
+announced: 2022-02-23
