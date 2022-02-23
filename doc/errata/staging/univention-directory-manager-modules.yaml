@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-directory-manager-modules
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * When user templates were members of groups an error was raised
+   which prevented opening or modifying that group. Templates as
+   group members are now ignored in UDM module groups/group.
+bug: [54402]

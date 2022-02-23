@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.11-31) unstable; urgency=medium
+
+  * Bug #54402: Handle univentionUserTemplates in udm module groups/group correctly
+    to avoid RuntimeError
+
+ -- Christian Castens <castens@univention.de>  Wed, 23 Feb 2022 12:14:53 +0100
+
 univention-directory-manager-modules (15.0.11-30) unstable; urgency=medium
 
   * Bug #54297: memberuid is missing after updating group users

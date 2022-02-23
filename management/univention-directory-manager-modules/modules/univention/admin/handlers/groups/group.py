@@ -350,6 +350,8 @@ class object(univention.admin.handlers.simpleLdap):
 							cache_uniqueMember.set(i, {'type': 'host'})
 						elif set(result) & {b'person', b'inetOrgPerson', b'organizationalPerson'}:
 							self['users'].append(i)
+						elif b'univentionUserTemplate' in result:
+							continue
 						else:
 							raise RuntimeError('%s not detected: %r' % (i, result))
 
