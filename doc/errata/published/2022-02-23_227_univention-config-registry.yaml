@@ -9,3 +9,5 @@ desc: |
   * Adapted the code due to a Linux kernel API change in v5.7-rc1~128, where
     `open(O_EXCL)` now returns `EEXIST` instead of `EISDIR`.
 bug: [54476]
+erratum: 227
+announced: 2022-02-23
