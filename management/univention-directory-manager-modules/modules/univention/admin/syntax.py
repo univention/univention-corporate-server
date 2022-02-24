@@ -305,14 +305,7 @@ class ISyntax(object):
 
 		ud.debug(ud.ADMIN, ud.INFO, 'Find choices for syntax %s' % (self.name,))
 		descr = {'type': widget_name}
-
-		opts = self.get_widget_choices_options(udm_property)
-		if opts is None:  # TODO: move into Isyntax.get_widget_choices_options?
-			empty_value = [{'id': '', 'label': ''}] if getattr(self, 'empty_value', False) else []
-			opts = {
-				'staticValues': empty_value + [{'id': _[0], 'label': _[1], } for _ in getattr(self, 'choices', [])],
-			}
-		descr.update(opts)
+		descr.update(self.get_widget_choices_options(udm_property))
 
 		if getattr(self, 'depends', None) is not None:
 			descr.setdefault('dynamicOptions', {})
@@ -363,7 +356,11 @@ class ISyntax(object):
 		return descr
 
 	def get_widget_choices_options(self, udm_property):
-		return None
+		# for select, MultiSelect and SambaLogonHours
+		empty_value = [{'id': '', 'label': ''}] if getattr(self, 'empty_value', False) else []
+		return {
+			'staticValues': empty_value + [{'id': _[0], 'label': _[1], } for _ in getattr(self, 'choices', [])],
+		}
 
 	@classmethod
 	def get_object_property_filter(cls, object_property, object_property_value, allow_asterisks=True):
@@ -477,12 +474,12 @@ class select(ISyntax):
 		return choices
 
 	def get_widget_choices_options(self, udm_property):
-		opts = None
 		if self.depends:
 			opts = {
 				'dynamicValues': 'javascript:umc/modules/udm/callbacks:setDynamicValues',
 			}
-		return opts
+			return opts
+		return super(select, self).get_widget_choices_options(udm_property)
 
 
 class combobox(select):
