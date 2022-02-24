@@ -1,3 +1,9 @@
+ucs-test (10.0.6-100) unstable; urgency=medium
+
+  * Bug #54067: Add samba debug
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 24 Feb 2022 17:13:49 +0100
+
 ucs-test (10.0.6-99) unstable; urgency=medium
 
   * Bug #51327: migrated self-service tests to Python 3
