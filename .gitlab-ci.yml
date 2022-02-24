@@ -37,7 +37,6 @@ generate-config:
       --yaml .gitlab-ci/base-deb.yml
       --out generated-config-deb.yml
       --skip src:python-notifier
-      --auto-select-packages
       --branches remotes/origin/5.0-1 remotes/origin/$CI_COMMIT_REF_NAME
       --search-depth 2
   artifacts:
