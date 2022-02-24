@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-management-console-module-diagnostic
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The script `univention-run-diagnostic-check` now displays links
+   in the description of failed tests.
+bug: [50756]

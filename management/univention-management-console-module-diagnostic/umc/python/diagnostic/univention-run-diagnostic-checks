@@ -101,6 +101,16 @@ class CLIClient(object):
 		self.client = client
 		self.args = args
 
+	def replace_links(self, description, links):
+		for link in links:
+			placeholder = '{%s}' % (link['name'],)
+			link_text = '%s (%s)' % (link['label'], link['href'])
+			if placeholder in description:
+				description = description.replace(placeholder, link_text)
+			else:
+				description += '\n%s' % link_text
+		return description
+
 	def run(self):
 		responses = self.run_diagnostic_checks(self.args.checks)
 
@@ -115,7 +125,7 @@ class CLIClient(object):
 				print('\n'.join([
 					(' Start %s ' % (plugin,)).center(len(title), '#'),
 					title,
-					result['description'].strip(),
+					self.replace_links(result['description'].strip(), result['links']),
 					(' End %s ' % (plugin,)).center(len(title), '#'),
 					'',
 				]))
@@ -141,6 +151,7 @@ class CLIClient(object):
 						'type': result['result']['type'],
 						'title': result['result']['title'],
 						'description': result['result']['description'],
+						'links': result['result']['links'],
 					}
 			time.sleep(0.25)
 		return response

@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.0-25) unstable; urgency=medium
+
+  * Bug #50756: display links in the description of failed tests in univention-run-diagnostic-check
+
+ -- Maximilian Janßen <janssen@univention.de>  Thu, 24 Feb 2022 15:00:18 +0100
+
 univention-management-console-module-diagnostic (6.0.0-24) unstable; urgency=medium
 
   * Bug #49354: fix log level check for ldap/debug/level in 30_disk_usage.py
