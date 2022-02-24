@@ -72,7 +72,7 @@ def capture_mails(timeout=5):
 
 		def process_message(self, peer, mailfrom, rcpttos, data, **kwargs):
 			print(('receiving email with length=', len(data)))
-			self.data.append(data)
+			self.data.append(data.decode('utf-8'))
 
 	class MailServer(object):
 
