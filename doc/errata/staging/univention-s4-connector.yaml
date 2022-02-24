@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: univention-s4-connector
+fix: 13.0.2-90A~4.4.0.202202241039
+desc: |
+ This update addresses the following issue:
+ * The user expiry was off by one day between UCS and Samba. This discrepancy
+   has been removed.
+bug: [54433]
