@@ -44,7 +44,6 @@ from six.moves.urllib_parse import urljoin
 import listener
 import univention.debug as ud
 
-name = 'serverinstallerpxe'
 description = 'PXE configuration for the Server installer'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer)(objectClass=univentionClient))'
 attributes = [

@@ -54,7 +54,6 @@ from six.moves.urllib_parse import quote
 import listener
 import univention.debug as ud  # pylint: disable-msg=E0611
 
-name = 'bind'
 description = 'Update BIND zones'
 filter = '(&(objectClass=dNSZone)(relativeDomainName=@)(zoneName=*))'
 

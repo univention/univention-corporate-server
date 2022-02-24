@@ -47,7 +47,6 @@ import univention.debug as ud
 server_role = listener.configRegistry['server/role']
 
 
-name = 'keytab-member'
 description = 'Kerberos 5 keytab maintenance for Managed Nodes'
 filter = (
 	'(&'

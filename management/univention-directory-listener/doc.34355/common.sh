@@ -79,7 +79,6 @@ from typing import Dict, List
 
 import listener
 
-name = 'printusers'
 description = 'print all changes into a file'
 filter = """(objectClass=*)""".translate(None, '\t\n\r')
 modrdn = "1"

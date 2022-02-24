@@ -47,11 +47,8 @@ from six.moves import cPickle as pickle
 import listener
 import univention.debug as ud
 
-name = 's4-connector'
 description = 'S4 Connector replication'
 filter = '(objectClass=*)'
-
-# use the modrdn listener extension
 modrdn = "1"
 
 # While initialize copy all group objects into a list:

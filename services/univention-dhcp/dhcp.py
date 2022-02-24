@@ -40,7 +40,6 @@ from typing import Dict, List
 import univention.debug as ud
 from listener import configRegistry as ucr, run
 
-name = 'dhcp'
 description = 'Restart the dhcp service if a dhcp subnet or a policy was changed'
 filter = (
 	'(|'

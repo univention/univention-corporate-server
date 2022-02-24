@@ -41,7 +41,6 @@ from typing import Dict, List
 import listener
 import univention.config_registry
 
-name = 'selfservice'
 description = 'Set umc/self-service/passwordreset/email/webserver_address.'
 filter = '(univentionService=univention-self-service)'
 

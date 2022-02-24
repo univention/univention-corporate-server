@@ -39,7 +39,6 @@ import listener
 import univention.debug as ud
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
 
-name = 'univention-saml-idp-config'
 description = 'Replication of identity provider settings'
 filter = '(objectClass=univentionSAMLIdpConfig)'
 

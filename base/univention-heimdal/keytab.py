@@ -55,7 +55,6 @@ ldap_master = listener.configRegistry['ldap/master']
 samba4_role = listener.configRegistry.get('samba4/role', '')
 
 
-name = 'keytab'
 description = 'Kerberos 5 keytab maintainance'
 filter = (
 	'(&'

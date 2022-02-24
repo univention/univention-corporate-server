@@ -43,7 +43,6 @@ import listener
 import univention.config_registry
 import univention.debug
 
-name = 'hosteddomains'
 description = 'update mail/hosteddomains'
 filter = '(objectClass=univentionMailDomainname)'
 

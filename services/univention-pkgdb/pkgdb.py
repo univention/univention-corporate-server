@@ -42,7 +42,6 @@ from typing import Dict, List
 import univention.debug as ud
 from listener import SetUID, configRegistry
 
-name = 'pkgdb'
 description = 'Package-Database'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionClient)(objectClass=univentionMemberServer))'
 attributes = ['uid']

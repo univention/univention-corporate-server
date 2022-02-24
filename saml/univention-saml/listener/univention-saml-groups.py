@@ -44,10 +44,10 @@ from typing import Dict, List
 
 import listener
 
-name = 'univention-saml-groups'
 description = 'Write SAML enabled groups to json file, to be read by the services metadata.php'
 filter = '(objectClass=univentionSAMLEnabledGroup)'
 attributes = ['enabledServiceProviderIdentifierGroup']
+
 path = '/etc/simplesamlphp/serviceprovider_enabled_groups.json'
 tmp_path = '/etc/simplesamlphp/serviceprovider_enabled_groups.json.tmp'
 uid = pwd.getpwnam("samlcgi").pw_uid

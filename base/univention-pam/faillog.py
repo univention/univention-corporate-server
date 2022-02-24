@@ -42,7 +42,6 @@ import listener
 import univention.debug as ud
 from univention.admin.handlers.users.user import unmapLocked
 
-name = 'faillog'
 description = 'The listener module resets the faillog count'
 filter = '(objectClass=shadowAccount)'
 

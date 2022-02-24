@@ -42,7 +42,6 @@ from typing import Dict, List
 import listener
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
 
-name = 'univention-saml-servers'
 description = 'Manage ucs/server/saml-idp-server/* variables'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))'
 attributes = ['univentionService']

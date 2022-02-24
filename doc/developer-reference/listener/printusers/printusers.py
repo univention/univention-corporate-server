@@ -12,7 +12,6 @@ from typing import Dict, List
 import univention.debug as ud
 from listener import SetUID
 
-name = 'printusers'
 description = 'print all names/users/uidNumbers into a file'
 filter = ''.join("""\
 (&

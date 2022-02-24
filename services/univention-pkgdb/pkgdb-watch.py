@@ -43,10 +43,10 @@ import univention.pkgdb
 import univention.uldap
 from listener import SetUID
 
-name = 'pkgdb-watch'
 description = 'watches the availability of the software monitor service'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))'
 attributes = ['univentionService']
+
 ldap_info: Dict[str, Any] = {}
 
 

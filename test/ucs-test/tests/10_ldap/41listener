@@ -30,7 +30,6 @@ from typing import Dict, List
 import listener
 
 description = 'set up a new handler (with an new uid entry in tmp-file) for listener'
-name = 'ucstest'
 filter = '(objectClass=posixAccount)'
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
@@ -41,7 +40,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 		listener.unsetuid()
 __HERE__
 undo systemctl restart univention-directory-listener # Reversed order
-undo rm -f "$listener"
+undo rm -f "$listener" "/var/lib/univention-directory-listener/handlers/$ucstest"
 systemctl restart univention-directory-listener
 
 # create domain part in configured mail domains list

@@ -43,15 +43,10 @@ from typing import Dict, List, Optional  # noqa: F401
 from univention.listener.handler import ListenerModuleHandler
 
 
-# Bug #48886: udl-ctrl parses this name with sed
-name = 'univention-radius'
-
-
 class AppListener(ListenerModuleHandler):
 	run_update = False
 
 	class Configuration(ListenerModuleHandler.Configuration):
-		name = 'univention-radius'
 		description = 'Listener module for univention-radius'
 		ldap_filter = '(objectClass=univentionHost)'
 

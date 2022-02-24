@@ -47,7 +47,6 @@ import listener
 import univention.debug as ud
 
 
-name = 'univention-saml-simplesamlphp-configuration'
 description = 'Manage simpleSAMLphp service providers'
 filter = '(objectClass=univentionSAMLServiceProvider)'
 

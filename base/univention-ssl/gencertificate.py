@@ -46,7 +46,6 @@ from typing import Dict, List
 import univention.debug as ud
 from listener import configRegistry, setuid, unsetuid
 
-name = 'gencertificate'
 description = 'Generate new Certificates'
 filter = '(|%s)' % ''.join('(objectClass=%s)' % oc for oc in set(configRegistry['ssl/host/objectclass'].split(',')))
 modrdn = "1"

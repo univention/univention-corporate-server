@@ -48,7 +48,6 @@ import univention.debug as ud
 import univention.lib.policy_result
 import univention.uldap
 
-name = 'quota'
 description = 'Dump quota settings into a cache directory'
 filter = '(|(objectClass=univentionPolicyShareUserQuota)(objectClass=organizationalRole)(objectClass=organizationalUnit)(objectClass=univentionBase)(objectClass=univentionShare))'
 

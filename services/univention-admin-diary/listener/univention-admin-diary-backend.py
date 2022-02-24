@@ -41,10 +41,10 @@ from typing import Dict, List
 import listener
 from univention.config_registry import ConfigRegistry, handler_set
 
-name = 'univention-admin-diary-backend'
 description = 'Manage admin/diary/backend variable'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))'
 attributes = ['univentionService']
+
 service_name = b"Admin Diary Backend"
 
 

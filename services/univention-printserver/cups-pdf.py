@@ -41,10 +41,10 @@ import listener
 import univention.config_registry
 import univention.debug as ud
 
-name = 'cups-pdf'
 description = 'Manage Samba share for CUPS pdf printer'
 filter = '(objectClass=univentionShareSamba)'
 attributes = ['cn', 'univentionSharePath']
+
 sharename = "pdfPrinterShare"
 
 # set two ucr variables (template cups-pdf) if the share for

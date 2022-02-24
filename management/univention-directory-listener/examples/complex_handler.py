@@ -42,7 +42,6 @@ class ComplexHandler(ListenerModuleHandler):
 	# For complex setups make the :py:class:`Configuration` a subclass of
 	# :py:class:`ListenerModuleConfiguration` and overwrite its methods.
 	class Configuration(ListenerModuleConfiguration):
-		name = 'my_listener_module'
 		description = 'a description'
 		ldap_filter = '(objectClass=inetOrgPerson)'
 

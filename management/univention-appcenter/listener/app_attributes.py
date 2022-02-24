@@ -49,8 +49,6 @@ from univention.listener.handler import ListenerModuleHandler
 from univention.appcenter.app_cache import AllApps
 from univention.appcenter.udm import search_objects
 
-name = 'app_attributes'
-
 FNAME = '/var/lib/univention-appcenter/attributes/mapping.json'
 
 
@@ -208,6 +206,5 @@ class AppAttributes(ListenerModuleHandler):
 			self._write_json_without_some_debug_output()
 
 	class Configuration(ListenerModuleHandler.Configuration):
-		name = name
 		ldap_filter = '(|(univentionObjectType=settings/extended_attribute)(univentionObjectType=settings/extended_option)(univentionObjectType=appcenter/app))'
 		description = 'Writes a JSON file with information about installed Apps for the UMC UDM module to load'

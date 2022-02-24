@@ -59,7 +59,6 @@ domainname = listener.configRegistry['domainname']
 ip = str(interfaces.get_default_ip_address().ip)
 ldap_base = listener.configRegistry['ldap/base']
 
-name = 'cups-printers'
 description = 'Manage CUPS printer configuration'
 filter = '(|(objectClass=univentionPrinter)(objectClass=univentionPrinterGroup))'
 attributes = ['univentionPrinterSpoolHost', 'univentionPrinterModel', 'univentionPrinterURI', 'univentionPrinterLocation', 'description', 'univentionPrinterSambaName', 'univentionPrinterGroupMember', 'univentionPrinterACLUsers', 'univentionPrinterACLGroups', 'univentionPrinterACLtype']

@@ -62,7 +62,6 @@ from six.moves.email_mime_text import MIMEText
 import listener
 import univention.debug as ud
 
-name = 'replication'
 description = 'LDAP Replica Node replication'
 filter = '(objectClass=*)'  # default filter - may be overwritten later
 modrdn = '1'

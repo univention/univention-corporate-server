@@ -41,7 +41,6 @@ import univention.config_registry
 import univention.debug as ud
 import univention.uldap
 
-name = 'fetchmailrc'
 description = 'write user-configuration to fetchmailrc'
 filter = '(objectClass=univentionFetchmail)'
 

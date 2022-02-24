@@ -8,7 +8,6 @@ import ldap
 import univention.debug as ud
 from listener import SetUID
 
-name = "refcheck"
 description = "Check referential integrity of uniqueMember relations"
 filter = "(uniqueMember=*)"
 attribute = ["uniqueMember"]
