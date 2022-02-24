@@ -2,7 +2,7 @@ Source: univention-python
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Standards-Version: 3.9.8
+Standards-Version: 3.9.9
 Build-Depends:
  debhelper,
  dh-python,
