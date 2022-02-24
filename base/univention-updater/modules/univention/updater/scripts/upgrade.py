@@ -326,7 +326,7 @@ def parse_args(argv: Optional[List[str]] = None) -> Namespace:
     parser = ArgumentParser(description=__doc__)
     parser.add_argument(
         "--updateto",
-        help="update up to specified version")
+        help="update up to specified version. Expected format is X.Y-Z")
     parser.add_argument(
         "--check",
         action="store_true",
@@ -369,6 +369,12 @@ def parse_args(argv: Optional[List[str]] = None) -> Namespace:
 
     parser.set_defaults(app_updates=True)
     options = parser.parse_args()
+    if options.updateto:
+        try:
+            UCS_Version(options.updateto)
+        except ValueError:
+            dprint(silent, "Unexpected format of updateto: %s .Expected format: X.Y-Z" % options.updateto)
+            sys.exit(1)
 
     if options.app_updates:
         if options.pwdfile and not options.username:
