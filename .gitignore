@@ -22,3 +22,4 @@ doc/*/*.xml.err.d
 doc/*/*.xml.err
 doc/*/*codeclimate.json
 generated-config-*.yml
+.idea/
