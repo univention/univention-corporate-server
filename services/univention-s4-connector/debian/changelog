@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-90) unstable; urgency=medium
+
+  * Bug #54433: Fix accountExpires synchronisation between LDAP - S4
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 24 Feb 2022 09:50:57 +0100
+
 univention-s4-connector (13.0.2-89) unstable; urgency=medium
 
   * Bug #54019: Added timestamp to logger output of server password change
