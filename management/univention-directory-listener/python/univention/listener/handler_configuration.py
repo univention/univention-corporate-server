@@ -63,7 +63,7 @@ class ListenerModuleConfiguration(object):
 	listener module through :py:meth:`get_listener_module_instance()`.
 	"""
 
-	name = ''                     # (*) name of the listener module
+	name = ''                     # (**) name of the listener module
 	description = ''              # (*) description of the listener module
 	ldap_filter = ''              # (*) LDAP filter, if matched will trigger the listener module
 	listener_module_class = None  # type: Type[ListenerModuleHandler] # (**) class that implements the module
@@ -71,7 +71,7 @@ class ListenerModuleConfiguration(object):
 	# (*) required
 	# (**) will be set automatically by the handlers metaclass
 
-	_mandatory_attributes = ('name', 'description', 'ldap_filter', 'listener_module_class')  # type: Tuple[str, ...]
+	_mandatory_attributes = ('description', 'ldap_filter', 'listener_module_class')  # type: Tuple[str, ...]
 
 	def __init__(self, *args, **kwargs):
 		# type: (*Any, **Any) -> None

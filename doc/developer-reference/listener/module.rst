@@ -8,7 +8,6 @@ variables and functions must be declared at the module level.
 
 .. code:: python
 
-   name : str = "module_name"
    description : str = "Module description"
    filter : str = "(objectClass=*)"
    attributes : List[str] = ["objectClass"]

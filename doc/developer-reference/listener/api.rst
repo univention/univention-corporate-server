@@ -28,7 +28,7 @@ overwritten if values should be computed once on module load.
 
    :rtype: str
 
-   (required)
+   (optional)
 
    The internal name of the handler, see :py:data:`name <your_module.name>`.
 

@@ -218,10 +218,13 @@ static int handler_import(char *filename) {
 		goto error;
 	}
 
-	handler->name = module_get_string(handler->module, "name"); /* required */
-	if (handler->name == NULL) {
-		error_msg = "module_get_string(\"name\")";
-		goto error;
+	handler->name = module_get_string(handler->module, "name"); /* optional */
+	if (handler->name == NULL || !handler->name) {
+		free(handler->name);
+		char *dot = rindex(filename, '.');
+		char *slash = rindex(filename, '/');
+		char *basename = slash ? slash + 1 : filename;
+		handler->name = strndup(basename, dot - slash - 1);
 	}
 
 	if (PyObject_HasAttrString(handler->module, "modrdn")) { /* optional */

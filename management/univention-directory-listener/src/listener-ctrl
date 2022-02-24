@@ -106,6 +106,7 @@ modules () {
 		[ -f "$module_file" ] || continue
 		rv=
 		module_name=$(sed -rne "s/^name\s*=\s*['\"]([^'\"]+)['\"]\s*(#.*)?$/\1/p;T;q" "$module_file") || rv="$FAIL"
+		[ -z "$module_name" ] && module_name=$(basename "$module_file" '.py')
 		module_state=$(cat "$STATE_DIR/$module_name" 2>/dev/null) &&
 			[ "$module_state" -eq 3 ] ||
 			rv="$FAIL"

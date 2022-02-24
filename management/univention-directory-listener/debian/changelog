@@ -1,6 +1,7 @@
 univention-directory-listener (14.0.7-1) unstable; urgency=medium
 
   * Bug #55554: Fix UCR variable typing
+  * Bug #53824: Make attribute `name` optional
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 02 Feb 2023 11:10:16 +0100
 

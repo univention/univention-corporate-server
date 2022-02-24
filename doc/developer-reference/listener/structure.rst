@@ -19,10 +19,10 @@ required by the |UCSUDL| to handle each module.
 .. py:data:: name
    :type: str
 
-   (required)
+   (optional)
 
-   This name is used to uniquely identify the module. This should match
-   with the filename containing this listener module without the
+   This name is used to uniquely identify the module. It defaults to
+   the filename containing this listener module without the
    ``.py`` suffix. The name is used to keep track of
    the module state in :file:`/var/lib/univention-directory-listener/handlers/`.
 
