@@ -4,7 +4,11 @@
 
 """Unit test for univention.updater.scripts.upgrade"""
 
+import sys
 import pytest
+if sys.version_info < (3,):
+    pytest.skip("unsupported python version, skipping test.", allow_module_level=True)
+
 from univention.updater.scripts.upgrade import parse_args
 
 
