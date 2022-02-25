@@ -87,7 +87,7 @@ class TestPasswordConfigDefaults(object):
 		assert password_config_default['min_length'] == 24
 
 	def test_special_characters(self, password_config_default):
-		assert password_config_default['forbidden'] == ''
+		assert password_config_default['forbidden'] == '0Ol1I'
 
 
 class TestScopedPasswordConfigDefaults(object):
@@ -196,7 +196,7 @@ class TestScopedPasswordConfigCustomizing(object):
 		with monkeypatch.context() as mp:
 			mp.setattr("univention.config_registry.ucr", {'password/%s/quality/forbidden/chars' % self.scope: ''}, raising=True)
 			cfg = password_config(self.scope)
-			assert cfg['forbidden'] == ''
+			assert cfg['forbidden'] == '0Ol1I'
 
 
 class TestPasswordConfigDigitCount(object):
@@ -211,10 +211,6 @@ class TestPasswordConfigDigitCount(object):
 			cfg = {'digits': -1, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6}
 			generate_password(**cfg)
 
-	def test_empty_string(self):
-		with pytest.raises(ValueError, match="invalid literal for int()*"):
-			cfg = {'digits': '', 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6}
-			generate_password(**cfg)
 
 	def test_zero(self):
 		digit_count = 0
@@ -230,13 +226,6 @@ class TestPasswordConfigDigitCount(object):
 
 		assert (password_stats(cfg, pwd)['digits'] >= digit_count)
 
-	def test_valid_string(self):
-		digit_count = "3"
-		cfg = {'digits': digit_count, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6}
-		pwd = generate_password(**cfg)
-
-		assert (password_stats(cfg, pwd)['digits'] >= int(digit_count))
-
 
 class TestPasswordConfigLowerCaseCount(object):
 
@@ -248,11 +237,6 @@ class TestPasswordConfigLowerCaseCount(object):
 	def test_negative(self):
 		with pytest.raises(ValueError, match="Number of digits, lower, upper or other characters can not be negative"):
 			cfg = {'digits': 1, 'lower': -1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6}
-			generate_password(**cfg)
-
-	def test_empty_string(self):
-		with pytest.raises(ValueError, match="invalid literal for int()*"):
-			cfg = {'digits': 1, 'lower': '', 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6}
 			generate_password(**cfg)
 
 	def test_zero(self):
@@ -269,13 +253,6 @@ class TestPasswordConfigLowerCaseCount(object):
 
 		assert (password_stats(cfg, pwd)['lower'] >= lowercase_count)
 
-	def test_valid_string(self):
-		lowercase_count = "3"
-		cfg = {'digits': 1, 'lower': lowercase_count, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6}
-		pwd = generate_password(**cfg)
-
-		assert (password_stats(cfg, pwd)['lower'] >= int(lowercase_count))
-
 
 class TestPasswordConfigSpecialCharacterCount(object):
 
@@ -287,11 +264,6 @@ class TestPasswordConfigSpecialCharacterCount(object):
 	def test_negative(self):
 		with pytest.raises(ValueError, match="Number of digits, lower, upper or other characters can not be negative"):
 			cfg = {'digits': 1, 'lower': 1, 'other': -1, 'upper': 1, 'forbidden': None, 'min_length': 6}
-			generate_password(**cfg)
-
-	def test_empty_string(self):
-		with pytest.raises(ValueError, match="invalid literal for int()*"):
-			cfg = {'digits': 1, 'lower': 1, 'other': '', 'upper': 1, 'forbidden': None, 'min_length': 6}
 			generate_password(**cfg)
 
 	def test_empty_pool(self):
@@ -313,13 +285,6 @@ class TestPasswordConfigSpecialCharacterCount(object):
 
 		assert (password_stats(cfg, pwd)['other'] >= special_count)
 
-	def test_valid_string(self):
-		special_count = "3"
-		cfg = {'digits': 1, 'lower': 1, 'other': special_count, 'upper': 1, 'forbidden': None, 'min_length': 6}
-		pwd = generate_password(**cfg)
-
-		assert (password_stats(cfg, pwd)['other'] >= int(special_count))
-
 
 class TestPasswordConfigUpperCaseCount(object):
 
@@ -331,11 +296,6 @@ class TestPasswordConfigUpperCaseCount(object):
 	def test_negative(self):
 		with pytest.raises(ValueError, match="Number of digits, lower, upper or other characters can not be negative"):
 			cfg = {'digits': 1, 'lower': 1, 'other': 1, 'upper': -1, 'forbidden': None, 'min_length': 6}
-			generate_password(**cfg)
-
-	def test_empty_string(self):
-		with pytest.raises(ValueError, match="invalid literal for int()*"):
-			cfg = {'digits': 1, 'lower': 1, 'other': 1, 'upper': '', 'forbidden': None, 'min_length': 6}
 			generate_password(**cfg)
 
 	def test_zero(self):
@@ -351,13 +311,6 @@ class TestPasswordConfigUpperCaseCount(object):
 		pwd = generate_password(**cfg)
 
 		assert (password_stats(cfg, pwd)['upper'] >= uppercase_count)
-
-	def test_valid_string(self):
-		uppercase_count = "3"
-		cfg = {'digits': 1, 'lower': 1, 'other': 1, 'upper': uppercase_count, 'forbidden': None, 'min_length': 6}
-		pwd = generate_password(**cfg)
-
-		assert (password_stats(cfg, pwd)['upper'] >= int(uppercase_count))
 
 
 class TestPasswordConfigExhaustedAvailableCharacterPool(object):
@@ -401,7 +354,6 @@ class TestRandomPasswordGenerator(object):
 		pwd = generate_password(**cfg)
 
 		assert match_password_complexity(cfg, pwd)
-		assert password_stats(cfg, pwd)['digits'] == len(pwd)
 
 	def test_all_digits_exclude_zero_and_one(self):
 		cfg = {'digits': 3, 'lower': 0, 'other': 0, 'upper': 0, 'forbidden': '01', 'min_length': 12}
@@ -418,7 +370,6 @@ class TestRandomPasswordGenerator(object):
 		pwd = generate_password(**cfg)
 
 		assert match_password_complexity(cfg, pwd)
-		assert password_stats(cfg, pwd)['lower'] == len(pwd)
 
 	def test_all_lowercase_exclude_a_and_b(self):
 		cfg = {'digits': 0, 'lower': 3, 'other': 0, 'upper': 0, 'forbidden': 'ab', 'min_length': 12}
@@ -452,7 +403,6 @@ class TestRandomPasswordGenerator(object):
 		pwd = generate_password(**cfg)
 
 		assert match_password_complexity(cfg, pwd)
-		assert password_stats(cfg, pwd)['upper'] == len(pwd)
 
 	def test_all_uppercase_exclude_cap_a_and_cap_b(self):
 		cfg = {'digits': 0, 'lower': 0, 'other': 0, 'upper': 3, 'forbidden': 'AB', 'min_length': 12}

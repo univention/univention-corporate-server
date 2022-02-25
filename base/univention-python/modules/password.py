@@ -207,7 +207,7 @@ def password_config(scope=None):
 		'lower': int(ucr.ucr.get('password/quality/credit/lower', 6)),
 		'other': int(ucr.ucr.get('password/quality/credit/other', 0)),
 		'upper': int(ucr.ucr.get('password/quality/credit/upper', 6)),
-		'forbidden': ucr.ucr.get('password/quality/forbidden/chars', ''),
+		'forbidden': ucr.ucr.get('password/quality/forbidden/chars', '0Ol1I'),
 		'min_length': int(ucr.ucr.get('password/quality/length/min', 24)),
 	}
 
@@ -217,7 +217,7 @@ def password_config(scope=None):
 			'lower': int(ucr.ucr.get('password/%s/quality/credit/lower' % scope) or default_cfg.get('lower')),
 			'other': int(ucr.ucr.get('password/%s/quality/credit/other' % scope) or default_cfg.get('other')),
 			'upper': int(ucr.ucr.get('password/%s/quality/credit/upper' % scope) or default_cfg.get('upper')),
-			'forbidden': ucr.ucr.get('password/%s/quality/forbidden/chars' % scope, default_cfg.get('forbidden')) or '0Ol1I',
+			'forbidden': ucr.ucr.get('password/%s/quality/forbidden/chars' % scope) or default_cfg.get('forbidden'),
 			'min_length': int(ucr.ucr.get('password/%s/quality/length/min' % scope) or default_cfg.get('min_length')),
 		}
 	else:
@@ -254,18 +254,13 @@ def generate_password(digits=6, lower=6, other=0, upper=6, forbidden='', min_len
 	:raises TypeError: In case invalid UCR configuration value type.
 	:raises ValueError: In case any password quality precondition fails.
 	"""
-	digit_count = int(digits)
-	lowercase_count = int(lower)
-	special_count = int(other)
-	uppercase_count = int(upper)
-	min_length = int(min_length)
 	special_characters = string.punctuation
 	forbidden_chars = forbidden or ''
 	exclude_characters = ''.join(set((forbidden_chars + string.whitespace) if forbidden_chars else string.whitespace))
 
-	if 0 > digit_count or 0 > lowercase_count or 0 > special_count or 0 > uppercase_count:
+	if 0 > digits or 0 > lower or 0 > other or 0 > upper:
 		raise ValueError('Number of digits, lower, upper or other characters can not be negative')
-	elif 0 >= digit_count + lowercase_count + special_count + uppercase_count:
+	elif 0 >= digits + lower + other + upper:
 		raise ValueError('At least one from the: digits, lower, upper or other characters must be positive number')
 
 	available_chars = set(string.printable) - set(string.whitespace) - set(exclude_characters)
@@ -274,53 +269,39 @@ def generate_password(digits=6, lower=6, other=0, upper=6, forbidden='', min_len
 
 	rnd = SystemRandom()
 
-	if exclude_characters:
-		digits = ''.join(set(string.digits) - set(exclude_characters))
-		ascii_lowercase = ''.join(set(string.ascii_lowercase) - set(exclude_characters))
-		ascii_uppercase = ''.join(set(string.ascii_uppercase) - set(exclude_characters))
-		special_characters = ''.join(set(special_characters) - set(exclude_characters)) if special_characters else ''
-	else:
-		digits = string.digits
-		ascii_lowercase = string.ascii_lowercase
-		ascii_uppercase = string.ascii_uppercase
-		special_characters = special_characters or ''
-
-	pools = []  # list of tuples in form: (characters_type_pool, characters_type_count)
-	if 0 < digit_count:
-		if digits:
-			pools.append((digits, digit_count))
-		else:
-			raise ValueError('There are %s digits requested but digits pool is empty' % (digit_count,))
-
-	if 0 < lowercase_count:
-		if ascii_lowercase:
-			pools.append((ascii_lowercase, lowercase_count))
-		else:
-			raise ValueError('There are %s lowercase characters requested but lowercase pool is empty' % (lowercase_count,))
-
-	if 0 < uppercase_count:
-		if ascii_uppercase:
-			pools.append((ascii_uppercase, uppercase_count))
-		else:
-			raise ValueError('There are %s uppercase characters requested but uppercase pool is empty' % (uppercase_count,))
-
-	if 0 < special_count:
-		if special_characters:
-			pools.append((special_characters, special_count))
-		else:
-			raise ValueError('There are %s special characters requested but special characters pool is empty' % (special_count,))
+	digit_characters = ''.join(set(string.digits) - set(exclude_characters)) if digits > 0 else ''
+	ascii_lowercase = ''.join(set(string.ascii_lowercase) - set(exclude_characters)) if lower > 0 else ''
+	ascii_uppercase = ''.join(set(string.ascii_uppercase) - set(exclude_characters)) if upper > 0 else ''
+	special_characters = ''.join(set(special_characters) - set(exclude_characters)) if other > 0 else ''
 
 	random_list = []
-	while True:
-		if len(random_list) >= min_length:
-			break
+	if digits > 0:
+		if digit_characters:
+			random_list.extend(rnd.choices(digit_characters, k=digits))
+		else:
+			raise ValueError('There are %s digits requested but digits pool is empty' % (digits,))
 
-		for pool in pools:
-			for c in range(pool[1]):
-				random_list.append(rnd.choice(pool[0]))
+	if lower > 0:
+		if ascii_lowercase:
+			random_list.extend(rnd.choices(ascii_lowercase, k=lower))
+		else:
+			raise ValueError('There are %s lowercase characters requested but lowercase pool is empty' % (lower,))
 
-				if len(random_list) >= min_length:
-					break
+	if upper > 0:
+		if ascii_uppercase:
+			random_list.extend(rnd.choices(ascii_uppercase, k=upper))
+		else:
+			raise ValueError('There are %s uppercase characters requested but uppercase pool is empty' % (upper,))
+
+	if other > 0:
+		if special_characters:
+			random_list.extend(rnd.choices(special_characters, k=other))
+		else:
+			raise ValueError('There are %s special characters requested but special characters pool is empty' % (other,))
+
+	if min_length > len(random_list):
+		available_char_pool = ''.join(set(digit_characters + ascii_lowercase + ascii_uppercase + special_characters))
+		random_list.extend(rnd.choices(available_char_pool, k=min_length-len(random_list)))
 
 	rnd.shuffle(random_list)
 	res = ''.join(random_list)
