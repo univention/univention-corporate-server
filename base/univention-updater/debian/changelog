@@ -1,3 +1,9 @@
+univention-updater (15.0.3-77) unstable; urgency=medium
+
+  * Bug #49061: univention-upgrade: validating updateto param in parsing method now, sysexit(1) on wrong param 
+
+ -- Siavash Sefid Rodi <sefid-rodi.extern@univention.de>  Fri, 25 Feb 2022 11:02:28 +0100
+
 univention-updater (15.0.3-76) unstable; urgency=medium
 
   * Bug #48891: apt-get --force-yes option is deprecated
