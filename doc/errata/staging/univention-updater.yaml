@@ -9,4 +9,5 @@ desc: |
  * apt-get --force-yes option is deprecated and replaced with:
    --allow-unauthenticated --allow-downgrades --allow-remove-essential
    --allow-change-held-packages
-bug: [48891]
+ * univention-upgrade: validating updateto param in parsing method now, sysexit(1) on wrong param
+bug: [48891, 49061]
