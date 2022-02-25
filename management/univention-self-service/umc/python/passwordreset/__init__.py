@@ -285,17 +285,19 @@ class Instance(Base):
 
 		:return: list of dicts with users ssp
 		"""
-		if ucr.is_false('umc/self-service/service-specific-passwords/backend/enabled') or \
-			not ucr.is_true('radius/use-service-specific-password'):  # TODO - once we have more than one type, this should change
+		if ucr.is_false('umc/self-service/service-specific-passwords/backend/enabled'):
 			msg = _('Service specific passwords were disabled via the Univention Configuration Registry.')
 			MODULE.error('get_service_specific_passwords(): {}'.format(msg))
 			raise UMC_Error(msg)
 		dn, username = self.auth(username, password)
 		ret = []
-		if ucr.is_true('radius/use-service-specific-password'):
-			ldap_connection, ldap_position = getMachineConnection()
-			radius_passwords = ldap_connection.get(dn, attr=['univentionRadiusPassword']).get('univentionRadiusPassword', [])
-			ret.append({'type': 'radius', 'set': len(radius_passwords)})
+		# we only have radius as a service specific password: setting
+		# the backend to true means that the admin wants to allow
+		# radius password. at some point we would need to know which
+		# services should actually be managed
+		ldap_connection, ldap_position = getMachineConnection()
+		radius_passwords = ldap_connection.get(dn, attr=['univentionRadiusPassword']).get('univentionRadiusPassword', [])
+		ret.append({'type': 'radius', 'set': len(radius_passwords)})
 		return ret
 
 	@forward_to_master
@@ -316,7 +318,7 @@ class Instance(Base):
 			raise UMC_Error(msg)
 		dn, username = self.auth(username, password)
 		MODULE.error('set_service_specific_passwords(): Setting {} password for {}'.format(password_type, username))
-		if password_type == 'radius' and ucr.is_true('radius/use-service-specific-password'):
+		if password_type == 'radius':
 			udm = UDMRest.http('https://%s.%s/univention/udm/' % (ucr.get('hostname'), ucr.get('domainname')), 'cn=admin', open('/etc/ldap.secret').read())
 			user_obj = udm.get('users/user').get(dn)
 			service_specific_password = user_obj.generate_service_specific_password('radius')
