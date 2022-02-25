@@ -167,7 +167,7 @@ class UCS_Version(object):
 		"""
 		match = UCS_Version._regexp.match(version)
 		if not match:
-			raise ValueError('string does not match UCS version pattern')
+			raise ValueError('string %s does not match UCS version pattern' % version)
 		self.mmp = map(int, match.groups())  # type: ignore
 
 	def __getitem__(self, k):
