@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
 # -*- coding: utf-8 -*-
 ## desc: Test univention.password.password_config and univention.password.generate_password
-## exposure: dangerous
+## exposure: safe
 ## roles: [domaincontroller_master]
 ## packages: [python3-univention]
 
@@ -30,7 +30,7 @@ def password_stats(cfg, password):
 	Calculate password stats based on given configuration
 	"""
 	special_characters = string.punctuation
-	forbidden_characters = cfg.get('forbidden', '')
+	forbidden_characters = cfg.get('forbidden') or ''
 	digits = 0
 	lower = 0
 	other = 0
@@ -46,7 +46,7 @@ def password_stats(cfg, password):
 			upper += 1
 		elif c in special_characters:
 			other += 1
-		elif c in forbidden_characters:
+		if c in forbidden_characters:
 			forbidden += 1
 
 	return {'digits': digits, 'lower': lower, 'other': other, 'upper': upper, 'forbidden': forbidden}
@@ -56,17 +56,14 @@ def match_password_complexity(cfg, password):
 	"""
 	Test if given password matches complexity criteria.
 	"""
-	if not password or set(password) <= set(string.whitespace):
-		return False
-
 	stats = password_stats(cfg, password)
-	digits = stats['digits']
-	lower = stats['lower']
-	other = stats['other']
-	upper = stats['upper']
-	forbidden = stats['forbidden']
 
-	return 0 == forbidden and digits >= cfg['digits'] and lower >= cfg['lower'] and other >= cfg['other'] and upper >= cfg['upper']
+	for stat in ['digits', 'lower', 'other', 'upper']:
+		if cfg[stat] == 0 and stats[stat]:
+			return False
+		elif stats[stat] < cfg[stat]:
+			return False
+	return stats['forbidden'] == 0 and cfg['min_length'] <= len(password)
 
 
 class TestPasswordConfigDefaults(object):
@@ -157,6 +154,49 @@ class TestScopedPasswordConfigFallback(object):
 			mp.setattr("univention.config_registry.ucr", {'password/%s/quality/forbidden/chars' % self.scope: None}, raising=True)
 			cfg = password_config(self.scope)
 			assert cfg['forbidden'] == '0Ol1I'
+
+
+class TestScopedPasswordConfigCustomizing(object):
+	"""
+	Set radius 'scoped' variables explicitely and checks value
+	"""
+	scope = 'radius'
+
+	def test_digit_count(self, monkeypatch):
+		with monkeypatch.context() as mp:
+			mp.setattr("univention.config_registry.ucr", {'password/%s/quality/credit/digits' % self.scope: '10'}, raising=True)
+			cfg = password_config(self.scope)
+			assert cfg['digits'] == 10
+
+	def test_lowercase_count(self, monkeypatch):
+		with monkeypatch.context() as mp:
+			mp.setattr("univention.config_registry.ucr", {'password/%s/quality/credit/lower' % self.scope: '11'}, raising=True)
+			cfg = password_config(self.scope)
+			assert cfg['lower'] == 11
+
+	def test_special_count(self, monkeypatch):
+		with monkeypatch.context() as mp:
+			mp.setattr("univention.config_registry.ucr", {'password/%s/quality/credit/other' % self.scope: '12'}, raising=True)
+			cfg = password_config(self.scope)
+			assert cfg['other'] == 12
+
+	def test_uppercase(self, monkeypatch, password_config_default):
+		with monkeypatch.context() as mp:
+			mp.setattr("univention.config_registry.ucr", {'password/%s/quality/credit/upper' % self.scope: '13'}, raising=True)
+			cfg = password_config(self.scope)
+			assert cfg['upper'] == 13
+
+	def test_min_length(self, monkeypatch, password_config_default):
+		with monkeypatch.context() as mp:
+			mp.setattr("univention.config_registry.ucr", {'password/%s/quality/length/min' % self.scope: '14'}, raising=True)
+			cfg = password_config(self.scope)
+			assert cfg['min_length'] == 14
+
+	def test_special_characters(self, monkeypatch, password_config_default):
+		with monkeypatch.context() as mp:
+			mp.setattr("univention.config_registry.ucr", {'password/%s/quality/forbidden/chars' % self.scope: ''}, raising=True)
+			cfg = password_config(self.scope)
+			assert cfg['forbidden'] == ''
 
 
 class TestPasswordConfigDigitCount(object):
@@ -436,3 +476,15 @@ class TestRandomPasswordGenerator(object):
 			assert "l" not in pwd
 			assert "1" not in pwd
 			assert "I" not in pwd
+
+	def test_small_min_length(self):
+		cfg = {'digits': 6, 'lower': 6, 'other': 0, 'upper': 0, 'forbidden': '', 'min_length': 6}
+		pwd = generate_password(**cfg)
+
+		assert match_password_complexity(cfg, pwd)
+
+	def test_zero_min_length(self):
+		cfg = {'digits': 6, 'lower': 0, 'other': 0, 'upper': 0, 'forbidden': '', 'min_length': 0}
+		pwd = generate_password(**cfg)
+
+		assert match_password_complexity(cfg, pwd)
