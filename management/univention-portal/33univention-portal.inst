@@ -126,12 +126,13 @@ if [ "$role" = "domaincontroller_master" ]; then
 	univention-directory-manager portals/entry create "$@" --ignore_exists \
 		--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--set name=self-service-password-change \
-		--append displayName="\"en_US\" \"Change password\"" \
-		--append displayName="\"de_DE\" \"Passwort ändern\"" \
-		--append description="\"en_US\" \"Change your password\"" \
-		--append description="\"de_DE\" \"Ihr Passwort ändern\"" \
+		--append displayName='"en_US" "Change your password"' \
+		--append displayName='"de_DE" "Ihr Passwort ändern"' \
+		--append description='"en_US" "Change your password"' \
+		--append description='"de_DE" "Ihr Passwort ändern"' \
 		--append link='"en_US" "#/selfservice/passwordchange"' \
 		--append allowedGroups="cn=Domain Users,cn=groups,$ldap_base" \
+		--set icon="$(base64 /usr/share/univention-portal/key.svg)" \
 		--set linkTarget=samewindow || die
 	## HELP SUBMENU
 	univention-directory-manager portals/entry create "$@" --ignore_exists \

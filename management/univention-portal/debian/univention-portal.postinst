@@ -74,12 +74,13 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "4.0.5-75"; then
 	univention-directory-manager portals/entry create --ignore_exists \
 		--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--set name=self-service-password-change \
-		--append displayName="\"en_US\" \"Change password\"" \
-		--append displayName="\"de_DE\" \"Passwort ändern\"" \
-		--append description="\"en_US\" \"Change your password\"" \
-		--append description="\"de_DE\" \"Ihr Passwort ändern\"" \
+		--append displayName='"en_US" "Change your password"' \
+		--append displayName='"de_DE" "Ihr Passwort ändern"' \
+		--append description='"en_US" "Change your password"' \
+		--append description='"de_DE" "Ihr Passwort ändern"' \
 		--append link='"en_US" "#/selfservice/passwordchange"' \
 		--append allowedGroups="cn=Domain Users,cn=groups,$ldap_base" \
+		--set icon="$(base64 /usr/share/univention-portal/key.svg)" \
 		--set linkTarget=samewindow
 	univention-directory-manager portals/portal modify --dn "cn=domain,cn=portal,cn=portals,cn=univention,$ldap_base" --ignore_not_exists \
 		--append userLinks="cn=self-service-password-change,cn=entry,cn=portals,cn=univention,$ldap_base"
