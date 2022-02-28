@@ -26,6 +26,7 @@ Build-Depends:
  python3-pytest-mock,
  python3-pytest-timeout,
  python3-setuptools,
+ python3-univention-admin-diary,
  python3-univention-debug,
  python3-univention-lib,
  univention-config-dev (>= 15.0.3),
