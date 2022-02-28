@@ -42,7 +42,7 @@ categories = udm.get('portals/category')
 entries = udm.get('portals/entry')
 
 
-def create_self_service_portal(args: Namespace, categories: List[FIXME]) -> None:
+def create_self_service_portal(args: Namespace, categories: List[str]) -> None:
 	try:
 		portal = portals.get_by_id('self-service')
 		print('Found', portal.dn)
@@ -61,7 +61,7 @@ def create_self_service_portal(args: Namespace, categories: List[FIXME]) -> None
 	print('Saved', portal.dn)
 
 
-def create_self_service_category(args: Namespace, name: str, display_name: Dict[str, str], entries: List[FIXME]) -> FIXME:
+def create_self_service_category(args: Namespace, name: str, display_name: Dict[str, str], entries: List[str]) -> str:
 	try:
 		category = categories.get_by_id(name)
 		print('Found', category.dn)
@@ -79,7 +79,7 @@ def create_self_service_category(args: Namespace, name: str, display_name: Dict[
 	return category.dn
 
 
-def create_self_service_entry(args: Namespace, name: str, page: str, ucr_name: str, anonymous: bool, display_name: Dict[str, str], description: Optional[Dict[str, str]] = None) -> FIXME:
+def create_self_service_entry(args: Namespace, name: str, page: str, ucr_name: str, anonymous: bool, display_name: Dict[str, str], description: Optional[Dict[str, str]] = None) -> str:
 	try:
 		entry = entries.get_by_id(name)
 		print('Found', entry.dn)
@@ -93,11 +93,13 @@ def create_self_service_entry(args: Namespace, name: str, page: str, ucr_name: s
 	entry.props.displayName = display_name
 	entry.props.description = description or display_name
 	entry.props.linkTarget = 'samewindow'
-	#icon_content_bytes = open('/usr/share/univention-self-service/www/icons/password.png', 'rb').read()
-	#icon_content = b64encode(icon_content_bytes).decode('utf-8')
-	#if not entry.props.icon:
-	#	entry.props.icon = icon_content_bytes
-	#entry.props.icon.encoded = icon_content
+	icon_file = '/usr/share/univention-self-service/www/icons/%s.png' % name
+	if os.path.exists(icon_file):
+		icon_content_bytes = open(icon_file, 'rb').read()
+		icon_content = b64encode(icon_content_bytes).decode('utf-8')
+		if not entry.props.icon:
+			entry.props.icon = icon_content_bytes
+		entry.props.icon.encoded = icon_content
 	entry.props.activated = ucr.is_true(ucr_name)
 	entry.props.anonymous = anonymous
 	entry.props.link = [{'locale': 'en_US', 'value': '#/selfservice/%s' % page}]
@@ -129,13 +131,13 @@ def main(args: Namespace) -> None:
 			create_self_service_entry(args, 'self-service-create-account', 'createaccount', 'umc/self-service/account-registration/backend/enabled', True, display_name={'en_US': 'Create an account', 'de_DE': 'Konto erstellen'}),
 			create_self_service_entry(args, 'self-service-verify-account', 'verifyaccount', 'umc/self-service/account-verification/backend/enabled', True, display_name={'en_US': 'Account verification', 'de_DE': 'Kontoverifizierung'}),
 		]),
-	]  # type: List[FIXME]
+	]  # type: List[str]
 
 	create_self_service_portal(args, categories)
 
 
 if __name__ == '__main__':
-	parser = ArgumentParser()
-	parser.add_argument('--no-update', action='store_true')
+	parser = ArgumentParser(description='Creates or updates all portals/entry objects for the self service')
+	parser.add_argument('--no-update', action='store_true', help='Whether or not to skip portals/entry objects when they already exist')
 	args = parser.parse_args()
 	main(args)

@@ -34,6 +34,13 @@
 
 systemctl try-restart univention-directory-listener
 
-/usr/share/univention-self-service/univention-setup-self-service-portal-links --no-update
+if [ "$1" = configure ] &&
+	dpkg --compare-versions "$2" lt 5.0.1-19~
+then
+	/usr/share/univention-self-service/univention-setup-self-service-portal-links
+	udm portals/entry modify \
+		--dn "cn=self-service,cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)" \
+		--set activated=FALSE
+fi
 
 exit 0
