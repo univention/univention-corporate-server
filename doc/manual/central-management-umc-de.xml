@@ -262,12 +262,15 @@
 			Diese Datei hat folgenden Inhalt aufzuweisen, um die nötigen ACL-Änderungen zu ermöglichen:
 		</para>
 		<programlisting>
-access to dn="cn=portal,cn=univention,@%@ldap/base@%@" attrs=children
+access to
+  dn="cn=portal,cn=univention,@%@ldap/base@%@"
+  attrs=children
   by group/univentionGroup/uniqueMember="cn=Portal Admins,cn=groups,@%@ldap/base@%@" write
   by * +0 break
 
-access to dn.children="cn=portal,cn=univention,@%@ldap/base@%@" attrs=entry,@univentionObject,@univentionPortalEntry,
-@univentionPortal,@univentionPortalCategory,children
+access to
+  dn.children="cn=portal,cn=univention,@%@ldap/base@%@"
+  attrs=entry,@univentionObject,@univentionPortalEntry,@univentionPortal,@univentionPortalCategory,children
   by group/univentionGroup/uniqueMember="cn=Portal Admins,cn=groups,@%@ldap/base@%@" write
   by * +0 break
 		</programlisting>

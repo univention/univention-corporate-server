@@ -3,19 +3,25 @@ authz-regexp
     ldap:///@%@ldap/base@%@??sub?uid=$1
 
 # allow authentication
-access to attrs=userPassword
-    by anonymous auth
-    by * none break
+access to
+  attrs=userPassword
+  by anonymous auth
+  by * none break
 
-access to attrs=userPassword,krb5Key,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,sambaPwdCanChange,sambaPwdMustChange,sambaPasswordHistory,sambaClearTextPassword,sambaPreviousClearTextPassword
-   by sockname="PATH=/var/run/slapd/ldapi" read
+access to
+  attrs=userPassword,krb5Key,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,sambaPwdCanChange,sambaPwdMustChange,sambaPasswordHistory,sambaClearTextPassword,sambaPreviousClearTextPassword
+ by sockname="PATH=/var/run/slapd/ldapi" read
 @!@
 from univention.lib.misc import custom_groupname
 
+INDENT = f'  %s'
+TO_CLAUSE = f'access to\n%s' % INDENT
+BY_CLAUSE = INDENT % f'by %s '
+
 groups_default_domainadmins = custom_groupname('Domain Admins')
 ldap_base = configRegistry['ldap/base']
-print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" read' % (groups_default_domainadmins, ldap_base))
+print(BY_CLAUSE % f'group/univentionGroup/uniqueMember="cn={groups_default_domainadmins},cn=groups,{ldap_base}" read')
 
 if configRegistry['ldap/hostdn']:
-	print('   by dn.base="%s" read' % configRegistry['ldap/hostdn'])
+	print(BY_CLAUSE % f'dn.base="{configRegistry['ldap/hostdn']}" read')
 @!@   by * none

@@ -3,69 +3,75 @@ from univention.lib.misc import custom_username, custom_groupname
 
 ldap_base = configRegistry['ldap/base']
 ldap_port = configRegistry['slapd/port']
-usr = 'write' if configRegistry.get('ldap/server/type') == "master" else 'read'
+priv = 'write' if configRegistry.get('ldap/server/type') == "master" else 'read'
 
 groups_default_domainadmins = custom_groupname('Domain Admins')
 users_default_administrator = custom_username('Administrator')
 
+INDENT = f'  %s'
+TO_CLAUSE = f'access to\n%s' % INDENT
+BY_CLAUSE = INDENT % f'by %s '
+
 print('authz-regexp')
-print('    uid=([^,]*),cn=(gssapi|saml),cn=auth')
-print('    ldap:///%s??sub?uid=$1' % (ldap_base,))
+print(INDENT % 'uid=([^,]*),cn=(gssapi|saml),cn=auth')
+print(INDENT % f'ldap:///{ldap_base}??sub?uid=$1')
 print('')
 
-print('access to attrs=uid value=root by * none stop')
+print(TO_CLAUSE % 'attrs=uid')
+print(INDENT % 'value=root')
+print(BY_CLAUSE % '* none stop')
 
-print('access to attrs=userPassword')
-print('    by anonymous auth')
-print('    by * none break')
+print(TO_CLAUSE % 'attrs=userPassword')
+print(BY_CLAUSE % 'anonymous auth')
+print(BY_CLAUSE % '* none break')
 print('')
 
-print('access to dn="cn=admin,%s"' % (ldap_base))
-print('    by self %s' % (usr))
-print('    by * none')
+print(TO_CLAUSE % f'dn="cn=admin,{ldap_base}"')
+print(BY_CLAUSE % f'self {priv}')
+print(BY_CLAUSE % '* none')
 print('')
 
-print('access to *')
-print('    by sockname="PATH=/var/run/slapd/ldapi" %s' % (usr))
+print(TO_CLAUSE % '*')
+print(BY_CLAUSE % f'sockname="PATH=/var/run/slapd/ldapi" {priv}')
 if configRegistry['ldap/server/type'] == "slave":
-	print('    by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
-print('    by dn.base="uid=%s,cn=users,%s" %s' % (users_default_administrator, ldap_base, usr))
-print('    by * none break')
+	print(BY_CLAUSE % f'dn.base="cn=admin,{ldap_base}" {priv}')
+print(BY_CLAUSE % f'dn.base="uid={users_default_administrator},cn=users,{ldap_base}" {priv}')
+print(BY_CLAUSE % '* none break')
 print('')
 
-print('access to dn="uid=%s,cn=users,%s"' % (users_default_administrator, ldap_base))
-print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+print(TO_CLAUSE % f'dn="uid={users_default_administrator},cn=users,{ldap_base}"')
+print(BY_CLAUSE % f'group/univentionGroup/uniqueMember="cn={groups_default_domainadmins},cn=groups,{ldap_base}" {priv}')
 if configRegistry['ldap/server/type'] == "slave":
-	print('    by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
-print('    by self %s' % (usr))
-print('    by * +0 break')
+	print(BY_CLAUSE % f'dn.base="cn=admin,{ldap_base}" {priv}')
+print(BY_CLAUSE % f'self {priv}')
+print(BY_CLAUSE % '* +0 break')
 print('')
 
-print('access to dn="uid=join-backup,cn=users,%s"' % (ldap_base))
-print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+print(TO_CLAUSE % f'dn="uid=join-backup,cn=users,{ldap_base}"')
+print(BY_CLAUSE % f'group/univentionGroup/uniqueMember="cn={groups_default_domainadmins},cn=groups,{ldap_base}" {priv}')
 if configRegistry['ldap/server/type'] == "slave":
-	print('    by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
-print('    by self %s' % (usr))
-print('    by * +0 break')
+	print(BY_CLAUSE % f'dn.base="cn=admin,{ldap_base}" {priv}')
+print(BY_CLAUSE % f'self {priv}')
+print(BY_CLAUSE % '* +0 break')
 print('')
 
-print('access to dn="uid=join-slave,cn=users,%s"' % (ldap_base))
-print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+print(TO_CLAUSE % f'dn="uid=join-slave,cn=users,{ldap_base}"')
+print(BY_CLAUSE % f'group/univentionGroup/uniqueMember="cn={groups_default_domainadmins},cn=groups,{ldap_base}" {priv}')
 if configRegistry['ldap/server/type'] == "slave":
-	print('    by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
-print('    by self %s' % (usr))
-print('    by * +0 break')
+	print(BY_CLAUSE % f'dn.base="cn=admin,{ldap_base}" {priv}')
+print(BY_CLAUSE % f'self {priv}')
+print(BY_CLAUSE % '* +0 break')
 print('')
 
-print('access to attrs=entry,objectClass,uniqueMember,ou,uid,loginShell,homeDirectory,uidNumber,gidNumber,sn,cn,gecos,description,memberUid')
-print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+print(TO_CLAUSE % 'attrs=entry,objectClass,uniqueMember,ou,uid,loginShell,homeDirectory,uidNumber,gidNumber,sn,cn,gecos,description,memberUid')
+print(BY_CLAUSE % f'group/univentionGroup/uniqueMember="cn={groups_default_domainadmins},cn=groups,{ldap_base}" {priv}')
 if configRegistry['ldap/server/type'] == "slave":
-	print('    by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
-print('    by * +0 break')
+	print(BY_CLAUSE % f'dn.base="cn=admin,{ldap_base}" {priv}')
+print(BY_CLAUSE % '* +0 break')
 print('')
 
-print('access to attrs=univentionOperatingSystem,univentionOperatingSystemVersion')
-print('    by self %s' % (usr))
-print('    by * none break')
+print(TO_CLAUSE % 'attrs=univentionOperatingSystem,univentionOperatingSystemVersion')
+print(BY_CLAUSE % f'self {priv}')
+print(BY_CLAUSE % '* none break')
 print('')
 @!@

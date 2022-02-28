@@ -1,21 +1,26 @@
 @!@
+INDENT = f'  %s'
+TO_CLAUSE = f'access to\n%s' % INDENT
+BY_CLAUSE = INDENT % f'by %s '
+
 if configRegistry.is_false('ldap/acl/read/anonymous'):
-	print('access to dn.subtree="%s" attrs=entry,uid' % (configRegistry['ldap/base'],))
+	print(TO_CLAUSE % f'dn.subtree="{configRegistry['ldap/base']}")
+	print(INDENT % 'attrs=entry,uid')
 	ldap_acl_read_anonymous_ips = configRegistry.get('ldap/acl/read/ips')
 	if ldap_acl_read_anonymous_ips:
 		for ip in ldap_acl_read_anonymous_ips.split(','):
-			print('   by peername.ip=%s read' % ip)
-	print('   by anonymous auth')
-	print('   by * +0 break')
+			print(BY_CLAUSE % f'peername.ip={ip} read')
+	print(BY_CLAUSE % 'anonymous auth')
+	print(BY_CLAUSE % '* +0 break')
 	print('')
 print('access to *')
 if configRegistry.is_false('ldap/acl/read/anonymous'):
-	print('   by users read')
+	print(BY_CLAUSE % 'users read')
 	ldap_acl_read_anonymous_ips = configRegistry.get('ldap/acl/read/ips')
 	if ldap_acl_read_anonymous_ips:
 		for ip in ldap_acl_read_anonymous_ips.split(','):
-			print('   by peername.ip=%s read' % ip)
+			print(BY_CLAUSE % f'peername.ip={ip} read')
 else:
-	print('   by * read')
+	print(BY_CLAUSE % '* read')
 print('')
 @!@

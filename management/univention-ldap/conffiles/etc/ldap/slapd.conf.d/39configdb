@@ -2,6 +2,7 @@
 database config
 # no rootdn/updatedn, thus no access via LDAP:// for cn=admin
 # access via LDAPI (simple or SASL EXTERNAL bind):
-access to *
-    by sockname="PATH=/var/run/slapd/ldapi" write
-    by * none
+access to
+  *
+  by sockname="PATH=/var/run/slapd/ldapi" write
+  by * none

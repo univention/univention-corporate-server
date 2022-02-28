@@ -21,7 +21,8 @@ print((B64 if IS_64BITS else B32) % configRegistry)
 @!@
 limits dn.children=cn=peercred,cn=external,cn=auth size.prtotal=unlimited
 # access via LDAPI (simple or SASL EXTERNAL bind):
-access to *
-    by sockname="PATH=/var/run/slapd/ldapi" write
-    by users read
-    by * none
+access to
+  *
+  by sockname="PATH=/var/run/slapd/ldapi" write
+  by users read
+  by * none

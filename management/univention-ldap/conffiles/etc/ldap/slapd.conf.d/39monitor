@@ -2,17 +2,22 @@
 from univention.lib.misc import custom_groupname
 groups_default_domainadmins = custom_groupname('Domain Admins')
 ldap_base = configRegistry['ldap/base']
+
+INDENT = f'  %s'
+TO_CLAUSE = f'access to\n%s' % INDENT
+BY_CLAUSE = INDENT % f'by %s '
+
 print('')
 if configRegistry.is_true('ldap/monitor', False):
 	print('moduleload\tback_monitor.so')
 print('### cn=Monitor backend for statistical information')
-if configRegistry.is_true('ldap/monitor',False):
+if configRegistry.is_true('ldap/monitor', False):
 	print('database monitor')
-	print('access to dn.subtree="cn=monitor"')
-	print('   by dn.base="cn=admin,%s" read' % ldap_base)
-	print('   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" read' % (groups_default_domainadmins, ldap_base))
+	print(TO_CLAUSE % 'dn.subtree="cn=monitor"')
+	print(BY_CLAUSE % f'dn.base="cn=admin,{ldap_base}" read')
+	print(BY_CLAUSE % f'set="user & [cn={groups_default_domainadmins},cn=groups,{ldap_base}]/uniqueMember*" read')
 	for key, value in configRegistry.items():
 		if key.startswith('ldap/monitor/acl/read/groups/'):
-			print('   by set="user & [%s]/uniqueMember*" read' % (value,))
-	print('   by * +0 break')
+			print(BY_CLAUSE % f'set="user & [{value}]/uniqueMember*" read')
+	print(BY_CLAUSE % '* +0 break')
 @!@
