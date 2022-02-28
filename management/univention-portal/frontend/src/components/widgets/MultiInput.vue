@@ -119,7 +119,7 @@ export default defineComponent({
     },
   },
   methods: {
-    onUpdate(valIdx, typeIdx, val) :void {
+    onUpdate(valIdx, typeIdx, val): void {
       const newVal = JSON.parse(JSON.stringify(this.modelValue));
       if (this.subtypes.length === 1) {
         newVal[valIdx] = val;
@@ -131,12 +131,14 @@ export default defineComponent({
     addEntry(): void {
       const newVal = JSON.parse(JSON.stringify(this.modelValue));
       newVal.push(this.newRow());
-      console.log('REFS', Object.keys(this.$refs).length);
       this.$emit('update:modelValue', newVal);
-      this.$store.dispatch('activity/setMessage', `${this.extraLabel} ${newVal.length} ${_('added')}`);
+      this.$store.dispatch('activity/setMessage', _('%(label)s %(idx)s added', {
+        label: this.extraLabel,
+        idx: newVal.length,
+      }));
       this.focusLastInputField();
     },
-    newRow(): void {
+    newRow(): any {
       return initialValue({
         type: 'MultiInput',
         subtypes: this.subtypes,
@@ -149,7 +151,10 @@ export default defineComponent({
         newVal.push(this.newRow());
       }
       this.$emit('update:modelValue', newVal);
-      this.$store.dispatch('activity/setMessage', `${this.extraLabel} ${valIdx + 1} ${_('removed')}`);
+      this.$store.dispatch('activity/setMessage', _('%(label)s %(idx)s removed', {
+        label: this.extraLabel,
+        idx: valIdx + 1,
+      }));
     },
     rowInvalidMessage(valIdx): string {
       // show invalidMessage for row only if we have multiple subtypes
@@ -182,12 +187,10 @@ export default defineComponent({
       };
     },
     focus(): void {
-      // @ts-ignore
       const firstWidget = this.$refs['component-0-0'];
       // TODO find first interactable?
       if (firstWidget) {
-        // @ts-ignore TODO
-        firstWidget.focus();
+        (firstWidget as HTMLElement).focus();
       }
     },
     REMOVE_BUTTON_LABEL(idx): string {
@@ -197,12 +200,25 @@ export default defineComponent({
       });
     },
     focusLastInputField(): void {
-      setTimeout(() => {
-        const refArray = Object.keys(this.$refs).map((item) => item);
-        const lastItemRef = refArray[refArray.length - 1];
-        console.log('asdasdasd', (this.$refs[lastItemRef] as HTMLElement));
+      // MultiInput can have multiple widgets per row.
+      // Focus first widget in last row.
+
+      // @ts-ignore FIXME not sure how to fix this error
+      this.$nextTick(() => {
+        const firstRowEntryRefs = Object.keys(this.$refs)
+          .filter((ref) => {
+            // Filter out widgets that are not the first of their row.
+            const column = ref.split('-')[2];
+            try {
+              return parseInt(column, 10) === 0;
+            } catch (e) {
+              return true;
+            }
+          })
+          .sort();
+        const lastItemRef = firstRowEntryRefs[firstRowEntryRefs.length - 1];
         (this.$refs[lastItemRef] as HTMLElement).focus();
-      }, 50);
+      });
     },
   },
 });

@@ -71,9 +71,6 @@ export default defineComponent({
     CLOSE(): string {
       return _('Close');
     },
-    descriptionId(): string {
-      return `${this.$.uid}-description`;
-    },
   },
   methods: {
     cancel(): void {

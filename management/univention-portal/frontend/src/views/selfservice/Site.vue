@@ -45,9 +45,7 @@
       >
         {{ subtitle }}
       </template>
-      <div>
-        <slot />
-      </div>
+      <slot />
     </modal-dialog>
   </modal-wrapper>
 </template>

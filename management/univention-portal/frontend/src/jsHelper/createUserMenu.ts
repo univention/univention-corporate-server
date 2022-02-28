@@ -46,35 +46,6 @@ function makeEntry(entryID, availableTiles, defaultLinkTarget) {
   };
 }
 
-function changePasswordCallback(tileClick) {
-  tileClick.$store.dispatch('navigation/setActiveButton', '');
-  tileClick.$store.dispatch('modal/setShowModalPromise', {
-    name: 'ChangePassword',
-    stubborn: true,
-  }).then((values) => {
-    tileClick.$store.dispatch('activateLoadingState');
-    changePassword(values.oldPassword, values.newPassword).then((response) => {
-      tileClick.$store.dispatch('notifications/addSuccessNotification', {
-        title: _('Change password'),
-        description: response.data.message,
-      });
-      tileClick.$store.dispatch('modal/hideAndClearModal');
-      tileClick.$store.dispatch('deactivateLoadingState');
-    }, (error) => {
-      console.error('Error while changing password', error);
-      tileClick.$store.dispatch('notifications/addErrorNotification', {
-        title: _('Change password'),
-      });
-      tileClick.$store.dispatch('modal/hideAndClearModal');
-      tileClick.$store.dispatch('deactivateLoadingState');
-      return changePasswordCallback(tileClick);
-    });
-  }, () => {
-    tileClick.$store.dispatch('deactivateLoadingState');
-    tileClick.$store.dispatch('modal/hideAndClearModal');
-  });
-}
-
 export default function createUserMenu(portalData) {
   if (!portalData) {
     return [];
@@ -91,19 +62,6 @@ export default function createUserMenu(portalData) {
   const subMenuItems = userLinks
     .map((entryID) => makeEntry(entryID, availableTiles, defaultLinkTarget))
     .filter((entry) => !!entry);
-
-  if (portalData.username) {
-    subMenuItems.unshift({
-      id: `menu-item-${randomId()}`,
-      title: {
-        en_US: 'Change password',
-        de_DE: 'Passwort ändern',
-      },
-      linkTarget: 'internalFunction',
-      internalFunction: changePasswordCallback,
-      links: [],
-    });
-  }
 
   const menuElement = {
     id: `menu-${randomId()}`,

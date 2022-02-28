@@ -66,21 +66,6 @@ describe('Test Portal Error Components', () => {
     });
   });
 
-  it('should show disabled component if selfservice not enabled.', () => {
-    cy.intercept('GET', 'portal.json', { fixture: '/selfservice/portal.json' });
-    cy.intercept('GET', 'meta.json', { fixture: '/selfservice/meta_ucr_disabled.json' });
-    cy.intercept('GET', 'languages.json', { fixture: 'languages.json' });
-    cy.setCookie('univentionCookieSettingsAccepted', 'doesthisneedavalue');
-
-    cy.visit('/#/selfservice/profile');
-
-    const errorContainer = cy.get('.self-service-disabled');
-    errorContainer.should('be.visible');
-    errorContainer.should((container) => {
-      expect(container.first()).to.contain('This service is disabled');
-    });
-  });
-
   it('General a11y test', () => {
     cy.injectAxe();
     cy.checkA11y('body',

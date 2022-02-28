@@ -30,6 +30,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import Portal from '@/views/Portal.vue';
 import NotFound from '@/views/NotFound.vue';
+import PasswordChange from '@/views/selfservice/PasswordChange.vue';
 import Profile from '@/views/selfservice/Profile.vue';
 import ProtectAccount from '@/views/selfservice/ProtectAccount.vue';
 import CreateAccount from '@/views/selfservice/CreateAccount.vue';
@@ -45,6 +46,11 @@ const routes = [
     name: 'portal',
 
     children: [
+      {
+        path: 'selfservice/passwordchange',
+        component: PasswordChange,
+        name: 'selfservicePasswordChange',
+      },
       {
         path: 'selfservice/profile',
         component: Profile,

@@ -71,7 +71,7 @@ export default defineComponent({
       return _('Protect account');
     },
     SUBTITLE(): string {
-      return _('Everyone forgets his password now and then. Protect yourself and activate the opportunity to set a new password.');
+      return _('Add or update your account recovery options.');
     },
     widgets(): WidgetDefinition[] {
       return this.contactInformation.map((info) => ({
@@ -93,7 +93,7 @@ export default defineComponent({
     setContactInfo(values) {
       umcCommandWithStandby(this.$store, 'passwordreset/set_contact', values)
         .then((result) => {
-          let description = _('Your contact data has been successfully changed.');
+          let description = _('Your account recovery options have been updated.');
           if (result.verificationEmailSend) {
             description = `${description}. ${_('Your account has to be verified again after changing your email. We have sent you an email to %(email)s. Please follow the instructions in the email to verify your account.', { email: result.email })}`;
           }

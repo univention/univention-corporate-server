@@ -36,7 +36,7 @@
     data-test="form-element"
   >
     <form-label
-      :label="correctLabel"
+      :label="widget.label"
       :aria-label="widget.ariaLabel || widget.label"
       :required="widget.required"
       :for-attr="forAttrOfLabel"
@@ -107,10 +107,6 @@ export default defineComponent({
     modelValue: {
       required: true,
     },
-    isMultiInputChild: {
-      type: Boolean,
-      deault: false,
-    },
   },
   emits: ['update:modelValue'],
   computed: {
@@ -133,9 +129,6 @@ export default defineComponent({
     },
     invalidMessageId(): string {
       return `${this.forAttrOfLabel}--error`;
-    },
-    correctLabel(): string {
-      return this.widget.index ? `${this.widget.label}-${this.widget.index.toString()}` : this.widget.label;
     },
   },
   methods: {

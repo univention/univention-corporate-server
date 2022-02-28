@@ -75,7 +75,6 @@ interface Data {
   formValues: FormData,
   formWidgets: WidgetDefinition[],
   loaded: boolean,
-  usernameGiven: boolean,
 }
 
 export default defineComponent({
@@ -141,7 +140,6 @@ export default defineComponent({
       formValues,
       formWidgets,
       loaded: false,
-      usernameGiven: false,
     };
   },
   computed: {
@@ -180,10 +178,8 @@ export default defineComponent({
     setTimeout(() => {
       if (typeof this.$route.query.username === 'string' && this.$route.query.username) {
         this.formValues.username = this.$route.query.username;
-        this.usernameGiven = true;
       } else if (this.userState.username) {
         this.formValues.username = this.userState.username;
-        this.usernameGiven = true;
       }
       this.refocus();
     }, 300); // TODO...
@@ -218,7 +214,6 @@ export default defineComponent({
           if (this.passwordNeeded) {
             this.formValues.password = '';
           }
-          this.usernameGiven = false;
           this.showError(error.message, _('Authentification failed'))
             .then(() => {
               this.refocus();

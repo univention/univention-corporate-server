@@ -72,13 +72,20 @@ function umcCommandWithStandby(store, path: string, options?: any, flavor?: stri
     });
 }
 
-function changePassword(oldPassword: string, newPassword: string): Promise<AxiosResponse<any>> {
+function changePassword(oldPassword: string, newPassword: string): Promise<any> {
   return umc('set', {
     password: {
       password: oldPassword,
       new_password: newPassword,
     },
-  });
+  }).then((answer) => answer.data.result)
+    .catch((error) => {
+      if ('response' in error && 'data' in error.response) {
+        throw error.response.data;
+      }
+      console.error(error);
+      throw new Error('Unknown error');
+    });
 }
 
 function udmRemove(dn: string): Promise<AxiosResponse<any>> {

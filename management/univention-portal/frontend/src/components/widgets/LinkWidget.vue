@@ -166,10 +166,11 @@ export default defineComponent({
       this.modelValueData.push({ locale: this.currentLocale || 'en_US', value: '' });
       const i = (this.modelValueData.length - 1);
 
-      setTimeout(() => {
+      // @ts-ignore FIXME not sure how to fix this error
+      this.$nextTick(() => {
         const elem = (this.$refs[`link${i}`] as HTMLElement);
         elem.focus();
-      }, 50);
+      });
     },
     removeField(index) {
       this.modelValueData.splice(index, 1);

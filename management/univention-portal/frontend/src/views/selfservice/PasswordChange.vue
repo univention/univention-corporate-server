@@ -27,10 +27,9 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <modal-dialog
-    :i18n-title-key="CHANGE_PASSWORD"
-    class="change-password"
-    @cancel="cancel"
+  <site
+    :title="TITLE"
+    :subtitle="SUBTITLE"
   >
     <my-form
       ref="form"
@@ -46,32 +45,40 @@ License with the Debian GNU/Linux or Univention distribution in file
         </button>
         <button
           type="submit"
+          class="primary"
           @click.prevent="finish"
         >
           {{ CHANGE_PASSWORD }}
         </button>
       </footer>
     </my-form>
-  </modal-dialog>
+  </site>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import _ from '@/jsHelper/translate';
 import MyForm from '@/components/forms/Form.vue';
-import ModalDialog from '@/components/modal/ModalDialog.vue';
-import { allValid, isEmpty, validateAll } from '@/jsHelper/forms';
+import Site from '@/views/selfservice/Site.vue';
+import { allValid, isEmpty, validateAll, WidgetDefinition } from '@/jsHelper/forms';
+import { changePassword } from '@/jsHelper/umc';
+
+interface FormValues {
+  oldPassword: string,
+  newPassword: string,
+  newPasswordRetype: string,
+}
 
 interface ChangePasswordData {
-  formWidgets: any[],
-  formValues: any,
+  formWidgets: WidgetDefinition[],
+  formValues: FormValues,
 }
 
 export default defineComponent({
-  name: 'ChangePassword',
+  name: 'PasswordChange',
   components: {
     MyForm,
-    ModalDialog,
+    Site,
   },
   data(): ChangePasswordData {
     return {
@@ -111,6 +118,12 @@ export default defineComponent({
     };
   },
   computed: {
+    TITLE(): string {
+      return _('Change password');
+    },
+    SUBTITLE(): string {
+      return _('Change your password');
+    },
     CANCEL(): string {
       return _('Cancel');
     },
@@ -121,6 +134,7 @@ export default defineComponent({
   mounted(): void {
     // @ts-ignore TODO
     this.$refs.form.focusFirstInteractable();
+    this.$store.dispatch('navigation/setActiveButton', '');
   },
   methods: {
     finish() {
@@ -130,14 +144,26 @@ export default defineComponent({
         this.$refs.form.focusFirstInvalid();
         return;
       }
-      this.$store.dispatch('modal/resolve', {
-        level: 1,
-        oldPassword: this.formValues.oldPassword,
-        newPassword: this.formValues.newPassword,
-      });
+      this.$store.dispatch('activateLoadingState');
+      changePassword(this.formValues.oldPassword, this.formValues.newPassword)
+        .then((response) => {
+          this.$store.dispatch('notifications/addSuccessNotification', {
+            title: _('Change password'),
+            description: response.data.message,
+          });
+          this.$store.dispatch('deactivateLoadingState');
+        })
+        .catch((error) => {
+          console.error('Error while changing password', error);
+          this.$store.dispatch('notifications/addErrorNotification', {
+            title: _('Change password'),
+            description: error.message,
+          });
+          this.$store.dispatch('deactivateLoadingState');
+        });
     },
     cancel() {
-      this.$store.dispatch('modal/hideAndClearModal');
+      this.$router.push({ name: 'portal' });
     },
   },
 });

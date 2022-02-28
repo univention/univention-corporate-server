@@ -75,7 +75,6 @@ interface FormData {
 interface Data {
   formValues: FormData,
   formWidgets: WidgetDefinition[],
-  usernameGiven: boolean,
   tokenGiven: boolean,
 }
 
@@ -129,7 +128,6 @@ export default defineComponent({
         newPassword2: '',
       },
       formWidgets,
-      usernameGiven: false,
       tokenGiven: false,
     };
   },
@@ -163,7 +161,6 @@ export default defineComponent({
     setTimeout(() => {
       if (typeof this.$route.query.username === 'string' && this.$route.query.username) {
         this.formValues.username = this.$route.query.username;
-        this.usernameGiven = true;
       }
       if (typeof this.$route.query.token === 'string' && this.$route.query.token) {
         this.formValues.token = this.$route.query.token;
