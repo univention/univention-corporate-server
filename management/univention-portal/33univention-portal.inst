@@ -122,6 +122,17 @@ role="$(ucr get server/role)"
 
 # the following UDM objects need to be created only initially
 if [ "$role" = "domaincontroller_master" ]; then
+	## USER SUBMENU
+	univention-directory-manager portals/entry create "$@" --ignore_exists \
+		--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
+		--set name=self-service-password-change \
+		--append displayName="\"en_US\" \"Change password\"" \
+		--append displayName="\"de_DE\" \"Passwort ändern\"" \
+		--append description="\"en_US\" \"Change your password\"" \
+		--append description="\"de_DE\" \"Ihr Passwort ändern\"" \
+		--append link='"en_US" "#/selfservice/passwordchange"' \
+		--append allowedGroups="cn=Domain Users,cn=groups,$ldap_base" \
+		--set linkTarget=samewindow || die
 	## HELP SUBMENU
 	univention-directory-manager portals/entry create "$@" --ignore_exists \
 		--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
@@ -283,6 +294,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 	univention-directory-manager portals/portal create "$@" --ignore_exists \
 		--position "cn=portal,cn=portals,cn=univention,$ldap_base" \
 		--set name=domain \
+		--append userLinks="cn=self-service-password-change,cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--append menuLinks="cn=certificates,cn=folder,cn=portals,cn=univention,$ldap_base" \
 		--append menuLinks="cn=help,cn=folder,cn=portals,cn=univention,$ldap_base" \
 		--append categories="cn=domain-service,cn=category,cn=portals,cn=univention,$ldap_base" \
