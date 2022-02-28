@@ -319,7 +319,7 @@ class Instance(Base):
 		dn, username = self.auth(username, password)
 		MODULE.error('set_service_specific_passwords(): Setting {} password for {}'.format(password_type, username))
 		if password_type == 'radius':
-			udm = UDMRest.http('https://%s.%s/univention/udm/' % (ucr.get('hostname'), ucr.get('domainname')), 'cn=admin', open('/etc/ldap.secret').read())
+			udm = UDMRest.http('https://%(hostname)s.%(domainname)s/univention/udm/' % ucr, 'cn=admin', open('/etc/ldap.secret').read())
 			user_obj = udm.get('users/user').get(dn)
 			service_specific_password = user_obj.generate_service_specific_password('radius')
 		else:

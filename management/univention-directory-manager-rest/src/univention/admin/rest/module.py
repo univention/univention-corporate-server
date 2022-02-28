@@ -94,7 +94,6 @@ from univention.config_registry import handler_set
 from univention.admin.rest.shared_memory import shared_memory, JsonEncoder
 from univention.password import password_config, generate_password
 
-
 import univention.udm
 
 from univention.lib.i18n import Translation
