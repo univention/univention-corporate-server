@@ -125,6 +125,7 @@ def main(args: Namespace) -> None:
 			create_self_service_entry(args, 'self-service-my-profile', 'profile', 'umc/self-service/profiledata/enabled', False, display_name={'en_US': 'My Profile', 'de_DE': 'Mein Profil'}, description={'en_US': 'Manage profile', 'de_DE': 'Profil verwalten'}),
 		]),
 		create_self_service_category(args, 'self-service-password', {'en_US': 'Passwords', 'de_DE': 'Passwörter'}, [
+			'cn=self-service-password-change,cn=entry,cn=portals,cn=univention,%s' % ucr.get('ldap/base'),
 			create_self_service_entry(args, 'self-service-protect-account', 'protectaccount', 'umc/self-service/protect-account/backend/enabled', False, display_name={'en_US': 'Protect your account', 'de_DE': 'Kontozugang schützen'}),
 			create_self_service_entry(args, 'self-service-password-forgotten', 'passwordforgotten', 'umc/self-service/passwordreset/backend/enabled', True, display_name={'en_US': 'Password forgotten', 'de_DE': 'Passwort vergessen'}),
 			create_self_service_entry(args, 'self-service-service-specific-passwords', 'servicespecificpasswords', 'umc/self-service/service-specific-passwords/backend/enabled', False, display_name={'en_US': 'Password Wireless LAN', 'de_DE': 'WLAN-Passwort'}),
