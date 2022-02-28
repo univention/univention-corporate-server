@@ -96,7 +96,7 @@ def create_self_service_entry(args: Namespace, name: str, page: str, ucr_name: s
 	entry.props.displayName = display_name
 	entry.props.description = description or display_name
 	entry.props.linkTarget = 'samewindow'
-	icon_file = '/usr/share/univention-self-service/www/icons/%s.png' % page
+	icon_file = '/usr/share/univention-self-service/backend/icons/%s.png' % page
 	if os.path.exists(icon_file):
 		with open(icon_file, 'rb') as fd:
 			icon_content_bytes = fd.read()
