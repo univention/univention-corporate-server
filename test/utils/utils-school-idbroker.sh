@@ -51,6 +51,7 @@ ansible_preperation () {
 	cp /root/clients.yml clients.yml
 	cp /root/id-broker-TESTING.cert id-broker.cert
 	cp /root/id-broker-TESTING.key id-broker.key
+	# shellcheck disable=SC1091
 	source /root/id-broker-secrets.sh
 	sed -i "s/BETTERMARKS_CLIENT_SECRET/$BETTERMARKS_CLIENT_SECRET/g" clients.yml
 	sed -i "s/UTA_CLIENT_SECRET/$UTA_CLIENT_SECRET/g" clients.yml
@@ -233,5 +234,15 @@ setup_letsencrypt () {
 	return 0
 }
 
+install_id_connector_broker_plugin () {
+	# until we have "ucsschool/extras" install the id connector
+	# broker plugin from the 5.0 test repo
+	echo "deb http://updates-test.software-univention.de/5.0/maintained/component/ idbroker_DEVEL/all/" > /etc/apt/sources.list.d/broker.list
+	echo "deb http://updates-test.software-univention.de/5.0/maintained/component/ idbroker_DEVEL/amd64/" >> /etc/apt/sources.list.d/broker.list
+	apt-get -y update || return 1
+	apt-get -y install id-broker-id-connector-plugin || return 1
+	univention-app configure ucsschool-id-connector --set 'ucsschool-id-connector/log_level'=DEBUG
+	univention-app restart ucsschool-id-connector
+}
 
 # vim:set filetype=sh ts=4:
