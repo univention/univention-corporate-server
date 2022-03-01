@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 # -*- coding: utf-8 -*.
 ## desc: Test setting of user photo via UMC
 ## bugs: [36273]

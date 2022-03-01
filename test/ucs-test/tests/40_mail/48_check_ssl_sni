@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check if SNI can be configured for dovecot with one additional host/cert
 ## exposure: dangerous
 ## roles: [domaincontroller_master, domaincontroller_backup]

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -svvv
+#!/usr/share/ucs-test/runner pytest-3 -svvv
 ## desc: Test setting two different quotas on the same mountpoint
 ## roles-not: [basesystem]
 ## exposure: dangerous

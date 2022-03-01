@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python2.7
+#!/usr/share/ucs-test/runner python3
 ## desc: Test basic schema registration
 ## tags:
 ##  - ldapextensions
@@ -6,7 +6,7 @@
 ## roles-not:
 ##  - basesystem
 ## packages:
-##  - python-univention-lib
+##  - python3-univention-lib
 ## exposure: dangerous
 
 import os

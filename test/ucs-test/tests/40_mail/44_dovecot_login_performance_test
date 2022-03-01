@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test logon time with many groups in LDAP
 ## tags: [producttest]
 ## timeout: 0

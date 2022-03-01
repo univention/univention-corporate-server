@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Test security related HTTP headers are set
 ## exposure: dangerous
 ## packages: [univention-management-console-server]

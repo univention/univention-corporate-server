@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check that umc and slapd do not stop if the sso cert is renewd.
 ## tags: [saml]
 ## bugs: [45042]

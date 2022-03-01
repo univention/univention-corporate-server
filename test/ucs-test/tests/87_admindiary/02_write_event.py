@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s -vvv
+#!/usr/share/ucs-test/runner pytest-3 -s -vvv
 ## desc: Tests the Univention Admin Diary
 ## tags: [apptest]
 ## roles: [domaincontroller_master]

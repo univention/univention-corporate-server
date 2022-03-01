@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Import 10.000 users in 20 schools with the new import script and test the performance
 ## tags: [newimport10000,performance]
 ## rolest: [domaincontroller_master]

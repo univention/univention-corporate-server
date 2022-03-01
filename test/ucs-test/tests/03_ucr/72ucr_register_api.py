@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Test register() API of UCR modules
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
 ## exposure: dangerous

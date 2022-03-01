@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest-3 -s --tb=native
+#!/usr/share/ucs-test/runner pytest-3 -s --tb=native
 ## desc: "Find traceback in /var/log/univention/ logfiles"
 ## exposure: safe
 ## tags: [apptest]

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: |
 ##  Check if kpasswd spuriously reports success
 ##  This script tests if kpasswd spuriously reports success when trying to change the password to a too short one.
@@ -15,7 +15,7 @@
 ## versions:
 ##  2.2-0: fixed
 ## packages:
-##  - python-pexpect
+##  - python3-pexpect
 ##  - univention-heimdal-kdc
 ## exposure: dangerous
 

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: check if a radius login via DOMAIN\USERNAME is working
 ## tags: [apptest, radius]
 ## packages:

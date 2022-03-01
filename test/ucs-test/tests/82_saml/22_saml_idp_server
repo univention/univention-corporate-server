@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check for ucs/server/saml-idp-server/* variable
 ## tags: [saml]
 ## exposure: safe

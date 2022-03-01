@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check if there are any school-slaves with the attribute userAccountControl of a windows computer
 ## packages: [ucs-school-import, univention-samba4, univention-s4-connector]
 ## bugs: [50280]

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 # coding: utf-8
 ## desc: "Test the UCS<->AD sync in {read,write,sync} mode for `con_other_attribute`s."
 ## exposure: dangerous

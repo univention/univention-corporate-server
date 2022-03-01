@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: check for the correct settings for signed kernel modules
 ## exposure: safe
 ## bugs: [36383]

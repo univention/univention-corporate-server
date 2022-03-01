@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Change primary mail address of shared folders
 ## tags: [apptest]
 ## exposure: dangerous

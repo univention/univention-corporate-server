@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Import 500 users and test the performance
 ## tags: [import500,performance]
 ## rolest: [domaincontroller_master]

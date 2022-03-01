@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Delivery to deactivated local account
 ## tags: [apptest]
 ## exposure: dangerous

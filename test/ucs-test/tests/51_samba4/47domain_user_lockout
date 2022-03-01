@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test if a domain user account is locked out and freed.
 ## exposure: dangerous
 ## packages: [univention-samba4, univention-s4-connector]

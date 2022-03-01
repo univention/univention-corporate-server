@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test handling of non matching cert and private key with umc as SP
 ## tags: [saml]
 ## bugs: [47700]

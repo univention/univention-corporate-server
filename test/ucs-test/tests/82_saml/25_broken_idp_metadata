@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check that the umc server does not stop if the idp metadata is not available.
 ## tags: [saml]
 ## bugs: [39355]

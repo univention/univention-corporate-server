@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check that package versions of the current release are higher than for the previous.
 ## bugs: [36369]
 ## roles: [domaincontroller_master]
@@ -299,7 +299,7 @@ def select_major_versions_for_test(repo_url):
 def parse_arguments():
     """
     Returns the parsed arguments when test is run interactively via
-    'python testname ...'
+    'python3 testname ...'
     First an older version should be specified.
     """
     usage = """%progname <old UCS version> <new UCS version>

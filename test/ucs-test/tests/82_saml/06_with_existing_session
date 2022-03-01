@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test passwordless login at SP with existing session at IdP
 ## tags: [saml]
 ## roles-not: [domaincontroller_master]

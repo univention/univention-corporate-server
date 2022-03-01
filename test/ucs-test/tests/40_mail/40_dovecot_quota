@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test Dovecots mailquota support
 ## tags: [apptest]
 ## exposure: dangerous

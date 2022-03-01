@@ -1,10 +1,10 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3
+#!/usr/share/ucs-test/runner pytest-3
 # -*- coding: utf-8 -*-
 ## desc: Test UDM API for users/user module
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 ## tags: [udm_api, skip_admember]
-## packages: [python-univention-directory-manager]
+## packages: [python3-univention-directory-manager]
 ## bugs: [51184]
 
 from unittest import TestCase, main

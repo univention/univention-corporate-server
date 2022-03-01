@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest-3 -s -l -vv
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 # -*- coding: utf-8 -*-
 ## desc: test self registration
 ## tags: [apptest]

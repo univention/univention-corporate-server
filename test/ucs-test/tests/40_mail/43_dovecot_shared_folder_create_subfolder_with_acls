@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create subfolder in shared folder and check permissions
 ## tags: [apptest]
 ## exposure: dangerous

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Try to hack through manipulated share paths
 ## tags: [SKIP]
 ## roles:

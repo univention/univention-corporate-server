@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check UCR handlers getting registered only once
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## packages:

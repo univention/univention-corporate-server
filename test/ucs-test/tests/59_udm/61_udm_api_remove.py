@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s -lvvx
+#!/usr/share/ucs-test/runner pytest-3 -s -lvvx
 # -*- coding: utf-8 -*-
 ## desc: Test 'remove' operation in UDM API
 ## exposure: dangerous

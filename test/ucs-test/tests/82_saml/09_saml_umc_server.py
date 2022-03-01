@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -svvv
+#!/usr/share/ucs-test/runner pytest-3 -s -vvv
 ## desc: SSO Login at UMC, test umc connection and ldap connection
 ## tags: [saml]
 ## roles: [domaincontroller_master]

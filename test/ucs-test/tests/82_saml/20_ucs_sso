@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check if every DC Master and DC Backup is registered in ucs-sso
 ## tags: [saml]
 ## exposure: safe

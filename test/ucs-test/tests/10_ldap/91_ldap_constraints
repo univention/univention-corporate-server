@@ -1,11 +1,11 @@
-#!/usr/share/ucs-test/runner python2.7
+#!/usr/share/ucs-test/runner python3
 ## desc: test ldap constraints
 ## bugs: [43312]
 ## roles:
 ##  - domaincontroller_master
 ## packages:
-##  - python-univention-lib
-##  - python-ldap
+##  - python3-univention-lib
+##  - python3-ldap
 ## exposure: dangerous
 
 import atexit

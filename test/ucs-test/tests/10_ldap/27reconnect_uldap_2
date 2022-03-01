@@ -5,8 +5,8 @@
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:
-##   - python-univention-directory-manager
-##   - python-univention
+##   - python3-univention-directory-manager
+##   - python3-univention
 
 import subprocess
 import time
@@ -82,7 +82,7 @@ def main():
 						count += 1
 					except UNAVAILABLE:
 						# ignore ldap.UNAVAILABLE, slapd is started but database backend not yet available
-						# python-ldap reconnect does not handle this situation
+						# python3-ldap reconnect does not handle this situation
 						print('ignore UNAVAILABLE')
 						pass
 					except univention.admin.uexceptions.ldapError as exc:
@@ -110,7 +110,7 @@ def main():
 						count += 1
 					except UNAVAILABLE:
 						# ignore ldap.UNAVAILABLE, slapd is started but database backend not yet available
-						# python-ldap reconnect does not handle this situation
+						# python3-ldap reconnect does not handle this situation
 						pass
 					except univention.admin.uexceptions.ldapError as exc:
 						if 'Server is unavailable'.lower() not in str(exc).lower():

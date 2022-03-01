@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Postfix accepts mails on port 25, 465 and 587
 ## tags: [apptest]
 ## exposure: dangerous

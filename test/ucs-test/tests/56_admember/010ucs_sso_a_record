@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check ucs-sso A record on AD server
 ## tags: [admember]
 ## exposure: safe

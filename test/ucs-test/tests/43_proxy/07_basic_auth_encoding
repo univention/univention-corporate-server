@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 # -*- coding: utf8 -*-
 ## desc: http-proxy-basic-auth-encoding-check
 ## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave, memberserver]

@@ -3,7 +3,7 @@
 ## roles:
 ##  - domaincontroller_master
 ## packages:
-##  - python-notifier
+##  - python3-notifier
 ## bugs: [40510]
 ## exposure: safe
 

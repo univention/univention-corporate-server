@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## tags: [udm-net,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

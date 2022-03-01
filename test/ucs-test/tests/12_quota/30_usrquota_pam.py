@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -svvv
+#!/usr/share/ucs-test/runner pytest-3 -svvv
 ## desc: Test setting the quota through pam with usrquota
 ## roles-not: [basesystem]
 ## exposure: dangerous

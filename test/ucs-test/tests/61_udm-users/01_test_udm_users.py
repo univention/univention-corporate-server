@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest-3
+#!/usr/share/ucs-test/runner pytest-3
 # -*- coding: utf-8 -*-
 ## desc: Test users/user
 ## tags: [udm,apptest]

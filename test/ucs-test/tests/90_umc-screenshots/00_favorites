@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: UMC favorites screenshot
 ## roles-not: [basesystem]
 ## exposure: dangerous

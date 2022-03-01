@@ -3,7 +3,7 @@
 ## bugs: [43395]
 ## roles:
 ##  - domaincontroller_master
-## packages: [python-univention-directory-manager]
+## packages: [python3-univention-directory-manager]
 ## exposure: safe
 
 from argparse import Namespace as N

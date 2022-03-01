@@ -1,10 +1,10 @@
-#!/usr/share/ucs-test/runner python2.7
+#!/usr/share/ucs-test/runner python3
 ## desc: Test basic ACL unregistration
 ## tags: [ldapextensions, apptest]
 ## roles-not:
 ##  - basesystem
 ## packages:
-##  - python-univention-lib
+##  - python3-univention-lib
 ## exposure: dangerous
 
 import time

@@ -1,9 +1,8 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Mails to unknown users are rejected
 ## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
-
 import smtplib
 import time
 

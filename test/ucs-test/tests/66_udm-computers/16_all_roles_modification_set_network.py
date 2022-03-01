@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Test setting network during modification for all computer roles
 ## tags: [udm-computers, SKIP]
 ## roles: [domaincontroller_master]

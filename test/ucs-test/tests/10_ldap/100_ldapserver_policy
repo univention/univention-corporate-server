@@ -3,7 +3,7 @@
 ## exposure: dangerous
 ## packages:
 ##  - univention-ldap-server
-##  - python-univention-directory-manager
+##  - python3-univention-directory-manager
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup

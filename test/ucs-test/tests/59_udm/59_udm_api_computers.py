@@ -1,10 +1,10 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 # -*- coding: utf-8 -*-
 ## desc: Test UDM API for users/user module
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 ## tags: [udm_api]
-## packages: [python-univention-directory-manager]
+## packages: [python3-univention-directory-manager]
 ## bugs: [47316]
 
 from collections import namedtuple

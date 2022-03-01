@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check whether idP is synchronized between DC Master and DC Backup.
 ## tags:
 ##  - saml

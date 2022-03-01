@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check for umc/saml/trusted/sp/* variable
 ## tags: [saml]
 ## exposure: safe

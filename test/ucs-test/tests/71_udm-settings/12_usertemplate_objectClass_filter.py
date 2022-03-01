@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Creates extended attributes and usertemplate
 ## bugs: [51364]
 ## roles:

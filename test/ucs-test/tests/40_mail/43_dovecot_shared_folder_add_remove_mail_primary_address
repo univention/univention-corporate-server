@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Add and remove mail primary address from shared folders
 ## tags: [apptest]
 ## exposure: dangerous

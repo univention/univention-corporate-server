@@ -2,7 +2,7 @@
 ## desc: Test the reconnect mechanism of univention-ldapsearch
 ## tags: [apptest,reconnect]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave]
-## packages: [python-psutil]
+## packages: [python3-psutil]
 ## bugs: [34293, 37299]
 ## exposure: dangerous
 ## versions:

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Mail imap acl flags are correctly evaluated
 ## tags: [apptest]
 ## exposure: dangerous

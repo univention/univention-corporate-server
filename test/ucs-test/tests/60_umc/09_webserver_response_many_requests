@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check if the webserver is responding after sending many unanswered requests
 ## bugs: [37487]
 ## versions:

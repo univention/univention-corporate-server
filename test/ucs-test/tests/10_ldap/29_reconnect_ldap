@@ -5,8 +5,8 @@
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:
-##   - python-univention-directory-manager
-##   - python-univention
+##   - python3-univention-directory-manager
+##   - python3-univention
 
 import subprocess
 import threading

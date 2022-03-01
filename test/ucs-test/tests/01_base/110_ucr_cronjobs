@@ -3,7 +3,7 @@
 ## bugs: [16541]
 ## tags: [basic]
 ## packages:
-##   - python-univention-config-registry
+##   - python3-univention-config-registry
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 

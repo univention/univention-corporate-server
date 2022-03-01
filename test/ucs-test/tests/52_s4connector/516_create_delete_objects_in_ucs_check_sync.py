@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest-3 -s -vv
+#!/usr/share/ucs-test/runner pytest-3 -s -vv
 # coding: utf-8
 ## desc: "Create and delete objects in ucs, check for leftovers or falsely removed objects"
 ## exposure: dangerous

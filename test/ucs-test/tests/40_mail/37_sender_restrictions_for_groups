@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test sender restrictions for groups
 ## exposure: dangerous
 ## packages: [univention-mail-server]

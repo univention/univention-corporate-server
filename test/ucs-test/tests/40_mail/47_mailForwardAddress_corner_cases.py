@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest -l -v
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test unionmap
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]

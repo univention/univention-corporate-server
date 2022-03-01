@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Try to create invalid ldap acl objects
 ## tags: [udm-ldapextensions,apptest]
 ## roles: [domaincontroller_master]

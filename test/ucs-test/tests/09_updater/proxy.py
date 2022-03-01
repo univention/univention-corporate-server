@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """Simple HTTP Proxy for ucs-test."""
 # Inspired by <http://effbot.org/librarybook/simplehttpserver.htm>

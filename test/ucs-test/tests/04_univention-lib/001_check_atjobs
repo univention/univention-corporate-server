@@ -3,7 +3,7 @@
 ## bugs: [36809]
 ## tags: [basic]
 ## packages:
-##   - python-univention-lib
+##   - python3-univention-lib
 ## exposure: dangerous
 
 import datetime

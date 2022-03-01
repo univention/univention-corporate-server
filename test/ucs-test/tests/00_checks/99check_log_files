@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check installation log files for errors, warnings and tracebacks
 ## bugs: [30751, 36160, 36902]
 ## tags: [basic, SKIP]

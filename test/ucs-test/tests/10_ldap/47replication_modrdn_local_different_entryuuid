@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 # -*- coding: utf-8 -*
 ## desc: Move a computer which has in the local LDAP server a different entryUUID
 ## tags:

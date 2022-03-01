@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Spaces in mail addresses
 ## tags: [apptest]
 ## exposure: dangerous

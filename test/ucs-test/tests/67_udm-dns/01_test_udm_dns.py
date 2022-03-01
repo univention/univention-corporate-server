@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Check UDM integratoin of all DNS record and zone types
 ## tags: [udm]
 ## roles: [domaincontroller_master]

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create a settings/data object
 ## tags: [udm-ldapextensions,apptest]
 ## roles: [domaincontroller_master]

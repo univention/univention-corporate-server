@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Call univention-server-join on preexisting computer account with multiple macs
 ## bugs: [47338]
 ## roles: [domaincontroller_master]

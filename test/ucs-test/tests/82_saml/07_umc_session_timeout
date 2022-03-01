@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Session timeout at UMC
 ## tags: [saml]
 ## bugs: [52443, 52888]

@@ -1,9 +1,8 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test special mail addresses
 ## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
-
 import time
 
 import univention.testing.strings as uts

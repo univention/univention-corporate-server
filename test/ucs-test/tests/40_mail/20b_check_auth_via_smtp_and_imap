@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check authentication via SMTP, IMAP, POP3, sieve, testsaslauthd
 ## tags: [apptest]
 ## exposure: dangerous

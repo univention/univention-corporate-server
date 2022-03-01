@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Allow comparison of shadowExpire in nis.schema
 ## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave]
 ## exposure: dangerous

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Test UMC authentication with expired accounts
 ## exposure: dangerous
 ## packages: [univention-management-console-server]

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Creates Schema and ACL extensions in invalid paths
 ## bugs: [41780]
 ## roles:

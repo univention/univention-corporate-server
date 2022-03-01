@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Modification of user's mail primary address
 ## tags: [apptest]
 ## exposure: dangerous

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Ini Parser
 ## tags: [basic, coverage]
 ## exposure: safe

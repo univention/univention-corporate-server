@@ -11,7 +11,7 @@
 ##  4.1-0: fixed
 ## exposure: dangerous
 ## packages:
-##   - python-univention-directory-manager
+##   - python3-univention-directory-manager
 import univention.admin.modules as udm_modules
 import univention.config_registry
 import univention.testing.ucr as ucr_test

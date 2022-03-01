@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test PTR records are removed when no ptr record would be left over and multiple IP addresses are assigned
 ## tags: [udm-computers,apptest]
 ## roles: [domaincontroller_master]

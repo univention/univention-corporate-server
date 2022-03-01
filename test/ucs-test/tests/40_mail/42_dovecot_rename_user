@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Dovecot, test username modrdn while keeping mail primary address
 ## tags: [apptest]
 ## exposure: dangerous

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python2.7
+#!/usr/share/ucs-test/runner python3
 ## desc: Check for filesystem permissions on ldap.secret, ldap-backup.secret, slave-join.secret
 ## tags:
 ##  - basic

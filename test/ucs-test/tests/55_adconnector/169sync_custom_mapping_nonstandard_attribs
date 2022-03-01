@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python3
-# #!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
+# #!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Test to check custom mappings for the AD-Connector
 ## bugs: [49981]
 ## roles:

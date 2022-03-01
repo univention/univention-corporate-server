@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test the UMC domain complete rejoin
 ## bugs: [34624]
 ## roles:

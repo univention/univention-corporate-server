@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create and remove shared folders with different settings of mail/dovecot/mailbox/delete
 ## tags: [apptest]
 ## exposure: dangerous

@@ -3,7 +3,7 @@
 ## desc: Test comments of atjobs
 ## tags: [basic]
 ## packages:
-##   - python-univention-lib
+##   - python3-univention-lib
 ## exposure: safe
 
 import univention.lib.atjobs as atjobs

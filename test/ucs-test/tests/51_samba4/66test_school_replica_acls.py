@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest-3 -s -vvv
+#!/usr/share/ucs-test/runner pytest-3 -s -vvv
 # -*- coding: utf-8 -*-
 ## desc: Test that school replica server can't create a Samba Administrator on the primary server
 ## tags: [samba4,apptest]

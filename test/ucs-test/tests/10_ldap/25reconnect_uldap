@@ -1,11 +1,11 @@
-#!/usr/share/ucs-test/runner python2.7
+#!/usr/share/ucs-test/runner python3
 ## desc: Test reconnect mechanism of uldap
 ## tags: [reconnect]
 ## roles-not:
 ##  - basesystem
 ##  - memberserver
 ## packages:
-##  - python-univention
+##  - python3-univention
 ## bugs:
 ##  - 34292
 ## exposure: dangerous

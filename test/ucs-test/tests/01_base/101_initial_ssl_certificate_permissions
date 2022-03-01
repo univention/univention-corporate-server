@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Permissions after renewing ssl certificate
 ## versions:
 ##  3.2-4: skip

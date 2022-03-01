@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest-3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Containers and Users of the same name may not exist in the same position
 ## tags: [udm]
 ## roles: [domaincontroller_master]

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3
+#!/usr/share/ucs-test/runner pytest-3
 # -*- coding: utf-8 -*-
 ## desc: Test UDM umc call to request a new license
 ## exposure: dangerous

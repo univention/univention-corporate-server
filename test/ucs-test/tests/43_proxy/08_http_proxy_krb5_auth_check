@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 # This test can be used to check the kerberos authentication with squid.
 # Note: out of the box this only works on master systems. And check that the join script is executed.
 ## desc: http-proxy-kerberos-auth-check

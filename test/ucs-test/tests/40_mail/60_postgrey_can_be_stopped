@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test postgrey can be stopped
 ## exposure: careful
 ## packages: [univention-postgrey]

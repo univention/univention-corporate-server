@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create Py2-only UDM hook extension object, expect it to be present in LDAP but not committed locally
 ## tags: [udm-ldapextensions]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]

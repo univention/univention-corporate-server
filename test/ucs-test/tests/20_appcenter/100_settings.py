@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: App Settings
 ## tags: [basic, coverage, skip_admember]
 ## packages:

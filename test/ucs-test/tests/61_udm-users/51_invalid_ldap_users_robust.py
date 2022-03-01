@@ -1,9 +1,9 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 # -*- coding: utf-8 -*-
 ## desc: Test UDM cannot get broken by users with missing object classes
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
-## packages: [python-univention-directory-manager]
+## packages: [python3-univention-directory-manager]
 
 import base64
 import random

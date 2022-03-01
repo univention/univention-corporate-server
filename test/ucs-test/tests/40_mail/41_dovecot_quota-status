@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test Dovecots quota-status service for Postfix
 ## tags: [apptest]
 ## exposure: dangerous

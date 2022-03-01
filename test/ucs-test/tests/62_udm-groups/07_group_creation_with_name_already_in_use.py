@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Create/modify groups/group with name which is already in use
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]

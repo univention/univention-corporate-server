@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test if GPOs created on a native Windows Server work with S4
 ## exposure: dangerous
 ## packages: [univention-samba4, ucs-windows-tools]

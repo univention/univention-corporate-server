@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Run all diagnostic checks
 ## exposure: safe
 ## tags: [basic, apptest]

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: check if client setup through udm is working with PEAP
 ## tags: [apptest, radius]
 ## packages:

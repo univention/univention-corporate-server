@@ -7,8 +7,8 @@
 ## roles-not:
 ##  - basesystem
 ## packages:
-##  - python-univention-lib
-##  - python-ldap
+##  - python3-univention-lib
+##  - python3-ldap
 ## exposure: dangerous
 
 import sys
