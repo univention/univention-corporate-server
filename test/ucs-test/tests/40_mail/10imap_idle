@@ -42,9 +42,9 @@ def main():
 			c = imaplib.IMAP4_SSL(mailHomeServer)
 			c.login(mailPrimaryAddress, password)
 			c.select('INBOX', readonly=True)
-			c.send("%s IDLE\r\n" % (c._new_tag()))
+			c.send(b"%s IDLE\r\n" % (c._new_tag()))
 			while True:
-				line = c.readline().strip()
+				line = c.readline().decode('UTF-8').strip()
 				print('idle-client: got line %s' % line)
 				if line.endswith('EXISTS'):
 					print('idle-client: OK, we are good')

@@ -8,10 +8,10 @@ import os
 import shutil
 from optparse import OptionParser
 
-import httplib
-import urllib2
-import urlparse
-from six.moves import BaseHTTPServer
+from six.moves import BaseHTTPServer, http_client
+from six.moves.urllib.error import HTTPError
+from six.moves.urllib.parse import unquote, urlsplit, urlunsplit
+from six.moves.urllib.request import Request, urlopen
 
 PORT = 3128
 
@@ -28,13 +28,13 @@ class Proxy(BaseHTTPServer.BaseHTTPRequestHandler):
 	def common(self, data=True):
 		if options.authorization:
 			try:
-				auth = self.headers['Proxy-Authorization']
-				if not auth.startswith('Basic '):
+				auth = self.headers.get('Proxy-Authorization', '')
+				if not auth.lower().startswith('basic '):
 					raise KeyError("Only Basic authentication: %s" % auth)
 				auth = auth[len('Basic '):]
-				auth = base64.decodestring(auth)
+				auth = base64.b64decode(auth).decode('ISO8859-1')
 				username, password = auth.split(':', 1)
-				username, password = urllib2.unquote(username), urllib2.unquote(password)
+				username, password = unquote(username), unquote(password)
 				if username != options.username:
 					msg = "Username: %s != %s" % (username, options.username)
 					if options.verbose:
@@ -46,14 +46,14 @@ class Proxy(BaseHTTPServer.BaseHTTPRequestHandler):
 						self.log_error(msg)
 					raise KeyError(msg)
 			except KeyError as exc:
-				self.send_response(httplib.PROXY_AUTHENTICATION_REQUIRED)
+				self.send_response(http_client.PROXY_AUTHENTICATION_REQUIRED)
 				self.send_header('WWW-Authenticate', 'Basic realm="%s"' % (options.realm,))
-				self.send_header('Content-type', 'text/html')
+				self.send_header('Content-type', 'text/html; charset=UTF-8')
 				self.end_headers()
-				self.wfile.write('<html><body><h1>Error: Proxy authorization needed</h1>%s</body></html>' % (exc,))
+				self.wfile.write(('<html><body><h1>Error: Proxy authorization needed</h1>%s</body></html>' % (exc,)).encode('UTF-8'))
 				return
 		# rewrite url
-		url = urlparse.urlsplit(self.path)
+		url = urlsplit(self.path)
 		u = list(url)
 		# The proxy gets a verbatim copy of the URL, which might contain the
 		# target site credentials. urllib doesn't handle this, strip it.
@@ -63,14 +63,15 @@ class Proxy(BaseHTTPServer.BaseHTTPRequestHandler):
 		if options.translate:
 			if url.hostname == options.translate:
 				u[1] = u[1].replace(options.translate, 'localhost')
-		url = urlparse.urlunsplit(u)
+		url = urlunsplit(u)
 		try:
-			req = urllib2.Request(url=url, headers=self.headers)
+			req = Request(url=url, headers=self.headers)
 			if options.verbose:
 				for k, v in self.headers.items():
 					self.log_message("> %s: %s" % (k, v))
-			fp = urllib2.urlopen(req)
-		except urllib2.HTTPError as fp:
+			fp = urlopen(req)
+		except HTTPError as exc:
+			fp = exc
 			if options.verbose:
 				self.log_error("%d %s" % (fp.code, fp.msg))
 

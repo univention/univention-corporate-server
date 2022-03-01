@@ -28,7 +28,7 @@ def ldap_search(filter_):
 	lo = getMachineConnection()
 	found = lo.search(filter=filter_)
 	if found:
-		return [(x[1]['uid'][0], x[1]['shadowExpire'][0]) for x in found]
+		return [(x[1]['uid'][0].decode('UTF-8'), x[1]['shadowExpire'][0].decode('ASCII')) for x in found]
 
 
 def run():

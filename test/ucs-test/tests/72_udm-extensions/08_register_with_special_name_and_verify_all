@@ -73,7 +73,7 @@ exit 0
 				'univentionOwnedByPackage': [package_name],
 				'univentionObjectType': ['settings/udm_%s' % extension_type],
 				'univentionOwnedByPackageVersion': [package_version],
-				'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer[extension_type])],
+				'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer[extension_type].encode('UTF-8'))],
 			})
 
 	finally:

@@ -69,6 +69,7 @@ class Tester(object):
 					'mailPrimaryAddress': mail,
 				}
 			)
+
 			users.append(username)
 			mailsToTest.extend([mail, mail.upper(), mail.lower()])
 		return mailsToTest, users

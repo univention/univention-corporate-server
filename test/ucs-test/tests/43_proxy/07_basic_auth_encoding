@@ -22,7 +22,7 @@ def get_basic_auth_header(base64_encoded_creds):
 
 
 def get_base64_encoded_creds(username, password, encoding):
-	return base64.b64encode('{}:{}'.format(username, password).encode(encoding))
+	return base64.b64encode('{}:{}'.format(username, password).encode(encoding)).decode('ASCII')
 
 
 def check_proxy(user, encoding):

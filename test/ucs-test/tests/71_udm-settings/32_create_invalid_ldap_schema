@@ -19,7 +19,7 @@ if __name__ == '__main__':
 		filename = '/90%s' % uts.random_name()
 		data = '# schema test'
 		try:
-			schema = udm.create_object('settings/ldapschema', name=schema_name, filename=filename, data=base64.encodestring(bz2.compress(data)))
+			schema = udm.create_object('settings/ldapschema', name=schema_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'))
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			pass
 		else:
@@ -29,7 +29,7 @@ if __name__ == '__main__':
 		filename = '90%s' % uts.random_name()
 		data = '# schema test'
 		try:
-			schema = udm.create_object('settings/ldapschema', name=schema_name, filename=filename, data=base64.encodestring(data))
+			schema = udm.create_object('settings/ldapschema', name=schema_name, filename=filename, data=base64.b64encode(data.encode('UTF-8')).decode('ASCII'))
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			pass
 		else:
@@ -39,7 +39,7 @@ if __name__ == '__main__':
 		filename = '90%s' % uts.random_name()
 		data = '# schema test'
 		try:
-			schema = udm.create_object('settings/ldapschema', name=schema_name, filename=filename, data=base64.encodestring(bz2.compress(data)), active='YES')
+			schema = udm.create_object('settings/ldapschema', name=schema_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'), active='YES')
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			pass
 		else:

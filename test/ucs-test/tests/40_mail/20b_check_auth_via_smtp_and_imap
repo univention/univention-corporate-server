@@ -88,7 +88,8 @@ class AuthTests(object):
 			'--port', '4190', '-4',
 			'--passwordfd', '0',
 			'--list'], stdin=subprocess.PIPE)
-		proc.communicate('%s\n' % (self.password,))
+		command = '%s\n' % (self.password,)
+		proc.communicate(command.encode('UTF-8'))
 		exitcode = proc.returncode
 		print('>>> test_sieve(%s): exitcode=%r' % (user, exitcode))
 		return exitcode == 0
@@ -106,7 +107,9 @@ class AuthTests(object):
 
 	def set_userPassword(self, value):
 		lo = utils.get_ldap_connection()
-		lo.modify(self.userdn, [('userPassword', lo.get(self.userdn, ['userPassword'])['userPassword'], [value])])
+		password = lo.get(self.userdn, ['userPassword'])['userPassword']
+		print("password ", password)
+		lo.modify(self.userdn, [('userPassword', password, [value.encode('UTF-8')])])
 
 	def run_tests(self):
 		result = {}

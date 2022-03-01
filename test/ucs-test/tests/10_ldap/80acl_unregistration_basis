@@ -81,7 +81,7 @@ access to dn.base="%(container)s" attrs="description"
 		# Waiting for the postrun
 		wait_for_replication_and_postrun()
 
-		#TODO remove when bug #37516 is fixed
+		# TODO remove when bug #37516 is fixed
 		time.sleep(60)
 
 		try:

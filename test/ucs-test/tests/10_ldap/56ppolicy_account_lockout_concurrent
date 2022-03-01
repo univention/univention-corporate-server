@@ -174,7 +174,7 @@ for ((i=0;i<num_testusers;i++)); do
 		univention-ldapsearch -LLL -b "$test_userdn" -s base +
 
 		echo "DEBUG: attempting to lock account '$test_username' manually"
-		python -m univention.lib.account lock --dn "$test_userdn" --lock-time '20141006192950Z'
+		python3 -m univention.lib.account lock --dn "$test_userdn" --lock-time '20141006192950Z'
 
 		locked_state=$(udm-test users/user list --filter "username=$test_username" | sed -n 's/^  locked: //p')
 		echo "DEBUG: result: $locked_state"

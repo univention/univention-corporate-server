@@ -46,9 +46,8 @@ def check_pfs_cipher():
 	print('-----------CUTCUTCUT----------------')
 	print(openssl_out)
 	print('-----------CUTCUTCUT----------------')
-
 	for possible_cipher in PFS_CIPHERS:
-		if possible_cipher in openssl_out:
+		if possible_cipher in openssl_out.decode('UTF-8'):
 			print("\nCipher '%s' was found.\n" % possible_cipher)
 			return
 

@@ -33,7 +33,7 @@ class Bunch(object):
 
 	def __str__(self):
 		result = []
-		for key, value in self.__dict__.iteritems():
+		for key, value in self.__dict__.items():
 			result.append('%s=%r' % (key, value))
 		return 'Bunch(' + ', '.join(result) + ')'
 
@@ -65,7 +65,7 @@ def main():
 			user = Bunch(dn=dn, name=username)
 
 			def check_virtual_server(userdn, use_master, attrs):
-				assert attrs.get('univentionRadiusClientVirtualServer', [''])[0] == computer.name, '{} is unable to read univentionRadiusClientVirtualServer of {} from {}'.format(
+				assert attrs.get('univentionRadiusClientVirtualServer', [b''])[0].decode('UTF-8') == computer.name, '{} is unable to read univentionRadiusClientVirtualServer of {} from {}'.format(
 					userdn,
 					computer.dn,
 					'domaincontroller_master' if use_master else 'localhost')

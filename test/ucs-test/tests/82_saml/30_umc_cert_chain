@@ -20,7 +20,7 @@ def main():
 	with open(os.path.join(cert_folder, 'cert.pem'), 'rb') as cert_file:
 		cert = cert_file.read()
 	with open('/etc/univention/ssl/ucsCA/CAcert.pem', 'rb') as ca_file:
-		cert += '\n' + ca_file.read()
+		cert += b'\n' + ca_file.read()
 	with samltest.SPCertificate(cert):
 		saml_check()
 
@@ -35,7 +35,7 @@ def saml_check():
 		SamlSession.test_logout_at_IdP()
 		SamlSession.test_logout()
 	except samltest.SamlError as exc:
-		utils.fail(exc.message)
+		utils.fail(str(exc))
 
 
 if __name__ == '__main__':

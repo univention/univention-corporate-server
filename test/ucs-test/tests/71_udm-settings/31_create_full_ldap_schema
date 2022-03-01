@@ -27,7 +27,7 @@ if __name__ == '__main__':
 				'settings/ldapschema',
 				position=udm.UNIVENTION_CONTAINER,
 				name=schema_name,
-				data=base64.encodestring(bz2.compress(data)),
+				data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'),
 				filename=filename,
 				packageversion=package_version,
 				appidentifier=appidentifier,
@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
 			utils.verify_ldap_object(schema, {
 				'cn': [schema_name],
-				'univentionLDAPSchemaData': [bz2.compress(data)],
+				'univentionLDAPSchemaData': [bz2.compress(data.encode('UTF-8'))],
 				'univentionLDAPSchemaFilename': [filename],
 				'univentionOwnedByPackage': package,
 				'univentionOwnedByPackageVersion': [package_version],

@@ -24,7 +24,7 @@ def eapol_test(username):
 }}
 '''.format(username)
 	with tempfile.NamedTemporaryFile() as fd:
-		fd.write(testdata)
+		fd.write(testdata.encode('UTF-8'))
 		fd.flush()
 		subprocess.check_call(['/usr/sbin/eapol_test', '-c', fd.name, '-s', 'testing123'])
 

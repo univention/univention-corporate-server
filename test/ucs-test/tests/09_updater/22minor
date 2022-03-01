@@ -30,7 +30,7 @@ mkpdir "${major}.${minor}-0" maintained "${ARCH}"
 mkdeb "${pkgname}" 3 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
 
-python2.7 create_releases_json.py "${REPODIR}" "${_version_version}-0" "${_version_version}-1" "${major}.${minor}-0"
+python3 create_releases_json.py "${REPODIR}" "${_version_version}-0" "${_version_version}-1" "${major}.${minor}-0"
 
 config_repo version/patchlevel=0 version/erratalevel=0
 

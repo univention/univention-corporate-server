@@ -23,13 +23,14 @@ from univention.testing.ucs_samba import force_drs_replication
 from univention.testing.udm import UCSTestUDM
 
 
-def run_cmd(cmd, stdout=PIPE, stdin=None, std_in=None):
+def run_cmd(cmd, stdout=PIPE, stdin=None, std_in=None, encoding='UTF-8'):
 	"""
 	Creates a process as a Popen instance with a given 'cmd'
 	and 'communicates' with it.
 	"""
 	proc = Popen(cmd, stdout=stdout, stderr=PIPE, stdin=stdin)
-	return proc.communicate(std_in)
+	stdout, stderr = proc.communicate(std_in)
+	return stdout.decode(encoding), stderr.decode(encoding)
 
 
 def remove_samba_warnings(input_str):

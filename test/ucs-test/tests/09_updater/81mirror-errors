@@ -68,7 +68,7 @@ EOF
 comp="repository/online/component/${compname}"
 config_mirror version/patchlevel=0 version/erratalevel=0
 
-eval "$(python proxy.py -f -p 0 -a -u "${username}" -w "${password}" 3>&-)"
+eval "$(python3 proxy.py -f -p 0 -a -u "${username}" -w "${password}" 3>&-)"
 invoke-rc.d univention-firewall stop
 
 run_tests () { # execute all updater programs

@@ -232,7 +232,7 @@ def test_script_lock_expired_accounts(stopped_s4_connector, udm):  # TODO: param
 		userdn, username = udm.create_user(userexpiry=expiry_time.strftime("%Y-%m-%d"), check_for_drs_replication=False, wait_for=False)
 		if locked_status == '1':
 			locktime = time.strftime("%Y%m%d%H%M%SZ", time.gmtime())
-			subprocess.check_call(['/usr/bin/python2.7', '-m', 'univention.lib.account', 'lock', '--dn', userdn, '--lock-time', locktime])
+			subprocess.check_call(['/usr/bin/python3', '-m', 'univention.lib.account', 'lock', '--dn', userdn, '--lock-time', locktime])
 		return username
 
 	userdata = {}
@@ -737,7 +737,7 @@ def test_udm_users_ldap_mspolicy(udm, ucr, module):
 	utils.wait_for_replication_and_postrun()
 
 	name = "%s_test1" % (uts.random_username())
-	attr = {'password': 'Univention.1', 'username': name, 'lastname': 'test', 'policy_reference': pol_dn}
+	attr = {'password': b'Univention.1', 'username': name, 'lastname': 'test', 'policy_reference': pol_dn}
 	dn = udm.create_object(module, wait_for_replication=True, check_for_drs_replication=True, wait_for=True, **attr)
 
 	with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):

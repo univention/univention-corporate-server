@@ -18,7 +18,7 @@ if __name__ == '__main__':
 		acl_name = uts.random_name()
 		filename = '90%s' % uts.random_name()
 		data = '# access to  *'
-		acl = udm.create_object('settings/ldapacl', position=udm.UNIVENTION_CONTAINER, name=acl_name, filename=filename, data=base64.encodestring(bz2.compress(data)))
+		acl = udm.create_object('settings/ldapacl', position=udm.UNIVENTION_CONTAINER, name=acl_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'))
 		utils.verify_ldap_object(acl, {'cn': [acl_name]})
 
 		udm.remove_object('settings/ldapacl', dn=acl)

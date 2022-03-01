@@ -14,8 +14,7 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 from univention.testing.strings import random_username
 
-sys.path.insert(0, '.')
-from umc import UDMModule  # noqa: E402
+from umc import UDMModule
 
 
 class TestUMCExtendedAttributes(UDMModule):

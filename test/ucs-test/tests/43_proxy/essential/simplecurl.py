@@ -4,11 +4,12 @@
 
 .. moduleauthor:: Ammar Najjar <najjar@univention.de>
 """
+
 import time
+from io import BytesIO
 from tempfile import NamedTemporaryFile
 
 import pycurl
-import StringIO
 
 import univention.testing.utils as utils
 
@@ -94,15 +95,15 @@ class SimpleCurl(object):
 		self.curl.setopt(pycurl.VERBOSE, bVerbose)
 		if postData:
 			self.curl.setopt(pycurl.HTTPPOST, postData)
-		buf = StringIO.StringIO()
+		buf = BytesIO()
 		self.curl.setopt(pycurl.WRITEFUNCTION, buf.write)
 		print('getting page:', url)
 		for i in range(60):
 			try:
 				self.curl.perform()
 				break
-			except pycurl.error:
-				print('.')
+			except pycurl.error as exc:
+				print('.', exc)
 				time.sleep(1)
 		else:
 			print('Requested page could not be fetched')

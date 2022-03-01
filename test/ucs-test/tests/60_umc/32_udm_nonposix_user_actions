@@ -13,8 +13,7 @@ from univention.testing.strings import random_username
 from univention.testing.udm import UCSTestUDM
 from univention.testing.umc import Client
 
-sys.path.insert(0, '.')
-from umc import UMCBase  # noqa: E402
+from umc import UMCBase
 
 
 class TestUMCUserAuthentication(UMCBase):

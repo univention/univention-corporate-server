@@ -36,21 +36,21 @@ def doJobs(job, num):
 	for _ in range(num):
 		child = os.fork()
 		if child:
-			os.write(1, '<')
+			os.write(1, b'<')
 			children.add(child)
 		else:
 			os._exit(job.run())
 	# wait for the children and check the status
 	while children:
 		pid, status = os.waitpid(0, 0)
-		os.write(1, '>')
+		os.write(1, b'>')
 		if os.WIFSIGNALED(status):
 			utils.fail('job %d failed with signal %d' % (pid, os.WTERMSIG(status)))
 		elif os.WIFEXITED(status) and os.WEXITSTATUS(status):
 			utils.fail('job %d failed with status %d' % (pid, os.WEXITSTATUS(status)))
 		children.remove(pid)
 	end = time.time()
-	os.write(1, " %.2f\n" % (end - start,))
+	os.write(1, b" %.2f\n" % (end - start,))
 
 
 class Job(object):

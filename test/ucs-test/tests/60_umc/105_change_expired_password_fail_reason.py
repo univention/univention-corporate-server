@@ -59,7 +59,7 @@ def enabled_password_quality_checks(ucr):
 	ldap_base = ucr.get('ldap/base')
 	dn = 'cn=default-settings,cn=pwhistory,cn=users,cn=policies,%s' % (ldap_base,)
 	old = lo.getAttr(dn, 'univentionPWQualityCheck')
-	new = ['TRUE']
+	new = [b'TRUE']
 	lo.modify(dn, [('univentionPWQualityCheck', old, new)])
 	yield
 	lo.modify(dn, [('univentionPWQualityCheck', new, old)])

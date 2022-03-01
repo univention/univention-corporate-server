@@ -11,8 +11,7 @@ import sys
 import univention.testing.utils as utils
 from univention.testing.strings import random_username
 
-sys.path.insert(0, '.')
-from umc import UMCBase  # noqa: E402
+from umc import UMCBase
 
 
 class TestUMCGroupsCreation(UMCBase):

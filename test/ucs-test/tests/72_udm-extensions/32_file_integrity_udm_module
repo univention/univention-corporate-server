@@ -40,7 +40,7 @@ def test_module():
 	options = {}
 	buffers = {}
 	for option_type, filename, target_filename in TEST_DATA:
-		buffers[filename] = open('/usr/share/ucs-test/72_udm-extensions/%s' % filename, 'r').read()
+		buffers[filename] = open('/usr/share/ucs-test/72_udm-extensions/%s' % filename, 'rb').read()
 		options.setdefault(option_type, []).append('/usr/share/%s/%s' % (package_name, filename))
 
 	joinscript_buffer = get_join_script_buffer(extension_type, '/usr/share/%s/%s' % (package_name, extension_filename), options=options, version_start='5.0-0')
@@ -56,7 +56,7 @@ def test_module():
 		package.create_unjoin_script_from_buffer('66%s-uninstall.uinst' % package_name, unjoinscript_buffer)
 		package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
 		for fn, data in buffers.items():
-			package.create_usr_share_file_from_buffer(fn, data)
+			package.create_usr_share_file_from_buffer(fn, data, 'wb')
 		package.build()
 		package.install()
 
@@ -77,8 +77,8 @@ def test_module():
 			fail('ERROR: target file %s does not exist' % target_fn)
 
 		# check if sha1(buffer) == sha1(file)
-		hash_buffer = hashlib.sha1(extension_buffer).hexdigest()
-		hash_file = hashlib.sha1(open(target_fn).read()).hexdigest()
+		hash_buffer = hashlib.sha1(extension_buffer.encode('UTf-8')).hexdigest()
+		hash_file = hashlib.sha1(open(target_fn, 'rb').read()).hexdigest()
 		print('HASH BUFFER: %r' % hash_buffer)
 		print('HASH FILE: %r' % hash_file)
 		if hash_buffer != hash_file:
@@ -90,7 +90,7 @@ def test_module():
 			if not os.path.exists(filename):
 				fail('ERROR: file %r of type %r does not exist' % (filename, option_type))
 			hash_buffer = hashlib.sha1(buffers[src_fn]).hexdigest()
-			hash_file = hashlib.sha1(open(filename).read()).hexdigest()
+			hash_file = hashlib.sha1(open(filename, 'rb').read()).hexdigest()
 			if hash_buffer != hash_file:
 				print('\n'.join(difflib.context_diff(open(filename).read(), buffers[src_fn], fromfile='filename', tofile='buffer')))
 				fail('ERROR: sha1 sums of file and buffer differ (fn=%s ; file=%s ; buffer=%s)' % (filename, hash_file, hash_buffer))

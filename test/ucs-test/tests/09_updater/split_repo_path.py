@@ -2,6 +2,7 @@
 """
 Split repository path `$mm/$part/($mmp|component/$comp)/$arch` into atoms `($mmp|$mm--$comp,$part,$arch)`
 """
+
 from os.path import relpath
 from sys import argv, exit
 

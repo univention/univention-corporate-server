@@ -5,7 +5,6 @@
 ## packages: [univention-mail-dovecot]
 ## bugs: [48485]
 
-
 import socket
 import ssl
 import subprocess

@@ -46,7 +46,7 @@ class TestUcrWidgets(object):
 			position=self.udm.UNIVENTION_CONTAINER,
 			name=syntax,
 			filename='{}.py'.format(syntax),
-			data=base64.b64encode(bz2.compress(SYNTAX.format(syntax))),
+			data=base64.b64encode(bz2.compress(SYNTAX.format(syntax).encode('UTF-8'))).decode('ASCII'),
 			package=syntax,
 			packageversion='1'
 		)
@@ -68,7 +68,7 @@ class TestUcrWidgets(object):
 				position=self.udm.UNIVENTION_CONTAINER,
 				name=sub_syntax,
 				filename='{}.py'.format(sub_syntax),
-				data=base64.b64encode(bz2.compress(SUB_SYNTAX.format(syntax=syntax, sub_syntax=sub_syntax))),
+				data=base64.b64encode(bz2.compress(SUB_SYNTAX.format(syntax=syntax, sub_syntax=sub_syntax).encode('UTF-8'))).decode('ASCII'),
 				package=syntax,
 				packageversion='1'
 			)

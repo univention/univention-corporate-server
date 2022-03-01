@@ -48,7 +48,7 @@ if __name__ == '__main__':
 				dn = udm.create_object(
 					'settings/udm_%s' % extension_type,
 					name=extension_name,
-					data=base64.b64encode(bz2.compress(extension_buffer)),
+					data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
 					filename=extension_filename,
 					packageversion=package_version,
 					appidentifier=app_id,

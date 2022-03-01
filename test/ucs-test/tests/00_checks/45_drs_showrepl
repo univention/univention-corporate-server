@@ -14,6 +14,7 @@ import univention.testing.utils as utils
 proc = Popen(['samba-tool', 'drs', 'showrepl'], stdout=PIPE, stderr=PIPE)
 
 stdout, stderr = proc.communicate()
+stdout, stderr = stdout.decode("UTF-8"), stderr.decode("UTF-8")
 
 print('** STDERR')
 print(stderr.strip())

@@ -13,16 +13,18 @@ policy () {
 }
 
 pypolicy () {
-	python2.7 -c 'import sys
+	python3 -c 'import sys
 from univention.uldap import getMachineConnection
 c = getMachineConnection()
 p = c.getPolicies(sys.argv[1])
 v = p.get("univentionPolicyDhcpRouting", {}).get("univentionDhcpRouters", {})
-print "v=", v
+print("v=", v)
 e = eval(sys.argv[2]).get("univentionDhcpRouters", {})
-print "e=", e
-r = 0 if all(value == v.get(key) for key, value in e.iteritems()) else 1
-print "r=", r
+print("e=", e)
+def compare(a, b):
+	return a == b or isinstance(a, list) and [_.decode("UTF-8") if isinstance(_, bytes) else _ for _ in b] == a
+r = 0 if all(compare(value, v.get(key)) for key, value in e.items()) else 1
+print("r=", r)
 sys.exit(r)
 ' "$@"
 }

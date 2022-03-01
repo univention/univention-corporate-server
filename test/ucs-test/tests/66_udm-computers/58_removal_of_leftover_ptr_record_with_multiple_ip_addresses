@@ -39,4 +39,4 @@ if __name__ == '__main__':
 		}
 		udm.modify_object('computers/windows', dn=computer, ip='10.20.30.6', remove=remove, append=append)
 		univention.testing.utils.verify_ldap_object(ptr_record, should_exist=False)
-		univention.testing.utils.verify_ldap_object('relativeDomainName=6,%s' % (rdnsZone,), {'pTRRecord': [b'%s.%s.%s.' % (computer_name, domainname, tld), b'%s.%s2.%s.' % (computer_name, domainname, tld)]})
+		univention.testing.utils.verify_ldap_object('relativeDomainName=6,%s' % (rdnsZone,), {'pTRRecord': [('%s.%s.%s.' % (computer_name, domainname, tld)).encode('UTF-8'), ('%s.%s2.%s.' % (computer_name, domainname, tld)).encode('UTF-8')]})

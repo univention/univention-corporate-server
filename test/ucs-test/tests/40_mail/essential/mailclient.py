@@ -87,7 +87,7 @@ class BaseMailClient(object):
 		result = []
 		mBoxes = self.list()[1]
 		if mBoxes[0]:
-			result = [x.split('" ')[-1] for x in mBoxes if 'Noselect' not in x.split()[0]]
+			result = [x.split(b'" ')[-1].decode('UTF-8') for x in mBoxes if b'Noselect' not in x.split()[0]]
 			for i, item in enumerate(result):
 				if '"' in item:
 					item = item.replace('"', '')
@@ -105,7 +105,7 @@ class BaseMailClient(object):
 		# parse string into tokens
 		tokens = []
 		merge = False
-		for token in acls[0].split():
+		for token in acls[0].decode('UTF-8').split():
 			if merge:
 				# append to last token
 				tokens[-1] = '{} {}'.format(tokens[-1], token)

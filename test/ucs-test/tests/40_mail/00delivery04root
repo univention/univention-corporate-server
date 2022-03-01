@@ -6,7 +6,7 @@
 ## bugs: [23527]
 
 #################
-#  Infomartion  #
+#  Information  #
 #################
 # This script creates a user and then sends an eMail to root.
 # It then set the user as receiver (alias [mail/alias/root]) for the eMail to root,

@@ -8,11 +8,11 @@
 ##  - ucs-test-umc-module
 ## exposure: dangerous
 
+import http.client as httplib
 import ssl
 import subprocess
 import time
 
-import httplib
 import psutil
 
 import univention.testing.utils as utils
@@ -40,15 +40,13 @@ def kill_ucstest():
 
 
 def restart_web_server():
-	subprocess.call(['service', 'univention-management-console-web-server', 'restart'])
-	subprocess.call(['service', 'univention-management-console-server', 'restart'])
-	subprocess.call(['service', 'apache2', 'restart'])
+	subprocess.call(['systemctl', 'restart', 'univention-management-console-web-server', 'univention-management-console-server', 'apache2'])
 
 
 class AsyncClient(Client):
 
 	def async_request(self, path):
-		cookie = '; '.join(['='.join(x) for x in self.cookies.iteritems()])
+		cookie = '; '.join(['='.join(x) for x in self.cookies.items()])
 		headers = dict(self._headers, **{'Cookie': cookie, 'Content-Type': 'application/json'})
 		headers['X-XSRF-Protection'] = self.cookies.get('UMCSessionId', '')
 		connection = httplib.HTTPSConnection(self.hostname, timeout=10)

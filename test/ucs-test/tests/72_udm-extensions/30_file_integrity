@@ -45,7 +45,7 @@ if __name__ == '__main__':
 			dn = udm.create_object(
 				'settings/udm_%s' % extension_type,
 				name=extension_name,
-				data=base64.b64encode(bz2.compress(extension_buffer)),
+				data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
 				filename=extension_filename,
 				packageversion=package_version,
 				appidentifier=app_id,
@@ -65,14 +65,14 @@ if __name__ == '__main__':
 				fail('ERROR: expected UDM extension does not exist in filesystem (%s)' % (target_fn, ))
 
 			# check if sha1(buffer) == sha1(file)
-			hash_buffer = hashlib.sha1(extension_buffer).hexdigest()
-			hash_file = hashlib.sha1(open(target_fn).read()).hexdigest()
+			hash_buffer = hashlib.sha1(extension_buffer.encode('UTF-8')).hexdigest()
+			hash_file = hashlib.sha1(open(target_fn, 'rb').read()).hexdigest()
 			if hash_buffer != hash_file:
 				fail('ERROR: sha1 sums of file and buffer differ (fn=%s ; file=%s ; buffer=%s)' % (target_fn, hash_file, hash_buffer))
 
 			# check replicated file has correct file mode
 			current_mode = oct(os.stat(target_fn).st_mode & (stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO))
-			expected_mode = '0644'
+			expected_mode = '0o644'
 			if current_mode != expected_mode:
 				fail('ERROR: permissions of target file %s are not ok (current=%s  expected=%s)' % (target_fn, current_mode, expected_mode))
 

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: SSO Login at UMC as Service Provider with kerberos
 ## tags: [saml]
 ## join: true
@@ -43,7 +43,7 @@ def main():
 				SamlSession.test_logout_at_IdP()
 				SamlSession.test_logout()
 			except samltest.SamlError as exc:
-				utils.fail(exc.message)
+				utils.fail(str(exc))
 
 
 if __name__ == '__main__':

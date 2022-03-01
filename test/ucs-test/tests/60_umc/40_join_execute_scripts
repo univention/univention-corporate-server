@@ -14,8 +14,7 @@ import sys
 
 import univention.testing.utils as utils
 
-sys.path.insert(0, '.')
-from umc import JoinModule  # noqa: E402
+from umc import JoinModule
 
 
 class TestUMCDomainJoinModule(JoinModule):

@@ -79,7 +79,7 @@ def main():
 						new_addr = user_addr[0:3].upper() + user_addr[3:].lower()
 					elif i == 3:
 						new_addr = user_addr[:-5].upper() + user_addr[-5:].lower()
-					lo.modify(user_dn, [('mailPrimaryAddress', user_addr, new_addr)])
+					lo.modify(user_dn, [('mailPrimaryAddress', user_addr.encode('UTF-8'), new_addr.encode('UTF-8'))])
 					user_addr = new_addr
 
 					userbase.append(Bunch(dn=user_dn, name=user_name, addr=user_addr, msgid=msgid))

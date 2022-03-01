@@ -61,8 +61,9 @@ def join_member_with_conflicting_mac(memberserver):
 				"-ip", memberserver["ip"],
 				"-mac", mac,
 			])
+
 		expected_error = "E: failed to create Managed Node (1) [E: Object exists: (mac) {}]".format(mac)
-		assert expected_error in exc.value.output, "Join failed, but for the wrong reason:\n{}\ninstead of:\n{}".format(exc.value.output, expected_error)
+		assert expected_error in exc.value.output.decode('UTF-8'), "Join failed, but for the wrong reason:\n{}\ninstead of:\n{}".format(exc.value.output, expected_error)
 
 
 if __name__ == "__main__":

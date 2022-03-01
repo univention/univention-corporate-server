@@ -13,10 +13,7 @@ import ldap
 import pytest
 
 import univention.uldap
-from univention.config_registry import ConfigRegistry
-
-ucr = ConfigRegistry()
-ucr.load()
+from univention.config_registry import ucr
 
 
 def main():
@@ -31,13 +28,13 @@ def test_uidnumber_0():
 	with pytest.raises(ldap.CONSTRAINT_VIOLATION) as msg:
 		print('add', dn)
 		lo.add(dn, [
-			('objectClass', '', 'posixAccount'),
-			('objectClass', '', 'organizationalRole'),
-			('cn', '', 'foo'),
-			('uid', '', 'foo'),
-			('homeDirectory', '', '/home/foo'),
-			('uidNumber', '', '0'),
-			('gidNumber', '', '1'),
+			('objectClass', b'', b'posixAccount'),
+			('objectClass', b'', b'organizationalRole'),
+			('cn', b'', b'foo'),
+			('uid', b'', b'foo'),
+			('homeDirectory', b'', b'/home/foo'),
+			('uidNumber', b'', b'0'),
+			('gidNumber', b'', b'1'),
 		])
 	print(msg)
 	assert msg.value.args[0]['info'] == 'add breaks constraint on uidNumber'
@@ -50,13 +47,13 @@ def test_gidnumber_0():
 	with pytest.raises(ldap.CONSTRAINT_VIOLATION) as msg:
 		print('add', dn)
 		lo.add(dn, [
-			('objectClass', '', 'posixAccount'),
-			('objectClass', '', 'organizationalRole'),
-			('cn', '', 'bar'),
-			('uid', '', 'bar'),
-			('homeDirectory', '', '/home/bar'),
-			('uidNumber', '', '1'),
-			('gidNumber', '', '0'),
+			('objectClass', b'', b'posixAccount'),
+			('objectClass', b'', b'organizationalRole'),
+			('cn', b'', b'bar'),
+			('uid', b'', b'bar'),
+			('homeDirectory', b'', b'/home/bar'),
+			('uidNumber', b'', b'1'),
+			('gidNumber', b'', b'0'),
 		])
 	print(msg)
 	assert msg.value.args[0]['info'] == 'add breaks constraint on gidNumber'

@@ -67,7 +67,7 @@ def create_bad_mailheader(mailfrom, rcptto):
 		buff_size = 1024
 		reply = ''
 		while True:
-			part = s.recv(buff_size)
+			part = s.recv(buff_size).decode('UTf-8')
 			reply += part
 			if len(part) < buff_size:
 				break
@@ -75,7 +75,7 @@ def create_bad_mailheader(mailfrom, rcptto):
 
 	def send_message(s, message):
 		print('OUT: {!r}'.format(message))
-		s.send('{}\r\n'.format(message))
+		s.send(b'%s\r\n' % (message.encode('UTF-8'),))
 
 	def send_and_receive(s, message):
 		send_message(s, message)

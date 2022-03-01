@@ -21,8 +21,7 @@ from univention.testing.codes import TestCodes
 from univention.testing.license_client import CredentialsMissing, TestLicenseClient
 from univention.testing.strings import random_username
 
-sys.path.insert(0, '.')
-from umc import UDMModule  # noqa: E402
+from umc import UDMModule
 
 
 class TestUMCLicenseManagement(UDMModule):
@@ -199,28 +198,20 @@ class TestUMCLicenseManagement(UDMModule):
         print("\nSaving initial license to file: '%s'" % license_file)
         try:
             with open(license_file, 'w') as license:
-                proc = Popen(("univention-ldapsearch",
-                              "-LLLb",
-                              self.license_dn),
-                             stdout=license,
-                             stderr=PIPE)
+                proc = Popen(("univention-ldapsearch", "-LLLb", self.license_dn), stdout=license, stderr=PIPE)
                 stdout, stderr = proc.communicate()
-                if stderr:
-                    utils.fail("An error occurred during the license file "
-                               "dumping while the 'univention-ldapsearch' "
-                               "was running, '%s'" % stderr)
+                if stderr or proc.returncode:
+                    utils.fail("An error occurred during the license file dumping while the 'univention-ldapsearch' was running, '%s'" % stderr)
             self.license_dump_successful = True
         except (IOError, ValueError, OSError) as exc:
-            utils.fail("An error occurred during the license dump process, "
-                       "license file '%s', exception: %r"
-                       % (license_file, exc))
+            utils.fail("An error occurred during the license dump process, license file '%s', exception: %r" % (license_file, exc))
 
     def modify_license_signature(self, new_signature):
         """
         Modifies the license signature to a given 'new_signature'
         """
         # in changes "foo" stands as a dummy for 'old-values':
-        changes = [('univentionLicenseSignature', "foo", new_signature)]
+        changes = [('univentionLicenseSignature', b"foo", new_signature.encode("UTF-8"))]
         admin_ldap_conn = uldap.getAdminConnection()
         admin_ldap_conn.modify(self.license_dn, changes)
 

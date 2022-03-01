@@ -16,6 +16,7 @@ if __name__ == '__main__':
 	lo = get_ldap_connection()
 	for res in lo.search('univentionService=Univention Management Console', attr=['cn', 'associatedDomain']):
 		print(res[1])
-		fqdn = '%s.%s' % (res[1].get('cn')[0], res[1].get('associatedDomain')[0])
+		fqdn = b'%s.%s' % (res[1].get('cn')[0], res[1].get('associatedDomain')[0])
+		fqdn = fqdn.decode('UTF-8')
 		if ucr.get('umc/saml/trusted/sp/%s' % fqdn) != fqdn:
 			fail('umc/saml/trusted/sp/%s is %s, expected %s' % (fqdn, ucr.get('umc/saml/trusted/sp/%s' % fqdn), fqdn))

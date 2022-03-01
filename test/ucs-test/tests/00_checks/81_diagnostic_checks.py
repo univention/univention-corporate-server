@@ -20,7 +20,7 @@ def test_run_diagnostic_checks():
 
 	account = utils.UCSTestDomainAdminCredentials()
 	with tempfile.NamedTemporaryFile() as fd:
-		fd.write(account.bindpw)
+		fd.write(account.bindpw.encode('UTF-8'))
 		fd.flush()
 		args = ['/usr/bin/univention-run-diagnostic-checks', '--username', account.username, '--bindpwdfile', fd.name, '-t'] + plugins
 		print(args)

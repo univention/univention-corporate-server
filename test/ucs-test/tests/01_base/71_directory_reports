@@ -6,7 +6,7 @@
 
 import os
 from subprocess import check_call
-from urllib import splitquery, splitvalue
+from urllib.parse import splitquery, splitvalue
 
 from univention.config_registry import ConfigRegistry
 from univention.testing.umc import Client
@@ -21,7 +21,7 @@ def create_umc_report(client, report_type, obj, module):
 	assert r.status == 200
 	assert r.data
 	if report_type == 'PDF Document':
-		assert 'ReportLab Generated PDF document' in r.data
+		assert b'ReportLab Generated PDF document' in r.data
 		assert report.endswith('.pdf')
 	if report_type == 'CSV Report':
 		assert report.endswith('.csv')

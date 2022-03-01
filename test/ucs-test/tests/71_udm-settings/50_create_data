@@ -6,6 +6,7 @@
 ## packages:
 ##   - univention-directory-manager-tools
 
+import base64
 import bz2
 
 import univention.testing.strings as uts
@@ -22,7 +23,7 @@ with ucr_test.UCSTestConfigRegistry() as ucr:
 			filename=uts.random_name(),
 			description=uts.random_name(),
 			data_type=uts.random_name(),
-			data=bz2.compress(data).encode('base64').strip(),
+			data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'),
 			ucsversionstart=uts.random_ucs_version(),
 			ucsversionend=uts.random_ucs_version(),
 			meta=[uts.random_name(), uts.random_name()],
@@ -39,7 +40,7 @@ with ucr_test.UCSTestConfigRegistry() as ucr:
 				'description': [kwargs['description']],
 				'univentionDataFilename': [kwargs['filename']],
 				'univentionDataType': [kwargs['data_type']],
-				'univentionData': [bz2.compress(data)],
+				'univentionData': [bz2.compress(data.encode('UTF-8'))],
 				'univentionUCSVersionStart': [kwargs['ucsversionstart']],
 				'univentionUCSVersionEnd': [kwargs['ucsversionend']],
 				'univentionDataMeta': kwargs['meta'],

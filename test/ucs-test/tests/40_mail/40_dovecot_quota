@@ -8,7 +8,6 @@
 ##  - univention-directory-manager-tools
 ## bugs: [38727]
 
-
 import email
 import imaplib
 import subprocess
@@ -23,7 +22,7 @@ import univention.testing.utils as utils
 from essential.mail import ImapMail, mail_delivered
 from essential.mailclient import MailClient
 
-timeout = 10
+timeout = 1
 
 
 def main():
@@ -90,7 +89,7 @@ def main():
 				univention.config_registry.handler_set(["mail/dovecot/quota/warning/text/%d=%s" % (percent, token_body)])
 				subprocess.call(["/usr/bin/doveadm", "reload"])
 				udm.modify_object(modulename='users/user', dn=userdn, mailUserQuota=str(quota04))
-				msg = str(email.message_from_string("Lorem ipsum dolor sit amet, consetetur sadipscing " * quota04 * 12000))
+				msg = bytes(email.message_from_string("Lorem ipsum dolor sit amet, consetetur sadipscing " * quota04 * 12000))
 				imap = MailClient("localhost")
 				imap.login(mail, pw)
 				imap.select("INBOX")
@@ -101,7 +100,7 @@ def main():
 				#
 				# user over quota should not be able to IMAP4.append()
 				#
-				msg = str(email.message_from_string("Lorem ipsum dolor sit amet, consetetur sadipscing " * quota04 * 10000))
+				msg = bytes(email.message_from_string("Lorem ipsum dolor sit amet, consetetur sadipscing " * quota04 * 10000))
 				imap = MailClient("localhost")
 				imap.login(mail, pw)
 				imap.select("INBOX")
@@ -111,6 +110,4 @@ def main():
 
 
 if __name__ == '__main__':
-	global timeout
-	timeout = 1
 	main()

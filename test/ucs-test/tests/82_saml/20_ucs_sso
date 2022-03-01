@@ -31,7 +31,7 @@ def _check_record_type(record_type):
 			for ip in res[1].get(ldap_record_name[record_type]):
 				if record_type == 'AAAA':
 					ip = dns.ipv6.inet_ntoa(dns.ipv6.inet_aton(ip))
-				master_backup_ips.add(ip)
+				master_backup_ips.add(ip.decode('ASCII'))
 	print('LDAP entries: {}'.format('; '.join(master_backup_ips)))
 
 	if master_backup_ips.difference(dns_entries):

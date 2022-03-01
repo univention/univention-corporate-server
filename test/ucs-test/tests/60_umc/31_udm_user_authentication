@@ -19,8 +19,7 @@ from univention.testing.ucs_samba import wait_for_drs_replication
 from univention.testing.udm import UCSTestUDM
 from univention.testing.umc import Client
 
-sys.path.insert(0, '.')
-from umc import UDMModule  # noqa: E402
+from umc import UDMModule
 
 
 class TestUMCUserAuthentication(UDMModule):

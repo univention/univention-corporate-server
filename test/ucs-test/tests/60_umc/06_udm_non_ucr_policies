@@ -6,15 +6,13 @@
 ##  - domaincontroller_backup
 ## exposure: dangerous
 
-import sys
 from sys import exit
 
 import univention.testing.utils as utils
 from univention.testing.strings import random_username
 from univention.testing.udm import UCSTestUDM
 
-sys.path.insert(0, '.')
-from umc import UMCBase  # noqa: E402
+from umc import UMCBase
 
 
 class TestUMCnonUCRpolicies(UMCBase):

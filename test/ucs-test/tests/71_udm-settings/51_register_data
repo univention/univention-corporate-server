@@ -48,6 +48,7 @@ def run_cmd(cmd):
 	print('Running: {!r}'.format(cmd))
 	cmd_proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	cmd_out, cmd_err = cmd_proc.communicate()
+	cmd_out, cmd_err = cmd_out.decode('UTF-8', 'replace'), cmd_err.decode('UTF-8', 'replace')
 	print('exit code: {!r}'.format(cmd_proc.returncode))
 	print('stdout:-----\n{}\n-----'.format(cmd_out))
 	print('stderr:-----\n{}\n-----'.format(cmd_err))
@@ -87,7 +88,7 @@ with udm_test.UCSTestUDM() as udm:
 			'description': [],  # ucs_registerLDAPExtension doesn't support description
 			'univentionDataFilename': [file_name],
 			'univentionDataType': [kwargs['data_type']],
-			'univentionData': [bz2.compress(data)],
+			'univentionData': [bz2.compress(data.encode('UTF-8'))],
 			'univentionUCSVersionStart': [kwargs['ucsversionstart']],
 			'univentionUCSVersionEnd': [kwargs['ucsversionend']],
 			'univentionDataMeta': kwargs['meta'],
@@ -124,7 +125,7 @@ with udm_test.UCSTestUDM() as udm:
 			'description': [],  # ucs_registerLDAPExtension does not support description
 			'univentionDataFilename': [file_name],
 			'univentionDataType': [kwargs['data_type']],
-			'univentionData': [bz2.compress(data)],
+			'univentionData': [bz2.compress(data.encode('UTF-8'))],
 			'univentionUCSVersionStart': [kwargs['ucsversionstart']],
 			'univentionUCSVersionEnd': [kwargs['ucsversionend']],
 			'univentionDataMeta': kwargs['meta'],

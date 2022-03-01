@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
 	returnCode = 100
 
-	create_ous(map(lambda x: str(x), range(10, 70)))
+	create_ous([str(x) for x in range(10, 70)])
 
 	if not execute_timing('user import', MAX_SECONDS_IMPORT, import_users, CSV_IMPORT_FILE):
 		returnCode = 1

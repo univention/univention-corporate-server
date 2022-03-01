@@ -38,7 +38,7 @@ network={{
 def eap_test(username, password, ca_cert):
 	with NamedTemporaryFile() as tmp_file:
 		wpa_config = get_wpa_config(username, password, ca_cert)
-		tmp_file.write(wpa_config)
+		tmp_file.write(wpa_config.encode("UTF-8"))
 		tmp_file.seek(0)
 		print("wpa_config:")
 		print(tmp_file.read())

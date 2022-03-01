@@ -80,7 +80,7 @@ def fail_after(user, x, retry_after):
 		user.send_token('email')
 	except ServiceUnavailable as exc:
 		retry_after = 'Please retry in %s.' % (retry_after,)
-		assert exc.message
+		assert str(exc)
 		print('Yippie, failed!')
 		return True
 	assert False, 'limit not evaluated'

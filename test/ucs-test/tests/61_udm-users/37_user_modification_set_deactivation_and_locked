@@ -45,7 +45,7 @@ def modify_and_check(udm, dn, disabled_state, locked_state):
 		udm.modify_object('users/user', dn=dn, disabled=disabled_state, **locked)
 		if locked_state == '1':
 			locktime = time.strftime("%Y%m%d%H%M%SZ", time.gmtime())
-			subprocess.call(['python', '-m', 'univention.lib.account', 'lock', '--dn', dn, '--lock-time', locktime])
+			subprocess.call(['python3', '-m', 'univention.lib.account', 'lock', '--dn', dn, '--lock-time', locktime])
 	else:
 		dn, username = udm.create_user(
 			position='cn=users,{}'.format(ldap_base),
@@ -53,7 +53,7 @@ def modify_and_check(udm, dn, disabled_state, locked_state):
 		)
 		if locked_state == '1':
 			locktime = time.strftime("%Y%m%d%H%M%SZ", time.gmtime())
-			subprocess.call(['python', '-m', 'univention.lib.account', 'lock', '--dn', dn, '--lock-time', locktime])
+			subprocess.call(['python3', '-m', 'univention.lib.account', 'lock', '--dn', dn, '--lock-time', locktime])
 
 	krb_state = b'254' if disabled_state == '1' or 'kerberos' in disabled_state else b'126'
 	smb_disabled = disabled_state == '1' or 'windows' in disabled_state

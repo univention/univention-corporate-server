@@ -53,7 +53,7 @@ mkpdir "${major}.0--component/${compname}" maintained all "${ARCH}"  # 12 13
 mkdeb "${pkgname}" 3 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 
-python2.7 create_releases_json.py "${REPODIR}" "$version1" "$version2" "$version3" "$version4"
+python3 create_releases_json.py "${REPODIR}" "$version1" "$version2" "$version3" "$version4"
 
 comp="repository/online/component/${compname}"
 minor+=-1

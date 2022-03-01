@@ -31,7 +31,7 @@ class Bunch(object):
 
 	def __str__(self):
 		result = []
-		for key, value in self.__dict__.iteritems():
+		for key, value in self.__dict__.items():
 			result.append('%s=%r' % (key, value))
 		return 'Bunch(' + ', '.join(result) + ')'
 

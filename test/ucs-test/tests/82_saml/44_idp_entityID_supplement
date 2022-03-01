@@ -43,7 +43,7 @@ def main():
 				SamlSession.test_logout_at_IdP()
 				SamlSession.test_logout()
 			except samltest.SamlError as exc:
-				utils.fail(exc.message)
+				utils.fail(str(exc))
 	finally:
 		subprocess.check_call(['systemctl', 'reload', 'apache2.service'])
 		if umc_saml_idpserver:

@@ -18,7 +18,7 @@ if __name__ == '__main__':
 		schema_name = uts.random_name()
 		filename = '90%s' % uts.random_name()
 		data = '# schema test'
-		schema = udm.create_object('settings/ldapschema', position=udm.UNIVENTION_CONTAINER, name=schema_name, filename=filename, data=base64.encodestring(bz2.compress(data)))
+		schema = udm.create_object('settings/ldapschema', position=udm.UNIVENTION_CONTAINER, name=schema_name, filename=filename, data=(base64.b64encode(bz2.compress(data.encode('UTF-8')))).decode('ASCII'))
 		utils.verify_ldap_object(schema, {'cn': [schema_name]})
 
 		udm.remove_object('settings/ldapschema', dn=schema)

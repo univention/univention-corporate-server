@@ -29,7 +29,7 @@ if __name__ == '__main__':
 				'settings/ldapacl',
 				position=udm.UNIVENTION_CONTAINER,
 				name=acl_name,
-				data=base64.encodestring(bz2.compress(data)),
+				data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'),
 				filename=filename,
 				package=package[0],
 				packageversion=package_version,
@@ -40,7 +40,7 @@ if __name__ == '__main__':
 
 			utils.verify_ldap_object(acl, {
 				'cn': [acl_name],
-				'univentionLDAPACLData': [bz2.compress(data)],
+				'univentionLDAPACLData': [bz2.compress(data.encode('UTF-8'))],
 				'univentionLDAPACLFilename': [filename],
 				'univentionOwnedByPackage': package,
 				'univentionOwnedByPackageVersion': [package_version],

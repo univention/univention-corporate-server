@@ -61,8 +61,8 @@ def main():
 				SamlSession.test_login()
 		except samltest.SamlError as exc:
 			expected_error = "<h2>Metadata not found</h2>"
-			if expected_error not in exc.message:
-				utils.fail("Login failed, but for the wrong reason?:\n%s" % exc.message)
+			if expected_error not in str(exc):
+				utils.fail("Login failed, but for the wrong reason?:\n%s" % str(exc))
 		else:
 			utils.fail("Serviceprovider deactivation failed")
 
@@ -81,7 +81,7 @@ def main():
 				SamlSession.login_with_new_session_at_IdP()
 				SamlSession.test_login()
 	except samltest.SamlError as exc:
-		utils.fail(exc.message)
+		utils.fail(str(exc))
 	finally:
 		# enable SP config in any case to reset state
 		subprocess.check_call(cmd_enable)

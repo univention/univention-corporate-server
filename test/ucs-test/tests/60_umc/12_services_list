@@ -8,9 +8,7 @@ import sys
 import univention.testing.utils as utils
 from univention.testing.codes import TestCodes
 
-sys.path.insert(0, '.')
-
-from umc import ServiceModule  # noqa: E402
+from umc import ServiceModule
 
 
 class TestUMCServiceList(ServiceModule):

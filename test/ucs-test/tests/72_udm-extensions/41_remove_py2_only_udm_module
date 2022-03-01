@@ -37,7 +37,7 @@ if __name__ == '__main__':
 		dn = udm.create_object(
 			'settings/udm_%s' % extension_type,
 			name=extension_name,
-			data=base64.b64encode(bz2.compress(extension_buffer)),
+			data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
 			filename=extension_filename,
 			packageversion=package_version,
 			appidentifier=app_id,
@@ -56,7 +56,7 @@ if __name__ == '__main__':
 			'univentionOwnedByPackage': [package_name],
 			'univentionObjectType': ['settings/udm_%s' % extension_type],
 			'univentionOwnedByPackageVersion': [package_version],
-			'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer)],
+			'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
 			'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
 		}, should_exist=False, retry_count=3, delay=1)
 

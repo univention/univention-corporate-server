@@ -40,7 +40,7 @@ def main():
 			SamlSession.login_with_existing_session_at_IdP()
 			SamlSession.test_login()
 	except samltest.SamlError as exc:
-		utils.fail(exc.message)
+		utils.fail(str(exc))
 
 
 if __name__ == '__main__':

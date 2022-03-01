@@ -70,7 +70,7 @@ BUG31733 () { # expected-value cmd...
 		mkpdir "${_version_version}-${patchlevel}" maintained "${ARCH}"
 		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR_POOL}"
 		mkpkg "${DIR}" "${DIR_POOL}"
-		python2.7 create_releases_json.py "${REPODIR}" "${_version_version}-${patchlevel}"
+		python3 create_releases_json.py "${REPODIR}" "${_version_version}-${patchlevel}"
 
 		# an update should be available
 		BUG31733 yes /usr/share/univention-updater/univention-updater-check

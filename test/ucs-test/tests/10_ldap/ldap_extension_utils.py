@@ -143,4 +143,4 @@ def get_ldap_master_connection(user_dn):
 def set_container_description(user_dn, container):
 	print('set_container_description(%r, %r)' % (user_dn, container))
 	lo = get_ldap_master_connection(user_dn)
-	lo.modify(container, [('description', '', random_name())])
+	lo.modify(container, [('description', b'', random_name().encode('UTF-8'))])

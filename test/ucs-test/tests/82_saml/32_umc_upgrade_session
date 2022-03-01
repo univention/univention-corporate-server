@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test umc upgrade
 ## tags: [saml]
 ## bugs: [50670]
@@ -21,7 +21,7 @@ def main():
 	# with open(os.path.join(cert_folder, 'cert.pem'), 'rb') as cert_file:
 	# 	cert = cert_file.read()
 	# with open('/etc/univention/ssl/ucsCA/CAcert.pem', 'rb') as ca_file:
-	# 	cert += '\n' + ca_file.read()
+	# 	cert += b'\n' + ca_file.read()
 	# with samltest.SPCertificate(cert):
 	# 	saml_check()
 	saml_check()

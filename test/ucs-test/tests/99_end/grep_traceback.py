@@ -180,10 +180,15 @@ COMMON_EXCEPTIONS = (
 	E(r'^univention.admin.uexceptions.noObject: No such object$', ['^  File "/usr/lib/python3/dist-packages/univention/admin/objects.py", line .*, in get']),  # s4c
 	# during upgrade to UCS 5.0-0
 	E("^(apt.cache.FetchFailedException|apt_pkg.Error): E:The repository 'http://localhost/univention-repository.* Release' is not signed."),
-	E('ImportError: No module named client', ['univention-directory-listener/system/faillog.py', 'univention-directory-listener/system/udm_extension.py', 'univention-directory-listener/system/portal_groups.py', 'univention-directory-listener/system/app_attributes.py'], (53290, 53862)),
+	E('ImportError: No module named client', [
+		'univention-directory-listener/system/faillog.py',
+		'univention-directory-listener/system/udm_extension.py',
+		'univention-directory-listener/system/portal_groups.py',
+		'univention-directory-listener/system/app_attributes.py'
+	], (53290, 53862)),
 	E("AttributeError: 'ConfigRegistry' object has no attribute '_walk'", ['univention-directory-listener/system/nfs-shares.py'], (53291, 53862)),
 	E("AttributeError: 'module' object has no attribute 'localization'", ['univention-directory-listener/system/app_attributes.py'], 53862),
-	E("ConnectionRefusedError: \[Errno 111\] Connection refused", ['univention-self-service-invitation'], 53670),
+	E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention-self-service-invitation'], 53670),
 	E("univention.lib.umc.ConnectionError: .*Could not send request.*Connection refused", ['univention-self-service-invitation'], 53670),
 
 	# updater test cases:

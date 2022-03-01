@@ -30,7 +30,7 @@ def sieve_test(mail, expected_output):
 	print('**', cmd)
 	pop = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 	out, err = pop.communicate(input=b'univention\n')
-	if expected_output not in out:
+	if expected_output.encode('UTF-8') not in out:
 		utils.fail(out, err)
 
 

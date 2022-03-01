@@ -54,7 +54,7 @@ if __name__ == '__main__':
 				extension_buffer = get_extension_buffer(extension_type, extension_name)
 
 				properties = {
-					'data': base64.b64encode(bz2.compress(extension_buffer)),
+					'data': base64.b64encode(bz2.compress(extension_buffer.encode('UTF-8'))).decode('ASCII'),
 					'filename': '%s.py' % extension_name,
 					'packageversion': package_version,
 					'appidentifier': app_id,

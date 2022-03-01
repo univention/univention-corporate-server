@@ -36,8 +36,8 @@ def assert_raises(exc_type, message, callback, *args, **kwargs):
 	except exc_type as exc:
 		if message:
 			# TODO check actual message
-			print(exc.message)
-			#assert exc.message and message in exc.message, 'Exception %r does not contain %r' % (exc.message, message)
+			print(str(exc))
+			#assert str(exc) and message in str(exc), 'Exception %r does not contain %r' % (str(exc), message)
 	else:
 		assert False, 'did not raise %r' % (exc_type,)
 

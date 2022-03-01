@@ -58,7 +58,7 @@ def test_extension(extension_type):
 			'univentionOwnedByPackage': [package_name],
 			'univentionObjectType': ['settings/udm_%s' % extension_type],
 			'univentionOwnedByPackageVersion': [package_version],
-			'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer)],
+			'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
 			'univentionUCSVersionStart': [version_start],
 			'univentionUCSVersionEnd': [version_end],
 		})

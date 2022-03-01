@@ -60,7 +60,7 @@ cat >"${SH_LOG}" <<__SH__
 ${DIR}/preup.sh [0-9]\\+ pre ${major}.${minor}-${_version_patchlevel}
 __SH__
 
-python2.7 create_releases_json.py "${REPODIR}" "$version1" "$version2"
+python3 create_releases_json.py "${REPODIR}" "$version1" "$version2"
 
 comp="repository/online/component/${compname}"
 config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/version=current"

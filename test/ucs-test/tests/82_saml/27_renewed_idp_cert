@@ -63,16 +63,16 @@ def main():
 		SamlSession.login_with_new_session_at_IdP()
 	except samltest.SamlError as exc:
 		expected_error = "The SAML authentication failed. This might be a temporary problem. Please login again.\\nFurther information can be found in the following logfiles:\\n* /var/log/univention/management-console-web-server.log\\n* /var/log/univention/management-console-server.log\\n"
-		if expected_error not in exc.message:
-			utils.fail(exc.message)
+		if expected_error not in str(exc):
+			utils.fail(str(exc))
 	reload_idp_metadata()
 	try:
 		# Previously slapd had a segfault here
 		SamlSession.test_slapd()
 	except samltest.SamlError as exc:
 		expected_error = "Wrong status code: 401, expected: 200"
-		if expected_error not in exc.message:
-			utils.fail(exc.message)
+		if expected_error not in str(exc):
+			utils.fail(str(exc))
 	restart_umc_server()
 	restart_slapd()
 	SamlSession.login_with_existing_session_at_IdP()
