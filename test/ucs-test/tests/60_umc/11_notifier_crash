@@ -7,8 +7,6 @@
 ## bugs: [40510]
 ## exposure: safe
 
-from __future__ import print_function
-
 import subprocess
 
 import notifier

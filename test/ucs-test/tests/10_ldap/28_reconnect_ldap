@@ -8,8 +8,6 @@
 ##   - python-univention-directory-manager
 ##   - python-univention
 
-from __future__ import print_function
-
 import subprocess
 
 import ldap

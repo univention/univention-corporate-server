@@ -8,8 +8,6 @@
 ## exposure: safe
 ## tags: [appcenter, performance]
 
-from __future__ import print_function
-
 import time
 
 import univention.testing.utils as utils

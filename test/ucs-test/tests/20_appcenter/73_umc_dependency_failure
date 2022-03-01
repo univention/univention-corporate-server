@@ -7,7 +7,6 @@
 ##   - univention-appcenter-dev
 ## tags: [appcenter]
 ## bugs: [44769]
-from __future__ import print_function
 
 import logging
 

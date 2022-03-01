@@ -5,8 +5,6 @@
 ## packages:
 ##   - univention-saml
 
-from __future__ import print_function
-
 import dns.ipv6
 import dns.resolver
 

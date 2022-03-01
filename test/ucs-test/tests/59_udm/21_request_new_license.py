@@ -7,8 +7,6 @@
 ## packages: [univention-management-console-module-udm]
 ## bugs: [49384]
 
-from __future__ import print_function
-
 import shutil
 import ssl
 import subprocess

@@ -7,8 +7,6 @@
 ## tags: [skip_admember]
 ## exposure: dangerous
 
-from __future__ import print_function
-
 import sys
 from time import localtime, sleep, strftime, time
 

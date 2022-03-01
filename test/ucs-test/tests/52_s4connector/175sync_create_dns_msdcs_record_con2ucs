@@ -7,8 +7,6 @@
 ##   - univention-s4-connector
 ##   - dnsutils
 
-from __future__ import print_function
-
 import sys
 
 import univention.testing.strings as uts

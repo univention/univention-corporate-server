@@ -8,8 +8,6 @@
 ## exposure: safe
 ## bugs: [44768]
 
-from __future__ import print_function
-
 import os
 import sys
 

@@ -10,8 +10,6 @@
 ##  - 39792
 ##  - 39801
 
-from __future__ import print_function
-
 import time
 
 import ldap

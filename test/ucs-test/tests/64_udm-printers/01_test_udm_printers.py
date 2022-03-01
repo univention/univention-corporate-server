@@ -11,8 +11,6 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-from __future__ import absolute_import, print_function
-
 import os
 import random
 import re

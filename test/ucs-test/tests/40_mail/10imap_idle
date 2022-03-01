@@ -5,8 +5,6 @@
 ## packages: [univention-mail-server]
 ## bugs: [36907]
 
-from __future__ import print_function
-
 import imaplib
 import os
 import signal

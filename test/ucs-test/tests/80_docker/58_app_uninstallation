@@ -5,8 +5,6 @@
 ## packages:
 ##   - docker.io
 
-from __future__ import print_function
-
 import os
 
 from univention.testing.utils import fail, get_ldap_connection

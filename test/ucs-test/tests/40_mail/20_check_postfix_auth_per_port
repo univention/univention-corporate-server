@@ -4,8 +4,6 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
-from __future__ import print_function
-
 import univention.config_registry
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test

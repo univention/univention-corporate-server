@@ -6,7 +6,6 @@
 ##   - univention-management-console-module-appcenter
 ##   - univention-appcenter-dev
 ## tags: [appcenter]
-from __future__ import print_function
 
 from univention.lib.umc import ConnectionError, HTTPError
 

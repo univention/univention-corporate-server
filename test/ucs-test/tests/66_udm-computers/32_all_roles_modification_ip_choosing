@@ -5,8 +5,6 @@
 ## exposure: careful
 ## bugs: [16923]
 
-from __future__ import print_function
-
 import ldap.dn
 
 import univention.testing.strings as uts

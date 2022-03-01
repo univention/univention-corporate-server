@@ -4,8 +4,6 @@
 ## exposure: careful
 ## bugs: [42765,43428,29672]
 
-from __future__ import print_function
-
 import univention.admin.modules as udm_modules
 import univention.testing.utils as utils
 from univention.admin.uldap import getAdminConnection

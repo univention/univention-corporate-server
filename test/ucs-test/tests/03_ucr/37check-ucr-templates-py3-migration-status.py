@@ -4,8 +4,6 @@
 ## tags: [apptest]
 ## exposure: safe
 
-from __future__ import print_function
-
 import glob
 import json
 import os

@@ -4,8 +4,6 @@
 ## exposure: careful
 ## bugs: [40129]
 
-from __future__ import print_function
-
 from ldap import AVA_STRING
 from ldap.dn import dn2str, str2dn
 

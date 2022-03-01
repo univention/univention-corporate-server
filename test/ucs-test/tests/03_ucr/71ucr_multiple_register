@@ -5,8 +5,6 @@
 ##  - univention-base-files
 ## exposure: dangerous
 
-from __future__ import print_function
-
 import pickle
 
 import univention.config_registry.handler as ucrh

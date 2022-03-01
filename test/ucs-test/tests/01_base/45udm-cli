@@ -15,8 +15,6 @@
 ## versions:
 ##  3.0-0: found
 
-from __future__ import print_function
-
 import subprocess
 import time
 

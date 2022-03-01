@@ -14,8 +14,6 @@
 # Finally it checks that both eMail have arrived and deletes the user.
 #################
 
-from __future__ import print_function
-
 import subprocess
 import time
 

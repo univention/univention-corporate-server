@@ -6,8 +6,6 @@
 ## exposure: safe
 ## roles: [domaincontroller_master]
 
-from __future__ import print_function
-
 import subprocess
 import time
 

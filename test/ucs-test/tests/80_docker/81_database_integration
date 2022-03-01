@@ -6,8 +6,6 @@
 ## packages:
 ##   - docker.io
 
-from __future__ import print_function
-
 from subprocess import check_output
 from textwrap import dedent
 

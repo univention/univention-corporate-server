@@ -6,8 +6,6 @@
 ## exposure: careful
 ## packages: []
 
-from __future__ import print_function
-
 import glob
 import re
 import subprocess

@@ -7,8 +7,6 @@
 ##  3.0-0: skip
 ##  4.0-0: fixed
 
-from __future__ import print_function
-
 import gzip
 import re
 from os import path

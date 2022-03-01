@@ -6,8 +6,6 @@
 ## packages: [python3-univention-directory-manager]
 ## timeout: 0
 
-from __future__ import print_function
-
 import base64
 import calendar
 import subprocess

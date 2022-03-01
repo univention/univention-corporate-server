@@ -5,8 +5,6 @@
 ## tags: [apptest]
 ## bugs: [50098]
 
-from __future__ import print_function
-
 from univention.service_info import ServiceInfo
 
 

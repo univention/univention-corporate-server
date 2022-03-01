@@ -4,8 +4,6 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
-from __future__ import print_function
-
 import imaplib
 import poplib
 import subprocess

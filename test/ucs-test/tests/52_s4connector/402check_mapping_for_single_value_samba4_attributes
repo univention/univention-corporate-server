@@ -10,8 +10,6 @@
 ##   - 37259
 ##   - 38813
 
-from __future__ import print_function
-
 import ldap.filter
 
 import univention.s4connector.s4

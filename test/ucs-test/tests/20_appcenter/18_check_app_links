@@ -6,8 +6,6 @@
 ## packages: [univention-management-console-module-appcenter]
 ## exposure: careful
 
-from __future__ import print_function
-
 import glob
 import re
 import time

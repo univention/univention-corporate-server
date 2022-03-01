@@ -7,8 +7,6 @@
 ##   - univention-management-console-module-appcenter
 ## exposure: safe
 
-from __future__ import print_function
-
 import subprocess
 
 import lxml.html

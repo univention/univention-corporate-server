@@ -7,8 +7,6 @@
 ## packages: [python-univention-directory-manager]
 ## bugs: [51184]
 
-from __future__ import print_function
-
 from unittest import TestCase, main
 
 import univention.debug as ud

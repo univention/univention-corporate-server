@@ -7,8 +7,6 @@
 ## packages:
 ##   - univention-management-console-module-appcenter
 
-from __future__ import print_function
-
 import subprocess
 import sys
 import time

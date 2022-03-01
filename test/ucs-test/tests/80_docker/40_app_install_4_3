@@ -5,8 +5,6 @@
 ## packages:
 ##   - docker.io
 
-from __future__ import print_function
-
 from univention.testing.utils import get_ldap_connection
 
 from dockertest import App, Appcenter, get_app_name, get_app_version

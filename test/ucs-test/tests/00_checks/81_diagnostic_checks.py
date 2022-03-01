@@ -4,8 +4,6 @@
 ## tags: [basic, apptest]
 ## packages: [univention-management-console-module-diagnostic]
 
-from __future__ import print_function
-
 import subprocess
 import tempfile
 

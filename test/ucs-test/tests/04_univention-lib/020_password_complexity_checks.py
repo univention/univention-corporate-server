@@ -5,8 +5,6 @@
 ## roles: [domaincontroller_master]
 ## packages: [python3-univention]
 
-from __future__ import print_function
-
 import pytest
 
 import univention.config_registry

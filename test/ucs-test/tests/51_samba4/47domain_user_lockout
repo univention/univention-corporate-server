@@ -8,8 +8,6 @@
 ## - domaincontroller_backup
 ## - domaincontroller_slave
 
-from __future__ import print_function
-
 from subprocess import PIPE, Popen
 from sys import exit
 from time import sleep

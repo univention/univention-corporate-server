@@ -9,8 +9,6 @@
 
 # pylint: disable=attribute-defined-outside-init
 
-from __future__ import print_function
-
 import random
 import tempfile
 import time

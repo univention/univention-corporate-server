@@ -10,8 +10,6 @@
 
 # pylint: disable=attribute-defined-outside-init
 
-from __future__ import print_function
-
 import pytest
 
 import univention.testing.strings as uts

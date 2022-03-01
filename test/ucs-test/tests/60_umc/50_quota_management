@@ -6,8 +6,6 @@
 ##  3.0-0: skip
 ##  3.2-3: fixed
 
-from __future__ import print_function
-
 import sys
 
 import univention.testing.udm as udm_test

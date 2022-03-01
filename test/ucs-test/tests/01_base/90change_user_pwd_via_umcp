@@ -7,8 +7,6 @@
 ## tags: [basic, apptest, skip_admember]
 ## exposure: dangerous
 
-from __future__ import print_function
-
 from time import sleep
 
 import pytest

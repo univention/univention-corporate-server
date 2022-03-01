@@ -6,8 +6,6 @@
 ##   - python-univention-lib
 ## exposure: dangerous
 
-from __future__ import print_function
-
 import datetime
 from subprocess import PIPE, Popen
 

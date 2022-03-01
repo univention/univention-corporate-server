@@ -7,8 +7,6 @@
 ##   - univention-self-service
 ##   - univention-self-service-passwordreset-umc
 
-from __future__ import print_function
-
 import contextlib
 from subprocess import call
 from time import sleep

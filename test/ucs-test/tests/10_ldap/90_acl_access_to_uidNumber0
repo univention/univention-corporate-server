@@ -11,8 +11,6 @@
 ##  - python-ldap
 ## exposure: dangerous
 
-from __future__ import print_function
-
 import sys
 
 import ldap

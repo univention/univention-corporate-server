@@ -5,8 +5,6 @@
 ## tags: [basic, apptest]
 ## exposure: safe
 
-from __future__ import print_function
-
 from subprocess import PIPE, Popen
 
 import univention.testing.utils as utils

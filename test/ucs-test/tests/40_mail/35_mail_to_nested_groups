@@ -4,8 +4,6 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
-from __future__ import print_function
-
 import time
 
 import univention.testing.strings as uts

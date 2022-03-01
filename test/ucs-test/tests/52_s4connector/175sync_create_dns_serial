@@ -9,8 +9,6 @@
 ## bugs:
 ##   - 32156
 
-from __future__ import print_function
-
 import univention.admin.modules as udm_modules
 import univention.admin.uldap
 import univention.testing.udm as udm_test

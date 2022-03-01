@@ -7,8 +7,6 @@
 ## packages: [python-univention-directory-manager]
 ## bugs: [47316]
 
-from __future__ import print_function
-
 from collections import namedtuple
 from copy import deepcopy
 

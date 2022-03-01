@@ -7,8 +7,6 @@
 ## tags: [apptest]
 ## exposure: safe
 
-from __future__ import print_function
-
 from subprocess import PIPE, Popen
 
 from ldap.filter import filter_format

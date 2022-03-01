@@ -29,8 +29,6 @@
 # <https://www.gnu.org/licenses/>.
 """Grep python tracebacks in logfiles"""
 
-from __future__ import print_function
-
 import argparse
 import collections
 import contextlib

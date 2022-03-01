@@ -6,8 +6,6 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-from __future__ import print_function
-
 import univention.testing.strings as uts
 import univention.uldap as uldap
 from univention.testing import utils

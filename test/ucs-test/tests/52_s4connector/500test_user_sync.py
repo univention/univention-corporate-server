@@ -7,8 +7,6 @@
 ## bugs:
 ##  - 43598
 
-from __future__ import print_function
-
 import ldap
 import pytest
 

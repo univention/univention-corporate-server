@@ -4,8 +4,6 @@
 ## roles: [domaincontroller_master]
 ## exposure: safe
 
-from __future__ import print_function
-
 import subprocess
 import sys
 from configparser import NoOptionError, NoSectionError

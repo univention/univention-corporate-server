@@ -14,8 +14,6 @@
 # user and root was warned.
 #################
 
-from __future__ import print_function
-
 import time
 
 import univention.testing.strings as uts

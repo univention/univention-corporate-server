@@ -6,8 +6,6 @@
 ## packages:
 ##   - univention-home-mounter
 
-from __future__ import print_function
-
 from os.path import ismount, join
 from subprocess import PIPE, Popen
 from time import sleep

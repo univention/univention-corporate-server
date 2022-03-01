@@ -10,8 +10,6 @@
 ## - univention-squid-kerberos
 ## - univention-s4-connector
 
-from __future__ import print_function
-
 import subprocess
 
 import pycurl

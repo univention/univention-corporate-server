@@ -17,8 +17,6 @@
 # are tagged as spam (or not).
 #################
 
-from __future__ import print_function
-
 import time
 
 import univention.testing.strings as uts

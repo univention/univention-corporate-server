@@ -5,8 +5,6 @@
 ## packages: [univention-squid]
 ## bugs: [26452,37931]
 
-from __future__ import print_function
-
 import os
 import time
 

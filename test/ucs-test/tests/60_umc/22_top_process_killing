@@ -3,8 +3,6 @@
 ## bugs: [34593, 38174]
 ## exposure: dangerous
 
-from __future__ import print_function
-
 import signal
 import sys
 from os import WNOHANG, WTERMSIG, fork, wait4

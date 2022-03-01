@@ -5,8 +5,6 @@
 ## roles: [domaincontroller_master]
 ## exposure: careful
 
-from __future__ import print_function
-
 import univention.testing.strings as uts
 import univention.testing.utils as utils
 from univention.testing.udm import UCSTestUDM

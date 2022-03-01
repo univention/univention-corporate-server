@@ -3,8 +3,6 @@
 ## bugs: [34621]
 ## exposure: dangerous
 
-from __future__ import print_function
-
 import sys
 
 import univention.testing.udm as udm_test

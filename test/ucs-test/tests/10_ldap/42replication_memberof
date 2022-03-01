@@ -33,8 +33,6 @@ Otherwise the test would be flaky.
 """
 
 
-from __future__ import absolute_import, print_function
-
 import sys
 
 import univention.testing.ucr as ucr_test

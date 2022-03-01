@@ -8,8 +8,6 @@
 ##  - univention-management-console-module-udm
 ## exposure: safe
 
-from __future__ import print_function
-
 from univention.testing.strings import random_name
 from univention.testing.udm import UCSTestUDM
 from univention.testing.umc import Client

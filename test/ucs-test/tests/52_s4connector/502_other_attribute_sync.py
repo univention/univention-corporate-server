@@ -14,8 +14,6 @@
 # We skip this since 4.2-2, as the corresponding implementation is not yet committed.
 # See https://forge.univention.org/bugzilla/show_bug.cgi?id=45252.
 
-from __future__ import print_function
-
 import pytest
 
 import univention.testing.connector_common as tcommon

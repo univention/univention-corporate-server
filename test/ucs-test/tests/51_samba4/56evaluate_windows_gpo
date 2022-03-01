@@ -8,8 +8,6 @@
 ## - domaincontroller_master
 ## - domaincontroller_slave
 
-from __future__ import print_function
-
 import xml.etree.ElementTree as ET
 from os import path
 from re import search

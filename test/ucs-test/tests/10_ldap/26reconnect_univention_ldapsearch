@@ -9,8 +9,6 @@
 ##  4.0-0: skip
 ##  4.0-1: fixed
 
-from __future__ import print_function
-
 from multiprocessing import Process
 from subprocess import PIPE, Popen
 from time import sleep

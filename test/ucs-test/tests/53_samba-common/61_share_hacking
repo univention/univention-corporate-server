@@ -11,8 +11,6 @@
 ##   - univention-samba | univention-samba4
 ##   - univention-config
 
-from __future__ import print_function
-
 import contextlib
 import os
 import shutil

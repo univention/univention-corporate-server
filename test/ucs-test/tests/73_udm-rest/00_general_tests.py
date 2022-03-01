@@ -7,8 +7,6 @@
 ## packages:
 ##   - univention-directory-manager-rest
 
-from __future__ import print_function
-
 import subprocess
 import time
 

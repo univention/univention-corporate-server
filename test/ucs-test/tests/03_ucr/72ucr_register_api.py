@@ -6,8 +6,6 @@
 ## packages:
 ##   - univention-config
 
-from __future__ import print_function
-
 import json
 import subprocess
 

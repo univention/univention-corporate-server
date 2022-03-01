@@ -8,8 +8,6 @@
 ##  - ucs-test-umc-module
 ## exposure: dangerous
 
-from __future__ import print_function
-
 import ssl
 import subprocess
 import time

@@ -10,8 +10,6 @@
 ##   - python3-univention-directory-manager (>= 15.0.11-18)
 ## bugs: [53631]
 
-from __future__ import print_function
-
 import subprocess
 import time
 from datetime import datetime, timedelta

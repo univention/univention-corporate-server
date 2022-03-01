@@ -7,8 +7,6 @@
 ##  - univention-mail-server
 ##  - univention-directory-manager-tools
 
-from __future__ import print_function
-
 import imaplib
 import random
 import time

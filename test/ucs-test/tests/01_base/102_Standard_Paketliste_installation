@@ -8,8 +8,6 @@
 ##  3.2-3: skip
 ## packages: []
 
-from __future__ import print_function
-
 import re
 import subprocess
 

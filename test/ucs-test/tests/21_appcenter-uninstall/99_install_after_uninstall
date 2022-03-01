@@ -11,8 +11,6 @@
 
 # skip this, we now install the app via the cfg file
 
-from __future__ import print_function
-
 import univention.config_registry
 import univention.testing.utils as utils
 import univention.uldap as uldap

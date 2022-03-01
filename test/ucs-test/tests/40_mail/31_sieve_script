@@ -4,8 +4,6 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server, sieve-connect]
 
-from __future__ import print_function
-
 import subprocess
 import time
 

@@ -5,8 +5,6 @@
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## tags: [skip_admember]
 
-from __future__ import print_function
-
 import time
 
 import pytest

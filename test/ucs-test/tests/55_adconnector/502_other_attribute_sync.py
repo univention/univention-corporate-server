@@ -9,8 +9,6 @@
 ## bugs:
 ##  - 36480
 
-from __future__ import print_function
-
 import pytest
 
 import univention.testing.connector_common as tcommon

@@ -10,8 +10,6 @@
 ##  - 34292
 ## exposure: dangerous
 
-from __future__ import print_function
-
 import subprocess
 from time import sleep
 

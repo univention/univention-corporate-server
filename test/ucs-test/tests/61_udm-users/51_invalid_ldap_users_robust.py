@@ -5,8 +5,6 @@
 ## roles: [domaincontroller_master]
 ## packages: [python-univention-directory-manager]
 
-from __future__ import print_function
-
 import base64
 import random
 import traceback

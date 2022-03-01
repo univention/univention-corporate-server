@@ -3,8 +3,6 @@
 ## exposure: careful
 ## packages: [univention-postgrey]
 
-from __future__ import print_function
-
 import subprocess
 import time
 

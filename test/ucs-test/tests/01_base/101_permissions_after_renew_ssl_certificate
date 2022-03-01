@@ -5,8 +5,6 @@
 ## exposure: dangerous
 ## bugs: [36557, 31941, 34082, 34080, 32988]
 
-from __future__ import print_function
-
 import datetime
 import glob
 import grp

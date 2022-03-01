@@ -6,8 +6,6 @@
 ## tags: [skip_admember]
 ## exposure: dangerous
 
-from __future__ import print_function
-
 import sys
 from os import path
 from shutil import copy as file_copy, rmtree

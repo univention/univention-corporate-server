@@ -10,8 +10,6 @@
 ## tags:
 ##  - skip_admember
 
-from __future__ import print_function
-
 import univention.admin.modules as udm_modules
 import univention.admin.objects
 import univention.testing.strings as uts

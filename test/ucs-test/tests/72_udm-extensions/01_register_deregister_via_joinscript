@@ -8,8 +8,6 @@
 ##   - univention-directory-manager-tools
 ##   - shell-univention-lib
 
-from __future__ import print_function
-
 import grp
 import hashlib
 import os

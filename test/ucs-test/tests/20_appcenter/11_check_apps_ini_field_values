@@ -7,8 +7,6 @@
 ##   - univention-management-console-module-appcenter
 ## exposure: safe
 
-from __future__ import print_function
-
 from configparser import Error, RawConfigParser
 from glob import glob
 from os import path

@@ -5,8 +5,6 @@
 ## exposure: careful
 ## bugs: [52878]
 
-from __future__ import print_function
-
 import unidecode
 
 import univention.admin.modules as udm_modules

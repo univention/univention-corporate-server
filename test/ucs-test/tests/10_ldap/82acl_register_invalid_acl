@@ -9,8 +9,6 @@
 ##  - python-univention-lib
 ## exposure: dangerous
 
-from __future__ import print_function
-
 from time import sleep
 
 import ldap

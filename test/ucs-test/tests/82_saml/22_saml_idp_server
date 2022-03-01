@@ -5,8 +5,6 @@
 ## packages:
 ##   - univention-saml
 
-from __future__ import print_function
-
 from univention.config_registry import ConfigRegistry
 from univention.testing.utils import fail, get_ldap_connection
 

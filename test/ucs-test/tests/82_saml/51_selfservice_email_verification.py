@@ -8,8 +8,6 @@
 ## tags:
 ##  - skip_admember
 
-from __future__ import print_function
-
 import pytest
 
 import univention.testing.ucr as ucr_test

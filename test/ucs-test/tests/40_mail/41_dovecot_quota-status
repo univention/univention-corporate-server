@@ -13,8 +13,6 @@
 #   a) user under quota should receive email
 #   b) for a user over quota, Postfix should reject the mail (not bounce)
 
-from __future__ import print_function
-
 import smtplib
 import socket
 import subprocess

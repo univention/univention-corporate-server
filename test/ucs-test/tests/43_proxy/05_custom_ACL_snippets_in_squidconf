@@ -5,8 +5,6 @@
 ## exposure: dangerous
 ## packages: [univention-squid]
 
-from __future__ import print_function
-
 import itertools
 import time
 from multiprocessing import Process

@@ -9,8 +9,6 @@
 ## tags:
 ##  - skip_admember
 
-from __future__ import print_function
-
 import ldap
 import pytest
 
