@@ -14,8 +14,7 @@ import sys
 
 def main():
 	''' python %prog% --vnc 'utby:1' '''
-	description = sys.modules[__name__].__doc__
-	parser = ArgumentParser(description=description)
+	parser = ArgumentParser(description=__doc__)
 	parser.add_argument('--vnc', required=True)
 	parser.add_argument('--fqdn', default='master.ucs.local')
 	parser.add_argument('--ip', help='Give an IP address, if DHCP is unavailable.')
@@ -33,10 +32,12 @@ def main():
 	parser.add_argument('--components', default=[], choices=components.keys() + ['all'], action='append')
 	parser.add_argument('--no-second-interface', help='no not set configure second interface', action='store_true')
 	args = parser.parse_args()
+
 	if args.role in ['slave', 'backup', 'member', 'admember']:
 		assert args.dns is not None
 		assert args.join_user is not None
 		assert args.join_password is not None
+
 	inst = UCSInstallation(args=args)
 	inst.installation()
 

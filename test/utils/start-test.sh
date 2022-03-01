@@ -87,7 +87,7 @@ usage () {
 	echo "    UCSSCHOOL_RELEASE    - ucs school release (default: $ucsschool_release)"
 	echo "    COMPONENT_VERSION    - update component? should indicate dev/released version of non ucs component (app, ...) (default: testing)"
 	echo "    SCOPE                - defines a extra apt repo/scope that can be included during the test (default: None)"
-	echo "	  TESTING              - indicates unreleased UCS version (e.g. testing)"
+	echo "    TESTING              - indicates unreleased UCS version (e.g. testing)"
 	echo ""
 	echo "  ucs-test/fetch-results"
 	echo "    UCS_TEST_RUN         - if true, start ucs-test in utils/utils.sh::run_tests and copy log files from instance"
@@ -338,11 +338,11 @@ do
 done
 
 if [ -n "$JOB_URL" ]; then
-    header="$JOB_URL+++++++++++++++++++++++++++++++++++"
-    printf "%${#header}s\n" | tr " " "+"
-    echo "+ Jenkins Workspace: ${JOB_URL}ws           +"
-    echo "+ Jenkins Workspace/test: ${JOB_URL}ws/test +"
-    printf "%${#header}s\n" | tr " " "+"
+	header="$JOB_URL+++++++++++++++++++++++++++++++++++"
+	printf "%${#header}s\n" | tr " " "+"
+	echo "+ Jenkins Workspace: ${JOB_URL}ws           +"
+	echo "+ Jenkins Workspace/test: ${JOB_URL}ws/test +"
+	printf "%${#header}s\n" | tr " " "+"
 fi
 
 "${cmd[@]}" &&
