@@ -6,21 +6,21 @@
 ## exposure: safe
 
 from __future__ import print_function
-from lxml.html import fromstring
-from optparse import OptionParser
-from distutils.version import StrictVersion
-from re import IGNORECASE, compile as re_compile
 
-from time import sleep
-from os import path, makedirs
-from tempfile import mkdtemp
+from distutils.version import StrictVersion
 from gzip import open as gzip_open
-from shutil import rmtree, Error as shutil_Error
-from apt_pkg import version_compare, init as apt_init
-from urllib import urlopen, urlretrieve, ContentTooShortError
+from optparse import OptionParser
+from os import makedirs, path
+from re import IGNORECASE, compile as re_compile
+from shutil import Error as shutil_Error, rmtree
+from tempfile import mkdtemp
+from time import sleep
+from urllib import ContentTooShortError, urlopen, urlretrieve
+
+from apt_pkg import init as apt_init, version_compare
+from lxml.html import fromstring
 
 import univention.testing.utils as utils
-
 
 cleanup_folders = []  # list of the folders to be removed after the test
 total_errors = 0

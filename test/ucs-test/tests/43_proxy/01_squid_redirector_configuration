@@ -5,9 +5,10 @@
 ## bugs: [32429]
 ## packages: [univention-squid]
 
-from essential.simplesquid import SimpleSquid
-from univention.config_registry import handler_set
 import univention.testing.ucr as ucr_test
+from univention.config_registry import handler_set
+
+from essential.simplesquid import SimpleSquid
 
 
 def main():

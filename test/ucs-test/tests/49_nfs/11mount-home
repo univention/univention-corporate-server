@@ -7,14 +7,15 @@
 ##   - univention-home-mounter
 
 from __future__ import print_function
-from univention.testing.utils import fail, wait_for_replication
-from univention.testing.udm import UCSTestUDM
-from univention.testing.strings import random_name, random_username
-from univention.testing.ucr import UCSTestConfigRegistry
-from os.path import join, ismount
-from subprocess import Popen, PIPE
+
+from os.path import ismount, join
+from subprocess import PIPE, Popen
 from time import sleep
 
+from univention.testing.strings import random_name, random_username
+from univention.testing.ucr import UCSTestConfigRegistry
+from univention.testing.udm import UCSTestUDM
+from univention.testing.utils import fail, wait_for_replication
 
 if __name__ == '__main__':
 	ucr = UCSTestConfigRegistry()

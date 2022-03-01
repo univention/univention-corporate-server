@@ -2,18 +2,18 @@
 
 from __future__ import print_function
 
-import univention.testing.utils as utils
-import univention.testing.udm as udm_test
-import univention.testing.strings as uts
-from univention.testing.umc import Client
-
-from threading import Thread
-from smtpd import SMTPServer
-import subprocess
-import contextlib
 import asyncore
+import contextlib
 import fcntl
+import subprocess
 import time
+from smtpd import SMTPServer
+from threading import Thread
+
+import univention.testing.strings as uts
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+from univention.testing.umc import Client
 
 
 class SelfServiceUser(object):

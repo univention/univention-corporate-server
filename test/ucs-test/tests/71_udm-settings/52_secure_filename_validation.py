@@ -12,11 +12,11 @@ from __future__ import print_function
 import bz2
 import os.path
 
-import pytest
 import ldap.dn
+import pytest
 
 import univention.testing.udm as udm_test
-from univention.testing import utils, strings
+from univention.testing import strings, utils
 
 
 # TODO: add a test case for subdirectories

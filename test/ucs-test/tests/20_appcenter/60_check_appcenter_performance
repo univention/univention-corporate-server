@@ -9,10 +9,12 @@
 ## tags: [appcenter, performance]
 
 from __future__ import print_function
-from univention.testing.umc import Client
+
+import time
+
 import univention.testing.utils as utils
 from univention.appcenter import actions
-import time
+from univention.testing.umc import Client
 
 
 def main():

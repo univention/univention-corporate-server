@@ -4,6 +4,7 @@
 ## exposure: dangerous
 
 from lib.screen_shooter import BaseScreenShooter
+
 from univention.admin import localization
 
 translator = localization.translation('univention-ucs-test_umc-screenshots')

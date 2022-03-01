@@ -12,11 +12,12 @@ import pipes
 import subprocess
 import tempfile
 
-import grep_traceback
 import psutil
 import pytest
 
 import univention.testing.utils
+
+import grep_traceback
 
 
 @pytest.mark.exposure('safe')

@@ -6,8 +6,8 @@
 ##   - docker.io
 
 import os
-import sys
 import stat
+import sys
 
 from dockertest import Appcenter, get_app_name, tiny_app
 

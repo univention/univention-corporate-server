@@ -30,14 +30,16 @@
 
 from __future__ import print_function
 
-from univention.config_registry import ConfigRegistry
-from univention.testing.strings import random_name, random_int
+import subprocess
+import time
+
 import ldap
 import ldap.schema
 import psutil
-import subprocess
-import time
+
 import univention.uldap
+from univention.config_registry import ConfigRegistry
+from univention.testing.strings import random_int, random_name
 
 WAIT_FOR_LDAP_TIME = 30  # seconds
 

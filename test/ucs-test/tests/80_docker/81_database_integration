@@ -7,12 +7,13 @@
 ##   - docker.io
 
 from __future__ import print_function
+
 from subprocess import check_output
 from textwrap import dedent
 
-from dockertest import Appcenter, get_app_name, get_app_version, tiny_app
 from univention.testing.utils import restart_firewall
 
+from dockertest import Appcenter, get_app_name, get_app_version, tiny_app
 
 if __name__ == '__main__':
 	with Appcenter() as appcenter:

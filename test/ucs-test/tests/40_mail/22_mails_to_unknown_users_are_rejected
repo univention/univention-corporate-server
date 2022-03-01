@@ -4,13 +4,15 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
-from essential.mail import send_mail
 import smtplib
 import time
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+
+from essential.mail import send_mail
 
 
 def check_sending_mail(username, password, recipient_email, should_be_accepted):

@@ -9,12 +9,14 @@
 
 
 from __future__ import print_function
-import sys
-import atexit
-import univention.uldap
-import univention.testing.udm
-import univention.testing.strings as uts
 
+import sys
+
+import atexit
+
+import univention.testing.strings as uts
+import univention.testing.udm
+import univention.uldap
 
 if __name__ == '__main__':
 	ldap = univention.uldap.getMachineConnection(ldap_master=False)

@@ -9,12 +9,14 @@
 ## exposure: dangerous
 
 from __future__ import print_function
+
+import atexit
 import ldap
 import pytest
-import atexit
 
 import univention.uldap
 from univention.config_registry import ConfigRegistry
+
 ucr = ConfigRegistry()
 ucr.load()
 

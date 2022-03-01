@@ -6,8 +6,8 @@
 ## packages:
 ##   - univention-self-service
 
-import os
 import importlib
+import os
 import sys
 import time
 

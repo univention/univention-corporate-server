@@ -14,9 +14,9 @@ import ldap.dn
 import ldap.filter
 import pytest
 
-import univention.testing.utils as utils
-import univention.testing.udm as udm_test
 import univention.testing.strings as uts
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 from univention.testing.ucs_samba import wait_for_drs_replication
 
 

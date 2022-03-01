@@ -20,12 +20,15 @@
 ## exposure: dangerous
 
 from __future__ import print_function
-import pexpect
-import tempfile
-import sys
-import univention.config_registry
+
 import random
 import subprocess
+import sys
+import tempfile
+
+import pexpect
+
+import univention.config_registry
 import univention.testing.udm as udm_test
 
 ucr = univention.config_registry.ConfigRegistry()

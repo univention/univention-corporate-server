@@ -5,12 +5,12 @@
 
 import copy
 from collections import defaultdict
-from six.moves.http_client import HTTPConnection
 
 import pytest
+from six.moves.http_client import HTTPConnection
 
 from univention.lib.umc import Unauthorized
-from univention.testing import utils, network
+from univention.testing import network, utils
 
 
 class TestSecurityHeaders(object):

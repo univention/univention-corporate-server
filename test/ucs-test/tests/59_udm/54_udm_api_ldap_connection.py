@@ -9,14 +9,17 @@
 
 import os
 from subprocess import call
-from unittest import main, TestCase
-import univention.debug as ud
-from univention.testing.udm import UCSTestUDM
-from univention.testing.ucr import UCSTestConfigRegistry
-import univention.testing.strings as uts
-from univention.udm import UDM, ConnectionError, NoApiVersionSet, ApiVersionMustNotChange, ApiVersionNotSupported
-from univention.udm.connections import LDAP_connection
 
+from unittest import TestCase, main
+
+import univention.debug as ud
+import univention.testing.strings as uts
+from univention.testing.ucr import UCSTestConfigRegistry
+from univention.testing.udm import UCSTestUDM
+from univention.udm import (
+	UDM, ApiVersionMustNotChange, ApiVersionNotSupported, ConnectionError, NoApiVersionSet,
+)
+from univention.udm.connections import LDAP_connection
 
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
 ud.set_level(ud.ADMIN, ud.ALL)

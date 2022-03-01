@@ -8,9 +8,12 @@
 ##  - skip_admember
 
 from __future__ import print_function
+
 import univention.admin.modules as udm_modules
 import univention.testing.utils as utils
+
 import samltest
+
 udm_modules.update()
 
 

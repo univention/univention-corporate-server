@@ -10,18 +10,21 @@
 # pylint: disable=attribute-defined-outside-init
 
 from __future__ import print_function
+
 import random
-import time
-import dns.resolver
 import tempfile
-from essential.mail import send_mail, check_delivery, set_mail_forward_copy_to_self_ucrv
-from univention.testing.mail import MailSink, MailSinkGuard
-from univention.testing.network import NetworkRedirector
-import univention.testing.utils as utils
-import univention.testing.udm as udm_test
+import time
+
+import dns.resolver
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+from univention.testing.mail import MailSink, MailSinkGuard
+from univention.testing.network import NetworkRedirector
 
+from essential.mail import check_delivery, send_mail, set_mail_forward_copy_to_self_ucrv
 
 TIMEOUT = 600  # in seconds
 

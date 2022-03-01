@@ -10,16 +10,15 @@
 ##  - skip_admember
 ## exposure: careful
 
-from ipaddress import ip_address
-import pytest
 import re
 import subprocess
 import time
+from ipaddress import ip_address
 
 import dns.resolver as resolver
+import pytest
 from dns.exception import Timeout
-from dns.resolver import NXDOMAIN
-from dns.resolver import NoNameservers
+from dns.resolver import NXDOMAIN, NoNameservers
 
 import univention.testing.strings as uts
 import univention.testing.utils as utils

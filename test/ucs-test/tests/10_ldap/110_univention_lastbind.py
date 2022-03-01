@@ -4,17 +4,17 @@
 ## exposure: dangerous
 
 
+import imp
+import random
+import subprocess
+import time
+
 import pytest
 
-import subprocess
-import random
-import time
-import imp
-
-from univention.udm import UDM
-from univention.testing.ucr import UCSTestConfigRegistry
-from univention.config_registry import handler_set
 import univention.testing.strings as uts
+from univention.config_registry import handler_set
+from univention.testing.ucr import UCSTestConfigRegistry
+from univention.udm import UDM
 
 try:
 	import univention_lastbind

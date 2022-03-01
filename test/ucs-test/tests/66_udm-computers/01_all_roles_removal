@@ -7,11 +7,11 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-import univention.testing.udm as udm_test
 import univention.testing.strings as uts
+import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-
 from univention.testing.decorators import SetTimeout
+
 utils.verify_ldap_object = SetTimeout(utils.verify_ldap_object)
 
 if __name__ == '__main__':

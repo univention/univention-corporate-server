@@ -5,7 +5,9 @@ import json
 import os
 from itertools import groupby
 from operator import itemgetter
+
 from univention.lib.ucs import UCS_Version
+
 try:
     from typing import List, Tuple  # noqa F401
 except ImportError:

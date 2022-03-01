@@ -10,16 +10,17 @@
 ##  4.0-1: fixed
 
 from __future__ import print_function
-import psutil
-from time import sleep
-from six.moves.queue import Empty, Full
-from subprocess import Popen, PIPE
+
 from multiprocessing import Process
+from subprocess import PIPE, Popen
+from time import sleep
 
-from univention.testing.utils import fail
-from univention.testing.codes import TestCodes
+import psutil
+from six.moves.queue import Empty, Full
+
 from univention.config_registry import ConfigRegistry, handler_set
-
+from univention.testing.codes import TestCodes
+from univention.testing.utils import fail
 
 UCR = ConfigRegistry()
 UCR.load()

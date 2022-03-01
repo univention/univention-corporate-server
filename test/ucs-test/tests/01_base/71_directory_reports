@@ -5,11 +5,11 @@
 ## packages: [univention-directory-reports, univention-management-console-module-udm]
 
 import os
-
 from subprocess import check_call
-from univention.testing.umc import Client
-from univention.config_registry import ConfigRegistry
 from urllib import splitquery, splitvalue
+
+from univention.config_registry import ConfigRegistry
+from univention.testing.umc import Client
 
 
 def create_umc_report(client, report_type, obj, module):

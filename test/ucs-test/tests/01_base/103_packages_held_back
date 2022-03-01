@@ -5,6 +5,7 @@
 ## exposure: safe
 
 import apt_pkg
+
 import univention.testing.utils as utils
 
 

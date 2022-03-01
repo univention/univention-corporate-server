@@ -11,11 +11,12 @@
 #
 
 from __future__ import print_function
-import univention.uldap
+
+import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-import univention.testing.strings as uts
+import univention.uldap
 
 
 class Bunch(object):

@@ -8,11 +8,14 @@
 ##   - dnsutils
 
 from __future__ import print_function
+
+import sys
+
 import univention.testing.udm as udm_test
 from univention.testing.utils import wait_for_replication_and_postrun
+
 import dnstests
 import s4connector
-import sys
 
 if __name__ == '__main__':
 	s4connector.exit_if_connector_not_running()

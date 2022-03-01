@@ -12,14 +12,18 @@
 ##  - python-univention-lib
 ## exposure: dangerous
 
+from time import sleep
+
+from ldap_extension_utils import (
+	call_join_script, call_unjoin_script, get_package_name, get_schema_attribute_id, get_schema_name,
+)
+
+import univention.testing.udm as udm_test
+import univention.uldap
+from univention.config_registry import ConfigRegistry
 from univention.testing.debian_package import DebianPackage
 from univention.testing.strings import random_name, random_string
 from univention.testing.utils import fail, wait_for_replication
-from univention.config_registry import ConfigRegistry
-from ldap_extension_utils import get_package_name, get_schema_name, get_schema_attribute_id, call_join_script, call_unjoin_script
-from time import sleep
-import univention.testing.udm as udm_test
-import univention.uldap
 
 ucr = ConfigRegistry()
 ucr.load()

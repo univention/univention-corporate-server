@@ -10,12 +10,13 @@
 from __future__ import print_function
 
 from collections import defaultdict
-from six import string_types, reraise
-from unittest import main, TestCase
-import univention.debug as ud
-from univention.udm import UDM, WrongObjectType, NoSuperordinate
-import univention.admin.modules
 
+from six import reraise, string_types
+from unittest import TestCase, main
+
+import univention.admin.modules
+import univention.debug as ud
+from univention.udm import UDM, NoSuperordinate, WrongObjectType
 
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
 ud.set_level(ud.ADMIN, ud.ALL)

@@ -8,20 +8,21 @@
 
 from __future__ import print_function
 
-import sys
 import base64
-import pytest
-import time
 import calendar
-from datetime import datetime, timedelta
 import subprocess
+import sys
+import time
+from datetime import datetime, timedelta
+
+import pytest
 from M2Crypto import X509
 
 from univention.config_registry import handler_set
 from univention.testing.strings import random_username
-from univention.testing.utils import wait_for_connector_replication
-from univention.testing.udm import UCSTestUDM_NoModification
 from univention.testing.ucr import UCSTestConfigRegistry
+from univention.testing.udm import UCSTestUDM_NoModification
+from univention.testing.utils import wait_for_connector_replication
 
 
 class TestUsers(object):

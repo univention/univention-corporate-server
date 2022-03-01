@@ -9,13 +9,14 @@
 ## - domaincontroller_slave
 
 from __future__ import print_function
+
+from subprocess import PIPE, Popen
 from sys import exit
 from time import sleep
-from subprocess import Popen, PIPE
 
 import univention.testing.utils as utils
-from univention.testing.codes import TestCodes
 from univention.config_registry import ConfigRegistry
+from univention.testing.codes import TestCodes
 from univention.testing.strings import random_username
 
 LOCKOUT_DURATION = 1  # duration of lockout in minutes

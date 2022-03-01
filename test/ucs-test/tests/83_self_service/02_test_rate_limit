@@ -8,14 +8,16 @@
 ##   - univention-self-service-passwordreset-umc
 
 from __future__ import print_function
-from test_self_service import self_service_user, capture_mails
-from univention.testing.ucr import UCSTestConfigRegistry as UCR
-from univention.config_registry import handler_set, handler_unset
-from univention.lib.umc import ServiceUnavailable
 
+import contextlib
 from subprocess import call
 from time import sleep
-import contextlib
+
+from test_self_service import capture_mails, self_service_user
+
+from univention.config_registry import handler_set, handler_unset
+from univention.lib.umc import ServiceUnavailable
+from univention.testing.ucr import UCSTestConfigRegistry as UCR
 
 LIMIT_TOTAL_MINUTE = 'umc/self-service/passwordreset/limit/total/minute'
 LIMIT_TOTAL_HOUR = 'umc/self-service/passwordreset/limit/total/hour'

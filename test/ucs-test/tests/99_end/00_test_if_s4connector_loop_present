@@ -10,12 +10,13 @@
 ## exposure: dangerous
 
 from __future__ import print_function
-import univention.s4connector.s4
-from univention.testing.utils import wait_for_replication_and_postrun, LDAPReplicationFailed, fail
-from univention.config_registry import ConfigRegistry
-from univention.config_registry import handler_set as ucr_set
-import time
+
 import subprocess
+import time
+
+import univention.s4connector.s4
+from univention.config_registry import ConfigRegistry, handler_set as ucr_set
+from univention.testing.utils import LDAPReplicationFailed, fail, wait_for_replication_and_postrun
 
 ucr = ConfigRegistry()
 ucr.load()

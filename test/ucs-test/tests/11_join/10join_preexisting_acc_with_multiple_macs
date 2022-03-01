@@ -7,12 +7,14 @@
 ## exposure: dangerous
 
 from __future__ import print_function
+
 import subprocess
+
 import pytest
 
-import univention.testing.utils as utils
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 
 
 def main():

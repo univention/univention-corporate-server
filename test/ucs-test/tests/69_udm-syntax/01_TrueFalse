@@ -12,9 +12,9 @@
 ## bugs: [40731]
 
 
+import univention.testing.strings as uts
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-import univention.testing.strings as uts
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:

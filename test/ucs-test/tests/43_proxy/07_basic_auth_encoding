@@ -7,14 +7,16 @@
 ## bugs: [34154]
 
 from __future__ import print_function
-import subprocess
-import base64
 
-from essential.simplesquid import SimpleSquid
-from univention.config_registry import handler_set, handler_unset
+import base64
+import subprocess
+
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+from univention.config_registry import handler_set, handler_unset
+
+from essential.simplesquid import SimpleSquid
 
 
 def get_basic_auth_header(base64_encoded_creds):

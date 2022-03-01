@@ -8,15 +8,17 @@
 ##  4.0-0: fixed
 
 from __future__ import print_function
-import re
+
 import gzip
+import re
 from os import path
 from sys import exit
 
-import univention.testing.utils as utils
-from univention.testing.codes import TestCodes
-from univention.management.console.modules.setup.setup_script import Profile
 from check_log_files_definitions import Errors, Tracebacks, Warnings
+
+import univention.testing.utils as utils
+from univention.management.console.modules.setup.setup_script import Profile
+from univention.testing.codes import TestCodes
 
 
 class CheckLogFiles(object):

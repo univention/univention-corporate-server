@@ -11,15 +11,18 @@
 ##  - skip_admember
 
 from __future__ import print_function
-from univention.testing.connector_common import NormalUser, create_udm_user
-from univention.testing.strings import random_string
-from adconnector import ADConnection, restart_adconnector, wait_for_sync
 
 import os
 import sys
+
 import unittest
+
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+from univention.testing.connector_common import NormalUser, create_udm_user
+from univention.testing.strings import random_string
+
+from adconnector import ADConnection, restart_adconnector, wait_for_sync
 
 sys.path.append("$TESTLIBPATH")
 

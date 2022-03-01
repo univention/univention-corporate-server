@@ -8,14 +8,16 @@
 ## exposure: dangerous
 
 from __future__ import print_function
+
 import subprocess
-import ldap
 import time
 
-from univention.uldap import getRootDnConnection
-from univention.testing.udm import UCSTestUDM
-from univention.testing import utils
+import ldap
+
 import univention.testing.strings as uts
+from univention.testing import utils
+from univention.testing.udm import UCSTestUDM
+from univention.uldap import getRootDnConnection
 
 
 def test_resync_missing_object():

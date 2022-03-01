@@ -6,10 +6,11 @@
 ## bugs: [16923]
 
 from __future__ import print_function
+
 import ldap.dn
 
-import univention.testing.udm as udm_test
 import univention.testing.strings as uts
+import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 NET = '192.0.2'

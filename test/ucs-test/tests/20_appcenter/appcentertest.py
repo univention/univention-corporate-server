@@ -30,27 +30,27 @@
 # <https://www.gnu.org/licenses/>.
 from __future__ import print_function
 
-import re
-import string
-import os.path
-import logging
-import requests
+import contextlib
 import functools
 import itertools
-import lxml.html
+import logging
+import os.path
+import re
+import string
 import subprocess
-import contextlib
 import time
 
-from univention.appcenter.app_cache import Apps, AppCenterCache
-from univention.appcenter.utils import get_local_fqdn
-import univention.appcenter.log as app_logger
-from univention.appcenter.actions import get_action
-from univention.config_registry import ConfigRegistry
+import lxml.html
+import requests
 
-from univention.testing.umc import Client
-import univention.testing.utils as utils
+import univention.appcenter.log as app_logger
 import univention.testing.debian_package as debian_package
+import univention.testing.utils as utils
+from univention.appcenter.actions import get_action
+from univention.appcenter.app_cache import AppCenterCache, Apps
+from univention.appcenter.utils import get_local_fqdn
+from univention.config_registry import ConfigRegistry
+from univention.testing.umc import Client
 
 APPCENTER_FILE = "/var/cache/appcenter-installed.txt"  # installed apps
 

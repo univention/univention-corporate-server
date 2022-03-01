@@ -17,13 +17,13 @@
 
 from __future__ import print_function
 
-import time
 import subprocess
+import time
 
-import univention.uldap as uldap
 import univention.config_registry as configRegistry
-import univention.testing.utils as utils
 import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+import univention.uldap as uldap
 
 
 class cmd(object):

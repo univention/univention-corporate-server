@@ -6,11 +6,14 @@
 ## exposure: dangerous
 
 from __future__ import print_function
+
 import os
 import subprocess
 import time
-import samltest
+
 import univention.testing.utils as utils
+
+import samltest
 
 
 def restart_umc():

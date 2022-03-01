@@ -11,12 +11,15 @@
 ## exposure: dangerous
 
 from __future__ import print_function
-import univention.uldap
+
 import subprocess
-import ldap
 from time import sleep
-from univention.testing.utils import fail
+
+import ldap
+
 import univention.config_registry
+import univention.uldap
+from univention.testing.utils import fail
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()

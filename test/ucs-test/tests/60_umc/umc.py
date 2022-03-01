@@ -1,16 +1,15 @@
 from __future__ import print_function
 
 import os
-import sys
 import shutil
-
+import sys
 from time import sleep
 
-from univention.config_registry import ConfigRegistry
-from univention.testing.codes import TestCodes
 import univention.testing.utils as utils
+from univention.config_registry import ConfigRegistry
+from univention.lib.umc import ConnectionError, HTTPError
+from univention.testing.codes import TestCodes
 from univention.testing.umc import Client
-from univention.lib.umc import HTTPError, ConnectionError
 
 
 class UMCBase(object):

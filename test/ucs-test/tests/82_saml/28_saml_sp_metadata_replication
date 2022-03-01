@@ -8,14 +8,16 @@
 ## exposure: dangerous
 
 from __future__ import print_function
-import subprocess
-import os.path
-import difflib
 
-import univention.config_registry as configRegistry
+import difflib
+import os.path
+import subprocess
+
 import univention.admin.modules as udm_modules
-import univention.testing.utils as utils
+import univention.config_registry as configRegistry
 import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
 import samltest
 
 ucr = configRegistry.ConfigRegistry()

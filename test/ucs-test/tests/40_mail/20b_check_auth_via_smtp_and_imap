@@ -5,15 +5,18 @@
 ## packages: [univention-mail-server]
 
 from __future__ import print_function
-import time
-import subprocess
+
 import imaplib
 import poplib
-from essential.mail import send_mail
+import subprocess
+import time
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+
+from essential.mail import send_mail
 
 
 class AuthTests(object):

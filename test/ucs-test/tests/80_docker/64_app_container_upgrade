@@ -8,10 +8,11 @@
 ##   - docker.io
 
 from __future__ import print_function
-from dockertest import Appcenter, get_app_name, store_data_script_4_1, App, get_docker_appbox_image
-from univention.testing.utils import get_ldap_connection, fail
-from univention.config_registry import ConfigRegistry
 
+from univention.config_registry import ConfigRegistry
+from univention.testing.utils import fail, get_ldap_connection
+
+from dockertest import App, Appcenter, get_app_name, get_docker_appbox_image, store_data_script_4_1
 
 if __name__ == '__main__':
 	with Appcenter() as appcenter:

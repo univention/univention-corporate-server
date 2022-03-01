@@ -9,10 +9,11 @@
 ##  - skip_admember
 
 from __future__ import print_function
+
 import pytest
 
-import univention.testing.udm as udm_test
 import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
 from univention.config_registry import handler_set
 
 import samltest

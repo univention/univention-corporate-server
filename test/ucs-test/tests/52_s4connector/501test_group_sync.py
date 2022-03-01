@@ -13,16 +13,15 @@ from __future__ import print_function
 import ldap
 import pytest
 
-from univention.testing.udm import UCSTestUDM
-from univention.testing.connector_common import (
-	Utf8User, SpecialUser,
-	NormalGroup, Utf8Group, SpecialGroup, create_udm_group, delete_udm_group,
-	create_con_group, delete_con_group, create_udm_user, delete_udm_user,
-	create_con_user, delete_con_user)
 import univention.testing.connector_common as tcommon
+from univention.testing.connector_common import (
+	NormalGroup, SpecialGroup, SpecialUser, Utf8Group, Utf8User, create_con_group, create_con_user,
+	create_udm_group, create_udm_user, delete_con_group, delete_con_user, delete_udm_group, delete_udm_user,
+)
+from univention.testing.udm import UCSTestUDM
 
 import s4connector
-from s4connector import (connector_running_on_this_host, connector_setup)
+from s4connector import connector_running_on_this_host, connector_setup
 
 TEST_GROUPS = [NormalGroup, Utf8Group, SpecialGroup]
 NESTED_USERS = [Utf8User, SpecialUser]

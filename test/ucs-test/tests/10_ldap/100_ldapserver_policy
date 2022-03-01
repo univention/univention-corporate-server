@@ -11,15 +11,14 @@
 ##  - skip_admember
 
 from __future__ import print_function
-import univention.admin.objects
-import univention.admin.modules as udm_modules
 
+import univention.admin.modules as udm_modules
+import univention.admin.objects
 import univention.testing.strings as uts
-import univention.testing.udm as udm_test
 import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 from univention.testing.udm_extensions import call_cmd
-
 
 with ucr_test.UCSTestConfigRegistry() as ucr:
 	domain = ucr.get("domainname")

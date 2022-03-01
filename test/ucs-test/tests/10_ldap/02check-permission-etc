@@ -11,11 +11,13 @@
 ## exposure: safe
 
 from __future__ import print_function
-import sys
-import os
+
 import grp
+import os
 import pwd
 import stat
+import sys
+
 from univention.config_registry import ConfigRegistry
 
 RETURN_PASS_CODE = 100

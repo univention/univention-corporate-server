@@ -7,9 +7,11 @@ import os
 
 import pytest
 
+from univention.appcenter.ini_parser import (
+	IniSectionAttribute, IniSectionBooleanAttribute, IniSectionListAttribute, IniSectionObject,
+	NoValueError, ParseError, TypedIniSectionObject, read_ini_file,
+)
 from univention.appcenter.log import log_to_logfile, log_to_stream
-from univention.appcenter.ini_parser import read_ini_file, IniSectionObject, IniSectionAttribute, IniSectionBooleanAttribute, IniSectionListAttribute, NoValueError, ParseError, TypedIniSectionObject
-
 
 log_to_logfile()
 log_to_stream()

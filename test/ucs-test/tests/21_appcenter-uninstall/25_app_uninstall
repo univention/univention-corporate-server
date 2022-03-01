@@ -9,13 +9,14 @@
 
 
 from __future__ import print_function
-import subprocess
+
 import re
+import subprocess
 
 import univention.testing.utils as utils
+from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_keys
 
 from appcenteruninstalltest import get_requested_apps
-from univention.appcenter.ucr import ucr_get, ucr_keys, ucr_is_true
 
 
 def check_status(app):
@@ -71,8 +72,8 @@ def check_webinterface(app):
 
 def _check_url(url):
 	print('       Checking', url)
-	import requests
 	import lxml
+	import requests
 	requests_timeout = 30
 	r = requests.get(url, timeout=requests_timeout, verify=False)
 	print('       ...', r.status_code)

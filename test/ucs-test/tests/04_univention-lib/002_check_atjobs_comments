@@ -6,8 +6,8 @@
 ##   - python-univention-lib
 ## exposure: safe
 
-import univention.testing.utils as utils
 import univention.lib.atjobs as atjobs
+import univention.testing.utils as utils
 
 
 def main():

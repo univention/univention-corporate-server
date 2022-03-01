@@ -9,12 +9,12 @@
 
 from __future__ import print_function
 
-from unittest import main, TestCase
-import univention.debug as ud
-from univention.testing.udm import UCSTestUDM
-from univention.testing.ucr import UCSTestConfigRegistry
-from univention.udm import UDM
+from unittest import TestCase, main
 
+import univention.debug as ud
+from univention.testing.ucr import UCSTestConfigRegistry
+from univention.testing.udm import UCSTestUDM
+from univention.udm import UDM
 
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
 ud.set_level(ud.ADMIN, ud.ALL)

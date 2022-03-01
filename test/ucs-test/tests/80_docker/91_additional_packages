@@ -7,10 +7,11 @@
 ## bugs:
 ##  - 42200
 
-from dockertest import Appcenter, App, get_app_name, get_app_version, copy_package_to_appcenter
-from univention.testing.utils import package_installed
-from univention.testing.debian_package import DebianPackage
 from univention.config_registry import ConfigRegistry
+from univention.testing.debian_package import DebianPackage
+from univention.testing.utils import package_installed
+
+from dockertest import App, Appcenter, copy_package_to_appcenter, get_app_name, get_app_version
 
 
 class UCSTest_AppCenter_PackageIsNotInstalled(Exception):

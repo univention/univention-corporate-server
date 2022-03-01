@@ -10,23 +10,22 @@
 
 from __future__ import print_function
 
-import time
-import random
 import base64
 import pprint
+import random
 import subprocess
+import time
 from datetime import datetime, timedelta
 
 import pytest
 
-import univention.testing.strings as uts
-import univention.testing.utils as utils
-import univention.testing.udm as udm_test
-from univention.testing.umc import Client
-
-from univention.admin.uldap import position
-import univention.admin.uldap
 import univention.admin.modules as udm_modules
+import univention.admin.uldap
+import univention.testing.strings as uts
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+from univention.admin.uldap import position
+from univention.testing.umc import Client
 
 
 @pytest.fixture
@@ -338,8 +337,9 @@ def test_script_lock_expired_passwords(udm, ucr, delta, disabled, expected):
 def test_country_names_uptodate():  # TODO: move into package unit test
 	"""Test is list of country names in univention.admin.syntax.Country.choices is uptodate"""
 
-	import univention.admin.syntax as udm_syntax
 	import pycountry
+
+	import univention.admin.syntax as udm_syntax
 
 	current_countries = sorted([(country.alpha_2, country.name) for country in pycountry.countries], key=lambda x: x[0])
 	if dict(current_countries) != dict(udm_syntax.Country.choices):

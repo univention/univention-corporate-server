@@ -6,16 +6,16 @@
 ##   - docker.io
 
 from __future__ import print_function
+
 import os
 import subprocess
 from contextlib import contextmanager
 
-from univention.config_registry import ConfigRegistry
-
 import univention.testing.udm as udm_test
+from univention.config_registry import ConfigRegistry
 from univention.testing.utils import verify_ldap_object
 
-from dockertest import get_app_version, App, get_docker_appbox_image, get_app_name, Appcenter
+from dockertest import App, Appcenter, get_app_name, get_app_version, get_docker_appbox_image
 
 ucr = ConfigRegistry()
 ucr.load()

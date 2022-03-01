@@ -6,11 +6,13 @@
 ## bugs: []
 
 from __future__ import print_function
-from essential.mail import PopMail
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+
+from essential.mail import PopMail
 
 
 def main():

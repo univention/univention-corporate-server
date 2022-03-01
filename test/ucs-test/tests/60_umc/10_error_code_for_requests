@@ -9,16 +9,17 @@
 ## exposure: dangerous
 
 from __future__ import print_function
-import time
+
 import ssl
-import psutil
-import httplib
 import subprocess
+import time
 
-from univention.testing.umc import Client
+import httplib
+import psutil
+
 import univention.testing.utils as utils
-
 from univention.management.console.modules.ucstest import joinscript, unjoinscript
+from univention.testing.umc import Client
 
 NUMBER_OF_CONNECTIONS = 8
 RESPONSE_STATUS_CODES = (510, 511)

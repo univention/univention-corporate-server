@@ -3,10 +3,12 @@
 ## roles-not: [basesystem]
 ## exposure: dangerous
 
-from lib.screen_shooter import BaseScreenShooter
 import logging
-import univention.testing.udm as udm_test
+
+from lib.screen_shooter import BaseScreenShooter
+
 import univention.testing.selenium as selenium_test
+import univention.testing.udm as udm_test
 
 
 class ScreenShooter(BaseScreenShooter):

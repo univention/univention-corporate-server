@@ -6,13 +6,14 @@
 from __future__ import print_function
 
 import signal
+import sys
+from os import WNOHANG, WTERMSIG, fork, wait4
 from time import sleep
+
 from psutil import Process, TimeoutExpired
-from os import wait4, WNOHANG, WTERMSIG, fork
 
 import univention.testing.utils as utils
 
-import sys
 sys.path.insert(0, '.')
 from umc import UMCBase  # noqa: E402
 

@@ -7,13 +7,17 @@
 ##  - python-univention-lib
 ## exposure: dangerous
 
-from ldap_extension_utils import get_package_name, get_acl_name, get_container_name, wait_for_ldap
-from ldap_extension_utils import set_container_description, call_join_script, call_unjoin_script
+import time
+
+import ldap
+from ldap_extension_utils import (
+	call_join_script, call_unjoin_script, get_acl_name, get_container_name, get_package_name,
+	set_container_description, wait_for_ldap,
+)
+
 from univention.testing.debian_package import DebianPackage
 from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import fail, wait_for_replication_and_postrun
-import ldap
-import time
 
 
 def main():

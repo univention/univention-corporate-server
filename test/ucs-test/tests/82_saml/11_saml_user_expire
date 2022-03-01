@@ -9,11 +9,13 @@
 ##  - skip_admember
 
 from __future__ import print_function
+
 from datetime import datetime, timedelta
+
+import pytest
 
 import univention.testing.udm as udm_test
 
-import pytest
 import samltest
 
 

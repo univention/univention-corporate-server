@@ -12,14 +12,14 @@
 
 from os import environ
 from os.path import exists
-from univention import uldap
-from univention.testing.utils import retry_on_error
-from unittest import (TestCase, main, skip, skipUnless)
 from tempfile import NamedTemporaryFile
 
 import ldap
+from unittest import TestCase, main, skip, skipUnless
 
+from univention import uldap
 from univention.config_registry import ConfigRegistry
+from univention.testing.utils import retry_on_error
 
 ucr = ConfigRegistry()
 ucr.load()

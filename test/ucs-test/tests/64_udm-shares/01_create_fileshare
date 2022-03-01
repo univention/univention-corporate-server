@@ -12,14 +12,16 @@
 ##   - univention-directory-manager-tools
 
 
-from __future__ import absolute_import
-from __future__ import print_function
+from __future__ import absolute_import, print_function
+
+import random
+
 import ldap.dn
+
 import univention.testing.strings as uts
 import univention.testing.ucr
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-import random
 
 
 def random_fqdn(ucr):  # type: (univention.testing.ucr.UCSTestConfigRegistry) -> str

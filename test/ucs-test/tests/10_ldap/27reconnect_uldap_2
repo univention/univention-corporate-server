@@ -9,20 +9,23 @@
 ##   - python-univention
 
 from __future__ import print_function
-import univention.testing.ucr as ucr_test
-import univention.testing.utils as utils
-import univention.testing.udm
-import univention.testing.ucr
-import univention.testing.strings as uts
-import univention.uldap
-import univention.admin.uldap
-import univention.admin.uexceptions
-from six.moves._thread import start_new_thread
-import traceback
-import time
+
 import subprocess
-from ldap.filter import filter_format
+import time
+import traceback
+
 from ldap import INSUFFICIENT_ACCESS, UNAVAILABLE
+from ldap.filter import filter_format
+from six.moves._thread import start_new_thread
+
+import univention.admin.uexceptions
+import univention.admin.uldap
+import univention.testing.strings as uts
+import univention.testing.ucr
+import univention.testing.ucr as ucr_test
+import univention.testing.udm
+import univention.testing.utils as utils
+import univention.uldap
 
 
 def delayed_slapd_restart():

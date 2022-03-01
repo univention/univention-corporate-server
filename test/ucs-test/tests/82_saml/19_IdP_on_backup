@@ -7,12 +7,13 @@
 ## join: true
 ## exposure: dangerous
 
-import time
 import socket
+import time
 
-import univention.config_registry as configRegistry
 import univention.admin.modules as udm_modules
+import univention.config_registry as configRegistry
 import univention.testing.utils as utils
+
 import samltest
 
 ucr = configRegistry.ConfigRegistry()

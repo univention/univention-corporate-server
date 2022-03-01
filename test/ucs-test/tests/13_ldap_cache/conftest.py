@@ -3,7 +3,6 @@ import subprocess
 import pytest
 
 from univention.ldap_cache.cache import get_cache as lib_get_cache
-
 from univention.lib.misc import custom_groupname
 from univention.testing.strings import random_name
 

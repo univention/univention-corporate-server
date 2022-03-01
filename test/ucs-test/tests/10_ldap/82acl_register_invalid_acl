@@ -10,14 +10,19 @@
 ## exposure: dangerous
 
 from __future__ import print_function
-from univention.testing.debian_package import DebianPackage
-from univention.testing.utils import fail
-from univention.config_registry import ConfigRegistry
-from ldap_extension_utils import get_package_name, get_acl_name, get_container_name, set_container_description, call_join_script, call_unjoin_script, get_ldap_master_connection
 
 from time import sleep
-from univention.testing.udm import UCSTestUDM
+
 import ldap
+from ldap_extension_utils import (
+	call_join_script, call_unjoin_script, get_acl_name, get_container_name, get_ldap_master_connection,
+	get_package_name, set_container_description,
+)
+
+from univention.config_registry import ConfigRegistry
+from univention.testing.debian_package import DebianPackage
+from univention.testing.udm import UCSTestUDM
+from univention.testing.utils import fail
 
 ucr = ConfigRegistry()
 ucr.load()

@@ -7,11 +7,13 @@
 ## exposure: dangerous
 
 from __future__ import print_function
-import univention.testing.utils as utils
-import univention.testing.strings as strings
-import univention.lib.atjobs as atjobs
-from subprocess import Popen, PIPE
+
 import datetime
+from subprocess import PIPE, Popen
+
+import univention.lib.atjobs as atjobs
+import univention.testing.strings as strings
+import univention.testing.utils as utils
 
 
 def get_output(cmd):

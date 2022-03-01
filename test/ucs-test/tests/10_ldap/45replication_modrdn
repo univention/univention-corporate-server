@@ -16,12 +16,13 @@
 ## exposure: dangerous
 
 from __future__ import print_function
-from univention.testing.strings import random_name
-from univention.testing.utils import wait_for_replication, stop_listener, start_listener
-import univention.testing.udm as udm_test
-import univention.testing.utils as utils
+
 import sys
 
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+from univention.testing.strings import random_name
+from univention.testing.utils import start_listener, stop_listener, wait_for_replication
 
 if __name__ == '__main__':
 	if utils.package_installed('univention-samba4'):

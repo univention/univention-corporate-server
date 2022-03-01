@@ -7,6 +7,7 @@
 ##   - univention-admin-diary-backend
 
 import datetime
+
 import univention.admindiary.backend
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test

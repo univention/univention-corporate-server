@@ -8,9 +8,10 @@
 ## exposure: dangerous
 
 import pytest
-import univention.testing.udm as udm_test
-import univention.testing.ucr as ucr_test
+
 import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 

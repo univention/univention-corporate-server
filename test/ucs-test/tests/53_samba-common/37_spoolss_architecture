@@ -12,12 +12,14 @@
 ##   - univention-config
 
 from __future__ import print_function
-import univention.testing.utils as utils
-import univention.testing.ucr as ucr_test
-import univention.config_registry
-import subprocess
+
 import os
+import subprocess
 import sys
+
+import univention.config_registry
+import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
 
 
 def get_testparm_var(sectionname, varname):

@@ -31,29 +31,29 @@
 
 from __future__ import print_function
 
-import glob
-import smtplib
-import imaplib
 import email
+import email.encoders as Encoders
+import glob
+import imaplib
 import os
-from os.path import basename
+import poplib
 import re
+import smtplib
 import socket
 import subprocess
 import sys
 import time
 import uuid
-import univention.testing.strings as uts
-import univention.config_registry
+from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-import email.encoders as Encoders
-import poplib
+from os.path import basename
 
-from univention.config_registry import handler_set
-import univention.testing.utils as utils
+import univention.config_registry
+import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
+from univention.config_registry import handler_set
 from univention.testing.decorators import WaitForNonzeroResultOrTimeout
 
 COMMASPACE = ', '

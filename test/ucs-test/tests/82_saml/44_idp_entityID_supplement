@@ -8,13 +8,16 @@
 ##  - skip_admember
 
 from __future__ import print_function
+
 import subprocess
+
 import requests
 
-import samltest
-import univention.testing.utils as utils
 import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
 from univention.config_registry import handler_set
+
+import samltest
 
 
 def main():

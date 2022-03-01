@@ -12,9 +12,9 @@
 
 import pytest
 
+import univention.testing.strings as uts
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-import univention.testing.strings as uts
 
 
 class Test_DNSForwardZone(object):

@@ -1,10 +1,10 @@
-from threading import Thread
-from smtpd import SMTPServer
-import subprocess
-import contextlib
 import asyncore
+import contextlib
 import fcntl
+import subprocess
 import time
+from smtpd import SMTPServer
+from threading import Thread
 
 
 # copy pasted from 83_self_service/test_self_service.py

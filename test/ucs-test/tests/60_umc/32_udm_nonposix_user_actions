@@ -7,11 +7,12 @@
 ## exposure: dangerous
 
 from __future__ import print_function
+
 import sys
 
 import univention.testing.utils as utils
-from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_username
+from univention.testing.udm import UCSTestUDM
 from univention.testing.umc import Client
 
 sys.path.insert(0, '.')

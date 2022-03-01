@@ -10,11 +10,17 @@
 ## exposure: dangerous
 
 from __future__ import print_function
+
+from time import sleep
+
+from ldap_extension_utils import (
+	call_join_script, call_unjoin_script, fetch_schema_from_ldap_master, get_package_name,
+	get_schema_attribute_id, get_schema_name,
+)
+
+from univention.config_registry import ConfigRegistry
 from univention.testing.debian_package import DebianPackage
 from univention.testing.utils import fail
-from univention.config_registry import ConfigRegistry
-from ldap_extension_utils import call_unjoin_script, call_join_script, get_package_name, get_schema_name, get_schema_attribute_id, fetch_schema_from_ldap_master
-from time import sleep
 
 ucr = ConfigRegistry()
 ucr.load()

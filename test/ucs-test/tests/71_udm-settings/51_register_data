@@ -7,17 +7,19 @@
 ##   - univention-directory-manager-tools
 
 from __future__ import print_function
-import os
+
 import bz2
-import atexit
+import os
+import pipes
 import shutil
 import subprocess
-import pipes
-import univention.testing.utils as utils
-import univention.testing.udm as udm_test
-import univention.testing.ucr as ucr_test
-import univention.testing.strings as uts
 
+import atexit
+
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 
 file_name = uts.random_name()
 file_path = os.path.join('/tmp', file_name)

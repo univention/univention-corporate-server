@@ -7,7 +7,8 @@
 ## packages: [python-univention-directory-manager]
 ## bugs: [47316]
 
-from unittest import main, TestCase
+from unittest import TestCase, main
+
 from univention.udm import UDM
 
 

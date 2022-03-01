@@ -6,7 +6,11 @@
 ##   - docker.io
 
 import pytest
-from dockertest import Appcenter, get_app_name, get_docker_appbox_ucs, get_app_version, App, UCSTest_DockerApp_InstallationFailed
+
+from dockertest import (
+	App, Appcenter, UCSTest_DockerApp_InstallationFailed, get_app_name, get_app_version,
+	get_docker_appbox_ucs,
+)
 
 if __name__ == '__main__':
 

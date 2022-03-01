@@ -8,14 +8,18 @@
 ## bugs: [40095]
 
 from __future__ import print_function
-from univention.config_registry import handler_set
-import psutil
+
+import random
 import time
+
+import psutil
+from atexit import register
+
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
+from univention.config_registry import handler_set
+
 from essential.simplesquid import SimpleSquid
-from atexit import register
-import random
 
 
 def main():

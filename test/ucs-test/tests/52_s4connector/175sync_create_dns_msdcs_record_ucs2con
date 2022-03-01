@@ -8,12 +8,14 @@
 ##   - dnsutils
 
 from __future__ import print_function
-import univention.testing.strings as uts
-import univention.testing.utils as utils
-import dnstests
-import s4connector
+
 import subprocess
 
+import univention.testing.strings as uts
+import univention.testing.utils as utils
+
+import dnstests
+import s4connector
 
 if __name__ == '__main__':
 	s4connector.exit_if_connector_not_running()

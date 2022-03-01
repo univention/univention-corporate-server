@@ -7,12 +7,14 @@
 
 
 from __future__ import print_function
-import univention.testing.utils as utils
-import univention.testing.ucr as ucr_test
-import univention.config_registry
+
 import socket
 import ssl
 import subprocess
+
+import univention.config_registry
+import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
 
 
 def get_certificate_from_ssl_connection(fqdn, servername, port):

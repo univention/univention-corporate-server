@@ -9,16 +9,16 @@
 
 from __future__ import print_function
 
-import pytest
 import subprocess
 import time
 
-from univention.admin.rest.client import UDM as UDMClient, Forbidden, Unauthorized, PreconditionFailed
-from univention.config_registry import ConfigRegistry, handler_set
-from univention.testing.utils import UCSTestDomainAdminCredentials
-from univention.testing.udm import UDM
-from univention.lib.misc import custom_groupname
+import pytest
 
+from univention.admin.rest.client import UDM as UDMClient, Forbidden, PreconditionFailed, Unauthorized
+from univention.config_registry import ConfigRegistry, handler_set
+from univention.lib.misc import custom_groupname
+from univention.testing.udm import UDM
+from univention.testing.utils import UCSTestDomainAdminCredentials
 
 ucr = ConfigRegistry()
 ucr.load()

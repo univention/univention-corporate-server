@@ -9,8 +9,12 @@
 ##   - univention-samba4
 
 import sys
-from performanceutils import CONNECTOR_WAIT_TIME, create_ous, execute_timing, import_users, wait_for_s4connector, test_umc_admin_auth, test_umc_admin_auth_udm_load, create_test_user, s4_user_auth, get_user_dn_list, reset_passwords, count_users
 
+from performanceutils import (
+	CONNECTOR_WAIT_TIME, count_users, create_ous, create_test_user, execute_timing, get_user_dn_list,
+	import_users, reset_passwords, s4_user_auth, test_umc_admin_auth, test_umc_admin_auth_udm_load,
+	wait_for_s4connector,
+)
 
 if __name__ == '__main__':
 	MAX_SECONDS_IMPORT = 8 * 60

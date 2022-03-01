@@ -9,24 +9,25 @@
 ## bugs: [44786]
 
 from __future__ import print_function
+
+import logging
 import os
 import pwd
+import subprocess
 import sys
 import time
-import logging
-import subprocess
 
 from ldap.filter import filter_format
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
-from univention.testing.decorators import SetTimeout
 import univention.testing.utils as utils
-from univention.testing.ucs_samba import wait_for_drs_replication, wait_for_s4connector
 from univention.config_registry import handler_set
 from univention.listener.handler_logging import get_logger
 from univention.testing.codes import TestCodes
-
+from univention.testing.decorators import SetTimeout
+from univention.testing.ucs_samba import wait_for_drs_replication, wait_for_s4connector
 
 lm_name = 'test-{}'.format(uts.random_name())
 lm_file = os.path.join('/usr/lib/univention-directory-listener/system', '{}.py'.format(lm_name))

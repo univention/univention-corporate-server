@@ -6,10 +6,12 @@
 ##   - univention-saml
 
 from __future__ import print_function
-import dns.resolver
+
 import dns.ipv6
-from univention.testing.utils import get_ldap_connection, fail
+import dns.resolver
+
 import univention.testing.ucr as ucr_test
+from univention.testing.utils import fail, get_ldap_connection
 
 
 def _check_record_type(record_type):

@@ -4,11 +4,13 @@
 
 .. moduleauthor:: Ammar Najjar <najjar@univention.de>
 """
+import time
+from tempfile import NamedTemporaryFile
+
 import pycurl
 import StringIO
-import time
+
 import univention.testing.utils as utils
-from tempfile import NamedTemporaryFile
 
 
 class SimpleCurl(object):

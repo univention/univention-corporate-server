@@ -7,8 +7,8 @@
 
 from ldap import explode_dn
 
-from univention.testing.strings import random_name
 from univention.ldap_cache.cache import get_cache
+from univention.testing.strings import random_name
 
 
 def test_cache_user_add_remove_from_group(udm, group1, user1, user2):

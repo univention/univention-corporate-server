@@ -7,13 +7,14 @@
 ## exposure: dangerous
 
 from __future__ import print_function
+
 import subprocess
 import time
 
-import samltest
-import univention.testing.utils as utils
 import univention.config_registry
+import univention.testing.utils as utils
 
+import samltest
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()

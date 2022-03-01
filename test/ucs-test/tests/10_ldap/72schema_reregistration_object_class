@@ -9,11 +9,13 @@
 ##  - python-univention-lib
 ## exposure: dangerous
 
+from time import sleep
+
+from ldap_extension_utils import call_join_script, call_unjoin_script, get_package_name, get_schema_name
+
+from univention.config_registry import ConfigRegistry
 from univention.testing.debian_package import DebianPackage
 from univention.testing.utils import verify_ldap_object
-from univention.config_registry import ConfigRegistry
-from ldap_extension_utils import call_unjoin_script, call_join_script, get_package_name, get_schema_name
-from time import sleep
 
 ucr = ConfigRegistry()
 ucr.load()

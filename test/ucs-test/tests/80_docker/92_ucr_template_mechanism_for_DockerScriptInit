@@ -5,11 +5,13 @@
 ## packages:
 ##   - docker.io
 
-import subprocess
 import json
-from dockertest import Appcenter, get_app_name, get_app_version, tiny_app
+import subprocess
+
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.utils import fail
+
+from dockertest import Appcenter, get_app_name, get_app_version, tiny_app
 
 
 def check_docker_arg_against_ucrv(container_id, ucrv):

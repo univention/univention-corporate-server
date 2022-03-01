@@ -6,9 +6,10 @@
 from __future__ import print_function
 
 import subprocess
+import sys
+
 import univention.testing.utils as utils
 
-import sys
 sys.path.insert(0, '.')
 from umc import ServiceModule  # noqa: E402
 

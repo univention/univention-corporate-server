@@ -6,9 +6,11 @@
 ## packages: [python-univention-directory-manager]
 ## exposure: safe
 
-from univention.admin import property
-import unittest
 from argparse import Namespace as N
+
+import unittest
+
+from univention.admin import property
 
 
 class FakeObject(dict):

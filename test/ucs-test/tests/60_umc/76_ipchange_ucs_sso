@@ -4,14 +4,16 @@
 ## exposure: dangerous
 
 from __future__ import print_function
+
 import sys
+
 import atexit
 
-import univention.testing.utils as utils
-import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-from univention.testing.umc import Client
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 from univention.config_registry import ConfigRegistry
+from univention.testing.umc import Client
 
 if __name__ == '__main__':
 	ucr = ConfigRegistry()

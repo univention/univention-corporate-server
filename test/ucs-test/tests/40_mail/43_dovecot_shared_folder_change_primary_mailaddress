@@ -8,16 +8,21 @@
 ##  - univention-directory-manager-tools
 
 from __future__ import print_function
-import time
+
 import os
 import sys
 import syslog
-from univention.config_registry import handler_set
+import time
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-from essential.mail import send_mail, random_email, imap_search_mail, get_dovecot_maildir, create_shared_mailfolder
+from univention.config_registry import handler_set
+
+from essential.mail import (
+	create_shared_mailfolder, get_dovecot_maildir, imap_search_mail, random_email, send_mail,
+)
 
 TIMEOUT_MAIL = 120
 

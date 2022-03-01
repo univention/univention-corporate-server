@@ -8,17 +8,16 @@
 ##   - univention-directory-manager-tools
 
 from __future__ import print_function
-import bz2
+
 import base64
+import bz2
 
-import univention.testing.udm as udm_test
-import univention.testing.ucr as ucr_test
-import univention.testing.utils as utils
 import univention.testing.strings as uts
-from univention.testing.umc import Client
-
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 from univention.config_registry import handler_set
-
+from univention.testing.umc import Client
 
 SYNTAX = (
 	'from univention.admin.syntax import string\n'

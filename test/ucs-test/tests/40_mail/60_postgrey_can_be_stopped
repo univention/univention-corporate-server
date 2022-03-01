@@ -4,9 +4,12 @@
 ## packages: [univention-postgrey]
 
 from __future__ import print_function
-import psutil
+
 import subprocess
 import time
+
+import psutil
+
 import univention.testing.utils as utils
 
 

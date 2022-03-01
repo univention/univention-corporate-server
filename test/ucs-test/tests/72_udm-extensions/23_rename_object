@@ -7,24 +7,20 @@
 ##   - univention-directory-manager-tools
 
 from __future__ import print_function
+
+import base64
+import bz2
+import os
+
 import univention.testing.udm as udm_test
 from univention.config_registry import ConfigRegistry
-from univention.testing.utils import verify_ldap_object, fail, wait_for_replication
-from univention.testing.strings import random_name, random_version, random_ucs_version
+from univention.testing.strings import random_name, random_ucs_version, random_version
 from univention.testing.udm_extensions import (
-	VALID_EXTENSION_TYPES,
-	get_extension_name,
-	get_extension_filename,
-	get_extension_buffer,
-	get_package_name,
-	get_package_version,
-	get_absolute_extension_filename,
-	get_dn_of_extension_by_name,
-	remove_extension_by_name
+	VALID_EXTENSION_TYPES, get_absolute_extension_filename, get_dn_of_extension_by_name,
+	get_extension_buffer, get_extension_filename, get_extension_name, get_package_name, get_package_version,
+	remove_extension_by_name,
 )
-import os
-import bz2
-import base64
+from univention.testing.utils import fail, verify_ldap_object, wait_for_replication
 
 if __name__ == '__main__':
 	ucr = ConfigRegistry()

@@ -8,12 +8,13 @@
 ## bugs: [47316]
 
 from collections import namedtuple
-from unittest import main, TestCase
-import univention.debug as ud
-from univention.udm import UDM
-from univention.testing.ucr import UCSTestConfigRegistry
-from univention.udm.exceptions import NoSuperordinate, CreateError, MoveError
 
+from unittest import TestCase, main
+
+import univention.debug as ud
+from univention.testing.ucr import UCSTestConfigRegistry
+from univention.udm import UDM
+from univention.udm.exceptions import CreateError, MoveError, NoSuperordinate
 
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
 ud.set_level(ud.ADMIN, ud.ALL)

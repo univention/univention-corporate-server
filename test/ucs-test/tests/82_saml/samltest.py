@@ -1,21 +1,21 @@
 #!/usr/bin/env python
-import re
-import requests
-from requests_kerberos import HTTPKerberosAuth, OPTIONAL
-import subprocess
-import socket
 import json
-import shutil
 import os
+import re
+import shutil
+import socket
+import subprocess
 import time
-
-import univention.testing.utils as utils
-import univention.config_registry as configRegistry
-
-import defusedxml.ElementTree as ET
 import xml.etree.ElementTree
 
+import defusedxml.ElementTree as ET
+import requests
 from HTMLParser import HTMLParser
+from requests_kerberos import OPTIONAL, HTTPKerberosAuth
+
+import univention.config_registry as configRegistry
+import univention.testing.utils as utils
+
 html = HTMLParser()
 
 

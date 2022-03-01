@@ -8,8 +8,9 @@
 ## tags: [appcenter]
 from __future__ import print_function
 
+from univention.lib.umc import ConnectionError, HTTPError
+
 import appcentertest as app_test
-from univention.lib.umc import HTTPError, ConnectionError
 
 HTTPException = (HTTPError, ConnectionError)
 

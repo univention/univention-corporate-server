@@ -14,7 +14,9 @@ from __future__ import print_function
 import pytest
 
 import univention.testing.connector_common as tcommon
-from univention.testing.connector_common import (NormalUser, create_udm_user, delete_udm_user, create_con_user, delete_con_user)
+from univention.testing.connector_common import (
+	NormalUser, create_con_user, create_udm_user, delete_con_user, delete_udm_user,
+)
 
 import adconnector
 from adconnector import connector_setup

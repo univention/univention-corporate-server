@@ -5,7 +5,7 @@ from typing import Callable, Iterator, Type  # noqa F401
 import pytest
 
 import univention.lib.umc
-from univention.testing import strings, ucr as _ucr, udm as _udm, umc, utils, selenium as _sel
+from univention.testing import selenium as _sel, strings, ucr as _ucr, udm as _udm, umc, utils
 
 pytest_plugins = ["univention.testing.conftest"]
 

@@ -33,15 +33,17 @@ Otherwise the test would be flaky.
 """
 
 
-from __future__ import absolute_import
-from __future__ import print_function
-from univention.testing.strings import random_name
-from univention.testing.utils import wait_for_replication, stop_listener, start_listener
+from __future__ import absolute_import, print_function
+
+import sys
+
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 from univention.lib.misc import custom_groupname
-import sys
+from univention.testing.strings import random_name
+from univention.testing.utils import start_listener, stop_listener, wait_for_replication
+
 RETRY_COUNT = 20
 DELAY = 10
 

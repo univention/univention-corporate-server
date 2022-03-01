@@ -8,18 +8,20 @@
 ## exposure: safe
 
 from __future__ import print_function
+
 import subprocess
 
+import lxml.html
+import requests
+import urllib3
+
 import univention.testing.utils as utils
-from appcentertest import get_requested_apps
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.ucr import ucr_get
 
-import requests
-import lxml.html
+from appcentertest import get_requested_apps
 
 # Suppress InsecureRequestWarning: Unverified HTTPS request
-import urllib3
 urllib3.disable_warnings()
 
 

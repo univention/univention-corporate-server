@@ -7,11 +7,12 @@
 ##   - docker.io
 
 from __future__ import print_function
-from dockertest import Appcenter, App, get_app_name, UCTTest_DockerApp_UMCInstallFailed
 
-import requests
 import json
 
+import requests
+
+from dockertest import App, Appcenter, UCTTest_DockerApp_UMCInstallFailed, get_app_name
 
 if __name__ == '__main__':
 	# get latest app box image

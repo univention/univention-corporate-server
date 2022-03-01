@@ -3,14 +3,16 @@
 """Simple HTTP Proxy for ucs-test."""
 # Inspired by <http://effbot.org/librarybook/simplehttpserver.htm>
 from __future__ import print_function
-from six.moves import BaseHTTPServer
-import urllib2
-import urlparse
-import httplib
-import shutil
-from optparse import OptionParser
+
 import base64
 import os
+import shutil
+from optparse import OptionParser
+
+import httplib
+import urllib2
+import urlparse
+from six.moves import BaseHTTPServer
 
 PORT = 3128
 

@@ -6,22 +6,21 @@
 ##  - univention-directory-listener (>= 9.0.2-6)
 ## exposure: dangerous
 
-from __future__ import print_function
-from __future__ import absolute_import
-from tempfile import mkdtemp
-from shutil import rmtree
-from os import mkdir, chown
+from __future__ import absolute_import, print_function
+
+from os import chown, mkdir
 from os.path import join
-from sys import exit
-from time import sleep
 from pwd import getpwnam
-from subprocess import Popen
+from shutil import rmtree
 from socket import create_connection, error as socket_error
+from subprocess import Popen
+from sys import exit
+from tempfile import mkdtemp
+from time import sleep
 
 from univention.config_registry.frontend import handler_set
-
-from univention.testing.udm import UCSTestUDM
 from univention.testing.ucr import UCSTestConfigRegistry
+from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import verify_ldap_object
 
 MODULE = 'container/ou'

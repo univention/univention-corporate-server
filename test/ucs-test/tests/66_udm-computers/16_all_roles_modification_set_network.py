@@ -12,10 +12,10 @@ import ipaddress
 
 import pytest
 
-import univention.testing.udm as udm_test
-import univention.testing.strings as uts
-import univention.testing.utils as utils
 import univention.config_registry as configRegistry
+import univention.testing.strings as uts
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 
 
 @pytest.mark.parametrize('ip_subnet,ip_network,ip_netmask,ip_range', [

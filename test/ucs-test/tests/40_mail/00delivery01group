@@ -12,12 +12,14 @@
 # It then sends an eMail to the address and checks if all three user received it.
 #################
 
-from essential.mail import file_search_mail, send_mail
 import time
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+
+from essential.mail import file_search_mail, send_mail
 
 
 def main():

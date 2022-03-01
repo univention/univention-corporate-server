@@ -1,21 +1,21 @@
-import ldap
-import sys
-import subprocess
 import contextlib
-import ldap_glue_s4
+import subprocess
+import sys
 from time import sleep
 
-import univention.s4connector.s4 as s4
-import univention.testing.utils as utils
-import univention.testing.ucr as testing_ucr
-import univention.admin.uldap
+import ldap
+
 import univention.admin.modules
 import univention.admin.objects
-
-import univention.testing.connector_common as tcommon
-
+import univention.admin.uldap
 import univention.config_registry
+import univention.s4connector.s4 as s4
+import univention.testing.connector_common as tcommon
+import univention.testing.ucr as testing_ucr
+import univention.testing.utils as utils
 from univention.config_registry import handler_set as ucr_set
+
+import ldap_glue_s4
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()

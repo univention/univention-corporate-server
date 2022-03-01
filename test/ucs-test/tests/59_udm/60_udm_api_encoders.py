@@ -9,12 +9,12 @@
 
 from __future__ import print_function
 
-from unittest import main, TestCase
+from unittest import TestCase, main
+
 import univention.debug as ud
 from univention.testing.strings import random_username
 from univention.udm import UDM
 from univention.udm.exceptions import DeleteError
-
 
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
 ud.set_level(ud.ADMIN, ud.ALL)

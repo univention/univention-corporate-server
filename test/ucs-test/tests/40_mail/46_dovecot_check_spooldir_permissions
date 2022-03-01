@@ -5,9 +5,10 @@
 ## packages:
 ##  - univention-mail-dovecot
 
-import os
 import grp
+import os
 import pwd
+
 import univention.testing.utils as utils
 
 DIR_SPOOL_DOVECOT = '/var/spool/univention-mail-dovecot'

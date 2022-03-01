@@ -12,15 +12,16 @@
 
 from __future__ import print_function
 
-from datetime import datetime, timedelta
-import pytest
 import subprocess
 import time
-import univention.admin.uldap
-from univention.config_registry import handler_set, handler_unset
-import univention.testing.utils as utils
-import univention.testing.udm as udm_test
+from datetime import datetime, timedelta
 
+import pytest
+
+import univention.admin.uldap
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+from univention.config_registry import handler_set, handler_unset
 
 ucrv = "directory/manager/user/accountactivation/cron"
 expected_default_ucr_value = "*/15 * * * *"

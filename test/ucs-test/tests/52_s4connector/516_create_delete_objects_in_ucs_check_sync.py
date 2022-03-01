@@ -8,27 +8,26 @@
 ## bugs:
 ##  - 50593
 
-import pytest
-import time
 import subprocess
 import sys
+import time
 
-from ldap.filter import filter_format
+import pytest
 from ldap.dn import str2dn
+from ldap.filter import filter_format
 
-from univention.admin import modules
+from univention.admin import configRegistry, modules
 from univention.admin.uexceptions import noObject
 from univention.admin.uldap import position
-from univention.admin import configRegistry
 from univention.config_registry import handler_set
+from univention.s4connector import configdb
 from univention.testing.strings import random_name
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.ucs_samba import wait_for_drs_replication
 from univention.testing.udm import verify_udm_object
-from univention.testing.utils import (get_ldap_connection, fail)
+from univention.testing.utils import fail, get_ldap_connection
 
-from univention.s4connector import configdb
-from s4connector import (connector_running_on_this_host, connector_setup)
+from s4connector import connector_running_on_this_host, connector_setup
 
 
 def stderr(msg):

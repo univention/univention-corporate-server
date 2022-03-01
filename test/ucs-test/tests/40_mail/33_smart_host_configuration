@@ -5,17 +5,21 @@
 ## exposure: dangerous
 
 from __future__ import print_function
+
 import tempfile
 import time
+
 import dns.resolver
-from essential.mail import send_mail, check_delivery, restart_postfix
-from univention.testing.mail import MailSink
-from univention.config_registry import handler_set
-from univention.testing.network import NetworkRedirector
+
 import univention.testing.strings as uts
-import univention.testing.udm as udm_test
 import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+from univention.config_registry import handler_set
+from univention.testing.mail import MailSink
+from univention.testing.network import NetworkRedirector
+
+from essential.mail import check_delivery, restart_postfix, send_mail
 
 TIMEOUT = 90  # sec
 

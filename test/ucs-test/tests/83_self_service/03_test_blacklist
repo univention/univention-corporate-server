@@ -8,9 +8,11 @@
 ##   - univention-self-service-passwordreset-umc
 
 from __future__ import print_function
-from univention.testing import utils
+
 from test_self_service import SelfServiceUser
+
 from univention.lib.umc import HTTPError
+from univention.testing import utils
 
 error_get_contact = u'Either username or password is incorrect or you are not allowed to use this service.'
 error_set_contact = u'Either username or password is incorrect or you are not allowed to use this service.'

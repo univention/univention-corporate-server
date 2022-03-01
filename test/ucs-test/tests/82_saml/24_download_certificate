@@ -6,8 +6,11 @@
 ## exposure: safe
 
 from __future__ import print_function
-import urllib2
+
 import re
+
+import urllib2
+
 from univention.config_registry import ConfigRegistry
 from univention.testing.utils import fail
 

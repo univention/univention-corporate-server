@@ -12,20 +12,20 @@
 ## exposure: dangerous
 
 
-import re
-import os
 import glob
-import time
+import os
+import re
 import subprocess
+import time
 
 from ldap.dn import escape_dn_chars
 from ldap.filter import filter_format
 
 import univention.config_registry
+import univention.testing.strings as uts
+import univention.testing.utils as utils
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.ucs_samba import wait_for_drs_replication
-import univention.testing.utils as utils
-import univention.testing.strings as uts
 from univention.testing.utils import package_installed
 
 

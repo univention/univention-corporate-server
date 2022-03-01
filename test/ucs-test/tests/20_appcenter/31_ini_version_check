@@ -8,15 +8,15 @@
 ## exposure: careful
 
 from __future__ import print_function
+
 from sys import exit
 from time import sleep
 
 import univention.testing.utils as utils
-from univention.testing.codes import TestCodes
-
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.ucr import ucr_get
 from univention.appcenter.udm import ApplicationLDAPObject, get_machine_connection
+from univention.testing.codes import TestCodes
 
 APP_ID = 'univention-demo-data'
 

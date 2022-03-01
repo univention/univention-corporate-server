@@ -5,7 +5,8 @@
 
 from __future__ import print_function
 
-import grep_traceback
 import glob
+
+import grep_traceback
 
 grep_traceback.main(glob.glob('/var/log/univention/*.log*'))

@@ -7,9 +7,11 @@
 ## - univention-samba4
 
 from __future__ import print_function
-from subprocess import PIPE, Popen
-import univention.testing.utils as utils
+
 import re
+from subprocess import PIPE, Popen
+
+import univention.testing.utils as utils
 
 proc = Popen(['samba-tool', 'drs', 'showrepl'], stdout=PIPE, stderr=PIPE)
 

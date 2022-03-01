@@ -9,21 +9,17 @@
 ##   - shell-univention-lib
 
 from __future__ import print_function
+
+import random
+
 from univention.testing.debian_package import DebianPackage
-from univention.testing.utils import wait_for_replication, fail
-from univention.testing.strings import random_name, random_version, random_ucs_version
+from univention.testing.strings import random_name, random_ucs_version, random_version
 from univention.testing.udm_extensions import (
-	get_package_name,
-	get_extension_name,
-	get_extension_filename,
-	get_extension_buffer,
-	get_join_script_buffer,
-	VALID_EXTENSION_TYPES,
-	call_join_script,
-	get_absolute_extension_filename,
+	VALID_EXTENSION_TYPES, call_join_script, get_absolute_extension_filename, get_extension_buffer,
+	get_extension_filename, get_extension_name, get_join_script_buffer, get_package_name,
 	remove_extension_by_name,
 )
-import random
+from univention.testing.utils import fail, wait_for_replication
 
 
 def test_extension(extension_type):

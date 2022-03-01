@@ -7,21 +7,21 @@
 ## exposure: dangerous
 
 from __future__ import print_function
-import sys
 
+import sys
 from os import path
-from shutil import rmtree, copy as file_copy
-from time import sleep, time, localtime, strftime
-from subprocess import Popen, PIPE, check_call, call
+from shutil import copy as file_copy, rmtree
+from subprocess import PIPE, Popen, call, check_call
 from tempfile import mkdtemp
+from time import localtime, sleep, strftime, time
 
 import ldap.dn
 
-from univention import uldap
 import univention.testing.utils as utils
+from univention import uldap
 from univention.testing.codes import TestCodes
+from univention.testing.license_client import CredentialsMissing, TestLicenseClient
 from univention.testing.strings import random_username
-from univention.testing.license_client import TestLicenseClient, CredentialsMissing
 
 sys.path.insert(0, '.')
 from umc import UDMModule  # noqa: E402

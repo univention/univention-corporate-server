@@ -13,16 +13,16 @@
 
 from __future__ import print_function
 
+import contextlib
 import os
 import shutil
 import subprocess
-import contextlib
 
-import pytest
 import ldap.dn
+import pytest
 
 import univention.testing.udm as udm_test
-from univention.testing import utils, strings, ucr as _ucr
+from univention.testing import strings, ucr as _ucr, utils
 
 
 @contextlib.contextmanager

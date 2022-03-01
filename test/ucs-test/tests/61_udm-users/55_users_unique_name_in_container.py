@@ -8,10 +8,10 @@
 
 import pytest
 
-from univention.config_registry import ucr
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
 import univention.uldap
+from univention.config_registry import ucr
 
 
 @pytest.fixture

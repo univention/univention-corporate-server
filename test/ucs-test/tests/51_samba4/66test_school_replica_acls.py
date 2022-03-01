@@ -8,13 +8,14 @@
 ##   - univention-config
 ##   - ucs-school-replica
 
-import pytest
 import subprocess
+
+import pytest
 
 import univention.admin
 import univention.testing.strings as uts
-import univention.testing.utils as utils
 import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 
 
 # I only want the user to be created once

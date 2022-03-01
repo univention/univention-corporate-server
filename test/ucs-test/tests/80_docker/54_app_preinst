@@ -6,7 +6,11 @@
 ##   - docker.io
 
 import subprocess
-from dockertest import Appcenter, get_app_name, get_app_version, tiny_app, UCSTest_DockerApp_VerifyFailed, UCSTest_DockerApp_InstallationFailed
+
+from dockertest import (
+	Appcenter, UCSTest_DockerApp_InstallationFailed, UCSTest_DockerApp_VerifyFailed, get_app_name,
+	get_app_version, tiny_app,
+)
 
 
 def create_app(fail_in_preinst):

@@ -12,7 +12,7 @@ import json
 import subprocess
 
 from univention.testing.debian_package import DebianPackage
-from univention.testing.strings import random_version, random_string
+from univention.testing.strings import random_string, random_version
 from univention.testing.ucr import UCSTestConfigRegistry
 
 UCR_MODULE = '''

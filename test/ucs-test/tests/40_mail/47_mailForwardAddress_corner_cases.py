@@ -13,11 +13,16 @@
 from __future__ import print_function
 
 import pytest
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-from essential.mail import send_mail, check_delivery, create_shared_mailfolder, imap_search_mail, random_email, make_token, set_mail_forward_copy_to_self_ucrv
+
+from essential.mail import (
+	check_delivery, create_shared_mailfolder, imap_search_mail, make_token, random_email, send_mail,
+	set_mail_forward_copy_to_self_ucrv,
+)
 
 with ucr_test.UCSTestConfigRegistry() as ucr:
 	DOMAIN = ucr.get("domainname").lower()

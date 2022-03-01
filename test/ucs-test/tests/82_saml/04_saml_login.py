@@ -7,8 +7,10 @@
 ##  - skip_admember
 
 from __future__ import print_function
-import samltest
+
 import univention.testing.utils as utils
+
+import samltest
 
 
 def __get_samlSession():

@@ -10,8 +10,9 @@
 
 
 from __future__ import print_function
-import univention.testing.utils as utils
+
 import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 from univention.testing.strings import random_string
 
 if __name__ == '__main__':

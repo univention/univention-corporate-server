@@ -6,13 +6,17 @@
 ## packages: [univention-squid]
 
 from __future__ import print_function
-from essential.simplecurl import SimpleCurl
-from essential.simplesquid import SimpleSquid
-from univention.config_registry import handler_set, handler_unset
+
 import itertools
+
 import pycurl
+
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
+from univention.config_registry import handler_set, handler_unset
+
+from essential.simplecurl import SimpleCurl
+from essential.simplesquid import SimpleSquid
 
 
 def checkAuths(host, passwd, url, basic_ntlm, expect_wrong_password):

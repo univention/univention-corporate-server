@@ -6,9 +6,14 @@
 ##   - docker.io
 
 from __future__ import print_function
-from dockertest import Appcenter, App, get_app_name, get_app_version, get_docker_appbox_ucs, get_docker_appbox_image
-from univention.testing.utils import fail, get_ldap_connection
+
 import os
+
+from univention.testing.utils import fail, get_ldap_connection
+
+from dockertest import (
+	App, Appcenter, get_app_name, get_app_version, get_docker_appbox_image, get_docker_appbox_ucs,
+)
 
 
 def fail_if_file_exists(f):

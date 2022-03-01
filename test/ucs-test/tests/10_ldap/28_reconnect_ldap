@@ -9,9 +9,12 @@
 ##   - python-univention
 
 from __future__ import print_function
+
 import subprocess
-import univention.uldap
+
 import ldap
+
+import univention.uldap
 
 lo = univention.uldap.getMachineConnection()
 dn = lo.lo.whoami_s()[3:]

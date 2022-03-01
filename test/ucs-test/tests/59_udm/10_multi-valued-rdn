@@ -5,11 +5,13 @@
 ## bugs: [40129]
 
 from __future__ import print_function
-import univention.testing.udm as udm_test
-from univention.testing.utils import (verify_ldap_object, wait_for_replication)
-from univention.testing.strings import random_name
+
 from ldap import AVA_STRING
-from ldap.dn import (str2dn, dn2str)
+from ldap.dn import dn2str, str2dn
+
+import univention.testing.udm as udm_test
+from univention.testing.strings import random_name
+from univention.testing.utils import verify_ldap_object, wait_for_replication
 
 MODULE = 'tests/ipservice'
 

@@ -12,8 +12,8 @@
 ##  - 40120
 ##  - 40602
 
-from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_name
+from univention.testing.udm import UCSTestUDM
 from univention.uldap import getMachineConnection
 
 ATTR = 'prohibitedUsername'

@@ -6,7 +6,11 @@
 ##   - docker.io
 
 from __future__ import print_function
-from dockertest import Appcenter, App, get_app_name, get_app_version, get_docker_appbox_ucs, get_docker_appbox_image, UCSTest_Docker_Exception
+
+from dockertest import (
+	App, Appcenter, UCSTest_Docker_Exception, get_app_name, get_app_version, get_docker_appbox_image,
+	get_docker_appbox_ucs,
+)
 
 
 class UCSTest_DockerApp_Identify(UCSTest_Docker_Exception):

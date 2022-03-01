@@ -6,13 +6,13 @@
 ##  - domaincontroller_master
 ## exposure: dangerous
 
-import sys
 import subprocess
+import sys
 from tempfile import NamedTemporaryFile
 
 import univention.testing.utils as utils
-from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_username
+from univention.testing.udm import UCSTestUDM
 
 sys.path.insert(0, '.')
 from umc import UMCBase  # noqa: E402

@@ -8,12 +8,14 @@
 ##  4.0-2: skip
 
 from __future__ import print_function
-from datetime import datetime, timedelta
-from univention.uldap import getMachineConnection
+
 import re
+from datetime import datetime, timedelta
+
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+from univention.uldap import getMachineConnection
 
 
 def nis_schema_conatains_ordering_for_shadowExpire():

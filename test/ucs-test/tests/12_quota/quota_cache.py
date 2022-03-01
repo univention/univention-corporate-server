@@ -1,8 +1,11 @@
 from __future__ import print_function
-import univention.testing.utils as utils
-from six.moves import cPickle as pickle
+
 import os
 import time
+
+from six.moves import cPickle as pickle
+
+import univention.testing.utils as utils
 
 SHARE_CACHE_DIR = '/var/cache/univention-quota/'
 TIMEOUT = 5  # seconds

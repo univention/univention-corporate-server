@@ -8,9 +8,10 @@
 ## exposure: safe
 
 from __future__ import print_function
-from os import path
+
+from configparser import Error, RawConfigParser
 from glob import glob
-from configparser import RawConfigParser, Error
+from os import path
 
 import univention.testing.utils as utils
 from univention.appcenter.app_cache import Apps

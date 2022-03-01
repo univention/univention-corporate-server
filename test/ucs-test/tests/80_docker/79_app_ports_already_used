@@ -10,8 +10,11 @@ from __future__ import print_function
 import os
 import socket
 
-from dockertest import Appcenter, App, get_app_name, get_app_version, get_docker_appbox_ucs, get_docker_appbox_image
 from univention.testing.utils import get_ldap_connection
+
+from dockertest import (
+	App, Appcenter, get_app_name, get_app_version, get_docker_appbox_image, get_docker_appbox_ucs,
+)
 
 
 def _open_port(port):

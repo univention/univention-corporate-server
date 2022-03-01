@@ -9,26 +9,18 @@
 ##   - shell-univention-lib
 
 from __future__ import print_function
-import os
-import hashlib
+
 import difflib
+import hashlib
+import os
 
 from univention.testing.debian_package import DebianPackage
-from univention.testing.utils import fail, wait_for_replication
 from univention.testing.udm_extensions import (
-	get_package_name,
-	get_package_version,
-	get_extension_name,
-	get_extension_filename,
-	get_extension_buffer,
-	get_unjoin_script_buffer,
-	get_join_script_buffer,
-	call_join_script,
-	get_dn_of_extension_by_name,
-	remove_extension_by_name,
-	call_unjoin_script,
-	get_absolute_extension_filename
+	call_join_script, call_unjoin_script, get_absolute_extension_filename, get_dn_of_extension_by_name,
+	get_extension_buffer, get_extension_filename, get_extension_name, get_join_script_buffer,
+	get_package_name, get_package_version, get_unjoin_script_buffer, remove_extension_by_name,
 )
+from univention.testing.utils import fail, wait_for_replication
 
 TEST_DATA = (
 	('umcregistration', '32_file_integrity_udm_module.xml', '/usr/share/univention-management-console/modules/udm-%s.xml'),

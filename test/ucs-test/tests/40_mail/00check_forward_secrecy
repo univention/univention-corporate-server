@@ -7,10 +7,10 @@
 
 
 from __future__ import print_function
-from subprocess import Popen, PIPE
+
+from subprocess import PIPE, Popen
 
 import univention.testing.utils as utils
-
 
 # Possible Ciphers for UCS 4.0:
 # (info on PFS http://www.postfix.org/FORWARD_SECRECY_README.html)

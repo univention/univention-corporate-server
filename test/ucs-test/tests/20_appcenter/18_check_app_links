@@ -7,11 +7,12 @@
 ## exposure: careful
 
 from __future__ import print_function
-import re
-import requests
-import time
-import glob
 
+import glob
+import re
+import time
+
+import requests
 from six.moves.html_parser import HTMLParser
 
 import univention.testing.utils as utils

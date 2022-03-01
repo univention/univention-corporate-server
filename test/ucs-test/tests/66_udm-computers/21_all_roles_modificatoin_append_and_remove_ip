@@ -8,10 +8,9 @@
 ##   - univention-directory-manager-tools
 
 
-import univention.testing.udm as udm_test
 import univention.testing.strings as uts
+import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-
 
 if __name__ == '__main__':
 	ipAddresses = ('10.20.30.40', '10.20.30.41', '10.20.30.42', '10.20.30.43')

@@ -11,12 +11,12 @@
 ## versions:
 ##  3.2-0: skip
 
+import random
 
 import univention.testing.udm as udm_test
-import random
+
 import dnstests
 import s4connector
-
 
 if __name__ == '__main__':
 	s4connector.exit_if_connector_not_running()

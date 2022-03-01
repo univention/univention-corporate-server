@@ -9,10 +9,11 @@
 ## - domaincontroller_backup
 ## - domaincontroller_slave
 
+from subprocess import call, check_output
+
 import pytest
 
-from subprocess import call, check_output
-from univention.testing import utils, udm as _udm
+from univention.testing import udm as _udm, utils
 
 
 @pytest.fixture(scope='module')

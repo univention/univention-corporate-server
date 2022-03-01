@@ -3,11 +3,12 @@
 
 from __future__ import print_function
 
-import pexpect
 import sys
-import univention.config_registry
 from argparse import ArgumentParser
 
+import pexpect
+
+import univention.config_registry
 
 if __name__ == "__main__":
 	parser = ArgumentParser()

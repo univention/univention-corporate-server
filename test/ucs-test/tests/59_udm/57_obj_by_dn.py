@@ -7,11 +7,11 @@
 ## packages: [python-univention-directory-manager]
 ## bugs: [47316]
 
-from unittest import main, TestCase
+from unittest import TestCase, main
+
 import univention.debug as ud
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.udm import UDM, NoObject
-
 
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
 ud.set_level(ud.ADMIN, ud.ALL)

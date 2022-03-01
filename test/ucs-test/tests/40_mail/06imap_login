@@ -6,12 +6,14 @@
 ## bugs: []
 
 from __future__ import print_function
-from essential.mailclient import MailClient_SSL
+
+import univention.config_registry
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-import univention.config_registry
+
+from essential.mailclient import MailClient_SSL
 
 
 def main():

@@ -5,13 +5,13 @@
 ## bugs: [42765,43428,29672]
 
 from __future__ import print_function
-import univention.testing.utils as utils
-from univention.testing.udm import UCSTestUDM
-from univention.testing.strings import random_name, random_int
-from univention.testing.umc import Client
-from univention.admin.uldap import getAdminConnection
-import univention.admin.modules as udm_modules
 
+import univention.admin.modules as udm_modules
+import univention.testing.utils as utils
+from univention.admin.uldap import getAdminConnection
+from univention.testing.strings import random_int, random_name
+from univention.testing.udm import UCSTestUDM
+from univention.testing.umc import Client
 
 PASSWORD = 'Univention@99'
 MOD_TMPL = 'settings/usertemplate'

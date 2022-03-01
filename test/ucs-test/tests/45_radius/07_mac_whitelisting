@@ -8,11 +8,12 @@
 
 import subprocess
 import tempfile
-import univention.testing.utils as utils
-import univention.testing.strings as strings
-import univention.testing.udm as udm_test
-import univention.testing.ucr as ucr_test
+
 import univention.config_registry
+import univention.testing.strings as strings
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 
 
 def eapol_test(username, client_mac):

@@ -10,12 +10,15 @@
 ##   - 32156
 
 from __future__ import print_function
+
+import univention.admin.modules as udm_modules
+import univention.admin.uldap
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+
 import dnstests
 import s4connector
-import univention.admin.uldap
-import univention.admin.modules as udm_modules
+
 udm_modules.update()
 
 

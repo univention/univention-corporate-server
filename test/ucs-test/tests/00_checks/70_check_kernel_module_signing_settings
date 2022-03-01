@@ -6,6 +6,7 @@
 ##  4.3-0: skip
 
 from os import uname
+
 import univention.testing.utils as utils
 
 MINIMUM_CONFIG = [

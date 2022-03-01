@@ -7,9 +7,9 @@
 ## packages: [python-univention-directory-manager]
 ## bugs: [53832, 53833]
 import pytest
-from univention.udm.exceptions import SearchLimitReached
 
 from univention.udm import UDM
+from univention.udm.exceptions import SearchLimitReached
 
 
 def test_sizelimit():
