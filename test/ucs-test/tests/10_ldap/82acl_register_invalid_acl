@@ -63,7 +63,7 @@ exit 0
 	acl_buffer = '''
 access to ="%(container)s" attrs="description"
 	by * +0 break
-''' % {'container': container, 'user_dn': user_dn}
+''' % {'container': container}
 
 	package = DebianPackage(name=package_name)
 	package.create_join_script_from_buffer(join_script_name, joinscript_buffer)

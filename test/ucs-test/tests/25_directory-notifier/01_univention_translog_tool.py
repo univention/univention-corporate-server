@@ -12,8 +12,6 @@ import subprocess
 
 import pytest
 
-from univention.config_registry import ucr
-
 TRANSLOG_CMD = '/usr/share/univention-directory-notifier/univention-translog'
 
 

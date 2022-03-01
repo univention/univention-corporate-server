@@ -38,7 +38,7 @@ def search_templates(old_group_name, new_group_name):
 	for template in templates:
 		with open(template, 'r') as content_file:
 			# find all lines that start with File or Multifile and strip it to get the paths of the template files
-			file_content += ['/' + filter_pattern.sub('', l).strip() for l in content_file.readlines() if filter_pattern.match(l)]
+			file_content += ['/' + filter_pattern.sub('', line).strip() for line in content_file.readlines() if filter_pattern.match(line)]
 
 	file_content = list(dict.fromkeys(file_content))
 	for file in file_content:
@@ -56,7 +56,7 @@ def search_templates(old_group_name, new_group_name):
 					utils.fail('FAIL: New group name %s not in security conffiles' % (new_group_name,))
 				continue
 			if old_group_name in content:
-				lines_containing = [l for l in content.splitlines() if old_group_name in l]
+				lines_containing = [line for line in content.splitlines() if old_group_name in line]
 				print('\n'.join(lines_containing))
 				utils.fail('FAIL: Old group name %s still in file %s' % (old_group_name, file))
 

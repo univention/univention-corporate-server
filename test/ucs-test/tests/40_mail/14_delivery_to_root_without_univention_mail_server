@@ -4,7 +4,6 @@
 ## exposure: dangerous
 ## packages:
 ##  - univention-mail-postfix
-
 import time
 
 import univention.testing.ucr as ucr_test

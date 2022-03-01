@@ -22,8 +22,8 @@ from univention.testing.utils import fail, verify_ldap_object, wait_for_replicat
 def test_all():
 	package_name = get_package_name()
 	package_version = get_package_version()
-#	extension_name = get_extension_name(extension_type)
-#	extension_filename = get_extension_filename(extension_type, extension_name)
+	# extension_name = get_extension_name(extension_type)
+	# extension_filename = get_extension_filename(extension_type, extension_name)
 	extension_name = {}
 	extension_buffer = {}
 	extension_filename = {}

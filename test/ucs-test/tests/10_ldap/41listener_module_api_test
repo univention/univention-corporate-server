@@ -179,7 +179,7 @@ def main():
 		print(log_text)
 		print('*******************************************')
 
-	lines = (l.strip() for l in log_text.split('\n') if l.strip())
+	lines = (line.strip() for line in log_text.split('\n') if line.strip())
 	operations = ('clean', 'initialize', 'pre_run', 'create', 'modify employeeType {}'.format(employeeType), 'move', 'move', 'modify roomNumber {}'.format(roomNumber), 'error_handler', 'remove', 'post_run')
 	for operation in operations:
 		exp = '{} {}'.format(test_id, operation)

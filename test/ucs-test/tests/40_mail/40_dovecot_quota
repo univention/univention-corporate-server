@@ -7,7 +7,6 @@
 ##  - univention-mail-dovecot
 ##  - univention-directory-manager-tools
 ## bugs: [38727]
-
 import email
 import imaplib
 import subprocess

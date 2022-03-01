@@ -87,7 +87,7 @@ def main():
 						retry -= 5
 					else:
 						raise
-			#imap1.connection.logout()
+			# imap1.connection.logout()
 
 			print('*** OK: user1 can write to shared folder')
 

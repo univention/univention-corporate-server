@@ -32,8 +32,8 @@ test will be skipped for now on all system with samba4 installed but deactivated
 Otherwise the test would be flaky.
 """
 
-
 import sys
+from typing import List, Optional
 
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test

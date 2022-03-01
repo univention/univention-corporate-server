@@ -32,7 +32,7 @@ class TestUdmGenericVariousModules(TestCase):
 		univention.admin.modules.update()
 		cls.avail_modules = sorted([mod for mod in univention.admin.modules.modules.keys()])
 
-	def get_new_obj(self, mod):  # type: (GenericModuleTV) -> GenericObjectTV
+	def get_new_obj(self, mod):
 		try:
 			return mod.new()
 		except NoSuperordinate as exc:

@@ -62,7 +62,7 @@ def get_dir_files(dir_path, recursive=False):
 		if os.path.isfile(f):
 			result.append(f)
 		if os.path.isdir(f) and recursive:
-			#TODO remove line 60 after fixing Bug #36557
+			# TODO remove line 60 after fixing Bug #36557
 			if f != SKIP:
 				result.extend(get_dir_files(f))
 	return result
@@ -168,7 +168,7 @@ def main():
 
 	# Fails because of Bug #36557
 	check_dc_backup_hosts_readability(ssl_files)
-	#TODO uncomment next line after Bug #34082 is closed
+	# TODO uncomment next line after Bug #34082 is closed
 	# check_dc_backup_hosts_writability(ssl_files)
 	check_hosts_readability()
 	check_hosts_writability()
@@ -181,7 +181,7 @@ def main():
 	ssl_files = get_dir_files(SSLDIR, recursive=True)
 
 	check_dc_backup_hosts_readability(ssl_files)
-	#TODO uncomment next line after Bug #34082 is closed
+	# TODO uncomment next line after Bug #34082 is closed
 	# check_dc_backup_hosts_writability(ssl_files)
 	check_hosts_readability()
 	check_hosts_writability()

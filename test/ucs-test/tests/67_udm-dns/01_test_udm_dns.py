@@ -236,7 +236,13 @@ class Test_DNSServiceRecord(object):
 		"""Set location during dns/srv_record modification"""
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
-		srv_record = udm.create_object('dns/srv_record', superordinate=forward_zone, name='%s tcp %s' % (uts.random_string(), uts.random_string()), location='3 4 5 %s.%s' % (uts.random_string(), uts.random_string()), wait_for=True)
+		srv_record = udm.create_object(
+			'dns/srv_record',
+			superordinate=forward_zone,
+			name='%s tcp %s' % (uts.random_string(), uts.random_string()),
+			location='3 4 5 %s.%s' % (uts.random_string(), uts.random_string()),
+			wait_for=True
+		)
 
 		location = '0 1 2 %s.%s' % (uts.random_name(), uts.random_dns_record())
 		udm.modify_object('dns/srv_record', dn=srv_record, superordinate=forward_zone, location=location, wait_for=True)

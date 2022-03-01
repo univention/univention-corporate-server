@@ -4,7 +4,6 @@
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## packages: [univention-mail-dovecot]
 ## bugs: [48485]
-
 import socket
 import ssl
 import subprocess

@@ -10,6 +10,7 @@
 ## bugs: [52987]
 
 import os
+from typing import Iterator
 
 import pytest
 

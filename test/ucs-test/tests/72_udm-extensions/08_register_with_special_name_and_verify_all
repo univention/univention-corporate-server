@@ -24,8 +24,8 @@ def test_all():
 	objectname = "/".join([random_name(), random_name()])  # slash reqired for 'module'
 	package_name = get_package_name()
 	package_version = get_package_version()
-#	extension_name = get_extension_name(extension_type)
-#	extension_filename = get_extension_filename(extension_type, extension_name)
+	# extension_name = get_extension_name(extension_type)
+	# extension_filename = get_extension_filename(extension_type, extension_name)
 	extension_name = {}
 	extension_objectname = {}
 	extension_buffer = {}

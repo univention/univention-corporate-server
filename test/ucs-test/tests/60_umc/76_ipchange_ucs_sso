@@ -34,7 +34,13 @@ if __name__ == '__main__':
 		if role == 'domaincontroller_master':
 			role = 'domaincontroller_backup'
 		computerName = uts.random_string()
-		computer = udm.create_object('computers/%s' % role, name=computerName, password='univention', network='cn=default,cn=networks,%s' % ucr.get('ldap/base'), univentionService='univention-saml', check_for_drs_replication=False)
+		computer = udm.create_object(
+			'computers/%s' % role, name=computerName,
+			password='univention',
+			network='cn=default,cn=networks,%s' % ucr.get('ldap/base'),
+			univentionService='univention-saml',
+			check_for_drs_replication=False
+		)
 
 		lo = utils.get_ldap_connection()
 		computer_object = lo.get(computer)

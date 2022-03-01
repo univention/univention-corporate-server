@@ -24,7 +24,13 @@ def build_app(app_name, generic_user_activation, generic_user_activation_attribu
 	app_version = get_app_version()
 	app = App(name=app_name, version=app_version, build_package=False)
 	try:
-		app.set_ini_parameter(DockerImage=get_docker_appbox_image(), GenericUserActivation=generic_user_activation, GenericUserActivationAttribute=generic_user_activation_attribute, GenericUserActivationOption=generic_user_activation_option, DockerScriptSetup='/bin/true')
+		app.set_ini_parameter(
+			DockerImage=get_docker_appbox_image(),
+			GenericUserActivation=generic_user_activation,
+			GenericUserActivationAttribute=generic_user_activation_attribute,
+			GenericUserActivationOption=generic_user_activation_option,
+			DockerScriptSetup='/bin/true'
+		)
 		yield app
 	finally:
 		app.uninstall()
@@ -37,7 +43,7 @@ def test_app(appcenter, app, udm, activation_name, attribute_dn=None, attribute_
 	app.add_to_local_appcenter()
 	appcenter.update()
 	app.install()
-	#app.verify(joined=False)
+	# app.verify(joined=False)
 	schema_file = '/usr/share/univention-appcenter/apps/%s/%s.schema' % (app.app_name, app.app_name)
 	assert os.path.exists(schema_file)
 	subprocess.call(['univention-ldapsearch', '-b', attribute_dn])

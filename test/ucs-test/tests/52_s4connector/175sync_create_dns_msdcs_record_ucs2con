@@ -28,7 +28,11 @@ if __name__ == '__main__':
 
 	account = utils.UCSTestDomainAdminCredentials()
 
-	cmd = ["/usr/share/univention-directory-manager-tools/univention-dnsedit", "--binddn=%s" % (account.binddn,), "--bindpwd=%s" % (account.bindpw,), "--ignore-exists", domainname, "add", "srv", s4_RR_val, "msdcs"] + location.split(" ")
+	cmd = [
+		"/usr/share/univention-directory-manager-tools/univention-dnsedit",
+		"--binddn=%s" % (account.binddn,), "--bindpwd=%s" % (account.bindpw,),
+		"--ignore-exists", domainname, "add", "srv", s4_RR_val, "msdcs"
+	] + location.split(" ")
 	print(" ".join(cmd))
 	p = subprocess.Popen(cmd)
 	p.wait()

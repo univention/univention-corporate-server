@@ -15,26 +15,26 @@ DOCKER_COMPOSE = '''
 version: '2.0'
 
 services:
-  test1:
-    image: {image}
-    ports:
-      - "8000:8000"
-    environment:
-      REDIS_PORT_6379_TCP_ADDR: test2
-      REDIS_PORT_6379_TCP_PORT: 6379
-    links:
-      - test2:test2
-    command: /sbin/init
-    restart: always
-  test2:
-    image: {image}
-    volumes:
-      - /var/lib/univention-appcenter/apps/ethercalc/redis:/data
-    environment:
-      TEST_KEY: "@%@85_docker_compose/test_key@%@"
-    command: /sbin/init
-    restart: always
-'''
+	test1:
+		image: {image}
+		ports:
+			- "8000:8000"
+		environment:
+			REDIS_PORT_6379_TCP_ADDR: test2
+			REDIS_PORT_6379_TCP_PORT: 6379
+		links:
+			- test2:test2
+		command: /sbin/init
+		restart: always
+	test2:
+		image: {image}
+		volumes:
+			- /var/lib/univention-appcenter/apps/ethercalc/redis:/data
+		environment:
+			TEST_KEY: "@%@85_docker_compose/test_key@%@"
+		command: /sbin/init
+		restart: always
+'''.replace('\t', '  ')
 
 SETTINGS = '''
 [85_docker_compose/test_key]

@@ -57,8 +57,8 @@ class TestUdmUsersBasic(TestCase):
 
 	def test_create_data_with_data(self):
 		pass
-		#data_mod = self.udm.get('settings/data')
-		#obj = data_mod.new()
+		# data_mod = self.udm.get('settings/data')
+		# obj = data_mod.new()
 
 
 if __name__ == '__main__':

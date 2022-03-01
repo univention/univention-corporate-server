@@ -59,7 +59,7 @@ def preconditions(path):
 def test_filename_validation(modify, path, file_):
 	def check(safe=False):
 		# we have to check two cases here: samba share and NFS share
-		subprocess.check_output(['smbclient', '\\\\%s.%s\%s' % (ucr['hostname'], ucr['domainname'], name), '-U' 'Administrator%univention', '-c', 'get %s /dev/stdout' % (file_,)])
+		subprocess.check_output(['smbclient', '\\\\%s.%s\\%s' % (ucr['hostname'], ucr['domainname'], name), '-U' 'Administrator%univention', '-c', 'get %s /dev/stdout' % (file_,)])
 		assert name not in open('/etc/samba/shares.conf').read()
 
 	lo = utils.get_ldap_connection()

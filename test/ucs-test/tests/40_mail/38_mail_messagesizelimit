@@ -3,7 +3,6 @@
 ## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
-
 import smtplib
 import tempfile
 import time

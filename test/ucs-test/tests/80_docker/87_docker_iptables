@@ -16,18 +16,18 @@ DOCKER_COMPOSE = '''
 version: '2.0'
 
 services:
-  test1:
-    image: {image}
-    ports:
-      - "8000:8000"
-    command: /sbin/init
-    restart: always
-  test2:
-    image: {image}
-    ports:
-      - "9000:9000"
-    command: /sbin/init
-'''
+	test1:
+		image: {image}
+		ports:
+			- "8000:8000"
+		command: /sbin/init
+		restart: always
+	test2:
+		image: {image}
+		ports:
+			- "9000:9000"
+		command: /sbin/init
+'''.replace('\t', '  ')
 
 if __name__ == '__main__':
 	# cleanup remnants from previous tests

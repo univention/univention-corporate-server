@@ -5,6 +5,7 @@
 import email
 import imaplib
 import time
+from typing import Dict
 
 import univention.testing.strings as uts
 
