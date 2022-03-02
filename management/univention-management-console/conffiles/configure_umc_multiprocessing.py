@@ -4,7 +4,7 @@
 # Univention Management Console
 # Univention Configuration Registry Module to create systemd services for multiprocessing
 #
-# Copyright 2020-2021 Univention GmbH
+# Copyright 2020-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

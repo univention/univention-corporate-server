@@ -3,7 +3,7 @@
 # Univention Nagios Plugin
 #  check_univention_s4_connector: check s4 connector status
 #
-# Copyright 2015-2021 Univention GmbH
+# Copyright 2015-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

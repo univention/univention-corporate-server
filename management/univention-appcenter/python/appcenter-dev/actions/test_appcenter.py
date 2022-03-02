@@ -4,7 +4,7 @@
 # Univention App Center
 #  univention-app module for running an app specific test file
 #
-# Copyright 2017-2021 Univention GmbH
+# Copyright 2017-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

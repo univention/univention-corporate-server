@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2021 Univention GmbH
+# Copyright (C) 2017-2022 Univention GmbH
 # This file is distributed under the same license as the univention-self-service package.
 # Univention GmbH <packages@univention.de>, 2017.
 #

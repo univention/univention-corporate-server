@@ -4,7 +4,7 @@
 while applying Univention specific options.
 """
 #
-# Copyright 2016-2021 Univention GmbH
+# Copyright 2016-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

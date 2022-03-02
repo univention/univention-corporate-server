@@ -4,7 +4,7 @@
 # Univention Management Console
 # Univention Configuration Registry Module to rewrite SAML SP configuration for UMC
 #
-# Copyright 2015-2021 Univention GmbH
+# Copyright 2015-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

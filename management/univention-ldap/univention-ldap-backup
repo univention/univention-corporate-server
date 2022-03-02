@@ -3,7 +3,7 @@
 # Univention LDAP Server
 #  creates an LDIF backup on UCS Primary and Backup Directory Nodes
 #
-# Copyright 2001-2021 Univention GmbH
+# Copyright 2001-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

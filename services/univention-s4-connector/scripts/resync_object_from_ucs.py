@@ -4,7 +4,7 @@
 # Univention S4 Connector
 #  Resync object from OpenLDAP to S4
 #
-# Copyright 2014-2021 Univention GmbH
+# Copyright 2014-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

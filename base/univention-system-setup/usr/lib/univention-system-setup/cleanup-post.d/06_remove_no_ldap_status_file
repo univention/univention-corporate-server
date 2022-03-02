@@ -3,7 +3,7 @@
 # Remove "no-ldap" status file of Univention System Setup
 # (created by /usr/lib/univention-system-setup/scripts/setup-join.sh)
 #
-# Copyright 2021 Univention GmbH
+# Copyright 2021-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

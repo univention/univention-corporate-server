@@ -5,7 +5,7 @@
 #  helper script: prints out a list of UDM commands to create
 #  settings/printermodel objects for all existing PPDs
 #
-# Copyright 2004-2021 Univention GmbH
+# Copyright 2004-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

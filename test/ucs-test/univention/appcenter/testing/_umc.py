@@ -11,7 +11,7 @@ connections to remote |UMC| servers
 2000
 >>> umc.umc_logout()
 """
-# Copyright 2017-2021 Univention GmbH
+# Copyright 2017-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

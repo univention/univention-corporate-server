@@ -4,7 +4,7 @@
 # sync_krbtgt
 #  sync the password of krbtgt from Samba4 to UCS
 #
-# Copyright 2010-2021 Univention GmbH
+# Copyright 2010-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

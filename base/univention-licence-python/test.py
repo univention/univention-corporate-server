@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-# Copyright 2003-2021 Univention GmbH
+# Copyright 2003-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

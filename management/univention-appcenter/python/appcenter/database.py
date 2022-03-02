@@ -4,7 +4,7 @@
 # Univention App Center
 #  Database integration
 #
-# Copyright 2016-2021 Univention GmbH
+# Copyright 2016-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

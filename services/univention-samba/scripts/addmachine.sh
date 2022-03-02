@@ -3,7 +3,7 @@
 # Univention Samba
 #  Script for adding a machine via UMC
 #
-# Copyright 2012-2021 Univention GmbH
+# Copyright 2012-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

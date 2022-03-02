@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # SPDX-License-Identifier: AGPL-3.0
-# Copyright 2021 Univention GmbH
+# Copyright 2021-2022 Univention GmbH
 
 from setuptools import setup
 

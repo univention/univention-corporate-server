@@ -4,7 +4,7 @@ Upstream-Contact: <package@univention.de>
 Source: https://updates.software-univention.de/
 
 Files: *
-Copyright: 2001-2021 Univention GmbH
+Copyright: 2001-2022 Univention GmbH
 License: AGPL-3.0-only
  The source code of the software contained in this package
  as well as the source package itself are made available

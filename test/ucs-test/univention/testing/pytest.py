@@ -2,7 +2,7 @@
 #
 # -*- coding: utf-8 -*-
 #
-# Copyright 2021 Univention GmbH
+# Copyright 2021-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

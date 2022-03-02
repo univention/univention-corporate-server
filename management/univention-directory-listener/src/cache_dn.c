@@ -2,7 +2,7 @@
  * Univention Directory Listener
  *  implementation for LMDB dntree adjacency list
  *
- * Copyright 2016-2021 Univention GmbH
+ * Copyright 2016-2022 Univention GmbH
  * Copyright 2016-2017 Arvid Requate
  *
  * https://www.univention.de/

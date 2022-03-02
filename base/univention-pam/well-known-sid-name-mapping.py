@@ -4,7 +4,7 @@
 # Univention custom user and group name mapping
 #  listener module: mapping custom user and group names for well known sids
 #
-# Copyright 2014-2021 Univention GmbH
+# Copyright 2014-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

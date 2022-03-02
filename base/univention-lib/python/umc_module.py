@@ -4,7 +4,7 @@
 Univention common Python library with
 helper functions for MIME type handling.
 """
-# Copyright 2013-2021 Univention GmbH
+# Copyright 2013-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

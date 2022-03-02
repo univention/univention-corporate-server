@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Find use of deprecated functions / programs / scripts."""
 #
-# Copyright (C) 2008-2021 Univention GmbH
+# Copyright (C) 2008-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

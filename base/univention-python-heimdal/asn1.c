@@ -2,7 +2,7 @@
  * Python Heimdal
  *	Bindings for the ASN.1 API of heimdal
  *
- * Copyright 2003-2021 Univention GmbH
+ * Copyright 2003-2022 Univention GmbH
  *
  * https://www.univention.de/
  *

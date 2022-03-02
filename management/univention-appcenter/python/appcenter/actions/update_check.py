@@ -4,7 +4,7 @@
 # Univention App Center
 #  univention-app module checking UCS update regarding installed apps
 #
-# Copyright 2021 Univention GmbH
+# Copyright 2021-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

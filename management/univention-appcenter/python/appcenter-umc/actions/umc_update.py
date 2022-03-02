@@ -5,7 +5,7 @@
 #  univention-app module for updating the list of available apps
 #  (UMC version)
 #
-# Copyright 2015-2021 Univention GmbH
+# Copyright 2015-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

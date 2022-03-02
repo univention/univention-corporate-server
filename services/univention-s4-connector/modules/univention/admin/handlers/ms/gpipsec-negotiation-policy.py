@@ -3,7 +3,7 @@
 # Univention S4 Connector
 #  UDM module for MS IPsec policy
 #
-# Copyright 2019-2021 Univention GmbH
+# Copyright 2019-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

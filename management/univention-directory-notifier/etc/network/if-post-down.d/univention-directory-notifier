@@ -3,7 +3,7 @@
 # Restart the Directory Notifier after an interface was stopped.
 #  See https://forge.univention.org/bugzilla/show_bug.cgi?id=30408
 #
-# Copyright 2013-2021 Univention GmbH
+# Copyright 2013-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

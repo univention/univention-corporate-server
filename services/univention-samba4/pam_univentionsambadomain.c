@@ -2,7 +2,7 @@
  * PAM Univention Samba Domain
  *  PAM Module to change username from Domain+username to username
  *
- * Copyright 2011-2021 Univention GmbH
+ * Copyright 2011-2022 Univention GmbH
  *
  * https://www.univention.de/
  *

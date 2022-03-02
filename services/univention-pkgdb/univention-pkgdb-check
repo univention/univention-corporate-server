@@ -5,7 +5,7 @@
 #  PostgreSQL for pkgdb.  Normally this script is called by
 #  /etc/cron.d/univention-pkgdb-check
 #
-# Copyright 2004-2021 Univention GmbH
+# Copyright 2004-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

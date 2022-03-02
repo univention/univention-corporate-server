@@ -3,7 +3,7 @@
 # Univention System Info
 #  collects information about the hardware
 #
-# Copyright 2009-2021 Univention GmbH
+# Copyright 2009-2022 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -94,7 +94,7 @@ display_help() {
 
 display_header() {
 	echo "univention-sysinfo: collect information about your system"
-	echo "Copyright 2009-2021 Univention GmbH, Germany"
+	echo "Copyright 2009-2022 Univention GmbH, Germany"
 	echo ""
 }
 
