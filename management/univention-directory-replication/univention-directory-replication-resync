@@ -3,7 +3,7 @@
 # Univention Directory Replication
 #  re-synchronize the local LDAP directory
 #
-# Copyright 2001-2021 Univention GmbH
+# Copyright 2001-2022 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -44,7 +44,7 @@ die () {
 display_header () {
 	echo ""
 	echo "univention-directory-replication-resync: Resync local LDAP using a failed.ldif"
-	echo "copyright (c) 2001-2021 Univention GmbH, Germany"
+	echo "copyright (c) 2001-2022 Univention GmbH, Germany"
 	echo "usage: $0 <failed.ldif>"
 	echo ""
 	exit ${1:-0}

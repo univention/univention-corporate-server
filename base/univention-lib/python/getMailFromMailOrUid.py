@@ -5,7 +5,7 @@ get primaryMailAddress and uid from primaryMailAddress or uid
 (used by horde/imp login hook to map uid to mail address)
 """
 from __future__ import print_function
-# Copyright 2011-2021 Univention GmbH
+# Copyright 2011-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

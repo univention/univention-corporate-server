@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for the DNS TXT records
 #
-# Copyright 2011-2021 Univention GmbH
+# Copyright 2011-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -3,7 +3,7 @@
 # Univention Management Console
 # Listener module to set save all UMC service providers in UCR
 #
-# Copyright 2015-2021 Univention GmbH
+# Copyright 2015-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

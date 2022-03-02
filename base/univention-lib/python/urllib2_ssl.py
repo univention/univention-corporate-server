@@ -6,7 +6,7 @@ Univention fork of :py:mod:`urllib2` supporting verified |SSL| connections.
 .. deprecated:: 4.0
    This is directly supported by :py:mod:`urllib2` since Python 2.7.9
 """
-# Copyright 2012-2021 Univention GmbH
+# Copyright 2012-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

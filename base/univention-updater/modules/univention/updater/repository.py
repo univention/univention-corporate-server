@@ -3,7 +3,7 @@
 """
 Univention Updater helper functions for managing a local repository.
 """
-# Copyright 2009-2021 Univention GmbH
+# Copyright 2009-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

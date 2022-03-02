@@ -18,7 +18,7 @@ WARNING2:
 The API is currently under heavy development and may/will change before next UCS release!
 """
 from __future__ import print_function
-# Copyright 2013-2021 Univention GmbH
+# Copyright 2013-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

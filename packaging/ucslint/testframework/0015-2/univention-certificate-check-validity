@@ -1,7 +1,7 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 # SPDX-License-Identifier: AGPL-3.0
-# Copyright (C) 2006-2021 Univention GmbH
+# Copyright (C) 2006-2022 Univention GmbH
 
 import time
 import calendar

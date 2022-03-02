@@ -3,7 +3,7 @@
 # Univention Join
 #  helper script: checks the join status of the local system
 #
-# Copyright 2004-2021 Univention GmbH
+# Copyright 2004-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -3,7 +3,7 @@
 |UDM| basic functionality
 """
 from __future__ import print_function
-# Copyright 2004-2021 Univention GmbH
+# Copyright 2004-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

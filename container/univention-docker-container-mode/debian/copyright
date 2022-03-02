@@ -4,11 +4,11 @@ Upstream-Contact: <package@univention.de>
 Source: https://updates.software-univention.de/
 
 Files: *
-Copyright: 2015-2021 Univention GmbH
+Copyright: 2015-2022 Univention GmbH
 License: AGPL-3.0-only
 
 File: sbin/init
-Copyright: 2015-2021 Univention GmbH
+Copyright: 2015-2022 Univention GmbH
    2010-2017 Tom Eastep <teastep@shorewall.net>
 Comment:
  The four bash code functions decodeaddr, encodeaddr, ip_netmask and

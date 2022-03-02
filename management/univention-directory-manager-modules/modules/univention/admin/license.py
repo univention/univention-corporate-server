@@ -2,7 +2,7 @@
 """
 |UDM| wrapper around :py:mod:`univention.license` that translates error codes to exceptions
 """
-# Copyright 2004-2021 Univention GmbH
+# Copyright 2004-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -4,7 +4,7 @@
 # Univention Directory Listener
 """Read the notifier id from the DC master"""
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -2,7 +2,7 @@
 """
 |UDM| samba related code
 """
-# Copyright 2004-2021 Univention GmbH
+# Copyright 2004-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -1,6 +1,6 @@
 #!/bin/bash -e
 # SPDX-License-Identifier: AGPL-3.0
-# Copyright (C) 2004-2021 Univention GmbH
+# Copyright (C) 2004-2022 Univention GmbH
 
 # update paths (dir name changed on switch from 1.3-2 to 2.0-0)
 if [ ! -e /etc/univention/ssl/ucsCA -a -d /etc/univention/ssl/udsCA ] ; then

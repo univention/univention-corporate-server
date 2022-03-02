@@ -9,7 +9,7 @@ Copyright: 2012-2013 Red Hat, Inc
 License: BSD-2-Clause
 
 Files: debian/* univention-uefi-ca.cer
-Copyright: 2013-2021 Univention GmbH
+Copyright: 2013-2022 Univention GmbH
 License: AGPL
 
 Files: crypt_blowfish.*

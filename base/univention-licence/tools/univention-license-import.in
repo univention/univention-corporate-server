@@ -3,7 +3,7 @@
 # Univention License
 #  Import Univention License file
 #
-# Copyright 2004-2021 Univention GmbH
+# Copyright 2004-2022 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -49,7 +49,7 @@ display_help() {
 
 display_header() {
 	echo "univention-license-import: import license key for UCS"
-	echo "copyright (c) 2001-2021 Univention GmbH, Germany"
+	echo "copyright (c) 2001-2022 Univention GmbH, Germany"
 	echo ""
 }
 

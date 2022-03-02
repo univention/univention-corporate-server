@@ -1,5 +1,5 @@
 # Translation for UDM example module
-# Copyright (C) Copyright 2005-2021 Univention GmbH
+# Copyright (C) Copyright 2005-2022 Univention GmbH
 # This file is distributed under the same license as the univention-directory-manager-module-example package.
 #
 msgid ""

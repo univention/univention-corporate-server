@@ -4,7 +4,7 @@
 # Univention SSH
 #  ssh wrapper script
 #
-# Copyright 2004-2021 Univention GmbH
+# Copyright 2004-2022 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -70,7 +70,7 @@ def display_help(out=sys.stdout):
 	if cmd == 'univention-ssh':
 		text = '''
 		%(cmd)s: internal managing tool for UCS clients
-		Copyright (c) 2001-2021 Univention GmbH, Germany
+		Copyright (c) 2001-2022 Univention GmbH, Germany
 
 		Syntax:
 		  %(cmd)s [-timeout timeout] <pwd_file> [options] [user@]host <command>
@@ -97,7 +97,7 @@ def display_help(out=sys.stdout):
 	else:
 		text = '''
 		%(cmd)s: internal managing tool for UCS clients
-		Copyright (c) 2001-2021 Univention GmbH, Germany
+		Copyright (c) 2001-2022 Univention GmbH, Germany
 
 		Syntax:
 		  %(cmd)s [-timeout timeout] <pwd_file> [options] files [user@]host:[path]

@@ -12,7 +12,7 @@ usage: {prog} [-? || --help] [--dist-upgrade] [--silent] [--check]
 --check          Don't do anything, just check if updates are available
 """
 from __future__ import print_function
-# Copyright 2004-2021 Univention GmbH
+# Copyright 2004-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -4,7 +4,7 @@
 # Univention Directory Replication
 #  listener module for LDAP replication
 #
-# Copyright 2006-2021 Univention GmbH
+# Copyright 2006-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

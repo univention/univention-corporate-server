@@ -1,5 +1,5 @@
 # Univention Cloud init
-# Copyright (C) 2015-2021 Univention GmbH
+# Copyright (C) 2015-2022 Univention GmbH
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""

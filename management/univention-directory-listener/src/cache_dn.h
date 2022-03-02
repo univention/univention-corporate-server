@@ -2,7 +2,7 @@
  * Univention Directory Listener
  *  header information for cache_dn.c
  *
- * Copyright 2016-2021 Univention GmbH
+ * Copyright 2016-2022 Univention GmbH
  * Copyright 2016-2017 Arvid Requate
  *
  * https://www.univention.de/

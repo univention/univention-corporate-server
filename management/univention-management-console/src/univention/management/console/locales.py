@@ -3,7 +3,7 @@
 # Univention Management Console
 #  i18n utils
 #
-# Copyright 2006-2021 Univention GmbH
+# Copyright 2006-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

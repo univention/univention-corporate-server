@@ -2,7 +2,7 @@
 Internal functions for test finding and setup.
 """
 from __future__ import print_function
-# Copyright 2013-2021 Univention GmbH
+# Copyright 2013-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

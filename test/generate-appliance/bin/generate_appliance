@@ -4,7 +4,7 @@
 # generate_appliance
 #  create virtual appliances for various virtualization systems from a single disk image
 #
-# Copyright 2014-2021 Univention GmbH
+# Copyright 2014-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

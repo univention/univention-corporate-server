@@ -1,7 +1,7 @@
 # vim:set ts=4 sw=4 noet fileencoding=UTF-8 :
 """Find maintainer scripts using wrong header."""
 #
-# Copyright (C) 2016-2021 Univention GmbH
+# Copyright (C) 2016-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

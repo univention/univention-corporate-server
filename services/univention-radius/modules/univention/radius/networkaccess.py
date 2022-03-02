@@ -3,7 +3,7 @@
 # Univention RADIUS
 #  NTLM-Authentication program
 #
-# Copyright (C) 2012-2021 Univention GmbH
+# Copyright (C) 2012-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

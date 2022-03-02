@@ -3,7 +3,7 @@
 #
 # Univention Common Python Library
 #
-# Copyright 2014-2021 Univention GmbH
+# Copyright 2014-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

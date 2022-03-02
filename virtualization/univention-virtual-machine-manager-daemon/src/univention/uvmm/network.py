@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager Daemon
 #  network management
 #
-# Copyright 2011-2021 Univention GmbH
+# Copyright 2011-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

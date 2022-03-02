@@ -4,7 +4,7 @@
 # Univention App Center
 #  Utility functions
 #
-# Copyright 2015-2021 Univention GmbH
+# Copyright 2015-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

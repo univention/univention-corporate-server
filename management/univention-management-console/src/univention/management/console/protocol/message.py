@@ -4,7 +4,7 @@
 # Univention Management Console
 #  UMCP 2.0 messages
 #
-# Copyright 2006-2021 Univention GmbH
+# Copyright 2006-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

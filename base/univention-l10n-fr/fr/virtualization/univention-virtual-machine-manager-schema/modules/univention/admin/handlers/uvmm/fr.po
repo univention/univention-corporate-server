@@ -1,5 +1,5 @@
 # LDAP Schema package.
-# Copyright (C) 2010-2021 Univention GmbH.
+# Copyright (C) 2010-2022 Univention GmbH.
 # This file is distributed under the same license as the univention-virtual-machine-manager-schema package.
 #
 # Andreas Büsching <buesching@univention.de>, 2010.

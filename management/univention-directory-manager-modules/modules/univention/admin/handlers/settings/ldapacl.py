@@ -3,7 +3,7 @@
 # Univention Directory Manager Modules
 #  directory manager module for LDAP ACL extensions
 #
-# Copyright 2013-2021 Univention GmbH
+# Copyright 2013-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

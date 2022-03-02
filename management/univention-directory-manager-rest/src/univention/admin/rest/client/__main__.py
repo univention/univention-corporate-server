@@ -4,7 +4,7 @@
 # Univention Management Console
 #  Univention Directory Manager Module
 #
-# Copyright 2019-2021 Univention GmbH
+# Copyright 2019-2022 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -337,7 +337,7 @@ def argparse_module_help(client, parser, known_args, subparsers):
 
 def main():
 	client = CLIClient()
-	description = '%(prog)s command line interface for managing UCS\ncopyright (c) 2001-2021 Univention GmbH, Germany\n\nUsage:\n %(prog)s module action [options]\n %(prog)s [--help] [--version]\n'
+	description = '%(prog)s command line interface for managing UCS\ncopyright (c) 2001-2022 Univention GmbH, Germany\n\nUsage:\n %(prog)s module action [options]\n %(prog)s [--help] [--version]\n'
 	parser = argparse.ArgumentParser(
 		prog='univention-directory-manager',
 		#usage=argparse.SUPPRESS,

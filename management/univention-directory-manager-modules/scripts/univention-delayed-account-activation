@@ -3,7 +3,7 @@
 # Univention Server
 #  helper script: activates accounts with krb5ValidStart >= now
 #
-# Copyright 2021 Univention GmbH
+# Copyright 2021-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -3,7 +3,7 @@
 //  check_univention_ad_connector_suidwrapper: 
 //  wrapper to call script for checking Active Directory connector status
 //
-// Copyright 2011-2021 Univention GmbH
+// Copyright 2011-2022 Univention GmbH
 //
 // https://www.univention.de/
 //

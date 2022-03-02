@@ -4,7 +4,7 @@
 # Univention Management Console
 #  Univention Directory Manager Module
 #
-# Copyright 2019-2021 Univention GmbH
+# Copyright 2019-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

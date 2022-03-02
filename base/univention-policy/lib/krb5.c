@@ -2,7 +2,7 @@
  * Univention Policy
  *  C source of the univention policy library
  *
- * Copyright 2003-2021 Univention GmbH
+ * Copyright 2003-2022 Univention GmbH
  *
  * https://www.univention.de/
  *

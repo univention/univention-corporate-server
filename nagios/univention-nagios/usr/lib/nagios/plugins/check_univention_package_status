@@ -4,7 +4,7 @@
 # Univention Nagios Plugin
 #  check_package_status: check dpkg status
 #
-# Copyright 2017-2021 Univention GmbH
+# Copyright 2017-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

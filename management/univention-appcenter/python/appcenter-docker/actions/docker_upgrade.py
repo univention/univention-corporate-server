@@ -5,7 +5,7 @@
 #  univention-app module for upgrading an app
 #  (docker version)
 #
-# Copyright 2015-2021 Univention GmbH
+# Copyright 2015-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

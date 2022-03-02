@@ -7,7 +7,7 @@ Update the UIDs in memberUid of all groups to match the uid of the objects
 referenced by uniqueMember."""
 from __future__ import print_function
 #
-# Copyright 2007-2021 Univention GmbH
+# Copyright 2007-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

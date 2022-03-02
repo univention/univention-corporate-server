@@ -4,7 +4,7 @@
 # Univention AD Connector
 #  reads the internal configuration
 #
-# Copyright 2004-2021 Univention GmbH
+# Copyright 2004-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

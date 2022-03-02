@@ -4,16 +4,16 @@ Upstream-Contact: <package@univention.de>
 Source: https://updates.software-univention.de/
 
 Files: *
-Copyright: 2001-2021 Univention GmbH
+Copyright: 2001-2022 Univention GmbH
 License: AGPL-3.0-only
 
 Files: conffiles/usr/share/apps/kdeprint/specials.desktop
-Copyright: 2001-2021 Univention GmbH
+Copyright: 2001-2022 Univention GmbH
   Kalle Dalheimer <kalle@kde.org> and many others from the KDE-Project
 License: AGPL-3.0-only
 
 Files: design/usr/share/wallpapers/lineart_univention_*
-Copyright: 2001-2021 Univention GmbH
+Copyright: 2001-2022 Univention GmbH
   Jan-Victor Krille,
 License: AGPL-3.0-only and GPL-2
 Comment:
@@ -23,7 +23,7 @@ Comment:
 Files: design/*
  univention.svg
  conffiles/usr/share/apps/ksmserver/pics/shutdownkonq.png usr/share/plasma/look-and-feel/*
-Copyright: 2001-2021 Univention GmbH
+Copyright: 2001-2022 Univention GmbH
 License: Proprietary
 
 Files: usr/share/plasma/look-and-feel/org.kde.breeze.desktop/contents/splash/Splash.qml

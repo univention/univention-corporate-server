@@ -4,7 +4,7 @@
 Install UCS release and errata updates.
 """
 from __future__ import print_function
-# Copyright (C) 2010-2021 Univention GmbH
+# Copyright (C) 2010-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

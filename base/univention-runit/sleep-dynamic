@@ -5,7 +5,7 @@
 #  MAX_DELAY. Also checks that it is not execute to fast after last
 #  run. Waits at least 2 * delay.
 #
-# Copyright 2003-2021 Univention GmbH
+# Copyright 2003-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

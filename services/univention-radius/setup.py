@@ -4,7 +4,7 @@
 # Univention RADIUS
 #  setup.py
 #
-# Copyright (C) 2019-2021 Univention GmbH
+# Copyright (C) 2019-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

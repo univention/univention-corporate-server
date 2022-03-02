@@ -3,7 +3,7 @@
 # self-servic-acl
 #  config registry module to update self-service ACLs
 #
-# Copyright 2019-2021 Univention GmbH
+# Copyright 2019-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

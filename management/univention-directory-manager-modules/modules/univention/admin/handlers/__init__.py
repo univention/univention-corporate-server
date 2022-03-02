@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  base class for the handlers
 #
-# Copyright 2004-2021 Univention GmbH
+# Copyright 2004-2022 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin policy for the autostart settings
 #
-# Copyright 2004-2021 Univention GmbH
+# Copyright 2004-2022 Univention GmbH
 #
 # https://www.univention.de/
 #
