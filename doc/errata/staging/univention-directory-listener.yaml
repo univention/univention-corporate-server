@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: univention-directory-listener
+fix: 13.0.3-6
+desc: |
+ This update addresses the following issue:
+ * Add missing dependency on `python-typing`
+bug: [54322]

@@ -28,6 +28,7 @@ Package: univention-directory-listener
 Architecture: any
 Depends:
  bash,
+ python-typing,
  python-univention-lib (>= 1.0.25-1),
  python-univention-namespace,
  python2.7-univention,
