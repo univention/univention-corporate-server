@@ -8,3 +8,5 @@ desc: |
   This update addresses the following issue:
   * Add missing dependency on `python-typing`
 bug: [54322]
+erratum: 1185
+announced: 2022-03-02
