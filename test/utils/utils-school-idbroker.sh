@@ -195,6 +195,18 @@ create_school_users_classes () {
     --school "$ou2" \
     --append users "uid=stud3,cn=schueler,cn=users,ou=${ou1},$(ucr get ldap/base)" \
     --append users "uid=teach3,cn=lehrer,cn=users,ou=${ou1},$(ucr get ldap/base)"
+
+	# wait for id connector "replication"
+	# TODO find a better way
+	local i=0
+	local queue_entries=0
+	local out_queues="/var/lib/univention-appcenter/apps/ucsschool-id-connector/data/out_queues"
+	for i in $(seq 60); do
+		sleep 10
+		# shellcheck disable=SC2012
+		queue_entries=$(ls ${out_queues}/*/*_ready.json 2>/dev/null | wc -l)
+		[ 0 -eq "$queue_entries" ] && break
+	done
 }
 
 # install letsencrypt and copy certificate files from local
