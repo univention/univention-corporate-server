@@ -327,19 +327,19 @@
 		</para>
 		<variablelist>
 			<varlistentry>
-				<term id="udl:mod:create"><function>create(dn: str, new: Dict[str, List[bytes])</function> -> <type>None</type></term>
+				<term id="udl:mod:create"><function>create(dn: str, new: Dict[str, List[bytes]])</function> -> <type>None</type></term>
 				<listitem>
 					<simpara>Called when a new object was created.</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term id="udl:mod:modify"><function>modify(dn: str, new: Dict[str, List[bytes], old: Dict[str, List[bytes], old_dn: Optional[str])</function> -> <type>None</type></term>
+				<term id="udl:mod:modify"><function>modify(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], old_dn: Optional[str])</function> -> <type>None</type></term>
 				<listitem>
 					<simpara>Called when a new object was modified or moved. In case of a move <varname>old_dn</varname> is set. During a move attributes may be modified, too.</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term id="udl:mod:remove"><function>remove(dn: str, old: Dict[str, List[bytes])</function> -> <type>None</type></term>
+				<term id="udl:mod:remove"><function>remove(dn: str, old: Dict[str, List[bytes]])</function> -> <type>None</type></term>
 				<listitem>
 					<simpara>Called when a new object was deleted.</simpara>
 				</listitem>
