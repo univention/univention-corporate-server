@@ -60,6 +60,7 @@ description = 'LDAP slave replication'
 filter = '(objectClass=*)'  # default filter - may be overwritten later
 attributes = []
 modrdn = '1'
+priority = 0.0
 
 slave = listener.baseConfig['ldap/server/type'] == 'slave'
 
