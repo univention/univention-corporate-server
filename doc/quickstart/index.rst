@@ -68,12 +68,15 @@ can only be configured at this point in the setup process.
 
 - All other systems are joining the UCS domain when they are installed.
 
-An overview of the other different system roles can be found in [#ucs-systemrole]_.
+An overview of the other different system roles can be found in `UCS Manual -
+System roles
+<https://docs.software-univention.de/manual-5.0.html#systemrollen>`_.
 
-With UCS and the *Active Directory Takeover* an
+With UCS and the *Active Directory Takeover* app an
 existing Active Directory domain can be migrated completely to UCS. For
-information on how to set up the UCS system for this scenario, see
-[#ad-takeover]_.
+information on how to set up the UCS system for this scenario, see `UCS Manual -
+Migrating an Active Directory domain to UCS using Univention AD Takeover
+<https://docs.software-univention.de/manual-5.0.html#windows:adtakeover>`_.
 
 In the subsequent course of the installation, the fully qualified host
 name, under which the computer should be accessible in the network, is
@@ -115,8 +118,9 @@ recommended). By default, a portal page is configured on the
 |UCSPRIMARYDN| where all applications are listed that are installed in the
 domain. For all other system roles, the start site consists of an
 overview of all locally installed applications. (View as well as the
-partitioning of entries can be customized in a very flexible manner, see
-also [#ucs-portal]_.)
+partitioning of entries can be customized in a very flexible manner, see also
+`UCS manual - Portal page as central view on the UCS domain
+<https://docs.software-univention.de/manual-5.0.html#central:portal>`_.)
 
 .. _quick-ucs-portal:
 
@@ -141,7 +145,9 @@ information is replicated to the other Directory Nodes in the domain
 either completely or selectively. The UMC modules which edit the LDAP
 directory directly can be accessed only on the |UCSPRIMARYDN| via |UCSUMC|.
 Furthermore, they can also be controlled using the command line
-interface |UCSUDM|, see [#ucs-udm]_.
+interface |UCSUDM|, see `UCS manual - Command line interface of domain
+management (Univention Directory Manager)
+<https://docs.software-univention.de/manual-5.0.html#central:udm>`_.
 
 .. _quick-umc-overview:
 
@@ -210,14 +216,20 @@ different clients. The following clients are supported:
 - Microsoft Windows clients can join an AD-compatible Windows domain provided by
   the *Active Directory compatible domain controller* component (implemented
   using the software Samba). Further information on setting up Samba and the
-  domain join of Windows clients can be found in [#ucs-winjoin]_.
+  domain join of Windows clients can be found in `UCS Manual - Windows domain
+  joins
+  <https://docs.software-univention.de/manual-5.0.html#windows-domaenenbeitritt>`_.
 
 - macOS systems are also integrated via a Samba-based, AD-compatible Windows
   domain. Further information on setting up Samba and the domain join can be
-  found in [#ucs-macjoin]_.
+  found in `UCS Manual - Mac OS X domain joins
+  <https://docs.software-univention.de/manual-5.0.html#joining-macos>`_.
 
-- Ubuntu systems\ [#ubuntu-join]_ and other Linux distributions like Debian, SUSE or Red Hat can
-  also be integrated into the domain, see [#integrate-other-linux]_.
+- Ubuntu systems (see `Integration of Ubuntu clients into a UCS domain
+  <https://docs.software-univention.de/domain-5.0.html#ext-dom-ubuntu>`_) and
+  other Linux distributions like Debian, SUSE or Red Hat can also be integrated
+  into the domain, see `Integration of Linux/Unix systems into a UCS domain
+  <https://docs.software-univention.de/domain-5.0.html#ext-dom-unix>`_.
 
 .. _quickstart:extend:
 
@@ -226,18 +238,22 @@ Further expansion of the domain
 *******************************
 
 This quickstart guide only provides an entry into UCS. UCS is very
-scalable, additional services can simply be installed on additional
-systems. This domain join is described in [#ucs-join]_.
+scalable, additional services can simply be installed on additional systems.
+This domain join is described in `UCS Manual - How UCS systems join domains
+<https://docs.software-univention.de/manual-5.0.html#linux-domaenenbeitritt>`_.
 
 UCS offers various additional services which are covered by the UCS
 license and which can be integrated at a later point in time:
 
-- Single-sign-on with web services using a SAML identity provider, see
-  [#domain-saml]_.
+- Single-sign-on with web services using a SAML identity provider, see `UCS
+  manual - SAML identity provider
+  <https://docs.software-univention.de/manual-5.0.html#domain:saml>`_.
 
-- IP management using DHCP, see [#ucs-dhcp]_.
+- `UCS manual - IP assignment via DHCP
+  <https://docs.software-univention.de/manual-5.0.html#module:dhcp:dhcp>`_.
 
-- Web proxy for caching and policy management / virus scan, see [#ucs-proxy]_.
+- `UCS manual - Web proxy for caching and policy management / virus scan
+  <https://docs.software-univention.de/manual-5.0.html#ip-config:Web_proxy_for_caching_and_policy_management__virus_scan>`_.
 
 - Hybrid cloud setups
 
@@ -249,43 +265,22 @@ Further information
 
 |UCSUCS| provides comprehensive documentation:
 
-- The primary source of information on UCS is the UCS manual\ [#ucs-handbuch]_.
+- The primary source of information on UCS is the `UCS Manual for users and
+  administrators <https://docs.software-univention.de/manual-5.0.html>`_.
 
 - Further documentation for advanced scenarios can be found in the extended
   documentation. The various documents are linked at
   https://docs.software-univention.de/.
 
-- The `Univention Wiki <https://wiki.univention.de/index.php/Hauptseite>`_) contains several
+- The `Univention Wiki <https://wiki.univention.de/index.php/Hauptseite>`_ contains several
   HOWTOs and hands-on tips.
 
 - Answers to frequently asked questions can be found in the `support and
   knowledge database (SDB)
-  <https://help.univention.com/c/knowledge-base/supported/48>`_).
+  <https://help.univention.com/c/knowledge-base/supported/48>`_.
 
 - Questions on UCS can be asked at `Univention Help
   <https://help.univention.com/>`_.
-
-.. rubric:: References
-
-.. [#ucs-systemrole] `UCS Manual - System roles <https://docs.software-univention.de/manual-5.0.html#systemrollen>`_
-.. [#ad-takeover] `Migrating an Active Directory domain to UCS using Univention
-   AD Takeover
-   <https://docs.software-univention.de/manual-5.0.html#windows:adtakeover>`_
-.. [#ucs-portal] `UCS manual - Portal page as central view on the UCS domain <https://docs.software-univention.de/manual-5.0.html#central:portal>`_
-.. [#ucs-udm] `Command line interface of domain management (Univention Directory
-   Manager) <https://docs.software-univention.de/manual-5.0.html#central:udm>`_ 
-.. [#ucs-winjoin] `UCS Manual - Windows domain joins
-   <https://docs.software-univention.de/manual-5.0.html#windows-domaenenbeitritt>`_
-.. [#ucs-macjoin] `UCS Manual - Mac OS X domain joins <https://docs.software-univention.de/manual-5.0.html#joining-macos>`_
-.. [#ubuntu-join] `Integration of Ubuntu clients into a UCS domain <https://docs.software-univention.de/domain-5.0.html#ext-dom-ubuntu>`_
-.. [#integrate-other-linux] `Integration of Linux/Unix systems into a UCS domain <https://docs.software-univention.de/domain-5.0.html#ext-dom-unix>`_
-.. [#ucs-join] `UCS Manual - How UCS systems join domains <https://docs.software-univention.de/manual-5.0.html#linux-domaenenbeitritt>`_
-.. [#domain-saml] `SAML identity provider <https://docs.software-univention.de/manual-5.0.html#domain:saml>`_
-.. [#ucs-dhcp] `UCS manual - IP assignment via DHCP <https://docs.software-univention.de/manual-5.0.html#module:dhcp:dhcp>`_
-.. [#ucs-proxy] `UCS manual - Web proxy for caching and policy management /
-   virus scan
-   <https://docs.software-univention.de/manual-5.0.html#ip-config:Web_proxy_for_caching_and_policy_management__virus_scan>`_
-.. [#ucs-handbuch] `Univention Corporate Server - Manual for users and administrators <https://docs.software-univention.de/manual-5.0.html>`_
 
 .. Macro substitutions
 
