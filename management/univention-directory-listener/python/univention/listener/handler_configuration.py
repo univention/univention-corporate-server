@@ -81,10 +81,7 @@ class ListenerModuleConfiguration(object):
 
 	def __repr__(self):
 		# type: () -> str
-		return '{}({})'.format(
-			self.__class__.__name__,
-			', '.join('{}={!r}'.format(k, v) for k, v in self.as_dict().items())
-		)
+		return '{}(name={!r})'.format(self.__class__.__name__, self.get_name())
 
 	def _run_checks(self):
 		# type: () -> None
@@ -100,10 +97,13 @@ class ListenerModuleConfiguration(object):
 		if not inspect.isclass(self.get_listener_module_class()):
 			raise ListenerModuleConfigurationError('Attribute "listener_module_class" must be a class.')
 
-	def as_dict(self):
+	def get_configuration(self):
 		# type: () -> Dict[str, Any]
 		"""
-		Get the configuration as dictionary.
+		 Get the configuration as dictionary - *deprecated*.
+
+		.. deprecated:: 5.0-2
+			Will be removed in UCS 5.0-2.
 
 		:return: configuration of listener module
 		:rtype: dict
@@ -120,19 +120,6 @@ class ListenerModuleConfiguration(object):
 					'Neither "get_{0}" method nor class attribute found for configuration key {0!r}.'.format(key))
 			res[key] = value
 		return res
-
-	def get_configuration(self):
-		# type: () -> Dict[str, Any]
-		"""
-		 Get the configuration as dictionary. *Deprecated* use `as_dict()` instead.
-
-        .. deprecated:: 5.0-2
-            Use `as_dict()` instead.
-
-		:return: configuration of listener module
-		:rtype: dict
-		"""
-		return self.as_dict()
 
 	@classmethod
 	def get_configuration_keys(cls):
