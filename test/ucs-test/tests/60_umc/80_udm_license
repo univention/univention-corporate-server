@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner python
 ## desc: Test the UMC license management
 ## bugs: [34620]
 ## roles:
