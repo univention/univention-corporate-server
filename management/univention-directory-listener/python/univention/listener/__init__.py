@@ -41,10 +41,10 @@ See :file:`/usr/share/doc/univention-directory-listener/examples/` for examples.
 
 from __future__ import absolute_import
 
-from univention.listener.api_adapter import ListenerModuleAdapter
-from univention.listener.handler_configuration import ListenerModuleConfiguration
-from univention.listener.handler import ListenerModuleHandler
-from univention.listener.exceptions import ListenerModuleConfigurationError, ListenerModuleRuntimeError
+from .api_adapter import ListenerModuleAdapter
+from .exceptions import ListenerModuleConfigurationError, ListenerModuleRuntimeError
+from .handler import ListenerModuleHandler
+from .handler_configuration import ListenerModuleConfiguration
 
 __all__ = [
 	'ListenerModuleAdapter', 'ListenerModuleConfigurationError', 'ListenerModuleRuntimeError',
