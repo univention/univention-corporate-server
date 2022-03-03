@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: univention-directory-listener
+fix: 13.0.3-7A~4.4.0.202203031804
+desc: |
+ This update addresses the following issue:
+ * Remove hardcoded replication.py listener module priority from
+   `univention-directory-listener`. Instead, the priority is now set by
+   package `univention-directory-replication`
+bug: [54504]
