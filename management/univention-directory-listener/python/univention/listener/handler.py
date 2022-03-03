@@ -59,8 +59,9 @@ class HandlerMetaClass(type):
 		kls = cast(Type["ListenerModuleHandler"], super().__new__(mcs, clsname, bases, attrs))
 		is_listener_module = getattr(kls, '_is_listener_module', lambda: False)
 		if is_listener_module():
-			kls.config = kls._get_configuration()
 			lm_module = inspect.getmodule(kls)  # type: Optional[types.ModuleType]
+			name = os.path.basename(lm_module.__name__).split(".")[0]
+			kls.config = kls._get_configuration(name)
 			adapter_cls = kls._adapter_class  # type: Type[ListenerModuleAdapter]
 			for k, v in adapter_cls(kls.config).get_globals().items():
 				setattr(lm_module, k, v)
@@ -92,7 +93,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 	class Configuration(ListenerModuleConfiguration):
 		"""
 		Overwrite this with your own class of the same name. It can be
-		any Python class with just the required attributes (`name`, `description`,
+		any Python class with just the required attributes (`description`,
 		`ldap_filter`) or a subclass of :py:class:`ListenerModuleConfiguration`.
 		"""
 
@@ -321,14 +322,15 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 			self._lo = self._po = None
 
 	@classmethod
-	def _get_configuration(cls):
-		# type: () -> ListenerModuleConfiguration
+	def _get_configuration(cls, name):
+		# type: (str) -> ListenerModuleConfiguration
 		"""
 		Load configuration, optionally converting a plain Python class to a
 		:py:class:`ListenerModuleConfiguration` object. Set `cls._configuration_class` to
 		a subclass of :py:class:`ListenerModuleConfiguration` to change the returned
 		object type.
 
+		:param str name: the modules name
 		:return: configuration object
 		:rtype: ListenerModuleConfiguration
 		"""
@@ -340,10 +342,12 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 			raise ListenerModuleConfigurationError('{!s}.Configuration must be a class.'.format(cls.__name__))
 		if conf_class is ListenerModuleHandler.Configuration:
 			raise ListenerModuleConfigurationError('Missing {!s}.Configuration class.'.format(cls.__name__))
-		if issubclass(cls.Configuration, cls._configuration_class):
-			cls.Configuration.listener_module_class = cls
-			return cls.Configuration()
+		if issubclass(conf_class, cls._configuration_class):
+			conf_class.listener_module_class = cls
+			conf_class.name = name
+			return conf_class()
 		else:
+			conf_class.name = name
 			conf_obj = conf_class()
 			attrs = cls._configuration_class.get_configuration_keys()
 			kwargs = dict(listener_module_class=cls)
