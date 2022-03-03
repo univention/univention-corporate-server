@@ -1,11 +1,9 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Test UMC authentication with expired accounts
 ## exposure: dangerous
 ## packages: [univention-management-console-server]
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## tags: [skip_admember]
-
-from __future__ import print_function
 
 import time
 
@@ -14,10 +12,11 @@ from ldap.filter import filter_format
 
 from univention.lib.umc import Unauthorized
 from univention.testing import utils
+from univention.testing.ucs_samba import wait_for_drs_replication
+
 # TODO: test detection of expired password + account disabled + both
 # TODO: test password history, complexity, length
 
-from univention.testing.ucs_samba import wait_for_drs_replication
 
 samba4_installed = utils.package_installed('univention-samba4')
 

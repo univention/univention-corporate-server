@@ -7,16 +7,17 @@
 ## roles-not:
 ##  - basesystem
 ## packages:
-##  - python-univention-lib
-##  - python-ldap
+##  - python3-univention-lib
+##  - python3-ldap
 ## exposure: dangerous
 
-from __future__ import print_function
-from univention.testing import utils
+import sys
+
+import ldap
+
 import univention.testing.strings as uts
 import univention.uldap
-import ldap
-import sys
+from univention.testing import utils
 
 
 class Hacked(Exception):

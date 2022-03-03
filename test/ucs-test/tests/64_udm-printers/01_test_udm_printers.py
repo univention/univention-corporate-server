@@ -11,16 +11,13 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-from __future__ import absolute_import
-from __future__ import print_function
-
+import os
 import random
 import re
-import subprocess
-import time
-import os
-import sys
 import shlex
+import subprocess
+import sys
+import time
 
 import ldap.dn
 import pytest
@@ -28,7 +25,6 @@ import pytest
 import univention.testing.strings as uts
 import univention.testing.ucr
 import univention.testing.utils as utils
-
 
 printserver_installed = utils.package_installed('univention-printserver')
 samba_common_bin_installed = utils.package_installed('samba-common-bin')

@@ -1,15 +1,14 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 # -*- coding: utf-8 -*-
 ## desc: Test UDM cannot get broken by users with missing object classes
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
-## packages: [python-univention-directory-manager]
-
-from __future__ import print_function
+## packages: [python3-univention-directory-manager]
 
 import base64
 import random
 import traceback
+
 import univention.admin.uexceptions
 
 mapping = {
@@ -18,19 +17,19 @@ mapping = {
 		'cn': 'foo',
 		'uid': '%(uid)s',
 		'userPassword': base64.b64decode('e2NyeXB0fSQ2JDVZcjNsMGxReHN5d2Z1Ni8kQnR3bjRsL3BPcFNmUFJBYnllME1heTdWemVwUFFZRHJNWTBuUU1NZUhneHBmZUdybWJjVmdKaU1EY3hvQk0venRvZXFNWTlORWFoWUwybkwwMlVRWC4='),
-		'objectClass': ['person', 'univentionObject'],
+		'objectClass': [b'person', b'univentionObject'],
 		'univentionObjectType': 'users/user',
 	},
 	'person': {
 		'title': 'foo',
-		'objectClass': ['inetOrgPerson', 'organizationalPerson'],
+		'objectClass': [b'inetOrgPerson', b'organizationalPerson'],
 	},
 	'posix': {
 		'gidNumber': '5001',
 		'homeDirectory': '/home/%(uid)s',
 		'loginShell': '/bin/bash',
 		'uidNumber': '%(rid)s',
-		'objectClass': ['posixAccount', 'shadowAccount'],
+		'objectClass': [b'posixAccount', b'shadowAccount'],
 	},
 	'samba': {
 		'sambaAcctFlags': '[U          ]',
@@ -41,10 +40,10 @@ mapping = {
 		'sambaPrimaryGroupSID': '%(sid)s-513',
 		'sambaPwdLastSet': '1553939189',
 		'sambaSID': '%(sid)s-%(rid)s',
-		'objectClass': ['sambaSamAccount'],
+		'objectClass': [b'sambaSamAccount'],
 	},
 	'kerberos': {
-		'objectClass': ['krb5KDCEntry', 'krb5Principal'],
+		'objectClass': [b'krb5KDCEntry', b'krb5Principal'],
 		'krb5KDCFlags': '126',
 		'krb5Key': base64.b64decode('MDGhEzARoAMCAQGhCgQI3IyR5c6FsymiGjAYoAMCAQOhEQQPREVWLkxPQ0FMZm9vYmFy'),
 		'krb5KeyVersionNumber': '1',
@@ -53,7 +52,7 @@ mapping = {
 		'krb5PrincipalName': '%(uid)s@%(domain)s',
 	},
 	'mail': {
-		'objectClass': ['univentionMail'],
+		'objectClass': [b'univentionMail'],
 	}
 }
 
@@ -72,8 +71,9 @@ def test_invalid_users_do_not_break_udm(random_username, lo, wait_for_replicatio
 	rid = random.randint(2000, 3000)
 	try:
 		for options in constellations:
+			uid = random_username()
 			defaults = {
-				'uid': random_username(),
+				'uid': uid,
 				'sid': sid,
 				'rid': rid,
 				'domain': ucr['domainname'].upper(),
@@ -83,9 +83,9 @@ def test_invalid_users_do_not_break_udm(random_username, lo, wait_for_replicatio
 			al = []
 			for option in options + ['default']:
 				ocs.extend(mapping[option]['objectClass'])
-				al.extend([(key, val % defaults) for key, val in mapping[option].items() if key != 'objectClass'])
+				al.extend([(key, (val % defaults).encode('UTF-8')) for key, val in mapping[option].items() if key not in ['objectClass', 'userPassword', 'krb5Key']])
 			al.append(('objectClass', ocs))
-			dn = 'uid=%(uid)s,cn=users,%(base)s' % defaults
+			dn = 'uid=%s,cn=users,%s' % (uid, ucr['ldap/base'])
 			print('Adding', dn, 'with', options, 'and', al)
 			lo.add(dn, al)
 			dns.append(dn)

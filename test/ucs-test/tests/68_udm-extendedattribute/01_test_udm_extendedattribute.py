@@ -7,8 +7,6 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-from __future__ import print_function
-
 import os
 import subprocess
 
@@ -19,7 +17,6 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 from univention.testing import utils as testing_utils
 from univention.testing.umc import Client
-
 
 HOOKSPATH = '/usr/lib/python3/dist-packages/univention/admin/hooks.d/'
 

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Login user with $HOME on NFS share
 ## roles: [domaincontroller_backup, domaincontroller_slave, memberserver]
 ## exposure: dangerous
@@ -6,15 +6,14 @@
 ## packages:
 ##   - univention-home-mounter
 
-from __future__ import print_function
-from univention.testing.utils import fail, wait_for_replication
-from univention.testing.udm import UCSTestUDM
-from univention.testing.strings import random_name, random_username
-from univention.testing.ucr import UCSTestConfigRegistry
-from os.path import join, ismount
-from subprocess import Popen, PIPE
+from os.path import ismount, join
+from subprocess import PIPE, Popen
 from time import sleep
 
+from univention.testing.strings import random_name, random_username
+from univention.testing.ucr import UCSTestConfigRegistry
+from univention.testing.udm import UCSTestUDM
+from univention.testing.utils import fail, wait_for_replication
 
 if __name__ == '__main__':
 	ucr = UCSTestConfigRegistry()
@@ -60,12 +59,12 @@ if __name__ == '__main__':
 		print('2nd login...')
 		p2 = Popen(('su', '-c', 'df .', '-l', user_name), stdout=PIPE)
 
-		p1.communicate('1st')
+		p1.communicate(b'1st')
 		stdout, _stderr = p2.communicate()
 		ret = (p1.wait(), p2.wait())
 		print(stdout, ret)
 
 		Popen(('umount', '-l', '-f', user_home)).wait()
 
-		if any(ret) or share_path not in stdout:
+		if any(ret) or share_path not in stdout.decode('UTF-8'):
 			fail('Failed: %r %r' % (stdout, ret))

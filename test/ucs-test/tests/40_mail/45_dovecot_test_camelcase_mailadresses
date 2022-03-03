@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Dovecot, test behavior if mail address is specified in mixed case
 ## tags: [apptest]
 ## exposure: dangerous
@@ -7,16 +7,17 @@
 ##  - univention-mail-dovecot
 ##  - univention-directory-manager-tools
 
-from __future__ import print_function
 import os
 import time
-from univention.config_registry import handler_set
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-from essential.mail import send_mail, random_email, file_search_mail, get_dovecot_maildir
 import univention.uldap
+from univention.config_registry import handler_set
+
+from essential.mail import file_search_mail, get_dovecot_maildir, random_email, send_mail
 
 timeout = 10
 
@@ -78,7 +79,7 @@ def main():
 						new_addr = user_addr[0:3].upper() + user_addr[3:].lower()
 					elif i == 3:
 						new_addr = user_addr[:-5].upper() + user_addr[-5:].lower()
-					lo.modify(user_dn, [('mailPrimaryAddress', user_addr, new_addr)])
+					lo.modify(user_dn, [('mailPrimaryAddress', user_addr.encode('UTF-8'), new_addr.encode('UTF-8'))])
 					user_addr = new_addr
 
 					userbase.append(Bunch(dn=user_dn, name=user_name, addr=user_addr, msgid=msgid))

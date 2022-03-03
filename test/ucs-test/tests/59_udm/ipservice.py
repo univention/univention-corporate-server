@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from univention.admin import property, option
-from univention.admin.syntax import (string, ipProtocol, integer)
-from univention.admin.layout import Tab, Group
-from univention.admin.filter import (conjunction, expression)
-from univention.admin.mapping import (mapping as Mapping, ListToString, mapRewrite)
+from univention.admin import option, property
+from univention.admin.filter import conjunction, expression
 from univention.admin.handlers import simpleLdap
+from univention.admin.layout import Group, Tab
 from univention.admin.localization import translation
+from univention.admin.mapping import ListToString, mapping as Mapping, mapRewrite
+from univention.admin.syntax import integer, ipProtocol, string
 
 _ = translation('univention.admin.handlers.tests').translate
 

@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Copyright 2013-2022 Univention GmbH
@@ -28,16 +28,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
+import subprocess
+import time
 
-from univention.config_registry import ConfigRegistry
-from univention.testing.strings import random_name, random_int
 import ldap
 import ldap.schema
 import psutil
-import subprocess
-import time
+
 import univention.uldap
+from univention.config_registry import ConfigRegistry
+from univention.testing.strings import random_int, random_name
 
 WAIT_FOR_LDAP_TIME = 30  # seconds
 
@@ -143,4 +143,4 @@ def get_ldap_master_connection(user_dn):
 def set_container_description(user_dn, container):
 	print('set_container_description(%r, %r)' % (user_dn, container))
 	lo = get_ldap_master_connection(user_dn)
-	lo.modify(container, [('description', '', random_name())])
+	lo.modify(container, [('description', b'', random_name().encode('UTF-8'))])

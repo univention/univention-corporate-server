@@ -1,12 +1,10 @@
-#!/usr/share/ucs-test/runner /usr/bin/python2.7
+#!/usr/share/ucs-test/runner /usr/bin/python3
 ## desc: Checking all UCR-info-files for invalid UTF-8-characters
 ## bugs: [13111]
 ## tags:
 ##  - basic
 ##  - apptest
 ## exposure: safe
-
-from __future__ import print_function
 
 import os
 import sys

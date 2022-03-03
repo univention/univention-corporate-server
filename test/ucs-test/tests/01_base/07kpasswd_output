@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: |
 ##  Check if kpasswd spuriously reports success
 ##  This script tests if kpasswd spuriously reports success when trying to change the password to a too short one.
@@ -15,17 +15,18 @@
 ## versions:
 ##  2.2-0: fixed
 ## packages:
-##  - python-pexpect
+##  - python3-pexpect
 ##  - univention-heimdal-kdc
 ## exposure: dangerous
 
-from __future__ import print_function
-import pexpect
-import tempfile
-import sys
-import univention.config_registry
 import random
 import subprocess
+import sys
+import tempfile
+
+import pexpect
+
+import univention.config_registry
 import univention.testing.udm as udm_test
 
 ucr = univention.config_registry.ConfigRegistry()

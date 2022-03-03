@@ -1,11 +1,9 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Test detection of changing expired password failure reason
 ## exposure: dangerous
 ## packages: [univention-management-console-server]
 ## roles: [domaincontroller_master]
 ## tags: [skip_admember]
-
-from __future__ import print_function
 
 import contextlib
 from typing import Dict, List  # noqa F401
@@ -61,7 +59,7 @@ def enabled_password_quality_checks(ucr):
 	ldap_base = ucr.get('ldap/base')
 	dn = 'cn=default-settings,cn=pwhistory,cn=users,cn=policies,%s' % (ldap_base,)
 	old = lo.getAttr(dn, 'univentionPWQualityCheck')
-	new = ['TRUE']
+	new = [b'TRUE']
 	lo.modify(dn, [('univentionPWQualityCheck', old, new)])
 	yield
 	lo.modify(dn, [('univentionPWQualityCheck', new, old)])

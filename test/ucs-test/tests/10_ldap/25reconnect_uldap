@@ -1,22 +1,23 @@
-#!/usr/share/ucs-test/runner python2.7
+#!/usr/share/ucs-test/runner python3
 ## desc: Test reconnect mechanism of uldap
 ## tags: [reconnect]
 ## roles-not:
 ##  - basesystem
 ##  - memberserver
 ## packages:
-##  - python-univention
+##  - python3-univention
 ## bugs:
 ##  - 34292
 ## exposure: dangerous
 
-from __future__ import print_function
-import univention.uldap
 import subprocess
-import ldap
 from time import sleep
-from univention.testing.utils import fail
+
+import ldap
+
 import univention.config_registry
+import univention.uldap
+from univention.testing.utils import fail
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()

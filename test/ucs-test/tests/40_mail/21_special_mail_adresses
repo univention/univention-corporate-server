@@ -1,16 +1,17 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test special mail addresses
 ## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
-
-from essential.mail import send_mail, mail_delivered
-from univention.config_registry import handler_set
 import time
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+from univention.config_registry import handler_set
+
+from essential.mail import mail_delivered, send_mail
 
 
 def check_sending_mail(username, password, recipient_email):

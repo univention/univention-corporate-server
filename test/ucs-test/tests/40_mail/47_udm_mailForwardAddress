@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test UDM properties mailForwardAddress and mailForwardCopyToSelf
 ## tags: [udm,apptest]
 ## exposure: unsafe
@@ -9,11 +9,11 @@
 
 # pylint: disable=attribute-defined-outside-init
 
-from __future__ import print_function
-import univention.testing.utils as utils
-import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
 from essential.mail import set_mail_forward_copy_to_self_ucrv
 
 
@@ -33,7 +33,7 @@ class Bunch(object):
 
 	def __str__(self):
 		result = []
-		for key, value in self.__dict__.iteritems():
+		for key, value in self.__dict__.items():
 			result.append('%s=%r' % (key, value))
 		return 'Bunch(' + ', '.join(result) + ')'
 

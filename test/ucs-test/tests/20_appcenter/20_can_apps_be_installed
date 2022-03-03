@@ -7,18 +7,16 @@
 ## packages:
 ##   - univention-management-console-module-appcenter
 
-from __future__ import print_function
-import sys
 import subprocess
+import sys
 import time
 
+from univention.appcenter.actions import get_action
+from univention.appcenter.app_cache import Apps
+from univention.appcenter.log import log_to_logfile
 from univention.testing.ucr import UCSTestConfigRegistry
 
 from appcentertest import get_requested_apps
-
-from univention.appcenter.app_cache import Apps
-from univention.appcenter.actions import get_action
-from univention.appcenter.log import log_to_logfile
 
 requested_apps = get_requested_apps()
 if requested_apps and all(app.docker for app in requested_apps):

@@ -1,15 +1,16 @@
-from __future__ import print_function
-
 import os
+import random
+import re
+import subprocess
 import sys
 import time
+
 import ldap
+
+import univention.config_registry
 import univention.testing.strings as uts
 import univention.testing.utils as utils
-import subprocess
-import re
-import random
-import univention.config_registry
+
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 

@@ -12,7 +12,6 @@
 import univention.testing.utils as utils
 from univention.config_registry import ConfigRegistry
 
-
 if __name__ == '__main__':
 	ucr = ConfigRegistry()
 	ucr.load()

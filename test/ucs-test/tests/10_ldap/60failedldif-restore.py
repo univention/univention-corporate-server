@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Checking whether failed.ldif will be restored.
 ## tags:
 ##  - replication
@@ -7,20 +7,19 @@
 ##  - domaincontroller_slave
 ## exposure: dangerous
 
-from contextlib import contextmanager
+import os
 import subprocess
 import time
-import os
+from contextlib import contextmanager
 
 import ldap
 import pytest
 
 from univention.config_registry import handler_set
-from univention.testing.strings import random_name
 from univention.testing import utils
+from univention.testing.strings import random_name
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.udm import UCSTestUDM
-
 
 LDIF_TIMEOUT = 5
 ldif_folder = '/var/lib/univention-directory-replication'

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: check if RADIUS authenticator settings are written to clients.univention.conf
 ## tags: [radius]
 ## packages:
@@ -6,14 +6,13 @@
 ## join: true
 ## exposure: dangerous
 
-from __future__ import print_function
-import re
 import random
+import re
 
-import univention.testing.udm as udm_test
-import univention.testing.utils as utils
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 
 
 class Bunch(object):
@@ -32,7 +31,7 @@ class Bunch(object):
 
 	def __str__(self):
 		result = []
-		for key, value in self.__dict__.iteritems():
+		for key, value in self.__dict__.items():
 			result.append('%s=%r' % (key, value))
 		return 'Bunch(' + ', '.join(result) + ')'
 

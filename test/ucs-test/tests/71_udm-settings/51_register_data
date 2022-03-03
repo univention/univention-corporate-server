@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Register a settings/data object
 ## tags: [udm-ldapextensions,apptest]
 ## roles: [domaincontroller_master]
@@ -6,18 +6,18 @@
 ## packages:
 ##   - univention-directory-manager-tools
 
-from __future__ import print_function
-import os
 import bz2
-import atexit
+import os
+import pipes
 import shutil
 import subprocess
-import pipes
-import univention.testing.utils as utils
-import univention.testing.udm as udm_test
-import univention.testing.ucr as ucr_test
-import univention.testing.strings as uts
 
+import atexit
+
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 
 file_name = uts.random_name()
 file_path = os.path.join('/tmp', file_name)
@@ -48,6 +48,7 @@ def run_cmd(cmd):
 	print('Running: {!r}'.format(cmd))
 	cmd_proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	cmd_out, cmd_err = cmd_proc.communicate()
+	cmd_out, cmd_err = cmd_out.decode('UTF-8', 'replace'), cmd_err.decode('UTF-8', 'replace')
 	print('exit code: {!r}'.format(cmd_proc.returncode))
 	print('stdout:-----\n{}\n-----'.format(cmd_out))
 	print('stderr:-----\n{}\n-----'.format(cmd_err))
@@ -87,7 +88,7 @@ with udm_test.UCSTestUDM() as udm:
 			'description': [],  # ucs_registerLDAPExtension doesn't support description
 			'univentionDataFilename': [file_name],
 			'univentionDataType': [kwargs['data_type']],
-			'univentionData': [bz2.compress(data)],
+			'univentionData': [bz2.compress(data.encode('UTF-8'))],
 			'univentionUCSVersionStart': [kwargs['ucsversionstart']],
 			'univentionUCSVersionEnd': [kwargs['ucsversionend']],
 			'univentionDataMeta': kwargs['meta'],
@@ -124,7 +125,7 @@ with udm_test.UCSTestUDM() as udm:
 			'description': [],  # ucs_registerLDAPExtension does not support description
 			'univentionDataFilename': [file_name],
 			'univentionDataType': [kwargs['data_type']],
-			'univentionData': [bz2.compress(data)],
+			'univentionData': [bz2.compress(data.encode('UTF-8'))],
 			'univentionUCSVersionStart': [kwargs['ucsversionstart']],
 			'univentionUCSVersionEnd': [kwargs['ucsversionend']],
 			'univentionDataMeta': kwargs['meta'],

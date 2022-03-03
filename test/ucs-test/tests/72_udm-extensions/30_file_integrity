@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check permissions of distributed extension file
 ## tags: [udm-ldapextensions,apptest]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
@@ -6,26 +6,21 @@
 ## packages:
 ##   - univention-directory-manager-tools
 
-from __future__ import print_function
-import univention.testing.udm as udm_test
-from univention.testing.utils import wait_for_replication, fail
-from univention.testing.strings import random_name, random_version, random_ucs_version
-from univention.testing.udm_extensions import (
-	get_package_name,
-	get_package_version,
-	get_extension_name,
-	get_extension_filename,
-	get_extension_buffer,
-	VALID_EXTENSION_TYPES,
-	get_absolute_extension_filename,
-)
-from univention.config_registry import ConfigRegistry
-import os
-import bz2
 import base64
-import hashlib
-import stat
+import bz2
 import grp
+import hashlib
+import os
+import stat
+
+import univention.testing.udm as udm_test
+from univention.config_registry import ConfigRegistry
+from univention.testing.strings import random_name, random_ucs_version, random_version
+from univention.testing.udm_extensions import (
+	VALID_EXTENSION_TYPES, get_absolute_extension_filename, get_extension_buffer, get_extension_filename,
+	get_extension_name, get_package_name, get_package_version,
+)
+from univention.testing.utils import fail, wait_for_replication
 
 if __name__ == '__main__':
 	# wait for replicate before test starts
@@ -50,7 +45,7 @@ if __name__ == '__main__':
 			dn = udm.create_object(
 				'settings/udm_%s' % extension_type,
 				name=extension_name,
-				data=base64.b64encode(bz2.compress(extension_buffer)),
+				data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
 				filename=extension_filename,
 				packageversion=package_version,
 				appidentifier=app_id,
@@ -70,14 +65,14 @@ if __name__ == '__main__':
 				fail('ERROR: expected UDM extension does not exist in filesystem (%s)' % (target_fn, ))
 
 			# check if sha1(buffer) == sha1(file)
-			hash_buffer = hashlib.sha1(extension_buffer).hexdigest()
-			hash_file = hashlib.sha1(open(target_fn).read()).hexdigest()
+			hash_buffer = hashlib.sha1(extension_buffer.encode('UTF-8')).hexdigest()
+			hash_file = hashlib.sha1(open(target_fn, 'rb').read()).hexdigest()
 			if hash_buffer != hash_file:
 				fail('ERROR: sha1 sums of file and buffer differ (fn=%s ; file=%s ; buffer=%s)' % (target_fn, hash_file, hash_buffer))
 
 			# check replicated file has correct file mode
 			current_mode = oct(os.stat(target_fn).st_mode & (stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO))
-			expected_mode = '0644'
+			expected_mode = '0o644'
 			if current_mode != expected_mode:
 				fail('ERROR: permissions of target file %s are not ok (current=%s  expected=%s)' % (target_fn, current_mode, expected_mode))
 

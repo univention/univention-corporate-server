@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: check for the correct settings for signed kernel modules
 ## exposure: safe
 ## bugs: [36383]
@@ -6,6 +6,7 @@
 ##  4.3-0: skip
 
 from os import uname
+
 import univention.testing.utils as utils
 
 MINIMUM_CONFIG = [

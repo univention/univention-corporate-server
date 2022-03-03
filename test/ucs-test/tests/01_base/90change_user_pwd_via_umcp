@@ -7,17 +7,16 @@
 ## tags: [basic, apptest, skip_admember]
 ## exposure: dangerous
 
-from __future__ import print_function
-import pytest
 from time import sleep
 
-import univention.testing.utils as utils
-import univention.testing.strings as uts
-from univention.testing.udm import UCSTestUDM, UCSTestUDM_CreateUDMObjectFailed
+import pytest
 
+import univention.testing.strings as uts
+import univention.testing.utils as utils
 from univention.config_registry import ConfigRegistry
-from univention.testing.umc import Client
 from univention.lib.umc import BadRequest
+from univention.testing.udm import UCSTestUDM, UCSTestUDM_CreateUDMObjectFailed
+from univention.testing.umc import Client
 
 
 def main():

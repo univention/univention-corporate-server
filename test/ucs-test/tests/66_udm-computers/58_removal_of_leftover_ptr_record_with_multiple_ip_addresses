@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test PTR records are removed when no ptr record would be left over and multiple IP addresses are assigned
 ## tags: [udm-computers,apptest]
 ## roles: [domaincontroller_master]
@@ -8,11 +8,9 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-from __future__ import print_function
-import univention.uldap
-import univention.testing.udm
 import univention.testing.strings as uts
-
+import univention.testing.udm
+import univention.uldap
 
 if __name__ == '__main__':
 	ldap = univention.uldap.getAdminConnection()
@@ -41,4 +39,6 @@ if __name__ == '__main__':
 		}
 		udm.modify_object('computers/windows', dn=computer, ip='10.20.30.6', remove=remove, append=append)
 		univention.testing.utils.verify_ldap_object(ptr_record, should_exist=False)
-		univention.testing.utils.verify_ldap_object('relativeDomainName=6,%s' % (rdnsZone,), {'pTRRecord': [b'%s.%s.%s.' % (computer_name, domainname, tld), b'%s.%s2.%s.' % (computer_name, domainname, tld)]})
+		univention.testing.utils.verify_ldap_object('relativeDomainName=6,%s' % (rdnsZone,), {
+			'pTRRecord': [('%s.%s.%s.' % (computer_name, domainname, tld)).encode('UTF-8'), ('%s.%s2.%s.' % (computer_name, domainname, tld)).encode('UTF-8')]
+		})

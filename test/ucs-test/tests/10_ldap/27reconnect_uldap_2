@@ -5,24 +5,25 @@
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:
-##   - python-univention-directory-manager
-##   - python-univention
+##   - python3-univention-directory-manager
+##   - python3-univention
 
-from __future__ import print_function
-import univention.testing.ucr as ucr_test
-import univention.testing.utils as utils
-import univention.testing.udm
-import univention.testing.ucr
-import univention.testing.strings as uts
-import univention.uldap
-import univention.admin.uldap
-import univention.admin.uexceptions
-from six.moves._thread import start_new_thread
-import traceback
-import time
 import subprocess
-from ldap.filter import filter_format
+import time
+import traceback
+
 from ldap import INSUFFICIENT_ACCESS, UNAVAILABLE
+from ldap.filter import filter_format
+from six.moves._thread import start_new_thread
+
+import univention.admin.uexceptions
+import univention.admin.uldap
+import univention.testing.strings as uts
+import univention.testing.ucr
+import univention.testing.ucr as ucr_test
+import univention.testing.udm
+import univention.testing.utils as utils
+import univention.uldap
 
 
 def delayed_slapd_restart():
@@ -81,7 +82,7 @@ def main():
 						count += 1
 					except UNAVAILABLE:
 						# ignore ldap.UNAVAILABLE, slapd is started but database backend not yet available
-						# python-ldap reconnect does not handle this situation
+						# python3-ldap reconnect does not handle this situation
 						print('ignore UNAVAILABLE')
 						pass
 					except univention.admin.uexceptions.ldapError as exc:
@@ -109,7 +110,7 @@ def main():
 						count += 1
 					except UNAVAILABLE:
 						# ignore ldap.UNAVAILABLE, slapd is started but database backend not yet available
-						# python-ldap reconnect does not handle this situation
+						# python3-ldap reconnect does not handle this situation
 						pass
 					except univention.admin.uexceptions.ldapError as exc:
 						if 'Server is unavailable'.lower() not in str(exc).lower():

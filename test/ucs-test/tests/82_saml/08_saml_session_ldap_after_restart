@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check if SSO session is still active after LDAP server restart
 ## tags: [saml]
 ## roles: [domaincontroller_master]
@@ -6,9 +6,10 @@
 ## tags:
 ##  - skip_admember
 
-from __future__ import print_function
 import subprocess
+
 import univention.testing.utils as utils
+
 import samltest
 
 

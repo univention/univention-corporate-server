@@ -16,7 +16,8 @@ def test_groups_for_user(udm, group1, group2, user1, dn_domain_users, dn_builtin
     udm.modify_object('users/user', dn=user1, groups=[group1, group2], wait_for_replication=True)
     # cn=domain users,cn=groups is default created group
     result_groups = groups_for_user(user1)
-    if dn_builtin_users.lower() in result_groups: result_groups.remove(dn_builtin_users.lower())
+    if dn_builtin_users.lower() in result_groups:
+        result_groups.remove(dn_builtin_users.lower())
     assert sorted(result_groups) == sorted([dn_domain_users.lower(), group1.lower(), group2.lower()])
 
 
@@ -32,7 +33,8 @@ def test_groups_for_user_not_nested(udm, group1, group2, group3, user1, dn_domai
     result_groups = groups_for_user(user1, consider_nested_groups=False)
     assert sorted(result_groups) == sorted([dn_domain_users.lower(), group1.lower()])
     result_groups = groups_for_user(user1)
-    if dn_builtin_users.lower() in result_groups: result_groups.remove(dn_builtin_users.lower())
+    if dn_builtin_users.lower() in result_groups:
+        result_groups.remove(dn_builtin_users.lower())
     assert sorted(result_groups) == sorted([dn_domain_users.lower(), group1.lower(), group2.lower(), group3.lower()])
 
 

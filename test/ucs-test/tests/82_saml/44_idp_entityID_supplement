@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test SSO with supplement entityID
 ## tags: [saml]
 ## join: true
@@ -7,14 +7,15 @@
 ## tags:
 ##  - skip_admember
 
-from __future__ import print_function
 import subprocess
+
 import requests
 
-import samltest
-import univention.testing.utils as utils
 import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
 from univention.config_registry import handler_set
+
+import samltest
 
 
 def main():
@@ -42,7 +43,7 @@ def main():
 				SamlSession.test_logout_at_IdP()
 				SamlSession.test_logout()
 			except samltest.SamlError as exc:
-				utils.fail(exc.message)
+				utils.fail(str(exc))
 	finally:
 		subprocess.check_call(['systemctl', 'reload', 'apache2.service'])
 		if umc_saml_idpserver:

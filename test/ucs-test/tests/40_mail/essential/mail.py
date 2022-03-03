@@ -29,32 +29,31 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
-
-import glob
-import smtplib
-import imaplib
 import email
+import email.encoders as Encoders
+import glob
+import imaplib
 import os
-from os.path import basename
+import poplib
 import re
+import smtplib
 import socket
 import subprocess
 import sys
 import time
 import uuid
-import univention.testing.strings as uts
-import univention.config_registry
+from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-import email.encoders as Encoders
-import poplib
+from os.path import basename
+
 import six
 
-from univention.config_registry import handler_set
-import univention.testing.utils as utils
+import univention.config_registry
+import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
+from univention.config_registry import handler_set
 from univention.testing.decorators import WaitForNonzeroResultOrTimeout
 
 COMMASPACE = ', '
@@ -71,7 +70,7 @@ class Mail(object):
 			buff_size = 1024
 			while True:
 				part = s.recv(buff_size)
-				reply += part
+				reply += part.decode('UTF-8')
 				if len(part) < buff_size:
 					break
 			return reply
@@ -80,7 +79,7 @@ class Mail(object):
 
 	def send_message(self, s, message):
 		print(message, end=' ')
-		s.send(message)
+		s.send(message.encode('UTF-8'))
 
 
 class ImapMail(Mail):
@@ -94,7 +93,7 @@ class ImapMail(Mail):
 		for num in msg_ids[0].split():
 			rv, msg = self.connection.fetch(num, '(RFC822)')
 			assert rv == "OK", (rv, msg)
-			msgs.append(email.message_from_string(msg[0][1]))
+			msgs.append(email.message_from_bytes(msg[0][1]))
 		return msgs
 
 	def get_connection(self, host, user, password):
@@ -177,7 +176,7 @@ class ImapMail(Mail):
 		separator = None
 		regex = re.compile(r'^\(.*\) "(?P<separator>.*)" (?P<folder>.*)$')
 		for s in data:
-			sep, folder_name = regex.match(s).groups()
+			sep, folder_name = regex.match(s.decode('UTF-8')).groups()
 			if folder_name == parent:
 				separator = sep
 				break

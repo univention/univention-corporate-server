@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: install all packages from standard packet list
 ## roles: [domaincontroller_master]
 ## tags: [apptest]
@@ -8,9 +8,9 @@
 ##  3.2-3: skip
 ## packages: []
 
-from __future__ import print_function
 import re
 import subprocess
+
 import univention.testing.utils as utils
 
 

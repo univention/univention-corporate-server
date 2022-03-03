@@ -5,10 +5,10 @@
 ## packages:
 ##   - docker.io
 
-from __future__ import print_function
-from dockertest import Appcenter, App, get_app_name
 import os
 import subprocess
+
+from dockertest import App, Appcenter, get_app_name
 
 
 def cleanup(app):

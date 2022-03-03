@@ -8,8 +8,8 @@
 ## exposure: safe
 
 from univention.testing.umc import Client
-import appcentertest as app_test
 
+import appcentertest as app_test
 
 if __name__ == '__main__':
 	client = Client.get_test_connection()

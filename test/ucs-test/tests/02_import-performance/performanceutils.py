@@ -1,16 +1,15 @@
-from __future__ import print_function
-import subprocess
-import time
-import re
+#!/usr/bin/python3
+
 import json
 import os.path
-from ucsschool.importer.mass_import import user_import
-
+import re
 import sqlite3
+import subprocess
+import time
 
 import univention.testing.udm as udm_test
-
 import univention.uldap
+from ucsschool.importer.mass_import import user_import
 
 CONNECTOR_WAIT_INTERVAL = 12
 CONNECTOR_WAIT_SLEEP = 5
@@ -155,7 +154,8 @@ def get_user_dn_list_new(CSV_IMPORT_FILE):
 	config['input']['filename'] = CSV_IMPORT_FILE
 	with open(os.path.expanduser('~/.import_shell_config'), 'wb') as fp:
 		json.dump(config, fp)
-	from ucsschool.importer.utils.shell import logger  # this will setup a complete import system configuration  # noqa: F401
+	# this will setup a complete import system configuration
+	from ucsschool.importer.utils.shell import logger  # noqa: F401
 	up = user_import.UserImport()
 	imported_users = up.read_input()
 	user_dns = list()

@@ -5,11 +5,13 @@
 ## packages:
 ##   - docker.io
 
-from dockertest import Appcenter, get_app_name, get_app_version, App, get_docker_appbox_ucs, get_docker_appbox_image
-from univention.testing.utils import is_port_open
-from univention.testing.utils import restart_firewall
 from textwrap import dedent
 
+from univention.testing.utils import is_port_open, restart_firewall
+
+from dockertest import (
+	App, Appcenter, get_app_name, get_app_version, get_docker_appbox_image, get_docker_appbox_ucs,
+)
 
 if __name__ == '__main__':
 	with Appcenter() as appcenter:

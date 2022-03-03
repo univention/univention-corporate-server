@@ -1,18 +1,19 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3
+#!/usr/share/ucs-test/runner pytest-3
 # -*- coding: utf-8 -*-
 ## desc: Test UDM API for users/user module
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 ## tags: [udm_api]
-## packages: [python-univention-directory-manager]
+## packages: [python3-univention-directory-manager]
 ## bugs: [47316]
 
 from collections import namedtuple
-from unittest import main, TestCase
+
+from unittest import TestCase, main
+
 import univention.debug as ud
 from univention.testing.strings import random_string, random_username
 from univention.udm import UDM
-
 
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
 ud.set_level(ud.ADMIN, ud.ALL)
@@ -56,8 +57,8 @@ class TestUdmUsersBasic(TestCase):
 
 	def test_create_data_with_data(self):
 		pass
-		#data_mod = self.udm.get('settings/data')
-		#obj = data_mod.new()
+		# data_mod = self.udm.get('settings/data')
+		# obj = data_mod.new()
 
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create a valid ldap schema object
 ## tags: [udm-ldapextensions,apptest]
 ## roles: [domaincontroller_master]
@@ -6,18 +6,19 @@
 ## packages:
 ##   - univention-directory-manager-tools
 
-import univention.testing.utils as utils
-import univention.testing.udm as udm_test
-import univention.testing.strings as uts
-import bz2
 import base64
+import bz2
+
+import univention.testing.strings as uts
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		schema_name = uts.random_name()
 		filename = '90%s' % uts.random_name()
 		data = '# schema test'
-		schema = udm.create_object('settings/ldapschema', position=udm.UNIVENTION_CONTAINER, name=schema_name, filename=filename, data=base64.encodestring(bz2.compress(data)))
+		schema = udm.create_object('settings/ldapschema', position=udm.UNIVENTION_CONTAINER, name=schema_name, filename=filename, data=(base64.b64encode(bz2.compress(data.encode('UTF-8')))).decode('ASCII'))
 		utils.verify_ldap_object(schema, {'cn': [schema_name]})
 
 		udm.remove_object('settings/ldapschema', dn=schema)

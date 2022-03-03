@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test UMC policy result
 ## roles:
 ##  - domaincontroller_master
@@ -8,11 +8,10 @@
 ##  - univention-management-console-module-udm
 ## exposure: safe
 
-from __future__ import print_function
-from univention.testing.udm import UCSTestUDM
-from univention.testing.utils import fail
-from univention.testing.umc import Client
 from univention.testing.strings import random_name
+from univention.testing.udm import UCSTestUDM
+from univention.testing.umc import Client
+from univention.testing.utils import fail
 
 USERNAME = None
 PASSWORD = 'univention'

@@ -1,20 +1,18 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 # -*- coding: utf-8 -*-
 ## desc: Test UDM APIs module.meta.auto_open feature
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 ## tags: [udm_api, skip_admember]
-## packages: [python-univention-directory-manager]
+## packages: [python3-univention-directory-manager]
 ## bugs: [47316]
 
-from __future__ import print_function
+from unittest import TestCase, main
 
-from unittest import main, TestCase
 import univention.debug as ud
-from univention.testing.udm import UCSTestUDM
 from univention.testing.ucr import UCSTestConfigRegistry
+from univention.testing.udm import UCSTestUDM
 from univention.udm import UDM
-
 
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
 ud.set_level(ud.ADMIN, ud.ALL)

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Basic virus email delivery
 ## tags: []
 ## exposure: dangerous
@@ -14,15 +14,17 @@
 # user and root was warned.
 #################
 
-from __future__ import print_function
-from essential.mail import deactivate_spam_detection, reload_amavis_postfix
-from essential.mail import send_mail, virus_detected_and_quarantined
-from univention.config_registry import handler_set
 import time
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+from univention.config_registry import handler_set
+
+from essential.mail import (
+	deactivate_spam_detection, reload_amavis_postfix, send_mail, virus_detected_and_quarantined,
+)
 
 
 def main():

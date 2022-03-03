@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest-3 -s -l -v
+#!/usr/share/ucs-test/runner pytest-3 -s -l -v
 # -*- coding: utf-8 -*-
 ## desc: Test ticket lifetime are changed successfully
 ## exposure: safe
@@ -10,6 +10,7 @@
 ## bugs: [52987]
 
 import os
+from typing import Iterator
 
 import pytest
 

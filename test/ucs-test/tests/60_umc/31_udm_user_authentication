@@ -7,21 +7,19 @@
 ## tags: [skip_admember]
 ## exposure: dangerous
 
-from __future__ import print_function
 import sys
+from time import localtime, sleep, strftime, time
 
 from ldap.filter import filter_format
-from time import sleep, time, localtime, strftime
 
 import univention.testing.utils as utils
-from univention.testing.udm import UCSTestUDM
-from univention.testing.strings import random_username
-from univention.testing.umc import Client
-from univention.testing.ucs_samba import wait_for_drs_replication
 from univention.lib.umc import Unauthorized
+from univention.testing.strings import random_username
+from univention.testing.ucs_samba import wait_for_drs_replication
+from univention.testing.udm import UCSTestUDM
+from univention.testing.umc import Client
 
-sys.path.insert(0, '.')
-from umc import UDMModule  # noqa: E402
+from umc import UDMModule
 
 
 class TestUMCUserAuthentication(UDMModule):

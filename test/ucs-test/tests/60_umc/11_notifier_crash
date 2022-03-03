@@ -3,13 +3,13 @@
 ## roles:
 ##  - domaincontroller_master
 ## packages:
-##  - python-notifier
+##  - python3-notifier
 ## bugs: [40510]
 ## exposure: safe
 
-from __future__ import print_function
-import notifier
 import subprocess
+
+import notifier
 
 fd = None
 

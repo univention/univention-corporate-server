@@ -7,13 +7,10 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-from __future__ import print_function
-
 import pytest
 
-import univention.testing.utils as utils
 import univention.testing.udm as udm_test
-
+import univention.testing.utils as utils
 
 GROUP_TYPE_LOCAL = "-2147483643"
 GROUP_TYPE_DOMAIN_LOCAL = "-2147483644"

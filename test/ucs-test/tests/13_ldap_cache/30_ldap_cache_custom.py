@@ -5,9 +5,8 @@
 ## packages:
 ##   - univention-group-membership-cache
 
-from univention.udm import UDM
-
 from univention.testing.strings import random_name
+from univention.udm import UDM
 
 
 def test_custom_cache(udm, get_cache, add_cache, user1, user2):

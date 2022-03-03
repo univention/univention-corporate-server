@@ -1,19 +1,20 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 # -*- coding: utf-8 -*-
 ## desc: Test UDM API for users/user module
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 ## tags: [udm_api]
-## packages: [python-univention-directory-manager]
+## packages: [python3-univention-directory-manager]
 ## bugs: [47316]
 
 from collections import namedtuple
-from unittest import main, TestCase
-import univention.debug as ud
-from univention.udm import UDM
-from univention.testing.ucr import UCSTestConfigRegistry
-from univention.udm.exceptions import MoveError
 
+from unittest import TestCase, main
+
+import univention.debug as ud
+from univention.testing.ucr import UCSTestConfigRegistry
+from univention.udm import UDM
+from univention.udm.exceptions import MoveError
 
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
 ud.set_level(ud.ADMIN, ud.ALL)

@@ -9,11 +9,10 @@
 ##   - univention-directory-manager-tools
 
 
-import univention.testing.udm as udm_test
-import univention.testing.strings as uts
-import univention.testing.utils as utils
 import univention.config_registry as configRegistry
-
+import univention.testing.strings as uts
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 
 if __name__ == '__main__':
 	ldap = utils.get_ldap_connection()

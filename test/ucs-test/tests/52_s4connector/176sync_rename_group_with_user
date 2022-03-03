@@ -9,10 +9,10 @@
 #
 #  Bug #31324
 
-import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-import s4connector
+import univention.testing.udm as udm_test
 
+import s4connector
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:

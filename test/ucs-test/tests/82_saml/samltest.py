@@ -1,21 +1,21 @@
-#!/usr/bin/env python
-import re
-import requests
-from requests_kerberos import HTTPKerberosAuth, OPTIONAL
-import subprocess
-import socket
+#!/usr/bin/env python3
 import json
-import shutil
 import os
+import re
+import shutil
+import socket
+import subprocess
 import time
-
-import univention.testing.utils as utils
-import univention.config_registry as configRegistry
-
-import defusedxml.ElementTree as ET
 import xml.etree.ElementTree
 
-from HTMLParser import HTMLParser
+import defusedxml.ElementTree as ET
+import requests
+from requests_kerberos import OPTIONAL, HTTPKerberosAuth
+from six.moves.html_parser import HTMLParser
+
+import univention.config_registry as configRegistry
+import univention.testing.utils as utils
+
 html = HTMLParser()
 
 
@@ -28,7 +28,7 @@ class SamlLoginError(SamlError):
 	def __init__(self, page, message=''):
 		self.page = page.page
 		if not message and type(self) is SamlLoginError:
-			message = "Unknown error in SAML response.\nSAML response:\n%s" % self.page.text
+			message = "Unknown error in SAML response.\nSAML response:\n%s" % self.page.content
 		super(SamlLoginError, self).__init__(message)
 
 	def __new__(cls, saml):
@@ -108,7 +108,7 @@ class SPCertificate(object):
 
 	def __enter__(self):
 		shutil.move(self.cert_path, self.cert_path_backup)
-		with open(self.cert_path, 'w') as cert_file:
+		with open(self.cert_path, 'wb') as cert_file:
 			cert_file.write(self.certificate)
 		if self.update_metadata:
 			subprocess.check_call('/usr/share/univention-management-console/saml/update_metadata')
@@ -138,7 +138,7 @@ class SamlTest(object):
 		# check for an expected status_code as a different would indicate an error
 		# in the current login step.
 		if self.page.status_code != status_code:
-			raise SamlError("Problem while %s\nWrong status code: %s, expected: %s\nServer response was: %s" % (self.position, self.page.status_code, status_code, self.page.text))
+			raise SamlError("Problem while %s\nWrong status code: %s, expected: %s\nServer response was: %s" % (self.position, self.page.status_code, status_code, self.page.content))
 
 	def _request(self, method, url, status_code, data=None, expected_format='html'):
 		"""does POST or GET requests and raises SamlError which encodes the login step
@@ -154,18 +154,18 @@ class SamlTest(object):
 			self.page = _requests[method](url, data=data, verify='/etc/univention/ssl/ucsCA/CAcert.pem', headers=headers)
 		except requests.exceptions.SSLError:
 			# Bug: https://github.com/shazow/urllib3/issues/556
-			# raise SamlError("Problem while %s\nSSL error: %s" % (self.position, E.message))
+			# raise SamlError("Problem while %s\nSSL error: %s" % (self.position, exc))
 			raise SamlError("Problem while %s\nSSL error: %s" % (self.position, 'Some ssl error'))
-		except requests.ConnectionError as E:
-			raise SamlError("Problem while %s\nNo connection to server: %s" % (self.position, E.message))
+		except requests.ConnectionError as exc:
+			raise SamlError("Problem while %s\nNo connection to server: %s" % (self.position, exc))
 		if expected_format == 'html':
 			try:
-				self.parsed_page = ET.fromstring(bytes(self.page.text))
+				self.parsed_page = ET.fromstring(bytes(self.page.content))
 			except xml.etree.ElementTree.ParseError as exc:
 				print('WARN: could not parse XML/HTML: %s' % (exc,))
 				self.parsed_page = xml.etree.ElementTree.Element('html')
 		elif expected_format == 'json':
-			self.parsed_page = json.loads(bytes(self.page.text))
+			self.parsed_page = json.loads(bytes(self.page.content))
 		self._check_status_code(status_code)
 
 	def _login_at_idp_with_credentials(self):
@@ -216,12 +216,12 @@ class SamlTest(object):
 		if auth_state is None:
 			try:
 				print('WARNING: invalid HTML!!!!')
-				auth_state = re.search('name="AuthState" value="([^"]+)"', bytes(self.page.text)).group(1)
+				auth_state = re.search('name="AuthState" value="([^"]+)"', bytes(self.page.content)).group(1)
 				auth_state = html.unescape(auth_state)
 			except AttributeError:
 				pass
 		if not auth_state:
-			raise SamlError("No AuthState field found.\nSAML response:\n%s" % self.page.text)
+			raise SamlError("No AuthState field found.\nSAML response:\n%s" % self.page.content)
 		print("The SAML AuthState is:\n%s" % auth_state)
 		return auth_state
 

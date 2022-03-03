@@ -5,9 +5,9 @@
 ## packages:
 ##   - univention-group-membership-cache
 
+import random
 import subprocess
 from pathlib import Path
-import random
 from time import sleep
 
 from univention.testing.strings import random_username

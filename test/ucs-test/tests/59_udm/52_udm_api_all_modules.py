@@ -1,21 +1,20 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3
+#!/usr/share/ucs-test/runner pytest-3
 # -*- coding: utf-8 -*-
 ## desc: Test UDM API for users/user module
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 ## tags: [udm_api]
-## packages: [python-univention-directory-manager]
+## packages: [python3-univention-directory-manager]
 ## bugs: [47316]
 
-from __future__ import print_function
-
 from collections import defaultdict
-from six import string_types, reraise
-from unittest import main, TestCase
-import univention.debug as ud
-from univention.udm import UDM, WrongObjectType, NoSuperordinate
-import univention.admin.modules
 
+from six import reraise, string_types
+from unittest import TestCase, main
+
+import univention.admin.modules
+import univention.debug as ud
+from univention.udm import UDM, NoSuperordinate, WrongObjectType
 
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
 ud.set_level(ud.ADMIN, ud.ALL)
@@ -33,7 +32,7 @@ class TestUdmGenericVariousModules(TestCase):
 		univention.admin.modules.update()
 		cls.avail_modules = sorted([mod for mod in univention.admin.modules.modules.keys()])
 
-	def get_new_obj(self, mod):  # type: (GenericModuleTV) -> GenericObjectTV
+	def get_new_obj(self, mod):
 		try:
 			return mod.new()
 		except NoSuperordinate as exc:

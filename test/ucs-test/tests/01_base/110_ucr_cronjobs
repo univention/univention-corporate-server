@@ -3,19 +3,18 @@
 ## bugs: [16541]
 ## tags: [basic]
 ## packages:
-##   - python-univention-config-registry
+##   - python3-univention-config-registry
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 
-from __future__ import print_function
 import datetime
-import time
 import subprocess
+import time
 
-from univention.config_registry import handler_set, handler_unset
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
+from univention.config_registry import handler_set, handler_unset
 
 
 def ucr_cron(name, time_s, command, description=None, mailto=None, user=None):

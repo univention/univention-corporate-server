@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: check if client with PEAP is working
 ## tags: [apptest, radius]
 ## packages:
@@ -6,13 +6,11 @@
 ## join: true
 ## exposure: dangerous
 
-from __future__ import print_function
 import subprocess
 from tempfile import NamedTemporaryFile
 
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-
 
 UNIVENTION_CACERT = "/etc/univention/ssl/ucsCA/CAcert.pem"
 DEFAULT_CACERT = "/etc/default/cacert"
@@ -40,7 +38,7 @@ network={{
 def eap_test(username, password, ca_cert):
 	with NamedTemporaryFile() as tmp_file:
 		wpa_config = get_wpa_config(username, password, ca_cert)
-		tmp_file.write(wpa_config)
+		tmp_file.write(wpa_config.encode("UTF-8"))
 		tmp_file.seek(0)
 		print("wpa_config:")
 		print(tmp_file.read())

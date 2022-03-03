@@ -5,12 +5,10 @@
 ## tags: [basic, apptest]
 ## exposure: safe
 
-from __future__ import print_function
-from subprocess import Popen, PIPE
+from subprocess import PIPE, Popen
 
-from univention.config_registry import ConfigRegistry
 import univention.testing.utils as utils
-
+from univention.config_registry import ConfigRegistry
 
 UCR = ConfigRegistry()
 UCR.load()

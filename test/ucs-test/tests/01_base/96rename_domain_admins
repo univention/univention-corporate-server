@@ -12,20 +12,20 @@
 ## exposure: dangerous
 
 
-import re
-import os
 import glob
-import time
+import os
+import re
 import subprocess
+import time
 
 from ldap.dn import escape_dn_chars
 from ldap.filter import filter_format
 
 import univention.config_registry
+import univention.testing.strings as uts
+import univention.testing.utils as utils
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.ucs_samba import wait_for_drs_replication
-import univention.testing.utils as utils
-import univention.testing.strings as uts
 from univention.testing.utils import package_installed
 
 
@@ -37,7 +37,7 @@ def search_templates(old_group_name, new_group_name, server_role):
 	for template in templates:
 		with open(template, 'r') as content_file:
 			# find all lines that start with File or Multifile and strip it to get the paths of the template files
-			file_content += ['/' + file_pattern.sub('', l).strip() for l in content_file.readlines() if file_pattern.match(l)]
+			file_content += ['/' + file_pattern.sub('', line).strip() for line in content_file.readlines() if file_pattern.match(line)]
 
 	# A list of templates which are referencing the defaultdomainadmins group. The new name must be found in them
 	should_contain_admin = [
@@ -67,7 +67,7 @@ def search_templates(old_group_name, new_group_name, server_role):
 
 		# Contain comments or something about the group
 		if old_group_name in content:
-			lines_containing = [l for l in content.splitlines() if old_group_name in l]
+			lines_containing = [line for line in content.splitlines() if old_group_name in line]
 			# Workaround for Bug #51975: Please remove if fixed
 			if filename == '/etc/ldap/slapd.conf' and package_installed('univention-radius') and len(lines_containing) == 1:
 				print('/etc/ldap/slapd.conf contains the old_group_name due to http://forge.univention.org/bugzilla/show_bug.cgi?id=51975')

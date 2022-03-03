@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Test setting network during modification for all computer roles
 ## tags: [udm-computers, SKIP]
 ## roles: [domaincontroller_master]
@@ -12,10 +12,10 @@ import ipaddress
 
 import pytest
 
-import univention.testing.udm as udm_test
-import univention.testing.strings as uts
-import univention.testing.utils as utils
 import univention.config_registry as configRegistry
+import univention.testing.strings as uts
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 
 
 @pytest.mark.parametrize('ip_subnet,ip_network,ip_netmask,ip_range', [

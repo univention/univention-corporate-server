@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test logon time with many groups in LDAP
 ## tags: [producttest]
 ## timeout: 0
@@ -7,14 +7,15 @@
 ##  - univention-mail-server
 ##  - univention-directory-manager-tools
 
-from __future__ import print_function
-import random
 import imaplib
+import random
 import time
+
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 from univention.testing.ucs_samba import wait_for_drs_replication
+
 from essential.mail import random_email
 
 timeout = 10

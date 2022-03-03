@@ -590,7 +590,7 @@ mkpkg () { # Create Package files in ${1} for packages in ${2}. Optional argumen
 		cd "${OLDPWD}" || return $?
 	done
 
-	python "${SELFDIR}/create_releases_json.py" "$REPODIR"
+	python3 "${SELFDIR}/create_releases_json.py" "$REPODIR"
 }
 
 compress () { # compress file: <Packages|Sources>
@@ -753,7 +753,7 @@ checkapt () { # Check for apt.source statement ${1}: [--mirror] [[--]source] [/p
 			binary-i386|binary-amd64) shift ; continue ;;
 			main) shift ; continue ;;
 			/*) # shellcheck disable=SC2046
-				set -- "$@" $(python "${SELFDIR}/split_repo_path.py" "${REPODIR}" "${1}") && shift  # IFS
+				set -- "$@" $(python3 "${SELFDIR}/split_repo_path.py" "${REPODIR}" "${1}") && shift  # IFS
 				continue
 				;;
 			*) echo "Unknown ${1}" >&2 ; cat $files; return 2 ;;

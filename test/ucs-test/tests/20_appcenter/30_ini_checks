@@ -4,10 +4,9 @@
 ## roles: [domaincontroller_master]
 ## exposure: safe
 
-from __future__ import print_function
-import sys
 import subprocess
-from configparser import NoSectionError, NoOptionError
+import sys
+from configparser import NoOptionError, NoSectionError
 
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.ini_parser import read_ini_file

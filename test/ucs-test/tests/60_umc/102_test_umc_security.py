@@ -1,16 +1,16 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Test security related HTTP headers are set
 ## exposure: dangerous
 ## packages: [univention-management-console-server]
 
 import copy
 from collections import defaultdict
-from six.moves.http_client import HTTPConnection
 
 import pytest
+from six.moves.http_client import HTTPConnection
 
 from univention.lib.umc import Unauthorized
-from univention.testing import utils, network
+from univention.testing import network, utils
 
 
 class TestSecurityHeaders(object):
@@ -67,14 +67,14 @@ class TestSecurityHeaders(object):
 			c.cookies = copy.deepcopy(client.cookies)
 			with pytest.raises(Unauthorized) as exc:
 				c.umc_get('modules')
-			assert 'The current session is not valid with your IP address for security reasons.' in exc.value.message
+			assert 'The current session is not valid with your IP address for security reasons.' in str(exc.value)
 
 			# check if the session is still bound after the internal connection to the UMC-Server was lost
 			restart_umc_server()
 			c.cookies = copy.deepcopy(client.cookies)
 			with pytest.raises(Unauthorized) as exc:
 				c.umc_get('modules')
-			assert 'The current session is not valid with your IP address for security reasons.' in exc.value.message
+			assert 'The current session is not valid with your IP address for security reasons.' in str(exc.value)
 
 		# make sure any UMC module is present (the session is not dropped to anonymous)
 		assert any(x['id'] == 'top' for x in client.umc_get('modules').data['modules'])

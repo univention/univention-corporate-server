@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 # coding: utf-8
 ## desc: "Test the UCS<->AD sync in {read,write,sync} mode for `con_other_attribute`s."
 ## exposure: dangerous
@@ -9,12 +9,12 @@
 ## bugs:
 ##  - 36480
 
-from __future__ import print_function
-
 import pytest
 
 import univention.testing.connector_common as tcommon
-from univention.testing.connector_common import (NormalUser, create_udm_user, delete_udm_user, create_con_user, delete_con_user)
+from univention.testing.connector_common import (
+	NormalUser, create_con_user, create_udm_user, delete_con_user, delete_udm_user,
+)
 
 import adconnector
 from adconnector import connector_setup

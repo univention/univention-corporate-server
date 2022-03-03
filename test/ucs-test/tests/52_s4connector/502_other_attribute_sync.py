@@ -14,18 +14,16 @@
 # We skip this since 4.2-2, as the corresponding implementation is not yet committed.
 # See https://forge.univention.org/bugzilla/show_bug.cgi?id=45252.
 
-from __future__ import print_function
-
 import pytest
 
-from univention.testing.udm import UCSTestUDM
 import univention.testing.connector_common as tcommon
 from univention.testing.connector_common import (
-	NormalUser, create_udm_user,
-	delete_udm_user, create_con_user, delete_con_user)
+	NormalUser, create_con_user, create_udm_user, delete_con_user, delete_udm_user,
+)
+from univention.testing.udm import UCSTestUDM
 
 import s4connector
-from s4connector import (connector_running_on_this_host, connector_setup)
+from s4connector import connector_running_on_this_host, connector_setup
 
 MAPPINGS = (
 	# ucs_attribute, con_attribute, con_other_attribute

@@ -5,7 +5,7 @@
 ## packages:
 ##   - docker.io
 
-from dockertest import Appcenter, App
+from dockertest import App, Appcenter
 
 if __name__ == '__main__':
 	with Appcenter() as appcenter:

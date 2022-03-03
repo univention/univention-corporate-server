@@ -3,12 +3,14 @@
 ## bugs: [43395]
 ## roles:
 ##  - domaincontroller_master
-## packages: [python-univention-directory-manager]
+## packages: [python3-univention-directory-manager]
 ## exposure: safe
 
-from univention.admin import property
-import unittest
 from argparse import Namespace as N
+
+import unittest
+
+from univention.admin import property
 
 
 class FakeObject(dict):

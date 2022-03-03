@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: check if a radius login via host/FQDN@REALM is working
 ## tags: [apptest, radius]
 ## packages:
@@ -6,10 +6,10 @@
 ## join: true
 ## exposure: dangerous
 
-from __future__ import print_function
 import subprocess
-import univention.testing.udm as udm_test
+
 import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
 import univention.uldap as uldap
 
 

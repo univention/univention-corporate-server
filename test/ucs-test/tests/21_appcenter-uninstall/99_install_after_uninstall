@@ -11,13 +11,13 @@
 
 # skip this, we now install the app via the cfg file
 
-from __future__ import print_function
-import univention.testing.utils as utils
 import univention.config_registry
+import univention.testing.utils as utils
 import univention.uldap as uldap
 from univention.appcenter.actions import get_action
-from appcenteruninstalltest import get_requested_apps
 from univention.appcenter.log import log_to_stream
+
+from appcenteruninstalltest import get_requested_apps
 
 log_to_stream()
 ucr = univention.config_registry.ConfigRegistry()

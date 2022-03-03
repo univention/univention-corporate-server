@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check if perfect forward secrecy (PFS) is enabled.
 ## tags: [apptest]
 ## exposure: safe
@@ -6,11 +6,9 @@
 ## bugs: [35924]
 
 
-from __future__ import print_function
-from subprocess import Popen, PIPE
+from subprocess import PIPE, Popen
 
 import univention.testing.utils as utils
-
 
 # Possible Ciphers for UCS 4.0:
 # (info on PFS http://www.postfix.org/FORWARD_SECRECY_README.html)
@@ -48,9 +46,8 @@ def check_pfs_cipher():
 	print('-----------CUTCUTCUT----------------')
 	print(openssl_out)
 	print('-----------CUTCUTCUT----------------')
-
 	for possible_cipher in PFS_CIPHERS:
-		if possible_cipher in openssl_out:
+		if possible_cipher in openssl_out.decode('UTF-8'):
 			print("\nCipher '%s' was found.\n" % possible_cipher)
 			return
 

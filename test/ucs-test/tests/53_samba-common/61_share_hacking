@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Try to hack through manipulated share paths
 ## tags: [SKIP]
 ## roles:
@@ -11,18 +11,16 @@
 ##   - univention-samba | univention-samba4
 ##   - univention-config
 
-from __future__ import print_function
-
+import contextlib
 import os
 import shutil
 import subprocess
-import contextlib
 
-import pytest
 import ldap.dn
+import pytest
 
 import univention.testing.udm as udm_test
-from univention.testing import utils, strings, ucr as _ucr
+from univention.testing import strings, ucr as _ucr, utils
 
 
 @contextlib.contextmanager
@@ -61,7 +59,7 @@ def preconditions(path):
 def test_filename_validation(modify, path, file_):
 	def check(safe=False):
 		# we have to check two cases here: samba share and NFS share
-		subprocess.check_output(['smbclient', '\\\\%s.%s\%s' % (ucr['hostname'], ucr['domainname'], name), '-U' 'Administrator%univention', '-c', 'get %s /dev/stdout' % (file_,)])
+		subprocess.check_output(['smbclient', '\\\\%s.%s\\%s' % (ucr['hostname'], ucr['domainname'], name), '-U' 'Administrator%univention', '-c', 'get %s /dev/stdout' % (file_,)])
 		assert name not in open('/etc/samba/shares.conf').read()
 
 	lo = utils.get_ldap_connection()

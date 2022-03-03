@@ -37,7 +37,7 @@ AuthName "${compname}"
 Require user ${username}
 EOF
 
-eval "$(python proxy.py -f -p 0 -a -u "${proxyuser}" -w "${proxypass}" 3>&-)"
+eval "$(python3 proxy.py -f -p 0 -a -u "${proxyuser}" -w "${proxypass}" 3>&-)"
 comp="repository/online/component/${compname}"
 config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/username=${username}" "${comp}/password=${password}" proxy/http="http://${proxyuser}:${proxypass}@localhost:${proxy_port:?}"
 

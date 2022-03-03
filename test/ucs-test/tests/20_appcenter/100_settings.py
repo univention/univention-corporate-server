@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: App Settings
 ## tags: [basic, coverage, skip_admember]
 ## packages:
@@ -9,21 +9,19 @@ import os
 import os.path
 import re
 import stat
-from shutil import rmtree
 import subprocess
 from contextlib import contextmanager
+from shutil import rmtree
 
 import pytest
 
 import univention.config_registry
-
-from univention.appcenter.actions import get_action, Abort
+from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.app_cache import Apps
+from univention.appcenter.docker import Docker
+from univention.appcenter.log import log_to_logfile, log_to_stream
 from univention.appcenter.settings import SettingValueError
 from univention.appcenter.ucr import ucr_get, ucr_save
-from univention.appcenter.log import log_to_logfile, log_to_stream
-from univention.appcenter.docker import Docker
-
 
 log_to_logfile()
 log_to_stream()

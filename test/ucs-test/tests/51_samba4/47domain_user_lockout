@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test if a domain user account is locked out and freed.
 ## exposure: dangerous
 ## packages: [univention-samba4, univention-s4-connector]
@@ -8,14 +8,13 @@
 ## - domaincontroller_backup
 ## - domaincontroller_slave
 
-from __future__ import print_function
+from subprocess import PIPE, Popen
 from sys import exit
 from time import sleep
-from subprocess import Popen, PIPE
 
 import univention.testing.utils as utils
-from univention.testing.codes import TestCodes
 from univention.config_registry import ConfigRegistry
+from univention.testing.codes import TestCodes
 from univention.testing.strings import random_username
 
 LOCKOUT_DURATION = 1  # duration of lockout in minutes
@@ -35,8 +34,8 @@ def remove_samba_warnings(input_str):
 	Removes the Samba Warning/Note from the given input_str.
 	"""
 	# ignoring following messages (Bug #37362):
-	input_str = input_str.replace('WARNING: No path in service IPC$ - making it unavailable!', '')
-	return input_str.replace('NOTE: Service IPC$ is flagged unavailable.', '').strip()
+	input_str = input_str.replace(b'WARNING: No path in service IPC$ - making it unavailable!', b'')
+	return input_str.replace(b'NOTE: Service IPC$ is flagged unavailable.', b'').strip()
 
 
 def create_and_run_process(cmd, stdout=PIPE):
@@ -122,7 +121,7 @@ def check_no_errors_present_in_output(stdout, stderr):
 	Fails the test if there are signs of errors found in the given
 	'stdout' or 'stderr'.
 	"""
-	complete_output = (stdout + stderr)
+	complete_output = (stdout + stderr).decode('UTF-8')
 
 	if 'NT_STATUS_ACCOUNT_LOCKED_OUT' in complete_output:
 		utils.fail("\nThe 'NT_STATUS_ACCOUNT_LOCKED_OUT' error was found in the output.\nSTDOUT: '%s'. STDERR: '%s'." % (stdout, stderr))
@@ -145,7 +144,7 @@ def check_error_present_in_output(stdout, stderr):
 	Fails the test if there is no 'NT_STATUS_ACCOUNT_LOCKED_OUT' error in
 	the given stdout or stderr.
 	"""
-	if 'NT_STATUS_ACCOUNT_LOCKED_OUT' not in (stdout + stderr):
+	if 'NT_STATUS_ACCOUNT_LOCKED_OUT' not in (stdout + stderr).decode('UTF-8'):
 		utils.fail("The 'NT_STATUS_ACCOUNT_LOCKED_OUT' error could not be found in the STDOUT: '%s' or STDERR: '%s'. The account lockout may not work." % (stdout, stderr))
 
 

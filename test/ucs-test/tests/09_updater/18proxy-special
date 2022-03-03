@@ -33,7 +33,7 @@ quote () { # url-escape text
 run_test () {
 	local username="$1"
 	local password="$2"
-	eval "$(python proxy.py -f -p 0 -a -u "${username}" -w "${password}" 3>&-)"
+	eval "$(python3 proxy.py -f -p 0 -a -u "${username}" -w "${password}" 3>&-)"
 	local http_proxy
 	http_proxy="http://$(quote "${username}"):$(quote "${password}")@localhost:${proxy_port:?}"
 	ucr set proxy/http="${http_proxy}"

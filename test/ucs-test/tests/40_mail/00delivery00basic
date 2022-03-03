@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Basic email delivery
 ## tags: [apptest]
 ## exposure: dangerous
@@ -15,13 +15,14 @@
 # this script.
 #################
 
-from __future__ import print_function
-from essential.mail import file_search_mail, send_mail
 import time
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+
+from essential.mail import file_search_mail, send_mail
 
 TIMEOUT = 120
 
@@ -68,6 +69,7 @@ class Tester(object):
 					'mailPrimaryAddress': mail,
 				}
 			)
+
 			users.append(username)
 			mailsToTest.extend([mail, mail.upper(), mail.lower()])
 		return mailsToTest, users

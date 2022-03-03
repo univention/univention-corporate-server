@@ -1,17 +1,17 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check if ip_change also changes the ucs-sso entry
 ## roles-not: [basesystem]
 ## exposure: dangerous
 
-from __future__ import print_function
 import sys
+
 import atexit
 
-import univention.testing.utils as utils
-import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-from univention.testing.umc import Client
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 from univention.config_registry import ConfigRegistry
+from univention.testing.umc import Client
 
 if __name__ == '__main__':
 	ucr = ConfigRegistry()
@@ -34,7 +34,13 @@ if __name__ == '__main__':
 		if role == 'domaincontroller_master':
 			role = 'domaincontroller_backup'
 		computerName = uts.random_string()
-		computer = udm.create_object('computers/%s' % role, name=computerName, password='univention', network='cn=default,cn=networks,%s' % ucr.get('ldap/base'), univentionService='univention-saml', check_for_drs_replication=False)
+		computer = udm.create_object(
+			'computers/%s' % role, name=computerName,
+			password='univention',
+			network='cn=default,cn=networks,%s' % ucr.get('ldap/base'),
+			univentionService='univention-saml',
+			check_for_drs_replication=False
+		)
 
 		lo = utils.get_ldap_connection()
 		computer_object = lo.get(computer)
@@ -54,7 +60,7 @@ if __name__ == '__main__':
 
 			iface = ucr.get('interfaces/primary', 'eth0')
 			client = Client(ucr.get('ldap/master'), '%s$' % computerName, 'univention')
-			client.umc_command('ip/change', {'ip': new_ip, 'oldip': ip[0], 'netmask': ucr.get('interfaces/%s/netmask' % iface), 'role': role})
+			client.umc_command('ip/change', {'ip': new_ip, 'oldip': ip[0].decode('UTF-8'), 'netmask': ucr.get('interfaces/%s/netmask' % iface), 'role': role})
 
 			utils.wait_for_replication()
 			utils.verify_ldap_object(computer, {'aRecord': [new_ip]}, strict=True)

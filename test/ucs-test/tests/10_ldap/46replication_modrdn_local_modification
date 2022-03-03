@@ -14,19 +14,17 @@
 ##  - 33495
 ## exposure: dangerous
 
-from __future__ import print_function
-
 import os
 import re
 import sys
 
 import ldap
 
+import univention.testing.udm as udm_test
+import univention.uldap
+from univention.config_registry import ConfigRegistry
 from univention.testing.strings import random_name
 from univention.testing.utils import wait_for_replication
-import univention.testing.udm as udm_test
-from univention.config_registry import ConfigRegistry
-import univention.uldap
 
 success = True
 

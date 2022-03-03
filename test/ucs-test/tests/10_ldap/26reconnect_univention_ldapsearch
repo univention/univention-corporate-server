@@ -2,24 +2,23 @@
 ## desc: Test the reconnect mechanism of univention-ldapsearch
 ## tags: [apptest,reconnect]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave]
-## packages: [python-psutil]
+## packages: [python3-psutil]
 ## bugs: [34293, 37299]
 ## exposure: dangerous
 ## versions:
 ##  4.0-0: skip
 ##  4.0-1: fixed
 
-from __future__ import print_function
-import psutil
-from time import sleep
-from six.moves.queue import Empty, Full
-from subprocess import Popen, PIPE
 from multiprocessing import Process
+from subprocess import PIPE, Popen
+from time import sleep
 
-from univention.testing.utils import fail
-from univention.testing.codes import TestCodes
+import psutil
+from six.moves.queue import Empty, Full
+
 from univention.config_registry import ConfigRegistry, handler_set
-
+from univention.testing.codes import TestCodes
+from univention.testing.utils import fail
 
 UCR = ConfigRegistry()
 UCR.load()

@@ -1,17 +1,17 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3
+#!/usr/share/ucs-test/runner pytest-3
 # -*- coding: utf-8 -*-
 ## desc: Test UDM APIs LDAP connection initialization feature
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 ## tags: [udm_api]
-## packages: [python-univention-directory-manager]
+## packages: [python3-univention-directory-manager]
 ## bugs: [47316]
 
-from unittest import main, TestCase
+from unittest import TestCase, main
+
 import univention.debug as ud
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.udm import UDM, NoObject
-
 
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
 ud.set_level(ud.ADMIN, ud.ALL)

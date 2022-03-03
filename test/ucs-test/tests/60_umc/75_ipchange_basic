@@ -1,14 +1,13 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check basic ip_change functionality
 ## roles-not: [basesystem]
 ## exposure: dangerous
 
-from __future__ import print_function
-import univention.testing.utils as utils
-import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-from univention.testing.umc import Client
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 from univention.config_registry import ConfigRegistry
+from univention.testing.umc import Client
 
 if __name__ == '__main__':
 	ucr = ConfigRegistry()
@@ -31,7 +30,7 @@ if __name__ == '__main__':
 
 		iface = ucr.get('interfaces/primary', 'eth0')
 		client = Client(ucr.get('ldap/master'), '%s$' % computerName, 'univention')
-		client.umc_command('ip/change', {'ip': new_ip, 'oldip': ip[0], 'netmask': ucr.get('interfaces/%s/netmask' % iface), 'role': role})
+		client.umc_command('ip/change', {'ip': new_ip, 'oldip': ip[0].decode('UTF-8'), 'netmask': ucr.get('interfaces/%s/netmask' % iface), 'role': role})
 
 		utils.wait_for_replication()
 		utils.verify_ldap_object(computer, {'aRecord': [new_ip]}, strict=True)

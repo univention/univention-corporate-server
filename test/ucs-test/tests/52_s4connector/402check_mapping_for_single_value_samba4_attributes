@@ -10,11 +10,10 @@
 ##   - 37259
 ##   - 38813
 
-from __future__ import print_function
-import univention.testing.utils as utils
-
 import ldap.filter
+
 import univention.s4connector.s4
+import univention.testing.utils as utils
 
 
 class S4ConnectorWrapper(univention.s4connector.s4.s4):

@@ -5,23 +5,25 @@
 ## packages:
 ##   - docker.io
 
-from dockertest import Appcenter, App, get_app_name
-from univention.config_registry import ConfigRegistry
 import subprocess
+
+from univention.config_registry import ConfigRegistry
+
+from dockertest import App, Appcenter, get_app_name
 
 DOCKER_COMPOSE = '''
 version: '2.0'
 
 services:
-  test1:
-    image: {image}
-    command: /sbin/init
-    restart: always
-  test2:
-    image: {image}
-    command: /sbin/init
-    restart: always
-'''
+	test1:
+		image: {image}
+		command: /sbin/init
+		restart: always
+	test2:
+		image: {image}
+		command: /sbin/init
+		restart: always
+'''.replace('\t', '  ')
 
 ENV = '''
 REDIS_PORT_6379_TCP_ADDR=test2

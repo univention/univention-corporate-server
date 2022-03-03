@@ -13,17 +13,19 @@
 ##  - apptest
 ##  - skip_admember
 
-from __future__ import print_function
 import os
-import sys
-import atexit
-import univention.config_registry
 import random
 import subprocess
+import sys
 import time
-import univention.testing.udm as udm_test
+
+import atexit
+
+import univention.config_registry
 import univention.testing.strings as uts
+import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+
 try:
 	from univention.testing.ucs_samba import wait_for_drs_replication
 except ImportError:

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test if GPOs created on a native Windows Server work with S4
 ## exposure: dangerous
 ## packages: [univention-samba4, ucs-windows-tools]
@@ -8,29 +8,29 @@
 ## - domaincontroller_master
 ## - domaincontroller_slave
 
-from __future__ import print_function
-from os import path
-from sys import exit
-from re import search
-from subprocess import Popen, PIPE
 import xml.etree.ElementTree as ET
+from os import path
+from re import search
+from subprocess import PIPE, Popen
+from sys import exit
 
-import univention.winexe
 import univention.testing.utils as utils
+import univention.winexe
+from univention.config_registry import ConfigRegistry
 from univention.testing.codes import TestCodes
 from univention.testing.strings import random_username
 from univention.testing.ucs_samba import force_drs_replication
-from univention.config_registry import ConfigRegistry
 from univention.testing.udm import UCSTestUDM
 
 
-def run_cmd(cmd, stdout=PIPE, stdin=None, std_in=None):
+def run_cmd(cmd, stdout=PIPE, stdin=None, std_in=None, encoding='UTF-8'):
 	"""
 	Creates a process as a Popen instance with a given 'cmd'
 	and 'communicates' with it.
 	"""
 	proc = Popen(cmd, stdout=stdout, stderr=PIPE, stdin=stdin)
-	return proc.communicate(std_in)
+	stdout, stderr = proc.communicate(std_in)
+	return stdout.decode(encoding), stderr.decode(encoding)
 
 
 def remove_samba_warnings(input_str):

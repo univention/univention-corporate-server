@@ -1,15 +1,15 @@
-#!/usr/share/ucs-test/runner /usr/bin/python
+#!/usr/share/ucs-test/runner /usr/bin/python3
 # -*- coding: utf-8 -*-
 ## exposure: dangerous
 ## desc: check if directory reports can be generated
 ## packages: [univention-directory-reports, univention-management-console-module-udm]
 
 import os
-
 from subprocess import check_call
-from univention.testing.umc import Client
+from urllib.parse import splitquery, splitvalue
+
 from univention.config_registry import ConfigRegistry
-from urllib import splitquery, splitvalue
+from univention.testing.umc import Client
 
 
 def create_umc_report(client, report_type, obj, module):
@@ -21,7 +21,7 @@ def create_umc_report(client, report_type, obj, module):
 	assert r.status == 200
 	assert r.data
 	if report_type == 'PDF Document':
-		assert 'ReportLab Generated PDF document' in r.data
+		assert b'ReportLab Generated PDF document' in r.data
 		assert report.endswith('.pdf')
 	if report_type == 'CSV Report':
 		assert report.endswith('.csv')

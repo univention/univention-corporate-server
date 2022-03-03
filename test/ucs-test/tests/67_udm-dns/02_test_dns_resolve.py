@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Check DNS resolving of all DNS record and zone types
 ## bugs: [39269]
 ## roles:
@@ -10,16 +10,15 @@
 ##  - skip_admember
 ## exposure: careful
 
-from ipaddress import ip_address
-import pytest
 import re
 import subprocess
 import time
+from ipaddress import ip_address
 
 import dns.resolver as resolver
+import pytest
 from dns.exception import Timeout
-from dns.resolver import NXDOMAIN
-from dns.resolver import NoNameservers
+from dns.resolver import NXDOMAIN, NoNameservers
 
 import univention.testing.strings as uts
 import univention.testing.utils as utils

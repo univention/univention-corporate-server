@@ -13,21 +13,20 @@
 ## exposure: dangerous
 
 
-import pytest
 import email
-from six.moves.urllib_parse import urlparse, parse_qs
-from selenium.common.exceptions import NoSuchElementException
 
-from univention.config_registry import handler_set as hs
-from univention.admin.uldap import getAdminConnection
-from univention.admin.uexceptions import noObject
-
-from univention.testing.ucr import UCSTestConfigRegistry
-from test_self_service import capture_mails
-import univention.testing.strings as uts
+import pytest
 import selenium.common.exceptions as selenium_exceptions
-import univention.testing.utils as utils
+from selenium.common.exceptions import NoSuchElementException
+from six.moves.urllib_parse import parse_qs, urlparse
+from test_self_service import capture_mails
 
+import univention.testing.strings as uts
+import univention.testing.utils as utils
+from univention.admin.uexceptions import noObject
+from univention.admin.uldap import getAdminConnection
+from univention.config_registry import handler_set as hs
+from univention.testing.ucr import UCSTestConfigRegistry
 
 MAILS_TIMEOUT = 5
 
@@ -180,7 +179,13 @@ def test_user_creation(selenium, mails, get_registration_info, verification_proc
 		'univentionRegisteredThroughSelfService': ['TRUE'],
 		'univentionPasswordRecoveryEmailVerified': ['FALSE'],
 	})
-	selenium.driver.find_element_by_xpath('//p[text()="Hello "]/b[text()="{}"]//parent::p[text()=", we have sent you an email to "]/b[text()="{}"]//parent::p[text()=". Please follow the instructions in the email to verify your account."]'.format(info['attributes']['username'], info['attributes']['PasswordRecoveryEmail']))
+	send_text = ', we have sent you an email to '
+	verify_text = '. Please follow the instructions in the email to verify your account.'
+	selenium.driver.find_element_by_xpath(
+		'//p[text()="Hello "]/b[text()="{}"]//parent::p[text()="{}"]/b[text()="{}"]//parent::p[text()="{}"]'.format(
+			info['attributes']['username'], send_text, info['attributes']['PasswordRecoveryEmail'], verify_text
+		)
+	)
 	# tests email
 	mail = _get_mail(mails)
 	if verification_process == 'automatic':
@@ -232,12 +237,14 @@ def test_request_new_token(selenium, mails, get_registration_info):
 	_enter_attributes(selenium, {
 		'username': info['attributes']['username']
 	}, 'Request new token')
-	selenium.driver.find_element_by_xpath('//p[text()="Hello "]/b[text()="{}"]//parent::p[text()=", we have sent you an email to your registered address. Please follow the instructions in the email to verify your account."]'.format(info['attributes']['username']))
+	registered_text = ', we have sent you an email to your registered address. Please follow the instructions in the email to verify your account.'
+	selenium.driver.find_element_by_xpath('//p[text()="Hello "]/b[text()="{}"]//parent::p[text()="{}"]'.format(info['attributes']['username'], registered_text))
 	mail = _get_mail(mails)
 	selenium.driver.refresh()
 	selenium.driver.get(mail['auto_verify_link'])
 	selenium.wait_until_standby_animation_appears_and_disappears()
-	selenium.driver.find_element_by_xpath('//p[text()="Welcome "]/b[text()="{}"]//parent::p[text()=", your account has been successfully verified."]'.format(info['attributes']['username']))
+	verified_text = ', your account has been successfully verified.'
+	selenium.driver.find_element_by_xpath('//p[text()="Welcome "]/b[text()="{}"]//parent::p[text()="{}"]'.format(info['attributes']['username'], verified_text))
 	selenium.driver.find_element_by_xpath('//p[text()="Continue to the "]/a[text()="Univention Portal"]')
 
 
@@ -270,6 +277,7 @@ def test_email_change(selenium, mails, get_registration_info, change_email):
 	selenium.enter_input('password', info['attributes']['password'])
 	selenium.click_button('Next')
 	selenium.wait_for_text('Email')
+	verified_text = 'Your account has to be verified again after changing your email. We have sent you an email to '
 	if change_email:
 		new_email = 'foo@bar.com'
 		e = selenium.driver.find_element_by_id('email')
@@ -280,10 +288,10 @@ def test_email_change(selenium, mails, get_registration_info, change_email):
 		e.send_keys(new_email)
 		selenium.click_button('Save')
 		selenium.wait_for_text('Your contact data has been successfully changed.')
-		selenium.driver.find_element_by_xpath('//p[text()="Your account has to be verified again after changing your email. We have sent you an email to "]')
-		selenium.driver.find_element_by_xpath('//p[text()="Your account has to be verified again after changing your email. We have sent you an email to "]/b[text()="{}"]//parent::p[text()=". Please follow the instructions in the email to verify your account."]'.format(new_email))
+		selenium.driver.find_element_by_xpath('//p[text()="{}"]'.format(verified_text))
+		selenium.driver.find_element_by_xpath('//p[text()="{}"]/b[text()="{}"]//parent::p[text()=". Please follow the instructions in the email to verify your account."]'.format(verified_text, new_email))
 	else:
 		selenium.click_button('Save')
 		selenium.wait_for_text('Your contact data has been successfully changed.')
 		with pytest.raises(NoSuchElementException):
-			selenium.driver.find_element_by_xpath('//p[text()="Your account has to be verified again after changing your email. We have sent you an email to "]')
+			selenium.driver.find_element_by_xpath('//p[text()="{}"]'.format(verified_text))

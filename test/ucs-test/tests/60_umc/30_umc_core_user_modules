@@ -3,16 +3,12 @@
 ## bugs: [34621]
 ## exposure: dangerous
 
-from __future__ import print_function
-import sys
-
-import univention.testing.utils as utils
 import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 from univention.testing.strings import random_username
 from univention.testing.umc import Client
 
-sys.path.insert(0, '.')
-from umc import UMCBase  # noqa: E402
+from umc import UMCBase
 
 
 class TestUMCUserModules(UMCBase):

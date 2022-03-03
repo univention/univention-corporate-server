@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Test register() API of UCR modules
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
 ## exposure: dangerous
@@ -6,13 +6,11 @@
 ## packages:
 ##   - univention-config
 
-from __future__ import print_function
-
 import json
 import subprocess
 
 from univention.testing.debian_package import DebianPackage
-from univention.testing.strings import random_version, random_string
+from univention.testing.strings import random_string, random_version
 from univention.testing.ucr import UCSTestConfigRegistry
 
 UCR_MODULE = '''

@@ -5,14 +5,18 @@
 ## packages:
 ##   - univention-docker
 
-from __future__ import print_function
 import subprocess
+
 import apt
-from univention.testing.ucr import UCSTestConfigRegistry
+
 from univention.config_registry import handler_set
+from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.utils import fail
-from dockertest import docker_login, pull_docker_image, docker_image_is_present, get_docker_appbox_image
-from dockertest import remove_docker_image, restart_docker
+
+from dockertest import (
+	docker_image_is_present, docker_login, get_docker_appbox_image, pull_docker_image, remove_docker_image,
+	restart_docker,
+)
 
 
 def deb_package_is_installed(pkgname):

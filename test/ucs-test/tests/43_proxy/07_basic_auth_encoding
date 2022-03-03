@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 # -*- coding: utf8 -*-
 ## desc: http-proxy-basic-auth-encoding-check
 ## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave, memberserver]
@@ -6,15 +6,15 @@
 ## packages: [univention-squid]
 ## bugs: [34154]
 
-from __future__ import print_function
-import subprocess
 import base64
+import subprocess
 
-from essential.simplesquid import SimpleSquid
-from univention.config_registry import handler_set, handler_unset
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+from univention.config_registry import handler_set, handler_unset
+
+from essential.simplesquid import SimpleSquid
 
 
 def get_basic_auth_header(base64_encoded_creds):
@@ -22,7 +22,7 @@ def get_basic_auth_header(base64_encoded_creds):
 
 
 def get_base64_encoded_creds(username, password, encoding):
-	return base64.b64encode('{}:{}'.format(username, password).encode(encoding))
+	return base64.b64encode('{}:{}'.format(username, password).encode(encoding)).decode('ASCII')
 
 
 def check_proxy(user, encoding):

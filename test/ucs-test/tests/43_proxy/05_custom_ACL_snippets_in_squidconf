@@ -1,24 +1,26 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Custom ACL snippets in squid.conf
 ## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave, memberserver]
 ## tags: [apptest, SKIP]
 ## exposure: dangerous
 ## packages: [univention-squid]
 
-from __future__ import print_function
-from six.moves.SimpleHTTPServer import SimpleHTTPRequestHandler
-from essential.simplecurl import SimpleCurl
-from essential.simplesquid import SimpleSquid
-from multiprocessing import Process
-from univention.config_registry import handler_set, handler_unset
-from univention.testing.network import NetworkRedirector
-from six.moves import BaseHTTPServer
 import itertools
-import pycurl
 import time
+from multiprocessing import Process
+
+import pycurl
+from six.moves import BaseHTTPServer
+from six.moves.SimpleHTTPServer import SimpleHTTPRequestHandler
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
+from univention.config_registry import handler_set, handler_unset
+from univention.testing.network import NetworkRedirector
+
+from essential.simplecurl import SimpleCurl
+from essential.simplesquid import SimpleSquid
 
 
 class TestServer(object):

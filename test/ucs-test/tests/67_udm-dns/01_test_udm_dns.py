@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Check UDM integratoin of all DNS record and zone types
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -12,9 +12,9 @@
 
 import pytest
 
+import univention.testing.strings as uts
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-import univention.testing.strings as uts
 
 
 class Test_DNSForwardZone(object):
@@ -236,7 +236,13 @@ class Test_DNSServiceRecord(object):
 		"""Set location during dns/srv_record modification"""
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
-		srv_record = udm.create_object('dns/srv_record', superordinate=forward_zone, name='%s tcp %s' % (uts.random_string(), uts.random_string()), location='3 4 5 %s.%s' % (uts.random_string(), uts.random_string()), wait_for=True)
+		srv_record = udm.create_object(
+			'dns/srv_record',
+			superordinate=forward_zone,
+			name='%s tcp %s' % (uts.random_string(), uts.random_string()),
+			location='3 4 5 %s.%s' % (uts.random_string(), uts.random_string()),
+			wait_for=True
+		)
 
 		location = '0 1 2 %s.%s' % (uts.random_name(), uts.random_dns_record())
 		udm.modify_object('dns/srv_record', dn=srv_record, superordinate=forward_zone, location=location, wait_for=True)

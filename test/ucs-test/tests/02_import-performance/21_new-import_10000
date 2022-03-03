@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Import 10.000 users in 20 schools with the new import script and test the performance
 ## tags: [newimport10000,performance]
 ## rolest: [domaincontroller_master]
@@ -11,7 +11,13 @@
 ## bugs: [43936]
 
 import sys
-from performanceutils import CONNECTOR_WAIT_TIME, create_ous, remove_ous, execute_timing, wait_for_s4connector, test_umc_admin_auth, test_umc_admin_auth_udm_load, create_test_user, s4_user_auth, get_user_dn_list_new, reset_passwords, count_users, import_users_new
+
+from performanceutils import (
+	CONNECTOR_WAIT_TIME, count_users, create_ous, create_test_user, execute_timing, get_user_dn_list_new,
+	import_users_new, remove_ous, reset_passwords, s4_user_auth, test_umc_admin_auth,
+	test_umc_admin_auth_udm_load, wait_for_s4connector,
+)
+
 import univention.testing.strings as uts
 
 if __name__ == '__main__':

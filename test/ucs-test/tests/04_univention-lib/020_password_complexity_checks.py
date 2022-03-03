@@ -1,17 +1,15 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 # -*- coding: utf-8 -*-
 ## desc: Test univention.password.Check()
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 ## packages: [python3-univention]
 
-from __future__ import print_function
-
-from univention.password import Check, CheckFailed
-import univention.config_registry
 import pytest
-from univention.testing import udm as _udm
-from univention.testing import ucr as _ucr
+
+import univention.config_registry
+from univention.password import Check, CheckFailed
+from univention.testing import ucr as _ucr, udm as _udm
 
 
 class Password(object):

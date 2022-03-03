@@ -9,7 +9,6 @@ from univention.testing.ucr import UCSTestConfigRegistry
 
 from dockertest import Appcenter, get_app_name, get_app_version, tiny_app_apache
 
-
 if __name__ == '__main__':
 	with Appcenter() as appcenter:
 		# normal modproxy

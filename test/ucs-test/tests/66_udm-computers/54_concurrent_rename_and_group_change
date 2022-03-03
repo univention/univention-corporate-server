@@ -1,14 +1,13 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner python
 ## desc: rename and change groups at once
 ## tags: [udm-computers]
 ## bugs: [41694]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 
-from __future__ import print_function
-from univention.testing.udm import UCSTestUDM
 import univention.testing.strings as uts
 import univention.testing.utils as utils
+from univention.testing.udm import UCSTestUDM
 
 
 def main():

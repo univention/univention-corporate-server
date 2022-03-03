@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check whether idP is synchronized between DC Master and DC Backup.
 ## tags:
 ##  - saml
@@ -7,12 +7,13 @@
 ## join: true
 ## exposure: dangerous
 
-import time
 import socket
+import time
 
-import univention.config_registry as configRegistry
 import univention.admin.modules as udm_modules
+import univention.config_registry as configRegistry
 import univention.testing.utils as utils
+
 import samltest
 
 ucr = configRegistry.ConfigRegistry()
@@ -39,7 +40,7 @@ def main():
 			SamlSession.login_with_existing_session_at_IdP()
 			SamlSession.test_login()
 	except samltest.SamlError as exc:
-		utils.fail(exc.message)
+		utils.fail(str(exc))
 
 
 if __name__ == '__main__':

@@ -1,21 +1,19 @@
-import os
-import sys
-
-import ldap
-import subprocess
 import contextlib
-from ldap import modlist
+import os
+import subprocess
+import sys
 from time import sleep
 
-import univention.connector.ad as ad
-import univention.testing.ucr as testing_ucr
-import univention.admin.uldap
+import ldap
+from ldap import modlist
+
 import univention.admin.modules
 import univention.admin.objects
-
-import univention.testing.connector_common as tcommon
-
+import univention.admin.uldap
 import univention.config_registry
+import univention.connector.ad as ad
+import univention.testing.connector_common as tcommon
+import univention.testing.ucr as testing_ucr
 from univention.config_registry import handler_set as ucr_set
 
 configRegistry = univention.config_registry.ConfigRegistry()

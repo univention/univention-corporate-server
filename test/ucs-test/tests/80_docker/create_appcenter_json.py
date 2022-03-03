@@ -30,19 +30,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import sys
 import gzip
-import tarfile
 import os
 import os.path
 import socket
+import sys
+import tarfile
 import urllib
-from hashlib import md5, sha256
-from optparse import OptionParser
-from json import dumps
+from configparser import ConfigParser
 from difflib import unified_diff
 from glob import glob
-from configparser import ConfigParser
+from hashlib import md5, sha256
+from json import dumps
+from optparse import OptionParser
+
 import requests
 
 DOCKER_READ_USER_CRED = {

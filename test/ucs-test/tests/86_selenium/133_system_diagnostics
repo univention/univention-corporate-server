@@ -29,7 +29,7 @@ class UmcError(Exception):
 
 class UMCTester(object):
 
-	PLUGIN_DIR = os.path.dirname(plugins.__file__).replace('python2.7', 'python3')
+	PLUGIN_DIR = os.path.dirname(plugins.__file__)
 
 	def init(self):
 		self.plugin_path = self.get_plugin_path()

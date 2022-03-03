@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest-3 -s -l -vv
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 # -*- coding: utf-8 -*-
 ## desc: Create container/ou
 ## tags: [udm,apptest]
@@ -8,15 +8,13 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-from __future__ import print_function
-
 import ldap.dn
 import ldap.filter
 import pytest
 
-import univention.testing.utils as utils
-import univention.testing.udm as udm_test
 import univention.testing.strings as uts
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 from univention.testing.ucs_samba import wait_for_drs_replication
 
 

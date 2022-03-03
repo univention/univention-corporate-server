@@ -3,12 +3,11 @@
 ## exposure: dangerous
 ## packages: [univention-management-console-web-server]
 
-from __future__ import print_function
 from six.moves.http_client import HTTPConnection
 
-from univention.testing.umc import Client
-from univention.testing import utils, network
 from univention.config_registry import ConfigRegistry
+from univention.testing import network, utils
+from univention.testing.umc import Client
 
 
 class Client(Client):

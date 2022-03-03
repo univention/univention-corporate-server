@@ -1,8 +1,8 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 Split repository path `$mm/$part/($mmp|component/$comp)/$arch` into atoms `($mmp|$mm--$comp,$part,$arch)`
 """
-from __future__ import print_function
+
 from os.path import relpath
 from sys import argv, exit
 

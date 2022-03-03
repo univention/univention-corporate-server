@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Register and deregister UDM extension via joinscript
 ## tags: [udm-extensions,apptest]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
@@ -8,28 +8,19 @@
 ##   - univention-directory-manager-tools
 ##   - shell-univention-lib
 
-from __future__ import print_function
-from univention.testing.debian_package import DebianPackage
-from univention.testing.utils import fail, wait_for_replication
-from univention.testing.udm_extensions import (
-	get_package_name,
-	get_package_version,
-	get_extension_name,
-	get_extension_filename,
-	get_extension_buffer,
-	get_absolute_extension_filename,
-	get_join_script_buffer,
-	get_unjoin_script_buffer,
-	get_dn_of_extension_by_name,
-	remove_extension_by_name,
-	VALID_EXTENSION_TYPES,
-	call_join_script,
-	call_unjoin_script
-)
-import stat
-import os
 import grp
 import hashlib
+import os
+import stat
+
+from univention.testing.debian_package import DebianPackage
+from univention.testing.udm_extensions import (
+	VALID_EXTENSION_TYPES, call_join_script, call_unjoin_script, get_absolute_extension_filename,
+	get_dn_of_extension_by_name, get_extension_buffer, get_extension_filename, get_extension_name,
+	get_join_script_buffer, get_package_name, get_package_version, get_unjoin_script_buffer,
+	remove_extension_by_name,
+)
+from univention.testing.utils import fail, wait_for_replication
 
 
 def test_extension(extension_type):
@@ -68,7 +59,7 @@ def test_extension(extension_type):
 
 		# check replicated file has correct file mode
 		current_mode = oct(os.stat(target_fn).st_mode & (stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO))
-		expected_mode = '0644'
+		expected_mode = '0o644'
 		if current_mode == expected_mode:
 			print('PERMISSIONS OK: mode=%s' % current_mode)
 		else:
@@ -85,8 +76,8 @@ def test_extension(extension_type):
 			fail('ERROR: owner/group of target file %s is not ok (current=%s:%s  expected_uid=%s expected_gid=%s)' % (target_fn, current_uid, current_group, expected_uid, expected_groups))
 
 		# check if sha1(buffer) == sha1(file)
-		hash_buffer = hashlib.sha1(extension_buffer).hexdigest()
-		hash_file = hashlib.sha1(open(target_fn).read()).hexdigest()
+		hash_buffer = hashlib.sha1(extension_buffer.encode('UTF-8')).hexdigest()
+		hash_file = hashlib.sha1(open(target_fn, 'rb').read()).hexdigest()
 		print('HASH BUFFER: %r' % hash_buffer)
 		print('HASH FILE: %r' % hash_file)
 		if hash_buffer != hash_file:

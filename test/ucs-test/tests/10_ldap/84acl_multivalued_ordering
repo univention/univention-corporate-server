@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python2.7
+#!/usr/share/ucs-test/runner python3
 ## desc: Ignore odering of multi-valued attributes during modify
 ## tags:
 ##  - apptest
@@ -6,14 +6,14 @@
 ## roles-not:
 ##  - basesystem
 ## packages:
-##  - python-univention-lib
+##  - python3-univention-lib
 ## exposure: careful
 ## bugs:
 ##  - 40120
 ##  - 40602
 
-from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_name
+from univention.testing.udm import UCSTestUDM
 from univention.uldap import getMachineConnection
 
 ATTR = 'prohibitedUsername'

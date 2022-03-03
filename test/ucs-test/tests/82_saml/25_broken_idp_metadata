@@ -1,16 +1,17 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check that the umc server does not stop if the idp metadata is not available.
 ## tags: [saml]
 ## bugs: [39355]
 ## join: true
 ## exposure: dangerous
 
-from __future__ import print_function
 import os
 import subprocess
 import time
-import samltest
+
 import univention.testing.utils as utils
+
+import samltest
 
 
 def restart_umc():
@@ -42,9 +43,14 @@ def main():
 		try:
 			SamlSession.login_with_new_session_at_IdP()
 		except samltest.SamlError as exc:
-			expected_error = "The SAML authentication failed. This might be a temporary problem. Please login again.\\nFurther information can be found in the following logfiles:\\n* /var/log/univention/management-console-web-server.log\\n* /var/log/univention/management-console-server.log\\n"
-			if expected_error not in exc.message:
-				raise Exception({'expected': expected_error, 'got': exc.message})
+			expected_error = '\\n'.join([
+				"The SAML authentication failed. This might be a temporary problem. Please login again.",
+				"Further information can be found in the following logfiles:",
+				"* /var/log/univention/management-console-web-server.log",
+				"* /var/log/univention/management-console-server.log",
+			])
+			if expected_error not in str(exc):
+				raise Exception({'expected': expected_error, 'got': str(exc)})
 	SamlSession.logout_at_IdP()
 	SamlSession.login_with_new_session_at_IdP()
 	SamlSession.test_login()

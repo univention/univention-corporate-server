@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Creates Schema and ACL extensions in invalid paths
 ## bugs: [41780]
 ## roles:
@@ -7,16 +7,14 @@
 ##   - univention-config
 ## exposure: dangerous
 
-from __future__ import print_function
-
 import bz2
 import os.path
 
-import pytest
 import ldap.dn
+import pytest
 
 import univention.testing.udm as udm_test
-from univention.testing import utils, strings
+from univention.testing import strings, utils
 
 
 # TODO: add a test case for subdirectories
@@ -39,13 +37,13 @@ def test_filename_validation(modify, prefix, path, position, attr, ocs, name):
 		fullpath = os.path.join(path, filename)
 		fullpath_modify = os.path.join(path, filename_modify)
 		attrs = {
-			attr: [filename],
-			'cn': [filename],
-			'objectClass': ['top', 'univentionObjectMetadata', ocs],
-			'univentionOwnedByPackage': ['foo'],
-			'univentionOwnedByPackageVersion': ['1'],
-			attr.replace('Filename', 'Data'): [bz2.compress('\n' if modify else 'root:$6$5cAInBgG$7rdZuEujGK1QFoprcNspXsXHsymW3Txp0kDyHFsE.omI.3T0xek3KIneFPZ99Z8dwZnZ2I2O/Tk8x4mNNGSE4.:16965:0:99999:7:::')],
-			attr.replace('Filename', 'Active'): ['TRUE'],
+			attr: [filename.encode('UTF-8')],
+			'cn': [filename.encode('UTF-8')],
+			'objectClass': [b'top', b'univentionObjectMetadata', ocs.encode('UTF-8')],
+			'univentionOwnedByPackage': [b'foo'],
+			'univentionOwnedByPackageVersion': [b'1'],
+			attr.replace('Filename', 'Data'): [bz2.compress(b'\n' if modify else b'root:$6$5cAInBgG$7rdZuEujGK1QFoprcNspXsXHsymW3Txp0kDyHFsE.omI.3T0xek3KIneFPZ99Z8dwZnZ2I2O/Tk8x4mNNGSE4.:16965:0:99999:7:::')],
+			attr.replace('Filename', 'Active'): [b'TRUE'],
 		}
 		al = [(key, [v for v in val]) for key, val in attrs.items()]
 		print(('Creating', dn))
@@ -59,8 +57,8 @@ def test_filename_validation(modify, prefix, path, position, attr, ocs, name):
 
 				print(('Modifying into', dn_modify))
 				dn = lo.modify(dn, [
-					(attr, filename, filename_modify),
-					('cn', filename, filename_modify),
+					(attr, filename.encode('UTF-8'), filename_modify.encode('UTF-8')),
+					('cn', filename.encode('UTF-8'), filename_modify.encode('UTF-8')),
 				]) or dn
 				print(('Modified', dn))
 				assert dn == dn_modify

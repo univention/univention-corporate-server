@@ -7,11 +7,11 @@
 ##   - univention-self-service
 ##   - univention-self-service-passwordreset-umc
 
-from __future__ import print_function
 import subprocess
 import time
 
-from test_self_service import self_service_user, capture_mails
+from test_self_service import capture_mails, self_service_user
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 from univention.config_registry import handler_set

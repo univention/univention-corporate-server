@@ -10,15 +10,13 @@
 ##  - 52358
 ## exposure: dangerous
 
-from __future__ import print_function
-from univention.testing.utils import wait_for_replication_and_postrun, LDAPReplicationFailed, fail
-from univention.config_registry import ConfigRegistry
-import univention.testing.udm as udm_test
-import univention.testing.strings as strings
-from univention.config_registry import handler_set as ucr_set
-import time
 import subprocess
+import time
 
+import univention.testing.strings as strings
+import univention.testing.udm as udm_test
+from univention.config_registry import ConfigRegistry, handler_set as ucr_set
+from univention.testing.utils import LDAPReplicationFailed, fail, wait_for_replication_and_postrun
 
 ucr = ConfigRegistry()
 ucr.load()

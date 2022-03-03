@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 # coding: utf-8
 ## desc: "Test the UCS<->AD sync in {read,write,sync} mode with users"
 ## exposure: dangerous
@@ -9,27 +9,22 @@
 ## tags:
 ##  - skip_admember
 
-from __future__ import print_function
-
 import ldap
 import pytest
 
 import adconnector
-from adconnector import (connector_running_on_this_host, connector_setup)
+from adconnector import connector_running_on_this_host, connector_setup
 
 # This is something weird. The `adconnector.ADConnection()` MUST be
 # instantiated, before `UCSTestUDM` is imported.
 AD = adconnector.ADConnection()
 
-from univention.testing.udm import UCSTestUDM  # noqa: E402
-
-from univention.testing.connector_common import (
-	NormalUser, Utf8User,
-	SpecialUser, create_udm_user, delete_udm_user, create_con_user,
-	delete_con_user)  # noqa: E402
-
 import univention.testing.connector_common as tcommon  # noqa: E402
-
+from univention.testing.connector_common import delete_con_user  # noqa: E402
+from univention.testing.connector_common import (  # noqa: E402
+	NormalUser, SpecialUser, Utf8User, create_con_user, create_udm_user, delete_udm_user,
+)
+from univention.testing.udm import UCSTestUDM  # noqa: E402
 
 TEST_USERS = [NormalUser, Utf8User, SpecialUser]
 

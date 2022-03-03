@@ -50,7 +50,7 @@ mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"
 mkdeb "${pkgname}c" 2 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 
-python2.7 create_releases_json.py "${REPODIR}" "${_version_version}-0" "${major}.${minor}-0"
+python3 create_releases_json.py "${REPODIR}" "${_version_version}-0" "${major}.${minor}-0"
 
 for val in "${DIRS[@]}"; do
 	echo "$val"
@@ -68,7 +68,7 @@ EOF
 comp="repository/online/component/${compname}"
 config_repo version/patchlevel=0 version/erratalevel=0
 
-eval "$(python proxy.py -f -p 0 -a -u "${username}" -w "${password}" 3>&-)"
+eval "$(python3 proxy.py -f -p 0 -a -u "${username}" -w "${password}" 3>&-)"
 invoke-rc.d univention-firewall stop
 
 run_tests () { # execute all updater programs

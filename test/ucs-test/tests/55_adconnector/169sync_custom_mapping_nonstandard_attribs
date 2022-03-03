@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python3
-# #!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
+# #!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Test to check custom mappings for the AD-Connector
 ## bugs: [49981]
 ## roles:
@@ -10,16 +10,17 @@
 ## tags:
 ##  - skip_admember
 
-from __future__ import print_function
-from univention.testing.connector_common import NormalUser, create_udm_user
-from univention.testing.strings import random_string
-from adconnector import ADConnection, restart_adconnector, wait_for_sync
-
 import os
 import sys
+
 import unittest
+
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+from univention.testing.connector_common import NormalUser, create_udm_user
+from univention.testing.strings import random_string
+
+from adconnector import ADConnection, restart_adconnector, wait_for_sync
 
 sys.path.append("$TESTLIBPATH")
 

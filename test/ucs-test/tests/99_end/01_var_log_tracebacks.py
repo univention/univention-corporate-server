@@ -1,9 +1,7 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest-3 -s --tb=native
+#!/usr/share/ucs-test/runner pytest-3 -s --tb=native
 ## desc: "Find traceback in /var/log/univention/ logfiles"
 ## exposure: safe
 ## tags: [apptest]
-
-from __future__ import print_function
 
 import argparse
 import glob
@@ -12,11 +10,12 @@ import pipes
 import subprocess
 import tempfile
 
-import grep_traceback
 import psutil
 import pytest
 
 import univention.testing.utils
+
+import grep_traceback
 
 
 @pytest.mark.exposure('safe')

@@ -5,13 +5,13 @@
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:
-##   - python-univention-directory-manager
-##   - python-univention
+##   - python3-univention-directory-manager
+##   - python3-univention
 
-from __future__ import print_function
-import time
-import threading
 import subprocess
+import threading
+import time
+
 from ldap import LDAPError
 
 from univention.uldap import getMachineConnection

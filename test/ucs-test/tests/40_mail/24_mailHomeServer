@@ -1,22 +1,24 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Mail home server
 ## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
-from __future__ import print_function
-from essential.mail import send_mail, check_delivery
-import univention.admin.uldap
-from univention.admin.uexceptions import authFail
-from univention.testing.mail import MailSink
-from univention.testing.network import NetworkRedirector
-import dns.resolver
 import tempfile
 import time
+
+import dns.resolver
+
+import univention.admin.uldap
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+from univention.admin.uexceptions import authFail
+from univention.testing.mail import MailSink
+from univention.testing.network import NetworkRedirector
+
+from essential.mail import check_delivery, send_mail
 
 TIMEOUT = 60  # sec
 

@@ -6,16 +6,15 @@
 ##  - domaincontroller_backup
 ## exposure: dangerous
 
-from __future__ import print_function
+import sys
+
 import pytest
 
 import univention.testing.utils as utils
 from univention.lib.umc import BadRequest
 from univention.testing.strings import random_username
 
-import sys
-sys.path.insert(0, '.')
-from umc import UDMModule  # noqa: E402
+from umc import UDMModule
 
 
 class TestUMCNetworkFunctionality(UDMModule):

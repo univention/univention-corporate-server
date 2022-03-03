@@ -1,7 +1,8 @@
 import argparse
 import logging
-import univention.testing.udm as udm_test
+
 import univention.testing.selenium as selenium_test
+import univention.testing.udm as udm_test
 
 
 class BaseScreenShooter(object):

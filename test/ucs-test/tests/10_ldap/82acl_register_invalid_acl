@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python2.7
+#!/usr/share/ucs-test/runner python3
 ## desc: Test registration of invalid ACL
 ## tags:
 ##  - ldapextensions
@@ -6,18 +6,21 @@
 ## roles-not:
 ##  - basesystem
 ## packages:
-##  - python-univention-lib
+##  - python3-univention-lib
 ## exposure: dangerous
 
-from __future__ import print_function
-from univention.testing.debian_package import DebianPackage
-from univention.testing.utils import fail
-from univention.config_registry import ConfigRegistry
-from ldap_extension_utils import get_package_name, get_acl_name, get_container_name, set_container_description, call_join_script, call_unjoin_script, get_ldap_master_connection
-
 from time import sleep
-from univention.testing.udm import UCSTestUDM
+
 import ldap
+from ldap_extension_utils import (
+	call_join_script, call_unjoin_script, get_acl_name, get_container_name, get_ldap_master_connection,
+	get_package_name, set_container_description,
+)
+
+from univention.config_registry import ConfigRegistry
+from univention.testing.debian_package import DebianPackage
+from univention.testing.udm import UCSTestUDM
+from univention.testing.utils import fail
 
 ucr = ConfigRegistry()
 ucr.load()
@@ -60,7 +63,7 @@ exit 0
 	acl_buffer = '''
 access to ="%(container)s" attrs="description"
 	by * +0 break
-''' % {'container': container, 'user_dn': user_dn}
+''' % {'container': container}
 
 	package = DebianPackage(name=package_name)
 	package.create_join_script_from_buffer(join_script_name, joinscript_buffer)

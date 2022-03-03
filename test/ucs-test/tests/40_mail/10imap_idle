@@ -1,22 +1,22 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Imap idle test
 ## tags: [mail]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 ## bugs: [36907]
 
-from __future__ import print_function
-from essential.mail import send_mail
+import imaplib
+import os
+import signal
+import sys
+import time
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
-import imaplib
-import os
-import time
-import sys
-import signal
+from essential.mail import send_mail
 
 
 def main():
@@ -42,9 +42,9 @@ def main():
 			c = imaplib.IMAP4_SSL(mailHomeServer)
 			c.login(mailPrimaryAddress, password)
 			c.select('INBOX', readonly=True)
-			c.send("%s IDLE\r\n" % (c._new_tag()))
+			c.send(b"%s IDLE\r\n" % (c._new_tag()))
 			while True:
-				line = c.readline().strip()
+				line = c.readline().decode('UTF-8').strip()
 				print('idle-client: got line %s' % line)
 				if line.endswith('EXISTS'):
 					print('idle-client: OK, we are good')

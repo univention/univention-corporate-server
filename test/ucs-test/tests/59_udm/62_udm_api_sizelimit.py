@@ -4,12 +4,12 @@
 ## exposure: safe
 ## roles: [domaincontroller_master]
 ## tags: [udm_api]
-## packages: [python-univention-directory-manager]
+## packages: [python3-univention-directory-manager]
 ## bugs: [53832, 53833]
 import pytest
-from univention.udm.exceptions import SearchLimitReached
 
 from univention.udm import UDM
+from univention.udm.exceptions import SearchLimitReached
 
 
 def test_sizelimit():

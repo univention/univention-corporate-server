@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test the UMC domain join module
 ## bugs: [34624]
 ## roles:
@@ -9,14 +9,12 @@
 ## versions:
 ##  4.0-2: skip
 
-from __future__ import print_function
 import os
 import sys
 
 import univention.testing.utils as utils
 
-sys.path.insert(0, '.')
-from umc import JoinModule  # noqa: E402
+from umc import JoinModule
 
 
 class TestUMCDomainJoinModule(JoinModule):

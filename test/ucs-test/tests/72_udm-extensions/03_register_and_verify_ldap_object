@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Register UDM extension and perform simple LDAP verification
 ## tags: [udm-extensions,apptest]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
@@ -8,22 +8,15 @@
 ##   - univention-directory-manager-tools
 ##   - shell-univention-lib
 
-from __future__ import print_function
-from univention.testing.debian_package import DebianPackage
-from univention.testing.utils import fail, wait_for_replication, verify_ldap_object
-from univention.testing.udm_extensions import (
-	get_extension_name,
-	get_extension_filename,
-	get_extension_buffer,
-	get_package_name,
-	get_package_version,
-	get_join_script_buffer,
-	get_dn_of_extension_by_name,
-	call_join_script,
-	remove_extension_by_name,
-	VALID_EXTENSION_TYPES
-)
 import bz2
+
+from univention.testing.debian_package import DebianPackage
+from univention.testing.udm_extensions import (
+	VALID_EXTENSION_TYPES, call_join_script, get_dn_of_extension_by_name, get_extension_buffer,
+	get_extension_filename, get_extension_name, get_join_script_buffer, get_package_name,
+	get_package_version, remove_extension_by_name,
+)
+from univention.testing.utils import fail, verify_ldap_object, wait_for_replication
 
 
 def test_extension(extension_type):
@@ -56,7 +49,7 @@ def test_extension(extension_type):
 			'univentionOwnedByPackage': [package_name],
 			'univentionObjectType': ['settings/udm_%s' % extension_type],
 			'univentionOwnedByPackageVersion': [package_version],
-			'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer)],
+			'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
 		})
 
 	finally:

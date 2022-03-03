@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python2.7
+#!/usr/share/ucs-test/runner python3
 ## desc: Test ACL registration for different UCS versions
 ## tags:
 ##  - ldapextensions
@@ -6,17 +6,21 @@
 ## roles-not:
 ##  - basesystem
 ## packages:
-##  - python-univention-lib
+##  - python3-univention-lib
 ## exposure: dangerous
 
-from univention.testing.debian_package import DebianPackage
-from univention.testing.utils import fail
-from univention.config_registry import ConfigRegistry
-from ldap_extension_utils import get_package_name, get_acl_name, get_container_name, set_container_description, call_join_script
-from time import sleep
-from univention.testing.udm import UCSTestUDM
-import ldap
 import sys
+from time import sleep
+
+import ldap
+from ldap_extension_utils import (
+	call_join_script, get_acl_name, get_container_name, get_package_name, set_container_description,
+)
+
+from univention.config_registry import ConfigRegistry
+from univention.testing.debian_package import DebianPackage
+from univention.testing.udm import UCSTestUDM
+from univention.testing.utils import fail
 
 ucr = ConfigRegistry()
 ucr.load()

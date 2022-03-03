@@ -6,9 +6,8 @@
 ##   - univention-management-console-module-appcenter
 ##   - univention-appcenter-dev
 ## tags: [appcenter]
-from __future__ import print_function
-
 import logging
+
 import appcentertest as app_test
 
 

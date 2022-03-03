@@ -10,29 +10,28 @@
 #  Bug #33768
 
 
-from __future__ import print_function
-
-import time
-import subprocess
 import re
+import subprocess
+import time
 
+import ldb
+from ldap.filter import filter_format
+from samba.auth import system_session
+from samba.credentials import Credentials
+from samba.dcerpc import security
+from samba.ndr import ndr_unpack
+from samba.param import LoadParm
+from samba.samdb import SamDB
+from samba.sd_utils import SDUtils
+
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 import univention.uldap
 from univention.config_registry import ConfigRegistry
 from univention.s4connector import configdb
-import univention.testing.utils as utils
 from univention.testing.strings import random_username
-import univention.testing.udm as udm_test
-import s4connector
 
-from ldap.filter import filter_format
-import ldb
-from samba.param import LoadParm
-from samba.credentials import Credentials
-from samba.samdb import SamDB
-from samba.auth import system_session
-from samba.sd_utils import SDUtils
-from samba.ndr import ndr_unpack
-from samba.dcerpc import security
+import s4connector
 
 
 def set_ucr(ucr_set, ucr_unset=None, ucr=None):

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest-3 -s -l -v
+#!/usr/share/ucs-test/runner pytest-3 -s -l -v
 # -*- coding: utf-8 -*-
 ## desc: Test users/user accountActivationDate
 ## tags: [udm]
@@ -10,17 +10,16 @@
 ##   - python3-univention-directory-manager (>= 15.0.11-18)
 ## bugs: [53631]
 
-from __future__ import print_function
-
-from datetime import datetime, timedelta
-import pytest
 import subprocess
 import time
-import univention.admin.uldap
-from univention.config_registry import handler_set, handler_unset
-import univention.testing.utils as utils
-import univention.testing.udm as udm_test
+from datetime import datetime, timedelta
 
+import pytest
+
+import univention.admin.uldap
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+from univention.config_registry import handler_set, handler_unset
 
 ucrv = "directory/manager/user/accountactivation/cron"
 expected_default_ucr_value = "*/15 * * * *"

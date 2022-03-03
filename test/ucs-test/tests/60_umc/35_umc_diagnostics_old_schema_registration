@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python2.7
+#!/usr/share/ucs-test/runner python3
 ## desc: Test basic schema registration
 ## tags:
 ##  - ldapextensions
@@ -8,19 +8,20 @@
 ## roles-not:
 ##  - basesystem
 ## packages:
-##  - python-univention-lib
+##  - python3-univention-lib
 ## exposure: dangerous
 
-from __future__ import print_function
+import os
+import subprocess
+import time
+import traceback
+
+import ldap
+
 from univention.config_registry import ConfigRegistry
 from univention.management.console.modules import diagnostic
-from univention.testing.utils import fail
 from univention.testing.strings import random_int
-import time
-import ldap
-import traceback
-import subprocess
-import os
+from univention.testing.utils import fail
 
 attribute_id = random_int() + random_int() + random_int() + random_int() + random_int()
 schema_name = 'univention-corporate-client.schema'

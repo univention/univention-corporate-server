@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 # This test can be used to check the kerberos authentication with squid.
 # Note: out of the box this only works on master systems. And check that the join script is executed.
 ## desc: http-proxy-kerberos-auth-check
@@ -10,14 +10,16 @@
 ## - univention-squid-kerberos
 ## - univention-s4-connector
 
-from __future__ import print_function
-from essential.simplecurl import SimpleCurl
-from essential.simplesquid import SimpleSquid
-from univention.config_registry import handler_set, handler_unset
 import subprocess
+
 import pycurl
+
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
+from univention.config_registry import handler_set, handler_unset
+
+from essential.simplecurl import SimpleCurl
+from essential.simplesquid import SimpleSquid
 
 
 class kerberos_ticket(object):

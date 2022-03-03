@@ -1,19 +1,23 @@
-#!/usr/share/ucs-test/runner python2.7
+#!/usr/share/ucs-test/runner python3
 ## desc: Test basic ACL unregistration
 ## tags: [ldapextensions, apptest]
 ## roles-not:
 ##  - basesystem
 ## packages:
-##  - python-univention-lib
+##  - python3-univention-lib
 ## exposure: dangerous
 
-from ldap_extension_utils import get_package_name, get_acl_name, get_container_name, wait_for_ldap
-from ldap_extension_utils import set_container_description, call_join_script, call_unjoin_script
+import time
+
+import ldap
+from ldap_extension_utils import (
+	call_join_script, call_unjoin_script, get_acl_name, get_container_name, get_package_name,
+	set_container_description, wait_for_ldap,
+)
+
 from univention.testing.debian_package import DebianPackage
 from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import fail, wait_for_replication_and_postrun
-import ldap
-import time
 
 
 def main():
@@ -77,7 +81,7 @@ access to dn.base="%(container)s" attrs="description"
 		# Waiting for the postrun
 		wait_for_replication_and_postrun()
 
-		#TODO remove when bug #37516 is fixed
+		# TODO remove when bug #37516 is fixed
 		time.sleep(60)
 
 		try:

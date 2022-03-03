@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s -lvvx
+#!/usr/share/ucs-test/runner pytest-3 -s -lvvx
 # -*- coding: utf-8 -*-
 ## desc: Test 'remove' operation in UDM API
 ## exposure: dangerous
@@ -8,15 +8,15 @@
 ##  - python3-univention-directory-manager (>= 15.0.11-17)
 ## bugs: [53620]
 
+from typing import List, Tuple  # noqa: F401
+
 import pytest
 
 import univention.debug as ud
-from univention.testing.strings import random_username
 from univention.testing import utils
+from univention.testing.strings import random_username
+from univention.udm import UDM, NotYetSavedError
 from univention.udm.exceptions import DeleteError, NoObject
-from univention.udm import NotYetSavedError, UDM
-
-from typing import List, Tuple  # noqa: F401
 
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, ud.NO_FUNCTION)
 ud.set_level(ud.ADMIN, ud.ALL)

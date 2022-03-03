@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3
+#!/usr/share/ucs-test/runner pytest-3
 # -*- coding: utf-8 -*-
 ## desc: Test UDM umc call to request a new license
 ## exposure: dangerous
@@ -7,17 +7,17 @@
 ## packages: [univention-management-console-module-udm]
 ## bugs: [49384]
 
-from __future__ import print_function
-
-import subprocess
 import shutil
 import ssl
-from socket import gethostname
+import subprocess
 from multiprocessing import Process
+from socket import gethostname
+
 from six.moves import BaseHTTPServer
-from unittest import main, TestCase
-from univention.config_registry import handler_set, handler_unset
+from unittest import TestCase, main
+
 import univention.testing.utils as utils
+from univention.config_registry import handler_set, handler_unset
 from univention.testing.network import NetworkRedirector
 
 

@@ -8,16 +8,12 @@
 ##   - univention-appcenter
 ## exposure: safe
 
-from __future__ import print_function
-
-from os import path
 from glob import glob
-
-from univention.appcenter.app import App
-from univention.appcenter.actions import get_action
+from os import path
 
 import univention.testing.utils as utils
-
+from univention.appcenter.actions import get_action
+from univention.appcenter.app import App
 
 failures_counter = 0
 apps = []

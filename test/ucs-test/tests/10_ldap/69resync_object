@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check the resync_objects.py script supplied with the listener
 ## tags:
 ##  - replication
@@ -7,15 +7,15 @@
 ##  - domaincontroller_slave
 ## exposure: dangerous
 
-from __future__ import print_function
 import subprocess
-import ldap
 import time
 
-from univention.uldap import getRootDnConnection
-from univention.testing.udm import UCSTestUDM
-from univention.testing import utils
+import ldap
+
 import univention.testing.strings as uts
+from univention.testing import utils
+from univention.testing.udm import UCSTestUDM
+from univention.uldap import getRootDnConnection
 
 
 def test_resync_missing_object():
@@ -37,7 +37,7 @@ def test_resync_missing_object():
 			'--update',
 			'--filter',
 			user_filter,
-		])
+		]).decode('UTF-8')
 		if fail_update != 'resync from Primary: {}\n  ==> object does not exist, can not update\n'.format(user_dn):
 			utils.fail('Updating a nonexisting object should not work: {}'.format(fail_update))
 		simulation = subprocess.check_output([
@@ -45,7 +45,7 @@ def test_resync_missing_object():
 			'--simulate',
 			'--filter',
 			user_filter,
-		])
+		]).decode('UTF-8')
 		if simulation != 'resync from Primary: {}\n  ==> adding object\n'.format(user_dn):
 			utils.fail('Unexpected output from simulation: {}'.format(simulation))
 		if local_lo.searchDn(user_filter):
@@ -68,7 +68,7 @@ def test_resync_updating_object():
 		user_filter = ldap.filter.filter_format('uid=%s', (user_name, ))
 		local_lo = getRootDnConnection()
 		user_sn = local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0]
-		user_sn_new = uts.random_string()
+		user_sn_new = uts.random_string().encode('UTF-8')
 		local_lo.modify(user_dn, [('sn', user_sn, user_sn_new, )])
 		if local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0] != user_sn_new:
 			utils.fail('Local object modification failed')
@@ -76,7 +76,7 @@ def test_resync_updating_object():
 			'/usr/share/univention-directory-listener/resync-objects.py',
 			'--filter',
 			user_filter,
-		])
+		]).decode('UTF-8')
 		if fail_create != 'resync from Primary: {}\n  ==> object does exist, can not create\n'.format(user_dn):
 			utils.fail('Creating an existing object should not work: {}'.format(fail_create))
 		simulation = subprocess.check_output([
@@ -85,7 +85,7 @@ def test_resync_updating_object():
 			'--update',
 			'--filter',
 			user_filter,
-		])
+		]).decode('UTF-8')
 		if simulation != 'resync from Primary: {}\n  ==> modifying object\n'.format(user_dn):
 			utils.fail('Unexpected output from simulation: {}'.format(simulation))
 		if local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0] != user_sn_new:
@@ -109,7 +109,7 @@ def test_resync_recreate_object():
 		user_filter = ldap.filter.filter_format('uid=%s', (user_name, ))
 		local_lo = getRootDnConnection()
 		user_sn = local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0]
-		user_sn_new = uts.random_string()
+		user_sn_new = uts.random_string().encode('UTF-8')
 		local_lo.modify(user_dn, [('sn', user_sn, user_sn_new, )])
 		if local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0] != user_sn_new:
 			utils.fail('Local object modification failed')
@@ -119,7 +119,7 @@ def test_resync_recreate_object():
 			'--remove',
 			'--filter',
 			user_filter,
-		])
+		]).decode('UTF-8')
 		if simulation != 'remove from local: {}\nresync from Primary: {}\n  ==> adding object\n'.format(user_dn, user_dn):
 			utils.fail('Unexpected output from simulation: {}'.format(simulation))
 		if local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0] != user_sn_new:
@@ -147,7 +147,7 @@ def test_resync_remove_object():
 		'--remove',
 		'--filter',
 		container_filter,
-	])
+	]).decode('UTF-8')
 	if fail_remove != 'object does not exist local\nobject does not exist on Primary\n':
 		utils.fail('Script should not have done anything: {}'.format(fail_remove))
 	local_lo.add(container_dn, [('objectClass', 'organizationalRole'), ('cn', container_name)])
@@ -160,7 +160,7 @@ def test_resync_remove_object():
 			'--remove',
 			'--filter',
 			container_filter,
-		])
+		]).decode('UTF-8')
 		if simulation != 'remove from local: {}\nobject does not exist on Primary\n'.format(container_dn):
 			utils.fail('Unexpected output from simulation: {}'.format(simulation))
 		if not local_lo.searchDn(container_filter):

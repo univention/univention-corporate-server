@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create extensions with different version ranges
 ## tags: [udm-ldapextensions,apptest]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
@@ -6,23 +6,18 @@
 ## packages:
 ##   - univention-directory-manager-tools
 
-from __future__ import print_function
-from univention.config_registry import ConfigRegistry
+import base64
+import bz2
+import os
+
 import univention.testing.udm as udm_test
-from univention.testing.utils import wait_for_replication, fail
+from univention.config_registry import ConfigRegistry
 from univention.testing.strings import random_name, random_version
 from univention.testing.udm_extensions import (
-	VALID_EXTENSION_TYPES,
-	get_package_name,
-	get_package_version,
-	get_extension_name,
-	get_extension_filename,
-	get_extension_buffer,
-	get_absolute_extension_filename,
+	VALID_EXTENSION_TYPES, get_absolute_extension_filename, get_extension_buffer, get_extension_filename,
+	get_extension_name, get_package_name, get_package_version,
 )
-import os
-import bz2
-import base64
+from univention.testing.utils import fail, wait_for_replication
 
 if __name__ == '__main__':
 	ucr = ConfigRegistry()
@@ -53,7 +48,7 @@ if __name__ == '__main__':
 				dn = udm.create_object(
 					'settings/udm_%s' % extension_type,
 					name=extension_name,
-					data=base64.b64encode(bz2.compress(extension_buffer)),
+					data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
 					filename=extension_filename,
 					packageversion=package_version,
 					appidentifier=app_id,

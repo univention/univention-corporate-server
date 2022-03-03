@@ -1,16 +1,18 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Delivery to deactivated local account
 ## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
-from essential.mail import send_mail, check_delivery
-from univention.config_registry import handler_set
 import subprocess
 import time
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+from univention.config_registry import handler_set
+
+from essential.mail import check_delivery, send_mail
 
 
 def main():

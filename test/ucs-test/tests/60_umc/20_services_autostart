@@ -3,12 +3,12 @@
 ## bugs: [34506]
 ## exposure: dangerous
 
-from univention.config_registry.frontend import ucr_update
-import univention.testing.utils as utils
-
 import sys
-sys.path.insert(0, '.')
-from umc import ServiceModule  # noqa: E402
+
+import univention.testing.utils as utils
+from univention.config_registry.frontend import ucr_update
+
+from umc import ServiceModule
 
 
 class TestUMCServiceAutostart(ServiceModule):

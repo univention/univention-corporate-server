@@ -6,16 +6,15 @@
 ##  - domaincontroller_backup
 ## exposure: dangerous
 
-from __future__ import print_function
 import sys
 
-import univention.testing.utils as utils
-from univention.testing.strings import random_username
-import univention.testing.udm as udm_test
 import atexit
 
-sys.path.insert(0, '.')
-from umc import UDMModule  # noqa: E402
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+from univention.testing.strings import random_username
+
+from umc import UDMModule
 
 
 class TestUMCExtendedAttributes(UDMModule):

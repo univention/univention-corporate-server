@@ -9,10 +9,11 @@
 ##   - univention-directory-manager-tools
 
 import subprocess
+
 import univention.config_registry
+import univention.testing.utils as utils
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.udm import UCSTestUDM
-import univention.testing.utils as utils
 
 
 def get_current_v2license_user_count():

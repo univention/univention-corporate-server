@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check UCR template mapping for samba/spoolss/architecture
 ## tags: [basic]
 ## roles:
@@ -11,13 +11,13 @@
 ##   - univention-samba | univention-samba4
 ##   - univention-config
 
-from __future__ import print_function
-import univention.testing.utils as utils
-import univention.testing.ucr as ucr_test
-import univention.config_registry
-import subprocess
 import os
+import subprocess
 import sys
+
+import univention.config_registry
+import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
 
 
 def get_testparm_var(sectionname, varname):
@@ -36,7 +36,7 @@ def get_testparm_var(sectionname, varname):
 
 def check_spoolss_architecture(expected_value):
 	spoolss_architecture = get_testparm_var("global", "spoolss: architecture")
-	if spoolss_architecture != expected_value:
+	if spoolss_architecture.decode('UTF-8') != expected_value:
 		utils.fail("Wrong value for samba option 'spoolss: architecture', expected '%s', got '%s'" % (expected_value, spoolss_architecture))
 	else:
 		print("Ok, samba option 'spoolss: architecture' is set to '%s'" % (expected_value,))

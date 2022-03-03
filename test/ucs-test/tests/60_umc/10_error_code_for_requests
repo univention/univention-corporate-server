@@ -8,17 +8,16 @@
 ##  - ucs-test-umc-module
 ## exposure: dangerous
 
-from __future__ import print_function
-import time
+import http.client as httplib
 import ssl
-import psutil
-import httplib
 import subprocess
+import time
 
-from univention.testing.umc import Client
+import psutil
+
 import univention.testing.utils as utils
-
 from univention.management.console.modules.ucstest import joinscript, unjoinscript
+from univention.testing.umc import Client
 
 NUMBER_OF_CONNECTIONS = 8
 RESPONSE_STATUS_CODES = (510, 511)
@@ -41,15 +40,13 @@ def kill_ucstest():
 
 
 def restart_web_server():
-	subprocess.call(['service', 'univention-management-console-web-server', 'restart'])
-	subprocess.call(['service', 'univention-management-console-server', 'restart'])
-	subprocess.call(['service', 'apache2', 'restart'])
+	subprocess.call(['systemctl', 'restart', 'univention-management-console-web-server', 'univention-management-console-server', 'apache2'])
 
 
 class AsyncClient(Client):
 
 	def async_request(self, path):
-		cookie = '; '.join(['='.join(x) for x in self.cookies.iteritems()])
+		cookie = '; '.join(['='.join(x) for x in self.cookies.items()])
 		headers = dict(self._headers, **{'Cookie': cookie, 'Content-Type': 'application/json'})
 		headers['X-XSRF-Protection'] = self.cookies.get('UMCSessionId', '')
 		connection = httplib.HTTPSConnection(self.hostname, timeout=10)

@@ -1,3 +1,9 @@
+ucs-test (10.0.6-101) unstable; urgency=medium
+
+  * Bug #54381: migrate all tests to Python 3
+
+ -- Florian Best <best@univention.de>  Thu, 03 Mar 2022 18:07:37 +0100
+
 ucs-test (10.0.6-100) unstable; urgency=medium
 
   * Bug #54067: Add samba debug

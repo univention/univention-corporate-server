@@ -4,11 +4,12 @@
 ## exposure: dangerous
 ## packages:
 ##  - univention-mail-postfix
-
-from essential.mail import send_mail, check_delivery
-from univention.config_registry import handler_set
 import time
+
 import univention.testing.ucr as ucr_test
+from univention.config_registry import handler_set
+
+from essential.mail import check_delivery, send_mail
 
 
 def main():

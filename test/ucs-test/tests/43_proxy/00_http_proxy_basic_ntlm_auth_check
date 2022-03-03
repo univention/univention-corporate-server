@@ -1,18 +1,20 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: http-proxy-basic-ntlm-auth-check
 ## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave, memberserver]
 ## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-squid]
 
-from __future__ import print_function
-from essential.simplecurl import SimpleCurl
-from essential.simplesquid import SimpleSquid
-from univention.config_registry import handler_set, handler_unset
 import itertools
+
 import pycurl
+
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
+from univention.config_registry import handler_set, handler_unset
+
+from essential.simplecurl import SimpleCurl
+from essential.simplesquid import SimpleSquid
 
 
 def checkAuths(host, passwd, url, basic_ntlm, expect_wrong_password):

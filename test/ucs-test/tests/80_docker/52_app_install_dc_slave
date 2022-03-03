@@ -10,11 +10,15 @@
 ##  - 39792
 ##  - 39801
 
-from __future__ import print_function
-from dockertest import Appcenter, get_app_name, get_app_version, get_docker_appbox_ucs, get_docker_appbox_image, App
-from univention.testing.utils import get_ldap_connection
-import ldap
 import time
+
+import ldap
+
+from univention.testing.utils import get_ldap_connection
+
+from dockertest import (
+	App, Appcenter, get_app_name, get_app_version, get_docker_appbox_image, get_docker_appbox_ucs,
+)
 
 if __name__ == '__main__':
 

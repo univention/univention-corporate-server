@@ -20,7 +20,7 @@ mkpdir $(allpatchlevels "${_version_version}-${_version_patchlevel:?}") maintain
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
 
-eval "$(python proxy.py -f -p 0 3>&-)"
+eval "$(python3 proxy.py -f -p 0 3>&-)"
 config_repo proxy/http="http://localhost:${proxy_port:?}"
 
 (

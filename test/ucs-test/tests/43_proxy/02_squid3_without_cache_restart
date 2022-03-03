@@ -1,14 +1,15 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check squid restart without cache
 ## tags: [apptest]
 ## exposure: careful
 ## packages: [univention-squid]
 ## bugs: [33332, 35421]
 
-from essential.simplesquid import SimpleSquid
-from univention.config_registry import handler_set
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
+from univention.config_registry import handler_set
+
+from essential.simplesquid import SimpleSquid
 
 
 def main():

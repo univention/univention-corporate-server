@@ -5,9 +5,9 @@
 ## packages:
 ##   - docker.io
 
-from __future__ import print_function
-from dockertest import Appcenter, get_app_name, get_app_version, tiny_app
 from univention.testing.utils import get_ldap_connection
+
+from dockertest import Appcenter, get_app_name, get_app_version, tiny_app
 
 if __name__ == '__main__':
 

@@ -4,7 +4,7 @@
 ##  secure-apt should work with DVDs
 ## bugs: [45950]
 ## packages:
-##  - python-apt
+##  - python3-apt
 ## exposure: dangerous
 
 RETVAL=110 # Test fehlgeschlagen

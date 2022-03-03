@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Spaces in mail addresses
 ## tags: [apptest]
 ## exposure: dangerous
@@ -8,7 +8,6 @@ import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-
 
 EXPECTED_ERROR_MSG = 'Invalid Syntax: Primary e-mail address (mailbox): Not a valid email address!'
 

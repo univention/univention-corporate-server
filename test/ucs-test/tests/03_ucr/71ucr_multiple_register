@@ -1,11 +1,9 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check UCR handlers getting registered only once
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## packages:
 ##  - univention-base-files
 ## exposure: dangerous
-
-from __future__ import print_function
 
 import pickle
 
@@ -20,7 +18,7 @@ handler_register(['univention-base-files'])
 
 with open(UCR_CACHE, "rb") as f:
 	f.readline()
-	d = pickle.load(f)
+	d = pickle.load(f, encoding='bytes')
 
 modules = []
 

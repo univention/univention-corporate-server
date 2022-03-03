@@ -1,25 +1,23 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -svv --tb=native
+#!/usr/share/ucs-test/runner pytest-3 -svv --tb=native
 # -*- coding: utf-8 -*-
 ## desc: Check Python 2 + 3 compatibility and idempotency of UCR templates
 ## tags: [apptest]
 ## exposure: safe
 
-from __future__ import print_function
-
+import glob
+import json
 import os
+import subprocess
 import sys
 import tempfile
-import subprocess
-import json
-import glob
 from difflib import unified_diff
 from typing import Dict, Set  # noqa F401
 
-import pytest
 import py.path
+import pytest
 
-from univention.config_registry.handler import run_filter, EXECUTE_TOKEN
 from univention.config_registry import ConfigRegistry
+from univention.config_registry.handler import EXECUTE_TOKEN, run_filter
 
 ucr = ConfigRegistry()
 ucr.load()

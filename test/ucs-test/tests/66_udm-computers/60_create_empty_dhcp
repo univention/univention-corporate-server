@@ -8,10 +8,8 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-from __future__ import print_function
-
-import univention.testing.udm as udm_test
 import univention.testing.strings as uts
+import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 MAC = '00:11:22:33:44:55'

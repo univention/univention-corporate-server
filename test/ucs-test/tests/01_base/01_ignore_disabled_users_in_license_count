@@ -8,6 +8,7 @@
 ##   - univention-directory-manager-tools
 
 import subprocess
+
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 

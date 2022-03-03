@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest-3 -s -vvv
+#!/usr/share/ucs-test/runner pytest-3 -s -vvv
 # -*- coding: utf-8 -*-
 ## desc: Test that school replica server can't create a Samba Administrator on the primary server
 ## tags: [samba4,apptest]
@@ -8,13 +8,14 @@
 ##   - univention-config
 ##   - ucs-school-replica
 
-import pytest
 import subprocess
+
+import pytest
 
 import univention.admin
 import univention.testing.strings as uts
-import univention.testing.utils as utils
 import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 
 
 # I only want the user to be created once

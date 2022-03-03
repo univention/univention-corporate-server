@@ -12,21 +12,21 @@
 ## exposure: dangerous
 
 
-import re
-import os
 import glob
-import time
+import os
+import re
 import subprocess
+import time
 
 from ldap.dn import escape_dn_chars
 from ldap.filter import filter_format
 
-from univention.testing.udm import UCSTestUDM
-from univention.testing.ucr import UCSTestConfigRegistry
 import univention.config_registry
-from univention.testing.ucs_samba import wait_for_drs_replication
-import univention.testing.utils as utils
 import univention.testing.strings as uts
+import univention.testing.utils as utils
+from univention.testing.ucr import UCSTestConfigRegistry
+from univention.testing.ucs_samba import wait_for_drs_replication
+from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import package_installed
 
 
@@ -39,15 +39,17 @@ def search_templates(old_admin_name, new_admin_name, server_role):
 	for template in templates:
 		with open(template, 'r') as content_file:
 			# find all lines that start with File or Multifile and strip it to get the paths of the template files
-			file_content += ['/' + file_pattern.sub('', l).strip() for l in content_file.readlines() if file_pattern.match(l)]
+			file_content += ['/' + file_pattern.sub('', line).strip() for line in content_file.readlines() if file_pattern.match(line)]
 
 	# A list of templates which are referencing the Administrator. The new name must be found in them
 	should_contain_admin = [
-		'/etc/ldap/slapd.conf']
+		'/etc/ldap/slapd.conf'
+	]
 	ignore = [
 		'/etc/simplesamlphp/config.php', '/etc/freeradius/3.0/mods-available/ldap',
 		'/etc/bind/named.conf.samba4', '/var/www/univention/meta.json',
-		'/etc/issue', '/etc/welcome.msg', '/etc/samba/base.conf', '/etc/cups/cups-files.conf']
+		'/etc/issue', '/etc/welcome.msg', '/etc/samba/base.conf', '/etc/cups/cups-files.conf'
+	]
 	if server_role != 'domaincontroller_master':
 		should_contain_admin.remove('/etc/ldap/slapd.conf')
 
@@ -67,7 +69,7 @@ def search_templates(old_admin_name, new_admin_name, server_role):
 			utils.fail('FAIL: New admin name %s not in %s' % (new_admin_name, file))
 
 		if old_admin_name in content:
-			lines_containing = [l for l in content.splitlines() if old_admin_name in l and 'Administrators' not in l]
+			lines_containing = [line for line in content.splitlines() if old_admin_name in line and 'Administrators' not in line]
 			if lines_containing:
 				print('\n'.join(lines_containing))
 				utils.fail('FAIL: Old group name %s still in file %s' % (old_admin_name, file))

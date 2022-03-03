@@ -101,7 +101,7 @@ then
 fi
 
 info "Lock all"
-python -m univention.lib.account lock --dn "$(user_dn "$NAME")" --lock-time "$(date --utc '+%Y%m%d%H%M%SZ')" || fail_test 110 "Could not manually lock user account!"
+python3 -m univention.lib.account lock --dn "$(user_dn "$NAME")" --lock-time "$(date --utc '+%Y%m%d%H%M%SZ')" || fail_test 110 "Could not manually lock user account!"
 ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" = "$hostname" ]
 then

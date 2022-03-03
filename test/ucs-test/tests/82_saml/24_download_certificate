@@ -1,13 +1,14 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Download certificate
 ## tags: [saml]
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## bugs: [44704]
 ## exposure: safe
 
-from __future__ import print_function
-import urllib2
 import re
+
+from six.moves.urllib.request import urlopen
+
 from univention.config_registry import ConfigRegistry
 from univention.testing.utils import fail
 
@@ -38,8 +39,8 @@ if __name__ == '__main__':
 	# read at least five times because ucs-sso is an alias for different IPs
 	for i in range(0, 5):
 		print('%d: Query cert for %r' % (i, cert_url))
-		response = urllib2.urlopen(cert_url)
-		cert = response.read()
+		response = urlopen(cert_url)
+		cert = response.read().decode('ASCII')
 		if not cert:
 			fail('Empty response')
 		print(cert)
@@ -51,8 +52,8 @@ if __name__ == '__main__':
 
 	print("Compare certificate with metadata")
 	base64_cert = extract_base64_certificate_from_cert(cert)
-	response = urllib2.urlopen(metadata_url)
-	metadata = response.read()
+	response = urlopen(metadata_url)
+	metadata = response.read().decode('ASCII')
 	if extract_base64_certificate_from_metadata(metadata) != base64_cert:
 		fail('Certificate is different from the certificate in the metadata')
 	print("Certificate OK")

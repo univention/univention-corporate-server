@@ -7,15 +7,13 @@
 ##   - univention-management-console-module-appcenter
 ## exposure: safe
 
-from __future__ import print_function
 import re
-from sys import stderr
+from configparser import NoOptionError, NoSectionError, RawConfigParser
 from optparse import OptionParser
 from re import compile as regex_compile
-from configparser import RawConfigParser, NoOptionError, NoSectionError
+from sys import stderr
 
 import univention.testing.utils as utils
-
 from univention.appcenter.app_cache import Apps
 
 failures = 0

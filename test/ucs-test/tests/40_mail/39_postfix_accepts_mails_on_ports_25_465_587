@@ -1,17 +1,18 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Postfix accepts mails on port 25, 465 and 587
 ## tags: [apptest]
 ## exposure: dangerous
 ## packages:
 ##  - univention-mail-server
 
-from __future__ import print_function
 import syslog
-from essential.mail import send_mail, check_delivery
-import univention.testing.ucr as ucr_test
-import univention.testing.utils as utils
+
 import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+from essential.mail import check_delivery, send_mail
 
 
 def main():

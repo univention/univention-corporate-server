@@ -5,7 +5,7 @@
 ## bugs: [44741]
 ## tags: [basic]
 ## packages:
-##  - python-openssl
+##  - python3-openssl
 ## exposure: safe
 exec python3 -c 'import OpenSSL.SSL'
 # vim: set ft=sh :

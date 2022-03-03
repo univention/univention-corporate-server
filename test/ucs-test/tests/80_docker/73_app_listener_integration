@@ -6,13 +6,15 @@
 ## packages:
 ##   - docker.io
 
-from dockertest import Appcenter, App
-import univention.testing.udm as udm_test
-import time
-import json
 import glob
+import json
 import os
 import subprocess
+import time
+
+import univention.testing.udm as udm_test
+
+from dockertest import App, Appcenter
 
 APP_NAME = 'my-listener-test-app'
 DB_FILE = '/var/lib/univention-appcenter/apps/{0}/data/db.json'.format(APP_NAME)

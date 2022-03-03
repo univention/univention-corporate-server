@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Basic spam email delivery
 ## tags: [apptest]
 ## exposure: dangerous
@@ -17,15 +17,18 @@
 # are tagged as spam (or not).
 #################
 
-from __future__ import print_function
-from essential.mail import activate_spam_detection, deactivate_spam_detection, reload_amavis_postfix
-from essential.mail import send_mail, file_search_mail, get_spam_folder_name
-from univention.testing.decorators import WaitForNonzeroResultOrTimeout
 import time
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+from univention.testing.decorators import WaitForNonzeroResultOrTimeout
+
+from essential.mail import (
+	activate_spam_detection, deactivate_spam_detection, file_search_mail, get_spam_folder_name,
+	reload_amavis_postfix, send_mail,
+)
 
 
 def main():

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check setting of UNIVENTION_APP_ID for UDM extensions
 ## tags: [udm-extensions,apptest]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
@@ -8,23 +8,16 @@
 ##   - univention-directory-manager-tools
 ##   - shell-univention-lib
 
-from __future__ import print_function
+import bz2
+
 from univention.testing.debian_package import DebianPackage
-from univention.testing.utils import fail, wait_for_replication, verify_ldap_object
 from univention.testing.strings import random_name, random_version
 from univention.testing.udm_extensions import (
-	get_package_name,
-	get_package_version,
-	get_extension_name,
-	get_extension_filename,
-	get_extension_buffer,
-	call_join_script,
-	get_join_script_buffer,
-	get_dn_of_extension_by_name,
-	remove_extension_by_name,
-	VALID_EXTENSION_TYPES
+	VALID_EXTENSION_TYPES, call_join_script, get_dn_of_extension_by_name, get_extension_buffer,
+	get_extension_filename, get_extension_name, get_join_script_buffer, get_package_name,
+	get_package_version, remove_extension_by_name,
 )
-import bz2
+from univention.testing.utils import fail, verify_ldap_object, wait_for_replication
 
 
 def test_extension(extension_type):
@@ -63,7 +56,7 @@ def test_extension(extension_type):
 			'univentionOwnedByPackage': [package_name],
 			'univentionObjectType': ['settings/udm_%s' % extension_type],
 			'univentionOwnedByPackageVersion': [package_version],
-			'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer)],
+			'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
 			'univentionAppIdentifier': [app_id],
 		})
 	finally:

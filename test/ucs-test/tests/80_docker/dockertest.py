@@ -29,8 +29,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
-
 import json
 import os
 import shutil
@@ -916,4 +914,4 @@ def get_dummy_svg():
          style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none" />
     </g>
   </g>
-</svg>'''  # noqa: E101
+</svg>'''  # noqa: E101,E501

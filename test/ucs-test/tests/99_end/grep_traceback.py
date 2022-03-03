@@ -29,8 +29,6 @@
 # <https://www.gnu.org/licenses/>.
 """Grep python tracebacks in logfiles"""
 
-from __future__ import print_function
-
 import argparse
 import collections
 import contextlib
@@ -182,10 +180,15 @@ COMMON_EXCEPTIONS = (
 	E(r'^univention.admin.uexceptions.noObject: No such object$', ['^  File "/usr/lib/python3/dist-packages/univention/admin/objects.py", line .*, in get']),  # s4c
 	# during upgrade to UCS 5.0-0
 	E("^(apt.cache.FetchFailedException|apt_pkg.Error): E:The repository 'http://localhost/univention-repository.* Release' is not signed."),
-	E('ImportError: No module named client', ['univention-directory-listener/system/faillog.py', 'univention-directory-listener/system/udm_extension.py', 'univention-directory-listener/system/portal_groups.py', 'univention-directory-listener/system/app_attributes.py'], (53290, 53862)),
+	E('ImportError: No module named client', [
+		'univention-directory-listener/system/faillog.py',
+		'univention-directory-listener/system/udm_extension.py',
+		'univention-directory-listener/system/portal_groups.py',
+		'univention-directory-listener/system/app_attributes.py'
+	], (53290, 53862)),
 	E("AttributeError: 'ConfigRegistry' object has no attribute '_walk'", ['univention-directory-listener/system/nfs-shares.py'], (53291, 53862)),
 	E("AttributeError: 'module' object has no attribute 'localization'", ['univention-directory-listener/system/app_attributes.py'], 53862),
-	E("ConnectionRefusedError: \[Errno 111\] Connection refused", ['univention-self-service-invitation'], 53670),
+	E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention-self-service-invitation'], 53670),
 	E("univention.lib.umc.ConnectionError: .*Could not send request.*Connection refused", ['univention-self-service-invitation'], 53670),
 
 	# updater test cases:
@@ -231,7 +234,9 @@ COMMON_EXCEPTIONS = (
 	E("ucsschool.importer.exceptions.InvalidBirthday: Birthday has invalid format: '.*' error: time data '.*' does not match format '%Y-%m-%d'.", ['user_import.py.* in create_and_modify_users'], 53564),
 	E("ucsschool.importer.exceptions.UcsSchoolImportSkipImportRecord: Skipping user '.*' with firstname starting with \".\"", ['user_import.py.* in create_and_modify_users'], 53564),
 	E("ucsschool.importer.exceptions.TooManyErrors: More than 0 errors.", ['cmdline.py.* in main', 'in import_users'], 53564),
-	E(r"ucsschool.importer.exceptions.InitialisationError: Configuration value of username:max_length:default is .*, but must not be higher than UCR variable ucsschool/username/max_length \(20\).", ['in prepare_import'], 53564),
+	E(
+		r"ucsschool.importer.exceptions.InitialisationError: Configuration value of username:max_length:default is .*, "
+		r"but must not be higher than UCR variable ucsschool/username/max_length \(20\).", ['in prepare_import'], 53564),
 	E("ucsschool.importer.exceptions.InitialisationError: The 'user_deletion' configuration key is deprecated. Please set 'deletion_grace_period'.", ['in prepare_import'], 53564),
 	E("ucsschool.importer.exceptions.InitialisationError: Thou shalt not import birthdays!", ['in prepare_import'], 53564),
 	E("ucsschool.importer.exceptions.InitialisationError: Deprecated configuration key 'scheme:username:allow_rename'.", ['in prepare_import'], 53564),

@@ -5,13 +5,14 @@
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:
-##   - python-univention-directory-manager
-##   - python-univention
+##   - python3-univention-directory-manager
+##   - python3-univention
 
-from __future__ import print_function
 import subprocess
-import univention.uldap
+
 import ldap
+
+import univention.uldap
 
 lo = univention.uldap.getMachineConnection()
 dn = lo.lo.whoami_s()[3:]

@@ -8,20 +8,19 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-import os
-import tempfile
-import subprocess
-import random
-
 import grp
+import os
+import random
+import subprocess
+import tempfile
+
 import pytest
-from ldap.dn import str2dn, dn2str
+from ldap.dn import dn2str, str2dn
 
-import univention.uldap
-import univention.testing.utils as utils
 import univention.testing.strings as uts
-
 import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+import univention.uldap
 from univention.testing.ucs_samba import wait_for_s4connector
 
 

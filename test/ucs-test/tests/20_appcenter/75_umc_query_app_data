@@ -8,16 +8,16 @@
 ## exposure: safe
 ## bugs: [44768]
 
-from __future__ import print_function
 import os
 import sys
+
+import univention.testing.strings as str_test
+import univention.testing.ucr as ucr_test
+from univention import config_registry
 from univention.appcenter.app_cache import AppCache
 from univention.testing.umc import Client
-import appcentertest as app_test
-import univention.testing.ucr as ucr_test
-import univention.testing.strings as str_test
-from univention import config_registry
 
+import appcentertest as app_test
 
 opened_files = []
 

@@ -3,9 +3,8 @@
 ## exposure: safe
 ## tags: [apptest]
 
-from __future__ import print_function
+import glob
 
 import grep_traceback
-import glob
 
 grep_traceback.main(glob.glob('/var/log/univention/*.log*'))

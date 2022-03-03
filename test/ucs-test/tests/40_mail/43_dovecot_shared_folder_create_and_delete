@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create and remove shared folders with different settings of mail/dovecot/mailbox/delete
 ## tags: [apptest]
 ## exposure: dangerous
@@ -7,15 +7,17 @@
 ##  - univention-mail-dovecot
 ##  - univention-directory-manager-tools
 
-from __future__ import print_function
 import os
-from univention.config_registry import handler_set
+
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-from essential.mail import random_email, get_dovecot_shared_folder_maildir, create_shared_mailfolder
+from univention.config_registry import handler_set
+
+from essential.mail import create_shared_mailfolder, get_dovecot_shared_folder_maildir, random_email
 
 TIMEOUT_MAIL = 10
+timeout = 1
 
 
 class Bunch(object):
@@ -86,6 +88,4 @@ def main():
 
 
 if __name__ == '__main__':
-	global timeout
-	timeout = 1
 	main()

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: check samba-tool drs showrepl
 ## exposure: safe
 ## tags:
@@ -6,14 +6,15 @@
 ## packages:
 ## - univention-samba4
 
-from __future__ import print_function
-from subprocess import PIPE, Popen
-import univention.testing.utils as utils
 import re
+from subprocess import PIPE, Popen
+
+import univention.testing.utils as utils
 
 proc = Popen(['samba-tool', 'drs', 'showrepl'], stdout=PIPE, stderr=PIPE)
 
 stdout, stderr = proc.communicate()
+stdout, stderr = stdout.decode("UTF-8"), stderr.decode("UTF-8")
 
 print('** STDERR')
 print(stderr.strip())

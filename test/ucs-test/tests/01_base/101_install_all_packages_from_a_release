@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: install all packages from a release
 ## roles: [domaincontroller_backup]
 ## tags: [producttest]
@@ -6,7 +6,6 @@
 ## exposure: careful
 ## packages: []
 
-from __future__ import print_function
 import glob
 import re
 import subprocess

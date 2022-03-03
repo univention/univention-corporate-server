@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check service provider metadata replication.
 ## tags:
 ##  - saml
@@ -7,15 +7,15 @@
 ## join: true
 ## exposure: dangerous
 
-from __future__ import print_function
-import subprocess
-import os.path
 import difflib
+import os.path
+import subprocess
 
-import univention.config_registry as configRegistry
 import univention.admin.modules as udm_modules
-import univention.testing.utils as utils
+import univention.config_registry as configRegistry
 import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
 import samltest
 
 ucr = configRegistry.ConfigRegistry()
@@ -33,8 +33,16 @@ def main():
 	lo = utils.get_ldap_connection(admin_uldap=True)
 	master = udm_modules.lookup('computers/domaincontroller_master', None, lo, scope='sub')
 	master_hostname = "%s.%s" % (master[0]['name'], master[0]['domain'])
-	cmd_disable = ['/usr/sbin/udm', 'saml/serviceprovider', 'modify', '--dn=SAMLServiceProviderIdentifier=https://%s/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,%s' % (master_hostname, ucr.get('ldap/base')), '--set', 'isActivated=FALSE']
-	cmd_enable = ['/usr/sbin/udm', 'saml/serviceprovider', 'modify', '--dn=SAMLServiceProviderIdentifier=https://%s/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,%s' % (master_hostname, ucr.get('ldap/base')), '--set', 'isActivated=TRUE']
+	cmd_disable = [
+		'/usr/sbin/udm', 'saml/serviceprovider', 'modify',
+		'--dn=SAMLServiceProviderIdentifier=https://%s/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,%s' % (master_hostname, ucr.get('ldap/base')),
+		'--set', 'isActivated=FALSE'
+	]
+	cmd_enable = [
+		'/usr/sbin/udm', 'saml/serviceprovider', 'modify',
+		'--dn=SAMLServiceProviderIdentifier=https://%s/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,%s' % (master_hostname, ucr.get('ldap/base')),
+		'--set', 'isActivated=TRUE'
+	]
 	# Force update of the sp config to avoid test failures due to old configs
 	subprocess.check_call(cmd_disable)
 	utils.wait_for_replication()
@@ -61,8 +69,8 @@ def main():
 				SamlSession.test_login()
 		except samltest.SamlError as exc:
 			expected_error = "<h2>Metadata not found</h2>"
-			if expected_error not in exc.message:
-				utils.fail("Login failed, but for the wrong reason?:\n%s" % exc.message)
+			if expected_error not in str(exc):
+				utils.fail("Login failed, but for the wrong reason?:\n%s" % str(exc))
 		else:
 			utils.fail("Serviceprovider deactivation failed")
 
@@ -81,7 +89,7 @@ def main():
 				SamlSession.login_with_new_session_at_IdP()
 				SamlSession.test_login()
 	except samltest.SamlError as exc:
-		utils.fail(exc.message)
+		utils.fail(str(exc))
 	finally:
 		# enable SP config in any case to reset state
 		subprocess.check_call(cmd_enable)

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Mail imap acl flags are correctly evaluated
 ## tags: [apptest]
 ## exposure: dangerous
@@ -6,16 +6,17 @@
 ## versions:
 ##  4.1-2: skip
 
-from __future__ import print_function
-from essential.mail import send_mail, check_delivery, create_shared_mailfolder
-from essential.mailclient import MailClient_SSL
 import subprocess
 import time
+
 import univention.config_registry
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+
+from essential.mail import check_delivery, create_shared_mailfolder, send_mail
+from essential.mailclient import MailClient_SSL
 
 
 def main():

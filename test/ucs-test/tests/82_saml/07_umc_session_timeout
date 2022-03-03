@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Session timeout at UMC
 ## tags: [saml]
 ## bugs: [52443, 52888]
@@ -6,13 +6,14 @@
 ## exposure: safe
 ## roles: [domaincontroller_master]
 
-from __future__ import print_function
-import time
 import subprocess
-import samltest
-import univention.testing.utils as utils
+import time
+
 import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
 from univention.config_registry import handler_set
+
+import samltest
 
 
 def main():
@@ -49,7 +50,7 @@ def main():
 			SamlSession.test_logout_at_IdP()
 			SamlSession.test_logout()
 		except samltest.SamlError as exc:
-			utils.fail(exc.message)
+			utils.fail(str(exc))
 
 
 if __name__ == '__main__':

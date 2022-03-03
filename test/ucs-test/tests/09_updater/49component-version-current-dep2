@@ -38,7 +38,7 @@ version2="${major}.${minor}-${_version_patchlevel}"
 mkpdir "${major}.${minor}-${_version_patchlevel}" maintained "${ARCH}"  # 6 7
 mkpkg "${DIR}" "${DIR_POOL}"
 
-python2.7 create_releases_json.py "${REPODIR}" "$version1" "$version2"
+python3 create_releases_json.py "${REPODIR}" "$version1" "$version2"
 
 comp1="repository/online/component/${compname1}"
 comp2="repository/online/component/${compname2}"

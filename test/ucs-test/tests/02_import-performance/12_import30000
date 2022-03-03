@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Import 30.000 users and test the performance
 ## tags: [import30000,performance]
 ## rolest: [domaincontroller_master]
@@ -10,11 +10,12 @@
 ##   - univention-samba4
 
 import sys
-from performanceutils import (
-	CONNECTOR_WAIT_TIME, create_ous, import_users, execute_timing,
-	wait_for_s4connector, test_umc_admin_auth, test_umc_admin_auth_udm_load,
-	create_test_user, s4_user_auth, get_user_dn_list, reset_passwords, count_users)
 
+from performanceutils import (
+	CONNECTOR_WAIT_TIME, count_users, create_ous, create_test_user, execute_timing, get_user_dn_list,
+	import_users, reset_passwords, s4_user_auth, test_umc_admin_auth, test_umc_admin_auth_udm_load,
+	wait_for_s4connector,
+)
 
 if __name__ == '__main__':
 	MAX_SECONDS_IMPORT = 22 * 3600
@@ -29,7 +30,7 @@ if __name__ == '__main__':
 
 	returnCode = 100
 
-	create_ous(map(lambda x: str(x), range(10, 70)))
+	create_ous([str(x) for x in range(10, 70)])
 
 	if not execute_timing('user import', MAX_SECONDS_IMPORT, import_users, CSV_IMPORT_FILE):
 		returnCode = 1

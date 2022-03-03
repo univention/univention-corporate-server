@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 # -*- coding: utf-8 -*
 ## desc: Move a computer which has in the local LDAP server a different entryUUID
 ## tags:
@@ -14,15 +14,16 @@
 ##  - 33495
 ## exposure: dangerous
 
-from __future__ import print_function
-from univention.testing.strings import random_name
-from univention.testing.utils import wait_for_replication
+import sys
+
+import ldap
+
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-from univention.config_registry import ConfigRegistry
 import univention.uldap
-import ldap
-import sys
+from univention.config_registry import ConfigRegistry
+from univention.testing.strings import random_name
+from univention.testing.utils import wait_for_replication
 
 success = True
 
@@ -34,14 +35,14 @@ UDM_MODULE = 'computers/ipmanagedclient'
 name = random_name()
 dn = 'cn=%s,cn=memberserver,cn=computers,%s' % (name, ucr.get('ldap/base'))
 modlist = [
-	(ldap.MOD_REPLACE, 'entryUUID', '76944348-ea2e-1032-95ad-000000000000')
+	(ldap.MOD_REPLACE, 'entryUUID', b'76944348-ea2e-1032-95ad-000000000000')
 ]
 
 
 def get_entryUUID(lo, dn):
 	result = lo.search_s(base=dn, scope=ldap.SCOPE_BASE, attrlist=['*', '+'])
 	print('DN: %s\n%s' % (dn, result))
-	return result[0][1].get('entryUUID')[0]
+	return result[0][1].get('entryUUID')[0].decode('ASCII')
 
 
 lo_local = univention.uldap.getRootDnConnection().lo

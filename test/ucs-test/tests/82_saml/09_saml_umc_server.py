@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -svvv
+#!/usr/share/ucs-test/runner pytest-3 -s -vvv
 ## desc: SSO Login at UMC, test umc connection and ldap connection
 ## tags: [saml]
 ## roles: [domaincontroller_master]
@@ -7,11 +7,12 @@
 ## tags:
 ##  - skip_admember
 
-from __future__ import print_function
 import subprocess
 import time
-import samltest
+
 import univention.testing.utils as utils
+
+import samltest
 
 
 def __get_samlSession():

@@ -93,7 +93,7 @@ ${rdir}/postup.sh [0-9]\\+ ${major}.0-0
 ${cdir}/postup.sh [0-9]\\+ post ${major}.0-0
 __SH__
 
-python2.7 create_releases_json.py "${REPODIR}" "$version1" "$version2" "$version3"
+python3 create_releases_json.py "${REPODIR}" "$version1" "$version2" "$version3"
 
 comp="repository/online/component/${compname}"
 config_repo "${comp}=yes" "${comp}/parts=maintained"

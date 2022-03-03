@@ -10,11 +10,11 @@
 ##  3.2-0: skip
 ##  4.2-0: fixed
 
-import univention.testing.udm as udm_test
 import univention.testing.strings as uts
+import univention.testing.udm as udm_test
+
 import dnstests
 import s4connector
-
 
 if __name__ == '__main__':
 	s4connector.exit_if_connector_not_running()

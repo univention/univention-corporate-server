@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check installation log files for errors, warnings and tracebacks
 ## bugs: [30751, 36160, 36902]
 ## tags: [basic, SKIP]
@@ -7,16 +7,16 @@
 ##  3.0-0: skip
 ##  4.0-0: fixed
 
-from __future__ import print_function
-import re
 import gzip
+import re
 from os import path
 from sys import exit
 
-import univention.testing.utils as utils
-from univention.testing.codes import TestCodes
-from univention.management.console.modules.setup.setup_script import Profile
 from check_log_files_definitions import Errors, Tracebacks, Warnings
+
+import univention.testing.utils as utils
+from univention.management.console.modules.setup.setup_script import Profile
+from univention.testing.codes import TestCodes
 
 
 class CheckLogFiles(object):
@@ -47,6 +47,7 @@ class CheckLogFiles(object):
         last_line = ''
 
         for line in self.log_file:
+            line = line.decode('UTF-8', 'replace')
             trace_message += line
             self.line_counter += 1
             trace_line += 1
@@ -95,9 +96,7 @@ class CheckLogFiles(object):
 
         if definition.wanted(line):
             if line == 'failed.':  # special case, Bug #36160
-                if self.check_extra_lines(previous_line,
-                                          pre_previous_line,
-                                          definition):
+                if self.check_extra_lines(previous_line, pre_previous_line, definition):
                     return result  # ignore the 'failed.' message
 
             result.append(msg)
@@ -126,29 +125,19 @@ class CheckLogFiles(object):
             if basename.endswith('.gz'):
                 self.log_file = gzip.open(filename, "rb")
             else:
-                self.log_file = open(filename, "r")
+                self.log_file = open(filename, "rb")
 
             for line in self.log_file:
                 self.line_counter += 1
-                line = line.strip()
+                line = line.decode('UTF-8', 'replace').strip()
 
                 msg = "%s:%s, %s" % (basename, self.line_counter, line)
                 errors = self.check_for_tracebacks(line, errors, msg)
 
                 # skip the message if it is repeated from the previous line:
                 if line != previous_line:
-                    errors = self.check_line(line,
-                                             previous_line,
-                                             pre_previous_line,
-                                             self.errors,
-                                             errors,
-                                             msg)
-                    warnings = self.check_line(line,
-                                               previous_line,
-                                               pre_previous_line,
-                                               self.warnings,
-                                               warnings,
-                                               msg)
+                    errors = self.check_line(line, previous_line, pre_previous_line, self.errors, errors, msg)
+                    warnings = self.check_line(line, previous_line, pre_previous_line, self.warnings, warnings, msg)
 
                 pre_previous_line = previous_line
                 previous_line = line
@@ -199,9 +188,7 @@ class CheckLogFiles(object):
         InstallProfile = Profile()
         try:
             InstallProfile.load(filename='/etc/univention/installation_profile')
-            if bool(re.match('false',
-                             InstallProfile.get_list('call_master_joinscripts')[0],
-                             re.IGNORECASE)):
+            if bool(re.match('false', InstallProfile.get_list('call_master_joinscripts')[0], re.IGNORECASE)):
                 print("\nThe 'call_master_joinscripts' is 'false' in "
                       "'/etc/univention/installation_profile', adjusting "
                       "patterns to ignore respective 'join' messages.")

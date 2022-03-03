@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: check if a radius login via DOMAIN\USERNAME is working
 ## tags: [apptest, radius]
 ## packages:
@@ -8,8 +8,9 @@
 
 import subprocess
 import tempfile
-import univention.testing.udm as udm_test
+
 import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
 
 
 def eapol_test(username):
@@ -23,7 +24,7 @@ def eapol_test(username):
 }}
 '''.format(username)
 	with tempfile.NamedTemporaryFile() as fd:
-		fd.write(testdata)
+		fd.write(testdata.encode('UTF-8'))
 		fd.flush()
 		subprocess.check_call(['/usr/sbin/eapol_test', '-c', fd.name, '-s', 'testing123'])
 

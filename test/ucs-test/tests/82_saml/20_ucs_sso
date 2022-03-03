@@ -1,15 +1,15 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check if every DC Master and DC Backup is registered in ucs-sso
 ## tags: [saml]
 ## exposure: safe
 ## packages:
 ##   - univention-saml
 
-from __future__ import print_function
-import dns.resolver
 import dns.ipv6
-from univention.testing.utils import get_ldap_connection, fail
+import dns.resolver
+
 import univention.testing.ucr as ucr_test
+from univention.testing.utils import fail, get_ldap_connection
 
 
 def _check_record_type(record_type):
@@ -31,7 +31,7 @@ def _check_record_type(record_type):
 			for ip in res[1].get(ldap_record_name[record_type]):
 				if record_type == 'AAAA':
 					ip = dns.ipv6.inet_ntoa(dns.ipv6.inet_aton(ip))
-				master_backup_ips.add(ip)
+				master_backup_ips.add(ip.decode('ASCII'))
 	print('LDAP entries: {}'.format('; '.join(master_backup_ips)))
 
 	if master_backup_ips.difference(dns_entries):

@@ -1,11 +1,9 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test
+#!/usr/share/ucs-test/runner pytest-3 -s
 # -*- coding: utf-8 -*-
 ## desc: Check the service info files for ucr and the umc services module
 ## exposure: careful
 ## tags: [apptest]
 ## bugs: [50098]
-
-from __future__ import print_function
 
 from univention.service_info import ServiceInfo
 

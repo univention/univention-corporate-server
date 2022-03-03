@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create full UDM extension objects via CLI
 ## tags: [udm-ldapextensions,apptest]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
@@ -6,21 +6,17 @@
 ## packages:
 ##   - univention-directory-manager-tools
 
-from __future__ import print_function
+import base64
+import bz2
+
 import univention.testing.udm as udm_test
 from univention.config_registry import ConfigRegistry
-from univention.testing.utils import verify_ldap_object
-from univention.testing.strings import random_name, random_version, random_ucs_version
+from univention.testing.strings import random_name, random_ucs_version, random_version
 from univention.testing.udm_extensions import (
-	get_package_name,
-	get_package_version,
-	get_extension_name,
-	get_extension_filename,
-	get_extension_buffer,
-	VALID_EXTENSION_TYPES,
+	VALID_EXTENSION_TYPES, get_extension_buffer, get_extension_filename, get_extension_name,
+	get_package_name, get_package_version,
 )
-import bz2
-import base64
+from univention.testing.utils import verify_ldap_object
 
 if __name__ == '__main__':
 	ucr = ConfigRegistry()
@@ -43,7 +39,7 @@ if __name__ == '__main__':
 				dn = udm.create_object(
 					'settings/udm_%s' % extension_type,
 					name=extension_name,
-					data=base64.b64encode(bz2.compress(extension_buffer)),
+					data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
 					filename=extension_filename,
 					packageversion=package_version,
 					appidentifier=app_id,
@@ -60,7 +56,7 @@ if __name__ == '__main__':
 					'univentionOwnedByPackage': [package_name],
 					'univentionObjectType': ['settings/udm_%s' % extension_type],
 					'univentionOwnedByPackageVersion': [package_version],
-					'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer)],
+					'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
 					'univentionAppIdentifier': [app_id],
 					'univentionUCSVersionStart': [version_start],
 					'univentionUCSVersionEnd': [version_end],

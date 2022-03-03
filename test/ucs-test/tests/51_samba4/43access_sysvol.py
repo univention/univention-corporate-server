@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: "Accessing sysvol with smbclient"
 ## exposure: safe
 ## tags: [SKIP-UCSSCHOOL,apptest]
@@ -9,10 +9,11 @@
 ## - domaincontroller_backup
 ## - domaincontroller_slave
 
+from subprocess import call, check_output
+
 import pytest
 
-from subprocess import call, check_output
-from univention.testing import utils, udm as _udm
+from univention.testing import udm as _udm, utils
 
 
 @pytest.fixture(scope='module')
@@ -32,6 +33,7 @@ def user():
 
 def test_put_a_file_on_sysvol_as_administrator(s4_domainname):
 	account = utils.UCSTestDomainAdminCredentials()
+	print('smbclient //localhost/sysvol -U"{}%{}" -c "put /etc/hosts {}/t1"'.format(account.username, account.bindpw, s4_domainname))
 	rc = call('smbclient //localhost/sysvol -U"{}%{}" -c "put /etc/hosts {}/t1"'.format(account.username, account.bindpw, s4_domainname), shell=True)
 	assert rc == 0, "Could not put file on sysvol as Administrator"
 

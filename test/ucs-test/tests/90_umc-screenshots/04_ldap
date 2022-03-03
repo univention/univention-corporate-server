@@ -1,9 +1,10 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: UMC LDAP screenshots
 ## roles-not: [basesystem]
 ## exposure: dangerous
 
 from lib.screen_shooter import BaseScreenShooter
+
 from univention.admin import localization
 
 translator = localization.translation('univention-ucs-test_umc-screenshots')

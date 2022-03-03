@@ -6,6 +6,7 @@
 ##  - univention-mail-postfix
 
 import random
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
@@ -15,10 +16,10 @@ import univention.testing.utils as utils
 def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		with udm_test.UCSTestUDM() as udm:
-			domains = list()
+			domains = []
 			for _ in range(5):
 				maildomain = '{}.{}.{}'.format(uts.random_name(), uts.random_name(), uts.random_name())
-				maildomain = "".join(map(lambda x: random.choice([x.lower(), x.upper()]), maildomain))
+				maildomain = "".join(random.choice([x.lower(), x.upper()]) for x in maildomain)
 				udm.create_object(
 					'mail/domain',
 					position='cn=domain,cn=mail,{}'.format(ucr['ldap/base']),
@@ -42,5 +43,4 @@ def main():
 
 if __name__ == '__main__':
 	main()
-
 # vim: set ft=python ts=4 sw=4 noet :

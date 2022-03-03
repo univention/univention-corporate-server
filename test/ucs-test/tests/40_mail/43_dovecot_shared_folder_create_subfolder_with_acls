@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create subfolder in shared folder and check permissions
 ## tags: [apptest]
 ## exposure: dangerous
@@ -7,15 +7,19 @@
 ##  - univention-mail-dovecot
 ##  - univention-directory-manager-tools
 
-from __future__ import print_function
 import os
 import sys
 import time
+
+import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-import univention.testing.strings as uts
-from essential.mail import check_delivery, create_shared_mailfolder, get_dovecot_shared_folder_maildir, random_email, send_mail, ImapMail
+
+from essential.mail import (
+	ImapMail, check_delivery, create_shared_mailfolder, get_dovecot_shared_folder_maildir, random_email,
+	send_mail,
+)
 
 TIMEOUT_MAIL = 120
 
@@ -83,7 +87,7 @@ def main():
 						retry -= 5
 					else:
 						raise
-			#imap1.connection.logout()
+			# imap1.connection.logout()
 
 			print('*** OK: user1 can write to shared folder')
 

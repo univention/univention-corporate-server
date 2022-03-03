@@ -1,10 +1,10 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Download metadata.php
 ## tags: [saml]
 ## exposure: safe
 
-from __future__ import print_function
-import urllib2
+from six.moves.urllib.request import urlopen
+
 from univention.config_registry import ConfigRegistry
 from univention.testing.utils import fail
 
@@ -21,11 +21,11 @@ if __name__ == '__main__':
 	# read at least five times because ucs-sso is an alias for different IPs
 	for i in range(0, 5):
 		print('%d: Query metadata for %r' % (i, metadata_url))
-		response = urllib2.urlopen(metadata_url)
+		response = urlopen(metadata_url)
 		metadata = response.read()
 		if not metadata:
 			fail('Empty response')
-		print(metadata)
+		print(metadata.decode('UTF-8', 'replace'))
 		res.append(metadata)
 
 	for i in range(0, 4):

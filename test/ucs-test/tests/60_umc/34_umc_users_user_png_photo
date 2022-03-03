@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 # -*- coding: utf-8 -*.
 ## desc: Test setting of user photo via UMC
 ## bugs: [36273]
@@ -6,16 +6,16 @@
 ##  - domaincontroller_master
 ## exposure: dangerous
 
-import sys
+import base64
 import subprocess
+import sys
 from tempfile import NamedTemporaryFile
 
 import univention.testing.utils as utils
-from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_username
+from univention.testing.udm import UCSTestUDM
 
-sys.path.insert(0, '.')
-from umc import UMCBase  # noqa: E402
+from umc import UMCBase
 
 
 class TestUMCUserAuthentication(UMCBase):
@@ -39,32 +39,32 @@ class TestUMCUserAuthentication(UMCBase):
 		utils.verify_ldap_object(self.test_user_dn)
 
 	def set_image_jpeg(self):
-		with open('./34_userphoto.jpeg') as fd:
+		with open('./34_userphoto.jpeg', 'rb') as fd:
 			image = fd.read()
-		assert image == self.set_image(image).decode('base64'), "Failed to set JPEG user photo"
+		assert image == base64.b64decode(self.set_image(image)), "Failed to set JPEG user photo"
 
 	def set_image_jpg(self):
-		with open('./34_userphoto.jpg') as fd:
+		with open('./34_userphoto.jpg', 'rb') as fd:
 			image = fd.read()
-		assert image == self.set_image(image).decode('base64'), "Failed to set JPG user photo"
+		assert image == base64.b64decode(self.set_image(image)), "Failed to set JPG user photo"
 
 	def set_image_png(self):
-		with open('./34_userphoto.png') as fd:
+		with open('./34_userphoto.png', 'rb') as fd:
 			image = fd.read()
-		image = self.set_image(image).decode('base64')
-		with NamedTemporaryFile() as tempfile:
+		image = base64.b64decode(self.set_image(image))
+		with NamedTemporaryFile(mode='wb') as tempfile:
 			tempfile.write(image)
 			tempfile.flush()
 			p = subprocess.Popen(['/usr/bin/file', '-i', tempfile.name], stdout=subprocess.PIPE)
 			stdout, stderr = p.communicate()
-			assert 'image/jpeg' in stdout, "Failed to set PNG user photo (not converted to JPEG): %r" % (stdout,)
+			assert b'image/jpeg' in stdout, "Failed to set PNG user photo (not converted to JPEG): %r" % (stdout,)
 
 	def unset_image(self):
 		assert not self.set_image(""), "Failed to unset user photo"
 
 	def set_image(self, jpegPhoto):
 		if jpegPhoto:
-			jpegPhoto = jpegPhoto.encode('base64').rstrip()  # TODO: make umcp/upload request
+			jpegPhoto = base64.b64encode(jpegPhoto).decode('ASCII')  # TODO: make umcp/upload request
 		self.modify_object([{"object": {"jpegPhoto": jpegPhoto, "$dn$": self.test_user_dn}}], 'users/user')
 		response = self.get_object([self.test_user_dn], 'users/user')
 		return response[0].get('jpegPhoto')

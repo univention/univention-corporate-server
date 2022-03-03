@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Creates extended attributes and usertemplate
 ## bugs: [51364]
 ## roles:
@@ -8,9 +8,10 @@
 ## exposure: dangerous
 
 import pytest
-import univention.testing.udm as udm_test
-import univention.testing.ucr as ucr_test
+
 import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 

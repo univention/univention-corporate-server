@@ -4,11 +4,10 @@
 
 .. moduleauthor:: Ammar Najjar <najjar@univention.de>
 """
-from __future__ import print_function
-
 import os
-from subprocess import call
 import time
+from subprocess import call
+
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
 

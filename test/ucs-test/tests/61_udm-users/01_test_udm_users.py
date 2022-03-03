@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/pytest-3
+#!/usr/share/ucs-test/runner pytest-3
 # -*- coding: utf-8 -*-
 ## desc: Test users/user
 ## tags: [udm,apptest]
@@ -8,25 +8,22 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-from __future__ import print_function
-
-import time
-import random
 import base64
 import pprint
+import random
 import subprocess
+import time
 from datetime import datetime, timedelta
 
 import pytest
 
-import univention.testing.strings as uts
-import univention.testing.utils as utils
-import univention.testing.udm as udm_test
-from univention.testing.umc import Client
-
-from univention.admin.uldap import position
-import univention.admin.uldap
 import univention.admin.modules as udm_modules
+import univention.admin.uldap
+import univention.testing.strings as uts
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+from univention.admin.uldap import position
+from univention.testing.umc import Client
 
 
 @pytest.fixture
@@ -235,7 +232,7 @@ def test_script_lock_expired_accounts(stopped_s4_connector, udm):  # TODO: param
 		userdn, username = udm.create_user(userexpiry=expiry_time.strftime("%Y-%m-%d"), check_for_drs_replication=False, wait_for=False)
 		if locked_status == '1':
 			locktime = time.strftime("%Y%m%d%H%M%SZ", time.gmtime())
-			subprocess.check_call(['/usr/bin/python2.7', '-m', 'univention.lib.account', 'lock', '--dn', userdn, '--lock-time', locktime])
+			subprocess.check_call(['/usr/bin/python3', '-m', 'univention.lib.account', 'lock', '--dn', userdn, '--lock-time', locktime])
 		return username
 
 	userdata = {}
@@ -338,8 +335,9 @@ def test_script_lock_expired_passwords(udm, ucr, delta, disabled, expected):
 def test_country_names_uptodate():  # TODO: move into package unit test
 	"""Test is list of country names in univention.admin.syntax.Country.choices is uptodate"""
 
-	import univention.admin.syntax as udm_syntax
 	import pycountry
+
+	import univention.admin.syntax as udm_syntax
 
 	current_countries = sorted([(country.alpha_2, country.name) for country in pycountry.countries], key=lambda x: x[0])
 	if dict(current_countries) != dict(udm_syntax.Country.choices):
@@ -739,7 +737,7 @@ def test_udm_users_ldap_mspolicy(udm, ucr, module):
 	utils.wait_for_replication_and_postrun()
 
 	name = "%s_test1" % (uts.random_username())
-	attr = {'password': 'Univention.1', 'username': name, 'lastname': 'test', 'policy_reference': pol_dn}
+	attr = {'password': b'Univention.1', 'username': name, 'lastname': 'test', 'policy_reference': pol_dn}
 	dn = udm.create_object(module, wait_for_replication=True, check_for_drs_replication=True, wait_for=True, **attr)
 
 	with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):

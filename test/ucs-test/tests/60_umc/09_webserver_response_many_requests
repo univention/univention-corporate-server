@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check if the webserver is responding after sending many unanswered requests
 ## bugs: [37487]
 ## versions:
@@ -15,13 +15,13 @@
 ## exposure: dangerous
 
 
-from __future__ import print_function
 import ssl
-import httplib
 import subprocess
 
-from univention.management.console.modules.ucstest import joinscript, unjoinscript
+import httplib
+
 import univention.testing.utils as utils
+from univention.management.console.modules.ucstest import joinscript, unjoinscript
 from univention.testing.umc import Client
 
 NUMBER_OF_NOT_RESPONDING_REQUESTS = 100

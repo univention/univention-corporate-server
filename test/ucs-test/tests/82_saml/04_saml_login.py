@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -svvv
+#!/usr/share/ucs-test/runner pytest-3 -svvv
 ## desc: SSO Login at UMC as Service Provider
 ## tags: [saml]
 ## join: true
@@ -6,9 +6,9 @@
 ## tags:
 ##  - skip_admember
 
-from __future__ import print_function
-import samltest
 import univention.testing.utils as utils
+
+import samltest
 
 
 def __get_samlSession():
