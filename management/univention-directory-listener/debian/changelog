@@ -1,3 +1,11 @@
+univention-directory-listener (13.0.3-7) unstable; urgency=medium
+
+  * Bug #54504: Remove wrong code, which hardcodes listener module priority
+    for replication.py. Instead, the priority is set directly in the listener
+    module.
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 03 Mar 2022 17:53:00 +0100
+
 univention-directory-listener (13.0.3-6) unstable; urgency=low
 
   * Bug #54322: Add dependency on python-typing
