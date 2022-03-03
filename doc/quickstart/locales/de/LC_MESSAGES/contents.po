@@ -1,0 +1,23 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021-2022, Univention GmbH.
+# This file is distributed under the same license as the Quick start guide
+# for Univention Corporate Server package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Quick start guide for Univention Corporate Server \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-03 16:10+0100\n"
+"PO-Revision-Date: 2022-03-03 16:13+0100\n"
+"Last-Translator: Nico Gulden <gulden@univention.de>\n"
+"Language-Team: GERMAN <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../contents.rst:3
+msgid "Quick start guide for Univention Corporate Server"
+msgstr "Quickstart Guide für Univention Corporate Server"
+

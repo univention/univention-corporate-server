@@ -1,7 +1,3 @@
-#################################################
-Quick start guide for Univention Corporate Server
-#################################################
-
 .. _quickstart:intro:
 
 ************
@@ -82,7 +78,7 @@ information on how to set up the UCS system for this scenario, see
 In the subsequent course of the installation, the fully qualified host
 name, under which the computer should be accessible in the network, is
 entered for a |UCSPRIMARYDN|. A local name should also be used as the
-domain name in this case, e.g., company.intranet. (If the system is used
+domain name in this case, e.g. ``company.intranet``. (If the system is used
 as a mail server, for example, the mail domains can be used
 independently of the domain names). For example, to commission the
 *mailserver* host system in the ``company.intranet`` DNS domain,

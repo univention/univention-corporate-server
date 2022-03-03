@@ -82,7 +82,11 @@ if "spelling" in sys.argv:
     # Warnings may come up by sphinx-last-updated-by-git. Shall be suppressed in spelling job
     suppress_warnings = ['git.too_shallow']
 
-root_doc = "index"
+root_doc = "contents"
+
+html_sidebars = {
+    "**": ["sidebar-logo.html", "search-field.html", "_templates/sidebar-links.html", "sbt-sidebar-footer.html"],
+}
 
 latex_engine = 'lualatex'
 latex_show_pagerefs = True
