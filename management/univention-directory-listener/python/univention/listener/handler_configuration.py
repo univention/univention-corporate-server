@@ -31,6 +31,7 @@ from __future__ import absolute_import
 import inspect
 import string
 from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Type  # noqa: F401
+import warnings
 
 import listener
 from .exceptions import ListenerModuleConfigurationError
@@ -100,7 +101,7 @@ class ListenerModuleConfiguration(object):
 	def get_configuration(self):
 		# type: () -> Dict[str, Any]
 		"""
-		 Get the configuration as dictionary - *deprecated*.
+		Get the configuration as dictionary - *deprecated*.
 
 		.. deprecated:: 5.0-2
 			Will be removed in UCS 5.0-2.
@@ -108,6 +109,11 @@ class ListenerModuleConfiguration(object):
 		:return: configuration of listener module
 		:rtype: dict
 		"""
+		warnings.warn(
+			"The method ListenerModuleConfiguration.get_configuration() is deprecated and will be "
+			"removed with UCS 5.0-2.",
+			PendingDeprecationWarning,
+		)
 		res = {}
 		for key in self.get_configuration_keys():
 			getter = getattr(self, 'get_{}'.format(key), None)

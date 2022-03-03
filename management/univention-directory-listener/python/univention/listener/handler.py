@@ -33,7 +33,7 @@ import os
 import types  # noqa: F401
 from contextlib import contextmanager
 from six import reraise, with_metaclass
-from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Mapping, Optional, Sequence, Tuple, Type, Union  # noqa: F401
+from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Mapping, Optional, Sequence, Tuple, Type, Union, cast  # noqa: F401
 
 import listener
 from univention.admin.uldap import access, position
@@ -52,8 +52,8 @@ class HandlerMetaClass(type):
 	fulfill original API.
 	"""
 	def __new__(mcs, clsname, bases, attrs):
-		# type: (Type[ListenerModuleHandler], str, List[Type[Any]], Dict[str, str]) -> Any
-		kls = super(HandlerMetaClass, mcs).__new__(mcs, clsname, bases, attrs)
+		# type: (str, Tuple[type, ...], Dict[str, Any]) -> Type[ListenerModuleHandler]
+		kls = cast(Type["ListenerModuleHandler"], super().__new__(mcs, clsname, bases, attrs))
 		is_listener_module = getattr(kls, '_is_listener_module', lambda: False)
 		if is_listener_module():
 			kls.config = kls._get_configuration()
