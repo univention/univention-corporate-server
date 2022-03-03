@@ -6,14 +6,12 @@ exec >generated-config-doc.yml
 cat "${0%/*}/base.yml"
 cat "${0%/*}/base-doc.yml"
 
-doc_job () { # <extends> [<suffix>]
+doc_job () { # <extends> [<suffix> [<language>]]
 	echo
-	echo "build ${pkg}${language:+ "$language"}${2:+ "$2"}:"
+	echo "build ${pkg}${3:+ "$3"}${2:+ "$2"}:"
 	echo '  variables:'
 	echo "    base: $path"
-	if [ ! -z ${language+x} ]; then
-		echo "    language: $language"
-	fi
+    [ -n "${3+empty}" ] && echo "    language: $3"
 	echo "  extends: ${1:?extends}"
 	echo '  rules:'
 	echo '    - if: "$CI_COMMIT_MESSAGE =~ /skip-doc/ || $pipeline =~ /skip-doc/"'
@@ -35,12 +33,11 @@ do
 		for l_path in "$path"/locales/* "en"
 		do
 			language="${l_path##*/}"
-			doc_job '.sphinx-html' html
-			doc_job '.sphinx-pdf' pdf
-			doc_job '.sphinx-linkcheck' linkcheck
-			doc_job '.sphinx-spelling' spelling
+			doc_job '.sphinx-html' html "$language"
+			doc_job '.sphinx-pdf' pdf "$language"
+			doc_job '.sphinx-linkcheck' linkcheck "$language"
+			doc_job '.sphinx-spelling' spelling "$language"
 		done
-		unset language
 	elif [ -f "${path}/Makefile" ]
 	then
 		doc_job '.doc'
