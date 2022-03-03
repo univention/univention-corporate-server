@@ -226,6 +226,18 @@ class CheckExecutable(Check):
 		super(CheckExecutable, self).__init__()
 		self.filename = filename
 
+	@property
+	def cmd(self):  # type: () -> List[str]
+		filename = self.filename
+		cmd = [filename]
+		if filename in ('/usr/bin/pytest-3', '/usr/bin/py.test-3'):
+			filename = '/usr/bin/python3'
+			cmd = [filename, '-u', '-bb', self.filename]
+		elif filename.startswith('/usr/bin/python3'):
+			cmd.append('-u')
+			cmd.append('-bb')
+		return cmd
+
 	def check(self, _environment):  # type: (TestEnvironment) -> Iterator[Verdict]
 		"""Check environment for required executable."""
 		if not os.path.isabs(self.filename):
@@ -734,7 +746,7 @@ class TestCase(object):
 		"""Run the test case and fill in result."""
 		base = os.path.basename(self.filename)
 		dirname = os.path.dirname(self.filename)
-		cmd = [self.exe.filename, base] + self.args
+		cmd = self.exe.cmd + [base] + self.args
 
 		if self.is_pytest:
 			cmd = PytestRunner.extend_command(self, cmd)
@@ -768,7 +780,7 @@ class TestCase(object):
 			try:
 				if result.environment.interactive:
 					proc = Popen(
-						cmd, executable=self.exe.filename,
+						cmd, executable=cmd[0],
 						shell=False, stdout=PIPE, stderr=PIPE,
 						close_fds=True, cwd=dirname,
 						preexec_fn=os.setsid
@@ -777,7 +789,7 @@ class TestCase(object):
 				else:
 					with open(os.path.devnull, 'rb') as devnull:
 						proc = Popen(
-							cmd, executable=self.exe.filename,
+							cmd, executable=cmd[0],
 							shell=False, stdin=devnull,
 							stdout=PIPE, stderr=PIPE, close_fds=True,
 							cwd=dirname, preexec_fn=prepare_child
