@@ -595,7 +595,6 @@ class object(univention.admin.handlers.simpleLdap):
 				memberUidRemove = keepCase(memberUidRemove, oldMemberUids)
 				ml.append(('memberUid', memberUidRemove, ''))
 
-			memberUidAdd = list(set(memberUidAdd) - set(oldMemberUids))
 			if memberUidAdd:
 				ml.append(('memberUid', '', memberUidAdd))
 

@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: univention-directory-manager-modules
+fix: 
+desc: |
+ This update addresses the following issue:
+ * When setting an user as a member of a group in UDM, that had the same UID
+   but a different DN of another member, the related attribute `memberUid` of
+   the group got dropped. This happened in the cool Solution `user-group-sync`
+   during move operations.
+bug: [54487]
