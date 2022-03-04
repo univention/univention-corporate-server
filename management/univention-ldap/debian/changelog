@@ -1,3 +1,9 @@
+univention-ldap (16.0.7-16) unstable; urgency=medium
+
+  * Add univentionRadiusPassword
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 04 Mar 2022 11:55:12 +0100
+
 univention-ldap (16.0.7-15) unstable; urgency=medium
 
   * Bug #54092: removed code from postinst due to errata policies
