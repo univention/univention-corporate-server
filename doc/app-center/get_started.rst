@@ -14,7 +14,7 @@ the Test App Center.
 What does the app provider need?
 ================================
 
-.. _app-provider-needs:docker-image:
+.. _app-provider-needs-docker-image:
 
 Software in a Docker image
 --------------------------
@@ -39,7 +39,7 @@ considered public by the time the app is published in |UCSAPPC|.
 The image must have a version tag to distinguish different software
 versions. It later allows updates for the apps.
 
-.. _app-provider-needs:portal-account:
+.. _app-provider-needs-portal-account:
 
 Account for App Provider Portal
 -------------------------------
@@ -67,7 +67,7 @@ for all the settings around the app.
 
    App Provider Portal overview with "Apps" module selected
 
-.. _app-provider-needs:help:
+.. _app-provider-needs-help:
 
 Where to get help?
 ------------------
@@ -86,7 +86,7 @@ Create an app with a Docker image
 This section describes how to create the app in the App Provider Portal
 and use a Docker image. It focuses on a single container setup. For a
 setup with multiple containers with Docker Compose please see :ref:`Create a
-Multi Container App <create-app-with-docker:compose>`.
+Multi Container App <create-app-with-docker-compose>`.
 
 .. figure:: /images/app_portal_new_app.png
    :alt: Add new App
@@ -123,7 +123,7 @@ UCS version
    for an overview of the maintained UCS version. In either case it
    is recommended to specify the supported UCS versions explicitly
    (see :ref:`Supported UCS
-   versions <create-app-with-docker:supported-ucs-version>`.
+   versions <create-app-with-docker-supported-ucs-version>`.
 
 Provider / Maintainer
    refers to the organization that the app
@@ -134,7 +134,7 @@ Docker app
    is for the recommended Docker based app. This
    documentation only covers single and multi container apps.
 
-.. _create-app-with-docker:image:
+.. _create-app-with-docker-image:
 
 Docker image
 ------------
@@ -153,7 +153,7 @@ Docker image
    Please add the version tag explicitly. The App Center distinguishes
    different app versions and handles updates accordingly.
 
-.. _create-app-with-docker:supported-ucs-version:
+.. _create-app-with-docker-supported-ucs-version:
 
 Supported UCS versions
 ----------------------
@@ -167,7 +167,7 @@ entries for Supported UCS versions for App could be made: ``4.4-8`` and
 ``5.0-0``. This means that for the installation of the app UCS 4.4-8 or
 UCS 5.0-0 are required.
 
-.. _create-app-with-docker:description:
+.. _create-app-with-docker-description:
 
 Logo and description
 --------------------
@@ -186,7 +186,7 @@ Those settings can be changed later. For a more detailed description of
 the app presentation and notes on the translation, please take a look at
 :ref:`App presentation <app-presentation>`.
 
-.. _create-app-with-docker:volumes:
+.. _create-app-with-docker-volumes:
 
 Persistent data with volumes
 ----------------------------
@@ -214,7 +214,7 @@ Host
 Docker container
    ``/etc/app``
 
-.. _create-app-with-docker:web-interface:
+.. _create-app-with-docker-web-interface:
 
 Web interface
 -------------
@@ -241,7 +241,7 @@ Supported protocols by the container's web interface
    Select :guilabel:`HTTP and HTTPS`, if both protocol schemes should be
    covered.
 
-.. _create-app-with-docker:ports:
+.. _create-app-with-docker-ports:
 
 Ports
 -----
@@ -266,7 +266,7 @@ they can be defined in the app join script. Please refer to the `Network
 Packet Filter section in the UCS Development
 Reference <univention-dev-reference-nacl_>`_.
 
-.. _create-app-with-docker:database:
+.. _create-app-with-docker-database:
 
 Database
 --------
@@ -292,7 +292,7 @@ defined. For example, if the container expects the database hostname in
 database host`. There are also fields for the database port, user,
 password, database name and the password file.
 
-.. _create-app-with-docker:environment:
+.. _create-app-with-docker-environment:
 
 Environment
 -----------
@@ -312,7 +312,7 @@ The content of the environment file can be entered in the App Provider
 portal on the :guilabel:`Configuration` tab in the field for :guilabel:`Environment file for
 Docker container creation`.
 
-.. _create-app-with-docker:compose:
+.. _create-app-with-docker-compose:
 
 Create a Multi Container App
 ============================
@@ -324,7 +324,7 @@ defining and running multi-container Docker applications. The heart of
 such applications is a YAML file that configures all services for the
 application. The supported compose file format version is 2.0.
 
-.. _create-app-with-docker:setup:
+.. _create-app-with-docker-setup:
 
 Multi container setup
 ---------------------
@@ -367,13 +367,13 @@ You also need to define the :guilabel:`Name of the "main" service within the
 docker-compose.yml` below the :guilabel:`Contents of the docker-compose.yml file`.
 
 In order to provide access to the application's web interface, please
-see :ref:`Web interface <create-app-with-docker:web-interface>`.
+see :ref:`Web interface <create-app-with-docker-web-interface>`.
 
 If the app setup requires exclusive ports and a list of ports needs to
 get forwarded from the host to the container, please see
-:ref:`Ports <create-app-with-docker:ports>`.
+:ref:`Ports <create-app-with-docker-ports>`.
 
-.. _create-app-with-docker:script-reference:
+.. _create-app-with-docker-script-reference:
 
 Script execution reference
 --------------------------
@@ -384,7 +384,7 @@ container during :ref:`installation <installation-scripts>`,
 <upgrade-scripts>`. Scripts run inside the container are run inside the
 container of the "main service".
 
-.. _create-app-with-docker:compose-postprocessing:
+.. _create-app-with-docker-compose-postprocessing:
 
 Post processing of Docker Compose file
 --------------------------------------
@@ -428,7 +428,7 @@ changes:
    Center will define a port on the fly in ``docker-compose.yml``. This
    is because UCS hosts usually occupy ports 80 and 443 with a web
    server. The App Center creates an Apache Reverse Proxy configuration.
-   See :ref:`Web interface <create-app-with-docker:web-interface>` for
+   See :ref:`Web interface <create-app-with-docker-web-interface>` for
    details.
 
 6. UCS provides a number of environment variables via the App Center,
@@ -485,7 +485,7 @@ more about UCR templates, but the core mechanics are:
    Note that currently, you cannot access App Settings within the Python
    script.
 
-.. _create-app-with-docker:finish:
+.. _create-app-with-docker-finish:
 
 Finish multi container setup
 ----------------------------

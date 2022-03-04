@@ -10,7 +10,7 @@ VMware, VMware ESXi, VirtualBox and KVM images. By default the UCS
 branding is used, but it is possible and recommended to use a custom
 branding.
 
-.. _app-appliances:create:
+.. _app-appliances-create:
 
 Create an app appliance
 -----------------------
@@ -20,7 +20,7 @@ published and activate the :guilabel:`Create App appliance` checkbox on the
 :guilabel:`Appliance` tab. If the solution needs a minimum size of memory, please
 specify the needed mega bytes.
 
-.. _appliance:additional-software:
+.. _appliance-additional-software:
 
 Additional software
 ~~~~~~~~~~~~~~~~~~~
@@ -28,7 +28,7 @@ Additional software
 If the appliance should include additional apps, please specify them in
 the *Additional software* section.
 
-.. _appliance:customize-setup-wizard:
+.. _appliance-customize-setup-wizard:
 
 Customize setup wizard in appliance
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -37,7 +37,7 @@ The appliance allows customization of the UCS setup wizard and controls
 which setup pages and setup fields should be hidden. For simplicity
 towards the user, it is recommended to hide the ``software`` page.
 
-.. _appliance:customize-app-center:
+.. _appliance-customize-app-center:
 
 Customize app listing in App Center
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -48,7 +48,7 @@ if the solution is a groupware, other groupware solutions can be hidden
 from the overview listing. System administrators can only install the
 whitelisted apps or are not allowed to install the black listed apps.
 
-.. _appliance:first-steps:
+.. _appliance-first-steps:
 
 First steps information
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -60,7 +60,7 @@ needs to know that a user object has to be created and activated for the
 app first. This could be briefly described in this section. The German
 translation should be kept in mind and provided.
 
-.. _appliance:umc-favorites:
+.. _appliance-umc-favorites:
 
 Customize UMC favorite category
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -71,7 +71,7 @@ The favorites section comes up first, after a UCS system administrator
 logs onto the UCS management system. It is recommended to have the
 modules ``Users``, ``Groups`` and ``App Center`` listed here.
 
-.. _appliance:build:
+.. _appliance-build:
 
 Appliance build
 ~~~~~~~~~~~~~~~
@@ -81,7 +81,7 @@ button and provide a custom message to let the Univention team know that
 an appliance is ready to be build. This will create a ticket which helps
 to keep the communication in one place.
 
-.. _appliance:release:
+.. _appliance-release:
 
 Test and release
 ~~~~~~~~~~~~~~~~
@@ -109,7 +109,7 @@ splash, the system setup wizard and the portal page can be modified.
 Please look at the screenshots below and the explanations of the options
 that control the look.
 
-.. _appliance:branding:bootloader:
+.. _appliance-branding-bootloader:
 
 Boot loader
 ~~~~~~~~~~~
@@ -122,7 +122,7 @@ define in the *Primary color* setting.
 
    Boot loader
 
-.. _appliance:branding:bootsplash:
+.. _appliance-branding-bootsplash:
 
 Boot splash
 ~~~~~~~~~~~
@@ -143,7 +143,7 @@ function on w3schools <css-linear-gradient_>`_.
 
    Boot splash
 
-.. _appliance:branding:setup-wizard:
+.. _appliance-branding-setup-wizard:
 
 System setup wizard
 ~~~~~~~~~~~~~~~~~~~
@@ -159,9 +159,9 @@ the *Logo for header in setup wizard* setting. The *Primary color* controls
 the background color of the UMC header.
 
 The *Secondary color* is used as color for smaller graphical elements
-throughout the setup wizard (see :ref:`appliance:branding:umc-branding-figure`).
+throughout the setup wizard (see :ref:`appliance-branding-umc-branding-figure`).
 
-.. _appliance:branding:setup-wizard-figure:
+.. _appliance-branding-setup-wizard-figure:
 
 .. figure:: /images/Appliance_Branding_Setup_Wizard.png
    :alt: System setup first screen
@@ -169,14 +169,14 @@ throughout the setup wizard (see :ref:`appliance:branding:umc-branding-figure`).
    System setup first screen
 
 
-.. _appliance:branding:umc-branding-figure:
+.. _appliance-branding-umc-branding-figure:
 
 .. figure:: /images/Appliance_Branding_UMC.png
    :alt: System setup summary screen
 
    System setup summary screen
 
-.. _appliance:branding:welcome-screen:
+.. _appliance-branding-welcome-screen:
 
 Welcome screen
 ~~~~~~~~~~~~~~
@@ -193,7 +193,7 @@ Depending on the character of the welcome screen background (bright or
 dark), the *Font color for welcome screen* should be either set to
 ``White`` or ``Black``.
 
-.. _appliance:branding:portal-page:
+.. _appliance-branding-portal-page:
 
 Portal page
 ~~~~~~~~~~~
@@ -204,7 +204,7 @@ can be configured if the font color shall be black or white. The *Logo
 for the portal page* controls which logo shall be set in the first tile
 on the portal page. The background can either consist of a background
 image or a background color or a background color gradient as described
-in :ref:`Boot splash <appliance:branding:bootsplash>`.
+in :ref:`Boot splash <appliance-branding-bootsplash>`.
 
 .. figure:: /images/Appliance_Branding_Portal_Page.png
    :alt: Appliance portal page

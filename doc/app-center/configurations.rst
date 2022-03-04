@@ -31,7 +31,7 @@ found in the following sections.
 
    App workflow for installation
 
-.. _installation:preinst:
+.. _installation-preinst:
 
 Script called before installation to verify that App may be installed
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -54,7 +54,7 @@ Note that :ref:`App settings <app-settings>` with scope ``outside`` are
 already set by the time the script is run and can therefore be checked
 against.
 
-.. _installation:restore-data-before-setup:
+.. _installation-restore-data-before-setup:
 
 Docker script restore_data_before_setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -65,7 +65,7 @@ to restore the data which has been stored by the :file:`store_data` script.
 The parameters are the *appid*, the app version and a filename for error
 logging.
 
-.. _installation:setup:
+.. _installation-setup:
 
 Docker script setup
 ~~~~~~~~~~~~~~~~~~~
@@ -80,7 +80,7 @@ The parameters given to the script are the *appid*, the app version, a
 filename for error logging and the username and credentials for the
 Administrator user.
 
-.. _installation:restore_data_after_setup:
+.. _installation-restore-data-after-setup:
 
 Docker script restore_data_after_setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -91,7 +91,7 @@ to restore the data which has been stored by the :file:`store_data` script.
 The parameters are the *appid*, the app version and a filename for error
 logging.
 
-.. _installation:configure_host:
+.. _installation-configure-host:
 
 Settings script run on Docker host
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -102,7 +102,7 @@ make environment specific settings on the UCS host regarding the app.
 The parameters are the app action :file:`install`, the app version, a
 filename for error logging and the locale.
 
-.. _installation:configure:
+.. _installation-configure:
 
 Settings script run in Docker container
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -113,7 +113,7 @@ environment specific settings in the app container. The parameters are
 the app action :file:`install`, the *appid*, the app version and a filename
 for error logging.
 
-.. _installation:joinscript:
+.. _installation-joinscript:
 
 Join script
 ~~~~~~~~~~~
@@ -130,7 +130,7 @@ script does not need to run successfully. The installation will not be
 aborted at this point. But of course at some point it should run through
 successfully.
 
-.. _installation:joinscript:helper:
+.. _installation-joinscript-helper:
 
 Join script helper
 ^^^^^^^^^^^^^^^^^^
@@ -157,7 +157,7 @@ Furthermore, this call provides access to the following variables:
 ``$CONTAINER``
    Docker container id
 
-.. _installation:joinscript:functions:
+.. _installation-joinscript-functions:
 
 Join script functions
 ^^^^^^^^^^^^^^^^^^^^^
@@ -226,7 +226,7 @@ Join script functions
 
       joinscript_register_schema "$@"
 
-.. _installation:joinscript:boilerplate:
+.. _installation-joinscript-boilerplate:
 
 Join script boilerplate
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -264,7 +264,7 @@ found in the following sections.
 
    App workflow for Removal
 
-.. _uninstallation:prerm:
+.. _uninstallation-prerm:
 
 Script called before uninstalling to verify that App may be removed
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -281,7 +281,7 @@ the UCS management system and thus to the administrator performing the
 installation. Proper error messages can thus be passed to the
 administrator.
 
-.. _uninstallation:configure_host:
+.. _uninstallation-configure-host:
 
 Settings script run on Docker host
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -292,7 +292,7 @@ specific settings on the UCS host during the removal of the app. The
 parameters are the app action ``remove``, the app version, a filename
 for error logging and the locale.
 
-.. _uninstallation:configure:
+.. _uninstallation-configure:
 
 Settings script run in Docker container
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -303,7 +303,7 @@ environment specific settings in the app container before it is removed.
 The parameters are the app action ``remove``, the *appid*, the app
 version and a filename for error logging.
 
-.. _uninstallation:store-data:
+.. _uninstallation-store-data:
 
 Docker script store_data
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -319,7 +319,7 @@ data can be restored by one of the ``restore_data*`` scripts. The
 parameters are the *appid*, the app version and a filename for error
 logging.
 
-.. _uninstallation:unjoin:
+.. _uninstallation-unjoin:
 
 Unjoin script
 ~~~~~~~~~~~~~
@@ -349,7 +349,7 @@ the scripts themselves can be found in the following sections.
    App workflow for upgrade
 
 
-.. _upgrade-scripts:preinst:
+.. _upgrade-scripts-preinst:
 
 Script called before upgrade to verify that App may be upgraded
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -367,7 +367,7 @@ the passed error log file will be passed to the UCS management system
 and thus to the administrator performing the installation. Proper error
 messages can thus be passed to the administrator.
 
-.. _upgrade:store_data:
+.. _upgrade-store-data:
 
 Docker script store_data
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -382,7 +382,7 @@ should copy the relevant data to
 data can be restored by one of the ``restore_data*`` scripts when they
 are executed in the new container.
 
-.. _upgrade:restore_data_before_setup:
+.. _upgrade-restore-data-before-setup:
 
 Docker script restore_data_before_setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -391,7 +391,7 @@ The life cycle script :file:`restore_data_before_setup` is executed inside
 the Docker container before the :file:`setup` script is run. Its purpose is
 to restore the data which has been stored by the :file:`store_data` script.
 
-.. _upgrade:setup:
+.. _upgrade-setup:
 
 Docker script setup
 ~~~~~~~~~~~~~~~~~~~
@@ -405,7 +405,7 @@ The parameters given to the script are the *appid*, the app version, a
 filename for error logging and the username and credentials for the
 Administrator user.
 
-.. _upgrade:restore_data_after_setup:
+.. _upgrade-restore-data-after-setup:
 
 Docker script restore_data_after_setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -415,7 +415,7 @@ the Docker container after the :file:`setup` script is run. Its purpose is
 to restore the data which has been stored by the :file:`store_data` script
 in the old container.
 
-.. _upgrade:configure_host:
+.. _upgrade-configure-host:
 
 Settings script run on Docker host
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -426,7 +426,7 @@ make environment specific settings on the UCS host regarding the app
 during the upgrade. The parameters are the app action ``upgrade``, the
 app version, a filename for error logging and the locale.
 
-.. _upgrade:configure:
+.. _upgrade-configure:
 
 Settings script run in Docker container
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -437,7 +437,7 @@ make environment specific settings in the app container during the
 upgrade. The parameters are the app action ``upgrade``, the *appid*, the
 app version and a filename for error logging.
 
-.. _upgrade:joinscript:
+.. _upgrade-joinscript:
 
 Join Script
 ~~~~~~~~~~~
@@ -448,7 +448,7 @@ the necessary execution permissions or access to the UCS directory
 service. When a join script should run during the upgrade, please keep
 in mind to increment the ``VERSION`` counter. For more information on
 the join script in general see :ref:`Join
-script <installation:joinscript>`.
+script <installation-joinscript>`.
 
 .. _app-settings:
 
@@ -461,9 +461,9 @@ displayed to the user. The app can react accordingly to the changes.
 
 If App settings are defined for an app, the user can reach these
 settings in the app configuration, see
-:ref:`app-configurations:app-settings:button`).
+:ref:`app-configurations-app-settings-button`).
 
-.. _app-configurations:app-settings:button:
+.. _app-configurations-app-settings-button:
 
 .. figure:: /images/Appcenter-settings-button.png
    :alt: App settings button
@@ -471,9 +471,9 @@ settings in the app configuration, see
    App settings button
 
 An example for an App settings dialog is in
-:ref:`app-configurations:app-settings:example`).
+:ref:`app-configurations-app-settings-example`).
 
-.. _app-configurations:app-settings:example:
+.. _app-configurations-app-settings-example:
 
 .. figure:: /images/Appcenter-settings-example.png
    :alt: App settings example
@@ -483,7 +483,7 @@ An example for an App settings dialog is in
 The App settings can be defined on the tab :guilabel:`Advanced` in the section *App
 settings* in the App Provider Portal.
 
-.. _app-settings:scripts:
+.. _app-settings-scripts:
 
 React on App settings
 ~~~~~~~~~~~~~~~~~~~~~
@@ -497,7 +497,7 @@ container. In the App Provider Portal, the path of the script can be
 given (*Configure scripts*) or the script code can be uploaded (*Path to
 script inside the container (absolute)*).
 
-.. _app-settings:reference:
+.. _app-settings-reference:
 
 App settings configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -581,7 +581,7 @@ Docker container (``inside``), on the Docker host (``outside``) or on
 both (``inside, outside``). The default is ``inside``. Values in the
 scope ``inside`` can be referenced in the :file:`docker-compose.yml` for
 multi container apps just like |UCSUCRVs| (see :ref:`Post processing of Docker
-Compose file <create-app-with-docker:compose-postprocessing>` for an
+Compose file <create-app-with-docker-compose-postprocessing>` for an
 example).
 
 The attributes ``Labels`` and ``Values`` are used if a type List is defined. The
@@ -594,7 +594,7 @@ The attribute ``Filename`` can be used to define the absolute path where the
 file should be stored. This attribute is needed in case the types ``File``
 or ``PasswordFile`` are used.
 
-.. _app-settings:examples:
+.. _app-settings-examples:
 
 App settings examples
 ~~~~~~~~~~~~~~~~~~~~~
@@ -717,7 +717,7 @@ administrator to install it accordingly.
 
 Next the app needs to be configured to use the UCS SMTP and IMAP
 servers. This is done in the Join Script (see :ref:`Join
-script <installation:joinscript>`). The following snippet gives an
+script <installation-joinscript>`). The following snippet gives an
 example what should be included in the Join Script:
 
 .. code:: sh
@@ -768,7 +768,7 @@ SMTP:
 
 * Mechanism Login or Mechanism Plain
 
-.. _mail-integration:with-docker-apps:
+.. _mail-integration-with-docker-apps:
 
 Provide mail with Docker Apps
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -778,7 +778,7 @@ custom setup for the app. To provide SMTP and/or IMAP services in a
 Docker app, these services have to be stopped on the Docker host. This
 can be done in the app's preinst Docker script, see :ref:`Script called
 before installation to verify that App may be
-installed <installation:preinst>`. Example:
+installed <installation-preinst>`. Example:
 
 .. code:: sh
 
@@ -792,7 +792,7 @@ To map SMTP and/or IMAP ports from the container to the host to be able
 to use the Docker host as IMAP/SMTP server exclusive ports for the
 container have to be set to the relevant ports (e.g. ``110``, ``143``, ``993``, ``995``,
 ``587``, ``25``, ``465``, ``4190`` for *POP3(S)*, *IMAP(S)*, *SMTP(S)*, submission and sieve).
-See :ref:`Ports <create-app-with-docker:ports>` on how to set an exclusive
+See :ref:`Ports <create-app-with-docker-ports>` on how to set an exclusive
 port.
 
 Firewall exceptions for these ports are create automatically.
@@ -800,9 +800,9 @@ Firewall exceptions for these ports are create automatically.
 Best practice is to at least map the IMAP data store to the Docker host
 to provide a separation of data and container (important for migration
 to Docker and Docker image updates). See :ref:`Persistent data with
-volumes <create-app-with-docker:volumes>`.
+volumes <create-app-with-docker-volumes>`.
 
-.. _mail-integration:local-mail-docker-host:
+.. _mail-integration-local-mail-docker-host:
 
 Use local mail on Docker host
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -834,7 +834,7 @@ Subdomains / dedicated FQDN for an App
 There may be reasons why an App needs to have its own FQDN within the
 UCS domain. Some Apps may not be able to configure a web interface that
 integrates well into the default Apache sites of UCS (see :ref:`Web
-interface <create-app-with-docker:web-interface>`).
+interface <create-app-with-docker-web-interface>`).
 
 To avoid naming collisions, the App's FQDN should reference the Docker
 Host's FQDN, e.g, ``myapp.ucs-primary.domain.tld``. UCS can do the
@@ -853,7 +853,7 @@ following to allow this scenario to work as smooth as possible:
   that is then included in the *VHost* entry.
 
 For this to work, this snippet can be used in the join script (:ref:`Join
-script <installation:joinscript>`):
+script <installation-joinscript>`):
 
 .. code:: sh
 
@@ -909,15 +909,15 @@ This section describes how the local Univention Firewall based on
 :program:`iptables` is changed by apps and how it can be customized. Docker
 containers have access to the Docker host. And the Docker containers can
 be made available for external clients with *Ports redirection* settings
-(see :ref:`Ports <create-app-with-docker:ports>`).
+(see :ref:`Ports <create-app-with-docker-ports>`).
 
 If MariaDB or PostgreSQL are used as database, those ports will be
 opened automatically for the Docker container (section
-:ref:`Database <create-app-with-docker:database>`).
+:ref:`Database <create-app-with-docker-database>`).
 
 Every app can provide additional custom rules to open required ports.
 This can be done in the join script (section :ref:`Join
-script <installation:joinscript>`). In the example the port 6644 is
+script <installation-joinscript>`). In the example the port 6644 is
 opened for TCP and UDP:
 
 .. code-block:: sh
@@ -933,4 +933,4 @@ opened for TCP and UDP:
 Please also add corresponding ``ucr unset`` commands in the unjoin
 script so that the firewall rules will be removed when the app is
 removed from the system (section :ref:`Unjoin
-script <uninstallation:unjoin>`).
+script <uninstallation-unjoin>`).

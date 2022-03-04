@@ -25,7 +25,7 @@ Provisioning
 There are different ways in which applications can access provisioning
 information. The following describes a pull and push-based procedure.
 
-.. _provisioning:pull:
+.. _provisioning-pull:
 
 Automatically via LDAP connection (Pull)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -73,7 +73,7 @@ environment variable ``LDAP_HOSTDN``. The password is written in the file
 :file:`/etc/machine.secret`. The credentials are not changed when an app is
 upgraded. But they change if an app is reinstalled.
 
-.. _provisioning:push:
+.. _provisioning-push:
 
 Automatically via IDM notifications (Push)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -85,7 +85,7 @@ command that is executed when a file is created.
 
 `UCS 4.3 erratum 211 <e43-211_>`_ is required on the user's system for this feature.
 
-.. _provision:push:setup:
+.. _provision-push-setup:
 
 Setup in App configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -105,7 +105,7 @@ container, this script can be called accordingly, e.g.
    #/bin/sh
    /usr/sbin/app-connector
 
-.. _provision:push:mechanism:
+.. _provision-push-mechanism:
 
 How the mechanism works
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -141,7 +141,7 @@ All files are JSON with one dictionary and the following content:
 Logging information about the listener can found in
 :file:`/var/log/univention/listener_modules/$appid.log`.
 
-.. _provision:push:script:
+.. _provision-push-script:
 
 What should the script cover?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -171,7 +171,7 @@ What should the script cover?
   files. This means that multiple modifications on the object have been
   made since the last time your script processed the object.
 
-.. _provision:push:json:
+.. _provision-push-json:
 
 JSON example
 ^^^^^^^^^^^^
@@ -240,7 +240,7 @@ Authentication
 There are different ways in which applications can authenticate against
 the UCS identity management system.
 
-.. _authentication:ldap:
+.. _authentication-ldap:
 
 LDAP
 ~~~~
@@ -289,7 +289,7 @@ environment variable ``LDAP_HOSTDN``. The password is written in the file
 :file:`/etc/machine.secret`. The credentials are not changed when an app is
 upgraded. But they change if an app is reinstalled.
 
-.. _authentication:kerberos:
+.. _authentication-kerberos:
 
 Kerberos
 ~~~~~~~~

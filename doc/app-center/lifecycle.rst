@@ -20,7 +20,7 @@ the solution with UCS, for example in the identity management area (see
 :ref:`Connection with Identity Management <connection-idm>`). This part of
 the life cycle can be divided into two steps: setup and integration.
 
-.. _development:best-practice:
+.. _development-best-practice:
 
 Best practice for app development environment
 ---------------------------------------------
@@ -33,12 +33,12 @@ example, are caused by the download of Docker images.
 The development of apps mainly involves the App Provider portal and a
 local instance of |UCSUCR| (UCS). To setup your UCS environment the best
 practice is to download one of the UCS virtual machine images and use
-VirtualBox or VMware (see :ref:`Download UCS <testing:download>`). After
+VirtualBox or VMware (see :ref:`Download UCS <testing-download>`). After
 the installation, `activate the
 system <ucs-manual-license_>`_
 and copy your SSH key to the UCS system to save typing the password on
 each remote console login. Finally, activate the Test App Center (see
-:ref:`Test App Center <testing:test-app-center>`). With that status it is
+:ref:`Test App Center <testing-test-app-center>`). With that status it is
 a good time to make a snapshot of the system, which allows to got back
 to that status. Afterwards, app specific time consuming tasks can be
 prepared to reduce recurring waiting times. Among them are for example
@@ -47,7 +47,7 @@ even the own Docker registry, and the manual download of the app's
 Docker image(s) with :command:`docker pull` (for single container apps) or
 :command:`docker-compose -p $appid pull` (for multi container apps) from the
 within the :file:`docker-compose.yml` directory of the app (see
-:ref:`Debugging <testing:debugging>`). And then also make a new snapshot.
+:ref:`Debugging <testing-debugging>`). And then also make a new snapshot.
 Especially, having the Docker image(s) locally saves download time
 during recurring installation test cycles.
 
@@ -67,7 +67,7 @@ Testing the app is the final part of its development. It typically
 involves a combination of manual and automatic tests. In order to test
 the app with UCS, please follow these instructions.
 
-.. _testing:download:
+.. _testing-download:
 
 Download UCS
 ------------
@@ -78,7 +78,7 @@ an ISO image or a pre-installed virtual machine image for various
 virtualization hypervisors, like for example VMware (ESXi and
 Workstations), VirtualBox and KVM.
 
-.. _testing:setup:
+.. _testing-setup:
 
 Initial UCS setup
 -----------------
@@ -87,7 +87,7 @@ Please refer to the `Quickstart Guide for Univention Corporate Server
 <ucs-quickstart_>`_ for the first
 steps about installation and initial setup.
 
-.. _testing:test-app-center:
+.. _testing-test-app-center:
 
 Test App Center
 ---------------
@@ -100,7 +100,7 @@ the UCS system set up before.
    $ univention-install univention-appcenter-dev
    $ univention-app dev-use-test-appcenter
 
-.. _testing:install:
+.. _testing-install:
 
 Install the app
 ---------------
@@ -131,7 +131,7 @@ The following points are mandatory for the App to be published:
 
 *  The app is working with the UCS versions that are configured as
    Supported UCS version (see :ref:`Supported UCS
-   versions <create-app-with-docker:supported-ucs-version>`).
+   versions <create-app-with-docker-supported-ucs-version>`).
 
 When installing the App, also mind :file:`README` information that may have
 been defined on the :guilabel:`Additional texts` tab in the app in the App Provider
@@ -143,7 +143,7 @@ after the installation. If something is needed in order to use the app
 appropriate README section (see :ref:`README for the
 administrator <readme>`).
 
-.. _testing:upgrade:
+.. _testing-upgrade:
 
 Upgrade the app
 ---------------
@@ -161,7 +161,7 @@ Afterwards, go back to the App Center UMC module. There, the app should
 show up with the update symbol indicating the availability of an update.
 Continue and perform the app upgrade.
 
-.. _testing:checklist:
+.. _testing-checklist:
 
 Test checklist
 --------------
@@ -183,7 +183,7 @@ all possible items, but mentions what is missed repeatedly.
    Can they be understood easily? Is the description of technical steps
    complete and correct, especially path and file names?
 
-.. _testing:deactive-test-app-center:
+.. _testing-deactive-test-app-center:
 
 Deactivate the Test App Center
 ------------------------------
@@ -194,7 +194,7 @@ To switch back to the productive App Center, please run:
 
    $ univention-app dev-use-test-appcenter --revert
 
-.. _testing:automation-for-providers:
+.. _testing-automation-for-providers:
 
 Automated testing for App Providers
 -----------------------------------
@@ -245,7 +245,7 @@ The test script can be manually tested.
    > --binddn "$DN" \
    > --bindpwd "$BINDPWD"
 
-.. _testing:debugging:
+.. _testing-debugging:
 
 Debugging
 ---------
