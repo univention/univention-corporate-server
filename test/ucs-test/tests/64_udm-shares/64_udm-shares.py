@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Create shares/share and verify LDAP object
 ## tags: [udm]
 ## roles:
 ##   - domaincontroller_master
@@ -14,6 +13,8 @@
 import pytest
 
 import random
+import subprocess
+import time
 
 import ldap.dn
 
@@ -28,10 +29,12 @@ def random_fqdn(ucr):  # type: (univention.testing.ucr.UCSTestConfigRegistry) ->
 boolean_to_unmapped = {'0': 'no', '1': 'yes'}
 
 
-# This is *very* inconsistent:
+## This is *very* inconsistent:
 # Most boolean syntax properties *must* be set with 0/1 but are returned as no/yes.
 # OTOH some are returned as 0/1: sambaNtAclSupport sambaInheritAcls sambaOplocks sambaLevel2Oplocks sambaFakeOplocks
 def keyAndValue_to_ldap(property_values):
+	if not isinstance(property_values, list):
+		property_values = [property_values]
 	_keyAndValue_to_ldap = {
 		'"acl xattr update mtime" yes': 'acl xattr update mtime = yes',
 		'"access based share enum" yes': 'access based share enum = yes',
@@ -43,6 +46,7 @@ def keyAndValue_to_ldap(property_values):
 @pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 @pytest.mark.exposure('careful')
 def test_create_fileshare(udm, ucr):
+	"""Create shares/share and verify LDAP object"""
 	admin_dn = ucr.get('tests/domainadmin/account', 'uid=Administrator,cn=users,%s' % (ucr.get('ldap/base'),))
 	admin_name = ldap.dn.str2dn(admin_dn)[0][0][1]
 
@@ -171,56 +175,13 @@ def test_create_fileshare(udm, ucr):
 		{'univentionShareSambaPostexec': [properties['sambaPostexec']]},
 		delay=1
 	)
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Create shares/share and check if share connect works
-## tags: [udm]
-## roles:
-##   - domaincontroller_master
-##   - domaincontroller_backup
-##   - domaincontroller_slave
-##   - memberserver
-## exposure: careful
-## packages:
-##   - univention-config
-##   - univention-directory-manager-tools
-
-import pytest
-
-import random
-import subprocess
-import time
-
-import ldap.dn
-
-import univention.testing.strings as uts
-import univention.testing.ucr
-import univention.testing.utils as utils
-
-
-def random_fqdn(ucr):  # type: (univention.testing.ucr.UCSTestConfigRegistry) -> str
-	return '%s.%s' % (uts.random_name(), ucr.get('domainname'))
-
-
-boolean_to_unmapped = {'0': 'no', '1': 'yes'}
-
-
-## This is *very* inconsistent:
-# Most boolean syntax properties *must* be set with 0/1 but are returned as no/yes.
-# OTOH some are returned as 0/1: sambaNtAclSupport sambaInheritAcls sambaOplocks sambaLevel2Oplocks sambaFakeOplocks
-def keyAndValue_to_ldap(property_values):
-	if not isinstance(property_values, list):
-		property_values = [property_values]
-	_keyAndValue_to_ldap = {
-		'"acl xattr update mtime" yes': 'acl xattr update mtime = yes',
-		'"access based share enum" yes': 'access based share enum = yes',
-	}
-	return [_keyAndValue_to_ldap[v] for v in property_values]
 
 
 @pytest.mark.tags('udm')
 @pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 @pytest.mark.exposure('careful')
 def test_create_fileshare_and_connect_via_samba(udm, ucr):
+	"""Create shares/share and check if share connect works"""
 	admin_dn = ucr.get('tests/domainadmin/account', 'uid=Administrator,cn=users,%s' % (ucr.get('ldap/base'),))
 	admin_name = ldap.dn.str2dn(admin_dn)[0][0][1]
 	password = ucr.get('tests/domainadmin/pwd', 'univention')
