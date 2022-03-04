@@ -333,11 +333,11 @@ def spam_delivered(token, mail_address):
 	if not os.path.isdir(mail_dir):
 		print('Warning: maildir %r does not exist!' % (mail_dir,))
 	for _file in get_dir_files(mail_dir, recursive=True, exclude=["tmp"]):
-		with open(_file) as fi:
+		with open(_file, 'rb') as fi:
 			content = fi.read()
-		delivered = delivered or (token in content)
+		delivered = delivered or (token.encode('UTF-8') in content)
 		if delivered:
-			if 'X-Spam-Flag: YES' in content:
+			if b'X-Spam-Flag: YES' in content:
 				spam = spam or True
 			break
 	return delivered and spam
