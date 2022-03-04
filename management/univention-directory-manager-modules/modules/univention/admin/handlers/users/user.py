@@ -70,7 +70,10 @@ from univention.admin.layout import Group, Tab
 from univention.lib.s4 import rids_for_well_known_security_identifiers
 
 from typing import List  # noqa: F401
-
+try:
+	timezone = tzlocal.get_localzone().zone
+except BytesWarning:
+	timezone = 'Europe/Berlin'
 try:
 	from univention.admin.syntax import ActivationDateTimeTimezone
 except ImportError:
@@ -255,7 +258,7 @@ property_descriptions = {
 		long_description=_('This disables the account until the specified time.'),
 		syntax=univention.admin.syntax.ActivationDateTimeTimezone,
 		dontsearch=True,
-		default=[[None, None, tzlocal.get_localzone().zone], []],
+		default=[[None, None, timezone], []],
 	),
 	'locked': univention.admin.property(  # This property only serves two purposes: 1) filtering 2) artificial simulation of lockout
 		short_description=_('Locked state of account'),
