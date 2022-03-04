@@ -19,7 +19,7 @@ from datetime import date
 # -- Project information -----------------------------------------------------
 
 project = 'Quick start guide for Univention Corporate Server'
-copyright = '2021-{}, Univention GmbH.'.format(date.today().year)
+copyright = '2021-{}, Univention GmbH'.format(date.today().year)
 author = ''
 
 # The full version, including alpha/beta/rc tags
