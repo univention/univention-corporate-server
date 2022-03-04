@@ -1,3 +1,9 @@
+ucs-test (9.0.7-88) unstable; urgency=medium
+
+  * Bug #54487: memberuid is mission after updating group users with same uid
+
+ -- Arvid Requate <requate@univention.de>  Mon, 07 Mar 2022 09:38:44 +0100
+
 ucs-test (9.0.7-87) unstable; urgency=medium
 
   * Bug #54433: Added testcase 52_s4connector/517authentication_accountExpires
