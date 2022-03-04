@@ -4,6 +4,9 @@
 .. _docker-docs: https://docs.docker.com/
 .. _docker-hub: https://hub.docker.com/
 .. _docker: https://www.docker.com/
+.. _e43-91: https://errata.software-univention.de/#/?erratum=4.3x91
+.. _e43-211: https://errata.software-univention.de/#/?erratum=4.3x211
+.. _e43-345: https://errata.software-univention.de/#/?erratum=4.3x345
 .. _openldap-docs-schema: https://www.openldap.org/doc/admin24/schema.html
 .. _ucs-download: https://www.univention.com/downloads/download-ucs/
 .. _ucs-maintenance-cycle: https://wiki.univention.de/index.php/Maintenance_Cycle_for_UCS

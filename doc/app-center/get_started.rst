@@ -317,7 +317,7 @@ Docker container creation`.
 Create a Multi Container App
 ============================
 
-Starting with 345 |UCSAPPC| supports apps that consist of multiple Docker
+Starting with `UCS 4.3-2 erratum 345 <e43-345_>`_ |UCSAPPC| supports apps that consist of multiple Docker
 images. It uses `Docker
 Compose <docker-compose-docs_>`_, a tool for
 defining and running multi-container Docker applications. The heart of

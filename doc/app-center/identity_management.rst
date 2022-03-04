@@ -83,7 +83,7 @@ created, modified or deleted. For each change, a file is created in a
 specific directory. The app can either poll the directory or register a
 command that is executed when a file is created.
 
-211 is required on the user's system for this feature.
+`UCS 4.3 erratum 211 <e43-211_>`_ is required on the user's system for this feature.
 
 .. _provision:push:setup:
 

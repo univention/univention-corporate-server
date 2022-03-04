@@ -650,7 +650,7 @@ management <ucs-manual-domain-ssl_>`_
 in the UCS manual.
 
 Apps may need access to the UCS certificate infrastructure or need to be
-aware of changes to the certificates. Starting with 91 the |UCSAPPC|
+aware of changes to the certificates. Starting with `UCS 4.3 erratum 91 <e43-91_>`_ the |UCSAPPC|
 provides a simple way to manage certificates inside an app. The script
 ``update-certificates`` is executed on the UCS host automatically during the
 installation and upgrade of apps (but can also be executed manually) and

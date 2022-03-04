@@ -106,3 +106,7 @@ latex_elements = {
 
 # Sitemap, see https://github.com/jdillard/sphinx-sitemap
 html_baseurl = f'https://docs.software-univention.de/app-provider/{language}/{release}'
+
+linkcheck_ignore = [
+    r"https://errata\.software-univention\.de/#/\?erratum=",
+]
