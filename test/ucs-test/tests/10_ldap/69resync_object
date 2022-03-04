@@ -150,7 +150,7 @@ def test_resync_remove_object():
 	]).decode('UTF-8')
 	if fail_remove != 'object does not exist local\nobject does not exist on Primary\n':
 		utils.fail('Script should not have done anything: {}'.format(fail_remove))
-	local_lo.add(container_dn, [('objectClass', 'organizationalRole'), ('cn', container_name)])
+	local_lo.add(container_dn, [('objectClass', b'organizationalRole'), ('cn', container_name.encode('UTF-8'))])
 	try:
 		if not local_lo.searchDn(container_filter):
 			utils.fail("Could not add container to local ldap")
