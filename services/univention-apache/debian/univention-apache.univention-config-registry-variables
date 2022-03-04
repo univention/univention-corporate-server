@@ -143,14 +143,20 @@ Type=str
 Categories=service-apache
 
 [apache2/ssl/tlsv11]
-Description[de]=Ist diese Option aktiviert, wird nur noch TLS 1.1 und TLS 1.2 von Apache unterstützt. Ist die Variable nicht gesetzt und keine weitere apache2/ssl/* Variable gesetzt, wird TLS 1.0 bis 1.2 unterstützt.
-Description[en]=If this option is enabled, only TLS 1.1 and TLS 1.2 is supported in Apache. If the variable is unset and no further apache2/ssl/* variable is set, TLS 1.0 to TLS 1.2 are supported.
+Description[de]=Ist diese Option aktiviert, wird nur noch TLS 1.1, TLS 1.2 und TLS 1.3 von Apache unterstützt. Ist die Variable nicht gesetzt und keine weitere apache2/ssl/* Variable gesetzt, wird TLS 1.0 bis 1.3 unterstützt.
+Description[en]=If this option is enabled, only TLS 1.1, TLS 1.2 and TLS 1.3 is supported in Apache. If the variable is unset and no further apache2/ssl/* variable is set, TLS 1.0 to TLS 1.3 are supported.
 Type=bool
 Categories=service-apache
 
 [apache2/ssl/tlsv12]
-Description[de]=Ist diese Option aktiviert, wird nur noch TLS 1.2 von Apache unterstützt. Ist die Variable nicht gesetzt und keine weitere apache2/ssl/* Variable gesetzt, wird TLS 1.0 bis 1.2 unterstützt.
-Description[en]=If this option is enabled, only TLS 1.2 is supported in Apache. If the variable is unset and no further apache2/ssl/* variable is set, TLS 1.0 to TLS 1.2 are supported.
+Description[de]=Ist diese Option aktiviert, wird nur noch TLS 1.2 und TLS 1.3 von Apache unterstützt. Ist die Variable nicht gesetzt und keine weitere apache2/ssl/* Variable gesetzt, wird TLS 1.0 bis 1.3 unterstützt.
+Description[en]=If this option is enabled, only TLS 1.2 and TLS 1.3 is supported in Apache. If the variable is unset and no further apache2/ssl/* variable is set, TLS 1.0 to TLS 1.3 are supported.
+Type=bool
+Categories=service-apache
+
+[apache2/ssl/tlsv13]
+Description[de]=Ist diese Option aktiviert, wird nur noch TLS 1.3 von Apache unterstützt. Ist die Variable nicht gesetzt und keine weitere apache2/ssl/* Variable gesetzt, wird TLS 1.0 bis 1.3 unterstützt.
+Description[en]=If this option is enabled, only TLS 1.3 is supported in Apache. If the variable is unset and no further apache2/ssl/* variable is set, TLS 1.0 to TLS 1.3 are supported.
 Type=bool
 Categories=service-apache
 
@@ -170,6 +176,12 @@ Categories=service-apache
 Description[de]=Dies konfiguriert die kryptografischen Verfahren, die ein Client in der SSL-Handshake-Phase angeboten bekommt. Das Format ist unter <http://httpd.apache.org/docs/2.4/mod/mod_ssl.html#sslciphersuite> beschrieben. Ist die Variable nicht gesetzt, wird 'HIGH:MEDIUM:!aNULL' verwendet.
 Description[en]=This configures the cryptopgraphic algorithms which are offered to clients during a SSL handshake. The format is described at <http://httpd.apache.org/docs/2.4/mod/mod_ssl.html#sslciphersuite>. If the variable is unset, 'HIGH:MEDIUM:!aNULL' is used.
 Type=str
+Categories=service-apache
+
+[apache2/ssl/strict-sni-vhost-check]
+Description[de]=Ist diese Option aktiviert, wird Nicht-SNI-Clients der Zugriff auf namensbasierte virtuelle Hosts untersagt.
+Description[en]=If this option is enabled, non-SNI clients are forbidden to access name based virtual hosts.
+Type=bool
 Categories=service-apache
 
 [apache2/documentroot]

@@ -34,9 +34,11 @@ Type: file
 File: etc/apache2/mods-available/ssl.conf
 Variables: apache2/ssl/tlsv11
 Variables: apache2/ssl/tlsv12
+Variables: apache2/ssl/tlsv13
 Variables: apache2/ssl/compression
 Variables: apache2/ssl/honorcipherorder
 Variables: apache2/ssl/ciphersuite
+Variables: apache2/ssl/strict-sni-vhost-check
 Variables: apache2/force_https
 Variables: apache2/force_https/exclude/.*
 

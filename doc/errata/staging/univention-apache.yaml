@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-apache
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Apache can now be configured to only support TLS v1.3 connections
+   by setting the UCR Variable `ucr set apache2/ssl/tlsv13=true`.
+bug: [54306]
