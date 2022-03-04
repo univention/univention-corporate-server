@@ -1,4 +1,4 @@
-.. _quickstart:intro:
+.. _quickstart-intro:
 
 ************
 Introduction
@@ -26,7 +26,7 @@ The system requirements vary considerably depending on the intended
 purpose and the number of users. The minimum requirements for the
 installation are 1 GB memory and 8 GB hard drive space.
 
-.. _quickstart:installation:
+.. _quickstart-installation:
 
 ************
 Installation
@@ -50,7 +50,7 @@ UCS systems are installed in the domain at a later point in time, the
 servers.
 
 
-.. _quick-systemrole:
+.. _quickstart-systemrole:
 
 .. figure:: images/systemrole.png
    
@@ -106,7 +106,7 @@ initiated. Once completed, the system must be restarted. The further
 configuration is made using the |UCSUMC| (UMC). This is described in more
 detail in the following chapter.
 
-.. _quickstart:administration:
+.. _quickstart-administration:
 
 *****************
 UCS web interface
@@ -122,7 +122,7 @@ partitioning of entries can be customized in a very flexible manner, see also
 `UCS manual - Portal page as central view on the UCS domain
 <https://docs.software-univention.de/manual-5.0.html#central:portal>`_.)
 
-.. _quick-ucs-portal:
+.. _quickstart-ucs-portal:
 
 .. figure:: images/ucs-portal.png
 
@@ -149,13 +149,13 @@ interface |UCSUDM|, see `UCS manual - Command line interface of domain
 management (Univention Directory Manager)
 <https://docs.software-univention.de/manual-5.0.html#central:udm>`_.
 
-.. _quick-umc-overview:
+.. _quickstart-umc-overview:
 
 .. figure:: images/umc-modules.png
 
    Modules in the UMC
 
-.. _quickstart:updatesinstall:
+.. _quickstart-updatesinstall:
 
 ********************************************
 UCS updates / Installing additional software
@@ -175,13 +175,13 @@ Management Console:
   add-on products (e.g. `UCS@school` for school deployment can also be installed
   through the App Center.
 
-.. _quick-appcenter:
+.. _quickstart-appcenter:
 
 .. figure:: images/appcenter.png
 
    Subsequent installation of UCS components
 
-.. _quickstart:ucr:
+.. _quickstart-ucr:
 
 ****************************************************************
 Configuration management using Univention Configuration Registry
@@ -198,13 +198,13 @@ configuration files is only needed in exceptional cases.
 Configuration Registry`. Configuration files are automatically
 updated when the UCR variables registered on them are changed.
 
-.. _quick-ucr:
+.. _quickstart-ucr-image:
 
 .. figure:: images/ucr.png
 
    Managing |UCSUCR| variables
 
-.. _quickstart:clients:
+.. _quickstart-clients:
 
 *******
 Clients
@@ -231,7 +231,7 @@ different clients. The following clients are supported:
   into the domain, see `Integration of Linux/Unix systems into a UCS domain
   <https://docs.software-univention.de/domain-5.0.html#ext-dom-unix>`_.
 
-.. _quickstart:extend:
+.. _quickstart-extend:
 
 *******************************
 Further expansion of the domain
@@ -257,7 +257,7 @@ license and which can be integrated at a later point in time:
 
 - Hybrid cloud setups
 
-.. _quickstart:furtherinfo:
+.. _quickstart-furtherinfo:
 
 *******************
 Further information
