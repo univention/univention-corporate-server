@@ -693,7 +693,7 @@ class Test_StandardContainer(object):
 		for object_type in ('container/cn', 'container/ou'):
 			defalt_containers = 'cn=default containers,%s' % (udm.UNIVENTION_CONTAINER,)
 			print('testing', object_type)
-			computerPath = lo.getAttr(defalt_containers, 'univentionComputersObject')
+			computerPath = [x.decode('UTF-8') for x in lo.getAttr(defalt_containers, 'univentionComputersObject')]
 			userPath = lo.getAttr(defalt_containers, 'univentionUsersObject')
 
 			utils.verify_ldap_object(defalt_containers, {'univentionUsersObject': userPath, 'univentionComputersObject': computerPath})

@@ -16,7 +16,7 @@ import univention.testing.utils as utils
 
 def get_output(cmd):
 	p = Popen(cmd, stdout=PIPE, stderr=PIPE)
-	return '%s\n%s' % p.communicate()
+	return (b'%s\n%s' % p.communicate()).decode('UTF-8')
 
 
 def print_job(job, msg=''):

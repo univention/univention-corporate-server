@@ -90,8 +90,8 @@ if __name__ == '__main__':
 			computer_DN = udm.create_object(role, **properties)
 
 			# FIXME: workaround for remaining locks
-			udm.addCleanupLock('aRecord', ldap.getAttr(computer_DN, 'aRecord')[0])
-			udm.addCleanupLock('mac', ldap.getAttr(computer_DN, 'macAddress')[0])
+			udm.addCleanupLock('aRecord', ldap.getAttr(computer_DN, 'aRecord')[0].decode('ASCII'))
+			udm.addCleanupLock('mac', ldap.getAttr(computer_DN, 'macAddress')[0].decode('ASCII'))
 
 			# validate computer ldap object
 			utils.verify_ldap_object(computer_DN, expectedLdap)
@@ -118,13 +118,13 @@ if __name__ == '__main__':
 
 			if role != 'computers/ipmanagedclient':
 				# validate computer sambaSID
-				computer_sambaSID = ldap.getAttr(computer_DN, 'sambaSID')[0]
+				computer_sambaSID = ldap.getAttr(computer_DN, 'sambaSID')[0].decode('ASCII')
 				udm.addCleanupLock('sid', computer_sambaSID)
 				if utils.s4connector_present():
-					if not computer_sambaSID.decode('ASCII').startswith('S-1-4'):
+					if not computer_sambaSID.startswith('S-1-4'):
 						utils.fail('"sambaSID" of %s did not start with "S-1-4-" as expected' % computer_DN)
 				else:
-					sambaDomainSID = ldap.search(filter='objectClass=sambaDomain', attr=['sambaSID'])[0][1]['sambaSID'][0]
+					sambaDomainSID = ldap.search(filter='objectClass=sambaDomain', attr=['sambaSID'])[0][1]['sambaSID'][0].decode('ASCII')
 					if not computer_sambaSID.startswith(sambaDomainSID):
 						utils.fail('"sambaSID" of %s did not start with "%s" as expected' % (computer_DN, sambaDomainSID))
 

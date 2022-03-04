@@ -28,7 +28,7 @@ class SamlLoginError(SamlError):
 	def __init__(self, page, message=''):
 		self.page = page.page
 		if not message and type(self) is SamlLoginError:
-			message = "Unknown error in SAML response.\nSAML response:\n%s" % self.page.content
+			message = "Unknown error in SAML response.\nSAML response:\n%s" % (self.page.content.decode('UTF-8', 'replace'),)
 		super(SamlLoginError, self).__init__(message)
 
 	def __new__(cls, saml):
@@ -138,7 +138,7 @@ class SamlTest(object):
 		# check for an expected status_code as a different would indicate an error
 		# in the current login step.
 		if self.page.status_code != status_code:
-			raise SamlError("Problem while %s\nWrong status code: %s, expected: %s\nServer response was: %s" % (self.position, self.page.status_code, status_code, self.page.content))
+			raise SamlError("Problem while %s\nWrong status code: %s, expected: %s\nServer response was: %s" % (self.position, self.page.status_code, status_code, self.page.content.decode('UTF-8', 'replace')))
 
 	def _request(self, method, url, status_code, data=None, expected_format='html'):
 		"""does POST or GET requests and raises SamlError which encodes the login step

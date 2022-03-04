@@ -92,7 +92,7 @@ class TestCases(object):
 			attrs = self.udm._lo.get(dn, attr=ATTR_LIST)
 			for key in ATTR_LIST:
 				for val in attrs.get(key, []):
-					print('  %s: %s' % (key, val,))
+					print('  %s: %s' % (key, val.decode('UTF-8'),))
 			print()
 
 	def test_user_then_group(self, with_listener):  # type: (bool) -> None

@@ -47,7 +47,7 @@ def eap_test(username, password, password_ap, addr_ap):
 		tmp_file.write(wpa_config.encode('UTF-8'))
 		tmp_file.seek(0)
 		print("wpa_config:")
-		print(tmp_file.read())
+		print(tmp_file.read().decode('UTF-8'))
 		subprocess.check_call([
 			'eapol_test',
 			'-c',

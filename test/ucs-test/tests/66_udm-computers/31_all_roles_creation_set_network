@@ -48,7 +48,7 @@ if __name__ == '__main__':
 			network = udm.create_object('networks/network', **networkProperties)
 
 			computer = udm.create_object(role, network=network, **computerProperties)
-			aRecord = utils.get_ldap_connection().getAttr(computer, 'aRecord')[0]
+			aRecord = utils.get_ldap_connection().getAttr(computer, 'aRecord')[0].decode('ASCII')
 
 			# FIXME: workaround for remaining locks
 			udm.addCleanupLock('aRecord', aRecord)

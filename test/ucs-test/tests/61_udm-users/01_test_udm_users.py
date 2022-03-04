@@ -737,7 +737,7 @@ def test_udm_users_ldap_mspolicy(udm, ucr, module):
 	utils.wait_for_replication_and_postrun()
 
 	name = "%s_test1" % (uts.random_username())
-	attr = {'password': b'Univention.1', 'username': name, 'lastname': 'test', 'policy_reference': pol_dn}
+	attr = {'password': 'Univention.1', 'username': name, 'lastname': 'test', 'policy_reference': pol_dn}
 	dn = udm.create_object(module, wait_for_replication=True, check_for_drs_replication=True, wait_for=True, **attr)
 
 	with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):
