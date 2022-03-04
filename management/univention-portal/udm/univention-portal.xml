@@ -4,8 +4,8 @@
     <name></name>
     <description></description>
     <flavor id="portals/all" icon="portal">
-      <name>Portal</name>
-      <description>Managing the Univention Portal</description>
+      <name>Portal</name>  # Portail
+      <description>Managing the Univention Portal</description>  # Gestion du Portail Univention
     </flavor>
     <categories>
       <category name="domain"/>

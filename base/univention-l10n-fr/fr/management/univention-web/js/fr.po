@@ -134,7 +134,7 @@ msgstr "Retour"
 
 #: js/hooks/default_menu_entries.js:267
 msgid "Back to start site"
-msgstr "Retour vers page d'accueil"
+msgstr "Retour à la page d'accueil"
 
 #: js/hooks/default_menu_entries.js:353
 msgid "Buy support package"
@@ -155,7 +155,7 @@ msgstr "Certificats"
 
 #: js/hooks/default_menu_entries.js:166
 msgid "Changing language"
-msgstr "Changer langue"
+msgstr "Changer de langue"
 
 #: js/tools.js:955 js/hooks/default_menu_entries.js:384
 #: js/widgets/Module.js:180
