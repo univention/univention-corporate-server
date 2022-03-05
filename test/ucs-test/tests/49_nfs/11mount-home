@@ -61,10 +61,11 @@ if __name__ == '__main__':
 
 		p1.communicate(b'1st')
 		stdout, _stderr = p2.communicate()
+		stdout = stdout.decode('UTF-8')
 		ret = (p1.wait(), p2.wait())
 		print(stdout, ret)
 
 		Popen(('umount', '-l', '-f', user_home)).wait()
 
-		if any(ret) or share_path not in stdout.decode('UTF-8'):
+		if any(ret) or share_path not in stdout:
 			fail('Failed: %r %r' % (stdout, ret))
