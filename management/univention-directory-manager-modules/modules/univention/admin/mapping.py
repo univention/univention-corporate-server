@@ -372,7 +372,7 @@ def mapBase64(value):
 	>>> mapBase64('YQ==')
 	b'a'
 	"""
-	if value == '*':
+	if value == b'*':
 		# special case for filter pattern '*'
 		return value
 	if isinstance(value, list):
@@ -385,7 +385,7 @@ def mapBase64(value):
 			return base64.b64decode(value)
 		except Exception as e:
 			ud.debug(ud.ADMIN, ud.ERROR, 'ERROR in mapBase64: %s' % e)
-	return ""
+	return b""
 
 
 def BooleanListToString(list, encoding=()):
