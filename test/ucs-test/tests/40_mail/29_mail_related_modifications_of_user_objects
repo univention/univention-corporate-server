@@ -34,10 +34,11 @@ def check_login_lookup(host, mail, password, expected_result):
 			utils.fail('Authentication passed, expected to fail.')
 	except Exception as ex:
 		auth_errors = ['AUTHENTICATIONFAILED', 'LOGIN => socket error', '[UNAVAILABLE] Internal error']
-		if any([msg in str(ex) for msg in auth_errors]):
+		error = ''.join(s.decode('UTF-8', 'replace') if isinstance(s, bytes) else s for s in ex.args)
+		if any(msg in error for msg in auth_errors):
 			if expected_result:
 				utils.fail('Authentication failed, expected to pass.')
-		elif 'Login failed' in str(ex):
+		elif 'Login failed' in error:
 			if expected_result:
 				utils.fail('Login failed, expected to pass.')
 		else:

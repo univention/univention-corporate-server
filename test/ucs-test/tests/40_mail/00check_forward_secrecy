@@ -42,12 +42,12 @@ def check_pfs_cipher():
 	Makes a localhost connection with openssl client and looks for cipher used.
 	"""
 	print("\nExpecting one of the following ciphers to be used:", PFS_CIPHERS)
-	openssl_out = run_openssl()
+	openssl_out = run_openssl().decode('UTF-8')
 	print('-----------CUTCUTCUT----------------')
 	print(openssl_out)
 	print('-----------CUTCUTCUT----------------')
 	for possible_cipher in PFS_CIPHERS:
-		if possible_cipher in openssl_out.decode('UTF-8'):
+		if possible_cipher in openssl_out:
 			print("\nCipher '%s' was found.\n" % possible_cipher)
 			return
 
@@ -66,7 +66,7 @@ def run_openssl():
 	stdout, stderr = proc.communicate()
 
 	if stderr:
-		print("The following message(s) appeared in STDERR:\n", stderr)
+		print("The following message(s) appeared in STDERR:\n", stderr.decode('UTF-8', 'replace'))
 	if not stdout:
 		utils.fail("The 'openssl' client did not produce any output to STDOUT")
 
@@ -77,7 +77,7 @@ def run_openssl():
 	grep_stdout, stderr = proc.communicate(stdout)
 
 	if stderr:
-		print(("The following message(s) appeared in STDERR while grep'ing for 'cipher':\n", stderr))
+		print(("The following message(s) appeared in STDERR while grep'ing for 'cipher':\n", stderr.decode('UTF-8', 'replace')))
 	if not grep_stdout:
 		utils.fail("No 'cipher' string was found in the output from openssl client. Probably TLS/PFS does not work.")
 
