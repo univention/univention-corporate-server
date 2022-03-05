@@ -357,7 +357,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 	def setup_parser(self, parser):
 		super(DevPopulateAppcenter, self).setup_parser(parser)
 		version = ucr_get('version/version')
-		arch = subprocess.check_output(['uname', '-m']).strip()
+		arch = subprocess.check_output(['uname', '-m']).decode('UTF-8', 'replace').strip()
 		parser.add_argument('--new', action='store_true', help='Add a completely new (or a new version of an existing) app in the local App Center')
 		parser.add_argument('-c', '--component-id', help='The internal component ID for this version of the App')
 		parser.add_argument('--clear', action='store_true', help='Clear existing files')
