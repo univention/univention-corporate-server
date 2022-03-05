@@ -1,4 +1,4 @@
-univention-appcenter (9.0.2-72) unstable; urgency=medium
+univention-appcenter (9.1.2-72) unstable; urgency=medium
 
   * Bug #54452: Download/uncompress to temporary directory
 
