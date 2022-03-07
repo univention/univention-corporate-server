@@ -33,6 +33,7 @@ do
 		for l_path in "$path"/locales/* "en"
 		do
 			language="${l_path##*/}"
+			[ "$language" = '*' ] && continue
 			doc_job '.sphinx-html' html "$language"
 			doc_job '.sphinx-pdf' pdf "$language"
 			doc_job '.sphinx-linkcheck' linkcheck "$language"
