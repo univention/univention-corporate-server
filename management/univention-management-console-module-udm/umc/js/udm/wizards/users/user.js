@@ -60,7 +60,11 @@ define([
 			this.inherited(arguments);
 			array.forEach(this.pages, function(page) {
 				array.forEach(this.getPage(page.name)._form.widgets, function(widget) {
-					var ucrkey = {'_invite': 'invite'}[widget.id] || widget.id;
+					var ucrkey = widget.id;
+					if (widget.name === '_invite') {
+						widget.id = '_invite';
+						ucrkey = 'invite';
+					}
 					var wid = this.getWidget(page.name, widget.id);
 					var visibility = this.ucr['directory/manager/web/modules/users/user/wizard/property/' + ucrkey + '/visible'];
 					var defaultValue = this.ucr['directory/manager/web/modules/users/user/wizard/property/' + ucrkey + '/default'];

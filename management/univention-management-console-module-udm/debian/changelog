@@ -1,3 +1,10 @@
+univention-management-console-module-udm (10.0.1-21) unstable; urgency=medium
+
+  * Bug #54316: fix functionality for UCR variable directory/manager/web/modules/
+    users/user/wizard/property/invite/default=True
+
+ -- Christian Castens <castens@univention.de>  Mon, 07 Mar 2022 17:00:57 +0100
+
 univention-management-console-module-udm (10.0.1-20) unstable; urgency=medium
 
   * Bug #53857: remodified solution of null value problem in process method
