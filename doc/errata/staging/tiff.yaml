@@ -1,0 +1,17 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: tiff
+fix: 4.0.8-2+deb9u8
+desc: |
+ This update addresses the following issues:
+ * Denial of Service via crafted TIFF file (CVE-2022-0561)
+ * Null source pointer lead to Denial of Service via crafted TIFF file
+   (CVE-2022-0562)
+ * out-of-bounds read in _TIFFmemcpy() in tif_unix.c (CVE-2022-22844)
+bug: [54511]
+cve:
+- CVE-2022-0561
+- CVE-2022-0562
+- CVE-2022-22844
