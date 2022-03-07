@@ -37,6 +37,7 @@ ad_set_sync_mode "read"
 ucr set connector/debug/level=5
 ucr set samba/debug/level=10
 /etc/init.d/samba restart
+sleep 5
 invoke-rc.d univention-s4-connector restart
 # temporary debug
 section "Create new container"
@@ -103,6 +104,7 @@ ad_set_sync_mode "$SYNCMODE"
 ucr unset connector/debug/level
 ucr unset samba/debug/level
 /etc/init.d/samba restart
+sleep 5
 invoke-rc.d univention-s4-connector restart
 # temporary debug
 
