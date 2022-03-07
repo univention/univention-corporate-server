@@ -3,7 +3,7 @@ release: "4.4"
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: univention-directory-manager-modules
-fix: 
+fix: 14.0.20-31A~4.4.0.202203071011
 desc: |
  This update addresses the following issue:
  * When setting an user as a member of a group in UDM, that had the same UID
