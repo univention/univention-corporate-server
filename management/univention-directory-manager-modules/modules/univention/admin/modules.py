@@ -295,15 +295,15 @@ def update_extended_options(lo, module, position):
 		classes = [x.decode('UTF-8', 'replace') for x in attrs.get('univentionUDMOptionObjectClass', [])]
 		is_app_option = attrs.get('univentionUDMOptionIsApp', [b'0'])[0] == b'1'
 
-		if not hasattr(module, 'options'):
-			module.options = {}
-		module.options[oname] = univention.admin.option(
+		new_options = copy.copy(module.options) if hasattr(module, 'options') else {}
+		new_options[oname] = univention.admin.option(
 			short_description=shortdesc,
 			long_description=longdesc,
 			default=default,
 			editable=editable,
 			objectClasses=classes,
 			is_app_option=is_app_option)
+		module.options = new_options
 
 
 class EA_Layout(dict):
@@ -473,7 +473,8 @@ def update_extended_attributes(lo, module, position):
 
 		# create property
 		fullWidth = (attrs.get('univentionUDMPropertyLayoutFullWidth', [b'0'])[0].upper() in [b'1', b'TRUE'])
-		module.property_descriptions[pname] = univention.admin.property(
+		new_property_descriptions = copy.copy(module.property_descriptions)
+		new_property_descriptions[pname] = univention.admin.property(
 			short_description=shortdesc,
 			long_description=longdesc,
 			syntax=propertySyntax,
@@ -487,6 +488,7 @@ def update_extended_attributes(lo, module, position):
 			copyable=copyable,
 			size='Two' if fullWidth else None,
 		)
+		module.property_descriptions = new_property_descriptions
 
 		# add LDAP mapping
 		if attrs['univentionUDMPropertyLdapMapping'][0].lower() != b'objectClass'.lower():
