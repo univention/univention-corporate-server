@@ -62,6 +62,8 @@ for all the settings around the app.
 4. After the login, the :guilabel:`Apps` module needs to be opened to work on the
    app.
 
+.. _create-app-with-docker-portal-overview:
+
 .. figure:: /images/app_portal_overview.png
    :alt: App Provider Portal overview with "Apps" module selected
 
@@ -87,6 +89,8 @@ This section describes how to create the app in the App Provider Portal
 and use a Docker image. It focuses on a single container setup. For a
 setup with multiple containers with Docker Compose please see :ref:`Create a
 Multi Container App <create-app-with-docker-compose>`.
+
+.. _create-app-with-docker-create-app:
 
 .. figure:: /images/app_portal_new_app.png
    :alt: Add new App

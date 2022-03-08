@@ -43,7 +43,7 @@ orientation. The App Center and the App Catalog take care of the
 appropriate scaling. SVG allows a very good result due to its nature as
 a vector graphics format.
 
-.. _screentshots:
+.. _screenshots:
 
 Screenshots and videos
 ----------------------
@@ -135,6 +135,8 @@ overview in the App Center and in the App Catalog accordingly. App
 categories help to group apps together by topic and give a better
 overview for the various apps available.
 
+.. _contact:
+
 Contact
 -------
 
@@ -146,6 +148,8 @@ to the solution. Please also link to a website, where the app provider's
 support options and pricing is explained to potential customers and
 place the link in the field Link to website with product support
 options.
+
+.. _license:
 
 License
 -------

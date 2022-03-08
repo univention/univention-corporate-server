@@ -10,6 +10,8 @@ This chapter relates the life cycle of an app from the first app
 development, its life in the public to termination. The life cycle
 applies to the app overall and to every single version.
 
+.. _development:
+
 Development
 ===========
 
@@ -59,6 +61,8 @@ to a snapshot, it is recommended to update the local App Center cache.
 This is either automatically done during login and opening of the App
 Center module in the UCS management system or triggered manually with
 :command:`univention-app update` on the console.
+
+.. _testing:
 
 Testing
 =======
@@ -110,6 +114,8 @@ system is up and running that is configured against the Test App Center.
 The app can be installed via the |UCSUMC|. UMC consists of several modules
 and one of them is called :guilabel:`App Center`. Open this module and install the
 app from there.
+
+.. _testing-install-app-center-umc-module:
 
 .. figure:: /images/umc-module-app-center.png
    :scale: 80%
@@ -324,6 +330,8 @@ Besides the technical testing, the first release also undergoes a manual
 review process on the app presentation. The app description is checked
 for plausibility, understandability and for the App Center context.
 
+.. _release:
+
 Release
 =======
 
@@ -335,6 +343,8 @@ to the Docker image is updated accordingly in the app definition. The
 app will be visible in the App Center UMC module immediately for all UCS
 users after release. The app catalog is updated automatically and shows
 the new app.
+
+.. _updates:
 
 Updates
 =======
@@ -359,11 +369,15 @@ follow these steps:
    the scripts and maybe the integration. Texts and logos should be
    checked if they are still up to date.
 
+.. _app-life-cycle-update-create-new-version:
+
 .. figure:: /images/app_portal_create_new_version.png
    :scale: 80%
    :alt: Menu to add a new App
 
    Menu to add a new App
+
+.. _app-life-cycle-update-new-version:
 
 .. figure:: /images/app_portal_new_version.png
    :scale: 80%

@@ -19,6 +19,8 @@ module and is called :guilabel:`Apps`. It is also possible to make significantly
 more complex settings. See :ref:`User rights
 management <user-rights-management>` for more details.
 
+.. _provisioning:
+
 Provisioning
 ------------
 
@@ -231,6 +233,8 @@ but should clarify the idea.
        },
        "udm_object_type": "users/user"
    }
+
+.. _authentication:
 
 Authentication
 --------------

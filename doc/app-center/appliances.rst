@@ -117,6 +117,8 @@ Boot loader
 The background color can be configured for the boot loader. Please
 define in the *Primary color* setting.
 
+.. _appliance-branding-bootloader-figure:
+
 .. figure:: /images/Appliance_Branding_Bootloader.png
    :alt: Boot loader
 
@@ -137,6 +139,8 @@ simply define ``#000000``. A gradient can for example be defined with
 ``linear-gradient(to bottom, #345279 0%, #1d2c41 100%)``. For more
 information on how to use a gradient, see `CSS linear-gradient()
 function on w3schools <css-linear-gradient_>`_.
+
+.. _appliance-branding-bootsplash-figure:
 
 .. figure:: /images/Appliance_Branding_Bootsplash.png
    :alt: Boot splash
@@ -193,6 +197,13 @@ Depending on the character of the welcome screen background (bright or
 dark), the *Font color for welcome screen* should be either set to
 ``White`` or ``Black``.
 
+.. _appliance-branding-umc-branding-welcome-screen:
+
+.. figure:: /images/Appliance_Branding_Welcome_Screen.png
+   :alt: Appliance welcome screen
+
+   Appliance welcome screen
+
 .. _appliance-branding-portal-page:
 
 Portal page
@@ -205,6 +216,8 @@ for the portal page* controls which logo shall be set in the first tile
 on the portal page. The background can either consist of a background
 image or a background color or a background color gradient as described
 in :ref:`Boot splash <appliance-branding-bootsplash>`.
+
+.. _appliance-branding-portal-page-figure:
 
 .. figure:: /images/Appliance_Branding_Portal_Page.png
    :alt: Appliance portal page

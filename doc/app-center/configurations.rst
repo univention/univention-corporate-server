@@ -26,6 +26,8 @@ see the overview below about of the involved scripts and the parameters
 they are called with. More information on the scripts themselves can be
 found in the following sections.
 
+.. _installation-scripts-app-flow-install:
+
 .. figure:: /images/app-flow-install.png
    :alt: App workflow for installation
 
@@ -259,6 +261,8 @@ see the overview below about the involved scripts and the parameters
 they are called with. More information on the scripts themselves can be
 found in the following sections.
 
+.. _uninstallation-scripts-app-flow-remove:
+
 .. figure:: /images/app-flow-remove.png
    :alt: App workflow for Removal
 
@@ -342,6 +346,8 @@ the app is uninstalled. The upgrade scripts can be used for this
 purpose. Please see an overview of the involved scripts and the
 parameters they are called with in the figure below. More information on
 the scripts themselves can be found in the following sections.
+
+.. _upgrade-scripts-app-flow-update:
 
 .. figure:: /images/app-flow-update.png
    :alt: App workflow for upgrade
@@ -641,6 +647,8 @@ The first of these two settings will upload a file to
 Docker host. Both settings will be shown before the installation. On the
 App settings page, the list setting will be read-only.
 
+.. _certificates:
+
 Certificates
 ------------
 
@@ -700,6 +708,8 @@ written locally and then uploaded with the following command:
 .. code:: sh
 
    ./univention-appcenter-control upload --username $your-username 5.0/myapp=1.0 update_certificates
+
+.. _mail-integration:
 
 Mail integration
 ----------------
@@ -901,6 +911,8 @@ This will create the following entry in
    Domaincontroller is the leading system and provides the DNS. The DNS
    alias has to be added by the Admin manually there as our script
    cannot add it for them.
+
+.. _firewall:
 
 Firewall
 --------
