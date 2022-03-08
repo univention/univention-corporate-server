@@ -6,7 +6,7 @@ src: cyrus-sasl2
 fix: 2.1.27~101-g0780600+dfsg-3+deb9u2
 desc: |
  This update addresses the following issue:
- * failure to properly escape SQL input allows an attacker to execute
+ * Failure to properly escape SQL input allows an attacker to execute
    arbitrary SQL commands (CVE-2022-24407)
 bug: [54510]
 cve:
