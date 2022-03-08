@@ -67,7 +67,7 @@ def getfile(filename, mode):
 			yield filename, name
 
 
-def main(files, ignore_exceptions={}, out=sys.stdout):
+def main(files, ignore_exceptions=[], out=sys.stdout):
 	tracebacks = {}
 	for file_ in files:
 		with getfile(file_, 'rt') as (fd, filename):
@@ -189,9 +189,11 @@ COMMON_EXCEPTIONS = (
 	E("AttributeError: 'ConfigRegistry' object has no attribute '_walk'", ['univention-directory-listener/system/nfs-shares.py'], (53291, 53862)),
 	E("AttributeError: 'module' object has no attribute 'localization'", ['univention-directory-listener/system/app_attributes.py'], 53862),
 	E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention-self-service-invitation'], 53670),
+	E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention/lib/umc.py.*in send'], 53670),
 	E("univention.lib.umc.ConnectionError: .*Could not send request.*Connection refused", ['univention-self-service-invitation'], 53670),
 	E("ssl.SSLCertVerificationError.*self signed certificate in certificate chain", ['univention/lib/umc.py.*in send'], 53670),
 	E("univention.lib.umc.ConnectionError: .*Could not send request.*SSLCertVerificationError", ['univention-self-service-invitation'], 53670),
+	E("FileNotFoundError: \\[Errno 2\\] No such file or directory: '/etc/machine.secret'", ['univention/lib/umc.py.*in authenticate_with_machine_account'], 53670),
 
 	# updater test cases:
 	E('urllib.error.URLError: .*', ['updater/tools.py.*in access']),
