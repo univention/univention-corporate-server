@@ -257,4 +257,15 @@ install_id_connector_broker_plugin () {
 	univention-app restart ucsschool-id-connector
 }
 
+# Setup dns entries for Traeger, to be able to download idp metadata
+kvm_setup_dns_entries_in_broker () {
+	# only for kvm
+	[ "$KVM_BUILD_SERVER" = "EC2" ] && return 0
+	udm dns/forward_zone create --set zone="${UCS_ENV_TRAEGER1_DOMAIN}" --set nameserver="$(hostname -f)." --position="cn=dns,$(ucr get ldap/base)" || return 1
+	udm dns/host_record create --set a="${TRAEGER1_IP}" --set name=ucs-sso --position zoneName="${UCS_ENV_TRAEGER1_DOMAIN},cn=dns,$(ucr get ldap/base)" || return 1
+	udm dns/host_record create --set a="${TRAEGER1_IP}" --set name=traeger1 --position zoneName="${UCS_ENV_TRAEGER1_DOMAIN},cn=dns,$(ucr get ldap/base)" || return 1
+	udm dns/forward_zone create --set zone="${UCS_ENV_TRAEGER2_DOMAIN}" --set nameserver="$(hostname -f)." --position="cn=dns,$(ucr get ldap/base)" || return 1
+	udm dns/host_record create --set a="${TRAEGER2_IP}" --set name=ucs-sso --position zoneName="${UCS_ENV_TRAEGER2_DOMAIN},cn=dns,$(ucr get ldap/base)" || return 1
+	udm dns/host_record create --set a="${TRAEGER2_IP}" --set name=traeger2 --position zoneName="${UCS_ENV_TRAEGER2_DOMAIN},cn=dns,$(ucr get ldap/base)" || return 1
+}
 # vim:set filetype=sh ts=4:
