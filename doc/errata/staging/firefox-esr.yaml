@@ -6,8 +6,10 @@ src: firefox-esr
 fix: 91.6.1esr-1~deb9u1
 desc: |
  This update addresses the following issues:
- * firefox-esr (CVE-2022-26485)
- * firefox-esr (CVE-2022-26486)
+ * Removing an XSLT parameter during processing could have lead to an
+   exploitable use-after-free. (CVE-2022-26485)
+ * An unexpected message in the WebGPU IPC framework could lead to a
+   use-after-free and exploitable sandbox escape. (CVE-2022-26486)
 bug: [54517]
 cve:
 - CVE-2022-26485
