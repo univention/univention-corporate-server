@@ -209,7 +209,7 @@ def init(lo, position, module, template_object=None, force_reload=False):
 	univention.admin.ucr_overwrite_properties(module, lo)
 
 	# check for properties with the syntax class LDAP_Search
-	for pname, prop in module.property_descriptions.items():
+	for pname, prop in list(module.property_descriptions.items()):
 		if prop.syntax.name == 'LDAP_Search':
 			prop.syntax._load(lo)
 			if prop.syntax.viewonly:
