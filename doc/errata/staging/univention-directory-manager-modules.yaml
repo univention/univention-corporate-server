@@ -3,12 +3,15 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-directory-manager-modules
-fix: 15.0.11-32A~5.0.0.202203041759
+fix: 
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * When user templates were members of groups an error was raised
    which prevented opening or modifying that group. Templates as
    group members are now ignored in UDM module `groups/group`.
  * Moving of `users/ldap` objects is possible again. This was broken
    due to the Python 3 migration in UCS 5.0.
-bug: [54402, 54085]
+ * Two resource sharing conflicts on Python dictionaries have been
+   fixed, that could lead to tracebacks when modules are reloaded
+   in a multithreaded context.
+bug: [54402, 54085, 53581]
