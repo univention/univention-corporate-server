@@ -190,6 +190,8 @@ COMMON_EXCEPTIONS = (
 	E("AttributeError: 'module' object has no attribute 'localization'", ['univention-directory-listener/system/app_attributes.py'], 53862),
 	E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention-self-service-invitation'], 53670),
 	E("univention.lib.umc.ConnectionError: .*Could not send request.*Connection refused", ['univention-self-service-invitation'], 53670),
+	E("ssl.SSLCertVerificationError.*self signed certificate in certificate chain", ['univention/lib/umc.py.*in send'], 53670),
+	E("univention.lib.umc.ConnectionError: .*Could not send request.*SSLCertVerificationError", ['univention-self-service-invitation'], 53670),
 
 	# updater test cases:
 	E('urllib.error.URLError: .*', ['updater/tools.py.*in access']),
