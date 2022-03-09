@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: twisted
+fix: 16.6.0-2+deb9u2
+desc: |
+ This update addresses the following issue:
+ * SSH client and server denial of service during SSH handshake
+   (CVE-2022-21716)
+bug: [54525]
+cve:
+- CVE-2022-21716
