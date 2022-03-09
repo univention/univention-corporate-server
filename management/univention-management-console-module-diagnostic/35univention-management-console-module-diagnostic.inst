@@ -33,7 +33,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=1
+VERSION=2
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -43,6 +43,12 @@ joinscript_init
 umc_init
 umc_operation_create "diagnostic-all" "diagnostic" "" "diagnostic/*"
 umc_policy_append "default-umc-all" "diagnostic-all"
+
+# create default policies if not exists and append operationset to it
+for name in 'default-slave-umc' 'default-backup-umc'; do
+	udm policies/umc create "$@" --ignore_exists --set "name=$name" --position "cn=UMC,cn=policies,$ldap_base" || die
+	umc_policy_append "$name" "diagnostic-all"
+done
 
 joinscript_save_current_version
 

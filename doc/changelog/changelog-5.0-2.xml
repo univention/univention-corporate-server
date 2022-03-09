@@ -596,6 +596,9 @@
 				<listitem><simpara>
 					<command>univention-run-diagnostic-checks</command> now offers to run a group of tests and also to exclude some of the tests (<u:bug>53969</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The script <command>univention-run-diagnostic-check</command> is now executed with machine account credentials by default (<u:bug>54515</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 

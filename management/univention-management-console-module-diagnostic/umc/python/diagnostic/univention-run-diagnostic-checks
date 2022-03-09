@@ -36,8 +36,8 @@ import time
 import argparse
 import traceback
 from getpass import getpass
-from six.moves import input
 
+from univention.config_registry import ucr
 from univention.lib.umc import Client, Unauthorized
 
 
@@ -47,22 +47,29 @@ class CLIClient(object):
 	def main(cls):
 		parser = argparse.ArgumentParser(description='Executes the diagnostic module checks')
 		parser.add_argument('--bindpwdfile', help='Path to a file that contains your password')
-		parser.add_argument('--username', help='Domain Admin username for Authentication')
+		parser.add_argument('--username', help='Domain Admin username for authentication')
 		parser.add_argument('-l', '--list', action='store_true', help='List all available checks and exit')
 		parser.add_argument('-t', '--test', default=['all'], nargs='*', dest='checks', help='List of checks to run. Default is: all')
 		parser.add_argument('-s', '--skip', default=[], nargs='*', dest='skip_checks', help='List of checks to skip. Default is: []')
-
 		args = parser.parse_args()
+
+		if not args.bindpwdfile and not args.username:
+			args.username = '%s$' % (ucr['hostname'],)
+			args.bindpwdfile = '/etc/machine.secret'
 
 		if not args.username:
 			args.username = input('Domain Admin Login: ')
+
 		args.password = None
-		if args.bindpwdfile:
-			with open(args.bindpwdfile) as fd:
-				args.password = fd.read().strip()
+		try:
+			if args.bindpwdfile:
+				with open(args.bindpwdfile) as fd:
+					args.password = fd.read().strip()
+		except OSError:
+			parser.error('Unable to read the password-file "%s".' % (args.bindpwdfile,))
+
 		if not args.password:
 			args.password = getpass('Password: ')
-
 		try:
 			client = Client(None, args.username, args.password)
 		except Unauthorized as exc:

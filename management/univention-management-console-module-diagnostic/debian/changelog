@@ -1,3 +1,10 @@
+univention-management-console-module-diagnostic (6.0.1-2) unstable; urgency=medium
+
+  * Bug #54515: allow running univention-run-diagnostic-checks as machine
+    account and use it as default.
+
+ -- Maximilian Janßen <janssen@univention.de>  Mon, 20 Jun 2022 09:08:10 +0200
+
 univention-management-console-module-diagnostic (6.0.1-1) unstable; urgency=medium
 
   * Bug #54706: drop Python 3 package files
