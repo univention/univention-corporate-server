@@ -13,10 +13,11 @@ System roles
 
 UCS system roles imply certain permissions on domain data. Only the Primary
 Directory Node can write data to the domain database. All other system roles
-have read-only access. Nevertheless, write operations happen on the Primary
-Directory Node on behalf of other systems or users. For example, when a new UCS
-system joins the domain or an administrator installs an app write operations run
-on the Primary Directory Node.
+have read-only access. Nevertheless, other systems or users have write
+permissions for certain operations affecting themselves and they run them on the
+Primary Directory Node. For example, when a new UCS system joins the domain or
+an administrator installs an app write operations run on the Primary Directory
+Node.
 
 Administrator and root
 ----------------------
@@ -51,8 +52,7 @@ root
    system.
 
    The *root* account has no permissions and is no valid account in the domain
-   context. The account *root* must not be created as domain account or you risk
-   to lockout the *root* user from the local UCS system.
+   context. The account *root* must not be created as domain account.
 
 Domain users and admins
 -----------------------
@@ -66,11 +66,12 @@ Domain Users
    group identifies the user account as belonging to a person. The user account
    only has a minimal set of permissions in the domain.
 
-   For example, users accounts in the group can read the domain database, but
+   For example, user accounts in the group can read the domain database, but
    cannot view password hashes. Additional apps in the domain like UCS@school
-   and fetchmail limit the read permissions. User accounts in the *Domain
-   Users* group also cannot log in to UCS systems for a remote shell. The UCS
-   management system yields no modules for them either.
+   and Fetchmail can alter read and write permissions for users and systems.
+   User accounts in the *Domain Users* group also cannot log in to UCS systems
+   for a remote shell by default. The UCS management system yields no modules
+   for them either.
 
 Domain Admins
    UCS creates one user account called *Administrator* during the installation
@@ -85,8 +86,10 @@ Domain Admins
 Machine account
 ---------------
 
-UCS systems are actors in a domain like users. Each UCS system has its
-own account in the domain database. The account is called *machine account*.
+All systems part of the domain are actors in a domain like users. Each
+system has its own account in the domain database. The account is called
+*machine account*. Depending on the type of system they have different
+permission sets.
 
 UCS systems can read data from the domain database with their machine account.
 Every machine account has assigned the following default permissions in the UCS
@@ -96,10 +99,10 @@ domain:
    referred section. Statements about LDAP and ACLs don't fit in this place.
 
    The distinct permission for the machine account are defined in LDAP ACLs. See
-   /etc/ldap/slapd.conf, the ACL blocks beginning with ``access-to ...``
+   /etc/ldap/slapd.conf, the ACL blocks beginning with ``access to ...``
 
 * The UCS system can read all object information and password hashes for
-  accounts from the domain database. Apps like UCS@school and fetchmail limit
+  accounts from the domain database. Apps like UCS@school and Fetchmail limit
   the read permissions.
 
 * The UCS system can write only information to the domain database that is

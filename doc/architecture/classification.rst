@@ -33,8 +33,8 @@ Packages
 --------
 
 On UCS software is managed in software packages. The packages on UCS use the deb
-file format. For more information on the deb file format, see the `Wikipedia
-article dev (file format) <w-deb-file-format_>`_ and `Basics of the Debian
+file format. For more information on the deb file format, see the Wikipedia
+article `deb (file format) <w-deb-file-format_>`_ and `Basics of the Debian
 package management system in the Debian FAQ <debian-faq-pkg-basics_>`_.
 
 UCS—like Debian—uses a package manager, which is a collection of software tools,
@@ -44,10 +44,11 @@ package manager is the advanced package tool (APT). For more information about
 APT, see the `Debian package management chapter in the Debian reference
 <debian-ref-package-mngmt_>`_.
 
-Univention distributes most packages from Debian GNU/Linux for the *amd64*
+Univention distributes most packages from Debian GNU/Linux for the *amd64* and *all*
 architecture without changes for UCS. This includes the GNU/Linux kernel and
-over 98% unchanged packages. Univention uses the default services from the
-Debian distribution and delivers custom configurations for UCS.
+over 98% of unchanged packages from the Debian project. Univention uses the
+default services from the Debian distribution and delivers custom configurations
+for UCS.
 
 In the following circumstances, Univention builds and maintains derived
 packages:
@@ -58,7 +59,10 @@ packages:
 Additionally, Univention develops own software responsible for UCS functionality
 that is distributed as Debian package.
 
-Nevertheless, UCS doesn't include packages from the Debian games section.
+Nevertheless, UCS doesn't include packages from the Debian games section,
+because it would require a content rating for video games. Univention does not
+see added value in the distribution of video games with UCS for the product
+audience.
 
 Identity management
 ===================
@@ -123,19 +127,20 @@ printers.
 Connection to the world around
 ==============================
 
-As operating system offering many services, UCS interacts with its surrounding
-peers. Users access the functionality of UCS through the following ways:
+As an operating system that offers many services, UCS interacts with its
+surrounding peers. Users access the functionality of UCS through the following
+ways:
 
 Web
    Persons like administrators and also end users use HTTPS to access the web
    based UCS management system. In many cases other web-based services provided
-   by other software products delivered through apps are available through
+   by other software products delivered through apps are also available through
    HTTPS.
 
 Console
    Persons with more technical background and the appropriate permissions can
    access UCS through a console, either on a local terminal or through a remote
-   SSH session.
+   `secure shell (SSH) <https://en.wikipedia.org/wiki/Secure_Shell>`_ session.
 
 Service protocols
    As soon as users use any of the services that UCS offers, they access UCS

@@ -34,13 +34,7 @@ few that domain nodes replicate and cannot cover all items:
 * Information about printers
 * Information about file shares
 
-The domain replication in UCS also ensures that the affect UCS systems run
-follow-up actions once the changes are replicated. The following example shows
-the follow-up actions for a new file share:
-
-#. An administrator creates a new file share.
-#. The domain database stores a new object about the new file share.
-#. The replication synchronizes this information to all domain controllers.
-#. The responsible domain controller updates its service configuration about
-   local file shares.
-#. The file share service offers the new share to users.
+The domain replication in UCS also ensures that the affected UCS systems run
+follow-up actions once the changes are replicated. The actions can comprise of,
+for example, updates to configurations of services and making the changes
+available to the users.
