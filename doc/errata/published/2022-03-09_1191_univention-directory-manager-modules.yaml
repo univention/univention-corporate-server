@@ -11,3 +11,5 @@ desc: |
    the group got dropped. This happened in the cool Solution `user-group-sync`
    during move operations.
 bug: [54487]
+erratum: 1191
+announced: 2022-03-09
