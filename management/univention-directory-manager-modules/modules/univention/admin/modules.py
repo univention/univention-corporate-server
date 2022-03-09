@@ -209,7 +209,7 @@ def init(lo, position, module, template_object=None, force_reload=False):
 	univention.admin.ucr_overwrite_properties(module, lo)
 
 	# check for properties with the syntax class LDAP_Search
-	for pname, prop in list(module.property_descriptions.items()):
+	for pname, prop in module.property_descriptions.items():
 		if prop.syntax.name == 'LDAP_Search':
 			prop.syntax._load(lo)
 			if prop.syntax.viewonly:
@@ -286,6 +286,7 @@ def update_extended_options(lo, module, position):
 		module_filter = '(|(univentionUDMOptionModule=users/user)%s)' % (module_filter,)
 
 	# append UDM extended options
+	new_options = copy.copy(module.options) if hasattr(module, 'options') else {}
 	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMOption)%s)' % (module_filter,)):
 		oname = attrs['cn'][0].decode('UTF-8', 'replace')
 		shortdesc = _get_translation(lang, attrs, 'univentionUDMOptionTranslationShortDescription;entry-%s', 'univentionUDMOptionShortDescription')
@@ -295,7 +296,6 @@ def update_extended_options(lo, module, position):
 		classes = [x.decode('UTF-8', 'replace') for x in attrs.get('univentionUDMOptionObjectClass', [])]
 		is_app_option = attrs.get('univentionUDMOptionIsApp', [b'0'])[0] == b'1'
 
-		new_options = copy.copy(module.options) if hasattr(module, 'options') else {}
 		new_options[oname] = univention.admin.option(
 			short_description=shortdesc,
 			long_description=longdesc,
@@ -303,7 +303,7 @@ def update_extended_options(lo, module, position):
 			editable=editable,
 			objectClasses=classes,
 			is_app_option=is_app_option)
-		module.options = new_options
+	module.options = new_options
 
 
 class EA_Layout(dict):
@@ -394,6 +394,7 @@ def update_extended_attributes(lo, module, position):
 	if name(module) == 'settings/usertemplate':
 		module_filter = '(|(univentionUDMPropertyModule=users/user)%s)' % (module_filter,)
 
+	new_property_descriptions = copy.copy(module.property_descriptions)
 	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMProperty)%s(univentionUDMPropertyVersion=2))' % (module_filter,)):
 		# get CLI name
 		pname = attrs['univentionUDMPropertyCLIName'][0].decode('UTF-8', 'replace')
@@ -473,7 +474,6 @@ def update_extended_attributes(lo, module, position):
 
 		# create property
 		fullWidth = (attrs.get('univentionUDMPropertyLayoutFullWidth', [b'0'])[0].upper() in [b'1', b'TRUE'])
-		new_property_descriptions = copy.copy(module.property_descriptions)
 		new_property_descriptions[pname] = univention.admin.property(
 			short_description=shortdesc,
 			long_description=longdesc,
@@ -488,7 +488,6 @@ def update_extended_attributes(lo, module, position):
 			copyable=copyable,
 			size='Two' if fullWidth else None,
 		)
-		module.property_descriptions = new_property_descriptions
 
 		# add LDAP mapping
 		if attrs['univentionUDMPropertyLdapMapping'][0].lower() != b'objectClass'.lower():
@@ -567,6 +566,7 @@ def update_extended_attributes(lo, module, position):
 				syntax=propertySyntaxString,
 				hook=propertyHook
 			))
+	module.property_descriptions = new_property_descriptions
 
 	# overwrite tabs that have been added by UDM extended attributes
 	for tab in module.extended_attribute_tabnames:
@@ -647,7 +647,7 @@ def update_extended_attributes(lo, module, position):
 								break
 
 	# check for properties with the syntax class LDAP_Search
-	for pname, prop in list(module.property_descriptions.items()):
+	for pname, prop in module.property_descriptions.items():
 		if prop.syntax.name == 'LDAP_Search':
 			prop.syntax._load(lo)
 			if prop.syntax.viewonly:

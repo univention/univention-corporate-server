@@ -4898,7 +4898,7 @@ class univentionAdminModules(select):
 		"""
 		cls.choices = sorted((
 			(name, univention.admin.modules.short_description(mod))
-			for name, mod in list(univention.admin.modules.modules.items())
+			for name, mod in univention.admin.modules.modules.items()
 			if not univention.admin.modules.virtual(mod)
 		), key=itemgetter(1))
 
@@ -4955,7 +4955,7 @@ class optionsUsersUser(select):
 	def update_choices(cls):
 		users = univention.admin.modules.get('users/user')
 		if users:
-			cls.choices = [(key, x.short_description) for key, x in list(users.options.items()) if key != 'default']
+			cls.choices = [(key, x.short_description) for key, x in users.options.items() if key != 'default']
 
 
 __register_choice_update_function(optionsUsersUser.update_choices)
@@ -4972,7 +4972,7 @@ class allModuleOptions(combobox):
 		cls.choices = [
 			(key, opt.short_description)
 			for module in modules
-			for key, opt in list(getattr(module, 'options', {}).items())
+			for key, opt in getattr(module, 'options', {}).items()
 			if key != 'default'
 		]
 
