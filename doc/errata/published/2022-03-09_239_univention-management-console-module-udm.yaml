@@ -10,3 +10,5 @@ desc: |
    invite/default` will now work properly and can be used to activate the
    `invite user via e-mail` option in the user wizard by default.
 bug: [54316]
+erratum: 239
+announced: 2022-03-09
