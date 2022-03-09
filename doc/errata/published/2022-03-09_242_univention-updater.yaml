@@ -12,3 +12,5 @@ desc: |
  * univention-upgrade: validating `updateto` param in parsing method now,
    exit early on wrong parameter
 bug: [48891, 49061]
+erratum: 242
+announced: 2022-03-09
