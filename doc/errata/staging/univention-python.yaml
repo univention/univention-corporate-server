@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-python
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Changing a user password is now possible again when the referenced
+   Password History policy did not define values for password length
+   or history length.
+bug: [51354]
