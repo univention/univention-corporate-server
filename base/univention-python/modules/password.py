@@ -113,9 +113,13 @@ class Check(object):
 			raise CheckFailed('User was not found.')
 
 		policy_result = self.lo.getPolicies(dn)
+		self.min_length = -1
+		self.history_length = -1
 		if policy_result.get('univentionPolicyPWHistory'):
-			self.min_length = int(policy_result['univentionPolicyPWHistory']['univentionPWLength']['value'][0])
-			self.history_length = int(policy_result['univentionPolicyPWHistory']['univentionPWHistoryLen']['value'][0])
+			if policy_result['univentionPolicyPWHistory'].get('univentionPWLength'):
+				self.min_length = int(policy_result['univentionPolicyPWHistory']['univentionPWLength']['value'][0])
+			if policy_result['univentionPolicyPWHistory'].get('univentionPWHistoryLen'):
+				self.history_length = int(policy_result['univentionPolicyPWHistory']['univentionPWHistoryLen']['value'][0])
 			if policy_result['univentionPolicyPWHistory'].get('univentionPWQualityCheck'):
 				univentionPasswordQualityCheck = policy_result['univentionPolicyPWHistory']['univentionPWQualityCheck']['value'][0].decode('ASCII', 'replace')
 				self.enableQualityCheck = self.ConfigRegistry.is_true(value=univentionPasswordQualityCheck)
