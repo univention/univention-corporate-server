@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-1
 src: univention-lib
 fix: 9.0.11-10A~5.0.0.202202251627
 desc: |
- This update addresses the following issue(s):
- * UCSVersion: extended message of ValueError.
-   Including erronous input param in error message for debugging.
+ This update addresses the following issue:
+ * `UCSVersion`: extended message of `ValueError`. The erronous input
+   parameter is included in the error message for debugging.
 bug: [49061]
