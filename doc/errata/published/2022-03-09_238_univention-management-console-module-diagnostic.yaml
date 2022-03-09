@@ -9,3 +9,5 @@ desc: |
  * The script `univention-run-diagnostic-check` now displays links
    in the description of failed tests.
 bug: [50756]
+erratum: 238
+announced: 2022-03-09
