@@ -1,0 +1,74 @@
+product: ucs
+release: '4.4'
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: univention-kernel-image
+fix: 12.0.0-10A~4.4.0.202203091957
+desc: |-
+ This updates the Linux kernel to version 4.9.303, which addresses (among
+ others) the following security issues:
+ * Bluetooth: sco: Fix `lock_sock()` blockage by `memcpy_from_msg()`
+   (CVE-2021-3640)
+ * Bluetooth: fix use-after-free error in `lock_sock_nested()` (CVE-2021-3752)
+ * hugetlbfs: flush TLBs correctly after `huge_pmd_unshare()` (CVE-2021-4002)
+ * fget: check that the fd still exists after getting a ref to it
+   (CVE-2021-4083)
+ * xfs: map unwritten blocks in `XFS_IOC_{ALLOC,FREE}SP` just like
+   `fallocate()` (CVE-2021-4155)
+ * NFC: reorganize the functions in `nci_request()` (CVE-2021-4202)
+ * NFC: add `NCI_UNREG` flag to eliminate the race (CVE-2021-4202)
+ * xen/blkfront: harden `blkfront` against event channel storms
+   (CVE-2021-28711)
+ * xen/netfront: harden `netfront` against event channel storms
+   (CVE-2021-28712)
+ * xen/console: harden `hvc_xen` against event channel storms (CVE-2021-28713)
+ * xen/netback: fix rx queue stall detection (CVE-2021-28714)
+ * xen/netback: don't queue unlimited number of packages (CVE-2021-28715)
+ * gianfar: fix jumbo packets+napi+rx overrun crash (CVE-2021-29264)
+ * cipso,calipso: resolve a number of problems with the DOI reference counts
+   (CVE-2021-33033)
+ * USB: gadget: detect too-big endpoint 0 requests (CVE-2021-39685)
+ * USB: gadget: zero allocate endpoint 0 buffers (CVE-2021-39685)
+ * mwifiex: Fix `skb_over_panic` in `mwifiex_usb_recv()` (CVE-2021-43976)
+ * phonet: refcount leak in `pep_sock_accep` (CVE-2021-45095)
+ * Mitigate Spectre v2-type Branch History Buffer attacks (CVE-2022-0001,
+   CVE-2022-0002)
+ * [x86] drm/i915: Flush TLBs before releasing backing store (CVE-2022-0330)
+ * tipc: improve size validations for received domain records (CVE-2022-0435)
+ * moxart: fix potential use-after-free on remove path (CVE-2022-0487)
+ * cgroup-v1: Require capabilities to set release_agent (CVE-2022-0492)
+ * udf: Restore `i_lenAlloc` when inode expansion fails (CVE-2022-0617)
+ * udf: Fix NULL pointer de-reference when converting from inline format
+   (CVE-2022-0617)
+ * NFSv4: Handle case where the lookup of a directory fails (CVE-2022-24448)
+ * USB: gadget: validate interface OS descriptor requests (CVE-2022-25258)
+ * usb: gadget: rndis: check size of `RNDIS_MSG_SET` command (CVE-2022-25375)
+note: This is the third of four parts.
+bug: [54529]
+cve:
+- CVE-2021-3640
+- CVE-2021-3752
+- CVE-2021-4202
+- CVE-2021-4002
+- CVE-2021-4083
+- CVE-2021-39685
+- CVE-2021-28711
+- CVE-2021-28712
+- CVE-2021-28713
+- CVE-2021-28714
+- CVE-2021-28715
+- CVE-2021-4155
+- CVE-2021-45095
+- CVE-2021-43976
+- CVE-2021-29264
+- CVE-2021-33033
+- CVE-2022-0330
+- CVE-2022-0617
+- CVE-2022-24448
+- CVE-2022-0492
+- CVE-2022-0487
+- CVE-2022-0435
+- CVE-2022-25258
+- CVE-2022-25375
+- CVE-2022-0001
+- CVE-2022-0002
