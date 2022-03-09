@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Set replication.py listener module priority directly in the file.
 bug: [54504]
+erratum: 1193
+announced: 2022-03-09
