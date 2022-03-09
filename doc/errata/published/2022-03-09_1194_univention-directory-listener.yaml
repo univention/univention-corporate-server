@@ -10,3 +10,5 @@ desc: |
    `univention-directory-listener`. Instead, the priority is now set by
    package `univention-directory-replication`
 bug: [54504]
+erratum: 1194
+announced: 2022-03-09
