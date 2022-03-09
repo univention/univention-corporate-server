@@ -29,15 +29,15 @@ stages:
   extends: .sphinx-doc
   script:
     - make -C $base -e SPHINXOPTS="-D language='$language'" -e BUILDDIR="_build/$language" html
-    - mkdir -p $CI_PROJECT_DIR/public/$language
-    - rsync -av --delete $base/_build/$language/html/ $CI_PROJECT_DIR/public/$language
+    - mkdir -p $CI_PROJECT_DIR/public/$DOC_NAME/$DOC_TARGET_VERSION/$language
+    - rsync -av --delete $base/_build/$language/html/ $CI_PROJECT_DIR/public/$DOC_NAME/$DOC_TARGET_VERSION/$language
 
 .sphinx-pdf:
   extends: .sphinx-doc
   script:
     - make -C $base -e SPHINXOPTS="-D language='$language'" -e BUILDDIR="_build/$language" latexpdf
-    - mkdir -p $CI_PROJECT_DIR/public/$language
-    - cp $base/_build/$language/latex/*.pdf $CI_PROJECT_DIR/public/$language
+    - mkdir -p $CI_PROJECT_DIR/public/$DOC_NAME/$DOC_TARGET_VERSION/$language
+    - rsync -av --exclude-from doc/pipeline-rsync-exclude.txt $base/_build/$language/latex/*.pdf $CI_PROJECT_DIR/public/$DOC_NAME/$DOC_TARGET_VERSION/$language
 
 .sphinx-linkcheck:
   extends: .sphinx-doc

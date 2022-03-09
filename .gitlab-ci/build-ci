@@ -11,6 +11,8 @@ doc_job () { # <extends> [<suffix> [<language>]]
 	echo "build ${pkg}${3:+ "$3"}${2:+ "$2"}:"
 	echo '  variables:'
 	echo "    base: $path"
+	echo "    DOC_NAME: ${path##*/}"
+	echo '    DOC_TARGET_VERSION: "5.0"'
     [ -n "${3+empty}" ] && echo "    language: $3"
 	echo "  extends: ${1:?extends}"
 	echo '  rules:'
