@@ -9,3 +9,5 @@ desc: |
  * `UCSVersion`: extended message of `ValueError`. The erronous input
    parameter is included in the error message for debugging.
 bug: [49061]
+erratum: 241
+announced: 2022-03-09
