@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The package `univention-squid` has been migrated to Python 3.
 bug: [53357]
+erratum: 240
+announced: 2022-03-09
