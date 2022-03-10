@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * The domain component in a LDAP path is not shown in wrong reversed
    order anymore.
-bug: [53678]
+ * Byte values are now correctly decoded for the labels of choices delivered
+   by the syntax class `LDAP_Search`.
+bug: [53678, 54190]
