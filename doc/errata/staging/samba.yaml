@@ -3,10 +3,10 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: samba
-fix: 2:4.13.13-1A~5.0.0.202202081641
+fix: 2:4.13.13-1A~5.0.0.202203101935
 desc: |
  This update addresses the following issue:
- * Paged LDAP searches combined with Arbitrary Name Resolution (anr)
-   could cause an use after free error in the LDB module stack of the
-   Samba/AD `sam.ldb´.
-bug: [54425]
+ * The option to pass an authentication file via
+   `--authentication-file` instead of a password
+   has been added to samba tool
+bug: [53101]
