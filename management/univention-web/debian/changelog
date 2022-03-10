@@ -1,3 +1,10 @@
+univention-web (4.0.2-49) unstable; urgency=medium
+
+  * Bug #53678: don't display domain components of path in reverse
+    domain notation
+
+ -- Florian Best <best@univention.de>  Thu, 10 Mar 2022 12:07:31 +0100
+
 univention-web (4.0.2-48) unstable; urgency=medium
 
   * Bug #54032: Minor translation adjustment

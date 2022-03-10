@@ -1167,7 +1167,7 @@ def ldap_dn2path(ldap_dn, include_rdn=True):
 		return ldap_dn
 	rel_path = ldap_dn[:-(1 + len(ldap_base))]
 	rel_path = explode_dn(rel_path, True)[int(not include_rdn):]
-	return '%s:/%s' % ('.'.join(reversed(explode_dn(ldap_base, True))), '/'.join(reversed(rel_path)))
+	return '%s:/%s' % ('.'.join(explode_dn(ldap_base, True)), '/'.join(reversed(rel_path)))
 
 
 def get_module(flavor, ldap_dn, ldap_connection=None, ldap_position=None):
