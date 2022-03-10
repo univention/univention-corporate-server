@@ -3394,6 +3394,14 @@ class simplePolicy(simpleLdap):
 
 		simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes)
 
+	def _ldap_post_remove(self):
+		super(simpleLdap, self)._ldap_post_remove()
+		for object_dn in self.lo.searchDn(filter_format('univentionPolicyReference=%s', [self.dn])):
+			try:
+				self.lo.modify(object_dn, [('univentionPolicyReference', self.dn.encode('UTF-8'), None)])
+			except (univention.admin.uexceptions.base, ldap.LDAPError) as exc:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Could not remove policy reference %r from %r: %s' % (self.dn, object_dn, exc))
+
 	def copyIdentifier(self, from_object):
 		"""Activate the result mode and set the referring object"""
 
