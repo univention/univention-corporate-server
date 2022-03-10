@@ -693,6 +693,7 @@ class Resource(RequestHandler):
 				traceback = traceback.strip()
 				body = exc.body
 			content = self.default_error_page(exc.status_code, exc.log_message, traceback, body)
+			self.set_status(exc.status_code, reason=exc.reason)
 			self.finish(content.encode('utf-8'))
 			return
 
