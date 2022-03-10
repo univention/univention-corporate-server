@@ -3,7 +3,7 @@ release: '4.4'
 version: [8]
 scope: ucs_4.4-0-errata4.4-8
 src: univention-kernel-image-signed
-fix: 5.0.0-20A~4.4.0.202203091848
+fix: 5.0.0-20A~4.4.0.202203101340
 desc: |-
  This updates the Linux kernel to version 4.9.303, which addresses (among
  others) the following security issues:
