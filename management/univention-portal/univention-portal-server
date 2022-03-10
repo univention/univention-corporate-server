@@ -38,10 +38,14 @@ import univention.portal.config as config
 from univention.portal.factory import make_portal
 from univention.portal.log import setup_logger, get_logger
 
+from univention.management.console.ldap import get_machine_connection, get_admin_connection
+from univention.admin import modules
+from ldap.filter import filter_format
 
 class PortalHandler(tornado.web.RequestHandler):
 	def initialize(self, portals):
 		self.portals = portals
+		self._usersmod = None
 
 	def write_error(self, status_code, **kwargs):
 		if "exc_info" in kwargs:
@@ -57,6 +61,33 @@ class PortalHandler(tornado.web.RequestHandler):
 				best_score = score
 				best_portal = portal
 		return best_portal
+
+	@property
+	def usersmod(self):
+		if not self._usersmod:
+			modules.update()
+			self._usersmod = modules.get('users/user')
+			if not self._usersmod.initialized:
+				lo, po = get_machine_connection()
+				modules.init(lo, po, self._usersmod)
+		return self._usersmod
+
+	def get_udm_user_by_dn(self, userdn, admin=False):
+		if admin:
+			lo, po = get_admin_connection()
+		else:
+			lo, po = get_machine_connection()
+		user = self.usersmod.object(None, lo, po, userdn)
+		user.open()
+		return user
+
+	def get_udm_user_info(self, username, admin=False):
+		filter_s = filter_format('(|(uid=%s)(mailPrimaryAddress=%s))', (username, username))
+		lo, po = get_machine_connection()
+		dn = lo.searchDn(filter=filter_s)[0]
+		udm_user = self.get_udm_user_by_dn(dn, admin=admin)
+		udm_info = {key: value for key, value in udm_user.items()}
+		return udm_info
 
 
 class LoginHandler(PortalHandler):
@@ -75,6 +106,12 @@ class JsonHandler(PortalHandler):
 		if not portal:
 			raise tornado.web.HTTPError(404)
 		user = portal.get_user(self)
+
+		if user.username:
+			udm_user = self.get_udm_user_info(user.username)
+		else:
+			udm_user = {}
+
 		admin_mode = False
 		if self.request.headers.get("X-Univention-Portal-Admin-Mode", "no") == "yes":
 			get_logger("admin").info("Admin mode requested")
@@ -105,6 +142,10 @@ class JsonHandler(PortalHandler):
 			answer["portal"]["content"].extend(umc_meta["content"])
 		answer["filtered"] = not admin_mode
 		answer["username"] = user.username
+		answer["mailPrimaryAddress"] = udm_user.get('mailPrimaryAddress')
+		answer["title"] = udm_user.get('title')
+		answer["firstname"] = udm_user.get('firstname')
+		answer["lastname"] = udm_user.get('lastname')
 		answer["user_displayname"] = user.display_name
 		answer["auth_mode"] = portal.auth_mode(self)
 		answer["may_edit_portal"] = portal.may_be_edited(user)
