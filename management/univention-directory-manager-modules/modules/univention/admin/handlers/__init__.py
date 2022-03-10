@@ -3395,7 +3395,7 @@ class simplePolicy(simpleLdap):
 		simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes)
 
 	def _ldap_post_remove(self):
-		super(simpleLdap, self)._ldap_post_remove()
+		super(simplePolicy, self)._ldap_post_remove()
 		for object_dn in self.lo.searchDn(filter_format('univentionPolicyReference=%s', [self.dn])):
 			try:
 				self.lo.modify(object_dn, [('univentionPolicyReference', self.dn.encode('UTF-8'), None)])
