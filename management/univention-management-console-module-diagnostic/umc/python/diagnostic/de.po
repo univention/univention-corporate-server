@@ -11,6 +11,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: umc/python/diagnostic/plugins/62_check_sslapschema.py:11
+msgid "LDAP schema files are missing"
+msgstr "LDAP-Schemadateien sind nicht installiert"
+
+#: umc/python/diagnostic/plugins/62_check_sslapschema.py:13
+msgid "The following LDAP schema definitions are missing:\n"
+msgstr "Die folgenden LDAP-Schema Definitionen fehlen:\n"
+
+#: umc/python/diagnostic/plugins/62_check_sslapschema.py:15
+msgid "The schema definition for attribute {0} is missing.\n"
+msgstr "Die Schema-Definition für Attribut {0} fehlt.\n"
+
 #: umc/python/diagnostic/plugins/21_check_join_status.py:55
 msgid ""
 "\"univention-check-join-status\" returned a problem with the domain join."
