@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.11-34) unstable; urgency=medium
+
+  * Bug #54150: allow "udm users/user list --filter userexpiry=2021-04-
+    14"
+
+ -- Florian Best <best@univention.de>  Thu, 10 Mar 2022 11:51:18 +0100
+
 univention-directory-manager-modules (15.0.11-33) unstable; urgency=medium
 
   * Bug #53581: Python3: fixed reading over shared dictionary
