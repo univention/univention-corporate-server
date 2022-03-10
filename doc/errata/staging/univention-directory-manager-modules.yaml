@@ -18,6 +18,4 @@ desc: |
    objects.
  * Searching with patterns containing umlauts is possible again.
  * When removing a policy the policy is removed from the referencing objects.
- * Byte values are now correctly decoded for the labels of choices delivered
-   by the syntax class `LDAP_Search`.
-bug: [54402, 54085, 53581, 54150, 53975, 16966, 54190]
+bug: [54402, 54085, 53581, 54150, 53975, 16966]
