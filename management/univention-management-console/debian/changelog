@@ -1,3 +1,10 @@
+univention-management-console (12.0.12-21) unstable; urgency=medium
+
+  * Bug #54484: add UCR variable `umc/http/cookie/samesite` to set SameSite
+    attribute for UMC cookies.
+
+ -- Christian Castens <castens@univention.de>  Thu, 10 Mar 2022 15:55:57 +0100
+
 univention-management-console (12.0.12-20) unstable; urgency=medium
 
   * Bug #54043: univention-management-console-dev must depend on

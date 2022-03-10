@@ -30,6 +30,12 @@ Type=bool
 Categories=management-umc
 Default=false
 
+[umc/http/cookie/samesite]
+Description[de]=Legt den Wert des SameSite-Cookie-Attributs für UMC-Cookies fest. Mögliche Werte sind "Strict", "Lax" und "None".
+Description[en]=Sets the SameSite cookie attribute for UMC cookies. Possible values are "Strict", "Lax" and "None".
+Type=str
+Categories=management-umc
+
 [umc/http/session/timeout]
 Description[de]=Nach diesem Zeitraum in Sekunden wird die Browser-Sitzung automatisch geschlossen und eine Neuanmeldung ist notwendig. Ist die Variable nicht gesetzt, gilt 300, also fünf Minuten.
 Description[en]=After this time period in seconds the browser session is automatically closed and a renewed login is required. If the variable is unset, 300 applies (i.e. five minutes).

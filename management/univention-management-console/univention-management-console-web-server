@@ -94,6 +94,10 @@ try:
 except ImportError:
 	from monotonic import monotonic
 
+# the SameSite cookie attribute is only available from Python 3.8
+from six.moves.http_cookies import Morsel
+Morsel._reserved['samesite'] = 'SameSite'
+
 _ = NullTranslation('univention-management-console-frontend').translate
 
 _session_timeout = get_int('umc/http/session/timeout', 300)
@@ -722,6 +726,8 @@ class Ressource(object):
 			cookie[name]['path'] = '/univention/'
 			if cherrypy.request.scheme == 'https' and ucr.is_true('umc/http/enforce-secure-cookie'):
 				cookie[name]['secure'] = True
+			if ucr.get('umc/http/cookie/samesite') in ('Strict', 'Lax', 'None'):
+				cookie[name]['samesite'] = ucr['umc/http/cookie/samesite']
 
 	def get_cookie(self, name):
 		cookie = cherrypy.request.cookie.get
