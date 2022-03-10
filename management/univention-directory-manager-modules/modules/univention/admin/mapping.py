@@ -510,7 +510,7 @@ class mapping(object):
 		"""
 		return self._unmap.get(unmap_name, [''])[0]
 
-	def mapValue(self, map_name, value):
+	def mapValue(self, map_name, value, encoding_errors=None):
 		"""
 		Map |UDM| property value to |LDAP| attribute value.
 
@@ -543,6 +543,7 @@ class mapping(object):
 			return b''
 
 		encoding, strictness = self._map_encoding.get(map_name, ('UTF-8', 'strict'))
+		strictness = encoding_errors or strictness
 		if not map_value:
 			map_value = MapToBytes
 		kwargs = {}
@@ -556,9 +557,9 @@ class mapping(object):
 		return value
 
 	def mapValueDecoded(self, map_name, value, encoding_errors=None):
-		value = self.mapValue(map_name, value)
 		encoding, errors = self.getEncoding(map_name)
 		errors = encoding_errors or errors
+		value = self.mapValue(map_name, value, encoding_errors=errors)
 		if isinstance(value, (list, tuple)):
 			ud.debug(ud.ADMIN, ud.WARN, 'mapValueDecoded returns a list for %s. This is probably not wanted?' % map_name)
 			value = [val.decode(encoding, errors) for val in value]
@@ -769,7 +770,7 @@ def mapRewrite(filter, mapping):
 		if not mapping.shouldMap(key):
 			return
 		k = mapping.mapName(key)
-		v = mapping.mapValueDecoded(key, filter.value)
+		v = mapping.mapValueDecoded(key, filter.value, encoding_errors='ignore')
 	except KeyError:
 		return
 	if k:
