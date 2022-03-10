@@ -555,13 +555,15 @@ class mapping(object):
 			raise univention.admin.uexceptions.valueInvalidSyntax(_('Invalid encoding for %s') % (map_name,))
 		return value
 
-	def mapValueDecoded(self, map_name, value):
+	def mapValueDecoded(self, map_name, value, encoding_errors=None):
 		value = self.mapValue(map_name, value)
+		encoding, errors = self.getEncoding(map_name)
+		errors = encoding_errors or errors
 		if isinstance(value, (list, tuple)):
 			ud.debug(ud.ADMIN, ud.WARN, 'mapValueDecoded returns a list for %s. This is probably not wanted?' % map_name)
-			value = [val.decode(*self.getEncoding(map_name)) for val in value]
+			value = [val.decode(encoding, errors) for val in value]
 		else:
-			value = value.decode(*self.getEncoding(map_name))
+			value = value.decode(encoding, errors)
 		return value
 
 	def unmapValue(self, unmap_name, value):
