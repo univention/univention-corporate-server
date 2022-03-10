@@ -59,6 +59,34 @@
              </simpara></listitem>
         </orderedlist>
     </para>
+    <para>
+        Ein sehr wichtiges und erforderliches Attribut für Benutzerkonten ist der Benutzername.
+        Um Konflikte mit den verschiedenen Werkzeugen zu vermeiden, die Benutzerkonten in UCS verarbeiten,
+        berücksichtigen Sie die folgenden Empfehlungen für die Definition von Benutzernamen:
+        <itemizedlist>
+            <listitem><simpara>
+                Verwenden Sie für Benutzernamen nur Kleinbuchstaben (<literal>a-z</literal>), Ziffern
+                (<literal>0-9</literal>) und den Bindestrich (<literal>-</literal>) aus dem
+                ASCII-Zeichensatz.
+            </simpara></listitem>
+            <listitem><simpara>
+                Der Benutzername beginnt mit einem Kleinbuchstaben aus dem ASCII-Zeichensatz.
+                Der Bindestrich als letztes Zeichen ist nicht erlaubt.
+            </simpara></listitem>
+            <listitem><simpara>
+                Bei UCS hat der Benutzername eine Länge von mindestens 4 und höchstens 20 Zeichen.
+            </simpara></listitem>
+        </itemizedlist>
+            Die Empfehlung ergibt den folgenden regulären Ausdruck:
+            <literal>^[a-z][a-z0-9-]{2,18}[a-z0-9]$</literal>.
+    </para>
+    <para>
+        Neben der Empfehlung enthalten Benutzernamen in der Praxis auch Unterstriche (<literal>_</literal>)
+        und ASCII-Großbuchstaben. Computerkontonamen verwenden zusätzlich das Dollarzeichen (<literal>$</literal>).
+        Gruppennamen können auch Leerzeichen enthalten. Betrachten Sie die Empfehlung als Richtlinie und nicht als
+        harte Regel und bedenken Sie mögliche Nebenwirkungen, wenn Sie Benutzernamen außerhalb der Empfehlung
+        definieren.
+    </para>
     <section id="users::management">
         <title>Verwaltung von Benutzern über &ucsUMC; Modul</title>
         <para>
