@@ -1,0 +1,2 @@
+.. _ucs-documentation-overview: https://docs.software-univention.de/
+.. _univention-wiki: https://wiki.univention.de/
