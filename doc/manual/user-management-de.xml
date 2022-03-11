@@ -74,7 +74,7 @@
                 Der Bindestrich als letztes Zeichen ist nicht erlaubt.
             </simpara></listitem>
             <listitem><simpara>
-                Bei UCS hat der Benutzername eine Länge von mindestens 4 und höchstens 20 Zeichen.
+                In UCS hat der Benutzername eine Länge von mindestens 4 und höchstens 20 Zeichen.
             </simpara></listitem>
         </itemizedlist>
             Die Empfehlung ergibt den folgenden regulären Ausdruck:
@@ -82,9 +82,8 @@
     </para>
     <para>
         Neben der Empfehlung enthalten Benutzernamen in der Praxis auch Unterstriche (<literal>_</literal>)
-        und ASCII-Großbuchstaben. Computerkontonamen verwenden zusätzlich das Dollarzeichen (<literal>$</literal>).
-        Gruppennamen können auch Leerzeichen enthalten. Betrachten Sie die Empfehlung als Richtlinie und nicht als
-        harte Regel und bedenken Sie mögliche Nebenwirkungen, wenn Sie Benutzernamen außerhalb der Empfehlung
+        und ASCII-Großbuchstaben. Betrachten Sie die Empfehlung als Richtlinie und nicht als harte Regel
+        und bedenken Sie mögliche Nebenwirkungen, wenn Sie Benutzernamen außerhalb der Empfehlung
         definieren.
     </para>
     <section id="users::management">

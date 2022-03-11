@@ -26,6 +26,7 @@
 		<para>
 			Die Zuordnung von Benutzern zu Gruppen erfolgt auf zwei Wegen:
 		</para>
+		<para>
 			<itemizedlist>
 				<listitem>
 				<simpara>
@@ -40,6 +41,33 @@
 				</simpara>
 				</listitem>
 			</itemizedlist>
+		</para>
+		<para>
+		    Ein sehr wichtiges und erforderliches Attribut für Gruppen ist der Gruppenname.
+		    Um Konflikte mit den verschiedenen Werkzeugen zu vermeiden, die Gruppen in UCS verarbeiten,
+		    berücksichtigen Sie die folgenden Empfehlungen für die Definition von Gruppennamen:
+		    <itemizedlist>
+		        <listitem><simpara>
+		            Verwenden Sie für Gruppennamen nur Groß- und Kleinbuchstaben (<literal>A-Za-z</literal>),
+                    Ziffern (<literal>0-9</literal>), den Bindestrich (<literal>-</literal>) und Leerzeichen
+                    aus dem ASCII-Zeichensatz.
+		        </simpara></listitem>
+		        <listitem><simpara>
+                    Der Gruppenname beginnt mit einem Buchstaben aus dem ASCII-Zeichensatz.
+                    Das Leerzeichen ist weder als erstes, noch als letztes Zeichen erlaubt.
+                    Der Bindestrich als letztes Zeichen ist nicht erlaubt.
+		        </simpara></listitem>
+		        <listitem><simpara>
+		            In UCS hat der Gruppenname eine Länge von mindestens 4 und höchstens 20 Zeichen.
+		        </simpara></listitem>
+		    </itemizedlist>
+		        Die Empfehlung ergibt den folgenden regulären Ausdruck:
+		        <literal>^[A-Za-z][A-Za-z0-9 -]{2,18}[A-Za-z0-9]$</literal>.
+		</para>
+		<para>
+		    Betrachten Sie die Empfehlung als Richtlinie und nicht als harte Regel und bedenken Sie mögliche
+		    Nebenwirkungen, wenn Sie Gruppennamen außerhalb der Empfehlung definieren.
+		</para>
 
 
 	<section id="groups::management">

@@ -68,7 +68,7 @@
                 The hyphen is not allowed as last character.
             </simpara></listitem>
             <listitem><simpara>
-                On UCS the username has at least a length of 4 characters and at most 20 characters.
+                In UCS the username has at least a length of 4 characters and at most 20 characters.
             </simpara></listitem>
         </itemizedlist>
         The recommendation results in the following regular expression:
@@ -76,9 +76,8 @@
     </para>
     <para>
         Besides the recommendation, usernames also contain underscores (<literal>_</literal>) and upper case
-        ASCII letters in practice. Computer account names additionally use the dollar sign (<literal>$</literal>).
-        Group names may also contain space characters. Consider the recommendation as a guideline and not a
-        rule and keep potential side-effects in mind when defining usernames outside the recommendation.
+        ASCII letters in practice. Consider the recommendation as a guideline and not a rule and keep
+        potential side-effects in mind when defining usernames outside the recommendation.
     </para>
     <section id="users::management">
         <title>User management via &ucsUMC; module</title>

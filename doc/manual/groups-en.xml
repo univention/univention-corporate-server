@@ -40,6 +40,33 @@
 			</itemizedlist>
 		</para>
 
+		<para>
+		    One very important and required attribute for groups is the group name.
+		    To avoid conflicts with the different tools handling groups in UCS, adhere
+		    to the following recommendations for the definition of group names:
+		    <itemizedlist>
+		        <listitem><simpara>
+		            Only use upper and lower case letters (<literal>A-Za-z</literal>),
+                    digits (<literal>0-9</literal>) the hyphen (<literal>-</literal>) and space
+                    from the ASCII character set for group names.
+		        </simpara></listitem>
+		        <listitem><simpara>
+                    The group name starts with a letter ASCII character set.
+                    The space is not allowed as first or last character.
+                    The hyphen is not allowed as last character.
+		        </simpara></listitem>
+		        <listitem><simpara>
+		            In UCS the group name has at least a length of 4 characters and at most 20 characters.
+		        </simpara></listitem>
+		    </itemizedlist>
+		    The recommendation results in the following regular expression:
+		    <literal>^[A-Za-z][A-Za-z0-9 -]{2,18}[A-Za-z0-9]$</literal>.
+		</para>
+		<para>
+		    Consider the recommendation as a guideline and not a rule and keep potential side-effects in
+		    mind when defining group names outside the recommendation.
+		</para>
+
 	<section id="groups::management">
 		<title>Managing groups via &ucsUMC; module</title>
 		<para>
