@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-self-service
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The e-mail template for password reset tokens now support
+   additional placeholders for the properties `title`, `initials`,
+   `displayName`, `firstname`, `lastname`, `mailPrimaryAddress`,
+   `employeeNumber` and `organisation`.
+bug: [48960]

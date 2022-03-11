@@ -1,3 +1,10 @@
+univention-self-service (5.0.1-19) unstable; urgency=medium
+
+  * Bug #48960: make additional UDM user info fields available to self-
+    service email templates
+
+ -- Florian Best <best@univention.de>  Fri, 11 Mar 2022 13:39:14 +0100
+
 univention-self-service (5.0.1-18) unstable; urgency=medium
 
   * Bug #51327: migrate univention-self-service to Python 3
