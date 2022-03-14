@@ -686,7 +686,7 @@ class Instance(Base):
 		else:
 			if not email:
 				return invalid_information
-		user_info = self._extract_user_properties(user)
+		user_info = self._extract_user_properties(user._orig_udm_object)
 		self.send_message(username, 'verify_email', email, user_info, raise_on_success=False)
 		return {
 			'success': True,
