@@ -71,6 +71,7 @@ MEMCACHED_MAX_KEY = 250
 
 SELFSERVICE_MASTER = ucr.get("self-service/backend-server", ucr.get("ldap/master"))
 IS_SELFSERVICE_MASTER = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname')) == SELFSERVICE_MASTER
+UDM_REST_SERVER = ucr.get('self-service/udm-rest-server', '%s.%s' % (ucr.get('hostname'), ucr.get('domainname')))
 DISALLOW_AUTHENTICATION = not ucr.is_true('umc/self-service/allow-authenticated-use')
 
 DEREGISTRATION_TIMESTAMP_FORMATTING = '%Y%m%d%H%M%SZ'
@@ -319,7 +320,7 @@ class Instance(Base):
 		dn, username = self.auth(username, password)
 		MODULE.error('set_service_specific_passwords(): Setting {} password for {}'.format(password_type, username))
 		if password_type == 'radius':
-			udm = UDMRest.http('https://%(hostname)s.%(domainname)s/univention/udm/' % ucr, 'cn=admin', open('/etc/ldap.secret').read())
+			udm = UDMRest.http('https://%s/univention/udm/' % UDM_REST_SERVER, 'cn=admin', open('/etc/ldap.secret').read())
 			user_obj = udm.get('users/user').get(dn)
 			service_specific_password = user_obj.generate_service_specific_password('radius')
 		else:
