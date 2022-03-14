@@ -63,6 +63,8 @@ basic_setup_allow_uss () {
 		xargs ucr set nameserver/external=false nameserver1= nameserver2= nameserver3= dns/forwarder1= dns/forwarder2= dns/forwarder3=
 	ucr set --force updater/identify="UCS (EC2 Test)"
 	ucr set update/check/cron/enabled=false update/check/boot/enabled=false
+	# only execute server password change on 29th of febuarys that are a monday. Happens in 2044. Our tests do this manually
+	ucr set server/password/cron="0 0 29 2 1"
 	service cron reload || true
 }
 
