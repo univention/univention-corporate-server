@@ -1,0 +1,22 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: firefox-esr
+fix: 91.7.0esr-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ * Use-after-free in text reflows (CVE-2022-26381)
+ * Browser window spoof using fullscreen mode (CVE-2022-26383)
+ * iframe allow-scripts sandbox bypass (CVE-2022-26384)
+ * Temporary files downloaded to /tmp and accessible by other local users
+   (CVE-2022-26386)
+ * Time-of-check time-of-use bug when verifying add-on signatures
+   (CVE-2022-26387)
+bug: [54543]
+cve:
+- CVE-2022-26381
+- CVE-2022-26383
+- CVE-2022-26384
+- CVE-2022-26386
+- CVE-2022-26387
