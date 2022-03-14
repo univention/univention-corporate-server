@@ -263,7 +263,6 @@ COMMON_EXCEPTIONS = (
 	E("ldap.CONSTRAINT_VIOLATION: .*unique index violation on objectSid", ['in sync_from_ucs'], 43775),  # a test creates a user with the default Administrators SID, which creates a SID-Conflict
 	# Tracebacks caused by specific bugs:
 	E(r'^ldap\.NO_SUCH_OBJECT: .*', [r'quota\.py'], 52765),
-	E(r'^ldap\.INVALID_CREDENTIALS: .*', [r'quota\.py.*_is_container_change_relevant'], 54518),  # join.log
 	E(r'.*OperationalError.*FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py', '_wrap_pool_connect'], 51671),
 	E(r"(OSError|FileNotFoundError): \[Errno 2\] .*: '/var/lib/samba/sysvol/.*/Policies/'", [r'sysvol-cleanup\.py'], 51670),
 	E("AttributeError: 'NoneType' object has no attribute 'lower'", ['_remove_subtree_in_s4'], 50282),
