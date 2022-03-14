@@ -6,29 +6,27 @@ src: vim
 fix: 2:8.0.0197-4+deb9u5
 desc: |
  This update addresses the following issues:
- * heap-based buffer overflow in win_redr_status() in drawscreen.c
+ * Heap-based buffer overflow in win_redr_status() in drawscreen.c
    (CVE-2021-3872)
- * heap-based buffer overflow in gchar_cursor() in misc1.c (CVE-2021-3927)
- * stack-based buffer overflow in spell_iswordp() in spell.c (CVE-2021-3928)
+ * Heap-based buffer overflow in gchar_cursor() in misc1.c (CVE-2021-3927)
+ * Stack-based buffer overflow in spell_iswordp() in spell.c (CVE-2021-3928)
  * Heap based buffer overflow in findfile.c (CVE-2021-3973)
  * Use after free in regexp_nfa.c (CVE-2021-3974)
- * illegal memory access in find_start_brace() in cindent.c when C-indenting
+ * Illegal memory access in find_start_brace() in cindent.c when C-indenting
    (CVE-2021-3984)
- * heap-based buffer overflow in find_help_tags() in help.c (CVE-2021-4019)
- * use-after-free in ex_open() in src/ex_docmd.c (CVE-2021-4069)
- * use-after-free in win_linetabsize() (CVE-2021-4192)
- * out-of-bound read in getvcol() (CVE-2021-4193)
+ * Heap-based buffer overflow in find_help_tags() in help.c (CVE-2021-4019)
+ * Use-after-free in ex_open() in src/ex_docmd.c (CVE-2021-4069)
+ * Use-after-free in win_linetabsize() (CVE-2021-4192)
+ * Out-of-bound read in getvcol() (CVE-2021-4193)
  * vim is vulnerable to out of bounds read (CVE-2022-0213)
- * heap-based out-of-bounds read (CVE-2022-0319)
+ * Heap-based out-of-bounds read (CVE-2022-0319)
  * Heap-based buffer overflow in init_ccline() in ex_getln.c (CVE-2022-0359)
  * Illegal memory access when copying lines in visual mode leads to heap
    buffer overflow (CVE-2022-0361)
  * Out-of-bounds Read in vim (CVE-2022-0368)
  * Stack-based Buffer Overflow in spellsuggest.c (CVE-2022-0408)
- * Use of Out-of-range Pointer Offset in vim (CVE-2022-0554)
- * CVE-2022-0685 : vim: Use of Out-of-range Pointer Offset in vim
-   (CVE-2022-0685)
- * buffer overflow (CVE-2022-0714)
+ * Use of Out-of-range Pointer Offset in vim (CVE-2022-0554, CVE-2022-0685)
+ * Buffer overflow (CVE-2022-0714)
  * Use of Out-of-range Pointer Offset (CVE-2022-0729)
 bug: [54546]
 cve:
