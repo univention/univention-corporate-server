@@ -2,8 +2,8 @@ product: ucs
 release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
-src: linux
-fix: 4.19.232-1
+src: linux-latest
+fix: 105+deb10u14
 desc: |
  This updates the Linux kernel to version 4.19.232, which addresses (among
  others) the following security issues:
@@ -104,7 +104,7 @@ desc: |
    (CVE-2022-25375)
  * drivers/net/usb/sr9700.c allows attackers to obtain sensitive information
    from heap memory via crafted frame lengths from a device. (CVE-2022-26966)
-note: This is the first of two parts.
+note: This is the second of two parts.
 bug: [54541]
 cve:
 - CVE-2020-29374
