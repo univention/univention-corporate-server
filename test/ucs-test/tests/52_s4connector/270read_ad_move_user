@@ -35,8 +35,7 @@ SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "read"
 # temporary debug for test analysis
 ucr set connector/debug/level=5
-ucr set samba/debug/level=10
-/etc/init.d/samba restart
+smbcontrol all debug 10
 sleep 5
 invoke-rc.d univention-s4-connector restart
 # temporary debug
@@ -102,8 +101,7 @@ ad_delete "CN=$CONTAINER_NAME,$(ad_get_base)" || fail_test 110
 ad_set_sync_mode "$SYNCMODE"
 # temporary debug for test analysis
 ucr unset connector/debug/level
-ucr unset samba/debug/level
-/etc/init.d/samba restart
+smbcontrol all debug 1
 sleep 5
 invoke-rc.d univention-s4-connector restart
 # temporary debug
