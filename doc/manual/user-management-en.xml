@@ -905,10 +905,8 @@
 				password management without administrator interaction.
 			</para>
 			<para>
-				The Self Service app registers one web service on the portal
-				which can be accessed via a dedicated web page:
-				"Change Password".
-				It allows users to update their password given their old password as well as
+                The <foreignphrase>Self Service app</foreignphrase> creates its own portal, accessible at /univention/selfservice/, which bundles all its functionality. The original portal has the same entries registered at its user menu.
+				They allow users to update their password given their old password as well as
 				to reset their lost password by requesting a token to be sent to a previously registered
 				contact e-mail address. The token has to be entered on the dedicated password reset web page.
 			</para>
@@ -918,23 +916,11 @@
 			</para>
 			<variablelist>
 				<varlistentry>
-					<term><envar>umc/self-service/passwordreset/frontend/enabled</envar></term>
-					<listitem><simpara>
-						Activates or deactivates the "Password forgotten" page of the Self Service on individual hosts.
-					</simpara></listitem>
-				</varlistentry>
-				<varlistentry>
 					<term><envar>umc/self-service/passwordreset/backend/enabled</envar></term>
 					<listitem><simpara>
 						Activates or deactivates the backend of the "Password forgotten" page.
 						This &ucsUCRV; has to be set on the systems that is defined as Self Service backend via the &ucsUCRV;
 						<envar>self-service/backend-server</envar>, since requests regarding these variables are forwarded to the Self Service backend.
-					</simpara></listitem>
-				</varlistentry>
-				<varlistentry>
-					<term><envar>umc/self-service/protect-account/frontend/enabled</envar></term>
-					<listitem><simpara>
-						Activates or deactivates the "Protect account" page of the Self Service on individual hosts.
 					</simpara></listitem>
 				</varlistentry>
 				<varlistentry>
@@ -945,16 +931,9 @@
 						<envar>self-service/backend-server</envar>, since requests regarding these variables are forwarded to the Self Service backend.
 					</simpara></listitem>
 				</varlistentry>
-				<varlistentry>
-					<term><envar>umc/self-service/passwordchange/frontend/enabled</envar></term>
-					<listitem><simpara>
-						Activates or deactivates the "Password change" page of the Self Service on individual hosts.
-					</simpara></listitem>
-				</varlistentry>
 			</variablelist>
 			<para>
-				The design of the Self Service app can be customized via the file <filename>/usr/share/univention-self-service/www/css/custom.css</filename>.
-				This file is not overwritten during an update.
+				Those variables also activate or deactivate the corresponding entries in the portal. However, you can also adjust them manually, they are in fact just normal portal entries.
 			</para>
 		</section>
 		<section id="user-management:password-changes-by-users:contact-data">
@@ -971,7 +950,7 @@
 				<graphic scalefit="1" width="65%" align="center" fileref="illustrations50/users_self-service_profile_en.png"/>
 			</figure>
 			<para>
-				For this the following &ucsUCRV;s must be configured:<footnote><simpara>Both <phrase>attributes</phrase> variables must match each other. The names of the attributes and their mapping can be fetch from the following command: <command><![CDATA[python -c 'from univention.admin.handlers.users.user import mapping;print("\n".join(map("{0[0]:>30s} {0[1][0]:<30s}".format, sorted(mapping._map.items()))))']]></command></simpara></footnote>
+				For this the following &ucsUCRV;s must be configured:<footnote><simpara>Both <phrase>attributes</phrase> variables must match each other. The names of the attributes and their mapping can be fetch from the following command: <command><![CDATA[python3 -c 'from univention.admin.handlers.users.user import mapping;print("\n".join(map("{0[0]:>30s} {0[1][0]:<30s}".format, sorted(mapping._map.items()))))']]></command></simpara></footnote>
 			</para>
 			<variablelist>
 				<varlistentry>
@@ -1023,10 +1002,6 @@
 					<title>Account registration</title>
 					<graphic scalefit="1" width="65%" align="center" fileref="illustrations50/users_self-service_registration_en.png"/>
 				</figure>
-				<para>
-					The "Create an account" page can be enabled/disabled on individual hosts, where the Self Service app is installed,
-					with the &ucsUCRV; <envar>umc/self-service/account-registration/frontend/enabled</envar>.
-				</para>
 				<para>
 					Aspects about the "Create an account" page and the account creation itself can be configured with the following &ucsUCRV;s.
 					These &ucsUCRV;s have to be set on the systems that is defined as Self Service backend via the &ucsUCRV;
@@ -1131,20 +1106,10 @@
 					<graphic scalefit="1" width="65%" align="center" fileref="illustrations50/users_self-service_verification_en.png"/>
 				</figure>
 				<para>
-					The "Account verification" page can be enabled/disabled on individual hosts, where the Self Service app is installed,
-					with the &ucsUCRV; <envar>umc/self-service/account-verification/frontend/enabled</envar>.
-				</para>
-				<para>
 					The account verification and request of new verification tokens can be disabled/enabled with the
 					&ucsUCRV; <envar>umc/self-service/account-verification/backend/enabled</envar>.
 					This &ucsUCRV; has to be set on the systems that is defined as Self Service backend via the &ucsUCRV;
 					<envar>self-service/backend-server</envar>.
-				</para>
-				<para>
-					After the verification was successful a message is shown on what the user can do next.
-					This message can be configured with the &ucsUCRV; <envar>umc/self-service/account-verification/next-steps</envar>.
-					A localized message can be configured by appending a locale to the variable.
-					E.g. <envar>umc/self-service/account-verification/next-steps/en</envar>.
 				</para>
 				<figure id="user-verification-message">
 					<title>Account verification</title>
