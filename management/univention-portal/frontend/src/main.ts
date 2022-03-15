@@ -29,6 +29,7 @@
 import { createApp } from 'vue';
 import App from '@/App.vue';
 import { store } from '@/store';
+import { router } from '@/router';
 import localize from '@/plugins/localize';
 import VueDOMPurifyHTML from 'vue-dompurify-html';
 
@@ -46,6 +47,7 @@ window.store = store;
 
 const app = createApp(App)
   .use(localize)
+  .use(router)
   .use(store)
   .use(VueDOMPurifyHTML, {
     hooks: {
@@ -61,3 +63,4 @@ const app = createApp(App)
   });
 
 const vm = app.mount('#app');
+export default vm;

@@ -1,0 +1,39 @@
+{
+  "administrator": "Administrator",
+  "cookieBanner": {
+    "cookie": null,
+    "show": true,
+    "text": {},
+    "title": {}
+  },
+  "domainname": "duckdns.org",
+  "feedbackAddress": "feedback@univention.de",
+  "feedbackSubject": "[UMC-Feedback] Traceback",
+  "fqdn": "ucs5-p1.duckdns.org",
+  "has_certificates": true,
+  "hostname": "ucs5-p1",
+  "login_links": {
+    "how_do_i_login/enabled": "true",
+    "login_without_sso/enabled": "true",
+    "login_without_sso/text": "Login without Single Sign On",
+    "login_without_sso/text/de": "Ohne Single Sign-On anmelden"
+  },
+  "login_texts": {},
+  "piwikDisabled": false,
+  "portal/show-outdated-browser-warning": false,
+  "serveraddress": "85.215.239.177",
+  "sessionTimeout": 28800,
+  "system/setup/showloginmessage": "false",
+  "umc/self-service/account-deregistration/enabled": false,
+  "umc/self-service/account-registration/frontend/enabled": false,
+  "umc/self-service/account-verification/frontend/enabled": false,
+  "umc/self-service/allow-authenticated-use": false,
+  "umc/self-service/passwordchange/frontend/enabled": true,
+  "umc/self-service/passwordreset/frontend/enabled": true,
+  "umc/self-service/profiledata/enabled": true,
+  "umc/self-service/protect-account/frontend/enabled": true,
+  "umc/server/upload/max": "2048",
+  "umc/web/sso/enabled": "true",
+  "umc/web/startupdialog": "false"
+}
+

@@ -54,22 +54,18 @@ const user: PortalModule<UserState> = {
     },
   },
 
-  getters: { userState: (state) => state.user },
+  getters: {
+    userState: (state: UserState) => state.user,
+  },
 
   actions: {
     setUser({ commit, dispatch }: UserActionContext, payload: UserWrapper): void {
       commit('SETUSER', payload);
       const username = payload.user.username;
       if (username) {
-        dispatch('activity/addMessage', {
-          id: 'login',
-          msg: _('Logged in as "%(username)s"', { username }),
-        }, { root: true });
+        dispatch('activity/setMessage', _('Logged in as "%(username)s"', { username }), { root: true });
       } else {
-        dispatch('activity/addMessage', {
-          id: 'login',
-          msg: _('Not logged in'),
-        }, { root: true });
+        dispatch('activity/setMessage', _('Not logged in'), { root: true });
       }
     },
   },

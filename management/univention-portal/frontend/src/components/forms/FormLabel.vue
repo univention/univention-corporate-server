@@ -27,13 +27,13 @@
   <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <span
-    aria-hidden="true"
-  > *
-  </span>
-  <span class="sr-only sr-only-mobile">
-    {{ REQUIRED }}
-  </span>
+  <label :for="forAttr">
+    {{ label }}
+    <span
+      v-if="required"
+      aria-hidden="true"
+    >*</span>
+  </label>
 </template>
 
 <script lang="ts">
@@ -41,10 +41,23 @@ import { defineComponent } from 'vue';
 import _ from '@/jsHelper/translate';
 
 export default defineComponent({
-  name: 'PortalTile',
-  computed: {
-    REQUIRED(): string {
-      return _('required');
+  name: 'Label',
+  props: {
+    forAttr: {
+      type: String,
+      required: true,
+    },
+    label: {
+      type: String,
+      required: true,
+    },
+    required: {
+      type: Boolean,
+      default: false,
+    },
+    invalidMessage: {
+      type: String,
+      default: '',
     },
   },
 });

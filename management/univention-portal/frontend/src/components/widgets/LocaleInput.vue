@@ -27,30 +27,33 @@
   <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <div class="locale-input">
-    <label
-      class="locale-input__label"
-      :for="`locale-input-${I18N_LABEL}`"
-    >
-      {{ I18N_LABEL }}
-    </label>
+  <div
+    class="locale-input"
+    data-test="locale-input"
+  >
     <div class="locale-input__wrapper">
       <input
-        :id="`locale-input-${I18N_LABEL}`"
-        v-model="modelValueData.en_US"
+        :id="forAttrOfLabel"
+        ref="input"
+        :value="modelValue.en_US"
         class="locale-input__text-field"
         autocomplete="off"
         :name="name"
         :tabindex="tabindex"
-        :data-test="`localeInput--${I18N_LABEL}`"
+        :required="required"
+        :aria-invalid="invalid"
+        :aria-describedby="invalidMessageId || null"
+        :data-test="`localeInput--${i18nLabel}`"
+        @input="onInputEN"
       >
       <icon-button
-        :id="`locale-input__icon--${I18N_LABEL}`"
+        :id="`locale-input__icon--${i18nLabel}`"
         icon="globe"
+        class="locale-input__button"
         :has-button-style="true"
         :aria-label-prop="TRANSLATE_TEXT_INPUT"
         :tabindex="tabindex"
-        :data-test="`iconButton--${I18N_LABEL}`"
+        :data-test="`iconButton--${i18nLabel}`"
         @click="openTranslationEditingDialog"
       />
     </div>
@@ -63,6 +66,7 @@ import { mapGetters } from 'vuex';
 import _ from '@/jsHelper/translate';
 
 import IconButton from '@/components/globals/IconButton.vue';
+import { isValid } from '@/jsHelper/forms';
 
 export default defineComponent({
   name: 'LocaleInput',
@@ -90,53 +94,47 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    invalidMessage: {
+      type: String,
+      default: '',
+    },
+    forAttrOfLabel: {
+      type: String,
+      required: true,
+    },
+    invalidMessageId: {
+      type: String,
+      required: true,
+    },
+    required: {
+      type: Boolean,
+      default: false,
+    },
   },
-  emits: [
-    'update:modelValue',
-  ],
-  data() {
-    return {
-      modelValueData: {
-        en_US: '',
-      },
-      translations: {
-        en_US: '',
-      },
-    };
-  },
+  emits: ['update:modelValue'],
   computed: {
     ...mapGetters({
       locales: 'locale/getAvailableLocales',
-      getModalError: 'modal/getModalError',
-      savedFocus: 'activity/focus',
     }),
-    I18N_LABEL():string {
-      return _('%(key1)s', { key1: this.i18nLabel });
-    },
     TRANSLATE_TEXT_INPUT(): string {
       return _('Edit Translations');
-    },
-    hasNewTranslation(): string {
-      return !this.translations.en_US ? this.translations.en_US : this.modelValueData.en_US;
     },
     translationEditingDialogLevel(): number {
       return this.isInModal ? 2 : 1;
     },
-  },
-  created() {
-    const model = this.modelValue;
-    const newModel = {};
-    if ('locale' in model) {
-      newModel[model.locale] = model.value;
-      Object.assign(this.modelValueData, newModel);
-    } else {
-      Object.assign(this.modelValueData, model);
-    }
-  },
-  updated() {
-    this.$emit('update:modelValue', this.modelValueData);
+    invalid(): boolean {
+      return !isValid({
+        type: 'TextBox',
+        invalidMessage: this.invalidMessage,
+      });
+    },
   },
   methods: {
+    onInputEN(evt) {
+      const newVal = JSON.parse(JSON.stringify(this.modelValue));
+      newVal.en_US = evt.target.value;
+      this.$emit('update:modelValue', newVal);
+    },
     openTranslationEditingDialog() {
       this.$store.dispatch('modal/setShowModalPromise', {
         level: this.translationEditingDialogLevel,
@@ -147,21 +145,26 @@ export default defineComponent({
           title: this.i18nLabel,
           modalLevelProp: this.translationEditingDialogLevel,
         },
-      }).then((data) => {
-        this.$store.dispatch('modal/hideAndClearModal', this.translationEditingDialogLevel);
-        this.modelValueData = data.translations;
-        this.translations = data.translations;
-        const clickedButton = document.getElementById(`locale-input__icon--${this.I18N_LABEL}`);
-        clickedButton?.focus();
-      }, () => {
-        this.$store.dispatch('modal/hideAndClearModal', this.translationEditingDialogLevel);
-      });
-      this.$store.dispatch('activity/setRegion', 'translation-editing');
+      })
+        .then((data) => {
+          this.$emit('update:modelValue', data.translations);
+        }, () => {
+          // catch modal/reject to prevent uncaught reject error in console
+        })
+        .finally(() => {
+          this.$store.dispatch('modal/hideAndClearModal', this.translationEditingDialogLevel);
+          this.$store.dispatch('activity/setRegion', 'modal-wrapper--isVisible-1');
+          console.log('SET REGION');
+        });
       this.$store.dispatch('activity/setLevel', 'modal2');
       this.$store.dispatch('activity/saveFocus', {
-        region: 'modal-wrapper--isVisible',
-        id: `locale-input__icon--${this.I18N_LABEL}`,
+        region: 'modal-wrapper--isVisible-1',
+        id: `locale-input__icon--${this.i18nLabel}`,
       });
+    },
+    focus() {
+      // @ts-ignore TODO
+      this.$refs.input.focus();
     },
   },
 });
@@ -169,17 +172,11 @@ export default defineComponent({
 
 <style lang="stylus">
 .locale-input
-  margin-top: calc(3 * var(--layout-spacing-unit))
-  margin-bottom: var(--layout-spacing-unit)
-
-  label
-    margin-top: 0
   &__wrapper
     display: flex
     align-items: center
+    gap: var(--layout-spacing-unit)
 
-  &__text-field
-    margin-bottom: 0
-    margin-right: var(--layout-spacing-unit)
-
+  &__button
+    flex: 0 0 auto
 </style>

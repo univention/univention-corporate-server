@@ -33,6 +33,7 @@
       :tag="wrapperTag"
       :active-at="activeAt"
       :href="link"
+      :to="link"
       :target="anchorTarget"
       :aria-describedby="tileId"
       :aria-label="ariaLabelPortalTile"
@@ -93,12 +94,13 @@
           :active-at="activeAtEdit"
           class="icon-button--admin"
           :aria-label-prop="MOVE_ENTRY"
+          role="button"
           @click="dragKeyboardClick"
           @keydown.esc="dragend"
-          @keydown.left="dragKeyboardDirection($event, 'left')"
-          @keydown.right="dragKeyboardDirection($event, 'right')"
-          @keydown.up="dragKeyboardDirection($event, 'up')"
-          @keydown.down="dragKeyboardDirection($event, 'down')"
+          @keydown.left="dragKeyboardDirection($event, 'left', dragAndDropData)"
+          @keydown.right="dragKeyboardDirection($event, 'right', dragAndDropData)"
+          @keydown.up="dragKeyboardDirection($event, 'up',dragAndDropData)"
+          @keydown.down="dragKeyboardDirection($event, 'down', dragAndDropData)"
           @keydown.tab="handleTabWhileMoving"
         />
       </div>
@@ -114,6 +116,8 @@
 </template>
 
 <script lang="ts">
+// TODO remove extra attributes on tabindex-element depending on tag (?) e.g. in edit mode the <div>s have href set
+
 import { defineComponent, PropType } from 'vue';
 import { mapGetters } from 'vuex';
 import _ from '@/jsHelper/translate';
@@ -201,6 +205,9 @@ export default defineComponent({
       lastDir: 'dragndrop/getLastDir',
     }),
     wrapperTag(): string {
+      if (this.linkTarget === 'internalrouter') {
+        return 'router-link';
+      }
       return (this.minified || this.editMode) ? 'div' : 'a';
     },
     isDisabled(): boolean {
@@ -234,10 +241,10 @@ export default defineComponent({
       return ['portal', 'header-search'];
     },
     MOVE_ENTRY(): string {
-      return _('Move entry');
+      return _('Move tile: %(entry)s', { entry: this.$localized(this.title) });
     },
     EDIT_ENTRY(): string {
-      return _('Edit entry');
+      return _('Edit tile: %(entry)s', { entry: this.$localized(this.title) });
     },
     SHOW_TOOLTIP(): string {
       return _('Show tooltip');

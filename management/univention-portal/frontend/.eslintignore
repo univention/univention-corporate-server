@@ -41,7 +41,6 @@ pts-sdk-node/
 src/assets/
 tools/
 src/constants/semanticUIIcons.js
-tests/
 lib/**/node_modules/
 lib/**/build/
 lib/

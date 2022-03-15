@@ -31,7 +31,7 @@
     v-if="showCookieBanner"
     @dismissed="hideCookieBanner"
   />
-  <portal />
+  <router-view />
 </template>
 
 <script lang="ts">

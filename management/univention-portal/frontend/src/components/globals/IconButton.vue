@@ -29,6 +29,7 @@ License with the Debian GNU/Linux or Univention distribution in file
 <template>
   <tabindex-element
     :id="id"
+    ref="icon-button"
     :active-at="activeAt"
     :aria-label="ariaLabelProp"
     :class="{'icon-button--button-style': hasButtonStyle}"

@@ -33,40 +33,27 @@
     :modal-level="modalLevel"
     @cancel="cancel"
   >
-    <form class="translation-editing">
-      <label
-        v-for="locale in locales"
-        :key="locale"
-      >
-        {{ localeLabel(locale) }}
-        <template
-          v-if="locale === 'en_US'"
-        >
-          <required-field-label />
-        </template>
-        <input
-          :ref="'ref_input_' + locale"
-          v-model="translationObject[locale]"
-          :placeholder="hasValue(locale)"
-          class="translation-editing__text-input"
-        >
-      </label>
-      <footer class="translation-editing__footer-buttons">
+    <my-form
+      ref="form"
+      v-model="formValues"
+      :widgets="formWidgets"
+    >
+      <footer>
         <button
           type="button"
-          @click.prevent="cancel()"
+          @click.prevent="cancel"
         >
           {{ CANCEL }}
         </button>
         <button
           class="primary"
-          type="button"
-          @click.prevent="closeDialog()"
+          type="submit"
+          @click.prevent="save"
         >
           {{ SAVE }}
         </button>
       </footer>
-    </form>
+    </my-form>
   </modal-dialog>
 </template>
 <script lang="ts">
@@ -74,18 +61,15 @@ import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 import _ from '@/jsHelper/translate';
 
-import RequiredFieldLabel from '@/components/forms/RequiredFieldLabel.vue';
 import ModalDialog from '@/components/modal/ModalDialog.vue';
-import ModalWrapper from '@/components/modal/ModalWrapper.vue';
-
-import { Locale } from '@/store/modules/locale/locale.models';
+import MyForm from '@/components/forms/Form.vue';
+import { allValid, validateAll } from '@/jsHelper/forms';
 
 export default defineComponent({
   name: 'TranslationEditing',
   components: {
     ModalDialog,
-    ModalWrapper,
-    RequiredFieldLabel,
+    MyForm,
   },
   props: {
     title: {
@@ -103,16 +87,15 @@ export default defineComponent({
   },
   data() {
     return {
-      translationObject: {},
       id: '',
+      formWidgets: [],
+      formValues: {},
     };
   },
   computed: {
     ...mapGetters({
       locales: 'locale/getAvailableLocales',
       localeLabels: 'locale/getLocaleLabels',
-      getModalError: 'modal/getModalError',
-      savedFocus: 'activity/focus',
     }),
     TRANSLATION_OF(): string {
       return _('Translation: %(key1)s', { key1: this.title });
@@ -129,39 +112,47 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.locales.forEach((key, index) => {
-      if (this.inputValue[this.locales[index]]) {
-        this.translationObject[this.locales[index]] = this.inputValue[this.locales[index]];
-      }
-    });
     this.id = 'translation-editing';
 
-    setTimeout(() => {
-      (this.$refs.ref_input_en_US as HTMLElement).focus();
-    }, 100);
+    const formWidgets: any = [];
+    const formValues = {};
+    this.locales.forEach((locale) => {
+      const widget = {
+        type: 'TextBox',
+        name: locale,
+        label: this.localeLabels[locale] || locale,
+        placeholder: this.inputValue[locale] ? null : this.inputValue.en_US,
+        required: false,
+      };
+      if (locale === 'en_US') {
+        widget.required = true;
+      }
+      formWidgets.push(widget);
+      formValues[locale] = this.inputValue[locale] ?? '';
+    });
+    this.formWidgets = formWidgets;
+    this.formValues = formValues;
+
+    this.$nextTick(() => {
+      // @ts-ignore TODO
+      this.$refs.form.focusFirstInteractable();
+    });
   },
   methods: {
     cancel(): void {
-      this.$store.dispatch('modal/hideAndClearModal', this.modalLevelProp);
-      const lastFocusID = this.savedFocus['modal-wrapper--isVisible'];
-      const clickedButton = document.getElementById(lastFocusID);
-      clickedButton?.focus();
+      this.$store.dispatch('modal/reject', this.modalLevelProp);
     },
-    closeDialog(): void {
-      const translations = this.translationObject;
+    save(): void {
+      validateAll(this.formWidgets, this.formValues);
+      if (!allValid(this.formWidgets)) {
+        // @ts-ignore TODO
+        this.$refs.form.focusFirstInvalid();
+        return;
+      }
       this.$store.dispatch('modal/resolve', {
         level: this.modalLevelProp,
-        translations,
+        translations: this.formValues,
       });
-    },
-    hasValue(locale): string {
-      return this.inputValue[locale] ? null : this.inputValue.en_US;
-    },
-    isUserInput(locale): boolean {
-      return this.inputValue[locale];
-    },
-    localeLabel(locale: Locale): string {
-      return this.localeLabels[locale] || locale;
     },
   },
 });
@@ -169,11 +160,7 @@ export default defineComponent({
 </script>
 
 <style lang="stylus">
-.translation-editing
-  &__footer-buttons
-    display: flex
-    justify-content: space-between
-
-  &__text-input
+#translation-editing
+  input
     width: 100%
 </style>
