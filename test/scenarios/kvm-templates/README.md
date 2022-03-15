@@ -99,3 +99,27 @@ listView("${c.jenkins_folder_name}/KVM Templates") {
 ### Create templates
 
 To create the template, go to Jenkins UCS-X.X / UCS-X.X-X / KVM Templates and start your job.
+
+## Windows Templates
+
+Here some hints how to prepare such a windows template
+
+* start/install the windows system on our KVM environment
+* deactivate the firewall (TODO, add the correct exceptions instead of deactivating)
+* add VirtIO drivers
+* set DCHP for the network
+* Administrator password -> univention (clients), Univention.99 (server)
+* set network profie to "Private"
+  * powershell
+  * Get-NetConnectionProfile
+  * Set-NetConnectionProfile -Name "NetworkName" -NetworkCategory Private
+* activate winrm
+  * winrm quickconfig
+  * Restart-Service winrm
+* apply the ucs-winrm default settings (!! important, otherwise ucs-winrm will not work later)
+  * cd git/ucs-ec2-tools/
+  * python shared-utils/ucs-winrm.py winrm-config --client $IP --user Administrator --password univention
+  * python shared-utils/ucs-winrm.py run-ps --cmd ipconfig --client $IP --user Administrator --password univention
+* cleanup windows (disk cleanup to save disk space)
+* stop instance
+* use `ucs-kt-put` on the KVM server to create a template
