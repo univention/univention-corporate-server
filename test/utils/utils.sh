@@ -607,6 +607,11 @@ remove_s4connector_tests_and_mark_tests_manual_installed () {
 	apt-mark manual 'ucs-test-*'
 }
 
+remove_adconnector_tests_and_mark_tests_manual_installed () {
+	univention-remove --yes ucs-test-adconnector ucs-test-admember
+	apt-mark manual 'ucs-test-*'
+}
+
 install_ucs_windows_tools () {
 	install_with_unmaintained ucs-windows-tools
 }
