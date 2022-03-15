@@ -44,8 +44,8 @@ License with the Debian GNU/Linux or Univention distribution in file
       class="notifications__close-all"
     >
       <button
-        type="button"
         ref="removeAllNotificationsButton"
+        type="button"
         @click.prevent="removeAllNotifications"
       >
         <portal-icon
@@ -128,7 +128,7 @@ export default defineComponent({
     }
   },
   mounted(): void {
-    if ( this.isInNotificationBar && this.notifications.length > 1) {
+    if (this.isInNotificationBar && this.notifications.length > 1) {
       (this.$refs.removeAllNotificationsButton as HTMLElement).focus();
     } else {
       this.$store.dispatch('activity/setRegion', 'notifications-all');

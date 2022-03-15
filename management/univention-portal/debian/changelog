@@ -1,3 +1,9 @@
+univention-portal (4.0.5-76) unstable; urgency=medium
+
+  * Bug #54556: Fix linter
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 15 Mar 2022 22:29:47 +0100
+
 univention-portal (4.0.5-75) unstable; urgency=medium
 
   * Bug #54556: Include patches from phoenix
