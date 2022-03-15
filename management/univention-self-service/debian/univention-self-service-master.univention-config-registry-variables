@@ -4,3 +4,9 @@ Description[en]=A comma separated list of LDAP attributes that a user must be ab
 Type=str
 Default=jpegPhoto,mail,telephoneNumber,roomNumber,departmentNumber,st,homePhone,mobile,homePostalAddress
 Categories=self-service
+
+[self-service/udm-rest-server]
+Description[de]=Der Server auf dem die UDM REST API läuft, den der Self-Service verwendet. Der angegebene Wert ist der FQDN des Servers. Der Default ist der Primary Directory Node. Diese Variable muss nur auf einem Primary Directory Node konfiguriert werden.
+Description[en]=The server on which the UDM REST API is running, that the self service uses. The given value is the FQDN of the server. The default is the Primary Directory Node. This variable only has to be configured the Primary Directory Node.
+Type=str
+Categories=self-service

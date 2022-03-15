@@ -40,6 +40,7 @@ Depends:
  python-six,
  python-univention-debug,
  python-univention-namespace,
+ python-univention-config-registry (>= 15.0.7-16),
  ${misc:Depends},
  ${python:Depends},
 Provides:
@@ -62,6 +63,7 @@ Depends:
  python3-samba,
  python3-six,
  python3-univention-debug,
+ python3-univention-config-registry (>= 15.0.7-16),
  ${misc:Depends},
  ${python3:Depends},
 Provides:

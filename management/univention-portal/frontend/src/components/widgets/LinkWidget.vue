@@ -68,16 +68,19 @@
           :aria-label-prop="removeLink(index)"
           :active-at="['modal']"
           :has-button-style="true"
+          :data-test="`link-widget-remove-button-${index}`"
           @click="removeField(index, modelValueData)"
         />
       </div>
     </div>
     <div class="modal-admin__button">
       <button
+        ref="addButton"
         type="button"
         class="modal-admin__button--inner"
+        data-test="add-field"
         :tabindex="tabindex"
-        @click.prevent="addField"
+        @click.prevent="addField()"
       >
         <portal-icon
           icon="plus"
@@ -163,25 +166,30 @@ export default defineComponent({
       this.modelValueData.push({ locale: this.currentLocale || 'en_US', value: '' });
       const i = (this.modelValueData.length - 1);
 
-      setTimeout(() => {
+      // @ts-ignore FIXME not sure how to fix this error
+      this.$nextTick(() => {
         const elem = (this.$refs[`link${i}`] as HTMLElement);
         elem.focus();
-      }, 50);
+      });
     },
     removeField(index) {
       this.modelValueData.splice(index, 1);
     },
     LINK(index: number): string {
-      return `${_('Link')} ${index}:`;
+      return `${_('Link')} ${index + 1}:`;
     },
     localeSelect(index: number): string {
-      return `${this.LINK(index + 1)} ${_('Select locale for Link')}`;
+      return `${this.LINK(index)} ${_('Select locale for Link')}`;
     },
     linkInput(index: number): string {
-      return `${this.LINK(index + 1)} ${_('insert valid Link')}`;
+      return `${this.LINK(index)} ${_('insert valid Link')}`;
     },
     removeLink(index: number): string {
-      return `${this.LINK(index + 1)} ${this.REMOVE}`;
+      return `${this.LINK(index)} ${this.REMOVE}`;
+    },
+    focus() {
+      // @ts-ignore TODO
+      this.$refs.addButton.focus();
     },
   },
 });
@@ -194,23 +202,18 @@ export { LocaleAndValue };
 .link-widget
   display: flex
   align-items: center
+  margin-bottom: var(--layout-spacing-unit)
 
   &__select
-    max-width: 5rem
-
-    select
-      width: 5rem
+    flex: 0 0 auto
 
   &__input
-    width: 100%
-    margin-left: 0.5rem
+    margin-left: var(--layout-spacing-unit)
     margin-right: var(--layout-spacing-unit)
 
     input
       width: 100%
-      box-sizing: border-box
 
   &__remove
-    width: 3rem
-    margin-bottom: var(--layout-spacing-unit)
+    flex: 0 0 auto
 </style>

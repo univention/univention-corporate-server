@@ -43,6 +43,7 @@ Depends:
  univention-postgresql,
  univention-self-service-invitation,
  univention-self-service-passwordreset-umc,
+ python-univention-directory-manager-rest(>> 10.0.2-8),
  ${misc:Depends},
 Description: Univention Self Service
  This package contains the required dependencies for the Primary Directory Node

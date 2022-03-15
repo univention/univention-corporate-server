@@ -11,6 +11,7 @@ udm/migrate-to-new-portal usr/lib/univention-portal/
 udm/univention-portal.xml usr/lib/univention-portal/umc/
 listener/*.py usr/lib/univention-directory-listener/system
 univention-blog.png usr/share/univention-portal/
+key.svg usr/share/univention-portal/
 login.svg usr/share/univention-portal/
 univention-management-console.svg usr/share/univention-portal/
 univention-portal-server usr/sbin/

@@ -95,9 +95,9 @@ const tileClickMixin = {
       if (this.linkTarget === 'embedded') {
         evt.preventDefault();
         this.openEmbedded();
-        this.$emit('clickAction');
         // return false;
       }
+      this.$emit('clickAction');
       return true;
     },
     openEmbedded() {

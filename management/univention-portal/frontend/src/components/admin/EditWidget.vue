@@ -31,13 +31,13 @@
     :i18n-title-key="label"
     @cancel="cancel"
   >
-    <form
+    <my-form
+      ref="form"
       class="admin-entry"
-      @submit.prevent="submit"
+      :widgets="formWidgets"
+      :model-value="formValues"
+      @update:model-value="$emit('update:formValues', $event)"
     >
-      <main>
-        <slot />
-      </main>
       <footer
         v-if="canRemove"
       >
@@ -66,7 +66,7 @@
           {{ SAVE }}
         </button>
       </footer>
-    </form>
+    </my-form>
   </modal-dialog>
 </template>
 
@@ -74,17 +74,15 @@
 import { defineComponent, PropType } from 'vue';
 import { mapGetters } from 'vuex';
 import _ from '@/jsHelper/translate';
+import MyForm from '@/components/forms/Form.vue';
 
 import activity from '@/jsHelper/activity';
 import ModalDialog from '@/components/modal/ModalDialog.vue';
 
-export interface ValidatableData {
-  getErrors: () => Record<string, string>,
-}
-
 export default defineComponent({
   name: 'EditWidget',
   components: {
+    MyForm,
     ModalDialog,
   },
   props: {
@@ -96,12 +94,16 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
-    model: {
-      type: Object as PropType<ValidatableData>,
+    formWidgets: {
+      type: Array,
+      required: true,
+    },
+    formValues: {
+      type: Object,
       required: true,
     },
   },
-  emits: ['unlink', 'remove', 'save'],
+  emits: ['unlink', 'remove', 'save', 'update:formValues', 'submit'],
   computed: {
     ...mapGetters({
       activityLevel: 'activity/level',
@@ -121,7 +123,8 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.$el.querySelector('input:enabled')?.focus();
+    // @ts-ignore TODO
+    this.$refs.form.focusFirstInteractable();
   },
   methods: {
     cancel() {
@@ -129,27 +132,7 @@ export default defineComponent({
       this.$store.dispatch('activity/setRegion', 'portalCategories');
     },
     submit() {
-      const errors = this.model.getErrors();
-      if (Object.keys(errors).length === 0) {
-        this.$emit('save');
-      } else {
-        this.$el.querySelectorAll('input').forEach((input) => {
-          if (input.name) {
-            if (input.name in errors) {
-              input.setAttribute('invalid', 'invalid');
-            } else {
-              input.removeAttribute('invalid');
-            }
-          }
-        });
-        const description = Object.values(errors)
-          .map((err) => _('%(key1)s', { key1: err }))
-          .join('</li><li>');
-        this.$store.dispatch('notifications/addErrorNotification', {
-          title: _('The form data is not valid'),
-          description: `<ul><li>${description}</li></ul>`,
-        });
-      }
+      this.$emit('submit');
     },
     openConfirmationDialog() {
       this.$store.dispatch('modal/setShowModalPromise', {
@@ -170,3 +153,11 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="stylus">
+.admin-entry
+  .form-element
+    input[type="text"],
+    select
+      width: 100%
+</style>

@@ -37,19 +37,10 @@ define([
 	'umc/tools',
 	'umc/i18n!umc/hooks/passwordreset'
 ], function(topic, dom, entities, login, dialog, menu, tools, _) {
-	function isSelfServiceURL() {
-		return window.location.pathname.indexOf('/univention/self-service/') === 0;
-	}
-
 	function gotoPage(subPage) {
 		topic.publish('/umc/actions', 'menu', 'user-settings', subPage);
-		if (isSelfServiceURL()) {
-			window.location.hash = '#page=' + subPage;
-			menu.close();
-		} else {
-			// open a new tab
-			window.open('/univention/self-service/' + window.location.search + '#page=' + subPage);
-		}
+		// open a new tab
+		window.open('/univention/selfservice/#/selfservice/' + subPage);
 	}
 
 	if (tools.isTrue(tools.status('umc/self-service/protect-account/frontend/enabled'))) {
@@ -58,7 +49,7 @@ define([
 			label: _('Protect your account'),
 			priority: -10,
 			onClick: function() {
-				gotoPage('setcontactinformation');
+				gotoPage('protectaccount');
 			}
 		});
 	}
@@ -69,7 +60,7 @@ define([
 			priority: -5,
 			label: _('Forgot your password?'),
 			onClick: function() {
-				gotoPage('passwordreset');
+				gotoPage('passwordforgotten');
 			}
 		});
 		login.onLogin(function() {
@@ -85,7 +76,7 @@ define([
 	// add "Forgot password?" link to login page
 	dialog.addLinkFromUcr('forgot_your_password', {
 		text: _('Forgot your password?'),
-		href: '/univention/self-service/#page=passwordreset'
+		href: '/univention/selfservice/#/selfservice/passwordforgotten'
 	});
 });
 

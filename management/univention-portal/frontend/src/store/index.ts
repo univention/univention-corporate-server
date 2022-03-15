@@ -60,10 +60,14 @@ const mutations = {
   SET_LOADING_STATE(state, active: boolean) {
     state.loadingState = active;
   },
+  SET_INITIAL_LOAD_DONE(state, done: boolean) {
+    state.initialLoadDone = done;
+  },
 };
 
 const getters = {
   getLoadingState: (state) => state.loadingState,
+  getInitialLoadDone: (state) => state.initialLoadDone,
 };
 
 const actions = {
@@ -72,6 +76,9 @@ const actions = {
   },
   deactivateLoadingState({ commit }) {
     commit('SET_LOADING_STATE', false);
+  },
+  initialLoadDone({ commit }) {
+    commit('SET_INITIAL_LOAD_DONE', true);
   },
   portalJsonRequest: (_, payload) => {
     const umcLang = getCookie('UMCLang');
@@ -129,6 +136,7 @@ const actions = {
             authMode: portal.auth_mode,
           },
         });
+        dispatch('initialLoadDone');
         resolve(portal);
       }
     })

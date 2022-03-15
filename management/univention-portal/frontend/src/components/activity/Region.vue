@@ -30,6 +30,7 @@
   <component
     :is="tag"
     :id="id"
+    :role="ariaRole"
     @keydown.left.exact="goLeft"
     @keydown.right.exact="goRight"
     @keydown.up.exact="goUp"
@@ -54,6 +55,10 @@ export default defineComponent({
       type: String,
       default: 'region',
     },
+    ariaRole: {
+      type: String,
+      default: '',
+    },
     direction: {
       type: String,
       default: 'leftright',
@@ -75,6 +80,9 @@ export default defineComponent({
       }
       if (this.role === 'navigation') {
         return 'nav';
+      }
+      if (this.role === 'main') {
+        return 'main';
       }
       if (this.role === 'main') {
         return 'main';

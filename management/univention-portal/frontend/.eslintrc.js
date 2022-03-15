@@ -81,7 +81,7 @@ module.exports = {
 
     // Disabled rules from ESLint core that don't work together with TypeScript code
     'no-unused-vars': 'off',
-
+    'no-unused-expressions': 'off',
     // TODO: Temporay rule settings that should be deleted when code issues are fixed
     'import/no-extraneous-dependencies': 'warn', // e.g. no use of 'require' -> Convert all .js to .ts files and use import!
     'vue/no-unused-components': 'off',

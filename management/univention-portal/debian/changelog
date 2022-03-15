@@ -1,3 +1,9 @@
+univention-portal (4.0.5-75) unstable; urgency=medium
+
+  * Bug #54556: Include patches from phoenix
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 15 Mar 2022 19:27:09 +0100
+
 univention-portal (4.0.5-74) unstable; urgency=medium
 
   * Bug #54029: Update French translation

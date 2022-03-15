@@ -1,3 +1,15 @@
+univention-ldap (16.0.7-17) unstable; urgency=medium
+
+  * Bug #54395: Add schema for univention-radius-password
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 15 Mar 2022 19:24:30 +0100
+
+univention-ldap (16.0.7-16) unstable; urgency=medium
+
+  * Add univentionRadiusPassword
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 04 Mar 2022 11:55:12 +0100
+
 univention-ldap (16.0.7-15) unstable; urgency=medium
 
   * Bug #54092: removed code from postinst due to errata policies
@@ -9,6 +21,12 @@ univention-ldap (16.0.7-14) unstable; urgency=medium
   * Bug #48626: Fixed up only set ucr ldap/translog-ignore-temporary on master
 
  -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Mon, 31 Jan 2022 09:03:45 +0100
+
+univention-ldap (16.0.7-13) unstable; urgency=medium
+
+  * Bug #54395: Add univentionRadiusPassword attribute
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 31 Jan 2022 02:34:26 +0100
 
 univention-ldap (16.0.7-12) unstable; urgency=medium
 

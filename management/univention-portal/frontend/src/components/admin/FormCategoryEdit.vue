@@ -28,33 +28,16 @@
 -->
 <template>
   <edit-widget
+    v-model:form-values="formValues"
+    :form-widgets="formWidgetsComputed"
     :label="label"
     :can-remove="!!modelValue.dn"
     :model="$data"
     @unlink="unlink"
     @remove="remove"
     @save="finish"
-  >
-    <h3 class="sr-only sr-only-mobile">
-      {{ INTERNAL_NAME_SR_ONLY }}
-    </h3>
-    <label>
-      {{ INTERNAL_NAME }}
-      <span> *</span>
-      <input
-        v-model="name"
-        name="name"
-        :tabindex="tabindex"
-        :disabled="modelValue.dn"
-      >
-    </label>
-    <locale-input
-      v-model="title"
-      :i18n-label="NAME"
-      name="title"
-      :tabindex="tabindex"
-    />
-  </edit-widget>
+    @submit="submit"
+  />
 </template>
 
 <script lang="ts">
@@ -64,35 +47,18 @@ import _ from '@/jsHelper/translate';
 
 import { put, add, remove } from '@/jsHelper/admin';
 import activity from '@/jsHelper/activity';
-import LocaleInput from '@/components/widgets/LocaleInput.vue';
-import EditWidget, { ValidatableData } from '@/components/admin/EditWidget.vue';
+import EditWidget from '@/components/admin/EditWidget.vue';
+import { validateAll, allValid, validateInternalName } from '@/jsHelper/forms';
 
-interface AdminCategoryData extends ValidatableData {
-  name: string,
-  title: Record<string, string>,
-}
-
-function getErrors(this: AdminCategoryData) {
-  const errors: Record<string, string> = {};
-  if (!this.name) {
-    errors.name = _('Please enter an internal name');
-  } else {
-    const regex = new RegExp('(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)');
-    if (!regex.test(this.name)) {
-      errors.name = _('Internal name must not contain anything other than digits, letters or dots, must be at least 2 characters long, and start and end with a digit or letter!');
-    }
-  }
-  if (!this.title.en_US) {
-    errors.title = _('Please enter a display name');
-  }
-  return errors;
+interface AdminCategoryData {
+  formWidgets: any,
+  formValues: any,
 }
 
 export default defineComponent({
   name: 'FormCategoryEdit',
   components: {
     EditWidget,
-    LocaleInput,
   },
   props: {
     label: {
@@ -106,9 +72,26 @@ export default defineComponent({
   },
   data(): AdminCategoryData {
     return {
-      name: '',
-      title: {},
-      getErrors,
+      formWidgets: [{
+        type: 'TextBox',
+        name: 'name',
+        label: _('Internal name'),
+        required: true,
+        autocomplete: 'off',
+        validators: [validateInternalName],
+      }, {
+        type: 'LocaleInput',
+        name: 'title',
+        required: true,
+        label: _('Name'),
+        i18nLabel: _('Name'),
+      }],
+      formValues: {
+        name: '',
+        title: {
+          en_US: '',
+        },
+      },
     };
   },
   computed: {
@@ -117,25 +100,25 @@ export default defineComponent({
       categories: 'portalData/portalCategoriesOnPortal',
       activityLevel: 'activity/level',
     }),
-    INTERNAL_NAME(): string {
-      return _('Internal name');
-    },
-    INTERNAL_NAME_SR_ONLY(): string {
-      return `${this.name} ${this.INTERNAL_NAME} ${_('view-only')}`;
-    },
-    NAME(): string {
-      return _('Name');
-    },
-    tabindex(): number {
-      return activity(['modal'], this.activityLevel);
+    formWidgetsComputed(): any {
+      return this.formWidgets.map((widget) => {
+        if (widget.name === 'name') {
+          widget.readonly = !!this.modelValue.dn;
+        }
+        widget.tabindex = activity(['modal'], this.activityLevel);
+        return widget;
+      });
     },
   },
   created(): void {
     const dn = this.modelValue.dn;
     if (dn) {
-      this.name = dn.slice(3, dn.indexOf(','));
+      this.formValues.name = dn.slice(3, dn.indexOf(','));
     }
-    this.title = { ...(this.modelValue.title || {}) };
+    const title = this.modelValue.title;
+    if (title) {
+      this.formValues.title = { ...this.modelValue.title };
+    }
   },
   methods: {
     cancel() {
@@ -169,8 +152,8 @@ export default defineComponent({
       this.$store.dispatch('activateLoadingState');
       let success = false;
       const attrs = {
-        name: this.name,
-        displayName: Object.entries(this.title),
+        name: this.formValues.name,
+        displayName: Object.entries(this.formValues.title),
       };
       if (this.modelValue.dn) {
         // console.info('Modifying', this.modelValue.dn);
@@ -191,6 +174,13 @@ export default defineComponent({
       if (success) {
         this.cancel();
       }
+    },
+    submit() {
+      validateAll(this.formWidgets, this.formValues);
+      if (!allValid(this.formWidgets)) {
+        return;
+      }
+      this.finish();
     },
   },
 });
