@@ -26,28 +26,28 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-export const applyDrag = (arr, dragResult) => {
-  const { removedIndex, addedIndex, payload } = dragResult;
-  if (removedIndex === null && addedIndex === null) return arr;
 
-  const result = [...arr];
-  let itemToAdd = payload;
+// copy pasted from https://git.knut.univention.de/univention/ucs/-/blob/5.0-0/management/univention-web/js/tools.js
 
-  if (removedIndex !== null) {
-    itemToAdd = result.splice(removedIndex, 1)[0];
+export function isFalse(input: any) {
+  if (typeof input === 'string') {
+    switch (input.toLowerCase()) {
+      case 'no':
+      case 'not':
+      case 'false':
+      case '0':
+      case 'disable':
+      case 'disabled':
+      case 'off':
+        return true;
+      default:
+        break;
+    }
   }
+  return input === false || input === 0 || input === null || input === undefined || input === '';
+}
 
-  if (addedIndex !== null) {
-    result.splice(addedIndex, 0, itemToAdd);
-  }
-
-  return result;
-};
-
-export const generateItems = (count, creator) => {
-  const result = [];
-  for (let i = 0; i < count; i += 1) {
-    result.push(creator(i));
-  }
-  return result;
-};
+export function isTrue(input: any) {
+  // ('yes', 'true', '1', 'enable', 'enabled', 'on')
+  return !isFalse(input);
+}

@@ -62,7 +62,8 @@ describe('ChooseTabButton Component', () => {
     cy.wait(500);
 
     const openElements = 4;
-    cy.get('[data-test="portal-iframes"]').children().should('have.length', openElements);
+    cy.get('[data-test="portal-iframes"]').children()
+      .should('have.length', openElements);
     cy.get('.choose-tab').should('have.length', openElements);
     cy.get('.header-button__detail').contains(openElements);
     cy.wait(500);
@@ -71,8 +72,8 @@ describe('ChooseTabButton Component', () => {
     cy.get('#header-button-copy').click();
     cy.get('#choose-tab__button--4').click();
     cy.get('#header-button-copy').click();
-    for (let i = 1; i <= openElements; i++) {
-      cy.get(`[data-test="chooseTabCloseButton--1"]`).click();
+    for (let i = 1; i <= openElements; i += 1) {
+      cy.get('[data-test="chooseTabCloseButton--1"]').click();
       if (i < openElements) {
         cy.get('.modal-wrapper--isVisible').should('be.visible');
       }
@@ -96,15 +97,15 @@ describe('ChooseTabButton Component', () => {
     cy.wait(500);
     cy.get('.modal-wrapper--isVisible').should('be.visible');
     cy.wait(500);
-    cy.checkA11y('[data-test="choose-tabs"]', 
-    {
-      runOnly: {
-        type: 'tag',
-        values: ['wcag21aa'],
-      }
-    },
-    cy.terminalLog, {
-      skipFailures: true
-    });
+    cy.checkA11y('[data-test="choose-tabs"]',
+      {
+        runOnly: {
+          type: 'tag',
+          values: ['wcag21aa'],
+        },
+      },
+      cy.terminalLog, {
+        skipFailures: true,
+      });
   });
 });

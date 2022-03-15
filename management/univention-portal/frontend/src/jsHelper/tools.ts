@@ -57,10 +57,10 @@ function getCookie(name: string): string | undefined {
 
 const cookiePath = process.env.VUE_APP_COOKIE_PATH || '/univention/';
 
-function setCookie(name: string, value: string): void {
+function setCookie(name: string, value: string, path?: string): void {
   const date = new Date();
   date.setTime(date.getTime() + (100 * 24 * 60 * 60 * 1000)); // 100 days
-  document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=${cookiePath}; SameSite=Strict`;
+  document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=${path || cookiePath}; SameSite=Strict`;
 }
 
 function setInvalidity(element: any, name: string, invalid: boolean): void {

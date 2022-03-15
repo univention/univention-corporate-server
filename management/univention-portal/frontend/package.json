@@ -8,6 +8,7 @@
     "serve:wait": "yarn serve & wait-on http://localhost:8080",
     "deploy:firebase": "yarn build && firebase deploy",
     "test:unit": "vue-cli-service test:unit",
+    "test:coverage": "vue-cli-service test:unit --coverage",
     "test:unit:updatesnapshots": "yarn test:unit --updateSnapshot",
     "test:unit:watch": "yarn test:unit --watch",
     "test:e2e": "NODE_ENV=development vue-cli-service test:e2e",
@@ -19,12 +20,17 @@
     "lint:fix:all": "yarn lint:fix && stylelint --fix \"{**/*.{scss,vue,styl}\""
   },
   "dependencies": {
+    "@types/lodash.isempty": "^4.4.6",
+    "@types/lodash.isequal": "^4.5.5",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "cypress-axe": "^0.13.0",
+    "lodash.isempty": "^4.4.0",
+    "lodash.isequal": "^4.5.0",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "vue": "^3.0.11",
     "vue-dompurify-html": "^3.0.0-alpha.3",
+    "vue-router": "4",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
@@ -51,7 +57,7 @@
     "cypress": "^6.3.0",
     "cypress-file-upload": "^5.0.8",
     "cypress-wait-until": "^1.7.1",
-    "eslint": "^7.21.0",
+    "eslint": "6.2.0",
     "eslint-plugin-cypress": "^2.11.2",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.22.1",

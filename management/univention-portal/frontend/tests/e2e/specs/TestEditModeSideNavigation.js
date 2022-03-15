@@ -31,6 +31,14 @@ import 'cypress-file-upload';
 import 'cypress-axe';
 // import terminalLog from './terminallog';
 
+const openEditmode = () => {
+  // Open Editmode
+  cy.get('[data-test="navigationbutton"]').click();
+  cy.get('[data-test="openEditmodeButton"]').click();
+  cy.get('[data-test="settingsbutton"]').click();
+  cy.get('.edit-mode-side-navigation__form').should('be.visible');
+};
+
 beforeEach(() => {
   cy.setCookie('UMCLang', 'de_DE');
   cy.intercept('GET', 'portal.json', { fixture: 'portal_logged_in.json' });
@@ -53,7 +61,7 @@ describe('Test Editmode Side navigation', () => {
     // programmatically upload the logo
     const fileName = 'images/logo.svg';
 
-    cy.fixture(fileName).then(fileContent => {
+    cy.fixture(fileName).then((fileContent) => {
       cy.get('[data-test=imageUploadFileInput--Portal-Logo]').attachFile(
         { fileContent, fileName, mimeType: 'image/svg+xml' },
       );
@@ -73,11 +81,9 @@ describe('Test Editmode Side navigation', () => {
     cy.get('[data-test="editModeSideNavigation--Save"]').click();
 
     // assert Error Notification due to empty input
-    cy.get('[data-test="notification--error"]').should('exist');
+    cy.get('.form-element--LocaleInput.form-element--invalid .input-error-message').contains('This value is required');
 
-    cy.get('[data-test="closeNotification--error"]').click();
-
-    // Enter Text and Save then. 
+    // Enter Text and Save then.
     cy.get('[data-test="localeInput--Name"]').type('Univention Portal');
     cy.get('[data-test="editModeSideNavigation--Save"]').click();
 
@@ -87,23 +93,15 @@ describe('Test Editmode Side navigation', () => {
   it('make a11y test', () => {
     // Inject the axe-core library
     // first a11y test
-    cy.checkA11y('.edit-mode-side-navigation__form', 
-    {
-      runOnly: {
-        type: 'tag',
-        values: ['wcag21aa'],
-      }
-    },
-    cy.terminalLog, {
-      skipFailures: true
-    });
+    cy.checkA11y('.edit-mode-side-navigation__form',
+      {
+        runOnly: {
+          type: 'tag',
+          values: ['wcag21aa'],
+        },
+      },
+      cy.terminalLog, {
+        skipFailures: true,
+      });
   });
 });
-
-const openEditmode = () => {
-    // Open Editmode
-    cy.get('[data-test="navigationbutton"]').click();
-    cy.get('[data-test="openEditmodeButton"]').click();
-    cy.get('[data-test="settingsbutton"]').click();
-    cy.get('.edit-mode-side-navigation__form').should('be.visible');
-}

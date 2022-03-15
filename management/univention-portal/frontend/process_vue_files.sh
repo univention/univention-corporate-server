@@ -32,7 +32,7 @@ SRC_FOLDER="$(dirname "$0")"/src
 echo looking in $SRC_FOLDER for .vue files
 rm -r $SRC_FOLDER/tmp/ || true
 mkdir $SRC_FOLDER/tmp/
-for f in $(ls $SRC_FOLDER/views/*.vue $SRC_FOLDER/components/*.vue $SRC_FOLDER/components/*/*.vue); do
+for f in $(ls $SRC_FOLDER/views/*.vue $SRC_FOLDER/views/*/*.vue $SRC_FOLDER/components/*.vue $SRC_FOLDER/components/*/*.vue); do
 	mkdir -p "$SRC_FOLDER/tmp/ts/$(dirname "$f")"
 	sed -n '/^<script/,/^<\/script/p' "$f" | sed '1d;$ d' > "$SRC_FOLDER/tmp/ts/$f"
 	#mkdir -p "$SRC_FOLDER/tmp/html/$(dirname "$f")"

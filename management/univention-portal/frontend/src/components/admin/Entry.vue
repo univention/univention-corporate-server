@@ -28,100 +28,17 @@
 -->
 <template>
   <edit-widget
+    ref="editWidget"
+    v-model:form-values="formValues"
+    :form-widgets="formWidgetsComputed"
     :label="label"
     :can-remove="!!modelValue.dn"
     :model="$data"
     @unlink="unlink"
     @remove="remove"
     @save="finish"
-  >
-    <label>
-      {{ INTERNAL_NAME }}
-      {{ READ_ONLY }}
-      <required-field-label
-        v-if="!modelValue.dn"
-      />
-      <input
-        v-model="name"
-        :readonly="modelValue.dn"
-        :tabindex="tabindex"
-        class="entry__text-input"
-        name="name"
-        autocomplete="off"
-      >
-    </label>
-    <locale-input
-      v-model="title"
-      name="title"
-      :i18n-label="NAME"
-      :tabindex="tabindex"
-    />
-    <locale-input
-      v-model="description"
-      name="description"
-      :i18n-label="DESCRIPTION"
-      :tabindex="tabindex"
-    />
-    <label class="entry__checkbox">
-      <input
-        v-model="activated"
-        type="checkbox"
-        :tabindex="tabindex"
-      >
-      {{ ACTIVATED }}
-    </label>
-    <div>
-      <label>
-        Links
-      </label>
-      <link-widget
-        v-model="links"
-        name="links"
-        :tabindex="tabindex"
-      />
-    </div>
-    <label>
-      {{ WAY_OF_OPENING_LINKS }}
-      <select
-        v-model="linkTarget"
-        :tabindex="tabindex"
-        class="entry__select"
-      >
-        <option value="useportaldefault">{{ PORTAL_DEFAULT }}</option>
-        <option value="samewindow">{{ SAME_TAB }}</option>
-        <option value="newwindow">{{ NEW_TAB }}</option>
-        <option value="embedded">{{ EMBEDDED }}</option>
-      </select>
-    </label>
-
-    <image-upload
-      v-model="pathToLogo"
-      label="Icon"
-      :tabindex="tabindex"
-    />
-    <label>
-      {{ BACKGROUND_COLOR }}
-      <input
-        v-model="backgroundColor"
-        :tabindex="tabindex"
-        name="backgroundColor"
-        class="entry__text-input"
-      >
-    </label>
-    <multi-select
-      v-model="allowedGroups"
-      :label="ALLOWED_GROUPS"
-      :tabindex="tabindex"
-    />
-    <label class="entry__checkbox">
-      <input
-        v-model="anonymous"
-        type="checkbox"
-        :tabindex="tabindex"
-      >
-      {{ ONLY_VISIBLE_IF_NOT_LOGGED_IN }}
-    </label>
-  </edit-widget>
+    @submit="submit"
+  />
 </template>
 
 <script lang="ts">
@@ -131,60 +48,20 @@ import _ from '@/jsHelper/translate';
 
 import { removeEntryFromSuperObj, addEntryToSuperObj, put, add, remove } from '@/jsHelper/admin';
 import activity from '@/jsHelper/activity';
-import EditWidget, { ValidatableData } from '@/components/admin/EditWidget.vue';
-import RequiredFieldLabel from '@/components/forms/RequiredFieldLabel.vue';
-import ImageUpload from '@/components/widgets/ImageUpload.vue';
-import LocaleInput from '@/components/widgets/LocaleInput.vue';
-import MultiSelect from '@/components/widgets/MultiSelect.vue';
+import EditWidget from '@/components/admin/EditWidget.vue';
 import LinkWidget, { LocaleAndValue } from '@/components/widgets/LinkWidget.vue';
+import { validateAll, allValid, validateInternalName } from '@/jsHelper/forms';
 
-interface AdminEntryData extends ValidatableData {
-  name: string,
-  activated: boolean,
-  pathToLogo: string,
-  backgroundColor: string | null,
-  title: Record<string, string>,
-  description: Record<string, string>,
-  links: Array<LocaleAndValue>,
-  allowedGroups: string[],
-  linkTarget: 'useportaldefault' | 'samewindow' | 'newwindow' | 'embedded',
-  anonymous: boolean,
-}
-
-function getErrors(this: AdminEntryData) {
-  const errors: Record<string, string> = {};
-  if (!this.name) {
-    errors.name = _('Please enter an internal name');
-  } else {
-    const regex = new RegExp('(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)');
-    if (!regex.test(this.name)) {
-      errors.name = _('Internal name must not contain anything other than digits, letters or dots, must be at least 2 characters long, and start and end with a digit or letter!');
-    }
-  }
-  if (!this.title.en_US) {
-    errors.title = _('Please enter a display name');
-  }
-  if (!this.description.en_US) {
-    errors.description = _('Please enter a description');
-  }
-  if (!this.links.some((link) => link.locale === 'en_US' && !!link.value)) {
-    errors.links = _('Please enter at least one English link');
-  }
-  if (this.links.length === 0) {
-    errors.links = _('Please enter at least one English link');
-  }
-  return errors;
+interface AdminEntryData {
+  formWidgets: any,
+  formValues: any,
 }
 
 export default defineComponent({
   name: 'FormEntryEdit',
   components: {
-    ImageUpload,
     EditWidget,
-    LocaleInput,
-    MultiSelect,
     LinkWidget,
-    RequiredFieldLabel,
   },
   props: {
     label: {
@@ -206,17 +83,86 @@ export default defineComponent({
   },
   data(): AdminEntryData {
     return {
-      name: '',
-      activated: true,
-      pathToLogo: '',
-      title: {},
-      description: {},
-      backgroundColor: null,
-      links: [],
-      allowedGroups: [],
-      linkTarget: 'useportaldefault',
-      anonymous: false,
-      getErrors,
+      formWidgets: [{
+        type: 'TextBox',
+        name: 'name',
+        label: _('Internal name'),
+        required: true,
+        autocomplete: 'off',
+        validators: [validateInternalName],
+      }, {
+        type: 'LocaleInput',
+        name: 'title',
+        required: true,
+        label: _('Name'),
+        i18nLabel: _('Name'),
+      }, {
+        type: 'LocaleInput',
+        name: 'description',
+        required: true,
+        label: _('Description'),
+        i18nLabel: _('Description'),
+      }, {
+        type: 'CheckBox',
+        name: 'activated',
+        label: _('Activated'),
+      }, {
+        // type: type is set in the 'formWidgetsComputed' computed property
+        name: 'links',
+        label: _('Links'),
+      }, {
+        type: 'ComboBox',
+        name: 'linkTarget',
+        label: _('Way of opening links'),
+        options: [{
+          id: 'useportaldefault',
+          label: _('Use default of portal'),
+        }, {
+          id: 'samewindow',
+          label: _('Same tab'),
+        }, {
+          id: 'newwindow',
+          label: _('New tab'),
+        }, {
+          id: 'embedded',
+          label: _('Embedded'),
+        }],
+      }, {
+        type: 'ImageUploader',
+        name: 'logo',
+        label: _('Icon'),
+        extraLabel: _('Icon'),
+      }, {
+        type: 'TextBox',
+        name: 'backgroundColor',
+        label: _('Background color'),
+      }, {
+        type: 'MultiSelect',
+        name: 'allowedGroups',
+        label: _('Can only be seen by these groups'),
+      }, {
+        type: 'CheckBox',
+        name: 'anonymous',
+        label: _('Only visible if not logged in'),
+      }],
+      formValues: {
+        name: '',
+        title: {
+          en_US: '',
+        },
+        description: {
+          en_US: '',
+        },
+        activated: true,
+        linkTarget: 'useportaldefault',
+        logo: '',
+        backgroundColor: '',
+        allowedGroups: [],
+        anonymous: false,
+        links: {
+          en_US: '',
+        },
+      },
     };
   },
   computed: {
@@ -224,9 +170,31 @@ export default defineComponent({
       portalCategories: 'portalData/portalCategories',
       portalFolders: 'portalData/portalFolders',
       activityLevel: 'activity/level',
+      availableLocales: 'locale/getAvailableLocales',
     }),
-    tabindex(): number {
-      return activity(['modal'], this.activityLevel);
+    formWidgetsComputed(): any {
+      return this.formWidgets.map((widget) => {
+        if (widget.name === 'name') {
+          widget.readonly = !!this.modelValue.dn;
+        }
+        if (widget.name === 'links') {
+          widget.type = Array.isArray(this.formValues.links) ? 'LinkWidget' : 'LocaleInput';
+          if (widget.type === 'LocaleInput') {
+            widget.i18nLabel = _('Links');
+            widget.required = true;
+          } else {
+            widget.validators = [(_widget, value) => {
+              const hasEnglishEntry = value.some((link) => link.locale === 'en_US' && !!link.value);
+              if (!hasEnglishEntry) {
+                return _('Please enter at least one English link');
+              }
+              return '';
+            }];
+          }
+        }
+        widget.tabindex = activity(['modal'], this.activityLevel);
+        return widget;
+      });
     },
     superObjs(): any[] { // eslint-disable-line @typescript-eslint/no-explicit-any
       if (this.fromFolder) {
@@ -234,64 +202,44 @@ export default defineComponent({
       }
       return this.portalCategories;
     },
-    INTERNAL_NAME(): string {
-      return _('Internal name');
-    },
-    READ_ONLY(): string | null {
-      return this.modelValue.dn ? `(${_('readonly')})` : null;
-    },
-    ACTIVATED(): string {
-      return _('Activated');
-    },
-    WAY_OF_OPENING_LINKS(): string {
-      return _('Way of opening links');
-    },
-    PORTAL_DEFAULT(): string {
-      return _('Use default of portal');
-    },
-    SAME_TAB(): string {
-      return _('Same tab');
-    },
-    NEW_TAB(): string {
-      return _('New tab');
-    },
-    EMBEDDED(): string {
-      return _('Embedded');
-    },
-    BACKGROUND_COLOR(): string {
-      return _('Background color');
-    },
-    ONLY_VISIBLE_IF_NOT_LOGGED_IN(): string {
-      return _('Only visible if not logged in');
-    },
-    DESCRIPTION(): string {
-      return _('Description');
-    },
-    NAME(): string {
-      return _('Name');
-    },
-    ALLOWED_GROUPS(): string {
-      return _('Can only be seen by these groups');
-    },
   },
   created(): void {
-    // console.info('Edit entry', this.modelValue);
     const dn = this.modelValue.dn;
-    const activated = this.modelValue.activated;
     if (dn) {
-      this.name = dn.slice(3, dn.indexOf(','));
+      this.formValues.name = dn.slice(3, dn.indexOf(','));
     }
-    if (activated !== undefined) {
-      this.activated = activated;
+    const links = this.modelValue.links;
+    if (Array.isArray(links) && links.length > 0) {
+      let canUseLocaleInput = true;
+      const uniqueLocales: string[] = [];
+      links.forEach((lnk) => {
+        if (uniqueLocales.includes(lnk.locale)) {
+          canUseLocaleInput = false;
+        } else {
+          uniqueLocales.push(lnk.locale);
+        }
+      });
+      if (!uniqueLocales.includes('en_US')) {
+        canUseLocaleInput = false;
+      }
+      if (canUseLocaleInput) {
+        const simpleLinks = links.reduce((dict, lnk) => {
+          dict[lnk.locale] = lnk.value;
+          return dict;
+        }, {});
+        this.formValues.links = simpleLinks;
+      } else {
+        this.formValues.links = links;
+      }
     }
-    this.pathToLogo = this.modelValue.pathToLogo || '';
-    this.backgroundColor = this.modelValue.backgroundColor || null;
-    this.title = { ...(this.modelValue.title || {}) };
-    this.description = { ...(this.modelValue.description || {}) };
-    this.links.push(...(this.modelValue.links || []));
-    this.allowedGroups.push(...(this.modelValue.allowedGroups || []));
-    this.linkTarget = this.modelValue.originalLinkTarget || 'useportaldefault';
-    this.anonymous = this.modelValue.anonymous;
+    this.formValues.title = { ...(this.modelValue.title ?? this.formValues.title) };
+    this.formValues.description = { ...(this.modelValue.description ?? this.formValues.description) };
+    this.formValues.activated = this.modelValue.activated ?? this.formValues.activated;
+    this.formValues.linkTarget = this.modelValue.originalLinkTarget ?? this.formValues.linkTarget;
+    this.formValues.logo = this.modelValue.pathToLogo ?? this.formValues.logo;
+    this.formValues.backgroundColor = this.modelValue.backgroundColor ?? this.formValues.backgroundColor;
+    this.formValues.allowedGroups = [...(this.modelValue.allowedGroups ?? this.formValues.allowedGroups)];
+    this.formValues.anonymous = this.modelValue.anonymous ?? this.formValues.anonymous;
   },
   methods: {
     cancel() {
@@ -321,22 +269,30 @@ export default defineComponent({
     async finish() {
       this.$store.dispatch('activateLoadingState');
       let success = false;
-      const links = this.links.filter((lnk) => !!lnk.value).map((lnk) => [lnk.locale, lnk.value]);
+      let links = this.formValues.links;
+      if (Array.isArray(links)) {
+        links = links.filter((lnk) => !!lnk.value).map((lnk) => [lnk.locale, lnk.value]);
+      } else {
+        links = Object.keys(links).reduce((acc: any, locale) => {
+          acc.push([locale, links[locale]]);
+          return acc;
+        }, []);
+      }
       const attrs = {
-        name: this.name,
-        activated: this.activated,
-        displayName: Object.entries(this.title),
-        description: Object.entries(this.description),
+        name: this.formValues.name,
+        displayName: Object.entries(this.formValues.title),
+        description: Object.entries(this.formValues.description),
+        activated: this.formValues.activated,
         link: links,
-        allowedGroups: this.allowedGroups,
-        linkTarget: this.linkTarget,
-        anonymous: this.anonymous,
-        icon: '',
-        backgroundColor: this.backgroundColor,
+        linkTarget: this.formValues.linkTarget,
+        icon: this.formValues.logo,
+        backgroundColor: this.formValues.backgroundColor,
+        allowedGroups: this.formValues.allowedGroups,
+        anonymous: this.formValues.anonymous,
       };
-      if (this.pathToLogo.startsWith('data:')) {
-        attrs.icon = this.pathToLogo.split(',')[1];
-      } else if (this.pathToLogo === '') {
+      if (attrs.icon.startsWith('data:')) {
+        attrs.icon = attrs.icon.split(',')[1];
+      } else if (attrs.icon === '') {
         attrs.icon = '';
       } else {
         delete attrs.icon;
@@ -358,15 +314,15 @@ export default defineComponent({
         this.cancel();
       }
     },
+    submit() {
+      validateAll(this.formWidgets, this.formValues);
+      if (!allValid(this.formWidgets)) {
+        // @ts-ignore
+        this.$refs.editWidget.$refs.form.focusFirstInvalid();
+        return;
+      }
+      this.finish();
+    },
   },
 });
 </script>
-
-<style lang="stylus">
-.entry
-  &__checkbox
-    display: flex
-  &__text-input,
-  &__select
-    width: 100%
-</style>

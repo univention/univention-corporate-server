@@ -45,7 +45,6 @@
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 
-import ChangePassword from '@/components/forms/ChangePassword.vue';
 import ModalWrapper from '@/components/modal/ModalWrapper.vue';
 import PortalFolder from '@/components/PortalFolder.vue';
 import AdminEntry from '@/components/admin/Entry.vue';
@@ -68,7 +67,6 @@ export default defineComponent({
   // Register and import all possible modal components here
   // Otherwise they will not be displyed correctly
   // (Maybe change PortalModal to not use the component tag anymore?)
-    ChangePassword,
     ConfirmDialog,
     AddObjects,
     ModalWrapper,

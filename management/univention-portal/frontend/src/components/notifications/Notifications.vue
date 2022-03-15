@@ -28,8 +28,8 @@ License with the Debian GNU/Linux or Univention distribution in file
 -->
 <template>
   <region
-    ref="region"
     :id="`notifications-${!isInNotificationBar ? 'visible' : 'all'}`"
+    ref="region"
     :aria-live="ariaLiveStatus"
     direction="topdown"
     :class="['notifications',
@@ -45,6 +45,7 @@ License with the Debian GNU/Linux or Univention distribution in file
     >
       <button
         type="button"
+        ref="removeAllNotificationsButton"
         @click.prevent="removeAllNotifications"
       >
         <portal-icon
@@ -126,23 +127,24 @@ export default defineComponent({
       this.$store.dispatch('modal/disableBodyScrolling');
     }
   },
+  mounted(): void {
+    if ( this.isInNotificationBar && this.notifications.length > 1) {
+      (this.$refs.removeAllNotificationsButton as HTMLElement).focus();
+    } else {
+      this.$store.dispatch('activity/setRegion', 'notifications-all');
+    }
+  },
   methods: {
     removeAllNotifications(): void {
       this.$store.dispatch('notifications/removeAllNotifications');
-      this.$store.dispatch('activity/addMessage', {
-        id: 'notifications',
-        msg: _('Notifications removed'),
-      });
+      this.$store.dispatch('activity/setMessage', _('Notifications removed'));
       this.closeNotificationsSidebar();
     },
     closeNotificationsSidebar(): void {
       this.$store.dispatch('navigation/closeNotificationsSidebar');
     },
     onNotificationRemoved() {
-      this.$store.dispatch('activity/addMessage', {
-        id: 'notifications',
-        msg: _('Notification removed'),
-      });
+      this.$store.dispatch('activity/setMessage', _('Notification removed'));
       if (this.numNotifications === 0) {
         this.closeNotificationsSidebar();
       } else {
@@ -150,9 +152,6 @@ export default defineComponent({
         this.$refs.region.goUp();
       }
     },
-  },
-  mounted(): void {
-    this.$store.dispatch('activity/setRegion', 'notifications-all');
   },
 });
 
@@ -195,5 +194,5 @@ export default defineComponent({
 
   .flyout-wrapper &
     top: calc(4 * var(--layout-spacing-unit));
-    height: calc(100vh - var(--layout-height-header) - 10 * var(--layout-spacing-unit))
+    bottom: 0
 </style>

@@ -35,7 +35,7 @@ interface Choice {
   label: string,
 }
 
-function umc(path: string, options: any, flavor?: string): Promise<AxiosResponse<any>> {
+function umc(path: string, options?: any, flavor?: string): Promise<AxiosResponse<any>> {
   const umcSessionId = getCookie('UMCSessionId');
   const umcLang = getCookie('UMCLang');
   const headers = { 'X-Requested-With': 'XMLHttpRequest' };
@@ -45,20 +45,47 @@ function umc(path: string, options: any, flavor?: string): Promise<AxiosResponse
   if (umcSessionId) {
     headers['X-XSRF-Protection'] = umcSessionId;
   }
-  const params: any = { options };
+  const params: any = { options: options || {} };
   if (flavor) {
     params.flavor = flavor;
   }
   return axios.post(`/univention/${path}`, params, { headers });
 }
 
-function changePassword(oldPassword: string, newPassword: string): Promise<AxiosResponse<any>> {
+function umcCommand(path: string, options?: any, flavor?: string): Promise<any> {
+  return umc(`command/${path}`, options, flavor)
+    .then((answer) => answer.data.result)
+    .catch((error) => {
+      if ('response' in error && 'data' in error.response) {
+        throw error.response.data;
+      }
+      console.error(error);
+      throw new Error('Unknown error');
+    });
+}
+
+function umcCommandWithStandby(store, path: string, options?: any, flavor?: string): Promise<any> {
+  store.dispatch('activateLoadingState');
+  return umcCommand(path, options, flavor)
+    .finally(() => {
+      store.dispatch('deactivateLoadingState');
+    });
+}
+
+function changePassword(oldPassword: string, newPassword: string): Promise<any> {
   return umc('set', {
     password: {
       password: oldPassword,
       new_password: newPassword,
     },
-  });
+  }).then((answer) => answer.data)
+    .catch((error) => {
+      if ('response' in error && 'data' in error.response) {
+        throw error.response.data;
+      }
+      console.error(error);
+      throw new Error('Unknown error');
+    });
 }
 
 function udmRemove(dn: string): Promise<AxiosResponse<any>> {
@@ -100,4 +127,4 @@ function udmChoices(objectType: string, syntax: string, searchString: string): P
   'portals/all');
 }
 
-export { changePassword, umc, udmPut, udmAdd, udmRemove, udmChoices, Choice };
+export { changePassword, umc, umcCommand, umcCommandWithStandby, udmPut, udmAdd, udmRemove, udmChoices, Choice };

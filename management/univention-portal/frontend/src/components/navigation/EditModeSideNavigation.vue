@@ -36,59 +36,21 @@
     >
       {{ PORTAL_SETTINGS }}
     </h2>
-    <form
-      class="edit-mode-side-navigation__form"
-      @submit.prevent="saveChanges"
+    <my-form
+      ref="form"
+      v-model="formValues"
+      :widgets="formWidgetsWithTabindex"
+      :class="['edit-mode-side-navigation__form',
+               {
+                 'edit-mode-side-navigation__form--unfocusable': !isFocusable
+               }]"
     >
-      <image-upload
-        v-model="portalLogoData"
-        :label="PORTAL_LOGO"
-        :tabindex="tabindex"
-      />
-      <locale-input
-        v-model="portalNameData"
-        :i18n-label="NAME"
-        :tabindex="tabindex"
-        name="name"
-        @update:modelValue="update"
-      />
-      <image-upload
-        v-model="portalBackgroundData"
-        :label="BACKGROUND"
-        :tabindex="tabindex"
-      />
-      <label>
-        {{ DEFAULT_LINK_BEHAVIOUR }}
-        <select
-          v-model="portalDefaultLinkTargetData"
-          :tabindex="tabindex"
-        >
-          <option value="samewindow">{{ SAME_TAB }}</option>
-          <option value="newwindow">{{ NEW_TAB }}</option>
-          <option value="embedded">{{ EMBEDDED }}</option>
-        </select>
-      </label>
-      <label class="edit-mode-side-navigation__checkbox">
-        <input
-          v-model="portalEnsureLoginData"
-          type="checkbox"
-          :tabindex="tabindex"
-        >
-        {{ USERS_REQUIRED_TO_LOGIN }}
-      </label>
-      <label class="edit-mode-side-navigation__checkbox">
-        <input
-          v-model="portalShowUmcData"
-          type="checkbox"
-          :tabindex="tabindex"
-        >
-        {{ SHOW_LOCAL_UMC_MODULES }}
-
-      </label>
       <button
         class="primary edit-mode-side-navigation__save-button"
         data-test="editModeSideNavigation--Save"
+        type="submit"
         :tabindex="tabindex"
+        @click.prevent="onSave"
       >
         <portal-icon
           icon="save"
@@ -97,7 +59,7 @@
           {{ SAVE }}
         </span>
       </button>
-    </form>
+    </my-form>
   </nav>
 </template>
 
@@ -109,34 +71,86 @@ import _ from '@/jsHelper/translate';
 import { udmPut } from '@/jsHelper/umc';
 import activity from '@/jsHelper/activity';
 import PortalIcon from '@/components/globals/PortalIcon.vue';
-import ImageUpload from '@/components/widgets/ImageUpload.vue';
-import LocaleInput from '@/components/widgets/LocaleInput.vue';
+import MyForm from '@/components/forms/Form.vue';
+import { validateAll, allValid } from '@/jsHelper/forms';
 
 interface EditModeSideNavigationData {
-  portalLogoData: string,
-  portalNameData: Record<string, string>,
-  portalBackgroundData: string,
-  portalDefaultLinkTargetData: string,
-  portalShowUmcData: boolean,
-  portalEnsureLoginData: boolean,
+  formWidgets: any[],
+  formValues: any,
 }
 
 export default defineComponent({
   name: 'EditModeSideNavigation',
   components: {
     PortalIcon,
-    ImageUpload,
-    LocaleInput,
+    MyForm,
   },
   data(): EditModeSideNavigationData {
     return {
-      portalLogoData: '',
-      portalNameData: {},
-      portalBackgroundData: '',
-      portalDefaultLinkTargetData: 'embedded',
-      portalShowUmcData: false,
-      portalEnsureLoginData: false,
+      formWidgets: [{
+        type: 'ImageUploader',
+        name: 'logo',
+        label: _('Portal logo'),
+        extraLabel: _('Portal logo'),
+      }, {
+        type: 'LocaleInput',
+        name: 'displayName',
+        label: _('Name'),
+        i18nLabel: _('Name'),
+        required: true,
+      }, {
+        type: 'ImageUploader',
+        name: 'background',
+        label: _('Background'),
+        extraLabel: _('Background'),
+      }, {
+        type: 'ComboBox',
+        name: 'defaultLinkTarget',
+        label: _('Default link behaviour for portal entries'),
+        options: [{
+          id: 'samewindow',
+          label: _('Same tab'),
+        }, {
+          id: 'newwindow',
+          label: _('New tab'),
+        }, {
+          id: 'embedded',
+          label: _('Embedded'),
+        }],
+      }, {
+        type: 'CheckBox',
+        name: 'ensureLogin',
+        label: _('Users are required to login'),
+      }, {
+        type: 'CheckBox',
+        name: 'showUmc',
+        label: _('Show local UMC modules'),
+      }],
+      formValues: {
+        logo: '',
+        displayName: {
+          en_US: '',
+        },
+        background: '',
+        defaultLinkTarget: 'embedded',
+        ensureLogin: false,
+        showUmc: false,
+      },
     };
+  },
+  watch: {
+    'formValues.logo': function () {
+      this.$store.dispatch('portalData/setPortalLogo', this.formValues.logo);
+    },
+    'formValues.displayName': {
+      handler() {
+        this.$store.dispatch('portalData/setPortalName', this.formValues.displayName);
+      },
+      deep: true,
+    },
+    'formValues.background': function () {
+      this.$store.dispatch('portalData/setPortalBackground', this.formValues.background);
+    },
   },
   computed: {
     ...mapGetters({
@@ -148,114 +162,72 @@ export default defineComponent({
       portalEnsureLogin: 'portalData/portalEnsureLogin',
       portalDefaultLinkTarget: 'portalData/portalDefaultLinkTarget',
       activityLevel: 'activity/level',
+      getModalState: 'modal/getModalState',
     }),
-    PORTAL_LOGO(): string {
-      return _('Portal logo');
-    },
-    BACKGROUND(): string {
-      return _('Background');
-    },
-    DEFAULT_LINK_BEHAVIOUR(): string {
-      return _('Default link behaviour for portal entries');
-    },
-    SAME_TAB(): string {
-      return _('Same tab');
-    },
-    NEW_TAB(): string {
-      return _('New tab');
-    },
-    EMBEDDED(): string {
-      return _('Embedded');
-    },
-    USERS_REQUIRED_TO_LOGIN(): string {
-      return _('Users are required to login');
-    },
-    SHOW_LOCAL_UMC_MODULES(): string {
-      return _('Show local UMC modules');
+    PORTAL_SETTINGS(): string {
+      return _('Portal settings');
     },
     SAVE(): string {
       return _('Save');
     },
-    NAME(): string {
-      return _('Name');
-    },
-    PORTAL_SETTINGS(): string {
-      return _('Portal settings');
-    },
     tabindex(): number {
       return activity(['header-settings'], this.activityLevel);
     },
+    formWidgetsWithTabindex(): any {
+      return this.formWidgets.map((widget) => {
+        widget.tabindex = this.tabindex;
+        return widget;
+      });
+    },
+    isFocusable(): boolean {
+      return !this.getModalState('secondLevelModal');
+    },
   },
   updated() {
-    this.update();
     if (this.activityLevel === 'modal') {
       this.$store.dispatch('activity/setLevel', 'header-settings');
     }
   },
   created() {
     this.$store.dispatch('modal/disableBodyScrolling');
-    // get initial logo data
-    this.portalLogoData = this.portalLogo || '';
-    this.portalNameData = this.portalName;
-    this.portalBackgroundData = this.portalBackground || '';
-    this.portalShowUmcData = this.portalShowUmc;
-    this.portalEnsureLoginData = this.portalEnsureLogin;
-    this.portalDefaultLinkTargetData = this.portalDefaultLinkTarget;
+    this.formValues.logo = this.portalLogo || '';
+    this.formValues.displayName = this.portalName;
+    this.formValues.background = this.portalBackground || '';
+    this.formValues.defaultLinkTarget = this.portalDefaultLinkTarget;
+    this.formValues.ensureLogin = this.portalEnsureLogin;
+    this.formValues.showUmc = this.portalShowUmc;
   },
   methods: {
     closeNavigation(): void {
       this.$store.dispatch('navigation/setActiveButton', '');
       this.$store.dispatch('activity/setRegion', 'portal-header');
     },
-    update() {
-      this.$store.dispatch('portalData/setPortalName', this.portalNameData);
-      this.$store.dispatch('portalData/setPortalLogo', this.portalLogoData);
-      this.$store.dispatch('portalData/setPortalBackground', this.portalBackgroundData);
-    },
-    validate() {
-      const errors: Record<string, string> = {};
-      if (!this.portalNameData.en_US) {
-        errors.name = _('Please enter a display name');
-      }
-      return errors;
-    },
-    async saveChanges() {
-      const errors = this.validate();
-      if (Object.keys(errors).length > 0) {
-        this.$el.querySelectorAll('input').forEach((input) => {
-          if (input.name) {
-            if (input.name in errors) {
-              input.setAttribute('invalid', 'invalid');
-            } else {
-              input.removeAttribute('invalid');
-            }
-          }
-        });
-        const description = Object.values(errors)
-          .map((err) => _('%(key1)s', { key1: err }))
-          .join('</li><li>');
-        this.$store.dispatch('notifications/addErrorNotification', {
-          title: _('Error on validation'),
-          description: `<ul><li>${description}</li></ul>`,
-        });
+    onSave() {
+      validateAll(this.formWidgets, this.formValues);
+      if (!allValid(this.formWidgets)) {
+        // @ts-ignore TODO
+        this.$refs.form.focusFirstInvalid();
         return;
       }
+      this.saveChanges();
+    },
+    async saveChanges() {
       let logo: string | null = null;
-      if (this.portalLogoData.startsWith('data:')) {
-        logo = this.portalLogoData.split(',')[1];
-      } else if (this.portalLogoData === '') {
+      if (this.formValues.logo.startsWith('data:')) {
+        logo = this.formValues.logo.split(',')[1];
+      } else if (this.formValues.logo === '') {
         logo = '';
       }
       let background: string | null = null;
-      if (this.portalBackgroundData.startsWith('data:')) {
-        background = this.portalBackgroundData.split(',')[1];
-      } else if (this.portalBackgroundData === '') {
+      if (this.formValues.background.startsWith('data:')) {
+        background = this.formValues.background.split(',')[1];
+      } else if (this.formValues.background === '') {
         background = '';
       }
-      const displayName = Object.entries(this.portalNameData);
-      const showUmc = this.portalShowUmcData;
-      const ensureLogin = this.portalEnsureLoginData;
-      const defaultLinkTarget = this.portalDefaultLinkTargetData;
+      const displayName = Object.entries(this.formValues.displayName);
+      const showUmc = this.formValues.showUmc;
+      const ensureLogin = this.formValues.ensureLogin;
+      const defaultLinkTarget = this.formValues.defaultLinkTarget;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const attrs: any = { displayName, showUmc, ensureLogin, defaultLinkTarget };
       if (logo !== null) {
@@ -295,6 +267,9 @@ export default defineComponent({
     overflow: auto
     padding: calc(2 * var(--layout-spacing-unit))
 
+    &--unfocusable
+      overflow: hidden
+
     input
       width: 18rem
       &[type=checkbox]
@@ -304,6 +279,4 @@ export default defineComponent({
       margin-top: 0
   &__save-button
     margin-top: calc(2 * var(--layout-spacing-unit))
-  &__checkbox
-    display: flex
 </style>
