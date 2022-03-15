@@ -268,4 +268,31 @@ kvm_setup_dns_entries_in_broker () {
 	udm dns/host_record create --set a="${TRAEGER2_IP}" --set name=ucs-sso --position zoneName="${UCS_ENV_TRAEGER2_DOMAIN},cn=dns,$(ucr get ldap/base)" || return 1
 	udm dns/host_record create --set a="${TRAEGER2_IP}" --set name=traeger2 --position zoneName="${UCS_ENV_TRAEGER2_DOMAIN},cn=dns,$(ucr get ldap/base)" || return 1
 }
+
+# add entry to ssh environment to pass variables via env
+add_to_ssh_environment () {
+	local entry="${1:?missing entry}"
+	echo "$entry" >> /root/.ssh/environment
+}
+
+# create hosts entry
+add_to_hosts () {
+	local ip="${1:?missing ip}"
+	local fqdn="${2:?missing fqdn}"
+	ucr set "hosts/static/$ip=$fqdn"
+}
+
+# setup the jump host for the id broker performance tests
+prepare_jump_host () {
+    lsb_release -a
+    free -m
+    cat /proc/cpuinfo
+    apt-get -y update
+    DEBIAN_FRONTEND=noninteractive apt-get -y install id-broker-performance-tests
+    echo 'root soft nofile 10240' >> /etc/security/limits.conf
+    echo 'root hard nofile 10240' >> /etc/security/limits.conf
+    echo "fs.file-max=1048576" > /etc/sysctl.d/99-file-max.conf
+    sysctl -p
+}
+
 # vim:set filetype=sh ts=4:
