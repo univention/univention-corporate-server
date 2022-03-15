@@ -148,3 +148,50 @@ Description[en]=Activates further authentication modules for users. If left unde
 Type=str
 Categories=service-radius
 
+[radius/use-service-specific-password]
+Description[de]=Ermöglicht die Verwendung von dienstspezifischen Passwörtern. Dieses Passwort wird im Attribut univentionRadiusPassword eines Benutzers gespeichert. Wenn kein dienstspezifisches Kennwort festgelegt ist, schlägt die Authentifizierung fehl, da nicht auf das Standardkennwort zurückgefallen wird.
+Description[en]=Enables the use of service specific passwords. This password stored in the univentionRadiusPassword attribute of a user. If no service specific password is set, the authentication will fail as there is no fallback to the standard password.
+Type=bool
+Categories=service-radius
+
+[password/radius/quality/credit/digits]
+Description[de]=Wenn "radius/use-service-specific-password" angeschaltet ist, bestimmt diese Variable die minimale Anzahl an Ziffern bei einem neuen Passwort. Der Wert "0" bedeutet, dass keine Ziffern verwendet werden.
+Description[en]=If "radius/use-service-specific-password" is enabled, this variable configures the minimum number of digits in the new password. The value "0" means that no digits will be used.
+Type=int
+Default=6
+Categories=service-radius
+
+[password/radius/quality/credit/lower]
+Description[de]=Wenn "radius/use-service-specific-password" angeschaltet ist, bestimmt diese Variable die minimale Anzahl an Kleinbuchstaben bei einem neuen Passwort. Der Wert "0" bedeutet, dass keine Kleinbuchstaben verwendet werden.
+Description[en]=If "radius/use-service-specific-password" is enabled, this variable configures the minimum number of lower case letters in the new password. The value "0" means that no lower case letters will be used.
+Type=int
+Default=6
+Categories=service-radius
+
+[password/radius/quality/credit/other]
+Description[de]=Wenn "radius/use-service-specific-password" angeschaltet ist, bestimmt diese Variable die minimale Anzahl an Zeichen, die weder Buchstaben noch Ziffern sind, bei einem neuen Passwort. Der Wert "0" bedeutet, dass keine solchen Zeichen verwendet werden.
+Description[en]=If "radius/use-service-specific-password" is enabled, this variable configures the minimum number of characters in the new password which are neither letters nor digits. The value "0" means that no such letters will be used.
+Type=int
+Default=0
+Categories=service-radius
+
+[password/radius/quality/credit/upper]
+Description[de]=Wenn "radius/use-service-specific-password" angeschaltet ist, bestimmt diese Variable die minimale Anzahl an Großbuchstaben bei einem neuen Passwort. Der Wert "0" bedeutet, dass keine Großbuchstaben verwendet werden.
+Description[en]=If "radius/use-service-specific-password" is enabled, this variable configures the minimum number of upper case letters in the new password. The value "0" means that no upper case letters will be used.
+Type=int
+Default=6
+Categories=service-radius
+
+[password/radius/quality/forbidden/chars]
+Description[de]=Wenn "radius/use-service-specific-password" angeschaltet ist, bestimmt diese Variable, welche Zeichen bei einem neuen Passwort nicht erlaubt sind.
+Description[en]=If "radius/use-service-specific-password" is enabled, characters specified here would not be part of the new password.
+Type=str
+Default=0Ol1I
+Categories=service-radius
+
+[password/radius/quality/length/min]
+Description[de]=Wenn "radius/use-service-specific-password" angeschaltet ist, bestimmt diese Variable die minimale Länge bei einem neuen Passwort.
+Description[en]=If "radius/use-service-specific-password" is enabled, this variable configures the minimum length of the new password.
+Type=int
+Default=24
+Categories=service-radius
