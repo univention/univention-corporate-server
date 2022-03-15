@@ -4,7 +4,7 @@
 # Univention Management Console module:
 #  System Diagnosis UMC module
 #
-# Copyright 2022-2022 Univention GmbH
+# Copyright 2022 Univention GmbH
 #
 # https://www.univention.de/
 #
