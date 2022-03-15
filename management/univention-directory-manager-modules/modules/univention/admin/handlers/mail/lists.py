@@ -133,7 +133,7 @@ class object(univention.admin.handlers.simpleLdap):
 		super(object, self)._ldap_pre_ready()
 		if not self.exists() or self.hasChanged('mailAddress'):
 			try:
-				if self['mailAddress']:
+				if self['mailAddress'] and self['mailAddress'].lower() != self.oldinfo.get('mailAddress', '').lower():
 					self.request_lock('mailPrimaryAddress', self['mailAddress'])
 			except univention.admin.uexceptions.noLock:
 				raise univention.admin.uexceptions.mailAddressUsed(self['mailAddress'])

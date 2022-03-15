@@ -213,7 +213,7 @@ class object(univention.admin.handlers.simpleLdap):
 				))
 
 				address = '%s@%s' % (self['name'], self['mailDomain'])
-				if self['mailPrimaryAddress'] != address:
+				if self['mailPrimaryAddress'] != address and self['mailPrimaryAddress'].lower() != self.oldinfo.get('mailPrimaryAddress', '').lower():
 					try:
 						self.request_lock('mailPrimaryAddress', self['mailPrimaryAddress'])
 					except univention.admin.uexceptions.noLock:

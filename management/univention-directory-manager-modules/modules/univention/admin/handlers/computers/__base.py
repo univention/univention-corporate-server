@@ -228,11 +228,12 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 			if 'posix' in self.options:
 				requested_uid = "%s$" % self['name']
 				try:
-					self.uid = self.request_lock('uid', requested_uid)
+					if not self.exists() or self['name'].lower() != self.oldinfo['name'].lower():
+						requested_uid = self.request_lock('uid', requested_uid)
 				except univention.admin.uexceptions.noLock:
 					raise univention.admin.uexceptions.uidAlreadyUsed(requested_uid)
 
-				ml.append(('uid', self.oldattr.get('uid', [None])[0], self.uid.encode('UTF-8')))
+				ml.append(('uid', self.oldattr.get('uid', [None])[0], requested_uid.encode('UTF-8')))
 
 			if 'samba' in self.options:
 				ml.append(('displayName', self.oldattr.get('displayName', [None])[0], self['name'].encode('utf-8')))

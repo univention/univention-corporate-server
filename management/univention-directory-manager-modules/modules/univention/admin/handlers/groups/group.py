@@ -441,14 +441,14 @@ class object(univention.admin.handlers.simpleLdap):
 		super(object, self)._ldap_pre_ready()
 
 		# get lock for name
-		if not self.exists() or self.hasChanged('name'):
+		if not self.exists() or self.hasChanged('name') and self['name'].lower() != self.oldinfo['name'].lower():
 			try:
 				self.request_lock('groupName', self['name'])
 			except univention.admin.uexceptions.noLock:
 				raise univention.admin.uexceptions.groupNameAlreadyUsed(self['name'])
 
 		# get lock for mailPrimaryAddress
-		if self['mailAddress'] and (not self.exists() or self.hasChanged('mailAddress')):
+		if self['mailAddress'] and (not self.exists() or self.hasChanged('mailAddress') and self['mailAddress'].lower() != self.oldinfo.get('mailAddress', '').lower()):
 			try:
 				self.request_lock('mailPrimaryAddress', self['mailAddress'])
 			except univention.admin.uexceptions.noLock:

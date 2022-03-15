@@ -1698,7 +1698,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if self['primaryGroup'] and not self.lo.getAttr(self['primaryGroup'], 'sambaSID'):
 				raise univention.admin.uexceptions.primaryGroupWithoutSamba(self['primaryGroup'])
 
-		if not self.exists() or self.hasChanged('username'):
+		if not self.exists() or self.hasChanged('username') and self['username'].lower() != self.oldinfo['username'].lower():
 			check_prohibited_username(self.lo, self['username'])
 
 			# get lock for username

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.11-41) unstable; urgency=medium
+
+  * Bug #52760: allow case changes without triggering locking mechanism
+
+ -- Florian Best <best@univention.de>  Fri, 08 Apr 2022 12:10:30 +0200
+
 univention-directory-manager-modules (15.0.11-40) unstable; urgency=medium
 
   * Bug #54348: remove 2 lines logging password hashes
