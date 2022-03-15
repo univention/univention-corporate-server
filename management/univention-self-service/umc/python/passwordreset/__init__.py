@@ -620,8 +620,17 @@ class Instance(Base):
 			self._usersmod = None
 			#  univention.admin.modules.init(lo, po, usersmod, None, True)
 		try:
-			self.send_message(new_user['username'], 'verify_email', new_user['PasswordRecoveryEmail'], raise_on_success=False)
+			# in all SS cases we need more than the previously default fields
+			user_info = self._extract_user_properties(new_user)
+			self.send_message(
+				new_user['username'],
+				'verify_email',
+				new_user['PasswordRecoveryEmail'],
+				user_info,
+				raise_on_success=False
+			)
 		except Exception:
+			MODULE.error('could not send message: %s' % (traceback.format_exc(),))
 			verify_token_successfully_send = False
 		else:
 			verify_token_successfully_send = True
@@ -633,6 +642,21 @@ class Instance(Base):
 				'email': new_user['PasswordRecoveryEmail'],
 			}
 		}
+
+	def _extract_user_properties(self, user_obj):
+		message_fields = [
+			'username',
+			'title',
+			'initials',
+			'displayName',
+			'organisation',
+			'employeeNumber',
+			'firstname',
+			'lastname',
+			'mailPrimaryAddress'
+		]
+		info_out = {field: user_obj.info.get(field, '') for field in message_fields}
+		return info_out
 
 	@forward_to_master
 	@prevent_denial_of_service
@@ -662,7 +686,8 @@ class Instance(Base):
 		else:
 			if not email:
 				return invalid_information
-		self.send_message(username, 'verify_email', email, raise_on_success=False)
+		user_info = self._extract_user_properties(user._orig_udm_object)
+		self.send_message(username, 'verify_email', email, user_info, raise_on_success=False)
 		return {
 			'success': True,
 			'data': {
@@ -719,7 +744,8 @@ class Instance(Base):
 
 		if len(user[plugin.udm_property]) > 0:
 			# found contact info
-			self.send_message(username, method, user[plugin.udm_property])
+			user_info = self._extract_user_properties(user)
+			self.send_message(username, method, user[plugin.udm_property], user_info, raise_on_success=True)
 
 		# no contact info
 		raise MissingContactInformation()
@@ -923,7 +949,7 @@ class Instance(Base):
 		rand = random.SystemRandom()
 		return ''.join(rand.choice(chars) for _ in range(length))
 
-	def send_message(self, username, method, address, raise_on_success=True):
+	def send_message(self, username, method, address, user_properties, raise_on_success=True):
 		plugin = self._get_send_plugin(method)
 		try:
 			token_from_db = self.db.get_one(username=username)
@@ -943,7 +969,7 @@ class Instance(Base):
 			MODULE.info("send_token(): Adding new token for user '{}'...".format(username))
 			self.db.insert_token(username, method, token)
 		try:
-			self._call_send_msg_plugin(username, method, address, token)
+			self._call_send_msg_plugin(username, method, address, token, user_properties)
 		except Exception:
 			MODULE.error("send_token(): Error sending token with via '{method}' to '{username}'.".format(
 				method=method, username=username))
@@ -963,14 +989,16 @@ class Instance(Base):
 			raise UMC_Error("Unknown send message method", status=500)
 		return plugin
 
-	def _call_send_msg_plugin(self, username, method, address, token):
+	def _call_send_msg_plugin(self, username, method, address, token, user_properties):
 		MODULE.info("send_message(): username: {} method: {} address: {}".format(username, method, address))
 		plugin = self._get_send_plugin(method)
 
 		plugin.set_data({
 			"username": username,
 			"address": address,
-			"token": token})
+			"token": token,
+			"user_properties": user_properties,
+		})
 		MODULE.info("send_message(): Running plugin of class {}...".format(plugin.__class__.__name__))
 		try:
 			plugin.send()
@@ -989,7 +1017,7 @@ class Instance(Base):
 			get_user_connection(binddn=binddn, bindpw=password)
 		except (udm_errors.authFail, IndexError):
 			raise ServiceForbidden()
-		return binddn, userdict["uid"][0]
+		return binddn, userdict["uid"][0].decode('utf-8')
 
 	def authenticate_user(self, username=None, password=None):
 		"""Check if the user is already authenticated (via UMC/SAML login) or use the credentials provided via the form."""
@@ -1020,7 +1048,8 @@ class Instance(Base):
 				if old_email is not None and old_email.lower() != email.lower():
 					self._notify_about_email_change(user['username'], old_email, email)
 				if email is not None and email.lower() != old_email.lower():
-					self.send_message(user['username'], 'verify_email', email, raise_on_success=False)
+					user_info = self._extract_user_properties(user)
+					self.send_message(user['username'], 'verify_email', email, user_info, raise_on_success=False)
 					verification_email_send = True
 			return {
 				'verificationEmailSend': verification_email_send,
@@ -1065,7 +1094,7 @@ class Instance(Base):
 		except (EnvironmentError, KeyError):
 			raise UMC_Error(_('The configuration of the password reset service is not complete. The UCR variables "ad/reset/username" and "ad/reset/password" need to be set properly. Please inform an administrator.'), status=500)
 		process = Popen(['samba-tool', 'user', 'setpassword', '--username', reset_username, '--password', reset_password, '--filter', filter_format('samaccountname=%s', (username,)), '--newpassword', password, '-H', ldb_url], stdout=PIPE, stderr=STDOUT)
-		stdouterr = process.communicate()[0]
+		stdouterr = process.communicate()[0].decode('utf-8', 'replace')
 
 		if stdouterr:
 			MODULE.process('samba-tool user setpassword: %s' % (stdouterr,))
@@ -1212,7 +1241,7 @@ class Instance(Base):
 				_, userdict = users[0]
 			except IndexError:
 				return email
-			username = userdict["uid"][0]
+			username = userdict["uid"][0].decode('utf-8')
 			self.memcache.set("e2u:{}".format(email), username, 300)
 
 		return username
