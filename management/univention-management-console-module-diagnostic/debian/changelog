@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.0-26) unstable; urgency=medium
+
+  * Bug #53455: added a diagnostic tool for missing LDAP schemas
+
+ -- Juan Pedro Torres <torres-munoz.extern@univention.de>  Tue, 15 Mar 2022 07:45:07 +0100
+
 univention-management-console-module-diagnostic (6.0.0-25) unstable; urgency=medium
 
   * Bug #50756: display links in the description of failed tests in univention-run-diagnostic-check
