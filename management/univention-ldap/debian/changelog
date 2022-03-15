@@ -1,3 +1,9 @@
+univention-ldap (16.0.7-17) unstable; urgency=medium
+
+  * Bug #54395: Add schema for univention-radius-password
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 15 Mar 2022 19:24:30 +0100
+
 univention-ldap (16.0.7-16) unstable; urgency=medium
 
   * Add univentionRadiusPassword

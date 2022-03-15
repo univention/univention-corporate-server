@@ -29,7 +29,9 @@
 
 import cracklib
 import os
+from random import SystemRandom
 import re
+import string
 import univention.uldap
 import univention.debug as ud
 import univention.config_registry as ucr
@@ -188,3 +190,119 @@ class Check(object):
 #	pwdCheck = univention.password.Check(univention.uldap.getMachineConnection(), None)
 #	self.enableQualityCheck = True
 #	pwdCheck.check('univention')
+
+
+def password_config(scope=None):
+	"""
+	Read password configuration options from UCR.
+
+	:param scope: UCR scope in which password configuration options are searched for. Default is None.
+	:type scope: :class:`str`
+
+	:return: Password configuration options.
+	:rtype: :class:`dict`
+	"""
+	default_cfg = {
+		'digits': ucr.ucr.get_int('password/quality/credit/digits', 6),
+		'lower': ucr.ucr.get_int('password/quality/credit/lower', 6),
+		'other': ucr.ucr.get_int('password/quality/credit/other', 0),
+		'upper': ucr.ucr.get_int('password/quality/credit/upper', 6),
+		'forbidden': ucr.ucr.get_int('password/quality/forbidden/chars', '0Ol1I'),
+		'min_length': ucr.ucr.get_int('password/quality/length/min', 24),
+	}
+
+	if scope:
+		cfg = {
+			'digits': ucr.ucr.get_int('password/%s/quality/credit/digits' % scope, default_cfg.get('digits')),
+			'lower': ucr.ucr.get_int('password/%s/quality/credit/lower' % scope, default_cfg.get('lower')),
+			'other': ucr.ucr.get_int('password/%s/quality/credit/other' % scope, default_cfg.get('other')),
+			'upper': ucr.ucr.get_int('password/%s/quality/credit/upper' % scope, default_cfg.get('upper')),
+			'forbidden': ucr.ucr.get('password/%s/quality/forbidden/chars' % scope, default_cfg.get('forbidden')),
+			'min_length': ucr.ucr.get_int('password/%s/quality/length/min' % scope, default_cfg.get('min_length')),
+		}
+	else:
+		cfg = default_cfg
+
+	return cfg
+
+
+def generate_password(digits=6, lower=6, other=0, upper=6, forbidden='', min_length=24):
+	"""
+	Generate random password using given parameters. Whitespaces are implicitly forbidden.
+
+	:param digits: Minimal number of digits in generated password. 0 excludes it from the password.
+	:type digits: :class:`int`
+
+	:param lower: Minimal number of lowercase ASCII letters in generated password. 0 excludes it from the password.
+	:type lower: :class:`int`
+
+	:param other: Minimal number of special characters in generated password. 0 excludes it from the password.
+	:type other: :class:`int`
+
+	:param upper: Minimal number of uppercase ASCII letters in generated password. 0 excludes it from the password.
+	:type upper: :class:`int`
+
+	:param forbidden: Forbidden characters in generated password.
+	:type forbidden: :class:`str`
+
+	:param min_length: Minimal length of generated password.
+	:type min_length: :class:`int`
+
+	:return: Randomly generated password.
+	:rtype: :class:`str`
+
+	:raises ValueError: In case any password quality precondition fails.
+	"""
+	special_characters = string.punctuation
+	forbidden_chars = forbidden or ''
+	exclude_characters = set(forbidden_chars) | string.whitespace
+
+	if 0 > digits or 0 > lower or 0 > other or 0 > upper:
+		raise ValueError('Number of digits, lower, upper or other characters can not be negative')
+	elif 0 >= digits + lower + other + upper:
+		raise ValueError('At least one from the: digits, lower, upper or other characters must be positive number')
+
+	available_chars = set(string.printable) - exclude_characters
+	if not available_chars:
+		raise ValueError('All available characters are excluded by the rule: %r', (exclude_characters,))
+
+	rnd = SystemRandom()
+
+	digit_characters = ''.join(set(string.digits) - set(exclude_characters)) if digits > 0 else ''
+	ascii_lowercase = ''.join(set(string.ascii_lowercase) - set(exclude_characters)) if lower > 0 else ''
+	ascii_uppercase = ''.join(set(string.ascii_uppercase) - set(exclude_characters)) if upper > 0 else ''
+	special_characters = ''.join(set(special_characters) - set(exclude_characters)) if other > 0 else ''
+
+	random_list = []
+	if digits > 0:
+		if digit_characters:
+			random_list.extend(rnd.choices(digit_characters, k=digits))
+		else:
+			raise ValueError('There are %s digits requested but digits pool is empty' % (digits,))
+
+	if lower > 0:
+		if ascii_lowercase:
+			random_list.extend(rnd.choices(ascii_lowercase, k=lower))
+		else:
+			raise ValueError('There are %s lowercase characters requested but lowercase pool is empty' % (lower,))
+
+	if upper > 0:
+		if ascii_uppercase:
+			random_list.extend(rnd.choices(ascii_uppercase, k=upper))
+		else:
+			raise ValueError('There are %s uppercase characters requested but uppercase pool is empty' % (upper,))
+
+	if other > 0:
+		if special_characters:
+			random_list.extend(rnd.choices(special_characters, k=other))
+		else:
+			raise ValueError('There are %s special characters requested but special characters pool is empty' % (other,))
+
+	if min_length > len(random_list):
+		available_char_pool = ''.join(set(digit_characters + ascii_lowercase + ascii_uppercase + special_characters))
+		random_list.extend(rnd.choices(available_char_pool, k=min_length - len(random_list)))
+
+	rnd.shuffle(random_list)
+	res = ''.join(random_list)
+
+	return res

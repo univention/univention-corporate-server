@@ -1,3 +1,9 @@
+univention-python (13.0.2-8) unstable; urgency=medium
+
+  * Bug #54555: Password generation library method for service specific passwords.
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 15 Mar 2022 19:23:32 +0100
+
 univention-python (13.0.2-7) unstable; urgency=medium
 
   * Bug #51354: fixed KeyError in _userPolicy
