@@ -3,10 +3,13 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-python
-fix: 13.0.2-7A~5.0.0.202203091733
+fix: 13.0.2-8A~5.0.0.202203152146
 desc: |
  This update addresses the following issue(s):
  * Changing a user password is now possible again when the referenced
    Password History policy did not define values for password length
    or history length.
-bug: [51354]
+ * Added the new function `generate_password` that can generate random
+   passwords. The new function `password_config` can be used to get parameters
+   for that from UCR.
+bug: [51354, 54555]

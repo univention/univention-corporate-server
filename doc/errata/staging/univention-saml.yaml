@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-saml
+fix: 7.0.4-20A~5.0.0.202203152216
+desc: |
+ This update addresses the following issue(s):
+ * The link to the self service has been changed to point to the new portal
+   based self service.
+bug: [54556]

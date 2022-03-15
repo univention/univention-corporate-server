@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-ldap
+fix: 16.0.7-17A~5.0.0.202203152157
+desc: |
+ This update addresses the following issue(s):
+ * A new attribute univentionNagiosPassword has been added to the user class.
+bug: [54395]

@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-directory-manager-modules
-fix: 15.0.11-36A~5.0.0.202203101444
+fix: 15.0.11-37A~5.0.0.202203152148
 desc: |
  This update addresses the following issues:
  * When user templates were members of groups an error was raised
@@ -18,4 +18,6 @@ desc: |
    objects.
  * Searching with patterns containing umlauts is possible again.
  * When removing a policy the policy is removed from the referencing objects.
-bug: [54402, 54085, 53581, 54150, 53975, 16966]
+ * Backend functionality for service specific passwords has been added. Cannot
+   be used via CLI.
+bug: [54402, 54085, 53581, 54150, 53975, 16966, 54438]

@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-radius
+fix: 7.0.1-8A~5.0.0.202203152214
+desc: |
+ This update addresses the following issue(s):
+ * A new UCRV has been added: radius/use-service-specific-passwords. If
+   enabled, the authentication is done against a nagios specific password, not
+   the domain password of the user.
+bug: [54409]
