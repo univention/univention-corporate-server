@@ -39,6 +39,13 @@ class TestUCR(object):
 	def get(self, key, default=None):
 		return self.items.get(key, default)
 
+	def get_int(self, key, default=None):
+		val = self.get(key)
+		try:
+			return int(val)
+		except (TypeError, ValueError):
+			return default
+
 	def __contains__(self, key):
 		return key in self.items
 
@@ -74,5 +81,5 @@ class TestUCR(object):
 
 
 @pytest.fixture
-def ucr():
+def ucr2():
 	return TestUCR()
