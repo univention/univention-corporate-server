@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-1
 src: univention-web
 fix: 4.0.2-49A~5.0.0.202203101233
 desc: |
- This update addresses the following issue(s):
- * The domain component in a LDAP path is not shown in wrong reversed
+ This update addresses the following issue:
+ * The domain component in an LDAP path is not shown in wrong reversed
    order anymore.
 bug: [53678]
