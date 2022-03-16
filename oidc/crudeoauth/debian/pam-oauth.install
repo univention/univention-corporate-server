@@ -1,0 +1,2 @@
+lib/*/security/pam_oauth.so
+usr/share/man/man?/pam_oauth.*
