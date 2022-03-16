@@ -16,6 +16,7 @@ Standards-Version: 3.8.2
 Package: python-univentionunittests
 Architecture: all
 Depends:
+ python-cracklib,
  python-pytest,
  python-pytest-mock,
  python-mock,
@@ -36,6 +37,7 @@ Description: Plugins for pytest that go with UCS specific packages.
 Package: python3-univentionunittests
 Architecture: all
 Depends:
+ python3-cracklib,
  python3-pytest,
  python3-pytest-mock,
  ${python3:Depends},
