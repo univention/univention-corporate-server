@@ -1,3 +1,9 @@
+ucs-test (10.0.6-103) unstable; urgency=medium
+
+  * Bug #54555: No ucs-test needed; done in unittest
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 16 Mar 2022 14:07:34 +0100
+
 ucs-test (10.0.6-102) unstable; urgency=medium
 
   * Bug #54409: Add tests for service specific passwords
