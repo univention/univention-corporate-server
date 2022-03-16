@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: openssl
+fix: 1.1.1d-0+deb10u8
+desc: |
+ This update addresses the following issues:
+ * Carry propagation bug in the MIPS32 and MIPS64 squaring procedure
+   (CVE-2021-4160)
+ * Infinite loop in BN_mod_sqrt() reachable when parsing certificates
+   (CVE-2022-0778)
+bug: [54557]
+cve:
+- CVE-2021-4160
+- CVE-2022-0778
