@@ -9,3 +9,5 @@ desc: |
  * Apache can now be configured to only support TLS v1.3 connections
    by setting the UCR Variable `ucr set apache2/ssl/tlsv13=true`.
 bug: [54306]
+erratum: 246
+announced: 2022-03-16
