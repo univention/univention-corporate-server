@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: linux-signed-amd64
-fix: 4.19.232-1
+fix: 4.19.232+1
 desc: |
  This updates the Linux kernel to version 4.19.232, which addresses (among
  others) the following security issues:
