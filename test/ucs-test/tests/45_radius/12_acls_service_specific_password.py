@@ -11,6 +11,7 @@ import pytest
 import subprocess
 import univention.uldap as uldap
 
+
 def radius_auth(username, password):
 	subprocess.check_call([
 		'radtest',
