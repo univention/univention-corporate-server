@@ -2089,7 +2089,7 @@ univention-config-registry set squid/webports="80 443"
                         wird stattdessen ein Passwort speziell für RADIUS genutzt. Dieses Passwort können Nutzer
                         selbst über die App Self Service setzen lassen. Dabei wird vom System ein zufälliges Passwort erzeugt, das die Benutzer dann nutzen können. Bei Bedarf kann das Passwort neu generiert werden. Dadurch wird gleichzeitig das alte Passwort ungültig.
 				</para>
-					<figure id="ip-config:radius:group">
+					<figure id="ip-config:radius:selfservice">
 						<title>Seite im Self Service, um ein RADIUS-spezifisches Passwort zu bekommen</title>
 						<graphic fileref="illustrations50/radius-service-specific-password_DE.png" scalefit="1" width="100%"/>
 					</figure>
