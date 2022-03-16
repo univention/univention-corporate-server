@@ -1,3 +1,9 @@
+ucs-test (10.0.6-104) unstable; urgency=medium
+
+  * Bug #53455: Fixed 111_test_slapschema to avoid execution on non master server
+
+ -- Juan Pedro Torres <torres-munoz.extern@univention.de>  Wed, 16 Mar 2022 14:43:11 +0100
+
 ucs-test (10.0.6-103) unstable; urgency=medium
 
   * Bug #54555: No ucs-test needed; done in unittest

@@ -3,6 +3,7 @@
 ## tags:
 ##  - schemas
 ##  - slapschema
+## roles: [domaincontroller_master]
 ## bugs: [53455]
 ## exposure:
 
