@@ -305,6 +305,9 @@ class UDM(Client):
 		for module in self.modules(name):
 			return module
 
+	def get_object(self, object_type, dn):
+		return self.get(object_type).get(dn)
+
 	def __repr__(self):
 		return 'UDM(uri={}, username={}, password=****, version={})'.format(self.uri, self.username, self._api_version)
 
@@ -377,6 +380,26 @@ class Module(Client):
 				dn = objself['name']
 				yield ShallowObject(self.udm, dn, uri)
 
+	def get_layout(self):
+		self.load_relations()
+		return self.udm.client.resolve_relation(self.relations, 'udm:layout').get('layout')
+
+	def get_properties(self):
+		self.load_relations()
+		return self.udm.client.resolve_relation(self.relations, 'udm:properties').get('properties')
+
+	def get_property_choices(self, property):
+		self.load_relations()
+		relations = self.udm.client.resolve_relation(self.relations, 'udm:properties')
+		return self.udm.client.resolve_relation(relations, 'udm:property-choices', name=property).get('choices')
+
+	def policy_result(self, policy_module, position, policy=None):
+		self.load_relations()
+		policy_result = self.udm.client.resolve_relation(self.relations, 'udm:policy-result', name=policy_module, template={'position': position, 'policy': policy})
+		policy_result.pop('_links', None)
+		policy_result.pop('_embedded', None)
+		return policy_result
+
 
 class ShallowObject(Client):
 
@@ -402,7 +425,7 @@ class References(object):
 	def __getitem__(self, item):
 		return [
 			ShallowObject(self.obj.udm, x['name'], x['href'])
-			for x in self.udm.get_relations(self.obj.hal, 'udm:object/property/reference/%s' % (item,))
+			for x in self.udm.client.get_relations(self.obj.hal, 'udm:object/property/reference/%s' % (item,))
 		]
 
 	def __getattribute__(self, key):
@@ -571,3 +594,19 @@ class Object(Client):
 		uri = self.client.get_relation(self.hal, 'udm:service-specific-password')['href']
 		response = self.client.make_request('POST', uri, data={"service": service})
 		return response.data.get('password', None)
+
+	def get_layout(self):
+		return self.udm.client.resolve_relation(self.hal, 'udm:layout').get('layout')
+
+	def get_properties(self):
+		return self.udm.client.resolve_relation(self.hal, 'udm:properties').get('properties')
+
+	def get_property_choices(self, property):
+		hal = self.udm.client.resolve_relation(self.hal, 'udm:properties')
+		return self.udm.client.resolve_relation(hal, 'udm:property-choices', name=property).get('choices')
+
+	def policy_result(self, policy_module, policy=None):
+		policy_result = self.udm.client.resolve_relation(self.hal, 'udm:policy-result', name=policy_module, template={'policy': policy})
+		policy_result.pop('_links', None)
+		policy_result.pop('_embedded', None)
+		return policy_result

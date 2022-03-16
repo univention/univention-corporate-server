@@ -2074,6 +2074,10 @@ class Properties(Resource):
 			properties = dict((name, prop) for name, prop in properties.items() if prop.get('searchable', False))
 		result['properties'] = properties
 
+		for propname, prop in properties.items():
+			if prop.get('dynamicValues') or prop.get('staticValues') or prop.get('type') == 'umc/modules/udm/MultiObjectSelect':
+				self.add_link(result, 'udm:property-choices', self.urljoin('properties', propname, 'choices'), name=propname, title=_('Get choices for property %s') % (propname,))
+
 		self.add_caching(public=True, must_revalidate=True)
 		self.content_negotiation(result)
 
@@ -2444,6 +2448,12 @@ class Objects(FormBase, ReportingBase):
 
 		if search:
 			result['results'] = len(self.get_resources(result, 'udm:object'))
+		else:
+			self.add_link(result, 'udm:layout', self.urljoin('layout'), title=_('Module layout'))
+			self.add_link(result, 'udm:properties', self.urljoin('properties'), title=_('Module properties'))
+			for policy_module in module.policies:
+				policy_module = policy_module['objectType']
+				self.add_link(result, 'udm:policy-result', self.urljoin('%s/{?policy,position}' % (policy_module,)), name=policy_module, title=_('Evaluate referenced %s policies') % (policy_module,), templated=True)
 
 		self.add_caching(public=False, no_cache=True, no_store=True, max_age=1, must_revalidate=True)
 		self.content_negotiation(result)
@@ -2543,7 +2553,7 @@ class Objects(FormBase, ReportingBase):
 		self.add_link(result, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'))
 		self.add_link(result, 'up', self.urljoin('../'), title=parent.object_name_plural)
 		self.add_link(result, 'self', self.urljoin(''), name=module.name, title=module.object_name_plural)
-		self.add_link(result, 'describedby', self.urljoin(''), method='OPTIONS')
+		self.add_link(result, 'describedby', self.urljoin(''), title=_('%s module') % (module.name,), method='OPTIONS')
 		if 'search' in module.operations:
 			searchfields = ['position', 'query[]', 'filter', 'scope', 'hidden', 'properties']
 			if superordinate_names(module):
@@ -2667,6 +2677,10 @@ class Object(FormBase, Resource):
 
 		if module.name == 'users/user':
 			self.add_link(props, 'udm:service-specific-password', self.urljoin(quote_dn(obj.dn), 'service-specific-password'), title=_('Generate a new service specific password'))
+		self.add_link(props, 'udm:layout', self.urljoin(quote_dn(obj.dn), 'layout'), title=_('Module layout'))
+		self.add_link(props, 'udm:properties', self.urljoin(quote_dn(obj.dn), 'properties'), title=_('Module properties'))
+		for policy_module in props.get('policies', {}).keys():
+			self.add_link(props, 'udm:policy-result', self.urljoin(quote_dn(obj.dn), '%s/{?policy}' % (policy_module,)), name=policy_module, title=_('Evaluate referenced %s policies') % (policy_module,), templated=True)
 
 		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation(props)
@@ -2682,7 +2696,7 @@ class Object(FormBase, Resource):
 		self.add_link(props, 'type', self.urljoin('x/../'), name=module.name, title=module.object_name)
 		self.add_link(props, 'up', self.urljoin('x/../'), name=module.name, title=module.object_name)
 		self.add_link(props, 'self', self.urljoin(''), title=dn)
-		self.add_link(props, 'describedby', self.urljoin(''), method='OPTIONS')
+		self.add_link(props, 'describedby', self.urljoin(''), title=_('%s module') % (module.name,), method='OPTIONS')
 		self.add_link(props, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
 		self.add_link(props, 'udm:object/remove', self.urljoin(''), method='DELETE')
 		self.add_link(props, 'udm:object/edit', self.urljoin(''), method='PUT')
@@ -3409,7 +3423,7 @@ class PropertyChoices(Resource):
 		request_body = {'syntax': syntax.name}  # FIXME
 		choices = yield self.pool.submit(read_syntax_choices, _get_syntax(syntax.name), request_body, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 		self.add_caching(public=False, must_revalidate=True)
-		self.content_negotiation(choices)
+		self.content_negotiation({'choices': choices})
 
 
 class PolicyResultBase(Resource):
@@ -3590,7 +3604,7 @@ class LicenseCheck(Resource):
 		except LicenseError as exc:
 			message = str(exc)
 		self.add_caching(public=False, max_age=120, must_revalidate=True)
-		self.content_negotiation(message)
+		self.content_negotiation({'message': message})
 
 
 class License(Resource):
@@ -3825,6 +3839,7 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/multi-edit" % (object_type,), ObjectMultiEdit),
 			(r"/udm/%s/tree" % (object_type,), Tree),
 			(r"/udm/%s/properties" % (object_type,), Properties),
+			(r"/udm/%s/()properties/%s/choices" % (object_type, property_), PropertyChoices),
 			(r"/udm/%s/layout" % (object_type,), Layout),
 			(r"/udm/%s/favicon.ico" % (object_type,), Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
 			(r"/udm/%s/%s" % (object_type, dn), Object),
@@ -3835,7 +3850,6 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/%s/" % (object_type, policies_object_type), PolicyResultContainer),
 			(r"/udm/%s/%s/layout" % (object_type, dn), Layout),
 			(r"/udm/%s/%s/properties" % (object_type, dn), Properties),
-			(r"/udm/%s/%s/properties/choices" % (object_type, dn), Properties),
 			(r"/udm/%s/%s/properties/%s/choices" % (object_type, dn, property_), PropertyChoices),
 			(r"/udm/%s/%s/properties/jpegPhoto.jpg" % (object_type, dn), UserPhoto),
 			(r"/udm/%s/properties/%s/default" % (object_type, property_), DefaultValue),
