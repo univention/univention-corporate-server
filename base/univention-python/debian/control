@@ -12,6 +12,12 @@ Build-Depends:
  python3-pytest,
  python3-univentionunittests,
  python3-debian,
+ python3-cracklib,
+ python3-ldap,
+ python3-samba,
+ python3-six,
+ python3-univention-debug,
+ python3-univention-config-registry (>= 15.0.7-16),
 
 Package: python-univention-namespace
 Architecture: all

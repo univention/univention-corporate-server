@@ -35,6 +35,7 @@ import pytest
 from univentionunittests import import_module
 
 
+_uldap = import_module('uldap', 'modules/', 'univention.uldap', use_installed=False)  # not needed. but we have to import it
 univention_password = import_module('password', 'modules/', 'univention.password', use_installed=False)
 
 

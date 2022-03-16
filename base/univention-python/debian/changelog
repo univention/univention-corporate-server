@@ -1,3 +1,9 @@
+univention-python (13.0.2-12) unstable; urgency=medium
+
+  * Bug #54555: Fix build dependencies
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 16 Mar 2022 13:54:40 +0100
+
 univention-python (13.0.2-11) unstable; urgency=medium
 
   * Bug #54555: Fix dependencies
