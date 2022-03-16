@@ -45,6 +45,7 @@ def mocked_ucr(ucr2, mocker):
 		mock.ucr = ucr2
 		yield ucr2
 
+
 @pytest.fixture(scope='class')
 def password_config_default():
 	cfg = univention_password.password_config()
