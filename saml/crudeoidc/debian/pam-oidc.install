@@ -1,2 +1,2 @@
-usr/lib/*/security/pam_oidc.so
+lib/*/security/pam_oidc.so
 usr/share/man/man?/pam_oidc.*

@@ -1,0 +1,3 @@
+07_fix-pam-dir.patch
+09_pkgconfig.patch
+15_fix-string-format-vulnerability.patch

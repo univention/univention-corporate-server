@@ -1,2 +1,2 @@
-lib/sasl2/liboidc.so*
+usr/lib/*/sasl2/liboidc.so*
 usr/share/man/man?/cy2_oidc.*
