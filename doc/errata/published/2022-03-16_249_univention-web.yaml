@@ -9,3 +9,5 @@ desc: |
  * The domain component in an LDAP path is not shown in wrong reversed
    order anymore.
 bug: [53678]
+erratum: 249
+announced: 2022-03-16
