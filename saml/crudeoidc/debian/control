@@ -1,0 +1,34 @@
+Source: crudeoidc
+Section: libs
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends:
+ debhelper,
+ dh-autoreconf,
+ liblasso3-dev,
+ libpam0g-dev,
+ libsasl2-dev,
+ librhonabwy-dev (>= 1.1.2)
+Standards-Version: 3.7.2
+
+Package: cy2-oidc
+Architecture: any
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
+Description: SASL plugin for OIDC authentication
+ This package contains a SASL plugin that performs a crude
+ check on a OIDC ID-Token. The JWT signature and date
+ are verified, and access is granted on behalf to the user taken for a
+ configurable attribute.
+
+Package: pam-oidc
+Architecture: any
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
+Description: PAM module for OIDC authentication
+ This package contains a PAM module that performs a crude
+ check on a OIDC ID-Token. The JWT signature and date
+ are verified, and access is granted on behalf to the user taken for a
+ configurable attribute.

@@ -1,0 +1,11 @@
+crudeoidc (0.0.2-1) unstable; urgency=medium
+
+  * OIDC implementation based on rhonabwy
+
+ -- Arvid <requate@univention.de>  Wed, 16 Mar 2022 14:28:02 +0100
+
+crudeoidc (0.0.1-1) unstable; urgency=medium
+
+  * initial packaging
+
+ -- Florian Best <best@univention.de>  Fri, 04 Feb 2022 15:07:42 +0100
