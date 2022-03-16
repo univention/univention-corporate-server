@@ -207,7 +207,7 @@ def password_config(scope=None):
 		'lower': ucr.ucr.get_int('password/quality/credit/lower', 6),
 		'other': ucr.ucr.get_int('password/quality/credit/other', 0),
 		'upper': ucr.ucr.get_int('password/quality/credit/upper', 6),
-		'forbidden': ucr.ucr.get_int('password/quality/forbidden/chars', '0Ol1I'),
+		'forbidden': ucr.ucr.get('password/quality/forbidden/chars', '0Ol1I'),
 		'min_length': ucr.ucr.get_int('password/quality/length/min', 24),
 	}
 
@@ -255,14 +255,14 @@ def generate_password(digits=6, lower=6, other=0, upper=6, forbidden='', min_len
 	"""
 	special_characters = string.punctuation
 	forbidden_chars = forbidden or ''
-	exclude_characters = set(forbidden_chars) | string.whitespace
+	exclude_characters = set(forbidden_chars) | set(string.whitespace)
 
 	if 0 > digits or 0 > lower or 0 > other or 0 > upper:
 		raise ValueError('Number of digits, lower, upper or other characters can not be negative')
 	elif 0 >= digits + lower + other + upper:
 		raise ValueError('At least one from the: digits, lower, upper or other characters must be positive number')
 
-	available_chars = set(string.printable) - set(exclude_characters)
+	available_chars = set(string.printable) - exclude_characters
 	if not available_chars:
 		raise ValueError('All available characters are excluded by the rule: %r', (exclude_characters,))
 

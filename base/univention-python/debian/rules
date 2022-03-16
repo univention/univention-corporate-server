@@ -32,5 +32,8 @@
 
 export PYBUILD_NAME=univention
 
+override_dh_auto_test:
+	pytest-3 unittests/
+
 %:
 	dh $@ --with python2,python3 --buildsystem=pybuild
