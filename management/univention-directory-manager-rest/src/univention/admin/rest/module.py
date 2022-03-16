@@ -2208,7 +2208,7 @@ class Report(ReportingBase):
 class NextFreeIpAddress(Resource):
 	"""GET udm/networks/network/$DN/next-free-ip-address (get the next free IP in this network)"""
 
-	def get(self, dn):  # TODO: threaded?! (might have caused something in the past in system setup?!)
+	def get(self, object_type, dn):  # TODO: threaded?! (might have caused something in the past in system setup?!)
 		"""Returns the next IP configuration based on the given network object
 
 		requests.options = {}
@@ -2218,7 +2218,7 @@ class NextFreeIpAddress(Resource):
 		return: {}
 		"""
 		dn = unquote_dn(dn)
-		obj = self.get_object('networks/network', dn)
+		obj = self.get_object(object_type, dn)
 		try:
 			obj.refreshNextIp()
 		except udm_errors.nextFreeIp:
@@ -3706,8 +3706,7 @@ class ServiceSpecificPassword(Resource):
 		service=StringSanitizer(required=True),
 	)
 	@tornado.gen.coroutine
-	def post(self, dn):
-		object_type = 'users/user'
+	def post(self, object_type, dn):
 		module = get_module(object_type, dn, self.ldap_connection)
 		if module is None:
 			raise NotFound(object_type, dn)
@@ -3840,9 +3839,9 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/%s/properties/%s/choices" % (object_type, dn, property_), PropertyChoices),
 			(r"/udm/%s/%s/properties/jpegPhoto.jpg" % (object_type, dn), UserPhoto),
 			(r"/udm/%s/properties/%s/default" % (object_type, property_), DefaultValue),
-			(r"/udm/networks/network/%s/next-free-ip-address" % (dn,), NextFreeIpAddress),
+			(r"/udm/(networks/network)/%s/next-free-ip-address" % (dn,), NextFreeIpAddress),
+			(r"/udm/(users/user)/%s/service-specific-password" % (dn,), ServiceSpecificPassword),
 			(r"/udm/progress/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", Operations),
-			(r"/udm/users/user/%s/service-specific-password" % (dn,), ServiceSpecificPassword),
 			# TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
 		], default_handler_class=Nothing, **kwargs)
 
