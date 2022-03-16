@@ -1,0 +1,5 @@
+crudeoauth (1.0.0-1) unstable; urgency=medium
+
+  * Bug #49006: implement OAUTHBEARER SASL mechanism (RFC 7628) based on rhonabwy
+
+ -- Arvid <requate@univention.de>  Wed, 16 Mar 2022 14:28:02 +0100

@@ -1,0 +1,44 @@
+Source: crudeoauth
+Section: libs
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends:
+ debhelper-compat (= 12),
+ dh-autoreconf,
+ gawk,
+ libglib2.0-0,
+ libjansson-dev,
+ liblasso3-dev,
+ libpam0g-dev,
+ librhonabwy-dev (>= 1.1.11),
+ libsasl2-dev,
+Standards-Version: 3.7.2
+
+Package: libsasl2-modules-oauthbearer
+Architecture: any
+Depends:
+ libjansson4,
+ librhonabwy1.1,
+ libsasl2-2,
+ ${misc:Depends},
+ ${shlibs:Depends},
+Description: SASL plugin for OAUTHBEARER (RFC 7628) authentication
+ This package contains a SASL plugin that performs a
+ check on a OAuth Bearer Access-Token. The JWT signature and date
+ are verified, and access is granted on behalf to the user taken for
+ configurable issuer and audiences.
+
+Package: libpam-oauthbearer
+Architecture: any
+Depends:
+ libjansson4,
+ libpam0g,
+ librhonabwy1.1,
+ libsasl2-2,
+ ${misc:Depends},
+ ${shlibs:Depends},
+Description: PAM module for OAuth authentication
+ This package contains a PAM module that performs a crude
+ check on a OAuth Access-Token. The JWT signature and date
+ are verified, and access is granted on behalf to the user taken for
+ configurable issuer and audiences.
