@@ -11,3 +11,5 @@ desc: |
  * Byte values are now correctly decoded for the labels of choices delivered
    by the syntax class `LDAP_Search`.
 bug: [53678, 54190]
+erratum: 250
+announced: 2022-03-16
