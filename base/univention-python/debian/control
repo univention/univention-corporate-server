@@ -10,6 +10,7 @@ Build-Depends:
  python-debian,
  python3-all,
  python3-pytest,
+ python3-univentionunittests,
  python3-debian,
 
 Package: python-univention-namespace
