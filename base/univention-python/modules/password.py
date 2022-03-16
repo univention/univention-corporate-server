@@ -262,7 +262,7 @@ def generate_password(digits=6, lower=6, other=0, upper=6, forbidden='', min_len
 	elif 0 >= digits + lower + other + upper:
 		raise ValueError('At least one from the: digits, lower, upper or other characters must be positive number')
 
-	available_chars = set(string.printable) - exclude_characters
+	available_chars = set(string.printable) - set(exclude_characters)
 	if not available_chars:
 		raise ValueError('All available characters are excluded by the rule: %r', (exclude_characters,))
 
