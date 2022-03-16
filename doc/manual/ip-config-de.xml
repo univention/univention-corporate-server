@@ -2049,7 +2049,7 @@ univention-config-registry set squid/webports="80 443"
 			über das <ulink
 			url="https://de.wikipedia.org/wiki/Remote_Authentication_Dial-In_User_Service">RADIUS-Protokoll</ulink>. Die Konfiguration erfolgt über Blacklisten und Whitelisten
 			direkt am Benutzer-, Gruppen- oder Endgeräte-Objekt im UCS Managementsystem.
-			Registrierte Benutzer werden mit ihrem üblichen Domänenpasswort
+			Registrierte Benutzer werden mit ihrem üblichen Domänenpasswort oder alternativ mit einem eigens erzeugten RADIUS-Passwort
 			authentisiert, so dass unter anderem <foreignphrase>Bring-Your-Own-Device-Konzepte</foreignphrase> ermöglicht
 			werden.
 		</para>
@@ -2080,6 +2080,27 @@ univention-config-registry set squid/webports="80 443"
 						<title>Beispiel für eine Gruppe, die ihren Benutzern Zugang gewährt</title>
 						<graphic fileref="illustrations50/radius-group-allow-network_DE.png" scalefit="1" width="100%"/>
 					</figure>
+			</section>
+			<section id="ip-config:radius:configuration:service-specific-password">
+				<title>Dienstspezifisches Passwort</title>
+				<para>
+					Standardmäßig authentifizieren sich Benutzer über ihr Domänenpasswort. Durch Setzen der &ucsUCRV;
+					<envar>radius/service-specific-password</envar> auf <literal>true</literal>
+                        wird stattdessen ein Passwort speziell für RADIUS genutzt. Dieses Passwort können Nutzer
+                        selbst über die App Self Service setzen lassen. Dabei wird vom System ein zufälliges Passwort erzeugt, das die Benutzer dann nutzen können. Bei Bedarf kann das Passwort neu generiert werden. Dadurch wird gleichzeitig das alte Passwort ungültig.
+				</para>
+					<figure id="ip-config:radius:group">
+						<title>Seite im Self Service, um ein RADIUS-spezifisches Passwort zu bekommen</title>
+						<graphic fileref="illustrations50/radius-service-specific-password_DE.png" scalefit="1" width="100%"/>
+					</figure>
+				<para>
+                    Die Parameter, mit denen das Passwort erzeugt wird, können
+                    angepasst werden. Auf dem &ucsPrimaryDN; müssen dazu
+                    &ucsUCRV;n gesetzt werden: 
+                    <programlisting language="sh">
+                        ucr search password/radius/quality
+                    </programlisting>
+				</para>
 			</section>
 			<section id="ip-config:radius:configuration:mac-filtering">
 				<title>MAC-Adressfilter</title>

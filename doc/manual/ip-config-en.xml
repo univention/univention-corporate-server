@@ -2375,7 +2375,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 		devices via <ulink url="https://en.wikipedia.org/wiki/RADIUS">RADIUS
 		protocol</ulink>. The configuration is done via black and white lists and
 		directly at user, group and endpoint device objects in the UCS management
-		system. Registered users are authenticated with their usual domain credentials,
+		system. Registered users are authenticated with their usual domain credentials or, alternatively, with a specifically for RADIUS generated password,
 		which, among others, also allows bring your own device concepts.
 	</para>
 	  <section id="ip-config:radius:installation">
@@ -2408,6 +2408,26 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 				  <graphic fileref="illustrations50/radius-group-allow-network_EN.png" scalefit="1" width="100%"/>
 			  </figure>
 		  </section>
+			<section id="ip-config:radius:configuration:service-specific-password">
+				<title>Service specific password</title>
+				<para>
+					By default, users authenticate with their domain password. By setting the &ucsUCRV;
+					<envar>radius/service-specific-password</envar> to <literal>true</literal>,
+                        a dedicated password for RADIUS will be used. Through the App Self Service, users can get such a password. The system will generate a random password for users to use. If needed, a new password can be generated at any time. This also invalidates the old password.
+				</para>
+					<figure id="ip-config:radius:group">
+						<title>The page in the Self Service to get a RADIUS specific password</title>
+						<graphic fileref="illustrations50/radius-service-specific-password_EN.png" scalefit="1" width="100%"/>
+					</figure>
+				<para>
+                    The parameters used to generate the passwords can be
+                    adjusted. On a &ucsPrimaryDN; some &ucsUCRV;s have to be
+                    set: 
+                    <programlisting language="sh">
+                        ucr search password/radius/quality
+                    </programlisting>
+				</para>
+			</section>
 		  <section id="ip-config:radius:configuration:mac-filtering">
 			  <title>MAC filtering</title>
 			  <para>

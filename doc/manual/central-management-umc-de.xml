@@ -119,9 +119,8 @@
 				Einige &ucsWeb; importieren ihre eigene lokale <filename>custom.css</filename> Datei,
 				mit der das Design der jeweiligen Seite weiter angepasst werden kann.
 				Dies sind <filename>/usr/share/univention-management-console-login/css/custom.css</filename>
-				(<xref linkend="domain:saml:ssologin"/>), <filename>/usr/share/univention-portal/custom.css</filename>
-				(<xref linkend="central:portal"/>) und <filename>/usr/share/univention-self-service/www/css/custom.css</filename>
-				(<xref linkend="user-management:password-changes-by-users:self-service"/>).
+				(<xref linkend="domain:saml:ssologin"/>) und <filename>/usr/share/univention-portal/custom.css</filename>
+				(<xref linkend="central:portal"/>).
 				Die Dateien sind bei der Installation von UCS leer und werden bei einem Upgrade von UCS nicht verändert. 
 				Beachten Sie jedoch, dass ein gegebener
 				<ulink url="https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors" lang="">CSS Selector</ulink>
