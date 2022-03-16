@@ -18,6 +18,6 @@ desc: |
    objects.
  * Searching with patterns containing umlauts is possible again.
  * When removing a policy the policy is removed from the referencing objects.
- * Backend functionality for service specific passwords has been added. Cannot
-   be used via CLI.
+ * Backend functionality for service specific passwords has been added. It
+   cannot be used via CLI.
 bug: [54402, 54085, 53581, 54150, 53975, 16966, 54438]
