@@ -20,6 +20,22 @@
 
 #include <rhonabwy.h>
 
+#define AUTOPTR_FUNC_NAME(type) type##AutoPtrFree
+#define DEFINE_AUTOPTR_FUNC(type, func) \
+  static inline void AUTOPTR_FUNC_NAME(type)(type **_ptr) \
+  { \
+    if (*_ptr) \
+      (func)(*_ptr); \
+    *_ptr = NULL; \
+  }
+#define AUTOPTR(type) \
+  __attribute__((cleanup(AUTOPTR_FUNC_NAME(type)))) type *
+DEFINE_AUTOPTR_FUNC(char, r_free);
+DEFINE_AUTOPTR_FUNC(jwks_t, r_jwks_free);
+DEFINE_AUTOPTR_FUNC(jwk_t, r_jwk_free);
+DEFINE_AUTOPTR_FUNC(jwt_t, r_jwt_free);
+
+
 #ifdef HACK
 // wget https://login.$(hostname -f)/realms/master/protocol/openid-connect/certs -O - | python -c 'import json, sys; print(json.dumps(json.load(sys.stdin)["keys"][0]))'
 // static const char jwk_str[] = ...;
@@ -247,7 +263,7 @@ int oidc_check_jwt_signature(
 	jwk_t *jwk
 ) {
 	int error = 0;
-	char * claims;
+	AUTOPTR(char) claims = NULL;
 
 	if (r_jwt_verify_signature(jwt, jwk, 0) != RHN_OK) {
 		oidc_error(utils, 0, "Error r_jwt_verify_signature");
@@ -257,7 +273,6 @@ int oidc_check_jwt_signature(
 
 	claims = r_jwt_get_full_claims_str(jwt);
 	printf("Verified payload:\n%s\n", claims);
-	r_free(claims);
 
 out:
 	return error;
@@ -269,7 +284,7 @@ jwk_t * oidc_get_jwk(
 	const void *utils
 ) {
 	int error = 0;
-	jwks_t *jwks;
+	AUTOPTR(jwks_t) jwks = NULL;
 	jwk_t *jwk;
 	unsigned char output[2048];
 	size_t output_len = 2048;
@@ -284,7 +299,6 @@ jwk_t * oidc_get_jwk(
 	if (r_jwks_import_from_json_str(jwks, ctx->glob_context->trusted_jwks_str) != RHN_OK) {
 		oidc_error(utils, 0, "Error r_jwks_import_from_str");
 		error = EINVAL;
-		r_jwks_free(jwks);
 		goto out;
 	}
 
@@ -292,18 +306,15 @@ jwk_t * oidc_get_jwk(
 	if (!jwk) {
 		oidc_error(utils, 0, "Error r_jwks_get_at");
 		error = EINVAL;
-		r_jwks_free(jwks);
 		goto out;
 	}
 
 	if (r_jwk_export_to_pem_der(jwk, R_FORMAT_PEM, output, &output_len, 0) != RHN_OK) {
 		oidc_error(utils, 0, "Error r_jwk_export_to_pem_der");
 		error = EINVAL;
-		r_jwks_free(jwks);
 		goto out;
 	}
 	printf("Exported key:\n%.*s\n", (int)output_len, output);
-	r_jwks_free(jwks);
 	return jwk;
 
 out:
@@ -320,8 +331,8 @@ int oidc_check_jwt(
 ) {
 	unsigned int msg_len;
 	int error = EINVAL;
-	jwk_t *jwk;
-	jwt_t *jwt;
+	AUTOPTR(jwk_t) jwk = NULL;
+	AUTOPTR(jwt_t) jwt = NULL;
 
 	if (msg == NULL) {
 		oidc_error(utils, 0, "No token");
@@ -354,7 +365,7 @@ int oidc_check_jwt(
 	if (!msg) {
 		oidc_error(utils, 0, "Error No access_token found in OIDC message");
 		error = EINVAL;
-		goto out2;
+		goto out;
 	}
 	msg_len = strlen(msg);
 
@@ -363,14 +374,14 @@ int oidc_check_jwt(
 	if (!jwk) {
 		oidc_error(utils, 0, "Error oidc_get_jwk");
 		error = EINVAL;
-		goto out2;
+		goto out;
 	}
 
 	// parse the token
 	if (r_jwt_init(&jwt) != RHN_OK) {
 		oidc_error(utils, 0, "Error oidc_get_jwk");
 		error = EINVAL;
-		goto out1;
+		goto out;
 	}
 
 	if (r_jwt_parse(jwt, msg, 0) != RHN_OK) {
@@ -392,10 +403,6 @@ int oidc_check_jwt(
 
 	*userid = ctx->userid;
 out:
-	r_jwt_free(jwt);
-out1:
-	r_jwk_free(jwk);
-out2:
 	return oidc_retcode(error);
 }
 
