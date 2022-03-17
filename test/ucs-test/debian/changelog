@@ -1,3 +1,9 @@
+ucs-test (10.0.6-105) unstable; urgency=medium
+
+  * Bug #54434: Adapt 06_test_self_registration.py
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 17 Mar 2022 10:37:11 +0100
+
 ucs-test (10.0.6-104) unstable; urgency=medium
 
   * Bug #53455: Fixed 111_test_slapschema to avoid execution on non master server

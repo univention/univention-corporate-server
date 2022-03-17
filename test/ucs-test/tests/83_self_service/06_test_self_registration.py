@@ -116,7 +116,7 @@ def _get_mail(mails, idx=-1):
 		'verify_link': verify_link,
 		'verify_data': {
 			'username': verify_params.get('username', [''])[0],
-			'token': verify_params.get('token', [''])[0],
+			'token': verify_params.get('/selfservice/verifyaccount/?token', [''])[0],
 			'method': verify_params.get('method', [''])[0],
 		}
 	}
