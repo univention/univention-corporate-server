@@ -1,3 +1,9 @@
+univention-self-service (5.0.1-21) unstable; urgency=medium
+
+  * Bug #54434: Fix new installations of the Self Service
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 17 Mar 2022 21:30:42 +0100
+
 univention-self-service (5.0.1-20) unstable; urgency=medium
 
   * Bug #54434: Add self service function to generate a service specific password
