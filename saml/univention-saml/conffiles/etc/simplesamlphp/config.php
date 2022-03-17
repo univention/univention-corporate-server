@@ -7,6 +7,10 @@
  * $Id: config.php 3246 2013-05-23 11:43:52Z olavmrk $
  */
 
+$httpUtils = new \SimpleSAML\Utils\HTTP();
+
+$_samesite_none = $httpUtils->canSetSameSiteNone() ? 'None' : null;
+
 require_once('/usr/share/simplesamlphp/lib/univention/lib.php');
 
 @!@
@@ -290,7 +294,31 @@ print("	'session.duration'            =>	%s," % configRegistry.get('saml/idp/ses
 	 * through https. If the user can access the service through
 	 * both http and https, this must be set to FALSE.
 	 */
-	'session.cookie.secure' => FALSE,
+@!@
+print("\t'session.cookie.secure' => %s," % ('TRUE' if configRegistry.is_true('saml/idp/session-cookie/secure') else 'FALSE',))
+@!@
+
+    /*
+     * Set the SameSite attribute in the cookie.
+     *
+     * You can set this to the strings 'None', 'Lax', or 'Strict' to support
+     * the RFC6265bis SameSite cookie attribute. If set to null, no SameSite
+     * attribute will be sent.
+     *
+     * A value of "None" is required to properly support cross-domain POST
+     * requests which are used by different SAML bindings. Because some older
+     * browsers do not support this value, the canSetSameSiteNone function
+     * can be called to only set it for compatible browsers.
+     *
+     * You must also set the 'session.cookie.secure' value above to true.
+     *
+     * Example:
+     *  'session.cookie.samesite' => 'None',
+     */
+@!@
+if configRegistry.get('saml/idp/session-cookie/samesite') in ('Lax', 'Strict', 'None'):
+    print("\t'session.cookie.samesite' => %s," % ("'%s'" % (configRegistry['saml/idp/session-cookie/samesite'],) if configRegistry['saml/idp/session-cookie/samesite'] in ('Strict', 'Lax') else '$_samesite_none',))
+@!@
 
 	/*
 	 * When set to FALSE fallback to transient session on session initialization
@@ -343,6 +371,11 @@ print("	'session.duration'            =>	%s," % configRegistry.get('saml/idp/ses
 	'language.cookie.domain'		=> NULL,
 	'language.cookie.path'		=> '/',
 	'language.cookie.lifetime'		=> (60*60*24*900),
+@!@
+print("\t'language.cookie.secure' => %s," % ('TRUE' if configRegistry.is_true('saml/idp/language-cookie/secure') else 'FALSE',))
+if configRegistry.get('saml/idp/language-cookie/samesite') in ('Lax', 'Strict', 'None'):
+    print("\t'language.cookie.samesite' => %s," % ("'%s'" % (configRegistry['saml/idp/language-cookie/samesite'],) if configRegistry['saml/idp/language-cookie/samesite'] in ('Strict', 'Lax') else '$_samesite_none',))
+@!@
 
 	/**
 	 * Custom getLanguage function called from SimpleSAML_XHTML_Template::getLanguage().

@@ -39,6 +39,10 @@ Variables: locale/default
 Variables: hostname
 Variables: domainname
 Variables: ucs/server/saml-idp-server/.*
+Variables: saml/idp/session-cookie/secure
+Variables: saml/idp/session-cookie/samesite
+Variables: saml/idp/language-cookie/secure
+Variables: saml/idp/language-cookie/samesite
 
 Type: multifile
 Multifile: etc/simplesamlphp/authsources.php

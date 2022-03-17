@@ -1,3 +1,9 @@
+univention-saml (7.0.4-21) unstable; urgency=medium
+
+  * Bug #54883: make "Secure" and "SameSite" cookie attribute configurable
+
+ -- Christian Castens <castens@univention.de>  Thu, 17 Mar 2022 12:55:27 +0100
+
 univention-saml (7.0.4-20) unstable; urgency=medium
 
   * Bug #54556: Change self-service links

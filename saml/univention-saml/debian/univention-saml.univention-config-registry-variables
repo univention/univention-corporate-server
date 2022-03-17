@@ -231,3 +231,27 @@ Description[de]=Gibt eine lokalisierte Version von saml/idp/selfservice/account-
 Description[en]=Specifies a localized version of saml/idp/selfservice/account-verification/error-msg. E.g. saml/idp/selfservice/account-verification/error-descr/en="...".
 Type=str
 Categories=saml
+
+[saml/idp/session-cookie/secure]
+Description[de]=Aktiviert das "Secure"-Attribut am Session-Cookie des SAML-Identity-Providers. Sollte nur gesetzt werden, wenn "saml/idp/https" aktiviert ist.
+Description[en]=Activates the "Secure" attribute in the session cookie of the SAML Identity Provider. Should only be set if "saml/idp/https" is activated.
+Type=bool
+Categories=saml
+
+[saml/idp/session-cookie/samesite]
+Description[de]=Setzt das "SameSite"-Attribut am Session-Cookie des SAML-Identity-Providers. Mögliche Werte sind "Lax", "Strict" und "None".
+Description[en]=Sets the "SameSite" attribute in the session cookie of the SAML Identity Provider. Possible values are "Lax", "Strict" and "None".
+Type=str
+Categories=saml
+
+[saml/idp/language-cookie/secure]
+Description[de]=Aktiviert das "Secure"-Attribut am Language-Cookie des SAML-Identity-Providers. Sollte nur gesetzt werden, wenn "saml/idp/https" aktiviert ist.
+Description[en]=Activates the "Secure" attribute in the language cookie of the SAML Identity Provider. Should only be set if "saml/idp/https" is activated.
+Type=bool
+Categories=saml
+
+[saml/idp/language-cookie/samesite]
+Description[de]=Setzt das "SameSite"-Attribut am Language-Cookie des SAML-Identity-Providers. Mögliche Werte sind "Lax", "Strict" und "None".
+Description[en]=Sets the "SameSite" attribute in the language cookie of the SAML Identity Provider. Possible values are "Lax", "Strict" and "None".
+Type=str
+Categories=saml
