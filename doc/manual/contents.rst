@@ -3,7 +3,7 @@ Univention Corporate Server - Manual for users and administrators
 #################################################################
 
 .. toctree::
-   :numbered:
+   :numbered: 3
 
    index
    installation
@@ -20,3 +20,4 @@ Univention Corporate Server - Manual for users and administrators
    print-services
    mail
    nagios
+   appendix/index

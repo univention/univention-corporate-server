@@ -1,0 +1,8 @@
+********
+Appendix
+********
+
+.. toctree::
+
+   variables
+   indices
