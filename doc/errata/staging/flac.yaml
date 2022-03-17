@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: flac
+fix: 1.3.2-2+deb9u2
+desc: |
+ This update addresses the following issue:
+ * out of bound write in append_to_verify_fifo_interleaved_ of
+   stream_encoder.c (CVE-2021-0561)
+bug: [54563]
+cve:
+- CVE-2021-0561
