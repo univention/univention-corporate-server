@@ -33,8 +33,7 @@ static const char test_token_str[] =
 ;
 
 /* Helper functions copied from pam_oidc.c for compiling oidc.c with -DHACK */
-void
-oidc_log(
+void oidc_log(
 	const void *utils,
 	int pri,
 	const char *fmt,
@@ -47,8 +46,7 @@ oidc_log(
 	va_end(ap);
 }
 
-void
-oidc_error(
+void oidc_error(
 	const void *utils,
 	int pri,
 	const char *fmt,
@@ -66,8 +64,7 @@ oidc_error(
 
 #include <security/pam_modules.h>
 #include <security/pam_appl.h>
-int
-oidc_retcode(
+int oidc_retcode(
 	int code
 ) {
 	int retcode;
@@ -91,8 +88,12 @@ oidc_retcode(
 	return retcode;
 }
 
-int
-oidc_strdup(const void *utils, const char *src, char **dst, int *len) {
+int oidc_strdup(
+	const void *utils,
+	const char *src,
+	char **dst,
+	int *len
+) {
 	*dst = strdup(src);
 	if (*dst == NULL)
 		return -1;
@@ -104,8 +105,7 @@ oidc_strdup(const void *utils, const char *src, char **dst, int *len) {
 }
 #endif /*HACK*/
 
-int
-oidc_check_token_iss(
+int oidc_check_token_iss(
 	oidc_serv_context_t *ctx,
 	const void *utils,
 	jwt_t *jwt
@@ -128,8 +128,7 @@ oidc_check_token_iss(
 
 }
 
-int
-oidc_check_token_azp(
+int oidc_check_token_azp(
 	oidc_serv_context_t *ctx,
 	const void *utils,
 	jwt_t *jwt
@@ -151,22 +150,7 @@ oidc_check_token_azp(
 	return EACCES;
 }
 
-extern char *strptime(const char *s, const char *format, struct tm *tm);
-
-static time_t
-oidc_get_time(
-	const char *epoch_time_str
-) {
-	struct tm tm;
-
-	if (strptime(epoch_time_str, "%s", &tm) == NULL)
-		return (time_t)-1;
-
-	return (timegm(&tm));
-}
-
-static int
-oidc_check_token_validity_dates(
+static int oidc_check_token_validity_dates(
 	oidc_serv_context_t *ctx,
 	const void *utils,
 	jwt_t *jwt
@@ -422,8 +406,7 @@ out2:
 static struct oidc_trusted_rp trusted_rp;
 static oidc_glob_context_t server_glob_context;
 
-int
-main() {
+int main() {
 	int rc;
 
 	oidc_glob_context_t *gctx = &server_glob_context;

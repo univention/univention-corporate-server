@@ -58,7 +58,12 @@ typedef struct {
 
 static oidc_glob_context_t server_glob_context;
 
-void oidc_log(const void *utils, int pri, const char *fmt, ...) {
+void oidc_log(
+	const void *utils,
+	int pri,
+	const char *fmt,
+	...
+) {
 	sasl_utils_t *sasl_utils;
 	char msg[4096];
 	va_list ap;
@@ -82,7 +87,12 @@ void oidc_log(const void *utils, int pri, const char *fmt, ...) {
 	va_end(ap);
 }
 
-void oidc_error(const void *utils, int pri, const char *fmt, ...) {
+void oidc_error(
+	const void *utils,
+	int pri,
+	const char *fmt,
+	...
+) {
 	sasl_utils_t *sasl_utils;
 	char msg[4096];
 	va_list ap;
@@ -95,21 +105,21 @@ void oidc_error(const void *utils, int pri, const char *fmt, ...) {
 	va_end(ap);
 }
 
-int oidc_strdup(utils, src, dst, len)
-	const void *utils;
-	const char *src;
-	char **dst;
-	int *len;
-{
+int oidc_strdup(
+	const void *utils,
+	const char *src,
+	char **dst,
+	int *len
+) {
 	sasl_utils_t *sasl_utils;
 
 	sasl_utils = (sasl_utils_t *)utils;
 	return _plug_strdup(sasl_utils, src, dst, len);
 }
 
-int oidc_retcode(code)
-	int code;
-{
+int oidc_retcode(
+	int code
+) {
 	int retcode;
 
 	switch(code) {
@@ -131,13 +141,13 @@ int oidc_retcode(code)
 	return retcode;
 }
 
-static int oidc_server_mech_new(glob_context, params, challenge, challen, conn_context)
-	void *glob_context;
-	sasl_server_params_t *params;
-	const char *challenge;
-	unsigned int challen;
-	void **conn_context;
-{
+static int oidc_server_mech_new(
+	void *glob_context,
+	sasl_server_params_t *params,
+	const char *challenge,
+	unsigned int challen,
+	void **conn_context
+) {
 	oidc_serv_context_t *ctx;
 
 	if (conn_context == NULL) {
@@ -157,15 +167,15 @@ static int oidc_server_mech_new(glob_context, params, challenge, challen, conn_c
 	return SASL_OK;
 }
 
-static int oidc_server_mech_step(conn_context, params, clientin, clientinlen, serverout, serveroutlen, oparams)
-	void *conn_context;
-	sasl_server_params_t *params;
-	const char *clientin;
-	unsigned int clientinlen;
-	const char **serverout;
-	unsigned int *serveroutlen;
-	sasl_out_params_t *oparams;
-{
+static int oidc_server_mech_step(
+	void *conn_context,
+	sasl_server_params_t *params,
+	const char *clientin,
+	unsigned int clientinlen,
+	const char **serverout,
+	unsigned int *serveroutlen,
+	sasl_out_params_t *oparams
+) {
 	oidc_serv_context_t *ctx = (oidc_serv_context_t *)conn_context;
 	oidc_glob_context_t *gctx;
 	const char *authen;
@@ -277,10 +287,10 @@ out:
 	return SASL_OK;
 }
 
-static void oidc_server_mech_dispose(conn_context, utils)
-	void *conn_context;
-	const sasl_utils_t *utils;
-{
+static void oidc_server_mech_dispose(
+	void *conn_context,
+	const sasl_utils_t *utils
+) {
 	oidc_serv_context_t *ctx = (oidc_serv_context_t *)conn_context;
 
 	if (ctx != NULL) {
@@ -293,10 +303,10 @@ static void oidc_server_mech_dispose(conn_context, utils)
 	return;
 }
 
-static void oidc_server_mech_free(glob_context, utils)
-	void *glob_context;
-	const sasl_utils_t *utils;
-{
+static void oidc_server_mech_free(
+	void *glob_context,
+	const sasl_utils_t *utils
+) {
 	struct oidc_trusted_rp *item;
 	oidc_glob_context_t *gctx;
 
@@ -336,13 +346,13 @@ static sasl_server_plug_t oidc_server_plugin = {
 	NULL  /* spare */
 };
 
-int sasl_server_plug_init(utils, maxvers, outvers, pluglist, plugcount)
-	const sasl_utils_t *utils;
-	int maxvers;
-	int *outvers;
-	sasl_server_plug_t **pluglist;
-	int *plugcount;
-{
+int sasl_server_plug_init(
+	const sasl_utils_t *utils,
+	int maxvers,
+	int *outvers,
+	sasl_server_plug_t **pluglist,
+	int *plugcount
+) {
 	oidc_glob_context_t *gctx;
 	const char *grace;
 	char propname[1024];
@@ -477,11 +487,11 @@ int sasl_server_plug_init(utils, maxvers, outvers, pluglist, plugcount)
 }
 
 
-static int oidc_client_mech_new(glob_context, params, conn_context)
-	void *glob_context;
-	sasl_client_params_t *params;
-	void **conn_context;
-{
+static int oidc_client_mech_new(
+	void *glob_context,
+	sasl_client_params_t *params,
+	void **conn_context
+) {
 	oidc_client_context *text;
 
 	if ((text = params->utils->malloc(sizeof(*text))) == NULL) {
@@ -495,16 +505,16 @@ static int oidc_client_mech_new(glob_context, params, conn_context)
 	return SASL_OK;
 }
 
-static int oidc_client_mech_step(conn_context, params, serverin, serverinlen, prompt_need, clientout, clientoutlen, oparams)
-	void *conn_context;
-	sasl_client_params_t *params;
-	const char *serverin;
-	unsigned serverinlen;
-	sasl_interact_t **prompt_need;
-	const char **clientout;
-	unsigned *clientoutlen;
-	sasl_out_params_t *oparams;
-{
+static int oidc_client_mech_step(
+	void *conn_context,
+	sasl_client_params_t *params,
+	const char *serverin,
+	unsigned serverinlen,
+	sasl_interact_t **prompt_need,
+	const char **clientout,
+	unsigned *clientoutlen,
+	sasl_out_params_t *oparams
+) {
 	oidc_client_context *text = (oidc_client_context *)conn_context;
 	const char *user = NULL;
 	sasl_secret_t *jwt_msg = NULL;
@@ -626,10 +636,10 @@ out:
 	return result;
 }
 
-static void oidc_client_mech_dispose(conn_context, utils)
-	void *conn_context;
-	const sasl_utils_t *utils;
-{
+static void oidc_client_mech_dispose(
+	void *conn_context,
+	const sasl_utils_t *utils
+) {
 	oidc_client_context *text = (oidc_client_context *)conn_context;
 
 	if (text == NULL)
@@ -656,13 +666,13 @@ static sasl_client_plug_t oidc_client_plugin = {
 	NULL /* spare */
 };
 
-int sasl_client_plug_init(utils, maxvers, outvers, pluglist, plugcount)
-	const sasl_utils_t *utils;
-	int maxvers;
-	int *outvers;
-	sasl_client_plug_t **pluglist;
-	int *plugcount;
-{
+int sasl_client_plug_init(
+	const sasl_utils_t *utils,
+	int maxvers,
+	int *outvers,
+	sasl_client_plug_t **pluglist,
+	int *plugcount
+) {
 	if (maxvers < SASL_CLIENT_PLUG_VERSION) {
 		utils->seterror(utils->conn, 0, "OIDC version mismatch");
 		return SASL_BADVERS;

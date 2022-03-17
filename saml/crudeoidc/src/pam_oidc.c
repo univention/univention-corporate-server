@@ -53,9 +53,12 @@
 
 #define GCTX_DATA "CRUDEOIDC-GCTX"
 
-void
-oidc_log(const void *utils, int pri, const char *fmt, ...)
-{
+void oidc_log(
+	const void *utils,
+	int pri,
+	const char *fmt,
+	...
+) {
 	va_list ap;
 
 	va_start(ap, fmt);
@@ -63,9 +66,12 @@ oidc_log(const void *utils, int pri, const char *fmt, ...)
 	va_end(ap);
 }
 
-void
-oidc_error(const void *utils, int pri, const char *fmt, ...)
-{
+void oidc_error(
+	const void *utils,
+	int pri,
+	const char *fmt,
+	...
+) {
 	va_list ap;
 
 	if (pri == 0)
@@ -76,13 +82,12 @@ oidc_error(const void *utils, int pri, const char *fmt, ...)
 	va_end(ap);
 }
 
-int
-oidc_strdup(utils, src, dst, len)
-	const void *utils;
-	const char *src;
-	char **dst;
-	int *len;
-{
+int oidc_strdup(
+	const void *utils,
+	const char *src,
+	char **dst,
+	int *len
+) {
 	*dst = strdup(src);
 	if (*dst == NULL)
 		return -1;
@@ -93,10 +98,9 @@ oidc_strdup(utils, src, dst, len)
 	return 0;
 }
 
-int
-oidc_retcode(code)
-	int code;
-{
+int oidc_retcode(
+	int code
+) {
 	int retcode;
 
 	switch(code) {
@@ -118,12 +122,11 @@ oidc_retcode(code)
 	return retcode;
 }
 
-static void
-gctx_cleanup(pamh, data, error)
-	pam_handle_t *pamh;
-	void *data;
-	int error;
-{
+static void gctx_cleanup(
+	pam_handle_t *pamh,
+	void *data,
+	int error
+) {
 	oidc_glob_context_t *gctx = (oidc_glob_context_t *)data;
 
 	if (gctx != NULL) {
@@ -156,12 +159,11 @@ gctx_cleanup(pamh, data, error)
 	}
 }
 
-static oidc_glob_context_t *
-pam_global_context_init(pamh, ac, av)
-	pam_handle_t *pamh;
-	int ac;
-	const char **av;
-{
+static oidc_glob_context_t * pam_global_context_init(
+	pam_handle_t *pamh,
+	int ac,
+	const char **av
+) {
 	int error;
 	const void *data;
 	oidc_glob_context_t *gctx;
@@ -334,13 +336,12 @@ cleanup:
 	return NULL;
 }
 
-PAM_EXTERN int
-pam_sm_authenticate(pamh, flags, ac, av)
-	pam_handle_t *pamh;
-	int flags;
-	int ac;
-	const char **av;
-{
+PAM_EXTERN int pam_sm_authenticate(
+	pam_handle_t *pamh,
+	int flags,
+	int ac,
+	const char **av
+) {
 	oidc_serv_context_t ctx;
 	struct passwd *pwd;
 	struct passwd pwres;
@@ -489,53 +490,50 @@ out:
 }
 
 /* ARGSUSED0 */
-PAM_EXTERN int
-pam_sm_setcred(pamh, flags, ac, av)
-	pam_handle_t *pamh;
-	int flags;
-	int ac;
-	const char **av;
-{
+PAM_EXTERN int pam_sm_setcred(
+	pam_handle_t *pamh,
+	int flags,
+	int ac,
+	const char **av
+) {
 	return PAM_SUCCESS;
 }
 
 /* ARGSUSED0 */
-PAM_EXTERN int
-pam_sm_acct_mgmt(pamh, flags, ac, av)
-	pam_handle_t *pamh;
-	int flags;
-	int ac;
-	const char **av;
-{
+PAM_EXTERN int pam_sm_acct_mgmt(
+	pam_handle_t *pamh,
+	int flags,
+	int ac,
+	const char **av
+) {
 	return PAM_SUCCESS;
 }
 
 /* ARGSUSED0 */
-PAM_EXTERN int
-pam_sm_open_session(pamh, flags, ac, av)
-	pam_handle_t *pamh;
-	int flags;
-	int ac;
-	const char **av;
-{
+PAM_EXTERN int pam_sm_open_session(
+	pam_handle_t *pamh,
+	int flags,
+	int ac,
+	const char **av
+) {
 	return PAM_SUCCESS;
 }
 
-PAM_EXTERN int pam_sm_close_session(pamh, flags, ac, av)
-	pam_handle_t *pamh;
-	int flags;
-	int ac;
-	const char **av;
-{
+PAM_EXTERN int pam_sm_close_session(
+	pam_handle_t *pamh,
+	int flags,
+	int ac,
+	const char **av
+) {
 	return PAM_SUCCESS;
 }
 
-PAM_EXTERN int pam_sm_chauthtok(pamh, flags, ac, av)
-	pam_handle_t *pamh;
-	int flags;
-	int ac;
-	const char **av;
-{
+PAM_EXTERN int pam_sm_chauthtok(
+	pam_handle_t *pamh,
+	int flags,
+	int ac,
+	const char **av
+) {
 	return PAM_SUCCESS;
 }
 
