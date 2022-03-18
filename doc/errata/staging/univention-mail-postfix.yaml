@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-mail-postfix
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Error handling in the script `/usr/share/univention-mail-postfix/listfilter.py` has been repaired.
+bug: [54560]

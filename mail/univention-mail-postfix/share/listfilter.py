@@ -211,7 +211,7 @@ if __name__ == '__main__':
 					debug("action=%s", action)
 					print("action=%s\n" % action)
 				else:
-					print("unknown action in %s" % att, file=sys.stderrr)
+					print("unknown action in %s" % attr, file=sys.stderr)
 					print("defer_if_permit Service temporarily unavailable")
 					syslog.syslog(syslog.LOG_ERR, "unknown action in '{}', exiting.".format(attr))
 					sys.exit(1)
