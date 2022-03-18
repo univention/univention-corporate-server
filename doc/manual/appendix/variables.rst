@@ -12,6 +12,12 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    :ref:`domain-ldap-nightly-backup`.
 
 
+.. envvar:: directory/reports/logo
+
+   Defines the path and name to an image file for usage as logo in a Univention
+   Directory report PDF file. For more information see
+   :ref:`central-management-umc-adjustment_expansion_of_directory_reports`.
+
 .. envvar:: kerberos/adminserver
 
    Defines the system that provides the Kerberos admin server. See
@@ -153,6 +159,12 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    ``SHA-512``. See :ref:`domain-password-hashes`.
 
 
+.. envvar:: portal/auth-mode
+
+   Defines the authentication mode for the UCS portal. Set it to ``saml``, if
+   you want to activate SAML for single sign-on login. For more information see
+   :ref:`central-management-umc-login`.
+
 .. envvar:: saml/idp/authsource
 
    Allows Kerberos authentication at the SAML identity provider. Change to
@@ -198,3 +210,10 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
    Defines the warning period for the expiration check of the SSL/TLS root
    certificate. The default value is ``30`` days. See :ref:`domain-ssl`.
+
+
+.. envvar:: ucs/web/theme
+
+   Select the theme for |UCSWEB|. The value corresponds to a CSS file under
+   :file:`/usr/share/univention-web/themes/` with the same name without filename
+   extension.
