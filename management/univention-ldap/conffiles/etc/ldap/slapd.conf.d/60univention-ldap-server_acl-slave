@@ -7,7 +7,7 @@ access to attrs=userPassword
     by anonymous auth
     by * none break
 
-access to attrs=userPassword,krb5Key,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,sambaPwdCanChange,sambaPwdMustChange,sambaPasswordHistory,sambaClearTextPassword,sambaPreviousClearTextPassword
+access to attrs=userPassword,krb5Key,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,sambaPwdCanChange,sambaPwdMustChange,sambaPasswordHistory,sambaClearTextPassword,sambaPreviousClearTextPassword,univentionRadiusPassword
    by sockname="PATH=/var/run/slapd/ldapi" read
 @!@
 from univention.lib.misc import custom_groupname
