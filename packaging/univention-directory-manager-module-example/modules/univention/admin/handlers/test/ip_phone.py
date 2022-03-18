@@ -203,10 +203,10 @@ class object(univention.admin.handlers.simpleLdap):
 
 	"""This object assists the Univention Directory Manager in LDAP operations that relate to this module.
 	The base class univention.admin.handlers.simpleLdap implements the complete communication via LDAP,
-    so that only the adjustments for this special LDAP object have to be implemented here.
+	so that only the adjustments for this special LDAP object have to be implemented here.
 	For this purpose, the base class offers one function each to make adjustments before and after an LDAP
-    operation. In this example class the prototypes of all these functions are defined to give an overview
-    of the possibilities."""
+	operation. In this example class the prototypes of all these functions are defined to give an overview
+	of the possibilities."""
 
 	# take the module name as attributes of the class (defined above as module='test/ip-phone')
 	module = module
