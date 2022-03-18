@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-management-console-module-adtakeover
+fix: 
+desc: |
+ This update addresses the following issue:
+ * Performing an Active Directory takeover will work when the original AD
+   contains Group Policy Objects that use non ASCII encoding.
+bug: [54196]

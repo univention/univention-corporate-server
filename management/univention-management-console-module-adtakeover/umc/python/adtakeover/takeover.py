@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import chardet
+import codecs
 import os
 import re
 import sys
@@ -1930,18 +1932,21 @@ def check_gpo_presence():
 			gpcversion = int(obj["versionNumber"][0])
 			config = configparser.ConfigParser()
 			try:
-				with open(os.path.join(gpo_path, 'GPT.INI')) as f:
-					try:
-						config.readfp(f)
-						fileversion = int(config.get('General', 'version'))
-						if fileversion < gpcversion:
-							log.error("File version %s of GPO %s is lower than GPO container versionNumber (%s)" % (fileversion, name, gpcversion))
-							raise SysvolGPOVersionTooLow(_("At least one GPO in SYSVOL is not up to date yet."))
-						if fileversion != gpcversion:
-							log.error("File version %s of GPO %s differs from GPO container versionNumber (%s)" % (fileversion, name, gpcversion))
-							# TODO: Imrpove error reporting
-					except configparser.Error as ex:
-						log.error(ex.args[0])
+				gpo_filepath = os.path.join(gpo_path, 'GPT.INI')
+				with codecs.open(gpo_filepath, 'rb') as file_encoding:
+					encoding = chardet.detect(file_encoding.read())['encoding']
+					with codecs.open(gpo_filepath, 'rb', encoding) as f:
+						try:
+							config.read_file(f)
+							fileversion = int(config.get('General', 'version'))
+							if fileversion < gpcversion:
+								log.error("File version %s of GPO %s is lower than GPO container versionNumber (%s)" % (fileversion, name, gpcversion))
+								raise SysvolGPOVersionTooLow(_("At least one GPO in SYSVOL is not up to date yet."))
+							if fileversion != gpcversion:
+								log.error("File version %s of GPO %s differs from GPO container versionNumber (%s)" % (fileversion, name, gpcversion))
+								# TODO: Improve error reporting
+						except configparser.Error as ex:
+							log.error(ex.args[0])
 			except IOError as ex:
 				log.error(ex.args[0])
 

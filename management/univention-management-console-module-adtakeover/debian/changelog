@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (7.0.2-7) unstable; urgency=medium
+
+  * Bug #54196: Added encoding checks in `check_gpo_presence` for GPT.INI during AD takeovers
+
+ -- Juan Pedro Torres <torres-munoz.extern@univention.de>  Fri, 18 Mar 2022 14:17:40 +0100
+
 univention-management-console-module-adtakeover (7.0.2-6) unstable; urgency=medium
 
   * Bug #54359: use `ucr_update` to apply network changes when creating
