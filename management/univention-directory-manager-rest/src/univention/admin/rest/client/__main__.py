@@ -222,11 +222,48 @@ class CLIClient(object):
 					self.print_line(key, json.dumps(value, ensure_ascii=False, indent=4), '  ')
 				else:
 					self.print_line(key, repr(value), '  ')
-			if args.policies:  # FIXME: do a policy result
+			if args.policies:
 				self.print_line('Policy-based Settings:', '', '  ')
-				for key, values in entry.policies.items():
-					for value in values:
-						self.print_line(key, value, '   ')
+				entry.reload()  # expensive when done for every object of the search
+				self.policy_result_for(entry, indent='    ')
+
+	def list_choices(self, args):
+		module = self.get_module(args.object_type)
+		choices = module.get_property_choices(args.property)
+		for value, label in choices:
+			self.print_line('Label', label)
+			self.print_line('Value', value)
+			self.print_line('')
+
+	def policy_result(self, args):
+		module = self.get_module(args.object_type)
+		entry = module.get(args.dn)
+		self.policy_result_for(entry)
+
+	def policy_result_for(self, entry, indent=''):
+		for key in entry.policies:
+			vals = entry.policy_result(key)
+			for prop, items in vals.items():
+				if not isinstance(items, list):
+					items = [items]
+				# TODO: support different output types like -s/--shell, -b/--basic
+				self.print_line('Policy-Type', key, indent)
+				for item in items:
+					self.print_line('Policy', item['policy'], indent + '  ')
+					self.print_line('Attribute', prop, indent + '  ')
+					self.print_line('Value', item['value'], indent + '  ')
+					self.print_line('Fixed', item['fixed'], indent + '  ')
+					self.print_line('')
+
+	def list_reports(self, args):
+		module = self.get_module(args.object_type)
+		for report_type in module.get_report_types():
+			self.print_line('Report-Type', report_type)
+
+	def create_report(self, args):
+		module = self.get_module(args.object_type)
+		report = module.create_report(args.report_type, args.dns)
+		args.output.write(report)
 
 	def print_line(self, key, value='', prefix=''):
 		# prints and makes sure that no ANSI escape sequences or binary data is printed
@@ -245,9 +282,9 @@ class CLIClient(object):
 	def get_info(self, args, file=sys.stdout):
 		module = self.get_module(args.object_type)
 		module.load_relations()
-		mod = self.udm.client.resolve_relation(module.relations, 'create-form', template={'position': '', 'superordinate': ''})  # TODO: integrate in client.py?
-		properties = self.udm.client.resolve_relation(mod, 'udm:properties')['properties']
-		layout = self.udm.client.resolve_relation(mod, 'udm:layout', 'create-form')['layout']
+		# mod = self.udm.client.resolve_relation(module.relations, 'create-form', template={'position': '', 'superordinate': ''})  # TODO: integrate in client.py?
+		properties = module.get_properties()
+		layout = module.get_layout()
 
 		for layout in layout:
 			print('  %s - %s:' % (layout['label'], layout['description']), file=file)
@@ -257,11 +294,26 @@ class CLIClient(object):
 
 	def print_layout(self, sub, properties, indent=1, file=None):
 		def _print_prop(prop):
+			def _get_flags(vals):
+				flags = []
+				if vals.get('required'):
+					flags.append('c')
+				if vals.get('identifies') and vals.get('editable'):
+					flags.append('m')
+					flags.append('r')
+				if not vals.get('editable', True):
+					flags.append('e')
+				flags.extend(vals.get('options', []))
+				if vals.get('multivalue'):
+					flags.append('[]')
+				return ' (%s)' % ','.join(flags) if flags else ''
+
 			def _print(prop):
 				if isinstance(prop, dict):
 					print(repr(prop), file=file)
 					return
-				print('\t\t%s%s' % (prop.ljust(41), properties.get(prop, {}).get('label')), file=file)
+				vals = properties.get(prop, {})
+				print('\t\t%s%s' % ((prop + _get_flags(vals)).ljust(41), vals.get('label')), file=file)
 
 			if isinstance(prop, list):
 				for prop in prop:
@@ -461,12 +513,26 @@ def add_object_action_arguments(parser, client):
 	copy = add_subparser(str('copy'), help='Copy object in directory tree', usage=argparse.SUPPRESS)
 	copy.set_defaults(func=client.copy_object)
 
-	reports = add_subparser(str('report'), help='Create report for selected objects', usage=argparse.SUPPRESS)
+	list_choices = add_subparser(str('list-choices'), help='List all possible choices for the selected property', usage=argparse.SUPPRESS)
+	list_choices.set_defaults(func=client.list_choices)
+	list_choices.add_argument('property', help='The property to list choices for')
+
+	policy_result = add_subparser(str('policy-result'), help='List all possible choices for the selected property', usage=argparse.SUPPRESS)
+	policy_result.set_defaults(func=client.policy_result)
+	policy_result.add_argument('dn')
+
+	list_reports = add_subparser(str('list-reports'), help='List all possible report types for selected object type', usage=argparse.SUPPRESS)
+	list_reports.set_defaults(func=client.list_reports)
+
+	reports = add_subparser(str('create-report'), help='Create report for selected objects', usage=argparse.SUPPRESS)
+	reports.set_defaults(func=client.create_report)
+	reports.add_argument('-o', '--output', type=argparse.FileType('w'), default='-', help='Filename to write report to')
 	reports.add_argument('report_type')
 	reports.add_argument('dns', nargs='*')
 
 	info = add_subparser(str('info'), help='Print information about the object type', usage=argparse.SUPPRESS)
 	info.set_defaults(func=client.get_info)
+
 	return subparsers
 
 

@@ -580,7 +580,7 @@ class ResourceBase(object):
 			_links[params.get('rel')] = dict(params, href=link)
 			if params.get('rel') == 'self':
 				titleelement.text = params.get('title') or link or 'FIXME:notitle'
-			if params.get('rel') in ('stylesheet', 'icon', 'self', 'up', 'udm:object/remove', 'udm:object/edit'):
+			if params.get('rel') in ('stylesheet', 'icon', 'self', 'up', 'udm:object/remove', 'udm:object/edit', 'udm:report'):
 				continue
 			if params.get('rel') in navigation_relations:
 				continue
@@ -2412,6 +2412,7 @@ class Objects(FormBase, ReportingBase):
 			for i, report_type in enumerate(sorted(self.reports_cfg.get_report_names(object_type)), 1):
 				form = self.add_form(result, self.urljoin('report', quote(report_type)), 'POST', rel='udm:report', name=report_type, id='report%d' % (i,))
 				self.add_form_element(form, '', _('Create %s report') % _(report_type), type='submit')
+				self.add_link(result, 'udm:report', self.urljoin('report', quote(report_type)) + '{?dn}', name=report_type, title=_('Create %s report') % _(report_type), method='POST', templated=True)
 
 			form = self.add_form(result, self.urljoin('multi-edit'), 'POST', name='multi-edit', id='multi-edit', rel='edit-form')
 			self.add_form_element(form, '', _('Modify %s (multi edit)') % (module.object_name_plural,), type='submit')
@@ -2419,6 +2420,9 @@ class Objects(FormBase, ReportingBase):
 			form = self.add_form(result, self.urljoin('move'), 'POST', name='move', id='move', rel='udm:object/move')
 			self.add_form_element(form, 'position', '')
 			self.add_form_element(form, '', _('Move %s') % (module.object_name_plural,), type='submit')
+		else:
+			for i, report_type in enumerate(sorted(self.reports_cfg.get_report_names(object_type)), 1):
+				self.add_link(result, 'udm:report', self.urljoin('report', quote(report_type)) + '{?dn}', name=report_type, title=_('Create %s report') % _(report_type), method='POST', templated=True)
 
 		search_layout_base = [{'description': _('Search for %s') % (module.object_name_plural,), 'label': _('Search'), 'layout': []}]
 		search_layout = search_layout_base[0]['layout']

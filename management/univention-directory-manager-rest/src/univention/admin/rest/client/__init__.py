@@ -400,6 +400,14 @@ class Module(Client):
 		policy_result.pop('_embedded', None)
 		return policy_result
 
+	def get_report_types(self):
+		self.load_relations()
+		return [x['name'] for x in self.udm.client.get_relations(self.relations, 'udm:report', template={'dn': ''}) if x.get('name')]
+
+	def create_report(self, report_type, object_dns):
+		self.load_relations()
+		return self.udm.client.resolve_relation(self.relations, 'udm:report', name=report_type, template={'dn': object_dns})
+
 
 class ShallowObject(Client):
 
