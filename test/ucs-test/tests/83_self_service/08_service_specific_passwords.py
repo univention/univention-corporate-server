@@ -55,7 +55,7 @@ def get_new_ssp(chrome, user):
 	chrome.enter_input('username', user.properties['username'])
 	chrome.enter_input('password', 'univention')
 	chrome.enter_return()
-	time.sleep(2)
+	time.sleep(10)
 	chrome.driver.find_elements_by_css_selector(".primary")[0].click()
 	time.sleep(10)
 	elem = chrome.driver.find_elements_by_css_selector(".service-specific-passwords__hint")[0]
