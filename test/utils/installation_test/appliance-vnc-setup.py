@@ -56,7 +56,7 @@ class UCSSetup(UCSInstallation):
 	def language(self, language):  # type: (str) -> None
 		if self.text_is_visible('Notification', timeout=self.timeout):
 			self.screenshot('notification.png')
-			self.mouseClickOnText('OK')
+			self.client.mouseClickOnText('OK')
 		try:
 			self.client.waitForText('English', timeout=self.timeout, prevent_screen_saver=True)
 		except VNCDoException:
