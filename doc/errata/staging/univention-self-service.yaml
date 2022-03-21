@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-self-service
-fix: 5.0.1-20A~5.0.0.202203152210
+fix: 5.0.1-22A~5.0.0.202203211801
 desc: |
  This update addresses the following issue(s):
  * The e-mail template for password reset tokens now support
