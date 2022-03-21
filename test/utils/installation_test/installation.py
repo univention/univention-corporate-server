@@ -17,11 +17,12 @@ import time
 import sys
 import os
 import logging
+from argparse import Namespace  # noqa F401
 
 
 class UCSInstallation(object):
 
-	def __init__(self, args):
+	def __init__(self, args):  # type: (Namespace) -> None
 		# see https://github.com/tesseract-ocr/tesseract/issues/2611
 		os.environ['OMP_THREAD_LIMIT'] = '1'
 		init_logger('info')
@@ -32,29 +33,29 @@ class UCSInstallation(object):
 		self.setup_finish_sleep = 900
 		self.connect()
 
-	def _clear_input(self):
+	def _clear_input(self):  # type: () -> None
 		self.client.keyPress('end')
 		time.sleep(0.1)
 		for i in range(100):
 			self.client.keyPress('bsp')
 			time.sleep(0.1)
 
-	def screenshot(self, filename):
+	def screenshot(self, filename):  # type: (str) -> None
 		if not os.path.isdir(self.args.screenshot_dir):
 			os.mkdir(self.args.screenshot_dir)
 		screenshot_file = os.path.join(self.args.screenshot_dir, filename)
 		self.client.captureScreen(screenshot_file)
 
-	def click(self, text):
+	def click(self, text):  # type: (str) -> None
 		self.client.waitForText(text, timeout=self.timeout)
 		self.client.mouseClickOnText(text)
 
-	def connect(self):
+	def connect(self):  # type: () -> None
 		self.conn = VNCConnection(self.args.vnc)
 		self.client = self.conn.__enter__()
 		self.client.updateOCRConfig(self.config)
 
-	def text_is_visible(self, text, timeout=120):
+	def text_is_visible(self, text, timeout=120):  # type: (str, int) -> bool
 		try:
 			self.client.waitForText(text, timeout=timeout)
 			return True
@@ -62,14 +63,14 @@ class UCSInstallation(object):
 			self.connect()
 			return False
 
-	def move_to_next_and_click(self):
+	def move_to_next_and_click(self):  # type: () -> None
 		time.sleep(1)
 		self.client.mouseMove(910, 700)
 		time.sleep(1)
 		logging.info('clicking next')
 		self.client.mousePress(1)
 
-	def installer(self):
+	def installer(self):  # type: () -> None
 		# language
 		for i in range(3):
 			self.client.waitForText('Select a language', timeout=self.timeout + 120, prevent_screen_saver=True)
@@ -181,7 +182,7 @@ class UCSInstallation(object):
 		self.client.keyPress('enter')
 		time.sleep(30)
 
-	def network_setup(self):
+	def network_setup(self):  # type: () -> bool
 		time.sleep(60)
 		# we may not see this because the only interface is configured via dhcp
 		if not self.text_is_visible(self._['configure_network'], timeout=120):
@@ -215,7 +216,7 @@ class UCSInstallation(object):
 			self.client.keyPress('enter')
 		return True
 
-	def configure_kvm_network(self):
+	def configure_kvm_network(self):  # type: () -> None
 		if 'all' in self.args.components or 'kde' in self.args.components:
 			time.sleep(10)
 			self.client.keyDown('alt')
@@ -250,7 +251,7 @@ class UCSInstallation(object):
 		self.client.enterText(' crontab')
 		self.client.keyPress('enter')
 
-	def setup(self):
+	def setup(self):  # type: () -> None
 		self.client.waitForText(self._['domain_setup'], timeout=self.timeout + 900)
 		if self.args.role == 'master':
 			self.click(self._['new_domain'])
@@ -314,7 +315,7 @@ class UCSInstallation(object):
 		else:
 			raise NotImplementedError
 
-	def joinpass(self):
+	def joinpass(self):  # type: () -> None
 		if self.args.role not in ['slave', 'backup', 'member']:
 			return
 		self.client.waitForText(self._['start_join'], timeout=self.timeout)
@@ -336,7 +337,7 @@ class UCSInstallation(object):
 				self.connect()
 				break
 
-	def joinpass_ad(self):
+	def joinpass_ad(self):  # type: () -> None
 		if self.args.role not in ['admember']:
 			return
 		# join/ad password and user
@@ -358,7 +359,7 @@ class UCSInstallation(object):
 				self.connect()
 				break
 
-	def hostname(self):
+	def hostname(self):  # type: () -> None
 		# name hostname
 		if self.args.role == 'master':
 			self.client.waitForText(self._['host_settings'], timeout=self.timeout)
@@ -370,7 +371,7 @@ class UCSInstallation(object):
 			self.client.keyPress('tab')
 		self.move_to_next_and_click()
 
-	def finish(self):
+	def finish(self):  # type: () -> None
 		self.client.waitForText(self._['confirm_config'], timeout=self.timeout)
 		self.client.keyPress('enter')
 		time.sleep(self.setup_finish_sleep)
@@ -380,7 +381,7 @@ class UCSInstallation(object):
 		time.sleep(10)
 		self.client.waitForText('univention', timeout=self.timeout)
 
-	def ucsschool(self):
+	def ucsschool(self):  # type: () -> None
 		# ucs@school role
 		if self.args.school_dep:
 			self.client.waitForText(self._['school_role'], timeout=self.timeout)
@@ -394,13 +395,13 @@ class UCSInstallation(object):
 				raise NotImplementedError()
 			self.move_to_next_and_click()
 
-	def bootmenu(self):
+	def bootmenu(self):  # type: () -> None
 		if self.text_is_visible('Univention Corporate Server Installer', timeout=120):
 			if self.args.ip:
 				self.client.keyPress('down')
 			self.client.keyPress('enter')
 
-	def installation(self):
+	def installation(self):  # type: () -> None
 		if self.args.language == 'eng':
 			self._ = english.strings
 		elif self.args.language == 'fra':

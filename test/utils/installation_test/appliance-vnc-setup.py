@@ -7,7 +7,7 @@ setup via umc
 
 import os
 import time
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace  # noqa F401
 
 from components.components import components_with_steps as components
 from installation import UCSInstallation
@@ -19,7 +19,7 @@ from vncdotool.api import VNCDoException
 
 class UCSSetup(UCSInstallation):
 
-	def __init__(self, args):
+	def __init__(self, args):  # type: (Namespace) -> None
 		init_logger('info')
 		self.args = args
 		self.config = OCRConfig()
@@ -27,17 +27,17 @@ class UCSSetup(UCSInstallation):
 		self.timeout = 40
 		self.connect()
 
-	def click(self, text):
+	def click(self, text):  # type: (str) -> None
 		self.client.waitForText(text, timeout=self.timeout)
 		self.client.mouseClickOnText(text)
 
-	def screenshot(self, filename):
+	def screenshot(self, filename):  # type: (str) -> None
 		if not os.path.isdir(self.args.screenshot_dir):
 			os.mkdir(self.args.screenshot_dir)
 		screenshot_file = os.path.join(self.args.screenshot_dir, filename)
 		self.client.captureScreen(screenshot_file)
 
-	def __next__(self):
+	def __next__(self):  # type: () -> None
 		self.client.waitForText('NEXT', timeout=self.timeout)
 		self.client.mouseClickOnText('NEXT')
 
@@ -49,11 +49,11 @@ class UCSSetup(UCSInstallation):
 			time.sleep(0.5)
 		self.client.keyPress('enter')
 
-	def enter(self):
+	def enter(self):  # type: () -> None
 		time.sleep(0.5)
 		self.client.keyPress('enter')
 
-	def language(self, language):
+	def language(self, language):  # type: (str) -> None
 		if self.text_is_visible('Notification', timeout=self.timeout):
 			self.screenshot('notification.png')
 			self.mouseClickOnText('OK')
@@ -68,7 +68,7 @@ class UCSSetup(UCSInstallation):
 		#self.next()
 		self.tab_to_next_and_enter(4)
 
-	def network(self):
+	def network(self):  # type: () -> None
 		try:
 			self.client.waitForText('IP address', timeout=self.timeout)
 		except VNCDoException:
@@ -101,7 +101,7 @@ class UCSSetup(UCSInstallation):
 			self.connect()
 		time.sleep(120)
 
-	def domain(self, role):
+	def domain(self, role):  # type: (str) -> None
 		text = 'Manage users and permissions'
 		if self.args.ucs is True:
 			text = 'Create a new UCS domain'
@@ -138,7 +138,7 @@ class UCSSetup(UCSInstallation):
 			#self.next()
 			self.tab_to_next_and_enter(2)
 
-	def orga(self, orga, password):
+	def orga(self, orga, password):  # type: (str, str) -> None
 		self.client.waitForText('Account information', timeout=self.timeout)
 		self.screenshot('organisation-setup.png')
 		self.client.enterText('home')
@@ -151,7 +151,7 @@ class UCSSetup(UCSInstallation):
 		#self.next()
 		self.tab_to_next_and_enter(2)
 
-	def hostname(self, hostname):
+	def hostname(self, hostname):  # type: (str) -> None
 		self.client.waitForText('Host settings', timeout=self.timeout)
 		self.screenshot('hostname-setup.png')
 		# delete the pre-filled hostname
@@ -168,7 +168,7 @@ class UCSSetup(UCSInstallation):
 		#self.next()
 		self.tab_to_next_and_enter(2)
 
-	def start(self):
+	def start(self):  # type: () -> None
 		self.client.waitForText('confirm configuration', timeout=self.timeout)
 		self.screenshot('start-setup.png')
 		found = False
@@ -182,7 +182,7 @@ class UCSSetup(UCSInstallation):
 		if not found:
 			self.client.mouseClickOnText('configure system')
 
-	def finish(self):
+	def finish(self):  # type: () -> None
 		time.sleep(600)
 		self.client.waitForText('UCS setup successful', timeout=3000, prevent_screen_saver=True)
 		self.screenshot('finished-setup.png')
@@ -199,12 +199,12 @@ class UCSSetup(UCSInstallation):
 			self.client.waitForText('press any key', timeout=self.timeout)
 		self.screenshot('welcome-screen.png')
 
-	def connect(self):
+	def connect(self):  # type: () -> None
 		self.conn = VNCConnection(self.args.vnc)
 		self.client = self.conn.__enter__()
 		self.client.updateOCRConfig(self.config)
 
-	def setup(self):
+	def setup(self):  # type: () -> None
 		try:
 			self.language('English')
 			self.network()
