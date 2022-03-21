@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: bind9
+fix: 1:9.11.5.P4+dfsg-5.1+deb10u7A~5.0.1.202203212040
+desc: |
+ This update addresses the following issue:
+ * The rules for acceptance of records into the cache have been tightened to
+   prevent the possibility of poisoning if forwarders send records outside the
+   configured bailiwick (CVE-2021-25220)
+bug: [54573]
+cve:
+- CVE-2021-25220
