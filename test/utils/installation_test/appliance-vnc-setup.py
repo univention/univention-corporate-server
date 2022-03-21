@@ -5,17 +5,16 @@
 setup via umc
 """
 
+import os
+import time
 from argparse import ArgumentParser
-from vncautomate import init_logger, VNCConnection
+
+from components.components import components_with_steps as components
+from installation import UCSInstallation
+
+from vncautomate import VNCConnection, init_logger
 from vncautomate.config import OCRConfig
 from vncdotool.api import VNCDoException
-
-from installation import UCSInstallation
-from components.components import components_with_steps as components
-
-import time
-import sys
-import os
 
 
 class UCSSetup(UCSInstallation):
@@ -222,27 +221,29 @@ class UCSSetup(UCSInstallation):
 			raise
 
 
-def main():
-	''' python %prog% --vnc 'utby:1' '''
-	description = sys.modules[__name__].__doc__
-	parser = ArgumentParser(description=description)
-	parser.add_argument('--vnc')
-	parser.add_argument('--fqdn', default='master.ucs.local')
-	parser.add_argument('--dns')
-	parser.add_argument('--join-user')
-	parser.add_argument('--join-password')
-	parser.add_argument('--password', default='univention')
-	parser.add_argument('--organisation', default='ucs')
-	parser.add_argument('--screenshot-dir', default='./screenshots')
-	parser.add_argument('--role', default='master', choices=['master', 'admember', 'fast', 'slave'])
-	parser.add_argument('--ucs', help='ucs appliance', action='store_true')
-	parser.add_argument('--components', default=[], choices=components.keys() + ['all'], action='append')
+def main():  # type: () -> None
+	parser = ArgumentParser(description=__doc__)
+	parser.add_argument('--screenshot-dir', default='./screenshots', help="Directory for storing screenshots")
+	parser.add_argument('--ucs', help='UCS appliance', action='store_true')
+	group = parser.add_argument_group("Virtual machine settings")
+	group.add_argument('--vnc', required=True, help="VNC screen to connect to")
+	group = parser.add_argument_group("Host settings")
+	group.add_argument('--fqdn', default='master.ucs.local', help="Fully qualified host name to use")
+	group.add_argument('--password', default='univention', help="Password to setup for user 'root' and/or 'Administrator'")
+	group.add_argument('--organisation', default='ucs', help="Oranisation name to setup")
+	group.add_argument('--role', default='master', choices=['master', 'admember', 'fast', 'slave'], help="UCS system role")
+	group.add_argument('--components', default=[], choices=list(components) + ['all'], action='append', help="UCS components to install")
+	group = parser.add_argument_group("Join settings")
+	group.add_argument('--dns', help="DNS server of UCS domain")
+	group.add_argument('--join-user', help="User name for UCS domain join")
+	group.add_argument('--join-password', help="Password for UCS domain join")
 	args = parser.parse_args()
+
 	if args.role in ['admember', 'slave']:
 		assert args.dns is not None
 		assert args.join_user is not None
 		assert args.join_password is not None
-	assert args.vnc is not None
+
 	setup = UCSSetup(args=args)
 	setup.setup()
 
