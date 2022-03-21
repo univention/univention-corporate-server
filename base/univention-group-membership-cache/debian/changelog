@@ -1,3 +1,9 @@
+univention-group-membership-cache (1.0.0-11) unstable; urgency=medium
+
+  * Bug #54561: Return empty list instead of None
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 21 Mar 2022 18:01:10 +0100
+
 univention-group-membership-cache (1.0.0-10) unstable; urgency=medium
 
   * Bug #54206: Fix upgrade process to 5.0 
