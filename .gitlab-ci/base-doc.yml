@@ -30,7 +30,7 @@ stages:
   script:
     - make -C $base -e SPHINXOPTS="-D language='$language'" -e BUILDDIR="_build/$language" html
     - mkdir -p $CI_PROJECT_DIR/public/$DOC_NAME/$DOC_TARGET_VERSION/$language
-    - rsync -av --delete $base/_build/$language/html/ $CI_PROJECT_DIR/public/$DOC_NAME/$DOC_TARGET_VERSION/$language
+    - rsync -av --delete --exclude-from doc/pipeline-rsync-exclude.txt $base/_build/$language/html/ $CI_PROJECT_DIR/public/$DOC_NAME/$DOC_TARGET_VERSION/$language
 
 .sphinx-pdf:
   extends: .sphinx-doc
