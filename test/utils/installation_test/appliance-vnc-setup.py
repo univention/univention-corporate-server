@@ -151,7 +151,7 @@ class UCSSetup(UCSInstallation):
 		#self.next()
 		self.tab_to_next_and_enter(2)
 
-	def hostname(self, hostname):  # type: (str) -> None
+	def hostname(self):  # type: () -> None
 		self.client.waitForText('Host settings', timeout=self.timeout)
 		self.screenshot('hostname-setup.png')
 		# delete the pre-filled hostname
@@ -159,7 +159,7 @@ class UCSSetup(UCSInstallation):
 		for i in range(1, 200):
 			self.client.keyPress('bsp')
 		time.sleep(3)
-		self.client.enterText(hostname)
+		self.client.enterText(self.args.fqdn)
 		self.client.keyPress('tab')
 		if self.args.role in ['admember', 'slave']:
 			self.client.enterText(self.args.password)
@@ -212,7 +212,7 @@ class UCSSetup(UCSInstallation):
 			if self.args.role == 'master':
 				self.orga(self.args.organisation, self.args.password)
 			if not self.args.role == 'fast':
-				self.hostname(self.args.fqdn)
+				self.hostname()
 			self.start()
 			self.finish()
 		except Exception:
