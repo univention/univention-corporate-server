@@ -38,6 +38,8 @@ Description: Univention Self Service
 
 Package: univention-self-service-master
 Architecture: all
+Pre-Depends:
+ univention-portal,
 Depends:
  univention-mail-postfix | mail-transport-agent,
  univention-postgresql,

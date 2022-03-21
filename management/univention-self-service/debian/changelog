@@ -1,3 +1,9 @@
+univention-self-service (5.0.1-22) unstable; urgency=medium
+
+  * Bug #54434: Pre-Depend on univention-portal; UDM modules needed in postinst
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 21 Mar 2022 17:36:44 +0100
+
 univention-self-service (5.0.1-21) unstable; urgency=medium
 
   * Bug #54434: Fix new installations of the Self Service
