@@ -14,4 +14,3 @@ Univention App Center for App Providers' documentation!
    identity_management
    configurations
    appliances
-   indices-tables
