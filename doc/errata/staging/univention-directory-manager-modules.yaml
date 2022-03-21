@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-directory-manager-modules
-fix: 15.0.11-37A~5.0.0.202203152148
+fix: 15.0.11-38A~5.0.0.202203211721
 desc: |
  This update addresses the following issue(s):
  * When user templates were members of groups an error was raised
