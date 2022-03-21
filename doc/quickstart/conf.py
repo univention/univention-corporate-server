@@ -24,6 +24,7 @@ author = ''
 
 # The full version, including alpha/beta/rc tags
 release = '5.0'
+version = release
 
 html_show_copyright = True
 language = 'en'
@@ -39,7 +40,6 @@ extensions = [
     "univention_sphinx_extension",
     "sphinxcontrib.spelling",
     "sphinx_last_updated_by_git",
-    "sphinx_sitemap",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -97,9 +97,6 @@ latex_elements = {
     "papersize": "a4paper",
     "babel": "\\usepackage{babel}",
 }
-
-# Sitemap, see https://github.com/jdillard/sphinx-sitemap
-html_baseurl = f'docs.software-univention.de/quickstart/{language}/{release}'
 
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-figure_language_filename
 figure_language_filename = "{root}-{language}{ext}"

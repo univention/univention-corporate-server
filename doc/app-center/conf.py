@@ -25,6 +25,7 @@ author = ''
 
 # The full version, including alpha/beta/rc tags
 release = '5.0'
+version = release
 
 html_show_copyright = True
 language = 'en'
@@ -41,7 +42,6 @@ extensions = [
     "univention_sphinx_extension",
     "sphinxcontrib.spelling",
     "sphinx_last_updated_by_git",
-    "sphinx_sitemap",
     "sphinx_copybutton",
 ]
 
@@ -103,9 +103,6 @@ latex_documents = [(root_doc, f'{pdf_doc_base}.tex', project, author, "manual", 
 latex_elements = {
     "papersize": "a4paper",
 }
-
-# Sitemap, see https://github.com/jdillard/sphinx-sitemap
-html_baseurl = f'https://docs.software-univention.de/app-provider/{release}/{language}'
 
 linkcheck_ignore = [
     r"https://errata\.software-univention\.de/#/\?erratum=",
