@@ -375,7 +375,7 @@ class Docker(object):
 		if self.app.docker_script_init:
 			command = shlex.split(ucr_run_filter(self.app.docker_script_init))
 		args = shlex.split(ucr_get(self.app.ucr_docker_params_key, ''))
-		for tmpfs in ("/run", "/run/lock"):                                 # systemd
+		for tmpfs in self.app.docker_tmpfs:                                # systemd
 			args.extend(["--tmpfs", tmpfs])
 		seccomp_profile = "/etc/docker/seccomp-systemd.json"
 		args.extend(["--security-opt", "seccomp:%s" % seccomp_profile])     # systemd

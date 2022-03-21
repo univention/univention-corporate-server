@@ -976,6 +976,7 @@ class App(with_metaclass(AppMetaClass, object)):
 	docker_script_update_app_version = AppDockerScriptAttribute()
 	docker_script_configure = AppAttribute()
 	docker_ucr_style_env = AppBooleanAttribute(default=True)
+	docker_tmpfs = AppListAttribute(default=["/run", "/run/lock"])
 
 	host_certificate_access = AppBooleanAttribute()
 

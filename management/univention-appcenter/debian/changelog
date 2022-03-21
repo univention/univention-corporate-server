@@ -1,3 +1,9 @@
+univention-appcenter (9.0.2-73) unstable; urgency=medium
+
+  * Bug #54562: Make tempfs for docker apps configurable
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Wed, 16 Mar 2022 21:00:00 +0100
+
 univention-appcenter (9.0.2-72) unstable; urgency=medium
 
   * Bug #54452: Download/uncompress to temporary directory

@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-appcenter
+fix:
+desc: |
+ This update addresses the following issue(s):
+ * Allow for the tmpfs that are created for a docker app to be
+   defined in the apps ini file.
+bug: [54562]
