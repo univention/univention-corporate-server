@@ -146,7 +146,9 @@ class GdbmCache(LdapCache):
 			try:
 				value = reader[key]
 			except KeyError:
-				return None
+				if self.single_value:
+					return None
+				return []
 			if self.single_value:
 				return _s(value)
 			elif value:
