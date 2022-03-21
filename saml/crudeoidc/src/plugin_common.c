@@ -1,9 +1,8 @@
 /* Generic SASL plugin utility functions
  * Rob Siemborski
- * $Id: plugin_common.c,v 1.1 2012/11/07 16:21:52 manu Exp $
  */
 /* 
- * Copyright (c) 1998-2003 Carnegie Mellon University.  All rights reserved.
+ * Copyright (c) 1998-2016 Carnegie Mellon University.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -21,12 +20,13 @@
  *    endorse or promote products derived from this software without
  *    prior written permission. For permission or any other legal
  *    details, please contact  
- *      Office of Technology Transfer
  *      Carnegie Mellon University
- *      5000 Forbes Avenue
- *      Pittsburgh, PA  15213-3890
- *      (412) 268-4387, fax: (412) 268-7395
- *      tech-transfer@andrew.cmu.edu
+ *      Center for Technology Transfer and Enterprise Creation
+ *      4615 Forbes Avenue
+ *      Suite 302
+ *      Pittsburgh, PA  15213
+ *      (412) 268-7393, fax: (412) 268-7395
+ *      innovation@andrew.cmu.edu
  *
  * 4. Redistributions of any form whatsoever must retain the following
  *    acknowledgment:
@@ -46,6 +46,7 @@
 #ifndef macintosh
 #ifdef WIN32
 # include <winsock2.h>
+# include <versionhelpers.h>
 #else
 # include <sys/socket.h>
 # include <netinet/in.h>
@@ -57,7 +58,6 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#include <string.h>
 #include <fcntl.h>
 #include <sasl.h>
 #include <saslutil.h>
@@ -95,7 +95,11 @@ static void sockaddr_unmapped(
     if (!IN6_IS_ADDR_V4MAPPED((&sin6->sin6_addr)))
 	return;
     sin4 = (struct sockaddr_in *)sa;
-    addr = *(uint32_t *)&sin6->sin6_addr.s6_addr[12];
+#ifdef s6_addr32
+    addr = *(uint32_t *)&sin6->sin6_addr.s6_addr32[3];
+#else
+    memcpy(&addr, &sin6->sin6_addr.s6_addr[12], 4);
+#endif
     port = sin6->sin6_port;
     memset(sin4, 0, sizeof(struct sockaddr_in));
     sin4->sin_addr.s_addr = addr;
@@ -126,7 +130,7 @@ int _plug_ipfromstring(const sasl_utils_t *utils, const char *addr,
 
     /* Parse the address */
     for (i = 0; addr[i] != '\0' && addr[i] != ';'; i++) {
-	if (i >= NI_MAXHOST) {
+	if (i + 1 >= NI_MAXHOST) {
 	    if(utils) PARAMERROR( utils );
 	    return SASL_BADPARAM;
 	}
@@ -153,7 +157,7 @@ int _plug_ipfromstring(const sasl_utils_t *utils, const char *addr,
 	return SASL_BADPARAM;
     }
 
-    len = ai->ai_addrlen;
+    len = (socklen_t) ai->ai_addrlen;
     memcpy(&ss, ai->ai_addr, len);
     freeaddrinfo(ai);
     sockaddr_unmapped((struct sockaddr *)&ss, &len);
@@ -218,7 +222,7 @@ int _plug_buf_alloc(const sasl_utils_t *utils, char **rwbuf,
 		    unsigned *curlen, unsigned newlen) 
 {
     if(!utils || !rwbuf || !curlen) {
-	PARAMERROR(utils);
+	if (utils) PARAMERROR(utils);
 	return SASL_BADPARAM;
     }
 
@@ -231,7 +235,7 @@ int _plug_buf_alloc(const sasl_utils_t *utils, char **rwbuf,
 	}
 	*curlen = newlen;
     } else if(*rwbuf && *curlen < newlen) {
-	size_t needed = 2*(*curlen);
+	unsigned needed = 2*(*curlen);
 
 	while(needed < newlen)
 	    needed *= 2;
@@ -252,12 +256,14 @@ int _plug_buf_alloc(const sasl_utils_t *utils, char **rwbuf,
 int _plug_strdup(const sasl_utils_t * utils, const char *in,
 		 char **out, int *outlen)
 {
-  size_t len = strlen(in);
+  size_t len = 0;
 
   if(!utils || !in || !out) {
       if(utils) PARAMERROR(utils);
       return SASL_BADPARAM;
   }
+
+  len = strlen(in);
 
   *out = utils->malloc(len + 1);
   if (!*out) {
@@ -268,7 +274,7 @@ int _plug_strdup(const sasl_utils_t * utils, const char *in,
   strcpy((char *) *out, in);
 
   if (outlen)
-      *outlen = len;
+      *outlen = (int) len;
 
   return SASL_OK;
 }
@@ -281,7 +287,7 @@ void _plug_free_string(const sasl_utils_t *utils, char **str)
 
   len = strlen(*str);
 
-  utils->erasebuffer(*str, len);
+  utils->erasebuffer(*str, (unsigned int) len);
   utils->free(*str);
 
   *str=NULL;
@@ -335,7 +341,7 @@ int _plug_get_simple(const sasl_utils_t *utils, unsigned int id, int required,
 	/* We prompted, and got.*/
 	
 	if (required && !prompt->result) {
-	    SETERROR(utils, "Unexpectedly missing a prompt result");
+	    SETERROR(utils, "Unexpectedly missing a prompt result in _plug_get_simple");
 	    return SASL_BADPARAM;
 	}
 
@@ -383,7 +389,7 @@ int _plug_get_password(const sasl_utils_t *utils, sasl_secret_t **password,
 	/* We prompted, and got.*/
 	
 	if (!prompt->result) {
-	    SETERROR(utils, "Unexpectedly missing a prompt result");
+	    SETERROR(utils, "Unexpectedly missing a prompt result in _plug_get_password");
 	    return SASL_BADPARAM;
 	}
       
@@ -442,7 +448,7 @@ int _plug_challenge_prompt(const sasl_utils_t *utils, unsigned int id,
 	/* We prompted, and got.*/
 	
 	if (!prompt->result) {
-	    SETERROR(utils, "Unexpectedly missing a prompt result");
+	    SETERROR(utils, "Unexpectedly missing a prompt result in _plug_challenge_prompt");
 	    return SASL_BADPARAM;
 	}
       
@@ -488,7 +494,7 @@ int _plug_get_realm(const sasl_utils_t *utils, const char **availrealms,
 	/* We prompted, and got.*/
 	
 	if (!prompt->result) {
-	    SETERROR(utils, "Unexpectedly missing a prompt result");
+	    SETERROR(utils, "Unexpectedly missing a prompt result in _plug_get_realm");
 	    return SASL_BADPARAM;
 	}
 
@@ -821,91 +827,80 @@ char * _plug_get_error_message (const sasl_utils_t *utils,
 void _plug_snprintf_os_info (char * osbuf, int osbuf_len)
 {
 #ifdef WIN32
-    OSVERSIONINFOEX versioninfo;
     char *sysname;
-
-/* :
-  DWORD dwOSVersionInfoSize; 
-  DWORD dwMajorVersion; 
-  DWORD dwMinorVersion; 
-  DWORD dwBuildNumber; 
-  TCHAR szCSDVersion[ 128 ];
-//Only NT SP 6 and later
-  WORD wServicePackMajor;
-  WORD wServicePackMinor;
-  WORD wSuiteMask;
-  BYTE wProductType;
- */
-
-    versioninfo.dwOSVersionInfoSize = sizeof (versioninfo);
     sysname = "Unknown Windows";
 
-    if (GetVersionEx ((OSVERSIONINFO *) &versioninfo) == FALSE) {
+/* Let's suppose it's still compilable with win2k sdk. So define everythig missing */
+#ifndef _WIN32_WINNT_WINXP
+# define _WIN32_WINNT_WINXP                  0x0501
+#endif
+#ifndef _WIN32_WINNT_WS03
+# define _WIN32_WINNT_WS03                   0x0502
+#endif
+#ifndef _WIN32_WINNT_WIN6
+# define _WIN32_WINNT_WIN6                   0x0600
+#endif
+#ifndef _WIN32_WINNT_VISTA
+# define _WIN32_WINNT_VISTA                  0x0600
+#endif
+#ifndef _WIN32_WINNT_WS08
+# define _WIN32_WINNT_WS08                   0x0600
+#endif
+#ifndef _WIN32_WINNT_LONGHORN
+# define _WIN32_WINNT_LONGHORN               0x0600
+#endif
+#ifndef _WIN32_WINNT_WIN7
+# define _WIN32_WINNT_WIN7                   0x0601
+#endif
+#ifndef _WIN32_WINNT_WIN8
+# define _WIN32_WINNT_WIN8                   0x0602
+#endif
+#ifndef _WIN32_WINNT_WINBLUE
+# define _WIN32_WINNT_WINBLUE                0x0603
+#endif
+#ifndef _WIN32_WINNT_WIN10
+# define _WIN32_WINNT_WIN10                  0x0A00
+#endif
+
+    /* and use IsWindowsVersionOrGreater instead of convenient wrappers by the same reason */
+    if (IsWindowsVersionOrGreater(HIBYTE(_WIN32_WINNT_WIN10), LOBYTE(_WIN32_WINNT_WIN10), 0)) {
+        sysname = "Windows 10 or greater";
+    } else
+    if (IsWindowsVersionOrGreater(HIBYTE(_WIN32_WINNT_WINBLUE), LOBYTE(_WIN32_WINNT_WINBLUE), 0)) {
+        sysname = "Windows 8.1";
+    } else
+    if (IsWindowsVersionOrGreater(HIBYTE(_WIN32_WINNT_WIN8), LOBYTE(_WIN32_WINNT_WIN8), 0)) {
+        sysname = "Windows 8";
+    } else
+    if (IsWindowsVersionOrGreater(HIBYTE(_WIN32_WINNT_WIN7), LOBYTE(_WIN32_WINNT_WIN7), 1)) {
+        sysname = "Windows 7 SP1";
+    } else
+    if (IsWindowsVersionOrGreater(HIBYTE(_WIN32_WINNT_WIN7), LOBYTE(_WIN32_WINNT_WIN7), 0)) {
+        sysname = "Windows 7";
+    } else
+    if (IsWindowsVersionOrGreater(HIBYTE(_WIN32_WINNT_VISTA), LOBYTE(_WIN32_WINNT_VISTA), 2)) {
+        sysname = "Windows Vista SP2";
+    } else
+    if (IsWindowsVersionOrGreater(HIBYTE(_WIN32_WINNT_VISTA), LOBYTE(_WIN32_WINNT_VISTA), 1)) {
+        sysname = "Windows Vista SP1";
+    } else
+    if (IsWindowsVersionOrGreater(HIBYTE(_WIN32_WINNT_VISTA), LOBYTE(_WIN32_WINNT_VISTA), 0)) {
+        sysname = "Windows Vista";
+    } else
+    if (IsWindowsVersionOrGreater(HIBYTE(_WIN32_WINNT_WINXP), LOBYTE(_WIN32_WINNT_WINXP), 3)) {
+        sysname = "Windows XP SP3";
+    } else
+    if (IsWindowsVersionOrGreater(HIBYTE(_WIN32_WINNT_WINXP), LOBYTE(_WIN32_WINNT_WINXP), 2)) {
+        sysname = "Windows XP SP2";
+    } else
+    if (IsWindowsVersionOrGreater(HIBYTE(_WIN32_WINNT_WINXP), LOBYTE(_WIN32_WINNT_WINXP), 1)) {
+        sysname = "Windows XP SP1";
+    } else
+    if (IsWindowsVersionOrGreater(HIBYTE(_WIN32_WINNT_WINXP), LOBYTE(_WIN32_WINNT_WINXP), 0)) {
+        sysname = "Windows XP";
+    }
+
 	snprintf(osbuf, osbuf_len, "%s", sysname);
-	goto SKIP_OS_INFO;
-    }
-
-    switch (versioninfo.dwPlatformId) {
-	case VER_PLATFORM_WIN32s: /* Win32s on Windows 3.1 */
-	    sysname = "Win32s on Windows 3.1";
-/* I can't test if dwBuildNumber has any meaning on Win32s */
-	    break;
-
-	case VER_PLATFORM_WIN32_WINDOWS: /* 95/98/ME */
-	    switch (versioninfo.dwMinorVersion) {
-		case 0:
-		    sysname = "Windows 95";
-		    break;
-		case 10:
-		    sysname = "Windows 98";
-		    break;
-		case 90:
-		    sysname = "Windows Me";
-		    break;
-		default:
-		    sysname = "Unknown Windows 9X/ME series";
-		    break;
-	    }
-/* Clear the high order word, as it contains major/minor version */
-	    versioninfo.dwBuildNumber &= 0xFFFF;
-	    break;
-
-	case VER_PLATFORM_WIN32_NT: /* NT/2000/XP/.NET */
-	    if (versioninfo.dwMinorVersion > 99) {
-	    } else {
-		switch (versioninfo.dwMajorVersion * 100 + versioninfo.dwMinorVersion) {
-		    case 351:
-			sysname = "Windows NT 3.51";
-			break;
-		    case 400:
-			sysname = "Windows NT 4.0";
-			break;
-		    case 500:
-			sysname = "Windows 2000";
-			break;
-		    case 501:
-			sysname = "Windows XP/.NET"; /* or Windows .NET Server */
-			break;
-		    default:
-			sysname = "Unknown Windows NT series";
-			break;
-		}
-	    }
-	    break;
-
-	default:
-	    break;
-    }
-
-    snprintf(osbuf, osbuf_len,
-	     "%s %s (Build %u)",
-	     sysname,
-	     versioninfo.szCSDVersion,
-	     versioninfo.dwBuildNumber
-	     );
-
-SKIP_OS_INFO:
-    ;
 
 #else /* !WIN32 */
     struct utsname os;
