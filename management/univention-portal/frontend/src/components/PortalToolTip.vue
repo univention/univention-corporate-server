@@ -27,54 +27,83 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <teleport to="body">
+  <transition
+    name="fade"
+    appear
+    @before-enter="beforeEnter"
+    @after-enter="onAfterEnter"
+    @leave="leave"
+  >
     <div
+      ref="toolTip"
       class="portal-tooltip"
       role="tooltip"
       data-test="portal-tooltip"
+      :style="tooltipPosition"
+      @mouseenter="keepTooltip()"
+      @mouseleave="closeToolTip"
     >
-      <div
-        class="portal-tooltip__header"
-      >
+      <div class="portal-tooltip__inner-wrap">
         <div
-          class="portal-tooltip__thumbnail"
-          :style="backgroundColor ? `background: ${backgroundColor}` : ''"
-        >
-          <img
-            :src="icon || './questionMark.svg'"
-            onerror="this.src='./questionMark.svg'"
-            alt=""
-            class="portal-tooltip__logo"
-          >
-        </div>
-        <div class="portal-tooltip__title">
-          {{ title }}
-        </div>
-        <icon-button
-          icon="x"
-          class="portal-tooltip__close-icon"
-          :aria-label-prop="CLOSE_TOOLTIP"
-          @click="closeToolTip()"
+          v-if="!isMobile"
+          class="portal-tooltip__arrow"
+          data-test="portal-tooltip-arrow"
+          :style="arrowPosition"
         />
-      </div>
+        <div
+          class="portal-tooltip__header"
+        >
+          <template v-if="isMobile">
+            <div
+              class="portal-tooltip__thumbnail"
+              data-test="portal-tooltip-image"
+              :style="backgroundColor ? `background: ${backgroundColor}` : ''"
+            >
+              <img
+                :src="icon || './questionMark.svg'"
+                onerror="this.src='./questionMark.svg'"
+                alt=""
+                class="portal-tooltip__logo"
+              >
+            </div>
+            <div
+              class="portal-tooltip__title"
+              data-test="portal-tooltip-title"
+            >
+              {{ title }}
+            </div>
+          </template>
+          <icon-button
+            icon="x"
+            class="portal-tooltip__close-icon"
+            data-test="portal-tooltip-close-icon"
+            :aria-label-prop="CLOSE_TOOLTIP"
+            @click="closeToolTip()"
+          />
+        </div>
 
-      <!-- eslint-disable vue/no-v-html -->
-      <div
-        v-if="description"
-        :id="ariaId"
-        class="portal-tooltip__description"
-        v-html="description"
-      />
-    <!-- eslint-enable vue/no-v-html -->
+        <!-- eslint-disable vue/no-v-html -->
+        <div
+          v-if="description"
+          class="portal-tooltip__description"
+          data-test="portal-tooltip-description"
+          v-html="description"
+        />
+        <!-- eslint-enable vue/no-v-html -->
+      </div>
     </div>
-  </teleport>
+  </transition>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import _ from '@/jsHelper/translate';
 
 import IconButton from '@/components/globals/IconButton.vue';
+
+interface Data {
+  calculatedPosition: Record<string, number|string>,
+}
 
 export default defineComponent({
   name: 'PortalToolTip',
@@ -82,15 +111,11 @@ export default defineComponent({
     IconButton,
   },
   props: {
-    title: {
+    backgroundColor: {
       type: String,
       default: '',
     },
-    icon: {
-      type: String,
-      default: './questionMark.svg',
-    },
-    backgroundColor: {
+    title: {
       type: String,
       default: '',
     },
@@ -102,14 +127,140 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    icon: {
+      type: String,
+      default: './questionMark.svg',
+    },
+    position: {
+      type: Object as PropType<Record<string, number>>,
+      required: true,
+    },
+    isMobile: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  data(): Data {
+    return {
+      calculatedPosition: {
+        left: this.position.left,
+        bottom: this.position.bottom,
+        zone: 'REGULAR',
+      },
+    };
   },
   computed: {
     CLOSE_TOOLTIP(): string {
       return _('Close Tooltip');
     },
+    tooltipPosition(): string {
+      if (!this.isMobile) {
+        this.calculatePosition();
+        return `left:${this.calculatedPosition.left}px;`;
+      }
+      return '';
+    },
+    arrowPosition(): string {
+      if (this.calculatedPosition.zone === 'RIGHT') {
+        return 'top: -2rem; right: 0.5rem;';
+      }
+      if (this.calculatedPosition.zone === 'BOTTOM') {
+        return 'bottom: -2rem; left: 0.2rem; transform: rotate(180deg);';
+      }
+      if (this.calculatedPosition.zone === 'BOTTOM_RIGHT') {
+        return 'bottom: -2rem; right: 0.5rem; transform: rotate(180deg);';
+      }
+      return 'top: -2rem; left:  0.2rem;';
+    },
+    transitionClassEnter(): string {
+      if (this.calculatedPosition.zone === 'BOTTOM') {
+        return 'fade-enter-from-top';
+      }
+      return 'fade-enter-from';
+    },
+    transitionClassLeave(): string {
+      if (this.calculatedPosition.zone === 'BOTTOM') {
+        return 'fade-leave-from-top';
+      }
+      return 'fade-leave-from';
+    },
+  },
+  created(): void {
+    window.addEventListener('scroll', this.handleScroll);
+  },
+  unmounted(): void {
+    window.removeEventListener('scroll', this.handleScroll);
   },
   methods: {
+    keepTooltip(): void {
+      this.$store.dispatch('tooltip/setHoverOnTooltip', true);
+    },
     closeToolTip() {
+      this.$store.dispatch('tooltip/setHoverOnTooltip', false);
+      this.$store.dispatch('tooltip/unsetTooltip');
+    },
+    beforeEnter(el): void {
+      const prePosition = this.calculatedPosition.zone === 'BOTTOM' || this.calculatedPosition.zone === 'BOTTOM_RIGHT' ? -15 : 20;
+      if (!this.isMobile) {
+        if (this.calculatedPosition.zone === 'BOTTOM' || this.calculatedPosition.zone === 'BOTTOM_RIGHT') {
+          el.style.bottom = `${(this.calculatedPosition.bottom as number) - prePosition}px`;
+        } else {
+          el.style.top = `${(this.calculatedPosition.bottom as number) + prePosition}px`;
+        }
+        el.style.transition = 'all 0.2s ease-out';
+        el.style.transition = this.calculatedPosition.zone === 'BOTTOM' ? 'transform: translateY(-115px)' : 'transform: translateY(15px)';
+        el.style.opacity = '0';
+      }
+    },
+    onAfterEnter(el): void {
+      if (!this.isMobile) {
+        const correctedPosition = this.calculatedPosition.zone === 'BOTTOM' || this.calculatedPosition.zone === 'BOTTOM_RIGHT' ? 0 : 10;
+        if (this.calculatedPosition.zone === 'BOTTOM' || this.calculatedPosition.zone === 'BOTTOM_RIGHT') {
+          el.style.bottom = `${(this.calculatedPosition.bottom as number) + correctedPosition}px`;
+        } else {
+          el.style.top = `${(this.calculatedPosition.bottom as number) + correctedPosition}px`;
+        }
+        el.style.opacity = '1';
+        el.style.transition = 'transform: translateY(0)';
+      }
+    },
+    leave(el): void {
+      if (!this.isMobile) {
+        el.style.top = `${this.calculatedPosition.bottom}px`;
+        el.style.transition = 'all 0.25s ease-out';
+        el.style.transition = this.calculatedPosition.zone === 'BOTTOM' ? 'transform: translateY(-115px)' : 'transform: translateY(15px)';
+        el.style.opacity = '0';
+      }
+    },
+    calculatePosition(): void {
+      const tile = document.querySelector<HTMLElement>('.portal-tile__root-element');
+      if (tile) {
+        const regularZone = {
+          x: (window.innerWidth - tile?.offsetWidth * 2),
+          y: (window.innerHeight - tile?.offsetHeight * 2),
+        };
+        if (this.position.x > regularZone.x && this.position.y <= regularZone.y) {
+          this.calculatedPosition = {
+            left: this.position.left - tile?.offsetWidth * 2,
+            bottom: this.position.bottom,
+            zone: 'RIGHT',
+          };
+        } else if (this.position.x <= regularZone.x && this.position.y > regularZone.y) {
+          this.calculatedPosition = {
+            bottom: window.innerHeight - (this.position.y - 20),
+            left: this.position.left,
+            zone: 'BOTTOM',
+          };
+        } else if (this.position.x > regularZone.x && this.position.y > regularZone.y) {
+          this.calculatedPosition = {
+            left: this.position.left - tile?.offsetWidth * 2,
+            bottom: window.innerHeight - (this.position.y - 20),
+            zone: 'BOTTOM_RIGHT',
+          };
+        }
+      }
+    },
+    handleScroll(): void {
       this.$store.dispatch('tooltip/unsetTooltip');
     },
   },
@@ -119,8 +270,6 @@ export default defineComponent({
 <style lang="stylus">
 .portal-tooltip
   position: fixed
-  bottom: calc(2 * var(--layout-spacing-unit))
-  right: calc(2 * var(--layout-spacing-unit))
   background-color: var(--bgc-content-container)
   border-radius: var(--border-radius-container)
   min-width: calc(20 * 1rem)
@@ -129,7 +278,7 @@ export default defineComponent({
   box-shadow: var(--box-shadow)
   z-index: $zindex-3
   display: block
-  pointer-events: none
+  border: 1px solid var(--font-color-contrast-high)
 
   @media $mqSmartphone
     bottom: unset;
@@ -147,7 +296,6 @@ export default defineComponent({
   &__header
     display: flex
     align-items: center
-    margin-bottom: 1rem
 
     @media $mqSmartphone
       margin-bottom: calc(1 * var(--layout-spacing-unit))
@@ -182,4 +330,25 @@ export default defineComponent({
     @media $mqSmartphone
       display: block
       margin-left: auto
+
+  &__arrow
+    display: block
+    position: absolute
+    width: 0;
+    height: 0;
+    border: solid var(--layout-spacing-unit);
+    border-color: transparent transparent var(--font-color-contrast-high) transparent;
+
+  &__inner-wrap
+    position: relative
+    width: 100%
+    height: 100%
+
+.fade-enter-active {
+  transition: all 0.25s ease-out
+}
+
+.fade-leave-active {
+  transition: all 0.25s cubic-bezier(1, 0.5, 0.8, 1)
+}
 </style>

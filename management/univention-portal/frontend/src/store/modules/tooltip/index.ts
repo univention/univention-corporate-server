@@ -32,19 +32,26 @@ import { Tooltip } from './tooltip.models';
 
 export interface TooltipState {
   tooltip: Tooltip | null,
+  hoverOnToolip: boolean,
 }
 
 const tooltip: PortalModule<TooltipState> = {
   namespaced: true,
-  state: { tooltip: null },
+  state: { tooltip: null, hoverOnToolip: false },
 
   mutations: {
     SETTOOLTIP: (state: TooltipState, payload: TooltipState): void => {
       state.tooltip = payload.tooltip;
     },
+    SET_HOVER_ON_TOOLIP: (state: TooltipState, payload: boolean): void => {
+      state.hoverOnToolip = payload;
+    },
   },
 
-  getters: { tooltip: (state) => state.tooltip },
+  getters: {
+    tooltip: (state) => state.tooltip,
+    tooltipIsHovered: (state) => state.hoverOnToolip,
+  },
 
   actions: {
     setTooltip({ commit }: { commit: Commit }, payload: TooltipState): void {
@@ -52,6 +59,9 @@ const tooltip: PortalModule<TooltipState> = {
     },
     unsetTooltip({ commit }: { commit: Commit }): void {
       commit('SETTOOLTIP', { tooltip: null });
+    },
+    setHoverOnTooltip({ commit }: { commit: Commit }, payload: boolean): void {
+      commit('SET_HOVER_ON_TOOLIP', payload);
     },
   },
 };

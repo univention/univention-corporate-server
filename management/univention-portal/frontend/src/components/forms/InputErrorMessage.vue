@@ -31,13 +31,15 @@
     v-if="displayCondition"
     class="input-error-message"
   >
-    <portal-icon
-      icon="alert-circle"
-      class="input-error-message__icon"
-    />
-    <span>
-      {{ errorMessage }}
-    </span>
+    <template v-if="displayCondition">
+      <portal-icon
+        icon="alert-circle"
+        class="input-error-message__icon"
+      />
+      <span>
+        {{ errorMessage }}
+      </span>
+    </template>
   </div>
 </template>
 

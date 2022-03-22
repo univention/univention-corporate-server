@@ -33,4 +33,6 @@ export interface Tooltip {
     backgroundColor: string | null,
     description: string,
     ariaId: string,
+    position: Record<string, number>,
+    isMobile: boolean | null,
 }

@@ -76,6 +76,12 @@
       <span class="portal-tile__name">
         {{ $localized(title) }}
       </span>
+      <div
+        :id="tileId"
+        class="sr-only sr-only-mobile"
+      >
+        {{ $localized(description) }}
+      </div>
 
       <div class="portal-tile__icon-bar">
         <icon-button
@@ -132,6 +138,7 @@ import { Title, Description } from '@/store/modules/portalData/portalData.models
 
 interface PortalTile {
   tileId: string,
+  mouseIsOverTile: boolean,
 }
 
 export default defineComponent({
@@ -197,11 +204,13 @@ export default defineComponent({
   data(): PortalTile {
     return {
       tileId: '',
+      mouseIsOverTile: false,
     };
   },
   computed: {
     ...mapGetters({
       tooltip: 'tooltip/tooltip',
+      tooltipIsHovered: 'tooltip/tooltipIsHovered',
       lastDir: 'dragndrop/getLastDir',
     }),
     wrapperTag(): string {
@@ -252,6 +261,9 @@ export default defineComponent({
     anchorTarget(): string {
       return this.linkTarget === 'newwindow' ? '_blank' : '';
     },
+    isMobile(): boolean {
+      return this.isTouchDevice && !this.minified;
+    },
   },
   mounted() {
     if (this.hasFocus) {
@@ -264,18 +276,38 @@ export default defineComponent({
   },
   methods: {
     hideTooltip(): void {
-      this.$store.dispatch('tooltip/unsetTooltip');
+      this.mouseIsOverTile = false;
+      setTimeout(() => {
+        if (!this.tooltipIsHovered) {
+          this.$store.dispatch('tooltip/unsetTooltip');
+        }
+      }, 350);
     },
     showTooltip(): void {
+      this.mouseIsOverTile = true;
       if (!this.editMode && !this.minified) {
+        const portalTileNameRect = this.$el.querySelector('.portal-tile__name').getBoundingClientRect();
+        const portalTileRect = this.$el.getBoundingClientRect();
         const tooltip = {
+          isMobile: this.isMobile,
           title: this.$localized(this.title),
           backgroundColor: this.backgroundColor,
-          icon: this.pathToLogo,
           description: this.$localized(this.description),
           ariaId: this.createID(),
+          position: {
+            top: portalTileRect.top,
+            right: portalTileRect.right,
+            bottom: portalTileNameRect.bottom,
+            left: portalTileRect.left,
+            x: portalTileRect.x,
+            y: portalTileRect.y,
+          },
         };
-        this.$store.dispatch('tooltip/setTooltip', { tooltip });
+        setTimeout(() => {
+          if (this.mouseIsOverTile === true) {
+            this.$store.dispatch('tooltip/setTooltip', { tooltip });
+          }
+        }, 650);
       }
     },
     editTile() {
@@ -293,8 +325,13 @@ export default defineComponent({
     toolTipTouchHandler() {
       if (this.tooltip && this.tooltip.description === this.$localized(this.description)) {
         this.hideTooltip();
+        this.$store.dispatch('activity/setMessage', _('Tooltip hidden'));
       } else {
         this.showTooltip();
+        this.$store.dispatch('activity/setMessage', _('Tooltip displayed'));
+        setTimeout(() => {
+          this.$store.dispatch('activity/setMessage', this.$localized(this.description));
+        }, 50);
       }
     },
     createID() {

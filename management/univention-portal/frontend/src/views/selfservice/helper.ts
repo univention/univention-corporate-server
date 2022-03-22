@@ -106,20 +106,75 @@ export function setBackendInvalidMessage(widgets: WidgetDefinition[], invalidDat
   });
 }
 
-export function sanitizeFrontendValues(values) {
-  const sanitized = JSON.parse(JSON.stringify(values));
-  Object.entries(sanitized).forEach(([name, value]) => {
-    if (Array.isArray(value)) {
-      sanitized[name] = value.reduce((arr, arrValue) => {
-        if (Array.isArray(arrValue)) {
-          if (arrValue.some((v) => !!v)) {
+function getWidget(name: string, widgets: WidgetDefinition[]) {
+  return widgets.find((_w) => _w.name === name);
+}
+
+export function sanitizeFrontendValues(values: Record<string, unknown>, widgets: WidgetDefinition[]) {
+  const sanitized: Record<string, unknown> = JSON.parse(JSON.stringify(values));
+  widgets.forEach((widget) => {
+    const value = sanitized[widget.name];
+    if (widget.type === 'ImageUploader') {
+      if (typeof value === 'string' && value.startsWith('data:')) {
+        const data = value.split(',')[1];
+        if (data) {
+          sanitized[widget.name] = data;
+        } else {
+          delete sanitized[widget.name];
+        }
+      } else {
+        delete sanitized[widget.name];
+      }
+    }
+    if (widget.type === 'MultiInput') {
+      if (Array.isArray(value)) {
+        sanitized[widget.name] = value.reduce((arr, arrValue) => {
+          if (Array.isArray(arrValue)) {
+            if (arrValue.some((v) => !!v)) {
+              arr.push(arrValue);
+            }
+          } else if (arrValue) {
             arr.push(arrValue);
           }
-        } else if (arrValue) {
-          arr.push(arrValue);
-        }
-        return arr;
-      }, []);
+          return arr;
+        }, []);
+      }
+    }
+  });
+  return sanitized;
+}
+
+// copy pasted from ucs/management/univention-web/js/widgets/Image.js
+function getImageType(base64String: string): string {
+  // check the signature of the first bytes...
+  // for jpeg it is (in hex): hex pattern: FF D8 FF
+  if (base64String.indexOf('/9j/4') === 0) {
+    return 'jpeg';
+  }
+  // the first 8 bytes (in hex) should be matched: 89 50 4E 47 0D 0A 1A 0A
+  // note that base64 encodes 6 bits per character...
+  if (base64String.indexOf('iVBORw0KGg') === 0) {
+    return 'png';
+  }
+  if (base64String.indexOf('R0lGODdh') === 0 || base64String.indexOf('R0lGODlh') === 0) {
+    return 'gif';
+  }
+  // check whether file starts with '<svg', '<SVG', '<xml', or '<XML'...
+  // as simple check that should work for most cases
+  if (base64String.indexOf('PHN2Z') === 0 || base64String.indexOf('PFNWR') === 0 || base64String.indexOf('PFhNT') || base64String.indexOf('PHhtb')) {
+    return 'svg+xml';
+  }
+  return 'unknown';
+}
+
+export function sanitizeBackendValues(values: Record<string, unknown>, widgets: WidgetDefinition[]) {
+  const sanitized: Record<string, unknown> = JSON.parse(JSON.stringify(values));
+  widgets.forEach((widget) => {
+    if (widget.type === 'ImageUploader') {
+      const value = sanitized[widget.name];
+      if (typeof value === 'string' && !value.startsWith('data:')) {
+        sanitized[widget.name] = `data:image/${getImageType(value)};base64,${value}`;
+      }
     }
   });
   return sanitized;

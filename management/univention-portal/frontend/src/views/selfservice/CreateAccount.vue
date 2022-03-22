@@ -67,7 +67,7 @@ import { mapGetters } from 'vuex';
 import { sanitizeBackendWidget, setBackendInvalidMessage, sanitizeFrontendValues } from '@/views/selfservice/helper';
 
 interface Data {
-  formValues: Record<string, string>,
+  formValues: Record<string, unknown>,
   formWidgets: WidgetDefinition[],
 }
 
@@ -133,8 +133,8 @@ export default defineComponent({
         sanitized.forEach((widget) => {
           values[widget.name] = initialValue(widget, values[widget.name]);
         });
-        this.formValues = values;
         this.formWidgets = sanitized;
+        this.formValues = values;
         this.$nextTick(() => {
           this.form.focusFirstInteractable();
         });
@@ -149,7 +149,7 @@ export default defineComponent({
         return;
       }
       umcCommandWithStandby(this.$store, 'passwordreset/create_self_registered_account', {
-        attributes: sanitizeFrontendValues(this.formValues),
+        attributes: sanitizeFrontendValues(this.formValues, this.formWidgets),
       })
         .then((result) => {
           console.log(result);
