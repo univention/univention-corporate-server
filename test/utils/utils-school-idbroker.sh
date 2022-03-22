@@ -262,9 +262,11 @@ kvm_setup_dns_entries_in_broker () {
 	# only for kvm
 	[ "$KVM_BUILD_SERVER" = "EC2" ] && return 0
 	udm dns/forward_zone create --set zone="${UCS_ENV_TRAEGER1_DOMAIN}" --set nameserver="$(hostname -f)." --position="cn=dns,$(ucr get ldap/base)" || return 1
+	# shellcheck disable=SC2153
 	udm dns/host_record create --set a="${TRAEGER1_IP}" --set name=ucs-sso --position zoneName="${UCS_ENV_TRAEGER1_DOMAIN},cn=dns,$(ucr get ldap/base)" || return 1
 	udm dns/host_record create --set a="${TRAEGER1_IP}" --set name=traeger1 --position zoneName="${UCS_ENV_TRAEGER1_DOMAIN},cn=dns,$(ucr get ldap/base)" || return 1
 	udm dns/forward_zone create --set zone="${UCS_ENV_TRAEGER2_DOMAIN}" --set nameserver="$(hostname -f)." --position="cn=dns,$(ucr get ldap/base)" || return 1
+	# shellcheck disable=SC2153
 	udm dns/host_record create --set a="${TRAEGER2_IP}" --set name=ucs-sso --position zoneName="${UCS_ENV_TRAEGER2_DOMAIN},cn=dns,$(ucr get ldap/base)" || return 1
 	udm dns/host_record create --set a="${TRAEGER2_IP}" --set name=traeger2 --position zoneName="${UCS_ENV_TRAEGER2_DOMAIN},cn=dns,$(ucr get ldap/base)" || return 1
 }
@@ -293,6 +295,31 @@ prepare_jump_host () {
     echo 'root hard nofile 10240' >> /etc/security/limits.conf
     echo "fs.file-max=1048576" > /etc/sysctl.d/99-file-max.conf
     sysctl -p
+}
+
+# fix traeger host records for id broker kvm templates
+fix_traeger_dns_entries_in_broker_domain () {
+	local traeger1_ip="${1:?missing ip}"
+	local traeger2_ip="${2:?missing ip}"
+	udm dns/host_record modify --dn "relativeDomainName=traeger1,zoneName=traeger1.local,cn=dns,dc=idbroker,dc=local" --set a="$traeger1_ip"
+	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=traeger1.local,cn=dns,dc=idbroker,dc=local" --set a="$traeger1_ip"
+	udm dns/host_record modify --dn "relativeDomainName=traeger2,zoneName=traeger2.local,cn=dns,dc=idbroker,dc=local" --set a="$traeger2_ip"
+	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=traeger2.local,cn=dns,dc=idbroker,dc=local" --set a="$traeger2_ip"
+	# ucs sso TODO add other systems
+	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=$(ucr get domainname),cn=dns,$(ucr get ldap/base)" --set a="$(ucr get interfaces/eth0/address)"
+}
+
+fix_broker_dns_entries_on_traeger () {
+	local kc1_ip="${1:?missing ip}"
+	local provisioning1_ip="${2:?missing ip}"
+	# kc1
+	ucr search --value --brief login.kc1.broker.local | awk -F : '{print $1}' | xargs  ucr unset
+	# shellcheck disable=SC2140
+	ucr set "hosts/static/$kc1_ip"="login.kc1.broker.local"
+	# provisioning1
+	udm dns/host_record modify --dn "relativeDomainName=provisioning1,zoneName=broker.local,cn=dns,$(ucr get ldap/base)" --set a="$provisioning1_ip"
+	# ucs sso
+	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=$(ucr get domainname),cn=dns,$(ucr get ldap/base)" --set a="$(ucr get interfaces/eth0/address)"
 }
 
 # vim:set filetype=sh ts=4:

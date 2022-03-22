@@ -11,6 +11,8 @@ config.read(template_file)
 sections = config.sections()
 sections.remove("Global")
 recover_command = config.getint("Global", "recover")
+kvm_extra_label = config.get("Global", "kvm_extra_label")
+config.set("Global", "kvm_extra_label", "{kvm_extra_label}-kvm-templates".format(kvm_extra_label=kvm_extra_label))
 new_recover_command = recover_command + 1
 config.set("Global", "recover", str(new_recover_command))
 
@@ -23,6 +25,8 @@ for section in sections:
         "command{recover_command}".format(recover_command=recover_command),
         """
 ucr set internal/kvm/template/old/ip="$(ucr get interfaces/eth0/address)"
+apt-get -y remove firefox-esr
+apt-get clean
 echo -e "version=@%@version/version@%@-@%@version/patchlevel@%@-$(date +%Y-%m-%d)\\nversion_version=@%@version/version@%@" | ucr filter>/tmp/ucs.ver
 GET /tmp/ucs.ver ucs.ver
 . base_appliance.sh && appliance_poweroff
