@@ -206,8 +206,6 @@ class simpleLdap(object):
 		m = univention.admin.modules.get(self.module)
 		if not hasattr(self, 'mapping'):
 			self.mapping = getattr(m, 'mapping', None)
-		if not hasattr(self, 'descriptions'):
-			self.descriptions = getattr(m, 'property_descriptions', None)
 
 		self.oldattr = {}  # type: _Attributes
 		if attributes:
@@ -233,6 +231,10 @@ class simpleLdap(object):
 		self.save()
 
 		self._validate_superordinate(False)
+
+	@property
+	def descriptions(self):  # type: () -> Dict[Text, univention.admin.property]
+		return univention.admin.modules.get(self.module).property_descriptions
 
 	def save(self):  # type: () -> None
 		"""Saves the current internal object state as old state for later comparison when e.g. modifying this object.
