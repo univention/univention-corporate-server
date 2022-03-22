@@ -956,6 +956,15 @@
 						<envar>self-service/backend-server</envar>, since requests regarding these variables are forwarded to the Self Service backend.
 					</simpara></listitem>
 				</varlistentry>
+				<varlistentry>
+					<term><envar>umc/self-service/service-specific-passwords/backend/enabled</envar></term>
+					<listitem><simpara>
+                        Activates or deactivates the backend for service
+                        specific passwords. Currently, only the service RADIUS
+                        is supported. Find more information in
+                        <xref linkend="ip-config:radius:configuration:service-specific-password"/>.
+					</simpara></listitem>
+				</varlistentry>
 			</variablelist>
 			<para>
 				Those variables also activate or deactivate the corresponding entries in the portal. However, you can also adjust them manually, they are in fact just normal portal entries.

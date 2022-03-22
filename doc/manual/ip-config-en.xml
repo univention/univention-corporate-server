@@ -2414,6 +2414,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 					By default, users authenticate with their domain password. By setting the &ucsUCRV;
 					<envar>radius/service-specific-password</envar> to <literal>true</literal>,
                         a dedicated password for RADIUS will be used. Through the App Self Service, users can get such a password. The system will generate a random password for users to use. If needed, a new password can be generated at any time. This also invalidates the old password.
+                        To enable this page in the Self Service, the &ucsUCRV; <envar>umc/self-service/service-specific-passwords/backend/enabled</envar> has to be set to <literal>true</literal> on the <guimenu>Self Service Backend</guimenu>.
 				</para>
 					<figure id="ip-config:radius:selfservice">
 						<title>The page in the Self Service to get a RADIUS specific password</title>

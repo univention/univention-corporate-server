@@ -995,6 +995,16 @@
 						definiert ist, da Anfragen bezüglich dieser Variablen an das <foreignphrase>Self Service Backend</foreignphrase> weitergeleitet werden.
 					</simpara></listitem>
 				</varlistentry>
+				<varlistentry>
+					<term><envar>umc/self-service/service-specific-passwords/backend/enabled</envar></term>
+					<listitem><simpara>
+                        Aktiviert bzw. deaktiviert die Backend-Funktionalität
+                        für dienstspezifische Passwörter. Momentan wird nur
+                        RADIUS als Dienst unterstützt. Weitere Informationen
+                        finden sich in
+                        <xref linkend="ip-config:radius:configuration:service-specific-password"/>.
+					</simpara></listitem>
+				</varlistentry>
 			</variablelist>
 			<para>
 				Die entsprechenden Einträge im Portal werden damit auch aktiviert bzw. deaktiviert. Sie können die Einträge aber auch manuell anpassen. Sie verhalten sich wie normale Einträge im Portal.
