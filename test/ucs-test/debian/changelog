@@ -1,3 +1,9 @@
+ucs-test (10.0.6-106) unstable; urgency=medium
+
+  * Bug #54561: ldap-group-cache returns empty list instead of none - adapt tests
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 22 Mar 2022 13:13:23 +0100
+
 ucs-test (10.0.6-105) unstable; urgency=medium
 
   * Bug #54434: Adapt 06_test_self_registration.py
