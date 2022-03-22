@@ -11,8 +11,6 @@ desc: |
    group members are now ignored in UDM module `groups/group`.
  * Moving of `users/ldap` objects is possible again. This was broken
    due to the Python 3 migration in UCS 5.0.
- * The performance of the license check has been improved to reduce
-   the initial login time.
  * Two resource sharing conflicts on Python dictionaries have been
    fixed, that could lead to tracebacks when modules are reloaded
    in a multithreaded context.
@@ -22,4 +20,6 @@ desc: |
  * When removing a policy the policy is removed from the referencing objects.
  * Backend functionality for service specific passwords has been added. It
    cannot be used via CLI.
+ * The performance of the license check has been improved to reduce
+   the initial login time.
 bug: [54402, 54085, 53581, 54150, 53975, 16966, 54438, 52292]
