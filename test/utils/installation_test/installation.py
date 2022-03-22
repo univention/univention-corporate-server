@@ -108,7 +108,8 @@ class UCSInstallation(object):
 		time.sleep(60)
 		self.client.waitForText(self._['partition_disks'], timeout=self.timeout)
 		if self.args.role == 'applianceLVM':
-			self.click(self._['entire_disk_with_lvm'])
+			#self.click(self._['entire_disk_with_lvm'])
+			# LVM is the default so just press enter
 			self.client.keyPress('enter')
 			time.sleep(3)
 			self.client.keyPress('enter')
