@@ -69,6 +69,8 @@ if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 
 fi
 
+/usr/share/univention-self-service/univention-setup-self-service-portal-links --no-update
+
 joinscript_save_current_version
 
 exit 0

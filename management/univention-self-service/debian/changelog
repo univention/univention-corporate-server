@@ -1,3 +1,9 @@
+univention-self-service (5.0.1-23) unstable; urgency=medium
+
+  * Bug #54434: Register the new portal in the joinscript, not in postinst
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 22 Mar 2022 13:43:05 +0100
+
 univention-self-service (5.0.1-22) unstable; urgency=medium
 
   * Bug #54434: Pre-Depend on univention-portal; UDM modules needed in postinst

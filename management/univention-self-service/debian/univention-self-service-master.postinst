@@ -42,6 +42,5 @@ then
 		--dn "cn=self-service,cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)" \
 		--set activated=FALSE
 fi
-/usr/share/univention-self-service/univention-setup-self-service-portal-links --no-update
 
 exit 0
