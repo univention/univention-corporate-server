@@ -1,3 +1,9 @@
+univention-self-service (5.0.1-24) unstable; urgency=medium
+
+  * Bug #54434: replace pngs with svgs
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 22 Mar 2022 14:29:32 +0100
+
 univention-self-service (5.0.1-23) unstable; urgency=medium
 
   * Bug #54434: Register the new portal in the joinscript, not in postinst
