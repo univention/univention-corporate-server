@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.0-29) unstable; urgency=medium
+
+  * Bug #53455: added code and readability improvements
+
+ -- Juan Pedro Torres <torres-munoz.extern@univention.de>  Tue, 22 Mar 2022 12:24:34 +0100
+
 univention-management-console-module-diagnostic (6.0.0-28) unstable; urgency=medium
 
   * Bug #53455: added check for slapschema installed in the device

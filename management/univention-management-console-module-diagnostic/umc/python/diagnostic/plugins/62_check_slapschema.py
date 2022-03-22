@@ -33,6 +33,7 @@
 
 from subprocess import Popen, PIPE
 
+import os
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import Warning
 
@@ -55,27 +56,24 @@ def reduce_errors(list_errors):
 	return error_info
 
 
-def check_program_exists(name):
-	p = Popen(['/usr/bin/which', name], stdout=PIPE, stderr=PIPE)
-	p.communicate()
-	return p.returncode == 0
-
-
 def run(_umc_instance):
-	if check_program_exists('slapschema'):
-		process = Popen(['slapschema'], stdout=PIPE, stderr=PIPE, env={'LANG': 'C'}, shell=True)
-		stdout, stderr = process.communicate()
-		stderr = stderr.decode('UTF-8', 'replace')
+	# Check if slapschema is installed
+	if not os.path.exists('/usr/sbin/slapschema'):
+		return
+	process = Popen(['slapschema'], stdout=PIPE, stderr=PIPE, env={'LANG': 'C'}, shell=True)
+	stdout, stderr = process.communicate()
+	stderr = stderr.decode('UTF-8', 'replace')
 
-		# Check if there was an error
-		if stderr:
-			# Filter UNKNOWN error message
-			error_list = stderr.splitlines()
-			error_id = reduce_errors(error_list)
-			# Raise Warning with all attribute missing a schema
-			error_msg = description + "".join([att_missing.format(error) for error in error_id])
+	# Check if there was an error
+	if not stderr:
+		return
+	# Filter UNKNOWN error message
+	error_list = stderr.splitlines()
+	error_id = reduce_errors(error_list)
+	# Raise Warning with all attribute missing a schema
+	error_msg = description + "".join([att_missing.format(error) for error in error_id])
 
-			raise Warning(error_msg)
+	raise Warning(error_msg)
 
 
 if __name__ == '__main__':
