@@ -15,6 +15,7 @@ kvm_extra_label = config.get("Global", "kvm_extra_label")
 config.set("Global", "kvm_extra_label", "{kvm_extra_label}-kvm-templates".format(kvm_extra_label=kvm_extra_label))
 new_recover_command = recover_command + 1
 config.set("Global", "recover", str(new_recover_command))
+config.set("Global", "kvm_memory", "8G")
 
 for section in sections:
     template_name = section
@@ -24,6 +25,7 @@ for section in sections:
         section,
         "command{recover_command}".format(recover_command=recover_command),
         """
+rm -f /root/.ssh/environment
 ucr set internal/kvm/template/old/ip="$(ucr get interfaces/eth0/address)"
 apt-get -y remove firefox-esr
 apt-get clean
