@@ -6,12 +6,9 @@ src: bind9
 fix: 1:9.10.3.dfsg.P4-12.3+deb9u12A~4.4.8.202203210927
 desc: |
  This update addresses the following issue:
- * The rules for acceptance of records into the cache have been tightened to prevent the possibility of poisoning if forwarders send records outside the configured bailiwick (CVE-2021-25220)
-
- * 1:9.10.3.dfsg.P4-12.3+deb9u12 (Sat, 19 Mar 2022 14:43:45 +0100)
-  * Non-maintainer upload by the LTS team.
-  * Regression update for CVE-2021-25220: Properly initialize variables before
-  using them.
+ * The rules for acceptance of records into the cache have been tightened to
+   prevent the possibility of poisoning if forwarders send records outside the
+   configured bailiwick (CVE-2021-25220)
 bug: [54566]
 cve:
 - CVE-2021-25220
