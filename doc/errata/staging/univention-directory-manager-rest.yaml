@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-directory-manager-rest
-fix: 10.0.2-9A~5.0.0.202203152207
+fix: 10.0.2-10A~5.0.0.202203191704
 desc: |
  This update addresses the following issue(s):
  * The UDM REST API now supports UDM object types containing "-" in their
