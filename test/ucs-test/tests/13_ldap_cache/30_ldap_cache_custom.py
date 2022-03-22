@@ -65,6 +65,6 @@ def test_double_cache(udm, get_cache, add_cache, group1, user1):
 	new_name = random_name()
 	new_dn = udm.modify_object('users/user', dn=user1.dn, username=new_name, check_for_drs_replication=True)
 	udm.remove_object('groups/group', dn=group1.dn, check_for_drs_replication=True)
-	assert testcache.get(group1.dn.lower()) is None
-	assert testcache.get(user1.dn.lower()) is None
+	assert testcache.get(group1.dn.lower()) == []
+	assert testcache.get(user1.dn.lower()) == []
 	assert testcache.get(new_dn.lower()) == [new_name]

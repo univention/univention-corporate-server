@@ -1,3 +1,9 @@
+ucs-test (9.0.7-89) unstable; urgency=medium
+
+  * Bug #54561: ldap-group-cache returns empty list instead of none - adapt tests
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 22 Mar 2022 13:15:50 +0100
+
 ucs-test (9.0.7-88) unstable; urgency=medium
 
   * Bug #54487: memberuid is mission after updating group users with same uid
