@@ -25,7 +25,7 @@ shutdown='false'
 # some internal stuff
 image="${DIMAGE:-docker-registry.knut.univention.de/ucs-ec2-tools}"
 debug="${DEBUG:=false}"
-docker="${DOCKER:=false}"
+docker="${DOCKER:=true}"
 docker_env_file="$(mktemp)"
 
 usage () {
@@ -94,7 +94,7 @@ usage () {
 	echo "                           in utils/utils-local.sh::fetch-results (default: true for jenkins, otherwise false)"
 	echo ""
 	echo "  internal"
-	echo "    DOCKER               - use docker container instead if local ucs-ec2-tools (default: false)"
+	echo "    DOCKER               - use docker container instead if local ucs-ec2-tools (default: true)"
 	echo "    DEBUG                - debug mode (default: false)"
 	echo ""
 	echo "  branch tests:"
