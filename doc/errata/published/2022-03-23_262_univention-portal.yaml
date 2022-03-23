@@ -16,3 +16,5 @@ desc: |
  * Fixed various CSS issues.
  * Fixed various accessibility issues.
 bug: [54556]
+erratum: 262
+announced: 2022-03-23
