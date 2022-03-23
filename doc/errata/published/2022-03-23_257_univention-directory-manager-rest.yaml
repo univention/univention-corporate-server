@@ -11,3 +11,5 @@ desc: |
  * A new method has been added to generate and set a service specific password
    for a user.
 bug: [54063, 54438]
+erratum: 257
+announced: 2022-03-23
