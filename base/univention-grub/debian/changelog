@@ -1,3 +1,9 @@
+univention-grub (12.0.0-4) unstable; urgency=low
+
+  * Bug #54530: Disable apparmor
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Mar 2022 16:57:23 +0100
+
 univention-grub (12.0.0-3) unstable; urgency=medium
 
   * Bug #51018: make UCR templates compatible to python3
