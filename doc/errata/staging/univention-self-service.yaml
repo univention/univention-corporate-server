@@ -12,4 +12,7 @@ desc: |
    `employeeNumber` and `organisation`.
  * A new backend function has been added that can set service specific
    passwords for a user.
-bug: [48960, 54434]
+ * The Self Service now adds its dedicated portal to make use of the new
+   features in Univention Portal. For more, see
+   https://help.univention.com/t/the-new-self-service-is-integrated-in-the-portal/19671
+bug: [48960, 54434, 54556]
