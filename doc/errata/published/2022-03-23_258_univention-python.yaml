@@ -13,3 +13,5 @@ desc: |
    passwords. The new function `password_config` can be used to get parameters
    for that from UCR.
 bug: [51354, 54555]
+erratum: 258
+announced: 2022-03-23
