@@ -10,3 +10,5 @@ desc: |
    If enabled, the authentication is done against a nagios specific password,
    not the domain password of the user.
 bug: [54409]
+erratum: 256
+announced: 2022-03-23
