@@ -272,7 +272,7 @@ exe='ucs-ec2-create'
 declare -a cmd=()
 if "$docker"; then
 	# get latest version of image
-	docker pull "$image"
+	case "$image" in *.*/*) docker pull "$image" ;; esac
 	# create env file
 	{
 		for env_var in "${env_vars[@]}"
