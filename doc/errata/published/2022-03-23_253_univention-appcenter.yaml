@@ -9,3 +9,5 @@ desc: |
  * Allow for the tmpfs that are created for a docker app to be
    defined in the apps ini file.
 bug: [54562]
+erratum: 253
+announced: 2022-03-23
