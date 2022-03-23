@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: apache2
+fix: 2.4.25-3+deb9u13A~4.4.9.202203231446
+desc: |
+ This update addresses the following issues:
+ * mod_lua: Use of uninitialized value of in r:parsebody (CVE-2022-22719)
+ * Errors encountered during the discarding of request body lead to HTTP
+   request smuggling (CVE-2022-22720)
+ * core: Possible buffer overflow with very large or unlimited
+   LimitXMLRequestBody (CVE-2022-22721)
+ * mod_sed: Read/write beyond bounds (CVE-2022-23943)
+bug: [54580]
+cve:
+- CVE-2022-22719
+- CVE-2022-22720
+- CVE-2022-22721
+- CVE-2022-23943
