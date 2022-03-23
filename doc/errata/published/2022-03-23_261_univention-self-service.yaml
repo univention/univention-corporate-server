@@ -16,3 +16,5 @@ desc: |
    features in Univention Portal. For more, see
    https://help.univention.com/t/19671
 bug: [48960, 54434, 54556]
+erratum: 261
+announced: 2022-03-23
