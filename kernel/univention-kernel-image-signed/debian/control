@@ -6,14 +6,14 @@ Build-Depends:
  debhelper,
 Standards-Version: 3.8.2
 
-Package: kernel-image-4.9.0-18-amd64-di-signed
+Package: kernel-image-4.19.0-0.bpo.19-amd64-di-signed
 Architecture: amd64
 Section: debian-installer
 Package-Type: udeb
 Description: UCS - Linux kernel (standard)
  This package provides the signed version of:
  .
- The Linux kernel 4.9 and modules for use on PCs with AMD64, Intel 64 or
+ The Linux kernel 4.19 and modules for use on PCs with AMD64, Intel 64 or
  VIA Nano processors.
  .
  This kernel also runs on a Xen hypervisor.  It supports both privileged
@@ -24,14 +24,14 @@ Description: UCS - Linux kernel (standard)
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: linux-image-4.9.0-18-amd64-signed
+Package: linux-image-4.19.0-0.bpo.19-amd64-signed
 Architecture: amd64
 Depends:
- linux-image-4.9.0-18-amd64 (= 4.9.303-1),
+ linux-image-4.19.0-0.bpo.19-amd64 (= 4.19.232-1~deb9u1),
 Description: UCS - Linux kernel (standard)
  This package provides the signed version of:
  .
- The Linux kernel 4.9 and modules for use on PCs with AMD64, Intel 64 or
+ The Linux kernel 4.19 and modules for use on PCs with AMD64, Intel 64 or
  VIA Nano processors.
  .
  This kernel also runs on a Xen hypervisor.  It supports both privileged
@@ -42,14 +42,14 @@ Description: UCS - Linux kernel (standard)
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: linux-image-4.9.0-18-686-pae-signed
+Package: linux-image-4.19.0-0.bpo.19-686-pae-signed
 Architecture: i386
 Depends:
- linux-image-4.9.0-18-686-pae (= 4.9.303-1),
+ linux-image-4.19.0-0.bpo.19-686-pae (= 4.19.232-1~deb9u1),
 Description: UCS - Linux kernel (standard)
  This package depends on the unsigned version of:
  .
- The Linux kernel 4.9 and modules for use on PCs with one or more
+ The Linux kernel 4.19 and modules for use on PCs with one or more
  processors supporting PAE.
  .
  This kernel requires PAE (Physical Address Extension). This feature is
