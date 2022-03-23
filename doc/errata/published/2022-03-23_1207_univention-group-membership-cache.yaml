@@ -11,3 +11,5 @@ desc: |
    traceback in the Microsoft365 connector listener, when not every
    ADConnectionAlias has at least one user.
 bug: [54561]
+erratum: 1207
+announced: 2022-03-23
