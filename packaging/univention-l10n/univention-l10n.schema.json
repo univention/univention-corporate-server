@@ -78,15 +78,15 @@
 			}
 		],
 		"additionalProperties": false,
-		"if": {
-			"properties": { "target_type": { "const": "mo" } }
-		}, "then": {
-			"properties": { "destination": { "$ref": "#/definitions/mopath" } }
-		},
-		"if": {
-			"properties": { "target_type": { "const": "json" } }
-		}, "then": {
-			"properties": { "destination": { "$ref": "#/definitions/jsonpath" } }
-		}
+		"allOf": [
+			{
+				"if": { "properties": { "target_type": { "const": "mo" } } },
+				"then": { "properties": { "destination": { "$ref": "#/definitions/mopath" } } }
+			},
+			{
+				"if": { "properties": { "target_type": { "const": "json" } } },
+				"then": { "properties": { "destination": { "$ref": "#/definitions/jsonpath" } } }
+			}
+		]
 	}
 }
