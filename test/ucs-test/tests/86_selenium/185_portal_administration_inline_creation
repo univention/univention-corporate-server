@@ -30,6 +30,7 @@ def _add_german_text(chrome, text):
     chrome.enter_tab()
     chrome.enter_tab()
     chrome.enter_return()
+    time.sleep(.1)
 
 
 def test_inline_creation(chrome, admin_username, admin_password, udm):
@@ -40,6 +41,7 @@ def test_inline_creation(chrome, admin_username, admin_password, udm):
     chrome.wait_until_clickable_and_click('#header-button-menu')
     chrome.wait_until_clickable_and_click('button.portal-sidenavigation__edit-mode')
 
+    chrome.enter_return()
     # create category
     chrome.wait_until_clickable_and_click('.portal-categories__add-button')
     buttons = chrome.find_all('.tile-add-modal-button')
@@ -54,6 +56,7 @@ def test_inline_creation(chrome, admin_username, admin_password, udm):
     chrome.enter_tab()
     chrome.enter_tab()
     chrome.enter_return()
+    time.sleep(.2)
     chrome.wait_until_gone('.modal-wrapper--isVisible')
     categories = udm.get('portals/category')
     category = list(categories.search('name=%s' % cat_name))[0].open()
@@ -79,17 +82,9 @@ def test_inline_creation(chrome, admin_username, admin_password, udm):
     _add_german_text(chrome, tile_description + ' DE')
     chrome.enter_tab()
     chrome.enter_tab()
-    chrome.enter_return()
-    time.sleep(1)
-    chrome.enter_shift_tab()
-    chrome.send_keys('en')
-    chrome.enter_tab()
     chrome.send_keys(tile_link)
-    chrome.enter_tab()
-    chrome.enter_tab()
-    chrome.enter_tab()
-    chrome.enter_tab()
     chrome.click_element('form.admin-entry button.primary')
+    time.sleep(.2)
     chrome.wait_until_gone('.modal-wrapper--isVisible')
     entries = udm.get('portals/entry')
     entry = list(entries.search('name=%s' % tile_name))[0].open()
@@ -122,6 +117,7 @@ def test_inline_creation(chrome, admin_username, admin_password, udm):
     _add_german_text(chrome, folder_display + ' DE')
     chrome.enter_shift_tab()
     chrome.enter_return()
+    time.sleep(.2)
     chrome.wait_until_gone('.modal-wrapper--isVisible')
     folders = udm.get('portals/folder')
     folder = list(folders.search('name=%s' % folder_name))[0].open()
