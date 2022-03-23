@@ -1,0 +1,28 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+exclude: "^packaging/ucslint/testframework/"
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+    -   id: check-added-large-files
+    -   id: check-json
+        exclude: "/conffiles/.*[.]json$"
+    -   id: check-xml
+        exclude: "/conffiles/.*[.]xml$\
+                  |^base/univention-app-appliance/\
+                  "
+    -   id: check-yaml
+        exclude: '/conffiles/.*\.yaml$'
+    -   id: check-merge-conflict
+    -   id: trailing-whitespace
+        exclude: "^base/univention-config-registry/tests/unwrap/\
+                  |^base/univention-lib/unittests/fstab$\
+                  |^base/univention-system-setup/city-data/.*[.](txt|json)$\
+                  |^doc/errata/staging/0.*template[.]yaml$\
+                  |^services/univention-ldb-modules/buildtools/wafsamba/\
+                  |[.]csv$\
+                  |[.]diff$\
+                  |[.]patch$\
+                  |[.]svg$\
+                  "
