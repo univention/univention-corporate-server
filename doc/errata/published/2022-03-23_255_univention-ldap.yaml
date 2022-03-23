@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * A new attribute univentionRadiusPassword has been added to the user class.
 bug: [54395]
+erratum: 255
+announced: 2022-03-23
