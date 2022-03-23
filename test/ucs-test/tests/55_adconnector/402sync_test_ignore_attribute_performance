@@ -14,7 +14,7 @@
 # shellcheck source=../../lib/udm.sh
 . "$TESTLIBPATH/udm.sh" || exit 137
 # shellcheck source=../../lib/random.sh
-. "$TESTLIBPATH/random.sh" || exit 137 
+. "$TESTLIBPATH/random.sh" || exit 137
 
 
 . "adconnector.sh" || exit 137
@@ -76,7 +76,7 @@ sleep 10 ## Wait for replication attempt
 	RE_END="^$RE_UNIVENTION_DEBUG POLL FROM CON: Processed .*"
 
 	lines_replication_cycle_begin=$(grep "$RE_START" /var/log/univention/connector-ad.log)
-	if [ -z "$lines_replication_cycle_begin" ]; then 
+	if [ -z "$lines_replication_cycle_begin" ]; then
 		grep "$RE_START" /var/log/univention/connector-ad.log
 		exit 1
 	fi
@@ -88,7 +88,7 @@ sleep 10 ## Wait for replication attempt
 	fi
 	grep -i "sync to ucs:   [          user] [    modify] $UDM_USER_DN$" /var/log/univention/connector-ad.log && fail_test 110
 	lines_replication_cycle_end=$(grep "$RE_END" /var/log/univention/connector-ad.log)
-	if [ -z "$lines_replication_cycle_end" ]; then 
+	if [ -z "$lines_replication_cycle_end" ]; then
 		grep "$RE_END" /var/log/univention/connector-ad.log
 		exit 1
 	fi
@@ -131,4 +131,3 @@ ad_delete "$AD_DN" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 
 exit "$RETVAL"
-

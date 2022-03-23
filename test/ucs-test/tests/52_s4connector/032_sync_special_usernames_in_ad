@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Use a username with special characters in Samba4"
 ## exposure: dangerous
@@ -104,4 +104,3 @@ rm -f "$ad_object_file"
 ad_delete "$AD_DN" || fail_test 110
 
 exit $RETVAL
-

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Create and delete a UCS user and re-create a user with the same username at a different position"
 ## exposure: dangerous

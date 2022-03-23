@@ -5,12 +5,12 @@
 ## packages:
 ##  - univention-samba | univention-samba4
 ##  - univention-quota
-## roles: 
+## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave
 ##  - memberserver
-## tags: 
+## tags:
 ##  - skip_admember
 ## exposure: dangerous
 
@@ -54,7 +54,7 @@ for FS in xfs ext2 ext3 ext4; do
 		fail_test
 		exit 110
 	fi
-		
+
 	mkdir -p "${mountpoint}"
 	if ! mount -o loop,usrquota "${image}" "${mountpoint}"; then
 		fail_test

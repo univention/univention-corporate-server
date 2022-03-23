@@ -26,7 +26,7 @@ univention-samba (14.0.5-3) unstable; urgency=medium
 
 univention-samba (14.0.4-6) unstable; urgency=medium
 
-  * Bug #53828: correct samba fix 
+  * Bug #53828: correct samba fix
 
  -- Tobias Wenzel <wenzel@univention.de>  Fri, 24 Sep 2021 10:40:41 +0200
 
@@ -395,26 +395,26 @@ univention-samba (11.0.0-1) unstable; urgency=medium
 
 univention-samba (10.0.1-6) unstable; urgency=low
 
-  * Added samba/register/exclude/interfaces (Bug #39601) 
+  * Added samba/register/exclude/interfaces (Bug #39601)
 
  -- Felix Botner <botner@univention.de>  Wed, 02 Dec 2015 09:41:58 +0100
 
 univention-samba (10.0.1-5) unstable; urgency=low
 
-  * Ignore appliance-mode-temporary (Bug #39601) 
+  * Ignore appliance-mode-temporary (Bug #39601)
 
  -- Felix Botner <botner@univention.de>  Tue, 01 Dec 2015 18:35:32 +0100
 
 univention-samba (10.0.1-4) unstable; urgency=low
 
   * Respect samba/interfaces/bindonly in
-    samba/register/exclude/interfaces (Bug #39601) 
+    samba/register/exclude/interfaces (Bug #39601)
 
  -- Felix Botner <botner@univention.de>  Tue, 01 Dec 2015 18:10:08 +0100
 
 univention-samba (10.0.1-3) unstable; urgency=low
 
-  * Added samba/register/exclude/interfaces (Bug #39601) 
+  * Added samba/register/exclude/interfaces (Bug #39601)
 
  -- Felix Botner <botner@univention.de>  Tue, 01 Dec 2015 17:38:03 +0100
 
@@ -566,20 +566,20 @@ univention-samba (9.0.0-1) unstable; urgency=medium
 
 univention-samba (8.0.19-11) unstable; urgency=low
 
-  * set default samba/role during update (Bug #35584) 
+  * set default samba/role during update (Bug #35584)
 
  -- Felix Botner <botner@univention.de>  Fri, 08 Aug 2014 10:18:16 +0200
 
 univention-samba (8.0.19-10) unstable; urgency=low
 
   * added prechange to password change script to
-    check time diff in member mode (Bug #35467) 
+    check time diff in member mode (Bug #35467)
 
  -- Felix Botner <botner@univention.de>  Mon, 28 Jul 2014 15:35:17 +0200
 
 univention-samba (8.0.19-9) unstable; urgency=low
 
-  * fixed last commit (Bug #35467) 
+  * fixed last commit (Bug #35467)
 
  -- Felix Botner <botner@univention.de>  Mon, 28 Jul 2014 14:24:29 +0200
 
@@ -591,19 +591,19 @@ univention-samba (8.0.19-8) unstable; urgency=low
 
 univention-samba (8.0.19-7) unstable; urgency=low
 
-  * use dns for kerberos in member mode (Bug #35470) 
+  * use dns for kerberos in member mode (Bug #35470)
 
  -- Felix Botner <botner@univention.de>  Fri, 25 Jul 2014 10:57:59 +0200
 
 univention-samba (8.0.19-6) unstable; urgency=low
 
-  * replaced ldap search with is_domain_in_admember_mode (Bug #35095) 
+  * replaced ldap search with is_domain_in_admember_mode (Bug #35095)
 
  -- Felix Botner <botner@univention.de>  Wed, 23 Jul 2014 10:46:14 +0200
 
 univention-samba (8.0.19-5) unstable; urgency=low
 
-  * removed univention-samba-ad-member (Bug #35095) 
+  * removed univention-samba-ad-member (Bug #35095)
 
  -- Felix Botner <botner@univention.de>  Wed, 23 Jul 2014 09:50:01 +0200
 
@@ -617,13 +617,13 @@ univention-samba (8.0.19-4) unstable; urgency=low
 
 univention-samba (8.0.19-3) unstable; urgency=low
 
-  * fixed postinst (Bug #35095) 
+  * fixed postinst (Bug #35095)
 
  -- Felix Botner <botner@univention.de>  Wed, 16 Jul 2014 14:23:34 +0200
 
 univention-samba (8.0.19-2) unstable; urgency=low
 
-  * fixed join script (Bug #35095) 
+  * fixed join script (Bug #35095)
 
  -- Felix Botner <botner@univention.de>  Tue, 15 Jul 2014 14:54:07 +0200
 
@@ -636,7 +636,7 @@ univention-samba (8.0.19-1) unstable; urgency=low
      * Remove configure_adds_dc_as_kdc function (Bug #34091)
      * remove the development version settings of timeserver (Bug #34091)
      * Let UCR variable ad/member decide upon AD Member mode (Bug #34091)
-     * Abort join of another UCS DC if the UCS master claims to be AD Member (Bug #34091) 
+     * Abort join of another UCS DC if the UCS master claims to be AD Member (Bug #34091)
      * support explicit choice of samba/dc (Bug #34091)
      * ADDS DC lookup was moved to python-univention-lib (Bug #34091)
      * remove the development version settings of nameserver and AD-Connector (Bug #34091)
@@ -655,19 +655,19 @@ univention-samba (8.0.19-1) unstable; urgency=low
 
 univention-samba (8.0.18-3) unstable; urgency=low
 
-  * Added samba/acl/allow/execute/always (Bug #33785) 
+  * Added samba/acl/allow/execute/always (Bug #33785)
 
  -- Felix Botner <botner@univention.de>  Tue, 17 Jun 2014 12:46:43 +0200
 
 univention-samba (8.0.18-2) unstable; urgency=low
 
-  * Added samba/acl/allow/execute/always (Bug #33785) 
+  * Added samba/acl/allow/execute/always (Bug #33785)
 
  -- Felix Botner <botner@univention.de>  Tue, 17 Jun 2014 12:44:34 +0200
 
 univention-samba (8.0.18-1) unstable; urgency=low
 
-  * Added samba/acl/allow/execute/always (Bug #33785) 
+  * Added samba/acl/allow/execute/always (Bug #33785)
 
  -- Felix Botner <botner@univention.de>  Tue, 17 Jun 2014 12:08:42 +0200
 
@@ -679,13 +679,13 @@ univention-samba (8.0.16-1) unstable; urgency=medium
 
 univention-samba (8.0.15-5) unstable; urgency=low
 
-  * removed nofile limit stuff from package (Bug #32415) 
+  * removed nofile limit stuff from package (Bug #32415)
 
  -- Felix Botner <botner@univention.de>  Fri, 10 Jan 2014 11:39:40 +0100
 
 univention-samba (8.0.15-4) unstable; urgency=low
 
-  * increase max number of open files for smbd (Bug #32415) 
+  * increase max number of open files for smbd (Bug #32415)
 
  -- Felix Botner <botner@univention.de>  Wed, 08 Jan 2014 17:07:42 +0100
 
@@ -840,9 +840,9 @@ univention-samba (8.0.4-4) unstable; urgency=low
 univention-samba (8.0.4-3) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)
-  * samba/netbios/filter was removed, the underlying Samba patch was dropped 
+  * samba/netbios/filter was removed, the underlying Samba patch was dropped
     for UCS 3.0
-  * Removed obsolete univention-samba-ha.dirs	
+  * Removed obsolete univention-samba-ha.dirs
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 24 Jul 2013 11:25:55 +0200
 
@@ -988,11 +988,11 @@ univention-samba (7.0.13-1) unstable; urgency=low
 univention-samba (7.0.12-3) unstable; urgency=low
 
   * another fix for setting samba/share/home=yes on a memberserver when joining a samba4-domain (Bug #25339)
-  
+
  -- Tobias Peters <tpeters@omar.knut.univention.de>  Tue, 16 Oct 2012 15:45:46 +0200
 
 univention-samba (7.0.12-2) unstable; urgency=low
- 
+
   * fixed again setting samba/share/home=yes on a memberserver when joining a samba4-domain (Bug #25339)
 
  -- Tobias Peters <peters@univention.de>  Mon, 15 Oct 2012 12:25:35 +0200

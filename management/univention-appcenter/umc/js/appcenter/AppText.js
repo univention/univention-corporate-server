@@ -41,7 +41,7 @@ define([
 					class="umcTile__box"
 					style="background: \${app.bgc}"
 				>
-					<img 
+					<img
 						class="umcTile__logo"
 						src="\${app.logo}"
 						alt="\${app.name} logo"

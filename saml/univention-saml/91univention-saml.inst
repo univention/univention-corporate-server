@@ -397,7 +397,7 @@ if ! joinscript_check_any_version_executed || joinscript_check_version_in_range_
 	)
 fi
 
-# Bug #39739: the listener will be installed and running before univention-saml has configured the 
+# Bug #39739: the listener will be installed and running before univention-saml has configured the
 # simplesamlphp config. The listener will then not be able to write the SP metadata. Reinitialize it here
 # Bug #47309 Additional resync required for raw metadata
 if ! joinscript_check_any_version_executed || joinscript_check_version_in_range_executed 1 9; then

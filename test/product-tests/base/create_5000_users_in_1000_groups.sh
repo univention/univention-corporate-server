@@ -96,7 +96,7 @@ create_5000_users_distributed_in_1000_groups() {
 			--append users="uid=$TESTUSER_PREFIX$((c+46)),cn=users,$ldap_base" \
 			--append users="uid=$TESTUSER_PREFIX$((c+47)),cn=users,$ldap_base" \
 			--append users="uid=$TESTUSER_PREFIX$((c+48)),cn=users,$ldap_base" \
-			--append users="uid=$TESTUSER_PREFIX$((c+49)),cn=users,$ldap_base" 
+			--append users="uid=$TESTUSER_PREFIX$((c+49)),cn=users,$ldap_base"
 		((++NEXT_GROUPNUMBER))
 	done
 }
@@ -163,7 +163,7 @@ create_group_with_5000_members() {
 			--append users="uid=$TESTUSER_PREFIX$((c+46)),cn=users,$ldap_base" \
 			--append users="uid=$TESTUSER_PREFIX$((c+47)),cn=users,$ldap_base" \
 			--append users="uid=$TESTUSER_PREFIX$((c+48)),cn=users,$ldap_base" \
-			--append users="uid=$TESTUSER_PREFIX$((c+49)),cn=users,$ldap_base" 
+			--append users="uid=$TESTUSER_PREFIX$((c+49)),cn=users,$ldap_base"
 	done
 }
 

@@ -87,20 +87,20 @@ univention-nfs (8.0.1-1) unstable; urgency=medium
 
 univention-nfs (7.0.0-1) unstable; urgency=low
 
-  * Update to UCS 4.0 (Bug #35138) 
+  * Update to UCS 4.0 (Bug #35138)
 
  -- Felix Botner <botner@univention.de>  Mon, 23 Jun 2014 11:17:26 +0200
 
 univention-nfs (6.0.3-1) unstable; urgency=low
 
   * Added idmapd configuration option nfs/common/idmapd (default=yes)
-    for NFSv4 support (Bug #21556) 
+    for NFSv4 support (Bug #21556)
 
  -- Erik Damrose <damrose@univention.de>  Fri, 25 Oct 2013 10:43:43 +0200
 
 univention-nfs (6.0.2-2) unstable; urgency=low
 
-  * Fix nfs/common/gssd default value (Bug #21556) 
+  * Fix nfs/common/gssd default value (Bug #21556)
 
  -- Erik Damrose <damrose@univention.de>  Thu, 24 Oct 2013 16:38:50 +0200
 
@@ -113,7 +113,7 @@ univention-nfs (6.0.2-1) unstable; urgency=low
 
 univention-nfs (6.0.1-5) unstable; urgency=low
 
-  * Activate NFSv4 by default (Bug #21556) 
+  * Activate NFSv4 by default (Bug #21556)
   * Added support for custom NFS share settings by supporting
     univentionShareNFSCustomSetting in nfs-shares listener (Bug #18708)
 
@@ -160,14 +160,14 @@ univention-nfs (5.0.8-1) unstable; urgency=low
 
 univention-nfs (5.0.7-2) unstable; urgency=low
 
-  * fixed nfs-homes listener (Bug #25375) 
+  * fixed nfs-homes listener (Bug #25375)
 
  -- Felix Botner <botner@univention.de>  Thu, 15 Nov 2012 12:39:24 +0100
 
 univention-nfs (5.0.7-1) unstable; urgency=low
 
-  * added listener nfs-homes to create homeSharePath 
-    on nfs home servers (Bug #25375) 
+  * added listener nfs-homes to create homeSharePath
+    on nfs home servers (Bug #25375)
 
  -- Felix Botner <botner@univention.de>  Thu, 01 Nov 2012 12:01:03 +0100
 
@@ -187,25 +187,25 @@ univention-nfs (5.0.5-1) unstable; urgency=low
 
 univention-nfs (5.0.4-2) unstable; urgency=low
 
-  * deactivate nfs4 for rpc.nfsd by default (Bug #28500) 
+  * deactivate nfs4 for rpc.nfsd by default (Bug #28500)
 
  -- Felix Botner <botner@univention.de>  Tue, 09 Oct 2012 11:14:09 +0200
 
 univention-nfs (5.0.4-1) unstable; urgency=low
 
-  * deactivate nfs4 for rpc.nfsd by default (Bug #28500) 
+  * deactivate nfs4 for rpc.nfsd by default (Bug #28500)
 
  -- Felix Botner <botner@univention.de>  Tue, 09 Oct 2012 11:04:29 +0200
 
 univention-nfs (5.0.3-3) unstable; urgency=low
 
-  * fixed preinst (Bug #27959) 
+  * fixed preinst (Bug #27959)
 
  -- Felix Botner <botner@univention.de>  Thu, 04 Oct 2012 13:25:35 +0200
 
 univention-nfs (5.0.3-2) unstable; urgency=low
 
-  * remove old nfs-kernel-lockd (Bug #27959) 
+  * remove old nfs-kernel-lockd (Bug #27959)
 
  -- Felix Botner <botner@univention.de>  Thu, 04 Oct 2012 13:20:07 +0200
 

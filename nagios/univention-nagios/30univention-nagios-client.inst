@@ -46,7 +46,7 @@ univention-config-registry commit /etc/nagios/nrpe.cfg
 # only register host to ldap if nagios/client/autoregister is not "no"
 if [ ! "$nagios_client_autoregister" = "no" ] ; then
 
-	if ! udm container/cn list "$@" --filter cn=nagios | grep "^DN: cn=nagios,$ldap_base$" 2>/dev/null >/dev/null ; then 
+	if ! udm container/cn list "$@" --filter cn=nagios | grep "^DN: cn=nagios,$ldap_base$" 2>/dev/null >/dev/null ; then
 		echo "Cannot find container cn=nagios,$ldap_base (ldapsearch error $?)"
 		echo "Please check if univention-nagios-server is installed on a system in UCS domain."
 		exit 0

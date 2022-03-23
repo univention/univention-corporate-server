@@ -36,7 +36,7 @@ univention-nagios (13.0.2-1) unstable; urgency=medium
 
 univention-nagios (13.0.1-1) unstable; urgency=medium
 
-  * Bug #43686: use systemctl to start stop and restart UDL 
+  * Bug #43686: use systemctl to start stop and restart UDL
 
  -- Sebastian Lobinger <lobinger@univention.de>  Fri, 30 Oct 2020 13:41:50 +0100
 

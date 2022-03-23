@@ -88,7 +88,7 @@ univention-python-heimdal (4.0.4-1) unstable; urgency=low
 univention-python-heimdal (4.0.3-2.1) unstable; urgency=low
 
   * Remove copyright block for code not present in univention-python-heimdal
-    (Bug #26440)	
+    (Bug #26440)
 
  -- Moritz Mühlenhoff <muehlenhoffunivention.de>  Thu, 04 Oct 2012 12:04:05 +0200
 

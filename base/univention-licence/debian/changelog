@@ -58,7 +58,7 @@ univention-licence (8.0.0-2) unstable; urgency=low
 
   * Bug #35157: added fallback to machine account in
     univention_license_ldap_init
- 
+
  -- Felix Botner <botner@univention.de>  Tue, 29 Nov 2016 17:06:38 +0100
 
 univention-licence (8.0.0-1) unstable; urgency=medium
@@ -365,7 +365,7 @@ univention-licence (0.17) unstable; urgency=low
 
 univention-licence (0.16) unstable; urgency=low
 
-  * add -H to specify an LDAP-server to work on for make_license.sh 
+  * add -H to specify an LDAP-server to work on for make_license.sh
 
  -- Wolf Wiegand <wiegand@univention.de>  Fri, 14 Jul 2006 16:03:11 +0200
 

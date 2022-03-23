@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 # -*- coding: utf-8 -*.
 ## desc: Check univention-samba4-backup warnings are suppressed.

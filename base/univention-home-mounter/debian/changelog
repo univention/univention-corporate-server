@@ -74,7 +74,7 @@ univention-home-mounter (5.0.1-4) unstable; urgency=low
 
 univention-home-mounter (5.0.0-1) unstable; urgency=low
 
-  * fixed shell escaping (Bug #19441) 
+  * fixed shell escaping (Bug #19441)
 
  -- Felix Botner <botner@univention.de>  Fri, 07 Jun 2013 11:43:23 +0200
 

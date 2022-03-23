@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Remove user from group both starting with capital letters on ad-side in sync mode"
 ## exposure: dangerous

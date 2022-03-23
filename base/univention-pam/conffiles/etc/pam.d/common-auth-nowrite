@@ -2,7 +2,7 @@
 
 auth     requisite                          pam_nologin.so
 @!@
-if configRegistry.is_true('auth/faillog', False): 
+if configRegistry.is_true('auth/faillog', False):
 	tally_option = 'per_user deny=%s' % configRegistry.get('auth/faillog/limit', '5')
 	if configRegistry.is_true('auth/faillog/root', False):
 		tally_option += ' even_deny_root_account'

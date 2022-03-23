@@ -3,7 +3,7 @@ univention-ldap-overlay-memberof (12.0.0-2) unstable; urgency=medium
   * Bug #53356: Migrated univention-ldap-overlay-memberof to Python 3
 
  -- Eduardo Ruiz Moreno <moreno@univention.de>  Thu, 14 Oct 2021 13:35:12 +0200
- 
+
 univention-ldap-overlay-memberof (12.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
@@ -66,7 +66,7 @@ univention-ldap-overlay-memberof (8.0.1-1) unstable; urgency=medium
 
 univention-ldap-overlay-memberof (7.0.0-1) unstable; urgency=low
 
-  * Update to UCS 4.0 (Bug #36114) 
+  * Update to UCS 4.0 (Bug #36114)
   * removed ldap/acl/read/ips as slapd.conf now always
     set rootdn
 
@@ -83,7 +83,7 @@ univention-ldap-overlay-memberof (6.0.0-1) unstable; urgency=low
   * Bump version for UCS 3.2, update copyright years for 2013
   * Update/review UCR variable descriptions (Bug #30946)
       Remove UCR variable description for ldap/overlay/memberof/refint, see
-      #32549	
+      #32549
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 11 Sep 2013 11:37:29 +0200
 
@@ -96,7 +96,7 @@ univention-ldap-overlay-memberof (5.0.0-1) unstable; urgency=low
 
 univention-ldap-overlay-memberof (4.0.3-3) unstable; urgency=low
 
-  * fixed dependency to shell-univention-lib (Bug #24433) 
+  * fixed dependency to shell-univention-lib (Bug #24433)
 
  -- Felix Botner <botner@univention.de>  Mon, 16 Jul 2012 09:55:07 +0200
 
@@ -145,7 +145,7 @@ univention-ldap-overlay-memberof (3.0.0-1) unstable; urgency=low
 
 univention-ldap-overlay-memberof (2.0.2-1) unstable; urgency=low
 
-  * updated copyright Bug #16818 
+  * updated copyright Bug #16818
 
  -- Felix Botner <botner@univention.de>  Fri, 08 Jan 2010 10:39:09 +0100
 

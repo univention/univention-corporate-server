@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Create an UCS-User with LM-hash and check sync of LM-hash"
 ## exposure: dangerous

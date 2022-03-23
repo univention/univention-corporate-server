@@ -207,7 +207,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			--append packageList=openssh-client  \
 			--append packageList=openssh-server  \
 			--append packageList=tightvncserver  \
-			--append packageList=rdesktop || die 
+			--append packageList=rdesktop || die
 
 		univention-directory-manager settings/packages create "$@" --ignore_exists \
 			--superordinate "cn=packages,cn=univention,$ldap_base" \
@@ -254,7 +254,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			# mailPrimaryAddress is required on ox systems
 			if [ -n "$ox_primary_maildomain" ] ; then
 				univention-directory-manager users/user create "$@" --position="cn=users,$ldap_base" --set mailPrimaryAddress="administrator@$ox_primary_maildomain" --set firstname="Admin" --set username="$users_default_administrator" --set sambaRID=500 --set unixhome="/home/$users_default_administrator" --set lastname="$users_default_administrator" --set password="$(cat /var/lib/univention-ldap/root.secret)" --set primaryGroup="cn=$groups_default_domainadmins,cn=groups,$ldap_base" || die
-			else	
+			else
 				univention-directory-manager users/user create "$@" --position="cn=users,$ldap_base" --set username="$users_default_administrator" --set sambaRID=500 --set unixhome="/home/$users_default_administrator" --set lastname="$users_default_administrator" --set password="$(cat /var/lib/univention-ldap/root.secret)" --set primaryGroup="cn=$groups_default_domainadmins,cn=groups,$ldap_base" || die
 			fi
 		fi
@@ -367,7 +367,7 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 	for i in $(univention-directory-manager policies/ldapserver list "$@" --filter name=default-settings | grep ldapServer | cut -f 2 -d ':'); do
 		ldapservers="$ldapservers $i";
 	done
-	if [ -n "$ldapservers" ]; then 
+	if [ -n "$ldapservers" ]; then
 		univention-directory-manager policies/registry modify "$@" \
 			--dn="cn=default-ldap-servers,cn=config-registry,cn=policies,$ldap_base" \
 			--set registry="ldap/server/addition \"$ldapservers\""

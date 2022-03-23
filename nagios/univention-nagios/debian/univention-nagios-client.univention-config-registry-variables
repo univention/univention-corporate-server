@@ -1,6 +1,6 @@
 [nagios/client/autostart]
 Description[de]=Werden Änderungen an der Nagios-Konfiguration im LDAP-Verzeichnis vorgenommen und ist diese Variable auf 'yes' gesetzt, wird der Nagios-NRPE-Server automatisch neu gestartet.
-Description[en]=If changes to the Nagios configuration are made in the LDAP directory and if this variable is set to 'yes', the Nagios NRPE server is restarted automatically. 
+Description[en]=If changes to the Nagios configuration are made in the LDAP directory and if this variable is set to 'yes', the Nagios NRPE server is restarted automatically.
 Type=str
 Categories=service-nagios
 

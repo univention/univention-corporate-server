@@ -165,7 +165,7 @@ define([
 
 		getFormDeferred: function(app, phase, smallHeaders) {
 			return this.getFormConfDeferred(app, phase, smallHeaders).then(function(formConf) {
-				return formConf ? new AppSettingsForm(formConf) : null; 
+				return formConf ? new AppSettingsForm(formConf) : null;
 			});
 		}
 	};

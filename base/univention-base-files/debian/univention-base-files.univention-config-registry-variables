@@ -585,7 +585,7 @@ Categories=system-network
 
 [interfaces/.*/ipv6/acceptRA]
 Description[de]=Ist diese Option aktiviert, kommt für die Netzwerkschnittstelle Stateless Address Autoconfiguration (SLAAC) zum Einsatz. Dabei wird die IP-Adresse von den Routern des lokalen Netzsegmentes zugewiesen.
-Description[en]=If this option is activated, Stateless Address Autoconfiguration (SLAAC) is used for the network interface. In this, the IP address is assigned from the routers of the local network segment. 
+Description[en]=If this option is activated, Stateless Address Autoconfiguration (SLAAC) is used for the network interface. In this, the IP address is assigned from the routers of the local network segment.
 Type=bool
 Categories=system-network
 

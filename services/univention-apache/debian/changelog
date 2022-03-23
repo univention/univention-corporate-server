@@ -548,7 +548,7 @@ univention-apache (7.0.16-6) unstable; urgency=low
 
 univention-apache (7.0.16-5) unstable; urgency=low
 
-  * Bug #37780: Adjusted styling for the module items 
+  * Bug #37780: Adjusted styling for the module items
 
  -- Johannes Keiser <keiser@univention.de>  Wed, 18 Feb 2015 20:05:44 +0100
 
@@ -605,21 +605,21 @@ univention-apache (7.0.14-1) unstable; urgency=low
 
   Bug #35890:
   * reduced font size for the login error message
-  * adjusted box-shadow slightly 
+  * adjusted box-shadow slightly
 
  -- Johannes Keiser <keiser@univention.de>  Tue, 04 Nov 2014 12:30:55 +0100
 
 univention-apache (7.0.13-2) unstable; urgency=low
 
   Bug #36095:
-  * reactivated disabled variables declarations in 
+  * reactivated disabled variables declarations in
     css/variables.styl so variables can
     be resolved again
 
  -- Drees Dormann <dormann@univention.de>  Tue, 04 Nov 2014 10:30:00 +0100
 
 univention-apache (7.0.13-1) unstable; urgency=low
-  
+
   Bug #35890:
   * added css class for saml-app login authentication
   * replaced old login-image with saml-login.svg
@@ -633,7 +633,7 @@ univention-apache (7.0.13-1) unstable; urgency=low
 univention-apache (7.0.12-3) unstable; urgency=low
 
   Bug #36095:
-  * removed margin-right for element .umcGalleryName 
+  * removed margin-right for element .umcGalleryName
     in css/gallerypane.styl
 
  -- Drees Dormann <dormann@univention.de>  Mon, 03 Nov 2014 16:30:01 +0100
@@ -649,9 +649,9 @@ univention-apache (7.0.12-1) unstable; urgency=low
 
   Bug #36337:
   * added clearsans-1.00.zip
-  * added font.styl for clear sans  
-  Bug #36095: 
-  * renamed css class for samlapp 
+  * added font.styl for clear sans
+  Bug #36095:
+  * renamed css class for samlapp
   * stickyfooter hidden on load via dijitHidden
 
  -- Johannes Keiser <keiser@univention.de>  Fri, 31 Oct 2014 13:16:11 +0100
@@ -672,7 +672,7 @@ univention-apache (7.0.11-2) unstable; urgency=medium
 
 univention-apache (7.0.11-1) unstable; urgency=low
 
-  * Bug #36095: added css classes for login elements 
+  * Bug #36095: added css classes for login elements
 
  -- Johannes Keiser <keiser@univention.de>  Thu, 30 Oct 2014 19:54:32 +0100
 
@@ -736,7 +736,7 @@ univention-apache (7.0.7-1) unstable; urgency=low
 
   Bug #36095:
   * cleaned up and rearranged startsite.js
-  * added check if DOM nodes exist in startsite.js 
+  * added check if DOM nodes exist in startsite.js
 
  -- Johannes Keiser <keiser@univention.de>  Tue, 28 Oct 2014 16:20:31 +0100
 
@@ -749,7 +749,7 @@ univention-apache (7.0.6-2) unstable; urgency=low
 
 univention-apache (7.0.6-1) unstable; urgency=low
 
-  Bug #36095: 
+  Bug #36095:
   * adjusted styling of noscript tag
   * cleaned up html ids
   * added new javascript module for initial query string parsing
@@ -861,7 +861,7 @@ univention-apache (7.0.0-2) unstable; urgency=low
 
 univention-apache (7.0.0-1) unstable; urgency=low
 
-  * Update to UCS 4.0 (Bug #35147) 
+  * Update to UCS 4.0 (Bug #35147)
 
  -- Felix Botner <botner@univention.de>  Fri, 20 Jun 2014 16:18:54 +0200
 
@@ -884,7 +884,7 @@ univention-apache (6.0.16-5) unstable; urgency=low
   * This update corrects the generation of ucs-overview links. The links
   are now generated in the domain-joinscript. This ensures that
   host- and domain-identifiers match the current settings in case of
-  a domain-rejoin and after completing the appliance setup. (Bug #33447) 
+  a domain-rejoin and after completing the appliance setup. (Bug #33447)
 
  -- Erik Damrose <damrose@univention.de>  Tue, 10 Dec 2013 12:43:02 +0100
 
@@ -968,7 +968,7 @@ univention-apache (6.0.12-6) unstable; urgency=low
 
 univention-apache (6.0.12-5) unstable; urgency=low
 
-  * Improve startsite.js javascript code (Bug #32932) 
+  * Improve startsite.js javascript code (Bug #32932)
 
  -- Erik Damrose <damrose@univention.de>  Wed, 23 Oct 2013 11:25:43 +0200
 
@@ -992,7 +992,7 @@ univention-apache (6.0.12-2) unstable; urgency=low
 
 univention-apache (6.0.12-1) unstable; urgency=low
 
-  * Preserve additional query parameters when switching language (Bug #32932) 
+  * Preserve additional query parameters when switching language (Bug #32932)
 
  -- Erik Damrose <damrose@univention.de>  Mon, 21 Oct 2013 16:23:00 +0200
 
@@ -1035,7 +1035,7 @@ univention-apache (6.0.7-3) unstable; urgency=low
 
   * removed locale field from entries.json UCR template
   * adapted startsite.js to read available locales from languages.json
-  * adopt old umc/server/languages/.* UCRVs to ucs/server/languages/.* 
+  * adopt old umc/server/languages/.* UCRVs to ucs/server/languages/.*
     during postinst when updating from a version <= 6.0.7-2
   (Bug #32678)
 
@@ -1051,7 +1051,7 @@ univention-apache (6.0.7-1) unstable; urgency=low
 
   * New file /var/www/ucs-overview/languages.json, which contains
     available server languages. This information is also available in
-    entries.json, from which it will be removed in a future change 
+    entries.json, from which it will be removed in a future change
     (Bug #32677)
 
  -- Erik Damrose <damrose@univention.de>  Tue, 24 Sep 2013 14:19:06 +0200
@@ -1136,7 +1136,7 @@ univention-apache (5.0.14-1) unstable; urgency=low
 
 univention-apache (5.0.13-1) unstable; urgency=low
 
-  * Change to overview on non dc master: link to domain master is now 
+  * Change to overview on non dc master: link to domain master is now
     above doc-links (Bug #26858)
 
  -- Erik Damrose <damrose@univention.de>  Thu, 27 Dec 2012 11:04:55 +0100
@@ -1145,7 +1145,7 @@ univention-apache (5.0.12-1) unstable; urgency=low
 
   * Added new ucr variable for apache2 SSLCACertificateFile (apache2/ssl/ca)
     (Bug #26171)
-  * Added new ucr variable for apache2 SSLCertificateChainFile 
+  * Added new ucr variable for apache2 SSLCertificateChainFile
     (apache2/ssl/certificatechainfile) (Bug #29374)
 
  -- Erik Damrose <edamrose@univention.de>  Fri, 21 Dec 2012 13:15:49 +0100
@@ -1194,7 +1194,7 @@ univention-apache (5.0.8-3) unstable; urgency=low
 
 univention-apache (5.0.8-2) unstable; urgency=low
 
-  * added UCR variables apache2/ssl/certificate and apache2/ssl/key 
+  * added UCR variables apache2/ssl/certificate and apache2/ssl/key
     (Bug #21574).
 
  -- Florian Best <best@univention.de>  Fri, 01 Jun 2012 08:12:44 +0200
@@ -1482,13 +1482,13 @@ univention-apache (2.0.12-1) unstable; urgency=low
 univention-apache (2.0.11-6) unstable; urgency=low
 
   * replace calls to univention-config-registry with
-    univention-baseconfig 
+    univention-baseconfig
 
  -- Andreas Büsching <buesching@univention.de>  Mon,  3 Dec 2007 17:34:50 +0100
 
 univention-apache (2.0.11-5) unstable; urgency=low
 
-  * fixed encoding of variable description 
+  * fixed encoding of variable description
 
  -- Andreas Büsching <buesching@univention.de>  Thu,  8 Nov 2007 17:24:29 +0100
 
@@ -1512,7 +1512,7 @@ univention-apache (2.0.11-2) unstable; urgency=low
 
 univention-apache (2.0.11-1) unstable; urgency=low
 
-  * if started by UMC do not force the reload of apache 
+  * if started by UMC do not force the reload of apache
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 19 Sep 2007 16:09:08 +0200
 
@@ -1562,7 +1562,7 @@ univention-apache (2.0.8-2) unstable; urgency=low
 univention-apache (2.0.7-1) unstable; urgency=low
 
   * add config registry variable apache2/autostart to determine start type
-    (manual or auto start) 
+    (manual or auto start)
   * use univention-config-registry instead of univention-baseconfig
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 18 Jul 2007 13:44:48 +0200
@@ -1614,7 +1614,7 @@ univention-apache (2.0.4-2) unstable; urgency=low
 
 univention-apache (2.0.4-1) unstable; urgency=low
 
-  * add service information file 
+  * add service information file
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 18 Jun 2007 14:26:31 +0200
 

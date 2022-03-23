@@ -83,7 +83,7 @@ univention-network-manager (10.0.0-3) unstable; urgency=medium
 
 univention-network-manager (10.0.0-2) unstable; urgency=medium
 
-  * Bug #45858: fix path in debian/univention-network-common.maintscript 
+  * Bug #45858: fix path in debian/univention-network-common.maintscript
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 12 Dec 2017 13:10:02 +0100
 
@@ -167,7 +167,7 @@ univention-network-manager (5.0.0-1) unstable; urgency=low
   * Bump version for UCS 3.2, update copyright years for 2013
   * Update/review UCR variable descriptions (Bug #30943)
       Remove UCR variable description for networkmanager/group, no longer
-      used.	 
+      used.
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 06 Sep 2013 09:44:19 +0200
 
@@ -228,7 +228,7 @@ univention-network-manager (4.0.3-1) unstable; urgency=low
 
 univention-network-manager (4.0.2-1) unstable; urgency=low
 
-  * start univention-network-common before plymouth (Bug #28287) 
+  * start univention-network-common before plymouth (Bug #28287)
 
  -- Felix Botner <botner@univention.de>  Thu, 23 Aug 2012 15:07:45 +0200
 

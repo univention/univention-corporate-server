@@ -1,6 +1,6 @@
 univention-updater (15.0.3-77) unstable; urgency=medium
 
-  * Bug #49061: univention-upgrade: validating updateto param in parsing method now, sysexit(1) on wrong param 
+  * Bug #49061: univention-upgrade: validating updateto param in parsing method now, sysexit(1) on wrong param
 
  -- Siavash Sefid Rodi <sefid-rodi.extern@univention.de>  Fri, 25 Feb 2022 11:02:28 +0100
 
@@ -985,7 +985,7 @@ univention-updater (13.0.1-45) unstable; urgency=medium
 
 univention-updater (13.0.1-44) unstable; urgency=medium
 
-  * Bug #47029: Try to start all services that are (re-)enabled in 
+  * Bug #47029: Try to start all services that are (re-)enabled in
     enable--apache2-umc script
 
  -- Erik Damrose <damrose@univention.de>  Fri, 18 May 2018 12:14:27 +0200
@@ -1592,7 +1592,7 @@ univention-updater (12.0.4-9) unstable; urgency=medium
 univention-updater (12.0.4-8) unstable; urgency=medium
 
   * Bug #43782: Reactivate apache2 module proxy_wstunnel if
-    kopano-webmeetings is installed 
+    kopano-webmeetings is installed
 
  -- Erik Damrose <damrose@univention.de>  Tue, 21 Mar 2017 14:59:19 +0100
 
@@ -1706,7 +1706,7 @@ univention-updater (12.0.3-8) unstable; urgency=medium
 
 univention-updater (12.0.3-7) unstable; urgency=medium
 
-  * Bug #42174: changed dependency from "umc/login" to "login" 
+  * Bug #42174: changed dependency from "umc/login" to "login"
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Feb 2017 18:24:10 +0100
 
@@ -1811,7 +1811,7 @@ univention-updater (12.0.0-11) unstable; urgency=low
 
 univention-updater (12.0.0-10) unstable; urgency=medium
 
-  * Bug #41840: Revert 
+  * Bug #41840: Revert
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 20 Sep 2016 14:28:59 +0200
 
@@ -1949,13 +1949,13 @@ univention-updater (11.0.9-3) unstable; urgency=low
 
 univention-updater (11.0.9-2) unstable; urgency=low
 
-  * Bug #40624: Adapt preup/postup.sh 
+  * Bug #40624: Adapt preup/postup.sh
 
  -- Felix Botner <botner@univention.de>  Mon, 15 Feb 2016 10:56:12 +0100
 
 univention-updater (11.0.9-1) unstable; urgency=low
 
-  * Bug #40624: Adapt preup/postup.sh 
+  * Bug #40624: Adapt preup/postup.sh
 
  -- Felix Botner <botner@univention.de>  Fri, 12 Feb 2016 10:59:35 +0100
 
@@ -2032,7 +2032,7 @@ univention-updater (11.0.7-3) unstable; urgency=medium
 
 univention-updater (11.0.7-2) unstable; urgency=low
 
-  * Bug #39991: checks for more free space 
+  * Bug #39991: checks for more free space
 
  -- Felix Botner <botner@univention.de>  Thu, 19 Nov 2015 12:47:23 +0100
 
@@ -2151,7 +2151,7 @@ univention-updater (11.0.2-8) unstable; urgency=low
 
 univention-updater (11.0.2-7) unstable; urgency=low
 
-  * Bug #39366: added check_for_postgresql84 
+  * Bug #39366: added check_for_postgresql84
 
  -- Felix Botner <botner@univention.de>  Thu, 08 Oct 2015 18:59:51 +0200
 
@@ -2270,7 +2270,7 @@ univention-updater (10.0.53-12) unstable; urgency=low
 
 univention-updater (10.0.53-11) unstable; urgency=low
 
-  * Bug #37961: remove umc/apache restart from postup.sh 
+  * Bug #37961: remove umc/apache restart from postup.sh
 
  -- Felix Botner <botner@univention.de>  Mon, 09 Mar 2015 13:29:54 +0100
 
@@ -2314,13 +2314,13 @@ univention-updater (10.0.53-5) unstable; urgency=low
 
 univention-updater (10.0.53-4) unstable; urgency=low
 
-  * Bug #37573: adjusted the styling for the updater dialog. 
+  * Bug #37573: adjusted the styling for the updater dialog.
 
  -- Johannes Keiser <keiser@univention.de>  Thu, 19 Feb 2015 16:28:05 +0100
 
 univention-updater (10.0.53-3) unstable; urgency=low
 
-  * Bug #37573: added max-height for the updater dialog. 
+  * Bug #37573: added max-height for the updater dialog.
 
  -- Johannes Keiser <keiser@univention.de>  Tue, 17 Feb 2015 12:23:09 +0100
 
@@ -2376,7 +2376,7 @@ univention-updater (10.0.51-17) unstable; urgency=medium
 
 univention-updater (10.0.51-16) unstable; urgency=low
 
-  * Bug #37410: preup firefox to UCS 4.0-0 version 
+  * Bug #37410: preup firefox to UCS 4.0-0 version
 
  -- Felix Botner <botner@univention.de>  Wed, 21 Jan 2015 11:31:58 +0100
 
@@ -2497,19 +2497,19 @@ univention-updater (10.0.48-1) unstable; urgency=medium
 
 univention-updater (10.0.47-3) unstable; urgency=low
 
-  * remove wamerican-large (Bug #36619) 
+  * remove wamerican-large (Bug #36619)
 
  -- Felix Botner <botner@univention.de>  Thu, 13 Nov 2014 13:42:00 +0100
 
 univention-updater (10.0.47-2) unstable; urgency=low
 
-  * preup wamerican-large (replace with wamerican) (Bug #36619) 
+  * preup wamerican-large (replace with wamerican) (Bug #36619)
 
  -- Felix Botner <botner@univention.de>  Thu, 13 Nov 2014 12:04:01 +0100
 
 univention-updater (10.0.47-1) unstable; urgency=low
 
-  * block update if obsolete packages are installed (Bug #36619) 
+  * block update if obsolete packages are installed (Bug #36619)
 
  -- Felix Botner <botner@univention.de>  Thu, 13 Nov 2014 11:30:50 +0100
 
@@ -2619,7 +2619,7 @@ univention-updater (10.0.36-1) unstable; urgency=medium
 
 univention-updater (10.0.35-1) unstable; urgency=low
 
-  * Bug #35885: update univention-xrdp in postup if installed  
+  * Bug #35885: update univention-xrdp in postup if installed
 
  -- Felix Botner <botner@univention.de>  Tue, 04 Nov 2014 11:07:09 +0100
 
@@ -2650,8 +2650,8 @@ univention-updater (10.0.33-2) unstable; urgency=low
 
 univention-updater (10.0.33-1) unstable; urgency=low
 
-  * Bug #36365: Added autoremove to preup, 
-    purge pnm2ppa in preup 
+  * Bug #36365: Added autoremove to preup,
+    purge pnm2ppa in preup
 
  -- Felix Botner <botner@univention.de>  Mon, 03 Nov 2014 11:52:25 +0100
 
@@ -2699,7 +2699,7 @@ univention-updater (10.0.26-2) unstable; urgency=medium
 
 univention-updater (10.0.25-1) unstable; urgency=low
 
-  * Autoremove packages in postup (Bug #36265) 
+  * Autoremove packages in postup (Bug #36265)
 
  -- Felix Botner <botner@univention.de>  Wed, 22 Oct 2014 15:02:53 +0200
 
@@ -2730,7 +2730,7 @@ univention-updater (10.0.21-1) unstable; urgency=medium
 
 univention-updater (10.0.20-1) unstable; urgency=low
 
-  * fixed preup (Bug #36237) 
+  * fixed preup (Bug #36237)
 
  -- Felix Botner <botner@univention.de>  Tue, 21 Oct 2014 09:37:59 +0200
 
@@ -2742,7 +2742,7 @@ univention-updater (10.0.19-1) unstable; urgency=low
 
 univention-updater (10.0.18-1) unstable; urgency=low
 
-  * Block update if old univention-horde4 is installed (Bug #36237) 
+  * Block update if old univention-horde4 is installed (Bug #36237)
 
  -- Felix Botner <botner@univention.de>  Mon, 20 Oct 2014 17:30:03 +0200
 
@@ -2779,7 +2779,7 @@ univention-updater (10.0.13-1) unstable; urgency=medium
 
 univention-updater (10.0.12-1) unstable; urgency=low
 
-  * remove php5-suhosin during update to UCS 4.0-0 (Bug #35203) 
+  * remove php5-suhosin during update to UCS 4.0-0 (Bug #35203)
 
  -- Felix Botner <botner@univention.de>  Thu, 16 Oct 2014 17:16:57 +0200
 
@@ -2840,7 +2840,7 @@ univention-updater (10.0.4-1) unstable; urgency=low
 
 univention-updater (10.0.3-1) unstable; urgency=low
 
-  * releasename (Bug #35312) 
+  * releasename (Bug #35312)
 
  -- Felix Botner <botner@univention.de>  Thu, 04 Sep 2014 10:26:58 +0200
 
@@ -3030,14 +3030,14 @@ univention-updater (9.0.36-1) unstable; urgency=low
 
 univention-updater (9.0.35-1) unstable; urgency=low
 
-  * Switch back to official repository 
+  * Switch back to official repository
     updates.software-univention.de (Bug #32217)
 
  -- Erik Damrose <damrose@univention.de>  Fri, 15 Nov 2013 15:06:53 +0100
 
 univention-updater (9.0.34-1) unstable; urgency=low
 
-  * Redirect output in preup.sh even more (Bug #33342) 
+  * Redirect output in preup.sh even more (Bug #33342)
 
  -- Erik Damrose <damrose@univention.de>  Fri, 15 Nov 2013 14:34:56 +0100
 
@@ -3057,7 +3057,7 @@ univention-updater (9.0.31-3) unstable; urgency=low
 
   * Reroute errormessages to logfile while checking for samba domain
     trust (Bug #33342)
-  * Add note to clarify that samba trust will be fixed with erratum 
+  * Add note to clarify that samba trust will be fixed with erratum
 
  -- Erik Damrose <damrose@univention.de>  Fri, 15 Nov 2013 11:55:29 +0100
 
@@ -3069,7 +3069,7 @@ univention-updater (9.0.31-2) unstable; urgency=low
 
 univention-updater (9.0.31-1) unstable; urgency=low
 
-  * Revert last change(Bug #29605) 
+  * Revert last change(Bug #29605)
 
  -- Erik Damrose <damrose@univention.de>  Tue, 12 Nov 2013 13:48:09 +0100
 
@@ -3123,7 +3123,7 @@ univention-updater (9.0.26-1) unstable; urgency=low
 univention-updater (9.0.25-1) unstable; urgency=low
 
   * pre upgrade grub-common to avoid update-grub error
-    during upgrade (Bug #32657) 
+    during upgrade (Bug #32657)
 
  -- Felix Botner <botner@univention.de>  Tue, 22 Oct 2013 16:26:03 +0200
 
@@ -3216,20 +3216,20 @@ univention-updater (9.0.13-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30943)
     Remove UCR variable descriptions for update/security/prefix and update/security/server
-      (already removed code-wise in 4.0.18-1). 
-    Remove UCR variable description for update/security/proxy and repository/online/hotfixes, 
+      (already removed code-wise in 4.0.18-1).
+    Remove UCR variable description for update/security/proxy and repository/online/hotfixes,
     which are also a remnant of the security update mechanism prior to UCS 3.0.
     Remove UCR variable descriptions for update/umc/nextversion and repository/online/maintained,
-    no longer used in current code. 
+    no longer used in current code.
     Remove UCR variable descriptions for repository/online/component/.*/parts, replaced by
     repository/online/component/.*/unmaintained in current code
-    Remove UCR variable	descriptions for update/doc/releasenotes/url and 
+    Remove UCR variable	descriptions for update/doc/releasenotes/url and
     update/doc/releasenotes/description, not used anywhere
   * No longer set repository/online/hotfixes in postinst, no longer relevant for new installations
     and the fallback is "no" anyway.
-  * Mark repository/online/component/.*/erratalevel and update/available as ReadOnly, should 
+  * Mark repository/online/component/.*/erratalevel and update/available as ReadOnly, should
     only be updated by the respective update script/cron jobs.
-  * Mark uuid/license and uuid/system as ReadOnly, these are generated externally	
+  * Mark uuid/license and uuid/system as ReadOnly, these are generated externally
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 03 Sep 2013 15:22:36 +0200
 
@@ -3256,7 +3256,7 @@ univention-updater (9.0.11-1) unstable; urgency=low
 
 univention-updater (9.0.10-3) unstable; urgency=low
 
-  * Set correct permissions for /cdrom/ /floppy/ and /etc/univention/ 
+  * Set correct permissions for /cdrom/ /floppy/ and /etc/univention/
     while updating (Bug #29450)
 
  -- Erik Damrose <damrose@univention.de>  Tue, 20 Aug 2013 13:03:12 +0200

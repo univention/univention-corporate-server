@@ -15,7 +15,7 @@
 	<para>
 	  Die in UCS integrierte Softwareverteilung bietet umfangreiche
 	  Möglichkeiten für den Rollout und die Aktualisierung von UCS-Installationen.
-	  Sicherheits- und Versionsupdates können über das UMC-Modul <guimenu>Software-Aktualisierung</guimenu>, 
+	  Sicherheits- und Versionsupdates können über das UMC-Modul <guimenu>Software-Aktualisierung</guimenu>,
 	  über ein Kommandozeilen-Tool
 	  und richtliniengesteuert installiert werden. Dies wird in
 	  <xref linkend="software::ucs-updates"/> beschrieben. Die UCS-Softwareverteilung

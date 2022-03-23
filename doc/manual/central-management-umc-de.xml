@@ -102,7 +102,7 @@
 			Der Wert von <envar>ucs/web/theme</envar> entspricht einer CSS Datei unter
 			<filename>/usr/share/univention-web/themes/</filename> mit demselben Namen (ohne Dateierweiterung).
 			Wird <envar>ucs/web/theme</envar> z.B. auf <emphasis><literal>'light'</literal></emphasis> gesetzt, wird
-			<filename>/usr/share/univention-web/themes/light.css</filename> als <foreignphrase>Theme</foreignphrase> für alle &ucsWeb;n verwendet. 
+			<filename>/usr/share/univention-web/themes/light.css</filename> als <foreignphrase>Theme</foreignphrase> für alle &ucsWeb;n verwendet.
 		</para>
 		<section id="central:theming:custom">
 			<title>Erstellen eines eigenen <foreignphrase>Themes</foreignphrase>/Anpassen des Designs von &ucsWeb;n</title>
@@ -121,7 +121,7 @@
 				Dies sind <filename>/usr/share/univention-management-console-login/css/custom.css</filename>
 				(<xref linkend="domain:saml:ssologin"/>) und <filename>/usr/share/univention-portal/custom.css</filename>
 				(<xref linkend="central:portal"/>).
-				Die Dateien sind bei der Installation von UCS leer und werden bei einem Upgrade von UCS nicht verändert. 
+				Die Dateien sind bei der Installation von UCS leer und werden bei einem Upgrade von UCS nicht verändert.
 				Beachten Sie jedoch, dass ein gegebener
 				<ulink url="https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors" lang="">CSS Selector</ulink>
 				bei der Installation eines beliebigen UCS-Updates kaputt gehen kann.
@@ -290,7 +290,7 @@ udm settings/ldapacl remove \
   --dn "cn=62my-portal-acl,cn=ldapacl,cn=univention,$(ucr get ldap/base)"
 		</programlisting>
 		<para>
-			Über die UMC kann nun eine passende UMC-Richtlinie angelegt werden. Die folgenden <guimenu>UMC-Operationen</guimenu> müssen dafür innerhalb der Richtlinie erlaubt werden: <guimenu>udm-portal</guimenu>, <guimenu>udm-syntax</guimenu>, <guimenu>udm-validate</guimenu> und <guimenu>udm-license</guimenu>. Wie man eine Richtlinie anlegt, ist unter <xref linkend="central-management-umc:Anlegen_einer_Richtlinie"/> beschrieben. Nun muss die neu erstellte Richtlinie nur noch dem gewünschten Objekt, in diesem Fall der Gruppe <guimenu>Portal Admins</guimenu>, zugewiesen werden. Dies kann ebenfalls direkt innerhalb der UMC erfolgen. Für dieses Beispiel navigiert man dafür in das Gruppenmodul und editiert dort die gewünschte Gruppe. In den Gruppeneinstellungen können unter <guimenu>Richtlinien</guimenu> für das Gruppenobjekt vorhandene Richtlinien ausgewählt werden. Genauere Informationen über Richtlinienzuweisung sind unter <xref linkend="central:policies:assign"/> beschrieben. 
+			Über die UMC kann nun eine passende UMC-Richtlinie angelegt werden. Die folgenden <guimenu>UMC-Operationen</guimenu> müssen dafür innerhalb der Richtlinie erlaubt werden: <guimenu>udm-portal</guimenu>, <guimenu>udm-syntax</guimenu>, <guimenu>udm-validate</guimenu> und <guimenu>udm-license</guimenu>. Wie man eine Richtlinie anlegt, ist unter <xref linkend="central-management-umc:Anlegen_einer_Richtlinie"/> beschrieben. Nun muss die neu erstellte Richtlinie nur noch dem gewünschten Objekt, in diesem Fall der Gruppe <guimenu>Portal Admins</guimenu>, zugewiesen werden. Dies kann ebenfalls direkt innerhalb der UMC erfolgen. Für dieses Beispiel navigiert man dafür in das Gruppenmodul und editiert dort die gewünschte Gruppe. In den Gruppeneinstellungen können unter <guimenu>Richtlinien</guimenu> für das Gruppenobjekt vorhandene Richtlinien ausgewählt werden. Genauere Informationen über Richtlinienzuweisung sind unter <xref linkend="central:policies:assign"/> beschrieben.
 		</para>
 	</section>
 </section>

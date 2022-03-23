@@ -38,7 +38,7 @@
 if [ "$1" = "configure" ]; then
 	## create sysvol-sync logfile
 	create_logfile /var/log/univention/sysvol-sync.log "root:adm" 640
-	
+
 	## activate sysvol replication
 	univention-config-registry set samba4/sysvol/cleanup/cron?"4 4 * * *"
 

@@ -5,7 +5,7 @@ Ablauf:
 * Alle Dateien im Verzeichnis auf ein UCS-Master kopieren:
   rsync -a data root@<ip>:
 * Auf dem Zielsystem inidividualisiertes Import-Skript für UDM erstellen:
-  root@ucs-master:~/data# ./import.py > import.sh 
+  root@ucs-master:~/data# ./import.py > import.sh
 * Import starten:
   root@ucs-master:~/data# sh import.sh
 

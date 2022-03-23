@@ -7,7 +7,7 @@
 ##  - univention-config
 ##  - univention-directory-manager-tools
 ##  - univention-samba
-## roles-not: 
+## roles-not:
 ## - basesystem
 ## tags:
 ##  - basic

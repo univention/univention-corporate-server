@@ -129,7 +129,7 @@ univention-bind (13.0.1-11) unstable; urgency=medium
 
 univention-bind (13.0.1-10) unstable; urgency=medium
 
-  * Bug #50499: add warning to dns/backend 
+  * Bug #50499: add warning to dns/backend
 
  -- Tobias Wenzel <wenzel@univention.de>  Tue, 28 Apr 2020 10:53:02 +0200
 
@@ -500,7 +500,7 @@ univention-bind (9.0.1-1) unstable; urgency=medium
 
 univention-bind (9.0.0-1) unstable; urgency=low
 
-  * Update to UCS 4.0 (Bug #35147) 
+  * Update to UCS 4.0 (Bug #35147)
 
  -- Felix Botner <botner@univention.de>  Fri, 20 Jun 2014 16:23:35 +0200
 
@@ -647,7 +647,7 @@ univention-bind (7.0.9-3) unstable; urgency=low
 
 univention-bind (7.0.9-2) unstable; urgency=low
 
-  * fixed typo in changelog (Bug #28065) 
+  * fixed typo in changelog (Bug #28065)
 
  -- Tobias Peters <peters@univention.de>  Wed, 17 Oct 2012 16:28:33 +0200
 
@@ -690,7 +690,7 @@ univention-bind (7.0.7-2) unstable; urgency=low
 
 univention-bind (7.0.7-1) unstable; urgency=low
 
-  * deactivated the dns and gc registration on a DC slave in an ucs@school environment (Bug #28065) 
+  * deactivated the dns and gc registration on a DC slave in an ucs@school environment (Bug #28065)
 
  -- Tobias Peters <peters@univention.de>  Thu, 11 Oct 2012 11:23:22 +0200
 
@@ -817,7 +817,7 @@ univention-bind (6.0.38-3) unstable; urgency=low
 
   * conffiles/etc/bind/named.conf.proxy,
     conffiles/etc/bind/named.conf.samba4:
-    If dns/fakeroot is False, then zone "." generated with type "hint" 
+    If dns/fakeroot is False, then zone "." generated with type "hint"
     Generated comments explain why zone "." is generated with
     type master, forward or hint.
     Used tabulators in generated lines for better indentation.
@@ -1108,7 +1108,7 @@ univention-bind (6.0.0-1) unstable; urgency=low
 univention-bind (5.0.22-1) unstable; urgency=low
 
   * bumped version (for integration of 2.4-2 version at a later point)
-  * included directory var/cache/univention-bind-proxy in 
+  * included directory var/cache/univention-bind-proxy in
     debian/univention-bind{,-proxy}.dirs and removed mkdir command for this
     directory from debian/univention-bind-proxy.postinst (Bug #21197)
 
@@ -1174,7 +1174,7 @@ univention-bind (4.0.5-1) unstable; urgency=low
 
 univention-bind (4.0.4-1) unstable; urgency=low
 
-  * updated copyright Bug #17222 
+  * updated copyright Bug #17222
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 13:59:56 +0100
 
@@ -1311,7 +1311,7 @@ univention-bind (2.0.3-4) unstable; urgency=low
 
 univention-bind (2.0.3-3) unstable; urgency=low
 
-  * set bind/autostart to 'yes' by default if not already set 
+  * set bind/autostart to 'yes' by default if not already set
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 18 Jul 2007 16:18:44 +0200
 
@@ -1329,7 +1329,7 @@ univention-bind (2.0.2-5) unstable; urgency=low
 
 univention-bind (2.0.2-3) unstable; urgency=low
 
-  * add service information files 
+  * add service information files
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 18 Jun 2007 14:54:03 +0200
 

@@ -105,25 +105,25 @@ univention-spamassassin (6.0.2-0) unstable; urgency=low
 
 univention-spamassassin (6.0.1-5) unstable; urgency=low
 
-  *  updated spamassassin rules installation (Bug #36607) 
+  *  updated spamassassin rules installation (Bug #36607)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Nov 2014 17:31:42 +0100
 
 univention-spamassassin (6.0.1-4) unstable; urgency=low
 
-  * updated spamassassin rules installation (Bug #36607) 
+  * updated spamassassin rules installation (Bug #36607)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Nov 2014 16:48:23 +0100
 
 univention-spamassassin (6.0.1-3) unstable; urgency=low
 
-  * updated spamassassin rules (Bug #36607) 
+  * updated spamassassin rules (Bug #36607)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Nov 2014 16:43:52 +0100
 
 univention-spamassassin (6.0.1-2) unstable; urgency=low
 
-  * restart amavis (not postfix) (Bug #36524) 
+  * restart amavis (not postfix) (Bug #36524)
 
  -- Felix Botner <botner@univention.de>  Fri, 07 Nov 2014 16:29:30 +0100
 
@@ -187,19 +187,19 @@ univention-spamassassin (4.0.2-1) unstable; urgency=low
 
 univention-spamassassin (4.0.1-3) unstable; urgency=low
 
-  * added debian/compat (Bug #18002) 
+  * added debian/compat (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 17:22:46 +0200
 
 univention-spamassassin (4.0.1-2) unstable; urgency=low
 
-  * fixed logrotate template (Bug #18002) 
+  * fixed logrotate template (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 17:10:11 +0200
 
 univention-spamassassin (4.0.1-1) unstable; urgency=low
 
-  * added logrotate configuration (Bug #18002) 
+  * added logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 17:00:43 +0200
 

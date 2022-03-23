@@ -48,7 +48,7 @@ univention-admingrp-user-passwordreset (6.0.1-1) unstable; urgency=medium
 
 univention-admingrp-user-passwordreset (5.0.0-1) unstable; urgency=low
 
-  * Update to UCS 4.0 (Bug #36114) 
+  * Update to UCS 4.0 (Bug #36114)
 
  -- Felix Botner <botner@univention.de>  Wed, 15 Oct 2014 14:48:25 +0200
 

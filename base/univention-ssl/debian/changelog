@@ -321,20 +321,20 @@ univention-ssl (9.0.4-1) unstable; urgency=low
 
 univention-ssl (9.0.3-2) unstable; urgency=low
 
-  * new default sha256 for ssl/default/hashfunction (Bug #30545) 
+  * new default sha256 for ssl/default/hashfunction (Bug #30545)
 
  -- Felix Botner <botner@univention.de>  Wed, 29 Oct 2014 14:23:26 +0100
 
 univention-ssl (9.0.3-1) unstable; urgency=low
 
-  * added default_md to req section and 
+  * added default_md to req section and
     switched back to sha1 (Bug #30545)
 
  -- Felix Botner <botner@univention.de>  Wed, 29 Oct 2014 14:10:35 +0100
 
 univention-ssl (9.0.2-1) unstable; urgency=low
 
-  * removed unused openssl.conf (Bug #30545) 
+  * removed unused openssl.conf (Bug #30545)
 
  -- Felix Botner <botner@univention.de>  Wed, 29 Oct 2014 13:24:26 +0100
 
@@ -354,7 +354,7 @@ univention-ssl (9.0.0-5) unstable; urgency=low
 
 univention-ssl (9.0.0-4) unstable; urgency=low
 
-  * re-added dependency to univention-directory-listener (Bug #35144) 
+  * re-added dependency to univention-directory-listener (Bug #35144)
 
  -- Felix Botner <botner@univention.de>  Tue, 19 Aug 2014 11:26:20 +0200
 
@@ -407,7 +407,7 @@ univention-ssl (8.0.0-1) unstable; urgency=low
 
 univention-ssl (7.0.7-1) unstable; urgency=low
 
-  * reduced pseudo log messages in gencertificate.py (Bug #9819) 
+  * reduced pseudo log messages in gencertificate.py (Bug #9819)
 
  -- Felix Botner <botner@univention.de>  Tue, 05 Mar 2013 14:42:17 +0100
 
@@ -426,7 +426,7 @@ univention-ssl (7.0.5-3) unstable; urgency=low
 univention-ssl (7.0.5-2) unstable; urgency=low
 
   * fixed ucr var description of ssl/validity/host and
-    ssl/validity/root (Bug #25788) 
+    ssl/validity/root (Bug #25788)
 
  -- Felix Botner <botner@univention.de>  Wed, 17 Oct 2012 10:17:52 +0200
 
@@ -454,7 +454,7 @@ univention-ssl (7.0.3-1) unstable; urgency=low
 
   * removed ssl/validity/days, instead
     added ssl/validity/host (host cert) and
-    ssl/validity/root (root ca) (Bug #27002) 
+    ssl/validity/root (root ca) (Bug #27002)
 
  -- Felix Botner <botner@univention.de>  Thu, 06 Sep 2012 17:25:15 +0200
 

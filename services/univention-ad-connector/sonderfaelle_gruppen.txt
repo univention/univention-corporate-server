@@ -16,21 +16,21 @@ Die Behandlung der Fälle muss sowohl beim initialen als auch beim laufenden Syn
 - Gruppe A anlegen
 - Gruppe B anlegen
 - User anlegen mit prim. Gr. A
-- User in Gruppe B aufnehmen 
+- User in Gruppe B aufnehmen
 
 3)
 - Gruppe A anlegen
 - Gruppe B anlegen
 - User anlegen mit prim. Gr. A
-- User in Gruppe B aufnehmen 
-- Beschreibung an User ändern 
+- User in Gruppe B aufnehmen
+- Beschreibung an User ändern
 
 4)
 - Gruppe A anlegen
 - Gruppe B anlegen
 - User anlegen mit prim. Gr. A - User wird aus anderem Grund rejected
-- User in Gruppe B aufnehmen 
-- Beschreibung an User ändern 
+- User in Gruppe B aufnehmen
+- Beschreibung an User ändern
 
 Dieser Fall kann vergleichbar auftreten wenn der User selektiv von AD nach UCS synchronisiert wird.
 

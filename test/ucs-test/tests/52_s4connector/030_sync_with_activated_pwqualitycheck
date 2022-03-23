@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: Activate pwQualityCheck in UCS and check the user creation
 ## exposure: dangerous

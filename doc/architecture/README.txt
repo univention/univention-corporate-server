@@ -18,7 +18,7 @@ Requirements:
   * Create a new virtual environment with ``mkvirtualenv $env_name``.
   * Enter a virtual environment with ``workon $env_name``.
   * Leave a virtual environment with ``deactivate``.
-     
+
   On other operating systems see the `Virtualenvwrapper documentation
   <https://virtualenvwrapper.readthedocs.io/en/latest/>`__.  See `Controlling
   the Active Environment

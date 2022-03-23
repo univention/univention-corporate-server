@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Check User-Mail-Attributes in sync-mode"
 ## exposure: dangerous

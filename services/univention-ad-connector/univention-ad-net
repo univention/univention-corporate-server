@@ -33,4 +33,4 @@ ADMINUSERFILTER=`echo $connector_ad_ldap_binddn | sed -e 's|,.*||'`
 
 ADMINUSER=`univention-adsearch $ADMINUSERFILTER sAMAccountName | grep sAMAccountName | sed -e 's|sAMAccountName: ||'`
 
-net $@ -I "$connector_ad_ldap_host" -U "$ADMINUSER"%`cat $connector_ad_ldap_bindpw` 
+net $@ -I "$connector_ad_ldap_host" -U "$ADMINUSER"%`cat $connector_ad_ldap_bindpw`

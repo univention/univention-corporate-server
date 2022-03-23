@@ -295,25 +295,25 @@ attributetype ( 1.3.6.1.4.1.10176.200.131 NAME 'univentionUDMPropertyCopyable'
 objectclass ( 1.3.6.1.4.1.10176.200.199
     NAME 'univentionUDMProperty'
         DESC ' defines a custom attribute for use in univention directory manager '
-        MUST ( cn $ 
-			   univentionUDMPropertyVersion $ 
-			   univentionUDMPropertyModule $ 
-			   univentionUDMPropertyShortDescription $ 
+        MUST ( cn $
+			   univentionUDMPropertyVersion $
+			   univentionUDMPropertyModule $
+			   univentionUDMPropertyShortDescription $
 			   univentionUDMPropertyLdapMapping $
 			   univentionUDMPropertyCLIName )
-        MAY ( univentionUDMPropertyLongDescription $ 
-			  univentionUDMPropertyTranslationShortDescription $ 
-			  univentionUDMPropertyTranslationLongDescription $ 
-			  univentionUDMPropertyTranslationTabName $ 
-			  univentionUDMPropertySyntax $ 
-			  univentionUDMPropertyMultivalue $ 
-			  univentionUDMPropertyDefault $ 
-			  univentionUDMPropertyObjectClass $ 
-			  univentionUDMPropertyDeleteObjectClass $ 
-			  univentionUDMPropertyValueMayChange $ 
+        MAY ( univentionUDMPropertyLongDescription $
+			  univentionUDMPropertyTranslationShortDescription $
+			  univentionUDMPropertyTranslationLongDescription $
+			  univentionUDMPropertyTranslationTabName $
+			  univentionUDMPropertySyntax $
+			  univentionUDMPropertyMultivalue $
+			  univentionUDMPropertyDefault $
+			  univentionUDMPropertyObjectClass $
+			  univentionUDMPropertyDeleteObjectClass $
+			  univentionUDMPropertyValueMayChange $
 			  univentionUDMPropertyValueRequired $
 			  univentionUDMPropertyValueNotEditable $
-			  univentionUDMPropertyLayoutTabName $ 
+			  univentionUDMPropertyLayoutTabName $
 			  univentionUDMPropertyLayoutOverwriteTab $
 			  univentionUDMPropertyLayoutOverwritePosition $
 			  univentionUDMPropertyLayoutFullWidth $
@@ -393,7 +393,7 @@ attributetype ( 1.3.6.1.4.1.10176.200.209 NAME 'univentionUDMOptionIsApp'
 objectclass ( 1.3.6.1.4.1.10176.200.299
 		NAME 'univentionUDMOption'
 		DESC 'defines an option for use in univention directory manager'
-		MUST ( cn $ 
+		MUST ( cn $
 			univentionUDMOptionShortDescription $
 			univentionUDMOptionModule )
 		MAY ( univentionUDMPropertyOptions $

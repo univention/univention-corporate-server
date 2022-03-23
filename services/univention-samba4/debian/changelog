@@ -26,14 +26,14 @@ univention-samba4 (9.0.6-10) unstable; urgency=medium
 
 univention-samba4 (9.0.6-9) unstable; urgency=medium
 
-  * Bug #53100: Passes credentials with an authentication file to remove 
+  * Bug #53100: Passes credentials with an authentication file to remove
     credentials in clear text
 
  -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Tue, 25 Jan 2022 09:38:08 +0100
 
 univention-samba4 (9.0.6-8) unstable; urgency=medium
 
-  * Bug #54356: Fixed After Server-Password-Change samba process is not started 
+  * Bug #54356: Fixed After Server-Password-Change samba process is not started
     due to Failed to listen on ::1:135
 
  -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Tue, 18 Jan 2022 14:25:58 +0100
@@ -47,7 +47,7 @@ univention-samba4 (9.0.6-7) unstable; urgency=medium
 
 univention-samba4 (9.0.6-6) unstable; urgency=medium
 
-  * Bug #53438: Fix for the tar command for backup script. 
+  * Bug #53438: Fix for the tar command for backup script.
 
  -- Esteban Martinena <martinena@univention.de>  Tue, 16 Nov 2021 10:55:28 +0100
 
@@ -1275,13 +1275,13 @@ univention-samba4 (5.0.1-5) unstable; urgency=medium
 
 univention-samba4 (5.0.1-4) unstable; urgency=low
 
-  * limit ACL check in sysvol sync to Policies dir (Bug #40266) 
+  * limit ACL check in sysvol sync to Policies dir (Bug #40266)
 
  -- Felix Botner <botner@univention.de>  Wed, 16 Dec 2015 12:34:02 +0100
 
 univention-samba4 (5.0.1-3) unstable; urgency=low
 
-  * No, set ldapsam:trusted to no in upgrade smb.conf (Bug #39932) 
+  * No, set ldapsam:trusted to no in upgrade smb.conf (Bug #39932)
 
  -- Felix Botner <botner@univention.de>  Fri, 13 Nov 2015 13:50:37 +0100
 
@@ -1366,19 +1366,19 @@ univention-samba4 (5.0.0-4) unstable; urgency=medium
 
 univention-samba4 (5.0.0-3) unstable; urgency=low
 
-  * added logging/error handling to sysvol-sync.sh (Bug #38868) 
+  * added logging/error handling to sysvol-sync.sh (Bug #38868)
 
  -- Felix Botner <botner@univention.de>  Tue, 22 Sep 2015 16:13:06 +0200
 
 univention-samba4 (5.0.0-2) unstable; urgency=low
 
-  * added logging/error handling to sysvol-sync.sh (Bug #38868) 
+  * added logging/error handling to sysvol-sync.sh (Bug #38868)
 
  -- Felix Botner <botner@univention.de>  Mon, 21 Sep 2015 14:46:43 +0200
 
 univention-samba4 (5.0.0-1) unstable; urgency=low
 
-  * 2008_R2 as default for domain and forest function level (Bug #38800) 
+  * 2008_R2 as default for domain and forest function level (Bug #38800)
   * UCS 4.1-0 version bump
 
  -- Felix Botner <botner@univention.de>  Thu, 03 Sep 2015 19:32:49 +0200
@@ -1458,7 +1458,7 @@ univention-samba4 (4.0.0-6) unstable; urgency=medium
 
 univention-samba4 (4.0.0-5) unstable; urgency=low
 
-  * ignore tar "file changed as we read it" warning in 
+  * ignore tar "file changed as we read it" warning in
     univention-samba4-backup (Bug #35392)
 
  -- Felix Botner <botner@univention.de>  Thu, 28 Aug 2014 12:57:45 +0200
@@ -1500,7 +1500,7 @@ univention-samba4 (3.0.39-34) unstable; urgency=low
 
 univention-samba4 (3.0.39-33) unstable; urgency=low
 
-  * Fix: Stop all winbind processes during samba4 join 
+  * Fix: Stop all winbind processes during samba4 join
     in 96univention-samba4.inst (Bug #35600)
 
  -- Erik Damrose <damrose@univention.de>  Wed, 13 Aug 2014 12:10:37 +0200
@@ -1540,13 +1540,13 @@ univention-samba4 (3.0.39-28) unstable; urgency=medium
 
 univention-samba4 (3.0.39-27) unstable; urgency=low
 
-  * added samba4/backup/cron/options (Bug #35085) 
+  * added samba4/backup/cron/options (Bug #35085)
 
  -- Felix Botner <botner@univention.de>  Tue, 08 Jul 2014 16:13:01 +0200
 
 univention-samba4 (3.0.39-26) unstable; urgency=low
 
-  * fixed univention-samba4-backup (Bug #35084) 
+  * fixed univention-samba4-backup (Bug #35084)
 
  -- Felix Botner <botner@univention.de>  Tue, 08 Jul 2014 15:50:05 +0200
 
@@ -1559,7 +1559,7 @@ univention-samba4 (3.0.39-25) unstable; urgency=low
 
 univention-samba4 (3.0.39-24) unstable; urgency=low
 
-  * Added samba/acl/allow/execute/always (Bug #33785) 
+  * Added samba/acl/allow/execute/always (Bug #33785)
 
  -- Felix Botner <botner@univention.de>  Tue, 17 Jun 2014 12:45:54 +0200
 
@@ -1592,13 +1592,13 @@ univention-samba4 (3.0.39-20) unstable; urgency=medium
 
 univention-samba4 (3.0.39-19) unstable; urgency=low
 
-  * Added univention-samba4-backup (Bug #34113) 
+  * Added univention-samba4-backup (Bug #34113)
 
  -- Felix Botner <botner@univention.de>  Tue, 01 Apr 2014 13:56:50 +0200
 
 univention-samba4 (3.0.39-18) unstable; urgency=low
 
-  * Added univention-samba4-backup (Bug #34113) 
+  * Added univention-samba4-backup (Bug #34113)
 
  -- Felix Botner <botner@univention.de>  Wed, 26 Mar 2014 16:58:10 +0100
 
@@ -1631,7 +1631,7 @@ univention-samba4 (3.0.39-14) unstable; urgency=medium
 
 univention-samba4 (3.0.39-13) unstable; urgency=low
 
-  * removed nofile limit stuff (Bug #32415) 
+  * removed nofile limit stuff (Bug #32415)
 
  -- Felix Botner <botner@univention.de>  Fri, 10 Jan 2014 11:45:57 +0100
 
@@ -1655,19 +1655,19 @@ univention-samba4 (3.0.39-10) unstable; urgency=medium
 
 univention-samba4 (3.0.39-9) unstable; urgency=low
 
-  * added ldapsearch-wrapper to ldapsearch (Bug #33583) 
+  * added ldapsearch-wrapper to ldapsearch (Bug #33583)
 
  -- Felix Botner <botner@univention.de>  Mon, 09 Dec 2013 16:44:13 +0100
 
 univention-samba4 (3.0.39-8) unstable; urgency=low
 
-  * added wins/ipv6 to postinst (Bug #33250) 
+  * added wins/ipv6 to postinst (Bug #33250)
 
  -- Felix Botner <botner@univention.de>  Mon, 09 Dec 2013 16:35:45 +0100
 
 univention-samba4 (3.0.39-7) unstable; urgency=low
 
-  * added ldapsearch-wrapper to univention-ldapsearch calls (Bug #33583) 
+  * added ldapsearch-wrapper to univention-ldapsearch calls (Bug #33583)
 
  -- Felix Botner <botner@univention.de>  Fri, 06 Dec 2013 11:10:03 +0100
 
@@ -1681,21 +1681,21 @@ univention-samba4 (3.0.39-6) unstable; urgency=low
 univention-samba4 (3.0.39-5) unstable; urgency=low
 
   * added logrotate config for winbind to overwrite
-    default config (Bug #33529) 
+    default config (Bug #33529)
 
  -- Felix Botner <botner@univention.de>  Mon, 02 Dec 2013 14:09:04 +0100
 
 univention-samba4 (3.0.39-4) unstable; urgency=low
 
   * added logrotate config for winbind to overwrite
-    default config (Bug #33529) 
+    default config (Bug #33529)
 
  -- Felix Botner <botner@univention.de>  Mon, 02 Dec 2013 14:04:43 +0100
 
 univention-samba4 (3.0.39-3) unstable; urgency=low
 
   * added logrotate config for samba to overwrite
-    default config (Bug #33529) 
+    default config (Bug #33529)
 
  -- Felix Botner <botner@univention.de>  Mon, 02 Dec 2013 13:40:30 +0100
 
@@ -2256,7 +2256,7 @@ univention-samba4 (3.0.5-1) unstable; urgency=low
 
   * The UCR variable windows/wins-server is now set to the server it
     joined against (Bug #30813)
-  * The UCR variable windows/wins-support is now initialised in the 
+  * The UCR variable windows/wins-support is now initialised in the
     Samba4 joinscript (Bug #30813)
 
  -- Tobias Peters <peters@univention.de>  Mon, 27 Jun 2013 15:56:08 +0200
@@ -2290,7 +2290,7 @@ univention-samba4 (3.0.1-1) unstable; urgency=low
 univention-samba4 (3.0.0-1) unstable; urgency=low
 
   * replaced makepasswd with create_machine_password (Bug #31281)
-  * bump version for UCS 3.2 
+  * bump version for UCS 3.2
 
  -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 13:18:08 +0200
 
@@ -2843,7 +2843,7 @@ univention-samba4 (2.0.18-1) unstable; urgency=low
  -- Arvid Requate <requate@univention.de>  Tue, 16 Oct 2012 18:02:15 +0200
 
 univention-samba4 (2.0.17-2) unstable; urgency=low
- 
+
   * GC record registration is now controlled by the ucr variable
     dns/register/srv_record/gc and the pdc record registration by
     the ucr variable dns/register/srv_record/pdc (Bug #28065)
@@ -3049,7 +3049,7 @@ univention-samba4 (2.0.2-3) unstable; urgency=low
 
 univention-samba4 (2.0.2-2) unstable; urgency=low
 
-  * make samba-shares module listen on old value as well.. 
+  * make samba-shares module listen on old value as well..
     (Bug #27253)
 
  -- Arvid Requate <requate@univention.de>  Thu, 09 Aug 2012 19:39:45 +0200
@@ -3135,7 +3135,7 @@ univention-samba4 (1.0.173-1) unstable; urgency=low
 
 univention-samba4 (1.0.172-1) unstable; urgency=low
 
-  * remove samba3 startup links for this update and new installations (Bug #26087) 
+  * remove samba3 startup links for this update and new installations (Bug #26087)
 
  -- Felix Botner <botner@univention.de>  Thu, 12 Jul 2012 13:14:09 +0200
 
@@ -3180,7 +3180,7 @@ univention-samba4 (1.0.166-1) unstable; urgency=low
 
 univention-samba4 (1.0.165-1) unstable; urgency=low
 
-  * remove samba(3) system startup links in postinst script (Bug #26087) 
+  * remove samba(3) system startup links in postinst script (Bug #26087)
 
  -- Felix Botner <botner@univention.de>  Tue, 10 Jul 2012 10:23:33 +0200
 
@@ -3341,7 +3341,7 @@ univention-samba4 (1.0.145-1) unstable; urgency=low
 
 univention-samba4 (1.0.144-1) unstable; urgency=low
 
-  * don't run join scripts if samba4/disabled is true (Bug #27122) 
+  * don't run join scripts if samba4/disabled is true (Bug #27122)
 
  -- Felix Botner <botner@univention.de>  Tue, 19 Jun 2012 12:46:28 +0200
 
@@ -3361,7 +3361,7 @@ univention-samba4 (1.0.142-1) unstable; urgency=low
 
 univention-samba4 (1.0.141-1) unstable; urgency=low
 
-  * also modify ext2 partitions in mount_extfs_with_user_xattr.py (Bug #27466) 
+  * also modify ext2 partitions in mount_extfs_with_user_xattr.py (Bug #27466)
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jun 2012 14:38:05 +0200
 
@@ -3547,7 +3547,7 @@ univention-samba4 (1.0.125-1) unstable; urgency=low
 
 univention-samba4 (1.0.124-1) unstable; urgency=low
 
-  * fixed dependency to univention-lib (Bug #26025) 
+  * fixed dependency to univention-lib (Bug #26025)
 
  -- Felix Botner <botner@univention.de>  Thu, 23 Feb 2012 11:16:57 +0100
 
@@ -3708,7 +3708,7 @@ univention-samba4 (1.0.111-1) unstable; urgency=low
 
 univention-samba4 (1.0.110-1) unstable; urgency=low
 
-  * fixed logrotate template (Bug #18002) 
+  * fixed logrotate template (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Mon, 21 Nov 2011 09:36:10 +0100
 
@@ -4026,7 +4026,7 @@ univention-samba4 (1.0.75-1) unstable; urgency=low
 
 univention-samba4 (1.0.74-1) unstable; urgency=low
 
-  * Fixed error in 98univention-samba4-dns.inst from last commit 
+  * Fixed error in 98univention-samba4-dns.inst from last commit
     (Bug #24129)
 
  -- Stefan Gohmann <gohmann@univention.de>  Sat, 22 Oct 2011 21:45:17 +0200
@@ -4289,7 +4289,7 @@ univention-samba4 (1.0.60-1) unstable; urgency=low
 
 univention-samba4 (1.0.59-1) unstable; urgency=low
 
-  * added logrotate configuration (Bug #18002) 
+  * added logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 11:40:19 +0200
 

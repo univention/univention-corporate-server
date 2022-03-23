@@ -92,7 +92,7 @@ define([
 			this.menuSlide.itemsContainer.addChild(item, pos);
 			this._updateState();
 
-			// update the counter if the 
+			// update the counter if the
 			item.watch('visible', lang.hitch(this, '_updateState'));
 		},
 

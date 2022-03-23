@@ -20,7 +20,7 @@ use lib '/usr/lib/nagios/plugins/';
 use utils qw(%ERRORS &print_revision &support &usage);
 
 $ENV{'PATH'}='/bin:/usr/bin:/sbin:/usr/sbin';
-$ENV{'BASH_ENV'}=''; 
+$ENV{'BASH_ENV'}='';
 $ENV{'ENV'}='';
 
 use vars qw($opt_d $opt_debug $opt_h $opt_i $opt_v);
@@ -39,7 +39,7 @@ if ($opt_v) {
 }
 
 if ($opt_h) {
-	print_help(); 
+	print_help();
 	exit $ERRORS{'OK'};
 }
 

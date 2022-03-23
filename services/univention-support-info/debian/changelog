@@ -36,7 +36,7 @@ univention-support-info (2.0.1-1) unstable; urgency=medium
 
 univention-support-info (1.0.0-1) unstable; urgency=low
 
-  * Update to UCS 4.0 (Bug #36114) 
+  * Update to UCS 4.0 (Bug #36114)
 
  -- Felix Botner <botner@univention.de>  Thu, 16 Oct 2014 12:06:55 +0200
 

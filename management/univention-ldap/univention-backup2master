@@ -98,7 +98,7 @@ resolve_reference() {
   # So the DN may possibly span several fields.
   # Beware when quoting DN.
   while read -u 5 DN; do
-	while [ 1 ]; do 
+	while [ 1 ]; do
       old_value=$( udm $module list $udm_options | \
         awk -vold=$old_ldap_master -vdn="$DN" -vattr=$attribute \
           '/^DN:/ { $1=""; sub(/^[ ]+/, "") ; DN=$0 ; next };
@@ -149,7 +149,7 @@ resolve_reference() {
             if [ "$module" = "shares/share" -o "$attribute" = "mailHomeServer" ] ; then
               # some attributes are single values, like hosts or mailHomeSevers
               udm $module modify --dn "$DN" --set $attribute="$new_value"
-            else 
+            else
               # other modules can have the same attribute several times
               udm $module modify --dn "$DN" --append $attribute="$new_value"
               udm $module modify --dn "$DN" --remove $attribute="$old_value"
@@ -165,8 +165,8 @@ resolve_reference() {
               udm $module remove --dn "$DN"
               break
             else
-              echo "removal is offered only with udm module shares/share" 
-              echo "changing nothing, try again [Y|n]? " 
+              echo "removal is offered only with udm module shares/share"
+              echo "changing nothing, try again [Y|n]? "
             fi
             ;;
           * )
@@ -179,7 +179,7 @@ resolve_reference() {
         esac
       done
     done
-  done 
+  done
   # Close fd 5 (domain names) and remove the file.
   exec 5>&-
   rm -f "$domains"
@@ -276,7 +276,7 @@ if [ ! -e /var/univention-join/joined ]; then
   printf "ERROR: The system is not joined to an UCS domain. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
   if [ $opt_force -eq 0 ] ; then
     exit 1
-  fi 
+  fi
 fi
 
 # check Primary DNS
@@ -529,7 +529,7 @@ udm_remove_dns_service_account "$old_ldap_master_hostname"
 # Any bind9 that might be running shall be restarted.
 test -x /etc/init.d/bind9 && /etc/init.d/bind9 force-reload
 
-# Tell trap handler to terminate silently. 
+# Tell trap handler to terminate silently.
 STILL_RUNNING=
 
 exit 0

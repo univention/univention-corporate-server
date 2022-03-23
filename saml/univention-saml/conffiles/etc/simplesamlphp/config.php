@@ -1,9 +1,9 @@
 <?php
 @%@UCRWARNING=# @%@
 
-/* 
+/*
  * The configuration of simpleSAMLphp
- * 
+ *
  * $Id: config.php 3246 2013-05-23 11:43:52Z olavmrk $
  */
 
@@ -61,7 +61,7 @@ print("	'domainname'	=> '%s'," % configRegistry.get('domainname', ''))
 	 * SimpleSAMLphp will attempt to create this directory if it doesn't exist.
 	 */
 	'tempdir'               => '/tmp/simplesaml',
-	
+
 
 	/*
 	 * If you enable this option, simpleSAMLphp will log all sent and received messages
@@ -113,7 +113,7 @@ print("	'errorreporting'            =>	%s," % ('TRUE' if configRegistry.is_true(
 	 */
 	// Debian: this secret is in /var/lib/simplesamlphp/secrets.inc.php
 	//'secretsalt' => 'defaultsecretsalt',
-	
+
 	/*
 	 * Some information about the technical persons running this installation.
 	 * The email address will be used as the recipient address for error reports, and
@@ -132,18 +132,18 @@ print("	'errorreporting'            =>	%s," % ('TRUE' if configRegistry.is_true(
 
 	/*
 	 * Logging.
-	 * 
+	 *
 	 * define the minimum log level to log
 	 *		SimpleSAML\Logger::ERR		No statistics, only errors
 	 *		SimpleSAML\Logger::WARNING	No statistics, only warnings/errors
 	 *		SimpleSAML\Logger::NOTICE	Statistics and errors
 	 *		SimpleSAML\Logger::INFO		Verbose logs
 	 *		SimpleSAML\Logger::DEBUG	Full debug logs - not recommended for production
-	 * 
+	 *
 	 * Choose logging handler.
-	 * 
+	 *
 	 * Options: [syslog,file,errorlog]
-	 * 
+	 *
 	 */
 #	'logging.level'         => SimpleSAML\Logger::NOTICE,
 	'logging.handler'       => 'syslog',
@@ -196,8 +196,8 @@ print("	'errorreporting'            =>	%s," % ('TRUE' if configRegistry.is_true(
 
 	/*
 	 * Enable
-	 * 
-	 * Which functionality in simpleSAMLphp do you want to enable. Normally you would enable only 
+	 *
+	 * Which functionality in simpleSAMLphp do you want to enable. Normally you would enable only
 	 * one of the functionalities below, but in some cases you could run multiple functionalities.
 	 * In example when you are setting up a federation bridge.
 	 */
@@ -227,7 +227,7 @@ print("	'errorreporting'            =>	%s," % ('TRUE' if configRegistry.is_true(
 	 */
 
 
-	/* 
+	/*
 	 * This value is the duration of the session in seconds. Make sure that the time duration of
 	 * cookies both at the SP and the IdP exceeds this duration.
 	 */
@@ -242,7 +242,7 @@ print("	'session.duration'            =>	%s," % configRegistry.get('saml/idp/ses
 	 * The default is 4 hours (4*60*60) seconds, which should be more than enough for these operations.
 	 */
 	'session.datastore.timeout' => (4*60*60), // 4 hours
-	
+
 	/*
 	 * Sets the duration, in seconds, auth state should be stored.
 	 */
@@ -387,7 +387,7 @@ print("	'session.duration'            =>	%s," % configRegistry.get('saml/idp/ses
 	 */
 #	'theme.use' 		=> 'default',
 
-	
+
 	/*
 	 * Default IdP for WS-Fed.
 	 */
@@ -398,22 +398,22 @@ print("	'session.duration'            =>	%s," % configRegistry.get('saml/idp/ses
 	 */
 	'idpdisco.enableremember' => TRUE,
 	'idpdisco.rememberchecked' => TRUE,
-	
+
 	// Disco service only accepts entities it knows.
 	'idpdisco.validate' => TRUE,
-	
-	'idpdisco.extDiscoveryStorage' => NULL, 
+
+	'idpdisco.extDiscoveryStorage' => NULL,
 
 	/*
-	 * IdP Discovery service look configuration. 
-	 * whether to display a list of idp or to display a dropdown box. For many IdP' a dropdown box  
+	 * IdP Discovery service look configuration.
+	 * whether to display a list of idp or to display a dropdown box. For many IdP' a dropdown box
 	 * gives the best use experience.
-	 * 
-	 * When using dropdown box a cookie is used to highlight the previously chosen IdP in the dropdown.  
+	 *
+	 * When using dropdown box a cookie is used to highlight the previously chosen IdP in the dropdown.
 	 * This makes it easier for the user to choose the IdP
-	 * 
+	 *
 	 * Options: [links,dropdown]
-	 * 
+	 *
 	 */
 	'idpdisco.layout' => 'dropdown',
 
@@ -426,9 +426,9 @@ print("	'session.duration'            =>	%s," % configRegistry.get('saml/idp/ses
 	 * same name to the metadata of the SP.
 	 */
 	'shib13.signresponse' => TRUE,
-	
-	
-	
+
+
+
 	/*
 	 * Authentication processing filters that will be executed for all IdPs
 	 * Both Shibboleth and SAML 2.0
@@ -438,13 +438,13 @@ print("	'session.duration'            =>	%s," % configRegistry.get('saml/idp/ses
  		10 => array(
  			'class' => 'core:AttributeMap', 'addurnprefix'
  		), */
- 		/* Enable the authproc filter below to automatically generated eduPersonTargetedID. 
+ 		/* Enable the authproc filter below to automatically generated eduPersonTargetedID.
  		20 => 'core:TargetedID',
  		*/
 
 		// Adopts language from attribute to use in UI
  		30 => 'core:LanguageAdaptor',
- 		
+
 		/* Add a realm attribute from edupersonprincipalname
 		40 => 'core:AttributeRealm',
 		 */
@@ -457,9 +457,9 @@ print("	'session.duration'            =>	%s," % configRegistry.get('saml/idp/ses
 		/* When called without parameters, it will fallback to filter attributes ‹the old way›
 		 * by checking the 'attributes' parameter in metadata on IdP hosted and SP remote.
 		 */
-		50 => 'core:AttributeLimit', 
+		50 => 'core:AttributeLimit',
 
-		/* 
+		/*
 		 * Search attribute "distinguishedName" for pattern and replaces if found
 
 		60 => array(
@@ -467,7 +467,7 @@ print("	'session.duration'            =>	%s," % configRegistry.get('saml/idp/ses
 			'pattern'	=> '/OU=studerende/',
 			'replacement'	=> 'Student',
 			'subject'	=> 'distinguishedName',
-			'%replace',	
+			'%replace',
 		),
 		 */
 
@@ -475,9 +475,9 @@ print("	'session.duration'            =>	%s," % configRegistry.get('saml/idp/ses
 		 * Consent module is enabled (with no permanent storage, using cookies).
 
 		90 => array(
-			'class' 	=> 'consent:Consent', 
-			'store' 	=> 'consent:Cookie', 
-			'focus' 	=> 'yes', 
+			'class' 	=> 'consent:Consent',
+			'store' 	=> 'consent:Cookie',
+			'focus' 	=> 'yes',
 			'checked' 	=> TRUE
 		),
 		 */
@@ -499,14 +499,14 @@ print("	'session.duration'            =>	%s," % configRegistry.get('saml/idp/ses
 		 * Generate the 'group' attribute populated from other variables, including eduPersonAffiliation.
 		 */
  		60 => array('class' => 'core:GenerateGroups', 'eduPersonAffiliation'),
- 		// All users will be members of 'users' and 'members' 	
+ 		// All users will be members of 'users' and 'members'
  		61 => array('class' => 'core:AttributeAdd', 'groups' => array('users', 'members')),
- 		
+
 		// Adopts language from attribute to use in UI
  		90 => 'core:LanguageAdaptor',
 
 	),
-	
+
 
 	/*
 	 * This option configures the metadata sources. The metadata sources is given as an array with

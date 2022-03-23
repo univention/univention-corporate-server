@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Check whether container can be recursively moved on ad-side in sync-mode"
 ## exposure: dangerous

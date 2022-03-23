@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Change password vi s4 and verify shadowMax, shadowLastChange (posix pw expiry) and krb5PasswordEnd"
 ## exposure: dangerous
@@ -25,7 +25,7 @@ RETVAL=100
 test -n "$connector_s4_ldap_host" || exit 137
 connector_running_on_this_host || exit 137
 
-function ad_change_password () 
+function ad_change_password ()
 {
 	local uid="$1"
 	local old="$2"

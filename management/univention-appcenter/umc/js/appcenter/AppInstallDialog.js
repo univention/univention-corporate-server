@@ -149,7 +149,7 @@ define([
 				// });
 				// this.addChild(progressBarContext);
 			// }
-			
+
 			const progressBar = new ProgressBar({});
 			progressBar.reset();
 			progressBar.setInfo(_('Running tests'), '', Infinity);
@@ -180,7 +180,7 @@ define([
 						invokation_forbidden_details: {},
 						invokation_warning_details: {},
 						host,
-						app, 
+						app,
 					};
 					return dryRunResults[key];
 				}
@@ -218,7 +218,7 @@ define([
 				backpack.dryRunResults = dryRunResults;
 				return backpack;
 			});
-				
+
 			// this._hasSeriousProblems = values.dryRunResults.serious_problems;
 			// if (this._hasSeriousProblems) {
 				// topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, backpack.app.id, 'cannot-continue');

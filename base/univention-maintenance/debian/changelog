@@ -85,7 +85,7 @@ univention-maintenance (6.0.0-1) unstable; urgency=low
 
 univention-maintenance (5.0.3-1) unstable; urgency=low
 
-  * added .htaccess to protect /var/www/statistik/ (Bug #22513) 
+  * added .htaccess to protect /var/www/statistik/ (Bug #22513)
 
  -- Felix Botner <botner@univention.de>  Thu, 27 Oct 2011 10:25:44 +0200
 
@@ -103,7 +103,7 @@ univention-maintenance (5.0.1-2) unstable; urgency=low
 
 univention-maintenance (5.0.1-1) unstable; urgency=low
 
-  * added logrotate configuration (Bug #18002) 
+  * added logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 15:54:58 +0200
 
@@ -127,7 +127,7 @@ univention-maintenance (4.0.2-1) unstable; urgency=low
 
 univention-maintenance (4.0.1-1) unstable; urgency=low
 
-  * added univention-system-stats Bug #20121 
+  * added univention-system-stats Bug #20121
 
  -- Felix Botner <botner@univention.de>  Thu, 30 Sep 2010 13:38:46 +0200
 
@@ -140,7 +140,7 @@ univention-maintenance (4.0.0-1) unstable; urgency=low
 
 univention-maintenance (3.0.3-3) unstable; urgency=low
 
-  * changed mrtg graphics ylegend  (Bug: #15191) 
+  * changed mrtg graphics ylegend  (Bug: #15191)
 
  -- Felix Botner <botner@univention.de>  Tue, 17 Nov 2009 17:00:43 +0100
 

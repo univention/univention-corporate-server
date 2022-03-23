@@ -220,7 +220,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	# Create initial certificate for Primary Directory Node
 	univention-certificate new -name "$hostname.$domainname"
 	ln -snf "$hostname.$domainname" "/etc/univention/ssl/$hostname"
-	
+
 	invoke-rc.d apache2 restart
 else
 	# Other system roles require the certificate creation here only if they to not join

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Make concurrent changes in UCS"
 ## exposure: dangerous
@@ -63,7 +63,7 @@ for((i=0;i<10;i++)); do
 	sleep $i
 	udm_modify "users/user" "" "" "" "" \
 		--set postcode="28359"|| fail_test 110
-		
+
 	sleep $i
 	udm_modify "users/user" "" "" "" "" \
 		--set mobileTelephoneNumber="3"|| fail_test 110

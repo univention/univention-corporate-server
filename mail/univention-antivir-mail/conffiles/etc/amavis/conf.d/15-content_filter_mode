@@ -6,7 +6,7 @@ use strict;
 
 #
 # Default antivirus checking mode
-# Please note, that anti-virus checking is DISABLED by 
+# Please note, that anti-virus checking is DISABLED by
 # default.
 # If You wish to enable it, please uncomment the following lines:
 
@@ -23,7 +23,7 @@ else:
 
 #
 # Default SPAM checking mode
-# Please note, that anti-spam checking is DISABLED by 
+# Please note, that anti-spam checking is DISABLED by
 # default.
 # If You wish to enable it, please uncomment the following lines:
 

@@ -283,7 +283,7 @@ if [ "$1" = "configure" ]; then
 			univention-config-registry set samba/domain/master?yes
 		fi
 
-		## New installation, remove leftover samba3.x rc?.d links 
+		## New installation, remove leftover samba3.x rc?.d links
 		update-rc.d -f samba remove > /dev/null
 
 		divert_univention_heimdal_service_cfg
@@ -340,14 +340,14 @@ secret: $machine_secret
 				fi
 			fi
 		fi
-		
+
 		### The following block of code may be removed after ucs_3.2-0
 		if dpkg --compare-versions "$2" lt-nl "2.0.44-24"; then
 			default_domain_gpo_dir="/var/lib/samba/sysvol/$domainname/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}"
 			if [ -d "$default_domain_gpo_dir" ]; then
 				gpo_dir_owner=$(stat --printf '%U' "$default_domain_gpo_dir" 2>&1)
 				if [ "$gpo_dir_owner" = "UNKNOWN" ]; then
-					samba-tool ntacl sysvolreset 
+					samba-tool ntacl sysvolreset
 				fi
 			fi
 		fi

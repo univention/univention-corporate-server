@@ -46,7 +46,7 @@ define([
 		autocomplete: 'new-password',
 
 		/**
-		 * If true a button is shown that toggles whether the password is 
+		 * If true a button is shown that toggles whether the password is
 		 * shown in cleartext or not.
 		 */
 		showRevealToggle: false,

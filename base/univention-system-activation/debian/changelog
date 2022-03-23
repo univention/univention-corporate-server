@@ -263,7 +263,7 @@ univention-system-activation (1.0.1-9) unstable; urgency=medium
 
 univention-system-activation (1.0.1-8) unstable; urgency=medium
 
-  * Bug #39700: more restrictions, make sure auth/$service/restrict=yes is set 
+  * Bug #39700: more restrictions, make sure auth/$service/restrict=yes is set
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 16 Mar 2016 13:20:35 +0100
 
@@ -283,7 +283,7 @@ univention-system-activation (1.0.1-6) unstable; urgency=medium
 
 univention-system-activation (1.0.1-5) unstable; urgency=medium
 
-  * Bug #39700: Changed help text 
+  * Bug #39700: Changed help text
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 15 Mar 2016 11:28:24 +0100
 
@@ -313,7 +313,7 @@ univention-system-activation (1.0.1-1) unstable; urgency=medium
 
 univention-system-activation (1.0.0-11) unstable; urgency=low
 
-  * Bug #39395: get uuid from license file 
+  * Bug #39395: get uuid from license file
 
  -- Felix Botner <botner@univention.de>  Thu, 24 Sep 2015 09:30:55 +0200
 

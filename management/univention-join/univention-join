@@ -466,7 +466,7 @@ if [ $? -ne 0 ]; then
 		ping6_out=$(echo "$ping6_out" | tr '\n' ' ' | tr  '\r' ' ')
 		failed_message "The UCS Primary Node \"$DCNAME\" is not reachable, ping failed (ping ipv4: $ping_out, ping ipv6: $ping6_out)."
 	fi
-fi 
+fi
 
 ssh_out="$(univention-ssh -timeout 3 "$DCPWD" "${DCACCOUNT}@${DCNAME}" ls 2>&1)"
 if [ $? -ne 0 ]; then
@@ -999,7 +999,7 @@ elif [ "$server_role" = "memberserver" ]; then
 		ldap/master?"$DCNAME" \
 		ldap/master/port?7389 \
 		>>/var/log/univention/join.log 2>&1
-    
+
 	if ! is_domain_in_admember_mode; then
 		univention-config-registry set kerberos/adminserver?"$DCNAME"
 	fi

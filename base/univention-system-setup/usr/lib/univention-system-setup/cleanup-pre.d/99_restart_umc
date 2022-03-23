@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-# unset ssl certificate variables, 
+# unset ssl certificate variables,
 # from now on use the new certificate
 ucr unset \
 	apache2/ssl/certificate \

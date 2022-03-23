@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Check group type synchronisation"
 ## exposure: dangerous
@@ -85,4 +85,3 @@ for groupType in $LOCAL_GROUP_TYPE; do
 done
 
 exit "$RETVAL"
-

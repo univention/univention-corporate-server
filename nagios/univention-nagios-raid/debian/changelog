@@ -74,7 +74,7 @@ univention-nagios-raid (3.0.0-1) unstable; urgency=low
 
 univention-nagios-raid (2.0.5-2) unstable; urgency=low
 
-  * run the join script at an earlier stage (Bug #24252) 
+  * run the join script at an earlier stage (Bug #24252)
 
  -- Felix Botner <botner@univention.de>  Tue, 22 Nov 2011 09:39:36 +0100
 
@@ -150,7 +150,7 @@ univention-nagios-raid (1.0.0-1) unstable; urgency=low
 
 univention-nagios-raid (0.0.2-1) unstable; urgency=low
 
-  * added description for nagios service Ticket #2009102710000119 
+  * added description for nagios service Ticket #2009102710000119
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 16:43:27 +0100
 

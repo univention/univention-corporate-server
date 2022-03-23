@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Test nested groups with umlauts in sync-mode"
 ## exposure: dangerous
@@ -74,4 +74,3 @@ pkill -f univention-cli-server
 ad_set_sync_mode "$SYNCMODE"
 
 exit "$RETVAL"
- 

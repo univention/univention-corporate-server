@@ -41,7 +41,7 @@ if [ "$1" = "configure" ] && [ -n "$2" ]; then
 		if [ -e /var/univention-join/joined -a -e /etc/nagios/nrpe.univention.d/UNIVENTION_RAID.cfg ]; then
 			sed -i -r 's|^command\[UNIVENTION_RAID\]=/usr/lib/nagios/plugins/check_raid$|& -p mdstat|' /etc/nagios/nrpe.univention.d/UNIVENTION_RAID.cfg
 			service nagios-nrpe-server restart
-		fi 
+		fi
 	fi
 
 fi

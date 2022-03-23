@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Create two groups on ad-side and nest them on ucs-side in sync-mode. This will fail on w2k and w2k3. Can't consider that in the test, as I can't distinguish between w2k3 and w2k8 yet."
 ## exposure: dangerous

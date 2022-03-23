@@ -624,7 +624,7 @@ in ad_verify_user_primary_group_attribute"
 	else
 		info "No. \"$actual_primarygroup_dn\" is."
 		return 1
-	fi	
+	fi
 }
 
 function ad_set_retry_rejected ()

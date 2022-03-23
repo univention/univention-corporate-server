@@ -1,20 +1,20 @@
-/* 
+/*
    Unix SMB/CIFS implementation.
 
    Functions to create reasonable random numbers for crypto use.
 
    Copyright (C) Jeremy Allison 2001
-   
+
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation; either version 2 of the License, or
    (at your option) any later version.
-   
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-   
+
    You should have received a copy of the GNU General Public License
    along with this program; if not, write to the Free Software
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -27,7 +27,7 @@ static uint32 counter;
 static unsigned char *reseed_data;
 static size_t reseed_data_size;
 
-/**************************************************************** 
+/****************************************************************
  Copy any user given reseed data.
 *****************************************************************/
 
@@ -41,7 +41,7 @@ void set_rand_reseed_data(unsigned char *data, size_t len)
 		reseed_data_size = len;
 }
 
-/**************************************************************** 
+/****************************************************************
  Setup the seed.
 *****************************************************************/
 
@@ -67,7 +67,7 @@ static void seed_random_stream(unsigned char *seedval, size_t seedlen)
 	hash[257] = 0;
 }
 
-/**************************************************************** 
+/****************************************************************
  Get datasize bytes worth of random data.
 *****************************************************************/
 

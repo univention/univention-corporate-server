@@ -310,7 +310,7 @@ univention-config-registry (13.0.0-3) unstable; urgency=medium
 
 univention-config-registry (13.0.0-2) unstable; urgency=medium
 
-  * Bug #45841: Add ucslint exception for ltmain.sh 
+  * Bug #45841: Add ucslint exception for ltmain.sh
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 12 Dec 2017 11:43:16 +0100
 
@@ -429,7 +429,7 @@ univention-config-registry (11.0.0-3) unstable; urgency=medium
 univention-config-registry (11.0.0-2) unstable; urgency=medium
 
   * For Bug #40383:
-    Consider only /etc/univention/service.info/services/*.cfg files 
+    Consider only /etc/univention/service.info/services/*.cfg files
     ignore files with other suffixes (same as in config_registry_info.py)
 
  -- Arvid Requate <requate@univention.de>  Tue, 22 Mar 2016 20:21:49 +0100
@@ -480,13 +480,13 @@ univention-config-registry (10.0.1-7) unstable; urgency=low
 
 univention-config-registry (10.0.1-6) unstable; urgency=low
 
-  * fixed iter_templates in univention-check-templates (Bug #35202) 
+  * fixed iter_templates in univention-check-templates (Bug #35202)
 
  -- Felix Botner <botner@univention.de>  Mon, 01 Sep 2014 16:02:10 +0200
 
 univention-config-registry (10.0.1-5) unstable; urgency=low
 
-  * skip writing cache if process has no write permission (Bug #35368) 
+  * skip writing cache if process has no write permission (Bug #35368)
 
  -- Felix Botner <botner@univention.de>  Thu, 28 Aug 2014 16:15:44 +0200
 
@@ -610,7 +610,7 @@ univention-config-registry (9.0.5-3) unstable; urgency=medium
 
 univention-config-registry (9.0.5-2) unstable; urgency=low
 
-  * added groupNameMapping() (Bug #33650) 
+  * added groupNameMapping() (Bug #33650)
 
  -- Felix Botner <botner@univention.de>  Mon, 09 Dec 2013 15:50:53 +0100
 
@@ -710,7 +710,7 @@ univention-config-registry (8.0.8-1) unstable; urgency=low
 
 univention-config-registry (8.0.7-1) unstable; urgency=low
 
-  * added dependency to ldap-utils in univention-config (Bug #28851) 
+  * added dependency to ldap-utils in univention-config (Bug #28851)
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Mar 2013 14:40:55 +0100
 

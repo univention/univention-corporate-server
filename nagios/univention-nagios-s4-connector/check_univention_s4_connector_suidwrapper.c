@@ -1,6 +1,6 @@
 //
 // Univention Nagios Plugin
-//  check_univention_s4_connector_suidwrapper: 
+//  check_univention_s4_connector_suidwrapper:
 //  wrapper to call script for checking s4 connector status
 //
 // Copyright 2015-2022 Univention GmbH
@@ -42,7 +42,7 @@ main( int argc, char ** argv, char ** envp )
 	uid_t uid = getuid();
 	if (setgid(getegid()))
 		perror("setgid");
-	if (setuid(geteuid())) 
+	if (setuid(geteuid()))
 		perror("setuid");
 	execle(COMMAND, COMMAND, (char *)0, (char *)0);
 	setuid(uid);

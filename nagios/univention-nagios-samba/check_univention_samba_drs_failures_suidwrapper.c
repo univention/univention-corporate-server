@@ -39,7 +39,7 @@ main( int argc, char ** argv, char ** envp )
 	uid_t uid = getuid();
 	if (setgid(getegid()))
 		perror("setgid");
-	if (setuid(geteuid())) 
+	if (setuid(geteuid()))
 		perror("setuid");
 	execle(COMMAND, COMMAND, (char *)0, (char *)0);
 	setuid(uid);

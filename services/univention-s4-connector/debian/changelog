@@ -392,7 +392,7 @@ univention-s4-connector (13.0.2-36) unstable; urgency=medium
 
 univention-s4-connector (13.0.2-35) unstable; urgency=medium
 
-  * Bug #36633: remove more unused code 
+  * Bug #36633: remove more unused code
 
  -- Florian Best <best@univention.de>  Thu, 08 Aug 2019 23:17:26 +0200
 
@@ -1075,7 +1075,7 @@ univention-s4-connector (11.0.7-10) unstable; urgency=medium
 
 univention-s4-connector (11.0.7-9) unstable; urgency=medium
 
-  * Bug #31311: fix last commit 
+  * Bug #31311: fix last commit
 
  -- Felix Botner <botner@univention.de>  Tue, 13 Jun 2017 18:06:38 +0200
 
@@ -1471,13 +1471,13 @@ univention-s4-connector (10.0.1-13) unstable; urgency=medium
 univention-s4-connector (10.0.1-12) unstable; urgency=low
 
   * Bug #41288: reopen ucs and s4 connection on
-    ldap.SERVER_DOWN in s4.poll() 
+    ldap.SERVER_DOWN in s4.poll()
 
  -- Felix Botner <botner@univention.de>  Mon, 06 Jun 2016 10:24:48 +0200
 
 univention-s4-connector (10.0.1-11) unstable; urgency=low
 
-  * Bug #41309: compare cn lowercase for msPrintConnectionPolicy 
+  * Bug #41309: compare cn lowercase for msPrintConnectionPolicy
 
  -- Felix Botner <botner@univention.de>  Fri, 20 May 2016 12:45:13 +0200
 
@@ -1507,13 +1507,13 @@ univention-s4-connector (10.0.1-7) unstable; urgency=low
 
 univention-s4-connector (10.0.1-6) unstable; urgency=low
 
-  * fixed msPrint-ConnectionPolicy udm module (Bug #40298) 
+  * fixed msPrint-ConnectionPolicy udm module (Bug #40298)
 
  -- Felix Botner <botner@univention.de>  Mon, 21 Dec 2015 11:25:15 +0100
 
 univention-s4-connector (10.0.1-5) unstable; urgency=low
 
-  * sync msPrint-ConnectionPolicy (Bug #40298) 
+  * sync msPrint-ConnectionPolicy (Bug #40298)
 
  -- Felix Botner <botner@univention.de>  Fri, 18 Dec 2015 15:29:17 +0100
 
@@ -1634,7 +1634,7 @@ univention-s4-connector (9.0.16-36) unstable; urgency=low
 
   * also look for dn_attr=dn_attr_val in
     samaccountname_dn_mapping to detect modrdn (Bug #37709)
- 
+
  -- Felix Botner <botner@univention.de>  Mon, 03 Aug 2015 18:52:17 +0200
 
 univention-s4-connector (9.0.16-35) unstable; urgency=medium
@@ -1758,13 +1758,13 @@ univention-s4-connector (9.0.16-18) unstable; urgency=medium
 
 univention-s4-connector (9.0.16-17) unstable; urgency=low
 
-  * Bug #28331: removed pwdComplexity UDM default from join script 
+  * Bug #28331: removed pwdComplexity UDM default from join script
 
  -- Felix Botner <botner@univention.de>  Tue, 14 Apr 2015 10:04:00 +0200
 
 univention-s4-connector (9.0.16-16) unstable; urgency=low
 
-  * Bug #28331: fixed postinst 
+  * Bug #28331: fixed postinst
 
  -- Felix Botner <botner@univention.de>  Thu, 09 Apr 2015 16:51:58 +0200
 
@@ -1772,34 +1772,34 @@ univention-s4-connector (9.0.16-15) unstable; urgency=low
 
   * Bug #28331
   * initial (update) setup of UCS pwdProperties
-  * dc/syncmode=write for slaves in ucs@school  
+  * dc/syncmode=write for slaves in ucs@school
 
  -- Felix Botner <botner@univention.de>  Thu, 09 Apr 2015 16:10:15 +0200
 
 univention-s4-connector (9.0.16-14) unstable; urgency=low
 
-  * Bug #28331: added synchronization of domainPwdProperties 
+  * Bug #28331: added synchronization of domainPwdProperties
     pwdProperties to s4connector/s4/dc.py
 
  -- Felix Botner <botner@univention.de>  Fri, 27 Mar 2015 12:11:50 +0100
 
 univention-s4-connector (9.0.16-13) unstable; urgency=low
 
-  * Bug #36317: update krb5PasswordEnd too 
+  * Bug #36317: update krb5PasswordEnd too
 
  -- Felix Botner <botner@univention.de>  Thu, 05 Mar 2015 17:53:17 +0100
 
 univention-s4-connector (9.0.16-12) unstable; urgency=low
 
   * Bug #36317: update shadowMax and shadowLastChange during password
-    change in s4 
+    change in s4
 
  -- Felix Botner <botner@univention.de>  Tue, 03 Mar 2015 13:33:20 +0100
 
 univention-s4-connector (9.0.16-11) unstable; urgency=low
 
-  * Bug #36317: update shadowMax and shadowLastChange during password 
-    change in s4  
+  * Bug #36317: update shadowMax and shadowLastChange during password
+    change in s4
 
  -- Felix Botner <botner@univention.de>  Tue, 03 Mar 2015 11:14:05 +0100
 
@@ -1830,7 +1830,7 @@ univention-s4-connector (9.0.16-7) unstable; urgency=medium
 
 univention-s4-connector (9.0.16-6) unstable; urgency=medium
 
-  * Bug #36981: Treat objects without entryUUID as rejected 
+  * Bug #36981: Treat objects without entryUUID as rejected
 
  -- Arvid Requate <requate@univention.de>  Wed, 10 Dec 2014 16:18:26 +0100
 
@@ -1843,7 +1843,7 @@ univention-s4-connector (9.0.16-5) unstable; urgency=medium
 
 univention-s4-connector (9.0.16-4) unstable; urgency=medium
 
-  * Bug #36981: Don't sync cn=Subschema                                        
+  * Bug #36981: Don't sync cn=Subschema
   * Log error if entryUUID is missing in pickle file but continue
 
  -- Arvid Requate <requate@univention.de>  Mon, 24 Nov 2014 20:22:04 +0100
@@ -1876,7 +1876,7 @@ univention-s4-connector (9.0.15-1) unstable; urgency=medium
 
 univention-s4-connector (9.0.14-1) unstable; urgency=low
 
-  * fixed sync_mode check in post_con_modify_functions (Bug #35251) 
+  * fixed sync_mode check in post_con_modify_functions (Bug #35251)
 
  -- Felix Botner <botner@univention.de>  Tue, 09 Sep 2014 09:46:06 +0200
 
@@ -1899,7 +1899,7 @@ univention-s4-connector (9.0.12-1) unstable; urgency=medium
 
 univention-s4-connector (9.0.11-1) unstable; urgency=low
 
-  * check sync_mode in post_con_modify_functions 
+  * check sync_mode in post_con_modify_functions
     object_memberships_sync* (Bug #35251)
 
  -- Felix Botner <botner@univention.de>  Thu, 04 Sep 2014 13:49:48 +0200
@@ -1932,7 +1932,7 @@ univention-s4-connector (9.0.7-1) unstable; urgency=medium
 
 univention-s4-connector (9.0.6-1) unstable; urgency=medium
 
-  * Removed MOD_DELETE for con_other_attribute during ldap add 
+  * Removed MOD_DELETE for con_other_attribute during ldap add
     (Bug #31172)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 03 Sep 2014 17:01:08 +0200
@@ -2838,14 +2838,14 @@ univention-s4-connector (8.0.1-2) unstable; urgency=low
 univention-s4-connector (8.0.1-1) unstable; urgency=low
 
   * log addlist and modlist on debug level INFO (Bug #31133)
-  * log addlist, modlist and traceback on debug level ERROR 
+  * log addlist, modlist and traceback on debug level ERROR
 
  -- Arvid Requate <requate@univention.de>  Mon, 15 Jul 2013 18:17:41 +0200
 
 univention-s4-connector (8.0.0-1) unstable; urgency=low
 
   * replaced makepasswd with univention.lib.createMachinePassword (Bug #31281)
-  * bump version for UCS 3.2  
+  * bump version for UCS 3.2
 
  -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 13:58:12 +0200
 
@@ -4101,7 +4101,7 @@ univention-s4-connector (6.0.80-1) unstable; urgency=low
 
 univention-s4-connector (6.0.79-1) unstable; urgency=low
 
-  * fixed logrotate template (Bug #18002) 
+  * fixed logrotate template (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Mon, 21 Nov 2011 16:26:15 +0100
 
@@ -4121,7 +4121,7 @@ univention-s4-connector (6.0.77-1) unstable; urgency=low
 
 univention-s4-connector (6.0.76-1) unstable; urgency=low
 
-  * fixed logrotate template (Bug #18002) 
+  * fixed logrotate template (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 16:54:57 +0100
 
@@ -4387,14 +4387,14 @@ univention-s4-connector (6.0.43-1) unstable; urgency=low
 univention-s4-connector (6.0.42-1) unstable; urgency=low
 
   * Merged AD connector changes from r27472
-    * Don't synchonisze all objects during the init twice, only search for                                                                                                                          
-      uSNCreated objects and not for uSNCreated and uSNChanged objects                                                                                                                              
-      (Bug #23734)                                                                                                                                                                                  
-    * Don't try to decode the userCertificate value (Bug #23612)                                                                                                                                    
-    * Build an internal membership cache while synchronize the members from                                                                                                                          
-      S4 to UCS. So every S4 member will get once instead of twice. Also                                                                                                                            
-      don't open the UDM group module twice (Bug #21010)                                                                                                                                            
-    * Make the ldap sever configurable (Bug #18136)                                                                                                                                                 
+    * Don't synchonisze all objects during the init twice, only search for
+      uSNCreated objects and not for uSNCreated and uSNChanged objects
+      (Bug #23734)
+    * Don't try to decode the userCertificate value (Bug #23612)
+    * Build an internal membership cache while synchronize the members from
+      S4 to UCS. So every S4 member will get once instead of twice. Also
+      don't open the UDM group module twice (Bug #21010)
+    * Make the ldap sever configurable (Bug #18136)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Oct 2011 07:20:06 +0200
 
@@ -4420,7 +4420,7 @@ univention-s4-connector (6.0.39-1) unstable; urgency=low
 
 univention-s4-connector (6.0.38-1) unstable; urgency=low
 
-  * added logrotate configuration (Bug #18002) 
+  * added logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 11:13:03 +0200
 
@@ -4635,7 +4635,7 @@ univention-s4-connector (6.0.16-1) unstable; urgency=low
 
   * call univention-password_sync_ucs_to_s4 for Administrator once
     in join script, i.e. before first stat of the S4 Connector.
-  * avoid duplication of complex password_sync_ucs_to_s4 code  
+  * avoid duplication of complex password_sync_ucs_to_s4 code
     in univention-password_sync_ucs_to_s4, simply call the connector code
   * remove ad-connector specific code in s4connector/s4/password.py
     (Bug #22559)
@@ -5184,7 +5184,7 @@ univention-ad-connector (4.1.10-1) unstable; urgency=low
 
 univention-ad-connector (4.1.9-1) unstable; urgency=low
 
-  * fixed ad-connector umc service configuration Bug #17311 
+  * fixed ad-connector umc service configuration Bug #17311
 
  -- Felix Botner <botner@univention.de>  Fri, 15 Jan 2010 12:21:25 +0100
 
@@ -5209,7 +5209,7 @@ univention-ad-connector (4.1.6-1) unstable; urgency=low
 
 univention-ad-connector (4.1.5-1) unstable; urgency=low
 
-  * updated copyright Bug #17222 
+  * updated copyright Bug #17222
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 13:47:52 +0100
 

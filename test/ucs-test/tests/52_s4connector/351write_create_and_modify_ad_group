@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Create and modify AD-Group and verify attributes in write-mode"
 ## exposure: dangerous

@@ -108,7 +108,7 @@ define([
 			{ type: Text, name: 'empty3', content: '' },
 			{ type: Text, name: 'empty4', content: '' }
 			]);
-			
+
 			array.forEach( [ 'Setgid', 'Stickybit' ], lang.hitch( this, function( item ) {
 				this.widgets.push( { type: CheckBox, name: item + 'CheckBox', disabled: this.disabled } );
 			} ) );
@@ -167,7 +167,7 @@ define([
 				rights += this._widgets[ item + 'Read' ].get( 'checked' ) ? 4 : 0;
 				rights <<= 3;
 			} ) );
-			
+
 			rights >>= 3;
 
 			return '0' + rights.toString( 8 );

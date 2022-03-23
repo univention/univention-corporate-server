@@ -298,19 +298,19 @@ univention-pkgdb (8.0.0-5) unstable; urgency=low
 
 univention-pkgdb (8.0.0-4) unstable; urgency=low
 
-  * fixed pyshared/univention/pkgdb.py (Bug #35147) 
+  * fixed pyshared/univention/pkgdb.py (Bug #35147)
 
  -- Felix Botner <botner@univention.de>  Fri, 29 Aug 2014 09:54:56 +0200
 
 univention-pkgdb (8.0.0-3) unstable; urgency=low
 
-  * added postgresql 9.1 config templates (Bug #35147) 
+  * added postgresql 9.1 config templates (Bug #35147)
 
  -- Felix Botner <botner@univention.de>  Tue, 19 Aug 2014 11:43:22 +0200
 
 univention-pkgdb (8.0.0-2) unstable; urgency=low
 
-  * added dh $@ --with 'python_support' (Bug #35147) 
+  * added dh $@ --with 'python_support' (Bug #35147)
 
  -- Felix Botner <botner@univention.de>  Thu, 10 Jul 2014 16:08:07 +0200
 
@@ -324,19 +324,19 @@ univention-pkgdb (7.0.11-5) unstable; urgency=low
 
   * give user friendly feedback whenever a command execution fails because the
     postgreSQL server is not running (Bug #34723)
-    
+
  -- Lukas Walter <walter@univention.de>  Wed, 02 Jul 2014 16:45:20 +0200
 
 univention-pkgdb (7.0.11-4) unstable; urgency=low
 
   * on module init error, raise UMC_Error (Bug #34723)
-    
+
  -- Lukas Walter <walter@univention.de>  Wed, 02 Jul 2014 11:20:15 +0200
 
 univention-pkgdb (7.0.11-3) unstable; urgency=low
 
   * version bump, corrected bug number in changelog (Bug #34723)
-    
+
  -- Lukas Walter <walter@univention.de>  Wed, 18 Jun 2014 17:41:12 +0200
 
 univention-pkgdb (7.0.11-2) unstable; urgency=low
@@ -432,14 +432,14 @@ univention-pkgdb (7.0.1-1) unstable; urgency=low
 
 univention-pkgdb (7.0.0-2) unstable; urgency=low
 
-  * fixed password generation (Bug #31281) 
+  * fixed password generation (Bug #31281)
 
  -- Felix Botner <botner@univention.de>  Fri, 14 Jun 2013 11:11:04 +0200
 
 univention-pkgdb (7.0.0-1) unstable; urgency=low
 
   * replaced makepasswd with create_machine_password (Bug #31281)
-  * bump version for UCS 3.2 
+  * bump version for UCS 3.2
 
  -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 12:33:16 +0200
 
@@ -645,7 +645,7 @@ univention-pkgdb (5.0.14-1) unstable; urgency=low
 
 univention-pkgdb (5.0.13-1) unstable; urgency=low
 
-  * UMC: fixed widget sizes (Bug #22896) 
+  * UMC: fixed widget sizes (Bug #22896)
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 15 Nov 2011 18:37:33 +0100
 
@@ -710,7 +710,7 @@ univention-pkgdb (5.0.7-1) unstable; urgency=low
 
 univention-pkgdb (5.0.6-1) unstable; urgency=low
 
-  * added logrotate configuration (Bug #18002) 
+  * added logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 10:56:00 +0200
 
@@ -731,7 +731,7 @@ univention-pkgdb (5.0.4-1) unstable; urgency=low
 
 univention-pkgdb (5.0.3-1) unstable; urgency=low
 
-  * added postgres 8.4 pg_hba config template (Bug #23343) 
+  * added postgres 8.4 pg_hba config template (Bug #23343)
 
  -- Felix Botner <botner@univention.de>  Mon, 19 Sep 2011 10:42:30 +0200
 
@@ -1184,7 +1184,7 @@ univention-pkgdb (1.0.0-1) unstable; urgency=low
 
 univention-pkgdb (0.21-1) unstable; urgency=low
 
-  * add GPL headers 
+  * add GPL headers
 
  -- Andreas BÃŒschin <buesching@univention.de>  Tue,  5 Dec 2006 10:41:43 +0100
 
@@ -1226,14 +1226,14 @@ univention-pkgdb (0.19-2) unstable; urgency=low
 
 univention-pkgdb (0.19-1) unstable; urgency=low
 
-  * mails upon addition and deletion of systems are now being suppressed 
+  * mails upon addition and deletion of systems are now being suppressed
   * corrected dependencies on python2.4-packages
 
  -- Wolf Wiegand <wiegand@univention.de>  Wed, 19 Oct 2005 11:20:44 +0200
 
 univention-pkgdb (0.18) unstable; urgency=low
 
-  * Added more python 2.4 dependencies 
+  * Added more python 2.4 dependencies
 
  -- Alexander Reelsen <reelsen@univention.de>  Tue, 20 Sep 2005 15:01:09 +0200
 
@@ -1245,7 +1245,7 @@ univention-pkgdb (0.17) unstable; urgency=low
 
 univention-pkgdb (0.15) unstable; urgency=low
 
-  * basesystems can now be included in the database 
+  * basesystems can now be included in the database
 
  -- Wolf Wiegand <wiegand@univention.de>  Wed, 17 Aug 2005 11:25:18 +0200
 
@@ -1278,7 +1278,7 @@ univention-pkgdb (0.11) unstable; urgency=low
 
 univention-pkgdb (0.10) unstable; urgency=low
 
-  * fixed inclusion of translations 
+  * fixed inclusion of translations
 
  -- Wolf Wiegand <wiegand@univention.de>  Mon, 21 Mar 2005 16:17:10 +0100
 

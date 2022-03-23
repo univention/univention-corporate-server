@@ -536,7 +536,7 @@ univention-python (7.0.3-1) unstable; urgency=low
 univention-python (7.0.2-1) unstable; urgency=low
 
   * Removed deprecated multivalue checks for some attributes (Bug #18929)
-  * Updated copyright 
+  * Updated copyright
 
  -- Erik Damrose <damrose@univention.de>  Mon, 01 Jul 2013 14:24:57 +0200
 
@@ -555,7 +555,7 @@ univention-python (7.0.0-1) unstable; urgency=low
 
 univention-python (6.0.21-2) unstable; urgency=low
 
-  * bumped version  (Bug #9139) 
+  * bumped version  (Bug #9139)
 
  -- Felix Botner <botner@univention.de>  Fri, 29 Jun 2012 09:46:19 +0200
 
@@ -900,7 +900,7 @@ univention-python (2.2.1-3) unstable; urgency=low
 
 univention-python (2.2.1-2) unstable; urgency=low
 
-  * no password encoding to ISO-8859-1 anymore 
+  * no password encoding to ISO-8859-1 anymore
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 15 Jun 2007 15:09:58 +0200
 

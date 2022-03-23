@@ -430,7 +430,7 @@ define([
 					originalText = inode._originalTextContent = inode.textContent;
 				}
 				inode.textContent = originalText;
-				
+
 				// if the description overflows max height show ellipsis and
 				// show full description on hover
 				if (domGeometry.position(inode).h > descriptionMaxHeight) {

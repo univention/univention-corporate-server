@@ -83,8 +83,8 @@ then
 	ucr commit /etc/resolv.conf
 else
 	# Add the local configured nameserver to the resolv.conf
-	
-	# The given nameserver via DHCP should be the default nameserver, so split the 
+
+	# The given nameserver via DHCP should be the default nameserver, so split the
 	# current resolv.conf
 	tempdir=$(mktemp -d)
 	trap "rm -rf '$tempdir'" EXIT

@@ -52,7 +52,7 @@ define([
 						class="umcTile__box"
 						style="background: \${bgc}"
 					>
-						<img 
+						<img
 							class="umcTile__logo"
 							src="\${logo}"
 							alt="\${name} logo"

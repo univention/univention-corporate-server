@@ -96,7 +96,7 @@ define([
 
 			this.dndSource = new Source(this.domNode, properties);
 			domClass.add(this.domNode, lang.replace('dojoDndSource_{0}', [this.dndOptions.type[0]]));
-			
+
 			this.own(aspect.after(this.dndSource, 'onDropInternal', function(nodes, copy) {
 				this.parentWidget.updateAfterDnd();
 			}, true));

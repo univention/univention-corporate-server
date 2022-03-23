@@ -189,7 +189,7 @@ define([
 				var plural;
 				var _data = {};
 				var i = 0;
-				
+
 				for (i = 0; i < scopes.length; ++i) {
 					_data = _get(language, scopes[i]);
 					_msg = _data[id];
@@ -206,7 +206,7 @@ define([
 						if (typeof plural === "boolean") {
 							plural = plural ? 1 : 0;
 						}
-						
+
 						msg = _msg[plural];
 						break;
 					}

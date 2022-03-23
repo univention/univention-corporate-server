@@ -73,7 +73,7 @@ Type=str
 Categories=management-umc,saml
 
 [umc/saml/sp-server]
-Description[de]=Definiert den SAML 2.0 Service Provider FQDN. Wenn die Variable nicht gesetzt ist wird der Rechnername und alle IP Adressen verwendet. 
+Description[de]=Definiert den SAML 2.0 Service Provider FQDN. Wenn die Variable nicht gesetzt ist wird der Rechnername und alle IP Adressen verwendet.
 Description[en]=Defines the SAML 2.0 service provider fqdn. If the variable is unset, the fqdn of the UCS system and all IP addresses are used.
 Type=str
 Categories=management-umc,saml

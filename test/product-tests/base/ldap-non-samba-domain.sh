@@ -45,7 +45,7 @@ test_ldap_non_samba_domain () {
 		echo $password > /tmp/.usertest
 		kinit --password-file=/tmp/.usertest $user
 	done
-	
+
 	echo "Success"
 
 }

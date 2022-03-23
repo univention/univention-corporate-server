@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Test if a user can be added from ad, when mspolicy and pwQualityCheck is enabled"
 ## exposure: dangerous

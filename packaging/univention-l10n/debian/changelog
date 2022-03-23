@@ -323,7 +323,7 @@ univention-ucs-translation-template (3.0.1-12) unstable; urgency=medium
 
 univention-ucs-translation-template (3.0.1-11) unstable; urgency=medium
 
-  * Bug #41223: *merge: handle old translation package format 
+  * Bug #41223: *merge: handle old translation package format
 
  -- Eduard Mai <mai@univention.de>  Tue, 02 Aug 2016 18:24:30 +0200
 
@@ -335,7 +335,7 @@ univention-ucs-translation-template (3.0.1-10) unstable; urgency=medium
 
 univention-ucs-translation-template (3.0.1-9) unstable; urgency=medium
 
-  * Bug #41223: Improve ability to merge new messages into exiting translation 
+  * Bug #41223: Improve ability to merge new messages into exiting translation
 
  -- Eduard Mai <mai@univention.de>  Fri, 15 Jul 2016 15:13:43 +0200
 
@@ -347,20 +347,20 @@ univention-ucs-translation-template (3.0.1-8) unstable; urgency=medium
 
 univention-ucs-translation-template (3.0.1-7) unstable; urgency=medium
 
-  * Bug #41222: Add univention/saml to specialcases.json 
+  * Bug #41222: Add univention/saml to specialcases.json
 
  -- Eduard Mai <mai@univention.de>  Thu, 02 Jun 2016 16:25:34 +0200
 
 univention-ucs-translation-template (3.0.1-6) unstable; urgency=medium
 
-  * Bug #40917: Locale territory is now written correctly to UCR. 
+  * Bug #40917: Locale territory is now written correctly to UCR.
 
  -- Eduard Mai <mai@univention.de>  Thu, 02 Jun 2016 14:03:02 +0200
 
 univention-ucs-translation-template (3.0.1-5) unstable; urgency=medium
 
   * Bug #40936: Tested and applied patch which fixes wrong source files being
-    used for po file generation. 
+    used for po file generation.
 
  -- Eduard Mai <mai@univention.de>  Wed, 01 Jun 2016 16:13:57 +0200
 
@@ -390,13 +390,13 @@ univention-ucs-translation-template (3.0.1-1) unstable; urgency=medium
 
 univention-ucs-translation-template (2.0.0-1) unstable; urgency=low
 
-  * Update to UCS 4.0 (Bug #36115) 
+  * Update to UCS 4.0 (Bug #36115)
 
  -- Felix Botner <botner@univention.de>  Wed, 22 Oct 2014 13:13:47 +0200
 
 univention-ucs-translation-template (1.0.0-2) unstable; urgency=low
 
-  * Small code improvements (Bug #31559) 
+  * Small code improvements (Bug #31559)
 
  -- Erik Damrose <damrose@univention.de>  Thu, 15 Aug 2013 12:12:00 +0200
 

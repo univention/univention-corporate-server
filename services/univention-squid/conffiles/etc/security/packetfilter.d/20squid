@@ -46,7 +46,7 @@ if configRegistry.is_true('squid/transparentproxy', False):
 		for address in local_addresses:
 			print('iptables --wait -t nat -A PREROUTING -d %s -p tcp -m tcp --dport %s -j ACCEPT' % (address, port))
 		print('iptables --wait -t nat -A PREROUTING -p tcp -m tcp --dport %s -j REDIRECT --to-ports %s' % (port, squidport))
-	
+
 	# redirect locally created packages
 	for port in configRegistry.get('squid/webports', '80 443 21').split(" "):
 		print('iptables --wait -t nat -A OUTPUT -p tcp -m tcp --dport %s -j REDIRECT --to-ports %s' % (port, squidport))

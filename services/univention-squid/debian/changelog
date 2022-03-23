@@ -291,13 +291,13 @@ univention-squid (8.0.1-1) unstable; urgency=medium
 
 univention-squid (8.0.0-1) unstable; urgency=low
 
-  * Update to UCS 4.0 (Bug #35147) 
+  * Update to UCS 4.0 (Bug #35147)
 
  -- Felix Botner <botner@univention.de>  Fri, 20 Jun 2014 16:10:19 +0200
 
 univention-squid (7.0.4-2) unstable; urgency=low
 
-  * added UCRV squid/forwardedfor (Bug #34025) 
+  * added UCRV squid/forwardedfor (Bug #34025)
 
  -- Felix Botner <botner@univention.de>  Fri, 09 May 2014 10:03:21 +0200
 
@@ -309,7 +309,7 @@ univention-squid (7.0.4-1) unstable; urgency=low
 
 univention-squid (7.0.3-5) unstable; urgency=low
 
-  * made made squid/redirect a bit more flexible (Bug #32429) 
+  * made made squid/redirect a bit more flexible (Bug #32429)
 
  -- Felix Botner <botner@univention.de>  Tue, 08 Apr 2014 12:07:40 +0200
 
@@ -327,7 +327,7 @@ univention-squid (7.0.3-3) unstable; urgency=low
 
 univention-squid (7.0.3-2) unstable; urgency=low
 
-  * removed squid/sslports (Bug #32183) 
+  * removed squid/sslports (Bug #32183)
 
  -- Felix Botner <botner@univention.de>  Thu, 31 Oct 2013 10:51:40 +0100
 
@@ -340,7 +340,7 @@ univention-squid (7.0.3-1) unstable; urgency=low
 
 univention-squid (7.0.2-1) unstable; urgency=low
 
-  * added unjoin scripts (Bug #32447) 
+  * added unjoin scripts (Bug #32447)
 
  -- Felix Botner <botner@univention.de>  Tue, 15 Oct 2013 13:42:46 +0200
 
@@ -359,23 +359,23 @@ univention-squid (7.0.1-2) unstable; urgency=low
 univention-squid (7.0.1-1) unstable; urgency=low
 
   * support type 3 validation in YR (Bug #32183)
-    (office2013 workaround) 
+    (office2013 workaround)
 
  -- Felix Botner <botner@univention.de>  Thu, 08 Aug 2013 10:59:53 +0200
 
 univention-squid (7.0.0-1) unstable; urgency=low
 
   * added negotiate (krb5, ntlm) mode to squid_ldap_ntlm_auth (Bug #31972)
-    and squid_ldap_ntlm_auth is now also a negotiate wrapper  
+    and squid_ldap_ntlm_auth is now also a negotiate wrapper
 
  -- Felix Botner <botner@univention.de>  Tue, 30 Jul 2013 11:15:43 +0200
 
 univention-squid (6.0.9-1) unstable; urgency=low
 
-  * Fixed a regression in squid group authentication if squid/auth/allowed_groups 
+  * Fixed a regression in squid group authentication if squid/auth/allowed_groups
     was not set (Bug #30969)
-  * When using squid with ntlm authentication it is now checked if the user account 
-    is locked or disabled (Bug #29492) 
+  * When using squid with ntlm authentication it is now checked if the user account
+    is locked or disabled (Bug #29492)
 
  -- Erik Damrose <damrose@univention.de>  Wed, 03 Apr 2013 13:47:40 +0200
 
@@ -394,7 +394,7 @@ univention-squid (6.0.7-1) unstable; urgency=low
 univention-squid (6.0.6-1) unstable; urgency=low
 
   * squid/auth/groups is removed, group authentication is handled by squid/auth/allowed_groups (Bug #30553)
-  * Renamed squid/ldapauth/groups to squid/auth/allowed_groups, which is by default empty (Bug #30553) 
+  * Renamed squid/ldapauth/groups to squid/auth/allowed_groups, which is by default empty (Bug #30553)
 
  -- Erik Damrose <damrose@univention.de>  Fri, 22 Feb 2013 14:16:37 +0100
 
@@ -402,9 +402,9 @@ univention-squid (6.0.5-1) unstable; urgency=low
 
   * Added squid3 entry to system services umc module (Bug #30295)
   * Added parsing option for squid/allowfrom=all (Bug #27523)
-  * Added new variable squid/append_domain (Bug #10390) 
+  * Added new variable squid/append_domain (Bug #10390)
   * Authentication with group membership now supports groups with spaces in their names (Bug #11819)
-  * Use CIDR masks in always_direct rule definitions (Bug #25268) 
+  * Use CIDR masks in always_direct rule definitions (Bug #25268)
 
  -- Erik Damrose <damrose@univention.de>  Fri, 22 Feb 2013 11:13:20 +0100
 
@@ -470,31 +470,31 @@ univention-squid (5.0.15-1) unstable; urgency=low
 
 univention-squid (5.0.14-1) unstable; urgency=low
 
-  * default for squid/ntlmauth/keepalive is now "off" (Bug #27401) 
+  * default for squid/ntlmauth/keepalive is now "off" (Bug #27401)
 
  -- Felix Botner <botner@univention.de>  Mon, 04 Jun 2012 11:14:48 +0200
 
 univention-squid (5.0.13-3) unstable; urgency=low
 
-  * fixed last commit (Bug #24281) 
+  * fixed last commit (Bug #24281)
 
  -- Felix Botner <botner@univention.de>  Fri, 01 Jun 2012 12:47:54 +0200
 
 univention-squid (5.0.13-2) unstable; urgency=low
 
-  * also convert squid/ldapauth/children (Bug #24281) 
+  * also convert squid/ldapauth/children (Bug #24281)
 
  -- Felix Botner <botner@univention.de>  Fri, 01 Jun 2012 12:38:38 +0200
 
 univention-squid (5.0.13-1) unstable; urgency=low
 
-  * convert old ldapauth ucr var to new basicauth (Bug #24281) 
+  * convert old ldapauth ucr var to new basicauth (Bug #24281)
 
  -- Felix Botner <botner@univention.de>  Fri, 01 Jun 2012 12:21:43 +0200
 
 univention-squid (5.0.12-1) unstable; urgency=low
 
-  * merged ucs@school 3.0 changes (Bug #24281) 
+  * merged ucs@school 3.0 changes (Bug #24281)
 
  -- Felix Botner <botner@univention.de>  Fri, 01 Jun 2012 12:20:15 +0200
 
@@ -543,13 +543,13 @@ univention-squid (5.0.10-1) unstable; urgency=low
 univention-squid (5.0.9-2) unstable; urgency=low
 
   * fixed debugging in ntlm authentication module
-  * added copyright (Bug #25771) 
+  * added copyright (Bug #25771)
 
  -- Felix Botner <botner@univention.de>  Tue, 20 Mar 2012 10:37:21 +0100
 
 univention-squid (5.0.9-1) unstable; urgency=low
 
-  * fixed squid.conf template (Bug #25771) 
+  * fixed squid.conf template (Bug #25771)
 
  -- Felix Botner <botner@univention.de>  Tue, 13 Mar 2012 11:22:00 +0100
 
@@ -578,9 +578,9 @@ univention-squid (5.0.6-1) unstable; urgency=low
 
 univention-squid (5.0.5-1) unstable; urgency=low
 
-  * added squid/auth/groups and squid/redirect 
+  * added squid/auth/groups and squid/redirect
   * added squid/parent/options
-  (Bug #25806) 
+  (Bug #25806)
 
  -- Felix Botner <botner@univention.de>  Fri, 03 Feb 2012 09:02:17 +0100
 
@@ -681,7 +681,7 @@ univention-squid (5.0.4-1) unstable; urgency=low
 
 univention-squid (5.0.3-19) unstable; urgency=low
 
-  * Fix group lookup (Bug #22576) 
+  * Fix group lookup (Bug #22576)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 07 Nov 2011 11:05:36 +0100
 
@@ -724,20 +724,20 @@ univention-squid (5.0.3-13) unstable; urgency=low
 
 univention-squid (5.0.3-12) unstable; urgency=low
 
-  * Depend on winbind | winbind4 (Bug #22576) 	 
+  * Depend on winbind | winbind4 (Bug #22576)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 31 Oct 2011 15:56:11 +0100
 
 univention-squid (5.0.3-11) unstable; urgency=low
 
   * Move copying of squid3.secret to join script, when the postinst is run during a
-    fresh install, the machine.secret is not yet available (Bug #22576) 	
+    fresh install, the machine.secret is not yet available (Bug #22576)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 28 Oct 2011 10:33:39 +0200
 
 univention-squid (5.0.3-10) unstable; urgency=low
 
-  * Convert join script to univention-ldapsearch (Bug #22576) 
+  * Convert join script to univention-ldapsearch (Bug #22576)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 25 Oct 2011 16:14:21 +0200
 
@@ -775,7 +775,7 @@ univention-squid (5.0.3-5) unstable; urgency=low
 univention-squid (5.0.3-4) unstable; urgency=low
 
   * ucslint fixes  (Bug #22576)
-  * Remove two files, which don't need to be templates	
+  * Remove two files, which don't need to be templates
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Oct 2011 13:48:41 +0200
 
@@ -827,46 +827,46 @@ univention-squid (5.0.2-12) unstable; urgency=low
 univention-squid (5.0.2-11) unstable; urgency=low
 
   * Adapt to new ldap auth helpers for groups
-  * Remove old Squid 2 templates (Bug #22576)	
+  * Remove old Squid 2 templates (Bug #22576)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 14 Sep 2011 11:16:27 +0200
 
 univention-squid (5.0.2-10) unstable; urgency=low
 
-  * Fix typo in postinst (Bug #22576) 
-  * Fix names of authentication helpers	
+  * Fix typo in postinst (Bug #22576)
+  * Fix names of authentication helpers
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 14 Sep 2011 09:24:06 +0200
 
 univention-squid (5.0.2-9) unstable; urgency=low
 
-  * Fix syntax in template (Bug #22576) 
+  * Fix syntax in template (Bug #22576)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 14 Sep 2011 09:14:52 +0200
 
 univention-squid (5.0.2-8) unstable; urgency=low
 
-  * Register squid/level/level in UCR template (Bug #22576) 
+  * Register squid/level/level in UCR template (Bug #22576)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 13 Sep 2011 16:34:01 +0200
 
 univention-squid (5.0.2-7) unstable; urgency=low
 
   * More template changes for new network syntax (Bug #22576)
-  * Add dependency on python-ipaddr for network calculation in UCR template	
+  * Add dependency on python-ipaddr for network calculation in UCR template
   * Update refresh_pattern from the Debian squeeze standard configuration
   * Explicitly configure the logfiles to new log names below /var/log/squid3.
     Since the log format is different external packages should be adapted anyway.
     If the paths were set to old versions from UCS 2.4, we would need to patch
-    the logrotate configs shipped with the Debian package	 
-  * Introduce a new UCR variable squid/debug/level for easier debugging	
+    the logrotate configs shipped with the Debian package
+  * Introduce a new UCR variable squid/debug/level for easier debugging
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 30 Aug 2011 16:38:21 +0200
 
 univention-squid (5.0.2-6) unstable; urgency=low
 
   * Adapt template: 0.0.0.0/0.0.0.0 no longer permitted in ACL syntax, use CIDR
-    notation for networks (Bug #22576)	
+    notation for networks (Bug #22576)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 30 Aug 2011 16:02:03 +0200
 
@@ -911,7 +911,7 @@ univention-squid (5.0.0-1) unstable; urgency=low
 
   * Update for UCS 3.0 (Bug #22576)
   * Migrate to Squid 3
-  * Execute correct join script (Bug #19737)	 
+  * Execute correct join script (Bug #19737)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 26 May 2011 15:07:49 +0200
 
@@ -974,7 +974,7 @@ univention-squid (3.0.8-1) unstable; urgency=low
 
 univention-squid (3.0.7-1) unstable; urgency=low
 
-  * updated copyright Bug #17222 
+  * updated copyright Bug #17222
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 15:24:17 +0100
 

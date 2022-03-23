@@ -117,7 +117,7 @@ univention-management-console-module-lib (3.0.7-2) unstable; urgency=low
 
 univention-management-console-module-lib (3.0.7-1) unstable; urgency=low
 
-  * Bug #24422: 
+  * Bug #24422:
     - create/add default UMC policy commands
     - added dependency to shell-univention-lib
     - updated error message in single sign on

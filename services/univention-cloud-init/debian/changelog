@@ -110,7 +110,7 @@ univention-cloud-init (2.0.0-6) unstable; urgency=low
 
 univention-cloud-init (2.0.0-5) unstable; urgency=low
 
-  * Adapted package to UCS 4 (Bug #36092) 
+  * Adapted package to UCS 4 (Bug #36092)
 
  -- Erik Damrose <damrose@univention.de>  Thu, 23 Oct 2014 16:16:10 +0200
 
@@ -122,13 +122,13 @@ univention-cloud-init (2.0.0-4) unstable; urgency=low
 
 univention-cloud-init (1.0.0-3) unstable; urgency=low
 
-  * Bug #35236: Add build dependency on univention-management-console-dev 
+  * Bug #35236: Add build dependency on univention-management-console-dev
 
  -- Erik Damrose <damrose@univention.de>  Wed, 22 Oct 2014 17:24:51 +0200
 
 univention-cloud-init (1.0.0-2) unstable; urgency=low
 
-  * Bug #35236: Add improvements based on feedback / testing 
+  * Bug #35236: Add improvements based on feedback / testing
 
  -- Erik Damrose <damrose@univention.de>  Wed, 22 Oct 2014 17:13:31 +0200
 

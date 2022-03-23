@@ -26,7 +26,7 @@
 		<title>UCS Dashboard</title>
 			<para>
 				Das UCS Dashboard ermöglicht es Administratoren, den Zustand der Domäne und einzelner
-				Server schnell und übersichtlich auf sogenannten Dashboards abzulesen. Die Dashboards sind 
+				Server schnell und übersichtlich auf sogenannten Dashboards abzulesen. Die Dashboards sind
 				über einen Web-Browser erreichbar, greifen im Hintergrund auf eine Datenbank zu und liefern
 				kontinuierlich aktualisierte Reports über bestimmte Aspekte der Domäne oder der Server.
 			</para>

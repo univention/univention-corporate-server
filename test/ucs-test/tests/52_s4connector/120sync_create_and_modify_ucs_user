@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Create and modify UCS-User and verify attributes in sync-mode"
 ## exposure: dangerous
@@ -159,7 +159,7 @@ if $ext_mapping; then
 			   --append departmentNumber="$UDM_users_user_departmentNumber1" \
 			   --append departmentNumber="$UDM_users_user_departmentNumber2" \
 			   --append roomNumber="$UDM_users_user_roomNumber1" \
-			   --append roomNumber="$UDM_users_user_roomNumber2" || fail_test 110 
+			   --append roomNumber="$UDM_users_user_roomNumber2" || fail_test 110
 	ad_wait_for_synchronization ; fail_bool 0 110
 fi
 
@@ -366,6 +366,5 @@ ad_exists "$AD_DN"; fail_bool 1 110
 
 ad_set_sync_mode "$SYNCMODE"
 ad_connector_restart
-
 
 exit "$RETVAL"

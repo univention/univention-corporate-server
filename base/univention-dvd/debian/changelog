@@ -144,7 +144,7 @@ univention-dvd (3.0.0-3) unstable; urgency=medium
 
 univention-dvd (3.0.0-2) unstable; urgency=medium
 
-  * Bug #45868: UCS-4.3-0 DVD 
+  * Bug #45868: UCS-4.3-0 DVD
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 13 Dec 2017 18:07:04 +0100
 
@@ -266,7 +266,7 @@ univention-dvd (1.0.0-20) unstable; urgency=low
 
 univention-dvd (1.0.0-19) unstable; urgency=low
 
-  * Bug #37006 : add univention-nagios-s4-connector 
+  * Bug #37006 : add univention-nagios-s4-connector
 
  -- Felix Botner <botner@univention.de>  Thu, 26 Nov 2015 12:10:29 +0100
 
@@ -345,7 +345,7 @@ univention-dvd (1.0.0-7) unstable; urgency=low
 
 univention-dvd (1.0.0-6) unstable; urgency=low
 
-  * added ntpdate and rdate (Bug #39410) 
+  * added ntpdate and rdate (Bug #39410)
 
  -- Felix Botner <botner@univention.de>  Thu, 08 Oct 2015 17:12:14 +0200
 
@@ -376,7 +376,7 @@ univention-dvd (1.0.0-2) unstable; urgency=low
 
 univention-dvd (0.2.29-14) unstable; urgency=low
 
-  * added nodejs and npm to tasklist (Bug #37972) 
+  * added nodejs and npm to tasklist (Bug #37972)
 
  -- Felix Botner <botner@univention.de>  Thu, 06 Aug 2015 11:56:02 +0200
 
@@ -452,7 +452,7 @@ univention-dvd (0.2.29-2) unstable; urgency=low
 univention-dvd (0.2.29-1) unstable; urgency=low
 
   * added several packages to maintained
-    Bug #36583, Bug #36609, Bug #36735, Bug #37669 
+    Bug #36583, Bug #36609, Bug #36735, Bug #37669
 
  -- Felix Botner <botner@univention.de>  Wed, 04 Feb 2015 15:23:40 +0100
 
@@ -476,7 +476,7 @@ univention-dvd (0.2.27-9) unstable; urgency=low
 
 univention-dvd (0.2.27-8) unstable; urgency=low
 
-  * Bug #36467: Added several packages to maintained 
+  * Bug #36467: Added several packages to maintained
 
  -- Felix Botner <botner@univention.de>  Thu, 04 Dec 2014 16:43:55 +0100
 
@@ -536,7 +536,7 @@ univention-dvd (0.2.25-1) unstable; urgency=medium
 
 univention-dvd (0.2.24-1) unstable; urgency=low
 
-  * Bug #36619: Add deborphan to maintained 
+  * Bug #36619: Add deborphan to maintained
 
  -- Felix Botner <botner@univention.de>  Thu, 13 Nov 2014 11:36:40 +0100
 
@@ -587,7 +587,7 @@ univention-dvd (0.2.18-1) unstable; urgency=medium
 
 univention-dvd (0.2.17-1) unstable; urgency=low
 
-  * Bug #35890: Added php5-mcrypt to maintained 
+  * Bug #35890: Added php5-mcrypt to maintained
 
  -- Erik Damrose <damrose@univention.de>  Tue, 04 Nov 2014 16:56:29 +0100
 
@@ -611,7 +611,7 @@ univention-dvd (0.2.14-1) unstable; urgency=low
 
 univention-dvd (0.2.13-2) unstable; urgency=low
 
-  * Bug #36365: Added amarok to maintained 
+  * Bug #36365: Added amarok to maintained
 
  -- Felix Botner <botner@univention.de>  Tue, 04 Nov 2014 10:08:03 +0100
 
@@ -719,13 +719,13 @@ univention-dvd (0.2.8-1) unstable; urgency=low
 
 univention-dvd (0.2.7-2) unstable; urgency=low
 
-  * Added several packages for zarafa/z-push App (Bug #36204) 
+  * Added several packages for zarafa/z-push App (Bug #36204)
 
  -- Felix Botner <botner@univention.de>  Tue, 21 Oct 2014 18:02:54 +0200
 
 univention-dvd (0.2.7-1) unstable; urgency=low
 
-  * Added phonon-backend-xine to maintained (Bug #36224) 
+  * Added phonon-backend-xine to maintained (Bug #36224)
 
  -- Felix Botner <botner@univention.de>  Tue, 21 Oct 2014 12:22:04 +0200
 
@@ -737,13 +737,13 @@ univention-dvd (0.2.6-1) unstable; urgency=medium
 
 univention-dvd (0.2.5-2) unstable; urgency=low
 
-  * Added several packages for horde App (Bug #36237) 
+  * Added several packages for horde App (Bug #36237)
 
  -- Felix Botner <botner@univention.de>  Mon, 20 Oct 2014 17:18:55 +0200
 
 univention-dvd (0.2.5-1) unstable; urgency=low
 
-  * Added several packages for horde App (Bug #36237) 
+  * Added several packages for horde App (Bug #36237)
 
  -- Felix Botner <botner@univention.de>  Mon, 20 Oct 2014 17:14:27 +0200
 

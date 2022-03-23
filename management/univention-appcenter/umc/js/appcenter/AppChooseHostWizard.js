@@ -236,7 +236,7 @@ define([
 					page.layout.push(`chooseHosts_removeExplanation_${app.id}`);
 				}
 
-				this._chooseHostsNeedsToBeShown = this._chooseHostsNeedsToBeShown 
+				this._chooseHostsNeedsToBeShown = this._chooseHostsNeedsToBeShown
 					|| (hosts.length > 1 || !!removedDueToInstalled.length || !!removedDueToRole.length);
 			}
 			return page;

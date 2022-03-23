@@ -409,6 +409,6 @@ univention-admin-diary (1.0.0-2) unstable; urgency=medium
 
 univention-admin-diary (1.0.0-1) unstable; urgency=medium
 
-  * Bug #48342: initial release 
+  * Bug #48342: initial release
 
  -- Felix Botner <botner@univention.de>  Mon, 17 Dec 2018 11:01:41 +0100

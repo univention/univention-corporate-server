@@ -98,14 +98,14 @@ ucs-test (10.0.6-95) unstable; urgency=medium
 
 ucs-test (10.0.6-92) unstable; urgency=medium
 
-  * Bug #54336: Ignore 61_notifier_protocol_version in tests if 
+  * Bug #54336: Ignore 61_notifier_protocol_version in tests if
     notifier not installed
 
  -- Julia Bremer <bremer@univention.de>  Fri, 14 Jan 2022 10:32:47 +0100
 
 ucs-test (10.0.6-91) unstable; urgency=medium
 
-  * Bug #52987: Test to check that kerberos ticket lifetime is configured 
+  * Bug #52987: Test to check that kerberos ticket lifetime is configured
     successfully with kerberos/defaults/ticket-lifetime.
 
  -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Tue, 04 Jan 2022 08:02:42 +0100
@@ -178,7 +178,7 @@ ucs-test (10.0.6-74) unstable; urgency=medium
 
 ucs-test (10.0.6-73) unstable; urgency=medium
 
-  * Bug #53438: Added new test for samba4 backup 
+  * Bug #53438: Added new test for samba4 backup
 
  -- Esteban Martinena <martinena@univention.de>  Thu, 18 Nov 2021 09:50:50 +0100
 
@@ -2284,7 +2284,7 @@ ucs-test (9.0.3-184) unstable; urgency=medium
 
 ucs-test (9.0.3-183) unstable; urgency=medium
 
-  * Bug #50944: Skip s4-tests that test stuff the AD-Connector can not do, 
+  * Bug #50944: Skip s4-tests that test stuff the AD-Connector can not do,
     if AD-Connector is installed
 
  -- Julia Bremer <bremer@univention.de>  Mon, 16 Mar 2020 13:25:09 +0100
@@ -2543,7 +2543,7 @@ ucs-test (9.0.3-144) unstable; urgency=medium
 
 ucs-test (9.0.3-143) unstable; urgency=medium
 
-  * Bug #50540: Add stdout to MailSink 
+  * Bug #50540: Add stdout to MailSink
 
  -- Tobias Wenzel <wenzel@.univention.de>  Thu, 30 Jan 2020 16:04:41 +0100
 
@@ -2561,7 +2561,7 @@ ucs-test (9.0.3-141) unstable; urgency=medium
 
 ucs-test (9.0.3-140) unstable; urgency=medium
 
-  * Bug #50428: fixed test for passwordreset permissions  
+  * Bug #50428: fixed test for passwordreset permissions
 
  -- Christian Castens <castens@univention.de>  Mon, 27 Jan 2020 14:03:26 +0100
 
@@ -4580,7 +4580,7 @@ ucs-test (8.0.28-228) unstable; urgency=low
 
 ucs-test (8.0.28-227) unstable; urgency=medium
 
-  * Bug #47653: Code cleanup 
+  * Bug #47653: Code cleanup
 
  -- Julia Bremer <bremer@univention.de>  Mon, 19 Nov 2018 10:19:34 +0100
 
@@ -4728,8 +4728,8 @@ ucs-test (8.0.28-204) unstable; urgency=medium
 
 ucs-test (8.0.28-203) unstable; urgency=low
 
-  * Bug #47650 Implemented a CLI Tool which executes the diagnostic modules. 
-  	Build package again in right scope. 
+  * Bug #47650 Implemented a CLI Tool which executes the diagnostic modules.
+  	Build package again in right scope.
 
  -- Julia Bremer <bremer@univention.de>  Fri, 12 Oct 2018 09:42:31 +0200
 
@@ -4778,7 +4778,7 @@ ucs-test (8.0.28-196) unstable; urgency=medium
 
 ucs-test (8.0.28-195) unstable; urgency=medium
 
-  * Bug #47863: Test for umc traceback handling 
+  * Bug #47863: Test for umc traceback handling
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 26 Sep 2018 10:36:54 +0200
 
@@ -5287,7 +5287,7 @@ ucs-test (8.0.28-114) unstable; urgency=medium
 
 ucs-test (8.0.28-113) unstable; urgency=medium
 
-  * Bug #34154: Fix 43_proxy/05_custom_ACL_snippets_in_squidconf 
+  * Bug #34154: Fix 43_proxy/05_custom_ACL_snippets_in_squidconf
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 04 May 2018 11:18:58 +0200
 
@@ -6343,7 +6343,7 @@ ucs-test (8.0.7-6) unstable; urgency=medium
 
 ucs-test (8.0.7-5) unstable; urgency=medium
 
-  * Bug #45980: fix 43access_sysvol checking invalid smbclient error code 
+  * Bug #45980: fix 43access_sysvol checking invalid smbclient error code
 
  -- Arvid Requate <requate@univention.de>  Thu, 04 Jan 2018 16:41:17 +0100
 
@@ -7006,7 +7006,7 @@ ucs-test (7.0.23-19) unstable; urgency=medium
 
 ucs-test (7.0.23-18) unstable; urgency=medium
 
-  * Bug #45101: Fix and move nfs options test 
+  * Bug #45101: Fix and move nfs options test
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 01 Aug 2017 11:39:49 +0200
 
@@ -7102,7 +7102,7 @@ ucs-test (7.0.23-4) unstable; urgency=medium
 
 ucs-test (7.0.23-3) unstable; urgency=medium
 
-  * Bug #44704: test download of saml idp certificate 
+  * Bug #44704: test download of saml idp certificate
 
  -- Jürn Brodersen <brodersen@univention.de>  Thu, 20 Jul 2017 16:38:43 +0200
 
@@ -7114,7 +7114,7 @@ ucs-test (7.0.23-2) unstable; urgency=medium
 
 ucs-test (7.0.23-1) unstable; urgency=medium
 
-  * Bug #37157: remove SKIP_UCSSCHOOL tag from 
+  * Bug #37157: remove SKIP_UCSSCHOOL tag from
   63_udm-containers/06_container_ou_rename and
   63_udm-containers/07_container_ou_rename_uppercase
 
@@ -7937,7 +7937,7 @@ ucs-test (7.0.11-3) unstable; urgency=low
 
 ucs-test (7.0.11-2) unstable; urgency=medium
 
-  * Bug #43384: Fixed timezone in saml test 
+  * Bug #43384: Fixed timezone in saml test
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 03 Feb 2017 16:28:46 +0100
 
@@ -7973,7 +7973,7 @@ ucs-test (7.0.10-17) unstable; urgency=medium
 
 ucs-test (7.0.10-16) unstable; urgency=medium
 
-  * Bug #43444: Fixed header for saml tests 
+  * Bug #43444: Fixed header for saml tests
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 31 Jan 2017 10:48:27 +0100
 
@@ -7997,7 +7997,7 @@ ucs-test (7.0.10-13) unstable; urgency=medium
 
 ucs-test (7.0.10-12) unstable; urgency=medium
 
-  * Bug #43444: Saml tests for login with wrong account or password 
+  * Bug #43444: Saml tests for login with wrong account or password
   * Bug #43384: re-enable saml tests
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 20 Jan 2017 13:34:26 +0100
@@ -8101,7 +8101,7 @@ ucs-test (7.0.8-5) unstable; urgency=low
 
 ucs-test (7.0.8-4) unstable; urgency=medium
 
-  * Bug #43333: Updates for new simplesaml (82_saml) 
+  * Bug #43333: Updates for new simplesaml (82_saml)
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 18 Jan 2017 18:43:46 +0100
 
@@ -8143,7 +8143,7 @@ ucs-test (7.0.7-1) unstable; urgency=medium
 
 ucs-test (7.0.6-52) unstable; urgency=medium
 
-  * Bug #43333: more verbose saml error (82_saml) 
+  * Bug #43333: more verbose saml error (82_saml)
 
  -- Jürn Brodersen <brodersen@univention.de>  Mon, 16 Jan 2017 11:26:44 +0100
 
@@ -8624,7 +8624,7 @@ ucs-test (6.0.36-3) unstable; urgency=medium
 ucs-test (6.0.36-2) unstable; urgency=medium
 
   * Stop S4 connector in the following test cases. The test cases change
-    the same object / attributes in a short time frame which leds to sync 
+    the same object / attributes in a short time frame which leds to sync
     errors (Bug #35336):
       60_umc-system/60_umc-service-extended-attributes (Bug #41790)
       60_umc-system/76_ipchange_ucs_sso (Bug #41748)
@@ -9056,7 +9056,7 @@ ucs-test (6.0.33-43) unstable; urgency=low
 
 ucs-test (6.0.33-42) unstable; urgency=medium
 
-  * 20_appcenter/60_check_appcenter_performance: Update Appcenter before 
+  * 20_appcenter/60_check_appcenter_performance: Update Appcenter before
     testing the appcenter performance (Bug #38545)
 
  -- Jürn Brodersen <brodersen@univention.de>  Mon, 14 Mar 2016 15:03:26 +0100
@@ -9513,7 +9513,7 @@ ucs-test (6.0.31-4) unstable; urgency=low
 
 ucs-test (6.0.31-3) unstable; urgency=low
 
-  * Bug #40298: added 52_s4connector/405sync_msprintconnectionpolicy 
+  * Bug #40298: added 52_s4connector/405sync_msprintconnectionpolicy
 
  -- Felix Botner <botner@univention.de>  Tue, 22 Dec 2015 10:17:30 +0100
 
@@ -9539,7 +9539,7 @@ ucs-test (6.0.31-1) unstable; urgency=medium
 
 ucs-test (6.0.30-3) unstable; urgency=low
 
-  * Bug #40298: added 52_s4connector/405sync_msprintconnectionpolicy 
+  * Bug #40298: added 52_s4connector/405sync_msprintconnectionpolicy
 
  -- Felix Botner <botner@univention.de>  Mon, 21 Dec 2015 16:55:17 +0100
 
@@ -9677,7 +9677,7 @@ ucs-test (6.0.27-7) unstable; urgency=low
 
   * Bug #40084: 34_update_of_mail_hosteddomains_ucr_variable
     and 14_delivery_to_root_without_univention_mail_server  only
-    if univention-mail-postfix is installed 
+    if univention-mail-postfix is installed
 
  -- Felix Botner <botner@univention.de>  Tue, 24 Nov 2015 18:27:11 +0100
 
@@ -9696,7 +9696,7 @@ ucs-test (6.0.27-5) unstable; urgency=medium
 ucs-test (6.0.27-4) unstable; urgency=low
 
   * Bug #40036: support https in 20_appcenter/17_app_status
-    check_app_webinterface_registration 
+    check_app_webinterface_registration
 
  -- Felix Botner <botner@univention.de>  Thu, 19 Nov 2015 16:27:09 +0100
 
@@ -9792,7 +9792,7 @@ ucs-test (6.0.18-1) unstable; urgency=low
 
 ucs-test (6.0.17-2) unstable; urgency=low
 
-  * 20_appcenter/17_app_status: check app webinterface (Bug #39478) 
+  * 20_appcenter/17_app_status: check app webinterface (Bug #39478)
 
  -- Felix Botner <botner@univention.de>  Fri, 06 Nov 2015 11:56:15 +0100
 
@@ -9862,13 +9862,13 @@ ucs-test (6.0.12-15) unstable; urgency=low
 
 ucs-test (6.0.12-14) unstable; urgency=low
 
-  * ignore some links in 20_appcenter/18_check_app_links (Bug #39478) 
+  * ignore some links in 20_appcenter/18_check_app_links (Bug #39478)
 
  -- Felix Botner <botner@univention.de>  Wed, 04 Nov 2015 08:56:21 +0100
 
 ucs-test (6.0.12-13) unstable; urgency=low
 
-  * ignore some links in 20_appcenter/18_check_app_links (Bug #39478) 
+  * ignore some links in 20_appcenter/18_check_app_links (Bug #39478)
 
  -- Felix Botner <botner@univention.de>  Tue, 03 Nov 2015 14:55:37 +0100
 
@@ -9893,7 +9893,7 @@ ucs-test (6.0.12-10) unstable; urgency=low
 
 ucs-test (6.0.12-9) unstable; urgency=low
 
-  * ignore some links in 20_appcenter/18_check_app_links (Bug #39478) 
+  * ignore some links in 20_appcenter/18_check_app_links (Bug #39478)
 
  -- Felix Botner <botner@univention.de>  Mon, 02 Nov 2015 14:17:29 +0100
 
@@ -10024,7 +10024,7 @@ ucs-test (6.0.10-26) unstable; urgency=medium
 
 ucs-test (6.0.10-25) unstable; urgency=low
 
-  * increased LongDescription max to 2000 (Bug #38798) 
+  * increased LongDescription max to 2000 (Bug #38798)
 
  -- Felix Botner <botner@univention.de>  Wed, 28 Oct 2015 15:05:48 +0100
 
@@ -10057,7 +10057,7 @@ ucs-test (6.0.10-21) unstable; urgency=medium
 
 ucs-test (6.0.10-20) unstable; urgency=low
 
-  * fixed 12_check_apps_ini_all_fields (Bug #39478) 
+  * fixed 12_check_apps_ini_all_fields (Bug #39478)
 
  -- Felix Botner <botner@univention.de>  Tue, 27 Oct 2015 14:16:06 +0100
 
@@ -10152,7 +10152,7 @@ ucs-test (6.0.10-8) unstable; urgency=low
 
 ucs-test (6.0.10-7) unstable; urgency=low
 
-  * Bug #39574: added 56_admember/010ucs_sso_a_record 
+  * Bug #39574: added 56_admember/010ucs_sso_a_record
 
  -- Felix Botner <botner@univention.de>  Wed, 21 Oct 2015 13:20:19 +0200
 
@@ -10189,7 +10189,7 @@ ucs-test (6.0.10-1) unstable; urgency=low
 
 ucs-test (6.0.9-21) unstable; urgency=low
 
-  * Bug #39199: fixed docker port tests 
+  * Bug #39199: fixed docker port tests
 
  -- Felix Botner <botner@univention.de>  Tue, 20 Oct 2015 10:41:40 +0200
 
@@ -10215,7 +10215,7 @@ ucs-test (6.0.9-18) unstable; urgency=medium
 
 ucs-test (6.0.9-17) unstable; urgency=low
 
-  * Bug #39199: added docker port tests 
+  * Bug #39199: added docker port tests
 
  -- Felix Botner <botner@univention.de>  Mon, 19 Oct 2015 17:40:25 +0200
 
@@ -10261,7 +10261,7 @@ ucs-test (6.0.9-10) unstable; urgency=medium
 
 ucs-test (6.0.9-9) unstable; urgency=low
 
-  * 80_docker/dockertest.py: fixed upgrade (Bug #39448) 
+  * 80_docker/dockertest.py: fixed upgrade (Bug #39448)
 
  -- Felix Botner <botner@univention.de>  Thu, 15 Oct 2015 10:52:46 +0200
 
@@ -10724,7 +10724,7 @@ ucs-test (6.0.4-1) unstable; urgency=medium
     * test: 01/11 daemonize FDs
       [Philipp Hahn]
 
-    * Bug #39176: fixed 17_app_status 
+    * Bug #39176: fixed 17_app_status
       [Felix Botner]
 
     * Disable 01_base/99restart_services to check if it breaks the current
@@ -11024,7 +11024,7 @@ ucs-test (6.0.0-1) unstable; urgency=medium
 
 ucs-test (5.0.163-2) unstable; urgency=low
 
-  * Bug #37709: add test tests/52_s4connector/403rename_computer_object 
+  * Bug #37709: add test tests/52_s4connector/403rename_computer_object
 
  -- Felix Botner <botner@univention.de>  Mon, 03 Aug 2015 18:56:31 +0200
 
@@ -11158,7 +11158,7 @@ ucs-test (5.0.154-1) unstable; urgency=low
 
 ucs-test (5.0.153-1) unstable; urgency=low
 
-  * Bug #38883 :authenticate using the user mailAddress instead of uid 
+  * Bug #38883 :authenticate using the user mailAddress instead of uid
 
  -- Ammar Najjar <najjar@univention.de>  Thu, 16 Jul 2015 09:01:59 +0200
 
@@ -11182,7 +11182,7 @@ ucs-test (5.0.152-2) unstable; urgency=low
 
 ucs-test (5.0.152-1) unstable; urgency=low
 
-  * Bug #38883 :authenticate using the user mailAddress instead of uid 
+  * Bug #38883 :authenticate using the user mailAddress instead of uid
 
  -- Ammar Najjar <najjar@univention.de>  Fri, 10 Jul 2015 10:38:00 +0200
 
@@ -11329,7 +11329,7 @@ ucs-test (5.0.148-23) unstable; urgency=low
 
 ucs-test (5.0.148-22) unstable; urgency=low
 
-  * added tests/51_samba4/59checkPrimaryGroupInPacInfo (Bug #37101) 
+  * added tests/51_samba4/59checkPrimaryGroupInPacInfo (Bug #37101)
 
  -- Felix Botner <botner@univention.de>  Wed, 24 Jun 2015 17:22:51 +0200
 
@@ -11429,7 +11429,7 @@ ucs-test (5.0.148-7) unstable; urgency=medium
 
 ucs-test (5.0.148-6) unstable; urgency=low
 
-  * enabled 20_can_apps_be_installed Bug #36223 
+  * enabled 20_can_apps_be_installed Bug #36223
 
  -- Felix Botner <botner@univention.de>  Tue, 19 May 2015 13:53:25 +0200
 

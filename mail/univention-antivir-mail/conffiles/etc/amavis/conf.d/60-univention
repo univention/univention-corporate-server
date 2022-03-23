@@ -43,7 +43,7 @@ use strict;
 #    within the string. In other words, $ and # lose their special meaning
 #    within a qw argument, just like within '...' strings.
 #  - all e-mail addresses in this file and as used internally by the daemon
-#    are in their raw (rfc2821-unquoted and nonbracketed) form, i.e. 
+#    are in their raw (rfc2821-unquoted and nonbracketed) form, i.e.
 #    Bob "Funny" Dude@example.com, not: "Bob \"Funny\" Dude"@example.com
 #    and not <"Bob \"Funny\" Dude"@example.com>; also: '' and not '<>'.
 
@@ -222,7 +222,7 @@ else:
 # if $relayhost_is_client is true, the IP address in $notify_method and
 # $forward_method is dynamically overridden with SMTP client peer address
 # (if available), which makes it possible for several hosts to share one
-# daemon.  The static port number is also overridden, and is dynamically 
+# daemon.  The static port number is also overridden, and is dynamically
 # calculated  as being one above the incoming SMTP/LMTP session port number.
 #
 # These are logged at level 3, so enable logging until you know you got it

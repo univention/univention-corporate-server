@@ -34,4 +34,3 @@ echo "Checking how many fds are allowed according to /proc/$umc_pid/limits"
 echo "Result: $control"
 [ "$control" = "$fd_max" ] || fail_bool 110 "ERROR: max file descriptor configuration didn't work"
 [ $? = 0 ] && echo "SUCCESS: the maximum amount of file descriptors has been successfully set by setting ucr variable umc/http/max-open-file-descriptors"
-

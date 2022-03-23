@@ -569,7 +569,7 @@ define([
 			var title = 'UCS Ambassador Program';
 			switch (i18nTools.defaultLang().substring(0, 2)) {
 				case 'de':
-					message = 'Jetzt Kommentar, kurzes Review oder Tutorial zu UCS schreiben und als UCS Ambassador wertvolle Bonuspunkte sammeln! Mehr Infos: <a href="http://bit.ly/UCS_Ambassador" target="_blank" rel="noopener">UCS Ambassador Programm</a>'; 
+					message = 'Jetzt Kommentar, kurzes Review oder Tutorial zu UCS schreiben und als UCS Ambassador wertvolle Bonuspunkte sammeln! Mehr Infos: <a href="http://bit.ly/UCS_Ambassador" target="_blank" rel="noopener">UCS Ambassador Programm</a>';
 					title = 'UCS Ambassador Programm';
 					break;
 				case 'fr':
@@ -929,7 +929,7 @@ define([
 			if (props.overview !== undefined) {
 				_overviewVisible = tools.isTrue(props.overview);
 			}
-			
+
 			if (props.menu !== undefined) {
 				_menuVisible = tools.isTrue(props.menu);
 			}

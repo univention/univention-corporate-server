@@ -649,7 +649,7 @@ univention-lib (6.0.9-2) unstable; urgency=medium
 
 univention-lib (6.0.9-1) unstable; urgency=medium
 
-  * Bug #44144: use /etc/init.d/samba instead of /etc/init.d/samba4 
+  * Bug #44144: use /etc/init.d/samba instead of /etc/init.d/samba4
 
  -- Arvid Requate <requate@univention.de>  Mon, 24 Apr 2017 19:19:05 +0200
 
@@ -751,7 +751,7 @@ univention-lib (6.0.0-1) unstable; urgency=medium
 
 univention-lib (5.0.0-15) unstable; urgency=low
 
-  * add support for message catalogs for UDM syntax and hook extensions 
+  * add support for message catalogs for UDM syntax and hook extensions
     (Bug #34556)
 
  -- Daniel Troeder <troeder@univention.de>  Tue, 19 Jan 2016 10:59:24 +0100
@@ -777,7 +777,7 @@ univention-lib (5.0.0-12) unstable; urgency=low
 
 univention-lib (5.0.0-11) unstable; urgency=low
 
-  * AD Member: suppotr uid in add_host_record_in_ad() (Bug #39574) 
+  * AD Member: suppotr uid in add_host_record_in_ad() (Bug #39574)
 
  -- Felix Botner <botner@univention.de>  Wed, 21 Oct 2015 10:39:15 +0200
 
@@ -807,7 +807,7 @@ univention-lib (5.0.0-8) unstable; urgency=medium
 univention-lib (5.0.0-7) unstable; urgency=low
 
   * AD Member: use join credentials in
-    add_ucs_sso_host_record_in_ad() (Bug #39574) 
+    add_ucs_sso_host_record_in_ad() (Bug #39574)
 
  -- Felix Botner <botner@univention.de>  Tue, 20 Oct 2015 17:41:20 +0200
 
@@ -820,7 +820,7 @@ univention-lib (5.0.0-6) unstable; urgency=low
 
 univention-lib (5.0.0-5) unstable; urgency=low
 
-  * AD Member: added add_ucs_sso_host_record_in_ad() (Bug #39574) 
+  * AD Member: added add_ucs_sso_host_record_in_ad() (Bug #39574)
 
  -- Felix Botner <botner@univention.de>  Tue, 20 Oct 2015 15:11:48 +0200
 
@@ -1039,7 +1039,7 @@ univention-lib (4.0.2-1) unstable; urgency=medium
 
 univention-lib (4.0.1-3) unstable; urgency=low
 
-  * fixed python version in hashbang (Bug #34091) 
+  * fixed python version in hashbang (Bug #34091)
 
  -- Felix Botner <botner@univention.de>  Tue, 19 Aug 2014 11:31:30 +0200
 
@@ -1063,20 +1063,20 @@ univention-lib (4.0.1-2) unstable; urgency=low
       connector/ad/mapping/user/primarymail in
       member mode to sync mail addresses from AD (Bug #35551)
     * added dependency to python-ldb, python-samba
-      and python-ldap (Bug #35520) 
+      and python-ldap (Bug #35520)
     * check 'dns/forwarder1', 'dns/forwarder2', 'dns/forwarder3',
       'nameserver1', 'nameserver2' and 'nameserver3' in
       lookup_adds_dc() (Bug #35520)
-    * fixed lookup_adds_dc (Bug #35520) 
-    * added debug output for samba_join (Bug #35520) 
+    * fixed lookup_adds_dc (Bug #35520)
+    * added debug output for samba_join (Bug #35520)
     * raise exception if no ips could be found in
-      lookup_adds_dc() (Bug #35520) 
-    * added python-ipaddr and dnsutils to the 
+      lookup_adds_dc() (Bug #35520)
+    * added python-ipaddr and dnsutils to the
       package dependencies (Bug #35520)
-    * check cldap and dns in lookup_adds_dc() (Bug #35520) 
+    * check cldap and dns in lookup_adds_dc() (Bug #35520)
     * set ldap/sasl/secprops/maxssf=128 in enable_ssl
-      and unset ldap/sasl/secprops/maxssf in disbale_ssl (Bug #35513) 
-    * added debug output (Bug #35467) 
+      and unset ldap/sasl/secprops/maxssf in disbale_ssl (Bug #35513)
+    * added debug output (Bug #35467)
     * enable password change (Bug #35467)
     * unset kerberos/adminserver in member mode (Bug #35470)
     * disable password change in member mode (Bug #35467)
@@ -1092,7 +1092,7 @@ univention-lib (4.0.1-2) unstable; urgency=low
     * added configure_backup_as_ad_member(), configure_slave_as_ad_member() and
       configure_member_as_ad_member() (Bug #35446)
     * added shell wrapper for univention.lib.admember (Bug #35095)
-  [ Florian Best ] 
+  [ Florian Best ]
     * admember.py: add dns/dns to show/adnotification UCR variables (Bug #34092)
   [ Stefan Gohmann ]
     * admember.py: server_supports_ssl: we have to create a new process
@@ -1222,7 +1222,7 @@ univention-lib (3.0.26-9) unstable; urgency=low
 
 univention-lib (3.0.26-8) unstable; urgency=low
 
-  * use ucr.groupNameMapping in custom_groupname (Bug #33710) 
+  * use ucr.groupNameMapping in custom_groupname (Bug #33710)
 
  -- Felix Botner <botner@univention.de>  Wed, 11 Dec 2013 15:16:43 +0100
 
@@ -1240,19 +1240,19 @@ univention-lib (3.0.26-6) unstable; urgency=medium
 
 univention-lib (3.0.26-5) unstable; urgency=low
 
-  * added univention.lib.s4 (Bug #33710) 
+  * added univention.lib.s4 (Bug #33710)
 
  -- Felix Botner <botner@univention.de>  Tue, 10 Dec 2013 15:59:55 +0100
 
 univention-lib (3.0.26-4) unstable; urgency=low
 
-  * fixed last commit (Bug #33649) 
+  * fixed last commit (Bug #33649)
 
  -- Felix Botner <botner@univention.de>  Tue, 10 Dec 2013 10:53:09 +0100
 
 univention-lib (3.0.26-3) unstable; urgency=low
 
-  * added group name localization in shell/umc.sh (Bug #33649) 
+  * added group name localization in shell/umc.sh (Bug #33649)
 
  -- Felix Botner <botner@univention.de>  Tue, 10 Dec 2013 10:43:20 +0100
 
@@ -1379,7 +1379,7 @@ univention-lib (3.0.20-1) unstable; urgency=low
 
 univention-lib (3.0.19-1) unstable; urgency=low
 
-  * parse --binddn and --bindpwd in ucs_isServiceUnused 
+  * parse --binddn and --bindpwd in ucs_isServiceUnused
     and always use ldap/master for ldapsearch (Bug #32578)
 
  -- Felix Botner <botner@univention.de>  Mon, 30 Sep 2013 17:19:14 +0200
@@ -1645,31 +1645,31 @@ univention-lib (3.0.2-1) unstable; urgency=low
 univention-lib (3.0.1-4) unstable; urgency=low
 
   * Update copyright years for 2013
-  * Update/review UCR variable descriptions (Bug #30943)	
+  * Update/review UCR variable descriptions (Bug #30943)
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 26 Jun 2013 14:49:31 +0200
 
 univention-lib (3.0.1-3) unstable; urgency=low
 
-  * fixed create_machine_password (Bug #31281) 
+  * fixed create_machine_password (Bug #31281)
 
  -- Felix Botner <botner@univention.de>  Fri, 14 Jun 2013 09:58:42 +0200
 
 univention-lib (3.0.1-2) unstable; urgency=low
 
-  * added create_machine_password to python lib (Bug #31281) 
+  * added create_machine_password to python lib (Bug #31281)
 
  -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 13:50:10 +0200
 
 univention-lib (3.0.1-1) unstable; urgency=low
 
-  * added dependency to pwgen (Bug #31281) 
+  * added dependency to pwgen (Bug #31281)
 
  -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 10:31:21 +0200
 
 univention-lib (3.0.0-1) unstable; urgency=low
 
-  * bump version for UCS 3.2 
+  * bump version for UCS 3.2
   * added create_machine_password (Bug #31281)
 
  -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 10:13:32 +0200
@@ -1960,14 +1960,14 @@ univention-lib (1.0.72-1) unstable; urgency=low
 
 univention-lib (1.0.71-2) unstable; urgency=low
 
-  * fixed build dep (Bug #26536) 
+  * fixed build dep (Bug #26536)
 
  -- Felix Botner <botner@univention.de>  Mon, 16 Apr 2012 09:59:38 +0200
 
 univention-lib (1.0.71-1) unstable; urgency=low
 
   * added description for listener/shares/rename and
-    listener/shares/rename/fstypes (Bug #26536) 
+    listener/shares/rename/fstypes (Bug #26536)
 
  -- Felix Botner <botner@univention.de>  Mon, 16 Apr 2012 09:51:47 +0200
 
@@ -1979,7 +1979,7 @@ univention-lib (1.0.70-1) unstable; urgency=low
 
 univention-lib (1.0.45-1) unstable; urgency=low
 
-  * fixed python/listenerSharePath.py (Bug #26025) 
+  * fixed python/listenerSharePath.py (Bug #26025)
 
  -- Felix Botner <botner@univention.de>  Thu, 23 Feb 2012 11:10:14 +0100
 
@@ -1991,13 +1991,13 @@ univention-lib (1.0.44-1) unstable; urgency=low
 
 univention-lib (1.0.43-1) unstable; urgency=low
 
-  * added python lib to rename directories (Bug #26025) 
+  * added python lib to rename directories (Bug #26025)
 
  -- Felix Botner <botner@univention.de>  Fri, 03 Feb 2012 14:29:30 +0100
 
 univention-lib (1.0.42-1) unstable; urgency=low
 
-  * fixed ldap search filter in getMailFromMailOrUid.py (Bug #23739) 
+  * fixed ldap search filter in getMailFromMailOrUid.py (Bug #23739)
 
  -- Felix Botner <botner@univention.de>  Thu, 24 Nov 2011 09:36:08 +0100
 
@@ -2021,7 +2021,7 @@ univention-lib (1.0.39-1) unstable; urgency=low
 
 univention-lib (1.0.38-1) unstable; urgency=low
 
-  * escape ldap filter in python/getMailFromMailOrUid.py (Bug #23739) 
+  * escape ldap filter in python/getMailFromMailOrUid.py (Bug #23739)
 
  -- Felix Botner <botner@univention.de>  Tue, 08 Nov 2011 08:54:44 +0100
 
@@ -2034,7 +2034,7 @@ univention-lib (1.0.37-1) unstable; urgency=low
 
 univention-lib (1.0.36-1) unstable; urgency=low
 
-  * shell/umc.sh: added check whether UMC frontend is installed for 
+  * shell/umc.sh: added check whether UMC frontend is installed for
     umc_frontend_new_hash (Bug #22881)
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 02 Nov 2011 17:14:31 +0100
@@ -2084,7 +2084,7 @@ univention-lib (1.0.30-1) unstable; urgency=low
 
 univention-lib (1.0.29-1) unstable; urgency=low
 
-  * added logrotate/notifempty to ucrLogrotate helper (Bug #18002) 
+  * added logrotate/notifempty to ucrLogrotate helper (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 12:38:59 +0200
 
@@ -2108,7 +2108,7 @@ univention-lib (1.0.26-1) unstable; urgency=low
 
 univention-lib (1.0.25-1) unstable; urgency=low
 
-  * added python/ucrLogrotate.py (Bug #18002) 
+  * added python/ucrLogrotate.py (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 15:41:41 +0200
 

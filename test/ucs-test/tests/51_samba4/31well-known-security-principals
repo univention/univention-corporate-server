@@ -21,7 +21,7 @@ univention-s4search -b "CN=Configuration,$ldap_base" objectclass=foreignSecurity
 	sid="$(univention-s4search -b "CN=Configuration,$ldap_base" "(&(objectclass=foreignSecurityPrincipal)(cn=$cn))" objectSid | sed -ne 's|objectSid: ||p')"
 
 	ucs_dn="$(univention-ldapsearch "(&(cn=$cn)(sambaSID=$sid))" dn | sed -ne 's|dn: ||p')"
-	
+
 	if [ -n "$ucs_dn" ]; then
 		echo "Found $ucs_dn with SID $sid"
 	else
@@ -29,4 +29,3 @@ univention-s4search -b "CN=Configuration,$ldap_base" objectclass=foreignSecurity
 		exit 1
 	fi
 done
-

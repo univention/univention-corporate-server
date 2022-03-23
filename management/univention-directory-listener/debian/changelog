@@ -842,13 +842,13 @@ univention-directory-listener (9.0.1-1) unstable; urgency=medium
 
 univention-directory-listener (9.0.0-2) unstable; urgency=low
 
-  * changed debian/compat level (Bug #35144) 
+  * changed debian/compat level (Bug #35144)
 
  -- Felix Botner <botner@univention.de>  Tue, 19 Aug 2014 10:02:34 +0200
 
 univention-directory-listener (9.0.0-1) unstable; urgency=low
 
-  * Update to UCS 4.0 (Bug #35144) 
+  * Update to UCS 4.0 (Bug #35144)
 
  -- Felix Botner <botner@univention.de>  Mon, 18 Aug 2014 17:40:09 +0200
 
@@ -958,7 +958,7 @@ univention-directory-listener (8.0.0-1) unstable; urgency=low
 
 univention-directory-listener (7.0.8-1) unstable; urgency=low
 
-  * respect listener/debug/level in join script (Bug #30154) 
+  * respect listener/debug/level in join script (Bug #30154)
 
  -- Felix Botner <botner@univention.de>  Fri, 01 Mar 2013 15:00:19 +0100
 

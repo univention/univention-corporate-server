@@ -76,7 +76,7 @@ fi
 # fail if Windows Host SIDs in S4 and OpenLDAP are different:
 if [ "$windows_object_sid" != "$windows_samba_sid" ]; then
     fail_fast 110 "The SIDs of '$windows_hostname' are not the same in Samba4 '$windows_object_sid' and OpenLDAP '$windows_samba_sid'."
-fi   
+fi
 
 
 exit $RETVAL

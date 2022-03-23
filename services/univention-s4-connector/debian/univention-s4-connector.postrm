@@ -40,7 +40,7 @@ if [ "$1" = "remove" ]; then
 
 	handler_file=/var/lib/univention-directory-listener/handlers/s4-connector
 	test -e "$handler_file" && rm -f "$handler_file"
-	
+
 	db=/etc/univention/connector/s4internal.sqlite
 	test -e "$db" && mv "$db" "${db}_backup_$(date +%Y%m%d%H%M%S)"
 

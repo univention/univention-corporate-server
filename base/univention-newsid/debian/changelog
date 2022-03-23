@@ -48,7 +48,7 @@ univention-newsid (4.0.1-4) unstable; urgency=low
  -- Tobias Peters <peters@univention.de>  Tue, 12 Jun 2012 16:05:37 +0200
 
 univention-newsid (4.0.1-3) unstable; urgency=low
-  
+
   * fixed help output (Bug #25627)
 
  -- Tobias Peters <peters@univention.de>  Mon, 04 Jun 2012 14:58:07 +0200

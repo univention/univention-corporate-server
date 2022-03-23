@@ -67,7 +67,7 @@ univention-nagios-servicechecks (4.0.0-1) unstable; urgency=low
 univention-nagios-servicechecks (3.0.1-1) unstable; urgency=low
 
   * Updated check_univention_squid and check_univention_dansguardian to check for
-    currently supported auth methods (Bug #29506) 
+    currently supported auth methods (Bug #29506)
 
  -- Erik Damrose <damrose@univention.de>  Wed, 20 Feb 2013 14:00:36 +0100
 
@@ -80,7 +80,7 @@ univention-nagios-servicechecks (3.0.0-1) unstable; urgency=low
 
 univention-nagios-servicechecks (2.0.4-1) unstable; urgency=low
 
-  * fixed check_univention_squid (Bug #25283) 
+  * fixed check_univention_squid (Bug #25283)
 
  -- Felix Botner <botner@univention.de>  Tue, 03 Jan 2012 18:03:04 +0100
 

@@ -46,7 +46,7 @@ _uniucr () {
 				opts="$( /usr/sbin/univention-config-registry get "${cur%%=*}" )"
 				COMPREPLY=( $(IFS=$'\n' compgen -P\" -S\" -W "$opts" -- "${cur#*=}") )
 			else
-				# Don't evaluate the ucr dump while using the tab completion and put it into single quotes 
+				# Don't evaluate the ucr dump while using the tab completion and put it into single quotes
 				# instead of double quotes, otherwise the value will be evaluated during the new value is set:
 				#  ucr set xyz='$(cat /etc/foo)' instead of ucr set xyz="$(cat /etc/foo)"
 				# See https://forge.univention.org/bugzilla/show_bug.cgi?id=27573

@@ -110,7 +110,7 @@ done
 echo -en '\n\n\n'
 
 echo mapping
-for i in '"foo"' '"bar"' '"baz"' '"notexisting"'; do 
+for i in '"foo"' '"bar"' '"baz"' '"notexisting"'; do
 	echo "In: $i"
 	result sanitize/mapping "$i"
 done

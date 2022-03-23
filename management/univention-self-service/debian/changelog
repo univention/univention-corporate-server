@@ -731,7 +731,7 @@ univention-self-service (2.0.11-4) unstable; urgency=medium
 
 univention-self-service (2.0.11-3) unstable; urgency=medium
 
-  * Bug #42267: fix whitelist check; prefill username; allow unset sms secret 
+  * Bug #42267: fix whitelist check; prefill username; allow unset sms secret
 
  -- Jürn Brodersen <brodersen@univention.de>  Mon, 27 Mar 2017 18:31:09 +0200
 
@@ -749,13 +749,13 @@ univention-self-service (2.0.11-1) unstable; urgency=medium
 
 univention-self-service (2.0.10-6) unstable; urgency=medium
 
-  * Bug #42267: destroy all renew options widgets 
+  * Bug #42267: destroy all renew options widgets
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 21 Mar 2017 13:25:41 +0100
 
 univention-self-service (2.0.10-5) unstable; urgency=medium
 
-  * Bug #42267: separate labels for first input and retype input 
+  * Bug #42267: separate labels for first input and retype input
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 21 Mar 2017 11:45:51 +0100
 
@@ -773,7 +773,7 @@ univention-self-service (2.0.10-3) unstable; urgency=medium
 
 univention-self-service (2.0.10-2) unstable; urgency=medium
 
-  * Bug #42267: switch save/cancel button; fix input validation 
+  * Bug #42267: switch save/cancel button; fix input validation
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 15 Mar 2017 15:22:23 +0100
 
@@ -912,7 +912,7 @@ univention-self-service (2.0.4-7) unstable; urgency=medium
 
 univention-self-service (2.0.4-6) unstable; urgency=medium
 
-  * Bug #42263: show all possible renew options 
+  * Bug #42263: show all possible renew options
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Feb 2017 14:25:15 +0100
 
@@ -948,25 +948,25 @@ univention-self-service (2.0.4-1) unstable; urgency=medium
 
 univention-self-service (2.0.3-5) unstable; urgency=medium
 
-  * Bug #42267: remove password change from frontend 
+  * Bug #42267: remove password change from frontend
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Feb 2017 12:48:48 +0100
 
 univention-self-service (2.0.3-4) unstable; urgency=medium
 
-  * Bug #42267: entries.json not needed anymore -> removed 
+  * Bug #42267: entries.json not needed anymore -> removed
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Feb 2017 12:24:40 +0100
 
 univention-self-service (2.0.3-3) unstable; urgency=medium
 
-  * Bug #42267: removed navigation bubbles 
+  * Bug #42267: removed navigation bubbles
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Feb 2017 11:59:55 +0100
 
 univention-self-service (2.0.3-2) unstable; urgency=medium
 
-  * Bug #42267: multiple usability improvements 
+  * Bug #42267: multiple usability improvements
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Feb 2017 11:22:36 +0100
 
@@ -1115,7 +1115,7 @@ univention-self-service (1.0.3-6) unstable; urgency=medium
 
 univention-self-service (1.0.3-5) unstable; urgency=low
 
-  * restart apache in postrm (Bug #40061) 
+  * restart apache in postrm (Bug #40061)
 
  -- Felix Botner <botner@univention.de>  Fri, 04 Dec 2015 15:13:19 +0100
 

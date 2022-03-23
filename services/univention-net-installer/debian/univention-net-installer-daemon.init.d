@@ -69,10 +69,10 @@ STARTTIME=2            # Time to wait for the server to start, in seconds
                         # started (on start or restart) the script will
                         # stall to try to determine if it is running
                         # If it is not set and the server takes time
-                        # to setup a pid file the log message might 
+                        # to setup a pid file the log message might
                         # be a false positive (says it did not start
                         # when it actually did)
-                        
+
 LOGFILE="$LOGDIR/$NAME.log"  # Server logfile
 
 # Include defaults if available
@@ -156,7 +156,7 @@ case "$1" in
             # NOTE: Some servers might die some time after they start,
             # this code will detect this issue if STARTTIME is set
             # to a reasonable value
-            [ -n "$STARTTIME" ] && sleep $STARTTIME # Wait some time 
+            [ -n "$STARTTIME" ] && sleep $STARTTIME # Wait some time
             if  running ;  then
                 # It's ok, the server started and is running
                 log_end_msg 0

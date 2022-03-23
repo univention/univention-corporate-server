@@ -166,7 +166,7 @@ objectclass ( univentionAppObjectClass:1 NAME 'univentionApp'
 	DESC 'UCS App Metadata'
 	SUP top
 	MUST ( univentionAppID )
-	MAY (	
+	MAY (
 			  univentionAppName
 			$ univentionAppVersion
 			$ univentionAppDescription

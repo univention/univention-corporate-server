@@ -71,7 +71,7 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
 		if [ -f /proc/mdstat ]; then
 			univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_RAID,cn=nagios,$ldap_base" || die
 		fi
-	fi	
+	fi
 fi
 
 joinscript_save_current_version

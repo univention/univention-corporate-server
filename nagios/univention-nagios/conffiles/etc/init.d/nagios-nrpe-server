@@ -83,7 +83,7 @@ case "$1" in
 	$0 start
 	;;
   *)
-	log_failure_msg "Usage: $N {start|stop|restart|reload|force-reload}" 
+	log_failure_msg "Usage: $N {start|stop|restart|reload|force-reload}"
 	exit 1
 	;;
 esac

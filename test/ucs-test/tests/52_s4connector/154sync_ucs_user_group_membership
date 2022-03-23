@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Verify user-group-membership synchronisation after changes from ucs-side in sync mode"
 ## exposure: dangerous

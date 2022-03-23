@@ -90,7 +90,7 @@ if [ "$server_role" == "domaincontroller_master" ]; then
 		echo "ERROR: Could not determine msDS-KeyVersionNumber of $spn_account_name account!"
 		exit 1
 	fi
-	
+
 	spn_secrets_dn=$(sed -n 's/^dn: //p' <<<"$spn_secrets_ldif")
 	if [ -z "$spn_secrets_dn" ]; then
 		ldbadd -H /var/lib/samba/private/secrets.ldb <<-%EOF

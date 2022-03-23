@@ -78,7 +78,7 @@ sysvol_path="/var/lib/samba/sysvol"
 sysvol_domain_path="$sysvol_path/$domainname"
 policies_path="$sysvol_domain_path/Policies"
 
-# Bug #49686: use ip address instead of hostname for samba-tool gpo 
+# Bug #49686: use ip address instead of hostname for samba-tool gpo
 s4host_ipaddr=$(dig +short "$s4host_fqdn")
 
 echo "## create an fACL-free file in sysvol on remote DC $s4host_fqdn"

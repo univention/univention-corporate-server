@@ -1,6 +1,6 @@
 # These udebs build the d-i cdrom initrd. As such, there is no reason
 # to keep another copy of them on the CD in udeb form.
-# 
+#
 # This duplicates data found in the file build/pkg-lists/kernel, in d-i svn
 kernel-image-*
 # build/pkg-lists/base in d-i svn

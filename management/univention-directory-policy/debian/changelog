@@ -67,7 +67,7 @@ univention-directory-policy (5.0.6-1) unstable; urgency=low
 
 univention-directory-policy (5.0.5-1) unstable; urgency=low
 
-  * added support for ldap/server/addition (Bug #26417) 
+  * added support for ldap/server/addition (Bug #26417)
 
  -- Felix Botner <botner@univention.de>  Thu, 01 Nov 2012 15:20:47 +0100
 
@@ -79,7 +79,7 @@ univention-directory-policy (5.0.4-2) unstable; urgency=low
 
 univention-directory-policy (5.0.4-1) unstable; urgency=low
 
-  * added logrotate configuration (Bug #18002) 
+  * added logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 09:20:48 +0200
 
@@ -235,7 +235,7 @@ univention-directory-policy (1.1.1-5) unstable; urgency=low
 
 univention-directory-policy (1.1.1-4) unstable; urgency=low
 
-  * Renamed baseconfig config 
+  * Renamed baseconfig config
 
  -- Soenke Schwardt <schwardt@univention.de>  Fri, 10 Aug 2007 09:31:11 +0200
 

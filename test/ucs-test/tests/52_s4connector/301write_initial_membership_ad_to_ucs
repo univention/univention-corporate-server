@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Test an initial sync of group memberships from AD to UCS in write-mode"
 ## exposure: dangerous

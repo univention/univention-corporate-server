@@ -321,7 +321,7 @@ for zonename in "${active_zonenames[@]}"; do
 		ldbdel -H /var/lib/samba/private/sam.ldb \
 			--recursive "$fdz_zone_dn"
 	fi
-	
+
 	fdz_zone_dn="DC=${msdcs_zonename},CN=MicrosoftDNS,${fdz},${samba4_ldap_base}"
 	if [ -n "$(sed -n 's/^dn: //p' <<<"$old_zone_container_ldif")" ]; then
 		dst_zone_dn=$(sed -n 's/^dn: //p' <<<"$old_zone_container_ldif")
@@ -352,7 +352,7 @@ dnsRecord:: $dnsRecord_soa
 dnsRecord:: $dnsRecord_ns
 %EOF
 	fi
-	
+
 
 	## Consider only _msdcs subzone records in this:
 	src_ldif=$(ldbsearch -H /var/lib/samba/private/sam.ldb \

@@ -102,7 +102,7 @@ univention-directory-reports (7.0.0-2) unstable; urgency=low
 
 univention-directory-reports (7.0.0-1) unstable; urgency=low
 
-  * Update to UCS 4.0 (Bug #35144) 
+  * Update to UCS 4.0 (Bug #35144)
 
  -- Felix Botner <botner@univention.de>  Tue, 19 Aug 2014 10:58:50 +0200
 
@@ -153,7 +153,7 @@ univention-directory-reports (4.0.7-1) unstable; urgency=low
 
 univention-directory-reports (4.0.6-1) unstable; urgency=low
 
-  * added logrotate configuration (Bug #18002) 
+  * added logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 09:34:14 +0200
 
@@ -218,13 +218,13 @@ univention-directory-reports (3.0.6-1) unstable; urgency=low
 
 univention-directory-reports (3.0.5-5) unstable; urgency=low
 
-  * fixed postinst (Bug #17425) 
+  * fixed postinst (Bug #17425)
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 07 Mar 2011 12:18:53 +0100
 
 univention-directory-reports (3.0.5-4) unstable; urgency=low
 
-  * version bump (Bug #17425) 
+  * version bump (Bug #17425)
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 07 Mar 2011 12:04:46 +0100
 
@@ -392,31 +392,31 @@ univention-directory-reports (1.0.1-1) unstable; urgency=low
 
 univention-directory-reports (1.0.0-2) unstable; urgency=low
 
-  * add support for CSV reports 
+  * add support for CSV reports
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 16 Jun 2008 09:12:16 +0200
 
 univention-directory-reports (0.5.8-1) unstable; urgency=low
 
-  * add method to clear object cache 
+  * add method to clear object cache
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 31 Mar 2008 14:48:44 +0200
 
 univention-directory-reports (0.5.7-1) unstable; urgency=low
 
-  * really deactivate filters for CSV reports 
+  * really deactivate filters for CSV reports
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 28 Mar 2008 11:41:18 +0100
 
 univention-directory-reports (0.5.6-1) unstable; urgency=low
 
-  * minor fixes in latex templates 
+  * minor fixes in latex templates
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 28 Mar 2008 08:52:58 +0100
 
 univention-directory-reports (0.5.5-1) unstable; urgency=low
 
-  * fixed a typo in the report registration 
+  * fixed a typo in the report registration
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 28 Mar 2008 08:18:59 +0100
 
@@ -429,13 +429,13 @@ univention-directory-reports (0.5.4-1) unstable; urgency=low
 
 univention-directory-reports (0.5.3-1) unstable; urgency=low
 
-  * add support for a default report 
+  * add support for a default report
 
  -- Andreas Büsching <buesching@univention.de>  Thu, 27 Mar 2008 17:30:29 +0100
 
 univention-directory-reports (0.5.2-1) unstable; urgency=low
 
-  * add default computer report for PDF and CSV output 
+  * add default computer report for PDF and CSV output
   * removed Scalix attributes from user report
 
  -- Andreas Büsching <buesching@univention.de>  Thu, 27 Mar 2008 11:31:57 +0100
@@ -454,7 +454,7 @@ univention-directory-reports (0.5.0-1) unstable; urgency=low
 
 univention-directory-reports (0.4.1-1) unstable; urgency=low
 
-  * replace \ with $\backslash$ in attribute values 
+  * replace \ with $\backslash$ in attribute values
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 15 Oct 2007 15:59:10 +0200
 
@@ -487,7 +487,7 @@ univention-directory-reports (0.3.4-1) unstable; urgency=low
 
 univention-directory-reports (0.3.3-2) unstable; urgency=low
 
-  * add postinst script 
+  * add postinst script
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 29 Aug 2007 10:29:03 +0200
 
@@ -499,13 +499,13 @@ univention-directory-reports (0.3.3-1) unstable; urgency=low
 
 univention-directory-reports (0.3.2-1) unstable; urgency=low
 
-  * fixed a typo in the users template 
+  * fixed a typo in the users template
 
  -- Andreas Büsching <buesching@univention.de>  Tue, 28 Aug 2007 18:33:37 +0200
 
 univention-directory-reports (0.3.1-1) unstable; urgency=low
 
-  * clean up in templates; remove parts from template 
+  * clean up in templates; remove parts from template
 
  -- Andreas Büsching <buesching@univention.de>  Tue, 28 Aug 2007 18:10:15 +0200
 

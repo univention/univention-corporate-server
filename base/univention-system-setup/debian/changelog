@@ -982,7 +982,7 @@ univention-system-setup (10.0.10-34) unstable; urgency=medium
 
 univention-system-setup (10.0.10-33) unstable; urgency=medium
 
-  * Bug #44995: fix license check in appliance setup 
+  * Bug #44995: fix license check in appliance setup
 
  -- Jürn Brodersen <brodersen@univention.de>  Thu, 13 Jul 2017 16:51:38 +0200
 
@@ -1197,7 +1197,7 @@ univention-system-setup (10.0.10-1) unstable; urgency=medium
 
 univention-system-setup (10.0.9-11) unstable; urgency=medium
 
-  * Bug #43973: use toggle selection mode for software selection 
+  * Bug #43973: use toggle selection mode for software selection
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Mar 2017 10:44:41 +0100
 
@@ -1682,19 +1682,19 @@ univention-system-setup (9.0.4-30) unstable; urgency=medium
 
 univention-system-setup (9.0.4-29) unstable; urgency=medium
 
-  * Bug #40551: Send piwik data for the system setup (fixes) 
+  * Bug #40551: Send piwik data for the system setup (fixes)
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 08 Jul 2016 18:44:04 +0200
 
 univention-system-setup (9.0.4-28) unstable; urgency=medium
 
-  * Bug #40782: Allow users to send system setup errors as feedback 
+  * Bug #40782: Allow users to send system setup errors as feedback
 
  -- Johannes Keiser <keiser@univention.de>  Fri, 08 Jul 2016 11:31:50 +0200
 
 univention-system-setup (9.0.4-27) unstable; urgency=medium
 
-  * Bug #40551: Send piwik data for the system setup 
+  * Bug #40551: Send piwik data for the system setup
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 05 Jul 2016 09:20:16 +0200
 
@@ -1839,7 +1839,7 @@ univention-system-setup (9.0.4-7) unstable; urgency=medium
 
 univention-system-setup (9.0.4-6) unstable; urgency=medium
 
-  * Bug #39700: Call the appliance by its name 
+  * Bug #39700: Call the appliance by its name
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 15 Mar 2016 18:34:11 +0100
 
@@ -1876,7 +1876,7 @@ univention-system-setup (9.0.4-1) unstable; urgency=medium
 
 univention-system-setup (9.0.2-28) unstable; urgency=medium
 
-  * Bug #39886, #40344: Fixed typos in german translation 
+  * Bug #39886, #40344: Fixed typos in german translation
 
  -- Erik Damrose <damrose@univention.de>  Fri, 05 Feb 2016 15:53:40 +0100
 
@@ -1998,7 +1998,7 @@ univention-system-setup (9.0.2-8) unstable; urgency=low
 univention-system-setup (9.0.2-7) unstable; urgency=low
 
   * do not disable apache restart during setup (Bug #39476)
-    keep initial certificates until setup is finished 
+    keep initial certificates until setup is finished
 
  -- Felix Botner <botner@univention.de>  Thu, 15 Oct 2015 13:29:37 +0200
 
@@ -2252,8 +2252,8 @@ univention-system-setup (8.1.66-41) unstable; urgency=low
 
 univention-system-setup (8.1.66-40) unstable; urgency=low
 
-  * Bug #38393: Improve error handling in 05_role/10role 
-  * Force pam-auth-update config handling to always run noninteractive 
+  * Bug #38393: Improve error handling in 05_role/10role
+  * Force pam-auth-update config handling to always run noninteractive
 
  -- Erik Damrose <damrose@univention.de>  Wed, 06 May 2015 11:37:02 +0200
 
@@ -2274,7 +2274,7 @@ univention-system-setup (8.1.66-37) unstable; urgency=low
 
   * Bug #38332: Cleanup scripts will now be executed if setup-join.sh is
     called from the command line. A new parameter --do_not_run_cleanup has
-    been introduced, which is used by the UMC system setup module 
+    been introduced, which is used by the UMC system setup module
   * Bug #38393: The setup script 05_role/10role has been sped up. It no
     longer copies packages into the dpkg cache, but creates hardlinks
   * Improved logging when running setup-join: run-parts now prints filenames
@@ -2366,7 +2366,7 @@ univention-system-setup (8.1.66-25) unstable; urgency=medium
 
 univention-system-setup (8.1.66-24) unstable; urgency=low
 
-  * Bug #36843: changed timing so that save only continues if the 
+  * Bug #36843: changed timing so that save only continues if the
     umcpCommand was successful
 
  -- Johannes Keiser <keiser@univention.de>  Fri, 13 Mar 2015 13:20:15 +0100
@@ -2748,13 +2748,13 @@ univention-system-setup (8.1.65-5) unstable; urgency=medium
 
 univention-system-setup (8.1.65-4) unstable; urgency=low
 
-  * Bug #36874: Declare 'Breaks' on earlier version 
+  * Bug #36874: Declare 'Breaks' on earlier version
 
  -- Erik Damrose <damrose@univention.de>  Tue, 25 Nov 2014 17:14:42 +0100
 
 univention-system-setup (8.1.65-3) unstable; urgency=medium
 
-  * Bug #37001: fix an error which prevents loading of the setup wizard 
+  * Bug #37001: fix an error which prevents loading of the setup wizard
     module if more than 4 network interfaces exists
 
  -- Florian Best <best@univention.de>  Tue, 25 Nov 2014 15:22:34 +0100
@@ -2795,7 +2795,7 @@ univention-system-setup (8.1.63-6) unstable; urgency=medium
 univention-system-setup (8.1.63-5) unstable; urgency=low
 
   * Bug #36874: Fix appliance mode package removal
-  * Bug #35583: Hide firefox address bar 
+  * Bug #35583: Hide firefox address bar
 
  -- Erik Damrose <damrose@univention.de>  Fri, 21 Nov 2014 16:19:07 +0100
 
@@ -3499,7 +3499,7 @@ univention-system-setup (8.1.2-2) unstable; urgency=low
 
 univention-system-setup (8.1.2-1) unstable; urgency=low
 
-  * Bug #35654: UMC design adaptions 
+  * Bug #35654: UMC design adaptions
 
  -- Florian Best <best@univention.de>  Mon, 29 Sep 2014 16:04:08 +0200
 
@@ -3573,7 +3573,7 @@ univention-system-setup (8.0.36-1) unstable; urgency=low
 
 univention-system-setup (8.0.35-4) unstable; urgency=low
 
-  * Prevent double registration (Bug #35711) 
+  * Prevent double registration (Bug #35711)
 
  -- Alexander Kramer <kramer@univention.de>  Wed, 03 Sep 2014 10:40:42 +0200
 
@@ -3738,7 +3738,7 @@ univention-system-setup (8.0.21-1) unstable; urgency=low
 
 univention-system-setup (8.0.20-1) unstable; urgency=low
 
-  * added univention-ipcalc to dependencies in 
+  * added univention-ipcalc to dependencies in
     univention-management-console-module-setup (Bug #35144)
 
  -- Felix Botner <botner@univention.de>  Tue, 19 Aug 2014 11:35:18 +0200
@@ -3781,7 +3781,7 @@ univention-system-setup (8.0.15-3) unstable; urgency=low
 
 univention-system-setup (8.0.15-2) unstable; urgency=low
 
-  * Bug #34388: Updated links to appliance wizard 
+  * Bug #34388: Updated links to appliance wizard
 
  -- Erik Damrose <damrose@univention.de>  Fri, 01 Aug 2014 11:51:56 +0200
 
@@ -3834,7 +3834,7 @@ univention-system-setup (8.0.11-1) unstable; urgency=low
 
 univention-system-setup (8.0.10-2) unstable; urgency=low
 
-  * Bug #34388: Updated links to appliance wizard 
+  * Bug #34388: Updated links to appliance wizard
 
  -- Erik Damrose <damrose@univention.de>  Fri, 25 Jul 2014 10:33:53 +0200
 
@@ -3884,7 +3884,7 @@ univention-system-setup (8.0.8-1) unstable; urgency=low
 
 univention-system-setup (8.0.7-4) unstable; urgency=low
 
-  * Bug #34388: Updated links to appliance wizard 
+  * Bug #34388: Updated links to appliance wizard
 
  -- Erik Damrose <damrose@univention.de>  Wed, 23 Jul 2014 15:29:29 +0200
 
@@ -3893,7 +3893,7 @@ univention-system-setup (8.0.7-3) unstable; urgency=low
   Bug #34388:
   * Only show introduction page if UCRV server/amazon is set to true
   * Removed duplicate code from javascript
-  * Changed directory structure 
+  * Changed directory structure
 
  -- Erik Damrose <damrose@univention.de>  Wed, 23 Jul 2014 14:07:22 +0200
 
@@ -3938,7 +3938,7 @@ univention-system-setup (8.0.5-1) unstable; urgency=low
   Bug #34484 [WIP]
   * integration of server side validation + summary
   * perform server side validation
-  * make sure that test cases can be run during build 
+  * make sure that test cases can be run during build
   * fixed reference to undefined
   * fixed undefined description of apps
   * added package dependencies
@@ -4033,7 +4033,7 @@ univention-system-setup (7.0.69-7) unstable; urgency=low
 
   * Add Firefox addon that hides the tab bar. This is necessary for the
     appliance setup user experience. It was removed in Firefox 24esr, the
-    addon restores the feature. (Bug #33640) 
+    addon restores the feature. (Bug #33640)
 
  -- Erik Damrose <damrose@univention.de>  Fri, 07 Feb 2014 13:37:47 +0100
 
@@ -4107,13 +4107,13 @@ univention-system-setup (7.0.66-7) unstable; urgency=low
 
   * Add cleanup -pre and -post hookdirectories (Bug #33729)
   * Added a notifier and listener restart script to be executed after
-    appliance setup cleanup. 
+    appliance setup cleanup.
 
  -- Erik Damrose <damrose@univention.de>  Tue, 17 Dec 2013 09:25:43 +0100
 
 univention-system-setup (7.0.66-5) unstable; urgency=low
 
-  * Use correct quoting in system-setup-boot initscript (Bug #30034) 
+  * Use correct quoting in system-setup-boot initscript (Bug #30034)
 
  -- Erik Damrose <damrose@univention.de>  Tue, 10 Dec 2013 15:43:30 +0100
 
@@ -4133,7 +4133,7 @@ univention-system-setup (7.0.66-3) unstable; urgency=low
 univention-system-setup (7.0.66-2) unstable; urgency=low
 
   * System-setup-boot: urandom init-script is deactivated until system
-    setup finishes, to avoid having the same random seed 
+    setup finishes, to avoid having the same random seed
     in templates (Bug #30034)
   * Recreate ssh and ssl keys during boot if the files are missing (Bug #30034)
 
@@ -4637,8 +4637,8 @@ univention-system-setup (7.0.6-1) unstable; urgency=low
 
 univention-system-setup (7.0.5-1) unstable; urgency=low
 
-  * disable windows/domain in basic settings for 
-    non DC master systems (Bug #24442) 
+  * disable windows/domain in basic settings for
+    non DC master systems (Bug #24442)
 
  -- Felix Botner <botner@univention.de>  Thu, 27 Jun 2013 15:20:13 +0200
 
@@ -4662,7 +4662,7 @@ univention-system-setup (7.0.2-1) unstable; urgency=low
 
 univention-system-setup (7.0.1-1) unstable; urgency=low
 
-  * replaced makepasswd with create_machine_password (Bug #31281) 
+  * replaced makepasswd with create_machine_password (Bug #31281)
 
  -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 11:20:52 +0200
 
@@ -4677,7 +4677,7 @@ univention-system-setup (7.0.0-2) unstable; urgency=low
 
 univention-system-setup (6.0.78-1) unstable; urgency=low
 
-  * Removed usr variable setting for "mail/antispam/globalfolder" from file 
+  * Removed usr variable setting for "mail/antispam/globalfolder" from file
     univention-system-setup/scripts/basis/10hostname and 12domainname. Bug #31072.
 
 
@@ -4685,12 +4685,12 @@ univention-system-setup (6.0.78-1) unstable; urgency=low
 
 univention-system-setup (6.0.77-1) unstable; urgency=low
 
-  * UCRV apache2/startsite will be set to correct values when reinstalling 
-    and uninstalling univention-system-setup-boot (Bug #31385) 
+  * UCRV apache2/startsite will be set to correct values when reinstalling
+    and uninstalling univention-system-setup-boot (Bug #31385)
   * Added error handling in case the download of required packages for
-    univention-system-setup-boot failed. This could prevent a 
+    univention-system-setup-boot failed. This could prevent a
     role switch when configuring the system in appliance setup. (Bug #30896)
-  * Disabled Firefox update popups during appliance setup (Bug #30980) 
+  * Disabled Firefox update popups during appliance setup (Bug #30980)
 
  -- Erik Damrose <damrose@univention.de>  Tue, 28 May 2013 10:32:49 +0200
 
@@ -5520,7 +5520,7 @@ univention-system-setup (5.0.158-2) unstable; urgency=low
 
 univention-system-setup (5.0.158-1) unstable; urgency=low
 
-  * univention-system-setup is deprecated (Bug #26061) 
+  * univention-system-setup is deprecated (Bug #26061)
 
  -- Felix Botner <botner@univention.de>  Thu, 14 Jun 2012 12:23:18 +0200
 
@@ -6150,13 +6150,13 @@ univention-system-setup (5.0.76-1) unstable; urgency=low
 
 univention-system-setup (5.0.75-1) unstable; urgency=low
 
-  * UMC: fixed translation errors (Bug #22904) 
+  * UMC: fixed translation errors (Bug #22904)
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Nov 2011 16:24:37 +0100
 
 univention-system-setup (5.0.74-1) unstable; urgency=low
 
-  * adapted software/10software script to call "apt-get update" first 
+  * adapted software/10software script to call "apt-get update" first
     (Bug #22904)
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Nov 2011 10:43:01 +0100
@@ -6367,7 +6367,7 @@ univention-system-setup (5.0.47-1) unstable; urgency=low
 
 univention-system-setup (5.0.46-1) unstable; urgency=low
 
-  * UMC: make sure that UMC server, UMC web server, and apache are not 
+  * UMC: make sure that UMC server, UMC web server, and apache are not
     restarted during the join script
   * UMC: fixed handling of username+password for domain join
   (Bug #22904)
@@ -6396,7 +6396,7 @@ univention-system-setup (5.0.43-1) unstable; urgency=low
 
 univention-system-setup (5.0.42-1) unstable; urgency=low
 
-  * UMC: added call to this.startup (Bug #22904) 
+  * UMC: added call to this.startup (Bug #22904)
 
  -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Nov 2011 02:07:42 +0100
 
@@ -6408,19 +6408,19 @@ univention-system-setup (5.0.41-1) unstable; urgency=low
 
 univention-system-setup (5.0.40-1) unstable; urgency=low
 
-  * fixed error in script function info_header (Bug #22904) 
+  * fixed error in script function info_header (Bug #22904)
 
  -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Nov 2011 00:58:22 +0100
 
 univention-system-setup (5.0.39-1) unstable; urgency=low
 
-  * fixed some GUI logic with respect to appliance mode (Bug #22904) 
+  * fixed some GUI logic with respect to appliance mode (Bug #22904)
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 03 Nov 2011 23:53:14 +0000
 
 univention-system-setup (5.0.38-1) unstable; urgency=low
 
-  * respect system roles and join status (Bug #22904) 
+  * respect system roles and join status (Bug #22904)
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 03 Nov 2011 17:22:27 +0100
 
@@ -6464,7 +6464,7 @@ univention-system-setup (5.0.31-1) unstable; urgency=low
 
 univention-system-setup (5.0.30-1) unstable; urgency=low
 
-  * UMC: fixed check for correct windows domain name (Bug #22908) 
+  * UMC: fixed check for correct windows domain name (Bug #22908)
 
  -- Alexander Kläser <klaeser@univention.de>  Sun, 30 Oct 2011 00:16:14 +0200
 
@@ -6787,7 +6787,7 @@ univention-system-setup (4.0.3-1) unstable; urgency=low
 univention-system-setup (4.0.2-1) unstable; urgency=low
 
   * fixed certificate creation for ucs master in basis/12domainname and
-    basis/10hostname Bug #16929 
+    basis/10hostname Bug #16929
 
  -- Felix Botner <botner@univention.de>  Thu, 10 Jun 2010 15:16:34 +0200
 
@@ -6801,7 +6801,7 @@ univention-system-setup (4.0.0-1) unstable; urgency=low
 
   * version bump for UCS 2.4
   * use reverse instead of network from univention-ipcalc for adding/editing reverse zone Bug #17413
-  * use email address syntax for contact address in dns zone Bug #18461 
+  * use email address syntax for contact address in dns zone Bug #18461
 
  -- Felix Botner <botner@univention.de>  Tue, 25 May 2010 11:33:51 +0200
 
@@ -6816,7 +6816,7 @@ univention-system-setup (3.0.34-1) unstable; urgency=low
 
 univention-system-setup (3.0.33-1) unstable; urgency=low
 
-  * updated copyright Bug #17222 
+  * updated copyright Bug #17222
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 15:27:09 +0100
 

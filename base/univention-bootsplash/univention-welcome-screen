@@ -63,7 +63,7 @@ check_capabilities () {
 		quit=true
 		msg="bootsplash deactivated, exiting"
 	fi
-	if is_ucr_false welcome-screen/autostart; then 
+	if is_ucr_false welcome-screen/autostart; then
 		quit=true
 		msg="welcome screen disabled, exiting"
 	fi

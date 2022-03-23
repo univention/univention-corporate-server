@@ -247,9 +247,9 @@ univention-docker (1.0.1-4) unstable; urgency=low
 univention-docker (1.0.1-3) unstable; urgency=low
 
   * make docker daemon opts configurable (Bug #40515)
-  * set defaults 
+  * set defaults
     docker/daemon/default/opts/bip?"172.17.42.1/16"
-    docker/daemon/default/opts/storage-driver?"overlay"  
+    docker/daemon/default/opts/storage-driver?"overlay"
   * disable docker daemon start if docker_bridge_network_conflict
 
  -- Felix Botner <botner@univention.de>  Thu, 16 Jun 2016 15:16:46 +0200

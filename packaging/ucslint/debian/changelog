@@ -199,7 +199,7 @@ ucslint (8.0.0-3) unstable; urgency=low
 
 ucslint (8.0.0-2) unstable; urgency=medium
 
-  * Bug #46969: bindpwdfile support 
+  * Bug #46969: bindpwdfile support
 
  -- Felix Botner <botner@univention.de>  Fri, 21 Dec 2018 13:59:44 +0100
 

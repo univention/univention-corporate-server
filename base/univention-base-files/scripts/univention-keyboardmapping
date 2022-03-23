@@ -256,12 +256,12 @@ case "$1" in
 		;;
 	*)
 		cat <<-EOL >&2
-		
+
 		Syntax:  univention-keyboardmapping --xtordp <x-keymap>
 		Example: univention-keyboardmapping --xtordp gb
 
 		Returns corresponding rdesktop-keymap to stdout
-		
+
 		EOL
 		exit 255
 		;;

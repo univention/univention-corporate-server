@@ -34,14 +34,14 @@ REPLICATION_TIME=30
 echo "----Create CNAME record"
 udm-test dns/alias create --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --set name=alias1 --set cname="$hostname.$domainname"
 if [ "$?" != 0 ];then
-	fail_test 1 "Could not create CNAME record." 
+	fail_test 1 "Could not create CNAME record."
 fi
 
 #SRV RECORD
 echo "----Create SRV record"
 udm-test dns/srv_record create --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --set name="45dnstest_srv_record tcp foobar" --set location="0 100 389 $hostname.$domainname"
 if [ "$?" != 0 ]; then
-	fail_test 1 "Could not create SRV record." 
+	fail_test 1 "Could not create SRV record."
 fi
 
 #A RECORD
@@ -60,7 +60,7 @@ for((i=0;i<$REPLICATION_TIME;i++)); do
 	test -n "$alias_test" && break
 	sleep 1
 done
-test "$i" = "$REPLICATION_TIME" && fail_test 1 "Created CNAME record could not be found." 
+test "$i" = "$REPLICATION_TIME" && fail_test 1 "Created CNAME record could not be found."
 
 #SRV RECORD
 echo "----Check functionality of SRV record"
@@ -69,7 +69,7 @@ for((i=0;i<$REPLICATION_TIME;i++)); do
 	test -n "$srv_test" && break
 	sleep 1
 done
-test "$i" = "$REPLICATION_TIME" && fail_test 1 "Created SRV record could not be found." 
+test "$i" = "$REPLICATION_TIME" && fail_test 1 "Created SRV record could not be found."
 
 #A RECORD
 echo "----Check functionality of A record"
@@ -78,6 +78,6 @@ for((i=0;i<$REPLICATION_TIME;i++)); do
 	test -n "$a_test" && break
 	sleep 1
 done
-test "$i" = "$REPLICATION_TIME" && fail_test 1 "Created A record could not be found." 
+test "$i" = "$REPLICATION_TIME" && fail_test 1 "Created A record could not be found."
 
 exit $RETVAL

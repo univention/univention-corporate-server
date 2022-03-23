@@ -116,7 +116,7 @@ univention-debug (7.0.0-1) unstable; urgency=low
 
 univention-debug (6.0.0-1) unstable; urgency=low
 
-  * do not log ERROR to syslog (Bug #25469) 
+  * do not log ERROR to syslog (Bug #25469)
 
  -- Felix Botner <botner@univention.de>  Tue, 30 Oct 2012 15:31:27 +0100
 

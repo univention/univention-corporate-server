@@ -666,12 +666,12 @@ ID 342: ID: 342
 ID 342: Modifier: cn=admin,dc=example,dc=com
 ID 342: Timestamp: 15.04.2020 09:20:40
 ID 342: Action: modify
-ID 342: 
+ID 342:
 ID 342: Old values:
 ID 342: description: Dhis is a description test
 ID 342: entryCSN: 20200415091936.317108Z#000000#000#000000
 ID 342: modifyTimestamp: 20200415091936Z
-ID 342: 
+ID 342:
 ID 342: New values:
 ID 342: description: This is a description test
 ID 342: entryCSN: 20200415092040.430976Z#000000#000#000000

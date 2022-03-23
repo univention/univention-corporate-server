@@ -205,7 +205,7 @@ define([
 			var locales = array.map(this._form.getWidget('locale').get('value'), function(ilocale) {
 				return allLocales[ilocale];
 			});
-			
+
 			var vals = this.getValues();
 			return [{
 				variables: ['timezone' ],

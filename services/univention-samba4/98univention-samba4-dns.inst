@@ -96,7 +96,7 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ] && [ "$dns_backend" != "samba4" ] && [ -n "
 		echo "**************************************************************"
 		exit 1
 	fi
-	
+
 fi
 
 if [ "$samba4_role" != "RODC" ]; then
@@ -133,7 +133,7 @@ if [ -n "$samba4_join_site" ]; then
 fi
 
 if [ $JS_LAST_EXECUTED_VERSION -le 1 ]; then
-## Set DNS records again in case Bug #26285 occurred in UCS 3.0-0. 
+## Set DNS records again in case Bug #26285 occurred in UCS 3.0-0.
 ## Flow control copied from 96univention-samba4.inst
 
 	if [ "$samba4_role" = 'DC' ]; then

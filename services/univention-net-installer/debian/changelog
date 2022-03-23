@@ -283,7 +283,7 @@ univention-net-installer (6.0.1-1) unstable; urgency=low
 
 univention-net-installer (6.0.0-1) unstable; urgency=low
 
-  * increased default pxe ramdisksize (Bug #28477) 
+  * increased default pxe ramdisksize (Bug #28477)
 
  -- Felix Botner <botner@univention.de>  Thu, 20 Sep 2012 12:59:46 +0200
 
@@ -341,7 +341,7 @@ univention-net-installer (5.0.1-2) unstable; urgency=low
 
 univention-net-installer (5.0.1-1) unstable; urgency=low
 
-  * fixed rules file (Bug #22576) 
+  * fixed rules file (Bug #22576)
 
  -- Felix Botner <botner@univention.de>  Tue, 27 Sep 2011 14:55:37 +0200
 
@@ -352,10 +352,10 @@ univention-net-installer (5.0.0-1) unstable; urgency=low
   * Remove the old transition package univention-server-installer, also
     rename the source package and the join script to univention-net-installer
   * Remove link creation for older kernels in postinst
-  * Remove historic Conflicts	
+  * Remove historic Conflicts
   * Port join script to join script library
   * Minimize rules file with dh(1)
-  * ucslint cleanups	
+  * ucslint cleanups
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 23 Aug 2011 16:47:58 +0200
 
@@ -426,7 +426,7 @@ univention-server-installer (3.0.3-1) unstable; urgency=low
 
 univention-server-installer (3.0.2-1) unstable; urgency=low
 
-  * updated copyright Bug #17222 
+  * updated copyright Bug #17222
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 15:21:35 +0100
 
@@ -438,7 +438,7 @@ univention-server-installer (3.0.1-1) unstable; urgency=low
 
 univention-server-installer (3.0.0-1) unstable; urgency=low
 
-  * fixed installer boot kernel links (Bug: #16019) 
+  * fixed installer boot kernel links (Bug: #16019)
 
  -- Felix Botner <botner@univention.de>  Tue, 20 Oct 2009 14:20:35 +0200
 

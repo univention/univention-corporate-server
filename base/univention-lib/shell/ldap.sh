@@ -134,8 +134,8 @@ ucs_getGroupMembersRecursive () { # <groupDN> [<ldapsearch-credentials>]
 
 #
 # ucs_addServiceToLocalhost adds a new service entry to local UDM host object. This can be easily used
-# in join scripts to add a new service (like "nagios-server") after installation of corresponding service 
-# package (luke "univention-nagios-server"). Additional arguments like UDM credentials will be passed 
+# in join scripts to add a new service (like "nagios-server") after installation of corresponding service
+# package (luke "univention-nagios-server"). Additional arguments like UDM credentials will be passed
 # through.
 # ucs_addServiceToLocalhost <servicename> [<udm-credentials>]
 # e.g. ucs_addServiceToLocalhost "nagios-server" "$@"
@@ -154,7 +154,7 @@ ucs_addServiceToLocalhost () { # <servicename> [<udm-credentials>]
 
 #
 # ucs_addServiceToHost adds a new service entry to specified UDM host object. This can be easily used
-# in e.g. join scripts to add a new service. Additional arguments like UDM credentials will be passed 
+# in e.g. join scripts to add a new service. Additional arguments like UDM credentials will be passed
 # through.
 # ucs_addServiceToHost <servicename> <udm-module-name> <dn> [<udm-credentials>]
 # e.g. ucs_addServiceToHost "nagios-server" "domaincontroller_slave" "cn=myslave,cn=dc,cn=computers,dc=test,dc=system" "$@"
@@ -179,8 +179,8 @@ ucs_addServiceToHost () { # <servicename> <udm-module-name> <dn> [options]
 
 #
 # ucs_removeServiceFromLocalhost removes a service entry from local UDM host object. This can be easily used
-# in join scripts to remove a service (like "nagios-server") after removing of corresponding service 
-# package (luke "univention-nagios-server"). Additional arguments like UDM credentials will be passed 
+# in join scripts to remove a service (like "nagios-server") after removing of corresponding service
+# package (luke "univention-nagios-server"). Additional arguments like UDM credentials will be passed
 # through.
 # ucs_removeServiceFromLocalhost <servicename> [<udm-credentials>]
 # e.g. ucs_removeServiceFromLocalhost "nagios-server" "$@"
@@ -199,7 +199,7 @@ ucs_removeServiceFromLocalhost () { # <servicename> [<udm-credentials>]
 
 #
 # ucs_removeServiceFromHost removes a service entry from specified UDM host object. This can be easily used
-# in e.g. join scripts to remove a service. Additional arguments like UDM credentials will be passed 
+# in e.g. join scripts to remove a service. Additional arguments like UDM credentials will be passed
 # through.
 # ucs_removeServiceFromHost <servicename> <udm-module-name> <dn> [<udm-credentials>]
 # e.g. ucs_removeServiceFromHost "nagios-server" "domaincontroller_slave" "cn=myslave,cn=dc,cn=computers,dc=test,dc=system" "$@"
@@ -306,7 +306,7 @@ ucs_isServiceUnused () { # <servicename>
 	else
 		ret=0
 	fi
-	
+
 	rm -f "$tempfile"
 
 	return $ret

@@ -88,7 +88,7 @@ define([
 			this.set('carouselIdx', this.carouselIdx + 1);
 		},
 
-		srcs: null, 
+		srcs: null,
 		_items: null,
 		_ytAPILoaded: null,
 		_ytPlayers: null,
@@ -127,7 +127,7 @@ define([
 			for (let player of this._ytPlayers) {
 				player.pauseVideo();
 			}
-		}, 
+		},
 
 
 		//// lifecycle

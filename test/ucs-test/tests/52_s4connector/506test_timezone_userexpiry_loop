@@ -67,4 +67,3 @@ do
 		--set userexpiry="$UDM_users_user_userexpiry" || fail_fast 110
 
 done
-

@@ -150,8 +150,8 @@ univention-directory-logger (4.0.2-1) unstable; urgency=low
 
   * Merge patches from UCS 2.4-3
    [ Stefan Gohmann ]
-    * Copy the dictonaries new and old in handlers function, because the                                                                                                                            
-      dicts will be modified (Bug #22564)  
+    * Copy the dictonaries new and old in handlers function, because the
+      dicts will be modified (Bug #22564)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 17:23:00 +0200
 

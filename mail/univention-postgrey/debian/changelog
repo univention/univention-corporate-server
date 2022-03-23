@@ -64,7 +64,7 @@ univention-postgrey (4.0.1-1) unstable; urgency=medium
 
 univention-postgrey (3.0.1-1) unstable; urgency=low
 
-  * updated init script (Bug #36637) 
+  * updated init script (Bug #36637)
 
  -- Felix Botner <botner@univention.de>  Thu, 13 Nov 2014 13:38:38 +0100
 

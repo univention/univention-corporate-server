@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: Create, modify and delete users in UCS and test if they get synced back
 ## exposure: dangerous
@@ -68,7 +68,7 @@ for((i=0;i<10;i++)); do
 
 	/etc/init.d/univention-s4-connector restart
 	ad_wait_for_synchronization; fail_bool 0 110
-		
+
 	udm_exists "groups/group" && fail_test 110
 	UDM_users_user_username="$username1"
 	udm_exists "users/user" && fail_test 110
