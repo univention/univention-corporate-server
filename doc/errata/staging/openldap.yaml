@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: openldap
-fix: 2.4.47+dfsg-3+deb10u6A~5.0.0.202203232305
+fix: 2.4.47+dfsg-3+deb10u6A~5.0.0.202203241119
 desc: |
  This update addresses the following issue:
  * The ppolicy overlay uses embedded Python. This has been
