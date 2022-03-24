@@ -6,6 +6,6 @@ src: openldap
 fix: 2.4.47+dfsg-3+deb10u6A~5.0.0.202203241119
 desc: |
  This update addresses the following issue:
- * The ppolicy overlay uses embedded Python. This has been
-   migrated to Python3.
+ * The `ppolicy` overlay module uses embedded Python. This has been
+   migrated to Python 3.
 bug: [54582]
