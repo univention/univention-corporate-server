@@ -70,7 +70,7 @@ config.set(new_section, "command{recover_command}".format(recover_command=recove
 # create ssh config and prepare ldap server
 #
 . utils-school-idbroker.sh && prepare_jump_host
-cd /var/lib/id-broker-performance-tests/prepare_ldap && ./prepare_ldap.sh
+/var/lib/id-broker-performance-tests/prepare_ldap/prepare_ldap.sh
 """)
 config.set(new_section, "command{recover_command}".format(recover_command=recover_command), "")
 config.set(new_section, "command{new_recover_command}".format(new_recover_command=new_recover_command), "")
