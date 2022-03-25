@@ -375,21 +375,22 @@
 						<member><package>aide</package></member>
 						<member><package>ansible</package></member>
 						<member><package>apache2</package></member>
-						<member><package>apache-log4</package></member>
+						<member><package>apache-log4j1.2</package></member>
+						<member><package>apache-log4j2</package></member>
 						<member><package>apng2gif</package></member>
 						<member><package>aria2</package></member>
 						<member><package>axis</package></member>
 						<member><package>botan1.10</package></member>
 						<member><package>btrbk</package></member>
-						<member><package>cargo-mozil</package></member>
+						<member><package>cargo-mozilla</package></member>
 						<member><package>cgal</package></member>
 						<member><package>ckeditor</package></member>
 						<member><package>commons-io</package></member>
 						<member><package>composer</package></member>
 						<member><package>condor</package></member>
 						<member><package>connman</package></member>
-						<member><package>debian-arch</package></member>
-						<member><package>debian-edu-</package></member>
+						<member><package>debian-archive-keyring</package></member>
+						<member><package>debian-edu-config</package></member>
 						<member><package>drupal7</package></member>
 						<member><package>edk2</package></member>
 						<member><package>eterm</package></member>
@@ -402,7 +403,7 @@
 						<member><package>glusterfs</package></member>
 						<member><package>golang-1.7</package></member>
 						<member><package>golang-1.8</package></member>
-						<member><package>graphicsmag</package></member>
+						<member><package>graphicsmagick</package></member>
 						<member><package>gst-libav1.0</package></member>
 						<member><package>gst-plugins-bad1.0</package></member>
 						<member><package>gst-plugins-ugly1.0</package></member>
@@ -418,8 +419,8 @@
 						<member><package>jackson-databind</package></member>
 						<member><package>jetty9</package></member>
 						<member><package>ldns</package></member>
-						<member><package>libdatetime</package></member>
-						<member><package>libextracto</package></member>
+						<member><package>libdatetime-timezone-perl</package></member>
+						<member><package>libextractor</package></member>
 						<member><package>libgetdata</package></member>
 						<member><package>libimage-exiftool-perl</package></member>
 						<member><package>libjdom1-java</package></member>
@@ -428,20 +429,19 @@
 						<member><package>libntlm</package></member>
 						<member><package>libpam-tacplus</package></member>
 						<member><package>libpano13</package></member>
-						<member><package>libphp-adod</package></member>
+						<member><package>libphp-adodb</package></member>
 						<member><package>librecad</package></member>
 						<member><package>libspf2</package></member>
 						<member><package>libspring-java</package></member>
 						<member><package>libxml-security-java</package></member>
 						<member><package>libxstream-java</package></member>
-						<member><package>libxstream-</package></member>
+						<member><package>libxstream-java</package></member>
 						<member><package>lighttpd</package></member>
 						<member><package>linux-4.19</package></member>
-						<member><package>linux-lates</package></member>
 						<member><package>linux-latest-4.19</package></member>
 						<member><package>linux-latest</package></member>
 						<member><package>linuxptp</package></member>
-						<member><package>llvm-toolch</package></member>
+						<member><package>llvm-toolchain-11</package></member>
 						<member><package>lrzip</package></member>
 						<member><package>lrzsz</package></member>
 						<member><package>lynx</package></member>
@@ -456,7 +456,7 @@
 						<member><package>neutron</package></member>
 						<member><package>nginx</package></member>
 						<member><package>node-bl</package></member>
-						<member><package>nvidia-grap</package></member>
+						<member><package>nvidia-graphics-drivers</package></member>
 						<member><package>opendmarc</package></member>
 						<member><package>opensc</package></member>
 						<member><package>paramiko</package></member>
@@ -465,7 +465,7 @@
 						<member><package>postgis</package></member>
 						<member><package>privoxy</package></member>
 						<member><package>prosody</package></member>
-						<member><package>python-scra</package></member>
+						<member><package>python-scrapy</package></member>
 						<member><package>python-treq</package></member>
 						<member><package>pywps</package></member>
 						<member><package>pyxdg</package></member>
@@ -480,9 +480,9 @@
 						<member><package>ruby-haml</package></member>
 						<member><package>ruby-kaminari</package></member>
 						<member><package>ruby-nokogiri</package></member>
-						<member><package>ruby-sideki</package></member>
-						<member><package>rust-cbindg</package></member>
-						<member><package>rustc-mozil</package></member>
+						<member><package>ruby-sidekiq</package></member>
+						<member><package>rust-cbindgen</package></member>
+						<member><package>rustc-mozilla</package></member>
 						<member><package>rxvt</package></member>
 						<member><package>rxvt-unicode</package></member>
 						<member><package>salt</package></member>
@@ -491,7 +491,7 @@
 						<member><package>shiro</package></member>
 						<member><package>slurm-llnl</package></member>
 						<member><package>sogo</package></member>
-						<member><package>sphinxsearc</package></member>
+						<member><package>sphinxsearch</package></member>
 						<member><package>spip</package></member>
 						<member><package>squashfs-tools</package></member>
 						<member><package>sssd</package></member>
@@ -499,8 +499,8 @@
 						<member><package>thunderbird</package></member>
 						<member><package>tnef</package></member>
 						<member><package>tomcat8</package></member>
-						<member><package>tryton-prot</package></member>
-						<member><package>tryton-serv</package></member>
+						<member><package>tryton-proteus</package></member>
+						<member><package>tryton-server</package></member>
 						<member><package>tzdata</package></member>
 						<member><package>ujson</package></member>
 						<member><package>unbound1.9</package></member>
