@@ -60,10 +60,6 @@ if [ "$1" = "configure" ]; then
 	if [ ! -s /var/cache/univention-system-setup/profile ] && [ ! -e /var/cache/univention-system-setup/packages/Packages ]; then
 		/usr/share/univention-system-setup/download-packages
 	fi
-
-	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.4-34; then
-		ucr set system/setup/boot/legacyfrontend?true
-	fi
 fi
 
 #DEBHELPER#

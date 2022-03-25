@@ -34,9 +34,6 @@ from __future__ import print_function
 
 import os
 import os.path
-import subprocess
-
-import psutil
 
 import univention.config_registry
 
@@ -52,35 +49,6 @@ def finish_system_setup_boot():
 	setup_status_file = '/var/www/ucs_setup_process_status.json'
 	if os.path.exists(setup_status_file):
 		os.remove(setup_status_file)
-
-	# It is possible that the installation is started with a legacy
-	# umc system setup frontend (deb version < 9.0.4-33), in that case,
-	# a UCRv is used as a flag to indicate this. Firefox then has to be
-	# stopped manually
-
-	if ucr.is_true('system/setup/boot/legacyfrontend', False):
-		print('Appliance mode: try to shut down the browser')
-		try:
-			with open(PATH_BROWSER_PID) as fpid:
-				strpid = fpid.readline().strip()
-			pid = int(strpid)
-			p = psutil.Process(pid)
-			p.kill()
-		except IOError:
-			print('WARN: cannot open browser PID file: %s' % PATH_BROWSER_PID)
-		except ValueError:
-			print('ERROR: browser PID is not a number: "%s"' % strpid)
-		except psutil.NoSuchProcess:
-			print('ERROR: cannot kill process with PID: %s' % pid)
-
-		# Maybe the system-setup CMD tool was started
-		for p in psutil.process_iter():
-			if p.name() == 'python3' and '/usr/share/univention-system-setup/univention-system-setup' in p.cmdline():
-				p.kill()
-
-		# When the debian installer is not running, stop plymouth
-		if not ucr.is_true('system/setup/boot/installer'):
-			subprocess.call(["service", "plymouth", "stop"])
 
 
 if __name__ == "__main__":
