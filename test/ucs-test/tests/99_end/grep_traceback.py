@@ -327,6 +327,7 @@ COMMON_EXCEPTIONS = (
 	E('univention.admin.uexceptions.noObject: uid=.*', ['connector/ad/.*set_userPrincipalName_from_ucr'], 53769),
 	E('ldap.TYPE_OR_VALUE_EXISTS:.*SINGLE-VALUE attribute description.*specified more than once', ['sync_from_ucs'], 52801),
 	E('univention.admin.uexceptions.wrongObjectType: relativeDomainName=.* is not recognized as dns/txt_record.', ['ucs_txt_record_create'], 53425),
+	E(r"ldap.TYPE_OR_VALUE_EXISTS: \{'desc': 'Type or value exists', 'info': 'modify\/add: uniqueMember: value \#\d already exists'\}", ['object_memberships_sync_to_ucs'], 54590),
 	# Tracebacks caused by specific UCS@school bugs:
 	E(r"_ldb.LdbError: \(1, 'LDAP client internal error: NT_STATUS_INVALID_PARAMETER'\)", ['univention-samba4-site-tool.py'], 54592),
 	E(r"AssertionError: Attribute \(username\) is parsed wrong as.*", ['103_ucsschool_smbstatus_parser.py'], 54591),
