@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.13-2) unstable; urgency=medium
+
+  * Bug #54596: add UCR variable for making mailAlternativeAdress with
+    mailPrimaryAddress unique
+
+ -- Florian Best <best@univention.de>  Wed, 13 Jul 2022 21:26:05 +0200
+
 univention-directory-manager-modules (15.0.13-1) unstable; urgency=medium
 
   * Bug #54840: remove UCR widget mapping directory/manager/web/widget/.*

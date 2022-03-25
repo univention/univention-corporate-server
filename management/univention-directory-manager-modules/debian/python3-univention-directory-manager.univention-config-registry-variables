@@ -94,6 +94,13 @@ Description[en]=If this option is activated or the variable unset, UIDs and GIDs
 Type=bool
 Categories=management-udm
 
+[directory/manager/mail-primary-alternative-address/uniqueness]
+Description[de]=Ist diese Option aktiviert, müssen mailPrimaryAddress und mailAlternativeAddress global unterschiedlich und mailAlternativeAddress global unique sein.
+Description[en]=If this option is activated, mailPrimaryAddress and mailAlternativeAddress must be globally disjunct and mailAlternativeAddress must be globally unique.
+Type=bool
+Default=false
+Categories=management-udm
+
 [directory/manager/user/primarygroup/update]
 Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, wird beim Anlegen/Löschen eines Benutzers auch die primäre Gruppe (in alle Regel 'Domain Users') aktualisiert. Ist diese Option deaktiviert, wird kein Update durchgeführt. Diese Option ist nur in Ausnahmefällen sinnvoll und sollte sorgfältig getestet werden.
 Description[en]=If this option is activated or the variable unset, the primary group (typically 'Domain Users') is updated if a user is added/removed. If this option is disabled, no update is performed. This option should only be used in exceptional cases and should be tested carefully.

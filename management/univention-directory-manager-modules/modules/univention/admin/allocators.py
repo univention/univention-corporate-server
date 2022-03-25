@@ -51,6 +51,7 @@ _type2attr = {
 	'sid': 'sambaSID',
 	'domainSid': 'sambaSID',
 	'mailPrimaryAddress': 'mailPrimaryAddress',
+	'mailAlternativeAddress': 'mailAlternativeAddress',
 	'aRecord': 'aRecord',
 	'mac': 'macAddress',
 	'groupName': 'cn',
@@ -64,6 +65,7 @@ _type2scope = {
 	'sid': 'base',
 	'domainSid': 'base',
 	'mailPrimaryAddress': 'domain',
+	'mailAlternativeAddress': 'domain',
 	'aRecord': 'domain',
 	'mac': 'domain',
 	'groupName': 'domain',
@@ -193,6 +195,15 @@ def acquireUnique(lo, position, type, value, attr, scope='base'):
 		if all(ldap.dn.str2dn(x)[0][0][0] not in attrs for x in lo.searchDn(base=base, filter='(|%s)' % ''.join(filter_format('(%s=%s)', (attr, value)) for attr in attrs), scope=scope)):
 			return value
 		raise univention.admin.uexceptions.alreadyUsedInSubtree('name=%r position=%r' % (value, base))
+	elif type in ('mailPrimaryAddress', 'mailAlternativeAddress') and configRegistry.is_true('directory/manager/mail-primary-alternative-address/uniqueness'):
+		ud.debug(ud.ADMIN, ud.INFO, 'LOCK univention.admin.locking.lock scope = %s' % scope)
+		univention.admin.locking.lock(lo, position, 'mailPrimaryAddress', value.encode('utf-8'), scope=scope)
+		other = 'mailPrimaryAddress' if type == 'mailAlternativeAddress' else 'mailAlternativeAddress'
+		if not lo.searchDn(base=searchBase, filter=filter_format('(|(%s=%s)(%s=%s))', (attr, value, other, value))):
+			ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE return %s' % value)
+			return value
+	elif type == 'mailAlternativeAddress':
+		return value  # lock for mailAlternativeAddress exists only if above UCR variable is enabled
 	else:
 		ud.debug(ud.ADMIN, ud.INFO, 'LOCK univention.admin.locking.lock scope = %s' % scope)
 		univention.admin.locking.lock(lo, position, type, value.encode('utf-8'), scope=scope)
