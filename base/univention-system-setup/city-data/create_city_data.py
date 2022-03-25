@@ -27,21 +27,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""
+Generate `city_data.json`
+"""
+
 from __future__ import print_function
 
 import json
-import sys
+from argparse import ArgumentParser, FileType
 
 import _util
 
 if __name__ == '__main__':
-	# check argument (action)
-	args = sys.argv[1:]
-	if not len(args) or '--help' in args or '-h' in args:
-		print('options: <outfile.json> <locale1> [<locale2>...]', file=sys.stderr)
-		sys.exit(1)
-
-	locales = args[1:]
+	parser = ArgumentParser(description=__doc__)
+	parser.add_argument("outfile", type=FileType("w"))
+	parser.add_argument("locales", nargs="+")
+	opt = parser.parse_args()
 
 	print('generating city data...')
 	city_data = _util.get_city_data()
@@ -49,13 +50,12 @@ if __name__ == '__main__':
 	for iid, icity in city_data.items():
 		icity['id'] = iid
 
-	for ilocale in locales + ['']:
+	for ilocale in opt.locales + ['']:
 		print('loading data for locale %s' % ilocale)
 		city_names = _util.get_localized_names(city_geonameids, ilocale)
 		for iid, ilabel in city_names.items():
 			city_data[iid].setdefault('label', {})[ilocale] = ilabel
 
-	with open(args[0], 'w') as outfile:
-		json.dump(list(city_data.values()), outfile, indent=2)
+	json.dump(list(city_data.values()), opt.outfile, indent=2)
 
 	print('... done :)')

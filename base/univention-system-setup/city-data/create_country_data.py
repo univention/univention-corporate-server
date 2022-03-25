@@ -27,24 +27,26 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""
+Generate `country_data.json`
+"""
+
 from __future__ import print_function
 
 import json
-import sys
+from argparse import ArgumentParser, FileType
+from typing import Any, Dict  # noqa F401
 
 import _util
 
 if __name__ == '__main__':
-	# check argument (action)
-	args = sys.argv[1:]
-	if not len(args) or '--help' in args or '-h' in args:
-		print('options: <outfile.json> <locale1> [<locale2>...]', file=sys.stderr)
-		sys.exit(1)
-
-	locales = args[1:]
+	parser = ArgumentParser(description=__doc__)
+	parser.add_argument("outfile", type=FileType("w"))
+	parser.add_argument("locales", nargs="+")
+	opt = parser.parse_args()
 
 	print('generating country data...')
-	country_data = {}
+	country_data = {}  # type: Dict[str, Dict[str, Any]]
 
 	country_default_lang = _util.get_country_default_language()
 	for icountry, ilang in country_default_lang.items():
@@ -56,7 +58,7 @@ if __name__ == '__main__':
 
 	country_code_to_geonameid_map = _util.get_country_code_to_geonameid_map()
 	country_geonameids = list(country_code_to_geonameid_map.values())
-	for ilocale in locales + ['']:
+	for ilocale in opt.locales + ['']:
 		print('loading data for locale %s' % ilocale)
 		country_names = _util.get_localized_names(country_geonameids, ilocale)
 		for icode, iid in country_code_to_geonameid_map.items():
@@ -68,7 +70,6 @@ if __name__ == '__main__':
 			if ilabel:
 				data_set.setdefault('label', {})[ilocale] = ilabel
 
-	with open(args[0], 'w') as outfile:
-		json.dump(country_data, outfile, indent=2)
+	json.dump(country_data, opt.outfile, indent=2)
 
 	print('... done :)')

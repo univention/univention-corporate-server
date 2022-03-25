@@ -27,22 +27,23 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""
+Generate `country_codes.json`
+"""
+
 from __future__ import print_function
 
 import json
-import sys
+from argparse import ArgumentParser, FileType
 
 import _util
 
 if __name__ == '__main__':
-	# check argument (action)
-	args = sys.argv[1:]
-	if not args or '--help' in args or '-h' in args:
-		print('usage: create_country_codes.py <outfile.json>', file=sys.stderr)
-		sys.exit(1)
+	parser = ArgumentParser(description=__doc__)
+	parser.add_argument("outfile", type=FileType("w"))
+	opt = parser.parse_args()
 
 	print('generating country code data...')
 	pairs = _util.get_country_codes(3)
-	with open(args[0], 'w') as outfile:
-		json.dump(pairs, outfile)
+	json.dump(pairs, opt.outfile)
 	print('... done :)')

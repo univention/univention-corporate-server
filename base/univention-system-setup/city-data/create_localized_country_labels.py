@@ -27,25 +27,27 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""
+Generate localized country labels.
+"""
+
 from __future__ import print_function
 
 import json
-import sys
+from argparse import ArgumentParser, FileType
 
 import _util
 
 if __name__ == '__main__':
-	# check argument (action)
-	args = sys.argv[1:]
-	if len(args) != 2 or '--help' in args or '-h' in args:
-		print('usage: create_localized_country_labels.py <languageCode> <outfile.json>', file=sys.stderr)
-		sys.exit(1)
+	parser = ArgumentParser(description=__doc__)
+	parser.add_argument("languageCode", nargs="+")
+	parser.add_argument("outfile", type=FileType("w"))
+	opt = parser.parse_args()
 
 	print('generating country label data...')
 	countries = _util.get_country_code_to_geonameid_map(3)
 	country_ids = set(countries.values())
-	labels = _util.get_localized_names(country_ids, args[0])
+	labels = _util.get_localized_names(country_ids, opt.languageCode)
 	final_lables = {icountry: labels.get(igeonameid, '') for icountry, igeonameid in countries.items()}
-	with open(args[1], 'w') as outfile:
-		json.dump(final_lables, outfile)
+	json.dump(final_lables, opt.outfile)
 	print('... done :)')
