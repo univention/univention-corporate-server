@@ -31,7 +31,7 @@ def test_acl_read_access(rad_user, lo, ssp, ucr, allowed, credentials):
 	binddn, bindpw = credentials
 	lo.modify(dn, [('univentionRadiusPassword', [b'old'], [ssp[1]])])
 	lo = univention.admin.uldap.access(host=ucr.get('ldap/master'), port=ucr.get('ldap/server/port'), base=ucr.get('ldap/base'), binddn=binddn, bindpw=bindpw, start_tls=2, follow_referral=True)
-	passwords = [(dn, attr) for dn, attr in lo.search(attr=['univentionRadiusPassword']) if 'univentionRadiusPassword' in attr]
+	passwords = [(_dn, attr) for _dn, attr in lo.search(attr=['univentionRadiusPassword']) if 'univentionRadiusPassword' in attr]
 	if allowed:
 		assert passwords
 	else:
