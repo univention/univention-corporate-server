@@ -187,7 +187,8 @@ COMMON_EXCEPTIONS = (
 		'univention-directory-listener/system/app_attributes.py'
 	], (53290, 53862)),
 	E("AttributeError: 'ConfigRegistry' object has no attribute '_walk'", ['univention-directory-listener/system/nfs-shares.py'], (53291, 53862)),
-	E("AttributeError: 'module' object has no attribute 'localization'", ['univention-directory-listener/system/app_attributes.py'], 53862),
+	E("AttributeError: 'module' object has no attribute 'localization'", ['univention-directory-listener/system/app_attributes.py', 'system/portal_groups.py'], 53862),
+	E("ImportError: cannot import name localization", ['univention-directory-listener/system/app_attributes.py'], 53862),
 	E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention-self-service-invitation'], 53670),
 	E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention/lib/umc.py.*in send'], 53670),
 	E("univention.lib.umc.ConnectionError: .*Could not send request.*Connection refused", ['univention-self-service-invitation'], 53670),
