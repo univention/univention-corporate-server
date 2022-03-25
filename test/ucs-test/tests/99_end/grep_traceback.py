@@ -216,7 +216,7 @@ COMMON_EXCEPTIONS = (
 	E('MyTestException: .*'),
 	E('univention.management.console.modules.ucstest.ThreadedError'),  # 60_umc/17_traceback_handling.py
 	# various test cases:
-	E('AssertionError: .*contain.*traceback', ['01_var_log_tracebacks']),
+	E('AssertionError: .*contain.*traceback.*', ['01_var_log_tracebacks']),
 	E('^(univention.management.console.modules.ucstest.)?NonThreadedError$'),
 	E(r'^(ldap\.)?INVALID_SYNTAX: .*ABCDEFGHIJKLMNOPQRSTUVWXYZ.*', ['sync_from_ucs']),
 	E(r'^(ldap\.)?INVALID_SYNTAX: .*telephoneNumber.*', ['sync_from_ucs'], 35391),  # 52_s4connector/134sync_incomplete_attribute_ucs
@@ -329,6 +329,7 @@ COMMON_EXCEPTIONS = (
 	E('univention.admin.uexceptions.wrongObjectType: relativeDomainName=.* is not recognized as dns/txt_record.', ['ucs_txt_record_create'], 53425),
 	# Tracebacks caused by specific UCS@school bugs:
 	E(r"_ldb.LdbError: \(1, 'LDAP client internal error: NT_STATUS_INVALID_PARAMETER'\)", ['univention-samba4-site-tool.py'], 54592),
+	E(r"AssertionError: Attribute \(username\) is parsed wrong as.*", ['103_ucsschool_smbstatus_parser.py'], 54591),
 )
 
 
