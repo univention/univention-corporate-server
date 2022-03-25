@@ -7,7 +7,7 @@ fix: 5.0.1-55A~4.4.0.202112211520
 desc: |-
   This update addresses the following issue:
   * A diagnostic module has been added to check the UCR variable
-    `notifier/protocol/version´.
+    `notifier/protocol/version`.
 bug: [50733]
 erratum: 1130
 announced: 2021-12-22
