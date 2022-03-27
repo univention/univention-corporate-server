@@ -1026,7 +1026,7 @@ def get_fqdn(nameserver):
 			return None
 
 		fqdn = reverse_lookup[0]
-		parts = [i for i in fqdn.target.labels if i]
+		parts = [i.decode('ASCII') for i in fqdn.target.labels if i]
 		domain = '.'.join(parts)
 
 		return domain
