@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: cups
+fix: 2.2.10-6+deb10u5A~5.0.1.202203271459
+desc: |
+ This update addresses the following issue:
+ * access to uninitialized buffer in ipp.c (CVE-2020-10001)
+bug: [54598]
+cve:
+- CVE-2020-10001
