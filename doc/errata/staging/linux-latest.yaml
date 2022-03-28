@@ -2,8 +2,8 @@ product: ucs
 release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
-src: linux
-fix: 4.19.235-1
+src: linux-latest
+fix: 105+deb10u15
 desc: |
  This updates the Linux kernel to version 4.19.235, which addresses (among
  others) the following security issues:
@@ -26,7 +26,7 @@ desc: |
  * cpu: arm64: Spectre-BHB (CVE-2022-23960)
  * Use-after-free in dev->buf release in drivers/usb/gadget/legacy/inode.c
    (CVE-2022-24958)
-note: This is the first of three parts.
+note: This is the third of three parts.
 bug: [54607]
 cve:
 - CVE-2021-4149
