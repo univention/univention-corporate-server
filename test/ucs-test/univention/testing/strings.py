@@ -30,7 +30,7 @@
 # <https://www.gnu.org/licenses/>.
 
 from random import choice, randint
-from typing import Iterator, Text, Optional, Tuple  # noqa F401
+from typing import Iterator, Text, Optional, Tuple  # noqa: F401
 
 import six
 

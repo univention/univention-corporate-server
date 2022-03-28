@@ -33,7 +33,7 @@
 from __future__ import absolute_import
 
 import logging
-from typing import Any, Callable, Iterable, List  # noqa F401
+from typing import Any, Callable, Iterable, List  # noqa: F401
 
 import selenium.common.exceptions as selenium_exceptions
 from selenium import webdriver

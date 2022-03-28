@@ -35,8 +35,8 @@
 
 from __future__ import absolute_import
 
-from typing import Optional, Union  # noqa F401
-from types import ModuleType  # noqa F401
+from typing import Optional, Union  # noqa: F401
+from types import ModuleType  # noqa: F401
 
 import six
 

@@ -2,7 +2,7 @@ from __future__ import print_function
 
 import time
 from functools import wraps
-from typing import Any, Callable, TypeVar, cast  # noqa F401
+from typing import Any, Callable, TypeVar, cast  # noqa: F401
 
 DEFAULT_TIMEOUT = 90  # seconds
 

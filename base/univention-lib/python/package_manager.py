@@ -31,7 +31,7 @@ package management (info/install/progress...)
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import logging  # noqa F401
+import logging  # noqa: F401
 import sys
 import os
 import re
@@ -42,8 +42,8 @@ from contextlib import contextmanager
 import threading
 from logging import getLogger, DEBUG, Handler
 from time import sleep
-from types import TracebackType  # noqa F401
-from typing import IO, Any, Callable, Dict, Iterator, List, Optional, Sequence, Set, Tuple, Type, Union  # noqa F401
+from types import TracebackType  # noqa: F401
+from typing import IO, Any, Callable, Dict, Iterator, List, Optional, Sequence, Set, Tuple, Type, Union  # noqa: F401
 
 import six
 

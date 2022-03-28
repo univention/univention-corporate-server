@@ -45,10 +45,10 @@ import base64
 import time
 import tempfile
 import datetime
-from optparse import OptionParser, OptionGroup, Option, OptionValueError, Values  # noqa F401
+from optparse import OptionParser, OptionGroup, Option, OptionValueError, Values  # noqa: F401
 from copy import copy
 from abc import ABCMeta, abstractproperty, abstractmethod
-from typing import Dict, List, Optional, Tuple  # noqa F401
+from typing import Dict, List, Optional, Tuple  # noqa: F401
 
 import six
 import apt

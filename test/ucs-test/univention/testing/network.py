@@ -44,10 +44,10 @@ from __future__ import print_function
 import copy
 import re
 import subprocess
-from types import TracebackType  # noqa F401
-from typing import List, Mapping, Optional, Set, Tuple, Type, Union  # noqa F401
+from types import TracebackType  # noqa: F401
+from typing import List, Mapping, Optional, Set, Tuple, Type, Union  # noqa: F401
 try:
-	from typing_extensions import Literal  # noqa F401
+	from typing_extensions import Literal  # noqa: F401
 except ImportError:
 	pass
 

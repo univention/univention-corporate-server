@@ -50,7 +50,7 @@ import time
 import traceback
 import zlib
 from io import BytesIO
-from typing import TYPE_CHECKING, Any, Callable, Iterable, List, Optional, Pattern, Sequence, Set, Tuple, Type, Union  # noqa F401
+from typing import TYPE_CHECKING, Any, Callable, Iterable, List, Optional, Pattern, Sequence, Set, Tuple, Type, Union  # noqa: F401
 
 import dateutil
 import ldap
@@ -60,7 +60,7 @@ import pytz
 import six
 from ldap.filter import filter_format, escape_filter_chars
 from ldap.schema import ObjectClass, AttributeType
-from ldap.schema.subentry import SubSchema  # noqa F401
+from ldap.schema.subentry import SubSchema  # noqa: F401
 
 import univention.admin.modules
 import univention.admin.types
@@ -72,7 +72,7 @@ from univention.lib.umc_module import get_mime_type, get_mime_description, image
 from univention.uldap import getMachineConnection
 
 if TYPE_CHECKING:
-	from univention.admin.uldap import access  # noqa F401
+	from univention.admin.uldap import access  # noqa: F401
 
 translation = localization.translation('univention/admin')
 _ = translation.translate

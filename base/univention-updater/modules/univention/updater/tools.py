@@ -73,8 +73,8 @@ import functools
 import six
 import base64
 try:
-    from typing import Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Text, Tuple, Type, TypeVar, Union  # noqa F401
-    from typing_extensions import Literal  # noqa F401
+    from typing import Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Text, Tuple, Type, TypeVar, Union  # noqa: F401
+    from typing_extensions import Literal  # noqa: F401
     _TS = TypeVar("_TS", bound="_UCSServer")
 except ImportError:
     pass

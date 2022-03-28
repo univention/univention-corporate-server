@@ -28,7 +28,7 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from typing import List  # noqa F401
+from typing import List  # noqa: F401
 
 import univention.admin.modules
 

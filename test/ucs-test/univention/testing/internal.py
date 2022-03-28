@@ -35,7 +35,7 @@ import operator
 import os
 import re
 import sys
-from typing import Any, Callable, Dict, Iterable, List, NoReturn, Optional, Tuple, Union  # noqa F401
+from typing import Any, Callable, Dict, Iterable, List, NoReturn, Optional, Tuple, Union  # noqa: F401
 
 import six
 

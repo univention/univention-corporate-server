@@ -36,8 +36,8 @@ import shlex
 import subprocess
 import sys
 import time
-from argparse import ArgumentParser, Namespace  # noqa F401
-from typing import Any, Container, List, NoReturn, Optional, Sequence  # noqa F401
+from argparse import ArgumentParser, Namespace  # noqa: F401
+from typing import Any, Container, List, NoReturn, Optional, Sequence  # noqa: F401
 
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
 from univention.lib.policy_result import PolicyResultFailed, policy_result
@@ -55,7 +55,7 @@ from univention.updater.commands import (
 from univention.updater.locking import UpdaterLock, apt_lock
 
 try:
-    from typing_extensions import Literal  # noqa F401
+    from typing_extensions import Literal  # noqa: F401
     _JOB = Literal["add", "remove"]
 except ImportError:
     _JOB = str  # type: ignore

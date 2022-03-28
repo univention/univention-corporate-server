@@ -32,7 +32,7 @@
 
 from univention.config_registry.misc import key_shell_escape, escape_value
 try:
-	from typing import Any, Iterable  # noqa F401
+	from typing import Any, Iterable  # noqa: F401
 except ImportError:  # pragma: no cover
 	pass
 

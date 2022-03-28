@@ -6,7 +6,7 @@ import pytest
 
 pytest.importorskip("ipaddress")
 
-from univention.ipcalc.__main__ import main, parse_options  # noqa E402
+from univention.ipcalc.__main__ import main, parse_options  # noqa: E402
 
 
 @pytest.mark.parametrize("args", [

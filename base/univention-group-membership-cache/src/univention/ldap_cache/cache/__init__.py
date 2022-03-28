@@ -30,7 +30,7 @@
 #
 
 # choose a backend
-from univention.ldap_cache.cache.backend.gdbm_cache import GdbmCaches as Caches, GdbmCache as Cache, GdbmShard as Shard  # noqa
+from univention.ldap_cache.cache.backend.gdbm_cache import GdbmCaches as Caches, GdbmCache as Cache, GdbmShard as Shard  # noqa: F401
 # from univention.ldap_cache.cache.backend.lmdb_cache import LmdbCaches as Caches, LmdbCache as Cache, LmdbShard as Shard
 
 from univention.ldap_cache.log import debug

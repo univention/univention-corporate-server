@@ -40,7 +40,7 @@ import grp
 import shutil
 import stat
 try:
-	from typing import Any, Optional, Sequence, Tuple  # noqa F401
+	from typing import Any, Optional, Sequence, Tuple  # noqa: F401
 except ImportError:
 	pass
 

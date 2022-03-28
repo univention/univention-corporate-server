@@ -30,4 +30,4 @@
 Python tools for Updater and repository maintenance.
 """
 
-from univention.updater.tools import UniventionUpdater  # NOQA
+from univention.updater.tools import UniventionUpdater  # noqa: F401

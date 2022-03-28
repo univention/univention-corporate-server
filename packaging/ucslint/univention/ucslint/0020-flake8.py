@@ -33,7 +33,7 @@ import re
 import subprocess
 import sys
 from argparse import ArgumentParser
-from typing import Any, Dict, Iterable, List, Tuple  # noqa F401
+from typing import Any, Dict, Iterable, List, Tuple  # noqa: F401
 
 import univention.ucslint.base as uub
 from univention.ucslint.python import python_files
@@ -41,8 +41,8 @@ from univention.ucslint.python import python_files
 EXECUTE_TOKEN = re.compile('@!@(.+?)@!@', re.MULTILINE | re.DOTALL)
 UCR_HEADER = '''\
 # -*- coding: utf-8 -*-
-import univention.config_registry  # noqa
-from fake import configRegistry, baseConfig  # noqa
+import univention.config_registry  # noqa: F401
+from fake import configRegistry, baseConfig  # noqa: F401
 
 '''
 PYTHON_VERSIONS = PY2, PY3 = ('python2', 'python3')
@@ -370,7 +370,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			'0020-B901': (
 				uub.RESULT_WARN,
 				"Using `yield` together with `return x`. Use native "
-				"`async def` coroutines or put a `# noqa` comment on this "
+				"`async def` coroutines or put a `# noqa: ???` comment on this "
 				"line if this was intentional."
 			),
 		}

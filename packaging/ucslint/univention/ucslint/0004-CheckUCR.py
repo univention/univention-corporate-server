@@ -31,7 +31,7 @@ import os
 import re
 import sys
 from configparser import DuplicateOptionError, DuplicateSectionError, MissingSectionHeaderError, ParsingError, RawConfigParser
-from typing import Any, Dict, Iterator, List, Set, Tuple, Union  # noqa F401
+from typing import Any, Dict, Iterator, List, Set, Tuple, Union  # noqa: F401
 
 import univention.ucslint.base as uub
 

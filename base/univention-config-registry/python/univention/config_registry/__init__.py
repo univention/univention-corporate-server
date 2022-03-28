@@ -33,17 +33,17 @@
 
 from lazy_object_proxy import Proxy
 
-from univention.config_registry.backend import StrictModeException, SCOPE, ConfigRegistry, Load, ReadOnlyConfigRegistry as _RCR  # noqa F401
-from univention.config_registry.handler import run_filter as filter, ConfigHandlers as configHandlers  # noqa F401
-from univention.config_registry.misc import key_shell_escape, validate_key, INVALID_KEY_CHARS as invalid_key_chars  # noqa F401
-from univention.config_registry.filters import filter_shell, filter_keys_only, filter_sort  # noqa F401
-from univention.config_registry.frontend import (  # noqa F401
+from univention.config_registry.backend import StrictModeException, SCOPE, ConfigRegistry, Load, ReadOnlyConfigRegistry as _RCR  # noqa: F401
+from univention.config_registry.handler import run_filter as filter, ConfigHandlers as configHandlers  # noqa: F401
+from univention.config_registry.misc import key_shell_escape, validate_key, INVALID_KEY_CHARS as invalid_key_chars  # noqa: F401
+from univention.config_registry.filters import filter_shell, filter_keys_only, filter_sort  # noqa: F401
+from univention.config_registry.frontend import (  # noqa: F401
 	REPLOG_FILE, UnknownKeyException, main,
 	handler_set, handler_unset, handler_commit, handler_filter,
 	handler_get, handler_dump, handler_search,
 	handler_register, handler_unregister, handler_update,
 )
-from univention.debhelper import parseRfc822  # noqa F401
+from univention.debhelper import parseRfc822  # noqa: F401
 
 ucr = Proxy(lambda: _RCR().load(autoload=Load.ONCE))
 ucr_live = Proxy(lambda: _RCR().load(autoload=Load.ALWAYS))

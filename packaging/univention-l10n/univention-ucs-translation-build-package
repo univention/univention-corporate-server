@@ -32,12 +32,12 @@ Build UCS package containing translations for a new language.
 # <https://www.gnu.org/licenses/>.
 from __future__ import print_function
 
-from argparse import ArgumentParser, Namespace  # noqa F401
+from argparse import ArgumentParser, Namespace  # noqa: F401
 import os
 import univention.l10n.umc as dh_umc
 import univention.l10n as tlh
 try:
-	from typing import List  # noqa F401
+	from typing import List  # noqa: F401
 except ImportError:
 	pass
 

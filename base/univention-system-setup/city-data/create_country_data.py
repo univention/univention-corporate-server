@@ -35,7 +35,7 @@ from __future__ import print_function
 
 import json
 from argparse import ArgumentParser, FileType
-from typing import Any, Dict  # noqa F401
+from typing import Any, Dict  # noqa: F401
 
 import _util
 

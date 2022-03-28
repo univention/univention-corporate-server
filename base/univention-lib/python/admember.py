@@ -47,7 +47,7 @@ import ipaddress
 import time
 from datetime import datetime, timedelta
 import pipes
-from typing import Optional  # noqa F401
+from typing import Optional  # noqa: F401
 
 import six
 

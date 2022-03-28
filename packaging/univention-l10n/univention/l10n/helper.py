@@ -30,7 +30,7 @@
 import os
 import subprocess
 try:
-	from typing import Any  # noqa F401
+	from typing import Any  # noqa: F401
 except ImportError:
 	pass
 

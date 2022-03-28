@@ -6,7 +6,7 @@
 ## tags: [skip_admember]
 
 import contextlib
-from typing import Dict, List  # noqa F401
+from typing import Dict, List  # noqa: F401
 
 import pytest
 

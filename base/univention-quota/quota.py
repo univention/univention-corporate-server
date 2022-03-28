@@ -38,7 +38,7 @@ from ldap.filter import filter_format
 from six.moves import cPickle as pickle
 import os
 try:
-	from typing import Dict, List, Optional, Tuple  # noqa F401
+	from typing import Dict, List, Optional, Tuple  # noqa: F401
 except ImportError:
 	pass
 

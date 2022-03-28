@@ -36,7 +36,7 @@ from __future__ import absolute_import
 import re
 import bcrypt
 import hashlib
-from typing import List, Optional, Tuple  # noqa F401
+from typing import List, Optional, Tuple  # noqa: F401
 
 import heimdal
 import passlib.hash

@@ -45,8 +45,8 @@ try:
 except ImportError:
     import univention.debug2 as ud  # type: ignore
 try:
-    from typing import Any, Iterator, List, Optional, Tuple  # noqa F401
-    from typing_extensions import Literal  # noqa F401
+    from typing import Any, Iterator, List, Optional, Tuple  # noqa: F401
+    from typing_extensions import Literal  # noqa: F401
 except ImportError:
     pass
 

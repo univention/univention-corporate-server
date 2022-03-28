@@ -36,7 +36,7 @@ import shutil
 import univention.l10n as tlh
 import univention.l10n.umc as dh_umc
 try:
-	from typing import List, Set, Tuple  # noqa F401
+	from typing import List, Set, Tuple  # noqa: F401
 except ImportError:
 	pass
 

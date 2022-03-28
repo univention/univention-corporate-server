@@ -28,7 +28,7 @@
 
 """Univention IP Calculator for DNS records (IPv6 edition)."""
 
-from typing import Union  # noqa F401
+from typing import Union  # noqa: F401
 
 import six
 
@@ -36,7 +36,7 @@ import six
 if six.PY3:
 	from ipaddress import IPv4Address, IPv6Address, IPv4Interface, IPv6Interface
 else:
-	from ipaddr import IPv4Address, IPv6Address, IPv4Network as IPv4Interface, IPv6Network as IPv6Interface # noqa F401
+	from ipaddr import IPv4Address, IPv6Address, IPv4Network as IPv4Interface, IPv6Network as IPv6Interface # noqa: F401
 
 _Interface = Union[IPv4Interface, IPv6Interface]
 

@@ -35,7 +35,7 @@
 from __future__ import absolute_import
 
 import subprocess
-from typing import Dict, List, Optional  # noqa F401
+from typing import Dict, List, Optional  # noqa: F401
 
 from univention.listener.handler import ListenerModuleHandler
 

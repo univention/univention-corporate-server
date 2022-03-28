@@ -39,12 +39,12 @@ import subprocess
 import sys
 import gzip
 try:
-    from typing import IO, List, Optional, Tuple  # noqa F401
+    from typing import IO, List, Optional, Tuple  # noqa: F401
 except ImportError:
     pass
 
 from univention.config_registry import ConfigRegistry
-from univention.lib.ucs import UCS_Version  # noqa F401
+from univention.lib.ucs import UCS_Version  # noqa: F401
 
 configRegistry = ConfigRegistry()
 configRegistry.load()

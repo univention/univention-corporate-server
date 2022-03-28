@@ -34,8 +34,8 @@
 from __future__ import absolute_import
 
 import pytest
-from _pytest.config import Config  # noqa F401
-from _pytest.config.argparsing import Parser  # noqa F401
+from _pytest.config import Config  # noqa: F401
+from _pytest.config.argparsing import Parser  # noqa: F401
 
 
 def pytest_addoption(parser):

@@ -41,8 +41,8 @@ import time
 import traceback
 from itertools import chain
 from enum import IntEnum
-from types import TracebackType  # noqa F401
-from typing import IO, Any, Callable, Dict, Iterable, List, NoReturn, Optional, Sequence, Text, Tuple, Type, TypeVar, Union  # noqa F401
+from types import TracebackType  # noqa: F401
+from typing import IO, Any, Callable, Dict, Iterable, List, NoReturn, Optional, Sequence, Text, Tuple, Type, TypeVar, Union  # noqa: F401
 
 import ldap
 import six

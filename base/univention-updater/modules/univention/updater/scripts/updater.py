@@ -36,7 +36,7 @@ from __future__ import print_function
 import os
 import re
 import sys
-from argparse import SUPPRESS, ArgumentParser, Namespace  # noqa F401
+from argparse import SUPPRESS, ArgumentParser, Namespace  # noqa: F401
 from datetime import datetime
 from errno import ENOENT
 from subprocess import DEVNULL, call
@@ -54,13 +54,13 @@ from univention.admindiary.client import write_event
 from univention.admindiary.events import UPDATE_STARTED, UPDATE_FINISHED_SUCCESS, UPDATE_FINISHED_FAILURE
 
 from univention.updater.errors import PreconditionError, ConfigurationError, RequiredComponentError, VerificationError, DownloadError
-from univention.updater.tools import Component, UniventionUpdater, LocalUpdater  # noqa F401
+from univention.updater.tools import Component, UniventionUpdater, LocalUpdater  # noqa: F401
 from univention.updater.locking import UpdaterLock, apt_lock
 from univention.updater.commands import cmd_update, cmd_dist_upgrade
 
 try:
-    from typing import Container, Dict, IO, Iterable, Iterator, List, NoReturn, Optional, Set, Sequence, Tuple  # noqa F401
-    from typing_extensions import Literal  # noqa F401
+    from typing import Container, Dict, IO, Iterable, Iterator, List, NoReturn, Optional, Set, Sequence, Tuple  # noqa: F401
+    from typing_extensions import Literal  # noqa: F401
     _ESRC = Literal["SETTINGS", "PREPARATION", "PREUP", "UPDATE", "POSTUP"]
     _CMDS = Literal["local", "net"]
 except ImportError:

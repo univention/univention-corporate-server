@@ -29,9 +29,9 @@
 # <https://www.gnu.org/licenses/>.
 
 from contextlib import contextmanager
-from datetime import datetime  # noqa F401
+from datetime import datetime  # noqa: F401
 from functools import partial
-from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional, Set, Tuple  # noqa F401
+from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional, Set, Tuple  # noqa: F401
 
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker, relationship
@@ -40,7 +40,7 @@ from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Sequence, T
 
 from univention.config_registry import ConfigRegistry
 
-from univention.admindiary import get_logger, DiaryEntry  # noqa F401
+from univention.admindiary import get_logger, DiaryEntry  # noqa: F401
 
 get_logger = partial(get_logger, 'backend')
 

@@ -32,8 +32,8 @@ Univention Updater: UCR Repository Server URL
 
 from copy import copy
 try:
-    from typing import Optional, TypeVar, Union  # noqa F401
-    from univention.config_registry import ConfigRegistry  # noqa F401
+    from typing import Optional, TypeVar, Union  # noqa: F401
+    from univention.config_registry import ConfigRegistry  # noqa: F401
     _T = TypeVar("_T")
 except ImportError:
     pass

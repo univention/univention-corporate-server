@@ -28,4 +28,4 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from . l10n import *  # noqa
+from . l10n import *  # noqa: F401

@@ -29,7 +29,7 @@
 
 import re
 from itertools import chain
-from typing import Any, Dict, Iterator, List  # noqa F401
+from typing import Any, Dict, Iterator, List  # noqa: F401
 
 import univention.ucslint.base as uub
 

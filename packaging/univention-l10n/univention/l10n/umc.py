@@ -70,7 +70,7 @@ from debian.deb822 import Deb822, Packages
 from .helper import Error, call, make_parent_dir
 from .message_catalogs import merge_po
 try:
-	from typing import Iterable, Iterator, List, Optional, Tuple, Union  # noqa F401
+	from typing import Iterable, Iterator, List, Optional, Tuple, Union  # noqa: F401
 except ImportError:
 	pass
 

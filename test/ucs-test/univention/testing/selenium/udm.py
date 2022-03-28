@@ -33,7 +33,7 @@
 from __future__ import absolute_import, print_function
 
 import time
-from typing import Any, Dict, Mapping, Optional  # noqa F401
+from typing import Any, Dict, Mapping, Optional  # noqa: F401
 
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException

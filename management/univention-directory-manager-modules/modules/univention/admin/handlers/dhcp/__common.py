@@ -32,7 +32,7 @@
 """
 
 from ipaddress import IPv4Address, IPv4Network
-from typing import List, Tuple, Sequence  # noqa F401
+from typing import List, Tuple, Sequence  # noqa: F401
 import sys
 
 import univention.admin.localization

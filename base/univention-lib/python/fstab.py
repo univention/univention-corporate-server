@@ -36,7 +36,7 @@ from __future__ import print_function
 
 import os
 import re
-from typing import Container, List, Optional, Union  # noqa F401
+from typing import Container, List, Optional, Union  # noqa: F401
 
 
 class InvalidEntry(Exception):

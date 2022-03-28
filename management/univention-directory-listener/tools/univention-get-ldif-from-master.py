@@ -40,7 +40,7 @@ import io
 import logging
 import os
 import sys
-from typing import IO, Text  # noqa F401
+from typing import IO, Text  # noqa: F401
 
 import ldap
 import ldif

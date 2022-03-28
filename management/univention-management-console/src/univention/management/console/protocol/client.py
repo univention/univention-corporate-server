@@ -50,7 +50,7 @@ import notifier
 import notifier.signals as signals
 
 try:
-	from typing import Any, Dict, Iterable, List, Optional  # noqa F401
+	from typing import Any, Dict, Iterable, List, Optional  # noqa: F401
 except ImportError:
 	pass
 

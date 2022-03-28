@@ -73,7 +73,7 @@ from ..modules.sanitizers import StringSanitizer, DictSanitizer
 from ..modules.decorators import sanitize, sanitize_args, simple_response, allow_get_request
 
 try:
-	from typing import Any, Dict, Iterable, List, Optional  # noqa F401
+	from typing import Any, Dict, Iterable, List, Optional  # noqa: F401
 except ImportError:
 	pass
 

@@ -34,11 +34,11 @@
 
 import os
 import os.path
-from argparse import SUPPRESS, ArgumentParser, Namespace  # noqa F401
+from argparse import SUPPRESS, ArgumentParser, Namespace  # noqa: F401
 from glob import glob
 from gzip import open as gzip_open
 import zlib
-from typing import Dict, Iterable, Iterator, List, Mapping, Optional  # noqa F401
+from typing import Dict, Iterable, Iterator, List, Mapping, Optional  # noqa: F401
 
 from six.moves.urllib_request import Request
 from six.moves.urllib_error import HTTPError

@@ -52,7 +52,7 @@ from univention.management.console.modules.decorators import simple_response, sa
 from univention.management.console.modules.sanitizers import StringSanitizer, ListSanitizer, BooleanSanitizer
 
 
-from typing import Any, Callable, Dict, List, Union  # noqa F401
+from typing import Any, Callable, Dict, List, Union  # noqa: F401
 
 
 _ = umc.Translation('univention-management-console-module-join').translate

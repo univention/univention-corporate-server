@@ -47,7 +47,7 @@ import univention.config_registry
 _ = Translation('univention-management-console-module-services').translate
 
 
-from typing import Any, Dict, List, Union  # noqa F401
+from typing import Any, Dict, List, Union  # noqa: F401
 
 
 class Instance(Base):

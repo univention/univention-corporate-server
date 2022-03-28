@@ -30,7 +30,7 @@
 import os
 import re
 import time
-from typing import List  # noqa F401
+from typing import List  # noqa: F401
 
 import univention.ucslint.base as uub
 

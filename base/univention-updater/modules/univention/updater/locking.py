@@ -43,8 +43,8 @@ except ImportError:
     from monotonic import monotonic  # type: ignore
 from errno import EEXIST, ESRCH, ENOENT
 try:
-    from typing import Optional, Type  # noqa F401
-    from types import TracebackType  # noqa F401
+    from typing import Optional, Type  # noqa: F401
+    from types import TracebackType  # noqa: F401
 except ImportError:
     pass
 from .errors import UpdaterException

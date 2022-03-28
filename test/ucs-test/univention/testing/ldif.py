@@ -17,10 +17,10 @@ import subprocess
 import sys
 import time
 import unicodedata
-from optparse import SUPPRESS_HELP, OptionGroup, OptionParser, Values  # noqa F401
-from typing import Any, Dict, Iterable, Iterator, List, Set, Text, Tuple, NoReturn  # noqa F401
+from optparse import SUPPRESS_HELP, OptionGroup, OptionParser, Values  # noqa: F401
+from typing import Any, Dict, Iterable, Iterator, List, Set, Text, Tuple, NoReturn  # noqa: F401
 try:
-	from typing_extensions import Literal  # noqa F401
+	from typing_extensions import Literal  # noqa: F401
 except ImportError:
 	pass
 

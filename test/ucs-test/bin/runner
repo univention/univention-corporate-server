@@ -5,9 +5,9 @@
 #
 import os
 import sys
-from argparse import ArgumentParser, FileType, Namespace, REMAINDER  # noqa F401
+from argparse import ArgumentParser, FileType, Namespace, REMAINDER  # noqa: F401
 try:
-	from typing import Optional, Sequence  # noqa F401
+	from typing import Optional, Sequence  # noqa: F401
 except ImportError:
 	pass
 

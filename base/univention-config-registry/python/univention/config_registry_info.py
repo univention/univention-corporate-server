@@ -36,7 +36,7 @@ import re
 
 import univention.info_tools as uit
 try:
-	from typing import Dict, Iterable, List, Optional, Tuple  # noqa F401
+	from typing import Dict, Iterable, List, Optional, Tuple  # noqa: F401
 except ImportError:
 	pass
 

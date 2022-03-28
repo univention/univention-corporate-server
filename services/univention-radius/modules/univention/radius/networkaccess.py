@@ -33,7 +33,7 @@
 import codecs
 import logging
 import os
-from typing import Dict, List, Optional, Tuple  # noqa F401
+from typing import Dict, List, Optional, Tuple  # noqa: F401
 
 from ldap import SERVER_DOWN
 from ldap.filter import filter_format

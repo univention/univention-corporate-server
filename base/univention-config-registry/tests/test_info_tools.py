@@ -4,7 +4,7 @@
 
 import pytest
 
-import univention.info_tools as uit  # noqa E402
+import univention.info_tools as uit  # noqa: E402
 
 
 @pytest.fixture
@@ -100,22 +100,22 @@ class TestLocalizedDictionary(object):
 	def test_in(self, ldict0):
 		"""in and has_key()."""
 		assert 'foo' not in ldict0
-		assert not ldict0.has_key('foo')  # noqa W601
+		assert not ldict0.has_key('foo')  # noqa: W601
 		ldict0['foo'] = 'bar'
 		assert 'foO' in ldict0
-		assert ldict0.has_key('foO')  # noqa W601
+		assert ldict0.has_key('foO')  # noqa: W601
 
 	def test_in_locale(self, ldict0):
 		"""in and has_key() with locale request."""
 		ldict0['foo'] = 'bar'
 		assert 'foO[fr]' in ldict0
-		assert ldict0.has_key('foO[fr]')  # noqa W601
+		assert ldict0.has_key('foO[fr]')  # noqa: W601
 
 	def test_in_locale_set(self, ldict0):
 		"""in and has_key() with locale set."""
 		ldict0['foo[fr]'] = 'bar'
 		assert 'foO' in ldict0
-		assert ldict0.has_key('foO')  # noqa W601
+		assert ldict0.has_key('foO')  # noqa: W601
 
 	def test_normalize(self, ldict0):
 		"""normalize()."""

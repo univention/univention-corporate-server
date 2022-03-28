@@ -55,7 +55,7 @@ from univention.debhelper import parseRfc822  # pylint: disable-msg=W0403
 if six.PY2:
 	from io import open
 try:
-	from typing import Any, Dict, IO, Iterable, List, Mapping, Optional, Set, Tuple, Union  # noqa F401
+	from typing import Any, Dict, IO, Iterable, List, Mapping, Optional, Set, Tuple, Union  # noqa: F401
 	_OPT = Mapping[str, Any]
 	_UCR = Mapping[str, str]
 	_CHANGES = Mapping[str, Tuple[Optional[str], Optional[str]]]

@@ -46,7 +46,7 @@ class TestConfigRegistry(object):
 	])
 	def test_levels(self, level, tmpdir):
 		"""Create level registry."""
-		_ucr = ConfigRegistry(write_registry=level)  # noqa F841
+		_ucr = ConfigRegistry(write_registry=level)  # noqa: F841
 		assert (tmpdir / ConfigRegistry.BASES[level]).exists()
 
 	@pytest.mark.parametrize("levels", range(1 << 4))
@@ -68,13 +68,13 @@ class TestConfigRegistry(object):
 		"""Create CUSTOM registry."""
 		fname = tmpdir / 'custom.conf'
 
-		_ucr = ConfigRegistry(str(fname))  # noqa F841
+		_ucr = ConfigRegistry(str(fname))  # noqa: F841
 
 		assert fname.exists()
 
 	def test_custom_through_env(self, tmpucr):
 		"""Create CUSTOM registry through environment variable."""
-		_ucr = ConfigRegistry(str(tmpucr))  # noqa F841
+		_ucr = ConfigRegistry(str(tmpucr))  # noqa: F841
 
 		assert tmpucr.exists()
 

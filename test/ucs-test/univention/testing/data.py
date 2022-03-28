@@ -17,7 +17,7 @@ from functools import reduce
 from operator import and_, or_
 from subprocess import PIPE, Popen, call
 from time import time
-from typing import IO, Any, Dict, Iterable, Iterator, List, Optional, Sequence, Set, Tuple, TypeVar  # noqa F401
+from typing import IO, Any, Dict, Iterable, Iterator, List, Optional, Sequence, Set, Tuple, TypeVar  # noqa: F401
 
 import apt
 import six

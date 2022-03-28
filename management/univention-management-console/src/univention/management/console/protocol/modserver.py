@@ -55,7 +55,7 @@ from univention.management.console.log import MODULE, PROTOCOL
 from univention.lib.i18n import Translation
 
 try:
-	from typing import Any, NoReturn, Optional  # noqa F401
+	from typing import Any, NoReturn, Optional  # noqa: F401
 except ImportError:
 	pass
 

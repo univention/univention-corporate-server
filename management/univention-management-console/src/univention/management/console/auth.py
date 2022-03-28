@@ -51,8 +51,8 @@ from univention.management.console.ldap import get_machine_connection, reset_cac
 from univention.management.console.pam import PamAuth, AuthenticationError, AuthenticationFailed, AuthenticationInformationMissing, PasswordExpired, AccountExpired, PasswordChangeFailed
 
 try:
-	from typing import Any, Dict, Optional, Tuple, Union  # noqa F401
-	from univention.management.console.protocol.meesage import Request  # noqa F401
+	from typing import Any, Dict, Optional, Tuple, Union  # noqa: F401
+	from univention.management.console.protocol.meesage import Request  # noqa: F401
 except ImportError:
 	pass
 

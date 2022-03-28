@@ -38,7 +38,7 @@ import re
 import string  # pylint: disable-msg=W0402
 from pipes import quote as escape_value
 try:
-	from typing import Dict, IO, List, Text  # noqa F401
+	from typing import Dict, IO, List, Text  # noqa: F401
 except ImportError:  # pragma: no cover
 	pass
 

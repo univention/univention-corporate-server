@@ -44,8 +44,8 @@ file.
 from __future__ import print_function
 
 import copy
-from types import TracebackType  # noqa F401
-from typing import Any, Dict, Optional, Type  # noqa F401
+from types import TracebackType  # noqa: F401
+from typing import Any, Dict, Optional, Type  # noqa: F401
 
 import univention.config_registry
 from univention.config_registry import ConfigRegistry

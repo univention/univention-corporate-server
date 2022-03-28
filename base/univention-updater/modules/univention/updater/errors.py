@@ -30,7 +30,7 @@
 Univention Updater exceptions.
 """
 try:
-    from typing import Set  # noqa F401
+    from typing import Set  # noqa: F401
 except ImportError:
     pass
 

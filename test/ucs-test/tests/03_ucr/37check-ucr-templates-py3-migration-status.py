@@ -11,7 +11,7 @@ import subprocess
 import sys
 import tempfile
 from difflib import unified_diff
-from typing import Dict, Set  # noqa F401
+from typing import Dict, Set  # noqa: F401
 
 import py.path
 import pytest
