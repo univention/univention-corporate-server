@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: gmp
+fix: 2:6.1.2+dfsg-4+deb10u1
+desc: |
+ This update addresses the following issue:
+ * Integer overflow and resultant buffer overflow via crafted input
+   (CVE-2021-43618)
+bug: [54602]
+cve:
+- CVE-2021-43618
