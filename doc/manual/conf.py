@@ -109,6 +109,7 @@ html_baseurl = f'docs.software-univention.de/manual/{release}/{language}'
 
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-figure_language_filename
 figure_language_filename = "{root}-{language}{ext}"
+
 linkcheck_allowed_redirects = {
     r"https://help\.univention\.com/t/\d+": r"https://help\.univention\.com/t/[\w-]+/\d+",
 }

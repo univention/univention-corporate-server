@@ -4,6 +4,39 @@
 
 This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
+.. envvar:: auth/faillog
+
+   Configures the automatic locking of users after failed login attempts in the
+   PAM stack. To activate, set the value to ``yes``. For more information, see
+   :ref:`users-faillog-pam`.
+
+
+.. envvar:: auth/faillog/limit
+
+   Configures the upper limit of failed login attempts for a user account
+   lockout. For more information, see :ref:`users-faillog-pam`.
+
+.. envvar:: auth/faillog/lock_global
+
+   Configure on |UCSPRIMARYDN| and |UCSBACKUPDN| to create a failed login
+   account lockout globally and store it in the LDAP directory. For more
+   information, see :ref:`users-faillog-pam`.
+
+
+.. envvar:: auth/faillog/root
+
+   To make the user account ``root`` subject of the PAM stack account lockout,
+   set the value to ``yes``. It defaults to ``no``. For more information, see
+   :ref:`users-faillog-pam`.
+
+
+.. envvar:: auth/faillog/unlock_time
+
+   Configure a time interval to unlock an account lockout. The value is defined
+   in seconds. The value ``0`` resets the lock immediately. For more
+   information, see :ref:`users-faillog-pam`.
+
+
 .. envvar:: backup/clean/max_age
 
    Defines how long a UCS system keeps old backup files of the LDAP data.
@@ -11,6 +44,24 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    delete backup files when the variable is not set. See
    :ref:`domain-ldap-nightly-backup`.
 
+.. envvar:: directory/manager/templates/alphanum/whitelist
+
+   Define an allowlist of characters that are not removed by the ``:alphanum``
+   option for the value definition in user templates. For more information, see
+   :ref:`users-templates`.
+
+.. envvar:: directory/manager/user_group/uniqueness
+
+   Controls if UCS prevents users with the same username as existing groups. To
+   deactivate the check for uniqueness, set the value to ``false``. For more
+   information see :numref:`users-management-table-general-tab`.
+
+
+.. envvar:: directory/manager/web/modules/users/user/wizard/disabled
+
+   Deactivates the simplified wizard to create users when the value is set to
+   ``true``. In the default setting the wizard is activated. For more
+   information see :ref:`users-management`.
 
 .. envvar:: directory/reports/logo
 
@@ -93,6 +144,32 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
 .. TODO : Define UCRV server/role
 
+.. envvar:: ldap/overlay/lastbind
+
+   To activate the ``lastbind`` overlay module for the LDAP server, set the
+   value to ``yes``. For more information, see
+   :ref:`users-lastbind-overlay-module`.
+
+.. envvar:: ldap/overlay/lastbind/precision
+
+   Configures the time in seconds that has to pass before the ``authTimestamp``
+   is updated again by the ``lastbind`` overlay. For more information, see
+   :ref:`users-lastbind-overlay-module`.
+
+
+.. envvar:: ldap/ppolicy
+
+   To enable automatic account locking, set the value to ``yes``. Also set
+   :envvar:`ldap/ppolicy/enabled`. For more information, see
+   :ref:`users-faillog-openldap`.
+
+
+.. envvar:: ldap/ppolicy/enabled
+
+   To enable automatic account locking, set the value to ``yes``. Also set
+   :envvar:`ldap/ppolicy`. For more information, see
+   :ref:`users-faillog-openldap`.
+
 
 .. envvar:: ldap/pw-bcrypt
 
@@ -165,6 +242,57 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    ``SHA-512``. See :ref:`domain-password-hashes`.
 
 
+.. envvar:: password/quality/credit/digits
+
+   Defines the minimum number of digits for a new password. For more
+   information, see :ref:`users-passwords`. For more information, see
+   :ref:`users-passwords`.
+
+
+.. envvar:: password/quality/credit/lower
+
+   Defines the minimum number of lowercase letters in the new password. For more
+   information, see :ref:`users-passwords`.
+
+
+.. envvar:: password/quality/credit/other
+
+   Defines the minimum number of characters in the new password which are
+   neither letters nor digits. For more information, see :ref:`users-passwords`.
+
+
+.. envvar:: password/quality/credit/upper
+
+   Defines the minimum number of uppercase letters in the new password. For more
+   information, see :ref:`users-passwords`.
+
+
+.. envvar:: password/quality/forbidden/chars
+
+   Defines the characters and digits that are not allowed for passwords. For
+   more information, see :ref:`users-passwords`.
+
+
+.. envvar:: password/quality/length/min
+
+   Sets the minimum length default for a password on a per UCS system basis for
+   users not subject to a UDM password policy. The value ``yes`` applies checks
+   from the :program:`python-cracklib`. The value ``sufficient`` does not
+   include :program:`python-cracklib` checks. For more information, see
+   :ref:`users-passwords`.
+
+
+.. envvar:: password/quality/mspolicy
+
+   Defines the standard Microsoft password complexity criteria. For more
+   information, see :ref:`users-passwords`.
+
+.. envvar:: password/quality/required/chars
+
+   Defines individual characters/figures that are compulsory for passwords. For
+   more information, see :ref:`users-passwords`.
+
+
 .. envvar:: pkgdb/scan
 
    Controls if a UCS system stores installation processes in the software
@@ -220,6 +348,33 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    ``127.0.0.0/16,192.168.0.0/16``. For more information, see
    :ref:`domain-saml`.
 
+.. envvar:: saml/idp/selfservice/account-verification/error-descr
+
+   Configures the error message description text for the :program:`Self
+   Service`. The text shows up for users that login through SSO with an
+   unverified and self registered user account. For more information, see
+   :ref:`user-management-password-changes-by-users-selfregistration-account-verification`.
+
+
+.. envvar:: saml/idp/selfservice/account-verification/error-title
+
+   Configures the error message title for the :program:`Self Service`. The title
+   shows up for users that login through SSO with an unverified and self
+   registered user account. For more information, see
+   :ref:`user-management-password-changes-by-users-selfregistration-account-verification`.
+
+
+.. envvar:: saml/idp/selfservice/check_email_verification
+
+   Controls if the SSO login denies logins from unverified and self registered
+   user accounts. For more information, see
+   :ref:`user-management-password-changes-by-users-selfregistration-account-verification`.
+
+.. envvar:: self-service/backend-server
+
+   Defines the UCS system where the backend of the :program:`Self Service` app
+   is installed. For more information, see
+   :ref:`user-management-password-changes-by-users-self-service`.
 
 .. envvar:: server/role
 
@@ -251,3 +406,17 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    Select the theme for |UCSWEB|. The value corresponds to a CSS file under
    :file:`/usr/share/univention-web/themes/` with the same name without filename
    extension.
+
+
+.. envvar:: umc/self-service/account-deregistration/enabled
+
+   To activate the :program:`Self Service` deregistration, set the variable to
+   ``True``. For more information, see
+   :ref:`user-management-password-changes-by-users-selfderegistration`.
+
+
+.. envvar:: umc/self-service/account-verification/backend/enabled
+
+   Enables or disables the account verification and request of new verification
+   tokens for the :program:`Self Service`. For more information, see
+   :ref:`user-management-password-changes-by-users-selfregistration-account-verification`.
