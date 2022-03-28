@@ -1,3 +1,9 @@
+univention-unittests (2.0.1-7) unstable; urgency=medium
+
+  * Bug #54555: Rename the fixture ucr2 to mock_ucr
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 28 Mar 2022 09:13:47 +0200
+
 univention-unittests (2.0.1-6) unstable; urgency=medium
 
   * Bug #54555: Version bump

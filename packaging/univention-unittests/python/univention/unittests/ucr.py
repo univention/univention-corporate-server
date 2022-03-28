@@ -81,5 +81,5 @@ class TestUCR(object):
 
 
 @pytest.fixture
-def ucr2():
+def mock_ucr():
 	return TestUCR()
