@@ -21,6 +21,7 @@ repos:
                   |^base/univention-system-setup/city-data/.*[.](txt|json)$\
                   |^doc/errata/staging/0.*template[.]yaml$\
                   |^services/univention-ldb-modules/buildtools/wafsamba/\
+                  |[.]ai$\
                   |[.]csv$\
                   |[.]diff$\
                   |[.]patch$\
