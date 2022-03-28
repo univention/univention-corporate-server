@@ -118,7 +118,7 @@ Commissioning
 
 The use of UCS begins either with a classic operating system
 installation on a physical server or as a virtual machine. Further
-information can be found in :ref:`installation:chapter`.
+information can be found in :ref:`installation-chapter`.
 
 .. _introduction-domain-concept:
 
@@ -298,7 +298,7 @@ further - also customer-specific - procedures. Consequently, it is used
 by numerous technology partners for the integration of their products in
 the LDAP directory service and the |UCSUMS| for example.
 
-Further information can be found in :ref:`domain-listenernotifier`.
+Further information can be found in :ref:`domain-listener-notifier`.
 
 .. _introduction-further-documentation:
 

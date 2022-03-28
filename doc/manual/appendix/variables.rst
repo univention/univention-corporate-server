@@ -16,7 +16,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
    Defines the path and name to an image file for usage as logo in a Univention
    Directory report PDF file. For more information see
-   :ref:`central-management-umc-adjustment_expansion_of_directory_reports`.
+   :ref:`central-management-umc-adjustment-expansion-of-directory-reports`.
 
 .. envvar:: kerberos/adminserver
 
@@ -119,6 +119,12 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    been changed, the |UCSUDL| must be restarted.
 
 
+.. envvar:: local/repository
+
+   Activates and deactivates the local repository. For more information see
+   :ref:`software-createrepo`.
+
+
 .. envvar:: notifier/debug/level
 
    Defines the detail level for log messages of the notifier to
@@ -159,11 +165,39 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    ``SHA-512``. See :ref:`domain-password-hashes`.
 
 
+.. envvar:: pkgdb/scan
+
+   Controls if a UCS system stores installation processes in the software
+   monitor. To turn it off, set the value ``no``. For more information see
+   :ref:`computers-softwaremonitor`.
+
 .. envvar:: portal/auth-mode
 
    Defines the authentication mode for the UCS portal. Set it to ``saml``, if
    you want to activate SAML for single sign-on login. For more information see
    :ref:`central-management-umc-login`.
+
+
+.. envvar:: repository/mirror/server
+
+   Defines another repository server as source for the local mirror. Default
+   value: ``updates.software-univention.de``. For more information see
+   :ref:`software-createrepo`.
+
+
+.. envvar:: repository/online/component/.*/unmaintained
+
+   Defines how to deal with unmaintained packages from additional repositories.
+   To activate, set the value to ``yes``. For more information see
+   :ref:`software-configrepo`.
+
+
+.. envvar:: repository/online/server
+
+   The repository server used to check for updates and download packages.
+   Default value: ``updates.software-univention.de``. For more information see
+   :ref:`computers-configuration-via-univention-configuration-registry`.
+
 
 .. envvar:: saml/idp/authsource
 

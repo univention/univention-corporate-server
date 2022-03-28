@@ -559,7 +559,8 @@ Troubleshooting for installation problems
 =========================================
 
 Information on possible installation problems can be found in the `Univention
-Support database <http://sdb.univention.de>`_ in the subitem *Installation*.
+Knowledge base <https://help.univention.com/c/knowledge-base/supported/48>`_ in
+the subitem *Installation*.
 
 .. _installation-textmode:
 
@@ -596,7 +597,7 @@ derive an individual instance which can be configured via |UCSUMC| modules
 
 The process for setting up a UCS instance based on Amazon EC2 is documented in
 the `Amazon EC2 Quickstart in the Univention Wiki
-<http://wiki.univention.de/index.php?title=Amazon_EC2_Quickstart>`_.
+<https://wiki.univention.de/index.php?title=Amazon_EC2_Quickstart>`_.
 
 .. _installation-vmware:
 
@@ -623,7 +624,7 @@ Installation as Docker image
 ============================
 
 Univention provides UCS as Docker images in the `Docker Hub
-<https://hub.docker.com/r/univention/>`_. The description of the Docker images
+<https://hub.docker.com/u/univention/>`_. The description of the Docker images
 explains how they can be configured.
 
 In a standard installation, the Docker images are used in a network that cannot

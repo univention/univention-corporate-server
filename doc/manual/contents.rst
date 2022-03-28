@@ -9,7 +9,7 @@ Univention Corporate Server - Manual for users and administrators
    installation
    domain-ldap/index
    central-management-umc/index
-   software
+   software/index
    user-management
    groups
    computers

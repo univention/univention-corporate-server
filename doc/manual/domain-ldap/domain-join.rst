@@ -248,7 +248,7 @@ domain user. For that, the following line has to be added to the file
    /Volumes    auto_custom
 
 
-In addition, the file :file:/etc/auto_custom` needs to be created and the shares
+In addition, the file :file:`/etc/auto_custom` needs to be created and the shares
 which should be mounted have to be listed in it in the following way:
 
 ::
