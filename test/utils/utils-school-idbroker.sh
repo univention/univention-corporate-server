@@ -323,9 +323,14 @@ fix_broker_dns_entries_on_traeger () {
 	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=$(ucr get domainname),cn=dns,$(ucr get ldap/base)" --set a="$(ucr get interfaces/eth0/address)"
 }
 
+# we pass locust env vars like this from jenkins to the instance
+# (docker can't handle newlines in env files :-( )
+#    UCS_ENV_LOCUST_VARS=var1=val1:DELIM:var2=val 2:DELIM...
+# this function makes proper env var from this
 set_locust_env_vars () {
-	local IFS=$'\n'
-	for entry in $UCS_ENV_LOCUST_VARS; do
+	local locust_vars="${1:?missing locust parameter}"
+    local IFS=$'\n'
+	for entry in ${locust_vars//:DELIM:/$'\n'}; do
 		add_to_ssh_environment "$entry"
 	done
 }
