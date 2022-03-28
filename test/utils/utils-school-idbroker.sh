@@ -323,4 +323,11 @@ fix_broker_dns_entries_on_traeger () {
 	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=$(ucr get domainname),cn=dns,$(ucr get ldap/base)" --set a="$(ucr get interfaces/eth0/address)"
 }
 
+set_locust_env_vars () {
+	local IFS=$'\n'
+	for entry in $UCS_ENV_LOCUST_VARS; do
+		add_to_ssh_environment "$entry"
+	done
+}
+
 # vim:set filetype=sh ts=4:
