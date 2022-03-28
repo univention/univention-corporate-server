@@ -56,29 +56,29 @@ def get_action():
 
 
 @pytest.fixture
-def mocked_ucr(ucr, mocker):
+def mocked_ucr_appcenter(mocked_ucr, mocker):
 	ucr_module = _import('ucr')
-	mocker.patch.object(ucr_module, '_UCR', ucr)
+	mocker.patch.object(ucr_module, '_UCR', mocked_ucr)
 
 	def ucr_save(values):
 		changed_values = {}
 		for k, v in values.items():
-			if ucr.get(k) != v:
+			if mocked_ucr.get(k) != v:
 				changed_values[k] = v
 		if changed_values:
-			ucr.items.update(changed_values)
+			mocked_ucr.items.update(changed_values)
 		return changed_values
 	mocker.patch.object(ucr_module, 'ucr_save', ucr_save)
 
-	ucr['uuid/license'] = '00000000-0000-0000-0000-000000000000'
-	ucr['server/role'] = 'domaincontroller_master'
-	ucr['hostname'] = 'master'
-	ucr['domainname'] = 'intranet.example.de'
-	ucr['version/version'] = '5.0'
-	ucr['version/patchlevel'] = '0'
-	ucr['version/erratalevel'] = '0'
-	ucr['repository/app_center/server'] = 'https://appcenter.software-univention.de'
-	return ucr
+	mocked_ucr['uuid/license'] = '00000000-0000-0000-0000-000000000000'
+	mocked_ucr['server/role'] = 'domaincontroller_master'
+	mocked_ucr['hostname'] = 'master'
+	mocked_ucr['domainname'] = 'intranet.example.de'
+	mocked_ucr['version/version'] = '5.0'
+	mocked_ucr['version/patchlevel'] = '0'
+	mocked_ucr['version/erratalevel'] = '0'
+	mocked_ucr['repository/app_center/server'] = 'https://appcenter.software-univention.de'
+	return mocked_ucr
 
 
 @pytest.fixture

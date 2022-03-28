@@ -58,7 +58,7 @@ def assert_called_with(mock, *argss):
 
 
 class TestRiot(object):
-	def test_resolve(self, mocked_ucr, custom_apps_umc, appcenter_umc_instance, umc_request):
+	def test_resolve(self, mocked_ucr_appcenter, custom_apps_umc, appcenter_umc_instance, umc_request):
 		umc_request.options = {'apps': ['riot'], 'action': 'install'}
 		appcenter_umc_instance.resolve(umc_request)
 		assert 'apps' in umc_request.result
@@ -71,8 +71,8 @@ class TestRiot(object):
 		assert 'warnings' in umc_request.result
 		assert isinstance(umc_request.result['warnings'], dict)
 
-	def test_dry_run(self, mocked_ucr, custom_apps_umc, appcenter_umc_instance, umc_request, mocker):
-		host = '{hostname}.{domainname}'.format(**mocked_ucr)
+	def test_dry_run(self, mocked_ucr_appcenter, custom_apps_umc, appcenter_umc_instance, umc_request, mocker):
+		host = '{hostname}.{domainname}'.format(**mocked_ucr_appcenter)
 		settings = {'riot/default/base_url': '/riot', 'riot/default/server_name': host}
 		umc_request.options = {'apps': ['riot'], 'action': 'install', 'auto_installed': [], 'hosts': {'riot': host}, 'settings': {'riot': settings}, 'dry_run': True}
 		mock = mocker.patch.object(appcenter_umc_instance, '_run_local_dry_run')
@@ -83,8 +83,8 @@ class TestRiot(object):
 		umc_request.progress(appcenter_umc_instance.progress)
 		assert_called_with(mock, [(custom_apps_umc.find('riot'), 'install', settings, ANYTHING), {}])
 
-	def test_run(self, mocked_ucr, custom_apps_umc, appcenter_umc_instance, umc_request, mocker):
-		host = '{hostname}.{domainname}'.format(**mocked_ucr)
+	def test_run(self, mocked_ucr_appcenter, custom_apps_umc, appcenter_umc_instance, umc_request, mocker):
+		host = '{hostname}.{domainname}'.format(**mocked_ucr_appcenter)
 		settings = {'riot/default/base_url': '/riot', 'riot/default/server_name': host}
 		umc_request.options = {'apps': ['riot'], 'action': 'install', 'auto_installed': [], 'hosts': {'riot': host}, 'settings': {'riot': settings}, 'dry_run': False}
 		mocker.patch.object(appcenter_umc_instance, '_run_local_dry_run')
@@ -97,7 +97,7 @@ class TestRiot(object):
 
 
 class TestKopano(object):
-	def test_resolve(self, mocked_ucr, custom_apps_umc, appcenter_umc_instance, umc_request):
+	def test_resolve(self, mocked_ucr_appcenter, custom_apps_umc, appcenter_umc_instance, umc_request):
 		umc_request.options = {'apps': ['kopano-webapp'], 'action': 'install'}
 		appcenter_umc_instance.resolve(umc_request)
 		assert 'apps' in umc_request.result
@@ -110,9 +110,9 @@ class TestKopano(object):
 		assert 'warnings' in umc_request.result
 		assert isinstance(umc_request.result['warnings'], dict)
 
-	def test_dry_run(self, mocked_ucr, custom_apps_umc, appcenter_umc_instance, umc_request, mocker):
-		host = '{hostname}-fake.{domainname}'.format(**mocked_ucr)
-		localhost = '{hostname}.{domainname}'.format(**mocked_ucr)
+	def test_dry_run(self, mocked_ucr_appcenter, custom_apps_umc, appcenter_umc_instance, umc_request, mocker):
+		host = '{hostname}-fake.{domainname}'.format(**mocked_ucr_appcenter)
+		localhost = '{hostname}.{domainname}'.format(**mocked_ucr_appcenter)
 		umc_request.options = {'apps': ['kopano-webapp', 'kopano-core'], 'action': 'install', 'auto_installed': ['kopano-core'], 'hosts': {'kopano-webapp': localhost, 'kopano-core': host}, 'settings': {'kopano-core': {}, 'kopano-webapp': {}}, 'dry_run': True}
 		mock1 = mocker.patch.object(appcenter_umc_instance, '_run_local_dry_run')
 		mocker.patch.object(appcenter_umc_instance, '_run_local')
@@ -123,9 +123,9 @@ class TestKopano(object):
 		assert_called_with(mock1, [(custom_apps_umc.find('kopano-webapp'), 'install', {}, ANYTHING), {}])
 		assert_called_with(mock2, [(host, custom_apps_umc.find('kopano-core'), 'install', True, {}, ANYTHING), {}])
 
-	def test_run(self, mocked_ucr, custom_apps_umc, appcenter_umc_instance, umc_request, mocker):
-		host = '{hostname}-fake.{domainname}'.format(**mocked_ucr)
-		localhost = '{hostname}.{domainname}'.format(**mocked_ucr)
+	def test_run(self, mocked_ucr_appcenter, custom_apps_umc, appcenter_umc_instance, umc_request, mocker):
+		host = '{hostname}-fake.{domainname}'.format(**mocked_ucr_appcenter)
+		localhost = '{hostname}.{domainname}'.format(**mocked_ucr_appcenter)
 		umc_request.options = {'apps': ['kopano-webapp', 'kopano-core'], 'action': 'install', 'auto_installed': ['kopano-core'], 'hosts': {'kopano-webapp': localhost, 'kopano-core': host}, 'settings': {'kopano-core': {}, 'kopano-webapp': {}}, 'dry_run': False}
 		mocker.patch.object(appcenter_umc_instance, '_run_local_dry_run')
 		mock1 = mocker.patch.object(appcenter_umc_instance, '_run_local')
@@ -138,7 +138,7 @@ class TestKopano(object):
 
 
 class TestUCSSchool(object):
-	def test_resolve(self, mocked_ucr, custom_apps_umc, appcenter_umc_instance, umc_request):
+	def test_resolve(self, mocked_ucr_appcenter, custom_apps_umc, appcenter_umc_instance, umc_request):
 		umc_request.options = {'apps': ['ucsschool-kelvin-rest-api', 'ucsschool'], 'action': 'install'}
 		appcenter_umc_instance.resolve(umc_request)
 		assert 'apps' in umc_request.result
@@ -151,8 +151,8 @@ class TestUCSSchool(object):
 		assert 'warnings' in umc_request.result
 		assert isinstance(umc_request.result['warnings'], dict)
 
-	def test_dry_run(self, mocked_ucr, custom_apps_umc, appcenter_umc_instance, umc_request, mocker):
-		host = '{hostname}.{domainname}'.format(**mocked_ucr)
+	def test_dry_run(self, mocked_ucr_appcenter, custom_apps_umc, appcenter_umc_instance, umc_request, mocker):
+		host = '{hostname}.{domainname}'.format(**mocked_ucr_appcenter)
 		settings_ucsschool = {'ucsschool/join/create_demo': False}
 		settings_kelvin = {'ucsschool/kelvin/access_tokel_ttl': 60, 'ucsschool/kelvin/log_level': 'DEBUG'}
 		umc_request.options = {'apps': ['ucsschool', 'ucsschool-kelvin-rest-api'], 'action': 'install', 'auto_installed': [], 'hosts': {'ucsschool': host, 'ucsschool-kelvin-rest-api': host}, 'settings': {'ucsschool': settings_ucsschool, 'ucsschool-kelvin-rest-api': settings_kelvin}, 'dry_run': True}
@@ -168,8 +168,8 @@ class TestUCSSchool(object):
 			[(custom_apps_umc.find('ucsschool-kelvin-rest-api'), 'install', settings_kelvin, ANYTHING), {}],
 		)
 
-	def test_run(self, mocked_ucr, custom_apps_umc, appcenter_umc_instance, umc_request, mocker):
-		host = '{hostname}.{domainname}'.format(**mocked_ucr)
+	def test_run(self, mocked_ucr_appcenter, custom_apps_umc, appcenter_umc_instance, umc_request, mocker):
+		host = '{hostname}.{domainname}'.format(**mocked_ucr_appcenter)
 		settings_ucsschool = {'ucsschool/join/create_demo': False}
 		settings_kelvin = {'ucsschool/kelvin/access_tokel_ttl': 60, 'ucsschool/kelvin/log_level': 'DEBUG'}
 		umc_request.options = {'apps': ['ucsschool', 'ucsschool-kelvin-rest-api'], 'action': 'install', 'auto_installed': [], 'hosts': {'ucsschool': host, 'ucsschool-kelvin-rest-api': host}, 'settings': {'ucsschool': settings_ucsschool, 'ucsschool-kelvin-rest-api': settings_kelvin}, 'dry_run': False}

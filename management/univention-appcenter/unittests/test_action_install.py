@@ -50,7 +50,7 @@ def assert_called_with(mock, *argss):
 			assert call_arg == assert_arg
 
 
-def test_install_two_apps(get_action, custom_apps, mocked_ucr, mocker):
+def test_install_two_apps(get_action, custom_apps, mocked_ucr_appcenter, mocker):
 	custom_apps.load('unittests/inis/dependencies')
 	app1 = custom_apps.find('self-service')
 	app2 = custom_apps.find('kopano-webapp')

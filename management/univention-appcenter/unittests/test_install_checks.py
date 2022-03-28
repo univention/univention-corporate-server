@@ -38,10 +38,10 @@ def ldap_database_file():
 	return 'unittests/install_checks.ldif'
 
 
-def test_install_two_apps(custom_apps, import_appcenter_module, mocked_ucr):
+def test_install_two_apps(custom_apps, import_appcenter_module, mocked_ucr_appcenter):
 	custom_apps.load('unittests/inis/install_checks/')
 	current_role = 'domaincontroller_master'
-	mocked_ucr['server/role'] = current_role
+	mocked_ucr_appcenter['server/role'] = current_role
 	install_checks = import_appcenter_module('install_checks')
 	apps = [custom_apps.find('samba-memberserver'), custom_apps.find('oxseforucs')]
 	requirement = install_checks.get_requirement('must_have_correct_server_role')
@@ -82,13 +82,13 @@ def test_must_have_fitting_kernel_version(custom_apps, import_appcenter_module, 
 	assert result == {}
 
 
-def test_must_have_fitting_ucs_version(custom_apps, import_appcenter_module, mocked_ucr):
+def test_must_have_fitting_ucs_version(custom_apps, import_appcenter_module, mocked_ucr_appcenter):
 	custom_apps.load('unittests/inis/install_checks/')
 	install_checks = import_appcenter_module('install_checks')
 	apps = [custom_apps.find('ucsschool-kelvin-rest-api'), custom_apps.find('wekan'), custom_apps.find('collabora')]
-	mocked_ucr['version/version'] = '4.4'
-	mocked_ucr['version/patchlevel'] = '1'
-	mocked_ucr['version/erratalevel'] = '50'
+	mocked_ucr_appcenter['version/version'] = '4.4'
+	mocked_ucr_appcenter['version/patchlevel'] = '1'
+	mocked_ucr_appcenter['version/erratalevel'] = '50'
 	requirement = install_checks.get_requirement('must_have_fitting_ucs_version')
 	result = requirement(apps, 'install').test()
 	assert result == {'ucsschool-kelvin-rest-api': {'required_version': '4.4-2'}, 'wekan': {'required_version': '4.4-1 errata251'}}
@@ -179,7 +179,7 @@ def test_must_have_no_unmet_dependencies_with_list(custom_apps, import_appcenter
 	assert result == {}
 
 
-def test_must_not_be_depended_on(custom_apps, import_appcenter_module, mocked_connection, mocker):
+def test_must_not_be_depended_on(custom_apps, import_appcenter_module, mocked_ucr_appcenter, mocker):
 	custom_apps.load('unittests/inis/install_checks/')
 	install_checks = import_appcenter_module('install_checks')
 	kelvin = custom_apps.find('ucsschool-kelvin-rest-api')
@@ -196,7 +196,7 @@ def test_must_not_be_depended_on(custom_apps, import_appcenter_module, mocked_co
 	assert result == {'ucsschool': [{'id': 'ucsschool-kelvin-rest-api', 'name': 'UCS@school Kelvin REST API'}], 'self-service-backend': [{'id': 'self-service', 'name': 'Self Service'}]}
 
 
-def test_must_not_be_depended_on_in_list(custom_apps, import_appcenter_module, mocked_connection, mocker):
+def test_must_not_be_depended_on_in_list(custom_apps, import_appcenter_module, mocked_ucr_appcenter, mocker):
 	custom_apps.load('unittests/inis/install_checks/')
 	install_checks = import_appcenter_module('install_checks')
 	kelvin = custom_apps.find('ucsschool-kelvin-rest-api')
