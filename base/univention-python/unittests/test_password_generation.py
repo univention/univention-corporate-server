@@ -40,10 +40,10 @@ univention_password = import_module('password', 'modules/', 'univention.password
 
 
 @pytest.fixture
-def mocked_ucr(ucr2, mocker):
+def mocked_ucr(mock_ucr, mocker):
 		mock = mocker.patch.object(univention_password, 'ucr')
-		mock.ucr = ucr2
-		yield ucr2
+		mock.ucr = mock_ucr
+		yield mock_ucr
 
 
 @pytest.fixture(scope='class')
