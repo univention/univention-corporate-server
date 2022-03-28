@@ -34,3 +34,6 @@ repos:
     -   id: python-no-eval
         exclude: "^management/univention-directory-manager-modules/modules/univention/admin/__init__.py\
                   |^packaging/univention-l10n/univention/l10n/umc.py"
+    -   id: rst-backticks
+    -   id: rst-directive-colons
+    -   id: rst-inline-touching-normal

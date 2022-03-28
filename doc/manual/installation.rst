@@ -311,7 +311,7 @@ number of file systems created:
 
 * :guilabel:`Separate /home, /usr, /var and /tmp partition`: In addition to a
   file system for :file:`/`, an additional file system is also created each for
-  :file: `/home/`, :file:`/usr/`, :file:`/var/` and :file:`/tmp/`.
+  :file:`/home/`, :file:`/usr/`, :file:`/var/` and :file:`/tmp/`.
 
 Before every active change to the hard drive, the change is displayed again in
 an additional dialogue and must be confirmed explicitly.

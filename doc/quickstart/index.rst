@@ -172,7 +172,7 @@ Management Console:
   :guilabel:`UCS components`.
 
 - Third-party software (e.g. various groupware solutions) and UCS-compatible
-  add-on products (e.g. `UCS@school` for school deployment can also be installed
+  add-on products (e.g. *UCS@school* for school deployment can also be installed
   through the App Center.
 
 .. _quickstart-appcenter:
