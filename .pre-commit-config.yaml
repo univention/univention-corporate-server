@@ -31,3 +31,6 @@ repos:
     rev: v1.9.0
     hooks:
     -   id: python-check-blanket-noqa
+    -   id: python-no-eval
+        exclude: "^management/univention-directory-manager-modules/modules/univention/admin/__init__.py\
+                  |^packaging/univention-l10n/univention/l10n/umc.py"
