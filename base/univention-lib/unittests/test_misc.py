@@ -36,10 +36,10 @@ misc = import_lib_module('misc')
 
 
 @pytest.fixture
-def lib_ucr(mocker, ucr):
-	mock_config_registry = mocker.Mock(return_value=ucr)
+def lib_ucr(mocker, mocked_ucr):
+	mock_config_registry = mocker.Mock(return_value=mocked_ucr)
 	mocker.patch.object(misc, 'ConfigRegistry', mock_config_registry)
-	return ucr
+	return mocked_ucr
 
 
 @pytest.fixture
