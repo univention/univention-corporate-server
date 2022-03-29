@@ -37,12 +37,25 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    information, see :ref:`users-faillog-pam`.
 
 
+.. envvar:: auth/sshd/user/root
+
+   To prohibit SSH login for the user ``root`` completely, set the value ``no``.
+   For more information, see :ref:`computers-ssh-login-to-systems`.
+
+
 .. envvar:: backup/clean/max_age
 
    Defines how long a UCS system keeps old backup files of the LDAP data.
    Allowed values are integer numbers and they define days. The system doesn't
    delete backup files when the variable is not set. See
    :ref:`domain-ldap-nightly-backup`.
+
+
+.. envvar:: cups/server
+
+   Defines the print server to be used by a UCS system. For more information,
+   see :ref:`computers-configureprintserver`.
+
 
 .. envvar:: directory/manager/templates/alphanum/whitelist
 
@@ -55,6 +68,13 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    Controls if UCS prevents users with the same username as existing groups. To
    deactivate the check for uniqueness, set the value to ``false``. For more
    information see :numref:`users-management-table-general-tab`.
+
+
+.. envvar:: directory/manager/web/modules/computers/computer/wizard/disabled
+
+   To disable the simplified wizard for computer management, set this variable
+   to ``true``. For more information, see :ref:`computers-hostaccounts`.
+
 
 .. envvar:: directory/manager/web/modules/groups/group/checks/circular_dependency
 
@@ -75,6 +95,114 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    Directory report PDF file. For more information see
    :ref:`central-management-umc-adjustment-expansion-of-directory-reports`.
 
+.. envvar:: dns/forwarder1
+
+   Defines the first *external DNS server*. For more information, see
+   :ref:`computers-configuring-the-name-servers`.
+
+
+.. envvar:: dns/forwarder2
+
+   Defines the second *external DNS server*. For more information, see
+   :ref:`computers-configuring-the-name-servers`.
+
+
+.. envvar:: dns/forwarder3
+
+   Defines the third *external DNS server*. For more information, see
+   :ref:`computers-configuring-the-name-servers`.
+
+
+.. envvar:: gateway
+
+   Configures the IPv4 network gateway. For more information, see
+   :ref:`computers-ipv6`.
+
+
+.. envvar:: grub/append
+
+   Defines Linux kernel boot options that the GRUB boot loader passes to the
+   Linux kernel for system boot. For more information, see :ref:`grub`.
+
+
+.. envvar:: grub/bootsplash
+
+   To deactivate the splash screen during system boot, set the value to
+   ``nosplash``. For more information, see :ref:`grub`.
+
+
+.. envvar:: grub/gfxmode
+
+   Defines screen size and color depth for the GRUB boot menu. For more
+   information, see :ref:`grub`.
+
+
+.. envvar:: grub/timeout
+
+   Defines the waiting period in seconds in the GRUB boot menu. During this
+   waiting time alternative boot menu entries can be selected. The default value
+   is ``5`` seconds. For more information, see :ref:`grub`.
+
+.. envvar:: grub/xenhopt
+
+   Defines options that are passed to the Xen hypervisor. For more information,
+   see :ref:`grub`.
+
+
+.. envvar:: interfaces/ethX/address
+
+   Defines the network IPv4 address for the interface :samp:`eth{X}`. Replace
+   :samp:`{X}` with the actual value for the interface. For more information,
+   see :ref:`computers-ipv4`.
+
+
+.. envvar:: interfaces/ethX/netmask
+
+   Defines the network mask for the interface :samp:`eth{X}`. Replace
+   :samp:`{X}` with the actual value for the interface. For more information,
+   see :ref:`computers-ipv4`.
+
+
+.. envvar:: interfaces/ethX/type
+
+   Defines the network interface type for the interface :samp:`eth{X}`. Replace
+   :samp:`{X}` with the actual value for the interface. For more information,
+   see :ref:`computers-ipv4`.
+
+
+.. envvar:: interfaces/ethX_Y/setting
+
+   Defines an additional virtual interface. Replace :samp:`{X}` and
+   :samp:`{Y}`with the actual value for the interface. For more information, see
+   :ref:`computers-ipv4`.
+
+.. envvar:: interfaces/ethX/ipv6/address
+
+   Defines the network IPv6 address for the interface :samp:`eth{X}`. Replace
+   :samp:`{X}` with the actual value for the interface. For more information,
+   see :ref:`computers-ipv6`.
+
+
+.. envvar:: interfaces/ethX/ipv6/prefix
+
+   Defines the network IPv6 prefix for the interface :samp:`eth{X}`. Replace
+   :samp:`{X}` with the actual value for the interface. For more information,
+   see :ref:`computers-ipv6`.
+
+
+.. envvar:: interfaces/ethX/ipv6/acceptRA
+
+   Activates stateless address autoconfiguration (SLAAC) for the interface
+   :samp:`eth{X}`. Replace :samp:`{X}` with the actual value for the interface.
+   For more information, see :ref:`computers-ipv6`.
+
+
+.. envvar:: ipv6/gateway
+
+   Configures the IPv4 network gateway. For more information, see
+   :ref:`computers-ipv6`.
+
+
 .. envvar:: kerberos/adminserver
 
    Defines the system that provides the Kerberos admin server. See
@@ -93,6 +221,19 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 .. envvar:: kerberos/realm
 
    Contains the name of the Kerberos realm. See :ref:`domain-kerberos`.
+
+.. envvar:: kernel/blacklist
+
+   Defines additional Linux kernel modules that need to be loaded during system
+   boot. Single items must be separated with a semicolon (``;``). For more
+   information, see :ref:`computers-hardware-drivers-kernel-modules`.
+
+
+.. envvar:: kernel/modules
+
+   Defines Linux kernel modules that must not be loaded during system
+   boot. Single items must be separated with a semicolon (``;``). For more
+   information, see :ref:`computers-hardware-drivers-kernel-modules`.
 
 
 .. envvar:: ldap/acl/read/anonymous
@@ -169,6 +310,14 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    Default value is ``memberOf``. For more information, see
    :ref:`groups-memberof`.
 
+
+.. envvar:: ldap/policy/cron
+
+   Time interval to write profile based UCR variables to a UCS system. The
+   default value is one hour. For more information, see
+   :ref:`ucr-templates-policy`.
+
+
 .. envvar:: ldap/ppolicy
 
    To enable automatic account locking, set the value to ``yes``. Also set
@@ -213,6 +362,49 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    Activates and deactivates the local repository. For more information see
    :ref:`software-createrepo`.
 
+.. envvar:: logrotate/compress
+
+   Controls, if rotated logfiles are zipped with :command:`gzip`. For more
+   information, see :ref:`computers-log-files`.
+
+
+.. envvar:: log/rotate/weeks
+
+   Configures the logfile rotation interval on a UCS system in weeks. The
+   default value is ``12`` weeks. For more information, see
+   :ref:`computers-log-files`.
+
+
+.. envvar:: logrotate/rotates
+
+   Configures the logfile rotation according to the file size, for example
+   ``size 50M``. For more information, see :ref:`computers-log-files`.
+
+
+.. envvar:: machine/password/length
+
+   Define the lenght for the computer password, also called *machin secret*.
+   Default value is ``20``. For more information, see
+   :ref:`computers-hostaccounts`.
+
+
+.. envvar:: nameserver1
+
+   Defines the first *Domain DNS Server*. For more information, see
+   :ref:`computers-configuring-the-name-servers`.
+
+
+.. envvar:: nameserver2
+
+   Defines the second *Domain DNS Server*. For more information, see
+   :ref:`computers-configuring-the-name-servers`.
+
+
+.. envvar:: nameserver3
+
+   Defines the third *Domain DNS Server*. For more information, see
+   :ref:`computers-configuring-the-name-servers`.
+
 
 .. envvar:: notifier/debug/level
 
@@ -220,6 +412,49 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    :file:`/var/log/univention/notifier.log`. The possible values are from 0
    (only error messages) to 4 (all status messages). Once the debug level has
    been changed, the |UCSUDN| must be restarted.
+
+
+.. envvar:: nscd/debug/level
+
+   Defines the detail level for log messages of the NSCD. For more information,
+   see :ref:`computers-nscd`.
+
+.. envvar:: nscd/group/maxdbsize
+
+   Configures the hash table size of the NSCD for groups. For more information,
+   see :ref:`computers-nscd`.
+
+
+.. envvar:: nscd/group/positive_time_to_live
+
+   Configures the time that a resolved group or hostname is kept in the cache of
+   NSCD. The default is one hour in seconds (``3600``). For more information,
+   see :ref:`computers-nscd`.
+
+
+.. envvar:: nscd/hosts/maxdbsize
+
+   Configures the hash table size of the NSCD for hosts. The default value is
+   ``6007``. For more information, see :ref:`computers-nscd`.
+
+
+.. envvar:: nscd/passwd/maxdbsize
+
+   Configures the hash table size of the NSCD for usernames. The default value
+   is ``6007``. For more information, see :ref:`computers-nscd`.
+
+.. envvar:: nscd/passwd/positive_time_to_live
+
+   Configures the time that a resolved username is kept in the cache of
+   NSCD. The default is ten minutes in seconds (``600``). For more information,
+   see :ref:`computers-nscd`.
+
+
+.. envvar:: nscd/threads
+
+   Configures the number of threads that NSCD uses. Default value is ``5``. For
+   more information, see :ref:`computers-nscd`.
+
 
 .. envvar:: nss/group/cachefile/check_member
 
@@ -248,6 +483,11 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    be reached. See :ref:`domain-ldap-name-service-switch-ldap-nss-module`.
 
 .. TODO Ask SME: What is the default value and what values are possible?
+
+.. envvar:: ntp/signed
+
+   The NTP server replies with requests that are signed by Samba/AD when the
+   value is set to ``yes``. For more information, see :ref:`basicservices-ntp`.
 
 
 .. envvar:: password/hashing/bcrypt
@@ -338,6 +578,19 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    :ref:`central-management-umc-login`.
 
 
+.. envvar:: proxy/http
+
+   Defines the HTTP proxy server on the UCS host system. For more information,
+   see :ref:`computers-configuring-proxy-access`.
+
+
+.. envvar:: proxy/no_proxy
+
+   Defines a list of domains that are not used over a HTTP proxy. Entries are
+   separated by commas. For more information, see
+   :ref:`computers-configuring-proxy-access`.
+
+
 .. envvar:: repository/mirror/server
 
    Defines another repository server as source for the local mirror. Default
@@ -408,11 +661,46 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    is installed. For more information, see
    :ref:`user-management-password-changes-by-users-self-service`.
 
+.. envvar:: server/password/change
+
+   Enables or disables the password rotation on a UCS system. Per default the
+   password rotation is activated. For more information, see
+   :ref:`computers-hostaccounts`.
+
+
+.. envvar:: server/password/interval
+
+   Defines the interval in days to regeneratee the computer account password.
+   The default is set to 21 days. For more information, see
+   :ref:`computers-hostaccounts`.
+
+
 .. envvar:: server/role
 
    TBD
 
 .. TODO : Define UCRV server/role
+
+
+.. envvar:: sshd/permitroot
+
+   Configures how the SSH daemon permits login for the user ``root``. The value
+   ``without-password`` does not ask for the password interactively. The login
+   requires the public SSH key. For more information, see
+   :ref:`computers-ssh-login-to-systems`.
+
+
+.. envvar:: sshd/port
+
+   Configure the port that the SSH daemon uses to listen for connection. The
+   default value is ``22``. For more information, see
+   :ref:`computers-ssh-login-to-systems`.
+
+
+.. envvar:: sshd/xforwarding
+
+   Configures, if the SSH daemon allows X11 forwarding. Valid values are ``yes``
+   and ``no``. For more information, see :ref:`computers-ssh-login-to-systems`.
 
 
 .. envvar:: ssl/validity/host
@@ -431,6 +719,37 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
    Defines the warning period for the expiration check of the SSL/TLS root
    certificate. The default value is ``30`` days. See :ref:`domain-ssl`.
+
+.. envvar:: system/stats
+
+   Enables or disables the logging of the system status. The default value is
+   ``yes``. For more information, see
+   :ref:`computers-logging-the-system-status`.
+
+
+.. envvar:: system/stats/cron
+
+   Configures the runtimes when :command:`univention-system-stats` is run. The
+   value follows the :ref:`cron syntax <cron-syntax>`. For more information, see
+   :ref:`computers-logging-the-system-status`.
+
+
+.. envvar:: timeserver
+
+   Configures the first external NTP timeserver. For more information, see
+   :ref:`basicservices-ntp`.
+
+
+.. envvar:: timeserver2
+
+   Configures the second external NTP timeserver. For more information, see
+   :ref:`basicservices-ntp`.
+
+
+.. envvar:: timeserver3
+
+   Configures the third external NTP timeserver. For more information, see
+   :ref:`basicservices-ntp`.
 
 
 .. envvar:: ucs/web/theme
