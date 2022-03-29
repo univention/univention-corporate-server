@@ -56,6 +56,12 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    deactivate the check for uniqueness, set the value to ``false``. For more
    information see :numref:`users-management-table-general-tab`.
 
+.. envvar:: directory/manager/web/modules/groups/group/checks/circular_dependency
+
+   Controls the check for circular dependencies regarding nested groups. To
+   disable, set the value to ``no``. For more information, see
+   :ref:`groups-nested`.
+
 
 .. envvar:: directory/manager/web/modules/users/user/wizard/disabled
 
@@ -157,6 +163,12 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    :ref:`users-lastbind-overlay-module`.
 
 
+.. envvar:: ldap/overlay/memberof/memberof
+
+   Configures the attribute at user objects that shows the group membership.
+   Default value is ``memberOf``. For more information, see
+   :ref:`groups-memberof`.
+
 .. envvar:: ldap/ppolicy
 
    To enable automatic account locking, set the value to ``yes``. Also set
@@ -208,6 +220,26 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    :file:`/var/log/univention/notifier.log`. The possible values are from 0
    (only error messages) to 4 (all status messages). Once the debug level has
    been changed, the |UCSUDN| must be restarted.
+
+.. envvar:: nss/group/cachefile/check_member
+
+   When activated with ``true``, the cron job script for exporting the local
+   group cache also checks, if the group members are still present in the LDAP
+   directory. For more information, see :ref:`groups-cache`.
+
+
+.. envvar:: nss/group/cachefile/invalidate_interval
+
+   Defines the invalidation interval to control when the local group cache is
+   considered invalid and a new export is run. For more information, see
+   :ref:`groups-cache`.
+
+
+.. envvar:: nss/group/cachefile/invalidate_on_changes
+
+   Activates or deactivates the listener to invalidate the local group cache. To
+   activate the listener, set the value to ``true``. Else, set it to ``false``.
+   For more information, see :ref:`groups-cache`.
 
 
 .. envvar:: nssldap/bindpolicy

@@ -415,7 +415,7 @@ under which the policy should appear in Group Policy Management and which value
 should be set in the Windows registry. Administrative templates are saved in
 so-called *ADMX files* (previously *ADM files*), see `Group Policy ADMX Syntax
 Reference Guide
-<https://technet.microsoft.com/en-us/library/1db6fd85-d682-4d7d-9223-6b8dfafddc1c>`_.
+<https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc753471(v=ws.10)?redirectedfrom=MSDN>`_.
 
 Among other things, ADMX files offer the advantage that they can be provided
 centrally across several domain controllers so that Group Policy Management on
@@ -481,7 +481,7 @@ similar to SQL. Examples rules can be found in `WMI filtering using GPMC
 <https://www.microsoft.com/en-US/download/details.aspx?id=53314>`_  and `Filtern
 von Gruppenrichtlinien anhand von Benutzergruppen, WMI und
 Zielgruppenadressierung (German)
-<http://www.gruppenrichtlinien.de/artikel/filtern-von-gruppenrichtlinien-anhand-von-benutzergruppen-wmi-und-zielgruppenadressierung/>`_.
+<https://www.gruppenrichtlinien.de/artikel/filtern-von-gruppenrichtlinien-anhand-von-benutzergruppen-wmi-und-zielgruppenadressierung/>`_.
 
 .. _netlogon-freigabe-samba4:
 
