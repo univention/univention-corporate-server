@@ -13,6 +13,10 @@ In addition, there are also local user groups on each system, which are
 predominantly used for hardware access. These are not managed through the
 |UCSUMS|, but saved in the :file:`/etc/group` file.
 
+.. _groups-assignement:
+
+.. rubric:: User group assignments
+
 The assignment of users to groups is performed in two ways:
 
 * A selection of groups can be assigned to a user in the user management, see
@@ -75,9 +79,8 @@ Group management module - General tab
      - Description
 
    * - Name (*)
-     - The name of the group has to begin and end with a letter or a numeral.
-       The rest of the characters which form the group name may include letters,
-       numerals, spaces, hyphens, or dots.
+     - Defines the name of the group. For recommended characters for the group
+       name, see :ref:`groups-recommendation-group-name`.
 
        By default it is not possible to create a group with the same name as an
        existing user. If the |UCSUCRV|
