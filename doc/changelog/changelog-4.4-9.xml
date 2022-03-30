@@ -783,8 +783,8 @@
 				UDM now enforces uniqueness of the name of objects in the same subtree position (<u:bug>53725</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-			<function>ucs_registerLDAPExtension</function> from the UCS shell function library now allows the option <option>umcmessagecatalog</option>.
-			This option can be used to supply translation files in GNU message catalog format for the UMC (<u:bug>53362</u:bug>).
+				<function>ucs_registerLDAPExtension</function> from the UCS shell function library now allows the option <option>umcmessagecatalog</option>.
+				This option can be used to supply translation files in GNU message catalog format for the UMC (<u:bug>53362</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The cache settings of &ucsUMC; have been enhanced and relaxed to fix caching issues after the upgrade to UCS 5.0 (<u:bug>37720</u:bug>).

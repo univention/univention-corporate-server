@@ -51,6 +51,15 @@
 
 		<itemizedlist>
 			<listitem><para>
+				The security and usability of &ucsUMC; has been improved.
+			</para></listitem>
+			<listitem><para>
+				The UDM REST API scales better.
+			</para></listitem>
+			<listitem><para>
+				The robustness and performance of Listener/Notifier replication has been improved.
+			</para></listitem>
+			<listitem><para>
 				The <application>Linux kernel</application> has been updated to version <productnumber>4.19.235</productnumber>.
 			</para></listitem>
 			<listitem><simpara>
