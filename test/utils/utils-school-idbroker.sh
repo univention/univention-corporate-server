@@ -287,10 +287,8 @@ add_to_hosts () {
 
 # setup the jump host for the id broker performance tests
 prepare_jump_host () {
-    lsb_release -a
-    free -m
-    cat /proc/cpuinfo
     apt-get -y update
+    hostname jumphost
     DEBIAN_FRONTEND=noninteractive apt-get -y install id-broker-performance-tests
     echo 'root soft nofile 10240' >> /etc/security/limits.conf
     echo 'root hard nofile 10240' >> /etc/security/limits.conf
