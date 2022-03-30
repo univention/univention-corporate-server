@@ -1,11 +1,30 @@
 {
-  "user_links": [],
-  "menu_links": [
-    "cn=certificates,cn=folder,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
-    "cn=folder,cn=folder,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
-    "cn=help,cn=folder,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
-    "cn=owncloud-admindoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
-    "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
+  "auth_mode": "ucs",
+  "cache_id": "abc:123",
+  "categories": [
+    {
+      "display_name": {
+        "de_DE": "Verwaltung",
+        "en_US": "Administration"
+      },
+      "dn": "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "entries": [
+        "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=owncloud-admindoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=owncloud-userdoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
+      ]
+    },
+    {
+      "display_name": {
+        "de_DE": "Applikationen",
+        "en_US": "Applications"
+      },
+      "dn": "cn=domain-service,cn=category,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "entries": [
+        "cn=folder,cn=folder,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
+      ]
+    }
   ],
   "entries": [
     {
@@ -20,8 +39,14 @@
       "dn": "cn=root-cert,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
       "linkTarget": "samewindow",
       "links": [
-        {"locale": "de_DE", "value": "/ucs-root-ca-de.crt"},
-        {"locale": "en_US", "value": "/ucs-root-ca-en.crt"}
+        {
+          "locale": "de_DE",
+          "value": "/ucs-root-ca-de.crt"
+        },
+        {
+          "locale": "en_US",
+          "value": "/ucs-root-ca-en.crt"
+        }
       ],
       "logo_name": null,
       "name": {
@@ -41,7 +66,10 @@
       "dn": "cn=certificate-revocation,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
       "linkTarget": "samewindow",
       "links": [
-        {"locale": "en_US", "value": "/ucsCA.crl"}
+        {
+          "locale": "en_US",
+          "value": "/ucsCA.crl"
+        }
       ],
       "logo_name": null,
       "name": {
@@ -60,8 +88,14 @@
       "dn": "cn=owncloud-admindoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
       "linkTarget": "useportaldefault",
       "links": [
-        {"locale": "en_US", "value": "https://doc.owncloud.com/server/10.0/admin_manual/"},
-        {"locale": "de_DE", "value": "https://doc.owncloud.com/server/10.0/admin_manual/"}
+        {
+          "locale": "en_US",
+          "value": "https://doc.owncloud.com/server/10.0/admin_manual/"
+        },
+        {
+          "locale": "de_DE",
+          "value": "https://doc.owncloud.com/server/10.0/admin_manual/"
+        }
       ],
       "logo_name": "./data/icons/owncloud-admindoc.svg",
       "name": {
@@ -81,7 +115,10 @@
       "dn": "cn=owncloud-userdoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
       "linkTarget": "useportaldefault",
       "links": [
-        {"locale": "en_US", "value": "https://doc.owncloud.com/server/10.0/user_manual/"}
+        {
+          "locale": "en_US",
+          "value": "https://doc.owncloud.com/server/10.0/user_manual/"
+        }
       ],
       "logo_name": "./data/icons/owncloud-userdoc.svg",
       "name": {
@@ -102,7 +139,10 @@
       "dn": "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
       "linkTarget": "newwindow",
       "links": [
-        {"locale": "en_US", "value": "/univention/management/"}
+        {
+          "locale": "en_US",
+          "value": "/univention/management/"
+        }
       ],
       "logo_name": "./data/icons/umc-domain.svg",
       "name": {
@@ -124,8 +164,14 @@
       "dn": "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
       "linkTarget": "newwindow",
       "links": [
-        {"locale": "de_DE", "value": "https://www.univention.de/news/blog-de"},
-        {"locale": "en_US", "value": "https://www.univention.com/news/blog-en"}
+        {
+          "locale": "de_DE",
+          "value": "https://www.univention.de/news/blog-de"
+        },
+        {
+          "locale": "en_US",
+          "value": "https://www.univention.com/news/blog-en"
+        }
       ],
       "logo_name": "./data/icons/univentionblog.png",
       "name": {
@@ -147,8 +193,14 @@
       "dn": "cn=univentionfeedback,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
       "linkTarget": "newwindow",
       "links": [
-        {"locale": "en_US", "value": "https://www.univention.de/produkt-feedback/?umc=portal"},
-        {"locale": "en_US", "value": "https://www.univention.com/feedback/?umc=portal"}
+        {
+          "locale": "en_US",
+          "value": "https://www.univention.de/produkt-feedback/?umc=portal"
+        },
+        {
+          "locale": "en_US",
+          "value": "https://www.univention.com/feedback/?umc=portal"
+        }
       ],
       "logo_name": null,
       "name": {
@@ -169,7 +221,10 @@
       "dn": "cn=univentionforum,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
       "linkTarget": "newwindow",
       "links": [
-        {"locale": "en_US", "value": "https://help.univention.com"}
+        {
+          "locale": "en_US",
+          "value": "https://help.univention.com"
+        }
       ],
       "logo_name": null,
       "name": {
@@ -190,8 +245,14 @@
       "dn": "cn=univentionwebsite,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
       "linkTarget": "newwindow",
       "links": [
-        {"locale": "de_DE", "value": "https://www.univention.de"},
-        {"locale": "en_US", "value": "https://www.univention.com"}
+        {
+          "locale": "de_DE",
+          "value": "https://www.univention.de"
+        },
+        {
+          "locale": "en_US",
+          "value": "https://www.univention.com"
+        }
       ],
       "logo_name": null,
       "name": {
@@ -201,6 +262,7 @@
       }
     }
   ],
+  "filtered": true,
   "folders": [
     {
       "dn": "cn=folder,cn=folder,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
@@ -248,30 +310,13 @@
       }
     }
   ],
-  "categories": [
-    {
-      "display_name": {
-        "de_DE": "Verwaltung",
-        "en_US": "Administration"
-      },
-      "dn": "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
-      "entries": [
-        "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
-        "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
-        "cn=owncloud-admindoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
-        "cn=owncloud-userdoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
-      ]
-    },
-    {
-      "display_name": {
-        "de_DE": "Applikationen",
-        "en_US": "Applications"
-      },
-      "dn": "cn=domain-service,cn=category,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
-      "entries": [
-        "cn=folder,cn=folder,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
-      ]
-    }
+  "may_edit_portal": true,
+  "menu_links": [
+    "cn=certificates,cn=folder,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+    "cn=folder,cn=folder,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+    "cn=help,cn=folder,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+    "cn=owncloud-admindoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+    "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
   ],
   "portal": {
     "background": null,
@@ -279,16 +324,6 @@
       "cn=domain-service,cn=category,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
       "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
     ],
-    "defaultLinkTarget": "embedded",
-    "dn": "cn=domain,cn=portal,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
-    "ensureLogin": false,
-    "showUmc": true,
-    "logo": "",
-    "name": {
-      "de_DE": "Univention Portal DE",
-      "en_US": "Univention Portal EN",
-      "fr_FR": "Portail Univention FR"
-    },
     "content": [
       [
         "cn=domain-service,cn=category,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
@@ -305,12 +340,19 @@
           "cn=owncloud-userdoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
         ]
       ]
-    ]
+    ],
+    "defaultLinkTarget": "embedded",
+    "dn": "cn=domain,cn=portal,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+    "ensureLogin": false,
+    "logo": "",
+    "name": {
+      "de_DE": "Univention Portal DE",
+      "en_US": "Univention Portal EN",
+      "fr_FR": "Portail Univention FR"
+    },
+    "showUmc": true
   },
-  "filtered": true,
-  "may_edit_portal": true,
-  "auth_mode": "ucs",
-  "cache_id": "abc:123",
-  "username": "administrator",
-  "user_displayname": "Administrator"
+  "user_displayname": "Administrator",
+  "user_links": [],
+  "username": "administrator"
 }

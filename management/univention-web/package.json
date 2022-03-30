@@ -1,35 +1,54 @@
 {
-	"name": "umc",
-	"description": "Univention Javascript Library.",
-	"version": "%VERSION%",
-	"keywords": ["JavaScript", "Univention", "UMC", "Management", "Management Console", "Server Management", "Active Directory", "Dojo"],
-	"maintainers": [{
-		"name": "Univention GmbH",
-		"email": "packages@univention.de",
-		"web": "https://www.univention.com/"
-	}],
-	"contributors": [{
-		"name": "Univention GmbH"
-	}],
-	"licenses": [{
-		"type": "AGPLv3",
-		"url": "https://www.gnu.org/licenses/agpl.txt"
-	},{
-		"type": "AFLv2.1",
-		"url": "http://bugs.dojotoolkit.org/browser/dojox/trunk/LICENSE#L43"
-	},{
-		"type": "BSD",
-		"url": "http://bugs.dojotoolkit.org/browser/dojox/trunk/LICENSE#L13"
-	}],
-	"bugs": "https://forge.univention.org/bugzilla/",
-	"repositories": [{
-		"type": "git",
-		"url": "https://github.com/univention/univention-corporate-server.git"
-	}],
-	"dependencies": {
-		"dojo": "~1.12.4",
-		"dijit": "~1.12.4",
-		"dojox": "~1.12.4"
-	},
-	"dojoBuild": "umc.profile.js"
+  "bugs": "https://forge.univention.org/bugzilla/",
+  "contributors": [
+    {
+      "name": "Univention GmbH"
+    }
+  ],
+  "dependencies": {
+    "dijit": "~1.12.4",
+    "dojo": "~1.12.4",
+    "dojox": "~1.12.4"
+  },
+  "description": "Univention Javascript Library.",
+  "dojoBuild": "umc.profile.js",
+  "keywords": [
+    "JavaScript",
+    "Univention",
+    "UMC",
+    "Management",
+    "Management Console",
+    "Server Management",
+    "Active Directory",
+    "Dojo"
+  ],
+  "licenses": [
+    {
+      "type": "AGPLv3",
+      "url": "https://www.gnu.org/licenses/agpl.txt"
+    },
+    {
+      "type": "AFLv2.1",
+      "url": "http://bugs.dojotoolkit.org/browser/dojox/trunk/LICENSE#L43"
+    },
+    {
+      "type": "BSD",
+      "url": "http://bugs.dojotoolkit.org/browser/dojox/trunk/LICENSE#L13"
+    }
+  ],
+  "maintainers": [
+    {
+      "email": "packages@univention.de",
+      "name": "Univention GmbH",
+      "web": "https://www.univention.com/"
+    }
+  ],
+  "name": "umc",
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/univention/univention-corporate-server.git"
+    }
+  ],
+  "version": "%VERSION%"
 }

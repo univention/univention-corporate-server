@@ -1,11 +1,11 @@
 {
-	"change_password": {
-		"en": "Change password"
-	},
-	"new_password": {
-		"en": "New password"
-	},
-	"new_password_retype": {
-		"en": "New password (retype)"
-	}
+  "change_password": {
+    "en": "Change password"
+  },
+  "new_password": {
+    "en": "New password"
+  },
+  "new_password_retype": {
+    "en": "New password (retype)"
+  }
 }
