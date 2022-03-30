@@ -263,7 +263,9 @@ def object_input(module, object, input, append=None, remove=None):
 					out.append('WARNING: file not found: %s' % values)
 			else:
 				if univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
-					values = _parse_complex_syntax_input(values if isinstance(values, list) else [values])
+					if not isinstance(values, list):
+						values = [values]
+					values = [module.property_descriptions[key].syntax.parse_command_line(x) for x in values]
 				current_values = list(object[key] or [])
 				if current_values == ['']:
 					current_values = []
@@ -294,7 +296,7 @@ def object_input(module, object, input, append=None, remove=None):
 			else:
 				vallist = [values] if isinstance(values, six.string_types) else values
 				if univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
-					vallist = _parse_complex_syntax_input(vallist)
+					vallist = [module.property_descriptions[key].syntax.parse_command_line(x) for x in vallist]
 
 				for val in vallist:
 					try:
@@ -341,9 +343,8 @@ def object_input(module, object, input, append=None, remove=None):
 			else:
 				if univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
 					if isinstance(value, list):
-						value = _parse_complex_syntax_input(value)[-1]
-					else:
-						value = _parse_complex_syntax_input([value])[0]
+						value = value[-1]
+					value = module.property_descriptions[key].syntax.parse_command_line(value)
 
 					if module.property_descriptions[key].multivalue:
 						value = [value]
@@ -354,17 +355,6 @@ def object_input(module, object, input, append=None, remove=None):
 				except univention.admin.uexceptions.valueMayNotChange as exc:
 					raise univention.admin.uexceptions.valueMayNotChange("%s: %s" % (exc.message, key))
 	return out
-
-
-def _parse_complex_syntax_input(values):
-	parsed_values = []
-	for value in values:
-		if '"' not in value:
-			value = value.split(' ')
-		else:
-			value = [x.strip() for x in value.split('"') if x.strip()]
-		parsed_values.append(value)
-	return parsed_values
 
 
 def list_available_modules(o=[]):
