@@ -56,9 +56,9 @@ def clean_environment():
 		shell=True,
 		stdin=None).communicate()
 	Popen('apt-get -y remove univention-directory-manager-module-example',
-	      shell=True,
-	      stdout=subprocess.DEVNULL,
-	      stdin=None).communicate()
+		shell=True,
+		stdout=subprocess.DEVNULL,
+		stdin=None).communicate()
 
 
 def remove_schema():
