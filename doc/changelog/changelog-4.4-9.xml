@@ -23,7 +23,7 @@
 						<package>amd64-microcode</package> (<u:cve>2017-5715</u:cve>) (<u:bug>53699</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>apache2</package> (<u:cve>2020-1927</u:cve> <u:cve>2020-1934</u:cve> <u:cve>2020-35452</u:cve> <u:cve>2021-26690</u:cve> <u:cve>2021-26691</u:cve> <u:cve>2021-30641</u:cve> <u:cve>2021-31618</u:cve> <u:cve>2021-34798</u:cve> <u:cve>2021-39275</u:cve> <u:cve>2021-40438</u:cve> <u:cve>2021-44224</u:cve> <u:cve>2021-44790</u:cve>) (<u:bug>53560</u:bug> <u:bug>53865</u:bug> <u:bug>54412</u:bug>)
+						<package>apache2</package> (<u:cve>2020-1927</u:cve> <u:cve>2020-1934</u:cve> <u:cve>2020-35452</u:cve> <u:cve>2021-26690</u:cve> <u:cve>2021-26691</u:cve> <u:cve>2021-30641</u:cve> <u:cve>2021-31618</u:cve> <u:cve>2021-34798</u:cve> <u:cve>2021-39275</u:cve> <u:cve>2021-40438</u:cve> <u:cve>2021-44224</u:cve> <u:cve>2021-44790</u:cve> <u:cve>CVE-2022-22719</u:cve> <u:cve>CVE-2022-22720</u:cve> <u:cve>CVE-2022-22721</u:cve> <u:cve>CVE-2022-23943</u:cve>) (<u:bug>53560</u:bug> <u:bug>53865</u:bug> <u:bug>54412</u:bug> <u:bug>54580</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>apr</package> (<u:cve>2017-12613</u:cve>) (<u:bug>54372</u:bug>)
@@ -236,7 +236,7 @@
 						<package>openssl1.0</package> (<u:cve>2021-3712</u:cve> <u:cve>2022-0778</u:cve>) (<u:bug>53861</u:bug> <u:bug>54564</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>paramiko</package> (<u:cve>2018-7750</u:cve> <u:cve>2018-1000805</u:cve>) (<u:bug>54279</u:bug>)
+						<package>paramiko</package> (<u:cve>2018-7750</u:cve> <u:cve>2018-1000805</u:cve> <u:cve>CVE-2022-24302</u:cve>) (<u:bug>54279</u:bug>, <u:bug>54581</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>php7.0</package> (<u:cve>2019-18218</u:cve> <u:cve>2020-7071</u:cve> <u:cve>2021-21702</u:cve> <u:cve>2021-21704</u:cve> <u:cve>2021-21705</u:cve> <u:cve>2021-21703</u:cve>) (<u:bug>53593</u:bug> <u:bug>53991</u:bug>)
@@ -368,7 +368,7 @@
 			</listitem>
 			<listitem>
 				<para>
-					The following updated packages from Debian Stretch <productnumber>10.11</productnumber> are included (<u:bug>53918</u:bug>):
+					The following updated packages from Debian Stretch <productnumber>10.12</productnumber> are included (<u:bug>53918</u:bug>):
 					<simplelist type="inline" id="_debian">
 						<member><package>advancecomp</package></member>
 						<member><package>agg</package></member>
@@ -511,6 +511,16 @@
 						<member><package>xmlbeans</package></member>
 						<member><package>zabbix</package></member>
 						<member><package>zsh</package></member>
+					</simplelist>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The following updated packages from Debian Buster <productnumber>11.3</productnumber> are included (<u:bug>54530</u:bug>):
+					<simplelist type="inline">
+						<member><package>linux</package></member>
+						<member><package>linux-signed-amd64</package></member>
+						<member><package>linux-signed-i386</package></member>
 					</simplelist>
 				</para>
 			</listitem>

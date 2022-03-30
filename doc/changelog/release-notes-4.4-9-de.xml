@@ -51,7 +51,10 @@
 
 		<itemizedlist>
 			<listitem><para>
-				Diverse Security Updates wurden in UCS 4.4-9 integriert, bspw. für <application>PostgreSQL</application>, <application>Samba</application>, den <application>Linux Kernel</application> und <application>MariaDB</application>.
+				Der <application>Linux Kernel</application> wurde auf Version <productnumber>4.19.235</productnumber> aktualisiert.
+			</para></listitem>
+			<listitem><para>
+				Diverse Security Updates wurden in UCS 4.4-9 integriert, bspw. für <application>PostgreSQL</application>, <application>Samba</application> und <application>MariaDB</application>.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -154,6 +157,35 @@ Checking ldap_schema ...                          OK
 
 	<chapter id="relnotes:packages">
 		<title>Hinweise zum Einsatz einzelner Pakete</title>
+
+		<section id="relnotes:shim">
+			<title>UEFI Secure Boot</title>
+			<para>
+				Secure Boot bildet eine Kette des Vertrauens von der UEFI Firmware bis zum Linux Kernel.
+				Jede Änderung bevor der Linux Kernel läuft wird erkannt und bricht den Boot-Prozess ab.
+				Diese Technik kann benutzt werden, um Boot-Viren daran zu hindern, das System zu infizieren.
+			</para>
+			<para>
+				In <ulink url="https://eclypsium.com/2020/07/29/theres-a-hole-in-the-boot/">Juli 2020</ulink> wurde eine eklatante Sicherheitslücke in GRUB dem dem Linux Kernel entdeckt:
+				Angreifen können die Umgebung modifizieren bevor der Linux Kernel die volle Kontrolle hat und damit Secure Boot deaktivieren.
+				Diese Lücke hat alle Linux Distributionen inklusive &ucsUCS; betroffen.
+				Microsoft hat deshalb alle bisherigen signierten Versionen von <package>shim</package> widerrufen, wodurch Secure Boot an erster Stelle unterbrochen wird.
+				Sobald ein UEFI Firmware Update oder ein auf dem selben System laufendes Microsoft Windows die Liste der widerrufenen Programme aktualisiert, wird UCS 4.4 nicht mehr gebootet.
+			</para>
+			<para>
+				Für 4.4-9 war geplant, alle beteiligten Komponenten zu aktualisieren, um wieder eine voll funktionsfähige UEFI Installation mit Secure Boot zu ermöglichen.
+				Inzwischen wurden aber weitere Fehler in <package>grub2</package> und <package>shim</package> entdeckt.
+				Aus diesem Grund signiert Microsoft derzeit keine neuen Versionen von <package>shim</package>.
+				Deshalb enthält UCS 4.4-9 zum Übergang lediglich den neuen Linux Kernel 4.19.235;
+				ältere Versionen werden zukünftig nicht mehr erlaubt sein.
+			</para>
+			<para>
+				Eine Aktualisierung von <package>grub2</package> und <package>shim</package> ist für UCS 4.4-10 geplant.
+				Bis dahin wird weiterhin der <emphasis>widerrufene</emphasis> <package>shim</package> genutzt.
+				Sollte das System nach dem Einspielen einer aktualisierten Widerrufsliste nicht mehr starten, muss bis auf weiteres Secure Boot deaktiviert werden.
+				Alternativ kann auf UCS 5.0 aktualisiert werden.
+			</para>
+		</section>
 
 		<section id="relnotes:usage">
 			<title>Erfassung von Nutzungsstatistiken</title>
