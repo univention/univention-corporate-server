@@ -65,7 +65,7 @@ expire soon (the warning period can be specified with the |UCSUCRV|
 :envvar:`ssl/validity/warning`; the standard value is 30 days).
 
 The renewal of the root certificate and the other host certificates is
-documented in @@u:@@sdb>1183</u:sdb>.
+documented in :uv:kb:`Renewing the SSL certificates <37>`.
 
 On UCS systems, a Cron job verifies the validity of the local computer
 certificate and the root certificate daily and records the expiry date in the

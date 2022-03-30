@@ -113,9 +113,9 @@ The logging is made in the
 A hash sum is calculated for each logged data record and also logged in the
 :file:`daemon.info` section of the Syslog service.
 
-As of @@u:@@erratum release="4.4-4">536</u:erratum> the respective transaction
-ID of the entry is added to the file
-:file:`/var/log/univention/directory-logger.log` before each line as a prefix:
+As of :uv:erratum:`4.4x536` the respective transaction ID of the entry is
+added to the file :file:`/var/log/univention/directory-logger.log` before each
+line as a prefix:
 
 .. code-block:: none
 
