@@ -2206,43 +2206,27 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
 
         value = prop.syntax.parse_command_line(value)
 
-        current_values = obj[property_name] if prop.multivalue else [obj[property_name]]
-        current_values = list(current_values or [])
-        if current_values == ['']:
-            current_values = []
+        # TODO: reimplement
+        # if op == 'add' and not prop.multivalue:
+        #     self.add_resource(result, 'udm:warning', {'message': 'appending to a single value property (%s) is not supported.' % (property_name,)})
+        #     return
+        try:
+            if op == 'add' and prop.multivalue:
+                obj.append_value(value)
+            elif op in ('add', 'replace'):
+                obj.set_value(value)
+            elif op == 'remove':
+                obj.remove_value(value)
+        except univention.admin.uexceptions.valueAlreadySet:
+            self.add_resource(result, 'udm:warning', {'message': 'cannot append %s to %s, value exists' % (value, property_name)})
+            return
+        except univention.admin.uexceptions.valueNotSet:
+            self.add_resource(result, 'udm:warning', {'message': 'cannot remove %s from %s, value does not exist' % (value, property_name)})
+            return
 
-        if op == 'replace':
-            current_values = []
-
-        if op in ('add', 'replace'):
-            if value in current_values:
-                self.add_resource(result, 'udm:warning', {'message': 'cannot append %s to %s, value exists' % (value, property_name)})
-                return
-            if prop.multivalue:
-                value = [*current_values, value]
-            elif op == 'add':
-                self.add_resource(result, 'udm:warning', {'message': 'appending to a single value property (%s) is not supported.' % (property_name,)})
-                return
-        elif op == 'remove' and value is None:
-            pass
-        elif op == 'remove':
-            try:
-                normalized_val = prop.syntax.parse(value)
-            except (univention.admin.uexceptions.valueInvalidSyntax, univention.admin.uexceptions.valueError):
-                normalized_val = None
-
-            if value in current_values:
-                current_values.remove(value)
-            elif normalized_val is not None and normalized_val in current_values:
-                current_values.remove(normalized_val)
-            else:
-                self.add_resource(result, 'udm:warning', {'message': 'cannot remove %s from %s, value does not exist' % (value, property_name)})
-                return
-
-            value = current_values if prop.multivalue else None
-
-        password_properties = module.password_properties
-        self.set_property(obj, property_name, value, result, multi_error, password_properties)
+        # FIXME: move error handling from below into here
+        # password_properties = module.password_properties
+        # self.set_property(obj, property_name, value, result, multi_error, password_properties)
 
     async def move(self, module, dn, position):
         if module.childs:

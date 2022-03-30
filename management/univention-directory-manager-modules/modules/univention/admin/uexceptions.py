@@ -148,6 +148,14 @@ class valueMismatch(valueError):
     message = _('Values do not match.')
 
 
+class valueNotSet(valueError):
+    message = _('The value is not set.')
+
+
+class valueAlreadySet(valueError):
+    message = _('The value is already set.')
+
+
 class noLock(base):
     message = _('Could not acquire lock.')
 

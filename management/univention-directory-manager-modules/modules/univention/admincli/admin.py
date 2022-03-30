@@ -298,54 +298,33 @@ def object_input(
                     print('WARNING: file not found: %s' % values, file=stderr)
             else:
                 values = [module.property_descriptions[key].syntax.parse_command_line(x) for x in values]
-                current_values = list(object[key] or [])
-                if current_values == ['']:
-                    current_values = []
-
-                for val in values:
-                    if val in current_values:
-                        print('WARNING: cannot append %s to %s, value exists' % (val, key), file=stderr)
-                    else:
-                        current_values.append(val)
-
-                if not module.property_descriptions[key].multivalue:
+                for value in values:
                     try:
-                        current_values = current_values[-1]
-                    except IndexError:
-                        current_values = None
-
-                try:
-                    object[key] = current_values
-                except univention.admin.uexceptions.valueInvalidSyntax as errmsg:
-                    raise OperationFailed('E: %s' % (errmsg,))
+                        object.append_value(key, value)
+                    except univention.admin.uexceptions.noProperty:
+                        raise OperationFailed("WARNING: No attribute with name %s in this module, value not appended." % (key,))
+                    except univention.admin.uexceptions.valueNotSet as exc:
+                        raise OperationFailed("WARNING: cannot append %s to %s: %s" % (value, key, exc))
+                    except univention.admin.uexceptions.valueInvalidSyntax as errmsg:
+                        raise OperationFailed('E: %s' % (errmsg,))
 
     if remove:
         for key, values in remove.items():
-            current_values = [object[key]] if not module.property_descriptions[key].multivalue else list(object[key])
-            if values is None:
-                current_values = []
-            else:
-                vallist = [values] if isinstance(values, str) else values
-                vallist = [module.property_descriptions[key].syntax.parse_command_line(x) for x in vallist]
-
-                for val in vallist:
-                    try:
-                        normalized_val = module.property_descriptions[key].syntax.parse(val)
-                    except (univention.admin.uexceptions.valueInvalidSyntax, univention.admin.uexceptions.valueError):
-                        normalized_val = None
-
-                    if val in current_values:
-                        current_values.remove(val)
-                    elif normalized_val is not None and normalized_val in current_values:
-                        current_values.remove(normalized_val)
-                    else:
-                        print("WARNING: cannot remove %s from %s, value does not exist" % (val, key), file=stderr)
-            if not module.property_descriptions[key].multivalue:
-                try:
-                    current_values = current_values[0]
-                except IndexError:
-                    current_values = None
-            object[key] = current_values
+            try:
+                if values is None:
+                    object.remove_value(key, values)
+                    continue
+                for value in values:
+                    value = module.property_descriptions[key].syntax.parse_command_line(value)
+                    # try:  # TODO: remove?! move into normalize()
+                    #     value = module.property_descriptions[key].syntax.parse(value)
+                    # except (univention.admin.uexceptions.valueInvalidSyntax, univention.admin.uexceptions.valueError):
+                    #     pass
+                    object.remove_value(key, value)
+            except univention.admin.uexceptions.noProperty:
+                print("WARNING: No attribute with name %s in this module, value not removed." % (key,), file=stderr)
+            except univention.admin.uexceptions.valueNotSet as exc:
+                print("WARNING: cannot remove %s from %s: %s" % (value, key, exc), file=stderr)
 
     if input:
         for key, value in sorted(input.items(), key=_tmp_cmp):
@@ -357,7 +336,7 @@ def object_input(
 
             if module.property_descriptions[key].syntax.name == 'binaryfile':
                 if value == '':
-                    object[key] = value
+                    object.set_value(key, value)
                 elif os.path.exists(value):
                     with open(value) as fh:
                         content = fh.read()
@@ -379,7 +358,7 @@ def object_input(
                 value = values if module.property_descriptions[key].multivalue else values[-1]
 
                 try:
-                    object[key] = value
+                    object.set_value(key, value)
                 except univention.admin.uexceptions.ipOverridesNetwork as exc:
                     print('WARNING: %s' % (exc,), file=stderr)
                 except univention.admin.uexceptions.valueMayNotChange:

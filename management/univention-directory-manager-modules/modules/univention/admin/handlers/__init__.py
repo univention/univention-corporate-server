@@ -1002,6 +1002,61 @@ class simpleLdap:
         """Hook which is called after the object removal."""
         self._release_locks()
 
+    def remove_value(self, key, value=None):
+        """
+        Removes a specific value from the specified property.
+        If this value is currently not set univention.admin.uexceptions.valueNotSet is raised.
+        if value is None the whole values of this property gets removed.
+        """
+        if not self.has_property(key):
+            raise univention.admin.uexceptions.noProperty(key)
+
+        if value is None:
+            # remove all currently set values
+            self[key] = [] if self.descriptions[key].multivalue else None
+            return
+
+        if not self.contains_value(key, value):
+            raise univention.admin.uexceptions.valueNotSet(key, value)
+
+        if not self.descriptions[key].multivalue:
+            self[key] = value
+            return
+
+        current_values = list(self[key])
+        for val in current_values[:]:
+            if self.compare_value(key, value, val):
+                current_values.remove(val)
+        self[key] = current_values
+
+    def contains_value(self, key, value):
+        if self.descriptions[key].multivalue and any(self.compare_value(key, value, val) for val in self[key]):
+            return True
+        if not self.descriptions[key].multivalue and self.compare_value(key, value, self[key]):
+            return True
+        return False
+
+    def compare_value(self, key, a, b):
+        return self.descriptions[key].syntax.normalize(a) == self.descriptions[key].syntax.normalize(b)
+
+    def set_value(self, key, value):
+        self[key] = value
+
+    def append_value(self, key, value):
+        if not self.has_property(key):
+            raise univention.admin.uexceptions.noProperty(key)
+
+        if self.contains_value(key, value):
+            raise univention.admin.uexceptions.valueAlreadySet(key, value)
+
+        if not self.descriptions[key].multivalue:
+            self[key] = value
+            return
+
+        current_values = self[key]
+        current_values.append(value)
+        self[key] = current_values
+
     def _safe_cancel(self):  # type: () -> None
         try:
             self.cancel()
