@@ -263,7 +263,7 @@ class ISyntax(object):
 		return text
 
 	def parse_command_line(self, value):
-		return self.parse(value)
+		return value
 
 	@classmethod
 	def new(self):
@@ -6250,24 +6250,25 @@ class PortalEntrySelection(complex):
 class PortalCategorySelection(simple):
 	r"""
 	Syntax to select a portal category.
-	>>> x = PortalCategorySelection.tostring([["cn=category1", []], ["cn=category2", ["cn=entry1", "cn=entry2"]]])
+	>>> PCS = PortalCategorySelection
+	>>> x = PCS.tostring([["cn=category1", []], ["cn=category2", ["cn=entry1", "cn=entry2"]]])
 	>>> x.replace(' ','').replace('\n','')
 	'[["cn=category1",[]],["cn=category2",["cn=entry1","cn=entry2"]]]'
-	>>> PortalCategorySelection.parse('[["cn=category1",[]],["cn=category2",["cn=entry1","cn=entry2"]]]')
+	>>> PCS.parse(PCS().parse_command_line('[["cn=category1",[]],["cn=category2",["cn=entry1","cn=entry2"]]]'))
 	[['cn=category1', []], ['cn=category2', ['cn=entry1', 'cn=entry2']]]
-	>>> PortalCategorySelection.parse('[["cn=category1",[]],["",["cn=entry1","cn=entry2"]]]') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> PCS.parse(PCS().parse_command_line('[["cn=category1",[]],["",["cn=entry1","cn=entry2"]]]')) #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueInvalidSyntax:
-	>>> PortalCategorySelection.parse('[["cn=category1"]]') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> PCS.parse(PCS().parse_command_line('[["cn=category1"]]')) #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueInvalidSyntax:
-	>>> PortalCategorySelection.parse('[["cn=category1",[], []]]') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> PCS.parse(PCS().parse_command_line('[["cn=category1",[], []]]')) #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueInvalidSyntax:
-	>>> PortalCategorySelection.parse('hallo') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> PCS.parse(PCS().parse_command_line('hallo')) #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueInvalidSyntax:
@@ -6278,13 +6279,14 @@ class PortalCategorySelection(simple):
 	widget = 'umc/modules/udm/PortalContent'
 	widget_default_search_pattern = None
 
+	def parse_command_line(self, value):
+		try:
+			return json.loads(value)
+		except ValueError:
+			raise univention.admin.uexceptions.valueInvalidSyntax(_("Value has to be in valid json format"))
+
 	@classmethod
 	def parse(self, texts, minn=None):
-		if isinstance(texts, six.string_types):  # for UDM-CLI
-			try:
-				texts = json.loads(texts)
-			except ValueError:
-				raise univention.admin.uexceptions.valueInvalidSyntax(_("Value has to be in valid json format"))
 		for text in texts:
 			if len(text) < len(self.subsyntaxes):
 				raise univention.admin.uexceptions.valueInvalidSyntax(_("not enough arguments"))

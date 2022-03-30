@@ -262,10 +262,7 @@ def object_input(module, object, input, append=None, remove=None):
 				else:
 					out.append('WARNING: file not found: %s' % values)
 			else:
-				if univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
-					if not isinstance(values, list):
-						values = [values]
-					values = [module.property_descriptions[key].syntax.parse_command_line(x) for x in values]
+				values = [module.property_descriptions[key].syntax.parse_command_line(x) for x in values]
 				current_values = list(object[key] or [])
 				if current_values == ['']:
 					current_values = []
@@ -277,7 +274,6 @@ def object_input(module, object, input, append=None, remove=None):
 						current_values.append(val)
 
 				if not module.property_descriptions[key].multivalue:
-					out.append('WARNING: using --append on a single value property (%s) is not supported.' % (key,))
 					try:
 						current_values = current_values[-1]
 					except IndexError:
@@ -295,8 +291,7 @@ def object_input(module, object, input, append=None, remove=None):
 				current_values = []
 			else:
 				vallist = [values] if isinstance(values, six.string_types) else values
-				if univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
-					vallist = [module.property_descriptions[key].syntax.parse_command_line(x) for x in vallist]
+				vallist = [module.property_descriptions[key].syntax.parse_command_line(x) for x in vallist]
 
 				for val in vallist:
 					try:
@@ -341,13 +336,13 @@ def object_input(module, object, input, append=None, remove=None):
 					out.append('WARNING: file not found: %s' % value)
 
 			else:
-				if univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
-					if isinstance(value, list):
-						value = value[-1]
-					value = module.property_descriptions[key].syntax.parse_command_line(value)
+				if isinstance(value, list) and len(value) > 1:
+					out.append('WARNING: multiple values for %s given via --set. Use --append instead!' % (key,))
 
-					if module.property_descriptions[key].multivalue:
-						value = [value]
+				values = value if isinstance(value, list) else [value]
+				values = [module.property_descriptions[key].syntax.parse_command_line(x) for x in values]
+				value = values if module.property_descriptions[key].multivalue else values[-1]
+
 				try:
 					object[key] = value
 				except univention.admin.uexceptions.ipOverridesNetwork as exc:
@@ -608,12 +603,12 @@ def _doit(arglist):
 				if name in properties:
 					if not properties[name].cli_enabled:
 						continue
-					if properties[name].multivalue:
-						append.setdefault(name, [])
-						if value:
-							append[name].append(value)
-					else:
-						append[name] = value
+					if not properties[name].multivalue:
+						out.append('WARNING: using --append on a single value property (%s). Use --set instead!' % (name,))
+
+					append.setdefault(name, [])
+					if value:
+						append[name].append(value)
 			if name not in append:
 				out.append("WARNING: No attribute with name %s in this module, value not appended." % name)
 
