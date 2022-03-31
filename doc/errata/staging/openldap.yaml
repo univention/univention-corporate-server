@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: openldap
+fix: 2.4.47+dfsg-3+deb10u6A~5.0.0.202203311540
+desc: |
+ This update addresses the following issue:
+ * Unauthenticated remote denial-of-service
+   due to a Null pointer dereference in ber_skip_tag
+   (no CVE).
+bug: [54627]
