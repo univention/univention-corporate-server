@@ -1,3 +1,10 @@
+univention-docker (5.0.2-1) unstable; urgency=medium
+
+  * Bug #52539: removed deprecated script:
+    migrate_container_MountPoints_to_v2_config
+
+ -- Johannes Lohmer <lohmer@univention.de>  Mon, 04 Apr 2022 14:39:43 +0200
+
 univention-docker (5.0.2-0) unstable; urgency=medium
 
   * Bug #52344: Add two UCR variables for docker/daemon.json customisation

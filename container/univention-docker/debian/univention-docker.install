@@ -1,2 +1,1 @@
 lib/univention-docker_lib.sh usr/lib/univention-docker
-scripts/migrate_container_MountPoints_to_v2_config usr/lib/univention-docker/scripts
