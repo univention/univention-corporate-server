@@ -1,7 +1,7 @@
 product: ucs
 release: "4.4"
-version: [8]
-scope: ucs_4.4-0-errata4.4-8
+version: [8,9]
+scope: ucs_4.4-0-errata4.4-9
 src: 
 fix: 
 desc: |
