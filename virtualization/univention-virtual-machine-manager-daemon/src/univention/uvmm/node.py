@@ -329,6 +329,7 @@ class Domain(PersistentCached):
 		self._cache_id = None  # type: Optional[int]
 		self._restart = 0
 		self._redefined = True  # check for <cpu> only once per process as this is quiet expensive
+		self._error = 0
 		self.pd = Data_Domain()
 		if isinstance(domain, libvirt.virDomain):
 			self.pd.uuid = domain.UUIDString()
@@ -556,9 +557,17 @@ class Domain(PersistentCached):
 		"""Parse XML into python object."""
 		try:
 			domain_tree = ET.fromstring(xml)
+			self._xml2obj(domain_tree)
 		except ET.XMLSyntaxError:
 			return
+		except Exception as exc:
+			error = hash(xml)
+			if error != self._error:
+				logger.error("xml2obj(%s): %s", xml, exc, exc_info=True)
+				self._error = error
 
+	def _xml2obj(self, domain_tree):
+		# typpe: (ET._Element) -> None
 		self.pd.domain_type = domain_tree.attrib['type']
 		if not self.pd.domain_type:
 			logger.error("Failed /domain/@type from %s" % xml)
