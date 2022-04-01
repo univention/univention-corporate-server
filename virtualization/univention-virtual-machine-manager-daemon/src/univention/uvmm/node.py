@@ -626,7 +626,7 @@ class Domain(PersistentCached):
 				elif dev.type == Disk.TYPE_NETWORK:
 					dev.source = source.attrib['protocol']
 				else:
-					raise NodeError(_('Unknown disk type: %(type)d'), type=dev.type)
+					raise NodeError(_('Unknown disk type: %(type)s'), type=dev.type)
 			target = disk.find('target', namespaces=XMLNS)
 			if target is not None:
 				dev.target_dev = target.attrib['dev']
