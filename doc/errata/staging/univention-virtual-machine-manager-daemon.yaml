@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: univention-virtual-machine-manager-daemon
+fix: 8.0.1-17
+desc: |
+ This update addresses the following issues:
+ * Iterating all virtual machines multi-threaded has been fixed.
+ * Disks using the new type "volume" are now handled.
+bug: [49297, 54630]
