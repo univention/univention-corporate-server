@@ -625,6 +625,8 @@ class Domain(PersistentCached):
 					dev.source = source.attrib['dir']
 				elif dev.type == Disk.TYPE_NETWORK:
 					dev.source = source.attrib['protocol']
+				elif dev.type == Disk.TYPE_VOLUME:
+					dev.source = "%(pool)s:%(volume)s" % source.attrib
 				else:
 					raise NodeError(_('Unknown disk type: %(type)s'), type=dev.type)
 			target = disk.find('target', namespaces=XMLNS)
@@ -1649,13 +1651,16 @@ def _domain_edit(node, dom_stat, xml):
 		_update_xml(domain_devices_disk, 'driver', None, name=disk.driver, type=disk.driver_type, cache=disk.driver_cache)
 		# /domain/devices/disk/source @file @dev
 		if disk.type == Disk.TYPE_FILE:
-			_update_xml(domain_devices_disk, 'source', None, _changes=changes, file=disk.source, dev=None, dir=None, protocol=None)
+			_update_xml(domain_devices_disk, 'source', None, _changes=changes, file=disk.source, dev=None, dir=None, protocol=None, pool=None, volume=None)
 		elif disk.type == Disk.TYPE_BLOCK:
-			_update_xml(domain_devices_disk, 'source', None, _changes=changes, file=None, dev=disk.source, dir=None, protocol=None)
+			_update_xml(domain_devices_disk, 'source', None, _changes=changes, file=None, dev=disk.source, dir=None, protocol=None, pool=None, volume=None)
 		elif disk.type == Disk.TYPE_DIR:
-			_update_xml(domain_devices_disk, 'source', None, _changes=changes, file=None, dev=None, dir=disk.source, protocol=None)
+			_update_xml(domain_devices_disk, 'source', None, _changes=changes, file=None, dev=None, dir=disk.source, protocol=None, pool=None, volume=None)
 		elif disk.type == Disk.TYPE_NETWORK:
-			_update_xml(domain_devices_disk, 'source', None, _changes=changes, file=None, dev=None, dir=None, protocol=disk.source)
+			_update_xml(domain_devices_disk, 'source', None, _changes=changes, file=None, dev=None, dir=None, protocol=disk.source, pool=None, volume=None)
+		elif disk.type == Disk.TYPE_VOLUME:
+			pool, volume = disk.source.split(":", 1)
+			_update_xml(domain_devices_disk, 'source', None, _changes=changes, file=None, dev=None, dir=None, protocol=None, pool=pool, volume=volume)
 		else:
 			raise NodeError(_("Unknown disk/type='%(type)s'"), type=disk.type)
 		# /domain/devices/disk/readonly
