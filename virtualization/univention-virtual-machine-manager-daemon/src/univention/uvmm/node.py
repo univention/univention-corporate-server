@@ -1148,7 +1148,7 @@ class Node(PersistentCached):
 		curMem = 0
 		maxMem = 0
 		cpu_usage = 0.0
-		cached_domains = self.domains.keys()
+		cached_domains = set(self.domains)
 
 		assert self.conn is not None
 		for dom in self.conn.listAllDomains():
@@ -1158,10 +1158,7 @@ class Node(PersistentCached):
 					# Update existing domains
 					domStat = self.domains[uuid]
 					domStat.update(dom)
-					try:
-						cached_domains.remove(uuid)
-					except ValueError:
-						pass
+					cached_domains.discard(uuid)
 				else:
 					# Add new domains
 					domStat = Domain(dom, node=self)
