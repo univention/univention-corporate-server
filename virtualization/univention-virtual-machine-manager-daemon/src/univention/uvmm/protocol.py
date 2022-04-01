@@ -813,6 +813,7 @@ class Disk(object):
 	TYPE_BLOCK = 'block'
 	TYPE_DIR = 'dir'
 	TYPE_NETWORK = 'network'
+	TYPE_VOLUME = 'volume'
 
 	CACHE_DEFAULT = 'default'
 	CACHE_NONE = 'none'  # off
