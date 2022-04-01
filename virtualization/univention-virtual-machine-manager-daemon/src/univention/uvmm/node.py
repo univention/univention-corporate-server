@@ -1154,15 +1154,16 @@ class Node(PersistentCached):
 		for dom in self.conn.listAllDomains():
 			try:
 				uuid = dom.UUIDString()
-				if uuid in self.domains:
+				try:
 					# Update existing domains
 					domStat = self.domains[uuid]
-					domStat.update(dom)
-					cached_domains.discard(uuid)
-				else:
+				except LookupError:
 					# Add new domains
 					domStat = Domain(dom, node=self)
 					self.domains[uuid] = domStat
+				else:
+					domStat.update(dom)
+					cached_domains.discard(uuid)
 			except libvirt.libvirtError as ex:
 				if ex.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
 					raise
