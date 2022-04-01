@@ -51,6 +51,54 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    :ref:`domain-ldap-nightly-backup`.
 
 
+.. envvar:: connector/ad/ldap/binddn
+
+   Configures the LDAP DN of a priviledged replication user. For more
+   information, see :ref:`ad-connector-ad-member-setup` and
+   :ref:`ad-connector-ad-password`.
+
+
+.. envvar:: connector/ad/ldap/bindpw
+
+   Configures the password of a priviledged replication user. For more
+   information, see :ref:`ad-connector-ad-member-setup` and
+   :ref:`ad-connector-ad-password`.
+
+
+.. envvar:: connector/ad/ldap/ssl
+
+   To deactivate encrypted communication between the UCS system and Active
+   Directory set the value to ``no``. For more information, see
+   :ref:`ad-connector-ad-certificate`.
+
+
+.. envvar:: connector/ad/mapping/group/language
+
+   Configures the mapping for group name conversion in anglophone AD domains.
+   For more information, see :ref:`ad-connector-groups`.
+
+
+.. envvar:: connector/ad/mapping/user/ignorelist
+
+   Configures a list of usernames that the AD Connector excludes from
+   synchronization. For more information, see
+   :ref:`ad-connector-details-on-preconfigured-synchronization`.
+
+
+.. envvar:: connector/ad/poll/sleep
+
+   Configures the interval to poll for changes in the AD domain. The default is
+   ``5`` seconds. For more information, see :ref:`ad-connector-ad-connector-setup`.
+
+
+.. envvar:: connector/ad/retryrejected
+
+   Configures the number of cylces that the UCS AD Connector attempts to
+   sychronize an object from the AD domain when it can't be synchronized. The
+   default value is ``10`` cycles. For more information, see
+   :ref:`ad-connector-ad-connector-setup`
+
+
 .. envvar:: cups/server
 
    Defines the print server to be used by a UCS system. For more information,
@@ -117,6 +165,13 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
    Configures the IPv4 network gateway. For more information, see
    :ref:`computers-ipv6`.
+
+
+.. envvar:: groups/default/domainadmins
+
+   Configures the default group name for the domain administrator group. The
+   value might be changed during an AD Takeover. For more information, see
+   :ref:`windows-adtakeover-migrate`.
 
 
 .. envvar:: grub/append
@@ -612,6 +667,20 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    :ref:`computers-configuration-via-univention-configuration-registry`.
 
 
+.. envvar:: samba/max/protocol
+
+   Configures the file service protocol that Samba uses on UCS. The allowed
+   values ``NT1``, ``SMB2``, and ``SMB3``. For more information, see
+   :ref:`windows-samba4-fileservices`.
+
+
+.. envvar:: samba4/sysvol/sync/cron
+
+   Configures the synchronization time interval between Samba/AD domain
+   controllers for the SYSVOL share. Default value is five minutes. For more
+   information, see :ref:`windows-sysvolshare`.
+
+
 .. envvar:: saml/idp/authsource
 
    Allows Kerberos authentication at the SAML identity provider. Change to
@@ -771,3 +840,10 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    Enables or disables the account verification and request of new verification
    tokens for the :program:`Self Service`. For more information, see
    :ref:`user-management-password-changes-by-users-selfregistration-account-verification`.
+
+
+.. envvar:: users/default/administrator
+
+   Configures the default user name for the domain administrator. The value
+   might be changed during an AD Takeover. For more information, see
+   :ref:`windows-adtakeover-migrate`.

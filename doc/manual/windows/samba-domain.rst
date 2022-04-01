@@ -307,7 +307,7 @@ There are two basic possibilities for creating GPOs:
   to several positions in the LDAP.
 
 * The GPO can also be created at an LDAP position ad hoc and then directly
-  linked to it. This is the simpler means for small and medium*sized domains.
+  linked to it. This is the simpler means for small and medium-sized domains.
   Domains created ad hoc are also shown in the *Group Policy Objects* folder.
 
 A policy can have one of three statuses: ``enabled``, ``disabled`` or ``unset``.
@@ -430,7 +430,7 @@ can also be converted to the newer ADMX format using third-party tools. Further
 information on the format of ADM files can be found at `Writing Custom ADM
 Files for System Policy Editor <https://support.microsoft.com/en-us/kb/225087>`_
 and `How to create custom ADM templates
-<http://www.frickelsoft.net/blog/downloads/howto_admTemplates.pdf>`_.  The
+<http://www.frickelsoft.net/blog/downloads/howto_admTemplates.pdf>`_. The
 administrative template must have the file suffix :file:`.adm`:
 
 .. code-block::
@@ -478,7 +478,7 @@ The WMI filters are displayed in the domain structure in the *WMI Filters*
 container. :guilabel:`New` can be used to define an additional filter. The
 filter rules are defined under *Queries*. The rules are defined in a syntax
 similar to SQL. Examples rules can be found in `WMI filtering using GPMC
-<https://www.microsoft.com/en-US/download/details.aspx?id=53314>`_  and `Filtern
+<https://www.microsoft.com/en-US/download/details.aspx?id=53314>`_ and `Filtern
 von Gruppenrichtlinien anhand von Benutzergruppen, WMI und
 Zielgruppenadressierung (German)
 <https://www.gruppenrichtlinien.de/artikel/filtern-von-gruppenrichtlinien-anhand-von-benutzergruppen-wmi-und-zielgruppenadressierung/>`_.

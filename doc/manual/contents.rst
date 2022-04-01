@@ -13,7 +13,7 @@ Univention Corporate Server - Manual for users and administrators
    user-management/index
    groups
    computers/index
-   windows
+   windows/index
    appendix/index
 
 .. idm-cloud
