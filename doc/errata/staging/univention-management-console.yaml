@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The cookie attribute `SameSite` can now be set for UMC cookies via the UCR
    variable `umc/http/cookie/samesite`.
-bug: [54484]
+ * `DNSanitizer` is now included in `__all__` preventing warnings in IDEs.
+bug: [54484, 52445]

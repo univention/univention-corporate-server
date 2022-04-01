@@ -721,4 +721,4 @@ class MappingSanitizer(ChoicesSanitizer):
 		return self.mapping[value]
 
 
-__all__ = ['UnformattedValidationError', 'ValidationError', 'MultiValidationError', 'Sanitizer', 'DictSanitizer', 'ListSanitizer', 'BooleanSanitizer', 'IntegerSanitizer', 'SearchSanitizer', 'LDAPSearchSanitizer', 'PatternSanitizer', 'StringSanitizer', 'EmailSanitizer', 'ChoicesSanitizer', 'MappingSanitizer']
+__all__ = ['UnformattedValidationError', 'ValidationError', 'MultiValidationError', 'Sanitizer', 'DictSanitizer', 'ListSanitizer', 'BooleanSanitizer', 'IntegerSanitizer', 'SearchSanitizer', 'LDAPSearchSanitizer', 'PatternSanitizer', 'StringSanitizer', 'DNSanitizer', 'EmailSanitizer', 'ChoicesSanitizer', 'MappingSanitizer']

@@ -1,3 +1,9 @@
+univention-management-console (12.0.12-22) unstable; urgency=medium
+
+  * Bug #52445: fixed Development Environment warning of missing DNSanitizer
+
+ -- Johannes Lohmer <lohmer@univention.de>  Mon, 04 Apr 2022 12:04:29 +0200
+
 univention-management-console (12.0.12-21) unstable; urgency=medium
 
   * Bug #54484: add UCR variable `umc/http/cookie/samesite` to set SameSite
