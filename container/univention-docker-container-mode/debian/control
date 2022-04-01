@@ -4,29 +4,14 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
- univention-config-dev (>= 15.0.3),
 Standards-Version: 3.5.2
 
 Package: univention-docker-container-mode
 Architecture: all
 Depends:
- cron,
- curl,
- jq,
- net-tools,
- python-univention-lib (>= 3.0.1-1),
- shell-univention-lib (>= 3.0.1-1),
- univention-appcenter,
- univention-network-common,
  ${misc:Depends},
-Conflicts:
- cgroupfs-mount,
- docker.io,
- univention-appcenter-docker,
- univention-docker,
-Description: Settings for running UCS in a Docker container
- This package installs settings for running UCS in a Docker
- container.
+Description: UCS transitional package
+ This dummy package can be removed.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

@@ -30,25 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-ucr set homedir/mount?false
+set -e
 
-if [ "$1" = configure ]; then
-	if dpkg --compare-versions "$2" lt-nl '1.0.12-5'; then
-		/etc/univention/docker/preinit.d/fix-cron-hardlinks
-	fi
-
-	if dpkg --compare-versions "$2" lt-nl '2.0.0-14'; then
-		ucr set update/check/cron/enabled=false
-		ucr set update/check/boot/enabled=false
-		invoke-rc.d cron reload || true
-	fi
-
-	# installation
-	if [ -z "$2" ]; then
-		ucr set update/check/cron/enabled=false
-		ucr set update/check/boot/enabled=false
-		invoke-rc.d cron reload || true
-	fi
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt-nl "5.0.0-2"; then
+	dpkg-divert --package univention-docker-container-mode --divert /sbin/init.debian --rename --remove /sbin/init
 fi
 
 #DEBHELPER#

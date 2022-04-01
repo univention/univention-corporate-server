@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-docker-container-mode
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The package `univention-docker-container-mode` is deprecated since UCS 4.3 and has been replaced by a empty transitional package.
+bug: [52539]

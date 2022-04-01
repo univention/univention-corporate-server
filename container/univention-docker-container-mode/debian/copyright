@@ -6,31 +6,6 @@ Source: https://updates.software-univention.de/
 Files: *
 Copyright: 2015-2022 Univention GmbH
 License: AGPL-3.0-only
-
-File: sbin/init
-Copyright: 2015-2022 Univention GmbH
-   2010-2017 Tom Eastep <teastep@shorewall.net>
-Comment:
- The four bash code functions decodeaddr, encodeaddr, ip_netmask and
- ip_network have been developed by Tom Eastep <teastep@shorewall.net> and were
- copied from /usr/share/shorewall/lib.common
-License: AGPL-3.0-only and GPL-2+
-
-License: GPL-2+
- This program is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by the
- Free Software Foundation, either version 2 of the license or, at your
- option, any later version.
- .
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- GNU General Public License for more details.
- .
- You should have received a copy of the GNU General Public License
- along with this program; if not, see <https://www.gnu.org/licenses/>.
-
-License: AGPL-3.0-only
  The source code of the software contained in this package
  as well as the source package itself are made available
  under the terms of the GNU Affero General Public License version 3

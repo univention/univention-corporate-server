@@ -3668,7 +3668,6 @@ univention-directory-replication
 univention-directory-reports
 univention-directory-reports-latex
 univention-docker
-univention-docker-container-mode
 univention-errata-level
 univention-fetchmail
 univention-fetchmail-schema
