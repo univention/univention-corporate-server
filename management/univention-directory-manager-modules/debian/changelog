@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.11-40) unstable; urgency=medium
+
+  * Bug #54348: remove 2 lines logging password hashes
+
+ -- Johannes Lohmer <lohmer@univention.de>  Fri, 01 Apr 2022 11:08:47 +0200
+
 univention-directory-manager-modules (15.0.11-39) unstable; urgency=medium
 
   * Bug #53581: patch to solve problems introduce in commit b74a2e5e9b28

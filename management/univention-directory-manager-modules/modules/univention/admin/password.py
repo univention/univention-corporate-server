@@ -297,11 +297,9 @@ def password_already_used(password, pwhistory):
 			if linesplit[0] == '{BCRYPT}':
 				password_hash = line[len('{BCRYPT}'):]
 				if bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('ASCII')):
-					ud.debug(ud.ADMIN, ud.ERROR, '\nbcrypt.checkpw() == [%s]' % (line))
 					return True
 			else:
 				password_hash = crypt(password, linesplit[1], linesplit[2])
-				ud.debug(ud.ADMIN, ud.ERROR, '\n== [%s]\n== [%s]' % (password_hash, line))
 		except IndexError:  # old style password history entry, no method id/salt in there
 			hash_algorithm = hashlib.new("sha1")
 			hash_algorithm.update(password.encode("utf-8"))
