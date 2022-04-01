@@ -1245,16 +1245,16 @@ class Node(PersistentCached):
 		# type: (str) -> List[Dict[str, Any]]
 		regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
 		domains = []
-		for dom in self.domains:
-			pd = self.domains[dom].pd
+		for domStat in self.domains.values():
+			pd = domStat.pd
 			contact = pd.annotations.get('contact', '')
 			name = pd.name
 			descr = pd.annotations.get('description', '')
 			if regex.match(name) or regex.match(contact) or regex.match(descr):
-				vnc = self.domains[dom]._vnc()
+				vnc = domStat._vnc()
 				domains.append({
 					'uuid': pd.uuid,
-					'name': pd.name,
+					'name': name,
 					'state': STATES[pd.state],
 					'reason': pd.reason,
 					'mem': pd.maxMem,
