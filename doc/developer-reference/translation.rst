@@ -1,14 +1,8 @@
 {Comments)
-How to rever to the univention-l10n-fr package? 
+How to refer to the univention-l10n-fr package? 
 - Translation package   what we use colloquially but not particularly nice.
 - Localization package  official name but we don't really provide localization?!
 - Language package?     mabe good, mabe not specific enough
-
-
-{old stuff}
-The original, english messages are the source code and wrapped with the gettext function, aliased to  `_`.
-It swaps the message with its translation if a different language is specified beforehand.
-The actual translation strings are supplied by `.po` files, which 
 
 .. _chap:translation:
 
@@ -21,12 +15,13 @@ UCSUMC translations Translation LocalisationTranslation
 =======================================================
 {1. Overview, intro}
 By default UCS includes English and German localizations.
-A french localization ist also provided by Univention but not installed by default and not updated as frequently.
-It can be installed using the following commands for ucs and ucs@school respectively: 
+A french localization is also provided by Univention but not installed by default and not updated as frequently.
+You can install it by using the following commands for ucs and ucs@school respectively: 
 `univention-install univention-l10n-fr
 `univention-install ucs-school-l10n-fr`
 
-Additional or custoized localization packages can be created by following the steps outlined below.
+To create additional or customized localization packages, please follow the
+steps outlined in the "???" section.
 
 {1. Overview, mechanism}
 The overwhelming majority of UCS is translated with the GNU gettetxt mechanism.
@@ -35,10 +30,11 @@ For more information on gettext, visit https://www.gnu.org/software/gettext/.
 The gettext function is aliased to `_` and the translations are located in `.po` files (de.po, fr.po)
 
 {1. Overview, implementation}
-Since the german localization is installed by default, every UCS package includes its german translation and the translation files (de.po files) can be found next to the source code.
+Every UCS package includes its german translation and the translation files (de.po files) can be found next to the source code. 
 All other localizations are encapsulated within a separate language package which allows building, maintaining and installing them as needed.
-Thus the french UCS localization package is located under `/base/univention-l10n-fr/` while the french ucs@cshool localization package is located at `/ucs-school-l10n-fr/`. 
-The translation entries, are concatenated into a few translation files (.po files) for each UCS package. fr.po files for example are located below `base/univention-l10n-fr/fr`. The directory tree mirrors the one of the source-code but only the translation files are present.
+Thus you can find the french UCS localization package under `/base/univention-l10n-fr/` and the french ucs@cshool localization package under `/ucs-school-l10n-fr/` within their respective git repositories.
+The translation entries, are concatenated into a few translation files (.po files) for each UCS package. 
+fr.po files for example are located below `base/univention-l10n-fr/fr`. The directory tree mirrors the one of the source-code but only the translation files are present.
 
 {2. .po files}
 .. _misc:translation:translate:
@@ -66,7 +62,8 @@ entries of the form
    msgstr ""
                
 
-The first line provides a hint, were the text is used. The second line
+The first line is a reference to the source code location of the String.
+The second line
 is optional and contains flags, which indicate the type and state of the
 translation. The string ``fuzzy`` indicates an entry, which was copied
 by gettext from a previous version and needs to be updated.
@@ -124,12 +121,12 @@ The workflow of creating and maintaining localization packages is outlined below
 Install needed tools
 --------------------
 
-The package univention-l10n-dev contains all tools required to setup and
+The package univention-l10n-dev contains all tools required to create and
 update a translation package. It requires some additional Debian tools
 to build the package. Run the following command on your UCS to install
 all needed packages.
-We recommend having a running UCS installation where the tools can be set up in an easy manner.
-Further more a current GIT checkout of the UCS source code is required.
+You need a running UCS installation to ensure that the tools described below
+work as intended
 
 .. code:: sh
 
@@ -142,7 +139,7 @@ Obtain a current checkout of the UCS GIT repository
 ---------------------------------------------------
 
 The GIT repository is later processed to get initial files for a new
-translation(often referred to as PO file or Portable Objects).
+translation.
 
 .. code:: sh
 
@@ -155,11 +152,11 @@ translation(often referred to as PO file or Portable Objects).
 
 .. _misc:translation:createpackage:
 
-Create a new translation package
+Create a translation package
 --------------------------------
 
-To create a new translation package for, e.g., Spanish in the current
-working directory, the following command would need to be executed:
+To create a  translation package, you need to execute
+the commands outlined below:
 
 .. code:: sh
 
@@ -174,8 +171,8 @@ working directory, the following command would need to be executed:
 `univention-ucs-translation-build-package` creates a new directory
 ``~/translation/univention-l10n-es/``, which contains a Debian source package of the same name.
 It includes all source and target files for the translation.
-`--source` specifies the UCS git checkout base directory of which a translation should be created.
-`--languagecode` `--locale` and `--language-name` specify the settings of the to be created localization package.
+`--source` specifies the UCS git checkout base directory from which a translation will be create.
+`--languagecode` `--locale` and `--language-name` specify the settings of the new localization package.
 
 .. _misc:translation:updatepackage:
 
@@ -192,12 +189,14 @@ First update your GIT checkout:
    git pull --rebase
                
 
-If changes affecting translations are made in the GIT repository,
-existing translation packages need to be updated to reflect those
-changes. Given a path to an updated GIT checkout,
-``univention-ucs-translation-merge`` can update a previously created
-translation source package. The following example will update the
-translation package univention-l10n-fr/:
+Over time the translation package becomes outdated as the source code
+is modified. 
+UCS doesn't break in this case but tew and updated English messages don't have
+a translation and are thus displayed in English.
+
+To update the translation, use the `univention-ucs-translation-merge` tool as
+described below.
+You also need an up-to-date git checkout.
 
 .. code:: sh
 
@@ -206,7 +205,7 @@ translation package univention-l10n-fr/:
        ~/translation/univention-l10n-es
                
 
-the first argument again specifies the source-code git checkout
+The first argument again specifies the source-code git checkout
 while the second command specifies the already existing and to be updated
 translation package source location.
 If you want to update the french translation package, you need to
@@ -217,8 +216,8 @@ specify `~/translation/univeniton-corporate-server/base/` as the second argument
 Build the translation package
 -----------------------------
 
-Before using the new translation, the Debian package has to be built and
-installed. This can be done with the following commands:
+Before you can use the new or updated translation, you need to first build and
+install the Debian package.
 
 .. code:: sh
 
@@ -228,6 +227,6 @@ installed. This can be done with the following commands:
    sudo apt install ../univention-l10n-es_*.deb
                
 
-After logging out of the UCSUMC the new language should now be
-selectable in the UCSUMC login window. Untranslated strings will still be
-shown in their original language, i.e. in English.
+After logging out of the UCSUMC, you can select the new or updated language in
+the UCSUMC login window. Strings without a translation are still
+displayed in their original language, meaning English.
