@@ -299,13 +299,12 @@ class Resource(RequestHandler):
 		if exc_info and isinstance(exc_info[1], (HTTPError, UMC_Error)):
 			exc = exc_info[1]
 			if isinstance(exc, UMC_Error):  # FIXME: just a workaround!
-				exc = UMC_HTTPError(exc.status, exc.msg, )
+				exc = UMC_HTTPError(exc.status, exc.msg, exc.result, reason=exc.reason)
 			traceback = None
-			body = None
+			body = exc.body
 			if isinstance(exc, UMC_HTTPError) and self.settings.get("serve_traceback") and isinstance(exc.error, dict) and exc.error.get('traceback'):
 				traceback = '%s\nRequest: %s\n\n%s' % (exc.log_message, exc.error.get('command'), exc.error.get('traceback'))
 				traceback = traceback.strip()
-				body = exc.body
 			content = self.default_error_page(exc.status_code, exc.log_message, traceback, body)
 			self.set_status(exc.status_code, reason=exc.reason)
 			self.finish(content.encode('utf-8'))
