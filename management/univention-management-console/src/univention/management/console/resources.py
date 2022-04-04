@@ -67,8 +67,8 @@ from .config import MODULE_INACTIVITY_TIMER, MODULE_COMMAND, ucr, get_int
 from .error import UMC_Error, BadRequest, Forbidden, BadGateway
 from .ldap import reset_cache as reset_ldap_connection_cache
 from .session import moduleManager, categoryManager
-#from .modules.sanitizers import StringSanitizer, DictSanitizer
-#from .modules.decorators import sanitize, allow_get_request
+from .modules.sanitizers import StringSanitizer, DictSanitizer, ListSanitizer
+from .modules.decorators import copy_function_meta_data, sanitize_args
 
 try:
 	from time import monotonic
@@ -78,6 +78,23 @@ except ImportError:
 REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE = int(REQUEST_ENTITY_TOO_LARGE), int(LENGTH_REQUIRED), int(NOT_FOUND), int(BAD_REQUEST), int(UNAUTHORIZED), int(SERVICE_UNAVAILABLE)
 
 SessionHandler = None
+
+
+def sanitize(*sargs, **skwargs):
+	defaults = {'default': {}, 'required': True, 'may_change_value': True}
+	if sargs:
+		defaults.update(skwargs)
+		sanitizer = ListSanitizer(sargs[0], **defaults)
+	else:
+		sanitizer = DictSanitizer(skwargs, **defaults)
+
+	def _decorator(function):
+		def _response(self, *args, **kwargs):
+			self.request.body_arguments = sanitize_args(sanitizer, 'request.options', {'request.options': self.request.body_arguments})
+			return function(self, *args, **kwargs)
+		copy_function_meta_data(function, _response)
+		return _response
+	return _decorator
 
 
 class NotFound(HTTPError):
@@ -519,7 +536,7 @@ class SetLocale(Resource):
 		set language via `Accept-Language` HTTP header
 	"""
 
-	#@sanitize(locale=StringSanitizer(required=True))
+	@sanitize(locale=StringSanitizer(required=True))
 	def post(self, locale):
 		locale = self.request.body_arguments['locale']
 		# self.update_language([locale])
@@ -665,7 +682,7 @@ class Command(Resource):
 class UCR(Resource):
 	"""Get UCR Variables matching a pattern"""
 
-	#@sanitize(StringSanitizer(required=True))
+	@sanitize(StringSanitizer(required=True))
 	def get(self):
 		ucr.load()
 		result = {}
@@ -841,10 +858,10 @@ class Set(Resource):
 class SetPassword(Resource):
 	"""Change the password of the currently authenticated user"""
 
-	#@sanitize(password=DictSanitizer(dict(
-	#	password=StringSanitizer(required=True),
-	#	new_password=StringSanitizer(required=True),
-	#)))
+	@sanitize(password=DictSanitizer(dict(
+		password=StringSanitizer(required=True),
+		new_password=StringSanitizer(required=True),
+	)))
 	@tornado.gen.coroutine
 	def post(self):
 		from .server import pool
@@ -900,9 +917,9 @@ class SetUserPreferences(UserPreferences):
 	def get(self):
 		return self.post()
 
-	#@sanitize(user=DictSanitizer(dict(
-	#	preferences=DictSanitizer(dict(), required=True),
-	#)))
+	@sanitize(user=DictSanitizer(dict(
+		preferences=DictSanitizer(dict(), required=True),
+	)))
 	def post(self):
 		lo = self.current_user.user.get_user_ldap_connection()
 		# eliminate double entries
