@@ -217,6 +217,9 @@ class SAMLUser(object):
 		if response.not_on_or_after:
 			self.session_end_time = int(monotonic() + (response.not_on_or_after - time.time()))
 
+	def on_logout(self):
+		SAMLResource.on_logout(self.name_id)
+
 
 class SamlError(HTTPError):
 	"""Errors caused during SAML authentication"""
@@ -350,8 +353,8 @@ class Logout(Resource):
 	"""Logout a user"""
 
 	def get(self, **kwargs):
-		user = self.get_user()
-		if user and user.saml is not None:
+		session = self.current_user
+		if session.saml is not None:
 			return self.redirect('/univention/saml/logout', status=303)
 		self.expire_session()
 		self.redirect(ucr.get('umc/logout/location') or '/univention/', status=303)
@@ -599,6 +602,7 @@ class SamlACS(SAMLResource):
 	def attribute_consuming_service(self, binding, message, relay_state):
 		response = self.acs(message, binding)
 		saml = SAMLUser(response, message)
+		# TODO/FIXME: do PAM auth here?!
 		self.set_session(self.create_sessionid(), saml.username, saml=saml)
 		# protect against javascript:alert('XSS'), mailto:foo and other non relative links!
 		location = urlparse(relay_state)
@@ -613,13 +617,14 @@ class SamlACS(SAMLResource):
 		response = self.acs(message, binding)
 		saml = SAMLUser(response, message)
 		sessionid = self.create_sessionid()
+		# TODO/FIXME: do PAM auth here?!
 		self.set_session(sessionid, saml.username, saml=saml)
 		self.set_header('Content-Type', 'text/html')
 		data = {"status": 200, "result": {"username": saml.username}}
 		self.finish(b'<html><body><textarea>%s</textarea></body></html>' % (json.dumps(data).encode('ASCII'),))
 
 	def _logout_success(self):
-		user = self.get_user()
+		user = self.current_user
 		if user:
 			user.saml = None
 		self.redirect('/univention/logout', status=303)
@@ -768,7 +773,7 @@ class SamlSingleLogout(SamlACS):
 			is_logout_request = False
 
 		if is_logout_request:
-			user = self.get_user()
+			user = self.current_user
 			if not user or user.saml is None:
 				# The user is either already logged out or has no cookie because he signed in via IP and gets redirected to the FQDN
 				name_id = None
@@ -789,7 +794,7 @@ class SamlLogout(SamlACS):
 	"""Initiate SAML Logout at the IDP"""
 
 	def get(self):
-		user = self.get_user()
+		user = self.current_user
 
 		if user is None or user.saml is None:
 			return self._logout_success()

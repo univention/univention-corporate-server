@@ -407,6 +407,23 @@ class Resource(RequestHandler):
 	def set_default_headers(self):
 		self.set_header('Server', 'UMC-Server/1.0')  # TODO:
 
+	@tornado.gen.coroutine
+	def prepare(self):
+		super(Resource, self).prepare()
+		self._proxy_uri()
+		self._ = self.locale.translate
+		self.request.content_negotiation_lang = 'json'
+		self.decode_request_arguments()
+		yield self.parse_authorization()
+		self.current_user.reset_connection_timeout()  # FIXME: order correct?
+		self.check_saml_session_validity()
+		self.bind_session_to_ip()
+
+	def check_saml_session_validity(self):
+		session = self.current_user
+		if session.saml is not None and session.timed_out(monotonic()):
+			raise HTTPError(UNAUTHORIZED)
+
 	def get_current_user(self):
 		session = Session.get(self.get_session_id())
 		session._ = self._
@@ -420,9 +437,15 @@ class Resource(RequestHandler):
 		# because it is an arbitrary value coming from the Client!
 		return self.get_cookie('UMCSessionId') or self.sessionidhash()
 
-	def get_session(self):
-		if self.current_user.session_id in Session.sessions:
-			return self.current_user
+	def create_sessionid(self, random=True):
+		if self.current_user.authenticated:
+			# if the user is already authenticated at the UMC-Server
+			# we must not change the session ID cookie as this might cause
+			# race conditions in the frontend during login, especially when logged in via SAML
+			return self.get_session_id()
+		if random:
+			return str(uuid.uuid4())
+		return self.sessionidhash()
 
 	def sessionidhash(self):
 		session = u'%s%s%s%s' % (self.request.headers.get('Authorization', ''), self.request.headers.get('Accept-Language', ''), self.get_ip_address(), self.sessionidhash.salt)
@@ -432,17 +455,58 @@ class Resource(RequestHandler):
 
 	sessionidhash.salt = uuid.uuid4()
 
-	@tornado.gen.coroutine
-	def prepare(self):
-		super(Resource, self).prepare()
-		self._proxy_uri()
-		self._ = self.locale.translate
-		self.request.content_negotiation_lang = 'json'
-		self.decode_request_arguments()
-		yield self.parse_authorization()
-		self.current_user.reset_connection_timeout()
-		# self.check_saml_session_validity()
-		self.bind_session_to_ip()
+	def set_session(self, sessionid, username, password=None, saml=None):
+		self.current_user.user.username = username
+		self.current_user.user.password = password
+		if saml:
+			self.current_user.saml = saml
+		Session.put(sessionid, self.current_user)
+		self.set_cookies(('UMCSessionId', sessionid), ('UMCUsername', username))
+
+	def expire_session(self):
+		self.current_user.logout()
+		self.set_cookies(('UMCSessionId', ''), expires=datetime.datetime.fromtimestamp(0))
+
+	def set_cookies(self, *cookies, **kwargs):
+		# TODO: use expiration from session timeout?
+		# set the cookie once during successful authentication
+		if kwargs.get('expires'):
+			expires = kwargs.get('expires')
+		elif ucr.is_true('umc/http/enforce-session-cookie'):
+			# session cookie (will be deleted when browser closes)
+			expires = None
+		else:
+			# force expiration of cookie in 5 years from now on...
+			expires = (datetime.datetime.now() + datetime.timedelta(days=5 * 365))
+		for name, value in cookies:
+			name = self.suffixed_cookie_name(name)
+			if value is None:  # session.user.username might be None for unauthorized users
+				self.clear_cookie(name, path='/univention/')
+				continue
+			cookie_args = {
+				'expires': expires,
+				'path': '/univention/',
+				'secure': self.request.protocol == 'https' and ucr.is_true('umc/http/enforce-secure-cookie'),
+				'version': 1,
+			}
+			if ucr.get('umc/http/cookie/samesite') in ('Strict', 'Lax', 'None'):
+				cookie_args['samesite'] = ucr['umc/http/cookie/samesite']
+			self.set_cookie(name, value, **cookie_args)
+
+	def get_cookie(self, name):
+		cookie = self.request.cookies.get
+		morsel = cookie(self.suffixed_cookie_name(name)) or cookie(name)
+		if morsel:
+			return morsel.value
+
+	def suffixed_cookie_name(self, name):
+		host, _, port = self.request.headers.get('Host', '').partition(':')
+		if port:
+			try:
+				port = '-%d' % (int(port),)
+			except ValueError:
+				port = ''
+		return '%s%s' % (name, port)
 
 	def bind_session_to_ip(self):
 		ip = self.get_ip_address()

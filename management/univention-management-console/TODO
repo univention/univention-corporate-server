@@ -11,3 +11,7 @@
 [ ] self._
 [ ] restart of server drops sessions - do we want to preserver? prior, this was only for umc-webserver the case, which simply reconnected to umc-server if that was restarted.
 [ ] https://github.com/tornadoweb/tornado/pull/3072 - Cookie UMCUsername contains UTF-8 characters, 60_umc/03_acls
+[ ] unify session/user classes
+[ ] remove custom error handling exceptions?
+[ ] multiprocessing sticky sessions not possible anymore. sessions aren't in shared memory
+[ ] can our exceptions inherit from tornado.web.HTTPError ?
