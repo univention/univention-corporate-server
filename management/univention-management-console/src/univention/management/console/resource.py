@@ -34,9 +34,9 @@ import base64
 import uuid
 import hashlib
 import datetime
+from http.server import BaseHTTPRequestHandler
 
 import tornado.gen
-from cherrypy.lib.httputil import valid_status  # FIXME: replace
 from tornado.web import HTTPError, RequestHandler
 from six.moves.http_client import LENGTH_REQUIRED, UNAUTHORIZED
 
@@ -67,6 +67,10 @@ Morsel._reserved['samesite'] = 'SameSite'
 LENGTH_REQUIRED, UNAUTHORIZED = int(LENGTH_REQUIRED), int(UNAUTHORIZED)
 
 traceback_pattern = re.compile(r'(Traceback.*most recent call|File.*line.*in.*\d)')
+
+_http_response_codes = BaseHTTPRequestHandler.responses.copy()
+_http_response_codes[500] = ('Internal Server Error', 'The server encountered an unexpected condition which prevented it from fulfilling the request.')
+_http_response_codes[503] = ('Service Unavailable', 'The server is currently unable to handle the request due to a temporary overloading or maintenance of the server.')
 
 
 class UMC_HTTPError(HTTPError):
@@ -346,8 +350,7 @@ class Resource(RequestHandler):
 
 	def default_error_page_json(self, status, message, traceback, result=None):
 		""" The default error page for UMCP responses """
-		status, _, description = valid_status(status)
-		if status == 401 and message == description:
+		if status == 401 and message == _http_response_codes.get(status):
 			message = ''
 		location = self.request.full_url().rsplit('/', 1)[0]
 		if status == 404:
