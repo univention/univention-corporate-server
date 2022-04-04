@@ -68,7 +68,7 @@ from saml2.metadata import create_metadata_string
 from saml2.response import VerificationError, UnsolicitedResponse, StatusError
 from saml2.s_utils import UnknownPrincipal, UnsupportedBinding
 from saml2.sigver import MissingKey, SignatureError
-from saml2.ident import code as encode_name_id, decode as decode_name_id
+from saml2.ident import code as encode_name_id
 
 from univention.lib.i18n import NullTranslation
 
@@ -96,12 +96,6 @@ class NotFound(HTTPError):
 		super(NotFound, self).__init__(404)
 
 
-class UMCP_Dispatcher(object):
-
-	"""Dispatcher used to exchange the requests between CherryPy and UMC"""
-	sessions = {}
-
-
 class UploadManager(dict):
 	"""Store file uploads in temporary files so that module processes can access them"""
 
@@ -125,83 +119,6 @@ class UploadManager(dict):
 
 
 _upload_manager = UploadManager()
-
-
-class User(object):
-	# TODO: merge with other user class
-
-	__slots__ = ('sessionid', 'username', 'password', 'saml', '_timeout', '_timeout_id')
-
-	def __init__(self, sessionid, username, password, saml=None):
-		self.sessionid = sessionid
-		self.username = username
-		self.password = password
-		self.saml = saml
-		self._timeout_id = None
-		self.reset_timeout()
-
-	def _session_timeout_timer(self):
-		session = UMCP_Dispatcher.sessions.get(self.sessionid)
-		if session and session._requestid2response_queue:
-			self._timeout = 1
-			ioloop = tornado.ioloop.IOLoop.current()
-			self._timeout_id = ioloop.call_later(1000, self._session_timeout_timer)
-			return
-
-		CORE.info('session %r timed out' % (self.sessionid,))
-		Resource.sessions.pop(self.sessionid, None)
-		self.on_logout()
-		return False
-
-	def reset_timeout(self):
-		self.disconnect_timer()
-		self._timeout = monotonic() + _session_timeout
-		ioloop = tornado.ioloop.IOLoop.current()
-		self._timeout_id = ioloop.call_later(int(self.session_end_time - monotonic()) * 1000, self._session_timeout_timer)
-
-	def disconnect_timer(self):
-		if self._timeout_id is not None:
-			ioloop = tornado.ioloop.IOLoop.current()
-			ioloop.remove_timeout(self._timeout_id)
-
-	def timed_out(self, now):
-		return self.session_end_time < now
-
-	@property
-	def session_end_time(self):
-		if self.is_saml_user() and self.saml.session_end_time:
-			return self.saml.session_end_time
-		return self._timeout
-
-	def is_saml_user(self):
-		# self.saml indicates that it was originally a
-		# saml user. but it may have upgraded and got a
-		# real password. the saml user object is still there,
-		# though
-		return self.password is None and self.saml
-
-	def on_logout(self):
-		self.disconnect_timer()
-		if SAMLResource.SP and self.saml:
-			try:
-				SAMLResource.SP.local_logout(decode_name_id(self.saml.name_id))
-			except Exception as exc:  # e.g. bsddb.DBNotFoundError
-				CORE.warn('Could not remove SAML session: %s' % (exc,))
-
-	def get_umc_password(self):
-		if self.is_saml_user():
-			return self.saml.message
-		else:
-			return self.password
-
-	def get_umc_auth_type(self):
-		if self.is_saml_user():
-			return "SAML"
-		else:
-			return None
-
-	def __repr__(self):
-		return '<User(%s, %s, %s)>' % (self.username, self.sessionid, self.saml is not None)
 
 
 class SAMLUser(object):
@@ -375,12 +292,12 @@ class SessionInfo(Resource):
 
 	def get(self):
 		info = {}
-		user = self.get_user()
-		if user is None:
+		session = self.current_user
+		if not session.authenticated:
 			raise HTTPError(UNAUTHORIZED)
-		info['username'] = user.username
-		info['auth_type'] = user.saml and 'SAML'
-		info['remaining'] = int(user.session_end_time - monotonic())
+		info['username'] = session.user.username
+		info['auth_type'] = session.get_umc_auth_type()  # prior: session.saml and 'SAML'
+		info['remaining'] = int(session.session_end_time - monotonic())
 		self.content_negotiation(info)
 
 	def post(self):
@@ -501,7 +418,7 @@ class CPCommand(Resource):
 #class AuthSSO(Resource):
 #
 #	def parse_authorization(self):
-#		return  # do not call super method, prevent basic auth
+#		return  # do not call super method: prevent basic auth
 #
 #	def get(self):
 #		CORE.info('/auth/sso: got new auth request')

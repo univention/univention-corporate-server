@@ -106,6 +106,8 @@ SessionHandler = None
 
 traceback_pattern = re.compile(r'(Traceback.*most recent call|File.*line.*in.*\d)')
 
+_session_timeout = get_int('umc/http/session/timeout', 300)
+
 
 class UMC_HTTPError(HTTPError):
 
@@ -306,7 +308,11 @@ class User(object):
 		self.session = session
 		self.username = None
 		self.password = None
+		self.auth_type = None
 		self.user_dn = None
+
+	def __repr__(self):
+		return '<User(%s, %s, %s)>' % (self.username, self.session.session_id, self.session.saml is not None)
 
 	def set_credentials(self, username, password, auth_type):
 		self.username = username
@@ -345,7 +351,7 @@ class User(object):
 class Session(object):
 	"""A interface to session data"""
 
-	__slots__ = ('session_id', 'ip', 'acls', 'user', 'processes', 'authenticated', 'timeout', '_timeout', '_timeout_id', '_')
+	__slots__ = ('session_id', 'ip', 'acls', 'user', 'saml', 'processes', 'authenticated', 'timeout', '_timeout', '_timeout_id', '_')
 	__auth = AuthHandler()
 	sessions = {}
 
@@ -375,12 +381,16 @@ class Session(object):
 		self.ip = None
 		self.authenticated = False
 		self.user = User(self)
+		self.saml = None
 		self.acls = IACLs(self)
 		self.processes = Processes(self)
 		self.timeout = None
 		self._timeout = None
 		self._timeout_id = None
 		self.reset_connection_timeout()
+
+	#	self._timeout_id = None
+	#	self.reset_timeout()
 
 	def renew(self):
 		CORE.info('Renewing session')
@@ -399,6 +409,71 @@ class Session(object):
 	def reset_connection_timeout(self):
 		self.timeout = SERVER_CONNECTION_TIMEOUT
 		self.reset_timeout()
+
+	def is_saml_user(self):
+		# self.saml indicates that it was originally a
+		# saml user. but it may have upgraded and got a
+		# real password. the saml user object is still there,
+		# though
+		return self.user.password is None and self.saml
+
+	def get_umc_password(self):
+		if self.is_saml_user():
+			return self.saml.message
+		else:
+			return self.user.password
+
+	def get_umc_auth_type(self):
+		if self.is_saml_user():
+			return "SAML"
+		else:
+			return None
+
+	def logout(self):
+		self.on_logout()
+		self.expire(self.session_id)
+
+	# FIXME: TAKEN FROM WEBSERVER. FIX ACCURATENESS
+
+	def _session_timeout_timer(self):
+		class UMCP_Dispatcher(object):
+			sessions = {}
+		session = UMCP_Dispatcher.sessions.get(self.sessionid)
+		if session and session._requestid2response_queue:
+			self._timeout = 1
+			ioloop = tornado.ioloop.IOLoop.current()
+			self._timeout_id = ioloop.call_later(1000, self._session_timeout_timer)
+			return
+
+		CORE.info('session %r timed out' % (self.sessionid,))
+		Resource.sessions.pop(self.sessionid, None)
+		self.on_logout()
+		return False
+
+	def reset_timeout(self):
+		self.disconnect_timer()
+		self._timeout = monotonic() + _session_timeout
+		ioloop = tornado.ioloop.IOLoop.current()
+		self._timeout_id = ioloop.call_later(int(self.session_end_time - monotonic()) * 1000, self._session_timeout_timer)
+
+	def disconnect_timer(self):
+		if self._timeout_id is not None:
+			ioloop = tornado.ioloop.IOLoop.current()
+			ioloop.remove_timeout(self._timeout_id)
+
+	def timed_out(self, now):
+		return self.session_end_time < now
+
+	@property
+	def session_end_time(self):
+		if self.is_saml_user() and self.saml.session_end_time:
+			return self.saml.session_end_time
+		return self._timeout
+
+	def on_logout(self):
+		self.disconnect_timer()
+		if self.saml:
+			self.saml.on_logout()
 
 
 class Resource(RequestHandler):
@@ -698,101 +773,6 @@ class Resource(RequestHandler):
 			langs.append((parts[0].strip(), score))
 		langs.sort(key=lambda pair: pair[1], reverse=True)
 		return langs
-	sessions = dict()  # SharedMemoryDict()
-
-	def suffixed_cookie_name(self, name):
-		host, _, port = self.request.headers.get('Host', '').partition(':')
-		if port:
-			try:
-				port = '-%d' % (int(port),)
-			except ValueError:
-				port = ''
-		return '%s%s' % (name, port)
-
-	def create_sessionid(self, random=True):
-		if self.get_session():
-			# if the user is already authenticated at the UMC-Server
-			# we must not change the session ID cookie as this might cause
-			# race conditions in the frontend during login, especially when logged in via SAML
-			return self.get_session_id()
-		user = self.get_user()
-		if user:
-			# If the user was already authenticated at the UMC-Server
-			# and the connection was lost (e.g. due to a module timeout)
-			# we must not change the session ID cookie, as there might be multiple concurrent
-			# requests from the same client during a new initialization of the connection to the UMC-Server.
-			# They must cause that the session has one singleton connection!
-			return user.sessionid
-		if random:
-			return str(uuid.uuid4())
-		return self.sessionidhash()
-
-	def check_saml_session_validity(self):
-		user = self.get_user()
-		if user and user.saml is not None and user.timed_out(monotonic()):
-			raise HTTPError(UNAUTHORIZED)
-
-	def set_cookies(self, *cookies, **kwargs):
-		# TODO: use expiration from session timeout?
-		# set the cookie once during successful authentication
-		if kwargs.get('expires'):
-			expires = kwargs.get('expires')
-		elif ucr.is_true('umc/http/enforce-session-cookie'):
-			# session cookie (will be deleted when browser closes)
-			expires = None
-		else:
-			# force expiration of cookie in 5 years from now on...
-			expires = (datetime.datetime.now() + datetime.timedelta(days=5 * 365))
-		for name, value in cookies:
-			name = self.suffixed_cookie_name(name)
-			if value is None:  # session.user.username might be None for unauthorized users
-				self.clear_cookie(name, path='/univention/')
-				continue
-			cookie_args = {
-				'expires': expires,
-				'path': '/univention/',
-				'secure': self.request.protocol == 'https' and ucr.is_true('umc/http/enforce-secure-cookie'),
-				'version': 1,
-			}
-			if ucr.get('umc/http/cookie/samesite') in ('Strict', 'Lax', 'None'):
-				cookie_args['samesite'] = ucr['umc/http/cookie/samesite']
-			self.set_cookie(name, value, **cookie_args)
-
-	def get_cookie(self, name):
-		cookie = self.request.cookies.get
-		morsel = cookie(self.suffixed_cookie_name(name)) or cookie(name)
-		if morsel:
-			return morsel.value
-
-	def set_session(self, sessionid, username, password=None, saml=None):
-		olduser = self.get_user()
-
-		if olduser:
-			olduser.disconnect_timer()
-		from .server import User
-		user = User(sessionid, username, password, saml or olduser and olduser.saml)
-
-		self.sessions[sessionid] = user
-		self.set_cookies(('UMCSessionId', sessionid), ('UMCUsername', username))
-		return user
-
-	def expire_session(self):
-		sessionid = self.get_session_id()
-		if sessionid:
-			user = self.sessions.pop(sessionid, None)
-			if user:
-				user.on_logout()
-			Session.expire(sessionid)
-			self.set_cookies(('UMCSessionId', ''), expires=datetime.datetime.fromtimestamp(0))
-
-	def get_user(self):
-		value = self.get_session_id()
-		if not value or value not in self.sessions:
-			return
-		user = self.sessions[value]
-		if user.timed_out(monotonic()):
-			return
-		return user
 
 
 class NewSession(Resource):
@@ -808,7 +788,7 @@ class Auth(Resource):
 	"""Authenticate the user via PAM - either via plain password or via SAML message"""
 
 	def parse_authorization(self):
-		return  # do not call super method, prevent basic auth
+		return  # do not call super method: prevent basic auth
 
 	@tornado.gen.coroutine
 	def post(self):
@@ -845,7 +825,6 @@ class Auth(Resource):
 		# create a sessionid if the user is not yet authenticated
 		sessionid = self.create_sessionid(True)
 		self.set_session(sessionid, session.user.username, password=session.user.password)
-		Session.put(sessionid, session)
 		self.set_status(result.status)
 		if result.message:
 			self.set_header('X-UMC-Message', json.dumps(result.message))
@@ -1199,10 +1178,12 @@ class Command(Resource):
 		headers['X-User-Dn'] = json.dumps(session.user.user_dn)
 		#headers['X-UMC-Flavor'] = None
 		# Forwarded=self.get_ip_address() ?
-		headers['Authorization'] = 'basic ' + base64.b64encode(('%s:%s' % (session.user.username, session.user.password)).encode('ISO8859-1')).decode('ASCII')
+		headers['Authorization'] = 'basic ' + base64.b64encode(('%s:%s' % (session.user.username, session.get_umc_password())).encode('ISO8859-1')).decode('ASCII')
 		headers['X-UMC-Method'] = methodname
 		headers['X-UMC-Command'] = umcp_command.upper()
-		#headers['X-UMC-SAML'] = None
+		auth_type = session.get_umc_auth_type()
+		if auth_type:
+			headers['X-UMC-AuthType'] = auth_type
 		return headers
 
 	@tornado.web.asynchronous
