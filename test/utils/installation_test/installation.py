@@ -19,6 +19,8 @@ import os
 import logging
 from argparse import Namespace  # noqa F401
 
+KVM_INTERFACE = 'ens7'
+
 
 class UCSInstallation(object):
 
@@ -235,16 +237,16 @@ class UCSInstallation(object):
 		time.sleep(5)
 		self.client.enterText(self.args.password)
 		self.client.keyPress('enter')
-		self.client.enterText('ucr set interfaces-ens6-tzpe`manual')
+		self.client.enterText('ucr set interfaces-%s-tzpe`manual' % KVM_INTERFACE)
 		self.client.keyPress('enter')
 		time.sleep(30)
-		self.client.enterText('ifconfig ens6 up')
+		self.client.enterText('ifconfig %s up' % KVM_INTERFACE)
 		self.client.keyPress('enter')
 		self.client.enterText('echo ')
 		self.client.keyDown('shift')
 		self.client.enterText('2')  # @
 		self.client.keyUp('shift')
-		self.client.enterText('reboot -sbin-ifconfig ens6 up ')
+		self.client.enterText('reboot -sbin-ifconfig %s up ' % KVM_INTERFACE)
 		self.client.keyDown('shift')
 		self.client.enterText("'")  # |
 		self.client.keyUp('shift')
@@ -419,7 +421,7 @@ class UCSInstallation(object):
 			self.ucsschool()
 			self.finish()
 			if not self.args.no_second_interface:
-				# TODO activate ens6 so that ucs-kvm-create can connect to instance
+				# TODO activate `KVM_INTERFACE` so that ucs-kvm-create can connect to instance
 				# this is done via login and setting interfaces/eth0/type, is there a better way?
 				self.configure_kvm_network()
 		except Exception:
