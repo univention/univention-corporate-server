@@ -59,12 +59,12 @@ import univention.admin.uexceptions as udm_errors
 
 from univention.lib.i18n import Locale
 from .protocol.message import Request
-from .resource import Resource, UMC_HTTPError
+from .resource import Resource
 from .pam import PamAuth, PasswordChangeFailed
 from .log import CORE
 from .locales import I18N, I18N_Manager
 from .config import MODULE_INACTIVITY_TIMER, MODULE_COMMAND, ucr, get_int
-from .error import UMC_Error, BadRequest, Forbidden, BadGateway
+from .error import UMC_Error, BadRequest, Forbidden, BadGateway, NotFound
 from .ldap import reset_cache as reset_ldap_connection_cache
 from .session import moduleManager, categoryManager
 from .modules.sanitizers import StringSanitizer, DictSanitizer, ListSanitizer
@@ -95,12 +95,6 @@ def sanitize(*sargs, **skwargs):
 		copy_function_meta_data(function, _response)
 		return _response
 	return _decorator
-
-
-class NotFound(HTTPError):
-
-	def __init__(self):
-		super(NotFound, self).__init__(404)
 
 
 class CouldNotConnect(Exception):
@@ -571,6 +565,7 @@ class Command(Resource):
 		# make sure that the UMC login dialog is shown if e.g. restarting the UMC-Server during active sessions
 		if isinstance(exc, UMC_Error) and exc.status == 403:
 			exc.status = 401
+			exc.status_code = 401
 
 	@tornado.gen.coroutine
 	def get(self, umcp_command, command):
@@ -633,8 +628,8 @@ class Command(Resource):
 			if response.code >= 400 and response.headers.get('Content-Type', '').startswith('application/json'):
 				body = json.loads(response.body)
 				message = json.loads(response.headers.get('X-UMC-Message', 'null'))
-				exc = UMC_HTTPError(response.code, message=message, body=body.get('result'), error=body.get('error'), reason=response.reason)
-				self.write_error(response.code, (UMC_HTTPError, exc, None))
+				exc = UMC_Error(message, response.code, body.get('result'), reason=response.reason)
+				self.write_error(response.code, (UMC_Error, exc, None), error=body.get('error'))
 				return
 
 			if response.body:
@@ -851,8 +846,7 @@ class Set(Resource):
 				self.redirect('/univention/set/user/preferences', status=307)
 			elif key == 'locale':
 				self.redirect('/univention/set/locale', status=307)
-		#raise NotFound()
-		raise HTTPError(404)
+		raise NotFound()
 
 
 class SetPassword(Resource):
@@ -874,7 +868,7 @@ class SetPassword(Resource):
 		try:
 			yield pool.submit(pam.change_password, username, password, new_password)
 		except PasswordChangeFailed as exc:
-			raise UMC_HTTPError(400, str(exc), {'new_password': '%s' % (exc,)})  # 422
+			raise UMC_Error(str(exc), 400, {'new_password': '%s' % (exc,)})  # 422
 		else:
 			CORE.info('Successfully changed password')
 			self.set_header('X-UMC-Message', json.dumps(self._('Password successfully changed.')))

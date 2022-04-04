@@ -73,16 +73,6 @@ _http_response_codes[500] = ('Internal Server Error', 'The server encountered an
 _http_response_codes[503] = ('Service Unavailable', 'The server is currently unable to handle the request due to a temporary overloading or maintenance of the server.')
 
 
-class UMC_HTTPError(HTTPError):
-
-	""" HTTPError which sets an error result """
-
-	def __init__(self, status=500, message=None, body=None, error=None, reason=None):
-		HTTPError.__init__(self, status, message, reason=reason)
-		self.body = body
-		self.error = error
-
-
 class Resource(RequestHandler):
 	"""Base class for every UMC resource"""
 
@@ -298,12 +288,11 @@ class Resource(RequestHandler):
 	def write_error(self, status_code, exc_info=None, **kwargs):
 		if exc_info and isinstance(exc_info[1], (HTTPError, UMC_Error)):
 			exc = exc_info[1]
-			if isinstance(exc, UMC_Error):  # FIXME: just a workaround!
-				exc = UMC_HTTPError(exc.status, exc.msg, exc.result, reason=exc.reason)
 			traceback = None
-			body = exc.body
-			if isinstance(exc, UMC_HTTPError) and self.settings.get("serve_traceback") and isinstance(exc.error, dict) and exc.error.get('traceback'):
-				traceback = '%s\nRequest: %s\n\n%s' % (exc.log_message, exc.error.get('command'), exc.error.get('traceback'))
+			body = exc.result if isinstance(exc, UMC_Error) else None
+			error = kwargs.pop('error', None)
+			if isinstance(exc, UMC_Error) and self.settings.get("serve_traceback") and isinstance(error, dict) and error.get('traceback'):
+				traceback = '%s\nRequest: %s\n\n%s' % (exc.msg, error.get('command'), error.get('traceback'))
 				traceback = traceback.strip()
 			content = self.default_error_page(exc.status_code, exc.log_message, traceback, body)
 			self.set_status(exc.status_code, reason=exc.reason)
