@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-management-console
-fix: 12.0.12-21A~5.0.0.202204041052
+fix: 12.0.12-22A~5.0.0.202204041241
 desc: |
  This update addresses the following issue(s):
  * The cookie attribute `SameSite` can now be set for UMC cookies via the UCR
