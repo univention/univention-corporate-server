@@ -382,9 +382,9 @@ class Session(object):
 		# TODO: implement
 
 	@tornado.gen.coroutine
-	def authenticate(self, request):
-		pam = self.__auth.get_handler(request.body_arguments['locale'])
-		result = yield pool.submit(self.__auth.authenticate, pam, request.body_arguments)
+	def authenticate(self, args):
+		pam = self.__auth.get_handler(args['locale'])
+		result = yield pool.submit(self.__auth.authenticate, pam, args)
 		pam.end()
 		self.authenticated = bool(result)
 		if self.authenticated:
@@ -457,6 +457,7 @@ class Resource(RequestHandler):
 			self.request.protocol = 'https'
 		self.request.uri = '/univention%s' % (self.request.uri,)
 
+	@tornado.gen.coroutine
 	def parse_authorization(self):
 		credentials = self.request.headers.get('Authorization')
 		if not credentials:
@@ -769,7 +770,7 @@ class Auth(Resource):
 		self.request.body_arguments['auth_type'] = None
 		self.request.body_arguments['locale'] = self.locale.code
 		session = self.current_user
-		result = yield session.authenticate(self.request)
+		result = yield session.authenticate(self.request.body_arguments)
 
 		# create a sessionid if the user is not yet authenticated
 		sessionid = self.create_sessionid(True)
@@ -785,10 +786,13 @@ class Auth(Resource):
 	@tornado.gen.coroutine
 	def authenticate(self, username, password):
 		sessionid = self.sessionidhash()
+		session = self.current_user
+		result = yield session.authenticate({'locale': self.locale.code, 'username': username, 'password': password})
+		if not session.authenticated:
+			raise UMC_Error(result.message, result.status, result.result)
 
 		ud.debug(ud.MAIN, 99, 'auth: creating session with sessionid=%r' % (sessionid,))
-
-		self.set_session(sessionid, username, password=password)
+		self.set_session(sessionid, session.user.username, password=session.user.password)
 
 
 class Modules(Resource):
