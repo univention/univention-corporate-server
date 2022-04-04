@@ -36,19 +36,19 @@ ucrLogrotate = import_lib_module("ucrLogrotate")
 
 
 @pytest.fixture
-def logrotate_ucr(mocked_ucr):
-	mocked_ucr["logrotate/rotate"] = "weekly"
-	mocked_ucr["logrotate/rotate/count"] = "12"
-	mocked_ucr["logrotate/create"] = "640 root adm"
-	mocked_ucr["logrotate/missingok"] = "yes"
-	mocked_ucr["logrotate/compress"] = "yes"
-	mocked_ucr["logrotate/notifempty"] = "yes"
-	return mocked_ucr
+def logrotate_ucr(mock_ucr):
+	mock_ucr["logrotate/rotate"] = "weekly"
+	mock_ucr["logrotate/rotate/count"] = "12"
+	mock_ucr["logrotate/create"] = "640 root adm"
+	mock_ucr["logrotate/missingok"] = "yes"
+	mock_ucr["logrotate/compress"] = "yes"
+	mock_ucr["logrotate/notifempty"] = "yes"
+	return mock_ucr
 
 
 class TestLogrotateConfig(object):
-	def test_empty(self, mocked_ucr):
-		settings = ucrLogrotate.getLogrotateConfig("my-service", mocked_ucr)
+	def test_empty(self, mock_ucr):
+		settings = ucrLogrotate.getLogrotateConfig("my-service", mock_ucr)
 		assert settings["compress"] == "compress"
 		assert settings["missingok"] == "missingok"
 		assert settings["notifempty"] == "notifempty"

@@ -43,6 +43,7 @@ from six import BytesIO, with_metaclass
 from six.moves.urllib.parse import quote
 from univention.portal import Plugin
 from univention.portal.log import get_logger
+import univention.portal.config as config
 
 
 class Reloader(with_metaclass(Plugin)):
@@ -213,39 +214,39 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 			}
 		return ret
 
+	def _add_entry_to_result(self, entry, ret, in_portal):
+		if entry.dn not in ret:
+			ret[entry.dn] = {
+				"dn": entry.dn,
+				"in_portal": in_portal,
+				"name": entry.props.displayName,
+				"description": entry.props.description,
+				"logo_name": self._save_image(portal, entry),
+				"activated": entry.props.activated,
+				"anonymous": entry.props.anonymous,
+				"allowedGroups": entry.props.allowedGroups,
+				"links": entry.props.link,
+				"linkTarget": entry.props.linkTarget,
+				"backgroundColor": entry.props.backgroundColor,
+			}
+
 	def _extract_entries(self, udm, portal, categories, folders):
 		ret = {}
 
-		def add(entry, ret, in_portal):
-			if entry.dn not in ret:
-				ret[entry.dn] = {
-					"dn": entry.dn,
-					"in_portal": in_portal,
-					"name": entry.props.displayName,
-					"description": entry.props.description,
-					"logo_name": self._save_image(portal, entry),
-					"activated": entry.props.activated,
-					"anonymous": entry.props.anonymous,
-					"allowedGroups": entry.props.allowedGroups,
-					"links": entry.props.link,
-					"linkTarget": entry.props.linkTarget,
-					"backgroundColor": entry.props.backgroundColor,
-				}
-
 		for obj in udm.get("portals/entry").search():
 			if obj.dn in portal.props.menuLinks:
-				add(obj, ret, True)
+				self._add_entry_to_result(obj, ret, True)
 				continue
 			if obj.dn in portal.props.userLinks:
-				add(obj, ret, True)
+				self._add_entry_to_result(obj, ret, True)
 				continue
 			if any(obj.dn in category["entries"] for category in categories if category["in_portal"]):
-				add(obj, ret, True)
+				self._add_entry_to_result(obj, ret, True)
 				continue
 			if any(obj.dn in folder["entries"] for folder in folders if folder["in_portal"]):
-				add(obj, ret, True)
+				self._add_entry_to_result(obj, ret, True)
 				continue
-			add(obj, ret, False)
+			self._add_entry_to_result(obj, ret, False)
 
 		return ret
 
@@ -379,3 +380,19 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
 			ret.update(self._nested_groups(group_dn, ldap_content, nested_groups_cache))
 		nested_groups_cache[dn] = ret
 		return ret
+
+
+class XPortalReloaderUDMWithTargets(PortalReloaderUDM):
+	"""
+	Unsupported special reloader that adds a "target" key to the cache of entries.
+	The entries are enriched by reading the data from the config files.
+	This should get into the database. But this implementation is much easier (PoC)
+	"""
+	def _add_entry_to_result(self, entry, ret, in_portal):
+		super(XPortalReloaderUDMWithTargets, self)._add_entry_to_result(entry, ret, in_portal)
+		try:
+			targets = config.fetch("x-targets")
+		except KeyError:
+			return
+		else:
+			ret[entry.dn]["target"] = targets.get(entry.dn)

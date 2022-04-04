@@ -48,30 +48,30 @@ def mocked_conn(mocker, lo, pos):
 
 
 @pytest.fixture
-def selfservice_ucr(mocker, mocked_ucr):
+def selfservice_ucr(mocker, mock_ucr):
 	from univentionunittests.umc import import_umc_module
 	from univention.config_registry import ConfigRegistry
 	selfservice = import_umc_module('passwordreset')
-	mocker.patch.object(selfservice, 'ucr', mocked_ucr)
+	mocker.patch.object(selfservice, 'ucr', mock_ucr)
 
 	def inject_fake_ucr(self):
 		self.clear()
-		self.update(mocked_ucr.items)
+		self.update(mock_ucr.items)
 	mocker.patch.object(ConfigRegistry, 'load', inject_fake_ucr)
 	mocker.patch.object(ConfigRegistry, '__enter__', side_effect=ValueError("You may not save a faked UCR"))
-	mocked_ucr['umc/self-service/enabled'] = 'yes'
-	mocked_ucr['umc/self-service/passwordreset/email/enabled'] = 'yes'
-	mocked_ucr['umc/self-service/account-deregistration/blacklist/groups'] = 'Administrators,Domain Admins'
-	mocked_ucr['umc/self-service/account-deregistration/blacklist/users'] = ''
-	mocked_ucr['umc/self-service/account-deregistration/whitelist/groups'] = 'Domain Users'
-	mocked_ucr['umc/self-service/account-deregistration/whitelist/users'] = ''
-	mocked_ucr['umc/self-service/passwordreset/blacklist/groups'] = 'Administrators,Domain Admins'
-	mocked_ucr['umc/self-service/passwordreset/whitelist/groups'] = 'Domain Users'
-	mocked_ucr['umc/self-service/profiledata/blacklist/groups'] = 'Administrators,Domain Admins'
-	mocked_ucr['umc/self-service/profiledata/blacklist/users'] = ''
-	mocked_ucr['umc/self-service/profiledata/whitelist/groups'] = 'Domain Users'
-	mocked_ucr['umc/self-service/profiledata/whitelist/users'] = ''
-	return mocked_ucr
+	mock_ucr['umc/self-service/enabled'] = 'yes'
+	mock_ucr['umc/self-service/passwordreset/email/enabled'] = 'yes'
+	mock_ucr['umc/self-service/account-deregistration/blacklist/groups'] = 'Administrators,Domain Admins'
+	mock_ucr['umc/self-service/account-deregistration/blacklist/users'] = ''
+	mock_ucr['umc/self-service/account-deregistration/whitelist/groups'] = 'Domain Users'
+	mock_ucr['umc/self-service/account-deregistration/whitelist/users'] = ''
+	mock_ucr['umc/self-service/passwordreset/blacklist/groups'] = 'Administrators,Domain Admins'
+	mock_ucr['umc/self-service/passwordreset/whitelist/groups'] = 'Domain Users'
+	mock_ucr['umc/self-service/profiledata/blacklist/groups'] = 'Administrators,Domain Admins'
+	mock_ucr['umc/self-service/profiledata/blacklist/users'] = ''
+	mock_ucr['umc/self-service/profiledata/whitelist/groups'] = 'Domain Users'
+	mock_ucr['umc/self-service/profiledata/whitelist/users'] = ''
+	return mock_ucr
 
 
 @pytest.fixture
