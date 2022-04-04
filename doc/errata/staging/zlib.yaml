@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: zlib
+fix: 1:1.2.11.dfsg-1+deb10u1
+desc: |
+ This update addresses the following issue:
+ * A flaw in zlib-1.2.11 when compressing (not decompressing!) certain inputs.
+   (CVE-2018-25032)
+bug: [54631]
+cve:
+- CVE-2018-25032
