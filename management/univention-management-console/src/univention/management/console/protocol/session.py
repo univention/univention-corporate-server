@@ -1444,6 +1444,9 @@ class UserPreferences(Resource):
 		result = {'preferences': self._get_user_preferences(lo)}
 		self.content_negotiation(result)
 
+	def post(self):
+		return self.get()
+
 	def _get_user_preferences(self, lo):
 		user_dn = self.current_user.user.user_dn
 		if not user_dn or not lo:
