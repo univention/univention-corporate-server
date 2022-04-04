@@ -207,6 +207,9 @@ class ModuleProcess(object):
 			response = exc.response
 			if response is None:  # (599, 'Timeout while connecting', None)
 				raise CouldNotConnect(exc)
+		except ValueError as exc:  # HTTP GET request with body
+			CORE.warn('Reaching module failed: %s' % (exc,))
+			raise BadRequest(str(exc))
 
 		self.reset_inactivity_timer()
 		raise tornado.gen.Return(response)
@@ -342,7 +345,7 @@ class User(object):
 class Session(object):
 	"""A interface to session data"""
 
-	__slots__ = ('session_id', 'ip', 'acls', 'user', 'processes', 'authenticated', 'timeout', '_')
+	__slots__ = ('session_id', 'ip', 'acls', 'user', 'processes', 'authenticated', 'timeout', '_timeout', '_timeout_id', '_')
 	__auth = AuthHandler()
 	sessions = {}
 
@@ -375,6 +378,8 @@ class Session(object):
 		self.acls = IACLs(self)
 		self.processes = Processes(self)
 		self.timeout = None
+		self._timeout = None
+		self._timeout_id = None
 		self.reset_connection_timeout()
 
 	def renew(self):
@@ -393,6 +398,7 @@ class Session(object):
 
 	def reset_connection_timeout(self):
 		self.timeout = SERVER_CONNECTION_TIMEOUT
+		self.reset_timeout()
 
 
 class Resource(RequestHandler):
