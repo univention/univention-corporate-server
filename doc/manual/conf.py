@@ -112,6 +112,7 @@ figure_language_filename = "{root}-{language}{ext}"
 
 linkcheck_allowed_redirects = {
     r"https://help\.univention\.com/t/\d+": r"https://help\.univention\.com/t/[\w-]+/\d+",
+    r"https://admin\.google\.com/": r"https://accounts\.google\.com/ServiceLogin\?passive=\d{7}&osid=1&continue=https://admin\.google\.com/&followup=https://admin\.google\.com/",
 }
 
 linkcheck_ignore = [
