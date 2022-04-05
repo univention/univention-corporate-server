@@ -14,6 +14,7 @@ from requests import get
 
 import univention.config_registry
 import univention.lib.umc
+from univention.appcenter.actions import get_action
 from univention.appcenter.app_cache import Apps as FindApps
 from univention.appcenter.utils import call_process, get_local_fqdn
 
@@ -99,7 +100,7 @@ class Apps(object):
 		try:
 			cmd = [fname, '--binddn', bind_dn, '--bindpwdfile', pwd_file]
 			print('running ', cmd)
-			return call_process(cmd).returncode
+			assert call_process(cmd).returncode == 0
 		finally:
 			if unlink_pwd_file:
 				os.unlink(pwd_file)
@@ -145,6 +146,8 @@ class Apps(object):
 		self.run_action("upgrade", self.options.app)
 
 	def main(self):
+		update = get_action('update')
+		update.call()
 		if self.options.remove:
 			self.uninstall()
 		elif self.options.update:
