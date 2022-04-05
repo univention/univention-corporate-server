@@ -288,11 +288,12 @@ class ModuleServer(object):
 			signal.alarm(1)
 			six.reraise(self.__init_etype, self.__init_exc, self.__init_etraceback)
 
+		self.__handler.username = username
+		self.__handler.user_dn = user_dn
+		self.__handler.password = password
+		self.__handler.auth_type = auth_type
+
 		if not self.__initialized:
-			self.__handler.username = username
-			self.__handler.user_dn = user_dn
-			self.__handler.password = password
-			self.__handler.auth_type = auth_type
 			try:
 				self.__handler.update_language([locale])
 			except NotAcceptable:

@@ -60,7 +60,7 @@ import univention.admin.uexceptions as udm_errors
 from univention.lib.i18n import Locale
 from .protocol.message import Request
 from .resource import Resource
-from .pam import PamAuth, PasswordChangeFailed
+from .pam import PasswordChangeFailed
 from .log import CORE
 from .locales import I18N, I18N_Manager
 from .config import MODULE_INACTIVITY_TIMER, MODULE_COMMAND, ucr, get_int
@@ -640,7 +640,7 @@ class Command(Resource):
 
 	def get_request_header(self, session, methodname, umcp_command):
 		headers = dict(self.request.headers)
-		for header in ('Content-Length', 'Transfer-Encoding', 'Content-Encoding', 'Connection', 'X-Http-Reason', 'Range', 'Trailer', 'Server', 'Set-Cookie'):
+		for header in ('Content-Length', 'Transfer-Encoding', 'Content-Encoding', 'Connection', 'X-Http-Reason', 'Range', 'Trailer', 'Server', 'Set-Cookie', 'X-UMC-AuthType'):
 			headers.pop(header, None)
 		headers['Cookie'] = '; '.join([m.OutputString(attrs=[]) for name, m in self.cookies.items() if not name.startswith('UMCUsername')])
 		headers['X-User-Dn'] = json.dumps(session.user.user_dn)
@@ -859,26 +859,27 @@ class SetPassword(Resource):
 	)))
 	@tornado.gen.coroutine
 	def post(self):
-		from .server import pool
 		username = self.current_user.user.username
 		password = self.request.body_arguments['password']['password']
 		new_password = self.request.body_arguments['password']['new_password']
 
+		args = {
+			'locale': str(self.locale.code),
+			'username': username,
+			'password': password,
+			'new_password': new_password,
+		}
+
 		CORE.info('Changing password of user %r' % (username,))
-		pam = PamAuth(str(self.locale.code))
+		session = self.current_user
 		try:
-			yield pool.submit(pam.change_password, username, password, new_password)
+			yield session.change_password(args)
 		except PasswordChangeFailed as exc:
 			raise UMC_Error(str(exc), 400, {'new_password': '%s' % (exc,)})  # 422
 		else:
 			CORE.info('Successfully changed password')
 			self.set_header('X-UMC-Message', json.dumps(self._('Password successfully changed.')))
 			self.content_negotiation(None)
-
-			# FIXME:
-			self.auth_type = None
-			self._password = new_password
-			yield self.current_user.processes.update_module_passwords()
 
 
 class UserPreferences(Resource):
