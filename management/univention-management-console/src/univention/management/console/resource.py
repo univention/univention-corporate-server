@@ -290,11 +290,12 @@ class Resource(RequestHandler):
 			exc = exc_info[1]
 			traceback = None
 			body = exc.result if isinstance(exc, UMC_Error) else None
+			message = exc.msg if isinstance(exc, UMC_Error) else exc.log_message
 			error = kwargs.pop('error', None)
 			if isinstance(exc, UMC_Error) and self.settings.get("serve_traceback") and isinstance(error, dict) and error.get('traceback'):
 				traceback = '%s\nRequest: %s\n\n%s' % (exc.msg, error.get('command'), error.get('traceback'))
 				traceback = traceback.strip()
-			content = self.default_error_page(exc.status_code, exc.log_message, traceback, body)
+			content = self.default_error_page(exc.status_code, message, traceback, body)
 			self.set_status(exc.status_code, reason=exc.reason)
 			self.finish(content.encode('utf-8'))
 			return
