@@ -1,0 +1,24 @@
+product: ucs
+release: "4.4"
+version: [8, 9]
+scope: ucs_4.4-0-errata4.4-9
+src: qemu
+fix: 1:2.8+dfsg-6+deb9u17A~4.4.8.202204051146
+desc: |
+ This update addresses the following issues:
+ * slirp: invalid pointer initialization may lead to information disclosure
+   (udp6) (CVE-2021-3593)
+ * virtio-net: heap use-after-free in virtio_net_receive_rcu (CVE-2021-3748)
+ * off-by-one error in mode_sense_page() in hw/scsi/scsi-disk.c
+   (CVE-2021-3930)
+ * block: fdc: null pointer dereference may lead to guest crash
+   (CVE-2021-20196)
+ * vhost-vsock: missing virtqueue detach on error can lead to memory leak
+   (CVE-2022-26354)
+bug: [54639]
+cve:
+- CVE-2021-3593
+- CVE-2021-3748
+- CVE-2021-3930
+- CVE-2021-20196
+- CVE-2022-26354
