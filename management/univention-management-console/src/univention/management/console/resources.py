@@ -531,8 +531,9 @@ class SetLocale(Resource):
 	"""
 
 	@sanitize(locale=StringSanitizer(required=True))
-	def post(self, locale):
+	def post(self):
 		locale = self.request.body_arguments['locale']
+		# TODO:
 		# self.update_language([locale])
 		locale
 
