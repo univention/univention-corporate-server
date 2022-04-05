@@ -182,7 +182,13 @@ class Resource(RequestHandler):
 
 	def bind_session_to_ip(self):
 		ip = self.get_ip_address()
-		if self.current_user.ip != ip and not (self.current_user.ip in ('127.0.0.1', '::1') and ip in ('127.0.0.1', '::1')):
+		# make sure a lost connection to the UMC-Server does not bind the session to ::1
+		if self.current_user.ip in ('127.0.0.1', '::1') and ip != self.current_user.ip:
+			CORE.warn('Switching session IP from=%r to=%r' % (self.current_user.ip, ip))
+			self.current_user.ip = ip
+
+		# bind session to IP (allow requests from localhost)
+		if ip not in (self.current_user.ip, '127.0.0.1', '::1'):
 			CORE.warn('The sessionid (ip=%s) is not valid for this IP address (%s)' % (ip, self.current_user.ip))
 			# very important! We must expire the session cookie, with the same path, otherwise one ends up in a infinite redirection loop after changing the IP address (e.g. because switching from VPN to regular network)
 			for name in self.request.cookies:
