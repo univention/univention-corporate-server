@@ -9,7 +9,7 @@ include:
 variables:
   pipeline:
     value: ""
-    description: "Skip or force jobs: '(skip|force)-(doc|lint|build)'"
+    description: "Skip or force jobs: '(skip|force)-(doc|ucslint|build)'"
 
 generate-config:
   stage: prepare
