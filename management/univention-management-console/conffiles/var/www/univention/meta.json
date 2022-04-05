@@ -204,6 +204,7 @@ ucr_vars = [
     ('umc/web/feedback/mail', 'feedbackAddress', 'feedback@univention.de'),
     ('umc/server/upload/max', ),
     ('umc/web/sso/enabled', ),
+    ('umc/web/oidc/enabled', ),
     ('umc/self-service/.*/title/.*', ),
     ('umc/self-service/profiledata/enabled', ),
     ('umc/self-service/account-registration/frontend/enabled', None, False),

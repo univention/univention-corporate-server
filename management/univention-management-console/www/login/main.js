@@ -261,33 +261,38 @@ define([
 			this.autologin().otherwise(lang.hitch(this, 'sessioninfo')).otherwise(lang.hitch(this, function() {
 				//console.debug('no active session found');
 				if (tools.isFalse(tools.status('umc/web/sso/enabled') || 'yes')) {
-					if (!withoutRedirect) {
-						this.redirectToLogin(false);
-					} else {
-						if (callbackIfNoRedirect) {
-							callbackIfNoRedirect(false);
-						}
- 					}
-					return;
+					var passiveLogin = new Deferred();
+					passiveLogin.cancel();
+				} else {
+					var passiveLogin = this.passiveSingleSignOn({ timeout: 3000 });
 				}
-				var passiveLogin = this.passiveSingleSignOn({ timeout: 3000 });
 				return passiveLogin.then(lang.hitch(this, 'sessioninfo')).otherwise(lang.hitch(this, function() {
-					var saml = !passiveLogin.isCanceled();
-					if (!withoutRedirect) {
-						this.redirectToLogin(saml);
+					var saml = !passiveLogin.isCanceled();  // cancel means: not reachable (ping, TLS, hostname) or not enabled
+
+					var backChannelOIDC = new Deferred();
+					if (tools.isFalse(tools.status('umc/web/oidc/enabled') || 'yes')) {
+						backChannelOIDC.cancel();
 					} else {
-						if (callbackIfNoRedirect) {
-							callbackIfNoRedirect(saml);
+						backChannelOIDC.resolve();  // TODO: check if reachable
+					}
+					return backChannelOIDC.then(lang.hitch(this, 'sessioninfo')).otherwise(lang.hitch(this, function() {
+						var oidc = !backChannelOIDC.isCanceled();  // cancel means: not reachable or not enabled
+						if (!withoutRedirect) {
+							this.redirectToLogin({"saml": saml, "oidc": oidc});
+						} else {
+							if (callbackIfNoRedirect) {
+								callbackIfNoRedirect({"saml": saml, "oidc": oidc});
+							}
 						}
- 					}
+					}));
 				}));
 			}));
 
 			return authenticatedDeferred;
 		},
 
-		redirectToLogin: function(saml) {
-			var target = saml ? '/univention/saml/' : '/univention/login/';
+		redirectToLogin: function(auth_states) {
+			var target = auth_states.saml ? '/univention/saml/' : (auth_states.oidc ? '/univention/oidc/' : '/univention/login/');
 			window.location = target + '?' + ioQuery.objectToQuery({
 				'location': window.location.pathname + window.location.search + window.location.hash,
 				username: tools.status('username'),
@@ -351,6 +356,13 @@ define([
 		autorelogin: function(args) {
 			if (tools.status('authType') === 'SAML') {
 				var passiveLogin = this.passiveSingleSignOn(args);
+				passiveLogin.then(lang.hitch(this, function(response) {
+					return this.authenticated(response.result.username);
+				}));
+				return passiveLogin;
+			}
+			if (tools.status('authType') === 'OIDC') {
+				var passiveLogin = this.backChannelOIDC(args);
 				passiveLogin.then(lang.hitch(this, function(response) {
 					return this.authenticated(response.result.username);
 				}));

@@ -38,8 +38,9 @@ import traceback
 import uuid
 from http.server import BaseHTTPRequestHandler
 
-import tornado.gen
+import tornado
 from six.moves.http_client import LENGTH_REQUIRED, UNAUTHORIZED
+from tornado.gen import convert_yielded
 from tornado.web import HTTPError, RequestHandler
 
 import univention.debug as ud
@@ -49,11 +50,6 @@ from univention.management.console.ldap import get_machine_connection
 from univention.management.console.log import CORE
 from univention.management.console.session import Session
 
-
-try:
-    from time import monotonic
-except ImportError:
-    from monotonic import monotonic
 
 try:
     from html import escape, unescape
@@ -84,29 +80,33 @@ class Resource(RequestHandler):
     requires_authentication = True
     ignore_session_timeout_reset = False
 
+    @property
+    def _(self):
+        return self.locale.translate
+
     def set_default_headers(self):
         self.set_header('Server', 'UMC-Server/1.0')
 
     async def prepare(self):
         super(Resource, self).prepare()
         self._proxy_uri()
-        self._ = self.locale.translate
         self.request.content_negotiation_lang = 'json'
         self.decode_request_arguments()
         await self.parse_authorization()
         if not self.ignore_session_timeout_reset:
             self.current_user.reset_timeout()  # FIXME: order correct?
-        self.check_saml_session_validity()
+        await self.refresh_oidc_session()
+        self.check_session_validity()
         self.bind_session_to_ip()
         if self.requires_authentication and not self.current_user.user.authenticated:
             raise Forbidden(self._("For using this request a login is required."))
 
-    def check_saml_session_validity(self):
+    def check_session_validity(self):
         if not self.requires_authentication:  # TODO: or do we just want to disable this during auth?
             return
         session = self.current_user
-        if session.saml is not None and session.timed_out(monotonic()):
-            raise Unauthorized(self._('The SAML session expired.'))
+        if (session.saml or session.oidc) and session.timed_out():
+            raise Unauthorized(self._('The session has expired.'))
 
     def get_current_user(self):
         session = Session.get_or_create(self.get_session_id())  # FIXME: this creates a Session instance even if the session does not exists
@@ -178,11 +178,12 @@ class Resource(RequestHandler):
                 cookie_args['samesite'] = ucr['umc/http/cookie/samesite']
             self.set_cookie(name, value, **cookie_args)
 
-    def get_cookie(self, name):
+    def get_cookie(self, name, default=None):
         cookie = self.request.cookies.get
         morsel = cookie(self.suffixed_cookie_name(name)) or cookie(name)
         if morsel:
             return morsel.value
+        return default
 
     def suffixed_cookie_name(self, name):
         host, _, port = self.request.headers.get('Host', '').partition(':')
@@ -235,6 +236,8 @@ class Resource(RequestHandler):
             raise BadRequest('invalid Authorization')
         if scheme.lower() == u'basic':
             await self.basic_authorization(credentials)
+        elif scheme.lower() == u'bearer':
+            await self.bearer_authorization(credentials)
 
     async def basic_authorization(self, credentials):
         try:
@@ -250,6 +253,33 @@ class Resource(RequestHandler):
 
         ud.debug(ud.MAIN, 99, 'auth: creating session with sessionid=%r' % (sessionid,))
         self.set_session(sessionid)
+
+    async def bearer_authorization(self, bearer_token):
+        from univention.management.console.oidc import OIDCResource
+        oidc = OIDCResource(self.application, self.request)
+        oidc.path_args = self.path_args
+        oidc.set_settings(self.application.settings['default_authorization_server'])
+        await oidc.bearer_authorization(bearer_token)
+
+    async def refresh_oidc_session(self):
+        session = self.current_user
+
+        if not session.oidc or not session.oidc.refresh_token or not session.timed_out(session_end_time=session.oidc.token_end_time):
+            return
+
+        if session.oidc.session_refresh_future:
+            await session.oidc.session_refresh_future
+            return
+
+        from univention.management.console.oidc import OIDCResource
+        oidc = OIDCResource(self.application, self.request)
+        oidc.path_args = self.path_args
+        oidc.set_settings(session.oidc.claims['iss'])
+        session.oidc.session_refresh_future = convert_yielded(oidc.refresh_session_tokens(session))
+        try:
+            await session.oidc.session_refresh_future
+        finally:
+            session.oidc.session_refresh_future = None
 
     @property
     def lo(self):
@@ -420,5 +450,5 @@ class Resource(RequestHandler):
         langs.sort(key=lambda pair: pair[1], reverse=True)
         return langs
 
-    def reverse_abs_url(self, name):
-        return '%s://%s/univention%s' % (self.request.protocol, self.request.host, self.reverse_url(name, *self.path_args))
+    def reverse_abs_url(self, name, path=None):
+        return '%s://%s/univention%s' % (self.request.protocol, self.request.host, self.reverse_url(name, *(self.path_args if path is None else path)))

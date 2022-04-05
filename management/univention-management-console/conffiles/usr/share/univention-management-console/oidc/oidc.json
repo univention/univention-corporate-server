@@ -1,0 +1,43 @@
+@!@
+import json
+
+rawconfig = {}
+for key, value in configRegistry.items():
+    if not key.startswith('umc/oidc/') or key in ('umc/oidc/default-op',):
+        continue
+    try:
+        oidcname, keyname = key[len('umc/oidc/'):].split('/', 1)
+    except ValueError:
+        continue
+    rawconfig.setdefault(oidcname, {})[keyname] = value
+
+config = {}
+for oidcname, oidcconfig in rawconfig.items():
+    try:
+        issuer = oidcconfig['issuer']
+        client_id = oidcconfig['client-id']
+        client_secret_file = oidcconfig['client-secret-file']
+        op = oidcconfig['openid-configuration']
+        jwks = oidcconfig['openid-certs']
+    except KeyError:
+        continue
+    try:
+        with open(op) as fd:
+            pass
+        with open(jwks) as fd:
+            pass
+        with open(client_secret_file) as fd:
+            pass
+    except EnvironmentError:
+        continue
+    config[oidcname] = {
+        "client_id": client_id,
+        "client_secret_file": client_secret_file,
+        "issuer": issuer,
+        "openid_configuration": op,
+        "openid_certs": jwks,
+        "extra_parameters": oidcconfig.get("extra-parameter", ""),
+    }
+default_authorization_server = config.get(configRegistry.get("umc/oidc/default-op", "default"), {}).get('issuer')
+print(json.dumps({'oidc': config, 'default_authorization_server': default_authorization_server}, sort_keys=True, indent=2))
+@!@

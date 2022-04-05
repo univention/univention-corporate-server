@@ -36,3 +36,7 @@ Type: module
 Module: configure_umc_multiprocessing.py
 Variables: umc/http/processes
 Variables: umc/http/processes/start-port
+
+Type: module
+Module: setup_oidc_rp.py
+Variables: umc/oidc/issuer

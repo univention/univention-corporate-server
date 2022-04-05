@@ -59,6 +59,7 @@ bases = ['%s://%s/univention/saml' % (scheme, addr) for addr in addresses for sc
 CONFIG = {
     "entityid": "https://%s/univention/saml/metadata" % (fqdn,),
     "name_form": NAME_FORMAT_URI,
+    "name": "UMC at %s" % (fqdn,),
     "description": "Univention Management Console at %s" % (fqdn,),
     "service": {
         "sp": {

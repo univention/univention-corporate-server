@@ -61,6 +61,7 @@ override_dh_python2:
 		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/auth.py \
 		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/category.py \
 		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/module.py \
+		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/oidc.py \
 		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/pam.py \
 		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/resource.py \
 		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/resources.py \

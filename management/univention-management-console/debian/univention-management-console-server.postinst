@@ -75,5 +75,9 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 12.0.20-1; then
 	[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 fi
 
+# protect secret contents!
+touch /usr/share/univention-management-console/oidc/oidc.json
+chmod 0600 /usr/share/univention-management-console/oidc/oidc.json
+
 # ucslint needs this
 exit 0

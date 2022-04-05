@@ -153,6 +153,42 @@ Description[en]=Defines the localized text for the cookie banner texts. Placehol
 Type=str
 Categories=management-umc
 
+[umc/oidc/default]
+Description[de]=Aktivierte OIDC-Konfiguration
+Description[en]=Activated OIDC configuration
+Type=str
+Categories=management-umc,oidc
+
+[umc/oidc/issuer]
+Description[de]=Definiert den OpenID-Connect-Provider-Issuer.
+Description[en]=Defines the OpenID-Connect provider issuer.
+Type=str
+Categories=management-umc,oidc
+
+[umc/oidc/.*/server]
+Description[de]=OIDC Server
+Description[en]=OIDC Server
+Type=str
+Categories=management-umc,oidc
+
+[umc/oidc/.*/client-realm]
+Description[de]=OIDC Client Realm
+Description[en]=OIDC Client Realm
+Type=str
+Categories=management-umc,oidc
+
+[umc/oidc/.*/client-id]
+Description[de]=OIDC Client ID
+Description[en]=OIDC Client ID
+Type=str
+Categories=management-umc,oidc
+
+[umc/oidc/.*/client-secret-file]
+Description[de]=Dateiname des OIDC Client Secret
+Description[en]=Filename for OIDC Client Secret
+Type=str
+Categories=management-umc,oidc
+
 [ldap/server/sasl/mech_list]
 Description[de]=Definiert die SASL-Mechanismen, die der lokale LDAP-Server anbieten soll. Diese Variable sollte nicht angepasst werden ohne gute Gründe und vorhergehende Tests.
 Description[en]=Defines the SASL mechanisms that the local LDAP server shall offer. This variable should not be adjusted without compelling reasons and prior checks.

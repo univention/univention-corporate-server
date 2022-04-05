@@ -165,3 +165,9 @@ class LDAP_ConnectionFailed(LDAP_ServerDown):
         yield ' * ' + _('Restart the LDAP service on the Primary Directory Node either via "service slapd restart" on command line or with the UMC module "System services"')
         if self._updates_available:
             yield ' * ' + _('Install the latest software updates')
+
+
+class OpenIDProvideUnavailable(ServiceUnavailable):
+
+    def __init__(self, *args, **kwargs):
+        super(OpenIDProvideUnavailable, self).__init__(*args, **kwargs, reason='OpenID-Provider Unavailable')
