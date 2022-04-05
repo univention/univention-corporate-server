@@ -162,7 +162,7 @@ def file_and_permission_checks():
 	]
 
 	iglob_paths = [
-		('/var/run/univention-management-console/*.socket', ('root', 'root', 0o700, False)),
+		('/var/run/univention-management-console/*.socket', ('root', 'root', 0o600, False)),
 		('/var/cache/univention-*', ('root', 'root', 0o700, False)),
 		('/var/tmp/univention-management-console-frontend/*', ('root', 'root', 0o600, False)),
 		('/etc/univention/connector/*.sqlite', ('root', 'root', 0o644, False)),
