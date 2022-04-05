@@ -397,6 +397,7 @@ class Handler(RequestHandler):
 			msg.options = json.loads(self.request.body)
 			msg.flavor = flavor
 		elif umcp_command == 'UPLOAD' and self.request.headers.get('Content-Type', '').startswith('multipart/form-data'):
+			msg.mimetype = 'application/json'
 			msg.body = self._get_upload_arguments(msg)
 		else:
 			msg.body = self.request.body
