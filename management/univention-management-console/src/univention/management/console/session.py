@@ -41,7 +41,6 @@ import tornado.gen
 
 import univention.admin.uexceptions as udm_errors
 
-from .protocol.message import Request
 from .log import CORE
 from .auth import AuthHandler
 from .acl import LDAP_ACLs, ACLs
@@ -77,13 +76,14 @@ class User(object):
 	def __repr__(self):
 		return '<User(%s, %s, %s)>' % (self.username, self.session.session_id, self.session.saml is not None)
 
+	@tornado.gen.coroutine
 	def set_credentials(self, username, password, auth_type):
 		self.username = username
 		self.password = password
 		self.auth_type = auth_type
 		self._search_user_dn()
 		self.session.acls._reload_acls_and_permitted_commands()
-		self.session.processes.update_module_passwords()
+		yield self.session.processes.update_module_passwords()
 
 	def _search_user_dn(self):
 		lo = get_machine_connection(write=False)[0]
@@ -167,7 +167,7 @@ class Session(object):
 		pam.end()
 		self.authenticated = bool(result)
 		if self.authenticated:
-			self.user.set_credentials(**result.credentials)
+			yield self.user.set_credentials(**result.credentials)
 		raise tornado.gen.Return(result)
 
 	def reset_connection_timeout(self):
@@ -344,14 +344,19 @@ class Processes(object):
 	def has_active_module_processes(self):
 		return self.__processes
 
+	@tornado.gen.coroutine
 	def update_module_passwords(self):
 		user = self.session.user
 		if self.__processes:
 			CORE.process('Updating user password in %d running module processes (auth-type: %s).' % (len(self.__processes), user.auth_type))
 		for module_name, proc in self.__processes.items():
 			CORE.info('Update the users password in the running %r module instance.' % (module_name,))
-			req = Request('SET', arguments=[module_name], options={'password': user.password, 'auth_type': user.auth_type})
+			headers = {
+				'X-UMC-Command': 'SET',
+				'X-UMC-Method': '',
+			}
+			body = {'password': user.password, 'auth_type': user.auth_type}
 			try:
-				proc.request(req)
+				yield proc.request('POST', '/%s' % (module_name,), body=body, headers=headers)
 			except Exception:
 				CORE.error(traceback.format_exc())

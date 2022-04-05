@@ -103,7 +103,7 @@ if __name__ == '__main__':
 		MODULE.error('The specified locale %r is not available' % (options.language,))
 
 	# this import must be done after the locale is set!
-	import univention.management.console.protocol as umcp
+	from univention.management.console.protocol.modserver import ModuleServer
 
 	if not options.socket:
 		raise SystemError('socket name is missing')
@@ -120,7 +120,7 @@ if __name__ == '__main__':
 		MODULE.warn('Failed to read module timeout from UCR variable umc/module/timeout. Using default of 300 seconds')
 
 	try:
-		with umcp.ModuleServer(options.socket, options.module, options.logfile, timeout=session_timeout) as server:
+		with ModuleServer(options.socket, options.module, options.logfile, timeout=session_timeout) as server:
 			server.loop()
 	except (SystemExit, KeyboardInterrupt):
 		raise

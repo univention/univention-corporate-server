@@ -878,7 +878,7 @@ class SetPassword(Resource):
 			# FIXME:
 			self.auth_type = None
 			self._password = new_password
-			self.current_user.processes.update_module_passwords()
+			yield self.current_user.processes.update_module_passwords()
 
 
 class UserPreferences(Resource):
