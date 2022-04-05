@@ -54,10 +54,10 @@ def application(environ, start_response):
 		if status == 503:
 			reason = 'Portal Service Unavailable'
 	elif url.startswith('/univention/'):
-		service_name = 'Univention Management Console Web Server'
-		service = 'univention-management-console-web-server'
+		service_name = 'Univention Management Console Server'
+		service = 'univention-management-console-server'
 		if status == 503:
-			reason = 'UMC-Web-Server Unavailable'
+			reason = 'UMC Service Unavailable'
 
 	message = "The %s could not be reached. Please restart %s or try again later." % (service_name, service)
 	if status == 502:
