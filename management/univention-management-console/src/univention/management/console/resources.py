@@ -889,7 +889,7 @@ class UserPreferences(Resource):
 		# fallback is an empty dict
 		lo = self.current_user.user.get_user_ldap_connection()
 		result = {'preferences': self._get_user_preferences(lo)}
-		self.content_negotiation(result)
+		self.content_negotiation(result, False)
 
 	def post(self):
 		return self.get()
