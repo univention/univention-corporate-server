@@ -3,7 +3,7 @@ release: "4.4"
 version: [8, 9]
 scope: ucs_4.4-0-errata4.4-9
 src: qemu
-fix: 1:2.8+dfsg-6+deb9u17A~4.4.8.202204051146
+fix: 1:2.8+dfsg-6+deb9u17A~4.4.8.202204051855
 desc: |
  This update addresses the following issues:
  * slirp: invalid pointer initialization may lead to information disclosure
