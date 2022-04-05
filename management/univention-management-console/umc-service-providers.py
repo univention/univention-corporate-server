@@ -46,7 +46,7 @@ import listener
 
 
 name = 'umc-service-providers'
-description = 'Manage umc/saml/trusted/sp/* variable'
+description = 'Manage umc/saml/trusted/sp/* and ldap/server/sasl/oauthbearer/trusted-authorized-party/* variable'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))'
 attributes = ['univentionService', 'cn', 'associatedDomain']
 
@@ -65,10 +65,16 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
         umc_service_was_active = b'Univention Management Console' in old.get('univentionService', [])
         domain_added = 'associatedDomain' in new and 'associatedDomain' not in old and umc_service_active
         if umc_service_active and (domain_added or not umc_service_was_active):
-            handler_set(['umc/saml/trusted/sp/%s=%s' % (fqdn, fqdn)])
+            handler_set([
+                'umc/saml/trusted/sp/%s=%s' % (fqdn, fqdn),
+                'ldap/server/sasl/oauthbearer/trusted-authorized-party/%s=https://%s/univention/oidc/' % (fqdn, fqdn),
+            ])
             __changed_trusted_sp = True
         elif umc_service_was_active and not umc_service_active:
-            handler_unset(['umc/saml/trusted/sp/%s' % (fqdn,)])
+            handler_unset([
+                'umc/saml/trusted/sp/%s' % (fqdn,),
+                'ldap/server/sasl/oauthbearer/trusted-authorized-party/%s' % (fqdn,),
+            ])
             __changed_trusted_sp = True
 
     finally:

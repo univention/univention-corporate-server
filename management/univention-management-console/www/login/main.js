@@ -261,33 +261,38 @@ define([
 			this.autologin().otherwise(lang.hitch(this, 'sessioninfo')).otherwise(lang.hitch(this, function() {
 				//console.debug('no active session found');
 				if (tools.isFalse(tools.status('umc/web/sso/enabled') || 'yes')) {
-					if (!withoutRedirect) {
-						this.redirectToLogin(false);
-					} else {
-						if (callbackIfNoRedirect) {
-							callbackIfNoRedirect(false);
-						}
- 					}
-					return;
+					var passiveLogin = new Deferred();
+					passiveLogin.cancel();
+				} else {
+					var passiveLogin = this.passiveSingleSignOn({ timeout: 3000 });
 				}
-				var passiveLogin = this.passiveSingleSignOn({ timeout: 3000 });
 				return passiveLogin.then(lang.hitch(this, 'sessioninfo')).otherwise(lang.hitch(this, function() {
-					var saml = !passiveLogin.isCanceled();
-					if (!withoutRedirect) {
-						this.redirectToLogin(saml);
+					var saml = !passiveLogin.isCanceled();  // cancel means: not reachable (ping, TLS, hostname) or not enabled
+
+					if (tools.isFalse(tools.status('umc/web/oidc/enabled') || 'yes')) {
+						var backChannelOIDC = new Deferred();
+						backChannelOIDC.cancel();
 					} else {
-						if (callbackIfNoRedirect) {
-							callbackIfNoRedirect(saml);
+						var backChannelOIDC = this.backChannelOIDC({ timeout: 3000 });
+					}
+					return backChannelOIDC.then(lang.hitch(this, 'sessioninfo')).otherwise(lang.hitch(this, function() {
+						var oidc = !backChannelOIDC.isCanceled();  // cancel means: not reachable or not enabled
+						if (!withoutRedirect) {
+							this.redirectToLogin({"saml": saml, "oidc": oidc});
+						} else {
+							if (callbackIfNoRedirect) {
+								callbackIfNoRedirect({"saml": saml, "oidc": oidc});
+							}
 						}
- 					}
+					}));
 				}));
 			}));
 
 			return authenticatedDeferred;
 		},
 
-		redirectToLogin: function(saml) {
-			var target = saml ? '/univention/saml/' : '/univention/login/';
+		redirectToLogin: function(auth_states) {
+			var target = auth_states.saml ? '/univention/saml/' : (auth_states.oidc ? '/univention/oidc/' : '/univention/login/');
 			window.location = target + '?' + ioQuery.objectToQuery({
 				'location': window.location.pathname + window.location.search + window.location.hash,
 				username: tools.status('username'),
@@ -356,6 +361,13 @@ define([
 				}));
 				return passiveLogin;
 			}
+			if (tools.status('authType') === 'OIDC') {
+				var passiveLogin = this.backChannelOIDC(args);
+				passiveLogin.then(lang.hitch(this, function(response) {
+					return this.authenticated(response.result.username);
+				}));
+				return passiveLogin;
+			}
 			return this.autologin();
 		},
 
@@ -413,6 +425,61 @@ define([
 					dialog.alert(entities.encode(info.message).replace(/\n/g, '<br>'), info.title);
 				})
 			};
+		},
+
+		backChannelOIDC: function(args) {
+			return xhr.get('/univention/oidc/refresh', {
+				handleAs: 'json',
+				headers: {
+					'Accept-Language': i18nTools.defaultLang(),
+					'Accept': 'application/json; q=1.0, text/html; q=0.3; */*; q=0.1'
+				}
+			}).otherwise(lang.hitch(this, function() {
+			    return this.frontChannelOIDC(args);
+			}));
+		},
+
+		frontChannelOIDC: function(args) {
+			var deferred = new Deferred();
+
+			if (!tools.status('oidc-client-id')) {
+				deferred.cancel();
+				return deferred.promise;
+			}
+
+			const keycloak = new Keycloak({
+				url: `https://${tools.status('keycloakserver')}${tools.status('keycloakpath')}`,
+				realm: 'ucs',
+				clientId: tools.status('oidc-client-id')
+			});
+
+			try {
+				keycloak.init({
+					onLoad: 'check-sso',
+					silentCheckSsoRedirectUri: `${location.origin}/univention/login/silent-check-sso.html`
+				}).then(function(authenticated) {
+					console.log(`User is ${authenticated ? 'authenticated' : 'not authenticated'}`);
+					data = {};
+					if (authenticated) {
+						deferred.reject(data);
+					} else {
+						deferred.resolve(data);
+					}
+				}, function(error) {
+					console.error('Initialization failed');
+					deferred.cancel(error);
+				});
+			} catch (error) {
+				console.error('Failed to initialize adapter:', error);
+				deferred.cancel(error);
+			}
+
+			if (args && args.timeout) {
+				setTimeout(function() {
+					deferred.cancel();
+				}, args.timeout);
+			}
+			return deferred.promise;
 		},
 
 		passiveSingleSignOn: function(args) {

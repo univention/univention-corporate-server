@@ -1,0 +1,24 @@
+@!@
+issuers = [iss for key, iss in configRegistry.items() if key.startswith('ldap/server/sasl/oauthbearer/trusted-issuer/')]
+jwks = [jwk for key, jwk in configRegistry.items() if key.startswith('ldap/server/sasl/oauthbearer/trusted-jwks/')]
+audiences = [server for key, server in configRegistry.items() if key.startswith('ldap/server/sasl/oauthbearer/trusted-audience/')]
+scopes = [scope for key, scope in configRegistry.items() if key.startswith('ldap/server/sasl/oauthbearer/required-scopes/')]
+relying_parties = [server for key, server in configRegistry.items() if key.startswith('ldap/server/sasl/oauthbearer/trusted-authorized-party/')]
+
+if issuers:
+    args = []
+    for op in issuers:
+        args.append('iss=%s' % (op,))
+        break
+    for jwk in jwks:
+        args.append('jwks=%s' % (jwk,))
+        break
+    for aud in audiences:
+        args.append('trusted_aud=%s' % (aud,))
+    for scope in scopes:
+        args.append('required_scope=%s' % (scope,))
+    for rp in relying_parties:
+        args.append('trusted_azp=%s' % (rp,))
+    grace = configRegistry.get_int('ldap/server/sasl/oauthbearer/grace-time', 3)
+    print('auth sufficient pam_oauthbearer.so grace=%d userid=uid %s' % (grace, ' '.join(args)))
+@!@

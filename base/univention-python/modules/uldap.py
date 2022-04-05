@@ -323,6 +323,29 @@ class access(object):
         self.binddn = self.whoami()
         univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'SAML bind binddn=%s' % self.binddn)
 
+    @_fix_reconnect_handling
+    def bind_oauthbearer(self, authzid, bindpw):
+        # type: (Optional[str], str) -> None
+        """
+        Do LDAP bind using OAuth 2.0 Access Token.
+
+        :param str authzid: Authorization Identifier
+        :param str bindpw: The Access Token (as JWT)
+
+        OAUTHBEARER follows RFC 7628.
+        Currently sending an optional authzid which could be used for SASL Proxy Authorization in the future
+        (https://www.openldap.org/doc/admin26/sasl.html#SASL%20Proxy%20Authorization).
+        """
+        self.binddn = None
+        self.bindpw = bindpw
+        oauth = ldap.sasl.sasl({
+            ldap.sasl.CB_AUTHNAME: authzid,
+            ldap.sasl.CB_PASS: bindpw,
+        }, 'OAUTHBEARER')
+        self.lo.sasl_interactive_bind_s('', oauth)
+        self.binddn = self.whoami()
+        univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'OAUTHBEARER bind binddn=%r' % self.binddn)
+
     def unbind(self):
         # type: () -> None
         """Unauthenticate."""

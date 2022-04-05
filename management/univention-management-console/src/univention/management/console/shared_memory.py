@@ -45,6 +45,7 @@ class _SharedMemory(managers.SyncManager):
     started = False
     saml_state_cache = {}
     children = {}
+    pkce = {}
 
     def dict(self):
         if self.started:
@@ -67,6 +68,7 @@ class _SharedMemory(managers.SyncManager):
         # we must create the parent dictionary instance before forking but after python importing
         self.saml_state_cache = self.dict()
         self.children = self.dict()
+        self.pkce = self.dict()
 
 
 shared_memory = _SharedMemory()

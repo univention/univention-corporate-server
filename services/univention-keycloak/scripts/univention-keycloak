@@ -953,7 +953,7 @@ def create_oidc_client(opt):
             "use.refresh.tokens": "true",
             "oidc.ciba.grant.enabled": "false",
             "backchannel.logout.session.required": "false",
-            "client_credentials.use_refresh_token": str(opt.use_client_credentials_refresh_token).lower(),
+            "client_credentials.use_refresh_token": str(opt.use_client_credentials_refresh_tokens).lower(),
             "saml.client.signature": "false",
             "require.pushed.authorization.requests": "false",
             "saml.allow.ecp.flow": "false",

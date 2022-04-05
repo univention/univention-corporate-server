@@ -22,6 +22,14 @@ Variables: auth/faillog/lock_global
 
 Type: subfile
 Multifile: etc/pam.d/univention-management-console
+Subfile: etc/pam.d/univention-management-console.d/35_oidc
+Variables: hostname
+Variables: domainname
+Variables: umc/oidc/.*
+Variables: ldap/server/sasl/oauthbearer/.*
+
+Type: subfile
+Multifile: etc/pam.d/univention-management-console
 Subfile: etc/pam.d/univention-management-console.d/40_saml
 Variables: hostname
 Variables: domainname
@@ -55,6 +63,7 @@ File: etc/ldap/sasl2/slapd.conf
 Variables: umc/saml/grace_time
 Variables: umc/saml/trusted/sp/.*
 Variables: ldap/server/sasl/mech_list
+Variables: ldap/server/sasl/oauthbearer/.*
 
 Type: file
 File: var/www/univention/meta.json
@@ -83,3 +92,8 @@ Variables: umc/self-service/account-deregistration/enabled
 Variables: umc/self-service/.*/title/.*
 Variables: portal/show-outdated-browser-warning
 Variables: users/default/Administrator
+Variables: umc/single-sign-on/.*
+
+Type: file
+File: usr/share/univention-management-console/oidc/oidc.json
+Variables: umc/oidc/.*

@@ -59,6 +59,8 @@ Package: univention-management-console-server
 Architecture: all
 Depends:
  cy2-saml,
+ libpam-oauthbearer,
+ libsasl2-modules-oauthbearer,
  pam-saml,
  python-univention-lib (>= 1.0.25-1),
  python-univention-management-console (= ${source:Version}),
@@ -124,6 +126,7 @@ Package: python3-univention-management-console
 Architecture: all
 Depends:
  python3-cryptography,
+ python3-jwt,
  python3-notifier (>= 0.9.9-1),
  python3-openssl,
  python3-pam,
@@ -222,6 +225,7 @@ Depends:
  python3-univention-management-console (= ${source:Version}),
  shell-univention-lib,
  univention-base-files,
+ univention-keycloak-client,
  univention-management-console-frontend,
  univention-management-console-server,
  univention-saml-schema,

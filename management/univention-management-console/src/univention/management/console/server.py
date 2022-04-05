@@ -33,6 +33,7 @@
 
 from __future__ import absolute_import, division
 
+import json
 import logging
 import logging.handlers
 import os
@@ -47,12 +48,16 @@ from concurrent.futures import ThreadPoolExecutor
 from sdnotify import SystemdNotifier
 from tornado.httpserver import HTTPServer
 from tornado.netutil import bind_sockets
-from tornado.web import Application as TApplication
+from tornado.web import Application as TApplication, url
 
 import univention.debug as ud
 from univention.management.console import saml
 from univention.management.console.config import ucr
 from univention.management.console.log import CORE, log_init, log_reopen
+from univention.management.console.oidc import (
+    OIDCBackchannelLogout, OIDCBackchannelRefresh, OIDCFrontchannelLogout, OIDCLogin, OIDCLogout, OIDCLogoutFinished,
+    OIDCMetadata,
+)
 from univention.management.console.resources import (
     UCR, Auth, Categories, Command, GetIPAddress, Hosts, Index, Info, Logout, Meta, Modules, NewSession, Nothing,
     SessionInfo, Set, SetLocale, SetPassword, SetUserPreferences, Upload, UserPreferences,
@@ -76,7 +81,7 @@ class Application(TApplication):
     def __init__(self, **settings):
         tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console')
         super(Application, self).__init__([
-            (r'/', Index),
+            url(r'/', Index, name='index'),
             (r'/auth/?', Auth),
             (r'/upload/?', Upload),
             (r'/(upload)/(.+)', Command),
@@ -100,6 +105,13 @@ class Application(TApplication):
             (r'/saml/slo/?', SamlSingleLogout),
             (r'/saml/logout/?', SamlLogout),
             (r'/saml/iframe/?', SamlIframeACS),
+            url(r'/oidc/', OIDCLogin, name='oidc-login'),
+            url(r'/oidc/logout', OIDCLogout, name='oidc-logout'),
+            url(r'/oidc/frontchannel-logout', OIDCFrontchannelLogout, name='frontchannel-logout'),
+            url(r'/oidc/backchannel-logout', OIDCBackchannelLogout, name='backchannel-logout'),
+            url(r'/oidc/refresh', OIDCBackchannelRefresh),
+            url(r'/oidc/logout-done', OIDCLogoutFinished, name='oidc-logout-done'),
+            url(r'/oidc/.well-known/oauth-client', OIDCMetadata),
             (r'/logout/?', Logout),
             (r'()/(.+)', Command),
         ], default_handler_class=Nothing, **settings)
@@ -228,9 +240,16 @@ class Server(object):
             if self._child_number is not None:
                 shared_memory.children[self._child_number] = os.getpid()
 
+        with open('/usr/share/univention-management-console/oidc/oidc.json') as fd:
+            config = json.load(fd)
+            settings = {
+                'oidc': config.get('oidc'),
+                'default_authorization_server': config.get('default_authorization_server'),
+            }
         application = Application(
             serve_traceback=ucr.is_true('umc/http/show_tracebacks', True),
             no_daemonize_module_processes=self.options.no_daemonize_module_processes,
+            **settings,
         )
         server = HTTPServer(
             application,
