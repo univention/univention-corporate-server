@@ -56,6 +56,12 @@ class UMC_Error(HTTPError):
 			self.status = status
 		super(UMC_Error, self).__init__(self.status, message, reason=reason)
 
+	def __str__(self):
+		return self.msg
+
+	def __repr__(self):
+		return HTTPError.__str__(self)
+
 
 class BadRequest(UMC_Error):
 	msg = _('Bad request')
