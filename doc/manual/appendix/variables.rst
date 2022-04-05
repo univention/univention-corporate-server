@@ -143,6 +143,32 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    Directory report PDF file. For more information see
    :ref:`central-management-umc-adjustment-expansion-of-directory-reports`.
 
+
+.. envvar:: dns/allow/transfer
+
+   To deactivate the DNS zone transfer when using the OpenLDAP back end, set the
+   value to ``none``. For more information, see
+   :ref:`ip-config-configuration-of-zone-transfers`.
+
+
+.. envvar:: dns/backend
+
+   Configures the DNS backend. For more information, see
+   :ref:`ip-config-dns-backend`.
+
+
+.. envvar:: dns/debug/level
+
+   Configures the debug level for BIND. For more information, see
+   :ref:`ip-config-bind-debug`.
+
+
+.. envvar:: dns/dlz/debug/level
+
+   Configures the debug level for the Samba DNS backend. For more information,
+   see :ref:`ip-config-bind-debug`.
+
+
 .. envvar:: dns/forwarder1
 
    Defines the first *external DNS server*. For more information, see
@@ -159,6 +185,11 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
    Defines the third *external DNS server*. For more information, see
    :ref:`computers-configuring-the-name-servers`.
+
+.. envvar:: freeradius/auth/helper/ntlm/debug
+
+   Configures the debug level or verbosity for logging messages of FreeRADIUS.
+   For more information, see :ref:`ip-config-radius-debugging`.
 
 
 .. envvar:: gateway
@@ -752,6 +783,20 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    :ref:`computers-configuring-proxy-access`.
 
 
+.. envvar:: radius/mac/whitelisting
+
+   To only allow specific network devices access to a network through RADIUS,
+   set the value to ``true``. For more information, see
+   :ref:`ip-config-radius-configuration-mac-filtering`.
+
+
+.. envvar:: radius/service-specific-password
+
+   To use a dedicated user password for RADIUS instead of the domain password,
+   set the value to ``true``. For more information, see
+   :ref:`ip-config-radius-configuration-service-specific-password`.
+
+
 .. envvar:: repository/mirror/server
 
    Defines another repository server as source for the local mirror. Default
@@ -830,6 +875,12 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    user accounts. For more information, see
    :ref:`user-management-password-changes-by-users-selfregistration-account-verification`.
 
+.. envvar:: security/packetfilter/disabled
+
+   To disable Univention firewall, set the value to ``true``. For more
+   information, see :ref:`ip-config-packet-filter-with-univention-firewall`.
+
+
 .. envvar:: self-service/backend-server
 
    Defines the UCS system where the backend of the :program:`Self Service` app
@@ -855,6 +906,67 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    TBD
 
 .. TODO : Define UCRV server/role
+
+
+.. envvar:: squid/auth/allowed_groups
+
+   To limit the access to the Squid web proxy, define a list of group names
+   separated by semicolon (``;``). For more information, see
+   :ref:`proxy-userauth`.
+
+.. envvar:: squid/allowfrom
+
+   Configures additional networks to allow access to the Squid web proxy.
+   Seperate the entries with blank spaces and use the CIDR notation, for example
+   ``192.0.2.0/24``. For more information, see
+   :ref:`ip-config-restriction-of-access-to-permitted-networks`.
+
+.. envvar:: squid/basicauth
+
+   To activate direct authentication for the Squid web proxy against the LDAP
+   server, set the value to ``yes`` and restart Squid. For more information, see
+   :ref:`proxy-userauth`.
+
+
+.. envvar:: squid/cache
+
+   To deactivate the caching function of the Squid web proxy, set the value to
+   ``no``. For more information, see :ref:`ip-config-caching-of-web-content`.
+
+
+.. envvar:: squid/httpport
+
+   Configures the port for Squid web proxy, where the daemon listens for
+   incoming connections. The default value is ``3128``. For more information,
+   see :ref:`proxy-port`.
+
+
+.. envvar:: squid/krb5auth
+
+   To activate authentication through Kerberos for the Squid web proxy, set the
+   value to ``yes`` and restart Squid. For more information, see
+   :ref:`proxy-userauth`.
+
+
+.. envvar:: squid/ntlmauth
+
+   To activate authentication for the Squid web proxy against the NTLM
+   interface, set the value to ``yes`` and restart Squid. For more information,
+   see :ref:`proxy-userauth`.
+
+
+.. envvar:: squid/ntlmauth/keepalive
+
+   To deactivate further NTML authentication for subsequent HTML requests to the
+   same website, set the value to ``yes``. For more information, see
+   :ref:`proxy-userauth`.
+
+
+.. envvar:: squid/webports
+
+   Configures the list of permitted ports for the Squid web proxy. Separate
+   entries with blank spaces. For more information, see
+   :ref:`ip-config-permitted-ports`.
 
 
 .. envvar:: sshd/permitroot

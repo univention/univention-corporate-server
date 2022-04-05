@@ -33,7 +33,7 @@ By default a simplified wizard for creating a computer is shown, which
 only requests the most important settings. All attributes can be shown
 by clicking on :guilabel:`Advanced`. If there is a DNS forward
 zone and/or a DNS reverse zone (see :ref:`networks-dns`) assigned to
-the selected network object (see :ref:`networks-introduction`), a
+the selected network object (see :ref:`network-objects`), a
 host record and/or pointer record is automatically created for the host.
 If there is a DHCP service configured for the network object and a MAC
 address is configured, a DHCP host entry is created (see
@@ -98,7 +98,7 @@ Computer management module - General tab
 
    * - Network
      - The host can be assigned to an existing network object. Information on the
-       IP configuration can be found in :ref:`networks-introduction`.
+       IP configuration can be found in :ref:`network-objects`.
 
    * - MAC address
      - The MAC address of the computer can be entered here, for example
@@ -107,7 +107,7 @@ Computer management module - General tab
 
    * - IP address
      - Fixed IP addresses for the host can be given here. Further information on
-       the IP configuration can be found in :ref:`networks-introduction`.
+       the IP configuration can be found in :ref:`network-objects`.
 
        If a network was selected on the *General* tab, the IP address assigned
        to the host from the network will be shown here automatically.
@@ -130,18 +130,18 @@ Computer management module - General tab
      - The DNS forward zone in which the computer is entered. The zone is used
        for the resolution of the computer name in the assigned IP address.
        Further information on the IP configuration can be found in
-       :ref:`networks-introduction`.
+       :ref:`network-objects`.
 
    * - Reverse zone for DNS entry
      - The DNS reverse zone in which the computer is entered. The zone is used
        to resolve the computer's IP address in a computer name. Further
        information on the IP configuration can be found in
-       :ref:`networks-introduction`.
+       :ref:`network-objects`.
 
    * - DHCP service
      - If a computer is supposed to procure its IP address via DHCP, a DHCP
        service must be assigned here. Information on the IP configuration can be
-       found in :ref:`networks-introduction`.
+       found in :ref:`network-objects`.
 
        During assignment, it must be ensured that the DHCP servers of the DHCP
        service object are responsible for the physical network.

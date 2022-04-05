@@ -91,7 +91,7 @@ following chapters:
 
 * Computers - :ref:`computers-general`
 
-* Networks - :ref:`networks-introduction`
+* Networks - :ref:`networks-general`
 
 * DNS - :ref:`networks-dns`
 
