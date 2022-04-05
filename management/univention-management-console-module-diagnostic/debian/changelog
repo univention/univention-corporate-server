@@ -1,4 +1,4 @@
-univention-management-console-module-diagnostic (6.0.0-29) unstable; urgency=medium
+univention-management-console-module-diagnostic (6.1.0-29) unstable; urgency=medium
 
   * Bug #53455: added code and readability improvements
 
