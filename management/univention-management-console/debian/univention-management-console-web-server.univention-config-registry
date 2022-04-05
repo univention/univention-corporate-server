@@ -31,3 +31,7 @@ Variables: ucs/server/sso/virtualhost
 Type: module
 Module: setup_saml_sp.py
 Variables: umc/saml/idp-server
+
+Type: module
+Module: setup_oidc_rp.py
+Variables: umc/oidc/op-issuer

@@ -87,5 +87,9 @@ fi
 
 deb-systemd-invoke restart univention-management-console-server.service
 
+# protect secret contents!
+touch /usr/share/univention-management-console/oidc/oidc.json
+chmod 600 /usr/share/univention-management-console/oidc/oidc.json
+
 # ucslint needs this
 exit 0

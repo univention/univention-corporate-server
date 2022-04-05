@@ -1,5 +1,5 @@
 authz-regexp
-    uid=([^,]*),cn=(gssapi|saml),cn=auth
+    uid=([^,]*),cn=(gssapi|saml|oidc),cn=auth
     ldap:///@%@ldap/base@%@??sub?uid=$1
 
 # allow authentication

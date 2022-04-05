@@ -9,7 +9,7 @@ groups_default_domainadmins = custom_groupname('Domain Admins')
 users_default_administrator = custom_username('Administrator')
 
 print('authz-regexp')
-print('    uid=([^,]*),cn=(gssapi|saml),cn=auth')
+print('    uid=([^,]*),cn=(gssapi|saml|oidc),cn=auth')
 print('    ldap:///%s??sub?uid=$1' % (ldap_base,))
 print('')
 

@@ -80,6 +80,7 @@ Package: python-univention-management-console
 Architecture: all
 Depends:
  python-cryptography,
+ python-jwt,
  python-notifier (>= 0.9.5-1),
  python-openssl,
  python-pam,
@@ -114,6 +115,7 @@ Architecture: all
 Depends:
  python3-cryptography,
  python3-daemon,
+ python3-jwt,
  python3-notifier,
  python3-openssl,
  python3-pam,

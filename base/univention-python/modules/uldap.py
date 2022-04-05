@@ -319,6 +319,24 @@ class access(object):
 		self.binddn = self.whoami()
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'SAML bind binddn=%s' % self.binddn)
 
+	@_fix_reconnect_handling
+	def bind_oidc(self, bindpw):
+		# type: (str) -> None
+		"""
+		Do LDAP bind using OIDC JWT.
+
+		:param str bindpw: The OIDC bearer token (JWT)
+		"""
+		self.binddn = None
+		self.bindpw = bindpw
+		oidc = ldap.sasl.sasl({
+			ldap.sasl.CB_AUTHNAME: None,
+			ldap.sasl.CB_PASS: bindpw,
+		}, 'OIDC')
+		self.lo.sasl_interactive_bind_s('', oidc)
+		self.binddn = self.whoami()
+		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'OIDC bind binddn=%s' % self.binddn)
+
 	def unbind(self):
 		# type: () -> None
 		"""

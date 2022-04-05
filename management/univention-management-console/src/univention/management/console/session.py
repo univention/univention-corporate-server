@@ -74,7 +74,7 @@ class User(object):
 		self.user_dn = None
 
 	def __repr__(self):
-		return '<User(%s, %s, %s)>' % (self.username, self.session.session_id, self.session.saml is not None)
+		return '<User(%s, %s, %s)>' % (self.username, self.session.session_id, self.session.get_umc_auth_type() or '')
 
 	def set_credentials(self, username, password, auth_type):
 		self.username = username
@@ -118,7 +118,7 @@ class User(object):
 class Session(object):
 	"""A interface to session data"""
 
-	__slots__ = ('session_id', 'ip', 'acls', 'user', 'saml', 'processes', 'authenticated', 'timeout', '_timeout', '_timeout_id', '_')
+	__slots__ = ('session_id', 'ip', 'acls', 'user', 'saml', 'oidc', 'processes', 'authenticated', 'timeout', '_timeout', '_timeout_id', '_')
 	__auth = AuthHandler()
 	sessions = {}
 
@@ -149,6 +149,7 @@ class Session(object):
 		self.authenticated = False
 		self.user = User(self)
 		self.saml = None
+		self.oidc = None
 		self.acls = IACLs(self)
 		self.processes = Processes(self)
 		self.timeout = None
@@ -197,14 +198,25 @@ class Session(object):
 		# though
 		return self.user.password is None and self.saml
 
+	def is_oidc_user(self):
+		# self.oidc indicates that it was originally a
+		# oidc user. but it may have upgraded and got a
+		# real password. the oidc user object is still there,
+		# though
+		return self.user.password is None and self.oidc
+
 	def get_umc_password(self):
+		if self.is_oidc_user():
+			return self.oidc.jwt
 		if self.is_saml_user():
 			return self.saml.message
 		else:
 			return self.user.password
 
 	def get_umc_auth_type(self):
-		if self.is_saml_user():
+		if self.is_oidc_user():
+			return "OIDC"
+		elif self.is_saml_user():
 			return "SAML"
 		else:
 			return None
@@ -244,6 +256,8 @@ class Session(object):
 
 	@property
 	def session_end_time(self):
+		if self.is_oidc_user() and self.oidc.session_end_time:
+			return self.oidc.session_end_time
 		if self.is_saml_user() and self.saml.session_end_time:
 			return self.saml.session_end_time
 		return self._timeout

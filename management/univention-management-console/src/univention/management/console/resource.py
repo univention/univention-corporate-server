@@ -89,12 +89,12 @@ class Resource(RequestHandler):
 		self.decode_request_arguments()
 		yield self.parse_authorization()
 		self.current_user.reset_connection_timeout()  # FIXME: order correct?
-		self.check_saml_session_validity()
+		self.check_session_validity()
 		self.bind_session_to_ip()
 
-	def check_saml_session_validity(self):
+	def check_session_validity(self):
 		session = self.current_user
-		if session.saml is not None and session.timed_out(monotonic()):
+		if session.saml or session.oidc and session.timed_out(monotonic()):
 			raise Unauthorized(self._('The SAML session expired.'))
 
 	def get_current_user(self):
@@ -128,9 +128,11 @@ class Resource(RequestHandler):
 
 	sessionidhash.salt = uuid.uuid4()
 
-	def set_session(self, sessionid, username, password=None, saml=None):
+	def set_session(self, sessionid, username, password=None, saml=None, oidc=None):
 		self.current_user.user.username = username
 		self.current_user.user.password = password
+		if oidc:
+			self.current_user.oidc = oidc
 		if saml:
 			self.current_user.saml = saml
 		Session.put(sessionid, self.current_user)
@@ -166,11 +168,12 @@ class Resource(RequestHandler):
 				cookie_args['samesite'] = ucr['umc/http/cookie/samesite']
 			self.set_cookie(name, value, **cookie_args)
 
-	def get_cookie(self, name):
+	def get_cookie(self, name, default=None):
 		cookie = self.request.cookies.get
 		morsel = cookie(self.suffixed_cookie_name(name)) or cookie(name)
 		if morsel:
 			return morsel.value
+		return default
 
 	def suffixed_cookie_name(self, name):
 		host, _, port = self.request.headers.get('Host', '').partition(':')
@@ -220,6 +223,8 @@ class Resource(RequestHandler):
 			raise BadRequest('invalid Authorization')
 		if scheme.lower() == u'basic':
 			yield self.basic_authorization(credentials)
+		elif scheme.lower() == u'bearer':
+			yield self.bearer_authorization(credentials)
 
 	@tornado.gen.coroutine
 	def basic_authorization(self, credentials):
@@ -236,6 +241,13 @@ class Resource(RequestHandler):
 
 		ud.debug(ud.MAIN, 99, 'auth: creating session with sessionid=%r' % (sessionid,))
 		self.set_session(sessionid, session.user.username, password=session.user.password)
+
+	@tornado.gen.coroutine
+	def bearer_authorization(self, credentials):
+		from univention.management.console.oidc import OIDCResource
+		oidc = OIDCResource(self.application, self.request)
+		access = yield oidc.verify_jwt(credentials)
+		yield oidc.bearer_authorization(access)
 
 	@property
 	def lo(self):

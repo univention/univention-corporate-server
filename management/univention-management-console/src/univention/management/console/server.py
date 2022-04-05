@@ -41,10 +41,11 @@ import logging
 import resource
 import traceback
 import threading
+import json
 from argparse import ArgumentParser
 
 import setproctitle
-from tornado.web import Application as TApplication
+from tornado.web import Application as TApplication, url
 from tornado.httpserver import HTTPServer
 from tornado.netutil import bind_sockets
 import tornado
@@ -54,6 +55,7 @@ from univention.management.console.resources import Auth, Upload, Command, UCR, 
 from univention.management.console.log import CORE, log_init, log_reopen
 from univention.management.console.config import ucr, get_int
 from univention.management.console.saml import SamlACS, SamlMetadata, SamlSingleLogout, SamlLogout, SamlIframeACS
+from univention.management.console.oidc import OIDCLogin, OIDCLogout, OIDCLogoutFinished
 from univention.management.console.session import moduleManager, categoryManager
 from univention.management.console.shared_memory import shared_memory
 
@@ -70,7 +72,7 @@ class Application(TApplication):
 	def __init__(self, **kwargs):
 		tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console')
 		super(Application, self).__init__([
-			(r'/', Index),
+			url(r'/', Index, name='index'),
 			(r'/auth/?', Auth),
 			(r'/upload/?', Upload),
 			(r'/(upload)/(.+)', Command),
@@ -94,6 +96,9 @@ class Application(TApplication):
 			(r'/saml/slo/?', SamlSingleLogout),
 			(r'/saml/logout', SamlLogout),
 			(r'/saml/iframe/?', SamlIframeACS),
+			url(r'/oidc/', OIDCLogin, name='oidc-login'),
+			url(r'/oidc/logout', OIDCLogout, name='oidc-logout'),
+			url(r'/oidc/logout-done', OIDCLogoutFinished, name='oidc-logout-done'),
 			(r'/logout', Logout),
 		], default_handler_class=Nothing, **kwargs)
 
@@ -185,7 +190,13 @@ class Server(object):
 			if self._child_number is not None:
 				shared_memory.children[self._child_number] = os.getpid()
 
-		application = Application(serve_traceback=ucr.is_true('umc/http/show_tracebacks', True))
+		with open('/usr/share/univention-management-console/oidc/oidc.json') as fd:
+			config = json.load(fd)
+			settings = {
+				'oidc': config.get('oidc'),
+				'oidc_default_op': config.get('oidc_default_op'),
+			}
+		application = Application(serve_traceback=ucr.is_true('umc/http/show_tracebacks', True), **settings)
 		server = HTTPServer(
 			application,
 			idle_connection_timeout=get_int('umc/http/response-timeout', 310),  # is this correct? should be internal response timeout

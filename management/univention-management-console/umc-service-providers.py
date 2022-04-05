@@ -40,7 +40,7 @@ import os
 import subprocess
 
 name = 'umc-service-providers'
-description = 'Manage umc/saml/trusted/sp/* variable'
+description = 'Manage umc/saml/trusted/sp/* and umc/oidc/trusted/rp/* variable'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))'
 attributes = ['univentionService', 'cn', 'associatedDomain']
 
@@ -60,10 +60,16 @@ def handler(dn, new, old):
 		umc_service_was_active = b'Univention Management Console' in old.get('univentionService', [])
 		domain_added = 'associatedDomain' in new and 'associatedDomain' not in old and umc_service_active
 		if umc_service_active and (domain_added or not umc_service_was_active):
-			handler_set(['umc/saml/trusted/sp/%s=%s' % (fqdn, fqdn)])
+			handler_set([
+				'umc/saml/trusted/sp/%s=%s' % (fqdn, fqdn),
+				'umc/oidc/trusted/rp/%s=%s' % (fqdn, fqdn),
+			])
 			__changed_trusted_sp = True
 		elif umc_service_was_active and not umc_service_active:
-			handler_unset(['umc/saml/trusted/sp/%s' % (fqdn,)])
+			handler_unset([
+				'umc/saml/trusted/sp/%s' % (fqdn,),
+				'umc/oidc/trusted/rp/%s' % (fqdn,),
+			])
 			__changed_trusted_sp = True
 
 	finally:

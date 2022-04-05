@@ -591,6 +591,12 @@ msgstr ""
 msgid "error parsing UMCP message body"
 msgstr "Fehler beim Parsen des UMCP-Nachrichtenrumpfes"
 
+msgid "The OIDC response contained an invalid signature: %s"
+msgstr "Die OIDC-Antwort enthält eine ungültige Signatur: %s"
+
+msgid "The OIDC response signature is expired."
+msgstr "Die OIDC-Antwort enthält eine ungültige Signatur: %s"
+
 #~ msgid ""
 #~ "The password does not meet the password policy requirements. Check the "
 #~ "minimum password length, password complexity and password history "

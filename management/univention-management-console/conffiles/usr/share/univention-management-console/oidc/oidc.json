@@ -1,0 +1,39 @@
+@!@
+import json
+
+rawconfig = {}
+for key, value in configRegistry.items():
+	if not key.startswith('umc/oidc/') or key in ('umc/oidc/default-op',):
+		continue
+	try:
+		oidcname, keyname = key[len('umc/oidc/'):].split('/', 1)
+	except ValueError:
+		continue
+	rawconfig.setdefault(oidcname, {})[keyname] = value
+
+config = {}
+for oidcname, oidcconfig in rawconfig.items():
+	try:
+		issuer = oidcconfig['issuer']
+		client_id = oidcconfig['client-id']
+		client_secret_file = oidcconfig['client-secret-file']
+	except KeyError:
+		continue
+	try:
+		with open(client_secret_file) as fd:
+			client_secret = fd.read().strip()
+	except EnvironmentError:
+		continue
+	config[oidcname] = {
+		"client_id": client_id,
+		"client_secret": client_secret,
+		"issuer": issuer,
+		"authorization_endpoint": oidcconfig.get("authorize-url", "%s/protocol/openid-connect/auth" % (issuer,)),
+		"token_endpoint": oidcconfig.get("access-token-url", "%s/protocol/openid-connect/token" % (issuer,)),
+		"end_session_endpoint": oidcconfig.get("logout-url", "%s/protocol/openid-connect/logout" % (issuer,)),
+		"userinfo_endpoint": oidcconfig.get("userinfo-url", "%s/protocol/openid-connect/userinfo" % (issuer,)),
+		"jwks_uri": oidcconfig.get("cert-url", '%s/protocol/openid-connect/certs' % (issuer,)),
+		"extra_parameters": oidcconfig.get("extra-parameter", ""),
+	}
+print(json.dumps({'oidc': config, 'oidc_default_op': configRegistry.get("umc/oidc/default-op", "default")}, sort_keys=True, indent=2))
+@!@

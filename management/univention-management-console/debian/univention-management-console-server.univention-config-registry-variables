@@ -147,3 +147,33 @@ Description[de]=Definiert den lokalisierten Text für die Cookie-Banner Texte. P
 Description[en]=Defines the localized text for the cookie banner texts. Placeholders are "text" and "title" (e.g.: umc/cookie-banner/text/en).
 Type=str
 Categories=management-umc
+
+[umc/oidc/default]
+Description[de]=Aktivierte OIDC-Konfiguration
+Description[en]=Activated OIDC configuration
+Type=str
+Categories=management-umc
+
+[umc/oidc/.*/server]
+Description[de]=OIDC Server
+Description[en]=OIDC Server
+Type=str
+Categories=management-umc
+
+[umc/oidc/.*/client-realm]
+Description[de]=OIDC Client Realm
+Description[en]=OIDC Client Realm
+Type=str
+Categories=management-umc
+
+[umc/oidc/.*/client-id]
+Description[de]=OIDC Client ID
+Description[en]=OIDC Client ID
+Type=str
+Categories=management-umc
+
+[umc/oidc/.*/client-secret-file]
+Description[de]=Dateiname des OIDC Client Secret
+Description[en]=Filename for OIDC Client Secret
+Type=str
+Categories=management-umc

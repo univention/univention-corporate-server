@@ -390,7 +390,12 @@ class Base(signals.Provider, Translation):
 	def bind_user_connection(self, lo):
 		CORE.process('LDAP bind for user %r.' % (self._user_dn,))
 		try:
-			if self.auth_type == 'SAML':
+			if self.auth_type == 'OIDC':
+				lo.lo.bind_oidc(self._password)
+				if not lo.lo.compare_dn(lo.binddn, self._user_dn):
+					CORE.warn('OIDC binddn does not match: %r != %r' % (lo.binddn, self._user_dn))
+					self._user_dn = lo.binddn
+			elif self.auth_type == 'SAML':
 				lo.lo.bind_saml(self._password)
 				if not lo.lo.compare_dn(lo.binddn, self._user_dn):
 					CORE.warn('SAML binddn does not match: %r != %r' % (lo.binddn, self._user_dn))

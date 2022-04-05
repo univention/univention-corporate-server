@@ -292,6 +292,8 @@ class Logout(Resource):
 
 	def get(self, **kwargs):
 		session = self.current_user
+		if session.oidc is not None:
+			return self.redirect('/univention/oidc/logout', status=303)
 		if session.saml is not None:
 			return self.redirect('/univention/saml/logout', status=303)
 		self.expire_session()

@@ -137,3 +137,9 @@ Description[de]=Definiert den ersten port für parallele UMC-Webserver (Standard
 Description[en]=Defines the first port for parallel UMC-Webserver (default: 18200).
 Type=int
 Categories=management-umc
+
+[umc/oidc/op-issuer]
+Description[de]=Definiert den OpenID-Connect-Provider-Issuer.
+Description[en]=Defines the OpenID-Connect provider issuer.
+Type=str
+Categories=management-umc,oidc

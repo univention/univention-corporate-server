@@ -64,6 +64,17 @@ else
 
 fi
 
+_cleanup_oidc_die () {
+	ucr unset umc/oidc/op-issuer; exit 3
+}
+if ! is_ucr_false 'umc/web/sso/enabled'; then
+	ucr set ucs/server/oidc/fqdn?"keycloak.$ldap_master"
+	eval "$(ucr shell ucs/server/oidc/fqdn)"
+	rm /usr/share/univention-management-console/oidc/*.jwks
+	ucr --debug set umc/oidc/op-issuer="https://${ucs_server_oidc_fqdn}/realms/ucs" || _cleanup_oidc_die
+	[ "$(ls -A /usr/share/univention-management-console/oidc/*.jwks)" ] || _cleanup_oidc_die
+fi
+
 if [ -n "$umc_saml_sp_server" ]; then
 	fqdn="$umc_saml_sp_server"
 else
@@ -99,6 +110,7 @@ if ! is_ucr_false 'umc/web/sso/enabled'; then
 	ucr set umc/saml/idp-server="https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/idp/metadata.php" || _cleanup_die
 	[ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || _cleanup_die
 fi
+
 
 systemctl restart univention-management-console-server
 /etc/init.d/slapd crestart
