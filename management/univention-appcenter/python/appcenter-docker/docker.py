@@ -338,11 +338,6 @@ class Docker(object):
 		fd = os.open(env_file, os.O_RDWR | os.O_CREAT)
 		os.chmod(env_file, 0o400)
 		with os.fdopen(fd, 'w') as outfile:
-			# appcenter env file
-			if os.path.exists(self.app.get_cache_file('env')):
-				with open(self.app.get_cache_file('env'), 'r') as infile:
-					outfile.write(ucr_run_filter(infile.read()))
-					outfile.write('\n')
 			# env variables from appcenter
 			for key, value in env.items():
 				if value is None:
@@ -350,6 +345,11 @@ class Docker(object):
 				if self.app.docker_ucr_style_env:
 					outfile.write('%s=%s\n' % (shell_safe(key), value))
 				outfile.write('%s=%s\n' % (shell_safe(key).upper(), value))
+			# appcenter env file
+			if os.path.exists(self.app.get_cache_file('env')):
+				with open(self.app.get_cache_file('env'), 'r') as infile:
+					outfile.write(ucr_run_filter(infile.read(), env))
+					outfile.write('\n')
 		return env_file
 
 	def create(self, hostname, env):
