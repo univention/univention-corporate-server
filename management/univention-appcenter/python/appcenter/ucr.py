@@ -89,7 +89,7 @@ def ucr_run_filter(string, additional=None):
 		# if we would... NEVER __setitem__ on ucr!
 		ucr = deepcopy(ucr)
 		for k, v in additional.iteritems():
-			ucr[k] = v
+			ucr[k] = str(v)
 	return run_filter(string, ucr)
 
 
