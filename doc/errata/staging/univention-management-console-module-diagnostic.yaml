@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-1
 src: univention-management-console-module-diagnostic
 fix: 6.0.0-29A~5.0.0.202203221239
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * A new diagnostic plugin has been added to detect cases where an LDAP
    schema is missing that is actually still referenced by some objects.
 bug: [53455]
