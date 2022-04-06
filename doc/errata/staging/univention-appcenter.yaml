@@ -6,8 +6,7 @@ src: univention-appcenter
 fix: 9.0.2-74A~5.0.0.202204061233
 desc: |
  This update addresses the following issue:
- * Change order when populating env file during the installation of
-   Docker Apps: App specific goes at the end so the App Center does not
-   overwrite them with other values. This is required for some upcoming Apps
-   to be installable.
+ * Change order and prioritize App specific settings over App Center settings
+   when populating the environment file. This is required for some upcoming
+   Apps to be installable.
 bug: [54612]
