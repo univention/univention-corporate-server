@@ -35,6 +35,7 @@ from __future__ import absolute_import, division
 
 import os
 import sys
+import pipes
 import signal
 import logging
 import resource
@@ -150,7 +151,7 @@ class Server(object):
 				CORE.process('Failed sending signal %d to process %d: %s' % (signal, pid, exc))
 
 	def run(self):
-		setproctitle.setproctitle('%s # /usr/sbin/univention-management-console-server' % (setproctitle.getproctitle(),))
+		setproctitle.setproctitle('/usr/bin/python3 /usr/sbin/univention-management-console-server' + ' '.join(pipes.quote(x) for x in sys.argv[1:]))
 		signal.signal(signal.SIGHUP, self.signal_handler_hup)
 		signal.signal(signal.SIGUSR1, self.signal_handler_reload)
 
