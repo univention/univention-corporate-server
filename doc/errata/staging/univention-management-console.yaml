@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-1
 src: univention-management-console
 fix: 12.0.12-22A~5.0.0.202204041241
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The cookie attribute `SameSite` can now be set for UMC cookies via the UCR
    variable `umc/http/cookie/samesite`.
  * `DNSanitizer` is now included in `__all__` preventing warnings in IDEs.
