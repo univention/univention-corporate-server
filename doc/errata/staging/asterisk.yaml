@@ -1,0 +1,52 @@
+product: ucs
+release: "4.4"
+version: [8, 9]
+scope: ucs_4.4-0-errata4.4-9
+src: asterisk
+fix: 1:13.14.1~dfsg-2+deb9u6
+desc: |
+ This update addresses the following issues:
+ * An issue was discovered in Asterisk Open Source through 13.27.0, 14.x and
+   15.x through 15.7.2, and 16.x through 16.4.0, and Certified Asterisk
+   through 13.21-cert3. A pointer dereference in chan_sip while handling SDP
+   negotiation allows an attacker to crash Asterisk when handling an SDP
+   answer to an outgoing T.38 re-invite. To exploit this vulnerability an
+   attacker must cause the chan_sip module to send a T.38 re-invite request to
+   them. Upon receipt, the attacker must send an SDP answer containing both a
+   T.38 UDPTL stream and another media stream containing only a codec (which
+   is not permitted according to the chan_sip configuration). (CVE-2019-13161)
+ * An issue was discovered in manager.c in Sangoma Asterisk through 13.x,
+   16.x, 17.x and Certified Asterisk 13.21 through 13.21-cert4. A remote
+   authenticated Asterisk Manager Interface (AMI) user without system
+   authorization could use a specially crafted Originate AMI request to
+   execute arbitrary system commands. (CVE-2019-18610)
+ * An issue was discovered in channels/chan_sip.c in Sangoma Asterisk 13.x
+   before 13.29.2, 16.x before 16.6.2, and 17.x before 17.0.1, and Certified
+   Asterisk 13.21 before cert5. A SIP request can be sent to Asterisk that can
+   change a SIP peer's IP address. A REGISTER does not need to occur, and
+   calls can be hijacked as a result. The only thing that needs to be known is
+   the peer's name; authentication details such as passwords do not need to be
+   known. This vulnerability is only exploitable when the nat option is set to
+   the default, or auto_force_rport. (CVE-2019-18790)
+ * An issue was discovered in res_pjsip_t38.c in Sangoma Asterisk through 13.x
+   and Certified Asterisk through 13.21-x. If it receives a re-invite
+   initiating T.38 faxing and has a port of 0 and no c line in the SDP, a NULL
+   pointer dereference and crash will occur. This is different from
+   CVE-2019-18940. (CVE-2019-18976)
+ * An issue was discovered in Asterisk Open Source 13.x before 13.37.1, 16.x
+   before 16.14.1, 17.x before 17.8.1, and 18.x before 18.0.1 and Certified
+   Asterisk before 16.8-cert5. If Asterisk is challenged on an outbound INVITE
+   and the nonce is changed in each response, Asterisk will continually send
+   INVITEs in a loop. This causes Asterisk to consume more and more memory
+   since the transaction will never terminate (even if the call is hung up),
+   ultimately leading to a restart or shutdown of Asterisk. Outbound
+   authentication must be configured on the endpoint for this to occur.
+   (CVE-2020-28242)
+bug: [54645]
+cve:
+- CVE-2019-13161
+- CVE-2019-18610
+- CVE-2019-18790
+- CVE-2019-18976
+- CVE-2020-28242
+- CVE-2019-18940
