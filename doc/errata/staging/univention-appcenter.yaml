@@ -3,10 +3,11 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-appcenter
-fix: 
+fix: 9.0.2-74A~5.0.0.202204061233
 desc: |
  This update addresses the following issue:
  * Change order when populating env file during the installation of
    Docker Apps: App specific goes at the end so the App Center does not
-   overwrite them with other values.
+   overwrite them with other values. This is required for some upcoming Apps
+   to be installable.
 bug: [54612]
