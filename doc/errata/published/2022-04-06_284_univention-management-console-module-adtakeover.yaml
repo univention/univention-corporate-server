@@ -9,3 +9,5 @@ desc: |
  * Performing an Active Directory takeover will work when the original AD
    contains Group Policy Objects that use non ASCII encoding.
 bug: [54196]
+erratum: 284
+announced: 2022-04-06
