@@ -10,3 +10,5 @@ desc: |
    when populating the environment file. This is required for some upcoming
    Apps to be installable.
 bug: [54612]
+erratum: 280
+announced: 2022-04-06
