@@ -352,6 +352,9 @@ class NewSession(Resource):
 		session.renew()
 		self.content_negotiation(None)
 
+	def post(self):
+		return self.get()
+
 
 class Auth(Resource):
 	"""Authenticate the user via PAM - either via plain password or via SAML message"""

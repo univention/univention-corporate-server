@@ -49,7 +49,7 @@ from tornado.netutil import bind_sockets
 import tornado
 from concurrent.futures import ThreadPoolExecutor
 
-from univention.management.console.resources import Auth, Upload, Command, UCR, Meta, Info, Modules, Categories, UserPreferences, Hosts, Set, SetPassword, SetLocale, SetUserPreferences, SessionInfo, GetIPAddress, Index, Logout, Nothing
+from univention.management.console.resources import Auth, Upload, Command, UCR, Meta, Info, Modules, Categories, UserPreferences, Hosts, Set, SetPassword, SetLocale, SetUserPreferences, SessionInfo, GetIPAddress, Index, Logout, Nothing, NewSession
 from univention.management.console.log import CORE, log_init, log_reopen
 from univention.management.console.config import ucr, get_int
 from univention.management.console.saml import SamlACS, SamlMetadata, SamlSingleLogout, SamlLogout, SamlIframeACS
@@ -78,6 +78,7 @@ class Application(TApplication):
 			(r'/get/ucr', UCR),
 			(r'/get/meta', Meta),
 			(r'/get/info', Info),
+			(r'/get/new-session', NewSession),
 			(r'/get/modules', Modules),
 			(r'/get/categories', Categories),
 			(r'/get/user/preferences', UserPreferences),
