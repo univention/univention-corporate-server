@@ -193,7 +193,7 @@ class Resource(RequestHandler):
 			# very important! We must expire the session cookie, with the same path, otherwise one ends up in a infinite redirection loop after changing the IP address (e.g. because switching from VPN to regular network)
 			for name in self.request.cookies:
 				if name.startswith('UMCSessionId'):
-					self.set_cookie(name, '', path='/univention/', expires=datetime.datetime.fromtimestamp(0))
+					self.clear_cookie(name, path='/univention/')
 			raise HTTPError(UNAUTHORIZED, 'The current session is not valid with your IP address for security reasons. This might happen after switching the network. Please login again.')
 
 	def get_ip_address(self):
