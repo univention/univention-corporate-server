@@ -1,7 +1,7 @@
 product: ucs
 release: "4.4"
-version: [8, 9]
-scope: ucs_4.4-0-errata4.4-9
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
 src: asterisk
 fix: 1:13.14.1~dfsg-2+deb9u6
 desc: |
