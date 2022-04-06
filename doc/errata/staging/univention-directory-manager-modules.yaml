@@ -5,6 +5,6 @@ scope: ucs_5.0-0-errata5.0-1
 src: univention-directory-manager-modules
 fix: 15.0.11-40A~5.0.0.202204041248
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Some redundant log messages logging password hashes were removed.
 bug: [54348]
