@@ -10,3 +10,5 @@ desc: |
    variable `umc/http/cookie/samesite`.
  * `DNSanitizer` is now included in `__all__` preventing warnings in IDEs.
 bug: [54484, 52445]
+erratum: 283
+announced: 2022-04-06
