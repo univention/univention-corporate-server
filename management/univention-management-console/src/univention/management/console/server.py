@@ -31,12 +31,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import division
+from __future__ import absolute_import, division
 
 import os
 import sys
 import signal
 import logging
+import resource
 import traceback
 import threading
 from argparse import ArgumentParser
@@ -153,6 +154,11 @@ class Server(object):
 		signal.signal(signal.SIGUSR1, self.signal_handler_reload)
 
 		tornado.httpclient.AsyncHTTPClient.configure('tornado.curl_httpclient.CurlAsyncHTTPClient')
+		try:
+			fd_limit = get_int('umc/http/max-open-file-descriptors', 65535)
+			resource.setrlimit(resource.RLIMIT_NOFILE, (fd_limit, fd_limit))
+		except (ValueError, resource.error) as exc:
+			CORE.error('Could not raise NOFILE resource limits: %s' % (exc,))
 
 		sockets = bind_sockets(get_int('umc/http/port', 8090), ucr.get('umc/http/interface', '127.0.0.1'), backlog=get_int('umc/http/requestqueuesize', 100), reuse_port=True)
 		if self.options.processes != 1:
