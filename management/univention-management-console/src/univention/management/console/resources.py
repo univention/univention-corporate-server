@@ -539,6 +539,7 @@ class SetLocale(Resource):
 		# TODO:
 		# self.update_language([locale])
 		locale
+		self.content_negotiation(None)
 
 
 class Upload(Resource):
