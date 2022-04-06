@@ -109,7 +109,7 @@ class Server(object):
 			help='if given than debugging is activated and set to the specified level [default: %(default)s]'
 		)
 		self.parser.add_argument(
-			'-L', '--log-file', default='stdout',
+			'-L', '--log-file', default='/var/log/univention/management-console-server.log',
 			help='specifies an alternative log file [default: %(default)s]'
 		)
 		self.parser.add_argument(
