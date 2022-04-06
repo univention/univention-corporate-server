@@ -9,3 +9,5 @@ desc: |
  * During the release of UCS 4.4-0 NUMA support in libvirt was accidentally
    disabled again after having been enabled for UCS 4.3-4 by erratum 512.
 bug: [54615]
+erratum: 1213
+announced: 2022-04-06
