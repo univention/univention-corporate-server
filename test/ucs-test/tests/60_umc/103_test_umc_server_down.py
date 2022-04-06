@@ -19,14 +19,7 @@ class Test_ServerDown_Messages(object):
 			with pytest.raises(ServiceUnavailable) as exc:
 				Client().umc_get('modules')
 			assert exc.value.response.reason == 'UMC Service Unavailable'
-			assert exc.value.message.splitlines() == [
-				'The Univention Management Console Server is currently not running. ',
-				'If you have root permissions on the system you can restart it by executing the following command:',
-				' * service univention-management-console-server restart',
-				'The following logfile may contain information why the server is not running:',
-				' * /var/log/univention/management-console-server.log',
-				'Otherwise please contact an administrator or try again later.',
-			]
+			assert exc.value.message.splitlines() == 'The Univention Management Console Server could not be reached. Please restart univention-management-console-server or try again later.'
 		finally:
 			subprocess.call(['service', 'univention-management-console-server', 'start'])
 
