@@ -216,7 +216,7 @@ class SamlTest(object):
 		if auth_state is None:
 			try:
 				print('WARNING: invalid HTML!!!!')
-				auth_state = re.search('name="AuthState" value="([^"]+)"', bytes(self.page.content)).group(1)
+				auth_state = re.search(b'name="AuthState" value="([^"]+)"', bytes(self.page.content)).group(1)
 				auth_state = html.unescape(auth_state)
 			except AttributeError:
 				pass
