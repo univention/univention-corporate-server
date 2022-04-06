@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [8, 9]
+scope: ucs_4.4-0-errata4.4-9
+src: libgc
+fix: 1:7.4.2-8+deb9u1
+desc: |
+ This update addresses the following issue:
+ * Integer overflow in GC_MALLOC_ATOMIC (CVE-2016-9427)
+bug: [54648]
+cve:
+- CVE-2016-9427
