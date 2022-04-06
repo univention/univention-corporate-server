@@ -9,3 +9,5 @@ desc: |
  * Error handling in the script
    `/usr/share/univention-mail-postfix/listfilter.py` has been repaired.
 bug: [54560]
+erratum: 282
+announced: 2022-04-06
