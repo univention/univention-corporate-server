@@ -19,7 +19,7 @@ import os
 import logging
 from argparse import Namespace  # noqa F401
 
-KVM_INTERFACE = 'ens7'
+KVM_INTERFACE = 'ens6'
 
 
 class UCSInstallation(object):
