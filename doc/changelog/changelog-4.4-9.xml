@@ -278,7 +278,7 @@
 						<package>python-urllib3</package> (<u:cve>2018-20060</u:cve> <u:cve>2019-11236</u:cve> <u:cve>2019-11324</u:cve> <u:cve>2020-26137</u:cve>) (<u:bug>53467</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>qemu</package> (<u:bug>53745</u:bug> <u:bug>53791</u:bug>)
+						<package>qemu</package> (<u:cve>2021-3593</u:cve> <u:cve>2021-3748</u:cve> <u:cve>2021-3930</u:cve> <u:cve>2021-20196</u:cve> <u:cve>2022-26354</u:cve>) (<u:bug>53745</u:bug> <u:bug>53791</u:bug> <u:bug>54639</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>qt4-x11</package> (<u:cve>2021-3481</u:cve> <u:cve>2021-45930</u:cve>) (<u:bug>54373</u:bug>)
