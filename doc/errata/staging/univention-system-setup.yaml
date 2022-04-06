@@ -5,6 +5,6 @@ scope: ucs_5.0-0-errata5.0-1
 src: univention-system-setup
 fix: 
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The package `univention-system-setup` has been migrated to Python 3.
 bug: [51318]
