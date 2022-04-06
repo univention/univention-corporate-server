@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Some redundant log messages logging password hashes were removed.
 bug: [54348]
+erratum: 281
+announced: 2022-04-06
