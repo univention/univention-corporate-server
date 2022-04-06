@@ -1,7 +1,7 @@
 product: ucs
 release: "4.4"
-version: [8, 9]
-scope: ucs_4.4-0-errata4.4-9
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
 src: pjproject
 fix: 2.5.5~dfsg-6+deb9u4
 desc: |
@@ -109,9 +109,6 @@ desc: |
    not be affected. A patch is available on the `master` branch of the
    `pjsip/pjproject` GitHub repository. There are currently no known
    workarounds. (CVE-2022-24764)
- 2.5.5~dfsg-6+deb9u4 (Thu, 31 Mar 2022 13:04:55 +0530)
- * Non-maintainer upload by the Debian LTS Team.
- * Regression fix for CVE-2022-23608
 bug: [54647]
 cve:
 - CVE-2021-32686
