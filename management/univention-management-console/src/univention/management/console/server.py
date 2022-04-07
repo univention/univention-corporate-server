@@ -106,7 +106,7 @@ class Server(object):
 		self.parser = ArgumentParser()
 		self.parser.add_argument(
 			'-d', '--debug', type=int, default=get_int('umc/server/debug/level', 1),
-			help='if given than debugging is activated and set to the specified level [default: %(default)s]'
+			help='if given then debugging is activated and set to the specified level [default: %(default)s]'
 		)
 		self.parser.add_argument(
 			'-L', '--log-file', default='/var/log/univention/management-console-server.log',
