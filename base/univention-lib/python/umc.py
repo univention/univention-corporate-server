@@ -52,6 +52,10 @@ from six.moves import http_client as httplib  # noqa F401
 
 from univention.config_registry import ConfigRegistry
 
+# the SameSite cookie attribute is only available from Python 3.8
+from six.moves.http_cookies import Morsel
+Morsel._reserved['samesite'] = 'SameSite'
+
 from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union  # noqa F401
 _T = TypeVar("_T")
 
