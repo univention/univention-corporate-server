@@ -1528,8 +1528,7 @@ class object(univention.admin.handlers.simpleLdap):
 		self.info['certificateDateNotAfter'] = ''
 		self.info['certificateVersion'] = ''
 		self.info['certificateSerial'] = ''
-		_certificate = self.info.get('userCertificate')
-		certificate = _certificate[0] if isinstance(_certificate, list) else _certificate
+		certificate = self.info.get('userCertificate')
 		values = load_certificate(certificate)
 		if values:
 			self.info.update(values)
