@@ -1,0 +1,28 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: wireshark
+fix: 2.6.20-0+deb9u3
+desc: |
+ This update addresses the following issues:
+ * Sysdig Event dissector crash (CVE-2021-4181)
+ * BitTorrent DHT dissector infinite loop (CVE-2021-4184)
+ * RTMPT dissector infinite loop (CVE-2021-4185)
+ * improper URL handling may lead to remote code execution (CVE-2021-22191)
+ * CMS dissector crash (CVE-2022-0581)
+ * CSN.1 dissector crash (CVE-2022-0582)
+ * PVFS dissector crash (CVE-2022-0583)
+ * Large loops in multiple dissectors (CVE-2022-0585)
+ * RTMPT dissector infinite loop (CVE-2022-0586)
+bug: [54652]
+cve:
+- CVE-2021-4181
+- CVE-2021-4184
+- CVE-2021-4185
+- CVE-2021-22191
+- CVE-2022-0581
+- CVE-2022-0582
+- CVE-2022-0583
+- CVE-2022-0585
+- CVE-2022-0586
