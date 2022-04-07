@@ -392,10 +392,11 @@ class Auth(Resource):
 		self.request.body_arguments['auth_type'] = None
 		self.request.body_arguments['locale'] = self.locale.code
 		session = self.current_user
+		# create a sessionid if the user is not yet authenticated
+		sessionid = self.create_sessionid(True)  # important: must be called before the auth!
+
 		result = yield session.authenticate(self.request.body_arguments)
 
-		# create a sessionid if the user is not yet authenticated
-		sessionid = self.create_sessionid(True)
 		self.set_session(sessionid, session.user.username, password=session.user.password)
 		self.set_status(result.status)
 		if result.message:
