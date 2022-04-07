@@ -72,9 +72,9 @@ def main():
 	for i_connection in connections:
 		try:
 			response = i_connection.getresponse()
-			print('*** RESPONSE Status=%s; body=\n%r\n***' % (response.status, response.read()))
-			if response.status not in RESPONSE_STATUS_CODES:
-				print('ERROR: Unexpected status of response %s (expected was one of %s)' % (response.status, RESPONSE_STATUS_CODES))
+			print('*** RESPONSE Status=%s %s; body=\n%r\n***' % (response.status, response.reason, response.read()))
+			if response.status != 502 or response.reason != 'UMC-Server module process connection failed':
+				print('ERROR: Unexpected status of response %s %s (expected 502)' % (response.status, response.reason))
 				success = False
 		except ssl.SSLError:
 			print('ERROR: request timed out')

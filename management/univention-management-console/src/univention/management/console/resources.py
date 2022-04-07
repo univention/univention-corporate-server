@@ -620,7 +620,8 @@ class Command(Resource):
 			# cleanup module
 			session.processes.stop_process(module_name)
 			# TODO: read stderr
-			raise BadGateway('%s: %s: %s' % (self._('Connection to module process failed'), module_name, exc))
+			reason = 'UMC-Server module process connection failed'
+			raise BadGateway('%s: %s: %s' % (self._('Connection to module process failed'), module_name, exc), reason=reason)
 		else:
 			CORE.process('Recevied response %s' % (response.code,))
 			self.set_status(response.code, response.reason)
