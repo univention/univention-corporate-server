@@ -54,6 +54,7 @@ from univention.management.console.resources import Auth, Upload, Command, UCR, 
 from univention.management.console.log import CORE, log_init, log_reopen
 from univention.management.console.config import ucr, get_int
 from univention.management.console.saml import SamlACS, SamlMetadata, SamlSingleLogout, SamlLogout, SamlIframeACS
+from univention.management.console.session import moduleManager, categoryManager
 from univention.management.console.shared_memory import shared_memory
 
 from univention.lib.i18n import NullTranslation
@@ -135,7 +136,15 @@ class Server(object):
 	def signal_handler_reload(self, signo, frame):
 		log_reopen()
 		SamlACS.reload()
+		self.reload()
 		self._inform_childs(signal)
+
+	@classmethod
+	def reload(cls):
+		CORE.info('Reloading resources: UCR, modules, categories')
+		ucr.load()
+		moduleManager.load()
+		categoryManager.load()
 
 	def _inform_childs(self, signal):
 		if self._child_number is not None:
@@ -190,6 +199,8 @@ class Server(object):
 		logger = logging.getLogger()
 		logger.setLevel(logging.INFO)
 		logger.addHandler(channel)
+
+		self.reload()
 
 		ioloop = tornado.ioloop.IOLoop.current()
 
