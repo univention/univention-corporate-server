@@ -12,3 +12,4 @@
 [ ] test session timeout
 [ ] test get/new-session
 [ ] address all FIXME/TODO notes
+[ ] already create future proof interfaces? e.g. combine UserPreferences
