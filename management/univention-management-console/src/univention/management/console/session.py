@@ -81,6 +81,12 @@ class User(object):
 		self.password = password
 		self.auth_type = auth_type
 		self._search_user_dn()
+
+		CORE.info('Reloading resources: UCR, modules, categories')
+		ucr.load()
+		moduleManager.load()
+		categoryManager.load()
+
 		self.session.acls._reload_acls_and_permitted_commands()
 
 	def _search_user_dn(self):

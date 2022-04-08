@@ -388,11 +388,6 @@ class Auth(Resource):
 			if content_length >= max_length:  # prevent some DoS
 				raise HTTPError(REQUEST_ENTITY_TOO_LARGE, 'Request data is too large, allowed length is %d' % max_length)
 
-		CORE.info('Reloading resources: UCR, modules, categories')
-		ucr.load()
-		moduleManager.load()
-		categoryManager.load()
-
 		self.request.body_arguments['auth_type'] = None
 		self.request.body_arguments['locale'] = self.locale.code
 		session = self.current_user
@@ -594,7 +589,6 @@ class Command(Resource):
 		session = self.current_user
 		acls = session.acls
 
-		# module_name = acls.get_module_providing(moduleManager, command)  # TODO: remove
 		module_name = acls.get_module_providing(moduleManager, command)
 		if not module_name:
 			CORE.warn('No module provides %s' % (command))
