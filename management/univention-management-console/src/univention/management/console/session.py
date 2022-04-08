@@ -161,7 +161,8 @@ class Session(object):
 
 	def renew(self):
 		CORE.info('Renewing session')
-		# TODO: implement
+		self.acls = IACLs(self)
+		self.processes = Processes(self)
 
 	@tornado.gen.coroutine
 	def authenticate(self, args):
