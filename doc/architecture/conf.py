@@ -62,9 +62,6 @@ rst_epilog = """
 pdf_doc_base = "ucs-architecture"
 
 html_theme = 'univention_sphinx_book_theme'
-html_theme_options = {
-    "extra_navbar": "Status: DRAFT. Work in Progress.",
-}
 
 html_context = {
     "pdf_download_filename" : f"{pdf_doc_base}.pdf",
