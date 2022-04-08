@@ -16,6 +16,5 @@ Welcome to Univention Corporate Server architecture!
 
    .. toctree::
 
-      glossary
       indices
 
