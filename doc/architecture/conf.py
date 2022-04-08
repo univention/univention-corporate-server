@@ -59,7 +59,7 @@ rst_epilog = """
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-pdf_doc_base = "ucs-architecture"
+pdf_doc_base = "architecture"
 
 html_theme = 'univention_sphinx_book_theme'
 
