@@ -1672,9 +1672,6 @@ class object(univention.admin.handlers.simpleLdap):
 		super(object, self)._ldap_pre_create()
 		ud.debug(ud.ADMIN, ud.INFO, 'users/user: dn was set to %s' % (self.dn,))
 
-		if self['mailPrimaryAddress']:
-			self['mailPrimaryAddress'] = self['mailPrimaryAddress'].lower()
-
 		# request a new uidNumber or get lock for manually set uidNumber
 		if self['uidNumber']:
 			univention.admin.allocators.acquireUnique(self.lo, self.position, 'uidNumber', self['uidNumber'], 'uidNumber', scope='base')
@@ -1710,6 +1707,9 @@ class object(univention.admin.handlers.simpleLdap):
 
 		# get lock for mailPrimaryAddress
 		if not self.exists() or self.hasChanged('mailPrimaryAddress'):
+			if self['mailPrimaryAddress']:
+				self['mailPrimaryAddress'] = self['mailPrimaryAddress'].lower()
+
 			# ignore case in change of mailPrimaryAddress, we only store the lowercase address anyway
 			if self['mailPrimaryAddress'] and self['mailPrimaryAddress'].lower() != (self.oldinfo.get('mailPrimaryAddress', None) or '').lower():
 				try:
@@ -1760,10 +1760,6 @@ class object(univention.admin.handlers.simpleLdap):
 		super(object, self)._ldap_pre_modify()
 		if not self.oldattr.get('mailForwardCopyToSelf') and self['mailForwardCopyToSelf'] == '0' and not self['mailForwardAddress']:
 			self['mailForwardCopyToSelf'] = None
-
-		if self.hasChanged('mailPrimaryAddress'):
-			if self['mailPrimaryAddress']:
-				self['mailPrimaryAddress'] = self['mailPrimaryAddress'].lower()
 
 		if self.hasChanged("uidNumber"):
 			# this should never happen, as uidNumber is marked as unchangeable
