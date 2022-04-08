@@ -536,7 +536,7 @@ class SetLocale(Resource):
 	@sanitize(locale=StringSanitizer(required=True))
 	def post(self):
 		locale = self.request.body_arguments['locale']
-		# TODO:
+		# FIXME: evaluate locale
 		# self.update_language([locale])
 		locale
 		self.content_negotiation(None)

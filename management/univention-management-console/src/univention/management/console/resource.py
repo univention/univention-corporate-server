@@ -78,7 +78,7 @@ class Resource(RequestHandler):
 	"""Base class for every UMC resource"""
 
 	def set_default_headers(self):
-		self.set_header('Server', 'UMC-Server/1.0')  # TODO:
+		self.set_header('Server', 'UMC-Server/1.0')
 
 	@tornado.gen.coroutine
 	def prepare(self):
@@ -248,7 +248,6 @@ class Resource(RequestHandler):
 		return json_
 
 	def decode_request_arguments(self):
-		# FIXME / TODO: regression: support query string ?flavor=foo for non-JSON
 		if self.request.headers.get('Content-Type', '').startswith('application/json'):  # normal (json) request
 			# get body and parse json
 			body = u'{}'
@@ -262,13 +261,14 @@ class Resource(RequestHandler):
 				self.request.headers['X-UMC-Flavor'] = args['flavor']
 			self.request.body_arguments = args.get('options', {})
 			self.request.body = json.dumps(self.request.body_arguments).encode('ASCII')
-#		else:
-#			kwargs = dict((name, self.get_query_arguments(name)) for name in self.request.query_arguments)
-#			kwargs = dict((name, value[0] if len(value) == 1 else value) for name, value in kwargs.items())
-#			# request is not json
-#			args = {'options': kwargs}
-#			if 'flavor' in kwargs:
-#				args['flavor'] = kwargs['flavor']
+		else:  # request is not json
+			args = dict((name, self.get_query_arguments(name)) for name in self.request.query_arguments)
+			args = dict((name, value[0] if len(value) == 1 else value) for name, value in args.items())
+			if 'flavor' in args:
+				self.request.headers['X-UMC-Flavor'] = args['flavor']
+			self.request.body_arguments = args
+			self.request.body = json.dumps(self.request.body_arguments).encode('ASCII')
+			self.request.headers['Content-Type'] = 'application/json'
 
 	def content_negotiation(self, response, wrap=True):
 		lang = self.request.content_negotiation_lang

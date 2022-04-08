@@ -374,7 +374,7 @@ class ModuleServer(object):
 class Handler(RequestHandler):
 
 	def set_default_headers(self):
-		self.set_header('Server', 'UMC-Module/1.0')  # TODO:
+		self.set_header('Server', 'UMC-Module/1.0')
 
 	def initialize(self, server):
 		self.server = server
