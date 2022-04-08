@@ -41,6 +41,7 @@ import json
 import gzip
 import re
 import pipes
+import subprocess
 
 from ipaddress import ip_address
 import ldap
@@ -128,8 +129,8 @@ class ModuleProcess(object):
 			args.extend(('-l', '%s' % locale))
 
 		CORE.process('running: %s' % ' '.join(pipes.quote(x) for x in args))
-		self.__process = tornado.process.Subprocess(args)  # , stderr=tornado.process.Subprocess.STREAM)
-		# self.__process.initialize()
+		self.__process = tornado.process.Subprocess(args, stderr=subprocess.PIPE)
+		# self.__process.initialize()  # TODO: do we need SIGCHILD handler?
 		self.set_exit_callback(self._died)  # default
 		self._client = tornado.httpclient.AsyncHTTPClient()
 
@@ -148,7 +149,10 @@ class ModuleProcess(object):
 		elif connect_retries > 200:
 			raise CouldNotConnect('timeout exceeded')
 		elif self.__process and self.__process.proc.poll() is not None:
-			raise CouldNotConnect('process died')
+			stderr = self.__process.stderr.read().decode('utf-8', 'replace')
+			if stderr:
+				CORE.error(stderr)
+			raise CouldNotConnect('process died' + stderr)
 		else:
 			if not connect_retries % 50:
 				CORE.info('No connection to module process yet')

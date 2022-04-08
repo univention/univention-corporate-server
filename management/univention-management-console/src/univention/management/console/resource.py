@@ -34,6 +34,7 @@ import base64
 import uuid
 import hashlib
 import datetime
+import traceback
 from http.server import BaseHTTPRequestHandler
 
 import tornado.gen
@@ -290,34 +291,50 @@ class Resource(RequestHandler):
 		self.set_header('Content-Type', 'application/json')
 		return json.dumps(response).encode('ASCII')
 
-	# old
 	def write_error(self, status_code, exc_info=None, **kwargs):
-		if exc_info and isinstance(exc_info[1], (HTTPError, UMC_Error)):
-			exc = exc_info[1]
-			traceback = None
+		try:
+			return self._write_error(status_code, exc_info=exc_info, **kwargs)
+		except Exception:
+			CORE.error(traceback.format_exc())
+			raise
+
+	def _write_error(self, status_code, exc_info=None, **kwargs):
+		if not exc_info:
+			return super(Resource, self).write_error(status_code, **kwargs)
+
+		exc = exc_info[1]
+		if isinstance(exc, (HTTPError, UMC_Error)):
+			status = exc.status_code
+			reason = exc.reason
 			body = exc.result if isinstance(exc, UMC_Error) else None
 			message = exc.msg if isinstance(exc, UMC_Error) else exc.log_message
 			error = kwargs.pop('error', None)
-			if isinstance(exc, UMC_Error) and self.settings.get("serve_traceback") and isinstance(error, dict) and error.get('traceback'):
-				traceback = '%s\nRequest: %s\n\n%s' % (exc.msg, error.get('command'), error.get('traceback'))
-				traceback = traceback.strip()
-			content = self.default_error_page(exc.status_code, message, traceback, body)
-			self.set_status(exc.status_code, reason=exc.reason)
-			self.finish(content.encode('utf-8'))
-			return
+			stacktrace = None
+			if isinstance(exc, UMC_Error) and isinstance(error, dict) and error.get('traceback'):
+				stacktrace = '%s\nRequest: %s\n\n%s' % (exc.msg, error.get('command'), error.get('traceback'))
+				stacktrace = stacktrace.strip()
+		else:
+			status = 500
+			stacktrace = ''.join(traceback.format_exception(*exc_info))
+			body = None
+			message = str(exc)
+			reason = None
 
-		if exc_info:
-			kwargs['exc_info'] = exc_info
-		super(Resource, self).write_error(status_code, **kwargs)
+		if not self.settings.get("serve_traceback"):
+			stacktrace = None
 
-	def default_error_page(self, status, message, traceback, result=None):
-		if message and not traceback and traceback_pattern.search(message):
+		content = self.default_error_page(status, message, stacktrace, body)
+		self.set_status(status, reason=reason)
+		self.finish(content.encode('utf-8'))
+
+	def default_error_page(self, status, message, stacktrace, result=None):
+		if message and not stacktrace and traceback_pattern.search(message):
 			index = message.find('Traceback') if 'Traceback' in message else message.find('File')
-			message, traceback = message[:index].strip(), message[index:].strip()
-		if traceback:
-			CORE.error('%s' % (traceback,))
+			message, stacktrace = message[:index].strip(), message[index:].strip()
+		if stacktrace:
+			CORE.error('%s' % (stacktrace,))
 		if ucr.is_false('umc/http/show_tracebacks', False):
-			traceback = None
+			stacktrace = None
 
 		accept_json, accept_html = 0, 0
 		for mimetype, qvalue in self.check_acceptable('Accept', 'text/html'):
@@ -326,15 +343,15 @@ class Resource(RequestHandler):
 			if mimetype in ('application/*', 'application/json'):
 				accept_json = max(accept_json, qvalue)
 		if accept_json < accept_html:
-			return self.default_error_page_html(status, message, traceback, result)
-		page = self.default_error_page_json(status, message, traceback, result)
+			return self.default_error_page_html(status, message, stacktrace, result)
+		page = self.default_error_page_json(status, message, stacktrace, result)
 		if self.request.headers.get('X-Iframe-Response'):
 			self.set_header('Content-Type', 'text/html')
 			return '<html><body><textarea>%s</textarea></body></html>' % (escape(page, False),)
 		return page
 
-	def default_error_page_html(self, status, message, traceback, result=None):
-		content = self.default_error_page_json(status, message, traceback, result)
+	def default_error_page_html(self, status, message, stacktrace, result=None):
+		content = self.default_error_page_json(status, message, stacktrace, result)
 		try:
 			with open('/usr/share/univention-management-console-frontend/error.html', 'r') as fd:
 				content = fd.read().replace('%ERROR%', json.dumps(escape(content, True)))
@@ -343,17 +360,17 @@ class Resource(RequestHandler):
 			pass
 		return content
 
-	def default_error_page_json(self, status, message, traceback, result=None):
+	def default_error_page_json(self, status, message, stacktrace, result=None):
 		""" The default error page for UMCP responses """
 		if status == 401 and message == _http_response_codes.get(status):
 			message = ''
 		location = self.request.full_url().rsplit('/', 1)[0]
 		if status == 404:
-			traceback = None
+			stacktrace = None
 		response = {
 			'status': status,
 			'message': message,
-			'traceback': unescape(traceback) if traceback else traceback,
+			'traceback': unescape(stacktrace) if stacktrace else stacktrace,
 			'location': location,
 		}
 		if result:

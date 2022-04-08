@@ -286,7 +286,9 @@ class ModuleServer(object):
 		if self.__init_etype:
 			# notifier.timer_add(10000, self._timed_out)
 			signal.alarm(1)
-			six.reraise(self.__init_etype, self.__init_exc, self.__init_etraceback)
+			exc_info = (self.__init_etype, self.__init_exc, self.__init_etraceback)
+			self.error_handling(msg, 'init', *exc_info)
+			return
 
 		self.__handler.username = username
 		self.__handler.user_dn = user_dn
@@ -393,6 +395,7 @@ class Handler(RequestHandler):
 			mimetype = 'application/json'
 		locale = self.locale.code
 		msg = Request(umcp_command, [path], mime_type=mimetype)
+		self.request.umcp_message = msg
 		if mimetype.startswith('application/json'):
 			msg.options = json.loads(self.request.body)
 			msg.flavor = flavor
@@ -451,6 +454,13 @@ class Handler(RequestHandler):
 	@tornado.web.asynchronous
 	def options(self, *args):
 		return self.get(*args)
+
+	def write_error(self, status_code, exc_info=None, **kwargs):
+		MODULE.error('Fatal error: %s' % (exc_info,))
+		msg = self.request.umcp_message
+		self.server._ModuleServer__active_requests.setdefault(msg.id, msg)
+		exc_info = exc_info or (None, None, None)
+		self.server.error_handling(msg, 'init', *exc_info)
 
 	def _get_upload_arguments(self, req):
 		# FIXME / TODO: move into UMC-Server core?
