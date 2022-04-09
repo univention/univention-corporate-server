@@ -231,6 +231,7 @@ class SamlACS(SAMLResource):
 		# TODO/FIXME: do PAM auth here?!
 		self.set_session(self.create_sessionid(), saml.username, saml=saml)
 		self.current_user.authenticated = True
+		self.current_user.user.set_credentials(saml.username, saml.message, 'SAML')
 		# protect against javascript:alert('XSS'), mailto:foo and other non relative links!
 		location = urlparse(relay_state)
 		if location.path.startswith('//'):
@@ -247,6 +248,7 @@ class SamlACS(SAMLResource):
 		# TODO/FIXME: do PAM auth here?!
 		self.set_session(sessionid, saml.username, saml=saml)
 		self.current_user.authenticated = True
+		self.current_user.user.set_credentials(saml.username, saml.message, 'SAML')
 		self.set_header('Content-Type', 'text/html')
 		data = {"status": 200, "result": {"username": saml.username}}
 		self.finish(b'<html><body><textarea>%s</textarea></body></html>' % (json.dumps(data).encode('ASCII'),))
