@@ -216,18 +216,15 @@ class Session(object):
 	# FIXME: TAKEN FROM WEBSERVER. FIX ACCURATENESS
 
 	def _session_timeout_timer(self):
-		class UMCP_Dispatcher(object):
-			sessions = {}
-		session = UMCP_Dispatcher.sessions.get(self.sessionid)
-		if session and session._requestid2response_queue:
+		if False and self._requestid2response_queue:  # FIXME: check for open requests
 			self._timeout = 1
 			ioloop = tornado.ioloop.IOLoop.current()
 			self._timeout_id = ioloop.call_later(1000, self._session_timeout_timer)
 			return
 
-		CORE.info('session %r timed out' % (self.sessionid,))
+		CORE.info('session %r timed out' % (self.session_id,))
 		from univention.management.console.resource import Resource
-		Resource.sessions.pop(self.sessionid, None)
+		Resource.sessions.pop(self.session_id, None)
 		self.on_logout()
 		return False
 
