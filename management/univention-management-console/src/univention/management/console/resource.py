@@ -43,7 +43,7 @@ from six.moves.http_client import LENGTH_REQUIRED, UNAUTHORIZED
 
 import univention.debug as ud
 from univention.management.console.config import ucr
-from univention.management.console.error import UMC_Error, BadRequest
+from univention.management.console.error import UMC_Error, BadRequest, Unauthorized
 from univention.management.console.ldap import get_machine_connection
 from univention.management.console.log import CORE
 from univention.management.console.session import Session
@@ -95,7 +95,7 @@ class Resource(RequestHandler):
 	def check_saml_session_validity(self):
 		session = self.current_user
 		if session.saml is not None and session.timed_out(monotonic()):
-			raise HTTPError(UNAUTHORIZED)
+			raise Unauthorized(self._('The SAML session expired.'))
 
 	def get_current_user(self):
 		session = Session.get(self.get_session_id())
@@ -195,7 +195,7 @@ class Resource(RequestHandler):
 			for name in self.request.cookies:
 				if name.startswith('UMCSessionId'):
 					self.clear_cookie(name, path='/univention/')
-			raise HTTPError(UNAUTHORIZED, 'The current session is not valid with your IP address for security reasons. This might happen after switching the network. Please login again.')
+			raise Unauthorized(self._('The current session is not valid with your IP address for security reasons. This might happen after switching the network. Please login again.'))
 
 	def get_ip_address(self):
 		"""get the IP address of client by last entry (from apache) in X-FORWARDED-FOR header"""
@@ -217,13 +217,13 @@ class Resource(RequestHandler):
 		try:
 			scheme, credentials = credentials.split(u' ', 1)
 		except ValueError:
-			raise HTTPError(400)
+			raise BadRequest('invalid Authorization')
 		if scheme.lower() != u'basic':
 			return
 		try:
 			username, password = base64.b64decode(credentials.encode('utf-8')).decode('latin-1').split(u':', 1)
 		except ValueError:
-			raise HTTPError(400)
+			raise BadRequest('invalid Authorization')
 
 		sessionid = self.sessionidhash()
 		session = self.current_user
