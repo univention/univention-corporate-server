@@ -5,7 +5,6 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  dh-autoreconf,
- liblasso3-dev,
  libpam0g-dev,
  libsasl2-dev,
  librhonabwy-dev (>= 1.1.2)

@@ -19,8 +19,7 @@ if test "z$PKG_CONFIG_PATH" != "z"; then
     export PKG_CONFIG_PATH
 fi
 
-PKG_CHECK_MODULES(CRUDEOIDC, glib-2.0 >= 2.4.0 gobject-2.0 >= 2.4.0 
-		  libxml-2.0 xmlsec1 >= 1.2.6 xmlsec1-openssl >= 1.2.6)
+PKG_CHECK_MODULES(CRUDEOIDC, glib-2.0 >= 2.4.0 gobject-2.0 >= 2.4.0)
 CFLAGS="$CFLAGS $CRUDEOIDC_CFLAGS"
 LIBS="$LIBS $CRUDEOIDC_LIBS"
 
@@ -32,17 +31,11 @@ AC_ARG_WITH(pam, [  --with-pam=prefix             Base installation of PAM],
 		 [CFLAGS="$CFLAGS -I${with_pam}/include -DWITH_PAM"; 
 		  LDFLAGS="$LDFLAGS -L${with_pam}/lib";
 		  pam_prefix="${with_pam}"])
-AC_ARG_WITH(lasso, [  --with-lasso[=prefix]         Base installation of Lasso],
-		   [CFLAGS="$CFLAGS -I${with_lasso}/include"; 
-		    LDFLAGS="$LDFLAGS -L${with_lasso}/lib -llasso"])
 AC_ARG_WITH(rhonabwy, [  --with-rhonabwy[=prefix]         Base installation of rhonabwy],
 		   [CFLAGS="$CFLAGS -I${with_rhonabwy}/include"; 
 		    LDFLAGS="$LDFLAGS -L${with_rhonabwy}/lib -lrhonabwy"])
 
 # Checks for libraries.
-AC_CHECK_LIB([lasso], [lasso_node_new_from_xmlNode])
-AC_CHECK_LIB([xml2], [xmlParseDoc])
-AC_CHECK_LIB([xmlsec1], [xmlSecInit])
 AC_CHECK_LIB([pam], [pam_authenticate])
 AC_CHECK_LIB([sasl], [sasl_client_init])
 AC_CHECK_LIB([crypto], [BIO_f_base64])

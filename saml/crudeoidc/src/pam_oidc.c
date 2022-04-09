@@ -178,10 +178,6 @@ static oidc_glob_context_t * pam_global_context_init(
 		return gctx;
 	}
 
-	/*
-	 * Initialize lasso
-	 */
-
 	if ((gctx = malloc(sizeof(*gctx))) == NULL) {
 		syslog(LOG_ERR, "malloc() failed: %s", strerror(errno));
 		return NULL;

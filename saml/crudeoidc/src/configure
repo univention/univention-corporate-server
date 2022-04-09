@@ -773,7 +773,6 @@ enable_libtool_lock
 with_pkg_config
 with_sasl2
 with_pam
-with_lasso
 with_rhonabwy
 '
       ac_precious_vars='build_alias
@@ -1446,7 +1445,6 @@ Optional Packages:
   --with-pkg-config=PATH set pkg-config metadata search path.
   --with-sasl2=prefix           Base installation of Cyrus SASL
   --with-pam=prefix             Base installation of PAM
-  --with-lasso=prefix         Base installation of Lasso
   --with-rhonabwy=prefix         Base installation of rhonabwy
 
 Some influential environment variables:
@@ -12243,155 +12241,12 @@ if test "${with_pam+set}" = set; then :
 fi
 
 
-# Check whether --with-lasso was given.
-if test "${with_lasso+set}" = set; then :
-  withval=$with_lasso; CFLAGS="$CFLAGS -I${with_lasso}/include";
-		    LDFLAGS="$LDFLAGS -L${with_lasso}/lib -llasso"
-fi
-
-
 # Check whether --with-rhonabwy was given.
 if test "${with_rhonabwy+set}" = set; then :
   withval=$with_rhonabwy; CFLAGS="$CFLAGS -I${with_rhonabwy}/include";
 		    LDFLAGS="$LDFLAGS -L${with_rhonabwy}/lib -lrhonabwy"
 fi
 
-
-# Checks for libraries.
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for lasso_node_new_from_xmlNode in -llasso" >&5
-$as_echo_n "checking for lasso_node_new_from_xmlNode in -llasso... " >&6; }
-if ${ac_cv_lib_lasso_lasso_node_new_from_xmlNode+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-llasso  $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char lasso_node_new_from_xmlNode ();
-int
-main ()
-{
-return lasso_node_new_from_xmlNode ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_lasso_lasso_node_new_from_xmlNode=yes
-else
-  ac_cv_lib_lasso_lasso_node_new_from_xmlNode=no
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_lasso_lasso_node_new_from_xmlNode" >&5
-$as_echo "$ac_cv_lib_lasso_lasso_node_new_from_xmlNode" >&6; }
-if test "x$ac_cv_lib_lasso_lasso_node_new_from_xmlNode" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBLASSO 1
-_ACEOF
-
-  LIBS="-llasso $LIBS"
-
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for xmlParseDoc in -lxml2" >&5
-$as_echo_n "checking for xmlParseDoc in -lxml2... " >&6; }
-if ${ac_cv_lib_xml2_xmlParseDoc+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lxml2  $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char xmlParseDoc ();
-int
-main ()
-{
-return xmlParseDoc ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_xml2_xmlParseDoc=yes
-else
-  ac_cv_lib_xml2_xmlParseDoc=no
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_xml2_xmlParseDoc" >&5
-$as_echo "$ac_cv_lib_xml2_xmlParseDoc" >&6; }
-if test "x$ac_cv_lib_xml2_xmlParseDoc" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBXML2 1
-_ACEOF
-
-  LIBS="-lxml2 $LIBS"
-
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for xmlSecInit in -lxmlsec1" >&5
-$as_echo_n "checking for xmlSecInit in -lxmlsec1... " >&6; }
-if ${ac_cv_lib_xmlsec1_xmlSecInit+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lxmlsec1  $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char xmlSecInit ();
-int
-main ()
-{
-return xmlSecInit ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_xmlsec1_xmlSecInit=yes
-else
-  ac_cv_lib_xmlsec1_xmlSecInit=no
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_xmlsec1_xmlSecInit" >&5
-$as_echo "$ac_cv_lib_xmlsec1_xmlSecInit" >&6; }
-if test "x$ac_cv_lib_xmlsec1_xmlSecInit" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBXMLSEC1 1
-_ACEOF
-
-  LIBS="-lxmlsec1 $LIBS"
-
-fi
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for pam_authenticate in -lpam" >&5
 $as_echo_n "checking for pam_authenticate in -lpam... " >&6; }
