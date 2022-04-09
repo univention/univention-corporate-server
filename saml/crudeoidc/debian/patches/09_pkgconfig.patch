@@ -25,7 +25,7 @@ paths honoring multi-arch.
  EXTRA_DIST = $(man_MANS)
 --- a/src/configure.ac
 +++ b/src/configure.ac
-@@ -13,40 +13,39 @@ AC_PROG_CC
+@@ -13,24 +13,23 @@ AC_PROG_CC
  AC_PROG_INSTALL
  AC_PROG_LIBTOOL
  
@@ -36,23 +36,21 @@ paths honoring multi-arch.
      export PKG_CONFIG_PATH
  fi
  
--PKG_CHECK_MODULES(CRUDEOIDC, glib-2.0 >= 2.4.0 gobject-2.0 >= 2.4.0 
--		  libxml-2.0 xmlsec1 >= 1.2.6 xmlsec1-openssl >= 1.2.6)
+-PKG_CHECK_MODULES(CRUDEOIDC, glib-2.0 >= 2.4.0 gobject-2.0 >= 2.4.0)
 -CFLAGS="$CFLAGS $CRUDEOIDC_CFLAGS"
 -LIBS="$LIBS $CRUDEOIDC_LIBS"
--
--AC_ARG_WITH(sasl2, [  --with-sasl2=prefix           Base installation of Cyrus SASL],
--		   [CFLAGS="$CFLAGS -I${with_sasl2}/include -I${with_sasl2}/include/sasl -DWITH_SASL2"; 
--		    LDFLAGS="$LDFLAGS -L${with_sasl2}/lib";
--		    cyrus_sasl2_prefix="${with_sasl2}"])
--AC_ARG_WITH(pam, [  --with-pam=prefix             Base installation of PAM],
 +PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.4.0])
 +PKG_CHECK_MODULES([GOBJECT], [gobject-2.0 >= 2.4.0])
 +PKG_CHECK_MODULES([SASL2], [libsasl2 >= 2.1])
 +# PKG_CHECK_MODULES([RHONABWY], [rhonabwy >= 1.1.2])
 +CFLAGS="$CFLAGS $SASL2_CFLAGS"
 +LIBS="$LIBS $GLIB_LIBS $GOBJECT_LIBS $SASL2_LIBS"
-+
+ 
+-AC_ARG_WITH(sasl2, [  --with-sasl2=prefix           Base installation of Cyrus SASL],
+-		   [CFLAGS="$CFLAGS -I${with_sasl2}/include -I${with_sasl2}/include/sasl -DWITH_SASL2"; 
+-		    LDFLAGS="$LDFLAGS -L${with_sasl2}/lib";
+-		    cyrus_sasl2_prefix="${with_sasl2}"])
+-AC_ARG_WITH(pam, [  --with-pam=prefix             Base installation of PAM],
 +AC_ARG_WITH([pam],
 +			AS_HELP_STRING([--with-pam=DIR], [Base installation of PAM]),
  		 [CFLAGS="$CFLAGS -I${with_pam}/include -DWITH_PAM"; 
@@ -62,7 +60,7 @@ paths honoring multi-arch.
  AC_ARG_WITH([pamlibdir],
  			AS_HELP_STRING([--with-pamlibdir=DIR], [directory for PAM modules]),
  			[],
- 			[with_pamlibdir=/lib/security])
+@@ -38,11 +37,13 @@ AC_ARG_WITH([pamlibdir],
  AC_ARG_WITH(rhonabwy, [  --with-rhonabwy[=prefix]         Base installation of rhonabwy],
  		   [CFLAGS="$CFLAGS -I${with_rhonabwy}/include"; 
  		    LDFLAGS="$LDFLAGS -L${with_rhonabwy}/lib -lrhonabwy"])
@@ -72,15 +70,12 @@ paths honoring multi-arch.
 +			[with_sasllibdir=${libdir}/sasl2])
  
  # Checks for libraries.
- AC_CHECK_LIB([rhonabwy], [r_jwt_get_full_claims_str])
- AC_CHECK_LIB([xml2], [xmlParseDoc])
--AC_CHECK_LIB([xmlsec1], [xmlSecInit])
  AC_CHECK_LIB([pam], [pam_authenticate])
 -AC_CHECK_LIB([sasl], [sasl_client_init])
 -AC_CHECK_LIB([crypto], [BIO_f_base64])
+ AC_CHECK_LIB([rhonabwy], [r_jwt_get_full_claims_str])
  
  # Checks for header files.
- AC_CHECK_HEADERS([string.h])
 @@ -56,8 +53,7 @@ AC_CHECK_HEADERS([string.h])
  # Checks for library functions.
  AC_FUNC_MALLOC

@@ -12,7 +12,7 @@ Make /lib/security/ configurable for multi-arch
  liboidc_la_SOURCES = cy2_oidc.c oidc.c plugin_common.c plugin_common.h oidc.h
 --- a/src/configure.ac
 +++ b/src/configure.ac
-@@ -32,6 +32,10 @@ AC_ARG_WITH(pam, [  --with-pam=prefix
+@@ -31,6 +31,10 @@ AC_ARG_WITH(pam, [  --with-pam=prefix             Base installation of PAM],
  		 [CFLAGS="$CFLAGS -I${with_pam}/include -DWITH_PAM"; 
  		  LDFLAGS="$LDFLAGS -L${with_pam}/lib";
  		  pam_prefix="${with_pam}"])
@@ -23,7 +23,7 @@ Make /lib/security/ configurable for multi-arch
  AC_ARG_WITH(rhonabwy, [  --with-rhonabwy[=prefix]         Base installation of rhonabwy],
  		   [CFLAGS="$CFLAGS -I${with_rhonabwy}/include"; 
  		    LDFLAGS="$LDFLAGS -L${with_rhonabwy}/lib -lrhonabwy"])
-@@ -54,5 +58,6 @@ AC_FUNC_MALLOC
+@@ -51,5 +55,6 @@ AC_FUNC_MALLOC
  
  AC_SUBST([cyrus_sasl2_prefix])
  AC_SUBST([pam_prefix])
