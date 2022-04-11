@@ -19,7 +19,7 @@ import os
 import logging
 from argparse import Namespace  # noqa F401
 
-KVM_INTERFACE = 'ens6'
+KVM_INTERFACE = 'ens8'
 
 
 class UCSInstallation(object):
@@ -240,13 +240,13 @@ class UCSInstallation(object):
 		self.client.enterText('ucr set interfaces-%s-tzpe`manual' % KVM_INTERFACE)
 		self.client.keyPress('enter')
 		time.sleep(30)
-		self.client.enterText('ifconfig %s up' % KVM_INTERFACE)
+		self.client.enterText('ip link set %s up' % KVM_INTERFACE)
 		self.client.keyPress('enter')
 		self.client.enterText('echo ')
 		self.client.keyDown('shift')
 		self.client.enterText('2')  # @
 		self.client.keyUp('shift')
-		self.client.enterText('reboot -sbin-ifconfig %s up ' % KVM_INTERFACE)
+		self.client.enterText('reboot -sbin-ip link set %s up ' % KVM_INTERFACE)
 		self.client.keyDown('shift')
 		self.client.enterText("'")  # |
 		self.client.keyUp('shift')
