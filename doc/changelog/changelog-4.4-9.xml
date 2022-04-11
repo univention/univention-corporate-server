@@ -532,6 +532,7 @@
 				<para>
 					The following updated packages from Debian Buster <productnumber>11.3</productnumber> are included (<u:bug>54530</u:bug>):
 					<simplelist type="inline">
+						<member><package>gcc-8</package></member>
 						<member><package>linux</package></member>
 						<member><package>linux-signed-amd64</package></member>
 						<member><package>linux-signed-i386</package></member>
