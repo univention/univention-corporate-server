@@ -5,10 +5,12 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  dh-autoreconf,
+ liblasso3-dev,
  libglib2.0-0,
  libpam0g-dev,
  libsasl2-dev,
  librhonabwy-dev (>= 1.1.2),
+ gawk,
 Standards-Version: 3.7.2
 
 Package: cy2-oidc

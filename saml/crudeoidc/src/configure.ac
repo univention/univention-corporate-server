@@ -19,8 +19,6 @@ if test "z$PKG_CONFIG_PATH" != "z"; then
     export PKG_CONFIG_PATH
 fi
 
-PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.4.0])
-PKG_CHECK_MODULES([GOBJECT], [gobject-2.0 >= 2.4.0])
 PKG_CHECK_MODULES([SASL2], [libsasl2 >= 2.1])
 # PKG_CHECK_MODULES([RHONABWY], [rhonabwy >= 1.1.2])
 CFLAGS="$CFLAGS $SASL2_CFLAGS"
