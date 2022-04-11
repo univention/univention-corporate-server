@@ -1,0 +1,22 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: openjpeg2
+fix: 2.1.2-1.1+deb9u7
+desc: |
+ This update addresses the following issues:
+ * null pointer dereference in opj_tgt_reset function in lib/openjp2/tgt.c
+   (CVE-2020-27842)
+ * out-of-bounds read in opj_t2_encode_packet function in openjp2/t2.c
+   (CVE-2020-27843)
+ * out-of-bounds write due to an integer overflow in opj_compress.c
+   (CVE-2021-29338)
+ * segmentation fault in opj2_decompress due to uninitialized pointer
+   (CVE-2022-1122)
+bug: [54659]
+cve:
+- CVE-2020-27842
+- CVE-2020-27843
+- CVE-2021-29338
+- CVE-2022-1122
