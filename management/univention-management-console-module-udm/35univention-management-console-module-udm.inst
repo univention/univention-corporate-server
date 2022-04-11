@@ -91,6 +91,8 @@ umc_operation_create "udm-syntax" "UDM - Syntax" "" "udm/syntax/choices/info" "u
 
 umc_operation_create "udm-validate" "UDM - Validate" "" "udm/validate"
 
+umc_operation_create "udm-reports" "UDM - Reports" "" "udm/reports/query" "udm/reports/create" "udm/reports/get"
+
 umc_policy_append "default-umc-all" "udm-all"
 
 if [ "$JS_LAST_EXECUTED_VERSION" = 3 ]; then
@@ -117,5 +119,3 @@ umc_policy_append "default-udm-self" "udm-self"
 joinscript_save_current_version
 
 exit 0
-
-

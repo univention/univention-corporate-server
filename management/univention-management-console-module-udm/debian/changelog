@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.1-24) unstable; urgency=medium
+
+  * Bug #54109: add a UMC operation set which allows the creation of reports
+
+ -- Johannes Lohmer <lohmer@univention.de>  Mon, 11 Apr 2022 14:28:48 +0200
+
 univention-management-console-module-udm (10.0.1-23) unstable; urgency=medium
 
   * Bug #54190: fix transformation of LDAP values from LDAP_Search

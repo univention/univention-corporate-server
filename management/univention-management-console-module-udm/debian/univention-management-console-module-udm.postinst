@@ -50,4 +50,8 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 7.0.10-23; then
 	a2dissite univention-directory-manager.conf || true
 fi
 
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "10.0.1.24" && [ "$server_role" = "domaincontroller_master" ]; then
+	umc_operation_create "udm-reports" "UDM - Reports" "" "udm/reports/query" "udm/reports/create" "udm/reports/get"
+fi
+
 exit 0
