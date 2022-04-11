@@ -536,6 +536,7 @@
 						<member><package>linux</package></member>
 						<member><package>linux-signed-amd64</package></member>
 						<member><package>linux-signed-i386</package></member>
+						<member><package>nvptx-tools</package></member>
 					</simplelist>
 				</para>
 			</listitem>
