@@ -9,7 +9,6 @@ Build-Depends:
  libpam0g-dev,
  libsasl2-dev,
  librhonabwy-dev (>= 1.1.2),
- quilt,
 Standards-Version: 3.7.2
 
 Package: cy2-oidc

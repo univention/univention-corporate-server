@@ -13,32 +13,37 @@ AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 
-AC_ARG_WITH(pkg-config, [  --with-pkg-config=PATH set pkg-config metadata search path.],
+AC_ARG_WITH(pkg-config, AS_HELP_STRING([--with-pkg-config=PATH], [set pkg-config metadata search path.]),
             PKG_CONFIG_PATH="${withval}", PKG_CONFIG_PATH="")
 if test "z$PKG_CONFIG_PATH" != "z"; then
     export PKG_CONFIG_PATH
 fi
 
-PKG_CHECK_MODULES(CRUDEOIDC, glib-2.0 >= 2.4.0 gobject-2.0 >= 2.4.0)
-CFLAGS="$CFLAGS $CRUDEOIDC_CFLAGS"
-LIBS="$LIBS $CRUDEOIDC_LIBS"
+PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.4.0])
+PKG_CHECK_MODULES([GOBJECT], [gobject-2.0 >= 2.4.0])
+PKG_CHECK_MODULES([SASL2], [libsasl2 >= 2.1])
+# PKG_CHECK_MODULES([RHONABWY], [rhonabwy >= 1.1.2])
+CFLAGS="$CFLAGS $SASL2_CFLAGS"
+LIBS="$LIBS $GLIB_LIBS $GOBJECT_LIBS $SASL2_LIBS"
 
-AC_ARG_WITH(sasl2, [  --with-sasl2=prefix           Base installation of Cyrus SASL],
-		   [CFLAGS="$CFLAGS -I${with_sasl2}/include -I${with_sasl2}/include/sasl -DWITH_SASL2"; 
-		    LDFLAGS="$LDFLAGS -L${with_sasl2}/lib";
-		    cyrus_sasl2_prefix="${with_sasl2}"])
-AC_ARG_WITH(pam, [  --with-pam=prefix             Base installation of PAM],
+AC_ARG_WITH([pam],
+			AS_HELP_STRING([--with-pam=DIR], [Base installation of PAM]),
 		 [CFLAGS="$CFLAGS -I${with_pam}/include -DWITH_PAM"; 
-		  LDFLAGS="$LDFLAGS -L${with_pam}/lib";
-		  pam_prefix="${with_pam}"])
+		  LDFLAGS="$LDFLAGS -L${with_pam}/lib"])
+AC_ARG_WITH([pamlibdir],
+			AS_HELP_STRING([--with-pamlibdir=DIR], [directory for PAM modules]),
+			[],
+			[with_pamlibdir=/lib/security])
 AC_ARG_WITH(rhonabwy, [  --with-rhonabwy[=prefix]         Base installation of rhonabwy],
 		   [CFLAGS="$CFLAGS -I${with_rhonabwy}/include"; 
 		    LDFLAGS="$LDFLAGS -L${with_rhonabwy}/lib -lrhonabwy"])
+AC_ARG_WITH([sasllibdir],
+			AS_HELP_STRING([--with-sasllibdir=DIR], [directory for SASL modules]),
+			[],
+			[with_sasllibdir=${libdir}/sasl2])
 
 # Checks for libraries.
 AC_CHECK_LIB([pam], [pam_authenticate])
-AC_CHECK_LIB([sasl], [sasl_client_init])
-AC_CHECK_LIB([crypto], [BIO_f_base64])
 AC_CHECK_LIB([rhonabwy], [r_jwt_get_full_claims_str])
 
 # Checks for header files.
@@ -49,7 +54,7 @@ AC_CHECK_HEADERS([string.h])
 # Checks for library functions.
 AC_FUNC_MALLOC
 
-AC_SUBST([cyrus_sasl2_prefix])
-AC_SUBST([pam_prefix])
+AC_SUBST([pamlibdir], [$with_pamlibdir])
+AC_SUBST([sasllibdir], [$with_sasllibdir])
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

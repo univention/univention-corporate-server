@@ -83,7 +83,7 @@ void oidc_log(
 
 	va_start(ap, fmt);
 	vsnprintf(msg, sizeof(msg), fmt, ap);
-	sasl_utils->log(sasl_utils->conn, pri, msg);
+	sasl_utils->log(sasl_utils->conn, pri, "%s", msg);
 	va_end(ap);
 }
 
@@ -101,7 +101,7 @@ void oidc_error(
 
 	va_start(ap, fmt);
 	vsnprintf(msg, sizeof(msg), fmt, ap);
-	sasl_utils->seterror(sasl_utils->conn, 0, msg);
+	sasl_utils->seterror(sasl_utils->conn, 0, "%s", msg);
 	va_end(ap);
 }
 
