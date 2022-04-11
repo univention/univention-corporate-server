@@ -894,6 +894,22 @@
 		</section>
 	</section>
 
+	<section id="changelog:virt">
+		<title>Virtualization</title>
+
+		<section id="changelog:virt:uvmm">
+			<title>UCS Virtual Machine Manager (UVMM)</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Iterating all virtual machines multi-threaded has been fixed (<u:bug>49297</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Disks using the new type <emphasis>volume</emphasis> are now handled (<u:bug>54630</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
 	<section id="changelog:win">
 		<title>Services for Windows</title>
 

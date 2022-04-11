@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (8.0.1-17) unstable; urgency=low
+
+  * Bug #54630: Handle error case iterating VMs
+  * Bug #49297: Support disk type volume
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 01 Apr 2022 11:02:41 +0200
+
 univention-virtual-machine-manager-daemon (8.0.1-16) unstable; urgency=medium
 
   * Bug #51215: make UCR templates compatible to python3
