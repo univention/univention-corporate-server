@@ -7,8 +7,8 @@ fix: 2.9.4+dfsg1-2.2+deb9u6
 desc: |
  This update addresses the following issues:
  * XML External Entity vulnerability (CVE-2016-9318)
- * heap overflow in libxml2 (CVE-2017-5130)
- * Null pointer dereference in xmlSaveDoc implementation (CVE-2017-5969)
+ * Heap overflow (CVE-2017-5130)
+ * NULL pointer dereference in `xmlSaveDoc` implementation (CVE-2017-5969)
  * Infinite recursion in parameter entities (CVE-2017-16932)
  * Use-after-free of ID and IDREF attributes (CVE-2022-23308)
 bug: [54657]
