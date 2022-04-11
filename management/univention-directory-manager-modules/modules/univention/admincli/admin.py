@@ -262,8 +262,11 @@ def object_input(module, object, input, append=None, remove=None):
 				else:
 					out.append('WARNING: file not found: %s' % values)
 			else:
+				values = values if isinstance(values, list) else [values]
+
 				if univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
-					values = _parse_complex_syntax_input(values if isinstance(values, list) else [values])
+					values = _parse_complex_syntax_input(values)
+
 				current_values = list(object[key] or [])
 				if current_values == ['']:
 					current_values = []
@@ -275,7 +278,7 @@ def object_input(module, object, input, append=None, remove=None):
 						current_values.append(val)
 
 				if not module.property_descriptions[key].multivalue:
-					out.append('WARNING: using --append on a single value property (%s) is not supported.' % (key,))
+					out.append('WARNING: using --append on a single value property (%s) is not supported. Replacing value instead.' % (key,))
 					try:
 						current_values = current_values[-1]
 					except IndexError:
