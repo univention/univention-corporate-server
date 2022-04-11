@@ -9,7 +9,7 @@ desc: |
  * Sysdig Event dissector crash (CVE-2021-4181)
  * BitTorrent DHT dissector infinite loop (CVE-2021-4184)
  * RTMPT dissector infinite loop (CVE-2021-4185)
- * improper URL handling may lead to remote code execution (CVE-2021-22191)
+ * Improper URL handling may lead to remote code execution (CVE-2021-22191)
  * CMS dissector crash (CVE-2022-0581)
  * CSN.1 dissector crash (CVE-2022-0582)
  * PVFS dissector crash (CVE-2022-0583)
