@@ -18,7 +18,7 @@ Univention Corporate Server - Manual for users and administrators
    ip-config/index
    shares/index
    print-services/index
+   monitoring/index
    appendix/index
 
 .. mail
-   nagios
