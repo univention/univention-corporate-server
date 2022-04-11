@@ -227,6 +227,13 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    Defines the third *external DNS server*. For more information, see
    :ref:`computers-configuring-the-name-servers`.
 
+
+.. envvar:: fetchmail/autostart
+
+   Controls the autostart of Fetchmail. To disable Fetchmail, set the value to
+   ``false``. For more information, see :ref:`mail-fetchmail`.
+
+
 .. envvar:: freeradius/auth/helper/ntlm/debug
 
    Configures the debug level or verbosity for logging messages of FreeRADIUS.
@@ -559,6 +566,241 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    Define the lenght for the computer password, also called *machin secret*.
    Default value is ``20``. For more information, see
    :ref:`computers-hostaccounts`.
+
+.. envvar:: mail/antispam/bodysizelimit
+
+   Configures the size of emails that are scanned for Spam by SpamAssassin. The
+   default value is 300 kilobytes. For more information, see :ref:`mail-spam`.
+
+
+.. envvar:: mail/antispam/learndaily
+
+   Configures the evaluation of ham emails in the ham folder for daily
+   evaluation. The evaluation is activate per default. For more information, see
+   :ref:`mail-spam`.
+
+
+.. envvar:: mail/antispam/requiredhits
+
+   Configures the threshold in points when an email is classified as spam. The
+   default value is ``5``. For more information, see :ref:`mail-spam`.
+
+.. envvar:: mail/antivir
+
+   To deactivate virus and malware detection for incoming and outgoing emails,
+   set the value to ``no``. For more information, see :ref:`mail-virus`.
+
+
+.. envvar:: mail/antivir/spam
+
+   Configures, if spam filtering is running. To deactivate spam filtering, set
+   the value to ``no``. For more inform
+
+
+.. envvar:: mail/archivefolder
+
+   Configures Postfix to send all incoming and outgoing emails as blind copy to
+   this email address for archive purposes. The variable isn't set per default.
+   For more information, see :ref:`mail-serverconfig-archivefolder`.
+
+
+.. envvar:: mail/dovecot/auth/cache_ttl
+
+   Configures the expiration time of the authentication cache in Dovecot for the
+   mail service. For more information, see :ref:`mail-management-users`.
+
+
+.. envvar:: mail/dovecot/auth/cache_negative_ttl
+
+   Configures the expiration time of the authentication cache in Dovecot for the
+   mail service. For more information, see :ref:`mail-management-users`.
+
+
+.. envvar:: mail/dovecot/folder/ham
+
+   Configures the name of the folder for emails that SpamAssissin considers as
+   *ham*. The default value is ``Ham``. For more information, see
+   :ref:`mail-spam`.
+
+
+.. envvar:: mail/dovecot/folder/Spam
+
+   Configures the name of the folder where SpamAssissin moves emails classified
+   as spam. The default value is ``Spam``. For more information, see
+   :ref:`mail-spam`.
+
+
+.. envvar:: mail/dovecot/imap
+
+   Controls the IMAP protocol service in the Dovecot IMAP service. To deactivate
+   access to emails through IMAP, set the value to ``no``. For more information,
+   see :ref:`mail-general`.
+
+
+.. envvar:: mail/dovecot/limits
+
+   Configures different connection limits for the Dovecot service. For more
+   information, see :ref:`mail-serverconfig-limits`.
+
+
+.. envvar:: mail/dovecot/location/separate_index
+
+   Configures the Dovecot service to use an index separated from the email
+   message storage location. To activate the separate index, set the value to
+   ``yes``. Dovecot writes the index to :file:`/var/lib/dovecot/index/`. For
+   more information, see :ref:`mail-serverconfig-nfs`.
+
+
+.. envvar:: mail/dovecot/mailbox/rename
+
+   Configures how the Dovecot services reacts on changes of the primary email
+   address. The default value is ``yes`` and it changes the name of the user's
+   IMAP mailbox. For more information about the values, see
+   :ref:`mail-renamed-users`.
+
+   Shared folders are not renamed. For more information, see
+   :ref:`mail-management-shared-folder`.
+
+
+.. envvar:: mail/dovecot/mailbox/delete
+
+   Configures the deletion of an IMAP mailbox. The default value is ``no`` and
+   keeps the mailbox. For more information, see :ref:`mail-renamed-users`.
+
+   The value also affects shared IMAP folders. For more information, see
+   :ref:`mail-management-shared-folder`.
+
+
+.. envvar:: mail/dovecot/pop3
+
+   Controls the POP3 protocol service in the Dovecot IMAP service. To deactivate
+   access to emails through POP3, set the value to ``no``. For more information,
+   see :ref:`mail-general`.
+
+.. envvar:: mail/dovecot/process/lock_method
+
+   Controls the lock method for *lockd*. For more information, see
+   :ref:`mail-serverconfig-nfs`.
+
+
+.. envvar:: mail/dovecot/process/mail_nfs_index
+
+   Configures the Dovecot service to flush NFS caches after writing index files
+   when set to ``yes``. For more information, see :ref:`mail-serverconfig-nfs`.
+
+
+.. envvar:: mail/dovecot/process/mail_nfs_storage
+
+   Configures the Dovecot service to flush NFS caches when set to ``yes``. For
+   more information, see :ref:`mail-serverconfig-nfs`.
+
+
+.. envvar:: mail/dovecot/process/mmap_disable
+
+   Allows mail storage on NFS. For more information, see
+   :ref:`mail-serverconfig-nfs`.
+
+
+.. envvar:: mail/dovecot/process/dotlock_use_excl
+
+   Allows mail storage on NFS. For more information, see
+   :ref:`mail-serverconfig-nfs`.
+
+
+.. envvar:: mail/dovecot/process/mail_fsync
+
+   Allows mail storage on NFS. For more information, see
+   :ref:`mail-serverconfig-nfs`.
+
+
+.. envvar:: mail/dovecot/quota/warning/subject
+
+   Configures the subject for the email to the user that exceeds the configured
+   quota limit. For more information, see :ref:`mail-quota`.
+
+.. envvar:: mail/dovecot/quota/warning/text
+
+   Configures the email text body for the email to the user that exceeds the
+   configured quota limit. Percentage values can have different texts. For
+   example, to configure a text for 50% of the quota, set
+   :samp:`mail/dovecot/quota/warning/text/50={your text}`.
+
+   For more information, see :ref:`mail-quota`.
+
+
+.. envvar:: mail/hosteddomains
+
+   Configures the mail domains managed by UCS. For more information, see
+   :ref:`mail-management-domains`.
+
+
+.. envvar:: mail/messagesizelimit
+
+   Configures the maximum size of an email in bytes for incoming and outgoing
+   emails. The default setting is ``10240000`` bytes. For more information, see
+   :ref:`mail-serverconfig-mailsize`.
+
+
+.. envvar:: mail/postfix/mastercf/options/smtp/smtpd_sasl_auth_enable
+
+   To enable authentication for the submission of emails on port 25, set the
+   value to ``yes``. For more information, see
+   :ref:`mail-serverconfig-smtp-ports`.
+
+
+.. envvar:: mail/postfix/policy/listfilter
+
+   To restrict the circle of persons who can send emails to mailing lists, set
+   the value to ``yes`` and restart the Postfix service. For more information,
+   see :ref:`mail-management-mailinglists` and
+   :ref:`mail-management-mailgroups`.
+
+
+.. envvar:: mail/postfix/postscreen/
+
+   A prefix of variables to configure :program:`postscreen`. For more
+   information, see :ref:`mail-serverconfig-postscreen`.
+
+
+.. envvar:: mail/postfix/postscreen/enabled
+
+   To activate postscreen for eligibility checks on incoming emails, set the
+   value to ``yes``. For more information, see
+   :ref:`mail-serverconfig-postscreen`.
+
+
+.. envvar:: mail/postfix/smtpd/restrictions/recipient
+
+   Configures DNS-based Blackhole List (DNSBL) for Postfix in the format
+   :samp:`mail/postfix/smtpd/restrictions/recipient/{SEQUENCE}={RULE}`.
+
+   | For example:
+   | ``mail/postfix/smtpd/restrictions/recipient/80="reject_rbl_client ix.dnsbl.manitu.net"``.
+
+   For more information, see :ref:`mail-dnsbl`.
+
+
+.. envvar:: mail/postfix/softbounce
+
+   To never return emails after a mail bounce, set the value to ``yes``. For
+   more information, see :ref:`mail-serverconfig-softbounce`.
+
+
+.. envvar:: mail/postfix/tls/client/level
+
+   For more information, see :ref:`mail-serverconfig-relay`.
+
+.. envvar:: mail/relayauth
+
+   If authentication for the mail relay is needed, set the value to ``yes`` and
+   add the credentials to :file:`/etc/postfix/smtp_auth`. For more information,
+   see :ref:`mail-serverconfig-relay`.
+
+
+.. envvar:: mail/relayhost
+
+   Configures the fully qualified domain name (FQDN) of a mail relay server. For
+   more information, see :ref:`mail-serverconfig-relay`.
 
 
 .. envvar:: nameserver1

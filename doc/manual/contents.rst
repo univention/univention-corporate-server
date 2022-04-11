@@ -18,7 +18,6 @@ Univention Corporate Server - Manual for users and administrators
    ip-config/index
    shares/index
    print-services/index
+   mail/index
    monitoring/index
    appendix/index
-
-.. mail
