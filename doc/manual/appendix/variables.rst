@@ -99,6 +99,47 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    :ref:`ad-connector-ad-connector-setup`
 
 
+.. envvar:: cups/cups-pdf/anonymous
+
+   Configures the target directory for the *Generic CUPS-PDF Printer* for
+   anonymous print jobs. It defaults to the value :file:`/var/spool/cups-pdf/`.
+   For more information, see :ref:`pdf-printer`.
+
+
+.. envvar:: cups/cups-pdf/cleanup/enabled
+
+   To cleanup outdated print jobs of the *Generic CUPS-PDF Printer*, set the
+   value to ``true``. For the storage time, see
+   :envvar:`cups/cups-pdf/cleanup/keep`. For more information, see
+   :ref:`pdf-printer`.
+
+
+.. envvar:: cups/cups-pdf/cleanup/keep
+
+   Configures the storage time in days for PDF files from the *Generic CUPS-PDF
+   Printer*. For more information, see :ref:`pdf-printer`.
+
+
+.. envvar:: cups/cups-pdf/directory
+
+   Configures the target directory for the *Generic CUPS-PDF Printer*. It
+   defaults to the value :file:`/var/spool/cups-pdf/%U` and uses a different
+   directory for each user. For more information, see :ref:`pdf-printer`.
+
+.. envvar:: cups/errorpolicy
+
+   To automatically retry unsuccessful print jobs every 30 seconds, set the
+   value to ``retry-job``. For more information, see
+   :ref:`print-services-configuration`.
+
+
+.. envvar:: cups/include/local
+
+   To include configuration from :file:`/etc/cups/cupsd.local.conf`, set the
+   value to ``true``. For more information, see
+   :ref:`print-services-configuration`.
+
+
 .. envvar:: cups/server
 
    Defines the print server to be used by a UCS system. For more information,
