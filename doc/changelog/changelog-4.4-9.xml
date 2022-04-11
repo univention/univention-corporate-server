@@ -89,13 +89,16 @@
 						<package>ffmpeg</package> (<u:bug>53660</u:bug>, <u:bug>54057</u:bug> <u:bug>54057</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>firefox-esr</package> (<u:cve>2021-23961</u:cve> <u:cve>2021-23994</u:cve> <u:cve>2021-23995</u:cve> <u:cve>2021-23998</u:cve> <u:cve>2021-23999</u:cve> <u:cve>2021-24002</u:cve> <u:cve>2021-29945</u:cve> <u:cve>2021-29946</u:cve> <u:cve>2021-29967</u:cve> <u:cve>2021-29970</u:cve> <u:cve>2021-29976</u:cve> <u:cve>2021-29980</u:cve> <u:cve>2021-29984</u:cve> <u:cve>2021-29985</u:cve> <u:cve>2021-29986</u:cve> <u:cve>2021-29988</u:cve> <u:cve>2021-29989</u:cve> <u:cve>2021-30547</u:cve> <u:cve>2021-38493</u:cve> <u:cve>2021-38496</u:cve> <u:cve>2021-38500</u:cve> <u:cve>2021-4140</u:cve> <u:cve>2021-38503</u:cve> <u:cve>2021-38504</u:cve> <u:cve>2021-38506</u:cve> <u:cve>2021-38507</u:cve> <u:cve>2021-38508</u:cve> <u:cve>2021-38509</u:cve> <u:cve>2021-43534</u:cve> <u:cve>2021-43535</u:cve> <u:cve>2021-43536</u:cve> <u:cve>2021-43537</u:cve> <u:cve>2021-43538</u:cve> <u:cve>2021-43539</u:cve> <u:cve>2021-43541</u:cve> <u:cve>2021-43542</u:cve> <u:cve>2021-43543</u:cve> <u:cve>2021-43545</u:cve> <u:cve>2021-43546</u:cve> <u:cve>2022-22737</u:cve> <u:cve>2022-22738</u:cve> <u:cve>2022-22739</u:cve> <u:cve>2022-22740</u:cve> <u:cve>2022-22741</u:cve> <u:cve>2022-22742</u:cve> <u:cve>2022-22743</u:cve> <u:cve>2022-22745</u:cve> <u:cve>2022-22747</u:cve> <u:cve>2022-22748</u:cve> <u:cve>2022-22751</u:cve> <u:cve>2022-22754</u:cve> <u:cve>2022-22756</u:cve> <u:cve>2022-22759</u:cve> <u:cve>2022-22760</u:cve> <u:cve>2022-22761</u:cve> <u:cve>2022-22763</u:cve> <u:cve>2022-22764</u:cve> <u:cve>2022-26381</u:cve> <u:cve>2022-26383</u:cve> <u:cve>2022-26384</u:cve> <u:cve>2022-26386</u:cve> <u:cve>2022-26387</u:cve> <u:cve>2022-26485</u:cve> <u:cve>2022-26486</u:cve>) (<u:bug>53153</u:bug> <u:bug>53395</u:bug> <u:bug>53594</u:bug> <u:bug>53659</u:bug> <u:bug>53774</u:bug> <u:bug>53893</u:bug> <u:bug>54285</u:bug> <u:bug>54343</u:bug> <u:bug>54443</u:bug> <u:bug>54517</u:bug> <u:bug>54545</u:bug>)
+						<package>firefox-esr</package> (<u:cve>2021-23961</u:cve> <u:cve>2021-23994</u:cve> <u:cve>2021-23995</u:cve> <u:cve>2021-23998</u:cve> <u:cve>2021-23999</u:cve> <u:cve>2021-24002</u:cve> <u:cve>2021-29945</u:cve> <u:cve>2021-29946</u:cve> <u:cve>2021-29967</u:cve> <u:cve>2021-29970</u:cve> <u:cve>2021-29976</u:cve> <u:cve>2021-29980</u:cve> <u:cve>2021-29984</u:cve> <u:cve>2021-29985</u:cve> <u:cve>2021-29986</u:cve> <u:cve>2021-29988</u:cve> <u:cve>2021-29989</u:cve> <u:cve>2021-30547</u:cve> <u:cve>2021-38493</u:cve> <u:cve>2021-38496</u:cve> <u:cve>2021-38500</u:cve> <u:cve>2021-4140</u:cve> <u:cve>2021-38503</u:cve> <u:cve>2021-38504</u:cve> <u:cve>2021-38506</u:cve> <u:cve>2021-38507</u:cve> <u:cve>2021-38508</u:cve> <u:cve>2021-38509</u:cve> <u:cve>2021-43534</u:cve> <u:cve>2021-43535</u:cve> <u:cve>2021-43536</u:cve> <u:cve>2021-43537</u:cve> <u:cve>2021-43538</u:cve> <u:cve>2021-43539</u:cve> <u:cve>2021-43541</u:cve> <u:cve>2021-43542</u:cve> <u:cve>2021-43543</u:cve> <u:cve>2021-43545</u:cve> <u:cve>2021-43546</u:cve> <u:cve>2022-22737</u:cve> <u:cve>2022-22738</u:cve> <u:cve>2022-22739</u:cve> <u:cve>2022-22740</u:cve> <u:cve>2022-22741</u:cve> <u:cve>2022-22742</u:cve> <u:cve>2022-22743</u:cve> <u:cve>2022-22745</u:cve> <u:cve>2022-22747</u:cve> <u:cve>2022-22748</u:cve> <u:cve>2022-22751</u:cve> <u:cve>2022-22754</u:cve> <u:cve>2022-22756</u:cve> <u:cve>2022-22759</u:cve> <u:cve>2022-22760</u:cve> <u:cve>2022-22761</u:cve> <u:cve>2022-22763</u:cve> <u:cve>2022-22764</u:cve> <u:cve>2022-26381</u:cve> <u:cve>2022-26383</u:cve> <u:cve>2022-26384</u:cve> <u:cve>2022-26386</u:cve> <u:cve>2022-26387</u:cve> <u:cve>2022-26485</u:cve> <u:cve>2022-26486</u:cve>, <u:cve>2022-1097</u:cve> <u:cve>2022-1196</u:cve> <u:cve>2022-24713</u:cve> <u:cve>2022-28281</u:cve> <u:cve>2022-28282</u:cve> <u:cve>2022-28285</u:cve> <u:cve>2022-28286</u:cve> <u:cve>2022-28289</u:cve>) (<u:bug>53153</u:bug> <u:bug>53395</u:bug> <u:bug>53594</u:bug> <u:bug>53659</u:bug> <u:bug>53774</u:bug> <u:bug>53893</u:bug> <u:bug>54285</u:bug> <u:bug>54343</u:bug> <u:bug>54443</u:bug> <u:bug>54517</u:bug> <u:bug>54545</u:bug>, <u:bug>54655</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>flac</package> (<u:cve>2021-0561</u:cve>) (<u:bug>54563</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>fluidsynth</package> (<u:cve>2021-28421</u:cve>) (<u:bug>53546</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>fribidi</package> (<u:cve>2022-25308</u:cve> <u:cve>2022-25309</u:cve> <u:cve>2022-25310</u:cve>) (<u:bug>54658</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>ghostscript</package> (<u:bug>54344</u:bug>)
@@ -114,6 +117,9 @@
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>gst-plugins-base1.0</package> (<u:cve>2021-3522</u:cve>) (<u:bug>53208</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>gzip</package> (<u:cve>2022-1271</u:cve>) (<u:bug>54661</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>icu</package> (<u:cve>2020-21913</u:cve>) (<u:bug>53930</u:bug>)
@@ -188,7 +194,7 @@
 						<package>libxfont</package> (<u:cve>2017-16611</u:cve>) (<u:bug>54378</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>libxml2</package> (<u:cve>2021-3516</u:cve> <u:cve>2021-3517</u:cve> <u:cve>2021-3518</u:cve> <u:cve>2021-3537</u:cve> <u:cve>2021-3541</u:cve>) (<u:bug>53269</u:bug> <u:bug>53353</u:bug>)
+						<package>libxml2</package> (<u:cve>2021-3516</u:cve> <u:cve>2021-3517</u:cve> <u:cve>2021-3518</u:cve> <u:cve>2021-3537</u:cve> <u:cve>2021-3541</u:cve>, <u:cve>2016-9318</u:cve> <u:cve>2017-5130</u:cve> <u:cve>2017-5969</u:cve> <u:cve>2017-16932</u:cve> <u:cve>2022-23308</u:cve>) (<u:bug>53269</u:bug> <u:bug>53353</u:bug>, <u:bug>54657</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>libzip</package> (<u:cve>2017-14107</u:cve>) (<u:bug>54290</u:bug>)
@@ -228,6 +234,9 @@
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>openjdk-8</package> (<u:cve>2021-2161</u:cve> <u:cve>2021-2341</u:cve> <u:cve>2021-2369</u:cve> <u:cve>2021-2388</u:cve> <u:cve>2021-35550</u:cve> <u:cve>2021-35556</u:cve> <u:cve>2021-35559</u:cve> <u:cve>2021-35561</u:cve> <u:cve>2021-35564</u:cve> <u:cve>2021-35565</u:cve> <u:cve>2021-35567</u:cve> <u:cve>2021-35578</u:cve> <u:cve>2021-35586</u:cve> <u:cve>2021-35588</u:cve> <u:cve>2021-35603</u:cve> <u:cve>2021-35550</u:cve> <u:cve>2021-35556</u:cve> <u:cve>2021-35559</u:cve> <u:cve>2021-35561</u:cve> <u:cve>2021-35564</u:cve> <u:cve>2021-35565</u:cve> <u:cve>2021-35567</u:cve> <u:cve>2021-35578</u:cve> <u:cve>2021-35586</u:cve> <u:cve>2021-35588</u:cve> <u:cve>2021-35603</u:cve> <u:cve>2022-21248</u:cve> <u:cve>2022-21282</u:cve> <u:cve>2022-21283</u:cve> <u:cve>2022-21293</u:cve> <u:cve>2022-21294</u:cve> <u:cve>2022-21296</u:cve> <u:cve>2022-21299</u:cve> <u:cve>2022-21305</u:cve> <u:cve>2022-21340</u:cve> <u:cve>2022-21341</u:cve> <u:cve>2022-21349</u:cve> <u:cve>2022-21360</u:cve> <u:cve>2022-21365</u:cve>) (<u:bug>53155</u:bug> <u:bug>53645</u:bug> <u:bug>54044</u:bug> <u:bug>54044</u:bug> <u:bug>54444</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openjpeg2</package> (<u:cve>2020-27842</u:cve> <u:cve>2020-27843</u:cve> <u:cve>2021-29338</u:cve> <u:cve>2022-1122</u:cve>) (<u:bug>54659</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>openssl</package> (<u:cve>2021-3712</u:cve> <u:cve>2019-1551</u:cve> <u:cve>2022-0778</u:cve>) (<u:bug>53842</u:bug> <u:bug>54565</u:bug>)
@@ -353,13 +362,16 @@
 						<package>vlc</package> (<u:bug>53635</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>wireshark</package> (<u:cve>2021-22207</u:cve> <u:cve>2021-22235</u:cve> <u:cve>2021-39921</u:cve> <u:cve>2021-39922</u:cve> <u:cve>2021-39923</u:cve> <u:cve>2021-39924</u:cve> <u:cve>2021-39925</u:cve> <u:cve>2021-39928</u:cve> <u:cve>2021-39929</u:cve>) (<u:bug>54284</u:bug>)
+						<package>wireshark</package> (<u:cve>2021-22207</u:cve> <u:cve>2021-22235</u:cve> <u:cve>2021-39921</u:cve> <u:cve>2021-39922</u:cve> <u:cve>2021-39923</u:cve> <u:cve>2021-39924</u:cve> <u:cve>2021-39925</u:cve> <u:cve>2021-39928</u:cve> <u:cve>2021-39929</u:cve>, <u:cve>2021-4181</u:cve> <u:cve>2021-4184</u:cve> <u:cve>2021-4185</u:cve> <u:cve>2021-22191</u:cve> <u:cve>2022-0581</u:cve> <u:cve>2022-0582</u:cve> <u:cve>2022-0583</u:cve> <u:cve>2022-0585</u:cve> <u:cve>2022-0586</u:cve>) (<u:bug>54284</u:bug>, <u:bug>54652</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>xorg-server</package> (<u:cve>2021-4008</u:cve> <u:cve>2021-4009</u:cve> <u:cve>2021-4011</u:cve>) (<u:bug>54288</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>xterm</package> (<u:cve>2022-24130</u:cve>) (<u:bug>54428</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>xz-utils</package> (<u:cve>2022-1271</u:cve>) (<u:bug>54660</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>zziplib</package> (<u:cve>2020-18442</u:cve>) (<u:bug>54286</u:bug>)
@@ -382,6 +394,7 @@
 						<member><package>axis</package></member>
 						<member><package>botan1.10</package></member>
 						<member><package>btrbk</package></member>
+						<member><package>cacti</package></member>
 						<member><package>cargo-mozilla</package></member>
 						<member><package>cgal</package></member>
 						<member><package>ckeditor</package></member>
@@ -448,6 +461,7 @@
 						<member><package>mailman</package></member>
 						<member><package>mbedtls</package></member>
 						<member><package>mediawiki</package></member>
+						<member><package>minidlna</package></member>
 						<member><package>monit</package></member>
 						<member><package>mosquitto</package></member>
 						<member><package>mrxvt</package></member>
