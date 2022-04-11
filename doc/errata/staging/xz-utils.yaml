@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: xz-utils
+fix: 5.2.2-1.2+deb9u1
+desc: |
+ This update addresses the following issue:
+ * arbitrary-file-write vulnerability (CVE-2022-1271)
+bug: [54660]
+cve:
+- CVE-2022-1271
