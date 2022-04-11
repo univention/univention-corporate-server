@@ -1,4 +1,4 @@
-univention-management-console (12.1.12-21) unstable; urgency=medium
+univention-management-console (12.2.12-21) unstable; urgency=medium
 
   * Bug #53885: change from init script to systemd service
 

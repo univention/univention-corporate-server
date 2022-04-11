@@ -1,0 +1,10 @@
+[
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/oidc/.*\\.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/oidc",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-oidc.mo"
+	}
+]

@@ -34,10 +34,13 @@
 from __future__ import print_function
 
 import requests
+import sys
 
 from six.moves.urllib_parse import quote
 
 from univention.config_registry import handler_set
+
+verify = False   # FIXME: deactivate
 
 
 def handler(config_registry, changes):
@@ -47,13 +50,18 @@ def handler(config_registry, changes):
 		return
 
 	well_known_uri = '%s/.well-known/openid-configuration' % (oidc_op,)
-	response = requests.get(well_known_uri)
+	response = requests.get(well_known_uri, verify=verify)
 	well_known = response.json()
 
-	certs_uri = well_known['jwks_uri']
+	try:
+		certs_uri = well_known['jwks_uri']
+	except KeyError:
+		print('OIDC IP: %r Well-Known: %r' % (oidc_op, well_known,), file=sys.stderr)
+		raise
+
 	cert_filename = '%s.jwks' % (quote(oidc_op, safe=''),)
 	with open('/usr/share/univention-management-console/oidc/%s' % (cert_filename,), 'wb') as fd:
-		cert_response = requests.get(certs_uri)
+		cert_response = requests.get(certs_uri, verify=verify)
 		cert_response.json()  # validate JSON!
 		fd.write(cert_response.content)
 

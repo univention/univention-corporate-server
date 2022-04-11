@@ -1,0 +1,43 @@
+Source: univention-oidc
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends:
+ debhelper,
+ dh-python,
+ python-all,
+ python3-all,
+ univention-config-dev (>= 15.0.3),
+ univention-join-dev,
+ univention-l10n-dev (>= 7.0.1),
+Standards-Version: 3.8.4
+
+Package: univention-oidc
+Architecture: all
+Depends:
+ univention-oidc-schema (= ${source:Version}),
+ python-six,
+ python3-six,
+ ${misc:Depends},
+Description: OIDC
+ TODO
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated Single Sign-On technology for corporate usage.
+ For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-oidc-schema
+Architecture: all
+Depends:
+ univention-config,
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
+Description: OIDC
+ TODO
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/

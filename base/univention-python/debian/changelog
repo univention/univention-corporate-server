@@ -1,4 +1,4 @@
-univention-python (13.0.2-12) unstable; urgency=medium
+univention-python (13.1.2-12) unstable; urgency=medium
 
   * Bug #54555: Fix build dependencies
 

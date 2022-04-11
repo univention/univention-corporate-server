@@ -1,0 +1,71 @@
+#
+# OpenLDAP Schema file
+# for univention-oidc package
+# 
+
+objectIdentifier univentionOIDC 1.3.6.1.4.1.10176.4300.1
+
+attributetype ( univentionOIDC:2
+	NAME 'univentionOIDCClientID'
+	DESC 'Unique relying party identifier'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionOIDC:3
+	NAME 'univentionOIDCClientSecret'
+	DESC ''
+	SINGLE-VALUE
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionOIDC:4
+	NAME 'univentionOIDCClienScope'
+	DESC ''
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionOIDC:5
+	NAME 'univentionOIDCOptionalClientScope'
+	DESC ''
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionOIDC:6
+	NAME 'univentionOIDCRedirectURI'
+	DESC ''
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionOIDC:7
+	NAME 'univentionOIDCBaseURL'
+	DESC ''
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionOIDC:8
+	NAME 'univentionOIDCAccessTokenLifespan'
+	DESC ''
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionOIDC:9
+	NAME 'univentionOIDCKeycloakAttributes'
+	DESC ''
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+
+objectclass ( univentionOIDC:1 NAME 'univentionOIDCRelyingParty' SUP top STRUCTURAL
+	DESC 'univention OIDC relying party'
+	MAY ( univentionOIDCClientSecret $ univentionOIDCClienScope $ univentionOIDCOptionalClientScope $ univentionOIDCRedirectURI $ univentionOIDCBaseURL $ univentionOIDCAccessTokenLifespan $ univentionOIDCKeycloakAttributes )
+	MUST ( cn $ univentionOIDCClientID )
+	)

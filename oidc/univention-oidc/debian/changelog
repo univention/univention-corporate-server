@@ -1,0 +1,5 @@
+univention-oidc (1.0.0-1) unstable; urgency=medium
+
+  * init
+
+ -- Florian Best <best@univention.de>  Mon, 11 Apr 2022 14:49:13 +0200

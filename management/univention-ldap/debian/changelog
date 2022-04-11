@@ -1,4 +1,4 @@
-univention-ldap (16.0.7-18) unstable; urgency=medium
+univention-ldap (16.1.7-18) unstable; urgency=medium
 
   * Bug #54395: Add schema for univention-radius-password
 

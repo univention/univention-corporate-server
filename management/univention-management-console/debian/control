@@ -53,6 +53,7 @@ Package: univention-management-console-server
 Architecture: all
 Depends:
  cy2-saml,
+ cy2-oidc,
  pam-saml,
  python-daemon,
  python-univention-lib (>= 1.0.25-1),
@@ -63,6 +64,8 @@ Depends:
  shell-univention-lib (>= 1.0.10-1),
  univention-base-files,
  univention-directory-manager-tools (>> 7.0.147),
+ univention-oidc,
+ univention-oidc-schema,
  ${misc:Depends},
 Description: UCS Management Console - server
  UCS Management Console is a web based program to manage computers.

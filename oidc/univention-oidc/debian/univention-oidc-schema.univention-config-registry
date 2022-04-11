@@ -1,0 +1,4 @@
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/11univention-oidc-schema
+Variables: ldap/server/type

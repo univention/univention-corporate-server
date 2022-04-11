@@ -33,7 +33,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=7
+VERSION=8
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/all.sh
@@ -64,6 +64,35 @@ else
 
 fi
 
+# OIDC
+if [ -n "$umc_oidc_rp_server" ]; then
+	fqdn_oidc="$umc_oidc_rp_server"
+else
+	fqdn_oidc="$hostname.$domainname"
+fi
+
+touch /etc/umc-oidc.secret
+chmod 0600 /etc/umc-oidc.secret
+create_machine_password > /etc/umc-oidc.secret
+
+udm oidc/relyingparty create "$@" --ignore_exists --position "cn=oidc-relying-parties,cn=univention,$ldap_base" \
+	--set name="$fqdn_oidc" \
+	--set description="Univention Management Console on $fqdn_oidc" \
+	--set clientid="$fqdn_oidc" \
+	--set clientsecret="$(cat /etc/umc-oidc.secret)" \
+	--set baseurl="https://$fqdn_oidc/univention/oidc/" \
+	--set accesstokenlifespan="${umc_oidc_access_token_lifespan:-300}" \
+	--append redirectURI="https://$fqdn_oidc/univention/oidc/*" \
+	--append redirectURI="http://$fqdn_oidc/univention/oidc/*" \
+	--append clientscope='web-origins' \
+	--append clientscope='profile' \
+	--append clientscope='roles' \
+	--append clientscope='email' \
+	--append optionalclientscope='address' \
+	--append optionalclientscope='phone' \
+	--append optionalclientscope='offline_access' \
+	--append optionalclientscope='microprofile-jwt' || die
+
 _cleanup_oidc_die () {
 	ucr unset umc/oidc/op-issuer; exit 3
 }
@@ -75,6 +104,7 @@ if ! is_ucr_false 'umc/web/sso/enabled'; then
 	[ "$(ls -A /usr/share/univention-management-console/oidc/*.jwks)" ] || _cleanup_oidc_die
 fi
 
+# SAML
 if [ -n "$umc_saml_sp_server" ]; then
 	fqdn="$umc_saml_sp_server"
 else
@@ -107,7 +137,7 @@ _cleanup_die () {
 }
 if ! is_ucr_false 'umc/web/sso/enabled'; then
 	rm /usr/share/univention-management-console/saml/idp/*.xml
-	ucr set umc/saml/idp-server="https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/idp/metadata.php" || _cleanup_die
+	ucr --debug set umc/saml/idp-server="https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/idp/metadata.php" || _cleanup_die
 	[ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || _cleanup_die
 fi
 
