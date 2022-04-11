@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [8]
+scope: ucs_4.4-0-errata4.4-8
+src: fribidi
+fix: 0.19.7-1+deb9u2
+desc: |
+ This update addresses the following issues:
+ * Stack based buffer overflow (CVE-2022-25308)
+ * Heap-buffer-overflow in fribidi_cap_rtl_to_unicode (CVE-2022-25309)
+ * SEGV in fribidi_remove_bidi_marks (CVE-2022-25310)
+bug: [54658]
+cve:
+- CVE-2022-25308
+- CVE-2022-25309
+- CVE-2022-25310
