@@ -481,6 +481,14 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    been changed, the |UCSUDL| must be restarted.
 
 
+.. envvar:: listener/shares/rename
+
+   Contents of existing share directories are moved, when the path to a share is
+   modified and the value is set to ``yes``. For more information, see
+   :numref:`shares-management-general-tab-table` in
+   :ref:`shares-management-general-tab`.
+
+
 .. envvar:: local/repository
 
    Activates and deactivates the local repository. For more information see
@@ -783,6 +791,18 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    :ref:`computers-configuring-proxy-access`.
 
 
+.. envvar:: quota/logfile
+
+   To log the activation of quotas to a file, specify the file in this variable.
+   For more information, see :ref:`shares-quota-apply`.
+
+
+.. envvar:: quota/userdefault
+
+   To disable the evaluation of user quota during login, set the value to
+   ``no``. For more information, see :ref:`shares-quota-apply`.
+
+
 .. envvar:: radius/mac/whitelisting
 
    To only allow specific network devices access to a network through RADIUS,
@@ -816,6 +836,12 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    The repository server used to check for updates and download packages.
    Default value: ``updates.software-univention.de``. For more information see
    :ref:`computers-configuration-via-univention-configuration-registry`.
+
+
+.. envvar:: samba/enable-msdfs
+
+   To enable Microsoft Distributed File System (MSDFS), set the value to ``yes``
+   and restart Samba. For more information, see :ref:`shares-msdfs`.
 
 
 .. envvar:: samba/max/protocol

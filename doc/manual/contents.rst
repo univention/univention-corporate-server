@@ -16,9 +16,9 @@ Univention Corporate Server - Manual for users and administrators
    windows/index
    idm-cloud/index
    ip-config/index
+   shares/index
    appendix/index
 
-.. shares
-   print-services
+.. print-services
    mail
    nagios
