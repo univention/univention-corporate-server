@@ -13,8 +13,7 @@ desc: |
  * Use-after-free in DocumentL10n::TranslateDocument (CVE-2022-28282)
  * Incorrect AliasSet used in JIT Codegen (CVE-2022-28285)
  * iframe contents could be rendered outside the border (CVE-2022-28286)
- * Memory safety bugs fixed in Firefox 99 and Firefox ESR 91.8
-   (CVE-2022-28289)
+ * Memory safety bugs fixed (CVE-2022-28289)
 bug: [54654]
 cve:
 - CVE-2022-1097
