@@ -6,7 +6,7 @@ src: openjpeg2
 fix: 2.1.2-1.1+deb9u7
 desc: |
  This update addresses the following issues:
- * null pointer dereference in opj_tgt_reset function in lib/openjp2/tgt.c
+ * NULL pointer dereference in opj_tgt_reset function in lib/openjp2/tgt.c
    (CVE-2020-27842)
  * out-of-bounds read in opj_t2_encode_packet function in openjp2/t2.c
    (CVE-2020-27843)
