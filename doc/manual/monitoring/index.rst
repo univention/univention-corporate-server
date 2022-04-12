@@ -16,7 +16,7 @@ the systems can still be monitored, e.g. by UCS 4.4 Nagios servers, as described
 in the UCS 4.4 manual.
 
 .. toctree::
-   :hidden:
+   :caption: Chapter contents
 
    dashboard
    nagios

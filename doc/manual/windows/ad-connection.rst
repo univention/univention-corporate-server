@@ -231,7 +231,7 @@ previously rejected changes again.
 .. _ad-connector-basicsetup:
 
 Basic configuration of the UCS AD Connector
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The UCS AD Connector is configured using a wizard in the UMC module
 :guilabel:`Active Directory Connection`.
@@ -352,7 +352,7 @@ for checking whether the service is running and restart it if necessary (see
 .. _ad-connector-ad-certificate:
 
 Importing the SSL certificate of the Active Directory
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A SSL certificate must be created on the Active Directory system and the root
 certificate exported to allow encrypted communication. The certificate is
@@ -367,7 +367,7 @@ data.
 .. _windows-adconn-win2012:
 
 Exporting the certificate on Windows 2012 / 2016 / 2019
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 If the certificate service is not installed, it must be installed before
 proceeding.
@@ -404,7 +404,7 @@ Select an arbitrary filename --> Finish`.
 .. _windows-copying-the-active-directory-certificate-to-the-ucs-system:
 
 Copying the Active Directory certificate to the UCS system
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 The SSL AD certificate should now be imported into the UCS system using
 the UMC module.
@@ -416,7 +416,7 @@ selected, which is being uploaded and integrated into the UCS AD Connector.
 .. _ad-connector-restart:
 
 Starting/Stopping the Active Directory Connection
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The connector can be started using *Start Active Directory connection service*
 and stopped using *Stop Active Directory connection service*. Alternatively,
@@ -426,7 +426,7 @@ the starting/stopping can also be performed with the
 .. _windows-functional-test-of-basic-settings:
 
 Functional test of basic settings
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The correct basic configuration of the connector can be checked by searching in
 Active Directory from the UCS system. Here one can search e.g. for the
@@ -443,7 +443,7 @@ access.
 .. _ad-connector-ad-password:
 
 Changing the AD access password
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The access data required by the UCS AD Connector for Active Directory are
 configured via the |UCSUCRV| :envvar:`connector/ad/ldap/binddn` and
@@ -530,7 +530,7 @@ without any other characters.
 .. _ad-connector-containers-and-ous:
 
 Containers and organizational units
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Containers and organizational units are synchronized together with their
 description. In addition, the ``cn=mail`` and ``cn=kerberos`` containers are
@@ -548,7 +548,7 @@ Take the following particularities into account:
 .. _ad-connector-groups:
 
 Groups
-^^^^^^
+~~~~~~
 
 Groups are synchronized using the group name, whereby a user's primary group is
 taken into account (which is only stored for the user in LDAP in AD).
@@ -639,7 +639,7 @@ restarted.
 .. _ad-connector-benutzer:
 
 Users
-^^^^^
+~~~~~
 
 Users are synchronized like groups using the user name or using the AD pre
 Windows 2000 name. The *First name*, *Last name*, *Primary group* (in so far as

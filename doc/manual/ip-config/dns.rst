@@ -68,7 +68,7 @@ Configuration of the BIND name server
 .. _ip-config-bind-debug:
 
 Configuration of BIND debug output
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The level of detail of the BIND debug output can be configured via the
 :envvar:`dns/debug/level` and :envvar:`dns/dlz/debug/level` (for the Samba
@@ -80,7 +80,7 @@ can be found at `Reading Bind Debugging Output
 .. _ip-config-dns-backend:
 
 Configuration of the data backend
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In a typical BIND installation on a non-UCS system, the configuration is
 performed by editing zone files. In UCS, BIND is completely configured via UMC
@@ -117,7 +117,7 @@ modules in both cases.
 .. _ip-config-configuration-of-zone-transfers:
 
 Configuration of zone transfers
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By default the UCS name server allows zone transfers of the DNS data. If the UCS
 server can be reached from the Internet, a list of all computer names and IP
@@ -150,7 +150,7 @@ zone, the zone is labeled in the UMC dialogues as a *superordinate object*.
 .. _networks-dns-forwardzone:
 
 Forward lookup zone
-^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~
 
 Forward lookup zones contain information which is used to resolve DNS names into
 IP addresses. They are managed in the UMC module :guilabel:`DNS` (see
@@ -320,7 +320,7 @@ DNS UMC module forward lookup - TXT records tab
 .. _ip-config-cname-record-alias-records:
 
 CNAME record (Alias records)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 CNAME records / alias records are managed in the UMC module :guilabel:`DNS` (see
 :ref:`central-user-interface`). To create another record, the forward lookup
@@ -348,7 +348,7 @@ record` can be used to create a new record.
 .. _networks-dns-hostrecord:
 
 A/AAAA records (host records)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Host records are managed in the UMC module :guilabel:`DNS` (see
 :ref:`central-user-interface`). To create another record, the forward lookup
@@ -381,7 +381,7 @@ automatically or edited.
 .. _ip-config-service-records:
 
 Service records
-^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~
 
 Service records are managed in the UMC module :guilabel:`DNS` (see
 :ref:`central-user-interface`). To create another record, the forward lookup
@@ -452,7 +452,7 @@ therefore only be added to a forward lookup zone or a subordinate container.
 .. _ip-config-reverse-lookup-zone:
 
 Reverse lookup zone
-^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~
 
 A reverse lookup zone is used to resolve IP address into host names. They are
 managed in the UMC module :guilabel:`DNS`. To add another reverse lookup zone,
@@ -532,7 +532,7 @@ DNS UMC module reverse lookup - Start of authority tab
 .. _ip-config-pointer-record:
 
 Pointer record
-^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~
 
 Pointer records are managed in the UMC module :guilabel:`DNS` (see
 :ref:`central-user-interface`). To create another record, the reverse lookup

@@ -52,7 +52,7 @@ the user Administrator).
 .. _dashboard-use-domain:
 
 Domain dashboard
-^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~
 
 .. _dashboard-domain:
 
@@ -76,7 +76,7 @@ together.
 .. _dashboard-nutzung-server:
 
 Server dashboard
-^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~
 
 .. _dashboard-server:
 
@@ -95,7 +95,7 @@ details about the selected server.
 .. _dashboard-usage-mydashboard:
 
 Own dashboards
-^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~
 
 The two included dashboards *Domain Dashboard* and *Server Dashboard* can't be
 changed, because they are updated by Univention with updates.

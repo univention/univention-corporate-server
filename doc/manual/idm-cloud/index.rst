@@ -1,5 +1,6 @@
 .. _idmcloud:
 
+************************************************
 Identity Management connection to cloud services
 ************************************************
 
@@ -21,7 +22,7 @@ The following chapter describes how to set up the Microsoft 365 Connector and
 the Google Apps for Work Connector.
 
 .. toctree::
-   :hidden:
+   :caption: Chapter contents
 
    office-365
    google

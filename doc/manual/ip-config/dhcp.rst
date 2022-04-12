@@ -71,7 +71,7 @@ dialogues as a *superordinate object*.
 .. _networks-dhcp-services:
 
 Administration of DHCP services
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 DHCP services are managed in the UMC module :guilabel:`DHCP` (see
 :ref:`central-user-interface`). To create a new DHCP service, *All DHCP
@@ -108,7 +108,7 @@ A description of this and the other DHCP policies can be found at
 .. _networks-dhcp-dhcpserver:
 
 Administration of DHCP server entries
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Each server which should offer the DHCP service requires a *DHCP server* entry
 in the LDAP directory. The entry does not normally need to be created manually,
@@ -136,7 +136,7 @@ selected in the left column of the UMC module :guilabel:`DHCP`.
 .. _ip-config-administration-of-dhcp-subnets:
 
 Administration of DHCP subnets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 DHCP subnets are managed in the UMC module :guilabel:`DHCP` (see
 :ref:`central-user-interface`). To create another subnet, a DHCP service must be
@@ -189,7 +189,7 @@ At this level, the gateway for all computers in a subnet is often set using the
 .. _ip-config-administration-of-dhcp-pools:
 
 Administration of DHCP pools
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 DHCP pools can only be managed via the UMC module :guilabel:`LDAP directory`. To
 do so, one must always be in a DHCP subnet object - a DHCP pool object must
@@ -270,7 +270,7 @@ the subnet entry. These should only be specified via the pool entries.
 .. _ip-config-dhcp-objects-hosts:
 
 Registration of computers with DHCP computer objects
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A *DHCP host* entry is used to register the respective computer in the DHCP
 service. Computers can be handled depending on their registration status. Known
@@ -319,7 +319,7 @@ service must be selected in the left column of the module. :menuselection:`Add
 .. _networks-dhcp-sharedsubnets:
 
 Management of DHCP shared networks / DHCP shared subnets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 *DHCP shared network* objects accept subnets which use a common physical
 network.
@@ -390,7 +390,7 @@ Configuration of clients via DHCP policies
 .. _ip-config-setting-the-gateway:
 
 Setting the gateway
-^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~
 
 The default gateway can be specified via DHCP with a *DHCP routing* policy,
 which is managed in the UMC module :guilabel:`Policies` (see
@@ -414,7 +414,7 @@ which is managed in the UMC module :guilabel:`Policies` (see
 .. _ip-config-setting-the-dns-servers:
 
 Setting the DNS servers
-^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~
 
 The name servers to be used by a client can be specified via DHCP with a *DHCP
 DNS* policy, which is managed in the UMC module :guilabel:`Policies` (see
@@ -444,7 +444,7 @@ DNS* policy, which is managed in the UMC module :guilabel:`Policies` (see
 .. _networks-dhcp-wins:
 
 Setting the WINS server
-^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~
 
 The WINS server to be used can be specified via DHCP with a *DHCP NetBIOS*
 policy, which is managed in the UMC module :guilabel:`Policies` (see
@@ -485,7 +485,7 @@ policy, which is managed in the UMC module :guilabel:`Policies` (see
 .. _ip-config-configuration-of-the-dhcp-lease:
 
 Configuration of the DHCP lease
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The validity of an assigned IP address - a so-called DHCP lease - can be
 specified with a *DHCP lease time* policy, which is managed in the UMC module
@@ -518,7 +518,7 @@ specified with a *DHCP lease time* policy, which is managed in the UMC module
 .. _ip-config-configuration-of-boot-server-pxe-settings:
 
 Configuration of boot server/PXE settings
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A *DHCP Boot* policy is used to assign computer configuration parameters for
 booting via BOOTP/PXE. They are managed in the UMC module :guilabel:`Policies`
@@ -547,7 +547,7 @@ booting via BOOTP/PXE. They are managed in the UMC module :guilabel:`Policies`
 .. _ip-config-further-dhcp-policies:
 
 Further DHCP policies
-^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~
 
 There are some further DHCP policies available, but they are only required in
 special cases.

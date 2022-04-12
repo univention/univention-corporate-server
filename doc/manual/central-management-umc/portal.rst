@@ -52,8 +52,7 @@ overwritten during an update.
 
 .. _central-management-umc-assignment-of-portal-settings-module:
 
-Assign rights for portal settings
----------------------------------
+.. rubric:: Assign rights for portal settings
 
 The following describes how to make the UMC module :guilabel:`Portal` accessible
 to selected groups or users. This example assumes that a group

@@ -67,7 +67,7 @@ not a rule and keep potential side-effects in mind when defining usernames
 outside the recommendation.
 
 .. toctree::
-   :hidden:
+   :caption: Chapter contents
 
    umc
    user-activation-apps

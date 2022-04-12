@@ -36,7 +36,7 @@ Configuration
 .. _ip-config-radius-configuration-allowed-users:
 
 Allowed users
-^^^^^^^^^^^^^
+~~~~~~~~~~~~~
 
 By default no user is allowed to access the network. Enabling the checkbox for
 *network access* on the *RADIUS* tab, gives the user access to the network. The
@@ -52,7 +52,7 @@ checkbox can also be set on groups, which allows all users in this group access.
 .. _ip-config-radius-configuration-service-specific-password:
 
 Service specific password
-^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By default, users authenticate with their domain password. By setting the
 |UCSUCRV| :envvar:`radius/service-specific-password` to ``true``, a dedicated
@@ -82,7 +82,7 @@ The parameters used to generate the passwords can be adjusted. On a
 .. _ip-config-radius-configuration-mac-filtering:
 
 MAC filtering
-^^^^^^^^^^^^^
+~~~~~~~~~~~~~
 
 By default access to the network is allowed for every device (assuming the used
 user name has access). It can be restricted to only allow specific devices. This
@@ -94,7 +94,7 @@ network access granted (either directly or via one of its groups), too.
 .. _ip-config-radius-configuration-access-points-registration:
 
 Access point administration
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 All access points must be known to the RADIUS server. An access point can either
 be configured in the file :file:`/etc/freeradius/3.0/clients.conf` or through
@@ -144,7 +144,7 @@ server after this restart.
 .. _ip-config-radius-configuration-access-points-clients:
 
 Access point and client configuration
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The access points must then be configured to use 802.1x ("WPA Enterprise")
 authentication. And the *RADIUS server* address should be set to the address of

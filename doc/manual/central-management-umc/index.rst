@@ -59,7 +59,7 @@ reporting function are explained (:ref:`central-reports`).
 
 
 .. toctree::
-   :hidden:
+   :caption: Chapter contents
 
    introduction
    login

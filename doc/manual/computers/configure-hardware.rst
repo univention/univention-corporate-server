@@ -146,7 +146,7 @@ written in hexadecimal form (e.g., ``2001:0DB8:FE29:DE27:0000:0000:0000:0000``).
 .. _computers-ipv4:
 
 Configuration of IPv4 addresses
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If the *Dynamic (DHCP)* option was not chosen, the IP address to be bound to the
 network card must be entered. In addition to the *IPv4 address* the *net mask*
@@ -179,7 +179,7 @@ defined in the form :envvar:`interfaces/ethX_Y/setting`.
 .. _computers-ipv6:
 
 Configuration of IPv6 addresses
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The IPv6 address can be configured in two ways: Stateless address
 autoconfiguration (SLAAC) is employed in the :guilabel:`Autoconfiguration
@@ -219,7 +219,7 @@ router advertisements, which might otherwise be able to change the route.
 .. _computers-configuring-the-name-servers:
 
 Configuring the name servers
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 There are two types of DNS servers:
 
@@ -248,7 +248,7 @@ UCR variables:
 .. _computers-network-complex:
 
 Bridges, bonding, VLANs
-^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~
 
 UCS supports advanced network configurations using bridging, bonding and virtual
 networks (VLAN):
@@ -265,7 +265,7 @@ networks (VLAN):
 .. _computers-network-complex-bridge:
 
 Configure bridging
-^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~
 
 .. index::
    single: network; bridge
@@ -310,7 +310,7 @@ interface for the virtualization host. The options are the same as described in
 .. _computers-network-complex-bonding:
 
 Configure bonding
-^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~
 
 .. index::
    single: network; bonding
@@ -368,7 +368,7 @@ and :ref:`computers-ipv6`.
 .. _computers-network-complex-vlan:
 
 Configure VLAN
-^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~
 
 .. index::
    pair: network; vlan

@@ -20,7 +20,6 @@ the enforcement of content policies for web access, see
 :ref:`ip-config-web-proxy-for-caching-and-policy-management-virus-scan`.
 
 .. toctree::
-   :hidden:
 
    network-objects
    dns

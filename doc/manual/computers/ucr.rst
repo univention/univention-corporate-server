@@ -121,7 +121,7 @@ The command line interface of |UCSUCR| is run using the
 .. _computers-querying-a-ucr-variable:
 
 Querying a UCR variable
-^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. option:: get
 
@@ -146,7 +146,7 @@ Querying a UCR variable
 .. _computers-setting-ucr-variables:
 
 Setting UCR variables
-^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~
 
 .. option:: set
 
@@ -194,7 +194,7 @@ when assigning values.
 .. _computers-searching-for-variables-and-set-values:
 
 Searching for variables and set values
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. option:: search
 
@@ -222,7 +222,7 @@ https://docs.python.org/2/library/re.html.
 .. _computers-deleting-ucr-variables:
 
 Deleting UCR variables
-^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~
 
 .. option:: unset
 
@@ -238,7 +238,7 @@ Deleting UCR variables
 .. _computers-regeneration-of-configuration-files-from-their-template:
 
 Regeneration of configuration files from their template
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. option:: commit
 
@@ -261,7 +261,7 @@ generally necessary to regenerate all the configuration files.
 .. _computers-sourcing-variables-in-shell-scripts:
 
 Sourcing variables in shell scripts
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. option:: shell
 
@@ -365,7 +365,7 @@ disrupt the way |UCSUCR| uses the file.
 .. _ucr-templates-extend-simple:
 
 Referencing of UCR variables in templates
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In the simplest case, a UCR variable can be directly referenced in the template.
 The variable name framed by the string ``@%@`` represents the wildcard. As an
@@ -383,7 +383,7 @@ Python code (see :ref:`ucr-templates-extend-python`).
 .. _ucr-templates-extend-python:
 
 Integration of inline Python code in templates
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Any type of Python code can be embedded in UCR templates by entering a code
 block framed by the string ``@!@``. For example, these blocks can be used to

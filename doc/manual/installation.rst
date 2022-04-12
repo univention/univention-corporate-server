@@ -635,7 +635,7 @@ a VPN solution should be used.
 .. _installation-xenserver:
 
 Installation in Citrix XenServer
---------------------------------
+================================
 
 The process for setting up a UCS instance in Citrix XenServer is documented in
 `Citrix XenServer in Univention Wiki

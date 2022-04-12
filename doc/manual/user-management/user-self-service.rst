@@ -145,7 +145,7 @@ verified his account via the verification email the
 .. _user-management-password-changes-by-users-selfregistration-account-creation:
 
 Account creation
-^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~
 
 .. _user-registration:
 
@@ -191,7 +191,7 @@ backend.
 .. _user-management-password-changes-by-users-selfregistration-verification-email:
 
 Verification email
-^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~
 
 After a user has clicked on :guilabel:`Create account`, they
 will see a message that an email for the account verification has been
@@ -243,7 +243,7 @@ are forwarded to the :program:`Self Service Backend`.
 .. _user-management-password-changes-by-users-selfregistration-account-verification:
 
 Account verification
-^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~
 
 Following the verification link from the email, the user will land on
 the *Account verification* page of the :program:`Self Service`.

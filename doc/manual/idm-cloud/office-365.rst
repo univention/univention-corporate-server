@@ -71,7 +71,7 @@ are acknowledged in the *Microsoft 365 Admin Center*.
 .. _idmcloud-o365-users:
 
 Users
-^^^^^
+~~~~~
 
 If a change is made to the user, the changes are likewise replicated to the
 Azure Active Directory domain. There is no synchronization from the Azure Active
@@ -116,7 +116,7 @@ Changes to |UCSUCRV|\ s are implemented only after restarting the |UCSUDL|.
 .. _idmcloud-o365-teams:
 
 Teams
-^^^^^
+~~~~~
 
 To use Teams, synchronization of groups must be enabled in the |UCSUCRV|
 :envvar:`office365/groups/sync` with the value ``yes``, and then the |UCSUDL|

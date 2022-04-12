@@ -36,7 +36,7 @@ Services of a Samba domain
 .. _windows-samba4-services-auth:
 
 Authentication services
-^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~
 
 User logins can only be performed on Microsoft Windows systems joined in the
 Samba domain. Domain joins are documented in :ref:`windows-domain-join`.
@@ -60,7 +60,7 @@ Common sources of error in failed logins are:
 .. _windows-samba4-fileservices:
 
 File services
-^^^^^^^^^^^^^
+~~~~~~~~~~~~~
 
 A file server provides files over the network and allows concentrating the
 storage of user data on a central server.
@@ -97,7 +97,7 @@ Samba server(s) restarted.
 .. _windows-samba4-services-print:
 
 Print services
-^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~
 
 Samba offers the possibility of sharing printers set up under Linux as network
 printers for Windows clients. The management of the printer shares and the
@@ -110,7 +110,7 @@ consideration.
 .. _windows-s4-connector:
 
 Univention S4 connector
-^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~
 
 When using Samba as an Active Directory domain controller, Samba provides a
 separate LDAP directory service. The synchronization between the UCS LDAP and
@@ -146,7 +146,7 @@ credentials of the machine account are used automatically:
 .. _windows-multimaster:
 
 Replication of directory data
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Samba/AD domains use the Directory Replication System (DRS) to replicate
 the directory data. DRS allows multi-master replication, i.e., the write
@@ -167,7 +167,7 @@ found in :uv:kb:`Samba 4 Troubleshooting <32>`.
 .. _windows-sysvolshare:
 
 Synchronization of the SYSVOL share
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The SYSVOL share is a share which provides group policies and logon scripts in
 Active Directory/Samba. It is synchronized among all domain controllers and
@@ -189,7 +189,7 @@ Configuration and management of Windows desktops
 .. _gruppenrichtlinien:
 
 Group policies
-^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~
 
 Group policies are an Active Directory feature which allows the central
 configuration of settings for computers and users. Group policies are also
@@ -263,7 +263,7 @@ and host accounts in the Samba directory service.
 .. _gpo-install:
 
 Installation of Group Policy Management
-'''''''''''''''''''''''''''''''''''''''
+"""""""""""""""""""""""""""""""""""""""
 
 :program:`Group Policy Management` can be installed as a component of the
 *Remote Server Administration Tools* on Windows clients. They can be found at
@@ -289,7 +289,7 @@ Following the enabling, Group Policy Management can be run under
 .. _gpo-config:
 
 Configuration of policies with Group Policy Management
-''''''''''''''''''''''''''''''''''''''''''''''''''''''
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Group policies can only be configured by users who are members of the ``Domain
 Admins`` group (e.g., the ``Administrator``). When logging in, attention must be
@@ -388,7 +388,7 @@ with the *IT staff* OU.
 .. _gpo-gposync:
 
 Configuration of group policies in environments with more than one Samba domain controller
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 A group policy is technically composed of two parts: On the one hand there is a
 directory in the domain controllers' file system which contains the actual
@@ -407,7 +407,7 @@ a domain controller which has not yet replicated the current files.
 .. _gpo-adm:
 
 Administrative templates (ADMX/ADM)
-'''''''''''''''''''''''''''''''''''
+"""""""""""""""""""""""""""""""""""
 
 The policies displayed in *Group Policy Management* can be expanded with
 so-called *administrative templates*. This type of template defines the name
@@ -464,7 +464,7 @@ Management to access them from the Windows clients.
 .. _gpo-wmifilter:
 
 Application of policies based on computer properties (WMI filters)
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 It is also possible to configure policies based on system properties. These
 properties are provided via the Windows Management Instrumentation interface.
@@ -486,7 +486,7 @@ Zielgruppenadressierung (German)
 .. _netlogon-freigabe-samba4:
 
 Logon scripts / NETLOGON share
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The NETLOGON share serves the purpose of providing logon scripts in Windows
 domains. The logon scripts are executed following after the user login and allow
@@ -505,7 +505,7 @@ The logon script can be assigned for each user, see :ref:`users-management`.
 .. _windows-serverhome-samba4:
 
 Configuration of the file server for the home directory
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The home directory can be defined user-specifically in the UMC module
 :guilabel:`Users`, see :ref:`users-management`. This is performed with the
@@ -517,7 +517,7 @@ multiple users at one time, see :ref:`central-user-interface-edit`.
 .. _windows-roamingprofiles-samba4:
 
 Roaming profiles
-^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~
 
 Samba supports roaming profiles, i.e., user settings are saved on a
 central server. This directory is also used for storing the files which

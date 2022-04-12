@@ -55,7 +55,7 @@ the same name (without file extension). For example, setting
 .. _central-theming-custom:
 
 Creating a custom theme/Adjusting the design of |UCSWEB|\ s
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------------------------------------
 
 To create a custom theme it is advised not to edit
 :file:`/usr/share/univention-web/themes/dark.css` or

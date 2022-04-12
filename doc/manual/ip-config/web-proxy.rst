@@ -102,7 +102,7 @@ Configuration of the ports used
 .. _proxy-port:
 
 Access port
-^^^^^^^^^^^
+~~~~~~~~~~~
 
 As standard, the web proxy can be accessed via port ``3128``. If another port is
 required, this can be configured via the |UCSUCRV| :envvar:`squid/httpport`. If
@@ -112,7 +112,7 @@ adjusted.
 .. _ip-config-permitted-ports:
 
 Permitted ports
-^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~
 
 In the standard configuration, Squid only forwards client requests intended for
 the network ports 80 (HTTP), 443 (HTTPS) or 21 (FTP). The list of permitted

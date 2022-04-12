@@ -83,8 +83,7 @@ applications.
 
 .. _computers-limiting-authentication-to-selected-users:
 
-Limiting authentication to selected users
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. rubric:: Limiting authentication to selected users
 
 By default only the ``root`` user and members of the ``Domain Admins`` group can
 login remotely via SSH and locally on a ``tty``.
@@ -147,7 +146,7 @@ Logging/retrieval of system messages and system status
 .. _computers-log-files:
 
 Log files
-^^^^^^^^^
+~~~~~~~~~
 
 All UCS-specific log files (e.g., for the listener/notifier replication) are
 stored in the :file:`/var/log/univention/` directory. Services log in their own
@@ -171,7 +170,7 @@ older log files are additionally zipped with :command:`gzip`.
 .. _computers-logging-the-system-status:
 
 Logging the system status
-^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :command:`univention-system-stats` can be used to document the current system
 status in the :file:`/var/log/univention/system-stats.log` file. The following
@@ -205,7 +204,7 @@ for logging every half and full hour. The logging is activated by setting the
 .. _computers-modules-top:
 
 Process overview via |UCSUMC| module
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The UMC module :guilabel:`Process overview` displays a table of the current
 processes on the system. The processes can be sorted based on the following
@@ -239,7 +238,7 @@ save open files.
 .. _computers-modules-diagnostic:
 
 System diagnostic via |UCSUMC| module
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The UMC module :guilabel:`System diagnostic` offers a corresponding user
 interface to analyze a UCS system for a range of known problems.
@@ -261,7 +260,7 @@ as a cron job.
 .. _computers-hourly-daily-weekly-monthly-execution-of-scripts:
 
 Hourly/daily/weekly/monthly execution of scripts
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Four directories are predefined on every UCS system, :file:`/etc/cron.hourly/`,
 :file:`/etc/cron.daily/`, :file:`/etc/cron.weekly/` and
@@ -271,7 +270,7 @@ and marked as executable are run automatically every hour, day, week or month.
 .. _cron-local:
 
 Defining local cron jobs in :file:`/etc/cron.d/`
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. index:: cron; syntax
    :name: cron-syntax
@@ -307,7 +306,7 @@ Example:
 .. _computers-defining-cron-jobs-in-univention-configuration-registry:
 
 Defining cron jobs in Univention Configuration Registry
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Cron jobs can also be defined in |UCSUCR|. This is particularly useful if
 they are set via a |UCSUDM| policy and are thus used on more than one

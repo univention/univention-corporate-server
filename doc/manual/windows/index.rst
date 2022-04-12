@@ -36,7 +36,7 @@ domain (see :ref:`windows-trust`). Outgoing trusts with Active Directory domain
 (UCS trusts Windows) are not supported currently.
 
 .. toctree::
-   :hidden:
+   :caption: Chapter contents
 
    samba-domain
    ad-connection
