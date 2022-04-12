@@ -4,11 +4,6 @@
 Installation
 ************
 
-.. _installation-introduction:
-
-Introduction
-============
-
 The following documentation describes how to install Univention Corporate Server
 (UCS). The UCS system is installed from the DVD. The installation is interactive
 and prompts all the necessary system settings in a graphic interface.

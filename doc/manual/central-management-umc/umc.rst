@@ -3,11 +3,6 @@
 |UCSUMC| modules
 ================
 
-.. _central-management-umc:
-
-Introduction
-------------
-
 |UCSUMC| (UMC) modules are the web-based tool for administration of the UCS
 domain. They are shown on the portal page (:ref:`central-portal`) for logged in
 administrators. Depending on the system role, different UMC modules are
