@@ -7,12 +7,12 @@ The UCS proxy integration allows the use of a web cache for improving the
 performance and controlling data traffic. It is based on the tried-and-tested
 proxy server Squid and supports the protocols HTTP, FTP and HTTPS.
 
-A proxy server receives requests about Internet contents and verifies whether
+A proxy server receives requests about internet contents and verifies whether
 these contents are already available in a local cache. If this is the case, the
 requested data are provided from the local cache. If the data are not available,
 these contents are called up from the respective web server and inserted in the
 local cache. This can be used to reduce the answering times for the users and
-the transfer volume via the Internet access.
+the transfer volume via the internet access.
 
 Further documentation on proxy services - such as the cascading of proxy
 servers, transparent proxies and the integration of a virus scan engine - are
@@ -53,7 +53,7 @@ Caching of web content
 
 Squid is a caching proxy, i.e., previously viewed contents can be provided from
 a cache without being reloaded from the respective web server. This reduces the
-incoming traffic via the Internet connection and can result in quicker responses
+incoming traffic via the internet connection and can result in quicker responses
 of HTTP requests.
 
 However, this caching function is not necessary for some environments or, in the
@@ -67,7 +67,7 @@ restarted.
 Logging proxy accesses
 ----------------------
 
-All accesses performed via the proxy server are stored in the logfile
+All accesses performed via the proxy server are stored in the log file
 :file:`/var/log/squid/access.log`. It can be used to follow which websites have
 been accessed by the users.
 
@@ -142,7 +142,7 @@ server.
 
    To prevent unauthorized users from opening websites nonetheless, additional
    measures are required to prevent these users from bypassing the proxy server
-   and accessing the Internet. This can be done, for example, by limiting all
+   and accessing the internet. This can be done, for example, by limiting all
    HTTP traffic through a firewall.
 
 The proxy authentication (and as a result the possible verification of the group

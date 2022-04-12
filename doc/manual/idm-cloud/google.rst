@@ -25,14 +25,14 @@ To setup the Google Apps for Work Connectors a G Suite Administrator account, a
 corresponding account in the G Suite domain, and a `domain verified
 <https://support.google.com/a/topic/9196?hl=en>`_ by Google are required. The
 first two will be provided free of charge by Google for testing purposes.
-However, configuring the SSO requires a separate Internet domain where TXT
+However, configuring the SSO requires a separate internet domain where TXT
 records can be created.
 
 If no G Suite subscription is available yet, it can be configured via `Set up
 Google Workspace for your organization <https://support.google.com/a/answer/6365252>`_.
 A connection with a private Gmail account is not possible.
 
-Afterwards, you should log in with a *G Suite administrator account* in the
+Afterwards, you should sign in with a *G Suite administrator account* in the
 `Admin Console <https://admin.google.com/>`_. The domain should now be verified.
 For this it is necessary to create a TXT record in the DNS of your own domain.
 This process can take a few minutes.
@@ -72,7 +72,7 @@ synchronized. The |UCSUCRV| and its values reflect the nested data structure of
 the G Suite user accounts. The names that follow the percentage sign in the
 values are the attributes in the UCS LDAP. If all |UCSUCRV|
 :envvar:`google-apps/attributes/mapping/.*` are removed, no data other than the
-primary e-mail address is synchronized.
+primary email address is synchronized.
 
 The |UCSUCRV| :envvar:`google-apps/attributes/anonymize` can be used to specify
 comma-separated LDAP attributes that are created in the G Suite domain but

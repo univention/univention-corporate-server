@@ -114,7 +114,7 @@ option name:
 
 Here, ``username (*)`` signifies that this attribute must always be set when
 creating user objects. If the *person* option is set for the user account (this
-is the standard case), one or more e-mail addresses can be added to the contact
+is the standard case), one or more email addresses can be added to the contact
 information.
 
 A range of standard parameters are defined for every module:
@@ -245,7 +245,7 @@ Subsequent addition of the postal address for an existing user:
    > --set postcode="28239" \
    > --set city="Bremen"
 
-This command can be used to display all the users whose user name begins with
+This command can be used to display all the users whose username begins with
 *user*:
 
 .. code-block::

@@ -9,7 +9,7 @@ the UMC module :guilabel:`Shares` is created on an arbitrary UCS server system
 as part of the UCS domain replication.
 
 Provision for accessing clients can occur via CIFS (supported by Windows/Linux
-clients) and/or NFS (primarily supported by Linux/Unix).  The NFS shares managed
+clients) and/or NFS (primarily supported by Linux/Unix). The NFS shares managed
 in the UMC module can be mounted by clients both via NFSv3 and via NFSv4.
 
 If a file share is deleted on a server, the shared files in the directory are

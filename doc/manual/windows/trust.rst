@@ -4,7 +4,7 @@ Trust relationships
 ===================
 
 Trust relationships between domains make it possible for users from one domain
-to log in to computers from another domain.
+to sign in to computers from another domain.
 
 In general, Windows trust relations can be *unidirectional* or *bidirectional*.
 Technically a bidirectional trust is simply realized as two unidirectional
@@ -82,7 +82,7 @@ The trust can be checked using the following commands:
    $ wbinfo --check-secret –domain=addom.example
 
 
-After the setup, a UCS user should be able to log in to systems of the remote
+After the setup, a UCS user should be able to sign in to systems of the remote
 Active Directory domain. Users must either use the format ``UCSDOM\username`` as
 login name or their Kerberos principal in the notation
 ``username@ucsdom.example``.

@@ -32,7 +32,7 @@ see which portal entries can be made using the UMC portal settings module.
 
 By default, all portal entries are displayed for everyone. In the UMC module
 :guilabel:`Portal` in the category :guilabel:`Login`, it can be configured
-whether anonymous visitors have to log in before they can see entries. It is
+whether anonymous visitors have to sign in before they can see entries. It is
 also possible to limit certain entries for certain groups. This requires the
 LDAP attribute ``memberOf``. Nested group memberships (i.e., groups in groups)
 are evaluated.
@@ -94,7 +94,6 @@ If the ACL is to be deleted again, the following command can be used:
 
    udm settings/ldapacl remove \
      --dn "cn=62my-portal-acl,cn=ldapacl,cn=univention,$(ucr get ldap/base)"
-           
 
 An appropriate UMC policy can now be created via UMC. The following
 *UMC operations* must be allowed within the policy:
@@ -106,9 +105,9 @@ An appropriate UMC policy can now be created via UMC. The following
 
 How to create a policy is described in
 :ref:`central-management-umc-create-policy`. Now the newly created policy only
-needs to be assigned to the desired object, in this case the group ``Portal
+needs to be assigned to the wanted object, in this case the group ``Portal
 Admins``. This can also be done directly within the UMC. For this example,
-navigate to the group module and edit the desired group there. In the group
+navigate to the group module and edit the wanted group there. In the group
 settings, existing policies for the group object can be selected under
 :guilabel:`Policies`. More detailed information about policy assignment is
 described under :ref:`central-policies-assign`.

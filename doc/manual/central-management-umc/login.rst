@@ -14,7 +14,7 @@ UCS comes with a central login page. Logging in to the |UCSWEB| is done with the
 credentials of the respective domain account. On the portal, the login process
 can be started either via the user menu an then :guilabel:`Login` or by clicking
 on the entry in the portal itself. If a site (e.g., a UMC module) requires a
-login, it will redirect to the central login page. To log out, the entry
+login, it will redirect to the central login page. To sign out, the entry
 :guilabel:`Logout` in the user menu can be used.
 
 By default a login does not use single sign-on. The login can be changed to use
@@ -43,7 +43,7 @@ the corresponding domain account:
   account which should be used for the initial login at a newly installed
   |UCSPRIMARYDN|\ system.
 
-* In some cases, it might be necessary to log in with the system's local
+* In some cases, it might be necessary to sign in with the system's local
   ``root`` account (see :ref:`computers-rootaccount`). This account enables
   access only to the UMC modules for the administration and configuration of the
   local system.

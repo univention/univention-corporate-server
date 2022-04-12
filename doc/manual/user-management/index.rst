@@ -31,11 +31,11 @@ There are three different types of users in UCS:
    :guilabel:`Users` (see :ref:`users-management`).
 
 2. **Address book entries** can be used to maintain internal or external contact
-   information. These contacts can not log in to UCS or Windows systems.
+   information. These contacts can't sign in to UCS or Windows systems.
    Address book entries can be managed via the UMC module :guilabel:`Contacts`.
 
 3. **Simple authentication account**: With a simple authentication account, a
-   user object is created, which has only a user name and a password. With this
+   user object is created, which has only a username and a password. With this
    account, only authentication against the LDAP directory service is possible,
    but no login to UCS or Windows systems. Simple authentication accounts can be
    accessed via the UMC module :guilabel:`LDAP directory` (see

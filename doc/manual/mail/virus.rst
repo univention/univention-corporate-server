@@ -8,10 +8,10 @@ The UCS mail services include virus and malware detection via the
 the setup of the mail server package. The virus scan can be deactivated with
 the |UCSUCRV| :envvar:`mail/antivir`.
 
-All incoming and outgoing e-mails are scanned for viruses. If the scanner
-recognizes a virus, the e-mail is sent to quarantine. That means that the e-mail
+All incoming and outgoing emails are scanned for viruses. If the scanner
+recognizes a virus, the email is sent to quarantine. That means that the email
 is stored on the server where it is not accessible to the user. The original
-recipient receives a message per e-mail stating that this measure has been
+recipient receives a message per email stating that this measure has been
 taken. If necessary, the administrator can restore or delete this from the
 :file:`/var/lib/amavis/virusmails/` directory. Automatic deletion is not
 performed.

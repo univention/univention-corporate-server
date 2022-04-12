@@ -70,7 +70,7 @@ found in :ref:`computers-softwaremanagement-installsoftware`.
    * The *AD member* mode can only be configured on a |UCSPRIMARYDN|.
 
    * The name of the DNS domain of the UCS systems must match that of the AD
-     domain. The host name must of course be different.
+     domain. The hostname must of course be different.
 
    * All the AD and UCS servers in a connector environment must use the same
      time zone.
@@ -157,7 +157,7 @@ authorizations are not sufficient for exporting encrypted password data. In this
 case, the LDAP DN of a privileged replication user can be adjusted manually in
 the |UCSUCRV| :envvar:`connector/ad/ldap/binddn`. This must be a member of the
 ``Domain Admins`` group in the AD. The corresponding password must be saved in a
-file on the |UCSPRIMARYDN| and the file name entered in the |UCSUCRV|
+file on the |UCSPRIMARYDN| and the filename entered in the |UCSUCRV|
 :envvar:`connector/ad/ldap/bindpw`. If the access password is changed at a later
 point in time, the new password must be entered in this file. The access rights
 for the file should be restricted so that only the ``root`` owner has access.
@@ -174,7 +174,7 @@ The following commands demonstrate the steps in an example:
    $ ucr set connector/ad/mapping/user/password/kinit=false
 
 
-If desired, the AD domain controller can also be replaced by the
+If needed, the AD domain controller can also be replaced by the
 |UCSPRIMARYDN| at a later point in time. This is possible via the
 :program:`Active Directory Takeover` application (see
 :ref:`windows-adtakeover`).
@@ -309,7 +309,7 @@ replaced.
 Following this step, the setup can be continued by clicking :guilabel:`Next`
 again. If it is still not possible to create an SSL/TLS-encrypted connection, a
 security query appears asking whether to set up the synchronization without SSL
-encryption. If this is desired, the setup can be continued by clicking
+encryption. If this is needed, the setup can be continued by clicking
 :guilabel:`Continue without encryption`. In this case, the synchronization of
 the directory data is performed unencrypted.
 
@@ -479,7 +479,7 @@ diagnosis:
 .. _ad-connector-univention-adsearch:
 
 :command:`univention-adsearch`
-   This tool facilitates a simple LDAP search in Active Directory. Objects
+   This tool facilitates a LDAP search in Active Directory. Objects
    deleted in AD are always shown (they are still kept in an LDAP subtree in
    AD). As the first parameter the script awaits an LDAP filter; the second
    parameter can be a list of LDAP attributes to be displayed.
@@ -641,13 +641,13 @@ restarted.
 Users
 ~~~~~
 
-Users are synchronized like groups using the user name or using the AD pre
+Users are synchronized like groups using the username or using the AD pre
 Windows 2000 name. The *First name*, *Last name*, *Primary group* (in so far as
 present on the other side), *Organization*, *Description*, *Street*, *City*,
 *Postal code*, *Windows home path*, *Windows login script*, *Disabled* and
 *Account expiry date* attributes are transferred. Indirectly *Password*,
 *Password expiry date* and *Change password on next login* are also
-synchronized. *Primary e-mail address* and *Telephone number* are prepared, but
+synchronized. *Primary email address* and *Telephone number* are prepared, but
 commented out due to differing syntax in the mapping configuration.
 
 The ``root`` and ``Administrator`` users are exempted.

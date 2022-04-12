@@ -8,7 +8,7 @@ User self services
 Password change by user via UCS portal page
 -------------------------------------------
 
-Every logged in user can change his own password by opening the menu via the
+Every logged in user can change their own password by opening the menu via the
 hamburger icon in the top right corner and selecting :menuselection:`User settings -->
 Change password`. The change is performed directly via the PAM stack (see
 :ref:`computers-Authentication-PAM`) and is then available centrally for all
@@ -29,7 +29,7 @@ URI ``/univention/selfservice/``, which bundles all its functionality. The
 original portal has the same entries registered at its user menu. They allow
 users to update their password given their old password as well as to reset
 their lost password by requesting a token to be sent to a previously registered
-contact e-mail address. The token has to be entered on the dedicated password
+contact email address. The token has to be entered on the dedicated password
 reset web page.
 
 The following |UCSUCRV|\ s can be used to activate or deactivate individual
@@ -93,7 +93,7 @@ For this the following |UCSUCRV|\ s must be configured:
 
    This variable configures the *UDM* attributes a user can modify. The names of
    the attributes must be separated by comma. This variable must be set on all
-   hosts, where the :program:`Self Service`  app is installed (incl. |UCSPRIMARYDN|).
+   hosts, where the :program:`Self Service` app is installed (incl. |UCSPRIMARYDN|).
 
 .. envvar:: umc/self-service/profiledata/enabled
 
@@ -139,7 +139,7 @@ user account that has to be verified via email.
 User accounts that are created via the Self Service will have the
 ``RegisteredThroughSelfService`` attribute of the user set to ``TRUE`` and the
 ``PasswordRecoveryEmailVerified`` attribute set to FALSE. After the user has
-verified his account via the verification email the
+verified their account via the verification email the
 ``PasswordRecoveryEmailVerified`` attribute will be set to ``TRUE``.
 
 .. _user-management-password-changes-by-users-selfregistration-account-creation:
@@ -294,11 +294,11 @@ own account. This feature can be activated with the |UCSUCRV|
 :guilabel:`Delete my account` Button on the *Your profile* page of the Self
 Service (:ref:`users-templates`).
 
-If a user has requested to delete his account, it will not be deleted directly
+If a user has requested to delete their account, it will not be deleted directly
 but deactivated. In addition the ``DeregisteredThroughSelfService`` attribute of
 the user will be set to ``TRUE`` and the ``DeregistrationTimestamp`` attribute
 of the user will be set to the current time in the `GeneralizedTime LDAP syntax
-<https://ldapwiki.com/wiki/GeneralizedTime>`__. If the user has a
+<https://ldapwiki.com/wiki/GeneralizedTime>`_. If the user has a
 ``PasswordRecoveryEmail`` set they will receive a notification email which can
 be configured with the following |UCSUCRV|\ s.
 

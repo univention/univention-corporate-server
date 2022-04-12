@@ -47,7 +47,7 @@ release.
 
 If a new release or errata updates are available, a corresponding notification
 is given when a user opens a UMC module. The availability of new updates is also
-notified via e-mail; the corresponding newsletters - separated into release and
+notified via email; the corresponding newsletters - separated into release and
 error updates - can be subscribed on the Univention website. A changelog
 document is published for every release update listing the updated packages,
 information on error corrections and new functions and references to the

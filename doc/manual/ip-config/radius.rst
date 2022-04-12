@@ -25,7 +25,7 @@ Authenticators (e.g.  access points) can contact via RADIUS to check network
 access requests.
 
 The RADIUS app can also be installed on UCS\@school systems. In this case, the
-network access can be given to users or groups regardless of the Internet rule
+network access can be given to users or groups regardless of the internet rule
 or computer room settings.
 
 .. _ip-config-radius-configuration:
@@ -85,7 +85,7 @@ MAC filtering
 ~~~~~~~~~~~~~
 
 By default access to the network is allowed for every device (assuming the used
-user name has access). It can be restricted to only allow specific devices. This
+username has access). It can be restricted to only allow specific devices. This
 can be enabled by setting the |UCSUCRV| :envvar:`radius/mac/whitelisting` to
 ``true``. When enabled, the device used to access the network is looked up via
 the LDAP attribute ``macAddress`` and the resulting computer object must have
@@ -151,7 +151,7 @@ authentication. And the *RADIUS server* address should be set to the address of
 the server, where the RADIUS app is installed. The password must be set to the
 ``secret`` from the :file:`clients.conf` entry for that access point.
 
-WiFi clients have to be configured to use *WPA* with *PEAP* and *MSCHAPv2* for
+Wireless clients have to be configured to use *WPA* with *PEAP* and *MSCHAPv2* for
 authentication.
 
 .. _ip-config-radius-debugging:

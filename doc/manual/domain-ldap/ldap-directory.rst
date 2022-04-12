@@ -143,7 +143,7 @@ If :program:`univention-directory-logger` was installed before this UCS version,
 the old behavior (no prefix) is retained by default. By setting the |UCSUCRV|
 :envvar:`ldap/logging/id-prefix` to ``yes`` the new behavior can be activated.
 This prefix simplifies the correlation of related lines when post-processing the
-log in analysis and monitoring software.
+sign in analysis and monitoring software.
 
 .. _domain-ldap-timeout-for-inactive-ldap-connections:
 
@@ -254,7 +254,7 @@ configuration of UMC policies can be found in :ref:`delegated-administration`.
 The policy makes it possible to search for users and create an overview of all
 the attributes of a user object. If an attempt is made to modify further
 attributes in addition to the password when the user does not have sufficient
-access rights to the LDAP directory, |UCSUDM| denies him write access with the
+access rights to the LDAP directory, |UCSUDM| denies them write access with the
 message *Permission denied*.
 
 .. caution::
@@ -323,7 +323,7 @@ If Samba/AD is used, the Samba/AD domain controller service occupies the ports
 ``389`` and ``636``. In this case, OpenLDAP is automatically reconfigured so
 that only ports ``7389`` and ``7636`` are used. This must be taken into account
 during the configuration of syncrepl in particular (see
-:ref:`domain-ldap-syncrepl`).  :command:`univention-ldapsearch` uses the
+:ref:`domain-ldap-syncrepl`). :command:`univention-ldapsearch` uses the
 standard port automatically.
 
 .. _domain-ldap-nightly-backup:
@@ -341,7 +341,7 @@ format. They can only be read by the ``root`` user. The Samba 4 files are stored
 the directory :file:`/var/univention-backup/samba/`.
 
 The |UCSUCRV| :envvar:`backup/clean/max_age` can be used to define how long old
-backup files are kept (e.g.  ``backup/clean/max_age=365``, all files older than
+backup files are kept (e.g. ``backup/clean/max_age=365``, all files older than
 ``365`` days are automatically deleted). For new installations (from UCS 4.4-7
 on) the default for this variable is ``365`` (days). If the variable is not set,
 no backup files are deleted.

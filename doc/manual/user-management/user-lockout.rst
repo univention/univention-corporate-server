@@ -30,7 +30,7 @@ attempts, the tool :command:`samba-tool` can be used.
 
      $ samba-tool domain passwordsettings show
 
-* To specify how often a user can attempt to log in with an incorrect password
+* To specify how often a user can attempt to sign in with an incorrect password
   before the account is locked:
 
   .. code-block::
@@ -53,7 +53,7 @@ attempts, the tool :command:`samba-tool` can be used.
   If an account gets automatically unlocked after the lockout duration, the
   counter is not reset immediately, to keep the account under strict monitoring
   for some time. During the time window between the end of the lockout duration
-  and the point when the counter gets reset, a single attempt to log in with an
+  and the point when the counter gets reset, a single attempt to sign in with an
   incorrect password will lock the account immediately again.
 
 
@@ -108,9 +108,9 @@ OpenLDAP
 --------
 
 On UCS Directory Nodes, automatic account locking can be enabled for too many
-failed LDAP server login attempts. The MDB LDAP backend must be used. This is
-the default backend since UCS 4, previous systems must be migrated to the MDB
-LDAP backend, see `UCS performance guide
+failed LDAP server login attempts. The MDB LDAP back end must be used. This is
+the default back end since UCS 4, previous systems must be migrated to the MDB
+LDAP back end, see `UCS performance guide
 <https://docs.software-univention.de/performance-guide-5.0.html>`_.
 
 Automatic account locking must be enabled for each UCS Directory Node.

@@ -29,14 +29,14 @@ Quotas can either be defined via the UMC module :guilabel:`Filesystem quotas` or
 a policy for shares, see :ref:`shares-quota-policy`.
 
 File system quotas can only be applied on partitions with the file systems
-``ext4`` and ``XFS``. Before filesystem quotas can be configured, the use of
+``ext4`` and ``XFS``. Before file system quotas can be configured, the use of
 file system quotas needs to be activated per partition, see
 :ref:`shares-quota-umc`.
 
 .. _shares-quota-umc:
 
-Activating filesystem quota
----------------------------
+Activating file system quota
+----------------------------
 
 In the UMC module :guilabel:`Filesystem quotas`, all the
 partitions are listed on which quotas can be set up. Only partitions are
@@ -57,13 +57,13 @@ rebooted.
 
 .. _shares-quota-policy:
 
-Configuring filesystem quota
-----------------------------
+Configuring file system quota
+-----------------------------
 
 Quotas can either be defined via the UMC module :guilabel:`Filesystem quotas` or
 a policy for shares, see :ref:`central-policies`. The configuration through a
 policy allows setting a default value for all users, while the UMC module allows
-easy configuration of user-specific quota values.
+configuration of user-specific quota values.
 
 The user-specific quota settings can be configured with the UMC module
 :guilabel:`Filesystem quotas`. The permitted storage quantities can be set with
@@ -76,7 +76,7 @@ settings apply for all users of a share; it is not possible to establish
 different quota limits for different users within one policy.
 
 Quota settings that are applied via a quota policy are by default only applied
-once to the filesystem. If the setting is changed, it will not be applied
+once to the file system. If the setting is changed, it will not be applied
 automatically on the next user login. To inherit changed quota values, the
 option *Reapply settings on every login* can be activated at the quota policy.
 
@@ -85,7 +85,7 @@ enabled in the UMC module, see :ref:`shares-quota-umc`.
 
 .. note::
 
-   Filesystem quotas always apply to a full partition. Even if the
+   File system quotas always apply to a full partition. Even if the
    policies are defined for shares, they are used on complete
    partitions. If, for example, three shares are provided on one server
    which are all saved on the separate :file:`/var/` partition and three different
@@ -105,7 +105,7 @@ enabled during login to UCS systems by the tool
 If no quota are needed, the evaluation can be disabled by setting the
 |UCSUCRV| :envvar:`quota/userdefault` to ``no``.
 
-If the |UCSUCRV| :envvar:`quota/logfile` is set to any file name,
+If the |UCSUCRV| :envvar:`quota/logfile` is set to any filename,
 the activation of the quotas is logged in the specified file.
 
 .. _shares-quota-query:

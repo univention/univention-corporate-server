@@ -32,9 +32,9 @@ Windows and UCS systems.
 
    * - Minimum password age
      - The period of time set for this must have at least expired since the last
-       password change before a user can reset his password again.
+       password change before a user can reset their password again.
 
    * - Maximum password age
      - Once the saved period of time has elapsed, the password must be changed
-       again by the user the next time he logs in. If the value is left blank,
+       again by the user the next time they sign in. If the value is left blank,
        the password is infinitely valid.

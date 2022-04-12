@@ -17,11 +17,11 @@ operation of all the components in an interrelated security and trust
 context, the so-called UCS domain. At the same time, UCS supports a wide
 range of open standards and includes extensive interfaces to
 infrastructure components and management tools from other manufacturers,
-meaning it can be easily integrated in existing environments.
+meaning it can be integrated in existing environments.
 
-UCS consists of reliable Open Source software tried and tested in
+UCS consists of reliable open source software tried and tested in
 organizations of different sizes. These software components are
-integrated together via the |UCSUMS|. This allows the easy integration and
+integrated together via the |UCSUMS|. This allows the integration and
 administration of the system in both simple and complex distributed or
 virtualized environments.
 
@@ -81,7 +81,7 @@ interfaces) and provides a flexible client-server architecture which
 allows changes to be transferred to the involved systems and be
 activated there.
 
-Additional components from Univention and other manufacturers can easily
+Additional components from Univention and other manufacturers can
 be installed using the App Center. They expand the system with numerous
 functions such as groupware, document management and services for
 Windows, meaning that they can also be run from a UCS system and
@@ -197,7 +197,7 @@ security and trust context for its members. An account in the LDAP
 directory establishes the membership in the UCS domain for users.
 Computers receive a computer account when they join the domain.
 Microsoft Windows systems can also join the domain such that users can
-log in there with their domain passport.
+sign in there with their domain passport.
 
 UCS utilizes OpenLDAP as a directory service server. The directory is
 provided by the |UCSPRIMARYDN| and replicated on all UCS Directory Nodes
@@ -293,7 +293,7 @@ ensures that the NFS and Samba configuration files are also expanded
 accordingly on the selected server and that the directory is created in
 the file system of the selected server if it does not already exist.
 
-The listener/notifier mechanism can be easily expanded with modules for
+The listener/notifier mechanism can be expanded with modules for
 further - also customer-specific - procedures. Consequently, it is used
 by numerous technology partners for the integration of their products in
 the LDAP directory service and the |UCSUMS| for example.
@@ -364,7 +364,7 @@ also optically accented.
 
 ``Commands and other keyboard input`` is accented optically.
 
-::
+.. code-block:: console
 
    In addition, excerpts from configuration files, screen output, etc. are
    printed as code block.

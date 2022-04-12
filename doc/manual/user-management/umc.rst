@@ -24,9 +24,9 @@ With :guilabel:`Next` on :numref:`user-create` the second page
    Password setting for a new user
 
 As an alternative the user may set the initial password himself if the
-:program:`Self Service` app is installed. For this to work an external e-mail
-address must be given, which is registered at the contact e-mail address. The
-user will then receive an e-mail to that address containing a web address and a
+:program:`Self Service` app is installed. For this to work an external email
+address must be given, which is registered at the contact email address. The
+user will then receive an email to that address containing a web address and a
 token, which can be used to set the password and unlock the account. For this
 also see :ref:`user-management-password-changes-by-users-self-service`.
 
@@ -74,14 +74,14 @@ User management module - General tab
    * - Last name
      - The last name of the user is to be entered here.
 
-   * - User name
+   * - Username
      - This is the name, by which the user logs into the system. For recommended
        characters for the user, see :ref:`users-recommendation-usernames`.
 
        In order to ensure compatibility to non-UCS systems the creation of users
        which are only distinguished from each other by upper and lower case
-       letters is prevented. Thus, if the user name ``smith`` already exists,
-       then the user name ``Smith`` cannot be created.
+       letters is prevented. Thus, if the username ``smith`` already exists,
+       then the username ``Smith`` cannot be created.
 
        By default it is not possible to create a user with the same name as an
        existing group. If the |UCSUCRV|
@@ -115,8 +115,8 @@ User management module - General tab
        Further details on the password policies for users can be found in
        :ref:`users-passwords`.
 
-   * - Primary e-mail address (mailbox)
-     - The e-mail address of the user is declared here, see
+   * - Primary email address (mailbox)
+     - The email address of the user is declared here, see
        :ref:`mail-management-users`.
 
    * - Display name
@@ -194,10 +194,10 @@ User management module - Account tab
        need to be active for a certain period of time, e.g., for interns.
 
        If the date is deleted or replaced by a different, future date, the user
-       will regain the right to log in.
+       will regain the right to sign in.
 
    * - User has to change password on next login
-     - If this checkbox is ticked, then the user has to change his password
+     - If this checkbox is ticked, then the user has to change their password
        during the next login procedure.
 
    * - Password expiry date
@@ -254,7 +254,7 @@ User management module - Account tab
 
    * - Windows logon script
      - The user-specific logon script relative to the NETLOGON share is entered
-       here, e.g.  :file:`user.bat`.
+       here, e.g. :file:`user.bat`.
 
    * - Windows profile directory
      - The profile directory for the user can be entered here, e.g.
@@ -273,15 +273,15 @@ User management module - Account tab
        rights, for example the permission to join a system to the domain.
 
    * - Permitted times for Windows logins
-     - This input field contains time periods for which this user can log in to
+     - This input field contains time periods for which this user can sign in to
        Windows computers.
 
-       If no entry is made in this field, the user can log in at any time of
+       If no entry is made in this field, the user can sign in at any time of
        day.
 
    * - Allow the authentication only on these Microsoft Windows host(s)
-     - This setting specifies the clients where the user may log in. If no
-       settings are made, the user can log in to any client.
+     - This setting specifies the clients where the user may sign in. If no
+       settings are made, the user can sign in to any client.
 
    * - UNIX home directory
      - The path of the user's home directory.
@@ -328,13 +328,13 @@ User management module - Contact tab
    * - Attribute
      - Description
 
-   * - E-mail address(es)
-     - Additional e-mail addresses can be saved here. These are not evaluated by
+   * - Email address(es)
+     - Additional email addresses can be saved here. These are not evaluated by
        the mail server.
 
        The values of this attribute are stored in the LDAP attribute ``mail``.
        Most address book applications using an LDAP search function will search
-       for an e-mail address by this attribute.
+       for an email address by this attribute.
 
    * - Telephone number(s)
      - This field contains the user's business phone number.
@@ -368,7 +368,7 @@ User management module - Contact tab
      - One or more of the user's private postal addresses can be entered in this
        field.
 
-.. _users-management-table-mail:
+.. _users-management-tablemail:
 
 User management module - Mail tab
 ---------------------------------

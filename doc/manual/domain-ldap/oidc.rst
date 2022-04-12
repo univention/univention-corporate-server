@@ -13,7 +13,7 @@ provided by the software :program:`Kopano Konnect`.
 
 The app can be installed on all system roles. When installing on a UCS system
 with the role |UCSPRIMARYDN| or |UCSBACKUPDN| the :program:`OpenID Connect
-Provider` is made available under the DNS entry for the *Single Sign-On*,
+Provider` is made available under the DNS entry for the single sign-on,
 normally this is ``ucs-sso.[Domain name]``.
 
 If the app is installed on a different system role, the provider can be reached
@@ -63,7 +63,7 @@ The command parameters are:
    attributes to the service.
 
 ``applicationtype``
-   should be set to ``web`` for Internet services.
+   should be set to ``web`` for internet services.
 
 ``redirectURI``
    URL of the login endpoint, which can be found in the documentation of

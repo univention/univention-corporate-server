@@ -14,9 +14,9 @@ Once the installation is finished, there are additional input fields in the
 :menuselection:`Advanced settings --> Remote mail retrieval` tab of the user
 administration which can be used to configure the collection of mails from an
 external server. The mails are delivered to the inboxes of the respective users.
-The primary e-mail address must be configured for that.
+The primary email address must be configured for that.
 
-The mail is fetched every twenty minutes once at least one e-mail address is
+The mail is fetched every twenty minutes once at least one email address is
 configured for mail retrieval. After the initial configuration of a user
 Fetchmail needs to be started in the UMC module :guilabel:`System services`. In
 that module the fetching can also be disabled (alternatively by setting the
@@ -39,7 +39,7 @@ that module the fetching can also be disabled (alternatively by setting the
      - The mail can be fetched via the IMAP or POP3 protocols.
 
    * - Remote mail server
-     - The name of the mail server from which the e-mails are to be fetched.
+     - The name of the mail server from which the emails are to be fetched.
 
    * - Encrypt connection (SSL/TLS)
      - If this option is enabled, the mail is fetched in an encrypted form (when

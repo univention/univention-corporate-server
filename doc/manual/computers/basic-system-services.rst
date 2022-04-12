@@ -149,7 +149,7 @@ Log files
 ~~~~~~~~~
 
 All UCS-specific log files (e.g., for the listener/notifier replication) are
-stored in the :file:`/var/log/univention/` directory. Services log in their own
+stored in the :file:`/var/log/univention/` directory. Services write log messages their own
 standard log files: for example, Apache to the file
 :file:`/var/log/apache2/error.log`.
 
@@ -212,7 +212,7 @@ properties by clicking on the corresponding table header:
 
 * CPU utilization in percent
 
-* The user name under which the process is running
+* The username under which the process is running
 
 * Memory consumption in percent
 
@@ -323,8 +323,8 @@ Each cron job is composed of at least two |UCSUCR| variables.
 * As standard, the cron job is run as a user ``root``.
   :samp:`cron/{JOBNAME}/user` can be used to specify a different user.
 
-* If an e-mail address is specified under :samp:`cron/{JOBNAME}/mailto`, the
-  output of the cron job is sent there per e-mail.
+* If an email address is specified under :samp:`cron/{JOBNAME}/mailto`, the
+  output of the cron job is sent there per email.
 
 * :samp:`cron/{JOBNAME}/description` can be used to provide a description.
 
@@ -373,8 +373,8 @@ As standard, five threads are started by NSCD. In environments with many
 accesses it may prove necessary to increase the number via the |UCSUCRV|
 :envvar:`nscd/threads`.
 
-In the basic setting, a resolved group or host name is kept in cache for one
-hour, a user name for ten minutes. With the |UCSUCR| variables
+In the basic setting, a resolved group or hostname is kept in cache for one
+hour, a username for ten minutes. With the |UCSUCR| variables
 :envvar:`nscd/group/positive_time_to_live` and
 :envvar:`nscd/passwd/positive_time_to_live` these periods can be extended or
 diminished (in seconds).

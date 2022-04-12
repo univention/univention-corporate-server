@@ -5,22 +5,22 @@ Configuration of the mail server
 
 .. _mail-serverconfig-relay:
 
-Configuration of a relay host for sending the e-mails
------------------------------------------------------
+Configuration of a relay host for sending the emails
+----------------------------------------------------
 
 By default Postfix creates a direct SMTP connection to the mail server
-responsible for the domain when an e-mail is sent to a non-local address. This
+responsible for the domain when an email is sent to a non-local address. This
 server is determined by querying the MX record in the DNS.
 
 Alternatively, a mail relay server can also be used, i.e., a server which
 receives the mails and takes over their further sending. This type of mail relay
-server can be provided by a superordinate corporate headquarters or the Internet
+server can be provided by a superordinate corporate headquarters or the nternet
 provider, for example. To set a relay host, it must be entered as a fully
 qualified domain name (FQDN) in the |UCSUCRV| :envvar:`mail/relayhost`.
 
 If authentication is necessary on the relay host for sending, the |UCSUCRV|
 :envvar:`mail/relayauth` must be set to ``yes`` and the
-:file:`/etc/postfix/smtp_auth` file edited. The relay host, user name and
+:file:`/etc/postfix/smtp_auth` file edited. The relay host, username and
 password must be saved in this file in one line: :samp:`{FQDN-Relayhost}
 {username}:{password}`
 
@@ -46,9 +46,9 @@ Configuration of the maximum mail size
 --------------------------------------
 
 The |UCSUCRV| :envvar:`mail/messagesizelimit` can be used to set the maximum
-size in bytes for incoming and outgoing e-mails. Postfix must be restarted after
+size in bytes for incoming and outgoing emails. Postfix must be restarted after
 modifying the setting. The preset maximum size is ``10240000`` bytes. If the value
-is configured to ``0`` the limit is effectively removed. Please note that e-mail
+is configured to ``0`` the limit is effectively removed. Please note that email
 attachments are enlarged by approximately a third due to the *base64* encoding.
 
 .. _mail-serverconfig-archivefolder:
@@ -56,11 +56,11 @@ attachments are enlarged by approximately a third due to the *base64* encoding.
 Configuration of a blind carbon copy for mail archiving solutions
 -----------------------------------------------------------------
 
-If the |UCSUCRV| :envvar:`mail/archivefolder` is set to an e-mail address,
-Postfix sends a blind carbon copy of all incoming and outgoing e-mails to this
-address. This results in an archiving of all e-mails.  The e-mail address must
-already exist. It can be either one already registered in |UCSUCS| as the e-mail
-address of a user, or an e-mail account with an external e-mail service. As
+If the |UCSUCRV| :envvar:`mail/archivefolder` is set to an email address,
+Postfix sends a blind carbon copy of all incoming and outgoing emails to this
+address. This results in an archiving of all emails. The email address must
+already exist. It can be either one already registered in |UCSUCS| as the email
+address of a user, or an email account with an external email service. As
 standard the variable is not set.
 
 Postfix must then be restarted.
@@ -72,7 +72,7 @@ Configuration of soft bounces
 
 In a number of error situations (e.g., for non-existent users) the result may be
 a mail bounce, i.e., the email cannot be delivered and is returned to the sender.
-When |UCSUCRV| :envvar:`mail/postfix/softbounce` is set to ``yes`` e-mails are
+When |UCSUCRV| :envvar:`mail/postfix/softbounce` is set to ``yes`` emails are
 never returned after a bounce, but instead are held in the queue. This setting
 is particularly useful during configuration work on the mail server.
 
@@ -86,7 +86,7 @@ three ports:
 
 Port 25 - SMTP
    Port 25 (``SMTP``) should be used by other mail servers only. By default
-   authentication is disabled. If submission of emails from users is desired on
+   authentication is disabled. If submission of emails from users is wanted on
    port 25, authentication can be enabled by setting the |UCSUCRV|
    :envvar:`mail/postfix/mastercf/options/smtp/smtpd_sasl_auth_enable` to
    ``yes``.
@@ -108,9 +108,9 @@ The submission port should be preferred by email clients. The use of the ports
 Configuration of additional checks
 ----------------------------------
 
-When using a mail server that is directly accessible from the Internet, there is
-always a risk that Spam sender, Spam bots or broken mail servers are continually
-trying to deliver unwanted emails (for example Spam) to the UCS system.
+When using a mail server that is directly accessible from the internet, there is
+always a risk that spam sender, spam bots or broken mail servers are continually
+trying to deliver unwanted emails (for example spam) to the UCS system.
 
 To reduce the load of the mail server for such cases, Postfix brings its own
 service with the name :program:`postscreen`, which is put in front of Postfix
@@ -200,19 +200,19 @@ Afterwards Postfix needs to be restarted:
 
 .. _mail-renamed-users:
 
-Handling of mailboxes during e-mail changes and the deletion of user accounts
+Handling of mailboxes during email changes and the deletion of user accounts
 -----------------------------------------------------------------------------
 
-A user's mailbox is linked to the primary e-mail address and not to the
+A user's mailbox is linked to the primary email address and not to the
 username. The |UCSUCRV| :envvar:`mail/dovecot/mailbox/rename` can be used to
-configure the reaction when the primary e-mail address is changed:
+configure the reaction when the primary email address is changed:
 
 * If the variable is set to ``yes``, the name of the user's IMAP mailbox is
   changed. This is the standard setting since UCS 3.0.
 
-* If the setting is ``no``, it will not be possible to read previous e-mails
-  any more once the user's primary e-mail address is changed! If another user is
-  assigned a previously used primary e-mail address, she receives access to the
+* If the setting is ``no``, it will not be possible to read previous emails
+  any more once the user's primary email address is changed! If another user is
+  assigned a previously used primary email address, they receive access to the
   old IMAP structure of this mailbox.
 
 The |UCSUCRV| :envvar:`mail/dovecot/mailbox/delete` can be used to configure,
@@ -222,7 +222,7 @@ performed:
 
 * deletion of the user account
 
-* removal of the primary e-mail address from the user account
+* removal of the primary email address from the user account
 
 * changing the user's mail home server to a different system
 
@@ -230,9 +230,9 @@ With default settings (``no``) the mailboxes are kept if one of the actions
 above is performed.
 
 The combination of the two variables creates four possible outcomes when the
-e-mail address is changed:
+email address is changed:
 
-.. list-table:: Renaming of e-mail addresses
+.. list-table:: Renaming of email addresses
    :header-rows: 1
    :widths: 4 8
 
@@ -240,11 +240,11 @@ e-mail address is changed:
      - Meaning
 
    * - ``rename=yes`` and ``delete=no`` (default)
-     - The existing mailbox will be renamed. E-mails will be preserved and will
+     - The existing mailbox will be renamed. Emails will be preserved and will
        be accessible at the new address.
 
    * - ``rename=yes`` and ``delete=yes``
-     - The existing mailbox will be renamed. E-mails will be preserved and will
+     - The existing mailbox will be renamed. Emails will be preserved and will
        be accessible at the new address.
 
    * - ``rename=no`` and ``delete=no``
@@ -262,7 +262,7 @@ Distribution of an installation on several mail servers
 
 The UCS mail system offers the possibility of distributing users across several
 mail servers. To this end, each user is assigned a so-called mail home server on
-which the user's mail data are stored. When delivering an e-mail, the
+which the user's mail data are stored. When delivering an email, the
 responsible home server is automatically determined from the LDAP directory.
 
 It must be observed that global IMAP folders (see
@@ -276,7 +276,7 @@ to the server automatically.
 Mail storage on NFS
 -------------------
 
-Dovecot supports storing e-mails and index files on cluster filesystems and on
+Dovecot supports storing emails and index files on cluster file systems and on
 NFS. Some settings are necessary to prevent data loss in certain situations.
 
 The following settings assume that mailboxes are not accessed simultaneously by
@@ -389,7 +389,7 @@ lead to failed logins.
 
 The values are so high, because ``default_client_limit`` and
 ``default_process_limit`` do not only lift limits for IMAP and POP3, but also
-for other services like ``lmtp`` and ``managesieve-login``.  Those services can
+for other services like ``lmtp`` and ``managesieve-login``. Those services can
 now start more processes that have to be monitored and can theoretically make
 more authentication requests. This increases the number of possible concurrent
 connections to the ``auth`` and ``anvil`` services.

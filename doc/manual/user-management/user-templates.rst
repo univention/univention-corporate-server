@@ -37,7 +37,7 @@ It is also possible to only use partial values of attributes or convert values
 in uppercase/lowercase.
 
 For example, the UNIX home directory can be stored under
-:file:`/home/<title>.<lastname>` or the primary e-mail address can be predefined
+:file:`/home/<title>.<lastname>` or the primary email address can be predefined
 with ``<firstname>.<lastname>@company.com``. Substitutions are generally
 possibly for any value, but there is no syntax or semantics check. So, if no
 first name is specified when creating a user, the above e-mail address would
@@ -63,7 +63,7 @@ name.
 Adding ``:lower`` or ``:upper`` to the attribute name converts the attribute
 value to lowercase or uppercase, e.g., ``<firstname:lower>``. If a modifier like
 ``:lower`` is appended to the entire field, the complete value is transformed,
-e.g.  ``<lastname>@company.com<:lower>``.
+e.g. ``<lastname>@company.com<:lower>``.
 
 The option ``:umlauts`` can be used to convert special characters such as *è*,
 *ä* or *ß* into the corresponding ASCII characters.
@@ -74,7 +74,7 @@ ignored by this option can be defined in the UCR variable
 :envvar:`directory/manager/templates/alphanum/whitelist`. If this option is
 applied to an entire field, even manually placed symbols like the ``@`` in an
 email address are removed. To avoid that, this option should be applied to
-specific attributes only or desired symbols should be entered into the
+specific attributes only or needed symbols should be entered into the
 whitelist.
 
 The options ``:strip`` or ``:trim`` remove all white space characters from the

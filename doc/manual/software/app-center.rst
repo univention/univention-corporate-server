@@ -34,7 +34,7 @@ classification of the licensing can be found under the *License* section. Some
 applications provide a :guilabel:`Buy` button with a link to detailed licensing
 information. For all other applications, it is recommended to contact the
 manufacturer of the application about detailed licensing information using the
-e-mail address shown under *Contact*.
+email address shown under *Contact*.
 
 .. _appcenter-details:
 

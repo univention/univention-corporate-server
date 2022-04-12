@@ -7,14 +7,14 @@ Package installations and updates can either be performed from the Univention
 update server or from a locally maintained repository. A local repository is
 practical if there are a lot of UCS systems to update as the updates only need
 to be downloaded once in this case. As repositories can also be updated offline,
-a local repository also allows the updating of UCS environments without Internet
+a local repository also allows the updating of UCS environments without internet
 access.
 
 A local repository can require a lot of disk space.
 
 Using the registered settings, APT package sources are automatically generated
 in the :file:`/etc/apt/sources.list.d/` directory for release and errata updates
-as well as addon components. If further repositories are required on a system,
+as well as add-on components. If further repositories are required on a system,
 these can be entered in the :file:`/etc/apt/sources.list` file.
 
 By default the Univention repository ``updates.software-univention.de`` is used
@@ -72,7 +72,7 @@ Package installations and updates can either be performed from the Univention
 update server or from a locally maintained repository. A local repository is
 practical if there are a lot of UCS systems to update as the updates only need
 to be downloaded once in this case. As repositories can also be updated offline,
-a local repository also allows the updating of UCS environments without Internet
+a local repository also allows the updating of UCS environments without internet
 access.
 
 The local repository can be activated/deactivated using the |UCSUCRV|

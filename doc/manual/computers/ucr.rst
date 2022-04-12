@@ -254,7 +254,7 @@ Regeneration of configuration files from their template
 As UCR templates are generally regenerated automatically when UCR variables are
 edited, this is primarily used for tests.
 
-If no file name is given when running :command:`ucr commit`, all of the files
+If no filename is given when running :command:`ucr commit`, all of the files
 managed by |UCSUCR| will be regenerated from the templates. It is, however, not
 generally necessary to regenerate all the configuration files.
 

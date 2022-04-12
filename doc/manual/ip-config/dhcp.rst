@@ -296,7 +296,7 @@ service must be selected in the left column of the module. :menuselection:`Add
    * - Attribute
      - Description
 
-   * - Host name
+   * - Hostname
      - A name for the computer is entered in this input field (which usually
        also has an entry in the computer management). It is recommended to enter
        the same name and the same MAC address for the computer in both entries

@@ -213,7 +213,7 @@ server manually. They depend on the intended subsequent use of the UCS system.
 
 * When installing the first UCS system in a new UCS domain, the IP address of
   the local router (if it provides the DNS service) or the DNS server of the
-  Internet provider should be entered.
+  internet provider should be entered.
 
 * When installing every additional UCS system, the IP address of a UCS Directory
   Node system must be specified as the DNS server. This is essential for the
@@ -269,7 +269,7 @@ There are three schemes available for selection for guided partitioning:
 
 * :guilabel:`Guided - Use entire disk`: In this scheme, an individual partition
   is created for each file system. Abstraction layers like LVM are not used.
-  During the following step the number of filesystems/partitions is assigned.
+  During the following step the number of file systems or partitions is assigned.
   The size of the partitions is restricted to the size of the respective hard
   drive.
 
@@ -351,7 +351,7 @@ steps:
   new UCS domain is configured: a UCS system with the |UCSPRIMARYDN_e| system
   role. In the following configuration steps, the information required for
   setting up a new directory service, authentication service and DNS server are
-  requested. A UCS domain can comprise one single or several UCS systems.
+  requested. A UCS domain can consist of one single or several UCS systems.
   Additional UCS systems can be added at a later point in time using the
   :guilabel:`Join an existing UCS domain` mode.
 
@@ -380,15 +380,15 @@ steps:
 ------------------------------
 
 Once the :guilabel:`Create a new UCS domain` mode has been selected, an
-*organization name*, an *e-mail address*, a *fully qualified domain name* and an
+*organization name*, an *email address*, a *fully qualified domain name* and an
 *LDAP base* are requested in the following two steps.
 
 Specification of an organization name is optional and it is used in the second
 step to generate a domain name and the LDAP base automatically.
 
-If a valid e-mail address is specified, this is used to activate a personalized
+If a valid email address is specified, this is used to activate a personalized
 license, which is required for the use of the Univention App Center. The license
-is generated automatically and sent to the specified e-mail address immediately.
+is generated automatically and sent to the specified email address immediately.
 The license can then be imported via the UMC module :guilabel:`Welcome!`
 (:ref:`central-license`).
 
@@ -515,7 +515,7 @@ The :guilabel:`Update system after installation` option allows the automatic
 installation of available Errata updates. In addition, all patch level updates
 and Errata updates available are installed on a |UCSPRIMARYDN|. On all other
 system roles, all the patch level updates are set up to the installation status
-of the |UCSPRIMARYDN|. (You need to log in to the |UCSPRIMARYDN| to check the
+of the |UCSPRIMARYDN|. (You need to sign in to the |UCSPRIMARYDN| to check the
 installation status. This is done using the login data specified in the join
 options).
 
@@ -541,9 +541,9 @@ SYSTEM` button. The UCS system is then prepared for the first full booting
 procedure and restarted.
 
 The system will then boot from the hard drive. Following the boot procedure, the
-``root`` and ``Administrator`` users can log in to the UCS portal page (see
+``root`` and ``Administrator`` users can sign in to the UCS portal page (see
 :ref:`central-general`), which can be reached under the IP address set during
-the installation or the host name.
+the installation or the hostname.
 
 If the computer was installed as the first system in the UCS domain
 (|UCSPRIMARYDN|), the license can now be imported (see :ref:`central-license`).

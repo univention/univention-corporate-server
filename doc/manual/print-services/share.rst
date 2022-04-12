@@ -90,7 +90,7 @@ Printers UMC module - General tab
        creates a PDF document from all the print jobs. The setup is documented
        in :ref:`pdf-printer`.
 
-       The ``file:/`` protocol expects a file name as a target. The print job is
+       The ``file:/`` protocol expects a filename as a target. The print job is
        then not sent to the printer, but instead written in this file, which can
        be useful for test purposes. The file is rewritten with every print job.
 

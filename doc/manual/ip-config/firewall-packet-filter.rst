@@ -20,7 +20,7 @@ Reference <https://docs.software-univention.de/developer-reference-5.0.html>`_.
 
 In addition, the configuration scripts in the
 :file:`/etc/security/packetfilter.d/` directory are listed in alphabetic order.
-The names of all scripts begin with two digits, which makes it easy to create a
+The names of all scripts begin with two digits, which allows a
 numbered order. The scripts must be marked as executable.
 
 After changing the packet filter settings, the :program:`univention-firewall`

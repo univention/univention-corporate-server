@@ -6,9 +6,9 @@ Domain services / LDAP directory
 
 Univention Corporate Server offers a cross platform domain concept with a common
 trust context between Linux and/or Windows systems. Within this domain a user is
-known to all systems via his username and password stored in the |UCSUMS| and
-can use all services which are authorized for him. The management system keeps
-the account synchronized for the windows log-in, Linux/POSIX systems and
+known to all systems via their username and password stored in the |UCSUMS| and
+can use all services which are authorized for them. The management system keeps
+the account synchronized for the windows login, Linux/POSIX systems and
 Kerberos. The management of user accounts is described in :ref:`users-general`.
 
 All UCS and Windows systems within a UCS domain have a host domain account. This

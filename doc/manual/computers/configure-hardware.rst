@@ -226,7 +226,7 @@ There are two types of DNS servers:
 External DNS Server
    An *External DNS Server* is employed for the resolution of host names and
    addresses outside of the UCS domain, e.g., ``univention.de``. This is
-   typically a name server operated by the Internet provider.
+   typically a name server operated by the internet provider.
 
 Domain DNS Server
    A *Domain DNS Server* is a local name server in the UCS domain. This name
@@ -493,5 +493,5 @@ list of the hardware components used in the system and can be downloaded via
 Clicking on :guilabel:`Next` again allows you to select the way the data are
 transferred to Univention. :guilabel:`Upload` transmits the data via HTTPS,
 :guilabel:`Send mail)` opens a dialogue, which lists the needed steps to send
-the archive via e-mail.
+the archive via email.
 

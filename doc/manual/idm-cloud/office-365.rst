@@ -28,14 +28,14 @@ account, a corresponding Account in the Azure Active Directory, as well
 as a `Domain verified by
 Microsoft <https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/add-custom-domain>`_
 are required. The first two are provided for test purposes by Microsoft
-for free. However to configure the SSO, a separate Internet domain where
+for free. However to configure the SSO, a separate internet domain where
 TXT records can be created is required.
 
 In case there is no Microsoft 365 subscription available, one can be configured
 it via https://www.office.com/ in the *trial for business* section. A connection
 is not possible with a private Microsoft account.
 
-You should then log in with a *Microsoft 365 Administrator Account* into the
+You should then sign in with a *Microsoft 365 Administrator Account* into the
 :guilabel:`Microsoft 365 Admin Center`. At the bottom left of the navigation bar
 select :guilabel:`Azure AD` to open the *Azure Management Portal* in a new
 window.
@@ -93,7 +93,7 @@ user. If not set, it uses the setting of the server. With the help of |UCSUCRV|
 Through |UCSUCRV| :envvar:`office365/attributes/sync`, the LDAP attributes (e.g.
 first name, last name, etc.) of a user's account which will to be synchronized
 are configured. The form is a comma-separated list of LDAP attributes. Thus
-adaptation to personal needs is easily possible.
+adaptation to personal needs is possible.
 
 With the |UCSUCRV| :envvar:`office365/attributes/anonymize`, a comma-separated
 list of LDAP attributes can be configured that are created in the Azure Active

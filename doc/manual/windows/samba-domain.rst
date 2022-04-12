@@ -491,7 +491,7 @@ format which can be executed by Windows, such as :file:`bat`.
 
 The logon scripts are stored in
 :samp:`/var/lib/samba/sysvol/{Domainname}/scripts/` and provided under the share
-name *NETLOGON*. The file name of the script must be given relative to that
+name *NETLOGON*. The filename of the script must be given relative to that
 directory.
 
 The NETLOGON share is replicated within the scope of the SYSVOL replication.
@@ -534,7 +534,7 @@ directory of the user located on the currently chosen logon server.
 Alternatively the profile path can be defined for individual user accounts. This
 is possible in the UMC module :guilabel:`Users` under the *Account* tab by
 filling the field *Windows profile directory*. The corresponding UDM property is
-called ``profilepath``. In the OpenLDAP backend this is stored in the LDAP
+called ``profilepath``. In the OpenLDAP back end this is stored in the LDAP
 attribute ``sambaProfilePath``.
 
 If the profile path is changed, then a new profile directory will be

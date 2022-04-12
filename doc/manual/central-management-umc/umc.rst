@@ -47,7 +47,7 @@ field`.
 Installation of most of the applications in the Univention App Center requires a
 personalized license key. UCS core edition licenses can be converted by clicking
 :guilabel:`Request a new license`. The current license key is sent to Univention
-and the updated key returned to a specified e-mail address within a few minutes.
+and the updated key returned to a specified email address within a few minutes.
 The new key can be imported directly. The conversion does not affect the scope
 of the license.
 
@@ -96,7 +96,7 @@ following chapters:
 
 * Printers - :ref:`print-general`
 
-* E-mail - :ref:`mail-general`
+* Email - :ref:`mail-general`
 
 * Nagios - :ref:`nagios-general`
 
@@ -110,8 +110,8 @@ Searching for objects
 
 The module overview lists all the objects managed by this module. *Search*
 performs a search for a selection of important attributes (e.g., for user
-objects by first and last name, primary e-mail address, description, employee
-number and user name). A wildcard search is also possible, e.g.,
+objects by first and last name, primary email address, description, employee
+number and username). A wildcard search is also possible, e.g.,
 ``m*``.
 
 Clicking on the :guilabel:`Advanced options` button (the filter icon) next to

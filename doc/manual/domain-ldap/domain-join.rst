@@ -169,7 +169,7 @@ prematurely. After successful joining a small window appears with the message
 effect.
 
 Domain names must be limited to 13 characters as they are otherwise truncated at
-the Windows client and this can lead to log-in errors.
+the Windows client and this can lead to sign in errors.
 
 For a domain join against a domain controller based on Samba/AD, the DNS
 configuration of the client must be set up in such a way that DNS entries from
@@ -245,7 +245,7 @@ domain user. For that, the following line has to be added to the file
 
 ::
 
-   /Volumes    auto_custom
+   /Volumes	auto_custom
 
 
 In addition, the file :file:`/etc/auto_custom` needs to be created and the shares

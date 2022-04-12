@@ -183,7 +183,7 @@ Shares UMC module - Samba permissions tab
      - This username and its permissions and primary group is used for
        performing all the file operations of accessing users. The username is
        only used once the user has established a connection to the Samba share
-       by using his real username and password. A common username is useful for
+       by using their real username and password. A common username is useful for
        using data in a shared way, yet improper application might cause security
        problems.
 

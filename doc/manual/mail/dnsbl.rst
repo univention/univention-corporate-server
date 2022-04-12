@@ -3,17 +3,17 @@
 Identification of Spam sources with DNS-based Blackhole Lists
 =============================================================
 
-Another means of combating Spam is to use a *DNS-based Blackhole List* (DNSBL)
+Another means of combating spam is to use a *DNS-based Blackhole List* (DNSBL)
 or *Real-time Blackhole List* (RBL). DNSBLs are lists of IP addresses that the
-operator believes to be (potential) sources of Spam. The lists are checked by
-DNS. If the IP of the sending e-mail server is known to the DNS server, the
+operator believes to be (potential) sources of spam. The lists are checked by
+DNS. If the IP of the sending email server is known to the DNS server, the
 message is rejected. The IP address is checked quickly and in a comparatively
 resource-friendly manner. The check is performed *before* the message is
 accepted. The extensive checking of the content with SpamAssassin and anti-virus
 software is only performed once it has been received. Postfix has `integrated
 support for DNSBLs <http://www.postfix.org/postconf.5.html#reject_rbl_client>`_.
 
-DNSBLs from various projects and companies are available on the Internet. Please
+DNSBLs from various projects and companies are available on the internet. Please
 refer to the corresponding websites for further information on conditions and
 prices.
 
