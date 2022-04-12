@@ -3,7 +3,7 @@ release: "4.4"
 version: [8,9]
 scope: ucs_4.4-0-errata4.4-9
 src: univention-appcenter
-fix: 
+fix: 8.0.11-151A~4.4.0.202204121635
 desc: |
  This update addresses the following issue:
  * Change order when populating env file during the installation of
