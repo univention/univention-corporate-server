@@ -34,7 +34,7 @@ sticky bit
 
 Access control lists allow even more complex permission models. The
 configuration of ACLs is described in `SDB 1042
-<https://sdb.univention.de/1042>`_.
+<https://help.univention.com/c/knowledge-base/supported/48>`_.
 
 In the Unix permission model - and thus under UCS - write permission is not
 sufficient to change the permissions of a file. This is limited to the

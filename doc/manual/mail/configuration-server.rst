@@ -313,7 +313,7 @@ case you encounter problems, here are some notes that might help:
   :envvar:`mail/dovecot/process/mail_nfs_index`\ ``= yes``.
 
 The Dovecot documentation has more information on the topic: `Dovecot Wiki: NFS
-<http://wiki2.dovecot.org/NFS>`_.
+<https://wiki2.dovecot.org/NFS>`_.
 
 .. _mail-serverconfig-limits:
 
@@ -351,7 +351,7 @@ To display the total amount of open connections, run:
 The |UCSUCRV|\ s :envvar:`mail/dovecot/limits`\ ``/*`` can be set to modify the
 limits. The process of adapting those variables is only semi automatic, because
 of their complex interaction. For the meaning of each variable refer to `Dovecot
-Wiki: Service configuration <http://wiki2.dovecot.org/Services>`_.
+Wiki: Service configuration <https://wiki2.dovecot.org/Services>`_.
 
 Dovecot uses separate processes for login and to access emails. The limits for
 these can be configured separately. The maximum number of concurrent connections

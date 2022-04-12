@@ -39,4 +39,4 @@ This reference will be displayed on every client capable of MSDFS (e.g.
 
    Further information on this issue can be found in the `Samba documentation in
    the chapter "Hosting a Microsoft Distributed File System Tree"
-   <http://www.samba.org/samba/docs/Samba3-HOWTO.pdf#chapter.20>`_.
+   <https://www.samba.org/samba/docs/Samba3-HOWTO.pdf>`_ (chapter 20).
