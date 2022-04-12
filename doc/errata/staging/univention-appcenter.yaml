@@ -1,7 +1,7 @@
 product: ucs
-release: "5.0"
-version: [1]
-scope: ucs_5.0-0-errata5.0-1
+release: "4.4"
+version: [8,9]
+scope: ucs_4.4-0-errata4.4-9
 src: univention-appcenter
 fix: 
 desc: |
@@ -9,4 +9,4 @@ desc: |
  * Change order when populating env file during the installation of
    Docker Apps: App specific goes at the end so the App Center does not
    overwrite them with other values.
-bug: [54612]
+bug: [54667]
