@@ -6,9 +6,8 @@ wait_for_umc () {  # <ip>
 	do
 		echo "$i: Waiting for UMC $1 to be online."
 		sleep 60
-		if curl --fail --silent "http://$1/univention/management/" >/dev/null 2>&1
+		if curl --fail --silent "http://$1/univention/management/" >/dev/null 2>&1 && curl --fail --silent "https://$1/univention/get/modules" >/dev/null 2>&1
 		then
-			sleep 500
 			echo "UMC $1 is now online."
 			return 0
 		fi
