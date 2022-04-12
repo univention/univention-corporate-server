@@ -426,9 +426,7 @@ Remove Those .ADM files!)
 
 The following example of an ADM file defines a computer policy in which a
 registry key is configured for the (fictitious) Univention RDP client. ADM files
-can also be converted to the newer ADMX format using third-party tools. Further
-information on the format of ADM files can be found at `How to create custom ADM templates
-<http://www.frickelsoft.net/blog/downloads/howto_admTemplates.pdf>`_. The
+can also be converted to the newer ADMX format using third-party tools. The
 administrative template must have the file suffix :file:`.adm`:
 
 .. code-block::
