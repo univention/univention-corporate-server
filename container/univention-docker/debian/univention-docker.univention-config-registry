@@ -19,3 +19,4 @@ File: etc/systemd/system/docker.service.d/http-proxy.conf
 Variables: proxy/http
 Variables: proxy/https
 Variables: proxy/no_proxy
+Postinst: docker-daemon-restart.py
