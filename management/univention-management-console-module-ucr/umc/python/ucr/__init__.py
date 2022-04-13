@@ -141,6 +141,12 @@ class Instance(Base):
 		})
 	}))
 	def put(self, request) -> None:
+		services_for_reset = set()
+
+		def _services_needs_restart(services=None):
+			if services:
+				services_for_reset.update(services)
+
 		for _var in request.options:
 			var = _var['object']
 			value = var['value'] or ''
@@ -148,12 +154,12 @@ class Instance(Base):
 			if self.is_readonly(key):
 				raise UMC_Error(_('The UCR variable %s is read-only and can not be changed!') % (key,))
 			arg = [f'{key}={value}']
-			handler_set(arg)
+			handler_set(arg, on_change_callback=_services_needs_restart)
 
 			# handle descriptions, type, and categories
 			if 'descriptions' in var or 'type' in var or 'categories' in var:
 				self.__create_variable_info(var)
-		self.finished(request.id, True)
+		self.finished(request.id, [','.join(services_for_reset)])
 
 	def remove(self, request) -> None:
 		variables = [x for x in [x.get('object') for x in request.options] if x is not None]

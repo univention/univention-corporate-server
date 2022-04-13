@@ -1,3 +1,10 @@
+univention-config-registry (15.0.7-19) unstable; urgency=medium
+
+  * Bug #51125: Notify administrator with custom message after changing UCR
+    variables
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Mon, 11 Apr 2022 09:58:12 +0200
+
 univention-config-registry (15.0.7-18) unstable; urgency=low
 
   * Bug #54476: Adapt to Linux kernel API change open(O_EXCL): EISDIR->EEXIST

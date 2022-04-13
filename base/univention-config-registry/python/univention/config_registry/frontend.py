@@ -128,8 +128,20 @@ def replog(ucr, var, old_value, value=None):
 			exception_occured()
 
 
-def handler_set(args, opts={}, quiet=False):
-	# type: (List[str], Dict[str, Any], bool) -> None
+def _services_needs_restart(services=None):
+	# type: ([Set[str]]) -> None
+	"""
+	Display message about all services in need of restart after UCR
+	variable(s) with Restart option were changed.
+
+	:param services: services to restart.
+	"""
+	if services:
+		print("In order to the changes to take effect, the following services need to be restarted: %s" % (", ".join(services),), file=sys.stderr)
+
+
+def handler_set(args, opts={}, quiet=False, on_change_callback=None):
+	# type: (List[str], Dict[str, Any], bool, Callable[[Set[str]], None]) -> None
 	"""
 	Set config registry variables in args.
 	Args is an array of strings 'key=value' or 'key?value'.
@@ -137,6 +149,7 @@ def handler_set(args, opts={}, quiet=False):
 	:param args: Command line arguments.
 	:param opts: Command line options.
 	:param quiet: Hide output.
+	:param on_change_callback: Method to call when affected service(s) requires restart.
 	"""
 	ucr = _ucr_from_opts(opts)
 	with ucr:
@@ -176,6 +189,21 @@ def handler_set(args, opts={}, quiet=False):
 		changed = ucr.update(changes)
 
 	_run_changed(ucr, changed, "" if quiet else 'W: %s is overridden by scope "%s"')
+
+	if not on_change_callback:
+		on_change_callback = _services_needs_restart
+
+	restart_services = set()
+	info = _get_config_registry_info()
+
+	for var_name in changed:
+		var = info.get_variable(var_name)
+
+		if var:
+			restart_required = var.get('restart', '')
+			restart_services.update(s.strip() for s in restart_required.split(','))
+
+	on_change_callback(restart_services)
 
 
 def handler_unset(args, opts={}):

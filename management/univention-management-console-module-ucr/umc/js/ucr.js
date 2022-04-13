@@ -118,8 +118,20 @@ define([
 				name: 'submit',
 				label: _( 'Save' ),
 				callback: lang.hitch(this, function() {
-					this._form.save();
+					this._form.save().then(function(data) {
+						if (typeof data === 'string'  && data.length) {
+							var message = _('In order to the changes to take effect, the following services need' +
+								'to be restarted:<ul>');
+							var services = data.split(',');
+							for (var i = 0; i < services.length; i++) {
+									message += _('<li>%s</li>', entities.encode(services[i]));
+							}
+							message += _('</ul>');
+							dialog.notify(message);
+						}
+					});
 				})
+
 			}];
 
 			var layout = ['key', 'value', 'description', 'default'];//, ['categories']];
