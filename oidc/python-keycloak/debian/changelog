@@ -2,4 +2,4 @@ python-keycloak (0.27.0-1) unstable; urgency=low
 
   * Bug #54666: source package automatically created by stdeb 0.10.0
 
- -- requate@univention.de <requate@univention.de>  Tue, 12 Apr 2022 17:19:05 +0200
+ -- Arvid Requate <requate@univention.de>  Tue, 12 Apr 2022 17:19:05 +0200
