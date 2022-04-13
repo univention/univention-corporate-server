@@ -3,8 +3,9 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-docker
-fix: 
+fix: 5.0.2-1A~5.0.0.202204131129
 desc: |
  This update addresses the following issue(s):
- * The script `migrate_container_MountPoints_to_v2_config` is deprecated since UCS 4.3 and has been removed.
+ * The script `migrate_container_MountPoints_to_v2_config` is deprecated since
+   UCS 4.3 and has been removed.
 bug: [52539]
