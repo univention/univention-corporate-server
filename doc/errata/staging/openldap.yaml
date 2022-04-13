@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [8,9]
+scope: ucs_4.4-0-errata4.4-9
+src: openldap
+fix: 2.4.45+dfsg-1~bpo9+1A~4.4.0.202204131147
+desc: |
+ This update addresses the following issue:
+ * Unauthenticated remote denial-of-service due to a NULL pointer dereference
+   in `ber_skip_tag`.
+bug: [54628]
+cve:
+  - TEMP-2022-1
+ignore:
+  - cve.TEMP-2022-1
