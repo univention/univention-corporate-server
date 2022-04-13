@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.11-42) unstable; urgency=medium
+
+  * Bug #54617: get first userCertificate if multiple
+
+ -- Carlos García-Mauriño <garcia-maurino.extern@univention.de>  Thu, 13 Apr 2022 10:30:59 +0300
+
 univention-directory-manager-modules (15.0.11-41) unstable; urgency=medium
 
   * Bug #52760: allow case changes without triggering locking mechanism
