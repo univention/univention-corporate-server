@@ -89,7 +89,7 @@ By default, the *Server Dashboard* is also configured. On this dashboard,
 detailed information about individual server systems are shown, such as the CPU-
 or memory usage or network throughput.
 
-The servers can be selected in the dropdown *server*. Then the graphics show the
+The servers can be selected in the drop down *server*. Then the graphics show the
 details about the selected server.
 
 .. _dashboard-usage-mydashboard:

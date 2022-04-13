@@ -111,7 +111,7 @@ The logging is made in the
 
 
 A hash sum is calculated for each logged data record and also logged in the
-:file:`daemon.info` section of the Syslog service.
+:file:`daemon.info` section of the syslog service.
 
 As of :uv:erratum:`4.4x536` the respective transaction ID of the entry is
 added to the file :file:`/var/log/univention/directory-logger.log` before each
@@ -232,7 +232,7 @@ Delegation of the privilege to reset user passwords
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To facilitate the delegation of the privilege to reset user passwords, the
-:program:univention-admingrp-user-passwordreset` package can be installed. It
+:program:`univention-admingrp-user-passwordreset` package can be installed. It
 uses a join script to create the ``User Password Admins`` user group, in so far
 as this does not already exist.
 

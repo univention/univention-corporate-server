@@ -16,7 +16,7 @@
 The |UCSWEB| is the central tool for managing a UCS domain as well as for
 accessing installed applications of the domain.
 
-The |UCSWEB| is divided into several subpages which all have a similarly
+The |UCSWEB| is divided into several pages which all have a similarly
 designed header. Via the symbols in the top right, one may launch a search on
 the current page (magnifier) or open the user menu (three bars) (login is
 possible through the latter). The login at the web interface is done via a

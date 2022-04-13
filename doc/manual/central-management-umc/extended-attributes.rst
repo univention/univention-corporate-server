@@ -246,7 +246,7 @@ Extended attributes - Data type tab
 
        The syntax ``string`` is the default. An overview of the additionally
        available syntax definitions and instructions on integrating your own
-       syntaxes can be found in `Univention Developer Reference
+       syntax can be found in `Univention Developer Reference
        <https://docs.software-univention.de/developer-reference-5.0.html>`_.
 
    * - Default value

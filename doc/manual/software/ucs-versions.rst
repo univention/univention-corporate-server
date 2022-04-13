@@ -26,7 +26,7 @@ Patchlevel releases
 
 Errata updates
    Univention continuously releases *errata updates*. Errata updates provide
-   fixes for security vulnerabilities and bugfixes/smaller enhancements to make
+   fixes for security vulnerabilities, bug fixes, and smaller enhancements to make
    them available to customer systems quickly. An overview of all errata updates
    can be found at https://errata.software-univention.de/.
 

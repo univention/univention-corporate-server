@@ -256,7 +256,7 @@ networks (VLAN):
 * Bridging is often used with virtualization to connect multiple virtual
   machines running on a host through one shared physical network interface.
 
-* Bondings allows failover redundancy for hosts with multiple physical network
+* Bonding allows failover redundancy for hosts with multiple physical network
   interfaces to the same network.
 
 * VLANs can be used to separate network traffic logically while using only one
@@ -435,7 +435,7 @@ proxy port can be specified in the proxy URL using a colon, e.g.,
 accessing user, this can be provided in the form
 :samp:`http://{username}:{password}@192.0.2.100``.
 
-The environment variable is not adopted for sessions currently opened. A relogin
+The environment variable is not adopted for sessions currently opened. A new login
 is required for the change to be activated.
 
 The Univention tools for software updates also support operation via a proxy and

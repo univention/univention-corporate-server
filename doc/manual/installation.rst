@@ -161,7 +161,7 @@ Network configuration
 
 Initially, the Univention Installer attempts to configure the network interfaces
 automatically. This can be disabled by selecting the menu item :guilabel:`Start
-with manual network settings` from the menu of the bootloader. Firstly, an
+with manual network settings` from the menu of the boot loader. Firstly, an
 attempt is made to determine an IPv6 address via the stateless address
 autoconfiguration (SLAAC). If this is not successful, the Univention Installer
 attempts to request an IPv4 address via the Dynamic Host Configuration Protocol
@@ -300,7 +300,7 @@ There are three schemes available for selection for guided partitioning:
 The next step is to select a hard drive from the list of those detected to which
 the partitioning version should be applied.
 
-There are three subversions for each partitioning version, which differ in the
+There are three sub versions for each partitioning version, which differ in the
 number of file systems created:
 
 * :guilabel:`All files in one partition`: In this version, just one partition or
@@ -326,7 +326,7 @@ an additional dialogue and must be confirmed explicitly.
 Once the partitioning is complete, the UCS basic system and additional software
 is installed automatically. This can take some time depending on the speed of
 the hardware used. The system is then made ready to boot via the installation of
-the GRUB bootloader.
+the GRUB boot loader.
 
 .. _installation-reboot:
 
@@ -555,7 +555,7 @@ Troubleshooting for installation problems
 
 Information on possible installation problems can be found in the `Univention
 Knowledge base <https://help.univention.com/c/knowledge-base/supported/48>`_ in
-the subitem *Installation*.
+the section *Installation*.
 
 .. _installation-textmode:
 

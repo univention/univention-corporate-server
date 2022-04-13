@@ -196,7 +196,7 @@ values are logged:
 * A list of the current Samba connections
   (:command:`smbstatus`)
 
-The runtimes in which the system status should be logged can be defined in Cron
+The runtime in which the system status should be logged can be defined in Cron
 syntax via the |UCSUCRV| :envvar:`system/stats/cron`, e.g., ``0,30 \* \* \* \*``
 for logging every half and full hour. The logging is activated by setting the
 |UCSUCRV| :envvar:`system/stats` to ``yes``. This is the default since UCS 3.0.

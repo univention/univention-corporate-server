@@ -170,7 +170,7 @@ Kerberos authentication
 
 If NTLM is used an NTLM authentication is performed for every HTTP query as
 standard. If for example the website ``https://www.univention.de/`` is opened,
-the subpages and images are loaded in addition to the actual HTML page. The NTLM
+the subsequent pages and images are loaded in addition to the actual HTML page. The NTLM
 authentication can be cached per domain: If the |UCSUCRV|
 :envvar:`squid/ntlmauth/keepalive` is set to ``yes``, no further NTLM
 authentication is performed for subsequent HTML queries in the same domain. In

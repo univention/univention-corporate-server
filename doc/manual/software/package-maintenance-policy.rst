@@ -11,7 +11,7 @@ following steps should be performed:
   :ref:`computers-softwaremanagement-releasepolicy`) and, if applicable,
   installation.
 
-* Installation/uninstallation of package lists (see
+* Installation/deinstallation of package lists (see
   :ref:`computers-softwaremanagement-packagelists`)
 
 * Installation of available errata updates

@@ -83,6 +83,8 @@ if "spelling" in sys.argv:
     spelling_show_suggestions = True
     spelling_warning = True
     spelling_word_list = list()
+    # Don't load extension to speed up the job
+    extensions.remove("sphinx_last_updated_by_git")
     # Warnings may come up by sphinx-last-updated-by-git. Shall be suppressed in spelling job
     suppress_warnings = ['git.too_shallow']
 

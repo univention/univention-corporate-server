@@ -54,7 +54,7 @@ to the second character of the attribute value. Accordingly,
 ``<firstname>[0].<lastname>@company.com`` means an e-mail address will consist
 of the first letter of the first name plus the last name.
 
-A substring of the attribute value can be defined by entering a range in square
+A sub string of the attribute value can be defined by entering a range in square
 parentheses. In doing so, the index of the first required character and the
 index of the last required character plus one are to be entered. For example,
 the input ``<firstname>[2:5]`` returns the third to fifth character of the first

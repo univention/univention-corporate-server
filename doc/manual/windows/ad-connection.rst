@@ -480,7 +480,7 @@ diagnosis:
 
 :command:`univention-adsearch`
    This tool facilitates a LDAP search in Active Directory. Objects
-   deleted in AD are always shown (they are still kept in an LDAP subtree in
+   deleted in AD are always shown (they are still kept in an LDAP sub tree in
    AD). As the first parameter the script awaits an LDAP filter; the second
    parameter can be a list of LDAP attributes to be displayed.
 
@@ -503,7 +503,7 @@ diagnosis:
 
 .. _windows-logfiles:
 
-Logfiles
+Log files
    For troubleshooting when experiencing synchronization problems, corresponding
    messages can be found in the following files on the UCS system:
 

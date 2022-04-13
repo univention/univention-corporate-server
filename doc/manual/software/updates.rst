@@ -118,8 +118,8 @@ The messages created during the update are written to the file
 
 .. _computers-postprocessing-of-release-updates:
 
-Postprocessing of release updates
----------------------------------
+Post-processing of release updates
+----------------------------------
 
 Once a release update has been performed successfully, a check should be
 made for whether new or updated join scripts need to be run.

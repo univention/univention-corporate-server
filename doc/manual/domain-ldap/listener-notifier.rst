@@ -118,8 +118,8 @@ This check can also be performed automatically by the Nagios service
 Reinitialization of listener modules
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If there are problems in running a listener module, there is the option of
-reinitializing the module. In this case, all LDAP objects with which the
+If there are problems in running a listener module, there is the option to
+reinitialize the module. In this case, all LDAP objects with which the
 listener module works are passed on again.
 
 The name of the listener module must be supplied to the command for the renewed

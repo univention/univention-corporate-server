@@ -204,7 +204,7 @@ The following steps are now automatically performed:
    (see :ref:`ip-config-cname-record-alias-records`) for the UCS DNS server.
 
 #. Configure the IP address of the Active Directory domain controller as a
-   virtual ethernet interface.
+   virtual Ethernet interface.
 
 #. Perform some cleanup, e.g. removal of the AD domain controller account and
    related objects in the Samba SAM account database.

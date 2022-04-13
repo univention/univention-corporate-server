@@ -14,7 +14,7 @@ server is determined by querying the MX record in the DNS.
 
 Alternatively, a mail relay server can also be used, i.e., a server which
 receives the mails and takes over their further sending. This type of mail relay
-server can be provided by a superordinate corporate headquarters or the nternet
+server can be provided by a superordinate corporate headquarters or the internet
 provider, for example. To set a relay host, it must be entered as a fully
 qualified domain name (FQDN) in the |UCSUCRV| :envvar:`mail/relayhost`.
 
@@ -326,7 +326,7 @@ IMAP users, possibly a lot more.
 
 How many IMAP connections are opened by a user depends on the clients they use:
 
-* Webmail opens just a few short lived connections.
+* Web mail opens just a few short lived connections.
 
 * Desktop clients keep multiple connections open over a long period of time.
 

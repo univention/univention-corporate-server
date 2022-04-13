@@ -547,3 +547,7 @@ the old profile directory can be deleted.
    As standard, the ``Administrator`` accesses shares with ``root`` rights. If
    as a result the profile directory is created with the root user, it should be
    manually assigned to the ``Administrator`` with the command :command:`chown`.
+
+.. spelling::
+
+   ad hoc

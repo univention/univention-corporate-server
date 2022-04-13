@@ -155,7 +155,7 @@ Shares UMC module - Samba tab
        rights, see :ref:`shares-permissions`.
 
    * - Hide unreadable files/directories
-     - If this option is activated, all files which are nonreadable for the user
+     - If this option is activated, all files which are not readable for the user
        due to their file permissions, will be hidden.
 
    * - VFS Objects
@@ -211,16 +211,16 @@ Shares UMC module - Samba permissions tab
        accessing the Samba share:
 
        * A name beginning with the character ``@`` will first be interpreted as
-         a NIS Netgroup. Should no NIS Netgroup of this name be found, the name
+         a NIS net-group. Should no NIS net-group of this name be found, the name
          will be considered as a UNIX group.
 
        * A name beginning with the character ``+`` will be exclusively
          considered as a UNIX group, a name beginning with the character ``&``
-         will be exclusively considered as a NIS Netgroup.
+         will be exclusively considered as a NIS net-group.
 
        * A name beginning with the characters ``+&``, will first be interpreted
          as a UNIX group. Should no UNIX group of this name be found, the name
-         will be considered as a NIS Netgroup. The characters ``&+`` as the
+         will be considered as a NIS net-group. The characters ``&+`` as the
          beginning of a name correspond to the character ``@``.
 
    * - Invalid users or groups
@@ -547,3 +547,9 @@ Shares UMC module - Options tab
 
    * - Export for NFS clients
      - This option defines whether the share is to be exported for NFS clients.
+
+
+.. spelling::
+
+   Subtree
+

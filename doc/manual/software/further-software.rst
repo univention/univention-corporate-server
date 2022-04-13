@@ -24,7 +24,7 @@ an installed system, as the following sections describe.
 
 .. _computers-softwareselection:
 
-Installation/uninstallation of UCS components in the Univention App Center
+Installation/deinstallation of UCS components in the Univention App Center
 --------------------------------------------------------------------------
 
 All software components offered in the Univention Installer can also be
@@ -144,7 +144,7 @@ possible scripting error messages and further hints.
 
 .. _computers-softwaremanagement-packagelists:
 
-Policy-based installation/uninstallation of individual packages via package lists
+Policy-based installation/deinstallation of individual packages via package lists
 ---------------------------------------------------------------------------------
 
 Package lists can be used to install and remove software using policies. This

@@ -44,8 +44,8 @@ system features on the |UCSPRIMARYDN|).
 
 .. _domain-ldap-subsequent-domain-joins-with-univention-join:
 
-Subsequent domain joins with univention-join
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Subsequent domain joins with *univention-join*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. program:: univention-join
 
@@ -103,7 +103,7 @@ Join scripts / Unjoin scripts
 join scripts are the registration of a print server in the domain or the
 adaptation of DNS entries. Join scripts are components of the individual
 software packages. In the same way, there are also *unjoin scripts*, which can
-reset these changes following uninstallation of software components.
+reset these changes following deinstallation of software components.
 
 Join scripts are stored in the :file:`/usr/lib/univention-install/` directory
 and unjoin scripts in :file:`/usr/lib/univention-uninstall/`. Each join/unjoin
@@ -256,7 +256,7 @@ which should be mounted have to be listed in it in the following way:
    <SUBFOLDER_NAME>    -fstype=smbfs    ://<FQDN>/<SHARE_NAME>
 
 
-Note that the automounted shares are not displayed in the finder's sidebar.
+Note that the automatically mounted shares are not displayed in the finder's sidebar.
 
 .. _macos-domain-join-gui:
 

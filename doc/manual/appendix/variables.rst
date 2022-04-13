@@ -53,14 +53,14 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
 .. envvar:: connector/ad/ldap/binddn
 
-   Configures the LDAP DN of a priviledged replication user. For more
+   Configures the LDAP DN of a privileged replication user. For more
    information, see :ref:`ad-connector-ad-member-setup` and
    :ref:`ad-connector-ad-password`.
 
 
 .. envvar:: connector/ad/ldap/bindpw
 
-   Configures the password of a priviledged replication user. For more
+   Configures the password of a privileged replication user. For more
    information, see :ref:`ad-connector-ad-member-setup` and
    :ref:`ad-connector-ad-password`.
 
@@ -93,8 +93,8 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
 .. envvar:: connector/ad/retryrejected
 
-   Configures the number of cylces that the UCS AD Connector attempts to
-   sychronize an object from the AD domain when it can't be synchronized. The
+   Configures the number of cycles that the UCS AD Connector attempts to
+   synchronize an object from the AD domain when it can't be synchronized. The
    default value is ``10`` cycles. For more information, see
    :ref:`ad-connector-ad-connector-setup`
 
@@ -230,7 +230,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
 .. envvar:: fetchmail/autostart
 
-   Controls the autostart of Fetchmail. To disable Fetchmail, set the value to
+   Controls the automatic start of Fetchmail. To disable Fetchmail, set the value to
    ``false``. For more information, see :ref:`mail-fetchmail`.
 
 
@@ -249,7 +249,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 .. envvar:: google-apps/attributes/anonymize
 
    Configures the LDAP attributes of a user account that Google Apps for Work
-   Connector synchronizes, but filles with random data. The value is a
+   Connector synchronizes, but fills with random data. The value is a
    comma-separated list of LDAP attributes. For more information, see
    :ref:`idmcloud-gsuite-config`.
 
@@ -411,7 +411,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 .. envvar:: ldap/acl/read/anonymous
 
    Controls if the LDAP server allows anonymous access to the LDAP directory.
-   In the default configuration the LDAP server doesn't allow ananymous access
+   In the default configuration the LDAP server doesn't allow anonymous access
    to the LDAP directory.
 
 
@@ -544,26 +544,26 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
 .. envvar:: logrotate/compress
 
-   Controls, if rotated logfiles are zipped with :command:`gzip`. For more
+   Controls, if rotated log files are zipped with :command:`gzip`. For more
    information, see :ref:`computers-log-files`.
 
 
 .. envvar:: log/rotate/weeks
 
-   Configures the logfile rotation interval on a UCS system in weeks. The
+   Configures the log file rotation interval on a UCS system in weeks. The
    default value is ``12`` weeks. For more information, see
    :ref:`computers-log-files`.
 
 
 .. envvar:: logrotate/rotates
 
-   Configures the logfile rotation according to the file size, for example
+   Configures the log file rotation according to the file size, for example
    ``size 50M``. For more information, see :ref:`computers-log-files`.
 
 
 .. envvar:: machine/password/length
 
-   Define the lenght for the computer password, also called *machin secret*.
+   Define the length for the computer password, also called *machin secret*.
    Default value is ``20``. For more information, see
    :ref:`computers-hostaccounts`.
 
@@ -779,6 +779,10 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
    For more information, see :ref:`mail-dnsbl`.
 
+   .. spelling::
+
+      Blackhole
+
 
 .. envvar:: mail/postfix/softbounce
 
@@ -915,7 +919,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 .. envvar:: office365/attributes/anonymize
 
    Configures the LDAP attributes of a user account that the Microsoft 365
-   connector synchronizes, but filles with random data. The value is a
+   connector synchronizes, but fills with random data. The value is a
    comma-separated list of LDAP attributes. For more information, see
    :ref:`idmcloud-o365-users`.
 
@@ -1157,7 +1161,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 .. envvar:: saml/idp/negotiate/filter-subnets
 
    Allows to restrict the Kerberos authentication at the SAML identity provider
-   to certain IP subnets in the `CIDR notation
+   to certain IP subnetworks in the `CIDR notation
    <https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`_, for example
    ``127.0.0.0/16,192.168.0.0/16``. For more information, see
    :ref:`domain-saml`.
@@ -1205,7 +1209,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
 .. envvar:: server/password/interval
 
-   Defines the interval in days to regeneratee the computer account password.
+   Defines the interval in days to regenerate the computer account password.
    The default is set to 21 days. For more information, see
    :ref:`computers-hostaccounts`.
 
@@ -1226,7 +1230,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 .. envvar:: squid/allowfrom
 
    Configures additional networks to allow access to the Squid web proxy.
-   Seperate the entries with blank spaces and use the CIDR notation, for example
+   Separate the entries with blank spaces and use the CIDR notation, for example
    ``192.0.2.0/24``. For more information, see
    :ref:`ip-config-restriction-of-access-to-permitted-networks`.
 
@@ -1325,7 +1329,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
 .. envvar:: system/stats/cron
 
-   Configures the runtimes when :command:`univention-system-stats` is run. The
+   Configures the run times when :command:`univention-system-stats` is run. The
    value follows the :ref:`cron syntax <cron-syntax>`. For more information, see
    :ref:`computers-logging-the-system-status`.
 

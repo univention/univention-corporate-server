@@ -3,7 +3,7 @@
 Installing a print server
 =========================
 
-A printserver can be installed from the Univention App Center with the
+A print server can be installed from the Univention App Center with the
 application :program:`Print server (CUPS)`. Alternatively, the software package
 :program:`univention-printserver` can be installed
 (:command:`univention-run-join-scripts` must be executed after installation).

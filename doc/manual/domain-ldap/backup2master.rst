@@ -98,7 +98,7 @@ steps are performed by :command:`univention-backup2master`:
 * Now, the most important services OpenLDAP, Samba, Kerberos and |UCSUDN| and
   Listener will be stopped. Important |UCSUCRV|, such as :envvar:`ldap/master`
   and :envvar:`server/role` will be changed. The UCS Root CA certificate will be
-  available via the webserver on the |UCSBACKUPDN|. All mentioned services will
+  available via the web server on the |UCSBACKUPDN|. All mentioned services will
   be started again.
 
 * The DNS SRV record ``kerberos-adm`` will be changed from the old to the new

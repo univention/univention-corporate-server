@@ -111,7 +111,7 @@ is important to follow the individual steps precisely.
 
       Error message on first access
 
-8. The uploaded driver now needs to be selected from the dropdown menu under
+8. The uploaded driver now needs to be selected from the drop down menu under
    *Drivers* in the *Advanced* tab. Then click on :guilabel:`Apply` (Important:
    **DON'T** click on :guilabel:`OK`!).
 

@@ -87,3 +87,7 @@ information about UMC, see :ref:`central-user-interface`.
        If no DHCP service is selected, no DHCP host record is created during
        assignment to a computer object. However, such an entry can also still be
        assigned manually.
+
+.. spelling::
+
+   Netmask
