@@ -874,11 +874,11 @@ __EOF__
 	ucr unset nameserver2 nameserver3
 	ucr unset dns/forwarder2 dns/forwarder3
 
-	ucr unset interfaces/ens3/address \
-			interfaces/ens3/broadcast \
-			interfaces/ens3/netmask \
-			interfaces/ens3/network \
-			interfaces/ens3/type
+	ucr unset interfaces/ens7/address \
+			interfaces/ens7/broadcast \
+			interfaces/ens7/netmask \
+			interfaces/ens7/network \
+			interfaces/ens7/type
 
 	ucr unset interfaces/primary
 
