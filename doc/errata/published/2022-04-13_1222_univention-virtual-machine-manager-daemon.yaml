@@ -9,3 +9,5 @@ desc: |
   * Iterating all virtual machines multi-threaded has been fixed.
   * Disks using the new type "volume" are now handled.
 bug: [49297, 54630]
+erratum: 1222
+announced: 2022-04-13
