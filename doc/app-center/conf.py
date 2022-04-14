@@ -10,7 +10,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
+import os
 import sys
 # sys.path.insert(0, os.path.abspath('.'))
 from datetime import date
@@ -43,6 +43,7 @@ extensions = [
     "sphinxcontrib.spelling",
     "sphinx_last_updated_by_git",
     "sphinx_copybutton",
+    "sphinx_sitemap",
 ]
 
 copybutton_prompt_text = r"\$ |> "
@@ -60,7 +61,8 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-pdf_doc_base = "app-center"
+
+pdf_doc_base = os.path.basename(os.path.dirname(__file__))
 
 html_theme = "univention_sphinx_book_theme"
 html_context = {
