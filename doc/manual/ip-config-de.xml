@@ -2085,7 +2085,7 @@ univention-config-registry set squid/webports="80 443"
 				<title>Dienstspezifisches Passwort</title>
 				<para>
 					Standardmäßig authentifizieren sich Benutzer über ihr Domänenpasswort. Durch Setzen der &ucsUCRV;
-					<envar>radius/service-specific-password</envar> auf <literal>true</literal>
+					<envar>radius/use-service-specific-password</envar> auf <literal>true</literal>
                         wird stattdessen ein Passwort speziell für RADIUS genutzt. Dieses Passwort können Nutzer
                         selbst über die App <guimenu>Self Service</guimenu> setzen lassen. Dafür ist auf dem <guimenu>Self Service Backend</guimenu> die &ucsUCRV; <envar>umc/self-service/service-specific-passwords/backend/enabled</envar> auf <literal>true</literal> zu setzen.
                         In der App kann dann vom System ein zufälliges Passwort
