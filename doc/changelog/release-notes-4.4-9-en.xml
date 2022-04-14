@@ -129,7 +129,7 @@
 curl -OOs https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-4.4{,.gpg}
 
 # run script
-gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-4x.gpg \
+gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-5x.gpg \
         pre-update-checks-4.4.gpg pre-update-checks-4.4 && bash pre-update-checks-4.4
 
 ...
