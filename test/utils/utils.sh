@@ -1123,7 +1123,7 @@ sa_bug47030 () {
 }
 
 sa_bug54194 () {
-	curl -s -k https://spamassassin.apache.org/updates/MIRRORED.BY -o /var/lib/spamassassin/3.004002/updates_spamassassin_org/MIRRORED.BY
+	curl -k https://spamassassin.apache.org/updates/MIRRORED.BY -o /var/lib/spamassassin/3.004002/updates_spamassassin_org/MIRRORED.BY
 	sa-update
 }
 
