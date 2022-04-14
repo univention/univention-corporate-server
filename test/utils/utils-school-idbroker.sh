@@ -275,6 +275,8 @@ kvm_setup_dns_entries_in_broker () {
 # add entry to ssh environment to pass variables via env
 add_to_ssh_environment () {
 	local entry="${1:?missing entry}"
+	# add newline if missing
+	[ -n "$(tail -c1 /root/.ssh/environment)" ] && printf '\n' >>/root/.ssh/environment
 	echo "$entry" >> /root/.ssh/environment
 }
 
@@ -321,13 +323,22 @@ fix_broker_dns_entries_on_traeger () {
 	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=$(ucr get domainname),cn=dns,$(ucr get ldap/base)" --set a="$(ucr get interfaces/eth0/address)"
 }
 
+# make env file available in ssh session
+set_env_variables_from_env_file () {
+	local env_file="${1:?missing env file}"
+	while read -r entry; do
+		add_to_ssh_environment "$entry"
+	done < "$env_file"
+	return 0
+}
+
 # we pass locust env vars like this from jenkins to the instance
 # (docker can't handle newlines in env files :-( )
 #    UCS_ENV_LOCUST_VARS=var1=val1:DELIM:var2=val 2:DELIM...
 # this function makes proper env var from this
 set_locust_env_vars () {
-	local locust_vars="${1:?missing locust parameter}"
-    local IFS=$'\n'
+	local locust_vars="${1:-"LOCUST_LOGLEVEL=info:DELIM:LOCUST_RUN_TIME=5m:DELIM:LOCUST_SPAWN_RATE=0.03333:DELIM:LOCUST_STOP_TIMEOUT=60:DELIM:LOCUST_USERS=8"}"
+	local IFS=$'\n'
 	for entry in ${locust_vars//:DELIM:/$'\n'}; do
 		add_to_ssh_environment "$entry"
 	done
