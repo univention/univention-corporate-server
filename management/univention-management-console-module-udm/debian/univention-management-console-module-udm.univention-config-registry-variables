@@ -22,36 +22,6 @@ Description[en]=This variable allows to configure for every module whether a war
 Type=str
 Categories=management-umc
 
-[directory/manager/web/widget/.*/widget]
-Description[de]=Definiert ein Widget für die Anzeige in UMC. Der Wert ist ein Pfad zum Widget.
-Description[en]=Defines a widget for displaying in UMC. The value is the path to the widget.
-Type=str
-Categories=management-umc
-
-[directory/manager/web/widget/.*/syntax]
-Description[de]=Definiert eine kommaseparierte Liste von Syntax-Klassen, für die dieses Widget angewendet wird.
-Description[en]=Defines a commaseparated list of syntax classes where this widget will be applied to.
-Type=str
-Categories=management-umc
-
-[directory/manager/web/widget/.*/default]
-Description[de]=Definiert den Standardsuchwert für die Widget-Definition (z.B.: *).
-Description[en]=Defines the default search value for the widget definition (e.g.: *).
-Type=str
-Categories=management-umc
-
-[directory/manager/web/widget/.*/subclasses]
-Description[de]=Definiert, ob dieses Widget auch für Subklassen der definierten Syntax-Klassen angewendet wird.
-Description[en]=Defines whether this widget is also applied on subclasses of the defined syntax class.
-Type=bool
-Categories=management-umc
-
-[directory/manager/web/widget/.*/property/.*]
-Description[de]=Definiert eine abweichenden Widget-Pfad für die angegebene Eigenschaft.
-Description[en]=Defines a differing widget path for the specified property.
-Type=str
-Categories=management-umc
-
 [directory/manager/web/allow_wildcard_search]
 Description[de]=Definiert, ob Wildcards (*) in der Suche ausgewertet werden.
 Description[en]=Defines whether wildcards (*) are evaluated when searching.
