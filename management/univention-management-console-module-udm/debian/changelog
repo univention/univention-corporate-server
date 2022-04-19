@@ -1,3 +1,10 @@
+univention-management-console-module-udm (10.0.1-26) unstable; urgency=medium
+
+  * Bug #53843: add dependency mechanism for choices of "select" syntax
+    classes
+
+ -- Florian Best <best@univention.de>  Wed, 20 Apr 2022 17:50:39 +0200
+
 univention-management-console-module-udm (10.0.1-25) unstable; urgency=medium
 
   * Bug #38762: move widget<>syntax mapping into UDM syntax classes
