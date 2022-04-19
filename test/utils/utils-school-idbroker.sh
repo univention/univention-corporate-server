@@ -298,6 +298,18 @@ prepare_jump_host () {
     sysctl -p
 }
 
+start_openvpn () {
+    apt-get -y update
+	apt-get -y install openvpn
+	openvpn --config /root/vpn/client.conf --daemon
+}
+
+install_ansible () {
+	apt-get -y update
+	apt-get -y install python3-pip
+	pip3 install ansible
+}
+
 # fix traeger host records for id broker kvm templates
 fix_traeger_dns_entries_in_broker_domain () {
 	local traeger1_ip="${1:?missing ip}"
