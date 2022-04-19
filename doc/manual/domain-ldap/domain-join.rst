@@ -8,8 +8,7 @@ Joining domains
 A UCS, Ubuntu or Windows system must join the domain after installation.
 
 In addition to UCS, Ubuntu and macOS, arbitrary Unix systems can be integrated
-into the domain. This is described in `Extended domain services documentation
-<https://docs.software-univention.de/domain-5.0.html>`_.
+into the domain. This is described in :cite:t:`ext-doc-domain`.
 
 .. _linux-domain-join:
 

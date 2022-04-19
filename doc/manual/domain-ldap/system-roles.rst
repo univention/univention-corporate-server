@@ -69,8 +69,7 @@ Linux
 
 This system role is used for the integration of other Linux systems than UCS and
 Ubuntu, e.g., for Debian or CentOS systems. The integration is documented in
-`Extended domain services documentation
-<https://docs.software-univention.de/domain-5.0.html>`_.
+:cite:t:`ext-doc-domain`.
 
 .. _domain-ldap-macos:
 

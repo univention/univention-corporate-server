@@ -16,8 +16,7 @@ the transfer volume via the internet access.
 
 Further documentation on proxy services - such as the cascading of proxy
 servers, transparent proxies and the integration of a virus scan engine - are
-documented in `Extended IP and network management documentation
-<https://docs.software-univention.de/networks-5.0.html>`_.
+documented in :cite:t:`ext-doc-net`.
 
 .. _ip-config-installation:
 

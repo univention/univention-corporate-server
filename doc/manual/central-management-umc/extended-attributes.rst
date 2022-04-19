@@ -92,8 +92,7 @@ Extended attributes - Module tab
    * - Hook class
      - The functions of the hook class specified here are used during saving,
        modifying and deleting the objects with extended attributes. Additional
-       information can be found in `Univention Developer Reference
-       <https://docs.software-univention.de/developer-reference-5.0.html>`_.
+       information can be found in :cite:t:`developer-reference`.
 
 .. _central-extended-attrs-ldap-mapping-tab:
 
@@ -246,8 +245,7 @@ Extended attributes - Data type tab
 
        The syntax ``string`` is the default. An overview of the additionally
        available syntax definitions and instructions on integrating your own
-       syntax can be found in `Univention Developer Reference
-       <https://docs.software-univention.de/developer-reference-5.0.html>`_.
+       syntax can be found in :cite:t:`developer-reference`.
 
    * - Default value
      - If a preset value is defined here, new objects to be created will be

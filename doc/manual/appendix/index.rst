@@ -6,4 +6,5 @@ Appendix
    :caption: Chapter contents
 
    variables
+   bibliography
    indices

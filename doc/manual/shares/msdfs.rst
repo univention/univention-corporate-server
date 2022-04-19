@@ -37,6 +37,5 @@ This reference will be displayed on every client capable of MSDFS (e.g.
    spelled entirely in lower case. If changes are made in the
    references, the concerned clients have to be restarted.
 
-   Further information on this issue can be found in the `Samba documentation in
-   the chapter "Hosting a Microsoft Distributed File System Tree"
-   <https://www.samba.org/samba/docs/Samba3-HOWTO.pdf>`_ (chapter 20).
+   Further information on this issue can be found in
+   :cite:t:`samba3-howto-chapter-20`.

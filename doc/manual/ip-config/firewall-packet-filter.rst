@@ -15,8 +15,8 @@ By default all incoming ports are blocked. Every UCS package provides rules,
 which free up the ports required by the package again.
 
 The configuration is primarily performed via |UCSUCR| variables. The definition
-of this type of packet filter rules is documented in `Univention Developer
-Reference <https://docs.software-univention.de/developer-reference-5.0.html>`_.
+of this type of packet filter rules is documented in
+:cite:t:`developer-reference`.
 
 In addition, the configuration scripts in the
 :file:`/etc/security/packetfilter.d/` directory are listed in alphabetic order.

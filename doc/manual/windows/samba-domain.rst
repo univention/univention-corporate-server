@@ -25,8 +25,7 @@ Additional information can be found in
 :ref:`computers-softwaremanagement-installsoftware`.
 
 Samba supports the operation as a *read-only domain controller*. The setup is
-documented in `Extended Windows integration documentation
-<https://docs.software-univention.de/windows-5.0.html>`_.
+documented in :cite:t:`ext-doc-win`.
 
 .. _windows-samba4-services:
 
@@ -413,16 +412,12 @@ The policies displayed in *Group Policy Management* can be expanded with
 so-called *administrative templates*. This type of template defines the name
 under which the policy should appear in Group Policy Management and which value
 should be set in the Windows registry. Administrative templates are saved in
-so-called *ADMX files* (previously *ADM files*), see `Group Policy ADMX Syntax
-Reference Guide
-<https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc753471(v=ws.10)?redirectedfrom=MSDN>`_.
+so-called *ADMX files* (previously *ADM files*), see :cite:t:`admx-reference`.
 
 Among other things, ADMX files offer the advantage that they can be provided
 centrally across several domain controllers so that Group Policy Management on
-all Windows clients displays the same configuration possibilities, see `How to
-Implement the Central Store for Group Policy Admin Templates, Completely (Hint:
-Remove Those .ADM files!)
-<https://techcommunity.microsoft.com/t5/core-infrastructure-and-security/how-to-implement-the-central-store-for-group-policy-admin/ba-p/255448>`_.
+all Windows clients displays the same configuration possibilities, see
+:cite:t:`admx-central`.
 
 The following example of an ADM file defines a computer policy in which a
 registry key is configured for the (fictitious) Univention RDP client. ADM files
@@ -473,11 +468,8 @@ re-evaluated by the client.
 The WMI filters are displayed in the domain structure in the *WMI Filters*
 container. :guilabel:`New` can be used to define an additional filter. The
 filter rules are defined under *Queries*. The rules are defined in a syntax
-similar to SQL. Examples rules can be found in `WMI filtering using GPMC
-<https://www.microsoft.com/en-US/download/details.aspx?id=53314>`_ and `Filtern
-von Gruppenrichtlinien anhand von Benutzergruppen, WMI und
-Zielgruppenadressierung (German)
-<https://www.gruppenrichtlinien.de/artikel/filtern-von-gruppenrichtlinien-anhand-von-benutzergruppen-wmi-und-zielgruppenadressierung/>`_.
+similar to SQL. Examples rules can be found in :cite:t:`microsoft-wmi-filter`
+and :cite:t:`add-wmi-filters`.
 
 .. _netlogon-freigabe-samba4:
 

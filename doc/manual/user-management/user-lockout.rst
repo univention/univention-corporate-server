@@ -110,8 +110,7 @@ OpenLDAP
 On UCS Directory Nodes, automatic account locking can be enabled for too many
 failed LDAP server login attempts. The MDB LDAP back end must be used. This is
 the default back end since UCS 4, previous systems must be migrated to the MDB
-LDAP back end, see `UCS performance guide
-<https://docs.software-univention.de/performance-guide-5.0.html>`_.
+LDAP back end, see :cite:t:`ucs-performance-guide`.
 
 Automatic account locking must be enabled for each UCS Directory Node.
 To do this, the |UCSUCRV|\ s :envvar:`ldap/ppolicy` and

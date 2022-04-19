@@ -591,8 +591,7 @@ derive an individual instance which can be configured via |UCSUMC| modules
 (domain name, software selection, etc.).
 
 The process for setting up a UCS instance based on Amazon EC2 is documented in
-the `Amazon EC2 Quickstart in the Univention Wiki
-<https://wiki.univention.de/index.php?title=Amazon_EC2_Quickstart>`_.
+:cite:t:`ec2-quickstart`.
 
 .. _installation-vmware:
 
@@ -633,5 +632,4 @@ Installation in Citrix XenServer
 ================================
 
 The process for setting up a UCS instance in Citrix XenServer is documented in
-`Citrix XenServer in Univention Wiki
-<https://wiki.univention.de/index.php?title=Citrix_Xen_Server>`_.
+:cite:t:`xenserver-installation`.

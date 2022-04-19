@@ -321,9 +321,8 @@ UCS. Among other things, UCS and solutions based on UCS provide:
 
 * Proxy server
 
-Further documentation related to UCS and further issues is published under `UCS
-documentation overview <ucs-documentation-overview_>`_ and in the `Univention
-Wiki <univention-wiki_>`_).
+Further documentation related to UCS and further issues is published under
+:cite:t:`ucs-docs` and in the `Univention Wiki <univention-wiki_>`_.
 
 .. _introduction-symbols-and-conventions-used-in-this-manual:
 

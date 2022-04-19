@@ -74,8 +74,7 @@ The level of detail of the BIND debug output can be configured via the
 :envvar:`dns/debug/level` and :envvar:`dns/dlz/debug/level` (for the Samba
 back end, see :ref:`ip-config-dns-backend`) |UCSUCR| variables. The possible
 values are between ``0`` (no debug tasks) to ``11``. A complete list of levels
-can be found at `Reading Bind Debugging Output
-<https://www.diablotin.com/librairie/networking/dnsbind/ch12_01.htm>`_.
+can be found at :cite:t:`bind-loglevel`.
 
 .. _ip-config-dns-backend:
 

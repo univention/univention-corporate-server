@@ -44,8 +44,7 @@ by the |UCSUDL| module *cups-printers* and an entry added to, modified or
 deleted in :file:`/etc/cups/printers.conf` based on the data in the LDAP.
 
 Additional information on the setup of |UCSUDL| modules and developing your own
-modules can be found in `Univention Developer Reference
-<https://docs.software-univention.de/developer-reference-5.0.html>`_.
+modules can be found in :cite:t:`developer-reference`.
 
 LDAP replication is also performed by a listener module. If the LDAP server to
 be replicated to is not accessible, the LDAP changes are temporarily stored in

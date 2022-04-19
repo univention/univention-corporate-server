@@ -339,8 +339,7 @@ for checking whether the service is running and restart it if necessary (see
 .. note::
 
    The connector can also synchronize several AD domains within one UCS domain;
-   this is documented in `Extended Windows integration documentation
-   <https://docs.software-univention.de/windows-5.0.html>`_.
+   this is documented in :cite:t:`ext-doc-win`.
 
 .. _windows-ad-dialog:
 

@@ -423,6 +423,5 @@ accept 3000 client connections each.
 
 |UCSUCS| configures Dovecot to run in "High-security mode" by default. For
 installations with 10.000s of users, Dovecot offers the "High-performance mode".
-The performance guide has further details on how to configure it, see `UCS
-performance guide
-<https://docs.software-univention.de/performance-guide-5.0.html>`_.
+The performance guide has further details on how to configure it, see
+:cite:t:`ucs-performance-guide`.

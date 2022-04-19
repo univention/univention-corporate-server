@@ -230,9 +230,8 @@ Computer management module - Services tab
 Computer management module - Deployment tab
 -------------------------------------------
 
-This *Deployment* tab is used for the Univention Net Installer, see `Extended
-installation documentation
-<https://docs.software-univention.de/installation-5.0.html>`_.
+This *Deployment* tab is used for the Univention Net Installer, see
+:cite:t:`ext-doc-inst`.
 
 .. _computers-management-table-dns-alias:
 
@@ -302,5 +301,4 @@ properties for DNS/DHCP can also be managed there.
 The use of policies is not supported.
 
 Some configuration adjustments need to be performed on Ubuntu systems; these are
-documented in the `Extended domain services documentation
-<https://docs.software-univention.de/domain-5.0.html>`_.
+documented in :cite:t:`ext-doc-domain`.

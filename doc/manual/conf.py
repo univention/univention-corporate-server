@@ -41,7 +41,13 @@ extensions = [
     "sphinx_last_updated_by_git",
     "sphinx_sitemap",
     "sphinx_copybutton",
+    "sphinxcontrib.bibtex",
 ]
+
+bibtex_bibfiles = ["../bibliography.bib"]
+bibtex_encoding = "utf-8"
+bibtex_default_style = "unsrt"
+bibtex_reference_style = "label"
 
 copybutton_prompt_text = r"\$ |> |.+# "
 copybutton_prompt_is_regexp = True
@@ -86,7 +92,7 @@ if "spelling" in sys.argv:
     # Don't load extension to speed up the job
     extensions.remove("sphinx_last_updated_by_git")
     # Warnings may come up by sphinx-last-updated-by-git. Shall be suppressed in spelling job
-    suppress_warnings = ['git.too_shallow']
+    suppress_warnings = ['git.too_shallow', "bibtex"]
 
 root_doc = "contents"
 
