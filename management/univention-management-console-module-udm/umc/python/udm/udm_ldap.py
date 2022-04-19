@@ -60,7 +60,7 @@ import univention.admin.uexceptions as udm_errors
 import univention.admin.mapping as udm_mapping
 
 from ldap import LDAPError, NO_SUCH_OBJECT
-from ldap.filter import filter_format, escape_filter_chars
+from ldap.filter import filter_format
 from ldap.dn import explode_dn
 from functools import reduce
 
@@ -1150,9 +1150,7 @@ class UDM_Module(object):
 		if object_property in [None, 'None']:
 			ret = ''
 			if object_property_value not in [None, '*']:
-				ret = '(|%s)' % ''.join(filter_format('(%s=%s)', (attr, object_property_value)) for attr in self.default_search_attrs)
-				if allow_asterisks:
-					ret = ret.replace(escape_filter_chars('*'), '*')
+				ret = '(|%s)' % ''.join(udm_syntax.ISyntax.get_object_property_filter(attr, object_property_value, allow_asterisks) for attr in self.default_search_attrs)
 		else:
 			prop = self.module.property_descriptions.get(object_property)
 			syn = prop.syntax if prop else udm_syntax.ISyntax
