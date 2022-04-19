@@ -48,6 +48,7 @@ from saml2.s_utils import UnknownPrincipal, UnsupportedBinding
 from saml2.sigver import MissingKey, SignatureError
 from saml2.ident import code as encode_name_id, decode as decode_name_id
 
+from univention.management.console.error import UMC_Error
 from univention.management.console.log import CORE
 from univention.management.console.shared_memory import shared_memory
 from univention.management.console.resource import Resource
@@ -229,9 +230,17 @@ class SamlACS(SAMLResource):
 		response = self.acs(message, binding)
 		saml = SAMLUser(response, message)
 		# TODO/FIXME: do PAM auth here?!
-		self.set_session(self.create_sessionid(), saml.username, saml=saml)
+		#result = yield self.current_user.authenticate({
+		#	'locale': self.locale.code,
+		#	'username': saml.username,
+		#	'password': saml.message,
+		#	'auth_type': 'SAML',
+		#})
+		#if not self.current_user.authenticated:
+		#	raise UMC_Error(result.message, result.status, result.result)
 		self.current_user.authenticated = True
 		self.current_user.user.set_credentials(saml.username, saml.message, 'SAML')
+		self.set_session(self.create_sessionid(), saml.username, saml=saml)
 		# protect against javascript:alert('XSS'), mailto:foo and other non relative links!
 		location = urlparse(relay_state)
 		if location.path.startswith('//'):
