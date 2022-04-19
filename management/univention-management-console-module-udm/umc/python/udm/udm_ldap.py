@@ -1091,10 +1091,23 @@ class UDM_Module(object):
 
 	def get_policy_references(self, dn):
 		ldap_connection, ldap_position = self.get_ldap_connection()
+		references = []
 		if self.is_policy_module():  # TODO: move into the handlers/policies/*.py
 			search_filter = filter_format("(&(objectClass=univentionPolicyReference)(univentionPolicyReference=%s))", (dn,))
-			return read_syntax_choices(udm_syntax.LDAP_Search(filter=search_filter, viewonly=True), ldap_connection=ldap_connection, ldap_position=ldap_position)
-		return []
+			for dn in ldap_connection.searchDn(filter=search_filter):
+				obj, module = get_obj_module(None, dn, ldap_connection)
+				if not module or not obj:
+					continue
+				label = '%s: %s' % (module.title, obj.description())
+				references.append({
+					'module': 'udm',
+					'flavor': module.flavor or 'navigation',
+					'objectType': module.name,
+					'id': dn,
+					'label': label,
+					'icon': 'udm-%s' % module.name.replace('/', '-')
+				})
+		return references
 
 	def get_references(self, obj):
 		references = []
