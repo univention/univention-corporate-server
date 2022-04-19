@@ -61,10 +61,11 @@ object_name_plural = _('Nagios services')
 long_description = ''
 operations = ['search', 'edit', 'add', 'remove']
 
-ldap_search_period = univention.admin.syntax.LDAP_Search(
-	filter='(objectClass=univentionNagiosTimeperiodClass)',
-	attribute=['nagios/timeperiod: name'],
-	value='nagios/timeperiod: name')
+
+class NagiosTimePeriod(univention.admin.syntax.UDM_Attribute):
+	udm_module = 'nagios/timeperiod'
+	attribute = 'name'
+
 
 options = {
 	'default': univention.admin.option(
@@ -109,7 +110,7 @@ property_descriptions = {
 	'checkPeriod': univention.admin.property(
 		short_description=_('Check period'),
 		long_description=_('Check services within check period'),
-		syntax=ldap_search_period,
+		syntax=getattr(univention.admin.syntax, 'NagiosTimePeriod', NagiosTimePeriod),
 		required=True,
 	),
 	'maxCheckAttempts': univention.admin.property(
@@ -147,7 +148,7 @@ property_descriptions = {
 	'notificationPeriod': univention.admin.property(
 		short_description=_('Notification period'),
 		long_description=_('Send notifications during this period'),
-		syntax=ldap_search_period,
+		syntax=getattr(univention.admin.syntax, 'NagiosTimePeriod', NagiosTimePeriod),
 		required=True,
 	),
 	'notificationOptionWarning': univention.admin.property(

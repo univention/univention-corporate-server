@@ -5000,6 +5000,11 @@ class nagiosServiceDn(UDM_Objects):
 	udm_modules = ('nagios/service', )
 
 
+class NagiosTimePeriod(UDM_Attribute):
+	udm_module = 'nagios/timeperiod'
+	attribute = 'name'
+
+
 class UCR_Variable(complex):
 	"""
 	Syntax to enter |UCR| variable name and value.
