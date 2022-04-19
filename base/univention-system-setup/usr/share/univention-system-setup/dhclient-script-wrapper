@@ -46,7 +46,7 @@ case "$reason" in
 		echo "0" >/proc/sys/kernel/printk
 
 		# basic interface setup if it is not already up
-		ip link show "$interface" | grep -w UP || ip link dev "$interface" dynamic off up
+		ip link show "$interface" | grep -w UP || ip link set dev "$interface" dynamic off up
 
 		# We need to give the kernel some time to get the interface up.
 		sleep 1
