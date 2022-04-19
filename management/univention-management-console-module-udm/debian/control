@@ -23,7 +23,7 @@ Depends:
  python3-notifier,
  python3-six,
  python3-univention-config-registry,
- python3-univention-directory-manager,
+ python3-univention-directory-manager (>= 15.0.11-43),
  univention-directory-manager-tools (>= 15),
  univention-directory-reports,
  univention-management-console-server (>= 12.0.10-1),

@@ -1,3 +1,9 @@
+univention-self-service (5.0.1-25) unstable; urgency=medium
+
+  * Bug #38762: move widget<>syntax mapping into UDM syntax classes
+
+ -- Florian Best <best@univention.de>  Wed, 20 Apr 2022 00:38:54 +0200
+
 univention-self-service (5.0.1-24) unstable; urgency=medium
 
   * Bug #54434: replace pngs with svgs
