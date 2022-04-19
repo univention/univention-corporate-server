@@ -542,12 +542,12 @@ class UDM_Module(object):
 			ldap_position.setDn(container)
 
 		if superordinate:
-			mod = get_module(self.name, superordinate, ldap_connection)
+			_superordinate, mod = get_obj_module(self.name, superordinate, ldap_connection)
 			if not mod:
 				MODULE.error('Superordinate module not found: %s' % (superordinate,))
 				raise SuperordinateDoesNotExist(superordinate)
 			MODULE.info('Found UDM module for superordinate')
-			superordinate = mod.get(superordinate)
+			superordinate = _superordinate
 
 		obj = self.module.object(None, ldap_connection, ldap_position, superordinate=superordinate)
 		try:
@@ -1172,11 +1172,21 @@ def ldap_dn2path(ldap_dn, include_rdn=True):
 
 def get_module(flavor, ldap_dn, ldap_connection=None, ldap_position=None):
 	"""Determines an UDM module handling the LDAP object identified by the given LDAP DN"""
+	return _get_module(flavor, ldap_dn, None, ldap_connection, ldap_position)
+
+
+def get_obj_module(flavor, ldap_dn, ldap_connection=None, ldap_position=None):
+	attr = ldap_connection.get(ldap_dn)
+	module = _get_module(flavor, ldap_dn, attr, ldap_connection, ldap_position)
+	return module.get(ldap_dn, attributes=attr), module
+
+
+def _get_module(flavor, ldap_dn, attributes=None, ldap_connection=None, ldap_position=None):
 	if flavor is None or flavor == 'navigation':
 		base = None
 	else:
 		base, name = split_module_name(flavor)
-	modules = udm_modules.objectType(None, ldap_connection, ldap_dn, module_base=base)
+	modules = udm_modules.objectType(None, ldap_connection, ldap_dn, attributes, module_base=base)
 
 	if not modules:
 		return None

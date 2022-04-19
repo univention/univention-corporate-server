@@ -74,7 +74,7 @@ import univention.directory.reports as udr
 
 from .udm_ldap import (
 	UDM_Error, UDM_Module,
-	ldap_dn2path, get_module, read_syntax_choices, list_objects, _get_syntax,
+	ldap_dn2path, get_module, get_obj_module, read_syntax_choices, list_objects, _get_syntax,
 	LDAP_Connection, set_bind_function, container_modules,
 	info_syntax_choices, search_syntax_choices_by_key,
 	UserWithoutDN, ObjectDoesNotExist, SuperordinateDoesNotExist, NoIpLeft,
@@ -222,6 +222,9 @@ class Instance(Base, ProgressMixin):
 
 	def get_module(self, flavor, ldap_dn):
 		return get_module(flavor, ldap_dn, self.get_ldap_connection()[0])
+
+	def get_obj_module(self, flavor, ldap_dn):
+		return get_obj_module(flavor, ldap_dn, self.get_ldap_connection()[0])
 
 	def _get_module_by_request(self, request, object_type=None):
 		"""Tries to determine the UDM module to use. If no specific
@@ -514,11 +517,10 @@ class Instance(Base, ProgressMixin):
 		for ldap_dn in request.options:
 			if request.flavor == 'users/self':
 				ldap_dn = self._user_dn
-			module = self.get_module(request.flavor, ldap_dn)
+			obj, module = self.get_obj_module(request.flavor, ldap_dn)
 			if module is None:
 				raise ObjectDoesNotExist(ldap_dn)
 			else:
-				obj = module.get(ldap_dn)
 				if obj:
 					_remove_uncopyable_properties(obj)
 					obj.set_defaults = True
@@ -589,10 +591,10 @@ class Instance(Base, ProgressMixin):
 				superordinate = None
 			elif superordinate is not None:
 				MODULE.info('Query defines a superordinate %s' % superordinate)
-				mod = self.get_module(request.flavor, superordinate)
+				_superordinate, mod = self.get_obj_module(request.flavor, superordinate)
 				if mod is not None:
 					MODULE.info('Found UDM module %r for superordinate %s' % (mod.name, superordinate))
-					superordinate = mod.get(superordinate)
+					superordinate = _superordinate
 					if not request.options.get('container'):
 						request.options['container'] = superordinate.dn
 				else:
