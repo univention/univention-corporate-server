@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [8, 9]
+scope: ucs_4.4-0-errata4.4-9
+src: python-django
+fix: 1:1.10.7-2+deb9u16
+desc: |
+ This update addresses the following issue:
+ * Potential SQL injection in QuerySet.annotate(),aggregate() and extra()
+   (CVE-2022-28346)
+bug: [54670]
+cve:
+- CVE-2022-28346
