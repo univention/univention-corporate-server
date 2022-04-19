@@ -218,8 +218,11 @@ class Resource(RequestHandler):
 			scheme, credentials = credentials.split(u' ', 1)
 		except ValueError:
 			raise BadRequest('invalid Authorization')
-		if scheme.lower() != u'basic':
-			return
+		if scheme.lower() == u'basic':
+			yield self.basic_authorization(credentials)
+
+	@tornado.gen.coroutine
+	def basic_authorization(self, credentials):
 		try:
 			username, password = base64.b64decode(credentials.encode('utf-8')).decode('latin-1').split(u':', 1)
 		except ValueError:
@@ -396,3 +399,6 @@ class Resource(RequestHandler):
 			langs.append((parts[0].strip(), score))
 		langs.sort(key=lambda pair: pair[1], reverse=True)
 		return langs
+
+	def reverse_abs_url(self, name):
+		return '%s://%s/univention%s' % (self.request.protocol, self.request.host, self.reverse_url(name, *self.path_args))
