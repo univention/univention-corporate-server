@@ -75,11 +75,6 @@ options = {
 	)
 }
 
-module_search_filter = univention.admin.filter.conjunction('&', [
-	univention.admin.filter.expression('objectClass', 'univentionGroup'),
-])
-
-
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),

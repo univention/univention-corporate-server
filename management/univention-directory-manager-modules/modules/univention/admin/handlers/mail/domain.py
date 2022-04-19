@@ -50,9 +50,6 @@ object_name = _('Mail domain')
 object_name_plural = _('Mail domains')
 long_description = ''
 
-module_search_filter = univention.admin.filter.conjunction('&', [
-	univention.admin.filter.expression('objectClass', 'univentionMailDomainname'),
-])
 options = {
 	'default': univention.admin.option(
 		short_description=short_description,

@@ -48,8 +48,6 @@ object_name = _('Mailing list')
 object_name_plural = _('Mailing lists')
 long_description = ''
 
-module_search_filter = univention.admin.filter.expression('objectClass', 'univentionMailList'),
-
 options = {
 	'default': univention.admin.option(
 		short_description=short_description,

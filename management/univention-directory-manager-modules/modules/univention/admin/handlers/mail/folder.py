@@ -52,11 +52,6 @@ object_name = _('IMAP mail folder')
 object_name_plural = _('IMAP mail folders')
 long_description = ''
 
-module_search_filter = univention.admin.filter.conjunction('&', [
-	univention.admin.filter.expression('objectClass', 'univentionMailSharedFolder'),
-])
-
-
 ldap_search_maildomain = univention.admin.syntax.LDAP_Search(
 	filter='(objectClass=univentionMailDomainname)',
 	attribute=['mail/domain: name'],
