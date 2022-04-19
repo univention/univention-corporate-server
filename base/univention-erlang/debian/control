@@ -1,0 +1,42 @@
+Source: univention-erlang
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.8.2
+Build-Depends:
+ debhelper,
+ gcc,
+ libssl-dev,
+ unixodbc-dev,
+ libfakeroot,
+ libsigsegv2,
+ perl-modules-5.28,
+ libltdl7,
+ tzdata,
+ libssl1.1,
+ libperl5.28,
+ libmagic1,
+ gawk,
+ locales,
+ libodbc1,
+ file,
+ libmagic-mgc,
+ mime-support
+
+
+Package: univention-erlang
+Architecture: any
+Multi-Arch: foreign
+Depends:
+ libssl-dev,
+ unixodbc-dev,
+ ${misc:Depends},
+ ${shlibs:Depends}
+Description: UCS - meta package for the Erlang interpreter
+ This package contains the Erlang interpreter (without Java support).
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
