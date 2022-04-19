@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.11-45) unstable; urgency=medium
+
+  * Bug #54467: add widget for users/user:mailPrimaryAddress
+
+ -- Florian Best <best@univention.de>  Wed, 20 Apr 2022 18:04:24 +0200
+
 univention-directory-manager-modules (15.0.11-44) unstable; urgency=medium
 
   * Bug #53843: add dependency mechanism for choices of "select" syntax classes

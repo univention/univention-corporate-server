@@ -1,3 +1,9 @@
+univention-web (4.0.2-51) unstable; urgency=medium
+
+  * Bug #54467: add widget for users/user:mailPrimaryAddress
+
+ -- Florian Best <best@univention.de>  Fri, 22 Apr 2022 01:34:26 +0200
+
 univention-web (4.0.2-50) unstable; urgency=medium
 
   * Bug #38762: make MultiInput handle all types of widgets and fix
