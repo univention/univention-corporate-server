@@ -50,7 +50,6 @@ import time
 import traceback
 import zlib
 from io import BytesIO
-from operator import itemgetter
 from typing import TYPE_CHECKING, Any, Callable, Iterable, List, Optional, Pattern, Sequence, Set, Tuple, Type, Union  # noqa F401
 
 import dateutil
@@ -284,7 +283,10 @@ class ISyntax(object):
 	@classmethod
 	def get_choices(cls, lo, options):
 		"""Get all already sorted choices"""
-		choices = getattr(cls, 'choices', [])
+		return cls.sort_choices(getattr(cls, 'choices', []))
+
+	@classmethod
+	def sort_choices(cls, choices):
 		return sorted(choices, key=lambda choice: choice[1])
 
 	widget = None
@@ -466,7 +468,7 @@ class select(ISyntax):
 		except AttributeError:
 			class_choices = []
 
-		choices = sorted(class_choices, key=lambda choice: choice[1])
+		choices = cls.sort_choices(class_choices)
 
 		if cls.empty_value and class_choices and class_choices[0][0] != '':
 			choices.insert(0, ('', ''))
@@ -893,7 +895,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
 						choices.extend(zip(keys, labels))
 
 		# sort choices before inserting / appending some special items
-		choices = sorted(choices, key=lambda choice: choice[1])
+		choices = cls.sort_choices(choices)
 
 		if isinstance(cls.static_values, (tuple, list)):
 			for value in cls.static_values:
@@ -1002,7 +1004,7 @@ class UDM_Attribute(ISyntax, _UDMObjectOrAttribute):
 						choices.append(item)
 
 		# sort choices before inserting / appending some special items
-		choices = sorted(choices, key=lambda choice: choice[1])
+		choices = cls.sort_choices(choices)
 
 		if isinstance(cls.static_values, (tuple, list)):
 			for value in cls.static_values:
@@ -3405,10 +3407,10 @@ class ldapDn(simple):
 			ud.debug(ud.ADMIN, ud.PROCESS, 'Failed to initialize syntax class %s' % (cls.name,))
 			return []
 
-		return sorted([
+		return cls.sort_choices([
 			(dn, ldap.dn.explode_rdn(dn, True)[0])
 			for dn in result
-		], key=lambda x: x[1])
+		])
 
 	def get_widget_choices_options(self, udm_property):
 		return _default_widget_options(self)
@@ -3626,7 +3628,11 @@ class _CachedLdap(six.with_metaclass(_ClassChoices, combobox)):
 			if obj:
 				names.update(obj.names)
 
-		cls._cached_choices = [(name, name) for name in sorted(names, key=lambda name: name.lower())]
+		cls._cached_choices = cls.sort_choices([(name, name) for name in names])
+
+	@classmethod
+	def sort_choices(cls, choices):
+		return sorted(choices, key=lambda choice: choice[1].lower())
 
 	@classmethod
 	def update_choices(cls):
@@ -5463,11 +5469,11 @@ class univentionAdminModules(select):
 		"""
 		Update internal list of |UDM| modules in :py:class:`univentionAdminModules`.
 		"""
-		cls.choices = sorted((
+		cls.choices = cls.sort_choices((
 			(name, univention.admin.modules.short_description(mod))
 			for name, mod in univention.admin.modules.modules.items()
 			if not univention.admin.modules.virtual(mod)
-		), key=itemgetter(1))
+		))
 
 
 __register_choice_update_function(univentionAdminModules.update_choices)
@@ -5536,12 +5542,12 @@ class allModuleOptions(combobox):
 	@classmethod
 	def update_choices(cls):
 		modules = univention.admin.modules.modules.values()
-		cls.choices = sorted([
+		cls.choices = cls.sort_choices([
 			(key, opt.short_description)
 			for module in modules
 			for key, opt in getattr(module, 'options', {}).items()
 			if key != 'default'
-		], key=lambda x: x[1])
+		])
 
 
 __register_choice_update_function(allModuleOptions.update_choices)
@@ -5792,7 +5798,7 @@ class LDAP_Search(select):
 			choices.append({'objectType': module.module, 'id': id, 'label': label})
 
 		# sort choices before inserting / appending some special items
-		choices = sorted(choices, key=lambda choice: choice['label'])
+		choices = cls.sort_choices(choices)
 
 		# then append empty value
 		if cls.addEmptyValue:
@@ -5801,6 +5807,10 @@ class LDAP_Search(select):
 			choices.append({'id': '', 'label': ''})
 
 		return choices
+
+	@classmethod
+	def sort_choices(cls, choices):
+		return sorted(choices, key=lambda choice: choice['label'] if isinstance(choice, dict) else choice[1])
 
 	def get_widget_choices_options(self, udm_property):
 		opts = _default_widget_options(self)
@@ -6451,7 +6461,7 @@ class Country(select):
 		iso_3166.set_language(str(translation.locale))
 		_iso_3166 = iso_3166.translate
 
-		cls.choices = [
+		choices = [
 			('AF', _iso_3166(u'Afghanistan')), ('AX', _iso_3166(u'\xc5land Islands')),
 			('AL', _iso_3166(u'Albania')), ('DZ', _iso_3166(u'Algeria')),
 			('AS', _iso_3166(u'American Samoa')), ('AD', _iso_3166(u'Andorra')),
@@ -6568,7 +6578,7 @@ class Country(select):
 			('VI', _iso_3166(u'Virgin Islands, U.S.')), ('WF', _iso_3166(u'Wallis and Futuna')),
 			('EH', _iso_3166(u'Western Sahara')), ('YE', _iso_3166(u'Yemen')), ('ZM', _iso_3166(u'Zambia')),
 			('ZW', _iso_3166(u'Zimbabwe'))]
-		cls.choices.sort(key=itemgetter(1))
+		cls.choices = cls.sort_choices(choices)
 
 
 __register_choice_update_function(Country.update_choices)
@@ -6636,7 +6646,7 @@ class UDM_Syntax(combobox):
 	@classmethod
 	def update_choices(cls):
 		mod = sys.modules[__name__]
-		cls.choices = sorted(
+		cls.choices = cls.sort_choices(
 			(sym, sym)
 			for sym, obj in ((sym, getattr(mod, sym)) for sym in dir(mod))
 			if isinstance(obj, type) and issubclass(obj, ISyntax)
