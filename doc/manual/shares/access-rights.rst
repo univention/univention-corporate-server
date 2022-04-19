@@ -33,8 +33,7 @@ sticky bit
    directory can only be deleted by the owner of the file or the root user.
 
 Access control lists allow even more complex permission models. The
-configuration of ACLs is described in `SDB 1042
-<https://help.univention.com/c/knowledge-base/supported/48>`_.
+configuration of ACLs is described in `SDB 1042 <univention-kb_>`_.
 
 In the Unix permission model - and thus under UCS - write permission is not
 sufficient to change the permissions of a file. This is limited to the

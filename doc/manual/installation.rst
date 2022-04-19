@@ -554,8 +554,7 @@ Troubleshooting for installation problems
 =========================================
 
 Information on possible installation problems can be found in the `Univention
-Knowledge base <https://help.univention.com/c/knowledge-base/supported/48>`_ in
-the section *Installation*.
+Knowledge base <univention-kb_>`_ in the section *Installation*.
 
 .. _installation-textmode:
 
@@ -572,7 +571,7 @@ and asks for the same settings. After partitioning the hard drive, the system is
 prepared for the first boot and finally restarted.
 
 After restart the configuration may be resumed by using a web browser. The URL
-``https://SERVER-IP-ADDRESS`` or ``http://SERVER-IP-ADDRESS`` has to be opened
+:samp:`https://{SERVER-IP-ADDRESS}` or :samp:`http://{SERVER-IP-ADDRESS}` has to be opened
 within the browser (HTTPS is recommended). After loading the URL a login as user
 ``root`` is required.
 
@@ -618,8 +617,8 @@ Installation as Docker image
 ============================
 
 Univention provides UCS as Docker images in the `Docker Hub
-<https://hub.docker.com/u/univention/>`_. The description of the Docker images
-explains how they can be configured.
+<docker-hub-univention_>`_. The description of the Docker images explains how
+they can be configured.
 
 In a standard installation, the Docker images are used in a network that cannot
 be reached directly from outside the server. If multiple Docker images are used

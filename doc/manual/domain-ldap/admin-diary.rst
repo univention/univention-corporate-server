@@ -54,4 +54,4 @@ Admin Diary front end
    a different host than where the back end is installed, access to the central
    database needs to be configured manually. The required steps for this are
    described in `Admin Diary - How to separate front end and back end
-   <https://help.univention.com/t/admin-diary-how-to-seperate-frontend-and-backend/11331>`_.
+   <univention-kb-admin-diary-separate-frontend-backend_>`_.

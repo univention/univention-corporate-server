@@ -104,9 +104,9 @@ By default a screen size of ``800x600`` pixels and 16 Bit color depth is preset.
 A different value can be set via the |UCSUCRV| :envvar:`grub/gfxmode`. Only
 resolutions are supported which can be set via VESA BIOS extensions. A list of
 available modes can be found in `VESA BIOS Extensions
-<https://en.wikipedia.org/wiki/VESA_BIOS_Extensions>`_. The input must be
-specified in the format :samp:`{HORIZONTAL}x{VERTICAL}@{COLOURDEPTHBIT}`, so for
-example ``1024x768@16``.
+<w-vesa-bios-extensions_>`_. The input must be specified in the format
+:samp:`{HORIZONTAL}x{VERTICAL}@{COLOURDEPTHBIT}`, so for example
+``1024x768@16``.
 
 Kernel options for the started Linux kernel can be passed with the |UCSUCRV|
 :envvar:`grub/append`. |UCSUCRV| :envvar:`grub/xenhopt` can be used to pass
@@ -347,8 +347,7 @@ The *Mode* configures the distribution of the network cards within the bonding:
 
 In addition, there are also a number of other bonding methods. These are
 generally only relevant for special cases and are described under `Linux
-Ethernet Bonding Driver HOWTO
-<https://www.kernel.org/doc/Documentation/networking/bonding.txt>`_.
+Ethernet Bonding Driver HOWTO <kernel-bonding_>`_.
 
 The Media Independent Interface (MII) of the network cards is used to detect
 failed network adapters. The *MII link monitoring frequency* setting
@@ -357,7 +356,7 @@ specifies the testing interval in milliseconds.
 All other bonding parameters can be configured under *Additional bonding
 options*. This is only necessary in exceptional cases; an overview of the
 possible settings can be found under `Linux Ethernet Bonding Driver HOWTO
-<https://www.kernel.org/doc/Documentation/networking/bonding.txt>`_.
+<kernel-bonding_>`_.
 
 Clicking on :guilabel:`Next` allows to optionally assign the bonding interface
 an IP address. If one of the existing network cards which form part of the

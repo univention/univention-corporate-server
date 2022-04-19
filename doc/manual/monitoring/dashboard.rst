@@ -19,7 +19,7 @@ The UCS Dashboard consists of three parts:
 UCS Dashboard
    The *UCS Dashboard* app for the visualization of data from the central
    Database. This component is based on the software `Grafana
-   <https://grafana.com/>`_ [1]_.
+   <grafana_>`_ [1]_.
 
 UCS Dashboard Database
    The *UCS Dashboard Database* app, a time series database for storing of the

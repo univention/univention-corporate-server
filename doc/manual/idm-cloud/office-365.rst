@@ -23,13 +23,11 @@ particularly important point to note for mobile devices.
 Setup
 -----
 
-To setup the Microsoft 365 Connector a Microsoft 365 Administrator
-account, a corresponding Account in the Azure Active Directory, as well
-as a `Domain verified by
-Microsoft <https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/add-custom-domain>`_
-are required. The first two are provided for test purposes by Microsoft
-for free. However to configure the SSO, a separate internet domain where
-TXT records can be created is required.
+To setup the Microsoft 365 Connector a Microsoft 365 Administrator account, a
+corresponding Account in the Azure Active Directory, as well as a `Domain
+verified by Microsoft <microsoft-domain-verify_>`_ are required. The first two
+are provided for test purposes by Microsoft for free. However to configure the
+SSO, a separate internet domain where TXT records can be created is required.
 
 In case there is no Microsoft 365 subscription available, one can be configured
 it via https://www.office.com/ in the *trial for business* section. A connection

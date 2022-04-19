@@ -237,7 +237,7 @@ the subnet entry. These should only be specified via the pool entries.
      - The name of a failover configuration, which must to be configured
        manually in file :file:`/etc/dhcp/local.conf`. Further information can
        be found at `A Basic Guide to Configuring DHCP Failover
-       <https://kb.isc.org/docs/aa-00502>`_.
+       <isc-dhcp-failover_>`_.
 
    * - Allow known clients
      - A computer is identified by its MAC address. If this input field is set

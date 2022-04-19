@@ -223,8 +223,7 @@ Ubuntu domain joins
 
 Univention provides the :program:`Univention Domain Join Assistant` to integrate
 Ubuntu clients into a UCS domain. Documentation and installation instructions
-are available at `Github
-<https://github.com/univention/univention-domain-join>`_.
+are available at `Github <github-univention-domain-join_>`_.
 
 .. _macos-domain-join:
 

@@ -11,7 +11,7 @@ message is rejected. The IP address is checked quickly and in a comparatively
 resource-friendly manner. The check is performed *before* the message is
 accepted. The extensive checking of the content with SpamAssassin and anti-virus
 software is only performed once it has been received. Postfix has `integrated
-support for DNSBLs <http://www.postfix.org/postconf.5.html#reject_rbl_client>`_.
+support for DNSBLs <postfix-reject-rbl-client_>`_.
 
 DNSBLs from various projects and companies are available on the internet. Please
 refer to the corresponding websites for further information on conditions and
@@ -23,8 +23,8 @@ with Postfix:
 :samp:`mail/postfix/smtpd/restrictions/recipient/{SEQUENCE}={RULE}`.
 
 It can be used to configure recipient restrictions via the Postfix option
-``smtpd_recipient_restrictions`` (see
-http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions). The
+``smtpd_recipient_restrictions`` (see `Postfix setting
+smtpd_recipient_restrictions <postfix-smtp-recipient-restrictions_>`_). The
 sequential number is used to sort multiple rules alphanumerically, which can be
 used to influences the ordering.
 

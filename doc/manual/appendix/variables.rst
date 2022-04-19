@@ -1162,7 +1162,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
    Allows to restrict the Kerberos authentication at the SAML identity provider
    to certain IP subnetworks in the `CIDR notation
-   <https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`_, for example
+   <w-classless-inter-domain-routing_>`_, for example
    ``127.0.0.0/16,192.168.0.0/16``. For more information, see
    :ref:`domain-saml`.
 

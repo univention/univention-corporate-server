@@ -8,9 +8,8 @@ Overlay module for recording an account's last successful LDAP bind
    Before using this feature please read :uv:kb:`support article about
    activating the OpenLDAP lastbind overlay module <14404>`.
 
-The optional `lastbind overlay module
-<http://manpages.ubuntu.com/manpages/xenial/man5/slapo-lastbind.5.html>`_ for
-OpenLDAP allows recording the timestamp of the last successful LDAP bind in the
+The optional `lastbind overlay module <lastbind-overlay_>`_ for OpenLDAP allows
+recording the timestamp of the last successful LDAP bind in the
 ``authTimestamp`` attribute and can for example be used to detect unused
 accounts.
 

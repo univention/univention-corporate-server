@@ -217,7 +217,7 @@ Searching for variables and set values
 
 Search templates in the form of regular expressions can also be used in
 the search. The complete format is documented at
-https://docs.python.org/2/library/re.html.
+`Regular expression operations in the Python 2 documentation <python2-re_>`_.
 
 .. _computers-deleting-ucr-variables:
 

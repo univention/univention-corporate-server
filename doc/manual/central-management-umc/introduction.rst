@@ -68,11 +68,10 @@ set the |UCSUCRV| :envvar:`ucs/web/theme` to
 
 The files :file:`/usr/share/univention-web/themes/dark.css` and
 :file:`/usr/share/univention-web/themes/light.css` contain the same list of `CSS
-variables
-<https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties>`_.
-These variables are used in other CSS files and are the supported layer of
-configurability for |UCSWEB|\ s. The names and current use case for these
-variables will not change between UCS upgrades but new ones may be added.
+variables <mozilla-css-custom-properties_>`_. These variables are used in other
+CSS files and are the supported layer of configurability for |UCSWEB|\ s. The
+names and current use case for these variables will not change between UCS
+upgrades but new ones may be added.
 
 Some |UCSWEB|\ s import their own local :file:`custom.css` file which can be
 used to further adjust the design of that page. These are
@@ -80,8 +79,7 @@ used to further adjust the design of that page. These are
 (:ref:`domain-saml-ssologin`) and
 :file:`/usr/share/univention-portal/custom.css` (:ref:`central-portal`). The
 files are empty when installing UCS and are not modified when installing any UCS
-update. Be aware though that a given `CSS selector
-<https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors>`_
+update. Be aware though that a given `CSS selector <mozilla-css-selectors_>`_
 may break when installing any UCS update.
 
 .. _central-management-umc-feedback:

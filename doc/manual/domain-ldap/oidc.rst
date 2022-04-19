@@ -14,7 +14,7 @@ provided by the software :program:`Kopano Konnect`.
 The app can be installed on all system roles. When installing on a UCS system
 with the role |UCSPRIMARYDN| or |UCSBACKUPDN| the :program:`OpenID Connect
 Provider` is made available under the DNS entry for the single sign-on,
-normally this is ``ucs-sso.[Domain name]``.
+normally this is :samp:`ucs-sso.{Domain name}`.
 
 If the app is installed on a different system role, the provider can be reached
 directly via the hostname instead. It should be ensured that the app is
@@ -76,10 +76,10 @@ The command parameters are:
 The connected web service still needs information about the :program:`OpenID
 Connect` endpoints of the provider app for its configuration. If the provider
 app is installed, this information can be found at the URL
-``https://ucs-sso[Domain name]/.well-known/openid-configuration``. If the
+:samp:`https://ucs-sso{[Domain name]}/.well-known/openid-configuration`. If the
 provider app was installed on a system other than |UCSPRIMARYDN| or
 |UCSBACKUPDN|, use the FQDN of the respective server instead of
-``ucs-sso.[Domain name]`` as described above.
+:samp:`ucs-sso.{Domain name}` as described above.
 
 When using :program:`OpenID Connect`, resolvable DNS names and verifiable
 certificates are a prerequisite. This is especially true for client computers of
@@ -102,7 +102,7 @@ available under the set DNS name in a virtual host.
 With version 2 of the :program:`OIDC-Provider App` the authentication to
 :program:`OpenID Connect` works via the SAML Identity Provider of the UCS
 domain. If the SAML Identity Provider is not reachable at the default URL
-``https://ucs-sso.[Domain name]``, the correct URL under which the SAML IdP
+:samp:`https://ucs-sso.{[Domain name]}`, the correct URL under which the SAML IdP
 metadata for the UCS domain can be retrieved must be entered correctly in the
 app settings. If this URL is configured incorrectly, the :program:`OpenID
 Connect Provider` will not start.

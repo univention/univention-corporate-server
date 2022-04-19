@@ -26,11 +26,11 @@ Clients that will be used to access the UCS identity provider have to be
 able to resolve DNS records in the UCS domain. The domain DNS Servers
 should therefore be configured on all clients in order to be able to
 resolve the central DNS record, which by default is
-``ucs-sso.[Domain name]``.
+:samp:`ucs-sso.{[Domain name]}`.
 
 The UCS identity provider is automatically installed on |UCSPRIMARYDN| and
 |UCSBACKUPDN|\ s. Further |UCSBACKUPDN|\ s can be made available in the domain
-to increase fail-safe safety. The default DNS record ``ucs-sso.[Domain name]``
+to increase fail-safe safety. The default DNS record :samp:`ucs-sso.{[Domain name]}`
 is registered to increase fail-safe access to the UCS identity provider. The
 SSL certificate for this record is kept on all participating systems in the
 domain. It is advised to install the UCS domain root certificate on all clients
@@ -51,14 +51,14 @@ Mozilla Firefox
    In the extended Firefox configuration, which can be reached by entering
    ``about:config`` in the Firefox address line, the address of the identity
    provider must be entered in the option
-   ``network.negotiate-auth.trusted-uris``, which is ``ucs-sso.[Domain name]``
+   ``network.negotiate-auth.trusted-uris``, which is :samp:`ucs-sso.{[Domain name]}`
    by default.
 
 Microsoft Internet Explorer; Microsoft Edge
    In the Control Panel, the :guilabel:`Internet Options` must be opened,
    followed by :menuselection:`Security --> Local Intranet --> Sites -->
    Advanced`. The address of the identity provider has to be added, which is
-   ``ucs-sso.[Domain name]`` by default.
+   :samp:`ucs-sso.{[Domain name]}` by default.
 
 The Kerberos authentication can be restricted to certain IP subnets by setting
 the |UCSUCRV| :envvar:`saml/idp/negotiate/filter-subnets` for example to
@@ -71,7 +71,7 @@ Login via *single sign-on*
 --------------------------
 
 The *single sign-on* is the default login for |UCSWEB|\ s, as long as
-``ucs-sso.[Domain name]`` can be reached. To login the domain credentials must
+:samp:`ucs-sso.[Domain name]}` can be reached. To login the domain credentials must
 be provided. For the login directly at the UCS system (i.e., without *single
 sign-on*), follow the link :guilabel:`Login without Single Sign On`.
 
@@ -88,9 +88,8 @@ The *single sign-on* for a particular service can be initiated from the UCS
 identity provider, as well. This saves an extra visit at the external web
 service which redirects to the authentication site. To do so, a link to the UCS
 identity provider page needs to be provided in the form of
-``https://ucs-sso.[Domain
-name]/simplesamlphp/saml2/idp/SSOService.php?spentityid=[Service provider
-identifier]``.
+:samp:`https://ucs-sso.{[Domain name]}/simplesamlphp/saml2/idp/SSOService.php?spentityid={[Service provider
+identifier]}`.
 
 .. _domain-saml-additional-serviceprovider:
 
@@ -111,7 +110,7 @@ provider. The certificate can be downloaded via a link in the UMC
 module. Some service providers may require the UCS identity provider XML
 metadata as a file upload. By default the XML file can be downloaded
 from the URL
-``https://ucs-sso.[Domain name]/simplesamlphp/saml2/idp/metadata.php``.
+:samp:`https://ucs-sso.{[Domain name]}/simplesamlphp/saml2/idp/metadata.php`.
 
 The following attributes can be configured when adding a new service provider.
 
@@ -205,13 +204,13 @@ Some environments may require the UCS Identity Provider to provide multiple
 logical Identity Provider instances. Logical separation is achieved by offering
 different URIs as Identity Provider endpoints.
 
-The default endpoint is ``https://ucs-sso.[Domain
-name]/simplesamlphp/saml2/idp/metadata.php``. Further entries can be created by
+The default endpoint is :samp:`https://ucs-sso.{[Domain
+name]}/simplesamlphp/saml2/idp/metadata.php``. Further entries can be created by
 setting |UCSUCRV|\ s in the form
 :envvar:`saml/idp/entityID/supplement/[identifier]` to ``true`` on all servers
 which serve the UCS Identity Provider. Typically that will be the |UCSPRIMARYDN|
 and all |UCSBACKUPDN|\ s. The :program:`apache2` service must then be reloaded.
 
-For example, to set up another entry under the URI ``https://ucs-sso.[Domain
-name]/simplesamlphp/[secondIDP]/saml2/idp/metadata.php``, the |UCSUCRV|
+For example, to set up another entry under the URI :samp:`https://ucs-sso.{[Domain
+name]}/simplesamlphp/{[secondIDP]}/saml2/idp/metadata.php``, the |UCSUCRV|
 ``saml/idp/entityID/supplement/secondIDP=true`` must be set.

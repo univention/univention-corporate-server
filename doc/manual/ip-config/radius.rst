@@ -5,12 +5,12 @@ RADIUS
 
 The :program:`RADIUS` app increases the security for UCS managed IT
 infrastructures by controlling the access to the wireless network for users,
-groups and endpoint devices via `RADIUS protocol
-<https://en.wikipedia.org/wiki/RADIUS>`_. The configuration is done via deny
-and allow lists and directly at user, group and endpoint device objects in the
-UCS management system. Registered users are authenticated with their usual
-domain credentials or, alternatively, with a specifically for RADIUS generated
-password, which, among others, also allows bring your own device concepts.
+groups and endpoint devices via `RADIUS protocol <w-radius_>`_. The
+configuration is done via deny and allow lists and directly at user, group and
+endpoint device objects in the UCS management system. Registered users are
+authenticated with their usual domain credentials or, alternatively, with a
+specifically for RADIUS generated password, which, among others, also allows
+bring your own device concepts.
 
 .. _ip-config-radius-installation:
 
@@ -20,7 +20,7 @@ Installation
 :program:`RADIUS` is available through the App Center (see
 :ref:`software-appcenter`) and can be installed using the UMC module
 :guilabel:`App Center`. It can be installed on multiple machines. After the
-installation it runs a `FreeRADIUS <https://freeradius.org/>`_ server.
+installation it runs a `FreeRADIUS <freeradius_>`_ server.
 Authenticators (e.g.  access points) can contact via RADIUS to check network
 access requests.
 

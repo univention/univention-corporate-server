@@ -298,9 +298,9 @@ If a user has requested to delete their account, it will not be deleted directly
 but deactivated. In addition the ``DeregisteredThroughSelfService`` attribute of
 the user will be set to ``TRUE`` and the ``DeregistrationTimestamp`` attribute
 of the user will be set to the current time in the `GeneralizedTime LDAP syntax
-<https://ldapwiki.com/wiki/GeneralizedTime>`_. If the user has a
-``PasswordRecoveryEmail`` set they will receive a notification email which can
-be configured with the following |UCSUCRV|\ s.
+<ldap-generalized-time_>`_. If the user has a ``PasswordRecoveryEmail`` set they
+will receive a notification email which can be configured with the following
+|UCSUCRV|\ s.
 
 .. envvar:: umc/self-service/account-deregistration/email/sender_address
 

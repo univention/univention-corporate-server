@@ -267,7 +267,7 @@ Installation of Group Policy Management
 :program:`Group Policy Management` can be installed as a component of the
 *Remote Server Administration Tools* on Windows clients. They can be found at
 `Remote Server Administration Tools (RSAT) for Windows 10
-<https://www.microsoft.com/en-us/download/details.aspx?id=45520>`_.
+<microsoft-rsat-tools_>`_.
 
 .. _windows-gpo-activate:
 
