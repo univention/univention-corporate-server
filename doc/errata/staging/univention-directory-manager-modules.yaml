@@ -24,4 +24,6 @@ desc: |
  * The syntax `emailAddress` (and its children) are now checked against the
    external library python-email-validator by default. This can be disabled
    with the new UCRV `directory/manager/mail-address/extra-validation`.
-bug: [20235, 42080, 55279, 55096, 55394, 54064, 55413]
+ * The `policies/umc` module now also applied to `computer` objects as the
+   UMC-Server evaluated them also for those.
+bug: [20235, 42080, 55279, 55096, 55394, 54064, 55413, 54568]

@@ -62,7 +62,7 @@ module = 'policies/umc'
 operations = ('add', 'edit', 'remove', 'search')
 
 policy_oc = 'umcPolicy'
-policy_apply_to = ['users/user', 'users/ldap', 'groups/group']
+policy_apply_to = ['users/user', 'users/ldap', 'groups/group', 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver']
 policy_position_dn_prefix = 'cn=UMC'
 
 childs = False

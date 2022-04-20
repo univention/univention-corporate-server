@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.13-20) unstable; urgency=medium
+
+  * Bug #54568: apply policies/umc also to computer objects
+
+ -- Florian Best <best@univention.de>  Fri, 11 Nov 2022 13:16:32 +0100
+
 univention-directory-manager-modules (15.0.13-19) unstable; urgency=medium
 
   * Bug #55413: Less strict mail validation
