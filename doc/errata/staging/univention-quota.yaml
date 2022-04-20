@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-quota
-fix: 
+fix: 14.0.1-10A~5.0.0.202204201908
 desc: |
  This update addresses the following issue:
  * Setting quotas for accounts with a fully numeric username
