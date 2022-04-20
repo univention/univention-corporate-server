@@ -3125,6 +3125,7 @@ python3-httplib2
 python3-idna
 python3-imagesize
 python3-jinja2
+python3-jose
 python3-json-pointer
 python3-jsonpatch
 python3-jsonschema
