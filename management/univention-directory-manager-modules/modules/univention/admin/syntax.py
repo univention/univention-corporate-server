@@ -3621,20 +3621,6 @@ class UMC_CommandPattern(complex):
     size = ('One', 'One')
 
 
-class LDAP_Server(UDM_Objects):
-    """
-    Syntax to select a |LDAP| server.
-
-    .. deprecated:: 4.4-0
-            Use :py:class:`DomainController`.
-    """
-
-    udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave')
-    udm_filter = '!(univentionObjectFlag=docker)'
-    label = '%(fqdn)s'
-    simple = True
-
-
 class IMAP_POP3(select):
     """Syntax to select between |IMAP| and POP3."""
 
