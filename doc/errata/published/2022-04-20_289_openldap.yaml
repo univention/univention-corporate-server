@@ -13,3 +13,5 @@ cve:
   - TEMP-2022-1
 ignore:
   - cve.TEMP-2022-1
+erratum: 289
+announced: 2022-04-20
