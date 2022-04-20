@@ -49,7 +49,7 @@ BUILD_THEME_DIR=$(BUILD_DIR)/dijit/themes/umc
 
 .PHONY: build install clean tmp-build tmp-umc-icons build-dev build-live i18n
 
-build: $(BUILD_DIR)/dojo/dojo.js $(BUILD_THEME_DIR)/umc.css $(BUILD_DIR)/config.js css/themes/dark.css css/themes/light.css
+build: $(BUILD_DIR)/dojo/dojo.js $(BUILD_THEME_DIR)/umc.css $(BUILD_DIR)/config.js $(BUILD_DIR)/mqtt.js css/themes/dark.css css/themes/light.css
 
 $(BUILD_DIR)/dojo/dojo.js $(BUILD_THEME_DIR)/umc.css: build_profile.js tmp-build
 	# main dojo build process
@@ -116,7 +116,7 @@ PNG_IMG_FILES := $(filter-out css/images/login_logo.png css/images/feather-sprit
 ALL_IMG_FILES := $(IMG_FILES) $(WHITE_IMG_FILES) $(PNG_IMG_FILES)
 TMP_IMG_FILES := $(patsubst css/%,$(TMP_THEME_DIR)/%,$(ALL_IMG_FILES))
 
-tmp-build: $(TMP_JS_FILES) $(TMP_DOJO_PACKAGES) $(TMP_I18N_FILES) $(TMP_DIR)/umc/package.json $(TMP_DIR)/umc/_all.js $(TMP_DIR)/login/main.js $(TMP_DIR)/config.js $(TMP_THEME_DIR)/umc.css $(TMP_THEME_DIR)/login.css $(TMP_THEME_DIR)/dijit.css $(TMP_THEME_DIR)/bootstrap.css $(TMP_FONT_FILES) $(TMP_IMG_FILES) css/themes/dark.css css/themes/light.css
+tmp-build: $(TMP_JS_FILES) $(TMP_DOJO_PACKAGES) $(TMP_I18N_FILES) $(TMP_DIR)/umc/package.json $(TMP_DIR)/umc/_all.js $(TMP_DIR)/login/main.js $(TMP_DIR)/config.js $(TMP_DIR)/mqtt.js $(TMP_THEME_DIR)/umc.css $(TMP_THEME_DIR)/login.css $(TMP_THEME_DIR)/dijit.css $(TMP_THEME_DIR)/bootstrap.css $(TMP_FONT_FILES) $(TMP_IMG_FILES) css/themes/dark.css css/themes/light.css
 
 $(TMP_JS_FILES):
 	@# create symlinks for all JavaScript files
@@ -161,6 +161,11 @@ $(TMP_DIR)/login/main.js:
 
 %/config.js: config.js
 	# copy the config.js to its appropriate directory
+	mkdir -p $(@D)
+	sed 's/%VERSION%/$(VERSION)/' $< > $@
+
+%/mqtt.js: mqtt.js
+	# copy the mqtt.js to its appropriate directory
 	mkdir -p $(@D)
 	sed 's/%VERSION%/$(VERSION)/' $< > $@
 
