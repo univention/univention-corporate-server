@@ -208,7 +208,7 @@ _quota() {
 	case "$mtype" in
 		local)
 			if [[ "$qtype" == "local" ]]; then
-				setquota -u "$user" "$soft" "$limit" 0 0 "$fs"
+				setquota --always-resolve -u "$user" "$soft" "$limit" 0 0 "$fs"
 			fi
 			__quota "$user" "$fs/$file" "$limit"
 			rc=$?

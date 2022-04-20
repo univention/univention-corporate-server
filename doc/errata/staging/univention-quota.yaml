@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-quota
+fix: 
+desc: |
+ This update addresses the following issue:
+ * Setting quotas for accounts with a fully numeric username
+   did not work. This has been fixed.
+bug: [54638]

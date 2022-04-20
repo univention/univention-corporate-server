@@ -1,3 +1,9 @@
+univention-quota (14.0.1-10) unstable; urgency=medium
+
+  * Bug #54638: Make setquota work for strictly numeric account names
+
+ -- Arvid <requate@univention.de>  Thu, 31 Mar 2022 09:46:18 +0200
+
 univention-quota (14.0.1-9) unstable; urgency=medium
 
   * Bug #53665: rename css class

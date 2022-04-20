@@ -113,7 +113,7 @@ def repquota_parse(partition, output):
 
 
 def setquota(partition, user, bsoft, bhard, fsoft, fhard):
-	return subprocess.call(['/usr/sbin/setquota', '-u', user, str(bsoft), str(bhard), str(fsoft), str(fhard), partition])
+	return subprocess.call(['/usr/sbin/setquota', '--always-resolve', '-u', user, str(bsoft), str(bhard), str(fsoft), str(fhard), partition])
 
 
 class QuotaActivationError(Exception):
