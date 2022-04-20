@@ -280,6 +280,7 @@ def rewrite_rev(filter, subnet):
 
 
 lookup = object.lookup
+lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr):

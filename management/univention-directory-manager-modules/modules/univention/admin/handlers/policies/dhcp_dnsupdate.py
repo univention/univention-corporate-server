@@ -173,4 +173,5 @@ class object(univention.admin.handlers.simplePolicy):
 
 
 lookup = object.lookup
+lookup_filter = object.lookup_filter
 identify = object.identify

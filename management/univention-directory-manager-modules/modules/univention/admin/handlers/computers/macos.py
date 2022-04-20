@@ -274,3 +274,4 @@ class object(ComputerObject):
 
 identify = object.identify
 lookup = object.lookup
+lookup_filter = object.lookup_filter

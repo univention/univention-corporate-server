@@ -291,6 +291,7 @@ class object(ComputerObject):
 
 
 lookup = object.lookup
+lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr, canonical=False):

@@ -206,4 +206,5 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 lookup = object.lookup
+lookup_filter = object.lookup_filter
 identify = object.identify
