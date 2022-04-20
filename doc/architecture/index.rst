@@ -27,8 +27,8 @@ This document is for consultants, administrators, solution architects, software
 developers and system engineers. It describes the technical architecture of UCS
 on three different detail levels.
 
-The first, high level, :ref:`classifies UCS in the known IT world
-<classification>` and describes the :ref:`concepts <concepts>`. This view helps
+The first, high level, :ref:`positions UCS in the known IT world
+<positioning>` and describes the :ref:`concepts <concepts>`. This view helps
 readers to understand the principles of UCS. Chapters 2 and 3 assume you are
 familiar with information technology in general and that you have heard of
 computer network building blocks and software.

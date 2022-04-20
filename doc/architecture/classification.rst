@@ -1,8 +1,8 @@
-.. _classification:
+.. _positioning:
 
-******************************
-Classification in the IT world
-******************************
+***************************
+Positioning in the IT world
+***************************
 
 To comprehend the architecture of Univention Corporate Server (UCS), it is
 important to understand the origin and where it is located in the world of

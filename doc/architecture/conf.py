@@ -37,6 +37,7 @@ extensions = [
     "univention_sphinx_extension",
     "sphinx_last_updated_by_git",
     "sphinxcontrib.inkscapeconverter",
+    "sphinxext.rediraffe",
 ]
 
 root_doc = "contents"
@@ -52,6 +53,9 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 rst_epilog = """
 .. include:: /links.txt
 """
+
+rediraffe_redirects = "redirects.txt"
+rediraffe_branch = "5.0-1"
 
 
 # -- Options for HTML output -------------------------------------------------
