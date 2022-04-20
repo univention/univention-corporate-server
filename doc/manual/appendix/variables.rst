@@ -1097,7 +1097,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    :ref:`ip-config-radius-configuration-mac-filtering`.
 
 
-.. envvar:: radius/service-specific-password
+.. envvar:: radius/use-service-specific-password
 
    To use a dedicated user password for RADIUS instead of the domain password,
    set the value to ``true``. For more information, see

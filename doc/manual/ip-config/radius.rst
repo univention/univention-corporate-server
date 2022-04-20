@@ -55,7 +55,7 @@ Service specific password
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By default, users authenticate with their domain password. By setting the
-|UCSUCRV| :envvar:`radius/service-specific-password` to ``true``, a dedicated
+|UCSUCRV| :envvar:`radius/use-service-specific-password` to ``true``, a dedicated
 password for RADIUS will be used. Through the :ref:`Self Service app
 <user-management-password-changes-by-users>`, users can get such a password. The
 system will generate a random password for users to use. If needed, a new
