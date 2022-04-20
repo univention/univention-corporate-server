@@ -15,8 +15,8 @@ product. For instructions about how to install and use UCS, see the `UCS manual
 The document is released iteratively after each part is finished. The beginning
 is at the first, high level.
 
-Your feed is welcome and highly appreciated. If you have comments, suggestions,
-or criticism, please send your `feedback
+Your feedback is welcome and highly appreciated. If you have comments, suggestions,
+or criticism, please `send your feedback
 <https://www.univention.com/feedback/?architecture=generic>`_ for document
 improvement.
 
