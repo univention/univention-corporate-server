@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: python-keycloak
-fix: 0.27.0-1A~5.0.0.202204201437
+fix: 0.27.0-1A~5.0.0.202204201457
 desc: |
  This update addresses the following issue:
  * A Debian package has been created to make the Python 3 module `keycloak`
