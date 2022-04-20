@@ -10,3 +10,5 @@ desc: |
    Docker Apps: App specific goes at the end so the App Center does not
    overwrite them with other values.
 bug: [54667]
+erratum: 1227
+announced: 2022-04-20
