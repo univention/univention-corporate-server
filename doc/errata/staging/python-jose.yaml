@@ -9,3 +9,4 @@ desc: |
  * The Debian package `python-jose` has been created to make the Python 3
    module `keycloak` available for installation in UCS.
 bug: [54666]
+maintained: true

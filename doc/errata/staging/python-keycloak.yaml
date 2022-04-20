@@ -10,3 +10,4 @@ desc: |
    available for installation in UCS. It will be used for configuration of
    the Keycloak app.
 bug: [54666]
+maintained: true
