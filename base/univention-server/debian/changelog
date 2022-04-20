@@ -1,3 +1,9 @@
+univention-server (15.0.4-8) unstable; urgency=medium
+
+  * Bug #53205: move samba call to the end of changes queue in server_password_change
+
+ -- Juan Pedro Torres <torres-munoz.extern@univention.de>  Thu, 21 Apr 2022 10:36:47 +0200
+
 univention-server (15.0.4-7) unstable; urgency=medium
 
   * Bug #53182: Add timestamps to server_password_change log messages
