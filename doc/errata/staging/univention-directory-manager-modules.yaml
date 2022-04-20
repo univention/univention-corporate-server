@@ -18,4 +18,7 @@ desc: |
  * The OpenAPI schema of the UDM REST API has been improved.
  * The error format of the UDM REST API now contains property information
    about email address validation failures.
-bug: [20235, 42080, 55279, 55096, 55394]
+ * A missing call to the super method `open()` has been added in the
+   `nagios/service` UDM module so that it is available in the UDM REST API
+   again.
+bug: [20235, 42080, 55279, 55096, 55394, 54064]

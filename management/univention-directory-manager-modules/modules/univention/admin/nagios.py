@@ -160,9 +160,9 @@ class Support(object):
 					for aRecord in res[0][1]['aRecord']:
 						filter += filter_format('(aRecord=%s)', [aRecord.decode('ASCII')])
 					filter += filter_format('(cn=%s))', [relDomainName])
-					res = self.lo.search(filter)
+					res = self.lo.searchDn(filter)
 					if res:
-						parentlist.append(res[0][0])
+						parentlist.append(res[0])
 
 		return parentlist
 

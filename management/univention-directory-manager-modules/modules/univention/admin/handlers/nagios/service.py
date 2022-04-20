@@ -251,6 +251,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return info
 
 	def open(self):
+		super(object, self).open()
 		_re = re.compile(r'^([^.]+)\.(.+?)$')
 		# convert host FQDN to host DN
 		hostlist = []
