@@ -10,3 +10,5 @@ desc: |
    module `keycloak` available for installation in UCS.
 bug: [54666]
 maintained: true
+erratum: 291
+announced: 2022-04-20
