@@ -3129,6 +3129,7 @@ python3-json-pointer
 python3-jsonpatch
 python3-jsonschema
 python3-jwt
+python3-keycloak
 python3-lasso
 python3-lazy-object-proxy
 python3-ldap
