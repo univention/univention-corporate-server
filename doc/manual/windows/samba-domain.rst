@@ -1,4 +1,4 @@
-.. _windows-addomain:
+.. _windows-ad-domain:
 
 Operation of a Samba domain based on Active Directory
 =====================================================
@@ -15,14 +15,14 @@ domain controller*. Alternatively, the software package
 |UCSPRIMARYDN| and |UCSBACKUPDN| the :program:`univention-s4-connector` package
 must also be installed and :command:`univention-run-join-scripts` command must
 be run after installation. Additional information can be found in
-:ref:`computers-softwaremanagement-installsoftware`.
+:ref:`computers-softwaremanagement-install-software`.
 
 A Samba member server can be installed on UCS Managed Nodes from the Univention
 App Center with the application :program:`Windows-compatible Fileserver`.
 Alternatively, the software package :program:`univention-samba` can be installed
 (:command:`univention-run-join-scripts` command must be run after installation).
 Additional information can be found in
-:ref:`computers-softwaremanagement-installsoftware`.
+:ref:`computers-softwaremanagement-install-software`.
 
 Samba supports the operation as a *read-only domain controller*. The setup is
 documented in :cite:t:`ext-doc-win`.
@@ -142,7 +142,7 @@ credentials of the machine account are used automatically:
    (..)
 
 
-.. _windows-multimaster:
+.. _windows-multi-primary:
 
 Replication of directory data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -185,7 +185,7 @@ standard - can be configured using the |UCSUCRV|
 Configuration and management of Windows desktops
 ------------------------------------------------
 
-.. _gruppenrichtlinien:
+.. _group-policies:
 
 Group policies
 ~~~~~~~~~~~~~~
@@ -471,7 +471,7 @@ filter rules are defined under *Queries*. The rules are defined in a syntax
 similar to SQL. Examples rules can be found in :cite:t:`microsoft-wmi-filter`
 and :cite:t:`add-wmi-filters`.
 
-.. _netlogon-freigabe-samba4:
+.. _netlogon-share-samba4:
 
 Logon scripts / NETLOGON share
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

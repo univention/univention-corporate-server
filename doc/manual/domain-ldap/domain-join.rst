@@ -176,7 +176,7 @@ the DNS zone of the UCS domain can also be resolved. In addition, the time on
 the client system must also be synchronized with the time on the domain
 controller.
 
-.. _domain-ldap-Windows-10:
+.. _domain-ldap-windows-10:
 
 Windows 10
 ~~~~~~~~~~

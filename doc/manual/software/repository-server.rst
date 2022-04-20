@@ -1,4 +1,4 @@
-.. _software-configrepo:
+.. _software-config-repo:
 
 Configuration of the repository server for updates and package installations
 ============================================================================
@@ -63,7 +63,7 @@ server* policy in the |UCSUMC| module :guilabel:`Computers`. Only UCS server
 systems for which a DNS entry has been configured are shown in the selection
 field (see :ref:`central-policies`).
 
-.. _software-createrepo:
+.. _software-create-repo:
 
 Creating and updating a local repository
 ----------------------------------------

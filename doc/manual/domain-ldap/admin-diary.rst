@@ -17,21 +17,21 @@ the domain. This includes among others:
 
 * Start and end of UCS updates
 
-.. _domain-ldap-adminndiary-list:
+.. _domain-ldap-admindiary-list:
 
 .. figure:: /images/admindiary-list.*
    :alt: View of events in Admin Diary
 
    View of events in Admin Diary
 
-:numref:`domain-ldap-adminndiary-list` shows, how events are shown in the UMC
+:numref:`domain-ldap-admindiary-list` shows, how events are shown in the UMC
 module :guilabel:`Admin Diary`. By default the displayed entries are grouped by
 week and can additionally be filtered through the search field. Selecting an
 entry from the list opens a dialog showing additional details about the who and
-when of the event, as shown in :numref:`domain-ldap-adminndiary-detail`.
+when of the event, as shown in :numref:`domain-ldap-admindiary-detail`.
 Moreover there is the possibility to comment each event.
 
-.. _domain-ldap-adminndiary-detail:
+.. _domain-ldap-admindiary-detail:
 
 .. figure:: /images/admindiary-detail.*
    :alt: Detail view in Admin Diary

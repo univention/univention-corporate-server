@@ -6,7 +6,7 @@ Active Directory Connection
 |UCSUCS| can be operated together with an existing Active Directory domain (AD
 domain) in two different ways. Both modes can be set up using the
 :program:`Active Directory Connection` application from the Univention App
-Center (see :ref:`computers-softwaremanagement-installsoftware`). This is
+Center (see :ref:`computers-softwaremanagement-install-software`). This is
 available on a |UCSPRIMARYDN| and |UCSBACKUPDN|.
 
 The two modes are:
@@ -63,7 +63,7 @@ The setup wizard can be started directly from the UCS installation by selecting
 can be installed with the app *Active Directory Connection* from the Univention
 App Center. Alternatively, the software package
 :program:`univention-ad-connector` can be installed. Further information can be
-found in :ref:`computers-softwaremanagement-installsoftware`.
+found in :ref:`computers-softwaremanagement-install-software`.
 
 .. note::
 
@@ -177,7 +177,7 @@ The following commands demonstrate the steps in an example:
 If needed, the AD domain controller can also be replaced by the
 |UCSPRIMARYDN| at a later point in time. This is possible via the
 :program:`Active Directory Takeover` application (see
-:ref:`windows-adtakeover`).
+:ref:`windows-ad-takeover`).
 
 .. _ad-connector-ad-connector-setup:
 
@@ -239,7 +239,7 @@ The UCS AD Connector is configured using a wizard in the UMC module
 The module can be installed from the Univention App Center with the application
 :program:`Active Directory Connection`. Alternatively, the software package
 :program:`univention-ad-connector` can be installed. Additional information can
-be found in :ref:`computers-softwaremanagement-installsoftware`.
+be found in :ref:`computers-softwaremanagement-install-software`.
 
 .. note::
 
@@ -557,6 +557,8 @@ are ignored (thus remain members of the group).
 
 The description of the group is also synchronized.
 
+.. _windows-groups-particularities:
+
 .. rubric:: Particularities
 
 Take the following particularities into account:
@@ -616,7 +618,7 @@ Take the following particularities into account:
   :samp:`{B}` will be lost. Since :program:`Windows 2008` this limitation no
   longer exists and thus global groups can also be nested in Active Directory.
 
-.. _windows-groups-custommappings:
+.. _windows-groups-custom-mappings:
 
 .. rubric:: Custom mappings
 
@@ -635,7 +637,7 @@ the mapping. The resulting mapping gets written to
 :file:`/var/log/univention/connector-ad-mapping.log` when the |UCSADC| is
 restarted.
 
-.. _ad-connector-benutzer:
+.. _ad-connector-users:
 
 Users
 ~~~~~

@@ -21,7 +21,7 @@ In UCS all these services are provided by Samba.
 UCS supports the mostly automatic migration of an existing Active Directory
 domain to UCS. All users, groups, computer objects and group policies are
 migrated without the need to rejoin the Windows clients. This is documented in
-:ref:`windows-adtakeover`.
+:ref:`windows-ad-takeover`.
 
 Microsoft Active Directory domain controllers cannot join the Samba domain. This
 functionality is planned at a later point in time.

@@ -143,7 +143,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 .. envvar:: cups/server
 
    Defines the print server to be used by a UCS system. For more information,
-   see :ref:`computers-configureprintserver`.
+   see :ref:`computers-configure-print-server`.
 
 
 .. envvar:: directory/manager/templates/alphanum/whitelist
@@ -288,7 +288,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
    Configures the default group name for the domain administrator group. The
    value might be changed during an AD Takeover. For more information, see
-   :ref:`windows-adtakeover-migrate`.
+   :ref:`windows-ad-takeover-migrate`.
 
 
 .. envvar:: grub/append
@@ -540,7 +540,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 .. envvar:: local/repository
 
    Activates and deactivates the local repository. For more information see
-   :ref:`software-createrepo`.
+   :ref:`software-create-repo`.
 
 .. envvar:: logrotate/compress
 
@@ -601,7 +601,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
    Configures Postfix to send all incoming and outgoing emails as blind copy to
    this email address for archive purposes. The variable isn't set per default.
-   For more information, see :ref:`mail-serverconfig-archivefolder`.
+   For more information, see :ref:`mail-serverconfig-archive-folder`.
 
 
 .. envvar:: mail/dovecot/auth/cache_ttl
@@ -1056,7 +1056,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
    Controls if a UCS system stores installation processes in the software
    monitor. To turn it off, set the value ``no``. For more information see
-   :ref:`computers-softwaremonitor`.
+   :ref:`computers-software-monitor`.
 
 .. envvar:: portal/auth-mode
 
@@ -1108,14 +1108,14 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
    Defines another repository server as source for the local mirror. Default
    value: ``updates.software-univention.de``. For more information see
-   :ref:`software-createrepo`.
+   :ref:`software-create-repo`.
 
 
 .. envvar:: repository/online/component/.*/unmaintained
 
    Defines how to deal with unmaintained packages from additional repositories.
    To activate, set the value to ``yes``. For more information see
-   :ref:`software-configrepo`.
+   :ref:`software-config-repo`.
 
 
 .. envvar:: repository/online/server
@@ -1377,4 +1377,4 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
    Configures the default user name for the domain administrator. The value
    might be changed during an AD Takeover. For more information, see
-   :ref:`windows-adtakeover-migrate`.
+   :ref:`windows-ad-takeover-migrate`.

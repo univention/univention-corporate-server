@@ -73,7 +73,7 @@ In addition, the CPU usage, memory usage, free hard disk space and the status of
 the LDAP replication are displayed. In this graphics all servers are displayed
 together.
 
-.. _dashboard-nutzung-server:
+.. _dashboard-use-server:
 
 Server dashboard
 ~~~~~~~~~~~~~~~~

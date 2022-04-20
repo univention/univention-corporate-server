@@ -51,7 +51,7 @@ modifying the setting. The preset maximum size is ``10240000`` bytes. If the val
 is configured to ``0`` the limit is effectively removed. Please note that email
 attachments are enlarged by approximately a third due to the *base64* encoding.
 
-.. _mail-serverconfig-archivefolder:
+.. _mail-serverconfig-archive-folder:
 
 Configuration of a blind carbon copy for mail archiving solutions
 -----------------------------------------------------------------

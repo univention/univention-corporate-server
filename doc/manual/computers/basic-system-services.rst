@@ -44,7 +44,7 @@ locale*.
 The *Keyboard layout* in the menu entry *Time zone and keyboard settings* is
 applied during local logins to the system.
 
-.. _computers-systemservices:
+.. _computers-system-services:
 
 Starting/stopping system services / configuration of automatic startup
 ----------------------------------------------------------------------
@@ -127,7 +127,7 @@ order to improve redundancy. In cases of an environment distributed over
 several locations, preference should be given to LDAP servers from the local
 network.
 
-.. _computers-configureprintserver:
+.. _computers-configure-print-server:
 
 Configuration of the print server in use
 ----------------------------------------

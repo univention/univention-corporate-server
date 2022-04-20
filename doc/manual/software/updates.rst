@@ -34,10 +34,10 @@ Updating individual systems via |UCSUMC| module
 The UMC module :guilabel:`Software update` allows the installation of release
 updates and errata updates.
 
-:numref:`software-umcupdate` shows the overview page of the module. The
+:numref:`software-umc-update` shows the overview page of the module. The
 currently installed version is displayed under :guilabel:`Release updates`.
 
-.. _software-umcupdate:
+.. _software-umc-update:
 
 .. figure:: /images/software_onlineupdate.*
    :alt: Updating a UCS system via UMC module 'Software update'
@@ -86,7 +86,7 @@ disconnection from the network. This can be done, for example, using the tools
 The messages created during the update are written to the file
 :file:`/var/log/univention/updater.log`
 
-.. _computers-softwaremanagement-releasepolicy:
+.. _computers-softwaremanagement-release-policy:
 
 Updating systems via a policy
 -----------------------------
@@ -95,7 +95,7 @@ An update for more than one computer can be configured with an
 :guilabel:`Automatic updates` policy in the UMC modules :guilabel:`Computers`
 and :guilabel:`LDAP directory` (see :ref:`central-policies`).
 
-.. _software-policyupdate:
+.. _software-policy-update:
 
 .. figure:: /images/software_policy.*
    :alt: Updating UCS systems using an update policy
@@ -111,7 +111,7 @@ the system continues updating to the highest available version number.
 
 The point at which the update should be performed is configured via a
 :guilabel:`Maintenance` policy (see
-:ref:`computers-softwaremanagement-maintenancepolicy`).
+:ref:`computers-softwaremanagement-maintenance-policy`).
 
 The messages created during the update are written to the file
 :file:`/var/log/univention/updater.log`.

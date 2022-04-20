@@ -11,7 +11,7 @@ registered at an external service with a cryptographic certificate and
 establishes a trust relationship. The user then only needs to authenticate
 himself against UCS and can use the service without renewed authentication.
 
-.. _domain-saml-samllogin:
+.. _domain-saml-saml-login:
 
 .. figure:: /images/sso_login.*
    :alt: The single sign-on login page
@@ -65,7 +65,7 @@ the |UCSUCRV| :envvar:`saml/idp/negotiate/filter-subnets` for example to
 ``127.0.0.0/16,192.168.0.0/16``. This is especially useful to prevent a pop up
 login box being shown for clients which are not part of the UCS domain.
 
-.. _domain-saml-ssologin:
+.. _domain-saml-sso-login:
 
 Login via *single sign-on*
 --------------------------

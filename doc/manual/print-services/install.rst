@@ -8,4 +8,4 @@ application :program:`Print server (CUPS)`. Alternatively, the software package
 :program:`univention-printserver` can be installed
 (:command:`univention-run-join-scripts` must be executed after installation).
 Additional information can be found in
-:ref:`computers-softwaremanagement-installsoftware`.
+:ref:`computers-softwaremanagement-install-software`.

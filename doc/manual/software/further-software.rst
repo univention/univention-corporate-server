@@ -1,4 +1,4 @@
-.. _computers-softwaremanagement-installsoftware:
+.. _computers-softwaremanagement-install-software:
 
 Installation of further software
 ================================
@@ -12,7 +12,7 @@ individual packages can also be specifically installed and removed for further
 tasks. When installing a package, it is sometimes necessary to install
 additional packages, which are required for the proper functioning of the
 package. These are called package dependencies. All software components are
-loaded from a repository (see :ref:`software-configrepo`).
+loaded from a repository (see :ref:`software-config-repo`).
 
 Software which is not available in the Debian package format should be installed
 into the :file:`/opt/` or :file:`/usr/local/` directories. These directories are
@@ -48,7 +48,7 @@ Installation/removal of individual packages via |UCSUMC| module
 The UMC module :guilabel:`Package Management` can be used to
 install and uninstall individual software packages.
 
-.. _software-umcinstall:
+.. _software-umc-install:
 
 .. figure:: /images/software_install.*
    :alt: Installing the package univention-squid via |UCSUMC| module 'Package management'
@@ -142,7 +142,7 @@ can be found in the manual with :command:`man run-parts`.
 The :file:`/var/log/univention/appcenter.log` contains
 possible scripting error messages and further hints.
 
-.. _computers-softwaremanagement-packagelists:
+.. _computers-softwaremanagement-package-lists:
 
 Policy-based installation/deinstallation of individual packages via package lists
 ---------------------------------------------------------------------------------
@@ -172,6 +172,6 @@ Package policies are managed in the UMC module :guilabel:`Policies` with the
 
 The software packages defined in a package list are installed/uninstalled at the
 time defined in the :guilabel:`Maintenance` policy (for the configuration see
-:ref:`computers-softwaremanagement-maintenancepolicy`).
+:ref:`computers-softwaremanagement-maintenance-policy`).
 
 The software assignable in the package policies are also registered in the LDAP.

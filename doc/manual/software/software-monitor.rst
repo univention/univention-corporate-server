@@ -1,4 +1,4 @@
-.. _computers-softwaremonitor:
+.. _computers-software-monitor:
 
 Central monitoring of software installation statuses with the software monitor
 ==============================================================================
@@ -14,7 +14,7 @@ and for use in identifying problems.
 The software monitor can be installed from the Univention App Center with the
 application :program:`Software installation monitor`. Alternatively, the
 software package :program:`univention-pkgdb` can be installed. Additional
-information can be found in :ref:`computers-softwaremanagement-installsoftware`.
+information can be found in :ref:`computers-softwaremanagement-install-software`.
 
 UCS systems update their entries automatically when software is installed,
 uninstalled or updated. The system on which the software monitor is operated is

@@ -1,4 +1,4 @@
-.. _windows-adtakeover:
+.. _windows-ad-takeover:
 
 Migrating an Active Directory domain to UCS using Univention AD Takeover
 ========================================================================
@@ -39,7 +39,7 @@ Univention App Center for the migration. It must be installed on the system
 where the Univention S4 Connector is running (see :ref:`windows-s4-connector`,
 usually the |UCSPRIMARYDN|).
 
-.. _windows-adtakeover-preparations:
+.. _windows-ad-takeover-preparations:
 
 Preparation
 -----------
@@ -73,7 +73,7 @@ Directory Users and Computers` module or by running the following two commands:
    > net user administrator PASSWORD
 
 
-.. _windows-adtakeover-migrate:
+.. _windows-ad-takeover-migrate:
 
 Domain migration
 ----------------
@@ -211,7 +211,7 @@ The following steps are now automatically performed:
 
 #. Finally restart Samba and the DNS server.
 
-.. _windows-adtakeover-finalsteps:
+.. _windows-ad-takeover-finalsteps:
 
 Final steps of the takeover
 ---------------------------
@@ -248,7 +248,7 @@ Finally the following steps are required:
 
 #. All Windows clients need to be rebooted.
 
-.. _windows-adtakeover-tests:
+.. _windows-ad-takeover-tests:
 
 Tests
 -----

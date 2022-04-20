@@ -26,7 +26,7 @@ Installation
 Squid can be installed from the Univention App Center with the application
 :program:`Web proxy / web cache (Squid)`. Alternatively, the software package
 :program:`univention-squid` can be installed. Additional information can be
-found in :ref:`computers-softwaremanagement-installsoftware`.
+found in :ref:`computers-softwaremanagement-install-software`.
 
 The service is configured with standard settings sufficient for operation so
 that it can be used immediately. It is possible to configure the port on which

@@ -147,7 +147,7 @@ The keyboard layout can be selected independently of the system language. The
 language selected here should be compatible with the keyboard used as it may
 otherwise cause operating problems.
 
-.. _installation-keyboardselection:
+.. _installation-keyboard-selection:
 
 .. figure:: /images/installer-keyboardselection.*
    :alt: Selecting the keyboard layout
@@ -225,7 +225,7 @@ server manually. They depend on the intended subsequent use of the UCS system.
   should be specified as the DNS server. This is essential for the automatic
   detection of the Windows Active Directory domain controller to function.
 
-.. _installation-rootpassword:
+.. _installation-root-password:
 
 Setting up the root password
 ============================
@@ -290,7 +290,7 @@ There are three schemes available for selection for guided partitioning:
    In all three versions, the data already on the selected hard drive are
    deleted during the partitioning!
 
-.. _installation-partman-selectguided:
+.. _installation-partman-select-guided:
 
 .. figure:: /images/installer-partman-selectguided.*
    :alt: Selecting the partitioning scheme
@@ -316,7 +316,7 @@ number of file systems created:
 Before every active change to the hard drive, the change is displayed again in
 an additional dialogue and must be confirmed explicitly.
 
-.. _installation-partman-writelvm:
+.. _installation-partman-write-lvm:
 
 .. figure:: /images/installer-partman-writelvm.*
    :alt: Confirmation of changes to the hard drive
@@ -367,7 +367,7 @@ steps:
   system to be configured to join an existing UCS domain. What UCS system role
   it is to take on in the domain is queried at a later stage.
 
-.. _installation-domainrole:
+.. _installation-domain-role:
 
 .. figure:: /images/installer-domainrole.*
    :alt: Domain settings
@@ -556,7 +556,7 @@ Troubleshooting for installation problems
 Information on possible installation problems can be found in the `Univention
 Knowledge base <univention-kb_>`_ in the section *Installation*.
 
-.. _installation-textmode:
+.. _installation-text-mode:
 
 Installation in text mode
 =========================

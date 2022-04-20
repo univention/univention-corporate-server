@@ -20,7 +20,7 @@ parameters in the subordinate objects.
 A DHCP server can be installed from the Univention App Center with the
 application :program:`DHCP server`. Alternatively, the software package
 :program:`univention-dhcp` can be installed. Additional information can be
-found in :ref:`computers-softwaremanagement-installsoftware`.
+found in :ref:`computers-softwaremanagement-install-software`.
 
 Every DHCP assigns IP addresses via DHCP. In the default setting, only static IP
 addresses are assigned to computer objects registered in the UCS LDAP.
@@ -149,7 +149,7 @@ IP addresses are to be assigned dynamically.
 
 If *DHCP shared subnet* objects are to be used, the corresponding subnets should
 be created below the *DHCP shared subnet* container created for this purpose
-(see :ref:`networks-dhcp-sharedsubnets`).
+(see :ref:`networks-dhcp-shared-subnets`).
 
 .. _ip-config-administration-of-dhcp-subnets-general-tab-table:
 
@@ -316,7 +316,7 @@ service must be selected in the left column of the module. :menuselection:`Add
        entered, which is resolved into one or more IP addresses by the DHCP
        server.
 
-.. _networks-dhcp-sharedsubnets:
+.. _networks-dhcp-shared-subnets:
 
 Management of DHCP shared networks / DHCP shared subnets
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

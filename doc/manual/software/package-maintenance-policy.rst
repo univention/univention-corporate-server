@@ -1,4 +1,4 @@
-.. _computers-softwaremanagement-maintenancepolicy:
+.. _computers-softwaremanagement-maintenance-policy:
 
 Specification of an update point using the package maintenance policy
 =====================================================================
@@ -8,11 +8,11 @@ computer and domain management can be used to specify a point at which the
 following steps should be performed:
 
 * Check for available release updates to be installed (see
-  :ref:`computers-softwaremanagement-releasepolicy`) and, if applicable,
+  :ref:`computers-softwaremanagement-release-policy`) and, if applicable,
   installation.
 
 * Installation/deinstallation of package lists (see
-  :ref:`computers-softwaremanagement-packagelists`)
+  :ref:`computers-softwaremanagement-package-lists`)
 
 * Installation of available errata updates
 

@@ -76,7 +76,7 @@ upgrades but new ones may be added.
 Some |UCSWEB|\ s import their own local :file:`custom.css` file which can be
 used to further adjust the design of that page. These are
 :file:`/usr/share/univention-management-console-login/css/custom.css`
-(:ref:`domain-saml-ssologin`) and
+(:ref:`domain-saml-sso-login`) and
 :file:`/usr/share/univention-portal/custom.css` (:ref:`central-portal`). The
 files are empty when installing UCS and are not modified when installing any UCS
 update. Be aware though that a given `CSS selector <mozilla-css-selectors_>`_
@@ -90,7 +90,7 @@ Feedback on UCS
 By choosing the :menuselection:`Help --> Feedback` option in the upper right
 menu, you can provide feedback on UCS via a web form.
 
-.. _central-management-umc-piwik:
+.. _central-management-umc-matomo:
 
 Collection of usage statistics
 ------------------------------

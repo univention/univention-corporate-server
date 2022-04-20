@@ -1,4 +1,4 @@
-.. _domaenenkonzept:
+.. _domain-concept:
 
 ********************************
 Domain services / LDAP directory
