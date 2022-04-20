@@ -236,8 +236,8 @@ if __name__ == '__main__':
 		log.write('Found %i shares and %i mountpoints\n' % (len(shares), len(mountpoints)))
 		for mountpoint_path, attrs in mountpoints.iteritems():
 			if attrs['reapplyQuota']:
-				log.write('Set quota on mountpoint "%s": /usr/sbin/setquota -u %s %s %s %s %s %s\n' % (mountpoint_path, user, attrs['spaceSoftLimit'], attrs['spaceHardLimit'], attrs['inodeSoftLimit'], attrs['inodeHardLimit'], mountpoint_path))
-				command = ['/usr/sbin/setquota', '-u', user, str(attrs['spaceSoftLimit']), str(attrs['spaceHardLimit']), str(attrs['inodeSoftLimit']), str(attrs['inodeHardLimit']), mountpoint_path]
+				log.write('Set quota on mountpoint "%s": /usr/sbin/setquota --always-resolve -u %s %s %s %s %s %s\n' % (mountpoint_path, user, attrs['spaceSoftLimit'], attrs['spaceHardLimit'], attrs['inodeSoftLimit'], attrs['inodeHardLimit'], mountpoint_path))
+				command = ['/usr/sbin/setquota', '--always-resolve', '-u', user, str(attrs['spaceSoftLimit']), str(attrs['spaceHardLimit']), str(attrs['inodeSoftLimit']), str(attrs['inodeHardLimit']), mountpoint_path]
 				set_quota = subprocess.Popen(command, stderr=log)
 				set_quota.wait()
 			else:

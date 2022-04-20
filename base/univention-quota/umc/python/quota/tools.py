@@ -117,7 +117,7 @@ def repquota_parse(partition, output):
 
 
 def setquota(partition, user, bsoft, bhard, fsoft, fhard):
-	cmd = ('/usr/sbin/setquota', '-u', user, str(bsoft), str(bhard), str(fsoft), str(fhard), partition)
+	cmd = ('/usr/sbin/setquota', '--always-resolve', '-u', user, str(bsoft), str(bhard), str(fsoft), str(fhard), partition)
 	return subprocess.call(cmd)
 
 

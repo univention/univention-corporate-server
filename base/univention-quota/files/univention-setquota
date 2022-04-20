@@ -76,8 +76,8 @@ len=0
 #search for mountpoint
 for mpoint in `cat /etc/mtab | awk '{print $2}'`; do if [ "`echo "$share" | sed -e "s|^$mpoint||"`" != "$share" -a $len -lt `echo $mpoint | wc -m` ]; then len=`echo $mpoint | wc -m`; filesystem=$mpoint; fi; done
 
-echo "/usr/sbin/setquota $type $sid $blocksoft $blockhard $inodesoft $inodehard $filesystem" >> $LOGFILE
-if /usr/sbin/setquota $type $sid $blocksoft $blockhard $inodesoft $inodehard $filesystem >>  /dev/null 2>&1
+echo "/usr/sbin/setquota --always-resolve $type $sid $blocksoft $blockhard $inodesoft $inodehard $filesystem" >> $LOGFILE
+if /usr/sbin/setquota --always-resolve $type $sid $blocksoft $blockhard $inodesoft $inodehard $filesystem >>  /dev/null 2>&1
 	then
 	echo "univention-setquota: done"
 else

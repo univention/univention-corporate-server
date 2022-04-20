@@ -89,13 +89,13 @@ setQuotaForUserOnFilesystem () { # USER FILESYSTEM BSL BHL
 	local ISL=$(quota -wulv "$USER"|tr -s '\t' ' '|grep "^ *$FILESYSTEM "|cut -d' ' -f6)
 	local IHL=$(quota -wulv "$USER"|tr -s '\t' ' '|grep "^ *$FILESYSTEM "|cut -d' ' -f7)
 	verbose "Setting quota $BSL/$BHL ($ISL/$IHL) for $USER on $FILESYSTEM"
-	setquota -u "$USER" "$BSL" "$BHL" "$ISL" "$IHL" "$FILESYSTEM"
+	setquota --always-resolve -u "$USER" "$BSL" "$BHL" "$ISL" "$IHL" "$FILESYSTEM"
 }
 
 userHasQuotaOnFilesystem () { # USER FILESYSTEM
 	local USER="$1"
 	local FILESYSTEM="$2"
-	quota -wul "$USER"|tr -s '\t' ' '|grep -qs "^ *$FILESYSTEM "
+	quota --always-resolve -wul "$USER"|tr -s '\t' ' '|grep -qs "^ *$FILESYSTEM "
 }
 
 usage () {
