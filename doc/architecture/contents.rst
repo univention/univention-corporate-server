@@ -9,7 +9,7 @@ Welcome to Univention Corporate Server architecture!
    :hidden:
 
    index
-   classification
+   positioning
    concepts/index
 
 .. only:: html
