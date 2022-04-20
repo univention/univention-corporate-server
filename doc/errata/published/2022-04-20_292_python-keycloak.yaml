@@ -11,3 +11,5 @@ desc: |
    the Keycloak app.
 bug: [54666]
 maintained: true
+erratum: 292
+announced: 2022-04-20
