@@ -1,0 +1,2475 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021-2022, Univention GmbH
+# This file is distributed under the same license as the Univention
+# Corporate Server - Manual for users and administrators package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Univention Corporate Server - Manual for users and "
+"administrators \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-21 12:53+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../computers/basic-system-services.rst:4
+msgid "Basic system services"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:6
+msgid ""
+"This chapter describes basic system services of a UCS Installation such "
+"as the configuration of the PAM authentication framework, system logs and"
+" the NSCD."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:13
+msgid "Administrative access with the root account"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:15
+msgid ""
+"There is a ``root`` account on every UCS system for complete "
+"administrative access. The password is set during installation of the "
+"system. The root user **is not** stored in the LDAP directory, but "
+"instead in the local user accounts."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:19
+msgid ""
+"The password for the root user can be changed via the command line by "
+"using the :command:`passwd` command. It must be pointed out that this "
+"process does not include any checks regarding either the length of the "
+"password or the passwords used in the past."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:27
+msgid "Configuration of language and keyboard settings"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:29
+msgid ""
+"In Linux, localization properties for software are defined in so-called "
+"*locales*. Configuration includes, among other things, settings for date "
+"and currency format, the set of characters in use and the language used "
+"for internationalized programs. The installed locales can be changed in "
+"the UMC module :guilabel:`Language settings` under "
+":menuselection:`Language settings --> Installed system locales`. The "
+"standard locale is set under *Default system locale*."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:42
+msgid "Configuring the language settings"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:44
+msgid ""
+"The *Keyboard layout* in the menu entry *Time zone and keyboard settings*"
+" is applied during local logins to the system."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:50
+msgid "Starting/stopping system services / configuration of automatic startup"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:52
+msgid ""
+"The UMC module :guilabel:`System services` can be used to check the "
+"current status of a system service and to start or stop it as required."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:60
+msgid "Overview of system services"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:62
+msgid ""
+"In this list of all the services installed on the system, the current "
+"running runtime status and a *Description* are displayed under *Status*. "
+"The service can be started, stopped or restarted under :guilabel:`more`."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:66
+msgid ""
+"By default every service is started automatically when the system is "
+"started. In some situations, it can be useful not to have the service "
+"start directly, but instead only after further configuration. The action "
+"*Start manually* is used so that the service is not started automatically"
+" when the system is started, but can still be started subsequently. The "
+"action *Start never* also prevents subsequent service starts."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:76
+msgid "Authentication / PAM"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:78
+msgid ""
+"Authentication services in Univention Corporate Server are realized via "
+"*Pluggable Authentication Modules* (PAM). To this end different login "
+"procedures are displayed on a common interface so that a new login method"
+" does not require adaptation for existing applications."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:87
+msgid "Limiting authentication to selected users"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:88
+msgid ""
+"By default only the ``root`` user and members of the ``Domain Admins`` "
+"group can login remotely via SSH and locally on a ``tty``."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:91
+msgid ""
+"This restriction can be configured with the |UCSUCRV| "
+":samp:`auth/{SERVICE}/restrict`. Access to this service can be authorized"
+" by setting the variables :samp:`auth/{SERVICE}/user/{USERNAME}` and "
+":samp:`auth/{SERVICE}/group/{GROUPNAME}` to ``yes``."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:96
+msgid ""
+"Login restrictions are supported for *SSH* (``sshd``), login on a *tty* "
+"(``login``), *rlogin* (``rlogin``), *PPP* (``ppp``) and other services "
+"(``other``). An example for *SSH*:"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:100
+msgid ""
+"auth/sshd/group/Administrators: yes\n"
+"auth/sshd/group/Computers: yes\n"
+"auth/sshd/group/DC Backup Hosts: yes\n"
+"auth/sshd/group/DC Slave Hosts: yes\n"
+"auth/sshd/group/Domain Admins: yes\n"
+"auth/sshd/restrict: yes"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:113
+msgid "Configuration of the LDAP server in use"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:115
+msgid ""
+"Several LDAP servers can be operated in a UCS domain. The primary one "
+"used is specified with the |UCSUCRV| :envvar:`ldap/server/name`, further "
+"servers can be specified via the |UCSUCRV| "
+":envvar:`ldap/server/addition`."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:119
+msgid ""
+"Alternatively, the LDAP servers can also be specified via a *LDAP server*"
+" policy. The order of the servers determines the order of the computer's "
+"requests to the server if a LDAP server cannot be reached."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:123
+msgid ""
+"By default only :envvar:`ldap/server/name` is set following the "
+"installation or the domain join. If there is more than one LDAP server "
+"available, it is advisable to assign at least two LDAP servers using the "
+"*LDAP server* policy in order to improve redundancy. In cases of an "
+"environment distributed over several locations, preference should be "
+"given to LDAP servers from the local network."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:133
+msgid "Configuration of the print server in use"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:135
+msgid ""
+"The print server to be used can be specified with the |UCSUCRV| "
+":envvar:`cups/server`."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:138
+msgid ""
+"Alternatively, the server can also be specified via the *Print server* "
+"policy in the UMC module :guilabel:`Computers`."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:144
+msgid "Logging/retrieval of system messages and system status"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:149
+msgid "Log files"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:151
+msgid ""
+"All UCS-specific log files (e.g., for the listener/notifier replication) "
+"are stored in the :file:`/var/log/univention/` directory. Services write "
+"log messages their own standard log files: for example, Apache to the "
+"file :file:`/var/log/apache2/error.log`."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:156
+msgid ""
+"The log files are managed by :program:`logrotate`. It ensures that log "
+"files are named in series in intervals (can be configured in weeks using "
+"the |UCSUCRV| :envvar:`log/rotate/weeks`, with the default setting being "
+"12) and older log files are then deleted. For example, the current log "
+"file for the |UCSUDL| is found in the :file:`listener.log` file; the one "
+"for the previous week in :file:`listener.log.1`, etc."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:163
+msgid ""
+"Alternatively, log files can also be rotated only once they have reached "
+"a certain size. For example, if they are only to be rotated once they "
+"reach a size of 50 MB, the |UCSUCRV| :envvar:`logrotate/rotates` can be "
+"set to ``size 50M``."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:167
+msgid ""
+"The |UCSUCRV| :envvar:`logrotate/compress` is used to configure whether "
+"the older log files are additionally zipped with :command:`gzip`."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:173
+msgid "Logging the system status"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:175
+msgid ""
+":command:`univention-system-stats` can be used to document the current "
+"system status in the :file:`/var/log/univention/system-stats.log` file. "
+"The following values are logged:"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:179
+msgid "The free disk space on the system partitions (:command:`df -lhT`)"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:182
+msgid "The current process list (:command:`ps auxf`)"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:184
+msgid ""
+"Two :command:`top` lists of the current processes and system load "
+"(:command:`top -b -n2`)"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:187
+msgid "The current free system memory (:command:`free`)"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:189
+msgid "The time elapsed since the system was started (:command:`uptime`)"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:192
+msgid ""
+"Temperature, fan and voltage indexes from :program:`lm-sensors` "
+"(:command:`sensors`)"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:196
+msgid "A list of the current Samba connections (:command:`smbstatus`)"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:199
+msgid ""
+"The runtime in which the system status should be logged can be defined in"
+" Cron syntax via the |UCSUCRV| :envvar:`system/stats/cron`, e.g., ``0,30 "
+"\\* \\* \\* \\*`` for logging every half and full hour. The logging is "
+"activated by setting the |UCSUCRV| :envvar:`system/stats` to ``yes``. "
+"This is the default since UCS 3.0."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:207
+msgid "Process overview via |UCSUMC| module"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:209
+msgid ""
+"The UMC module :guilabel:`Process overview` displays a table of the "
+"current processes on the system. The processes can be sorted based on the"
+" following properties by clicking on the corresponding table header:"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:213
+msgid "CPU utilization in percent"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:215
+msgid "The username under which the process is running"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:217
+msgid "Memory consumption in percent"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:219
+msgid "The process ID"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:221
+msgid ""
+"The menu item *more* can be used to terminate processes. Two different "
+"types of termination are possible:"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:226
+msgid "Terminate"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:225
+msgid ""
+"The action :guilabel:`Terminate` sends the process a ``SIGTERM`` signal; "
+"this is the standard method for the controlled termination of programs."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:232
+msgid "Force terminate"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:229
+msgid ""
+"Sometimes, it may be the case that a program - e.g., after crashing - can"
+" no longer be terminated with this procedure. In this case, the action "
+":guilabel:`Force terminate` can be used to send the signal ``SIGKILL`` "
+"and force the process to terminate."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:234
+msgid ""
+"As a general rule, terminating the program with ``SIGTERM`` is preferable"
+" as many programs then stop the program in a controlled manner and, for "
+"example, save open files."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:241
+msgid "System diagnostic via |UCSUMC| module"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:243
+msgid ""
+"The UMC module :guilabel:`System diagnostic` offers a corresponding user "
+"interface to analyze a UCS system for a range of known problems."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:246
+msgid ""
+"The module evaluates a range of problem scenarios known to it and "
+"suggests solutions if it is able to resolve the identified solutions "
+"automatically. This function is displayed via ancillary buttons. In "
+"addition, links are shown to further articles and corresponding UMC "
+"modules."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:254
+msgid "Executing recurring actions with Cron"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:256
+msgid ""
+"Regularly recurring actions (e.g., the processing of log files) can be "
+"started at a defined time with the Cron service. Such an action is known "
+"as a cron job."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:263
+msgid "Hourly/daily/weekly/monthly execution of scripts"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:265
+msgid ""
+"Four directories are predefined on every UCS system, "
+":file:`/etc/cron.hourly/`, :file:`/etc/cron.daily/`, "
+":file:`/etc/cron.weekly/` and :file:`/etc/cron.monthly/`. Shell scripts "
+"which are placed in these directories and marked as executable are run "
+"automatically every hour, day, week or month."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:273
+msgid "Defining local cron jobs in :file:`/etc/cron.d/`"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:278
+msgid ""
+"A cron job is defined in a line, which is composed of a total of seven "
+"columns:"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:280
+msgid "Minute (0-59)"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:282
+msgid "Hour (0-23)"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:284
+msgid "Day (1-31)"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:286
+msgid "Month (1-12)"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:288
+msgid "Weekday (0-7) (0 and 7 both stand for Sunday)"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:290
+msgid "Name of user executing the job (e.g., root)"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:292
+msgid "The command to be run"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:294
+msgid ""
+"The time specifications can be set in different ways. One can specify a "
+"specific minute/hour/etc. or run an action every minute/hour/etc. with a "
+"``*``. Intervals can also be defined, for example ``*/2`` as a minute "
+"specification runs an action every two minutes."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:299
+msgid "Example:"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:301
+msgid ""
+"30 * * * * root /usr/sbin/jitter 600 /usr/share/univention-samba/slave-"
+"sync"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:309
+msgid "Defining cron jobs in Univention Configuration Registry"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:311
+msgid ""
+"Cron jobs can also be defined in |UCSUCR|. This is particularly useful if"
+" they are set via a |UCSUDM| policy and are thus used on more than one "
+"computer."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:315
+msgid ""
+"Each cron job is composed of at least two |UCSUCR| variables. "
+":samp:`{JOBNAME}` is a general description."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:318
+msgid ":samp:`cron/{JOBNAME}/command` specifies the command to be run (required)"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:320
+msgid ""
+":samp:`cron/{JOBNAME}/time` specifies the execution time (see :ref:`cron-"
+"local`) (required)"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:323
+msgid ""
+"As standard, the cron job is run as a user ``root``. "
+":samp:`cron/{JOBNAME}/user` can be used to specify a different user."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:326
+msgid ""
+"If an email address is specified under :samp:`cron/{JOBNAME}/mailto`, the"
+" output of the cron job is sent there per email."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:329
+msgid ":samp:`cron/{JOBNAME}/description` can be used to provide a description."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:334
+msgid "Name service cache daemon"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:336
+msgid ""
+"Data of the NSS service is cached by the *Name Server Cache Daemon* "
+"(NSCD) in order to speed up frequently recurring requests for unchanged "
+"data. Thus, if a repeated request occurs, instead of a complete LDAP "
+"request to be processed, the data are simply drawn directly from the "
+"cache."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:341
+msgid ""
+"Since UCS 3.1, the groups are no longer cached via the NSCD for "
+"performance and stability reasons; instead they are now cached by a local"
+" group cache, see :ref:`groups-cache`."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:345
+msgid ""
+"The central configuration file of the (:file:`/etc/nscd.conf`) is managed"
+" by |UCSUCR|."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:348
+msgid ""
+"The access to the cache is handled via a hash table. The size of the hash"
+" table can be specified in |UCSUCR|, and should be higher than the number"
+" of simultaneously used users/hosts. For technical reasons, a prime "
+"number should be used for the size of the table. The following table "
+"shows the standard values of the variables:"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:354
+#: ../../computers/basic-system-services.rst:359
+msgid "Default size of the hash table"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:358
+msgid "Variable"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:361
+msgid "``nscd /hosts/size``"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:362
+#: ../../computers/basic-system-services.rst:365
+msgid "``6007``"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:364
+msgid "``nscd/passwd/size``"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:367
+msgid ""
+"With very big caches it may be necessary to increase the size of the "
+"cache database in the system memory. This can be configured through the "
+"|UCSUCR| variables :envvar:`nscd/hosts/maxdbsize`, "
+":envvar:`nscd/group/maxdbsize` and :envvar:`nscd/passwd/maxdbsize`."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:372
+msgid ""
+"As standard, five threads are started by NSCD. In environments with many "
+"accesses it may prove necessary to increase the number via the |UCSUCRV| "
+":envvar:`nscd/threads`."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:376
+msgid ""
+"In the basic setting, a resolved group or hostname is kept in cache for "
+"one hour, a username for ten minutes. With the |UCSUCR| variables "
+":envvar:`nscd/group/positive_time_to_live` and "
+":envvar:`nscd/passwd/positive_time_to_live` these periods can be extended"
+" or diminished (in seconds)."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:382
+msgid ""
+"From time to time it might be necessary to manually invalidate the cache "
+"of the NSCD. This can be done individually for each cache table with the "
+"following commands:"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:386
+msgid ""
+"$ nscd -i passwd\n"
+"$ nscd -i hosts"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:392
+msgid ""
+"The verbosity of the log messages can be configured through the |UCSUCRV|"
+" :envvar:`nscd/debug/level`."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:398
+msgid "SSH login to systems"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:400
+msgid ""
+"When installing a UCS system, an SSH server is also installed per "
+"preselection. SSH is used for realizing encrypted connections to other "
+"hosts, wherein the identity of a host can be assured via a check sum. "
+"Essential aspects of the SSH server's configuration can be adjusted in "
+"|UCSUCR|."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:405
+msgid ""
+"By default the login of the privileged ``root`` user is permitted by SSH "
+"(e.g. for configuring a newly installed system where no users have been "
+"created yet, from a remote location)."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:409
+msgid ""
+"If the |UCSUCRV| :envvar:`sshd/permitroot` is set to ``without-"
+"password``, then no interactive password request will be performed for "
+"the ``root`` user, but only a login based on a public key. By this means "
+"brute force attacks to passwords can be avoided."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:414
+msgid ""
+"To prohibit SSH login completely, this can be deactivated by setting the "
+"|UCSUCRV| :envvar:`auth/sshd/user/root` to ``no``."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:417
+msgid ""
+"The |UCSUCRV| :envvar:`sshd/xforwarding` can be used to configure whether"
+" an X11 output should be passed on via SSH. This is necessary, for "
+"example, for allowing a user to start a program with graphic output on a "
+"remote computer by logging in with :command:`ssh -X TARGETHOST`. Valid "
+"settings are ``yes`` and ``no``."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:424
+msgid ""
+"The standard port for SSH connections is port 22 via TCP. If a different "
+"port is to be used, this can be arranged via the |UCSUCRV| "
+":envvar:`sshd/port`."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:431
+msgid "Configuring the time zone / time synchronization"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:433
+msgid ""
+"The time zone in which a system is located can be changed in the UMC "
+"module :guilabel:`Language settings` under :menuselection:`Time zone and "
+"keyboard settings --> Time zone`."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:437
+msgid ""
+"Asynchronous system times between individual hosts of a domain can be the"
+" source of a large number of errors, for example:"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:440
+msgid "The reliability of log files is impaired."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:442
+msgid "Kerberos operation is disrupted."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:444
+msgid ""
+"The correct evaluation of the validity periods of passwords can be "
+"disturbed"
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:446
+msgid ""
+"Usually the |UCSPRIMARYDN| functions as the time server of a domain. With"
+" the |UCSUCR| variables :envvar:`timeserver`, :envvar:`timeserver2` and "
+":envvar:`timeserver3` external NTP servers can be included as time "
+"sources."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:450
+msgid ""
+"Manual time synchronization can be started by the command "
+":command:`ntpdate`."
+msgstr ""
+
+#: ../../computers/basic-system-services.rst:452
+msgid ""
+"Windows clients joined in a Samba/AD domain only accept signed NTP time "
+"requests. If the |UCSUCRV| :envvar:`ntp/signed` is set to ``yes``, the "
+"NTP replies are signed by Samba/AD."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:4
+msgid "Configuration of hardware and drivers"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:9
+msgid "Available kernel variants"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:11
+msgid ""
+"The standard kernel in UCS 5.0 is based on the Linux kernel 4.19. In "
+"principle, there are three different types of kernel packages:"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:14
+msgid ""
+"A *kernel image package* provides an executable kernel which can be "
+"installed and started."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:17
+msgid ""
+"A *kernel source package* provides the source code for a kernel. From "
+"this source, a tailor-made kernel can be created, and functions can be "
+"activated or deactivated."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:21
+msgid ""
+"A *kernel header package* provides interface information which is "
+"required by external packages if these have to access kernel functions. "
+"This information is usually necessary for compiling external kernel "
+"drivers."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:25
+msgid ""
+"Normally, the operation of a UCS system only requires the installation of"
+" one kernel image package."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:28
+msgid ""
+"Several kernel versions can be installed in parallel. This makes sure "
+"that there is always an older version available to which can be reverted "
+"in case of an error. So-called meta packages are available which always "
+"refer to the kernel version currently recommended for UCS. In case of an "
+"update, the new kernel version will be installed, making it possible to "
+"keep the system up to date at any time."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:38
+msgid "Hardware drivers / kernel modules"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:40
+msgid ""
+"The boot process occurs in two steps using an initial RAM disk (*initrd* "
+"for short). This is composed of an archive with further drivers and "
+"programs."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:43
+msgid ""
+"The GRUB boot manager (see :ref:`grub`) loads the kernel and the *initrd*"
+" into the system memory, where the *initrd* archive is extracted and "
+"mounted as a temporary root file system. The real root file system is "
+"then mounted from this, before the temporary archive is removed and the "
+"system start implemented."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:48
+msgid ""
+"The drivers to be used are recognized automatically during system start "
+"and loaded via the :program:`udev` device manager. At this point, the "
+"necessary device links are also created under :file:`/dev/`. If drivers "
+"are not recognized (which can occur if no respective hardware IDs are "
+"registered or hardware is employed which cannot be recognized "
+"automatically, e.g., ISA boards), kernel modules to be loaded can be "
+"added via |UCSUCRV| :envvar:`kernel/modules`. If more than one kernel "
+"module is to be loaded, these must be separated by a semicolon. The "
+"|UCSUCRV| :envvar:`kernel/blacklist` can be used to configure a list of "
+"one or more kernel modules for which automatic loading should be "
+"prevented. Multiple entries must also be separated by a semicolon."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:59
+msgid ""
+"Unlike other operating systems, the Linux kernel (with very few "
+"exceptions) provides all drivers for hardware components from one source."
+" For this reason, it is not normally necessary to install drivers from "
+"external sources subsequently."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:64
+msgid ""
+"However, if external drivers or kernel modules are required, they can be "
+"integrated via the DKMS framework (Dynamic Kernel Module Support). This "
+"provides a standardized interface for kernel sources, which are then "
+"built automatically for every installed kernel (insofar as the source "
+"package is compatible with the respective kernel). For this to happen, "
+"the kernel header package :program:`linux-headers-amd64` must be "
+"installed in addition to the :program:`dkms` package. Please note that "
+"not all the external kernel modules are compatible with all kernels."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:76
+msgid "GRUB boot manager"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:78
+msgid ""
+"In |UCSUCS| GNU GRUB 2 is used as the boot manager. GRUB provides a menu "
+"which allows the selection of a Linux kernel or another operating system "
+"to be booted. GRUB can also access file systems directly and can thus, "
+"for example, load another kernel in case of an error."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:88
+msgid "GRUB menu"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:90
+msgid ""
+"GRUB gets loaded in a two-step procedure; in the Master Boot Record of "
+"the hard drive, the Stage 1 loader is written which refers to the data of"
+" Stage 2, which in turn manages the rest of the boot procedure."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:94
+msgid ""
+"The selection of kernels to be started in the boot menu is stored in the "
+"file :file:`/boot/grub/grub.cfg`. This file is generated automatically; "
+"all installed kernel packages are available for selection. The memory "
+"test program :command:`Memtest86+` can be started by selecting the option"
+" :guilabel:`Memory test` and performs a consistency check for the main "
+"memory."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:100
+msgid ""
+"There is a five second waiting period during which the kernel to be "
+"booted can be selected. This delay can be changed via the |UCSUCRV| "
+":envvar:`grub/timeout`."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:103
+msgid ""
+"By default a screen size of ``800x600`` pixels and 16 Bit color depth is "
+"preset. A different value can be set via the |UCSUCRV| "
+":envvar:`grub/gfxmode`. Only resolutions are supported which can be set "
+"via VESA BIOS extensions. A list of available modes can be found in `VESA"
+" BIOS Extensions <w-vesa-bios-extensions_>`_. The input must be specified"
+" in the format :samp:`{HORIZONTAL}x{VERTICAL}@{COLOURDEPTHBIT}`, so for "
+"example ``1024x768@16``."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:111
+msgid ""
+"Kernel options for the started Linux kernel can be passed with the "
+"|UCSUCRV| :envvar:`grub/append`. |UCSUCRV| :envvar:`grub/xenhopt` can be "
+"used to pass options to the Xen hypervisor."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:115
+msgid ""
+"The graphic representation of the boot procedure - the so-called splash "
+"screen - can be deactivated by setting |UCSUCRV| "
+":envvar:`grub/bootsplash` to ``nosplash``."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:122
+msgid "Network configuration"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:124
+msgid ""
+"The configuration of network interfaces can be adjusted with the UMC "
+"module :guilabel:`Network settings`."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:127
+msgid ""
+"The configuration is saved in |UCSUCR| variables, which can also be set "
+"directly. These variables are listed in the individual sections."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:135
+msgid "Configuring the network settings"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:137
+msgid ""
+"All the network cards available in the system are listed under *IPv4 "
+"network devices* and *IPv6 network devices* (only network interfaces in "
+"the :samp:`eth{X}` scheme are shown)."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:141
+msgid ""
+"Network interfaces can be configured for IPv4 and/or IPv6. IPv4 addresses"
+" have a 32-bit length and are generally written in four blocks in decimal"
+" form (e.g., ``192.0.2.10``), whereas IPv6 addresses are four times as "
+"long and typically written in hexadecimal form (e.g., "
+"``2001:0DB8:FE29:DE27:0000:0000:0000:0000``)."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:149
+msgid "Configuration of IPv4 addresses"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:151
+msgid ""
+"If the *Dynamic (DHCP)* option was not chosen, the IP address to be bound"
+" to the network card must be entered. In addition to the *IPv4 address* "
+"the *net mask* must also be entered. *DHCP query* is used to request an "
+"address from a DHCP server. Unless the *Dynamic (DHCP)* option is "
+"activated, the values received from the DHCP request are configured "
+"statically."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:157
+msgid ""
+"Server systems can also be configured via DHCP. This is necessary for "
+"some cloud providers, for example. If the assignment of an IP address for"
+" a server fails, a random link local address (:samp:`169.254.{x}.{y}`) is"
+" configured as a replacement."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:162
+msgid ""
+"For UCS server systems the address received via DHCP is also written to "
+"the LDAP directory."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:167
+msgid ""
+"Not all services (e.g., DNS servers) are suitable for use on a DHCP-based"
+" server."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:170
+#: ../../computers/configure-hardware.rst:198
+#: ../../computers/configure-hardware.rst:243
+msgid "UCR variables:"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:172
+msgid ":envvar:`interfaces/ethX/address`"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:173
+msgid ":envvar:`interfaces/ethX/netmask`"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:174
+msgid ":envvar:`interfaces/ethX/type`"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:176
+msgid ""
+"Besides the physical interfaces, additional virtual interfaces can also "
+"be defined in the form :envvar:`interfaces/ethX_Y/setting`."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:182
+msgid "Configuration of IPv6 addresses"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:184
+msgid ""
+"The IPv6 address can be configured in two ways: Stateless address "
+"autoconfiguration (SLAAC) is employed in the :guilabel:`Autoconfiguration"
+" (SLAAC)` configuration. In this, the IP address is assigned from the "
+"routers of the local network segment. Alternatively, the address can also"
+" be configured statically by entering the *IPv6 address* and *IPv6 "
+"prefix*."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:190
+msgid ""
+"In contrast to DHCP, in SLAAC there is no assignment of additional data "
+"such as the DNS server to be used. There is an additional protocol for "
+"this (DHCPv6), which, however, is not employed in the dynamic assignment."
+" One network card can be used for different IPv6 addresses. The "
+"*Identifier* is a unique name for individual addresses. The main address "
+"always uses the identifier ``default``; functional identifiers such as "
+"``Interface mail server`` can be assigned for all other addresses."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:200
+msgid ":envvar:`interfaces/ethX/ipv6/address`"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:201
+msgid ":envvar:`interfaces/ethX/ipv6/prefix`,"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:202
+msgid ":envvar:`interfaces/ethX/ipv6/acceptRA` activates SLAAC"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:204
+msgid ""
+"Further network settings can be performed under :guilabel:`Global network"
+" settings`."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:207
+msgid ""
+"The IP addresses for the standard gateways in the subnetwork can be "
+"entered under *Gateway (IPv4)* and *Gateway (IPv6)*. It is not obligatory"
+" to enter a gateway for IPv6, but recommended. A gateway configured here "
+"has preference over router advertisements, which might otherwise be able "
+"to change the route."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:212
+msgid "(UCR variables:"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:214
+msgid ":envvar:`gateway`"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:215
+msgid ":envvar:`ipv6/gateway`"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:217
+msgid ")"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:222
+msgid "Configuring the name servers"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:224
+msgid "There are two types of DNS servers:"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:229
+msgid "External DNS Server"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:227
+msgid ""
+"An *External DNS Server* is employed for the resolution of host names and"
+" addresses outside of the UCS domain, e.g., ``univention.de``. This is "
+"typically a name server operated by the internet provider."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:236
+msgid "Domain DNS Server"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:232
+msgid ""
+"A *Domain DNS Server* is a local name server in the UCS domain. This name"
+" server usually administrates host names and IP addresses belonging to "
+"the UCS domain. If an address is not found in the local inventory, an "
+"external DNS server is automatically requested. The DNS data are saved in"
+" the LDAP directory service, i.e., all domain DNS servers deliver "
+"identical data."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:238
+msgid ""
+"A local DNS server is set up on the |UCSPRIMARYDN|, |UCSBACKUPDN| and "
+"|UCSREPLICADN| system roles. Here, you can configure which server should "
+"be primarily used for the name resolution by entering the *Domain DNS "
+"Server*."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:245
+msgid ":envvar:`nameserver1` to :envvar:`nameserver3`"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:246
+msgid ":envvar:`dns/forwarder1` to :envvar:`dns/forwarder3`,"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:251
+msgid "Bridges, bonding, VLANs"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:253
+msgid ""
+"UCS supports advanced network configurations using bridging, bonding and "
+"virtual networks (VLAN):"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:256
+msgid ""
+"Bridging is often used with virtualization to connect multiple virtual "
+"machines running on a host through one shared physical network interface."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:259
+msgid ""
+"Bonding allows failover redundancy for hosts with multiple physical "
+"network interfaces to the same network."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:262
+msgid ""
+"VLANs can be used to separate network traffic logically while using only "
+"one (or more) physical network interface."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:268
+msgid "Configure bridging"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:275
+msgid ""
+"The most common application scenario for *bridging* is the shared use of "
+"a physical network card by one or more virtual machines. Instead of one "
+"network card for each virtual machine and the virtualization server "
+"itself, all systems are connected via a shared uplink. A bridge can be "
+"compared with a switch implemented in software which is used to connect "
+"the individual hosts together. The hardware network adapter used is "
+"called a *bridge port*."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:282
+msgid ""
+"In order to configure a bridge, ``Bridge`` must be selected as the "
+"*Interface type* under :guilabel:`Add`. The *Name of new bridge "
+"interface* can be selected at will. Then click on :guilabel:`Next`."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:286
+msgid ""
+"The physical network card intended to act as the uplink can be selected "
+"under *Bridge ports*. In the typical scenario of connecting virtual "
+"machines via just one network card, there is no risk of a network loop. "
+"If the bridge is used to connect two Ethernet networks, the spanning tree"
+" protocol (STP) is employed to avoid network loops. The Linux kernel only"
+" implements STP, not the Rapid STP or Multiple STP versions."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:293
+msgid ""
+"The *Forwarding delay* setting configures the waiting time in seconds "
+"during which information is collected about the network topology when a "
+"connection is being made via STP. If the bridge is used for connecting "
+"virtual machines to one physical network card, STP should be disabled by "
+"setting the value to ``0``. Otherwise problems may occur when using DHCP,"
+" as the packets sent during the waiting time are not forwarded."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:300
+msgid ""
+"The *Additional bridge options* input field can be used to configure "
+"arbitrary bridge parameters. This is only necessary in exceptional cases;"
+" an overview of the possible settings can be found on the manual page "
+":manpage:`bridge-utils-interfaces(5)`."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:305
+msgid ""
+"Clicking on :guilabel:`Next` offers the possibility of optionally "
+"assigning the bridge an IP address. This interface can then also be used "
+"as a network interface for the virtualization host. The options are the "
+"same as described in :ref:`computers-ipv4` and :ref:`computers-ipv6`."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:313
+msgid "Configure bonding"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:324
+msgid ""
+"*Bonding* can be used to bundle two (or more) physical network cards in "
+"order to increase the performance or improve redundancy in failover "
+"scenarios."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:327
+msgid ""
+"In order to configure a bonding, ``Bonding`` must be selected as the "
+"*Interface type* under :guilabel:`Add`. The *Name of the bonding "
+"interface* can be selected at will. Then click on :guilabel:`Next`."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:331
+msgid ""
+"The network cards which form part of the bonding interface are selected "
+"under *Bond slaves*. The network cards which should be given preference "
+"in failover scenarios (see below) can be selected via *Bond primary*."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:335
+msgid ""
+"The *Mode* configures the distribution of the network cards within the "
+"bonding:"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:337
+msgid ""
+"``balance-rr (0)`` distributes the packets equally over the available "
+"network interfaces within the bonding one after the other. This increases"
+" performance and improves redundancy. In order to use this mode, the "
+"network switches used must support *link aggregation*."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:342
+msgid ""
+"When ``active-backup (1)`` is used, only one network card is active for "
+"each bonding interface (by default this is the network interface "
+"configured in *Bond primary*). If the primary network card fails, this is"
+" detected by the Linux kernel, which switches to another card in the "
+"bonding. This version increases redundancy. It can be used with every "
+"network switch."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:348
+msgid ""
+"In addition, there are also a number of other bonding methods. These are "
+"generally only relevant for special cases and are described under `Linux "
+"Ethernet Bonding Driver HOWTO <kernel-bonding_>`_."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:352
+msgid ""
+"The Media Independent Interface (MII) of the network cards is used to "
+"detect failed network adapters. The *MII link monitoring frequency* "
+"setting specifies the testing interval in milliseconds."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:356
+msgid ""
+"All other bonding parameters can be configured under *Additional bonding "
+"options*. This is only necessary in exceptional cases; an overview of the"
+" possible settings can be found under `Linux Ethernet Bonding Driver "
+"HOWTO <kernel-bonding_>`_."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:361
+msgid ""
+"Clicking on :guilabel:`Next` allows to optionally assign the bonding "
+"interface an IP address. If one of the existing network cards which form "
+"part of the bonding interface has already been assigned an IP address, "
+"this configuration will be removed. The options are the same as described"
+" in :ref:`computers-ipv4` and :ref:`computers-ipv6`."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:370
+msgid "Configure VLAN"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:376
+msgid ""
+"VLANs can be used to separate the network traffic in a physical network "
+"logically over one or more virtual subnetworks. Each of these virtual "
+"networks is an independent broadcast domain. This makes it e.g. possible "
+"to differentiate between a network for the employees and a guest network "
+"for visitors in a company network although they use the same physical "
+"cables. The individual end devices can be assigned to the VLANs via the "
+"configuration of the switches. The network switches must support 802.1q "
+"VLANs."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:384
+msgid ""
+"A distinction is made between two types of connections between network "
+"cards:"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:386
+msgid ""
+"A connection only transports packets from a specific VLAN. In this case, "
+"untagged data packets are transmitted."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:389
+msgid ""
+"This is typically the case if only one individual end device is connected"
+" via this network connection."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:392
+msgid ""
+"A connection transports packets from several VLANs. This is also referred"
+" to as a trunk link. In this case, each packet is assigned to a VLAN "
+"using a VLAN ID. During transmission between trunk links and specific "
+"VLANs, the network switch takes over the task of filtering the packets by"
+" means of the VLAN IDs as well as adding and removing the VLAN IDs."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:398
+msgid "This type of connection is primarily used between switches/servers."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:400
+msgid ""
+"Some switches also allow the sending of packets with and without VLAN "
+"tags over a shared connection, but this is not described in more detail "
+"here."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:403
+msgid ""
+"When configuring a VLAN in the UMC module :guilabel:`Network settings` it"
+" is possible to configure for a computer which VLANs it wants to "
+"participate in. An example here would be an internal company web server, "
+"which should be available both to the employees and any users of the "
+"guest network."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:408
+msgid ""
+"In order to configure a VLAN, ``Virtual LAN`` must be selected as the "
+"*Interface type* under :guilabel:`Add`. The network interface for which "
+"the VLAN is specified with *Parent interface*. The *VLAN ID* is the "
+"unique identifier of the VLAN. Valid values are from 1 to 4095. Then "
+":guilabel:`Next` must be clicked."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:413
+msgid ""
+"Clicking on :guilabel:`Next` allows to optionally assign the VLAN "
+"interface an IP address. The options are the same as described in :ref"
+":`computers-ipv4` and :ref:`computers-ipv6`. When assigning an IP "
+"address, ensure that the address matches the assigned VLAN address range."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:421
+msgid "Proxy access configuration"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:423
+msgid ""
+"The majority of the command line tools which access web servers (e.g., "
+":command:`wget`, :command:`elinks` or :command:`curl`) check whether the "
+"environment variable ``http_proxy`` is set. If this is the case, the "
+"proxy server set in this variable is used automatically."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:428
+msgid ""
+"The |UCSUCRV| :envvar:`proxy/http` can also be used to activate the "
+"setting of this environment variable via an entry in "
+":file:`/etc/profile`."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:431
+msgid ""
+"The proxy URL must be specified for this, e.g., ``http://192.0.2.100``. "
+"The proxy port can be specified in the proxy URL using a colon, e.g., "
+"``http://192.0.2.100:3128``. If the proxy requires authentication for the"
+" accessing user, this can be provided in the form "
+":samp:`http://{username}:{password}@192.0.2.100``."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:437
+msgid ""
+"The environment variable is not adopted for sessions currently opened. A "
+"new login is required for the change to be activated."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:440
+msgid ""
+"The Univention tools for software updates also support operation via a "
+"proxy and query the |UCSUCR| variable."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:443
+msgid ""
+"Individual domains can be excluded from use by the proxy by including "
+"them separated by commas in the |UCSUCRV| :envvar:`proxy/no_proxy`. "
+"Subdomains are taken into account; e.g. an exception for ``software-"
+"univention.de`` also applies for ``updates.software-univention.de``."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:451
+msgid "Mounting NFS shares"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:453
+msgid ""
+"The *NFS mounts* policy of the UMC computer management can be used to "
+"configure NFS shares, which are mounted on the system. There is a *NFS "
+"share* for selection, which is mounted in the file path specified under "
+"*Mount point*."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:463
+msgid "Mounting a NFS share"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:468
+msgid "Collection of list of supported hardware"
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:470
+msgid ""
+"Univention collects information about hardware which is compatible with "
+"UCS and in use by customers. The information processed for this is "
+"gathered by the UMC module :guilabel:`Hardware information`."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:474
+msgid ""
+"All files are forwarded to Univention anonymously and only transferred "
+"once permission has been received from the user."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:477
+msgid ""
+"The start dialogue contains the entry fields *Manufacturer* and *Model*, "
+"which must be completed with the values determined from the DMI "
+"information of the hardware. The fields can also be adapted and an "
+"additional *Descriptive comment* added."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:482
+msgid ""
+"If the hardware information is transferred as part of a support request, "
+"the :guilabel:`This is related to a support case` option should be "
+"activated. A ticket number can be entered in the next field; this "
+"facilitates assignment and allows quicker processing."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:487
+msgid ""
+"Clicking on :guilabel:`Next` offers an overview of the transferred "
+"hardware information. In addition, a compressed TAR archive is created, "
+"which contains a list of the hardware components used in the system and "
+"can be downloaded via :guilabel:`Archive with system information`."
+msgstr ""
+
+#: ../../computers/configure-hardware.rst:492
+msgid ""
+"Clicking on :guilabel:`Next` again allows you to select the way the data "
+"are transferred to Univention. :guilabel:`Upload` transmits the data via "
+"HTTPS, :guilabel:`Send mail)` opens a dialogue, which lists the needed "
+"steps to send the archive via email."
+msgstr ""
+
+#: ../../computers/index.rst:7
+msgid "Chapter contents"
+msgstr ""
+
+#: ../../computers/index.rst:5
+msgid "Computer management"
+msgstr ""
+
+#: ../../computers/ucr.rst:4
+msgid ""
+"Administration of local system configuration with Univention "
+"Configuration Registry"
+msgstr ""
+
+#: ../../computers/ucr.rst:6
+msgid ""
+"|UCSUCR| is the central tool for managing the local system configuration "
+"of a UCS-based system. Direct editing of the configuration files is "
+"usually not necessary."
+msgstr ""
+
+#: ../../computers/ucr.rst:10
+msgid ""
+"Settings are specified in a consistent format in a registry mechanism, "
+"the so-called *Univention Configuration Registry variables*. These "
+"variables are used to generate the configuration files used effectively "
+"by the services/programs from the configuration templates (the so-called "
+"*Univention Configuration Registry templates*)."
+msgstr ""
+
+#: ../../computers/ucr.rst:16
+msgid "This procedure offers a range of advantages:"
+msgstr ""
+
+#: ../../computers/ucr.rst:18
+msgid ""
+"It is not usually necessary to edit any configuration files manually. "
+"This avoids errors arising from invalid syntax of configuration settings "
+"or similar."
+msgstr ""
+
+#: ../../computers/ucr.rst:22
+msgid ""
+"There is a uniform interface for editing the settings and the different "
+"syntax formats of the configuration files are hidden from the "
+"administrator."
+msgstr ""
+
+#: ../../computers/ucr.rst:25
+msgid ""
+"Settings are decoupled from the actual configuration file, i.e., if a "
+"software uses a different configuration format in a new version, a new "
+"template in a new format is simply delivered instead of performing time-"
+"consuming and error-prone conversion of the file."
+msgstr ""
+
+#: ../../computers/ucr.rst:30
+msgid ""
+"The variables used in a configuration file administrated with |UCSUCR| "
+"are registered internally. This ensures that when a UCR variable is "
+"changed, all the configuration files containing the changed variable are "
+"recreated."
+msgstr ""
+
+#: ../../computers/ucr.rst:34
+msgid ""
+"|UCSUCR| variables can be configured in the command line using the "
+":command:`univention-config-registry` command (short form: "
+":command:`ucr`) or via the UMC module :guilabel:`Univention Configuration"
+" Registry`."
+msgstr ""
+
+#: ../../computers/ucr.rst:38
+msgid ""
+"As the majority of packages perform their configuration via |UCSUCR| and "
+"the corresponding basic settings need to be set up during the "
+"installation, hundreds of |UCSUCR| variables are already set after the "
+"installation of a UCS system."
+msgstr ""
+
+#: ../../computers/ucr.rst:42
+msgid ""
+"UCR variables can also be used efficiently in shell scripts for accessing"
+" current system settings."
+msgstr ""
+
+#: ../../computers/ucr.rst:45
+msgid ""
+"The variables are named according to a tree structure with a forward "
+"slash being used to separate components of the name. For example, "
+"|UCSUCR| variables beginning with ``ldap`` are settings which apply to "
+"the local directory service."
+msgstr ""
+
+#: ../../computers/ucr.rst:49
+msgid "A description is given for the majority of variables explaining their use."
+msgstr ""
+
+#: ../../computers/ucr.rst:51
+msgid ""
+"If a configuration file is administrated by a UCR template and the "
+"required setting has not already been covered by an existing variable, "
+"the UCR template should be edited instead of the configuration file. If "
+"the configuration were directly adapted, the next time the file is "
+"regenerated - e.g., when a registered UCR variable is set - the local "
+"modification will be overwritten again. Adaptation of UCR templates is "
+"described in :ref:`ucr-templates-extend`."
+msgstr ""
+
+#: ../../computers/ucr.rst:58
+msgid ""
+"Part of the settings configured in |UCSUCR| are system-specific (e.g., "
+"the computer name); many settings can, however, be used on more then one "
+"computer. The |UCSUCR| policy in the domain administration UMC modules "
+"can be used to compile variables and apply them on more than one "
+"computer."
+msgstr ""
+
+#: ../../computers/ucr.rst:63
+msgid ""
+"The evaluation of the |UCSUCR| variables on a UCS system comprises four "
+"stages:"
+msgstr ""
+
+#: ../../computers/ucr.rst:65
+msgid "First the local |UCSUCR| variables are evaluated."
+msgstr ""
+
+#: ../../computers/ucr.rst:67
+msgid ""
+"The local variables are overruled by policy variables which are usually "
+"sourced from the directory service"
+msgstr ""
+
+#: ../../computers/ucr.rst:70
+msgid ""
+"The ``--schedule`` option is used to set local variables which are only "
+"intended to apply for a certain period of time. This level of the "
+"|UCSUCR| is reserved for local settings which are automated by time-"
+"controlled mechanisms in |UCSUCS|."
+msgstr ""
+
+#: ../../computers/ucr.rst:75
+msgid ""
+"When the ``--force`` option is used in setting a local variable, settings"
+" adopted from the directory service and variables from the schedule level"
+" are overruled and the given value for the local system fixed instead. An"
+" example:"
+msgstr ""
+
+#: ../../computers/ucr.rst:79
+msgid "$ univention-config-registry set --force mail/messagesizelimit=1000000"
+msgstr ""
+
+#: ../../computers/ucr.rst:83
+msgid ""
+"If a variable is set which is overwritten by a superordinate policy, a "
+"warning message is given."
+msgstr ""
+
+#: ../../computers/ucr.rst:86
+msgid ""
+"The use of the |UCSUCR| policy is documented in the :ref:`ucr-templates-"
+"policy`."
+msgstr ""
+
+#: ../../computers/ucr.rst:91
+msgid "Using the |UCSUMC| module"
+msgstr ""
+
+#: ../../computers/ucr.rst:93
+msgid ""
+"The UMC module :guilabel:`Univention Configuration Registry` can be used "
+"to display and adjust the variables of a system. There is also the "
+"possibility of setting new variables using :guilabel:`Add new variable`."
+msgstr ""
+
+#: ../../computers/ucr.rst:97
+msgid ""
+"A search mask is displayed on the start page. All variables are "
+"classified using a *Category*, for example all LDAP-specific settings."
+msgstr ""
+
+#: ../../computers/ucr.rst:100
+msgid ""
+"The *Search attribute* can be entered as a filter in the search mask, "
+"which can refer to the variable name, value or description."
+msgstr ""
+
+#: ../../computers/ucr.rst:103
+msgid ""
+"Following a successful search, the variables found are displayed in a "
+"table with the variable name and the value. A detailed description of the"
+" variable is displayed when moving the mouse cursor over the variable "
+"name."
+msgstr ""
+
+#: ../../computers/ucr.rst:107
+msgid ""
+"A variable can be edited by clicking on its name. A variable can be "
+"deleted by right-clicking and selecting :guilabel:`Delete`."
+msgstr ""
+
+#: ../../computers/ucr.rst:113
+msgid "Using the command line front end"
+msgstr ""
+
+#: ../../computers/ucr.rst:117
+msgid ""
+"The command line interface of |UCSUCR| is run using the :command"
+":`univention-config-registry` command. Alternatively, the short form "
+":command:`ucr` can be used."
+msgstr ""
+
+#: ../../computers/ucr.rst:124
+msgid "Querying a UCR variable"
+msgstr ""
+
+#: ../../computers/ucr.rst:128
+msgid ""
+"A single |UCSUCR| variable can be queried with the parameter "
+":option:`get`:"
+msgstr ""
+
+#: ../../computers/ucr.rst:131
+msgid "$ univention-config-registry get ldap/server/ip"
+msgstr ""
+
+#: ../../computers/ucr.rst:138
+msgid ""
+"The parameter :option:`dump` can also be used to display all currently "
+"set variables:"
+msgstr ""
+
+#: ../../computers/ucr.rst:141
+msgid "$ univention-config-registry dump"
+msgstr ""
+
+#: ../../computers/ucr.rst:149
+msgid "Setting UCR variables"
+msgstr ""
+
+#: ../../computers/ucr.rst:153
+msgid ""
+"The parameter :option:`set` is used to set a variable. The variable can "
+"be given any name consisting exclusively of letters, full stops, figures,"
+" hyphens and forward slashes."
+msgstr ""
+
+#: ../../computers/ucr.rst:157
+msgid "$ univention-config-registry set VARIABLENAME=VALUE"
+msgstr ""
+
+#: ../../computers/ucr.rst:162
+msgid ""
+"If the variable already exists, the content is updated; otherwise, a new "
+"entry is created."
+msgstr ""
+
+#: ../../computers/ucr.rst:165
+msgid ""
+"The syntax is not checked when a |UCSUCR| variable is set. The change to "
+"a variable results in all configuration files for which the variable is "
+"registered being rewritten immediately. The files in question are output "
+"on the console."
+msgstr ""
+
+#: ../../computers/ucr.rst:169
+msgid ""
+"In doing so it must be noted that although the configuration of a service"
+" is updated, the service in question is not restarted automatically! The "
+"restart must be performed manually."
+msgstr ""
+
+#: ../../computers/ucr.rst:173
+msgid ""
+"It is also possible to perform simultaneous changes to several variables "
+"in one command line. If these refer to the same configuration file, the "
+"file is only rewritten once."
+msgstr ""
+
+#: ../../computers/ucr.rst:177
+msgid ""
+"$ univention-config-registry set \\\n"
+"> dns/forwarder1=192.0.2.2 \\\n"
+"> sshd/xforwarding=\"no\" \\\n"
+"> sshd/port=2222"
+msgstr ""
+
+#: ../../computers/ucr.rst:184
+msgid ""
+"A conditional setting is also possible. For example, if a value should "
+"only be saved in a |UCSUCR| variable when the variable does not yet "
+"exist, this can be done by entering a question mark (``?``) instead of "
+"the equals sign ( ``=``) when assigning values."
+msgstr ""
+
+#: ../../computers/ucr.rst:189
+msgid "$ univention-config-registry set dns/forwarder1?192.0.2.2"
+msgstr ""
+
+#: ../../computers/ucr.rst:197
+msgid "Searching for variables and set values"
+msgstr ""
+
+#: ../../computers/ucr.rst:201
+msgid ""
+"The parameter :option:`search` can be used to search for a variable. This"
+" command searches for variable names which contain ``nscd`` and displays "
+"these with their current assignments:"
+msgstr ""
+
+#: ../../computers/ucr.rst:205
+msgid "$ univention-config-registry search nscd"
+msgstr ""
+
+#: ../../computers/ucr.rst:210
+msgid ""
+"Alternatively, searches can also be performed for set variable values. "
+"This request searches for all variables set to ``primary.example.com``:"
+msgstr ""
+
+#: ../../computers/ucr.rst:213
+msgid "$ univention-config-registry search --value primary.example.com"
+msgstr ""
+
+#: ../../computers/ucr.rst:218
+msgid ""
+"Search templates in the form of regular expressions can also be used in "
+"the search. The complete format is documented at `Regular expression "
+"operations in the Python 2 documentation <python2-re_>`_."
+msgstr ""
+
+#: ../../computers/ucr.rst:225
+msgid "Deleting UCR variables"
+msgstr ""
+
+#: ../../computers/ucr.rst:229
+msgid ""
+"The parameter :option:`unset` is used to delete a variable. The following"
+" example deletes the variable :envvar:`dns/forwarder2`. It is also "
+"possible here to specify several variables to be deleted:"
+msgstr ""
+
+#: ../../computers/ucr.rst:233
+msgid "$ univention-config-registry unset dns/forwarder2"
+msgstr ""
+
+#: ../../computers/ucr.rst:241
+msgid "Regeneration of configuration files from their template"
+msgstr ""
+
+#: ../../computers/ucr.rst:245
+msgid ""
+"The parameter :option:`commit` is used to regenerate a configuration file"
+" from its template. The name of the configuration file is entered as a "
+"parameter, e.g.:"
+msgstr ""
+
+#: ../../computers/ucr.rst:249
+msgid "$ univention-config-registry commit /etc/samba/smb.conf"
+msgstr ""
+
+#: ../../computers/ucr.rst:254
+msgid ""
+"As UCR templates are generally regenerated automatically when UCR "
+"variables are edited, this is primarily used for tests."
+msgstr ""
+
+#: ../../computers/ucr.rst:257
+msgid ""
+"If no filename is given when running :command:`ucr commit`, all of the "
+"files managed by |UCSUCR| will be regenerated from the templates. It is, "
+"however, not generally necessary to regenerate all the configuration "
+"files."
+msgstr ""
+
+#: ../../computers/ucr.rst:264
+msgid "Sourcing variables in shell scripts"
+msgstr ""
+
+#: ../../computers/ucr.rst:268
+msgid ""
+"The parameter :option:`shell` is used to display |UCSUCR| variables and "
+"their current assignments in a format that can be used in shell scripts."
+msgstr ""
+
+#: ../../computers/ucr.rst:271
+msgid "$ univention-config-registry shell ldap/server/name"
+msgstr ""
+
+#: ../../computers/ucr.rst:276
+msgid ""
+"Different conversions are involved in this: forward slashes in variable "
+"names are replaced with underscores and characters in the values which "
+"have a particular significance in shell scripts are included in quotation"
+" marks to ensure they are not altered."
+msgstr ""
+
+#: ../../computers/ucr.rst:281
+msgid ""
+"The |UCSUCR| output must be executed via the command :command:`eval` for "
+"|UCSUCR| variables to be able to be read in a shell script as environment"
+" variables:"
+msgstr ""
+
+#: ../../computers/ucr.rst:285
+msgid ""
+"# eval \"$(univention-config-registry shell ldap/server/name)\"\n"
+"# echo \"$ldap_server_name\"\n"
+"primary.firma.de"
+msgstr ""
+
+#: ../../computers/ucr.rst:295
+msgid "Policy-based configuration of UCR variables"
+msgstr ""
+
+#: ../../computers/ucr.rst:297
+msgid ""
+"Part of the settings configured in |UCSUCR| are system-specific (e.g., "
+"the computer name); many settings can, however, be used on more then one "
+"computer. The *Univention Configuration Registry* policy managed in the "
+"UMC module :guilabel:`Policies` can be used to compile variables and "
+"apply them on more than one computer."
+msgstr ""
+
+#: ../../computers/ucr.rst:308
+msgid "Policy-based configuration of the Apache start page and forced HTTPS"
+msgstr ""
+
+#: ../../computers/ucr.rst:310
+msgid ""
+"Firstly, a *Name* must be set for the policy which is to be created, "
+"under which the variables will later be assigned to the individual "
+"computer objects."
+msgstr ""
+
+#: ../../computers/ucr.rst:313
+msgid ""
+"In addition, at least one *Variable* must be configured and a *Value* "
+"assigned."
+msgstr ""
+
+#: ../../computers/ucr.rst:315
+msgid ""
+"This policy can then be assigned to a computer object or a container or "
+"OU (see :ref:`central-policies-assign`). Note that the evaluation of "
+"configured values differs from other policies: The values are not "
+"forwarded directly to the computer, but rather written on the assigned "
+"computer by Univention Directory Policy. The time interval used for this "
+"is configured by the |UCSUCRV| :envvar:`ldap/policy/cron` and is set to "
+"hourly as standard."
+msgstr ""
+
+#: ../../computers/ucr.rst:326
+msgid "Modifying UCR templates"
+msgstr ""
+
+#: ../../computers/ucr.rst:328
+msgid ""
+"In the simplest case, a |UCSUCR| template is a copy of the original "
+"configuration file in which the points at which the value of a variable "
+"are to be used contain a reference to the variable name."
+msgstr ""
+
+#: ../../computers/ucr.rst:332
+msgid ""
+"Inline Python code can also be integrated for more complicated scenarios,"
+" which then also allows more complicated constructions such as "
+"conditional assignments."
+msgstr ""
+
+#: ../../computers/ucr.rst:338
+msgid ""
+"|UCSUCR| templates are included in the corresponding software packages as"
+" configuration files. When packages are updated, a check is performed for"
+" whether any changes have been made to the configuration files."
+msgstr ""
+
+#: ../../computers/ucr.rst:343
+msgid ""
+"If configuration files are no longer there in the form in which they were"
+" delivered, they will not be overwritten. Instead a new version will be "
+"created in the same directory with the ending :file:`.debian.dpkg-new`."
+msgstr ""
+
+#: ../../computers/ucr.rst:347
+msgid ""
+"If changes are to be made on the |UCSUCR| templates, these templates are "
+"also not overwritten during the update and are instead re-saved in the "
+"same directory with the ending :file:`.dpkg-new` or :file:`.dpkg-dist`. "
+"Corresponding notes are written in the "
+":file:`/var/log/univention/actualise.log` log file. This only occurs if "
+"UCR templates have been locally modified."
+msgstr ""
+
+#: ../../computers/ucr.rst:354
+msgid ""
+"The UCR templates are stored in the "
+":file:`/etc/univention/templates/files/` directory. The path to the "
+"templates is the absolute path to the configuration file with the "
+"prefixed path to the template directory. For example, the template for "
+"the :file:`/etc/issue` configuration file can be found under "
+":file:`/etc/univention/templates/files/etc/issue`."
+msgstr ""
+
+#: ../../computers/ucr.rst:360
+msgid ""
+"For the configuration files to be processed correctly by |UCSUCR| they "
+"must be in UNIX format. If configuration files are edited in DOS or "
+"Windows, for example, control characters are inserted to indicate line "
+"breaks, which can disrupt the way |UCSUCR| uses the file."
+msgstr ""
+
+#: ../../computers/ucr.rst:368
+msgid "Referencing of UCR variables in templates"
+msgstr ""
+
+#: ../../computers/ucr.rst:370
+msgid ""
+"In the simplest case, a UCR variable can be directly referenced in the "
+"template. The variable name framed by the string ``@%@`` represents the "
+"wildcard. As an example the option for the activation of X11 forwarding "
+"in the configuration file :file:`/etc/ssh/sshd_config` of the OpenSSH "
+"server:"
+msgstr ""
+
+#: ../../computers/ucr.rst:375
+msgid "X11Forwarding @%@sshd/xforwarding@%@"
+msgstr ""
+
+#: ../../computers/ucr.rst:379
+msgid ""
+"Newly added references to UCR variables are automatically evaluated by "
+"templates; additional registration is only required with the use of "
+"inline Python code (see :ref:`ucr-templates-extend-python`)."
+msgstr ""
+
+#: ../../computers/ucr.rst:386
+msgid "Integration of inline Python code in templates"
+msgstr ""
+
+#: ../../computers/ucr.rst:388
+msgid ""
+"Any type of Python code can be embedded in UCR templates by entering a "
+"code block framed by the string ``@!@``. For example, these blocks can be"
+" used to realize conditional requests so that when a parameter is changed"
+" via a variable, further dependent settings are automatically adopted in "
+"the configuration file. The following code sequence configures for "
+"example network settings using the |UCSUCR| settings:"
+msgstr ""
+
+#: ../../computers/ucr.rst:395
+#, python-format
+msgid ""
+"@!@\n"
+"if configRegistry.get('apache2/ssl/certificate'):\n"
+"    print('SSLCertificateFile %s' %\n"
+"        configRegistry['apache2/ssl/certificate'])\n"
+"@!@"
+msgstr ""
+
+#: ../../computers/ucr.rst:404
+msgid ""
+"All the data output with the print function are written in the generated "
+"configuration file. The data saved in |UCSUCR| can be requested via the "
+"``ConfigRegistry`` object, e.g.:"
+msgstr ""
+
+#: ../../computers/ucr.rst:408
+msgid ""
+"@!@\n"
+"if configRegistry.get('version/version') and \\\n"
+"        configRegistry.get('version/patchlevel'):\n"
+"    print('UCS %(version/version)s-%(version/patchlevel)s' %\n"
+"        configRegistry)\n"
+"@!@"
+msgstr ""
+
+#: ../../computers/ucr.rst:418
+msgid ""
+"In contrast to directly referenced UCR variables (see :ref:`ucr-"
+"templates-extend-simple`), variables accessed in inline Python code must "
+"be explicitly registered."
+msgstr ""
+
+#: ../../computers/ucr.rst:422
+msgid ""
+"The |UCSUCR| variables used in the configuration files are registered in "
+"*info* files in the :file:`/etc/univention/templates/info/` directory "
+"which are usually named after the package name with the file ending "
+":file:`.info`. If new Python code is entered into the templates or the "
+"existing code changed in such a way that it requires additional or "
+"different variables, one of the existing :file:`.info` files will need to"
+" be modified or a new one added."
+msgstr ""
+
+#: ../../computers/ucr.rst:429
+msgid ""
+"Following the changing of :file:`.info` files, the :command:`ucr update` "
+"command must be run."
+msgstr ""
+
+#: ../../computers/umc.rst:4
+msgid "Management of computer accounts via |UCSUMC| module"
+msgstr ""
+
+#: ../../computers/umc.rst:6
+msgid ""
+"All UCS, Linux and Windows systems within a UCS domain each have a "
+"computer domain account (also referred to as the host account) with which"
+" the systems can authenticate themselves among each other and with which "
+"they can access the LDAP directory."
+msgstr ""
+
+#: ../../computers/umc.rst:11
+msgid ""
+"The computer account is generally created automatically when the system "
+"joins the UCS domain (see :ref:`domain-join`); however, the computer "
+"account can also be added prior to the domain join."
+msgstr ""
+
+#: ../../computers/umc.rst:15
+msgid ""
+"The password for the computer account is generated automatically during "
+"the domain join and saved in the :file:`/etc/machine.secret` file. By "
+"default the password consists of 20 characters (can be configured via the"
+" |UCSUCRV| :envvar:`machine/password/length`). The password is "
+"regenerated automatically at fixed intervals (default setting: 21 days; "
+"can be configured using the |UCSUCRV| "
+":envvar:`server/password/interval`). Password rotation can also be "
+"disabled using the variable :envvar:`server/password/change`."
+msgstr ""
+
+#: ../../computers/umc.rst:25
+msgid ""
+"There is an different computer object type for every system role. Further"
+" information on the individual system roles can be found in :ref:`system-"
+"roles`."
+msgstr ""
+
+#: ../../computers/umc.rst:29
+msgid "Computer accounts are managed in the UMC module :guilabel:`Computers`."
+msgstr ""
+
+#: ../../computers/umc.rst:32
+msgid ""
+"By default a simplified wizard for creating a computer is shown, which "
+"only requests the most important settings. All attributes can be shown by"
+" clicking on :guilabel:`Advanced`. If there is a DNS forward zone and/or "
+"a DNS reverse zone (see :ref:`networks-dns`) assigned to the selected "
+"network object (see :ref:`network-objects`), a host record and/or pointer"
+" record is automatically created for the host. If there is a DHCP service"
+" configured for the network object and a MAC address is configured, a "
+"DHCP host entry is created (see :ref:`module-dhcp-dhcp`)."
+msgstr ""
+
+#: ../../computers/umc.rst:42
+msgid ""
+"The simplified wizard can be disabled for all system roles by setting the"
+" |UCSUCRV| "
+":envvar:`directory/manager/web/modules/computers/computer/wizard/disabled`"
+" to ``true``."
+msgstr ""
+
+#: ../../computers/umc.rst:52
+msgid "Creating a computer in the UMC module"
+msgstr ""
+
+#: ../../computers/umc.rst:59
+msgid "Advanced computer settings"
+msgstr ""
+
+#: ../../computers/umc.rst:64
+msgid "Computer management module - General tab"
+msgstr ""
+
+#: ../../computers/umc.rst:68
+msgid "*General* tab"
+msgstr ""
+
+#: ../../computers/umc.rst:72 ../../computers/umc.rst:163
+#: ../../computers/umc.rst:192 ../../computers/umc.rst:217
+#: ../../computers/umc.rst:247 ../../computers/umc.rst:277
+msgid "Attribute"
+msgstr ""
+
+#: ../../computers/umc.rst:73 ../../computers/umc.rst:93
+#: ../../computers/umc.rst:164 ../../computers/umc.rst:193
+#: ../../computers/umc.rst:218 ../../computers/umc.rst:248
+#: ../../computers/umc.rst:278
+msgid "Description"
+msgstr ""
+
+#: ../../computers/umc.rst:75
+msgid "Name"
+msgstr ""
+
+#: ../../computers/umc.rst:76
+msgid "The name for the host should be entered in this input field."
+msgstr ""
+
+#: ../../computers/umc.rst:78
+msgid ""
+"To guarantee compatibility with different operating systems and services,"
+" computer names should only contain the lowercase letters *a* to *z*, "
+"numbers, hyphens and underscores. Umlauts and special characters are not "
+"permitted. The full stop is used as a separating mark between the "
+"individual components of a fully qualified domain name and must therefore"
+" not appear as part of the computer name. Computer names must begin with "
+"a letter."
+msgstr ""
+
+#: ../../computers/umc.rst:86
+msgid ""
+"Microsoft Windows accepts computer names with a maximum of 13 characters,"
+" so as a rule computer names should be limited to 13 characters if there "
+"is any chance that Microsoft Windows will be used."
+msgstr ""
+
+#: ../../computers/umc.rst:90
+msgid ""
+"After creation, the computer name can only be changed for the system "
+"roles *Windows Workstation/Server*, *macOS Client* and *IP client*."
+msgstr ""
+
+#: ../../computers/umc.rst:94
+msgid "Any description can be entered for the host in this input field."
+msgstr ""
+
+#: ../../computers/umc.rst:96
+msgid "Inventory number"
+msgstr ""
+
+#: ../../computers/umc.rst:97
+msgid "Inventory numbers for hosts can be stored here."
+msgstr ""
+
+#: ../../computers/umc.rst:99
+msgid "Network"
+msgstr ""
+
+#: ../../computers/umc.rst:100
+msgid ""
+"The host can be assigned to an existing network object. Information on "
+"the IP configuration can be found in :ref:`network-objects`."
+msgstr ""
+
+#: ../../computers/umc.rst:103
+msgid "MAC address"
+msgstr ""
+
+#: ../../computers/umc.rst:104
+msgid ""
+"The MAC address of the computer can be entered here, for example "
+"``2e:44:56:3f:12:32``. If the computer is to receive a DHCP entry, the "
+"entry of the MAC address is essential."
+msgstr ""
+
+#: ../../computers/umc.rst:108
+msgid "IP address"
+msgstr ""
+
+#: ../../computers/umc.rst:109
+msgid ""
+"Fixed IP addresses for the host can be given here. Further information on"
+" the IP configuration can be found in :ref:`network-objects`."
+msgstr ""
+
+#: ../../computers/umc.rst:112
+msgid ""
+"If a network was selected on the *General* tab, the IP address assigned "
+"to the host from the network will be shown here automatically."
+msgstr ""
+
+#: ../../computers/umc.rst:115
+msgid ""
+"An IP address entered here (i.e. in the LDAP directory) can only be "
+"transferred to the host via DHCP. If no DHCP is being used, the IP "
+"address must be configured locally, see :ref:`hardware-network-"
+"configuration`."
+msgstr ""
+
+#: ../../computers/umc.rst:120
+msgid ""
+"If the IP addresses entered for a host are changed without the DNS zones "
+"being changed, they are automatically changed in the computer object and "
+"- where they exist - in the DNS entries of the forward and reverse lookup"
+" zones. If the IP address of the host was entered at other places as "
+"well, these entries must be changed manually! For example, if the IP "
+"address was given in a DHCP boot policy instead of the name of the boot "
+"server, this IP address will need to be changed manually by editing the "
+"policy."
+msgstr ""
+
+#: ../../computers/umc.rst:129
+msgid "Forward zone for DNS entry"
+msgstr ""
+
+#: ../../computers/umc.rst:130
+msgid ""
+"The DNS forward zone in which the computer is entered. The zone is used "
+"for the resolution of the computer name in the assigned IP address. "
+"Further information on the IP configuration can be found in :ref"
+":`network-objects`."
+msgstr ""
+
+#: ../../computers/umc.rst:135
+msgid "Reverse zone for DNS entry"
+msgstr ""
+
+#: ../../computers/umc.rst:136
+msgid ""
+"The DNS reverse zone in which the computer is entered. The zone is used "
+"to resolve the computer's IP address in a computer name. Further "
+"information on the IP configuration can be found in :ref:`network-"
+"objects`."
+msgstr ""
+
+#: ../../computers/umc.rst:141
+msgid "DHCP service"
+msgstr ""
+
+#: ../../computers/umc.rst:142
+msgid ""
+"If a computer is supposed to procure its IP address via DHCP, a DHCP "
+"service must be assigned here. Information on the IP configuration can be"
+" found in :ref:`network-objects`."
+msgstr ""
+
+#: ../../computers/umc.rst:146
+msgid ""
+"During assignment, it must be ensured that the DHCP servers of the DHCP "
+"service object are responsible for the physical network."
+msgstr ""
+
+#: ../../computers/umc.rst:149
+msgid ""
+"If a network is selected on the *General* tab an appropriate entry for "
+"the network will be added automatically. It can be adapted subsequently."
+msgstr ""
+
+#: ../../computers/umc.rst:155
+msgid "Computer management module - Account tab"
+msgstr ""
+
+#: ../../computers/umc.rst:159
+msgid "*Account* tab (advanced settings)"
+msgstr ""
+
+#: ../../computers/umc.rst:166
+msgid "Password"
+msgstr ""
+
+#: ../../computers/umc.rst:167
+msgid ""
+"The password for the computer account is usually automatically created "
+"and rotated. For special cases such as the integration of external "
+"systems it can also be explicitly configured in this field."
+msgstr ""
+
+#: ../../computers/umc.rst:171
+msgid ""
+"The same password must then also be entered locally on the computer in "
+"the :file:`/etc/machine.secret` file."
+msgstr ""
+
+#: ../../computers/umc.rst:174
+msgid "Primary group"
+msgstr ""
+
+#: ../../computers/umc.rst:175
+msgid ""
+"The primary group of the host can be selected in this selection field. "
+"This is only necessary when they deviate from the automatically created "
+"default values. The default value for a |UCSPRIMARYDN| or |UCSBACKUPDN| "
+"is ``DC Backup Hosts``, for a |UCSREPLICADN| ``DC Slave Hosts`` and for "
+"|UCSMANAGEDNODE|\\ s ``Computers``."
+msgstr ""
+
+#: ../../computers/umc.rst:184
+msgid "Computer management module - Unix account tab"
+msgstr ""
+
+#: ../../computers/umc.rst:188
+msgid "*Unix account* tab (advanced settings)"
+msgstr ""
+
+#: ../../computers/umc.rst:195
+msgid "Unix home directory (*)"
+msgstr ""
+
+#: ../../computers/umc.rst:196
+msgid ""
+"A different input field for the host account can be entered here. The "
+"automatically created default value for the home directory is "
+":file:`/dev/null`."
+msgstr ""
+
+#: ../../computers/umc.rst:200
+msgid "Login shell"
+msgstr ""
+
+#: ../../computers/umc.rst:201
+msgid ""
+"If a different login shell from the default value is to be used for the "
+"computer account, the login shell can be adapted manually in this input "
+"field. The automatically set default value assumes a login shell of "
+":file:`/bin/sh`."
+msgstr ""
+
+#: ../../computers/umc.rst:209
+msgid "Computer management module - Services tab"
+msgstr ""
+
+#: ../../computers/umc.rst:213
+msgid "*Services* tab (advanced settings)"
+msgstr ""
+
+#: ../../computers/umc.rst:220
+msgid "Service"
+msgstr ""
+
+#: ../../computers/umc.rst:221
+msgid ""
+"By means of a service object, applications or services can determine "
+"whether a service is available on a computer or generally in the domain."
+msgstr ""
+
+#: ../../computers/umc.rst:226
+msgid "The tab *Services* is only displayed on UCS server system roles."
+msgstr ""
+
+#: ../../computers/umc.rst:231
+msgid "Computer management module - Deployment tab"
+msgstr ""
+
+#: ../../computers/umc.rst:233
+msgid ""
+"This *Deployment* tab is used for the Univention Net Installer, see "
+":cite:t:`ext-doc-inst`."
+msgstr ""
+
+#: ../../computers/umc.rst:239
+msgid "Computer management module - DNS alias tab"
+msgstr ""
+
+#: ../../computers/umc.rst:243
+msgid "*DNS alias* tab (advanced settings)"
+msgstr ""
+
+#: ../../computers/umc.rst:250
+msgid "Zone for DNS Alias"
+msgstr ""
+
+#: ../../computers/umc.rst:251
+msgid ""
+"If a zone entry for forward mapping has been set up for the host in the "
+"*Forward zone for DNS entry* field, the additional alias entries via "
+"which the host can be reached can be configured here."
+msgstr ""
+
+#: ../../computers/umc.rst:258
+msgid "Computer management module - Groups tab"
+msgstr ""
+
+#: ../../computers/umc.rst:260
+msgid "The computer can be added into different groups in *Groups* tab."
+msgstr ""
+
+#: ../../computers/umc.rst:265
+msgid "Computer management module - Options alias tab"
+msgstr ""
+
+#: ../../computers/umc.rst:267
+msgid ""
+"The *Options* tab allows to disable LDAP object classes for host objects."
+" The entry fields for attributes of disabled object classes are no longer"
+" shown. Not all object classes can be modified subsequently."
+msgstr ""
+
+#: ../../computers/umc.rst:273
+msgid "*(Options)* tab"
+msgstr ""
+
+#: ../../computers/umc.rst:280
+msgid "Kerberos principal"
+msgstr ""
+
+#: ../../computers/umc.rst:281
+msgid ""
+"If this checkbox is not selected the host does not receive the "
+"``krb5Principal`` and ``krb5KDCEntry`` object classes."
+msgstr ""
+
+#: ../../computers/umc.rst:284
+msgid "POSIX account"
+msgstr ""
+
+#: ../../computers/umc.rst:285
+msgid ""
+"If this checkbox is not selected the host does not receive the "
+"``posixAccount`` object class."
+msgstr ""
+
+#: ../../computers/umc.rst:288
+msgid "Samba account"
+msgstr ""
+
+#: ../../computers/umc.rst:289
+msgid ""
+"If this checkbox is not selected the host does not receive the "
+"``sambaSamAccount`` object class."
+msgstr ""
+
+#: ../../computers/umc.rst:295
+msgid "Integration of Ubuntu clients"
+msgstr ""
+
+#: ../../computers/umc.rst:297
+msgid ""
+"Ubuntu clients can be managed in the UMC module :guilabel:`Computers` "
+"with their own system role. The network properties for DNS/DHCP can also "
+"be managed there."
+msgstr ""
+
+#: ../../computers/umc.rst:301
+msgid "The use of policies is not supported."
+msgstr ""
+
+#: ../../computers/umc.rst:303
+msgid ""
+"Some configuration adjustments need to be performed on Ubuntu systems; "
+"these are documented in :cite:t:`ext-doc-domain`."
+msgstr ""
+

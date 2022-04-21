@@ -1,0 +1,547 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021-2022, Univention GmbH
+# This file is distributed under the same license as the Univention
+# Corporate Server - Manual for users and administrators package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Univention Corporate Server - Manual for users and "
+"administrators \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-21 09:59+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../index.rst:5
+msgid "Introduction"
+msgstr ""
+
+#: ../../index.rst:10
+msgid "What is Univention Corporate Server?"
+msgstr ""
+
+#: ../../index.rst:12
+msgid ""
+"Univention Corporate Server (UCS) is a Linux-based server operating "
+"system for the operation and administration of IT infrastructures for "
+"companies and authorities. UCS implements an integrated, holistic concept"
+" with consistent, central administration and can ensure the operation of "
+"all the components in an interrelated security and trust context, the so-"
+"called UCS domain. At the same time, UCS supports a wide range of open "
+"standards and includes extensive interfaces to infrastructure components "
+"and management tools from other manufacturers, meaning it can be "
+"integrated in existing environments."
+msgstr ""
+
+#: ../../index.rst:22
+msgid ""
+"UCS consists of reliable open source software tried and tested in "
+"organizations of different sizes. These software components are "
+"integrated together via the |UCSUMS|. This allows the integration and "
+"administration of the system in both simple and complex distributed or "
+"virtualized environments."
+msgstr ""
+
+#: ../../index.rst:28
+msgid "The central functions of UCS are:"
+msgstr ""
+
+#: ../../index.rst:30
+msgid ""
+"Flexible and extensive identity/infrastructure management for the central"
+" administration of servers, workstations, users and their permissions, "
+"server applications and web services"
+msgstr ""
+
+#: ../../index.rst:34
+msgid ""
+"Services for integrating the management of existing Microsoft Active "
+"Directory domains or even the provision of such services as an "
+"alternative for Microsoft-based server systems"
+msgstr ""
+
+#: ../../index.rst:38
+msgid ""
+"App Center for simple installation and management of extensions and "
+"applications"
+msgstr ""
+
+#: ../../index.rst:41
+msgid ""
+"Comprehensive features for the operation of virtualized systems (e.g. "
+"running a Windows or Linux operating systems) in either the cloud of on "
+"locally running UCS systems"
+msgstr ""
+
+#: ../../index.rst:45
+msgid "Network and intranet services for administration of DHCP and DNS"
+msgstr ""
+
+#: ../../index.rst:47
+msgid "File and print services"
+msgstr ""
+
+#: ../../index.rst:49
+msgid "Computer administration and monitoring"
+msgstr ""
+
+#: ../../index.rst:51
+msgid "Mail services"
+msgstr ""
+
+#: ../../index.rst:53
+msgid ""
+"These functions are provided by different software packages in Univention"
+" Corporate Server and are handled in detail in the course of this "
+"handbook. Basically, the software packages contained in UCS can be "
+"assigned to the following three main categories:"
+msgstr ""
+
+#: ../../index.rst:58
+msgid "Base system"
+msgstr ""
+
+#: ../../index.rst:60
+msgid "UCS management system with |UCSUMC| modules"
+msgstr ""
+
+#: ../../index.rst:62
+msgid ""
+"Univention App Center, allowing the installation of further components "
+"and applications of other software vendors"
+msgstr ""
+
+#: ../../index.rst:65
+msgid ""
+"The *base system* encompasses the operating system of the UCS Linux "
+"distribution maintained by Univention and based on Debian GNU/Linux. It "
+"largely includes the same software selection as Debian GNU/Linux as well "
+"as additional tools for the installation, updating and configuration of "
+"clients and servers."
+msgstr ""
+
+#: ../../index.rst:70
+msgid ""
+"The |UCSUMS| realizes a single point of administration where the accounts"
+" of all domain members (users, groups, and hosts) and services such as "
+"DNS and DHCP are managed in a single directory service. Core components "
+"of the management system are the services OpenLDAP (directory service), "
+"Samba (provision of domain, file and print services for Windows), "
+"Kerberos (authentication and single sign on), DNS (network name "
+"resolution) and SSL/TLS (secure transmission of data between systems). It"
+" can be used either via a web interface (|UCSUMC| modules) or in the "
+"command line and in individual scripts. The UCS management system can be "
+"extended with APIs (application programming interfaces) and provides a "
+"flexible client-server architecture which allows changes to be "
+"transferred to the involved systems and be activated there."
+msgstr ""
+
+#: ../../index.rst:84
+msgid ""
+"Additional components from Univention and other manufacturers can be "
+"installed using the App Center. They expand the system with numerous "
+"functions such as groupware, document management and services for "
+"Windows, meaning that they can also be run from a UCS system and "
+"administrated via the UCS management system."
+msgstr ""
+
+#: ../../index.rst:93
+msgid "Overview of UCS"
+msgstr ""
+
+#: ../../index.rst:95
+msgid ""
+"Linux is an operating system which always had a focus on stability, "
+"security and compatibility with other operating systems. Therefore Linux "
+"is predestined for being used in server operating systems that are "
+"stable, secure and highly available."
+msgstr ""
+
+#: ../../index.rst:100
+msgid ""
+"Built on that base, UCS is a server operating system which is optimized "
+"for the simple and secure operation and management of applications and "
+"infrastructure services in enterprises and public authorities. For "
+"efficient and secure management such applications rely on the tight "
+"integration in the user and permission management of the |UCSUMS|."
+msgstr ""
+
+#: ../../index.rst:106
+msgid ""
+"UCS can be employed as the basis for the IT infrastructure in companies "
+"and authorities and provide the central control for it. This makes a "
+"considerable contribution to secure, efficient and cost-effective IT "
+"operation. The business-critical applications are integrated in a uniform"
+" concept, adapted to each other and pre-configured for professional "
+"utilization. Alternatively it can be operated as part of an existing "
+"Microsoft Active Directory domain."
+msgstr ""
+
+#: ../../index.rst:117
+msgid "Commissioning"
+msgstr ""
+
+#: ../../index.rst:119
+msgid ""
+"The use of UCS begins either with a classic operating system installation"
+" on a physical server or as a virtual machine. Further information can be"
+" found in :ref:`installation-chapter`."
+msgstr ""
+
+#: ../../index.rst:126
+msgid "Domain concept"
+msgstr ""
+
+#: ../../index.rst:128
+msgid ""
+"In an IT infrastructure managed with UCS, all servers, clients and users "
+"are contained in a common security and trust context, referred to as the "
+"UCS domain. Every UCS system is assigned a so-called server role during "
+"the installation. Possible system roles are Directory Node, "
+"|UCSMANAGEDNODE| and client."
+msgstr ""
+
+#: ../../index.rst:139
+msgid "UCS domain concept"
+msgstr ""
+
+#: ../../index.rst:141
+msgid ""
+"Depending on the system role within the domain, such services as "
+"Kerberos, OpenLDAP, Samba, modules for domain replication or a Root CA "
+"(certification authority) are installed on the computer. These are "
+"automatically configured for the selected system role. The manual "
+"implementation and configuration of every single service and application "
+"is therefore not required. Due to the modular design and extensive "
+"configuration interfaces, tailor-made solutions to individual "
+"requirements can nevertheless be realized."
+msgstr ""
+
+#: ../../index.rst:150
+msgid ""
+"The integration of Samba, which provides the domain service for clients "
+"and servers operated with Microsoft Windows, makes Univention Corporate "
+"Server compatible with Microsoft Active Directory (AD), whereby the "
+"system acts as an Active Directory server for Windows-based systems. "
+"Consequently, for example, group policies for Microsoft Windows systems "
+"can be administrated in the usual way."
+msgstr ""
+
+#: ../../index.rst:157
+msgid ""
+"UCS can also be operated as part of an existing Microsoft Active "
+"Directory domain. This way, users and groups of the Active Directory "
+"domain can access applications from the Univention App Center."
+msgstr ""
+
+#: ../../index.rst:161
+msgid ""
+"Ubuntu or macOS clients can be integrated in a UCS environment, as well "
+"(see :ref:`computers-ubuntu`)."
+msgstr ""
+
+#: ../../index.rst:167
+msgid "Expandability with the Univention App Center"
+msgstr ""
+
+#: ../../index.rst:169
+msgid ""
+"The Univention App Center offers additional UCS components and extensions"
+" and a broad selection of business IT software, e.g., groupware and "
+"collaboration, file exchange, CRM or backup. These applications can be "
+"installed in existing environments with a few clicks and are usually "
+"ready to use. In most cases they are directly integrated into the "
+"|UCSUMS| such that they are available as |UCSUMC| modules. This provides "
+"a central management of data on the domain level and obsoletes the "
+"separate management of, e.g., user data in multiple places."
+msgstr ""
+
+#: ../../index.rst:181
+msgid "LDAP directory service"
+msgstr ""
+
+#: ../../index.rst:183
+msgid ""
+"With the |UCSUMS|, all the components of the UCS domain can be centrally "
+"administrated across computer, operating system and site boundaries. It "
+"thus provides a single point of administration for the domain. One "
+"primary element of the UCS management system is an LDAP directory in "
+"which the data required across the domain for the administration are "
+"stored. In addition to the user accounts and similar elements, the data "
+"basis of services such as DHCP is also saved there. The central data "
+"management in the LDAP directory avoids not only the repeated entry of "
+"the same data, but also reduces the probability of errors and "
+"inconsistencies."
+msgstr ""
+
+#: ../../index.rst:194
+msgid ""
+"An LDAP directory has a tree-like structure, the root of which forms the "
+"so-called basis of the UCS domain. The UCS domain forms the common "
+"security and trust context for its members. An account in the LDAP "
+"directory establishes the membership in the UCS domain for users. "
+"Computers receive a computer account when they join the domain. Microsoft"
+" Windows systems can also join the domain such that users can sign in "
+"there with their domain passport."
+msgstr ""
+
+#: ../../index.rst:202
+msgid ""
+"UCS utilizes OpenLDAP as a directory service server. The directory is "
+"provided by the |UCSPRIMARYDN| and replicated on all UCS Directory Nodes "
+"in the domain. The complete LDAP directory is also replicated on a "
+"|UCSBACKUPDN| as this can replace the |UCSPRIMARYDN| in an emergency. In "
+"contrast, the replication on |UCSREPLICADN| can be restricted to certain "
+"areas of the LDAP directory using ACLs (access control lists) in order to"
+" realize a selective replication. For example, this may be desirable if "
+"data should only be stored on as few servers as possible for security "
+"reasons. For secure communication of all systems within the domain, UCS "
+"integrates a root CA (certification authority)."
+msgstr ""
+
+#: ../../index.rst:213
+msgid "Further information can be found in :ref:`domain-ldap`."
+msgstr ""
+
+#: ../../index.rst:218
+msgid "Domain administration"
+msgstr ""
+
+#: ../../index.rst:225
+msgid "|UCSUMC| modules"
+msgstr ""
+
+#: ../../index.rst:227
+msgid ""
+"Access to the LDAP directory is performed via a web-based user interface "
+"through |UCSUMC| (UMC) modules. In addition to this, |UCSUDM| allows the "
+"realization of all domain-wide administrative tasks via a command line "
+"interface. This is particularly suitable for the integration in scripts "
+"or automated administrative steps."
+msgstr ""
+
+#: ../../index.rst:233
+msgid ""
+"|UCSUMC| modules allows to display, edit, delete, and search the data in "
+"the LDAP directory via various filter criteria. The web interface offers "
+"a range of wizards for the administration of user, groups, networks, "
+"computers, directory shares and printers. The administration of computers"
+" also comprises comprehensive functions for distributing and updating "
+"software. The integrated LDAP directory browser can be used to make "
+"further settings and add customer-specific object classes or attributes."
+msgstr ""
+
+#: ../../index.rst:242
+msgid "Further information can be found in :ref:`central-general`."
+msgstr ""
+
+#: ../../index.rst:247
+msgid "Computer administration"
+msgstr ""
+
+#: ../../index.rst:249
+msgid ""
+"|UCSUMC| modules allows not only the access to the LDAP directory, but "
+"also the web-based configuration and administration of individual "
+"computers. These include the adaptation of configuration data, the "
+"installation of software as well as the monitoring and control of "
+"services and the operating system itself. With the |UCSUMS|, domain "
+"administration as well as computer and server configuration is possible "
+"from any place via a comfortable graphic web interface."
+msgstr ""
+
+#: ../../index.rst:260
+msgid "Policy concept"
+msgstr ""
+
+#: ../../index.rst:262
+msgid ""
+"The tree-like structure of LDAP directories is similar to that of a file "
+"system It ensures that objects (such as users, computers, etc.) are in "
+"one container which itself can be adopted by other containers. The root "
+"container is also called the LDAP base object."
+msgstr ""
+
+#: ../../index.rst:267
+msgid ""
+"Policies describe certain administrative settings which are applied to "
+"more than one object. Linked to containers, they facilitate the "
+"administration as they are effective for all objects in the container in "
+"question as well as the objects in subfolders."
+msgstr ""
+
+#: ../../index.rst:272
+msgid ""
+"For example, users can be organized in different containers or "
+"organizational units (which are a form of containers) depending on which "
+"department they belong to. Settings such as the desktop background or "
+"accessible programs can then be connected to these organizational units "
+"using policies. Subsequently, they apply for all users within the "
+"organizational unit in question."
+msgstr ""
+
+#: ../../index.rst:279
+msgid "Further information can be found in :ref:`central-policies`."
+msgstr ""
+
+#: ../../index.rst:284
+msgid "Listener/notifier replication"
+msgstr ""
+
+#: ../../index.rst:286
+msgid ""
+"The listener/notifier mechanism is an important technical component of "
+"the |UCSUMS|. With this, the creation, editing or deleting of entries in "
+"the LDAP directory triggers defined actions on the computers in question."
+" For example, the creation of a directory share with the UMC module "
+":guilabel:`Shares` leads to the share firstly being entered in the LDAP "
+"directory. The listener/notifier mechanism then ensures that the NFS and "
+"Samba configuration files are also expanded accordingly on the selected "
+"server and that the directory is created in the file system of the "
+"selected server if it does not already exist."
+msgstr ""
+
+#: ../../index.rst:296
+msgid ""
+"The listener/notifier mechanism can be expanded with modules for further "
+"- also customer-specific - procedures. Consequently, it is used by "
+"numerous technology partners for the integration of their products in the"
+" LDAP directory service and the |UCSUMS| for example."
+msgstr ""
+
+#: ../../index.rst:301
+msgid "Further information can be found in :ref:`domain-listener-notifier`."
+msgstr ""
+
+#: ../../index.rst:306
+msgid "Further documentation"
+msgstr ""
+
+#: ../../index.rst:308
+msgid ""
+"This manual addresses just a small selection of the possibilities in UCS."
+" Among other things, UCS and solutions based on UCS provide:"
+msgstr ""
+
+#: ../../index.rst:311
+msgid ""
+"Comprehensive support for complex server environments and replication "
+"scenarios"
+msgstr ""
+
+#: ../../index.rst:314
+msgid "Advanced capabilities for Windows environments"
+msgstr ""
+
+#: ../../index.rst:316
+msgid "Central network management with DNS and DHCP"
+msgstr ""
+
+#: ../../index.rst:318
+msgid "Monitoring systems and networks"
+msgstr ""
+
+#: ../../index.rst:320
+msgid "Print server functionalities"
+msgstr ""
+
+#: ../../index.rst:322
+msgid "Proxy server"
+msgstr ""
+
+#: ../../index.rst:324
+msgid ""
+"Further documentation related to UCS and further issues is published "
+"under :cite:t:`ucs-docs` and in the `Univention Wiki <univention-"
+"wiki_>`_."
+msgstr ""
+
+#: ../../index.rst:330
+msgid "Symbols and conventions used in this manual"
+msgstr ""
+
+#: ../../index.rst:332
+msgid "The manual uses the following symbols:"
+msgstr ""
+
+#: ../../index.rst:336
+msgid "Warnings are highlighted."
+msgstr ""
+
+#: ../../index.rst:340
+msgid "Notes are also highlighted."
+msgstr ""
+
+#: ../../index.rst:342
+msgid "This table describes the functionality of a UMC module:"
+msgstr ""
+
+#: ../../index.rst:344
+msgid "Tab DHCP service"
+msgstr ""
+
+#: ../../index.rst:347
+msgid "Attribute"
+msgstr ""
+
+#: ../../index.rst:347 ../../index.rst:351
+msgid "Description"
+msgstr ""
+
+#: ../../index.rst:349
+msgid "Name"
+msgstr ""
+
+#: ../../index.rst:349
+msgid "The unique name of a DHCP service."
+msgstr ""
+
+#: ../../index.rst:351
+msgid "An arbitrary description of the service."
+msgstr ""
+
+#: ../../index.rst:354
+msgid ""
+"Menu entries, button labels, and similar details with actions are printed"
+" in :guilabel:`this font face`."
+msgstr ""
+
+#: ../../index.rst:357
+msgid "*Names* are highlighted."
+msgstr ""
+
+#: ../../index.rst:359
+msgid ""
+"``Computer names, LDAP DNs``, :command:`program names`, :file:`file "
+"names, file paths`, `internet addresses <https://example.com>`_ and "
+"``options`` are also optically accented."
+msgstr ""
+
+#: ../../index.rst:364
+msgid "``Commands and other keyboard input`` is accented optically."
+msgstr ""
+
+#: ../../index.rst:371
+msgid ""
+"A backslash (``\\``) at the end of a line signifies that the subsequent "
+"line feed is not to be understood as an *end of line*. This circumstance "
+"may occur, for example, where commands cannot be represented in one line "
+"in the manual, yet have to be entered in the command line in one piece "
+"without the backslash or with the backslash and a subsequent "
+":kbd:`Enter`."
+msgstr ""
+
+#: ../../index.rst:378
+msgid ""
+"The path to a function is represented in a similar way to a file path. "
+":menuselection:`Users --> Add` means for example, you have to click "
+":guilabel:`Users` in the main menu and :guilabel:`Add` in the submenu."
+msgstr ""
+

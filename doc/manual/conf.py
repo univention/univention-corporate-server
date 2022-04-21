@@ -125,3 +125,22 @@ linkcheck_ignore = [
 ]
 
 univention_use_doc_base = True
+
+gettext_additional_targets = ["literal-block"]
+
+def fix_title_translation(app, config):
+    """
+    Sets the document title correctly according to the target language.
+
+    See https://github.com/sphinx-doc/sphinx/issues/10282
+    """
+    if config.language == "de":
+        config.project = "Univention Corporate Server - Handbuch für Benutzer und Administratoren"
+        config.html_title = config.project
+
+
+def setup(app):
+    app.connect(
+        "config-inited",
+        fix_title_translation,
+    )

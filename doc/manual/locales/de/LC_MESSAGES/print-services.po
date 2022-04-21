@@ -1,0 +1,858 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021-2022, Univention GmbH
+# This file is distributed under the same license as the Univention
+# Corporate Server - Manual for users and administrators package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Univention Corporate Server - Manual for users and "
+"administrators \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-21 09:59+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../print-services/configuration.rst:4
+msgid "Setting the local configuration properties of a print server"
+msgstr ""
+
+#: ../../print-services/configuration.rst:6
+msgid ""
+"The configuration of the CUPS print server is performed via settings from"
+" the LDAP directory service and |UCSUCR|. If the |UCSUCRV| "
+":envvar:`cups/include/local` is set to ``true``, the "
+":file:`/etc/cups/cupsd.local.conf` file is included, in which arbitrary "
+"options can be defined. Changes in this file require :command:`ucr commit"
+" /etc/cups/cupsd.conf` to get applied."
+msgstr ""
+
+#: ../../print-services/configuration.rst:13
+msgid ""
+"If an error occurs when working through a printer queue (e.g., because "
+"the connected printer is switched off), the further processing of the "
+"queue is stopped by default. This must then be reactivated by the "
+"administrator (see :ref:`umc-modules-printer`). If the |UCSUCRV| "
+":envvar:`cups/errorpolicy` is set to ``retry-job``, CUPS automatically "
+"attempts to process unsuccessful print jobs again every 30 seconds."
+msgstr ""
+
+#: ../../print-services/group.rst:4
+msgid "Creating a printer group"
+msgstr ""
+
+#: ../../print-services/group.rst:6
+msgid ""
+"CUPS offers the possibility to group printers into classes. These are "
+"implemented in UCS as *printer groups*. Printer groups appear to clients "
+"as normal printers. The aim of such a printer group is to create a higher"
+" availability of printer services. If the printer group is used to print,"
+" the job is sent to the first printer in the printer group to become "
+"available. The printers are selected based on the round robin principle "
+"so that the degree of utilization is kept uniform."
+msgstr ""
+
+#: ../../print-services/group.rst:18
+msgid ""
+"A printer group must have at least one printer as a member. Only printers"
+" from the same server can be members of the group."
+msgstr ""
+
+#: ../../print-services/group.rst:23
+msgid ""
+"The possibility of grouping printers shares from different printer "
+"servers in a printer group makes it possible to select printer groups as "
+"members of a printer group. This could result in a printer group adopting"
+" itself as a group member. This must not be allowed to happen."
+msgstr ""
+
+#: ../../print-services/group.rst:28
+msgid ""
+"Printer groups are administrated in the UMC module :guilabel:`Printers` "
+"with the *Printer share* object type (see :ref:`central-user-interface`)."
+msgstr ""
+
+#: ../../print-services/group.rst:31 ../../print-services/ppd.rst:22
+#: ../../print-services/share.rst:29
+msgid "*General* tab"
+msgstr ""
+
+#: ../../print-services/group.rst:35 ../../print-services/ppd.rst:26
+#: ../../print-services/share.rst:33 ../../print-services/share.rst:149
+msgid "Attribute"
+msgstr ""
+
+#: ../../print-services/group.rst:36 ../../print-services/ppd.rst:27
+#: ../../print-services/ppd.rst:41 ../../print-services/share.rst:34
+#: ../../print-services/share.rst:134 ../../print-services/share.rst:150
+msgid "Description"
+msgstr ""
+
+#: ../../print-services/group.rst:38 ../../print-services/ppd.rst:29
+#: ../../print-services/share.rst:36
+msgid "Name (*)"
+msgstr ""
+
+#: ../../print-services/group.rst:39
+msgid ""
+"This input field contains the names of the printer group share, which is "
+"used by CUPS. The printer group appears under this name in Linux and "
+"Windows."
+msgstr ""
+
+#: ../../print-services/group.rst:43
+msgid ""
+"The name may contain alphanumeric characters (i.e., uppercase and "
+"lowercase letters a to z and numbers 0 to 9) as well as hyphens and "
+"underscores. Other characters (including blank spaces) are not permitted."
+msgstr ""
+
+#: ../../print-services/group.rst:47 ../../print-services/share.rst:43
+msgid "Print server (*)"
+msgstr ""
+
+#: ../../print-services/group.rst:48
+msgid ""
+"A range of print servers (spoolers) can be specified here to expand the "
+"list of printers available for selection. Printers which are assigned to "
+"the servers specified here can then be adopted in the *Group members* "
+"list from the selection arranged below them."
+msgstr ""
+
+#: ../../print-services/group.rst:53 ../../print-services/share.rst:119
+msgid "Samba name"
+msgstr ""
+
+#: ../../print-services/group.rst:54
+msgid ""
+"A printer group can also be assigned an additional name by which it can "
+"reached from Windows. Unlike the CUPS name (see *Name*), the Samba name "
+"may contain blank spaces and umlauts. The printer is then available to "
+"Windows under both the CUPS name and the Samba name."
+msgstr ""
+
+#: ../../print-services/group.rst:59
+msgid ""
+"Using a Samba name in addition to the CUPS name is practical, for "
+"example, if the printer group was already in use in Windows under a name "
+"which contains blank spaces or umlauts. The printer group can then still "
+"be reached under this name without the need to reconfigure the Windows "
+"computers."
+msgstr ""
+
+#: ../../print-services/group.rst:65
+msgid "Group members"
+msgstr ""
+
+#: ../../print-services/group.rst:66
+msgid "This list is used to assign printers to the printer group."
+msgstr ""
+
+#: ../../print-services/index.rst:50
+msgid "Chapter contents"
+msgstr ""
+
+#: ../../print-services/index.rst:5
+msgid "Print services"
+msgstr ""
+
+#: ../../print-services/index.rst:9
+msgid ""
+"|UCSUCS| includes a print system, which can also be used to realize "
+"complex environments. Printers and printer groups can be created and "
+"configured conveniently in the UMC module :guilabel:`Printers`."
+msgstr ""
+
+#: ../../print-services/index.rst:13
+msgid ""
+"The print services are based on *CUPS (Common Unix Printing System)*. "
+"CUPS manages print jobs in print queues and converts print jobs into the "
+"native formats of the connected printers. The print queues are "
+"administrated via the UMC module :guilabel:`Print jobs`, see :ref:`umc-"
+"modules-printer`."
+msgstr ""
+
+#: ../../print-services/index.rst:18
+msgid ""
+"All printers set up in CUPS can be directly used by UCS systems and are "
+"automatically also provided for Windows computers when Samba is used."
+msgstr ""
+
+#: ../../print-services/index.rst:21
+msgid ""
+"The technical capacities of a printer are specified in so-called PPD "
+"files. These files include for example whether a printer can print in "
+"color, whether duplex printing is possible, whether there are several "
+"paper trays, which resolutions are supported and which printer control "
+"languages are supported (e.g., PCL or PostScript)."
+msgstr ""
+
+#: ../../print-services/index.rst:27
+msgid ""
+"Print jobs are transformed by CUPS with the help of filters into a format"
+" that the respective printer can interpret, for example into PostScript "
+"for a PostScript-compatible printer."
+msgstr ""
+
+#: ../../print-services/index.rst:31
+msgid ""
+"UCS already includes a wide variety of filters and PPD files. "
+"Consequently, most printers can be employed without the need to install "
+"additional drivers. The setting up of additional PPD files is described "
+"in :ref:`print-ppdlisten`."
+msgstr ""
+
+#: ../../print-services/index.rst:35
+msgid ""
+"A printer can either be connected directly to the print server locally "
+"(e.g., via the USB port or a parallel port) or communicate with a printer"
+" via remote protocols (e.g., TCP/IP compatible printers, which are "
+"connected via ``IPP`` or ``LPD``)."
+msgstr ""
+
+#: ../../print-services/index.rst:40
+msgid ""
+"Network printers with their own IP address should be registered in the "
+"UMC module :guilabel:`Computers` as an IP client (see :ref:`system-"
+"roles`)."
+msgstr ""
+
+#: ../../print-services/index.rst:43
+msgid ""
+"CUPS offers the possibility of defining printer groups. The included "
+"printers are used employed alternating, which allows automatic load "
+"distribution between neighboring printers."
+msgstr ""
+
+#: ../../print-services/index.rst:47
+msgid ""
+"Print shares from Windows systems can also be integrated in the CUPS "
+"print server, see :ref:`print-shares`."
+msgstr ""
+
+#: ../../print-services/install.rst:4
+msgid "Installing a print server"
+msgstr ""
+
+#: ../../print-services/install.rst:6
+msgid ""
+"A print server can be installed from the Univention App Center with the "
+"application :program:`Print server (CUPS)`. Alternatively, the software "
+"package :program:`univention-printserver` can be installed (:command"
+":`univention-run-join-scripts` must be executed after installation). "
+"Additional information can be found in :ref:`computers-"
+"softwaremanagement-install-software`."
+msgstr ""
+
+#: ../../print-services/pdf.rst:4
+msgid "Generating PDF documents from print jobs"
+msgstr ""
+
+#: ../../print-services/pdf.rst:6
+msgid ""
+"Installing the :program:`univention-printserver-pdf` package expands the "
+"print server with a special *cups-pdf* printer type, which converts "
+"incoming print jobs into PDF documents and adds them in a specified "
+"directory on the printer server where they are readable for the "
+"respective user. After the installation of the package, :command"
+":`univention-run-join-scripts` must be run."
+msgstr ""
+
+#: ../../print-services/pdf.rst:12
+msgid ""
+"The ``cups-pdf:/`` protocol must be selected when creating a PDF printer "
+"in the UMC module :guilabel:`Printers` (see :ref:`print-shares`); the "
+"destination field remains empty."
+msgstr ""
+
+#: ../../print-services/pdf.rst:16
+msgid ""
+"``PDF`` must be selected as *Printer producer* and ``Generic CUPS-PDF "
+"Printer`` as *Printer model*."
+msgstr ""
+
+#: ../../print-services/pdf.rst:19
+msgid ""
+"The target directory for the generated PDF documents is set using the "
+"|UCSUCRV| :envvar:`cups/cups-pdf/directory`. As standard it is set to "
+":file:`/var/spool/cups-pdf/%U` so that :program:`cups-pdf` uses a "
+"different directory for each user."
+msgstr ""
+
+#: ../../print-services/pdf.rst:24
+msgid ""
+"Print jobs coming in anonymously are printed in the directory specified "
+"by the |UCSUCRV| :envvar:`cups/cups-pdf/anonymous` (standard setting: "
+":file:`/var/spool/cups-pdf/`)."
+msgstr ""
+
+#: ../../print-services/pdf.rst:28
+msgid ""
+"By default generated PDF documents are kept without any restrictions. If "
+"the |UCSUCRV| :envvar:`cups/cups-pdf/cleanup/enabled` is set to ``true``,"
+" old PDF print jobs are deleted via a Cron job. The storage time in days "
+"can be configured using the |UCSUCRV| :envvar:`cups/cups-"
+"pdf/cleanup/keep`."
+msgstr ""
+
+#: ../../print-services/ppd.rst:4
+msgid "Integrating additional PPD files"
+msgstr ""
+
+#: ../../print-services/ppd.rst:6
+msgid ""
+"The technical capabilities of a printer are specified in so-called PPD "
+"files. These files include for example whether a printer can print in "
+"color, whether duplex printing is possible, whether there are several "
+"paper trays, which resolutions are supported and which printer control "
+"languages are supported (e.g., PCL or PostScript)."
+msgstr ""
+
+#: ../../print-services/ppd.rst:12
+msgid ""
+"In addition to the PPD files already included in the standard scope, "
+"additional ones can be added via UMC modules. The PPDs are generally "
+"provided by the printer manufacturer and need to be copied into the "
+":file:`/usr/share/ppd/` directory on the print servers."
+msgstr ""
+
+#: ../../print-services/ppd.rst:17
+msgid ""
+"The printer driver lists are administrated in the UMC module "
+":guilabel:`LDAP directory`. There you need to switch to the "
+"``univention`` container and then to the ``cups`` subcontainer. Printer "
+"driver lists already exist for the majority of printer manufacturers. "
+"These can be expanded or new ones can be added."
+msgstr ""
+
+#: ../../print-services/ppd.rst:30
+msgid ""
+"The name of the printer driver list. The name under which the list "
+"appears in the *Printer model* selection list on the *General* tab for "
+"printer shares (see :ref:`print-shares`)."
+msgstr ""
+
+#: ../../print-services/ppd.rst:34
+msgid "Driver"
+msgstr ""
+
+#: ../../print-services/ppd.rst:35
+msgid ""
+"The path to the :file:`ppd` file or to the :file:`/usr/share/ppd/` "
+"directory. For example, if the :file:`/usr/share/ppd/laserjet.ppd` should"
+" be used, :file:`laserjet.ppd` must be entered here. :command:`gzip` "
+"compressed files (file ending :file:`.gz`) can also be entered here."
+msgstr ""
+
+#: ../../print-services/ppd.rst:42
+msgid ""
+"A description of the printer driver, under which it appears in the "
+"*Printer model* selection list on the *General* tab for printer shares."
+msgstr ""
+
+#: ../../print-services/share.rst:4 ../../print-services/share.rst:14
+msgid "Creating a printer share"
+msgstr ""
+
+#: ../../print-services/share.rst:6
+msgid ""
+"Print shares are administrated in the UMC module :guilabel:`Printers` "
+"with the *Printer share* object type (see :ref:`central-user-interface`)."
+msgstr ""
+
+#: ../../print-services/share.rst:16
+msgid ""
+"When adding/deleting/editing a printer share, the printer is "
+"automatically configured in CUPS. CUPS does not have an LDAP interface "
+"for printer configuration, instead the :file:`printers.conf` file is "
+"generated via a listener module. If Samba is used, the printer shares are"
+" also automatically provided for Windows clients."
+msgstr ""
+
+#: ../../print-services/share.rst:25
+msgid "Printers UMC module - General tab"
+msgstr ""
+
+#: ../../print-services/share.rst:37
+msgid ""
+"This input field contains the name of the printer share, which is used by"
+" CUPS. The printer appears under this name in Linux and Windows. The name"
+" may contain alphanumeric characters (i.e., uppercase and lowercase "
+"letters a to z and numbers 0 to 9) as well as hyphens and underscores. "
+"Other characters (including blank spaces) are not permitted."
+msgstr ""
+
+#: ../../print-services/share.rst:44
+msgid ""
+"A print server manages the printer queue for the printers to be shared. "
+"It converts the data to be printed into a compatible print format when "
+"this is necessary. If the printer is not ready, the print server saves "
+"the print jobs temporarily and forwards them on to the printer "
+"subsequently. If more than one print server is specified, the print job "
+"from the client will be sent to the first print server to become "
+"available."
+msgstr ""
+
+#: ../../print-services/share.rst:52
+msgid ""
+"Only UCS Directory Node and |UCSMANAGEDNODE|\\ s on which the :program"
+":`univention-printserver` package is installed are displayed in the list."
+msgstr ""
+
+#: ../../print-services/share.rst:56
+msgid "Protocol and Destination (*)"
+msgstr ""
+
+#: ../../print-services/share.rst:57
+msgid "These two input fields specify how the print server accesses the printer."
+msgstr ""
+
+#: ../../print-services/share.rst:59
+msgid ""
+"The following list describes the syntax of the individual protocols for "
+"the configuration of printers connected locally to the server:"
+msgstr ""
+
+#: ../../print-services/share.rst:62
+msgid ":samp:`parallel://{devicefile}`"
+msgstr ""
+
+#: ../../print-services/share.rst:64
+msgid "Example: ``parallel://dev/lp0``"
+msgstr ""
+
+#: ../../print-services/share.rst:66
+msgid ":samp:`socket://{server}:{port}`"
+msgstr ""
+
+#: ../../print-services/share.rst:68
+msgid "Example: ``socket://printer_03:9100``"
+msgstr ""
+
+#: ../../print-services/share.rst:70
+msgid ":samp:`usb://{devicefile}`"
+msgstr ""
+
+#: ../../print-services/share.rst:72
+msgid "Example: ``usb://dev/usb/lp0``"
+msgstr ""
+
+#: ../../print-services/share.rst:74
+msgid ""
+"The following list describes the syntax of the individual protocols for "
+"the configuration of network printers:"
+msgstr ""
+
+#: ../../print-services/share.rst:77
+msgid ":samp:`http://{server}[:{port}]/{path}`"
+msgstr ""
+
+#: ../../print-services/share.rst:79
+msgid "Example: ``http://192.0.2.10:631/printers/remote``"
+msgstr ""
+
+#: ../../print-services/share.rst:81
+msgid ":samp:`ipp://{server}/printers/{queue}`"
+msgstr ""
+
+#: ../../print-services/share.rst:83
+msgid "Example: ``ipp://printer_01/printers/xerox``"
+msgstr ""
+
+#: ../../print-services/share.rst:85
+msgid ":samp:`lpd://{server}/{queue}`"
+msgstr ""
+
+#: ../../print-services/share.rst:87
+msgid "Example: ``lpd://192.0.2.30/bwdraft``"
+msgstr ""
+
+#: ../../print-services/share.rst:89
+msgid ""
+"The ``cups-pdf`` protocol is used for integrating a pseudo printer, which"
+" creates a PDF document from all the print jobs. The setup is documented "
+"in :ref:`pdf-printer`."
+msgstr ""
+
+#: ../../print-services/share.rst:93
+msgid ""
+"The ``file:/`` protocol expects a filename as a target. The print job is "
+"then not sent to the printer, but instead written in this file, which can"
+" be useful for test purposes. The file is rewritten with every print job."
+msgstr ""
+
+#: ../../print-services/share.rst:97
+msgid ""
+"The ``smb://`` protocol can be used to mount a Windows print share. For "
+"example, to integrate the ``laser01`` printer share from Windows system "
+"``win01``, ``win01/laser01`` must be specified as destination. The "
+"manufacturer and model must be selected according to the printer in "
+"question. The print server uses the printer model settings to convert the"
+" print jobs where necessary and send these directly to the URI "
+"``smb://win01/laser01``. No Windows drivers are used in this."
+msgstr ""
+
+#: ../../print-services/share.rst:105
+msgid ""
+"Independent of these settings, the printer share can be mounted by other "
+"Windows systems with the corresponding printer drivers."
+msgstr ""
+
+#: ../../print-services/share.rst:108
+msgid "Manufacturer"
+msgstr ""
+
+#: ../../print-services/share.rst:109
+msgid ""
+"When the printer manufacturer is selected, the *Printer model* selection "
+"list updates automatically."
+msgstr ""
+
+#: ../../print-services/share.rst:112
+msgid "Printer model (*)"
+msgstr ""
+
+#: ../../print-services/share.rst:113
+msgid ""
+"This selection list shows all the printers PPD files available for the "
+"selected manufacturer. If the required printer model is not there, a "
+"similar model can be selected and a test print used to establish correct "
+"function. :ref:`print-ppdlisten` explains how to expand the list of "
+"printer models."
+msgstr ""
+
+#: ../../print-services/share.rst:120
+msgid ""
+"A printer can also be assigned an additional name by which it can be "
+"reached from Windows. Unlike the CUPS name (see *Name*), the Samba name "
+"may contain blank spaces and umlauts. The printer is then available to "
+"Windows under both the CUPS name and the Samba name."
+msgstr ""
+
+#: ../../print-services/share.rst:125
+msgid ""
+"Using a Samba name in addition to the CUPS name is practical, for "
+"example, if the printer was already in use in Windows under a name which "
+"contains blank spaces or umlauts. The printer can then still be reached "
+"under this name without the need to reconfigure the Windows computers."
+msgstr ""
+
+#: ../../print-services/share.rst:130
+msgid "Location"
+msgstr ""
+
+#: ../../print-services/share.rst:131
+msgid ""
+"This data is displayed by some applications when selecting the printer. "
+"It can be filled with any text."
+msgstr ""
+
+#: ../../print-services/share.rst:135
+msgid ""
+"This is displayed by some applications when selecting the printer. It can"
+" be filled with any text."
+msgstr ""
+
+#: ../../print-services/share.rst:141
+msgid "Printers UMC module - Access control tab"
+msgstr ""
+
+#: ../../print-services/share.rst:145
+msgid "*Access control* tab"
+msgstr ""
+
+#: ../../print-services/share.rst:152
+msgid "Access control"
+msgstr ""
+
+#: ../../print-services/share.rst:153
+msgid ""
+"Access rights for the printer can be specified here. Access can be "
+"limited to certain groups or users or generally allowed and certain "
+"groups or users blocked specifically. As standard, access is available "
+"for all groups and users. These rights are also adopted for the "
+"corresponding Samba printer shares, so that the same access rights apply "
+"when printing via Samba as when printing directly via CUPS."
+msgstr ""
+
+#: ../../print-services/share.rst:160
+msgid ""
+"This access control is useful for the management of printers spread "
+"across several locations, so that the users at location A do not see the "
+"printers of location B."
+msgstr ""
+
+#: ../../print-services/share.rst:164
+msgid "Allowed/denied users"
+msgstr ""
+
+#: ../../print-services/share.rst:165
+msgid "This lists individual users for whom access should be controlled."
+msgstr ""
+
+#: ../../print-services/share.rst:167
+msgid "Allowed/denied groups"
+msgstr ""
+
+#: ../../print-services/share.rst:168
+msgid "This lists individual groups for whom access should be controlled."
+msgstr ""
+
+#: ../../print-services/umc.rst:4
+msgid "Administration of print jobs and print queues"
+msgstr ""
+
+#: ../../print-services/umc.rst:6
+msgid ""
+"The UMC module :guilabel:`Print jobs` allows you to check the status of "
+"the connected printers, restart paused printers and remove print jobs "
+"from the queues on printer servers."
+msgstr ""
+
+#: ../../print-services/umc.rst:15
+msgid "Printer administration"
+msgstr ""
+
+#: ../../print-services/umc.rst:17
+msgid ""
+"The start page of the module contains a search mask with which the "
+"available printers can be selected. The result list displays the server, "
+"name, status, location and description of the respective printer. The "
+"status of more than one printer can be changed simultaneously by "
+"selecting the printers and running either the *deactivate* or *activate* "
+"function."
+msgstr ""
+
+#: ../../print-services/umc.rst:23
+msgid ""
+"Clicking on the printer name displays details of the selected printer. "
+"The information displayed includes a list of the print jobs currently in "
+"the printer queue. These print jobs can be deleted from the queue by "
+"selecting the jobs and running the *Delete* function."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:4
+msgid "Mounting of print shares in Windows clients"
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:6
+msgid ""
+"The printer shares set up in the UMC module :guilabel:`Printers` can be "
+"added as network printers on Windows systems. This is done via the "
+"Control Panel under :menuselection:`Add a device --> Add a printer`. The "
+"printer drivers need to be set up during the first access. If the drivers"
+" are stored on the server side (see below), the drivers are assigned "
+"automatically."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:12
+msgid ""
+"Printer shares are usually operated using the Windows printer drivers "
+"provided. The network printer can alternatively be set up on the Windows "
+"side with a standard PostScript printer driver. If a color printer should"
+" be accessed, a driver for a PostScript-compatible color printer should "
+"be used on the Windows side, e.g., *HP Color LaserJet 8550*."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:20
+msgid ""
+"The printer can only be accessed by regular users when they have local "
+"permissions for driver installation or the respective printer drivers "
+"were stored on the printer server. If this is not the case, Windows may "
+"issue an error warning that the permissions are insufficient to establish"
+" a connection to the printer."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:26
+msgid ""
+"Windows supports a mechanism for providing the printer drivers on the "
+"print server (*Point 'n' Print*). The following guide describes the "
+"provision of the printer drivers in Windows for a print share configured "
+"in the UMC module :guilabel:`Printers`. Firstly, the printer drivers must"
+" be stored on the print server. There are a number of pitfalls in the "
+"Windows user wizard, so it is important to follow the individual steps "
+"precisely."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:33
+msgid ""
+"Firstly, the printer drivers must be downloaded from the manufacturer's "
+"website. If you are using an environment in which 64-bit installations of"
+" Windows are used, you will need both versions of the drivers (32 and 64 "
+"bit). The :file:`INF` files are required."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:38
+msgid ""
+"Now you need to start the :program:`printmanagement.msc` program. "
+"Clicking on :guilabel:`Add/remove server` in the *Action* menu item "
+"allows you to add another server. The name of the printer server needs to"
+" be entered in the *Add server* input field."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst
+#: ../../print-services/windows-clients.rst:48
+msgid "Add printer server"
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:50
+msgid ""
+"The newly added printer server should now be listed in the print "
+"management program. Clicking on :guilabel:`Printers` displays the printer"
+" shares currently set up on the printer server."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst
+#: ../../print-services/windows-clients.rst:59
+msgid "Printer list"
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:61
+msgid ""
+"Clicking on :guilabel:`Drivers` lists the saved printer drivers. Clicking"
+" on :guilabel:`Add driver` in the *Action* menu item opens the dialogue "
+"window for the driver installation."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:65
+msgid ""
+"We recommend downloading the printer drivers directly from the "
+"manufacturer and selecting them during the driver installation. If you "
+"are using an environment containing 64-bit versions of Windows, start by "
+"performing a check to see if the |UCSUCRV| ``samba/spoolss/architecture``"
+" is set to ``Windows x64`` on the UCS Samba system. If this is not the "
+"case, both the 32-bit and the 64-bit drivers must be uploaded; if your "
+"domain only uses 64-bit Windows systems, the 32-bit driver can be "
+"ignored. The drivers for the different Windows architectures can be "
+"uploaded one after the other or together."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:75
+msgid ""
+"If both driver architectures are selected for uploading at the same time,"
+" the 64-bit driver should be selected first in the subsequent file "
+"selection window. Once Windows has uploaded these files to the server, it"
+" asks for the location of the 32-bit drivers again. They are then also "
+"uploaded to the server."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst
+#: ../../print-services/windows-clients.rst:86
+msgid "Driver installation"
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:88
+msgid ""
+"After these steps the drivers are stored in the directory "
+":file:`/var/lib/samba/drivers/` on the print server."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:91
+msgid ""
+"The print share now needs to be linked to the uploaded printer driver. To"
+" do so, the list of the printers available on the printer server is "
+"opened in the :program:`printmanagement.msc` program. The properties can "
+"be listed there by double-clicking on the *printer*."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst
+#: ../../print-services/windows-clients.rst:101
+msgid "Selecting a printer"
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:103
+msgid ""
+"If no printer driver is saved, a message is displayed saying that there "
+"is no printer driver installed. The prompt to install the driver should "
+"be closed with :guilabel:`No` here."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst
+#: ../../print-services/windows-clients.rst:112
+msgid "Error message on first access"
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:114
+msgid ""
+"The uploaded driver now needs to be selected from the drop down menu "
+"under *Drivers* in the *Advanced* tab. Then click on :guilabel:`Apply` "
+"(Important: **DON'T** click on :guilabel:`OK`!)."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:118
+msgid ""
+"If the printer driver in question is being assigned to a printer for the "
+"first time, a dialogue window is shown, asking whether the printer can be"
+" trusted. This should be confirmed with :guilabel:`Install driver`. The "
+"printer drivers saved on the server side are now downloaded to the "
+"client. If the printer driver in question has already been downloaded to "
+"the Windows system in question in this manner before, Windows displays an"
+" error message at this point ``0x0000007a``. This can simply be ignored."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:126
+msgid ""
+"**Important**: Now, instead of clicking directly on :guilabel:`OK`, you "
+"need to return to the *General* tab again. The old name for the printer "
+"share should still be displayed on the tab."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:130
+msgid ""
+"In UCS releases earlier than UCS 4.0-1, it is possible that the Windows "
+"system has changed the name of the printer share to the name of the "
+"printer driver. If that were accepted, the printer would no longer be "
+"associated with the share!"
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:135
+msgid ""
+"If this is the case, the name of the printer on the *General* tab (the "
+"first input field next to the stylized printer symbol) needs to be reset "
+"to the name of the print share. This can be done using the *Windows name*"
+" field configured in the UMC module :guilabel:`Printers` (or if this was "
+"left blank, use the value from *Name*). If the name has had to be reset "
+"in this fashion, Windows then asks if you are sure that you want to "
+"change the name when :guilabel:`OK` is clicked. Confirm the prompt."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:143
+msgid ""
+"To give the Windows printer driver the opportunity to save correct "
+"standard settings for the printer, you now need to switch to the *Device "
+"settings* tab. The name of the tab differs from manufacturer to "
+"manufacturer and may also be *Settings* or even just *Configuration*."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:148
+msgid ""
+"Clicking on :guilabel:`OK` closes the window. You can then print a test "
+"page. If Windows displays an error message here ``0x00000006``, the "
+"printer settings must be checked again to see whether there is a "
+"manufacturer-specific tab called *Device settings* (or something "
+"similar). If so, it should be opened and then simply confirmed with "
+":guilabel:`OK`. This closes the dialogue window and saves the printer "
+"drivers settings (``PrinterDriverData``) in the Samba registry."
+msgstr ""
+
+#: ../../print-services/windows-clients.rst:156
+msgid ""
+"At this point, it is also practical to make the settings for the paper "
+"size and other parameters, so that they are saved in the print share. "
+"Other Windows systems which subsequently access the print share will then"
+" find the correct settings automatically. These settings can usually be "
+"opened by clicking on the :guilabel:`Standard values...` button in the "
+"*Advanced* tab of the printer settings. The dialogue window which opens "
+"also varies from manufacturer to manufacturer. Typically, the settings "
+"for paper size and orientation are found on a tab called *Page setup* or "
+"*Paper/Quality*. Once the dialogue has been confirmed by clicking on "
+":guilabel:`OK`, the printer driver saves these settings (as ``Default "
+"DevMode``) for the printer in the Samba registry."
+msgstr ""
+

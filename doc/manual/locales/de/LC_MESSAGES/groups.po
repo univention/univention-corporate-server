@@ -1,0 +1,667 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021-2022, Univention GmbH
+# This file is distributed under the same license as the Univention
+# Corporate Server - Manual for users and administrators package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Univention Corporate Server - Manual for users and "
+"administrators \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-21 09:59+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../groups.rst:5
+msgid "Group management"
+msgstr ""
+
+#: ../../groups.rst:7
+msgid ""
+"Permissions in UCS are predominantly differentiated between on the basis "
+"of *groups*. Groups are stored in the LDAP and are thus identical on all "
+"systems. Groups can contain not only user accounts, but can also "
+"optionally accept computer accounts."
+msgstr ""
+
+#: ../../groups.rst:12
+msgid ""
+"In addition, there are also local user groups on each system, which are "
+"predominantly used for hardware access. These are not managed through the"
+" |UCSUMS|, but saved in the :file:`/etc/group` file."
+msgstr ""
+
+#: ../../groups.rst:19
+msgid "User group assignments"
+msgstr ""
+
+#: ../../groups.rst:20
+msgid "The assignment of users to groups is performed in two ways:"
+msgstr ""
+
+#: ../../groups.rst:22
+msgid ""
+"A selection of groups can be assigned to a user in the user management, "
+"see :ref:`users-management`."
+msgstr ""
+
+#: ../../groups.rst:25
+msgid ""
+"A selection of users can be assigned to a group in the group management, "
+"see :ref:`groups-management`."
+msgstr ""
+
+#: ../../groups.rst:31
+msgid "Recommendation for group name definition"
+msgstr ""
+
+#: ../../groups.rst:32
+msgid ""
+"One very important and required attribute for groups is the group name. "
+"To avoid conflicts with the different tools handling groups in UCS, "
+"adhere to the following recommendations for the definition of group "
+"names:"
+msgstr ""
+
+#: ../../groups.rst:36
+msgid ""
+"Only use upper and lower case letters (``A-Za-z``), digits (``0-9``) the "
+"hyphen (``-``) and space from the ASCII character set for group names."
+msgstr ""
+
+#: ../../groups.rst:39
+msgid ""
+"The group name starts with a letter from the ASCII character set. The "
+"space is not allowed as first or last character. The hyphen is not "
+"allowed as last character."
+msgstr ""
+
+#: ../../groups.rst:43
+msgid ""
+"In UCS the group name has at least a length of 4 characters and at most "
+"20 characters."
+msgstr ""
+
+#: ../../groups.rst:46
+msgid ""
+"The recommendation results in the following regular expression: "
+"``^[A-Za-z][A-Za-z0-9 -]{2,18}[A-Za-z0-9]$``."
+msgstr ""
+
+#: ../../groups.rst:49
+msgid ""
+"Consider the recommendation as a guideline and not a rule and keep "
+"potential side-effects in mind when defining group names outside the "
+"recommendation."
+msgstr ""
+
+#: ../../groups.rst:55
+msgid "Managing groups via |UCSUMC| module"
+msgstr ""
+
+#: ../../groups.rst:57
+msgid ""
+"Groups are managed in the UMC module :guilabel:`Groups` (see :ref"
+":`central-user-interface`)."
+msgstr ""
+
+#: ../../groups.rst:65
+msgid "Creating a group via UMC module"
+msgstr ""
+
+#: ../../groups.rst:70
+msgid "Group management module - General tab"
+msgstr ""
+
+#: ../../groups.rst:74
+msgid "*General* tab"
+msgstr ""
+
+#: ../../groups.rst:78 ../../groups.rst:111 ../../groups.rst:193
+msgid "Attribute"
+msgstr ""
+
+#: ../../groups.rst:79 ../../groups.rst:90 ../../groups.rst:112
+#: ../../groups.rst:194
+msgid "Description"
+msgstr ""
+
+#: ../../groups.rst:81
+msgid "Name (*)"
+msgstr ""
+
+#: ../../groups.rst:82
+msgid ""
+"Defines the name of the group. For recommended characters for the group "
+"name, see :ref:`groups-recommendation-group-name`."
+msgstr ""
+
+#: ../../groups.rst:85
+msgid ""
+"By default it is not possible to create a group with the same name as an "
+"existing user. If the |UCSUCRV| "
+":envvar:`directory/manager/user_group/uniqueness` is set to ``false``, "
+"this check is removed."
+msgstr ""
+
+#: ../../groups.rst:91
+msgid "A description of the group can be entered here."
+msgstr ""
+
+#: ../../groups.rst:93
+msgid "Users"
+msgstr ""
+
+#: ../../groups.rst:94
+msgid "This input field can be used for adding users as members to the group."
+msgstr ""
+
+#: ../../groups.rst:96
+msgid "Groups"
+msgstr ""
+
+#: ../../groups.rst:97
+msgid ""
+"On this input field, other groups can be added as members of the current "
+"group (groups in groups)."
+msgstr ""
+
+#: ../../groups.rst:103
+msgid "Group management module - Advanced settings tab"
+msgstr ""
+
+#: ../../groups.rst:107
+msgid "*Advanced settings* tab"
+msgstr ""
+
+#: ../../groups.rst:114
+msgid "Mail"
+msgstr ""
+
+#: ../../groups.rst:115
+msgid ""
+"These options define a mail group and are documented in the :ref:`mail-"
+"management-mailgroups`."
+msgstr ""
+
+#: ../../groups.rst:118
+msgid "Host members"
+msgstr ""
+
+#: ../../groups.rst:119
+msgid "This field can be used for accepting computers as members of the group."
+msgstr ""
+
+#: ../../groups.rst:121 ../../groups.rst:207
+msgid "Nested groups"
+msgstr ""
+
+#: ../../groups.rst:122
+msgid ""
+"The current group can be added as a member to other groups here (groups "
+"in groups)."
+msgstr ""
+
+#: ../../groups.rst:125
+msgid "Group ID"
+msgstr ""
+
+#: ../../groups.rst:126
+msgid ""
+"If a group is to be assigned a certain group ID, the ID in question can "
+"be entered in this field. Otherwise the next available group ID will be "
+"automatically assigned when adding the group. The group ID cannot be "
+"subsequently changed. When editing the group, the group ID will be "
+"represented in gray."
+msgstr ""
+
+#: ../../groups.rst:132
+msgid ""
+"The group ID may consist of integers between 1000 and 59999 and between "
+"65536 and 100000."
+msgstr ""
+
+#: ../../groups.rst:135
+msgid ":menuselection:`Windows --> Relative ID`"
+msgstr ""
+
+#: ../../groups.rst:136
+msgid ""
+"The relative ID (RID) is the local part of the Security ID (SID) and is "
+"used in Windows and Samba domains. If a group is to be assigned a certain"
+" RID, the ID in question can be entered in this field. Otherwise a RID "
+"will be automatically assigned."
+msgstr ""
+
+#: ../../groups.rst:141
+msgid ""
+"The RID cannot be subsequently changed. When editing the group, the group"
+" ID will be represented in gray."
+msgstr ""
+
+#: ../../groups.rst:144
+msgid ""
+"The RIDs below 1000 are reserved for standard groups and other special "
+"objects."
+msgstr ""
+
+#: ../../groups.rst:147
+msgid ""
+"When Samba/AD is used, the RID is generated by Samba and cannot be "
+"specified."
+msgstr ""
+
+#: ../../groups.rst:150
+msgid ":menuselection:`Windows --> group type`"
+msgstr ""
+
+#: ../../groups.rst:151
+msgid ""
+"This group type is evaluated when the user logs in to a Samba/AD-based "
+"domain. Three types of Windows groups can be distinguished:"
+msgstr ""
+
+#: ../../groups.rst:155
+msgid "Domain Groups"
+msgstr ""
+
+#: ../../groups.rst:155
+msgid "are known across the domain. This is the default group type."
+msgstr ""
+
+#: ../../groups.rst:162
+msgid "Local groups"
+msgstr ""
+
+#: ../../groups.rst:158
+msgid ""
+"are only relevant on Windows servers. If a local group is created on a "
+"Windows server, this group is known solely to the server; it is not "
+"available across the domain. UCS, in contrast, does not differentiate "
+"between local and global groups. After taking over an AD domain, local "
+"groups in UCS can be handled in the same way as global groups."
+msgstr ""
+
+#: ../../groups.rst:166
+msgid "Well-known group"
+msgstr ""
+
+#: ../../groups.rst:165
+msgid ""
+"This group type covers groups preconfigured by Samba/Windows servers "
+"which generally have special privileges, e.g., ``Power Users``."
+msgstr ""
+
+#: ../../groups.rst:168
+msgid ":menuselection:`Windows --> AD group type`"
+msgstr ""
+
+#: ../../groups.rst:169
+msgid ""
+"This group type is only evaluated when the user logs in to a Samba/AD-"
+"based domain (which offers Active Directory domain services). These "
+"groups are described in :ref:`groups-adgroups`."
+msgstr ""
+
+#: ../../groups.rst:173
+msgid ":menuselection:`Windows --> Samba privileges`"
+msgstr ""
+
+#: ../../groups.rst:174
+msgid ""
+"This input mask can be used to assign Windows system rights to a group, "
+"e.g., the right to join a Windows client in the domain. This function is "
+"documented in :ref:`users-management`."
+msgstr ""
+
+#: ../../groups.rst:181
+msgid "Group management module - Options settings tab"
+msgstr ""
+
+#: ../../groups.rst:185
+msgid ""
+"This tab is only available when adding groups, not when editing groups. "
+"Certain LDAP object classes for the group can be de-selected here. The "
+"entry fields for the attributes of these classes can then no longer be "
+"filled in."
+msgstr ""
+
+#: ../../groups.rst:189
+msgid "*Options* tab"
+msgstr ""
+
+#: ../../groups.rst:196
+msgid "Samba group"
+msgstr ""
+
+#: ../../groups.rst:197
+msgid ""
+"This checkbox indicates whether the group contains the object class "
+"``sambaGroupMapping``."
+msgstr ""
+
+#: ../../groups.rst:200
+msgid "POSIX group"
+msgstr ""
+
+#: ../../groups.rst:201
+msgid ""
+"This checkbox indicates whether the group contains the object class "
+"``posixGroup``."
+msgstr ""
+
+#: ../../groups.rst:209
+msgid ""
+"UCS supports group nesting (also known as \"groups in groups\"). This "
+"simplifies the management of the groups. For example, if two locations "
+"are managed in one domain, two groups can be formed ``IT staff location "
+"A`` and ``IT staff location B``, to which the user accounts of the "
+"location's IT staff can be assigned respectively."
+msgstr ""
+
+#: ../../groups.rst:215
+msgid ""
+"To create a cross-location group, it is then sufficient to define the "
+"groups ``IT staff location A`` and ``IT staff location B`` as members."
+msgstr ""
+
+#: ../../groups.rst:218
+msgid ""
+"Cyclic dependencies of nested groups are automatically detected and "
+"refused. This check can be disabled with the |UCSUCRV| "
+":envvar:`directory/manager/web/modules/groups/group/checks/circular_dependency`."
+" Cyclic memberships must also be avoided in direct group changes without "
+"the |UCSUMS|."
+msgstr ""
+
+#: ../../groups.rst:224
+msgid ""
+"The resolution of nested group memberships is performed during the "
+"generation of the group cache (see :ref:`groups-cache`) and is thus "
+"transparent for applications."
+msgstr ""
+
+#: ../../groups.rst:231
+msgid "Local group cache"
+msgstr ""
+
+#: ../../groups.rst:233
+msgid ""
+"The user and computer information retrieved from the LDAP is cached by "
+"the Name Server Cache Daemon (NSCD), see :ref:`computers-nscd`."
+msgstr ""
+
+#: ../../groups.rst:236
+msgid ""
+"Since UCS 3.1, the groups are no longer cached via the NSCD for "
+"performance and stability reasons; instead they are now cached by the NSS"
+" module :program:`libnss-extrausers`. The group information is "
+"automatically exported to the :file:`/var/lib/extrausers/group` file by "
+"the :file:`/usr/lib/univention-pam/ldap-group-to-file.py` script and read"
+" from there by the NSS module."
+msgstr ""
+
+#: ../../groups.rst:244
+msgid ""
+"In the basic setting, the export is performed once a day by a cron job "
+"and is additionally started if the |UCSUDL| has been inactive for 15 "
+"seconds. The interval for the cron update is configured in Cron syntax "
+"(see :ref:`cron-local`) by the |UCSUCRV| "
+":envvar:`nss/group/cachefile/invalidate_interval`. This listener module "
+"can be activated/deactivated via the |UCSUCRV| "
+":envvar:`nss/group/cachefile/invalidate_on_changes` (``true/false``)."
+msgstr ""
+
+#: ../../groups.rst:253
+msgid ""
+"When the group cache file is being generated, the script can verify "
+"whether the group members are still present in the LDAP directory. If not"
+" only UMC modules are used for user management, this additional check can"
+" be can be enabled by setting the |UCSUCRV| "
+":envvar:`nss/group/cachefile/check_member` to ``true``."
+msgstr ""
+
+#: ../../groups.rst:263
+msgid "Synchronization of Active Directory groups when using Samba/AD"
+msgstr ""
+
+#: ../../groups.rst:265
+msgid ""
+"If Samba/AD is used, the group memberships are synchronized between the "
+"Samba/AD directory service and the OpenLDAP directory service by the "
+"Univention S4 connector, i.e., each group on the UCS side is associated "
+"with a group in Active Directory. General information on the Univention "
+"S4 connector can be found in :ref:`windows-s4-connector`."
+msgstr ""
+
+#: ../../groups.rst:271
+msgid ""
+"Some exceptions are formed by the *pseudo groups* (sometimes also called "
+"system groups). These are only managed internally by Active "
+"Directory/Samba, e.g., the ``Authenticated Users`` group includes a list "
+"of all the users currently logged on to the system. Pseudo groups are "
+"stored in the UCS directory service, but they are not synchronized by the"
+" Univention S4 connector and should usually not be edited. This applies "
+"to the following groups:"
+msgstr ""
+
+#: ../../groups.rst:279
+msgid "``Anonymous Logon``"
+msgstr ""
+
+#: ../../groups.rst:280
+msgid "``Authenticated Users``"
+msgstr ""
+
+#: ../../groups.rst:281
+msgid "``Batch``"
+msgstr ""
+
+#: ../../groups.rst:282
+msgid "``Creator Group``"
+msgstr ""
+
+#: ../../groups.rst:283
+msgid "``Creator Owner``"
+msgstr ""
+
+#: ../../groups.rst:284
+msgid "``Dialup``"
+msgstr ""
+
+#: ../../groups.rst:285
+msgid "``Digest Authentication``"
+msgstr ""
+
+#: ../../groups.rst:286
+msgid "``Enterprise Domain Controllers``"
+msgstr ""
+
+#: ../../groups.rst:287
+msgid "``Everyone``"
+msgstr ""
+
+#: ../../groups.rst:288
+msgid "``IUSR``"
+msgstr ""
+
+#: ../../groups.rst:289
+msgid "``Interactive``"
+msgstr ""
+
+#: ../../groups.rst:290
+msgid "``Local Service``"
+msgstr ""
+
+#: ../../groups.rst:291
+msgid "``NTLM Authentication``"
+msgstr ""
+
+#: ../../groups.rst:292
+msgid "``Network Service``"
+msgstr ""
+
+#: ../../groups.rst:293
+msgid "``Network``"
+msgstr ""
+
+#: ../../groups.rst:294
+msgid "``Nobody``"
+msgstr ""
+
+#: ../../groups.rst:295
+msgid "``Null Authority``"
+msgstr ""
+
+#: ../../groups.rst:296
+msgid "``Other Organization``"
+msgstr ""
+
+#: ../../groups.rst:297
+msgid "``Owner Rights``"
+msgstr ""
+
+#: ../../groups.rst:298
+msgid "``Proxy``"
+msgstr ""
+
+#: ../../groups.rst:299
+msgid "``Remote Interactive Logon``"
+msgstr ""
+
+#: ../../groups.rst:300
+msgid "``Restricted``"
+msgstr ""
+
+#: ../../groups.rst:301
+msgid "``SChannel Authentication``"
+msgstr ""
+
+#: ../../groups.rst:302
+msgid "``Self``"
+msgstr ""
+
+#: ../../groups.rst:303
+msgid "``Service``"
+msgstr ""
+
+#: ../../groups.rst:304
+msgid "``System``"
+msgstr ""
+
+#: ../../groups.rst:305
+msgid "``Terminal Server User``"
+msgstr ""
+
+#: ../../groups.rst:306
+msgid "``This Organization``"
+msgstr ""
+
+#: ../../groups.rst:307
+msgid "``World Authority``"
+msgstr ""
+
+#: ../../groups.rst:309
+msgid ""
+"In Active Directory/Samba, a distinction is made between the following "
+"four AD group types. These group types can be applied to two types of "
+"groups; *security groups* configure permissions (corresponding to the UCS"
+" groups), whilst *distribution groups* are used for mailing lists:"
+msgstr ""
+
+#: ../../groups.rst:319
+msgid "Local"
+msgstr ""
+
+#: ../../groups.rst:316
+msgid ""
+"*Local* groups only exist locally on a host. A local group created in "
+"Samba/AD is synchronized by the Univention S4 Connector and thus also "
+"appears in the UMC module :guilabel:`Groups`. There is no need to create "
+"local groups in the UMC module."
+msgstr ""
+
+#: ../../groups.rst:327
+msgid "Global"
+msgstr ""
+
+#: ../../groups.rst:322
+msgid ""
+"*Global* groups are the standard type for newly created groups in the UMC"
+" module :guilabel:`Groups`. A global group applies for one domain, but it"
+" can also accept members from other domains. If there is a trust "
+"relationship with a domain, the groups there are displayed and "
+"permissions can be assigned. However, the current version of UCS does not"
+" support multiple domains/forests or outgoing trust relationships."
+msgstr ""
+
+#: ../../groups.rst:334
+msgid "Domain local"
+msgstr ""
+
+#: ../../groups.rst:330
+msgid ""
+"*Domain local* groups can also adopt members of other domains (insofar as"
+" there is a trust relationship in place or they form part of a forest). "
+"Local domain groups are only shown in their own domain though. However, "
+"the current version of UCS does not support multiple domains/forests or "
+"outgoing trust relationships."
+msgstr ""
+
+#: ../../groups.rst:340
+msgid "Universal"
+msgstr ""
+
+#: ../../groups.rst:337
+msgid ""
+"*Universal* groups can adopt members from all domains and these members "
+"are also shown in all the domains of a forest. These groups are stored in"
+" a separate segment of the directory service, the so-called *global "
+"catalog*. Domain forests are currently not supported by Samba/AD."
+msgstr ""
+
+#: ../../groups.rst:345
+msgid "Overlay module for displaying the group information on user objects"
+msgstr ""
+
+#: ../../groups.rst:347
+msgid ""
+"In the UCS directory service, group membership properties are only saved "
+"in the group objects and not in the respective user objects. However, "
+"some applications expect group membership properties at the user objects "
+"(e.g., in the attribute ``memberOf``). An optional overlay module in the "
+"LDAP server makes it possible to present these attributes automatically "
+"based on the group information. The additional attributes are not written"
+" to the LDAP, but displayed on the fly by the overlay module if a user "
+"object is queried."
+msgstr ""
+
+#: ../../groups.rst:357
+msgid ""
+"Before using this feature, please read :uv:kb:`memberOf attribute: Group "
+"memberships of user and computer objects <6439>` about activating the "
+"OpenLDAP ``memberOf`` overlay module."
+msgstr ""
+
+#: ../../groups.rst:361
+msgid ""
+"To this end, the :program:`univention-ldap-overlay-memberof` package must"
+" be installed on all LDAP servers. Afterwards :command:`/usr/share"
+"/univention-ldap-overlay-memberof/univention-update-memberof` must be "
+"invoked on all servers."
+msgstr ""
+
+#: ../../groups.rst:366
+msgid ""
+"By default the user attribute ``memberOf`` is shown. The |UCSUCRV| "
+":envvar:`ldap/overlay/memberof/memberof` can be used to configure a "
+"different attribute."
+msgstr ""
+

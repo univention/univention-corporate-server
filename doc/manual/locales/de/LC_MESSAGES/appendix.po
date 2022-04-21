@@ -1,0 +1,1446 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021-2022, Univention GmbH
+# This file is distributed under the same license as the Univention
+# Corporate Server - Manual for users and administrators package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Univention Corporate Server - Manual for users and "
+"administrators \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-21 09:59+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../appendix/bibliography.rst:2
+msgid "Bibliography"
+msgstr ""
+
+#: ../../appendix/index.rst:5
+msgid "Chapter contents"
+msgstr ""
+
+#: ../../appendix/index.rst:3
+msgid "Appendix"
+msgstr ""
+
+#: ../../appendix/indices.rst:3
+msgid "Indices"
+msgstr ""
+
+#: ../../appendix/indices.rst:5
+msgid ""
+"The :ref:`genindex` provides direct links to curated content topics. It "
+"contains the terms from the word list in bold face."
+msgstr ""
+
+#: ../../appendix/variables.rst:3
+msgid "|UCSUCRV|\\ s"
+msgstr ""
+
+#: ../../appendix/variables.rst:5
+msgid "This appendix lists the |UCSUCRV|\\ s mentioned in the document."
+msgstr ""
+
+#: ../../appendix/variables.rst:9
+msgid ""
+"Configures the automatic locking of users after failed login attempts in "
+"the PAM stack. To activate, set the value to ``yes``. For more "
+"information, see :ref:`users-faillog-pam`."
+msgstr ""
+
+#: ../../appendix/variables.rst:16
+msgid ""
+"Configures the upper limit of failed login attempts for a user account "
+"lockout. For more information, see :ref:`users-faillog-pam`."
+msgstr ""
+
+#: ../../appendix/variables.rst:21
+msgid ""
+"Configure on |UCSPRIMARYDN| and |UCSBACKUPDN| to create a failed login "
+"account lockout globally and store it in the LDAP directory. For more "
+"information, see :ref:`users-faillog-pam`."
+msgstr ""
+
+#: ../../appendix/variables.rst:28
+msgid ""
+"To make the user account ``root`` subject of the PAM stack account "
+"lockout, set the value to ``yes``. It defaults to ``no``. For more "
+"information, see :ref:`users-faillog-pam`."
+msgstr ""
+
+#: ../../appendix/variables.rst:35
+msgid ""
+"Configure a time interval to unlock an account lockout. The value is "
+"defined in seconds. The value ``0`` resets the lock immediately. For more"
+" information, see :ref:`users-faillog-pam`."
+msgstr ""
+
+#: ../../appendix/variables.rst:42
+msgid ""
+"To prohibit SSH login for the user ``root`` completely, set the value "
+"``no``. For more information, see :ref:`computers-ssh-login-to-systems`."
+msgstr ""
+
+#: ../../appendix/variables.rst:48
+msgid ""
+"Defines how long a UCS system keeps old backup files of the LDAP data. "
+"Allowed values are integer numbers and they define days. The system "
+"doesn't delete backup files when the variable is not set. See :ref"
+":`domain-ldap-nightly-backup`."
+msgstr ""
+
+#: ../../appendix/variables.rst:56
+msgid ""
+"Configures the LDAP DN of a privileged replication user. For more "
+"information, see :ref:`ad-connector-ad-member-setup` and :ref:`ad-"
+"connector-ad-password`."
+msgstr ""
+
+#: ../../appendix/variables.rst:63
+msgid ""
+"Configures the password of a privileged replication user. For more "
+"information, see :ref:`ad-connector-ad-member-setup` and :ref:`ad-"
+"connector-ad-password`."
+msgstr ""
+
+#: ../../appendix/variables.rst:70
+msgid ""
+"To deactivate encrypted communication between the UCS system and Active "
+"Directory set the value to ``no``. For more information, see :ref:`ad-"
+"connector-ad-certificate`."
+msgstr ""
+
+#: ../../appendix/variables.rst:77
+msgid ""
+"Configures the mapping for group name conversion in anglophone AD "
+"domains. For more information, see :ref:`ad-connector-groups`."
+msgstr ""
+
+#: ../../appendix/variables.rst:83
+msgid ""
+"Configures a list of usernames that the AD Connector excludes from "
+"synchronization. For more information, see :ref:`ad-connector-details-on-"
+"preconfigured-synchronization`."
+msgstr ""
+
+#: ../../appendix/variables.rst:90
+msgid ""
+"Configures the interval to poll for changes in the AD domain. The default"
+" is ``5`` seconds. For more information, see :ref:`ad-connector-ad-"
+"connector-setup`."
+msgstr ""
+
+#: ../../appendix/variables.rst:96
+msgid ""
+"Configures the number of cycles that the UCS AD Connector attempts to "
+"synchronize an object from the AD domain when it can't be synchronized. "
+"The default value is ``10`` cycles. For more information, see :ref:`ad-"
+"connector-ad-connector-setup`"
+msgstr ""
+
+#: ../../appendix/variables.rst:104
+msgid ""
+"Configures the target directory for the *Generic CUPS-PDF Printer* for "
+"anonymous print jobs. It defaults to the value :file:`/var/spool/cups-"
+"pdf/`. For more information, see :ref:`pdf-printer`."
+msgstr ""
+
+#: ../../appendix/variables.rst:111
+msgid ""
+"To cleanup outdated print jobs of the *Generic CUPS-PDF Printer*, set the"
+" value to ``true``. For the storage time, see :envvar:`cups/cups-"
+"pdf/cleanup/keep`. For more information, see :ref:`pdf-printer`."
+msgstr ""
+
+#: ../../appendix/variables.rst:119
+msgid ""
+"Configures the storage time in days for PDF files from the *Generic CUPS-"
+"PDF Printer*. For more information, see :ref:`pdf-printer`."
+msgstr ""
+
+#: ../../appendix/variables.rst:125
+msgid ""
+"Configures the target directory for the *Generic CUPS-PDF Printer*. It "
+"defaults to the value :file:`/var/spool/cups-pdf/%U` and uses a different"
+" directory for each user. For more information, see :ref:`pdf-printer`."
+msgstr ""
+
+#: ../../appendix/variables.rst:131
+msgid ""
+"To automatically retry unsuccessful print jobs every 30 seconds, set the "
+"value to ``retry-job``. For more information, see :ref:`print-services-"
+"configuration`."
+msgstr ""
+
+#: ../../appendix/variables.rst:138
+msgid ""
+"To include configuration from :file:`/etc/cups/cupsd.local.conf`, set the"
+" value to ``true``. For more information, see :ref:`print-services-"
+"configuration`."
+msgstr ""
+
+#: ../../appendix/variables.rst:145
+msgid ""
+"Defines the print server to be used by a UCS system. For more "
+"information, see :ref:`computers-configure-print-server`."
+msgstr ""
+
+#: ../../appendix/variables.rst:151
+msgid ""
+"Define an allowlist of characters that are not removed by the "
+"``:alphanum`` option for the value definition in user templates. For more"
+" information, see :ref:`users-templates`."
+msgstr ""
+
+#: ../../appendix/variables.rst:157
+msgid ""
+"Controls if UCS prevents users with the same username as existing groups."
+" To deactivate the check for uniqueness, set the value to ``false``. For "
+"more information see :numref:`users-management-table-general-tab`."
+msgstr ""
+
+#: ../../appendix/variables.rst:164
+msgid ""
+"To disable the simplified wizard for computer management, set this "
+"variable to ``true``. For more information, see :ref:`computers-"
+"hostaccounts`."
+msgstr ""
+
+#: ../../appendix/variables.rst:170
+msgid ""
+"Controls the check for circular dependencies regarding nested groups. To "
+"disable, set the value to ``no``. For more information, see :ref:`groups-"
+"nested`."
+msgstr ""
+
+#: ../../appendix/variables.rst:177
+msgid ""
+"Deactivates the simplified wizard to create users when the value is set "
+"to ``true``. In the default setting the wizard is activated. For more "
+"information see :ref:`users-management`."
+msgstr ""
+
+#: ../../appendix/variables.rst:183
+msgid ""
+"Defines the path and name to an image file for usage as logo in a "
+"Univention Directory report PDF file. For more information see :ref"
+":`central-management-umc-adjustment-expansion-of-directory-reports`."
+msgstr ""
+
+#: ../../appendix/variables.rst:190
+msgid ""
+"To deactivate the DNS zone transfer when using the OpenLDAP back end, set"
+" the value to ``none``. For more information, see :ref:`ip-config-"
+"configuration-of-zone-transfers`."
+msgstr ""
+
+#: ../../appendix/variables.rst:197
+msgid ""
+"Configures the DNS backend. For more information, see :ref:`ip-config-"
+"dns-backend`."
+msgstr ""
+
+#: ../../appendix/variables.rst:203
+msgid ""
+"Configures the debug level for BIND. For more information, see :ref:`ip-"
+"config-bind-debug`."
+msgstr ""
+
+#: ../../appendix/variables.rst:209
+msgid ""
+"Configures the debug level for the Samba DNS backend. For more "
+"information, see :ref:`ip-config-bind-debug`."
+msgstr ""
+
+#: ../../appendix/variables.rst:215
+msgid ""
+"Defines the first *external DNS server*. For more information, see :ref"
+":`computers-configuring-the-name-servers`."
+msgstr ""
+
+#: ../../appendix/variables.rst:221
+msgid ""
+"Defines the second *external DNS server*. For more information, see :ref"
+":`computers-configuring-the-name-servers`."
+msgstr ""
+
+#: ../../appendix/variables.rst:227
+msgid ""
+"Defines the third *external DNS server*. For more information, see :ref"
+":`computers-configuring-the-name-servers`."
+msgstr ""
+
+#: ../../appendix/variables.rst:233
+msgid ""
+"Controls the automatic start of Fetchmail. To disable Fetchmail, set the "
+"value to ``false``. For more information, see :ref:`mail-fetchmail`."
+msgstr ""
+
+#: ../../appendix/variables.rst:239
+msgid ""
+"Configures the debug level or verbosity for logging messages of "
+"FreeRADIUS. For more information, see :ref:`ip-config-radius-debugging`."
+msgstr ""
+
+#: ../../appendix/variables.rst:245 ../../appendix/variables.rst:374
+msgid ""
+"Configures the IPv4 network gateway. For more information, see :ref"
+":`computers-ipv6`."
+msgstr ""
+
+#: ../../appendix/variables.rst:251
+msgid ""
+"Configures the LDAP attributes of a user account that Google Apps for "
+"Work Connector synchronizes, but fills with random data. The value is a "
+"comma-separated list of LDAP attributes. For more information, see :ref"
+":`idmcloud-gsuite-config`."
+msgstr ""
+
+#: ../../appendix/variables.rst:259
+msgid ""
+"Defines a mapping of UCS LDAP attributes of a user account for "
+"synchronization to Google Apps attributes. The default settings usually "
+"suffice most environment needs. For more information, see :ref:`idmcloud-"
+"gsuite-config`."
+msgstr ""
+
+#: ../../appendix/variables.rst:266
+msgid ""
+"Configures the LDAP attributes of a user account that the Google Apps for"
+" Work Connector never synchronizes, even if mentioned in :envvar:`google-"
+"apps/attributes/mapping/.*` or :envvar:`google-"
+"apps/attributes/anonymize`. The value is a comma-separated list of LDAP "
+"attributes. For more information, see :ref:`idmcloud-gsuite-config`."
+msgstr ""
+
+#: ../../appendix/variables.rst:276
+msgid ""
+"Configure additional debug error for the Google Apps for Work. For more "
+"information, see :ref:`idmcloud-gsuite-debug`."
+msgstr ""
+
+#: ../../appendix/variables.rst:282
+msgid ""
+"Enables the synchronization of groups of the Google Apps for Work user "
+"groups with the value ``yes``. For more information, see :ref:`idmcloud-"
+"gsuite-config`."
+msgstr ""
+
+#: ../../appendix/variables.rst:289
+msgid ""
+"Configures the default group name for the domain administrator group. The"
+" value might be changed during an AD Takeover. For more information, see "
+":ref:`windows-ad-takeover-migrate`."
+msgstr ""
+
+#: ../../appendix/variables.rst:296
+msgid ""
+"Defines Linux kernel boot options that the GRUB boot loader passes to the"
+" Linux kernel for system boot. For more information, see :ref:`grub`."
+msgstr ""
+
+#: ../../appendix/variables.rst:302
+msgid ""
+"To deactivate the splash screen during system boot, set the value to "
+"``nosplash``. For more information, see :ref:`grub`."
+msgstr ""
+
+#: ../../appendix/variables.rst:308
+msgid ""
+"Defines screen size and color depth for the GRUB boot menu. For more "
+"information, see :ref:`grub`."
+msgstr ""
+
+#: ../../appendix/variables.rst:314
+msgid ""
+"Defines the waiting period in seconds in the GRUB boot menu. During this "
+"waiting time alternative boot menu entries can be selected. The default "
+"value is ``5`` seconds. For more information, see :ref:`grub`."
+msgstr ""
+
+#: ../../appendix/variables.rst:320
+msgid ""
+"Defines options that are passed to the Xen hypervisor. For more "
+"information, see :ref:`grub`."
+msgstr ""
+
+#: ../../appendix/variables.rst:326
+msgid ""
+"Defines the network IPv4 address for the interface :samp:`eth{X}`. "
+"Replace :samp:`{X}` with the actual value for the interface. For more "
+"information, see :ref:`computers-ipv4`."
+msgstr ""
+
+#: ../../appendix/variables.rst:333
+msgid ""
+"Defines the network mask for the interface :samp:`eth{X}`. Replace "
+":samp:`{X}` with the actual value for the interface. For more "
+"information, see :ref:`computers-ipv4`."
+msgstr ""
+
+#: ../../appendix/variables.rst:340
+msgid ""
+"Defines the network interface type for the interface :samp:`eth{X}`. "
+"Replace :samp:`{X}` with the actual value for the interface. For more "
+"information, see :ref:`computers-ipv4`."
+msgstr ""
+
+#: ../../appendix/variables.rst:347
+msgid ""
+"Defines an additional virtual interface. Replace :samp:`{X}` and "
+":samp:`{Y}`with the actual value for the interface. For more information,"
+" see :ref:`computers-ipv4`."
+msgstr ""
+
+#: ../../appendix/variables.rst:353
+msgid ""
+"Defines the network IPv6 address for the interface :samp:`eth{X}`. "
+"Replace :samp:`{X}` with the actual value for the interface. For more "
+"information, see :ref:`computers-ipv6`."
+msgstr ""
+
+#: ../../appendix/variables.rst:360
+msgid ""
+"Defines the network IPv6 prefix for the interface :samp:`eth{X}`. Replace"
+" :samp:`{X}` with the actual value for the interface. For more "
+"information, see :ref:`computers-ipv6`."
+msgstr ""
+
+#: ../../appendix/variables.rst:367
+msgid ""
+"Activates stateless address autoconfiguration (SLAAC) for the interface "
+":samp:`eth{X}`. Replace :samp:`{X}` with the actual value for the "
+"interface. For more information, see :ref:`computers-ipv6`."
+msgstr ""
+
+#: ../../appendix/variables.rst:380
+msgid ""
+"Defines the system that provides the Kerberos admin server. See :ref"
+":`domain-kerberos-admin-server`."
+msgstr ""
+
+#: ../../appendix/variables.rst:386
+msgid ""
+"Contains the reference to the KDC. Typically, a UCS system selects the "
+"KDC to be used from a DNS service record. With this variable "
+"administrators can configure an alternative KDC."
+msgstr ""
+
+#: ../../appendix/variables.rst:395
+msgid "Contains the name of the Kerberos realm. See :ref:`domain-kerberos`."
+msgstr ""
+
+#: ../../appendix/variables.rst:399
+msgid ""
+"Defines additional Linux kernel modules that need to be loaded during "
+"system boot. Single items must be separated with a semicolon (``;``). For"
+" more information, see :ref:`computers-hardware-drivers-kernel-modules`."
+msgstr ""
+
+#: ../../appendix/variables.rst:406
+msgid ""
+"Defines Linux kernel modules that must not be loaded during system boot. "
+"Single items must be separated with a semicolon (``;``). For more "
+"information, see :ref:`computers-hardware-drivers-kernel-modules`."
+msgstr ""
+
+#: ../../appendix/variables.rst:413
+msgid ""
+"Controls if the LDAP server allows anonymous access to the LDAP "
+"directory. In the default configuration the LDAP server doesn't allow "
+"anonymous access to the LDAP directory."
+msgstr ""
+
+#: ../../appendix/variables.rst:420
+msgid ""
+"A list of IP addresses for which the LDAP server allows anonymous access."
+" See :ref:`domain-ldap-acls`."
+msgstr ""
+
+#: ../../appendix/variables.rst:426
+msgid ""
+"Controls if nested groups are allowed. Per default nested groups are "
+"activated. See :ref:`domain-ldap-acls`."
+msgstr ""
+
+#: ../../appendix/variables.rst:432
+msgid ""
+"Use a different group from the default ``User Password Admins`` group to "
+"reset user passwords. The value is a distinguished name (DN) to a user "
+"group. See :ref:`domain-ldap-delegation-of-the-priviledge-to-reset-user-"
+"passwords`."
+msgstr ""
+
+#: ../../appendix/variables.rst:439
+msgid ""
+"Configures a time period in seconds after which the LDAP connection is "
+"cut off on the server side. See :ref:`domain-ldap-timeout-for-inactive-"
+"ldap-connections`."
+msgstr ""
+
+#: ../../appendix/variables.rst:446
+msgid ""
+"Exclude individual areas of the directory service from logging. See :ref"
+":`domain-ldap-directory-logger`."
+msgstr ""
+
+#: ../../appendix/variables.rst:452
+msgid "See :envvar:`ldap/logging/exclude1`."
+msgstr ""
+
+#: ../../appendix/variables.rst:457
+msgid ""
+"Adds the transaction ID of an entry to the directory log. Possible values"
+" are the default ``yes`` and ``no``. See :ref:`domain-ldap-directory-"
+"logger`."
+msgstr ""
+
+#: ../../appendix/variables.rst:462 ../../appendix/variables.rst:1219
+msgid "TBD"
+msgstr ""
+
+#: ../../appendix/variables.rst:468
+msgid ""
+"To activate the ``lastbind`` overlay module for the LDAP server, set the "
+"value to ``yes``. For more information, see :ref:`users-lastbind-overlay-"
+"module`."
+msgstr ""
+
+#: ../../appendix/variables.rst:474
+msgid ""
+"Configures the time in seconds that has to pass before the "
+"``authTimestamp`` is updated again by the ``lastbind`` overlay. For more "
+"information, see :ref:`users-lastbind-overlay-module`."
+msgstr ""
+
+#: ../../appendix/variables.rst:481
+msgid ""
+"Configures the attribute at user objects that shows the group membership."
+" Default value is ``memberOf``. For more information, see :ref:`groups-"
+"memberof`."
+msgstr ""
+
+#: ../../appendix/variables.rst:488
+msgid ""
+"Time interval to write profile based UCR variables to a UCS system. The "
+"default value is one hour. For more information, see :ref:`ucr-templates-"
+"policy`."
+msgstr ""
+
+#: ../../appendix/variables.rst:495
+msgid ""
+"To enable automatic account locking, set the value to ``yes``. Also set "
+":envvar:`ldap/ppolicy/enabled`. For more information, see :ref:`users-"
+"faillog-openldap`."
+msgstr ""
+
+#: ../../appendix/variables.rst:502
+msgid ""
+"To enable automatic account locking, set the value to ``yes``. Also set "
+":envvar:`ldap/ppolicy`. For more information, see :ref:`users-faillog-"
+"openldap`."
+msgstr ""
+
+#: ../../appendix/variables.rst:509 ../../appendix/variables.rst:982
+msgid ""
+"Activates :program:`bcrypt` as password hashing method when set to "
+"``true``. See :ref:`domain-password-hashes`."
+msgstr ""
+
+#: ../../appendix/variables.rst:515
+msgid ""
+"Additional LDAP server a UCS system can query for information in the "
+"directory service."
+msgstr ""
+
+#: ../../appendix/variables.rst:521
+msgid ""
+"The LDAP server the system queries for information in the directory "
+"service."
+msgstr ""
+
+#: ../../appendix/variables.rst:526
+msgid ""
+"Defines the detail level for log messages of the listener to "
+":file:`/var/log/univention/listener.log`. The possible values are from 0 "
+"(only error messages) to 4 (all status messages). Once the debug level "
+"has been changed, the |UCSUDL| must be restarted."
+msgstr ""
+
+#: ../../appendix/variables.rst:534
+msgid ""
+"Contents of existing share directories are moved, when the path to a "
+"share is modified and the value is set to ``yes``. For more information, "
+"see :numref:`shares-management-general-tab-table` in :ref:`shares-"
+"management-general-tab`."
+msgstr ""
+
+#: ../../appendix/variables.rst:542
+msgid ""
+"Activates and deactivates the local repository. For more information see "
+":ref:`software-create-repo`."
+msgstr ""
+
+#: ../../appendix/variables.rst:547
+msgid ""
+"Controls, if rotated log files are zipped with :command:`gzip`. For more "
+"information, see :ref:`computers-log-files`."
+msgstr ""
+
+#: ../../appendix/variables.rst:553
+msgid ""
+"Configures the log file rotation interval on a UCS system in weeks. The "
+"default value is ``12`` weeks. For more information, see :ref:`computers-"
+"log-files`."
+msgstr ""
+
+#: ../../appendix/variables.rst:560
+msgid ""
+"Configures the log file rotation according to the file size, for example "
+"``size 50M``. For more information, see :ref:`computers-log-files`."
+msgstr ""
+
+#: ../../appendix/variables.rst:566
+msgid ""
+"Define the length for the computer password, also called *machin secret*."
+" Default value is ``20``. For more information, see :ref:`computers-"
+"hostaccounts`."
+msgstr ""
+
+#: ../../appendix/variables.rst:572
+msgid ""
+"Configures the size of emails that are scanned for Spam by SpamAssassin. "
+"The default value is 300 kilobytes. For more information, see :ref:`mail-"
+"spam`."
+msgstr ""
+
+#: ../../appendix/variables.rst:578
+msgid ""
+"Configures the evaluation of ham emails in the ham folder for daily "
+"evaluation. The evaluation is activate per default. For more information,"
+" see :ref:`mail-spam`."
+msgstr ""
+
+#: ../../appendix/variables.rst:585
+msgid ""
+"Configures the threshold in points when an email is classified as spam. "
+"The default value is ``5``. For more information, see :ref:`mail-spam`."
+msgstr ""
+
+#: ../../appendix/variables.rst:590
+msgid ""
+"To deactivate virus and malware detection for incoming and outgoing "
+"emails, set the value to ``no``. For more information, see :ref:`mail-"
+"virus`."
+msgstr ""
+
+#: ../../appendix/variables.rst:596
+msgid ""
+"Configures, if spam filtering is running. To deactivate spam filtering, "
+"set the value to ``no``. For more inform"
+msgstr ""
+
+#: ../../appendix/variables.rst:602
+msgid ""
+"Configures Postfix to send all incoming and outgoing emails as blind copy"
+" to this email address for archive purposes. The variable isn't set per "
+"default. For more information, see :ref:`mail-serverconfig-archive-"
+"folder`."
+msgstr ""
+
+#: ../../appendix/variables.rst:609 ../../appendix/variables.rst:615
+msgid ""
+"Configures the expiration time of the authentication cache in Dovecot for"
+" the mail service. For more information, see :ref:`mail-management-"
+"users`."
+msgstr ""
+
+#: ../../appendix/variables.rst:621
+msgid ""
+"Configures the name of the folder for emails that SpamAssissin considers "
+"as *ham*. The default value is ``Ham``. For more information, see :ref"
+":`mail-spam`."
+msgstr ""
+
+#: ../../appendix/variables.rst:628
+msgid ""
+"Configures the name of the folder where SpamAssissin moves emails "
+"classified as spam. The default value is ``Spam``. For more information, "
+"see :ref:`mail-spam`."
+msgstr ""
+
+#: ../../appendix/variables.rst:635
+msgid ""
+"Controls the IMAP protocol service in the Dovecot IMAP service. To "
+"deactivate access to emails through IMAP, set the value to ``no``. For "
+"more information, see :ref:`mail-general`."
+msgstr ""
+
+#: ../../appendix/variables.rst:642
+msgid ""
+"Configures different connection limits for the Dovecot service. For more "
+"information, see :ref:`mail-serverconfig-limits`."
+msgstr ""
+
+#: ../../appendix/variables.rst:648
+msgid ""
+"Configures the Dovecot service to use an index separated from the email "
+"message storage location. To activate the separate index, set the value "
+"to ``yes``. Dovecot writes the index to :file:`/var/lib/dovecot/index/`. "
+"For more information, see :ref:`mail-serverconfig-nfs`."
+msgstr ""
+
+#: ../../appendix/variables.rst:656
+msgid ""
+"Configures how the Dovecot services reacts on changes of the primary "
+"email address. The default value is ``yes`` and it changes the name of "
+"the user's IMAP mailbox. For more information about the values, see :ref"
+":`mail-renamed-users`."
+msgstr ""
+
+#: ../../appendix/variables.rst:661
+msgid ""
+"Shared folders are not renamed. For more information, see :ref:`mail-"
+"management-shared-folder`."
+msgstr ""
+
+#: ../../appendix/variables.rst:667
+msgid ""
+"Configures the deletion of an IMAP mailbox. The default value is ``no`` "
+"and keeps the mailbox. For more information, see :ref:`mail-renamed-"
+"users`."
+msgstr ""
+
+#: ../../appendix/variables.rst:670
+msgid ""
+"The value also affects shared IMAP folders. For more information, see "
+":ref:`mail-management-shared-folder`."
+msgstr ""
+
+#: ../../appendix/variables.rst:676
+msgid ""
+"Controls the POP3 protocol service in the Dovecot IMAP service. To "
+"deactivate access to emails through POP3, set the value to ``no``. For "
+"more information, see :ref:`mail-general`."
+msgstr ""
+
+#: ../../appendix/variables.rst:682
+msgid ""
+"Controls the lock method for *lockd*. For more information, see :ref"
+":`mail-serverconfig-nfs`."
+msgstr ""
+
+#: ../../appendix/variables.rst:688
+msgid ""
+"Configures the Dovecot service to flush NFS caches after writing index "
+"files when set to ``yes``. For more information, see :ref:`mail-"
+"serverconfig-nfs`."
+msgstr ""
+
+#: ../../appendix/variables.rst:694
+msgid ""
+"Configures the Dovecot service to flush NFS caches when set to ``yes``. "
+"For more information, see :ref:`mail-serverconfig-nfs`."
+msgstr ""
+
+#: ../../appendix/variables.rst:700 ../../appendix/variables.rst:706
+#: ../../appendix/variables.rst:712
+msgid ""
+"Allows mail storage on NFS. For more information, see :ref:`mail-"
+"serverconfig-nfs`."
+msgstr ""
+
+#: ../../appendix/variables.rst:718
+msgid ""
+"Configures the subject for the email to the user that exceeds the "
+"configured quota limit. For more information, see :ref:`mail-quota`."
+msgstr ""
+
+#: ../../appendix/variables.rst:723
+#, python-format
+msgid ""
+"Configures the email text body for the email to the user that exceeds the"
+" configured quota limit. Percentage values can have different texts. For "
+"example, to configure a text for 50% of the quota, set "
+":samp:`mail/dovecot/quota/warning/text/50={your text}`."
+msgstr ""
+
+#: ../../appendix/variables.rst:728
+msgid "For more information, see :ref:`mail-quota`."
+msgstr ""
+
+#: ../../appendix/variables.rst:733
+msgid ""
+"Configures the mail domains managed by UCS. For more information, see "
+":ref:`mail-management-domains`."
+msgstr ""
+
+#: ../../appendix/variables.rst:739
+msgid ""
+"Configures the maximum size of an email in bytes for incoming and "
+"outgoing emails. The default setting is ``10240000`` bytes. For more "
+"information, see :ref:`mail-serverconfig-mailsize`."
+msgstr ""
+
+#: ../../appendix/variables.rst:746
+msgid ""
+"To enable authentication for the submission of emails on port 25, set the"
+" value to ``yes``. For more information, see :ref:`mail-serverconfig-"
+"smtp-ports`."
+msgstr ""
+
+#: ../../appendix/variables.rst:753
+msgid ""
+"To restrict the circle of persons who can send emails to mailing lists, "
+"set the value to ``yes`` and restart the Postfix service. For more "
+"information, see :ref:`mail-management-mailinglists` and :ref:`mail-"
+"management-mailgroups`."
+msgstr ""
+
+#: ../../appendix/variables.rst:761
+msgid ""
+"A prefix of variables to configure :program:`postscreen`. For more "
+"information, see :ref:`mail-serverconfig-postscreen`."
+msgstr ""
+
+#: ../../appendix/variables.rst:767
+msgid ""
+"To activate postscreen for eligibility checks on incoming emails, set the"
+" value to ``yes``. For more information, see :ref:`mail-serverconfig-"
+"postscreen`."
+msgstr ""
+
+#: ../../appendix/variables.rst:774
+msgid ""
+"Configures DNS-based Blackhole List (DNSBL) for Postfix in the format "
+":samp:`mail/postfix/smtpd/restrictions/recipient/{SEQUENCE}={RULE}`."
+msgstr ""
+
+#: ../../appendix/variables.rst:777
+msgid "For example:"
+msgstr ""
+
+#: ../../appendix/variables.rst:778
+msgid ""
+"``mail/postfix/smtpd/restrictions/recipient/80=\"reject_rbl_client "
+"ix.dnsbl.manitu.net\"``."
+msgstr ""
+
+#: ../../appendix/variables.rst:780
+msgid "For more information, see :ref:`mail-dnsbl`."
+msgstr ""
+
+#: ../../appendix/variables.rst:789
+msgid ""
+"To never return emails after a mail bounce, set the value to ``yes``. For"
+" more information, see :ref:`mail-serverconfig-softbounce`."
+msgstr ""
+
+#: ../../appendix/variables.rst:795
+msgid "For more information, see :ref:`mail-serverconfig-relay`."
+msgstr ""
+
+#: ../../appendix/variables.rst:799
+msgid ""
+"If authentication for the mail relay is needed, set the value to ``yes`` "
+"and add the credentials to :file:`/etc/postfix/smtp_auth`. For more "
+"information, see :ref:`mail-serverconfig-relay`."
+msgstr ""
+
+#: ../../appendix/variables.rst:806
+msgid ""
+"Configures the fully qualified domain name (FQDN) of a mail relay server."
+" For more information, see :ref:`mail-serverconfig-relay`."
+msgstr ""
+
+#: ../../appendix/variables.rst:812
+msgid ""
+"Defines the first *Domain DNS Server*. For more information, see :ref"
+":`computers-configuring-the-name-servers`."
+msgstr ""
+
+#: ../../appendix/variables.rst:818
+msgid ""
+"Defines the second *Domain DNS Server*. For more information, see :ref"
+":`computers-configuring-the-name-servers`."
+msgstr ""
+
+#: ../../appendix/variables.rst:824
+msgid ""
+"Defines the third *Domain DNS Server*. For more information, see :ref"
+":`computers-configuring-the-name-servers`."
+msgstr ""
+
+#: ../../appendix/variables.rst:830
+msgid ""
+"Defines the detail level for log messages of the notifier to "
+":file:`/var/log/univention/notifier.log`. The possible values are from 0 "
+"(only error messages) to 4 (all status messages). Once the debug level "
+"has been changed, the |UCSUDN| must be restarted."
+msgstr ""
+
+#: ../../appendix/variables.rst:838
+msgid ""
+"Defines the detail level for log messages of the NSCD. For more "
+"information, see :ref:`computers-nscd`."
+msgstr ""
+
+#: ../../appendix/variables.rst:843
+msgid ""
+"Configures the hash table size of the NSCD for groups. For more "
+"information, see :ref:`computers-nscd`."
+msgstr ""
+
+#: ../../appendix/variables.rst:849
+msgid ""
+"Configures the time that a resolved group or hostname is kept in the "
+"cache of NSCD. The default is one hour in seconds (``3600``). For more "
+"information, see :ref:`computers-nscd`."
+msgstr ""
+
+#: ../../appendix/variables.rst:856
+msgid ""
+"Configures the hash table size of the NSCD for hosts. The default value "
+"is ``6007``. For more information, see :ref:`computers-nscd`."
+msgstr ""
+
+#: ../../appendix/variables.rst:862
+msgid ""
+"Configures the hash table size of the NSCD for usernames. The default "
+"value is ``6007``. For more information, see :ref:`computers-nscd`."
+msgstr ""
+
+#: ../../appendix/variables.rst:867
+msgid ""
+"Configures the time that a resolved username is kept in the cache of "
+"NSCD. The default is ten minutes in seconds (``600``). For more "
+"information, see :ref:`computers-nscd`."
+msgstr ""
+
+#: ../../appendix/variables.rst:874
+msgid ""
+"Configures the number of threads that NSCD uses. Default value is ``5``. "
+"For more information, see :ref:`computers-nscd`."
+msgstr ""
+
+#: ../../appendix/variables.rst:880
+msgid ""
+"When activated with ``true``, the cron job script for exporting the local"
+" group cache also checks, if the group members are still present in the "
+"LDAP directory. For more information, see :ref:`groups-cache`."
+msgstr ""
+
+#: ../../appendix/variables.rst:887
+msgid ""
+"Defines the invalidation interval to control when the local group cache "
+"is considered invalid and a new export is run. For more information, see "
+":ref:`groups-cache`."
+msgstr ""
+
+#: ../../appendix/variables.rst:894
+msgid ""
+"Activates or deactivates the listener to invalidate the local group "
+"cache. To activate the listener, set the value to ``true``. Else, set it "
+"to ``false``. For more information, see :ref:`groups-cache`."
+msgstr ""
+
+#: ../../appendix/variables.rst:901
+msgid ""
+"Controls the measures that the UCS system takes when the LDAP server "
+"cannot be reached. See :ref:`domain-ldap-name-service-switch-ldap-nss-"
+"module`."
+msgstr ""
+
+#: ../../appendix/variables.rst:908
+msgid ""
+"The NTP server replies with requests that are signed by Samba/AD when the"
+" value is set to ``yes``. For more information, see :ref:`basicservices-"
+"ntp`."
+msgstr ""
+
+#: ../../appendix/variables.rst:914
+msgid ""
+"Defines the Azure AD connection alias that is used by the next run of the"
+" Microsoft 365 Configuration Wizard. For more information, see "
+":ref:`idmcloud-o365-multipleconnections`."
+msgstr ""
+
+#: ../../appendix/variables.rst:921
+msgid ""
+"Configures the LDAP attributes of a user account that the Microsoft 365 "
+"connector synchronizes, but fills with random data. The value is a comma-"
+"separated list of LDAP attributes. For more information, see "
+":ref:`idmcloud-o365-users`."
+msgstr ""
+
+#: ../../appendix/variables.rst:929
+msgid ""
+"Defines a mapping of UCS LDAP attributes of a user account for "
+"synchronization to Azure attributes. The default settings usually suffice"
+" most environment needs. For more information, see "
+":ref:`idmcloud-o365-users`."
+msgstr ""
+
+#: ../../appendix/variables.rst:936
+msgid ""
+"Configures the LDAP attributes of a user account that the Microsoft 365 "
+"connector never synchronizes, even if mentioned in "
+":envvar:`office365/attributes/sync` or "
+":envvar:`office365/attributes/anonymize`. The value is a comma-separated "
+"list of LDAP attributes. For more information, see "
+":ref:`idmcloud-o365-users`."
+msgstr ""
+
+#: ../../appendix/variables.rst:945
+msgid ""
+"Configures LDAP attributes for synchronization with predefined values. "
+"For more information, see :ref:`idmcloud-o365-users`."
+msgstr ""
+
+#: ../../appendix/variables.rst:951
+msgid ""
+"Configures the LDAP attributes of a user account that the Microsoft 365 "
+"connector synchronizes. The value is a comma-separated list of LDAP "
+"attributes. For more information, see :ref:`idmcloud-o365-users`."
+msgstr ""
+
+#: ../../appendix/variables.rst:958
+msgid ""
+"Configures the default country for the user in Microsoft 365. Values are "
+"2-character abbreviations for countries. For more information, see "
+":ref:`idmcloud-o365-users`."
+msgstr ""
+
+#: ../../appendix/variables.rst:965
+msgid ""
+"Configure additional debug error for the Microsoft 365 connector. For "
+"more information, see :ref:`idmcloud-o365-debug`."
+msgstr ""
+
+#: ../../appendix/variables.rst:970
+msgid ""
+"Configures the default connection alias for Microsoft 365 enabled users "
+"and groups. For more information, see "
+":ref:`idmcloud-o365-multipleconnections`."
+msgstr ""
+
+#: ../../appendix/variables.rst:975
+msgid ""
+"Enables the synchronization of groups of the Microsoft 365 users. To use "
+"teams, set the value to ``yes``. For more information, see "
+":ref:`idmcloud-o365-teams`."
+msgstr ""
+
+#: ../../appendix/variables.rst:988
+msgid ""
+"Defines the :program:`bcrypt` cost factor and defaults to ``12``. See "
+":ref:`domain-password-hashes`."
+msgstr ""
+
+#: ../../appendix/variables.rst:994
+msgid ""
+"Defines the :program:`bcrypt` prefix and defaults to ``2b``. See :ref"
+":`domain-password-hashes`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1000
+msgid ""
+"Defines the hashing method for the password hashes. The default is "
+"``SHA-512``. See :ref:`domain-password-hashes`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1006
+msgid ""
+"Defines the minimum number of digits for a new password. For more "
+"information, see :ref:`users-passwords`. For more information, see :ref"
+":`users-passwords`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1013
+msgid ""
+"Defines the minimum number of lowercase letters in the new password. For "
+"more information, see :ref:`users-passwords`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1019
+msgid ""
+"Defines the minimum number of characters in the new password which are "
+"neither letters nor digits. For more information, see :ref:`users-"
+"passwords`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1025
+msgid ""
+"Defines the minimum number of uppercase letters in the new password. For "
+"more information, see :ref:`users-passwords`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1031
+msgid ""
+"Defines the characters and digits that are not allowed for passwords. For"
+" more information, see :ref:`users-passwords`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1037
+msgid ""
+"Sets the minimum length default for a password on a per UCS system basis "
+"for users not subject to a UDM password policy. The value ``yes`` applies"
+" checks from the :program:`python-cracklib`. The value ``sufficient`` "
+"does not include :program:`python-cracklib` checks. For more information,"
+" see :ref:`users-passwords`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1046
+msgid ""
+"Defines the standard Microsoft password complexity criteria. For more "
+"information, see :ref:`users-passwords`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1051
+msgid ""
+"Defines individual characters/figures that are compulsory for passwords. "
+"For more information, see :ref:`users-passwords`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1057
+msgid ""
+"Controls if a UCS system stores installation processes in the software "
+"monitor. To turn it off, set the value ``no``. For more information see "
+":ref:`computers-software-monitor`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1063
+msgid ""
+"Defines the authentication mode for the UCS portal. Set it to ``saml``, "
+"if you want to activate SAML for single sign-on login. For more "
+"information see :ref:`central-management-umc-login`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1070
+msgid ""
+"Defines the HTTP proxy server on the UCS host system. For more "
+"information, see :ref:`computers-configuring-proxy-access`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1076
+msgid ""
+"Defines a list of domains that are not used over a HTTP proxy. Entries "
+"are separated by commas. For more information, see :ref:`computers-"
+"configuring-proxy-access`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1083
+msgid ""
+"To log the activation of quotas to a file, specify the file in this "
+"variable. For more information, see :ref:`shares-quota-apply`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1089
+msgid ""
+"To disable the evaluation of user quota during login, set the value to "
+"``no``. For more information, see :ref:`shares-quota-apply`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1095
+msgid ""
+"To only allow specific network devices access to a network through "
+"RADIUS, set the value to ``true``. For more information, see :ref:`ip-"
+"config-radius-configuration-mac-filtering`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1102
+msgid ""
+"To use a dedicated user password for RADIUS instead of the domain "
+"password, set the value to ``true``. For more information, see :ref:`ip-"
+"config-radius-configuration-service-specific-password`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1109
+msgid ""
+"Defines another repository server as source for the local mirror. Default"
+" value: ``updates.software-univention.de``. For more information see :ref"
+":`software-create-repo`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1116
+msgid ""
+"Defines how to deal with unmaintained packages from additional "
+"repositories. To activate, set the value to ``yes``. For more information"
+" see :ref:`software-config-repo`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1123
+msgid ""
+"The repository server used to check for updates and download packages. "
+"Default value: ``updates.software-univention.de``. For more information "
+"see :ref:`computers-configuration-via-univention-configuration-registry`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1130
+msgid ""
+"To enable Microsoft Distributed File System (MSDFS), set the value to "
+"``yes`` and restart Samba. For more information, see :ref:`shares-msdfs`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1136
+msgid ""
+"Configures the file service protocol that Samba uses on UCS. The allowed "
+"values ``NT1``, ``SMB2``, and ``SMB3``. For more information, see :ref"
+":`windows-samba4-fileservices`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1143
+msgid ""
+"Configures the synchronization time interval between Samba/AD domain "
+"controllers for the SYSVOL share. Default value is five minutes. For more"
+" information, see :ref:`windows-sysvolshare`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1150
+msgid ""
+"Allows Kerberos authentication at the SAML identity provider. Change to "
+"``univention-negotiate`` to activate. The default is ``univention-ldap``."
+" For more information, see :ref:`domain-saml`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1156
+msgid ""
+"Activates additional local identity providers for SAML on a UCS system "
+"serving as UCS Identity provider. To activate set the value to ``true``. "
+"For more information see :ref:`domain-saml-extended-configuration`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1163
+msgid ""
+"Allows to restrict the Kerberos authentication at the SAML identity "
+"provider to certain IP subnetworks in the `CIDR notation <w-classless-"
+"inter-domain-routing_>`_, for example ``127.0.0.0/16,192.168.0.0/16``. "
+"For more information, see :ref:`domain-saml`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1171
+msgid ""
+"Configures the error message description text for the :program:`Self "
+"Service`. The text shows up for users that login through SSO with an "
+"unverified and self registered user account. For more information, see "
+":ref:`user-management-password-changes-by-users-selfregistration-account-"
+"verification`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1179
+msgid ""
+"Configures the error message title for the :program:`Self Service`. The "
+"title shows up for users that login through SSO with an unverified and "
+"self registered user account. For more information, see :ref:`user-"
+"management-password-changes-by-users-selfregistration-account-"
+"verification`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1187
+msgid ""
+"Controls if the SSO login denies logins from unverified and self "
+"registered user accounts. For more information, see :ref:`user-"
+"management-password-changes-by-users-selfregistration-account-"
+"verification`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1193
+msgid ""
+"To disable Univention firewall, set the value to ``true``. For more "
+"information, see :ref:`ip-config-packet-filter-with-univention-firewall`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1199
+msgid ""
+"Defines the UCS system where the backend of the :program:`Self Service` "
+"app is installed. For more information, see :ref:`user-management-"
+"password-changes-by-users-self-service`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1205
+msgid ""
+"Enables or disables the password rotation on a UCS system. Per default "
+"the password rotation is activated. For more information, see :ref"
+":`computers-hostaccounts`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1212
+msgid ""
+"Defines the interval in days to regenerate the computer account password."
+" The default is set to 21 days. For more information, see :ref"
+":`computers-hostaccounts`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1226
+msgid ""
+"To limit the access to the Squid web proxy, define a list of group names "
+"separated by semicolon (``;``). For more information, see :ref:`proxy-"
+"userauth`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1232
+msgid ""
+"Configures additional networks to allow access to the Squid web proxy. "
+"Separate the entries with blank spaces and use the CIDR notation, for "
+"example ``192.0.2.0/24``. For more information, see :ref:`ip-config-"
+"restriction-of-access-to-permitted-networks`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1239
+msgid ""
+"To activate direct authentication for the Squid web proxy against the "
+"LDAP server, set the value to ``yes`` and restart Squid. For more "
+"information, see :ref:`proxy-userauth`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1246
+msgid ""
+"To deactivate the caching function of the Squid web proxy, set the value "
+"to ``no``. For more information, see :ref:`ip-config-caching-of-web-"
+"content`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1252
+msgid ""
+"Configures the port for Squid web proxy, where the daemon listens for "
+"incoming connections. The default value is ``3128``. For more "
+"information, see :ref:`proxy-port`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1259
+msgid ""
+"To activate authentication through Kerberos for the Squid web proxy, set "
+"the value to ``yes`` and restart Squid. For more information, see :ref"
+":`proxy-userauth`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1266
+msgid ""
+"To activate authentication for the Squid web proxy against the NTLM "
+"interface, set the value to ``yes`` and restart Squid. For more "
+"information, see :ref:`proxy-userauth`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1273
+msgid ""
+"To deactivate further NTML authentication for subsequent HTML requests to"
+" the same website, set the value to ``yes``. For more information, see "
+":ref:`proxy-userauth`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1280
+msgid ""
+"Configures the list of permitted ports for the Squid web proxy. Separate "
+"entries with blank spaces. For more information, see :ref:`ip-config-"
+"permitted-ports`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1287
+msgid ""
+"Configures how the SSH daemon permits login for the user ``root``. The "
+"value ``without-password`` does not ask for the password interactively. "
+"The login requires the public SSH key. For more information, see :ref"
+":`computers-ssh-login-to-systems`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1295
+msgid ""
+"Configure the port that the SSH daemon uses to listen for connection. The"
+" default value is ``22``. For more information, see :ref:`computers-ssh-"
+"login-to-systems`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1302
+msgid ""
+"Configures, if the SSH daemon allows X11 forwarding. Valid values are "
+"``yes`` and ``no``. For more information, see :ref:`computers-ssh-login-"
+"to-systems`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1308
+msgid ""
+"Records the expiry date of the local computer certificate on each UCS "
+"system. The value reflects the number of days since the 1970-01-01."
+msgstr ""
+
+#: ../../appendix/variables.rst:1314
+msgid ""
+"Records the expiry date of the root certificate on each UCS system. The "
+"value reflects the number of days since the 1970-01-01."
+msgstr ""
+
+#: ../../appendix/variables.rst:1320
+msgid ""
+"Defines the warning period for the expiration check of the SSL/TLS root "
+"certificate. The default value is ``30`` days. See :ref:`domain-ssl`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1325
+msgid ""
+"Enables or disables the logging of the system status. The default value "
+"is ``yes``. For more information, see :ref:`computers-logging-the-system-"
+"status`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1332
+msgid ""
+"Configures the run times when :command:`univention-system-stats` is run. "
+"The value follows the :ref:`cron syntax <cron-syntax>`. For more "
+"information, see :ref:`computers-logging-the-system-status`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1339
+msgid ""
+"Configures the first external NTP timeserver. For more information, see "
+":ref:`basicservices-ntp`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1345
+msgid ""
+"Configures the second external NTP timeserver. For more information, see "
+":ref:`basicservices-ntp`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1351
+msgid ""
+"Configures the third external NTP timeserver. For more information, see "
+":ref:`basicservices-ntp`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1357
+msgid ""
+"Select the theme for |UCSWEB|. The value corresponds to a CSS file under "
+":file:`/usr/share/univention-web/themes/` with the same name without "
+"filename extension."
+msgstr ""
+
+#: ../../appendix/variables.rst:1364
+msgid ""
+"To activate the :program:`Self Service` deregistration, set the variable "
+"to ``True``. For more information, see :ref:`user-management-password-"
+"changes-by-users-selfderegistration`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1371
+msgid ""
+"Enables or disables the account verification and request of new "
+"verification tokens for the :program:`Self Service`. For more "
+"information, see :ref:`user-management-password-changes-by-users-"
+"selfregistration-account-verification`."
+msgstr ""
+
+#: ../../appendix/variables.rst:1378
+msgid ""
+"Configures the default user name for the domain administrator. The value "
+"might be changed during an AD Takeover. For more information, see :ref"
+":`windows-ad-takeover-migrate`."
+msgstr ""
+

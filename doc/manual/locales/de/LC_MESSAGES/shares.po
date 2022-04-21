@@ -1,0 +1,1352 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021-2022, Univention GmbH
+# This file is distributed under the same license as the Univention
+# Corporate Server - Manual for users and administrators package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Univention Corporate Server - Manual for users and "
+"administrators \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-21 12:53+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../shares/access-rights.rst:4
+msgid "Access rights to data in shares"
+msgstr ""
+
+#: ../../shares/access-rights.rst:6
+msgid ""
+"Access permissions to files are managed in UCS using users and groups. "
+"All the file servers in the UCS domain access identical user and group "
+"data via the LDAP directory."
+msgstr ""
+
+#: ../../shares/access-rights.rst:10
+msgid "Three access rights are differentiated per file:"
+msgstr ""
+
+#: ../../shares/access-rights.rst:12
+msgid "read"
+msgstr ""
+
+#: ../../shares/access-rights.rst:13
+msgid "write"
+msgstr ""
+
+#: ../../shares/access-rights.rst:14
+msgid "execute"
+msgstr ""
+
+#: ../../shares/access-rights.rst:16
+msgid ""
+"Three access rights also apply per directory: read and write are the "
+"same; the execute permission here refers to the permission to enter a "
+"directory."
+msgstr ""
+
+#: ../../shares/access-rights.rst:19
+msgid ""
+"Each file/directory is owned by a user and a group. The three permission "
+"outlined above can be applied to the user owner, the owner group and all "
+"others."
+msgstr ""
+
+#: ../../shares/access-rights.rst:24
+msgid "setuid"
+msgstr ""
+
+#: ../../shares/access-rights.rst:23
+msgid ""
+"If the *setuid* option is set for an executable file, it can be run by "
+"users with the privileges of the owner of the file."
+msgstr ""
+
+#: ../../shares/access-rights.rst:29
+msgid "setgid"
+msgstr ""
+
+#: ../../shares/access-rights.rst:27
+msgid ""
+"If the *setgid* option is set for a directory, files saved there inherit "
+"the directory's owner group. If further directories are created, they "
+"also inherit the option."
+msgstr ""
+
+#: ../../shares/access-rights.rst:33
+msgid "sticky bit"
+msgstr ""
+
+#: ../../shares/access-rights.rst:32
+msgid ""
+"If the *sticky bit* option is enabled for a directory, files in this "
+"directory can only be deleted by the owner of the file or the root user."
+msgstr ""
+
+#: ../../shares/access-rights.rst:35
+msgid ""
+"Access control lists allow even more complex permission models. The "
+"configuration of ACLs is described in `SDB 1042 <univention-kb_>`_."
+msgstr ""
+
+#: ../../shares/access-rights.rst:38
+msgid ""
+"In the Unix permission model - and thus under UCS - write permission is "
+"not sufficient to change the permissions of a file. This is limited to "
+"the owner/owner group of a file. In contrast, under Microsoft Windows all"
+" users with write permissions also have the permission to change the "
+"permissions. This scheme can be adjusted for CIFS shares (see :ref"
+":`shares-management`)."
+msgstr ""
+
+#: ../../shares/access-rights.rst:44
+msgid ""
+"Only initial users and access permissions are assigned when a directory "
+"share is created. If the directory already exists, the permissions of the"
+" existing directory are adjusted."
+msgstr ""
+
+#: ../../shares/access-rights.rst:48
+msgid ""
+"Changes to the permissions of a shared directory performed directly in "
+"the file system are not forwarded to the LDAP directory. If the "
+"permissions/owners are edited with the UMC module :guilabel:`Shares`, the"
+" changes in the file system are overwritten. Settings to the root "
+"directory of a file share should thus only be set and edited with the UMC"
+" module. Additional adjustment of the access permissions of the "
+"subordinate directories are then performed via the accessing clients, "
+"e.g., via Windows Explorer, or directly via command line commands on the "
+"file server."
+msgstr ""
+
+#: ../../shares/access-rights.rst:57
+msgid ""
+"The *homes* share plays a special role within Samba. This share is used "
+"for sharing the home directories of the users. This share is "
+"automatically converted to the user's home directory. Samba therefore "
+"ignores the rights assigned to the share, and uses the rights of the "
+"respective home directory instead."
+msgstr ""
+
+#: ../../shares/index.rst:24
+msgid "Chapter contents"
+msgstr ""
+
+#: ../../shares/index.rst:5
+msgid "File share management"
+msgstr ""
+
+#: ../../shares/index.rst:7
+msgid ""
+"UCS supports the central management of directory shares. A share "
+"registered via the UMC module :guilabel:`Shares` is created on an "
+"arbitrary UCS server system as part of the UCS domain replication."
+msgstr ""
+
+#: ../../shares/index.rst:11
+msgid ""
+"Provision for accessing clients can occur via CIFS (supported by "
+"Windows/Linux clients) and/or NFS (primarily supported by Linux/Unix). "
+"The NFS shares managed in the UMC module can be mounted by clients both "
+"via NFSv3 and via NFSv4."
+msgstr ""
+
+#: ../../shares/index.rst:15
+msgid ""
+"If a file share is deleted on a server, the shared files in the directory"
+" are preserved."
+msgstr ""
+
+#: ../../shares/index.rst:18
+msgid ""
+"To be able to use access control lists on a share, the underlying Linux "
+"file system must support POSIX ACLs. In UCS the file systems ``ext4`` and"
+" ``XFS`` support POSIX ACLs. The Samba configuration also allows storing "
+"DOS file attributes in extended attributes of the Unix file system. To "
+"use extended attributes, the partition must be mounted using the mount "
+"option ``user_xattr``."
+msgstr ""
+
+#: ../../shares/msdfs.rst:4
+msgid "Support for MSDFS"
+msgstr ""
+
+#: ../../shares/msdfs.rst:6
+msgid ""
+"The Microsoft Distributed File System (MSDFS) is a distributed file "
+"system which makes it possible to access shares spanning several servers "
+"and paths as a virtual directory hierarchy. The load can then be "
+"distributed across several servers."
+msgstr ""
+
+#: ../../shares/msdfs.rst:11
+msgid ""
+"Setting the *MSDFS Root* option for a share (see :ref:`shares-"
+"management`) indicates that the shared directory is a share which can be "
+"used for the MSDFS. References to other shares are only displayed in such"
+" an MSDFS root, elsewhere they are hidden."
+msgstr ""
+
+#: ../../shares/msdfs.rst:16
+msgid ""
+"To be able to utilize the functions of a distributed file system, the "
+"|UCSUCRV| :envvar:`samba/enable-msdfs` has to be set to ``yes`` on a file"
+" server. Afterwards Samba has to be restarted."
+msgstr ""
+
+#: ../../shares/msdfs.rst:20
+msgid ""
+"For creating a reference named :file:`tofb` from server ``sa`` within the"
+" share :file:`fa` to share :file:`fb` on the server ``sb``, the following"
+" command has to be executed in directory :file:`fa`:"
+msgstr ""
+
+#: ../../shares/msdfs.rst:24
+msgid "$ ln -s msdfs:sb\\\\fb tofb"
+msgstr ""
+
+#: ../../shares/msdfs.rst:28
+msgid ""
+"This reference will be displayed on every client capable of MSDFS (e.g. "
+"*Windows 2000* and *Windows XP*) as a regular directory."
+msgstr ""
+
+#: ../../shares/msdfs.rst:33
+msgid ""
+"Only restricted user groups should have write access to root directories."
+" Otherwise, it would be possible for users to redirect references to "
+"other shares, and intercept or manipulate files. In addition, paths to "
+"the shares, as well as the references are to be spelled entirely in lower"
+" case. If changes are made in the references, the concerned clients have "
+"to be restarted."
+msgstr ""
+
+#: ../../shares/msdfs.rst:40
+msgid ""
+"Further information on this issue can be found in :cite:t:`samba3-howto-"
+"chapter-20`."
+msgstr ""
+
+#: ../../shares/quota.rst:4
+msgid "Configuration of file system quota"
+msgstr ""
+
+#: ../../shares/quota.rst:6
+msgid ""
+"UCS allows the limiting of the storage space available to a user on a "
+"partition. These thresholds can be set as either a quantity of storage "
+"space (e.g., 500 MB per user) or a maximum number of files without a "
+"defined size limit."
+msgstr ""
+
+#: ../../shares/quota.rst:11
+msgid "Two types of thresholds are differentiated:"
+msgstr ""
+
+#: ../../shares/quota.rst:15
+msgid "Hard limit"
+msgstr ""
+
+#: ../../shares/quota.rst:14
+msgid ""
+"The *hard limit* is the maximum storage space a user can employ. If it is"
+" attained, no further files can be saved."
+msgstr ""
+
+#: ../../shares/quota.rst:23
+msgid "Soft limit"
+msgstr ""
+
+#: ../../shares/quota.rst:18
+msgid ""
+"If the *soft limit* is attained - which must be smaller than the hard "
+"limit - and the storage space used is still below the hard limit, the "
+"user is given a grace period of seven days to delete unused data. Once "
+"seven days have elapsed, it is no longer possible to save or change "
+"additional files. A warning is displayed to users who access a file "
+"system with an exceeded quota via CIFS (the threshold is based on the "
+"soft limit)."
+msgstr ""
+
+#: ../../shares/quota.rst:25
+msgid ""
+"If a quota value of ``0`` has been configured, it is evaluated as an "
+"unlimited quota."
+msgstr ""
+
+#: ../../shares/quota.rst:28
+msgid ""
+"Quotas can either be defined via the UMC module :guilabel:`Filesystem "
+"quotas` or a policy for shares, see :ref:`shares-quota-policy`."
+msgstr ""
+
+#: ../../shares/quota.rst:31
+msgid ""
+"File system quotas can only be applied on partitions with the file "
+"systems ``ext4`` and ``XFS``. Before file system quotas can be "
+"configured, the use of file system quotas needs to be activated per "
+"partition, see :ref:`shares-quota-umc`."
+msgstr ""
+
+#: ../../shares/quota.rst:39
+msgid "Activating file system quota"
+msgstr ""
+
+#: ../../shares/quota.rst:41
+msgid ""
+"In the UMC module :guilabel:`Filesystem quotas`, all the partitions are "
+"listed on which quotas can be set up. Only partitions are shown which are"
+" currently mounted under a mount point."
+msgstr ""
+
+#: ../../shares/quota.rst:50
+msgid "The UMC module *File system quotas*"
+msgstr ""
+
+#: ../../shares/quota.rst:50
+msgid "The UMC module :guilabel:`File system quotas`"
+msgstr ""
+
+#: ../../shares/quota.rst:52
+msgid ""
+"The current quota status (activated/deactivated) is shown and can be "
+"changed with *Activate* and *Deactivate*."
+msgstr ""
+
+#: ../../shares/quota.rst:55
+msgid ""
+"If quota has been activated on a ``XFS`` root-partition, the system has "
+"to be rebooted."
+msgstr ""
+
+#: ../../shares/quota.rst:61
+msgid "Configuring file system quota"
+msgstr ""
+
+#: ../../shares/quota.rst:63
+msgid ""
+"Quotas can either be defined via the UMC module :guilabel:`Filesystem "
+"quotas` or a policy for shares, see :ref:`central-policies`. The "
+"configuration through a policy allows setting a default value for all "
+"users, while the UMC module allows configuration of user-specific quota "
+"values."
+msgstr ""
+
+#: ../../shares/quota.rst:68
+msgid ""
+"The user-specific quota settings can be configured with the UMC module "
+":guilabel:`Filesystem quotas`. The permitted storage quantities can be "
+"set with the pencil symbol for all enabled partitions. All the settings "
+"are set user-specifically. :guilabel:`Add` can be used to set the "
+"thresholds for soft and hard limits for a user."
+msgstr ""
+
+#: ../../shares/quota.rst:74
+msgid ""
+"The quota settings can also be set with a *User quota* share policy. The "
+"settings apply for all users of a share; it is not possible to establish "
+"different quota limits for different users within one policy."
+msgstr ""
+
+#: ../../shares/quota.rst:78
+msgid ""
+"Quota settings that are applied via a quota policy are by default only "
+"applied once to the file system. If the setting is changed, it will not "
+"be applied automatically on the next user login. To inherit changed quota"
+" values, the option *Reapply settings on every login* can be activated at"
+" the quota policy."
+msgstr ""
+
+#: ../../shares/quota.rst:83
+msgid ""
+"Quota policies can only be used on partitions for which the quota support"
+" is enabled in the UMC module, see :ref:`shares-quota-umc`."
+msgstr ""
+
+#: ../../shares/quota.rst:88
+msgid ""
+"File system quotas always apply to a full partition. Even if the policies"
+" are defined for shares, they are used on complete partitions. If, for "
+"example, three shares are provided on one server which are all saved on "
+"the separate :file:`/var/` partition and three different policies are "
+"configured and used, the most restrictive setting applies for the "
+"complete partition. If different quotas are used, it is recommended to "
+"distribute the data over individual partitions."
+msgstr ""
+
+#: ../../shares/quota.rst:99
+msgid "Evaluation of quota during login"
+msgstr ""
+
+#: ../../shares/quota.rst:101
+msgid ""
+"The settings defined in the UCS management system are evaluated and "
+"enabled during login to UCS systems by the tool :command:`univention-"
+"user-quota` run in the PAM stack."
+msgstr ""
+
+#: ../../shares/quota.rst:105
+msgid ""
+"If no quota are needed, the evaluation can be disabled by setting the "
+"|UCSUCRV| :envvar:`quota/userdefault` to ``no``."
+msgstr ""
+
+#: ../../shares/quota.rst:108
+msgid ""
+"If the |UCSUCRV| :envvar:`quota/logfile` is set to any filename, the "
+"activation of the quotas is logged in the specified file."
+msgstr ""
+
+#: ../../shares/quota.rst:114
+msgid "Querying the quota status by administrators or users"
+msgstr ""
+
+#: ../../shares/quota.rst:116
+msgid ""
+"A user can view the quota limits defined for a system using the command "
+":command:`repquota -va`, e.g.:"
+msgstr ""
+
+#: ../../shares/quota.rst:119
+msgid ""
+"*** Report for user quotas on device /dev/vdb1\n"
+"Block grace time: 7days; Inode grace time: 7days\n"
+"                        Block limits                File limits\n"
+"User            used    soft    hard  grace    used  soft  hard  grace\n"
+"----------------------------------------------------------------------\n"
+"root            --      20       0       0              2     0     0\n"
+"Administrator   --       0       0  102400              0     0     0\n"
+"user01          --  234472 2048000 4096000              2     0     0\n"
+"user02          --       0 2048000 4096000              0     0     0\n"
+"\n"
+"Statistics:\n"
+"Total blocks: 8\n"
+"Data blocks: 1\n"
+"Entries: 4\n"
+"Used average: 4.000000"
+msgstr ""
+
+#: ../../shares/quota.rst:137
+msgid ""
+"Logged in users can use the :command:`quota -v` command to view the "
+"applicable quota limits and the current utilization."
+msgstr ""
+
+#: ../../shares/quota.rst:140
+msgid ""
+"Further information on the commands can be found in the man pages of the "
+"commands."
+msgstr ""
+
+#: ../../shares/umc.rst:4
+msgid "Management of shares via UMC module"
+msgstr ""
+
+#: ../../shares/umc.rst:6
+msgid ""
+"File shares are managed in the UMC module :guilabel:`Shares` (see :ref"
+":`central-user-interface`)."
+msgstr ""
+
+#: ../../shares/umc.rst:9
+msgid ""
+"When adding/editing/deleting a share, it is entered, modified or removed "
+"in the :file:`/etc/exports` file and/or the Samba configuration."
+msgstr ""
+
+#: ../../shares/umc.rst:18
+msgid "Creating a share via the UMC module *Shares*"
+msgstr ""
+
+#: ../../shares/umc.rst:18
+msgid "Creating a share via the UMC module :guilabel:`Shares`"
+msgstr ""
+
+#: ../../shares/umc.rst:23
+msgid "Shares UMC module - General tab"
+msgstr ""
+
+#: ../../shares/umc.rst:27
+msgid "*General* tab"
+msgstr ""
+
+#: ../../shares/umc.rst:31 ../../shares/umc.rst:81 ../../shares/umc.rst:129
+#: ../../shares/umc.rst:179 ../../shares/umc.rst:321 ../../shares/umc.rst:369
+#: ../../shares/umc.rst:487 ../../shares/umc.rst:515 ../../shares/umc.rst:541
+msgid "Attribute"
+msgstr ""
+
+#: ../../shares/umc.rst:32 ../../shares/umc.rst:82 ../../shares/umc.rst:130
+#: ../../shares/umc.rst:180 ../../shares/umc.rst:322 ../../shares/umc.rst:370
+#: ../../shares/umc.rst:488 ../../shares/umc.rst:516 ../../shares/umc.rst:542
+msgid "Description"
+msgstr ""
+
+#: ../../shares/umc.rst:34
+msgid "Name"
+msgstr ""
+
+#: ../../shares/umc.rst:35
+msgid ""
+"The name of the share is to be entered here. The name must be composed of"
+" letters, numerals, full stops or blank spaces and must begin and end "
+"with a letter or numeral."
+msgstr ""
+
+#: ../../shares/umc.rst:39
+msgid "Host"
+msgstr ""
+
+#: ../../shares/umc.rst:40
+msgid ""
+"The server where the share is located. All of the Primary/Backup/\\ "
+"|UCSREPLICADN| computers and |UCSMANAGEDNODE|\\ s entered in the LDAP "
+"directory for the domain are available for selection which are entered in"
+" a DNS forward lookup zone in the LDAP directory."
+msgstr ""
+
+#: ../../shares/umc.rst:45
+msgid "Directory"
+msgstr ""
+
+#: ../../shares/umc.rst:46
+msgid ""
+"The absolute path of the directory to be shared, without quotation marks "
+"(this also applies if the name includes special characters such as "
+"spaces). If the directory does not exist, it will be created "
+"automatically on the selected server."
+msgstr ""
+
+#: ../../shares/umc.rst:51
+msgid ""
+"If the |UCSUCRV| :envvar:`listener/shares/rename` is set to ``yes``, the "
+"contents of the existing directory are moved when the path is modified."
+msgstr ""
+
+#: ../../shares/umc.rst:54
+msgid ""
+"No shares can be created in and below :file:`/proc`, :file:`/tmp`, "
+":file:`/root`, :file:`/dev` and :file:`/sys` and no files can be moved "
+"there."
+msgstr ""
+
+#: ../../shares/umc.rst:58
+msgid "Directory owner of the share's root"
+msgstr ""
+
+#: ../../shares/umc.rst:59
+msgid ""
+"The user to whom the root directory of the share should belong, see :ref"
+":`shares-permissions`."
+msgstr ""
+
+#: ../../shares/umc.rst:62
+msgid "Directory owner group of the share's root"
+msgstr ""
+
+#: ../../shares/umc.rst:63
+msgid ""
+"The group to whom the root directory of the share should belong, see :ref"
+":`shares-permissions`."
+msgstr ""
+
+#: ../../shares/umc.rst:66
+msgid "Permissions for the share's root"
+msgstr ""
+
+#: ../../shares/umc.rst:67
+msgid ""
+"The read, write and access permissions for the root directory of the "
+"share, see :ref:`shares-permissions`."
+msgstr ""
+
+#: ../../shares/umc.rst:73
+msgid "Shares UMC module - NFS tab"
+msgstr ""
+
+#: ../../shares/umc.rst:77
+msgid "*NFS* tab"
+msgstr ""
+
+#: ../../shares/umc.rst:84
+msgid "NFS write access"
+msgstr ""
+
+#: ../../shares/umc.rst:85
+msgid ""
+"Allows NFS write access to this share; otherwise the share can only be "
+"used in read-only mode."
+msgstr ""
+
+#: ../../shares/umc.rst:88
+msgid "Subtree checking"
+msgstr ""
+
+#: ../../shares/umc.rst:89
+msgid ""
+"If only one subdirectory of a file system is exported, the NFS server has"
+" to check whether an accessed file is located on the exported file system"
+" and in the exported path, each time access is made. Path information is "
+"passed on to the client for this check. Activating this function might "
+"cause problems if a file opened by the client, is renamed."
+msgstr ""
+
+#: ../../shares/umc.rst:95
+msgid "Modify user ID for root user (root squashing)"
+msgstr ""
+
+#: ../../shares/umc.rst:96
+msgid ""
+"In the NFS standard procedure, identification of users is achieved via "
+"user IDs. To prevent a local root user from working with root permissions"
+" on other shares, root access can be redirected. If this option is "
+"activated, access operations are executed as user ``nobody``."
+msgstr ""
+
+#: ../../shares/umc.rst:101
+msgid ""
+"The local group ``staff``, which is by default empty, owns privileges "
+"which come quite close to ``root`` permissions, yet this group is not "
+"considered by the redirection mechanism. This fact should be borne in "
+"mind when adding users to this group."
+msgstr ""
+
+#: ../../shares/umc.rst:106
+msgid "NFS synchronization"
+msgstr ""
+
+#: ../../shares/umc.rst:107
+msgid ""
+"The synchronization mode for the share. The ``sync`` setting is used to "
+"write data directly on the underlying storage device. The opposite "
+"setting - ``async`` - can improve performance but also involves the risk "
+"of data loss if the server is shut down incorrectly."
+msgstr ""
+
+#: ../../shares/umc.rst:112
+msgid "Only allow access for these hosts, IP addresses or networks"
+msgstr ""
+
+#: ../../shares/umc.rst:113
+msgid ""
+"By default, all hosts are permitted access to a share. In this selection "
+"list, host names and IP addresses can be included, to which the access to"
+" the share is to be restricted. For example, access to a share containing"
+" mail data could be restricted to the mail server of the domain."
+msgstr ""
+
+#: ../../shares/umc.rst:121
+msgid "Shares UMC module - Samba tab"
+msgstr ""
+
+#: ../../shares/umc.rst:125
+msgid "*Samba* tab"
+msgstr ""
+
+#: ../../shares/umc.rst:132
+msgid "Samba name"
+msgstr ""
+
+#: ../../shares/umc.rst:133
+msgid ""
+"The NetBIOS name of the share. This is the name under which the share is "
+"displayed on Windows computers in the network environment. When adding a "
+"directory share, the UMC module adopts the name entered in the *Name* "
+"field of the *General* tab as the default."
+msgstr ""
+
+#: ../../shares/umc.rst:138
+msgid "Samba write access"
+msgstr ""
+
+#: ../../shares/umc.rst:139
+msgid "Permits write access to this share."
+msgstr ""
+
+#: ../../shares/umc.rst:141
+msgid "Show in Windows network environment"
+msgstr ""
+
+#: ../../shares/umc.rst:142
+msgid ""
+"Specifies whether the share in question is to show up on Windows clients "
+"within the network environment."
+msgstr ""
+
+#: ../../shares/umc.rst:145
+msgid "Allow anonymous read-only access with a guest user"
+msgstr ""
+
+#: ../../shares/umc.rst:146
+msgid ""
+"Permits access to this share without a password. Every access is carried "
+"out by means of the common guest user ``nobody``."
+msgstr ""
+
+#: ../../shares/umc.rst:149
+msgid "MSDFS root"
+msgstr ""
+
+#: ../../shares/umc.rst:150
+msgid "This option is documented in :ref:`shares-msdfs`."
+msgstr ""
+
+#: ../../shares/umc.rst:152
+msgid "Users with write access may modify permissions"
+msgstr ""
+
+#: ../../shares/umc.rst:153
+msgid ""
+"If this option is activated, all users with write permission to a file "
+"are allowed to change permissions, ACL entries, and file ownership "
+"rights, see :ref:`shares-permissions`."
+msgstr ""
+
+#: ../../shares/umc.rst:157
+msgid "Hide unreadable files/directories"
+msgstr ""
+
+#: ../../shares/umc.rst:158
+msgid ""
+"If this option is activated, all files which are not readable for the "
+"user due to their file permissions, will be hidden."
+msgstr ""
+
+#: ../../shares/umc.rst:161
+msgid "VFS Objects"
+msgstr ""
+
+#: ../../shares/umc.rst:162
+msgid ""
+"Virtual File System (VFS) modules are used in Samba for performing "
+"actions before an access to the file system of a share is made, e.g., a "
+"virus scanner which stores every infected file accessed in the share in "
+"quarantine or server-side implementation of recycle bin deletion of "
+"files."
+msgstr ""
+
+#: ../../shares/umc.rst:171
+msgid "Shares UMC module - Samba permissions tab"
+msgstr ""
+
+#: ../../shares/umc.rst:175
+msgid "*Samba permissions* tab (advanced settings)"
+msgstr ""
+
+#: ../../shares/umc.rst:182
+msgid "Force user"
+msgstr ""
+
+#: ../../shares/umc.rst:183
+msgid ""
+"This username and its permissions and primary group is used for "
+"performing all the file operations of accessing users. The username is "
+"only used once the user has established a connection to the Samba share "
+"by using their real username and password. A common username is useful "
+"for using data in a shared way, yet improper application might cause "
+"security problems."
+msgstr ""
+
+#: ../../shares/umc.rst:190
+msgid "Force group"
+msgstr ""
+
+#: ../../shares/umc.rst:191
+msgid ""
+"A group which is to be used by all users connecting with this share, as "
+"their primary group. Thereby, the permissions of this group automatically"
+" apply as the group permissions of all these users. A group registered "
+"here has a higher priority than a group which was assigned as the primary"
+" group of a user via the *Force user* entry field."
+msgstr ""
+
+#: ../../shares/umc.rst:197
+msgid ""
+"If a ``+`` sign is prefixed to the group name, then the group is assigned"
+" as a primary group solely to those users which are already members of "
+"this group. All other users retain their primary groups."
+msgstr ""
+
+#: ../../shares/umc.rst:201
+msgid "Valid users or groups"
+msgstr ""
+
+#: ../../shares/umc.rst:202
+msgid ""
+"Names of users or groups which are authorized to access this Samba share."
+" To all other users, access is denied. If the field is empty, all users "
+"may access the share - if necessary after entering a password. This "
+"option is useful for securing access to a share at file server level "
+"beyond the file permissions."
+msgstr ""
+
+#: ../../shares/umc.rst:208
+msgid ""
+"The entries are to be separated by spaces. The special characters ``@``, "
+"``+`` and ``&`` can be used in connection with the group name for "
+"assigning certain permissions to the users of the stated group for "
+"accessing the Samba share:"
+msgstr ""
+
+#: ../../shares/umc.rst:213
+msgid ""
+"A name beginning with the character ``@`` will first be interpreted as a "
+"NIS net-group. Should no NIS net-group of this name be found, the name "
+"will be considered as a UNIX group."
+msgstr ""
+
+#: ../../shares/umc.rst:217
+msgid ""
+"A name beginning with the character ``+`` will be exclusively considered "
+"as a UNIX group, a name beginning with the character ``&`` will be "
+"exclusively considered as a NIS net-group."
+msgstr ""
+
+#: ../../shares/umc.rst:221
+msgid ""
+"A name beginning with the characters ``+&``, will first be interpreted as"
+" a UNIX group. Should no UNIX group of this name be found, the name will "
+"be considered as a NIS net-group. The characters ``&+`` as the beginning "
+"of a name correspond to the character ``@``."
+msgstr ""
+
+#: ../../shares/umc.rst:226
+msgid "Invalid users or groups"
+msgstr ""
+
+#: ../../shares/umc.rst:227
+msgid ""
+"The users or groups listed here cannot access the Samba share. The syntax"
+" is identical to the one for valid users. If a user or group is included "
+"in the list of valid users and unauthorized users, access is denied."
+msgstr ""
+
+#: ../../shares/umc.rst:231
+msgid "Restrict write access to these users/groups"
+msgstr ""
+
+#: ../../shares/umc.rst:232
+msgid ""
+"Only the users and groups listed here have write permission for the "
+"corresponding share."
+msgstr ""
+
+#: ../../shares/umc.rst:235
+msgid "Allowed hosts/networks"
+msgstr ""
+
+#: ../../shares/umc.rst:236
+msgid ""
+"Names of computers which are authorized to access this Samba share. All "
+"other computers are denied access. In addition to computer names, it is "
+"also possible to specify IP or network addresses, e.g., "
+"``192.0.2.0/255.255.255.0``."
+msgstr ""
+
+#: ../../shares/umc.rst:241
+msgid "Denied hosts/networks"
+msgstr ""
+
+#: ../../shares/umc.rst:242
+msgid ""
+"The opposite to the authorized computers. If a computer appears in both "
+"lists, the computer is permitted to access the Samba share."
+msgstr ""
+
+#: ../../shares/umc.rst:245
+msgid "NT ACL support"
+msgstr ""
+
+#: ../../shares/umc.rst:246
+msgid ""
+"If this option is activated, Samba will try to show POSIX ACLs under "
+"Windows, and to adopt changes to the ACLs, which were performed under "
+"Windows, for the POSIX ACLs."
+msgstr ""
+
+#: ../../shares/umc.rst:250
+msgid ""
+"If this option is not set, existing POSIX ACLs are effective but not "
+"shown under Windows, and consequently cannot be changed under Windows."
+msgstr ""
+
+#: ../../shares/umc.rst:253
+msgid "Inherit ACLs"
+msgstr ""
+
+#: ../../shares/umc.rst:254
+msgid ""
+"When activating this option, each file created in this share will inherit"
+" the ACL (Access Control List) of the directory where the file was "
+"created."
+msgstr ""
+
+#: ../../shares/umc.rst:258
+msgid "Create files/directories with the owner of the parent directory"
+msgstr ""
+
+#: ../../shares/umc.rst:259
+msgid ""
+"When activating this option, each newly created file will not be assigned"
+" of the user who created the file, but to the owner of the superior "
+"directory instead."
+msgstr ""
+
+#: ../../shares/umc.rst:263
+msgid "Create files/directories with permissions of the parent directory"
+msgstr ""
+
+#: ../../shares/umc.rst:264
+msgid ""
+"When activating this option, for each file or directory created in this "
+"share, the UNIX permissions of the superior directory will automatically "
+"be adopted."
+msgstr ""
+
+#: ../../shares/umc.rst:268
+msgid ""
+"If a new file is created on a Samba server from a Windows client, the "
+"file permissions will be set in several steps:"
+msgstr ""
+
+#: ../../shares/umc.rst:271
+msgid "First, only the DOS permissions are translated into UNIX permissions."
+msgstr ""
+
+#: ../../shares/umc.rst:273
+msgid ""
+"Then the permissions are filtered via the *Filemode*. UNIX permissions "
+"which are marked in *File mode*, are the only ones preserved. Permissions"
+" not set here, will be removed. Thus, the permissions have to be set as "
+"UNIX permissions and in *File mode* in order to be preserved."
+msgstr ""
+
+#: ../../shares/umc.rst:278
+msgid ""
+"In the next step, the permissions under *Force file mode* are added. As a"
+" result, the file will have all the permissions set after step 2 or under"
+" *Force file mode*. This means, permissions marked under *Force file "
+"mode* are set in any case."
+msgstr ""
+
+#: ../../shares/umc.rst:283
+msgid ""
+"Accordingly, a newly created directory will initially be assigned the "
+"same permissions as that which are set as UNIX permissions and in "
+"*Directory mode* at the same time. Then these permissions are completed "
+"by those marked under *Force directory mode*."
+msgstr ""
+
+#: ../../shares/umc.rst:288
+msgid ""
+"In a similar way, the security settings are adopted for existing files "
+"and directories the permissions of which are edited under Windows:"
+msgstr ""
+
+#: ../../shares/umc.rst:291
+msgid ""
+"Only those permissions can be changed under Windows, which are marked in "
+"*Security mode* or in *Directory security mode*. Once this is done, the "
+"permissions marked under *Force security mode* or under *Force directory "
+"security mode* are set in any case."
+msgstr ""
+
+#: ../../shares/umc.rst:296
+msgid ""
+"Thus, the parameters *File mode* and *Force file mode*, or *Directory "
+"mode* and *Force directory mode* are applied during the creation of a "
+"file or directory, while the parameters *Security mode* and *Force "
+"Security Mode* or *Security directory mode* and *Force security directory"
+" mode* are applied when changing permissions."
+msgstr ""
+
+#: ../../shares/umc.rst:304
+msgid "The security settings only relate to the access via Samba."
+msgstr ""
+
+#: ../../shares/umc.rst:306
+msgid ""
+"The user on the Windows side does not receive any notification of the "
+"fact that the file or directory authorizations might by changed according"
+" to the Samba settings on this tab."
+msgstr ""
+
+#: ../../shares/umc.rst:313
+msgid "Shares UMC module - Samba extended permissions tab"
+msgstr ""
+
+#: ../../shares/umc.rst:317
+msgid "*Samba extended permissions* tab (advanced settings)"
+msgstr ""
+
+#: ../../shares/umc.rst:324
+msgid "File mode"
+msgstr ""
+
+#: ../../shares/umc.rst:325
+msgid ""
+"The permissions Samba is to adopt when creating a file, provided they are"
+" set under Windows."
+msgstr ""
+
+#: ../../shares/umc.rst:328
+msgid "Directory mode"
+msgstr ""
+
+#: ../../shares/umc.rst:329
+msgid ""
+"The permissions Samba is to adopt when creating a directory, provided "
+"they are set under Windows."
+msgstr ""
+
+#: ../../shares/umc.rst:332
+msgid "Force file mode"
+msgstr ""
+
+#: ../../shares/umc.rst:333
+msgid ""
+"The permissions Samba is to set in any case when creating a file, "
+"irrespective of whether they are set under Windows or not."
+msgstr ""
+
+#: ../../shares/umc.rst:336
+msgid "Force directory mode"
+msgstr ""
+
+#: ../../shares/umc.rst:337
+msgid ""
+"The permissions Samba is to set in any case when creating a directory, "
+"irrespective of whether they are set under Windows or not."
+msgstr ""
+
+#: ../../shares/umc.rst:340
+msgid "Security mode"
+msgstr ""
+
+#: ../../shares/umc.rst:341
+msgid ""
+"The file permissions to which Samba is to permit changes made from "
+"Windows side."
+msgstr ""
+
+#: ../../shares/umc.rst:344
+msgid "Directory security mode"
+msgstr ""
+
+#: ../../shares/umc.rst:345
+msgid ""
+"The directory authorizations to which Samba is to permit changes made "
+"from Windows side."
+msgstr ""
+
+#: ../../shares/umc.rst:348
+msgid "Force security mode"
+msgstr ""
+
+#: ../../shares/umc.rst:349
+msgid ""
+"The permissions Samba is to set in any case (irrespective of whether they"
+" are set under Windows or not), if file permissions are changed from "
+"Windows side."
+msgstr ""
+
+#: ../../shares/umc.rst:353
+msgid "Force directory security mode"
+msgstr ""
+
+#: ../../shares/umc.rst:354
+msgid ""
+"The permissions Samba is to set in any case if directory permissions are "
+"changed from Windows side (irrespective of whether they are set under "
+"Windows or not)."
+msgstr ""
+
+#: ../../shares/umc.rst:361
+msgid "Shares UMC module - Samba options tab"
+msgstr ""
+
+#: ../../shares/umc.rst:365
+msgid "*Samba options* tab (advanced settings)"
+msgstr ""
+
+#: ../../shares/umc.rst:372
+msgid "Locking"
+msgstr ""
+
+#: ../../shares/umc.rst:373
+msgid ""
+"Locking means preventing concurrent access to a file, making an exclusive"
+" access possible. When activating this checkbox, Samba will lock the "
+"access to files on the client's request."
+msgstr ""
+
+#: ../../shares/umc.rst:377
+msgid ""
+"Deactivating this option can be useful for improving performance, yet it "
+"should generally not be set in shares with write access, since without "
+"locking, files might be corrupted due to concurrent access."
+msgstr ""
+
+#: ../../shares/umc.rst:381
+msgid "Blocking locks"
+msgstr ""
+
+#: ../../shares/umc.rst:382
+msgid ""
+"Clients can send a lock request with a time limit for a certain area of "
+"an open file."
+msgstr ""
+
+#: ../../shares/umc.rst:385
+msgid ""
+"In case Samba is unable to comply with a the lock request, and this "
+"option is activated, then Samba will - in periodical intervals until the "
+"expiry of the time limit - try to lock the requested file area. If the "
+"option is deactivated, no further attempt will be made."
+msgstr ""
+
+#: ../../shares/umc.rst:390
+msgid "Strict locking"
+msgstr ""
+
+#: ../../shares/umc.rst:391
+msgid ""
+"If this option is activated, Samba will with each read or write access "
+"check if the file is locked, and will deny access if required. On some "
+"systems, this procedure can take a long time."
+msgstr ""
+
+#: ../../shares/umc.rst:395
+msgid ""
+"If this option is deactivated, Samba will check if the file is locked on "
+"the client's request exclusively. Well configured clients ask for a check"
+" in all important cases, so that this option is usually unnecessary."
+msgstr ""
+
+#: ../../shares/umc.rst:399
+msgid "Oplocks"
+msgstr ""
+
+#: ../../shares/umc.rst:400
+msgid ""
+"If this option is activated, Samba will use so-called *opportunistic "
+"locks*. This can improve the speed of file access considerably. However, "
+"the option permits clients local caching of files on a large scale. In "
+"unreliable networks it might therefore be necessary to do without "
+"Oplocks."
+msgstr ""
+
+#: ../../shares/umc.rst:406
+msgid "Level 2 Oplocks"
+msgstr ""
+
+#: ../../shares/umc.rst:407
+msgid ""
+"When activating this option, Samba will support an extended form of "
+"Oplocks, the so-called *opportunistic read-only locks* or *Level 2 "
+"Oplocks*. Windows clients receiving a read/write Oplock for a file can "
+"then scale down this Oplock to a read-only Oplock instead of having to "
+"abandon the Oplock completely as soon as a second client opens the file. "
+"All clients supporting Level 2 Oplocks, will then cache read access "
+"processes to the file exclusively. Should one of the clients write to the"
+" file, all the other clients will be asked to abandon their Oplocks, and "
+"to empty their caches."
+msgstr ""
+
+#: ../../shares/umc.rst:417
+msgid ""
+"It is recommended to activate this option to speed up access to files "
+"which are normally not written to (e.g. programs / executable files)."
+msgstr ""
+
+#: ../../shares/umc.rst:422
+msgid ""
+"If kernel Oplocks are supported, Level 2 Oplocks will not be allowed, "
+"even if the option is activated. Only if the checkbox *Oplocks* is also "
+"ticked, this option will become valid."
+msgstr ""
+
+#: ../../shares/umc.rst:426
+msgid "Fake Oplocks"
+msgstr ""
+
+#: ../../shares/umc.rst:427
+msgid ""
+"When activating this option, Samba will allow all Oplock requests "
+"irrespective of the number of clients having access to a file. This "
+"method considerably improves performance, and is useful for shares which "
+"can only be accessed for reading (e.g. CD-ROMs), or where it is ensured "
+"that there can never occur a situation when several clients make access "
+"at the same time."
+msgstr ""
+
+#: ../../shares/umc.rst:434
+msgid ""
+"If it cannot be excluded that several clients make reading and writing "
+"access to a file at the same time, this option should not be activated, "
+"since it may cause data loss."
+msgstr ""
+
+#: ../../shares/umc.rst:438
+msgid "Block size"
+msgstr ""
+
+#: ../../shares/umc.rst:439
+msgid ""
+"The block size in bytes in which unoccupied disk space is to be reported "
+"to the clients. By default, this size is defined as 1024 bytes."
+msgstr ""
+
+#: ../../shares/umc.rst:442
+msgid "Client-side caching policy"
+msgstr ""
+
+#: ../../shares/umc.rst:443
+msgid ""
+"This option specifies in which way the clients are to cache the files of "
+"this share offline. The available alternatives are ``manua``, "
+"``documents``, ``programs``, and ``disable``."
+msgstr ""
+
+#: ../../shares/umc.rst:447
+msgid "Hide files"
+msgstr ""
+
+#: ../../shares/umc.rst:448
+msgid ""
+"Files and directories to be accessed under Windows, yet not to be "
+"visible. Such files or directories are assigned the DOS attribute "
+"*hidden*."
+msgstr ""
+
+#: ../../shares/umc.rst:452
+msgid ""
+"When entering the names of files and directories, upper and lower case "
+"letters are to be differentiated. Each entry is to be separated from the "
+"next by a slash. Since the slash can thus not be used for structuring "
+"path names, the input of path names is not possible. All files and "
+"directories of this name within the share will be hidden. The names may "
+"include spaces and the wildcards ``*`` and ``?``."
+msgstr ""
+
+#: ../../shares/umc.rst:459
+msgid ""
+"As an example, ``/.*/test/`` hides all files and directories the names of"
+" which begin with a dot, or which are called test."
+msgstr ""
+
+#: ../../shares/umc.rst:464
+msgid ""
+"Entries in this field have an impact on the speed of Samba since every "
+"time particular contents of the share are to be displayed, all files and "
+"directories have to be checked according to the active filters."
+msgstr ""
+
+#: ../../shares/umc.rst:468
+msgid "Postexec script"
+msgstr ""
+
+#: ../../shares/umc.rst:469
+msgid ""
+"A script or command which is to be executed on the server if the "
+"connection to this share is finished."
+msgstr ""
+
+#: ../../shares/umc.rst:472
+msgid "Preexec script"
+msgstr ""
+
+#: ../../shares/umc.rst:473
+msgid ""
+"A script or command which is to be executed on the server each time a "
+"connection to this share is established."
+msgstr ""
+
+#: ../../shares/umc.rst:479
+msgid "Shares UMC module - Samba custom settings tab"
+msgstr ""
+
+#: ../../shares/umc.rst:483
+msgid "*Samba custom settings* tab (advanced settings)"
+msgstr ""
+
+#: ../../shares/umc.rst:490
+msgid "Custom share settings"
+msgstr ""
+
+#: ../../shares/umc.rst:491
+msgid ""
+"Apart from the properties which can, as a standard feature, be configured"
+" in a Samba share, this setting makes it possible to define further "
+"arbitrary Samba settings within the share. A list of available options "
+"can be obtained by the command :command:`man smb.conf`. In *Key* the name"
+" of the option is to be entered, and in the *Value* field the value to be"
+" set. Double entries of configuration options are not checked."
+msgstr ""
+
+#: ../../shares/umc.rst:500
+msgid ""
+"The definition of extended Samba settings is only necessary in very "
+"special cases. The options should be thoroughly checked since they might "
+"have security-relevant effects."
+msgstr ""
+
+#: ../../shares/umc.rst:507
+msgid "Shares UMC module - NFS custom settings tab"
+msgstr ""
+
+#: ../../shares/umc.rst:511
+msgid "*NFS custom settings* tab (advanced settings)"
+msgstr ""
+
+#: ../../shares/umc.rst:518
+msgid "Custom NFS share settings"
+msgstr ""
+
+#: ../../shares/umc.rst:519
+msgid ""
+"Apart from the properties in the :guilabel:`NFS` tab, this setting makes "
+"it possible to define further arbitrary NFS settings for the share. A "
+"list of available options can be obtained by the command :command:`man 5 "
+"exports`. Double entries of configuration options are not checked."
+msgstr ""
+
+#: ../../shares/umc.rst:526
+msgid ""
+"The definition of extended NFS settings is only necessary in special "
+"cases. The options should be thoroughly checked since they might have "
+"security-relevant effects."
+msgstr ""
+
+#: ../../shares/umc.rst:533
+msgid "Shares UMC module - Options tab"
+msgstr ""
+
+#: ../../shares/umc.rst:537
+msgid "*(Options)* tab"
+msgstr ""
+
+#: ../../shares/umc.rst:544
+msgid "Export for Samba clients"
+msgstr ""
+
+#: ../../shares/umc.rst:545
+msgid "This option defines whether the share is to be exported for Samba clients."
+msgstr ""
+
+#: ../../shares/umc.rst:548
+msgid "Export for NFS clients"
+msgstr ""
+
+#: ../../shares/umc.rst:549
+msgid "This option defines whether the share is to be exported for NFS clients."
+msgstr ""
+

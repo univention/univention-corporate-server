@@ -1,0 +1,1558 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021-2022, Univention GmbH
+# This file is distributed under the same license as the Univention
+# Corporate Server - Manual for users and administrators package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Univention Corporate Server - Manual for users and "
+"administrators \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-21 12:53+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../mail/configuration-client.rst:4
+msgid "Configuration of mail clients for the mail server"
+msgstr ""
+
+#: ../../mail/configuration-client.rst:6
+msgid ""
+"The use of IMAP is recommended for using a mail client with the UCS mail "
+"server. STARTTLS is used to switch to a TLS-secured connection after an "
+"initial negotiation phase when using SMTP (for sending mail) and IMAP "
+"(for receiving/synchronizing mail). *Password (plain text)* should be "
+"used in combination with *STARTTLS* as the authentication method. The "
+"method may have a different name depending on the mail client. The "
+"following screenshot shows the setup of Mozilla Thunderbird as an "
+"example."
+msgstr ""
+
+#: ../../mail/configuration-client.rst:21
+msgid "Setup of Mozilla Thunderbird"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:4
+msgid "Configuration of the mail server"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:9
+msgid "Configuration of a relay host for sending the emails"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:11
+msgid ""
+"By default Postfix creates a direct SMTP connection to the mail server "
+"responsible for the domain when an email is sent to a non-local address. "
+"This server is determined by querying the MX record in the DNS."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:15
+msgid ""
+"Alternatively, a mail relay server can also be used, i.e., a server which"
+" receives the mails and takes over their further sending. This type of "
+"mail relay server can be provided by a superordinate corporate "
+"headquarters or the internet provider, for example. To set a relay host, "
+"it must be entered as a fully qualified domain name (FQDN) in the "
+"|UCSUCRV| :envvar:`mail/relayhost`."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:21
+msgid ""
+"If authentication is necessary on the relay host for sending, the "
+"|UCSUCRV| :envvar:`mail/relayauth` must be set to ``yes`` and the "
+":file:`/etc/postfix/smtp_auth` file edited. The relay host, username and "
+"password must be saved in this file in one line: :samp:`{FQDN-Relayhost} "
+"{username}:{password}`"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:28
+msgid "To adopt the changes in Postfix, complete the step with the command:"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:30
+msgid "$ postmap /etc/postfix/smtp_auth"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:37
+msgid ""
+"To ensure an encrypted connection while using a relay host, the Postfix "
+"option ``smtp_tls_security_level=encrypt`` has to be set. |UCSUCS| will "
+"set this option automatically, if :envvar:`mail/relayhost` is set and "
+":envvar:`mail/relayauth` is set to ``yes`` and "
+":envvar:`mail/postfix/tls/client/level` is not set to ``none``."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:46
+msgid "Configuration of the maximum mail size"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:48
+msgid ""
+"The |UCSUCRV| :envvar:`mail/messagesizelimit` can be used to set the "
+"maximum size in bytes for incoming and outgoing emails. Postfix must be "
+"restarted after modifying the setting. The preset maximum size is "
+"``10240000`` bytes. If the value is configured to ``0`` the limit is "
+"effectively removed. Please note that email attachments are enlarged by "
+"approximately a third due to the *base64* encoding."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:57
+msgid "Configuration of a blind carbon copy for mail archiving solutions"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:59
+msgid ""
+"If the |UCSUCRV| :envvar:`mail/archivefolder` is set to an email address,"
+" Postfix sends a blind carbon copy of all incoming and outgoing emails to"
+" this address. This results in an archiving of all emails. The email "
+"address must already exist. It can be either one already registered in "
+"|UCSUCS| as the email address of a user, or an email account with an "
+"external email service. As standard the variable is not set."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:66
+msgid "Postfix must then be restarted."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:71
+msgid "Configuration of soft bounces"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:73
+msgid ""
+"In a number of error situations (e.g., for non-existent users) the result"
+" may be a mail bounce, i.e., the email cannot be delivered and is "
+"returned to the sender. When |UCSUCRV| :envvar:`mail/postfix/softbounce` "
+"is set to ``yes`` emails are never returned after a bounce, but instead "
+"are held in the queue. This setting is particularly useful during "
+"configuration work on the mail server."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:82
+msgid "Configuration of SMTP ports"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:84
+msgid ""
+"On a |UCSUCS| mail server Postfix is configured to listen for connections"
+" on three ports:"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:92
+msgid "Port 25 - SMTP"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:88
+msgid ""
+"Port 25 (``SMTP``) should be used by other mail servers only. By default "
+"authentication is disabled. If submission of emails from users is wanted "
+"on port 25, authentication can be enabled by setting the |UCSUCRV| "
+":envvar:`mail/postfix/mastercf/options/smtp/smtpd_sasl_auth_enable` to "
+"``yes``."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:97
+msgid "Port 465 - SMTPS"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:95
+msgid ""
+"Port 465 (``SMTPS``) allows authentication and email submission through a"
+" SSL encrypted connection. ``SMTPS`` has been declared deprecated in "
+"favor of port 587 but is kept enabled for legacy clients."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:101
+msgid "Port 587 - Submission"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:100
+msgid ""
+"Port 587 (``Submission``) allows authentication and email submission "
+"through a TLS encrypted connection. The use of ``STARTTLS`` is enforced."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:103
+msgid ""
+"The submission port should be preferred by email clients. The use of the "
+"ports ``25`` and ``465`` for email submission is deprecated."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:109
+msgid "Configuration of additional checks"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:111
+msgid ""
+"When using a mail server that is directly accessible from the internet, "
+"there is always a risk that spam sender, spam bots or broken mail servers"
+" are continually trying to deliver unwanted emails (for example spam) to "
+"the UCS system."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:115
+msgid ""
+"To reduce the load of the mail server for such cases, Postfix brings its "
+"own service with the name :program:`postscreen`, which is put in front of"
+" Postfix and accepts incoming SMTP connections. On these incoming SMTP "
+"connections, some lightweight tests are first performed. If the result is"
+" positive, the respective connection is passed on to Postfix. Otherwise "
+"the SMTP connection is terminated and thus the incoming mail is rejected "
+"before being in the area of responsibility of the UCS mail server."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:123
+msgid ""
+"By default, :program:`postscreen` is not active. By setting the |UCSUCRV|"
+" :envvar:`mail/postfix/postscreen/enabled` to the value ``yes``, "
+":program:`postscreen` can be activated."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:127
+msgid ""
+"Various UCR variables with the prefix :envvar:`mail/postfix/postscreen/` "
+"can be used to configure :program:`postscreen`. A list of all relevant "
+"UCR variables including descriptions can be retrieved e.g. on command "
+"line via the command:"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:131
+msgid "$ ucr search --verbose mail/postfix/postscreen/"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:137
+msgid ""
+"After each change of a UCR variable for :program:`postscreen` the "
+"configuration of Postfix and :program:`postscreen` should be reloaded. "
+"This can be triggered e.g. via the command :command:`systemctl reload "
+"postfix`."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:144
+msgid "Custom Postfix configuration"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:146
+msgid ""
+"It is possible to modify the Postfix configuration, that resides within "
+"the file :file:`/etc/postfix/main.cf`, beyond the variables that can be "
+"set with |UCSUCRV|."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:150
+msgid ""
+"If the file :file:`/etc/postfix/main.cf.local` exists, its content will "
+"be appended to the file :file:`main.cf`. To transfer changes of "
+":file:`main.cf.local` to :file:`main.cf`, the following command must be "
+"executed:"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:155
+msgid "$ ucr commit /etc/postfix/main.cf"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:160
+msgid "For the Postfix service to accept the changes, it must be reloaded:"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:162
+msgid "$ systemctl reload postfix"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:167
+msgid ""
+"If a Postfix variable that has previously been set in :file:`main.cf` is "
+"set again in :file:`main.cf.local`, Postfix will issue a warning to the "
+"log file :file:`/var/log/mail.log`."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:173
+msgid ""
+"If Postfix' behavior is not as expected, first remove configuration "
+"settings made by :file:`main.cf.local`. Rename the file or comment out "
+"its content. Next run the two commands above. The configuration will then"
+" return to UCS defaults."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:181
+msgid "Configuring the alias expansion limit"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:183
+msgid ""
+"When sending a mail to a group including other nested groups, the mail "
+"may not be accepted/delivered. This is caused by Postfix trying to expand"
+" the number of the primary recipients via *virtual alias expansion*. This"
+" number is limited to ``1000`` users by default which might be too low."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:188
+msgid ""
+"To adjust the number to (for instance) 5000 users, the following line can"
+" be added or edited in :file:`/etc/postfix/main.cf.local`:"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:191
+msgid "virtual_alias_expansion_limit = 5000"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:195
+msgid "Afterwards Postfix needs to be restarted:"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:197
+msgid "$ systemctl restart postfix"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:204
+msgid ""
+"Handling of mailboxes during email changes and the deletion of user "
+"accounts"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:206
+msgid ""
+"A user's mailbox is linked to the primary email address and not to the "
+"username. The |UCSUCRV| :envvar:`mail/dovecot/mailbox/rename` can be used"
+" to configure the reaction when the primary email address is changed:"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:210
+msgid ""
+"If the variable is set to ``yes``, the name of the user's IMAP mailbox is"
+" changed. This is the standard setting since UCS 3.0."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:213
+msgid ""
+"If the setting is ``no``, it will not be possible to read previous emails"
+" any more once the user's primary email address is changed! If another "
+"user is assigned a previously used primary email address, they receive "
+"access to the old IMAP structure of this mailbox."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:218
+msgid ""
+"The |UCSUCRV| :envvar:`mail/dovecot/mailbox/delete` can be used to "
+"configure, whether the IMAP mailbox is also deleted. The value ``yes`` "
+"activates the removal of the corresponding IMAP mailbox if one of the "
+"following actions is performed:"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:223
+msgid "deletion of the user account"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:225
+msgid "removal of the primary email address from the user account"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:227
+msgid "changing the user's mail home server to a different system"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:229
+msgid ""
+"With default settings (``no``) the mailboxes are kept if one of the "
+"actions above is performed."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:232
+msgid ""
+"The combination of the two variables creates four possible outcomes when "
+"the email address is changed:"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:235
+msgid "Renaming of email addresses"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:239
+msgid "mail/dovecot/mailbox/…"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:240
+msgid "Meaning"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:242
+msgid "``rename=yes`` and ``delete=no`` (default)"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:243
+#: ../../mail/configuration-server.rst:247
+msgid ""
+"The existing mailbox will be renamed. Emails will be preserved and will "
+"be accessible at the new address."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:246
+msgid "``rename=yes`` and ``delete=yes``"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:250
+msgid "``rename=no`` and ``delete=no``"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:251
+msgid ""
+"A new, empty mailbox will be created. The old one will be preserved on "
+"disk with the old name and will thus not be accessible to users."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:254
+msgid "``rename=no`` and ``delete=yes``"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:255
+msgid ""
+"A new, empty mailbox will be created. The old one will be deleted from "
+"the hard disk."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:261
+msgid "Distribution of an installation on several mail servers"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:263
+msgid ""
+"The UCS mail system offers the possibility of distributing users across "
+"several mail servers. To this end, each user is assigned a so-called mail"
+" home server on which the user's mail data are stored. When delivering an"
+" email, the responsible home server is automatically determined from the "
+"LDAP directory."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:268
+msgid ""
+"It must be observed that global IMAP folders (see :ref:`mail-management-"
+"shared-folder`) are assigned to a mail home server."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:271
+msgid ""
+"If the mail home server changes for a user, the user's mail data is *not*"
+" moved to the server automatically."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:277
+msgid "Mail storage on NFS"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:279
+msgid ""
+"Dovecot supports storing emails and index files on cluster file systems "
+"and on NFS. Some settings are necessary to prevent data loss in certain "
+"situations."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:282
+msgid ""
+"The following settings assume that mailboxes are not accessed "
+"simultaneously by multiple servers. This is the case if for each user "
+"exactly one mail home server has been configured."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:286
+msgid ":envvar:`mail/dovecot/process/mmap_disable`\\ ``=yes``"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:288
+msgid ":envvar:`mail/dovecot/process/dotlock_use_excl`\\ ``=yes``"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:290
+msgid ":envvar:`mail/dovecot/process/mail_fsync`\\ ``=always``"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:292
+msgid ""
+"To achieve higher performance, index files can be kept on the local "
+"servers disk, instead of storing them together with the messages on NFS. "
+"The index files can then be found at :file:`/var/lib/dovecot/index/`. To "
+"activate this option, set |UCSUCRV| "
+":envvar:`mail/dovecot/location/separate_index`\\ ``=yes``."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:297
+msgid ""
+"With the above settings the mail server should work without problems on "
+"NFS. There are however a lot of different client and server systems in "
+"service. In case you encounter problems, here are some notes that might "
+"help:"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:301
+msgid ""
+"If NFSv2 is in use (not the case if the NFS server is a |UCSUCS|), please"
+" set :envvar:`mail/dovecot/process/dotlock_use_excl`\\ ``=no``."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:304
+msgid ""
+"If *lockd* is not in use (not the case on |UCSUCS| systems) or if even "
+"with *lockd* in use locking error are encountered, set "
+":envvar:`mail/dovecot/process/lock_method`\\ ``=dotlock``. This does "
+"lower the performance, but solves most locking related errors."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:309
+msgid ""
+"Dovecot flushes NFS caches when needed if you set "
+":envvar:`mail/dovecot/process/mail_nfs_storage`\\ ``=yes``, but "
+"unfortunately this doesn't work 100%, so you can get random errors. The "
+"same holds for flushing NFS caches after writing index files with "
+":envvar:`mail/dovecot/process/mail_nfs_index`\\ ``= yes``."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:315
+msgid ""
+"The Dovecot documentation has more information on the topic: `Dovecot "
+"Wiki: Mail storage on shared disks <dovecot-mail-storage-shared-disk_>`_ "
+"and `Dovecot Wiki: NFS <dovecot-nfs_>`_."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:322
+msgid "Connection limits"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:324
+msgid ""
+"In a default |UCSUCS| configuration Dovecot allows ``400`` concurrent "
+"IMAP and POP3 connections each. That is enough to serve at least 100 "
+"concurrently logged in IMAP users, possibly a lot more."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:328
+msgid ""
+"How many IMAP connections are opened by a user depends on the clients "
+"they use:"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:330
+msgid "Web mail opens just a few short lived connections."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:332
+msgid "Desktop clients keep multiple connections open over a long period of time."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:334
+msgid ""
+"Mobile clients keep just a few connections open over a long period of "
+"time. But they tend to never close them, unnecessarily wasting resources."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:337
+msgid ""
+"The limits exist mainly to resist denial of service attacks that open a "
+"lot of connections and create lots of processes."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:340
+msgid "To list the open connections, run:"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:342
+msgid "$ doveadm who"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:346
+msgid "To display the total amount of open connections, run:"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:348
+msgid "$ doveadm who -1 | wc -l"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:352
+msgid ""
+"The |UCSUCRV|\\ s :envvar:`mail/dovecot/limits`\\ ``/*`` can be set to "
+"modify the limits. The process of adapting those variables is only semi "
+"automatic, because of their complex interaction. For the meaning of each "
+"variable refer to `Dovecot Wiki: Service configuration <dovecot-"
+"services_>`_."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:357
+msgid ""
+"Dovecot uses separate processes for login and to access emails. The "
+"limits for these can be configured separately. The maximum number of "
+"concurrent connections to a service and the maximum number of processes "
+"for a service is also configured separately. Setting "
+"``mail/dovecot/limits/default_client_limit = 3000`` changes the limit for"
+" the maximum number of concurrent connections to the IMAP and POP3 "
+"services but does not change the maximum number of processes allowed to "
+"run. With the |UCSUCS| default settings Dovecot runs in \"High-security "
+"mode\": each connection is served by a separate process. The default is "
+"to allow only ``400`` processes, so only 400 connections can be made."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:368
+msgid ""
+"To allow 3000 clients to connect to their emails, another |UCSUCRV| has "
+"to be set:"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:371
+msgid ""
+"$ ucr set mail/dovecot/limits/default_client_limit=3000\n"
+"$ ucr set mail/dovecot/limits/default_process_limit=3000\n"
+"$ doveadm reload"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:378
+msgid "Reading :file:`/var/log/dovecot.info` reveals a warning:"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:382
+msgid ""
+"config: Warning: service auth { client_limit=2000 } is lower than "
+"required under max. load (15000)\n"
+"config: Warning: service anvil { client_limit=1603 } is lower than "
+"required under max. load (12003)"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:385
+msgid ""
+"The services ``auth`` (responsible for login and SSL connections) and "
+"``anvil`` (responsible for statistics collection) are set to their "
+"default limits. Although 3000 POP3 and IMAP connections and processes are"
+" allowed, the connection limit for the login service is too low. Leaving "
+"it like this will lead to failed logins."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:391
+msgid ""
+"The values are so high, because ``default_client_limit`` and "
+"``default_process_limit`` do not only lift limits for IMAP and POP3, but "
+"also for other services like ``lmtp`` and ``managesieve-login``. Those "
+"services can now start more processes that have to be monitored and can "
+"theoretically make more authentication requests. This increases the "
+"number of possible concurrent connections to the ``auth`` and ``anvil`` "
+"services."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:398
+msgid "The values have to be adapted, using the numbers from the log file:"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:400
+msgid ""
+"$ ucr set mail/dovecot/limits/auth/client_limit=15000\n"
+"$ ucr set mail/dovecot/limits/anvil/client_limit=12003\n"
+"$ doveadm reload"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:406
+msgid "Another warning appears in :file:`/var/log/dovecot.info`:"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:411
+msgid ""
+"master: Warning: fd limit (ulimit -n) is lower than required under max. "
+"load (2000 < 15000),…\n"
+" because of service auth { client_limit }"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:414
+msgid ""
+"The Linux kernel controlled setting ``ulimit`` setting (limit on the "
+"number of files/connections a process is allowed to open) is changed only"
+" when the Dovecot service is restarted:"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:418
+msgid "$ systemctl restart dovecot"
+msgstr ""
+
+#: ../../mail/configuration-server.rst:422
+msgid ""
+"No more warnings are written to the log file and both IMAP and POP3 "
+"servers now accept 3000 client connections each."
+msgstr ""
+
+#: ../../mail/configuration-server.rst:425
+msgid ""
+"|UCSUCS| configures Dovecot to run in \"High-security mode\" by default. "
+"For installations with 10.000s of users, Dovecot offers the \"High-"
+"performance mode\". The performance guide has further details on how to "
+"configure it, see :cite:t:`ucs-performance-guide`."
+msgstr ""
+
+#: ../../mail/dnsbl.rst:4
+msgid "Identification of Spam sources with DNS-based Blackhole Lists"
+msgstr ""
+
+#: ../../mail/dnsbl.rst:6
+msgid ""
+"Another means of combating spam is to use a *DNS-based Blackhole List* "
+"(DNSBL) or *Real-time Blackhole List* (RBL). DNSBLs are lists of IP "
+"addresses that the operator believes to be (potential) sources of spam. "
+"The lists are checked by DNS. If the IP of the sending email server is "
+"known to the DNS server, the message is rejected. The IP address is "
+"checked quickly and in a comparatively resource-friendly manner. The "
+"check is performed *before* the message is accepted. The extensive "
+"checking of the content with SpamAssassin and anti-virus software is only"
+" performed once it has been received. Postfix has `integrated support for"
+" DNSBLs <postfix-reject-rbl-client_>`_."
+msgstr ""
+
+#: ../../mail/dnsbl.rst:16
+msgid ""
+"DNSBLs from various projects and companies are available on the internet."
+" Please refer to the corresponding websites for further information on "
+"conditions and prices."
+msgstr ""
+
+#: ../../mail/dnsbl.rst:20
+msgid ""
+"The |UCSUCRV| :envvar:`mail/postfix/smtpd/restrictions/recipient` with a "
+"key-value pair :samp:`{SEQUENCE}={RULE}` must be set to be able to use "
+"DNSBLs with Postfix: "
+":samp:`mail/postfix/smtpd/restrictions/recipient/{SEQUENCE}={RULE}`."
+msgstr ""
+
+#: ../../mail/dnsbl.rst:25
+msgid ""
+"It can be used to configure recipient restrictions via the Postfix option"
+" ``smtpd_recipient_restrictions`` (see `Postfix setting "
+"smtpd_recipient_restrictions <postfix-smtp-recipient-restrictions_>`_). "
+"The sequential number is used to sort multiple rules alphanumerically, "
+"which can be used to influences the ordering."
+msgstr ""
+
+#: ../../mail/dnsbl.rst:33
+msgid ""
+"Existing ``smtpd_recipient_restrictions`` regulations can be listed as "
+"follows:"
+msgstr ""
+
+#: ../../mail/dnsbl.rst:36
+msgid "$ ucr search --brief mail/postfix/smtpd/restrictions/recipient"
+msgstr ""
+
+#: ../../mail/dnsbl.rst:40
+msgid ""
+"In an unmodified |UCSUCS| Postfix installation, the DNSBL should be added"
+" to the end of the ``smtpd_recipient_restrictions`` rules. For example:"
+msgstr ""
+
+#: ../../mail/dnsbl.rst:44
+msgid ""
+"$ ucr set "
+"mail/postfix/smtpd/restrictions/recipient/80=\"reject_rbl_client "
+"ix.dnsbl.manitu.net\""
+msgstr ""
+
+#: ../../mail/fetchmail.rst:4
+msgid "Integration of Fetchmail for retrieving mail from external mailboxes"
+msgstr ""
+
+#: ../../mail/fetchmail.rst:6
+msgid ""
+"Usually, the UCS mail service accepts mails for the users of the UCS "
+"domain directly via SMTP. UCS also offers optional integration of the "
+"software *Fetchmail* for fetching emails from external POP3 or IMAP "
+"mailboxes."
+msgstr ""
+
+#: ../../mail/fetchmail.rst:10
+msgid ""
+"Fetchmail can be installed via the Univention App Center; simply select "
+"the :program:`Fetchmail` application and then click on "
+":guilabel:`Install`."
+msgstr ""
+
+#: ../../mail/fetchmail.rst:13
+msgid ""
+"Once the installation is finished, there are additional input fields in "
+"the :menuselection:`Advanced settings --> Remote mail retrieval` tab of "
+"the user administration which can be used to configure the collection of "
+"mails from an external server. The mails are delivered to the inboxes of "
+"the respective users. The primary email address must be configured for "
+"that."
+msgstr ""
+
+#: ../../mail/fetchmail.rst:19
+msgid ""
+"The mail is fetched every twenty minutes once at least one email address "
+"is configured for mail retrieval. After the initial configuration of a "
+"user Fetchmail needs to be started in the UMC module :guilabel:`System "
+"services`. In that module the fetching can also be disabled "
+"(alternatively by setting the |UCSUCRV| :envvar:`fetchmail/autostart` to "
+"``false``)."
+msgstr ""
+
+#: ../../mail/fetchmail.rst:25
+msgid "*Remote mail retrieval* tab"
+msgstr ""
+
+#: ../../mail/fetchmail.rst:29 ../../mail/management.rst:192
+#: ../../mail/management.rst:233
+msgid "Attribute"
+msgstr ""
+
+#: ../../mail/fetchmail.rst:30 ../../mail/management.rst:193
+#: ../../mail/management.rst:234
+msgid "Description"
+msgstr ""
+
+#: ../../mail/fetchmail.rst:32
+msgid "Username"
+msgstr ""
+
+#: ../../mail/fetchmail.rst:33
+msgid "The username to be provided to the mail server for fetching mail."
+msgstr ""
+
+#: ../../mail/fetchmail.rst:35
+msgid "Password"
+msgstr ""
+
+#: ../../mail/fetchmail.rst:36
+msgid "The password to be used for fetching mail."
+msgstr ""
+
+#: ../../mail/fetchmail.rst:38
+msgid "Protocol"
+msgstr ""
+
+#: ../../mail/fetchmail.rst:39
+msgid "The mail can be fetched via the IMAP or POP3 protocols."
+msgstr ""
+
+#: ../../mail/fetchmail.rst:41
+msgid "Remote mail server"
+msgstr ""
+
+#: ../../mail/fetchmail.rst:42
+msgid "The name of the mail server from which the emails are to be fetched."
+msgstr ""
+
+#: ../../mail/fetchmail.rst:44
+msgid "Encrypt connection (SSL/TLS)"
+msgstr ""
+
+#: ../../mail/fetchmail.rst:45
+msgid ""
+"If this option is enabled, the mail is fetched in an encrypted form (when"
+" this is supported by the mail server)."
+msgstr ""
+
+#: ../../mail/fetchmail.rst:48
+msgid "Keep mails on the server"
+msgstr ""
+
+#: ../../mail/fetchmail.rst:49
+msgid ""
+"By default the fetched mails are deleted from the server following the "
+"transfer. If this option is enabled, it can be suppressed."
+msgstr ""
+
+#: ../../mail/index.rst:56
+msgid "Chapter contents"
+msgstr ""
+
+#: ../../mail/index.rst:5
+msgid "Mail services"
+msgstr ""
+
+#: ../../mail/index.rst:7
+msgid ""
+"|UCSUCS| provides mail services that users can access via standard mail "
+"clients such as Thunderbird."
+msgstr ""
+
+#: ../../mail/index.rst:10
+msgid ""
+"Postfix is used for sending and receiving mails. In the basic "
+"installation, a configuration equipped for local mail delivery is set up "
+"on every UCS system. In this configuration, Postfix only accepts mails "
+"from the local server and they can also only be delivered to local system"
+" users."
+msgstr ""
+
+#: ../../mail/index.rst:15
+msgid ""
+"The installation of the mail server component implements a complete mail "
+"transport via SMTP (see :ref:`mail-installation`). Postfix is "
+"reconfigured during the installation of the component so that a validity "
+"test in the form of a search in the LDAP directory is performed for "
+"incoming emails. That means that emails are only accepted for email "
+"addresses defined in the LDAP directory or via an alias."
+msgstr ""
+
+#: ../../mail/index.rst:22
+msgid ""
+"The IMAP service Dovecot is also installed on the system along with the "
+"mail server component. It provides email accounts for the domain users "
+"and offers corresponding interfaces for access via email clients. Dovecot"
+" is preconfigured for the fetching of emails via ``IMAP`` and ``POP3``. "
+"Access via POP3 can be deactivated by setting the |UCSUCRV| "
+":envvar:`mail/dovecot/pop3` to ``no``. The same applies to IMAP and the "
+"|UCSUCRV| :envvar:`mail/dovecot/imap`. The further configuration of the "
+"mail server is performed via |UCSUCR|, as well, see :ref:`mail-"
+"serverconfig-general`."
+msgstr ""
+
+#: ../../mail/index.rst:31
+msgid ""
+"The management of the user data of the mail server (e.g., email addresses"
+" or mailing list) is performed via UMC modules and is documented in :ref"
+":`mail-management-general`. User data are stored in LDAP. The "
+"authentication is performed using a user's primary email address, i.e., "
+"it must be entered as the username in mail clients. As soon as a primary "
+"email address is assigned to a user in the LDAP directory, a listener "
+"module creates an IMAP mailbox on the mail home server. By specifying the"
+" mail home server, user email accounts can be distributed over several "
+"mail servers, as well, see :ref:`mail-homeserver`."
+msgstr ""
+
+#: ../../mail/index.rst:41
+msgid ""
+"Optionally, emails received via Postfix can be checked for spam content "
+"and viruses before further processing by Dovecot. Spam emails are "
+"detected by the classification software SpamAssassin (:ref:`mail-spam`); "
+"ClamAV is used for the detection of viruses and other malware (:ref"
+":`mail-virus`)."
+msgstr ""
+
+#: ../../mail/index.rst:46
+msgid ""
+"By default emails to external domains are delivered directly to the "
+"responsible SMTP server of that domain. Its location is performed via the"
+" resolution of the MX record in the DNS. Mail sending can also be taken "
+"over by the relay host, e.g., on the internet provider (see :ref:`mail-"
+"serverconfig-relay`)."
+msgstr ""
+
+#: ../../mail/index.rst:51
+msgid ""
+"The UCS mail system does not offer any groupware functionality such as "
+"shared calendars or invitations to appointments. However, there are "
+"groupware systems based on UCS which integrate in the UCS management "
+"system such as Kopano and Open-Xchange. Further information can be found "
+"in the :ref:`software-appcenter`."
+msgstr ""
+
+#: ../../mail/install.rst:4
+msgid "Installation"
+msgstr ""
+
+#: ../../mail/install.rst:6
+msgid ""
+"A mail server can be installed from the Univention App Center with the "
+"application :program:`Mail server`. Alternatively, the software package "
+":program:`univention-mail-server` can be installed. Additional "
+"information can be found in :ref:`computers-softwaremanagement-install-"
+"software`. A mail server can be installed on all server system roles. The"
+" use of a UCS Directory Node is recommended because of frequent LDAP "
+"accesses."
+msgstr ""
+
+#: ../../mail/install.rst:13
+msgid ""
+"The runtime data of the Dovecot server are stored in the "
+":file:`/var/spool/dovecot/` directory. If this directory is on a NFS "
+"share, please read :ref:`mail-serverconfig-nfs`."
+msgstr ""
+
+#: ../../mail/management.rst:4
+msgid "Management of the mail server data"
+msgstr ""
+
+#: ../../mail/management.rst:9
+msgid "Management of mail domains"
+msgstr ""
+
+#: ../../mail/management.rst:11
+msgid ""
+"A mail domain is an common namespace for email addresses, mailing lists "
+"and IMAP group folders. Postfix differentiates between the delivery of "
+"emails between local and external domains. Delivery to mailboxes defined "
+"in the LDAP directory is only conducted for email address from local "
+"domains. The name of a mail domain may only be composed of lowercase "
+"letters, the figures 0-9, full stops and hyphens."
+msgstr ""
+
+#: ../../mail/management.rst:18
+msgid ""
+"Several mail domains can be managed with UCS. The managed mail domains do"
+" not need to be the DNS domains of the server - they can be selected at "
+"will. The mail domains registered on a mail server are automatically "
+"saved in the |UCSUCRV| :envvar:`mail/hosteddomains`."
+msgstr ""
+
+#: ../../mail/management.rst:23
+msgid ""
+"To ensure that external senders can also send emails to members of the "
+"domain, MX records must be created in the configuration of the "
+"authoritative name servers, which designate the UCS server as mail server"
+" for the domain. These DNS adjustments are generally performed by an "
+"internet provider."
+msgstr ""
+
+#: ../../mail/management.rst:28
+msgid ""
+"Mail domains are managed in the UMC module :guilabel:`Mail` with the "
+"*Mail domain* object type."
+msgstr ""
+
+#: ../../mail/management.rst:34
+msgid "Assignment of email addresses to users"
+msgstr ""
+
+#: ../../mail/management.rst:36
+msgid "A user can be assigned three different types of email addresses:"
+msgstr ""
+
+#: ../../mail/management.rst:45
+msgid "Primary email address"
+msgstr ""
+
+#: ../../mail/management.rst:39
+msgid ""
+"The *primary email address* is used for authentication on Postfix and "
+"Dovecot. Primary email addresses must always be unique. Only one primary "
+"email address can be configured for every user. It also defines the "
+"user's IMAP mailbox. If a mail home server is assigned to a user (see "
+":ref:`mail-homeserver`), the IMAP inbox is automatically created by a "
+"|UCSUDL| module. The domain part of the email address must be registered "
+"in the UMC module :guilabel:`Mail` (see :ref:`mail-management-domains`)."
+msgstr ""
+
+#: ../../mail/management.rst:54
+msgid "Alternative email addresses"
+msgstr ""
+
+#: ../../mail/management.rst:48
+msgid ""
+"Emails to *alternative email addresses* are also delivered to the user's "
+"mailbox. As many addresses can be entered as you wish. The alternative "
+"email addresses do not have to be unique: if two users have the same "
+"email address, they both receive all the emails which are sent to this "
+"address. The domain part of the email address must be registered in the "
+"UMC module :guilabel:`Mail` (see :ref:`mail-management-domains`). To "
+"receive emails to alternative email addresses, a user must have a primary"
+" email address."
+msgstr ""
+
+#: ../../mail/management.rst:61
+msgid "Forward email addresses"
+msgstr ""
+
+#: ../../mail/management.rst:57
+msgid ""
+"If *forward email addresses* are configured for a user, emails received "
+"through the primary or alternative email addresses are forwarded to them."
+" A copy of the messages can optionally be stored in the user's mailbox. "
+"Forward email addresses do not have to be unique and their domain part "
+"does not have to be registered via a UMC module."
+msgstr ""
+
+#: ../../mail/management.rst:65
+msgid ""
+"Email addresses can consist of the following characters: letters ``a-z``,"
+" figures ``0-9``, dots (``.``), hyphens (``-``) and underscores (``_``). "
+"The address has to begin with a letter and must include an ``@`` "
+"character. At least one mail domain must be registered for to be able to "
+"assign email addresses (see :ref:`mail-management-domains`)."
+msgstr ""
+
+#: ../../mail/management.rst:71
+msgid ""
+"Email addresses are managed in the UMC module :guilabel:`Users`. The "
+"*primary email address* is entered in the *General* tab in the *User "
+"account* submenu. *Alternative email addresses* can be entered under "
+":menuselection:`Advanced settings --> Mail`."
+msgstr ""
+
+#: ../../mail/management.rst:78
+msgid ""
+"Once the user account is properly configured, authentication to the mail "
+"stack is possible (``IMAP``/``POP3``/``SMTP``). Please keep in mind that "
+"after disabling the account or changing the password, the login to the "
+"mail stack is still possible for 5 minutes due to the authentication "
+"cache of the mail stack. To invalidate the authentication cache run"
+msgstr ""
+
+#: ../../mail/management.rst:84
+msgid "$ doveadm auth cache flush"
+msgstr ""
+
+#: ../../mail/management.rst:89
+msgid ""
+"on the mail server. The expiration time of the authentication cache can "
+"be configured on the mail server with the |UCSUCRV| "
+":envvar:`mail/dovecot/auth/cache_ttl` and "
+":envvar:`mail/dovecot/auth/cache_negative_ttl`."
+msgstr ""
+
+#: ../../mail/management.rst:97
+msgid "Management of mailing lists"
+msgstr ""
+
+#: ../../mail/management.rst:99
+msgid ""
+"Mailing lists are used to exchange emails in closed groups. Each mailing "
+"list has its own email address. If an email is sent to this address, it "
+"is received by all the members of the mailing list."
+msgstr ""
+
+#: ../../mail/management.rst:108
+msgid "Creating a mailing list"
+msgstr ""
+
+#: ../../mail/management.rst:110
+msgid ""
+"Mail domains are managed in the UMC module :guilabel:`Mail` with the "
+"*Mailing list* object type. A name of your choice can be entered for the "
+"mailing list under *Name*; the entry of a *Description* is optional. The "
+"email address of the mailing list should be entered as the *Mail "
+"address*. The domain part of the address needs to be the same as one of "
+"the managed mail domains. As many addresses as necessary can be entered "
+"under *Members*. In contrast to mail groups (see :ref:`mail-management-"
+"mailgroups`), external email addresses can also be added here. The "
+"mailing list is available immediately after its creation."
+msgstr ""
+
+#: ../../mail/management.rst:120
+msgid ""
+"By default everyone can write to the mailing list. To prevent misuse, "
+"there is the possibility of restricting the circle of people who can send"
+" mails. To do so, the |UCSUCRV| :envvar:`mail/postfix/policy/listfilter` "
+"on the mail server must be set to ``yes`` and Postfix restarted. *Users "
+"that are allowed to send emails to the list* and *Groups that are allowed"
+" to send emails to the list* can be specified under *Advanced settings*. "
+"If a field is set here, only authorized users/groups are allowed to send "
+"mails."
+msgstr ""
+
+#: ../../mail/management.rst:131
+msgid "Management of mail groups"
+msgstr ""
+
+#: ../../mail/management.rst:133
+msgid ""
+"There is the possibility of creating a mail group: This is where an email"
+" address is assigned to a group of users. Emails to this address are "
+"delivered to the primary email address of each of the group members."
+msgstr ""
+
+#: ../../mail/management.rst:137
+msgid ""
+"Mail groups are managed in the UMC module :guilabel:`Groups` (see "
+":ref:`groups`)."
+msgstr ""
+
+#: ../../mail/management.rst:140
+msgid ""
+"The email address of the mail group is specified in the *mail address* "
+"input field under *Advanced settings*. The domain part of the address "
+"must be the same as one of the managed mail domains."
+msgstr ""
+
+#: ../../mail/management.rst:144
+msgid ""
+"By default everyone can write to the mail group. To prevent misuse, there"
+" is the possibility of restricting the circle of people who can send "
+"mails. To do so, the |UCSUCRV| :envvar:`mail/postfix/policy/listfilter` "
+"on the mail server must be set to ``yes`` and Postfix restarted."
+msgstr ""
+
+#: ../../mail/management.rst:149
+msgid ""
+"*Users that are allowed to send emails to the group* and *Groups that are"
+" allowed to send emails to the group* can be specified under *Advanced "
+"settings*. If a field is set here, only authorized users/groups are "
+"allowed to send mails."
+msgstr ""
+
+#: ../../mail/management.rst:157
+msgid "Management of shared IMAP folders"
+msgstr ""
+
+#: ../../mail/management.rst:159
+msgid ""
+"Shared email access forms the basis for cooperation in many work groups. "
+"In UCS, users can create folders in their own mailboxes and assign "
+"permissions so that other users may read emails in these folders or save "
+"additional emails in them."
+msgstr ""
+
+#: ../../mail/management.rst:164
+msgid ""
+"Alternatively, individual IMAP folders can be shared for users or user "
+"groups. This type of folder is described as a shared IMAP folder. Shared "
+"IMAP folders are managed in the UMC module :guilabel:`Mail` with the "
+"*Mail folder (IMAP)* object type."
+msgstr ""
+
+#: ../../mail/management.rst:169
+msgid ""
+"Shared folders cannot be renamed, therefore the |UCSUCRV| "
+":envvar:`mail/dovecot/mailbox/rename` is not taken into account. When a "
+"shared folder is deleted in the UMC module :guilabel:`Mail`, it is only "
+"deleted from the hard disk, if :envvar:`mail/dovecot/mailbox/delete` is "
+"set to ``yes``. The default value is ``no``."
+msgstr ""
+
+#: ../../mail/management.rst:180
+msgid "Creating a shared IMAP folder"
+msgstr ""
+
+#: ../../mail/management.rst:185
+msgid "Shared IMAP folder - General tab"
+msgstr ""
+
+#: ../../mail/management.rst:188
+msgid "*General* tab"
+msgstr ""
+
+#: ../../mail/management.rst:195 ../../mail/management.rst:236
+msgid "Name (*)"
+msgstr ""
+
+#: ../../mail/management.rst:196
+msgid ""
+"The name under which the IMAP folder is available in the email clients. "
+"The name displayed in the IMAP client differs depending on if an email "
+"address is configured (see field *Email address*) or not. If no email "
+"address is configured, the IMAP folder will be displayed in the client as"
+" ``name@domain/INBOX``. If an email address is configured, it will be "
+"``shared/name@domain``."
+msgstr ""
+
+#: ../../mail/management.rst:203
+msgid "Mail domain (*)"
+msgstr ""
+
+#: ../../mail/management.rst:204
+msgid ""
+"Every shared IMAP folder is assigned to a mail domain. The management of "
+"the domains is documented in the :ref:`mail-management-domains`."
+msgstr ""
+
+#: ../../mail/management.rst:207
+msgid "Mail home server (*)"
+msgstr ""
+
+#: ../../mail/management.rst:208
+msgid ""
+"An IMAP folder is assigned to a mail home server. Further information can"
+" be found in :ref:`mail-homeserver`."
+msgstr ""
+
+#: ../../mail/management.rst:211
+msgid "Quota in MB"
+msgstr ""
+
+#: ../../mail/management.rst:212
+msgid ""
+"This setting can be used to set the maximum total size of all emails in "
+"this folder."
+msgstr ""
+
+#: ../../mail/management.rst:215
+msgid "Email address"
+msgstr ""
+
+#: ../../mail/management.rst:216
+msgid ""
+"An email address can be entered here via which emails can be sent "
+"directly to the IMAP folder. If no address is set here, it is only "
+"possible to write in the folder from email clients."
+msgstr ""
+
+#: ../../mail/management.rst:220
+msgid ""
+"The domain part of the email address must be registered in the UMC module"
+" :guilabel:`Mail` (see :ref:`mail-management-domains`)."
+msgstr ""
+
+#: ../../mail/management.rst:226
+msgid "Shared IMAP folder - Access rights tab"
+msgstr ""
+
+#: ../../mail/management.rst:229
+msgid "*Access rights* tab"
+msgstr ""
+
+#: ../../mail/management.rst:237
+msgid ""
+"Access permissions based on users or groups can be entered here. Users "
+"are entered with their username; the groups saved in the UMC module "
+":guilabel:`Groups` can be used as groups."
+msgstr ""
+
+#: ../../mail/management.rst:241
+msgid ""
+"The access permissions have the following consequences for individual "
+"users or members of the specified group:"
+msgstr ""
+
+#: ../../mail/management.rst:245
+msgid "No access"
+msgstr ""
+
+#: ../../mail/management.rst:245
+msgid "No access is possible. The folder is not displayed in the folder list."
+msgstr ""
+
+#: ../../mail/management.rst:248
+msgid "Read"
+msgstr ""
+
+#: ../../mail/management.rst:248
+msgid "The user may only perform read access to existing entries."
+msgstr ""
+
+#: ../../mail/management.rst:251
+msgid "Append"
+msgstr ""
+
+#: ../../mail/management.rst:251
+msgid "Existing entries may not be edited; only new entries may be created."
+msgstr ""
+
+#: ../../mail/management.rst:255
+msgid "Write"
+msgstr ""
+
+#: ../../mail/management.rst:254
+msgid ""
+"New entries may be created in this directory; existing entries may be "
+"edited or deleted."
+msgstr ""
+
+#: ../../mail/management.rst:259
+msgid "Post"
+msgstr ""
+
+#: ../../mail/management.rst:258
+msgid ""
+"Sending an email to this directory as a recipient is permitted. This "
+"function is not supported by all the clients."
+msgstr ""
+
+#: ../../mail/management.rst:262
+msgid "All"
+msgstr ""
+
+#: ../../mail/management.rst:262
+msgid ""
+"Encompasses all permissions of *write* and also allows the changing of "
+"access permissions."
+msgstr ""
+
+#: ../../mail/management.rst:268
+msgid "Mail quota"
+msgstr ""
+
+#: ../../mail/management.rst:270
+msgid ""
+"The size of the users' mailboxes can be restricted via the mail quota. "
+"When this is attained, no further emails can be accepted for the mailbox "
+"by the mail server until the user deletes old mails from their account."
+msgstr ""
+
+#: ../../mail/management.rst:274
+msgid ""
+"The limit is specified in megabytes in the *Mail quota* field under "
+":menuselection:`Advanced settings --> Mail`. The default value is ``0`` "
+"and means that no limit is set. The multi edit mode of UMC modules can be"
+" used to assign a quota to multiple users at one time, see :ref:`central-"
+"user-interface-edit`."
+msgstr ""
+
+#: ../../mail/management.rst:280
+msgid ""
+"The user can be warned once a specified portion of the mailbox is "
+"attained and then receives a message that their available storage space "
+"is almost full. The administrator can enter the threshold in percent and "
+"the messages subject and text:"
+msgstr ""
+
+#: ../../mail/management.rst:285
+msgid ""
+"The threshold for when the warning message should be issued can be "
+"configured in the |UCSUCRV| :envvar:`mail/dovecot/quota/warning/text`, "
+"for example :samp:`mail/dovecot/quota/warning/text/{PERCENT}={TEXT}`"
+msgstr ""
+
+#: ../../mail/management.rst:289
+msgid "``PERCENT`` must be a number between 0 and 100 without the percent sign."
+msgstr ""
+
+#: ../../mail/management.rst:291
+msgid ""
+"``TEXT`` will be the content of the email. If the value ``TEXT`` contains"
+" the string ``$PERCENT``, it will be replaced in the email with the value"
+" of the limit that has been exceeded."
+msgstr ""
+
+#: ../../mail/management.rst:295
+msgid ""
+"The value of the |UCSUCRV| :envvar:`mail/dovecot/quota/warning/subject` "
+"will be used for the subject of the email."
+msgstr ""
+
+#: ../../mail/management.rst:298
+msgid ""
+"When the mail server package is installed, a subject and two warning "
+"messages are automatically configured:"
+msgstr ""
+
+#: ../../mail/management.rst:301
+msgid "``mail/dovecot/quota/warning/subject`` is set to ``Quota-Warning``"
+msgstr ""
+
+#: ../../mail/management.rst:303
+msgid ""
+"``mail/dovecot/quota/warning/text/80`` is set to ``Your mailbox has "
+"filled up to over $PERCENT%.``"
+msgstr ""
+
+#: ../../mail/management.rst:306
+msgid ""
+"``mail/dovecot/quota/warning/text/95`` is set to ``Attention: Your "
+"mailbox has already filled up to over $PERCENT%. Please delete some "
+"messages or contact the administrator.``"
+msgstr ""
+
+#: ../../mail/ox-connector.rst:4
+msgid "OX Connector"
+msgstr ""
+
+#: ../../mail/ox-connector.rst:6
+msgid ""
+":program:`OX Connector` is an app in Univention App Center. It "
+"synchronizes selected users and groups to a remote OX App Suite "
+"installation like for example a hosted OX App Suite. The app should not "
+"be used with the separate OX App Suite app from the App Center, because "
+"it has synchronization already included."
+msgstr ""
+
+#: ../../mail/spam.rst:4
+msgid "Spam detection and filtering"
+msgstr ""
+
+#: ../../mail/spam.rst:6
+msgid ""
+"Undesirable and unsolicited emails are designated as spam. The software "
+"SpamAssassin and Postgrey are integrated in UCS for the automatic "
+"identification of these emails. SpamAssassin attempts to identify whether"
+" an email is desirable or not based on heuristics concerning its origin, "
+"form and content. Postgrey is a policy server for Postfix, which "
+"implements gray listing. Grey listing is a spam detection method which "
+"denies the first delivery attempt of external mail servers. Mail servers "
+"of spam senders most often do not perform a second delivery attempt, "
+"while legitimate servers do so. Integration occurs via the packages "
+":program:`univention-spamassassin` and :program:`univention-postgrey`, "
+"which are automatically set up during the installation of the mail server"
+" package."
+msgstr ""
+
+#: ../../mail/spam.rst:18
+msgid ""
+"SpamAssassin operates a point system, which uses an increasing number of "
+"points to express a high probability of the email being spam. Points are "
+"awarded according to different criteria, for example, keywords within the"
+" email or incorrect encodings. In the standard configuration only mails "
+"with a size of up to 300 kilobytes are scanned, this can be adjusted "
+"using the |UCSUCRV| :envvar:`mail/antispam/bodysizelimit`."
+msgstr ""
+
+#: ../../mail/spam.rst:25
+msgid ""
+"E-mails which are classified as spam - because they exceed a certain "
+"number of points - are not delivered to the recipient's inbox by Dovecot,"
+" but rather in the *Spam* folder below it. The name of the folder for "
+"spam can be configured with the |UCSUCRV| "
+":envvar:`mail/dovecot/folder/Spam`. The filtering is performed by a Sieve"
+" script, which is automatically generated when the user is created."
+msgstr ""
+
+#: ../../mail/spam.rst:32
+msgid ""
+"The threshold in these scripts as of which emails are declared to be spam"
+" can be configured with the |UCSUCRV| "
+":envvar:`mail/antispam/requiredhits`. The presetting (``5``) generally "
+"does not need to be adjusted. However, depending on experience in the "
+"local environment, this value can also be set lower. This will, however, "
+"result in more emails being incorrectly designated as spam. Changes to "
+"the threshold do not apply to existing users."
+msgstr ""
+
+#: ../../mail/spam.rst:39
+msgid ""
+"There is also the possibility of evaluating emails with a Bayes "
+"classifier. This compares an incoming email with statistical data already"
+" gathered from processed emails and uses this to adapt it's evaluation to"
+" the user's email. The Bayes classification is controlled by the user "
+"himself, whereby emails not identified as spam by the system can be "
+"placed in the *Spam* subfolder by the user and a selection of legitimate "
+"emails copied into the *Ham* (:envvar:`mail/dovecot/folder/ham`) "
+"subfolder. This folder is evaluated daily and data which have not yet "
+"been collected or were previously classified incorrectly are collected in"
+" a shared database. This evaluation is activated by default and can be "
+"configured with the |UCSUCRV| :envvar:`mail/antispam/learndaily`."
+msgstr ""
+
+#: ../../mail/spam.rst:51
+msgid ""
+"The spam filtering can be deactivated by setting the |UCSUCRV| "
+":envvar:`mail/antivir/spam` to ``no``. When modifying Univention "
+"Configuration Registry variables concerning spam detection, the AMaViS "
+"service and Postfix must be restarted subsequently."
+msgstr ""
+
+#: ../../mail/virus.rst:4
+msgid "Identification of viruses and malware"
+msgstr ""
+
+#: ../../mail/virus.rst:6
+msgid ""
+"The UCS mail services include virus and malware detection via the "
+":program:`univention-antivir-mail` package, which is automatically set up"
+" during the setup of the mail server package. The virus scan can be "
+"deactivated with the |UCSUCRV| :envvar:`mail/antivir`."
+msgstr ""
+
+#: ../../mail/virus.rst:11
+msgid ""
+"All incoming and outgoing emails are scanned for viruses. If the scanner "
+"recognizes a virus, the email is sent to quarantine. That means that the "
+"email is stored on the server where it is not accessible to the user. The"
+" original recipient receives a message per email stating that this "
+"measure has been taken. If necessary, the administrator can restore or "
+"delete this from the :file:`/var/lib/amavis/virusmails/` directory. "
+"Automatic deletion is not performed."
+msgstr ""
+
+#: ../../mail/virus.rst:19
+msgid ""
+"The :program:`AMaViSd-new` software serves as an interface between the "
+"mail server and different virus scanners. The free virus scanner ClamAV "
+"is included in the package and enters operation immediately after "
+"installation. The signatures required for virus identification are "
+"procured and updated automatically and free of charge by the Freshclam "
+"service."
+msgstr ""
+
+#: ../../mail/virus.rst:25
+msgid ""
+"Alternatively or in addition, other virus scanners can also be integrated"
+" in AMaViS. Postfix and AMaViS need to be restarted following changes to "
+"the AMaViS or ClamAV configuration."
+msgstr ""
+
