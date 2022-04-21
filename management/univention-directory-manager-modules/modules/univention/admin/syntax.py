@@ -446,6 +446,9 @@ class select(ISyntax):
 	widget = 'ComboBox'
 	widget_default_search_pattern = []
 
+	depends = None  # type: Optional[str]
+	"""The name of another |UDM| property this syntax depends on."""
+
 	@classmethod
 	def parse(self, text):
 		# type: (Any) -> Optional[str]
