@@ -233,7 +233,7 @@ define([
 						content: removeExplanation,
 						'class': 'umcAppChooseHostWizard__removeExplanation'
 					});
-					page.layout.push(`removeExplanation_${app.id}`);
+					page.layout.push(`chooseHosts_removeExplanation_${app.id}`);
 				}
 
 				this._chooseHostsNeedsToBeShown = this._chooseHostsNeedsToBeShown 

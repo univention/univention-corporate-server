@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-appcenter
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The reason why servers are excluded from the app-installation
+   drop-down menu is displayed again. This was broken since UCS 5.0.
+bug: [54460]

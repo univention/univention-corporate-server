@@ -1,3 +1,10 @@
+univention-appcenter (9.0.2-76) unstable; urgency=medium
+
+  * Bug #54460: show the reason why servers may be excluded from the
+    app-installation drop down menu
+
+ -- Johannes Lohmer <lohmer@univention.de>  Thu, 21 Apr 2022 17:21:19 +0200
+
 univention-appcenter (9.0.2-75) unstable; urgency=medium
 
   * Bug #54669: Use app configuration to determine if app uses docker compose
