@@ -403,6 +403,25 @@ class ConfigRegistryInfo(object):
 		"""
 		self.variables[key] = variable
 
+	def match_pattern(self, key):
+		# type: (str) -> Optional[Variable]
+		"""
+		Searches the variable info, whichs regex pattern patches the given key.
+
+		:param key: search key which should be matched by the regex pattern
+		:returns: corresponding variable info block
+		"""
+		for pattern, data in sorted(self._patterns.items(), key=ConfigRegistryInfo._pattern_sorter, reverse=True):
+			regex = re.compile(pattern)
+			if not regex.match(key):
+				continue
+			var = Variable()
+			for name, value in data:
+				var[name] = value
+			return var
+
+		return None
+
 
 def set_language(lang):
 	# type: (str) -> None

@@ -162,9 +162,15 @@ Setting UCR variables
 If the variable already exists, the content is updated; otherwise, a new entry
 is created.
 
-The syntax is not checked when a |UCSUCR| variable is set. The change to a
-variable results in all configuration files for which the variable is registered
-being rewritten immediately. The files in question are output on the console.
+When setting a new value for a |UCSUCR| variable UCR runs checks to verify
+the compatibility of the value with the variable type. In case
+of incompatibility UCR displays a warning message. Moreover, the variable is not
+set to the new value if the |UCSUCR| variable :envvar:`ucr/check/type` is ``true``
+(default is ``false``). If the ``--ignore-check`` option is used, the value is always
+set independent of type compatibility and setting of :envvar:`ucr/check/type`.
+
+When a variable changes, UCR rewrites all configuration files immediately for which the
+variable is registered. UCR outputs the paths of the updated files to the console.
 
 In doing so it must be noted that although the configuration of a service is
 updated, the service in question is not restarted automatically! The restart

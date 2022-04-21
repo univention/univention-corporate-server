@@ -2153,3 +2153,6 @@ msgstr ""
 "Wert kann während einer AD-Übernahme geändert werden. Für weitere "
 "Informationen, siehe :ref:`windows-ad-takeover-migrate`."
 
+msgid "If this option is ``yes``, the correctness of type definitions and the type compatibility of values are always checked in |UCSUCR|. The setting of the value is aborted for unsuccessful checks. Default is ``no``. For more information, see :ref:`computers-setting-ucr-variables`."
+msgstr "Ist diese Option ``Ja``, wird die Korrektheit von Typ-Definitionen und die Typ-Kompatibilität von Werten immer in |UCSUCR| überprüft. Bei erfolgloser Prüfung wird das Setzen des Wertes abgebrochen. Voreinstellung ist ``Nein``. Für weitere Informationen, siehe :ref:`computers-setting-ucr-variables`."
+

@@ -349,6 +349,11 @@ For each variable a section of the following structure is defined:
    Description[en]=<description>
    Description[<language>]=<description>
    Type=<type>
+   Elementtype=<type of all list elements>
+   Separator=<regular expression for separating list elements>
+   Min=<type constraint range minimum>
+   Max=<type constraint range maximum>
+   Regex=<type constraint regular expression>
    Default=<default value>
    ReadOnly=<yes|no>
    Categories=<category,...>
@@ -367,9 +372,40 @@ For each variable a section of the following structure is defined:
    two-letter-code following :cite:t:`ISO639`.
 
 ``Type`` (required)
-   The syntax type for the value. This is unused in UCS-3.1, but future versions
-   might use this for validating the input. Valid values include ``str`` for
-   strings, ``bool`` for boolean values, and ``int`` for integers.
+   The syntax type for the value. This is used since UCS 5.0-2 for validating
+   the input. Valid values include:
+
+   - ``str`` for strings
+   - ``json`` for JSON strings
+   - ``ipv4address`` for IPv4 addresses
+   - ``ipv6address`` for IPv6 addresses
+   - ``ipaddress`` for IPv6 addresses
+   - ``url_proxy`` for HTTP/HTTP proxy URLs
+   - ``bool`` for boolean values
+   - ``int`` for integers (-∞…∞)
+   - ``uint`` for unsigned integers (0…∞)
+   - ``pint`` for positive integers (1…∞)
+   - ``portnumber`` for TCP/UDP port numbers 0-65535
+   - ``list`` for lists of items separated by some character
+
+``Elementtype`` (required for Type=list)
+   Specifies the type for all elements of type ``list``.
+
+``Separator`` (optional)
+   For type ``list`` a regular expression used as the separator of the list
+   elements. Default separator is a comma.
+
+``Min`` (optional)
+   Optional constraint for variables of type ``int`` defining the smallest
+   possible value the variable can take.
+
+``Max`` (optional)
+   Optional constraint for variables of type ``int`` defining the largest
+   possible value the variable can take.
+
+``Regex`` (optional)
+   Optional constraint for variables of type ``str`` defining a valid regular
+   expression the value has to match.
 
 ``Default`` (optional)
    .. versionadded:: 5.0-0

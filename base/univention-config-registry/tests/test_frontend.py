@@ -49,13 +49,47 @@ def vinfo():
 
 
 @pytest.fixture
-def rinfo(mocker, vinfo):
+def vcinfo():
+	"""Fake variable info."""
+	return {
+		"description": "description",
+		"type": "int",
+		"categories": "category",
+		"default": "default",
+	}
+
+
+@pytest.fixture
+def vrinfo():
+	"""Fake variable info."""
+	return {
+		"description": "description",
+		"type": "int",
+		"min": 10,
+		"max": 1,
+		"categories": "category",
+		"default": "default",
+	}
+
+
+@pytest.fixture
+def rinfo(request, mocker, vinfo, vcinfo, vrinfo):
 	"""Fake registry info."""
 	info = mocker.patch("univention.config_registry.frontend._get_config_registry_info")
+	marker = request.node.get_closest_marker("vtype")
 	info.return_value.get_category.return_value = None
-	info.return_value.get_variable.return_value = vinfo
-	info.return_value.get_variables.return_value = {"key": vinfo}
-	info.return_value.describe_search_term.return_value = {}
+	if marker is None:
+		info.return_value.get_variable.return_value = vinfo
+		info.return_value.get_variables.return_value = {"key": vinfo}
+		info.return_value.describe_search_term.return_value = {}
+	elif marker.args[0] == 'int':
+		info.return_value.get_variable.return_value = vcinfo
+		info.return_value.get_variables.return_value = {"key": vcinfo}
+	elif marker.args[0] == "range":
+		info.return_value.get_variable.return_value = vrinfo
+		info.return_value.get_variables.return_value = {"key": vrinfo}
+	else:
+		assert False
 	return info
 
 
@@ -165,6 +199,44 @@ class TestHandler(object):
 	def test_handler_set(self, arg, changed, out, err, run, mocker, capsys):
 		ucrfe.handler_set([arg])
 
+		run.assert_called_once_with(mocker.ANY, changed, mocker.ANY)
+		assert capsys.readouterr() == (out, err)
+
+	@pytest.mark.parametrize("arg, ignore_check, ucr_check, changed, out, err", [
+		("bar=1", True, False, {"bar": ("NORMAL", "1")}, "Setting bar\n", ""),
+		("bar=text", True, False, {"bar": ("NORMAL", "text")}, "Setting bar\n", "W: Value 'text' incompatible with type 'int' of 'bar', but set anyway\n"),
+		("bar=1", False, False, {"bar": ("NORMAL", "1")}, "Setting bar\n", ""),
+		("bar=text", False, False, {"bar": ("NORMAL", "text")}, "Setting bar\n", "W: Value 'text' incompatible with type 'int' of 'bar', but set anyway\n"),
+		("bar=1", True, True, {"bar": ("NORMAL", "1")}, "Setting bar\n", ""),
+		("bar=text", True, True, {"bar": ("NORMAL", "text")}, "Setting bar\n", "W: Value 'text' incompatible with type 'int' of 'bar', but set anyway\n"),
+		("bar=1", False, True, {"bar": ("NORMAL", "1")}, "Setting bar\n", ""),
+		("bar=text", False, True, {}, "Setting bar\n", "E: Error validating value 'text' for type 'int' of 'bar'\n"),
+	])
+	@pytest.mark.vtype("int")
+	def test_handler_set_value_checking(self, arg, ignore_check, ucr_check, changed, out, err, rinfo, run, mocker, capsys):
+		opts = {}
+		if ignore_check:
+			opts = {"ignore-check": True}
+		mucr = mocker.patch("univention.config_registry.frontend.ConfigRegistry.is_false")
+		mucr.return_value = not ucr_check
+		ucrfe.handler_set([arg], opts)
+		run.assert_called_once_with(mocker.ANY, changed, mocker.ANY)
+		assert capsys.readouterr() == (out, err)
+
+	@pytest.mark.parametrize("arg, ignore_check, ucr_check, changed, out, err", [
+		("bar=1", True, False, {"bar": ("NORMAL", "1")}, "Setting bar\n", "W: Invalid UCR type definition for type 'int' of 'bar', but set anyway\n"),
+		("bar=1", False, False, {"bar": ("NORMAL", "1")}, "Setting bar\n", "W: Invalid UCR type definition for type 'int' of 'bar', but set anyway\n"),
+		("bar=1", True, True, {"bar": ("NORMAL", "1")}, "Setting bar\n", "W: Invalid UCR type definition for type 'int' of 'bar', but set anyway\n"),
+		("bar=1", False, True, {}, "Setting bar\n", "E: Invalid UCR type definition for type 'int' of 'bar', value '1' not set\n"),
+	])
+	@pytest.mark.vtype("range")
+	def test_handler_set_type_checking(self, arg, ignore_check, ucr_check, changed, out, err, rinfo, run, mocker, capsys):
+		opts = {}
+		if ignore_check:
+			opts = {"ignore-check": True}
+		mucr = mocker.patch("univention.config_registry.frontend.ConfigRegistry.is_false")
+		mucr.return_value = not ucr_check
+		ucrfe.handler_set([arg], opts)
 		run.assert_called_once_with(mocker.ANY, changed, mocker.ANY)
 		assert capsys.readouterr() == (out, err)
 
@@ -480,6 +552,7 @@ class TestMain(object):
 		"set --forced KEY",
 		"set --ldap-policy KEY",
 		"set --schedule KEY",
+		"set --ignore-check KEY",
 		"unset KEY",
 		"unset --force KEY",
 		"unset --forced KEY",

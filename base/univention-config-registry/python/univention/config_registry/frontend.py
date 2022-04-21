@@ -49,6 +49,7 @@ from univention.config_registry.backend import exception_occured, SCOPE, ConfigR
 from univention.config_registry.handler import run_filter, ConfigHandlers
 from univention.config_registry.misc import validate_key, escape_value
 from univention.config_registry.filters import filter_shell, filter_keys_only, filter_sort
+from univention.config_registry.validation import Type
 if six.PY2:
 	from io import open
 try:
@@ -141,7 +142,12 @@ def handler_set(args, opts={}, quiet=False):
 	:param opts: Command line options.
 	:param quiet: Hide output.
 	"""
+	ucr = ConfigRegistry()
+	ucr.load()
+	ignore_check = opts.get('ignore-check') or ucr.is_false('ucr/check/type', True)
+
 	ucr = _ucr_from_opts(opts)
+	info = _get_config_registry_info()
 	with ucr:
 		changes = {}  # type: Dict[str, Optional[str]]
 		for arg in args:
@@ -167,6 +173,25 @@ def handler_set(args, opts={}, quiet=False):
 						print('Setting %s' % key)
 					else:
 						print('Create %s' % key)
+				vinfo = info.get_variable(key) or info.match_pattern(key)
+				if vinfo:  # Type checking can only be done if key is already configured
+					try:
+						validator = Type(vinfo)
+					except (TypeError, ValueError):
+						if ignore_check:
+							print('W: Invalid UCR type definition for type %r of %r, but set anyway' % (vinfo.get('type'), key), file=sys.stderr)
+						else:
+							print('E: Invalid UCR type definition for type %r of %r, value %r not set' % (vinfo.get('type'), key, value), file=sys.stderr)
+							opts['exit_code'] = 1
+							continue  # do not set value and continue with next element of for loop to be set
+					else:
+						if not validator.check(value):
+							if ignore_check:
+								print('W: Value %r incompatible with type %r of %r, but set anyway' % (value, vinfo.get('type'), key), file=sys.stderr)
+							else:
+								print('E: Error validating value %r for type %r of %r' % (value, vinfo.get('type'), key), file=sys.stderr)
+								opts['exit_code'] = 1
+								continue  # do not set value and continue with next element of for loop to be set
 				changes[key] = value
 			else:
 				if do_set_value:
@@ -575,9 +600,10 @@ Options:
     print only the keys
 
 Actions:
-  set [--force|--schedule|--ldap-policy] <key>=<value> [... <key>=<value>]:
+  set [--force|--schedule|--ldap-policy] [--ignore-check] <key>=<value> [... <key>=<value>]:
     set one or more keys to specified values; if a key is non-existent
     in the configuration registry it will be created
+    --ignore-check: ignore check if given value is compatible with type of the key
 
   get <key>:
     retrieve the value of the specified key from the configuration
@@ -699,6 +725,7 @@ OPT_COMMANDS = {
 		'force': [BOOL, False],
 		'ldap-policy': [BOOL, False],
 		'schedule': [BOOL, False],
+		'ignore-check': [BOOL, False],
 	},
 	'unset': {
 		'force': [BOOL, False],

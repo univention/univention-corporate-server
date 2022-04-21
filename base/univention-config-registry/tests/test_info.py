@@ -85,6 +85,7 @@ class TestConfigRegistryInfo(object):
 		setup0.variables.join("a.cfg").write("[a]\nDescription[de]=Description\nDescription[en]=description\nType=str\nDefault=default\nCategories=category\n\n")
 		setup0.variables.join("b.cfg").write("[b]\nDescription=description\nType=int\n\n")
 		setup0.variables.join("c.cfg").write("[key/.*]\nDescription=description\nType=str\nCategories=category\n\n")
+		setup0.variables.join("d.cfg").write("[key/.*/abc]\nDescription=description\nType=int\nCategories=category\n\n")
 		return setup0
 
 	@pytest.fixture
@@ -149,7 +150,7 @@ class TestConfigRegistryInfo(object):
 	@pytest.mark.parametrize("term,result", [
 		("other", []),
 		("key/a", ["key/.*"]),
-		("^key", ["key/.*"]),
+		("^key", ["key/.*", 'key/.*/abc']),
 	])
 	def test_describe_search_term(self, term, result, info):
 		assert sorted(info.describe_search_term(term)) == result
@@ -258,6 +259,21 @@ class TestConfigRegistryInfo(object):
 	def test_add_variable(self, info0, variable):
 		info0.add_variable("v", variable)
 		assert info0.get_variable("v") is variable
+
+	@pytest.mark.parametrize("key,result", [
+		("other", None),
+		("key/a", {"description": "description", "type": "str", "categories": "category"}),
+		("key/xyz/abc", {"description": "description", "type": "int", "categories": "category"}),
+	])
+	def test_match_pattern(self, key, result, info):
+		if result is None:
+			v = None
+		else:
+			v = variable()
+			v["description"] = result["description"]
+			v["type"] = result["type"]
+			v["categories"] = result["categories"]
+		assert info.match_pattern(key) == v
 
 
 def test_set_language():

@@ -844,6 +844,13 @@ Description[en]=If this option is activated, only UTF-8 encoded values and varia
 Type=bool
 Categories=system-base
 
+[ucr/check/type]
+Description[de]=Ist diese Option aktiviert, wird in Univention Configuration Registry grundsätzlich auf Korrektheit von Typen Definition und die Typ-Kompatibilität von zu setzenden Werten geprüft.
+Description[en]=If this option is activated, correctness of type definitions and type compatibility of values to be set are always checked in Univention Configuration Registry.
+Type=bool
+Default=no
+Categories=system-base
+
 [version/patchlevel]
 Description[de]=Vier Arten von UCS-Updates werden unterschieden: Major Releases (erscheinen ca. alle vier Jahre, können auch größere Veränderungen mit sich bringen), Minor Release (erscheinen ca. alle 6-8 Monate, Fehlerkorrekturen und neue Funktionen), Patchlevel Releases (erscheinen ca. alle 2-3 Monate, enthalten gegenüber einem Minor Release weniger Änderungen und der Fokus liegt auf Bugfixes) und Errata-Updates (zeitnahe Fehlerkorrekturen für Sicherheitslücken oder kritische Programmfehler). Diese Variable wird während Updates automatisch gesetzt und enthält den Stand des Patchlevel Releases.
 Description[en]=Four types of Univention Configuration Registry updates are differentiated: Major releases (released approximately every four years, may introduce bigger changes), minor releases (released approximately every 6-8 months, error corrections and new functions), patch level releases (released every 2-3 months, less changes compared to a minor release, focus on bugfixes) and errata updates (timely bugfixes for security problems and critical bugs). This variable is set automatically during updates and contains the version of the installed patch level release.
