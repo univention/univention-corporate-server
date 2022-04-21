@@ -321,10 +321,10 @@ class PropertySanitizer(Sanitizer):
 class BoolSanitizer(ChoicesSanitizer):
 
 	def __init__(self, **kwargs):
-		super(BoolSanitizer, self).__init__(choices=['1', 'on', 'true', 'false', '0', 'off', '', None], **kwargs)
+		super(BoolSanitizer, self).__init__(choices=['1', 'on', 'true', 'false', '0', 'off', '', None, True, False], **kwargs)
 
 	def _sanitize(self, value, name, further_arguments):
-		return super(BoolSanitizer, self)._sanitize(value, name, further_arguments) in ('1', 'on', 'true')
+		return super(BoolSanitizer, self)._sanitize(value, name, further_arguments) in ('1', 'on', 'true', True)
 
 
 class LDAPFilterSanitizer(StringSanitizer):
@@ -1084,7 +1084,6 @@ class Relations(Resource):
 			'tree': 'list of tree content for providing a hierarchical navigation',
 			'policy-result': 'policy result by virtual policy object containing the values that the given object or container inherits',
 			'report': 'create a report',
-			'default-search': 'default search pattern/value for the given object property',
 			'next-free-ip': 'next IP configuration based on the given network object',
 			'property-choices': 'determine valid values for a given syntax class',
 			'user-photo': 'photo of the object',
@@ -2060,7 +2059,10 @@ class MoveDestinations(ContainerQueryBase):
 class Properties(Resource):
 	"""GET udm/users/user/properties (get properties of users/user object type)"""
 
-	def get(self, object_type, dn=None):  # TODO: add link to DefaultValue
+	@sanitize_query_string(
+		searchable=BoolSanitizer(required=False)
+	)
+	def get(self, object_type, dn=None):
 		result = {}
 		if dn:
 			dn = unquote_dn(dn)
@@ -2069,7 +2071,7 @@ class Properties(Resource):
 
 		self.add_link(result, 'up', self.urljoin('.'))
 		properties = self.get_properties(module, dn)
-		searchable = self.get_query_argument('searchable', False)
+		searchable = self.request.decoded_query_arguments['searchable']
 		if searchable:
 			properties = dict((name, prop) for name, prop in properties.items() if prop.get('searchable', False))
 		result['properties'] = properties
@@ -2242,17 +2244,6 @@ class NextFreeIpAddress(Resource):
 			# increase the next free IP address
 			obj.stepIp()
 			obj.modify()
-
-
-class DefaultValue(Resource):
-	"""GET udm/users/user/properties/$property/default (get the default value for the specified property)
-	Returns the default search pattern/value for the given object property"""
-
-	def get(self, object_type, property_):
-		module = self.get_module(object_type)
-		result = module.get_default_values(property_)
-		self.add_caching(public=False, must_revalidate=True)
-		self.content_negotiation(result)
 
 
 class FormBase(object):
@@ -3868,7 +3859,6 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/%s/properties" % (object_type, dn), Properties),
 			(r"/udm/%s/%s/properties/%s/choices" % (object_type, dn, property_), PropertyChoices),
 			(r"/udm/%s/%s/properties/jpegPhoto.jpg" % (object_type, dn), UserPhoto),
-			(r"/udm/%s/properties/%s/default" % (object_type, property_), DefaultValue),
 			(r"/udm/(networks/network)/%s/next-free-ip-address" % (dn,), NextFreeIpAddress),
 			(r"/udm/(users/user)/%s/service-specific-password" % (dn,), ServiceSpecificPassword),
 			(r"/udm/progress/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", Operations),
