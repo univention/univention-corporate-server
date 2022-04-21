@@ -1,19 +1,12 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2021-2022, Univention GmbH
-# This file is distributed under the same license as the Univention
-# Corporate Server - Manual for users and administrators package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
-#
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-21 09:59+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2022-04-25 22:22+0200\n"
+"PO-Revision-Date: 2022-04-25 22:25+0200\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language-Team: Univention GmbH <packages@univention.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,214 +14,278 @@ msgstr ""
 
 #: ../../monitoring/dashboard.rst:4 ../../monitoring/dashboard.rst:22
 msgid "UCS Dashboard"
-msgstr ""
+msgstr "UCS Dashboard"
 
 #: ../../monitoring/dashboard.rst:6
 msgid ""
-"The :program:`UCS Dashboard` app allows administrators to view the state "
-"of the domain and individual servers can be read quickly and clearly on "
-"so-called dashboards. The dashboards are accessible via a web browser, "
-"access a database in the background, and deliver continuously updated "
-"reports on specific aspects of the domain or server."
+"The :program:`UCS Dashboard` app allows administrators to view the state of the "
+"domain and individual servers can be read quickly and clearly on so-called "
+"dashboards. The dashboards are accessible via a web browser, access a database "
+"in the background, and deliver continuously updated reports on specific aspects "
+"of the domain or server."
 msgstr ""
+"Die :program:`UCS Dashboard` app ermöglicht es Administratoren, den Zustand der "
+"Domäne und einzelner Server schnell und übersichtlich auf sogenannten "
+"Dashboards abzulesen. Die Dashboards sind über einen Web-Browser erreichbar, "
+"greifen im Hintergrund auf eine Datenbank zu und liefern kontinuierlich "
+"aktualisierte Reports über bestimmte Aspekte der Domäne oder der Server."
 
 #: ../../monitoring/dashboard.rst:15 ../../monitoring/nagios.rst:13
 msgid "Installation"
-msgstr ""
+msgstr "Installation"
 
 #: ../../monitoring/dashboard.rst:17
 msgid "The UCS Dashboard consists of three parts:"
-msgstr ""
+msgstr "Das UCS Dashboard besteht aus drei Teilen:"
 
 #: ../../monitoring/dashboard.rst:20
 msgid ""
 "The *UCS Dashboard* app for the visualization of data from the central "
-"Database. This component is based on the software `Grafana <grafana_>`_ "
-"[1]_."
+"Database. This component is based on the software `Grafana <grafana_>`_ [1]_."
 msgstr ""
+"Die UCS Dashboard App für die Visualisierung von Daten aus der zentralen "
+"Datenbank. Diese Komponente basiert auf der Softwarekomponente `Grafana "
+"<grafana_>`_ [1]_."
 
 #: ../../monitoring/dashboard.rst:26
 msgid "UCS Dashboard Database"
-msgstr ""
+msgstr "UCS Dashboard Database"
 
 #: ../../monitoring/dashboard.rst:25
 msgid ""
-"The *UCS Dashboard Database* app, a time series database for storing of "
-"the metrics. This database is based on the software Prometheus."
+"The *UCS Dashboard Database* app, a time series database for storing of the "
+"metrics. This database is based on the software Prometheus."
 msgstr ""
+"Die *UCS Dashboard Database* App, eine Zeitserien-Datenbank für die Speicherung "
+"der Metriken. Diese Datenbank wird durch die Software Prometheus bereitgestellt."
 
 #: ../../monitoring/dashboard.rst:30
 msgid "UCS Dashboard Client"
-msgstr ""
+msgstr "UCS Dashboard Client"
 
 #: ../../monitoring/dashboard.rst:29
 msgid ""
-"The *UCS Dashboard Client* app for deploying the metrics of server "
-"systems. This is based on the Prometheus Node Exporter."
+"The *UCS Dashboard Client* app for deploying the metrics of server systems. "
+"This is based on the Prometheus Node Exporter."
 msgstr ""
+"Die *UCS Dashboard Client* App für die Bereitstellung der Metriken von "
+"Serversystemen. Diese baut auf dem Prometheus Node-Exporter auf."
 
 #: ../../monitoring/dashboard.rst:32
 msgid ""
-"The app *UCS Dashboard* can be installed from the Univention App Center "
-"on a server in the domain. Currently, the installation is only possible "
-"on the system roles Primary, Backup or |UCSREPLICADN|. The apps *UCS "
-"Dashboard Database* and *UCS Dashboard Client* are automatically "
-"installed on the same system."
+"The app *UCS Dashboard* can be installed from the Univention App Center on a "
+"server in the domain. Currently, the installation is only possible on the "
+"system roles Primary, Backup or |UCSREPLICADN|. The apps *UCS Dashboard "
+"Database* and *UCS Dashboard Client* are automatically installed on the same "
+"system."
 msgstr ""
+"Die App *UCS Dashboard* kann aus dem Univention App Center auf einem Server in "
+"der Domäne installiert werden. Derzeit ist die Installation nur auf den "
+"Systemrollen Primary, Backup oder |UCSREPLICADN| erlaubt. Die Apps *UCS "
+"Dashboard Database* und *UCS Dashboard Client* werden automatisch auf dem "
+"System mitinstalliert."
 
 #: ../../monitoring/dashboard.rst:37
 msgid ""
-"The app *UCS Dashboard Client* should be installed on every UCS system. "
-"Only then will the system data be displayed on the dashboard."
+"The app *UCS Dashboard Client* should be installed on every UCS system. Only "
+"then will the system data be displayed on the dashboard."
 msgstr ""
+"Die App *UCS Dashboard Client* sollte auf jedem UCS-System installiert werden. "
+"Nur dadurch werden die Daten des Systems auf dem Dashboard dargestellt."
 
 #: ../../monitoring/dashboard.rst:43
 msgid "Usage"
-msgstr ""
+msgstr "Nutzung"
 
 #: ../../monitoring/dashboard.rst:45
 msgid ""
 "After the installation, the UCS Dashboard is linked in the portal. "
-"Alternatively, it can be accessed directly via :samp:`https"
-"://{SERVERNAME-OR-IP}/ucs-dashboard/`."
+"Alternatively, it can be accessed directly via :samp:`https://{SERVERNAME-OR-"
+"IP}/ucs-dashboard/`."
 msgstr ""
+"Nach der Installation ist das UCS Dashboard im Portal verlinkt.  Alternativ "
+"kann es direkt über :samp:`https://{SERVERNAME-OR-IP}/ucs-dashboard/` erreicht "
+"werden."
 
 #: ../../monitoring/dashboard.rst:49
 msgid ""
-"By default access is only granted to users of the group ``Domain Admins``"
-" (e.g. the user Administrator)."
+"By default access is only granted to users of the group ``Domain Admins`` (e.g. "
+"the user Administrator)."
 msgstr ""
+"Der Zugriff wird in der Standardeinstellung ausschließlich Benutzern der Gruppe "
+"``Domain Admins`` (z.B.  der Benutzer Administrator) gewährt."
 
 #: ../../monitoring/dashboard.rst:55 ../../monitoring/dashboard.rst:62
 msgid "Domain dashboard"
-msgstr ""
+msgstr "Domain Dashboard"
 
 #: ../../monitoring/dashboard.rst:64
 msgid ""
 "After the login, the *Domain Dashboard* is opened by default. On this "
-"dashboard, general information about the domain is displayed, such as how"
-" many servers and how many users exist in the environment."
+"dashboard, general information about the domain is displayed, such as how many "
+"servers and how many users exist in the environment."
 msgstr ""
+"Nach der Anmeldung wird standardmäßig das *Domain Dashboard* geöffnet. Auf "
+"diesem Dashboard werden allgemeine Informationen über die Domäne angezeigt, "
+"bspw. wie viele Server und wie viele Benutzer in der Umgebung existieren."
 
 #: ../../monitoring/dashboard.rst:68
 msgid ""
 "Furthermore, the UCS systems are listed on the dashboard, in a tabular "
-"overview, including further information, such as the server role, the "
-"installed apps or whether an update is available or not."
+"overview, including further information, such as the server role, the installed "
+"apps or whether an update is available or not."
 msgstr ""
+"Weiter sind auf dem Dashboard, in einer tabellarischen Übersicht, die UCS-"
+"Systeme aufgelistet inkl. weiterer Informationen, wie bspw. die Server Rolle, "
+"die installierten Apps oder ob ein Update verfügbar ist."
 
 #: ../../monitoring/dashboard.rst:72
 msgid ""
-"In addition, the CPU usage, memory usage, free hard disk space and the "
-"status of the LDAP replication are displayed. In this graphics all "
-"servers are displayed together."
+"In addition, the CPU usage, memory usage, free hard disk space and the status "
+"of the LDAP replication are displayed. In this graphics all servers are "
+"displayed together."
 msgstr ""
+"Zusätzlich wird die CPU-Auslastung, Arbeitsspeicherauslastung, der freie "
+"Festplattenspeicher und der Status der LDAP-Replikation angezeigt. Dabei werden "
+"in den Grafiken jeweils alle Serversysteme angezeigt."
 
 #: ../../monitoring/dashboard.rst:79 ../../monitoring/dashboard.rst:86
 msgid "Server dashboard"
-msgstr ""
+msgstr "Server Dashboard"
 
 #: ../../monitoring/dashboard.rst:88
 msgid ""
-"By default, the *Server Dashboard* is also configured. On this dashboard,"
-" detailed information about individual server systems are shown, such as "
-"the CPU- or memory usage or network throughput."
+"By default, the *Server Dashboard* is also configured. On this dashboard, "
+"detailed information about individual server systems are shown, such as the "
+"CPU- or memory usage or network throughput."
 msgstr ""
+"Standardmäßig wird zusätzlich das *Server Dashboard* eingerichtet. Auf diesem "
+"Dashboard sind detaillierte Informationen zu einzelnen Serversystemen "
+"aufgelistet, wie bspw. die CPU- oder Speicherauslastung oder der "
+"Netzwerkdurchsatz."
 
 #: ../../monitoring/dashboard.rst:92
 msgid ""
-"The servers can be selected in the drop down *server*. Then the graphics "
-"show the details about the selected server."
+"The servers can be selected in the drop down *server*. Then the graphics show "
+"the details about the selected server."
 msgstr ""
+"Die Server können im Dropdown *server* ausgewählt werden. Anschließend werden "
+"die Grafiken entsprechend aktualisiert."
 
 #: ../../monitoring/dashboard.rst:98
 msgid "Own dashboards"
-msgstr ""
+msgstr "Eigene Dashboards"
 
 #: ../../monitoring/dashboard.rst:100
 msgid ""
-"The two included dashboards *Domain Dashboard* and *Server Dashboard* "
-"can't be changed, because they are updated by Univention with updates."
+"The two included dashboards *Domain Dashboard* and *Server Dashboard* can't be "
+"changed, because they are updated by Univention with updates."
 msgstr ""
+"Die beiden mitgelieferten Dashboards *Domain Dashboard* und *Server Dashboard* "
+"können nicht verändert werden, da diese von Univention durch Aktualisierungen "
+"ergänzt und verändert werden können."
 
 #: ../../monitoring/dashboard.rst:103
 msgid ""
-"Instead, you can create your own dashboards. On these dashboards you can "
-"then either add already existing elements or new elements can be created."
-" All you need to do is click on the plus sign on the left side. A new "
-"dashboard will be created which can be filled with elements."
+"Instead, you can create your own dashboards. On these dashboards you can then "
+"either add already existing elements or new elements can be created. All you "
+"need to do is click on the plus sign on the left side. A new dashboard will be "
+"created which can be filled with elements."
 msgstr ""
+"Stattdessen können eigene Dashboards erstellt werden. Auf diesen Dashboards "
+"können dann entweder bereits vorhandene Elemente hinzugefügt werden oder auch "
+"neue Elemente erstellt werden. Dazu muss lediglich auf das Plus Zeichen am "
+"linken Rand geklickt werden. Anschließend existiert ein neues Dashboard, "
+"welches mit Elementen befüllt werden kann."
 
 #: ../../monitoring/dashboard.rst:109
 msgid ""
 "The Grafana Labs Marks are trademarks of Grafana Labs, and are used with "
-"Grafana Labs’ permission. We are not affiliated with, endorsed or "
-"sponsored by Grafana Labs or its affiliates."
+"Grafana Labs’ permission. We are not affiliated with, endorsed or sponsored by "
+"Grafana Labs or its affiliates."
 msgstr ""
+"Die Grafana Labs-Marken sind Warenzeichen von Grafana Labs und werden mit "
+"Genehmigung von Grafana Labs verwendet. Wir sind weder mit Grafana Labs noch "
+"mit seinen Tochtergesellschaften verbunden, noch werden wir von ihnen "
+"unterstützt oder gefördert."
 
 #: ../../monitoring/index.rst:18
 msgid "Chapter contents"
-msgstr ""
+msgstr "Kapitelinhalte"
 
 #: ../../monitoring/index.rst:5
 msgid "Infrastructure monitoring"
-msgstr ""
+msgstr "Infrastruktur-Monitoring"
 
 #: ../../monitoring/index.rst:7
 msgid "UCS offers two different solutions for infrastructure monitoring."
 msgstr ""
+"UCS bietet zwei unterschiedliche Lösungen für das Monitoring der Infrastruktur."
 
 #: ../../monitoring/index.rst:9
 msgid ""
-"On the one hand the UCS Dashboard helps administrators to quickly read "
-"the state of domains and individual servers. On the other hand, under UCS"
-" 4.4, with Nagios it is possible to continuously check computers and "
-"services in the background and proactively trigger a notification if a "
-"warning level is reached."
+"On the one hand the UCS Dashboard helps administrators to quickly read the "
+"state of domains and individual servers. On the other hand, under UCS 4.4, with "
+"Nagios it is possible to continuously check computers and services in the "
+"background and proactively trigger a notification if a warning level is reached."
 msgstr ""
+"Einerseits das UCS Dashboard mit dessen Hilfe Administratoren sehr schnell den "
+"Zustand der Domänen und einzelner Server abzulesen. Anderseits gibt es in UCS "
+"4.4 mit Nagios die Möglichkeit, fortlaufend im Hintergrund Rechner und Dienste "
+"zu überprüfen und proaktiv eine Benachrichtigung auszulösen, sollte eine "
+"Warnstufe erreicht werden."
 
 #: ../../monitoring/index.rst:14
 msgid ""
-"With UCS 5.0 support for the Nagios server component has been "
-"discontinued, but the systems can still be monitored, e.g. by UCS 4.4 "
-"Nagios servers, as described in the UCS 4.4 manual."
+"With UCS 5.0 support for the Nagios server component has been discontinued, but "
+"the systems can still be monitored, e.g. by UCS 4.4 Nagios servers, as "
+"described in the UCS 4.4 manual."
 msgstr ""
+"In UCS 5.0 ist die Serverkomponente von Nagios nicht mehr unterstützt, die "
+"Systeme können aber als Nagios Client dienen, um sie z.B. von einem UCS 4.4 "
+"Nagios Server überwachen zu lassen, wie im UCS 4.4 Handbuch beschreiben."
 
 #: ../../monitoring/nagios.rst:4
 msgid "Nagios"
-msgstr ""
+msgstr "Nagios"
 
 #: ../../monitoring/nagios.rst:6
 msgid ""
-"With UCS 5.0 support for the Nagios server component has been "
-"discontinued. Yet, the systems can still be monitored, e.g. by UCS 4.4 "
-"Nagios servers, as described in the UCS 4.4 manual."
+"With UCS 5.0 support for the Nagios server component has been discontinued. "
+"Yet, the systems can still be monitored, e.g. by UCS 4.4 Nagios servers, as "
+"described in the UCS 4.4 manual."
 msgstr ""
+"In UCS 5.0 ist die Serverkomponente von Nagios nicht mehr unterstützt.  Die "
+"Systeme können aber als Nagios Client dienen, um sie z.B. von einem UCS 4.4 "
+"Nagios Server überwachen zu lassen, wie im UCS 4.4 Handbuch beschreiben."
 
 #: ../../monitoring/nagios.rst:15
 msgid ""
-"In addition to the standard plugins provided with the installation of the"
-" :program:`univention-nagios-client` package, additional plugins can be "
+"In addition to the standard plugins provided with the installation of the :"
+"program:`univention-nagios-client` package, additional plugins can be "
 "subsequently installed with the following packages:"
 msgstr ""
+"Neben den Standard-Plugins, die mit der Installation des Pakets :program:"
+"`univention-nagios-client` mitgebracht werden, können zusätzliche Plugins über "
+"folgende Pakete nachinstalliert werden:"
 
 #: ../../monitoring/nagios.rst:19
 msgid ":program:`univention-nagios-raid`: Monitoring of the software RAID status"
-msgstr ""
+msgstr ":program:`univention-nagios-raid` Überwachung des Software-RAID-Status"
 
 #: ../../monitoring/nagios.rst:21
 msgid ""
-":program:`univention-nagios-smart`: Test of the S.M.A.R.T. status of hard"
-" drives"
+":program:`univention-nagios-smart`: Test of the S.M.A.R.T. status of hard drives"
 msgstr ""
+":program:`univention-nagios-smart` Prüfung des S.M.A.R.T.-Status von Festplatten"
 
 #: ../../monitoring/nagios.rst:24
 msgid ":program:`univention-nagios-opsi`: Test of software distribution opsi"
-msgstr ""
+msgstr ":program:`univention-nagios-opsi` Prüfung der Softwareverteilung opsi"
 
 #: ../../monitoring/nagios.rst:26
 msgid ":program:`univention-nagios-ad-connector`: Test of the AD Connector"
-msgstr ""
+msgstr ":program:`univention-nagios-ad-connector` Prüfung des AD Connectors"
 
 #: ../../monitoring/nagios.rst:28
 msgid ""
@@ -236,164 +293,194 @@ msgid ""
 "respective services. For example, if the UCS AD connector is set up, the "
 "monitoring plugin is included automatically."
 msgstr ""
+"Einige der Pakete werden bei der Installation der entsprechenden Dienste "
+"automatisch mit eingerichtet. Wird beispielsweise der UCS AD Connector "
+"eingerichtet, bringt dieser das Überwachungs-Plugin :program:`univention-nagios-"
+"ad-connector` mit."
 
 #: ../../monitoring/nagios.rst:35 ../../monitoring/nagios.rst:40
 msgid "Preconfigured Nagios checks"
-msgstr ""
+msgstr "Vorkonfigurierte Nagios-Prüfungen"
 
 #: ../../monitoring/nagios.rst:37
 msgid ""
-"During the installation, basic Nagios tests are set up automatically for "
-"UCS systems."
+"During the installation, basic Nagios tests are set up automatically for UCS "
+"systems."
 msgstr ""
+"Während der Installation werden automatisch grundlegende Nagios-Prüfungen für "
+"die UCS-Systeme der Domäne eingerichtet."
 
 #: ../../monitoring/nagios.rst:44 ../../monitoring/nagios.rst:139
 msgid "Nagios service"
-msgstr ""
+msgstr "Nagios-Dienst"
 
 #: ../../monitoring/nagios.rst:45 ../../monitoring/nagios.rst:140
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 #: ../../monitoring/nagios.rst:47
 msgid "``UNIVENTION_PING``"
-msgstr ""
+msgstr "``UNIVENTION_PING``"
 
 #: ../../monitoring/nagios.rst:48
-#, python-format
 msgid ""
-"Tests the availability of the monitored UCS system with the command "
-":command:`ping`. By default an error status is attained if the response "
-"time exceeds 50 ms or 100 ms or package losses of 20% or 40% occur."
+"Tests the availability of the monitored UCS system with the command :command:"
+"`ping`. By default an error status is attained if the response time exceeds 50 "
+"ms or 100 ms or package losses of 20% or 40% occur."
 msgstr ""
+"Testet die Erreichbarkeit des überwachten UCS-Systems mit dem Kommando :command:"
+"`ping`. In der Standardeinstellung wird der Fehlerzustand erreicht, wenn die "
+"Antwortzeit 50 ms bzw. 100 ms überschreitet oder Paketverluste von 20% bzw. 40% "
+"auftreten."
 
 #: ../../monitoring/nagios.rst:53
 msgid "``UNIVENTION_DISK_ROOT``"
-msgstr ""
+msgstr "``UNIVENTION_DISK_ROOT``"
 
 #: ../../monitoring/nagios.rst:54
-#, python-format
 msgid ""
-"Monitors how full the :file:`/` partition is. An error status is raised "
-"if the remaining free space falls below 25% or 10% by default."
+"Monitors how full the :file:`/` partition is. An error status is raised if the "
+"remaining free space falls below 25% or 10% by default."
 msgstr ""
+"Überwacht den Füllstand der :file:`/`-Partition.  Unterschreitet der "
+"verbleibende freie Platz in der Standardeinstellung 25% bzw. 10% wird der "
+"Fehlerzustand gesetzt."
 
 #: ../../monitoring/nagios.rst:57
 msgid "``UNIVENTION_DNS``"
-msgstr ""
+msgstr "``UNIVENTION_DNS``"
 
 #: ../../monitoring/nagios.rst:58
 msgid ""
-"Tests the function of the local DNS server and the accessibility of the "
-"public DNS server by querying the hostname ``www.univention.de``. If no "
-"DNS forwarder is defined for the UCS domain, this request fails. In this "
-"case, ``www.univention.de`` can be replaced with the FQDN of the "
-"|UCSPRIMARYDN| for example, in order to test the function of the name "
-"resolution."
+"Tests the function of the local DNS server and the accessibility of the public "
+"DNS server by querying the hostname ``www.univention.de``. If no DNS forwarder "
+"is defined for the UCS domain, this request fails. In this case, ``www."
+"univention.de`` can be replaced with the FQDN of the |UCSPRIMARYDN| for "
+"example, in order to test the function of the name resolution."
 msgstr ""
+"Testet die Funktion des lokalen DNS-Servers und die Erreichbarkeit der "
+"öffentlichen DNS-Server durch die Abfrage des Rechnernamens ``www.univention."
+"de``. Ist für die UCS-Domäne kein DNS-Forwarder definiert, schlägt diese "
+"Abfrage fehl. In diesem Fall kann ``www.univention.de`` z.B. gegen den FQDN des "
+"|UCSPRIMARYDN| ersetzt werden, um die Funktion der Namensauflösung zu testen."
 
 #: ../../monitoring/nagios.rst:65
 msgid "``UNIVENTION_LDAP``"
-msgstr ""
+msgstr "``UNIVENTION_LDAP``"
 
 #: ../../monitoring/nagios.rst:66
 msgid "Monitors the LDAP server running on UCS Directory Nodes."
-msgstr ""
+msgstr "Überwacht den auf Directory Nodes laufenden LDAP-Server."
 
 #: ../../monitoring/nagios.rst:68
 msgid "``UNIVENTION_LOAD``"
-msgstr ""
+msgstr "``UNIVENTION_LOAD``"
 
 #: ../../monitoring/nagios.rst:69
 msgid "Monitors the system load."
-msgstr ""
+msgstr "Überwacht die Systemlast."
 
 #: ../../monitoring/nagios.rst:71
 msgid "``UNIVENTION_NTP``"
-msgstr ""
+msgstr "``UNIVENTION_NTP``"
 
 #: ../../monitoring/nagios.rst:72
 msgid ""
-"Requests the time from the NTP service on the monitored UCS system. If "
-"this deviates by more than 60 or 120 seconds, the error status is "
-"attained."
+"Requests the time from the NTP service on the monitored UCS system. If this "
+"deviates by more than 60 or 120 seconds, the error status is attained."
 msgstr ""
+"Fragt auf dem überwachten UCS-System die Uhrzeit beim NTP-Dienst ab. Tritt eine "
+"Abweichung von mehr als 60 bzw. 120 Sekunden auf, wird der Fehlerzustand "
+"erreicht."
 
 #: ../../monitoring/nagios.rst:76
 msgid "``UNIVENTION_SMTP``"
-msgstr ""
+msgstr "``UNIVENTION_SMTP``"
 
 #: ../../monitoring/nagios.rst:77
 msgid "Tests the mail server."
-msgstr ""
+msgstr "Testet den Mailserver."
 
 #: ../../monitoring/nagios.rst:79
 msgid "``UNIVENTION_SSL``"
-msgstr ""
+msgstr "``UNIVENTION_SSL``"
 
 #: ../../monitoring/nagios.rst:80
 msgid ""
-"Tests the remaining validity period of the UCS SSL certificates. This "
-"plugin is only suitable for |UCSPRIMARYDN| and |UCSBACKUPDN| systems."
+"Tests the remaining validity period of the UCS SSL certificates. This plugin is "
+"only suitable for |UCSPRIMARYDN| and |UCSBACKUPDN| systems."
 msgstr ""
+"Testet die verbleibende Gültigkeitsdauer der UCS-SSL-Zertifikate. Dieses Plugin "
+"ist nur für |UCSPRIMARYDN| und |UCSBACKUPDN|\\ s geeignet."
 
 #: ../../monitoring/nagios.rst:83
 msgid "``UNIVENTION_SWAP``"
-msgstr ""
+msgstr "``UNIVENTION_SWAP``"
 
 #: ../../monitoring/nagios.rst:84
-#, python-format
 msgid ""
-"Monitors the utilization of the swap partition. An error status is raised"
-" if the remaining free space falls below the threshold (40% or 20% by "
-"default)."
+"Monitors the utilization of the swap partition. An error status is raised if "
+"the remaining free space falls below the threshold (40% or 20% by default)."
 msgstr ""
+"Überwacht die Auslastung der Swap-Partition. Unterschreitet der verbleibende "
+"freie Platz den Schwellwert (in der Standardeinstellung 40% bzw. 20%), wird der "
+"Fehlerzustand gesetzt."
 
 #: ../../monitoring/nagios.rst:88
 msgid "``UNIVENTION_REPLICATION``"
-msgstr ""
+msgstr "``UNIVENTION_REPLICATION``"
 
 #: ../../monitoring/nagios.rst:89
 msgid ""
-"Monitors the status of the LDAP replication and recognizes the creation "
-"of a :file:`failed.ldif` file and the standstill of the replication and "
-"warns of large differences between the transaction IDs."
+"Monitors the status of the LDAP replication and recognizes the creation of a :"
+"file:`failed.ldif` file and the standstill of the replication and warns of "
+"large differences between the transaction IDs."
 msgstr ""
+"Überwacht den Status der LDAP-Replikation, erkennt das Vorhandensein einer :"
+"file:`failed.ldif`-Datei sowie den Stillstand der Replikation und warnt vor zu "
+"großen Differenzen der Transaktions-IDs."
 
 #: ../../monitoring/nagios.rst:94
 msgid "``UNIVENTION_NSCD``"
-msgstr ""
+msgstr "``UNIVENTION_NSCD``"
 
 #: ../../monitoring/nagios.rst:95
 msgid ""
-"Tests the availability of the name server cache daemon (NSCD). If there "
-"is no NSCD process running, a CRITICAL event is triggered; if more than "
-"one process is running, a WARNING."
+"Tests the availability of the name server cache daemon (NSCD). If there is no "
+"NSCD process running, a CRITICAL event is triggered; if more than one process "
+"is running, a WARNING."
 msgstr ""
+"Testet die Verfügbarkeit des Name Server Cache Dienstes (NSCD). Läuft kein NSCD-"
+"Prozess wird ein CRITICAL-Event ausgelöst, läuft mehr als ein Prozess, wird ein "
+"WARNING-Event ausgelöst."
 
 #: ../../monitoring/nagios.rst:99
 msgid "``UNIVENTION_WINBIND``"
-msgstr ""
+msgstr "``UNIVENTION_WINBIND``"
 
 #: ../../monitoring/nagios.rst:100
 msgid ""
-"Tests the availability of the Winbind service. If no process is running, "
-"a CRITICAL event is triggered."
+"Tests the availability of the Winbind service. If no process is running, a "
+"CRITICAL event is triggered."
 msgstr ""
+"Testet die Verfügbarkeit des Winbind-Dienstes. Läuft kein Prozess, wird ein "
+"CRITICAL-Event ausgelöst."
 
 #: ../../monitoring/nagios.rst:103
 msgid "``UNIVENTION_SMBD``"
-msgstr ""
+msgstr "``UNIVENTION_SMBD``"
 
 #: ../../monitoring/nagios.rst:104
 msgid ""
 "Tests the availability of the Samba service. If no process is running, a "
 "CRITICAL event is triggered."
 msgstr ""
+"Testet die Verfügbarkeit des Samba-Dienstes. Läuft kein Prozess, wird ein "
+"CRITICAL-Event ausgelöst."
 
 #: ../../monitoring/nagios.rst:107
 msgid "``UNIVENTION_NMBD``"
-msgstr ""
+msgstr "``UNIVENTION_NMBD``"
 
 #: ../../monitoring/nagios.rst:108
 msgid ""
@@ -401,122 +488,146 @@ msgid ""
 "NetBIOS service in Samba. If no process is running, a CRITICAL event is "
 "triggered."
 msgstr ""
+"Testet die Verfügbarkeit des NMBD-Dienstes, der in Samba für den NetBIOS-Dienst "
+"zuständig ist. Läuft kein Prozess, wird ein CRITICAL-Event ausgelöst."
 
 #: ../../monitoring/nagios.rst:112
 msgid "``UNIVENTION_JOINSTATUS``"
-msgstr ""
+msgstr "``UNIVENTION_JOINSTATUS``"
 
 #: ../../monitoring/nagios.rst:113
 msgid ""
-"Tests the join status of a system. If a system has yet to join, a "
-"CRITICAL event is triggered; if non-run join scripts are available, a "
-"WARNING event is returned."
+"Tests the join status of a system. If a system has yet to join, a CRITICAL "
+"event is triggered; if non-run join scripts are available, a WARNING event is "
+"returned."
 msgstr ""
+"Prüft den Join-Status eines Systems. Ist ein System noch nicht Mitglied der "
+"Domäne, wird ein CRITICAL-Event ausgelöst, sind nicht-aufgerufene Joinskripte "
+"vorhanden, wird ein WARNING-Event zurückgeliefert."
 
 #: ../../monitoring/nagios.rst:117
 msgid "``UNIVENTION_KPASSWD``"
-msgstr ""
+msgstr "``UNIVENTION_KPASSWD``"
 
 #: ../../monitoring/nagios.rst:118
 msgid ""
-"Tests the availability of the Kerberos password service (only available "
-"on Primary/|UCSBACKUPDN|\\ s). If fewer or more than one process is "
-"running, a CRITICAL event is triggered."
+"Tests the availability of the Kerberos password service (only available on "
+"Primary/|UCSBACKUPDN|\\ s). If fewer or more than one process is running, a "
+"CRITICAL event is triggered."
 msgstr ""
+"Prüft die Verfügbarkeit des Kerberos-Passwort-Dienstes (nur verfügbar auf "
+"Primary/|UCSBACKUPDN|). Läuft weniger oder mehr als ein Prozess, wird ein "
+"CRITICAL-Event ausgelöst."
 
 #: ../../monitoring/nagios.rst:122
 msgid "``UNIVENTION_CUPS``"
-msgstr ""
+msgstr "``UNIVENTION_CUPS``"
 
 #: ../../monitoring/nagios.rst:123
 msgid ""
-"Monitors the CUPS daemon. If there is no :program:`cupsd` process running"
-" or the web interface on port 631 is not accessible, the CRITICAL status "
-"is returned."
+"Monitors the CUPS daemon. If there is no :program:`cupsd` process running or "
+"the web interface on port 631 is not accessible, the CRITICAL status is "
+"returned."
 msgstr ""
+"Überwacht den CUPS-Druckdienst. Läuft :program:`cupsd`-Prozess oder ist die "
+"Weboberfläche auf Port 631 nicht erreichbar, wird der Status CRITICAL "
+"zurückgegeben."
 
 #: ../../monitoring/nagios.rst:127
 msgid "``UNIVENTION_SQUID``"
-msgstr ""
+msgstr "``UNIVENTION_SQUID``"
 
 #: ../../monitoring/nagios.rst:128
 msgid ""
-"Monitors the Squid proxy. If no squid process is running or the Squid "
-"proxy is not accessible, the CRITICAL status is returned."
+"Monitors the Squid proxy. If no squid process is running or the Squid proxy is "
+"not accessible, the CRITICAL status is returned."
 msgstr ""
+"Überwacht den Proxy Squid. Läuft kein Squid-Prozess oder der Squid-Proxy ist "
+"nicht erreichbar, wird der Status CRITICAL zurückgegeben."
 
 #: ../../monitoring/nagios.rst:131
 msgid ""
-"The following Nagios services are only available on the respective Nagios"
-" client once additional packages have been installed (see :ref:`Nagios-"
-"Installation`):"
+"The following Nagios services are only available on the respective Nagios "
+"client once additional packages have been installed (see :ref:`nagios-"
+"installation`):"
 msgstr ""
+"Die folgenden Nagiosdienste sind nur auf dem jeweiligen Nagios Client verfügar, "
+"sobald zusätzliche Pakete installiert wurden (siehe :ref:`nagios-installation`):"
 
 #: ../../monitoring/nagios.rst:135
 msgid "Additional Nagios checks"
-msgstr ""
+msgstr "Zusätzliche Nagios Checks"
 
 #: ../../monitoring/nagios.rst:142
 msgid "``UNIVENTION_OPSI``"
-msgstr ""
+msgstr "``UNIVENTION_OPSI``"
 
 #: ../../monitoring/nagios.rst:143
 msgid ""
-"Monitors the opsi daemon. If no opsi process is running or the opsi proxy"
-" is not accessible, the CRITICAL status is returned."
+"Monitors the opsi daemon. If no opsi process is running or the opsi proxy is "
+"not accessible, the CRITICAL status is returned."
 msgstr ""
+"Überwacht den opsi-Daemon. Läuft kein opsi-Prozess oder die opsi-Weboberfläche "
+"ist nicht erreichbar, wird der Status CRITICAL zurückgegeben."
 
 #: ../../monitoring/nagios.rst:146
 msgid "``UNIVENTION_SMART_SDA``"
-msgstr ""
+msgstr "``UNIVENTION_SMART_SDA``"
 
 #: ../../monitoring/nagios.rst:147
 msgid ""
-"Tests the S.M.A.R.T. status of the hard drive :file:`/dev/sda`. "
-"Corresponding Nagios services exist for the hard drives :file:`sdb`, "
-":file:`sdc` and :file:`sdd`."
+"Tests the S.M.A.R.T. status of the hard drive :file:`/dev/sda`. Corresponding "
+"Nagios services exist for the hard drives :file:`sdb`, :file:`sdc` and :file:"
+"`sdd`."
 msgstr ""
+"Prüft den S.M.A.R.T.-Status der Festplatte :file:`/dev/sda`. Für die "
+"Festplatten :file:`sdb`, :file:`sdc` und :file:`sdd` existieren entsprechende "
+"Nagios-Dienste."
 
 #: ../../monitoring/nagios.rst:151
 msgid "``UNIVENTION_RAID``"
-msgstr ""
+msgstr "``UNIVENTION_RAID``"
 
 #: ../../monitoring/nagios.rst:152
 msgid ""
-"Tests the status of the software RAID via :file:`/proc/mdadm` and returns"
-" CRITICAL is one of the hard drives in the RAID association has failed or"
-" WARNING if a recovery procedure is in progress."
+"Tests the status of the software RAID via :file:`/proc/mdadm` and returns "
+"CRITICAL is one of the hard drives in the RAID association has failed or "
+"WARNING if a recovery procedure is in progress."
 msgstr ""
+"Prüft den Status des Software-RAIDs über :file:`/proc/mdadm` und gibt den "
+"Status CRITICAL zurück, sofern eine Festplatte des RAID-Verbunds ausgefallen "
+"ist, bzw. den Status WARNING zurück, wenn der Recovery-Vorgang läuft."
 
 #: ../../monitoring/nagios.rst:156
 msgid "``UNIVENTION_ADCONNECTOR``"
-msgstr ""
+msgstr "``UNIVENTION_ADCONNECTOR``"
 
 #: ../../monitoring/nagios.rst:157
 msgid "Checks the status of the AD connector:"
-msgstr ""
+msgstr "Prüft den Status des Active Directory Connectors:"
 
 #: ../../monitoring/nagios.rst:159
 msgid "If no connector process is running, CRITICAL is reported."
-msgstr ""
+msgstr "Läuft kein Connector-Prozess, wird der Status CRITICAL zurückgegeben."
 
 #: ../../monitoring/nagios.rst:160
 msgid ""
-"If more than one process is running per connector instance, a WARNING is "
-"given."
+"If more than one process is running per connector instance, a WARNING is given."
 msgstr ""
+"Existiert mehr mehr als ein Prozess pro Connector-Instanz gibt es eine WARNING."
 
 #: ../../monitoring/nagios.rst:161
 msgid "If rejects occur, a WARNING is given."
-msgstr ""
+msgstr "Treten Rejects auf, gibt es eine WARNING."
 
 #: ../../monitoring/nagios.rst:162
 msgid "If the AD server cannot be reached, a CRITICAL status occurs."
-msgstr ""
+msgstr "Kann der AD-Server nicht erreicht werden, tritt ein CRITICAL-Zustand ein."
 
 #: ../../monitoring/nagios.rst:164
 msgid ""
-"The plugin can also be used in multi-connector instances; the name of the"
-" instance must be passed on as a parameter."
+"The plugin can also be used in multi-connector instances; the name of the "
+"instance must be passed on as a parameter."
 msgstr ""
-
+"Das Plugin kann auch in Multi-Connector-Instanzen verwendet werden. Dabei muss "
+"der Name der Instanz als Parameter übergeben werden."

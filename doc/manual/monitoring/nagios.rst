@@ -129,7 +129,7 @@ UCS systems.
        proxy is not accessible, the CRITICAL status is returned.
 
 The following Nagios services are only available on the respective Nagios client
-once additional packages have been installed (see :ref:`Nagios-Installation`):
+once additional packages have been installed (see :ref:`nagios-installation`):
 
 
 .. list-table:: Additional Nagios checks
