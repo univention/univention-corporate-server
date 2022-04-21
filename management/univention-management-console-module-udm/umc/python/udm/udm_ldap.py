@@ -151,6 +151,9 @@ class AppAttributes:
     def data_for_module(cls, module):
         if cls._cache is None:
             cls.reload_cache(module)
+        if module == 'settings/usertemplate' and module not in cls._cache:
+            module = 'users/user'
+            cls.reload_cache(module)
         return cls._cache.get(module, {})
 
     @classmethod
