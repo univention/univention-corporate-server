@@ -1333,7 +1333,7 @@ class simpleLdap:
         ocs = set()  # type: set[str]
         for prop in getattr(m, 'extended_udm_attributes', []):
             log.debug('simpleLdap._create: info[%s]:%r = %r', prop.name, self.has_property(prop.name), self.info.get(prop.name))
-            if prop.syntax == 'boolean' and self.info.get(prop.name) == '0':
+            if prop.syntax == 'boolean' and self.info.get(prop.name) == u'0' and self.module != 'settings/usertemplate':
                 continue
             if self.has_property(prop.name) and self.info.get(prop.name):
                 ocs.add(prop.objClass)
