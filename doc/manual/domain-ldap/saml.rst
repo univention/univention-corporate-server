@@ -116,6 +116,7 @@ The following attributes can be configured when adding a new service provider.
 
 .. list-table:: General options when configuring a service provider
    :header-rows: 1
+   :widths: 3 9
 
    * - Attribute
      - Description
@@ -161,6 +162,7 @@ The following attributes can be configured when adding a new service provider.
 
 .. list-table:: Advanced settings when configuring a service provider
    :header-rows: 1
+   :widths: 3 9
 
    * - Attribute
      - Description

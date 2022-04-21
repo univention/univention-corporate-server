@@ -33,6 +33,7 @@ Extended attributes - General tab
 
 .. list-table:: *General* tab
    :header-rows: 1
+   :widths: 3 9
 
    * - Attribute
      - Description
@@ -77,6 +78,7 @@ Extended attributes - Module tab
 
 .. list-table:: *Module* tab
    :header-rows: 1
+   :widths: 3 9
 
    * - Attribute
      - Description
@@ -103,6 +105,7 @@ Extended attributes - LDAP mapping tab
 
 .. list-table:: *LDAP mapping* tab
    :header-rows: 1
+   :widths: 3 9
 
    * - Attribute
      - Description
@@ -140,6 +143,7 @@ Extended attributes - UMC tab
 
 .. list-table:: *UMC* tab
    :header-rows: 1
+   :widths: 3 9
 
    * - Attribute
      - Description
@@ -229,6 +233,7 @@ Extended attributes - Data type tab
 
 .. list-table:: *Data type* tab
    :header-rows: 1
+   :widths: 3 9
 
    * - Attribute
      - Description

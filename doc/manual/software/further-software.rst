@@ -155,8 +155,9 @@ Each system role has its own package policy type.
 Package policies are managed in the UMC module :guilabel:`Policies` with the
 *Policy: Packages + system role*.
 
-.. list-table:: 'General' tab
+.. list-table:: *General* tab
    :header-rows: 1
+   :widths: 3 9
 
    * - Attribute
      - Description

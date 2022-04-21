@@ -21,6 +21,7 @@ shut down.
 
 .. list-table:: *General* tab
    :header-rows: 1
+   :widths: 3 9
 
    * - Attribute
      - Description

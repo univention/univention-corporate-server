@@ -22,8 +22,9 @@ however, OUs cannot be created below containers.
 
 .. rubric:: General tab
 
-.. list-table:: 'General' tab
+.. list-table:: *General* tab
    :header-rows: 1
+   :widths: 3 9
 
    * - Attribute
      - Description
@@ -36,8 +37,9 @@ however, OUs cannot be created below containers.
 
 .. rubric:: Advanced settings tab
 
-.. list-table:: 'Advanced settings' tab
+.. list-table:: *Advanced settings* tab
    :header-rows: 1
+   :widths: 3 9
 
    * - Attribute
      - Description

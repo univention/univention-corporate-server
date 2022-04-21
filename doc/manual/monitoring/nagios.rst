@@ -39,7 +39,7 @@ UCS systems.
 
 .. list-table:: Preconfigured Nagios checks
    :header-rows: 1
-   :widths: 2 10
+   :widths: 4 8
 
    * - Nagios service
      - Description
@@ -134,7 +134,7 @@ once additional packages have been installed (see :ref:`Nagios-Installation`):
 
 .. list-table:: Additional Nagios checks
    :header-rows: 1
-   :widths: 2 10
+   :widths: 4 8
 
    * - Nagios service
      - Description

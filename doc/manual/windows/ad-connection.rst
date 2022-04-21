@@ -593,6 +593,7 @@ Take the following particularities into account:
 
   .. list-table::
      :header-rows: 1
+     :widths: 6 6
 
      * - *UCS group*
        - *AD group*

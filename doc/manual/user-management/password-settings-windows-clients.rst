@@ -14,7 +14,7 @@ The settings of the Samba domain object and the policy (see :ref:`users-password
 otherwise different password requirements will apply for logins to
 Windows and UCS systems.
 
-.. list-table:: 'General' tab
+.. list-table:: *General* tab
    :header-rows: 1
    :widths: 30 70
 

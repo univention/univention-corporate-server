@@ -22,8 +22,9 @@ have full access to the UCS LDAP. If a module is granted via a UMC policy, the
 LDAP access must also be allowed for the user/group in the LDAP ACLs. Further
 information on LDAP ACLs can be found in :ref:`domain-ldap-acls`.
 
-.. list-table:: Policy 'UMC'
+.. list-table:: Policy *UMC*
    :header-rows: 1
+   :widths: 3 9
 
    * - Attribute
      - Description
