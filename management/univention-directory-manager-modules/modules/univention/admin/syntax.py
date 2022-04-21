@@ -793,14 +793,12 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
 	def get_choices(cls, lo, options):
 		choices = []
 
-		# scope/base is no public API and only used by search_syntax_choices_by_key!
-		module_search_options = {}
-		if 'scope' in options:
-			module_search_options['scope'] = options.pop('scope')
-		if 'base' in options:
-			module_search_options['base'] = options.pop('base')
-		if 'sizelimit' in options:
-			module_search_options['sizelimit'] = options.pop('sizelimit')
+		# scope & base is no public API and only used by search_syntax_choices_by_key!
+		module_search_options = {
+			opt: options.pop(opt)
+			for opt in ('scope', 'base', 'sizelimit')
+			if opt in options
+		}
 
 		# try to avoid using the slow udm interface
 		simple = False

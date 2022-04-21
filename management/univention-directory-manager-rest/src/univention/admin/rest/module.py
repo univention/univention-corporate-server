@@ -82,7 +82,7 @@ from univention.management.console.ldap import get_user_connection, get_machine_
 from univention.management.console.modules.udm.udm_ldap import get_module, UDM_Module, ldap_dn2path, container_modules, UDM_Error
 from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, ObjectDoesNotExist, NoIpLeft
 from univention.management.console.modules.udm.tools import check_license, LicenseError, LicenseImport as LicenseImporter, dump_license
-from univention.management.console.modules.sanitizers import MultiValidationError, ValidationError, DictSanitizer, StringSanitizer, ListSanitizer, IntegerSanitizer, ChoicesSanitizer, DNSanitizer, EmailSanitizer, LDAPSearchSanitizer, Sanitizer, BooleanSanitizer
+from univention.management.console.modules.sanitizers import MultiValidationError, ValidationError, DictSanitizer, StringSanitizer, ListSanitizer, IntegerSanitizer, ChoicesSanitizer, DNSanitizer, EmailSanitizer, LDAPSearchSanitizer, SearchSanitizer, Sanitizer, BooleanSanitizer
 from univention.management.console.error import UMC_Error, LDAP_ServerDown, LDAP_ConnectionFailed, UnprocessableEntity
 
 import univention.directory.reports as udr
@@ -3414,8 +3414,15 @@ class ObjectMultiEdit(ObjectEdit):
 
 
 class PropertyChoices(Resource):
-	"""GET udm/users/user/$DN/property/$name/choices (get possible values/choices for that property)"""
+	"""GET udm/users/user/$DN/properties/$name/choices (get possible values/choices for that property)"""
 
+	@sanitize_query_string(
+		dn=DNSanitizer(required=False),
+		property=ObjectPropertySanitizer(required=False),
+		value=SearchSanitizer(required=False),
+		hidden=BooleanSanitizer(required=False, default=True),
+		dependencies=DictSanitizer({}, required=False)
+	)
 	@tornado.gen.coroutine
 	def get(self, object_type, dn, property_):
 		dn = unquote_dn(dn)
@@ -3425,7 +3432,11 @@ class PropertyChoices(Resource):
 		except KeyError:
 			raise NotFound(object_type, dn)
 		type_ = udm_types.TypeHint.detect(prop, property_)
-		options = {}  # TODO: implement dependencies
+		options = {
+			opt: self.request.decoded_query_arguments[opt]
+			for opt in ('dn', 'property', 'value', 'hidden', 'dependencies')
+			if self.request.decoded_query_arguments[opt] is not None
+		}
 		choices = yield self.pool.submit(type_.get_choices, self.ldap_connection, options)
 		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation({'choices': choices})
