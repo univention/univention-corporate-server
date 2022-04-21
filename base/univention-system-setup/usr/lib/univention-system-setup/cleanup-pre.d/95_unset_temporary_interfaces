@@ -54,7 +54,7 @@ def unset_temporary_interfaces():
 				keys.append(var.replace('/type', '/%s' % k))
 			univention.config_registry.handler_unset(keys)
 			# Shut down temporary interface
-			subprocess.call(['ip', 'link', 'set', 'down', var.split('/')[1].replace('_', ':')])
+			subprocess.call(['ifconfig', var.split('/')[1].replace('_', ':'), 'down'])
 
 
 if __name__ == "__main__":
