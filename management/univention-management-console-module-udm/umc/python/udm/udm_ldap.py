@@ -1167,7 +1167,7 @@ class UDM_Module(object):
 		if ret:
 			if not ret.startswith('('):
 				ret = '(%s)' % ret
-			return '(&(%s%s)' % (hidden_filter, ret)
+			return '(&(%s)%s)' % (hidden_filter, ret)
 		return hidden_filter
 
 
