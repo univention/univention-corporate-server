@@ -257,7 +257,7 @@ define([
 
 			// when the commands have been finished, create the detail page
 			all(commands).then(lang.hitch(this, function(results) {
-				var template = lang.getObject('template.result', false, results) || null;
+				var template = lang.clone(results.template && results.template.result && results.template.result[0]) || null;
 				var layout = lang.clone(results.layout);
 				var policies = lang.clone(results.policies);
 				var properties = lang.clone(results.properties);
@@ -1250,11 +1250,6 @@ define([
 				}
 			}));
 
-			if (template && template.length > 0) {
-				template = template[0];
-			} else {
-				template = null;
-			}
 			// create detail page
 			this._tabs = new StackContainer({
 				region: 'main'
