@@ -534,6 +534,8 @@ class Instance(Base, ProgressMixin):
                         props['$dn$'] = obj.dn
                     props['$options$'] = {}
                     for opt in module.get_options(udm_object=obj):
+                        if module.name == 'settings/usertemplate' and opt['value']:
+                            props['_options'].append(opt['id'])
                         props['$options$'][opt['id']] = opt['value']
                     props['$policies$'] = {}
                     for policy in obj.policies:
