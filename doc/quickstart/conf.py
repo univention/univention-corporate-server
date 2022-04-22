@@ -102,3 +102,5 @@ latex_elements = {
 
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-figure_language_filename
 figure_language_filename = "{root}-{language}{ext}"
+
+univention_use_doc_base = True

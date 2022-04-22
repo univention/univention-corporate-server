@@ -109,3 +109,5 @@ latex_elements = {
 linkcheck_ignore = [
     r"https://errata\.software-univention\.de/#/\?erratum=",
 ]
+
+univention_use_doc_base = True
