@@ -32,9 +32,7 @@ system can have the Backup Directory Node role. In case the Primary Directory
 Node is unavailable, recovery is impossible or needs too much time, an
 administrator can promote a UCS system in the role Backup Directory Node to a
 Primary Directory Node. The promotion cannot be reversed. For details on the
-promotion process, see `UCS manual - Converting a Backup Directory Node backup
-to the new Primary Directory Node
-<https://docs.software-univention.de/manual-5.0.html#domain:backup2master>`_.
+promotion process, see :ref:`uv-manual:domain-backup2master`.
 
 Replica Directory Node
 ----------------------
@@ -87,7 +85,7 @@ network printers and routers with the *IP client* role.
 
 For Microsoft Windows related systems, UCS offers the roles *Domain Trust
 Account*, *Windows Domaincontroller* and *Windows Workstation / Server*. For
-more information about the differences of these roles see `UCS system roles in
-the UCS manual <https://docs.software-univention.de/manual.html#systemrollen>`_.
+more information about the differences of these roles see
+:ref:`uv-manual:system-roles`.
 
 .. TODO : Replace the reference with an intersphinx label reference, once the manual is available as Sphinx document.

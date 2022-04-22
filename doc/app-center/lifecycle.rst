@@ -36,8 +36,8 @@ The development of apps mainly involves the App Provider portal and a
 local instance of |UCSUCR| (UCS). To setup your UCS environment the best
 practice is to download one of the UCS virtual machine images and use
 VirtualBox or VMware (see :ref:`Download UCS <testing-download>`). After
-the installation, `activate the
-system <ucs-manual-license_>`_
+the installation, :ref:`activate the
+system <uv-manual:central-license>`
 and copy your SSH key to the UCS system to save typing the password on
 each remote console login. Finally, activate the Test App Center (see
 :ref:`Test App Center <testing-test-app-center>`). With that status it is

@@ -41,8 +41,9 @@ extensions = [
     "univention_sphinx_extension",
     "sphinxcontrib.spelling",
     "sphinx_last_updated_by_git",
-    "local_fix_title_translation",
+    "sphinx.ext.intersphinx",
 ]
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -104,3 +105,21 @@ latex_elements = {
 figure_language_filename = "{root}-{language}{ext}"
 
 univention_use_doc_base = True
+
+intersphinx_mapping = {
+    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None)
+}
+
+def fix_title_translation(app, config):
+    if config.language == "de":
+        config.project = "Quickstart Guide für Univention Corporate Server"
+        config.html_title = config.project
+        # TODO : Uncomment, once the German translation is available
+        # config.intersphinx_mapping["uv-manual"] = ("https://docs.software-univention.de/manual/5.0/de", None)
+
+
+def setup(app):
+    app.connect(
+        "config-inited",
+        fix_title_translation,
+    )

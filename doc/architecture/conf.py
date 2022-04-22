@@ -38,7 +38,12 @@ extensions = [
     "sphinx_last_updated_by_git",
     "sphinxcontrib.inkscapeconverter",
     "sphinxext.rediraffe",
+    "sphinx.ext.intersphinx",
 ]
+
+intersphinx_mapping = {
+    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None)
+}
 
 root_doc = "contents"
 
