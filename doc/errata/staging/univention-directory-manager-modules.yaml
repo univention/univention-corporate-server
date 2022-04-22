@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-directory-manager-modules
-fix: 
+fix:
 desc: |
  This update addresses the following issues:
  * Changing the case of name or email attributes will not be prevented by
@@ -18,4 +18,5 @@ desc: |
    choices based on that.
  * The available mail domains are now suggested when entering values for the
    `mailPrimaryAddress` of users/user obects.
-bug: [52760, 54617, 38762, 53843, 54467]
+ * Improve the error message for invalid dates by specifying the valid range.
+bug: [52760, 54617, 38762, 53843, 54467, 54668]

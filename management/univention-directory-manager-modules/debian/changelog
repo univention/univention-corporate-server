@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.11-46) unstable; urgency=medium
+
+  * Bug #54668: specify valid range in date error message
+
+ -- Carlos García-Mauriño <garcia-maurino.extern@univention.de>  Fri, 22 Apr 2022 17:00:00 +0300
+
 univention-directory-manager-modules (15.0.11-45) unstable; urgency=medium
 
   * Bug #54467: add widget for users/user:mailPrimaryAddress
