@@ -345,7 +345,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 .. envvar:: interfaces/ethX_Y/setting
 
    Defines an additional virtual interface. Replace :samp:`{X}` and
-   :samp:`{Y}`with the actual value for the interface. For more information, see
+   :samp:`{Y}` with the actual value for the interface. For more information, see
    :ref:`computers-ipv4`.
 
 .. envvar:: interfaces/ethX/ipv6/address
