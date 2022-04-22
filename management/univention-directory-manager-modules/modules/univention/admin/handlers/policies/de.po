@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-09-25 01:35+0200\n"
+"POT-Creation-Date: 2022-04-22 22:53+0200\n"
 "PO-Revision-Date: 2021-05-04 10:26+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -38,7 +38,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: modules/univention/admin/handlers/policies/policy.py:52
+#: modules/univention/admin/handlers/policies/policy.py:53
 msgid ""
 "<p>Policies are objects that can be connected with other objects in the "
 "directory tree. Connected policies allow to define object properties in a "
@@ -57,35 +57,35 @@ msgstr ""
 "univention.de/handbuch-5.0.html#central:policies\" target=\"_blank\">Online-"
 "Dokumentation zu UCS</a>.</p>"
 
-#: modules/univention/admin/handlers/policies/release.py:87
+#: modules/univention/admin/handlers/policies/release.py:89
 msgid "Activate release updates (Errata updates are activated by default)."
 msgstr ""
 "Aktiviere Release-Updates (Errata-Updates sind standardmäßig aktiviert)."
 
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:56
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:107
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:57
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:109
 msgid "Add hostnames to leases"
 msgstr "Holen von Lease-Rechnernamen"
 
 # l dhcp_scope.py:33 dhcp_scope.py:150
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:72
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:125
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:73
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:127
 msgid "Allow/Deny"
 msgstr "Erlauben/Verbieten"
 
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:125
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:127
 msgid "Allow/Deny/Ignore statements"
 msgstr "Erlauben/Verbieten/Ignorieren-Einstellungen"
 
-#: modules/univention/admin/handlers/policies/umc.py:53
+#: modules/univention/admin/handlers/policies/umc.py:54
 msgid "Allowed UMC operation sets"
 msgstr "Erlaubte UMC Operationen"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:111
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:113
 msgid "Attempt to do a DNS update when a DHCP lease is confirmed"
 msgstr "Versuche eine DNS-Aktualisierung, wenn eine DHCP Lease bestätigt wird"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:121
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:123
 msgid ""
 "Attempt to update a DHCP client's A record when the client acquires or "
 "renews a lease"
@@ -93,260 +93,260 @@ msgstr ""
 "Versuche den zum Rechner gehörenden A-Record im DNS-Server zu aktualisieren,"
 " wenn eine IP-Adresse vergeben oder erneuert wird"
 
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:53
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:92
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:54
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:94
 msgid "Authoritative"
 msgstr "Autoritativ"
 
-#: modules/univention/admin/handlers/policies/release.py:68
-#: modules/univention/admin/handlers/policies/release.py:107
+#: modules/univention/admin/handlers/policies/release.py:69
+#: modules/univention/admin/handlers/policies/release.py:109
 msgid "Automatic updates"
 msgstr "Automatische Updates"
 
-#: modules/univention/admin/handlers/policies/release.py:67
+#: modules/univention/admin/handlers/policies/release.py:68
 msgid "Automatic updates policies"
 msgstr "Automatische Updates-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/release.py:66
+#: modules/univention/admin/handlers/policies/release.py:67
 msgid "Automatic updates policy"
 msgstr "Automatische Updates-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/admin_container.py:86
+#: modules/univention/admin/handlers/policies/admin_container.py:88
 msgid "Available Univention Directory Manager modules"
 msgstr "Verfügbare Univention Directory Manager Module"
 
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:54
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:96
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:55
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:98
 msgid "BOOTP"
 msgstr "BOOTP"
 
-#: modules/univention/admin/handlers/policies/dhcp_dns.py:109
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:111
 msgid "Basic DNS settings"
 msgstr "Allgemeine DNS-Einstellungen"
 
-#: modules/univention/admin/handlers/policies/policy.py:69
-#: modules/univention/admin/handlers/policies/nfsmounts.py:103
-#: modules/univention/admin/handlers/policies/printserver.py:102
-#: modules/univention/admin/handlers/policies/ldapserver.py:103
-#: modules/univention/admin/handlers/policies/umc.py:103
+#: modules/univention/admin/handlers/policies/policy.py:70
+#: modules/univention/admin/handlers/policies/nfsmounts.py:105
+#: modules/univention/admin/handlers/policies/printserver.py:104
+#: modules/univention/admin/handlers/policies/ldapserver.py:105
+#: modules/univention/admin/handlers/policies/umc.py:105
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: modules/univention/admin/handlers/policies/dhcp_boot.py:108
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:110
 msgid "Boot"
 msgstr "Boot"
 
-#: modules/univention/admin/handlers/policies/dhcp_boot.py:54
-#: modules/univention/admin/handlers/policies/dhcp_boot.py:94
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:55
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:96
 msgid "Boot filename"
 msgstr "Boot-Dateiname"
 
-#: modules/univention/admin/handlers/policies/dhcp_boot.py:69
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:70
 msgid "Boot parameters"
 msgstr "Boot-Parameter"
 
-#: modules/univention/admin/handlers/policies/dhcp_boot.py:53
-#: modules/univention/admin/handlers/policies/dhcp_boot.py:88
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:54
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:90
 msgid "Boot server"
 msgstr "Boot-Server"
 
-#: modules/univention/admin/handlers/policies/dhcp_boot.py:108
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:110
 msgid "Boot settings"
 msgstr "Boot-Einstellungen"
 
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:54
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:97
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:55
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:99
 msgid "Boot unknown clients"
 msgstr "Booten unbekannter Clients"
 
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:55
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:101
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:56
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:103
 msgid "Booting"
 msgstr "Booten"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:60
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:130
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:61
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:132
 msgid "Client updates"
 msgstr "Client Aktualisierungen"
 
-#: modules/univention/admin/handlers/policies/registry.py:89
+#: modules/univention/admin/handlers/policies/registry.py:92
 msgid "Configuration Registry"
 msgstr "Configuration Registry"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:54
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:100
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:55
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:102
 msgid "DDNS domain name"
 msgstr "DDNS Domänenname"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:58
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:120
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:59
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:122
 msgid "DDNS forward update"
 msgstr "DDNS Forward-Update durchführen"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:53
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:94
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:54
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:96
 msgid "DDNS hostname"
 msgstr "DDNS Rechnername"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:55
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:105
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:56
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:107
 msgid "DDNS reverse domain name"
 msgstr "DDNS Reverse Domänenname"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:57
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:115
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:58
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:117
 msgid "DDNS update style"
 msgstr "DDNS Update-Stil"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:56
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:110
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:57
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:112
 msgid "DDNS updates"
 msgstr "DDNS Aktualisierungen"
 
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:71
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:72
 msgid "DHCP Allow/Deny policies"
 msgstr "DHCP Erlauben/Verbieten-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:70
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:71
 msgid "DHCP Allow/Deny policy"
 msgstr "DHCP Erlauben/Verbieten-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/dhcp_boot.py:68
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:69
 msgid "DHCP Boot policies"
 msgstr "DHCP Boot-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/dhcp_boot.py:67
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:68
 msgid "DHCP Boot policy"
 msgstr "DHCP Boot-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/dhcp_dns.py:68
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:69
 msgid "DHCP DNS policies"
 msgstr "DHCP DNS-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/dhcp_dns.py:67
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:68
 msgid "DHCP DNS policy"
 msgstr "DHCP DNS-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:74
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:75
 msgid "DHCP Dynamic DNS policies"
 msgstr "DHCP DNS Aktualisierungs-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:73
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:74
 msgid "DHCP Dynamic DNS policy"
 msgstr "DHCP DNS Aktualisierungs-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:69
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:70
 msgid "DHCP NetBIOS policies"
 msgstr "DHCP NetBIOS-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:68
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:69
 msgid "DHCP NetBIOS policy"
 msgstr "DHCP NetBIOS-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:113
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:115
 msgid "DHCP lease time"
 msgstr "DHCP Lease-Zeit"
 
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:69
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:70
 msgid "DHCP lease time policies"
 msgstr "DHCP Lease-Zeit-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:68
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:69
 msgid "DHCP lease time policy"
 msgstr "DHCP Lease-Zeit-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/dhcp_routing.py:102
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:104
 msgid "DHCP routing"
 msgstr "DHCP Routing"
 
-#: modules/univention/admin/handlers/policies/dhcp_routing.py:67
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:68
 msgid "DHCP routing policies"
 msgstr "DHCP Routing-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/dhcp_routing.py:66
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:67
 msgid "DHCP routing policy"
 msgstr "DHCP Routing-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:73
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:74
 msgid "DHCP statement"
 msgstr "DHCP Verschiedenes"
 
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:131
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:133
 msgid "DHCP statements"
 msgstr "DHCP Verschiedenes"
 
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:72
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:73
 msgid "DHCP statements policies"
 msgstr "DHCP Verschiedenes-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:71
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:72
 msgid "DHCP statements policy"
 msgstr "DHCP Verschiedenes-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/dhcp_dns.py:69
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:70
 msgid "DNS"
 msgstr "DNS"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:144
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:146
 msgid "DNS Update"
 msgstr "DDNS Aktualisierungen"
 
-#: modules/univention/admin/handlers/policies/maintenance.py:116
-#: modules/univention/admin/handlers/policies/repositorysync.py:96
+#: modules/univention/admin/handlers/policies/maintenance.py:118
+#: modules/univention/admin/handlers/policies/repositorysync.py:98
 msgid "Day"
 msgstr "Tag"
 
-#: modules/univention/admin/handlers/policies/maintenance.py:122
-#: modules/univention/admin/handlers/policies/repositorysync.py:102
+#: modules/univention/admin/handlers/policies/maintenance.py:124
+#: modules/univention/admin/handlers/policies/repositorysync.py:104
 msgid "Day of week"
 msgstr "Wochentag"
 
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:57
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:111
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:58
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:113
 msgid "Declines"
 msgstr "Ablehnungen"
 
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:53
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:89
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:54
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:91
 msgid "Default lease time"
 msgstr "Standard Lease-Zeit"
 
-#: modules/univention/admin/handlers/policies/share_userquota.py:73
+#: modules/univention/admin/handlers/policies/share_userquota.py:74
 msgid "Default quota for each user on a share"
 msgstr "Standard-Speicherplatzbegrenzung für jeden User auf der Freigabe"
 
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:118
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:120
 msgid "Define the name of the DHCP server"
 msgstr "Definiert den Namen des DHCP-Servers"
 
-#: modules/univention/admin/handlers/policies/umc.py:68
+#: modules/univention/admin/handlers/policies/umc.py:69
 msgid "Defines a set of allowed UMC operations"
 msgstr "Definiert eine Liste von erlaubten UMC Operationen"
 
-#: modules/univention/admin/handlers/policies/desktop.py:53
-#: modules/univention/admin/handlers/policies/desktop.py:87
+#: modules/univention/admin/handlers/policies/desktop.py:54
+#: modules/univention/admin/handlers/policies/desktop.py:89
 msgid "Desktop language"
 msgstr "Desktop-Sprache"
 
-#: modules/univention/admin/handlers/policies/desktop.py:67
+#: modules/univention/admin/handlers/policies/desktop.py:68
 msgid "Desktop policies"
 msgstr "Desktop-Profil-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/desktop.py:66
+#: modules/univention/admin/handlers/policies/desktop.py:67
 msgid "Desktop policy"
 msgstr "Desktop-Profil-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/desktop.py:54
-#: modules/univention/admin/handlers/policies/desktop.py:92
+#: modules/univention/admin/handlers/policies/desktop.py:55
+#: modules/univention/admin/handlers/policies/desktop.py:94
 msgid "Desktop profile"
 msgstr "Desktop-Profil"
 
-#: modules/univention/admin/handlers/policies/desktop.py:68
-#: modules/univention/admin/handlers/policies/desktop.py:121
+#: modules/univention/admin/handlers/policies/desktop.py:69
+#: modules/univention/admin/handlers/policies/desktop.py:123
 msgid "Desktop settings"
 msgstr "Desktop-Einstellungen"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:126
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:128
 msgid ""
 "Do DNS updates for clients even if their IP addresses are assigned using "
 "fixed addresses"
@@ -354,17 +354,17 @@ msgstr ""
 "Führe DNS-Aktualisierung auch bei Clients durch, die eine statische IP-"
 "Addresse bekommen"
 
-#: modules/univention/admin/handlers/policies/dhcp_dns.py:53
-#: modules/univention/admin/handlers/policies/dhcp_dns.py:88
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:54
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:90
 msgid "Domain name"
 msgstr "Domänenname"
 
-#: modules/univention/admin/handlers/policies/dhcp_dns.py:54
-#: modules/univention/admin/handlers/policies/dhcp_dns.py:94
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:55
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:96
 msgid "Domain name servers"
 msgstr "DNS-Server"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:101
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:103
 msgid ""
 "Domain name that will be appended to the client's hostname to form a fully-"
 "qualified domain-name (FQDN)"
@@ -372,7 +372,7 @@ msgstr ""
 "Domänenname, der an den Rechnernamen angehängt wird, um den vollständigen "
 "Namen (FQDN) zu bilden"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:106
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:108
 msgid ""
 "Domain name that will be appended to the client's hostname to produce a name"
 " for use in the client's PTR record"
@@ -380,25 +380,25 @@ msgstr ""
 "Domänenname, der für den PTR-Record an den Rechnernamen des Clients "
 "angehängt wird"
 
-#: modules/univention/admin/handlers/policies/registry.py:139
+#: modules/univention/admin/handlers/policies/registry.py:140
 #, python-format
 msgid "Duplicated variables not allowed: %s"
 msgstr "Doppelte Variablen sind nicht erlaubt: %s"
 
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:56
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:106
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:57
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:108
 msgid "Duplicates"
 msgstr "Duplikate"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:75
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:76
 msgid "Dynamic DNS"
 msgstr "DNS Aktualisierung"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:144
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:146
 msgid "Dynamic DNS update"
 msgstr "Dynamische DNS-Aktualisierungen"
 
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:92
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:94
 msgid ""
 "Dynamically assign addresses to unknown clients. Allowed by default. This "
 "option should not be used anymore."
@@ -406,7 +406,7 @@ msgstr ""
 "Dynamische Vergabe von Adressen an unbekannte Clients. Standardmäßig "
 "erlaubt. Nicht mehr empfohlen."
 
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:98
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:100
 msgid ""
 "Enable clients for which there is no host declaration to obtain IP "
 "addresses. Allow and deny statements within pool declarations will still be "
@@ -415,13 +415,13 @@ msgstr ""
 "Vergabe von IP-Adressen an Clients ohne eigenen DHCP-Rechner-Eintrag (unter "
 "Berücksichtigung der Einstellungen zum DHCP-Pool)."
 
-#: modules/univention/admin/handlers/policies/pwhistory.py:104
+#: modules/univention/admin/handlers/policies/pwhistory.py:106
 msgid ""
 "Enables/disables password quality checks for example dictionary entries"
 msgstr ""
 "(De-)Aktiviert die Passwort-Qualitätsprüfung wie z.B. Wörterbuch-Prüfungen."
 
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:103
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:105
 msgid ""
 "First send an ICMP Echo request (a ping) when considering dynamically "
 "allocating an IP address. Should only be disabled if the delay of one second"
@@ -431,140 +431,140 @@ msgstr ""
 " dynamischen Adresse. Sollte nur bei Problemen seitens des Clients mit der "
 "Verzögerung von einer Sekunde deaktiviert werden."
 
-#: modules/univention/admin/handlers/policies/pwhistory.py:118
-#: modules/univention/admin/handlers/policies/policy.py:69
-#: modules/univention/admin/handlers/policies/nfsmounts.py:103
-#: modules/univention/admin/handlers/policies/release.py:107
-#: modules/univention/admin/handlers/policies/printserver.py:102
-#: modules/univention/admin/handlers/policies/ldapserver.py:103
-#: modules/univention/admin/handlers/policies/slavepackages.py:110
-#: modules/univention/admin/handlers/policies/admin_container.py:101
-#: modules/univention/admin/handlers/policies/dhcp_routing.py:102
-#: modules/univention/admin/handlers/policies/dhcp_dns.py:109
-#: modules/univention/admin/handlers/policies/memberpackages.py:110
-#: modules/univention/admin/handlers/policies/maintenance.py:150
-#: modules/univention/admin/handlers/policies/umc.py:103
-#: modules/univention/admin/handlers/policies/masterpackages.py:110
-#: modules/univention/admin/handlers/policies/registry.py:105
-#: modules/univention/admin/handlers/policies/repositorysync.py:130
-#: modules/univention/admin/handlers/policies/share_userquota.py:127
-#: modules/univention/admin/handlers/policies/desktop.py:121
-#: modules/univention/admin/handlers/policies/repositoryserver.py:103
+#: modules/univention/admin/handlers/policies/maintenance.py:152
+#: modules/univention/admin/handlers/policies/policy.py:70
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:104
+#: modules/univention/admin/handlers/policies/share_userquota.py:129
+#: modules/univention/admin/handlers/policies/repositorysync.py:132
+#: modules/univention/admin/handlers/policies/nfsmounts.py:105
+#: modules/univention/admin/handlers/policies/memberpackages.py:112
+#: modules/univention/admin/handlers/policies/pwhistory.py:120
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:111
+#: modules/univention/admin/handlers/policies/admin_container.py:103
+#: modules/univention/admin/handlers/policies/release.py:109
+#: modules/univention/admin/handlers/policies/masterpackages.py:112
+#: modules/univention/admin/handlers/policies/printserver.py:104
+#: modules/univention/admin/handlers/policies/ldapserver.py:105
+#: modules/univention/admin/handlers/policies/desktop.py:123
+#: modules/univention/admin/handlers/policies/registry.py:108
+#: modules/univention/admin/handlers/policies/slavepackages.py:112
+#: modules/univention/admin/handlers/policies/umc.py:105
+#: modules/univention/admin/handlers/policies/repositoryserver.py:105
 msgid "General"
 msgstr "Allgemein"
 
-#: modules/univention/admin/handlers/policies/dhcp_dns.py:110
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:112
 msgid "General DHCP DNS settings"
 msgstr "Grundeinstellungen - DHCP DNS"
 
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:115
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:117
 msgid "General DHCP NetBIOS settings"
 msgstr "Grundeinstellungen - DHCP NetBIOS"
 
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:126
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:128
 msgid "General DHCP allow/deny settings"
 msgstr "Grundeinstellungen - DHCP Erlauben/Verbieten"
 
-#: modules/univention/admin/handlers/policies/dhcp_boot.py:109
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:111
 msgid "General DHCP boot settings"
 msgstr "Grundeinstellungen - DHCP Boot"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:145
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:147
 msgid "General DHCP dynamic DNS settings"
 msgstr "Grundeinstellungen - DHCP DNS Aktualisierung"
 
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:114
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:116
 msgid "General DHCP lease time settings"
 msgstr "Grundeinstellungen - DHCP Lease-Zeit"
 
-#: modules/univention/admin/handlers/policies/dhcp_routing.py:103
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:105
 msgid "General DHCP routing settings"
 msgstr "Grundeinstellungen - DHCP Routing"
 
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:132
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:134
 msgid "General DHCP statements settings"
 msgstr "Grundeinstellungen - DHCP Verschiedenes"
 
-#: modules/univention/admin/handlers/policies/ldapserver.py:104
+#: modules/univention/admin/handlers/policies/ldapserver.py:106
 msgid "General LDAP server settings"
 msgstr "Grundeinstellungen - LDAP-Server"
 
-#: modules/univention/admin/handlers/policies/memberpackages.py:111
+#: modules/univention/admin/handlers/policies/memberpackages.py:113
 msgid "General Managed Node packages settings"
 msgstr "Grundeinstellungen - Managed Node-Pakete"
 
-#: modules/univention/admin/handlers/policies/nfsmounts.py:104
+#: modules/univention/admin/handlers/policies/nfsmounts.py:106
 msgid "General NFS mounts settings"
 msgstr "Grundeinstellungen - NFS-Freigaben"
 
-#: modules/univention/admin/handlers/policies/masterpackages.py:111
+#: modules/univention/admin/handlers/policies/masterpackages.py:113
 msgid "General Primary/Backup Node packages settings"
 msgstr "Grundeinstellungen - Primary/Backup Node-Pakete"
 
-#: modules/univention/admin/handlers/policies/slavepackages.py:111
+#: modules/univention/admin/handlers/policies/slavepackages.py:113
 msgid "General Replica Node packages settings"
 msgstr "Grundeinstellungen - Replica Node-Pakete"
 
-#: modules/univention/admin/handlers/policies/umc.py:104
+#: modules/univention/admin/handlers/policies/umc.py:106
 msgid "General UMC settings"
 msgstr "Grundeinstellungen - UMC"
 
-#: modules/univention/admin/handlers/policies/registry.py:106
+#: modules/univention/admin/handlers/policies/registry.py:109
 msgid "General Univention Configuration Registry settings"
 msgstr "Grundeinstellungen - Univention Configuration Registry"
 
-#: modules/univention/admin/handlers/policies/admin_container.py:102
+#: modules/univention/admin/handlers/policies/admin_container.py:104
 msgid "General Univention Directory Manager container settings"
 msgstr ""
 "Grundeinstellungen - Univention Directory Manager Container Konfiguration"
 
-#: modules/univention/admin/handlers/policies/release.py:108
+#: modules/univention/admin/handlers/policies/release.py:110
 msgid "General automatic updates settings"
 msgstr "Grundeinstellungen - Automatische Updates"
 
-#: modules/univention/admin/handlers/policies/desktop.py:122
+#: modules/univention/admin/handlers/policies/desktop.py:124
 msgid "General desktop settings"
 msgstr "Grundeinstellungen - Desktop"
 
-#: modules/univention/admin/handlers/policies/maintenance.py:151
+#: modules/univention/admin/handlers/policies/maintenance.py:153
 msgid "General maintenance settings"
 msgstr "Grundeinstellungen - Paketpflege"
 
-#: modules/univention/admin/handlers/policies/pwhistory.py:119
+#: modules/univention/admin/handlers/policies/pwhistory.py:121
 msgid "General passwords settings"
 msgstr "Grundeinstellungen - Passwort"
 
-#: modules/univention/admin/handlers/policies/printserver.py:103
+#: modules/univention/admin/handlers/policies/printserver.py:105
 msgid "General print server settings"
 msgstr "Grundeinstellungen - Druckserver"
 
-#: modules/univention/admin/handlers/policies/repositoryserver.py:104
+#: modules/univention/admin/handlers/policies/repositoryserver.py:106
 msgid "General repository server settings"
 msgstr "Grundeinstellungen - Repository-Server"
 
-#: modules/univention/admin/handlers/policies/repositorysync.py:131
+#: modules/univention/admin/handlers/policies/repositorysync.py:133
 msgid "General repository synchronisation settings"
 msgstr "Grundeinstellungen - Repository-Synchronisation"
 
-#: modules/univention/admin/handlers/policies/share_userquota.py:128
+#: modules/univention/admin/handlers/policies/share_userquota.py:130
 msgid "General user quota settings"
 msgstr "Grundeinstellungen - Benutzer-Quota"
 
-#: modules/univention/admin/handlers/policies/share_userquota.py:54
-#: modules/univention/admin/handlers/policies/share_userquota.py:96
+#: modules/univention/admin/handlers/policies/share_userquota.py:55
+#: modules/univention/admin/handlers/policies/share_userquota.py:98
 msgid "Hard limit"
 msgstr "Hard-Limit"
 
-#: modules/univention/admin/handlers/policies/share_userquota.py:56
-#: modules/univention/admin/handlers/policies/share_userquota.py:106
+#: modules/univention/admin/handlers/policies/share_userquota.py:57
+#: modules/univention/admin/handlers/policies/share_userquota.py:108
 msgid "Hard limit (Files)"
 msgstr "Hard-Limit (Anzahl Dateien)"
 
-#: modules/univention/admin/handlers/policies/share_userquota.py:107
+#: modules/univention/admin/handlers/policies/share_userquota.py:109
 msgid "Hard limit. Can not be exceeded."
 msgstr "Harte Grenze, die nicht überschritten werden kann."
 
-#: modules/univention/admin/handlers/policies/share_userquota.py:97
+#: modules/univention/admin/handlers/policies/share_userquota.py:99
 msgid ""
 "Hard limit. Can not be exceeded. Values may be entered with one of the "
 "following units as postfix: B (default), kB, MB, GB"
@@ -572,12 +572,12 @@ msgstr ""
 "Das Hardlimit kann vom Benutzer nicht überschritten werden. Dem anzugebenden"
 " Wert kann eine der folgenden Einheiten folgen: B (Vorgabe), KB, MB, GB"
 
-#: modules/univention/admin/handlers/policies/pwhistory.py:53
-#: modules/univention/admin/handlers/policies/pwhistory.py:88
+#: modules/univention/admin/handlers/policies/pwhistory.py:54
+#: modules/univention/admin/handlers/policies/pwhistory.py:90
 msgid "History length"
 msgstr "History-Länge"
 
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:112
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:114
 msgid ""
 "Honor DHCPDECLINE messages. deny/ignore will prevent malicious or buggy "
 "clients from completely exhausting the DHCP server's allocation pool."
@@ -586,20 +586,20 @@ msgstr ""
 "'Verbieten/Ignorieren' bewahrt den DHCP-Server vor Vergabe aller IP-Adressen"
 " an böswillige oder fehlerhafte Clients."
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:131
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:133
 msgid "Honor the client's intention to do its own update of its A record"
 msgstr "DNS-Aktualisierungen durch Clients erlauben"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:95
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:97
 msgid "Hostname that will be used for the client's A and PTR records"
 msgstr "Rechnername, der in den A- und PTR-Records verwendet werden soll"
 
-#: modules/univention/admin/handlers/policies/maintenance.py:128
-#: modules/univention/admin/handlers/policies/repositorysync.py:108
+#: modules/univention/admin/handlers/policies/maintenance.py:130
+#: modules/univention/admin/handlers/policies/repositorysync.py:110
 msgid "Hour"
 msgstr "Stunde"
 
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:107
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:109
 msgid ""
 "If a request is received from a client that matches the MAC address of a "
 "host declaration, any other leases matching that MAC address will be "
@@ -612,61 +612,61 @@ msgstr ""
 "Voreinstellung ist 'Erlauben'. Die Einstellung 'Verbieten' verletzt das "
 "DHCP-Protokoll."
 
-#: modules/univention/admin/handlers/policies/dhcp_boot.py:95
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:97
 msgid "Initial boot file to be loaded by a client"
 msgstr "Erste Datei, die beim Booten vom Client geladen wird"
 
-#: modules/univention/admin/handlers/policies/ldapserver.py:53
+#: modules/univention/admin/handlers/policies/ldapserver.py:54
 msgid "LDAP Server"
 msgstr "LDAP-Server"
 
-#: modules/univention/admin/handlers/policies/ldapserver.py:68
-#: modules/univention/admin/handlers/policies/ldapserver.py:87
+#: modules/univention/admin/handlers/policies/ldapserver.py:69
+#: modules/univention/admin/handlers/policies/ldapserver.py:89
 msgid "LDAP server"
 msgstr "LDAP-Server"
 
-#: modules/univention/admin/handlers/policies/ldapserver.py:67
+#: modules/univention/admin/handlers/policies/ldapserver.py:68
 msgid "LDAP server policies"
 msgstr "LDAP-Server-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/ldapserver.py:66
+#: modules/univention/admin/handlers/policies/ldapserver.py:67
 msgid "LDAP server policy"
 msgstr "LDAP-Server-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:113
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:115
 msgid "Lease Time"
 msgstr "Lease-Zeit"
 
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:70
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:71
 msgid "Lease time"
 msgstr "Lease-Zeit"
 
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:90
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:92
 msgid ""
 "Lease time used if the client does not request a specific expiration time"
 msgstr "Lease-Zeit, wenn der Client keine bestimmte Ablaufzeit erbittet"
 
-#: modules/univention/admin/handlers/policies/admin_container.py:52
+#: modules/univention/admin/handlers/policies/admin_container.py:53
 msgid "List of Univention Directory Manager modules"
 msgstr "Liste der Directory Manager Module"
 
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:90
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:92
 msgid "List of WINS servers listed in order of preference"
 msgstr "Liste der WINS-Server nach Priorität"
 
-#: modules/univention/admin/handlers/policies/umc.py:88
+#: modules/univention/admin/handlers/policies/umc.py:90
 msgid "List of allowed UMC operation sets"
 msgstr "Liste der erlaubten UMC Operationen"
 
-#: modules/univention/admin/handlers/policies/desktop.py:99
+#: modules/univention/admin/handlers/policies/desktop.py:101
 msgid "Logon scripts"
 msgstr "Login-Skripte"
 
-#: modules/univention/admin/handlers/policies/desktop.py:105
+#: modules/univention/admin/handlers/policies/desktop.py:107
 msgid "Logout scripts"
 msgstr "Logout-Skripte"
 
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:108
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:110
 msgid ""
 "Look up the domain name corresponding to the IP address of each address in "
 "the lease pool and use that address for the DHCP hostname option. Disabled "
@@ -676,357 +676,361 @@ msgstr ""
 "Vergabe-Pool (leases) und verwendet diesen für die DHCP-Hostname-Option. "
 "Standardmäßig deaktiviert."
 
-#: modules/univention/admin/handlers/policies/maintenance.py:56
-#: modules/univention/admin/handlers/policies/maintenance.py:71
+#: modules/univention/admin/handlers/policies/maintenance.py:57
+#: modules/univention/admin/handlers/policies/maintenance.py:72
 msgid "Maintenance"
 msgstr "Paketpflege"
 
-#: modules/univention/admin/handlers/policies/maintenance.py:70
+#: modules/univention/admin/handlers/policies/maintenance.py:71
 msgid "Maintenance policies"
 msgstr "Paketpflege-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/maintenance.py:69
+#: modules/univention/admin/handlers/policies/maintenance.py:70
 msgid "Maintenance policy"
 msgstr "Paketpflege-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/maintenance.py:150
+#: modules/univention/admin/handlers/policies/maintenance.py:152
 msgid "Maintenance settings"
 msgstr "Paketpflege Einstellungen"
 
 #: modules/univention/admin/handlers/policies/memberpackages.py:69
-msgid "Packages for Managed Nodes"
-msgstr "Pakete für Managed Nodes"
-
-#: modules/univention/admin/handlers/policies/memberpackages.py:68
 msgid "Managed Node packages policies"
 msgstr "Managed Node-Paketerichtlinien"
 
-#: modules/univention/admin/handlers/policies/memberpackages.py:67
+#: modules/univention/admin/handlers/policies/memberpackages.py:68
 msgid "Managed Node packages policy"
 msgstr "Managed Node-Paketerichtlinie"
 
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:54
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:94
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:55
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:96
 msgid "Maximum lease time"
 msgstr "Maximale Lease-Zeit"
 
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:95
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:97
 msgid "Maximum lease time that the server will accept if asked for"
 msgstr ""
 "Maximale Lease-Zeit, die der Server akzeptiert, wenn er dannach gefragt wird"
 
-#: modules/univention/admin/handlers/policies/pwhistory.py:99
+#: modules/univention/admin/handlers/policies/pwhistory.py:101
 msgid "Minimal amount of characters"
 msgstr "Mindestanzahl an Zeichen"
 
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:100
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:102
 msgid "Minimum granted lease time"
 msgstr "Minimal gewährte Lease-Zeit"
 
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:55
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:99
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:56
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:101
 msgid "Minimum lease time"
 msgstr "Minimale Lease-Zeit"
 
-#: modules/univention/admin/handlers/policies/maintenance.py:134
-#: modules/univention/admin/handlers/policies/repositorysync.py:114
+#: modules/univention/admin/handlers/policies/maintenance.py:136
+#: modules/univention/admin/handlers/policies/repositorysync.py:116
 msgid "Minute"
 msgstr "Minute"
 
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:131
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:133
 msgid "Miscellaneous DHCP statements"
 msgstr "Verschiedene DHCP-Einstellungen"
 
-#: modules/univention/admin/handlers/policies/maintenance.py:110
-#: modules/univention/admin/handlers/policies/repositorysync.py:90
+#: modules/univention/admin/handlers/policies/maintenance.py:112
+#: modules/univention/admin/handlers/policies/repositorysync.py:92
 msgid "Month"
 msgstr "Monat"
 
-#: modules/univention/admin/handlers/policies/nfsmounts.py:53
+#: modules/univention/admin/handlers/policies/nfsmounts.py:54
 msgid "Mount NFS shares"
 msgstr "Einzubindende NFS-Freigaben"
 
-#: modules/univention/admin/handlers/policies/nfsmounts.py:68
+#: modules/univention/admin/handlers/policies/nfsmounts.py:69
 msgid "NFS mounts"
 msgstr "NFS-Freigaben"
 
-#: modules/univention/admin/handlers/policies/nfsmounts.py:67
+#: modules/univention/admin/handlers/policies/nfsmounts.py:68
 msgid "NFS mounts policies"
 msgstr "NFS-Freigaben-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/nfsmounts.py:66
+#: modules/univention/admin/handlers/policies/nfsmounts.py:67
 msgid "NFS mounts policy"
 msgstr "NFS-Freigaben-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/nfsmounts.py:87
+#: modules/univention/admin/handlers/policies/nfsmounts.py:89
 msgid "NFS shares to mount"
 msgstr "NFS-Freigaben einbinden"
 
-#: modules/univention/admin/handlers/policies/pwhistory.py:79
-#: modules/univention/admin/handlers/policies/policy.py:61
-#: modules/univention/admin/handlers/policies/nfsmounts.py:78
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:83
-#: modules/univention/admin/handlers/policies/release.py:78
-#: modules/univention/admin/handlers/policies/printserver.py:77
-#: modules/univention/admin/handlers/policies/ldapserver.py:78
-#: modules/univention/admin/handlers/policies/slavepackages.py:79
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:85
-#: modules/univention/admin/handlers/policies/admin_container.py:77
-#: modules/univention/admin/handlers/policies/dhcp_routing.py:78
-#: modules/univention/admin/handlers/policies/dhcp_dns.py:79
-#: modules/univention/admin/handlers/policies/memberpackages.py:79
-#: modules/univention/admin/handlers/policies/maintenance.py:81
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:82
-#: modules/univention/admin/handlers/policies/umc.py:79
-#: modules/univention/admin/handlers/policies/masterpackages.py:79
-#: modules/univention/admin/handlers/policies/registry.py:80
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:80
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:80
-#: modules/univention/admin/handlers/policies/repositorysync.py:81
-#: modules/univention/admin/handlers/policies/share_userquota.py:82
-#: modules/univention/admin/handlers/policies/desktop.py:78
-#: modules/univention/admin/handlers/policies/dhcp_boot.py:79
-#: modules/univention/admin/handlers/policies/repositoryserver.py:78
+#: modules/univention/admin/handlers/policies/maintenance.py:83
+#: modules/univention/admin/handlers/policies/policy.py:62
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:80
+#: modules/univention/admin/handlers/policies/share_userquota.py:84
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:82
+#: modules/univention/admin/handlers/policies/repositorysync.py:83
+#: modules/univention/admin/handlers/policies/nfsmounts.py:80
+#: modules/univention/admin/handlers/policies/memberpackages.py:81
+#: modules/univention/admin/handlers/policies/pwhistory.py:81
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:81
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:84
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:81
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:82
+#: modules/univention/admin/handlers/policies/admin_container.py:79
+#: modules/univention/admin/handlers/policies/release.py:80
+#: modules/univention/admin/handlers/policies/masterpackages.py:81
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:85
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:87
+#: modules/univention/admin/handlers/policies/printserver.py:79
+#: modules/univention/admin/handlers/policies/ldapserver.py:80
+#: modules/univention/admin/handlers/policies/desktop.py:80
+#: modules/univention/admin/handlers/policies/registry.py:83
+#: modules/univention/admin/handlers/policies/slavepackages.py:81
+#: modules/univention/admin/handlers/policies/umc.py:81
+#: modules/univention/admin/handlers/policies/repositoryserver.py:80
 msgid "Name"
 msgstr "Name"
 
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:70
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:71
 msgid "NetBIOS"
 msgstr "NetBIOS"
 
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:53
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:89
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:54
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:91
 msgid "NetBIOS name servers"
 msgstr "NetBIOS-Nameserver"
 
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:55
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:100
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:56
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:102
 msgid "NetBIOS node type"
 msgstr "NetBIOS Node Typ"
 
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:96
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:98
 msgid "NetBIOS over TCP/IP scope parameter"
 msgstr "NetBIOS over TCP/IP scope parameter"
 
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:54
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:95
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:55
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:97
 msgid "NetBIOS scope"
 msgstr "NetBIOS Scope"
 
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:114
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:116
 msgid "Netbios"
 msgstr "Netbios"
 
-#: modules/univention/admin/handlers/policies/pwhistory.py:94
+#: modules/univention/admin/handlers/policies/pwhistory.py:96
 msgid "Number of days after which the password has to be changed"
 msgstr "Anzahl an Tagen, nach der das Passwort geändert werden muss"
 
-#: modules/univention/admin/handlers/policies/dhcp_boot.py:89
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:91
 msgid ""
 "Numeric IP address or name of the server from which the initial boot file is"
 " retrieved."
 msgstr ""
 "IP-Adresse oder Name des Servers, von dem die Boot-Datei geladen werden soll"
 
-#: modules/univention/admin/handlers/policies/slavepackages.py:53
-#: modules/univention/admin/handlers/policies/slavepackages.py:88
-#: modules/univention/admin/handlers/policies/memberpackages.py:53
-#: modules/univention/admin/handlers/policies/memberpackages.py:88
-#: modules/univention/admin/handlers/policies/masterpackages.py:53
-#: modules/univention/admin/handlers/policies/masterpackages.py:88
+#: modules/univention/admin/handlers/policies/memberpackages.py:54
+#: modules/univention/admin/handlers/policies/memberpackages.py:90
+#: modules/univention/admin/handlers/policies/masterpackages.py:54
+#: modules/univention/admin/handlers/policies/masterpackages.py:90
+#: modules/univention/admin/handlers/policies/slavepackages.py:54
+#: modules/univention/admin/handlers/policies/slavepackages.py:90
 msgid "Package installation list"
 msgstr "Paket Installationsliste"
 
-#: modules/univention/admin/handlers/policies/slavepackages.py:54
-#: modules/univention/admin/handlers/policies/slavepackages.py:94
-#: modules/univention/admin/handlers/policies/memberpackages.py:54
-#: modules/univention/admin/handlers/policies/memberpackages.py:94
-#: modules/univention/admin/handlers/policies/masterpackages.py:54
-#: modules/univention/admin/handlers/policies/masterpackages.py:94
+#: modules/univention/admin/handlers/policies/memberpackages.py:55
+#: modules/univention/admin/handlers/policies/memberpackages.py:96
+#: modules/univention/admin/handlers/policies/masterpackages.py:55
+#: modules/univention/admin/handlers/policies/masterpackages.py:96
+#: modules/univention/admin/handlers/policies/slavepackages.py:55
+#: modules/univention/admin/handlers/policies/slavepackages.py:96
 msgid "Package removal list"
 msgstr "Paket Deinstallationsliste"
 
-#: modules/univention/admin/handlers/policies/pwhistory.py:54
-#: modules/univention/admin/handlers/policies/pwhistory.py:93
+#: modules/univention/admin/handlers/policies/memberpackages.py:70
+msgid "Packages for Managed Nodes"
+msgstr "Pakete für Managed Nodes"
+
+#: modules/univention/admin/handlers/policies/masterpackages.py:70
+msgid "Packages for Primary/Backup Nodes"
+msgstr "Pakete für Primary/Backup Nodes"
+
+#: modules/univention/admin/handlers/policies/slavepackages.py:70
+msgid "Packages for Replica Nodes"
+msgstr "Pakete für Replica Nodes"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:55
+#: modules/univention/admin/handlers/policies/pwhistory.py:95
 msgid "Password expiry interval"
 msgstr "Passwort-Ablaufintervall"
 
-#: modules/univention/admin/handlers/policies/pwhistory.py:55
-#: modules/univention/admin/handlers/policies/pwhistory.py:98
+#: modules/univention/admin/handlers/policies/pwhistory.py:56
+#: modules/univention/admin/handlers/policies/pwhistory.py:100
 msgid "Password length"
 msgstr "Passwort-Länge"
 
-#: modules/univention/admin/handlers/policies/pwhistory.py:103
+#: modules/univention/admin/handlers/policies/pwhistory.py:105
 msgid "Password quality check"
 msgstr "Passwort-Qualitätsprüfung"
 
-#: modules/univention/admin/handlers/policies/pwhistory.py:69
-#: modules/univention/admin/handlers/policies/pwhistory.py:118
+#: modules/univention/admin/handlers/policies/pwhistory.py:70
+#: modules/univention/admin/handlers/policies/pwhistory.py:120
 msgid "Passwords"
 msgstr "Passwort-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/pwhistory.py:68
+#: modules/univention/admin/handlers/policies/pwhistory.py:69
 msgid "Passwords policies"
 msgstr "Passwort-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/pwhistory.py:67
+#: modules/univention/admin/handlers/policies/pwhistory.py:68
 msgid "Passwords policy"
 msgstr "Passwort-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/maintenance.py:90
+#: modules/univention/admin/handlers/policies/maintenance.py:92
 msgid "Perform maintenance after system startup"
 msgstr "Paketpflege durchführen nach Hochfahren des Systems"
 
-#: modules/univention/admin/handlers/policies/maintenance.py:95
+#: modules/univention/admin/handlers/policies/maintenance.py:97
 msgid "Perform maintenance before system shutdown"
 msgstr "Paketpflege durchführen vor Herunterfahren des Systems"
 
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:55
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:102
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:56
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:104
 msgid "Ping check"
 msgstr "Ping Check"
 
-#: modules/univention/admin/handlers/policies/policy.py:49
+#: modules/univention/admin/handlers/policies/policy.py:50
 msgid "Policies"
 msgstr "Richtlinien"
 
-#: modules/univention/admin/handlers/policies/policy.py:47
 #: modules/univention/admin/handlers/policies/policy.py:48
+#: modules/univention/admin/handlers/policies/policy.py:49
 msgid "Policy"
 msgstr "Richtlinie"
 
-#: modules/univention/admin/handlers/policies/release.py:65
+#: modules/univention/admin/handlers/policies/release.py:66
 msgid "Policy: Automatic updates"
 msgstr "Richtlinie: Automatische Updates"
 
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:69
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:70
 msgid "Policy: DHCP Allow/Deny"
 msgstr "Richtlinie: DHCP Erlauben/Verbieten"
 
-#: modules/univention/admin/handlers/policies/dhcp_boot.py:66
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:67
 msgid "Policy: DHCP Boot"
 msgstr "Richtlinie: DHCP Boot"
 
-#: modules/univention/admin/handlers/policies/dhcp_dns.py:66
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:67
 msgid "Policy: DHCP DNS"
 msgstr "Richtlinie: DHCP DNS"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:72
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:73
 msgid "Policy: DHCP Dynamic DNS"
 msgstr "Richtlinie: DHCP DNS Aktualisierung"
 
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:67
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:68
 msgid "Policy: DHCP NetBIOS"
 msgstr "Richtlinie: DHCP NetBIOS"
 
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:67
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:68
 msgid "Policy: DHCP lease time"
 msgstr "Richtlinie: DHCP Lease-Zeit"
 
-#: modules/univention/admin/handlers/policies/dhcp_routing.py:65
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:66
 msgid "Policy: DHCP routing"
 msgstr "Richtlinie: DHCP Routing"
 
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:70
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:71
 msgid "Policy: DHCP statements"
 msgstr "Richtlinie: DHCP Verschiedenes"
 
-#: modules/univention/admin/handlers/policies/desktop.py:65
+#: modules/univention/admin/handlers/policies/desktop.py:66
 msgid "Policy: Desktop"
 msgstr "Richtlinie: Desktop"
 
-#: modules/univention/admin/handlers/policies/ldapserver.py:65
+#: modules/univention/admin/handlers/policies/ldapserver.py:66
 msgid "Policy: LDAP server"
 msgstr "Richtlinie: LDAP-Server"
 
-#: modules/univention/admin/handlers/policies/maintenance.py:68
+#: modules/univention/admin/handlers/policies/maintenance.py:69
 msgid "Policy: Maintenance"
 msgstr "Richtlinie: Paketpflege"
 
-#: modules/univention/admin/handlers/policies/memberpackages.py:66
-msgid "Policy: Packages for Managed Nodes"
-msgstr "Richtlinie: Pakete für Managed Nodes"
-
-#: modules/univention/admin/handlers/policies/nfsmounts.py:65
+#: modules/univention/admin/handlers/policies/nfsmounts.py:66
 msgid "Policy: NFS mounts"
 msgstr "Richtlinie: NFS-Freigaben"
 
-#: modules/univention/admin/handlers/policies/pwhistory.py:66
-msgid "Policy: Passwords"
-msgstr "Richtlinie: Passwort"
+#: modules/univention/admin/handlers/policies/memberpackages.py:67
+msgid "Policy: Packages for Managed Nodes"
+msgstr "Richtlinie: Pakete für Managed Nodes"
 
-#: modules/univention/admin/handlers/policies/masterpackages.py:66
+#: modules/univention/admin/handlers/policies/masterpackages.py:67
 msgid "Policy: Packages for Primary/Backup Nodes"
 msgstr "Richtlinie: Pakete für Primary/Backup Nodes"
 
-#: modules/univention/admin/handlers/policies/printserver.py:64
-msgid "Policy: Print server"
-msgstr "Richtlinie: Druckserver"
-
-#: modules/univention/admin/handlers/policies/slavepackages.py:66
+#: modules/univention/admin/handlers/policies/slavepackages.py:67
 msgid "Policy: Packages for Replica Nodes"
 msgstr "Richtlinie: Pakete für Replica Nodes"
 
-#: modules/univention/admin/handlers/policies/repositoryserver.py:65
+#: modules/univention/admin/handlers/policies/pwhistory.py:67
+msgid "Policy: Passwords"
+msgstr "Richtlinie: Passwort"
+
+#: modules/univention/admin/handlers/policies/printserver.py:65
+msgid "Policy: Print server"
+msgstr "Richtlinie: Druckserver"
+
+#: modules/univention/admin/handlers/policies/repositoryserver.py:66
 msgid "Policy: Repository server"
 msgstr "Richtlinie: Repository-Server"
 
-#: modules/univention/admin/handlers/policies/repositorysync.py:68
+#: modules/univention/admin/handlers/policies/repositorysync.py:69
 msgid "Policy: Repository synchronisation"
 msgstr "Richtlinie: Repository-Synchronisation"
 
-#: modules/univention/admin/handlers/policies/umc.py:65
+#: modules/univention/admin/handlers/policies/umc.py:66
 msgid "Policy: UMC"
 msgstr "Richtlinie: UMC"
 
-#: modules/univention/admin/handlers/policies/registry.py:67
+#: modules/univention/admin/handlers/policies/registry.py:69
 msgid "Policy: Univention Configuration Registry"
 msgstr "Richtlinie: Univention Configuration Registry"
 
-#: modules/univention/admin/handlers/policies/admin_container.py:64
+#: modules/univention/admin/handlers/policies/admin_container.py:65
 msgid "Policy: Univention Directory Manager container settings"
 msgstr "Richtlinie: Univention Directory Manager Container Konfiguration"
 
-#: modules/univention/admin/handlers/policies/share_userquota.py:69
+#: modules/univention/admin/handlers/policies/share_userquota.py:70
 msgid "Policy: User quota"
 msgstr "Richtlinie: Benutzer-Quota"
 
 #: modules/univention/admin/handlers/policies/masterpackages.py:69
-msgid "Packages for Primary/Backup Nodes"
-msgstr "Pakete für Primary/Backup Nodes"
-
-#: modules/univention/admin/handlers/policies/masterpackages.py:68
 msgid "Primary/Backup Node packages policies"
 msgstr "Primary/Backup Node-Paketerichtlinien"
 
-#: modules/univention/admin/handlers/policies/masterpackages.py:67
+#: modules/univention/admin/handlers/policies/masterpackages.py:68
 msgid "Primary/Backup Node packages policy"
 msgstr "Primary/Backup Node-Paketerichtlinie"
 
-#: modules/univention/admin/handlers/policies/printserver.py:52
-#: modules/univention/admin/handlers/policies/printserver.py:67
-#: modules/univention/admin/handlers/policies/printserver.py:86
+#: modules/univention/admin/handlers/policies/printserver.py:53
+#: modules/univention/admin/handlers/policies/printserver.py:68
+#: modules/univention/admin/handlers/policies/printserver.py:88
 msgid "Print server"
 msgstr "Druckserver"
 
-#: modules/univention/admin/handlers/policies/printserver.py:66
+#: modules/univention/admin/handlers/policies/printserver.py:67
 msgid "Print server policies"
 msgstr "Druckserver-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/printserver.py:65
+#: modules/univention/admin/handlers/policies/printserver.py:66
 msgid "Print server policy"
 msgstr "Druckserver-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/share_userquota.py:127
+#: modules/univention/admin/handlers/policies/share_userquota.py:129
 msgid "Quota"
 msgstr "Speicherplatzbegrenzung für Benutzer"
 
-#: modules/univention/admin/handlers/policies/share_userquota.py:57
-#: modules/univention/admin/handlers/policies/share_userquota.py:111
+#: modules/univention/admin/handlers/policies/share_userquota.py:58
+#: modules/univention/admin/handlers/policies/share_userquota.py:113
 msgid "Reapply settings on every login"
 msgstr "Einstellungen bei jedem Login anwenden"
 
-#: modules/univention/admin/handlers/policies/share_userquota.py:112
+#: modules/univention/admin/handlers/policies/share_userquota.py:114
 msgid ""
 "Reapply the mountpoint specific user quota policies on each user login. If "
 "not set, the initially configured quota settings will not be overwritten."
@@ -1035,62 +1039,58 @@ msgstr ""
 "Benutzerlogin anwenden. Wenn nicht aktiviert, wird eine initial gesetzte "
 "Quota Einstellung nicht überschrieben werden."
 
-#: modules/univention/admin/handlers/policies/maintenance.py:100
+#: modules/univention/admin/handlers/policies/maintenance.py:102
 msgid "Reboot after maintenance"
 msgstr "Nach Paketpflege neu starten"
 
-#: modules/univention/admin/handlers/policies/release.py:53
+#: modules/univention/admin/handlers/policies/release.py:54
 msgid "Release Version"
 msgstr "Release Version"
 
 #: modules/univention/admin/handlers/policies/slavepackages.py:69
-msgid "Packages for Replica Nodes"
-msgstr "Pakete für Replica Nodes"
-
-#: modules/univention/admin/handlers/policies/slavepackages.py:68
 msgid "Replica Node packages policies"
 msgstr "Replica Node-Paketerichtlinien"
 
-#: modules/univention/admin/handlers/policies/slavepackages.py:67
+#: modules/univention/admin/handlers/policies/slavepackages.py:68
 msgid "Replica Node packages policy"
 msgstr "Replica Node-Paketerichtlinie"
 
-#: modules/univention/admin/handlers/policies/repositoryserver.py:53
-#: modules/univention/admin/handlers/policies/repositoryserver.py:68
-#: modules/univention/admin/handlers/policies/repositoryserver.py:87
+#: modules/univention/admin/handlers/policies/repositoryserver.py:54
+#: modules/univention/admin/handlers/policies/repositoryserver.py:69
+#: modules/univention/admin/handlers/policies/repositoryserver.py:89
 msgid "Repository server"
 msgstr "Repository-Server"
 
-#: modules/univention/admin/handlers/policies/repositoryserver.py:67
+#: modules/univention/admin/handlers/policies/repositoryserver.py:68
 msgid "Repository server policies"
 msgstr "Repository-Server-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/repositoryserver.py:66
+#: modules/univention/admin/handlers/policies/repositoryserver.py:67
 msgid "Repository server policy"
 msgstr "Repository-Server-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/repositorysync.py:56
-#: modules/univention/admin/handlers/policies/repositorysync.py:71
+#: modules/univention/admin/handlers/policies/repositorysync.py:57
+#: modules/univention/admin/handlers/policies/repositorysync.py:72
 msgid "Repository synchronisation"
 msgstr "Repository-Synchronisation"
 
-#: modules/univention/admin/handlers/policies/repositorysync.py:70
+#: modules/univention/admin/handlers/policies/repositorysync.py:71
 msgid "Repository synchronisation policies"
 msgstr "Repository-Synchronisation-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/repositorysync.py:69
+#: modules/univention/admin/handlers/policies/repositorysync.py:70
 msgid "Repository synchronisation policy"
 msgstr "Repository-Synchronisation-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/repositorysync.py:130
+#: modules/univention/admin/handlers/policies/repositorysync.py:132
 msgid "Repository synchronisation settings"
 msgstr "Repository Synchronisationseinstellungen"
 
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:97
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:99
 msgid "Respond to BOOTP queries. Allowed by default."
 msgstr "Auf BOOTP-Anfragen antworten. Standardmäßig erlaubt."
 
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:102
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:104
 msgid ""
 "Respond to queries from a particular client. Has meaning only when it "
 "appears in a host declaration. Allowed by default."
@@ -1098,51 +1098,51 @@ msgstr ""
 "Auf Anfragen dieses Rechners reagieren. Standardmäßig erlaubt. Ist nur in "
 "DHCP-Rechner-Einträgen von Bedeutung."
 
-#: modules/univention/admin/handlers/policies/dhcp_routing.py:53
-#: modules/univention/admin/handlers/policies/dhcp_routing.py:87
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:54
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:89
 msgid "Routers"
 msgstr "Router"
 
-#: modules/univention/admin/handlers/policies/dhcp_routing.py:68
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:69
 msgid "Routing"
 msgstr "Routing"
 
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:114
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:116
 msgid "SMB/CIFS name resolution"
 msgstr "Auflösung der SMB/CIFS-Namen"
 
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:93
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:95
 msgid "Send DHCPNAK messages to misconfigured clients. Disabled by default."
 msgstr ""
 "Versenden von DHCPNAK-Nachrichten an falsch konfigurierte Clients. "
 "Standardmäßig deaktiviert."
 
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:57
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:112
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:58
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:114
 msgid "Server identifier"
 msgstr "Serverkennung"
 
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:58
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:117
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:59
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:119
 msgid "Server name"
 msgstr "Servername"
 
-#: modules/univention/admin/handlers/policies/share_userquota.py:53
-#: modules/univention/admin/handlers/policies/share_userquota.py:91
+#: modules/univention/admin/handlers/policies/share_userquota.py:54
+#: modules/univention/admin/handlers/policies/share_userquota.py:93
 msgid "Soft limit"
 msgstr "Soft-Limit"
 
-#: modules/univention/admin/handlers/policies/share_userquota.py:55
-#: modules/univention/admin/handlers/policies/share_userquota.py:101
+#: modules/univention/admin/handlers/policies/share_userquota.py:56
+#: modules/univention/admin/handlers/policies/share_userquota.py:103
 msgid "Soft limit (Files)"
 msgstr "Soft-Limit (Anzahl Dateien)"
 
-#: modules/univention/admin/handlers/policies/share_userquota.py:102
+#: modules/univention/admin/handlers/policies/share_userquota.py:104
 msgid "Soft limit. If exceeded users can be warned."
 msgstr ""
 "Weiche Grenze, bei deren Überschreitung der Benutzer gewarnt werden kann"
 
-#: modules/univention/admin/handlers/policies/share_userquota.py:92
+#: modules/univention/admin/handlers/policies/share_userquota.py:94
 msgid ""
 "Soft limit. If exceeded users can be warned. Values may be entered with one "
 "of the following units as postfix: B (default), kB, MB, GB"
@@ -1151,11 +1151,11 @@ msgstr ""
 "werden. Dem anzugebenden Wert kann eine der folgenden Einheiten folgen: B "
 "(Vorgabe), KB, MB, GB"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:116
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:118
 msgid "Specify the DDNS Update Style to use for a DHCP Service"
 msgstr "Legt die Art der DDNS-Aktualisierung für einen DHCP Dienst fest"
 
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:113
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:115
 msgid ""
 "The IP address identifying the DHCP server that should be used by the "
 "clients. Use this only if auto-detection fails for servers with multiple IP "
@@ -1165,16 +1165,16 @@ msgstr ""
 "Diese Option sollte nur verwendet werden, wenn die automatische Erkennung "
 "bei Servern mit mehreren IP-Adressen fehlschlägt."
 
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:101
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:103
 msgid "The node type of clients for NetBIOS over TCP/IP"
 msgstr "Der Node Typ der Clients für NetBIOS over TCP/IP"
 
-#: modules/univention/admin/handlers/policies/registry.py:105
+#: modules/univention/admin/handlers/policies/registry.py:108
 msgid "These configuration settings will be set on the local UCS system."
 msgstr ""
 "Diese Konfigurationseinstellungen werden auf dem lokalen UCS-System gesetzt."
 
-#: modules/univention/admin/handlers/policies/pwhistory.py:89
+#: modules/univention/admin/handlers/policies/pwhistory.py:91
 msgid ""
 "This number indicates after how many changes the user may reuse the old "
 "password again"
@@ -1182,85 +1182,85 @@ msgstr ""
 "Diese Zahl gibt an, nach wie vielen Passwortwechseln der Benutzer ein altes "
 "Passwort wiederverwenden darf"
 
-#: modules/univention/admin/handlers/policies/registry.py:56
+#: modules/univention/admin/handlers/policies/registry.py:58
 msgid "UCR Variables"
 msgstr "UCR-Variablen"
 
-#: modules/univention/admin/handlers/policies/umc.py:67
+#: modules/univention/admin/handlers/policies/umc.py:68
 msgid "UMC policies"
 msgstr "UMC-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/umc.py:66
+#: modules/univention/admin/handlers/policies/umc.py:67
 msgid "UMC policy"
 msgstr "UMC-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/registry.py:70
+#: modules/univention/admin/handlers/policies/registry.py:72
 msgid "Univention Configuration Registry"
 msgstr "Univention Configuration Registry"
 
-#: modules/univention/admin/handlers/policies/registry.py:69
+#: modules/univention/admin/handlers/policies/registry.py:71
 msgid "Univention Configuration Registry policies"
 msgstr "Univention Configuration Registry-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/registry.py:68
+#: modules/univention/admin/handlers/policies/registry.py:70
 msgid "Univention Configuration Registry policy"
 msgstr "Univention Configuration Registry-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/admin_container.py:67
+#: modules/univention/admin/handlers/policies/admin_container.py:68
 msgid "Univention Directory Manager container settings"
 msgstr "Univention Directory Manager Container Konfiguration"
 
-#: modules/univention/admin/handlers/policies/admin_container.py:66
+#: modules/univention/admin/handlers/policies/admin_container.py:67
 msgid "Univention Directory Manager container settings policies"
 msgstr "Univention Directory Manager Container Konfiguration-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/admin_container.py:65
+#: modules/univention/admin/handlers/policies/admin_container.py:66
 msgid "Univention Directory Manager container settings policy"
 msgstr "Univention Directory Manager Container Konfiguration-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/admin_container.py:101
+#: modules/univention/admin/handlers/policies/admin_container.py:103
 msgid "Univention Directory Manager settings"
 msgstr "Univention Directory Manager Konfiguration"
 
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:53
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:91
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:54
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:93
 msgid "Unknown clients"
 msgstr "Unbekannte Clients"
 
-#: modules/univention/admin/handlers/policies/repositoryserver.py:103
+#: modules/univention/admin/handlers/policies/repositoryserver.py:105
 msgid "Update"
 msgstr "Aktualisieren"
 
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:59
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:125
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:60
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:127
 msgid "Update static leases"
 msgstr "Aktualisierung statischer Leases"
 
-#: modules/univention/admin/handlers/policies/release.py:92
+#: modules/univention/admin/handlers/policies/release.py:94
 msgid "Update to this UCS version"
 msgstr "Bis zu dieser UCS-Version aktualisieren"
 
-#: modules/univention/admin/handlers/policies/maintenance.py:105
+#: modules/univention/admin/handlers/policies/maintenance.py:107
 msgid "Use Cron settings"
 msgstr "Cron Einstellungen benutzen"
 
-#: modules/univention/admin/handlers/policies/share_userquota.py:72
+#: modules/univention/admin/handlers/policies/share_userquota.py:73
 msgid "User quota"
 msgstr "Benutzer-Quota"
 
-#: modules/univention/admin/handlers/policies/share_userquota.py:71
+#: modules/univention/admin/handlers/policies/share_userquota.py:72
 msgid "User quota policies"
 msgstr "Benutzer-Quota-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/share_userquota.py:70
+#: modules/univention/admin/handlers/policies/share_userquota.py:71
 msgid "User quota policy"
 msgstr "Benutzer-Quota-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/release.py:93
+#: modules/univention/admin/handlers/policies/release.py:95
 msgid "Without specifying the most recent version will be used"
 msgstr "Ohne Angabe wird die aktuellste Version verwendet"
 
-#: modules/univention/admin/handlers/policies/policy.py:51
+#: modules/univention/admin/handlers/policies/policy.py:52
 msgid "https://docs.software-univention.de/manual-5.0.html#central:policies"
 msgstr ""
 "https://docs.software-univention.de/handbuch-5.0.html#central:policies"

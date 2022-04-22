@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-09-25 01:35+0200\n"
+"POT-Creation-Date: 2022-04-22 22:53+0200\n"
 "PO-Revision-Date: 2006-11-02 17:18+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -12,58 +12,58 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: modules/univention/admin/handlers/kerberos/kdcentry.py:119
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:121
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: modules/univention/admin/handlers/kerberos/kdcentry.py:71
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:73
 msgid "Description"
 msgstr "Beschreibung"
 
-#: modules/univention/admin/handlers/kerberos/kdcentry.py:119
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:121
 msgid "General"
 msgstr "Allgemein"
 
-#: modules/univention/admin/handlers/kerberos/kdcentry.py:83
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:85
 msgid "Generate random password"
 msgstr "Zufälliges Passwort generieren"
 
-#: modules/univention/admin/handlers/kerberos/kdcentry.py:53
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:54
 msgid "KDC Entries"
 msgstr "KDC-Einträge"
 
-#: modules/univention/admin/handlers/kerberos/kdcentry.py:52
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:53
 msgid "KDC Entry"
 msgstr "KDC-Eintrag"
 
-#: modules/univention/admin/handlers/kerberos/kdcentry.py:96
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:98
 msgid "KDC Flags"
 msgstr "KDC-Flags"
 
-#: modules/univention/admin/handlers/kerberos/kdcentry.py:120
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:122
 msgid "KDC entry"
 msgstr "KDC-Eintrag"
 
-#: modules/univention/admin/handlers/kerberos/kdcentry.py:51
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:52
 msgid "Kerberos: KDC Entry"
 msgstr "Kerberos: KDC-Eintrag"
 
-#: modules/univention/admin/handlers/kerberos/kdcentry.py:89
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:91
 msgid "Key version"
 msgstr "Key-Version"
 
-#: modules/univention/admin/handlers/kerberos/kdcentry.py:103
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:105
 msgid "Maximum life time"
 msgstr "Maximale Lebenszeit"
 
-#: modules/univention/admin/handlers/kerberos/kdcentry.py:110
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:112
 msgid "Maximum renew time"
 msgstr "Maximale Erneruerungszeit"
 
-#: modules/univention/admin/handlers/kerberos/kdcentry.py:77
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:79
 msgid "Password"
 msgstr "Passwort"
 
-#: modules/univention/admin/handlers/kerberos/kdcentry.py:63
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:65
 msgid "Principal name"
 msgstr "Principal name"
