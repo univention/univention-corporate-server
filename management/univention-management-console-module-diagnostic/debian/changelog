@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.0-30) unstable; urgency=medium
+
+  * Bug #54675: fixed decode error in 52_mail_acl_sync when multiple folders exist
+
+ -- Maximilian Janßen <janssen@univention.de>  Fri, 22 Apr 2022 14:30:02 +0200
+
 univention-management-console-module-diagnostic (6.0.0-29) unstable; urgency=medium
 
   * Bug #53455: added code and readability improvements

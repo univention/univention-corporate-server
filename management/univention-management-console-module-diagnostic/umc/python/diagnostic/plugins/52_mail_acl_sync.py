@@ -152,7 +152,7 @@ class ACL(object):
 		return it.chain(user_diff, group_diff)
 
 	def _diff(self, exception, expected, actual):
-		all_id = expected.viewkeys() | actual.viewkeys()
+		all_id = expected.keys() | actual.keys()
 		for identifier in all_id:
 			exp = expected.get(identifier, 'none')
 			act = actual.get(identifier, 'none')
@@ -189,8 +189,8 @@ class DovecotACL(ACL):
 	def _get_dovecot_acl(folder):
 		mailbox = 'shared/{pm}' if folder.mail_address else '{cn}/INBOX'
 		cmd = ('doveadm', 'acl', 'get', '-u', 'Administrator', mailbox.format(cn=folder.common_name, pm=folder.mail_address))
-		output = subprocess.check_output(cmd, stderr=subprocess.PIPE).splitlines()
-		return {identifier.strip(): set(rights.strip().split()) for (identifier, rights) in (line.rsplit('  ', 1) for line in output.decode('UTF-8', 'replace'))}
+		output = subprocess.check_output(cmd, stderr=subprocess.PIPE).decode('UTF-8', 'replace').splitlines()
+		return {identifier.strip(): set(rights.strip().split()) for (identifier, rights) in (line.rsplit('  ', 1) for line in output)}
 
 
 def all_differences(acl_class):
