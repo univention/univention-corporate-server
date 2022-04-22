@@ -243,7 +243,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 .. envvar:: gateway
 
    Configures the IPv4 network gateway. For more information, see
-   :ref:`computers-ipv6`.
+   :ref:`computers-ipv4`.
 
 
 .. envvar:: google-apps/attributes/anonymize

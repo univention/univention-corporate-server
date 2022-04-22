@@ -172,6 +172,7 @@ UCR variables:
 * :envvar:`interfaces/ethX/address`
 * :envvar:`interfaces/ethX/netmask`
 * :envvar:`interfaces/ethX/type`
+* :envvar:`gateway`
 
 Besides the physical interfaces, additional virtual interfaces can also be
 defined in the form :envvar:`interfaces/ethX_Y/setting`.
@@ -209,12 +210,9 @@ under *Gateway (IPv4)* and *Gateway (IPv6)*. It is not obligatory to enter a
 gateway for IPv6, but recommended. A gateway configured here has preference over
 router advertisements, which might otherwise be able to change the route.
 
-(UCR variables:
+UCR variables:
 
-* :envvar:`gateway`
 * :envvar:`ipv6/gateway`
-
-)
 
 .. _computers-configuring-the-name-servers:
 
