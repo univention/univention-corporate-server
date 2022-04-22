@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-appcenter
+fix:
+desc: |
+ This update addresses the following issue(s):
+ * A crash when updating apps that used to be based in Docker compose but
+   aren't anymore has been fixed.
+bug: [54669]

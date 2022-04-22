@@ -1102,7 +1102,7 @@ class App(with_metaclass(AppMetaClass, object)):
 		return self.docker_image is not None or self.docker_main_service is not None
 
 	def uses_docker_compose(self):
-		return os.path.exists(self.get_cache_file('compose'))
+		return self.docker_main_service and not self.docker_image and os.path.exists(self.get_cache_file('compose'))
 
 	@property
 	def ucr_status_key(self):
