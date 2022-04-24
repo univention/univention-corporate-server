@@ -60,13 +60,15 @@ msgid ""
 msgstr ""
 "La valeur ne doit contenir que des chiffres, des lettres et des points."
 
-#: modules/univention/admin/syntax.py:2467
-#: modules/univention/admin/syntax.py:2497
+#: modules/univention/admin/syntax.py:3013
+#: modules/univention/admin/syntax.py:3043
 msgid ""
-"A host name or FQDN must start and end with a letter or number. In between "
-"additionally dashes, dots and underscores are allowed."
+"A host name or FQDN must start with a letter and end with a letter or number."
+" In between additionally dashes, dots and underscores are allowed."
 msgstr ""
-"La valeur ne doit contenir que des chiffres, des lettres et des points."
+"Un nom d'hôte ou FQDN doit commencer avec une lettre et terminer avec une "
+"lettre ou un chiffre. Les tirets, points et tirets bas sont aussi autorisés "
+"entre les deux."
 
 #: modules/univention/admin/syntax.py:5894
 msgid ""

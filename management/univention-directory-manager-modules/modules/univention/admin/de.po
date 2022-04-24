@@ -60,12 +60,12 @@ msgstr ""
 #: modules/univention/admin/syntax.py:3013
 #: modules/univention/admin/syntax.py:3043
 msgid ""
-"A host name or FQDN must start and end with a letter or number. In between "
-"additionally dashes, dots and underscores are allowed."
+"A host name or FQDN must start with a letter and end with a letter or number."
+" In between additionally dashes, dots and underscores are allowed."
 msgstr ""
 "Ein Hostname oder FQDN muss mit einem Buchstaben oder einer Zahl beginnen "
-"und enden. Dazwischen sind zusätzlich Bindestriche, Unterstriche und Punkte "
-"erlaubt."
+"und mit einem Buchstaben oder einer Zahl enden. Dazwischen sind zusätzlich "
+"Bindestriche, Unterstriche und Punkte erlaubt."
 
 #: modules/univention/admin/syntax.py:6687
 msgid ""

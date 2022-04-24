@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.11-47) unstable; urgency=medium
+
+  * Bug #54663: specify that host name or FQDN must begin with a letter in
+    ValueError message
+
+ -- Carlos García-Mauriño <garcia-maurino.extern@univention.de>  Thu, 23 Apr 2022 07:39:00 +0300
+
 univention-directory-manager-modules (15.0.11-46) unstable; urgency=medium
 
   * Bug #54668: specify valid range in date error message

@@ -19,4 +19,6 @@ desc: |
  * The available mail domains are now suggested when entering values for the
    `mailPrimaryAddress` of users/user obects.
  * Improve the error message for invalid dates by specifying the valid range.
-bug: [52760, 54617, 38762, 53843, 54467, 54668]
+ * Clarified error message for invalid host name or FQDN. The host name or
+   FQDN must begin with a letter.
+bug: [52760, 54617, 38762, 53843, 54467, 54668, 54663]
