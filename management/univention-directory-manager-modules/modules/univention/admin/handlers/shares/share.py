@@ -516,7 +516,7 @@ layout = [
             ['sambaForceSecurityMode', 'sambaForceDirectorySecurityMode'],
         ]),
         Group(_('Samba options'), layout=[
-            ['sambaLocking', 'sambaBlockingLocks'],
+            ['sambaLocking'],
             ['sambaStrictLocking'],
             ['sambaOplocks', 'sambaLevel2Oplocks', 'sambaFakeOplocks'],
             ['sambaBlockSize', 'sambaCscPolicy'],
