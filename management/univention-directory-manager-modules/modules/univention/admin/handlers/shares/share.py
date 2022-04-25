@@ -363,12 +363,14 @@ property_descriptions = {
         )),
         syntax=univention.admin.syntax.string,
         options=['samba'],
+        multivalue=True,
     ),
     'sambaInvalidUsers': univention.admin.property(
         short_description=_('Invalid users or groups'),
         long_description=_('The users or groups listed here cannot access the Samba share. The syntax is identical to the one for valid users. If a user or group is included in the list of valid users and unauthorized users, access is denied.'),
         syntax=univention.admin.syntax.string,
         options=['samba'],
+        multivalue=True,
     ),
     'sambaForceUser': univention.admin.property(
         short_description=_('Force user'),
@@ -421,12 +423,14 @@ property_descriptions = {
         long_description=_('List of users or groups that are given read-only access to the share.'),
         syntax=univention.admin.syntax.string,
         options=['samba'],
+        multivalue=True,
     ),
     'sambaWriteList': univention.admin.property(
         short_description=_('Restrict write access to these users/groups'),
         long_description=_('If (and only if) "Allow Samba write access" is deactivated only the users and groups listed here have write permission for this share. Groups can be assigned with the same syntax as "Valid users or groups". If the connecting user is in this list then they will be given write access, no matter what the read only option is set to.'),
         syntax=univention.admin.syntax.string,
         options=['samba'],
+        multivalue=True,
     ),
     'sambaVFSObjects': univention.admin.property(
         short_description=_('VFS objects'),
@@ -560,24 +564,45 @@ def unmapKeyAndValue(old):
     return [entry.decode('UTF-8').split(u' = ', 1) for entry in old]
 
 
-def insertQuotes(value):
-    'Turns @group name, user name into @"group name", "user name"'
-    new_entries = []
-    for entry in value.split(u','):
-        new_entry = entry.strip()
-        if not new_entry:
-            continue
-        if new_entry.startswith(u'@'):
-            is_group = True
-            new_entry = new_entry[1:].strip()
-        else:
-            is_group = False
-        if ' ' in new_entry:
-            new_entry = u'"%s"' % new_entry
-        if is_group:
-            new_entry = u'@%s' % new_entry
-        new_entries.append(new_entry)
-    return ', '.join(new_entries).encode('UTF-8')
+def unmap_samba_user_groups(value, encoding=()):
+    """
+    >>> unmap_samba_user_groups([b'root fred,admin, @wheel, "Domain User", @"Domain Users"'])
+    ['root', 'fred', 'admin', '@wheel', 'Domain User', '@Domain Users']
+
+    # FIXME: regex cannot handle this:
+    >>> unmap_samba_user_groups([b'root +"some \" quoted" &option'])  # doctest: +SKIP
+    ['root', '+some " quoted', '&option']
+    """
+    if not value:
+        return []
+
+    def unquote(x):
+        return x[1:-1].replace('\\"', '"').replace('\\\\', '\\') if x.startswith('"') and x.endswith('"') else x
+    value = value[0].decode(*encoding)
+    pattern = re.compile('[, ](?=(?:[^"]*"[^"]*")*[^"]*$)')
+    values = [x.strip() for x in pattern.split(value) if x.strip()]
+    return [
+        v[0] + unquote(v[1:]) if v[0] in '@+&' else unquote(v)
+        for v in values
+    ]
+
+
+def map_samba_user_groups(value, encoding=()):
+    """
+    Turns @group name, user name into @"group name", "user name"
+
+    >>> map_samba_user_groups(['root', 'fred', 'admin', '@wheel', 'Domain User', '&Domain Users', '+some " quoted', 'option"set'])
+    b'root, fred, admin, @wheel, "Domain User", &"Domain Users", +"some \\\\" quoted", "option\\\\"set"'
+    >>> map_samba_user_groups(['@"Domain Users"'])
+    b'@"Domain Users"'
+    """
+    def quote(x):
+        return '"%s"' % x.replace('\\', '\\\\').replace('"', r'\"') if not x.startswith('"') and not x.endswith('"') and (' ' in x or '"' in x or '\\' in x) else x
+    return ', '.join(
+        v[0] + quote(v[1:]) if v[0] in '@+&' else quote(v)
+        for v in value
+        if v
+    ).encode(*encoding)
 
 
 def unmap_vfs_objects(value, encoding=()):
@@ -621,8 +646,8 @@ mapping.register('sambaLevel2Oplocks', 'univentionShareSambaLevel2Oplocks', None
 mapping.register('sambaFakeOplocks', 'univentionShareSambaFakeOplocks', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('sambaBlockSize', 'univentionShareSambaBlockSize', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('sambaCscPolicy', 'univentionShareSambaCscPolicy', None, univention.admin.mapping.ListToString)
-mapping.register('sambaValidUsers', 'univentionShareSambaValidUsers', None, univention.admin.mapping.ListToString)
-mapping.register('sambaInvalidUsers', 'univentionShareSambaInvalidUsers', None, univention.admin.mapping.ListToString)
+mapping.register('sambaValidUsers', 'univentionShareSambaValidUsers', map_samba_user_groups, unmap_samba_user_groups)
+mapping.register('sambaInvalidUsers', 'univentionShareSambaInvalidUsers', map_samba_user_groups, unmap_samba_user_groups)
 mapping.register('sambaHostsAllow', 'univentionShareSambaHostsAllow', encoding='ASCII')
 mapping.register('sambaHostsDeny', 'univentionShareSambaHostsDeny', encoding='ASCII')
 mapping.register('sambaForceUser', 'univentionShareSambaForceUser', None, univention.admin.mapping.ListToString)
@@ -633,8 +658,8 @@ mapping.register('sambaInheritAcls', 'univentionShareSambaInheritAcls', None, un
 mapping.register('sambaPostexec', 'univentionShareSambaPostexec', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('sambaPreexec', 'univentionShareSambaPreexec', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('sambaWriteable', 'univentionShareSambaWriteable', boolToString, stringToBool, encoding='ASCII')
-mapping.register('sambaReadList', 'univentionShareSambaReadList', insertQuotes, univention.admin.mapping.ListToString)
-mapping.register('sambaWriteList', 'univentionShareSambaWriteList', insertQuotes, univention.admin.mapping.ListToString)
+mapping.register('sambaReadList', 'univentionShareSambaReadList', map_samba_user_groups, unmap_samba_user_groups)
+mapping.register('sambaWriteList', 'univentionShareSambaWriteList', map_samba_user_groups, unmap_samba_user_groups)
 mapping.register('sambaVFSObjects', 'univentionShareSambaVFSObjects', map_vfs_objects, unmap_vfs_objects, encoding='ASCII')
 mapping.register('sambaMSDFSRoot', 'univentionShareSambaMSDFS', boolToString, stringToBool, encoding='ASCII')
 mapping.register('sambaInheritOwner', 'univentionShareSambaInheritOwner', boolToString, stringToBool, encoding='ASCII')
