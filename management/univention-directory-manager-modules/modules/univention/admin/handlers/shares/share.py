@@ -497,11 +497,11 @@ layout = [
             'sambaBrowseable',
             'sambaPublic',
             'sambaMSDFSRoot',
-            'sambaDosFilemode',
             'sambaHideUnreadable',
             'sambaVFSObjects',
         ]),
         Group(_('Samba permissions'), layout=[
+            'sambaDosFilemode',
             ['sambaForceUser', 'sambaForceGroup'],
             ['sambaValidUsers', 'sambaInvalidUsers'],
             ['sambaWriteList'],
