@@ -109,6 +109,12 @@ if [ "$1" = "configure" ]; then
 	fi
 
 	if [ -n "$2" ]; then
+		if dpkg --compare-versions "$2" lt-nl "14.0.5-5"; then
+			if univention-ldapsearch -LLL "(&(univentionShareHost=$hostname.$domainname)(univentionShareSambaNtAclSupport=1)(univentionShareSambaInheritAcls=1))" 1.1 | grep -q "^dn:"; then
+				univention-directory-listener-ctrl resync samba-shares
+			fi
+		fi
+
 		### The following block of code may be removed after ucs_5.0-0
 		if dpkg --compare-versions "$2" lt-nl "14.0.1-2"; then
 			univention-config-registry commit /etc/samba/smb.conf
