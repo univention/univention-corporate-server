@@ -425,7 +425,8 @@ property_descriptions = {
     'sambaVFSObjects': univention.admin.property(
         short_description=_('VFS objects'),
         long_description=_('Specifies which VFS Objects to use.'),
-        syntax=univention.admin.syntax.string,
+        syntax=getattr(univention.admin.syntax, 'VFSObjects', univention.admin.syntax.string),
+        multivalue=True,
         options=['samba'],
     ),
     'sambaMSDFSRoot': univention.admin.property(
@@ -573,6 +574,14 @@ def insertQuotes(value):
     return ', '.join(new_entries).encode('UTF-8')
 
 
+def unmap_vfs_objects(value, encoding=()):
+    return [v for entry in value for v in entry.decode(*encoding).split(u' ')]
+
+
+def map_vfs_objects(value, encoding=()):
+    return u' '.join(value).encode('UTF-8')
+
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('host', 'univentionShareHost', None, univention.admin.mapping.ListToString, encoding='ASCII')
@@ -619,7 +628,7 @@ mapping.register('sambaPostexec', 'univentionShareSambaPostexec', None, univenti
 mapping.register('sambaPreexec', 'univentionShareSambaPreexec', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('sambaWriteable', 'univentionShareSambaWriteable', boolToString, stringToBool, encoding='ASCII')
 mapping.register('sambaWriteList', 'univentionShareSambaWriteList', insertQuotes, univention.admin.mapping.ListToString)
-mapping.register('sambaVFSObjects', 'univentionShareSambaVFSObjects', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('sambaVFSObjects', 'univentionShareSambaVFSObjects', map_vfs_objects, unmap_vfs_objects, encoding='ASCII')
 mapping.register('sambaMSDFSRoot', 'univentionShareSambaMSDFS', boolToString, stringToBool, encoding='ASCII')
 mapping.register('sambaInheritOwner', 'univentionShareSambaInheritOwner', boolToString, stringToBool, encoding='ASCII')
 mapping.register('sambaInheritPermissions', 'univentionShareSambaInheritPermissions', boolToString, stringToBool, encoding='ASCII')
