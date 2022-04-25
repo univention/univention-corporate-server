@@ -57,7 +57,7 @@ security_configurations.yml"
 	for file in $files; do
 		mkdir -p "keycloak/$(dirname "$file")"
 		curl -s "https://$repo_user:$(< "$repo_password_file")@service.software-univention.de/apt/00342/docs/keycloak/$file" -o "keycloak/$file" || return 1
-		[ -s "$file" ] || return 1
+		[ -s "keycloak/$file" ] || return 1
 	done
 	cd keycloak || return 1
 	# check the jenkins-data repo for the following files
