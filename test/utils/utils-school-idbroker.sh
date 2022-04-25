@@ -41,25 +41,10 @@ ansible_preperation () {
 	cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 	ssh -o "StrictHostKeyChecking=accept-new" localhost true
 	# Download ansible scripts
-	local files="database.yml
-hosts.ini.example
-schools_saml_IDP/idps.yml.example
-clients.yml.example
-available.yml
-parse_idp.yml
-register_clients.yml
-setup_default_scopes.yml
-truststore.yml
-web_interface.yml
-main.yml
-security_configurations.yml"
-	mkdir -p keycloak
-	for file in $files; do
-		mkdir -p "keycloak/$(dirname "$file")"
-		curl -s "https://$repo_user:$(< "$repo_password_file")@service.software-univention.de/apt/00342/docs/keycloak/$file" -o "keycloak/$file" || return 1
-		[ -s "keycloak/$file" ] || return 1
-	done
-	cd keycloak || return 1
+	wget -e robots=off --cut-dirs=3 -np -R "index.html*" --user "$repo_user" \
+		--password="$(< "$repo_password_file")" -r -l 10 \
+		"https://service.software-univention.de/apt/00342/docs/keycloak/" || rv=$?
+	cd service.software-univention.de/keycloak || rv=$?
 	# check the jenkins-data repo for the following files
 	cp /root/hosts.ini hosts.ini
 	cp /root/idps.yml schools_saml_IDP/idps.yml
