@@ -486,6 +486,9 @@ layout = [
             'sync',
             'nfs_hosts',
         ]),
+        Group(_('NFS custom settings'), layout=[
+            'nfsCustomSettings',
+        ]),
     ]),
     Tab(_('Samba'), _('General Samba settings'), layout=[
         Group(_('Samba'), layout=[
@@ -498,34 +501,31 @@ layout = [
             'sambaHideUnreadable',
             'sambaVFSObjects',
         ]),
-    ]),
-    Tab(_('Samba permissions'), _('Samba permission settings'), advanced=True, layout=[
-        ['sambaForceUser', 'sambaForceGroup'],
-        ['sambaValidUsers', 'sambaInvalidUsers'],
-        ['sambaWriteList'],
-        ['sambaHostsAllow', 'sambaHostsDeny'],
-        ['sambaNtAclSupport', 'sambaInheritAcls'],
-        ['sambaInheritOwner', 'sambaInheritPermissions'],
-    ]),
-    Tab(_('Samba extended permissions'), _('Samba extended permission settings'), advanced=True, layout=[
-        ['sambaCreateMode', 'sambaDirectoryMode'],
-        ['sambaForceCreateMode', 'sambaForceDirectoryMode'],
-        ['sambaSecurityMode', 'sambaDirectorySecurityMode'],
-        ['sambaForceSecurityMode', 'sambaForceDirectorySecurityMode'],
-    ]),
-    Tab(_('Samba options'), _('Samba options'), advanced=True, layout=[
-        ['sambaLocking', 'sambaBlockingLocks'],
-        ['sambaStrictLocking'],
-        ['sambaOplocks', 'sambaLevel2Oplocks', 'sambaFakeOplocks'],
-        ['sambaBlockSize', 'sambaCscPolicy'],
-        ['sambaHideFiles'],
-        ['sambaPostexec', 'sambaPreexec'],
-    ]),
-    Tab(_('Samba custom settings'), _('Custom settings for Samba shares'), advanced=True, layout=[
-        'sambaCustomSettings',
-    ]),
-    Tab(_('NFS custom settings'), _('Custom settings for NFS shares'), advanced=True, layout=[
-        'nfsCustomSettings',
+        Group(_('Samba permissions'), layout=[
+            ['sambaForceUser', 'sambaForceGroup'],
+            ['sambaValidUsers', 'sambaInvalidUsers'],
+            ['sambaWriteList'],
+            ['sambaHostsAllow', 'sambaHostsDeny'],
+            ['sambaNtAclSupport', 'sambaInheritAcls'],
+            ['sambaInheritOwner', 'sambaInheritPermissions'],
+        ]),
+        Group(_('Samba extended permissions'), layout=[
+            ['sambaCreateMode', 'sambaDirectoryMode'],
+            ['sambaForceCreateMode', 'sambaForceDirectoryMode'],
+            ['sambaSecurityMode', 'sambaDirectorySecurityMode'],
+            ['sambaForceSecurityMode', 'sambaForceDirectorySecurityMode'],
+        ]),
+        Group(_('Samba options'), layout=[
+            ['sambaLocking', 'sambaBlockingLocks'],
+            ['sambaStrictLocking'],
+            ['sambaOplocks', 'sambaLevel2Oplocks', 'sambaFakeOplocks'],
+            ['sambaBlockSize', 'sambaCscPolicy'],
+            ['sambaHideFiles'],
+            ['sambaPostexec', 'sambaPreexec'],
+        ]),
+        Group(_('Samba custom settings'), layout=[
+            'sambaCustomSettings',
+        ]),
     ]),
 ]
 
