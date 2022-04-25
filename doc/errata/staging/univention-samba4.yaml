@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-samba4
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The share setting `map acl inherit = yes` has been broken since UCS 5.0-0
+   and is not working properly again.
+bug: [54688]

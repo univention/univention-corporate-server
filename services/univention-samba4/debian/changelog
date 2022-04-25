@@ -1,3 +1,9 @@
+univention-samba4 (9.0.7-1) unstable; urgency=medium
+
+  * Bug #54688: fix support for shares "map acl inherit = yes"
+
+ -- Florian Best <best@univention.de>  Mon, 25 Apr 2022 15:31:16 +0200
+
 univention-samba4 (9.0.6-11) unstable; urgency=medium
 
   * Bug #53100: Fix path of samba-authentication-file

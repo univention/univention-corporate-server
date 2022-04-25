@@ -237,7 +237,7 @@ def handler(dn, new, old, command):
 			# implicit settings
 
 			# acl and inherit -> map acl inherit (Bug #47850)
-			if '1' in new.get('univentionShareSambaNtAclSupport', []) and '1' in new.get('univentionShareSambaInheritAcls', []):
+			if b'1' in new.get('univentionShareSambaNtAclSupport', []) and b'1' in new.get('univentionShareSambaInheritAcls', []):
 				print('map acl inherit = yes', file=fp)
 
 	if (not (new and old)) or (new['univentionShareSambaName'][0] != old['univentionShareSambaName'][0]):
