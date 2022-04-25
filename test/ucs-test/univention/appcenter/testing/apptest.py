@@ -178,7 +178,7 @@ class Session(object):
 
 	def click_portal_tile(self, name):
 		from selenium.common.exceptions import NoSuchElementException
-		elements = self.find_all('.portal-tile')
+		elements = self.find_all('.portal-tile__name')
 		for element in elements:
 			print('-%s- -> %s' % (element.text, name))
 			if element.text == name:
