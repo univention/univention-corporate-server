@@ -81,7 +81,9 @@ Domain Admins
 
    Users in *Domain Admins* group have all domain permissions just like the
    *Administrator* account. To join a UCS system to the domain, administrators
-   need a user account in the group *Domain Admins*.
+   need a user account that's member in the groups *Domain Admins* and *DC
+   Backup Hosts*. For more information see
+   :ref:`uv-manual:domain-ldap-subsequent-domain-joins-with-univention-join`.
 
 Machine account
 ---------------
