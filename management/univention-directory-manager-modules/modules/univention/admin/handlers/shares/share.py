@@ -188,7 +188,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.boolean,
         options=['samba'],
         default='1',
-        size='One',
+        size='Two',
     ),
     'sambaPublic': univention.admin.property(
         short_description=_('Allow anonymous read-only access with a guest user'),
@@ -196,7 +196,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.boolean,
         options=['samba'],
         default='0',
-        size='One',
+        size='Two',
     ),
     'sambaDosFilemode': univention.admin.property(
         short_description=_('Users with write access may modify permissions'),
@@ -204,7 +204,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.boolean,
         options=['samba'],
         default='0',
-        size='One',
+        size='Two',
     ),
     'sambaHideUnreadable': univention.admin.property(
         short_description=_('Hide unreadable files/directories'),
@@ -212,7 +212,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.boolean,
         options=['samba'],
         default='0',
-        size='One',
+        size='Two',
     ),
     'sambaCreateMode': univention.admin.property(
         short_description=_('File mode'),
@@ -428,7 +428,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.boolean,
         options=['samba'],
         default='0',
-        size='One',
+        size='Two',
     ),
     'sambaInheritOwner': univention.admin.property(
         short_description=_('Create files/directories with the owner of the parent directory'),
