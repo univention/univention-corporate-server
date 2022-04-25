@@ -516,7 +516,7 @@ layout = [
         Group(_('Samba options'), layout=[
             ['sambaLocking'],
             ['sambaStrictLocking'],
-            ['sambaOplocks', 'sambaFakeOplocks'],
+            ['sambaOplocks'],
             ['sambaBlockSize', 'sambaCscPolicy'],
             ['sambaHideFiles'],
             ['sambaPostexec', 'sambaPreexec'],
