@@ -506,7 +506,7 @@ layout = [
             ['sambaValidUsers', 'sambaInvalidUsers'],
             ['sambaWriteList'],
             ['sambaHostsAllow', 'sambaHostsDeny'],
-            ['sambaNtAclSupport', 'sambaInheritAcls'],
+            ['sambaInheritAcls'],
             ['sambaInheritOwner', 'sambaInheritPermissions'],
         ]),
         Group(_('Samba extended permissions'), layout=[
