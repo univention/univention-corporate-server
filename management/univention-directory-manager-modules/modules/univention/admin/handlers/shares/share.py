@@ -512,8 +512,6 @@ layout = [
         Group(_('Samba extended permissions'), layout=[
             ['sambaCreateMode', 'sambaDirectoryMode'],
             ['sambaForceCreateMode', 'sambaForceDirectoryMode'],
-            ['sambaSecurityMode', 'sambaDirectorySecurityMode'],
-            ['sambaForceSecurityMode', 'sambaForceDirectorySecurityMode'],
         ]),
         Group(_('Samba options'), layout=[
             ['sambaLocking'],
