@@ -514,7 +514,7 @@ layout = [
             ['sambaForceCreateMode', 'sambaForceDirectoryMode'],
         ]),
         Group(_('Samba options'), layout=[
-            ['sambaBlockSize', 'sambaCscPolicy'],
+            ['sambaCscPolicy'],
             ['sambaHideFiles'],
             ['sambaPostexec', 'sambaPreexec'],
         ]),
