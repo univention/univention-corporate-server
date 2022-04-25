@@ -660,6 +660,28 @@ update_check_md5_signature_is_used () {
 	return 1
 }
 
+# Bug #54651
+update_check_sha1_signature_is_used () {
+	local var="update$VERSION/ignore-sha1-check"
+	ignore_check "$var" && return 100
+
+	local cert_path="/etc/univention/ssl/${hostname}.${domainname}/cert.pem"
+	local sha1_indicator="Signature Algorithm: sha1WithRSAEncryption"
+	local certopt="no_header,no_version,no_serial,no_signame,no_subject,no_issuer,no_pubkey,no_aux,no_extensions,no_validity"
+
+	openssl x509 -in "$cert_path" -text -certopt "$certopt" | grep --quiet "$sha1_indicator" ||
+		return 0
+
+	echo "ERROR: The certificate file $cert_path"
+	echo "    is using SHA1 as the signature algorithm. This is no longer"
+	echo "    supported in UCS 5.0 and later versions."
+	echo "    In case you perform the update, the certificate needs to be renewed afterwards."
+	echo "    See <https://help.univention.com/t/37> for instructions."
+	echo
+	echo "    This check can be disabled by setting the UCR variable '$var' to 'yes'."
+	return 1
+}
+
 update_check_tls_public_key_size () {  # Bug #53013
 	local min_key_size=2048
 	local fqdn=${1:-"$hostname.$domainname"}
