@@ -416,9 +416,15 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         options=['samba'],
     ),
+    'sambaReadList': univention.admin.property(
+        short_description=_('Restrict read access to these users/groups'),
+        long_description=_('List of users or groups that are given read-only access to the share.'),
+        syntax=univention.admin.syntax.string,
+        options=['samba'],
+    ),
     'sambaWriteList': univention.admin.property(
         short_description=_('Restrict write access to these users/groups'),
-        long_description=_('If (and only if) "Allow Samba write access" is deactivated only the users and groups listed here have write permission for this share. Groups can be assigned with the same syntax as "Valid users or groups".'),
+        long_description=_('If (and only if) "Allow Samba write access" is deactivated only the users and groups listed here have write permission for this share. Groups can be assigned with the same syntax as "Valid users or groups". If the connecting user is in this list then they will be given write access, no matter what the read only option is set to.'),
         syntax=univention.admin.syntax.string,
         options=['samba'],
     ),
@@ -511,7 +517,7 @@ layout = [
             'sambaDosFilemode',
             ['sambaForceUser', 'sambaForceGroup'],
             ['sambaValidUsers', 'sambaInvalidUsers'],
-            ['sambaWriteList'],
+            ['sambaReadList', 'sambaWriteList'],
             ['sambaHostsAllow', 'sambaHostsDeny'],
             ['sambaInheritAcls'],
             ['sambaInheritOwner', 'sambaInheritPermissions'],
@@ -627,6 +633,7 @@ mapping.register('sambaInheritAcls', 'univentionShareSambaInheritAcls', None, un
 mapping.register('sambaPostexec', 'univentionShareSambaPostexec', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('sambaPreexec', 'univentionShareSambaPreexec', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('sambaWriteable', 'univentionShareSambaWriteable', boolToString, stringToBool, encoding='ASCII')
+mapping.register('sambaReadList', 'univentionShareSambaReadList', insertQuotes, univention.admin.mapping.ListToString)
 mapping.register('sambaWriteList', 'univentionShareSambaWriteList', insertQuotes, univention.admin.mapping.ListToString)
 mapping.register('sambaVFSObjects', 'univentionShareSambaVFSObjects', map_vfs_objects, unmap_vfs_objects, encoding='ASCII')
 mapping.register('sambaMSDFSRoot', 'univentionShareSambaMSDFS', boolToString, stringToBool, encoding='ASCII')
