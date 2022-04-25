@@ -967,7 +967,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    :ref:`idmcloud-o365-users`.
 
 
-.. envvar:: Office365/debug/werror
+.. envvar:: office365/debug/werror
 
    Configure additional debug error for the Microsoft 365 connector. For more
    information, see :ref:`idmcloud-o365-debug`.

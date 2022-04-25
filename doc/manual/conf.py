@@ -128,7 +128,7 @@ univention_use_doc_base = True
 
 gettext_additional_targets = ["literal-block"]
 
-def fix_title_translation(app, config):
+def adapt_settings_to_translation(app, config):
     """
     Sets the document title correctly according to the target language.
 
@@ -137,10 +137,15 @@ def fix_title_translation(app, config):
     if config.language == "de":
         config.project = "Univention Corporate Server - Handbuch für Benutzer und Administratoren"
         config.html_title = config.project
+        config.rst_epilog = """
+.. include:: /substitutions.txt
+
+.. include:: /links-de.txt
+"""
 
 
 def setup(app):
     app.connect(
         "config-inited",
-        fix_title_translation,
+        adapt_settings_to_translation,
     )

@@ -24,7 +24,7 @@ Setup
 To setup the Google Apps for Work Connectors a G Suite Administrator account, a
 corresponding account in the G Suite domain, and a `domain verified
 <google-domain-verify_>`_ by Google are required. The first two will be provided
-free of charge by Google for testing purposes.  However, configuring the SSO
+free of charge by Google for testing purposes. However, configuring the SSO
 requires a separate internet domain where TXT records can be created.
 
 If no G Suite subscription is available yet, it can be configured via `Set up

@@ -185,5 +185,5 @@ be examined: :file:`/var/log/univention/listener.log`.
 Some actions of the Connector use long-running Azure Cloud operations,
 especially when using Teams. These operations are logged in the log file
 :file:`/var/log/univention/listener_modules/ms-office-async.log`
-The |UCSUCRV| :envvar:`Office365/debug/werror` activates
+The |UCSUCRV| :envvar:`office365/debug/werror` activates
 additional debug output.
