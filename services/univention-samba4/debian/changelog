@@ -1,4 +1,4 @@
-univention-samba4 (9.0.7-1) unstable; urgency=medium
+univention-samba4 (9.0.6-12) unstable; urgency=medium
 
   * Bug #54688: fix support for shares "map acl inherit = yes"
 
