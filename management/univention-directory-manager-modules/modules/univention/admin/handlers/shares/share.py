@@ -515,7 +515,6 @@ layout = [
     Tab(_('Samba'), _('General Samba settings'), layout=[
         Group(_('Samba'), layout=[
             'sambaName',
-            'sambaWriteable',
             'sambaBrowseable',
             'sambaPublic',
             'sambaMSDFSRoot',
@@ -526,7 +525,7 @@ layout = [
             'sambaDosFilemode',
             ['sambaForceUser', 'sambaForceGroup'],
             ['sambaValidUsers', 'sambaInvalidUsers'],
-            ['sambaReadList', 'sambaWriteList'],
+            ['sambaReadList', 'sambaWriteable', 'sambaWriteList'],
             ['sambaHostsAllow', 'sambaHostsDeny'],
             ['sambaInheritAcls'],
             ['sambaInheritOwner', 'sambaInheritPermissions'],
