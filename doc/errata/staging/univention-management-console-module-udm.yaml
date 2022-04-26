@@ -13,4 +13,4 @@ desc: |
    the UDM syntax classes.
  * Syntax classes can now depend on another UDM property and restrict its
    choices based on that.
-bug: [54109, 938762, 53843]
+bug: [54109, 38762, 53843]
