@@ -5,10 +5,10 @@ scope: ucs_5.0-0-errata5.0-1
 src: univention-samba4
 fix: 9.0.6-13A~5.0.0.202204260243
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The share setting `map acl inherit = yes` has been broken since UCS 5.0-0
    and is not working properly again.
  * The share configuration of `vfs objects`, `write list`, `hosts allow` and
-   `hosts deny` was broken due to too excessive escaping of quotes and has
+   `hosts deny` was broken because of too excessive escaping of quotes and has
    been repaired.
 bug: [54688, 49842]
