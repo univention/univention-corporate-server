@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: python-keycloak
+fix: 
+desc: |
+ This update addresses the following issue:
+ * The Debian package `python3-keycloak` has been downgraded to make it
+   compatible with the UCS python packages. It will be used for configuration of
+   the Keycloak app.
+bug: [54689]

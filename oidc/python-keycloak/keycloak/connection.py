@@ -39,10 +39,9 @@ class ConnectionManager(object):
         headers (dict): The header parameters of the requests to the server.
         timeout (int): Timeout to use for requests to the server.
         verify (bool): Verify server SSL.
-        proxies (dict): The proxies servers requests is sent by.
     """
 
-    def __init__(self, base_url, headers={}, timeout=60, verify=True, proxies=None):
+    def __init__(self, base_url, headers={}, timeout=60, verify=True):
         self._base_url = base_url
         self._headers = headers
         self._timeout = timeout
@@ -55,17 +54,11 @@ class ConnectionManager(object):
         for protocol in ('https://', 'http://'):
             adapter = HTTPAdapter(max_retries=1)
             # adds POST to retry whitelist
-            allowed_methods = set(adapter.max_retries.allowed_methods)
-            allowed_methods.add('POST')
-            adapter.max_retries.allowed_methods = frozenset(allowed_methods)
+            method_whitelist = set(adapter.max_retries.method_whitelist)
+            method_whitelist.add('POST')
+            adapter.max_retries.method_whitelist = frozenset(method_whitelist)
 
             self._s.mount(protocol, adapter)
-        
-        if proxies:
-            self._s.proxies.update(proxies)
-
-    def __del__(self):
-        self._s.close()
 
     @property
     def base_url(self):

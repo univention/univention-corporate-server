@@ -11,9 +11,9 @@ See `docs/source/index.rst` for more details.
 * This package was created using [stdeb](https://pypi.org/project/stdeb/):
   ```
   pip3 install stdeb
-  wget https://github.com/marcospereirampj/python-keycloak/archive/refs/tags/0.27.0.tar.gz
-  mv 0.27.0.tar.gz python-keycloak-0.27.0.tar.gz
-  py2dsc --compat 11 python-keycloak-0.27.0.tar.gz
+  wget https://github.com/marcospereirampj/python-keycloak/archive/refs/tags/0.24.0.tar.gz
+  mv 0.24.0.tar.gz python-keycloak-0.24.0.tar.gz
+  py2dsc --compat 11 python-keycloak-0.24.0.tar.gz
   [...]
   rm -r bin Pipfile* requirements.txt LICENSE MANIFEST.in
   wrap-and-sort -astf debian/control

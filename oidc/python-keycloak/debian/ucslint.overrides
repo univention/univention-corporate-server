@@ -24,4 +24,5 @@
 0020-E303: keycloak/keycloak_openid.py
 0020-W293: keycloak/keycloak_openid.py
 0020-E222: keycloak/urls_patterns.py
+0020-E225: keycloak/urls_patterns.py
 0020-W391: keycloak/urls_patterns.py

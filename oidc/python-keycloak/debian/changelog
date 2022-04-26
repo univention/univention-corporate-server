@@ -1,5 +1,5 @@
-python-keycloak (0.27.0-1) unstable; urgency=low
+python-keycloak (0.24.0-1) unstable; urgency=low
 
-  * Bug #54666: source package automatically created by stdeb 0.10.0
+  * Bug #54689: source package automatically created by stdeb 0.10.0
 
- -- Arvid Requate <requate@univention.de>  Tue, 12 Apr 2022 17:19:05 +0200
+ -- Juan Pedro Torres <torres-munoz.extern@univention.de>  Tue, 26 Apr 2022 10:26:39 +0200
