@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-self-service
-fix: 
+fix: 5.0.1-25A~5.0.0.202204201809
 desc: |
  This update addresses the following issue:
  * The logic for mapping UDM syntax classes to UMC frontend widgets has been

@@ -3,8 +3,9 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-management-console-module-diagnostic
-fix: 
+fix: 6.0.0-30A~5.0.0.202204222247
 desc: |
  This update addresses the following issue(s):
- * 52_mail_acl_sync will no longer fail due to multiple IMAP mail folders existing.
+ * `52_mail_acl_sync` will no longer fail due to multiple IMAP mail folders
+   existing.
 bug: [54675]
