@@ -1,3 +1,9 @@
+univention-quota (13.0.1-10) unstable; urgency=medium
+
+  * Bug #54537: Add missing --always-resolve to univention-user-quota
+
+ -- Arvid <requate@univention.de>  Tue, 26 Apr 2022 14:06:21 +0200
+
 univention-quota (13.0.1-9) unstable; urgency=medium
 
   * Bug #54537: Make setquota work for strictly numeric account names

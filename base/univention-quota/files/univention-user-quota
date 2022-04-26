@@ -169,7 +169,7 @@ class Mountpoints(object):
 	def get_quota(self):
 		# parses the output of 'quota -vwpu <user>'
 		devices = {}
-		p = subprocess.Popen(['quota', '-vwpu', self.user], stdout=subprocess.PIPE)
+		p = subprocess.Popen(['quota', '-vwpu', '--always-resolve', self.user], stdout=subprocess.PIPE)
 		# quota_stdout has the parseable quota output
 		# format:
 		# Dateisystemquotas fuer user univention2 (uid 2006):
