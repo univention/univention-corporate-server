@@ -89,6 +89,11 @@ property_descriptions = {
         required=True,
         identifies=True,
     ),
+    'description': univention.admin.property(
+        short_description=_('Comment'),
+        long_description=_('A comment e.g. shown in the file browser.'),
+        syntax=univention.admin.syntax.string,
+    ),
     'printablename': univention.admin.property(
         short_description=_('Printable name'),
         long_description=_('Printable name'),
@@ -489,7 +494,7 @@ property_descriptions = {
 layout = [
     Tab(_('General'), _('General settings'), layout=[
         Group(_('General directory share settings'), layout=[
-            'name',
+            ['name', 'description'],
             ['host', 'path'],
             ['owner', 'group'],
             'directorymode',
@@ -615,6 +620,7 @@ def map_vfs_objects(value, encoding=()):
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('host', 'univentionShareHost', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('path', 'univentionSharePath', None, univention.admin.mapping.ListToString)
 mapping.register('owner', 'univentionShareUid', None, univention.admin.mapping.ListToString)
