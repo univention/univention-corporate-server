@@ -1,3 +1,10 @@
+univention-samba (14.0.5-6) unstable; urgency=medium
+
+  * Bug #49842: fix breaking VFS objects and other configuration through
+    double quoting tokens
+
+ -- Florian Best <best@univention.de>  Tue, 26 Apr 2022 02:04:56 +0200
+
 univention-samba (14.0.5-5) unstable; urgency=medium
 
   * Bug #54688: fix support for shares "map acl inherit = yes"

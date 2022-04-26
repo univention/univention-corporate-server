@@ -136,12 +136,9 @@ def handler(dn, new, old, command):
 			arg = '"%s"' % (arg.replace('\\', '\\\\').replace('"', '\\"'),)
 		return arg.replace('\n', '')
 
-	def _simple_quote(arg):
+	def _sanitize(arg):
 		# type: (str) -> str
-		return arg.replace('\n', '')
-
-	def _map_quote(args):
-		return (_quote(arg) for arg in args)
+		return arg.replace('\n', '').replace('\x00', '')
 
 	if new:
 		share_name = new['univentionShareSambaName'][0].decode('UTF-8', 'ignore')
@@ -208,33 +205,27 @@ def handler(dn, new, old, command):
 			vfs_objects = []
 			samba4_ntacl_backend = configRegistry.get('samba4/ntacl/backend', 'native')
 			if samba4_ntacl_backend == 'native':
-				vfs_objects.append('acl_xattr')
+				vfs_objects.append(b'acl_xattr')
 				if configRegistry.is_true('samba/vfs/acl_xattr/ignore_system_acls', False):
-					print('acl_xattr:ignore system acls = yes')
+					print('acl_xattr:ignore system acls = yes')  # FIXME: file=fp, broken since git:35decbd0e8f
 			elif samba4_ntacl_backend == 'tdb':
-				vfs_objects.append('acl_tdb')
-
-			vfs_objects.extend(x.decode('ASCII') for x in new.get('univentionShareSambaVFSObjects', []))
-
-			if vfs_objects:
-				print('vfs objects = %s' % (' '.join(_map_quote(vfs_objects)), ), file=fp)
+				vfs_objects.append(b'acl_tdb')
 
 			for attr, var, encoding in mapping:
-				if not new.get(attr):
-					continue
-				if attr == 'univentionShareSambaVFSObjects':
+				val = new.get(attr, [])
+				if attr == 'univentionShareSambaVFSObjects' and (val or vfs_objects):
+					val = [b' '.join(vfs_objects + val)]
+				if not val:
 					continue
 				if attr == 'univentionShareSambaDirectoryMode' and set(new['univentionSharePath']) & {b'/tmp', b'/tmp/'}:
 					continue
 				if attr in ('univentionShareSambaHostsAllow', 'univentionShareSambaHostsDeny'):
-					print('%s = %s' % (var, (', '.join(_map_quote(x.decode(encoding) for x in new[attr])))), file=fp)
-				elif attr in ('univentionShareSambaValidUsers', 'univentionShareSambaInvalidUsers'):
-					print('%s = %s' % (var, _simple_quote(new[attr][0].decode(encoding))), file=fp)
+					print('%s = %s' % (var, (', '.join(_sanitize(x.decode(encoding)) for x in val))), file=fp)
 				else:
-					print('%s = %s' % (var, _quote(new[attr][0].decode(encoding))), file=fp)
+					print('%s = %s' % (var, _sanitize(val[0].decode(encoding))), file=fp)
 
 			for setting in new.get('univentionShareSambaCustomSetting', []):  # FIXME: vulnerable to injection of further paths and entries
-				print(setting.decode('UTF-8').replace('\n', ''), file=fp)
+				print(_sanitize(setting.decode('UTF-8')), file=fp)
 
 			# implicit settings
 

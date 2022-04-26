@@ -289,8 +289,8 @@ if [ "$1" = "configure" ]; then
 		divert_univention_heimdal_service_cfg
 
 	elif [ -n "$2" ]; then
-		if dpkg --compare-versions "$2" lt-nl "9.0.6-12"; then
-			if univention-ldapsearch -LLL "(&(univentionShareHost=$hostname.$domainname)(univentionShareSambaNtAclSupport=1)(univentionShareSambaInheritAcls=1))" 1.1 | grep -q "^dn:"; then
+		if dpkg --compare-versions "$2" lt-nl "9.0.6-13"; then
+			if univention-ldapsearch -LLL "(&(univentionShareHost=$hostname.$domainname)(|(&(univentionShareSambaNtAclSupport=1)(univentionShareSambaInheritAcls=1))(univentionShareSambaVFSObjects=*)(univentionShareSambaWriteList=*)(univentionShareSambaHostsAllow=*)(univentionShareSambaHostsDeny=*)))" 1.1 | grep -q "^dn:"; then
 				univention-directory-listener-ctrl resync samba-shares
 			fi
 		fi
