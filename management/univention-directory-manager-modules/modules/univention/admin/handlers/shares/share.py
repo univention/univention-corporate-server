@@ -519,7 +519,6 @@ layout = [
             'sambaPublic',
             'sambaMSDFSRoot',
             'sambaHideUnreadable',
-            'sambaVFSObjects',
         ]),
         Group(_('Samba permissions'), layout=[
             'sambaDosFilemode',
@@ -535,6 +534,7 @@ layout = [
             ['sambaForceCreateMode', 'sambaForceDirectoryMode'],
         ]),
         Group(_('Samba options'), layout=[
+            'sambaVFSObjects',
             ['sambaCscPolicy'],
             ['sambaHideFiles'],
             ['sambaPostexec', 'sambaPreexec'],
