@@ -3,9 +3,11 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-appcenter
-fix: 9.0.2-75A~5.0.0.202204221536
+fix: 9.0.2-76A~5.0.0.202204271331
 desc: |
  This update addresses the following issue(s):
  * A crash when updating apps that used to be based in Docker compose but
    aren't anymore has been fixed.
-bug: [54669]
+ * The reason why servers are excluded from the app-installation
+   drop-down menu is displayed again. This was broken since UCS 5.0.
+bug: [54669,54460]
