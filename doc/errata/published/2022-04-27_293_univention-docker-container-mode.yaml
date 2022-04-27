@@ -9,3 +9,5 @@ desc: |
  * The package `univention-docker-container-mode` is deprecated since UCS 4.3
    and has been replaced by a empty transitional package.
 bug: [52539]
+erratum: 293
+announced: 2022-04-27
