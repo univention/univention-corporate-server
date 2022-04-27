@@ -12,3 +12,5 @@ desc: |
    `hosts deny` was broken because of too excessive escaping of quotes and has
    been repaired.
 bug: [54688, 49842]
+erratum: 296
+announced: 2022-04-27
