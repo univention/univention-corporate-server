@@ -9,3 +9,5 @@ desc: |
  * The script `migrate_container_MountPoints_to_v2_config` is deprecated since
    UCS 4.3 and has been removed.
 bug: [52539]
+erratum: 294
+announced: 2022-04-27
