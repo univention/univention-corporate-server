@@ -45,8 +45,9 @@ following recommendations for the definition of group names:
 * In UCS the group name has at least a length of 4 characters and at most 20
   characters.
 
-The recommendation results in the following regular expression:
-``^[A-Za-z][A-Za-z0-9 -]{2,18}[A-Za-z0-9]$``.
+The recommendation results in the following regular expression::
+
+   ^[A-Za-z][A-Za-z0-9 -]{2,18}[A-Za-z0-9]$
 
 Consider the recommendation as a guideline and not a rule and keep potential
 side-effects in mind when defining group names outside the recommendation.
@@ -205,8 +206,8 @@ the attributes of these classes can then no longer be filled in.
 
 .. _groups-nested:
 
-Nested groups
-=============
+Group nesting with groups in groups
+===================================
 
 UCS supports group nesting (also known as "groups in groups"). This simplifies
 the management of the groups. For example, if two locations are managed in one
@@ -270,8 +271,8 @@ Univention S4 connector, i.e., each group on the UCS side is associated
 with a group in Active Directory. General information on the Univention
 S4 connector can be found in :ref:`windows-s4-connector`.
 
-Some exceptions are formed by the *pseudo groups*
-(sometimes also called system groups). These are only managed internally
+Some exceptions are formed by the *pseudo groups*,
+sometimes also called system groups. These are only managed internally
 by Active Directory/Samba, e.g., the ``Authenticated Users`` group includes a list
 of all the users currently logged on to the system. Pseudo groups are
 stored in the UCS directory service, but they are not synchronized by
