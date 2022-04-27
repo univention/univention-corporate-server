@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-server
-fix: 
+fix: 15.0.4-8A~5.0.0.202204271356
 desc: |
  This update addresses the following issue:
  * The `server_password_change` mechanism has been adjusted
