@@ -10,3 +10,5 @@ desc: |
    use the documented default of 10 retries instead of 0, if the UCR variable
    `connector/ad/max_retry_rejected` is not set.
 bug: [54432]
+erratum: 1228
+announced: 2022-04-27
