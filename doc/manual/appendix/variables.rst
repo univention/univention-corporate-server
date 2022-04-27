@@ -240,6 +240,13 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    For more information, see :ref:`ip-config-radius-debugging`.
 
 
+.. envvar:: freeradius/vlan-id
+
+   Configures the fallback value for VLAN ID for users that aren't member of a
+   group with a VLAN ID. For more information, see
+   :ref:`ip-config-radius-configuration-vlanid-configuration`.
+
+
 .. envvar:: gateway
 
    Configures the IPv4 network gateway. For more information, see

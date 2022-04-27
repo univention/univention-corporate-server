@@ -159,11 +159,12 @@ authentication.
 VLAN IDs
 ~~~~~~~~
 
-Virtual Local Area Networks (VLANs) can be used to separate the traffic of users at
-the network level. UCS can be configured to return a VLAN-ID in the Radius response
-of the Radius authentication process according to RFC 3580 / IEEE 802.1X.
+Virtual Local Area Networks (VLANs) can be used to separate the traffic of users
+at the network level. UCS can be configured to return a VLAN ID in the Radius
+response of the Radius authentication process according to :rfc:`RFC 3580 / IEEE 802.1X
+<3580>`.
 
-The VLAN-ID for a user can be configured by assigning the user to a group with a VLAN-ID.
+The VLAN ID for a user can be configured by assigning the user to a group with a VLAN ID.
 
 .. _radius-vlanid-group:
 
@@ -172,10 +173,10 @@ The VLAN-ID for a user can be configured by assigning the user to a group with a
 
    Assigning VLAN ID to a user group
 
-A default VLAN-ID can be configured in the |UCSUCRV| :envvar:`freeradius/vlan-id`. This default
-VLAN-ID will be returned if the user is not a member of a group with a VLAN-ID. The Radius
-response will not contain any VLAN-ID in case the user is not a member of a group with
-VLAN-ID and no default VLAN-ID is defined.
+A default VLAN ID can be configured in the |UCSUCRV| :envvar:`freeradius/vlan-id`. This default
+VLAN ID will be returned if the user is not a member of a group with a VLAN ID. The Radius
+response will not contain any VLAN ID in case the user is not a member of a group with
+VLAN ID and no default VLAN ID is defined.
 
 .. _ip-config-radius-debugging:
 
