@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: univention-ad-connector
+fix: 13.0.0-67A~4.4.0.202204271236
+desc: |
+ This update addresses the following issue:
+ * The value for resynchronization of rejected changes from AD was fixed to
+   use the documented default of 10 retries instead of 0, if the UCR variable
+   `connector/ad/max_retry_rejected` is not set.
+bug: [54432]
