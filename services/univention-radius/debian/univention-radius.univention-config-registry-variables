@@ -148,6 +148,12 @@ Description[en]=Activates further authentication modules for users. If left unde
 Type=str
 Categories=service-radius
 
+[freeradius/vlan-id]
+Description[de]=Standard VLan-ID, die allen Clients zugewiesen wird, für die keine andere konfigurierte VLAN-ID gefunden wird. Mögliche Werte: 1,..,4096
+Description[en]=Default VLAN-ID assigned to all clients not having any other VLAN-ID configured. Possible values: 1,..,4096
+Type=int
+Categories=service-radius
+
 [radius/use-service-specific-password]
 Description[de]=Ermöglicht die Verwendung von dienstspezifischen Passwörtern. Dieses Passwort wird im Attribut univentionRadiusPassword eines Benutzers gespeichert. Wenn kein dienstspezifisches Kennwort festgelegt ist, schlägt die Authentifizierung fehl, da nicht auf das Standardkennwort zurückgefallen wird.
 Description[en]=Enables the use of service specific passwords. This password stored in the univentionRadiusPassword attribute of a user. If no service specific password is set, the authentication will fail as there is no fallback to the standard password.

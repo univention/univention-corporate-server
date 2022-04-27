@@ -2188,6 +2188,24 @@ client AP01 {
 					Authentisierung verwenden.
 				</para>
 			</section>
+			<section id="ip-config:radius:configuration:vlanid-configuration">
+				<title><foreignphrase>VLAN IDs</foreignphrase></title>
+				<para>
+					Virtual Local Area Networks (VLANs) können verwendet werden, um den Datenverkehr der Benutzer auf
+					der Netzwerkebene zu trennen. UCS kann so konfiguriert werden, dass es eine VLAN-ID in der Radius-Antwort
+					des Radius-Authentifizierungsprozesses gemäß RFC 3580 / IEEE 802.1X zurückgibt.
+					Weitere Informationen finden Sie in Abschnitt <ulink url="https://docs.software-univention.de/handbuch-5.0.html#computers:networkcomplex:vlan"> 8.2.4.1.4.3</ulink>
+					Die VLAN-ID für einen Benutzer kann konfiguriert werden, indem der Benutzer einer Gruppe mit einer VLAN-ID zugewiesen wird.
+					<figure id="radius-vlanid-group">
+					  <title>Zuweisung VLAN ID zu einer Benutzergruppe</title>
+					  <graphic fileref="illustrations50/radius-vlanid-group_DE.png" scalefit="1" width="100%"/>
+					</figure>
+					Eine Standard VLAN-ID kann in der &ucsUCR;-Variablen <envar>freeradius/vlan-id</envar> konfiguriert werden. Diese Standard
+					VLAN-ID wird zurückgegeben, wenn der Benutzer nicht Mitglied einer Gruppe mit einer VLAN-ID ist. Die Radius
+					Antwort wird keine VLAN-ID enthalten, wenn der Benutzer nicht Mitglied einer Gruppe mit
+					VLAN-ID ist und keine Standard VLAN-ID definiert ist.
+				</para>
+			</section>
 		</section>
 		<section id="ip-config:radius:debugging">
 			<title>Fehlersuche</title>

@@ -283,6 +283,34 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 	--set ldapMapping=univentionNetworkAccess \
 	--set deleteObjectClass=1 || exit "$?"
 
+udm settings/extended_attribute create "$@" --ignore_exists \
+	--position "cn=custom attributes,cn=univention,$ldap_base" \
+	--set name='univentionVLanIDGroups' \
+	--set CLIName='vlanId' \
+	--set shortDescription='Virtual LAN ID' \
+	--append translationShortDescription='"de_DE" "Virtual LAN ID"' \
+	--append translationShortDescription='"fr_FR" "Virtual LAN ID"' \
+	--set longDescription='The RADIUS server can use the VLAN ID to assign users and computers to specific VLANs depending on their goup membership.' \
+	--append translationLongDescription='"de_DE" "Der RADIUS-Server kann die VLAN-ID verwenden, um Benutzer und Computer je nach ihrer Gruppenzugehörigkeit bestimmten VLANs zuzuordnen."' \
+	--append translationLongDescription='"fr_FR" "Le serveur RADIUS peut utiliser l’ID VLAN pour affecter les utilisateurs et les ordinateurs à des VLAN spécifiques en fonction de leur appartenance à un groupe."' \
+	--set tabAdvanced=0 \
+	--set tabName='RADIUS' \
+	--set tabPosition=5 \
+	--set groupName="VLAN" \
+	--append translationGroupName='"de_DE" "VLAN"' \
+	--append translationGroupName='"fr_FR" "VLAN"' \
+	--set groupPosition=4 \
+	--set module=groups/group \
+	--set syntax=integer \
+	--set multivalue=0 \
+	--set valueRequired=0 \
+	--set mayChange=1 \
+	--set doNotSearch=0 \
+	--set notEditable=0 \
+	--set objectClass=univentionVLan \
+	--set ldapMapping=univentionVLanId \
+	--set deleteObjectClass=1 || exit "$?"
+
 # update existing extended attributes created in version 1
 if joinscript_check_specific_version_executed 1 ; then
 	echo "Updating RADIUS extended attributes..."

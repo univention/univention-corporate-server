@@ -780,6 +780,40 @@ post-auth {
 	# For Exec-Program and Exec-Program-Wait
 	exec
 
+    # Load module: ldap
+    ldap
+    # Rewrite username if it is a machine account. The krb5PrincipalName is passed as User-Name in the request in this case.
+    if ("%{request:User-Name}" =~ /^host\/(.*).@%@domainname@%@/) {
+        update request {
+            User-Name := "%{1}$"    # The uid attribute in the ldap object is filled with the host name and a trailing dollar sign.
+        }
+    }
+    # Check if the user or machine exists and do post-auth actions
+    # else do nothing in post-auth
+    # This way we also make sure that we do not change the VLAN ID again if the non-EAP-auth (MAC address auth) succeeded before (see above)
+    if ("%{ldap:ldap:///@%@ldap/base@%@?uid?sub?(uid=%{User-Name})}") {
+        # For known users as well for known machines we take the vlan-id from the group the user/machine is member of.
+        # In case there are assignments for several groups the first vlan-id is automatically taken.
+        if ("%{ldap:ldap:///@%@ldap/base@%@?univentionVlanId?sub?(&(memberUid=%{User-Name})(univentionObjectType=groups/group)(univentionVlanId=*))}") {
+            update reply {
+                Reply-Message := "DEBUG: Assigning VLAN-ID from user / computer object"
+                Tunnel-Type := VLAN
+                Tunnel-Medium-Type := IEEE-802
+                Tunnel-Private-Group-Id := "%{ldap:ldap:///@%@ldap/base@%@?univentionVlanId?sub?(&(memberUid=%{User-Name})(univentionObjectType=groups/group)(univentionVlanId=*))}"
+            }
+        }
+        # If we can't find a matching VLAN ID for the user or machine client in LDAP, we return the default VLAN ID, if configured.
+        # If no default vlan-id is configured in ucr we do not return any vlan information
+        elsif ("@%@freeradius/vlan-id@%@") {
+            update reply {
+                Reply-Message := "DEBUG: Not found, assigning default VLAN-ID"
+                Tunnel-Type := VLAN
+                Tunnel-Medium-Type := IEEE-802
+                Tunnel-Private-Group-Id := "@%@freeradius/vlan-id@%@"
+            }
+        }
+    }
+
 	#
 	#  Calculate the various WiMAX keys.  In order for this to work,
 	#  you will need to define the WiMAX NAI, usually via

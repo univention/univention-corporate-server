@@ -51,6 +51,7 @@ then
 		"cn=univentionRadiusClientSharedSecret,cn=custom attributes,cn=univention,$ldap_base" \
 		"cn=univentionRadiusClientType,cn=custom attributes,cn=univention,$ldap_base" \
 		"cn=univentionRadiusClientVirtualServer,cn=custom attributes,cn=univention,$ldap_base" \
+		"cn=univentionVLanIDGroups,cn=custom attributes,cn=univention,$ldap_base" \
 		; do
 			udm settings/extended_attribute remove "$@" --dn "$dn"
 	done

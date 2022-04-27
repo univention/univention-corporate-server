@@ -2,6 +2,7 @@ objectIdentifier univentionNetworkAccess 1.3.6.1.4.1.10176.4205
 objectIdentifier univentionNetworkAccessAttributeType univentionNetworkAccess:1
 objectIdentifier univentionNetworkAccessObjectClass   univentionNetworkAccess:2
 objectIdentifier univentionRadiusClientPrefix 1.3.6.1.4.1.10176.4205.100
+objectIdentifier univentionVLan 1.3.6.1.4.1.10176.4205.200
 
 attributetype ( univentionNetworkAccessAttributeType  NAME 'univentionNetworkAccess'
 	DESC 'Allow 802.1X network access'
@@ -12,6 +13,17 @@ objectclass ( univentionNetworkAccessObjectClass NAME 'univentionNetworkAccess'
 	DESC 'Network access rules'
 	SUP top AUXILIARY
 	MAY ( univentionNetworkAccess )
+	)
+
+attributetype ( univentionVLan:1 NAME 'univentionVLanId'
+	DESC 'Default V-Lan ID for network'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+objectclass ( univentionVLan:2 NAME 'univentionVlan'
+	DESC 'VlanId configuration'
+	SUP top AUXILIARY
+	MAY ( univentionVlanId )
 	)
 
 attributetype ( univentionRadiusClientPrefix:1.1  NAME 'univentionRadiusClientVirtualServer'

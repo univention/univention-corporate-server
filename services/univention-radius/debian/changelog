@@ -1,3 +1,9 @@
+univention-radius (7.0.1-9) unstable; urgency=medium
+
+  * Bug #25916 - VLAN-Zuordnung via 802.1x/RADIUS
+
+ -- Peter Stoll <stoll.extern@univention.de>  Thu, 31 Mar 2022 09:00:25 +0100
+
 univention-radius (7.0.1-8) unstable; urgency=medium
 
   * Bug #54409: Use service specific password
