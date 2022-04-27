@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: python-keycloak
-fix: 
+fix: 0.24.0-1A~5.0.0.202204270822
 desc: |
  This update addresses the following issue:
  * The Debian package `python3-keycloak` has been downgraded to make it
