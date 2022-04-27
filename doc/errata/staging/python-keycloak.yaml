@@ -10,3 +10,4 @@ desc: |
    compatible with the UCS python packages. It will be used for configuration
    of the Keycloak app.
 bug: [54689]
+maintained: true
