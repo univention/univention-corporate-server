@@ -1,19 +1,15 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2021-2022, Univention GmbH
-# This file is distributed under the same license as the Univention
-# Corporate Server - Manual for users and administrators package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
-#
-#, fuzzy
+
 msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
-"administrators \n"
+"administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-21 09:59+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2022-05-03 15:51+0200\n"
+"PO-Revision-Date: 2022-05-03 15:55+0200\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
+"Language-Team: Univention GmbH <packages@univention.de>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,7 +17,7 @@ msgstr ""
 
 #: ../../installation.rst:5
 msgid "Installation"
-msgstr ""
+msgstr "Installation"
 
 #: ../../installation.rst:7
 msgid ""
@@ -30,6 +26,10 @@ msgid ""
 " is interactive and prompts all the necessary system settings in a "
 "graphic interface."
 msgstr ""
+"Die folgende Dokumentation beschreibt die Installation von Univention "
+"Corporate Server (UCS). Als Installationsmedium wird eine DVD "
+"bereitgestellt. Die Installation erfolgt interaktiv und fragt alle "
+"notwendigen System-Einstellungen in einer graphischen Oberfläche ab."
 
 #: ../../installation.rst:11
 msgid ""
@@ -39,6 +39,12 @@ msgid ""
 "Interface (UEFI) standard. The UEFI support on the DVD is also capable of"
 " starting systems with activated Secure Boot and installing UCS there."
 msgstr ""
+"Die Installations-DVD wird für die Rechnerarchitektur *amd64* (64 Bit) "
+"bereitgestellt. Die DVD bringt neben einer Unterstützung für die weit "
+"verbreiteten BIOS-Systeme auch eine Unterstützung für den Unified "
+"Extensible Firmware Interface-Standard (UEFI) mit. Die UEFI-Unterstützung"
+" auf der DVD ist auch in der Lage, auf Systemen mit aktiviertem "
+"SecureBoot zu starten und UCS dort zu installieren."
 
 #: ../../installation.rst:19
 msgid ""
@@ -50,6 +56,14 @@ msgid ""
 " update to UCS 5.0. A subsequent installation of Debian will also result "
 "in UCS 5.0 not being able to boot."
 msgstr ""
+"Es ist zu beachten, dass beginnend ab UCS 5.0-0 ein gleichzeitiger "
+"Betrieb von UCS und Debian auf einem UEFI System nicht unterstützt wird. "
+"Ursache hierfür ist der Bootloader GRUB von |UCSUCS|, der teilweise die "
+"gleichen Konfigurationsdateien wie Debian verwendet. Ein bereits "
+"installiertes Debian führt dazu, dass UCS nach der Installation von bzw. "
+"einem Update auf UCS 5.0 nicht (mehr) gebootet werden kann. Eine "
+"nachträgliche Installation von Debian wird ebenfalls dazu führen, dass "
+"UCS 5.0 nicht mehr gebootet werden kann."
 
 #: ../../installation.rst:27
 msgid ""
@@ -58,34 +72,48 @@ msgid ""
 " information can be found in :ref:`Installation in the Amazon EC2 cloud "
 "<installation-amazon-ec2>`."
 msgstr ""
+"Neben einer Installation auf Hardware oder in einer "
+"Virtualisierungslösung kann UCS auch über ein AMI-Image in der Amazon "
+"EC2-Cloud installiert werden. Hinweise dazu finden sich in :ref"
+":`installation-amazon-ec2`."
 
 #: ../../installation.rst:32
 msgid ""
 "The installer's input masks can be operated with the mouse or via the "
 "keyboard."
 msgstr ""
+"Die Eingabemasken des Installers können mit der Maus oder über die "
+"Tastatur bedient werden."
 
 #: ../../installation.rst:34
 msgid "The :kbd:`Tab` key can be used to proceed to the next field."
 msgstr ""
+"Mit der :kbd:`Tab`-Taste kann der Fokus auf das nächste Feld bewegt "
+"werden."
 
 #: ../../installation.rst:36
 msgid ""
 "The key combination of :kbd:`Shift+Tab` can be used to return to the "
 "previous field."
 msgstr ""
+"Auf das vorherige Feld wird mit der Tastenkombination :kbd:`Shift+Tab` "
+"gesprungen."
 
 #: ../../installation.rst:39
 msgid ""
 "The :kbd:`Enter` key is used to assign values to the input field and "
 "confirm buttons."
 msgstr ""
+"Mit der :kbd:`Eingabe`-Taste werden Werte im Eingabefeld übergeben und "
+"Schaltflächen betätigt."
 
 #: ../../installation.rst:42
 msgid ""
 "Within a list or table, the *arrow keys* can be used for navigating "
 "between entries."
 msgstr ""
+"Innerhalb einer Liste oder Tabelle kann mit den *Pfeiltasten* zwischen "
+"den Einträgen gewechselt werden."
 
 #: ../../installation.rst:47
 msgid ""
@@ -95,24 +123,32 @@ msgid ""
 "circumstances, subsequent configuration steps cannot be directly selected"
 " if the earlier steps have not been completed."
 msgstr ""
+"Über die Schaltfläche :guilabel:`Abbrechen` kann der aktuelle "
+"Konfigurationsschritt abgebrochen werden. Im anschließend angezeigten "
+"Menü kann dann ein vorhergehender Konfigurationsschritt erneut ausgewählt"
+" werden. Nachfolgende Konfigurationsschritte sind unter Umständen nicht "
+"direkt auswählbar, wenn die vorhergehenden Schritte noch nicht "
+"vollständig durchlaufen wurden."
 
 #: ../../installation.rst:56
 msgid "Selecting the installation mode"
-msgstr ""
+msgstr "Auswahl des Installationsmodus"
 
 #: ../../installation.rst:58
 msgid ""
 "After booting the system from the installation medium, the following boot"
 " prompt is displayed:"
 msgstr ""
+"Nach dem Starten des Systems vom Installationsmedium erscheint der "
+"folgende Bootprompt:"
 
 #: ../../installation.rst:66
 msgid "Installation boot prompt"
-msgstr ""
+msgstr "Bootprompt der Installation"
 
 #: ../../installation.rst:68
 msgid "Now you can choose between several installation procedures."
-msgstr ""
+msgstr "Hier kann zwischen verschiedenen Installationsverfahren gewählt werden."
 
 #: ../../installation.rst:70
 msgid ""
@@ -122,6 +158,12 @@ msgid ""
 " settings for the UCS system to be installed and then performs the "
 "installation and the configuration."
 msgstr ""
+":guilabel:`Start with default settings` startet die interaktive, "
+"graphische Installation von UCS. Bei der Installation fragt das System "
+"nach einigen Parametern wie Netzwerkeinstellungen, "
+"Festplattenpartitionierung und Domäneneinstellungen für das zu "
+"installierende UCS-System und führt anschließend die Installation und "
+"Konfiguration durch."
 
 #: ../../installation.rst:76
 msgid ""
@@ -130,12 +172,18 @@ msgid ""
 "DHCP. This is practical on systems, where the network must be setup "
 "manually."
 msgstr ""
+":guilabel:`Start with manual network settings` führt eine "
+"Standardinstallation durch, bei der das Netzwerk nicht automatisch per "
+"DHCP konfiguriert wird. Dies ist auf Systemen sinnvoll, wo das Netzwerk "
+"manuell eingerichtet werden muss."
 
 #: ../../installation.rst:80
 msgid ""
-"The Advanced options submenu offers advanced options for the installation"
-" process for selection:"
+"The :guilabel:`Advanced options` submenu offers advanced options for the "
+"installation process for selection:"
 msgstr ""
+"Das Untermenü :guilabel:`Advanced options` bietet die Auswahl fortgeschrittener "
+"Optionen für den Installationsprozess:"
 
 #: ../../installation.rst:83
 msgid ""
@@ -143,24 +191,32 @@ msgid ""
 "installation in text mode. This is practical on systems which display "
 "problems with the graphic version of the installer."
 msgstr ""
+":guilabel:`Start in text mode` führt eine interaktive "
+"Standardinstallation im Textmodus durch. Dies ist auf Systemen sinnvoll, "
+"die Probleme mit der graphischen Variante des Installers zeigen."
 
 #: ../../installation.rst:87
-msgid ""
-":guilabel:`Rescue mode` The rescue mode is there to recover systems "
-"unable to boot."
+msgid ":guilabel:`Rescue mode` is there to recover systems unable to boot."
 msgstr ""
+":guilabel:`Rescue mode` (Rettungsmodus) ist da, um nicht bootende Systeme"
+" wiederherzustellen."
 
 #: ../../installation.rst:90
 msgid ""
 ":guilabel:`Boot from first hard drive` boots the operating system "
 "installed on the first hard drive instead of the UCS installation."
 msgstr ""
+":guilabel:`Boot from first hard drive` startet nicht die UCS-"
+"Installation, sondern das auf der ersten Festplatte installierte "
+"Betriebssystem."
 
 #: ../../installation.rst:93
 msgid ""
 ":guilabel:`Accessible dark contrast installer menu` allows to start the "
 "setup in a dark and contrast rich mode."
 msgstr ""
+":guilabel:`Accessible dark contrast installer menu` erlaubt das Starten "
+"der Installation in einem dunklen und kontrastreichen Modus."
 
 #: ../../installation.rst:96
 msgid ""
@@ -170,10 +226,16 @@ msgid ""
 "subsequently if necessary. There are modules for network configuration or"
 " for selecting the software to be installed, among others."
 msgstr ""
+"Nach der Auswahl einer der Installationsoptionen wird der Kernel vom "
+"Installationsmedium geladen. Die eigentliche Installation gliedert sich "
+"in einzelne Module, die bei Bedarf vom Installationsmedium nachgeladen "
+"werden. In einem Modul werden inhaltlich zusammenhängende Einstellungen "
+"getroffen, es gibt beispielsweise Module für die Netzkonfiguration oder "
+"die Auswahl der zu installierenden Software."
 
 #: ../../installation.rst:105 ../../installation.rst:117
 msgid "Selecting the installation language"
-msgstr ""
+msgstr "Auswahl der Installationssprache"
 
 #: ../../installation.rst:107
 msgid ""
@@ -182,6 +244,10 @@ msgid ""
 " and permits the representation of program output in the selected "
 "languages in the installed UCS system."
 msgstr ""
+"Im ersten Schritt wird die Systemsprache ausgewählt, die verwendet werden"
+" soll. Die Auswahl beeinflusst die Verwendung von sprachspezifischen "
+"Schriftzeichen und ermöglicht die Darstellung von Programmausgaben in den"
+" ausgewählten Sprachen im installierten UCS-System."
 
 #: ../../installation.rst:119
 msgid ""
@@ -189,10 +255,14 @@ msgid ""
 "(currently German and English), the selected language is also used during"
 " the installation, otherwise the installation is performed in English."
 msgstr ""
+"Sofern der Univention Installer die ausgewählte Sprache unterstützt, wird"
+" diese als Installationssprache verwendet, andernfalls wird Englisch "
+"verwendet. Derzeit sind Deutsch und Englisch vom Univention Installer "
+"unterstützt."
 
 #: ../../installation.rst:126 ../../installation.rst:139
 msgid "Selecting the location"
-msgstr ""
+msgstr "Auswahl des Standorts"
 
 #: ../../installation.rst:128
 msgid ""
@@ -203,10 +273,17 @@ msgid ""
 "locations be appropriate, a more extensive list can be displayed using "
 "the menu entry **other**."
 msgstr ""
+"Nach der Auswahl der Systemsprache wird basierend auf der zuvor "
+"ausgewählten Sprache eine kleine Liste mit Standorten angezeigt. Wählen "
+"Sie aus der Liste einen passenden Standort aus. Der ausgewählte Standort "
+"wird verwendet, um z.B. die Zeitzone zu setzen oder den korrekten "
+"Sprachdialekt zu ermitteln. Falls kein angezeigter Standort passend sein "
+"sollte, kann über den Menüeintrag **weitere** eine umfangreichere Liste "
+"angezeigt werden."
 
 #: ../../installation.rst:144 ../../installation.rst:155
 msgid "Selecting the keyboard layout"
-msgstr ""
+msgstr "Auswahl der Tastaturbelegung"
 
 #: ../../installation.rst:146
 msgid ""
@@ -214,10 +291,13 @@ msgid ""
 " The language selected here should be compatible with the keyboard used "
 "as it may otherwise cause operating problems."
 msgstr ""
+"Unabhängig von der Systemsprache kann ein Tastaturlayout ausgewählt "
+"werden. Die hier ausgewählte Sprache sollte zur verwendeten Tastatur "
+"passen, das es sonst zu Bedienproblemen kommen kann."
 
 #: ../../installation.rst:160
 msgid "Network configuration"
-msgstr ""
+msgstr "Netzwerkkonfiguration"
 
 #: ../../installation.rst:162
 msgid ""
@@ -230,10 +310,19 @@ msgid ""
 "Dynamic Host Configuration Protocol (DHCP). If this is successful, the "
 "manual network configuration of Univention Installer is skipped."
 msgstr ""
+"Initial versucht der Univention Installer eine automatische Konfiguration"
+" der Netzwerkschnittstellen vorzunehmen. Dies kann durch die Auswahl des "
+"Menüeintrags :guilabel:`Start with manual network settings` im Menü des "
+"Bootloaders deaktiviert werden. Dabei wird zunächst versucht, eine "
+"IPv6-Adresse über die Stateless Address Autoconfiguration (SLAAC) zu "
+"ermitteln.  Sollte dies nicht erfolgreich sein, versucht der Univention "
+"Installer eine IPv4-Adresse über das Dynamic Host Configuration Protocol "
+"(DHCP) zu erfragen.  Ist dies erfolgreich, wird die manuelle "
+"Netzwerkkonfiguration von Univention Installer übersprungen."
 
 #: ../../installation.rst:176
 msgid "Automatic network configuration"
-msgstr ""
+msgstr "Automatische Netzwerkkonfiguration"
 
 #: ../../installation.rst:178
 msgid ""
@@ -243,6 +332,11 @@ msgid ""
 "offers to repeat the automatic configuration or to configure the "
 "interface manually."
 msgstr ""
+"Sollte kein DHCP-Server im lokalen Netz vorhanden sein oder es soll eine "
+"statische Konfiguration der Netzwerkschnittstelle stattfinden, kann die "
+"Schaltfläche :guilabel:`Abbrechen` ausgewählt werden. Der Univention "
+"Installer bietet dann an, die automatische Konfiguration zu wiederholen "
+"oder die Schnittstelle manuell zu konfigurieren."
 
 #: ../../installation.rst:185
 msgid ""
@@ -250,10 +344,14 @@ msgid ""
 "|UCSUCS|. If no supported network card is detected, Univention Installer "
 "opens a list of supported drivers for selection."
 msgstr ""
+"Für die Installation von |UCSUCS| ist mindestens eine "
+"Netzwerkschnittstelle erforderlich. Wird keine unterstützte Netzwerkkarte"
+" erkannt, bietet Univention Installer eine Liste der unterstützten "
+"Treiber zur Auswahl an."
 
 #: ../../installation.rst:194
 msgid "Selecting the manual network configuration"
-msgstr ""
+msgstr "Auswahl der manuellen Netzwerkkonfiguration"
 
 #: ../../installation.rst:196
 msgid ""
@@ -266,10 +364,18 @@ msgid ""
 "static IP address, values for network masks, gateways and DNS servers are"
 " also requested."
 msgstr ""
+"Bei der manuellen Konfiguration kann für das System wahlweise eine "
+"statische IPv4- oder eine IPv6-Adresse angegeben werden. IPv4-Adressen "
+"haben 32 Bit Länge und werden in der Regel in vier Blöcken in "
+"Dezimalschreibweise dargestellt (z.B. ``192.0.2.10``), während "
+"IPv6-Adressen vier Mal so lang sind und typischerweise hexadezimal "
+"dargestellt werden (z.B. ``2001:0DB8:FE29:DE27:0000:0000:0000:000A``). "
+"Neben der Angabe einer statischen IP-Adresse werden auch Werte für "
+"Netzmaske, Gateway und DNS-Server abgefragt."
 
 #: ../../installation.rst:209
 msgid "Specifying an IP address"
-msgstr ""
+msgstr "Angabe einer IP-Adresse"
 
 #: ../../installation.rst:211
 msgid ""
@@ -277,6 +383,9 @@ msgid ""
 "DNS server manually. They depend on the intended subsequent use of the "
 "UCS system."
 msgstr ""
+"Bei der manuellen Angabe eines DNS-Server sind die folgenden Punkte zu "
+"beachten. Sie sind abhängig vom späteren Verwendungszweck des UCS-"
+"Systems."
 
 #: ../../installation.rst:214
 msgid ""
@@ -284,6 +393,10 @@ msgid ""
 "of the local router (if it provides the DNS service) or the DNS server of"
 " the internet provider should be entered."
 msgstr ""
+"Bei der Installation des ersten UCS-Systems einer neuen UCS-Domäne sollte"
+" die IP-Adresse des lokalen Routers (sofern dieser den DNS-Dienst "
+"bereitstellt) oder der DNS-Server des Internet-Providers angegeben "
+"werden."
 
 #: ../../installation.rst:218
 msgid ""
@@ -293,6 +406,11 @@ msgid ""
 "In case of doubt, the IP address of the UCS |UCSPRIMARYDN| system should "
 "be entered."
 msgstr ""
+"Bei der Installation jedes weiteren UCS-Systems muss als DNS-Server die "
+"IP-Adresse eines UCS Directory Nodes angegeben werden. Dies ist "
+"notwendig, damit die automatische Erkennung des |UCSPRIMARYDN| "
+"funktioniert. Im Zweifelsfall sollte hier die IP-Adresse des UCS "
+"|UCSPRIMARYDN| angegeben werden."
 
 #: ../../installation.rst:223
 msgid ""
@@ -302,10 +420,15 @@ msgid ""
 "automatic detection of the Windows Active Directory domain controller to "
 "function."
 msgstr ""
+"Soll das UCS-System während der Installation einer Windows-Active "
+"Directory-Domäne beitreten, muss als DNS-Server die IP-Adresse eines "
+"Active Directory-Domänencontroller-Systems angegeben werden. Dies ist "
+"notwendig, damit die automatische Erkennung des Windows-Active Directory-"
+"Domänencontroller funktioniert."
 
 #: ../../installation.rst:231
 msgid "Setting up the root password"
-msgstr ""
+msgstr "Einrichtung des root-Passworts"
 
 #: ../../installation.rst:233
 msgid ""
@@ -316,18 +439,24 @@ msgid ""
 "independently of each other. The password must be re-entered in the "
 "second entry field."
 msgstr ""
+"Für die Anmeldung am installierten System ist die Angabe eines Passworts "
+"für den Benutzer ``root`` notwendig. Wird ein |UCSPRIMARYDN| installiert,"
+" wird dieses Passwort auch für den Benutzer ``Administrator`` "
+"eingetragen. Im späteren Betrieb können die Passworte der Benutzer "
+"``root`` und ``Administrator`` unabhängig voneinander verwaltet werden. "
+"Das Passwort muss im zweiten Feld erneut eingetragen werden."
 
 #: ../../installation.rst:239
 msgid "The password must contain at least eight characters for security reasons."
-msgstr ""
+msgstr "Das Passwort muss aus Sicherheitsgründen mindestens acht Zeichen umfassen."
 
 #: ../../installation.rst:246
 msgid "Setting the root password"
-msgstr ""
+msgstr "root-Passwort einrichten"
 
 #: ../../installation.rst:251
 msgid "Partitioning the hard drive"
-msgstr ""
+msgstr "Partitionierung der Festplatten"
 
 #: ../../installation.rst:253
 msgid ""
@@ -336,6 +465,11 @@ msgid ""
 "addition, it is also possible to set up mechanisms such as the logical "
 "volume manager (LVM), RAID or partitions encrypted with LUKS."
 msgstr ""
+"Der Univention Installer unterstützt die Partitionierung von Festplatten "
+"und die Erstellung von unterschiedlichen Dateisystemen (u.a.  ``ext4`` "
+"und ``XFS``). Darüber hinaus können auch Mechanismen wie der Logical "
+"Volume Manager (LVM), RAID oder mit LUKS verschlüsselte Partitionen "
+"eingerichtet werden."
 
 #: ../../installation.rst:258
 msgid ""
@@ -344,6 +478,10 @@ msgid ""
 "hard drive. On systems with the *Unified Extensible Firmware Interface "
 "(UEFI)*, the GUID Partition Table (GPT) is used automatically."
 msgstr ""
+"Ab UCS 4.0 wählt der Univention Installer automatisch einen passenden "
+"Partitionstyp (MBR oder GPT) in Abhängigkeit von der Größe der gewählten "
+"Festplatte aus. Auf Systemen mit *Unified Extensible Firmware Interface "
+"(UEFI)* wird automatisch die GUID Partition Table (GPT) verwendet."
 
 #: ../../installation.rst:263
 msgid ""
@@ -353,177 +491,289 @@ msgid ""
 "hard drive. In addition, it is also possible to perform partitioning "
 "manually."
 msgstr ""
+"Zur einfacheren Installation bietet der Univention Installer geführte "
+"Installationen an. Bei der geführten Installation werden Standardschemata"
+" bzgl. Partitionierung und Formatierung auf die ausgewählte Festplatte "
+"angewendet. Darüber hinaus kann auch eine manuelle Partitionierung "
+"vorgenommen werden."
 
 #: ../../installation.rst:268
 msgid "There are three schemes available for selection for guided partitioning:"
-msgstr ""
+msgstr "Es stehen drei Schemata für eine geführte Partitionierung zur Auswahl:"
 
-#: ../../installation.rst:270
-msgid ""
-":guilabel:`Guided - Use entire disk`: In this scheme, an individual "
-"partition is created for each file system. Abstraction layers like LVM "
-"are not used. During the following step the number of file systems or "
-"partitions is assigned. The size of the partitions is restricted to the "
-"size of the respective hard drive."
-msgstr ""
+#: ../../installation.rst:274
+msgid "Guided - Use entire disk"
+msgstr "Geführt - vollständige Festplatte verwenden"
 
-#: ../../installation.rst:276
+#: ../../installation.rst:271
 msgid ""
-":guilabel:`Guided - Use entire disk and set up LVM`: If the second scheme"
-" is selected, an LVM volume group is set up on the selected hard drive "
-"first. A separate logical volume is then created within the volume group "
-"for each file system. In this scheme, the size of the logical volume is "
-"restricted by the size of the volume group, which can also be "
-"subsequently enlarged with additional hard drives. In case of doubt, "
-"select this partitioning scheme."
+"In this scheme, an individual partition is created for each file system. "
+"Abstraction layers like LVM are not used. During the following step the "
+"number of file systems or partitions is assigned. The size of the "
+"partitions is restricted to the size of the respective hard drive."
 msgstr ""
+"In diesem Schema wird für jedes Dateisystem eine eigene Partition "
+"angelegt. Abstraktionsschichten wie LVM werden nicht verwendet. Im "
+"nachfolgenden Schritt wird bestimmt, welche Dateisysteme/Partitionen "
+"erstellt werden sollen. Die Größe der Partitionen ist in diesem Schema "
+"auf die Größe der jeweiligen Festplatte beschränkt."
 
-#: ../../installation.rst:283
+#: ../../installation.rst:282
+msgid "Guided - Use entire disk and set up LVM"
+msgstr "Geführt - gesamte Platte verwenden und LVM einrichten"
+
+#: ../../installation.rst:277
 msgid ""
-":guilabel:`Guided - Use entire disk with encrypted LVM`: This version is "
-"the same as the previous version, with the addition that the LVM volume "
-"group is also encrypted. Consequently, the password for the encrypted "
-"volume group has to be entered every time the system is started up."
+"If the second scheme is selected, a *Logical Volume Group (LVM)* is set "
+"up on the selected hard drive first. A separate logical volume is then "
+"created within the volume group for each file system. In this scheme, the"
+" size of the logical volume is restricted by the size of the volume "
+"group, which can also be subsequently enlarged with additional hard "
+"drives. In case of doubt, select this partitioning scheme."
 msgstr ""
+"Mit der Auswahl des zweiten Schemas wird auf der ausgewählten Festplatte "
+"zunächst eine *Logical Volume Group (LVM)* eingerichtet. Anschließend "
+"wird für jedes Dateisystem ein eigenes Logical Volume innerhalb der "
+"Volume Group angelegt. Die Größe der Logical Volumes ist bei diesem "
+"Schema durch die Größe der Volume Group beschränkt, die später auch durch"
+" weitere Festplatten vergrößert werden kann. Im Zweifelsfall wählen Sie "
+"dieses Partitionierungsschema."
 
-#: ../../installation.rst:290
+#: ../../installation.rst:287
+msgid "Guided - Use entire disk with encrypted LVM"
+msgstr "Geführt - gesamte Platte mit verschlüsseltem LVM"
+
+#: ../../installation.rst:285
 msgid ""
-"In all three versions, the data already on the selected hard drive are "
+"This version is the same as the previous version, with the addition that "
+"the LVM volume group is also encrypted. Consequently, the password for "
+"the encrypted volume group has to be entered every time the system is "
+"started up."
+msgstr ""
+"Diese Variante entspricht der vorherigen Variante, allerdings wird "
+"zusätzlich die LVM Volume Group verschlüsselt. Dies macht die Angabe des "
+"Passwort für die verschlüsselte Volume Group bei jedem Start von UCS "
+"notwendig."
+
+#: ../../installation.rst:291
+msgid ""
+"In all three versions, the existing data on the selected hard drive are "
 "deleted during the partitioning!"
 msgstr ""
+"Bei allen drei Varianten gehen die existierenden Daten auf der "
+"ausgewählten Festplatte während der Partitionierung verloren!"
 
-#: ../../installation.rst:298
+#: ../../installation.rst:299
 msgid "Selecting the partitioning scheme"
-msgstr ""
+msgstr "Auswahl des Partitionierungsschemas"
 
-#: ../../installation.rst:300
+#: ../../installation.rst:301
 msgid ""
 "The next step is to select a hard drive from the list of those detected "
 "to which the partitioning version should be applied."
 msgstr ""
+"Im Anschluss muss aus der Liste der erkannten Festplatte eine ausgewählt "
+"werden, auf die die Partitionierungsvariante angewendet werden soll."
 
-#: ../../installation.rst:303
+#: ../../installation.rst:304
 msgid ""
 "There are three sub versions for each partitioning version, which differ "
 "in the number of file systems created:"
 msgstr ""
-
-#: ../../installation.rst:306
-msgid ""
-":guilabel:`All files in one partition`: In this version, just one "
-"partition or logical volume is created and the :file:`/` file system "
-"saved there."
-msgstr ""
+"Für jede Partitionierungsvariante gibt es drei Untervarianten, die sich "
+"in der Anzahl der erstellten Dateisysteme unterscheiden:"
 
 #: ../../installation.rst:309
+msgid "All files in one partition"
+msgstr "Alle Dateien auf eine Partition"
+
+#: ../../installation.rst:308
 msgid ""
-":guilabel:`Separate /home partition`: In addition to a file system for "
-":file:`/`, an additional file system is also created for :file:`/home/`."
+"In this version, just one partition or logical volume is created and the "
+":file:`/` file system saved there."
 msgstr ""
+"Bei dieser Variante wird nur eine Partition bzw. ein Logical Volume "
+"erstellt, auf dem das :file:`/`-Dateisystem angelegt wird."
+
+#: ../../installation.rst:313
+msgid "Separate :file:`/home` partition"
+msgstr "Separate :file:`/home`\\ -Partition"
 
 #: ../../installation.rst:312
 msgid ""
-":guilabel:`Separate /home, /usr, /var and /tmp partition`: In addition to"
-" a file system for :file:`/`, an additional file system is also created "
-"each for :file: `/home/`, :file:`/usr/`, :file:`/var/` and :file:`/tmp/`."
+"In addition to a file system for :file:`/`, an additional file system is "
+"also created for :file:`/home/`."
 msgstr ""
+"Neben einem Dateisystem für :file:`/` wird ein weiteres Dateisystem für "
+":file:`/home/` angelegt."
+
+#: ../../installation.rst:318
+msgid ""
+"Separate :file:`/home`, :file:`/usr`, :file:`/var` and :file:`/tmp` "
+"partition"
+msgstr ""
+"Separate :file:`/home`, :file:`/usr`, :file:`/var` und :file:`/tmp`\\ "
+"-Partition"
 
 #: ../../installation.rst:316
+msgid ""
+"In addition to a file system for :file:`/`, an additional file system is "
+"also created each for :file:`/home/`, :file:`/usr/`, :file:`/var/` and "
+":file:`/tmp/`."
+msgstr ""
+"Neben einem Dateisystem für :file:`/` wird für :file:`/home/`, "
+":file:`/usr/`, :file:`/var/` und :file:`/tmp/` jeweils ein eigenes "
+"Dateisystem angelegt."
+
+#: ../../installation.rst:320
 msgid ""
 "Before every active change to the hard drive, the change is displayed "
 "again in an additional dialogue and must be confirmed explicitly."
 msgstr ""
+"Vor jeder aktiven Änderung auf der Festplatte wird diese noch einmal in "
+"einem zusätzlichen Dialog angezeigt und muss explizit bestätigt werden."
 
-#: ../../installation.rst:324
+#: ../../installation.rst:328
 msgid "Confirmation of changes to the hard drive"
-msgstr ""
+msgstr "Bestätigung von Änderungen auf der Festplatte"
 
-#: ../../installation.rst:326
+#: ../../installation.rst:330
 msgid ""
 "Once the partitioning is complete, the UCS basic system and additional "
 "software is installed automatically. This can take some time depending on"
 " the speed of the hardware used. The system is then made ready to boot "
 "via the installation of the GRUB boot loader."
 msgstr ""
+"Nach Abschluss der Partitionierung werden automatisch das UCS-Grundsystem"
+" sowie weitere Software installiert. Dies kann je nach Geschwindigkeit "
+"der verwendeten Hardware einige Zeit beanspruchen. Nachfolgend wird das "
+"System durch die Installation des GRUB-Bootloaders bootfähig gemacht."
 
-#: ../../installation.rst:336
+#: ../../installation.rst:340
 msgid "Finish the installation"
-msgstr ""
+msgstr "Installation abschließen"
 
-#: ../../installation.rst:338
+#: ../../installation.rst:342
 msgid ""
 "A restart into the freshly installed system follows subsequently in order"
 " to complete the configuration within it."
 msgstr ""
+"Ein Systemneustart in das frisch installierte System erfolgt "
+"anschließend, um darin die Konfiguration abzuschließen."
 
-#: ../../installation.rst:344 ../../installation.rst:375
+#: ../../installation.rst:348 ../../installation.rst:382
 msgid "Domain settings"
-msgstr ""
+msgstr "Domäneneinstellungen"
 
-#: ../../installation.rst:346
+#: ../../installation.rst:350
 msgid ""
 "The final configuration of the UCS system is started by selecting a "
 "domain mode. There are three modes available, which influence the "
 "following configuration steps:"
 msgstr ""
+"Die abschließende Konfiguration des UCS-Systems beginnt mit der Auswahl "
+"eines Domänenmodus. Es stehen drei Modi zur Verfügung, die Einfluss auf "
+"die nächsten Konfigurationsschritte haben:"
 
-#: ../../installation.rst:350
+#: ../../installation.rst:361
+msgid "Create a new UCS domain"
+msgstr "Erstellen einer neuen UCS-Domäne"
+
+#: ../../installation.rst:355
 msgid ""
-"In the first mode, :guilabel:`Create a new UCS domain`, the first system "
-"in a new UCS domain is configured: a UCS system with the |UCSPRIMARYDN_e|"
-" system role. In the following configuration steps, the information "
-"required for setting up a new directory service, authentication service "
-"and DNS server are requested. A UCS domain can consist of one single or "
-"several UCS systems. Additional UCS systems can be added at a later point"
-" in time using the :guilabel:`Join an existing UCS domain` mode."
+"In the first mode, *Create a new UCS domain*, the first system in a new "
+"UCS domain is configured: a UCS system with the |UCSPRIMARYDN_e| system "
+"role. In the following configuration steps, the information required for "
+"setting up a new directory service, authentication service and DNS server"
+" are requested. A UCS domain can consist of one single or several UCS "
+"systems. Additional UCS systems can be added at a later point in time "
+"using the *Join an existing UCS domain* mode."
 msgstr ""
+"Im ersten Modus, *Erstellen einer neuen UCS-Domäne*, wird das erste "
+"System einer neuen UCS-Domäne konfiguriert: ein UCS-System mit der "
+"Systemrolle |UCSPRIMARYDN_e|. In den folgenden Konfigurationsschritten "
+"werden die notwendigen Informationen zur Einrichtung eines neuen "
+"Verzeichnisdienstes, Authentifikationsdienstes sowie DNS-Servers "
+"abgefragt. Eine UCS-Domäne kann aus einem einzelnen oder mehreren UCS-"
+"Systemen bestehen. Zusätzliche UCS-Systeme können über den Modus *Einer "
+"bestehenden UCS-Domäne beitreten* nachträglich aufgenommen werden."
 
-#: ../../installation.rst:358
+#: ../../installation.rst:370
+msgid "Join into an existing Active Directory domain"
+msgstr "Einer bestehenden Active-Directory-Domäne beitreten"
+
+#: ../../installation.rst:364
 msgid ""
-":guilabel:`Join into an existing Active Directory domain`: This mode, in "
-"which UCS is operated as a member of an Active Directory domain, is "
-"suitable for expanding an Active Directory domain with applications "
-"available on the UCS platform. Apps installed on the UCS platform are "
-"then available for the users of the Active Directory domain to use. On "
-"selection of this mode, all the relevant information for the joining of "
-"the Active Directory domain is requested and the UCS system configured "
-"correspondingly."
+"This mode, in which UCS is operated as a member of an Active Directory "
+"domain, is suitable for expanding an Active Directory domain with "
+"applications available on the UCS platform. Apps installed on the UCS "
+"platform are then available for the users of the Active Directory domain "
+"to use. On selection of this mode, all the relevant information for the "
+"joining of the Active Directory domain is requested and the UCS system "
+"configured correspondingly."
 msgstr ""
+"Dieser Modus, in dem UCS als Mitglied einer Active Directory-Domäne "
+"betrieben wird, eignet sich, um eine Active Directory-Domäne um "
+"Applikationen zu erweitern, die auf der UCS-Plattform zur Verfügung "
+"stehen. Auf der UCS-Plattform installierte Apps sind dann für Benutzer "
+"der Active Directory-Domäne nutzbar. Nach der Auswahl dieses Modus werden"
+" alle relevanten Informationen für den Beitritt zur Active Directory-"
+"Domäne abgefragt und das UCS-System entsprechend konfiguriert."
 
-#: ../../installation.rst:366
+#: ../../installation.rst:375
+msgid "Join into an existing UCS domain"
+msgstr "Einer bestehenden UCS-Domäne beitreten"
+
+#: ../../installation.rst:373
 msgid ""
-"Selecting the :guilabel:`Join into an existing UCS domain` mode allows "
-"the UCS system to be configured to join an existing UCS domain. What UCS "
-"system role it is to take on in the domain is queried at a later stage."
+"Selecting the *Join into an existing UCS domain* mode allows the UCS "
+"system to be configured to join an existing UCS domain. What UCS system "
+"role it is to take on in the domain is queried at a later stage."
 msgstr ""
+"Mit der Auswahl des Modus *Einer bestehenden UCS-Domäne beitreten* kann "
+"das zu konfigurierende UCS-System einer bereits existierenden UCS-Domäne "
+"beitreten. Die UCS-Systemrolle, die es in der Domäne einnehmen soll, wird"
+" in einem nachgelagerten Schritt abgefragt."
 
-#: ../../installation.rst:380
+#: ../../installation.rst:387
 msgid "\"Create a new UCS domain\" mode"
-msgstr ""
+msgstr "Modus \"Erstellen einer neuen UCS-Domäne\""
 
-#: ../../installation.rst:382
+#: ../../installation.rst:389
 msgid ""
-"Once the :guilabel:`Create a new UCS domain` mode has been selected, an "
+"Once the *Create a new UCS domain* mode has been selected, an "
 "*organization name*, an *email address*, a *fully qualified domain name* "
 "and an *LDAP base* are requested in the following two steps."
 msgstr ""
+"Nach der Auswahl des Modus *Erstellen einer neuen UCS-Domäne* wird in den"
+" folgenden zwei Schritten ein *Organisationsname*, eine *E-Mail-Adresse*,"
+" ein *vollständiger Rechnername* sowie eine *LDAP-Basis* abgefragt."
 
-#: ../../installation.rst:386
+#: ../../installation.rst:393
 msgid ""
 "Specification of an organization name is optional and it is used in the "
 "second step to generate a domain name and the LDAP base automatically."
 msgstr ""
+"Die Angabe eines Organisationsnamens ist optional und wird im zweiten "
+"Schritt für die automatische Generierung eines Domänennamens sowie der "
+"LDAP-Basis verwendet."
 
-#: ../../installation.rst:389
+#: ../../installation.rst:396
 msgid ""
 "If a valid email address is specified, this is used to activate a "
 "personalized license, which is required for the use of the Univention App"
 " Center. The license is generated automatically and sent to the specified"
 " email address immediately. The license can then be imported via the UMC "
-"module :guilabel:`Welcome!` (:ref:`central-license`)."
+"module *Welcome!* (:ref:`central-license`)."
 msgstr ""
+"Wird eine gültige E-Mail-Adresse angegeben, wird diese verwendet, um eine"
+" personalisierte Lizenz zu aktivieren, die für die Verwendung des "
+"Univention App Centers notwendig ist. Die Lizenz wird automatisch "
+"generiert und umgehend an die angegeben E-Mail-Adresse zugeschickt. Die "
+"Lizenz kann dann über das UMC-Modul *Wilkommen!* eingespielt werden (:ref"
+":`central-license`)."
 
-#: ../../installation.rst:395
+#: ../../installation.rst:402
 msgid ""
 "The name of the UCS system to be configured and the name of the DNS "
 "domain are determined from the fully qualified domain name (hostname "
@@ -532,42 +782,63 @@ msgid ""
 " is recommended not to use a publicly available DNS domain, as this can "
 "result in problems during the name resolution."
 msgstr ""
+"Aus dem hier eingetragenen vollständigen Rechnernamen (ein Rechnername "
+"inkl. Domänenname) wird automatisch der Name des zu konfigurierenden UCS-"
+"Systems sowie der Name der DNS-Domäne ermittelt. Aus dem im vorigen "
+"Schritt angegebenen Organisationsnamen wird automatisch ein Vorschlag "
+"generiert. Es wird empfohlen, keine öffentlich verfügbare DNS-Domäne zu "
+"verwenden, da dies zu Problemen in der Namensauflösung führen kann."
 
-#: ../../installation.rst:402
+#: ../../installation.rst:409
 msgid ""
 "A LDAP base needs to be specified for the initialization of the directory"
 " service. A suggestion is also derived here automatically from the fully "
 "qualified domain name. This value can usually be adopted without any "
 "changes."
 msgstr ""
-
-#: ../../installation.rst:411
-msgid "Specification of hostname and LDAP base"
-msgstr ""
-
-#: ../../installation.rst:416
-msgid "\"Join an existing Active Directory domain\" mode"
-msgstr ""
+"Für die Initialisierung des Verzeichnisdienstes wird die Angabe einer "
+"LDAP-Basis benötigt. Auch hier wird ein Vorschlag automatisch aus dem "
+"vollständigen Rechnernamen abgeleitet. In der Regel kann dieser Wert "
+"unverändert übernommen werden."
 
 #: ../../installation.rst:418
+msgid "Specification of hostname and LDAP base"
+msgstr "Angabe des Rechnernamens und der LDAP-Basis"
+
+#: ../../installation.rst:423
+msgid "\"Join an existing Active Directory domain\" mode"
+msgstr "Modus \"Einer bestehenden Active-Directory-Domäne beitreten\""
+
+#: ../../installation.rst:425
 msgid ""
 "If the DNS server of an Active Directory domain was specified during the "
 "network configuration, the name of the Active Directory domain controller"
-" is suggested automatically in the **Active Directory account "
-"information** step. If the suggestion is incorrect, the name of another "
-"Active Directory domain controller or another Active Directory domain can"
-" be entered here."
+" is suggested automatically in the *Active Directory account information*"
+" step. If the suggestion is incorrect, the name of another Active "
+"Directory domain controller or another Active Directory domain can be "
+"entered here."
 msgstr ""
+"Wurde während der Netzwerkkonfiguration der DNS-Server einer Active-"
+"Directory-Domäne angegeben, wird im Schritt *Active Directory-"
+"Kontoinformationen* automatisch der Name des Active Directory-"
+"Domänencontrollers vorgeschlagen. Falls dieser Vorschlag nicht stimmen "
+"sollte, kann hier der Name eines anderen Active Directory-"
+"Domänencontrollers bzw. einer anderen Active Directory-Domäne angegeben "
+"werden."
 
-#: ../../installation.rst:424
+#: ../../installation.rst:431
 msgid ""
 "The specification of an Active Directory account and the corresponding "
 "password is required for joining the Active Directory domain. The user "
 "account must possess the right to join new systems in the Active "
 "Directory domain."
 msgstr ""
+"Für den Beitritt in die Active Directory-Domäne ist die Angabe eines "
+"Active Directory-Kontos sowie des zugehörigen Passworts notwendig. Das "
+"Benutzerkonto muss die Berechtigung besitzen, neue Systeme in die Active "
+"Directory-Domäne aufzunehmen."
 
-#: ../../installation.rst:428
+#: ../../installation.rst:435
 msgid ""
 "In addition, a hostname must be entered for the UCS system to be "
 "configured. The suggested hostname can be adopted or a new hostname "
@@ -578,8 +849,17 @@ msgid ""
 "specified here. Once set up, the domain name **cannot** be changed again "
 "once the configuration is completed."
 msgstr ""
+"Zusätzlich muss ein Rechnername für das zu konfigurierende UCS-System "
+"angegeben werden. Dabei kann der vorgeschlagene Rechnername übernommen "
+"oder ein eigener Rechnername eingetragen werden. Der Domänenname des "
+"Rechners wird automatisch aus dem Domänen-DNS-Server abgeleitet. In "
+"einigen Szenarien (z.B. ein öffentlicher Mailserver) kann es notwendig "
+"sein, einen bestimmten vollständigen Rechnernamen zu verwenden. Das UCS-"
+"System wird mit dem hier angegebenen Rechnernamen der Active Directory-"
+"Domäne beitreten. Der eingerichtete Domänenname kann nach Abschluss der "
+"Konfiguration **nicht** mehr verändert werden."
 
-#: ../../installation.rst:436
+#: ../../installation.rst:443
 msgid ""
 "In a UCS domain, systems can be installed in different *system roles*. "
 "The first UCS system, that joins an Active Directory domain, is "
@@ -588,29 +868,41 @@ msgid ""
 "role selection dialogue is shown. The system roles are described within "
 "the following section."
 msgstr ""
-
-#: ../../installation.rst:447
-msgid "Information on the Active directory domain"
-msgstr ""
-
-#: ../../installation.rst:452
-msgid "\"Join an existing UCS domain domain\" mode"
-msgstr ""
+"In einer UCS-Domäne können Systeme in unterschiedlichen *Systemrollen* "
+"installiert werden. Das erste UCS-System, das einer Active Directory-"
+"Domäne beitritt, wird automatisch mit der Systemrolle |UCSPRIMARYDN| "
+"konfiguriert. Wird dieser Modus während der Installation eines weiteren "
+"UCS-Systems ausgewählt, wird der Dialog zur Auswahl einer Systemrolle "
+"angezeigt. Die einzelnen Systemrollen werden im folgenden Abschnitt "
+"genauer beschrieben."
 
 #: ../../installation.rst:454
+msgid "Information on the Active directory domain"
+msgstr "Informationen zum Active Directory-Domänenbeitritt"
+
+#: ../../installation.rst:459
+msgid "\"Join an existing UCS domain domain\" mode"
+msgstr "Modus \"Einer bestehenden UCS-Domäne beitreten\""
+
+#: ../../installation.rst:461
 msgid ""
 "In a UCS domain, systems can be installed in different *system roles*. "
 "The first system in a UCS domain is always installed with the "
-"|UCSPRIMARYDN| system role. Additional UCS systems can join the domain at"
-" a later point in time and can be configured with one of the following "
+"|UCSPRIMARYDN_e| system role. Additional UCS systems can join the domain "
+"at a later point in time and can be configured with one of the following "
 "system roles."
 msgstr ""
+"In einer UCS-Domäne können Systeme in unterschiedlichen *Systemrollen* "
+"installiert werden. Das erste System einer UCS-Domäne wird immer mit der "
+"Systemrolle |UCSPRIMARYDN_e| installiert. Zusätzliche UCS-Systeme können "
+"der Domäne später beitreten und mit einer der folgenden Systemrollen "
+"konfiguriert werden."
 
-#: ../../installation.rst:463
-msgid ":guilabel:`Backup Directory Node`"
-msgstr ""
+#: ../../installation.rst:470
+msgid "Backup Directory Node"
+msgstr "Backup Directory Node"
 
-#: ../../installation.rst:460
+#: ../../installation.rst:467
 msgid ""
 "The |UCSBACKUPDN| is the fallback system for the |UCSPRIMARYDN|. If the "
 "latter should fail, a |UCSBACKUPDN| can adopt the role of the "
@@ -618,12 +910,17 @@ msgid ""
 "certificates are saved as read-only copies on servers with the "
 "|UCSBACKUPDN| role."
 msgstr ""
+"Der |UCSBACKUPDN| dient als Fallback-System des |UCSPRIMARYDN|. Sollte "
+"dieser ausfallen, kann ein |UCSBACKUPDN| die Rolle des |UCSPRIMARYDN| "
+"dauerhaft übernehmen. Auf Servern mit der Rolle |UCSBACKUPDN| werden alle"
+" Domänendaten und SSL-Sicherheitszertifikate als Nur-Lese-Kopie "
+"gespeichert."
 
-#: ../../installation.rst:471
-msgid ":guilabel:`Replica Directory Node`"
-msgstr ""
+#: ../../installation.rst:478
+msgid "Replica Directory Node"
+msgstr "Replica Directory Node"
 
-#: ../../installation.rst:466
+#: ../../installation.rst:473
 msgid ""
 "All the domain data are saved as read-only copies on servers with the "
 "|UCSREPLICADN| role. In contrast to the |UCSBACKUPDN|, however, not all "
@@ -632,41 +929,64 @@ msgid ""
 "|UCSREPLICADN| systems are ideal for site servers and the distribution of"
 " high-load services."
 msgstr ""
+"Auf Servern mit der Rolle |UCSREPLICADN| werden die Domänendaten als Nur-"
+"Lese-Kopie gespeichert. Im Gegensatz zum |UCSBACKUPDN| werden jedoch "
+"nicht alle SSL-Sicherheitszertifikate gespeichert. Da die Zugriffe der "
+"auf einem |UCSREPLICADN| laufenden Dienste gegen den lokalen LDAP-"
+"Verzeichnisdienst erfolgen, bieten sich |UCSREPLICADN|\\ s für "
+"Standortserver und für die Verteilung lastintensiver Dienste an."
 
-#: ../../installation.rst:477
-msgid ":guilabel:`Managed Node`"
-msgstr ""
+#: ../../installation.rst:484
+msgid "Managed Node"
+msgstr "Managed Node"
 
-#: ../../installation.rst:474
+#: ../../installation.rst:481
 msgid ""
-"|UCSMANAGEDNODE| are server systems without a local LDAP directory "
+"|UCSMANAGEDNODE|\\ s are UCS systems without a local LDAP directory "
 "service. Access to domain data here is performed via other servers in the"
 " domain. They are therefore suitable for services which do not require a "
 "local database for authentication, for example, such as print and file "
 "servers."
 msgstr ""
+"|UCSMANAGEDNODE|\\ s sind UCS Systeme ohne lokalen LDAP-"
+"Verzeichnisdienst. Der Zugriff auf Domänendaten erfolgt hierbei über "
+"andere Server der Domäne. Sie eignen sich daher für Dienste, die keine "
+"lokale Datenbank für z.B. die Authentifizierung benötigen, beispielsweise"
+" Druck- und Dateiserver."
 
-#: ../../installation.rst:479
+#: ../../installation.rst:486
 msgid ""
 "Once the UCS system role has been selected, further information on the "
 "domain join is requested. If the domain join is not intended to occur "
-"automatically during the installation, the :guilabel:`Start join at the "
-"end of the installation` option can be disabled. If the correct DNS "
-"server was selected during the network configuration, Univention "
-"Installer can determine the name of the |UCSPRIMARYDN| system "
-"automatically. If the decision is taken to join another UCS domain, the "
-":guilabel:`Search Primary Directory Node in DNS` option can be disabled "
-"and the fully qualified domain name of the preferred |UCSPRIMARYDN| "
-"entered in the input field below. The access information required for the"
-" domain join must be entered in the :guilabel:`Administrator account` and"
-" :guilabel:`Administrator password` input fields."
+"automatically during the installation, the *Start join at the end of the "
+"installation* option can be disabled. If the correct DNS server was "
+"selected during the network configuration, Univention Installer can "
+"determine the name of the |UCSPRIMARYDN| system automatically. If the "
+"decision is taken to join another UCS domain, the *Search Primary "
+"Directory Node in DNS* option can be disabled and the fully qualified "
+"domain name of the preferred |UCSPRIMARYDN| entered in the input field "
+"below. The access information required for the domain join must be "
+"entered in the *Administrator account* and *Administrator password* input"
+" fields."
 msgstr ""
+"Nach der Auswahl der UCS-Systemrolle werden einige Informationen zum "
+"Domänenbeitritt abgefragt. Soll der Domänenbeitritt nicht automatisch "
+"während der Installation stattfinden, kann die Option *Domänenbeitritt am"
+" Ende der Installation starten* deaktiviert werden. Wurde während der "
+"Netzwerkkonfiguration der richtige DNS-Server ausgewählt, kann Univention"
+" Installer den Namen des |UCSPRIMARYDN| automatisch bestimmen. Falls doch"
+" in eine andere UCS-Domäne gejoined werden soll, kann die Option *Primary"
+" Directory Node im DNS suchen* deaktiviert und der vollständige "
+"Rechnername des gewünschten |UCSPRIMARYDN| im Eingabefeld darunter "
+"eingetragen werden. Die für den Domänenbeitritt notwendigen "
+"Zugangsinformationen müssen in die beiden Eingabefelder *Administrator-"
+"Kontoinformationen* und *Administrator-Passwort*."
 
-#: ../../installation.rst:496
+#: ../../installation.rst:502
 msgid "Information on the domain join"
-msgstr ""
+msgstr "Informationen zum Domänenbeitritt"
 
-#: ../../installation.rst:498
+#: ../../installation.rst:504
 msgid ""
 "In addition, a hostname must be entered for the UCS system to be "
 "configured in the next step. The suggested hostname can be adopted or a "
@@ -676,192 +996,276 @@ msgid ""
 "qualified domain name. Once set up, the domain name **cannot** be changed"
 " again once the configuration is completed."
 msgstr ""
+"Im nächsten Schritt muss zusätzlich ein Rechnername für das zu "
+"konfigurierende UCS-System angegeben werden. Dabei kann der "
+"vorgeschlagene Rechnername übernommen oder ein eigener Rechnername "
+"eingetragen werden. Der Domänenname des Rechners wird automatisch aus dem"
+" Domänen-DNS-Server abgeleitet. In einigen Szenarien (z.B. ein "
+"öffentlicher Mailserver) kann es notwendig sein, einen bestimmten "
+"vollständigen Rechnernamen zu verwenden. Der eingerichtete Domänenname "
+"kann nach Abschluss der Konfiguration *nicht* mehr verändert werden."
 
-#: ../../installation.rst:508
+#: ../../installation.rst:514
 msgid "Confirming the settings"
-msgstr ""
+msgstr "Bestätigen der Einstellungen"
 
-#: ../../installation.rst:510
+#: ../../installation.rst:516
 msgid ""
 "This dialogue shows the major settings that were made. If all the "
 "settings are correct, the :guilabel:`CONFIGURE SYSTEM` button can be used"
 " to start the configuration of the UCS system, see :numref:`installation-"
 "overview`."
 msgstr ""
+"In diesem Dialog werden die wichtigsten vorgenommenen Einstellungen "
+"angezeigt. Sind alle Einstellungen korrekt, kann über die Schaltfläche "
+":guilabel:`SYSTEM KONFIGURIEREN` die Konfiguration des UCS-Systems "
+"veranlasst werden, siehe :ref:`installation-overview`."
 
-#: ../../installation.rst:514
+#: ../../installation.rst:520
 msgid ""
-"The :guilabel:`Update system after installation` option allows the "
-"automatic installation of available Errata updates. In addition, all "
-"patch level updates and Errata updates available are installed on a "
-"|UCSPRIMARYDN|. On all other system roles, all the patch level updates "
-"are set up to the installation status of the |UCSPRIMARYDN|. (You need to"
-" sign in to the |UCSPRIMARYDN| to check the installation status. This is "
-"done using the login data specified in the join options)."
+"The *Update system after installation* option allows the automatic "
+"installation of available Errata updates. In addition, all patch level "
+"updates and Errata updates available are installed on a |UCSPRIMARYDN|. "
+"On all other system roles, all the patch level updates are set up to the "
+"installation status of the |UCSPRIMARYDN|. You need to sign in to the "
+"|UCSPRIMARYDN| to check the installation status. This is done using the "
+"login data specified in the join options."
 msgstr ""
+"Mit der Option *System nach der Installation aktualisieren* werden "
+"verfügbare Errata-Updates automatisch installiert. Zusätzlich werden auf "
+"einem |UCSPRIMARYDN| alle verfügbaren Patch-Level-Updates und Errata-"
+"Updates installiert. Auf allen übrigen Systemrollen werden alle Patch-"
+"Level-Updates bis zum Installationsstand des |UCSPRIMARYDN| eingerichtet."
+" Um den Installationsstand zu prüfen, muss ein Login auf dem "
+"|UCSPRIMARYDN| erfolgen. Dazu werden die in den Join-Optionen angegebenen"
+" Anmeldedaten verwendet."
 
-#: ../../installation.rst:527
+#: ../../installation.rst:533
 msgid "Installation overview"
-msgstr ""
+msgstr "Installationsüberblick"
 
-#: ../../installation.rst:529
+#: ../../installation.rst:535
 msgid ""
 "During the configuration, a progress bar displays the progress of the "
 "installation."
 msgstr ""
+"Während der Konfiguration zeigt ein Fortschrittsbalken den Verlauf der "
+"Installation an."
 
-#: ../../installation.rst:532
+#: ../../installation.rst:538
 msgid ""
 "The installation protocol of the Univention Installer is saved in the "
 "following files:"
 msgstr ""
+"Das Installationsprotokoll des Univention Installers wird in den "
+"folgenden Dateien abgelegt:"
 
-#: ../../installation.rst:535
+#: ../../installation.rst:541
 msgid ":file:`/var/log/installer/syslog`"
-msgstr ""
+msgstr ":file:`/var/log/installer/syslog`"
 
-#: ../../installation.rst:537
+#: ../../installation.rst:543
 msgid ":file:`/var/log/univention/management-console-module-setup.log`"
-msgstr ""
+msgstr ":file:`/var/log/univention/management-console-module-setup.log`"
 
-#: ../../installation.rst:539
+#: ../../installation.rst:545
 msgid ""
 "Completion of the configuration must be confirmed with the "
 ":guilabel:`CONFIGURE SYSTEM` button. The UCS system is then prepared for "
 "the first full booting procedure and restarted."
 msgstr ""
+"Der Abschluss der Konfiguration muss über die Schaltfläche "
+":guilabel:`SYSTEM KONFIGURIEREN` bestätigt werden. Das UCS-System wird "
+"anschließend auf den ersten vollständigen Bootvorgang vorbereitet und "
+"neugestartet."
 
-#: ../../installation.rst:543
+#: ../../installation.rst:549
 msgid ""
 "The system will then boot from the hard drive. Following the boot "
 "procedure, the ``root`` and ``Administrator`` users can sign in to the "
 "UCS portal page (see :ref:`central-general`), which can be reached under "
 "the IP address set during the installation or the hostname."
 msgstr ""
+"Das System startet nun von Festplatte. Nach dem Bootvorgang können sich "
+"die Benutzer ``root`` und ``Administrator`` beim UCS Portal anmelden "
+"(siehe :ref:`central-general`), welche unter der während der Installation"
+" gesetzten IP-Adresse bzw. unter dem Rechnernamen erreichbar ist."
 
-#: ../../installation.rst:548
+#: ../../installation.rst:554
 msgid ""
 "If the computer was installed as the first system in the UCS domain "
 "(|UCSPRIMARYDN|), the license can now be imported (see :ref:`central-"
 "license`)."
 msgstr ""
+"Wenn der Rechner als erstes System der UCS-Domäne (|UCSPRIMARYDN|) "
+"installiert wurde, kann nun die Lizenz eingespielt werden (siehe :ref"
+":`central-license`)."
 
-#: ../../installation.rst:554
+#: ../../installation.rst:560
 msgid "Troubleshooting for installation problems"
-msgstr ""
+msgstr "Fehlersuche bei Installationsproblemen"
 
-#: ../../installation.rst:556
+#: ../../installation.rst:562
 msgid ""
 "Information on possible installation problems can be found in the "
 "`Univention Knowledge base <univention-kb_>`_ in the section "
 "*Installation*."
 msgstr ""
+"Hinweise zu eventuellen Installationsproblemen finden sich in der "
+"`Univention Support Datenbank <univention-kb_>`_ im Unterpunkt "
+"*Installation*."
 
-#: ../../installation.rst:562
+#: ../../installation.rst:568
 msgid "Installation in text mode"
-msgstr ""
+msgstr "Installation im Textmodus"
 
-#: ../../installation.rst:564
+#: ../../installation.rst:570
 msgid ""
 "On systems that showed a problem with the graphic variant of Univention "
 "Installer, the installation may be also started in text mode. To achieve "
-"this, in the DVD boot menu :guilabel:`Advanced options` the entry "
-":guilabel:`Install in text mode` has to be selected."
+"this, in the DVD boot menu *Advanced options* the entry *Install in text "
+"mode* has to be selected."
 msgstr ""
+"Auf Systemen, die Probleme mit der graphischen Variante des Installers "
+"zeigen, kann der Installer auch im Textmodus gestartet werden. Im DVD-"
+"Bootmenu *Advanced options* muss dafür der Eintrag *Install in text mode*"
+" ausgewählt werden."
 
-#: ../../installation.rst:569
+#: ../../installation.rst:575
 msgid ""
 "During installation in text mode Univention Installer shows the same "
 "information and asks for the same settings. After partitioning the hard "
 "drive, the system is prepared for the first boot and finally restarted."
 msgstr ""
+"Während der Installation im Textmodus werden die gleichen Informationen "
+"wie im graphischen Installer angezeigt bzw. abgefragt. Jedoch wird nach "
+"der Partitionierung der Festplatten das System auf den ersten Neustart "
+"vorbereitet und schließlich neu gestartet."
 
-#: ../../installation.rst:573
+#: ../../installation.rst:579
 msgid ""
 "After restart the configuration may be resumed by using a web browser. "
-"The URL ``https://SERVER-IP-ADDRESS`` or ``http://SERVER-IP-ADDRESS`` has"
-" to be opened within the browser (HTTPS is recommended). After loading "
-"the URL a login as user ``root`` is required."
+"The URL :samp:`https://{SERVER-IP-ADDRESS}` or :samp:`http://{SERVER-IP-"
+"ADDRESS}` has to be opened within the browser (HTTPS is recommended). "
+"After loading the URL a login as user ``root`` is required."
 msgstr ""
+"Nach Abschluss des Neustarts kann die Konfiguration im Webbrowser "
+"fortgesetzt werden. Dafür muss im Browser die URL :samp:`https://{SERVER-"
+"IP-ADRESSE}` oder :samp:`http://{SERVER-IP-ADRESSE}` aufgerufen werden "
+"(HTTPS wird empfohlen). Nach dem Aufruf der Seite ist die Anmeldung mit "
+"dem Benutzer ``root`` erforderlich."
 
-#: ../../installation.rst:578
+#: ../../installation.rst:584
 msgid ""
 "The configuration process asks for location and network setting and then "
 "resumes with the same steps as the graphic variant of the installation, "
 "see :ref:`installation-domain-settings`."
 msgstr ""
+"Die Konfiguration im Browser erfragt den Standort sowie die "
+"Netzwerkeinstellungen und fährt dann (wie in der graphischen "
+"Installation) mit dem Punkt *Domäneneinstellungen* fort, siehe :ref"
+":`installation-domain-settings`."
 
-#: ../../installation.rst:585
+#: ../../installation.rst:591
 msgid "Installation in the Amazon EC2 cloud"
-msgstr ""
+msgstr "Installation in der Amazon EC2-Cloud"
 
-#: ../../installation.rst:587
+#: ../../installation.rst:593
 msgid ""
 "Univention provides an Amazon Machine Image (AMI) for the Amazon EC2 "
 "cloud for UCS. This generic image for all UCS system roles is used to "
 "derive an individual instance which can be configured via |UCSUMC| "
 "modules (domain name, software selection, etc.)."
 msgstr ""
+"Univention stellt für UCS ein Amazon Machine Image (AMI) für die Amazon "
+"EC2 Cloud bereit. Aus diesem generischen Image für alle UCS-Systemrollen "
+"wird eine eigene Instanz abgeleitet, die über UMC-Module konfiguriert "
+"wird (Domänenname, Softwareauswahl etc.)."
 
-#: ../../installation.rst:592
+#: ../../installation.rst:598
 msgid ""
 "The process for setting up a UCS instance based on Amazon EC2 is "
 "documented in :cite:t:`ec2-quickstart`."
 msgstr ""
+"Die Einrichtung einer UCS-Instanz auf Basis von Amazon EC2 ist  in "
+":cite:t:`ec2-quickstart` dokumentiert."
 
-#: ../../installation.rst:598
+#: ../../installation.rst:604
 msgid "Installation in VMware"
-msgstr ""
+msgstr "Installation in VMware"
 
-#: ../../installation.rst:600
+#: ../../installation.rst:606
 msgid ""
 "If UCS is installed as a guest in VMware, the :menuselection:`Linux --> "
-"Other Linux system` option must be selected as the :guilabel:`Guest "
-"operating system` (UCS is based on Debian but the templates for Debian "
-"cannot be used)."
+"Other Linux system` option must be selected as the *Guest operating "
+"system* (UCS is based on Debian but the templates for Debian cannot be "
+"used)."
 msgstr ""
+"Wird UCS als Gast in VMware installiert muss als *Gastbetriebssystem* die"
+" Option :menuselection:`Linux --> Anderes Linux-System` ausgewählt werden"
+" (UCS basiert zwar auf Debian, die Vorlagen für Debian können aber nicht "
+"verwendet werden)."
 
-#: ../../installation.rst:605
+#: ../../installation.rst:610
 msgid ""
 "The Linux kernel used in UCS includes all the support drivers necessary "
 "for operation in VMware (:file:`vmw_balloon`, :file:`vmw_pvsci`, "
 ":file:`vmw_vmci`, :file:`vmwgfx` and :file:`vmxnet3`)."
 msgstr ""
+"Der in UCS verwendete Linux-Kernel bringt alle nötigen "
+"Unterstützungstreiber für den Betrieb in VMware direkt mit "
+"(:file:`vmw_balloon`, :file:`vmw_pvsci`, :file:`vmw_vmci`, :file:`vmwgfx`"
+" und :file:`vmxnet3`)."
 
-#: ../../installation.rst:609
+#: ../../installation.rst:614
 msgid ""
 "The open source version of the VMware Tools (Open VM Tools) is delivered "
 "with UCS. The tools can be installed using the ``open-vm-tools`` package "
 "(they are not required but do, for example, allow synchronization of the "
 "time on the virtualization server with the guest system)."
 msgstr ""
+"Die Open-Source-Variante der VMware Tools (Open VM Tools) wird mit UCS "
+"ausgeliefert. Die Tools können über das Paket :program:`open-vm-tools` "
+"installiert werden (sie sind nicht zwingend notwendig, erlauben aber z.B."
+" die Synchronisation der Zeit auf dem Gastsystem mit dem "
+"Virtualisierungsserver)."
 
-#: ../../installation.rst:617
+#: ../../installation.rst:622
 msgid "Installation as Docker image"
-msgstr ""
+msgstr "Installation als Docker Image"
 
-#: ../../installation.rst:619
+#: ../../installation.rst:624
 msgid ""
 "Univention provides UCS as Docker images in the `Docker Hub <docker-hub-"
 "univention_>`_. The description of the Docker images explains how they "
 "can be configured."
 msgstr ""
+"Univention stellt UCS als Docker Images im `Docker Hub <docker-hub-"
+"univention_>`_ bereit. In der Beschreibung der jeweiligen Docker Images "
+"ist erklärt, wie diese in Betrieb genommen werden können."
 
-#: ../../installation.rst:623
+#: ../../installation.rst:628
 msgid ""
 "In a standard installation, the Docker images are used in a network that "
 "cannot be reached directly from outside the server. If multiple Docker "
 "images are used and they are executed on different Docker servers, a "
 "Software Defined Network or a VPN solution should be used."
 msgstr ""
+"Die Docker Images werden bei einer Standardinstallation in einem Netzwerk"
+" betrieben, welches von außerhalb des Servers nicht direkt erreicht "
+"werden kann. Sofern mehrere Docker Images eingesetzt werden und diese auf"
+" unterschiedlichen Docker Servern betrieben werden, sollte entsprechend "
+"ein *Software Defined Network* oder eine VPN Lösung eingesetzt werden."
 
-#: ../../installation.rst:631
+#: ../../installation.rst:636
 msgid "Installation in Citrix XenServer"
-msgstr ""
+msgstr "Installation in Citrix XenServer"
 
-#: ../../installation.rst:633
+#: ../../installation.rst:638
 msgid ""
 "The process for setting up a UCS instance in Citrix XenServer is "
 "documented in :cite:t:`xenserver-installation`."
 msgstr ""
+"Die Einrichtung einer UCS-Instanz in Citrix XenServer ist unter :cite:t"
+":`xenserver-installation` dokumentiert."
 

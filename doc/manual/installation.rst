@@ -77,14 +77,14 @@ Now you can choose between several installation procedures.
   installation, where the network is not configured automatically through DHCP.
   This is practical on systems, where the network must be setup manually.
 
-* The Advanced options submenu offers advanced options for the installation
-  process for selection:
+* The :guilabel:`Advanced options` submenu offers advanced options for the
+  installation process for selection:
 
   * :guilabel:`Start in text mode` performs an interactive standard installation
     in text mode. This is practical on systems which display problems with the
     graphic version of the installer.
 
-  * :guilabel:`Rescue mode` The rescue mode is there to recover systems unable
+  * :guilabel:`Rescue mode` is there to recover systems unable
     to boot.
 
   * :guilabel:`Boot from first hard drive` boots the operating system installed
@@ -267,27 +267,28 @@ addition, it is also possible to perform partitioning manually.
 
 There are three schemes available for selection for guided partitioning:
 
-* :guilabel:`Guided - Use entire disk`: In this scheme, an individual partition
-  is created for each file system. Abstraction layers like LVM are not used.
-  During the following step the number of file systems or partitions is assigned.
-  The size of the partitions is restricted to the size of the respective hard
-  drive.
+Guided - Use entire disk
+   In this scheme, an individual partition is created for each file system.
+   Abstraction layers like LVM are not used. During the following step the
+   number of file systems or partitions is assigned. The size of the partitions
+   is restricted to the size of the respective hard drive.
 
-* :guilabel:`Guided - Use entire disk and set up LVM`: If the second scheme is
-  selected, an LVM volume group is set up on the selected hard drive first. A
-  separate logical volume is then created within the volume group for each file
-  system. In this scheme, the size of the logical volume is restricted by the
-  size of the volume group, which can also be subsequently enlarged with
-  additional hard drives. In case of doubt, select this partitioning scheme.
+Guided - Use entire disk and set up LVM
+   If the second scheme is selected, a *Logical Volume Group (LVM)* is set up on
+   the selected hard drive first. A separate logical volume is then created
+   within the volume group for each file system. In this scheme, the size of the
+   logical volume is restricted by the size of the volume group, which can also
+   be subsequently enlarged with additional hard drives. In case of doubt,
+   select this partitioning scheme.
 
-* :guilabel:`Guided - Use entire disk with encrypted LVM`: This version is the
-  same as the previous version, with the addition that the LVM volume group is
-  also encrypted. Consequently, the password for the encrypted volume group has
-  to be entered every time the system is started up.
+Guided - Use entire disk with encrypted LVM
+   This version is the same as the previous version, with the addition that the
+   LVM volume group is also encrypted. Consequently, the password for the
+   encrypted volume group has to be entered every time the system is started up.
 
 .. caution::
 
-   In all three versions, the data already on the selected hard drive are
+   In all three versions, the existing data on the selected hard drive are
    deleted during the partitioning!
 
 .. _installation-partman-select-guided:
@@ -303,15 +304,18 @@ the partitioning version should be applied.
 There are three sub versions for each partitioning version, which differ in the
 number of file systems created:
 
-* :guilabel:`All files in one partition`: In this version, just one partition or
-  logical volume is created and the :file:`/` file system saved there.
+All files in one partition
+   In this version, just one partition or logical volume is created and the
+   :file:`/` file system saved there.
 
-* :guilabel:`Separate /home partition`: In addition to a file system for
-  :file:`/`, an additional file system is also created for :file:`/home/`.
+Separate :file:`/home` partition
+   In addition to a file system for :file:`/`, an additional file system is also
+   created for :file:`/home/`.
 
-* :guilabel:`Separate /home, /usr, /var and /tmp partition`: In addition to a
-  file system for :file:`/`, an additional file system is also created each for
-  :file:`/home/`, :file:`/usr/`, :file:`/var/` and :file:`/tmp/`.
+Separate :file:`/home`, :file:`/usr`, :file:`/var` and :file:`/tmp` partition
+   In addition to a file system for :file:`/`, an additional file system is also
+   created each for :file:`/home/`, :file:`/usr/`, :file:`/var/` and
+   :file:`/tmp/`.
 
 Before every active change to the hard drive, the change is displayed again in
 an additional dialogue and must be confirmed explicitly.
@@ -347,25 +351,28 @@ The final configuration of the UCS system is started by selecting a domain mode.
 There are three modes available, which influence the following configuration
 steps:
 
-* In the first mode, :guilabel:`Create a new UCS domain`, the first system in a
-  new UCS domain is configured: a UCS system with the |UCSPRIMARYDN_e| system
-  role. In the following configuration steps, the information required for
-  setting up a new directory service, authentication service and DNS server are
-  requested. A UCS domain can consist of one single or several UCS systems.
-  Additional UCS systems can be added at a later point in time using the
-  :guilabel:`Join an existing UCS domain` mode.
+Create a new UCS domain
+   In the first mode, *Create a new UCS domain*, the first system in a new UCS
+   domain is configured: a UCS system with the |UCSPRIMARYDN_e| system role. In
+   the following configuration steps, the information required for setting up a
+   new directory service, authentication service and DNS server are requested. A
+   UCS domain can consist of one single or several UCS systems. Additional UCS
+   systems can be added at a later point in time using the *Join an existing UCS
+   domain* mode.
 
-* :guilabel:`Join into an existing Active Directory domain`: This mode, in which
-  UCS is operated as a member of an Active Directory domain, is suitable for
-  expanding an Active Directory domain with applications available on the UCS
-  platform. Apps installed on the UCS platform are then available for the users
-  of the Active Directory domain to use. On selection of this mode, all the
-  relevant information for the joining of the Active Directory domain is
-  requested and the UCS system configured correspondingly.
+Join into an existing Active Directory domain
+   This mode, in which UCS is operated as a member of an Active Directory
+   domain, is suitable for expanding an Active Directory domain with
+   applications available on the UCS platform. Apps installed on the UCS
+   platform are then available for the users of the Active Directory domain to
+   use. On selection of this mode, all the relevant information for the joining
+   of the Active Directory domain is requested and the UCS system configured
+   correspondingly.
 
-* Selecting the :guilabel:`Join into an existing UCS domain` mode allows the UCS
-  system to be configured to join an existing UCS domain. What UCS system role
-  it is to take on in the domain is queried at a later stage.
+Join into an existing UCS domain
+   Selecting the *Join into an existing UCS domain* mode allows the UCS system
+   to be configured to join an existing UCS domain. What UCS system role it is
+   to take on in the domain is queried at a later stage.
 
 .. _installation-domain-role:
 
@@ -379,9 +386,9 @@ steps:
 "Create a new UCS domain" mode
 ------------------------------
 
-Once the :guilabel:`Create a new UCS domain` mode has been selected, an
-*organization name*, an *email address*, a *fully qualified domain name* and an
-*LDAP base* are requested in the following two steps.
+Once the *Create a new UCS domain* mode has been selected, an *organization
+name*, an *email address*, a *fully qualified domain name* and an *LDAP base*
+are requested in the following two steps.
 
 Specification of an organization name is optional and it is used in the second
 step to generate a domain name and the LDAP base automatically.
@@ -389,7 +396,7 @@ step to generate a domain name and the LDAP base automatically.
 If a valid email address is specified, this is used to activate a personalized
 license, which is required for the use of the Univention App Center. The license
 is generated automatically and sent to the specified email address immediately.
-The license can then be imported via the UMC module :guilabel:`Welcome!`
+The license can then be imported via the UMC module *Welcome!*
 (:ref:`central-license`).
 
 The name of the UCS system to be configured and the name of the DNS domain are
@@ -417,7 +424,7 @@ qualified domain name. This value can usually be adopted without any changes.
 
 If the DNS server of an Active Directory domain was specified during the network
 configuration, the name of the Active Directory domain controller is suggested
-automatically in the **Active Directory account information** step. If the
+automatically in the *Active Directory account information* step. If the
 suggestion is incorrect, the name of another Active Directory domain controller
 or another Active Directory domain can be entered here.
 
@@ -452,17 +459,17 @@ shown. The system roles are described within the following section.
 -----------------------------------------
 
 In a UCS domain, systems can be installed in different *system roles*. The first
-system in a UCS domain is always installed with the |UCSPRIMARYDN| system role.
+system in a UCS domain is always installed with the |UCSPRIMARYDN_e| system role.
 Additional UCS systems can join the domain at a later point in time and can be
 configured with one of the following system roles.
 
-:guilabel:`Backup Directory Node`
+Backup Directory Node
    The |UCSBACKUPDN| is the fallback system for the |UCSPRIMARYDN|. If the
    latter should fail, a |UCSBACKUPDN| can adopt the role of the |UCSPRIMARYDN|
    permanently. All the domain data and SSL security certificates are saved as
    read-only copies on servers with the |UCSBACKUPDN| role.
 
-:guilabel:`Replica Directory Node`
+Replica Directory Node
    All the domain data are saved as read-only copies on servers with the
    |UCSREPLICADN| role. In contrast to the |UCSBACKUPDN|, however, not all
    security certificates are saved. As accesses to the services running on a
@@ -470,23 +477,22 @@ configured with one of the following system roles.
    |UCSREPLICADN| systems are ideal for site servers and the distribution of
    high-load services.
 
-:guilabel:`Managed Node`
-   |UCSMANAGEDNODE| are server systems without a local LDAP directory service.
+Managed Node
+   |UCSMANAGEDNODE|\ s are UCS systems without a local LDAP directory service.
    Access to domain data here is performed via other servers in the domain. They
    are therefore suitable for services which do not require a local database for
    authentication, for example, such as print and file servers.
 
 Once the UCS system role has been selected, further information on the domain
 join is requested. If the domain join is not intended to occur automatically
-during the installation, the :guilabel:`Start join at the end of the
-installation` option can be disabled. If the correct DNS server was selected
-during the network configuration, Univention Installer can determine the name of
-the |UCSPRIMARYDN| system automatically. If the decision is taken to join
-another UCS domain, the :guilabel:`Search Primary Directory Node in DNS` option
-can be disabled and the fully qualified domain name of the preferred
-|UCSPRIMARYDN| entered in the input field below. The access information required
-for the domain join must be entered in the :guilabel:`Administrator account` and
-:guilabel:`Administrator password` input fields.
+during the installation, the *Start join at the end of the installation* option
+can be disabled. If the correct DNS server was selected during the network
+configuration, Univention Installer can determine the name of the |UCSPRIMARYDN|
+system automatically. If the decision is taken to join another UCS domain, the
+*Search Primary Directory Node in DNS* option can be disabled and the fully
+qualified domain name of the preferred |UCSPRIMARYDN| entered in the input field
+below. The access information required for the domain join must be entered in
+the *Administrator account* and *Administrator password* input fields.
 
 .. _installation-join:
 
@@ -511,13 +517,13 @@ This dialogue shows the major settings that were made. If all the settings are
 correct, the :guilabel:`CONFIGURE SYSTEM` button can be used to start the
 configuration of the UCS system, see :numref:`installation-overview`.
 
-The :guilabel:`Update system after installation` option allows the automatic
+The *Update system after installation* option allows the automatic
 installation of available Errata updates. In addition, all patch level updates
 and Errata updates available are installed on a |UCSPRIMARYDN|. On all other
 system roles, all the patch level updates are set up to the installation status
-of the |UCSPRIMARYDN|. (You need to sign in to the |UCSPRIMARYDN| to check the
+of the |UCSPRIMARYDN|. You need to sign in to the |UCSPRIMARYDN| to check the
 installation status. This is done using the login data specified in the join
-options).
+options.
 
 .. _installation-overview:
 
@@ -563,8 +569,8 @@ Installation in text mode
 
 On systems that showed a problem with the graphic variant of Univention
 Installer, the installation may be also started in text mode. To achieve this,
-in the DVD boot menu :guilabel:`Advanced options` the entry :guilabel:`Install
-in text mode` has to be selected.
+in the DVD boot menu *Advanced options* the entry *Install
+in text mode* has to be selected.
 
 During installation in text mode Univention Installer shows the same information
 and asks for the same settings. After partitioning the hard drive, the system is
@@ -598,9 +604,8 @@ Installation in VMware
 ======================
 
 If UCS is installed as a guest in VMware, the :menuselection:`Linux --> Other
-Linux system` option must be selected as the :guilabel:`Guest
-operating system` (UCS is based on Debian but the templates for
-Debian cannot be used).
+Linux system` option must be selected as the *Guest operating system* (UCS is
+based on Debian but the templates for Debian cannot be used).
 
 The Linux kernel used in UCS includes all the support drivers necessary for
 operation in VMware (:file:`vmw_balloon`, :file:`vmw_pvsci`, :file:`vmw_vmci`,
