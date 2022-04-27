@@ -356,4 +356,23 @@ set_locust_env_vars () {
 	done
 }
 
+performance_optimizations_broker () {
+	# just for our tests
+	ucr set ldap/database/mdb/envflags=nosync
+	# official
+	# Deactivate expensive updates of the NSS and the portal group cache and add regular portal group updates at night
+	ucr set \
+		nss/group/cachefile/invalidate_on_changes=no \
+		cron/portal_groups/command='/usr/sbin/univention-portal update --reason ldap:group' \
+		cron/portal_groups/time='30 4 * * *' \
+		cron/portal_groups/description='Update UCS portal group cache.'
+	# TODO activate once Bug 54696 is fixed
+	#ucr set listener/module/portal_groups/deactivate=yes
+}
+
+performance_optimizations_traeger () {
+	# just for our tests
+	ucr set ldap/database/mdb/envflags=nosync
+}
+
 # vim:set filetype=sh ts=4:
