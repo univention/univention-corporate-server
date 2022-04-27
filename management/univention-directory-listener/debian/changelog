@@ -1,3 +1,9 @@
+univention-directory-listener (14.0.5-7) unstable; urgency=low
+
+  * Bug #54696: fix TypeError when deactivating listener module
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 27 Apr 2022 14:43:08 +0200
+
 univention-directory-listener (14.0.5-6) unstable; urgency=low
 
   * Bug #26089: Move hard coded module ordering for `replication.py`

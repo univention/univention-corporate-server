@@ -113,7 +113,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 		if not self.config.get_active():
 			self.logger.warn(
 				'Listener module %r deactivated by UCRV "listener/module/%s/deactivate".',
-				self.config.get_name()
+				self.config.get_name(), self.config.get_name()
 			)
 
 	def __repr__(self):
