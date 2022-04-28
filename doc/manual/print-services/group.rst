@@ -41,8 +41,9 @@ Printer groups are administrated in the UMC module :guilabel:`Printers` with the
        Windows.
 
        The name may contain alphanumeric characters (i.e., uppercase and
-       lowercase letters a to z and numbers 0 to 9) as well as hyphens and
-       underscores. Other characters (including blank spaces) are not permitted.
+       lowercase letters ``a`` to ``z`` and numbers ``0`` to ``9``) as well as
+       hyphens and underscores. Other characters (including blank spaces) are
+       not permitted.
 
    * - Print server (*)
      - A range of print servers (spoolers) can be specified here to expand the

@@ -1150,6 +1150,13 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    :ref:`windows-samba4-fileservices`.
 
 
+.. envvar:: samba/spoolss/architecture
+
+   Defines the system architecture for the print spooler in Samba. Set the
+   values to ``Windows x64`` when your environment contains 64-bit version of
+   Microsoft Windows. For more information, see :ref:`print-services-winclients`.
+
+
 .. envvar:: samba4/sysvol/sync/cron
 
    Configures the synchronization time interval between Samba/AD domain

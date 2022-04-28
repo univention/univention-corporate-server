@@ -65,7 +65,7 @@ is important to follow the individual steps precisely.
    We recommend downloading the printer drivers directly from the manufacturer
    and selecting them during the driver installation. If you are using an
    environment containing 64-bit versions of Windows, start by performing a
-   check to see if the |UCSUCRV| ``samba/spoolss/architecture`` is set to
+   check to see if the |UCSUCRV| :envvar:`samba/spoolss/architecture` is set to
    ``Windows x64`` on the UCS Samba system. If this is not the case, both the
    32-bit and the 64-bit drivers must be uploaded; if your domain only uses
    64-bit Windows systems, the 32-bit driver can be ignored. The drivers for the

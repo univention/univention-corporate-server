@@ -48,7 +48,7 @@ Print shares from Windows systems can also be integrated in the CUPS print
 server, see :ref:`print-shares`.
 
 .. toctree::
-   :caption: Chapter contents
+   :caption: Chapter contents:
 
    install
    configuration

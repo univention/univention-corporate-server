@@ -37,8 +37,9 @@ Printers UMC module - General tab
      - This input field contains the name of the printer share, which is used by
        CUPS. The printer appears under this name in Linux and Windows. The name
        may contain alphanumeric characters (i.e., uppercase and lowercase
-       letters a to z and numbers 0 to 9) as well as hyphens and underscores.
-       Other characters (including blank spaces) are not permitted.
+       letters ``a`` to ``z`` and numbers ``0`` to ``9``) as well as hyphens and
+       underscores. Other characters (including blank spaces) are not
+       permitted.
 
    * - Print server (*)
      - A print server manages the printer queue for the printers to be shared.
