@@ -22,7 +22,7 @@ attributes in extended attributes of the Unix file system. To use extended
 attributes, the partition must be mounted using the mount option ``user_xattr``.
 
 .. toctree::
-   :caption: Chapter contents
+   :caption: Chapter contents:
 
    access-rights
    umc

@@ -3,7 +3,7 @@ Appendix
 ********
 
 .. toctree::
-   :caption: Chapter contents
+   :caption: Chapter contents:
 
    variables
    bibliography

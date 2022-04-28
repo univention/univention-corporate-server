@@ -54,7 +54,7 @@ based on UCS which integrate in the UCS management system such as Kopano and
 Open-Xchange. Further information can be found in the :ref:`software-appcenter`.
 
 .. toctree::
-   :caption: Chapter contents
+   :caption: Chapter contents:
 
    install
    management

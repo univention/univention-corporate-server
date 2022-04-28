@@ -4,11 +4,10 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-26 13:24+0200\n"
-"PO-Revision-Date: 2022-04-26 17:16+0200\n"
+"POT-Creation-Date: 2022-04-28 12:06+0200\n"
+"PO-Revision-Date: 2022-04-28 12:09+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -187,8 +186,8 @@ msgstr ""
 "Mit der |UCSUCRV| :envvar:`google-apps/attributes/never` können "
 "kommasepariert LDAP Attribute angegeben werden, die nicht synchronisiert "
 "werden sollen, selbst wenn diese per :envvar:`google-"
-"apps/attributes/mapping/.*` oder :envvar:`google-apps/attributes/anonymize` "
-"konfiguriert sind."
+"apps/attributes/mapping/.*` oder :envvar:`google-"
+"apps/attributes/anonymize` konfiguriert sind."
 
 #: ../../idm-cloud/google.rst:85
 msgid ""
@@ -229,8 +228,8 @@ msgstr ""
 "werden."
 
 #: ../../idm-cloud/index.rst:24
-msgid "Chapter contents"
-msgstr "Kapitelinhalte"
+msgid "Chapter contents:"
+msgstr "Kapitelinhalte:"
 
 #: ../../idm-cloud/index.rst:5
 msgid "Identity Management connection to cloud services"
@@ -675,7 +674,6 @@ msgstr ""
 "werden: :file:`/var/log/univention/listener.log`."
 
 #: ../../idm-cloud/office-365.rst:185
-#, fuzzy
 msgid ""
 "Some actions of the Connector use long-running Azure Cloud operations, "
 "especially when using Teams. These operations are logged in the log file "

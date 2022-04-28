@@ -30,7 +30,7 @@ The initial installation of UCS systems is not covered in this chapter, but is
 documented in :ref:`installation-chapter` instead.
 
 .. toctree::
-   :caption: Chapter contents
+   :caption: Chapter contents:
 
    ucs-versions
    app-center

@@ -5,7 +5,7 @@ Computer management
 *******************
 
 .. toctree::
-   :caption: Chapter contents
+   :caption: Chapter contents:
 
    umc
    configure-hardware

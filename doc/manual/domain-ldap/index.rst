@@ -38,7 +38,7 @@ networks. Every UCS domain operates its own Kerberos trust context (realm).
 Further information can be found in :ref:`domain-kerberos`.
 
 .. toctree::
-   :caption: Chapter contents
+   :caption: Chapter contents:
 
    domain-join
    system-roles
