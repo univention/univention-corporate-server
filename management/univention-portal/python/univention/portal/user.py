@@ -34,7 +34,7 @@ class User(object):
 	def __init__(self, username, display_name, groups, headers):
 		self.username = username
 		self.display_name = display_name
-		self.groups = [group.lower() for group in groups]
+		self.groups = groups
 		self.headers = headers
 
 	def is_admin(self):

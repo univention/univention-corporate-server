@@ -6,9 +6,7 @@ Build-Depends:
  debhelper,
  dh-python,
  python3-all,
-#python3-asyncio, # when enabling unit-tests during build process!
  python3-debian,
-#python3-tornado, # when enabling unit-tests during build process!
  npm,
  univention-config-dev (>= 15.0.3),
  univention-join-dev,
@@ -20,8 +18,8 @@ Architecture: all
 Depends:
  netcat-openbsd,
  python3-univention-portal (= ${source:Version}),
- python3-ldap,
  python3-click,
+ python3-requests,
  python3-tornado,
  univention-config,
  univention-directory-listener,
@@ -44,9 +42,6 @@ Description: Univention Portal - Central portal web page for a UCS domain
 Package: python3-univention-portal
 Architecture: all
 Depends:
- python3-ldap,
- python3-tornado,
- python3-requests,
  python3-univention-directory-manager,
  ${python:Depends},
 Provides:
