@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-directory-listener
-fix: 
+fix: 14.0.5-7A~5.0.0.202204271810
 desc: |
  This update addresses the following issue:
  * An error when deactivating a listener module through UCR was fixed.
