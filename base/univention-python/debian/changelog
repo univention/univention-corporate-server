@@ -1,3 +1,9 @@
+univention-python (13.0.2-13) unstable; urgency=low
+
+  * Bug #54698: raise log level for uldap operations debug output
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 28 Apr 2022 08:46:28 +0200
+
 univention-python (13.0.2-12) unstable; urgency=medium
 
   * Bug #54555: Fix build dependencies
