@@ -1,3 +1,9 @@
+univention-portal (4.0.5-78) unstable; urgency=medium
+
+  * Bug #54633: Include patches from Phoenix
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 28 Apr 2022 15:52:45 +0200
+
 univention-portal (4.0.5-77) unstable; urgency=medium
 
   * Bug #54556: Include patches from phoenix (2)

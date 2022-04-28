@@ -108,7 +108,7 @@ import {
 } from '@/views/selfservice/helper';
 import _ from '@/jsHelper/translate';
 import MyForm from '@/components/forms/Form.vue';
-import { validateAll, initialValue, isValid, allValid, WidgetDefinition } from '@/jsHelper/forms';
+import { validateAll, initialValue, allValid, WidgetDefinition } from '@/jsHelper/forms';
 import Site from '@/views/selfservice/Site.vue';
 import ErrorDialog from '@/views/selfservice/ErrorDialog.vue';
 import ConfirmDeregistration from '@/views/selfservice/ConfirmDeregistration.vue';
@@ -348,7 +348,7 @@ export default defineComponent({
               title: _('Profile changes'),
               description: 'Successfully saved changes',
             });
-            this.updateOrigFormValues();
+            this.$router.push({ name: 'portal' });
           });
         })
         .catch((error) => {

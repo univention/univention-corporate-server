@@ -35,4 +35,5 @@ export interface Tooltip {
     ariaId: string,
     position: Record<string, number>,
     isMobile: boolean | null,
+    linkType: string | null,
 }

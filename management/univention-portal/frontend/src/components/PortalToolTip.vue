@@ -81,7 +81,6 @@ License with the Debian GNU/Linux or Univention distribution in file
             @click="closeToolTip()"
           />
         </div>
-
         <!-- eslint-disable vue/no-v-html -->
         <div
           v-if="description"
@@ -90,6 +89,14 @@ License with the Debian GNU/Linux or Univention distribution in file
           v-html="description"
         />
         <!-- eslint-enable vue/no-v-html -->
+        <div class="portal-tooltip__link-type">
+          {{ linkTypeText }}
+          <portal-icon
+            class="portal-tooltip__link-type-icon"
+            :class="{'portal-tooltip__link-type-icon--same-tab': sameTab}"
+            :icon="linkTypeIcon"
+          />
+        </div>
       </div>
     </div>
   </transition>
@@ -100,6 +107,7 @@ import { defineComponent, PropType } from 'vue';
 import _ from '@/jsHelper/translate';
 
 import IconButton from '@/components/globals/IconButton.vue';
+import PortalIcon from '@/components/globals/PortalIcon.vue';
 
 interface Data {
   calculatedPosition: Record<string, number|string>,
@@ -109,6 +117,7 @@ export default defineComponent({
   name: 'PortalToolTip',
   components: {
     IconButton,
+    PortalIcon,
   },
   props: {
     backgroundColor: {
@@ -137,6 +146,10 @@ export default defineComponent({
     },
     isMobile: {
       type: Boolean,
+      required: true,
+    },
+    linkType: {
+      type: Object as PropType<Record<string, string>>,
       required: true,
     },
   },
@@ -183,6 +196,15 @@ export default defineComponent({
         return 'fade-leave-from-top';
       }
       return 'fade-leave-from';
+    },
+    linkTypeText(): string {
+      return this.linkType.label;
+    },
+    linkTypeIcon(): string {
+      return this.linkType.icon;
+    },
+    sameTab(): boolean {
+      return this.linkType.icon === 'sidebar';
     },
   },
   created(): void {
@@ -343,6 +365,20 @@ export default defineComponent({
     position: relative
     width: 100%
     height: 100%
+
+  &__link-type
+    text-align: right
+    font-size: var(--font-size-5)
+    display: flex
+    align-items: center
+    justify-content: flex-end
+    margin-top: 0.3rem
+
+  &__link-type-icon
+    margin-left: 0.3rem
+    width: 0.8rem
+    &--same-tab
+      transform: rotate(90deg)
 
 .fade-enter-active {
   transition: all 0.25s ease-out

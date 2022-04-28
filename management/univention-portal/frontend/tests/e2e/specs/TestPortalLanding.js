@@ -60,7 +60,7 @@ describe('Test Portal Landing', () => {
     // Mouseover tooltip?
     cy.get('.portal-category .portal-tile').first()
       .trigger('mouseenter');
-    cy.get('[data-test="portal-tooltip"]').contains('ownCloud');
+    cy.get('[data-test="portal-tooltip"]').contains('Cloud Lösung');
     cy.get('.portal-category .portal-tile').first()
       .trigger('mouseleave');
     cy.get('[data-test="portal-tooltip"]').should('not.exist');
