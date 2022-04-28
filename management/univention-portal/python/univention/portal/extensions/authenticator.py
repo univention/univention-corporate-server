@@ -29,8 +29,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import requests
+import json
+
 from six import with_metaclass
+from tornado.httpclient import AsyncHTTPClient, HTTPError, HTTPRequest
+
 from univention.portal import Plugin
 from univention.portal.log import get_logger
 from univention.portal.user import User
@@ -62,13 +65,16 @@ class Authenticator(with_metaclass(Plugin)):
 	def get_auth_mode(self, request):  # pragma: no cover
 		return "ucs"
 
-	def login_request(self, request):  # pragma: no cover
+	async def login_request(self, request):  # pragma: no cover
 		pass
 
-	def login_user(self, request):  # pragma: no cover
+	async def login_user(self, request):  # pragma: no cover
 		pass
 
-	def get_user(self, request):  # pragma: no cover
+	async def logout_user(self, request):  # pragma: no cover
+		pass
+
+	async def get_user(self, request):  # pragma: no cover
 		return User(username=None, display_name=None, groups=[], headers={})
 
 	def refresh(self, reason=None):  # pragma: no cover
@@ -99,13 +105,13 @@ class UMCAuthenticator(Authenticator):
 	def refresh(self, reason=None):
 		return self.group_cache.refresh(reason=reason)
 
-	def get_user(self, request):
+	async def get_user(self, request):
 		cookies = dict((key, morsel.value) for key, morsel in request.cookies.items())
-		username, display_name = self._get_username(cookies)
+		username, display_name = await self._get_username(cookies)
 		groups = self.group_cache.get().get(username, [])
 		return User(username, display_name=display_name, groups=groups, headers=dict(request.request.headers))
 
-	def _get_username(self, cookies):
+	async def _get_username(self, cookies):
 		for cookie in cookies:
 			if cookie.startswith("UMCSessionId"):
 				# UMCSessionId-1234 -> Host: localhost:1234
@@ -118,21 +124,26 @@ class UMCAuthenticator(Authenticator):
 			return None, None
 		headers = {"Host": "localhost" + host_port}
 		get_logger("user").debug("searching user for cookies=%r" % cookies)
-		username = self._ask_umc(cookies, headers)
+		username = await self._ask_umc(cookies, headers)
 		if username is None:
 			get_logger("user").debug("no user found")
 			return None, None
 		else:
-			get_logger("user").debug("found %s" % username)
+			get_logger("user").debug("found %s" % (username,))
 			return username.lower(), username
 
-	def _ask_umc(self, cookies, headers):
+	async def _ask_umc(self, cookies, headers):
 		try:
-			response = requests.get(self.umc_session_url, cookies=cookies, headers=headers)
-			data = response.json()
+			headers['Cookie'] = '; '.join('='.join(c) for c in cookies.items())
+			req = HTTPRequest(self.umc_session_url, method="GET", headers=headers)
+			http_client = AsyncHTTPClient()
+			response = await http_client.fetch(req)
+			data = json.loads(response.body.decode('UTF-8'))
 			username = data["result"]["username"]
-		except requests.RequestException as e:
-			get_logger("user").error("connection failed: %s" % e)
+		except HTTPError as exc:
+			get_logger("user").error("request failed: %s" % exc)
+		except EnvironmentError as exc:
+			get_logger("user").error("connection failed: %s" % exc)
 		except ValueError:
 			get_logger("user").error("malformed answer!")
 		except KeyError:
