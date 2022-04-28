@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python3
 ## desc: policy reference works after changing the objects dn
-## tags: [udm,apptest,SKIP]
+## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## bugs: [41694]
 ## exposure: dangerous
