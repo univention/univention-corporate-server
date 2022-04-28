@@ -78,6 +78,7 @@ export default defineComponent({
       activeButton: 'navigation/getActiveButton',
       modalState: 'modal/modalState',
       searchQuery: 'search/searchQuery',
+      emptySearchResults: 'search/emptySearchResults',
     }),
     SEARCH(): string {
       return _('search');

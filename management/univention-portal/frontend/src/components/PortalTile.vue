@@ -226,7 +226,7 @@ export default defineComponent({
       return 'ontouchstart' in document.documentElement;
     },
     ariaLabelPortalTile(): null | string {
-      return (this.minified || this.editMode) ? null : `${this.$localized(this.title)} ${this.LINK_TYPE(this.linkTarget)}`;
+      return (this.minified || this.editMode) ? null : this.$localized(this.title);
     },
     activeAtEdit(): string[] {
       if (!this.editMode) {
@@ -288,9 +288,7 @@ export default defineComponent({
       if (!this.editMode && !this.minified) {
         const portalTileNameRect = this.$el.querySelector('.portal-tile__name').getBoundingClientRect();
         const portalTileRect = this.$el.getBoundingClientRect();
-        const linkTypeText = this.LINK_TYPE(this.linkTarget);
         const tooltip = {
-          linkType: linkTypeText,
           isMobile: this.isMobile,
           title: this.$localized(this.title),
           backgroundColor: this.backgroundColor,
@@ -336,36 +334,14 @@ export default defineComponent({
         }, 50);
       }
     },
-    createID(): string {
+    createID() {
       return `element-${this.$.uid}`;
     },
-    setAriaDescribedBy(): void {
+    setAriaDescribedBy() {
       this.tileId = this.createID();
     },
-    removeAriaDescribedBy():void {
+    removeAriaDescribedBy() {
       this.tileId = '';
-    },
-    LINK_TYPE(linkTarget): string {
-      const target = (linkTarget === 'samewindow') && ((this.link as string).includes('.crt') || (this.link as string).includes('.crl')) ? 'download' : linkTarget;
-      const linkTypes = {
-        samewindow: {
-          label: _('Same tab'),
-          icon: 'sidebar',
-        },
-        newwindow: {
-          label: _('New Tab'),
-          icon: 'external-link',
-        },
-        embedded: {
-          label: _('iFrame'),
-          icon: 'layout',
-        },
-        download: {
-          label: _('Download'),
-          icon: 'download',
-        },
-      };
-      return linkTypes[target];
     },
   },
 });

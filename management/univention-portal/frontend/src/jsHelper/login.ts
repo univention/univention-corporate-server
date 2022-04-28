@@ -37,7 +37,7 @@ function login(user: User): void {
 }
 
 function logout(): void {
-  window.location.href = `/univention/logout/?location=${window.location.pathname}`;
+  window.location.href = '/univention/logout';
 }
 
 export { login, logout };

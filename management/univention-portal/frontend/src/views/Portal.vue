@@ -43,14 +43,13 @@
       class="portal-categories"
     >
       <portal-category
-        v-for="(category, index) in portalFinalLayout"
+        v-for="category in portalFinalLayout"
         :key="category.id"
         :layout-id="category.layoutId"
         :title="category.title"
         :dn="category.dn"
         :virtual="category.virtual"
         :tiles="category.tiles"
-        :category-index="index"
       />
 
       <h2

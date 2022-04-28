@@ -107,9 +107,6 @@
         :super-layout-id="layoutId"
       />
     </div>
-    <template v-if="hasNoSearchResults && categoryIndex === 0">
-      <h1>{{ NO_RESULTS }}</h1>
-    </template>
   </div>
 </template>
 
@@ -167,10 +164,6 @@ export default defineComponent({
       type: Array as PropType<Tile[]>,
       required: true,
     },
-    categoryIndex: {
-      type: Number,
-      required: true,
-    },
   },
   data(): PortalCategoryData {
     return {
@@ -193,14 +186,8 @@ export default defineComponent({
     EDIT_CATEGORY(): string {
       return _('Edit category: %(category)s', { category: this.$localized(this.title) });
     },
-    NO_RESULTS(): string {
-      return _('No search results');
-    },
     filteredTiles(): Tile[] {
       return this.tiles.filter((tile) => this.tileMatchesQuery(tile));
-    },
-    hasNoSearchResults(): boolean {
-      return this.filteredTiles.length === 0;
     },
   },
   methods: {
