@@ -110,6 +110,9 @@ const tileClickMixin = {
       this.$store.dispatch('navigation/setActiveButton', '');
       this.$store.dispatch('tabs/addTab', tab);
       this.$store.dispatch('modal/hideAndClearModal');
+      this.$store.dispatch('modal/hideAndClearModal');
+      this.$store.dispatch('tooltip/setHoverOnTooltip', false);
+      this.$store.dispatch('tooltip/unsetTooltip');
     },
   },
 };

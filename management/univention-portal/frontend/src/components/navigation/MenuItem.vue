@@ -47,6 +47,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       class="menu-item__arrow menu-item__arrow--left"
     />
     {{ $localized(title) }}
+    <span class="sr-only sr-only-mobile">{{ LINK_TYPE(linkTarget) }}</span>
     <template
       v-if="subMenu.length > 0"
     >
@@ -144,6 +145,19 @@ export default defineComponent({
         // @ts-ignore
         this.tileClick($event);
       }
+    },
+    LINK_TYPE(linkTarget): string {
+      const target = (linkTarget === 'samewindow') && ((this.link as string).includes('.crt') || (this.link as string).includes('.crl')) ? 'download' : linkTarget;
+      const linkTypes = {
+        samewindow: _('Same tab'),
+        newwindow: _('New Tab'),
+        embedded: _('iFrame'),
+        download: _('Download'),
+      };
+      console.log('this.link', this.link);
+      console.log('->>> target', target);
+      console.log('->>> target', linkTypes[target]);
+      return linkTypes[target];
     },
   },
 });

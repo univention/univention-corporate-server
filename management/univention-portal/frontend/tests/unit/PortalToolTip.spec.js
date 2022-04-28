@@ -47,6 +47,10 @@ const tooltipProps = {
     y: 140,
   },
   isMobile: false,
+  linkType: {
+    label: 'embedded',
+    icon: 'layout',
+  }
 };
 
 const state = { tooltip: tooltipProps, hoverOnToolip: false };
@@ -80,11 +84,6 @@ afterEach(() => {
 });
 
 describe('PortalToolTip.vue', () => {
-  test('Check if description id is prop aria id', async () => {
-    const descriptionTag = wrapper.find('[data-test="portal-tooltip-description"]');
-    expect(descriptionTag.attributes('id')).toBe(wrapper.vm.ariaId);
-  });
-
   test('check if description tag contains description text"', async () => {
     const descriptionTag = wrapper.find('[data-test="portal-tooltip-description"]');
     expect(descriptionTag.text()).toBe(wrapper.vm.description);
@@ -111,7 +110,7 @@ describe('PortalToolTip.vue', () => {
 
   test('arrowPosition is set for regular placement', async () => {
     const tooltipArrow = wrapper.find('[data-test="portal-tooltip-arrow"]');
-    expect(tooltipArrow.attributes('style')).toBe('top: -1.9rem; left: 0.2rem;');
+    expect(tooltipArrow.attributes('style')).toBe('top: -2rem; left: 0.2rem;');
   });
 
   test('keepTooltip is working on mouseover', async () => {
