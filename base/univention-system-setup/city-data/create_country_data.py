@@ -70,6 +70,7 @@ if __name__ == '__main__':
 			if ilabel:
 				data_set.setdefault('label', {})[ilocale] = ilabel
 
-	json.dump(country_data, opt.outfile, indent=2)
+	json.dump(country_data, opt.outfile, ensure_ascii=False, indent=2, sort_keys=True)
+	opt.outfile.write("\n")
 
 	print('... done :)')
