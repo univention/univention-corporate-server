@@ -20,7 +20,7 @@ tools, which are expanded through UCS-specific tools. The different tools for
 the installation of software are introduced in
 :ref:`computers-softwaremanagement-install-software`. The installation of version
 and errata updates can be automated via policies, see
-:ref:`computers-softwaremanagement-maintenance-policy`
+:ref:`computers-softwaremanagement-maintenance-policy`.
 
 The software monitor provides a tool with which all package installations
 statuses can be centrally stored in a database, see

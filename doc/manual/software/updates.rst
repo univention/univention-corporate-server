@@ -92,7 +92,7 @@ Updating systems via a policy
 -----------------------------
 
 An update for more than one computer can be configured with an
-:guilabel:`Automatic updates` policy in the UMC modules :guilabel:`Computers`
+*Automatic updates* policy in the UMC modules :guilabel:`Computers`
 and :guilabel:`LDAP directory` (see :ref:`central-policies`).
 
 .. _software-policy-update:
@@ -110,7 +110,7 @@ which the system should be updated, for example ``5.0-0``. If no entry is made,
 the system continues updating to the highest available version number.
 
 The point at which the update should be performed is configured via a
-:guilabel:`Maintenance` policy (see
+*Maintenance* policy (see
 :ref:`computers-softwaremanagement-maintenance-policy`).
 
 The messages created during the update are written to the file

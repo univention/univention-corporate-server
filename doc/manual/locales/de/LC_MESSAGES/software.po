@@ -1,19 +1,15 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2021-2022, Univention GmbH
-# This file is distributed under the same license as the Univention
-# Corporate Server - Manual for users and administrators package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
-#
-#, fuzzy
+
 msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
-"administrators \n"
+"administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-21 12:53+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2022-04-29 11:29+0200\n"
+"PO-Revision-Date: 2022-04-29 11:10+0200\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
+"Language-Team: Univention GmbH <packages@univention.de>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,7 +17,7 @@ msgstr ""
 
 #: ../../software/app-center.rst:5
 msgid "Univention App Center"
-msgstr ""
+msgstr "Univention App Center"
 
 #: ../../software/app-center.rst:7
 msgid ""
@@ -31,10 +27,15 @@ msgid ""
 "and support for the applications are provided by the respective "
 "manufacturer."
 msgstr ""
+"Das Univention App Center erlaubt die einfache Einbindung von "
+"Softwarekomponenten in eine UCS-Domäne. Die Applikationen werden sowohl "
+"von Drittanbietern wie auch von Univention selbst (z.B. UCS\\@school) "
+"bereitgestellt. Die Software-Pflege und der Support für die Applikationen"
+" erfolgt durch den jeweiligen Hersteller."
 
 #: ../../software/app-center.rst:17
 msgid "Overview of applications available in the App Center"
-msgstr ""
+msgstr "Überblick der verfügbaren Applikationen im App Center"
 
 #: ../../software/app-center.rst:19
 msgid ""
@@ -42,18 +43,29 @@ msgid ""
 " Center`. It shows by default all installed as well as available software"
 " components. :guilabel:`Search Apps...` can be used to search for "
 "available applications. Furthermore, the applications can also be "
-"filtered using the :guilabel:`Category` panel. More filters like the "
-":emphasis:`Badges` and the :emphasis:`App License` can be used. For "
-"example, the view can be limited to applications with the categories "
-"``Education`` or ``Office``. To only show the ``Recommended Apps`` for "
-"theses categories, it is sufficient to activate the appropriate filter."
+"filtered using the *Category* panel. More filters like the *Badges* and "
+"the *App License* can be used. For example, the view can be limited to "
+"applications with the categories ``Education`` or ``Office``. To only "
+"show the ``Recommended Apps`` for theses categories, it is sufficient to "
+"activate the appropriate filter."
 msgstr ""
+"Das Univention App Center kann über das UMC-Modul :guilabel:`App Center` "
+"aufgerufen werden. Es zeigt standardmäßig alle installierten sowie "
+"verfügbare Softwarekomponenten an. Mit :guilabel:`Suche Applikationen...`"
+" kann die Liste der angezeigten Applikationen auf Suchbegriffe "
+"eingeschränkt werden. Außerdem können die Applikationen anhand der "
+"*Kategorien* gefiltert werden. Weitere Filterkriterien sind die *App "
+"Badges* und die *App Lizenz*. So ist auch eine Kombination der Filter "
+"möglich. So kann die Ansicht beispielsweise auf Applikationen aus den "
+"Kategorien ``Bildung`` oder ``Office`` eingeschränkt werden. Um hieraus "
+"dann die *Recommended Apps* anzuzeigen, genügt die Aktivierung des "
+"entsprechenden Filters."
 
 #: ../../software/app-center.rst:29
 msgid ""
 "If you click on one of the displayed applications, further details on it "
-"are shown (e.g., description, manufacturer, contact information and "
-"screenshots or videos). The *Notification* field displays whether the "
+"are shown, for example description, manufacturer, contact information and"
+" screenshots or videos. The *Notification* field displays whether the "
 "manufacturer of the software component is notified when it is "
 "installed/uninstalled. A rough classification of the licensing can be "
 "found under the *License* section. Some applications provide a "
@@ -62,10 +74,20 @@ msgid ""
 " the application about detailed licensing information using the email "
 "address shown under *Contact*."
 msgstr ""
+"Klickt man auf eine der angezeigten Applikationen, werden weitergehende "
+"Details zu der Komponente angezeigt, u.a. Beschreibung, Hersteller, "
+"Ansprechpartner und Screenshots oder Videos. Im Feld *Benachrichtigung* "
+"wird angezeigt, ob der Hersteller der Softwarekomponente bei der "
+"Installation/Deinstallation benachrichtigt wird. Ein grobe Einordnung der"
+" Lizenzierung kann unter *Lizenz* entnommen werden. Detaillierte "
+"Informationen zur Lizenzierung können bei einigen Applikationen direkt "
+"über einen :guilabel:`Kaufen` Button bezogen werden. Für alle anderen "
+"Applikationen wird die Kontaktaufnahme mit dem Hersteller der Applikation"
+" über die unter *Kontakt* angezeigte E-Mail-Adresse empfohlen."
 
 #: ../../software/app-center.rst:44
 msgid "Details for an application in the App Center"
-msgstr ""
+msgstr "Details einer Applikation im App Center"
 
 #: ../../software/app-center.rst:46
 msgid ""
@@ -76,10 +98,22 @@ msgid ""
 "Apps are available, can be recognized by the shown *Vote Apps* filter "
 "option in the App Center overview."
 msgstr ""
+"Mit *Vote Apps* gibt es eine spezielle Form von Apps im App Center, die "
+"nichts auf dem UCS System installieren. Hierbei handelt es sich um Apps, "
+"für die im App Center abgestimmt werden kann. Die Abstimmungen helfen "
+"Univention und dem potentiellen App Anbieter dabei, das Interesse für "
+"diese App festzustellen. *Vote Apps* werden in der Regel nur für einen "
+"begrenzten Abstimmungszeitraum angezeigt. Dass *Vote Apps* verfügbar "
+"sind, kann an der angezeigten Filteroption *Vote Apps* in der App Center "
+"Übersicht erkannt werden."
 
 #: ../../software/app-center.rst:57
 msgid "Example Vote Apps in App Center overview and detail view"
-msgstr ""
+msgstr "Beispiel Vote Apps in App Center Übersicht und Detailansicht"
+
+#: ../../software/app-center.rst:57
+msgid "Example *Vote Apps* in App Center overview and detail view"
+msgstr "Beispiel *Vote Apps* in App Center Übersicht und Detailansicht"
 
 #: ../../software/app-center.rst:59
 msgid ""
@@ -90,6 +124,13 @@ msgid ""
 "be resolved. The installation of these packages is then prevented until "
 "the conflicts have been resolved."
 msgstr ""
+"Einige Applikationen sind möglicherweise inkompatibel mit anderen "
+"Softwarepaketen aus UCS. So setzen beispielsweise die meisten "
+"Groupwarepakete voraus, dass der UCS-Mailstack deinstalliert ist. Jede "
+"Applikation prüft, ob inkompatible Versionen installiert sind und gibt "
+"einen Hinweis, welche *Konflikte* bestehen und wie sie beseitigt werden "
+"können. Die Installation dieser Pakete wird dann zurückgehalten, bis die "
+"Konflikte beseitigt sind."
 
 #: ../../software/app-center.rst:66
 msgid ""
@@ -101,6 +142,14 @@ msgid ""
 "systems. If several UCS systems are available in the domain, it can be "
 "selected on which system the application is to be installed."
 msgstr ""
+"Einige Komponenten integrieren Pakete, die auf dem |UCSPRIMARYDN| "
+"installiert werden müssen (in der Regel LDAP-Schema-Erweiterungen oder "
+"Erweiterungen für das UCS-Managementsystem). Diese Pakete werden "
+"automatisch auf dem |UCSPRIMARYDN| installiert. Ist dieser nicht "
+"erreichbar, wird die Installation abgebrochen. Außerdem werden die Pakete"
+" auf allen erreichbaren |UCSBACKUPDN|\\ s eingerichtet. Sofern mehrere "
+"UCS Systeme in der Domäne vorhanden sind, kann ausgewählt werden, auf "
+"welchem der Systeme die Applikation installiert werden soll."
 
 #: ../../software/app-center.rst:74
 msgid ""
@@ -109,6 +158,10 @@ msgid ""
 " from the rest and both security as well as the compatibility with other "
 "applications are increased."
 msgstr ""
+"Einige Applikationen nutzen die Container-Technologie :program:`Docker`. "
+"Dadurch wird die Applikation (und ihre unmittelbare Umgebung) vom Rest "
+"gekapselt und die Sicherheit sowie die Kompatibilität von Applikationen "
+"untereinander erhöht."
 
 #: ../../software/app-center.rst:79
 msgid ""
@@ -116,6 +169,9 @@ msgid ""
 "joined into the UCS domain as |UCSMANAGEDNODE|. A corresponding computer "
 "object is created for the |UCSMANAGEDNODE| in the LDAP directory."
 msgstr ""
+"Technisch wird die App als Docker Container gestartet und als "
+"|UCSMANAGEDNODE| in die UCS Domäne gejoint. Für den |UCSMANAGEDNODE| wird"
+" im LDAP ein zugehöriges Rechner-Objekt angelegt."
 
 #: ../../software/app-center.rst:83
 msgid ""
@@ -125,6 +181,11 @@ msgid ""
 "firewall is correspondingly configured automatically to allow access to "
 "these ports."
 msgstr ""
+"Der Container ist per Netzwerk nur von dem Rechner aus zu erreichen, auf "
+"dem die App installiert ist. Die App kann aber bestimmte Ports öffnen, "
+"die dann vom eigentlichen Rechner in den Container weitergeleitet werden."
+" Die Firewall von UCS wird entsprechend automatisch konfiguriert, damit "
+"der Zugriff auf die Ports möglich ist."
 
 #: ../../software/app-center.rst:88
 msgid ""
@@ -133,46 +194,57 @@ msgid ""
 "command (using the fictitious app :program:`demo-docker-app` as an "
 "example in this case):"
 msgstr ""
+"Wird eine Kommandozeile in der Umgebung der App benötigt, muss zunächst "
+"in den Container gewechselt werden. Dazu kann folgender Befehl ausgeführt"
+" werden (hier am Beispiel der fiktiven App :program:`demo-docker-app`):"
 
 #: ../../software/app-center.rst:93
 msgid "$ univention-app shell demo-docker-app"
-msgstr ""
+msgstr "$ univention-app shell demo-docker-app"
 
 #: ../../software/app-center.rst:98
 msgid ""
 "Docker apps can be further configured via the UMC module. The app can be "
 "started and stopped and the *autostart* option be set:"
 msgstr ""
+"Docker Apps lassen sich über das UMC-Modul weiter konfigurieren. Die App "
+"kann gestartet und gestoppt, sowie die *Autostart*-Option gesetzt werden:"
 
 #: ../../software/app-center.rst:102
 msgid "Started automatically"
-msgstr ""
+msgstr "Automatisch gestartet"
 
 #: ../../software/app-center.rst:102
 msgid ""
 "ensures that the app is started automatically when the server is started "
 "up."
 msgstr ""
+"sorgt dafür, dass die App automatisch beim Hochfahren des Servers "
+"gestartet wird."
 
 #: ../../software/app-center.rst:106
 msgid "Started manually"
-msgstr ""
+msgstr "Manuell gestartet"
 
 #: ../../software/app-center.rst:105
 msgid ""
 "prevents the app from starting automatically, but it can be started via "
 "the UMC module."
 msgstr ""
+"verhindert den automatischen Start der App, sie kann aber über das UMC-"
+"Modul gestartet werden."
 
 #: ../../software/app-center.rst:110
 msgid "Starting is prevented"
-msgstr ""
+msgstr "Start wird verhindert"
 
 #: ../../software/app-center.rst:109
 msgid ""
 "prevents the app from starting at any time; it cannot even be started via"
 " the UMC module."
 msgstr ""
+"unterbindet grundsätzlich den Start der App; sie kann dann auch nicht "
+"über das UMC-Modul gestartet werden."
 
 #: ../../software/app-center.rst:112
 msgid ""
@@ -180,28 +252,33 @@ msgid ""
 "menu for doing so can be opened using the :guilabel:`App Settings` button"
 " of an installed app."
 msgstr ""
+"Darüber hinaus können Apps ggf. über weitere Parameter angepasst werden."
+"  Das Menü dafür ist über den Button App-Einstellungen einer "
+"installierten App zu erreichen."
 
 #: ../../software/app-center.rst:121
 msgid "Setting of an application in the App Center"
-msgstr ""
+msgstr "Einstellungen einer Applikation im App Center"
 
 #: ../../software/app-center.rst:123
 msgid ""
 "After its installation, one or several new options are shown when "
 "clicking on the icon of an application:"
 msgstr ""
+"Nach der Installation einer Applikation werden beim Klick auf das Icon "
+"einer Applikation eine oder mehrere neue Optionen angezeigt:"
 
-#: ../../software/app-center.rst:127
-msgid ":guilabel:`Uninstall`"
-msgstr ""
+#: ../../software/app-center.rst:127 ../../software/further-software.rst:79
+msgid "Uninstall"
+msgstr "Deinstallieren"
 
 #: ../../software/app-center.rst:127
 msgid "removes an application."
-msgstr ""
+msgstr "entfernt eine Applikation."
 
 #: ../../software/app-center.rst:132
-msgid ":guilabel:`Open`"
-msgstr ""
+msgid "Open"
+msgstr "Öffnen"
 
 #: ../../software/app-center.rst:130
 msgid ""
@@ -209,6 +286,10 @@ msgid ""
 "configure or use the installed application. This option is not displayed "
 "for applications which do not have a web interface or a UMC module."
 msgstr ""
+"verweist auf eine Webseite oder ein UMC-Modul, mit dem die installierte "
+"Applikation weitergehend konfiguriert oder verwendet werden kann. Bei "
+"Applikationen ohne Webinterface oder UMC-Modul wird die Option nicht "
+"angezeigt."
 
 #: ../../software/app-center.rst:134
 msgid ""
@@ -218,6 +299,12 @@ msgid ""
 "the new version. If updates are available, a corresponding message is "
 "also shown in the UMC module :guilabel:`Software update`."
 msgstr ""
+"Aktualisierungen für Applikationen erfolgen unabhängig von den Release-"
+"Zyklen für |UCSUCS|. Ist eine neue Version einer Applikation verfügbar, "
+"wird der Menüpunkt :guilabel:`Aktualisieren` angezeigt, der die "
+"Installation der neuen Version startet. Wenn Aktualisierungen verfügbar "
+"sind, wird außerdem im UMC-Modul :guilabel:`Software-Aktualisierung` ein "
+"entsprechender Hinweis ausgegeben."
 
 #: ../../software/app-center.rst:140
 msgid ""
@@ -225,10 +312,13 @@ msgid ""
 ":file:`/var/log/univention/management-console-module-appcenter.log` log "
 "file."
 msgstr ""
+"Installationen und das Entfernen von Paketen werden in der Logdatei "
+":file:`/var/log/univention/management-console-module-appcenter.log` "
+"protokolliert."
 
 #: ../../software/further-software.rst:4
 msgid "Installation of further software"
-msgstr ""
+msgstr "Installation weiterer Software"
 
 #: ../../software/further-software.rst:6
 msgid ""
@@ -244,6 +334,17 @@ msgid ""
 "dependencies. All software components are loaded from a repository (see "
 ":ref:`software-config-repo`)."
 msgstr ""
+"Die Erstauswahl der Softwarekomponenten eines UCS-Systems erfolgt im "
+"Rahmen der Installation. Die Auswahl der Softwarekomponenten erfolgt "
+"dabei funktionsbezogen, indem etwa die Komponente *Proxy-Server* "
+"ausgewählt wird, die dann über ein Meta-Paket die eigentlichen Software-"
+"Pakete nachzieht. Der Administrator muss dazu die eigentlichen Paketnamen"
+" nicht kennen. Für weitergehende Aufgaben können aber auch einzelne "
+"Pakete gezielt installiert und entfernt werden. Bei der Installation "
+"eines Pakets werden unter Umständen Pakete mitinstalliert, die für die "
+"Funktion des angegebenen Pakets erforderlich sind, die sogenannten "
+"Paketabhängigkeiten. Alle Softwarekomponenten werden aus einem Repository"
+" geladen (siehe :ref:`software-config-repo`)."
 
 #: ../../software/further-software.rst:17
 msgid ""
@@ -252,16 +353,22 @@ msgid ""
 "These directories are not used for installing UCS packages, thus a clean "
 "separation between UCS packages and other software is ensured."
 msgstr ""
+"Fremdsoftware, die nicht im Debian-Paketformat vorliegt, sollte in die "
+"Verzeichnisse :file:`/opt/` oder :file:`/usr/local/` installiert werden. "
+"UCS-Pakete nutzen diese Verzeichnisse nicht, so dass eine saubere "
+"Trennung von UCS- und Fremdsoftware gewährleistet ist."
 
 #: ../../software/further-software.rst:22
 msgid ""
 "There are several possibilities for installing further packages "
 "subsequently on an installed system, as the following sections describe."
 msgstr ""
+"Um auf einem bereits installierten System nachträglich weitere Pakete zu "
+"installieren, stehen mehrere Möglichkeiten zur Verfügung."
 
 #: ../../software/further-software.rst:28
 msgid "Installation/deinstallation of UCS components in the Univention App Center"
-msgstr ""
+msgstr "Installation/Deinstallation von UCS-Komponenten im Univention App Center"
 
 #: ../../software/further-software.rst:30
 msgid ""
@@ -271,32 +378,41 @@ msgid ""
 "Further information on the Univention App Center can be found in :ref"
 ":`software-appcenter`."
 msgstr ""
+"Alle Softwarekomponenten, die im Univention Installer angeboten werden, "
+"können auch über das Univention App Center nachträglich installiert und "
+"entfernt werden. Dazu muss die Paket-Kategorie *UCS-Komponenten* "
+"ausgewählt werden. Weitere Hinweise zum Univention App Center finden sich"
+" in :ref:`software-appcenter`."
 
 #: ../../software/further-software.rst:41
 msgid "Selection of UCS components in the App Center"
-msgstr ""
+msgstr "Auswahl von UCS-Komponenten im App Center"
 
 #: ../../software/further-software.rst:46
 msgid "Installation/removal of individual packages via |UCSUMC| module"
-msgstr ""
+msgstr "Installation/Deinstallation von UCS-Komponenten im Univention App Center"
 
 #: ../../software/further-software.rst:48
 msgid ""
 "The UMC module :guilabel:`Package Management` can be used to install and "
 "uninstall individual software packages."
 msgstr ""
+"Mit dem UMC-Modul :guilabel:`Paket-Verwaltung` können einzelne "
+"Softwarepakete installiert und deinstalliert werden."
 
 #: ../../software/further-software.rst:56
 msgid ""
 "Installing the package univention-squid via |UCSUMC| module 'Package "
 "management'"
-msgstr ""
+msgstr "Installation des Pakets univention-squid im UMC-Modul 'Paket-Verwaltung'"
 
 #: ../../software/further-software.rst:56
 msgid ""
 "Installing the package :program:`univention-squid` via |UCSUMC| module "
 "'Package management'"
 msgstr ""
+"Installation des Pakets :program:`univention-squid` mittels |UCSUMC| "
+"Modul *Paket-Verwaltung*"
 
 #: ../../software/further-software.rst:59
 msgid ""
@@ -304,86 +420,91 @@ msgid ""
 " the package category or a search filter (name or description). The "
 "results are displayed in a table with the following columns:"
 msgstr ""
+"Auf der Startseite wird eine Suchmaske angezeigt in der die "
+"Paketkategorie und ein Suchfilter (Name oder Beschreibung) zur Auswahl "
+"stehen. Die Ergebnisliste besteht aus einer Tabelle mit den folgenden "
+"Spalten:"
 
 #: ../../software/further-software.rst:63
 msgid "Package name"
-msgstr ""
+msgstr "Paketname"
 
 #: ../../software/further-software.rst:65
 msgid "Package description"
-msgstr ""
+msgstr "Paketbeschreibung"
 
 #: ../../software/further-software.rst:67
 msgid "Installation status"
-msgstr ""
+msgstr "Installationsstatus"
 
 #: ../../software/further-software.rst:69
 msgid ""
 "Clicking an entry in the result list opens a detailed information page "
 "with a comprehensive description of the package."
 msgstr ""
+"Durch einen Klick auf eine Zeile in der Ergebnisliste wird eine "
+"detaillierte Informationsseite zu dem Softwarepaket angezeigt, u.a. eine "
+"ausführliche Beschreibung und die Versionsnummer."
 
 #: ../../software/further-software.rst:72
 msgid ""
 "In addition, one or more buttons will be displayed. They have the "
 "following meanings:"
 msgstr ""
+"Zusätzlich werden ein oder mehrere Buttons angezeigt. Sie haben die "
+"folgenden Bedeutungen:"
 
 #: ../../software/further-software.rst:76
 msgid "Install"
-msgstr ""
+msgstr "Installieren"
 
 #: ../../software/further-software.rst:76
 msgid "is displayed if the software package is not installed yet."
-msgstr ""
-
-#: ../../software/further-software.rst:79
-msgid "Uninstall"
-msgstr ""
+msgstr "wird angezeigt, falls das Softwarepaket noch nicht installiert ist."
 
 #: ../../software/further-software.rst:79
 msgid "is displayed if the software package is installed."
-msgstr ""
+msgstr "wird angezeigt, falls das Paket installiert ist."
 
 #: ../../software/further-software.rst:82
 msgid "Upgrade"
-msgstr ""
+msgstr "Aktualisieren"
 
 #: ../../software/further-software.rst:82
 msgid "is displayed if the software package is installed but not updated."
-msgstr ""
+msgstr "wird angezeigt, falls das Softwarepaket bereits installiert, aber nicht aktuell ist."
 
 #: ../../software/further-software.rst:85
 msgid "Close"
-msgstr ""
+msgstr "Schließen"
 
 #: ../../software/further-software.rst:85
 msgid "can be used for returning to the previous search request."
-msgstr ""
+msgstr "kann verwendet werden, um zur vorherigen Suchanfrage zurück zu kehren."
 
 #: ../../software/further-software.rst:90
 msgid "Installation/removal of individual packages in the command line"
-msgstr ""
+msgstr "Installation/Deinstallation von einzelnen Paketen auf der Kommandozeile"
 
 #: ../../software/further-software.rst:92 ../../software/updates.rst:72
 msgid "The following steps must be performed with ``root`` user rights."
-msgstr ""
+msgstr "Die folgenden Schritte müssen mit ``root``-Rechten durchgeführt werden."
 
 #: ../../software/further-software.rst:94
 msgid "Individual packages are installed using the command:"
-msgstr ""
+msgstr "Die Installation einzelner Pakete erfolgt mit dem Kommando"
 
 #: ../../software/further-software.rst:96
 msgid "$ univention-install PACKAGENAME"
-msgstr ""
+msgstr "$ univention-install PACKAGENAME"
 
 #: ../../software/further-software.rst:101
 msgid "Packages can be removed with the following command:"
-msgstr ""
+msgstr "Pakete können mit dem folgenden Befehl entfernt werden:"
 
 #: ../../software/further-software.rst:103
 msgid "$ univention-remove PACKAGENAME"
-msgstr ""
+msgstr "$ univention-remove PACKAGENAME"
 
 #: ../../software/further-software.rst:107
 msgid ""
@@ -391,14 +512,18 @@ msgid ""
 "search` can be used to search for the package. Parts of the name or words"
 " which appear in the description of the package are listed, for example:"
 msgstr ""
+"Wenn der Name eines Pakets nicht bekannt ist, kann mit dem Kommando "
+":command:`apt-cache search` nach Paketen gesucht werden. Als "
+"Aufrufparameter können Teile des Namens oder Wörter, die in der "
+"Beschreibung eines Paketes vorkommen, angegeben werden, z.B."
 
 #: ../../software/further-software.rst:111
 msgid "$ apt-cache search fax"
-msgstr ""
+msgstr "$ apt-cache search fax"
 
 #: ../../software/further-software.rst:119
 msgid "Hook scripts for administrators"
-msgstr ""
+msgstr "Hook Skripte für Administratoren"
 
 #: ../../software/further-software.rst:121
 msgid ""
@@ -406,6 +531,9 @@ msgid ""
 "-removal. Such scripts can be used to automate repeating administrative "
 "tasks."
 msgstr ""
+"Benutzerdefinierte Skripte können nach jeder Installation, Aktualisierung"
+" oder Deinstallation von Apps ausgeführt werden. Solche Skripte erlauben "
+"die Automatisierung wiederkehrender administrativer Aufgaben."
 
 #: ../../software/further-software.rst:124
 msgid ""
@@ -413,30 +541,41 @@ msgid ""
 "directories listed below. If such a directory does not yet exist, it can "
 "be manually created:"
 msgstr ""
+"Um von dieser Eigenschaft Gebrauch zu machen, können Skripte in einem der "
+"folgenden Verzeichnisse abgelegt werden. Wenn ein solches Verzeichnis "
+"noch nicht existiert, kann es manuell angelegt werden."
 
 #: ../../software/further-software.rst:128
 msgid ""
 ":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
 "install.d/`"
 msgstr ""
+":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
+"install.d/`"
 
 #: ../../software/further-software.rst:129
 msgid ""
 ":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
 "upgrade.d/`"
 msgstr ""
+":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
+"upgrade.d/`"
 
 #: ../../software/further-software.rst:130
 msgid ""
 ":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
 "remove.d/`"
 msgstr ""
+":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
+"remove.d/`"
 
 #: ../../software/further-software.rst:132
 msgid ""
 "Where ``{appid}`` is the name of the app for which the scripts should be "
 "executed."
 msgstr ""
+"Wobei ``{appid}`` der Name einer App ist, für welche die Skripte "
+"ausgeführt werden sollen."
 
 #: ../../software/further-software.rst:135
 msgid ""
@@ -448,18 +587,29 @@ msgid ""
 "executed. Further information can be found in the manual with "
 ":command:`man run-parts`."
 msgstr ""
+"Dateinamen dürfen nur aus Kleinbuchstaben und Zahlen bestehen "
+"(``^[a-z0-9]+$``). Außerdem müssen die Dateien als ausführbar markiert "
+"sein (:command:`chmod +x [Dateiname]`) denn sie werden intern von "
+":command:`run-parts` aufgerufen.  Daher kann mit :command:`run-parts "
+"--test [Verzeichnis]` getestet werden, ob und welche Dateien ausgeführt "
+"werden würden. Weitere Informationen können der Manpage entnommen "
+"werden mit :command:`man run-parts`."
 
 #: ../../software/further-software.rst:142
 msgid ""
 "The :file:`/var/log/univention/appcenter.log` contains possible scripting"
 " error messages and further hints."
 msgstr ""
+"Die :file:`/var/log/univention/appcenter.log` enthält mögliche Fehler bei"
+" der Ausführung der Skripte und weitere Hinweise."
 
 #: ../../software/further-software.rst:148
 msgid ""
 "Policy-based installation/deinstallation of individual packages via "
 "package lists"
 msgstr ""
+"Richtlinienbasierte Installation/Deinstallation von einzelnen Paketen "
+"über Paketlisten"
 
 #: ../../software/further-software.rst:150
 msgid ""
@@ -467,76 +617,88 @@ msgid ""
 "This allows central software deployment for a large number of computer "
 "systems."
 msgstr ""
+"Mit Paketlisten kann richtlinienbasiert Software installiert und entfernt"
+" werden. Dadurch lassen sich auch große Stückzahlen an Rechnersystemen "
+"zentral mit neuer Software versehen."
 
 #: ../../software/further-software.rst:153
 msgid "Each system role has its own package policy type."
-msgstr ""
+msgstr "Jede Systemrolle verfügt über eine eigenen Paket-Richtlinien-Typ."
 
 #: ../../software/further-software.rst:155
 msgid ""
 "Package policies are managed in the UMC module :guilabel:`Policies` with "
 "the *Policy: Packages + system role*."
 msgstr ""
+"Paketrichtlinien werden im UMC-Modul :guilabel:`Richtlinien` mit dem "
+"Objekttyp *Richtlinie: Pakete + Systemrolle* verwaltet."
 
 #: ../../software/further-software.rst:158
-msgid "'General' tab"
-msgstr ""
-
-#: ../../software/further-software.rst:161
-#: ../../software/package-maintenance-policy.rst:25
-msgid "Attribute"
-msgstr ""
+#: ../../software/package-maintenance-policy.rst:22
+msgid "*General* tab"
+msgstr "Reiter *Allgemein*"
 
 #: ../../software/further-software.rst:162
 #: ../../software/package-maintenance-policy.rst:26
-msgid "Description"
-msgstr ""
+msgid "Attribute"
+msgstr "Attribut"
 
-#: ../../software/further-software.rst:164
-msgid "Name"
-msgstr ""
+#: ../../software/further-software.rst:163
+#: ../../software/package-maintenance-policy.rst:27
+msgid "Description"
+msgstr "Beschreibung"
 
 #: ../../software/further-software.rst:165
-msgid "An unambiguous name for this package list, e.g., *mail server*."
-msgstr ""
+msgid "Name"
+msgstr "Name"
 
-#: ../../software/further-software.rst:167
-msgid "Package installation list"
-msgstr ""
+#: ../../software/further-software.rst:166
+msgid "An unambiguous name for this package list, e.g., *mail server*."
+msgstr "Ein eindeutiger Name für diese Paketliste, z.B. *Standort-Server*."
 
 #: ../../software/further-software.rst:168
-msgid "A list of packages to be installed."
-msgstr ""
+msgid "Package installation list"
+msgstr "Pakete Installationsliste"
 
-#: ../../software/further-software.rst:170
-msgid "Package removal list"
-msgstr ""
+#: ../../software/further-software.rst:169
+msgid "A list of packages to be installed."
+msgstr "Eine Liste zu installierender Pakete."
 
 #: ../../software/further-software.rst:171
-msgid "A list of packages to be removed."
-msgstr ""
+msgid "Package removal list"
+msgstr "Pakete Deinstallationsliste"
 
-#: ../../software/further-software.rst:173
+#: ../../software/further-software.rst:172
+msgid "A list of packages to be removed."
+msgstr "Eine Liste zu entfernender Pakete."
+
+#: ../../software/further-software.rst:174
 msgid ""
 "The software packages defined in a package list are installed/uninstalled"
 " at the time defined in the :guilabel:`Maintenance` policy (for the "
 "configuration see :ref:`computers-softwaremanagement-maintenance-"
 "policy`)."
 msgstr ""
+"Die in einer Paketliste definierten Softwarepakete werden zu dem in der "
+":guilabel:`Paketpflege`-Richtlinie definierten Zeitpunkt (zur "
+"Konfiguration siehe :ref:`computers-softwaremanagement-maintenance-"
+"policy`) installiert, bzw. deinstalliert."
 
-#: ../../software/further-software.rst:177
+#: ../../software/further-software.rst:178
 msgid ""
 "The software assignable in the package policies are also registered in "
 "the LDAP."
 msgstr ""
+"Die in den Pakete-Richtlinien zuordbaren Softwarepakete werden ebenfalls "
+"im LDAP registriert."
 
 #: ../../software/index.rst:32
-msgid "Chapter contents"
-msgstr ""
+msgid "Chapter contents:"
+msgstr "Kapitelinhalte:"
 
 #: ../../software/index.rst:5
 msgid "Software deployment"
-msgstr ""
+msgstr "Softwareverteilung"
 
 #: ../../software/index.rst:7
 msgid ""
@@ -548,6 +710,14 @@ msgid ""
 " support the updating of Microsoft Windows systems. An additional Windows"
 " software distribution is required for this."
 msgstr ""
+"Die in UCS integrierte Softwareverteilung bietet umfangreiche "
+"Möglichkeiten für den Rollout und die Aktualisierung von UCS-"
+"Installationen. Sicherheits- und Versionsupdates können über das UMC-"
+"Modul :guilabel:`Software-Aktualisierung`, über ein Kommandozeilen-Tool "
+"und richtliniengesteuert installiert werden. Dies wird in :ref:`software-"
+"ucs-updates` beschrieben. Die UCS-Softwareverteilung unterstützt nicht "
+"die Aktualisierung von Microsoft Windows-Systemen. Hierfür ist eine "
+"zusätzliche Windows-Softwareverteilung nötig."
 
 #: ../../software/index.rst:14
 msgid ""
@@ -555,6 +725,9 @@ msgid ""
 "local repository server from which all further updates can be performed, "
 "see :ref:`software-config-repo`."
 msgstr ""
+"Für größere Installationen besteht die Möglichkeit, einen lokalen "
+"Repository-Server einzurichten, von dem aus alle weiteren "
+"Aktualisierungen durchgeführt werden (siehe :ref:`software-config-repo`)."
 
 #: ../../software/index.rst:18
 msgid ""
@@ -563,8 +736,15 @@ msgid ""
 "different tools for the installation of software are introduced in :ref"
 ":`computers-softwaremanagement-install-software`. The installation of "
 "version and errata updates can be automated via policies, see :ref"
-":`computers-softwaremanagement-maintenance-policy`"
+":`computers-softwaremanagement-maintenance-policy`."
 msgstr ""
+"Die UCS-Softwareverteilung basiert auf den unterliegenden Debian-"
+"Paketmanagement-Tools, wird aber durch UCS-spezifische Werkzeuge ergänzt."
+" Die verschiedenen Werkzeuge zur Installation von Software werden in :ref"
+":`computers-softwaremanagement-install-software` vorgestellt. Die "
+"Installation von Versions- und Sicherheitsupdates kann über Richtlinien "
+"automatisiert werden, siehe :ref:`computers-softwaremanagement-"
+"maintenance-policy`."
 
 #: ../../software/index.rst:25
 msgid ""
@@ -572,16 +752,22 @@ msgid ""
 " statuses can be centrally stored in a database, see :ref:`computers-"
 "software-monitor`."
 msgstr ""
+"Mit dem Software-Monitor steht ein Werkzeug zur Verfügung, mit dem alle "
+"Paketinstallationsstände zentral in einer Datenbank erfasst werden, siehe"
+" :ref:`computers-software-monitor`."
 
 #: ../../software/index.rst:29
 msgid ""
 "The initial installation of UCS systems is not covered in this chapter, "
 "but is documented in :ref:`installation-chapter` instead."
 msgstr ""
+"Die Erstinstallation von UCS-Systemen ist nicht Bestandteil dieses "
+"Kapitels, sie wird stattdessen in :ref:`installation-chapter` "
+"beschrieben."
 
 #: ../../software/package-maintenance-policy.rst:4
 msgid "Specification of an update point using the package maintenance policy"
-msgstr ""
+msgstr "Festlegung eines Aktualisierungszeitpunkts mit der Paketpflege-Richtlinie"
 
 #: ../../software/package-maintenance-policy.rst:6
 msgid ""
@@ -589,80 +775,96 @@ msgid ""
 "for computer and domain management can be used to specify a point at "
 "which the following steps should be performed:"
 msgstr ""
+"Mit einer :guilabel:`Paketpflege`-Richtlinie (siehe auch :ref:`central-"
+"policies`) in den UMC-Modulen zur Rechner- und Domänenverwaltung kann ein "
+"Zeitpunkt vorgegeben werden, an dem die folgenden Schritte durchgeführt "
+"werden:"
 
 #: ../../software/package-maintenance-policy.rst:10
 msgid ""
 "Check for available release updates to be installed (see :ref:`computers-"
 "softwaremanagement-release-policy`) and, if applicable, installation."
 msgstr ""
+"Prüfung auf verfügbare und zu installierende Release-Updates (siehe :ref"
+":`computers-softwaremanagement-release-policy`) und ggf. Installation"
 
 #: ../../software/package-maintenance-policy.rst:14
 msgid ""
 "Installation/deinstallation of package lists (see :ref:`computers-"
 "softwaremanagement-package-lists`)"
 msgstr ""
+"Installation/Deinstallation von Paketlisten (siehe :ref:`computers-"
+"softwaremanagement-package-lists`)"
 
 #: ../../software/package-maintenance-policy.rst:17
 msgid "Installation of available errata updates"
-msgstr ""
+msgstr "Installation verfügbarer Errata-Updates"
 
 #: ../../software/package-maintenance-policy.rst:19
 msgid ""
 "Alternatively, the updates can also be performed when the system is "
 "booting or shut down."
 msgstr ""
-
-#: ../../software/package-maintenance-policy.rst:22
-msgid "*General* tab"
-msgstr ""
-
-#: ../../software/package-maintenance-policy.rst:28
-msgid "Perform maintenance after system startup"
-msgstr ""
+"Alternativ können die Aktualisierungen auch beim Systemstart oder beim "
+"Herunterfahren des Systems erfolgen."
 
 #: ../../software/package-maintenance-policy.rst:29
+msgid "Perform maintenance after system startup"
+msgstr "Paketpflege durchführen nach Hochfahren des Systems"
+
+#: ../../software/package-maintenance-policy.rst:30
 msgid ""
 "If this option is activated, the update steps are performed when the "
 "computer is started up."
 msgstr ""
-
-#: ../../software/package-maintenance-policy.rst:32
-msgid "Perform maintenance before system shutdown"
-msgstr ""
+"Falls diese Option aktiviert ist, werden die Aktualisierungsschritte "
+"während des Startvorgangs des Rechners durchgeführt. "
 
 #: ../../software/package-maintenance-policy.rst:33
+msgid "Perform maintenance before system shutdown"
+msgstr "Paketpflege durchführen vor Herunterfahren des Systems"
+
+#: ../../software/package-maintenance-policy.rst:34
 msgid ""
 "If this option is activated, the update steps are performed when the "
 "computer is shut down."
 msgstr ""
-
-#: ../../software/package-maintenance-policy.rst:36
-msgid "Use Cron settings"
-msgstr ""
+"Falls diese Option aktiviert ist, werden die Aktualisierungsschritte beim"
+" Herunterfahren des Rechners durchgeführt."
 
 #: ../../software/package-maintenance-policy.rst:37
+msgid "Use Cron settings"
+msgstr "Cron Einstellung benutzen"
+
+#: ../../software/package-maintenance-policy.rst:38
 msgid ""
 "If this flag is activated, the fields *Month*, *Day of week*, *Day*, "
 "*Hour* and *Minute* can be used to specify an exact time when the update "
 "steps should be performed."
 msgstr ""
-
-#: ../../software/package-maintenance-policy.rst:41
-msgid "Reboot after maintenance"
-msgstr ""
+"Wird dieses Feld aktiviert, kann über die Felder *Monat*, *Wochentag*, "
+"*Tag*, *Stunde* und *Minute* ein genauer Zeitpunkt angegeben werden, an "
+"dem die Aktualisierungsschritte durchgeführt werden sollen."
 
 #: ../../software/package-maintenance-policy.rst:42
+msgid "Reboot after maintenance"
+msgstr "Nach Paketpflege neu starten"
+
+#: ../../software/package-maintenance-policy.rst:43
 msgid ""
 "This option allows you to perform an automatic system restart after "
 "release updates either directly or after a specified time period of "
 "hours."
 msgstr ""
+"Diese Option ermöglicht es, nach Release-Aktualisierungen optional einen "
+"automatischen Neustart des Systems durchzuführen, entweder direkt oder "
+"nach dem angegebenen Zeitintervall in Stunden."
 
 #: ../../software/repository-server.rst:4
 msgid ""
 "Configuration of the repository server for updates and package "
 "installations"
-msgstr ""
+msgstr "Konfiguration des Repository-Servers für Updates und Paketinstallationen"
 
 #: ../../software/repository-server.rst:6
 #: ../../software/repository-server.rst:71
@@ -674,10 +876,17 @@ msgid ""
 " can also be updated offline, a local repository also allows the updating"
 " of UCS environments without internet access."
 msgstr ""
+"Paketinstallationen und Updates können entweder vom Univention-Update-"
+"Server oder von einem lokal gepflegten Repository durchgeführt werden. "
+"Ein lokales Repository ist sinnvoll, wenn viele UCS-Systeme zu "
+"aktualisieren sind, da Updates in diesem Fall nur einmalig "
+"heruntergeladen werden müssen. Da Repositorys auch offline aktualisiert "
+"werden können, ermöglicht ein lokales Repository auch die Aktualisierung "
+"von UCS-Umgebungen ohne Internetanbindung."
 
 #: ../../software/repository-server.rst:13
 msgid "A local repository can require a lot of disk space."
-msgstr ""
+msgstr "Ein lokales Repository kann viel Plattenplatz in Anspruch nehmen."
 
 #: ../../software/repository-server.rst:15
 msgid ""
@@ -687,12 +896,19 @@ msgid ""
 "are required on a system, these can be entered in the "
 ":file:`/etc/apt/sources.list` file."
 msgstr ""
+"Anhand der registrierten Einstellungen werden APT-Paketquellen für "
+"Release- und Errata-Updates sowie Addon-Komponenten im Verzeichnis "
+":file:`/etc/apt/sources.list.d/` automatisch generiert. Sollten auf einem"
+" System weitere Repositorys benötigt werden, können diese in die Datei "
+":file:`/etc/apt/sources.list` eingetragen werden."
 
 #: ../../software/repository-server.rst:20
 msgid ""
 "By default the Univention repository ``updates.software-univention.de`` "
 "is used for a new installation."
 msgstr ""
+"Bei einer Neuinstallation wird in der Grundeinstellung das Univention-"
+"Repository ``updates.software-univention.de`` verwendet."
 
 #: ../../software/repository-server.rst:23
 msgid ""
@@ -700,6 +916,9 @@ msgid ""
 "and Debian. A distinction is made between maintained and unmaintained "
 "packages."
 msgstr ""
+"Das Univention Repository enthält alle von Univention und Debian "
+"bereitgestellten Pakete. Dabei wird zwischen maintained und unmaintained "
+"Paketen unterschieden."
 
 #: ../../software/repository-server.rst:26
 msgid ""
@@ -708,6 +927,11 @@ msgid ""
 "packages. The list of *maintained* packages can be viewed on a UCS system"
 " in :file:`univention-errata-level/maintained-packages.txt`."
 msgstr ""
+"Alle Pakete im Standard-Paketumfang befinden sich im Status *maintained*."
+" Sicherheitsupdates werden zeitnah nur für *maintained* Pakete "
+"bereitgestellt. Die Liste der *maintained* Pakete ist auf einem UCS "
+"System unter :file:`/usr/share/univention-errata-level/maintained-"
+"packages.txt` einsehbar."
 
 #: ../../software/repository-server.rst:31
 msgid ""
@@ -716,6 +940,10 @@ msgid ""
 "command :command:`univention-list-installed-unmaintained-packages` can be"
 " executed."
 msgstr ""
+"*unmaintained* Pakete sind nicht durch Sicherheitsupdates oder "
+"anderweitige Maintenance abgedeckt. Um zu prüfen ob *unmaintained* Pakete"
+" installiert sind, kann das Kommando :command:`univention-list-installed-"
+"unmaintained-packages` ausgeführt werden."
 
 #: ../../software/repository-server.rst:35
 msgid ""
@@ -724,20 +952,27 @@ msgid ""
 ":envvar:`repository/online/component/.*/unmaintained` must be set to "
 "``yes``."
 msgstr ""
+"Für zusätzliche eingebundene Repositories ist die Installation von "
+"*unmaintained* Paketen standardmäßig nicht möglich. Um die Installation "
+"zu ermöglichen, muss die |UCSUCRV| "
+":envvar:`repository/online/component/.*/unmaintained` auf ``yes`` gesetzt"
+" werden."
 
 #: ../../software/repository-server.rst:42
 msgid "Configuration via |UCSUMC| module"
-msgstr ""
+msgstr "Konfiguration über |UCSUMC| Modul"
 
 #: ../../software/repository-server.rst:44
 msgid ""
 "The :guilabel:`Repository server` can be specified in the UMC module "
 ":guilabel:`Repository Settings`."
 msgstr ""
+"Im UMC-Modul :guilabel:`Repository-Einstellungen` kann der :guilabel"
+":`Repository-Server` festgelegt werden."
 
 #: ../../software/repository-server.rst:50
 msgid "Configuration via Univention Configuration Registry"
-msgstr ""
+msgstr "Konfiguration über Univention Configuration Registry"
 
 #: ../../software/repository-server.rst:52
 msgid ""
@@ -745,10 +980,13 @@ msgid ""
 ":envvar:`repository/online/server` and is preset to ``updates.software-"
 "univention.de`` for a new installation."
 msgstr ""
+"Der zu verwendende Repository-Server wird in die |UCSUCRV| "
+":envvar:`repository/online/server` eingetragen und ist bei einer "
+"Neuinstallation auf ``updates.software-univention.de`` voreingestellt."
 
 #: ../../software/repository-server.rst:59
 msgid "Policy-based configuration of the repository server"
-msgstr ""
+msgstr "Richtlinienbasierte Konfiguration des Repository-Servers"
 
 #: ../../software/repository-server.rst:61
 msgid ""
@@ -757,16 +995,23 @@ msgid ""
 "Only UCS server systems for which a DNS entry has been configured are "
 "shown in the selection field (see :ref:`central-policies`)."
 msgstr ""
+"Der zu verwendende Repository-Server kann auch über die Richtlinie "
+"*Repository-Server* im |UCSUMC|\\ -Modul :guilabel:`Rechner` "
+"festgelegt werden. In dem Auswahlfeld werden UCS-Server-Systeme "
+"angezeigt, für die ein DNS-Eintrag hinterlegt ist (siehe auch :ref"
+":`central-policies`)."
 
 #: ../../software/repository-server.rst:69
 msgid "Creating and updating a local repository"
-msgstr ""
+msgstr "Einrichtung und Aktualisierung eines lokalen Repositorys"
 
 #: ../../software/repository-server.rst:78
 msgid ""
 "The local repository can be activated/deactivated using the |UCSUCRV| "
 ":envvar:`local/repository`."
 msgstr ""
+"Durch die |UCSUCRV| :envvar:`local/repository` kann das lokale Repository"
+" aktiviert/deaktiviert werden."
 
 #: ../../software/repository-server.rst:81
 msgid ""
@@ -775,12 +1020,18 @@ msgid ""
 "headquarters and then synchronized to local repositories at the "
 "individual locations."
 msgstr ""
+"Es besteht auch die Möglichkeit lokale Repositorys zu synchronisieren, so"
+" dass beispielsweise in der Firmenzentrale ein Haupt-Repository gepflegt "
+"wird, das dann in lokale Repositorys der einzelnen Standorte "
+"synchronisiert wird."
 
 #: ../../software/repository-server.rst:85
 msgid ""
 "To set up a repository, the :command:`univention-repository-create` "
 "command must be run as the ``root`` user."
 msgstr ""
+"Um ein Repository einzurichten, muss der Befehl :command:`univention-"
+"repository-create` als Benutzer ``root`` aufgerufen werden."
 
 #: ../../software/repository-server.rst:88
 msgid ""
@@ -791,28 +1042,40 @@ msgid ""
 ":envvar:`repository/mirror/server` and typically points to ``updates"
 ".software-univention.de``."
 msgstr ""
+"Mit dem Tool :command:`univention-repository-update` werden die Pakete im"
+" Repository aktualisiert. Mit :command:`univention-repository-update net`"
+" wird das Repository mit einem angegebenen anderen Repository-Server "
+"synchronisiert. Dieser ist in der |UCSUCRV| "
+":envvar:`repository/mirror/server` definiert (typischerweise ``updates"
+".software-univention.de``)."
 
 #: ../../software/repository-server.rst:95
 msgid ""
 "An overview of the possible options is displayed with the following "
 "command:"
 msgstr ""
+"Eine Übersicht über die möglichen Optionen kann mit folgendem Befehl "
+"aufgerufen werden:"
 
 #: ../../software/repository-server.rst:97
 msgid "$ univention-repository-update -h"
-msgstr ""
+msgstr "$ univention-repository-update -h"
 
 #: ../../software/repository-server.rst:102
 msgid ""
 "The repository is stored in the :file:`/var/lib/univention-"
 "repository/mirror/` directory."
 msgstr ""
+"Das Repository wird im Verzeichnis :file:`/var/lib/univention-"
+"repository/mirror/` vorgehalten."
 
 #: ../../software/software-monitor.rst:4
 msgid ""
 "Central monitoring of software installation statuses with the software "
 "monitor"
 msgstr ""
+"Zentrale Überwachung von Softwareinstallationsständen mit dem Software-"
+"Monitor"
 
 #: ../../software/software-monitor.rst:8
 msgid ""
@@ -823,6 +1086,13 @@ msgid ""
 "step-by-step updating of a UCS domain and for use in identifying "
 "problems."
 msgstr ""
+"Der Software-Monitor ist eine Datenbank, in der Informationen über die "
+"auf UCS-Systemen installierten Softwarepakete aufgezeichnet werden.  "
+"Durch diese Datenbank kann sich ein Administrator einen Überblick "
+"verschaffen, welche Release- und Paketversionen auf den Systemen der "
+"Domäne installiert sind und diese Informationen bei der schrittweisen "
+"Aktualisierung einer UCS-Domäne nutzen und Installations-Probleme "
+"erkennen."
 
 #: ../../software/software-monitor.rst:14
 msgid ""
@@ -832,6 +1102,11 @@ msgid ""
 "Additional information can be found in :ref:`computers-"
 "softwaremanagement-install-software`."
 msgstr ""
+"Der Software-Monitor kann mit der Applikation *Software-"
+"Installationsmonitor* aus dem Univention App Center installiert werden. "
+"Alternativ kann das Softwarepaket :program:`univention-pkgdb` installiert"
+" werden. Weitere Informationen finden sich in :ref:`computers-"
+"softwaremanagement-install-software`."
 
 #: ../../software/software-monitor.rst:19
 msgid ""
@@ -839,26 +1114,35 @@ msgid ""
 "installed, uninstalled or updated. The system on which the software "
 "monitor is operated is located by the DNS service record ``_pkgdb._tcp``."
 msgstr ""
+"UCS-Systeme aktualisieren ihre Einträge bei der Installation, Entfernung "
+"und Aktualisierung von Software automatisch. Das System, auf dem der "
+"Software-Monitor betrieben wird, wird dabei durch den DNS-Service-Record "
+"``_pkgdb._tcp`` lokalisiert."
 
 #: ../../software/software-monitor.rst:23
 msgid ""
 "The software monitor brings its own UMC module :guilabel:`Software "
 "monitor`. The following functions are available:"
 msgstr ""
+"Der Software-Monitor bringt sein eigenes UMC-Modul :guilabel:`Software-"
+"Monitor` mit. Folgende Funktionen stehen zur Verfügung:"
 
 #: ../../software/software-monitor.rst:28
 msgid "Systems"
-msgstr ""
+msgstr "Systeme"
 
 #: ../../software/software-monitor.rst:27
 msgid ""
 "allows to search for the version numbers of installed systems. It is "
 "possible to search for system names, UCS versions and system roles."
 msgstr ""
+"erlaubt die Suche nach den installierten Versionsständen von UCS-"
+"Systemen. Es kann nach Systemnamen, UCS-Versionen und Systemrollen "
+"gesucht werden."
 
 #: ../../software/software-monitor.rst:53
 msgid "Packages"
-msgstr ""
+msgstr "Pakete"
 
 #: ../../software/software-monitor.rst:31
 msgid ""
@@ -866,10 +1150,13 @@ msgid ""
 "database. Besides searching for a *Package name* there are various search"
 " possibilities available for the installation status of packages:"
 msgstr ""
+"ermöglicht die Suche in den von der Paketstatusdatenbank erfassten "
+"Installationsdaten. Neben der Suche nach *Paketnamen* gibt es auch die "
+"folgenden Suchmöglichkeiten zu den Installationszuständen von Paketen:"
 
 #: ../../software/software-monitor.rst:41
 msgid "Selection state"
-msgstr ""
+msgstr "Auswahlstatus"
 
 #: ../../software/software-monitor.rst:36
 msgid ""
@@ -880,10 +1167,17 @@ msgid ""
 "package removed with ``DeInstall`` keeps locally created configuration "
 "data, whilst a package removed with ``Purge`` is completely deleted."
 msgstr ""
+"Der *Auswahlstatus* beeinflusst das Verhalten bei der Aktualisierung "
+"eines Pakets. Durch ``Install`` wird ein Paket zur Installation "
+"ausgewählt. Ist ein Paket auf ``Hold`` konfiguriert, so wird es von "
+"weiterer Aktualisierung ausgenommen. Es existieren zwei Möglichkeiten ein"
+" Paket zu deinstallieren: Ein mit ``DeInstall`` entferntes Paket hält "
+"lokal erzeugte Konfigurations-Daten weiterhin vor, während ein mit "
+"``Purge`` entferntes Paket komplett gelöscht wird."
 
 #: ../../software/software-monitor.rst:47
 msgid "Installation state"
-msgstr ""
+msgstr "Installationsstatus"
 
 #: ../../software/software-monitor.rst:44
 msgid ""
@@ -892,10 +1186,15 @@ msgid ""
 " a package being updated when a newer version exists. If a package is "
 "configured to ``Hold`` it will be excluded from the update."
 msgstr ""
+"Der *Installationsstatus* beschreibt den Status eines installierten "
+"Pakets im Hinblick auf kommende Aktualisierungen. Der Normalfall ist "
+"``Ok``, was dazu führt, dass ein Paket bei Vorhandensein einer "
+"aktuelleren Version aktualisiert würde. Ist ein Paket auf ``Hold`` "
+"konfiguriert, so wird es von der Aktualisierung ausgenommen."
 
 #: ../../software/software-monitor.rst:53
 msgid "Package state"
-msgstr ""
+msgstr "Paketstatus"
 
 #: ../../software/software-monitor.rst:50
 msgid ""
@@ -904,10 +1203,14 @@ msgid ""
 "for removed packages. All other statuses appear when the package's "
 "installation was canceled in different phases."
 msgstr ""
+"Der *Paketstatus* beschreibt den Zustand eines eingerichteten Pakets. Der"
+" Normalfall ist ``Installed`` für installierte und ``ConfigFiles`` für "
+"entfernte Pakete, alle übrigen Zustände entstehen, wenn die Installation "
+"des Pakets in verschiedenen Phasen abgebrochen wurde."
 
 #: ../../software/software-monitor.rst:60
 msgid "Searching for packages in the software monitor"
-msgstr ""
+msgstr "Suche nach Paketen im Software-Monitor"
 
 #: ../../software/software-monitor.rst:62
 msgid ""
@@ -916,6 +1219,10 @@ msgid ""
 "database), this can be arranged by setting the |UCSUCRV| "
 ":envvar:`pkgdb/scan` to ``no``."
 msgstr ""
+"Wenn verhindert werden soll, dass UCS-Systeme Installationsvorgänge im "
+"Software-Monitor aufzeichnen, etwa weil keine Netzwerkverbindung zur "
+"Datenbank besteht, kann dies durch Setzen der |UCSUCRV| "
+":envvar:`pkgdb/scan` auf ``no`` abgeschaltet werden."
 
 #: ../../software/software-monitor.rst:66
 msgid ""
@@ -923,28 +1230,34 @@ msgid ""
 ":`univention-pkgdb-scan` must be executed to ensure that package versions"
 " installed in the meanwhile are also adopted in the database."
 msgstr ""
+"Wenn die Aufzeichnungen danach wieder aktiviert werden, muss das Kommando"
+" :command:`univention-pkgdb-scan` ausgeführt werden, damit die in der "
+"Zwischenzeit installierten Paketversionen in die Datenbank übernommen "
+"werden."
 
 #: ../../software/software-monitor.rst:70
 msgid ""
 "The following command can be used to remove a system's program inventory "
 "from the database again:"
 msgstr ""
+"Mit dem folgenden Befehl kann der Programmbestand eines Systems wieder "
+"aus der Datenbank entfernt werden:"
 
 #: ../../software/software-monitor.rst:73
 msgid "$ univention-pkgdb-scan --remove-system [HOSTNAME]"
-msgstr ""
+msgstr "$ univention-pkgdb-scan --remove-system [HOSTNAME]"
 
 #: ../../software/ucs-versions.rst:4
 msgid "Differentiation of update variants / UCS versions"
-msgstr ""
+msgstr "Unterscheidung der Update-Varianten / Aufbau der UCS-Versionen"
 
 #: ../../software/ucs-versions.rst:6
 msgid "Four types of UCS updates are differentiated:"
-msgstr ""
+msgstr "Vier Arten von UCS-Updates werden unterschieden:"
 
 #: ../../software/ucs-versions.rst:11
 msgid "Major releases"
-msgstr ""
+msgstr "Major releases"
 
 #: ../../software/ucs-versions.rst:9
 msgid ""
@@ -952,10 +1265,14 @@ msgid ""
 "releases can differ significantly from previous major releases in terms "
 "of their scope of services, functioning and the software they contain."
 msgstr ""
+"*Major Releases* erscheinen ca. alle drei bis vier Jahre. Major Releases "
+"können sich von vorhergehenden Major Releases signifikant hinsichtlich "
+"ihres Leistungsumfangs, ihrer Funktionsweise und der darin enthaltenen "
+"Software unterscheiden."
 
 #: ../../software/ucs-versions.rst:21
 msgid "Minor releases"
-msgstr ""
+msgstr "Minor releases"
 
 #: ../../software/ucs-versions.rst:14
 msgid ""
@@ -968,20 +1285,31 @@ msgid ""
 " behavior prove practical or unavoidable, this will be noted in the "
 "release notes when the new version is published."
 msgstr ""
+"Während der Wartungsdauer eines Major Releases erscheinen *Minor "
+"Releases* in einem Rhythmus von ca. 10-12 Monaten. Diese Updates "
+"beinhalten die Behebung neu bekannt gewordener Fehler, sowie die "
+"Ergänzung des Produkts um zusätzliche Funktionen. Dabei erhalten Minor "
+"Releases so weit wie möglich die Kompatibilität zu vorhergehenden "
+"Versionen hinsichtlich Funktionsweise, Schnittstellen und Bedienung. "
+"Sollte eine Änderung des Verhaltens sinnvoll oder unvermeidbar sein, so "
+"wird bei der Veröffentlichung der neuen Version in den Release Notes "
+"darauf hingewiesen."
 
 #: ../../software/ucs-versions.rst:25
 msgid "Patchlevel releases"
-msgstr ""
+msgstr "Patchlevel releases"
 
 #: ../../software/ucs-versions.rst:24
 msgid ""
 "*Patchlevel releases* are released approximately every three months and "
 "combine all errata updates published until then."
 msgstr ""
+"*Patchlevel Releases* fassen ca. alle drei Monate die bis dahin "
+"veröffentlichten Errata-Updates zusammen."
 
 #: ../../software/ucs-versions.rst:31
 msgid "Errata updates"
-msgstr ""
+msgstr "Errata updates"
 
 #: ../../software/ucs-versions.rst:28
 msgid ""
@@ -990,6 +1318,11 @@ msgid ""
 "to make them available to customer systems quickly. An overview of all "
 "errata updates can be found at https://errata.software-univention.de/."
 msgstr ""
+"Univention veröffentlicht fortlaufend *Errata-Updates*. Errata-Updates "
+"enthalten Korrekturen für Sicherheitslücken und Bugfixes/kleinere "
+"Erweiterungen, die zeitnah für Kundensysteme zur Verfügung gestellt "
+"werden sollen. Eine Aufstellung aller Errata-Updates findet sich unter "
+"https://errata.software-univention.de/."
 
 #: ../../software/ucs-versions.rst:33
 msgid ""
@@ -999,6 +1332,12 @@ msgid ""
 "version). The version UCS 4.2-1 thus refers to the first patch level "
 "update for the second minor update for the major release UCS 4."
 msgstr ""
+"Jede ausgelieferte UCS-Version besitzt eine eindeutige "
+"Versionsbezeichnung. Sie besteht aus einer Zahl (der Majorversion), einem"
+" Punkt, einer zweiten Zahl (der Minorversion) einem Bindestrich und einer"
+" dritten Zahl (der Patchlevelversion). Mit der Version UCS 4.2-1 wird "
+"also das erste Patchlevel-Update für das zweite Minor Update für das "
+"Major-Release UCS 4 bezeichnet."
 
 #: ../../software/ucs-versions.rst:39
 msgid ""
@@ -1008,6 +1347,11 @@ msgid ""
 ":file:`postup.sh` is run at the end of the update to perform additional "
 "cleanups, if necessary."
 msgstr ""
+"Vor jedem Release-Update wird das *Pre-update-Skript* :file:`preup.sh` "
+"aufgerufen. Dieses prüft z.B. ob Probleme bestehen und bricht das Update "
+"dann kontrolliert ab. Nach dem Update wird das *Post-Update-Skript* "
+":file:`postup.sh` aufgerufen, das ggf. weitere Aufräumarbeiten "
+"durchführt."
 
 #: ../../software/ucs-versions.rst:44
 msgid ""
@@ -1015,6 +1359,9 @@ msgid ""
 " Errata updates can generally be installed for all patch level versions "
 "of a minor release."
 msgstr ""
+"Errata-Updates beziehen sich immer auf bestimmte Minor-Releases, also "
+"beispielsweise für UCS 5.0. Errata-Updates können in der Regel für alle "
+"Patchlevelversionen eines Minor Releases installiert werden."
 
 #: ../../software/ucs-versions.rst:48
 msgid ""
@@ -1026,10 +1373,18 @@ msgid ""
 "update listing the updated packages, information on error corrections and"
 " new functions and references to the Univention Bugzilla."
 msgstr ""
+"Wenn neue Release- oder Errata-Updates verfügbar sind, wird beim Öffnen "
+"eines UMC-Moduls ein entsprechender Hinweis ausgegeben. Die Verfügbarkeit"
+" neuer Updates wird außerdem per E-Mail angekündigt, entsprechende "
+"Newsletter - getrennt nach Release- und Errata-Updates - können auf der "
+"Univention-Webseite abonniert werden. Zu jedem Release-Update wird ein "
+"Dokument mit Release Notes veröffentlicht, in dem die aktualisierten "
+"Pakete, Hinweise zu Fehlerkorrekturen und neuen Funktionen aufgeführt "
+"sind."
 
 #: ../../software/updates.rst:4
 msgid "Updates of UCS systems"
-msgstr ""
+msgstr "Aktualisierung von UCS-Systemen"
 
 #: ../../software/updates.rst:6
 msgid ""
@@ -1037,16 +1392,22 @@ msgid ""
 "(via UMC module :guilabel:`Software update` or command line) or via a "
 "computer policy for larger groups of UCS systems."
 msgstr ""
+"UCS-Systeme können auf zwei Wegen aktualisiert werden; entweder pro "
+"einzelnem System (über das UMC-Modul :guilabel:`Software-Aktualisierung` "
+"oder auf der Kommandozeile) oder für größere Gruppen von UCS-Systemen "
+"automatisiert über eine UMC-Rechner-Richtlinie."
 
 #: ../../software/updates.rst:13
 msgid "Update strategy in environments with more than one UCS system"
-msgstr ""
+msgstr "Update-Strategie in Umgebungen mit mehr als einem UCS-System"
 
 #: ../../software/updates.rst:15
 msgid ""
 "In environments with more than one UCS system, the update order of the "
 "UCS systems must be borne in mind."
 msgstr ""
+"In Umgebungen mit mehr als einem UCS-System muss die Update-Reihenfolge "
+"der UCS-Systeme beachtet werden:"
 
 #: ../../software/updates.rst:18
 msgid ""
@@ -1056,6 +1417,12 @@ msgid ""
 "schema`) can occur during release updates, the |UCSPRIMARYDN| **must "
 "always be the first system** to be updated during a release update."
 msgstr ""
+"Auf dem |UCSPRIMARYDN| wird die authoritative Version des LDAP-"
+"Verzeichnisdienstes vorgehalten, die an alle übrigen LDAP-Server der UCS-"
+"Domäne repliziert wird. Da bei Release-Updates Veränderungen an den LDAP-"
+"Schemata auftreten können (siehe :ref:`domain-ldap-schema`) **muss** der "
+"|UCSPRIMARYDN| bei einem Release-Update **immer als erstes System "
+"aktualisiert werden**."
 
 #: ../../software/updates.rst:24
 msgid ""
@@ -1064,16 +1431,24 @@ msgid ""
 "systems should only be one release version older compared with the "
 "|UCSPRIMARYDN|."
 msgstr ""
+"Generell ist es empfehlenswert, alle UCS-Systeme möglichst in einem "
+"Wartungsfenster zu aktualisieren. Wo dies nicht möglich ist, sollten die "
+"nicht-aktualisierten UCS-Systeme gegenüber dem |UCSPRIMARYDN| nur eine "
+"Release-Version älter sein."
 
 #: ../../software/updates.rst:32
 msgid "Updating individual systems via |UCSUMC| module"
 msgstr ""
+"Aktualisierung eines einzelnen Systems im |UCSUMC| Modul Software-"
+"Aktualisierung"
 
 #: ../../software/updates.rst:34
 msgid ""
 "The UMC module :guilabel:`Software update` allows the installation of "
 "release updates and errata updates."
 msgstr ""
+"Mit dem UMC-Modul :guilabel:`Software-Aktualisierung` können Versions- "
+"und Errata-Updates installiert werden."
 
 #: ../../software/updates.rst:37
 msgid ""
@@ -1081,14 +1456,21 @@ msgid ""
 "currently installed version is displayed under :guilabel:`Release "
 "updates`."
 msgstr ""
+":numref:`software-umc-update` zeigt die Übersichtsseite des Moduls. Im "
+"oberen Teil des Dialogs wird unter :guilabel:`Release-Aktualisierungen` "
+"der aktuelle Installationsstand angezeigt."
 
 #: ../../software/updates.rst:45
 msgid "Updating a UCS system via UMC module 'Software update'"
 msgstr ""
+"Aktualisierung eines UCS-Systems über das UMC-Modul 'Software-"
+"Aktualisierung'"
 
 #: ../../software/updates.rst:45
 msgid "Updating a UCS system via UMC module *Software update*"
 msgstr ""
+"Aktualisierung eines UCS-Systems über das UMC-Modul *Software-"
+"Aktualisierung*"
 
 #: ../../software/updates.rst:48
 msgid ""
@@ -1099,6 +1481,12 @@ msgid ""
 "the user of possible restrictions of the server's services during the "
 "update. Any intermediate versions are also installed automatically."
 msgstr ""
+"Sollte eine neuere UCS-Version vorhanden sein, wird eine Auswahlliste "
+"präsentiert. Durch einen Klick auf :guilabel:`Release-Aktualisierungen "
+"installieren` werden nach Bestätigung alle Updates bis zur jeweiligen "
+"Version eingespielt. Zuvor wird ein Hinweis auf mögliche Einschränkungen "
+"der Serverdienste während des Updates angezeigt. Eventuelle "
+"Zwischenversionen werden automatisch mitinstalliert."
 
 #: ../../software/updates.rst:56
 msgid ""
@@ -1106,6 +1494,9 @@ msgid ""
 " available errata updates for the current release and all installed "
 "components."
 msgstr ""
+"Durch einen Klick auf :guilabel:`Errata-Aktualisierungen installieren` "
+"werden alle für das aktuelle Release und die eingebundenen Komponenten "
+"verfügbaren Errata-Updates eingerichtet."
 
 #: ../../software/updates.rst:60
 msgid ""
@@ -1113,16 +1504,22 @@ msgid ""
 "sources currently entered. This can be used, for example, if an updated "
 "version is provided for a component."
 msgstr ""
+"Mit :guilabel:`Paket-Aktualisierungen prüfen` wird eine Aktualisierung "
+"der momentan eingetragenen Paketquellen aktiviert. Dies kann etwa "
+"verwendet werden, wenn für eine Komponente eine aktualisierte Version "
+"bereitgestellt wurde."
 
 #: ../../software/updates.rst:64 ../../software/updates.rst:86
 msgid ""
 "The messages created during the update are written to the file "
 ":file:`/var/log/univention/updater.log`"
 msgstr ""
+"Die während der Aktualisierung erzeugten Meldungen werden in die Datei "
+":file:`/var/log/univention/updater.log` geschrieben."
 
 #: ../../software/updates.rst:70
 msgid "Updating individual systems via the command line"
-msgstr ""
+msgstr "Aktualisierung eines einzelnen Systems auf der Kommandozeile"
 
 #: ../../software/updates.rst:74
 msgid ""
@@ -1132,6 +1529,11 @@ msgid ""
 "then installed if a prompt is confirmed. In addition, package updates are"
 " also performed (e.g., in the scope of an errata update)."
 msgstr ""
+"Ein einzelnes UCS-System kann auf der Kommandozeile mit dem Befehl "
+":command:`univention-upgrade` aktualisiert werden. Es wird geprüft, ob "
+"neue Release- oder Applikations-Updates vorliegen, die dann nach "
+"Bestätigung einer Nachfrage installiert werden. Außerdem werden Paket-"
+"Aktualisierungen durchgeführt, z.B. im Rahmen eines Errata-Updates."
 
 #: ../../software/updates.rst:80
 msgid ""
@@ -1142,28 +1544,39 @@ msgid ""
 "using the tools :program:`screen` and :program:`at`, which are installed "
 "on all system roles."
 msgstr ""
+"Von einer Remote-Aktualisierung über SSH wird abgeraten, da dies zum "
+"Abbruch des Update-Vorgangs führen kann. Sollte dennoch eine "
+"Aktualisierung über eine Netzverbindung durchgeführt werden, ist "
+"sicherzustellen, dass das Update bei Unterbrechung der Netzverbindung "
+"trotzdem weiterläuft. Hierfür können beispielsweise die Tools "
+":command:`screen` oder :command:`at` eingesetzt werden, die auf allen "
+"Systemrollen installiert sind."
 
 #: ../../software/updates.rst:92
 msgid "Updating systems via a policy"
-msgstr ""
+msgstr "Aktualisierung von Systemen über eine Rechner-Richtlinie"
 
 #: ../../software/updates.rst:94
 msgid ""
-"An update for more than one computer can be configured with an "
-":guilabel:`Automatic updates` policy in the UMC modules "
-":guilabel:`Computers` and :guilabel:`LDAP directory` (see :ref:`central-"
-"policies`)."
+"An update for more than one computer can be configured with an *Automatic"
+" updates* policy in the UMC modules :guilabel:`Computers` and "
+":guilabel:`LDAP directory` (see :ref:`central-policies`)."
 msgstr ""
+"Mit einer *Automatische Updates*-Richtlinien im UMC-Modul "
+":guilabel:`Rechner` lässt sich ein Update für mehrere Rechner "
+"konfigurieren (siehe auch :ref:`central-policies`)."
 
 #: ../../software/updates.rst:103
 msgid "Updating UCS systems using an update policy"
-msgstr ""
+msgstr "Aktualisierung eines UCS-Systems über eine Update-Richtlinie"
 
 #: ../../software/updates.rst:105
 msgid ""
 "A release update is only run when the *Activate release updates* "
 "selection field is activated."
 msgstr ""
+"Nur wenn das Auswahlfeld *Aktiviere Release-Updates* aktiviert ist, wird "
+"eine Release-Aktualisierung durchgeführt."
 
 #: ../../software/updates.rst:108
 msgid ""
@@ -1172,29 +1585,40 @@ msgid ""
 "entry is made, the system continues updating to the highest available "
 "version number."
 msgstr ""
+"Das Eingabefeld *Bis zu dieser UCS-Version aktualisieren* enthält die "
+"Versionsnummer, bis zu der das System aktualisiert werden soll, z.B. "
+"``5.0-0``. Wird keine Angabe gemacht, aktualisiert sich das System bis "
+"zur höchsten verfügbaren Versionsnummer."
 
 #: ../../software/updates.rst:112
 msgid ""
 "The point at which the update should be performed is configured via a "
-":guilabel:`Maintenance` policy (see :ref:`computers-softwaremanagement-"
-"maintenance-policy`)."
+"*Maintenance* policy (see :ref:`computers-softwaremanagement-maintenance-"
+"policy`)."
 msgstr ""
+"Der Zeitpunkt, zu dem die Aktualisierung durchgeführt wird, wird über "
+"eine *Paketpflege*-Richtlinie konfiguriert (siehe :ref"
+":`computers-softwaremanagement-maintenance-policy`)."
 
 #: ../../software/updates.rst:116
 msgid ""
 "The messages created during the update are written to the file "
 ":file:`/var/log/univention/updater.log`."
 msgstr ""
+"Die während der Aktualisierung erzeugten Meldungen werden in die Datei "
+":file:`/var/log/univention/updater.log` geschrieben."
 
 #: ../../software/updates.rst:122
 msgid "Post-processing of release updates"
-msgstr ""
+msgstr "Nachbereitung von Release-Updates"
 
 #: ../../software/updates.rst:124
 msgid ""
 "Once a release update has been performed successfully, a check should be "
 "made for whether new or updated join scripts need to be run."
 msgstr ""
+"Nach erfolgreicher Durchführung eines Release-Updates sollte geprüft "
+"werden, ob neue oder aktualisierte Join-Skripte ausgeführt werden müssen."
 
 #: ../../software/updates.rst:127
 msgid ""
@@ -1202,10 +1626,14 @@ msgid ""
 " :command:`univention-run-join-scripts` is used for checking and starting"
 " the join scripts (see :ref:`linux-domain-join`)."
 msgstr ""
+"Zur Überprüfung und zum Starten der Join-Skripte kann entweder das UMC-"
+"Modul :guilabel:`Domänenbeitritt` verwendet werden oder das "
+"Kommandozeilenprogramm :command:`univention-run-join-scripts` (siehe :ref"
+":`linux-domain-join`)."
 
 #: ../../software/updates.rst:135
 msgid "Troubleshooting in case of update problems"
-msgstr ""
+msgstr "Fehlersuche bei Updateproblemen"
 
 #: ../../software/updates.rst:137
 msgid ""
@@ -1213,6 +1641,9 @@ msgid ""
 ":file:`/var/log/univention/updater.log` file, which can be used for more "
 "in-depth error analysis."
 msgstr ""
+"Die während der Aktualisierung erzeugten Meldungen werden in die Datei "
+":file:`/var/log/univention/updater.log` geschrieben, die zur weiteren "
+"Fehleranalyse herangezogen werden kann."
 
 #: ../../software/updates.rst:141
 msgid ""
@@ -1221,4 +1652,7 @@ msgid ""
 "directory. This can then be used to check whether and which variables "
 "have been changed during the update."
 msgstr ""
-
+"Der Stand der |UCSUCR|-Variablen vor der Release-Aktualisierung wird in "
+"dem Verzeichnis :file:`/var/univention-backup/update-to-"
+"ZIELRELEASEVERSION/` gesichert. Damit kann geprüft werden, ob und welche "
+"Variablen im Rahmen des Updates verändert wurden. "

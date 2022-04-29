@@ -20,15 +20,15 @@ The Univention App Center can be opened via the UMC module :guilabel:`App
 Center`. It shows by default all installed as well as available software
 components. :guilabel:`Search Apps...` can be used to search for available
 applications. Furthermore, the applications can also be filtered using the
-:guilabel:`Category` panel. More filters like the :emphasis:`Badges` and the
-:emphasis:`App License` can be used. For example, the view can be limited to
+*Category* panel. More filters like the *Badges* and the
+*App License* can be used. For example, the view can be limited to
 applications with the categories ``Education`` or ``Office``. To only show the
 ``Recommended Apps`` for theses categories, it is sufficient to activate the
 appropriate filter.
 
 If you click on one of the displayed applications, further details on it are
-shown (e.g., description, manufacturer, contact information and screenshots or
-videos). The *Notification* field displays whether the manufacturer of the
+shown, for example description, manufacturer, contact information and screenshots or
+videos. The *Notification* field displays whether the manufacturer of the
 software component is notified when it is installed/uninstalled. A rough
 classification of the licensing can be found under the *License* section. Some
 applications provide a :guilabel:`Buy` button with a link to detailed licensing
@@ -54,7 +54,7 @@ recognized by the shown *Vote Apps* filter option in the App Center overview.
 .. figure:: /images/vote_apps.*
    :alt: Example Vote Apps in App Center overview and detail view
 
-   Example Vote Apps in App Center overview and detail view
+   Example *Vote Apps* in App Center overview and detail view
 
 Some applications may not be compatible with other software packages from UCS.
 For instance, most groupware packages require the UCS mail stack to be
@@ -123,10 +123,10 @@ app.
 After its installation, one or several new options are shown when
 clicking on the icon of an application:
 
-:guilabel:`Uninstall`
+Uninstall
    removes an application.
 
-:guilabel:`Open`
+Open
    refers you to a website or a UMC module with which you can further configure
    or use the installed application. This option is not displayed for
    applications which do not have a web interface or a UMC module.
