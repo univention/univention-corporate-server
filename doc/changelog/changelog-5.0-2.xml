@@ -599,6 +599,9 @@
 				<listitem><simpara>
 					The script <command>univention-run-diagnostic-check</command> is now executed with machine account credentials by default (<u:bug>54515</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The detection of <command>slapschema</command> error message has been improved in <command>62_check_slapschema</command> (<u:bug>54681</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 

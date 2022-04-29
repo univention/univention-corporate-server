@@ -31,49 +31,40 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import os
+import re
 from subprocess import Popen, PIPE
 
-import os
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import Warning
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
-title = _('LDAP schema files are missing')
-description = '\n'.join([
-	_('The following LDAP schema definitions are missing:\n'),
-])
-att_missing = _('The schema definition for attribute {0} is missing.\n')
+title = _('Validating the LDAP configuration and schema files.')
+description = _('LDAP configuration files are valid.')
 
-
-def reduce_errors(list_errors):
-	error_info = []
-	for error in list_errors:
-		error_split = error.split()
-		error_code = [word for word in error_split if word.isupper()]
-		error_info.append(error_code)
-	# print([[word for word in error.split() if word.isupper()] for error in list_errors])
-	return error_info
+RE_ERROR = re.compile("^[0-9a-f]{8} ")
 
 
 def run(_umc_instance):
-	# Check if slapschema is installed
 	if not os.path.exists('/usr/sbin/slapschema'):
 		return
-	process = Popen(['slapschema'], stdout=PIPE, stderr=PIPE, env={'LANG': 'C'}, shell=True)
+
+	process = Popen(['/usr/sbin/slapschema'], stdout=PIPE, stderr=PIPE, env={'LANG': 'C'}, shell=True)
 	stdout, stderr = process.communicate()
 	stderr = stderr.decode('UTF-8', 'replace')
 
-	# Check if there was an error
 	if not stderr:
 		return
-	# Filter UNKNOWN error message
-	error_list = stderr.splitlines()
-	error_id = reduce_errors(error_list)
-	# Raise Warning with all attribute missing a schema
-	error_msg = description + "".join([att_missing.format(error) for error in error_id])
 
-	raise Warning(error_msg)
+	errors = [
+		line.split(' ', 1)[1]
+		for line in stderr.splitlines()
+		if RE_ERROR.search(line)
+	]
+
+	if errors:
+		raise Warning(_('The LDAP schema validation failed with the following errors or warnings:\n') + "\n".join(errors))
 
 
 if __name__ == '__main__':

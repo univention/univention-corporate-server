@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2022-05-11 10:45+0200\n"
+"POT-Creation-Date: 2022-06-21 17:47+0200\n"
 "PO-Revision-Date: 2020-07-04 15:50+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -357,13 +357,13 @@ msgstr ""
 msgid "KDC service check"
 msgstr "KDC Erreichbarkeit"
 
+#: umc/python/diagnostic/plugins/62_check_slapschema.py:44
+msgid "LDAP configuration files are valid."
+msgstr "LDAP-Konfigurationsdateien sind ungültig."
+
 #: umc/python/diagnostic/plugins/56_univention_types.py:13
 msgid "LDAP objects"
 msgstr "LDAP-Objekte"
-
-#: umc/python/diagnostic/plugins/62_check_slapschema.py:42
-msgid "LDAP schema files are missing"
-msgstr "LDAP-Schemadateien sind nicht installiert"
 
 #: umc/python/diagnostic/plugins/60_old_schema_registration.py:15
 msgid "LDAP schema files are not properly registered"
@@ -714,6 +714,11 @@ msgstr ""
 "UCS-Versionen vorausgesetzt. Sie können die memberOf-Funktion für den LDAP-"
 "Server folgendermaßen aktivieren:"
 
+#: umc/python/diagnostic/plugins/62_check_slapschema.py:67
+msgid ""
+"The LDAP schema validation failed with the following errors or warnings:\n"
+msgstr "Die LDAP-Schema Validierung ist mit den Folgenden Fehlern oder Warnungen fehlgeschlagen:\n"
+
 #: umc/python/diagnostic/plugins/43_connectors4_rejects.py:101
 msgid ""
 "The UCR variable {variable!r} is unset, but necessary for the S4 Connector."
@@ -750,10 +755,6 @@ msgstr "Die folgenden FQDNs waren nicht auflösbar:"
 #: umc/python/diagnostic/plugins/22_kdc_service.py:347
 msgid "The following KDCs were unreachable: {}"
 msgstr "Die folgenden KDCs waren nicht erreichbar: {}"
-
-#: umc/python/diagnostic/plugins/62_check_slapschema.py:44
-msgid "The following LDAP schema definitions are missing:\n"
-msgstr "Die folgenden LDAP-Schema Definitionen fehlen:\n"
 
 #: umc/python/diagnostic/plugins/50_check_ucr_templates.py:53
 msgid "The following UCR files are modified locally."
@@ -864,11 +865,6 @@ msgstr ""
 #, python-format
 msgid "The registration failed: %s"
 msgstr "Die Registrierung schlug fehl: %s"
-
-#: umc/python/diagnostic/plugins/62_check_slapschema.py:46
-#, python-brace-format
-msgid "The schema definition for attribute {0} is missing.\n"
-msgstr "Die Schema-Definition für Attribut {0} fehlt.\n"
 
 #: umc/python/diagnostic/plugins/32_security_limits.py:17
 msgid ""
@@ -1072,6 +1068,10 @@ msgstr ""
 "Der Nutzer oder die Gruppe mit dem Namen {name!r} hat die SID {actual_sid}, "
 "sollte aber {sid} haben."
 
+#: umc/python/diagnostic/plugins/62_check_slapschema.py:43
+msgid "Validating the LDAP configuration and schema files."
+msgstr "Validierung der LDAP-Konfigurations und Schema Dateien."
+
 #: umc/python/diagnostic/plugins/55_user_migration.py:15
 msgid ""
 "When a user object is created by a system which is not yet on UCS 4.3 it "
@@ -1254,6 +1254,9 @@ msgstr "einigen"
 #~ msgid "Check Samba sysvol ACLs for errors"
 #~ msgstr "Überprüfe die Samba SYSVOL ACL Einträge auf Fehler"
 
+#~ msgid "LDAP schema files are missing"
+#~ msgstr "LDAP-Schemadateien sind nicht installiert"
+
 #~ msgid "Repair identity provider certificate"
 #~ msgstr "Identity Provider-Zertifikat wiederherstellen"
 
@@ -1270,6 +1273,12 @@ msgstr "einigen"
 
 #~ msgid "The check for the KDC reachability was succesful."
 #~ msgstr "Erreichbarkeitstest der KDCs war erfolgreich."
+
+#~ msgid "The following LDAP schema definitions are missing:\n"
+#~ msgstr "Die folgenden LDAP-Schema Definitionen fehlen:\n"
+
+#~ msgid "The schema definition for attribute {0} is missing.\n"
+#~ msgstr "Die Schema-Definition für Attribut {0} fehlt.\n"
 
 #~ msgid ""
 #~ "The ucr variable ldap/server/name is set to the UCS Master %s. Especially "

@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.2-1) unstable; urgency=medium
+
+  * Bug #54681: added handling for unexpected messages in 62_check_slapschema
+
+ -- Maximilian Janßen <janssen@univention.de>  Tue, 21 Jun 2022 17:45:00 +0200
+
 univention-management-console-module-diagnostic (6.0.1-2) unstable; urgency=medium
 
   * Bug #54515: allow running univention-run-diagnostic-checks as machine
