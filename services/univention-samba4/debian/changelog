@@ -1,3 +1,9 @@
+univention-samba4 (9.0.6-14) unstable; urgency=medium
+
+  * Bug #54682: option --debug-stderr became default, option has been removed
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 02 May 2022 08:20:11 +0200
+
 univention-samba4 (9.0.6-13) unstable; urgency=medium
 
   * Bug #49842: fix breaking VFS objects and other configuration through

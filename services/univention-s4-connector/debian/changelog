@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.7-9) unstable; urgency=medium
+
+  * Bug #54682: Adjust import to new samba version
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 02 May 2022 08:18:50 +0200
+
 univention-s4-connector (14.0.7-8) unstable; urgency=medium
 
   * Bug #53012: update unix2s4 and s42unix date functions provider for fully

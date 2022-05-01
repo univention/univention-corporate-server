@@ -65,7 +65,7 @@ from samba.provision.sambadns import SOARecord
 from samba.provision.sambadns import SRVRecord
 # def __init__(self, target, port, priority=0, weight=100, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
 
-from samba.provision.sambadns import CNameRecord
+from samba.provision.sambadns import CNAMERecord
 # def __init__(self, cname, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
 
 from samba.provision.sambadns import TXTRecord
@@ -614,7 +614,7 @@ def __unpack_txtRecord(object):
 def __pack_cName(object, dnsRecords):
 	for c in object['attributes'].get('cNAMERecord', []):
 		c = __remove_dot(c)
-		c_record = CNameRecord(c)
+		c_record = CNAMERecord(c)
 		dnsRecords.append(ndr_pack(c_record))
 
 
