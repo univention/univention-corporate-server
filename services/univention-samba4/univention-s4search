@@ -71,7 +71,7 @@ if ! [ "$credentials_given" = 'true' ]; then
 	fi
 fi
 
-ldbsearch --debug-stderr -H "ldaps://$ldap_server_name" "$@"
+ldbsearch -H "ldaps://$ldap_server_name" "$@"
 rc=$?
 
 if [ "$debug" = 'true' ]; then
