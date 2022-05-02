@@ -1,4 +1,3 @@
-umc/python/setup/netconf	usr/lib/python2.7/dist-packages/univention/management/console/modules/setup/
 umc/python/setup/netconf	usr/lib/python3/dist-packages/univention/management/console/modules/setup/
 city-data/*json		usr/share/univention-system-setup
 usr/share/univention-system-setup/dhclient-script-wrapper

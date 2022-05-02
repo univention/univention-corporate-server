@@ -7,17 +7,6 @@ Build-Depends:
  debhelper-compat (= 12),
  dh-python,
  node-stylus,
- python-all,
- python-apt,
- python-dnspython,
- python-ipaddress,
- python-lxml,
- python-notifier,
- python-pil,
- python-psutil,
- python-univention-appcenter,
- python-univention-lib,
- python-univention-management-console,
  python3-all,
  python3-apt,
  python3-dnspython,
@@ -37,7 +26,6 @@ Package: univention-system-setup
 Architecture: all
 Depends:
  gettext-base,
- python-univention-lib (>= 6.0.9-20),
  python3-univention-lib,
  shell-univention-lib (>= 3.0.1-1),
  univention-config (>= 8.0-2),
@@ -46,7 +34,6 @@ Depends:
  whois,
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
 Breaks:
  univention-system-setup-boot (<< 8.1.63-5),
 Recommends:
@@ -54,7 +41,6 @@ Recommends:
  univention-management-console-module-setup,
 Provides:
  ${python3:Provides},
- ${python:Provides},
 Description: UCS System Setup tools
  This package provides the tool to configure the system, especially its name,
  domain, network configuration, and software.
@@ -76,8 +62,6 @@ Conflicts:
  univention-system-setup-appliance,
 Depends:
  openbox,
- python-six,
- python-univention-appcenter,
  python3-six,
  python3-univention-appcenter,
  shell-univention-lib,
@@ -137,17 +121,6 @@ Architecture: all
 Depends:
  at,
  libsasl2-modules-gssapi-heimdal,
- python-apt,
- python-dnspython,
- python-ipaddress,
- python-ldap,
- python-lxml,
- python-notifier,
- python-psutil,
- python-six,
- python-univention-appcenter,
- python-univention-ipcalc (>= 5),
- python-univention-lib (>= 4.0.5-12),
  python3-apt,
  python3-dnspython,
  python3-ldap,
@@ -170,10 +143,8 @@ Depends:
  xkb-data,
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
 Provides:
  ${python3:Provides},
- ${python:Provides},
 Description: UMC module for Univention System Setup
  This package contains the UMC module for the UCS System Setup.
  .
