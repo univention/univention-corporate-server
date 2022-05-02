@@ -1,3 +1,9 @@
+univention-pkgdb (13.0.2-1) unstable; urgency=medium
+
+  * Bug #54706: move postinst into Python 3 package
+
+ -- Florian Best <best@univention.de>  Mon, 02 May 2022 12:29:47 +0200
+
 univention-pkgdb (13.0.1-10) unstable; urgency=medium
 
   * Bug #53665: rename css class
