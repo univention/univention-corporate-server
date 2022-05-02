@@ -1,3 +1,9 @@
+univention-base-files (9.0.3-7) unstable; urgency=medium
+
+  * Bug #54691: fix UCR logrotate/rotate/count description
+
+ -- Johannes Königer <koeniger@univention.de>  Mon, 02 May 2022 10:32:37 +0200
+
 univention-base-files (9.0.3-6) unstable; urgency=medium
 
   * Bug #54184: Confusing text in /etc/motd
