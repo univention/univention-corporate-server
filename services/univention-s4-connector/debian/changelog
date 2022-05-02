@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.8-1) unstable; urgency=medium
+
+  * Bug #54706: move essential files into Python 3 package
+
+ -- Florian Best <best@univention.de>  Mon, 02 May 2022 11:59:26 +0200
+
 univention-s4-connector (14.0.7-8) unstable; urgency=medium
 
   * Bug #53012: update unix2s4 and s42unix date functions provider for fully

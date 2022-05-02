@@ -42,6 +42,10 @@ Depends:
  ${python3:Depends},
 Provides:
  ${python3:Provides},
+Breaks:
+ python-univention-connector-s4 (<< 14.0.8-1),
+Replaces:
+ python-univention-connector-s4 (<< 14.0.8-1),
 Description: UCS - Modules for connector synchronisation
  This package contains the modules that implement the
  features of UCS Samba4 Connector.
