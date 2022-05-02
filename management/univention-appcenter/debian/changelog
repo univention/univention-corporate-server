@@ -1,3 +1,9 @@
+univention-appcenter (9.0.3-1) unstable; urgency=medium
+
+  * Bug #54706: move essential files into Python 3 package
+
+ -- Florian Best <best@univention.de>  Mon, 02 May 2022 11:55:44 +0200
+
 univention-appcenter (9.0.2-76) unstable; urgency=medium
 
   * Bug #54460: show the reason why servers may be excluded from the

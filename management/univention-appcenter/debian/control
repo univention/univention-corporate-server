@@ -100,6 +100,10 @@ Depends:
  zsync,
  ${misc:Depends},
  ${python3:Depends},
+Breaks:
+ python-univention-appcenter (<< 9.0.3-1),
+Replaces:
+ python-univention-appcenter (<< 9.0.3-1),
 Recommends:
  univention-appcenter,
 Provides:
