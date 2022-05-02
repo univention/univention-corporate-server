@@ -5,7 +5,6 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
  python3-all,
  univention-management-console-dev (>= 12.0.2),
 Standards-Version: 3.5.2
@@ -14,13 +13,10 @@ Package: univention-management-console-module-top
 Architecture: all
 Depends:
  python3-psutil,
- python-psutil,
  univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server (>= 11.0.4-37),
  ${python3:Depends},
- ${python:Depends},
 Provides:
- ${python:Provides},
  ${python3:Provides},
 Description: UMC module for process overview
  This package contains the UMC module for the process overview

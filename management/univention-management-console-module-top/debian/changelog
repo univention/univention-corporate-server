@@ -1,3 +1,9 @@
+univention-management-console-module-top (9.0.1-1) unstable; urgency=medium
+
+  * Bug #54706: drop Python 3 package files
+
+ -- Florian Best <best@univention.de>  Mon, 02 May 2022 12:34:06 +0200
+
 univention-management-console-module-top (9.0.0-9) unstable; urgency=medium
 
   * Bug #53665: rename css class
