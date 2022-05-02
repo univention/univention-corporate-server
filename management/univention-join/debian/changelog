@@ -1,3 +1,9 @@
+univention-join (12.0.4-1) unstable; urgency=medium
+
+  * Bug #54706: drop Python 3 package files
+
+ -- Florian Best <best@univention.de>  Mon, 13 Jun 2022 12:21:57 +0200
+
 univention-join (12.0.3-14) unstable; urgency=medium
 
   * Bug #33255: refactoring of univention-join line parser for read out of joinscript output
