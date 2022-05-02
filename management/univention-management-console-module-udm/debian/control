@@ -5,7 +5,6 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
  python3-all,
  univention-config-dev (>= 15.0.3),
  univention-management-console-dev (>= 12.0.2),
@@ -14,11 +13,6 @@ Standards-Version: 3.5.2
 Package: univention-management-console-module-udm
 Architecture: all
 Depends:
- python-ldap,
- python-notifier,
- python-six,
- python-univention-config-registry,
- python-univention-directory-manager,
  python3-ldap,
  python3-notifier,
  python3-six,
@@ -29,11 +23,9 @@ Depends:
  univention-management-console-server (>= 12.0.10-1),
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
 Provides:
  univention-directory-manager,
  ${python3:Provides},
- ${python:Provides},
 Replaces:
  univention-directory-manager (<< 9.0.0),
 Description: UMC module for UCS Directory Manager

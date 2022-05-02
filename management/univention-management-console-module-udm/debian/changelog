@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.2-1) unstable; urgency=medium
+
+  * Bug #54706: drop Python 3 package files
+
+ -- Florian Best <best@univention.de>  Mon, 02 May 2022 12:36:44 +0200
+
 univention-management-console-module-udm (10.0.1-26) unstable; urgency=medium
 
   * Bug #53843: add dependency mechanism for choices of "select" syntax

@@ -31,10 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 %:
-	dh $@ --with python2,python3,umc,ucr
-
-override_dh_python2:
-	dh_python2 --skip-private
+	dh $@ --with python3,umc,ucr
 
 override_dh_python3:
 	dh_python3 --skip-private
