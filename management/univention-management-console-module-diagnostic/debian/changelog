@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.1-1) unstable; urgency=medium
+
+  * Bug #54706: drop Python 3 package files
+
+ -- Florian Best <best@univention.de>  Mon, 13 Jun 2022 12:21:09 +0200
+
 univention-management-console-module-diagnostic (6.0.0-33) unstable; urgency=medium
 
   * Bug #48652: fixed decode error in 63_proof_uniqueMembers
