@@ -6,10 +6,7 @@ Standards-Version: 3.5.5
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
- python-all-dev,
  python3-all,
- python3-all-dev,
  univention-config-dev (>= 15.0.3),
  univention-management-console-dev (>= 12.0.2),
 
@@ -26,10 +23,6 @@ Depends:
  univention-policy-tools,
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
-Provides:
- ${python3:Provides},
- ${python:Provides},
 Conflicts:
  univention-management-console (<< 0.9.33-1),
 Description: UCS - set default-quotas for users
@@ -47,8 +40,6 @@ Description: UCS - set default-quotas for users
 Package: univention-management-console-module-quota
 Architecture: all
 Depends:
- python-notifier,
- python-univention-lib (>= 1.0.30-1),
  python3-notifier,
  python3-univention-lib,
  univention-directory-manager-tools (>> 7.0.147),
@@ -56,10 +47,8 @@ Depends:
  univention-quota,
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
 Provides:
  ${python3:Provides},
- ${python:Provides},
 Description: UMC module for filesystem quota
  This package contains the UMC module for the filesystem quota
  .

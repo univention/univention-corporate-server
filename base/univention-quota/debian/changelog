@@ -1,3 +1,9 @@
+univention-quota (14.0.2-1) unstable; urgency=medium
+
+  * Bug #54706: drop Python 3 UMC package files
+
+ -- Florian Best <best@univention.de>  Mon, 02 May 2022 13:00:02 +0200
+
 univention-quota (14.0.1-11) unstable; urgency=medium
 
   * Bug #54638: Add missing --always-resolve to univention-user-quota
