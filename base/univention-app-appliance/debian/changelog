@@ -1,3 +1,9 @@
+univention-app-appliance (4.0.1-1) unstable; urgency=medium
+
+  * Bug #54706: drop Python 2 packages
+
+ -- Florian Best <best@univention.de>  Wed, 04 May 2022 08:01:39 +0200
+
 univention-app-appliance (4.0.0-4) unstable; urgency=medium
 
   * Bug #53733: fixed system/setup/boot/fields|pages/blacklist

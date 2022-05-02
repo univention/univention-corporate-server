@@ -7,18 +7,13 @@ Build-Depends:
  debhelper,
  dh-python,
  node-stylus,
- python-all,
+ python3-all,
  univention-config-dev (>= 15.0.3),
  univention-l10n-dev (>= 7.0.1),
 
 Package: python-univention-app-appliance
 Architecture: all
-Depends:
- ${python:Depends},
-Provides:
- ${python:Provides},
-Description: UCS - python modules for app appliance configuration
- This package provides the python modules for setting up UCS App Appliances.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -46,7 +41,6 @@ Depends:
  univention-welcome-screen,
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
 Description: UCS - app appliance configuration
  This package provides UCS App Appliances with configuration and branding.
  .
