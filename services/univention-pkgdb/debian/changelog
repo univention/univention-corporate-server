@@ -1,3 +1,9 @@
+univention-pkgdb (13.0.2-2) unstable; urgency=medium
+
+  * Bug #54706: drop Python 3 UMC package files
+
+ -- Florian Best <best@univention.de>  Mon, 02 May 2022 12:56:35 +0200
+
 univention-pkgdb (13.0.2-1) unstable; urgency=medium
 
   * Bug #54706: move postinst into Python 3 package
