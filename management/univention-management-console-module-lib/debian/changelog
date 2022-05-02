@@ -1,3 +1,9 @@
+univention-management-console-module-lib (9.0.1-1) unstable; urgency=medium
+
+  * Bug #54706: drop Python 3 package files
+
+ -- Florian Best <best@univention.de>  Mon, 02 May 2022 12:37:33 +0200
+
 univention-management-console-module-lib (9.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

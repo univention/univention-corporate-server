@@ -5,7 +5,6 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
  python3-all,
  univention-management-console-dev (>= 12.0.2),
 Standards-Version: 3.7.2
@@ -14,18 +13,14 @@ Package: univention-management-console-module-lib
 Architecture: all
 Provides:
  ${python3:Provides},
- ${python:Provides},
 Depends:
- python-six,
  python3-six,
- python-notifier,
  python3-notifier,
  shell-univention-lib (>> 3.0.14-1),
  univention-management-console-server (>= 11.0.4-37),
  univention-updater,
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
 Description: Module lib containing low-lewel commands to control the UMC server
  Module lib containing low-lewel commands to control the UMC server
  .
