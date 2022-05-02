@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [8, 9]
+scope: ucs_4.4-0-errata4.4-9
+src: ghostscript
+fix: 9.26a~dfsg-0+deb9u9
+desc: |
+ This update addresses the following issues:
+ * Mishandling of .completefont (incomplete fix for CVE-2019-3839)
+   (CVE-2019-25059)
+bug: [54702]
+cve:
+- CVE-2019-25059
+- CVE-2019-3839
