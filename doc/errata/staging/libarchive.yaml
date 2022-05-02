@@ -1,0 +1,18 @@
+product: ucs
+release: "4.4"
+version: [8, 9]
+scope: ucs_4.4-0-errata4.4-9
+src: libarchive
+fix: 3.2.2-2+deb9u3
+desc: |
+ This update addresses the following issues:
+ * out-of-bounds read in archive_wstring_append_from_mbs in archive_string.c
+   (CVE-2019-19221)
+ * extracting a symlink with ACLs modifies ACLs of target (CVE-2021-23177)
+ * symbolic links incorrectly followed when changing modes, times, ACL and
+   flags of a file while extracting an archive (CVE-2021-31566)
+bug: [54703]
+cve:
+- CVE-2019-19221
+- CVE-2021-23177
+- CVE-2021-31566
