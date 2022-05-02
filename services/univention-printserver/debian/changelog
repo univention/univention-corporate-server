@@ -1,3 +1,9 @@
+univention-printserver (13.0.3-1) unstable; urgency=medium
+
+  * Bug #54706: drop Python 3 package files
+
+ -- Florian Best <best@univention.de>  Mon, 02 May 2022 12:54:55 +0200
+
 univention-printserver (13.0.2-12) unstable; urgency=medium
 
   * Bug #53665: rename css class

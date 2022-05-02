@@ -5,7 +5,6 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
  python3-all,
  univention-config-dev (>= 15.0.3),
  univention-join-dev,
@@ -23,13 +22,9 @@ Depends:
  hpijs-ppds,
  openprinting-ppds,
  printer-driver-all,
- python-ldap,
- python-pexpect,
- python-univention-lib (>= 1.0.25-1),
  python3-ldap,
  python3-pexpect,
  python3-univention-lib,
- python3-ldap,
  shell-univention-lib,
  univention-config (>= 15),
  univention-directory-listener,
@@ -40,7 +35,6 @@ Depends:
  univention-printclient,
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
 Conflicts:
  univention-management-console (<< 0.9.33-1),
 Recommends:
@@ -63,7 +57,6 @@ Depends:
  univention-printserver,
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
 Description: UCS - print server addons for pdf pseudo printer
  This packages provides configs and settings for a PDF printer.
  .
@@ -79,10 +72,8 @@ Depends:
  univention-management-console-server (>= 11.0.4-37),
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
 Provides:
  ${python3:Provides},
- ${python:Provides},
 Recommends:
  univention-printserver (= ${source:Version}),
 Description: UMC module for printer administration
