@@ -31,7 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 """
-python -m univention.lib.account lock --dn "$user_dn" --lock-time "$(date --utc '+%Y%m%d%H%M%SZ')"
+python3 -m univention.lib.account lock --dn "$user_dn" --lock-time "$(date --utc '+%Y%m%d%H%M%SZ')"
 """
 
 import argparse

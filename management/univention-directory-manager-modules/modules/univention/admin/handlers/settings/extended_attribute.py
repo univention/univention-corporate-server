@@ -166,7 +166,7 @@ property_descriptions = {
 	),
 	'overwritePosition': univention.admin.property(
 		short_description=_('Overwrite existing widget'),
-		long_description=_("In some cases it is useful to overwrite predefined input fields with extended attributes. If the internal UDM name of an attribute is configured here, its  input field is overwritten by this extended attribute. The UDM attribute name can only be determined by searching within /usr/lib/python2.7/dist-packages/univention/admin/handlers directory. It is the name which comes before the colon in the declarations of univention.admin.property objects, e.g., roomNumber for a  user's room number"),
+		long_description=_("In some cases it is useful to overwrite predefined input fields with extended attributes. If the internal UDM name of an attribute is configured here, its  input field is overwritten by this extended attribute. The UDM attribute name can only be determined by searching within /usr/lib/python3/dist-packages/univention/admin/handlers directory. It is the name which comes before the colon in the declarations of univention.admin.property objects, e.g., roomNumber for a  user's room number"),
 		syntax=univention.admin.syntax.string,
 	),
 	'fullWidth': univention.admin.property(
