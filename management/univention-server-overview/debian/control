@@ -6,7 +6,6 @@ Build-Depends:
  debhelper,
  dh-python,
  node-stylus,
- python-all,
  python3-all,
  univention-join-dev,
  univention-config-dev (>= 15.0.3),
@@ -17,12 +16,11 @@ Standards-Version: 3.9.5
 Package: univention-server-overview
 Architecture: all
 Depends:
- python-univention-directory-manager,
+ python3-univention-directory-manager,
  univention-join,
  univention-management-console-server (>= 11.0.4-37),
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
 Provides:
  ${python3:Provides},
 Description: Univention Server Overview - Web interface for overview over all server in a UCS domain

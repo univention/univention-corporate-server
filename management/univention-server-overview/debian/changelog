@@ -1,3 +1,9 @@
+univention-server-overview (3.0.2-1) unstable; urgency=medium
+
+  * Bug #54706: drop Python 3 package files
+
+ -- Florian Best <best@univention.de>  Mon, 02 May 2022 12:34:56 +0200
+
 univention-server-overview (3.0.1-5) unstable; urgency=medium
 
   * Bug #53390: implement light theme
