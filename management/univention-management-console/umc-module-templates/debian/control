@@ -5,19 +5,16 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 9),
  dh-python,
  univention-management-console-dev (>= 12.0.2),
- python-all,
  python3-all,
 Standards-Version: 3.7.2
 
 Package: PACKAGENAME
 Architecture: all
 Depends:
- ${python:Depends},
  ${python3:Depends},
  ${misc:Depends},
  univention-management-console-server (>= 11.0.4-37),
 Provides:
- ${python:Provides},
  ${python3:Provides},
 Description: MODULEDESC
  MODULEDESC
