@@ -69,9 +69,9 @@ Depends:
 Provides:
  ${python3:Provides},
 Breaks:
- python-univention-lib (<< 9.0.9-6),
+ python-univention-lib (<< 9.0.12-1),
 Replaces:
- python-univention-lib (<< 9.0.9-6),
+ python-univention-lib (<< 9.0.12-1),
 Description: UCS - common scripting functions for Python 3 scripts
  This package contains Python functions used by various
  components of UCS.
