@@ -1,3 +1,9 @@
+univention-admin-diary (2.0.4-2) unstable; urgency=medium
+
+  * Bug #54706: drop Python 3 package files
+
+ -- Florian Best <best@univention.de>  Mon, 02 May 2022 12:51:57 +0200
+
 univention-admin-diary (2.0.4-1) unstable; urgency=medium
 
   * Bug #54706: move essential files into Python 3 package
