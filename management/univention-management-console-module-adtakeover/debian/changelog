@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (7.0.3-1) unstable; urgency=medium
+
+  * Bug #54706: drop Python 3 package files
+
+ -- Florian Best <best@univention.de>  Mon, 13 Jun 2022 12:19:30 +0200
+
 univention-management-console-module-adtakeover (7.0.2-8) unstable; urgency=medium
 
   * Bug #53101: takeover passes credentials in clear text to subprocess

@@ -6,7 +6,7 @@ Standards-Version: 3.5.5
 Build-Depends:
  debhelper,
  dh-python,
- python2.7,
+ python3-all,
  univention-config-dev (>= 15.0.3),
  univention-management-console-dev (>= 12.0.2),
 
@@ -14,14 +14,11 @@ Package: univention-management-console-module-adtakeover
 Architecture: all
 Depends:
  fping,
- python-ipaddress,
- python-univention-lib (>= 3.0.26-37),
+ python3-univention-lib,
  univention-management-console-server (>= 11.0.4-37),
  univention-s4-connector,
  ${python3:Depends},
- ${python:Depends},
 Provides:
- ${python:Provides},
  ${python3:Provides},
 Description: UMC module for taking over an AD
  .
