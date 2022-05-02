@@ -718,8 +718,8 @@ Type=str
 Categories=system-base
 
 [logrotate/rotate/count]
-Description[de]=Das Rotations-Intervall für System-Logdateien. Steht 'logrotate/rotate' etwa auf 'weekly' und ist hier '12' eingetragen wird nach zwölf Wochen rotiert.
-Description[en]=The rotation interval for system log files. If e.g. 'logrotate/rotate' is set to 'weekly' and if '12' is configured here, rotation occurs after 12 weeks.
+Description[de]=Log-Dateien werden mit der gesetzten Anzahl rotiert bevor sie entfernt werden. Steht z.B. 'logrotate/rotate/count' auf 2, werden zwei alte Log-Dateien behalten. Siehe 'man logrotate' für zusätzlichen Informationen.
+Description[en]=Log files are rotated the set number of times before being removed. E.g., if 'logrotate/rotate/count' is set to 2, two old system log files will be kept. See 'man logrotate' for additional information.
 Type=int
 Categories=system-base
 
