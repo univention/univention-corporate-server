@@ -1335,8 +1335,10 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
 	if '$dn$' in options:
 		options['dn'] = options.pop('$dn$')
 
+	if 'container' in options:
+		options['base'] = options.pop('container') if options['container'] != 'all' else None
 	if 'objectProperty' in options:
-		options['property'] = options.pop('objectProperty')
+		options['property'] = options.pop('objectProperty') if options['objectProperty'] != 'None' else None
 	if 'objectPropertyValue' in options:
 		options['value'] = options.pop('objectPropertyValue')
 	# only for syntax_choices_key
