@@ -1,6 +1,7 @@
 univention-firewall (11.0.2-1) unstable; urgency=low
 
   * Bug #44700: Remove UMC firewall module.
+  * Bug #53673: Prevent double registration of rules
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 03 May 2022 14:45:36 +0200
 

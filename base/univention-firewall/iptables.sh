@@ -1,7 +1,6 @@
 #!/bin/sh
-@%@UCRWARNING=# @%@
 #
-# Copyright 2004-2022 Univention GmbH
+# Copyright 2022 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -28,20 +27,40 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-# shellcheck source=../../../../iptables.sh
-. /usr/share/univention-firewall/iptables.sh
+_checked () {
+	local exe="${1:?}" table='' command='' chain='' num=''
+	shift
+	while [ $# -ge 1 ]
+	do
+		case "$1" in
+		--wait) shift ;;
+		-t|--table)
+			table="${2:?}"
+			shift 2
+			;;
+		-A|--append|-I|--insert)
+			command="$1" chain="${2:?}"
+			shift 2
+			break
+			;;
+		*) break ;;
+		esac
+	done
 
-# set default policy for incoming traffic
-@!@
-policy = configRegistry.get('security/packetfilter/defaultpolicy', 'ACCEPT').upper()
-if policy == 'REJECT':
-	print('# "REJECT" is no valid default policy - changing default policy to "DROP" and')
-	print('# adding final "REJECT" rule in INPUT queue.')
-	print('iptables --wait -A INPUT -j REJECT')
-	print('ip6tables --wait -A INPUT -j REJECT')
-	policy = 'DROP'
-print('iptables --wait -P INPUT %s' % policy)
-print('iptables --wait -P OUTPUT ACCEPT')
-print('ip6tables --wait -P INPUT %s' % policy)
-print('ip6tables --wait -P OUTPUT ACCEPT')
-@!@
+	case "$command" in
+	-I|--insert)
+		case "${1:-}" in
+		[0-9]*)
+			num="$1"
+			shift
+		esac
+	esac
+
+	[ -n "$command" ] &&
+		"$exe" --wait ${table:+-t "$table"} --check "$chain" "$@" 2>/dev/null &&
+		return 0
+
+	"$exe" --wait ${table:+-t "$table"} ${command:+"$command"} ${chain:+"$chain"} ${num:+"$num"} "$@"
+}
+iptables () { _checked /sbin/iptables "$@"; }
+ip6tables () { _checked /sbin/ip6tables "$@"; }

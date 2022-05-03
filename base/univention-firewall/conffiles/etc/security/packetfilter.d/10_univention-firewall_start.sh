@@ -28,6 +28,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=../../../../iptables.sh
+. /usr/share/univention-firewall/iptables.sh
+
 # initialise IPv4
 iptables --wait -F
 iptables --wait -F -t nat

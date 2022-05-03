@@ -1,1 +1,2 @@
 etc/security/packetfilter.d/50_local.sh etc/security/packetfilter.d/
+iptables.sh	usr/share/univention-firewall/

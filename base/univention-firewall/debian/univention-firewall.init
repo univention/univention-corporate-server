@@ -39,6 +39,8 @@
 NAME='univention-firewall'
 DESC=$(get_lsb_header_val "$0" Short-Description)
 . /usr/share/univention-lib/ucr.sh
+# shellcheck source=../iptables.sh
+. /usr/share/univention-firewall/iptables.sh
 
 apply_docker_rules () {
 	local rule="/etc/security/packetfilter.d/20_docker.sh"

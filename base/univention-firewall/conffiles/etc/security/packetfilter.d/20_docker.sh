@@ -28,6 +28,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=../../../../iptables.sh
+. /usr/share/univention-firewall/iptables.sh
+
 nat_core_rules() {
 	# create docker chains if missing
 	iptables --wait -L DOCKER > /dev/null 2> /dev/null || iptables --wait -N DOCKER
