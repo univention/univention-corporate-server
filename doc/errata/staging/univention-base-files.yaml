@@ -3,8 +3,8 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-base-files
-fix: 
+fix: 9.0.3-7A~5.0.0.202205031001
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Clarified the description of ucr variable logrotate/rotate/count
 bug: [54691]
