@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-radius
+fix: 7.0.1-9A~5.0.0.202204271250
+desc: |
+ This update addresses the following issue(s):
+ * For new installations of the package, the RADIUS server can now assign VLAN
+   IDs to user connections if their group has set the attribute "vlanId". The
+   UCR variable "freeradius/vlan-id" has been added to set a VLAN ID even if
+   the user is no member of any such group.
+bug: [25916]
