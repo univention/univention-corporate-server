@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-portal
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The Portal Server now fetches user information from the UMC-Server
+   asynchronously.
+bug: [53853]
