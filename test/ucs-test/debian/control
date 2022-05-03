@@ -86,10 +86,6 @@ Recommends:
  ucs-test-framework,
 Depends:
  libfaketime,
- python,
- python-apt,
- python-lxml,
- python-pytest,
  python3-apt,
  python3-lxml,
  python3-pytest,
@@ -105,8 +101,6 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
- python,
- python-pytest,
  python3-pytest,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
@@ -124,8 +118,6 @@ Depends:
  lsof,
  nmap,
  openssl,
- python,
- python-pexpect,
  python3-pexpect,
  sshpass,
  ucs-test-libs (= ${source:Version}),
@@ -142,10 +134,6 @@ Recommends:
  ucs-test-framework,
 Depends:
  lsb-release,
- python,
- python-coverage,
- python-pexpect,
- python-pytest,
  python3-coverage,
  python3-pexpect,
  python3-pytest,
@@ -162,8 +150,7 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
- python,
- python-pytest,
+ python3-pytest,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Provides:
@@ -202,7 +189,6 @@ Recommends:
  ucs-test-framework,
 Depends:
  imagemagick,
- python-pytest,
  python3-pytest,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
@@ -235,7 +221,6 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
- python-pexpect,
  python3-pexpect,
  shell-univention-lib,
  ucs-test-libs (= ${source:Version}),
@@ -252,7 +237,6 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
- python-pexpect,
  python3-pexpect,
  shell-univention-lib,
  tshark,
@@ -284,7 +268,6 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
- python-pytest,
  python3-pytest,
  shell-univention-lib,
  ucs-test-libs (= ${source:Version}),
@@ -326,11 +309,6 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
- python-ldap,
- python-psutil,
- python-pycountry,
- python-pytest,
- python-univention-directory-manager,
  python3-ldap,
  python3-psutil,
  python3-pycountry,
@@ -349,8 +327,6 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
- python-ldap,
- python-univention-directory-manager,
  python3-ldap,
  python3-univention-directory-manager,
  ucs-test-libs (= ${source:Version}),
@@ -366,7 +342,6 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
- python-ipaddress,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Provides:
@@ -505,7 +480,6 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
- python-pytest,
  python3-pytest,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
@@ -544,8 +518,6 @@ Recommends:
  ucs-test-framework,
 Depends:
  curl,
- python-notifier,
- python-pytest,
  python3-notifier,
  python3-pytest,
  ucs-test-libs (= ${source:Version}),
@@ -564,10 +536,8 @@ Depends:
  ucs-test-libs (= ${source:Version}),
  univention-management-console-server,
  ${python3:Depends},
- ${python:Depends},
 Provides:
  ${python3:Provides},
- ${python:Provides},
 Description: Test UMC modules
  This package includes some test UMC modules
 
@@ -576,9 +546,6 @@ Architecture: all
 Depends:
  chromium,
  chromium-driver,
- python-pytest,
- python-selenium,
- python-xvfbwrapper,
  python3-pytest,
  python3-selenium,
  python3-xvfbwrapper,
@@ -607,7 +574,6 @@ Recommends:
  ucs-test-framework,
 Depends:
  ldb-tools,
- python-pytest,
  python3-pytest,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
@@ -634,7 +600,7 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
- python-pytest,
+ python3-pytest,
  univention-group-membership-cache,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
@@ -652,10 +618,6 @@ Depends:
  chromium-driver (>= 71.0.3578.80-1~deb9u1),
  ffmpeg,
  libnss3-tools,
- python-cssselect,
- python-lxml,
- python-pytest,
- python-requests,
  python3-cssselect,
  python3-lxml,
  python3-pip,
@@ -676,7 +638,6 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
- python-cssselect,
  python3-cssselect,
  ucs-test-apache,
  ucs-test-base,
@@ -719,7 +680,6 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
- python-pycurl,
  python3-pycurl,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
@@ -733,7 +693,6 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
- python-pytest,
  python3-pytest,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
@@ -758,12 +717,10 @@ Description: Test scripts to test the web server Apache
 Package: ucs-test-docker
 Architecture: all
 Depends:
- python-pytest,
  python3-pytest,
  ucs-test-libs (= ${source:Version}),
  zsync,
  ${misc:Depends},
- ${python:Depends},
 Recommends:
  ucs-test-framework,
 Provides:
@@ -774,9 +731,6 @@ Description: Test scripts to test the Docker integration
 Package: ucs-test-saml
 Architecture: all
 Depends:
- python-pytest,
- python-requests,
- python-requests-kerberos,
  python3-pytest,
  python3-requests,
  python3-requests-kerberos,
@@ -876,7 +830,6 @@ Description: Test scripts to check cryptography software in UCS
 Package: ucs-test-udm-rest
 Architecture: all
 Depends:
- python-pytest,
  python3-pip,
  python3-pytest,
  ucs-test-libs (= ${source:Version}),
