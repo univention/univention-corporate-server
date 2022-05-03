@@ -67,7 +67,7 @@ Depends:
  univention-ldap-server (>= 11.0.10-2),
  heimdal-clients (>= 7.1.0+dfsg-13+deb9u3A~4.4.0.202006161052),
  libkrb5-26-heimdal (>= 7.1.0+dfsg-13+deb9u3A~4.4.0.202006161052),
- univention-samba4 (>= 6.0.10-3),
+ univention-samba4 (>= 9.0.6-14),
  ${misc:Depends},
 Recommends:
  sqlite3,
