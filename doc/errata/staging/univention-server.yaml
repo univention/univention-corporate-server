@@ -9,7 +9,7 @@ desc: |
  * The `server_password_change` mechanism has been adjusted
    to first validate that the new machine password successfully
    replicated in OpenLDAP before finally changing the password
-   in locally in Samba/AD. Quickly reverting passwort changes
+   in locally in Samba/AD. Quickly reverting password changes
    in AD is not really possible without breaking DRS replication,
    so it's better to avoid the potential necessity for that.
 bug: [53205]
