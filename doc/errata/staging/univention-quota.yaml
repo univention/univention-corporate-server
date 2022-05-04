@@ -7,5 +7,5 @@ fix: 14.0.1-11A~5.0.0.202204261421
 desc: |
  This update addresses the following issue:
  * Setting quotas for accounts with a fully numeric username
-   did not work. This has been fixed.
+   has been fixed.
 bug: [54638]
