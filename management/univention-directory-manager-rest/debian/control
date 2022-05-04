@@ -5,7 +5,6 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
  python3-all,
  python3-dev,
  python3-univention (>> 13.0.2-7),
@@ -16,7 +15,6 @@ Standards-Version: 3.5.2
 Package: univention-directory-manager-rest
 Architecture: all
 Depends:
- python-univention-directory-manager-rest (= ${binary:Version}),
  python3-univention-directory-manager-rest (= ${binary:Version}),
  systemd,
  ${misc:Depends},
@@ -31,22 +29,8 @@ Description: REST service for UCS Directory Manager
 Package: python-univention-directory-manager-rest
 Architecture: all
 Depends:
- python-concurrent.futures,
- python-genshi,
- python-mimeparse,
- python-pycurl,
- python-setproctitle,
- python-six,
- python-tornado,
- python-univention-directory-manager (>= 15.0.11-43),
- python-univention-directory-reports,
- python-univention-management-console,
- python-uritemplate,
- univention-management-console-module-udm (>= 10.0.1-25),
  ${misc:Depends},
- ${python:Depends},
-Description: REST service for UCS Directory Manager
- This package contains the REST service for UCS Directory Manager.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

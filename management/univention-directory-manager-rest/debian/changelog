@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.3-1) unstable; urgency=medium
+
+  * Bug #54706: drop Python 2 package
+
+ -- Florian Best <best@univention.de>  Wed, 04 May 2022 08:57:15 +0200
+
 univention-directory-manager-rest (10.0.2-11) unstable; urgency=medium
 
   * Bug #38762: move widget<>syntax mapping into UDM syntax classes
