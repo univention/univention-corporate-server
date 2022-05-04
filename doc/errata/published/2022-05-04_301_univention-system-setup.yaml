@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The package `univention-system-setup` has been migrated to Python 3.
 bug: [51318]
+erratum: 301
+announced: 2022-05-04
