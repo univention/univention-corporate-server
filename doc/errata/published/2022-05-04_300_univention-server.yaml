@@ -12,3 +12,5 @@ desc: |
    password changes in AD easily breaks DRS replication, so prevent this
    situation from happening.
 bug: [53205]
+erratum: 300
+announced: 2022-05-04
