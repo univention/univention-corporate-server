@@ -1,3 +1,9 @@
+ucs-test (10.0.6-110) unstable; urgency=medium
+
+  * Bug #25916: Add test for vlan-id
+
+ -- Peter Stoll <stoll.extern@univention.de>  Wed, 04 May 2022 18:06:50 +0200
+
 ucs-test (10.0.6-109) unstable; urgency=medium
 
   * Bug #54381: remove Python 2 dependencies
