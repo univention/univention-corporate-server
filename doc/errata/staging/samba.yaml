@@ -5,10 +5,14 @@ scope: ucs_5.0-0-errata5.0-1
 src: samba
 fix: 2:4.13.13-1A~5.0.0.202205041854
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * The option to pass an authentication file via
-   `--authentication-file` instead of a password
-   has been added to samba tool
- * Solved an issue that may fill the samba log
-   while it is executed with debug level 1
+   `--authentication-file` instead of a clear text password
+   has been added to samba-tool
+ * In some cases, in UCS@school the log.smbd filled with a message
+   because a Windows 10 client attempted to access user files, which
+   is denied by the NTACLs. While the origin of that behavior is still
+   unknown, no negative side effects are known. To avoid overflowing
+   the log file, we adjusted the log message to only start appearing at
+   the debug level 2. Default log level is 1.
 bug: [53101, 52979]
