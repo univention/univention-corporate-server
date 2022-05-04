@@ -1,3 +1,9 @@
+univention-system-activation (5.0.2-1) unstable; urgency=medium
+
+  * Bug #54706: drop Python 3 UMC package files
+
+ -- Florian Best <best@univention.de>  Wed, 04 May 2022 08:12:08 +0200
+
 univention-system-activation (5.0.1-2) unstable; urgency=medium
 
   * Bug #53390: implement light theme

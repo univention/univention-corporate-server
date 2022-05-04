@@ -6,7 +6,6 @@ Build-Depends:
  debhelper,
  node-stylus,
  dh-python,
- python-all,
  python3-all,
  sed,
  univention-config-dev (>= 15.0.3),
@@ -23,11 +22,7 @@ Depends:
  sudo,
  univention-apache,
  ${misc:Depends},
- ${python:Depends},
  ${python3:Depends},
-Provides:
- ${python:Provides},
- ${python3:Provides},
 Description: Univention System Activation
  This package contains the system activation web service which is needed for
  Univention Corporate Server's virtual appliance images
