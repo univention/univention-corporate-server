@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-nagios
-fix: 
+fix: 13.0.2-5A~5.0.0.202112211458
 desc: |
  This update addresses the following issue:
  * The configuration of NRPE plugin definitions was broken due to the
