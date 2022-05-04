@@ -1,6 +1,0 @@
-modules/univention/s4connector/*.py usr/lib/python2.7/dist-packages/univention/s4connector/
-modules/univention/s4connector/s4/*.py usr/lib/python2.7/dist-packages/univention/s4connector/s4/
-modules/univention/admin/handlers/container/*.py usr/lib/python2.7/dist-packages/univention/admin/handlers/container/
-modules/univention/admin/handlers/settings/*.py usr/lib/python2.7/dist-packages/univention/admin/handlers/settings/
-modules/univention/admin/handlers/ms/*.py usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/
-modules/univention/admin/syntax.d/*.py usr/lib/python2.7/dist-packages/univention/admin/syntax.d/

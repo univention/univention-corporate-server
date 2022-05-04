@@ -6,7 +6,6 @@ Standards-Version: 3.5.5
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
  python3-all,
  univention-config-dev (>= 15.0.3),
  univention-l10n-dev (>= 7.0.1),
@@ -14,15 +13,8 @@ Build-Depends:
 Package: python-univention-connector-s4
 Architecture: all
 Depends:
- python-pyasn1-modules,
- python-univention (>=12.0.0-5),
- python-univention-directory-manager (>= 14.0.14-14),
- python-univention-heimdal (>= 4.0.2-2),
  ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
-Description: UCS - Modules for connector synchronisation
+Description: UCS transitional dummy package
  This package contains the modules that implement the
  features of UCS Samba4 Connector.
  .
@@ -40,8 +32,6 @@ Depends:
  python3-univention-heimdal,
  ${misc:Depends},
  ${python3:Depends},
-Provides:
- ${python3:Provides},
 Breaks:
  python-univention-connector-s4 (<< 14.0.8-1),
 Replaces:
@@ -59,9 +49,8 @@ Package: univention-s4-connector
 Architecture: all
 Depends:
  attr,
- python-univention-connector-s4 (= ${binary:Version}),
  python3-univention-connector-s4 (= ${binary:Version}),
- python-univention-lib (>= 9.0.11-9),
+ python3-univention-lib (>= 9.0.11-9),
  shell-univention-lib (>= 9.0.11-9),
  samba-common-bin,
  univention-base-files,
