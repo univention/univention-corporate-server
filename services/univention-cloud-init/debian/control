@@ -6,7 +6,6 @@ Standards-Version: 3.8.2
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
  python3-all,
  univention-config-dev (>= 15.0.3),
  univention-management-console-dev (>= 12.0.2),
@@ -20,9 +19,6 @@ Depends:
  univention-system-setup,
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
 Description: Univention cloud-init configuration
  This package contains cloud-init modules and configuration options
  for the UCS System Setup.

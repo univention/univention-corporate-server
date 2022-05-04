@@ -38,4 +38,4 @@ override_dh_installinit:
 	dh_installinit -punivention-cloud-init --no-start -u"defaults 95"
 
 %:
-	dh $@ --with python2,python3,ucr
+	dh $@ --with python3,ucr
