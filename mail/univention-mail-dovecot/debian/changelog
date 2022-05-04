@@ -1,3 +1,9 @@
+univention-mail-dovecot (6.0.4-1) unstable; urgency=medium
+
+  * Bug #54706: drop Python 2 package files
+
+ -- Florian Best <best@univention.de>  Wed, 04 May 2022 08:38:58 +0200
+
 univention-mail-dovecot (6.0.3-6) unstable; urgency=low
 
   * Bug #54029: Update French translation

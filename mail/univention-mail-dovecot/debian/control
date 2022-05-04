@@ -5,7 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
+ python3-all,
  univention-config-dev (>= 15.0.3),
 Standards-Version: 3.8.2
 
@@ -19,12 +19,6 @@ Depends:
  dovecot-pop3d (>= 2.2.13) | dovecot-ee-pop3d (>=2.2.13),
  dovecot-sieve (>= 2.2.13) | dovecot-ee-sieve (>=2.2.13),
  libpam-univentionmailcyrus,
- python-ldap,
- python-six,
- python-univention,
- python-univention-debug,
- python-univention-directory-manager,
- python-univention-lib (>= 9.0.11-9),
  python3-ldap,
  python3-six,
  python3-univention,
@@ -40,7 +34,6 @@ Depends:
  univention-join (>= 5.0.20-1),
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
 Conflicts:
  cyrus-admin,
  cyrus-clients,
