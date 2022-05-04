@@ -52,15 +52,6 @@ ansible_preperation () {
 	cp /root/hosts.ini hosts.ini
 	cp /root/idps.yml schools_saml_IDP/idps.yml
 	cp /root/clients.yml clients.yml
-
-	# TODO place files on service.software-univention
-	cp /root/main.yml main.yml
-	cp /root/vars.yml vars.yml
-	cp /root/keycloak.yml keycloak.yml
-	cp /root/JDBC_PING.cli JDBC_PING.cli
-	cp /root/web_interface.yml web_interface.yml
-	cp /root/database.yml database.yml
-
 	cp /root/id-broker-TESTING.cert id-broker.cert
 	cp /root/id-broker-TESTING.key id-broker.key
 	# shellcheck disable=SC1091
