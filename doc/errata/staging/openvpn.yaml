@@ -1,0 +1,34 @@
+product: ucs
+release: "4.4"
+version: [8, 9]
+scope: ucs_4.4-0-errata4.4-9
+src: openvpn
+fix: 2.4.0-6+deb9u4
+desc: |
+ This update addresses the following issues:
+ * OpenVPN versions before 2.3.3 and 2.4.x before 2.4.4 are vulnerable to a
+   buffer overflow vulnerability when key-method 1 is used, possibly resulting
+   in code execution. (CVE-2017-12166)
+ * An issue was discovered in OpenVPN 2.4.x before 2.4.9. An attacker can
+   inject a data channel v2 (P_DATA_V2) packet using a victim's peer-id.
+   Normally such packets are dropped, but if this packet arrives before the
+   data channel crypto parameters have been initialized, the victim's
+   connection will be dropped. This requires careful timing due to the small
+   time window (usually within a few seconds) between the victim client
+   connection starting and the server PUSH_REPLY response back to the client.
+   This attack will only work if Negotiable Cipher Parameters (NCP) is in use.
+   (CVE-2020-11810)
+ * OpenVPN 2.5.1 and earlier versions allows a remote attackers to bypass
+   authentication and access control channel data on servers configured with
+   deferred authentication, which can be used to potentially trigger further
+   information leaks. (CVE-2020-15078)
+ * OpenVPN 2.1 until v2.4.12 and v2.5.6 may enable authentication bypass in
+   external authentication plug-ins when more than one of them makes use of
+   deferred authentication replies, which allows an external user to be
+   granted access with only partially correct credentials. (CVE-2022-0547)
+bug: [54710]
+cve:
+- CVE-2017-12166
+- CVE-2020-11810
+- CVE-2020-15078
+- CVE-2022-0547
