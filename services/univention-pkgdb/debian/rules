@@ -34,7 +34,6 @@ version := $(shell dpkg-parsechangelog -SVersion)
 
 override_dh_install:
 	dh_install
-	sed -e "s/@%@package_version@%@/${version}/" -i debian/python-univention-pkgdb/usr/lib/python2.7/dist-packages/univention/pkgdb.py
 	sed -e "s/@%@package_version@%@/${version}/" -i debian/python3-univention-pkgdb/usr/lib/python3/dist-packages/univention/pkgdb.py
 
 override_dh_fixperms:
@@ -42,4 +41,4 @@ override_dh_fixperms:
 	chmod +x debian/univention-pkgdb/usr/lib/univention-directory-listener/system/pkgdb.py
 
 %:
-	dh $@ --with python2,python3,univention-l10n,univention-join,umc,ucr
+	dh $@ --with python3,univention-l10n,univention-join,umc,ucr

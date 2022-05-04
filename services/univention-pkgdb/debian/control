@@ -5,8 +5,6 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
- python-dev,
  python3-all,
  univention-config-dev (>= 15.0.3),
  univention-join-dev,
@@ -20,7 +18,7 @@ Pre-Depends:
  univention-postgresql (>= 2.0.1-5),
 Depends:
  postgresql-client,
- python-univention-lib (>= 1.0.25-1),
+ python3-univention-lib (>= 1.0.25-1),
  shell-univention-lib (>= 3.0.1-1),
  univention-config,
  univention-directory-listener (>= 14.0.5),
@@ -39,18 +37,10 @@ Description: UCS - Software monitoring database
 Package: python-univention-pkgdb
 Architecture: all
 Depends:
- python-apt,
- python-dns,
- python-pygresql,
- univention-config,
  ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
 Conflicts:
  univention-pkgdb-lib (<< 1.0.4),
-Description: UCS - Software monitoring database Python 2 library
- This package contains python libraries needed for all UCS package database components.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -66,8 +56,6 @@ Depends:
  univention-config,
  ${misc:Depends},
  ${python3:Depends},
-Provides:
- ${python3:Provides},
 Description: UCS - Software monitoring database Python 3 library
  This package contains python 3 libraries needed for all UCS package database components.
  .
@@ -79,7 +67,6 @@ Description: UCS - Software monitoring database Python 3 library
 Package: univention-pkgdb-tools
 Architecture: all
 Depends:
- python-univention-pkgdb,
  python3-univention-pkgdb,
  univention-config,
  univention-directory-listener (>= 14.0.5),
@@ -97,7 +84,6 @@ Description: UCS - Software monitoring database tools
 Package: univention-management-console-module-pkgdb
 Architecture: all
 Depends:
- python-univention-pkgdb (= ${source:Version}),
  python3-univention-pkgdb (= ${source:Version}),
  univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server (>= 11.0.4-37),
