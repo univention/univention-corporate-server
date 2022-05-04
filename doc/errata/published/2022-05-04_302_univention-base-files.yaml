@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Clarified the description of the UCR variable logrotate/rotate/count.
 bug: [54691]
+erratum: 302
+announced: 2022-05-04
