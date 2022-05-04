@@ -3,10 +3,12 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: samba
-fix: 2:4.13.13-1A~5.0.0.202203101935
+fix: 2:4.13.13-1A~5.0.0.202205041854
 desc: |
  This update addresses the following issue:
  * The option to pass an authentication file via
    `--authentication-file` instead of a password
    has been added to samba tool
-bug: [53101]
+ * Solved an issue that may fill the samba log
+   while it is executed with debug level 1
+bug: [53101, 52979]
