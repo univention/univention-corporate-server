@@ -32,7 +32,7 @@ class Test_DHCPService(object):
 	@pytest.mark.tags('udm')
 	@pytest.mark.roles('domaincontroller_master')
 	@pytest.mark.exposure('careful')
-	def test_dhcp_servoce_removal(self, udm):
+	def test_dhcp_service_removal(self, udm):
 		"""Remove dhcp/service"""
 		dhcp_service = udm.create_object('dhcp/service', service=uts.random_name())
 
