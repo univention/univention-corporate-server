@@ -6,5 +6,5 @@ src: univention-directory-listener
 fix: 14.0.5-7A~5.0.0.202204271810
 desc: |
  This update addresses the following issue:
- * An error when deactivating a listener module through UCR was fixed.
+ * An error when deactivating a listener module through UCR has been fixed.
 bug: [54696]
