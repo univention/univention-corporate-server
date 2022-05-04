@@ -44,17 +44,41 @@ DESC=$(get_lsb_header_val "$0" Short-Description)
 # shellcheck source=../iptables.sh
 . /usr/share/univention-firewall/iptables.sh
 
+flush () {
+	local rc=0
+
+	iptables --wait -P INPUT ACCEPT || rc=$?
+	iptables --wait -P OUTPUT ACCEPT || rc=$?
+	iptables --wait -F || rc=$?
+	iptables --wait -F -t nat || rc=$?
+	iptables --wait -F -t mangle || rc=$?
+	iptables --wait -X || rc=$?
+	iptables --wait -X -t nat || rc=$?
+	iptables --wait -X -t mangle || rc=$?
+
+	ip6tables --wait -P INPUT ACCEPT || rc=$?
+	ip6tables --wait -P OUTPUT ACCEPT || rc=$?
+	ip6tables --wait -F || rc=$?
+	ip6tables --wait -F -t mangle || rc=$?
+	ip6tables --wait -X || rc=$?
+	ip6tables --wait -X -t mangle || rc=$?
+
+	return $?
+}
+
 apply_docker_rules () {
-	local rule="/etc/security/packetfilter.d/20_docker.sh"
+	local rule="/etc/security/packetfilter.d/20_docker.sh" rc=0
+	flush || rc=$?
 	if [ -x "$rule" ]; then
 		if ! is_ucr_true security/packetfilter/docker/disabled; then
 			"$rule"
 		fi
 	fi
+	return $rc
 }
 
 case "$1" in
-    start)
+    start|restart|force-reload)
         if is_ucr_true security/packetfilter/disabled; then
             # Notice that only a proper "true" or "on" value switches firewall OFF.
             # Everything else like "false" or "off" or "muell" will leave firewall ON.
@@ -62,8 +86,8 @@ case "$1" in
             # always apply docker rules during start
             apply_docker_rules
         else
-            "$0" flush
             log_action_begin_msg "Starting $DESC"
+            flush
             run-parts --regex='^[a-zA-Z0-9_-]+([.]sh)?$' /etc/security/packetfilter.d/
             log_action_end_msg $?
         fi
@@ -72,34 +96,15 @@ case "$1" in
         if is_ucr_true security/packetfilter/disabled; then
             log_warning_msg "$DESC has been disabled.\nUse 'service univention-firewall flush' to remove existing iptable chains."
         else
-            "$0" flush
             log_daemon_msg "Stopping $DESC"
+            apply_docker_rules
+            log_action_end_msg $?
         fi
-        ;;
-    restart|force-reload)
-        "$0" stop
-        "$0" start
         ;;
     flush)
         log_daemon_msg "Flushing all iptable chains"
-        rc=0
-        iptables --wait -P INPUT ACCEPT || rc=$?
-        iptables --wait -P OUTPUT ACCEPT || rc=$?
-        iptables --wait -F || rc=$?
-        iptables --wait -F -t nat || rc=$?
-        iptables --wait -F -t mangle || rc=$?
-        iptables --wait -X || rc=$?
-        iptables --wait -X -t nat || rc=$?
-        iptables --wait -X -t mangle || rc=$?
-        # always apply docker rules during stop
         apply_docker_rules
-        ip6tables --wait -P INPUT ACCEPT || rc=$?
-        ip6tables --wait -P OUTPUT ACCEPT || rc=$?
-        ip6tables --wait -F || rc=$?
-        ip6tables --wait -F -t mangle || rc=$?
-        ip6tables --wait -X || rc=$?
-        ip6tables --wait -X -t mangle || rc=$?
-        log_action_end_msg $rc
+        log_action_end_msg $?
         ;;
     status)
         if is_ucr_true security/packetfilter/disabled
