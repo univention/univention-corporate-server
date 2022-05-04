@@ -1,3 +1,9 @@
+univention-directory-reports (12.0.2-2) unstable; urgency=medium
+
+  * Bug #54706: drop Python 2 package
+
+ -- Florian Best <best@univention.de>  Wed, 04 May 2022 09:06:33 +0200
+
 univention-directory-reports (12.0.2-1) unstable; urgency=medium
 
   * Bug #54706: move essential files into Python 3 package

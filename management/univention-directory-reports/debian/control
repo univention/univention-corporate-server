@@ -6,7 +6,6 @@ Standards-Version: 3.8.2
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
  python3-all,
  univention-config-dev (>= 15.0.3),
  univention-l10n-dev (>= 7.0.1),
@@ -16,9 +15,8 @@ Architecture: all
 Breaks: python-univention-directory-reports (<< 12.0.1-1)
 Replaces: python-univention-directory-reports (<< 12.0.1-1)
 Depends:
- python-univention-directory-reports,
- python-univention-lib (>= 1.0.25-1),
  python3-univention-directory-reports,
+ python3-univention-lib (>= 1.0.25-1),
  shell-univention-lib,
  ${misc:Depends},
 Description: Creates reports for UCS Directory Manager objects
@@ -29,18 +27,8 @@ Description: Creates reports for UCS Directory Manager objects
 Package: python-univention-directory-reports
 Architecture: all
 Depends:
- python-six,
- python-trml2pdf,
- python-univention-directory-manager,
- univention-config,
  ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
-Description: Creates reports for UCS Directory manager objects
- UCS Report Generator creates reports in PDF format using
- RML template files that contain a special template syntax to
- describe LDAP attributes and objects that should replace the patterns.
+Description: UCS transitional dummy package
 
 Package: python3-univention-directory-reports
 Architecture: all
