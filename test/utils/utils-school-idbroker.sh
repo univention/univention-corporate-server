@@ -35,6 +35,9 @@ ansible_preperation () {
 	local repo_user="${3:?missing repo_user}"
 	local repo_password_file="${4:?missing repo_password_file}"
 	local keycloak_password="${5:?missing keycloak_password}"
+	local kc1_ip="${6:?missing kc1_ip}"
+	local kc2_ip="${7:?missing kc2_ip}"
+	local db_extern="${8:?missing domain}"
 	local rv=0
 	# Setup passwordless ssh login for ansible
 	ssh-keygen -t rsa -b 4096 -f /root/.ssh/id_rsa -q -N ""
@@ -49,21 +52,53 @@ ansible_preperation () {
 	cp /root/hosts.ini hosts.ini
 	cp /root/idps.yml schools_saml_IDP/idps.yml
 	cp /root/clients.yml clients.yml
+
+	# TODO place files on service.software-univention
+	cp /root/main.yml main.yml
+	cp /root/vars.yml vars.yml
+	cp /root/keycloak.yml keycloak.yml
+	cp /root/JDBC_PING.cli JDBC_PING.cli
+	cp /root/web_interface.yml web_interface.yml
+	cp /root/database.yml database.yml
+
 	cp /root/id-broker-TESTING.cert id-broker.cert
 	cp /root/id-broker-TESTING.key id-broker.key
 	# shellcheck disable=SC1091
 	source /root/id-broker-secrets.sh
+	sed -i "s/KEYCLOAK_IP/$kc1_ip/g" hosts.ini
+	sed -i "s/KEYCLOAK2_IP/$kc2_ip/g" hosts.ini
+	sed -i "s/DOMAIN/$db_extern/g" hosts.ini
+	sed -i "s/hostssl keycloak keycloak KEYCLOAK2_IP/hostssl keycloak keycloak $kc2_ip/g" database.yml
 	sed -i "s/BETTERMARKS_CLIENT_SECRET/$BETTERMARKS_CLIENT_SECRET/g" clients.yml
 	sed -i "s/UTA_CLIENT_SECRET/$UTA_CLIENT_SECRET/g" clients.yml
 	sed -i "s/UTA_REDIRECT/https:\/\/$(hostname -f)\/univention-test-app\/authorize/g" clients.yml
-	sed -i "s/keycloak_password: admin/keycloak_password: $keycloak_password/g" main.yml
+	sed -i "s/keycloak_password: admin/keycloak_password: $keycloak_password/g" vars.yml
 	sed -i "s/CLIENT_SECRET=CLIENT_SECRET/CLIENT_SECRET=$UTA_CLIENT_SECRET/g" /etc/univention-test-app.conf
-	sed -i "s/ID_BROKER_KEYCLOAK_FQDN=ID_BROKER_KEYCLOAK_FQDN/ID_BROKER_KEYCLOAK_FQDN=login.$(hostname -f)/g" /etc/univention-test-app.conf
+	sed -i "s/ID_BROKER_KEYCLOAK_FQDN=ID_BROKER_KEYCLOAK_FQDN/ID_BROKER_KEYCLOAK_FQDN=kc.$(hostname -d)/g" /etc/univention-test-app.conf
 	sed -i "s/ID_BROKER_SDAPI_FQDN=ID_BROKER_SDAPI_FQDN/ID_BROKER_SDAPI_FQDN=self-disclosure1.$(hostname -d)/g" /etc/univention-test-app.conf
 	echo "EXTERNAL_ROOT_URL=https://$(hostname -f)/univention-test-app/" >> /etc/univention-test-app.conf
 	curl -k "https://ucs-sso.$traeger1_domain/simplesamlphp/saml2/idp/metadata.php" > schools_saml_IDP/traeger1_metadata.xml
 	curl -k "https://ucs-sso.$traeger2_domain/simplesamlphp/saml2/idp/metadata.php" > schools_saml_IDP/traeger2_metadata.xml
 	return $rv
+}
+
+create_certificate_kc_vhost () {
+	univention-certificate new -name kc.broker.local -id 658b0aaf-48dc-4a32-991f-db46648b22a5 -days 365 || return 1
+	return 0
+}
+
+apache_custom_vhosts () {
+	local keycloak2_ip="${1:?missing keycloak2_ip}"
+	local domain="${2:?missing domain}"
+	univention-add-vhost --conffile /var/lib/keycloak/keycloak_ProxyPass.conf kc.broker.local 443
+	cd /etc/apache2/sites-available/
+	cp /root/univention-vhosts.conf.example univention-vhosts.conf
+	sed -i "s/KEYCLOAK2_IP/$keycloak2_ip/g" univention-vhosts.conf
+	sed -i "s/DOMAIN/$domain/g" univention-vhosts.conf
+	cp /root/keycloak_ProxyPass.conf.example /var/lib/keycloak/keycloak_ProxyPass.conf
+	sed -i "s/DOMAIN/$domain/g" /var/lib/keycloak/keycloak_ProxyPass.conf
+	service apache2 restart || return 1
+	return 0
 }
 
 ansible_run_keycloak_configuration () {
@@ -239,8 +274,12 @@ setup_letsencrypt () {
 		ucr set --forced \
 			apache2/vhosts/login.kc1.broker0.dev.univention-id-broker.com/443/ssl/certificate="/etc/univention/letsencrypt/signed_chain.crt" \
 			apache2/vhosts/login.kc1.broker0.dev.univention-id-broker.com/443/ssl/key="/etc/univention/letsencrypt/domain.key"
+	# TODO if certificates for kc2 are created
+	# elif [ "$(hostname)" = "kc2" ]; then
+	# 	ucr set --forced \
+	# 		apache2/vhosts/login.kc2.broker0.dev.univention-id-broker.com/443/ssl/certificate="/etc/univention/letsencrypt/signed_chain.crt" \
+	# 		apache2/vhosts/login.kc2.broker0.dev.univention-id-broker.com/443/ssl/key="/etc/univention/letsencrypt/domain.key"
 	fi
-
 
 	service apache2 restart || return 1
 
