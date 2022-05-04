@@ -140,7 +140,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		chmod 640 "$SECRETFILE"
 		printf '%s' "$PASSWORD" > "$SECRETFILE"
 		# written in python to ignore extended attributes with required fields
-		(python - "$PASSWORD" "$ldap_base" || die) <<- EOF
+		(python3 - "$PASSWORD" "$ldap_base" || die) <<- EOF
 # -*- coding: utf-8 -*-
 import sys
 import univention.admin.uldap
@@ -164,7 +164,7 @@ except (univention.admin.uexceptions.objectExists, univention.admin.uexceptions.
   print('SAML user already exists')
   sys.exit(0)
 print('Make SAML user a system user')
-lo.modify(dn, [('univentionObjectFlag', None, ['functional', 'hidden'])])
+lo.modify(dn, [('univentionObjectFlag', None, [b'functional', b'hidden'])])
 EOF
 		ucr commit /etc/simplesamlphp/authsources.php
 	fi

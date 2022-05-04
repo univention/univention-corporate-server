@@ -1,3 +1,9 @@
+univention-saml (7.0.5-1) unstable; urgency=medium
+
+  * Bug #54706: drop Python 2 package files
+
+ -- Florian Best <best@univention.de>  Mon, 13 Jun 2022 12:26:58 +0200
+
 univention-saml (7.0.4-21) unstable; urgency=medium
 
   * Bug #54883: make "Secure" and "SameSite" cookie attribute configurable

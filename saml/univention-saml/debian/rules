@@ -32,4 +32,4 @@ override_dh_installinit:
 	dh_installinit --restart-after-upgrade
 
 %:
-	dh $@ --with python2,python3,systemd,univention-l10n,univention-join,umc,ucr
+	dh $@ --with python3,systemd,univention-l10n,univention-join,umc,ucr
