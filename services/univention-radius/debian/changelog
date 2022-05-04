@@ -1,3 +1,9 @@
+univention-radius (7.0.2-1) unstable; urgency=medium
+
+  * Bug #54706: drop Python 2 packages
+
+ -- Florian Best <best@univention.de>  Mon, 13 Jun 2022 12:26:11 +0200
+
 univention-radius (7.0.1-10) unstable; urgency=medium
 
   * Bug #25916: Fix case sensitivity problem
