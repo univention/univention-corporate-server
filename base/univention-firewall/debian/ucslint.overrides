@@ -5,3 +5,4 @@
 0017-4: debian/univention-firewall.init:8
 0017-4: debian/univention-firewall.init:46
 0017-4: etc/security/packetfilter.d/50_local.sh:2
+0017-4: iptables.sh
