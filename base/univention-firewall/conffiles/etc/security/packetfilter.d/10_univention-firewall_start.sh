@@ -62,79 +62,63 @@ ip6tables --wait -A INPUT -p icmpv6 -j ACCEPT
 
 
 @!@
-def print_packetfilter(key, value):
-	items = key.split('/')
-	addrv6 = items[-1]
-	addrv4 = items[-1]
-	# security/packetfilter/package/univention-samba/tcp/139/all=ACCEPT
-	if items[-1].lower() == 'all':
-		addrv4 = ''
-		addrv6 = ''
-	elif items[-1].lower() == 'ipv4':
-		addrv6 = None
-		addrv4 = ''
-	elif items[-1].lower() == 'ipv6':
-		addrv4 = None
-		addrv6 = ''
-	elif ':' in items[-1].lower():
-		addrv4 = None
+def print_packetfilter(proto, port, dst, action):  # type: (str, str, str, str) -> None
+	args = [
+		"--wait",
+		"-A", "INPUT",
+		"-p", proto,
+		"--dport", port,
+		"-j", action,
+	]
+
+	if dst == 'all':
+		ipv4 = ipv6 = args
+	elif dst == 'ipv4':
+		ipv4, ipv6 = args, []
+	elif dst == 'ipv6':
+		ipv4, ipv6 = [], args
+	elif ':' in dst:
+		ipv4, ipv6 = [], args + ["-d", dst]
 	else:
-		addrv6 = None
+		ipv4, ipv6 = args + ["-d", dst], []
 
-	if addrv4 is not None:
-		if addrv4:
-			addrv4 = '-d ' + ''.join([ x for x in addrv4 if x in set('0123456789.')])
-		print('iptables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
-			'protocol': items[-3],
-			'addr_args': addrv4,
-			'port': items[-2],
-			'action': value,
-			})
+	if ipv4:
+		print("iptables %s" % " ".join(ipv4))
 
-	if addrv6 is not None:
-		if addrv6:
-			addrv6 = '-d ' + ''.join([ x for x in addrv6 if x in set('abcdefABCDEF0123456789:.')])
-		print('ip6tables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
-			'protocol': items[-3],
-			'addr_args': addrv6,
-			'port': items[-2],
-			'action': value,
-			})
+	if ipv6:
+		print("ip6tables %s" % " ".join(ipv6))
 
-
-def print_descriptions(var):
-	print('')
-	for key in [ x for x in configRegistry.keys() if x.startswith('%s/' % var) ]:
-		items = key.split('/')
-		pkg = 'user'
-		if key.startswith('security/packetfilter/package/'):
-			pkg = items[3]
-		print('# %s[%s]: %s' % (pkg, items[-1], configRegistry.get(key)))
-
-
-filterlist = {}
 
 import re
-rePort = re.compile('^\d+(:\d+)?$')
+RE = re.compile(
+	r'''
+	^security/packetfilter/
+	(?:package / (?P<pkg> [^/]+)/)?
+	(?P<proto> tcp|udp) /
+	(?P<port> \d+ (?:[:]\d+)? ) /
+	(?P<dst> [^/]+)
+	(?:/ (?P<lang> [^/]+))?
+	$''',
+	re.VERBOSE)
 
-# get package settings
-if configRegistry.is_true('security/packetfilter/use_packages', True):
-	for key in [ x for x in configRegistry.keys() if x.startswith('security/packetfilter/package/') ]:
-		items = key.split('/')
-		# check if UCR variable is valid: security/packetfilter/package/univention-samba/tcp/139/all=ACCEPT
-		if items[-3] in ['tcp', 'udp'] and rePort.search(items[-2]) is not None:
-			filterlist[ '/'.join(items[-3:]) ] = key
+filterlist = {}  # type: Dict[Tuple[str, str, str], Dict[str, Dict[str, str]]]
+skip_package = not configRegistry.is_true('security/packetfilter/use_packages', True)
+for key, value in configRegistry.items():
+	m = RE.match(key)
+	if not m:
+		continue
 
-# get user settings
-for key in [ x for x in configRegistry.keys() if x.startswith('security/packetfilter/') and not x.startswith('security/packetfilter/package/') ]:
-	items = key.split('/')
-	# check if UCR variable is valid: security/packetfilter/package/univention-samba/tcp/139/all=ACCEPT
-	if items[-3] in ['tcp', 'udp'] and rePort.search(items[-2]) is not None:
-		filterlist[ '/'.join(items[-3:]) ] = key
+	pkg, proto, port, dst, lang = m.groups()
+	if skip_package and pkg:
+		continue
 
-# print values
-for ucrkey in sorted(filterlist.values()):
-	print_descriptions(ucrkey)
-	print_packetfilter(ucrkey, configRegistry[ucrkey])
+	filterlist.setdefault((proto, port, dst), {}).setdefault(pkg or "", {})[lang or ""] = value
 
+for (proto, port, dst), pkgs in sorted(filterlist.items()):
+	pkg, settings = min(pkgs.items())
+	action = settings.pop("")
+	print('')
+	for lang, desc in settings.items():
+		print('# %s[%s]: %s' % (pkg, lang, desc))
+	print_packetfilter(proto, port, dst, action)
 @!@
