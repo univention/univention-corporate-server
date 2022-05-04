@@ -40,4 +40,4 @@ override_dh_fixperms:
 	chmod 755 debian/univention-ad-connector/usr/share/univention-ad-connector/scripts/well-known-sid-object-rename
 
 %:
-	dh $@ --with python2,python3,univention-l10n,univention-join,umc,ucr
+	dh $@ --with python3,univention-l10n,univention-join,umc,ucr

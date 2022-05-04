@@ -6,7 +6,6 @@ Standards-Version: 3.7.2
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
  python3-all,
  univention-config-dev (>= 15.0.3),
  univention-join-dev,
@@ -16,19 +15,10 @@ Build-Depends:
 Package: python-univention-connector
 Architecture: all
 Depends:
- python-univention,
- python-univention-directory-manager (>= 7.0.214),
  ${misc:Depends},
- ${python:Depends},
-Pre-Depends:
- univention-config (>= 2.6.8-5),
-Provides:
- ${python:Provides},
 Conflicts:
  univention-server-member,
-Description: UCS - Modules for connector sychronisation
- This package contains the modules that implement the
- features of UCS Active Directory (AD) Connector.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -60,18 +50,8 @@ Description: UCS - Modules for connector sychronisation
 Package: python-univention-connector-ad
 Architecture: all
 Depends:
- python-univention,
- python-univention-connector (= ${binary:Version}),
- python-univention-heimdal,
  ${misc:Depends},
- ${python:Depends},
-Pre-Depends:
- univention-config,
-Provides:
- ${python:Provides},
-Description: UCS - Modules for connector sychronisation
- This package contains the modules that implement the
- features of UCS Active Directory (AD) Connector.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

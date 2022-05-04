@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.9-1) unstable; urgency=medium
+
+  * Bug #54706: drop Python 2 packages
+
+ -- Florian Best <best@univention.de>  Wed, 04 May 2022 08:17:55 +0200
+
 univention-ad-connector (14.0.8-6) unstable; urgency=medium
 
   * Bug #54408: add OPT_X_TLS_NEWCTX option for TLS encrypted
