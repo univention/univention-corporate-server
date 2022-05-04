@@ -62,7 +62,6 @@ Depends:
  python-unidecode,
  python-univention (>= 13.0.2-4),
  python-univention-admin-diary,
- python-univention-directory-manager-cli (= ${binary:Version}),
  python-univention-heimdal (>= 4.0.1-1),
  python-univention-lib (>= 8.0.0-6),
  python-univention-license,
@@ -88,16 +87,9 @@ Description: UCS - Modules for administration tools
 Package: python-univention-directory-manager-cli
 Architecture: all
 Depends:
- python-univention (>> 5.0.5),
- python-univention-lib (>= 7.0.0-14),
  shell-univention-lib,
  ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
-Description: UCS - Modules for administration tools
- This package contains the Python modules for the command line client that
- implement the features of UCS Directory Manager.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

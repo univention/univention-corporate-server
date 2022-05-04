@@ -1,5 +1,0 @@
-modules/univention/admincli/__init__.py usr/lib/python2.7/dist-packages/univention/admincli/
-modules/univention/admincli/adduser.py usr/lib/python2.7/dist-packages/univention/admincli/
-modules/univention/admincli/admin.py usr/lib/python2.7/dist-packages/univention/admincli/
-modules/univention/admincli/license_check.py usr/lib/python2.7/dist-packages/univention/admincli/
-modules/univention/admincli/passwd.py usr/lib/python2.7/dist-packages/univention/admincli/

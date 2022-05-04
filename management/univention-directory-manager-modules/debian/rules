@@ -44,7 +44,6 @@ override_dh_auto_test:
 
 override_dh_install:
 	dh_install
-	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/python-univention-directory-manager-cli/usr/lib/python2.7/dist-packages/univention/admincli/admin.py
 	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/python3-univention-directory-manager-cli/usr/lib/python3/dist-packages/univention/admincli/admin.py
 
 %:
