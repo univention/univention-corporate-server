@@ -12,6 +12,7 @@ import subprocess
 import re
 import univention.uldap as uldap
 import univention.testing.ucr as ucr_test
+from univention.testing.utils import UCSTestDomainAdminCredentials as credentials
 from univention.config_registry import handler_set as ucr_set
 from univention.config_registry import handler_unset as ucr_unset
 from univention.config_registry import handler_get as ucr_get
@@ -19,15 +20,15 @@ from univention.config_registry import handler_get as ucr_get
 
 def test_run_joinscript():
 	adm = list(ucr_get(['tests/domainadmin/account']))[0]
-	admin = adm[adm.find('uid=')+4:adm.find('cn=')-1]
+	admin = adm[adm.find('uid=') + 4:adm.find('cn=') - 1]
 	pwdfile = list(ucr_get(['tests/domainadmin/pwdfile']))[0]
 	ret = subprocess.run([
-			'/usr/share/univention-join/univention-run-join-scripts',
-			'-dcaccount', admin,
-			'-dcpwd', pwdfile,
-			'--force',
-			'--run-scripts', '80univention-radius.inst',
-		], check=True)
+		'/usr/share/univention-join/univention-run-join-scripts',
+		'-dcaccount', admin,
+		'-dcpwd', pwdfile,
+		'--force',
+		'--run-scripts', '80univention-radius.inst',
+	], check=True)
 	assert ret != 0
 
 
