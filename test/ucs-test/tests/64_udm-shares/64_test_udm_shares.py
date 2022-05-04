@@ -313,19 +313,20 @@ def test_create_fileshare_and_connect_via_samba(udm, ucr):
 	s4_dc_installed = utils.package_installed("univention-samba4")
 	s3_file_and_print_server_installed = utils.package_installed("univention-samba")
 	smb_server = s3_file_and_print_server_installed or s4_dc_installed
-	if smb_server:
-		delay = 1
-		time.sleep(delay)
-		cmd = ['smbclient', '//localhost/%s' % properties['sambaName'], '-U', '%'.join([admin_name, password]), '-c', 'showconnect']
-		print('\nRunning: %s' % ' '.join(cmd))
-		p = subprocess.Popen(cmd, close_fds=True)
+	if not smb_server:
+		pytest.skip('Samba 4 not installed')
+	delay = 1
+	time.sleep(delay)
+	cmd = ['smbclient', '//localhost/%s' % properties['sambaName'], '-U', '%'.join([admin_name, password]), '-c', 'showconnect']
+	print('\nRunning: %s' % ' '.join(cmd))
+	p = subprocess.Popen(cmd, close_fds=True)
+	p.wait()
+	if p.returncode:
+		share_definition = '/etc/samba/shares.conf.d/%s' % properties['sambaName']
+		with open(share_definition) as f:
+			print('### Samba share file %s :' % share_definition)
+			print(f.read())
+		print('### testpam for that smb.conf section:')
+		p = subprocess.Popen(['testparm', '-s', '--section-name', properties['sambaName']], close_fds=True)
 		p.wait()
-		if p.returncode:
-			share_definition = '/etc/samba/shares.conf.d/%s' % properties['sambaName']
-			with open(share_definition) as f:
-				print('### Samba share file %s :' % share_definition)
-				print(f.read())
-			print('### testpam for that smb.conf section:')
-			p = subprocess.Popen(['testparm', '-s', '--section-name', properties['sambaName']], close_fds=True)
-			p.wait()
-			utils.fail('Samba fileshare {} not accessible'.format(properties['sambaName']))
+		utils.fail('Samba fileshare {} not accessible'.format(properties['sambaName']))
