@@ -196,7 +196,7 @@ neg () {
 	return 0
 }
 _py_repr () {
-	python -c 'import sys,re;print re.sub(r"[][^\\.*$]", lambda m:"\\"+m.group(0), repr(sys.argv[1]))' "$1"
+	python3 -c 'import sys,re;print(re.sub(r"[][^\\.*$]", lambda m:"\\"+m.group(0), repr(sys.argv[1])))' "$1"
 }
 wait_listener () {
 	while [ "$(<"$LCACHE/notifier_id")" -lt "$(/usr/share/univention-directory-listener/get_notifier_id.py)" ]

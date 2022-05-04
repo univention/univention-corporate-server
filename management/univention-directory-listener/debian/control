@@ -13,10 +13,6 @@ Build-Depends:
  libunivention-config-dev,
  libunivention-debug-dev (>= 0.8),
  libunivention-policy-dev,
- python-all,
- python-all-dev,
- python-debian,
- python-six,
  python3-all,
  python3-all-dev,
  python3-debian,
@@ -26,15 +22,13 @@ Build-Depends:
 Package: univention-directory-listener
 Architecture: any
 Depends:
- python-univention-lib (>= 1.0.25-1),
- python-univention-namespace,
- python-univention (>= 13),
- python-univention-debug,
+ python3-univention-lib (>= 1.0.25-1),
+ python3-univention (>= 13),
+ python3-univention-debug,
  shell-univention-lib (>= 1.0.6),
  univention-base-files,
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
  ${shlibs:Depends},
 Suggests:
  lmdb-utils,

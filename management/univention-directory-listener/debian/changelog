@@ -1,3 +1,9 @@
+univention-directory-listener (14.0.6-1) unstable; urgency=medium
+
+  * Bug #54706: drop Python 2 package files
+
+ -- Florian Best <best@univention.de>  Wed, 04 May 2022 08:56:20 +0200
+
 univention-directory-listener (14.0.5-7) unstable; urgency=low
 
   * Bug #54696: fix TypeError when deactivating listener module

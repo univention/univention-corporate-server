@@ -3,7 +3,7 @@
 main () {
 	$BUG34749 && exit 0
 	new_name='RFC4514_ "#+,;<=>'\\
-	cn_escaped="$(python -c 'import sys,re,ldap.dn;print re.sub(r"\\(.)", lambda m: r"\%02X"%(ord(m.group(1)),), ldap.dn.dn2str(((("cn", sys.argv[1], 1),),)))' "$new_name")"
+	cn_escaped="$(python3 -c 'import sys,re,ldap.dn;print(re.sub(r"\\(.)", lambda m: r"\%02X"%(ord(m.group(1)),), ldap.dn.dn2str(((("cn", sys.argv[1], 1),),))))' "$new_name")"
 	udm settings/packages create --position "cn=visible,$BASE" --set name=test
 	wait_listener
 
