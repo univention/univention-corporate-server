@@ -9,3 +9,5 @@ desc: |
  * Setting quotas for accounts with a fully numeric username
    has been fixed.
 bug: [54638]
+erratum: 299
+announced: 2022-05-04
