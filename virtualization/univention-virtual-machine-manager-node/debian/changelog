@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (7.0.1-8) unstable; urgency=low
+
+  * Bug #50983: Restore libvirt firewall rules on UCS firewall restart
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 04 May 2022 10:32:30 +0200
+
 univention-virtual-machine-manager-node (7.0.1-7) unstable; urgency=medium
 
   * Bug #51739: Fix Exception handling in uvmm_restore ucr module. Package

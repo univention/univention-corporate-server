@@ -3,3 +3,4 @@ univention-virtual-machine-manager-restore.py usr/sbin/univention-virtual-machin
 43univention-virtual-machine-manager-node-common.inst usr/lib/univention-install/
 57univention-virtual-machine-manager-node-common.uinst usr/lib/univention-uninstall/
 conffiles/etc/modprobe.d/loop.conf etc/modprobe.d/
+50_libvirt-network-restore.sh	etc/security/packetfilter.d/
