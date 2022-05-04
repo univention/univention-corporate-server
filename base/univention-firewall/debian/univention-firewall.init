@@ -88,12 +88,17 @@ case "$1" in
         iptables --wait -F || rc=$?
         iptables --wait -F -t nat || rc=$?
         iptables --wait -F -t mangle || rc=$?
+        iptables --wait -X || rc=$?
+        iptables --wait -X -t nat || rc=$?
+        iptables --wait -X -t mangle || rc=$?
         # always apply docker rules during stop
         apply_docker_rules
         ip6tables --wait -P INPUT ACCEPT || rc=$?
         ip6tables --wait -P OUTPUT ACCEPT || rc=$?
         ip6tables --wait -F || rc=$?
         ip6tables --wait -F -t mangle || rc=$?
+        ip6tables --wait -X || rc=$?
+        ip6tables --wait -X -t mangle || rc=$?
         log_action_end_msg $rc
         ;;
     status)
