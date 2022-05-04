@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [8, 9]
+scope: ucs_4.4-0-errata4.4-9
+src: twisted
+fix: 16.6.0-2+deb9u3
+desc: |
+ This update addresses the following issue:
+ * possible http request smuggling (CVE-2022-24801)
+bug: [54709]
+cve:
+- CVE-2022-24801
