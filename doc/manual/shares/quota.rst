@@ -47,7 +47,7 @@ shown which are currently mounted under a mount point.
 .. figure:: /images/quota-overview.*
    :alt: The UMC module *File system quotas*
 
-   The UMC module :guilabel:`File system quotas`
+   The UMC module *File system quotas*
 
 The current quota status (activated/deactivated) is shown and can be changed
 with *Activate* and *Deactivate*.

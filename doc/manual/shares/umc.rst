@@ -288,16 +288,16 @@ directory mode*.
 In a similar way, the security settings are adopted for existing files and
 directories the permissions of which are edited under Windows:
 
-Only those permissions can be changed under Windows, which are marked in
-*Security mode* or in *Directory security mode*. Once this is done, the
-permissions marked under *Force security mode* or under *Force directory
-security mode* are set in any case.
+* Only those permissions can be changed under Windows, which are marked in
+  *Security mode* or in *Directory security mode*. Once this is done, the
+  permissions marked under *Force security mode* or under *Force directory
+  security mode* are set in any case.
 
-Thus, the parameters *File mode* and *Force file mode*, or *Directory mode* and
-*Force directory mode* are applied during the creation of a file or directory,
-while the parameters *Security mode* and *Force Security Mode* or *Security
-directory mode* and *Force security directory mode* are applied when changing
-permissions.
+* Thus, the parameters *File mode* and *Force file mode*, or *Directory mode*
+  and *Force directory mode* are applied during the creation of a file or
+  directory, while the parameters *Security mode* and *Force Security Mode* or
+  *Security directory mode* and *Force security directory mode* are applied when
+  changing permissions.
 
 .. note::
 
@@ -457,7 +457,7 @@ Shares UMC module - Samba options tab
        include spaces and the wildcards ``*`` and ``?``.
 
        As an example, ``/.*/test/`` hides all files and directories the names of
-       which begin with a dot, or which are called test.
+       which begin with a *dot*, or which are called *test*.
 
        .. note::
 
@@ -495,11 +495,11 @@ Shares UMC module - Samba custom settings tab
        of the option is to be entered, and in the *Value* field the value to be
        set. Double entries of configuration options are not checked.
 
-       .. caution::
+.. caution::
 
-          The definition of extended Samba settings is only necessary in very
-          special cases. The options should be thoroughly checked since they
-          might have security-relevant effects.
+   The definition of extended Samba settings is only necessary in very special
+   cases. The options should be thoroughly checked since they might have
+   security-relevant effects.
 
 .. _shares-management-nfs-custom-settings-tab:
 
@@ -516,16 +516,16 @@ Shares UMC module - NFS custom settings tab
      - Description
 
    * - Custom NFS share settings
-     - Apart from the properties in the :guilabel:`NFS` tab, this setting makes
+     - Apart from the properties in the *NFS* tab, this setting makes
        it possible to define further arbitrary NFS settings for the share. A
        list of available options can be obtained by the command :command:`man 5
        exports`. Double entries of configuration options are not checked.
 
-       .. caution::
+.. caution::
 
-          The definition of extended NFS settings is only necessary in special
-          cases. The options should be thoroughly checked since they might have
-          security-relevant effects.
+   The definition of extended NFS settings is only necessary in special cases.
+   The options should be thoroughly checked since they might have
+   security-relevant effects.
 
 .. _shares-management-options-tab:
 
