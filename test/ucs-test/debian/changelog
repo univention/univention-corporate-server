@@ -1,3 +1,9 @@
+ucs-test (10.0.6-111) unstable; urgency=medium
+
+  * Bug #25916: Updated test for vlan-id
+
+ -- Peter Stoll <stoll.extern@univention.de>  Thu, 05 May 2022 09:20:50 +0200
+
 ucs-test (10.0.6-110) unstable; urgency=medium
 
   * Bug #25916: Add test for vlan-id
