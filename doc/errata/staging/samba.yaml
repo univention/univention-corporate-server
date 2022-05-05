@@ -6,9 +6,10 @@ src: samba
 fix: 2:4.13.13-1A~5.0.0.202205041854
 desc: |
  This update addresses the following issues:
- * The option to pass an authentication file via
-   `--authentication-file` instead of a clear text password
-   has been added to samba-tool
+ * samba-tool now supports passing credentials using the options
+   -A|--authentication-file.
+ * samba-tool now supports passing machine password using the option
+   --machinepass-file.
  * In some cases, in UCS@school the log.smbd filled with a message
    because a Windows 10 client attempted to access user files, which
    is denied by the NTACLs. While the origin of that behavior is still
