@@ -44,6 +44,7 @@ import traceback
 import subprocess
 import configparser
 from datetime import datetime, timedelta
+from tempfile import NamedTemporaryFile
 
 import ldb
 import samba
@@ -933,16 +934,37 @@ class AD_Takeover(object):
 		run_and_output_to_log(["/etc/init.d/bind9", "restart"], log.debug)
 		progress.percentage_increment_scaled(1.0 / 16)
 
+		with NamedTemporaryFile(mode="w+") as fd:
+			fd.write("username=%s\n" % self.AD.username)
+			fd.write("password=%s\n" % self.AD.password)
+			fd.write("domain=%s\n" % self.ucr["domainname"])
+			fd.write("realm=%s\n" % self.ucr["kerberos/realm"])
+			fd.flush()
+
+			self.__join_into_ad(progress, fd.name)
+
+	def __join_into_ad(self, progress, auth_filename):
 		# Get machine credentials
 		try:
-			machine_secret = open('/etc/machine.secret', 'r').read().strip()
+			with open('/etc/machine.secret', 'r'):
+				pass
 		except IOError as e:
 			raise TakeoverError(_("Could not read local machine password: %s") % str(e))
 
 		# Join into the domain
 		log.info("Starting Samba domain join.")
 		t = time.time()
-		p = subprocess.Popen(["samba-tool", "domain", "join", self.ucr["domainname"], "DC", "-U%s%%%s" % (self.AD.username, self.AD.password), "--realm=%s" % self.ucr["kerberos/realm"], "--machinepass=%s" % machine_secret, "--server=%s" % self.ad_server_fqdn, "--site=%s" % self.AD.domain_info["ad_server_site"]], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
+		p = subprocess.Popen([
+			"samba-tool", "domain", "join",
+			self.ucr["domainname"],
+			"DC",
+			"--authentication-file=%s" % auth_filename,
+			"--machinepass-file=/etc/machine.secret",
+			"--server=%s" % self.ad_server_fqdn,
+			"--site=%s" % self.AD.domain_info["ad_server_site"]
+		], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
 		RE_SCHEMA = re.compile(r"^Schema-DN\[(?P<partition_dn>[^\]]+)\] objects\[([^\]]+)\] linked_values\[([^\]]+)\]$")
 		RE_PARTITION = re.compile(r"^Partition\[(?P<partition_dn>[^\]]+)\] objects\[([^\]]+)\] linked_values\[([^\]]+)\]$")
 		domain_dn = self.AD.samdb.domain_dn()

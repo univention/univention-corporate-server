@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-management-console-module-adtakeover
+fix:
+desc: |
+ This update addresses the following issues:
+ * samba-tool now supports passing credentials using the options
+   -A|--authentication-file.
+ * samba-tool now supports passing machine password using the option
+   --machinepass-file.
+bug: [53101]
