@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check if requests are answered with an error code after killing ucstest module
 ## roles:
 ##  - domaincontroller_master
