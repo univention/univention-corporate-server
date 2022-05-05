@@ -20,7 +20,7 @@
 			};
 			umcConfig.callback = function() {
 				require(["umc/tools", "dojo/json", "dojox/html/entities"], function(tools, json, entities) {
-					var data = json.parse(entities.decode(%ERROR%));
+					var data = json.parse(entities.decode(%ERROR%, entities.html.concat([["'", "#x27"]])));
 					tools.showErrorDialog(data);
 				});
 			};
