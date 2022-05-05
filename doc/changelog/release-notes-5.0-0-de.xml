@@ -401,6 +401,31 @@
 		</para>
 	</chapter>
 
+	<chapter id="relnotes:portal">
+		<title>Portal</title>
+
+		<para>
+			Design und Funktionalität des Portals in UCS 5 wurden grundlegend überarbeitet, gegebenenfalls sind nach dem Update auf UCS 5 Anpassungen an der Portalkonfiguration vorzunehmen.
+			<itemizedlist>
+				<listitem>
+					<para>
+						Standardmäßig wird beim Login am Portal kein Single Sign-On verwendet. Details zur Konfiguration von Single Sign-On sind <ulink url="https://docs.software-univention.de/handbuch-5.0.html#central-management-umc:login">im Handbuch</ulink> beschrieben.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Ein für das UCS 4 Portal angepasstes Design mittels CSS muss <ulink url="https://docs.software-univention.de/handbuch-5.0.html#central:theming">für das UCS 5 Portal überarbeitet</ulink> werden.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Die Verwaltung der Portalinhalte wird über <ulink url="https://docs.software-univention.de/handbuch-5.0.html#central:portal">neue &ucsUDM; Module</ulink> durchgeführt, die unter UCS 4 vorhandenen Einstellungen werden übernommen.
+					</para>
+				</listitem>
+			<itemizedlist>
+		</para>
+	</chapter>
+
 	<chapter id="relnotes:prepare">
 		<title>Vorbereitung des Updates</title>
 
