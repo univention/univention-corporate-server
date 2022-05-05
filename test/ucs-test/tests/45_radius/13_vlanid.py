@@ -72,8 +72,7 @@ def radius_auth(username, password, user_type, auth_method):
 		elif auth_method == 'eap':
 			credentials = 'user-name={username}, user-password={password}'.format(username=username, password=password)
 			echo_username_password = subprocess.Popen(('echo', credentials), stdout=subprocess.PIPE)
-			p = subprocess.run(['radeapclient', '-x', 'localhost', 'auth', 'testing123'], stdin=echo_username_password.stdout, capture_output=True,
-									text=True, check=True)
+			p = subprocess.run(['radeapclient', '-x', 'localhost', 'auth', 'testing123'], stdin=echo_username_password.stdout, capture_output=True, text=True, check=True)
 			echo_username_password.wait()
 		else:
 			raise ValueError("Unexpected radius authmethod '{}'".format(auth_method))
