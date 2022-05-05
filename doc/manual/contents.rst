@@ -21,3 +21,4 @@ Univention Corporate Server - Manual for users and administrators
    mail/index
    monitoring/index
    appendix/index
+   ucr-variables
