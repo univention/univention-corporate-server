@@ -17,6 +17,7 @@ kvm_template='generic-unsafe'
 kvm_build_server='lattjo.knut.univention.de'
 kvm_memory='2048M'
 kvm_cpus='1'
+kvm_label_suffix=''
 exact_match='false'
 ucsschool_release='scope'
 shutdown='false'
@@ -65,6 +66,9 @@ usage () {
 	echo "    KVM_BUILD_SERVER     - the KVM build server to use (default: $kvm_build_server)"
 	echo "    KVM_MEMORY           - ram for the KVM instance (default: $kvm_memory)"
 	echo "    KVM_CPUS             - cpu's for the KVM instance (default: $kvm_cpus)"
+	echo "    KVM_LABEL_SUFFIX     - additional label for instance name (default: $kvm_label_suffix)"
+	echo "    KVM_KEYPAIR_PASSPHRASE - ssh key password, also used as a fallback password for the ssh connection"
+	echo "    SOURCE_ISO           - an iso to mount (default: None)"
 	echo ""
 	echo "  ucs-*-create"
 	echo "    EXACT_MATCH          - if true, add -e (only look for exact matches in template names) option to ucs-kvm-create (default: $exact_match)"
@@ -82,6 +86,8 @@ usage () {
 	echo "    errata_update        - public, testing or none for errata updates (default: testing)"
 	echo "    UCSSCHOOL_RELEASE    - ucs school release (default: $ucsschool_release)"
 	echo "    COMPONENT_VERSION    - update component? should indicate dev/released version of non ucs component (app, ...) (default: testing)"
+	echo "    SCOPE                - defines a extra apt repo/scope that can be included during the test (default: None)"
+	echo "    TESTING              - indicates unreleased UCS version (e.g. testing)"
 	echo ""
 	echo "  ucs-test/fetch-results"
 	echo "    UCS_TEST_RUN         - if true, start ucs-test in utils/utils.sh::run_tests and copy log files from instance"
@@ -146,17 +152,25 @@ declare -a env_vars=(
 	HOME
 	USER
 	# Jenkins
+	BUILD_NUMBER
 	BUILD_URL
+	JOB_NAME
+	JOB_URL
 	NODE_NAME
 	# Job
+	APP_ID
 	BUILD_BRANCH
 	BUILD_REPO
+	COMBINED_APP_ID
+	COMPONENT_VERSION
 	CURRENT_AMI
 	ERRATA_UPDATE
 	EXACT_MATCH
 	HALT
 	KVM_BUILD_SERVER
 	KVM_CPUS
+	KVM_KEYPAIR_PASSPHRASE
+	KVM_LABEL_SUFFIX
 	KVM_MEMORY
 	KVM_OLDUCSVERSION
 	KVM_TEMPLATE
@@ -167,11 +181,15 @@ declare -a env_vars=(
 	OLD_AMI
 	OLD_VERSION
 	RELEASE_UPDATE
-	COMPONENT_VERSION
 	REPLACE
+	REPOSITORY_SERVER
+	SCOPE
 	SHUTDOWN
+	SOURCE_ISO
 	TARGET_VERSION
 	TERMINATE_ON_SUCCESS
+	TEST_GROUP
+	TESTING
 	UCS_MINORRELEASE
 	UCSSCHOOL_RELEASE
 	UCS_TEST_RUN
@@ -192,6 +210,7 @@ export KVM_OLDUCSVERSION="${KVM_OLDUCSVERSION:=$old_release}"
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=$kvm_build_server}"
 export KVM_MEMORY="${KVM_MEMORY:=$kvm_memory}"
 export KVM_CPUS="${KVM_CPUS:=$kvm_cpus}"
+export KVM_LABEL_SUFFIX="${KVM_LABEL_SUFFIX:=$kvm_label_suffix}"
 export EXACT_MATCH="${EXACT_MATCH:=$exact_match}"
 export SHUTDOWN="${SHUTDOWN:=$shutdown}"
 export RELEASE_UPDATE="${release_update:=public}"
@@ -271,6 +290,8 @@ if "$docker"; then
 		do
 			echo "$env_var=${!env_var}"
 		done
+		# pass all variable with prefix UCS_ENV_
+		env | grep ^UCS_ENV_
 		# get aws credentials
 		sed -rne '/^\[Credentials\]/,${/^\[Credentials\]/d;s/^ *(aws_(secret_)?access_key(_id)?) *= *(.*)/\U\1\E=\4/p;/^\[/q}' ~/.boto
 		echo "AWS_DEFAULT_REGION=eu-west-1"
@@ -329,11 +350,11 @@ do
 done
 
 if [ -n "$JOB_URL" ]; then
-    header="$JOB_URL+++++++++++++++++++++++++++++++++++"
-    printf "%${#header}s\n" | tr " " "+"
-    echo "+ Jenkins Workspace: ${JOB_URL}ws           +"
-    echo "+ Jenkins Workspace/test: ${JOB_URL}ws/test +"
-    printf "%${#header}s\n" | tr " " "+"
+	header="$JOB_URL+++++++++++++++++++++++++++++++++++"
+	printf "%${#header}s\n" | tr " " "+"
+	echo "+ Jenkins Workspace: ${JOB_URL}ws           +"
+	echo "+ Jenkins Workspace/test: ${JOB_URL}ws/test +"
+	printf "%${#header}s\n" | tr " " "+"
 fi
 
 "${cmd[@]}" &&
