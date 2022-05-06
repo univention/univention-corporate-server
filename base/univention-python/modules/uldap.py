@@ -48,6 +48,29 @@ try:
 except ImportError:
 	pass
 
+from opentelemetry import trace
+from opentelemetry.exporter.jaeger.thrift import JaegerExporter
+from opentelemetry.sdk.resources import SERVICE_NAME, Resource
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+
+trace.set_tracer_provider(
+    TracerProvider(
+        resource=Resource.create({SERVICE_NAME: "uldap"})
+    )
+)
+
+jaeger_exporter = JaegerExporter(
+    agent_host_name="localhost",
+    agent_port=6831,
+)
+
+trace.get_tracer_provider().add_span_processor(
+    BatchSpanProcessor(jaeger_exporter)
+)
+
+tracer = trace.get_tracer(__name__)
+
 
 def parentDn(dn, base=''):
 	# type: (str, str) -> Optional[str]
@@ -100,7 +123,8 @@ def getRootDnConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 	else:
 		bindpw = open('/etc/ldap/rootpw.conf').read().rstrip('\n').replace('rootpw "', '', 1)[:-1]
 		binddn = 'cn=update,{0}'.format(ucr['ldap/base'])
-	return access(host=host, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+	with tracer.start_as_current_span("access"):
+		return access(host=host, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 
 
 def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
@@ -119,7 +143,8 @@ def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 	ucr.load()
 	bindpw = open('/etc/ldap.secret').read().rstrip('\n')
 	port = int(ucr.get('ldap/master/port', '7389'))
-	return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=admin,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+	with tracer.start_as_current_span("access"):
+		return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=admin,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 
 
 def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
@@ -139,12 +164,14 @@ def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 	bindpw = open('/etc/ldap-backup.secret').read().rstrip('\n')
 	port = int(ucr.get('ldap/master/port', '7389'))
 	try:
-		return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+		with tracer.start_as_current_span("access"):
+			return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 	except ldap.SERVER_DOWN:
 		if not ucr['ldap/backup']:
 			raise
 		backup = ucr['ldap/backup'].split(' ')[0]
-		return access(host=backup, port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+		with tracer.start_as_current_span("access"):
+			return access(host=backup, port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 
 
 def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, secret_file="/etc/machine.secret", reconnect=True, random_server=False):
@@ -170,7 +197,8 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, se
 	if ldap_master:
 		# Connect to Primary Directory Node
 		port = int(ucr.get('ldap/master/port', '7389'))
-		return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+		with tracer.start_as_current_span("access"):
+			return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 	else:
 		# Connect to ldap/server/name
 		port = int(ucr.get('ldap/server/port', '7389'))
@@ -189,7 +217,8 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, se
 			servers += additional_servers
 		for server in servers:
 			try:
-				return access(host=server, port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+				with tracer.start_as_current_span("access"):
+					return access(host=server, port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 			# LDAP server down, try next server
 			except ldap.SERVER_DOWN as oexc:
 				exc = oexc
@@ -299,7 +328,8 @@ class access(object):
 		self.binddn = binddn
 		self.bindpw = bindpw
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'bind binddn=%s' % self.binddn)
-		self.lo.simple_bind_s(self.binddn, self.bindpw)
+		with tracer.start_as_current_span("bind"):
+			self.lo.simple_bind_s(self.binddn, self.bindpw)
 
 	@_fix_reconnect_handling
 	def bind_saml(self, bindpw):
@@ -311,12 +341,13 @@ class access(object):
 		"""
 		self.binddn = None
 		self.bindpw = bindpw
-		saml = ldap.sasl.sasl({
-			ldap.sasl.CB_AUTHNAME: None,
-			ldap.sasl.CB_PASS: bindpw,
-		}, 'SAML')
-		self.lo.sasl_interactive_bind_s('', saml)
-		self.binddn = self.whoami()
+		with tracer.start_as_current_span("bind_saml"):
+			saml = ldap.sasl.sasl({
+				ldap.sasl.CB_AUTHNAME: None,
+				ldap.sasl.CB_PASS: bindpw,
+			}, 'SAML')
+			self.lo.sasl_interactive_bind_s('', saml)
+			self.binddn = self.whoami()
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'SAML bind binddn=%s' % self.binddn)
 
 	def unbind(self):
@@ -324,7 +355,8 @@ class access(object):
 		"""
 		Unauthenticate.
 		"""
-		self.lo.unbind_s()
+		with tracer.start_as_current_span("unbind"):
+			self.lo.unbind_s()
 
 	def whoami(self):
 		# type: () -> str
@@ -334,50 +366,54 @@ class access(object):
 		:returns: The distinguished name.
 		:rtype: str
 		"""
-		dn = self.lo.whoami_s()
+		with tracer.start_as_current_span("whoami"):
+			dn = self.lo.whoami_s()
 		return re.sub(u'^dn:', u'', dn)
 
 	def _reconnect(self):
 		# type: () -> None
 		"""Reconnect."""
-		self.lo.reconnect(self.lo._uri, retry_max=self.lo._retry_max, retry_delay=self.lo._retry_delay)
+		with tracer.start_as_current_span("reconnect"):
+			self.lo.reconnect(self.lo._uri, retry_max=self.lo._retry_max, retry_delay=self.lo._retry_delay)
 
 	def __open(self, ca_certfile):
 		# type: (Optional[str]) -> None
 
-		if self.reconnect:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection with retry_max=%d' % self. client_connection_attempt)
-			self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1)
-		else:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
-			self.lo = ldap.initialize(self.uri, trace_stack_limit=None)
+		with tracer.start_as_current_span("__open"):
+			if self.reconnect:
+				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection with retry_max=%d' % self. client_connection_attempt)
+				self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1)
+			else:
+				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
+				self.lo = ldap.initialize(self.uri, trace_stack_limit=None)
 
-		if ca_certfile:
-			self.lo.set_option(ldap.OPT_X_TLS_CACERTFILE, ca_certfile)
-			self.lo.set_option(ldap.OPT_X_TLS_NEWCTX, 0)
+			if ca_certfile:
+				self.lo.set_option(ldap.OPT_X_TLS_CACERTFILE, ca_certfile)
+				self.lo.set_option(ldap.OPT_X_TLS_NEWCTX, 0)
 
-		if self.protocol.lower() != 'ldaps':
-			if self.start_tls == 1:
-				try:
+			if self.protocol.lower() != 'ldaps':
+				if self.start_tls == 1:
+					try:
+						self.__starttls()
+					except Exception:
+						univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'Could not start TLS')
+				elif self.start_tls == 2:
 					self.__starttls()
-				except Exception:
-					univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'Could not start TLS')
-			elif self.start_tls == 2:
-				self.__starttls()
 
-		if self.binddn and not self.uri.startswith('ldapi://'):
-			self.bind(self.binddn, self.bindpw)
+			if self.binddn and not self.uri.startswith('ldapi://'):
+				self.bind(self.binddn, self.bindpw)
 
-		# Override referral handling
-		if self.follow_referral:
-			self.lo.set_option(ldap.OPT_REFERRALS, 0)
+			# Override referral handling
+			if self.follow_referral:
+				self.lo.set_option(ldap.OPT_REFERRALS, 0)
 
 		self.__schema = None
 		self.__reconnects_done = 0
 
 	@_fix_reconnect_handling
 	def __starttls(self):
-		self.lo.start_tls_s()
+		with tracer.start_as_current_span("__starttls"):
+			self.lo.start_tls_s()
 
 	def __encode(self, value):
 		if six.PY3:
@@ -440,7 +476,8 @@ class access(object):
 		"""
 		if dn:
 			try:
-				result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', attr)
+				with tracer.start_as_current_span("get"):
+					result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', attr)
 				return self.__decode_entry(result[0][1])
 			except (ldap.NO_SUCH_OBJECT, LookupError):
 				pass
@@ -467,7 +504,8 @@ class access(object):
 		"""
 		if dn:
 			try:
-				result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', [attr])
+				with tracer.start_as_current_span("getAttr"):
+					result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', [attr])
 				return result[0][1][attr]
 			except (ldap.NO_SUCH_OBJECT, LookupError):
 				pass
@@ -504,17 +542,18 @@ class access(object):
 		if not base:
 			base = self.base
 
-		if scope == 'base+one':
-			res = self.lo.search_ext_s(base, ldap.SCOPE_BASE, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit) + \
-				self.lo.search_ext_s(base, ldap.SCOPE_ONELEVEL, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit)
-		else:
-			if scope == 'sub' or scope == 'domain':
-				ldap_scope = ldap.SCOPE_SUBTREE
-			elif scope == 'one':
-				ldap_scope = ldap.SCOPE_ONELEVEL
+		with tracer.start_as_current_span("search"):
+			if scope == 'base+one':
+				res = self.lo.search_ext_s(base, ldap.SCOPE_BASE, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit) + \
+					self.lo.search_ext_s(base, ldap.SCOPE_ONELEVEL, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit)
 			else:
-				ldap_scope = ldap.SCOPE_BASE
-			res = self.lo.search_ext_s(base, ldap_scope, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit)
+				if scope == 'sub' or scope == 'domain':
+					ldap_scope = ldap.SCOPE_SUBTREE
+				elif scope == 'one':
+					ldap_scope = ldap.SCOPE_ONELEVEL
+				else:
+					ldap_scope = ldap.SCOPE_BASE
+				res = self.lo.search_ext_s(base, ldap_scope, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit)
 
 		if unique and len(res) > 1:
 			raise ldap.INAPPROPRIATE_MATCHING({'desc': 'more than one object'})
@@ -542,7 +581,8 @@ class access(object):
 		:raises ldap.NO_SUCH_OBJECT: Indicates the target object cannot be found.
 		:raises ldap.INAPPROPRIATE_MATCHING: Indicates that the matching rule specified in the search filter does not match a rule defined for the attribute's syntax.
 		"""
-		return [x[0] for x in self.search(filter, base, scope, ['dn'], unique, required, timeout, sizelimit, serverctrls, response)]
+		with tracer.start_as_current_span("searchDn"):
+			return [x[0] for x in self.search(filter, base, scope, ['dn'], unique, required, timeout, sizelimit, serverctrls, response)]
 
 	@_fix_reconnect_handling
 	def getPolicies(self, dn, policies=None, attrs=None, result=None, fixedattrs=None):
@@ -565,32 +605,33 @@ class access(object):
 			return {}
 
 		# get current dn
-		if 'objectClass' in attrs and 'univentionPolicyReference' in attrs:
-			oattrs = attrs
-		else:
-			oattrs = self.get(dn, ['univentionPolicyReference', 'objectClass'])
+		with tracer.start_as_current_span("getPolicies"):
+			if 'objectClass' in attrs and 'univentionPolicyReference' in attrs:
+				oattrs = attrs
+			else:
+				oattrs = self.get(dn, ['univentionPolicyReference', 'objectClass'])
 
-		if 'univentionPolicyReference' in attrs:
-			policies = [x.decode('utf-8') for x in attrs['univentionPolicyReference']]
-		elif not policies and not attrs:
-			policies = [x.decode('utf-8') for x in oattrs.get('univentionPolicyReference', [])]
+			if 'univentionPolicyReference' in attrs:
+				policies = [x.decode('utf-8') for x in attrs['univentionPolicyReference']]
+			elif not policies and not attrs:
+				policies = [x.decode('utf-8') for x in oattrs.get('univentionPolicyReference', [])]
 
-		object_classes = set(oc.lower() for oc in oattrs.get('objectClass', []))
+			object_classes = set(oc.lower() for oc in oattrs.get('objectClass', []))
 
-		merged = {}  # type: Dict[str, Dict[str, Any]]
-		if dn:
-			obj_dn = dn
-			while True:
-				for policy_dn in policies or []:
-					self._merge_policy(policy_dn, obj_dn, object_classes, merged)
-				dn = self.parentDn(dn) or ''
-				if not dn:
-					break
-				try:
-					parent = self.get(dn, attr=['univentionPolicyReference'], required=True)
-				except ldap.NO_SUCH_OBJECT:
-					break
-				policies = [x.decode('utf-8') for x in parent.get('univentionPolicyReference', [])]
+			merged = {}  # type: Dict[str, Dict[str, Any]]
+			if dn:
+				obj_dn = dn
+				while True:
+					for policy_dn in policies or []:
+						self._merge_policy(policy_dn, obj_dn, object_classes, merged)
+					dn = self.parentDn(dn) or ''
+					if not dn:
+						break
+					try:
+						parent = self.get(dn, attr=['univentionPolicyReference'], required=True)
+					except ldap.NO_SUCH_OBJECT:
+						break
+					policies = [x.decode('utf-8') for x in parent.get('univentionPolicyReference', [])]
 
 		univention.debug.debug(
 			univention.debug.LDAP, univention.debug.INFO,
@@ -607,42 +648,43 @@ class access(object):
 		:param set object_classes: the set of object classes of the LDAP object.
 		:param list result: A mapping, into which the policy is merged.
 		"""
-		pattrs = self.get(policy_dn)
-		if not pattrs:
-			return
-
-		try:
-			classes = set(pattrs['objectClass']) - {b'top', b'univentionPolicy', b'univentionObject'}
-			ptype = classes.pop().decode('utf-8')
-		except KeyError:
-			return
-
-		if pattrs.get('ldapFilter'):
-			try:
-				self.search(pattrs['ldapFilter'][0].decode('utf-8'), base=obj_dn, scope='base', unique=True, required=True)
-			except ldap.NO_SUCH_OBJECT:
+		with tracer.start_as_current_span("_merge_policy"):
+			pattrs = self.get(policy_dn)
+			if not pattrs:
 				return
 
-		if not all(oc.lower() in object_classes for oc in pattrs.get('requiredObjectClasses', [])):
-			return
-		if any(oc.lower() in object_classes for oc in pattrs.get('prohibitedObjectClasses', [])):
-			return
+			try:
+				classes = set(pattrs['objectClass']) - {b'top', b'univentionPolicy', b'univentionObject'}
+				ptype = classes.pop().decode('utf-8')
+			except KeyError:
+				return
 
-		fixed = set(x.decode('utf-8') for x in pattrs.get('fixedAttributes', ()))
-		empty = set(x.decode('utf-8') for x in pattrs.get('emptyAttributes', ()))
-		values = result.setdefault(ptype, {})
-		SKIP = {'requiredObjectClasses', 'prohibitedObjectClasses', 'fixedAttributes', 'emptyAttributes', 'objectClass', 'cn', 'univentionObjectType', 'ldapFilter'}
-		for key in (empty | set(pattrs) | fixed) - SKIP:
-			if key not in values or key in fixed:
-				value = [] if key in empty else pattrs.get(key, [])
-				univention.debug.debug(
-					univention.debug.LDAP, univention.debug.INFO,
-					"getPolicies: %s sets: %s=%r" % (policy_dn, key, value))
-				values[key] = {
-					'policy': policy_dn,
-					'value': value,
-					'fixed': key in fixed,
-				}
+			if pattrs.get('ldapFilter'):
+				try:
+					self.search(pattrs['ldapFilter'][0].decode('utf-8'), base=obj_dn, scope='base', unique=True, required=True)
+				except ldap.NO_SUCH_OBJECT:
+					return
+
+			if not all(oc.lower() in object_classes for oc in pattrs.get('requiredObjectClasses', [])):
+				return
+			if any(oc.lower() in object_classes for oc in pattrs.get('prohibitedObjectClasses', [])):
+				return
+
+			fixed = set(x.decode('utf-8') for x in pattrs.get('fixedAttributes', ()))
+			empty = set(x.decode('utf-8') for x in pattrs.get('emptyAttributes', ()))
+			values = result.setdefault(ptype, {})
+			SKIP = {'requiredObjectClasses', 'prohibitedObjectClasses', 'fixedAttributes', 'emptyAttributes', 'objectClass', 'cn', 'univentionObjectType', 'ldapFilter'}
+			for key in (empty | set(pattrs) | fixed) - SKIP:
+				if key not in values or key in fixed:
+					value = [] if key in empty else pattrs.get(key, [])
+					univention.debug.debug(
+						univention.debug.LDAP, univention.debug.INFO,
+						"getPolicies: %s sets: %s=%r" % (policy_dn, key, value))
+					values[key] = {
+						'policy': policy_dn,
+						'value': value,
+						'fixed': key in fixed,
+					}
 
 	@_fix_reconnect_handling
 	def get_schema(self):
@@ -653,13 +695,14 @@ class access(object):
 		:returns: The |LDAP| schema.
 		:rtype: ldap.schema.subentry.SubSchema
 		"""
-		if self.reconnect and self.lo._reconnects_done > self.__reconnects_done:
-			# the schema might differ after reconnecting (e.g. slapd restart)
-			self.__schema = None
-			self.__reconnects_done = self.lo._reconnects_done
-		if not self.__schema:
-			self.__schema = ldap.schema.SubSchema(self.lo.read_subschemasubentry_s(self.lo.search_subschemasubentry_s()), 0)
-		return self.__schema
+		with tracer.start_as_current_span("get_schema"):
+			if self.reconnect and self.lo._reconnects_done > self.__reconnects_done:
+				# the schema might differ after reconnecting (e.g. slapd restart)
+				self.__schema = None
+				self.__reconnects_done = self.lo._reconnects_done
+			if not self.__schema:
+				self.__schema = ldap.schema.SubSchema(self.lo.read_subschemasubentry_s(self.lo.search_subschemasubentry_s()), 0)
+			return self.__schema
 
 	@_fix_reconnect_handling
 	def add(self, dn, al, serverctrls=None, response=None):
@@ -688,14 +731,14 @@ class access(object):
 			vals |= set(val)
 
 		nal = self.__encode_entry([(k, list(v)) for k, v in nal.items()])
-
-		try:
-			rtype, rdata, rmsgid, resp_ctrls = self.lo.add_ext_s(dn, nal, serverctrls=serverctrls)
-		except ldap.REFERRAL as exc:
-			if not self.follow_referral:
-				raise
-			lo_ref = self._handle_referral(exc)
-			rtype, rdata, rmsgid, resp_ctrls = lo_ref.add_ext_s(dn, nal, serverctrls=serverctrls)
+		with tracer.start_as_current_span("add"):
+			try:
+				rtype, rdata, rmsgid, resp_ctrls = self.lo.add_ext_s(dn, nal, serverctrls=serverctrls)
+			except ldap.REFERRAL as exc:
+				if not self.follow_referral:
+					raise
+				lo_ref = self._handle_referral(exc)
+				rtype, rdata, rmsgid, resp_ctrls = lo_ref.add_ext_s(dn, nal, serverctrls=serverctrls)
 
 		if serverctrls and isinstance(response, dict):
 			response['ctrls'] = resp_ctrls
@@ -718,40 +761,40 @@ class access(object):
 
 		if not serverctrls:
 			serverctrls = []
+		with tracer.start_as_current_span("modify"):
+			ml = []
+			for key, oldvalue, newvalue in changes:
+				if oldvalue and newvalue:
+					if oldvalue == newvalue or (not isinstance(oldvalue, (bytes, six.text_type)) and not isinstance(newvalue, (bytes, six.text_type)) and set(oldvalue) == set(newvalue)):
+						continue  # equal values
+					op = ldap.MOD_REPLACE
+					val = newvalue
+				elif not oldvalue and newvalue:
+					op = ldap.MOD_ADD
+					val = newvalue
+				elif oldvalue and not newvalue:
+					op = ldap.MOD_DELETE
+					val = oldvalue
+					# These attributes don't have a matching rule:
+					#   https://forge.univention.org/bugzilla/show_bug.cgi?id=15171
+					#   https://forge.univention.org/bugzilla/show_bug.cgi?id=44019
+					if key in ['preferredDeliveryMethod', 'jpegPhoto', 'univentionPortalBackground', 'univentionPortalLogo', 'univentionPortalEntryIcon', 'univentionUMCIcon']:
+						val = None
+				else:
+					continue
+				ml.append((op, key, val))
+			ml = self.__encode_entry(ml)
 
-		ml = []
-		for key, oldvalue, newvalue in changes:
-			if oldvalue and newvalue:
-				if oldvalue == newvalue or (not isinstance(oldvalue, (bytes, six.text_type)) and not isinstance(newvalue, (bytes, six.text_type)) and set(oldvalue) == set(newvalue)):
-					continue  # equal values
-				op = ldap.MOD_REPLACE
-				val = newvalue
-			elif not oldvalue and newvalue:
-				op = ldap.MOD_ADD
-				val = newvalue
-			elif oldvalue and not newvalue:
-				op = ldap.MOD_DELETE
-				val = oldvalue
-				# These attributes don't have a matching rule:
-				#   https://forge.univention.org/bugzilla/show_bug.cgi?id=15171
-				#   https://forge.univention.org/bugzilla/show_bug.cgi?id=44019
-				if key in ['preferredDeliveryMethod', 'jpegPhoto', 'univentionPortalBackground', 'univentionPortalLogo', 'univentionPortalEntryIcon', 'univentionUMCIcon']:
-					val = None
-			else:
-				continue
-			ml.append((op, key, val))
-		ml = self.__encode_entry(ml)
-
-		# check if we need to rename the object
-		new_dn, new_rdn = self.__get_new_dn(dn, ml)
-		if not self.compare_dn(dn, new_dn):
-			if rename_callback:
-				rename_callback(dn, new_dn, ml)
-			univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'rename %s' % (new_rdn,))
-			self.rename_ext_s(dn, new_rdn, serverctrls=serverctrls, response=response)
-			dn = new_dn
-		if ml:
-			self.modify_ext_s(dn, ml, serverctrls=serverctrls, response=response)
+			# check if we need to rename the object
+			new_dn, new_rdn = self.__get_new_dn(dn, ml)
+			if not self.compare_dn(dn, new_dn):
+				if rename_callback:
+					rename_callback(dn, new_dn, ml)
+				univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'rename %s' % (new_rdn,))
+				self.rename_ext_s(dn, new_rdn, serverctrls=serverctrls, response=response)
+				dn = new_dn
+			if ml:
+				self.modify_ext_s(dn, ml, serverctrls=serverctrls, response=response)
 
 		return dn
 
@@ -786,13 +829,14 @@ class access(object):
 		:param str dn: The distinguished name of the object to modify.
 		:param ml: The modify-list of 3-tuples (attribute-name, old-values, new-values).
 		"""
-		try:
-			self.lo.modify_ext_s(dn, ml)
-		except ldap.REFERRAL as exc:
-			if not self.follow_referral:
-				raise
-			lo_ref = self._handle_referral(exc)
-			lo_ref.modify_ext_s(dn, ml)
+		with tracer.start_as_current_span("modify_s"):
+			try:
+				self.lo.modify_ext_s(dn, ml)
+			except ldap.REFERRAL as exc:
+				if not self.follow_referral:
+					raise
+				lo_ref = self._handle_referral(exc)
+				lo_ref.modify_ext_s(dn, ml)
 
 	@_fix_reconnect_handling
 	def modify_ext_s(self, dn, ml, serverctrls=None, response=None):
@@ -809,16 +853,17 @@ class access(object):
 		if not serverctrls:
 			serverctrls = []
 
-		try:
-			rtype, rdata, rmsgid, resp_ctrls = self.lo.modify_ext_s(dn, ml, serverctrls=serverctrls)
-		except ldap.REFERRAL as exc:
-			if not self.follow_referral:
-				raise
-			lo_ref = self._handle_referral(exc)
-			rtype, rdata, rmsgid, resp_ctrls = lo_ref.modify_ext_s(dn, ml, serverctrls=serverctrls)
+		with tracer.start_as_current_span("modify_ext_s"):
+			try:
+				rtype, rdata, rmsgid, resp_ctrls = self.lo.modify_ext_s(dn, ml, serverctrls=serverctrls)
+			except ldap.REFERRAL as exc:
+				if not self.follow_referral:
+					raise
+				lo_ref = self._handle_referral(exc)
+				rtype, rdata, rmsgid, resp_ctrls = lo_ref.modify_ext_s(dn, ml, serverctrls=serverctrls)
 
-		if serverctrls and isinstance(response, dict):
-			response['ctrls'] = resp_ctrls
+			if serverctrls and isinstance(response, dict):
+				response['ctrls'] = resp_ctrls
 
 	def rename(self, dn, newdn, serverctrls=None, response=None):
 		# type: (str, str, Optional[List[ldap.controls.LDAPControl]], Optional[dict]) -> None
@@ -839,12 +884,13 @@ class access(object):
 		if not serverctrls:
 			serverctrls = []
 
-		if oldsdn and newsdn.lower() == oldsdn.lower():
-			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: modrdn %s to %s' % (dn, newrdn))
-			self.rename_ext_s(dn, newrdn, serverctrls=serverctrls, response=response)
-		else:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: move %s to %s in %s' % (dn, newrdn, newsdn))
-			self.rename_ext_s(dn, newrdn, newsdn, serverctrls=serverctrls, response=response)
+		with tracer.start_as_current_span("rename"):
+			if oldsdn and newsdn.lower() == oldsdn.lower():
+				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: modrdn %s to %s' % (dn, newrdn))
+				self.rename_ext_s(dn, newrdn, serverctrls=serverctrls, response=response)
+			else:
+				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: move %s to %s in %s' % (dn, newrdn, newsdn))
+				self.rename_ext_s(dn, newrdn, newsdn, serverctrls=serverctrls, response=response)
 
 	@_fix_reconnect_handling
 	def rename_ext_s(self, dn, newrdn, newsuperior=None, serverctrls=None, response=None):
@@ -862,13 +908,14 @@ class access(object):
 		if not serverctrls:
 			serverctrls = []
 
-		try:
-			rtype, rdata, rmsgid, resp_ctrls = self.lo.rename_s(dn, newrdn, newsuperior, serverctrls=serverctrls)
-		except ldap.REFERRAL as exc:
-			if not self.follow_referral:
-				raise
-			lo_ref = self._handle_referral(exc)
-			rtype, rdata, rmsgid, resp_ctrls = lo_ref.rename_s(dn, newrdn, newsuperior, serverctrls=serverctrls)
+		with tracer.start_as_current_span("rename_ext_s"):
+			try:
+				rtype, rdata, rmsgid, resp_ctrls = self.lo.rename_s(dn, newrdn, newsuperior, serverctrls=serverctrls)
+			except ldap.REFERRAL as exc:
+				if not self.follow_referral:
+					raise
+				lo_ref = self._handle_referral(exc)
+				rtype, rdata, rmsgid, resp_ctrls = lo_ref.rename_s(dn, newrdn, newsuperior, serverctrls=serverctrls)
 
 		if serverctrls and isinstance(response, dict):
 			response['ctrls'] = resp_ctrls
@@ -884,13 +931,14 @@ class access(object):
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.delete %s' % dn)
 		if dn:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'delete')
-			try:
-				self.lo.delete_s(dn)
-			except ldap.REFERRAL as exc:
-				if not self.follow_referral:
-					raise
-				lo_ref = self._handle_referral(exc)
-				lo_ref.delete_s(dn)
+			with tracer.start_as_current_span("delete"):
+				try:
+					self.lo.delete_s(dn)
+				except ldap.REFERRAL as exc:
+					if not self.follow_referral:
+						raise
+					lo_ref = self._handle_referral(exc)
+					lo_ref.delete_s(dn)
 
 	def parentDn(self, dn):
 		# type: (str) -> Optional[str]
@@ -977,29 +1025,30 @@ class access(object):
 		exc = exception.args[0]
 		info = exc.get('info')
 		ldap_url = info[info.find('ldap'):]
-		if isLDAPUrl(ldap_url):
-			conn_str = LDAPUrl(ldap_url).initializeUrl()
+		with tracer.start_as_current_span("_handle_referral"):
+			if isLDAPUrl(ldap_url):
+				conn_str = LDAPUrl(ldap_url).initializeUrl()
 
-			# FIXME?: this upgrades a access(reconnect=False) connection to a reconnect=True connection
-			lo_ref = ldap.ldapobject.ReconnectLDAPObject(conn_str, trace_stack_limit=None)
+				# FIXME?: this upgrades a access(reconnect=False) connection to a reconnect=True connection
+				lo_ref = ldap.ldapobject.ReconnectLDAPObject(conn_str, trace_stack_limit=None)
 
-			if self.ca_certfile:
-				lo_ref.set_option(ldap.OPT_X_TLS_CACERTFILE, self.ca_certfile)
-				lo_ref.set_option(ldap.OPT_X_TLS_NEWCTX, 0)
+				if self.ca_certfile:
+					lo_ref.set_option(ldap.OPT_X_TLS_CACERTFILE, self.ca_certfile)
+					lo_ref.set_option(ldap.OPT_X_TLS_NEWCTX, 0)
 
-			if self.start_tls == 1:
-				try:
+				if self.start_tls == 1:
+					try:
+						lo_ref.start_tls_s()
+					except Exception:
+						univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'Could not start TLS')
+				elif self.start_tls == 2:
 					lo_ref.start_tls_s()
-				except Exception:
-					univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'Could not start TLS')
-			elif self.start_tls == 2:
-				lo_ref.start_tls_s()
 
-			lo_ref.simple_bind_s(self.binddn, self.bindpw)
-			return lo_ref
+				lo_ref.simple_bind_s(self.binddn, self.bindpw)
+				return lo_ref
 
-		else:
-			raise ldap.CONNECT_ERROR('Bad referral "%s"' % (exc,))
+			else:
+				raise ldap.CONNECT_ERROR('Bad referral "%s"' % (exc,))
 
 
 if __name__ == '__main__':
