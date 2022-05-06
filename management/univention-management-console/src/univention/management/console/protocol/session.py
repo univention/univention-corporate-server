@@ -190,7 +190,10 @@ class ProcessorBase(Base):
 	def _reload_acls_and_permitted_commands(self):
 		if self.acls is None:
 			self.acls = self.get_acls()
-		self.acls.reload()
+		if isinstance(self.acls, LDAP_ACLs):
+			self.acls.reload(self.lo)
+		else:
+			self.acls.reload()
 		self.__command_list = moduleManager.permitted_commands(ucr['hostname'], self.acls)
 
 	def get_acls(self):
@@ -738,10 +741,6 @@ class ProcessorBase(Base):
 
 		if self._user_connections:
 			reset_ldap_connection_cache(*self._user_connections)
-
-		if isinstance(self.acls, LDAP_ACLs):
-			reset_ldap_connection_cache(self.acls.lo)
-			self.acls = None
 
 
 class Processor(ProcessorBase):
