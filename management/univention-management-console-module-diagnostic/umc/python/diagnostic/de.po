@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2022-03-25 13:38+0100\n"
+"POT-Creation-Date: 2022-05-11 10:45+0200\n"
 "PO-Revision-Date: 2020-07-04 15:50+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -119,6 +119,11 @@ msgstr "Überprüfe ACL Einträge der globalen IMAP Ordner"
 msgid "Check LDAP attribute memberOf"
 msgstr "Prüfe LDAP-Attribut memberOf"
 
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:43
+msgid "Check LDAP database for inconsistencies in group memberships."
+msgstr ""
+"Teste die LDAP-Datenbank auf Inkonsistenzen in Gruppen-Mitgliedschaften."
+
 #: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:53
 msgid "Check Samba replication status for errors"
 msgstr "Überprüfe den Samba Replikations Status"
@@ -159,10 +164,6 @@ msgstr "Überprüfe Kerberos authentifizierte DNS Updates"
 msgid "Check local AD database for errors"
 msgstr "Teste die lokale AD Datenbank auf Fehler"
 
-#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:40
-msgid "Check LDAP database for group membership attribute errors"
-msgstr "Teste die LDAP datenbank auf inkonsistenzen in Gruppen-Mitgliedschaften."
-
 #: umc/python/diagnostic/plugins/00_check_server_password.py:52
 msgid "Check machine password"
 msgstr "Password für das Rechnerkonto testen"
@@ -183,11 +184,11 @@ msgstr "Überprüfung des primären LDAP-Servers"
 msgid "Check resolving repository servers"
 msgstr "Überprüfe DNS Auflösung der Repository Server"
 
-#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:41
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:44
 msgid ""
 "Check the LDAP database for inconsistencies in group membership attributes."
 msgstr ""
-"Teste die LDAP Datenbank auf Inkonsistenzen in Gruppen-Mitgliedschaften."
+"Teste die LDAP-Datenbank auf Inkonsistenzen in Gruppen-Mitgliedschaften."
 
 #: umc/python/diagnostic/plugins/02_certificate_check.py:51
 msgid "Check validity of SSL certificates"
@@ -516,7 +517,7 @@ msgstr ""
 "({estring})."
 
 #: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:53
-#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:51
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:54
 #, python-brace-format
 msgid "Output of `{cmd}`:"
 msgstr "Ausgabe von `{cmd}`:"
@@ -598,9 +599,10 @@ msgstr "Schemadateien registrieren"
 msgid "Reset kerberos/kdc to 127.0.0.1"
 msgstr "Setze kerberos/kdc auf 127.0.0.1 zurück"
 
-#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:69
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:74
 msgid "Run `/usr/share/univention-directory-manager-tools/proof_uniqueMembers`"
-msgstr "Führe `/usr/share/univention-directory-manager-tools/proof_uniqueMembers` aus"
+msgstr ""
+"Führe `/usr/share/univention-directory-manager-tools/proof_uniqueMembers` aus"
 
 #: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:74
 msgid "Run `samba-tool dbcheck --fix --cross-ncs --yes`"
@@ -1088,13 +1090,13 @@ msgstr ""
 "Upgrade des Primary Directory Node werden all Nutzer Objekte in das neue "
 "Format migriert."
 
-#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:79
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:84
 msgid ""
 "You can run `/usr/share/univention-directory-manager-tools/"
 "proof_uniqueMembers` to fix the issue."
 msgstr ""
 "Sie können `/usr/share/univention-directory-manager-tools/"
-"proof_uniqueMembers` ausführen um das Problem zu beheben"
+"proof_uniqueMembers` ausführen um das Problem zu beheben."
 
 #: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:84
 msgid "You can run `samba-tool dbcheck --fix` to fix the issue."
@@ -1136,22 +1138,23 @@ msgstr "Sie können Heimdal KDC per {services} stoppen und Samba neu starten."
 msgid "You may want to uninstall software via {appcenter:appcenter}."
 msgstr "Sie können per {appcenter:appcenter} Software entfernen."
 
-#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:75
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:80
 msgid ""
 "`/usr/share/univention-directory-manager-tools/proof_uniqueMembers -c` found "
 "an error with the LDAP database group membership attributes."
 msgstr ""
-"`/usr/share/univention-directory-manager-tools/proof_uniqueMembers -c` hat"
-"einen Fehler in der LDAP Datenbak mit Gruppen-mitgliedschafts"
-"Attributen gefunden."
+"`/usr/share/univention-directory-manager-tools/proof_uniqueMembers -c` hat "
+"einen Fehler in der LDAP-Datenbank mit Gruppenmitgliedschafts-Attributen "
+"gefunden."
 
-#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:84
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:89
 msgid ""
 "`/usr/share/univention-directory-manager-tools/proof_uniqueMembers -c` found "
 "no errors with the LDAP database group membership attributes."
 msgstr ""
-"`/usr/share/univention-directory-manager-tools/proof_uniqueMembers -c` hat keine"
-"Probleme in der LDAP Datenbak mit Gruppen-mitgliedschafts Attributen gefunden."
+"`/usr/share/univention-directory-manager-tools/proof_uniqueMembers -c` hat "
+"keine Probleme in der LDAP-Datenbank mit Gruppenmitgliedschafts-Attributen "
+"gefunden."
 
 #: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:63
 #, python-brace-format
@@ -1243,6 +1246,10 @@ msgstr "einigen"
 
 #~ msgid "All nameserver entries are ok."
 #~ msgstr "Alle Nameserver Einträge sind in Ordnung."
+
+#~ msgid "Check LDAP database for group membership attribute errors"
+#~ msgstr ""
+#~ "Teste die LDAP-Datenbank auf Inkonsistenzen in Gruppen-Mitgliedschaften."
 
 #~ msgid "Check Samba sysvol ACLs for errors"
 #~ msgstr "Überprüfe die Samba SYSVOL ACL Einträge auf Fehler"

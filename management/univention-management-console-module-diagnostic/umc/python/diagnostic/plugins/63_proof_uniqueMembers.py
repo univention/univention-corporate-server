@@ -33,13 +33,14 @@
 
 import pipes
 
+from univention.config_registry import ucr
 from univention.management.console.modules.diagnostic import Warning, ProblemFixed
 from univention.management.console.modules.diagnostic import util
 from univention.management.console.log import MODULE
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
-title = _('Check LDAP database for group membership attribute errors')
+title = _('Check LDAP database for inconsistencies in group memberships.')
 description = _('Check the LDAP database for inconsistencies in group membership attributes.')
 run_descr = ['This can be checked by running: /usr/share/univention-directory-manager-tools/proof_uniqueMembers -c']
 
@@ -62,6 +63,8 @@ actions = {
 
 
 def run(_umc_instance, rerun=False, fix_log=''):
+	if ucr.get('server/role') != 'domaincontroller_master':
+		return
 	error_descriptions = []
 	if rerun and fix_log:
 		error_descriptions.append(fix_log)
@@ -76,7 +79,7 @@ def run(_umc_instance, rerun=False, fix_log=''):
 	if not success:
 		error = _('`/usr/share/univention-directory-manager-tools/proof_uniqueMembers -c` found an error with the LDAP database group membership attributes.')
 		error_descriptions.append(error)
-		error_descriptions.append(output)
+		error_descriptions.append(output.decode('utf-8', 'replace'))
 		if not rerun:
 			fix = _('You can run `/usr/share/univention-directory-manager-tools/proof_uniqueMembers` to fix the issue.')
 			error_descriptions.append(fix)
