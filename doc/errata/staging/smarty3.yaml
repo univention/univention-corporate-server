@@ -6,18 +6,11 @@ src: smarty3
 fix: 3.1.31+20161214.1.c7d42e4+selfpack1-2+deb9u5
 desc: |
  This update addresses the following issues:
- * Smarty is a template engine for PHP, facilitating the separation of
-   presentation (HTML/CSS) from application logic. Prior to versions 3.1.43
-   and 4.0.3, template authors could run restricted static php methods. Users
-   should upgrade to version 3.1.43 or 4.0.3 to receive a patch.
-   (CVE-2021-21408)
- * Smarty is a template engine for PHP, facilitating the separation of
-   presentation (HTML/CSS) from application logic. Prior to versions 3.1.42
-   and 4.0.2, template authors could run arbitrary PHP code by crafting a
-   malicious math string. If a math string was passed through as user provided
-   data to the math function, external users could run arbitrary PHP code by
-   crafting a malicious math string. Users should upgrade to version 3.1.42 or
-   4.0.2 to receive a patch. (CVE-2021-29454)
+ * Template authors could run restricted static php methods. (CVE-2021-21408)
+ * Template authors could run arbitrary PHP code by crafting a malicious math
+   string. If a math string was passed through as user provided data to the
+   math function, external users could run arbitrary PHP code by crafting a
+   malicious math string. (CVE-2021-29454)
 bug: [54732]
 cve:
 - CVE-2021-21408
