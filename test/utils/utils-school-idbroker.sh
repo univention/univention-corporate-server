@@ -78,6 +78,18 @@ create_certificate_kc_vhost () {
 	return 0
 }
 
+wait_for_certificate_replication () {
+	local end=$(($(date +%s)+300))
+	while [ $(date +%s) -lt $end ]
+	do
+		if [ -d "/etc/univention/ssl/kc.broker.local/" ]; then
+			return 0
+		fi
+		sleep 5
+	done
+	return 1
+}
+
 apache_custom_vhosts () {
 	local keycloak2_ip="${1:?missing keycloak2_ip}"
 	local domain="${2:?missing domain}"
