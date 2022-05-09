@@ -11,8 +11,7 @@ desc: |
  * Reader mode bypassed SameSite cookies (CVE-2022-29912)
  * Fullscreen notification bypass using popups (CVE-2022-29914)
  * Leaking browser history with CSS variables (CVE-2022-29916)
- * Memory safety bugs fixed in Firefox 100 and Firefox ESR 91.9
-   (CVE-2022-29917)
+ * Memory safety bugs fixed (CVE-2022-29917)
 bug: [54731]
 cve:
 - CVE-2022-29909
