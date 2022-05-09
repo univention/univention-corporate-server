@@ -297,9 +297,8 @@ class Target(object):
 
 
 def encode_vmware_uuid(universally_unique_identifier):
-	encoded = ' '.join([b.encode('hex') for b in universally_unique_identifier.bytes])
-	encoded = encoded[:23] + '-' + encoded[24:]
-	return encoded
+	encoded = ' '.join(re.findall('..', universally_unique_identifier.hex))
+	return encoded[:23] + '-' + encoded[24:]
 
 
 def create_vmxf(machine_uuid, image_name):
