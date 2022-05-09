@@ -1,3 +1,9 @@
+univention-radius (7.0.1-10) unstable; urgency=medium
+
+  * Bug #25916: Fix case sensitivity problem
+
+ -- Peter Stoll <stoll.extern@univention.de>  Mon, 09 May 2022 10:17:45 +0200
+
 univention-radius (7.0.1-9) unstable; urgency=medium
 
   * Bug #25916 - VLAN-Zuordnung via 802.1x/RADIUS

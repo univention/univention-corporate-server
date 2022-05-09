@@ -783,7 +783,9 @@ post-auth {
     # Load module: ldap
     ldap
     # Rewrite username if it is a machine account. The krb5PrincipalName is passed as User-Name in the request in this case.
-    if ("%{request:User-Name}" =~ /^host\/(.*).@%@domainname@%@/) {
+@!@
+print('\tif ("%%{tolower:%%{request:User-Name}}" =~ /^host\/(.*)\.%s/) {' % configRegistry.get('domainname', '').lower() )
+@!@
         update request {
             User-Name := "%{1}$"    # The uid attribute in the ldap object is filled with the host name and a trailing dollar sign.
         }

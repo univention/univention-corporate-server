@@ -73,6 +73,7 @@ Variables: freeradius/conf/realm
 Variables: freeradius/conf/users
 Variables: freeradius/conf/port
 Variables: freeradius/conf/accountingport
+Variables: domainname
 
 Type: file
 File: etc/freeradius/3.0/sites-available/inner-tunnel
