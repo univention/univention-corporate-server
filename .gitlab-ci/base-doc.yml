@@ -127,3 +127,5 @@ production:
   environment:
     name: production
     url: http://updates.knut.univention.de/download/docs/
+  after_script:
+    - rm -Rf public
