@@ -32,15 +32,10 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import unicode_literals
-from cStringIO import StringIO
-import VMDKstream
-import boto
-import boto.ec2
+
+import argparse
 import hashlib
-import lxml.builder
-import lxml.etree
 import math
-import optparse
 import os
 import shutil
 import stat
@@ -50,6 +45,13 @@ import tarfile
 import tempfile
 import time
 import uuid
+from io import StringIO
+
+import boto
+import boto.ec2
+import lxml.builder
+import lxml.etree
+import VMDKstream
 
 WORKDIR = TEMPDIR = STOREDIR = None
 
@@ -209,7 +211,7 @@ class Tar(File):
 				if isinstance(source_file, str):
 					handle = StringIO(source_file)
 				else:
-					handle = open(source_file.path(), 'rb')
+					handle = open(source_file.path(), 'r')
 				info = tarfile.TarInfo(name)
 				info.uname = info.gname = 'someone'
 				info.mode = stat.S_IRUSR | stat.S_IWUSR
@@ -1077,7 +1079,7 @@ def create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_
 	E = lxml.builder.ElementMaker()
 	part_count = int(math.ceil(float(vmdk.size()) / part_size))
 	parts = []
-	for index, offset in enumerate(map(lambda x: x * part_size, range(part_count))):
+	for index, offset in enumerate(x * part_size for x in range(part_count)):
 		key = boto.s3.key.Key(bucket, '%s/%s.part%d' % (folder_name, image_name, index, ))  # TODO: redundant code
 		parts.append(
 			E.part(
@@ -1312,24 +1314,23 @@ assert len(frozenset(map(repr, TARGETS))) == len(TARGETS), 'target names not uni
 
 
 def parse_options():
-	parser = optparse.OptionParser()
+	parser = argparse.ArgumentParser(description='create virtual appliances for various virtualization systems from a single disk image')
 	defaults = [('%r' % (target, ), True, ) for target in TARGETS if target.is_default]
 	parser.set_defaults(choices=defaults)
-	parser.usage = '%prog [options]\n create virtual appliances for various virtualization systems from a single disk image'
-	parser.add_option('-s', '--source', help='source image (required)')
-	parser.add_option('-m', '--memory-size', default=1024, type='int', help='size of virtual memory (MiB, default: %default)')
-	parser.add_option('-c', '--cpu-count', default=1, type='int', help='virtual CPU count (default: %default)')
-	parser.add_option('-f', '--filename', help='filename of appliance (default: derived from product)')
-	parser.add_option('-n', '--no-target-specific-filename', default=False, help='do not append hypervisor target to filename of appliance. This is the default if only one target is chosen.')
-	parser.add_option('-p', '--product', help='product name of appliance (default: %default)', default='Univention Corporate Server (UCS)')
-	parser.add_option('--product-url', help='product URL of appliance (default: %default)', default='https://www.univention.com/products/ucs/')
-	parser.add_option('-v', '--version', help='version string of appliance')
-	parser.add_option('--vendor', help='vendor string of appliance (default: %default)', default='Univention GmbH')
-	parser.add_option('--vendor-url', help='vendor URL of appliance (default: %default)', default='At least 2GB of RAM are required. https://www.univention.com/')
-	parser.add_option('-t', '--tempdir', help='temporary directory to use')
-	parser.add_option('--region', help='EC2 region to use (default %default)', default='eu-west-1')
-	parser.add_option('--bucket', help='S3 bucket to use (default %default)', default='generate-appliance')
-	parser.add_option(
+	parser.add_argument('-s', '--source', help='source image (required)')
+	parser.add_argument('-m', '--memory-size', default=1024, type=int, help='size of virtual memory (MiB, default: %(default)s)')
+	parser.add_argument('-c', '--cpu-count', default=1, type=int, help='virtual CPU count (default: %(default)s)')
+	parser.add_argument('-f', '--filename', help='filename of appliance (default: derived from product)')
+	parser.add_argument('-n', '--no-target-specific-filename', default=False, help='do not append hypervisor target to filename of appliance. This is the default if only one target is chosen.')
+	parser.add_argument('-p', '--product', help='product name of appliance (default: %(default)s)', default='Univention Corporate Server (UCS)')
+	parser.add_argument('--product-url', help='product URL of appliance (default: %(default)s)', default='https://www.univention.com/products/ucs/')
+	parser.add_argument('-v', '--version', help='version string of appliance')
+	parser.add_argument('--vendor', help='vendor string of appliance (default: %(default)s)', default='Univention GmbH')
+	parser.add_argument('--vendor-url', help='vendor URL of appliance (default: %(default)s)', default='At least 2GB of RAM are required. https://www.univention.com/')
+	parser.add_argument('-t', '--tempdir', help='temporary directory to use')
+	parser.add_argument('--region', help='EC2 region to use (default %(default)s)', default='eu-west-1')
+	parser.add_argument('--bucket', help='S3 bucket to use (default %(default)s)', default='generate-appliance')
+	parser.add_argument(
 		'-o', '--only', action='store_const', dest='choices', const=[],
 		help='ignore default selections, only create selected targets (must be the first option)',
 	)
@@ -1337,25 +1338,23 @@ def parse_options():
 		helptext = 'create "%s"' % (target, )
 		if target.is_default:
 			helptext += ' (selected by default)'
-		parser.add_option(
+		parser.add_argument(
 			'--%r' % (target, ), help=helptext,
 			action='append_const', dest='choices',
 			const=('%r' % (target, ), True, )
 		)
-		parser.add_option(
+		parser.add_argument(
 			'--no-%r' % (target, ),
 			action='append_const', dest='choices',
 			const=('%r' % (target, ), False, )
 		)
-	(options, args, ) = parser.parse_args()
+	options = parser.parse_args()
 	reverse = dict(('%r' % (target, ), target, ) for target in TARGETS)
 	options.choices = frozenset(
 		reverse[name] for (name, wanted) in dict(options.choices).items() if wanted
 	)
 	if len(options.choices) == 1:
 		options.no_target_specific_filename = True
-	if args:
-		parser.error('additional parameter')
 	if options.source is None:
 		parser.error('source image is required')
 	if options.tempdir is not None:
