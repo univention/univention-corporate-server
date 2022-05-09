@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import argparse
 from contextlib import contextmanager
 from datetime import datetime
@@ -15,12 +15,7 @@ import time
 
 
 def install_python_lmdb():
-    from univention.config_registry import ConfigRegistry, handler_set
-    ucr = ConfigRegistry()
-    ucr.load()
-    if not ucr.is_true("repository/online/unmaintained"):
-        handler_set(["repository/online/unmaintained=yes"])
-        subprocess.call(("univention-install", "python-lmdb"))
+    subprocess.call(("univention-install", "python3-lmdb"))
 
 
 try:
@@ -97,12 +92,12 @@ def activate_mdb(lp):
     try:
         delta = ldb.Message()
         delta.dn = ldb.Dn(samdb, "@PARTITION")
-        delta["backendStore"] = ldb.MessageElement("mdb", ldb.FLAG_MOD_REPLACE, "backendStore")
+        delta["backendStore"] = ldb.MessageElement(b"mdb", ldb.FLAG_MOD_REPLACE, "backendStore")
         samdb.modify(delta)
 
         delta = ldb.Message()
         delta.dn = ldb.Dn(samdb, "@SAMBA_DSDB")
-        delta["requiredFeatures"] = ldb.MessageElement("lmdbLevelOne", ldb.FLAG_MOD_ADD, "requiredFeatures")
+        delta["requiredFeatures"] = ldb.MessageElement(b"lmdbLevelOne", ldb.FLAG_MOD_ADD, "requiredFeatures")
         samdb.modify(delta)
     except ldb.LdbError:
         samdb.transaction_cancel()
@@ -133,7 +128,7 @@ def stopped_samba_and_s4c():
 def sam_ldb_is_using_mdb(lp):
     samdb = open_samdb_raw(lp)
     res = samdb.search(base="@PARTITION", scope=ldb.SCOPE_BASE, attrs=["backendStore"])
-    return (res and "backendStore" in res[0] and str(res[0]["backendStore"]) == "mdb")
+    return (res and "backendStore" in res[0] and res[0]["backendStore"][0] == b"mdb")
 
 
 if __name__ == "__main__":

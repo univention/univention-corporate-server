@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 import subprocess
@@ -111,5 +111,5 @@ with test:
 
 	# Bei Deinstallation einer App mit LDAP-Schema-Erweiterungen sollten die Schema-Pakete nicht deinstalliert werden.
 	output = subprocess.check_output(['dpkg -s univention-self-service-master | grep Status'], shell=True)
-	if output != 'Status: install ok installed\n':
+	if output != b'Status: install ok installed\n':
 		raise ValueError('Master package removed!')

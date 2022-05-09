@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 from ucsschool.lib.models.user import Student
 from univention.admin.uldap import getAdminConnection
@@ -16,17 +16,17 @@ student3 = Student(name='Teststudent3', firstname='Test3', lastname='Student3', 
 student3.create(lo)
 
 s = lo.get(student.dn)
-if ['School1'] != s['ucsschoolSchool']:
+if [b'School1'] != s['ucsschoolSchool']:
     print('Error: Student should only be in School1')
     sys.exit(1)
 
 s2 = lo.get(student2.dn)
-if ['School2'] != s2['ucsschoolSchool']:
+if [b'School2'] != s2['ucsschoolSchool']:
     print('Error: Student should only be in School2')
     sys.exit(1)
 
 s3 = lo.get(student3.dn)
-if set(['School1', 'School2']) != set(s3['ucsschoolSchool']):
+if set([b'School1', b'School2']) != set(s3['ucsschoolSchool']):
     print('Error: Student should be in School1 and School2')
     sys.exit(1)
 
