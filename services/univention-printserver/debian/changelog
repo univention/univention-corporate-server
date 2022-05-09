@@ -373,13 +373,13 @@ univention-printserver (10.0.0-1) unstable; urgency=medium
 
 univention-printserver (9.0.3-5) unstable; urgency=low
 
-  * UMC print quota performance (Bug #33792) 
+  * UMC print quota performance (Bug #33792)
 
  -- Felix Botner <botner@univention.de>  Tue, 26 Apr 2016 18:25:59 +0200
 
 univention-printserver (9.0.3-4) unstable; urgency=low
 
-  * Fixed translation (Bug #33792) 
+  * Fixed translation (Bug #33792)
 
  -- Felix Botner <botner@univention.de>  Wed, 20 Apr 2016 18:33:35 +0200
 
@@ -651,7 +651,7 @@ univention-printserver (7.0.3-4) unstable; urgency=low
 
 univention-printserver (7.0.3-3) unstable; urgency=low
 
-  * Added UCR variable description (Bug #32055) 
+  * Added UCR variable description (Bug #32055)
 
  -- Erik Damrose <damrose@univention.de>  Wed, 24 Jul 2013 15:52:00 +0200
 
@@ -672,8 +672,8 @@ univention-printserver (7.0.3-1) unstable; urgency=low
 
 univention-printserver (7.0.2-1) unstable; urgency=low
 
-  * Added to "79univention-printserver.inst" 
-    and "79univention-printserver-pdf.inst" files, credentials --binddn 
+  * Added to "79univention-printserver.inst"
+    and "79univention-printserver-pdf.inst" files, credentials --binddn
     and --bindpwd for ldapsearch request in case of backup or slave (Bug #19101)
 
  -- Liam Schwez <lschwez@sansad.knut.univention.de>  Tue, 16 Jul 2013 18:01:00 +0200
@@ -686,15 +686,15 @@ univention-printserver (7.0.1-3) unstable; urgency=low
 
 univention-printserver (7.0.1-2) unstable; urgency=low
 
-  * Improve info message of no package 'univention-pritquota'. 
-    in /umc/python/printers/__init__.py 
+  * Improve info message of no package 'univention-pritquota'.
+    in /umc/python/printers/__init__.py
     and /umc/python/printers/de.po (Bug #29001)
 
  -- Liam Schwez <lschwez@sansad.knut.univention.de>  Tue, 09 Jul 2013 13:45:43 +0200
 
 univention-printserver (7.0.1-1) unstable; urgency=low
 
-  * Modified /umc/python/printers/__init__.py and /umc/python/printers/de.po 
+  * Modified /umc/python/printers/__init__.py and /umc/python/printers/de.po
     for checking of univention-printquota package (Bug #29001)
 
  -- Liam Schwez <lschwez@sansad.knut.univention.de>  Tue, 09 Jul 2013 11:25:22 +0200
@@ -709,16 +709,16 @@ univention-printserver (7.0.0-1) unstable; urgency=low
 univention-printserver (6.0.25-5) unstable; urgency=low
 
   * Modified univention-lpadmin. Enabled lpadmin output (Bug# 17660)
-  * Modified cups/systemgroup ucr variable in univention-printserver.postinst. 
+  * Modified cups/systemgroup ucr variable in univention-printserver.postinst.
     Set comma as separator (Bug #28884)
-  * Modified description of ucr variable 
+  * Modified description of ucr variable
     in univention-printserver.univention-config-registry-variables (Bug #28877)
 
  -- Liam Schwez <lschwez@sansad.knut.univention.de>  Tue, 25 Jun 2013 09:55:44 +0200
 
 univention-printserver (6.0.25-4) unstable; urgency=low
 
-  * Set executable file permissions '755' in debian/rules override_dh_fixperms: 
+  * Set executable file permissions '755' in debian/rules override_dh_fixperms:
     on /etc/univention/templates/scripts/etc/cups/cupsd.conf (Bug #28877)
 
  -- Liam Schwez <lschwez@micke.knut.univention.de>  Wed, 05 Jun 2013 08:36:52 +0200
@@ -760,14 +760,14 @@ univention-printserver (6.0.23-1) unstable; urgency=low
 
 univention-printserver (6.0.22-1) unstable; urgency=low
 
-  * changed cupsd.conf file. SystemGroups are now separated by a blank character 
+  * changed cupsd.conf file. SystemGroups are now separated by a blank character
     and not by a comma (Bug #28884)
 
  -- Liam Schwez <lschwez@micke.knut.univention.de>  Tue, 21 May 2013 13:27:11 +0200
 
 univention-printserver (6.0.21-1) unstable; urgency=low
 
-  * added -h localhost to lpadmin call in univention-lpadmin (Bug #28476) 
+  * added -h localhost to lpadmin call in univention-lpadmin (Bug #28476)
   * added description for cups/autostart (Bug #29669)
   * include cupsd.local.conf in cupsd.conf (Bug #19552)
 
@@ -801,7 +801,7 @@ univention-printserver (6.0.20-1) unstable; urgency=low
 
 univention-printserver (6.0.19-1) unstable; urgency=low
 
-  * fixed variable description cups/cups-pdf/anonymous (Bug #17549) 
+  * fixed variable description cups/cups-pdf/anonymous (Bug #17549)
 
  -- Felix Botner <botner@univention.de>  Mon, 18 Feb 2013 16:45:42 +0100
 

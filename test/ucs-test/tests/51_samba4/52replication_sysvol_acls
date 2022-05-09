@@ -167,4 +167,3 @@ if ! [ "$replicated_gpo_fattr" = "$custom_gpo_fattr" ]; then
 	trap enable_sysvol_sync EXIT	## don't cleanup
 	fail_fast 110 "The GPO fattrs have been modified"
 fi
-

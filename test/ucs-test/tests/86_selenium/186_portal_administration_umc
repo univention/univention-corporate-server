@@ -76,4 +76,3 @@ if __name__ == '__main__':
 
 		umc_tester.test_umc()
 	subprocess.call(['univention-portal', 'update'])
-

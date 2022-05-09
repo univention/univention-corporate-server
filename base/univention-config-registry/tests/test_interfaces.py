@@ -8,7 +8,7 @@ import pytest
 from ipaddress import IPv4Address, IPv6Address, IPv4Interface, IPv6Interface
 
 import univention.config_registry.interfaces as ucri
-from univention.config_registry.interfaces import _Iface, Interfaces, forgiving, cmp_alnum  # noqa E402
+from univention.config_registry.interfaces import _Iface, Interfaces, forgiving, cmp_alnum  # noqa: E402
 
 
 @pytest.fixture(autouse=True)

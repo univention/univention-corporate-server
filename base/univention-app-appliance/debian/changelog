@@ -160,7 +160,7 @@ univention-app-appliance (1.0.2-29) unstable; urgency=medium
 
 univention-app-appliance (1.0.2-28) unstable; urgency=medium
 
-  * Bug #44952: Fix typo 
+  * Bug #44952: Fix typo
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 14 Jul 2017 13:49:50 +0200
 
@@ -172,19 +172,19 @@ univention-app-appliance (1.0.2-27) unstable; urgency=medium
 
 univention-app-appliance (1.0.2-26) unstable; urgency=medium
 
-  * Bug #44952: Copy and re-apply generated bootsplash images 
+  * Bug #44952: Copy and re-apply generated bootsplash images
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 07 Jul 2017 11:36:54 +0200
 
 univention-app-appliance (1.0.2-25) unstable; urgency=medium
 
-  * Bug #44952: Mark generated bootsplash images as conffiles 
+  * Bug #44952: Mark generated bootsplash images as conffiles
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 07 Jul 2017 10:44:47 +0200
 
 univention-app-appliance (1.0.2-24) unstable; urgency=medium
 
-  * Bug #44952: Fix position of bootsplash status text. 
+  * Bug #44952: Fix position of bootsplash status text.
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 07 Jul 2017 09:56:00 +0200
 
@@ -619,7 +619,7 @@ univention-app-appliance-branding (0.2.1-3) unstable; urgency=medium
 
 univention-app-appliance-branding (0.2-1) unstable; urgency=medium
 
-  * Bug #38957: Adjusted styling 
+  * Bug #38957: Adjusted styling
 
  -- Johannes Keiser <keiser@univention.de>  Tue, 01 Mar 2016 18:13:14 +0100
 
@@ -637,7 +637,7 @@ univention-app-appliance-branding (0.01-4) unstable; urgency=low
 
 univention-app-appliance-branding (0.01-3) unstable; urgency=low
 
-  * Bug #40096: Do not show again checkbox added. 
+  * Bug #40096: Do not show again checkbox added.
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 26 Feb 2016 17:46:15 +0100
 

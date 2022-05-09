@@ -36,8 +36,8 @@ from pwd import getpwnam
 from six import string_types
 from univention.config_registry import ConfigRegistry
 try:
-	from typing import Any, Callable, List, Optional, Text, Type, TypeVar, Union  # noqa F401
-	from types import TracebackType  # noqa F401
+	from typing import Any, Callable, List, Optional, Text, Type, TypeVar, Union  # noqa: F401
+	from types import TracebackType  # noqa: F401
 
 	_F = TypeVar("_F", bound=Callable[..., Any])
 except ImportError:

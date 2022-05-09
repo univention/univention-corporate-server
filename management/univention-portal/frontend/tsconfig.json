@@ -1,36 +1,59 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "strict": true,
-    "jsx": "preserve",
-    "importHelpers": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
     "baseUrl": ".",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "jsx": "preserve",
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost",
+      "es6"
+    ],
+    "module": "esnext",
+    "moduleResolution": "node",
     "noImplicitAny": false,
-    "resolveJsonModule": true,
-    "types": ["webpack-env", "jest"],
     "paths": {
-      "@/*": ["src/*"],
-      "components/*": ["src/components/*"],
-      "globals/*": ["src/components/globals/*"],
-      "assets/*": ["src/assets/*"],
-      "mixins/*": ["src/mixins/*"],
-      "views/*": ["src/views/*"]
+      "@/*": [
+        "src/*"
+      ],
+      "assets/*": [
+        "src/assets/*"
+      ],
+      "components/*": [
+        "src/components/*"
+      ],
+      "globals/*": [
+        "src/components/globals/*"
+      ],
+      "mixins/*": [
+        "src/mixins/*"
+      ],
+      "views/*": [
+        "src/views/*"
+      ]
     },
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost", "es6" ]
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "esnext",
+    "types": [
+      "webpack-env",
+      "jest"
+    ]
   },
+  "exclude": [
+    "node_modules"
+  ],
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-  ],
-  "exclude": ["node_modules"]
+  ]
 }

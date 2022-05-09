@@ -38,8 +38,8 @@ import logging
 import os
 import subprocess
 import time
-from types import TracebackType  # noqa F401
-from typing import Optional, Type  # noqa F401
+from types import TracebackType  # noqa: F401
+from typing import Optional, Type  # noqa: F401
 
 import selenium.common.exceptions as selenium_exceptions
 from PIL import Image

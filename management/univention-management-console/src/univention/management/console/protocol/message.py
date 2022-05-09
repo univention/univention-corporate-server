@@ -52,7 +52,7 @@ from univention.management.console.log import PARSER, PROTOCOL
 from univention.lib.i18n import Translation
 
 try:
-	from typing import Any, Dict, List, Optional, Text, Union  # noqa F401
+	from typing import Any, Dict, List, Optional, Text, Union  # noqa: F401
 	RequestType = int
 	UmcpBody = Union[dict, str, bytes]
 except ImportError:

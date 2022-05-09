@@ -143,7 +143,7 @@ define([
 				var date = new this.dateClassObj(this.get('currentFocus'));
 				date.setFullYear(val || 0); // if the input is empty set the fullYear to 0 to prevent NaN display errors
 				// use date.getTime() instead of date directly since copying a date object with a year of e.g. 99
-				// in IE11, sets the year to 1999 instead. 
+				// in IE11, sets the year to 1999 instead.
 				this.set('currentFocus', date.getTime(), false);
 				this._yearInput.focus();
 			}));

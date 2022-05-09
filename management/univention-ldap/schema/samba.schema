@@ -23,7 +23,7 @@
 ##
 ## ----- READ THIS WHEN ADDING A NEW ATTRIBUTE OR OBJECT CLASS ------
 ##
-## Run the 'get_next_oid' bash script in this directory to find the 
+## Run the 'get_next_oid' bash script in this directory to find the
 ## next available OID for attribute type and object classes.
 ##
 ##   $ ./get_next_oid
@@ -36,7 +36,7 @@
 ##    <attributetype|objectclass> ( 1.3.6.1.4.1.7165.2.XX.XX NAME ....
 ##                               ^ ^                        ^
 ##
-## The spaces are required for the get_next_oid script (and for 
+## The spaces are required for the get_next_oid script (and for
 ## readability).
 ##
 ## ------------------------------------------------------------------
@@ -384,7 +384,7 @@ attributetype ( 1.3.6.1.4.1.7165.2.1.46 NAME 'sambaStringListOption'
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 
-##attributetype ( 1.3.6.1.4.1.7165.2.1.50 NAME 'sambaPrivName' 
+##attributetype ( 1.3.6.1.4.1.7165.2.1.50 NAME 'sambaPrivName'
 ##	SUP name )
 
 ##attributetype ( 1.3.6.1.4.1.7165.2.1.52 NAME 'sambaPrivilegeList'
@@ -536,10 +536,10 @@ objectclass ( 1.3.6.1.4.1.7165.2.2.15 NAME 'sambaTrustedDomainPassword' SUP top 
 ##
 objectclass ( 1.3.6.1.4.1.7165.2.2.5 NAME 'sambaDomain' SUP top STRUCTURAL
 	DESC 'Samba Domain Information'
-	MUST ( sambaDomainName $ 
-	       sambaSID ) 
+	MUST ( sambaDomainName $
+	       sambaSID )
 	MAY ( sambaNextRid $ sambaNextGroupRid $ sambaNextUserRid $
-	      sambaAlgorithmicRidBase $ 
+	      sambaAlgorithmicRidBase $
 	      sambaMinPwdLength $ sambaPwdHistoryLength $ sambaLogonToChgPwd $
 	      sambaMaxPwdAge $ sambaMinPwdAge $
 	      sambaLockoutDuration $ sambaLockoutObservationWindow $ sambaLockoutThreshold $
@@ -575,7 +575,7 @@ objectclass ( 1.3.6.1.4.1.7165.2.2.11 NAME 'sambaShare' SUP top STRUCTURAL
 objectclass ( 1.3.6.1.4.1.7165.2.2.12 NAME 'sambaConfigOption' SUP top STRUCTURAL
 	DESC 'Samba Configuration Option'
 	MUST ( sambaOptionName )
-	MAY ( sambaBoolOption $ sambaIntegerOption $ sambaStringOption $ 
+	MAY ( sambaBoolOption $ sambaIntegerOption $ sambaStringOption $
 	      sambaStringListoption $ description ) )
 
 

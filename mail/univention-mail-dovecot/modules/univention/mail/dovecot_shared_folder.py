@@ -40,7 +40,7 @@ import imaplib
 import shutil
 import tempfile
 try:
-	from typing import Any, Dict, List, Optional, Tuple  # noqa F401
+	from typing import Any, Dict, List, Optional, Tuple  # noqa: F401
 except ImportError:
 	pass
 

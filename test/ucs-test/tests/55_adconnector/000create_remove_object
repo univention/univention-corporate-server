@@ -14,7 +14,7 @@
 # shellcheck source=../../lib/udm.sh
 . "$TESTLIBPATH/udm.sh" || exit 137
 # shellcheck source=../../lib/random.sh
-. "$TESTLIBPATH/random.sh" || exit 137 
+. "$TESTLIBPATH/random.sh" || exit 137
 
 
 . "adconnector.sh" || exit 137

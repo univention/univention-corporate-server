@@ -31,7 +31,7 @@
 """
 
 import re
-from typing import Callable, Iterator, List, Match, Optional, Sequence, TypeVar, Union  # noqa F401
+from typing import Callable, Iterator, List, Match, Optional, Sequence, TypeVar, Union  # noqa: F401
 
 import six
 from ldap.filter import filter_format

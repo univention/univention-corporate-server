@@ -49,8 +49,8 @@ from debian.deb822 import Deb822
 from . import message_catalogs, sourcefileprocessing, umc
 from .helper import Error, make_parent_dir
 try:
-	from typing import Any, Dict, Iterable, Iterator, List, Optional, Pattern, Tuple, Type  # noqa F401
-	from types import TracebackType  # noqa
+	from typing import Any, Dict, Iterable, Iterator, List, Optional, Pattern, Tuple, Type  # noqa: F401
+	from types import TracebackType  # noqa: F401
 	from mypy_extensions import TypedDict
 	BaseModule = TypedDict('BaseModule', {'module_name': str, 'package': str, 'abs_path_to_src_pkg': str, 'relative_path_src_pkg': str})
 except ImportError:

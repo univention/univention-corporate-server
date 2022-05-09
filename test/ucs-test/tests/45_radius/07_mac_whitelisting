@@ -25,8 +25,8 @@ def eapol_test(username, client_mac):
         password="univention"
         phase2="autheap=MSCHAPV2"
 }}
-'''.format(username) # noqa E101 (flake8 ignore mixed indentation)
-	with tempfile.NamedTemporaryFile() as fd: # noqa E101
+'''.format(username)  # noqa: E101 (flake8 ignore mixed indentation)
+	with tempfile.NamedTemporaryFile() as fd:  # noqa: E101
 		fd.write(testdata.encode('UTF-8'))
 		fd.flush()
 		subprocess.check_call(['/usr/sbin/eapol_test', '-c', fd.name, '-M', client_mac, '-s', 'testing123'])

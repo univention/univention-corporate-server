@@ -34,7 +34,7 @@ from itertools import cycle
 from os import walk
 from os.path import basename, dirname, isdir, join, normpath, relpath, splitext
 from shlex import split
-from typing import Callable, Dict, Iterable, Iterator, List, Set, Tuple, Union  # noqa F401
+from typing import Callable, Dict, Iterable, Iterator, List, Set, Tuple, Union  # noqa: F401
 
 from debian.changelog import Changelog, ChangelogParseError  # Version
 
@@ -355,7 +355,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		   \d+\.\d+
 		   (?:- (?:\d+\.\d+)? )?
 		)*
-		$''', re.VERBOSE)  # noqa E101
+		$''', re.VERBOSE)  # noqa: E101
 	# /usr/share/dh-python/dhpython/tools.py # INSTALL_RE
 	RE_NAMESPACE = re.compile(
 		r'''^
@@ -367,7 +367,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		(?:usr/lib/pymodules/python[0-9.]+/
 		  |usr/lib/python[0-9.]+/
 		  |usr/share/pyshared/
-		)''', re.VERBOSE)  # noqa E101
+		)''', re.VERBOSE)  # noqa: E101
 	RE_COMPARE_VERSIONS = re.compile(
 		r'''
 		\b dpkg \s+ --compare-versions
@@ -378,7 +378,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		\s+
 		( (?: '[^']*' | "[^"]*" | \S )+ )
 		\s*(?: $ | ; | && | \|\| | \))
-		''', re.VERBOSE)  # noqa E101
+		''', re.VERBOSE)  # noqa: E101
 	RE_ARG2 = re.compile(r'^("?)\$(?:2|\{2[#%:?+=/-[^}]*\})(\1)$')
 
 

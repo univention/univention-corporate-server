@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Reset password in AD and verify shadowMax, shadowLastChange (posix pw expiry) and krb5PasswordEnd"
 ## exposure: dangerous

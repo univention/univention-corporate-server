@@ -43,7 +43,7 @@ import ldap
 from ldap.dn import escape_dn_chars
 from random import choice
 try:
-	from typing import Iterator  # noqa F401
+	from typing import Iterator  # noqa: F401
 except ImportError:
 	pass
 

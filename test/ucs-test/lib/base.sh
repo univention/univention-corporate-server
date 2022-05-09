@@ -155,7 +155,7 @@ fail_fast () { # Like fail_test "$reason" "$message" but with exit
 	exit "$RETVAL"
 }
 fail_bool () { #This is intended to be called directly after functions that are supposed to return 0 on successful validation, 1 on failure or anything else in case of an internal error.
-	# Be sure not to use the !-Operator on such functions, as this prohibits to distinguish between check failure and internal test error. 
+	# Be sure not to use the !-Operator on such functions, as this prohibits to distinguish between check failure and internal test error.
 	# The intended calling scheme would be along the lines of: some_boolean_check; fail_bool 0 111 "Check xxx failed" or some_boolean_check; fail_bool 1 121
 	local rc=$?
 	local expected_retval="${1:-0}"

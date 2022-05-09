@@ -3,7 +3,7 @@
 ## desc: Test userPassword with K5KEY in combination with userexpiry
 ## tags:
 ##  - basic
-## roles: 
+## roles:
 ##  - domaincontroller_master
 ## packages:
 ##  - slapd

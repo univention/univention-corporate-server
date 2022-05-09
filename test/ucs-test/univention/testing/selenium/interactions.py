@@ -35,7 +35,7 @@ from __future__ import absolute_import
 import json
 import logging
 import time
-from typing import Any, List, Union  # noqa F401
+from typing import Any, List, Union  # noqa: F401
 
 import selenium.common.exceptions as selenium_exceptions
 import six

@@ -67,13 +67,13 @@ univention-printclient (7.0.0-1) unstable; urgency=low
 
 univention-printclient (6.0.4-3) unstable; urgency=low
 
-  * move old template in preinst (Bug #25472) 
+  * move old template in preinst (Bug #25472)
 
  -- Felix Botner <botner@univention.de>  Wed, 11 Jul 2012 09:22:03 +0200
 
 univention-printclient (6.0.4-2) unstable; urgency=low
 
-  * manually update ucr in postinst (Bug #25472) 
+  * manually update ucr in postinst (Bug #25472)
 
  -- Felix Botner <botner@univention.de>  Wed, 11 Jul 2012 09:03:41 +0200
 
@@ -151,7 +151,7 @@ univention-printclient (4.0.0-1) unstable; urgency=low
 
 univention-printclient (3.0.2-1) unstable; urgency=low
 
-  * updated copyright Bug #16818 
+  * updated copyright Bug #16818
 
  -- Felix Botner <botner@univention.de>  Fri, 08 Jan 2010 10:23:34 +0100
 
@@ -244,7 +244,7 @@ univention-printclient (1.0.0-1) unstable; urgency=low
 
 univention-printclient (0.9) unstable; urgency=low
 
-  * fixed creation of tempfile 
+  * fixed creation of tempfile
 
  -- Andreas BÃŒsching <buesching@univention.de>  Thu,  7 Dec 2006 16:22:37 +0100
 
@@ -262,7 +262,7 @@ univention-printclient (0.6) unstable; urgency=low
 
 univention-printclient (0.5) unstable; urgency=low
 
-  * change interpreter to python2.4 
+  * change interpreter to python2.4
 
  -- Wolf Wiegand <wiegand@univention.de>  Thu,  8 Dec 2005 08:13:07 +0100
 
@@ -274,19 +274,19 @@ univention-printclient (0.4) unstable; urgency=low
 
 univention-printclient (0.3) unstable; urgency=low
 
-  * do not use `-s' when invoking kprinter 
+  * do not use `-s' when invoking kprinter
 
  -- Sven Dreyer <dreyer@univention.de>  Mon,  4 Apr 2005 11:51:11 +0200
 
 univention-printclient (0.2) unstable; urgency=low
 
-  * If lp or lpr are invoked, use kprinter if $DISPLAY is set 
+  * If lp or lpr are invoked, use kprinter if $DISPLAY is set
 
  -- Sven Dreyer <dreyer@univention.de>  Wed,  1 Dec 2004 11:54:20 +0100
 
 univention-printclient (0.1) unstable; urgency=low
 
-  * Initial Release 
+  * Initial Release
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue,  2 Nov 2004 14:33:58 +0100
 

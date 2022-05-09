@@ -33,12 +33,12 @@ import re
 from glob import glob
 from os import listdir
 from os.path import curdir, exists, join, splitext
-from typing import Dict, Iterable, Iterator, Set, Tuple  # noqa F401
+from typing import Dict, Iterable, Iterator, Set, Tuple  # noqa: F401
 
 from apt import Cache  # type: ignore
 
 import univention.ucslint.base as uub
-from apt_pkg import Version  # noqa F401
+from apt_pkg import Version  # noqa: F401
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):

@@ -4,7 +4,7 @@ AUTOMAKE_OPTIONS = foreign
 
 INCLUDES = -I$(top_srcdir)/include
 
-bin_PROGRAMS = univentionLicenseTest 
+bin_PROGRAMS = univentionLicenseTest
 sbin_SCRIPTS = univention-license-import
 
 univentionLicenseTest_SOURCES = test.c

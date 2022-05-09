@@ -108,7 +108,7 @@ univention-heimdal (11.0.1-4) unstable; urgency=medium
 
 univention-heimdal (11.0.1-3) unstable; urgency=medium
 
-  * Bug #33214: Add UCR option for ignore_acceptor_hostname, 
+  * Bug #33214: Add UCR option for ignore_acceptor_hostname,
     kerberos/defaults/ignore_acceptor_hostname
 
  -- Erik Damrose <damrose@univention.de>  Fri, 09 Feb 2018 13:32:18 +0100
@@ -259,7 +259,7 @@ univention-heimdal (7.0.0-1) unstable; urgency=low
   * Update/review UCR variable descriptions (Bug #30943)
     Mark kerberos/realm as read-only
     Remove UCR variable descriptions for kerberos/v4tickets, kerberos/enable/kerberos4,
-    kerberos/enable/524 and kerberos/enable/kaserver; krb4 no longer support in 
+    kerberos/enable/524 and kerberos/enable/kaserver; krb4 no longer support in
     current Heimdal
     Remove UCR variable descriptions for kerberos/password/quality/ascii_lowercase,
     kerberos/password/quality/ascii_uppercase, kerberos/password/quality/diff_ok,
@@ -268,7 +268,7 @@ univention-heimdal (7.0.0-1) unstable; urgency=low
     and kerberos/password/quality/up_credit. These are no longer used, instead
     the password strength requirements are configured for all key types through
     the variables password/quality/*
-  * Remove empty debian/docs file (fixes ucslint warning)	
+  * Remove empty debian/docs file (fixes ucslint warning)
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 30 Aug 2013 14:03:34 +0200
 
@@ -413,7 +413,7 @@ univention-heimdal (5.0.21-1) unstable; urgency=low
 
 univention-heimdal (5.0.20-1) unstable; urgency=low
 
-  * fixed logrotate template (Bug #18002) 
+  * fixed logrotate template (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 16:28:20 +0100
 
@@ -487,13 +487,13 @@ univention-heimdal (5.0.13-1) unstable; urgency=low
 
 univention-heimdal (5.0.12-2) unstable; urgency=low
 
-  * fixed univention-config-registry (Bug #18002) 
+  * fixed univention-config-registry (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 16:14:01 +0200
 
 univention-heimdal (5.0.12-1) unstable; urgency=low
 
-  * added logrotate configuration (Bug #18002) 
+  * added logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Tue, 11 Oct 2011 16:02:34 +0200
 
@@ -652,13 +652,13 @@ univention-heimdal (4.0.3-3) unstable; urgency=low
 
 univention-heimdal (4.0.3-2) unstable; urgency=low
 
-  * set kerberos/kdc to hostname.domain (with this update) Bug #19020 
+  * set kerberos/kdc to hostname.domain (with this update) Bug #19020
 
  -- Felix Botner <botner@univention.de>  Tue, 08 Feb 2011 10:56:29 +0100
 
 univention-heimdal (4.0.3-1) unstable; urgency=low
 
-  * use fqdn (hostname.domain) for kerberos/kdc Bug #19020 
+  * use fqdn (hostname.domain) for kerberos/kdc Bug #19020
 
  -- Felix Botner <botner@univention.de>  Wed, 02 Feb 2011 16:32:03 +0100
 

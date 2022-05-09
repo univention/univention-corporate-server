@@ -38,7 +38,7 @@ import re
 import sys
 from argparse import ArgumentParser, FileType
 from base64 import b64decode
-from typing import IO, Iterable, Iterator  # noqa F401
+from typing import IO, Iterable, Iterator  # noqa: F401
 
 __all__ = [
 	"ldif_decode",

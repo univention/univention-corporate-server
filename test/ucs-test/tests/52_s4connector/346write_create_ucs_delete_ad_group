@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Create an UCS-Group and Delete the corresponding AD-Group in write mode"
 ## exposure: dangerous

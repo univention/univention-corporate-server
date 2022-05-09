@@ -1,80 +1,80 @@
 {
-	"title_WRONGUSERPASS": {
-		"en": "Incorrect username or password"
-	},
-	"descr_WRONGUSERPASS": {
-		"en": "Either no user with the given username could be found, or the password you gave was wrong. Please check the username and try again."
-	},
-	"title_univention:PW_CHANGE_FAILED": {
-		"en": "Changing password failed"
-	},
-	"descr_univention:PW_CHANGE_FAILED": {
-		"en": "%s"
-	},
-	"title_LDAP_ACCDISABLED": {
-		"en": "Account disabled"
-	},
-	"descr_LDAP_ACCDISABLED": {
-		"en": "The LDAP account is disabled, login is denied"
-	},
-	"title_LDAP_ACCEXPIRED": {
-		"en": "Account expired"
-	},
-	"descr_LDAP_ACCEXPIRED": {
-		"en": "The LDAP account is expired, login is denied"
-	},
-	"title_KRB_ACCEXPIRED": {
-		"en": "Account expired"
-	},
-	"descr_KRB_ACCEXPIRED": {
-		"en": "The Kerberos account is expired, login is denied"
-	},
-	"title_SAMBA_ACCEXPIRED": {
-		"en": "Account expired"
-	},
-	"descr_SAMBA_ACCEXPIRED": {
-		"en": "The Samba account is expired, login is denied"
-	},
-	"title_LDAP_PWCHANGE": {
-		"en": "The password has expired and must be renewed"
-	},
-	"descr_LDAP_PWCHANGE": {
-		"en": ""
-	},
-	"title_KRB_PWCHANGE": {
-		"en": "The password has expired and must be renewed"
-	},
-	"descr_KRB_PWCHANGE": {
-		"en": ""
-	},
-	"title_SAMBA_PWCHANGE": {
-		"en": "The password has expired and must be renewed"
-	},
-	"descr_SAMBA_PWCHANGE": {
-		"en": ""
-	},
-	"title_SAMBA_ACCLOCKED": {
-		"en": "Account locked"
-	},
-	"descr_SAMBA_ACCLOCKED": {
-		"en": "The Samba account is locked, login is denied"
-	},
-	"title_KRB_ACCLOCKED": {
-		"en": "Account locked"
-	},
-	"descr_KRB_ACCLOCKED": {
-		"en": "The Kerberos account is locked, login is denied"
-	},
-	"title_univention:RETYPE_MISMATCH": {
-		"en": "Changing password failed"
-	},
-	"descr_univention:RETYPE_MISMATCH": {
-		"en": "The passwords do not match, please retype again."
-	},
-	"title_univention:PASSWORD_CHANGE_SUCCESS": {
-		"en": "The password has been changed successfully"
-	},
-	"descr_univention:PASSWORD_CHANGE_SUCCESS": {
-		"en": "Please login again."
-	}
+  "descr_KRB_ACCEXPIRED": {
+    "en": "The Kerberos account is expired, login is denied"
+  },
+  "descr_KRB_ACCLOCKED": {
+    "en": "The Kerberos account is locked, login is denied"
+  },
+  "descr_KRB_PWCHANGE": {
+    "en": ""
+  },
+  "descr_LDAP_ACCDISABLED": {
+    "en": "The LDAP account is disabled, login is denied"
+  },
+  "descr_LDAP_ACCEXPIRED": {
+    "en": "The LDAP account is expired, login is denied"
+  },
+  "descr_LDAP_PWCHANGE": {
+    "en": ""
+  },
+  "descr_SAMBA_ACCEXPIRED": {
+    "en": "The Samba account is expired, login is denied"
+  },
+  "descr_SAMBA_ACCLOCKED": {
+    "en": "The Samba account is locked, login is denied"
+  },
+  "descr_SAMBA_PWCHANGE": {
+    "en": ""
+  },
+  "descr_WRONGUSERPASS": {
+    "en": "Either no user with the given username could be found, or the password you gave was wrong. Please check the username and try again."
+  },
+  "descr_univention:PASSWORD_CHANGE_SUCCESS": {
+    "en": "Please login again."
+  },
+  "descr_univention:PW_CHANGE_FAILED": {
+    "en": "%s"
+  },
+  "descr_univention:RETYPE_MISMATCH": {
+    "en": "The passwords do not match, please retype again."
+  },
+  "title_KRB_ACCEXPIRED": {
+    "en": "Account expired"
+  },
+  "title_KRB_ACCLOCKED": {
+    "en": "Account locked"
+  },
+  "title_KRB_PWCHANGE": {
+    "en": "The password has expired and must be renewed"
+  },
+  "title_LDAP_ACCDISABLED": {
+    "en": "Account disabled"
+  },
+  "title_LDAP_ACCEXPIRED": {
+    "en": "Account expired"
+  },
+  "title_LDAP_PWCHANGE": {
+    "en": "The password has expired and must be renewed"
+  },
+  "title_SAMBA_ACCEXPIRED": {
+    "en": "Account expired"
+  },
+  "title_SAMBA_ACCLOCKED": {
+    "en": "Account locked"
+  },
+  "title_SAMBA_PWCHANGE": {
+    "en": "The password has expired and must be renewed"
+  },
+  "title_WRONGUSERPASS": {
+    "en": "Incorrect username or password"
+  },
+  "title_univention:PASSWORD_CHANGE_SUCCESS": {
+    "en": "The password has been changed successfully"
+  },
+  "title_univention:PW_CHANGE_FAILED": {
+    "en": "Changing password failed"
+  },
+  "title_univention:RETYPE_MISMATCH": {
+    "en": "Changing password failed"
+  }
 }

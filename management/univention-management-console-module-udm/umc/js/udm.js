@@ -577,7 +577,7 @@ define([
 					'mail/mail'           : _('Add a new mail object.'),
 					'nagios/nagios'       : _('Add a new Nagios object.'),
 					'policies/policy'     : _('Add a new policy.'),
-					'portals/all' : _('Add a new portal object.') 
+					'portals/all' : _('Add a new portal object.')
 				}[this.moduleFlavor];
 				if (!text) {
 					text = _('Add a new LDAP object.');
@@ -597,7 +597,7 @@ define([
 					'mail/mail'           : _('Edit the mail object.'),
 					'nagios/nagios'       : _('Edit the Nagios object.'),
 					'policies/policy'     : _('Edit the policy.'),
-					'portals/all' : _('Edit the portal object.') 
+					'portals/all' : _('Edit the portal object.')
 				}[this.moduleFlavor];
 				if (!text) {
 					text = _('Edit the LDAP object.');
@@ -617,7 +617,7 @@ define([
 					'mail/mail'           : _('Delete the selected mail objects.'),
 					'nagios/nagios'       : _('Delete the selected Nagios objects.'),
 					'policies/policy'     : _('Delete the selected policies.'),
-					'portals/all' : _('Delete the selected portal object.') 
+					'portals/all' : _('Delete the selected portal object.')
 				}[this.moduleFlavor];
 				if (!text) {
 					text = _('Delete the selected LDAP objects.');
@@ -640,7 +640,7 @@ define([
 						'mail/mail'           : _('No mail objects could be found.'),
 						'nagios/nagios'       : _('No Nagios objects could be found.'),
 						'policies/policy'     : _('No policies could be found.'),
-						'portals/all' : _('No portal object could be found.') 
+						'portals/all' : _('No portal object could be found.')
 					}[this.moduleFlavor];
 					if (!text) {
 						text = _('No LDAP objects could be found.');

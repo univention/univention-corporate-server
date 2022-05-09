@@ -18,10 +18,10 @@ if (array_key_exists('pageid', $this->data)) {
 		'pre' => &$this->data['htmlinject']['htmlContentPre'],
 		'post' => &$this->data['htmlinject']['htmlContentPost'],
 		'head' => &$this->data['htmlinject']['htmlContentHead'],
-		'jquery' => &$jquery, 
+		'jquery' => &$jquery,
 		'page' => $this->data['pageid']
 	);
-		
+
 	SimpleSAML_Module::callHooks('htmlinject', $hookinfo);
 }
 

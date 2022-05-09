@@ -33,7 +33,7 @@
 case "$1" in
 	install|upgrade)
 		# remove old templates (lp, lpr) for this update
-		if [ -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.4-2; then	
+		if [ -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.4-2; then
 			if [ ! -d /etc/univention/templates/removed/ ] ; then
 				mkdir -p /etc/univention/templates/removed/
 			fi

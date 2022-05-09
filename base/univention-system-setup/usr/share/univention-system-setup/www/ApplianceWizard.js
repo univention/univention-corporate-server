@@ -3061,7 +3061,7 @@ define([
 
 				var promise = this.standbyDuring(deferred);
 				return promise;
-			} 
+			}
 
 
 			// update summary page

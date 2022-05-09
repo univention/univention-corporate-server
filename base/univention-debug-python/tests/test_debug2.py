@@ -9,7 +9,7 @@ from logging import DEBUG
 import pytest
 import univention.debug2 as ud
 try:
-	from typing import Callable, Dict, Iterator, Tuple  # noqa F401
+	from typing import Callable, Dict, Iterator, Tuple  # noqa: F401
 except ImportError:
 	pass
 

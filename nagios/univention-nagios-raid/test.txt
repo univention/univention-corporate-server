@@ -3,7 +3,7 @@
         /dev/sdc1 /dev/sdc2
      -> ...
 
-   * Raid Status mdadm 
+   * Raid Status mdadm
      -> --detail /dev/md0
 
    * Block Device als fehlerhaft markieren

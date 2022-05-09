@@ -1,6 +1,6 @@
 //
 // Univention Nagios Plugin
-//  check_univention_ad_connector_suidwrapper: 
+//  check_univention_ad_connector_suidwrapper:
 //  wrapper to call script for checking Active Directory connector status
 //
 // Copyright 2011-2022 Univention GmbH
@@ -49,7 +49,7 @@ char* strSanitize(char * str)
 {
 	int n = strlen(str);
 	int i = 0;
-	
+
 	// replace all insane characters by '_'
 	i = strspn(str, saneChars);
 	while (i < n) {
@@ -70,13 +70,13 @@ main( int argc, char ** argv, char ** envp )
 	uid_t uid = getuid();
 	if (setgid(getegid()))
 		perror("setgid");
-	if (setuid(geteuid())) 
+	if (setuid(geteuid()))
 		perror("setuid");
-	
+
 	if (argc >= 2)
 		execle(COMMAND, COMMAND, strSanitize(argv[1]), (char *)0, (char *)0);
 		//printf("%s %s\n", COMMAND, strSanitize(argv[1]));
-	else 
+	else
 		execle(COMMAND, COMMAND, (char *)0, (char *)0);
 		//printf("%s\n", COMMAND);
 	setuid(uid);

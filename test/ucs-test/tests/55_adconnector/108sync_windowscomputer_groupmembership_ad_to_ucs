@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Test sync of group memberships for windows computer from AD to UCS in sync-mode"
 ## exposure: dangerous

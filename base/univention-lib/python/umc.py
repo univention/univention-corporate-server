@@ -48,11 +48,11 @@ import base64
 
 from six.moves.http_cookies import SimpleCookie
 from six.moves.http_client import HTTPSConnection, HTTPException
-from six.moves import http_client as httplib  # noqa F401
+from six.moves import http_client as httplib  # noqa: F401
 
 from univention.config_registry import ConfigRegistry
 
-from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union  # noqa F401
+from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union  # noqa: F401
 _T = TypeVar("_T")
 
 ucr = ConfigRegistry()

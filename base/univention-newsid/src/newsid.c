@@ -81,10 +81,10 @@ int main ( int argc, char * argv[] ) {
   "Options:\n"
   "\t-h | --help:\n"
   "\tprint this usage message and exit program\n\n";
- 
-  
+
+
   if(argc >= 1) {
-    for(index_options=1;index_options<argc;index_options++) {        
+    for(index_options=1;index_options<argc;index_options++) {
       if (strcmp(argv[index_options],"--help")==0 || strcmp(argv[index_options],"-h")==0) {
         help_flag=1;
       } else {
@@ -98,8 +98,8 @@ int main ( int argc, char * argv[] ) {
     fprintf(stdout,"%s",help_text);
     exit(0);
   }
-  
- 
+
+
   generate_random_sid( &sid );
   sid_to_string ( sid_str, &sid );
 

@@ -87,7 +87,7 @@ test_change_password () {
 	local old_password=${2:?missing old password}
 	local new_password=${3:?missing new password}
 	echo "Changing password of User: $user"
-	expect ~/product-tests/domain-join/kpasswd "$user" "$old_password" "$new_password" 
+	expect ~/product-tests/domain-join/kpasswd "$user" "$old_password" "$new_password"
 }
 
 test_home_directory () {
@@ -113,7 +113,7 @@ run_tests () {
 	local user_lastname=${6:?missing user lastname}
 	local user_password=${7:?missing user password}
 	local new_user_password=${8:?missing new user password}
-	
+
 	if $run_tests; then
 		test_univention_domain_join_cli "$dc_ip" "$admin" "$admin_password"
 		test_user "$admin" "$admin_password"

@@ -5,7 +5,7 @@ your email address, please follow this link:
 
 {tokenlink}
 
-If the link does not work, you can go to 
+If the link does not work, you can go to
 
 {link}
 

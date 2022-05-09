@@ -49,7 +49,7 @@ from univention.config_registry.filters import filter_shell, filter_keys_only, f
 if six.PY2:
 	from io import open
 try:
-	from typing import Any, Callable, Dict, IO, Iterator, List, NoReturn, Optional, Tuple  # noqa F401
+	from typing import Any, Callable, Dict, IO, Iterator, List, NoReturn, Optional, Tuple  # noqa: F401
 except ImportError:  # pragma: no cover
 	pass
 

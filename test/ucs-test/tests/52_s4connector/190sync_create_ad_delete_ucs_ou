@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Create an AD-Ou and remove the corresponding UCS-Ou in sync mode"
 ## exposure: dangerous

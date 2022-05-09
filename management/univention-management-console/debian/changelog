@@ -557,7 +557,7 @@ univention-management-console (11.0.4-100) unstable; urgency=medium
 
 univention-management-console (11.0.4-99) unstable; urgency=medium
 
-  * Bug #51729: add ucr variable to modify the limit of file descriptors 
+  * Bug #51729: add ucr variable to modify the limit of file descriptors
     for the umc-web-server
 
  -- Julia Bremer <bremer@univention.de>  Mon, 03 Aug 2020 20:30:02 +0200
@@ -1642,7 +1642,7 @@ univention-management-console (9.0.80-57) unstable; urgency=medium
 
 univention-management-console (9.0.80-56) unstable; urgency=medium
 
-  * Bug #44966: Improve error handling if setting "umc/saml/idp-server" fails 
+  * Bug #44966: Improve error handling if setting "umc/saml/idp-server" fails
 
  -- Jürn Brodersen <brodersen@univention.de>  Thu, 20 Jul 2017 16:03:29 +0200
 
@@ -2238,7 +2238,7 @@ univention-management-console (9.0.44-1) unstable; urgency=medium
 
 univention-management-console (9.0.43-4) unstable; urgency=medium
 
-  * Bug #42174: prevent umcpCommand loops during session timeout 
+  * Bug #42174: prevent umcpCommand loops during session timeout
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 01 Mar 2017 18:09:13 +0100
 
@@ -3857,19 +3857,19 @@ univention-management-console (6.0.15-4) unstable; urgency=low
 
 univention-management-console (6.0.15-3) unstable; urgency=low
 
-  * ucs overview page (Bug #32611) 
+  * ucs overview page (Bug #32611)
 
  -- Felix Botner <botner@univention.de>  Mon, 07 Oct 2013 14:09:48 +0200
 
 univention-management-console (6.0.15-2) unstable; urgency=low
 
-  * ucs overview page (Bug #32611) 
+  * ucs overview page (Bug #32611)
 
  -- Felix Botner <botner@univention.de>  Tue, 01 Oct 2013 15:35:36 +0200
 
 univention-management-console (6.0.15-1) unstable; urgency=low
 
-  * ucs overview page (Bug #32611) 
+  * ucs overview page (Bug #32611)
 
  -- Felix Botner <botner@univention.de>  Tue, 01 Oct 2013 15:02:21 +0200
 

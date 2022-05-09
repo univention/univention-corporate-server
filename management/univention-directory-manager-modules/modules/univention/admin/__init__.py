@@ -36,7 +36,7 @@ from __future__ import absolute_import, print_function
 import copy
 import sys
 import re
-from typing import TYPE_CHECKING, Any, Callable, Container, Iterable, List, Match, Optional, Tuple, Type, Union  # noqa F401
+from typing import TYPE_CHECKING, Any, Callable, Container, Iterable, List, Match, Optional, Tuple, Type, Union  # noqa: F401
 
 import six
 from ldap.filter import filter_format
@@ -46,7 +46,7 @@ import univention.config_registry
 import univention.debug as ud
 from univention.admin._ucr import configRegistry
 if TYPE_CHECKING:
-	from univention.admin.layout import Tab  # noqa F401
+	from univention.admin.layout import Tab  # noqa: F401
 
 
 __all__ = ('configRegistry', 'ucr_overwrite_properties', 'pattern_replace', 'property', 'option', 'ucr_overwrite_module_layout', 'ucr_overwrite_layout', 'extended_attribute', 'policiesGroup', 'modules', 'objects', 'syntax', 'hook', 'mapping')
@@ -624,7 +624,7 @@ class policiesGroup:
 
 
 univention.admin = sys.modules[__name__]
-from univention.admin import modules, objects, syntax, hook, mapping  # noqa
+from univention.admin import modules, objects, syntax, hook, mapping  # noqa: F401
 syntax.import_syntax_files()
 hook.import_hook_files()
 

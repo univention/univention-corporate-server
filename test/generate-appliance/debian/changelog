@@ -149,7 +149,7 @@ generate-appliance (0.2.4-1) unstable; urgency=medium
 
 generate-appliance (0.2.3-1) unstable; urgency=low
 
-  * Cleanup of virtualbox xml to support import on MS Windows (Bug #35756) 
+  * Cleanup of virtualbox xml to support import on MS Windows (Bug #35756)
 
  -- Erik Damrose <damrose@univention.de>  Thu, 18 Sep 2014 10:40:09 +0200
 

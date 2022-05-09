@@ -36,19 +36,19 @@ univention-sasl (4.0.1-1) unstable; urgency=medium
 
 univention-sasl (3.0.0-3) unstable; urgency=low
 
-  * Added mail/saslauthd/cache/timeout?1800 (Bug #36949) 
+  * Added mail/saslauthd/cache/timeout?1800 (Bug #36949)
 
  -- Felix Botner <botner@univention.de>  Mon, 02 Feb 2015 13:06:23 +0100
 
 univention-sasl (3.0.0-2) unstable; urgency=low
 
-  * Added mail/saslauthd/cache/timeout?1800 (Bug #36949) 
+  * Added mail/saslauthd/cache/timeout?1800 (Bug #36949)
 
  -- Felix Botner <botner@univention.de>  Fri, 12 Dec 2014 11:20:54 +0100
 
 univention-sasl (3.0.0-1) unstable; urgency=low
 
-  * update to UCS 4.0 (Bug #35264) 
+  * update to UCS 4.0 (Bug #35264)
 
  -- Felix Botner <botner@univention.de>  Wed, 01 Oct 2014 13:49:17 +0200
 

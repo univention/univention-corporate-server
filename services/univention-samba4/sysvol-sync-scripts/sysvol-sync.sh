@@ -232,7 +232,7 @@ sync_from_active_downstream_DCs() {
 	if is_ucr_false "samba4/sysvol/sync/from_downstream"; then
 		return
 	fi
-		
+
 	## merge updates pushed to us by other s4DCs
 	for triggerfile in $(find "${SYSVOL_SYNC_TRIGGERDIR}" -mindepth 1 -maxdepth 1 -type f); do
 		## clear flag
@@ -316,7 +316,7 @@ sync_from_upstream_DC() {
 		if is_ucr_false "samba4/sysvol/sync/from_upstream"; then
 			continue
 		fi
-		
+
 		## check if parent s4dc has changes:
 		stderr_log_debug "[${s4dc}] rsync check for changes on upstream DC"
 
@@ -359,7 +359,7 @@ sync_from_upstream_DC() {
 
 # get a lock, prevent script from running twice
 flock -n 9 || exit 0
- 
+
 
 if ! [ -d "$SYSVOL_SYNC_TRIGGERDIR" ]; then
 	mkdir -p "$SYSVOL_SYNC_TRIGGERDIR"

@@ -46,8 +46,8 @@ import ssl
 from hashlib import md5, sha256
 import socket
 from locale import getlocale
-from logging import Logger  # noqa F401
-from typing import TYPE_CHECKING, Any, Container, Dict, Iterable, List, Mapping, Optional, Sequence, Text, Tuple, Type, TypeVar, Union  # noqa F401
+from logging import Logger  # noqa: F401
+from typing import TYPE_CHECKING, Any, Container, Dict, Iterable, List, Mapping, Optional, Sequence, Text, Tuple, Type, TypeVar, Union  # noqa: F401
 
 from six.moves.configparser import RawConfigParser, ParsingError
 from six.moves import urllib_request, http_client
@@ -62,7 +62,7 @@ from univention.appcenter.log import get_base_logger
 from univention.appcenter.ucr import ucr_get, ucr_keys
 
 if TYPE_CHECKING:
-	from univention.appcenter.app import App  # noqa F401
+	from univention.appcenter.app import App  # noqa: F401
 
 _ConfigParser = TypeVar("_ConfigParser", bound=RawConfigParser)
 _T = TypeVar("_T")

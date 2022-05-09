@@ -1,16 +1,16 @@
 /* Accordion
- * 
+ *
  * Styling AccordionContainer basically means styling the accordion pane (dijitAccordionInnerContainer)
  * and the title inside of it (dijitAccordionTitle).   There are 4 basic states to style:
- * 
- * 1. closed pane (and default styling): 
+ *
+ * 1. closed pane (and default styling):
  * 		.dijitAccordionInnerContainer - container for each accordion child
  * 		.dijitAccordionTitle - title for each accordion child
  *
  * 2. active closed pane (ie, mouse down on a title bar)
  * 		.dijitAccordionInnerContainerActive - for background-color, border
  * 		.dijitAccordionInnerContainerActive dijitAccordionTitle - for text color
- * 
+ *
  * 3. open pane (expanded child)
  *		.dijitAccordionChildWrapper - wraps around the child widget (typically ContentPane)
  *			setting a margin so that there's blue trim all the way around the child
@@ -19,7 +19,7 @@
  *
  * 		.dijitAccordionInnerContainerSelected - for background-color, border
  * 		.dijitAccordionInnerContainerSelected .dijitAccordionTitle - for text color
- * 
+ *
  * 4. hovered pane, open or closed
  * 		The selectors below affect hovering over both a closed pane (ie, hovering a title bar),
  * 		and hovering over an open pane.   Also, treat mouse down on an open pane as a hover:
@@ -57,7 +57,7 @@
 	border:1px solid $selected-border-color
 	margin: 0 2px 2px
 
-	
+
 .umc .dijitAccordionContainer .dijitAccordionContainer-child
 	/* this is affecting the child widget itself */
 	padding: 9px

@@ -28,7 +28,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
-from typing import Any, Dict  # noqa F401
+from typing import Any, Dict  # noqa: F401
 
 import univention.ucslint.base as uub
 

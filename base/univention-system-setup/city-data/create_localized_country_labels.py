@@ -49,5 +49,7 @@ if __name__ == '__main__':
 	country_ids = set(countries.values())
 	labels = _util.get_localized_names(country_ids, opt.languageCode)
 	final_lables = {icountry: labels.get(igeonameid, '') for icountry, igeonameid in countries.items()}
-	json.dump(final_lables, opt.outfile)
+	json.dump(final_lables, opt.outfile, ensure_ascii=False, indent=2, sort_keys=True)
+	opt.outfile.write("\n")
+
 	print('... done :)')

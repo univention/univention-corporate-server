@@ -128,19 +128,19 @@ univention-grub (8.0.4-1) unstable; urgency=low
 
 univention-grub (8.0.3-7) unstable; urgency=low
 
-  * added grub/gfxmode=text for xen HVM installations (Bug #30978) 
+  * added grub/gfxmode=text for xen HVM installations (Bug #30978)
 
  -- Felix Botner <botner@univention.de>  Tue, 21 Oct 2014 15:32:12 +0200
 
 univention-grub (8.0.3-6) unstable; urgency=low
 
-  * new menu colors (Bug #35934) 
+  * new menu colors (Bug #35934)
 
  -- Felix Botner <botner@univention.de>  Thu, 16 Oct 2014 14:23:43 +0200
 
 univention-grub (8.0.3-5) unstable; urgency=low
 
-  * new menu colors (Bug #35934) 
+  * new menu colors (Bug #35934)
 
  -- Felix Botner <botner@univention.de>  Fri, 26 Sep 2014 13:32:46 +0200
 
@@ -158,7 +158,7 @@ univention-grub (8.0.3-3) unstable; urgency=low
 
 univention-grub (8.0.3-2) unstable; urgency=low
 
-  * new menu colors (Bug #35934) 
+  * new menu colors (Bug #35934)
 
  -- Felix Botner <botner@univention.de>  Thu, 18 Sep 2014 09:53:17 +0200
 
@@ -170,7 +170,7 @@ univention-grub (8.0.3-1) unstable; urgency=low
 
 univention-grub (8.0.2-1) unstable; urgency=low
 
-  * new grub background (Bug #35934) 
+  * new grub background (Bug #35934)
 
  -- Felix Botner <botner@univention.de>  Wed, 17 Sep 2014 17:25:06 +0200
 
@@ -255,7 +255,7 @@ univention-grub (7.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013
   * Add a new UCR variable grub/rootdelay, which configures the time the initrd waits
-    until a mount of the root device is attempted. This prevents boot failures for 
+    until a mount of the root device is attempted. This prevents boot failures for
     some hardware setups, which initialises the root device slowly. By default five
     seconds are being waited, this can be disabled by setting the variable to 0.
     Bug #31071
@@ -319,7 +319,7 @@ univention-grub (6.0.0-2) unstable; urgency=low
 
 univention-grub (6.0.0-1) unstable; urgency=low
 
-  * bumped version for UCS 3.1 
+  * bumped version for UCS 3.1
   * do not use splash in recovery mode (Bug #28287)
 
  -- Felix Botner <botner@univention.de>  Wed, 19 Sep 2012 10:30:11 +0200
@@ -333,7 +333,7 @@ univention-grub (5.0.9-10) unstable; urgency=low
 univention-grub (5.0.9-9) unstable; urgency=low
 
   * The new UCR variable grub/grub1root can be used to specify a root partition
-    for the auto-generated /grub/menu.lst instead of probing it (Bug #26559)	
+    for the auto-generated /grub/menu.lst instead of probing it (Bug #26559)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 20 Mar 2012 11:28:21 +0100
 
@@ -345,7 +345,7 @@ univention-grub (5.0.9-8) unstable; urgency=low
 
 univention-grub (5.0.9-7) unstable; urgency=low
 
-  * Switch the generating menu.lst from the existing grub.cfg (Bug #25981) 
+  * Switch the generating menu.lst from the existing grub.cfg (Bug #25981)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 27 Feb 2012 08:21:45 +0100
 
@@ -358,16 +358,16 @@ univention-grub (5.0.9-6) unstable; urgency=low
 univention-grub (5.0.9-5) unstable; urgency=low
 
   * Start univention-grub-generate-menu-lst in postinst instead of the versioned
-    Depends  (Bug #25981)	
+    Depends  (Bug #25981)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 15 Feb 2012 12:16:21 +0100
 
 univention-grub (5.0.9-4) unstable; urgency=low
 
   * Version the dependency to grub-pc, so that the patched grub-pc is setup
-    before the postinst of univention-grub is executed 	
+    before the postinst of univention-grub is executed
     Bug #25981
-  * Sort kernels, so that the most recent kernel is listed first	
+  * Sort kernels, so that the most recent kernel is listed first
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 14 Feb 2012 15:59:23 +0100
 
@@ -391,8 +391,8 @@ univention-grub (5.0.9-2) unstable; urgency=low
 
 univention-grub (5.0.9-1) unstable; urgency=low
 
-  * save menu.lst in postinst (is needed for chainload into grub2) 
-    (Bug #24279) 
+  * save menu.lst in postinst (is needed for chainload into grub2)
+    (Bug #24279)
 
  -- Felix Botner <botner@univention.de>  Tue, 01 Nov 2011 16:46:20 +0100
 
@@ -404,19 +404,19 @@ univention-grub (5.0.8-2) unstable; urgency=low
 
 univention-grub (5.0.8-1) unstable; urgency=low
 
-  * reactivated grub/vga (Bug #23767) 
+  * reactivated grub/vga (Bug #23767)
 
  -- Felix Botner <botner@univention.de>  Wed, 05 Oct 2011 16:27:00 +0200
 
 univention-grub (5.0.7-1) unstable; urgency=low
 
-  * changed grub menu color (Bug #23405) 
+  * changed grub menu color (Bug #23405)
 
  -- Felix Botner <botner@univention.de>  Wed, 21 Sep 2011 08:59:05 +0200
 
 univention-grub (5.0.6-1) unstable; urgency=low
 
-  * copy font file to /boot/grub (Bug #23405) 
+  * copy font file to /boot/grub (Bug #23405)
 
  -- Felix Botner <botner@univention.de>  Tue, 20 Sep 2011 10:21:18 +0200
 
@@ -435,7 +435,7 @@ univention-grub (5.0.4-1) unstable; urgency=low
 
 univention-grub (5.0.3-1) unstable; urgency=low
 
-  * added grub/backgroundimage (Bug #23405) 
+  * added grub/backgroundimage (Bug #23405)
 
  -- Felix Botner <botner@univention.de>  Tue, 13 Sep 2011 11:27:20 +0200
 
@@ -447,7 +447,7 @@ univention-grub (5.0.2-1) unstable; urgency=low
 
 univention-grub (5.0.1-1) unstable; urgency=low
 
-  * added ucr var grub/bootsplash (Bug #22117) 
+  * added ucr var grub/bootsplash (Bug #22117)
 
  -- Felix Botner <botner@univention.de>  Fri, 09 Sep 2011 09:59:34 +0200
 
@@ -468,7 +468,7 @@ univention-grub (5.0.0-15) unstable; urgency=low
 
   * Activate gfxpayload=keep in the template for /etc/default/grub. This way
     the video mode selected for Grub is also activated when booting the Linux
-    kernel. This is needed for later bootsplash steps. Bug #22115	
+    kernel. This is needed for later bootsplash steps. Bug #22115
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 07 Sep 2011 16:27:02 +0200
 
@@ -484,11 +484,11 @@ univention-grub (5.0.0-13) unstable; urgency=low
   * Integrate UCR template for /etc/default/grub and map the already existing
     variables to it: (Bug #22115)
     - grub/timeout
-    - grub/xenhopt	
+    - grub/xenhopt
     - grub/append
     - grub/quiet
     - grub/loglevel
-  * Improve Univention Configuration registry variable descriptions	
+  * Improve Univention Configuration registry variable descriptions
   * Various ucslint cleanups
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 07 Sep 2011 14:35:56 +0200
@@ -516,7 +516,7 @@ univention-grub (5.0.0-10) unstable; urgency=low
       shown
     - grub/groot, grub/root and grub/boot are no longer needed. Grub 2 performs
       automatic parsing of filesystems and partitions and this no longer needs to
-      be configured.	    
+      be configured.
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 02 Sep 2011 12:31:04 +0200
 
@@ -538,13 +538,13 @@ univention-grub (5.0.0-8) unstable; urgency=low
 univention-grub (5.0.0-7) unstable; urgency=low
 
   * ucslint fixes (Bug #22115)
-	
+
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 30 Aug 2011 10:03:07 +0200
 
 univention-grub (5.0.0-6) unstable; urgency=low
 
   * The menu.lst isn't fully removed since it's marked as a conffile. Use the
-    new univention-lib helper function to get rid of it (Bug #22115)	 
+    new univention-lib helper function to get rid of it (Bug #22115)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 30 Aug 2011 09:56:08 +0200
 
@@ -557,7 +557,7 @@ univention-grub (5.0.0-5) unstable; urgency=low
 univention-grub (5.0.0-4) unstable; urgency=low
 
   * Remove registration of menu.lst to prevent overwriting the transitional
-    script generated in postinst (Bug #22115)	 
+    script generated in postinst (Bug #22115)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 23 Aug 2011 13:25:41 +0200
 
@@ -577,7 +577,7 @@ univention-grub (5.0.0-1) unstable; urgency=low
 
   * Update for UCS 3.0 (Bug #22115)
   * Depend on grub-pc
-  * Various cleanups	  
+  * Various cleanups
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 16 May 2011 10:54:10 +0200
 
@@ -730,7 +730,7 @@ univention-grub (1.0.16-1) unstable; urgency=low
 
 univention-grub (1.0.15-3) unstable; urgency=low
 
-  * add symbolic links from /boot/boot to /boot 
+  * add symbolic links from /boot/boot to /boot
   * fixed typo
 
  -- Andreas Büsching <buesching@univention.de>  Sat, 14 Jul 2007 15:26:45 +0200
@@ -745,7 +745,7 @@ univention-grub (1.0.15-1) unstable; urgency=low
 univention-grub (1.0.14-3) unstable; urgency=low
 
   * the splash image has to be specified like splashimage=; the '=' is
-    important 
+    important
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 13 Jul 2007 08:24:10 +0200
 
@@ -757,7 +757,7 @@ univention-grub (1.0.14-2) unstable; urgency=low
 
 univention-grub (1.0.14-1) unstable; urgency=low
 
-  * fixed reference to boot splash image 
+  * fixed reference to boot splash image
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 06 Jul 2007 14:19:34 +0200
 

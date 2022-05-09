@@ -1,4 +1,3 @@
-
 === Build ===
 
 In order to build the UMC application, call 'make build'. This will start the
@@ -23,12 +22,10 @@ build-dev" to recompile only CSS files.
 
 === Debugging ===
 
-Debugging in JavaScript can be somewhat cumbersome since modules are loaded 
+Debugging in JavaScript can be somewhat cumbersome since modules are loaded
 dynamically by Dojo. Error messages thus do not have useful tracebacks (they
 point to the position where the file was dynamically loaded). Working with a
-release build, one may change the included file '.../dojo/dojo.js' to 
+release build, one may change the included file '.../dojo/dojo.js' to
 '.../dojo/dojo.js.uncompressed.js'. This will load the uncompressed version
 of the build file (which contains all main modules). Tracebacks within modules
 contained in this file can be correctly traced back.
-
-

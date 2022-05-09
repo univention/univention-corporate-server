@@ -256,7 +256,7 @@ univention-management-console-module-udm (9.0.15-8) unstable; urgency=medium
 
 univention-management-console-module-udm (9.0.15-7) unstable; urgency=medium
 
-  * Bug #50688: Portal settings via umc policy 
+  * Bug #50688: Portal settings via umc policy
 
  -- Christian Castens <castens@univention.de>  Wed, 13 May 2020 11:06:55 +0200
 

@@ -30,13 +30,13 @@ univention-squid-kerberos (6.0.0-1) unstable; urgency=medium
 
 univention-squid-kerberos (5.0.1-3) unstable; urgency=low
 
-  * Longer timeout for spn account samba search (Bug #41443) 
+  * Longer timeout for spn account samba search (Bug #41443)
 
  -- Felix Botner <botner@univention.de>  Wed, 08 Jun 2016 09:13:25 +0200
 
 univention-squid-kerberos (5.0.1-2) unstable; urgency=low
 
-  * Longer timeout for spn account samba search (Bug #41443) 
+  * Longer timeout for spn account samba search (Bug #41443)
 
  -- Felix Botner <botner@univention.de>  Mon, 06 Jun 2016 11:37:41 +0200
 
@@ -48,37 +48,37 @@ univention-squid-kerberos (5.0.1-1) unstable; urgency=medium
 
 univention-squid-kerberos (4.0.0-1) unstable; urgency=low
 
-  * Update to UCS 4.0 (Bug #36114) 
+  * Update to UCS 4.0 (Bug #36114)
 
  -- Felix Botner <botner@univention.de>  Thu, 16 Oct 2014 11:58:18 +0200
 
 univention-squid-kerberos (3.0.2-8) unstable; urgency=low
 
-  * check if spn exists in secrects.ldb (Bug #33779) 
+  * check if spn exists in secrects.ldb (Bug #33779)
 
  -- Felix Botner <botner@univention.de>  Thu, 17 Apr 2014 14:56:25 +0200
 
 univention-squid-kerberos (3.0.2-7) unstable; urgency=low
 
-  * check if spn exists in secrects.ldb (Bug #33779) 
+  * check if spn exists in secrects.ldb (Bug #33779)
 
  -- Felix Botner <botner@univention.de>  Thu, 17 Apr 2014 14:01:31 +0200
 
 univention-squid-kerberos (3.0.2-6) unstable; urgency=low
 
-  * modify sp account if already existing (Bug #33779) 
+  * modify sp account if already existing (Bug #33779)
 
  -- Felix Botner <botner@univention.de>  Tue, 08 Apr 2014 16:03:13 +0200
 
 univention-squid-kerberos (3.0.2-4) unstable; urgency=low
 
-  * modify sp account if already existing (Bug #33779) 
+  * modify sp account if already existing (Bug #33779)
 
  -- Felix Botner <botner@univention.de>  Tue, 08 Apr 2014 12:04:15 +0200
 
 univention-squid-kerberos (3.0.2-3) unstable; urgency=low
 
-  * added saltPrincipal to samba4 keytab (secrets.ldb) (Bug #32292) 
+  * added saltPrincipal to samba4 keytab (secrets.ldb) (Bug #32292)
 
  -- Felix Botner <botner@univention.de>  Mon, 03 Mar 2014 15:19:20 +0100
 
@@ -91,14 +91,14 @@ univention-squid-kerberos (3.0.2-2) unstable; urgency=low
 univention-squid-kerberos (3.0.2-1) unstable; urgency=low
 
   * check local ldap for univentionService=S4 Connector
-    in join script (Bug #32186) 
+    in join script (Bug #32186)
 
  -- Felix Botner <botner@univention.de>  Fri, 27 Sep 2013 12:04:00 +0200
 
 univention-squid-kerberos (3.0.1-1) unstable; urgency=low
 
   * Merge from UCS@School Rev2-1 (Bug #32011):
-    * removed package dependency to univention-samba4 
+    * removed package dependency to univention-samba4
     * joinscript_save_current_version also in a samba3 env (Bug #31995)
 
  -- Erik Damrose <damrose@univention.de>  Tue, 27 Aug 2013 17:16:21 +0200
@@ -106,7 +106,7 @@ univention-squid-kerberos (3.0.1-1) unstable; urgency=low
 univention-squid-kerberos (3.0.0-1) unstable; urgency=low
 
   * replaced makepasswd with create_machine_password (Bug #31281)
-  * bump version for UCS 3.2 
+  * bump version for UCS 3.2
 
  -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 13:20:55 +0200
 
@@ -133,7 +133,7 @@ univention-squid-kerberos (2.0.0-1) unstable; urgency=low
 
 univention-squid-kerberos (1.0.0-2) unstable; urgency=low
 
-  * fixed control file (Bug #27278) 
+  * fixed control file (Bug #27278)
 
  -- Felix Botner <botner@univention.de>  Mon, 09 Jul 2012 14:19:07 +0200
 

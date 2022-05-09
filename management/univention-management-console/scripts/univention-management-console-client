@@ -32,7 +32,7 @@
 
 from __future__ import print_function
 
-from argparse import ArgumentParser, FileType, Namespace  # noqa F401
+from argparse import ArgumentParser, FileType, Namespace  # noqa: F401
 from getpass import getpass
 
 from datetime import datetime
@@ -51,7 +51,7 @@ from univention.management.console.protocol.client import Client
 from univention.management.console.log import log_init
 
 try:
-	from typing import NoReturn, Optional, Sequence  # noqa F401
+	from typing import NoReturn, Optional, Sequence  # noqa: F401
 except ImportError:
 	pass
 

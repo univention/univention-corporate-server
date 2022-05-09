@@ -62,7 +62,7 @@ define([
 		contentSliderOffset: null,
 
 		//the currently displayed offset as absolute value
-		//the navButtons lay on top of the contentSlider but the calculations ignore that fact. so the width of one or 
+		//the navButtons lay on top of the contentSlider but the calculations ignore that fact. so the width of one or
 		//both navButtons have to be accounted after the fact
 		_visibleOffset: null,
 
@@ -101,9 +101,9 @@ define([
 
 		// items: Array
 		//     array of received objects({src: <src-string>})
-		//     where <src-string> is either an image or a youtube video url 
+		//     where <src-string> is either an image or a youtube video url
 		items: null,
-		
+
 		//preparedItems: Array
 		//     array of objects derived from items.
 		//     Duplicate youtube videos are removed and
@@ -503,7 +503,7 @@ define([
 				}
 			});
 			this.own(player);
-			
+
 			//safe a reference to the video id accessible through the thumbIndex and vice versa
 			this.thumbIndexToVideoId[index] = videoId;
 			this.videoIdToThumbIndex[videoId] = index;
@@ -662,7 +662,7 @@ define([
 				//get new offset
 				newOffsetIgnoringNavButtons = this.defaultThumbOffsets[thumbIndex];
 				newOffsetWithNavButtons = newOffsetIgnoringNavButtons - this._leftNavButtonWidth;
-			} else { 
+			} else {
 				////for small thumbnails
 				if (!this._smallViewHasNavButtons) {
 					newOffsetIgnoringNavButtons = -((this._widthForThumbs - this._totalWidthOfSmallThumbs) / 2) - domGeometry.getMarginBox(this.leftButton).w;
@@ -723,7 +723,7 @@ define([
 					totalThumbsWidth = tmpWidth;
 					lastFullyVisibleThumbIndex = tmpIndex;
 				}
-				
+
 				return {
 					lastIndex: lastFullyVisibleThumbIndex,
 					width: totalThumbsWidth
@@ -733,7 +733,7 @@ define([
 			_calcNewFullyVisibleThumbs = lang.hitch(this, function(currThumbs) {
 				var lastFullyVisibleThumbIndex = currThumbs.lastIndex + 1;
 				var totalThumbsWidth = 0;
-				
+
 				var tmpWidth = 0;
 				var _widthForThumbs = this._widthForThumbs;
 				for (var tmpIndex = lastFullyVisibleThumbIndex; tmpIndex <= this.itemNodes.length -1; ++tmpIndex) {
@@ -988,8 +988,8 @@ define([
 			var maxHeightForVideoThumb = maxWidthForThumb / (this._youtubeIframeRatio);
 
 			return {
-				maxWidthForThumb: maxWidthForThumb, 
-				maxHeightForImgThumb: maxHeightForImgThumb, 
+				maxWidthForThumb: maxWidthForThumb,
+				maxHeightForImgThumb: maxHeightForImgThumb,
 				maxHeightForVideoThumb: maxHeightForVideoThumb
 			};
 		},
@@ -1058,7 +1058,7 @@ define([
 			if (Object.keys(this.playingVideos).length === 0) {
 				return;
 			}
-			
+
 			//pause all playing videos
 			//if a pauseExceptionIndex is given do not pause that video if it is playing
 			tools.forIn(this.playingVideos, lang.hitch(this, function(_videoId, player) {
@@ -1066,6 +1066,6 @@ define([
 					player.pauseVideo();
 				}
 			}));
-		}, 
+		},
 	});
 });

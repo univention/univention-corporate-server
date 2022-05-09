@@ -183,7 +183,7 @@ if [ -z "$PACKAGENAME" ]; then
 	PACKAGENAME=univention-management-console-module-$MODULEID
 fi
 
-# copy dummy module 
+# copy dummy module
 moduleDir="$DESTDIR/$PACKAGENAME"
 [ -e "$moduleDir" ] && err "The destination directory already exists: $moduleDir"
 cp -r "$SRC" "$moduleDir"

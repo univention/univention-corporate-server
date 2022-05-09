@@ -40,8 +40,8 @@ from hashlib import md5
 from os import stat, getpid
 from time import time
 from traceback import format_exc
-from types import ModuleType  # noqa F401
-from typing import Any, Callable, Dict, Iterable, List, Tuple, Union  # noqa F401
+from types import ModuleType  # noqa: F401
+from typing import Any, Callable, Dict, Iterable, List, Tuple, Union  # noqa: F401
 
 import notifier.threads
 from apt import Cache

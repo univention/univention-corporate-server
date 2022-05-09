@@ -29,7 +29,7 @@
 
 import os
 import re
-from typing import Any, Callable, Dict, Iterable, Iterator, List, Mapping, Match, Optional, Pattern, Set, Tuple  # noqa F401
+from typing import Any, Callable, Dict, Iterable, Iterator, List, Mapping, Match, Optional, Pattern, Set, Tuple  # noqa: F401
 
 try:
 	from junit_xml import TestCase  # type: ignore

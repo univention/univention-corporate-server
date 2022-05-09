@@ -34,7 +34,7 @@ import re
 import six
 from six.moves import configparser
 try:
-	from typing import overload, Dict, Optional, TypeVar, Union  # noqa F401
+	from typing import overload, Dict, Optional, TypeVar, Union  # noqa: F401
 	_VT = TypeVar('_VT')
 except ImportError:
 	def overload(f):
@@ -133,11 +133,11 @@ class LocalizedDictionary(__LD):
 		pass
 
 	@overload
-	def get(self, key, default):  # noqa F811 # pragma: no cover
+	def get(self, key, default):  # noqa: F811 # pragma: no cover
 		# type: (str, _VT) -> Union[str, _VT]
 		pass
 
-	def get(self, key, default=None):  # noqa F811
+	def get(self, key, default=None):  # noqa: F811
 		# type: (str, _VT) -> Union[str, _VT]
 		try:
 			value = self.__getitem__(key) or default
@@ -169,7 +169,7 @@ class LocalizedDictionary(__LD):
 
 		return temp
 
-	def normalize(self, key=None):  # noqa F811
+	def normalize(self, key=None):  # noqa: F811
 		# type: (str) -> Dict[str, str]
 		if key:
 			return self.__normalize_key(key)

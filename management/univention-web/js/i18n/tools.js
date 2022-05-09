@@ -113,7 +113,7 @@ define([
 	 * @summary
 	 *     Returns the default Language
 	 *
-	 * @description 
+	 * @description
 	 *     This function will retrieve the currently set Language (has to
 	 *     be allowed, i.e. in i18nTools.availableLanguages) or a default
 	 *     Language.  The currently set locale (dojo/_base/kernel.locale)

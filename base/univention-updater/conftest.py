@@ -16,7 +16,7 @@ import univention.updater.tools as U  # noqa: E402
 from univention.config_registry import ConfigRegistry
 
 try:
-    from typing import Any, Dict, IO, List, Sequence, Text, Union  # noqa F401
+    from typing import Any, Dict, IO, List, Sequence, Text, Union  # noqa: F401
 except ImportError:
     pass
 

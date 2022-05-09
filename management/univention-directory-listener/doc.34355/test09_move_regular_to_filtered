@@ -18,7 +18,7 @@ main () {
 # * Failed LDIF:
 # dn: cn=test,cn=visible,dc=phahn,dc=dev
 # changetype: delete
-# 
+#
 # dn: cn=test,cn=visible,dc=phahn,dc=dev
 # changetype: modify
 # replace: entryCSN
@@ -33,4 +33,4 @@ main () {
 # replace: createTimestamp
 # createTimestamp: 20140416085238Z
 # -
-# 
+#

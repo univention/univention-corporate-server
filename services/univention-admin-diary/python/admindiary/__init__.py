@@ -34,7 +34,7 @@ from socket import gethostname
 from datetime import datetime
 import logging
 import json
-from typing import Dict, List  # noqa F401
+from typing import Dict, List  # noqa: F401
 
 from univention.config_registry import ConfigRegistry
 

@@ -49,7 +49,7 @@ if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 
 	# Bug 50037 mv ACL from 67selfservice_userattributes.acl to 64selfservice_userattributes.acl
 	slapd=$(pidof -s slapd)
-	test -n "$slapd" || die 
+	test -n "$slapd" || die
 	if univention-ldapsearch -LLL -b "cn=67selfservice_userattributes,cn=ldapacl,cn=univention,$ldap_base" dn | grep "dn: cn=67"; then
 		# unregister old
 		univention-self-service-register-acl unregister /usr/share/univention-self-service/67selfservice_userattributes.acl 1

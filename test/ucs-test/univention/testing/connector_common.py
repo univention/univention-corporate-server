@@ -3,7 +3,7 @@
 from __future__ import print_function
 
 import subprocess
-from typing import Mapping, Text, Tuple, Union  # noqa F401
+from typing import Mapping, Text, Tuple, Union  # noqa: F401
 
 import ldap
 

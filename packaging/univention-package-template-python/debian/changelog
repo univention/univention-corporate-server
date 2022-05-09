@@ -42,7 +42,7 @@ univention-package-template-python (4.0.1-1) unstable; urgency=medium
 
 univention-package-template-python (3.0.0-2) unstable; urgency=low
 
-  * Added ucslint-univention to build deps (Bug #36115) 
+  * Added ucslint-univention to build deps (Bug #36115)
 
  -- Felix Botner <botner@univention.de>  Wed, 22 Oct 2014 13:54:40 +0200
 

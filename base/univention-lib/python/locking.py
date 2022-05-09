@@ -33,7 +33,7 @@ from __future__ import print_function
 
 import fcntl
 import os
-from typing import IO, Optional, Text  # noqa F401
+from typing import IO, Optional, Text  # noqa: F401
 
 
 def get_lock(name, nonblocking=False):

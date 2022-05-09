@@ -8,13 +8,13 @@ import os
 import sys
 from codecs import encode as _encode
 from datetime import datetime
-from typing import IO, Any  # noqa F401
+from typing import IO, Any  # noqa: F401
 from xml.sax.saxutils import XMLGenerator
 
 import six
 
 from univention.testing.codes import TestCodes
-from univention.testing.data import TestCase, TestFormatInterface, TestResult  # noqa F401
+from univention.testing.data import TestCase, TestFormatInterface, TestResult  # noqa: F401
 from univention.testing.format.text import Raw
 
 __all__ = ['Junit']

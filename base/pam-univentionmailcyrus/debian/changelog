@@ -68,13 +68,13 @@ pam-univentionmailcyrus (4.0.3-1) unstable; urgency=low
 
 pam-univentionmailcyrus (4.0.2-1) unstable; urgency=low
 
-  * fixed last commit (Bug #23487) 
+  * fixed last commit (Bug #23487)
 
  -- Felix Botner <botner@univention.de>  Thu, 01 Sep 2011 14:26:27 +0200
 
 pam-univentionmailcyrus (4.0.1-1) unstable; urgency=low
 
-  * ldap bind authentication with univention_ldap_open (Bug #23487) 
+  * ldap bind authentication with univention_ldap_open (Bug #23487)
 
  -- Felix Botner <botner@univention.de>  Thu, 01 Sep 2011 13:26:39 +0200
 

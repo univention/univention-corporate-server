@@ -970,15 +970,15 @@ systemctl reload postfix
 	<section id="mail::serverconfig::aliasexpansionlimit">
 		<title>Konfiguration des Alias Expansion Limits</title>
 		<para>
-			Werden E-Mails an einer Gruppe gesendet, die wiederum andere Gruppen enthält, 
-			kann es passieren, dass diese E-Mails nicht akzeptiert werden. Das 
-			liegt daran, dass Postfix durch eine Virtual Alias Expansion versucht, 
-			die Anzahl der ursprünglichen Empfänger entsprechend zu erweitern. 
-			Diese Anzahl wird standardmäßig auf 1000 Nutzer begrenzt und 
+			Werden E-Mails an einer Gruppe gesendet, die wiederum andere Gruppen enthält,
+			kann es passieren, dass diese E-Mails nicht akzeptiert werden. Das
+			liegt daran, dass Postfix durch eine Virtual Alias Expansion versucht,
+			die Anzahl der ursprünglichen Empfänger entsprechend zu erweitern.
+			Diese Anzahl wird standardmäßig auf 1000 Nutzer begrenzt und
 			kann daher zu gering sein.
 		</para>
 		<para>
-			Um den Wert auf beispielsweise 5000 Nutzer zu erhöhen, muss die folgende 
+			Um den Wert auf beispielsweise 5000 Nutzer zu erhöhen, muss die folgende
 			Zeile in <filename>/etc/postfix/main.cf.local</filename>
 		       	hinzugefügt bzw. angepasst werden:
 			<programlisting>virtual_alias_expansion_limit = 5000</programlisting>

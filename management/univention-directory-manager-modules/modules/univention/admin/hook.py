@@ -36,12 +36,12 @@ import io
 import os
 import traceback
 import six
-from typing import TYPE_CHECKING, List, Tuple, Union  # noqa F401
+from typing import TYPE_CHECKING, List, Tuple, Union  # noqa: F401
 
 import univention.debug as ud
 from univention.admin import localization
 if TYPE_CHECKING:
-	import univention.admin.handlers  # noqa F401
+	import univention.admin.handlers  # noqa: F401
 	AddList = List[Tuple[str, List[str]]]
 	_Mod2 = Tuple[str, List[str]]
 	_Mod3 = Tuple[str, List[str], List[str]]

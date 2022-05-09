@@ -35,7 +35,7 @@ even if it is a whitelisted user or in a whitelisted group.
 A user must be in a whitelist to use the service.
 
 === Email address verification ===
-If you wish to verify an email address you have to import and instantiate the Client class from 
+If you wish to verify an email address you have to import and instantiate the Client class from
 univention.lib.umc. With the umc_command() function a verification email can be sent to a specific
 email address. The email address can then be verified with a further call of umc_command().
 
@@ -44,7 +44,7 @@ Example: (send a verification email)
 from univention.lib.umc import Client
 c = Client()
 c.umc_command(
-		'passwordreset/create_self_registered_account', 
+		'passwordreset/create_self_registered_account',
 		{'lastname': 'foo', 'username': 'bar', 'email': 'root@localhost', 'password': 'univention'}
 	)
 
@@ -58,7 +58,7 @@ c.umc_command(
 		{'token': 'ABCDEF123456', 'username': 'bar', 'method': 'verify_email'}
 	)
 
-In UMC the verification status of the email address of a user can be seen under Password recovery in 
+In UMC the verification status of the email address of a user can be seen under Password recovery in
 the Users module when customizing a user.
 
 == Reference ==

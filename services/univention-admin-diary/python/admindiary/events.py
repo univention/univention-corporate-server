@@ -28,7 +28,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from typing import Dict, List, Optional  # noqa F401
+from typing import Dict, List, Optional  # noqa: F401
 
 
 class DiaryEvent(object):

@@ -40,7 +40,7 @@ from contextlib import contextmanager
 from time import sleep
 from glob import glob
 from json import dump, load
-from typing import Dict, Iterable, List, Optional, Tuple  # noqa F401
+from typing import Dict, Iterable, List, Optional, Tuple  # noqa: F401
 
 from six.moves.configparser import NoSectionError
 from six.moves.urllib_parse import urlsplit

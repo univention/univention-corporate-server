@@ -5,10 +5,10 @@ from __future__ import print_function
 
 import sys
 from codecs import encode
-from typing import IO  # noqa F401
+from typing import IO  # noqa: F401
 from xml.sax.saxutils import escape as escape_xml
 
-from univention.testing.data import TestFormatInterface, TestResult  # noqa F401
+from univention.testing.data import TestFormatInterface, TestResult  # noqa: F401
 
 __all__ = ['Jenkins']
 

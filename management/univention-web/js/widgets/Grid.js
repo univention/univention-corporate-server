@@ -116,7 +116,7 @@ define([
 				}
 			}
 		},
-		
+
 		_updateHeaderCheckboxes: function () {
 			// dgrid bug #292: the header checkbox doesn't work if all entries there selected manually
 			this.allSelected = array.every(this.collection.fetchSync(), function(item) {

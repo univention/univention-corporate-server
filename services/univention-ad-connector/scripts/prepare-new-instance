@@ -64,10 +64,10 @@ do
 	    ;;
 	a)
 	    case "$OPTARG" in
-		create) 
+		create)
 		    createflag="1"
 		    ;;
-		delete) 
+		delete)
 		    deleteflag="1"
 		    ;;
 		*)
@@ -78,13 +78,13 @@ do
 		    ;;
 	    esac
 	    ;;
-	c)	
+	c)
 	    CONFIGBASENAME="$OPTARG"
 	    ;;
 	f)
 	    forceflag="1"
 	    ;;
-	?)	
+	?)
 	    usage
 	    exit 1
 	    ;;
@@ -108,7 +108,7 @@ fi
 #CONFIGBASENAME should start with "con" to match UCR-info-templates
 echo "$CONFIGBASENAME" | grep -q \^con
 if [ "$?" = "1" ]
-then 
+then
     echo "ERROR: config base name must start with \"con\". "
     exit 3
 fi
@@ -168,7 +168,7 @@ then
     echo ""
     echo "Finished preparation. You'll need to restart univention-directory-listener and maybe resync the listener-plugin."
     echo "You can start the new connector instance after configuration using \"/etc/init.d/univention-ad-$CONFIGBASENAME start\"."
-    echo "Remember to remove additional instances manually before deinstallation of the univention-ad-connector debian package."   
+    echo "Remember to remove additional instances manually before deinstallation of the univention-ad-connector debian package."
     echo ""
 
 fi

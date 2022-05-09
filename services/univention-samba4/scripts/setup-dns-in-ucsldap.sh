@@ -127,11 +127,11 @@ fi
 
 IP=$(get_default_ip_address)
 
-if local_is_ucr_false dns/register/srv_records/gc; then 
+if local_is_ucr_false dns/register/srv_records/gc; then
     unset gc
 fi;
 
-if local_is_ucr_false dns/register/srv_records/pdc; then 
+if local_is_ucr_false dns/register/srv_records/pdc; then
     unset pdc
 fi;
 
@@ -182,14 +182,14 @@ if [ -n "$dc" ]; then
 		/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add srv kpasswd udp 0 100 464 "$fqdn."
 		###
 	fi
-	
+
 	if ! local_is_ucr_false dns/register/srv_records/ldap; then
 		## _ldap._tcp.Default-First-Site-Name._sites               IN SRV 0 100 389 qamaster
 		/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add srv "ldap._tcp.$sitename" sites 0 100 389 "$fqdn."
 		## _ldap._tcp.Default-First-Site-Name._sites.dc._msdcs     IN SRV 0 100 389 qamaster
 		/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add srv "ldap._tcp.$sitename._sites.dc" msdcs 0 100 389 "$fqdn."
 	fi
-	
+
 	if ! local_is_ucr_false dns/register/srv_records/kerberos; then
 		###
 		### krb5 servers
@@ -199,12 +199,12 @@ if [ -n "$dc" ]; then
 		/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add srv "kerberos._tcp.$sitename._sites.dc" msdcs 0 100 88 "$fqdn."
 		####### </Non-RODC server> #######
 	fi
-	
+
 	### heimdal 'find realm for host' hack
 	## TODO: also done in /usr/lib/univention-install/15univention-heimdal-kdc.inst but might be 'old' after u-s-s-base
 	## _kerberos               IN TXT  SAMBA4.QA
 	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add txt _kerberos "$kerberos_realm"
-	
+
 fi
 
 if [ -n "$rodc" ]; then

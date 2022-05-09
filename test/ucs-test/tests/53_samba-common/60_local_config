@@ -4,7 +4,7 @@
 ## exposure: safe
 ## packages:
 ##  - univention-samba-local-config
-## roles: 
+## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave
@@ -31,4 +31,3 @@ if [ "$result" != "$value" ]; then
 fi
 
 exit $RETVAL
-

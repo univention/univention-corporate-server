@@ -25,7 +25,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-# OID: 1.3.6.1.4.1.10176.4106 
+# OID: 1.3.6.1.4.1.10176.4106
 attributetype ( 1.3.6.1.4.1.10176.4106.1.1 NAME 'msWMIName'
 	DESC 'MS WMI Name'
 	EQUALITY caseExactMatch

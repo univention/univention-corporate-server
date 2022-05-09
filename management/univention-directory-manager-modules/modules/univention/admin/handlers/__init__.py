@@ -47,7 +47,7 @@ import time
 import sys
 import inspect
 import traceback
-from typing import Any, Dict, Iterable, List, Optional, Set, Text, Tuple, Union  # noqa F401
+from typing import Any, Dict, Iterable, List, Optional, Set, Text, Tuple, Union  # noqa: F401
 
 import six
 from ipaddress import ip_address, ip_network, IPv4Address, IPv6Address

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Create and delete GPO"
 ## exposure: dangerous
@@ -49,4 +49,3 @@ ad_wait_for_synchronization; fail_bool 0 110
 udm_exists "container/msgpo" "" "" "cn=Policies,cn=System,$ldap_base"; fail_bool 1 110
 
 exit "$RETVAL"
-

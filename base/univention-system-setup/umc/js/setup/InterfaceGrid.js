@@ -98,7 +98,7 @@ define([
 					isMultiAction: true,
 					isStandardAction: true,
 					callback: lang.hitch(this, function(ids, items) {
-						
+
 						var unremoveableInterfaces = [];
 						var removeableInterfaceIDs = [];
 						array.forEach(items, lang.hitch(this, function(item) {

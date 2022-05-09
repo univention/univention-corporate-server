@@ -1,7 +1,7 @@
 univention-dojo (13.0.1-2) unstable; urgency=medium
 
   * Bug #52453: UCS5 design - added patches to use umc/widgets/Icon
- 
+
 
  -- Johannes Keiser <keiser@univention.de>  Tue, 01 Dec 2020 17:26:23 +0100
 
@@ -68,13 +68,13 @@ univention-dojo (10.0.0-4) unstable; urgency=medium
 
 univention-dojo (10.0.0-3) unstable; urgency=medium
 
-  * Bug #42291: Updated dojo 1.12.1 and xstyle 0.3.2 
+  * Bug #42291: Updated dojo 1.12.1 and xstyle 0.3.2
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 31 Jan 2017 11:21:49 +0100
 
 univention-dojo (10.0.0-2) unstable; urgency=medium
 
-  * Bug #42291: Added/Updated dgrid and dstore 
+  * Bug #42291: Added/Updated dgrid and dstore
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 19 Oct 2016 18:33:12 +0200
 
@@ -385,7 +385,7 @@ univention-dojo (5.0.13-1) unstable; urgency=low
 
 univention-dojo (5.0.12-1) unstable; urgency=low
 
-  * added patch for dojox.form.Uploader functionality (Bug #23333) 
+  * added patch for dojox.form.Uploader functionality (Bug #23333)
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 15 Nov 2011 20:51:56 +0100
 
@@ -418,7 +418,7 @@ univention-dojo (5.0.8-1) unstable; urgency=low
 
 univention-dojo (5.0.7-1) unstable; urgency=low
 
-  * fixed patch (Bug #22881) 
+  * fixed patch (Bug #22881)
 
  -- Alexander Kläser <klaeser@univention.de>  Sun, 30 Oct 2011 21:15:09 +0100
 
@@ -511,7 +511,7 @@ univention-dojo (4.0.0-1) unstable; urgency=low
 
 univention-dojo (3.0.6-1) unstable; urgency=low
 
-  * updated copyright Bug #17222 
+  * updated copyright Bug #17222
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:28:55 +0100
 

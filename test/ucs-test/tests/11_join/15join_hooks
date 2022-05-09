@@ -4,7 +4,7 @@
 ## bugs: [47940]
 ## packages:
 ##  - univention-join
-## roles: 
+## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave

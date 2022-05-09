@@ -78,7 +78,7 @@ if [ "$1" = "install" -a -z "$2" ] ; then
 	# that will be overwritten when UCR templates will be committed
 	cd /etc/pam.d
 	for fn in *.debian ; do
-		cp "$fn" "$(basename $fn .debian)" 
+		cp "$fn" "$(basename $fn .debian)"
 	done
 fi
 

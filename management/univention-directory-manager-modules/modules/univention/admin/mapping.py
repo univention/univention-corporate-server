@@ -45,7 +45,7 @@ translation = localization.translation('univention/admin')
 _ = translation.translate
 
 try:
-	from typing import List, Text, Tuple, TypeVar, Union  # noqa F401
+	from typing import List, Text, Tuple, TypeVar, Union  # noqa: F401
 	_E = TypeVar('_E')
 except ImportError:
 	pass

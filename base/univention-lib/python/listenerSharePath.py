@@ -36,7 +36,7 @@ import sys
 import fnmatch
 import shutil
 from functools import reduce
-from typing import Dict, List, Optional  # noqa F401
+from typing import Dict, List, Optional  # noqa: F401
 
 if sys.version_info >= (3,):
 	from subprocess import getstatusoutput

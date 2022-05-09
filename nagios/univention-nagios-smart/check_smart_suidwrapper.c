@@ -30,13 +30,13 @@ main(int argc, char ** argv, char ** envp) {
 			default:
 				fprintf(stderr, "option %c is undefined\n", optopt);
 				usage();
-				exit(1);	
+				exit(1);
 		}
 	}
 
 	if (device == NULL || interface == NULL) {
 		usage();
-		exit(1);	
+		exit(1);
 	}
 
 	if(setgid(getegid()))

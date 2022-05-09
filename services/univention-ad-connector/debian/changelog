@@ -376,7 +376,7 @@ univention-ad-connector (13.0.0-14) unstable; urgency=medium
 
 univention-ad-connector (13.0.0-13) unstable; urgency=medium
 
-  *  Bug #48027: Fix links in UMC to the UCS 4.4 documentation 
+  *  Bug #48027: Fix links in UMC to the UCS 4.4 documentation
 
  -- Fathan Vidjaja <vidjaja@univention.de>  Wed, 14 Aug 2019 12:13:17 +0200
 
@@ -1092,7 +1092,7 @@ univention-ad-connector (11.0.0-1) unstable; urgency=medium
 
 univention-ad-connector (10.0.1-26) unstable; urgency=low
 
-  * connector.samr.Close(user_handle) after password sync to ad (Bug #41247) 
+  * connector.samr.Close(user_handle) after password sync to ad (Bug #41247)
 
  -- Felix Botner <botner@univention.de>  Mon, 06 Jun 2016 12:59:19 +0200
 
@@ -1104,13 +1104,13 @@ univention-ad-connector (10.0.1-25) unstable; urgency=medium
 
 univention-ad-connector (10.0.1-24) unstable; urgency=low
 
-  * fix mode (Bug #32265) 
+  * fix mode (Bug #32265)
 
  -- Felix Botner <botner@univention.de>  Wed, 04 May 2016 15:43:43 +0200
 
 univention-ad-connector (10.0.1-23) unstable; urgency=low
 
-  * restart connector after rotating log files (Bug #32265) 
+  * restart connector after rotating log files (Bug #32265)
 
  -- Felix Botner <botner@univention.de>  Mon, 02 May 2016 12:52:07 +0200
 
@@ -1315,7 +1315,7 @@ univention-ad-connector (9.0.11-5) unstable; urgency=medium
 
 univention-ad-connector (9.0.11-4) unstable; urgency=medium
 
-  * Bug #37450: Make object mapping to return properly cased LDAP base in DNs  
+  * Bug #37450: Make object mapping to return properly cased LDAP base in DNs
   * Lookup AD LDAP base from AD Root DSE to get properly cased AD LDAP base
 
  -- Arvid Requate <requate@univention.de>  Tue, 06 Jan 2015 14:38:30 +0100
@@ -1496,13 +1496,13 @@ univention-ad-connector (8.0.17-62) unstable; urgency=medium
 univention-ad-connector (8.0.17-61) unstable; urgency=low
 
   * don't test_connection in upload_certificate if
-    connector settings are not valid Bug #35090 
+    connector settings are not valid Bug #35090
 
  -- Felix Botner <botner@univention.de>  Thu, 31 Jul 2014 15:40:11 +0200
 
 univention-ad-connector (8.0.17-60) unstable; urgency=low
 
-  * use ip for server_supports_ssl Bug #35090 
+  * use ip for server_supports_ssl Bug #35090
 
  -- Felix Botner <botner@univention.de>  Thu, 31 Jul 2014 15:12:52 +0200
 
@@ -1676,7 +1676,7 @@ univention-ad-connector (8.0.17-36) unstable; urgency=low
 
 univention-ad-connector (8.0.17-35) unstable; urgency=medium
 
-  * Bug #35090 [WIP]: fixed ucslint error 
+  * Bug #35090 [WIP]: fixed ucslint error
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 28 Jul 2014 14:10:59 +0200
 
@@ -2090,9 +2090,9 @@ univention-ad-connector (8.0.1-1) unstable; urgency=low
 
 univention-ad-connector (8.0.0-3) unstable; urgency=low
 
-  * Added additional hints in the ad-connector setup wizard (Bug #24903) 
+  * Added additional hints in the ad-connector setup wizard (Bug #24903)
   * Corrected generation of error message to avoid a traceback (a wrong
-    variable name was used) 
+    variable name was used)
 
  -- Erik Damrose <damrose@univention.de>  Tue, 27 Aug 2013 16:13:34 +0200
 
@@ -2468,7 +2468,7 @@ univention-ad-connector (6.0.38-1) unstable; urgency=low
     - World Authority
     - Everyone
     - Null Authority
-    - Nobody 
+    - Nobody
     - Authenticated Users
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Nov 2011 15:16:52 +0100
@@ -2513,7 +2513,7 @@ univention-ad-connector (6.0.33-1) unstable; urgency=low
 
 univention-ad-connector (6.0.32-1) unstable; urgency=low
 
-  * fixed logrotate template (Bug #18002) 
+  * fixed logrotate template (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 16:49:33 +0100
 
@@ -2667,13 +2667,13 @@ univention-ad-connector (6.0.12-1) unstable; urgency=low
 
 univention-ad-connector (6.0.11-2) unstable; urgency=low
 
-  * fixed logrotate template (Bug #18002) 
+  * fixed logrotate template (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 10:59:22 +0200
 
 univention-ad-connector (6.0.11-1) unstable; urgency=low
 
-  * added logrotate configuration (Bug #18002) 
+  * added logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 10:33:41 +0200
 
@@ -2765,7 +2765,7 @@ univention-ad-connector (6.0.7-1) unstable; urgency=low
 univention-ad-connector (6.0.6-1) unstable; urgency=low
 
   * Write tracebacks into connector.log (Bug #13047)
-  * Cleanup debug messages and set the debug level to 2 by default 
+  * Cleanup debug messages and set the debug level to 2 by default
     (Bug #20971)
   * mapping.py: Remove object_memberships_sync_from_ucs from the list of
     post_con_modify_functions because the group object will changed if
@@ -2811,7 +2811,7 @@ univention-ad-connector (6.0.3-1) unstable; urgency=low
 univention-ad-connector (6.0.2-2) unstable; urgency=low
 
   * Update descriptions of Univention Configuration Registry variables
-    (Bug #22829)	
+    (Bug #22829)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 27 Jun 2011 17:34:54 +0200
 
@@ -2843,7 +2843,7 @@ univention-ad-connector (6.0.0-1) unstable; urgency=low
 
 univention-ad-connector (5.0.17-1) unstable; urgency=low
 
-  * fixed name of connector/ad/mapping/group/language in umc module (Bug #20195) 
+  * fixed name of connector/ad/mapping/group/language in umc module (Bug #20195)
 
  -- Felix Botner <botner@univention.de>  Fri, 18 Feb 2011 16:15:44 +0100
 
@@ -3046,7 +3046,7 @@ univention-ad-connector (4.1.10-1) unstable; urgency=low
 
 univention-ad-connector (4.1.9-1) unstable; urgency=low
 
-  * fixed ad-connector umc service configuration Bug #17311 
+  * fixed ad-connector umc service configuration Bug #17311
 
  -- Felix Botner <botner@univention.de>  Fri, 15 Jan 2010 12:21:25 +0100
 
@@ -3071,7 +3071,7 @@ univention-ad-connector (4.1.6-1) unstable; urgency=low
 
 univention-ad-connector (4.1.5-1) unstable; urgency=low
 
-  * updated copyright Bug #17222 
+  * updated copyright Bug #17222
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 13:47:52 +0100
 
@@ -3635,7 +3635,7 @@ univention-ad-connector (0.3-2) unstable; urgency=low
 
   * add optional mail-attribute mappings
   * fixed sync of custom attributes
-	
+
  -- Ingo Steuwer <steuwer@univention.de>  Wed, 12 Apr 2006 14:27:35 +0200
 
 univention-ad-connector (0.3-1) unstable; urgency=low

@@ -16,7 +16,7 @@
 ##  4.1-0: skip
 ##  4.3-2: fixed
 ##  4.4-2: skip
- 
+
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 # shellcheck source=../../lib/random.sh
@@ -64,9 +64,9 @@ test -e "$sharepath1/$ftemp_basename" || fail_test 1 "$sharepath1/$ftemp_basenam
 
 ucr set "samba/share/$sharename/options/path"="$sharepath2"
 if [ -x /etc/init.d/samba-ad-dc ]; then
-	/etc/init.d/samba-ad-dc restart 
+	/etc/init.d/samba-ad-dc restart
 elif [ -x /etc/init.d/samba-ad-dc ]; then
-	/etc/init.d/samba reload 
+	/etc/init.d/samba reload
 fi
 # Samba need some time
 sleep 3

@@ -54,7 +54,7 @@ univention-nagios-smart (4.0.0-1) unstable; urgency=low
 
 univention-nagios-smart (3.0.2-2) unstable; urgency=low
 
-  * fixed check_smart_suidwrapper.c (Bug #34041) 
+  * fixed check_smart_suidwrapper.c (Bug #34041)
 
  -- Felix Botner <botner@univention.de>  Wed, 19 Mar 2014 12:16:46 +0100
 
@@ -79,7 +79,7 @@ univention-nagios-smart (3.0.0-1) unstable; urgency=low
 
 univention-nagios-smart (2.0.2-1) unstable; urgency=low
 
-  * run the join script at an earlier stage (Bug #24252) 
+  * run the join script at an earlier stage (Bug #24252)
 
  -- Felix Botner <botner@univention.de>  Tue, 22 Nov 2011 09:41:20 +0100
 
@@ -128,13 +128,13 @@ univention-nagios-smart (1.0.0-1) unstable; urgency=low
 
 univention-nagios-smart (0.0.2-6) unstable; urgency=low
 
-  * fixed suid wrapper Ticket #2009102710000119 
+  * fixed suid wrapper Ticket #2009102710000119
 
  -- Felix Botner <botner@univention.de>  Mon, 11 Jan 2010 15:21:52 +0100
 
 univention-nagios-smart (0.0.2-5) unstable; urgency=low
 
-  * fixed rules file Ticket #2009102710000119 
+  * fixed rules file Ticket #2009102710000119
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 17:10:27 +0100
 
@@ -146,19 +146,19 @@ univention-nagios-smart (0.0.2-4) unstable; urgency=low
 
 univention-nagios-smart (0.0.2-3) unstable; urgency=low
 
-  * added description for services Ticket #2009102710000119 
+  * added description for services Ticket #2009102710000119
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 16:40:19 +0100
 
 univention-nagios-smart (0.0.2-2) unstable; urgency=low
 
-  * setuid for check_smart_suidwrapper Ticket #2009102710000119 
+  * setuid for check_smart_suidwrapper Ticket #2009102710000119
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 16:35:07 +0100
 
 univention-nagios-smart (0.0.2-1) unstable; urgency=low
 
-  * chgrp of suid binary to nagios in postinst Ticket #2009102710000119 
+  * chgrp of suid binary to nagios in postinst Ticket #2009102710000119
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 13:06:37 +0100
 

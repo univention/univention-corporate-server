@@ -1,2 +1,10 @@
-[{"id": "en-US", "label": "English"}, {"id": "de-DE", "label": "Deutsch"}]
-
+[
+  {
+    "id": "en-US",
+    "label": "English"
+  },
+  {
+    "id": "de-DE",
+    "label": "Deutsch"
+  }
+]

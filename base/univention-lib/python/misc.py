@@ -31,7 +31,7 @@ Univention Common Python Library
 # <https://www.gnu.org/licenses/>.
 
 import subprocess
-from typing import Optional  # noqa F401
+from typing import Optional  # noqa: F401
 
 from univention.config_registry import ConfigRegistry
 

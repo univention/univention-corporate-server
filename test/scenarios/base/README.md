@@ -1,5 +1,5 @@
 # Example cfg files
-Example cfg files for ucs-kt-get/start-test.sh to create various test environments. 
+Example cfg files for ucs-kt-get/start-test.sh to create various test environments.
 
 [[_TOC_]]
 

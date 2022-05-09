@@ -34,7 +34,7 @@ alternateNames.zip       : two files, alternate names with language codes and ge
 admin1CodesASCII.txt     : ascii names of admin divisions. (beta > http://forum.geonames.org/gforum/posts/list/208.page#1143)
 admin2Codes.txt          : names for administrative subdivision 'admin2 code' (UTF8), Format : concatenated codes <tab>name <tab> asciiname <tab> geonameId
 iso-languagecodes.txt    : iso 639 language codes, as used for alternate names in file alternateNames.zip
-featureCodes.txt         : name and description for feature classes and feature codes 
+featureCodes.txt         : name and description for feature classes and feature codes
 timeZones.txt            : countryCode, timezoneId, gmt offset on 1st of January, dst offset to gmt on 1st of July (of the current year), rawOffset without DST
 countryInfo.txt          : country information : iso codes, fips codes, languages, capital ,...
                            see the geonames webservices for additional country information,
@@ -62,10 +62,10 @@ feature code      : see http://www.geonames.org/export/codes.html, varchar(10)
 country code      : ISO-3166 2-letter country code, 2 characters
 cc2               : alternate country codes, comma separated, ISO-3166 2-letter country code, 60 characters
 admin1 code       : fipscode (subject to change to iso code), see exceptions below, see file admin1Codes.txt for display names of this code; varchar(20)
-admin2 code       : code for the second administrative division, a county in the US, see file admin2Codes.txt; varchar(80) 
+admin2 code       : code for the second administrative division, a county in the US, see file admin2Codes.txt; varchar(80)
 admin3 code       : code for third level administrative division, varchar(20)
 admin4 code       : code for fourth level administrative division, varchar(20)
-population        : bigint (8 byte int) 
+population        : bigint (8 byte int)
 elevation         : in meters, integer
 dem               : digital elevation model, srtm3 or gtopo30, average elevation of 3''x3'' (ca 90mx90m) or 30''x30'' (ca 900mx900m) area in meters, integer. srtm processed by cgiar/ciat.
 timezone          : the timezone id (see file timeZone.txt) varchar(40)
@@ -88,13 +88,13 @@ isShortName       : '1', if this is a short name like 'California' for 'State of
 isColloquial      : '1', if this alternate name is a colloquial or slang term
 isHistoric        : '1', if this alternate name is historic and was used in the past
 
-Remark : the field 'alternatenames' in the table 'geoname' is a short version of the 'alternatenames' table without links and postal codes but with ascii transliterations. You probably don't need both. 
+Remark : the field 'alternatenames' in the table 'geoname' is a short version of the 'alternatenames' table without links and postal codes but with ascii transliterations. You probably don't need both.
 If you don't need to know the language of a name variant, the field 'alternatenames' will be sufficient. If you need to know the language
 of a name variant, then you will need to load the table 'alternatenames' and you can drop the column in the geoname table.
 
 
 
-Statistics on the number of features per country and the feature class and code distributions : http://www.geonames.org/statistics/ 
+Statistics on the number of features per country and the feature class and code distributions : http://www.geonames.org/statistics/
 
 
 Continent codes :
@@ -107,8 +107,8 @@ SA : South America		geonameId=6255150
 AN : Antarctica			geonameId=6255152
 
 
-If you find errors or miss important places, please do use the wiki-style edit interface on our website 
-http://www.geonames.org to correct inaccuracies and to add new records. 
+If you find errors or miss important places, please do use the wiki-style edit interface on our website
+http://www.geonames.org to correct inaccuracies and to add new records.
 Thanks in the name of the geonames community for your valuable contribution.
 
 Data Sources:

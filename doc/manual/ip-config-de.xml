@@ -2100,7 +2100,7 @@ univention-config-registry set squid/webports="80 443"
 				<para>
                     Die Parameter, mit denen das Passwort erzeugt wird, können
                     angepasst werden. Auf dem &ucsPrimaryDN; müssen dazu
-                    &ucsUCRV;n gesetzt werden: 
+                    &ucsUCRV;n gesetzt werden:
                     <programlisting language="sh">
                         ucr search password/radius/quality
                     </programlisting>
@@ -2152,7 +2152,7 @@ client AP01 {
 					Es müssen mindestens die IP-Adresse am Rechnerobjekt und ein gemeinsamer, geheimer Schlüssel
 					gesetzt sein.
 					Die Eigenschaften <foreignphrase>NAS-Type</foreignphrase> und Virtueller Server müssen in der Regel nicht
-					verändert werden. 
+					verändert werden.
 				</para>
 				<para>
 					<foreignphrase>Access Points</foreignphrase>, welche über UMC-Modul <guimenu>Rechner</guimenu>

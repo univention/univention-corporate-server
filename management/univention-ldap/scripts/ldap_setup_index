@@ -143,7 +143,7 @@ class LdapIndex(object):
         if self.args.add_defaults or self.args.force_defaults:
             LOG.debug('Adding defaults...')
             for typ, attributes in self.index.items():
-                attributes |= RECOMMENDED_LDAP_INDEX[typ]  # noqa
+                attributes |= RECOMMENDED_LDAP_INDEX[typ]
 
     def modify_index(self):
         for typ, attributes in self.index.items():

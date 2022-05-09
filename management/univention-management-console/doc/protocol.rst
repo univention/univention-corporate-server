@@ -56,7 +56,7 @@ Server, client and session
 
 .. automodule:: univention.management.console.protocol.modserver
 	:members:
-	:undoc-members:	
+	:undoc-members:
 	:show-inheritance:
 
 .. automodule:: univention.management.console.protocol.session

@@ -55,7 +55,7 @@ import random
 import subprocess
 import sys
 import time
-from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Text, Tuple, Union  # noqa F401
+from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Text, Tuple, Union  # noqa: F401
 
 import ldap
 import ldap.filter

@@ -45,5 +45,7 @@ if __name__ == '__main__':
 
 	print('generating country code data...')
 	pairs = _util.get_country_codes(3)
-	json.dump(pairs, opt.outfile)
+	json.dump(pairs, opt.outfile, ensure_ascii=False, indent=2, sort_keys=True)
+	opt.outfile.write("\n")
+
 	print('... done :)')

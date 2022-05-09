@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#schleife: 
+#schleife:
 # for i in *.png; do ~/image-shadow.sh $i; done
 
 in=$1

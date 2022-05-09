@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Create two nested groups on ucs-side and unnest them in sync-mode"
 ## exposure: dangerous
@@ -27,7 +27,7 @@ ad_set_sync_mode "sync"
 UDM_groups_group_name="$INNER_GROUP"
 udm_create "groups/group" || fail_test 110
 UDM_groups_group_name="$OUTER_GROUP"
-udm_create "groups/group" || fail_test 110 
+udm_create "groups/group" || fail_test 110
 
 UDM_groups_group_name="$INNER_GROUP"
 udm_modify "groups/group" "" "" "" "" \
@@ -76,7 +76,7 @@ section "Clean up"
 UDM_groups_group_name="$INNER_GROUP"
 udm_remove "groups/group" || fail_test 110
 UDM_groups_group_name="$OUTER_GROUP"
-udm_remove "groups/group" || fail_test 110 
+udm_remove "groups/group" || fail_test 110
 
 ad_set_sync_mode "$SYNCMODE"
 

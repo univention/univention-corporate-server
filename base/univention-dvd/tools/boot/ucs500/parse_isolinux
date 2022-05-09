@@ -119,7 +119,7 @@ sub print_kernel {
 }
 
 sub debug {
-#    print_indent $menudepth . " " . $menu{"number"} . ": " . $menu{"label"} . 
+#    print_indent $menudepth . " " . $menu{"number"} . ": " . $menu{"label"} .
 #	" '" . $menu{"title"} . "'\n";
 }
 
@@ -208,7 +208,7 @@ foreach my $line(@lines) {
 	} else {
 	    $pre = "";
 	    $in_dark = 0;
-	}	    
+	}
     } elsif ($line =~ /^\s*menu title (.*$)/) {
 	if ($in_kernel) {
 	    print_kernel(\%kernel);
@@ -229,7 +229,7 @@ foreach my $line(@lines) {
 		$pre = "... ";
 	    } else {
 		$pre = "";
-	    }	    
+	    }
 	    debug();
 	    if ($in_dark) {
 		print_indent "set menu_color_normal=white/black\n";

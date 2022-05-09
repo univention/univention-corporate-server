@@ -31,12 +31,12 @@
 
 from __future__ import print_function
 
-from argparse import ArgumentParser, Namespace  # noqa F401
+from argparse import ArgumentParser, Namespace  # noqa: F401
 import os
 import subprocess
 
 try:
-	from typing import Dict, List, Optional, Sequence, Text  # noqa F401
+	from typing import Dict, List, Optional, Sequence, Text  # noqa: F401
 except ImportError:
 	pass
 

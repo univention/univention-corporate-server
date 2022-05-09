@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Create local group on ucs-side in sync-mode"
 ## exposure: dangerous
@@ -37,7 +37,7 @@ udm_verify_udm_attribute "sambaGroupType" "3" "groups/group"; fail_bool 0 110
 
 section "Clean up"
 
-udm_remove "groups/group" || fail_test 110 
+udm_remove "groups/group" || fail_test 110
 
 ad_set_sync_mode "$SYNCMODE"
 

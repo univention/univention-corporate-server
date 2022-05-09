@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Check SID synchronisation"
 ## exposure: dangerous
@@ -126,5 +126,3 @@ ad_exists "$AD_DN"; fail_bool 1 110
 udm_exists "groups/group"; fail_bool 1 110
 
 exit "$RETVAL"
-
-

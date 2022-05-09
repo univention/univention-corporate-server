@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Check synchronisation of maxPwdAge"
 ## exposure: dangerous
@@ -47,7 +47,7 @@ set_ucs_age ()
 changetype: modify
 replace: sambaMaxPwdAge
 sambaMaxPwdAge: $1
-" | ldapmodify -x -D cn=admin,$ldap_base -w "$(</etc/ldap.secret)" 
+" | ldapmodify -x -D cn=admin,$ldap_base -w "$(</etc/ldap.secret)"
 }
 
 OLD_VALUE=$(get_ucs_age)

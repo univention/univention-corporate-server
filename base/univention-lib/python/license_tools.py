@@ -33,7 +33,7 @@ from __future__ import print_function
 import sys
 import datetime
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
-from typing import Optional  # noqa F401
+from typing import Optional  # noqa: F401
 
 import univention.uldap
 

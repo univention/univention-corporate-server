@@ -29,11 +29,11 @@
 from __future__ import absolute_import
 
 import sys
-from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Optional, Sequence, Tuple  # noqa F401
+from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Optional, Sequence, Tuple  # noqa: F401
 
 if TYPE_CHECKING:
-	from .handler_configuration import ListenerModuleConfiguration  # noqa F401
-	from .handler import ListenerModuleHandler  # noqa F401
+	from .handler_configuration import ListenerModuleConfiguration  # noqa: F401
+	from .handler import ListenerModuleHandler  # noqa: F401
 
 
 class ListenerModuleAdapter(object):

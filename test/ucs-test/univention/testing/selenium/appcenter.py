@@ -33,7 +33,7 @@
 from __future__ import absolute_import
 
 from time import sleep
-from typing import Any  # noqa F401
+from typing import Any  # noqa: F401
 
 from selenium.common.exceptions import TimeoutException
 

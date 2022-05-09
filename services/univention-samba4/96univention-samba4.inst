@@ -329,11 +329,11 @@ samba_domain_join() {
 		fi
 	else
 
-		# Let's try to join against the S4 Connector 
+		# Let's try to join against the S4 Connector
 		s4connector_dc=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret \
 			"(&(univentionService=S4 Connector)(objectClass=univentionDomainController)(!(univentionService=S4 SlavePDC)))" cn \
 			| ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')
-	
+
 		if [ -n "$s4connector_dc" ]; then
 			echo "Join against S4 Connector server: $s4connector_dc"
 			if samba-tool domain info "$s4connector_dc.$domainname"; then
@@ -558,7 +558,7 @@ _create_group_with_special_sid()
 	local ldif
 
 	shift 3
-	
+
 	group_dn="$(univention-ldapsearch "(&(objectClass=univentionGroup)(cn=$name))" | ldapsearch-wrapper | sed -ne 's|dn: ||p')"
 
 	if [ -z "$group_dn" ]; then
@@ -593,7 +593,7 @@ univentionSamba4SID: $sid
 		fi
 
 		echo "$ldif" | ldapmodify -x -h "$ldap_master" -p "${ldap_master_port:-7389}" -D "$binddn" -y "$bindpwdfile"
-		
+
 		if [ "$name" = "Authenticated Users" ]; then
 			udm groups/group modify "$@" --dn "cn=$name,$position,$ldap_base" \
 				--append nestedGroup="cn=DC Slave Hosts,cn=groups,$ldap_base" \
@@ -652,7 +652,7 @@ _update_pseudo_group()
 	local name="$1"
 
 	shift 1
-	
+
 	group_dn="$(univention-ldapsearch "(&(objectClass=univentionGroup)(cn=$name)(!(univentionGroupType=-2147483643)))" | ldapsearch-wrapper | sed -ne 's|dn: ||p')"
 
 	if [ -n "$group_dn" ]; then
@@ -1029,7 +1029,7 @@ fi
 
 /etc/init.d/samba restart
 
-# To prevent a DRS replication conflict: 
+# To prevent a DRS replication conflict:
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=32257
 wait_until_dc_was_replicated_to_connector_dc
 

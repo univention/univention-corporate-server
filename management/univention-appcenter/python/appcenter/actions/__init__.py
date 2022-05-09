@@ -39,7 +39,7 @@ from argparse import ArgumentParser, Action, Namespace
 import logging
 import ssl
 from functools import wraps
-from typing import TYPE_CHECKING, Any, Iterator, Mapping, Optional, Sequence, Tuple  # noqa F401
+from typing import TYPE_CHECKING, Any, Iterator, Mapping, Optional, Sequence, Tuple  # noqa: F401
 
 from six.moves import urllib_error, http_client
 from six import string_types
@@ -50,7 +50,7 @@ from univention.appcenter.utils import underscore, call_process, verbose_http_er
 from univention.appcenter.exceptions import Abort, NetworkError
 from six import with_metaclass
 if TYPE_CHECKING:
-	from univention.appcenter.app import App  # noqa F401
+	from univention.appcenter.app import App  # noqa: F401
 
 _ACTIONS = {}
 JOINSCRIPT_DIR = '/usr/lib/univention-install'

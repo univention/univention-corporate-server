@@ -57,7 +57,7 @@ define([
 	"umc/i18n!umc/hooks/univention_demo",
 	"xstyle/css!./univention_demo.css"
 ], function(lang, array, declare, all, Deferred, query, dom, domClass, domAttr, domConstruct, domGeometry, topic, cookie, request, on, win, login, LoginDialog, tools, menu, store, i18nTools, ContainerWidget, Text, Button, _) {
-	
+
 	var _fillLoginForm = function () {
 		var node = dom.byId("umcLoginPassword");
 		if (!node) {
@@ -159,7 +159,7 @@ define([
 				}
 			};
 			on(overlayContainer.domNode, 'click', close);
-			
+
 			var readmeWidget = new Text({
 				'class': 'umcDemoReadme',
 				content: readme

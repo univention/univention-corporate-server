@@ -1,0 +1,45 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+exclude: "^packaging/ucslint/testframework/"
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+    -   id: check-added-large-files
+    -   id: check-json
+        exclude: "/conffiles/.*[.]json$"
+    -   id: check-xml
+        exclude: "/conffiles/.*[.]xml$\
+                  |^base/univention-app-appliance/\
+                  "
+    -   id: check-yaml
+        exclude: "/conffiles/.*[.]yaml$"
+    -   id: check-merge-conflict
+    -   id: pretty-format-json
+        exclude: "/conffiles/.*[.]json$\
+                  "
+        args:
+          - --autofix
+          - --no-ensure-ascii
+    -   id: trailing-whitespace
+        exclude: "^base/univention-config-registry/tests/unwrap/\
+                  |^base/univention-lib/unittests/fstab$\
+                  |^base/univention-system-setup/city-data/.*[.](txt|json)$\
+                  |^doc/errata/staging/0.*template[.]yaml$\
+                  |^services/univention-ldb-modules/buildtools/wafsamba/\
+                  |[.]ai$\
+                  |[.]csv$\
+                  |[.]diff$\
+                  |[.]patch$\
+                  |[.]svg$\
+                  "
+-   repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.9.0
+    hooks:
+    -   id: python-check-blanket-noqa
+    -   id: python-no-eval
+        exclude: "^management/univention-directory-manager-modules/modules/univention/admin/__init__.py\
+                  |^packaging/univention-l10n/univention/l10n/umc.py"
+    -   id: rst-backticks
+    -   id: rst-directive-colons
+    -   id: rst-inline-touching-normal

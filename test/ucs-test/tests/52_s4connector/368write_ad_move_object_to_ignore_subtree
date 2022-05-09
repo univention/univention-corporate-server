@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Move an AD-user into the User-Ignore-Subtree in write-mode"
 ## exposure: dangerous

@@ -33,7 +33,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
-from typing import Optional  # noqa F401
+from typing import Optional  # noqa: F401
 
 
 class BuildRuntimeError(RuntimeError):

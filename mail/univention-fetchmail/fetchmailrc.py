@@ -35,7 +35,7 @@ import univention.uldap
 import os
 from six.moves import cPickle as pickle
 try:
-	from typing import Dict, Iterable, List, Optional  # noqa F401
+	from typing import Dict, Iterable, List, Optional  # noqa: F401
 except ImportError:
 	pass
 

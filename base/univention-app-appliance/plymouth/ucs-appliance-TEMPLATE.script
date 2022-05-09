@@ -1,5 +1,5 @@
 # This is the Univention Corporate Server 4 plymouth plugin script
-# ${FONT_COLOR} is replaced by the makefile 
+# ${FONT_COLOR} is replaced by the makefile
 
 
 # background image
@@ -112,7 +112,7 @@ fun textWrapToSize(string, size, font) {
 		image = Image.Text(tmp, 0, 0, 0, 0, font);
 		if (image.GetWidth() > size - 20 && string.CharAt(index) == " ") {
 			ret += tmp;
-			ret += "\n"; 
+			ret += "\n";
 			tmp = "";
 		}
 		index++;
@@ -265,7 +265,7 @@ fun ask_dialog() {
 			prompt.y + 20,
 			10000
 		);
-	};	
+	};
 
 	global.ask.prompt = prompt;
 	global.ask.text = text;
@@ -313,7 +313,7 @@ fun dialog_setup() {
 			prompt[i].SetImage(msg);
 		}
 	};
-	
+
 	global.dialog.lock = lock;
 	global.dialog.entry = entry;
 	global.dialog.prompt = prompt;
@@ -673,7 +673,7 @@ fun update_status_callback (text) {
 			else
 				image = Image.Text("Checking disk " + device + " (" + progress + "%)", 0.4, 0.4, 0.4, 1, statusmsg.font);
 		}
-		statusmsg.sprite.SetImage(image);	
+		statusmsg.sprite.SetImage(image);
 	}
 }
 
@@ -719,7 +719,7 @@ Plymouth.SetDisplayQuestionFunction(question_callback);
 # message #
 ###########
 
-# message 
+# message
 message.font = "Sans 13";
 message.sprite = Sprite();
 message.sprite.SetPosition(10, 12, 10000);
@@ -744,7 +744,7 @@ fun message_callback (text) {
 		text += "...";
 	}
 
-	local.start = Window.GetWidth() - 10 - Image.Text(text, 0, 0, 0, 0, message.font).GetWidth(); 
+	local.start = Window.GetWidth() - 10 - Image.Text(text, 0, 0, 0, 0, message.font).GetWidth();
 
 	if (keys != NULL) {
 		message_action.sprite.SetX(local.start);
@@ -758,7 +758,7 @@ fun message_callback (text) {
 	}
 }
 
-# he callback function is called when new message should be displayed. 
+# he callback function is called when new message should be displayed.
 # First arg is message to display.
 Plymouth.SetMessageFunction(message_callback);
 
@@ -779,7 +779,7 @@ fun refresh_callback () {
 	}
 }
 
-# calling Plymouth.SetRefreshFunction with a function will set that 
+# calling Plymouth.SetRefreshFunction with a function will set that
 # function to be called up to 50 times every second
 Plymouth.SetRefreshFunction (refresh_callback);
 

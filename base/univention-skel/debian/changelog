@@ -122,7 +122,7 @@ univention-skel (2.0.0-0) unstable; urgency=low
 
 univention-skel (1.0.2-1) unstable; urgency=low
 
-  * removed debug message 
+  * removed debug message
 
  -- Andreas Büsching <buesching@univention.de>  Tue,  4 Nov 2008 14:38:29 +0100
 

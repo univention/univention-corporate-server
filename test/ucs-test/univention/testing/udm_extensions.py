@@ -31,7 +31,7 @@ from __future__ import print_function
 
 import subprocess
 import sys
-from typing import Iterable, Mapping, Optional, Sequence, Union  # noqa F401
+from typing import Iterable, Mapping, Optional, Sequence, Union  # noqa: F401
 
 from univention.config_registry import ConfigRegistry
 from univention.testing.strings import random_name, random_version

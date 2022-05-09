@@ -38,7 +38,7 @@ import polib
 
 from . import umc
 try:
-	from typing import Iterable, List  # noqa F401
+	from typing import Iterable, List  # noqa: F401
 except ImportError:
 	pass
 

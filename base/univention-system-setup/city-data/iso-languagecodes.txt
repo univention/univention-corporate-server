@@ -9,7 +9,7 @@ bad	bad		Banda languages
 bai	bai		Bamileke languages
 bat	bat		Baltic languages
 ber	ber		Berber languages
-bih	bih	bh	Bihari 
+bih	bih	bh	Bihari
 bnt	bnt		Bantu (Other)
 btk	btk		Batak languages
 cai	cai		Central American Indian languages
@@ -17,9 +17,9 @@ cau	cau		Caucasian languages
 cel	cel		Celtic languages
 cmc	cmc		Chamic languages
 cpe	cpe		Creoles and pidgins, English based
-cpf	cpf		Creoles and pidgins, French-based 
-cpp	cpp		Creoles and pidgins, Portuguese-based 
-crp	crp		Creoles and pidgins 
+cpf	cpf		Creoles and pidgins, French-based
+cpp	cpp		Creoles and pidgins, Portuguese-based
+crp	crp		Creoles and pidgins
 cus	cus		Cushitic languages
 day	day		Land Dayak languages
 dra	dra		Dravidian languages

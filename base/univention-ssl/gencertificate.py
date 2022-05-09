@@ -42,7 +42,7 @@ from errno import ENOENT
 import univention.debug as ud
 import subprocess
 try:
-	from typing import Dict, List, Optional  # noqa F401
+	from typing import Dict, List, Optional  # noqa: F401
 except ImportError:
 	pass
 

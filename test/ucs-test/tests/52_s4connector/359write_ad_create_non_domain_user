@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Synchronize ad-user that has another group than Domain Users as primary group in write mode"
 ## exposure: dangerous

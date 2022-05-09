@@ -30,10 +30,10 @@ from __future__ import absolute_import
 
 import inspect
 import os
-import types  # noqa F401
+import types  # noqa: F401
 from contextlib import contextmanager
 from six import reraise, with_metaclass
-from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Mapping, Optional, Sequence, Tuple, Type, Union  # noqa F401
+from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Mapping, Optional, Sequence, Tuple, Type, Union  # noqa: F401
 
 import listener
 from univention.admin.uldap import access, position

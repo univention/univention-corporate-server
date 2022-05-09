@@ -53,9 +53,9 @@ from ldap.modlist import addModlist
 from univention.config_registry import ConfigRegistry
 
 try:
-    from typing import Any, IO, Dict, Iterator, List, Optional, Tuple, Type, NamedTuple  # noqa F401
-    from types import TracebackType  # noqa F401
-    from argparse import Namespace  # noqa F401
+    from typing import Any, IO, Dict, Iterator, List, Optional, Tuple, Type, NamedTuple  # noqa: F401
+    from types import TracebackType  # noqa: F401
+    from argparse import Namespace  # noqa: F401
     Transaction = NamedTuple("Transaction", [("tid", int), ("dn", str), ("command", str)])
 except ImportError:
     Transaction = namedtuple("Transaction", ["tid", "dn", "command"])  # type: ignore

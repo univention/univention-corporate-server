@@ -13,7 +13,7 @@
 # shellcheck source=../../lib/udm.sh
 . "$TESTLIBPATH/udm.sh" || exit 137
 # shellcheck source=../../lib/random.sh
-. "$TESTLIBPATH/random.sh" || exit 137 
+. "$TESTLIBPATH/random.sh" || exit 137
 
 . "adconnector.sh" || exit 137
 test -n "$connector_ad_ldap_host" || exit 137
@@ -38,7 +38,7 @@ udm_verify_udm_attribute "sambaGroupType" "3" "groups/group"; fail_bool 0 110
 
 section "Clean up"
 
-udm_remove "groups/group" || fail_test 110 
+udm_remove "groups/group" || fail_test 110
 
 ad_set_sync_mode "$SYNCMODE"
 

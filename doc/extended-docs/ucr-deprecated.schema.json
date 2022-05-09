@@ -1,35 +1,35 @@
 {
-	"$schema": "http://json-schema.org/schema#",
-	"type": "array",
-	"items": {
-		"type": "object",
-		"properties": {
-			"git": {
-				"type": "string",
-				"title": "git commit hash",
-				"pattern": "^[0-9a-f]{7,40}$"
-			},
-			"desc": {
-				"type": "string",
-				"title": "free style text to mention package name"
-			},
-			"obsolete": {
-				"type": "string",
-				"title": "Obsoleting UCS release version",
-				"pattern": "^[1-9][0-9]*[.-][0-9]+[.-][0-9]+$"
-			},
-			"vars": {
-				"type": "array",
-				"title": "UCR variable patterns",
-				"items": {
-					"type": "string"
-				}
-			}
-		},
-		"required": [
-			"git",
-			"vars"
-		],
-		"additionalProperties": true
-	}
+  "$schema": "http://json-schema.org/schema#",
+  "items": {
+    "additionalProperties": true,
+    "properties": {
+      "desc": {
+        "title": "free style text to mention package name",
+        "type": "string"
+      },
+      "git": {
+        "pattern": "^[0-9a-f]{7,40}$",
+        "title": "git commit hash",
+        "type": "string"
+      },
+      "obsolete": {
+        "pattern": "^[1-9][0-9]*[.-][0-9]+[.-][0-9]+$",
+        "title": "Obsoleting UCS release version",
+        "type": "string"
+      },
+      "vars": {
+        "items": {
+          "type": "string"
+        },
+        "title": "UCR variable patterns",
+        "type": "array"
+      }
+    },
+    "required": [
+      "git",
+      "vars"
+    ],
+    "type": "object"
+  },
+  "type": "array"
 }

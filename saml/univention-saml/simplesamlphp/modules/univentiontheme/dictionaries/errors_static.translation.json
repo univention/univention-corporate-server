@@ -1,80 +1,80 @@
 {
-	"title_WRONGUSERPASS": {
-		"de": "Nutzername oder Passwort falsch"
-	},
-	"descr_WRONGUSERPASS": {
-		"de": "Entweder es konnte kein Nutzer mit dem angegebenen Nutzernamen gefunden werden oder das Passwort ist falsch. \u00dcberpr\u00fcfen Sie die Zugangsdaten und probieren Sie es nochmal"
-	},
-	"title_univention:PW_CHANGE_FAILED": {
-		"de": "Passwort ändern fehlgeschlagen"
-	},
-	"descr_univention:PW_CHANGE_FAILED": {
-		"de": "%s"
-	},
-	"title_LDAP_ACCDISABLED": {
-		"de": "Account deaktiviert"
-	},
-	"descr_LDAP_ACCDISABLED": {
-		"de": "Der LDAP Account ist deaktiviert, Login verweigert"
-	},
-	"title_LDAP_ACCEXPIRED": {
-		"de": "Account abgelaufen"
-	},
-	"descr_LDAP_ACCEXPIRED": {
-		"de": "Der LDAP Account ist abgelaufen, Login verweigert"
-	},
-	"title_KRB_ACCEXPIRED": {
-		"de": "Account abgelaufen"
-	},
-	"descr_KRB_ACCEXPIRED": {
-		"de": "Der Kerberos Account ist abgelaufen, Login verweigert"
-	},
-	"title_SAMBA_ACCEXPIRED": {
-		"de": "Account abgelaufen"
-	},
-	"descr_SAMBA_ACCEXPIRED": {
-		"de": "Der Samba Account ist abgelaufen, Login verweigert"
-	},
-	"title_LDAP_PWCHANGE": {
-		"de": "Das Passwort ist abgelaufen und muss erneuert werden"
-	},
-	"descr_LDAP_PWCHANGE": {
-		"de": ""
-	},
-	"title_KRB_PWCHANGE": {
-		"de": "Das Passwort ist abgelaufen und muss erneuert werden"
-	},
-	"descr_KRB_PWCHANGE": {
-		"de": ""
-	},
-	"title_SAMBA_PWCHANGE": {
-		"de": "Das Passwort ist abgelaufen und muss erneuert werden"
-	},
-	"descr_SAMBA_PWCHANGE": {
-		"de": ""
-	},
-	"title_SAMBA_ACCLOCKED": {
-		"de": "Account gesperrt"
-	},
-	"descr_SAMBA_ACCLOCKED": {
-		"de": "Der Samba Account ist gesperrt, Login verweigert"
-	},
-	"title_KRB_ACCLOCKED": {
-		"de": "Account gesperrt"
-	},
-	"descr_KRB_ACCLOCKED": {
-		"de": "Der Kerberos Account ist gesperrt, Login verweigert"
-	},
-	"title_univention:RETYPE_MISMATCH": {
-		"de": "Passwort ändern fehlgeschlagen"
-	},
-	"descr_univention:RETYPE_MISMATCH": {
-		"de": "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
-	},
-	"title_univention:PASSWORD_CHANGE_SUCCESS": {
-		"de": "Das Passwort wurde erfolgreich geändert"
-	},
-	"descr_univention:PASSWORD_CHANGE_SUCCESS": {
-		"de": "Bitte melden Sie sich erneut an."
-	}
+  "descr_KRB_ACCEXPIRED": {
+    "de": "Der Kerberos Account ist abgelaufen, Login verweigert"
+  },
+  "descr_KRB_ACCLOCKED": {
+    "de": "Der Kerberos Account ist gesperrt, Login verweigert"
+  },
+  "descr_KRB_PWCHANGE": {
+    "de": ""
+  },
+  "descr_LDAP_ACCDISABLED": {
+    "de": "Der LDAP Account ist deaktiviert, Login verweigert"
+  },
+  "descr_LDAP_ACCEXPIRED": {
+    "de": "Der LDAP Account ist abgelaufen, Login verweigert"
+  },
+  "descr_LDAP_PWCHANGE": {
+    "de": ""
+  },
+  "descr_SAMBA_ACCEXPIRED": {
+    "de": "Der Samba Account ist abgelaufen, Login verweigert"
+  },
+  "descr_SAMBA_ACCLOCKED": {
+    "de": "Der Samba Account ist gesperrt, Login verweigert"
+  },
+  "descr_SAMBA_PWCHANGE": {
+    "de": ""
+  },
+  "descr_WRONGUSERPASS": {
+    "de": "Entweder es konnte kein Nutzer mit dem angegebenen Nutzernamen gefunden werden oder das Passwort ist falsch. Überprüfen Sie die Zugangsdaten und probieren Sie es nochmal"
+  },
+  "descr_univention:PASSWORD_CHANGE_SUCCESS": {
+    "de": "Bitte melden Sie sich erneut an."
+  },
+  "descr_univention:PW_CHANGE_FAILED": {
+    "de": "%s"
+  },
+  "descr_univention:RETYPE_MISMATCH": {
+    "de": "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
+  },
+  "title_KRB_ACCEXPIRED": {
+    "de": "Account abgelaufen"
+  },
+  "title_KRB_ACCLOCKED": {
+    "de": "Account gesperrt"
+  },
+  "title_KRB_PWCHANGE": {
+    "de": "Das Passwort ist abgelaufen und muss erneuert werden"
+  },
+  "title_LDAP_ACCDISABLED": {
+    "de": "Account deaktiviert"
+  },
+  "title_LDAP_ACCEXPIRED": {
+    "de": "Account abgelaufen"
+  },
+  "title_LDAP_PWCHANGE": {
+    "de": "Das Passwort ist abgelaufen und muss erneuert werden"
+  },
+  "title_SAMBA_ACCEXPIRED": {
+    "de": "Account abgelaufen"
+  },
+  "title_SAMBA_ACCLOCKED": {
+    "de": "Account gesperrt"
+  },
+  "title_SAMBA_PWCHANGE": {
+    "de": "Das Passwort ist abgelaufen und muss erneuert werden"
+  },
+  "title_WRONGUSERPASS": {
+    "de": "Nutzername oder Passwort falsch"
+  },
+  "title_univention:PASSWORD_CHANGE_SUCCESS": {
+    "de": "Das Passwort wurde erfolgreich geändert"
+  },
+  "title_univention:PW_CHANGE_FAILED": {
+    "de": "Passwort ändern fehlgeschlagen"
+  },
+  "title_univention:RETYPE_MISMATCH": {
+    "de": "Passwort ändern fehlgeschlagen"
+  }
 }

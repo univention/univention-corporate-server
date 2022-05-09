@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Move an UCS-user out of the User-Ignore-Subtree in read-mode"
 ## exposure: dangerous

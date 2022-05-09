@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Make concurrent changes in AD"
 ## exposure: dangerous
@@ -50,7 +50,7 @@ for((i=0;i<10;i++)); do
 
 	sleep $i
 	ad_set_attribute "$AD_DN" "postalCode" "28359"; fail_bool 0 110
-		
+
 	sleep $i
 	ad_set_attribute "$AD_DN" "mobile" "3"; fail_bool 0 110
 

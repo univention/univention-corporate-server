@@ -1,13 +1,13 @@
 univention-antivir-mail (11.0.0-3) unstable; urgency=medium
 
-  * Bug #54070: refactored previous solution, due to decrepated filehandling 
+  * Bug #54070: refactored previous solution, due to decrepated filehandling
 
  -- Alexander Steffen <steffen@univention.de>  Fri, 28 Jan 2022 14:34:42 +0100
 
 univention-antivir-mail (11.0.0-2) unstable; urgency=medium
 
   * Bug #54070: resolved permission issues by changing the owner of
-    "/var/lib/clamav" to the clamav user 
+    "/var/lib/clamav" to the clamav user
 
  -- Alexander Steffen <steffen@univention.de>  Fri, 17 Dec 2021 11:20:16 +0100
 
@@ -93,20 +93,20 @@ univention-antivir-mail (6.0.0-6) unstable; urgency=medium
 
 univention-antivir-mail (6.0.0-5) unstable; urgency=low
 
-  * added mail/antispam/headertag (Bug #36664) 
+  * added mail/antispam/headertag (Bug #36664)
 
  -- Felix Botner <botner@univention.de>  Thu, 04 Dec 2014 16:23:05 +0100
 
 univention-antivir-mail (6.0.0-4) unstable; urgency=low
 
-  * remove obsolete cron job (Bug #36928) 
+  * remove obsolete cron job (Bug #36928)
 
  -- Felix Botner <botner@univention.de>  Thu, 04 Dec 2014 15:27:03 +0100
 
 univention-antivir-mail (6.0.0-3) unstable; urgency=low
 
   * removed retired variables $sa_spam_modifies_subj and
-    $sa_timeout (Bug #35264) 
+    $sa_timeout (Bug #35264)
 
  -- Felix Botner <botner@univention.de>  Tue, 21 Oct 2014 17:47:38 +0200
 
@@ -143,7 +143,7 @@ univention-antivir-mail (5.0.0-2) unstable; urgency=low
 univention-antivir-mail (5.0.0-1) unstable; urgency=low
 
   * removed scalix stuff (Bug #30900)
-  * version bump for 3.2 
+  * version bump for 3.2
 
  -- Felix Botner <botner@univention.de>  Tue, 18 Jun 2013 14:15:43 +0200
 
@@ -248,7 +248,7 @@ univention-antivir-mail (2.0.6-1) unstable; urgency=low
 
 univention-antivir-mail (2.0.5-1) unstable; urgency=low
 
-  * updated copyright Bug #17222 
+  * updated copyright Bug #17222
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 13:55:26 +0100
 
@@ -286,7 +286,7 @@ univention-antivir-mail (2.0.0-0) unstable; urgency=low
 
 univention-antivir-mail (1.3.4-3) unstable; urgency=low
 
-  * added service info  for umc and "autostart functionality" (Bug: #9954) 
+  * added service info  for umc and "autostart functionality" (Bug: #9954)
 
  -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue,  2 Sep 2008 11:27:06 +0200
 
@@ -345,7 +345,7 @@ univention-antivir-mail (1.3.2-2) unstable; urgency=low
 
 univention-antivir-mail (1.3.2-1) unstable; urgency=low
 
-  * removed debian/univention-antivir-mail.conffiles; not required 
+  * removed debian/univention-antivir-mail.conffiles; not required
 
  -- Andreas BÃŒsching <buesching@univention.de>  Tue, 03 Jul 2007 16:53:11 +0200
 

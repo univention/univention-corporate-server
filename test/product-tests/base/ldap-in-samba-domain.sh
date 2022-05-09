@@ -109,7 +109,7 @@ test_ldap_in_samba_domain_windowsclient () {
 		echo $password > /tmp/.usertest
 		kinit --password-file=/tmp/.usertest $user
 	done
-	
+
 	echo "Success"
 
 }

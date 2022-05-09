@@ -46,7 +46,7 @@ test_group_sid_s4 () {
 test_group_sid () {
 	test_group_sid_s4 "$@"
 	test_group_sid_openldap "$@"
-	
+
 }
 test_user_sid () {
 	user="$1"

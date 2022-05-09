@@ -6,7 +6,7 @@ import socket
 import sqlite3
 import subprocess
 import time
-from typing import Any, Dict, Iterator, List, Optional, Union  # noqa F401
+from typing import Any, Dict, Iterator, List, Optional, Union  # noqa: F401
 
 import ldap
 import six

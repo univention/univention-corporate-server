@@ -375,19 +375,19 @@ alpha-white-gradient()
 	// example:
 	//		Gradient starts at top (0%) with 30% opacity, and then ends at bottom (100%) with full transparency
 	//		|	alpha-white-gradient((0.3 0%), (0 100%))
-	
+
 	$args = ()
 	if (type(arguments[0]) == "ident")
 		// Immediately add first argument if it is an ident e.g. left, top
 		push($args, arguments[0])
 
-	
+
 	// Iterate arguments, skipping first if already added above
 	for $stop in arguments[length($args)...length(arguments)]
 		// Each "stop" is a tuple consisting of alpha and position along gradient
 		push($args, "rgba(255,255,255,%s) %s" % ($stop[0] $stop[1]))
 
-	
+
 	linear-gradient(unquote(join(", ", $args)))
 
 
@@ -426,7 +426,7 @@ gradient-and-filter($color, $fade1, $fade2)
 	//		The percent to fade at the top
 	// $fade2:
 	//		The percent to fade at the bottom
-	
+
 	background-color: $color // the base color
 	linear-gradient(#fff0 + rgba(0, 0, 0, $fade1 / 100), #fff0 + rgba(0, 0, 0, $fade2 / 100))
 	filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=%s, endColorstr=%s)" % (fullcolor(lighten($color, $fade1)) fullcolor(lighten($color, $fade2))) // IE
@@ -443,7 +443,7 @@ horizontal-gradient-and-filter($color, $fade1, $fade2)
 	//		The percent to fade at the top
 	// $fade2:
 	//		The percent to fade at the bottom
-	
+
 	background-color: $color // the base color
 	linear-gradient(left, #fff0 + rgba(0, 0, 0, $fade1 / 100), #fff0 + rgba(0, 0, 0, $fade2 / 100))
 	filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=%s, endColorstr=%s, gradientType=1)" % (fullcolor(lighten($color, $fade1)) fullcolor(lighten($color, $fade2))) // IE

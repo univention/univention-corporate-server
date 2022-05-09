@@ -33,7 +33,7 @@ Internationalization (i18n) utilities.
 import gettext
 from locale import getlocale, Error, LC_MESSAGES
 import re
-from typing import Optional, Text  # noqa F401
+from typing import Optional, Text  # noqa: F401
 
 import six
 

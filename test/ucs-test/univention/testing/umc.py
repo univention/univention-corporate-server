@@ -34,7 +34,7 @@ from __future__ import print_function
 
 import pprint
 import sys
-from typing import Any, Iterable, Optional, Tuple  # noqa F401
+from typing import Any, Iterable, Optional, Tuple  # noqa: F401
 
 import requests
 from six.moves.html_parser import HTMLParser

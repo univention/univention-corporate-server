@@ -32,6 +32,6 @@
 
 #DEBHELPER#
 
-rm -f /var/www/univention-management-console/js/umc/modules/appliance/appliance_first_steps.README* 
+rm -f /var/www/univention-management-console/js/umc/modules/appliance/appliance_first_steps.README*
 
 exit 0

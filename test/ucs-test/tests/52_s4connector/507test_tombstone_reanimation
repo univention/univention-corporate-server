@@ -68,4 +68,3 @@ ad_exists "$GROUP_AD_DN" ; fail_bool 1 12
 udm_create "groups/group"|| fail_fast 110
 ad_wait_for_synchronization
 ad_exists "$GROUP_AD_DN" ; fail_bool 0 12
-

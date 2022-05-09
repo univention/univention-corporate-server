@@ -167,7 +167,7 @@ univention-fetchmail (7.0.0-1) unstable; urgency=low
 
 univention-fetchmail (6.0.5-4) unstable; urgency=low
 
-  * Partially revert previous version: leave template files (Bug #30781) 
+  * Partially revert previous version: leave template files (Bug #30781)
 
  -- Erik Damrose <damrose@univention.de>  Fri, 22 Mar 2013 12:29:47 +0100
 
@@ -221,7 +221,7 @@ univention-fetchmail (6.0.1-1) unstable; urgency=low
 
   * Added ucr autostart capabilities (Bug #30781)
   * Added entries for system-services module (Bug #30782)
-  * Fixed an error that caused renamed user entries to not get properly 
+  * Fixed an error that caused renamed user entries to not get properly
     updated in the fetchmailrc file (Bug #29640)
 
  -- Erik Damrose <damrose@univention.de>  Thu, 21 Mar 2013 16:31:39 +0100
@@ -286,7 +286,7 @@ univention-fetchmail (4.0.0-1) unstable; urgency=low
 
 univention-fetchmail (3.0.2-1) unstable; urgency=low
 
-  * updated copyright Bug #16818 
+  * updated copyright Bug #16818
 
  -- Felix Botner <botner@univention.de>  Fri, 08 Jan 2010 10:54:20 +0100
 
@@ -364,13 +364,13 @@ univention-fetchmail-ext (0.1-12) unstable; urgency=low
 
 univention-fetchmail-ext (0.1-11) unstable; urgency=low
 
-  * fixed string error, lines in fetchmailrc are now removable, fixed typo 
+  * fixed string error, lines in fetchmailrc are now removable, fixed typo
 
  -- Tobias Scherer <scherer@univention.de>  Wed, 20 Jun 2007 12:02:23 +0200
 
 univention-fetchmail-ext (0.1-10) unstable; urgency=low
 
-  * added acl-bugfix and errorhandling 
+  * added acl-bugfix and errorhandling
 
  -- Tobias Scherer <scherer@univention.de>  Wed, 25 Apr 2007 16:25:55 +0200
 
@@ -388,19 +388,19 @@ univention-fetchmail-ext (0.1-7) unstable; urgency=low
 
 univention-fetchmail-ext (0.1-6) unstable; urgency=low
 
-  * fixed debian/control 
+  * fixed debian/control
 
  -- Tobias Scherer <scherer@univention.de>  Tue,  3 Apr 2007 09:58:09 +0200
 
 univention-fetchmail-ext (0.1-5) unstable; urgency=low
 
-  * fixed several failures 
+  * fixed several failures
 
  -- Tobias Scherer <scherer@univention.de>  Tue,  3 Apr 2007 09:44:37 +0200
 
 univention-fetchmail-ext (0.1-4) unstable; urgency=low
 
-  * added acl to hide fetchmailPasswd 
+  * added acl to hide fetchmailPasswd
 
  -- Tobias Scherer <scherer@univention.de>  Wed,  7 Mar 2007 11:50:48 +0100
 
@@ -412,7 +412,7 @@ univention-fetchmail-ext (0.1-3) unstable; urgency=low
 
 univention-fetchmail-ext (0.1-2) unstable; urgency=low
 
-  * fixed funtion-attributes 
+  * fixed funtion-attributes
 
  -- Tobias Scherer <scherer@univention.de>  Wed, 28 Feb 2007 16:53:11 +0100
 

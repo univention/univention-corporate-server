@@ -131,7 +131,7 @@ objectclass ( univentionPortalObjectClass:1 NAME 'univentionPortal'
 	DESC 'Portal data'
 	SUP top
 	MUST ( cn )
-	MAY (	
+	MAY (
 			  univentionPortalDisplayName
 			$ univentionPortalShowMenu
 			$ univentionPortalShowSearch
@@ -226,7 +226,7 @@ objectclass ( univentionPortalEntryObjectClass:1 NAME 'univentionPortalEntry'
 	DESC 'Portal Entry data'
 	SUP top
 	MUST ( cn )
-	MAY (	
+	MAY (
 			  univentionPortalEntryDisplayName
 			$ univentionPortalEntryDescription
 			$ univentionPortalEntryFavorite
@@ -253,7 +253,7 @@ objectclass ( univentionPortalCategoryObjectClass:1 NAME 'univentionPortalCatego
 	DESC 'Portal Category data'
 	SUP top
 	MUST ( cn )
-	MAY (	
+	MAY (
 			  univentionPortalCategoryDisplayName
 		)
 	)
@@ -271,7 +271,7 @@ objectclass ( univentionPortalComputerObjectClass:1 NAME 'univentionPortalComput
 	DESC 'Computer with Univention Portal'
 	SUP top
 	AUXILIARY
-	MAY (	
+	MAY (
 			  univentionComputerPortal
 		)
 	)

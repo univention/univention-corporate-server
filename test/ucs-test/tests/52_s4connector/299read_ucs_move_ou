@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Check whether ou can be recursively moved on ucs-side in read-mode"
 ## exposure: dangerous

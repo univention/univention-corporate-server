@@ -326,7 +326,7 @@ define([
 			this.set('notificationMessage', notification.message);
 			this.set('notificationAction', notification.action);
 			this.set('notificationActionLabel', notification.actionLabel);
-			
+
 			// update _maxVisibleTime based on amount of text in message
 			var textContent = notification.message.textContent ? notification.message.textContent : notification.message;
 			var wordCount = textContent.split(' ').length;

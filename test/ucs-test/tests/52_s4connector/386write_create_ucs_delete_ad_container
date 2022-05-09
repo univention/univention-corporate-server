@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Create an UCS-Container and Delete the corresponding AD-Container in write mode"
 ## exposure: dangerous

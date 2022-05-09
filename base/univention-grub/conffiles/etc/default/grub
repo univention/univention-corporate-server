@@ -46,7 +46,7 @@ if terminal:
 else:
 	print('#GRUB_TERMINAL="console"')
 @!@
-# Configure UCR Variable "grub/serialcommand" to adapt GRUB_SERIAL_COMMAND settings 
+# Configure UCR Variable "grub/serialcommand" to adapt GRUB_SERIAL_COMMAND settings
 @!@
 serial = configRegistry.get('grub/serialcommand')
 if serial:

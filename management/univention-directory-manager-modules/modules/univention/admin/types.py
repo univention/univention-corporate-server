@@ -36,7 +36,7 @@ from __future__ import absolute_import
 import inspect
 import time
 import datetime
-from typing import Optional, Sequence, Type, Union  # noqa F401
+from typing import Optional, Sequence, Type, Union  # noqa: F401
 
 import six
 import ldap.dn

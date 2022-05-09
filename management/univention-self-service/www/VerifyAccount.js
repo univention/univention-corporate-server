@@ -148,7 +148,7 @@ define([
 			this._token.startup();
 			put(this._steps, 'li.step div.stepLabel $ +', _('Token'), this._token.domNode);
 		},
-		
+
 		_createButtons: function() {
 			var buttonRow = put(this._steps, 'div.umcPageFooter');
 			var buttonsRight = put(buttonRow, 'div.umcPageFooterRight');

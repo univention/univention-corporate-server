@@ -30,7 +30,7 @@ univention-server (15.0.4-4) unstable; urgency=medium
 
 univention-server (15.0.4-3) unstable; urgency=medium
 
-  * Bug #52957: Added removed packages to univention-role-common conflict section 
+  * Bug #52957: Added removed packages to univention-role-common conflict section
 
  -- Jan Luttermann <luttermann@univention.de>  Tue, 27 Apr 2021 17:13:45 +0200
 
@@ -345,7 +345,7 @@ univention-server (12.0.0-1) unstable; urgency=medium
 univention-server (11.0.1-8) unstable; urgency=low
 
   * back to hard dependency for ntpdate/rdate (Bug #39410)
-    in univention-basesystem and univention-role-server-common 
+    in univention-basesystem and univention-role-server-common
 
  -- Felix Botner <botner@univention.de>  Wed, 14 Oct 2015 11:26:56 +0200
 
@@ -494,13 +494,13 @@ univention-server (9.0.0-4) unstable; urgency=low
 
 univention-server (9.0.0-3) unstable; urgency=low
 
-  * fixed last commit (Bug #31068) 
+  * fixed last commit (Bug #31068)
 
  -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 16:34:23 +0200
 
 univention-server (9.0.0-2) unstable; urgency=low
 
-  * rotate machine password if last modification of 
+  * rotate machine password if last modification of
     /etc/machine.secret is more than $(server/password/interval)
     days ago (Bug #31068)
 
@@ -509,7 +509,7 @@ univention-server (9.0.0-2) unstable; urgency=low
 univention-server (9.0.0-1) unstable; urgency=low
 
   * bump version for UCS 3.2
-  * replaced makepasswd with create_machine_password (Bug #31281) 
+  * replaced makepasswd with create_machine_password (Bug #31281)
 
  -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 11:12:49 +0200
 
@@ -522,7 +522,7 @@ univention-server (8.0.3-1) unstable; urgency=low
 
 univention-server (8.0.2-1) unstable; urgency=low
 
-  * added ntp as package dependency to univention-server-member (Bug #30041) 
+  * added ntp as package dependency to univention-server-member (Bug #30041)
 
  -- Felix Botner <botner@univention.de>  Fri, 08 Mar 2013 17:05:44 +0100
 

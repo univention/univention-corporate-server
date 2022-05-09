@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Create an UCS-Group and remove the corresponding AD-Group in sync mode"
 ## exposure: dangerous

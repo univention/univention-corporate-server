@@ -37,7 +37,7 @@ import subprocess
 from logging import getLogger
 import six
 try:
-	from typing import Any, Dict, Iterable, Iterator, List, Optional, Sequence, Set, Tuple  # noqa F401
+	from typing import Any, Dict, Iterable, Iterator, List, Optional, Sequence, Set, Tuple  # noqa: F401
 except ImportError:  # pragma: no cache
 	pass
 

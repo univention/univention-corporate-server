@@ -80,7 +80,7 @@ case "$1" in
 		start-stop-daemon --start --quiet --exec $DAEMON -- $RPCRQUOTADOPTS
 		log_end_msg $?
 	   fi
-	fi	
+	fi
 	;;
   stop)
 	log_daemon_msg "Stopping $DESC" "rpc.rquotad"

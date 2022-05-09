@@ -42,8 +42,8 @@ from pipes import quote
 from univention.debhelper import binary_packages, doIt, parser_dh_sequence
 
 try:
-	from typing import IO  # noqa F401
-	from typing_extensions import Literal  # noqa F401
+	from typing import IO  # noqa: F401
+	from typing_extensions import Literal  # noqa: F401
 except ImportError:
 	pass
 

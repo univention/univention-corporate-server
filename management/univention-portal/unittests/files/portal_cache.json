@@ -1,109 +1,109 @@
 {
-    "categories": {
-        "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
-            "display_name": {
-                "de_DE": "Verwaltung", 
-                "en_US": "Administration"
-            }, 
-            "dn": "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", 
-            "entries": [
-                "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", 
-                "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", 
-                "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"
-            ]
-        }
-    }, 
-    "entries": {
-        "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
-            "activated": true, 
-            "allowedGroups": [], 
-            "anonymous": true,
-            "description": {
-                "de_DE": "Zeigt eine \u00dcbersicht aller UCS Server in der Dom\u00e4ne", 
-                "en_US": "Provide an overview of all UCS server in the domain", 
-                "fr_FR": "Vue d'ensemble de tous les serveurs UCS du domaine"
-            }, 
-            "dn": "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", 
-            "in_portal": true,
-            "linkTarget": "useportaldefault", 
-            "links": [
-                "/univention/server-overview/"
-            ], 
-            "logo_name": "/univention/portal/icons/entries/server-overview.svg", 
-            "name": {
-                "de_DE": "Server\u00fcbersicht", 
-                "en_US": "Server overview", 
-                "fr_FR": "Vue d'ensemble de serveurs"
-            }
-        }, 
-        "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
-            "activated": true, 
-            "allowedGroups": [], 
-            "anonymous": true,
-            "description": {
-                "de_DE": "Univention Management Console zur Ver\u00adwal\u00adtung der UCS-Dom\u00e4ne und des lokalen Systems", 
-                "en_US": "Univention Management Console for admin\u00adis\u00adtra\u00adting the UCS domain and the local system", 
-                "fr_FR": "Console de gestion Univention pour admin\u00adis\u00adtrer le domaine UCS et le syst\u00e8me local"
-            }, 
-            "dn": "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", 
-            "in_portal": true,
-            "linkTarget": "useportaldefault", 
-            "links": [
-                "/univention/management/"
-            ], 
-            "logo_name": "/univention/portal/icons/entries/umc-domain.svg", 
-            "name": {
-                "de_DE": "System- und Dom\u00e4neneinstellungen", 
-                "en_US": "System and domain settings", 
-                "fr_FR": "R\u00e9glages du syst\u00e8me et du domaine"
-            }
-        }, 
-        "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
-            "activated": true, 
-            "allowedGroups": [
-                "cn=g1,cn=groups,dc=intranet,dc=example,dc=de", 
-                "cn=g2,cn=groups,dc=intranet,dc=example,dc=de"
-            ], 
-            "anonymous": true,
-            "description": {
-                "de_DE": "News, Tipps und Best Practices", 
-                "en_US": "News, tips and best practices", 
-                "fr_FR": "Nouvelles, conseils et bonne pratique"
-            }, 
-            "dn": "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", 
-            "in_portal": true,
-            "linkTarget": "newwindow", 
-            "links": [
-                "https://www.univention.com/news/blog-en/"
-            ], 
-            "logo_name": "/univention/portal/icons/entries/univentionblog.png", 
-            "name": {
-                "de_DE": "Univention Blog", 
-                "en_US": "Univention Blog", 
-                "fr_FR": "Univention Blog"
-            }
-        }
-    }, 
-    "folders": {}, 
-    "menu_links": [], 
-    "portal": {
-        "anonymousEmpty": [], 
-        "autoLayoutCategories": false, 
-        "categories": [
-            "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"
-        ], 
-        "defaultLinkTarget": "embedded", 
-        "dn": "cn=domain,cn=portal,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", 
-        "in_portal": true,
-        "ensureLogin": false, 
-        "fontColor": "black", 
-        "logo": null, 
-        "name": {
-            "de_DE": "Univention Portal", 
-            "en_US": "Univention Portal", 
-            "fr_FR": "Portail Univention"
-        }, 
-        "showApps": false
-    }, 
-    "user_links": []
+  "categories": {
+    "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
+      "display_name": {
+        "de_DE": "Verwaltung",
+        "en_US": "Administration"
+      },
+      "dn": "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
+      "entries": [
+        "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
+        "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
+        "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"
+      ]
+    }
+  },
+  "entries": {
+    "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": true,
+      "description": {
+        "de_DE": "Zeigt eine Übersicht aller UCS Server in der Domäne",
+        "en_US": "Provide an overview of all UCS server in the domain",
+        "fr_FR": "Vue d'ensemble de tous les serveurs UCS du domaine"
+      },
+      "dn": "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
+      "in_portal": true,
+      "linkTarget": "useportaldefault",
+      "links": [
+        "/univention/server-overview/"
+      ],
+      "logo_name": "/univention/portal/icons/entries/server-overview.svg",
+      "name": {
+        "de_DE": "Serverübersicht",
+        "en_US": "Server overview",
+        "fr_FR": "Vue d'ensemble de serveurs"
+      }
+    },
+    "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": true,
+      "description": {
+        "de_DE": "Univention Management Console zur Ver­wal­tung der UCS-Domäne und des lokalen Systems",
+        "en_US": "Univention Management Console for admin­is­tra­ting the UCS domain and the local system",
+        "fr_FR": "Console de gestion Univention pour admin­is­trer le domaine UCS et le système local"
+      },
+      "dn": "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
+      "in_portal": true,
+      "linkTarget": "useportaldefault",
+      "links": [
+        "/univention/management/"
+      ],
+      "logo_name": "/univention/portal/icons/entries/umc-domain.svg",
+      "name": {
+        "de_DE": "System- und Domäneneinstellungen",
+        "en_US": "System and domain settings",
+        "fr_FR": "Réglages du système et du domaine"
+      }
+    },
+    "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
+      "activated": true,
+      "allowedGroups": [
+        "cn=g1,cn=groups,dc=intranet,dc=example,dc=de",
+        "cn=g2,cn=groups,dc=intranet,dc=example,dc=de"
+      ],
+      "anonymous": true,
+      "description": {
+        "de_DE": "News, Tipps und Best Practices",
+        "en_US": "News, tips and best practices",
+        "fr_FR": "Nouvelles, conseils et bonne pratique"
+      },
+      "dn": "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
+      "in_portal": true,
+      "linkTarget": "newwindow",
+      "links": [
+        "https://www.univention.com/news/blog-en/"
+      ],
+      "logo_name": "/univention/portal/icons/entries/univentionblog.png",
+      "name": {
+        "de_DE": "Univention Blog",
+        "en_US": "Univention Blog",
+        "fr_FR": "Univention Blog"
+      }
+    }
+  },
+  "folders": {},
+  "menu_links": [],
+  "portal": {
+    "anonymousEmpty": [],
+    "autoLayoutCategories": false,
+    "categories": [
+      "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"
+    ],
+    "defaultLinkTarget": "embedded",
+    "dn": "cn=domain,cn=portal,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
+    "ensureLogin": false,
+    "fontColor": "black",
+    "in_portal": true,
+    "logo": null,
+    "name": {
+      "de_DE": "Univention Portal",
+      "en_US": "Univention Portal",
+      "fr_FR": "Portail Univention"
+    },
+    "showApps": false
+  },
+  "user_links": []
 }

@@ -7,7 +7,7 @@ setup via umc
 
 import os
 import time
-from argparse import ArgumentParser, Namespace  # noqa F401
+from argparse import ArgumentParser, Namespace  # noqa: F401
 
 from components.components import components_with_steps as components
 from installation import UCSInstallation

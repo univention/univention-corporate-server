@@ -95,32 +95,32 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "7.0.1-7"; then
 	udm settings/extended_options modify --dn "cn=radiusAuthenticator,cn=custom attributes,cn=univention,$ldap_base" \
 		--append translationShortDescription='"fr_FR" "Authentificateur RADIUS"' \
 		--append translationLongDescription='"fr_FR" "Active les options de configurations de l’authentificateur RADIUS, par exemple pour les points d’accès sans fil ou les serveurs d’accès au résau (NAS : Network Access Server)"'
-	
+
 	udm settings/extended_attribute modify --dn "cn=univentionRadiusClientSharedSecret,cn=custom attributes,cn=univention,$ldap_base" \
 		--append translationShortDescription='"fr_FR" "Secret partagé"' \
 		--append translationLongDescription='"fr_FR" "Secret partagé utilisé pour la communication entre le client RADIUS et le serveur RADIUS"' \
 		--append translationGroupName='"fr_FR" "Authentificateur RADIUS"'
-	
+
 	udm settings/extended_attribute modify --dn "cn=univentionRadiusClientType,cn=custom attributes,cn=univention,$ldap_base" \
 		--append translationShortDescription='"fr_FR" "Type de NAS"' \
 		--append translationLongDescription='"fr_FR" "Cette option indique à RADIUS la méthode spécifique au NAS devant être employée avec celui-ci pour les requêtes simultanées. La valeur par défaut est »other«."' \
 		--append translationGroupName='"fr_FR" "Authentificateur RADIUS"'
-	
+
 	udm settings/extended_attribute modify --dn "cn=univentionRadiusClientVirtualServer,cn=custom attributes,cn=univention,$ldap_base" \
 		--append translationShortDescription='"fr_FR" "Serveur virtuel"' \
 		--append translationLongDescription='"fr_FR" "Les clients RADIUS peuvent également être reliés à un serveur virtuel. Indiquez simplement le nom du serveur virtuel."' \
 		--append translationGroupName='"fr_FR" "Authentificateur RADIUS"'
-	
+
 	udm settings/extended_attribute modify --dn "cn=networkAccessComputers,cn=custom attributes,cn=univention,$ldap_base" \
 		--append translationShortDescription='"fr_FR" "Autoriser l’accès au réseau"' \
 		--append translationLongDescription='"fr_FR" "Autoriser l’accès via RADIUS (par exemple via IEEE 802.1x) pour cet ordinateur."' \
 		--append translationGroupName='"fr_FR" "Demandeur RADIUS"'
-	
+
 	udm settings/extended_attribute modify --dn "cn=networkAccessGroups,cn=custom attributes,cn=univention,$ldap_base" \
 		--append translationShortDescription='"fr_FR" "Autoriser l’accès au réseau"' \
 		--append translationLongDescription='"fr_FR" "Autoriser l’accès via RADIUS (par exemple via IEEE 802.1x) pour les membres de ce groupe."' \
 		--append translationGroupName='"fr_FR" "Demandeur RADIUS"'
-	
+
 	udm settings/extended_attribute modify --dn "cn=networkAccessUsers,cn=custom attributes,cn=univention,$ldap_base" \
 		--append translationShortDescription='"fr_FR" "Autoriser l’accès au réseau"' \
 		--append translationLongDescription='"fr_FR" "Autoriser l’accès via RADIUS (802.1x) pour cet utilisateur ou utilisatrice."'

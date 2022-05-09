@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Create 'known' group on ucs-side in sync-mode"
 ## exposure: dangerous
@@ -73,9 +73,9 @@ fi
 section "Clean up"
 
 UDM_groups_group_name="$OUTER_GROUP"
-udm_remove "groups/group" || fail_test 110 
+udm_remove "groups/group" || fail_test 110
 UDM_groups_group_name="$INNER_GROUP"
-udm_remove "groups/group" || fail_test 110 
+udm_remove "groups/group" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 
 UDM_groups_group_name="$OUTER_GROUP"

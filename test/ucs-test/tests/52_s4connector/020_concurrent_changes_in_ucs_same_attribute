@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Make concurrent changes in UCS"
 ## exposure: dangerous
@@ -31,7 +31,6 @@ for((i=0;i<10;i++)); do
 	UDM_users_user_lastname="$(random_chars)"
 	UDM_users_user_password="univention"
 	udm_create "users/user"; fail_bool 0 110
-
 
 	for((j=0;j<10;j++)); do
 		udm_modify "users/user" "" "" "" "" \

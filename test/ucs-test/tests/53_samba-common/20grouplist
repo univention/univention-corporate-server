@@ -4,7 +4,7 @@
 ## exposure: safe
 ## packages:
 ##  - univention-samba | univention-samba4
-## roles-not: 
+## roles-not:
 ## - basesystem
 ## - memberserver
 ## tags: [basic, skip_admember]

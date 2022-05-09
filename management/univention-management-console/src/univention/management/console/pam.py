@@ -55,7 +55,7 @@ from univention.management.console.log import AUTH
 from univention.lib.i18n import Translation, I18N_Error
 
 try:
-	from typing import Any, Dict, Iterator, List, Optional, Pattern, Sequence, Text, Tuple, Union  # noqa F401
+	from typing import Any, Dict, Iterator, List, Optional, Pattern, Sequence, Text, Tuple, Union  # noqa: F401
 except ImportError:
 	pass
 

@@ -37,7 +37,7 @@ typedef struct sid_info
   uint8  num_auths;               /**< Number of sub-authorities */
   uint8  id_auth[6];              /**< Identifier Authority */
   uint32 sub_auths[MAXSUBAUTHS];
-  
+
 } DOM_SID;
 
 #define FSTRING_LEN 256
@@ -47,7 +47,7 @@ typedef char fstring[FSTRING_LEN];
 /* from memory.c */
 void *smb_xmalloc(size_t size);
 char *smb_xstrdup(const char *s);
-void *memdup(const void *p, size_t size); 
+void *memdup(const void *p, size_t size);
 
 /* from md4.c */
 void mdfour(unsigned char *out, const unsigned char *in, int n);

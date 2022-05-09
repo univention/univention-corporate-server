@@ -1,24 +1,4 @@
 {
-  "name": "upx-portal",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "serve:wait": "yarn serve & wait-on http://localhost:8080",
-    "deploy:firebase": "yarn build && firebase deploy",
-    "test:unit": "vue-cli-service test:unit",
-    "test:coverage": "vue-cli-service test:unit --coverage",
-    "test:unit:updatesnapshots": "yarn test:unit --updateSnapshot",
-    "test:unit:watch": "yarn test:unit --watch",
-    "test:e2e": "NODE_ENV=development vue-cli-service test:e2e",
-    "test:e2e:headless": "NODE_ENV=development vue-cli-service test:e2e --headless",
-    "test:e2e:run": "yarn cypress run",
-    "lint": "vue-cli-service lint --no-fix",
-    "lint:all": "yarn lint && stylelint \"{**/*.{scss,vue,styl}\"",
-    "lint:fix": "vue-cli-service lint",
-    "lint:fix:all": "yarn lint:fix && stylelint --fix \"{**/*.{scss,vue,styl}\""
-  },
   "dependencies": {
     "@types/lodash.isempty": "^4.4.6",
     "@types/lodash.isequal": "^4.5.5",
@@ -73,5 +53,25 @@
     "vue-jest": "^5.0.0-0",
     "wait-on": "^5.3.0",
     "yarn": "^1.22.10"
-  }
+  },
+  "name": "upx-portal",
+  "private": true,
+  "scripts": {
+    "build": "vue-cli-service build",
+    "deploy:firebase": "yarn build && firebase deploy",
+    "lint": "vue-cli-service lint --no-fix",
+    "lint:all": "yarn lint && stylelint \"{**/*.{scss,vue,styl}\"",
+    "lint:fix": "vue-cli-service lint",
+    "lint:fix:all": "yarn lint:fix && stylelint --fix \"{**/*.{scss,vue,styl}\"",
+    "serve": "vue-cli-service serve",
+    "serve:wait": "yarn serve & wait-on http://localhost:8080",
+    "test:coverage": "vue-cli-service test:unit --coverage",
+    "test:e2e": "NODE_ENV=development vue-cli-service test:e2e",
+    "test:e2e:headless": "NODE_ENV=development vue-cli-service test:e2e --headless",
+    "test:e2e:run": "yarn cypress run",
+    "test:unit": "vue-cli-service test:unit",
+    "test:unit:updatesnapshots": "yarn test:unit --updateSnapshot",
+    "test:unit:watch": "yarn test:unit --watch"
+  },
+  "version": "0.1.0"
 }

@@ -41,7 +41,7 @@ define([
 
 		baseClass: "umcGridTile",
 
-		necessaryUdmValues: ["displayName", "mailPrimaryAddress", "firstname", "lastname"], 
+		necessaryUdmValues: ["displayName", "mailPrimaryAddress", "firstname", "lastname"],
 
 		_queryTimer: null,
 

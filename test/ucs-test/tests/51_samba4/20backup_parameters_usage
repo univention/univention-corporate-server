@@ -39,7 +39,7 @@ fi
 # force UCR vars settings for the test with options:
 echo "Setting the cron variable value and options for the test"
 ucr set samba4/backup/cron="0 3 * * *"
-ucr set samba4/backup/cron/options="--days 88" 
+ucr set samba4/backup/cron/options="--days 88"
 
 
 # check that '/etc/cron.d/univention-samba4-backup' has a line from 'samba4/backup/cron':

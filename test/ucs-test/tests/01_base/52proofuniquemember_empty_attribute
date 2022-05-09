@@ -7,7 +7,7 @@
 ## packages:
 ##  - ldap-utils
 ##  - univention-directory-manager-tools
-##  - univention-s4-connector | univention-ad-connector 
+##  - univention-s4-connector | univention-ad-connector
 ## exposure: dangerous
 
 # shellcheck source=../../lib/base.sh

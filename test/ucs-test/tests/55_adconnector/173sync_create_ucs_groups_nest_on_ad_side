@@ -13,7 +13,7 @@
 # shellcheck source=../../lib/udm.sh
 . "$TESTLIBPATH/udm.sh" || exit 137
 # shellcheck source=../../lib/random.sh
-. "$TESTLIBPATH/random.sh" || exit 137 
+. "$TESTLIBPATH/random.sh" || exit 137
 
 . "adconnector.sh" || exit 137
 test -n "$connector_ad_ldap_host" || exit 137
@@ -28,7 +28,7 @@ ad_set_sync_mode "sync"
 UDM_groups_group_name="$INNER_GROUP"
 udm_create "groups/group" || fail_test 110
 UDM_groups_group_name="$OUTER_GROUP"
-udm_create "groups/group" || fail_test 110 
+udm_create "groups/group" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 
 ad_append_to_attribute "CN=$OUTER_GROUP,CN=groups,$(ad_get_base)" \
@@ -60,7 +60,7 @@ section "Clean up"
 UDM_groups_group_name="$INNER_GROUP"
 udm_remove "groups/group" || fail_test 110
 UDM_groups_group_name="$OUTER_GROUP"
-udm_remove "groups/group" || fail_test 110 
+udm_remove "groups/group" || fail_test 110
 
 ad_set_sync_mode "$SYNCMODE"
 

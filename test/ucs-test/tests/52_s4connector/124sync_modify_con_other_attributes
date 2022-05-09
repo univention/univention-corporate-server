@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Modify and check con_other_attribute values"
 ## exposure: dangerous
@@ -60,7 +60,7 @@ set_and_check_phone_numbers_in_ucs ()
 	local phone1="$1"
 	local phone2="$2"
 	local phone3="$3"
-	
+
 	if [ -n "$phone1" ]; then
 		echo udm-test "users/user" modify --dn "$UDM_DN" --set phone="$phone1"
 		udm-test "users/user" modify --dn "$UDM_DN" --set phone="$phone1"
@@ -92,9 +92,9 @@ set_and_check_phone_numbers_in_ad ()
 	local phone2="$2"
 	local phone3="$3"
 
-	ad_set_attribute $AD_DN telephoneNumber "$phone1" 
-	ad_set_attribute $AD_DN otherTelephone "$phone2" 
-	ad_append_to_attribute $AD_DN otherTelephone "$phone3" 
+	ad_set_attribute $AD_DN telephoneNumber "$phone1"
+	ad_set_attribute $AD_DN otherTelephone "$phone2"
+	ad_append_to_attribute $AD_DN otherTelephone "$phone3"
 
 	ad_wait_for_synchronization; fail_bool 0 110
 

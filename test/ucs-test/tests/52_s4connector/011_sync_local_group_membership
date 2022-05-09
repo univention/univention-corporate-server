@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Check group type sync"
 ## exposure: dangerous
@@ -37,5 +37,3 @@ udm_verify_multi_value_udm_attribute_contains "users" \
 	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 1 110
 
 exit "$RETVAL"
-
-

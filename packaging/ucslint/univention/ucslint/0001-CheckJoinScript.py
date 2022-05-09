@@ -29,7 +29,7 @@
 
 import os
 import re
-from typing import Dict, Optional  # noqa F401
+from typing import Dict, Optional  # noqa: F401
 
 import univention.ucslint.base as uub
 

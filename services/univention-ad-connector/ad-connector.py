@@ -40,7 +40,7 @@ import univention.debug as ud
 import shutil
 import subprocess
 try:
-	from typing import Dict, List, Optional, Tuple  # noqa F401
+	from typing import Dict, List, Optional, Tuple  # noqa: F401
 except ImportError:
 	pass
 

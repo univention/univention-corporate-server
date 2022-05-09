@@ -85,7 +85,7 @@ if [ "$1" = "remove" ]; then
 	[ -d /run/systemd ] && systemctl enable heimdal-kdc.service || :
 	ucr unset kerberos/autostart
 	test -x /etc/init.d/heimdal-kdc && invoke-rc.d heimdal-kdc start
-		
+
 	un_divert_univention_heimdal_service_cfg
 
 	cp /usr/lib/univention-uninstall/04univention-samba4.uinst /usr/lib/univention-install/

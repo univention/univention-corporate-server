@@ -334,7 +334,7 @@ univention-directory-notifier (9.0.1-1) unstable; urgency=low
 
 univention-directory-notifier (9.0.0-1) unstable; urgency=low
 
-  * Update to UCS 4.0 (Bug #35144) 
+  * Update to UCS 4.0 (Bug #35144)
 
  -- Felix Botner <botner@univention.de>  Tue, 19 Aug 2014 10:07:51 +0200
 
@@ -353,7 +353,7 @@ univention-directory-notifier (8.0.0-1) unstable; urgency=low
 
 univention-directory-notifier (7.0.8-4) unstable; urgency=low
 
-  * fix permissions for the script (Bug #30408) 
+  * fix permissions for the script (Bug #30408)
 
  -- Arvid Requate <requate@univention.de>  Wed, 13 Feb 2013 12:06:20 +0100
 

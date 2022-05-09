@@ -36,8 +36,8 @@ import pwd
 import subprocess
 import sys
 import time
-from types import TracebackType  # noqa F401
-from typing import Optional, Set, Type  # noqa F401
+from types import TracebackType  # noqa: F401
+from typing import Optional, Set, Type  # noqa: F401
 
 
 class MailSinkGuard(object):

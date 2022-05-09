@@ -74,7 +74,7 @@ display_help() {
 }
 
 terminate_on_error() {
-	>&2 echo "$*" 
+	>&2 echo "$*"
 	exit 1
 }
 
@@ -99,7 +99,7 @@ while [ $# -gt 0 ]; do
 		"--days"|"-d")
 			DAYS="${2:?missing parameter for $1}"
 			[ $DAYS -eq $DAYS ] 2>/dev/null
-			if [ ! $? -eq 0 ]; then	
+			if [ ! $? -eq 0 ]; then
 				display_help
 				exit 1
 			fi

@@ -146,7 +146,7 @@ PROMPT 0
 DEFAULT linux
 IPAPPEND 3
 
-APPEND root=/dev/ram rw nomodeset initrd=linux.bin ramdisk_size=260000 quiet vga=788 loglevel=0 flavor=linux nfs  profile=memberserver 192.168.122.11:/profile syslogserver=192.168.122 DNSSERVER=192.168.122.11 
+APPEND root=/dev/ram rw nomodeset initrd=linux.bin ramdisk_size=260000 quiet vga=788 loglevel=0 flavor=linux nfs  profile=memberserver 192.168.122.11:/profile syslogserver=192.168.122 DNSSERVER=192.168.122.11
 
 LABEL linux
   KERNEL linux-server

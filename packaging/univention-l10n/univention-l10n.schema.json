@@ -1,92 +1,129 @@
 {
-	"$schema": "http://json-schema.org/schema#",
-
-	"definitions": {
-		"pyregexp": {
-			"type": "string",
-			"description": "Prevent globbing wildcard expression",
-			"pattern": "^([^\\/]|\\.|/(?![*+]))*$"
-		},
-		"popath": {
-			"type": "string",
-			"description": "Match files with extension .po",
-			"pattern": ".+\\.po$"
-		},
-		"mopath": {
-			"type": "string",
-			"description": "Match files with extension .mo",
-			"pattern": ".+\\.mo$"
-		},
-		"jsonpath": {
-			"type": "string",
-			"description": "Match files with extension .json",
-			"pattern": ".+\\.json$"
-		}
-	},
-
-	"type": "array",
-	"minItems": 1,
-	"items": {
-		"type": "object",
-		"properties": {
-			"input_files": {
-				"description": "Python regular expression to match source file paths",
-				"type": "array",
-				"minItems": 1,
-				"items": {
-					"$ref": "#/definitions/pyregexp"
-				}
-			},
-			"po_subdir": {
-				"description": "Directory containing multiple .po files",
-				"type": "string"
-			},
-			"po_path": {
-				"description": "Direct path to single .po file",
-				"$ref": "#/definitions/popath"
-			},
-			"target_type": {
-				"description": "File format",
-				"type": "string",
-				"enum": ["mo", "json"]
-			},
-			"destination": {
-				"description": "Installation path",
-				"oneOf": [
-					{ "$ref": "#/definitions/mopath" },
-					{ "$ref": "#/definitions/jsonpath" }
-				]
-			}
-		},
-		"required": [
-			"input_files",
-			"target_type",
-			"destination"
-		],
-		"oneOf": [
-			{
-				"required": ["po_subdir"],
-				"not": {
-					"required": ["po_path"]
-				}
-			},
-			{
-				"required": ["po_path"],
-				"not": {
-					"required": ["po_subdir"]
-				}
-			}
-		],
-		"additionalProperties": false,
-		"if": {
-			"properties": { "target_type": { "const": "mo" } }
-		}, "then": {
-			"properties": { "destination": { "$ref": "#/definitions/mopath" } }
-		},
-		"if": {
-			"properties": { "target_type": { "const": "json" } }
-		}, "then": {
-			"properties": { "destination": { "$ref": "#/definitions/jsonpath" } }
-		}
-	}
+  "$schema": "http://json-schema.org/schema#",
+  "definitions": {
+    "jsonpath": {
+      "description": "Match files with extension .json",
+      "pattern": ".+\\.json$",
+      "type": "string"
+    },
+    "mopath": {
+      "description": "Match files with extension .mo",
+      "pattern": ".+\\.mo$",
+      "type": "string"
+    },
+    "popath": {
+      "description": "Match files with extension .po",
+      "pattern": ".+\\.po$",
+      "type": "string"
+    },
+    "pyregexp": {
+      "description": "Prevent globbing wildcard expression",
+      "pattern": "^([^\\/]|\\.|/(?![*+]))*$",
+      "type": "string"
+    }
+  },
+  "items": {
+    "additionalProperties": false,
+    "allOf": [
+      {
+        "if": {
+          "properties": {
+            "target_type": {
+              "const": "mo"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "destination": {
+              "$ref": "#/definitions/mopath"
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "target_type": {
+              "const": "json"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "destination": {
+              "$ref": "#/definitions/jsonpath"
+            }
+          }
+        }
+      }
+    ],
+    "oneOf": [
+      {
+        "not": {
+          "required": [
+            "po_path"
+          ]
+        },
+        "required": [
+          "po_subdir"
+        ]
+      },
+      {
+        "not": {
+          "required": [
+            "po_subdir"
+          ]
+        },
+        "required": [
+          "po_path"
+        ]
+      }
+    ],
+    "properties": {
+      "destination": {
+        "description": "Installation path",
+        "oneOf": [
+          {
+            "$ref": "#/definitions/mopath"
+          },
+          {
+            "$ref": "#/definitions/jsonpath"
+          }
+        ]
+      },
+      "input_files": {
+        "description": "Python regular expression to match source file paths",
+        "items": {
+          "$ref": "#/definitions/pyregexp"
+        },
+        "minItems": 1,
+        "type": "array"
+      },
+      "po_path": {
+        "$ref": "#/definitions/popath",
+        "description": "Direct path to single .po file"
+      },
+      "po_subdir": {
+        "description": "Directory containing multiple .po files",
+        "type": "string"
+      },
+      "target_type": {
+        "description": "File format",
+        "enum": [
+          "mo",
+          "json"
+        ],
+        "type": "string"
+      }
+    },
+    "required": [
+      "input_files",
+      "target_type",
+      "destination"
+    ],
+    "type": "object"
+  },
+  "minItems": 1,
+  "type": "array"
 }

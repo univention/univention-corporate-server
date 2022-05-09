@@ -35,7 +35,7 @@ import os
 
 from .helper import Error, call, make_parent_dir
 try:
-	from typing import Any, List, Union  # noqa F401
+	from typing import Any, List, Union  # noqa: F401
 except ImportError:
 	pass
 

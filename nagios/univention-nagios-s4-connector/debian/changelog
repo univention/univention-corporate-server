@@ -37,7 +37,7 @@ univention-nagios-s4-connector (2.0.0-1) unstable; urgency=medium
 
 univention-nagios-s4-connector (1.0.0-3) unstable; urgency=low
 
-  * use nrpe (Bug #37006) 
+  * use nrpe (Bug #37006)
 
  -- Felix Botner <botner@univention.de>  Wed, 09 Dec 2015 09:00:45 +0100
 

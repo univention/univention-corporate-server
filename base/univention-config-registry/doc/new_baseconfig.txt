@@ -12,11 +12,11 @@ Univention Config
  * Schema basierte Variablen, z.B. (pseudo-code)
 
    Type DNS-Name:
-   	name (String)
+	name (String)
 	ip (IP-Address)
-	
+
    Type LDAP-Connection:
-   	host (DNS-Name)
+	host (DNS-Name)
 	port (Integer)
 	base (string)
 	starttls (Integer, 0-2)

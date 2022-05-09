@@ -82,22 +82,22 @@ attributetype ( 1.3.6.1.4.1.10176.1002.1.12 NAME 'univentionPrinterACLUsers'
 	DESC 'Users set in access control list'
 	EQUALITY distinguishedNameMatch
 	SUP distinguishedName )
-	
+
 attributetype ( 1.3.6.1.4.1.10176.1002.1.13 NAME 'univentionPrinterACLGroups'
 	DESC 'Groups set in access control list'
 	EQUALITY distinguishedNameMatch
 	SUP distinguishedName )
-	
+
 attributetype ( 1.3.6.1.4.1.10176.1002.1.14 NAME 'univentionPrinterACLtype'
 	DESC 'access control list is "allowed" or "denied"'
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
-	
+
 attributetype ( 1.3.6.1.4.1.10176.1002.1.15 NAME 'univentionPrinterUseClientDriver'
 	DESC 'Use client driver option in Samba'
 	EQUALITY caseIgnoreMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-	
+
 objectclass ( 1.3.6.1.4.1.10176.1002.2.1 NAME 'univentionPrinter'
 	STRUCTURAL
 	DESC 'share'

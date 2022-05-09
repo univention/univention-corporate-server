@@ -30,14 +30,14 @@ from __future__ import absolute_import
 
 import inspect
 import string
-from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Type  # noqa F401
+from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Type  # noqa: F401
 
 import listener
 from univention.listener.handler_logging import get_logger
 from univention.listener.exceptions import ListenerModuleConfigurationError
 
 if TYPE_CHECKING:
-	from .handler import ListenerModuleHandler  # noqa F401
+	from .handler import ListenerModuleHandler  # noqa: F401
 
 
 listener.configRegistry.load()

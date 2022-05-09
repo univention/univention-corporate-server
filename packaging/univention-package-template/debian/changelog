@@ -55,7 +55,7 @@ univention-package-template (4.0.1-1) unstable; urgency=medium
 
 univention-package-template (3.0.0-1) unstable; urgency=low
 
-  * Update to UCS 4.0 (Bug #36115) 
+  * Update to UCS 4.0 (Bug #36115)
 
  -- Felix Botner <botner@univention.de>  Wed, 22 Oct 2014 13:50:13 +0200
 

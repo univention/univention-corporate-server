@@ -6,7 +6,7 @@ import re
 from argparse import ArgumentParser, FileType
 from collections import defaultdict
 from operator import itemgetter
-from typing import IO, Dict, List  # noqa F401
+from typing import IO, Dict, List  # noqa: F401
 
 RE_ID = re.compile(r'^([UWEIS]:\d{4}-[BEFNW]?\d+)(?=: )')
 

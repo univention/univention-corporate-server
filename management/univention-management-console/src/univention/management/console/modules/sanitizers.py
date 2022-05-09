@@ -55,7 +55,7 @@ from univention.lib.i18n import Translation
 _ = Translation('univention.management.console').translate
 
 try:
-	from typing import Any, Dict, Iterable, Mapping, NoReturn, Optional, Pattern, Union, TypeVar  # noqa F401
+	from typing import Any, Dict, Iterable, Mapping, NoReturn, Optional, Pattern, Union, TypeVar  # noqa: F401
 except ImportError:
 	pass
 

@@ -92,7 +92,7 @@ while read option_line; do
 	if [ -z "$search" ]; then
 		search="${udm_option}:DELIMITER:${nfs_value}:DELIMITER:${udm_value}"
 	else
-		search="$search 
+		search="$search
 ${udm_option}:DELIMITER:${nfs_value}:DELIMITER:${udm_value}"
 	fi
 

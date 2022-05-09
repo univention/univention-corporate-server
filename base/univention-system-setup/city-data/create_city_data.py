@@ -56,6 +56,7 @@ if __name__ == '__main__':
 		for iid, ilabel in city_names.items():
 			city_data[iid].setdefault('label', {})[ilocale] = ilabel
 
-	json.dump(list(city_data.values()), opt.outfile, indent=2)
+	json.dump(list(city_data.values()), opt.outfile, ensure_ascii=False, indent=2, sort_keys=True)
+	opt.outfile.write("\n")
 
 	print('... done :)')

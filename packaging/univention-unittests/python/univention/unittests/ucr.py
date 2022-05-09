@@ -62,14 +62,14 @@ class TestUCR(object):
 	def keys(self):
 		return self.items.keys()
 
-	def is_false(self, key=None, default=False, value=None):  # noqa F811
+	def is_false(self, key=None, default=False, value=None):  # noqa: F811
 		if value is None:
 			value = self.get(key)  # type: ignore
 			if value is None:
 				return default
 		return value.lower() in ('no', 'false', '0', 'disable', 'disabled', 'off')
 
-	def is_true(self, key=None, default=False, value=None):  # noqa F811
+	def is_true(self, key=None, default=False, value=None):  # noqa: F811
 		if value is None:
 			value = self.get(key)  # type: ignore
 			if value is None:

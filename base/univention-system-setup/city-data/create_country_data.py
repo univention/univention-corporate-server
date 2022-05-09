@@ -35,7 +35,7 @@ from __future__ import print_function
 
 import json
 from argparse import ArgumentParser, FileType
-from typing import Any, Dict  # noqa F401
+from typing import Any, Dict  # noqa: F401
 
 import _util
 
@@ -70,6 +70,7 @@ if __name__ == '__main__':
 			if ilabel:
 				data_set.setdefault('label', {})[ilocale] = ilabel
 
-	json.dump(country_data, opt.outfile, indent=2)
+	json.dump(country_data, opt.outfile, ensure_ascii=False, indent=2, sort_keys=True)
+	opt.outfile.write("\n")
 
 	print('... done :)')
