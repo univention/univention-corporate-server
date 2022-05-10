@@ -43,11 +43,14 @@ import socket
 import resource
 import traceback
 import multiprocessing
+from types import TracebackType  # noqa: F401
+from typing import Dict, List, Optional, Tuple, Type  # noqa: F401
 
 from tornado import process
 import notifier
 import notifier.signals as signals
 from OpenSSL import SSL
+from OpenSSL.crypto import X509  # noqa: F401
 
 from univention.lib.i18n import Translation
 
@@ -70,9 +73,11 @@ class MagicBucket(object):
 	has authenticated the commands are passed on to the Processor.'''
 
 	def __init__(self):
-		self.__states = {}
+		# type: () -> None
+		self.__states = {}  # type: Dict[socket.socket, State]
 
 	def new(self, client, sock):
+		# type: (str, socket.socket) -> None
 		"""Is called by the Server object to announce a new incoming
 		connection.
 
@@ -88,11 +93,13 @@ class MagicBucket(object):
 		self.reset_connection_timeout(state)
 
 	def reset_connection_timeout(self, state):
+		# type: (State) -> None
 		state.reset_connection_timeout()
 		notifier.timer_remove(state._timer)
 		state._timer = notifier.timer_add(state.timeout * 1000, notifier.Callback(self._timed_out, state))
 
 	def _timed_out(self, state):
+		# type: (State) -> bool
 		"""Closes the connection after a specified timeout"""
 		if not state.active:
 			CORE.info('Session %r timed out' % (state,))
@@ -103,6 +110,7 @@ class MagicBucket(object):
 		return False
 
 	def exit(self):
+		# type: () -> None
 		'''Closes all open connections.'''
 		# remove all sockets
 		for sock in list(self.__states.keys()):
@@ -110,6 +118,7 @@ class MagicBucket(object):
 			self._cleanup(sock)
 
 	def _receive(self, sock):
+		# type: (socket.socket) -> bool
 		"""Signal callback: Handles incoming data. Processes SSL events
 		and parses the incoming data. If a valid UMCP was found it is
 		passed to _handle.
@@ -170,6 +179,7 @@ class MagicBucket(object):
 		return True
 
 	def _do_send(self, sock):
+		# type: (socket.socket) -> bool
 		try:
 			state = self.__states[sock]
 		except KeyError:
@@ -203,6 +213,7 @@ class MagicBucket(object):
 		return (len(state.resend_queue) > 0)
 
 	def _response(self, msg, state):
+		# type: (Message, State) -> None
 		''' Send UMCP response to client. If the status code is 250 the
 		module process is asking for exit. This method forfills the
 		request.'''
@@ -245,6 +256,7 @@ class MagicBucket(object):
 			self._cleanup(state.socket)
 
 	def _cleanup(self, sock):
+		# type: (socket.socket) -> None
 		state = self.__states.pop(sock, None)
 		if state is None:
 			return
@@ -275,6 +287,7 @@ class Server(signals.Provider):
 	"""
 
 	def __init__(self, port=6670, ssl=True, unix=None, magic=True, magicClass=MagicBucket, load_ressources=True, processes=1):
+		# type: (int, bool, Optional[str], bool, Type[MagicBucket], bool, int) -> None
 		'''Initializes the socket to listen for requests'''
 		signals.Provider.__init__(self)
 
@@ -285,17 +298,18 @@ class Server(signals.Provider):
 
 		self.__port = port
 		self.__unix = unix
-		self.__realtcpsocket = None
-		self.__realunixsocket = None
+		self.__realtcpsocket = None  # type: Optional[socket.socket]
+		self.__realunixsocket = None  # type: Optional[socket.socket]
 		self.__ssl = ssl
 		self.__processes = processes
-		self._child_number = None
-		self._children = {}
+		self._child_number = None  # type: Optional[int]
+		self._children = {}  # type: Dict[int, int]
 		self.__magic = magic
 		self.__magicClass = magicClass
-		self.__bucket = None
+		self.__bucket = None  # type: Optional[MagicBucket]
 
 	def __enter__(self):
+		# type: () -> Server
 		CORE.info('Initialising server process')
 		if self.__unix:
 			CORE.info('Using a UNIX socket')
@@ -393,12 +407,14 @@ class Server(signals.Provider):
 		return self
 
 	def __verify_cert_cb(self, conn, cert, errnum, depth, ok):
+		# type: (SSL.Connection, X509, int, int, int) -> bool
 		CORE.info('__verify_cert_cb: Got certificate: %s' % cert.get_subject())
 		CORE.info('__verify_cert_cb: Got certificate issuer: %s' % cert.get_issuer())
 		CORE.info('__verify_cert_cb: errnum=%d depth=%d ok=%d' % (errnum, depth, ok))
 		return ok
 
 	def _connection(self, sock):
+		# type: (socket.socket) -> bool
 		'''Signal callback: Invoked on incoming connections.'''
 		try:
 			sock, addr = sock.accept()
@@ -443,6 +459,7 @@ class Server(signals.Provider):
 		return True
 
 	def exit(self):
+		# type: () -> None
 		'''Shuts down all open connections.'''
 		CORE.warn('Shutting down all open connections')
 
@@ -471,10 +488,12 @@ class Server(signals.Provider):
 		self.__bucket = None
 
 	def __exit__(self, etype, exc, etraceback):
+		# type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
 		self.exit()
 
 	@staticmethod
 	def reload():
+		# type: () -> None
 		"""Reloads resources like module and category definitions"""
 		CORE.info('Reloading resources: modules, categories')
 		moduleManager.load()
@@ -484,6 +503,7 @@ class Server(signals.Provider):
 
 	@staticmethod
 	def analyse_memory():
+		# type: () -> None
 		"""Print the number of living UMC objects. Helpful when analysing memory leaks."""
 		components = (
 			'protocol.server.State', 'protocol.session.ModuleProcess',
@@ -522,21 +542,25 @@ class State(object):
 	__slots__ = ('client', 'socket', 'buffer', 'requests', 'resend_queue', 'session', 'timeout', '_timer')
 
 	def __init__(self, client, sock):
+		# type: (str, socket.socket) -> None
 		self.client = client
 		self.socket = sock
 		self.buffer = b''
-		self.requests = {}
-		self.resend_queue = []
+		self.requests = {}  # type: Dict
+		self.resend_queue = []  # type: List[Tuple[str, bytes]]
 		self.session = SessionHandler()
 		self._timer = None
 		self.reset_connection_timeout()
 
 	def reset_connection_timeout(self):
+		# type: () -> None
 		self.timeout = SERVER_CONNECTION_TIMEOUT
 
 	@property
 	def active(self):
+		# type: () -> bool
 		return bool(self.requests or self.session.has_active_module_processes())
 
 	def __repr__(self):
+		# type: () -> str
 		return '<State(%s %r buffer=%d requests=%d processes=%s)>' % (self.client, self.socket, len(self.buffer), len(self.requests), self.session.has_active_module_processes())
