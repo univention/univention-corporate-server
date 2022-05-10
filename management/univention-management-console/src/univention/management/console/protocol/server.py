@@ -332,7 +332,7 @@ class Server(signals.Provider):
 			flags = fcntl.fcntl(fd, fcntl.F_GETFD)
 			fcntl.fcntl(fd, fcntl.F_SETFD, flags | fcntl.FD_CLOEXEC)
 
-		if self.__ssl and self.__port:
+		if self.__ssl and self.__realtcpsocket is not None:
 			CORE.info('Setting up SSL configuration')
 			self.crypto_context = SSL.Context(SSL.TLSv1_METHOD)
 			self.crypto_context.set_cipher_list(ucr.get('umc/server/ssl/ciphers', 'DEFAULT'))
@@ -361,13 +361,13 @@ class Server(signals.Provider):
 				self.connection.set_accept_state()
 				CRYPT.info('Server listening to SSL connections')
 				self.connection.listen(SERVER_MAX_CONNECTIONS)
-		elif not self.__ssl and self.__port:
+		elif not self.__ssl and self.__realtcpsocket is not None:
 			self.crypto_context = None
 			self.__realtcpsocket.bind(('', self.__port))
 			CRYPT.info('Server listening to TCP connections')
 			self.__realtcpsocket.listen(SERVER_MAX_CONNECTIONS)
 
-		if self.__unix:
+		if self.__unix and self.__realunixsocket is not None:
 			# ensure that the UNIX socket is only accessible by root
 			old_umask = os.umask(0o077)
 			try:
@@ -399,7 +399,7 @@ class Server(signals.Provider):
 
 		if self.__ssl:
 			notifier.socket_add(self.connection, self._connection)
-		if (not self.__ssl and self.__port):
+		elif self.__port:
 			notifier.socket_add(self.__realtcpsocket, self._connection)
 		if self.__unix:
 			notifier.socket_add(self.__realunixsocket, self._connection)
@@ -452,7 +452,7 @@ class Server(signals.Provider):
 		else:
 			client = ''
 		CORE.info('Incoming connection from %s' % client)
-		if self.__magic:
+		if self.__bucket is not None:
 			self.__bucket.new(client, sock)
 		else:
 			self.signal_emit('session_new', client, sock)
