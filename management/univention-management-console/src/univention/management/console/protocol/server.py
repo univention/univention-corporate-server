@@ -124,7 +124,7 @@ class MagicBucket(object):
 
 		:param socket.socket sock: socket object that reported incoming data
 		"""
-		data = ''
+		data = b''
 
 		try:
 			data = sock.recv(RECV_BUFFER_SIZE)
