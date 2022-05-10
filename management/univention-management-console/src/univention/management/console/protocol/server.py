@@ -69,7 +69,7 @@ class MagicBucket(object):
 
 	'''Manages a connection (session) to the UMC server. Therefore it
 	ensures that without successful authentication no other command is
-	accepted. All commands are passed to the SessionHandler. After the user
+	accepted. All commands are passed to the :class:`~SessionHandler`. After the user
 	has authenticated the commands are passed on to the Processor.'''
 
 	def __init__(self):
@@ -282,6 +282,7 @@ class Server(signals.Provider):
 	:param bool magic: if an external session handler should be used
 	:param class magicClass: a reference to the class for the external session handler
 	:param bool load_ressources: if the modules and categories definitions should be loaded
+	:param int processes: Enable multi-process mode.
 	"""
 
 	def __init__(self, port=6670, ssl=True, unix=None, magic=True, magicClass=MagicBucket, load_ressources=True, processes=1):
