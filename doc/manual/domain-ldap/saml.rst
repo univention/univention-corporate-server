@@ -70,10 +70,11 @@ login box being shown for clients which are not part of the UCS domain.
 Login via *single sign-on*
 --------------------------
 
-The *single sign-on* is the default login for |UCSWEB|\ s, as long as
-:samp:`ucs-sso.[Domain name]}` can be reached. To login the domain credentials must
-be provided. For the login directly at the UCS system (i.e., without *single
-sign-on*), follow the link :guilabel:`Login without Single Sign On`.
+The activation of *single sign-on* for the portal is described in
+:ref:`central-management-umc-login`. For this, :samp:`ucs-sso.[Domain name]}`
+must be reacheable. To login the domain credentials must be provided. For the
+login directly at the UCS system (i.e., without *single sign-on*), follow the
+link :guilabel:`Login without Single Sign On`.
 
 The design of the login dialog can be changed by editing
 :file:`/usr/share/univention-management-console-login/css/custom.css`. This file

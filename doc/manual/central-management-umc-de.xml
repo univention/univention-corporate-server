@@ -227,6 +227,10 @@
 		Neben allen installierten Applikationen in der Domäne werden hier auch Verweise zu &ucsUMC; sowie zur Serverübersicht angezeigt.
 	</para>
 	<para>
+		Um das angezeigte Portal zu ändern, muss die &ucsUCRV; <envar>portal/default-dn</envar> angepasst werden.
+		Nach einer Änderung muss der Dienst <systemitem class="service">univention-portal-server</systemitem> neugestartet werden.
+	</para>
+	<para>
 		Eigene Portale und Portaleinträge können entweder über das UMC-Modul <guimenu>Portal</guimenu> oder
 		direkt auf der Portalseite angelegt und verwaltet werden.
 	</para>

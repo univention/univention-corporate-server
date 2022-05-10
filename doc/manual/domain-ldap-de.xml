@@ -1329,7 +1329,8 @@ univention-directory-listener-ctrl resync cups-printers
 	<section id="domain:saml:ssologin">
 	<title>Anmelden per <foreignphrase>Single Sign-On</foreignphrase></title>
 	<para>
-		Der <foreignphrase>Single Sign-On</foreignphrase> ist der Standard-Login für &ucsWeb;n, sofern <uri>ucs-sso.<replaceable>domainname</replaceable></uri> erreicht werden kann.
+		Die Aktivierung des <foreignphrase>Single Sign-On</foreignphrase> für das Portal ist in <xref linkend="central-management-umc:login"/> beschrieben.
+		Dafür muss <uri>ucs-sso.<replaceable>domainname</replaceable></uri> vom aufrufenden Rechner erreicht werden können.
 		Zum Login werden die Anmeldedaten des Domänenkontos verwendet.
 		Für den Login direkt am UCS-System (also ohne <foreignphrase>Single Sign-On</foreignphrase>) gelangt man über den Link <guimenu>Ohne Single Sign-On anmelden</guimenu>.
 	</para>

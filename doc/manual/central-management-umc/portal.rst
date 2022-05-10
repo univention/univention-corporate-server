@@ -19,6 +19,10 @@ The portal *domain*, shipped with every installation, is configured on each
 server by default. In addition to all installed applications of the domain,
 links to |UCSUMC| as well as the server overview are shown on this portal page.
 
+To change the displayed portal, the |UCSUCRV| :envvar:`portal/default-dn` must
+be adjusted. After a change, the :program:`univention-portal-server` service
+must be restarted.
+
 Custom portals and portal entries can be defined and managed either via the UMC
 module :guilabel:`Portal` or directly on the portal site.
 
