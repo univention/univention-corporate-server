@@ -230,10 +230,10 @@ class access(object):
 	:param int start_tls: 0=no, 1=try StartTLS, 2=require StartTLS.
 	:param str ca_certfile: File name to CA certificate.
 	:param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
-	:param use_ldaps bool: Connect to SSL port.
-	:param uri str: LDAP connection string.
-	:param follow_referral bool: Follow referrals and return result from other servers instead of returning the referral itself.
-	:param reconnect bool: Automatically re-establish connection to LDAP server if connection breaks.
+	:param bool use_ldaps: Connect to SSL port.
+	:param str uri: LDAP connection string.
+	:param bool follow_referral: Follow referrals and return result from other servers instead of returning the referral itself.
+	:param bool reconnect: Automatically re-establish connection to LDAP server if connection breaks.
 	"""
 
 	def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=[], use_ldaps=False, uri=None, follow_referral=False, reconnect=True):
@@ -602,10 +602,10 @@ class access(object):
 		"""
 		Merge policies into result.
 
-		:param policy_dn str: Distinguished name of the policy object.
+		:param str policy_dn: Distinguished name of the policy object.
 		:param obj_dn: Distinguished name of the LDAP object.
-		:param object_classes set: the set of object classes of the LDAP object.
-		:param result list: A mapping, into which the policy is merged.
+		:param set object_classes: the set of object classes of the LDAP object.
+		:param list result: A mapping, into which the policy is merged.
 		"""
 		pattrs = self.get(policy_dn)
 		if not pattrs:
@@ -969,7 +969,7 @@ class access(object):
 		"""
 		Follow LDAP rederral.
 
-		:param exception ldap.REFERRAL: The LDAP referral exception.
+		:param ldap.REFERRAL exception: The LDAP referral exception.
 		:returns: LDAP connection object for the referred LDAP server.
 		:rtype: ldap.ldapobject.ReconnectLDAPObject
 		"""

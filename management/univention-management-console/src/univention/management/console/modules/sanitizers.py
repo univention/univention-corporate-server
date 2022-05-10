@@ -155,7 +155,7 @@ class Sanitizer(object):
 	For reasons of extensibility and for ease of subclassing, the
 	parameters are \**kwargs. But only the following are meaningful:
 
-	:param [string] further_arguments: names of arguments that should be
+	:param str further_arguments: names of arguments that should be
 		passed along with the actual argument in order to return something
 		reasonable. Default: *None*
 	:param bool required: if the argument is required. Default: *False*
@@ -218,7 +218,7 @@ class Sanitizer(object):
 		override this method in your Sanitize class.
 
 		:param object value: the value as found in *request.options*.
-		:param string name: the name of the argument currently
+		:param str name: the name of the argument currently
 			sanitized.
 		:param further_arguments: dictionary
 			holding the values of those additional arguments
@@ -226,7 +226,7 @@ class Sanitizer(object):
 			the arguments come straight from the not altered
 			options dict (i.e. before potentially changing
 			sanitizing happened).
-		:type further_arguments: {string : object}
+		:type further_arguments: dict[str, object]
 		'''
 		return value
 
@@ -249,8 +249,8 @@ class Sanitizer(object):
 		:class:`~ValidationError`. *name* and *value* need to passed
 		because the sanitizer should be thread safe.
 
-		:param string msg: error message
-		:param string name: name of the argument
+		:param str msg: error message
+		:param str name: name of the argument
 		:param object value: the argument which caused the error
 		:param dict \**kwargs: additional arguments for formatting
 		'''
@@ -272,8 +272,8 @@ class DictSanitizer(Sanitizer):
 	:param bool allow_other_keys: if other keys than those in
 		:attr:`~DictSanitizer.sanitizers` are allowed.
 	:param default_sanitizer: will be applied to the content if no sanitizer is defined
-	:type sanitizers: {string : :class:`~Sanitizer`}
-	:type default_sanitizer: :class:`~Sanitizer`
+	:type sanitizers: dict[str, Sanitizer]
+	:type default_sanitizer: Sanitizer
 	'''
 
 	def __init__(self, sanitizers, allow_other_keys=True, default_sanitizer=None, **kwargs):
@@ -326,7 +326,7 @@ class ListSanitizer(Sanitizer):
 		If *None*, no sanitizing of elements takes place.
 	:param int min_elements: must have at least this number of elements
 	:param int max_elements: must have at most this number of elements
-	:type sanitizer: :class:`~Sanitizer`
+	:type sanitizer: Sanitizer
 	'''
 
 	def __init__(self, sanitizer=None, min_elements=None, max_elements=None, **kwargs):
@@ -594,6 +594,7 @@ class StringSanitizer(Sanitizer):
 
 	:param regex_pattern: a regex pattern or a string which will be
 		compiled into a regex pattern
+	:type regex_pattern: re.Pattern or str
 	:param int re_flags: additional regex flags for the regex_pattern
 		which will be compiled if :attr:`~StringSanitizer.regex_pattern`
 		is a string
@@ -673,7 +674,7 @@ class ChoicesSanitizer(Sanitizer):
 	''' ChoicesSanitizer makes sure that the input is in a given set of
 	choices.
 
-	:param [object] choices: the allowed choices used.
+	:param object choices: the allowed choices used.
 	'''
 
 	def __init__(self, choices, **kwargs):

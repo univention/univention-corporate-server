@@ -664,7 +664,7 @@ class ProcessorBase(Base):
 		is shut down to save resources. The timer ticks each seconds to
 		handle glitches of the system clock.
 
-		:param Module module: a module
+		:param Module module: a UMC module
 		"""
 		if module._inactivity_timer is None:
 			module._inactivity_timer = notifier.timer_add(1000, notifier.Callback(self._inactivitiy_tick, module))

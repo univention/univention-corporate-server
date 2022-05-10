@@ -479,10 +479,10 @@ class Job(JenkinsBase, MutableJenkinsThing):
     def modify_scm_branch(self, new_branch, old_branch=None):
         """
         Modify SCM ("Source Code Management") branch name for configured job.
-        :param new_branch : new repository branch name to set.
+        :param str new_branch: new repository branch name to set.
             If job has multiple branches configured and "old_branch"
             not provided - method will always modify first url.
-        :param old_branch (optional): exact value of branch name
+        :param str old_branch: (optiona) exact value of branch name
             to be replaced.
             For some SCM's jenkins allow set multiple branches per job
             this parameter intended to indicate which branch need to be
@@ -503,10 +503,10 @@ class Job(JenkinsBase, MutableJenkinsThing):
     def modify_scm_url(self, new_source_url, old_source_url=None):
         """
         Modify SCM ("Source Code Management") url for configured job.
-        :param new_source_url : new repository url to set.
+        :param str new_source_url: new repository url to set.
             If job has multiple repositories configured and "old_source_url"
             not provided - method will always modify first url.
-        :param old_source_url (optional): for some SCM's jenkins allows
+        :param str old_source_url: (optional) for some SCM's jenkins allows
             setting multiple repositories per job
             this parameter intended to indicate which repository need
             to be modified
@@ -530,7 +530,7 @@ class Job(JenkinsBase, MutableJenkinsThing):
         """
         Update the config.xml to the job
         Also refresh the ElementTree object since the config has changed
-        :param full_response (optional): if True, it will return the full
+        :param bool full_response: if True, it will return the full
             response object instead of just the response text.
             Useful for debugging and validation workflows.
         """

@@ -277,12 +277,12 @@ class UCSTestUDM(object):
 		:param str policy_dereference: The LDAP distinguished name of the UDM policy to remove.
 		:param str append_option: The name of an UDM option group to add.
 		:param list options: A list of UDM option group to set.
-		:param str_or_list set: A list or one single *name=value* property.
+		:param set str_or_list: A list or one single *name=value* property.
 		:param list append: A list of *name=value* properties to add.
 		:param list remove: A list of *name=value* properties to remove.
-		:param boolean remove_referring: Remove other LDAP entries referred by this entry.
-		:param boolean ignore_exists: Ignore error on creation if entry already exists.
-		:param boolean ignore_not_exists: Ignore error on deletion if entry does not exists.
+		:param bool remove_referring: Remove other LDAP entries referred by this entry.
+		:param bool ignore_exists: Ignore error on creation if entry already exists.
+		:param bool ignore_not_exists: Ignore error on deletion if entry does not exists.
 
 		>>> UCSTestUDM._build_udm_cmdline('users/user', 'create', {'username': 'foobar'})
 		['/usr/sbin/udm-test', 'users/user', 'create', '--set', 'username=foobar']

@@ -252,8 +252,8 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 		:param dict old: previous LDAP objects attributes
 		:param dict new: new LDAP objects attributes
 		:param str command: LDAP modification type
-		:param Exception exc_type: exception class
-		:param Exception exc_value: exception object
+		:param type exc_type: exception class
+		:param BaseException exc_value: exception object
 		:param traceback exc_traceback: traceback object
 		"""
 		self.logger.exception('dn=%r command=%r\n    old=%r\n    new=%r', dn, command, old, new)

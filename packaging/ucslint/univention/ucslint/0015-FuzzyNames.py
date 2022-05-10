@@ -87,7 +87,7 @@ class Trie():
 		"""
 		Recursively convert Trie structuture to regular expression.
 
-		:params pData: Partial Trie tree.
+		:param pData: Partial Trie tree.
 		:returns: regular expression string.
 		"""
 		data = pData

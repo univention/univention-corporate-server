@@ -77,7 +77,8 @@ class MagicBucket(object):
 		connection.
 
 		:param str client: IP address + port
-		:param fd socket: a file descriptor or socket object
+		:param sock: a file descriptor or socket object
+		:type: socket: int or socket.socket
 		"""
 		CORE.info('Established connection: %s' % client)
 		state = State(client, socket)
@@ -113,7 +114,8 @@ class MagicBucket(object):
 		and parses the incoming data. If a valid UMCP was found it is
 		passed to _handle.
 
-		:param fd socket: file descriptor or socket object that reported incoming data
+		:param sock: file descriptor or socket object that reported incoming data
+		:type: sock: int or socket.socket
 		"""
 		data = ''
 
@@ -514,7 +516,7 @@ class State(object):
 	"""Holds information about the state of an active session
 
 	:param str client: IP address + port
-	:param fd socket: file descriptor or socket object
+	:param socket.socket sock: socket object
 	"""
 
 	__slots__ = ('client', 'socket', 'buffer', 'requests', 'resend_queue', 'session', 'timeout', '_timer')
