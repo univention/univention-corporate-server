@@ -3,6 +3,8 @@
 Automatic lockout of users after failed login attempts
 ======================================================
 
+.. highlight:: console
+
 By default, a user can enter their password incorrectly any number of
 times. To hinder brute force attacks on passwords, an automatic lockout
 for user accounts can be activated after a configured number of failed
@@ -84,8 +86,8 @@ the listener module, depending on the current lock state in the LDAP directory.
 As standard, the lockout is not subject to time limitations and must be reset by
 the administrator. However, it can also be reset automatically after a certain
 time interval has elapsed. This is done by specifying a time period in seconds
-in the |UCSUCRV| :envvar:`auth/faillog/unlock_time`. If the value is set to 0,
-the lock is reset immediately.
+in the |UCSUCRV| :envvar:`auth/faillog/unlock_time`. If the value is set to
+``0``, the lock is reset immediately.
 
 By default, the ``root`` user is excluded from the password lock, but can also
 be subjected to it by setting the |UCSUCRV| :envvar:`auth/faillog/root` to

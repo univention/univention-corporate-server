@@ -6,8 +6,8 @@ Password settings for Windows clients when using Samba
 With the Samba domain object, one can set the password requirements for
 logins to Windows clients in a Samba domain.
 
-The Samba domain object is managed via the UMC module *LDAP
-directory*. It can be found in the ``samba``
+The Samba domain object is managed via the UMC module :guilabel:`LDAP
+directory`. It can be found in the ``samba``
 container below the LDAP base and carries the domain's NetBIOS name.
 
 The settings of the Samba domain object and the policy (see :ref:`users-passwords`) should be set identically,

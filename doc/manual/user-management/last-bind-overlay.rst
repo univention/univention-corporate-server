@@ -44,4 +44,4 @@ up-to-date is by creating a cron job via UCR:
 
 
 More information on how to set cron jobs via UCR can be found in
-:ref:`computers-Defining-cron-jobs-in-Univention-Configuration-Registry`.
+:ref:`computers-defining-cron-jobs-in-univention-configuration-registry`.

@@ -23,8 +23,7 @@ inconsistencies between the individual datasets.
 
 .. rubric:: User account types
 
-
-There are three different types of users in UCS:
+There are three different types of user accounts in UCS:
 
 1. **Normal user accounts** have all available properties. These users can log
    in to UCS or Windows systems and, depending on the configuration, also to the

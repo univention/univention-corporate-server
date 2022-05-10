@@ -183,7 +183,7 @@ User management module - Account tab
 
    * - Account is deactivated
      - The *Account is deactivated* checkbox can be used to deactivate the user
-       account. If this is activated, the user cannot log into the system. This
+       account. If the checkbox is selected, the user cannot log into the system. This
        affects all authentication methods. This is typically used when a user
        leaves the company. In a heterogeneous environment, an account
        deactivation might also be caused by external tools.

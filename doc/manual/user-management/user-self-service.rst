@@ -3,6 +3,8 @@
 User self services
 ==================
 
+.. highlight:: console
+
 .. _user-management-password-changes-by-users-via-umc:
 
 Password change by user via UCS portal page
@@ -11,7 +13,7 @@ Password change by user via UCS portal page
 Every logged in user can change their own password by opening the menu via the
 hamburger icon in the top right corner and selecting :menuselection:`User settings -->
 Change password`. The change is performed directly via the PAM stack (see
-:ref:`computers-Authentication-PAM`) and is then available centrally for all
+:ref:`computers-authentication-pam`) and is then available centrally for all
 services.
 
 .. _user-management-password-changes-by-users-self-service:
@@ -121,7 +123,7 @@ For this the following |UCSUCRV|\ s must be configured:
 Both ``*attributes`` variables must match each other. The names of the
 attributes and their mapping can be fetched from the following command:
 
-.. code-block::
+.. code-block:: console
 
    $ python3 -c 'from univention.admin.handlers.users.user import mapping;\
    > print("\n".join( \
@@ -167,7 +169,7 @@ backend.
 
 .. envvar:: umc/self-service/account-registration/usertemplate
 
-   With this variable a user template (:ref:`users-templates`) can be specified
+   With this variable a :ref:`user template <users-templates>` can be specified
    that will be used for the creation of self registered accounts.
 
 .. envvar:: umc/self-service/account-registration/usercontainer
@@ -204,7 +206,7 @@ sent.
 
    Sending the verification email
 
-Aspects about the verification email and the verification token can be
+Aspects about the *verification email* and the verification token can be
 configured with the following |UCSUCRV|\ s. These |UCSUCRV|\ s have to be set on
 the :program:`Self Service Backend` that is defined via the |UCSUCRV|
 :envvar:`self-service/backend-server`, since requests regarding these variables
@@ -219,8 +221,8 @@ are forwarded to the :program:`Self Service Backend`.
 
 .. envvar:: umc/self-service/account-verification/email/sender_address`
 
-   Defines the sender address of the verification email. Default is ``Account
-   Verification Service <noreply@FQDN>``.
+   Defines the sender address of the verification email. Default is :samp:`Account
+   Verification Service <noreply@{FQDN}>`.
 
 .. envvar:: umc/self-service/account-verification/email/server
 
@@ -279,8 +281,8 @@ The message on the SSO login page for unverified, self registered
 accounts, can be set with the |UCSUCRV|\ s
 :envvar:`saml/idp/selfservice/account-verification/error-title`
 and
-:envvar:`saml/idp/selfservice/account-verification/error-descr`.
-A localized message can be configured by adding a local to the variable, for
+:envvar:`saml/idp/selfservice/account-verification/error-descr`. A localized
+message can be configured by adding a *locale* like ``en`` to the variable, for
 example ``saml/idp/selfservice/account-verification/error-title/en``.
 
 .. _user-management-password-changes-by-users-selfderegistration:
@@ -304,8 +306,8 @@ will receive a notification email which can be configured with the following
 
 .. envvar:: umc/self-service/account-deregistration/email/sender_address
 
-   Defines the sender address of the email. Default is ``Password Reset Service
-   <noreply@FQDN>``.
+   Defines the sender address of the email. Default is :samp:`Password Reset Service
+   <noreply@{FQDN}>`.
 
 .. envvar:: umc/self-service/account-deregistration/email/server
 
@@ -352,4 +354,4 @@ The script can be run regularly by creating a cron job via |UCSUCR|.
 
 
 More information on how to set cron jobs via |UCSUCR| can be found in
-:ref:`computers-Defining-cron-jobs-in-Univention-Configuration-Registry`.
+:ref:`computers-defining-cron-jobs-in-univention-configuration-registry`.
