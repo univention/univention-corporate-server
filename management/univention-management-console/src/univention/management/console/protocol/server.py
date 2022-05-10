@@ -72,7 +72,7 @@ class MagicBucket(object):
 	def __init__(self):
 		self.__states = {}
 
-	def new(self, client, socket):
+	def new(self, client, sock):
 		"""Is called by the Server object to announce a new incoming
 		connection.
 
@@ -81,10 +81,10 @@ class MagicBucket(object):
 		:type: socket: int or socket.socket
 		"""
 		CORE.info('Established connection: %s' % client)
-		state = State(client, socket)
+		state = State(client, sock)
 		state.session.signal_connect('success', notifier.Callback(self._response, state))
-		self.__states[socket] = state
-		notifier.socket_add(socket, self._receive)
+		self.__states[sock] = state
+		notifier.socket_add(sock, self._receive)
 		self.reset_connection_timeout(state)
 
 	def reset_connection_timeout(self, state):
@@ -244,16 +244,16 @@ class MagicBucket(object):
 			CORE.error('FATAL ERROR: %s' % (traceback.format_exc(),))
 			self._cleanup(state.socket)
 
-	def _cleanup(self, socket):
-		state = self.__states.pop(socket, None)
+	def _cleanup(self, sock):
+		state = self.__states.pop(sock, None)
 		if state is None:
 			return
 
 		state.session.close_session()
 
-		notifier.socket_remove(socket)
+		notifier.socket_remove(sock)
 		try:
-			socket.close()
+			sock.close()
 		except Exception:
 			pass
 
@@ -398,10 +398,10 @@ class Server(signals.Provider):
 		CORE.info('__verify_cert_cb: errnum=%d depth=%d ok=%d' % (errnum, depth, ok))
 		return ok
 
-	def _connection(self, socket):
+	def _connection(self, sock):
 		'''Signal callback: Invoked on incoming connections.'''
 		try:
-			socket, addr = socket.accept()
+			sock, addr = sock.accept()
 		except EnvironmentError as exc:
 			if exc.errno == errno.EAGAIN:
 				# got an EAGAIN --> try again later
@@ -417,8 +417,8 @@ class Server(signals.Provider):
 				soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
 				resource.setrlimit(resource.RLIMIT_NOFILE, (soft + 2, hard + 2))
 				try:
-					socket, addr = socket.accept()
-					socket.close()
+					sock, addr = sock.accept()
+					sock.close()
 				except EnvironmentError:
 					pass
 				finally:
@@ -427,19 +427,19 @@ class Server(signals.Provider):
 				# unknown errno - log traceback and continue
 				CORE.error(traceback.format_exc())
 			return True
-		fd = socket.fileno()
+		fd = sock.fileno()
 		flags = fcntl.fcntl(fd, fcntl.F_GETFD)
 		fcntl.fcntl(fd, fcntl.F_SETFD, flags | fcntl.FD_CLOEXEC)
-		socket.setblocking(0)
+		sock.setblocking(0)
 		if addr:
 			client = '%s:%d' % (addr[0], addr[1])
 		else:
 			client = ''
 		CORE.info('Incoming connection from %s' % client)
 		if self.__magic:
-			self.__bucket.new(client, socket)
+			self.__bucket.new(client, sock)
 		else:
-			self.signal_emit('session_new', client, socket)
+			self.signal_emit('session_new', client, sock)
 		return True
 
 	def exit(self):
@@ -521,9 +521,9 @@ class State(object):
 
 	__slots__ = ('client', 'socket', 'buffer', 'requests', 'resend_queue', 'session', 'timeout', '_timer')
 
-	def __init__(self, client, socket):
+	def __init__(self, client, sock):
 		self.client = client
-		self.socket = socket
+		self.socket = sock
 		self.buffer = b''
 		self.requests = {}
 		self.resend_queue = []
