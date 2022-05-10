@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-radius
-fix: 7.0.1-9A~5.0.0.202204271250
+fix: .0.1-10A~5.0.0.202205100915
 desc: |
  This update addresses the following issue(s):
  * For new installations of the package, the RADIUS server can now assign VLAN
