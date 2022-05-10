@@ -175,6 +175,7 @@ def update_choices():
 	# type: () -> None
 	"""
 	Update choices which are defined in LDAP
+
 	>>> import univention.admin.modules
 	>>> univention.admin.modules.update()
 	>>> update_choices()
@@ -230,6 +231,7 @@ SIZES = ('OneThird', 'Half', 'TwoThirds', 'One', 'FourThirds', 'OneAndAHalf', 'F
 class ISyntax(object):
 	"""
 	Base class for all syntax classes.
+
 	>>> ISyntax.name
 	'ISyntax'
 	>>> ISyntax.type
@@ -387,6 +389,7 @@ class ISyntax(object):
 class simple(ISyntax):
 	"""
 	Base class for single value entries.
+
 	>>> simple.parse('A string')
 	'A string'
 	>>> simple().parse_command_line('A string')
@@ -732,6 +735,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
 	Base class to lookup selectable items from |LDAP| entries using their |DN|.
 
 	See :py:class:`UDM_Attribute` for an alternative to use values from one |LDAP| entry..
+
 	>>> UDM_Objects().type_class
 	<class 'univention.admin.types.DistinguishedNameType'>
 	>>> UDM_Objects.parse("uid=Administrator,cn=users,dc=intranet,dc=example,dc=com")
@@ -1059,6 +1063,7 @@ class string(simple):
 class string64(simple):
 	"""
 	Syntax for a string with up to 64 characters.
+
 	>>> string64.parse('a' * 64) == 'a' * 64
 	True
 	>>> string64.parse('a' * 65)  # doctest: +IGNORE_EXCEPTION_DETAIL
@@ -1086,6 +1091,7 @@ class OneThirdString(string):
 class string6(OneThirdString):
 	"""
 	Syntax for a string with up to 6 characters.
+
 	>>> string6.parse('123456')
 	'123456'
 	>>> string6.parse('1234567')  # doctest: +IGNORE_EXCEPTION_DETAIL
@@ -1165,6 +1171,7 @@ class TwoEditor(Editor):
 class UCSVersion(string):
 	"""
 	Syntax for an UCS release version `major.minor-patchlevel`.
+
 	>>> UCSVersion.parse('4.3-2')
 	'4.3-2'
 	>>> UCSVersion.parse('4.3-2 errata200')  # doctest: +IGNORE_EXCEPTION_DETAIL +SKIP
@@ -1193,6 +1200,7 @@ class UCSVersion(string):
 class DebianPackageVersion(string):
 	"""
 	Syntax for a Debian package version.
+
 	>>> DebianPackageVersion.parse('9.1.1-2A~4.4.0.202005121353')
 	'9.1.1-2A~4.4.0.202005121353'
 	>>> DebianPackageVersion.parse('7.52.1-5+deb9u10')
@@ -1225,6 +1233,7 @@ class DebianPackageVersion(string):
 class BaseFilename(string):
 	"""
 	Syntax for a file name. Sub- and parent directories are not allowed.
+
 	>>> BaseFilename.parse('example.txt')
 	'example.txt'
 	>>> BaseFilename.parse('my-folder/example.txt')  # doctest: +IGNORE_EXCEPTION_DETAIL
@@ -1246,6 +1255,7 @@ class BaseFilename(string):
 class Upload(ISyntax):
 	"""
 	Syntax to allow uploading a binary file.
+
 	>>> Upload.parse("hallo")
 	'hallo'
 	"""
@@ -1260,6 +1270,7 @@ class Upload(ISyntax):
 class Base64GzipText(TextArea):
 	"""
 	Syntax for some `gzip`-compressed and `base64`-encoded data.
+
 	>>> import base64
 	>>> import zlib
 	>>> content = b'txt'
@@ -1296,6 +1307,7 @@ class Base64GzipText(TextArea):
 class Base64Bzip2Text(TextArea):
 	"""
 	Syntax for some `bzip2`-compressed and `base64`-encoded data.
+
 	>>> import base64
 	>>> import bz2
 	>>> content = b'txt'
@@ -1332,6 +1344,7 @@ class Base64Bzip2Text(TextArea):
 class Base64Upload(Upload):
 	"""
 	Syntax to allow uploading a `base64` encoded file.
+
 	>>> import base64
 	>>> content = b'...'
 	>>> b64string = base64.b64encode(content)
@@ -1361,6 +1374,7 @@ class Base64Upload(Upload):
 class Base64BaseUpload(Base64Upload):
 	"""
 	Syntax to allow uploading a `base64` encoded file.
+
 	>>> import base64
 	>>> content = b'...'
 	>>> b64string = base64.b64encode(content)
@@ -1454,6 +1468,7 @@ class jpegPhoto(Upload):
 class Base64Bzip2XML(TextArea):
 	"""
 	Syntax for some `bzip2`-compressed |XML| data.
+
 	>>> import base64
 	>>> import bz2
 	>>> content = b'<?xml?><xml/>'
@@ -1499,6 +1514,7 @@ class Base64Bzip2XML(TextArea):
 class Base64UMCIcon(TextArea):
 	"""
 	Syntax for a `base64` encoded icon (|SVG|, |PNG|, |JPEG|).
+
 	>>> b64string = b'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII='
 	>>> Base64UMCIcon.parse(b64string) == b64string
 	True
@@ -1523,6 +1539,7 @@ class Base64UMCIcon(TextArea):
 class GNUMessageCatalog(TextArea):
 	"""
 	Syntax for a `base64` encoded binary message catalog `.mo`.
+
 	>>> b64string = b'3hIElQAAAAABAAAAHAAAACQAAAADAAAALAAAAAEAAAA4AAAAAQAAADoAAAAAAAAAAAAAAAEAAABfAF8A'
 	>>> GNUMessageCatalog.parse(b64string) == b64string
 	True
@@ -1554,6 +1571,7 @@ class Localesubdirname(string):
 	Syntax for a locale, e.g. `language[_COUNTRY][.encoding][@variant]`.
 
 	Must match a directory in :file:`/usr/share/locale/`.
+
 	>>> Localesubdirname.parse('de')
 	'de'
 	>>> Localesubdirname.parse('fantasy')  # doctest: +IGNORE_EXCEPTION_DETAIL
@@ -1672,6 +1690,7 @@ class integer(simple):
 class integerOrEmpty(integer):
 	"""
 	Syntax for positive numeric values or the empty value.
+
 	>>> integerOrEmpty.parse(None)
 	>>> integerOrEmpty.parse("")
 	>>> integerOrEmpty.parse(0)
@@ -2106,6 +2125,7 @@ class uid_umlauts(simple):
 class uid_umlauts_lower_except_first_letter(simple):
 	"""
 	Syntax for user account names supporting umlauts expecpt for the first character.
+
 	>>> uid_umlauts_lower_except_first_letter.parse('admin')
 	'admin'
 	>>> uid_umlauts_lower_except_first_letter.parse(b'admin')
@@ -2168,6 +2188,7 @@ class sharePath(simple):
 	* :file:`/root/`
 	* :file:`/sys/`
 	* :file:`/tmp/`
+
 	>>> sharePath.parse('/home/Administator')
 	'/home/Administator'
 	>>> sharePath.parse('./my-folder') #doctest: +IGNORE_EXCEPTION_DETAIL
@@ -2196,6 +2217,7 @@ class sharePath(simple):
 class passwd(simple):
 	"""
 	Syntax for passwords.
+
 	>>> passwd.parse('now this is a clever password')
 	'now this is a clever password'
 	>>> passwd.parse('secret') #doctest: +IGNORE_EXCEPTION_DETAIL
@@ -2225,6 +2247,7 @@ class passwd(simple):
 class userPasswd(simple):
 	"""
 	Syntax for user account passwords.
+
 	>>> userPasswd.parse('now this is a clever password')
 	'now this is a clever password'
 	>>> userPasswd.parse('') #doctest: +IGNORE_EXCEPTION_DETAIL
@@ -2564,6 +2587,7 @@ class ipProtocolSRV(select):
 class absolutePath(simple):
 	"""
 	Syntax for an absolute file system path.
+
 	>>> absolutePath.parse('/etc/')
 	'/etc/'
 	>>> absolutePath.parse('../etc/') # doctest: +IGNORE_EXCEPTION_DETAIL
@@ -2596,6 +2620,7 @@ class emailForwardSetting(select):
 class emailAddress(simple):
 	"""
 	Syntax class for an e-mail address.
+
 	>>> emailAddress.parse('quite@an.email.address')
 	'quite@an.email.address'
 	>>> emailAddress.parse('not quite an email address') # doctest: +IGNORE_EXCEPTION_DETAIL
@@ -2711,6 +2736,7 @@ class iso8601Date(simple):
 	* yyyy-Www-D (2009-W21-4)
 
 	with the dashes being optional
+
 	>>> iso8601Date.to_datetime('2020-05')  # doctest: +SKIP
 	datetime.date(2020, 5, 1)
 	>>> iso8601Date.to_datetime('2020-05-13')
@@ -3275,6 +3301,7 @@ class UNIX_BoundedTimeInterval(UNIX_TimeInterval):
 class SambaMinPwdAge(UNIX_BoundedTimeInterval):
 	"""
 	Syntax for the minimum password age in Samba: 0..998 days
+
 	>>> SambaMinPwdAge.parse((None, 'days'))
 	[None, None]
 	>>> SambaMinPwdAge.parse(('0', 'days'))
@@ -3293,6 +3320,7 @@ class SambaMinPwdAge(UNIX_BoundedTimeInterval):
 class SambaMaxPwdAge(UNIX_BoundedTimeInterval):
 	"""
 	Syntax for the maximum password age in Samba: 0..999 days
+
 	>>> SambaMaxPwdAge.parse((None, 'days'))
 	[None, None]
 	>>> SambaMaxPwdAge.parse(('0', 'days'))
@@ -3382,6 +3410,7 @@ class PackagesRemove(Packages):
 	"""
 	Syntax to select a Debian package name from lists stored in |LDAP| using :py:class:`univention.admin.handlers.settings.packages`.
 	This blacklists some important packages to prevent their removal.
+
 	>>> PackagesRemove.parse('curl')
 	'curl'
 	>>> PackagesRemove.parse('openssh-client') # doctest: +IGNORE_EXCEPTION_DETAIL
@@ -3405,6 +3434,7 @@ class userAttributeList(string):
 	.. note::
 
 		unused
+
 	>>> userAttributeList.parse('uid')
 	'uid'
 	"""
@@ -3708,6 +3738,7 @@ class ldapAttribute(_CachedLdap):
 class ldapFilter(simple):
 	"""
 	Syntax to enter a |LDAP| search filter.
+
 	>>> ldapFilter.parse('uid=*')
 	'uid=*'
 	>>> ldapFilter.parse('(uid=*') # doctest: +IGNORE_EXCEPTION_DETAIL
@@ -4147,6 +4178,7 @@ class UserID(UDM_Objects):
 
 	.. seealso::
 		* :py:class:`UserDN`.
+
 	>>> UserID.parse('0')
 	'0'
 	>>> UserID.parse(0)
@@ -4175,6 +4207,7 @@ class GroupID(UDM_Objects):
 	.. seealso::
 		* :py:class:`GroupDN`
 		* :py:class:`GroupDNOrEmpty`
+
 	>>> GroupID.parse('5000')
 	'5000'
 	>>> GroupID.parse(5000)
@@ -4424,6 +4457,7 @@ class dnsEntryReverse(complex):
 class DNS_ForwardZoneList(select):
 	"""
 	Syntax to select |DNS| forward zone for alias entries.
+
 	>>> DNS_ForwardZoneList.parse('some name')
 	'some name'
 	>>> DNS_ForwardZoneList.get_choices(None, {'dependencies': {'dnsEntryZoneForward': [["zoneName=example.org,cn=dns,dc=base", "1.2.3.4"]]}})
@@ -4464,6 +4498,7 @@ class dhcpService(UDM_Objects):
 class dhcpEntry(complex):
 	"""
 	Syntax to configure a |DHCP| host entry.
+
 	>>> dhcpEntry.parse(["cn=service", "aabbccddeeff"])
 	['cn=service', '', 'aa:bb:cc:dd:ee:ff']
 	>>> dhcpEntry.parse(["cn=service", "127.0.0.1", "aabbccddeeff"])
@@ -4586,6 +4621,7 @@ class IStates(select):
 class AllowDeny(IStates):
 	"""
 	Syntax class for a tri-state select between `None`, `"allow"` and `"deny"`.
+
 	>>> AllowDeny.choices
 	[('', ''), ('allow', 'allow'), ('deny', 'deny')]
 	>>> AllowDeny.sanitize_property_search_value(True)
@@ -4604,6 +4640,7 @@ class AllowDeny(IStates):
 class booleanNone(IStates):
 	"""
 	Syntax class for a tri-state select between `None`, `"yes"` and `"no"`.
+
 	>>> booleanNone.parse("yes")
 	'yes'
 	>>> booleanNone.parse("no")
@@ -4636,6 +4673,7 @@ class auto_one_zero(select):
 class TrueFalse(IStates):
 	"""
 	Syntax class for a tri-state select between `None`, `"true"` and `"false"`.
+
 	>>> TrueFalse.sanitize_property_search_value(True)
 	'true'
 	>>> TrueFalse.sanitize_property_search_value(False)
@@ -4652,6 +4690,7 @@ class TrueFalse(IStates):
 class TrueFalseUpper(IStates):
 	"""
 	Syntax class for a tri-state select between `None`, `"TRUE"` and `"FALSE"`.
+
 	>>> TrueFalseUpper.sanitize_property_search_value(True)
 	'TRUE'
 	>>> TrueFalseUpper.sanitize_property_search_value(False)
@@ -4674,6 +4713,7 @@ class TrueFalseUpper(IStates):
 class TrueFalseUp(IStates):
 	"""
 	Syntax for bool'ean value matching |LDAP| `boolean` (|OID| 1.3.6.1.4.1.1466.115.121.1.7).
+
 	>>> TrueFalseUp.sanitize_property_search_value(True)
 	'TRUE'
 	>>> TrueFalseUp.sanitize_property_search_value(False)
@@ -5293,6 +5333,7 @@ class adGroupType(select):
 class SambaLogonHours(MultiSelect):
 	"""
 	Syntax to select hour slots per day for Samba login.
+
 	>>> SambaLogonHours.parse("162 163")
 	[162, 163]
 	>>> SambaLogonHours.parse("5000") #doctest: +IGNORE_EXCEPTION_DETAIL
@@ -5361,6 +5402,7 @@ class SambaPrivileges(select):
 class UCSServerRole(select):
 	"""
 	Syntax to select |UCS| server role.
+
 	>>> UCSServerRole.parse('Undefined')
 	>>> UCSServerRole.parse('')
 	>>> UCSServerRole.parse('domaincontroller_master')
@@ -5565,6 +5607,7 @@ class listAttributes(string):
 	.. deprecated::
 		Old syntax required by :py:class:`univention.admin.handler.settings.syntax`.
 		Should be removed after migrating to :py:class:`UDM_PropertySelect`.
+
 	>>> listAttributes.parse("a value")
 	'a value'
 	"""
@@ -5932,6 +5975,7 @@ class nfsMounts(complex):
 class languageCode(combobox):
 	"""
 	Syntax for a language, e.g. `language_COUNTRY`.
+
 	>>> languageCode.parse("de_DE")
 	'de_DE'
 	>>> languageCode.parse("en_US")
@@ -5997,6 +6041,7 @@ class I18N_GroupName(translationTuple):
 class disabled(boolean):
 	"""
 	Syntax to select account disabled state.
+
 	>>> disabled.parse("none")
 	'0'
 	>>> disabled.parse("none2")
@@ -6022,6 +6067,7 @@ class disabled(boolean):
 class locked(boolean):
 	"""
 	Syntax to select account locked state.
+
 	>>> locked.parse("none")
 	'0'
 	>>> locked.parse("posix")
@@ -6079,6 +6125,7 @@ class PrinterNames(UDM_Objects):
 
 	.. seealso::
 		* :py:class:`Printers`
+
 	>>> PrinterNames().type_class
 	<class 'univention.admin.types.StringType'>
 	"""
@@ -6132,6 +6179,7 @@ class PrintQuotaUser(complex):
 class printerName(simple):
 	"""
 	Syntax to enter a printer name.
+
 	>>> printerName.parse("drucker1")
 	'drucker1'
 	>>> printerName.parse("drücker1") #doctest: +IGNORE_EXCEPTION_DETAIL
@@ -6193,6 +6241,7 @@ class PrinterProtocol(UDM_Attribute):
 class PrinterURI(complex):
 	"""
 	Syntax to configure printer.
+
 	>>> PrinterURI.parse(["uri://", "localhost"])
 	['uri://', 'localhost']
 	>>> PrinterURI.parse(["cups-pdf:/", ""])
@@ -6243,6 +6292,7 @@ class PrinterURI(complex):
 class policyName(string):
 	"""
 	Syntax to enter |UDM| policy name.
+
 	>>> policyName.parse('A valid name')
 	'A valid name'
 	>>> policyName.parse('An invalid name ') #doctest: +IGNORE_EXCEPTION_DETAIL
@@ -6337,6 +6387,7 @@ class PortalEntrySelection(complex):
 class PortalCategorySelection(simple):
 	r"""
 	Syntax to select a portal category.
+
 	>>> PCS = PortalCategorySelection
 	>>> x = PCS.tostring([["cn=category1", []], ["cn=category2", ["cn=entry1", "cn=entry2"]]])
 	>>> x.replace(' ','').replace('\n','')

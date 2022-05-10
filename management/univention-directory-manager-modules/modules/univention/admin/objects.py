@@ -57,7 +57,7 @@ def get_superordinate(module, co, lo, dn):
 	"""
 	Searches for the superordinate object for the given DN.
 
-	:param module: ???
+	:param module: |UDM| module name
 	:param co: |UDM| configuation object.
 	:param lo: |LDAP| connection.
 	:param dn: |DN|.

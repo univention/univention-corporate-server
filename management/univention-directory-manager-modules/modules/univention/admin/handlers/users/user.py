@@ -1200,6 +1200,7 @@ def unmapSambaRid(oldattr):
 
 def mapKeyAndValue(old, encoding=()):
 	"""Map (key, value) list to key=value list.
+
 	>>> mapKeyAndValue([("a", "b")])
 	[b'a=b']
 	"""
@@ -1208,6 +1209,7 @@ def mapKeyAndValue(old, encoding=()):
 
 def unmapKeyAndValue(old, encoding=()):
 	"""Map (key=value) list to (key, value) list.
+
 	>>> unmapKeyAndValue([b"a=b"])
 	[['a', 'b']]
 	"""
