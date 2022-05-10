@@ -306,6 +306,7 @@ class Server(signals.Provider):
 		self.__magic = magic
 		self.__magicClass = magicClass
 		self.__bucket = None  # type: Optional[MagicBucket]
+		self.crypto_context = None  # type: Optional[SSL.Context]
 
 	def __enter__(self):
 		# type: () -> Server
