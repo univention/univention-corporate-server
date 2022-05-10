@@ -339,7 +339,7 @@ class Server(signals.Provider):
 			self.crypto_context.set_options(SSL.OP_NO_SSLv2)
 			self.crypto_context.set_options(SSL.OP_NO_SSLv3)
 			self.crypto_context.set_verify(SSL.VERIFY_PEER, self.__verify_cert_cb)
-			dir = '/etc/univention/ssl/%s.%s' % (ucr['hostname'], ucr['domainname'])
+			dir = '/etc/univention/ssl/%(hostname)s.%(dirname)s' % ucr
 			try:
 				self.crypto_context.use_privatekey_file(os.path.join(dir, 'private.key'))
 				self.crypto_context.use_certificate_file(os.path.join(dir, 'cert.pem'))
