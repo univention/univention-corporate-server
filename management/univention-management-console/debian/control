@@ -119,7 +119,6 @@ Depends:
  python3-polib,
  python3-six,
  python3-tornado,
- python3-typing,
  python3-univention,
  python3-univention-config-registry,
  python3-univention-directory-manager,
