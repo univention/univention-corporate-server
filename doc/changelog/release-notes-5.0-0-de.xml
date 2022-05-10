@@ -414,6 +414,11 @@
 				</listitem>
 				<listitem>
 					<para>
+						Das von einem Server verwendete bzw. angezeigte Portal wird unter UCS 5 durch die &ucsUCRV; <envar>portal/default-dn</envar> bestimmt. Nach einer Änderung muss der Dienst <systemitem class="service">univention-portal-server</systemitem> neugestartet werden.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
 						Ein für das UCS 4 Portal angepasstes Design mittels CSS muss <ulink url="https://docs.software-univention.de/handbuch-5.0.html#central:theming">für das UCS 5 Portal überarbeitet</ulink> werden.
 					</para>
 				</listitem>
@@ -422,7 +427,7 @@
 						Die Verwaltung der Portalinhalte wird über <ulink url="https://docs.software-univention.de/handbuch-5.0.html#central:portal">neue &ucsUDM; Module</ulink> durchgeführt, die unter UCS 4 vorhandenen Einstellungen werden übernommen.
 					</para>
 				</listitem>
-			<itemizedlist>
+			</itemizedlist>
 		</para>
 	</chapter>
 
