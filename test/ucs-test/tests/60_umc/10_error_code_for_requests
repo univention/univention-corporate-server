@@ -9,6 +9,7 @@
 ## exposure: dangerous
 
 import http.client as httplib
+import socket
 import ssl
 import subprocess
 import time
@@ -76,7 +77,7 @@ def main():
 			if response.status not in RESPONSE_STATUS_CODES:
 				print('ERROR: Unexpected status of response %s (expected was one of %s)' % (response.status, RESPONSE_STATUS_CODES))
 				success = False
-		except ssl.SSLError:
+		except (socket.timeout, ssl.SSLError):
 			print('ERROR: request timed out')
 
 	if not success:
