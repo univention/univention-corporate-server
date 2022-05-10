@@ -112,7 +112,7 @@ class MagicBucket(object):
 		# type: () -> None
 		'''Closes all open connections.'''
 		# remove all sockets
-		for sock in list(self.__states.keys()):
+		for sock in list(self.__states):
 			CORE.info('Shutting down connection %s' % sock)
 			self._cleanup(sock)
 
