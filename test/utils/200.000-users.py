@@ -21,6 +21,7 @@ groups = modules.get('groups/group')
 modules.init(lo, position, groups)
 
 group_member = {}
+position.setDn('cn=users,%s' % (base,))
 for i in range(0, number_of_users):
     name = "%s%s" % (username, i)
     user = users.lookup(None, lo, "uid=%s" % name)
@@ -40,6 +41,7 @@ for i in range(0, number_of_users):
         group_member[group] = []
     group_member[group].append(dn)
 
+position.setDn('cn=groups,%s' % (base,))
 for i in range(0, number_of_groups):
     name = "%s%s" % (groupname, i)
     group = groups.lookup(None, lo, "cn=%s" % name)
