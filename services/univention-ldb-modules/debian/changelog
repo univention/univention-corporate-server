@@ -1,3 +1,9 @@
+univention-ldb-modules (7.0.0-7) unstable; urgency=medium
+
+  * Bug #52758: Backup server will be able to join a single server school environment
+
+ -- Juan Pedro Torres <torres-munoz.extern@univention.de>  Tue, 10 May 2022 10:10:01 +0200
+
 univention-ldb-modules (7.0.0-6) unstable; urgency=medium
 
   * Bug #51532: Restart univention-directory-listener on package update 

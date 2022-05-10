@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [8,9]
+scope: ucs_4.4-0-errata4.4-9
+src: univention-ldb-modules
+fix: 
+desc: |
+ This update addresses the following issue:
+ * When joining as a backup node into a single server a UCS@school
+   environment the ldb module would fail and would cause the join to
+   fail.
+bug: [52758]
