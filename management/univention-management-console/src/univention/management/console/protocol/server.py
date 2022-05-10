@@ -208,7 +208,7 @@ class MagicBucket(object):
 			self._cleanup(sock)
 			return False
 
-		return (len(state.resend_queue) > 0)
+		return bool(state.resend_queue)
 
 	def _response(self, msg, state):
 		# type: (Message, State) -> None
