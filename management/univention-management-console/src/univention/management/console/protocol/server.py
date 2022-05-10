@@ -82,8 +82,7 @@ class MagicBucket(object):
 		connection.
 
 		:param str client: IP address + port
-		:param sock: a file descriptor or socket object
-		:type: socket: int or socket.socket
+		:param socket.socket sock: a socket object
 		"""
 		CORE.info('Established connection: %s' % client)
 		state = State(client, sock)
@@ -123,8 +122,7 @@ class MagicBucket(object):
 		and parses the incoming data. If a valid UMCP was found it is
 		passed to _handle.
 
-		:param sock: file descriptor or socket object that reported incoming data
-		:type: sock: int or socket.socket
+		:param socket.socket sock: socket object that reported incoming data
 		"""
 		data = ''
 
