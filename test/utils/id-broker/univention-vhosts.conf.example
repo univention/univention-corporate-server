@@ -1,0 +1,56 @@
+#Warning: This file is auto-generated and might be overwritten by
+#         univention-config-registry.
+#         Please edit the following file(s) instead:
+#Warnung: Diese Datei wurde automatisch generiert und kann durch
+#         univention-config-registry ueberschrieben werden.
+#         Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):
+#
+#	/etc/univention/templates/files/etc/apache2/sites-available/univention-vhosts.conf
+#
+
+# Virtual Host for kc.DOMAIN/443
+<VirtualHost *:443>
+	ServerName kc.DOMAIN
+	IncludeOptional /var/lib/keycloak/keycloak_ProxyPass.con[f]
+	<Location "/">
+		ProxyPass "http://KEYCLOAK2_IP:8080/" retry=0
+		RequestHeader set X-Forwarded-Proto "https" "expr=%{HTTPS} == 'on'"
+		RequestHeader set X-Forwarded-Host "kc.DOMAIN"
+		Header set kc_info "kc2"
+	</Location>
+	<Location "/auth/realms/ID-Broker/protocol/openid-connect/auth">
+		ProxyPass "http://127.0.0.1:8080/auth/realms/ID-Broker/protocol/openid-connect/auth" retry=0
+		RequestHeader set X-Forwarded-Proto "https" "expr=%{HTTPS} == 'on'"
+		RequestHeader set X-Forwarded-Host "kc.DOMAIN"
+		Header set kc_info "kc1"
+	</Location>
+	<Location "/auth/realms/ID-Broker/broker/traeger1/endpoint">
+        	ProxyPass "http://127.0.0.1:8080/auth/realms/ID-Broker/broker/traeger1/endpoint" retry=0
+        	RequestHeader set X-Forwarded-Proto "https" "expr=%{HTTPS} == 'on'"
+        	RequestHeader set X-Forwarded-Host "kc.DOMAIN"
+        	Header set kc_info "kc1"
+	</Location>
+</VirtualHost>
+
+
+# Virtual Host for login.kc1.DOMAIN/443
+<IfModule mod_ssl.c>
+<VirtualHost *:443>
+	ServerName login.kc1.DOMAIN
+	IncludeOptional /var/lib/keycloak/keycloak_ProxyPass.con[f]
+
+	SSLEngine on
+	SSLProxyEngine on
+	SSLProxyCheckPeerCN off
+	SSLProxyCheckPeerName off
+	SSLProxyCheckPeerExpire off
+
+	SSLCertificateFile /etc/univention/ssl/*.kc1.DOMAIN/cert.pem
+	SSLCertificateKeyFile /etc/univention/ssl/*.kc1.DOMAIN/private.key
+	SSLCACertificateFile /etc/univention/ssl/ucsCA/CAcert.pem
+
+</VirtualHost>
+
+</IfModule>
+
+

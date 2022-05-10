@@ -1,0 +1,13 @@
+SSLEngine on
+SSLProxyEngine on
+SSLProxyCheckPeerCN off
+SSLProxyCheckPeerName off
+SSLProxyCheckPeerExpire off
+
+SSLCertificateFile /etc/univention/ssl/kc.DOMAIN/cert.pem
+SSLCertificateKeyFile /etc/univention/ssl/kc.DOMAIN/private.key
+SSLCACertificateFile /etc/univention/ssl/ucsCA/CAcert.pem
+
+ProxyPass / http://127.0.0.1:8080/ retry=0
+RequestHeader set X-Forwarded-Proto "https" "expr=%{HTTPS} == 'on'"
+RequestHeader set X-Forwarded-Host "login.kc1.DOMAIN"

@@ -1,0 +1,13 @@
+register_clients:
+  - client_id: "univention-test-app"
+    secret: "UTA_CLIENT_SECRET"
+    pseudonym_attr: "idBrokerPseudonym0001"
+    redirect_uris:
+      - "UTA_REDIRECT"
+  - client_id: "bettermarks"
+    secret: "BETTERMARKS_CLIENT_SECRET"
+    pseudonym_attr: "idBrokerPseudonym0002"
+    redirect_uris:
+      - "https://acc.bettermarks.com/auth/callback"
+      - "https://acc.bettermarks.com/auth/oidc/callback"
+      - "https://school.bettermarks.loc/*"
