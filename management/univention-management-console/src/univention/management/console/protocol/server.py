@@ -327,7 +327,7 @@ class Server(signals.Provider):
 				continue
 			sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
 			sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-			sock.setblocking(0)
+			sock.setblocking(False)
 			fd = sock.fileno()
 			flags = fcntl.fcntl(fd, fcntl.F_GETFD)
 			fcntl.fcntl(fd, fcntl.F_SETFD, flags | fcntl.FD_CLOEXEC)
@@ -446,7 +446,7 @@ class Server(signals.Provider):
 		fd = sock.fileno()
 		flags = fcntl.fcntl(fd, fcntl.F_GETFD)
 		fcntl.fcntl(fd, fcntl.F_SETFD, flags | fcntl.FD_CLOEXEC)
-		sock.setblocking(0)
+		sock.setblocking(False)
 		if addr:
 			client = '%s:%d' % (addr[0], addr[1])
 		else:
