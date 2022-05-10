@@ -411,7 +411,7 @@ class Server(signals.Provider):
 		CORE.info('__verify_cert_cb: Got certificate: %s' % cert.get_subject())
 		CORE.info('__verify_cert_cb: Got certificate issuer: %s' % cert.get_issuer())
 		CORE.info('__verify_cert_cb: errnum=%d depth=%d ok=%d' % (errnum, depth, ok))
-		return ok
+		return ok  # FIXME: should return true if verification passes and false otherwise.
 
 	def _connection(self, sock):
 		# type: (socket.socket) -> bool
