@@ -71,8 +71,8 @@ Login via *single sign-on*
 --------------------------
 
 The activation of *single sign-on* for the portal is described in
-:ref:`central-management-umc-login`. For this, :samp:`ucs-sso.[Domain name]}`
-must be reacheable. To login the domain credentials must be provided. For the
+:ref:`central-management-umc-login`. For this, :samp:`ucs-sso.{[Domain name]}`
+must be reachable. To login the domain credentials must be provided. For the
 login directly at the UCS system (i.e., without *single sign-on*), follow the
 link :guilabel:`Login without Single Sign On`.
 
