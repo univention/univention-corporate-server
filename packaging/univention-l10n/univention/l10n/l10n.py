@@ -409,7 +409,7 @@ def get_special_cases_from_srcpkg(source_tree_path, target_language):
 def get_special_cases_from_checkout(source_tree_path, target_language):
 	# type: (str, str) -> List[SpecialCase]
 	"""
-	Process *.univention-l10n files in the whole branch. Currently they
+	Process \\*.univention-l10n files in the whole branch. Currently they
 	lay 3 (UCS@school) or 4(UCS) directory levels deep in the repository.
 	"""
 	sc_files = glob(os.path.join(source_tree_path, '*/*/debian/*.univention-l10n')) or glob(os.path.join(source_tree_path, '*/debian/*.univention-l10n'))

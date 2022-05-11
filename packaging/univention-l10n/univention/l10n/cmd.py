@@ -92,7 +92,7 @@ def parse_args(cmd):  # type: (str) -> None
 
 def build(args):  # type: (argparse.Namespace) -> None
     """
-    Generate GNU gettext Portable Objects (PO files) from debian/*.univention-l10n files
+    Generate GNU gettext Portable Objects (PO files) from debian/\\*.univention-l10n files
 
     This script reads :file:`debian/*.univention-l10n` files inside the current working
     directory and creates gettext Portable Objects defined within. It intends to
@@ -134,7 +134,7 @@ def build(args):  # type: (argparse.Namespace) -> None
 
 def install(args):  # type: (argparse.Namespace) -> None
     """
-    Generate and install GNU gettext Message Objects (MO files) from debian/*.univention-l10n files.
+    Generate and install GNU gettext Message Objects (MO files) from debian/\\*.univention-l10n files.
 
     This script reads :file:`debian/*univention-l10n` files inside the current working
     directory. It builds the message catalogs and installs them to the path defined
@@ -143,7 +143,7 @@ def install(args):  # type: (argparse.Namespace) -> None
     The intended usage is to add it to the install target inside :file:`debian/rules` to
     automate in-package translations.
 
-    Example file:`debian/rules` override::
+    Example file: `debian/rules` override::
 
         %:
             dh --with univention-l10n

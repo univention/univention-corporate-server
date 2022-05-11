@@ -171,8 +171,7 @@ class ListenerModuleConfiguration(object):
 	def get_attributes(self):
 		# type: () -> List[str]
 		"""
-		:return: attributes of matching LDAP objects the module will be
-		notified about if changed
+		:return: attributes of matching LDAP objects the module will be notified about if changed
 		:rtype: list(str)
 		"""
 		assert isinstance(self.attributes, list)

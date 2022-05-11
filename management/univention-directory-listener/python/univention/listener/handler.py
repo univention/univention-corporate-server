@@ -98,7 +98,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 		"""
 		When subclassing, in :py:meth:`__init__()` first call must be:
 
-			super(.., self).__init__(*args, **kwargs)
+			`super(.., self).__init__(*args, **kwargs)`
 
 		`self.config` will be set by the metaclass.
 		"""
