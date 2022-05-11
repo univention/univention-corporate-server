@@ -94,6 +94,9 @@ if "spelling" in sys.argv:
     # Warnings may come up by sphinx-last-updated-by-git. Shall be suppressed in spelling job
     suppress_warnings = ['git.too_shallow', "bibtex"]
 
+if "linkcheck" in sys.argv:
+    suppress_warnings = ['git.too_shallow', "bibtex"]
+
 root_doc = "contents"
 
 rst_epilog = """

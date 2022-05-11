@@ -42,12 +42,12 @@ stages:
 .sphinx-linkcheck:
   extends: .sphinx-doc
   script:
-    - make -C $base -e SPHINXOPTS="-D language='$language'" -e BUILDDIR="_build/$language" linkcheck
+    - make -C $base -e SPHINXOPTS="-W --keep-going -D language='$language'" -e BUILDDIR="_build/$language" linkcheck
 
 .sphinx-spelling:
   extends: .sphinx-doc
   script:
-    - sphinx-build -M spelling "$base" "$base"/_build/"$language" -D language="$language" -W --keep-going
+    - make -C $base -e SPHINXOPTS="-W --keep-going -D language='$language'" -e BUILDDIR="_build/$language" spelling
 
 # The child pipeline needs at minimum one job to run - otherwise the sub-pipeline fails
 webframe:
