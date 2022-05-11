@@ -11,3 +11,5 @@ desc: |
    UCR variable "freeradius/vlan-id" has been added to set a VLAN ID even if
    the user is no member of any such group.
 bug: [25916]
+erratum: 305
+announced: 2022-05-11
