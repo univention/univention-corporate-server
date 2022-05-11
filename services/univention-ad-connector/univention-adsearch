@@ -147,11 +147,11 @@ if [ -n "${!base_env}" ]; then
 fi
 
 
-ldbsearch --debug-stderr --debug-stderr --show-deleted -H "$protocol://$ldap_server_name" "${options[@]}" "$@"
+ldbsearch --show-deleted -H "$protocol://$ldap_server_name" "${options[@]}" "$@"
 rc=$?
 
 if [ "$debug" = 'true' ]; then
-	echo "### Output of: ldbsearch --debug-stderr --show-deleted -H $protocol://$ldap_server_name ${options[@]} $@"
+	echo "### Output of: ldbsearch --show-deleted -H $protocol://$ldap_server_name ${options[@]} $@"
 fi
 
 exit $rc

@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.9-2) unstable; urgency=medium
+
+  * Bug #54682: option --debug-stderr became default, option has been removed
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 16 Jun 2022 14:26:29 +0200
+
 univention-ad-connector (14.0.9-1) unstable; urgency=medium
 
   * Bug #54706: drop Python 2 packages
