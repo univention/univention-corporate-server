@@ -9,3 +9,5 @@ desc: |
  * The configuration of NRPE plugin definitions was broken due to the
    migration to Python 3 and has been repaired.
 bug: [53681]
+erratum: 304
+announced: 2022-05-11
