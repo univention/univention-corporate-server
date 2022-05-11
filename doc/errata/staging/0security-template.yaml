@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-1
 src: 
 fix: 
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * 
 bug: []
 cve:
