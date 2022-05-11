@@ -1074,7 +1074,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 .. envvar:: portal/default-dn
 
    Defines the LDAP DN of the portal object that holds the data for the portal.
-   For more information, see :ref:`central:portal`.
+   For more information, see :ref:`central-portal`.
 
 
 .. envvar:: proxy/http
