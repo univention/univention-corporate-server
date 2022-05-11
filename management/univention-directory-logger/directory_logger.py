@@ -64,10 +64,10 @@ uidNumber = 0
 preferedGroup = "adm"
 gidNumber = 0  # fallback
 filemode = 0o640
-cleanupDellog = True  # remove missed dellog entries (after reporting about them)
 digest = configRegistry.get('ldap/logging/hash', 'md5')
 
 SAFE_STRING_RE = re.compile(r'^(?:\000|\n|\r| |:|<)|[\000\n\r\200-\377]+|[ ]+$'.encode('ASCII'))
+DELLOG_FILE_LINE_NUMBERS = 5
 
 
 def ldapEntry2string(entry):
@@ -111,25 +111,39 @@ def filterOutUnchangedAttributes(old_copy, new_copy):
 			new_copy[key].remove(value)
 
 
+def _parse_dellog_file(pathname):
+	"""Extract data from a dellog file."""
+	with open(pathname, 'r') as f:
+		lines = f.readlines()
+		# A dellog file must have DELLOG_FILE_LINE_NUMBERS lines
+		if len(lines) == DELLOG_FILE_LINE_NUMBERS:
+			return [line.rstrip() for line in lines]
+		else:
+			raise ValueError('')
+
+
 def process_dellog(dn):
 	dellog = configRegistry['ldap/logging/dellogdir']
 
 	dellist = sorted(os.listdir(dellog))
+
 	for filename in dellist:
 		pathname = os.path.join(dellog, filename)
-		try:
-			with open(pathname, 'r') as f:
-				(dellog_stamp, dellog_id, dellog_dn, modifier, action) = [line.rstrip() for line in f]
 
-			if cleanupDellog:
-				os.unlink(pathname)
+		try:
+			(dellog_stamp, dellog_id, dellog_dn, modifier, action) = _parse_dellog_file(pathname)
 		except EnvironmentError:
 			continue
+		except ValueError:
+			continue
+		finally:
+			os.unlink(pathname)
 
 		if dellog_dn == dn:
 			timestamp = ldapTime2string(dellog_stamp)
 			break
 	else:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Did not find matching dn "%s" in dellog directory %s.' % (dn, dellog))
 		timestamp = time.strftime(timestampfmt, time.gmtime())
 		dellog_id = '<NoID>'
 		modifier = '<unknown>'

@@ -1,3 +1,10 @@
+univention-directory-logger (11.0.3-2) unstable; urgency=medium
+
+  * Bug #51772: Fix crashing on corrupted log files in OpenLDAP "delete
+    log"-directory (see UCR-Variable "ldap/logging/dellogdir")
+
+ -- Johannes Königer <koeniger@univention.de>  Mon, 09 May 2022 12:53:33 +0200
+
 univention-directory-logger (11.0.3-1) unstable; urgency=medium
 
   * Bug #53304: fix Python 3 error: RuntimeError: dictionary changed
