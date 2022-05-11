@@ -1,3 +1,9 @@
+univention-ssh (11.0.0-4) unstable; urgency=medium
+
+  * Bug #54588: Add --no-split option before password file  
+
+ -- Eric Monne Mesalles <monne-mesalles.extern@univention.de>  Mon, 09 May 2022 09:07:29 +0200
+
 univention-ssh (11.0.0-3) unstable; urgency=medium
 
   * Bug #53342: Fix Timeout parameter
