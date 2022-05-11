@@ -402,7 +402,7 @@
       <itemizedlist>
         <listitem>
           <para>
-            By default, single sign-on is not used when logging in to the portal. Details on enabling single sign-on are <ulink url="https://docs.software-univention.de/handbuch-5.0.html#central-management-umc:login">described in the manual</ulink>.
+            By default, single sign-on is not used when logging in to the portal. Details on enabling single sign-on are <ulink url="https://docs.software-univention.de/manual/5.0/en/central-management-umc/login.html#central-management-umc-login">described in the manual</ulink>.
           </para>
         </listitem>
         <listitem>
@@ -412,12 +412,12 @@
         </listitem>
         <listitem>
           <para>
-            A design customized for the UCS 4 portal using CSS needs to be <ulink url="https://docs.software-univention.de/handbuch-5.0.html#central:theming">reworked</ulink> for the UCS 5 portal.
+            A design customized for the UCS 4 portal using CSS needs to be <ulink url="https://docs.software-univention.de/manual/5.0/en/central-management-umc/introduction.html#central-theming">reworked</ulink> for the UCS 5 portal.
           </para>
         </listitem>
         <listitem>
           <para>
-            Portal content management will be done via <ulink url="https://docs.software-univention.de/handbuch-5.0.html#central:portal">new &ucsUDM; modules</ulink>, the settings existing under UCS 4 will be migrated during the update.
+            Portal content management will be done via <ulink url="https://docs.software-univention.de/manual/5.0/en/central-management-umc/portal.html#central-portal">new &ucsUDM; modules</ulink>, the settings existing under UCS 4 will be migrated during the update.
           </para>
         </listitem>
 			</itemizedlist>

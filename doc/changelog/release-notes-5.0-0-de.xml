@@ -414,7 +414,7 @@
 				</listitem>
 				<listitem>
 					<para>
-						Das von einem Server verwendete bzw. angezeigte Portal wird unter UCS 5 durch die &ucsUCRV; <envar>portal/default-dn</envar> bestimmt. Nach einer Änderung muss der Dienst <systemitem class="service">univention-portal-server</systemitem> neugestartet werden.
+						Das von einem Server verwendete bzw. angezeigte Portal wird unter UCS 5 durch die &ucsUCRV; <envar>portal/default-dn</envar> bestimmt. Nach einer Änderung muss der Dienst <systemitem class="service">univention-portal-server</systemitem> neu gestartet werden.
 					</para>
 				</listitem>
 				<listitem>
