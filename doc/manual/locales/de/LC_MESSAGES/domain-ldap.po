@@ -1,19 +1,15 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2021-2022, Univention GmbH
-# This file is distributed under the same license as the Univention
-# Corporate Server - Manual for users and administrators package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
-#
-#, fuzzy
+
 msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
-"administrators \n"
+"administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-21 12:53+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2022-05-13 10:13+0200\n"
+"PO-Revision-Date: 2022-05-13 10:14+0200\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
+"Language-Team: Univention GmbH <packages@univention.de>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,39 +17,43 @@ msgstr ""
 
 #: ../../domain-ldap/admin-diary.rst:4
 msgid "Protocol of activities in the domain"
-msgstr ""
+msgstr "Protokollierung von Aktivitäten in der Domäne"
 
 #: ../../domain-ldap/admin-diary.rst:6
 msgid ""
-"The *Admin Diary* app provides the facility to log important events "
-"happening in the domain. This includes among others:"
+"The :program:`Admin Diary` app provides the facility to log important "
+"events happening in the domain. This includes among others:"
 msgstr ""
+"Über die :program:`Admin Diary` App besteht die Möglichkeit, wichtige "
+"Ereignisse in der Domäne zu protokollieren. Dazu gehören unter anderem:"
 
 #: ../../domain-ldap/admin-diary.rst:9
 msgid ""
 "Creation, move, modification and deletion of users and other objects "
 "using |UCSUDM|"
 msgstr ""
+"Das Anlegen, Verschieben, Verändern oder Löschen von Benutzern und "
+"anderen Objekten über |UCSUDM|"
 
 #: ../../domain-ldap/admin-diary.rst:12
 msgid "Installation, update and deinstallation of apps"
-msgstr ""
+msgstr "Installation, Update und Deinstallation von Apps"
 
 #: ../../domain-ldap/admin-diary.rst:14
 msgid "Server password changes"
-msgstr ""
+msgstr "Server-Passwort-Änderungen"
 
 #: ../../domain-ldap/admin-diary.rst:16
 msgid "Start, end and eventual failures of domain joins"
-msgstr ""
+msgstr "Start, Ende und enventuelle Fehler bei Domänenbeitritten"
 
 #: ../../domain-ldap/admin-diary.rst:18
 msgid "Start and end of UCS updates"
-msgstr ""
+msgstr "Start und Ende von UCS Updates"
 
 #: ../../domain-ldap/admin-diary.rst:25
 msgid "View of events in Admin Diary"
-msgstr ""
+msgstr "Ansicht der Ereignisse im Admin Diary"
 
 #: ../../domain-ldap/admin-diary.rst:27
 msgid ""
@@ -65,18 +65,26 @@ msgid ""
 ":`domain-ldap-admindiary-detail`. Moreover there is the possibility to "
 "comment each event."
 msgstr ""
+":numref:`domain-ldap-admindiary-list` zeigt, wie die Ereignisse im UMC-"
+"Modul :guilabel:`Admin Diary` dargestellt werden. Die angezeigten "
+"Einträge werden standardmäßig wochenweise gruppiert und können über das "
+"Suchfeld weiter eingegrenzt werden. Durch das Auswählen eines Eintrags "
+"gelangt man zu einer Detailansicht, wie sie in :numref:`domain-ldap-"
+"admindiary-detail` zu sehen ist. Dieser kann man weitere Details zum Wo "
+"und Wann entnehmen. Zudem besteht die Möglichkeit, das Ereignis zu "
+"kommentieren."
 
 #: ../../domain-ldap/admin-diary.rst:39
 msgid "Detail view in Admin Diary"
-msgstr ""
+msgstr "Detailansicht im Admin Diary"
 
 #: ../../domain-ldap/admin-diary.rst:41
 msgid "The app consists of two components:"
-msgstr ""
+msgstr "Die App besteht aus zwei Komponenten:"
 
 #: ../../domain-ldap/admin-diary.rst:48
 msgid "Admin Diary back end"
-msgstr ""
+msgstr "Admin Diary Backend"
 
 #: ../../domain-ldap/admin-diary.rst:44
 msgid ""
@@ -86,10 +94,15 @@ msgid ""
 "PostgreSQL. If MariaDB or MySQL is already installed on the target "
 "system, it will be used instead of PostgreSQL."
 msgstr ""
+"Das Backend muss auf einem System in der Domäne installiert sein, bevor "
+"das Frontend installiert werden kann. Es beinhaltet eine Anpassung für "
+":program:`rsyslog` und schreibt in eine zentrale Datenbank, standardmäßig"
+" PostgreSQL. Falls MariaDB oder MySQL vorher auf dem Zielsystem "
+"installiert ist, dann wird es statt PostgreSQL verwendet."
 
 #: ../../domain-ldap/admin-diary.rst:58
 msgid "Admin Diary front end"
-msgstr ""
+msgstr "Admin Diary Frontend"
 
 #: ../../domain-ldap/admin-diary.rst:51
 msgid ""
@@ -102,10 +115,18 @@ msgid ""
 " to separate front end and back end <univention-kb-admin-diary-separate-"
 "frontend-backend_>`_."
 msgstr ""
+"Auch das Frontend muss mindestens einmal installiert sein, kann aber "
+"öfter installiert werden. Das Frontend beinhaltet das UMC-Modul "
+":guilabel:`Admin Diary`, um die Einträge anzuzeigen und zu kommentieren. "
+"Wenn es nicht auf dem selben System installiert werden soll, auf dem das "
+"Backend läuft, dann muss der Zugriff auf die zentrale Datenbank manuell "
+"eingerichtet werden. Die dazu notwendigen Schritte sind in `Admin Diary -"
+" How to separate front end and back end <univention-kb-admin-diary-"
+"separate-frontend-backend_>`_ beschrieben."
 
 #: ../../domain-ldap/backup2master.rst:4
 msgid "Converting a |UCSBACKUPDN| backup to the new |UCSPRIMARYDN|"
-msgstr ""
+msgstr "Umwandlung eines |UCSBACKUPDN| zum neuen |UCSPRIMARYDN|"
 
 #: ../../domain-ldap/backup2master.rst:8
 msgid ""
@@ -114,22 +135,31 @@ msgid ""
 "and all SSL security certificates as read-only copies. However, in "
 "contrast to the |UCSPRIMARYDN|, writing changes are not allowed."
 msgstr ""
+"Eine UCS Domäne hat immer genau einen |UCSPRIMARYDN|, kann aber beliebig "
+"viele |UCSBACKUPDN| beinhalten. Ein |UCSBACKUPDN| speichert alle "
+"Domänendaten und alle SSL-Sicherheitszertifikate als Kopie, im Gegensatz "
+"zum |UCSPRIMARYDN| können jedoch keine schreibenden Änderungen "
+"vorgenommen werden."
 
 #: ../../domain-ldap/backup2master.rst:13
 msgid ""
 "Any |UCSBACKUPDN| can be converted to a |UCSPRIMARYDN|. There are two "
 "typical scenarios for this:"
 msgstr ""
+"Jeder |UCSBACKUPDN| kann zu einem |UCSPRIMARYDN| umgewandelt werden. "
+"Hierfür gibt es zwei typische Anwendungsfälle:"
 
 #: ../../domain-ldap/backup2master.rst:16
 msgid "In an emergency if the hardware of the |UCSPRIMARYDN| fails."
-msgstr ""
+msgstr "Im Notfall nach einem Hardwareausfall des |UCSPRIMARYDN|."
 
 #: ../../domain-ldap/backup2master.rst:18
 msgid ""
 "To replace a fully functional |UCSPRIMARYDN| with new hardware or "
 "changing the architecture from *i386* to *amd64*."
 msgstr ""
+"Zum geplanten Ersetzen des |UCSPRIMARYDN| durch neue Hardware oder "
+"Wechsel der Architektur von *i386* auf *amd64*."
 
 #: ../../domain-ldap/backup2master.rst:23
 msgid ""
@@ -137,6 +167,9 @@ msgid ""
 "configuration change and should be prepared carefully. The conversion "
 "cannot be reversed."
 msgstr ""
+"Die Umwandlung eines |UCSBACKUPDN| in einen |UCSPRIMARYDN| ist ein "
+"tiefgreifender Konfigurationsschritt und sollte gründlich vorbereitet "
+"werden! Die Umwandlung kann nicht rückgängig gemacht werden."
 
 #: ../../domain-ldap/backup2master.rst:27
 msgid ""
@@ -144,6 +177,9 @@ msgid ""
 "before the conversion. It must not be powered on during or after the "
 "conversion!"
 msgstr ""
+"Der zu ersetzende |UCSPRIMARYDN| muss vor Beginn der Umwandlung "
+"abgeschaltet werden und darf weder während der Umwandlung noch im "
+"Anschluss daran wieder in Betrieb genommen werden!"
 
 #: ../../domain-ldap/backup2master.rst:30
 msgid ""
@@ -154,6 +190,12 @@ msgid ""
 "old |UCSPRIMARYDN| have to be removed or changed to the new "
 "|UCSPRIMARYDN|."
 msgstr ""
+"Im Vorfeld muss die installierte Software sowie die aktuelle "
+"Konfiguration zwischen |UCSPRIMARYDN| und |UCSBACKUPDN| abgeglichen "
+"werden. Wenn der |UCSPRIMARYDN| wegen eines Ausfalls nicht mehr verfügbar"
+" ist, muss eine Sicherung herangezogen werden. Im Nachgang an die "
+"Umwandlung müssen alle evtl. verbliebenen Referenzen auf den alten "
+"|UCSPRIMARYDN| entfernt bzw. korrigiert werden."
 
 #: ../../domain-ldap/backup2master.rst:36
 msgid ""
@@ -162,6 +204,10 @@ msgid ""
 "software needs to be adjusted manually (this can be done using the UMC "
 "modules :guilabel:`App Center` or :guilabel:`Package Management`)."
 msgstr ""
+"Die Umwandlung umfasst primär die Umstellung der für die "
+"Authentifizierung relevanten Dienste wie LDAP, DNS, Kerberos und Samba.  "
+"Der Abgleich der installierten Software muss manuell erfolgen (über die "
+"UMC-Module :guilabel:`App Center` und :guilabel:`Paket-Verwaltung`)."
 
 #: ../../domain-ldap/backup2master.rst:41
 msgid ""
@@ -170,6 +216,11 @@ msgid ""
 "|UCSPRIMARYDN| after the conversion. To minimize manual changes after the"
 " conversion, please consider :ref:`domain-fault-tolerant`."
 msgstr ""
+"Wenn also z.B. auf dem vorherigen |UCSPRIMARYDN| die Mailkomponente "
+"installiert war, ist diese nach der Umwandlung nicht automatisch auf dem "
+"neuen |UCSPRIMARYDN| verfügbar. Um den Umfang der Nachbereitung möglichst"
+" gering zu halten, sollte im Vorfeld :ref:`domain-fault-tolerant` "
+"beachtet werden."
 
 #: ../../domain-ldap/backup2master.rst:46
 msgid ""
@@ -179,10 +230,16 @@ msgid ""
 "promotion in order to allow a subsequent comparison of the installed "
 "packages. The package list can be created with the following command:"
 msgstr ""
+"Wurden auf dem |UCSPRIMARYDN| zusätzliche LDAP-Schema-Pakete installiert,"
+" so müssen diese vor der Umwandlung auch auf dem |UCSBACKUPDN| "
+"installiert werden. Die Paketliste des alten |UCSPRIMARYDN| sollte vor "
+"der Umstellung gesichert werden, um einen Abgleich der installierten "
+"Pakete zu erlauben. Die Paketliste kann mit dem folgenden Befehl erstellt"
+" werden:"
 
 #: ../../domain-ldap/backup2master.rst:52
 msgid "$ dpkg --get-selections \\* >> dpkg.selection"
-msgstr ""
+msgstr "$ dpkg --get-selections \\* >> dpkg.selection"
 
 #: ../../domain-ldap/backup2master.rst:57
 msgid ""
@@ -192,12 +249,19 @@ msgid ""
 "necessary. The following command executed on the |UCSPRIMARYDN| will list"
 " all affected packages:"
 msgstr ""
+"Die so auf dem |UCSPRIMARYDN| erstellte Datei sollte mit einer ebenso "
+"erstellten Datei des |UCSBACKUPDN| verglichen und benötigte Pakete auf "
+"dem |UCSBACKUPDN| nachinstalliert werden. Insbesondere alle Pakete, die "
+"ein LDAP-Schema installieren, sind zwingend erforderlich. Eine Auflistung"
+" dieser LDAP-Schema-Pakete lässt sich wie folgt erstellen:"
 
 #: ../../domain-ldap/backup2master.rst:62
 msgid ""
 "$ dpkg -S /etc/ldap/schema/*.schema \\\n"
 "> /usr/share/univention-ldap/schema/*.schema"
 msgstr ""
+"$ dpkg -S /etc/ldap/schema/*.schema \\\n"
+"> /usr/share/univention-ldap/schema/*.schema"
 
 #: ../../domain-ldap/backup2master.rst:68
 msgid ""
@@ -205,12 +269,18 @@ msgid ""
 "|UCSBACKUPDN|, use the previously created file :file:`dpkg.selection` of "
 "the |UCSPRIMARYDN| and run the following command on the |UCSBACKUPDN|:"
 msgstr ""
+"Um einfach alle installierten Pakete des |UCSPRIMARYDN| auch auf dem "
+"|UCSBACKUPDN| zu installieren, kann die zuvor auf dem |UCSPRIMARYDN| "
+"erstellte Datei :file:`dpkg.selection` mit folgenden Befehlen verwendet "
+"werden:"
 
 #: ../../domain-ldap/backup2master.rst:72
 msgid ""
 "$ dpkg --set-selections < dpkg.selection\n"
 "$ apt-get dselect-upgrade"
 msgstr ""
+"$ dpkg --set-selections < dpkg.selection\n"
+"$ apt-get dselect-upgrade"
 
 #: ../../domain-ldap/backup2master.rst:77
 msgid ""
@@ -219,14 +289,18 @@ msgid ""
 "|UCSPRIMARYDN|. The following files on the |UCSPRIMARYDN| need to be "
 "compared with those on the |UCSBACKUPDN|:"
 msgstr ""
+"Darüber hinaus sollte der |UCSUCR|-Datenbestand gesichert werden, um "
+"Konfigurationsanpassungen auch auf dem neuen |UCSPRIMARYDN| abgleichen zu"
+" können. Folgende Dateien des |UCSPRIMARYDN| sind dazu mit denen auf dem "
+"|UCSBACKUPDN| zu vergleichen:"
 
 #: ../../domain-ldap/backup2master.rst:81
 msgid ":file:`/etc/univention/base.conf`"
-msgstr ""
+msgstr ":file:`/etc/univention/base.conf`"
 
 #: ../../domain-ldap/backup2master.rst:82
 msgid ":file:`/etc/univention/base-forced.conf`"
-msgstr ""
+msgstr ":file:`/etc/univention/base-forced.conf`"
 
 #: ../../domain-ldap/backup2master.rst:84
 #, python-format
@@ -234,6 +308,8 @@ msgid ""
 "UCS saves a copy of those files every night to :file:`/var/univention-"
 "backup/ucr-backup_%Y%m%d.tgz`."
 msgstr ""
+"Eine nächtliche Sicherung dieser Dateien findet sich auch in :file:`/var"
+"/univention-backup/ucr-backup_%Y%m%d.tgz`."
 
 #: ../../domain-ldap/backup2master.rst:87
 msgid ""
@@ -244,6 +320,13 @@ msgid ""
 ":file:`/var/log/univention/backup2master.log` The following steps are "
 "performed by :command:`univention-backup2master`:"
 msgstr ""
+"Die Umwandlung eines |UCSBACKUPDN| zum neuen |UCSPRIMARYDN| erfolgt dann "
+"durch Aufruf des Befehls :command:`/usr/lib/univention-ldap/univention-"
+"backup2master` auf dem |UCSBACKUPDN|. Das System muss anschließend neu "
+"gestartet werden. Die Umstellung wird in der Logdatei "
+":file:`/var/log/univention/backup2master.log` protokolliert. Folgende "
+"Schritte führt der Befehl :command:`univention-backup2master` der Reihe "
+"nach aus:"
 
 #: ../../domain-ldap/backup2master.rst:93
 msgid ""
@@ -252,6 +335,11 @@ msgid ""
 " be resolved via DNS and if the repository server can be reached. Also, "
 "the |UCSPRIMARYDN| must be powered off and not reachable anymore."
 msgstr ""
+"Prüfung der Umgebung: Bei dem System muss es sich um einen |UCSBACKUPDN| "
+"handeln, der der Domäne bereits beigetreten ist. Zudem wird "
+"sichergestellt, dass der |UCSPRIMARYDN| über DNS auflösbar sowie dass "
+"eine Verbindung zum Repository-Server möglich ist. Außerdem darf der "
+"|UCSPRIMARYDN| nicht mehr im Netzwerk erreichbar sein."
 
 #: ../../domain-ldap/backup2master.rst:98
 msgid ""
@@ -261,12 +349,19 @@ msgid ""
 "Root CA certificate will be available via the web server on the "
 "|UCSBACKUPDN|. All mentioned services will be started again."
 msgstr ""
+"Nun werden die wichtigsten Dienste OpenLDAP, Samba, Kerberos sowie "
+"|UCSUDN| und Listener gestoppt, elementare |UCSUCRV| wie "
+":envvar:`ldap/master` und :envvar:`server/role` umgestellt, das UCS Root-"
+"Zertifikat vom Webserver des |UCSBACKUPDN| abrufbar gemacht und die oben "
+"genannten Dienste wieder gestartet."
 
 #: ../../domain-ldap/backup2master.rst:104
 msgid ""
 "The DNS SRV record ``kerberos-adm`` will be changed from the old to the "
 "new |UCSPRIMARYDN|."
 msgstr ""
+"Der DNS SRV Eintrag ``kerberos-adm`` wird vom alten auf den neuen "
+"|UCSPRIMARYDN| geändert."
 
 #: ../../domain-ldap/backup2master.rst:107
 msgid ""
@@ -274,6 +369,10 @@ msgid ""
 " will be removed from the computer object of the old |UCSPRIMARYDN| and "
 "will be scheduled for re-configuration on the new |UCSPRIMARYDN|."
 msgstr ""
+"Sofern vorhanden, wird der Univention S4 Connector (siehe "
+":ref:`windows-s4-connector`) vom Rechnerobjekt des alten |UCSPRIMARYDN| "
+"entfernt und auf dem neuen |UCSPRIMARYDN| zur erneuten Konfiguration "
+"vorgemerkt."
 
 #: ../../domain-ldap/backup2master.rst:111
 msgid ""
@@ -281,6 +380,9 @@ msgid ""
 "``domaincontroller_master`` in the OpenLDAP directory service. The DNS "
 "SRV record ``_domaincontroller_master._tcp`` will also be adjusted."
 msgstr ""
+"Im OpenLDAP wird die Serverrolle des neuen |UCSPRIMARYDN| auf "
+"``domaincontroller_master`` geändert. Ebenfalls wird der DNS SRV Eintrag "
+"``_domaincontroller_master._tcp`` korrigiert."
 
 #: ../../domain-ldap/backup2master.rst:115
 msgid ""
@@ -288,12 +390,17 @@ msgid ""
 "the local Samba directory service. Additionally, the FSMO roles will be "
 "transferred to the new |UCSPRIMARYDN|."
 msgstr ""
+"Sofern vorhanden werden die Einträge des alten |UCSPRIMARYDN| aus der "
+"lokalen Samba-Datenbank des neuen |UCSPRIMARYDN| entfernt. Zudem werden "
+"die FSMO-Rollen auf den neuen |UCSPRIMARYDN| übertragen."
 
 #: ../../domain-ldap/backup2master.rst:119
 msgid ""
 "The computer object of the old |UCSPRIMARYDN| will be deleted from "
 "OpenLDAP."
 msgstr ""
+"Anschließend wird das Rechnerobjekt des alten |UCSPRIMARYDN| im OpenLDAP "
+"gelöscht."
 
 #: ../../domain-ldap/backup2master.rst:121
 msgid ""
@@ -302,12 +409,18 @@ msgid ""
 "records) are shown and suggested to be fixed. The suggested fixes have to"
 " be checked and confirmed one by one."
 msgstr ""
+"Nun wird das LDAP nach Referenzen auf den alten |UCSPRIMARYDN| "
+"durchsucht. Alle gefundenen Referenzen werden angezeigt und es wird eine "
+"Korrektur vorgeschlagen, welche einzeln geprüft und bestätigt werden "
+"muss, bspw. weitere DNS-Einträge."
 
 #: ../../domain-ldap/backup2master.rst:126
 msgid ""
 "Finally, the package :program:`univention-server-backup` will be replaced"
 " by :program:`univention-server-master`."
 msgstr ""
+"Zum Abschluss wird das Paket :program:`univention-server-backup` durch "
+":program:`univention-server-master` ersetzt."
 
 #: ../../domain-ldap/backup2master.rst:129
 msgid ""
@@ -317,14 +430,20 @@ msgid ""
 "|UCSPRIMARYDN|. Those references need to be adjusted to the new "
 "|UCSPRIMARYDN|, too."
 msgstr ""
+"Im Anschluss sollte sowohl |UCSUCR| auf allen UCS-Systemen der Domäne als"
+" auch das LDAP auf dem jetzt neuen |UCSPRIMARYDN| hinsichtlich Verweisen "
+"auf den Namen und die IP-Adresse des alten |UCSPRIMARYDN| überprüft und "
+"diese ggf. angepasst werden."
 
 #: ../../domain-ldap/domain-join.rst:4
 msgid "Joining domains"
-msgstr ""
+msgstr "Domänenbeitritt"
 
 #: ../../domain-ldap/domain-join.rst:8
 msgid "A UCS, Ubuntu or Windows system must join the domain after installation."
 msgstr ""
+"Ein UCS, Ubuntu- oder Windows-System muss nach der Installation der "
+"Domäne beitreten."
 
 #: ../../domain-ldap/domain-join.rst:10
 msgid ""
@@ -332,28 +451,56 @@ msgid ""
 "integrated into the domain. This is described in :cite:t:`ext-doc-"
 "domain`."
 msgstr ""
+"Neben UCS, Ubuntu und macOS können auch weitere Unix-Systeme in die "
+"Domäne integriert werden. Dies ist in :cite:t:`ext-doc-domain` "
+"beschrieben."
 
 #: ../../domain-ldap/domain-join.rst:16
 msgid "How UCS systems join domains"
-msgstr ""
+msgstr "Domänenbeitritt von UCS-Systemen"
 
 #: ../../domain-ldap/domain-join.rst:18
-msgid ""
-"There are three possibilities for a UCS system to join an existing "
-"domain; directly after installation in the Univention Installer (see :ref"
-":`installation-domain-settings-join-ucs-domain`) or subsequently using "
-"either the command :command:`univention-join` or the UMC module "
-":guilabel:`Domain join`."
+msgid "There are three possibilities for a UCS system to join an existing domain:"
 msgstr ""
+"Es gibt drei Möglichkeiten ein UCS-System einer bestehenden Domäne "
+"beitreten zu lassen:"
 
-#: ../../domain-ldap/domain-join.rst:24
+#: ../../domain-ldap/domain-join.rst:20
+msgid ""
+"Directly after installation in the Univention Installer, see :ref"
+":`installation-domain-settings-join-ucs-domain`."
+msgstr ""
+"Direkt am Ende der Installation im Univention Installer, siehe :ref"
+":`installation-domain-settings-join-ucs-domain`."
+
+#: ../../domain-ldap/domain-join.rst:23
+msgid ""
+"Subsequently with the command :command:`univention-join`, see :ref"
+":`domain-ldap-subsequent-domain-joins-with-univention-join`."
+msgstr ""
+"Nachträglich mit dem Befehl :command:`univention-join`, siehe :ref"
+":`domain-ldap-subsequent-domain-joins-with-univention-join`."
+
+#: ../../domain-ldap/domain-join.rst:26
+msgid ""
+"Using the UMC module :guilabel:`Domain join`, see :ref:`linux-domain-"
+"join-umc`."
+msgstr ""
+"Durch Verwendung des UMC Moduls :guilabel:`Domänenbeitritt`, siehe :ref"
+":`linux-domain-join-umc`."
+
+#: ../../domain-ldap/domain-join.rst:30
 msgid ""
 "The |UCSPRIMARYDN| should always be installed at the most up-to-date "
 "release stand of the domains, as problems can arise with an outdated "
 "|UCSPRIMARYDN| when a system using the current version joins."
 msgstr ""
+"Der |UCSPRIMARYDN| sollte in der Domäne immer auf dem aktuellsten "
+"Release-Stand der installiert sein, da beim Join eines Systems in "
+"aktuellerer Version gegen einen älteren |UCSPRIMARYDN| Probleme auftreten"
+" können."
 
-#: ../../domain-ldap/domain-join.rst:28
+#: ../../domain-ldap/domain-join.rst:34
 msgid ""
 "When a computer joins, a computer account is created, the SSL "
 "certificates are synchronized and an LDAP copy is initiated if necessary."
@@ -362,8 +509,14 @@ msgid ""
 "software packages installed on the system (see :ref:`domain-ldap-"
 "joinscripts`)."
 msgstr ""
+"Beim Beitritt eines Rechners wird für diesen ein Rechnerkonto angelegt, "
+"die SSL-Zertifikate synchronisiert und ggf. eine LDAP-Replikation "
+"angestoßen. Außerdem werden am Ende des Join-Vorgangs *Join-Skripte* "
+"ausgeführt. Diese registrieren anhand der auf dem System installierten "
+"Software-Pakete z.B. weitere Objekte im Verzeichnisdienst (siehe :ref"
+":`domain-ldap-joinscripts`)."
 
-#: ../../domain-ldap/domain-join.rst:35
+#: ../../domain-ldap/domain-join.rst:41
 msgid ""
 "The joining of the domain is registered on the client side in the "
 ":file:`/var/log/univention/join.log` log file, which can be used for "
@@ -371,26 +524,37 @@ msgid ""
 " in the :file:`/home/<Join-Account>/.univention-server-join.log` log "
 "file."
 msgstr ""
+"Der Domänenbeitritt wird auf Client-Seite in der Logdatei "
+":file:`/var/log/univention/join.log` aufgezeichnet, die zur Fehleranalyse"
+" herangezogen werden kann. Auf dem |UCSPRIMARYDN| ausgeführte Aktionen "
+"werden in der Logdatei :file:`/home/{Join-Account}/.univention-server-"
+"join.log` abgelegt."
 
-#: ../../domain-ldap/domain-join.rst:40
+#: ../../domain-ldap/domain-join.rst:46
 msgid ""
 "The joining process can be repeated at any time. Systems may even be "
 "required to rejoin following certain administrative steps (such as "
 "changes to important system features on the |UCSPRIMARYDN|)."
 msgstr ""
+"Der Join-Vorgang kann jederzeit wiederholt werden. Nach bestimmten "
+"administrativen Schritten (etwa nach Änderungen wichtiger "
+"Systemeigenschaften auf dem |UCSPRIMARYDN|) kann ein erneuter Beitritt "
+"der Systeme sogar zwingend erforderlich sein."
 
-#: ../../domain-ldap/domain-join.rst:47
+#: ../../domain-ldap/domain-join.rst:53
 msgid "Subsequent domain joins with *univention-join*"
-msgstr ""
+msgstr "Nachträglicher Domänenbeitritt mit *univention-join*"
 
-#: ../../domain-ldap/domain-join.rst:51
+#: ../../domain-ldap/domain-join.rst:57
 msgid ""
 ":command:`univention-join` retrieves a number of essential parameters "
 "interactively; however, it can also be configured using a number of "
 "parameters:"
 msgstr ""
+":command:`univention-join` fragt eine Reihe essentieller Parameter direkt"
+" ab, ist aber auch durch mehrere Parameter konfigurierbar:"
 
-#: ../../domain-ldap/domain-join.rst:56
+#: ../../domain-ldap/domain-join.rst:62
 msgid ""
 "The |UCSPRIMARYDN| is usually detected via a DNS request. If that is not "
 "possible (e.g., a |UCSREPLICADN| server with a different DNS domain is "
@@ -399,8 +563,14 @@ msgid ""
 "must then be entered as a fully qualified name, e.g., "
 "``primary.company.com``."
 msgstr ""
+"Der |UCSPRIMARYDN| wird im Regelfall durch eine DNS-Abfrage ermittelt.  "
+"Wenn das nicht möglich sein sollte (z.B. weil ein Standortserver mit "
+"einer abweichenden DNS-Domäne beitreten soll), lässt sich der Rechnername"
+" des |UCSPRIMARYDN| den Parameter :samp:`-dcname {HOSTNAME}` direkt "
+"angegeben werden. Der Rechnername muss dabei als vollqualifizierter Name "
+"angeben werden, also beispielsweise ``primary.firma.de``."
 
-#: ../../domain-ldap/domain-join.rst:64
+#: ../../domain-ldap/domain-join.rst:70
 msgid ""
 "A user account which is authorized to add systems to the UCS domains is "
 "called a join account. By default, this is the ``Administrator`` user or "
@@ -408,51 +578,73 @@ msgid ""
 " join account can be assigned using the ``-dcaccount ACCOUNTNAME`` "
 "parameter."
 msgstr ""
+"Als Join-Account wird ein Benutzerkonto bezeichnet, das berechtigt ist, "
+"Systeme der UCS-Domäne hinzuzufügen. Standardmäßig ist dies der Benutzer "
+"``Administrator`` oder ein Mitglied der beiden Gruppen ``Domain Admins`` "
+"und ``DC Backup Hosts``. Der Join-Account kann durch den Parameter "
+":samp:`-dcaccount {ACCOUNTNAME}` übergeben werden."
 
-#: ../../domain-ldap/domain-join.rst:71
+#: ../../domain-ldap/domain-join.rst:77
 msgid ""
 "The password can be set using the ``-dcpwd FILE`` parameter. The password"
 " is then read out of the specified file."
 msgstr ""
+"Das Passwort kann durch den Parameter :samp:`-dcpwd {DATEI}` übergeben "
+"werden. Das Passwort wird dabei aus der angegebenen Datei ausgelesen."
 
-#: ../../domain-ldap/domain-join.rst:76
+#: ../../domain-ldap/domain-join.rst:82
 msgid ""
 "The ``-verbose`` parameter is used to add additional debug output to the "
 "log files, which simplify the analysis in case of errors."
 msgstr ""
+"Mit dem Parameter ``-verbose`` werden zusätzliche Debugausgaben in die "
+"Logdateien geschrieben, die die Analyse im Fehlerfall vereinfachen."
 
-#: ../../domain-ldap/domain-join.rst:82
+#: ../../domain-ldap/domain-join.rst:88
 msgid "Joining domains via |UCSUMC| module"
-msgstr ""
+msgstr "Domänenbeitritt über |UCSUMC| Modul"
 
-#: ../../domain-ldap/domain-join.rst:84
+#: ../../domain-ldap/domain-join.rst:90
 msgid ""
 "A domain join can also be carried out web based via the UMC module "
 ":guilabel:`Domain join`. As the *Administrator* user does not yet exist "
 "on a system which has yet to join the domain, the login to the module is "
 "done as user ``root``."
 msgstr ""
+"Der Domänenbeitritt kann auch webbasiert über das UMC-Modul "
+":guilabel:`Domänenbeitritt` erfolgen. Da auf einem noch nicht der Domäne "
+"beigetretenen System der Administrator-Benutzer noch nicht vorhanden ist,"
+" muss die Anmeldung am Modul als Benutzer ``root`` erfolgen."
 
-#: ../../domain-ldap/domain-join.rst:89
+#: ../../domain-ldap/domain-join.rst:95
 msgid ""
-"As for the domain joining procedure via the command line, username and "
+"As for the :ref:`domain joining procedure via the command line <domain-"
+"ldap-subsequent-domain-joins-with-univention-join>`, username and "
 "password of a user account authorized to add computers to a domain must "
 "be entered in the resulting dialogue. Likewise, the |UCSPRIMARYDN| will "
 "be determined automatically via a DNS request, but can also be entered "
 "manually."
 msgstr ""
+"Wie bei der :ref:`Durchführung über die Kommandozeile sind für "
+"Domänenbeitritt <domain-ldap-subsequent-domain-joins-with-univention-"
+"join>` Benutzername und Passwort eines Benutzers notwendig, der "
+"berechtigt ist, Rechner der Domäne hinzuzufügen. Ebenfalls wird der "
+"|UCSPRIMARYDN| über eine DNS-Abfrage automatisch ermittelt, kann aber "
+"auch explizit im angezeigten Dialogfeld eingetragen werden."
 
-#: ../../domain-ldap/domain-join.rst:94
+#: ../../domain-ldap/domain-join.rst:101
 msgid ""
 "The :guilabel:`Rejoin` option can be used to repeat the domain join at "
 "any time."
 msgstr ""
+"Mit der Option :guilabel:`Erneut beitreten` kann der Domänenbeitritt "
+"jederzeit erneut durchgeführt werden."
 
-#: ../../domain-ldap/domain-join.rst:99
+#: ../../domain-ldap/domain-join.rst:106
 msgid "Join scripts / Unjoin scripts"
-msgstr ""
+msgstr "Join-Skripte / Unjoin-Skripte"
 
-#: ../../domain-ldap/domain-join.rst:101
+#: ../../domain-ldap/domain-join.rst:108
 msgid ""
 "*Join scripts* are run during the domain join. Examples for changes made "
 "by join scripts are the registration of a print server in the domain or "
@@ -461,8 +653,14 @@ msgid ""
 "scripts*, which can reset these changes following deinstallation of "
 "software components."
 msgstr ""
+"*Join-Skripte* werden während des Domänenbeitritts aufgerufen. Beispiele "
+"für von Join-Skripten vorgenommene Änderungen sind die Registrierung "
+"eines Druckservers in der Domäne oder die Anpassung von DNS-Einträgen. "
+"Die Skripte sind Bestandteil der einzelnen Softwarepakete. Analog dazu "
+"gibt es *Unjoin-Skripte*, die nach der Deinstallation einer "
+"Softwarekomponente diese Änderungen wieder rückgängig machen."
 
-#: ../../domain-ldap/domain-join.rst:107
+#: ../../domain-ldap/domain-join.rst:114
 msgid ""
 "Join scripts are stored in the :file:`/usr/lib/univention-install/` "
 "directory and unjoin scripts in :file:`/usr/lib/univention-uninstall/`. "
@@ -471,58 +669,82 @@ msgid ""
 "package now requires additional changes and the version number of the "
 "join script is increased."
 msgstr ""
+"Join-Skripte werden im Verzeichnis :file:`/usr/lib/univention-install/` "
+"und Unjoin-Skripte in :file:`/usr/lib/univention-uninstall/` gespeichert."
+" Jedes Join/Unjoin-Skript verfügt über eine Version. Ein Beispiel: Ein "
+"Paket ist bereits installiert und das Join-Skript schon aufgerufen. In "
+"der neuen Version des Pakets sind nun zusätzliche Änderungen nötig und "
+"die Versionsnummer des Join-Skripts wird erhöht."
 
-#: ../../domain-ldap/domain-join.rst:113
+#: ../../domain-ldap/domain-join.rst:120
 msgid ""
 "The :command:`univention-check-join-status` command can be used to check "
 "whether join/unjoin scripts need to be run (either because they have yet "
 "to be run or an older version was run)."
 msgstr ""
+"Mit dem Befehl :command:`univention-check-join-status` kann geprüft "
+"werden, ob Join- oder Unjoin-Skripte aufgerufen werden müssen (entweder "
+"weil sie noch nie oder in einer älteren Version aufgerufen wurde)."
 
-#: ../../domain-ldap/domain-join.rst:120
+#: ../../domain-ldap/domain-join.rst:127
 msgid "Subsequent running of join scripts"
-msgstr ""
+msgstr "Nachträgliches Ausführen von Join-/Unjoin-Skripten"
 
-#: ../../domain-ldap/domain-join.rst:121
+#: ../../domain-ldap/domain-join.rst:128
 msgid ""
 "If there are join/unjoin scripts on a system which have not yet been run "
 "or which can only be run for an older version, a warning message is shown"
 " upon opening a UMC module."
 msgstr ""
+"Gibt es auf einem System Join- oder Unjoin-Skripte, die noch nicht "
+"ausgeführt wurden oder die nur für eine ältere Version ausgeführt wurden,"
+" wird beim Öffnen eines UMC-Moduls eine Warnmeldung ausgegeben."
 
-#: ../../domain-ldap/domain-join.rst:125
+#: ../../domain-ldap/domain-join.rst:132
 msgid ""
 "Join scripts that have not been run can be executed via the UMC module "
 ":guilabel:`Domain join` by clicking on the menu entry :guilabel:`Execute "
 "all pending join scripts`."
 msgstr ""
+"Nicht ausgeführte Join-Skripte können über das UMC-Modul "
+":guilabel:`Domänenbeitritt` aufgerufen werden, in dem der Menüpunkt "
+":guilabel:`Alle Skripte ausführen` aufgerufen wird."
 
-#: ../../domain-ldap/domain-join.rst:129
+#: ../../domain-ldap/domain-join.rst:136
 msgid ""
 "The :command:`univention-run-join-scripts` command is used to run all of "
 "the join/unjoin scripts installed on a system. The scripts check "
 "automatically whether they have already been executed."
 msgstr ""
+"Mit dem Befehl :command:`univention-run-join-scripts` lassen sich alle "
+"auf einem System installierten Join-/Unjoin-Skripte ausführen. Ob sie "
+"bereits gestartet wurden, prüfen die Skripte selbständig."
 
-#: ../../domain-ldap/domain-join.rst:133
+#: ../../domain-ldap/domain-join.rst:140
 msgid ""
 "The name of the join/unjoin script and the output of the script are also "
 "recorded in :file:`/var/log/univention/join.log`."
 msgstr ""
+"Der Name des Join/Unjoin-Skripts und die Skriptausgabe werden auch in "
+":file:`/var/log/univention/join.log` festgehalten."
 
-#: ../../domain-ldap/domain-join.rst:136
+#: ../../domain-ldap/domain-join.rst:143
 msgid ""
 "If :command:`univention-run-join-scripts` is run on another system role "
 "than the |UCSPRIMARYDN|, the user will be asked to input a username and "
 "password. This can be performed on the |UCSPRIMARYDN| via the ``--ask-"
 "pass`` option."
 msgstr ""
+"Wird :command:`univention-run-join-scripts` auf einer anderen Systemrolle"
+" als |UCSPRIMARYDN| ausgeführt, so wird der Benutzer nach einem "
+"Benutzernamen und einem Passwort gefragt. Auf dem |UCSPRIMARYDN| kann "
+"dies durch die Option ``--ask-pass`` erreicht werden."
 
-#: ../../domain-ldap/domain-join.rst:143
+#: ../../domain-ldap/domain-join.rst:150
 msgid "Windows domain joins"
-msgstr ""
+msgstr "Windows-Domänenbeitritt"
 
-#: ../../domain-ldap/domain-join.rst:145
+#: ../../domain-ldap/domain-join.rst:152
 msgid ""
 "The procedure for joining a Windows system to a UCS domain made available"
 " via Samba is now described as an example for Windows 10 and Windows 2012"
@@ -532,28 +754,45 @@ msgid ""
 "Windows systems as a domain controller is not supported. Further "
 "information can be found in :ref:`windows-services-for-windows`."
 msgstr ""
+"Der Domänenbeitritt von Microsoft Windows-Systemen zu einer durch Samba "
+"bereitgestellten UCS-Domäne wird nachfolgend für Windows 10 und Windows "
+"2012 / 2016 / 2019 beispielhaft beschrieben. Bei anderen Windows-"
+"Versionen funktioniert der Beitritt ähnlich. Neben den Client-Versionen "
+"können auch Windows Server-Systeme der Domäne beitreten. Windows-Server "
+"treten der Domäne als Memberserver bei, ein Beitritt eines Windows-"
+"Systems als Domänencontroller wird nicht unterstützt. Weitere Hinweise "
+"finden sich in :ref:`windows-services-for-windows`."
 
-#: ../../domain-ldap/domain-join.rst:153
+#: ../../domain-ldap/domain-join.rst:160
 msgid ""
 "Only domain-compatible Windows versions can join the UCS domain, i.e., it"
 " is not possible for the Home versions of Windows to join a domain."
 msgstr ""
+"Nur domänenfähige Windows-Versionen können der UCS-Domäne beitreten, d.h."
+" ein Domänenbeitritt mit den Home-Versionen von Windows ist nicht "
+"möglich."
 
-#: ../../domain-ldap/domain-join.rst:156
+#: ../../domain-ldap/domain-join.rst:163
 msgid ""
 "A host account is created for the Windows client automatically when it "
 "joins the domain (see :ref:`computers-hostaccounts`). Information "
 "concerning MAC and IP addresses, the network, DHCP or DNS can be "
 "configured via UMC modules prior to or after joining the domain."
 msgstr ""
+"Beim Domänenbeitritt wird automatisch ein Rechnerkonto für den Windows-"
+"Client erstellt (siehe :ref:`computers-hostaccounts`). Angaben zu MAC- "
+"und IP-Adresse, Netzwerk, DHCP oder DNS können vor oder nach dem "
+"Domänenbeitritt durch UMC-Module ergänzt werden."
 
-#: ../../domain-ldap/domain-join.rst:161
+#: ../../domain-ldap/domain-join.rst:168
 msgid ""
 "Domain joining is usually performed with the local Administrator account "
 "on the Windows system."
 msgstr ""
+"Der Domänenbeitritt wird in der Regel mit dem lokalen Administrator-Konto"
+" des Windows-Systems durchgeführt."
 
-#: ../../domain-ldap/domain-join.rst:164
+#: ../../domain-ldap/domain-join.rst:171
 msgid ""
 "Joining the domain takes some time and the process must not be canceled "
 "prematurely. After successful joining a small window appears with the "
@@ -561,14 +800,22 @@ msgid ""
 "confirmed with :guilabel:`OK`. The computer must then be restarted for "
 "the changes to take effect."
 msgstr ""
+"Der Domänenbeitritt dauert einige Zeit und sollte nicht vorzeitig "
+"abgebrochen werden. Nach einem erfolgreichen Beitritt erscheint ein "
+"kleines Fenster mit der Nachricht *Willkommen in der Domäne <Name Ihrer "
+"Domain>*, die mit :guilabel:`OK` bestätigt werden muss. Abschließend muss"
+" der Rechner neu gestartet werden, um die Änderungen in Kraft zu setzen."
 
-#: ../../domain-ldap/domain-join.rst:170
+#: ../../domain-ldap/domain-join.rst:177
 msgid ""
 "Domain names must be limited to 13 characters as they are otherwise "
 "truncated at the Windows client and this can lead to sign in errors."
 msgstr ""
+"Domänennamen sollten auf 13 Zeichen beschränkt werden, da diese auf Seite"
+" der Windows-Clients ansonsten verkürzt dargestellt werden, was zu "
+"Anmeldefehlern führen kann."
 
-#: ../../domain-ldap/domain-join.rst:173
+#: ../../domain-ldap/domain-join.rst:180
 msgid ""
 "For a domain join against a domain controller based on Samba/AD, the DNS "
 "configuration of the client must be set up in such a way that DNS entries"
@@ -576,26 +823,38 @@ msgid ""
 "the time on the client system must also be synchronized with the time on "
 "the domain controller."
 msgstr ""
+"Bei einem Domänenbeitritt gegen einen Domänencontroller auf Basis von "
+"Samba/AD muss die DNS-Konfiguration des Clients so eingerichtet sein, "
+"dass DNS-Einträge aus der DNS-Zone der UCS-Domäne aufgelöst werden "
+"können. Außerdem muss die Zeit auf dem Client-System mit der Zeit auf dem"
+" Domänencontroller synchronisiert sein."
 
-#: ../../domain-ldap/domain-join.rst:182
+#: ../../domain-ldap/domain-join.rst:189
 msgid "Windows 10"
-msgstr ""
+msgstr "Windows 10"
 
-#: ../../domain-ldap/domain-join.rst:184
+#: ../../domain-ldap/domain-join.rst:191
 msgid ""
 "The joining of domains is only possible with the Pro and Enterprise "
 "editions of Windows 10."
 msgstr ""
+"Der Domänenbeitritt ist nur mit der Pro und Enterprise-Edition von "
+"Windows 10 möglich."
 
-#: ../../domain-ldap/domain-join.rst:187
+#: ../../domain-ldap/domain-join.rst:194
 msgid ""
 "The control panel can be reached via the search field :guilabel:`Search "
 "the web and Windows`, which can be found in the start bar. Under "
 ":menuselection:`System and Security --> System` it must be clicked on "
 ":menuselection:`Change settings --> Change`."
 msgstr ""
+"Die Systemsteuerung kann über das Suchfeld :guilabel:`Web und Windows "
+"durchsuchen`, welches in der Startleiste zu finden ist, gesucht und "
+"geöffnet werden. Unter :menuselection:`System und Sicherheit --> System` "
+"muss auf :menuselection:`Einstellungen ändern --> Ändern` geklickt "
+"werden."
 
-#: ../../domain-ldap/domain-join.rst:192
+#: ../../domain-ldap/domain-join.rst:199
 msgid ""
 "The :guilabel:`Domain` option field must be ticked and the name of the "
 "domain must be entered in the input field for the domain join. The full "
@@ -606,12 +865,21 @@ msgid ""
 "entered in the input field :guilabel:`Password`. Finally, the process for"
 " joining the domain can then be started by clicking on :guilabel:`OK`."
 msgstr ""
+"Für den Domänenbeitritt muss das Optionsfeld :guilabel:`Domäne` markiert "
+"und der Name der Domäne in das Eingabefeld eingetragen werden. Es sollte "
+"dabei der vollständige Domänenname verwendet werden, bspw. "
+"``mydomain.intranet``. Nach einem Klick auf die Schaltfläche "
+":guilabel:`OK` muss in das Eingabefeld :guilabel:`Benutzername` der "
+"Benutzername eines Domänen Administrator, standardmäßig ist dies "
+"``Administrator`` und in das Eingabefeld :guilabel:`Kennwort` das "
+"Passwort des Domänen Administrator eingetragen werden. Abschließend kann "
+"der Domänenbeitritt mit einem Klick auf :guilabel:`OK` gestartet werden."
 
-#: ../../domain-ldap/domain-join.rst:204
+#: ../../domain-ldap/domain-join.rst:211
 msgid "Windows Server 2012 / 2016 / 2019"
-msgstr ""
+msgstr "Windows Server 2012 / 2016 / 2019"
 
-#: ../../domain-ldap/domain-join.rst:206
+#: ../../domain-ldap/domain-join.rst:213
 msgid ""
 "The control panel can be reached by moving the cursor to the bottom "
 "right-hand corner of the screen. The *Control Panel* can then be searched"
@@ -619,121 +887,166 @@ msgid ""
 "settings --> Network ID` must be clicked on under :menuselection:`System "
 "and Security --> System`."
 msgstr ""
+"Die Systemsteuerung kann erreicht werden, indem der Mauszeiger in die "
+"rechte untere Bildschirmecke bewegt wird. Anschließend kann unter "
+":guilabel:`Suchen AR Apps` nach der *Systemsteuerung* gesucht werden. "
+"Unter :menuselection:`System und Sicherheit --> System` muss auf "
+":guilabel:`Einstellungen ändern --> Netzwerk ID` geklickt werden."
 
-#: ../../domain-ldap/domain-join.rst:211
+#: ../../domain-ldap/domain-join.rst:218
 msgid ""
-"The :guilabel:`Domain` option field must be ticked and the name of the "
-"Samba domain entered in the input field for the domain join. After "
-"clicking on the :guilabel:`OK` button, the username ``Administrator`` "
-"must be entered in the input field :guilabel:`Name` and the password from"
-" ``uid=Administrator,cn=users,<LDAP base DN`` transferred to the "
-":guilabel:`Password` input field. The process for joining the domain can "
-"then be started by clicking on :guilabel:`OK`."
+"The *Domain* option field must be ticked and the name of the Samba domain"
+" entered in the input field for the domain join. After clicking on the "
+":guilabel:`OK` button, the username ``Administrator`` must be entered in "
+"the input field *Name* and the password from "
+":samp:`uid=Administrator,cn=users,{LDAP base DN}` transferred to the "
+"*Password* input field. The process for joining the domain can then be "
+"started by clicking on :guilabel:`OK`."
 msgstr ""
+"Für den Domänenbeitritt muss das Optionsfeld *Domäne* markiert und der "
+"Name der Samba-Domäne in das Eingabefeld eingetragen werden. Nach einem "
+"Klick auf die Schaltfläche :guilabel:`OK` muss in das Eingabefeld *Name* "
+"der Name ``Administrator`` und in das Eingabefeld *Kennwort* das Passwort"
+" von :samp:`uid=Administrator,cn=users,{Basis-DN}` eingetragen werden. "
+"Abschließend kann der Domänenbeitritt mit einem Klick auf :guilabel:`OK` "
+"gestartet werden."
 
-#: ../../domain-ldap/domain-join.rst:222
+#: ../../domain-ldap/domain-join.rst:228
 msgid "Ubuntu domain joins"
-msgstr ""
+msgstr "Ubuntu-Domänenbeitritt"
 
-#: ../../domain-ldap/domain-join.rst:224
+#: ../../domain-ldap/domain-join.rst:230
 msgid ""
 "Univention provides the :program:`Univention Domain Join Assistant` to "
 "integrate Ubuntu clients into a UCS domain. Documentation and "
 "installation instructions are available at `Github <github-univention-"
 "domain-join_>`_."
 msgstr ""
+"Univention stellt den Univention Domain Join Assistant für die "
+"Integration von Ubuntu-Clients in eine UCS-Domäne bereit. Die "
+"Dokumentation und Installationshinweise sind auf `Github <github-"
+"univention-domain-join_>`_ zu finden."
 
-#: ../../domain-ldap/domain-join.rst:231
+#: ../../domain-ldap/domain-join.rst:237
 msgid "macOS domain joins"
-msgstr ""
+msgstr "macOS-Domänenbeitritt"
 
-#: ../../domain-ldap/domain-join.rst:233
+#: ../../domain-ldap/domain-join.rst:239
 msgid ""
 "UCS supports domain joins of macOS clients into a UCS environment using "
 "Samba/AD. This documentation refers to macOS 10.8.2."
 msgstr ""
+"UCS unterstützt den Domänenbeitritt von macOS-Clients in eine UCS-"
+"Umgebung mit Samba 4. Diese Anleitung bezieht sich auf macOS 10.8.2."
 
-#: ../../domain-ldap/domain-join.rst:236
+#: ../../domain-ldap/domain-join.rst:242
 msgid ""
 "The domain join can be performed using the system preferences menu or the"
 " :command:`dsconfigad` command line tool."
 msgstr ""
+"Der Domänenbeitritt kann über das Systemeinstellungsmenü oder den "
+"Kommandozeilenbefehl :command:`dsconfigad` erfolgen."
 
-#: ../../domain-ldap/domain-join.rst:239
+#: ../../domain-ldap/domain-join.rst:245
 msgid ""
 "After the domain join it is possible to automatically mount CIFS shares "
 "to subfolders in :file:`/Volumes` when logging in with a domain user. For"
 " that, the following line has to be added to the file "
 ":file:`/etc/auto_master`:"
 msgstr ""
+"Nach erfolgtem Domänenbeitritt besteht die Möglichkeit CIFS-Freigaben zu "
+"definieren, die bei der Anmeldung eines Benutzers unterhalb von "
+":file:`/Volumes` automatisch eingehängt werden. Um dies zu erreichen, "
+"muss die folgende Zeile in die Datei :file:`/etc/auto_master` eingefügt "
+"werden:"
 
-#: ../../domain-ldap/domain-join.rst:246
+#: ../../domain-ldap/domain-join.rst:252
 msgid "/Volumes     auto_custom"
-msgstr ""
+msgstr "/Volumes     auto_custom"
 
-#: ../../domain-ldap/domain-join.rst:249
+#: ../../domain-ldap/domain-join.rst:255
 msgid ""
 "In addition, the file :file:`/etc/auto_custom` needs to be created and "
 "the shares which should be mounted have to be listed in it in the "
 "following way:"
 msgstr ""
+"Außerdem muss die Datei :file:`/etc/auto_custom` angelegt werden und die "
+"einzubindenden Freigaben dort in der folgenden Form aufgeführt werden:"
 
-#: ../../domain-ldap/domain-join.rst:254
+#: ../../domain-ldap/domain-join.rst:260
 msgid "<SUBFOLDER_NAME>    -fstype=smbfs    ://<FQDN>/<SHARE_NAME>"
-msgstr ""
+msgstr "<SUBFOLDER_NAME>    -fstype=smbfs    ://<FQDN>/<SHARE_NAME>"
 
-#: ../../domain-ldap/domain-join.rst:257
+#: ../../domain-ldap/domain-join.rst:263
 msgid ""
 "Note that the automatically mounted shares are not displayed in the "
 "finder's sidebar."
 msgstr ""
+"Die eingebundenen Freigaben werden nicht in der Seitenleiste des Finders "
+"angezeigt."
 
-#: ../../domain-ldap/domain-join.rst:262
+#: ../../domain-ldap/domain-join.rst:268
 msgid "Domain join using the system preferences GUI"
-msgstr ""
+msgstr "Domänenbeitritt über das Systemeinstellungen-Menü"
 
-#: ../../domain-ldap/domain-join.rst:264
+#: ../../domain-ldap/domain-join.rst:270
 msgid ""
 "In the System Preferences via the :guilabel:`Users & Groups` entry, the "
 ":guilabel:`Login menu` can be reached. After authenticating by clicking "
 "on the lock in the lower left corner and providing credentials of a local"
 " *Administrator* account, the :guilabel:`Network Account Server: Join` "
 "button needs to be clicked. From that menu it is possible to open the "
-":guilabel:`Directory Utility`."
+"*Directory Utility*."
 msgstr ""
+"In den Systemeinstellungen kann über :guilabel:`Benutzer` das Menü "
+":guilabel:`Anmeldeoptionen` ausgewählt werden. Die Anmeldung erfolgt "
+"durch einen Klick auf das Schloss in der linken unteren Ecke, dort muss "
+"das lokale Administrator-Konto und dessen Passwort angegeben und "
+":guilabel:`Netzwerk-Account-Server: Verbinden` angeklickt werden."
 
-#: ../../domain-ldap/domain-join.rst:277
+#: ../../domain-ldap/domain-join.rst:282
 msgid "Domain join of a macOS system"
-msgstr ""
-
-#: ../../domain-ldap/domain-join.rst:279
-msgid ""
-"In the advanced options section, the option :guilabel:`Create mobile "
-"account at login` should be activated. A mobile account has the advantage"
-" that, when the domain is not available, the user can log into the macOS "
-"system with the same account used for logging into the domain."
-msgstr ""
+msgstr "Domänenbeitritt eines macOS-Systems"
 
 #: ../../domain-ldap/domain-join.rst:284
 msgid ""
-"After filling in the domain name in the field :guilabel:`Active Directory"
-" Domain` and the hostname of the macOS client in the field "
-":guilabel:`Computer ID`, the join process is initiated after clicking the"
-" button :guilabel:`Bind...`. The username and password of an account in "
-"the ``Domain Admins`` group needs to be entered, e.g., ``Administrator``."
+"In the advanced options section, the option *Create mobile account at "
+"login* should be activated. A mobile account has the advantage that, when"
+" the domain is not available, the user can log into the macOS system with"
+" the same account used for logging into the domain."
 msgstr ""
+"In den erweiterten Einstellungen sollte die Option *Mobilen Account bei "
+"Anmeldung erstellen* aktiviert werden. Sie bietet den Vorteil, das auch "
+"ohne Verbindung zur Domäne eine Anmeldung mit der Domänenbenutzerkennung "
+"erfolgen kann."
 
-#: ../../domain-ldap/domain-join.rst:293
+#: ../../domain-ldap/domain-join.rst:289
+msgid ""
+"After filling in the domain name in the field *Active Directory Domain* "
+"and the hostname of the macOS client in the field *Computer ID*, the join"
+" process is initiated after clicking the button :guilabel:`Bind...`. The "
+"username and password of an account in the ``Domain Admins`` group needs "
+"to be entered, e.g., ``Administrator``."
+msgstr ""
+"Der Domänenname muss nun im Feld *Active Directory Domain* und der "
+"Rechnername des macOS-Clients in das Feld *Computer-ID* eingetragen "
+"werden. Der Domänenbeitritt erfolgt nach einem Klick auf :guilabel:`OK`."
+"  Für den Domänenbeitritt muss ein Konto aus der Gruppe ``Domain Admins``"
+" verwendet werden, z.B. ``Administrator``."
+
+#: ../../domain-ldap/domain-join.rst:298
 msgid "Domain join on the command line"
-msgstr ""
+msgstr "Domänenbeitritt auf den Kommandozeile"
 
-#: ../../domain-ldap/domain-join.rst:295
+#: ../../domain-ldap/domain-join.rst:300
 msgid ""
 "The domain join can also be performed on the command line using "
 ":command:`dsconfigad`:"
 msgstr ""
+"Der Domänenbeitritt kann auch auf der Kommandozeile mit dem Befehl "
+":command:`dsconfigad` erfolgen:"
 
-#: ../../domain-ldap/domain-join.rst:298
+#: ../../domain-ldap/domain-join.rst:303
 msgid ""
 "$ dsconfigad -a <MAC HOSTNAME> \\\n"
 "> -domain <FQDN> \\\n"
@@ -741,16 +1054,21 @@ msgid ""
 "> -u <Domain Administrator> \\\n"
 "> -mobile enable"
 msgstr ""
+"$ dsconfigad -a <MAC HOSTNAME> \\\n"
+"> -domain <FQDN> \\\n"
+"> -ou \"CN=Computers,<LDAP base DN>\" \\\n"
+"> -u <Domain Administrator> \\\n"
+"> -mobile enable"
 
-#: ../../domain-ldap/domain-join.rst:306
+#: ../../domain-ldap/domain-join.rst:311
 msgid ""
 "Additional configuration options are available through "
 ":command:`dsconfigad -help`."
-msgstr ""
+msgstr "Weitere Optionen werden mit :command:`dsconfigad -help` angezeigt."
 
 #: ../../domain-ldap/fault-tolerant-setup.rst:4
 msgid "Fault-tolerant domain setup"
-msgstr ""
+msgstr "Fehlertolerante Domain Einrichtung"
 
 #: ../../domain-ldap/fault-tolerant-setup.rst:6
 msgid ""
@@ -760,14 +1078,20 @@ msgid ""
 " how to secure LDAP, Kerberos, DNS, DHCP and Active Directory-compatible "
 "Domain Controllers: :uv:kb:`Fail-safe domain setup <6682>`."
 msgstr ""
+"Einige Dienste in einer Domäne sind zentral für das Funktionieren von "
+"deren Mitgliedern. Redundanz ist ein Mittel um diesen potenziellen "
+"Bruchstellen (single points of failure) zu entfernen. Ein Artikel in der "
+"Univention Support Datenbank erklärt das Vorgehen um die Dienste LDAP, "
+"Kerberos, DNS, DHCP und Active Directory-kompatible Domain Controller "
+"abzusichern: :uv:kb:`Fail-safe domain setup <6682>`."
 
 #: ../../domain-ldap/index.rst:40
-msgid "Chapter contents"
-msgstr ""
+msgid "Chapter contents:"
+msgstr "Kapitelinhalte:"
 
 #: ../../domain-ldap/index.rst:5
 msgid "Domain services / LDAP directory"
-msgstr ""
+msgstr "Domänendienste / LDAP-Verzeichnisdienst"
 
 #: ../../domain-ldap/index.rst:7
 msgid ""
@@ -779,6 +1103,14 @@ msgid ""
 "windows login, Linux/POSIX systems and Kerberos. The management of user "
 "accounts is described in :ref:`users-general`."
 msgstr ""
+"Univention Corporate Server bietet ein plattformübergreifendes "
+"Domänenkonzept mit einem gemeinsamen Vertrauenskontext zwischen Linux- "
+"und Windows-Systemen. Innerhalb dieser Domäne ist ein Benutzer mit seinem"
+" im |UCSUMS| hinterlegten Benutzernamen und Passwort auf allen Systemen "
+"bekannt, und kann für ihn freigeschaltete Dienste nutzen. Das Konto wird "
+"über das Managementsystem sowohl für die Windows-Anmeldung als auch für "
+"Linux/POSIX-Systeme und Kerberos synchron gehalten. Die Verwaltung von "
+"Benutzerkonten ist in :ref:`users-general` beschrieben."
 
 #: ../../domain-ldap/index.rst:14
 msgid ""
@@ -786,6 +1118,9 @@ msgid ""
 "account. This allows system-to-system authentication. Domain joining is "
 "described in :ref:`domain-join`."
 msgstr ""
+"Alle UCS- und Windowssysteme innerhalb einer UCS-Domäne verfügen über ein"
+" Domänenkonto, sobald sie der UCS-Domäne beigetreten sind. Der "
+"Domänenbeitritt wird in :ref:`domain-join` beschrieben."
 
 #: ../../domain-ldap/index.rst:18
 msgid ""
@@ -794,6 +1129,10 @@ msgid ""
 "that has joined the domain. Further information can be found in :ref"
 ":`domain-ssl`."
 msgstr ""
+"Auf dem |UCSPRIMARYDN| wird die Certificate Authority (CA) der UCS-Domäne"
+" betrieben. Dort wird für jedes der Domäne beigetretene System ein SSL-"
+"Zertifikat generiert. Weitere Informationen finden sich in :ref:`domain-"
+"ssl`."
 
 #: ../../domain-ldap/index.rst:22
 msgid ""
@@ -801,6 +1140,10 @@ msgid ""
 "role. This system role represents different permissions and restrictions,"
 " which are described in :ref:`system-roles`."
 msgstr ""
+"Jedes Rechnersystem, das Mitglied einer UCS-Domäne ist, besitzt eine "
+"Systemrolle. Aus dieser Systemrolle ergeben sich verschiedene "
+"Berechtigungen und Einschränkungen, die in :ref:`system-roles` "
+"beschrieben sind."
 
 #: ../../domain-ldap/index.rst:26
 msgid ""
@@ -810,6 +1153,12 @@ msgid ""
 "LDAP documentation system and how to define access permissions to the "
 "LDAP directory."
 msgstr ""
+"Alle domänenweiten Einstellungen werden in einem Verzeichnisdienst auf "
+"Basis von OpenLDAP vorgehalten. In :ref:`domain-ldap` wird beschrieben "
+"wie der Speicherumfang durch LDAP-Schema-Erweiterungen ergänzt werden "
+"kann, wie eine revisionssichere LDAP-Protokollierung eingerichtet werden "
+"kann und wie Zugriffsberechtigungen auf das LDAP-Verzeichnis definiert "
+"werden können."
 
 #: ../../domain-ldap/index.rst:31
 msgid ""
@@ -817,6 +1166,9 @@ msgid ""
 "Univention Directory Listener / Notifier mechanism. Further information "
 "can be found in :ref:`domain-listener-notifier`."
 msgstr ""
+"Die Replikation der Verzeichnisdaten innerhalb einer UCS-Domäne erfolgt "
+"über den Listener/Notifier-Mechanismus. Weitere Informationen finden sich"
+" in :ref:`domain-listener-notifier`."
 
 #: ../../domain-ldap/index.rst:35
 msgid ""
@@ -826,10 +1178,15 @@ msgid ""
 "context (realm). Further information can be found in :ref:`domain-"
 "kerberos`."
 msgstr ""
+"Kerberos ist ein Authentikationsverfahren um in verteilten Netzen über "
+"potentiell unsichere Verbindungen eine sichere Identifikation zu "
+"erlauben. Jede UCS-Domäne betreibt einen eigenen "
+"Kerberosvertrauenskontext (Realm). Weitere Informationen finden sich in "
+":ref:`domain-kerberos`."
 
 #: ../../domain-ldap/kerberos.rst:4
 msgid "Kerberos"
-msgstr ""
+msgstr "Kerberos"
 
 #: ../../domain-ldap/kerberos.rst:6
 msgid ""
@@ -844,6 +1201,16 @@ msgid ""
 "|UCSUCRV| :envvar:`kerberos/realm`. It is not possible to change the name"
 " of the Kerberos realm at a later point in time."
 msgstr ""
+"Kerberos ist ein Authentikationsverfahren um in verteilten Netzen über "
+"potentiell unsichere Verbindungen eine sichere Identifikation zu "
+"erlauben. Alle Clients verwenden dabei eine gemeinsame Vertrauensbasis, "
+"das *Key Distribution Centre* (KDC). Ein Client authentifiziert sich bei "
+"diesem KDC und erhält ein Authentizierungs-Token, das sogenannte Ticket, "
+"das zur Authentizierung innerhalb einer Kerberos-Umgebung (der "
+"sogenannten Kerberos Realm) verwendet werden kann. Der Name der Kerberos "
+"Realm wird im Rahmen der Installation des |UCSPRIMARYDN| konfiguriert und"
+" in der |UCSUCRV| :envvar:`kerberos/realm` gespeichert. Der Name der "
+"Kerberos-Realm kann nachträglich nicht angepasst werden."
 
 #: ../../domain-ldap/kerberos.rst:18
 msgid ""
@@ -851,6 +1218,9 @@ msgid ""
 "vital for a Kerberos domain to have the system time synchronized for all "
 "the systems belonging to the Kerberos realm."
 msgstr ""
+"Tickets sind standardmäßig acht Stunden gültig; für eine Kerberos-Domäne "
+"ist deshalb eine synchrone Systemzeit zwischen den Systemen der Kerberos "
+"Realm essentiell."
 
 #: ../../domain-ldap/kerberos.rst:22
 msgid ""
@@ -862,10 +1232,19 @@ msgid ""
 "identical data (these are synchronized between Samba/AD and OpenLDAP via "
 "the Univention S4 connector (see :ref:`windows-s4-connector`))."
 msgstr ""
+"In |UCSUCS| wird die Kerberos-Implementierung Heimdal verwendet. Auf UCS "
+"Directory Nodes ohne Samba/AD wird ein eigenständiger Heimdal-Dienst "
+"gestartet, während auf Samba/AD-DCs Kerberos durch eine in Samba "
+"integrierte Heimdal-Version bereitgestellt wird. Verwendet man eine "
+"gemischte Umgebung aus UCS Directory Nodes mit Samba/AD und UCS Directory"
+" Nodes ohne Samba/AD, so basieren beide Kerberos-Umgebungen auf "
+"identischen Daten (diese werden zwischen Samba/AD und OpenLDAP durch den "
+"Univention S4 Connector synchronisiert (siehe "
+":ref:`windows-s4-connector`))."
 
 #: ../../domain-ldap/kerberos.rst:34
 msgid "KDC selection"
-msgstr ""
+msgstr "KDC Auswahl"
 
 #: ../../domain-ldap/kerberos.rst:36
 msgid ""
@@ -876,10 +1255,17 @@ msgid ""
 "based KDCs are offered. In a mixed environment it is recommended only to "
 "use the Samba/AD KDCs."
 msgstr ""
+"Standardmäßig wird der KDC über einen DNS-Servicerecord ausgewählt. Der "
+"von einem System verwendete KDC kann durch die |UCSUCRV| "
+":envvar:`kerberos/kdc` umkonfiguriert werden. Wird Samba/AD auf einem "
+"System der Domäne installiert, wird der Servicerecord umkonfiguriert, so "
+"dass nur noch die KDCs auf Samba/AD-Basis angeboten werden. In einer "
+"gemischten Umgebung ist es empfehlenswert nur noch die Samba/AD-KDCs zu "
+"verwenden."
 
 #: ../../domain-ldap/kerberos.rst:46
 msgid "Kerberos admin server"
-msgstr ""
+msgstr "Kerberos Adminserver"
 
 #: ../../domain-ldap/kerberos.rst:48
 msgid ""
@@ -891,10 +1277,18 @@ msgid ""
 "in the LDAP too. The Kerberos admin server can be configured on a system "
 "via the |UCSUCRV| :envvar:`kerberos/adminserver`."
 msgstr ""
+"Auf dem |UCSPRIMARYDN| läuft der Kerberos-Adminserver, auf dem "
+"administrative Einstellungen der Domäne vorgenommen werden können. Die "
+"meisten Einstellungen werden in Univention Corporate Server aus dem LDAP-"
+"Verzeichnis bezogen, so dass die wichtigste verbleibende Funktion das "
+"Ändern von Passwörtern darstellt. Diese können durch das Tool "
+":command:`kpasswd` geändert werden und werden dann auch im LDAP "
+"verändert. Der Kerberos Adminserver kann auf einem System durch die "
+"|UCSUCRV| :envvar:`kerberos/adminserver` konfiguriert werden."
 
 #: ../../domain-ldap/ldap-directory.rst:4
 msgid "LDAP directory"
-msgstr ""
+msgstr "LDAP-Verzeichnisdienst"
 
 #: ../../domain-ldap/ldap-directory.rst:8
 msgid ""
@@ -902,6 +1296,9 @@ msgid ""
 "service based on OpenLDAP. This chapter describes the advanced "
 "configuration and coordination of OpenLDAP."
 msgstr ""
+"Univention Corporate Server speichert domänenweit vorgehaltene Daten in "
+"einem LDAP-Verzeichnisdienst auf Basis von OpenLDAP. Dieses Kapitel "
+"beschreibt die weitergehende Konfiguration und Anpassung von OpenLDAP."
 
 #: ../../domain-ldap/ldap-directory.rst:12
 msgid ""
@@ -909,10 +1306,13 @@ msgid ""
 "configuration of the server(s) used is described in :ref:`computers-"
 "configure-ldap-server`."
 msgstr ""
+"In einer UCS-Domäne werden oft mehrere LDAP-Server betrieben. Die "
+"Konfiguration des/der verwendeten Server(s) wird in :ref:`computers-"
+"configure-ldap-server` beschrieben."
 
 #: ../../domain-ldap/ldap-directory.rst:18
 msgid "LDAP schemas"
-msgstr ""
+msgstr "LDAP-Schemata"
 
 #: ../../domain-ldap/ldap-directory.rst:20
 msgid ""
@@ -921,6 +1321,11 @@ msgid ""
 "service. Schema definitions are saved as text files and included in the "
 "OpenLDAP server's configuration file."
 msgstr ""
+"In Schema-Definitionen wird festgelegt, welche Objektklassen existieren "
+"und welche Attribute darin enthalten sind - mit anderen Worten, welche "
+"Daten in einem Verzeichnisdienst gespeichert werden können. Schema-"
+"Definitionen liegen als Text-Dateien vor und werden über die "
+"Konfigurationsdatei des OpenLDAP-Servers eingebunden."
 
 #: ../../domain-ldap/ldap-directory.rst:25
 msgid ""
@@ -929,10 +1334,14 @@ msgid ""
 "supplied for Univention-specific attributes - such as for the policy "
 "mechanism."
 msgstr ""
+"UCS verwendet nach Möglichkeit Standard-Schemata, so dass eine "
+"Interoperabilität mit anderen LDAP-Applikationen in der Regel gegeben "
+"ist. Für Univention-spezifische Attribute - etwa für den Richtlinien-"
+"Mechanismus - werden Schema-Erweiterungen mitgeliefert."
 
 #: ../../domain-ldap/ldap-directory.rst:32
 msgid "LDAP schema extensions"
-msgstr ""
+msgstr "LDAP-Schema-Erweiterungen"
 
 #: ../../domain-ldap/ldap-directory.rst:34
 msgid ""
@@ -944,6 +1353,13 @@ msgid ""
 "``univentionFreeAttribute20``) and can be used in connection with any "
 "LDAP object (e.g., a user object)."
 msgstr ""
+"Um den Aufwand für kleine Erweiterungen im LDAP möglichst gering zu "
+"halten, bringt UCS ein eigenes LDAP-Schema für Kundenerweiterungen mit.  "
+"Die LDAP-Objektklasse ``univentionFreeAttributes`` kann ohne "
+"Einschränkungen für erweiterte Attribute verwendet werden. Sie bringt 20 "
+"frei zu verwendende Attribute (``univentionFreeAttribute1`` bis "
+"``univentionFreeAttribute20``) mit und kann in Verbindung mit jedem "
+"beliebigen LDAP-Objekt (z.B. einem Benutzerobjekt) verwendet werden."
 
 #: ../../domain-ldap/ldap-directory.rst:41
 msgid ""
@@ -953,10 +1369,15 @@ msgid ""
 "|UCSUDL| module. Further information is available in `Packaging LDAP "
 "Schema Extensions <univention-docs-dev-ref-ldapschema_>`_."
 msgstr ""
+"Wenn LDAP-Schema-Erweiterungen als Teil von Softwarepaketen ausgeliefert "
+"werden sollen, besteht auch die Möglichkeit diese zu paketieren und durch"
+" ein |UCSUDL|-Modul an alle |UCSBACKUPDN|\\ s der Domäne zu verteilen. "
+"Weitere Hinweise finden sich in `Packaging LDAP Schema Extensions "
+"<univention-docs-dev-ref-ldapschema_>`_."
 
 #: ../../domain-ldap/ldap-directory.rst:50
 msgid "LDAP schema replication"
-msgstr ""
+msgstr "LDAP-Schema-Replikation"
 
 #: ../../domain-ldap/ldap-directory.rst:52
 msgid ""
@@ -967,6 +1388,13 @@ msgid ""
 " replication before the replication of LDAP objects guarantees that this "
 "doesn't fail as a result of missing object classes or attributes."
 msgstr ""
+"Über den Listener/Notifier-Mechanismus (siehe :ref:`domain-listener-"
+"notifier`) wird auch die Replikation der LDAP-Schemata automatisiert. "
+"Dies entbindet den Administrator von der Notwendigkeit, Schema-Änderungen"
+" auf allen OpenLDAP-Servern der Domäne manuell nachzupflegen. Mit der "
+"Ausführung der Schema-Replikation vor der Replikation von LDAP-Objekten "
+"wird sichergestellt, dass diese nicht aufgrund fehlender Objektklassen "
+"oder Attribute scheitert."
 
 #: ../../domain-ldap/ldap-directory.rst:59
 msgid ""
@@ -975,6 +1403,10 @@ msgid ""
 "checksum is compared with the last saved checksum in the :file:`/var/lib"
 "/univention-ldap/schema/md5` file."
 msgstr ""
+"Auf dem |UCSPRIMARYDN| wird beim Start des OpenLDAP-Servers über alle "
+"Verzeichnisse mit Schema-Definitionen eine Prüfsumme erzeugt. Diese "
+"Prüfsumme wird mit der letzten in der Datei :file:`/var/lib/univention-"
+"ldap/schema/md5` gespeicherten Prüfsumme verglichen."
 
 #: ../../domain-ldap/ldap-directory.rst:64
 msgid ""
@@ -984,6 +1416,11 @@ msgid ""
 " ID on the listener side, the currently used sub-schema is procured from "
 "the notifier system's LDAP server via an LDAP search."
 msgstr ""
+"Die eigentliche Replikation der Schema-Definitionen wird vom |UCSUDL| "
+"initiiert. Vor jeder Abfrage einer neuen Transaktion-ID durch den "
+"|UCSUDN| wird dessen aktuelle Schema-ID abgefragt. Ist diese höher als "
+"die Schema-ID auf der Listener-Seite, wird über eine LDAP-Suche vom LDAP-"
+"Server des Notifier-Systems dessen aktuell verwendetes Subschema bezogen."
 
 #: ../../domain-ldap/ldap-directory.rst:70
 msgid ""
@@ -992,10 +1429,15 @@ msgid ""
 "OpenLDAP server restarted. If the schema replication is completed with "
 "this step, the replication of the LDAP objects is continued."
 msgstr ""
+"Das ausgelesene Subschema wird auf dem Listener-System im LDIF-Format in "
+"die Datei :file:`/var/lib/univention-ldap/schema.conf` eingebunden und "
+"der lokale OpenLDAP-Server neu gestartet. Ist die Schema-Replikation mit "
+"diesem Schritt abgeschlossen, wird die Replikation der LDAP-Objekte "
+"fortgeführt."
 
 #: ../../domain-ldap/ldap-directory.rst:78
 msgid "Audit-proof logging of LDAP changes"
-msgstr ""
+msgstr "Revisionssichere LDAP-Protokollierung"
 
 #: ../../domain-ldap/ldap-directory.rst:80
 msgid ""
@@ -1004,6 +1446,11 @@ msgid ""
 "the hash value of the previous data record, manipulations of the log file"
 " - such as deleted entries - can be uncovered."
 msgstr ""
+"Das Paket :program:`univention-directory-logger` ermöglicht die "
+"Protokollierung von Änderungen im LDAP-Verzeichnisdienst. Da jeder "
+"Datensatz den Hash-Wert des vorhergehenden Datensatzes enthält, können "
+"Manipulationen an der Logdatei - etwa entfernte Einträge - aufgedeckt "
+"werden."
 
 #: ../../domain-ldap/ldap-directory.rst:85
 msgid ""
@@ -1015,12 +1462,22 @@ msgid ""
 " |UCSUDL| module. The |UCSUDL| service must be restarted if changes are "
 "made to the |UCSUCR| variables."
 msgstr ""
+"Einzelne Teilbereiche des Verzeichnisdienstes können von der "
+"Protokollierung ausgenommen werden. Diese Zweige können durch die "
+"|UCSUCR|-Variablen :envvar:`ldap/logging/exclude1`, "
+":envvar:`ldap/logging/excludeN` etc. konfiguriert werden.  Standardmässig"
+" ist der Container exkludiert, in dem die temporären Objekte gespeichert "
+"werden (``cn=temporary,cn=univention``). Die Protokollierung der LDAP-"
+"Änderungen erfolgt durch ein |UCSUDL|-Modul. Nach |UCSUCR|-Änderungen "
+"muss der |UCSUDL|-Dienst neu gestartet werden."
 
 #: ../../domain-ldap/ldap-directory.rst:93
 msgid ""
 "The logging is made in the :file:`/var/log/univention/directory-"
 "logger.log` file in the following format:"
 msgstr ""
+"Die Protokollierung erfolgt in die Datei :file:`/var/log/univention"
+"/directory-logger.log` im folgenden Format:"
 
 #: ../../domain-ldap/ldap-directory.rst:96
 msgid ""
@@ -1038,12 +1495,28 @@ msgid ""
 " List of new attributes, empty when an object is deleted\n"
 "END"
 msgstr ""
+"START\n"
+"Old Hash: Hashsumme des vorhergehenden Datensatzes\n"
+"DN: DN des LDAP-Objekts\n"
+"ID: Listener/Notifer-Transaktions-ID\n"
+"Modifier: DN des ändernden Kontos\n"
+"Timestamp: Zeitstempel im Format dd.mm.yyyy hh:mm:ss\n"
+"Action: add, modify oder delete\n"
+"\n"
+"Old Values:\n"
+" Liste der alten Attribute, ist leer wenn ein Objekt hinzugefügt wird\n"
+"New Values:\n"
+" Liste der neuen Attribute, ist leer wenn ein Objekt gelöscht wird\n"
+"END"
 
 #: ../../domain-ldap/ldap-directory.rst:113
 msgid ""
 "A hash sum is calculated for each logged data record and also logged in "
-"the :file:`daemon.info` section of the syslog service."
+"the ``daemon.info`` section of the syslog service."
 msgstr ""
+"Für jeden protokollierten Datensatz wird eine Hashsumme berechnet und "
+"zusätzlich in die Sektion ``daemon.info`` des Syslog-Dienstes "
+"protokolliert."
 
 #: ../../domain-ldap/ldap-directory.rst:116
 msgid ""
@@ -1051,6 +1524,9 @@ msgid ""
 " added to the file :file:`/var/log/univention/directory-logger.log` "
 "before each line as a prefix:"
 msgstr ""
+"Ab :uv:erratum:`4.4x536` wird in der Datei :file:`/var/log/univention"
+"/directory-logger.log` vor jede Zeile als Präfix die jeweilige "
+"Transaktions-ID des Eintrags hinzugefügt:"
 
 #: ../../domain-ldap/ldap-directory.rst:120
 msgid ""
@@ -1063,7 +1539,7 @@ msgid ""
 "ID 342: Action: modify\n"
 "ID 342:\n"
 "ID 342: Old values:\n"
-"ID 342: description: Dhis is a description test\n"
+"ID 342: description: This is a description test\n"
 "ID 342: entryCSN: 20200415091936.317108Z#000000#000#000000\n"
 "ID 342: modifyTimestamp: 20200415091936Z\n"
 "ID 342:\n"
@@ -1073,6 +1549,24 @@ msgid ""
 "ID 342: modifyTimestamp: 20200415092040Z\n"
 "ID 342: END"
 msgstr ""
+"ID 342: START\n"
+"ID 342: Old Hash: 70069d51a7e2e168d7c7defd19349985\n"
+"ID 342: DN: uid=Administrator,cn=users,dc=example,dc=com\n"
+"ID 342: ID: 342\n"
+"ID 342: Modifier: cn=admin,dc=example,dc=com\n"
+"ID 342: Timestamp: 15.04.2020 09:20:40\n"
+"ID 342: Action: modify\n"
+"ID 342:\n"
+"ID 342: Old values:\n"
+"ID 342: description: This is a description test\n"
+"ID 342: entryCSN: 20200415091936.317108Z#000000#000#000000\n"
+"ID 342: modifyTimestamp: 20200415091936Z\n"
+"ID 342:\n"
+"ID 342: New values:\n"
+"ID 342: description: This is a description test\n"
+"ID 342: entryCSN: 20200415092040.430976Z#000000#000#000000\n"
+"ID 342: modifyTimestamp: 20200415092040Z\n"
+"ID 342: END"
 
 #: ../../domain-ldap/ldap-directory.rst:142
 msgid ""
@@ -1083,10 +1577,17 @@ msgid ""
 "related lines when post-processing the sign in analysis and monitoring "
 "software."
 msgstr ""
+"Wurde :program:`univention-directory-logger` vor dieser UCS-Version "
+"installiert, wird per Default das alte Verhalten (kein Präfix) "
+"beibehalten. Durch das Setzen der |UCSUCRV| :envvar:`ldap/logging/id-"
+"prefix` auf ``yes`` kann das neue Verhalten aktiviert werden. Dieses "
+"Präfix erleichtert eine Korrelation der zusammenhängenden Zeilen bei "
+"einer Weiterverarbeitung des Protokolls in Analyse- und Monitoring-"
+"Software."
 
 #: ../../domain-ldap/ldap-directory.rst:151
 msgid "Timeout for inactive LDAP connections"
-msgstr ""
+msgstr "Timeout für inaktive LDAP-Verbindungen"
 
 #: ../../domain-ldap/ldap-directory.rst:153
 msgid ""
@@ -1095,16 +1596,23 @@ msgid ""
 "server side. When the value is set to ``0``, no expiry period is in use. "
 "The timeout period has been set at six minutes as standard."
 msgstr ""
+"Mit der |UCSUCRV| :envvar:`ldap/idletimeout` kann ein Zeitraum in "
+"Sekunden konfiguriert werden, nach dessen Ablauf eine LDAP-Verbindung "
+"serverseitig geschlossen wird. Wenn der Wert auf ``0`` gesetzt wird, wird"
+" kein Ablaufzeitraum angewendet. Der Ablaufzeitraum beträgt standardmäßig"
+" sechs Minuten."
 
 #: ../../domain-ldap/ldap-directory.rst:161
 msgid "LDAP command line tools"
-msgstr ""
+msgstr "LDAP-Kommandozeilen-Tools"
 
 #: ../../domain-ldap/ldap-directory.rst:163
 msgid ""
 "In addition to the UMC web interface, there are also a range of programs "
 "with which one can access the LDAP directory from the command line."
 msgstr ""
+"Neben den UMC-Modulen gibt es auch eine Reihe von Programmen, mit denen "
+"auf der Kommandozeile auf das LDAP-Verzeichnis zugegriffen werden kann."
 
 #: ../../domain-ldap/ldap-directory.rst:166
 msgid ""
@@ -1113,24 +1621,30 @@ msgid ""
 " argument; in the following example, the administrator is searched for "
 "using the user ID:"
 msgstr ""
+"Das Tool :command:`univention-ldapsearch` vereinfacht die "
+"authentifizierte Suche im LDAP-Verzeichnis. Als Argument muss ein "
+"Suchfilter übergeben werden, im folgenden Beispiel wird der Administrator"
+" anhand der User-ID gesucht:"
 
 #: ../../domain-ldap/ldap-directory.rst:170
 msgid "$ univention-ldapsearch uid=Administrator"
-msgstr ""
+msgstr "$ univention-ldapsearch uid=Administrator"
 
 #: ../../domain-ldap/ldap-directory.rst:175
 msgid ""
 "The :command:`slapcat` command makes it possible to save the current LDAP"
 " data in a text file in LDIF format, e.g.:"
 msgstr ""
+"Der Befehl :command:`slapcat` ermöglicht die Speicherung der aktuellen "
+"LDAP-Daten in einer Textdatei im LDIF-Format, z.B.:"
 
 #: ../../domain-ldap/ldap-directory.rst:178
 msgid "$ slapcat > ldapdata.txt"
-msgstr ""
+msgstr "$ slapcat > ldapdata.txt"
 
 #: ../../domain-ldap/ldap-directory.rst:186
 msgid "Access control for the LDAP directory"
-msgstr ""
+msgstr "Zugriffskontrolle auf das LDAP-Verzeichnis"
 
 #: ../../domain-ldap/ldap-directory.rst:188
 msgid ""
@@ -1139,6 +1653,10 @@ msgid ""
 "in the central configuration file :file:`/etc/ldap/slapd.conf` and "
 "managed using |UCSUCR|."
 msgstr ""
+"Der Zugriff auf die Informationen im LDAP-Verzeichnis wird serverseitig "
+"durch Access Control Lists (ACLs) geregelt. Die ACLs werden in der "
+"zentralen Konfigurationsdatei :file:`/etc/ldap/slapd.conf` definiert und "
+"über |UCSUCR| verwaltet."
 
 #: ../../domain-ldap/ldap-directory.rst:193
 msgid ""
@@ -1149,6 +1667,12 @@ msgid ""
 "ldap-server_acl-master-end` files or the existing templates expanded "
 "upon."
 msgstr ""
+"Die :file:`slapd.conf` wird dabei durch ein Multifile-Template verwaltet;"
+" weitere ACL-Elemente können unterhalb von "
+":file:`/etc/univention/templates/files/etc/ldap/slapd.conf.d/` zwischen "
+"den Dateien :file:`60univention-ldap-server_acl-master` und :file"
+":`70univention-ldap-server_acl-master-end` eingefügt oder die bestehenden"
+" Templates erweitert werden."
 
 #: ../../domain-ldap/ldap-directory.rst:200
 msgid ""
@@ -1158,6 +1682,11 @@ msgid ""
 "information is available in `Packaging LDAP ACL Extensions <univention-"
 "docs-dev-ref-ldapacl_>`_."
 msgstr ""
+"Wenn LDAP-ACL-Erweiterungen als Teil von Softwarepaketen ausgeliefert "
+"werden sollen, besteht auch die Möglichkeit diese zu paketieren und durch"
+" ein |UCSUDL|-Modul an alle LDAP-Server der Domäne zu verteilen. Weitere "
+"Hinweise finden sich in `Packaging LDAP ACL Extensions <univention-docs-"
+"dev-ref-ldapacl_>`_."
 
 #: ../../domain-ldap/ldap-directory.rst:205
 msgid ""
@@ -1167,18 +1696,28 @@ msgid ""
 "Individual IP addresses can be granted anonymous read permissions via "
 "|UCSUCRV| :envvar:`ldap/acl/read/ips`."
 msgstr ""
+"Die Grundeinstellung des LDAP-Servers bei Neuinstallationen mit UCS "
+"erlaubt keinen anonymen Zugriff auf das LDAP-Verzeichnis. Dieses "
+"Verhalten kann mit der |UCSUCRV| :envvar:`ldap/acl/read/anonymous` "
+"konfiguriert werden. Einzelne IP-Adressen können über die |UCSUCRV| "
+":envvar:`ldap/acl/read/ips` für den anonymen Lesezugriff freigeschaltet "
+"werden."
 
 #: ../../domain-ldap/ldap-directory.rst:211
 msgid ""
 "Following successful authentication on the LDAP server, all attributes of"
 " a user account can be read out by this user."
 msgstr ""
+"Nach erfolgreicher Authentifizierung am LDAP-Server können alle Attribute"
+" eines Benutzerkontos von diesem Benutzer ausgelesen werden."
 
 #: ../../domain-ldap/ldap-directory.rst:214
 msgid ""
 "In addition, an extra, internal account, the root DN, also has full write"
 " access."
 msgstr ""
+"Ein zusätzlicher, interner Account, der Root-DN, besitzt darüber hinaus "
+"auch schreibenden Vollzugriff."
 
 #: ../../domain-ldap/ldap-directory.rst:217
 msgid ""
@@ -1189,6 +1728,12 @@ msgid ""
 "this sensitive information if only intended for members of the ``Domain "
 "Admins`` group."
 msgstr ""
+"Unter UCS gibt es außerdem einige standardmäßig installierte ACLs, die "
+"den Zugriff auf sensitive Daten unterbinden (z.B. auf das "
+"Benutzerpasswort) und für den Betrieb notwendige Regeln setzen (etwa "
+"nötige Zugriffe auf Rechnerkonten für Anmeldungen). Der lesende und "
+"schreibende Zugriff auf diese sensitiven Daten ist nur für die Mitglieder"
+" der Gruppe ``Domain Admins`` vorgesehen."
 
 #: ../../domain-ldap/ldap-directory.rst:224
 msgid ""
@@ -1197,10 +1742,15 @@ msgid ""
 "groups function for LDAP ACLs, which will result in a speed increase for "
 "directory requests."
 msgstr ""
+"Dabei werden auch enthaltene Gruppen unterstützt. Mit der |UCSUCRV| "
+":envvar:`ldap/acl/nestedgroups` kann diese Gruppen-in-Gruppen-"
+"Funktionalität für die LDAP-ACLs deaktiviert werden, wodurch eine "
+"Geschwindigkeitssteigerung bei den Verzeichnisdienstanfragen zu erwarten "
+"ist."
 
 #: ../../domain-ldap/ldap-directory.rst:231
 msgid "Delegation of the privilege to reset user passwords"
-msgstr ""
+msgstr "Delegation des Zurücksetzens von Benutzerpasswörtern"
 
 #: ../../domain-ldap/ldap-directory.rst:233
 msgid ""
@@ -1209,6 +1759,11 @@ msgid ""
 "installed. It uses a join script to create the ``User Password Admins`` "
 "user group, in so far as this does not already exist."
 msgstr ""
+"Um einer Teilgruppe von Administratoren mit eingeschränkten Rechten, z.B."
+" einem Helpdesk, das Zurücksetzen von Benutzerpasswörtern zu ermöglichen,"
+" kann das Paket :program:`univention-admingrp-user-passwordreset` "
+"installiert werden. Es legt über ein Joinskript die Benutzergruppe ``User"
+" Password Admins`` an, sofern diese noch nicht existiert."
 
 #: ../../domain-ldap/ldap-directory.rst:238
 msgid ""
@@ -1220,6 +1775,14 @@ msgid ""
 ":envvar:`ldap/acl/user/passwordreset/accesslist/groups/dn`. The LDAP "
 "server must be restarted after making changes."
 msgstr ""
+"Mitglieder dieser Gruppe erhalten über zusätzliche LDAP-ACLs die "
+"Berechtigung, Passwörter von anderen Benutzern zurückzusetzen. Diese "
+"LDAP-ACLs werden bei der Paketinstallation automatisch aktiviert. Um eine"
+" andere ggf. schon existierende Gruppe statt der Gruppe ``User Password "
+"Admins`` zu verwenden, kann der DN der zu verwendenden Gruppe in die "
+"|UCSUCRV| :envvar:`ldap/acl/user/passwordreset/accesslist/groups/dn` "
+"eingetragen werden. Nach der Änderung ist ein Neustart des LDAP-Servers "
+"erforderlich."
 
 #: ../../domain-ldap/ldap-directory.rst:246
 msgid ""
@@ -1231,6 +1794,14 @@ msgid ""
 "LDAP directory. Further information on the configuration of UMC policies "
 "can be found in :ref:`delegated-administration`."
 msgstr ""
+"Passwörter können über das UMC-Modul :guilabel:`Benutzer` zurückgesetzt "
+"werden. In der Standardeinstellung wird das Modul nur dem Benutzer "
+"``Administrator`` angezeigt. Während der Installation wird automatisch "
+"eine neue Richtlinie ``default-user-password-admins`` erstellt, die den "
+"Mitgliedern der Gruppe ``User Password Admins`` zugewiesen ist bzw. mit "
+"einem entsprechenden Container im LDAP-Verzeichnis verknüpft werden kann."
+" Weitere Hinweise zur Konfiguration von UMC-Richtlinien finden sich in "
+"Kapitel :ref:`delegated-administration`."
 
 #: ../../domain-ldap/ldap-directory.rst:253
 msgid ""
@@ -1240,6 +1811,12 @@ msgid ""
 "have sufficient access rights to the LDAP directory, |UCSUDM| denies them"
 " write access with the message *Permission denied*."
 msgstr ""
+"Die Richtlinie ermöglicht dabei die Suche nach Benutzern sowie die "
+"Ansicht aller Attribute eines Benutzerobjektes. Wird versucht, neben dem "
+"Passwort weitere Attribute zu modifizieren, für die keine ausreichenden "
+"Zugriffsrechte auf das LDAP-Verzeichnis existieren, wird der "
+"Schreibzugriff vom |UCSUDM| mit der Meldung *Zugriff verweigert* "
+"abgelehnt."
 
 #: ../../domain-ldap/ldap-directory.rst:261
 msgid ""
@@ -1247,6 +1824,9 @@ msgid ""
 "|UCSBACKUPDN|\\ s. During the installation, the LDAP server is restarted "
 "and is thus temporarily unavailable."
 msgstr ""
+"Das Paket ist auf dem |UCSPRIMARYDN| sowie den |UCSBACKUPDN|\\ s zu "
+"installieren. Während der Installation wird der LDAP-Server neu gestartet"
+" und ist kurzzeitig nicht erreichbar."
 
 #: ../../domain-ldap/ldap-directory.rst:265
 msgid ""
@@ -1260,6 +1840,16 @@ msgid ""
 "the members of the ``Domain Admins`` group are protected against having "
 "theirs password changed."
 msgstr ""
+"Das Zurücksetzen der Passwörter durch die Passwort-Gruppe kann für "
+"sensible Benutzer oder Gruppen (z.B. Domänen-Administratoren) verhindert "
+"werden. Mit den |UCSUCR|-Variablen "
+":envvar:`ldap/acl/user/passwordreset/protected/uid` und "
+":envvar:`ldap/acl/user/passwordreset/protected/gid` können Benutzer und "
+"Gruppen konfiguriert werden. Mehrere Werte müssen durch Kommas getrennt "
+"werden. Nach Änderungen an den Variable ist es erforderlich, den LDAP-"
+"Server über den Befehl :command:`systemctl restart slapd` neu zu starten."
+" In der Standardeinstellung werden die Mitglieder der Gruppe ``Domain "
+"Admins`` vor Passwortänderungen geschützt."
 
 #: ../../domain-ldap/ldap-directory.rst:274
 msgid ""
@@ -1270,10 +1860,16 @@ msgid ""
 "This variable is already set appropriately for a UCS standard "
 "installation."
 msgstr ""
+"Sollte für die Änderung des Passworts der Zugriff auf zusätzliche LDAP-"
+"Attribute notwendig sein, können die Attributnamen in der |UCSUCRV| "
+":envvar:`ldap/acl/user/passwordreset/attributes` ergänzt werden. Nach der"
+" Änderung ist zur Übernahme ein Neustart des LDAP-Verzeichnisdienstes "
+"notwendig. Für eine UCS-Standard-Installation ist diese Variable bereits "
+"passend gesetzt."
 
 #: ../../domain-ldap/ldap-directory.rst:283
 msgid "Name Service Switch / LDAP NSS module"
-msgstr ""
+msgstr "Name Service Switch / LDAP-NSS-Modul"
 
 #: ../../domain-ldap/ldap-directory.rst:285
 msgid ""
@@ -1281,6 +1877,9 @@ msgid ""
 "(:program:`glibc`) used in Univention Corporate Server offers a modular "
 "interface for resolving the names of users, groups and hosts."
 msgstr ""
+"Die in Univention Corporate Server verwendete GNU C-Standardbibliothek "
+"(:program:`glibc`) bietet eine modulare Schnittstelle zur Auflösung von "
+"Namen von Benutzern, Gruppen und Rechnern, den *Name Service Switch*."
 
 #: ../../domain-ldap/ldap-directory.rst:289
 msgid ""
@@ -1289,6 +1888,10 @@ msgid ""
 "in the |UCSUCRV| :envvar:`ldap/server/name` (and if necessary the "
 ":envvar:`ldap/server/addition`)."
 msgstr ""
+"Das LDAP-NSS-Modul wird auf UCS-Systemen standardmäßig für den Zugriff "
+"auf die Domänen-Daten (z.B. Benutzer) verwendet. Das Modul greift dabei "
+"auf den in der |UCSUCRV| :envvar:`ldap/server/name` (und ggf.  zusätzlich"
+" der :envvar:`ldap/server/addition`) festgelegten LDAP-Server zu."
 
 #: ../../domain-ldap/ldap-directory.rst:294
 msgid ""
@@ -1299,10 +1902,17 @@ msgid ""
 " can considerably accelerate the boot of a system if the LDAP server "
 "cannot be reached, e.g., in an isolated test environment."
 msgstr ""
+"Das Verhalten bei nicht erreichbarem LDAP-Server kann durch die |UCSUCRV|"
+" :envvar:`nssldap/bindpolicy` festgelegt werden. Standardmäßig wird bei "
+"nicht erreichbarem Server eine erneute Verbindung aufgebaut.  Wird die "
+"Variable auf ``soft`` gesetzt, wird kein erneuter Verbindungsaufbau "
+"durchgeführt. Dies kann den Boot eines Systems mit nicht erreichbarem "
+"LDAP-Server - z.B. in einer abgeschottenen Testumgebung - deutlich "
+"beschleunigen."
 
 #: ../../domain-ldap/ldap-directory.rst:304
 msgid "Syncrepl for synchronization with non-UCS OpenLDAP servers"
-msgstr ""
+msgstr "Syncrepl zur Anbindung von Nicht-UCS OpenLDAP-Servern"
 
 #: ../../domain-ldap/ldap-directory.rst:306
 msgid ""
@@ -1312,10 +1922,15 @@ msgid ""
 "changes in the local directory service and transmits them to other "
 "OpenLDAP servers."
 msgstr ""
+"Für die Anbindung von nicht auf UCS-Systemen installierten OpenLDAP-"
+"Servern an das UCS-Managementsystem kann parallel zum Notifier-Dienst der"
+" Syncrepl-Replikations-Dienst aktiviert werden. Dieser ist Bestandteil "
+"von OpenLDAP, registriert Veränderungen im lokalen Verzeichnisdienst und "
+"überträgt diese auf weitere OpenLDAP-Server."
 
 #: ../../domain-ldap/ldap-directory.rst:315
 msgid "Configuration of the directory service when using Samba/AD"
-msgstr ""
+msgstr "Konfiguration des Verzeichnis-Dienstes bei Verwendung von Samba/AD"
 
 #: ../../domain-ldap/ldap-directory.rst:317
 msgid ""
@@ -1323,6 +1938,9 @@ msgid ""
 " accepts requests from ports ``7389`` and ``7636`` in addition to the "
 "standard ports ``389`` and ``636``."
 msgstr ""
+"Standardmäßig ist der OpenLDAP-Server so konfiguriert, dass er zusätzlich"
+" zu den Standard-Ports ``389`` und ``636`` auch auf den Ports ``7389`` "
+"und ``7636`` Anfragen entgegen nimmt."
 
 #: ../../domain-ldap/ldap-directory.rst:321
 msgid ""
@@ -1333,10 +1951,16 @@ msgid ""
 " (see :ref:`domain-ldap-syncrepl`). :command:`univention-ldapsearch` uses"
 " the standard port automatically."
 msgstr ""
+"Wird Samba/AD eingesetzt, belegt der Dienst Samba/AD-Domänencontroller "
+"die Ports ``389`` und ``636``. In diesem Fall wird OpenLDAP automatisch "
+"umkonfiguriert, so dass nur noch die Ports ``7389`` und ``7636`` "
+"eingesetzt werden. Dies ist insbesondere bei der Konfiguration von "
+"syncrepl zu beachten (siehe :ref:`domain-ldap-syncrepl`). :command"
+":`univention-ldapsearch` verwendet automatisch den Standard-Port."
 
 #: ../../domain-ldap/ldap-directory.rst:331
 msgid "Daily backup of LDAP data"
-msgstr ""
+msgstr "Tägliche Sicherung der LDAP-Daten"
 
 #: ../../domain-ldap/ldap-directory.rst:333
 msgid ""
@@ -1344,6 +1968,9 @@ msgid ""
 "|UCSPRIMARYDN| and all |UCSBACKUPDN| systems via a Cron job. If Samba 4 "
 "is used, its data directory is also backed up."
 msgstr ""
+"Auf dem |UCSPRIMARYDN| und allen |UCSBACKUPDN|\\ s wird der Inhalt des "
+"LDAP-Verzeichnisses durch einen Cron-Job täglich gesichert. Falls Samba 4"
+" eingesetzt wird, werden auch dessen Daten-Verzeichnis gesichert."
 
 #: ../../domain-ldap/ldap-directory.rst:337
 msgid ""
@@ -1352,6 +1979,11 @@ msgid ""
 "They can only be read by the ``root`` user. The Samba 4 files are stored "
 "in the directory :file:`/var/univention-backup/samba/`."
 msgstr ""
+"Die LDAP-Daten werden im LDIF-Format im Verzeichnis :file:`/var"
+"/univention-backup/` im Namensschema :file:`ldap-backup_DATUM.ldif.gz` "
+"gespeichert. Sie sind nur für den Benutzer ``root`` lesbar. Die Samba 4 "
+"Backup-Dateien werden im Verzeichnis :file:`/var/univention-"
+"backup/samba/` gesichert."
 
 #: ../../domain-ldap/ldap-directory.rst:342
 msgid ""
@@ -1361,24 +1993,32 @@ msgid ""
 "installations (from UCS 4.4-7 on) the default for this variable is "
 "``365`` (days). If the variable is not set, no backup files are deleted."
 msgstr ""
+"Mit der |UCSUCRV| :envvar:`backup/clean/max_age` kann definiert werden, "
+"wie lange alte Backup-Dateien aufgehoben werden (z.B. "
+"``backup/clean/max_age=365``, alle Dateien älter als ``365`` Tage werden "
+"automatisch gelöscht). Diese Variable wird bei Neuinstallationen ab UCS "
+"4.4-7 automatisch auf ``365`` gesetzt. Falls die Variable nicht gesetzt "
+"ist, werden keine Backup-Dateien gelöscht."
 
 #: ../../domain-ldap/listener-notifier.rst:4
 msgid "Listener/notifier domain replication"
-msgstr ""
+msgstr "Listener/Notifier-Domänenreplikation"
 
 #: ../../domain-ldap/listener-notifier.rst:11
 msgid "Listener/notifier replication workflow"
-msgstr ""
+msgstr "Ablauf der Listener/Notifier-Replikation"
 
 #: ../../domain-ldap/listener-notifier.rst:13
 msgid ""
 "Replication of the directory data within a UCS domain occurs via the "
 "|UCSUDL|/Notifier mechanism:"
 msgstr ""
+"Die Replikation der Verzeichnisdaten innerhalb einer UCS-Domäne erfolgt "
+"über den |UCSUDL|/Notifier-Mechanismus:"
 
 #: ../../domain-ldap/listener-notifier.rst:16
 msgid "The |UCSUDL| service runs on all UCS systems."
-msgstr ""
+msgstr "Der |UCSUDL|-Dienst läuft auf jedem UCS-System."
 
 #: ../../domain-ldap/listener-notifier.rst:18
 msgid ""
@@ -1387,10 +2027,14 @@ msgid ""
 "selected changes available to the |UCSUDL| services on the other UCS "
 "systems."
 msgstr ""
+"Auf dem |UCSPRIMARYDN| (und eventuell vorhandenen |UCSBACKUPDN|\\ s) "
+"überwacht der |UCSUDN|-Dienst Änderungen im LDAP-Verzeichnis und stellt "
+"die aufgezeichneten Änderungen transaktionsbasiert den |UCSUDL|-Diensten "
+"auf den weiteren UCS-Systemen zur Verfügung."
 
 #: ../../domain-ldap/listener-notifier.rst:27
 msgid "Listener/Notifier mechanism"
-msgstr ""
+msgstr "Listener/Notifier-Mechanismus"
 
 #: ../../domain-ldap/listener-notifier.rst:29
 msgid ""
@@ -1399,6 +2043,11 @@ msgid ""
 "LDAP servers in the domain are read-only), this is registered by the "
 "|UCSUDN| and notified to the listener instances."
 msgstr ""
+"Die aktiven |UCSUDL|-Instanzen der Domäne verbinden sich zu einem "
+"|UCSUDN|-Dienst. Wird auf dem |UCSPRIMARYDN| eine LDAP-Änderung "
+"durchgeführt (alle anderen LDAP-Server der Domäne sind nur lesend), wird "
+"diese durch den |UCSUDN| registriert und an die Listener-Instanzen "
+"gemeldet."
 
 #: ../../domain-ldap/listener-notifier.rst:34
 msgid ""
@@ -1407,6 +2056,10 @@ msgid ""
 "includes, for example, listener modules which generate the CUPS "
 "configuration."
 msgstr ""
+"Jede |UCSUDL|-Instanz verwendet eine Reihe von |UCSUDL|-Modulen. Diese "
+"Module werden von den installierten Applikationen mitgeliefert, das "
+"Druckserver-Paket bringt z.B Listener-Module mit, die die CUPS-"
+"Konfiguration erzeugen."
 
 #: ../../domain-ldap/listener-notifier.rst:38
 msgid ""
@@ -1419,12 +2072,22 @@ msgid ""
 "added to, modified or deleted in :file:`/etc/cups/printers.conf` based on"
 " the data in the LDAP."
 msgstr ""
+"Durch |UCSUDL|-Module können Änderungen an der Domäne auch an Dienste "
+"übermittelt werden, die selbst nicht LDAP-fähig sind. Ein Beispiel ist "
+"der Druckserver CUPS: Die Druckerdefinitionen werden nicht aus dem LDAP "
+"ausgelesen, sondern aus der Datei :file:`/etc/cups/printers.conf`. Wird "
+"nun im UMC-Modul :guilabel:`Drucker` ein Drucker angelegt, wird dieser im"
+" LDAP registriert. Diese Änderung wird dann vom |UCSUDL|-Modul *cups-"
+"printers* erkannt und basierend auf den Daten im LDAP ein Eintrag in "
+":file:`/etc/cups/printers.conf` hinzugefügt, modifiziert oder gelöscht."
 
 #: ../../domain-ldap/listener-notifier.rst:46
 msgid ""
 "Additional information on the setup of |UCSUDL| modules and developing "
 "your own modules can be found in :cite:t:`developer-reference`."
 msgstr ""
+"Weitergehende Informationen zum Aufbau von |UCSUDL|-Modulen und zur "
+"Entwicklung eigener Module finden sich in :cite:t:`developer-reference`."
 
 #: ../../domain-ldap/listener-notifier.rst:49
 msgid ""
@@ -1434,6 +2097,12 @@ msgid ""
 "replication/failed.ldif` file. The contents of the file are automatically"
 " transferred to the LDAP when the LDAP server is available again."
 msgstr ""
+"Die LDAP-Replikation erfolgt ebenfalls durch ein Listener-Modul. Ist der "
+"LDAP-Server zu dem repliziert werden soll nicht erreichbar, werden die "
+"LDAP-Änderungen in der Datei :file:`/var/lib/univention-directory-"
+"replication/failed.ldif` zwischengespeichert. Der Inhalt dieser Datei "
+"wird beim späteren Start des LDAP-Servers automatisch in das LDAP "
+"übertragen."
 
 #: ../../domain-ldap/listener-notifier.rst:55
 msgid ""
@@ -1445,14 +2114,20 @@ msgid ""
 "is available again until its local transaction ID corresponds to that of "
 "the |UCSPRIMARYDN|."
 msgstr ""
+"Der Listener/Notifier-Mechanismus arbeitet transaktionsbasiert. Für jede "
+"Änderung im LDAP-Verzeichnis des |UCSPRIMARYDN| wird eine Transaktions-ID"
+" erhöht. Eine |UCSUDL|-Instanz, die mehrere Transaktionen verpasst hat - "
+"weil zum Beispiel der Rechner ausgeschaltet war - fragt bei erneuter "
+"Verfügbarkeit der Verbindung automatisch alle fehlenden Transaktionen ab,"
+" bis seine lokale Transaktions-ID der des |UCSPRIMARYDN| entspricht."
 
 #: ../../domain-ldap/listener-notifier.rst:65
 msgid "Analysis of listener/notifier problems"
-msgstr ""
+msgstr "Analyse von Listener/Notifier-Problemen"
 
 #: ../../domain-ldap/listener-notifier.rst:70
 msgid "Log files/debug level of replication"
-msgstr ""
+msgstr "Logdateien/Debug-Level der Replikation"
 
 #: ../../domain-ldap/listener-notifier.rst:72
 msgid ""
@@ -1461,19 +2136,26 @@ msgid ""
 "level of detail of the log messages can be configured using the |UCSUCRV|"
 " :envvar:`listener/debug/level`."
 msgstr ""
+"Alle Statusmeldungen des |UCSUDL| und der aufgerufenen Listener-Module "
+"werden in die Datei :file:`/var/log/univention/listener.log` "
+"protokolliert.  Der Detailgrad der Logmeldungen kann über die |UCSUCRV| "
+":envvar:`listener/debug/level` konfiguriert werden."
 
-#: ../../domain-ldap/listener-notifier.rst:78
+#: ../../domain-ldap/listener-notifier.rst:77
 msgid ""
 "Status messages from the |UCSUDN| service are logged in the "
 ":file:`/var/log/univention/notifier.log` file. The debug level can be "
 "configured using the :envvar:`notifier/debug/level`."
 msgstr ""
+"Statusmeldungen des |UCSUDN|-Dienstes werden in die Datei "
+":file:`/var/log/univention/notifier.log` protokolliert.  Der Debuglevel "
+"kann mit der Variable :envvar:`notifier/debug/level` konfiguriert werden."
 
-#: ../../domain-ldap/listener-notifier.rst:85
+#: ../../domain-ldap/listener-notifier.rst:84
 msgid "Identification of replication problems"
-msgstr ""
+msgstr "Erkennung von Replikationsproblemen"
 
-#: ../../domain-ldap/listener-notifier.rst:87
+#: ../../domain-ldap/listener-notifier.rst:86
 msgid ""
 "When the domain replication is running normally (normal system load, no "
 "network problems), the delay between changes being made in UMC modules "
@@ -1481,79 +2163,113 @@ msgid ""
 "barely noticeable. An incomplete replication can be identified by "
 "comparing the transaction IDs of the listener and notifier services."
 msgstr ""
+"Im Regelbetrieb der Domänenreplikation (keine hohe Last auf den Systemen,"
+" keine Störungen im Netzwerk) ist die Verzögerung zwischen Änderungen in "
+"UMC-Modulen bis zur Replikation auf z.B. eines |UCSREPLICADN| kaum "
+"merkbar. Eine möglicherweise unvollständige Replikation kann durch einen "
+"Vergleich der Transaktions-IDs von Listener- und Notifier-Dienst "
+"identifiziert werden."
 
-#: ../../domain-ldap/listener-notifier.rst:93
+#: ../../domain-ldap/listener-notifier.rst:92
 msgid ""
 "The transactions registered by the notifier service are written in the "
 ":file:`/var/lib/univention-ldap/notify/transaction` file in ascending "
 "order on the |UCSPRIMARYDN|. An example:"
 msgstr ""
+"Auf dem |UCSPRIMARYDN| werden die vom Notifier-Dienst registrierten "
+"Transaktionen in aufsteigender Reihenfolge in die Datei :file:`/var/lib"
+"/univention-ldap/notify/transaction` geschrieben. Ein Beispiel:"
 
-#: ../../domain-ldap/listener-notifier.rst:97
+#: ../../domain-ldap/listener-notifier.rst:96
 msgid ""
 "root@primary:~# tail -1 /var/lib/univention-ldap/notify/transaction\n"
 "836 cn=replica3,cn=dc,cn=computers,dc=firma,dc=de m"
 msgstr ""
+"root@primary:~# tail -1 /var/lib/univention-ldap/notify/transaction\n"
+"836 cn=replica3,cn=dc,cn=computers,dc=firma,dc=de m"
 
-#: ../../domain-ldap/listener-notifier.rst:103
+#: ../../domain-ldap/listener-notifier.rst:102
 msgid ""
 "The last transaction received by the listener system is stored in the "
 ":file:`/var/lib/univention-directory-listener/notifier_id` file:"
 msgstr ""
+"Auf dem Listener-System wird die zuletzt vom Listener empfangene "
+"Transaktion in der Datei :file:`/var/lib/univention-directory-"
+"listener/notifier_id` gespeichert:"
 
-#: ../../domain-ldap/listener-notifier.rst:106
+#: ../../domain-ldap/listener-notifier.rst:105
 msgid ""
 "root@replica1:~# cat /var/lib/univention-directory-listener/notifier_id\n"
 "836"
 msgstr ""
+"root@replica1:~# cat /var/lib/univention-directory-listener/notifier_id\n"
+"836"
 
-#: ../../domain-ldap/listener-notifier.rst:112
+#: ../../domain-ldap/listener-notifier.rst:111
 msgid ""
 "This check can also be performed automatically by the Nagios service "
 "``UNIVENTION_REPLICATION`` (see :ref:`nagios-preconfigured-checks`)."
 msgstr ""
+"Diese Prüfung kann auch automatisiert durch den Nagios-Dienst "
+"``UNIVENTION_REPLICATION`` durchgeführt werden (siehe :ref:`nagios-"
+"preconfigured-checks`)."
 
-#: ../../domain-ldap/listener-notifier.rst:118
+#: ../../domain-ldap/listener-notifier.rst:117
 msgid "Reinitialization of listener modules"
-msgstr ""
+msgstr "Neuinitialiisierung von Listener-Modulen"
 
-#: ../../domain-ldap/listener-notifier.rst:120
+#: ../../domain-ldap/listener-notifier.rst:119
 msgid ""
 "If there are problems in running a listener module, there is the option "
 "to reinitialize the module. In this case, all LDAP objects with which the"
 " listener module works are passed on again."
 msgstr ""
+"Falls es zu Problemen bei der Abarbeitung eines Listener-Moduls gekommen "
+"ist, besteht die Möglichkeit, das Modul neu zu initialisieren. Dabei "
+"werden alle LDAP-Objekte mit denen das Listener-Modul arbeitet erneut "
+"übergeben."
 
-#: ../../domain-ldap/listener-notifier.rst:124
+#: ../../domain-ldap/listener-notifier.rst:123
 msgid ""
 "The name of the listener module must be supplied to the command for the "
 "renewed initialization. The installed listener modules can be found in "
 "the :file:`/var/lib/univention-directory-listener/handlers/` directory."
 msgstr ""
+"Dem Befehl zum erneuten Initialisieren muss der Name des Listener-Moduls "
+"übergeben werden. Die installierten Listener-Module sind im Verzeichnis "
+":file:`/var/lib/univention-directory-listener/handlers/` zu finden."
 
-#: ../../domain-ldap/listener-notifier.rst:128
+#: ../../domain-ldap/listener-notifier.rst:127
 msgid ""
 "The following command can be used to reinitialize the printer module, for"
 " example:"
 msgstr ""
+"Mit dem folgenden Befehl kann beispielsweise das Druckermodul neu "
+"initialisiert werden:"
 
-#: ../../domain-ldap/listener-notifier.rst:131
+#: ../../domain-ldap/listener-notifier.rst:130
 msgid "$ univention-directory-listener-ctrl resync cups-printers"
-msgstr ""
+msgstr "$ univention-directory-listener-ctrl resync cups-printers"
 
 #: ../../domain-ldap/oidc.rst:4
 msgid "OpenID Connect Provider"
-msgstr ""
+msgstr "OpenID Connect Provider"
 
 #: ../../domain-ldap/oidc.rst:8
 msgid ""
-"UCS offers the possibility to install a :program:`OpenID Connect "
-"Provider`, which allows external web services to delegate the user login "
-"via the *OpenID Connect* (OIDC) protocol to the UCS Identity Management. "
-"The :program:`OpenID Connect Provider` App can be installed via the App "
+"UCS offers the possibility to install a *OpenID Connect Provider*, which "
+"allows external web services to delegate the user login via the *OpenID "
+"Connect (OIDC)* protocol to the UCS Identity Management. The "
+":program:`OpenID Connect Provider` App can be installed via the App "
 "Center. The service is provided by the software :program:`Kopano "
 "Konnect`."
 msgstr ""
+"UCS bietet die Möglichkeit, einen *OpenID Connect Provider* zu "
+"installieren, mit dessen Hilfe externe Web-Dienste die Benutzeranmeldung "
+"über das *OpenID Connect (OIDC)* Protokoll an das UCS Identity Management"
+" delegieren können. Die :program:`OpenID Connect Provider` App kann über "
+"das App Center installiert werden.  Der Dienst wird von der Software "
+":program:`Kopano Konnect` bereitgestellt."
 
 #: ../../domain-ldap/oidc.rst:14
 msgid ""
@@ -1562,6 +2278,11 @@ msgid ""
 " Connect Provider` is made available under the DNS entry for the single "
 "sign-on, normally this is :samp:`ucs-sso.{Domain name}`."
 msgstr ""
+"Die App kann grundsätzlich auf allen Systemrollen installiert werden.  "
+"Bei einer Installation auf einem UCS System der Rolle |UCSPRIMARYDN| oder"
+" |UCSBACKUPDN| wird der :program:`OpenID Connect Provider` unter dem DNS "
+"Eintrag für den *Single Sign-On* verfügbar gemacht, im Normalfall ist "
+"dies :samp:`ucs-sso.{domain.name}`."
 
 #: ../../domain-ldap/oidc.rst:19
 msgid ""
@@ -1570,6 +2291,10 @@ msgid ""
 "app is installed on all other servers that are reachable at the ``ucs-"
 "sso`` DNS CNAME."
 msgstr ""
+"Wird die App auf einer anderen Systemrolle installiert, kann der Provider"
+" statt dessen direkt über den Hostnamen erreicht werden. Es sollte "
+"sichergestellt werden, dass die App auf allen Servern installiert ist, "
+"die unter dem ``ucs-sso`` DNS CNAME erreichbar sind."
 
 #: ../../domain-ldap/oidc.rst:23
 msgid ""
@@ -1578,6 +2303,12 @@ msgid ""
 " recommend to only install the OIDC Provider on one system, and restrict "
 "the ``ucs-sso`` DNS CNAME to that system, or contact Univention Support."
 msgstr ""
+"Die Synchronisation von Session Informationen zwischen mehreren Instanzen"
+" des OIDC Providers ist nicht vorkonfiguriert. Wenn Login Probleme bei "
+"Apps in dieser Konfiguration auftreten, empfehlen wir den OIDC Provider "
+"nur auf einem System zu betreiben, und den ``ucs-sso`` DNS CNAME auf "
+"dieses System zu beschränken, oder den Univention Support zu "
+"kontaktieren."
 
 #: ../../domain-ldap/oidc.rst:28
 msgid ""
@@ -1586,13 +2317,20 @@ msgid ""
 "this service in the UCS directory service. These can be created via the "
 "UMC module :guilabel:`LDAP directory` in the container ``cn=oidc``, which"
 " is located below the container ``cn=univention``. Here the new service "
-"can be registered via the item Add and the selection :guilabel:`OpenID "
-"Connect Relying Party Service`."
+"can be registered via the item Add and the selection *OpenID Connect "
+"Relying Party Service*."
 msgstr ""
+"Um externe Web-Dienste per :program:`OpenID Connect` an UCS anzubinden, "
+"muss für diesen Dienst ein bestimmtes Objekt des Typs ``oidc/rpservice`` "
+"im UCS Verzeichnisdienst vorhanden sein. Dies kann im UMC-Modul :guilabel"
+":`LDAP-Verzeichnis` im Container ``cn=oidc`` angelegt werden, der sich "
+"unterhalb des Containers ``cn=univention`` befindet. Hier kann über die "
+"Schaltfläche :guilabel:`Hinzufügen` und die Auswahl *OpenID Connect "
+"Relying Party Service* ein neuer Dienst registriert werden."
 
 #: ../../domain-ldap/oidc.rst:35
 msgid "The same is also possible from the command line:"
-msgstr ""
+msgstr "Das gleiche ist auch über die Kommandozeile möglich:"
 
 #: ../../domain-ldap/oidc.rst:37
 msgid ""
@@ -1604,52 +2342,62 @@ msgid ""
 "> --set applicationtype=web \\\n"
 "> --set redirectURI=$URL_from_services_documentation"
 msgstr ""
+"$ udm oidc/rpservice create --set name=$UCS_interner_Bezeichner> \\\n"
+"> --position=\"cn=oidc,cn=univention,$(ucr get ldap/base)\" \\\n"
+"> --set clientid=$ClientID \\\n"
+"> --set clientsecret=$ein_langes_Passwort \\\n"
+"> --set trusted=yes \\\n"
+"> --set applicationtype=web \\\n"
+"> --set redirectURI=$URL_aus_der_Dokumentation_des_Dienstes"
 
 #: ../../domain-ldap/oidc.rst:47
 msgid "The command parameters are:"
-msgstr ""
+msgstr "Die Parameter des Aufrufs sind:"
 
 #: ../../domain-ldap/oidc.rst:50
 msgid "``name``"
-msgstr ""
+msgstr "``name``"
 
 #: ../../domain-ldap/oidc.rst:50
 msgid "the service name displayed in the web interface during login."
-msgstr ""
+msgstr "der beim Login im Webinterface angezeigte Dienstname."
 
 #: ../../domain-ldap/oidc.rst:54
 msgid "``clientid``"
-msgstr ""
+msgstr "``clientid``"
 
 #: ../../domain-ldap/oidc.rst:53 ../../domain-ldap/oidc.rst:57
 msgid "must be identical here and in the connected service (*shared secret*)."
-msgstr ""
+msgstr "müssen hier und beim angebundenen Dienst identisch sein (*shared secret*)."
 
 #: ../../domain-ldap/oidc.rst:58
 msgid "``secret``"
-msgstr ""
+msgstr "``secret``"
 
 #: ../../domain-ldap/oidc.rst:63
 msgid "``trusted``"
-msgstr ""
+msgstr "``trusted``"
 
 #: ../../domain-ldap/oidc.rst:61
 msgid ""
 "should be set to ``yes`` by default. Otherwise, the user will be prompted"
 " for confirmation to transfer their user attributes to the service."
 msgstr ""
+"sollte standardmäßig auf ``yes`` gesetzt werden. Andernfalls wird dem "
+"Benutzer eine Bitte um Bestätigung zur Übertragung seiner "
+"Benutzerattribute an den Dienst angezeigt."
 
 #: ../../domain-ldap/oidc.rst:66
 msgid "``applicationtype``"
-msgstr ""
+msgstr "``applicationtype``"
 
 #: ../../domain-ldap/oidc.rst:66
 msgid "should be set to ``web`` for internet services."
-msgstr ""
+msgstr "sollte für Internetdienste auf den Wert ``web`` gesetzt werden."
 
 #: ../../domain-ldap/oidc.rst:74
 msgid "``redirectURI``"
-msgstr ""
+msgstr "``redirectURI``"
 
 #: ../../domain-ldap/oidc.rst:69
 msgid ""
@@ -1660,35 +2408,54 @@ msgid ""
 "defined multiple times, whereby each individual value must contain a "
 "valid URL."
 msgstr ""
+"URL des Login-Endpunkts, die in der Dokumentation des jeweiligen "
+"angebundenen Dienstes zu finden ist. Ist ein Dienst über mehrere URLs "
+"erreichbar oder soll er auch per IP Adresse aufrufbar sein, müssen alle "
+"möglichen Adressen zum Attribut ``redirectURI`` hinzugefügt werden. Das "
+"Feld kann daher mehrfach definiert werden, wobei jeder einzelne Wert eine"
+" gültige URL enthalten muss."
 
 #: ../../domain-ldap/oidc.rst:76
 msgid ""
-"The connected web service still needs information about the "
-":program:`OpenID Connect` endpoints of the provider app for its "
-"configuration. If the provider app is installed, this information can be "
-"found at the URL :samp:`https://ucs-sso{[Domain name]}/.well-known"
-"/openid-configuration`. If the provider app was installed on a system "
-"other than |UCSPRIMARYDN| or |UCSBACKUPDN|, use the FQDN of the "
-"respective server instead of :samp:`ucs-sso.{Domain name}` as described "
-"above."
+"The connected web service still needs information about the *OpenID "
+"Connect* endpoints of the provider app for its configuration. If the "
+"provider app is installed, this information can be found at the URL "
+":samp:`https://ucs-sso{[Domain name]}/.well-known/openid-configuration`. "
+"If the provider app was installed on a system other than |UCSPRIMARYDN| "
+"or |UCSBACKUPDN|, use the FQDN of the respective server instead of :samp"
+":`ucs-sso.{Domain name}` as described above."
 msgstr ""
+"Der angebundene Web-Dienst braucht für seine Konfiguration noch "
+"Informationen über die *OpenID Connect* Endpunkte der Provider-App. Diese"
+" sind bei installierter Provider-App unter der URL :samp:`https://ucs-"
+"sso.{[Domain Name]}/.well-known/openid-configuration` einsehbar. Wurde "
+"die Provider-App auf einem anderen System als |UCSPRIMARYDN| oder "
+"|UCSBACKUPDN| installiert, ist wie oben beschrieben statt :samp:`ucs-"
+"sso.{Domain Name}` der FQDN des jeweiligen Servers zu verwenden."
 
 #: ../../domain-ldap/oidc.rst:84
 msgid ""
-"When using :program:`OpenID Connect`, resolvable DNS names and verifiable"
-" certificates are a prerequisite. This is especially true for client "
+"When using *OpenID Connect*, resolvable DNS names and verifiable "
+"certificates are a prerequisite. This is especially true for client "
 "computers of end users who need to access both the DNS resolvable host "
-"names of the Web service and the :program:`OpenID Connect Provider`. In "
-"addition, the externally connected Web services must be able to establish"
-" a connection to the :program:`OpenID Connect Provider` in order to be "
-"able to retrieve the user attributes."
+"names of the Web service and the OpenID Connect Provider. In addition, "
+"the externally connected Web services must be able to establish a "
+"connection to the OpenID Connect Provider in order to be able to retrieve"
+" the user attributes."
 msgstr ""
+"Bei der Verwendung von *OpenID Connect* ist auf korrekte, auflösbare DNS "
+"Namen und verifizierbare Zertifikate zu achten. Zu beachten ist dies "
+"insbesondere bei Client-Rechnern von Endbenutzern, die sowohl auf die per"
+" DNS auflösbaren Hostnamen des Web-Dienst als auch auf den OpenID Connect"
+" Provider zugreifen müssen. Außerdem müssen die extern angebundenen Web-"
+"Dienste eine Verbindung zum OpenID Connect Provider herstellen können, um"
+" darüber die Benutzerattribute abrufen zu können."
 
 #: ../../domain-ldap/oidc.rst:92
 msgid ""
 "In the special case where the DNS name of the OIDC provider is to be "
 "changed, the corresponding value must first be adjusted in the app "
-"settings of the :program:`OpenID Connect Provider` App. Since there are "
+"settings of the :program:`OpenID Connect Provider` app. Since there are "
 "diverse scenarios for the availability of the provider after changing the"
 " DNS name, the web server configuration cannot be changed automatically. "
 "For example, depending on the configured DNS name, the UCS Apache "
@@ -1696,39 +2463,67 @@ msgid ""
 ":file:`/etc/apache2/conf-available/openid-connect-provider.conf` must be "
 "made available under the set DNS name in a virtual host."
 msgstr ""
+"Im speziellen Fall, wo der DNS Namen des OIDC-Providers geändert werden "
+"soll, muss zunächst der entsprechende Wert in den App Einstellungen der "
+":program:`OpenID Connect Provider` App angepasst werden. Da es diverse "
+"Szenarien für die Erreichbarkeit des Providers nach der Änderung des DNS "
+"Namens gibt, kann keine automatische Änderung der Webserverkonfiguration "
+"vorgenommen werden. Es muss so zum Beispiel je nach konfiguriertem DNS "
+"Namen noch die Apache Konfiguration unter UCS angepasst werden. Die "
+"Konfigurationsdatei :file:`/etc/apache2/conf-available/openid-connect-"
+"provider.conf` muss unter dem gesetzten DNS Namen in einem Virtual Host "
+"verfügbar gemacht werden."
 
 #: ../../domain-ldap/oidc.rst:102
 msgid ""
-"With version 2 of the :program:`OIDC-Provider App` the authentication to "
-":program:`OpenID Connect` works via the SAML Identity Provider of the UCS"
-" domain. If the SAML Identity Provider is not reachable at the default "
-"URL :samp:`https://ucs-sso.{[Domain name]}`, the correct URL under which "
-"the SAML IdP metadata for the UCS domain can be retrieved must be entered"
-" correctly in the app settings. If this URL is configured incorrectly, "
-"the :program:`OpenID Connect Provider` will not start."
+"With version 2 of the OIDC-Provider App the authentication to OpenID "
+"Connect works via the SAML Identity Provider of the UCS domain. If the "
+"SAML Identity Provider is not reachable at the default URL :samp:`https"
+"://ucs-sso.{[Domain name]}`, the correct URL under which the SAML IdP "
+"metadata for the UCS domain can be retrieved must be entered correctly in"
+" the app settings. If this URL is configured incorrectly, the OpenID "
+"Connect Provider will not start."
 msgstr ""
+"Mit Version 2 der OIDC-Provider App funktioniert die Authentifizierung an"
+" :program:`OpenID Connect` über den SAML Identity Provider der UCS "
+"Domäne. Ist der SAML Identity Provider von der Standardkonfiguration "
+"abweichend nicht unter :samp:`https://ucs-sso.{[domain.name]}` "
+"erreichbar, muss in den App Einstellungen die URL korrekt eingetragen "
+"werden, unter der die SAML IdP Metadaten für die UCS Domäne abgerufen "
+"werden können. Bei inkorrekter Konfiguration dieser URL startet der "
+"OpenID Connect Provider nicht."
 
 #: ../../domain-ldap/oidc.rst:110
 msgid ""
-"With SAML authentication, the authorization for the use of the "
-":program:`OpenID Connect Provider` and thus for all apps connected via "
-"OIDC can be controlled via SAML authorizations. By default, the group "
-"``Domain Users`` is enabled for access when the app is installed. If this"
-" permission should be removed, the corresponding option must also be "
+"With SAML authentication, the authorization for the use of the OpenID "
+"Connect Provider and thus for all apps connected via OIDC can be "
+"controlled via SAML authorizations. By default, the group ``Domain "
+"Users`` is enabled for access when the app is installed. If this "
+"permission should be removed, the corresponding option must also be "
 "activated in the app settings so that the permission is not automatically"
 " added again."
 msgstr ""
+"Mit der Authentifizierung per SAML ist die Autorisierung für die Nutzung "
+"des OpenID Connect Providers und damit zu allen per OIDC angebundenen "
+"Apps über SAML Berechtigungen steuerbar.  Standardmäßig wird bei der "
+"Installation der App die Gruppe ``Domänenbenutzer`` für den Zugriff "
+"freigeschaltet. Wenn diese Berechtigung entfernt werden soll, muss "
+"zusätzlich in den App Einstellungen die entsprechende Option aktiviert "
+"werden, damit die Berechtigung nicht automatisch erneut hinzugefügt wird."
 
 #: ../../domain-ldap/oidc.rst:117
 msgid ""
-"The :program:`OpenID Connect Provider` logs actions via the Docker "
-"Daemon. The output can be viewed with the command :command:`univention-"
-"app logs openid-connect-provider`."
+"The OpenID Connect Provider logs actions via the Docker Daemon. The "
+"output can be viewed with the command :command:`univention-app logs "
+"openid-connect-provider`."
 msgstr ""
+"Der OpenID Connect Provider protokolliert Aktionen über den Docker "
+"Daemon. Die Ausgaben können beispielsweise über das Kommando :command"
+":`univention-app logs openid-connect-provider` eingesehen werden."
 
 #: ../../domain-ldap/password-hashes.rst:4
 msgid "Password hashes in the directory service"
-msgstr ""
+msgstr "Passwort-Hashes im Verzeichnisdienst"
 
 #: ../../domain-ldap/password-hashes.rst:6
 msgid ""
@@ -1738,10 +2533,16 @@ msgid ""
 "|UCSUCRV| :envvar:`password/hashing/method`, ``SHA-512`` is used by "
 "default."
 msgstr ""
+"Passwort-Hashes von Benutzern werden u.a. im Attribut ``userPassword`` im"
+" Verzeichnisdienst gespeichert. Für die Generierung der Passwort-Hashes "
+"wird auf die :program:`crypt` Bibliotheksfunktion zurückgegriffen. Die "
+"eigentliche Hash-Funktion kann über die |UCSUCRV| "
+":envvar:`password/hashing/method` definiert werden, standardmäßig wird "
+"``SHA-512`` verwendet."
 
 #: ../../domain-ldap/password-hashes.rst:11
 msgid ""
-"As an alternative |UCSUCS| (from version :uv:erratum:`4.4x888` on) offers"
+"As an alternative |UCSUCS| (from version :uv:erratum:`4.4x887` on) offers"
 " the option of using :program:`bcrypt` as hashing method for passwords of"
 " user accounts. To activate :program:`bcrypt` support in OpenLDAP the "
 "|UCSUCRV| :envvar:`ldap/pw-bcrypt` has to bet set to ``true`` on all LDAP"
@@ -1751,6 +2552,15 @@ msgid ""
 " servers, to activate :program:`bcrypt` as the hashing method for setting"
 " or changing user password."
 msgstr ""
+"Alternativ dazu bietet |UCSUCS| ab :uv:erratum:`4.4x887` die Möglichkeit "
+":program:`bcrypt` als Hash-Funktion für Benutzerkonten zu verwenden. "
+"Dafür muss zunächst auf allen LDAP-Servern die |UCSUCRV| :envvar:`ldap"
+"/pw-bcrypt` auf ``true`` gesetzt werden um das nötige Modul für OpenLDAP "
+"zu aktivieren. Andernfalls ist eine Anmeldung am LDAP-Server mit einem "
+":program:`bcrypt` Hash nicht möglich. Damit beim Ändern von Passwörtern "
+"nun :program:`bcrypt` Hashes generiert werden, muss ebenfalls auf allen "
+"Servern die |UCSUCRV| :envvar:`password/hashing/bcrypt` auf ``true`` "
+"gesetzt werden."
 
 #: ../../domain-ldap/password-hashes.rst:20
 msgid ""
@@ -1759,16 +2569,23 @@ msgid ""
 ":envvar:`password/hashing/bcrypt/cost_factor` (default ``12``) and "
 ":envvar:`password/hashing/bcrypt/prefix` (default ``2b``)."
 msgstr ""
+"Zusätzlich können der *bcrypt Cost Factor* und die :program:`bcrypt` "
+"Variante über die |UCSUCRV|\\ n "
+":envvar:`password/hashing/bcrypt/cost_factor` (``12``) und "
+":envvar:`password/hashing/bcrypt/prefix` (``2b``) angepasst werden."
 
 #: ../../domain-ldap/password-hashes.rst:27
 msgid ""
 ":program:`bcrypt` is limited to a maximum of 72 characters. So only the "
 "first 72 characters of the password are used to generate the hashes."
 msgstr ""
+":program:`bcrypt` ist auf maximal 72 Zeichen begrenzt.  Für die "
+"Generierung der Hashes werden also nur die ersten 72 Zeichen des Kennwort"
+" verwendet."
 
 #: ../../domain-ldap/saml.rst:4
 msgid "SAML identity provider"
-msgstr ""
+msgstr "SAML Identity Provider"
 
 #: ../../domain-ldap/saml.rst:6
 msgid ""
@@ -1781,16 +2598,26 @@ msgid ""
 "authenticate himself against UCS and can use the service without renewed "
 "authentication."
 msgstr ""
+"SAML (Security Assertion Markup Language) ist ein XML-basierter Standard "
+"zum Austausch von Authentifizierungsinformationen, der *Single Sign-On* "
+"über Domänengrenzen hinweg erlaubt. UCS stellt auf dem |UCSPRIMARYDN| und"
+" den |UCSBACKUPDN| einen ausfallsicheren SAML Identity Provider bereit. "
+"Über ein kryptografisches Zertifikat wird der SAML Identity Provider bei "
+"einem externen Dienst fest registriert und vertraut diesem. Der Benutzer "
+"authentifiziert sich dann einmalig gegenüber UCS und kann den Dienst ohne"
+" erneute Authentifizierung nutzen."
 
 #: ../../domain-ldap/saml.rst:19
 msgid "The single sign-on login page"
-msgstr ""
+msgstr "Die Single Sign-On-Anmeldeseite"
 
 #: ../../domain-ldap/saml.rst:21
 msgid ""
 "The SAML 2.0 compatible UCS identity provider is provided by the "
 "integration of :program:`simplesamlphp`."
 msgstr ""
+"Der SAML 2.0 kompatible UCS Identity Provider wird durch die Integration "
+"von :program:`simplesamlphp` bereitgestellt."
 
 #: ../../domain-ldap/saml.rst:24
 msgid ""
@@ -1801,6 +2628,11 @@ msgid ""
 "resolve the central DNS record, which by default is :samp:`ucs-"
 "sso.{[Domain name]}`."
 msgstr ""
+"Der UCS Identity Provider ist eng in die UCS Domäne eingebunden. Daher "
+"müssen Rechner, von denen der UCS Identity Provider genutzt werden soll, "
+"DNS-Namen in der UCS-Domäne auflösen können. Die DNS-Server der Domäne "
+"sollten auf allen Clients eingetragen sein, um den zentralen DNS-Namen, "
+"im Normalfall :samp:`ucs-sso.{[domainname]}`, auflösen zu können."
 
 #: ../../domain-ldap/saml.rst:31
 msgid ""
@@ -1813,6 +2645,15 @@ msgid ""
 "UCS domain root certificate on all clients that are using *single sign-"
 "on*."
 msgstr ""
+"Der UCS Identity Provider wird auf dem |UCSPRIMARYDN| und |UCSBACKUPDN| "
+"mit der Installation automatisch eingerichtet. Um die Ausfallsicherheit "
+"innerhalb der Domäne zu erhöhen, können weitere Systeme der Rolle "
+"|UCSBACKUPDN| verfügbar gemacht werden. Für den ausfallsicheren Zugriff "
+"auf den UCS Identity Provider wird standardmäßig der DNS-Eintrag :samp"
+":`ucs-sso.{[domainname]}` registriert. Das für diesen Eintrag vorgesehene"
+" TLS Zertifikat wird auf allen beteiligten Systemen der Domäne "
+"vorgehalten. Es wird empfohlen, das Wurzelzertifikat der UCS Domäne auf "
+"allen Rechnern, die *Single Sign-On* nutzen, zu installieren."
 
 #: ../../domain-ldap/saml.rst:39
 msgid ""
@@ -1821,6 +2662,11 @@ msgid ""
 "after logging on to Windows or Linux, can sign in to the identity "
 "provider without having to manual re-authenticate."
 msgstr ""
+"Es besteht die Möglichkeit, die SAML-Authentifizierung mit der Kerberos "
+"Anmeldung zu verknüpfen. Das bedeutet, dass sich Nutzer mit einem "
+"gültigen Kerberos Ticket, bspw. nach einer Anmeldung an Windows oder "
+"Linux, ohne eine erneute manuelle Authentifizierung am Identity Provider "
+"anmelden können."
 
 #: ../../domain-ldap/saml.rst:44
 msgid ""
@@ -1831,10 +2677,16 @@ msgid ""
 "examples for the configuration of Firefox and Internet Explorer / "
 "Microsoft Edge:"
 msgstr ""
+"Um die Kerberos Authentifizierung am Identity Provider zuzulassen, muss "
+"die |UCSUCRV| :envvar:`saml/idp/authsource` von ``univention-ldap`` auf "
+"``univention-negotiate`` gesetzt werden. Die Webbrowser müssen "
+"entsprechend so konfiguriert werden, so dass das Kerberos Ticket an den "
+"SAML Identity Provider übertragen wird. Im folgenden beispielhaft für "
+"Firefox und den Internet Explorer / Microsoft Edge:"
 
 #: ../../domain-ldap/saml.rst:55
 msgid "Mozilla Firefox"
-msgstr ""
+msgstr "Mozilla Firefox"
 
 #: ../../domain-ldap/saml.rst:51
 msgid ""
@@ -1843,10 +2695,15 @@ msgid ""
 " provider must be entered in the option ``network.negotiate-auth.trusted-"
 "uris``, which is :samp:`ucs-sso.{[Domain name]}` by default."
 msgstr ""
+"In der erweiterten Firefox Konfiguration, diese ist erreichbar über die "
+"Eingabe von ``about:config`` in der Firefox Adresszeile, muss bei der "
+"Option ``network.negotiate-auth.trusted-uris`` die Adresse des Identity "
+"Providers eingetragen werden, also in der Standardeinstellung :samp:`ucs-"
+"sso.{[domainname]}`."
 
 #: ../../domain-ldap/saml.rst:61
 msgid "Microsoft Internet Explorer; Microsoft Edge"
-msgstr ""
+msgstr "Microsoft Internet Explorer; Microsoft Edge"
 
 #: ../../domain-ldap/saml.rst:58
 msgid ""
@@ -1855,6 +2712,11 @@ msgid ""
 "Advanced`. The address of the identity provider has to be added, which is"
 " :samp:`ucs-sso.{[Domain name]}` by default."
 msgstr ""
+"In der Systemsteuerung müssen die :guilabel:`Internetoptionen` geöffnet "
+"werden und dort wird unter :menuselection:`Sicherheit --> Lokales "
+"Intranet --> Sites --> Erweitert` die Adresse des Identity Providers "
+"hinzugefügt, also in der Standardeinstellung :samp:`ucs-"
+"sso.{[domainname]}`."
 
 #: ../../domain-ldap/saml.rst:63
 msgid ""
@@ -1864,19 +2726,29 @@ msgid ""
 "prevent a pop up login box being shown for clients which are not part of "
 "the UCS domain."
 msgstr ""
+"Die Kerberos Authentifizierung kann auf bestimmte IP Subnetze beschränkt "
+"werden, indem die |UCSUCRV| :envvar:`saml/idp/negotiate/filter-subnets` "
+"beispielsweise auf ``127.0.0.0/16,192.168.0.0/16`` gesetzt wird. Dies ist"
+" besonders nützlich, um zu verhindern, dass für Clients, die nicht zur "
+"UCS-Domäne gehören, ein Dialog für den Login angezeigt wird."
 
 #: ../../domain-ldap/saml.rst:71
-msgid "Login via *single sign-on*"
-msgstr ""
+msgid "Login via single sign-on"
+msgstr "Anmelden per Single Sign-On"
 
 #: ../../domain-ldap/saml.rst:73
 msgid ""
 "The *single sign-on* is the default login for |UCSWEB|\\ s, as long as "
-":samp:`ucs-sso.[Domain name]}` can be reached. To login the domain "
+":samp:`ucs-sso.{[Domain name]}` can be reached. To login the domain "
 "credentials must be provided. For the login directly at the UCS system "
 "(i.e., without *single sign-on*), follow the link :guilabel:`Login "
 "without Single Sign On`."
 msgstr ""
+"Der *Single Sign-On* ist der Standard-Login für |UCSWEB|\\ s, sofern "
+":samp:`ucs-sso.{[domainname]}` erreicht werden kann. Zum Login werden die"
+" Anmeldedaten des Domänenkontos verwendet. Für den Login direkt am UCS-"
+"System (also ohne *Single Sign-On*) gelangt man über den Link "
+":guilabel:`Ohne Single Sign-On anmelden`."
 
 #: ../../domain-ldap/saml.rst:78
 msgid ""
@@ -1884,6 +2756,9 @@ msgid ""
 ":file:`/usr/share/univention-management-console-login/css/custom.css`. "
 "This file will never be altered or deleted during updates."
 msgstr ""
+"Über die Datei :file:`/usr/share/univention-management-console-"
+"login/css/custom.css` kann das Design des Anmeldedialogs angepasst "
+"werden. Diese Datei wird niemals automatisch überschrieben."
 
 #: ../../domain-ldap/saml.rst:82
 msgid ""
@@ -1893,6 +2768,12 @@ msgid ""
 "itself. These services need to be registered as described in :ref"
 ":`domain-saml-additional-serviceprovider`."
 msgstr ""
+"Andere Webdienste leiten ebenfalls auf die Anmeldeseite des UCS Identity "
+"Providers weiter, wenn ein *Single Sign-On* durchgeführt wird. Nach "
+"erfolgreicher Authentifizierung wird der Benutzer wieder auf die Seite "
+"des Webdienstes gesendet werden. Diese Dienste müssen, wie in :ref"
+":`domain-saml-additional-serviceprovider` beschrieben, registriert "
+"werden."
 
 #: ../../domain-ldap/saml.rst:87
 msgid ""
@@ -1904,10 +2785,17 @@ msgid ""
 "name]}/simplesamlphp/saml2/idp/SSOService.php?spentityid={[Service "
 "provider identifier]}`."
 msgstr ""
+"Der *Single Sign-On* an einem Dienst kann auch vom UCS Identity Provider "
+"initiiert werden. Dies erspart den Umweg, zunächst den externen Dienst "
+"selbst aufzurufen und sich von dort zur Authentifizierung weiterleiten zu"
+" lassen. Dazu muss der Identity Provider mit einem Link der Form "
+":samp:`https://ucs-"
+"sso.{[domainname]}/simplesamlphp/saml2/idp/SSOService.php?spentityid={[Service"
+" provider identifier]}` aufgerufen werden."
 
 #: ../../domain-ldap/saml.rst:97
 msgid "Adding a new external service provider"
-msgstr ""
+msgstr "Hinzufügen eines neuen externen Service Providers"
 
 #: ../../domain-ldap/saml.rst:99
 msgid ""
@@ -1916,10 +2804,19 @@ msgid ""
 " have to be activated for a service provider, to be able to authenticate "
 "for it at the UCS identity provider. The service provider can be "
 "activated for groups, to allow authentication with that service provider "
-"for all users within that group. On the users :guilabel:`Account tab` or "
-"the groups :guilabel:`General tab`, the service provider can to be added "
-"under :guilabel:`SAML settings`."
+"for all users within that group. On the user's *Account* tab or the "
+"group's *General* tab, the service provider can to be added under *SAML "
+"settings*."
 msgstr ""
+"Die am UCS Identity Provider registrierten Service Provider können über "
+"das UMC-Modul :guilabel:`SAML Identity Provider` verwaltet werden. "
+"Benutzer müssen freigeschaltet werden, bevor sie sich am UCS Identity "
+"Provider für einen Dienst authentifizieren können. Service Provider "
+"können auch für Gruppen aktiviert werden, sodass sich alle Benutzer in "
+"dieser Gruppe für diesen Dienst authentifizieren können. Auf dem Reiter "
+"*Konto* eines Benutzers, oder dem Reiter *Allgemein* einer Gruppe, muss "
+"dazu unter *SAML Einstellungen* der Service Provider Eintrag hinzugefügt "
+"werden."
 
 #: ../../domain-ldap/saml.rst:107
 msgid ""
@@ -1931,73 +2828,95 @@ msgid ""
 " the URL :samp:`https://ucs-sso.{[Domain "
 "name]}/simplesamlphp/saml2/idp/metadata.php`."
 msgstr ""
+"Um den UCS Identity Provider bei einem SAML Service Provider zu "
+"registrieren, wird der öffentliche Teil des SAML-Zertifikats auf dem "
+"Service Provider benötigt. Dieses kann über einen Download-Link im UMC-"
+"Modul heruntergeladen werden. Andere Service Provider benötigen die XML-"
+"Metadaten des Identity Providers in Form eines Datei-*Uploads*. In der "
+"Standardkonfiguration kann die XML-Datei unter der URL :samp:`https"
+"://ucs-sso.{[domainname]}/simplesamlphp/saml2/idp/metadata.php` "
+"heruntergeladen werden."
 
 #: ../../domain-ldap/saml.rst:115
 msgid ""
 "The following attributes can be configured when adding a new service "
 "provider."
 msgstr ""
+"Die folgenden Attribute können beim Anlegen eines neuen Service Provider-"
+"Eintrags konfiguriert werden."
 
 #: ../../domain-ldap/saml.rst:117
 msgid "General options when configuring a service provider"
-msgstr ""
+msgstr "Allgemeine Felder bei der Anbindung eines Service Providers"
 
-#: ../../domain-ldap/saml.rst:120 ../../domain-ldap/saml.rst:165
+#: ../../domain-ldap/saml.rst:121 ../../domain-ldap/saml.rst:167
 msgid "Attribute"
-msgstr ""
+msgstr "Attribut"
 
-#: ../../domain-ldap/saml.rst:121 ../../domain-ldap/saml.rst:166
+#: ../../domain-ldap/saml.rst:122 ../../domain-ldap/saml.rst:168
 msgid "Description"
-msgstr ""
-
-#: ../../domain-ldap/saml.rst:123
-msgid "Service provider activation status"
-msgstr ""
+msgstr "Beschreibung"
 
 #: ../../domain-ldap/saml.rst:124
+msgid "Service provider activation status"
+msgstr "Service Provider aktivieren"
+
+#: ../../domain-ldap/saml.rst:125
 msgid ""
 "If activated, the configuration for the service provider is activated and"
 " is ready for authentication."
 msgstr ""
-
-#: ../../domain-ldap/saml.rst:127
-msgid "Service provider identifier"
-msgstr ""
+"Ist diese Option gesetzt, wird die Konfiguration des Service Providers "
+"aktiviert und steht für die Anmeldung bereit."
 
 #: ../../domain-ldap/saml.rst:128
+msgid "Service provider identifier"
+msgstr "Bezeichner des Service Providers"
+
+#: ../../domain-ldap/saml.rst:129
 msgid ""
 "Defines the internal name of the service provider. The name is later "
 "selected at user objects, when giving them access to a service provider. "
 "The identifier cannot be changed later."
 msgstr ""
-
-#: ../../domain-ldap/saml.rst:132
-msgid "Respond to this service provider URL after login"
-msgstr ""
+"Definiert den internen Namen des Service Providers. Dieser wird später am"
+" Benutzerobjekt angezeigt und ausgewählt, um Benutzer für die Verbindung "
+"freizuschalten.  Der Bezeichner kann später nicht mehr geändert werden."
 
 #: ../../domain-ldap/saml.rst:133
+msgid "Respond to this service provider URL after login"
+msgstr "Antwort an diese Service Provider URL nach dem Login"
+
+#: ../../domain-ldap/saml.rst:134
 msgid ""
 "After successful authentication, the user’s browser is redirected to the "
 "service provider. The redirection is done to this provided URL."
 msgstr ""
-
-#: ../../domain-ldap/saml.rst:136
-msgid "Single logout URL for service provider"
-msgstr ""
+"Nach dem erfolgreichen Login an UCS wird der Browser des Benutzers zurück"
+" zum Service Provider geleitet. Die Weiterleitung erfolgt an die hier "
+"angegebene URL."
 
 #: ../../domain-ldap/saml.rst:137
+msgid "Single logout URL for service provider"
+msgstr "Single logout URL des Service Providers"
+
+#: ../../domain-ldap/saml.rst:138
 msgid ""
 "Service providers can offer a URL endpoint at which the session at the "
 "service provider can be terminated. If a user logs out at the UCS "
 "identity provider, the browser will get redirected to the provided URL to"
 " terminate the session."
 msgstr ""
-
-#: ../../domain-ldap/saml.rst:142
-msgid "Format of ``NameID`` attribute"
-msgstr ""
+"Service Provider können einen URL Endpunkt anbieten, mit dem die Session "
+"am Service Provider beendet werden kann. Loggt sich der Benutzer am UCS "
+"Identity Provider aus, wird über die hier übergebene URL ein Logout am "
+"Service Provider durchgeführt."
 
 #: ../../domain-ldap/saml.rst:143
+msgid "Format of ``NameID`` attribute"
+msgstr "Format des ``NameID`` Attributs"
+
+#: ../../domain-ldap/saml.rst:144
 msgid ""
 "The value ``NameIDFormat`` that the service provider receives. The "
 "service provider’s documentation should contain information about "
@@ -2005,84 +2924,107 @@ msgid ""
 "format:transient`` or ``urn:oasis:names:tc:SAML:1.1:nameid-"
 "format:unspecified``."
 msgstr ""
-
-#: ../../domain-ldap/saml.rst:148
-msgid "Name of the attribute that is used as ``NameID``"
-msgstr ""
+"Der Wert ``NameIDFormat``, den der Service Provider erhält. Die "
+"Dokumentation des Service Providers sollte erwartete Formate erwähnen.  "
+"Beispiel: ``urn:oasis:names:tc:SAML:2.0:nameid-format:transient`` oder "
+"``urn:oasis:names:tc :SAML:1.1:nameid-format:unspecified``."
 
 #: ../../domain-ldap/saml.rst:149
+msgid "Name of the attribute that is used as ``NameID``"
+msgstr "Name des Attributs, das als ``NameID`` verwendet wird"
+
+#: ../../domain-ldap/saml.rst:150
 msgid ""
 "The LDAP attribute that is used to uniquely identify the user is provided"
 " here, e.g., ``uid``."
 msgstr ""
-
-#: ../../domain-ldap/saml.rst:152
-msgid "Name of the organization for service provider"
-msgstr ""
+"Hier kann das LDAP Attribut eingetragen werden, das für eine eindeutige "
+"Identifizierung des Benutzers am Service Provider verwendet wird, "
+"beispielsweise ``uid``."
 
 #: ../../domain-ldap/saml.rst:153
+msgid "Name of the organization for service provider"
+msgstr "Name der Organisation des Service Providers"
+
+#: ../../domain-ldap/saml.rst:154
 msgid ""
 "The value provided here will be shown on the UCS single sign-on login "
 "page. It helps the user to identify for which service they enter "
 "credentials."
 msgstr ""
-
-#: ../../domain-ldap/saml.rst:157
-msgid "Description of this service provider"
-msgstr ""
+"Der hier eingetragene Wert wird auf der UCS Single Sign-On-Login-Seite "
+"angezeigt. Dem Benutzer wird so dargestellt, für welchen Dienst er sich "
+"authentifiziert."
 
 #: ../../domain-ldap/saml.rst:158
+msgid "Description of this service provider"
+msgstr "Beschreibung dieses Service Providers"
+
+#: ../../domain-ldap/saml.rst:159
 msgid ""
 "The value provided here will be shown on the UCS single sign-on login "
 "page. A longer description about the service provider can be given here. "
 "The description will be shown on the login page in a separate paragraph."
 msgstr ""
+"Der hier eingetragene Wert wird auf der UCS Single Sign-On-Login-Seite "
+"angezeigt. Hier kann eine längere Beschreibung über den Dienst angegeben "
+"werden, der auf der Login Seite in einem eigenen Absatz angezeigt wird."
 
-#: ../../domain-ldap/saml.rst:162
+#: ../../domain-ldap/saml.rst:163
 msgid "Advanced settings when configuring a service provider"
-msgstr ""
+msgstr "Erweiterte Felder bei der Anbindung eines Service Providers"
 
-#: ../../domain-ldap/saml.rst:168
+#: ../../domain-ldap/saml.rst:170
 msgid "URL to the service provider’s privacy policy"
-msgstr ""
+msgstr "URL zur Datenschutzrichtlinie des Service Providers"
 
-#: ../../domain-ldap/saml.rst:169
+#: ../../domain-ldap/saml.rst:171
 msgid ""
 "If a URL is entered here, the UCS identity provider login page will "
 "contain a link to this URL."
 msgstr ""
+"Wird hier eine URL eingetragen, wird dem Benutzer ein Link zu dieser "
+"Seite auf der UCS Identity Provider-Login-Seite angezeigt."
 
-#: ../../domain-ldap/saml.rst:172
+#: ../../domain-ldap/saml.rst:174
 msgid "Allow transmission of LDAP attributes to the service provider"
-msgstr ""
+msgstr "Erlaube die Übertragung von LDAP Attributen an den Service Provider"
 
-#: ../../domain-ldap/saml.rst:173
+#: ../../domain-ldap/saml.rst:175
 msgid ""
 "By default, the UCS identity provider transmits only the ``NameID`` "
-"attribute entered on the :guilabel:`General` page to the service "
-"provider. If additional LDAP user attributes are required by the service "
-"provider, this checkbox can be activated. The attributes that should be "
-"transmitted have to be entered in the :guilabel:`List of LDAP attributes "
-"to transmit`."
+"attribute entered on the *General* page to the service provider. If "
+"additional LDAP user attributes are required by the service provider, "
+"this checkbox can be activated. The attributes that should be transmitted"
+" have to be entered in the *List of LDAP attributes to transmit*."
 msgstr ""
-
-#: ../../domain-ldap/saml.rst:180
-msgid "Value for ``attribute format`` field"
-msgstr ""
+"Standardmäßig überträgt der UCS Identity Provider nur das auf dem Reiter "
+"*Allgemein* angegebene ``NameID`` Attribut an den Service Provider. "
+"Benötigt der Service Provider weitere LDAP-Benutzerattribute, kann diese "
+"Checkbox aktiviert werden. Die zu übertragenen Attribute werden dann "
+"unter *Liste der zu übermittelnden LDAP Attribute* eingetragen."
 
 #: ../../domain-ldap/saml.rst:181
+msgid "Value for ``attribute format`` field"
+msgstr "Der Wert des ``attribute format`` Feldes"
+
+#: ../../domain-ldap/saml.rst:182
 msgid ""
 "In case the transmitted attributes need to be sent in a particular format"
 " value, this format can be entered here. Example: ``urn:oasis:names "
 ":tc:SAML:2.0:nameid-format:transient`` or ``urn:oasis:names:tc:SAML:1.1"
 ":nameid-format:unspecified``."
 msgstr ""
-
-#: ../../domain-ldap/saml.rst:186
-msgid "List of LDAP attributes to transmit"
-msgstr ""
+"Sollen die übertragenen Attribute mit einem besonderen Formatwert "
+"übertragen werden, kann dieser hier eingetragen werden. Beispiel: "
+"``urn:oasis:names:tc:SAML:2.0:nameid-format:transient`` oder "
+"``urn:oasis:names:tc :SAML:1.1:nameid-format:unspecified``."
 
 #: ../../domain-ldap/saml.rst:187
+msgid "List of LDAP attributes to transmit"
+msgstr "Liste der zu übermittelnden LDAP-Attribute"
+
+#: ../../domain-ldap/saml.rst:188
 msgid ""
 "Every LDAP attribute that should be transmitted to the service provider "
 "can be entered here. Additionally, one or more service attribute names "
@@ -2091,44 +3033,70 @@ msgid ""
 "names for the service provider. Multiple service attribute names have to "
 "be separated by commas. In order for the UCS identity provider to process"
 " these attributes, they need to be registered additionally via the LDAP "
-"object ``id=default-saml-idp,cn=univention,[LDAP base DN]``. LDAP "
+"object :samp:`id=default-saml-idp,cn=univention,{[LDAP base DN]}`. LDAP "
 "attributes entered at the object can be read and transferred by the "
 "Identity Provider."
 msgstr ""
+"Hier kann jedes zu übertragende LDAP-Attribut eingetragen werden. Zu "
+"jedem dieser Attribute können ebenfalls ein oder mehrere Service "
+"Attribut-Namen im nebenstehenden Feld definiert werden. Diese dienen zur "
+"Übersetzung des LDAP Attribut-Namen für den Service-Provider. Mehrere "
+"Einträge müssen durch Kommata getrennt werden. Damit der UCS Identity "
+"Provider die angegebenen Attribute verarbeiten kann, müssen sie "
+"zusätzlich am LDAP Objekt :samp:`id=default-saml-idp,cn=univention,{[base"
+" DN]}` eingetragen werden. Dort eingetragene LDAP Attribute können vom "
+"Identity Provider ausgelesen und übertragen werden."
 
-#: ../../domain-ldap/saml.rst:201
+#: ../../domain-ldap/saml.rst:202
 msgid "Extended Configuration"
-msgstr ""
+msgstr "Erweiterte Konfiguration"
 
-#: ../../domain-ldap/saml.rst:203
+#: ../../domain-ldap/saml.rst:204
 msgid ""
 "Some environments may require the UCS Identity Provider to provide "
 "multiple logical Identity Provider instances. Logical separation is "
 "achieved by offering different URIs as Identity Provider endpoints."
 msgstr ""
+"In manchen Umgebungen kann es erforderlich sein, dass der UCS Identity "
+"Provider mehrere logische Identity Provider Instanzen bereitstellt. Die "
+"logische Trennung wird erreicht, indem der Identity Provider "
+"unterschiedliche URIs als Endpunkt anbietet."
 
-#: ../../domain-ldap/saml.rst:207
+#: ../../domain-ldap/saml.rst:208
 msgid ""
 "The default endpoint is :samp:`https://ucs-sso.{[Domain "
-"name]}/simplesamlphp/saml2/idp/metadata.php``. Further entries can be "
+"name]}/simplesamlphp/saml2/idp/metadata.php`. Further entries can be "
 "created by setting |UCSUCRV|\\ s in the form "
 ":envvar:`saml/idp/entityID/supplement/[identifier]` to ``true`` on all "
 "servers which serve the UCS Identity Provider. Typically that will be the"
 " |UCSPRIMARYDN| and all |UCSBACKUPDN|\\ s. The :program:`apache2` service"
 " must then be reloaded."
 msgstr ""
+"Der standardmäßig eingerichtete Endpunkt ist :samp:`https://ucs-"
+"sso.{[domainname]}/simplesamlphp/saml2/idp/metadata.php`. Weitere "
+"Einträge können durch das Setzen von |UCSUCRV|\\ n in der Form "
+":envvar:`saml/idp/entityID/supplement/[identifier]` auf ``true`` erzeugt "
+"werden. Diese müssen auf allen Servern, die den UCS Identity Provider zur"
+" Verfügung stellen, gesetzt werden. Typischerweise sind dies der "
+"|UCSPRIMARYDN| und alle Server der Rolle |UCSBACKUPDN|. Anschließend muss"
+" der :program:`apache2` Dienst neu geladen werden."
 
-#: ../../domain-ldap/saml.rst:214
+#: ../../domain-ldap/saml.rst:215
 msgid ""
 "For example, to set up another entry under the URI :samp:`https://ucs-"
 "sso.{[Domain name]}/simplesamlphp/{[secondIDP]}/saml2/idp/metadata.php``,"
 " the |UCSUCRV| ``saml/idp/entityID/supplement/secondIDP=true`` must be "
 "set."
 msgstr ""
+"Um beispielsweise einen weiteren Eintrag unter der URI :samp:`https"
+"://ucs-"
+"sso.{[domainname]}/simplesamlphp/{[secondIDP]}/saml2/idp/metadata.php` "
+"einzurichten, muss die |UCSUCRV| "
+"``saml/idp/entityID/supplement/secondIDP=true`` gesetzt werden."
 
 #: ../../domain-ldap/ssl.rst:4
 msgid "SSL certificate management"
-msgstr ""
+msgstr "SSL-Zertifikatsverwaltung"
 
 #: ../../domain-ldap/ssl.rst:6
 msgid ""
@@ -2139,12 +3107,21 @@ msgid ""
 "Layer (SSL)*, however, is still more common and is also used in this "
 "documentation)."
 msgstr ""
+"Unter UCS werden sensitive Daten immer verschlüsselt über das Netzwerk "
+"übertragen, zum Beispiel durch die Verwendung von SSH für den Login auf "
+"Systeme oder durch Verwendung von Protokollen auf Basis von SSL/TLS.  "
+"(*Transport Layer Security (TLS)* ist der aktuelle Protokollname, der "
+"Name des Vorgängerprotokolls *Secure Socket Layer (SSL)* ist jedoch "
+"weiterhin gebräuchlicher und wird auch in dieser Dokumentation "
+"verwendet)."
 
 #: ../../domain-ldap/ssl.rst:12
 msgid ""
 "For example, SSL/TLS is employed in the listener/notifier domain "
 "replication or for HTTPS access to |UCSWEB|\\ s."
 msgstr ""
+"SSL/TLS kommt beispielsweise bei der Listener/Notifier-Domänenreplikation"
+" oder beim HTTPS-Zugriff auf |UCSWEB|\\ s zum Einsatz."
 
 #: ../../domain-ldap/ssl.rst:15
 msgid ""
@@ -2153,6 +3130,11 @@ msgid ""
 "end, each computer also features a so-called *host certificate*, which is"
 " issued and signed by a certification authority (CA)."
 msgstr ""
+"Für eine verschlüsselte Kommunikation zwischen zwei Rechnern müssen beide"
+" Kommunikationspartner die Authentizität des verwendeten Schlüssels "
+"prüfen können. Dafür besitzt jeder Rechner ein so genanntes "
+"*Rechnerzertifikat*, das von einer Zertifizierungsstelle (Certification "
+"Authority, CA) herausgegeben und signiert wird."
 
 #: ../../domain-ldap/ssl.rst:20
 msgid ""
@@ -2163,6 +3145,12 @@ msgid ""
 "signs its own certificate and can sign certificates for other "
 "certification authorities."
 msgstr ""
+"UCS bringt seine eigene CA mit, die bei der Installation des "
+"|UCSPRIMARYDN| automatisch eingerichtet wird und von der jedes UCS-System"
+" im Rahmen des Domänenbeitritts automatisch ein Zertifikat für sich "
+"selbst und das öffentliche Zertifikat der CA bezieht. Diese CA tritt als "
+"Root-CA auf, signiert ihr eigenes Zertifikat, und kann Zertifikate für "
+"andere Zertifizierungsstellen signieren."
 
 #: ../../domain-ldap/ssl.rst:26
 msgid ""
@@ -2171,6 +3159,10 @@ msgid ""
 "can be subsequently adapted on the |UCSPRIMARYDN| in the UMC module "
 ":guilabel:`Certificate settings`."
 msgstr ""
+"Die Eigenschaften der CA werden bei der Installation basierend auf "
+"Systemeinstellungen wie der Locale automatisch festgelegt. Diese "
+"Einstellungen können auf dem |UCSPRIMARYDN| im UMC-Modul :guilabel"
+":`Zertifikats-Einstellungen` nachträglich angepasst werden."
 
 #: ../../domain-ldap/ssl.rst:33
 msgid ""
@@ -2179,6 +3171,10 @@ msgid ""
 " procedure required for this is documented in :uv:kb:`Renewing the SSL "
 "certificates <37>`."
 msgstr ""
+"Besteht die UCS-Domäne aus mehr als einem System, müssen durch die "
+"Änderung des Root-Zertifikats auch alle anderen Rechner-Zertifikate neu "
+"ausgestellt werden! Das dafür nötige Vorgehen ist in :uv:kb:`Renewing the"
+" SSL certificates <37>` dokumentiert."
 
 #: ../../domain-ldap/ssl.rst:37
 msgid ""
@@ -2186,6 +3182,10 @@ msgid ""
 "stored on every |UCSBACKUPDN|, which is synchronized with the CA on the "
 "|UCSPRIMARYDN| by a Cron job every 20 minutes."
 msgstr ""
+"Die UCS-CA befindet sich immer auf dem |UCSPRIMARYDN|. Auf jedem "
+"|UCSBACKUPDN| wird eine Kopie der CA vorgehalten, die über einen Cronjob "
+"standardmäßig alle 20 Minuten mit der CA auf dem |UCSPRIMARYDN| "
+"synchronisiert wird."
 
 #: ../../domain-ldap/ssl.rst:43
 msgid ""
@@ -2193,18 +3193,26 @@ msgid ""
 "not vice-versa. For this reason, only the CA on the |UCSPRIMARYDN| should"
 " be used."
 msgstr ""
+"Die CA wird nur vom |UCSPRIMARYDN| zum |UCSBACKUPDN| synchronisiert und "
+"nicht umgekehrt. Es sollte also ausschließlich die CA auf dem "
+"|UCSPRIMARYDN| verwendet werden."
 
 #: ../../domain-ldap/ssl.rst:47
 msgid ""
 "If a |UCSBACKUPDN| is promoted to the |UCSPRIMARYDN| (see :ref:`domain-"
 "backup2master`), the CA on the new |UCSPRIMARYDN| can be used directly."
 msgstr ""
+"Wird ein |UCSBACKUPDN| zum |UCSPRIMARYDN| hochgestuft (siehe :ref"
+":`domain-backup2master`), so kann die CA auf dem dann neuen "
+"|UCSPRIMARYDN| direkt verwendet werden."
 
 #: ../../domain-ldap/ssl.rst:51
 msgid ""
 "The UCS root certificate has a specified validity period - as do the "
 "computer certificates created with it."
 msgstr ""
+"Das UCS-Root-Zertifikat hat - ebenso wie die damit erstellten "
+"Rechnerzertifikate - einen bestimmten Gültigkeitszeitraum."
 
 #: ../../domain-ldap/ssl.rst:56
 msgid ""
@@ -2212,6 +3220,9 @@ msgid ""
 "communication with SSL (e.g., LDAP or domain replication) no longer "
 "function."
 msgstr ""
+"Ist dieser Zeitraum abgelaufen, funktionieren Dienste, die ihre "
+"Kommunikation mit SSL verschlüsseln (z.B. LDAP oder die "
+"Domänenreplikation) nicht mehr."
 
 #: ../../domain-ldap/ssl.rst:60
 msgid ""
@@ -2222,12 +3233,21 @@ msgid ""
 "expire soon (the warning period can be specified with the |UCSUCRV| "
 ":envvar:`ssl/validity/warning`; the standard value is 30 days)."
 msgstr ""
+"Es ist deshalb notwendig, die Gültigkeit der Zertifikate regelmäßig zu "
+"überprüfen und rechtzeitig das Root-Zertifikat zu erneuern. Für die "
+"Überwachung des Gültigkeitszeitraums wird ein Nagios-Plugin "
+"bereitgestellt. Außerdem erfolgt beim Öffnen eines UMC-Moduls eine "
+"Warnmeldung, wenn das Root-Zertifikat bald abläuft (der Warnzeitraum kann"
+" mit der |UCSUCRV| :envvar:`ssl/validity/warning` festgelegt werden und "
+"beträgt standardmäßig 30 Tage)."
 
 #: ../../domain-ldap/ssl.rst:67
 msgid ""
 "The renewal of the root certificate and the other host certificates is "
 "documented in :uv:kb:`Renewing the SSL certificates <37>`."
 msgstr ""
+"Die Erneuerung des Root-Zertifikats und der übrigen Rechnerzertifikate "
+"ist in :uv:kb:`Renewing the SSL certificates <37>` dokumentiert."
 
 #: ../../domain-ldap/ssl.rst:70
 msgid ""
@@ -2237,6 +3257,12 @@ msgid ""
 "and :envvar:`ssl/validity/root` (root certificate). The values entered "
 "there reflect the number of days since the 1970-01-01."
 msgstr ""
+"Auf UCS-Systemen überprüft ein Cronjob täglich die Gültigkeit des lokalen"
+" Rechnerzertifikats und des Root-Zertifikats und schreibt das Ablaufdatum"
+" in die |UCSUCR|-Variablen :envvar:`ssl/validity/host` "
+"(Rechnerzertifikat) und :envvar:`ssl/validity/root` (Root-Zertifikat). "
+"Die dort angegebenen Werte spiegeln die Anzahl der Tage seit dem 1.1.1970"
+" wieder."
 
 #: ../../domain-ldap/ssl.rst:76
 msgid ""
@@ -2244,20 +3270,26 @@ msgid ""
 "certificate can be accessed via the upper right menu and the entry "
 ":menuselection:`License --> License information`."
 msgstr ""
+"In |UCSUMC| wird das effektive Ablaufdatum des Rechner- und Root-"
+"Zertifikats angezeigt über über das rechte, obere Benutzermenü und den "
+"Menüpunkt :menuselection:`Lizenz --> Lizenzinformation`."
 
 #: ../../domain-ldap/system-roles.rst:4
 msgid "UCS system roles"
-msgstr ""
+msgstr "UCS-Systemrollen"
 
 #: ../../domain-ldap/system-roles.rst:6
 msgid ""
 "In a UCS domain systems can be installed in different *system roles*. The"
-" following gives a short characterization of the different systems:"
+" following gives a short characterization of the different systems."
 msgstr ""
+"In einer UCS-Domäne können Systeme in unterschiedlichen *Systemrollen* "
+"installiert werden. Im Folgenden werden die verschiedenen Systemrollen "
+"kurz charakterisiert."
 
 #: ../../domain-ldap/system-roles.rst:12
 msgid "|UCSPRIMARYDN|"
-msgstr ""
+msgstr "|UCSPRIMARYDN|"
 
 #: ../../domain-ldap/system-roles.rst:14
 msgid ""
@@ -2266,22 +3298,30 @@ msgid ""
 "data (such as users, groups, printers) and the SSL security certificates "
 "are saved on the |UCSPRIMARYDN|."
 msgstr ""
+"Ein System mit der Rolle |UCSPRIMARYDN| ist das führende System einer "
+"UCS-Domäne und wird immer als erstes System installiert. Auf dem "
+"|UCSPRIMARYDN| werden die Domänendaten (wie z.B. Benutzer, Gruppen, "
+"Drucker) und die SSL-Sicherheitszertifikate gespeichert."
 
 #: ../../domain-ldap/system-roles.rst:19
 msgid ""
 "Copies of these data are automatically transferred to all servers with "
 "the |UCSBACKUPDN| role."
 msgstr ""
+"Kopien dieser Daten werden automatisch auf Server mit der Rolle "
+"|UCSBACKUPDN| übertragen."
 
 #: ../../domain-ldap/system-roles.rst:25
 msgid "|UCSBACKUPDN|"
-msgstr ""
+msgstr "|UCSBACKUPDN|"
 
 #: ../../domain-ldap/system-roles.rst:27
 msgid ""
 "All the domain data and SSL security certificates are saved as read-only "
 "copies on servers with the |UCSBACKUPDN| role."
 msgstr ""
+"Auf Servern mit der Rolle |UCSBACKUPDN| werden alle Domänendaten und SSL-"
+"Sicherheitszertifikate als Nur-Lese-Kopie gespeichert."
 
 #: ../../domain-ldap/system-roles.rst:30
 msgid ""
@@ -2289,10 +3329,13 @@ msgid ""
 "latter should fail, a |UCSBACKUPDN| can take over the role of the "
 "|UCSPRIMARYDN| permanently (see :ref:`domain-backup2master`)."
 msgstr ""
+"Der |UCSBACKUPDN| dient als Fallback-System des |UCSPRIMARYDN|. Sollte "
+"dieser ausfallen, kann ein |UCSBACKUPDN| die Rolle des |UCSPRIMARYDN| "
+"dauerhaft übernehmen (siehe :ref:`domain-backup2master`)."
 
 #: ../../domain-ldap/system-roles.rst:37
 msgid "|UCSREPLICADN|"
-msgstr ""
+msgstr "|UCSREPLICADN|"
 
 #: ../../domain-ldap/system-roles.rst:39
 msgid ""
@@ -2300,6 +3343,9 @@ msgid ""
 "|UCSREPLICADN| role. In contrast to the |UCSBACKUPDN|, however, not all "
 "security certificates are synchronized."
 msgstr ""
+"Auf Servern mit der Rolle |UCSREPLICADN| werden die Domänendaten als Nur-"
+"Lese-Kopie gespeichert. Im Gegensatz zum |UCSBACKUPDN| werden jedoch "
+"nicht alle SSL-Sicherheitszertifikate gespeichert."
 
 #: ../../domain-ldap/system-roles.rst:43
 msgid ""
@@ -2307,34 +3353,41 @@ msgid ""
 "against the local LDAP server, |UCSREPLICADN|\\ s are ideal for site "
 "servers and the distribution of load-intensive services."
 msgstr ""
+"Da die Zugriffe der auf einem |UCSREPLICADN| laufenden Dienste gegen den "
+"lokalen LDAP-Datenbestand erfolgen, bieten sich |UCSREPLICADN|\\ s für "
+"Standortserver und für die Verteilung lastintensiver Dienste an."
 
 #: ../../domain-ldap/system-roles.rst:47
-msgid "A |UCSREPLICADN| cannot be promoted to a |UCSPRIMARYDN|"
-msgstr ""
+msgid "A |UCSREPLICADN| cannot be promoted to a |UCSPRIMARYDN|."
+msgstr "Ein |UCSREPLICADN| kann nicht zum |UCSPRIMARYDN| hochgestuft werden."
 
 #: ../../domain-ldap/system-roles.rst:52
 msgid "|UCSMANAGEDNODE|"
-msgstr ""
+msgstr "|UCSMANAGEDNODE|"
 
 #: ../../domain-ldap/system-roles.rst:54
 msgid ""
 "|UCSMANAGEDNODE| are server systems without a local LDAP server. Access "
 "to domain data here is performed via other servers in the domain."
 msgstr ""
+"|UCSMANAGEDNODE| sind Server-Systeme ohne lokalen LDAP-Server. Der "
+"Zugriff auf Domänendaten erfolgt hierbei über andere Server der Domäne."
 
 #: ../../domain-ldap/system-roles.rst:60
 msgid "Ubuntu"
-msgstr ""
+msgstr "Ubuntu"
 
 #: ../../domain-ldap/system-roles.rst:62
 msgid ""
 "Ubuntu clients can be managed with this system role, see :ref:`computers-"
 "ubuntu`."
 msgstr ""
+"Ubuntu-Clients können mit einer eigenen Systemrolle verwaltet werden, "
+"siehe :ref:`computers-ubuntu`."
 
 #: ../../domain-ldap/system-roles.rst:68
 msgid "Linux"
-msgstr ""
+msgstr "Linux"
 
 #: ../../domain-ldap/system-roles.rst:70
 msgid ""
@@ -2342,54 +3395,67 @@ msgid ""
 "UCS and Ubuntu, e.g., for Debian or CentOS systems. The integration is "
 "documented in :cite:t:`ext-doc-domain`."
 msgstr ""
+"Diese Systemrolle wird für die Integration von anderen Linux-Systemen als"
+" UCS und Ubuntu verwendet, z.B. für Debian- oder CentOS-Systeme. Die "
+"Integration wird in :cite:t:`ext-doc-domain` beschrieben."
 
 #: ../../domain-ldap/system-roles.rst:77
 msgid "macOS"
-msgstr ""
+msgstr "macOS"
 
 #: ../../domain-ldap/system-roles.rst:79
 msgid ""
 "macOS systems can be joined into a UCS domain using Samba/AD. Additional "
 "information can be found in :ref:`macos-domain-join`."
 msgstr ""
+"macOS-Systeme können einer UCS-Domäne mit Samba/AD beitreten. Weitere "
+"Hinweise finden sich in :ref:`macos-domain-join`."
 
 #: ../../domain-ldap/system-roles.rst:85
 msgid "Domain Trust Account"
-msgstr ""
+msgstr "Domain Trust Account"
 
 #: ../../domain-ldap/system-roles.rst:87
 msgid ""
 "A domain trust account is set up for trust relationships between Windows "
 "and UCS domains."
 msgstr ""
+"Ein Domain Trust Account wird für Vertrauensstellungen zwischen Windows "
+"und UCS Domänen eingerichtet."
 
 #: ../../domain-ldap/system-roles.rst:93
 msgid "IP client"
-msgstr ""
+msgstr "IP-Client"
 
 #: ../../domain-ldap/system-roles.rst:95
 msgid ""
 "An IP client allows the integration of non-UCS systems into the IP "
 "management (DNS/DHCP), e.g., for network printers or routers."
 msgstr ""
+"Ein IP-Client ermöglicht die Integration von Nicht-UCS-Systemen in das "
+"IP-Management (DNS/DHCP), z.B. für Netzwerkdrucker oder Router."
 
 #: ../../domain-ldap/system-roles.rst:101
 msgid "Windows Domaincontroller"
-msgstr ""
+msgstr "Windows Domänencontroller"
 
 #: ../../domain-ldap/system-roles.rst:103
 msgid ""
 "Windows domain controllers in a Samba/AD environment are operated with "
 "this system role."
 msgstr ""
+"Windows-Domänencontroller in einer Samba/AD-Umgebung werden mit dieser "
+"Systemrolle betrieben."
 
 #: ../../domain-ldap/system-roles.rst:109
 msgid "Windows Workstation/Server"
-msgstr ""
+msgstr "Windows Workstation/Server"
 
 #: ../../domain-ldap/system-roles.rst:111
 msgid ""
 "Windows clients and Windows |UCSMANAGEDNODE|\\ s are managed with this "
 "system role."
 msgstr ""
+"Windows-Clients und Windows-Memberserver werden mit dieser Systemrolle "
+"verwaltet."
 

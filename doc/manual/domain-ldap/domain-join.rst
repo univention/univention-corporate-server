@@ -15,11 +15,17 @@ into the domain. This is described in :cite:t:`ext-doc-domain`.
 How UCS systems join domains
 ----------------------------
 
-There are three possibilities for a UCS system to join an existing domain;
-directly after installation in the Univention Installer (see
-:ref:`installation-domain-settings-join-ucs-domain`) or subsequently using
-either the command :command:`univention-join` or the UMC module
-:guilabel:`Domain join`.
+There are three possibilities for a UCS system to join an existing domain:
+
+* Directly after installation in the Univention Installer, see
+  :ref:`installation-domain-settings-join-ucs-domain`.
+
+* Subsequently with the command :command:`univention-join`, see
+  :ref:`domain-ldap-subsequent-domain-joins-with-univention-join`.
+
+* Using the UMC module :guilabel:`Domain join`, see
+  :ref:`linux-domain-join-umc`.
+
 
 The |UCSPRIMARYDN| should always be installed at the most up-to-date release
 stand of the domains, as problems can arise with an outdated |UCSPRIMARYDN| when
@@ -86,10 +92,11 @@ A domain join can also be carried out web based via the UMC module
 system which has yet to join the domain, the login to the module is done as user
 ``root``.
 
-As for the domain joining procedure via the command line, username and password
-of a user account authorized to add computers to a domain must be entered in the
-resulting dialogue. Likewise, the |UCSPRIMARYDN| will be determined
-automatically via a DNS request, but can also be entered manually.
+As for the :ref:`domain joining procedure via the command line
+<domain-ldap-subsequent-domain-joins-with-univention-join>`, username and
+password of a user account authorized to add computers to a domain must be
+entered in the resulting dialogue. Likewise, the |UCSPRIMARYDN| will be
+determined automatically via a DNS request, but can also be entered manually.
 
 The :guilabel:`Rejoin` option can be used to repeat the domain join at any time.
 
@@ -209,13 +216,12 @@ corner of the screen. The *Control Panel* can then be searched for under
 :menuselection:`Search --> Apps`. :menuselection:`Change settings --> Network
 ID` must be clicked on under :menuselection:`System and Security --> System`.
 
-The :guilabel:`Domain` option field must be ticked and the name of the Samba
-domain entered in the input field for the domain join. After clicking on the
+The *Domain* option field must be ticked and the name of the Samba domain
+entered in the input field for the domain join. After clicking on the
 :guilabel:`OK` button, the username ``Administrator`` must be entered in the
-input field :guilabel:`Name` and the password from
-``uid=Administrator,cn=users,<LDAP base DN`` transferred to the
-:guilabel:`Password` input field. The process for joining the domain can then be
-started by clicking on :guilabel:`OK`.
+input field *Name* and the password from :samp:`uid=Administrator,cn=users,{LDAP
+base DN}` transferred to the *Password* input field. The process for joining the
+domain can then be started by clicking on :guilabel:`OK`.
 
 .. _ubuntu-domain-join:
 
@@ -262,13 +268,12 @@ Note that the automatically mounted shares are not displayed in the finder's sid
 Domain join using the system preferences GUI
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In the System Preferences via the :guilabel:`Users & Groups`
-entry, the :guilabel:`Login menu` can be reached. After
-authenticating by clicking on the lock in the lower left corner and
-providing credentials of a local *Administrator* account, the
-:guilabel:`Network Account Server: Join` button needs to be
-clicked. From that menu it is possible to open the :guilabel:`Directory
-Utility`.
+In the System Preferences via the :guilabel:`Users & Groups` entry, the
+:guilabel:`Login menu` can be reached. After authenticating by clicking on the
+lock in the lower left corner and providing credentials of a local
+*Administrator* account, the :guilabel:`Network Account Server: Join` button
+needs to be clicked. From that menu it is possible to open the *Directory
+Utility*.
 
 .. _domain-ldap-join-osx:
 
@@ -277,16 +282,16 @@ Utility`.
 
    Domain join of a macOS system
 
-In the advanced options section, the option :guilabel:`Create mobile account at
-login` should be activated. A mobile account has the advantage that, when the
-domain is not available, the user can log into the macOS system with the same
-account used for logging into the domain.
+In the advanced options section, the option *Create mobile account at login*
+should be activated. A mobile account has the advantage that, when the domain is
+not available, the user can log into the macOS system with the same account used
+for logging into the domain.
 
-After filling in the domain name in the field :guilabel:`Active Directory
-Domain` and the hostname of the macOS client in the field :guilabel:`Computer
-ID`, the join process is initiated after clicking the button
-:guilabel:`Bind...`. The username and password of an account in the ``Domain
-Admins`` group needs to be entered, e.g., ``Administrator``.
+After filling in the domain name in the field *Active Directory Domain* and the
+hostname of the macOS client in the field *Computer ID*, the join process is
+initiated after clicking the button :guilabel:`Bind...`. The username and
+password of an account in the ``Domain Admins`` group needs to be entered, e.g.,
+``Administrator``.
 
 .. _macos-domain-join-cli:
 

@@ -67,8 +67,8 @@ login box being shown for clients which are not part of the UCS domain.
 
 .. _domain-saml-sso-login:
 
-Login via *single sign-on*
---------------------------
+Login via single sign-on
+------------------------
 
 The activation of *single sign-on* for the portal is described in
 :ref:`central-management-umc-login`. For this, :samp:`ucs-sso.{[Domain name]}`
@@ -102,8 +102,8 @@ providers that are registered at the UCS identity provider. Users have to be
 activated for a service provider, to be able to authenticate for it at the UCS
 identity provider. The service provider can be activated for groups, to allow
 authentication with that service provider for all users within that group. On
-the users :guilabel:`Account tab` or the groups :guilabel:`General tab`, the
-service provider can to be added under :guilabel:`SAML settings`.
+the user's *Account* tab or the group's *General* tab, the
+service provider can to be added under *SAML settings*.
 
 To register the UCS identity provider at an external service provider,
 the public part of the SAML certificate is required by the service
@@ -174,11 +174,10 @@ The following attributes can be configured when adding a new service provider.
 
    * - Allow transmission of LDAP attributes to the service provider
      - By default, the UCS identity provider transmits only the ``NameID``
-       attribute entered on the :guilabel:`General` page to the service
-       provider. If additional LDAP user attributes are required by the service
-       provider, this checkbox can be activated. The attributes that should be
-       transmitted have to be entered in the :guilabel:`List of LDAP attributes
-       to transmit`.
+       attribute entered on the *General* page to the service provider. If
+       additional LDAP user attributes are required by the service provider,
+       this checkbox can be activated. The attributes that should be transmitted
+       have to be entered in the *List of LDAP attributes to transmit*.
 
    * - Value for ``attribute format`` field
      - In case the transmitted attributes need to be sent in a particular format
@@ -194,7 +193,7 @@ The following attributes can be configured when adding a new service provider.
        names for the service provider. Multiple service attribute names have to
        be separated by commas. In order for the UCS identity provider to process
        these attributes, they need to be registered additionally via the LDAP
-       object ``id=default-saml-idp,cn=univention,[LDAP base DN]``. LDAP
+       object :samp:`id=default-saml-idp,cn=univention,{[LDAP base DN]}`. LDAP
        attributes entered at the object can be read and transferred by the
        Identity Provider.
 
@@ -208,7 +207,7 @@ logical Identity Provider instances. Logical separation is achieved by offering
 different URIs as Identity Provider endpoints.
 
 The default endpoint is :samp:`https://ucs-sso.{[Domain
-name]}/simplesamlphp/saml2/idp/metadata.php``. Further entries can be created by
+name]}/simplesamlphp/saml2/idp/metadata.php`. Further entries can be created by
 setting |UCSUCRV|\ s in the form
 :envvar:`saml/idp/entityID/supplement/[identifier]` to ``true`` on all servers
 which serve the UCS Identity Provider. Typically that will be the |UCSPRIMARYDN|

@@ -4,7 +4,7 @@ UCS system roles
 ================
 
 In a UCS domain systems can be installed in different *system roles*. The
-following gives a short characterization of the different systems:
+following gives a short characterization of the different systems.
 
 .. _domain-ldap-primary-directory-node:
 
@@ -44,7 +44,7 @@ As access to the services running on a |UCSREPLICADN| are performed against the
 local LDAP server, |UCSREPLICADN|\ s are ideal for site servers and the
 distribution of load-intensive services.
 
-A |UCSREPLICADN| cannot be promoted to a |UCSPRIMARYDN|
+A |UCSREPLICADN| cannot be promoted to a |UCSPRIMARYDN|.
 
 .. _domain-ldap-managed-node:
 

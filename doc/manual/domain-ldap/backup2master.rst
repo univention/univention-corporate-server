@@ -90,41 +90,41 @@ on the |UCSBACKUPDN|. The system must be rebooted after the conversion. The
 process is logged to :file:`/var/log/univention/backup2master.log` The following
 steps are performed by :command:`univention-backup2master`:
 
-* Checking the environment: The system must be a |UCSBACKUPDN| that already
-  joined the domain. Additionally, it is checked if the |UCSPRIMARYDN| can be
-  resolved via DNS and if the repository server can be reached. Also, the
-  |UCSPRIMARYDN| must be powered off and not reachable anymore.
+#. Checking the environment: The system must be a |UCSBACKUPDN| that already
+   joined the domain. Additionally, it is checked if the |UCSPRIMARYDN| can be
+   resolved via DNS and if the repository server can be reached. Also, the
+   |UCSPRIMARYDN| must be powered off and not reachable anymore.
 
-* Now, the most important services OpenLDAP, Samba, Kerberos and |UCSUDN| and
-  Listener will be stopped. Important |UCSUCRV|, such as :envvar:`ldap/master`
-  and :envvar:`server/role` will be changed. The UCS Root CA certificate will be
-  available via the web server on the |UCSBACKUPDN|. All mentioned services will
-  be started again.
+#. Now, the most important services OpenLDAP, Samba, Kerberos and |UCSUDN| and
+   Listener will be stopped. Important |UCSUCRV|, such as :envvar:`ldap/master`
+   and :envvar:`server/role` will be changed. The UCS Root CA certificate will
+   be available via the web server on the |UCSBACKUPDN|. All mentioned services
+   will be started again.
 
-* The DNS SRV record ``kerberos-adm`` will be changed from the old to the new
-  |UCSPRIMARYDN|.
+#. The DNS SRV record ``kerberos-adm`` will be changed from the old to the new
+   |UCSPRIMARYDN|.
 
-* If present, the Univention S4 Connector (see :ref:`windows-s4-connector`) will
-  be removed from the computer object of the old |UCSPRIMARYDN| and will be
-  scheduled for re-configuration on the new |UCSPRIMARYDN|.
+#. If present, the Univention S4 Connector (see :ref:`windows-s4-connector`)
+   will be removed from the computer object of the old |UCSPRIMARYDN| and will
+   be scheduled for re-configuration on the new |UCSPRIMARYDN|.
 
-* The server role of the new |UCSPRIMARYDN| will be changed to
-  ``domaincontroller_master`` in the OpenLDAP directory service. The DNS SRV
-  record ``_domaincontroller_master._tcp`` will also be adjusted.
+#. The server role of the new |UCSPRIMARYDN| will be changed to
+   ``domaincontroller_master`` in the OpenLDAP directory service. The DNS SRV
+   record ``_domaincontroller_master._tcp`` will also be adjusted.
 
-* If present, all entries of the old |UCSPRIMARYDN| will be removed from the
-  local Samba directory service. Additionally, the FSMO roles will be
-  transferred to the new |UCSPRIMARYDN|.
+#. If present, all entries of the old |UCSPRIMARYDN| will be removed from the
+   local Samba directory service. Additionally, the FSMO roles will be
+   transferred to the new |UCSPRIMARYDN|.
 
-* The computer object of the old |UCSPRIMARYDN| will be deleted from OpenLDAP.
+#. The computer object of the old |UCSPRIMARYDN| will be deleted from OpenLDAP.
 
-* The OpenLDAP directory service will be searched for any remaining references
-  to the old |UCSPRIMARYDN|. All found references (e.g. DNS records) are shown
-  and suggested to be fixed. The suggested fixes have to be checked and
-  confirmed one by one.
+#. The OpenLDAP directory service will be searched for any remaining references
+   to the old |UCSPRIMARYDN|. All found references (e.g. DNS records) are shown
+   and suggested to be fixed. The suggested fixes have to be checked and
+   confirmed one by one.
 
-* Finally, the package :program:`univention-server-backup` will be replaced by
-  :program:`univention-server-master`.
+#. Finally, the package :program:`univention-server-backup` will be replaced by
+   :program:`univention-server-master`.
 
 Subsequently, the LDAP directory on the new |UCSPRIMARYDN| and the |UCSUCR|
 values on all UCS systems of the domain should be checked for any remaining

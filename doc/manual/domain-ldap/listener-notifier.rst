@@ -69,10 +69,9 @@ Analysis of listener/notifier problems
 Log files/debug level of replication
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-All status messages from the |UCSUDL| and the executed listener modules
-are logged in the
-:file:`/var/log/univention/listener.log` file. The level
-of detail of the log messages can be configured using the |UCSUCRV|
+All status messages from the |UCSUDL| and the executed listener modules are
+logged in the :file:`/var/log/univention/listener.log` file. The level of detail
+of the log messages can be configured using the |UCSUCRV|
 :envvar:`listener/debug/level`.
 
 Status messages from the |UCSUDN| service are logged in the

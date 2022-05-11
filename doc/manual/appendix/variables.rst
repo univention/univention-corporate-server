@@ -441,6 +441,30 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    See :ref:`domain-ldap-delegation-of-the-priviledge-to-reset-user-passwords`.
 
 
+.. envvar:: ldap/acl/user/passwordreset/attributes
+
+   If users that are allowed to change other users' passwords need access to
+   additional LDAP attributes needed for the password change, configure them in
+   this variable. For more information, see
+   :ref:`domain-ldap-delegation-of-the-priviledge-to-reset-user-passwords`.
+
+
+.. envvar:: ldap/acl/user/passwordreset/protected/uid
+
+   Configures users with their user id to exclude them from user password resets by
+   administrators allowed to change user passwords. Separate multiple values
+   with a comma. For more information, see
+   :ref:`domain-ldap-delegation-of-the-priviledge-to-reset-user-passwords`.
+
+
+.. envvar:: ldap/acl/user/passwordreset/protected/gid
+
+   Configures groups with their group id to exclude them from user password resets by
+   administrators allowed to change user passwords. Separate multiple values
+   with a comma. For more information, see
+   :ref:`domain-ldap-delegation-of-the-priviledge-to-reset-user-passwords`.
+
+
 .. envvar:: ldap/idletimeout
 
    Configures a time period in seconds after which the LDAP connection is cut

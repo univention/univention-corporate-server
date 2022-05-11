@@ -3,7 +3,7 @@
 Protocol of activities in the domain
 ====================================
 
-The *Admin Diary* app provides the facility to log important events happening in
+The :program:`Admin Diary` app provides the facility to log important events happening in
 the domain. This includes among others:
 
 * Creation, move, modification and deletion of users and other objects using

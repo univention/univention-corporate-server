@@ -111,7 +111,7 @@ The logging is made in the
 
 
 A hash sum is calculated for each logged data record and also logged in the
-:file:`daemon.info` section of the syslog service.
+``daemon.info`` section of the syslog service.
 
 As of :uv:erratum:`4.4x536` the respective transaction ID of the entry is
 added to the file :file:`/var/log/univention/directory-logger.log` before each
@@ -128,7 +128,7 @@ line as a prefix:
    ID 342: Action: modify
    ID 342:
    ID 342: Old values:
-   ID 342: description: Dhis is a description test
+   ID 342: description: This is a description test
    ID 342: entryCSN: 20200415091936.317108Z#000000#000#000000
    ID 342: modifyTimestamp: 20200415091936Z
    ID 342:

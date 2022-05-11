@@ -5,9 +5,9 @@ OpenID Connect Provider
 
 .. highlight:: console
 
-UCS offers the possibility to install a :program:`OpenID Connect Provider`,
+UCS offers the possibility to install a *OpenID Connect Provider*,
 which allows external web services to delegate the user login via the *OpenID
-Connect* (OIDC) protocol to the UCS Identity Management. The :program:`OpenID
+Connect (OIDC)* protocol to the UCS Identity Management. The :program:`OpenID
 Connect Provider` App can be installed via the App Center. The service is
 provided by the software :program:`Kopano Konnect`.
 
@@ -30,7 +30,7 @@ creating a specific object of type ``oidc/rpservice`` for this service in the
 UCS directory service. These can be created via the UMC module :guilabel:`LDAP
 directory` in the container ``cn=oidc``, which is located below the container
 ``cn=univention``. Here the new service can be registered via the item Add and
-the selection :guilabel:`OpenID Connect Relying Party Service`.
+the selection *OpenID Connect Relying Party Service*.
 
 The same is also possible from the command line:
 
@@ -73,25 +73,25 @@ The command parameters are:
    therefore be defined multiple times, whereby each individual value
    must contain a valid URL.
 
-The connected web service still needs information about the :program:`OpenID
-Connect` endpoints of the provider app for its configuration. If the provider
+The connected web service still needs information about the *OpenID
+Connect* endpoints of the provider app for its configuration. If the provider
 app is installed, this information can be found at the URL
 :samp:`https://ucs-sso{[Domain name]}/.well-known/openid-configuration`. If the
 provider app was installed on a system other than |UCSPRIMARYDN| or
 |UCSBACKUPDN|, use the FQDN of the respective server instead of
 :samp:`ucs-sso.{Domain name}` as described above.
 
-When using :program:`OpenID Connect`, resolvable DNS names and verifiable
+When using *OpenID Connect*, resolvable DNS names and verifiable
 certificates are a prerequisite. This is especially true for client computers of
 end users who need to access both the DNS resolvable host names of the Web
-service and the :program:`OpenID Connect Provider`. In addition, the externally
+service and the OpenID Connect Provider. In addition, the externally
 connected Web services must be able to establish a connection to the
-:program:`OpenID Connect Provider` in order to be able to retrieve the user
+OpenID Connect Provider in order to be able to retrieve the user
 attributes.
 
 In the special case where the DNS name of the OIDC provider is to be changed,
 the corresponding value must first be adjusted in the app settings of the
-:program:`OpenID Connect Provider` App. Since there are diverse scenarios for
+:program:`OpenID Connect Provider` app. Since there are diverse scenarios for
 the availability of the provider after changing the DNS name, the web server
 configuration cannot be changed automatically. For example, depending on the
 configured DNS name, the UCS Apache configuration has to be adapted. The
@@ -99,21 +99,21 @@ configuration file
 :file:`/etc/apache2/conf-available/openid-connect-provider.conf` must be made
 available under the set DNS name in a virtual host.
 
-With version 2 of the :program:`OIDC-Provider App` the authentication to
-:program:`OpenID Connect` works via the SAML Identity Provider of the UCS
+With version 2 of the OIDC-Provider App the authentication to
+OpenID Connect works via the SAML Identity Provider of the UCS
 domain. If the SAML Identity Provider is not reachable at the default URL
 :samp:`https://ucs-sso.{[Domain name]}`, the correct URL under which the SAML IdP
 metadata for the UCS domain can be retrieved must be entered correctly in the
-app settings. If this URL is configured incorrectly, the :program:`OpenID
-Connect Provider` will not start.
+app settings. If this URL is configured incorrectly, the OpenID
+Connect Provider will not start.
 
-With SAML authentication, the authorization for the use of the :program:`OpenID
-Connect Provider` and thus for all apps connected via OIDC can be controlled via
+With SAML authentication, the authorization for the use of the OpenID
+Connect Provider and thus for all apps connected via OIDC can be controlled via
 SAML authorizations. By default, the group ``Domain Users`` is enabled for
 access when the app is installed. If this permission should be removed, the
 corresponding option must also be activated in the app settings so that the
 permission is not automatically added again.
 
-The :program:`OpenID Connect Provider` logs actions
+The OpenID Connect Provider logs actions
 via the Docker Daemon. The output can be viewed with the command
 :command:`univention-app logs openid-connect-provider`.
