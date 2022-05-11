@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-ssh
-fix:
+fix: 11.0.0-4A~5.0.0.202205111018
 desc: |
  This update addresses the following issue:
  * Update the `univention-ssh --help` message to specify that the
