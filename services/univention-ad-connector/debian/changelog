@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.8-7) unstable; urgency=medium
+
+  * Bug #54682: Option --debug-stderr has been removed from ldb-tools
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 11 May 2022 09:01:27 +0200
+
 univention-ad-connector (14.0.8-6) unstable; urgency=medium
 
   * Bug #54408: add OPT_X_TLS_NEWCTX option for TLS encrypted
