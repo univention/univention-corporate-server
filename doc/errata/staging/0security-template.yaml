@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-9
 src: 
 fix: 
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * 
 bug: []
 cve:
