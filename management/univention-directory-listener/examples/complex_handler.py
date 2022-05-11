@@ -84,7 +84,7 @@ class ComplexHandler(ListenerModuleHandler):
 		# An exception is triggered here to showcase the error_handler feature.
 		self.logger.info('ComplexHandler.remove() dn=%r', dn)
 		raise Exception("fail")
-		# This will raise an :py:exception:`Exception`, which will be handled by :py:method:`error_handler`.
+		# This will raise an :py:exception:`Exception`, which will be handled by :py:meth:`error_handler`.
 		# The error handler will *not* return here. After all this is an unhandled exception.
 
 	def initialize(self) -> None:

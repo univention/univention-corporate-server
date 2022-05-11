@@ -172,7 +172,7 @@ class MockPopen(object):
 @pytest.fixture
 def mockpopen(monkeypatch):
     """
-    Mock :py:method:`subprocess.Popen()` usage
+    Mock :py:meth:`subprocess.Popen()` usage
     """
     monkeypatch.setattr(subprocess, 'Popen', MockPopen)
     yield MockPopen

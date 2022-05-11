@@ -551,28 +551,28 @@ class App(with_metaclass(AppMetaClass, object)):
 			The file is shipped along with the ini file. Not part
 			of the ini file.
 		readme_install: A file containing important information for
-			the end user which is shown _just before_ the
+			the end user which is shown *just before* the
 			installation starts. The file is shipped along with
 			the ini file. Not part of the ini file.
 		readme_post_install: A file containing important information
-			for the end user which is shown _just after_ the
+			for the end user which is shown *just after* the
 			installation is completed. The file is shipped along
 			with the ini file. Not part of the ini file.
 		readme_update: A file containing important information for the
-			end user which is shown _just before_ the update
+			end user which is shown *just before* the update
 			starts. Use case: Changelog. The file is shipped along
 			with the ini file. Not part of the ini file.
 		readme_post_update: A file containing important information
-			for the end user which is shown _just after_ the update
+			for the end user which is shown *just after* the update
 			is completed. The file is shipped along with the ini
 			file. Not part of the ini file.
 		readme_uninstall: A file containing important information for
-			the end user which is shown _just before_ the
+			the end user which is shown *just before* the
 			uninstallation starts. Use case: Warning about broken
 			services. The file is shipped along with the ini
 			file. Not part of the ini file.
 		readme_post_uninstall: A file containing important information
-			for the end user which is shown _just after_ the
+			for the end user which is shown *just after* the
 			uninstallation is completed. Use case: Instructions how
 			to clean up if the App was unable to do it
 			automatically. The file is shipped along with the ini
