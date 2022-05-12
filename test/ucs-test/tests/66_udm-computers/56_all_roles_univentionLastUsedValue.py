@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Create minimal object for all computer roles and check univentionLastUsedValue
 ## tags: [udm-computers,apptest]
 ## roles: [domaincontroller_master]
@@ -16,27 +16,39 @@ is never changed.
 
 import time
 
-import univention.testing.strings as uts
-import univention.testing.ucr as ucr_test
-import univention.testing.udm as udm_test
-import univention.testing.utils as utils
-import univention.uldap
+import pytest
 
-if __name__ == '__main__':
-	with ucr_test.UCSTestConfigRegistry() as ucr:
-		with udm_test.UCSTestUDM() as udm:
-			luv_dn = 'cn=uidNumber,cn=temporary,cn=univention,%s' % (ucr.get('ldap/base'),)
-			lo = univention.uldap.getAdminConnection()
-			for role in udm.COMPUTER_MODULES:
+import univention.testing.udm as udm_test
+from univention.testing.strings import random_string
+
+COMPUTER_MODULES = udm_test.UCSTestUDM.COMPUTER_MODULES
+
+
+@pytest.fixture(scope='class')
+def wait_for_replication_cleanup(wait_for_replication):
+	yield
+	wait_for_replication()
+
+
+@pytest.mark.tags('udm-computers', 'apptest')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('careful')
+@pytest.mark.parametrize('role', COMPUTER_MODULES)
+class Test_ComputerAllRoles():
+	def test_all_roles_univentionLastUsedValue(self, udm, ucr, lo, verify_ldap_object, wait_for_replication_cleanup, role):
+				"""Create minimal object for all computer roles and check univentionLastUsedValue"""
+
+				luv_dn = 'cn=uidNumber,cn=temporary,cn=univention,%s' % (ucr.get('ldap/base'),)
 
 				lastUsedValue_old = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
-				computer_dn = udm.create_object(role, name=uts.random_string(), wait_for_replication=False)
-				utils.verify_ldap_object(computer_dn)
+				computer_dn = udm.create_object(role, name=random_string(), wait_for_replication=False)
+				verify_ldap_object(computer_dn)
 				lastUsedValue_new = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
-				if lastUsedValue_old == lastUsedValue_new and role not in ('computers/ipmanagedclient',):
-					utils.fail('Create %s with automatic uidNumber: univentionLastUsedValue did not change, but it should!' % (role,))
-				if lastUsedValue_old != lastUsedValue_new and role in ('computers/ipmanagedclient',):
-					utils.fail('Create %s: univentionLastUsedValue did change, but it should not!' % (role,))
+
+				if role == 'computers/ipmanagedclient':
+					assert lastUsedValue_old == lastUsedValue_new, f'Create {role} univentionLastUsedValue did change, but it should not!'
+				else:
+					assert lastUsedValue_old != lastUsedValue_new, f'Create {role} with automatic uidNumber: univentionLastUsedValue did not change, but it should!'
 
 				lastUsedValue_old = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
 				kwargs = {
@@ -45,9 +57,7 @@ if __name__ == '__main__':
 					'wait_for_replication': False,
 				}
 				computer_dn = udm.modify_object(role, **kwargs)
-				utils.verify_ldap_object(computer_dn, expected_attr={'description': [kwargs['description']]})
+				verify_ldap_object(computer_dn, expected_attr={'description': [kwargs['description']]})
 				lastUsedValue_new = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
-				if lastUsedValue_old != lastUsedValue_new:
-					utils.fail('Modified %s with specified uidNumber: univentionLastUsedValue did change, but it should not!' % (role,))
 
-		utils.wait_for_replication()
+				assert lastUsedValue_old == lastUsedValue_new, f'Modified {role} with specified uidNumber: univentionLastUsedValue did change, but it should not!'

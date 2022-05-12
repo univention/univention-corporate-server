@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test appending and removing dhcpEntryZone for all computer roles
 ## tags: [udm-computers]
 ## roles: [domaincontroller_master]
@@ -8,21 +8,28 @@
 ##   - univention-directory-manager-tools
 
 import ldap.dn
+import pytest
 
-import univention.testing.strings as uts
-import univention.testing.udm as udm_test
-import univention.testing.utils as utils
+from univention.testing.strings import random_name
+from univention.testing.udm import UCSTestUDM
 
-if __name__ == '__main__':
-	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
-		computerName = uts.random_name()
+COMPUTER_MODULES = UCSTestUDM.COMPUTER_MODULES
 
-		with udm_test.UCSTestUDM() as udm:
+
+@pytest.mark.tags('udm-computers')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('careful')
+@pytest.mark.parametrize('role', COMPUTER_MODULES)
+class Test_ComputerAllRoles():
+	def test_all_roles_modification_append_and_remove_dhcpEntryZone(self, udm, verify_ldap_object, role):
+			"""Test appending and removing dhcpEntryZone for all computer roles"""
+			computerName = random_name()
+
 			dhcpEntryZones = (
-				['%s' % udm.create_object('dhcp/service', service=uts.random_name()), '10.20.30.40', '11:11:11:11:11:11'],
-				['%s' % udm.create_object('dhcp/service', service=uts.random_name()), '10.20.30.41', '22:22:22:22:22:22'],
-				['%s' % udm.create_object('dhcp/service', service=uts.random_name()), '10.20.30.42', '33:33:33:33:33:33'],
-				['%s' % udm.create_object('dhcp/service', service=uts.random_name()), '10.20.30.43', '44:44:44:44:44:44']
+				['%s' % udm.create_object('dhcp/service', service=random_name()), '10.20.30.40', '11:11:11:11:11:11'],
+				['%s' % udm.create_object('dhcp/service', service=random_name()), '10.20.30.41', '22:22:22:22:22:22'],
+				['%s' % udm.create_object('dhcp/service', service=random_name()), '10.20.30.42', '33:33:33:33:33:33'],
+				['%s' % udm.create_object('dhcp/service', service=random_name()), '10.20.30.43', '44:44:44:44:44:44']
 			)
 
 			computer = udm.create_object(role, name=computerName)
@@ -33,7 +40,7 @@ if __name__ == '__main__':
 				'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones]
 			})
 			for service, ip, mac in dhcpEntryZones:
-				utils.verify_ldap_object('cn=%s,%s' % (computerName, service), {
+				verify_ldap_object('cn=%s,%s' % (computerName, service), {
 					'univentionDhcpFixedAddress': [ip],
 					'dhcpHWAddress': ['ethernet %s' % mac]
 				})
@@ -44,10 +51,10 @@ if __name__ == '__main__':
 				'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones[:2]]
 			})
 			for service, ip, mac in dhcpEntryZones[:2]:
-				utils.verify_ldap_object('cn=%s,%s' % (ldap.dn.escape_dn_chars(computerName), service), should_exist=False)
+				verify_ldap_object('cn=%s,%s' % (ldap.dn.escape_dn_chars(computerName), service), should_exist=False)
 
 			for service, ip, mac in dhcpEntryZones[2:]:
-				utils.verify_ldap_object('cn=%s,%s' % (ldap.dn.escape_dn_chars(computerName), service), {
+				verify_ldap_object('cn=%s,%s' % (ldap.dn.escape_dn_chars(computerName), service), {
 					'univentionDhcpFixedAddress': [ip],
 					'dhcpHWAddress': ['ethernet %s' % mac]
 				})

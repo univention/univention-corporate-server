@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Validate adoption of network properties during creation for all computer roles
 ## tags: [udm-computers, SKIP]
 ## roles: [domaincontroller_master]
@@ -8,36 +8,39 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
+import pytest
 
-import univention.config_registry as configRegistry
-import univention.testing.strings as uts
-import univention.testing.udm as udm_test
-import univention.testing.utils as utils
+from univention.testing.strings import random_name, random_string
+from univention.testing.udm import UCSTestUDM
 
-if __name__ == '__main__':
-	ldap = utils.get_ldap_connection()
-	ucr = configRegistry.ConfigRegistry()
-	ucr.load()
+COMPUTER_MODULES = UCSTestUDM.COMPUTER_MODULES
+COMPUTER_MODULES_EXCEPT_MACOS = [i for i in COMPUTER_MODULES if i != 'computers/macos']
 
-	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
-		if role == 'computers/macos':
-			continue
 
-		computerProperties = {
-			'mac': '01:23:45:67:89:ab',
-			'name': uts.random_name()
-		}
+@pytest.mark.skip(reason="Fails due to a bug in the UDM-CLI, see Bug #25163. Issues when running on AWS instances, see Bug #37365 git:8666c032e7e")
+@pytest.mark.tags('udm-computers')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('careful')
+@pytest.mark.parametrize('role', COMPUTER_MODULES_EXCEPT_MACOS)
+class Test_ComputerAllRoles():
+	def test_all_roles_creation_set_network(self, udm, ucr, verify_ldap_object, lo, role):
+			"""Validate adoption of network properties during creation for all computer roles"""
+			# bugs: [15758]
 
-		with udm_test.UCSTestUDM() as udm:
-			dNSCn = 'cn=dns,%s' % (ucr['ldap/base'],)
+			computerProperties = {
+				'mac': '01:23:45:67:89:ab',
+				'name': random_name()
+			}
 
-			forwardZoneName = '%s.%s' % (uts.random_name(), uts.random_name())
+			dNSCn = 'cn=dns,%s' % (ucr.get('ldap/base'),)
 
-			forwardZone = udm.create_object('dns/forward_zone', zone=forwardZoneName, position=dNSCn, nameserver=uts.random_string(numeric=False))
-			reverseZone = udm.create_object('dns/reverse_zone', subnet='10.20.30', position=dNSCn, nameserver=uts.random_string(numeric=False))
-			dhcpService = udm.create_object('dhcp/service', service=uts.random_name())
+			forwardZoneName = '%s.%s' % (random_name(), random_name())
+
+			forwardZone = udm.create_object('dns/forward_zone', zone=forwardZoneName, position=dNSCn, nameserver=random_string(numeric=False))
+			reverseZone = udm.create_object('dns/reverse_zone', subnet='10.20.30', position=dNSCn, nameserver=random_string(numeric=False))
+			dhcpService = udm.create_object('dhcp/service', service=random_name())
 			networkProperties = {
-				'name': uts.random_name(),
+				'name': random_name(),
 				'network': '10.20.30.0',
 				'netmask': '24',
 				'dnsEntryZoneForward': forwardZone,
@@ -48,17 +51,28 @@ if __name__ == '__main__':
 			network = udm.create_object('networks/network', **networkProperties)
 
 			computer = udm.create_object(role, network=network, **computerProperties)
-			aRecord = utils.get_ldap_connection().getAttr(computer, 'aRecord')[0].decode('ASCII')
+			aRecord = lo.getAttr(computer, 'aRecord')[0].decode('ASCII')
 
 			# FIXME: workaround for remaining locks
 			udm.addCleanupLock('aRecord', aRecord)
 			udm.addCleanupLock('mac', '01:23::89:ab')
 
 			# verify that properties have been adopted correctly during creation
-			utils.verify_ldap_object(computer, {'univentionNetworkLink': [network]})
+			verify_ldap_object(computer, {'univentionNetworkLink': [network]})
 
-			if aRecord not in ['10.20.30.%s' % str(oktett) for oktett in range(2, 255)]:
-				utils.fail('IP address of computer not in range of it\'s network')
-			utils.verify_ldap_object('relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone), {'aRecord': [aRecord]})
-			utils.verify_ldap_object('relativeDomainName=%s,%s' % (aRecord.split(".")[-1], reverseZone), {'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZoneName)]})
-			utils.verify_ldap_object('cn=%s,%s' % (computerProperties['name'], dhcpService), {'univentionDhcpFixedAddress': [aRecord]})
+			assert aRecord in ['10.20.30.%s' % str(oktett) for oktett in range(2, 255)], "IP address of computer not in range of it's network"
+
+			verify_ldap_object(
+				'relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone),
+				{'aRecord': [aRecord]}
+			)
+
+			verify_ldap_object(
+				'relativeDomainName=%s,%s' % (aRecord.split(".")[-1], reverseZone),
+				{'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZoneName)]}
+			)
+
+			verify_ldap_object(
+				'cn=%s,%s' % (computerProperties['name'], dhcpService),
+				{'univentionDhcpFixedAddress': [aRecord]}
+			)

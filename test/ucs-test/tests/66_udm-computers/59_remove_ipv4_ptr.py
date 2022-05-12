@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Removing one of multiple DNS PTR RR works
 ## tags: [udm-computers]
 ## roles: [domaincontroller_master]
@@ -8,19 +8,23 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-import univention.testing.strings as uts
-import univention.testing.udm as udm_test
-import univention.testing.utils as utils
+import pytest
+
+from univention.testing.strings import random_string
 
 IP4 = '10.20.40.40'
 IP6 = '2001:0db8:0001:0002:0000:0000:0000:000f'
 
 
-if __name__ == '__main__':
-	domainname = '%s.%s' % (uts.random_string(numeric=False), uts.random_string(numeric=False))
-	computerName = uts.random_string()
+@pytest.mark.tags('udm-computers')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('careful')
+def test_remove_ipv4_ptr(udm, verify_ldap_object):
+		"""Removing one of multiple DNS PTR RR works"""
+		# bugs: [53213]
+		domainname = '%s.%s' % (random_string(numeric=False), random_string(numeric=False))
+		computerName = random_string()
 
-	with udm_test.UCSTestUDM() as udm:
 		dnsZone = udm.create_object('dns/forward_zone', zone=domainname, nameserver='univention')
 
 		rdnsZone4 = udm.create_object('dns/reverse_zone', subnet='10.20', nameserver='univention')
@@ -36,4 +40,4 @@ if __name__ == '__main__':
 		udm.modify_object('computers/ipmanagedclient', dn=computer, remove={'ip': [IP4]})
 
 		ptr_record = 'relativeDomainName=40.40,%s' % (rdnsZone6,)
-		utils.verify_ldap_object(ptr_record, should_exist=False)
+		verify_ldap_object(ptr_record, should_exist=False)

@@ -1,5 +1,5 @@
-#!/usr/share/ucs-test/runner python3
-## desc: Test setting inventoryNumber during modification for all computer rolles
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
+## desc: Test setting inventoryNumber during modification for all computer roles
 ## tags: [udm-computers]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -7,16 +7,23 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
+import pytest
 
-import univention.testing.strings as uts
-import univention.testing.udm as udm_test
-import univention.testing.utils as utils
+from univention.testing.strings import random_name, random_string
+from univention.testing.udm import UCSTestUDM
 
-if __name__ == '__main__':
-	with udm_test.UCSTestUDM() as udm:
-		for role in udm.COMPUTER_MODULES:
-			inventoryNumber = uts.random_string()
+COMPUTER_MODULES = UCSTestUDM.COMPUTER_MODULES
 
-			computer = udm.create_object(role, name=uts.random_name())
+
+@pytest.mark.tags('udm-computers')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('careful')
+@pytest.mark.parametrize('role', COMPUTER_MODULES)
+class Test_ComputerAllRoles():
+	def test_all_roles_modification_set_inventoryNumber(self, udm, verify_ldap_object, role):
+			"""Test setting inventoryNumber during modification for all computer roles"""
+			inventoryNumber = random_string()
+
+			computer = udm.create_object(role, name=random_name())
 			udm.modify_object(role, dn=computer, inventoryNumber=inventoryNumber)
-			utils.verify_ldap_object(computer, {'univentionInventoryNumber': [inventoryNumber]})
+			verify_ldap_object(computer, {'univentionInventoryNumber': [inventoryNumber]})

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Create minimal object for all computer roles
 ## tags: [udm-computers,apptest]
 ## roles: [domaincontroller_master]
@@ -7,13 +7,20 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
+import pytest
 
-import univention.testing.strings as uts
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
+from univention.testing.strings import random_string
 
-if __name__ == '__main__':
-	with udm_test.UCSTestUDM() as udm:
-		for role in udm.COMPUTER_MODULES:
-			computer = udm.create_object(role, name=uts.random_string())
-			utils.verify_ldap_object(computer)
+COMPUTER_MODULES = udm_test.UCSTestUDM.COMPUTER_MODULES
+
+
+@pytest.mark.tags('udm-computers', 'apptest')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('careful')
+@pytest.mark.parametrize('role', COMPUTER_MODULES)
+class Test_ComputerAllRoles():
+	def test_all_roles_creation(self, udm, verify_ldap_object, role):
+			"""Create minimal object for all computer roles"""
+			computer = udm.create_object(role, name=random_string())
+			verify_ldap_object(computer)

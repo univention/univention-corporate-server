@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Create object with all attributes set for all computer roles
 ## tags: [udm-computers,apptest]
 ## roles: [domaincontroller_master]
@@ -7,50 +7,57 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-from random import choice
+import random
 
-import atexit
 import passlib.hash
+import pytest
 
-import univention.config_registry as configRegistry
-import univention.testing.strings as uts
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
+from univention.testing import utils
+from univention.testing.strings import random_name, random_string
 
-if __name__ == '__main__':
-	ldap = utils.get_ldap_connection()
-	ucr = configRegistry.ConfigRegistry()
-	ucr.load()
+COMPUTER_MODULES = udm_test.UCSTestUDM.COMPUTER_MODULES
+COMPUTER_MODULES_EXCEPT_MACOS = [i for i in COMPUTER_MODULES if i != 'computers/macos']
 
+
+@pytest.fixture
+def stopped_s4connector():
 	if utils.s4connector_present():
-		atexit.register(utils.start_s4connector)
 		utils.stop_s4connector()
+		yield
+		utils.start_s4connector()
+	else:
+		yield
 
-	available_ip_nums = list(range(1, 10))  # will be used for IP endings
-	available_mac_nums = list(range(11, 99))  # will be used for MAC endings
 
-	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
-		if role == 'computers/macos':
-			continue
-		with udm_test.UCSTestUDM() as udm:
-			dhcpZone = udm.create_object('dhcp/service', service=uts.random_name())
-
+class Test_ComputerAllRoles():
+	@pytest.mark.tags('udm-computers', 'apptest')
+	@pytest.mark.roles('domaincontroller_master')
+	@pytest.mark.exposure('careful')
+	@pytest.mark.parametrize(
+		'role,rand_ip,rand_mac',
+		list(zip(
+			COMPUTER_MODULES_EXCEPT_MACOS,
 			# get random, but unique IP and MAC endings Bug #38212:
-			rand_ip = choice(available_ip_nums)
-			available_ip_nums.remove(rand_ip)  # so it won't be used again
-			rand_mac = choice(available_mac_nums)
-			available_mac_nums.remove(rand_mac)  # so it won't be used again
+			random.sample(range(5, 19), 9),  # will be used for IP endings
+			random.sample(range(20, 99), 9),  # will be used for MAC endings
+		))
+	)
+	def test_all_roles_creation_with_all_attributes(self, ucr, udm, verify_ldap_object, lo, stopped_s4connector, role, rand_ip, rand_mac):
+			"""Create object with all attributes set for all computer roles"""
+
+			dhcpZone = udm.create_object('dhcp/service', service=random_name())
 
 			properties = {
-				'name': uts.random_name(),
-				'description': uts.random_string(),
+				'name': random_name(),
+				'description': random_string(),
 				'mac': '01:23:45:67:89:%s' % rand_mac,
-				'network': udm.create_object('networks/network', name=uts.random_name(), network='10.20.30.0', netmask='24'),
+				'network': udm.create_object('networks/network', name=random_name(), network='10.20.30.0', netmask='24'),
 				'ip': '10.20.30.%s' % rand_ip,
-				'dnsEntryZoneForward': udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_string(numeric=False)),
-				'dnsEntryZoneReverse': udm.create_object('dns/reverse_zone', subnet='10.20.30', nameserver=uts.random_string(numeric=False)),
-				'inventoryNumber': uts.random_string(),
-				'domain': '%s.%s' % (uts.random_name(), uts.random_name())
+				'dnsEntryZoneForward': udm.create_object('dns/forward_zone', zone='%s.%s' % (random_name(), random_name()), nameserver=random_string(numeric=False)),
+				'dnsEntryZoneReverse': udm.create_object('dns/reverse_zone', subnet='10.20.30', nameserver=random_string(numeric=False)),
+				'inventoryNumber': random_string(),
+				'domain': '%s.%s' % (random_name(), random_name())
 			}
 			properties['dhcpEntryZone'] = '%s %s %s' % (dhcpZone, properties['ip'], properties['mac'])
 
@@ -66,23 +73,23 @@ if __name__ == '__main__':
 			}
 
 			if role != 'computers/ipmanagedclient':
-				properties['password'] = uts.random_string()
+				properties['password'] = random_string()
 				properties['unixhome'] = '/home/'
-				properties['shell'] = uts.random_string()
+				properties['shell'] = random_string()
 				properties['primaryGroup'] = udm.create_group(check_for_drs_replication=False)[0]
 				properties['groups'] = [udm.create_group(check_for_drs_replication=False)[0], udm.create_group(check_for_drs_replication=False)[0]]
-				expectedLdap['gidNumber'] = ldap.search(base=properties['primaryGroup'], attr=['gidNumber'])[0][1].get('gidNumber', [])
+				expectedLdap['gidNumber'] = lo.search(base=properties['primaryGroup'], attr=['gidNumber'])[0][1].get('gidNumber', [])
 				expectedLdap['loginShell'] = [properties['shell']]
-				expectedLdap['sambaPrimaryGroupSID'] = [ldap.getAttr(properties['primaryGroup'], 'sambaSID')[0]]
+				expectedLdap['sambaPrimaryGroupSID'] = [lo.getAttr(properties['primaryGroup'], 'sambaSID')[0]]
 				expectedLdap['homeDirectory'] = [properties['unixhome']]
 				expectedLdap['uid'] = ['%s$' % properties['name']]
 				expectedLdap['displayName'] = [properties['name']]
 				expectedLdap['sambaNTPassword'] = [passlib.hash.nthash.hash(properties['password'].lower()).upper()]
-				expectedLdap['krb5PrincipalName'] = [b'host/%s.%s@%s' % (properties['name'].encode('UTF-8'), properties['domain'].lower().encode('UTF-8'), ldap.getAttr(ucr['ldap/base'], 'krb5RealmName')[0])]
+				expectedLdap['krb5PrincipalName'] = [b'host/%s.%s@%s' % (properties['name'].encode('UTF-8'), properties['domain'].lower().encode('UTF-8'), lo.getAttr(ucr['ldap/base'], 'krb5RealmName')[0])]
 
 			if role not in ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver', 'computers/ipmanagedclient'):
-				properties['operatingSystem'] = uts.random_string()
-				properties['operatingSystemVersion'] = uts.random_string()
+				properties['operatingSystem'] = random_string()
+				properties['operatingSystemVersion'] = random_string()
 				expectedLdap['univentionOperatingSystem'] = [properties['operatingSystem']]
 				expectedLdap['univentionOperatingSystemVersion'] = [properties['operatingSystemVersion']]
 
@@ -90,44 +97,44 @@ if __name__ == '__main__':
 			computer_DN = udm.create_object(role, **properties)
 
 			# FIXME: workaround for remaining locks
-			udm.addCleanupLock('aRecord', ldap.getAttr(computer_DN, 'aRecord')[0].decode('ASCII'))
-			udm.addCleanupLock('mac', ldap.getAttr(computer_DN, 'macAddress')[0].decode('ASCII'))
+			udm.addCleanupLock('aRecord', lo.getAttr(computer_DN, 'aRecord')[0].decode('ASCII'))
+			udm.addCleanupLock('mac', lo.getAttr(computer_DN, 'macAddress')[0].decode('ASCII'))
 
 			# validate computer ldap object
-			utils.verify_ldap_object(computer_DN, expectedLdap)
+			verify_ldap_object(computer_DN, expectedLdap)
 
 			# validate related DHCP host object
-			utils.verify_ldap_object('cn=%s,%s' % (properties['name'], dhcpZone), {
+			verify_ldap_object('cn=%s,%s' % (properties['name'], dhcpZone), {
 				'dhcpHWAddress': ['ethernet %s' % properties['mac']],
 				'univentionDhcpFixedAddress': [properties['ip']]
 			})
 
 			# validate related A record
-			utils.verify_ldap_object('relativeDomainName=%s,%s' % (properties['name'], properties['dnsEntryZoneForward']), {
+			verify_ldap_object('relativeDomainName=%s,%s' % (properties['name'], properties['dnsEntryZoneForward']), {
 				'aRecord': [properties['ip']],
 				'relativeDomainName': [properties['name']],
 				'zoneName': [properties['dnsEntryZoneForward'].split('zoneName=')[1].split(',')[0]]
 			})
 
 			# validate related PTR record
-			utils.verify_ldap_object('relativeDomainName=%s,%s' % (rand_ip, properties['dnsEntryZoneReverse']), {
-				'relativeDomainName': str(rand_ip),
+			verify_args = ('relativeDomainName=%s,%s' % (rand_ip, properties['dnsEntryZoneReverse']), {
+				'relativeDomainName': [str(rand_ip)],
 				'pTRRecord': ['%s.%s.' % (properties['name'], properties['dnsEntryZoneForward'].split('zoneName=')[1].split(',')[0])],
 				'zoneName': [properties['dnsEntryZoneReverse'].split('zoneName=')[1].split(',')[0]]
 			})
+			print(f'\n\nverify_args: \n{verify_args}\n')
+			verify_ldap_object(*verify_args)
 
 			if role != 'computers/ipmanagedclient':
 				# validate computer sambaSID
-				computer_sambaSID = ldap.getAttr(computer_DN, 'sambaSID')[0].decode('ASCII')
+				computer_sambaSID = lo.getAttr(computer_DN, 'sambaSID')[0].decode('ASCII')
 				udm.addCleanupLock('sid', computer_sambaSID)
 				if utils.s4connector_present():
-					if not computer_sambaSID.startswith('S-1-4'):
-						utils.fail('"sambaSID" of %s did not start with "S-1-4-" as expected' % computer_DN)
+					assert computer_sambaSID.startswith('S-1-4'), '"sambaSID" of %s did not start with "S-1-4-" as expected' % computer_DN
 				else:
-					sambaDomainSID = ldap.search(filter='objectClass=sambaDomain', attr=['sambaSID'])[0][1]['sambaSID'][0].decode('ASCII')
-					if not computer_sambaSID.startswith(sambaDomainSID):
-						utils.fail('"sambaSID" of %s did not start with "%s" as expected' % (computer_DN, sambaDomainSID))
+					sambaDomainSID = lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])[0][1]['sambaSID'][0].decode('ASCII')
+					assert computer_sambaSID.startswith(sambaDomainSID), '"sambaSID" of %s did not start with "%s" as expected' % (computer_DN, sambaDomainSID)
 
 				# validate group memberships
 				for group in [properties['primaryGroup']] + properties['groups']:
-					utils.verify_ldap_object(group, {'memberUid': ['%s$' % properties['name']], 'uniqueMember': [computer_DN]})
+					verify_ldap_object(group, {'memberUid': ['%s$' % properties['name']], 'uniqueMember': [computer_DN]})

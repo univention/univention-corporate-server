@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Create and move computer, should keep SSL certificate
 ## tags: [udm-computers,apptest]
 ## bugs: [41230]
@@ -10,12 +10,9 @@
 from subprocess import PIPE, Popen
 from time import sleep
 
-import univention.testing.strings as uts
-import univention.testing.udm as udm_test
-import univention.testing.utils as utils
-from univention.testing.decorators import SetTimeout
+import pytest
 
-utils.verify_ldap_object = SetTimeout(utils.verify_ldap_object)
+from univention.testing.strings import random_string
 
 
 def get_ssl(name):
@@ -31,20 +28,19 @@ def get_ssl(name):
 	raise LookupError('not found')
 
 
-def main():
-	with udm_test.UCSTestUDM() as udm:
-		test_ou = udm.create_object('container/ou', name=uts.random_string())
-		for role in ['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver']:
-			name = uts.random_string()
+@pytest.mark.tags('udm-computers', 'apptest')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('careful')
+@pytest.mark.parametrize('role', ['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver'])
+def test_move_computer_ssl(udm, role):
+			"""Create and move computer, should keep SSL certificate"""
+			# bugs: [41230]
+			test_ou = udm.create_object('container/ou', name=random_string())
+			name = random_string()
 			computer = udm.create_object(role, name=name)
 			old_seq = get_ssl(name)
 
 			udm.move_object(role, dn=computer, position=test_ou)
 			new_seq = get_ssl(name)
 
-			if old_seq != new_seq:
-				utils.fail('New SSL certificate for "%s": %x -> %x' % (name, old_seq, new_seq))
-
-
-if __name__ == '__main__':
-	main()
+			assert old_seq == new_seq, 'New SSL certificate for "%s": %x -> %x' % (name, old_seq, new_seq)

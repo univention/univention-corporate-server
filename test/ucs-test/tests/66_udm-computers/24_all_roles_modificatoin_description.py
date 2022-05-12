@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test modifying description for all computer roles
 ## tags: [udm-computers,apptest]
 ## roles: [domaincontroller_master]
@@ -7,17 +7,23 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
+import pytest
 
-import univention.testing.strings as uts
-import univention.testing.udm as udm_test
-import univention.testing.utils as utils
+from univention.testing.strings import random_name, random_string
+from univention.testing.udm import UCSTestUDM
 
-if __name__ == '__main__':
+COMPUTER_MODULES = UCSTestUDM.COMPUTER_MODULES
 
-	with udm_test.UCSTestUDM() as udm:
-		for role in udm.COMPUTER_MODULES:
-			description = uts.random_string()
 
-			computer = udm.create_object(role, name=uts.random_name())
+@pytest.mark.tags('udm-computers', 'apptest')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('careful')
+@pytest.mark.parametrize('role', COMPUTER_MODULES)
+class Test_ComputerAllRoles():
+	def test_all_roles_modification_description(self, udm, verify_ldap_object, role):
+			"""Test modifying description for all computer roles"""
+			description = random_string()
+
+			computer = udm.create_object(role, name=random_name())
 			udm.modify_object(role, dn=computer, description=description)
-			utils.verify_ldap_object(computer, {'description': [description]})
+			verify_ldap_object(computer, {'description': [description]})

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test appending and removing dhcpEntryZone for all computer roles
 ## tags: [udm-computers]
 ## roles: [domaincontroller_master]
@@ -9,17 +9,24 @@
 ##   - univention-directory-manager-tools
 
 import ldap.dn
+import pytest
 
-import univention.testing.strings as uts
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
+from univention.testing.strings import random_name
 
-if __name__ == '__main__':
-	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
-		computerName = uts.random_name()
+COMPUTER_MODULES = udm_test.UCSTestUDM.COMPUTER_MODULES
 
-		with udm_test.UCSTestUDM() as udm:
-			service = udm.create_object('dhcp/service', service=uts.random_name())
+
+@pytest.mark.tags('udm-computers')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('careful')
+@pytest.mark.parametrize('role', COMPUTER_MODULES)
+def test_multiple_dhcp_entry_zones(udm, verify_ldap_object, role):
+			"""Test appending and removing dhcpEntryZone for all computer roles"""
+			# bugs: [44937]
+			computerName = random_name()
+
+			service = udm.create_object('dhcp/service', service=random_name())
 			dhcpEntryZones = (
 				[service, '10.20.30.40', '11:11:11:11:11:11'],
 				[service, '10.20.30.41', '22:22:22:22:22:22'],
@@ -36,7 +43,7 @@ if __name__ == '__main__':
 			})
 			for i, (service, ip, mac) in enumerate(dhcpEntryZones, -1):
 				addon = '' if i < 0 else '_uv%d' % (i,)
-				utils.verify_ldap_object('cn=%s%s,%s' % (computerName, addon, service), {
+				verify_ldap_object('cn=%s%s,%s' % (computerName, addon, service), {
 					'univentionDhcpFixedAddress': [ip],
 					'dhcpHWAddress': ['ethernet %s' % mac]
 				})
@@ -48,11 +55,11 @@ if __name__ == '__main__':
 			})
 			for i, (service, ip, mac) in list(enumerate(dhcpEntryZones, -1))[:2]:
 				addon = '' if i < 0 else '_uv%d' % (i,)
-				utils.verify_ldap_object('cn=%s%s,%s' % (ldap.dn.escape_dn_chars(computerName), addon, service), should_exist=False)
+				verify_ldap_object('cn=%s%s,%s' % (ldap.dn.escape_dn_chars(computerName), addon, service), should_exist=False)
 
 			for i, (service, ip, mac) in list(enumerate(dhcpEntryZones, -1))[2:]:
 				addon = '' if i < 0 else '_uv%d' % (i,)
-				utils.verify_ldap_object('cn=%s%s,%s' % (ldap.dn.escape_dn_chars(computerName), addon, service), {
+				verify_ldap_object('cn=%s%s,%s' % (ldap.dn.escape_dn_chars(computerName), addon, service), {
 					'univentionDhcpFixedAddress': [ip],
 					'dhcpHWAddress': ['ethernet %s' % mac]
 				})

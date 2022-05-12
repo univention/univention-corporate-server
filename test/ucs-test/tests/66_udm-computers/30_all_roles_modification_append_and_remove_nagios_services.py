@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test modifying nagiosServices for all computer roles
 ## tags: [udm-computers]
 ## roles: [domaincontroller_master]
@@ -7,24 +7,29 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
+import pytest
 
-import univention.testing.strings as uts
-import univention.testing.udm as udm_test
-import univention.testing.utils as utils
+from univention.testing.strings import random_name, random_string
+from univention.testing.udm import UCSTestUDM
 
-if __name__ == '__main__':
-	ldap = utils.get_ldap_connection()
+COMPUTER_MODULES = UCSTestUDM.COMPUTER_MODULES
 
-	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
-		with udm_test.UCSTestUDM() as udm:
+
+@pytest.mark.tags('udm-computers')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('careful')
+@pytest.mark.parametrize('role', COMPUTER_MODULES)
+class Test_ComputerAllRoles():
+	def test_all_roles_modification_append_and_remove_nagios_services(self, udm, lo, verify_ldap_object, role):
+			"""Test modifying nagiosServices for all computer roles"""
 			nagiosServices = (
-				udm.create_object('nagios/service', name=uts.random_name(), checkCommand=uts.random_string(), checkPeriod=uts.random_string(), notificationPeriod=uts.random_string()),
-				udm.create_object('nagios/service', name=uts.random_name(), checkCommand=uts.random_string(), checkPeriod=uts.random_string(), notificationPeriod=uts.random_string()),
-				udm.create_object('nagios/service', name=uts.random_name(), checkCommand=uts.random_string(), checkPeriod=uts.random_string(), notificationPeriod=uts.random_string()),
-				udm.create_object('nagios/service', name=uts.random_name(), checkCommand=uts.random_string(), checkPeriod=uts.random_string(), notificationPeriod=uts.random_string())
+				udm.create_object('nagios/service', name=random_name(), checkCommand=random_string(), checkPeriod=random_string(), notificationPeriod=random_string()),
+				udm.create_object('nagios/service', name=random_name(), checkCommand=random_string(), checkPeriod=random_string(), notificationPeriod=random_string()),
+				udm.create_object('nagios/service', name=random_name(), checkCommand=random_string(), checkPeriod=random_string(), notificationPeriod=random_string()),
+				udm.create_object('nagios/service', name=random_name(), checkCommand=random_string(), checkPeriod=random_string(), notificationPeriod=random_string())
 			)
 			computerIp = '10.20.30.2'
-			computerName = uts.random_name()
+			computerName = random_name()
 
 			# FIXME: workaround for remaining locks
 			udm.addCleanupLock('aRecord', computerIp)
@@ -33,24 +38,24 @@ if __name__ == '__main__':
 			computer = udm.create_object(
 				role,
 				options=['posix', 'nagios'],
-				dnsEntryZoneForward=udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_string(numeric=False)),
+				dnsEntryZoneForward=udm.create_object('dns/forward_zone', zone='%s.%s' % (random_name(), random_name()), nameserver=random_string(numeric=False)),
 				name=computerName,
 				ip=computerIp,
 				wait_for=True,
 			)
-			computerAssociatedDomain = ldap.getAttr(computer, 'associatedDomain')[0]
+			computerAssociatedDomain = lo.getAttr(computer, 'associatedDomain')[0]
 
 			udm.modify_object(role, dn=computer, append={'nagiosServices': nagiosServices})
 			# validate that computer has been added to the new nagios services
 			for nagiosService in nagiosServices:
-				utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': [b'%s.%s' % (computerName.encode('ASCII'), computerAssociatedDomain)]})
+				verify_ldap_object(nagiosService, {'univentionNagiosHostname': [b'%s.%s' % (computerName.encode('ASCII'), computerAssociatedDomain)]})
 
 			# modify computer again, removing the nagios services which have been set during creation
 			udm.modify_object(role, dn=computer, remove={'nagiosServices': nagiosServices[:2]})
 			# validate that the computer has been removed from the related nagios services
 			for nagiosService in nagiosServices[:2]:
-				utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': []})
+				verify_ldap_object(nagiosService, {'univentionNagiosHostname': []})
 
 			# validated that the computers is still set at the not removed nagios services
 			for nagiosService in nagiosServices[2:]:
-				utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': [b'%s.%s' % (computerName.encode('ASCII'), computerAssociatedDomain)]})
+				verify_ldap_object(nagiosService, {'univentionNagiosHostname': [b'%s.%s' % (computerName.encode('ASCII'), computerAssociatedDomain)]})

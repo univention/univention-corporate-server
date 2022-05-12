@@ -8,20 +8,23 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-import univention.testing.strings as uts
-import univention.testing.udm as udm_test
-import univention.testing.utils as utils
+import pytest
+
+from univention.testing import utils
+from univention.testing.strings import random_name, random_string
 
 MAC = '00:11:22:33:44:55'
 
 
-if __name__ == '__main__':
-	computerName = uts.random_string()
+@pytest.mark.tags('udm-computers')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('careful')
+def test_create_empty_dhcp(udm):
+		computerName = random_string()
 
-	with udm_test.UCSTestUDM() as udm:
-		service = udm.create_object('dhcp/service', service=uts.random_name())
+		service = udm.create_object('dhcp/service', service=random_name())
 
-		computer = udm.create_object(
+		udm.create_object(
 			'computers/ipmanagedclient',
 			name=computerName,
 			mac=[MAC],
@@ -38,7 +41,6 @@ if __name__ == '__main__':
 		try:
 			vals = attr["univentionDhcpFixedAddress"]
 			val, = vals
-			if val == b'':
-				utils.fail("dhp/entry with univentionDhcpFixedAddress:['']")
+			assert val != b'', "dhp/entry with univentionDhcpFixedAddress:['']"
 		except (LookupError, ValueError):
 			pass

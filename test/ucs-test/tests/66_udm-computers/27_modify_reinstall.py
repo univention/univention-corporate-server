@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test modifying reinstall for computers/domaincontroller_master, computers/domaincontroller_slave, computers/domaincontroller_backup and computers/memberserver
 ## tags: [udm-computers]
 ## roles: [domaincontroller_master]
@@ -7,16 +7,21 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
+import pytest
 
-import univention.testing.strings as uts
-import univention.testing.udm as udm_test
-import univention.testing.utils as utils
+from univention.testing.strings import random_name
+from univention.testing.udm import UCSTestUDM
 
-if __name__ == '__main__':
-	reinstall = '1'
+COMPUTER_MODULES = UCSTestUDM.COMPUTER_MODULES
 
-	with udm_test.UCSTestUDM() as udm:
-		for role in ('computers/domaincontroller_master', 'computers/domaincontroller_slave', 'computers/domaincontroller_backup', 'computers/memberserver'):
-			computer = udm.create_object(role, name=uts.random_name())
+
+@pytest.mark.tags('udm-computers')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('careful')
+@pytest.mark.parametrize('role', ('computers/domaincontroller_master', 'computers/domaincontroller_slave', 'computers/domaincontroller_backup', 'computers/memberserver'))
+def test_modify_reinstall(role, verify_ldap_object, udm):
+			"""Test modifying reinstall for computers/domaincontroller_master, computers/domaincontroller_slave, computers/domaincontroller_backup and computers/memberserver"""
+			reinstall = '1'
+			computer = udm.create_object(role, name=random_name())
 			udm.modify_object(role, dn=computer, reinstall=reinstall)
-			utils.verify_ldap_object(computer, {'univentionServerReinstall': [reinstall]})
+			verify_ldap_object(computer, {'univentionServerReinstall': [reinstall]})

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test PTR records are removed when no ptr record would be left over and multiple IP addresses are assigned
 ## tags: [udm-computers,apptest]
 ## roles: [domaincontroller_master]
@@ -8,20 +8,24 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-import univention.testing.strings as uts
-import univention.testing.udm
-import univention.uldap
+import pytest
 
-if __name__ == '__main__':
-	ldap = univention.uldap.getAdminConnection()
-	with univention.testing.udm.UCSTestUDM() as udm:
-		domainname = uts.random_string(numeric=False)
-		tld = uts.random_string(numeric=False)
+from univention.testing.strings import random_string
+
+
+@pytest.mark.tags('udm-computers', 'apptest')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('careful')
+def test_removal_of_leftover_ptr_record_with_multiple_ip_addresses(udm, verify_ldap_object):
+		"""Test PTR records are removed when no ptr record would be left over and multiple IP addresses are assigned"""
+		# bugs: [44710, 51736]
+		domainname = random_string(numeric=False)
+		tld = random_string(numeric=False)
 		dnsZone1 = udm.create_object('dns/forward_zone', zone='%s.%s' % (domainname, tld), nameserver='univention')
 		dnsZone2 = udm.create_object('dns/forward_zone', zone='%s2.%s' % (domainname, tld), nameserver='univention')
 		rdnsZone = udm.create_object('dns/reverse_zone', subnet='10.20.30', nameserver='univention')
 
-		computer_name = uts.random_string()
+		computer_name = random_string()
 		computer = udm.create_object('computers/windows', name=computer_name, ip='10.20.30.60', dnsEntryZoneForward='%s 10.20.30.60' % dnsZone1, dnsEntryZoneReverse='%s 10.20.30.60' % rdnsZone)
 		udm.modify_object('computers/windows', dn=computer, append={'dnsEntryZoneForward': ['%s 10.20.30.60' % dnsZone2]})
 
@@ -38,7 +42,9 @@ if __name__ == '__main__':
 			'dnsEntryZoneReverse': ['%s 10.20.30.6' % rdnsZone],
 		}
 		udm.modify_object('computers/windows', dn=computer, ip='10.20.30.6', remove=remove, append=append)
-		univention.testing.utils.verify_ldap_object(ptr_record, should_exist=False)
-		univention.testing.utils.verify_ldap_object('relativeDomainName=6,%s' % (rdnsZone,), {
-			'pTRRecord': [('%s.%s.%s.' % (computer_name, domainname, tld)).encode('UTF-8'), ('%s.%s2.%s.' % (computer_name, domainname, tld)).encode('UTF-8')]
+		verify_ldap_object(ptr_record, should_exist=False)
+		verify_ldap_object('relativeDomainName=6,%s' % (rdnsZone,), {
+			'pTRRecord': [
+				('%s.%s.%s.' % (computer_name, domainname, tld)).encode('UTF-8'),
+				('%s.%s2.%s.' % (computer_name, domainname, tld)).encode('UTF-8')]
 		})
