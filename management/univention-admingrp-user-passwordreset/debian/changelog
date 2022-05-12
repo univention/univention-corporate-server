@@ -1,3 +1,9 @@
+univention-admingrp-user-passwordreset (10.0.0-3) unstable; urgency=medium
+
+  * Bug #54744: Avoid slapd not starting due to exceeding line length
+
+ -- Arvid <requate@univention.de>  Thu, 12 May 2022 15:57:25 +0200
+
 univention-admingrp-user-passwordreset (10.0.0-2) unstable; urgency=medium
 
   * Bug #53354: Migrated univention-admingrp-user-passwordreset to Python 3
