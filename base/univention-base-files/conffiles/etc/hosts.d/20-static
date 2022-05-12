@@ -1,7 +1,7 @@
 @!@
 # Add static addresses "hosts/static/$ip=$names"
 PREFIX = 'hosts/static/'
-for key, value in configRegistry.items():
+for key, value in sorted(configRegistry.items()):
 	if key.startswith(PREFIX) and key != PREFIX:
 		print("%s\t%s" % (key.split('/')[-1], value))
 @!@
