@@ -6,61 +6,47 @@ src: openjdk-8
 fix: 8u332-ga-1~deb9u1
 desc: |
  This update addresses the following issues:
- 8u332-ga-1~deb9u1 (Sun, 24 Apr 2022 21:07:12 +0200)
- * Disable tests (debian/README.source documents why they fail)
- * Build for wheezy (wtf), jessie (ELTS), stretch (LTS), buster, bullseye
-   (wtf) and PPA for (LTS) trusty, xenial, bionic, focal and jammy
- * Effort sponsored by ⮡ tarent
- 8u332~b09-2 (Sun, 24 Apr 2022 01:47:18 +0200)
- * Upload to experimental, with arm64 but see below
- * Security fixes: - JDK-8269938: Enhance XML processing passes redux -
-   JDK-8270504, CVE-2022-21426: Better XPath expression handling -
-   JDK-8272255: Completely handle MIDI files - JDK-8272261: Improve JFR
-   recording file processing - JDK-8272594: Better record of recordings -
-   JDK-8274221: More definite BER encodings - JDK-8275151, CVE-2022-21443:
-   Improved Object Identification - JDK-8277227: Better identification of OIDs
-   - JDK-8277672, CVE-2022-21434: Better invocation handler handling -
-   JDK-8278008, CVE-2022-21476: Improve Santuario processing - JDK-8278356:
-   Improve file creation - JDK-8278449: Improve keychain support -
-   JDK-8278805: Enhance BMP image loading - JDK-8278972, CVE-2022-21496:
-   Improve URL supports - JDK-8281388: Change wrapping of
-   EncryptedPrivateKeyInfo
- * Other changes: see
-   https://mail.openjdk.java.net/pipermail/jdk8u-dev/2022-April/014839.html
- * Use stock jdk8u on arm64 instead of aarch64-shenandoah hotspot+GC
- * Upload sponsored by ⮡ tarent
- 8u332~b09-1 (Thu, 21 Apr 2022 23:01:54 +0000)
- * Upload to experimental
- * New upstream release but without arm64 as it’s not yet ported
- 8u322-ga-1 (Thu, 21 Apr 2022 23:06:27 +0200)
- * Synchronise versions of G++ used with current distro defaults
- * Switch to github-based download workflow
- * Refresh patches, d/copyright, packaging
- * New upstream release
- * Security fixes: - JDK-8264934, CVE-2022-21248: Enhance cross VM
-   serialization - JDK-8268488: More valuable DerValues - JDK-8268494: Better
-   inlining of inlined interfaces - JDK-8268512: More content for ContentInfo
-   - JDK-8268795: Enhance digests of Jar files - JDK-8268801: Improve PKCS
-   attribute handling - JDK-8268813, CVE-2022-21283: Better String matching -
-   JDK-8269151: Better construction of EncryptedPrivateKeyInfo - JDK-8269944:
-   Better HTTP transport redux - JDK-8270392, CVE-2022-21293: Improve String
-   constructions - JDK-8270416, CVE-2022-21294: Enhance construction of
-   Identity maps - JDK-8270492, CVE-2022-21282: Better resolution of URIs -
-   JDK-8270498, CVE-2022-21296: Improve SAX Parser configuration management -
-   JDK-8270646, CVE-2022-21299: Improved scanning of XML entities -
-   JDK-8271962: Better TrueType font loading - JDK-8271968: Better canonical
-   naming - JDK-8271987: Manifest improved manifest entries - JDK-8272014,
-   CVE-2022-21305: Better array indexing - JDK-8272026, CVE-2022-21340: Verify
-   Jar Verification - JDK-8272236, CVE-2022-21341: Improve serial forms for
-   transport - JDK-8272272: Enhance jcmd communication - JDK-8272462: Enhance
-   image handling - JDK-8273290: Enhance sound handling - JDK-8273748,
-   CVE-2022-21349: Improve Solaris font rendering - JDK-8273756,
-   CVE-2022-21360: Enhance BMP image support - JDK-8273838, CVE-2022-21365:
-   Enhanced BMP processing
- * Other changes: see
-   https://mail.openjdk.java.net/pipermail/jdk8u-dev/2022-January/014522.html
- * Upload sponsored by ⮡ tarent in preparation for a quick 8u332 once
-   available
+ * JDK-8269938: Enhance XML processing passes redux -
+ * JDK-8270504, CVE-2022-21426: Better XPath expression handling -
+ * JDK-8272255: Completely handle MIDI files
+ * JDK-8272261: Improve JFR recording file processing
+ * JDK-8272594: Better record of recordings
+ * JDK-8274221: More definite BER encodings
+ * JDK-8275151, CVE-2022-21443: Improved Object Identification
+ * JDK-8277227: Better identification of OIDs
+ * JDK-8277672, CVE-2022-21434: Better invocation handler handling -
+ * JDK-8278008, CVE-2022-21476: Improve Santuario processing
+ * JDK-8278356: Improve file creation
+ * JDK-8278449: Improve keychain support
+ * JDK-8278805: Enhance BMP image loading
+ * JDK-8278972, CVE-2022-21496: Improve URL supports
+ * JDK-8281388: Change wrapping of EncryptedPrivateKeyInfo
+ * JDK-8264934, CVE-2022-21248: Enhance cross VM serialization
+ * JDK-8268488: More valuable DerValues
+ * JDK-8268494: Better inlining of inlined interfaces
+ * JDK-8268512: More content for ContentInfo
+ * JDK-8268795: Enhance digests of Jar files
+ * JDK-8268801: Improve PKCS attribute handling
+ * JDK-8268813, CVE-2022-21283: Better String matching -
+ * JDK-8269151: Better construction of EncryptedPrivateKeyInfo
+ * JDK-8269944: Better HTTP transport redux
+ * JDK-8270392, CVE-2022-21293: Improve String constructions
+ * JDK-8270416, CVE-2022-21294: Enhance construction of Identity maps
+ * JDK-8270492, CVE-2022-21282: Better resolution of URIs
+ * JDK-8270498, CVE-2022-21296: Improve SAX Parser configuration management -
+ * JDK-8270646, CVE-2022-21299: Improved scanning of XML entities -
+ * JDK-8271962: Better TrueType font loading
+ * JDK-8271968: Better canonical naming
+ * JDK-8271987: Manifest improved manifest entries
+ * JDK-8272014, CVE-2022-21305: Better array indexing
+ * JDK-8272026, CVE-2022-21340: Verify Jar Verification
+ * JDK-8272236, CVE-2022-21341: Improve serial forms for transport
+ * JDK-8272272: Enhance jcmd communication
+ * JDK-8272462: Enhance image handling
+ * JDK-8273290: Enhance sound handling
+ * JDK-8273748, CVE-2022-21349: Improve Solaris font rendering
+ * JDK-8273756, CVE-2022-21360: Enhance BMP image support
+ * JDK-8273838, CVE-2022-21365: Enhanced BMP processing
 bug: [54752]
 cve:
 - CVE-2022-21426
