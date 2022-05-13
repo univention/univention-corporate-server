@@ -78,6 +78,13 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    For more information, see :ref:`ad-connector-groups`.
 
 
+.. envvar:: connector/ad/mapping/user/ignorefilter
+
+   Defines a filter for usernames that the AD Connector excempt matching users
+   from the synchronisation. For more information, see
+   :ref:`ad-connector-details-on-preconfigured-synchronization`:
+
+
 .. envvar:: connector/ad/mapping/user/ignorelist
 
    Configures a list of usernames that the AD Connector excludes from

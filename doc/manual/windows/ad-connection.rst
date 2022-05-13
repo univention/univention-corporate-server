@@ -60,8 +60,8 @@ against native Microsoft AD domain controllers.
 
 The setup wizard can be started directly from the UCS installation by selecting
 *Join into an existing Active Directory domain*. Subsequently, the setup wizard
-can be installed with the app *Active Directory Connection* from the Univention
-App Center. Alternatively, the software package
+can be installed with the app :program:`Active Directory Connection` from the
+Univention App Center. Alternatively, the software package
 :program:`univention-ad-connector` can be installed. Further information can be
 found in :ref:`computers-softwaremanagement-install-software`.
 
@@ -221,7 +221,7 @@ Following the initial sync, additional changes are requested at a set interval.
 This value is set to five seconds and can be adjusted manually using the
 |UCSUCR| variable :envvar:`connector/ad/poll/sleep`.
 
-If an object cannot be synchronized, it is firstly reset (“rejected”).
+If an object cannot be synchronized, it is firstly reset (*rejected*).
 Following a configurable number of cycles – the interval can be adjusted using
 the |UCSUCR| variable :envvar:`connector/ad/retryrejected` – another attempt is
 made to import the changes. The standard value is ten cycles. In addition, when
@@ -588,7 +588,7 @@ Take the following particularities into account:
   with the AD group *Domänen-Benutzer*. When used in anglophone AD domains, this
   mapping can result in *germanophone* groups' being created and should thus be
   deactivated in this case. This can be done using the |UCSUCRV|
-  :envvar:`connector/ad/mapping/group/language`
+  :envvar:`connector/ad/mapping/group/language`.
 
   The complete table is:
 
@@ -635,7 +635,7 @@ following function should be implemented:
    def mapping_hook(ad_mapping):
        return ad_mapping
 
-The contents of the :command:`ad_mapping` variable can be modified to influence
+The contents of the ``ad_mapping`` variable can be modified to influence
 the mapping. The resulting mapping gets written to
 :file:`/var/log/univention/connector-ad-mapping.log` when the |UCSADC| is
 restarted.

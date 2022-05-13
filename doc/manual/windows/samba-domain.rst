@@ -9,8 +9,8 @@ Installation
 ------------
 
 Samba as an AD domain controller can be installed on all UCS Directory Nodes
-from the Univention App Center with the application *Active Directory-compatible
-domain controller*. Alternatively, the software package
+from the Univention App Center with the application :program:`Active
+Directory-compatible domain controller`. Alternatively, the software package
 :program:`univention-samba4` can be installed. On the system roles
 |UCSPRIMARYDN| and |UCSBACKUPDN| the :program:`univention-s4-connector` package
 must also be installed and :command:`univention-run-join-scripts` command must
@@ -359,20 +359,20 @@ with the modeling wizard in *Group Policy Management* or by entering the command
 
 The policies are evaluated in the following order:
 
-* By default *Default Domain Policy* settings apply for all the users and
-  computers within the domain.
+#. By default *Default Domain Policy* settings apply for all the users and
+   computers within the domain.
 
-* Policies linked to an OU overwrite policies from the default domain policy.
-  If the OUs are nested further, in the case of conflict, the "most subordinate"
-  policies in each case, in other words the one most closely linked to the
-  target object, apply. The following evaluation order applies:
+#. Policies linked to an OU overwrite policies from the default domain policy.
+   If the OUs are nested further, in the case of conflict, the "most
+   subordinate" policies in each case, in other words the one most closely
+   linked to the target object, apply. The following evaluation order applies:
 
-  * Assignment of a policy to an Active Directory site
-
-  * Settings of the default domain policy
-
-  * Assignment of a policy to an organizational unit (OU) (in turn, each
-    subordinate OU overrules policies from superordinate OUs).
+   * Assignment of a policy to an Active Directory site
+ 
+   * Settings of the default domain policy
+ 
+   * Assignment of a policy to an organizational unit (OU) (in turn, each
+     subordinate OU overrules policies from superordinate OUs).
 
 Example: A company blocks access to the :program:`Windows Task Manager` in general.
 This is done by enabling the :guilabel:`Remove Task Manager`

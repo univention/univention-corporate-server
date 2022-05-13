@@ -3,6 +3,8 @@
 Migrating an Active Directory domain to UCS using Univention AD Takeover
 ========================================================================
 
+.. highlight:: console
+
 UCS supports the takeover of user, group and computer objects as well as Group
 Policy Objects (GPOs) from a Microsoft Active Directory (AD) domain. Windows
 clients do not need to rejoin the domain. The takeover is an interactive process
@@ -67,7 +69,7 @@ because this account has all the required privileges to copy the GPO SYSVOL
 files. The activation can be achieved by means of the :guilabel:`Active
 Directory Users and Computers` module or by running the following two commands:
 
-.. code-block::
+.. code-block:: powershell
 
    > net user administrator /active:yes
    > net user administrator PASSWORD
@@ -89,7 +91,7 @@ Nodes.
 Other UCS Samba/AD systems can be stopped by logging into each of the other UCS
 Directory Nodes as the ``root`` user and running
 
-.. code-block:: console
+.. code-block::
 
    $ /etc/init.d/samba4 stop
 
@@ -98,7 +100,7 @@ After ensuring that only the Univention S4 Connector host runs Samba/AD, the
 takeover process can be started. If the UCS domain was installed initially with
 a UCS version before UCS 3.2, the following |UCSUCRV| needs to be set first:
 
-.. code-block:: console
+.. code-block::
 
    $ ucr set connector/s4/mapping/group/grouptype=false
 
@@ -221,7 +223,7 @@ Finally the following steps are required:
 #. The domain function level of the migrated Active Directory domain needs to be
    checked by running the following command:
 
-   .. code-block:: console
+   .. code-block:: powershell
 
       > samba-tool domain level show
 
@@ -230,7 +232,7 @@ Finally the following steps are required:
    run SAMBA 4 on a forest function level lower than Windows 2000
    (Native).`` the following commands should be run to fix this:
 
-   .. code-block:: console
+   .. code-block:: powershell
 
       > samba-tool domain level raise --forest-level=2003 --domain-level=2003
       > samba-tool dbcheck --fix --yes
