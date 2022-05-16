@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
-# Univention Nagios
+# Univention Monitoring
 #
 # Copyright 2004-2022 Univention GmbH
 #
@@ -30,77 +30,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import getopt
-import sys
 import time
 
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
+from univention.monitoring import Alert
 
 
-class SSLCertificateCheck:
+class SSLCertificateCheck(Alert):
 
-	def __init__(self):
-		self.PROGNAME = 'check_univention_ssl_certificate'
-		self.REVISION = '1.0'
-		self.days_warning = 45
-		self.days_critical = 15
-
-		self.STATE = {
-			'OK': 0,
-			'WARNING': 1,
-			'CRITICAL': 2,
-			'UNKNOWN': 3
-		}
-
-	def print_revision(self):
-		print('%s: version %s' % (self.PROGNAME, self.REVISION))
-
-	def print_usage(self):
-		print('Usage: %s [-w <n>] [-c <n>]' % self.PROGNAME)
-		print('Usage: %s --help' % self.PROGNAME)
-		print('Usage: %s --version' % self.PROGNAME)
-
-	def print_help(self):
-		self.print_revision()
-		print('')
-		self.print_usage()
-		print('')
-		print(' -w <n>   WARNING if ssl cert expires in <n> days')
-		print(' -c <n>   CRITICAL if ssl cert expires in <n> days')
-
-	def exit_with_status(self, state, msg):
-		print('%s: %s' % (state, msg))
-		sys.exit(self.STATE[state])
-
-	def main(self):
-		# parse command line
-		try:
-			(opts, pargs) = getopt.getopt(sys.argv[1:], 'ac:w:', ['help', 'version'])
-		except getopt.GetoptError:
-			self.print_usage()
-			sys.exit(self.STATE['UNKNOWN'])
-
-		# get command line data
-		for opt in opts:
-			if opt[0] == '-c':
-				self.days_critical = int(opt[1])
-			elif opt[0] == '-h' or opt[0] == '--help':
-				self.print_help()
-				sys.exit(self.STATE['UNKNOWN'])
-			elif opt[0] == '-w':
-				self.days_warning = int(opt[1])
-			elif opt[0] == '--version':
-				self.print_revision()
-				sys.exit(self.STATE['UNKNOWN'])
-
-		state = 'UNKNOWN'
-		msg = ''
-
-		_bc = ConfigRegistry()
-		_bc.load()
+	def write_metrics(self):
 		today = int(time.time()) // 60 // 60 // 24
-		rootc = int(_bc.get("ssl/validity/root", -1))
-		hostc = int(_bc.get("ssl/validity/host", -1))
+		rootc = ucr.get_int("ssl/validity/root", -1)
+		hostc = ucr.get_int("ssl/validity/host", -1)
 
 		# check root ca or host cert
 		certValid = rootc
@@ -111,18 +52,11 @@ class SSLCertificateCheck:
 
 		if certValid > 0:
 			diff = certValid - today
-			if diff <= self.days_critical:
-				state = 'CRITICAL'
-			elif diff <= self.days_warning:
-				state = 'WARNING'
-			else:
-				state = 'OK'
-			msg = "%s expires in %d days (warn@%s - crit@%s)" % (certType, diff, self.days_warning, self.days_critical)
+			self.write_metric('univention_ssl_certificate_expiry_seconds', diff * 24 * 60 * 60)
+			self.log.debug("%s expires in %d days" % (certType, diff))
 		else:
-			msg = 'unable to determine expire date - ucr variables ssl/validity/host|root are not set'
-
-		self.exit_with_status(state, msg)
+			self.write_metric('univention_ssl_certificate_expiry_seconds', -1, 'unable to determine expire date - ucr variables ssl/validity/host|root are not set')
 
 
-obj = SSLCertificateCheck()
-obj.main()
+if __name__ == '__main__':
+	SSLCertificateCheck.main()
