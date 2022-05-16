@@ -36,6 +36,7 @@ Depends:
  lmdb-utils,
  monitoring-plugins,
  nagios-nrpe-server,
+ python3-univention-lib,
  shell-univention-lib,
  univention-base-files,
  univention-config,

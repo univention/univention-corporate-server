@@ -9,3 +9,9 @@ Description[de]=Diese Variable konfiguriert die Drucker dessen Warteschlange üb
 Description[en]=This variable configures the printers which printing queue is monitored.
 Type=str
 Categories=service-monitoring
+
+[monitoring/nfs/allnfs]
+Description[de]=Die Variable konfiguriert, ob alle NFS mounts im NFS status check berücksichtigt werden sollen oder nur alle automatisch gemounteten.
+Description[en]=The variable configures whether all NFS mounts should be included in the NFS status check or only all automatically mounted mounts.
+Type=bool
+Categories=service-monitoring
