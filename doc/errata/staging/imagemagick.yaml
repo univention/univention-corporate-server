@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [8, 9]
+scope: ucs_4.4-0-errata4.4-9
+src: imagemagick
+fix: 8:6.9.7.4+dfsg-11+deb9u14
+desc: |
+ This update addresses the following issues:
+ * NULL pointer dereference in ReadSVGImage() in coders/svg.c (CVE-2021-3596)
+ * heap-buffer-overflow in PushLongPixel() of quantum-private.h
+   (CVE-2022-28463)
+bug: [54760]
+cve:
+- CVE-2021-3596
+- CVE-2022-28463
