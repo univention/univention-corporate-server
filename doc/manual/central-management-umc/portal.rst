@@ -70,12 +70,12 @@ to allow the necessary ACL changes:
 
 .. code-block::
 
-   access to dn="cn=portal,cn=univention,@%@ldap/base@%@" attrs=children
+   access to dn="cn=portals,cn=univention,@%@ldap/base@%@" attrs=children
      by group/univentionGroup/uniqueMember="cn=Portal Admins,cn=groups,@%@ldap/base@%@" write
      by * +0 break
 
-   access to dn.children="cn=portal,cn=univention,@%@ldap/base@%@" attrs=entry,@univentionObject,@univentionPortalEntry,
-   @univentionPortal,@univentionPortalCategory,children
+   access to dn.children="cn=portals,cn=univention,@%@ldap/base@%@" attrs=entry,@univentionObject,@univentionNewPortalEntry,
+   @univentionNewPortal,@univentionNewPortalCategory,children
      by group/univentionGroup/uniqueMember="cn=Portal Admins,cn=groups,@%@ldap/base@%@" write
      by * +0 break
 
@@ -103,7 +103,7 @@ If the ACL is to be deleted again, the following command can be used:
 An appropriate UMC policy can now be created via UMC. The following
 *UMC operations* must be allowed within the policy:
 
-* *udm-portal*
+* *udm-new-portal*
 * *udm-syntax*
 * *udm-validate*
 * *udm-license*

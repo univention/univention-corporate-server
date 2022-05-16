@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-30 12:50+0200\n"
-"PO-Revision-Date: 2022-06-14 16:15+0200\n"
+"POT-Creation-Date: 2022-08-19 11:47+0200\n"
+"PO-Revision-Date: 2022-08-19 11:48+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -1322,9 +1322,9 @@ msgid ""
 " SMTP mail server and the Dovecot IMAP mail server."
 msgstr ""
 "Die :program:`Let's Encrypt` App im Univention App Center bietet eine "
-"weitgehend automatisierte Integration des *acme-tiny Let's Encrypt Clients*"
-" in UCS. Unterstützte Dienste in UCS sind der Apache Webserver, der "
-"Postfix SMTP Mailserver und der Dovecot IMAP Mailserver."
+"weitgehend automatisierte Integration des *acme-tiny Let's Encrypt "
+"Clients* in UCS. Unterstützte Dienste in UCS sind der Apache Webserver, "
+"der Postfix SMTP Mailserver und der Dovecot IMAP Mailserver."
 
 #: ../../central-management-umc/login.rst:4
 msgid "Login"
@@ -1799,9 +1799,9 @@ msgid ""
 " must be adjusted. After a change, the :program:`univention-portal-"
 "server` service must be restarted."
 msgstr ""
-"Um das angezeigte Portal zu ändern, muss die |UCSUCRV| "
-":envvar:`portal/default-dn` angepasst werden. Nach einer Änderung muss der "
-"Dienst :program:`univention-portal-server` neugestartet werden."
+"Um das angezeigte Portal zu ändern, muss die |UCSUCRV| :envvar:`portal"
+"/default-dn` angepasst werden. Nach einer Änderung muss der Dienst "
+":program:`univention-portal-server` neugestartet werden."
 
 #: ../../central-management-umc/portal.rst:26
 msgid ""
@@ -1907,26 +1907,26 @@ msgstr ""
 
 #: ../../central-management-umc/portal.rst:71
 msgid ""
-"access to dn=\"cn=portal,cn=univention,@%@ldap/base@%@\" attrs=children\n"
+"access to dn=\"cn=portals,cn=univention,@%@ldap/base@%@\" attrs=children\n"
 "  by group/univentionGroup/uniqueMember=\"cn=Portal "
 "Admins,cn=groups,@%@ldap/base@%@\" write\n"
 "  by * +0 break\n"
 "\n"
-"access to dn.children=\"cn=portal,cn=univention,@%@ldap/base@%@\" "
-"attrs=entry,@univentionObject,@univentionPortalEntry,\n"
-"@univentionPortal,@univentionPortalCategory,children\n"
+"access to dn.children=\"cn=portals,cn=univention,@%@ldap/base@%@\" "
+"attrs=entry,@univentionObject,@univentionNewPortalEntry,\n"
+"@univentionNewPortal,@univentionNewPortalCategory,children\n"
 "  by group/univentionGroup/uniqueMember=\"cn=Portal "
 "Admins,cn=groups,@%@ldap/base@%@\" write\n"
 "  by * +0 break"
 msgstr ""
-"access to dn=\"cn=portal,cn=univention,@%@ldap/base@%@\" attrs=children\n"
+"access to dn=\"cn=portals,cn=univention,@%@ldap/base@%@\" attrs=children\n"
 "  by group/univentionGroup/uniqueMember=\"cn=Portal "
 "Admins,cn=groups,@%@ldap/base@%@\" write\n"
 "  by * +0 break\n"
 "\n"
-"access to dn.children=\"cn=portal,cn=univention,@%@ldap/base@%@\" "
-"attrs=entry,@univentionObject,@univentionPortalEntry,\n"
-"@univentionPortal,@univentionPortalCategory,children\n"
+"access to dn.children=\"cn=portals,cn=univention,@%@ldap/base@%@\" "
+"attrs=entry,@univentionObject,@univentionNewPortalEntry,\n"
+"@univentionNewPortal,@univentionNewPortalCategory,children\n"
 "  by group/univentionGroup/uniqueMember=\"cn=Portal "
 "Admins,cn=groups,@%@ldap/base@%@\" write\n"
 "  by * +0 break"
@@ -1983,7 +1983,7 @@ msgstr ""
 " werden:"
 
 #: ../../central-management-umc/portal.rst:106
-msgid "*udm-portal*"
+msgid "*udm-new-portal*"
 msgstr "*udm-portal*"
 
 #: ../../central-management-umc/portal.rst:107
@@ -2139,7 +2139,7 @@ msgstr ""
 "Operationen können durch Angabe des Operationsnamens ausgegeben werden, "
 "z.B.,"
 
-#: ../../central-management-umc/udm-command.rst:59
+#: ../../central-management-umc/udm-command.rst:68
 msgid ""
 "$ univention-directory-manager users/user move\n"
 "[...]\n"
@@ -2197,7 +2197,7 @@ msgstr ""
 "  --position                       Move to position in tree\n"
 "[...]"
 
-#: ../../central-management-umc/udm-command.rst:90
+#: ../../central-management-umc/udm-command.rst:99
 msgid ""
 "The following command outputs further information, the operations and the"
 " options for every module. This also displays all attributes of the "
@@ -2206,11 +2206,11 @@ msgstr ""
 "Nähere Informationen, Operationen und Optionen zu jedem Modul gibt der "
 "folgende Befehl aus:"
 
-#: ../../central-management-umc/udm-command.rst:93
+#: ../../central-management-umc/udm-command.rst:102
 msgid "$ univention-directory-manager [category/modulename]"
 msgstr "$ univention-directory-manager [category/modulename]"
 
-#: ../../central-management-umc/udm-command.rst:98
+#: ../../central-management-umc/udm-command.rst:107
 msgid ""
 "With the ``create`` operation, the attributes marked with ``*`` must be "
 "specified when creating a new object."
@@ -2219,7 +2219,7 @@ msgstr ""
 "``create`` werden mit ``*`` die Attribute markiert, die beim Anlegen "
 "eines neuen Objektes zwingend angegeben werden müssen."
 
-#: ../../central-management-umc/udm-command.rst:101
+#: ../../central-management-umc/udm-command.rst:110
 msgid ""
 "Some attributes can be assigned more than one value (e.g., mail addresses"
 " to user objects). These multi-value fields are marked with ``[]`` behind"
@@ -2234,7 +2234,7 @@ msgstr ""
 "Dies ist bei den einzelnen Attributen durch Angabe des Optionsnamens "
 "aufgeführt:"
 
-#: ../../central-management-umc/udm-command.rst:107
+#: ../../central-management-umc/udm-command.rst:116
 msgid ""
 "users/user variables:\n"
 "  General:\n"
@@ -2250,7 +2250,7 @@ msgstr ""
 "  Contact:\n"
 "    e-mail (person,[])                       E-Mail Address"
 
-#: ../../central-management-umc/udm-command.rst:117
+#: ../../central-management-umc/udm-command.rst:126
 msgid ""
 "Here, ``username (*)`` signifies that this attribute must always be set "
 "when creating user objects. If the *person* option is set for the user "
@@ -2263,11 +2263,11 @@ msgstr ""
 "eine oder mehrere E-Mail-Adressen zu den Kontaktinformationen hinzugefügt"
 " werden."
 
-#: ../../central-management-umc/udm-command.rst:122
+#: ../../central-management-umc/udm-command.rst:131
 msgid "A range of standard parameters are defined for every module:"
 msgstr "Eine Reihe von Standard-Parametern sind für jedes Modul definiert:"
 
-#: ../../central-management-umc/udm-command.rst:126
+#: ../../central-management-umc/udm-command.rst:135
 msgid ""
 "The parameter is used to specify the LDAP position of the object during "
 "modifications or deletion. The complete DN must be entered, e.g.,"
@@ -2276,7 +2276,7 @@ msgstr ""
 "die LDAP-Position des Objektes anzugeben. Dabei muss die komplette DN "
 "angegeben werden, z.B,"
 
-#: ../../central-management-umc/udm-command.rst:130
+#: ../../central-management-umc/udm-command.rst:139
 msgid ""
 "$ univention-directory-manager users/user remove \\\n"
 "> --dn \"uid=ldapadmin,cn=users,dc=company,dc=example\""
@@ -2284,7 +2284,7 @@ msgstr ""
 "$ univention-directory-manager users/user remove \\\n"
 "> --dn \"uid=ldapadmin,cn=users,dc=company,dc=example\""
 
-#: ../../central-management-umc/udm-command.rst:137
+#: ../../central-management-umc/udm-command.rst:146
 msgid ""
 "The parameter is used to specify at which LDAP position an object should "
 "be created. If no ``--position`` is entered, the object is created below "
@@ -2297,7 +2297,7 @@ msgstr ""
 " mit diesem Parameter angegeben, an welche Stelle ein Objekt verschoben "
 "werden soll, z.B:"
 
-#: ../../central-management-umc/udm-command.rst:142
+#: ../../central-management-umc/udm-command.rst:151
 msgid ""
 "$ univention-directory-manager computers/ipmanagedclient move \\\n"
 "> --dn \"cn=desk01,cn=management,cn=computers,dc=company,dc=com\" \\\n"
@@ -2307,7 +2307,7 @@ msgstr ""
 "> --dn \"cn=desk01,cn=management,cn=computers,dc=company,dc=com\" \\\n"
 "> --position \"cn=finance,cn=computers,dc=company,dc=example\""
 
-#: ../../central-management-umc/udm-command.rst:150
+#: ../../central-management-umc/udm-command.rst:159
 msgid ""
 "The parameter specifies that the given value should be assigned to the "
 "following attribute. The parameter must be used per attribute value pair,"
@@ -2317,7 +2317,7 @@ msgstr ""
 "Wert zugewiesen wird. Der Parameter muss je Attribut-Wert-Paar verwendet "
 "werden, z.B:"
 
-#: ../../central-management-umc/udm-command.rst:154
+#: ../../central-management-umc/udm-command.rst:163
 msgid ""
 "$ univention-directory-manager users/user create \\\n"
 "> --position \"cn=users,dc=compaby,dc=example\" \\\n"
@@ -2333,7 +2333,7 @@ msgstr ""
 "> --set lastname=\"Smith\" \\\n"
 "> --set password=\"12345678\""
 
-#: ../../central-management-umc/udm-command.rst:165
+#: ../../central-management-umc/udm-command.rst:174
 msgid ""
 "The parameter defines the LDAP object classes of an object. If, for "
 "example, only ``pki`` is provided as options for a user object, it is not"
@@ -2345,7 +2345,7 @@ msgstr ""
 "kann für diesen Benutzer keine ``mailPrimaryAddress`` angegeben werden, "
 "da dieses Attribut Teil der Option ``mail`` ist."
 
-#: ../../central-management-umc/udm-command.rst:172
+#: ../../central-management-umc/udm-command.rst:181
 msgid ""
 "``--superordinate`` is used to specify dependent, superordinate modules. "
 "A DHCP object, for example, requires a DHCP service object under which it"
@@ -2356,7 +2356,7 @@ msgstr ""
 "Service-Objekt, unter dem es angelegt werden kann.  Dieses wird mit der "
 "Option ``--superordinate`` übergeben."
 
-#: ../../central-management-umc/udm-command.rst:178
+#: ../../central-management-umc/udm-command.rst:187
 msgid ""
 "The ``--policy-reference`` parameter allows the assignment of policies to"
 " objects (and similarly their deletion with ``--policy-dereference``). If"
@@ -2368,7 +2368,7 @@ msgstr ""
 "Richtlinie an ein Objekt geknüpft, so werden die Einstellungen aus der "
 "Richtlinie für das Objekt angewendet, z.B:"
 
-#: ../../central-management-umc/udm-command.rst:183
+#: ../../central-management-umc/udm-command.rst:192
 msgid ""
 "$ univention-directory-manager [category | modulename] [Operation] \\\n"
 "> --policy-reference \"cn=sales,cn=pwhistory,\" \\\n"
@@ -2378,7 +2378,7 @@ msgstr ""
 "> --policy-reference \"cn=sales,cn=pwhistory,\" \\\n"
 "> \"cn=users,cn=policies,dc=company,dc=example\""
 
-#: ../../central-management-umc/udm-command.rst:191
+#: ../../central-management-umc/udm-command.rst:200
 msgid ""
 "The ``--ignore_exists`` parameters skips existing objects. If it is not "
 "possible to create an object, as it already exists, the error code ``0`` "
@@ -2388,7 +2388,7 @@ msgstr ""
 " Sollte ein Objekt nicht angelegt werden können, da es bereits existiert,"
 " wird trotzdem der Fehlercode ``0`` (kein Fehler) zurückgegeben."
 
-#: ../../central-management-umc/udm-command.rst:197
+#: ../../central-management-umc/udm-command.rst:206
 msgid ""
 "``--append`` and ``--remove`` are used to add/remove a value from a "
 "multi-value field, e.g.:"
@@ -2396,7 +2396,7 @@ msgstr ""
 "Mit ``--append`` und ``--remove`` wird einem Mehrfachwert-Feld ein Wert "
 "hinzugefügt/entfernt, z.B:"
 
-#: ../../central-management-umc/udm-command.rst:200
+#: ../../central-management-umc/udm-command.rst:209
 msgid ""
 "$ univention-directory-manager groups/group modify \\\n"
 "> --dn \"cn=staff,cn=groups,dc=company,dc=example\" \\\n"
@@ -2408,15 +2408,15 @@ msgstr ""
 "> --append users=\"uid=smith,cn=users,dc=company,dc=example\" \\\n"
 "> --remove users=\"uid=miller,cn=users,dc=company,dc=example\""
 
-#: ../../central-management-umc/udm-command.rst:209
+#: ../../central-management-umc/udm-command.rst:218
 msgid "See :option:`--append`."
 msgstr "Siehe :option:`--append`."
 
-#: ../../central-management-umc/udm-command.rst:215
+#: ../../central-management-umc/udm-command.rst:224
 msgid "Example invocations of the command line interface"
 msgstr "Beispielaufrufe für die Kommandozeilenschnittstelle"
 
-#: ../../central-management-umc/udm-command.rst:217
+#: ../../central-management-umc/udm-command.rst:226
 msgid ""
 "The following examples for the command line front end of |UCSUDM| can be "
 "used as templates for your own scripts."
@@ -2424,15 +2424,15 @@ msgstr ""
 "Die folgenden Beispielaufrufe des Kommandozeilen-Frontend von |UCSUDM| "
 "können als Vorlagen für eigene Skripte verwendet werden."
 
-#: ../../central-management-umc/udm-command.rst:223
+#: ../../central-management-umc/udm-command.rst:232
 msgid "Users"
 msgstr "Benutzer"
 
-#: ../../central-management-umc/udm-command.rst:225
+#: ../../central-management-umc/udm-command.rst:234
 msgid "Creating a user in the standard user container:"
 msgstr "Anlegen eines Benutzers im Standard-Benutzer-Container:"
 
-#: ../../central-management-umc/udm-command.rst:227
+#: ../../central-management-umc/udm-command.rst:236
 msgid ""
 "$ univention-directory-manager users/user create \\\n"
 "> --position \"cn=users,dc=example,dc=com\" \\\n"
@@ -2452,13 +2452,13 @@ msgstr ""
 "> --set mailPrimaryAddress=\"mail@example.com\" \\\n"
 "> --set password=\"secretpassword\""
 
-#: ../../central-management-umc/udm-command.rst:238
+#: ../../central-management-umc/udm-command.rst:247
 msgid "Subsequent addition of the postal address for an existing user:"
 msgstr ""
 "Nachträgliches Hinzufügen der postalischen Adresse zum gerade angelegten "
 "Benutzer:"
 
-#: ../../central-management-umc/udm-command.rst:240
+#: ../../central-management-umc/udm-command.rst:249
 msgid ""
 "$ univention-directory-manager users/user modify \\\n"
 "> --dn \"uid=user01,cn=users,dc=example,dc=com\" \\\n"
@@ -2472,7 +2472,7 @@ msgstr ""
 "> --set postcode=\"28239\" \\\n"
 "> --set city=\"Bremen\""
 
-#: ../../central-management-umc/udm-command.rst:248
+#: ../../central-management-umc/udm-command.rst:257
 msgid ""
 "This command can be used to display all the users whose username begins "
 "with *user*:"
@@ -2480,7 +2480,7 @@ msgstr ""
 "Mit diesem Befehl werden alle Benutzer angezeigt, deren Benutzername mit "
 "*user* beginnt:"
 
-#: ../../central-management-umc/udm-command.rst:251
+#: ../../central-management-umc/udm-command.rst:260
 msgid ""
 "$ univention-directory-manager users/user list \\\n"
 "> --filter uid=user*"
@@ -2488,7 +2488,7 @@ msgstr ""
 "$ univention-directory-manager users/user list \\\n"
 "> --filter uid=user*"
 
-#: ../../central-management-umc/udm-command.rst:256
+#: ../../central-management-umc/udm-command.rst:265
 msgid ""
 "Searching for objects with the ``--filter`` can also be limited to a "
 "position in the LDAP directory; in this case, to all users in the "
@@ -2498,7 +2498,7 @@ msgstr ""
 "LDAP-Verzeichnis eingeschränkt werden, in diesem Fall auf alle Benutzer "
 "im Container ``cn=bremen,cn=users,dc=example,dc=com``:"
 
-#: ../../central-management-umc/udm-command.rst:260
+#: ../../central-management-umc/udm-command.rst:269
 msgid ""
 "$ univention-directory-manager users/user list \\\n"
 "> --filter uid=\"user*\" \\\n"
@@ -2508,11 +2508,11 @@ msgstr ""
 "> --filter uid=\"user*\" \\\n"
 "> --position \"cn=bremen,cn=users,dc=example,dc=com\""
 
-#: ../../central-management-umc/udm-command.rst:266
+#: ../../central-management-umc/udm-command.rst:275
 msgid "This call removes the user ``user04``:"
 msgstr "Dieser Aufruf entfernt einen Benutzer ``user04``:"
 
-#: ../../central-management-umc/udm-command.rst:268
+#: ../../central-management-umc/udm-command.rst:277
 msgid ""
 "$ univention-directory-manager users/user remove \\\n"
 "> --dn \"uid=user04,cn=users,dc=example,dc=com\""
@@ -2520,7 +2520,7 @@ msgstr ""
 "$ univention-directory-manager users/user remove \\\n"
 "> --dn \"uid=user04,cn=users,dc=example,dc=com\""
 
-#: ../../central-management-umc/udm-command.rst:273
+#: ../../central-management-umc/udm-command.rst:282
 msgid ""
 "A company has two sites with containers created for each. The following "
 "command can be used to transfer a user from the container for the site "
@@ -2531,7 +2531,7 @@ msgstr ""
 "Standort \"Hamburg\" in den Container für den Standort \"Bremen\" "
 "verschoben:"
 
-#: ../../central-management-umc/udm-command.rst:277
+#: ../../central-management-umc/udm-command.rst:286
 msgid ""
 "$ univention-directory-manager users/user move \\\n"
 "> --dn \"uid=user03,cn=hamburg,cn=users,dc=example,dc=com\" \\\n"
@@ -2541,11 +2541,11 @@ msgstr ""
 "> --dn \"uid=user03,cn=hamburg,cn=users,dc=example,dc=com\" \\\n"
 "> --position \"cn=bremen,cn=users,dc=example,dc=com\""
 
-#: ../../central-management-umc/udm-command.rst:286
+#: ../../central-management-umc/udm-command.rst:295
 msgid "Groups"
 msgstr "Gruppen"
 
-#: ../../central-management-umc/udm-command.rst:288
+#: ../../central-management-umc/udm-command.rst:297
 msgid ""
 "Creating a group ``Example Users`` and adding the user ``user01`` to this"
 " group:"
@@ -2553,7 +2553,7 @@ msgstr ""
 "Anlegen einer Gruppe ``Example Users`` und Hinzufügen des Benutzers "
 "``user01`` in diese Gruppe:"
 
-#: ../../central-management-umc/udm-command.rst:290
+#: ../../central-management-umc/udm-command.rst:299
 msgid ""
 "$ univention-directory-manager groups/group create \\\n"
 "> --position \"cn=groups,dc=example,dc=com\" \\\n"
@@ -2565,13 +2565,13 @@ msgstr ""
 "> --set name=\"Example Users\" \\\n"
 "> --set users=\"uid=user01,cn=users,dc=example,dc=com\""
 
-#: ../../central-management-umc/udm-command.rst:297
+#: ../../central-management-umc/udm-command.rst:306
 msgid "Subsequent addition of the user ``user02`` to the existing group:"
 msgstr ""
 "Nachträgliches Hinzufügen des Benutzers ``user02`` zur gerade angelegten "
 "Gruppe:"
 
-#: ../../central-management-umc/udm-command.rst:299
+#: ../../central-management-umc/udm-command.rst:308
 msgid ""
 "$ univention-directory-manager groups/group modify \\\n"
 "> --dn \"cn=Example Users,cn=groups,dc=example,dc=com\" \\\n"
@@ -2581,7 +2581,7 @@ msgstr ""
 "> --dn \"cn=Example Users,cn=groups,dc=example,dc=com\" \\\n"
 "> --append users=\"uid=user02,cn=users,dc=example,dc=com\""
 
-#: ../../central-management-umc/udm-command.rst:307
+#: ../../central-management-umc/udm-command.rst:316
 msgid ""
 "A ``--set`` on the attribute ``users`` overwrites the list of group "
 "members in contrast to ``--append``."
@@ -2589,11 +2589,11 @@ msgstr ""
 "Ein ``--set`` des Attributs ``users`` überschreibt im Gegensatz zu "
 "``--append`` die Liste der Gruppenmitglieder."
 
-#: ../../central-management-umc/udm-command.rst:310
+#: ../../central-management-umc/udm-command.rst:319
 msgid "Subsequent removal of the user ``user01`` from the group:"
 msgstr "Nachträgliches Entfernen des Benutzers ``user01`` aus der Gruppe:"
 
-#: ../../central-management-umc/udm-command.rst:312
+#: ../../central-management-umc/udm-command.rst:321
 msgid ""
 "$ univention-directory-manager groups/group modify \\\n"
 "> --dn \"cn=Example Users,cn=groups,dc=example,dc=com\" \\\n"
@@ -2603,11 +2603,11 @@ msgstr ""
 "> --dn \"cn=Example Users,cn=groups,dc=example,dc=com\" \\\n"
 "> --remove users=\"uid=user01,cn=users,dc=example,dc=com\""
 
-#: ../../central-management-umc/udm-command.rst:321
+#: ../../central-management-umc/udm-command.rst:330
 msgid "Container / Policies"
 msgstr "Container / Richtlinien"
 
-#: ../../central-management-umc/udm-command.rst:323
+#: ../../central-management-umc/udm-command.rst:332
 msgid ""
 "This call creates a container ``cn=Bremen`` beneath the standard "
 "container ``cn=computers`` for the computers at the \"Bremen\" site. The "
@@ -2621,7 +2621,7 @@ msgstr ""
 "Container auch direkt als Standardcontainer für Rechnerobjekte "
 "registriert (siehe :ref:`central-cn-and-ous`):"
 
-#: ../../central-management-umc/udm-command.rst:328
+#: ../../central-management-umc/udm-command.rst:337
 msgid ""
 "$ univention-directory-manager container/cn create \\\n"
 "> --position \"cn=computers,dc=example,dc=com\" \\\n"
@@ -2633,15 +2633,15 @@ msgstr ""
 "> --set name=\"bremen\" \\\n"
 "> --set computerPath=1"
 
-#: ../../central-management-umc/udm-command.rst:335
+#: ../../central-management-umc/udm-command.rst:344
 msgid ""
 "This command creates a disk quota policy with soft and hard limits and "
 "the name *Default quota*:"
 msgstr ""
-"Dieser Befehl legt eine Speicherplatzbegrenzungsrichtlinie mit dem Namen"
-" *Default quota* mit Soft- und Hard-Limit an:"
+"Dieser Befehl legt eine Speicherplatzbegrenzungsrichtlinie mit dem Namen "
+"*Default quota* mit Soft- und Hard-Limit an:"
 
-#: ../../central-management-umc/udm-command.rst:338
+#: ../../central-management-umc/udm-command.rst:347
 msgid ""
 "$ univention-directory-manager policies/share_userquota create \\\n"
 "> --position \"cn=policies,dc=example,dc=com\" \\\n"
@@ -2655,11 +2655,11 @@ msgstr ""
 "> --set softLimitSpace=5GB \\\n"
 "> --set hardLimitSpace=10GB"
 
-#: ../../central-management-umc/udm-command.rst:346
+#: ../../central-management-umc/udm-command.rst:355
 msgid "This policy is now linked to the user container ``cn=users``:"
 msgstr "Diese Richtlinie wird nun an den Benutzer-Container ``cn=users`` gebunden:"
 
-#: ../../central-management-umc/udm-command.rst:348
+#: ../../central-management-umc/udm-command.rst:357
 msgid ""
 "$ univention-directory-manager container/cn modify \\\n"
 "> --dn \"cn=users,dc=example,dc=com\" \\\n"
@@ -2669,7 +2669,7 @@ msgstr ""
 "> --dn \"cn=users,dc=example,dc=com\" \\\n"
 "> --policy-reference \"cn=Default quota,cn=policies,dc=example,dc=com\""
 
-#: ../../central-management-umc/udm-command.rst:354
+#: ../../central-management-umc/udm-command.rst:363
 msgid ""
 "Creating a |UCSUCR| policy with which the storage time for log files can "
 "be set to one year. One space is used to separate the name and value of "
@@ -2679,7 +2679,7 @@ msgstr ""
 "Logdateien auf ein Jahr eingestellt wird. Als Trennzeichen zwischen Name "
 "und Wert der Variable wird ein Leerzeichen verwendet:"
 
-#: ../../central-management-umc/udm-command.rst:357
+#: ../../central-management-umc/udm-command.rst:366
 msgid ""
 "$ univention-directory-manager policies/registry create \\\n"
 "> --position \"cn=config-registry,cn=policies,dc=example,dc=com\" \\\n"
@@ -2691,7 +2691,7 @@ msgstr ""
 "> --set name=\"default UCR settings\" \\\n"
 "> --set registry=\"logrotate/rotate/count 52\""
 
-#: ../../central-management-umc/udm-command.rst:364
+#: ../../central-management-umc/udm-command.rst:373
 msgid ""
 "This command can be used to attach an additional value to the created "
 "policy:"
@@ -2699,7 +2699,7 @@ msgstr ""
 "Mit diesem Befehl wird an die angelegte Richtlinie ein weiterer Wert "
 "angehängt:"
 
-#: ../../central-management-umc/udm-command.rst:366
+#: ../../central-management-umc/udm-command.rst:375
 msgid ""
 "$ univention-directory-manager policies/registry modify \\\n"
 "> --dn \"cn=default UCR settings,cn=config-"
@@ -2711,11 +2711,11 @@ msgstr ""
 "registry,cn=policies,dc=example,dc=com\" \\\n"
 "> --append registry='\"logrotate/compress\" \"no\"'"
 
-#: ../../central-management-umc/udm-command.rst:375
+#: ../../central-management-umc/udm-command.rst:384
 msgid "Computers"
 msgstr "Rechner"
 
-#: ../../central-management-umc/udm-command.rst:377
+#: ../../central-management-umc/udm-command.rst:386
 msgid ""
 "In the following example, a Windows client is created. If this client "
 "joins the Samba domain at a later point in time (see :ref:`windows-"
@@ -2725,7 +2725,7 @@ msgstr ""
 "Client später der Samba-Domäne bei (siehe :ref:`windows-domain-join`), "
 "wird dieses Rechnerkonto dann automatisch verwendet:"
 
-#: ../../central-management-umc/udm-command.rst:381
+#: ../../central-management-umc/udm-command.rst:390
 msgid ""
 "$ univention-directory-manager computers/windows create \\\n"
 "> --position \"cn=computers,dc=example,dc=com\" \\\n"
@@ -2739,11 +2739,11 @@ msgstr ""
 "> --set mac=aa:bb:cc:aa:bb:cc \\\n"
 "> --set ip=192.0.2.10"
 
-#: ../../central-management-umc/udm-command.rst:392
+#: ../../central-management-umc/udm-command.rst:401
 msgid "Shares"
 msgstr "Freigaben"
 
-#: ../../central-management-umc/udm-command.rst:394
+#: ../../central-management-umc/udm-command.rst:403
 msgid ""
 "The following command creates a share *Documentation* on the server "
 "*fileserver.example.com*. As long as :file:`/var/shares/documentation/` "
@@ -2754,7 +2754,7 @@ msgstr ""
 "auf dem Server noch nicht existiert, wird es durch diesen Aufruf auch "
 "gleich angelegt:"
 
-#: ../../central-management-umc/udm-command.rst:398
+#: ../../central-management-umc/udm-command.rst:407
 msgid ""
 "$ univention-directory-manager shares/share create \\\n"
 "> --position \"cn=shares,dc=example,dc=com\" \\\n"
@@ -2768,11 +2768,11 @@ msgstr ""
 "> --set host=\"fileserver.example.com\" \\\n"
 "> --set path=\"/var/shares/documentation\""
 
-#: ../../central-management-umc/udm-command.rst:409
+#: ../../central-management-umc/udm-command.rst:418
 msgid "Printers"
 msgstr "Drucker"
 
-#: ../../central-management-umc/udm-command.rst:411
+#: ../../central-management-umc/udm-command.rst:420
 msgid ""
 "Creating a printer share *LaserPrinter01* on the print server "
 "*printserver.example.com*. The properties of the printer are specified in"
@@ -2786,7 +2786,7 @@ msgstr ""
 ":file:`/usr/share/ppd/` angegeben wird. Der angebundene Drucker ist "
 "netzwerkfähig und wird über das IPP-Protokoll angebunden."
 
-#: ../../central-management-umc/udm-command.rst:417
+#: ../../central-management-umc/udm-command.rst:426
 msgid ""
 "$ univention-directory-manager shares/printer create \\\n"
 "> --position \"cn=printers,dc=example,dc=com\" \\\n"
@@ -2808,7 +2808,7 @@ msgstr ""
 "> --set producer=\"producer: "
 "cn=HP,cn=cups,cn=univention,dc=example,dc=com\""
 
-#: ../../central-management-umc/udm-command.rst:430
+#: ../../central-management-umc/udm-command.rst:439
 msgid ""
 "There must be a blank space between the print protocol and the URL target"
 " path in the parameter ``uri``. A list of the print protocols can be "
@@ -2818,7 +2818,7 @@ msgstr ""
 "muss ein Leerzeichen stehen. Eine Liste der Druckprotokolle befindet sich"
 " in :ref:`print-shares`."
 
-#: ../../central-management-umc/udm-command.rst:434
+#: ../../central-management-umc/udm-command.rst:443
 msgid ""
 "Printers can be grouped in a printer group for simpler administration. "
 "Further information on printer groups can be found in :ref:`printer-"
@@ -2828,7 +2828,7 @@ msgstr ""
 "zusammengefasst werden. Weitere Informationen zu Druckergruppen finden "
 "sich in :ref:`printer-groups`."
 
-#: ../../central-management-umc/udm-command.rst:437
+#: ../../central-management-umc/udm-command.rst:446
 msgid ""
 "$ univention-directory-manager shares/printergroup create \\\n"
 "> --set name=LaserPrinters \\\n"
@@ -2842,11 +2842,11 @@ msgstr ""
 "> --append groupMember=LaserPrinter01 \\\n"
 "> --append groupMember=LaserPrinter02"
 
-#: ../../central-management-umc/udm-command.rst:448
+#: ../../central-management-umc/udm-command.rst:457
 msgid "DNS/DHCP"
 msgstr "DNS/DHCP"
 
-#: ../../central-management-umc/udm-command.rst:450
+#: ../../central-management-umc/udm-command.rst:459
 msgid ""
 "To configure an IP assignment via DHCP, a DHCP computer entry must be "
 "registered for the MAC address. Further information on DHCP can be found "
@@ -2856,7 +2856,7 @@ msgstr ""
 "Eintrag für die MAC-Adresse registriert werden. Weitere Informationen zu "
 "DHCP finden sich in :ref:`module-dhcp-dhcp`."
 
-#: ../../central-management-umc/udm-command.rst:454
+#: ../../central-management-umc/udm-command.rst:463
 msgid ""
 "$ univention-directory-manager dhcp/host create \\\n"
 "> --superordinate \"cn=example.com,cn=dhcp,dc=example,dc=com\" \\\n"
@@ -2870,7 +2870,7 @@ msgstr ""
 "> --set fixedaddress=\"192.0.2.110\" \\\n"
 "> --set hwaddress=\"ethernet 00:11:22:33:44:55\""
 
-#: ../../central-management-umc/udm-command.rst:462
+#: ../../central-management-umc/udm-command.rst:471
 msgid ""
 "If it should be possible for a computer name to be resolved via DNS, the "
 "following commands can be used to configure a forward (host record) and "
@@ -2880,7 +2880,7 @@ msgstr ""
 "Befehlen eine Vorwärts- (host record) und Reverse-Auflösung (PTR record) "
 "konfiguriert werden."
 
-#: ../../central-management-umc/udm-command.rst:466
+#: ../../central-management-umc/udm-command.rst:475
 msgid ""
 "$ univention-directory-manager dns/host_record create \\\n"
 "> --superordinate \"zoneName=example.com,cn=dns,dc=example,dc=com\" \\\n"
@@ -2904,15 +2904,15 @@ msgstr ""
 "> --set address=\"110\" \\\n"
 "> --set ptr_record=\"Client222.example.com.\""
 
-#: ../../central-management-umc/udm-command.rst:478
+#: ../../central-management-umc/udm-command.rst:487
 msgid "Further information on DNS can be found in :ref:`networks-dns`."
 msgstr "Weitere Informationen zu DNS finden sich in :ref:`networks-dns`."
 
-#: ../../central-management-umc/udm-command.rst:483
+#: ../../central-management-umc/udm-command.rst:492
 msgid "Extended attributes"
 msgstr "Erweiterte Attribute"
 
-#: ../../central-management-umc/udm-command.rst:485
+#: ../../central-management-umc/udm-command.rst:494
 msgid ""
 "Extended attributes can be used to expand the functional scope of UMC "
 "modules, see :ref:`central-extended-attrs`. In the following example, a "
@@ -2927,7 +2927,7 @@ msgstr ""
 "extra für diesen Zweck vorgesehenen Objektklasse "
 "``univentionFreeAttributes`` verwaltet:"
 
-#: ../../central-management-umc/udm-command.rst:491
+#: ../../central-management-umc/udm-command.rst:500
 msgid ""
 "$ univention-directory-manager settings/extended_attribute create \\\n"
 "> --position \"cn=custom attributes,cn=univention,dc=example,dc=com\" \\\n"
@@ -2993,9 +2993,9 @@ msgid ""
 msgstr ""
 "UMC-Module zur Konfiguration und Administration des lokalen Systems "
 "werden auf allen Systemrollen bereitgestellt. Über diese Module können "
-"z.B. zusätzliche Applikationen installiert, Aktualisierungen "
-"eingespielt, die lokale Konfiguration über |UCSUCR| angepasst oder "
-"Dienste gestartet/gestoppt werden."
+"z.B. zusätzliche Applikationen installiert, Aktualisierungen eingespielt,"
+" die lokale Konfiguration über |UCSUCR| angepasst oder Dienste "
+"gestartet/gestoppt werden."
 
 #: ../../central-management-umc/umc.rst:25
 msgid "Activation of UCS license / license overview"
@@ -3267,9 +3267,9 @@ msgid ""
 msgstr ""
 "Durch Rechtsklick auf ein LDAP-Objekt und Auswahl von "
 ":guilabel:`Bearbeiten` kann ein Objekt bearbeitet werden. Die einzelnen "
-"Attribute sind in den entsprechenden Abschnitten beschrieben."
-" Mit einem Klick auf :guilabel:`Speichern` ganz oben im Modul werden alle"
-" vorgenommenen Anpassungen in das LDAP-Verzeichnis übernommen. Die "
+"Attribute sind in den entsprechenden Abschnitten beschrieben. Mit einem "
+"Klick auf :guilabel:`Speichern` ganz oben im Modul werden alle "
+"vorgenommenen Anpassungen in das LDAP-Verzeichnis übernommen. Die "
 "Schaltfläche :guilabel:`Zurück` bricht die Bearbeitung ab und kehrt zur "
 "vorherigen Suchansicht zurück."
 
@@ -3290,8 +3290,8 @@ msgstr ""
 "zusätzlich in der Aktionsleiste der Tabelle dargestellt, z.B.  *2 "
 "Benutzer von 102 sind ausgewählt*. Ist mehr als ein Objekt selektiert, "
 "wird nach einem Klick auf :guilabel:`Bearbeiten` in der Aktionsleiste der"
-" Mehrfachbearbeitungsmodus aktiviert. Hierbei werden dieselben Attribute"
-" angezeigt wie bei der Bearbeitung eines einzelnen Objekts, Änderungen "
+" Mehrfachbearbeitungsmodus aktiviert. Hierbei werden dieselben Attribute "
+"angezeigt wie bei der Bearbeitung eines einzelnen Objekts, Änderungen "
 "werden aber nur für die Objekte übernommen, bei denen die "
 ":guilabel:`Überschreiben`-Checkbox aktiviert wird. Es können nur Objekte "
 "gleichen Typs bearbeitet werden."
