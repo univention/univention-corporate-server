@@ -4,6 +4,8 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper-compat (= 12),
+ dh-python,
+ python3-all,
  univention-config-dev,
  univention-join-dev,
 Standards-Version: 4.3.0.3
@@ -14,6 +16,7 @@ Depends:
  cron,
  univention-monitoring-plugins (=${source:Version}),
  ${misc:Depends},
+ ${python3:Depends},
 Description: UCS: monitoring client
  This package installs the required packages to allow clients
  to be monitored.

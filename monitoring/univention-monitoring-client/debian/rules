@@ -32,4 +32,4 @@
 #
 
 %:
-	dh $@ --with ucr,univention-join
+	dh $@ --with ucr,univention-join,python3
