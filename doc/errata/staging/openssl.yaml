@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [8, 9]
+scope: ucs_4.4-0-errata4.4-9
+src: openssl
+fix: 1.1.0l-1~deb9u6
+desc: |
+ This update addresses the following issue:
+ * c_rehash script allows command injection (CVE-2022-1292)
+bug: [54761]
+cve:
+- CVE-2022-1292
