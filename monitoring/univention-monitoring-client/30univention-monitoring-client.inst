@@ -35,9 +35,12 @@
 VERSION=1
 
 . /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/all.sh
 joinscript_init
 
 eval "$(univention-config-registry shell)"
+
+ucs_addServiceToLocalhost "UCS Monitoring" || die
 
 joinscript_save_current_version
 

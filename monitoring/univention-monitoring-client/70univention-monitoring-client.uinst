@@ -35,7 +35,11 @@
 VERSION=1
 
 . /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/all.sh
+
 joinscript_init
+
+ucs_removeServiceFromLocalhost "UCS Monitoring" || die
 
 joinscript_remove_script_from_status_file univention-monitoring-client
 
