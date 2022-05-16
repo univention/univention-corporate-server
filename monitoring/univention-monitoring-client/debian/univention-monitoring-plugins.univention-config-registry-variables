@@ -1,0 +1,5 @@
+[monitoring/nmbd/query-wins-hosts]
+Description[de]=Die Variable konfiguriert, welche Rechnernamen im NMBD Monitoring berücksichtigt werden soll. Die Variable muss eine kommaseparierte Liste enthalten. Jeder Eintrag muss aus zwei Rechnernamen bestehen, die mit " " separiert werden. An den ersten Rechner des jeweiligen Eintrags wird eine unicast query gesendet, um den zweiten übergebenen Rechnernamen zu einer IP-Adresse aufzulösen.
+Description[en]=The variable configures which hostnames should be included in the NMBD monitoring. The variable must contain a comma-separated list. Each entry must consist of two hostnames separated by " ". A unicast query is sent to the first hostname of each entry to resolve the second hostname passed to an IP address.
+Type=str
+Categories=service-monitoring

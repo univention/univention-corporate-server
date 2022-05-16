@@ -1,7 +1,6 @@
-#!/bin/sh
+#!/usr/bin/python3
 #
-#
-# Univention Nagios Plugin
+# Univention Monitoring Plugin
 #  check_univention_nmbd: check nmbd status
 #
 # Copyright 2007-2022 Univention GmbH
@@ -30,107 +29,46 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
-#
 
-VERSION="1.00"
-PROGNAME=`/usr/bin/basename $0`
-VERBOSE=0
+import re
+import subprocess
 
-STATE_OK=0
-STATE_WARNING=1
-STATE_CRITICAL=2
-STATE_UNKNOWN=3
-
-get_state_string() {
-	if [ "$1" = "$STATE_OK" ] ; then
-		STATE_STRING="OK"
-	elif [ "$1" = "$STATE_WARNING" ] ; then
-		STATE_STRING="WARNING"
-	elif [ "$1" = "$STATE_CRITICAL" ] ; then
-		STATE_STRING="CRITICAL"
-	else
-		STATE_STRING="UNKNOWN"
-    fi
-}
-
-print_revision() {
-    echo "$PROGNAME: version $VERSION"
-}
-
-print_usage() {
-    echo "Usage: $PROGNAME --help"
-    echo "Usage: $PROGNAME --version"
-    echo "Usage: $PROGNAME [-W <WINS server>] [-N <NetBIOS name>]"
-}
-
-print_help() {
-    print_revision
-    echo ""
-    print_usage
-}
-
-QUERY_HOST="$(/bin/hostname)"
-WINS_HOST="$(/bin/hostname)"
-while test -n "$1"; do
-    case "$1" in
-        --help)
-            print_help
-            exit $STATE_OK
-            ;;
-        -h)
-            print_help
-            exit $STATE_OK
-            ;;
-        --version)
-            print_revision
-            exit $STATE_OK
-            ;;
-        -V)
-            print_revision
-            exit $STATE_OK
-            ;;
-		-W)
-			WINS_HOST="$2"
-			shift
-			;;
-		-N)
-			QUERY_HOST="$2"
-			shift
-			;;
-    esac
-    shift
-done
+from univention.monitoring import Alert
+from univention.config_registry import ucr
 
 
+class NMBD(Alert):
 
-CMD=$(which nmblookup)
-if [ -z "$CMD" ] ; then
-	echo "Cannot find nmblookup executable"
-	exit $STATE_UNKNOWN
-fi
+	def write_metrics(self):
+		ucr_hosts = ucr.get("monitoring/nmbd/query-wins-hosts")
+		if ucr_hosts:
+			hosts = [ent.strip().split(' ', 1) for ent in ucr_hosts.split(',')]
+		else:
+			query_host = wins_host = subprocess.check_output('/bin/hostname').decode('UTF-8')
+			hosts = [(query_host, wins_host)]
 
-output=$($CMD -U "$WINS_HOST" -R "$QUERY_HOST" 2> /dev/null)
-msg=$(echo "$output" | tr '\n' ';')
+		for query_host, wins_host in hosts:
+			try:
+				output = subprocess.check_output(['/usr/bin/nmblookup', '-U', wins_host, '-R', query_host], stderr=subprocess.DEVNULL).decode('UTF-8', 'replace')
+			except FileNotFoundError:
+				self.write_metric('univention_nmbd_running', -1, query_host=query_host, wins_host=wins_host)
+				self.log.debug('Cannot find nmblookup executable')
+				return
+			except subprocess.CalledProcessError as exc:
+				output = exc.output.decode('UTF-8', 'replace')
 
-echo "$output" | grep -qc "failed to find name"
-if [ $? = 0 ]; then
-	state=$STATE_CRITICAL
-	get_state_string $state
-	echo "${STATE_STRING}: nmblookup for $QUERY_HOST failed: $msg"
-	exit $state
-fi
+			output = output.replace('\n', ';')
+			if 'failed to find name' in output:
+				self.log.debug('nmblookup for %s at host %s failed: %s' % (wins_host, query_host, output))
+				self.write_metric('univention_nmbd_running', 0, query_host=query_host, wins_host=wins_host)
 
-echo "$output" | egrep -q "[0-9]+.[0-9]+.[0-9]+.[0-9]+ $QUERY_HOST"
-if [ $? = 0 ]; then
-	state=$STATE_OK
-	get_state_string $state
-	echo "${STATE_STRING}: nmblookup for $QUERY_HOST ok"
-	exit $state
-fi
+			if re.search('[0-9]+.[0-9]+.[0-9]+.[0-9]+ %s' % (re.escape(query_host),), output):
+				self.log.debug('nmblookup for %s at host %s ok' % (wins_host, query_host))
+				self.write_metric('univention_nmbd_running', 1, query_host=query_host, wins_host=wins_host)
+			else:
+				self.log.debug('unknown nmblookup for %s at host %s: %s' % (wins_host, query_host, output))
+				self.write_metric('univention_nmbd_running', 0, query_host=query_host, wins_host=wins_host)
 
 
-state=$STATE_CRITICAL
-get_state_string $state
-echo "${STATE_STRING}: PLUGIN FAILED: unknown nmblookup output: $msg"
-exit $state
+if __name__ == '__main__':
+	NMBD.main()
