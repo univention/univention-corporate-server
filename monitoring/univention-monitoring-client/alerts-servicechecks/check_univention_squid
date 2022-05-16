@@ -1,0 +1,93 @@
+#!/bin/bash
+#
+# Univention Nagios Plugin
+#
+# Copyright 2010-2022 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+nagiosExit () {
+
+	local state="$1"
+	local msg="$2"
+
+	case $state in
+	0)
+		echo "OK: $msg"
+		exit 0
+		;;
+	1)
+		echo "WARNING: $msg"
+		exit 1
+		;;
+	2)
+		echo "CRITICAL: $msg"
+		exit 2
+		;;
+	*)
+		echo "UNKNOWN: $msg"
+		exit 3
+		;;
+	esac
+}
+
+if [ "$1" = "-h" -o "$1" = "--help" ] ; then
+	echo "$0 checks local service 'squid'"
+	echo "syntax: $0 [--help]"
+	exit 3
+fi
+
+# check for at least one squid process
+MSG="$(/usr/lib/nagios/plugins/check_procs -w 1: -c 1: -C squid)"
+RET="$?"
+if [ ! "$RET" = "0" ] ; then
+	nagiosExit "$RET" "$MSG"
+fi
+
+# get local squid port
+port=3128
+squidCfg=/etc/squid/squid.conf
+if [ -e "$squidCfg" ]; then
+	cfgPort=$(sed -nre 's/^\s*http_port\s+//p' "$squidCfg")
+	if [ -n "$cfgPort" ]; then
+		port=$cfgPort
+	fi
+fi
+
+# check if authentication is required
+auth=""
+for i in ntlmauth basicauth krb5auth; do
+	if [ -z "$auth" ] ; then
+		tmp=$(/usr/sbin/univention-config-registry get squid/$i)
+		if [ "yes" = "$tmp" -o "true" = "$tmp" ]; then
+			auth="-e 407"
+		fi
+	fi
+done
+
+# check HTTP service
+MSG="$(/usr/lib/nagios/plugins/check_http -I 127.0.0.1 -p $port -u http://127.0.0.1 $auth)"
+nagiosExit "$?" "$MSG"

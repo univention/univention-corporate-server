@@ -1,0 +1,202 @@
+#!/bin/bash
+#
+#
+# Univention Nagios Plugin
+#  check_univention_printerqueue: check status for printer queues
+#
+# Copyright 2007-2022 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+#
+#
+
+VERSION="1.00"
+PROGNAME=`/usr/bin/basename $0`
+VERBOSE=0
+
+
+
+STATE_OK=0
+STATE_WARNING=1
+STATE_CRITICAL=2
+STATE_UNKNOWN=3
+
+get_state_string() {
+	if [ "$1" = "$STATE_OK" ] ; then
+		STATE_STRING="OK"
+	elif [ "$1" = "$STATE_WARNING" ] ; then
+		STATE_STRING="WARNING"
+	elif [ "$1" = "$STATE_CRITICAL" ] ; then
+		STATE_STRING="CRITICAL"
+	else
+		STATE_STRING="UNKNOWN"
+    fi
+}
+
+print_revision() {
+    echo "$1: version $2"
+}
+
+print_usage() {
+    echo "Usage: $PROGNAME [-v] [--dw] [--dc] [-w <cnt>] [-c <cnt>] <printername>"
+    echo "Usage: $PROGNAME --help"
+    echo "Usage: $PROGNAME --version"
+}
+
+print_help() {
+    print_revision $PROGNAME $REVISION
+    echo ""
+    print_usage
+	echo ""
+	echo "--dw       status WARNING if queue disabled"
+	echo "--dc       status CRITICAL if queue disabled"
+	echo "-w <cnt>   status WARNING if more than <cnt> jobs in queue"
+	echo "-c <cnt>   status CRITICAL if more than <cnt> jobs in queue"
+}
+
+exit_with_status() {
+	get_state_string $1
+	MSG="${STATE_STRING}: printer $PRINTER: $JOBCNT jobs"
+	if [ -n "$CNT_WARNING" ] ; then
+		MSG="$MSG (warn@${CNT_WARNING})"
+	fi
+	if [ -n "$CNT_CRITICAL" ] ; then
+		MSG="$MSG (crit@${CNT_CRITICAL})"
+	fi
+	echo $MSG
+	exit $1
+}
+
+
+# default exit status
+exitstatus=$STATE_WARNING
+while test -n "$1"; do
+    case "$1" in
+        --help)
+            print_help
+            exit $STATE_OK
+            ;;
+        -h)
+            print_help
+            exit $STATE_OK
+            ;;
+        --version)
+            print_revision $PROGNAME $VERSION
+            exit $STATE_OK
+            ;;
+        -V)
+            print_revision $PROGNAME $VERSION
+            exit $STATE_OK
+            ;;
+		-v)
+			VERBOSE=1
+			;;
+		-vv)
+			VERBOSE=2
+			;;
+		-vvv)
+			VERBOSE=3
+			;;
+		-w)
+			let CNT_WARNING=$2
+			shift
+			;;
+		-c)
+			let CNT_CRITICAL=$2
+			shift
+			;;
+		--dw)
+			STATE_DISABLED="$STATE_WARNING"
+			;;
+		--dc)
+			STATE_DISABLED="$STATE_CRITICAL"
+			;;
+        *)
+			PRINTER=$1
+            ;;
+    esac
+    shift
+done
+
+
+if [ -z "$PRINTER" ] ; then
+	get_state_string $STATE_UNKNOWN
+	echo "${STATE_STRING}: no printer given"
+	exit $STATE_UNKNOWN
+fi
+
+
+# Sample output of lpq
+#
+#   TestPrinter is not ready
+#   Rank    Owner   Job     File(s)                         Total Size
+#   1st     remroot 1       <STDIN>                         13312 bytes
+#   2nd     remroot 2       <STDIN>                         13312 bytes
+#   3rd     remroot 3       <STDIN>                         13312 bytes
+
+if [ "$VERBOSE" = "0" ] ; then
+	OUTPUT=$(lpq -P $PRINTER 2> /dev/null)
+	RET=$?
+else
+	OUTPUT=$(lpq -P $PRINTER)
+	RET=$?
+fi
+
+if [ ! "$RET" = "0" ] ; then
+	get_state_string $STATE_UNKNOWN
+	echo "${STATE_STRING}: error while executing lpq"
+	exit $STATE_UNKNOWN
+fi
+
+#
+# get number of waiting jobs
+#
+let JOBCNT=$(echo "$OUTPUT" | sed -n '1,2d;p' | wc -l)
+
+#
+# check if printer is disabled
+#
+if [ -n "$STATE_DISABLED" ] ; then
+	if [ "`echo \"$OUTPUT\" | head -n1 | grep -c 'is ready'`" = "0" ] ; then
+		get_state_string $STATE_DISABLED
+		echo "${STATE_STRING}: printer `echo \"$OUTPUT\"| head -n1 | tr -d '\n'`: $JOBCNT jobs"
+		exit $STATE_DISABLED
+	fi
+fi
+
+#
+# process number of waiting jobs
+#
+if [ -n "$CNT_WARNING" -o -n "$CNT_CRITICAL" ] ; then
+	if [ -n "$CNT_CRITICAL" ] && [ $CNT_CRITICAL -le $JOBCNT ] ; then
+		exit_with_status $STATE_CRITICAL
+	fi
+	if [ -n "$CNT_WARNING" ] && [ $CNT_WARNING -le $JOBCNT ] ; then
+		exit_with_status $STATE_WARNING
+	fi
+fi
+
+exit_with_status $STATE_OK

@@ -1,0 +1,171 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+#
+# Univention Nagios
+#
+# Copyright 2004-2022 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+import getopt
+import sys
+import re
+
+
+class FSMountCheck:
+
+	def __init__(self):
+		self.PROGNAME = 'check_univention_nfsstatus'
+		self.REVISION = '1.0'
+		self.FSTAB = '/etc/fstab'
+		self.PROCMOUNTS = '/proc/mounts'
+		self.FSTYPES = ['nfs']
+		self.errorstate = 'CRITICAL'
+		self.allnfs = 0
+		self.verbose = 0
+		self.re_fstab = re.compile('^(.*?)[ \t]+(.*?)[ \t]+(.*?)[ \t]+(.*?)[ \t]+')
+		self.re_mounts = re.compile('^(.*?) (.*?) (.*?) (.*?) ')
+		self.re_comment = re.compile('^[ \t]*#')
+		self.re_noauto = re.compile('(?:^|,)noauto(?:,|$)', re.IGNORECASE)
+
+		self.STATE = {
+			'OK': 0,
+			'WARNING': 1,
+			'CRITICAL': 2,
+			'UNKNOWN': 3
+		}
+
+	def print_revision(self):
+		print('%s: version %s' % (self.PROGNAME, self.REVISION))
+
+	def print_usage(self):
+		print('Usage: %s [-v] [-w] [-c] [-a]' % self.PROGNAME)
+		print('Usage: %s --help' % self.PROGNAME)
+		print('Usage: %s --version' % self.PROGNAME)
+
+	def print_help(self):
+		self.print_revision()
+		print('')
+		self.print_usage()
+		print('')
+		print(' -v        verbose debug output')
+		print(' -w        WARNING if a nfs share is not mounted')
+		print(' -c        CRITICAL if a nfs share is not mounted')
+		print(' -a        check also nfs shares with option "noauto"')
+
+	def exit_with_status(self, state, msg):
+		print('%s: %s' % (state, msg))
+		sys.exit(self.STATE[state])
+
+	def main(self):
+		# parse command line
+		try:
+			(opts, pargs) = getopt.getopt(sys.argv[1:], 'acvw', ['help', 'version'])
+		except getopt.GetoptError:
+			self.print_usage()
+			sys.exit(self.STATE['UNKNOWN'])
+
+		# get command line data
+		for opt in opts:
+			if opt[0] == '-c':
+				self.errorstate = 'CRITICAL'
+			elif opt[0] == '-h' or opt[0] == '--help':
+				self.print_help()
+				sys.exit(self.STATE['UNKNOWN'])
+			elif opt[0] == '-v':
+				self.verbose += 1
+			elif opt[0] == '-w':
+				self.errorstate = 'WARNING'
+			elif opt[0] == '-a':
+				self.allnfs = 1
+			elif opt[0] == '--version':
+				self.print_revision()
+				sys.exit(self.STATE['UNKNOWN'])
+
+		nfscnt = 0
+		mounted = 0
+		umounted = 0
+		msg = ''
+		state = 'UNKNOWN'
+
+		# read currently mounted filesystems
+		try:
+			with open(self.PROCMOUNTS) as fd:
+				mounts = fd.read()
+		except EOFError as err:
+			self.exit_with_status('UNKNOWN', 'error while reading %s, EOF error: %s' % (self.PROCMOUNTS, err))
+		except OSError as err:
+			self.exit_with_status('UNKNOWN', 'error while reading %s, OS error: %s' % (self.PROCMOUNTS, err))
+		mountlist = {}
+
+		for line in mounts.splitlines():
+			result = self.re_mounts.match(line)
+			if result:
+				(source, mntpoint, fstype, options) = result.groups()
+				if fstype in self.FSTYPES:
+					mountlist[source] = (source, mntpoint, fstype, options)
+
+		# read desired mounted filesystemss
+		try:
+			with open(self.FSTAB) as fd:
+				fstab = fd.read()
+		except EOFError as err:
+			self.exit_with_status('UNKNOWN', 'error while reading %s, EOF error: %s' % (self.FSTAB, err))
+		except OSError as err:
+			self.exit_with_status('UNKNOWN', 'error while reading %s, OS error: %s' % (self.FSTAB, err))
+		self.fstab = []
+
+		for line in fstab.splitlines():
+			result = self.re_comment.match(line)
+			if not result:
+				result = self.re_fstab.match(line)
+				if result:
+					(source, mntpoint, fstype, options) = result.groups()
+					if fstype in self.FSTYPES:
+						result_noauto = self.re_noauto.search(options)
+						if self.allnfs == 1 or not result_noauto:
+							nfscnt += 1
+							if source in mountlist and mountlist[source][1] == mntpoint:
+								mounted += 1
+							else:
+								umounted += 1
+								msg += '"%s" not mounted, ' % source
+
+		msg = msg.rstrip(', ')
+		if nfscnt == 0:
+			msg = 'no nfs shares in /etc/fstab present'
+		elif umounted == 0:
+			state = 'OK'
+			msg = '%s OK, %s %s - all nfs shares are correctly mounted' % (mounted, umounted, self.errorstate)
+		else:
+			state = self.errorstate
+			msg = '%s OK, %s %s - %s' % (mounted, umounted, self.errorstate, msg)
+
+		self.exit_with_status(state, msg)
+
+
+obj = FSMountCheck()
+obj.main()

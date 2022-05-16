@@ -11,10 +11,155 @@ Standards-Version: 4.3.0.3
 Package: univention-monitoring-client
 Architecture: any
 Depends:
+ cron,
+ univention-monitoring-plugins (=${source:Version}),
  ${misc:Depends},
 Description: UCS: monitoring client
  This package installs the required packages to allow clients
  to be monitored.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-monitoring-plugins
+Architecture: any
+Depends:
+ cron,
+ cups-bsd,
+ dnsutils,
+ dpt-i2o-raidutils,
+ lmdb-utils,
+ monitoring-plugins,
+ nagios-nrpe-server,
+ shell-univention-lib,
+ univention-base-files,
+ univention-config,
+ univention-directory-listener,
+ univention-directory-manager-tools,
+ ${misc:Depends},
+Description: UCS: monitoring plugins
+ This package installs plugins to monitor various UCS
+ specific functionality.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-monitoring-ad-connector
+Architecture: any
+Depends:
+ shell-univention-lib,
+ univention-directory-manager-tools,
+ ${misc:Depends},
+Description: plugin for UCS AD connector
+ This package installs a plugin to monitor the state
+ of UCS Active Directory (AD) connectors.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-monitoring-raid
+Architecture: any
+Depends:
+ mdadm,
+ nagios-plugins-contrib,
+ univention-directory-manager-tools,
+ ${misc:Depends},
+Description: raid plugin
+ This package installs a nagios plugin to monitor software
+ RAID status.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-monitoring-s4-connector
+Architecture: any
+Depends:
+ ${misc:Depends},
+ shell-univention-lib,
+ univention-directory-manager-tools,
+Description: plugin for UCS S4 connector
+ This package installs a plugin to monitor the state
+ of UCS Samba connectors.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-monitoring-samba
+Architecture: any
+Depends:
+ shell-univention-lib,
+ univention-directory-manager-tools,
+ ${misc:Depends},
+Description: plugin for UCS samba
+ This package installs plugins to monitor the state
+ of UCS Samba.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-monitoring-cups
+Architecture: any
+Depends:
+ univention-directory-manager-tools,
+ ${misc:Depends},
+Description: plugin for monitoring cups daemon and webservice
+ This package installs a plugin to monitor CUPS
+ daemon and checks the availability of CUPS webfrontend.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-monitoring-squid
+Architecture: any
+Depends:
+ univention-directory-manager-tools,
+ ${misc:Depends},
+Description: plugin for monitoring squid daemon and webservice
+ This package installs a plugin to monitor squid
+ daemon and checks the availability of the proxy service.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-monitoring-opsi
+Architecture: any
+Depends:
+ univention-directory-manager-tools,
+ ${misc:Depends},
+Description: plugin for monitoring opsi daemons and webservice
+ This package installs a plugin to monitor OPSI
+ daemon and checks the availability of OPSI webfrontend.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-monitoring-smart
+Architecture: any
+Depends:
+ smartmontools,
+ univention-directory-manager-tools,
+ ${misc:Depends},
+Description: smart plugin
+ This package installs a plugin to monitor SMART
+ status of harddisks.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

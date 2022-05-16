@@ -1,0 +1,114 @@
+#!/bin/sh
+#
+#
+# Univention Nagios Plugin
+#  check_package_status: check dpkg status
+#
+# Copyright 2017-2022 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+#
+#
+
+VERSION="1.00"
+PROGNAME=`/usr/bin/basename $0`
+VERBOSE=0
+
+STATE_OK=0
+STATE_WARNING=1
+STATE_CRITICAL=2
+STATE_UNKNOWN=3
+
+get_state_string() {
+	if [ "$1" = "$STATE_OK" ] ; then
+		STATE_STRING="OK"
+	elif [ "$1" = "$STATE_WARNING" ] ; then
+		STATE_STRING="WARNING"
+	elif [ "$1" = "$STATE_CRITICAL" ] ; then
+		STATE_STRING="CRITICAL"
+	else
+		STATE_STRING="UNKNOWN"
+    fi
+}
+
+print_revision() {
+    echo "$PROGNAME: version $VERSION"
+}
+
+print_usage() {
+    echo "Usage: $PROGNAME --help"
+    echo "Usage: $PROGNAME --version"
+}
+
+print_help() {
+    print_revision
+    echo ""
+    print_usage
+}
+
+exit_with_msg() {
+	get_state_string $1
+	echo "${STATE_STRING}: $2"
+	exit $1
+}
+
+
+while test -n "$1"; do
+    case "$1" in
+        --help)
+            print_help
+            exit $STATE_OK
+            ;;
+        -h)
+            print_help
+            exit $STATE_OK
+            ;;
+        --version)
+            print_revision
+            exit $STATE_OK
+            ;;
+        -V)
+            print_revision
+            exit $STATE_OK
+            ;;
+    esac
+    shift
+done
+
+
+# Find half-configured and
+#       (exit 1 in postinst)
+#  half-installed packages
+#       (exit 1 in postrm)
+msg="$(dpkg-query -f '${status} ${package}\n' -W | awk '$3 ~ "half" {printf $4 " "}')"
+
+
+if [ -n "$msg" ] ; then
+	exit_with_msg $STATE_CRITICAL "Package status broken for $msg"
+fi
+
+
+exit_with_msg $STATE_OK "Package status OK"

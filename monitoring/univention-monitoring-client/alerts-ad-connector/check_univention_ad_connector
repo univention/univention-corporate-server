@@ -1,0 +1,143 @@
+#!/bin/bash
+#
+# Univention Nagios Plugin
+#  check_univention_ad_connector: check Active Directory connector status
+#
+# Copyright 2011-2022 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+#
+#
+
+PROGNAME=$(/usr/bin/basename $0)
+
+STATE_OK=0
+STATE_WARNING=1
+STATE_CRITICAL=2
+STATE_UNKNOWN=3
+
+print_usage() {
+	echo
+	echo "Usage: $PROGNAME [--help|-h] [<connectorName>]"
+	echo
+	echo "connectorName:"
+	echo "    Name of the AD connector instance to be monitored, defaults to 'connector'."
+	echo "    In the case of several running AD connector instances, this parameter can"
+	echo "    be specified to monitor other instances than the default one."
+	echo
+	exit $STATE_OK
+}
+
+count_connectors() {
+	ab="$(univention-config-registry get connector/listener/additionalbasenames)"
+	additionalbasenames=($ab)
+	count_connectors=${#additionalbasenames[@]}
+	echo "$((count_connectors+1))"
+}
+
+nagios_exit() {
+	local state="$1"
+	local msg="$2"
+
+	case $state in
+	0)
+		echo "ADCONNECTOR OK: System operational.${MSG_CONNECTOR}"
+		exit 0
+		;;
+	1)
+		echo "ADCONNECTOR WARNING: $msg${MSG_CONNECTOR}"
+		exit 1
+		;;
+	2)
+		echo "ADCONNECTOR CRITICAL: $msg${MSG_CONNECTOR}"
+		exit 2
+		;;
+	*)
+		echo "ADCONNECTOR UNKNOWN: $msg${MSG_CONNECTOR}"
+		exit 3
+		;;
+	esac
+}
+
+# parse help parameters
+[ "$1" = -h -o "$1" = --help ] && print_usage
+
+connectors=1
+
+# check whether a different connector name is given
+CONNECTOR="connector"
+MSG_CONNECTOR=""
+if [ "$#" -gt 0 -a -n "$1" ]; then
+	CONNECTOR="$1"
+	MSG_CONNECTOR=" [$1]"
+else
+	# get the number of connectors that are supposed to be running
+	connectors="$(count_connectors)"
+fi
+
+# check whether the AD connector is running; for this, get the exact command
+# that was used to launch the process; remove multiple whitespaces and quotes
+# in order to match the command via check_procs
+# WARNING: if not exactly the number of configured connectors is running
+# CRITICAL: if no process is running
+/usr/lib/nagios/plugins/check_procs -w "$connectors":"$connectors" -c 1: --ereg-argument-array "^([^ ]+)?python.*univention.connector.ad.main(.py)?" >/dev/null 2>&1
+ret="$?"
+# WARNING: if less than the configured number of connectors is running
+# CRITICAL: if more than the configured number of connector is running
+if [ "$ret" = "$STATE_WARNING" ]; then
+	/usr/lib/nagios/plugins/check_procs -w "$connectors": -c :"$connectors" --ereg-argument-array "^([^ ]+)?python.*univention.connector.ad.main(.py)?" >/dev/null 2>&1
+	ret2="$?"
+fi
+
+case "$ret" in
+	$STATE_OK)
+		;;
+	$STATE_WARNING)
+		[ "$ret2" = "$STATE_WARNING" ] && nagios_exit $ret "Less than the $connectors configured AD connectors are running!"
+		[ "$ret2" = "$STATE_CRITICAL" ] && nagios_exit $ret "More than the $connectors configured AD connectors are running!"
+		;;
+	$STATE_CRITICAL)
+		nagios_exit $ret "No AD connector is running!"
+		;;
+	*)
+		nagios_exit $ret "Unknown state!"
+		;;
+esac
+
+# count rejects by parsing the output of univention-adconnector-list-rejected
+# WARNING: if there are any rejects
+nRejects=$(univention-adconnector-list-rejected -c "$CONNECTOR" | sed -rn '/^ *[1-9]+: *(AD|UCS) DN:/p' | wc -l)
+[ "$nRejects" -gt 0 ] && nagios_exit $STATE_WARNING "There have been $nRejects reject(s)!"
+
+# check whether we can connect to the AD
+# CRITICAL: in case we cannot connect to the AD
+univention-adsearch -c "$CONNECTOR" cn=users >/dev/null 2>&1
+ret="$?"
+[ "$ret" != 0 ] && nagios_exit $STATE_CRITICAL "Could not connect to AD server!"
+
+# otherwise everything looks fine
+nagios_exit $STATE_OK
+

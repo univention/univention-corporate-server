@@ -1,0 +1,136 @@
+#!/bin/sh
+#
+#
+# Univention Nagios Plugin
+#  check_univention_nmbd: check nmbd status
+#
+# Copyright 2007-2022 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+#
+#
+
+VERSION="1.00"
+PROGNAME=`/usr/bin/basename $0`
+VERBOSE=0
+
+STATE_OK=0
+STATE_WARNING=1
+STATE_CRITICAL=2
+STATE_UNKNOWN=3
+
+get_state_string() {
+	if [ "$1" = "$STATE_OK" ] ; then
+		STATE_STRING="OK"
+	elif [ "$1" = "$STATE_WARNING" ] ; then
+		STATE_STRING="WARNING"
+	elif [ "$1" = "$STATE_CRITICAL" ] ; then
+		STATE_STRING="CRITICAL"
+	else
+		STATE_STRING="UNKNOWN"
+    fi
+}
+
+print_revision() {
+    echo "$PROGNAME: version $VERSION"
+}
+
+print_usage() {
+    echo "Usage: $PROGNAME --help"
+    echo "Usage: $PROGNAME --version"
+    echo "Usage: $PROGNAME [-W <WINS server>] [-N <NetBIOS name>]"
+}
+
+print_help() {
+    print_revision
+    echo ""
+    print_usage
+}
+
+QUERY_HOST="$(/bin/hostname)"
+WINS_HOST="$(/bin/hostname)"
+while test -n "$1"; do
+    case "$1" in
+        --help)
+            print_help
+            exit $STATE_OK
+            ;;
+        -h)
+            print_help
+            exit $STATE_OK
+            ;;
+        --version)
+            print_revision
+            exit $STATE_OK
+            ;;
+        -V)
+            print_revision
+            exit $STATE_OK
+            ;;
+		-W)
+			WINS_HOST="$2"
+			shift
+			;;
+		-N)
+			QUERY_HOST="$2"
+			shift
+			;;
+    esac
+    shift
+done
+
+
+
+CMD=$(which nmblookup)
+if [ -z "$CMD" ] ; then
+	echo "Cannot find nmblookup executable"
+	exit $STATE_UNKNOWN
+fi
+
+output=$($CMD -U "$WINS_HOST" -R "$QUERY_HOST" 2> /dev/null)
+msg=$(echo "$output" | tr '\n' ';')
+
+echo "$output" | grep -qc "failed to find name"
+if [ $? = 0 ]; then
+	state=$STATE_CRITICAL
+	get_state_string $state
+	echo "${STATE_STRING}: nmblookup for $QUERY_HOST failed: $msg"
+	exit $state
+fi
+
+echo "$output" | egrep -q "[0-9]+.[0-9]+.[0-9]+.[0-9]+ $QUERY_HOST"
+if [ $? = 0 ]; then
+	state=$STATE_OK
+	get_state_string $state
+	echo "${STATE_STRING}: nmblookup for $QUERY_HOST ok"
+	exit $state
+fi
+
+
+state=$STATE_CRITICAL
+get_state_string $state
+echo "${STATE_STRING}: PLUGIN FAILED: unknown nmblookup output: $msg"
+exit $state

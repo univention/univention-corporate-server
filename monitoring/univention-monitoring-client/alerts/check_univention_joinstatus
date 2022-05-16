@@ -1,0 +1,153 @@
+#!/bin/sh
+#
+#
+# Univention Nagios Plugin
+#  check_univention_joinstatus: check join status
+#
+# Copyright 2007-2022 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+#
+#
+
+VERSION="1.00"
+PROGNAME=`/usr/bin/basename $0`
+VERBOSE=0
+
+STATE_OK=0
+STATE_WARNING=1
+STATE_CRITICAL=2
+STATE_UNKNOWN=3
+
+get_state_string() {
+	if [ "$1" = "$STATE_OK" ] ; then
+		STATE_STRING="OK"
+	elif [ "$1" = "$STATE_WARNING" ] ; then
+		STATE_STRING="WARNING"
+	elif [ "$1" = "$STATE_CRITICAL" ] ; then
+		STATE_STRING="CRITICAL"
+	else
+		STATE_STRING="UNKNOWN"
+    fi
+}
+
+print_revision() {
+    echo "$PROGNAME: version $VERSION"
+}
+
+print_usage() {
+    echo "Usage: $PROGNAME --help"
+    echo "Usage: $PROGNAME --version"
+}
+
+print_help() {
+    print_revision
+    echo ""
+    print_usage
+}
+
+exit_with_msg() {
+	get_state_string $1
+	echo "${STATE_STRING}: $2"
+	exit $1
+}
+
+
+eval "$(univention-config-registry shell)"
+LDAPSERVER="$ldap_master"
+LDAPPORT="$ldap_master_port"
+
+while test -n "$1"; do
+    case "$1" in
+        --help)
+            print_help
+            exit $STATE_OK
+            ;;
+        -h)
+            print_help
+            exit $STATE_OK
+            ;;
+        --version)
+            print_revision
+            exit $STATE_OK
+            ;;
+        -V)
+            print_revision
+            exit $STATE_OK
+            ;;
+        -L)
+            LDAPSERVER="$2"
+            shift
+            ;;
+        -P)
+            LDAPPORT="$2"
+            shift
+            ;;
+    esac
+    shift
+done
+
+
+
+if [ ! -e /etc/machine.secret ]; then
+	exit_with_msg $STATE_CRITICAL "/etc/machine.secret not found - system not joined yet?"
+fi
+
+ldapsearch -x -h "$LDAPSERVER" -p "$LDAPPORT" -D "$ldap_hostdn" -w $(cat /etc/machine.secret) -b "$ldap_base" -s base 2> /dev/null > /dev/null
+if [ $? != 0 ]; then
+	exit_with_msg $STATE_CRITICAL "auth failed: ldapsearch -x -h $LDAPSERVER -p $LDAPPORT -D <ldap_hostdn>"
+fi
+
+
+ldapsearch -x -ZZ -h "$LDAPSERVER" -p "$LDAPPORT" -D "$ldap_hostdn" -w $(cat /etc/machine.secret) -b "$ldap_base" -s base 2> /dev/null > /dev/null
+if [ $? != 0 ]; then
+	exit_with_msg $STATE_CRITICAL "auth or TLS failed: ldapsearch -x -ZZ -h $LDAPSERVER -p $LDAPPORT -D <ldap_hostdn>"
+fi
+
+if [ ! -e /usr/share/univention-join/.joined -a ! -e /var/univention-join/joined ]; then
+	exit_with_msg $STATE_CRITICAL "Cannot find /usr/share/univention-join/.joined or /var/univention-join/joined"
+fi
+
+ldapsearch -x -ZZ -D "$ldap_hostdn" -w $(cat /etc/machine.secret) -b "$ldap_base" -s base  2> /dev/null > /dev/null
+if [ $? != 0 ]; then
+	exit_with_msg $STATE_CRITICAL "auth failed: ldapsearch -x -ZZ -D <ldap_hostdn>"
+fi
+
+CNT=0
+for i in /usr/lib/univention-install/*.inst ; do
+	VERSION=$(egrep "^VERSION=" $i | head -n1 | sed -e 's|VERSION=||' | tr -d -c "[0-9]")
+	SERVICE=$(basename $i .inst | cut -b3-)
+	grep -q "$SERVICE v$VERSION successful" /usr/lib/univention-install/.index.txt
+	if [ ! "$?" = "0" ] ; then
+		CNT=$(($CNT + 1))
+	fi
+done
+if [ $CNT -gt 0 ] ; then
+	exit_with_msg $STATE_WARNING "$CNT join scripts have to be called"
+fi
+
+
+exit_with_msg $STATE_OK "system joined successfully"

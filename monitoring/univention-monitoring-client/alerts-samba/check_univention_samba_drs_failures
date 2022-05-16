@@ -1,0 +1,113 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+#
+# Univention Nagios Plugin samba drs repl
+#
+# Copyright (C) 2010-2022 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+from samba.param import LoadParm
+from samba.credentials import Credentials
+from samba.netcmd.drs import drsuapi_connect, drs_parse_ntds_dn
+from samba.netcmd.common import netcmd_dnsname
+from samba.dcerpc import drsuapi
+
+import sys
+import univention.config_registry
+
+NAGIOS_STATE_OK = 0
+NAGIOS_STATE_WARNING = 1
+NAGIOS_STATE_CRITICAL = 2
+NAGIOS_STATE_UNKNOWN = 3
+
+
+class CheckSambaDrsRepl(object):
+
+	def __init__(self):
+		self.lp = LoadParm()
+		self.lp.load_default()
+		self.creds = Credentials()
+		self.creds.guess(self.lp)
+		self.creds.set_machine_account(self.lp)
+		self.server = netcmd_dnsname(self.lp)
+
+	def check(self):
+		consecutive_sync_failures = dict()
+		failures = False
+		msg = None
+		drsuapi_connect(self)
+		req1 = drsuapi.DsReplicaGetInfoRequest1()
+		req1.info_type = drsuapi.DRSUAPI_DS_REPLICA_INFO_REPSTO
+		(info_type, info) = self.drsuapi.DsReplicaGetInfo(self.drsuapi_handle, 1, req1)
+		for n in info.array:
+			if n.consecutive_sync_failures > 0:
+				failures = True
+				(site, server) = drs_parse_ntds_dn(n.source_dsa_obj_dn)
+				if server not in consecutive_sync_failures:
+					consecutive_sync_failures[server] = 0
+				consecutive_sync_failures[server] += n.consecutive_sync_failures
+		for server in consecutive_sync_failures:
+			text = '%s failures on %s' % (consecutive_sync_failures[server], server)
+			msg = msg + ', ' + text if msg else text
+		return (failures, msg)
+
+
+def nagios_exit(state, msg):
+	if state == NAGIOS_STATE_OK:
+		print('Samba DRS OK: %s' % msg)
+		sys.exit(NAGIOS_STATE_OK)
+	elif state == NAGIOS_STATE_WARNING:
+		print('Samba DRS WARNING: %s' % msg)
+		sys.exit(NAGIOS_STATE_WARNING)
+	elif state == NAGIOS_STATE_CRITICAL:
+		print('Samba DRS CRITICAL: %s' % msg)
+		sys.exit(NAGIOS_STATE_CRITICAL)
+	else:
+		print('Samba DRS UNKNOWN: %s' % msg)
+		sys.exit(NAGIOS_STATE_UNKNOWN)
+
+
+if __name__ == '__main__':
+
+	# return OK, is samba autostart is false
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+	if not ucr.is_true('samba4/autostart', False):
+		nagios_exit(NAGIOS_STATE_OK, 'samba4/autostart is not true')
+
+	# check drs
+	try:
+		(failures, msg) = CheckSambaDrsRepl().check()
+	except RuntimeError as error:
+		nagios_exit(NAGIOS_STATE_CRITICAL, error)
+	except Exception as ex:
+		nagios_exit(NAGIOS_STATE_CRITICAL, ex.message)
+
+	if failures:
+		nagios_exit(NAGIOS_STATE_CRITICAL, msg)
+
+	nagios_exit(NAGIOS_STATE_OK, 'no drs failures')

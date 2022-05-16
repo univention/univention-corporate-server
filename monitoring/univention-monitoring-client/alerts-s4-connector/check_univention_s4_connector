@@ -1,0 +1,102 @@
+#!/bin/sh
+#
+# Univention Nagios Plugin
+#  check_univention_s4_connector: check s4 connector status
+#
+# Copyright 2015-2022 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+#
+#
+
+. /usr/share/univention-lib/ucr.sh
+
+STATE_OK=0
+STATE_WARNING=1
+STATE_CRITICAL=2
+STATE_UNKNOWN=3
+
+nagios_exit() {
+	local state="$1"
+	local msg="$2"
+
+	case $state in
+	0)
+		echo "S4CONNECTOR OK: $msg"
+		exit 0
+		;;
+	1)
+		echo "S4CONNECTOR WARNING: $msg"
+		exit 1
+		;;
+	2)
+		echo "S4CONNECTOR CRITICAL: $msg"
+		exit 2
+		;;
+	*)
+		echo "S4CONNECTOR UNKNOWN: $msg"
+		exit 3
+		;;
+	esac
+}
+
+# check whether the s4 connector is activated
+if ! is_ucr_true connector/s4/autostart; then
+    nagios_exit $STATE_OK "Connector not activated (connector/s4/autostart =! true)"
+fi
+
+# check whether we can connect to the S4
+# CRITICAL: in case we cannot connect to the S4
+univention-s4search cn=users cn=users >/dev/null 2>&1
+ret="$?"
+[ "$ret" != 0 ] && nagios_exit $STATE_CRITICAL "Could not connect to samba server!"
+
+# check whether the s4 connector is running; for this
+# WARNING: if more than one instance of the same connector is running
+# CRITICAL: if no process is running
+/usr/lib/nagios/plugins/check_procs -w :1 -c 1: --ereg-argument-array "^([^ ]+)?python.*s4connector.s4.main(.py)?\$" >/dev/null 2>&1
+ret="$?"
+case "$ret" in
+	$STATE_OK)
+		;;
+	$STATE_WARNING)
+		nagios_exit $ret "More than one s4 connector instance are running!"
+		;;
+	$STATE_CRITICAL)
+		nagios_exit $ret "s4 connector is not running!"
+		;;
+	*)
+		nagios_exit $ret "Unknown state!"
+		;;
+esac
+
+# count rejects by parsing the output of univention-s4connector-list-rejected
+# WARNING: if there are any rejects
+nRejects=$(univention-s4connector-list-rejected | sed -rn '/^ *[1-9]+: *(S4|UCS) DN:/p' | wc -l)
+[ "$nRejects" -gt 0 ] && nagios_exit $STATE_WARNING "Found $nRejects reject(s)! Please check output of univention-s4connector-list-rejected."
+
+# otherwise everything looks fine
+nagios_exit $STATE_OK "System operational"

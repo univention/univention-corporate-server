@@ -1,0 +1,93 @@
+#!/bin/sh
+#
+# Univention Nagios Plugin
+#  check_univention_nscd: check if nscd is bound to its socket.
+#
+# Copyright 2017-2022 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+VERSION="1.00"
+PROGNAME="${0##*/}"
+
+STATE_OK=0
+STATE_WARNING=1
+STATE_CRITICAL=2
+STATE_UNKNOWN=3
+
+state () {
+    local STATE="$1"
+    case "$STATE" in
+        "$STATE_OK") STATE_STRING="OK" ;;
+        "$STATE_WARNING") STATE_STRING="WARNING" ;;
+        "$STATE_CRITICAL") STATE_STRING="CRITICAL" ;;
+        *) STATE_STRING="UNKNOWN" ;;
+    esac
+    shift
+    echo "${STATE_STRING}: $*"
+    exit "$STATE"
+}
+
+print_revision() {
+    echo "$PROGNAME: version $VERSION"
+}
+
+print_usage() {
+    echo "Usage: $PROGNAME --help"
+    echo "Usage: $PROGNAME --version"
+    echo "Usage: $PROGNAME"
+}
+
+print_help() {
+    print_revision
+    echo ""
+    print_usage
+}
+
+while [ $# -ge 1 ]
+do
+    case "$1" in
+        --help|-h)
+            print_help
+            exit "$STATE_OK"
+            ;;
+        --version|-V)
+            print_revision
+            exit "$STATE_OK"
+            ;;
+    esac
+    shift
+done
+
+nscd_socket="/var/run/nscd/socket"
+
+[ -S $nscd_socket ] ||
+    state "$STATE_CRITICAL" "no nscd socket found! nscd not running?"
+
+timeout 3 nscd -g >/dev/null 2>/dev/null ||
+    state "$STATE_CRITICAL" "nscd not responding!"
+
+state "$STATE_OK" "nscd is running."
