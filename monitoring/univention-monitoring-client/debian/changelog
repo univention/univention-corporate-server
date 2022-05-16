@@ -1,0 +1,5 @@
+univention-monitoring-client (1.0.0-1) unstable; urgency=medium
+
+  * Bug #54748: initial release
+
+ -- Florian Best <best@univention.de>  Mon, 16 May 2022 15:20:47 +0200

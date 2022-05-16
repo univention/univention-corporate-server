@@ -1,0 +1,22 @@
+Source: univention-monitoring-client
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends:
+ debhelper-compat (= 12),
+ univention-config-dev,
+ univention-join-dev,
+Standards-Version: 4.3.0.3
+
+Package: univention-monitoring-client
+Architecture: any
+Depends:
+ ${misc:Depends},
+Description: UCS: monitoring client
+ This package installs the required packages to allow clients
+ to be monitored.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
