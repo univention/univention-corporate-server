@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 #
-# Univention Nagios Plugin
+# Univention Monitoring Plugin
 #  check slapd's/udl's mdb maxsize
 #
 # Copyright 2007-2022 Univention GmbH
@@ -30,73 +30,46 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import os
 import sys
-import argparse
 import subprocess
 
-from univention.config_registry import ConfigRegistry
-
-STATE_OK = 0
-STATE_WARNING = 1
-STATE_CRITICAL = 2
-
-parser = argparse.ArgumentParser()
-parser.add_argument('-w', '--warn', type=int, default=75)
-parser.add_argument('-c', '--critical', type=int, default=90)
-parser.add_argument('-l', '--listener-only', action='store_true')
-args = parser.parse_args()
-
-ucr = ConfigRegistry()
-ucr.load()
-
-service_prefix = 'LISTENER' if args.listener_only else 'SLAPD'
-service = 'univention-directory-listener' if args.listener_only else 'slapd'
-ucr_variable = 'listener/cache/mdb/maxsize' if args.listener_only else 'ldap/database/mdb/maxsize'
+from univention.config_registry import ucr
+from univention.monitoring import Alert
 
 
-def nagios_exit(state, msg):
-	print('%s %s: %s' % (service_prefix, {STATE_OK: 'MDB OK', STATE_WARNING: 'MDB WARNING', STATE_CRITICAL: 'MDB CRITICAL'}.get(state, 'MDB UNKNOWN'), msg))
-	sys.exit(state)
+class MDBMaxsize(Alert):
+
+	def write_metrics(self):
+		self.write_metric_for_folder('univention_listener_mdb_size_used_ratio', '/var/lib/univention-directory-listener/cache')
+		if ucr.get('ldap/database/type') == 'mdb':
+			self.write_metric_for_folder('univention_slapd_mdb_size_used_ratio', '/var/lib/univention-ldap/ldap')
+		if sys.maxsize > 2 ** 32:
+			self.write_metric_for_folder('univention_slapd_translog_mdb_size_used_ratio', '/var/lib/univention-ldap/translog')
+
+	def write_metric_for_folder(self, metric_name, mdb_dir):
+		try:
+			output = subprocess.check_output(['/usr/bin/mdb_stat', '-ef', mdb_dir], close_fds=True, env={'LC_ALL': 'C'})
+		except FileNotFoundError:
+			self.write_metric(metric_name, -1)
+			self.log.debug('mdb_stat not found, please install lmdb-utils.')
+			return
+		except subprocess.CalledProcessError:
+			self.write_metric(metric_name, 1)
+			self.log.debug('mdb_stat -ef %s failed' % (mdb_dir,))
+			return
+
+		output = output.decode("utf-8", "replace")
+		stat = dict(line.strip().lower().split(': ', 1) for line in output.splitlines() if ': ' in line)
+		try:
+			in_use = (int(stat['number of pages used']) - int(stat['free pages'])) * 100 / int(stat['max pages'])
+		except KeyError:  # API change in the future
+			self.write_metric(metric_name, 1)
+			self.log.debug('output of "mdb_stat -e %s" could not be parsed: %s' % (mdb_dir, output,))
+			return
+
+		self.write_metric(metric_name, in_use)
+		self.log.debug(mdb_dir)
 
 
-files = []
-if args.listener_only:
-	files.append('/var/lib/univention-directory-listener/cache')
-else:
-	if ucr.get('ldap/database/type') == 'mdb':
-		files.append('/var/lib/univention-ldap/ldap')
-	if sys.maxsize > 2 ** 32:
-		files.append('/var/lib/univention-ldap/translog')
-
-files = [file_ for file_ in files if os.path.exists('%s/data.mdb' % (file_))]
-
-if not files:
-	nagios_exit(STATE_OK, 'OpenLDAP backend is not mdb')
-
-if not os.path.exists('/usr/bin/mdb_stat'):
-	nagios_exit(STATE_WARNING, 'mdb_stat not found, please install lmdb-utils')
-
-errors = []
-warnings = []
-success = []
-for mdb_dir in files:
-	try:
-		output = subprocess.check_output(['/usr/bin/mdb_stat', '-ef', mdb_dir], close_fds=True, env={'LC_ALL': 'C'})
-	except subprocess.CalledProcessError:
-		nagios_exit(STATE_CRITICAL, 'mdb_stat -ef %s failed' % (mdb_dir,))
-	output = output.decode("utf-8", "replace")
-	stat = dict(line.strip().lower().split(': ', 1) for line in output.splitlines() if ': ' in line)
-	try:
-		in_use = int((int(stat['number of pages used']) - int(stat['free pages'])) * 100 / int(stat['max pages']))
-	except KeyError:  # API change in the future
-		nagios_exit(STATE_CRITICAL, 'output of "mdb_stat -e %s" could not be parsed: %s' % (mdb_dir, output,))
-
-	if in_use >= args.critical:
-		errors.append("More than %s%% (in fact %s%%) of mdb database %s is use, please increase %s (and restart %s)" % (args.critical, in_use, mdb_dir, ucr_variable, service))
-	elif in_use >= args.warn:
-		warnings.append("More than %s%% (in fact %s%%) of mdb database %s is use, consider increasing %s (and restart %s)" % (args.warn, in_use, mdb_dir, ucr_variable, service))
-	else:
-		success.append("Database %s operational (in fact %s%%)" % (mdb_dir, in_use))
-result = STATE_CRITICAL if errors else (STATE_WARNING if warnings else STATE_OK)
-nagios_exit(result, '\n'.join(errors + warnings + success))
+if __name__ == '__main__':
+	MDBMaxsize.main()
