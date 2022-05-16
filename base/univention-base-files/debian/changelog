@@ -1,3 +1,9 @@
+univention-base-files (9.0.3-8) unstable; urgency=medium
+
+  * Bug #54558: Fix /etc/hosts.d/20-static UCR template so that it is idempotent
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Mon, 16 May 2022 07:45:17 +0200
+
 univention-base-files (9.0.3-7) unstable; urgency=medium
 
   * Bug #54691: fix UCR logrotate/rotate/count description
