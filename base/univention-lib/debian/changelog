@@ -1,3 +1,10 @@
+univention-lib (9.0.11-11) unstable; urgency=medium
+
+  * Bug #54047: Modified univention-lib/shell/umc.sh to not fail when there
+    are whitespaces in UMC filenames
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Mon, 16 May 2022 09:33:56 +0200
+
 univention-lib (9.0.11-10) unstable; urgency=medium
 
   * Bug #49061: UCSVersion: extended message of ValueError.
