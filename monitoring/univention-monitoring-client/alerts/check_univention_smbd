@@ -1,7 +1,6 @@
-#!/bin/sh
+#!/usr/bin/python3
 #
-#
-# Univention Nagios Plugin
+# Univention Monitoring Plugin
 #  check_univention_smbd: check smbd status
 #
 # Copyright 2007-2022 Univention GmbH
@@ -30,107 +29,33 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
-#
 
-VERSION="1.00"
-PROGNAME=`/usr/bin/basename $0`
-VERBOSE=0
+import subprocess
 
-STATE_OK=0
-STATE_WARNING=1
-STATE_CRITICAL=2
-STATE_UNKNOWN=3
-
-get_state_string() {
-	if [ "$1" = "$STATE_OK" ] ; then
-		STATE_STRING="OK"
-	elif [ "$1" = "$STATE_WARNING" ] ; then
-		STATE_STRING="WARNING"
-	elif [ "$1" = "$STATE_CRITICAL" ] ; then
-		STATE_STRING="CRITICAL"
-	else
-		STATE_STRING="UNKNOWN"
-    fi
-}
-
-print_revision() {
-    echo "$PROGNAME: version $VERSION"
-}
-
-print_usage() {
-    echo "Usage: $PROGNAME --help"
-    echo "Usage: $PROGNAME --version"
-    echo "Usage: $PROGNAME [-U <username>] [-H <hostname>]"
-}
-
-print_help() {
-    print_revision
-    echo ""
-    print_usage
-}
-
-SMB_USER="guest"
-SMB_HOST="$(/bin/hostname)"
-while test -n "$1"; do
-    case "$1" in
-        --help)
-            print_help
-            exit $STATE_OK
-            ;;
-        -h)
-            print_help
-            exit $STATE_OK
-            ;;
-        --version)
-            print_revision
-            exit $STATE_OK
-            ;;
-        -V)
-            print_revision
-            exit $STATE_OK
-            ;;
-		-U)
-			SMB_USER="$2"
-			shift
-			;;
-		-H)
-			SMB_HOST="$2"
-			shift
-			;;
-    esac
-    shift
-done
+from univention.config_registry import ucr
+from univention.monitoring import Alert
 
 
+class SMBD(Alert):
 
-CMD=$(which smbclient)
-if [ -z "$CMD" ] ; then
-	echo "Cannot find smbclient executable"
-	exit $STATE_UNKNOWN
-fi
+	def write_metrics(self):
+		smb_host = ucr['hostname']
+		# TODO: ? smb_user = 'guest'
 
-# See Bug #45454, since samba erratum 165 this no longer works
-# for now only remove the -U "$SMB_USER"
-#output=$($CMD -U "$SMB_USER" -N -L "$SMB_HOST" 2> /dev/null)
-output=$($CMD -N -L "$SMB_HOST" 2> /dev/null)
-RET=$?
+		# See Bug #45454, since samba erratum 165 this no longer works
+		# for now only remove the -U "$SMB_USER"
+		try:
+			subprocess.check_output(['/usr/bin/smbclient', '-N', '-L', smb_host], stderr=subprocess.DEVNULL).decode('UTF-8', 'replace')
+		except FileNotFoundError:
+			self.write_metric('univention_smbd_accessible', -1)
+			self.log.debug('Cannot find smbclient executable')
+			return
+		except subprocess.CalledProcessError as exc:
+			self.write_metric('univention_smbd_accessible', 0)
+			self.log.debug('smbclient failed: %s' % (exc.output.decode('UTF-8', 'replace'),))
+			return
+		self.write_metric('univention_smbd_accessible', 1)
 
-msg=$(echo -n "$output" | head -n1)
 
-if [ $RET != 0 ]; then
-	state=$STATE_CRITICAL
-	get_state_string $state
-	echo "${STATE_STRING}: smbclient failed: $msg"
-	exit $state
-else
-	state=$STATE_OK
-	get_state_string $state
-	echo "${STATE_STRING}: smbd is alive: smbclient -N -L $SMB_HOST"
-	exit $state
-fi
-
-state=$STATE_CRITICAL
-get_state_string $state
-echo "${STATE_STRING}: PLUGIN FAILED"
-exit $state
+if __name__ == '__main__':
+	SMBD.main()
