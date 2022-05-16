@@ -1,0 +1,5 @@
+[monitoring/raid/device]
+Description[de]=Die Variable konfiguriert, welches RAID-Gerät im Monitoring berücksichtigt werden soll.
+Description[en]=The variable configures which RAID device should be included in the monitoring.
+Type=int
+Categories=service-monitoring

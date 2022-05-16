@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
-# Univention Nagios
+# Univention Monitoring
 #
 # Copyright 2004-2022 Univention GmbH
 #
@@ -30,189 +30,67 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import getopt
-import sys
-import os
 import re
+from univention.config_registry import ucr
+from univention.monitoring import Alert
 
 
-class I2O_RAIDCheck:
+class I2O_RAIDCheck(Alert):
 
-	def __init__(self):
-		self.PROGNAME = 'check_univention_i2o_raid'
-		self.REVISION = '1.0'
-		self.INPUTFN = '/var/lib/univention-nagios/check_univention_i2o_raid.status'
-		self.verbose = 0
-		self.device = 0
-		self.option = None
-		self.content = {}
-		self.msg = ''
-		self.str_ok = ['Optimal']
-		self.str_warning = ['Rebuilding', 'Reconstruct', 'Reconstructing', 'Replaced Drive', 'Expanding', 'Warning', 'Verify']
-		self.str_critical = ['Degraded', 'Dead', 'Failed', 'Error', 'Missing']
+	STATUS = {
+		# OK:
+		'Optimal': 0,
+		# Warnings:
+		'Rebuilding': 11,
+		'Reconstruct': 12,
+		'Reconstructing': 13,
+		'Replaced Drive': 14,
+		'Expanding': 15,
+		'Warning': 16,
+		'Verify': 17,
+		# Errors:
+		'Degraded': 20,
+		'Dead': 21,
+		'Failed': 22,
+		'Error': 23,
+		'Missing': 24,
+	}
 
-		self.re_other = re.compile(r'^\s*(d(\d{1,2})b\d{1,2}t\d{1,2}d\d{1,2})\s+(RAID|Disk).*\W(\d+MB)\s+\W(.*?)(?: \d{1,3}%)?$')
-		self.re_controller = re.compile(r'^(d(\d{1,2})) -- --\s+(\w+)\s+\w+\s+\w+\s+\w+\s+[\w\.\_\-]+\s+([\.\-\_\w]+)\s*(%s|%s|%s)\s*$' % (
-			'|'.join(self.str_ok), '|'.join(self.str_warning), '|'.join(self.str_critical))
-		)
+	re_other = re.compile(r'^\s*(d(\d{1,2})b\d{1,2}t\d{1,2}d\d{1,2})\s+(RAID|Disk).*\W(\d+MB)\s+\W(.*?)(?: \d{1,3}%)?$')
+	re_controller = re.compile(r'^(d(\d{1,2})) -- --\s+(\w+)\s+\w+\s+\w+\s+\w+\s+[\w\.\_\-]+\s+([\.\-\_\w]+)\s*(%s)\s*$' % (
+		'|'.join(re.escape(s) for s in STATUS)
+	))
 
-		self.state = {
-			'OK': 0,
-			'WARNING': 1,
-			'CRITICAL': 2,
-			'UNKNOWN': 3
-		}
-
-	def print_revision(self):
-		print('%s: version %s' % (self.PROGNAME, self.REVISION))
-
-	def print_usage(self):
-		print('Usage: %s [-v [-v]] [-d <num>] (-l|-p|-c|-r)' % self.PROGNAME)
-		print('Usage: %s --help' % self.PROGNAME)
-		print('Usage: %s --version' % self.PROGNAME)
-
-	def print_help(self):
-		self.print_revision()
-		print('')
-		self.print_usage()
-		print('')
-		print(' -v        verbose debug output')
-		print(' -vv       intense debug output')
-		print(' -d <num>  select device (default: 0)')
-		print(' -p        test status of physical device')
-		print(' -l        test status of logical device')
-		print(' -c        test status of controller device')
-		print(' -r        test status of raid device')
-
-	def exit_with_status(self, state, msg):
-		print('%s: %s' % (state, msg))
-		sys.exit(self.state[state])
-
-	def load_inputfile(self):
-		if not os.path.exists(self.INPUTFN):
-			self.exit_with_status('UNKNOWN', 'file %s does not exist' % self.INPUTFN)
-
+	def write_metrics(self):
+		device = ucr.get_int('monitoring/raid/device')  # TODO: do we need to support more than one device?
+		options = ('physical', 'logical', 'controller', 'raid')
+		cmd = ['/usr/sbin/raidutil']
+		for option in options:
+			cmd.extend(['-L', option])
 		try:
-			with open(self.INPUTFN) as fd:
-				self.content['all'] = fd.read()
-		except EOFError as err:
-			self.exit_with_status('UNKNOWN', 'error while reading %s, EOF error: %s' % (self.INPUTFN, err))
+			rc, output = self.exec_command(cmd)
 		except OSError as err:
-			self.exit_with_status('UNKNOWN', 'error while reading %s, OS error: %s' % (self.INPUTFN, err))
+			self.log.debug('error executing raidutil: %s' % (err,))
+			for option in options:
+				self.write_metric('univention_i2o_raid_%s' % (option,), -1, device=device)
+			return
 
-		(self.content['physical'], self.content['logical'], self.content['controller'], self.content['raid']) = self.content['all'].split('\n\n')[0:4]
+		for option, text in zip(options, output.split('\n\n')[0:4]):
+			self.write_option_metric([device], option, text)  # test status of device
 
-	def parse_data(self):
-		returnstate = 'UNKNOWN'
-		txt = self.content[self.option]
-
+	def write_option_metric(self, devices, option, txt):
 		for line in txt.splitlines():
-			if self.verbose > 1:
-				print(line)
-
 			line = line.strip()
 
-			addr = type = size = status = ''
-
-			if self.option in ['physical', 'logical', 'raid']:
-				result = self.re_other.match(line)
-				if result:
-					(addr, device, type, size, status) = result.groups()
-
-					if int(device) == int(self.device):
-						state = 'UNKNOWN'
-						if status in self.str_critical:
-							state = 'CRITICAL'
-						elif status in self.str_warning:
-							state = 'WARNING'
-						elif status in self.str_ok:
-							state = 'OK'
-
-						if state == 'CRITICAL':
-							returnstate = state
-						elif state == 'WARNING' and returnstate not in ['CRITICAL']:
-							returnstate = state
-						elif state == 'OK' and returnstate not in ['CRITICAL', 'WARNING']:
-							returnstate = state
-						elif state == 'UNKNOWN' and returnstate not in ['CRITICAL']:
-							# return WARNING if device is in unknown state
-							returnstate = 'WARNING'
-
-						if self.verbose == 0:
-							self.msg += '%s %s, ' % (type, state)
-						else:
-							self.msg += '%s: %s with %s is %s, ' % (type, addr, size, state)
-			else:
-				result = self.re_controller.match(line)
-				if result:
-					(addr, device, type, serial, status) = result.groups()
-
-					if int(device) == int(self.device):
-						state = 'UNKNOWN'
-						if status in self.str_critical:
-							state = 'CRITICAL'
-						elif status in self.str_warning:
-							state = 'WARNING'
-						elif status in self.str_ok:
-							state = 'OK'
-
-						if state == 'CRITICAL':
-							returnstate = state
-						elif state == 'WARNING' and returnstate not in ['CRITICAL']:
-							returnstate = state
-						elif state == 'OK' and returnstate not in ['CRITICAL', 'WARNING']:
-							returnstate = state
-						elif state == 'UNKNOWN' and returnstate not in ['CRITICAL']:
-							# return WARNING if device is in unknown state
-							returnstate = 'WARNING'
-
-						if self.verbose == 0:
-							self.msg += 'Controller %s, ' % state
-						else:
-							self.msg += 'Controller %s: %s with serial %s is %s, ' % (type, addr, serial, state)
-
-		self.returnstate = returnstate
-		self.msg = self.msg.rstrip(', ')
-
-	def main(self):
-		# parse command line
-		try:
-			(opts, pargs) = getopt.getopt(sys.argv[1:], 'cd:lprv', ['help', 'version'])
-		except getopt.GetoptError:
-			self.print_usage()
-			sys.exit(self.state['UNKNOWN'])
-
-		# get command line data
-		for opt in opts:
-			if opt[0] == '-h' or opt[0] == '--help':
-				self.print_help()
-				sys.exit(self.state['UNKNOWN'])
-			elif opt[0] == '-v':
-				self.verbose += 1
-			elif opt[0] == '--version':
-				self.print_revision()
-				sys.exit(self.state['UNKNOWN'])
-			elif opt[0] == '-d':
-				self.device = opt[1]
-			elif opt[0] == '-p':
-				self.option = 'physical'
-			elif opt[0] == '-l':
-				self.option = 'logical'
-			elif opt[0] == '-c':
-				self.option = 'controller'
-			elif opt[0] == '-r':
-				self.option = 'raid'
-
-		if not self.option:
-			self.exit_with_status('UNKNOWN', 'choose one argument: -l, -p, -r or -c')
-
-		# load input file
-		self.load_inputfile()
-		# parse input file and set return value and msg
-		self.parse_data()
-		# exit gracefully
-		self.exit_with_status(self.returnstate, self.msg)
+			result = self.re_other.match(line) if option in ['physical', 'logical', 'raid'] else self.re_controller.match(line)
+			if not result:
+				continue
+			(addr, device, type, size_or_serial, status) = result.groups()
+			if int(device) not in devices:
+				continue
+			state = self.STATUS.get(status, -1)
+			self.write_metric('univention_i2o_raid_%s' % (option,), state, device=device)
 
 
-obj = I2O_RAIDCheck()
-obj.main()
+if __name__ == '__main__':
+	I2O_RAIDCheck.main()
