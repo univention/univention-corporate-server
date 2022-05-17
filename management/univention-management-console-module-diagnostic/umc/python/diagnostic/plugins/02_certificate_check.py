@@ -38,6 +38,7 @@ import datetime
 import tempfile
 import subprocess
 import contextlib
+import socket
 
 import requests
 import dateutil.tz
@@ -237,7 +238,7 @@ def certificates(configRegistry):
 @contextlib.contextmanager
 def download_tempfile(url):
 	with tempfile.NamedTemporaryFile() as fob:
-		response = requests.get(url, stream=True)
+		response = requests.get(url, stream=True, timeout=3)
 		shutil.copyfileobj(response.raw, fob)
 		fob.flush()
 		yield fob.name
@@ -261,9 +262,21 @@ def verify_local(all_certificates):
 				yield error
 
 
+def check_port(url, port):
+	# Checks if a port is open by opening a connection using a socket.
+	soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	# Set a timeout of 3 seconds to avoid long blocking times before the
+	# connection is closed when packets to the port are discarded.
+	soc.settimeout(3)
+	res = soc.connect_ex((url, port)) == 0
+	soc.close()
+	return res
+
+
 def verify_from_master(master, all_certificates):
-	root_ca_uri = 'http://{}/ucs-root-ca.crt'.format(master)
-	crl_uri = 'http://{}/ucsCA.crl'.format(master)
+	protocol = "http" if check_port(master, 80) else "https"
+	root_ca_uri = '{}://{}/ucs-root-ca.crt'.format(protocol, master)
+	crl_uri = '{}://{}/ucsCA.crl'.format(protocol, master)
 	with download_tempfile(root_ca_uri) as root_ca, download_tempfile(crl_uri) as crl:
 		with convert_crl_to_pem(crl) as crl_pem:
 			verifier = CertificateVerifier(root_ca, crl_pem)
