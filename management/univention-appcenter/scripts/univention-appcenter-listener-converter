@@ -52,6 +52,8 @@ from univention.appcenter.udm import search_objects, get_machine_connection, get
 from univention.appcenter.ucr import ucr_get
 from univention.appcenter.listener import LISTENER_DUMP_DIR
 
+from univention.admin.types import TypeHint
+
 
 logger = None
 
@@ -115,11 +117,16 @@ def convert(app, dumped, filename, lo, pos):
 	dn = dumped['dn']
 	if command == 'delete':
 		attrs = None
+		props = None
 		options = None
 	else:
 		objs = search_objects(udm_type, lo, pos, entryUUID=entry_uuid)
 		if objs:
 			attrs = objs[0].info
+			props = {
+				key: TypeHint.detect(objs[0].descriptions[key], key).decode_json(value)
+				for key, value in attrs.items()
+			}
 			options = objs[0].options
 		else:
 			logger.info('EntryUUID %s not found' % entry_uuid)
@@ -133,6 +140,7 @@ def convert(app, dumped, filename, lo, pos):
 		attrs = {
 			'id': entry_uuid,
 			'object': attrs,
+			'properties': props,
 			'options': options,
 			'dn': dn,
 			'udm_object_type': udm_type,
