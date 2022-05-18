@@ -846,6 +846,8 @@ class App(with_metaclass(AppMetaClass, object)):
 			to the host certificate.
 		listener_udm_modules: List of UDM modules that a listener
 			integration shall watch.
+		listener_udm_version: Version number for behavior of the listener integration.
+			With version 2 UDM REST API type information are saved.
 	"""
 
 	id = AppAttribute(regex='^[a-zA-Z0-9]+(([a-zA-Z0-9-_]+)?[a-zA-Z0-9])?$', required=True)
@@ -984,6 +986,7 @@ class App(with_metaclass(AppMetaClass, object)):
 	host_certificate_access = AppBooleanAttribute()
 
 	listener_udm_modules = AppListAttribute()
+	listener_udm_version = AppIntAttribute(default=1)
 
 	vote_for_app = AppBooleanAttribute()
 

@@ -1,3 +1,9 @@
+univention-appcenter (9.0.4-1) unstable; urgency=medium
+
+  * Bug #54773: write UDM type information into app JSON listener files
+
+ -- Florian Best <best@univention.de>  Wed, 01 Feb 2023 20:16:07 +0100
+
 univention-appcenter (9.0.3-9) unstable; urgency=medium
 
   * Bug #55467: Added solution in App Center when App is pinned
