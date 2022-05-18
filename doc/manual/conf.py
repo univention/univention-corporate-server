@@ -70,7 +70,7 @@ pdf_doc_base = "manual"
 
 html_theme = 'univention_sphinx_book_theme'
 html_context = {
-    "pdf_download_filename" : f"{pdf_doc_base}.pdf",
+    "pdf_download_filename": f"{pdf_doc_base}.pdf",
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -88,7 +88,7 @@ if "spelling" in sys.argv:
     spelling_lang = "en_US"
     spelling_show_suggestions = True
     spelling_warning = True
-    spelling_word_list = list()
+    spelling_word_list = []
     # Don't load extension to speed up the job
     extensions.remove("sphinx_last_updated_by_git")
     # Warnings may come up by sphinx-last-updated-by-git. Shall be suppressed in spelling job

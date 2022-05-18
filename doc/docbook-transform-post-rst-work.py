@@ -108,10 +108,7 @@ class ReplacementBase(object):
 
     def replace(self):
         pattern = re.compile(
-            r"(@@" +
-            re.escape(self.keyword) +
-            "@@>)(.+|.*\n.*)(</" +
-            re.escape(self.keyword) + ">)"
+            r"(@@%(kw)s@@>)(.+|.*\n.*)(</%(kw)s>)" % {"kw": re.escape(self.keyword)}
         )
         result, replacements = pattern.subn(self.substitute_pattern, self.content)
         logging.info("%s replacements for the keyword >%s<.", replacements, self.keyword)
@@ -120,12 +117,12 @@ class ReplacementBase(object):
     @property
     @abc.abstractmethod
     def keyword(self) -> str:
-        raise NotImplemented()
+        raise NotImplementedError()
 
     @property
     @abc.abstractmethod
     def substitute_pattern(self) -> str:
-        raise NotImplemented()
+        raise NotImplementedError()
 
 
 class ReplacementRole(ReplacementBase):
@@ -136,12 +133,12 @@ class ReplacementRole(ReplacementBase):
     @property
     @abc.abstractmethod
     def keyword(self) -> str:
-        raise NotImplemented()
+        raise NotImplementedError()
 
     @property
     @abc.abstractmethod
     def role(self) -> str:
-        raise NotImplemented()
+        raise NotImplementedError()
 
 
 class ReplacementEmphasis(ReplacementBase):
@@ -287,8 +284,8 @@ class ReplacementFigure(ReplacementBase):
 
     def replace(self):
         pattern = re.compile(
-            r'@@figure@@ id="(.+)">\n' +
-            r'@@graphic@@ scalefit=".+" width=".+"\n' +
+            r'@@figure@@ id="(.+)">\n'
+            r'@@graphic@@ scalefit=".+" width=".+"\n'
             r'fileref="(.+)"/> ?</figure>'
         )
 
@@ -320,14 +317,14 @@ def transform_keywords(content: str) -> List[str]:
         "figure": ReplacementFigure,
         "foreignphrase": ReplacementForeign,
         "property": ReplacementProperty,
-#        "phrase": ,
-#        "option": ,
-#        "function": ,
-#        "replaceable": ,
-#        "u:": ,
-#        "keycap": ,
-#        "mousebutton": ,
-#        "biblioref":,
+        # "phrase": ,
+        # "option": ,
+        # "function": ,
+        # "replaceable": ,
+        # "u:": ,
+        # "keycap": ,
+        # "mousebutton": ,
+        # "biblioref":,
     }
     result = content
     for replace in keywords.values():

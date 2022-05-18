@@ -12,10 +12,8 @@
 #
 import os
 import sys
-# sys.path.insert(0, os.path.abspath('.'))
-sys.path.append(os.path.abspath("./_ext"))
-
 from datetime import date
+sys.path.append(os.path.abspath("./_ext"))
 
 # -- Project information -----------------------------------------------------
 
@@ -81,7 +79,7 @@ if "spelling" in sys.argv:
     spelling_lang = "en_US"
     spelling_show_suggestions = True
     spelling_warning = True
-    spelling_word_list = list()
+    spelling_word_list = []
     # Warnings may come up by sphinx-last-updated-by-git. Shall be suppressed in spelling job
     suppress_warnings = ['git.too_shallow']
 
@@ -109,6 +107,7 @@ univention_use_doc_base = True
 intersphinx_mapping = {
     "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None)
 }
+
 
 def fix_title_translation(app, config):
     if config.language == "de":

@@ -12,9 +12,7 @@
 #
 import os
 import sys
-# sys.path.insert(0, os.path.abspath('.'))
 from datetime import date
-from sphinx.locale import _
 
 
 # -- Project information -----------------------------------------------------
@@ -71,7 +69,7 @@ pdf_doc_base = os.path.basename(os.path.dirname(__file__))
 
 html_theme = "univention_sphinx_book_theme"
 html_context = {
-    "pdf_download_filename" : f"{pdf_doc_base}.pdf",
+    "pdf_download_filename": f"{pdf_doc_base}.pdf",
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -97,7 +95,7 @@ if "spelling" in sys.argv:
     spelling_lang = "en_US"
     spelling_show_suggestions = True
     spelling_warning = True
-    spelling_word_list_filename = list()
+    spelling_word_list_filename = []
 #    spelling_word_list_filename = ["spelling_wordlist"]
     # Warnings may come up by sphinx-last-updated-by-git. Shall be suppressed in spelling job
     suppress_warnings = ['git.too_shallow']
