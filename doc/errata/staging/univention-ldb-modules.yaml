@@ -3,7 +3,7 @@ release: "4.4"
 version: [8,9]
 scope: ucs_4.4-0-errata4.4-9
 src: univention-ldb-modules
-fix: 
+fix: 7.0.0-8A~4.4.0.202205181839
 desc: |
  This update addresses the following issues:
  * Joining a backup node into a single server UCS@school environment
