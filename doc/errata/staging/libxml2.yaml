@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [8, 9]
+scope: ucs_4.4-0-errata4.4-9
+src: libxml2
+fix: 2.9.4+dfsg1-2.2+deb9u7
+desc: |
+ This update addresses the following issue:
+ * integer overflows in xmlBuf and xmlBuffer lead to out-of-bounds write
+   (CVE-2022-29824)
+bug: [54765]
+cve:
+- CVE-2022-29824
