@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: openssl
+fix: 1.1.1n-0+deb10u2
+desc: |
+ This update addresses the following issue:
+ 1.1.1n-0+deb10u1 (Fri, 18 Mar 2022 19:41:12 +0100)
+ * New upstream version. - Add new symbols.
+ * c_rehash script allows command injection (CVE-2022-1292)
+bug: [54764]
+cve:
+- CVE-2022-1292
