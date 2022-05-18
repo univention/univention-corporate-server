@@ -11,4 +11,7 @@ desc: |
  * A new diagnostic plugin has been added to detect cases where the group
    membership attributes 'uniqueMember' and 'memberUid' are no longer
    consistent.
-bug: [54675, 48652]
+ * `02_certificate_check` now checks if http is available before requesting
+   certificates. Otherwise it will use https. The timeout time for requests
+   has been reduced to 3 seconds.
+bug: [54675, 48652, 54720]

@@ -116,6 +116,15 @@ class CertificateMalformed(CertificateError):
 		return msg.format(path=self.path)
 
 
+class ConnectionError(Exception):
+	def __init__(self):
+		super(ConnectionError, self).__init__()
+
+	def __str__(self):
+		msg = _('Can\'t establish connection with the server.')
+		return msg
+
+
 class CertificateVerifier(object):
 	def __init__(self, root_cert_path, crl_path):
 		self.root_cert_path = root_cert_path
@@ -277,14 +286,17 @@ def verify_from_master(master, all_certificates):
 	protocol = "http" if check_port(master, 80) else "https"
 	root_ca_uri = '{}://{}/ucs-root-ca.crt'.format(protocol, master)
 	crl_uri = '{}://{}/ucsCA.crl'.format(protocol, master)
-	with download_tempfile(root_ca_uri) as root_ca, download_tempfile(crl_uri) as crl:
-		with convert_crl_to_pem(crl) as crl_pem:
-			verifier = CertificateVerifier(root_ca, crl_pem)
-			for error in verifier.verify_root():
-				yield error
-			for cert in all_certificates:
-				for error in verifier.verify(cert):
+	try:
+		with download_tempfile(root_ca_uri) as root_ca, download_tempfile(crl_uri) as crl:
+			with convert_crl_to_pem(crl) as crl_pem:
+				verifier = CertificateVerifier(root_ca, crl_pem)
+				for error in verifier.verify_root():
 					yield error
+				for cert in all_certificates:
+					for error in verifier.verify(cert):
+						yield error
+	except requests.exceptions.ConnectionError:
+		yield ConnectionError()
 
 
 def run(_umc_instance):
@@ -300,11 +312,11 @@ def run(_umc_instance):
 	else:
 		cert_verify = list(verify_from_master(configRegistry.get('ldap/master'), all_certificates))
 
-	error_descriptions = [str(error) for error in cert_verify if isinstance(error, CertificateWarning)]
+	error_descriptions = [str(error) for error in cert_verify if isinstance(error, (CertificateWarning, ConnectionError))]
 
 	if error_descriptions:
 		error_descriptions.append(_('Please see {sdb} on how to renew certificates.'))
-		if any(isinstance(error, CertificateError) for error in cert_verify):
+		if any(isinstance(error, (CertificateError, ConnectionError)) for error in cert_verify):
 			raise Critical(description='\n'.join(error_descriptions))
 		MODULE.error('\n'.join(error_descriptions))
 		raise Warning(description='\n'.join(error_descriptions))

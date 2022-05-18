@@ -1,3 +1,10 @@
+univention-management-console-module-diagnostic (6.0.0-33) unstable; urgency=medium
+
+  * Bug #54720: added http availability checks for 02_certificate_check
+    diagnostic and timeouts to performed requests.
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Wed, 18 May 2022 11:47:41 +0200
+
 univention-management-console-module-diagnostic (6.0.0-32) unstable; urgency=medium
 
   * Bug #48652: let group membership attribute consistency only run on
