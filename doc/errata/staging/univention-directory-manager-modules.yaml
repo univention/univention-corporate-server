@@ -21,4 +21,6 @@ desc: |
  * Improve the error message for invalid dates by specifying the valid range.
  * Clarified error message for invalid host name or FQDN. The host name or
    FQDN must begin with a letter.
-bug: [52760, 54617, 38762, 53843, 54467, 54668, 54663]
+ * The error handling of the `jpegPhoto` syntax class was broken since
+   UCS 5.0-0 and has been repaired.
+bug: [52760, 54617, 38762, 53843, 54467, 54668, 54663, 54769]

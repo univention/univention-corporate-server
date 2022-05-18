@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.11-48) unstable; urgency=medium
+
+  * Bug #54769: fix exception handling of jpegPhoto syntax class
+
+ -- Florian Best <best@univention.de>  Wed, 18 May 2022 16:55:59 +0200
+
 univention-directory-manager-modules (15.0.11-47) unstable; urgency=medium
 
   * Bug #54663: specify that host name or FQDN must begin with a letter in

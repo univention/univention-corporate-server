@@ -1454,12 +1454,11 @@ class jpegPhoto(Upload):
 					text = base64.b64encode(raw)
 				except (KeyError, IOError, IndexError):
 					ud.debug(ud.ADMIN, ud.WARN, 'Failed to convert PNG file into JPEG: %s' % (traceback.format_exc(),))
-					raise
 					raise univention.admin.uexceptions.valueError(_('Failed to convert PNG file into JPEG format.'))
 			# imghdr.what(None, base64.b64dcode(text)) == 'jpeg'  # See Bug #36304
 			# this is what imghdr.py probably does in  the future:
 			if raw[0:2] != b'\xff\xd8':
-				raise ValueError
+				raise ValueError()
 			return text
 		except (base64.binascii.Error, ValueError, TypeError):
 			raise univention.admin.uexceptions.valueError(_('Value must be Base64 encoded jpeg.'))
