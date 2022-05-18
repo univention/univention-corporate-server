@@ -11,3 +11,5 @@ desc: |
  * samba-tool now supports passing machine password using the option
    --machinepass-file.
 bug: [53101]
+erratum: 310
+announced: 2022-05-18
