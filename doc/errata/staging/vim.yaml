@@ -1,0 +1,28 @@
+product: ucs
+release: "4.4"
+version: [8, 9]
+scope: ucs_4.4-0-errata4.4-9
+src: vim
+fix: 2:8.0.0197-4+deb9u6
+desc: |
+ This update addresses the following issues:
+ * Heap-based buffer overflow in block_insert() in src/ops.c (CVE-2022-0261)
+ * access of memory location before start of buffer (CVE-2022-0351)
+ * Use after free in src/ex_cmds.c (CVE-2022-0413)
+ * heap-use-after-free in enter_buffer() of src/buffer.c (CVE-2022-0443)
+ * heap overflow in ex_retab() may lead to crash (CVE-2022-0572)
+ * use after free in utf_ptr2char (CVE-2022-1154)
+ * heap-buffer-overflow in append_command of src/ex_docmd.c (CVE-2022-1616)
+ * heap-buffer-overflow in cmdline_erase_chars of ex_getln.c (CVE-2022-1619)
+ * heap buffer overflow (CVE-2022-1621)
+bug: [54766]
+cve:
+- CVE-2022-0261
+- CVE-2022-0351
+- CVE-2022-0413
+- CVE-2022-0443
+- CVE-2022-0572
+- CVE-2022-1154
+- CVE-2022-1616
+- CVE-2022-1619
+- CVE-2022-1621
