@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Copyright 2020-2022 Univention GmbH
@@ -29,7 +29,6 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-# from distutils.core import setup as orig_setup
 from setuptools import setup as orig_setup
 
 import io
