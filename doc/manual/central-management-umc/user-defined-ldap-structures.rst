@@ -20,7 +20,10 @@ types *Container: Container* and *Container: Organisational unit*.
 Containers and OUs can in principle be added at any position in the LDAP;
 however, OUs cannot be created below containers.
 
-.. rubric:: General tab
+.. _central-cn-and-ous-general-tab:
+
+General tab
+-----------
 
 .. list-table:: *General* tab
    :header-rows: 1
@@ -35,7 +38,10 @@ however, OUs cannot be created below containers.
    * - Description
      - A random description for the container / organizational unit.
 
-.. rubric:: Advanced settings tab
+.. _central-cn-and-ous-avanced-tab:
+
+Advanced settings tab
+---------------------
 
 .. list-table:: *Advanced settings* tab
    :header-rows: 1
@@ -50,6 +56,9 @@ however, OUs cannot be created below containers.
        current container is declared the standard user container, for example,
        this container will also be displayed in users search and create masks.
 
-.. rubric:: Policies tag
+.. _central-cn-and-ous-policies-tab:
+
+Policies tab
+------------
 
 The *Policies* tab is described in :ref:`central-policies-assign`.

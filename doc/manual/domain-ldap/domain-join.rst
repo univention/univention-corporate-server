@@ -116,7 +116,8 @@ older version was run).
 
 .. _domain-ldap-joinscripts-execlater:
 
-.. rubric:: Subsequent running of join scripts
+Subsequent running of join scripts
+""""""""""""""""""""""""""""""""""
 
 If there are join/unjoin scripts on a system which have not yet been run or
 which can only be run for an older version, a warning message is shown upon

@@ -181,7 +181,8 @@ default value is ``no``.
 
 .. _mail-management-shared-folder-general-tab:
 
-.. rubric:: Shared IMAP folder - General tab
+Shared IMAP folder - General tab
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. _mail-management-shared-folder-general-tab-table:
 
@@ -222,7 +223,8 @@ default value is ``no``.
 
 .. _mail-management-shared-folder-access-rights-tab:
 
-.. rubric:: Shared IMAP folder - Access rights tab
+Shared IMAP folder - Access rights tab
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. _mail-management-shared-folder-access-rights-tab-table:
 

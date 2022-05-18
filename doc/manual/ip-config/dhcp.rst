@@ -201,7 +201,8 @@ the subnet entry. These should only be specified via the pool entries.
 
 .. _ip-config-administration-of-dhcp-pools-general-tab:
 
-.. rubric:: General tab
+General tab
+"""""""""""
 
 .. _ip-config-administration-of-dhcp-pools-general-tab-table:
 
@@ -222,7 +223,8 @@ the subnet entry. These should only be specified via the pool entries.
 
 .. _ip-config-administration-of-dhcp-pools-advanced-settings-tab:
 
-.. rubric:: Advanced settings tab
+Advanced settings tab
+"""""""""""""""""""""
 
 .. _ip-config-administration-of-dhcp-pools-advanced-settings-tab-table:
 

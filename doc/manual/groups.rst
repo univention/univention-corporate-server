@@ -15,7 +15,8 @@ predominantly used for hardware access. These are not managed through the
 
 .. _groups-assignement:
 
-.. rubric:: User group assignments
+User group assignments
+======================
 
 The assignment of users to groups is performed in two ways:
 
@@ -27,7 +28,8 @@ The assignment of users to groups is performed in two ways:
 
 .. _groups-recommendation-group-name:
 
-.. rubric:: Recommendation for group name definition
+Recommendation for group name definition
+========================================
 
 One very important and required attribute for groups is the group name. To
 avoid conflicts with the different tools handling groups in UCS, adhere to the

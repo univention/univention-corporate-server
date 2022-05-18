@@ -83,7 +83,8 @@ applications.
 
 .. _computers-limiting-authentication-to-selected-users:
 
-.. rubric:: Limiting authentication to selected users
+Limiting authentication to selected users
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By default only the ``root`` user and members of the ``Domain Admins`` group can
 login remotely via SSH and locally on a ``tty``.

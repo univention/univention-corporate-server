@@ -559,7 +559,8 @@ The description of the group is also synchronized.
 
 .. _windows-groups-particularities:
 
-.. rubric:: Particularities
+Particularities
+"""""""""""""""
 
 Take the following particularities into account:
 
@@ -621,7 +622,8 @@ Take the following particularities into account:
 
 .. _windows-groups-custom-mappings:
 
-.. rubric:: Custom mappings
+Custom mappings
+"""""""""""""""
 
 It is also possible to modify and append custom mappings. For that to work a
 file has to be created named
