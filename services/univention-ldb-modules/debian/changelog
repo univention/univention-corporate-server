@@ -1,3 +1,9 @@
+univention-ldb-modules (7.0.0-8) unstable; urgency=medium
+
+  * Bug #52758: Error message from libunivention-ldb-modules.postinst
+
+ -- Juan Pedro Torres <torres-munoz.extern@univention.de>  Wed, 18 May 2022 17:52:39 +0200
+
 univention-ldb-modules (7.0.0-7) unstable; urgency=medium
 
   * Bug #52758: Backup server will be able to join a single server school environment
