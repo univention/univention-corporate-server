@@ -73,6 +73,7 @@
 #define DOM_SID_STR_BUFLEN (15*11+25)
 // From openldap/servers/slapd/slap.h
 #define SLAP_LDAPDN_MAXLEN 8192
+#define UF_SERVER_TRUST_ACCOUNT 0x00002000
 
 #define AUTOPTR_FUNC_NAME(type) type##AutoPtrFree
 #define DEFINE_AUTOPTR_FUNC(type, func) \
@@ -148,6 +149,7 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 	struct ldb_context *ldb;
 	struct ldb_message *msg;
 	struct ldb_message_element *attribute;
+	uint32_t attribute_uac;
 	struct ldb_request *down_req = NULL;
 	bool is_computer = false;
 	bool is_group = false;
@@ -190,6 +192,13 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 		attribute = ldb_msg_find_element(req->op.add.message, "sAMAccountName");
 		if( attribute == NULL ) {
 			// we can't handle this
+			return ldb_next_request(module, req);
+		}
+
+		attribute_uac = ldb_msg_find_attr_as_uint(req->op.add.message, "userAccountControl", 0);
+		if (attribute_uac & UF_SERVER_TRUST_ACCOUNT) {
+			// It's a DC, we can't handle this in selectiveudm/create_windows_computer
+			ldb_debug(ldb, LDB_DEBUG_WARNING, ("%s: new computer object '%s' is a DC, that's ok\n"), ldb_module_get_name(module), attribute->values[0].data);
 			return ldb_next_request(module, req);
 		}
 
