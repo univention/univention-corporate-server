@@ -1,13 +1,11 @@
 #!/bin/bash
 
-set -x
-set -e
+set -e -x
 
 test_printers () {
-	set -x
-	set -e
+	set -e -x
 
-	# shellcheck disable=SC1091
+	# shellcheck source=utils.sh
 	. product-tests/samba/utils.sh
 
 	# unstable, deactivated check later
@@ -48,7 +46,6 @@ test_printers () {
 }
 
 test_master () {
-
 	# Es sollte eine größere UCS Domäne aufgesetzt werden, also DC Master, DC Backup, DC Slave und Memberserver
 	# zusätzlich sollte ein RODC installiert werden, siehe Produkttests UCS 3.2 Samba 4#Read-Only-DC. Auf allen Systemen
 	# sollte Samba4 (optional Printserver) im Installer ausgewählt werden. Auf dem Memberserver Samba 3. Done: see cfg file
@@ -60,10 +57,9 @@ test_master () {
 	#  Windows 2012
 	#  Windows 10/2016
 
-	set -x
-	set -e
+	set -e -x
 
-	# shellcheck disable=SC1091
+	# shellcheck source=utils.sh
 	. product-tests/samba/utils.sh
 
 	eval "$(ucr shell ldap/base windows/domain)"
@@ -131,8 +127,8 @@ test_master () {
 	# Nach dem Join sollten auf dem RODC z.B. keine unicodePwd und supplementalCredentials repliziert sein.
 	# Der folgende Aufruf sollte daher nur an dem Objekt des RODC selbst und an dem lokalen krbtgt_* Konto diese Passwortattribute finden:
 	# Schreibzugriffe gegen den RODC sollten scheitern
-	test 2 -eq "$(run_on_ucs_hosts "$SLAVE_RODC" "ldbsearch -H /var/lib/samba/private/sam.ldb unicodePwd" | grep -i ^unicodePwd: | wc -l)"
-	test 2 -eq "$(run_on_ucs_hosts "$SLAVE_RODC" "ldbsearch -H /var/lib/samba/private/sam.ldb supplementalcredentials" | grep -i ^supplementalcredentials: | wc -l)"
+	test 2 -eq "$(run_on_ucs_hosts "$SLAVE_RODC" "ldbsearch -H /var/lib/samba/private/sam.ldb unicodePwd" | grep -ci ^unicodePwd:)"
+	test 2 -eq "$(run_on_ucs_hosts "$SLAVE_RODC" "ldbsearch -H /var/lib/samba/private/sam.ldb supplementalcredentials" | grep -ci ^supplementalcredentials:)"
 	run_on_ucs_hosts "$SLAVE_RODC" '! samba-tool user add rodcuser1 Password.99'
 
 	# GPO's
@@ -202,8 +198,8 @@ test_master () {
 	run_on_ucs_hosts "$SLAVE" "stat /home/testshare/test-admin01.txt"
 	run_on_ucs_hosts "$SLAVE" "stat /home/testshare/test-newuser01.txt"
 	# check invalid write access
-	! ucs-winrm create-share-file --server ucs-slave --filename newuser03-test.txt --username 'newuser03' --userpwd "Univention.99" --share testshareSlave --debug
-	! run_on_ucs_hosts "$SLAVE" "stat /home/testshare/newuser03-test.txt"
+	ucs-winrm create-share-file --server ucs-slave --filename newuser03-test.txt --username 'newuser03' --userpwd "Univention.99" --share testshareSlave --debug && return 1
+	run_on_ucs_hosts "$SLAVE" "stat /home/testshare/newuser03-test.txt" && return 1
 	ucs-winrm create-share-file --server "$MASTER" --share "testshare" --filename "testfile.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
 	ucs-winrm create-share-file --server "$MASTER" --filename test-admin.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --share Administrator
 	stat /home/Administrator/test-admin.txt
@@ -279,7 +275,7 @@ test_master () {
 	sleep 10
 	ucs-winrm run-ps --cmd 'ls' --credssp --run-as-user newuser01 --run-as-password 'Univention123!' --client "$WIN2012" --debug 2>&1 | grep AccessDenied
 	ucs-winrm run-ps --cmd 'ls' --credssp --run-as-user newuser01 --run-as-password 'Univention123!' --client "$WIN2016" --debug 2>&1 | grep AccessDenied
-	! samba-tool user password -U newuser01 --password='Univention123!' --newpassword='Univention123!'
+	samba-tool user password -U newuser01 --password='Univention123!' --newpassword='Univention123!' && return 1
 	samba-tool user password -U newuser01 --password='Univention123!' --newpassword='Ünivention999!'
 	ucs-winrm logon-as --username newuser01 --userpwd "Ünivention999!" --client "$WIN2012"
 	ucs-winrm logon-as --username newuser01 --userpwd "Ünivention999!" --client "$WIN2016"

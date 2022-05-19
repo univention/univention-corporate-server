@@ -1,17 +1,17 @@
 #!/bin/bash
 
-set -x
-set -e
+set -e -x
 
 test_ldap_in_samba_domain_master () {
+	# shellcheck source=create_5000_users_in_1000_groups.sh
 	. product-tests/base/create_5000_users_in_1000_groups.sh
 	measure_time_for_create_5000_users_distributed_in_1000_groups
 	# measure_time_for_create_group_with_5000_members
 }
 
 test_ldap_in_samba_domain_backup () {
-
-	. product-tests/base/utils.sh
+	# shellcheck source=utils.sh
+	. product-tests/base/utils.sh || return $?
 	eval "$(ucr shell ldap/base windows/domain)"
 
 	### Skalierungstests
@@ -60,23 +60,25 @@ test_ldap_in_samba_domain_backup () {
 }
 
 test_ldap_in_samba_domain_windowsclient () {
-
 	# get windows client info/name
-	. utils.sh && ucs-winrm run-ps --cmd ipconfig
-	. utils.sh && ucs-winrm run-ps --cmd "(gwmi win32_operatingsystem).caption"
+	# shellcheck source=utils.sh
+	. utils.sh || return $?
+	ucs-winrm run-ps --cmd ipconfig
+	ucs-winrm run-ps --cmd "(gwmi win32_operatingsystem).caption"
+	# shellcheck disable=SC2016
 	winclient_name="$(. utils.sh && ucs-winrm run-ps  --cmd '$env:computername' --loglevel error | head -1 | tr -d '\r')"
 	test -n "$winclient_name"
 
 	# Join des Clients
-	. utils.sh && ucs-winrm domain-join --dnsserver "$UCS"  --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
+	ucs-winrm domain-join --dnsserver "$UCS"  --domainuser 'Administrator' --domainpassword "$ADMIN_PASSWORD"
 
 	#### Produktest start
 
 
 	### TODO
 	# Login als Domänen-Administrator am Windows-Client
-	. utils.sh && ucs-winrm domain-user-validate-password --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
-	. utils.sh && ucs-winrm domain-user-validate-password --domainuser "newuser01" --domainpassword "Univention.99"
+	ucs-winrm domain-user-validate-password --domainuser 'Administrator' --domainpassword "$ADMIN_PASSWORD"
+	ucs-winrm domain-user-validate-password --domainuser 'newuser01' --domainpassword 'Univention.99'
 
 	# userpassword change
 	password=univention
@@ -84,32 +86,31 @@ test_ldap_in_samba_domain_windowsclient () {
 	clients="$WINRM_CLIENT $UCS"
 	for user in $users; do
 		udm users/user create --ignore_exists \
-	    	--set password=$password --set lastname=$user --set username=$user
+			--set password="$password" --set lastname="$user" --set username="$user"
 		udm users/user modify \
-			--dn "$(univention-ldapsearch -LLL uid=$user dn |  sed -n 's/^dn: //p')" \
-			--set password=$password --set overridePWHistory=1
+			--dn "$(univention-ldapsearch -LLL uid="$user" dn |  sed -n 's/^dn: //p')" \
+			--set password="$password" --set overridePWHistory=1
 	done
 	sleep 10
 	for client in $clients; do
 		for user in $users; do
-			smbclient "//$client/IPC$" -U "$user"%"$password" -c exit
+			smbclient "//$client/IPC$" -U "${user}%${password}" -c exit
 		done
 	done
 	# password change via windows
 	password=Univention.98
 	for user in $users; do
-		. utils.sh && ucs-winrm change-user-password --userpassword="$password" --domainuser "$user"
+		ucs-winrm change-user-password --userpassword="$password" --domainuser "$user"
 	done
 	sleep 10
 	# check password
 	for user in $users; do
 		for client in $clients; do
-			smbclient //$client/IPC\$ -U "$user"%"$password" -c exit
+			smbclient "//$client/IPC\$" -U "${user}%${password}" -c exit
 		done
-		echo $password > /tmp/.usertest
-		kinit --password-file=/tmp/.usertest $user
+		echo -n "$password" > /tmp/.usertest
+		kinit --password-file=/tmp/.usertest "$user"
 	done
 
 	echo "Success"
-
 }

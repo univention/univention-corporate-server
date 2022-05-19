@@ -1,10 +1,9 @@
 #!/bin/bash
 
-set -x
-set -e
+set -e -x
 
 test_single_server () {
-
+	# shellcheck source=utils.sh
 	. product-tests/samba/utils.sh
 	eval "$(ucr shell ldap/base windows/domain)"
 
@@ -12,14 +11,14 @@ test_single_server () {
 	ucs-winrm run-ps --cmd ipconfig
 	ucs-winrm winrm-config
 	ucs-winrm run-ps --cmd "(gwmi win32_operatingsystem).caption"
+	# shellcheck disable=SC2016
 	winclient_name="$(ucs-winrm run-ps  --cmd '$env:computername' --loglevel error | head -1 | tr -d '\r')"
 	test -n "$winclient_name"
 
 	# Join des Clients
 	ucs-winrm domain-join --dnsserver "$UCS"  --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
 
-	# Auf core prüfen: find /var -name core
-	test -z "$(find /var -name core)"
+	assert_no_core_files
 
 	# SID des Windows-Clients in OpenLDAP prüfen Bug #39804
 	check_windows_client_sid "$winclient_name"
@@ -113,15 +112,15 @@ test_single_server () {
 	clients="$WINRM_CLIENT $UCS"
 	for user in $users; do
 		udm users/user create --ignore_exists \
-	    	--set password=$password --set lastname=$user --set username=$user
+			--set password="$password" --set lastname="$user" --set username="$user"
 		udm users/user modify \
-			--dn "$(univention-ldapsearch -LLL uid=$user dn |  sed -n 's/^dn: //p')" \
+			--dn "$(univention-ldapsearch -LLL uid="$user" dn |  sed -n 's/^dn: //p')" \
 			--set password=$password --set overridePWHistory=1
 	done
 	sleep 10
 	for client in $clients; do
 		for user in $users; do
-			smbclient //$client/IPC\$ -U "$user"%"$password" -c exit
+			smbclient "//${client}/IPC\$" -U "${user}%${password}" -c exit
 		done
 	done
 	# password change via windows
@@ -133,26 +132,26 @@ test_single_server () {
 	# check password
 	for user in $users; do
 		for client in $clients; do
-			smbclient //$client/IPC\$ -U "$user"%"$password" -c exit
+			smbclient "//${client}/IPC\$" -U "${user}%${password}" -c exit
 		done
 		echo $password > /tmp/.usertest
-		kinit --password-file=/tmp/.usertest $user
+		kinit --password-file=/tmp/.usertest "$user"
 	done
 	# check sid uid wbinfo
+	# shellcheck disable=SC2153
 	for user in $USERS; do
-		uidNumber="$(univention-ldapsearch -LLL uid=$user uidNumber |  sed -n 's/^uidNumber: //p')"
-		sid="$(univention-ldapsearch -LLL uid=$user sambaSID |  sed -n 's/^sambaSID: //p')"
-		test $uidNumber = $(wbinfo -S $sid)
-		test $sid = $(wbinfo -U $uidNumber)
-		wbinfo -i $windows_domain+$user
+		uidNumber="$(univention-ldapsearch -LLL uid="$user" uidNumber |  sed -n 's/^uidNumber: //p')"
+		sid="$(univention-ldapsearch -LLL uid="$user" sambaSID |  sed -n 's/^sambaSID: //p')"
+		test "$uidNumber" = "$(wbinfo -S "$sid")"
+		test "$sid" = "$(wbinfo -U "$uidNumber")"
+		# shellcheck disable=SC2154
+		wbinfo -i "${windows_domain}+${user}"
 	done
 
 	# IP-Adresse am Windows-Client ändern (statisch) DNS-Record auf dem Server überprüfen, DNS-Auflösung per host testen
 	# TODO, geht nicht so einfach in ec2
 
-	# Auf core prüfen: find /var -name core
-	test -z "$(find /var -name core)"
+	assert_no_core_files
 
 	echo "Success"
-
 }

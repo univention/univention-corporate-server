@@ -1,5 +1,5 @@
-set -e
-set -x
+# shellcheck shell=sh
+set -e -x
 
 setup_owncloud_with_oidc () {
 	local backup_ip=${1:?missing ip}

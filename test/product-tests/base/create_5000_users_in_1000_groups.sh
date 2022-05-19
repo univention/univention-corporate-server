@@ -2,13 +2,16 @@
 
 set -e
 
+# shellcheck source=utils.sh
 . utils.sh
+# shellcheck source=/dev/null
 . /usr/share/ucs-test/lib/samba.sh
 eval "$(ucr shell ldap/base connector/s4/poll/sleep connector/s4/retryrejected)"
 
 ### TODO: Define current limits
 CONNECTOR_WAIT_CYCLES=2
 CONNECTOR_WAIT_DURATION_PER_SYNC=1
+# shellcheck disable=SC2154
 CONNECTOR_WAIT_TIME=$((CONNECTOR_WAIT_CYCLES * (CONNECTOR_WAIT_DURATION_PER_SYNC + connector_s4_poll_sleep * (1 + connector_s4_retryrejected))))
 MAX_SECONDS_USER_CREATE=$((45 * 60))
 MAX_SECONDS_SAMBA_USER_CREATE=$((160 * 60 + CONNECTOR_WAIT_TIME))
@@ -35,6 +38,7 @@ create_5000_users_distributed_in_1000_groups() {
 	local i
 
 	for((i=0; i<num_users; i++)); do
+		# shellcheck disable=SC2154
 		udm users/user create --position "cn=users,$ldap_base" \
 			--set username="$TESTUSER_PREFIX$NEXT_USERNUMBER" \
 			--set firstname="Test$NEXT_USERNUMBER" \

@@ -1,21 +1,19 @@
 #!/bin/bash
 
-set -x
-set -e
+set -e -x
 
 prepare_on_master () {
-
 	echo -e "UserKnownHostsFile=/dev/null\nStrictHostKeyChecking=no" > ~/.ssh/config
 	service slapd stop
 
 	# type 1 - provide database backend
-	sshpass -p "univention" ssh "$slave1_IP" "mkdir -p /opt/type1"
-	cat /var/lib/univention-directory-listener/notifier_id | sshpass -p "univention" ssh "$slave1_IP" "cat - > /opt/type1/notifier_id"
-	cd /var/lib/univention-ldap/ldap && tar -Sc data.mdb | sshpass -p "univention" ssh "$slave1_IP" "tar -Sx -C /opt/type1/"
+	# shellcheck disable=SC2154
+	sshpass -p "univention" ssh "$slave1_IP" "mkdir -p /opt/type1 && cat - >/opt/type1/notifier_id" </var/lib/univention-directory-listener/notifier_id
+	tar -ScC /var/lib/univention-ldap/ldap data.mdb | sshpass -p "univention" ssh "$slave1_IP" "tar -Sx -C /opt/type1/"
 
 	# type 2 - provide ldif file
-	sshpass -p "univention" ssh "$backup_IP" "mkdir -p /opt/type2"
-	cat /var/lib/univention-directory-listener/notifier_id | sshpass -p "univention" ssh "$backup_IP" "cat - > /opt/type2/notifier_id"
+	# shellcheck disable=SC2154
+	sshpass -p "univention" ssh "$backup_IP" "mkdir -p /opt/type2 && cat - > /opt/type2/notifier_id" </var/lib/univention-directory-listener/notifier_id
 	slapcat | gzip | sshpass -p "univention" ssh "$backup_IP" "cat - > /opt/type2/ldif.gz"
 
 	# type 3 - let the join handle the provisioning (ldapsearch)
@@ -25,9 +23,7 @@ prepare_on_master () {
 }
 
 type1_listener_fake () {
-
 	# type1 fake for replication and nss with additional listener/init/fake/helper for nss
-
 	echo -n "$DOMAIN_PWD" > /tmp/join_secret
 	test -f /usr/share/univention-directory-listener/resync-objects.py
 	test -f /usr/share/univention-directory-listener/univention-get-ldif-from-master.py
@@ -47,15 +43,13 @@ EOF
 	grep "faking handler 'replication'" /var/log/univention/join.log
 	grep "faking handler 'nss'" /var/log/univention/join.log
 	grep "Installing database file /opt/type1/data.mdb" /var/log/univention/join.log
+	# shellcheck disable=SC2154
 	grep "resync from Primary: cn=$slave1_NAME," /var/log/univention/join.log
 	test -f /tmp/fake_nss
 }
 
 type2_listener_fake () {
-
-
 	# type2 fake for replication and nss without listener/init/fake/helper
-
 	echo -n "$DOMAIN_PWD" > /tmp/join_secret
 	test -f /usr/share/univention-directory-listener/resync-objects.py
 	test -f /usr/share/univention-directory-listener/univention-get-ldif-from-master.py
@@ -69,13 +63,12 @@ type2_listener_fake () {
 	grep "faking handler 'replication'" /var/log/univention/join.log
 	grep "faking handler 'nss'" /var/log/univention/join.log
 	grep "slapadd /opt/type2/ldif.gz" /var/log/univention/join.log
+	# shellcheck disable=SC2154
 	grep "resync from Primary: cn=$backup_NAME," /var/log/univention/join.log
 }
 
 type3_listener_fake () {
-
 	# type3 fake for replication
-
 	echo -n "$DOMAIN_PWD" > /tmp/join_secret
 	test -f /usr/share/univention-directory-listener/resync-objects.py
 	test -f /usr/share/univention-directory-listener/univention-get-ldif-from-master.py
@@ -86,5 +79,6 @@ type3_listener_fake () {
 	grep "faking listener initialization" /var/log/univention/join.log
 	grep "faking handler 'replication'" /var/log/univention/join.log
 	grep "searching LDAP on Primary Node and slapadd " /var/log/univention/join.log
+	# shellcheck disable=SC2154
 	grep "resync from Primary: cn=$slave2_NAME," /var/log/univention/join.log
 }

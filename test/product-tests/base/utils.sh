@@ -56,3 +56,7 @@ measure_duration() {
 		echo "ERROR: $operation took too long (allowed time: $limit seconds)"
 	fi
 }
+
+assert_no_core_files () {
+	find /var -name core -exec false {} +
+}

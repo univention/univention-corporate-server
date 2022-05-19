@@ -1,11 +1,9 @@
 #!/bin/bash
 
-set -x
-set -e
+set -e -x
 
 revert_to_samba47 () {
-	set -x
-	set -e
+	set -e -x
 	/etc/init.d/univention-s4-connector stop
 	ucr set dns/backend='ldap'
 	/etc/init.d/bind9 restart
@@ -43,7 +41,6 @@ revert_to_samba47 () {
 }
 
 set_MaxConnIdleTime () {
-
 	echo "dn: CN=Default Query Policy,CN=Query-Policies,CN=Directory Service,CN=Windows NT,CN=Services,CN=Configuration,DC=bigenv,DC=local
 changetype: modify
 delete: lDAPAdminLimits
@@ -68,9 +65,10 @@ replace_samdb_and_upgrade () {
 	/etc/init.d/bind9 restart
 	/etc/init.d/samba stop
 
-	local ridsetldif=$(ldbsearch -H /var/lib/samba/private/sam.ldb -b  "CN=RID Set,CN=$(hostname),OU=Domain Controllers,$(ucr get connector/s4/ldap/base)")
-	local nextrid=$(sed -n 's/^rIDNextRID: //p' <<<"$ridsetldif")
-	local prevpool=$(sed -n 's/^rIDPreviousAllocationPool: //p' <<<"$ridsetldif")
+	local ridsetldif nextrid prevpool
+	ridsetldif=$(ldbsearch -H /var/lib/samba/private/sam.ldb -b "CN=RID Set,CN=$(hostname),OU=Domain Controllers,$(ucr get connector/s4/ldap/base)")
+	nextrid=$(sed -n 's/^rIDNextRID: //p' <<<"$ridsetldif")
+	prevpool=$(sed -n 's/^rIDPreviousAllocationPool: //p' <<<"$ridsetldif")
 
 	# Important: Backup the Samba private data directory:
 	cp -a /var/lib/samba/private/ /var/lib/samba/private.backup
@@ -86,8 +84,8 @@ replace_samdb_and_upgrade () {
 	univention-upgrade --noninteractive --updateto=4.3-4 --disable-app-updates
 	/etc/init.d/samba stop
 
-   #  Finally restore the local RID Set state:
-echo -e "dn: CN=RID Set,CN=$(hostname),OU=Domain Controllers,$(ucr get connector/s4/ldap/base)
+	# Finally restore the local RID Set state:
+	echo -e "dn: CN=RID Set,CN=$(hostname),OU=Domain Controllers,$(ucr get connector/s4/ldap/base)
 changetype: modify
 replace: rIDNextRID
 rIDNextRID: $nextrid
@@ -108,11 +106,12 @@ restart_connector_and_bind () {
 
 bigenv_settings () {
 	# some settings for setups with a big database
-	ucr set directory/manager/user/primarygroup/update=false
-	ucr set connector/s4/mapping/group/syncmode=read
-	ucr set nss/group/cachefile/invalidate_interval=disabled
-	ucr set ldap/database/mdb/maxsize='4294967296'
-	ucr set listener/cache/mdb/maxsize='4294967296'
-	ucr set slapd/backup=disbaled
+	ucr set \
+		directory/manager/user/primarygroup/update=false \
+		connector/s4/mapping/group/syncmode=read \
+		nss/group/cachefile/invalidate_interval=disabled \
+		ldap/database/mdb/maxsize='4294967296' \
+		listener/cache/mdb/maxsize='4294967296' \
+		slapd/backup=disbaled
 	ucr unset samba4/backup/cron
 }

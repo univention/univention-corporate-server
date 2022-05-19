@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 #    Nach der erfolgreichen Durchführung des AD Takeover, wie in der Wiki-Dokumentation beschrieben, sollten folgende Punkte geprüft werden:
 #  done via WinRM:      Login am übernommenen Windows-Client mit einem übernommenen Benutzer
 #  done(server side)          GPOs müssen korrekt angewendet werden.
@@ -11,10 +13,9 @@
 #  done:    Anlegen eines neuen Benutzers per UMC, Anmeldung mit dem neuen Benutzer am Windows Client
 #  done:      Joinen eines weiteren Windows Clients in die (UCS-)Domäne, Anmeldung als übernommener Benutzer
 check_ad_takeover () {
+	set -e -x
 
-	set -x
-	set -e
-
+	# shellcheck source=utils.sh
 	. product-tests/samba/utils.sh
 	eval "$(ucr shell ldap/base)"
 
@@ -37,7 +38,7 @@ check_ad_takeover () {
 	done
 	for i in $(seq 1 1500); do
 		udm users/user list --filter username="benutzer$i" | grep "^DN: "
-		groupindex=$(($i % 40 + 1))
+		groupindex=$((i % 40 + 1))
 		check_user_in_group "benutzer$i" "gruppe$groupindex"
 	done
 	# TODO check group membership
@@ -97,10 +98,10 @@ check_ad_takeover () {
 #    Zusätzlich sollte etwas erkennbar an der AD Default-Domänen-Policy geändert werden, z.B. done
 #  done:      Benutzerkonfiguration -> Administrative Vorlagen -> "Liste "Alle Programme" aus dem Menü Start entfernen"
 prepare_ad_takeover () {
-
 	set -x
 	set -e
 
+	# shellcheck source=utils.sh
 	. product-tests/samba/utils.sh
 	eval "$(ucr shell ldap/base)"
 
