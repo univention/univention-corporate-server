@@ -1,7 +1,6 @@
-#!/bin/sh
+#!/usr/bin/python3
 #
-#
-# Univention Nagios Plugin
+# Univention Monitoring Plugin
 #  check_univention_ldap: check ldap status
 #
 # Copyright 2007-2022 Univention GmbH
@@ -30,8 +29,26 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
-#
-eval "$(/usr/sbin/univention-config-registry shell hostname domainname ldap/base ldap/hostdn slapd/port)"
-slapd_port="$(echo "$slapd_port"|LC_ALL=C cut -d, -f1)"
-exec /usr/lib/nagios/plugins/check_ldap -H "$hostname.$domainname" -p "$slapd_port" -b "$ldap_base" -D "$ldap_hostdn" -y '/etc/machine.secret'
+
+from univention.config_registry import ucr
+from univention.monitoring import Alert
+
+
+class LDAP(Alert):
+
+	def write_metrics(self):
+		slapd_port = ucr['slapd/port'].split(',')[0]
+		rc, output = self.exec_command([
+			'/usr/lib/nagios/plugins/check_ldap',
+			'-H', '%(hostname)s.%(domainname)s' % ucr,
+			'-p', slapd_port,
+			'-b', ucr['ldap/base'],
+			'-D', ucr['ldap/hostdn'],
+			'-y', '/etc/machine.secret'
+		])
+		self.write_metric('univention_ldap_reachable', 1 if rc == 0 else 0)
+		self.log.debug(output)
+
+
+if __name__ == '__main__':
+	LDAP.main()
