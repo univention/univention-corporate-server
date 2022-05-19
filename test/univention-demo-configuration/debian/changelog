@@ -1,3 +1,9 @@
+univention-demo-configuration (8.0.0-11) unstable; urgency=low
+
+  * Bug #49060: Convert to Python 3
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 20 May 2022 17:00:05 +0200
+
 univention-demo-configuration (8.0.0-10) unstable; urgency=medium
 
   * Bug #54029: updated french translation
