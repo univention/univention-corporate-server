@@ -1,7 +1,6 @@
-#!/bin/bash
+#!/usr/bin/python3
 #
-#
-# Univention Nagios Plugin
+# Univention Monitoring Plugin
 #  check_univention_printerqueue: check status for printer queues
 #
 # Copyright 2007-2022 Univention GmbH
@@ -30,173 +29,34 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
-#
 
-VERSION="1.00"
-PROGNAME=`/usr/bin/basename $0`
-VERBOSE=0
+import shlex
 
+from univention.config_registry import ucr
+from univention.monitoring import Alert
 
 
-STATE_OK=0
-STATE_WARNING=1
-STATE_CRITICAL=2
-STATE_UNKNOWN=3
+class Printerqueue(Alert):
 
-get_state_string() {
-	if [ "$1" = "$STATE_OK" ] ; then
-		STATE_STRING="OK"
-	elif [ "$1" = "$STATE_WARNING" ] ; then
-		STATE_STRING="WARNING"
-	elif [ "$1" = "$STATE_CRITICAL" ] ; then
-		STATE_STRING="CRITICAL"
-	else
-		STATE_STRING="UNKNOWN"
-    fi
-}
+	def write_metrics(self):
+		for printer in shlex.split(ucr.get('monitoring/printerqueue/printers', '')):
+			self.write_metric_for_printer(printer)
 
-print_revision() {
-    echo "$1: version $2"
-}
+	def write_metric_for_printer(self, printer):
+		rc, output = self.exec_command(['lpq', '-P', printer], env={'LANG': 'C'})
+		if rc != 0:
+			self.write_metric('univention_printerqueue_jobs', -1, printer=printer)
+			self.log.debug('error while executing lpq: %s' % (output,))
+			return
 
-print_usage() {
-    echo "Usage: $PROGNAME [-v] [--dw] [--dc] [-w <cnt>] [-c <cnt>] <printername>"
-    echo "Usage: $PROGNAME --help"
-    echo "Usage: $PROGNAME --version"
-}
+		if 'is ready' not in output.splitlines()[0]:
+			self.write_metric('univention_printerqueue_jobs', -1, printer=printer)
+			self.log.debug('printer is not ready: %s' % (output.splitlines()[0],))
+			return
 
-print_help() {
-    print_revision $PROGNAME $REVISION
-    echo ""
-    print_usage
-	echo ""
-	echo "--dw       status WARNING if queue disabled"
-	echo "--dc       status CRITICAL if queue disabled"
-	echo "-w <cnt>   status WARNING if more than <cnt> jobs in queue"
-	echo "-c <cnt>   status CRITICAL if more than <cnt> jobs in queue"
-}
-
-exit_with_status() {
-	get_state_string $1
-	MSG="${STATE_STRING}: printer $PRINTER: $JOBCNT jobs"
-	if [ -n "$CNT_WARNING" ] ; then
-		MSG="$MSG (warn@${CNT_WARNING})"
-	fi
-	if [ -n "$CNT_CRITICAL" ] ; then
-		MSG="$MSG (crit@${CNT_CRITICAL})"
-	fi
-	echo $MSG
-	exit $1
-}
+		jobs = len(output.splitlines()[2:])
+		self.write_metric('univention_printerqueue_jobs', jobs, printer=printer)
 
 
-# default exit status
-exitstatus=$STATE_WARNING
-while test -n "$1"; do
-    case "$1" in
-        --help)
-            print_help
-            exit $STATE_OK
-            ;;
-        -h)
-            print_help
-            exit $STATE_OK
-            ;;
-        --version)
-            print_revision $PROGNAME $VERSION
-            exit $STATE_OK
-            ;;
-        -V)
-            print_revision $PROGNAME $VERSION
-            exit $STATE_OK
-            ;;
-		-v)
-			VERBOSE=1
-			;;
-		-vv)
-			VERBOSE=2
-			;;
-		-vvv)
-			VERBOSE=3
-			;;
-		-w)
-			let CNT_WARNING=$2
-			shift
-			;;
-		-c)
-			let CNT_CRITICAL=$2
-			shift
-			;;
-		--dw)
-			STATE_DISABLED="$STATE_WARNING"
-			;;
-		--dc)
-			STATE_DISABLED="$STATE_CRITICAL"
-			;;
-        *)
-			PRINTER=$1
-            ;;
-    esac
-    shift
-done
-
-
-if [ -z "$PRINTER" ] ; then
-	get_state_string $STATE_UNKNOWN
-	echo "${STATE_STRING}: no printer given"
-	exit $STATE_UNKNOWN
-fi
-
-
-# Sample output of lpq
-#
-#   TestPrinter is not ready
-#   Rank    Owner   Job     File(s)                         Total Size
-#   1st     remroot 1       <STDIN>                         13312 bytes
-#   2nd     remroot 2       <STDIN>                         13312 bytes
-#   3rd     remroot 3       <STDIN>                         13312 bytes
-
-if [ "$VERBOSE" = "0" ] ; then
-	OUTPUT=$(lpq -P $PRINTER 2> /dev/null)
-	RET=$?
-else
-	OUTPUT=$(lpq -P $PRINTER)
-	RET=$?
-fi
-
-if [ ! "$RET" = "0" ] ; then
-	get_state_string $STATE_UNKNOWN
-	echo "${STATE_STRING}: error while executing lpq"
-	exit $STATE_UNKNOWN
-fi
-
-#
-# get number of waiting jobs
-#
-let JOBCNT=$(echo "$OUTPUT" | sed -n '1,2d;p' | wc -l)
-
-#
-# check if printer is disabled
-#
-if [ -n "$STATE_DISABLED" ] ; then
-	if [ "`echo \"$OUTPUT\" | head -n1 | grep -c 'is ready'`" = "0" ] ; then
-		get_state_string $STATE_DISABLED
-		echo "${STATE_STRING}: printer `echo \"$OUTPUT\"| head -n1 | tr -d '\n'`: $JOBCNT jobs"
-		exit $STATE_DISABLED
-	fi
-fi
-
-#
-# process number of waiting jobs
-#
-if [ -n "$CNT_WARNING" -o -n "$CNT_CRITICAL" ] ; then
-	if [ -n "$CNT_CRITICAL" ] && [ $CNT_CRITICAL -le $JOBCNT ] ; then
-		exit_with_status $STATE_CRITICAL
-	fi
-	if [ -n "$CNT_WARNING" ] && [ $CNT_WARNING -le $JOBCNT ] ; then
-		exit_with_status $STATE_WARNING
-	fi
-fi
-
-exit_with_status $STATE_OK
+if __name__ == '__main__':
+	Printerqueue.main()

@@ -3,3 +3,9 @@ Description[de]=Die Variable konfiguriert, welche Rechnernamen im NMBD Monitorin
 Description[en]=The variable configures which hostnames should be included in the NMBD monitoring. The variable must contain a comma-separated list. Each entry must consist of two hostnames separated by " ". A unicast query is sent to the first hostname of each entry to resolve the second hostname passed to an IP address.
 Type=str
 Categories=service-monitoring
+
+[monitoring/printerqueue/printers]
+Description[de]=Diese Variable konfiguriert die Drucker dessen Warteschlange überwacht werden sollen.
+Description[en]=This variable configures the printers which printing queue is monitored.
+Type=str
+Categories=service-monitoring
