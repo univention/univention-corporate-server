@@ -35,11 +35,11 @@ Advanced settings, such as adding new portals or setting which group members can
 see which portal entries can be made using the UMC portal settings module.
 
 By default, all portal entries are displayed for everyone. In the UMC module
-:guilabel:`Portal` in the category :guilabel:`Login`, it can be configured
-whether anonymous visitors have to sign in before they can see entries. It is
-also possible to limit certain entries for certain groups. This requires the
-LDAP attribute ``memberOf``. Nested group memberships (i.e., groups in groups)
-are evaluated.
+:guilabel:`Portal` in the category *Login*, it can be configured whether
+anonymous visitors have to sign in before they can see entries. It is also
+possible to limit certain entries for certain groups. This requires the LDAP
+attribute ``memberOf``. Nested group memberships (i.e., groups in groups) are
+evaluated.
 
 Further design adjustments can be made in the file
 :file:`/usr/share/univention-portal/css/custom.css`. This file will not be
@@ -61,7 +61,7 @@ Assign rights for portal settings
 
 The following describes how to make the UMC module :guilabel:`Portal` accessible
 to selected groups or users. This example assumes that a group
-:guilabel:`Portal Admins` has been created and members of this group are
+``Portal Admins`` has been created and members of this group are
 supposed to be given access to the portal settings.
 
 On a |UCSPRIMARYDN| an ACL file has to be created first, for example
@@ -104,7 +104,7 @@ An appropriate UMC policy can now be created via UMC. The following
 *UMC operations* must be allowed within the policy:
 
 * *udm-portal*
-* *udm-syntax*,
+* *udm-syntax*
 * *udm-validate*
 * *udm-license*
 

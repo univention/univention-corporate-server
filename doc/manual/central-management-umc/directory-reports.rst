@@ -3,6 +3,8 @@
 Evaluation of data from the LDAP directory with Univention Directory Reports
 ============================================================================
 
+.. highlight:: console
+
 Univention Directory Reports offers the possibility of creating predefined
 reports for any objects to be managed in the directory service.
 
@@ -30,9 +32,9 @@ Creating reports via |UCSUMC| modules
 To create a report, you need to open the UMC module :guilabel:`Users`,
 :guilabel:`Groups` or :guilabel:`Computers`. Then all the objects which should
 be covered by the report must be selected (you can select all objects by
-clicking the checkbox the left of *Name*). Clicking on :guilabel:`More AR Create
-report` allows to choose between the *Standard Report* in PDF format and the
-*Standard CSV Report* in CSV format.
+clicking the checkbox the left of *Name*). Clicking on :menuselection:`More -->
+Create report` allows to choose between the *Standard Report* in PDF format and
+the *Standard CSV Report* in CSV format.
 
 .. _umc-report:
 

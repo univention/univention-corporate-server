@@ -31,8 +31,8 @@ well as for third party Apps if these support web based SSO. It is possible to
 enforce a login on the local system by clicking on the link :guilabel:`Login
 without Single Sign On`.
 
-In the login mask, enter the :guilabel:`Username` and :guilabel:`Password` of
-the corresponding domain account:
+In the login mask, enter the *Username* and *Password* of the corresponding
+domain account:
 
 * When logging in with the ``Administrator`` account on a |UCSPRIMARYDN| or
   |UCSBACKUPDN|, UMC modules for the administration and configuration of the
@@ -58,4 +58,4 @@ the browser session will be automatically closed after an inactivity of 8 hours.
 
 By installing a third-party application, such as :program:`privacyIDEA`, it is
 possible to extend the |UCSWEB| authentication with a two-factor authentication
-(2FA). These extensions can be installed from the Univention App Center.
+(2FA).

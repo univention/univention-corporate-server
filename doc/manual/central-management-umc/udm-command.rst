@@ -3,6 +3,8 @@
 Command line interface of domain management (|UCSUDM|)
 ======================================================
 
+.. highlight:: console
+
 The |UCSUDM| is the command line interface alternative to the web-based
 interface of the domain management UMC modules. It functions as a powerful tool
 for the automation of administrative procedures in scripts and for the
@@ -24,7 +26,7 @@ Parameters of the command line interface
 A complete list of available modules is displayed if the :command:`udm`` is run
 with the ``modules`` parameter:
 
-.. code-block:: console
+.. code-block::
 
    $ univention-directory-manager modules
    Available Modules are:
@@ -54,7 +56,7 @@ move
 The possible options of a UDM module and the operations which can be used on it
 can be output by specifying the operation name, e.g.,
 
-.. code-block:: console
+.. code-block::
 
    $ univention-directory-manager users/user move
    [...]
@@ -90,7 +92,7 @@ options for every module. This also displays all attributes of the module:
 
 .. code-block::
 
-   univention-directory-manager [category/modulename]
+   $ univention-directory-manager [category/modulename]
 
 
 With the ``create`` operation, the attributes marked with ``*`` must be
@@ -118,8 +120,6 @@ is the standard case), one or more email addresses can be added to the contact
 information.
 
 A range of standard parameters are defined for every module:
-
-.. highlight:: console
 
 .. option:: --dn
 
@@ -165,7 +165,7 @@ A range of standard parameters are defined for every module:
    The parameter defines the LDAP object classes of an object. If, for example,
    only ``pki`` is provided as options for a user object, it is not possible to
    specify a ``mailPrimaryAddress`` for this user as this attribute is part of
-   the ``mail`` option:
+   the ``mail`` option.
 
 .. option:: --superordinate
 
@@ -180,7 +180,7 @@ A range of standard parameters are defined for every module:
    policy is linked to an object, the settings from the policy are used for the
    object, e.g.:
 
-   .. code-block:: console
+   .. code-block::
 
       $ univention-directory-manager [category | modulename] [Operation] \
       > --policy-reference "cn=sales,cn=pwhistory," \
@@ -197,7 +197,7 @@ A range of standard parameters are defined for every module:
    ``--append`` and ``--remove`` are used to add/remove a value from a
    multi-value field, e.g.:
 
-   .. code-block:: console
+   .. code-block::
 
       $ univention-directory-manager groups/group modify \
       > --dn "cn=staff,cn=groups,dc=company,dc=example" \

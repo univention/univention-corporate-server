@@ -32,7 +32,7 @@ information on LDAP ACLs can be found in :ref:`domain-ldap-acls`.
    * - List of allowed UCS operation sets
      - All the UMC modules defined here are displayed to the user or group to
        which this ACL is applied. The names of the domain modules begin with
-       'UDM'.
+       ``UDM``.
 
 .. caution::
 

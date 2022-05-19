@@ -12,7 +12,7 @@ integration of solutions in UCS.
 Extended attributes are managed in the UMC module :guilabel:`LDAP directory`.
 There one needs to switch to the ``univention`` container and then to the
 ``custom attributes`` subcontainer. Existing attributes can be edited here or a
-new :guilabel:`Settings: extended attribute` object created here with
+new *Settings: extended attribute* object created here with
 :guilabel:`Add`.
 
 .. _umc-extended-attrs-figure:

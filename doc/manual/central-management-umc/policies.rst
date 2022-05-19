@@ -39,7 +39,7 @@ chapters, e.g. the DHCP policies in the network chapter.
 
 The names of policies must not contain any umlauts.
 
-:guilabel:`Referencing objects` provides a list of all containers or LDAP
+*Referencing objects* provides a list of all containers or LDAP
 objects for which this policy currently applies.
 
 The expanded settings host some general policy options which are generally only
@@ -85,14 +85,14 @@ Policies can be assigned in two ways:
   objects for which there are policies available (e.g., for users). A particular
   policy for a user can be specified at this place.
 
-The :guilabel:`Policies` configuration dialogue is functionally identical;
+The *Policies* configuration dialogue is functionally identical;
 however, all policy types are offered when assigning policies to a LDAP
 container, whilst only the policy types applicable for the object type in
 question are offered when assigning policies to an LDAP object.
 
 A policy can be assigned to the LDAP object or container under *Policies*. The
 values resulting from this policy are displayed directly. The
-:guilabel:`Inherited` setting means that the settings are adopted from a
+*Inherited* setting means that the settings are adopted from a
 superordinate policy again - when one exists.
 
 If an object is linked to a policy, or inherits policy settings which cannot be

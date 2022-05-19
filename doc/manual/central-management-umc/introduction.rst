@@ -9,7 +9,7 @@ Access
 ------
 
 The |UCSWEB| can be opened on any UCS system via the URL
-``https://servername/``. Alternatively, access is also possible via the server's
+:samp:`https://{servername}/`. Alternatively, access is also possible via the server's
 IP address. Under certain circumstances it may be necessary to access the
 services over an insecure connection (e.g., if no SSL certificates have been
 created for the system yet). In this case, ``http`` must be used instead of
