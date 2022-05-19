@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/python3
 #
-# Univention Nagios Plugin
+# Univention Monitoring Plugin
 #
 # Copyright 2010-2022 Univention GmbH
 #
@@ -29,45 +29,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-nagiosExit () {
-
-	local state="$1"
-	local msg="$2"
-
-	case $state in
-	0)
-		echo "OK: $msg"
-		exit 0
-		;;
-	1)
-		echo "WARNING: $msg"
-		exit 1
-		;;
-	2)
-		echo "CRITICAL: $msg"
-		exit 2
-		;;
-	*)
-		echo "UNKNOWN: $msg"
-		exit 3
-		;;
-	esac
-}
-
-if [ "$1" = "-h" -o "$1" = "--help" ] ; then
-	echo "$0 checks local service 'cups'"
-	echo "syntax: $0 [--help]"
-	exit 3
-fi
+from univention.monitoring import Alert
 
 
-# check for at least one cupsd process
-MSG="$(/usr/lib/nagios/plugins/check_procs -w 1: -c 1: -C cupsd)"
-RET="$?"
-if [ ! "$RET" = "0" ] ; then
-	nagiosExit "$RET" "$MSG"
-fi
+class CUPS(Alert):
 
-# check HTTP service
-MSG="$(/usr/lib/nagios/plugins/check_http -H "127.0.0.1:631" -I 127.0.0.1 -p 631 -S)"
-nagiosExit "$?" "$MSG"
+	def write_metrics(self):
+		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '1:', '-c', '1:', '-C', 'cupsd'])
+		self.write_metric('univention_cups_running', 1 if rc == 0 else 0)
+		self.log.debug(output)
+
+		# check HTTP service
+		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_http', '-H', '127.0.0.1:631', '-I', '127.0.0.1', '-p', '631', '-S'])
+		self.write_metric('univention_cups_reachable', 1 if rc == 0 else 0)
+		self.log.debug(output)
+
+
+if __name__ == '__main__':
+	CUPS.main()
