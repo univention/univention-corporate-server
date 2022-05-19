@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/usr/bin/python3
 #
-# Univention Nagios Plugin
+# Univention Monitoring Plugin
 #  check_univention_s4_connector: check s4 connector status
 #
 # Copyright 2015-2022 Univention GmbH
@@ -29,74 +29,47 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
-#
 
-. /usr/share/univention-lib/ucr.sh
+import re
+import subprocess
 
-STATE_OK=0
-STATE_WARNING=1
-STATE_CRITICAL=2
-STATE_UNKNOWN=3
+from univention.config_registry import ucr
+from univention.monitoring import Alert
 
-nagios_exit() {
-	local state="$1"
-	local msg="$2"
+RE_REJECT = re.compile(r'^ *[1-9]+: *(S4|UCS) DN:.*')
 
-	case $state in
-	0)
-		echo "S4CONNECTOR OK: $msg"
-		exit 0
-		;;
-	1)
-		echo "S4CONNECTOR WARNING: $msg"
-		exit 1
-		;;
-	2)
-		echo "S4CONNECTOR CRITICAL: $msg"
-		exit 2
-		;;
-	*)
-		echo "S4CONNECTOR UNKNOWN: $msg"
-		exit 3
-		;;
-	esac
-}
 
-# check whether the s4 connector is activated
-if ! is_ucr_true connector/s4/autostart; then
-    nagios_exit $STATE_OK "Connector not activated (connector/s4/autostart =! true)"
-fi
+class S4Connector(Alert):
 
-# check whether we can connect to the S4
-# CRITICAL: in case we cannot connect to the S4
-univention-s4search cn=users cn=users >/dev/null 2>&1
-ret="$?"
-[ "$ret" != 0 ] && nagios_exit $STATE_CRITICAL "Could not connect to samba server!"
+	def write_metrics(self):
+		# check whether the s4 connector is activated
+		if not ucr.is_true('connector/s4/autostart', False):
+			self.write_metric('univention_s4_connector', 0)
+			self.log.debug('Connector not activated (connector/s4/autostart =! true)')
+			return
 
-# check whether the s4 connector is running; for this
-# WARNING: if more than one instance of the same connector is running
-# CRITICAL: if no process is running
-/usr/lib/nagios/plugins/check_procs -w :1 -c 1: --ereg-argument-array "^([^ ]+)?python.*s4connector.s4.main(.py)?\$" >/dev/null 2>&1
-ret="$?"
-case "$ret" in
-	$STATE_OK)
-		;;
-	$STATE_WARNING)
-		nagios_exit $ret "More than one s4 connector instance are running!"
-		;;
-	$STATE_CRITICAL)
-		nagios_exit $ret "s4 connector is not running!"
-		;;
-	*)
-		nagios_exit $ret "Unknown state!"
-		;;
-esac
+		# check whether we can connect to the S4
+		# CRITICAL: in case we cannot connect to the S4
+		rc = self.exec_command(['univention-s4search', 'cn=users', 'cn=users'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)[0]
+		self.write_metric('univention_s4_connector_samba_reachable', 1 if rc == 0 else 0)
 
-# count rejects by parsing the output of univention-s4connector-list-rejected
-# WARNING: if there are any rejects
-nRejects=$(univention-s4connector-list-rejected | sed -rn '/^ *[1-9]+: *(S4|UCS) DN:/p' | wc -l)
-[ "$nRejects" -gt 0 ] && nagios_exit $STATE_WARNING "Found $nRejects reject(s)! Please check output of univention-s4connector-list-rejected."
+		# check whether the s4 connector is running; for this
+		# WARNING: if more than one instance of the same connector is running
+		# CRITICAL: if no process is running
+		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', ':1', '-c', '1:', '--ereg-argument-array', '^([^ ]+)?python.*s4connector.s4.main(.py)?$'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+		output = {1: 'More than one s4 connector instance are running!', 2: 's4 connector is not running!'}.get(rc, 'Unknown state!')
+		self.log.debug(output)
+		self.write_metric('univention_s4_connector_running', rc if rc in (0, 1, 2) else -1)
 
-# otherwise everything looks fine
-nagios_exit $STATE_OK "System operational"
+		# count rejects by parsing the output of univention-s4connector-list-rejected
+		# WARNING: if there are any rejects
+		rc, output = self.exec_command(['univention-s4connector-list-rejected'])
+		rejects = sum(1 for line in output.splitlines() if RE_REJECT.match(line))
+
+		self.write_metric('univention_s4_connector_rejects', rejects)
+		if rejects:
+			self.debug('Found %d reject(s)! Please check output of univention-s4connector-list-rejected.' % (rejects,))
+
+
+if __name__ == '__main__':
+	S4Connector.main()
