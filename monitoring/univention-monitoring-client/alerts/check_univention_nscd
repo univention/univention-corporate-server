@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/usr/bin/python3
 #
-# Univention Nagios Plugin
+# Univention Monitoring Plugin
 #  check_univention_nscd: check if nscd is bound to its socket.
 #
 # Copyright 2017-2022 Univention GmbH
@@ -30,64 +30,35 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-VERSION="1.00"
-PROGNAME="${0##*/}"
+import os
+import stat
+import subprocess
 
-STATE_OK=0
-STATE_WARNING=1
-STATE_CRITICAL=2
-STATE_UNKNOWN=3
+from univention.monitoring import Alert
 
-state () {
-    local STATE="$1"
-    case "$STATE" in
-        "$STATE_OK") STATE_STRING="OK" ;;
-        "$STATE_WARNING") STATE_STRING="WARNING" ;;
-        "$STATE_CRITICAL") STATE_STRING="CRITICAL" ;;
-        *) STATE_STRING="UNKNOWN" ;;
-    esac
-    shift
-    echo "${STATE_STRING}: $*"
-    exit "$STATE"
-}
 
-print_revision() {
-    echo "$PROGNAME: version $VERSION"
-}
+class NSCD(Alert):
 
-print_usage() {
-    echo "Usage: $PROGNAME --help"
-    echo "Usage: $PROGNAME --version"
-    echo "Usage: $PROGNAME"
-}
+	def write_metrics(self):
+		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '1:1', '-c', '1:', '-C', 'nscd'])
+		self.write_metric('univention_nscd_running', 1 if rc == 0 else 0)
+		self.log.debug(output)
 
-print_help() {
-    print_revision
-    echo ""
-    print_usage
-}
+		message = None
+		try:
+			running = os.stat('/var/run/nscd/socket').st_mode & stat.S_IFSOCK == stat.S_IFSOCK
+		except FileNotFoundError:
+			running = False
+		if not running:
+			message = "no nscd socket found! nscd not running?"
+		else:
+			rc, output = self.exec_command(['/usr/bin/timeout', '3', 'nscd', '-g'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+			if rc:
+				running = False
+				message = "nscd not responding!"
+		self.write_metric('univention_nscd_responding', 1 if running else 0)
+		self.log.debug(message)
 
-while [ $# -ge 1 ]
-do
-    case "$1" in
-        --help|-h)
-            print_help
-            exit "$STATE_OK"
-            ;;
-        --version|-V)
-            print_revision
-            exit "$STATE_OK"
-            ;;
-    esac
-    shift
-done
 
-nscd_socket="/var/run/nscd/socket"
-
-[ -S $nscd_socket ] ||
-    state "$STATE_CRITICAL" "no nscd socket found! nscd not running?"
-
-timeout 3 nscd -g >/dev/null 2>/dev/null ||
-    state "$STATE_CRITICAL" "nscd not responding!"
-
-state "$STATE_OK" "nscd is running."
+if __name__ == '__main__':
+	NSCD.main()
