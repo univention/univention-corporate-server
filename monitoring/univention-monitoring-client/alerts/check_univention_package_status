@@ -1,7 +1,6 @@
-#!/bin/sh
+#!/usr/bin/python3
 #
-#
-# Univention Nagios Plugin
+# Univention Monitoring Plugin
 #  check_package_status: check dpkg status
 #
 # Copyright 2017-2022 Univention GmbH
@@ -30,85 +29,19 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
-#
 
-VERSION="1.00"
-PROGNAME=`/usr/bin/basename $0`
-VERBOSE=0
-
-STATE_OK=0
-STATE_WARNING=1
-STATE_CRITICAL=2
-STATE_UNKNOWN=3
-
-get_state_string() {
-	if [ "$1" = "$STATE_OK" ] ; then
-		STATE_STRING="OK"
-	elif [ "$1" = "$STATE_WARNING" ] ; then
-		STATE_STRING="WARNING"
-	elif [ "$1" = "$STATE_CRITICAL" ] ; then
-		STATE_STRING="CRITICAL"
-	else
-		STATE_STRING="UNKNOWN"
-    fi
-}
-
-print_revision() {
-    echo "$PROGNAME: version $VERSION"
-}
-
-print_usage() {
-    echo "Usage: $PROGNAME --help"
-    echo "Usage: $PROGNAME --version"
-}
-
-print_help() {
-    print_revision
-    echo ""
-    print_usage
-}
-
-exit_with_msg() {
-	get_state_string $1
-	echo "${STATE_STRING}: $2"
-	exit $1
-}
+from univention.monitoring import Alert
 
 
-while test -n "$1"; do
-    case "$1" in
-        --help)
-            print_help
-            exit $STATE_OK
-            ;;
-        -h)
-            print_help
-            exit $STATE_OK
-            ;;
-        --version)
-            print_revision
-            exit $STATE_OK
-            ;;
-        -V)
-            print_revision
-            exit $STATE_OK
-            ;;
-    esac
-    shift
-done
+class PackageStatus(Alert):
+
+	def write_metrics(self):
+		# Find half-configured (exit 1 in postinst) and half-installed packages (exit 1 in postrm)
+		rc, output = self.exec_command("dpkg-query -f '${status} ${package}\n' -W | awk '$3 ~ \"half\" {printf $4 " "}'", shell=True)
+		self.write_metric('univention_package_status_ok', 0 if output else 1)
+		if output:
+			self.log.debug(output)
 
 
-# Find half-configured and
-#       (exit 1 in postinst)
-#  half-installed packages
-#       (exit 1 in postrm)
-msg="$(dpkg-query -f '${status} ${package}\n' -W | awk '$3 ~ "half" {printf $4 " "}')"
-
-
-if [ -n "$msg" ] ; then
-	exit_with_msg $STATE_CRITICAL "Package status broken for $msg"
-fi
-
-
-exit_with_msg $STATE_OK "Package status OK"
+if __name__ == '__main__':
+	PackageStatus.main()
