@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-lib
-fix: 9.0.11-11A~5.0.0.202205161752
+fix: 9.0.11-11A~5.0.0.202205191244
 desc: |
  This update addresses the following issues:
  * Detecting UMC specific files did not work for packages containing
