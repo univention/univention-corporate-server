@@ -1,8 +1,5 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
-#
-# UCS Test Tools
-"""Create may users in groups."""
 #
 # Copyright 2010-2022 Univention GmbH
 #
@@ -31,28 +28,29 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""
+Create may users in groups.
+"""
+
 from __future__ import print_function
+
 import sys
-from optparse import OptionParser
-import univention.debug
+from argparse import ArgumentParser, Namespace
+from random import choice
+from typing import Iterator, List, Optional, Tuple  # noqa: F401
+
+import ldap
+from ldap.dn import escape_dn_chars
+
 import univention.admin
 import univention.admin.modules
 import univention.admin.objects
 import univention.admin.uldap
-import ldap
-from ldap.dn import escape_dn_chars
-from random import choice
-try:
-	from typing import Iterator  # noqa: F401
-except ImportError:
-	pass
+import univention.debug
 
 
 def names(count):  # type: (int) -> Iterator[str]
-	index = 0
-	while index < count:
-		yield 'nscd%04x' % index
-		index += 1
+	yield from ('nscd%04x' % index for index in range(count))
 
 
 class MassCreate(object):
@@ -60,6 +58,7 @@ class MassCreate(object):
 	"""Mass create users and groups."""
 
 	def __init__(self, count):
+		# type: (int) -> None
 		# create LDAP connection
 		self.access, self.position = univention.admin.uldap.getAdminConnection()
 
@@ -82,7 +81,8 @@ class MassCreate(object):
 		self.suffix = ''
 		self.fast = True
 
-	def group(self, name, in_group=None):
+	def group(self, name, in_group=""):
+		# type: (str, str) -> str
 		"""Create group, which is itself member in_group."""
 		g = self.gg.object(co=None, lo=self.access, position=self.gp)
 		g.options = ['posix', 'samba']
@@ -92,7 +92,7 @@ class MassCreate(object):
 		if in_group:
 			g.info['memberOf'] = ["cn=%s,%s" % (escape_dn_chars(in_group), self.gp.getDn())]
 		try:
-			dn = g.create()
+			dn = g.create()  # type: str
 			print('Group "%s"' % (dn,))
 		except univention.admin.uexceptions.groupNameAlreadyUsed as ex:
 			dn = 'cn=%s,%s' % (escape_dn_chars(name), self.gp.getDn())
@@ -100,9 +100,11 @@ class MassCreate(object):
 		except univention.admin.uexceptions.objectExists as ex:
 			dn = 'cn=%s,%s' % (escape_dn_chars(name), self.gp.getDn())
 			print('Object "%s" exists: %s' % (dn, ex), file=sys.stderr)
+
 		return dn
 
 	def user(self, name, groups):
+		# type: (str, List[str]) -> str
 		"""Create user, which is itself member in groups."""
 		gdn = ["cn=%s,%s" % (escape_dn_chars(group), self.gp.getDn()) for group in groups]
 		u = self.uu.object(co=None, lo=self.access, position=self.up)
@@ -119,7 +121,7 @@ class MassCreate(object):
 		u.info['primaryGroup'] = 'cn=Domain Users,%s' % self.gp.getDn()
 		u.info['unixhome'] = '/home/%s' % name
 		try:
-			dn = u.create()
+			dn = u.create()  # type: str
 			print('User "%s"' % (dn,))
 		except univention.admin.uexceptions.uidAlreadyUsed as ex:
 			dn = 'uid=%s,%s' % (escape_dn_chars(name), self.up.getDn())
@@ -127,44 +129,51 @@ class MassCreate(object):
 		except univention.admin.uexceptions.objectExists as ex:
 			dn = 'uid=%s,%s' % (escape_dn_chars(name), self.up.getDn())
 			print('Object "%s" exists: %s' % (dn, ex), file=sys.stderr)
+
 		return dn
 
-	def group_members(self, name, uniqueMember=None, memberUid=None):
+	def group_members(self, name, uniqueMember=[], memberUid=[]):
+		# type: (str, List[str], List[str]) -> str
 		"""Set members of group."""
 		dn = "cn=%s,%s" % (escape_dn_chars(name), self.gp.getDn())
-		ml = []
+
+		ml = []  # type: List[Tuple[object, str, object]]
 		if uniqueMember:
-			uniqueMember = [_.encode('utf8') for _ in uniqueMember]
-			ml.append((ldap.MOD_ADD, 'uniqueMember', uniqueMember))
+			data = [_.encode('utf8') for _ in uniqueMember]
+			ml.append((ldap.MOD_ADD, 'uniqueMember', data))
 		else:
 			ml.append((ldap.MOD_DELETE, 'uniqueMember', None))
-		if uniqueMember:
-			memberUid = [_.encode('utf8') for _ in memberUid]
-			ml.append((ldap.MOD_ADD, 'memberUid', memberUid))
+
+		if memberUid:
+			data = [_.encode('utf8') for _ in memberUid]
+			ml.append((ldap.MOD_ADD, 'memberUid', data))
 		else:
-			ml.append((ldap.MOD_DELETE, 'memberUid', memberUid))
+			ml.append((ldap.MOD_DELETE, 'memberUid', None))
+
 		if ml:
 			try:
 				try:
 					res = self.access.lo.lo.modify_s(dn, ml)
 					assert res
 				except ldap.TYPE_OR_VALUE_EXISTS as ex:
-					print('XXX %s' % (ex,), file=sys.stderr)
+					print('group %s: %s' % (name, ex), file=sys.stderr)
 					ml = [(ldap.MOD_REPLACE, attr, val) for (_op, attr, val) in ml]
 					res = self.access.lo.lo.modify_s(dn, ml)
 					assert res
 			except ldap.NO_SUCH_ATTRIBUTE as ex:
 				print('Group "%s" error: %s' % (dn, ex), file=sys.stderr)
+
 		return dn
 
 	def create(self, groups):
+		# type: (List[str]) -> None
 		"""Create hierarchy of groups and users."""
 		for group in groups:
 			self.group(group)
 		self.group('nscd_all')
 
-		uniqueMember = []
-		memberUid = []
+		uniqueMember = []  # type: List[str]
+		memberUid = []  # type: List[str]
 
 		for name in names(self.count):
 			if name.endswith('000'):
@@ -192,40 +201,53 @@ class MassCreate(object):
 
 
 def main():
+	# type: () -> None
 	"""Create users."""
-	description = 'Create may users and groups.'
-	parser = OptionParser(description=description)
-	parser.add_option(
+	opt = parse_args()
+	setup_logging()
+	load_udm_modules()
+	create_users_and_groups(opt)
+
+
+def parse_args():
+	# type: () -> Namespace
+	parser = ArgumentParser(description=__doc__)
+	parser.add_argument(
 		'-g', '--group-only',
 		dest='groups', action='append', default=['Domain Users'],
-		help='Add all users these groups [%default]')
-	parser.add_option(
+		help='Add all users to these groups [%(default)s]')
+	parser.add_argument(
 		'-n', '--number',
-		dest='count', action='store', type='int', default=1 << 15,
-		help='Number of users to create [%default]')
-	parser.add_option(
+		dest='count', type=int, default=1 << 15,
+		help='Number of users to create [%(default)s]')
+	parser.add_argument(
 		'-s', '--suffix',
-		dest='suffix', action='store', default='',
+		default='',
 		help='Specify character set for random suffix')
-	parser.add_option(
+	parser.add_argument(
 		'-f', '--fast',
-		dest='fast', action='store_false', default=True,
+		action='store_false',
 		help='Disable intermediate clean groups to speed up user creation')
-	options, args = parser.parse_args()
+	opt = parser.parse_args()
+	return opt
 
-	encoding = sys.getfilesystemencoding()
 
-	# setup Logger
+def setup_logging():
+	# type: () -> None
 	univention.debug.init('/dev/stderr', univention.debug.ADMIN, univention.debug.ALL)
-	# Update module list (needed since UCS 3.0)
+
+
+def load_udm_modules():
+	# type: () -> None
 	univention.admin.modules.update()
 
-	# Create users and groups
+
+def create_users_and_groups(options):
+	# type: (Namespace) -> None
 	generator = MassCreate(options.count)
-	generator.suffix = options.suffix.decode(encoding)
+	generator.suffix = options.suffix
 	generator.fast = options.fast
-	groups = [group.decode(encoding) for group in options.groups]
-	generator.create(groups)
+	generator.create(options.groups)
 
 
 if __name__ == '__main__':
