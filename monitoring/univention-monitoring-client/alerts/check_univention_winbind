@@ -1,7 +1,6 @@
-#!/bin/sh
+#!/usr/bin/python3
 #
-#
-# Univention Nagios Plugin
+# Univention Monitoring Plugin
 #  check_univention_winbind: check winbind status
 #
 # Copyright 2007-2022 Univention GmbH
@@ -30,93 +29,23 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
-#
 
-VERSION="1.00"
-PROGNAME=`/usr/bin/basename $0`
-VERBOSE=0
+import subprocess
 
-STATE_OK=0
-STATE_WARNING=1
-STATE_CRITICAL=2
-STATE_UNKNOWN=3
-
-get_state_string() {
-	if [ "$1" = "$STATE_OK" ] ; then
-		STATE_STRING="OK"
-	elif [ "$1" = "$STATE_WARNING" ] ; then
-		STATE_STRING="WARNING"
-	elif [ "$1" = "$STATE_CRITICAL" ] ; then
-		STATE_STRING="CRITICAL"
-	else
-		STATE_STRING="UNKNOWN"
-    fi
-}
-
-print_revision() {
-    echo "$PROGNAME: version $VERSION"
-}
-
-print_usage() {
-    echo "Usage: $PROGNAME --help"
-    echo "Usage: $PROGNAME --version"
-}
-
-print_help() {
-    print_revision
-    echo ""
-    print_usage
-}
-
-while test -n "$1"; do
-    case "$1" in
-        --help)
-            print_help
-            exit $STATE_OK
-            ;;
-        -h)
-            print_help
-            exit $STATE_OK
-            ;;
-        --version)
-            print_revision
-            exit $STATE_OK
-            ;;
-        -V)
-            print_revision
-            exit $STATE_OK
-            ;;
-    esac
-    shift
-done
+from univention.monitoring import Alert
 
 
+class Winbind(Alert):
 
-CMD=$(which wbinfo)
-if [ -z "$CMD" ] ; then
-	echo "Cannot find wbinfo executable"
-	exit $STATE_UNKNOWN
-fi
+	def write_metrics(self):
+		try:
+			rc, output = self.exec_command(['/usr/bin/wbinfo', '-t'], stderr=subprocess.DEVNULL)
+		except FileNotFoundError:
+			self.write_metric('univention_winbind_secret_ok', -1)
+			return
+		self.write_metric('univention_winbind_secret_ok', 1 if rc == 0 else 0)
+		self.log.debug(';'.join(output.splitlines()))
 
-output=$($CMD -t 2>&1)
-RET=$?
 
-msg=$(echo -n "$output" | tr '\n' ';' | sed -e 's/;$//')
-
-if [ $RET != 0 ]; then
-	state=$STATE_CRITICAL
-	get_state_string $state
-	echo "${STATE_STRING}: wbinfo failed: $msg"
-	exit $state
-else
-	state=$STATE_OK
-	get_state_string $state
-	echo "${STATE_STRING}: $msg"
-	exit $state
-fi
-
-state=$STATE_CRITICAL
-get_state_string $state
-echo "${STATE_STRING}: PLUGIN FAILED"
-exit $state
+if __name__ == '__main__':
+	Winbind.main()
