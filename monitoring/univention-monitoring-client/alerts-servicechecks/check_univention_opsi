@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/python3
 #
-# Univention Nagios Plugin
+# Univention Monitoring Plugin
 #
 # Copyright 2010-2022 Univention GmbH
 #
@@ -29,60 +29,41 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-function nagiosExit () {
+import re
 
-	local state="$1"
-	local msg="$2"
-
-	case $state in
-	0)
-		echo "OK: $msg"
-		exit 0
-		;;
-	1)
-		echo "WARNING: $msg"
-		exit 1
-		;;
-	2)
-		echo "CRITICAL: $msg"
-		exit 2
-		;;
-	*)
-		echo "UNKNOWN: $msg"
-		exit 3
-		;;
-	esac
-}
-
-if [ "$1" = "-h" -o "$1" = "--help" ] ; then
-	echo "$0 checks local service 'opsi'"
-	echo "syntax: $0 [--help]"
-	exit 3
-fi
+from univention.monitoring import Alert
 
 
-# check for at least one opsiconfd process
-MSG="$(/usr/lib/nagios/plugins/check_procs -w 1: -c 1: -C opsiconfd)"
-RET="$?"
-if [ ! "$RET" = "0" ] ; then
-	nagiosExit "$RET" "$MSG"
-fi
+class OPSI(Alert):
 
-# check for at least one opsiconfd-guard process
-MSG="$(/usr/lib/nagios/plugins/check_procs -w 1: -c 1: -C opsiconfd-guard)"
-RET="$?"
-if [ ! "$RET" = "0" ] ; then
-	nagiosExit "$RET" "$MSG"
-fi
+	def write_metrics(self):
+		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '1:', '-c', '1:', '-C', 'opsiconfd'])
+		self.write_metric('univention_opsi_running', 1 if rc == 0 else 0)
+		self.log.debug(output)
 
-# check HTTP service
-port=4447
-opsiCfg=/etc/opsi/opsiconfd.conf
-if [ -e "$opsiCfg" ]; then
-	cfgPort=$(sed -nre 's/^\s*https port\s+=\s+//p' "$opsiCfg")
-	if [ -n "$cfgPort" ]; then
-		port=$cfgPort
-	fi
-fi
-MSG="$(/usr/lib/nagios/plugins/check_http -I 127.0.0.1 -p $port -S)"
-nagiosExit "$?" "$MSG"
+		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '1:', '-c', '1:', '-C', 'opsiconfd-guard'])
+		self.write_metric('univention_opsiguard_running', 1 if rc == 0 else 0)
+		self.log.debug(output)
+
+		# check HTTP service
+		port = '4447'
+		try:
+			with open('/etc/opsi/opsiconfd.conf') as fd:
+				while True:
+					line = fd.readline()
+					if not line:
+						break
+					match = re.match(r'^\s*https port\s+=\s+(\d+)', line)
+					if match:
+						port = match.group(0)
+						break
+		except FileNotFoundError:
+			pass
+
+		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_http', '-I', '127.0.0.1', '-p', port, '-S'])
+		self.write_metric('univention_opsi_reachable', 1 if rc == 0 else 0)
+		self.log.debug(output)
+
+
+if __name__ == '__main__':
+	OPSI.main()
