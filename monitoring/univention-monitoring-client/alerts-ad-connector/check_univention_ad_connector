@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/python3
 #
-# Univention Nagios Plugin
+# Univention Monitoring Plugin
 #  check_univention_ad_connector: check Active Directory connector status
 #
 # Copyright 2011-2022 Univention GmbH
@@ -29,115 +29,57 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
-#
 
-PROGNAME=$(/usr/bin/basename $0)
+import re
+import subprocess
 
-STATE_OK=0
-STATE_WARNING=1
-STATE_CRITICAL=2
-STATE_UNKNOWN=3
+from univention.config_registry import ucr
+from univention.monitoring import Alert
 
-print_usage() {
-	echo
-	echo "Usage: $PROGNAME [--help|-h] [<connectorName>]"
-	echo
-	echo "connectorName:"
-	echo "    Name of the AD connector instance to be monitored, defaults to 'connector'."
-	echo "    In the case of several running AD connector instances, this parameter can"
-	echo "    be specified to monitor other instances than the default one."
-	echo
-	exit $STATE_OK
-}
+RE_REJECT = re.compile(r'^ *[1-9]+: *(AD|UCS) DN:.*')
 
-count_connectors() {
-	ab="$(univention-config-registry get connector/listener/additionalbasenames)"
-	additionalbasenames=($ab)
-	count_connectors=${#additionalbasenames[@]}
-	echo "$((count_connectors+1))"
-}
 
-nagios_exit() {
-	local state="$1"
-	local msg="$2"
+class ADConnector(Alert):
 
-	case $state in
-	0)
-		echo "ADCONNECTOR OK: System operational.${MSG_CONNECTOR}"
-		exit 0
-		;;
-	1)
-		echo "ADCONNECTOR WARNING: $msg${MSG_CONNECTOR}"
-		exit 1
-		;;
-	2)
-		echo "ADCONNECTOR CRITICAL: $msg${MSG_CONNECTOR}"
-		exit 2
-		;;
-	*)
-		echo "ADCONNECTOR UNKNOWN: $msg${MSG_CONNECTOR}"
-		exit 3
-		;;
-	esac
-}
+	def write_metrics(self):
+		connectors = ('connector %s' % ucr.get('connector/listener/additionalbasenames', '')).split(' ')
+		for connector in connectors:
+			self.write_connector_metrics(len(connectors), connector)
 
-# parse help parameters
-[ "$1" = -h -o "$1" = --help ] && print_usage
+	def write_connector_metrics(self, connectors, connector):
+		# check whether we can connect to the AD
+		# CRITICAL: in case we cannot connect to the AD
+		rc = self.exec_command(['univention-adsearch', '-c', connector, 'cn=users'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)[0]
+		self.write_metric('univention_ad_connector_ad_reachable', 1 if rc == 0 else 0)
 
-connectors=1
+		# check whether the AD connector is running; for this, get the exact command
+		# that was used to launch the process; remove multiple whitespaces and quotes
+		# in order to match the command via check_procs
+		# WARNING: if not exactly the number of configured connectors is running
+		# CRITICAL: if no process is running
+		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '%d:%d' % (connectors, connectors), '-c', '1:', '--ereg-argument-array', '^([^ ]+)?python.*univention.connector.ad.main(.py)?'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+		if rc == 1:
+			rc2, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '%d' % (connectors,), '-c', '1:', '--ereg-argument-array', '^([^ ]+)?python.*univention.connector.ad.main(.py)?'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+			output = {
+				1: 'More than the %s configured AD connectors are running!' % (connectors,),
+				2: 'Less than the %s configured AD connectors are running!' % (connectors,),
+			}.get(rc2, 'Unknown state!')
+		elif rc == 2:
+			output = 'No AD connector is running!'
+		else:
+			output = 'Unknown state!'
+		self.log.debug(output)
+		self.write_metric('univention_ad_connector_running', rc if rc in (0, 1, 2) else -1, connector=connector)
 
-# check whether a different connector name is given
-CONNECTOR="connector"
-MSG_CONNECTOR=""
-if [ "$#" -gt 0 -a -n "$1" ]; then
-	CONNECTOR="$1"
-	MSG_CONNECTOR=" [$1]"
-else
-	# get the number of connectors that are supposed to be running
-	connectors="$(count_connectors)"
-fi
+		# count rejects by parsing the output of univention-adconnector-list-rejected
+		# WARNING: if there are any rejects
+		rc, output = self.exec_command(['univention-adconnector-list-rejected', '-c', connector])
+		rejects = sum(1 for line in output.splitlines() if RE_REJECT.match(line))
 
-# check whether the AD connector is running; for this, get the exact command
-# that was used to launch the process; remove multiple whitespaces and quotes
-# in order to match the command via check_procs
-# WARNING: if not exactly the number of configured connectors is running
-# CRITICAL: if no process is running
-/usr/lib/nagios/plugins/check_procs -w "$connectors":"$connectors" -c 1: --ereg-argument-array "^([^ ]+)?python.*univention.connector.ad.main(.py)?" >/dev/null 2>&1
-ret="$?"
-# WARNING: if less than the configured number of connectors is running
-# CRITICAL: if more than the configured number of connector is running
-if [ "$ret" = "$STATE_WARNING" ]; then
-	/usr/lib/nagios/plugins/check_procs -w "$connectors": -c :"$connectors" --ereg-argument-array "^([^ ]+)?python.*univention.connector.ad.main(.py)?" >/dev/null 2>&1
-	ret2="$?"
-fi
+		self.write_metric('univention_ad_connector_rejects', rejects, connector=connector)
+		if rejects:
+			self.log.debug('Found %d reject(s)! Please check output of univention-adconnector-list-rejected.' % (rejects,))
 
-case "$ret" in
-	$STATE_OK)
-		;;
-	$STATE_WARNING)
-		[ "$ret2" = "$STATE_WARNING" ] && nagios_exit $ret "Less than the $connectors configured AD connectors are running!"
-		[ "$ret2" = "$STATE_CRITICAL" ] && nagios_exit $ret "More than the $connectors configured AD connectors are running!"
-		;;
-	$STATE_CRITICAL)
-		nagios_exit $ret "No AD connector is running!"
-		;;
-	*)
-		nagios_exit $ret "Unknown state!"
-		;;
-esac
 
-# count rejects by parsing the output of univention-adconnector-list-rejected
-# WARNING: if there are any rejects
-nRejects=$(univention-adconnector-list-rejected -c "$CONNECTOR" | sed -rn '/^ *[1-9]+: *(AD|UCS) DN:/p' | wc -l)
-[ "$nRejects" -gt 0 ] && nagios_exit $STATE_WARNING "There have been $nRejects reject(s)!"
-
-# check whether we can connect to the AD
-# CRITICAL: in case we cannot connect to the AD
-univention-adsearch -c "$CONNECTOR" cn=users >/dev/null 2>&1
-ret="$?"
-[ "$ret" != 0 ] && nagios_exit $STATE_CRITICAL "Could not connect to AD server!"
-
-# otherwise everything looks fine
-nagios_exit $STATE_OK
-
+if __name__ == '__main__':
+	ADConnector.main()
