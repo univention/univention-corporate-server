@@ -141,7 +141,7 @@ def adapt_settings_to_translation(app, config):
         config.project = "Univention Corporate Server - Handbuch für Benutzer und Administratoren"
         config.html_title = config.project
         config.rst_epilog = """
-.. include:: /substitutions.txt
+.. include:: /substitutions-de.txt
 
 .. include:: /links-de.txt
 """

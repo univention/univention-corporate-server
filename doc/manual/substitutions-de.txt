@@ -1,0 +1,17 @@
+.. |UCSADC| replace:: Univention AD connector
+.. |UCSAPPC| replace:: Univention App Center
+.. |UCSBACKUPDN| replace:: Backup Directory Node
+.. |UCSMANAGEDNODE| replace:: Managed Node
+.. |UCSPRIMARYDN_e| replace:: *Primary Directory Node*
+.. |UCSPRIMARYDN| replace:: Primary Directory Node
+.. |UCSREPLICADN| replace:: Replica Directory Node
+.. |UCSUCRVs| replace:: Univention Configuration Registry Variables
+.. |UCSUCRV| replace:: Univention Configuration Registry Variable
+.. |UCSUCR| replace:: Univention Configuration Registry
+.. |UCSUCS| replace:: Univention Corporate Server
+.. |UCSUDL| replace:: Univention Directory Listener
+.. |UCSUDM| replace:: Univention Directory Manager
+.. |UCSUDN| replace:: Univention Directory Notifier
+.. |UCSUMC| replace:: Univention Management Console
+.. |UCSUMS| replace:: UCS Managementsystem
+.. |UCSWEB| replace:: UCS Web-Oberfläche
