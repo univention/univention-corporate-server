@@ -1,6 +1,4 @@
-#!/usr/bin/python2.7
-#
-# Import example user data including profile images to UCS
+#!/usr/bin/python3
 #
 # Copyright 2013-2022 Univention GmbH
 #
@@ -29,24 +27,28 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""
+Import example user data including profile images to UCS
+"""
+
 from __future__ import print_function
 
-import os
 import csv
-import sys
-# from univention.config_registry import ConfigRegistry
+from os.path import dirname, join
+from typing import Dict
 
-# ucr = ConfigRegistry()
-# ucr.load()
+CWD = dirname(__file__)
 
-CWD = os.path.dirname(sys.argv[0])
+LDAPBASE = '$ldap_base'
+DOMAIN = '$domainname'
 
-# LDAPBASE=ucr.get('ldap/base')
-LDAPBASE = '"$ldap_base"'
 IMPORTFILE = '%s/data.csv' % CWD
 IMPORTIMAGEDIR = '%s/images' % CWD
-# DOMAIN=ucr.get('domainname')
-DOMAIN = '"$domainname"'
+FIELDS = (
+	"dn uid firstname lastname displayName gender birthplace birthday age imageref "  # 0-9
+	"mail office organisation department employeeType degree manager managerDN "  # 10-17
+	"ip18 num19 ip20 num21 home22 phone roomNumber num25 str26 uid27 employeeNumber computerType"  # 18-30
+).split()
 
 NAGIOS_SERVICES = (
 	"UNIVENTION_PING",
@@ -64,89 +66,118 @@ NAGIOS_SERVICES = (
 	"UNIVENTION_CUPS",
 )
 DC_OPTIONS = '--option kerberos --option samba --option posix --option nagios'
-NAGIOS_OPTIONS = ' '.join([
+NAGIOS_OPTIONS = ' '.join(
 	'--append nagiosServices=cn=%s,cn=nagios,%s' % (iservice, LDAPBASE)
 	for iservice in NAGIOS_SERVICES
-])
+)
 
 
-def importRow(row):
+def importRow(row: Dict[str, str]) -> None:
 	''' Import one row containing a user definition '''
-	# dwdn = row[0]
-	uid = row[1]
-	firstname = row[2]
-	lastname = row[3]
-	displayName = row[4]
-	# gender = row[5]
-	# birthplace = row[6]
-	birthday = row[7]
-	# age = row[8]  # calculated in 2012
-	# imageref = row[9]  # always broken
-	# mail = row[10] # broken in csv
-	mail = "%s@%s" % (uid, DOMAIN)
-	office = row[11]  # name of a city
-	organisation = row[12]
-	department = row[13]
-	employeeType = row[14]
-	# degree = row[15]
-	# manager = row[16]  # LDAP-DN
-	phone = row[23]  # partly broken, only phone extension (no complete numbers)
-	roomNumber = row[24]
-	employeeNumber = row[28]
-	computerType = row[29]
 
-	# print "generate %s %s / %s in %s" % (firstname, lastname, mail, office)
+	row["LDAPBASE"] = LDAPBASE
+	row["DOMAIN"] = DOMAIN
+	row["DC_OPTIONS"] = DC_OPTIONS
+	row["NAGIOS_OPTIONS"] = NAGIOS_OPTIONS
+	row["MAIL"] = "%(uid)s@%(DOMAIN)s" % row
+	row["IMG"] = '$(base64 "%s")' % join(IMPORTIMAGEDIR, ("%(firstname)s.%(lastname)s.jpg" % row).lower())
 
-	# check if container for user exists
-	print('udm container/ou create --ignore_exist --position "ou=People,%s" --set name="%s" --set userPath="1" --set groupPath="1"' % (LDAPBASE, office))  # create OU for User
+	# OU container for user
+	print(
+		'udm container/ou create --ignore_exist '
+		'--position "ou=People,%(LDAPBASE)s" '
+		'--set name="%(office)s" '
+		'--set userPath="1" '
+		'--set groupPath="1"' % row
+	)
 
-	# generate udm call to create user
-	userSetMap = [
-		('username', uid),
-		('description', "%s - %s %s %s" % (displayName, employeeType, department, office)),
-		('password', 'univention'),
-		('firstname', firstname),
-		('lastname', lastname),
-		('mailPrimaryAddress', mail),
-		('organisation', organisation),
-		('birthday', birthday),
-		('jpegPhoto', '$(cat %s/%s.%s.jpg|base64)' % (IMPORTIMAGEDIR, firstname.lower(), lastname.lower())),
-		('employeeType', employeeType),
-		('phone', phone),
-		('roomNumber', roomNumber),
-		('departmentNumber', department),  # mhm, might not "fit"
-		('city', office),
-		('employeeNumber', employeeNumber)
+	# create user
+	cmd = [
+		'udm', 'users/user', 'create',
+		'--position', '"ou=%(office)s,ou=People,%(LDAPBASE)s":',
+		'--set', 'username="%(uid)s"',
+		'--set', 'description="%(displayName)s - %(employeeType)s %(department)s %(office)s"',
+		'--set', 'password="univention"',
+		'--set', 'firstname="%(firstname)s"',
+		'--set', 'lastname="%(lastname)s"',
+		'--set', 'mailPrimaryAddress="%(MAIL)s"',
+		'--set', 'organisation="%(organisation)s"',
+		'--set', 'birthday="%(birthday)s"',
+		'--set', 'jpegPhoto="%(IMG)s"',
+		'--set', 'employeeType="%(employeeType)s"',
+		'--set', 'phone="%(phone)s"',
+		'--set', 'roomNumber="%(roomNumber)s"',
+		'--set', 'departmentNumber="%(department)s"',  # mhm, might not 'fit'
+		'--set', 'city="%(office)s"',
+		'--set', 'employeeNumber="%(employeeNumber)s"',
 	]
-	callUser = 'udm users/user create --position "ou=%s,ou=People,%s"' % (office, LDAPBASE)
-	for (udmOption, value) in userSetMap:
-		callUser = '%s --set "%s"="%s"' % (callUser, udmOption, value)
-	print(callUser)
+	print(" ".join(arg % row for arg in cmd))
 
-	groups = ["users office %s" % office, "users office %s" % department]
-	for group in groups:
-		print('udm groups/group create --ignore_exist --position "ou=People,%s" --set name="%s"' % (LDAPBASE, group))  # create group
-		print('udm groups/group modify --dn "cn=%s,ou=People,%s" --append users="uid=%s,ou=%s,ou=People,%s"' % (group, LDAPBASE, uid, office, LDAPBASE))
+	for row["GROUP"] in [
+		"users office %(office)s" % row,
+		"users department %(department)s" % row,
+	]:
+		print(
+			'udm groups/group create --ignore_exist '
+			'--position "ou=People,%(LDAPBASE)s" '
+			'--set name="%(GROUP)s"' % row
+		)
+		print(
+			'udm groups/group modify '
+			'--dn "cn=%(GROUP)s,ou=People,%(LDAPBASE)s" '
+			'--append users="uid=%(uid)s,ou=%(office)s,ou=People,%(LDAPBASE)s"' % row
+		)
 
-	# check if container for computer in this department exists
-	print('udm container/ou create --ignore_exist --position "ou=Departments,%s" --set name="%s" --set computerPath="1"' % (LDAPBASE, office))
+	# container for computer in this department
+	print(
+		'udm container/ou create --ignore_exist '
+		'--position "ou=Departments,%(LDAPBASE)s" '
+		'--set name="%(office)s" '
+		'--set computerPath="1"' % row
+	)
 
-	# check if DC slave for this department exists
-	print('udm computers/domaincontroller_slave create --ignore_exist --position "ou=Departments,%s" --set name="server-%s" --set network="cn=default,cn=networks,%s" %s %s' % (LDAPBASE, office, LDAPBASE, DC_OPTIONS, NAGIOS_OPTIONS))
+	# DC slave for this department
+	print(
+		'udm computers/domaincontroller_slave create --ignore_exist '
+		'--position "ou=Departments,%(LDAPBASE)s" '
+		'--set name="server-%(office)s" '
+		'--set network="cn=default,cn=networks,%(LDAPBASE)s" '
+		'%(DC_OPTIONS)s %(NAGIOS_OPTIONS)s' % row
+	)
 
-	# generate computer object per user
-	print('udm %s create  --ignore_exists --position "ou=%s,ou=Departments,%s" --set name="workstation%s" --set network="cn=default,cn=networks,%s"' % (computerType, office, LDAPBASE, roomNumber, LDAPBASE))
+	# computer object per user
+	print(
+		'udm %(computerType)s create  --ignore_exists '
+		'--position "ou=%(office)s,ou=Departments,%(LDAPBASE)s" '
+		'--set name="workstation%(roomNumber)s" '
+		'--set network="cn=default,cn=networks,%(LDAPBASE)s"' % row
+	)
 
-# print default commands
+
+HEADER = """\
+#!/bin/sh
+eval "$(ucr shell)"
+udm container/ou create --ignore_exists \
+	--set name=People --set description="Employees of this company" --set groupPath="1"
+udm container/ou create --ignore_exists \
+	--set name=Departments --set description="Resources of this company organized by department"
+udm mail/domain create --ignore_exists \
+	--position="cn=domain,cn=mail,%(LDAPBASE)s" --set name="%(DOMAIN)s"
+udm computers/domaincontroller_backup create --ignore_exist \
+	--position "cn=dc,cn=computers,%(LDAPBASE)s" \
+	--set name="dcbackup" \
+	--set network="cn=default,cn=networks,%(LDAPBASE)s" %(DC_OPTIONS)s %(NAGIOS_OPTIONS)s
+"""
 
 
-print('eval $(ucr shell)')
-print('udm container/ou create --ignore_exists --set name=People --set description="Employees of this company" --set groupPath="1"')
-print('udm container/ou create --ignore_exists --set name=Departments --set description="Resources of this company organized by department"')
-print('udm mail/domain create --ignore_exists --position="cn=domain,cn=mail,%s" --set name="%s"' % (LDAPBASE, DOMAIN))
-print('udm computers/domaincontroller_backup create --ignore_exist --position "cn=dc,cn=computers,%s" --set name="dcbackup" --set network="cn=default,cn=networks,%s" %s %s' % (LDAPBASE, LDAPBASE, DC_OPTIONS, NAGIOS_OPTIONS))
+def main() -> None:
+	print(HEADER % globals())
 
-with open(IMPORTFILE, 'rb') as importfile:
-	importreader = csv.reader(importfile, delimiter=',', quotechar='"')
-	for row in importreader:
-		importRow(row)
+	with open(IMPORTFILE, 'r', newline='') as importfile:
+		importreader = csv.DictReader(importfile, delimiter=',', quotechar='"', fieldnames=FIELDS)
+		for row in importreader:
+			importRow(row)
+
+
+if __name__ == "__main__":
+	main()

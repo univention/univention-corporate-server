@@ -27,8 +27,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-eval "$(ucr shell)"
-DIR="$(dirname $0)"
+eval "$(ucr shell ldap/base ldap/hostdn)"
+: "${ldap_base:?missing}" "${ldap_hostdn:?missing}"
+DIR="$(dirname "$0")"
 
 univention-directory-manager portals/entry modify \
 	--dn "cn=login-ucs,cn=entry,cn=portals,cn=univention,$ldap_base" \
@@ -67,26 +68,14 @@ univention-directory-manager portals/portal create \
 	--set showUmc=TRUE
 
 create_app_entry () {
-	cn=demo-$1
-	catalogID="$2"
-	label="$3"
-	description_en="$4"
-	description_de="$5"
-	description_fr="$6"
-	backgroundColor="$7"
-	link="/apps/?cn=$cn&catalogID=$catalogID&label=$label"
-	icon="$DIR/app-logo-$1.svg"
-	position="cn=entry,cn=portals,cn=univention,$ldap_base"
-	dn="cn=$cn,$position"
+	local cn=demo-$1 catalogID="$2" label="$3" description_en="$4" description_de="$5" description_fr="$6" backgroundColor="$7"
+	local link="/apps/?cn=$cn&catalogID=$catalogID&label=$label"
+	local icon="$DIR/app-logo-$1.svg"
+	local position="cn=entry,cn=portals,cn=univention,$ldap_base"
+	local dn="cn=$cn,$position"
 
-	# remove previous entry
-	search_result="$(univention-ldapsearch -LLL -b "$position" "cn=$cn" dn)"
-	if [ -n "$search_result" ]; then
-		udm portals/entry remove --dn "$dn"
-	fi
-
-	# add new entry
-	udm portals/entry create --ignore_exists \
+	udm portals/entry remove --ignore_not_exists --dn "$dn"
+	udm portals/entry create \
 		--position="$position" \
 		--set name="$cn" \
 		--set backgroundColor="$backgroundColor" \
@@ -161,23 +150,12 @@ create_app_entry \
 	"#1a67a3"
 
 create_admin_entry () {
-	cn=demo-$1
-	label="$2"
-	description_en="$3"
-	description_de="$4"
-	description_fr="$5"
-	link="$6"
-	icon="$DIR/admin-entry-logo-$1.svg"
-	position="cn=entry,cn=portals,cn=univention,$ldap_base"
-	dn="cn=$cn,$position"
+	local cn="demo-$1" label="$2" description_en="$3" description_de="$4" description_fr="$5" link="$6"
+	local icon="$DIR/admin-entry-logo-$1.svg"
+	local position="cn=entry,cn=portals,cn=univention,$ldap_base"
+	local dn="cn=$cn,$position"
 
-	# remove previous entry
-	search_result="$(univention-ldapsearch -LLL -b "$position" "cn=$cn" dn)"
-	if [ -n "$search_result" ]; then
-		udm portals/entry remove --dn "$dn"
-	fi
-
-	# add new entry
+	udm portals/entry remove --ignore_not_exists --dn "$dn"
 	udm portals/entry create --ignore_exists \
 		--position="$position" \
 		--set name="$cn" \
@@ -205,7 +183,7 @@ create_admin_entry () {
 # 	"La base de données de support d'Univention" \
 # 	"http://sdb.univention.de"
 
-cat "$DIR/domain-portal.ldif" | univention-config-registry filter | ldapmodify -D "$ldap_hostdn" -y /etc/machine.secret
+univention-config-registry filter <"$DIR/domain-portal.ldif" | ldapmodify -D "$ldap_hostdn" -y /etc/machine.secret
 cp "$DIR/portal.css" /usr/share/univention-portal/css/custom.css
 
 ucr set portal/default-dn="cn=demo,cn=portal,cn=portals,cn=univention,$ldap_base"

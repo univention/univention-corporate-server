@@ -2,6 +2,7 @@ usr
 data	usr/share/univention-demo-configuration
 portal/*.svg	usr/share/univention-demo-configuration/portal/
 portal/*.sh	usr/share/univention-demo-configuration/portal/
+portal/*.jpg.b64	usr/share/univention-demo-configuration/portal/
 portal/*.ldif	usr/share/univention-demo-configuration/portal/
 portal/*.css	usr/share/univention-demo-configuration/portal/
 portal/*.json	usr/lib/univention-portal/config/

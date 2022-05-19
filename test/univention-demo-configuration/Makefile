@@ -27,11 +27,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-build: usr/share/univention-web/js/umc/hooks/univention_demo.css
+ALL += usr/share/univention-web/js/umc/hooks/univention_demo.css
+ALL += portal/background.jpg.b64
+
+build: $(ALL)
 
 %.css: %.styl
 	stylus "$<"
 
-clean:
-	rm -f usr/share/univention-web/js/umc/hooks/univention_demo.css
+%.b64: %
+	base64 "$<" >"$@"
 
+clean:
+	$(RM) $(ALL)

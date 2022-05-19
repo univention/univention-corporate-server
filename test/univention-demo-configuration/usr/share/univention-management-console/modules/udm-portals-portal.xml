@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-  <module id="udm" version="1.0">
-    <name></name>
-    <description></description>
-    <flavor id="portals/all" icon="portal">
-      <name>Portal</name>
-      <description>Managing the Univention Portal</description>
-      <requiredCommands>
-        <requiredCommand name="udm/reports/query"/>
-        <requiredCommand name="udm/meta_info"/>
-        <requiredCommand name="udm/containers"/>
-        <requiredCommand name="udm/types"/>
-        <requiredCommand name="udm/properties"/>
-        <requiredCommand name="udm/layout"/>
-        <requiredCommand name="udm/policies"/>
-        <requiredCommand name="udm/values"/>
-        <requiredCommand name="udm/query"/>
-        <requiredCommand name="udm/get"/>
-      </requiredCommands>
-    </flavor>
-    <categories>
-      <category name="domain"/>
-    </categories>
-  </module>
+	<module id="udm" version="1.0">
+		<name></name>
+		<description></description>
+		<flavor id="portals/all" icon="portal">
+			<name>Portal</name>
+			<description>Managing the Univention Portal</description>
+			<requiredCommands>
+				<requiredCommand name="udm/reports/query"/>
+				<requiredCommand name="udm/meta_info"/>
+				<requiredCommand name="udm/containers"/>
+				<requiredCommand name="udm/types"/>
+				<requiredCommand name="udm/properties"/>
+				<requiredCommand name="udm/layout"/>
+				<requiredCommand name="udm/policies"/>
+				<requiredCommand name="udm/values"/>
+				<requiredCommand name="udm/query"/>
+				<requiredCommand name="udm/get"/>
+			</requiredCommands>
+		</flavor>
+		<categories>
+			<category name="domain"/>
+		</categories>
+	</module>
 </umc>
-

@@ -1,8 +1,5 @@
 #!/bin/sh
 #
-# restricted configuration for demo.univention.de
-#  postinst script
-#
 # Copyright 2012-2022 Univention GmbH
 #
 # https://www.univention.de/
@@ -32,13 +29,16 @@
 
 #DEBHELPER#
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/umc.sh
 
 eval "$(ucr shell)"
+: "${ldap_base:?missing}" "${server_role:?missing}" "${ldap_hostdn:?missing}"
 
 _undivert() {
-	[ -e "$1" -a -e "$1.real" ] && rm -f "$1"  # make sure that also config files are removed
+	[ -e "$1" ] && [ -e "$1.real" ] && rm -f "$1"  # make sure that also config files are removed
 	dpkg-divert --package univention-demo-configuration --remove --rename "$1"
 }
 
@@ -82,6 +82,7 @@ case "$1" in
 				for jkey in description description/de label label/de link priority; do
 					ucr_keys="$ucr_keys ucs/web/overview/entries/admin/$ikey/$jkey"
 				done
+				# shellcheck disable=SC2086
 				ucr unset $ucr_keys
 				dn="cn=$ikey,cn=entry,cn=portals,cn=univention,$ldap_base"
 				udm portals/entry remove --dn "$dn"
