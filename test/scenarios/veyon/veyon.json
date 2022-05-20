@@ -1,0 +1,8 @@
+{
+  "AccessControl": {
+    "DomainGroupsEnabled": true
+  },
+  "Authentication": {
+    "Method": 1
+  }
+}
