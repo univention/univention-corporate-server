@@ -57,6 +57,21 @@ rename_and_join () {
 		--dnsserver "$dns_server"
 }
 
+add_group_to_rdp_group () {
+	local client=${1:?missing client}
+	local group=${2:?missing group}
+	# shellcheck disable=SC2016
+	ucs-winrm run-ps --client "$client" --cmd '
+		$computer = $env:COMPUTERNAME
+		$ADSIComputer = [ADSI]("WinNT://$computer,computer")
+		$auth = New-Object System.Security.Principal.SecurityIdentifier("S-1-5-32-555")
+		$local_group_name = $auth.Translate([System.Security.Principal.NTAccount]).Value.Split("\")[1]
+		$local_group = $ADSIComputer.psbase.children.find($local_group_name, "Group")
+		$domain_users_name = "'"$group"'"
+		$local_group.add("WinNT://$domain_users_name")
+	'
+}
+
 create_winrm_config () {
 	local domain=${1:?missing domain}
 	local user=${2:?missing user}
@@ -90,6 +105,7 @@ import_windows_clients () {
 setup_windows () {
 	local domain_user="$1"
 	local domain_password="$2"
+	local school="$3"
 	local name_counter=1 name my_ip pids
 	# setup veyon key and config
 	cp "/var/lib/samba/sysvol/$(ucr get domainname)/scripts/veyon-cert_$(hostname).pem" /usr/share/ucs-school-veyon-windows/
@@ -115,8 +131,15 @@ setup_windows () {
 	for pid in "${pids[@]}"; do
 		wait -n "$pid"
 	done
-
-
+	# add school domain users group to local rdp group
+	pids=()
+	for client in $UCS_ENV_WINDOWS_CLIENTS; do
+		add_group_to_rdp_group "$client" "$(ucr get windows/domain)/Domain Users $school"
+		pids+=($!)
+	done
+	for pid in "${pids[@]}"; do
+		wait -n "$pid"
+	done
 }
 
 # call aws
@@ -124,10 +147,46 @@ aws_ec2 () {
 	docker run --network host --rm -v ~/.aws:/root/.aws amazon/aws-cli ec2 "$@"
 }
 
+# get all instances with
+# tag usecase:veyon-test-environment
+# from subnet subnet-0c8e0b6088ba000b2
+# and running
 get_veyon_aws_instances () {
-	local output=${1:=text}
+	local output="${1:-text}"
+	local filter=()
+	filter+=("Name=tag:usecase,Values=veyon-test-environment")
+	filter+=("Name=instance-state-name,Values=running")
+	filter+=("Name=network-interface.subnet-id,Values=subnet-0c8e0b6088ba000b2")
 	aws_ec2 describe-instances \
-		--query "Reservations[*].Instances[*].{name: Tags[?Key == 'Name'].Value | [0], ip: PrivateIpAddress, public_ip: PublicIpAddress, id: InstanceId }" \
-		--filters "Name=tag:usecase,Values=veyon-test-environment" \
+		--query "Reservations[*].Instances[*].{
+			name: Tags[?Key == 'Name'].Value | [0],
+			ip: PrivateIpAddress,
+			public_ip: PublicIpAddress,
+			id: InstanceId}" \
+		--filters "${filter[@]}" \
 		--output "$output"
+}
+
+destroy_veyon_aws_instances () {
+	get_veyon_aws_instances text | while read -r id ip name pip; do
+		echo "Destroy instance $id ($name, $ip, $pip)"
+		aws_ec2 terminate-instances --instance-ids "$id"
+	done
+}
+
+replace_nameserver_ip_in_profile () {
+	local ip=${1:?missing ip}
+	local profile="/var/cache/univention-system-setup/profile"
+    if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+        sed 's/nameserver=.*/nameserver='"$ip"'/' "$profile"
+    fi
+}
+
+create_test_user () {
+	local school=${1:?missing school}
+	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import \
+		--students 20 \
+		--teachers 2 \
+		--classes 2 \
+		"$school"
 }
