@@ -122,19 +122,19 @@ setup_windows () {
 	for pid in "${pids[@]}"; do
 		wait -n "$pid"
 	done
-	# install and setup veyon
+	# add school domain users group to local rdp group
 	pids=()
 	for client in $UCS_ENV_WINDOWS_CLIENTS; do
-		install_veyon "$client" "$(hostname)" &
+		add_group_to_rdp_group "$client" "$(ucr get windows/domain)/Domain Users $school"
 		pids+=($!)
 	done
 	for pid in "${pids[@]}"; do
 		wait -n "$pid"
 	done
-	# add school domain users group to local rdp group
+	# install and setup veyon
 	pids=()
 	for client in $UCS_ENV_WINDOWS_CLIENTS; do
-		add_group_to_rdp_group "$client" "$(ucr get windows/domain)/Domain Users $school"
+		install_veyon "$client" "$(hostname)" &
 		pids+=($!)
 	done
 	for pid in "${pids[@]}"; do
@@ -177,13 +177,18 @@ destroy_veyon_aws_instances () {
 replace_nameserver_ip_in_profile () {
 	local ip=${1:?missing ip}
 	local profile="/var/cache/univention-system-setup/profile"
-    if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
-        sed 's/nameserver=.*/nameserver='"$ip"'/' "$profile"
-    fi
+	if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+		sed -i 's/nameserver=.*/nameserver='"$ip"'/' "$profile"
+	fi
 }
 
-create_test_user () {
+create_school () {
 	local school=${1:?missing school}
+	local server=${2:?missing server}
+	/usr/share/ucs-school-import/scripts/create_ou \
+		--verbose "$school" "$server" \
+		--displayName="$school" \
+		--sharefileserver="$server"
 	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import \
 		--students 20 \
 		--teachers 2 \
