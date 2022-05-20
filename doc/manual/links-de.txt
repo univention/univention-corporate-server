@@ -27,4 +27,4 @@
 .. _univention-wiki: https://wiki.univention.de/index.php/Main_Page
 .. _w-classless-inter-domain-routing: https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing
 .. _w-radius: https://en.wikipedia.org/wiki/RADIUS
-.. _w-vesa-bios-extensions: https://en.wikipedia.org/wiki/VESA_BIOS_Extensions
+.. _w-vesa-bios-extensions: https://de.wikipedia.org/wiki/VESA_BIOS_Extension

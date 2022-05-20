@@ -430,7 +430,7 @@ The proxy URL must be specified for this, e.g., ``http://192.0.2.100``. The
 proxy port can be specified in the proxy URL using a colon, e.g.,
 ``http://192.0.2.100:3128``. If the proxy requires authentication for the
 accessing user, this can be provided in the form
-:samp:`http://{username}:{password}@192.0.2.100``.
+:samp:`http://{username}:{password}@192.0.2.100`.
 
 The environment variable is not adopted for sessions currently opened. A new login
 is required for the change to be activated.

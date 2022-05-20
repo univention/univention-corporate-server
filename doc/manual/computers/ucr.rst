@@ -183,7 +183,7 @@ rewritten once.
 
 A conditional setting is also possible. For example, if a value should only be
 saved in a |UCSUCR| variable when the variable does not yet exist, this can be
-done by entering a question mark (``?``) instead of the equals sign ( ``=``)
+done by entering a question mark (``?``) instead of the equals sign (``=``)
 when assigning values.
 
 .. code-block:: console

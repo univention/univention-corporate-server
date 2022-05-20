@@ -198,7 +198,7 @@ values are logged:
   (:command:`smbstatus`)
 
 The runtime in which the system status should be logged can be defined in Cron
-syntax via the |UCSUCRV| :envvar:`system/stats/cron`, e.g., ``0,30 \* \* \* \*``
+syntax via the |UCSUCRV| :envvar:`system/stats/cron`, e.g., ``0,30 * * * *``
 for logging every half and full hour. The logging is activated by setting the
 |UCSUCRV| :envvar:`system/stats` to ``yes``. This is the default since UCS 3.0.
 
@@ -288,7 +288,7 @@ A cron job is defined in a line, which is composed of a total of seven columns:
 
 * Weekday (0-7) (0 and 7 both stand for Sunday)
 
-* Name of user executing the job (e.g., root)
+* Name of user executing the job (e.g., ``root``)
 
 * The command to be run
 
@@ -376,7 +376,8 @@ accesses it may prove necessary to increase the number via the |UCSUCRV|
 
 In the basic setting, a resolved group or hostname is kept in cache for one
 hour, a username for ten minutes. With the |UCSUCR| variables
-:envvar:`nscd/group/positive_time_to_live` and
+:envvar:`nscd/group/positive_time_to_live`,
+:envvar:`nscd/hosts/positive_time_to_live` and
 :envvar:`nscd/passwd/positive_time_to_live` these periods can be extended or
 diminished (in seconds).
 
@@ -442,7 +443,7 @@ of a large number of errors, for example:
 
 * Kerberos operation is disrupted.
 
-* The correct evaluation of the validity periods of passwords can be disturbed
+* The correct evaluation of the validity periods of passwords can be disturbed.
 
 Usually the |UCSPRIMARYDN| functions as the time server of a domain. With the
 |UCSUCR| variables :envvar:`timeserver`, :envvar:`timeserver2` and
