@@ -80,7 +80,7 @@ create_certificate_kc_vhost () {
 
 wait_for_certificate_replication () {
 	local end=$(($(date +%s)+300))
-	while [ $(date +%s) -lt $end ]
+	while [ "$(date +%s)" -lt "$end" ]
 	do
 		if [ -d "/etc/univention/ssl/kc.broker.local/" ]; then
 			return 0
@@ -94,7 +94,7 @@ apache_custom_vhosts () {
 	local keycloak2_ip="${1:?missing keycloak2_ip}"
 	local domain="${2:?missing domain}"
 	univention-add-vhost --conffile /var/lib/keycloak/keycloak_ProxyPass.conf kc.broker.local 443
-	cd /etc/apache2/sites-available/
+	cd /etc/apache2/sites-available/ || return 1
 	cp /root/univention-vhosts.conf.example univention-vhosts.conf
 	sed -i "s/KEYCLOAK2_IP/$keycloak2_ip/g" univention-vhosts.conf
 	sed -i "s/DOMAIN/$domain/g" univention-vhosts.conf
