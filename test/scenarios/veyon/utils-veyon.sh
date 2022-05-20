@@ -125,7 +125,7 @@ setup_windows () {
 	# add school domain users group to local rdp group
 	pids=()
 	for client in $UCS_ENV_WINDOWS_CLIENTS; do
-		add_group_to_rdp_group "$client" "$(ucr get windows/domain)/Domain Users $school"
+		add_group_to_rdp_group "$client" "$(ucr get windows/domain)/Domain Users $school" &
 		pids+=($!)
 	done
 	for pid in "${pids[@]}"; do
