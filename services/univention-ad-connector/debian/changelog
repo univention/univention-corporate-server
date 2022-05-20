@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.10-2) unstable; urgency=medium
+
+  * Bug #54780: get mapping with respect to configbasename
+
+ -- Florian Best <best@univention.de>  Tue, 09 Aug 2022 13:20:31 +0200
+
 univention-ad-connector (14.0.10-1) unstable; urgency=medium
 
   * Bug #54748: add dependencies to monitoring packages

@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-ad-connector
+fix:
+desc: |
+ This update addresses the following issues:
+ * The mapping now evaluates UCR variables with respect to the configbasename.
+bug: [54780]

@@ -37,8 +37,7 @@ import six
 
 import univention.connector.ad
 import univention.connector.ad.password
-import univention.connector.ad.proxyAddresses as proxyAddresses
-from univention.connector.ad import format_escaped
+from univention.connector.ad import proxyAddresses
 
 from univention.config_registry import ConfigRegistry
 
@@ -59,6 +58,7 @@ def ignore_filter_from_tmpl(template, ucr_key, default=''):
 	... 'one,two,three')
 	'(|(cn=one)(cn=two)(cn=three))'
 	"""
+	from univention.connector.ad import format_escaped
 	variables = [v for v in configRegistry.get(ucr_key, default).split(',') if v]
 	filter_parts = [format_escaped(template, v) for v in variables]
 	if filter_parts:
@@ -81,7 +81,14 @@ def ignore_filter_from_attr(attribute, ucr_key, default=''):
 	return ignore_filter_from_tmpl(template, ucr_key, default)
 
 
-def create_mapping(connector='connector'):
+def get_mapping(configbasename='connector'):
+	ad_mapping = create_mapping(configbasename)
+	return load_localmapping(ad_mapping, '/etc/univention/%s/ad/localmapping.py' % configbasename)
+
+
+def create_mapping(configbasename='connector'):
+	def connector(string):
+		return string % (configbasename,)
 	global_ignore_subtree = [
 		'cn=univention,%(ldap/base)s' % configRegistry,
 		'cn=policies,%(ldap/base)s' % configRegistry,
@@ -94,40 +101,40 @@ def create_mapping(connector='connector'):
 		'cn=mail,%(ldap/base)s' % configRegistry,
 		'cn=samba,%(ldap/base)s' % configRegistry,
 		'cn=nagios,%(ldap/base)s' % configRegistry,
-		'cn=System,%(connector/ad/ldap/base)s' % configRegistry,
-		'ou=Grp Policy Users,%(connector/ad/ldap/base)s' % configRegistry,
-		'cn=Builtin,%(connector/ad/ldap/base)s' % configRegistry,
-		'cn=ForeignSecurityPrincipals,%(connector/ad/ldap/base)s' % configRegistry,
-		'ou=Domain Controllers,%(connector/ad/ldap/base)s' % configRegistry,
-		'cn=Program Data,%(connector/ad/ldap/base)s' % configRegistry,
-		'cn=Configuration,%(connector/ad/ldap/base)s' % configRegistry,
+		connector('cn=System,%%(%s/ad/ldap/base)s') % configRegistry,
+		connector('ou=Grp Policy Users,%%(%s/ad/ldap/base)s') % configRegistry,
+		connector('cn=Builtin,%%(%s/ad/ldap/base)s') % configRegistry,
+		connector('cn=ForeignSecurityPrincipals,%%(%s/ad/ldap/base)s') % configRegistry,
+		connector('ou=Domain Controllers,%%(%s/ad/ldap/base)s') % configRegistry,
+		connector('cn=Program Data,%%(%s/ad/ldap/base)s') % configRegistry,
+		connector('cn=Configuration,%%(%s/ad/ldap/base)s') % configRegistry,
 		'cn=opsi,%(ldap/base)s' % configRegistry,
-		'cn=Microsoft Exchange System Objects,%(connector/ad/ldap/base)s' % configRegistry
+		connector('cn=Microsoft Exchange System Objects,%%(%s/ad/ldap/base)s') % configRegistry
 	]
 
-	for k in configRegistry.keys():
-		if k.startswith('connector/ad/mapping/ignoresubtree/'):
-			global_ignore_subtree.append(configRegistry.get(k))
+	for key in configRegistry:
+		if key.startswith(connector('%s/ad/mapping/ignoresubtree/')):
+			global_ignore_subtree.append(configRegistry[key])
 
-	user_ignore_list = ignore_filter_from_tmpl('(uid={0!e})(CN={0!e})', 'connector/ad/mapping/user/ignorelist')
-	user_ignore_filter = configRegistry.get('connector/ad/mapping/user/ignorefilter', '')
+	user_ignore_list = ignore_filter_from_tmpl('(uid={0!e})(CN={0!e})', connector('%s/ad/mapping/user/ignorelist'))
+	user_ignore_filter = configRegistry.get(connector('%s/ad/mapping/user/ignorefilter'), '')
 	if user_ignore_filter and not user_ignore_filter.startswith('('):
 		user_ignore_filter = '({})'.format(user_ignore_filter)
 	user_ignore_filter = '(|{}{}{})'.format('(userAccountControl=2080)', user_ignore_filter, user_ignore_list)
 
 	ignore_filter_parts = '(groupType=-2147483643)(groupType=4)(univentionGroupType=-2147483643)(univentionGroupType=4)'
-	if configRegistry.is_false('connector/ad/mapping/group/grouptype', False):
+	if configRegistry.is_false(connector('%s/ad/mapping/group/grouptype'), False):
 		ignore_filter_parts += '(sambaGroupType=5)(groupType=5)'
-	ignore_filter_parts += ignore_filter_from_attr('cn', 'connector/ad/mapping/group/ignorelist')
+	ignore_filter_parts += ignore_filter_from_attr('cn', connector('%s/ad/mapping/group/ignorelist'))
 	group_ignore_filter = '(|{})'.format(ignore_filter_parts)
 
 	ad_mapping = {
 		'user': univention.connector.property(
 			ucs_default_dn='cn=users,%(ldap/base)s' % configRegistry,
-			con_default_dn='cn=users,%(connector/ad/ldap/base)s' % configRegistry,
+			con_default_dn=connector('cn=users,%%(%s/ad/ldap/base)s') % configRegistry,
 			ucs_module='users/user',
 			# read, write, sync, none
-			sync_mode=configRegistry.get('connector/ad/mapping/user/syncmode', configRegistry.get('connector/ad/mapping/syncmode')),
+			sync_mode=configRegistry.get(connector('%s/ad/mapping/user/syncmode'), configRegistry.get(connector('%s/ad/mapping/syncmode'))),
 			scope='sub',
 			con_search_filter='(&(objectClass=user)(!objectClass=computer))',
 			match_filter='(|(&(objectClass=posixAccount)(objectClass=sambaSamAccount))(objectClass=user))',
@@ -161,14 +168,14 @@ def create_mapping(connector='connector'):
 			],
 			post_con_modify_functions=list(filter(None, [
 				univention.connector.ad.set_userPrincipalName_from_ucr,
-				univention.connector.ad.password.password_sync_ucs if configRegistry.is_false('connector/ad/mapping/user/password/disabled', True) else None,
+				univention.connector.ad.password.password_sync_ucs if configRegistry.is_false(connector('%s/ad/mapping/user/password/disabled'), True) else None,
 				univention.connector.ad.primary_group_sync_from_ucs,
 				univention.connector.ad.object_memberships_sync_from_ucs,
 				univention.connector.ad.disable_user_from_ucs,
 			])),
 			post_ucs_modify_functions=list(filter(None, [
-				univention.connector.ad.password.password_sync_kinit if configRegistry.is_false('connector/ad/mapping/user/password/disabled', True) and configRegistry.is_true('connector/ad/mapping/user/password/kinit', False) else None,
-				univention.connector.ad.password.password_sync if configRegistry.is_false('connector/ad/mapping/user/password/disabled', True) and not configRegistry.is_true('connector/ad/mapping/user/password/kinit', False) else None,
+				univention.connector.ad.password.password_sync_kinit if configRegistry.is_false(connector('%s/ad/mapping/user/password/disabled'), True) and configRegistry.is_true(connector('%s/ad/mapping/user/password/kinit'), False) else None,
+				univention.connector.ad.password.password_sync if configRegistry.is_false(connector('%s/ad/mapping/user/password/disabled'), True) and not configRegistry.is_true(connector('%s/ad/mapping/user/password/kinit'), False) else None,
 				univention.connector.ad.set_univentionObjectFlag_to_synced,
 				univention.connector.ad.primary_group_sync_to_ucs,
 				univention.connector.ad.object_memberships_sync_to_ucs,
@@ -178,7 +185,7 @@ def create_mapping(connector='connector'):
 				'organisation': univention.connector.attribute(
 					ucs_attribute='organisation',
 					ldap_attribute='o',
-					con_attribute=configRegistry.get('connector/ad/mapping/organisation', 'company'),
+					con_attribute=configRegistry.get(connector('%s/ad/mapping/organisation'), 'company'),
 				),
 				'Exchange-Homeserver': univention.connector.attribute(
 					ucs_attribute='Exchange-Homeserver',
@@ -212,7 +219,7 @@ def create_mapping(connector='connector'):
 					con_attribute='mail',
 				),
 				'mailAlternativeAddress': univention.connector.attribute(
-					sync_mode='read' if configRegistry.is_true('connector/ad/mapping/user/primarymail') else 'sync',  # proxyAddresses.to_mailPrimaryAddress does the write
+					sync_mode='read' if configRegistry.is_true(connector('%s/ad/mapping/user/primarymail')) else 'sync',  # proxyAddresses.to_mailPrimaryAddress does the write
 					ucs_attribute='mailAlternativeAddress',
 					ldap_attribute='mailAlternativeAddress',
 					con_attribute='proxyAddresses',
@@ -295,9 +302,9 @@ def create_mapping(connector='connector'):
 		),
 		'group': univention.connector.property(
 			ucs_default_dn='cn=groups,%(ldap/base)s' % configRegistry,
-			con_default_dn='cn=Users,%(connector/ad/ldap/base)s' % configRegistry,
+			con_default_dn=connector('cn=Users,%%(%s/ad/ldap/base)s') % configRegistry,
 			ucs_module='groups/group',
-			sync_mode=configRegistry.get('connector/ad/mapping/group/syncmode', configRegistry.get('connector/ad/mapping/syncmode')),
+			sync_mode=configRegistry.get(connector('%s/ad/mapping/group/syncmode'), configRegistry.get(connector('%s/ad/mapping/syncmode'))),
 			scope='sub',
 			ignore_filter=group_ignore_filter or None,
 			ignore_subtree=global_ignore_subtree,
@@ -349,7 +356,7 @@ def create_mapping(connector='connector'):
 					con_attribute='mail',
 				),
 				'mailAlternativeAddress': univention.connector.attribute(
-					sync_mode='read' if configRegistry.is_true('connector/ad/mapping/group/primarymail') else 'sync',  # proxyAddresses.to_mailPrimaryAddress does the write
+					sync_mode='read' if configRegistry.is_true(connector('%s/ad/mapping/group/primarymail')) else 'sync',  # proxyAddresses.to_mailPrimaryAddress does the write
 					ucs_attribute='mailAlternativeAddress',
 					ldap_attribute='mailAlternativeAddress',
 					con_attribute='proxyAddresses',
@@ -376,10 +383,10 @@ def create_mapping(connector='connector'):
 		),
 		'windowscomputer': univention.connector.property(
 			ucs_default_dn='cn=computers,%(ldap/base)s' % configRegistry,
-			con_default_dn='cn=computers,%(connector/ad/ldap/base)s' % configRegistry,
+			con_default_dn=connector('cn=computers,%%(%s/ad/ldap/base)s') % configRegistry,
 			ucs_module='computers/windows',
 			ucs_module_others=['computers/memberserver', 'computers/linux', 'computers/ubuntu', 'computers/macos'],
-			sync_mode=configRegistry.get('connector/ad/mapping/computer/syncmode', configRegistry.get('connector/ad/mapping/syncmode')),
+			sync_mode=configRegistry.get(connector('%s/ad/mapping/computer/syncmode'), configRegistry.get(connector('%s/ad/mapping/syncmode'))),
 			post_ucs_modify_functions=[
 				univention.connector.ad.set_univentionObjectFlag_to_synced,
 			],
@@ -389,7 +396,7 @@ def create_mapping(connector='connector'):
 			# ignore_filter='userAccountControl=4096',
 			match_filter='(|(&(objectClass=univentionWindows)(!(univentionServerRole=windows_domaincontroller)))(objectClass=computer)(objectClass=univentionMemberServer)(objectClass=univentionUbuntuClient)(objectClass=univentionLinuxClient)(objectClass=univentionMacOSClient))',
 			ignore_subtree=global_ignore_subtree,
-			ignore_filter=ignore_filter_from_attr('cn', 'connector/ad/mapping/windowscomputer/ignorelist') or None,
+			ignore_filter=ignore_filter_from_attr('cn', connector('%s/ad/mapping/windowscomputer/ignorelist')) or None,
 			con_create_objectclass=['top', 'computer'],
 			con_create_attributes=[('userAccountControl', [b'4096'])],
 			attributes={
@@ -425,10 +432,10 @@ def create_mapping(connector='connector'):
 		),
 		'container': univention.connector.property(
 			ucs_module='container/cn',
-			sync_mode=configRegistry.get('connector/ad/mapping/container/syncmode', configRegistry.get('connector/ad/mapping/syncmode')),
+			sync_mode=configRegistry.get(connector('%s/ad/mapping/container/syncmode'), configRegistry.get(connector('%s/ad/mapping/syncmode'))),
 			scope='sub',
 			con_search_filter='(|(objectClass=container)(objectClass=builtinDomain))',  # builtinDomain is cn=builtin (with group cn=Administrators)
-			ignore_filter=ignore_filter_from_attr('cn', 'connector/ad/mapping/container/ignorelist', 'mail,kerberos') or None,
+			ignore_filter=ignore_filter_from_attr('cn', connector('%s/ad/mapping/container/ignorelist'), 'mail,kerberos') or None,
 			ignore_subtree=global_ignore_subtree,
 			post_ucs_modify_functions=[
 				univention.connector.ad.set_univentionObjectFlag_to_synced,
@@ -451,10 +458,10 @@ def create_mapping(connector='connector'):
 		),
 		'ou': univention.connector.property(
 			ucs_module='container/ou',
-			sync_mode=configRegistry.get('connector/ad/mapping/ou/syncmode', configRegistry.get('connector/ad/mapping/syncmode')),
+			sync_mode=configRegistry.get(connector('%s/ad/mapping/ou/syncmode'), configRegistry.get(connector('%s/ad/mapping/syncmode'))),
 			scope='sub',
 			con_search_filter='objectClass=organizationalUnit',
-			ignore_filter=ignore_filter_from_attr('ou', 'connector/ad/mapping/ou/ignorelist') or None,
+			ignore_filter=ignore_filter_from_attr('ou', connector('%s/ad/mapping/ou/ignorelist')) or None,
 			ignore_subtree=global_ignore_subtree,
 			post_ucs_modify_functions=[
 				univention.connector.ad.set_univentionObjectFlag_to_synced,
@@ -478,28 +485,30 @@ def create_mapping(connector='connector'):
 	}
 
 	# users
-	if configRegistry.is_false('connector/ad/mapping/user/exchange', True):
+	if configRegistry.is_false(connector('%s/ad/mapping/user/exchange'), True):
 		ad_mapping['user'].post_attributes.pop('Exchange-Homeserver')
 		ad_mapping['user'].post_attributes.pop('Exchange-homeMDB')
 		ad_mapping['user'].post_attributes.pop('Exchange-Nickname')
-	if not configRegistry.is_true('connector/ad/mapping/user/primarymail'):
+	if not configRegistry.is_true(connector('%s/ad/mapping/user/primarymail')):
 		ad_mapping['user'].post_attributes.pop('mailPrimaryAddress')
 		ad_mapping['user'].post_attributes.pop('mailPrimaryAddress_to_mail')
-	if not configRegistry.is_true('connector/ad/mapping/user/alternativemail'):
+	if not configRegistry.is_true(connector('%s/ad/mapping/user/alternativemail')):
 		ad_mapping['user'].post_attributes.pop('mailAlternativeAddress')
 
 	# groups
-	if not configRegistry.is_true('connector/ad/mapping/group/grouptype', True):
+	if not configRegistry.is_true(connector('%s/ad/mapping/group/grouptype'), True):
 		ad_mapping['group'].attributes.pop('groupType')
-	if not configRegistry.is_true('connector/ad/mapping/group/primarymail'):
+	if not configRegistry.is_true(connector('%s/ad/mapping/group/primarymail')):
 		ad_mapping['group'].attributes.pop('mailAddress')
 		ad_mapping['group'].attributes.pop('mailPrimaryAddress_to_mail')
-	if not configRegistry.is_true('connector/ad/mapping/group/alternativemail'):
+	if not configRegistry.is_true(connector('%s/ad/mapping/group/alternativemail')):
 		ad_mapping['group'].attributes.pop('mailAlternativeAddress')
-	if configRegistry.is_false('connector/ad/mapping/group/exchange', True):
+	if configRegistry.is_false(connector('%s/ad/mapping/group/exchange'), True):
 		ad_mapping['group'].attributes.pop('Exchange-Nickname')
-	if configRegistry.get('connector/ad/mapping/group/language') not in ['de', 'DE']:
+	if configRegistry.get(connector('%s/ad/mapping/group/language')) not in ['de', 'DE']:
 		ad_mapping['group'].mapping_table.pop('cn')
+
+	return ad_mapping
 
 
 def load_localmapping(ad_mapping, filename='/etc/univention/connector/ad/localmapping.py'):

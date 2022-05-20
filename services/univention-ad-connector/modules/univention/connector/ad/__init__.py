@@ -59,6 +59,7 @@ from samba import drs_utils
 import samba.dcerpc.samr
 
 from univention.config_registry import ConfigRegistry
+import univention.connector.ad.mapping
 import univention.uldap
 import univention.connector
 import univention.debug2 as ud
@@ -381,9 +382,7 @@ class ad(univention.connector.ucs):
 			ucr = ConfigRegistry()
 			ucr.load()
 
-		import univention.connector.ad.mapping
-		MAPPING_FILENAME = '/etc/univention/%s/ad/localmapping.py' % configbasename
-		ad_mapping = univention.connector.ad.mapping.load_localmapping(MAPPING_FILENAME)
+		ad_mapping = univention.connector.ad.mapping.get_mapping(configbasename)
 
 		_ucr = dict(ucr)
 		try:
