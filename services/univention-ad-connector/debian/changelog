@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.10-8) unstable; urgency=medium
+
+  * Bug #54781: Fix univention-adsearch for multi-connector setups
+
+ -- Arvid <requate@univention.de>  Mon, 09 Jan 2023 19:52:37 +0100
+
 univention-ad-connector (14.0.10-7) unstable; urgency=medium
 
   * Bug #55232: Set pwhistory_length to 0 when pwhistorylength

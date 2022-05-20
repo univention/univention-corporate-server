@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-ad-connector
+fix:
+desc: |
+ This update addresses the following issues:
+ * univention-adsearch did not properly work in multi-connector setups
+bug: [54781]

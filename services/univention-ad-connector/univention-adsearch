@@ -76,15 +76,15 @@ done
 
 eval "$(univention-config-registry shell "$CONFIGBASENAME/ad/ldap/.*")"
 
-binddn_env="${CONFIGBASENAME}_ad_ldap_binddn"
-binddn_ucr="${CONFIGBASENAME}/ad/ldap/binddn"
-bindpw_env="${CONFIGBASENAME}_ad_ldap_bindpw"
-bindpw_ucr="${CONFIGBASENAME}/ad/ldap/bindpw"
-host_env="${CONFIGBASENAME}_ad_ldap_host"
-port_env="${CONFIGBASENAME}_ad_ldap_port"
-base_env="${CONFIGBASENAME}_ad_ldap_base"
-ldaps_ucr="${CONFIGBASENAME}/ad/ldap/ldaps"
-kerberos_ucr="${CONFIGBASENAME}/ad/ldap/kerberos"
+binddn_env="${CONFIGBASENAME//-/_}_ad_ldap_binddn"
+binddn_ucr="${CONFIGBASENAME//-/_}/ad/ldap/binddn"
+bindpw_env="${CONFIGBASENAME//-/_}_ad_ldap_bindpw"
+bindpw_ucr="${CONFIGBASENAME//-/_}/ad/ldap/bindpw"
+host_env="${CONFIGBASENAME//-/_}_ad_ldap_host"
+port_env="${CONFIGBASENAME//-/_}_ad_ldap_port"
+base_env="${CONFIGBASENAME//-/_}_ad_ldap_base"
+ldaps_ucr="${CONFIGBASENAME//-/_}/ad/ldap/ldaps"
+kerberos_ucr="${CONFIGBASENAME//-/_}/ad/ldap/kerberos"
 
 
 cleanup() {
