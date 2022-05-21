@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [8, 9]
+scope: ucs_4.4-0-errata4.4-9
+src: ark
+fix: 4:16.08.3-2+deb9u1
+desc: |
+ This update addresses the following issues:
+ * maliciously crafted archive can install files anywhere in the user's home
+   directory (CVE-2020-16116)
+ * crafted TAR archive with symlinks can install files outside the extraction
+   directory (CVE-2020-24654)
+bug: [54785]
+cve:
+- CVE-2020-16116
+- CVE-2020-24654
