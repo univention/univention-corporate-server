@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [8, 9]
+scope: ucs_4.4-0-errata4.4-9
+src: rsyslog
+fix: 8.24.0-1+deb9u3
+desc: |
+ This update addresses the following issues:
+ * imptcp: integer overflow when Octet-Counted TCP Framing is enabled
+   (CVE-2018-16881)
+ * Heap-based overflow in TCP syslog server (CVE-2022-24903)
+bug: [54784]
+cve:
+- CVE-2018-16881
+- CVE-2022-24903
