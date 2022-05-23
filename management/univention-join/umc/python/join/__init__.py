@@ -291,18 +291,14 @@ def run(
 			# write stderr into the log file
 			MODULE.warn(f'stderr: {stderr}')
 
-		success = True
 		# check for errors
 		if process.returncode != 0:
 			# error case
 			MODULE.warn(f'Could not perform system join: {stdout}{stderr}')
-			success = False
+			error_handler(_('The join process could not be executed. More details can be found in the log file <i>/var/log/univention/join.log</i>.<br/>Please retry to join the system after resolving any conflicting issues.'))
 		elif failed_join_scripts:
 			MODULE.warn(f'The following join scripts could not be executed: {failed_join_scripts}')
 			error_handler(_('Some join scripts could not be executed. More details can be found in the log file <i>/var/log/univention/join.log</i>.<br/>Please retry to execute the join scripts after resolving any conflicting issues.'))
-
-			success = False
-		return success
 	finally:
 		# make sure that UMC servers and apache can be restarted again
 		MODULE.info('enabling UMC and apache server restart')

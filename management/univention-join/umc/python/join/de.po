@@ -72,9 +72,9 @@ msgstr ""
 
 #: umc/python/join/__init__.py:258
 msgid ""
-"Some join scripts could not be executed. More details can be found in the "
-"log file <i>/var/log/univention/join.log</i>.<br/>Please retry to execute "
-"the join scripts after resolving any conflicting issues."
+"Some join scripts could not be executed. More details can be found in the log "
+"file <i>/var/log/univention/join.log</i>.<br/>Please retry to execute the join "
+"scripts after resolving any conflicting issues."
 msgstr ""
 "Einige Join-Skripte konnten nicht ausgeführt werden. <br/>Weitere "
 "Informationen können in der Logdatei <i>/var/log/univention/join.log</i> "
@@ -112,3 +112,14 @@ msgstr ""
 #: umc/python/join/__init__.py:425 umc/python/join/__init__.py:478
 msgid "finished..."
 msgstr "beendet..."
+
+#: umc/python/join/__init__.py:310
+msgid ""
+"The join process could not be executed. More details can be found in the log file "
+"<i>/var/log/univention/join.log</i>.<br/>Please retry to join the system after "
+"resolving any conflicting issues."
+msgstr ""
+"Der Join-Vorgang konnte nicht durchgeführt werden. <br/>Weitere Informationen "
+"können in der Logdatei <i>/var/log/univention/join.log</i> gefunden werden."
+"<br/>Bitte die Ausführung der Join-Skripte nach Lösen aller Konflikte erneut "
+"durchführen. "
