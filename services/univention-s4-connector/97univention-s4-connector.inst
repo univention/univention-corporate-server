@@ -256,6 +256,10 @@ if [ -z "$s4connector_dc" ] \
 	univention-config-registry set connector/s4/autostart=yes
 
 	if is_ucr_true connector/s4/listener/disabled; then
+		/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "objectClass=dnsZone" --first
+		/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "univentionObjectType=container/cn" --first
+		/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "uid=http-proxy-$hostname" --first
+		/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "uid=dns-$hostname" --first
 		univention-config-registry unset connector/s4/listener/disabled
 		univention-directory-listener-ctrl resync s4-connector
 	fi
