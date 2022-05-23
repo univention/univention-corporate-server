@@ -74,3 +74,4 @@ if configRegistry.is_true('ldap/syncprov', True):
 @!@
 moduleload	constraint.so
 moduleload	accesslog.so
+moduleload	sssvlv.so

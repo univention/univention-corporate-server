@@ -119,6 +119,7 @@ Variables: ldap/overlay/lastbind
 Variables: ldap/overlay/lastbind/precision
 Variables: ldap/refint
 Variables: server/role
+Variables: ldap/overlay/ssslvl/.*
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
