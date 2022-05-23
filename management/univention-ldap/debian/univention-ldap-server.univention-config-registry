@@ -86,6 +86,7 @@ Variables: ldap/refint
 Variables: server/role
 Variables: ldap/syncprov
 Variables: ldap/database/internal/overlay/dds
+Variables: ldap/overlay/sssvlv
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
@@ -127,6 +128,8 @@ Variables: ldap/overlay/sock
 Variables: ldap/overlay/sock/sockops
 Variables: ldap/refint
 Variables: server/role
+Variables: ldap/overlay/sssvlv
+Variables: ldap/overlay/sssvlv/.*
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf

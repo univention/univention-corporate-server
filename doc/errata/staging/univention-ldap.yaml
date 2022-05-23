@@ -20,4 +20,9 @@ desc: |
    memberOf`, `systemctl start slapd.service`.  Rebuilding the index
    re-indexes the existing directory entries and may take a considerable
    amount of time on large databases.
-bug: [47464]
+ * The LDAP server can now enable the `sssvlv` overlay via the UCR variable
+   `ldap/overlay/sssvlv`, providing support for Server-Side Sorting (SSS) and
+   Virtual List View (VLV). The limits for concurrent sort requests can be
+   defined using the new UCR variables `ldap/overlay/sssvlv/max`,
+   `ldap/overlay/sssvlv/maxkeys`, and `ldap/overlay/sssvlv/maxperconn`.
+bug: [47464, 54786]

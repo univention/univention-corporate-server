@@ -81,4 +81,6 @@ if configRegistry.is_true('ldap/database/internal/overlay/dds', True):
     print('moduleload\tdds.so')
 
 print('moduleload\tmemberof.so')
+if configRegistry.is_true('ldap/overlay/sssvlv', False):
+    print('moduleload\tsssvlv.so')
 @!@
