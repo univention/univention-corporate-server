@@ -8,6 +8,7 @@ Build-Depends:
  python3-all,
  univention-config-dev,
  univention-join-dev,
+ univention-l10n-dev,
 Standards-Version: 4.3.0.3
 
 Package: univention-monitoring-client

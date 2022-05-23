@@ -1,7 +1,5 @@
-#!/usr/bin/make -f
-#
-# Univention Monitoring Client
-#  rules file for the debian package
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 #
 # Copyright 2022 Univention GmbH
 #
@@ -29,7 +27,18 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
 
-%:
-	dh $@ --with ucr,univention-join,univention-l10n,python3
+"""
+|UDM| syntax classes for monitoring alerts
+"""
+
+import univention.admin.syntax
+
+
+class monitoringEnabledHosts(univention.admin.syntax.UDM_Objects):
+	udm_modules = ('computers/computer', )
+	udm_filter = '(univentionService=UCS Monitoring)'
+
+
+class monitoringAlerts(univention.admin.syntax.UDM_Objects):
+	udm_modules = ('monitoring/alert', )

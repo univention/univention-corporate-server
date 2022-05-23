@@ -40,6 +40,61 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
+univention-directory-manager container/cn create "$@" --ignore_exists \
+	--position="$ldap_base" \
+	--set name="monitoring" \
+	--set description="Monitoring objects" || die
+
+ucs_registerLDAPExtension "$@" \
+	--ucsversionstart 4.4-1 \
+	--ucsversionend 5.99-0 \
+	--schema /usr/lib/univention-monitoring-client/schema/univention-monitoring.schema || die
+
+ucs_registerLDAPExtension "$@" \
+	--ucsversionstart 5.0-0 \
+	--ucsversionend 5.99-0 \
+	--udm_syntax /usr/lib/univention-monitoring-client/udm/syntax/monitoring.py || die
+
+ucs_registerLDAPExtension "$@" \
+	--ucsversionstart 5.0-0 \
+	--ucsversionend 5.99-0 \
+	--udm_hook /usr/lib/univention-monitoring-client/udm/hooks/monitoring.py || die
+
+ucs_registerLDAPExtension "$@" \
+	--ucsversionstart 5.0-0 \
+	--ucsversionend 5.99-0 \
+	--udm_module /usr/lib/univention-monitoring-client/udm/alert.py \
+	--messagecatalog /usr/lib/univention-monitoring-client/udm/de.mo || die
+
+univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
+	--position "cn=custom attributes,cn=univention,$ldap_base" \
+	--set name="ucs-monitoring" \
+	--set CLIName="monitoringAlerts" \
+	--set hook="MonitoringComputer" \
+	--set shortDescription="Assigned monitoring alerts" \
+	--append translationShortDescription='"de_DE" "zugewiesene Warnmeldungen"' \
+	--append translationShortDescription='"fr_FR" "alertes assignées"' \
+	--set longDescription="Assigned monitoring alerts" \
+	--append translationLongDescription='"de_DE" "zugewiesene Warnmeldungen"' \
+	--append translationLongDescription='"fr_FR" "alertes assignées"' \
+	--set tabAdvanced="1" \
+	--set tabName="Alerts" \
+	--append translationTabName='"de_DE" "Warnmeldungen"' \
+	--append translationTabName='"fr_FR" "Alertes"' \
+	--append module="computers/domaincontroller_master" \
+	--append module="computers/domaincontroller_backup" \
+	--append module="computers/domaincontroller_slave" \
+	--append module="computers/memberserver" \
+	--set syntax=monitoringAlerts \
+	--set multivalue=1 \
+	--set valueRequired=0 \
+	--set mayChange=1 \
+	--set doNotSearch=1 \
+	--set objectClass=univentionHost \
+	--set ldapMapping=univentionDoesNotExists \
+	--set deleteObjectClass=0 \
+	--set overwriteTab=0 || die
+
 ucs_addServiceToLocalhost "UCS Monitoring" || die
 
 joinscript_save_current_version

@@ -1,0 +1,10 @@
+[
+	{
+		"input_files": [
+			"src/univention/admin/handlers/monitoring/.*\\.py"
+		],
+		"po_subdir": "src/univention/admin/handlers/monitoring",
+		"target_type": "mo",
+		"destination": "usr/lib/univention-monitoring-client/udm/de.mo"
+	}
+]
