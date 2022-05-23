@@ -253,6 +253,8 @@ if [ -z "$s4connector_dc" ] \
 	ucs_addServiceToLocalhost "${NAME}" "$@"
 
 	univention-config-registry set connector/s4/autostart=yes
+	/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "objectClass=dnsZone" --first
+	/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "univentionObjectType=container/cn" --first
 
 	if is_ucr_true connector/s4/listener/disabled; then
 		univention-config-registry unset connector/s4/listener/disabled

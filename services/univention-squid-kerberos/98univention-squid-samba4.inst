@@ -98,6 +98,7 @@ else
 		--set password="$password" \
 		--set description="$servicedescription" || die
 fi
+s4connectorservicedcs="$(ldapsearch -x -ZZ -LLL -o ldif-wrap=no -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')"
 
 ## Next for keytab creation check if this host is a Samba4 DC
 cn=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=Samba 4)(cn=$hostname))" cn | sed -n 's/^cn: \(.*\)/\1/p')
@@ -105,6 +106,10 @@ cn=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univent
 if [ "$cn" = "$hostname" -a "$samba4_role" != "RODC" ]; then
 
 	## wait for S4 Connector and possibly DRS until the service_accountname is available
+	if [ "$s4connectorservicedcs" = "$hostname" ]; then
+		/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "uid=$service_accountname" --first
+		service univention-s4-connector restart
+	fi
 	timeout=${squid_kerberos_join_timeout:-1200}
 	for i in $(seq 1 10 $timeout); do
 		echo "looking for spn account \"$service_accountname\" in local samba"
