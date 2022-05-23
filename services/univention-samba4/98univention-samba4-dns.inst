@@ -101,10 +101,18 @@ fi
 
 if [ "$samba4_role" != "RODC" ]; then
 	univention_samba4_wait_for_rid_set	## Replication of local RID Pool required for SAM account creation
-	/usr/share/univention-samba4/scripts/create_spn_account.sh \
-		--samaccountname "dns-$hostname" \
-		--serviceprincipalname "DNS/$hostname.$domainname" \
-		--privatekeytab dns.keytab "$@"
+	if [ "$s4connectorservicedcs" = "$hostname" ]; then
+		/usr/share/univention-samba4/scripts/create_spn_account.sh \
+			--samaccountname "dns-$hostname" \
+			--serviceprincipalname "DNS/$hostname.$domainname" \
+			--privatekeytab dns.keytab "$@" \
+			--resync
+	else
+		/usr/share/univention-samba4/scripts/create_spn_account.sh \
+			--samaccountname "dns-$hostname" \
+			--serviceprincipalname "DNS/$hostname.$domainname" \
+			--privatekeytab dns.keytab "$@"
+	fi
 	if [ $? != 0 ]; then
 		echo "**************************************************************"
 		echo "* ERROR: Failed to create DNS spn account.                   *"

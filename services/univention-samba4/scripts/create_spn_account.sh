@@ -52,6 +52,7 @@ create_spn_account () {
 		--samaccountname <account>:		Account name
 		--serviceprincipalname <spn>:	servicePrincipalName
 		--privatekeytab <filename>:		privateKeytab
+		--resync:		resync object in s4connector
 		-h | --help | -?:        print this usage message and exit program
 
 		Description:
@@ -91,6 +92,10 @@ create_spn_account () {
 				binddn="${2:?missing argument for "$1"}"
 				credentials+=("--binddn" "$binddn")
 				shift 2 || exit 2
+				;;
+			"--resync")
+				resync=True
+				shift 1 || exit 2
 				;;
 			*)
 				display_help
@@ -134,6 +139,10 @@ create_spn_account () {
 		service_account_dn=$(ldbsearch -H $samba_private_dir/sam.ldb samAccountName="$samAccountName" dn | sed -n 's/^dn: \(.*\)/\1/p')
 		[ -n "$service_account_dn" ] && break
 		sleep 10
+		if [ "$resync" = "True" ]; then
+			/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "uid=dns-$hostname" --first
+			service univention-s4-connector restart
+		fi
 	done
 
 
