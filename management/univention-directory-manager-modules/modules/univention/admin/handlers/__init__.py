@@ -2118,6 +2118,7 @@ class simpleLdap:
         response: dict | None = None,
         authz: bool = True,
         opened: bool = False,
+        **future_reserved,
     ) -> list[Self]:
         """
         Perform a LDAP search and return a list of instances.
@@ -2136,6 +2137,7 @@ class simpleLdap:
         :param response: An optional dictionary to receive the server controls of the result.
         :param authz: ignore authorization checks (**dangerous!**)
         :param opened: open all found objects.
+        :param future_reserved: Catch all other arguments so that in a future world we can add new arguments more easily without breaking the API of existing UDM modules.
         :return: A list of UDM objects.
 
         .. warning::
@@ -2147,6 +2149,9 @@ class simpleLdap:
             warnings.warn('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap!', DeprecationWarning, stacklevel=3)
             if configRegistry.is_true('directory/manager/type-checking/strict'):
                 raise TypeError('Expect univention.admin.uldap.access!')
+
+        if future_reserved:
+            log.warning('Ignoring unknown keywords arguments to lookup().', type=cls.module, keywords=list(future_reserved))
 
         filter_e = cls.lookup_filter(filter_s, lo)
         if superordinate:
