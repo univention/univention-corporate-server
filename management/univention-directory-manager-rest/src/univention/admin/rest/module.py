@@ -41,6 +41,7 @@ import functools
 import io
 import json
 import logging
+import math
 import operator
 import os
 import re
@@ -60,9 +61,9 @@ import tornado.ioloop
 import tornado.log
 import tornado.web
 from concurrent.futures import ThreadPoolExecutor
-from ldap.controls import SimplePagedResultsControl
 from ldap.controls.readentry import PostReadControl
 from ldap.controls.sss import SSSRequestControl
+from ldap.controls.vlv import VLVRequestControl, VLVResponseControl
 from ldap.dn import explode_rdn
 from ldap.filter import filter_format
 from tornado.concurrent import run_on_executor
@@ -95,7 +96,9 @@ from univention.admin.rest.utils import (
 from univention.config_registry import handler_set
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
-from univention.management.console.error import LDAP_ConnectionFailed, LDAP_ServerDown, UMC_Error, UnprocessableEntity
+from univention.management.console.error import (
+    LDAP_ConnectionFailed, LDAP_ServerDown, ServiceUnavailable, UMC_Error, UnprocessableEntity,
+)
 from univention.management.console.modules.udm.tools import (
     LicenseError, LicenseImport as LicenseImporter, check_license, dump_license,
 )
@@ -1409,14 +1412,16 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         if superordinate:
             position = position or superordinate.dn
 
+        last_page = 1
         objects = []
         if search:  # TODO: check if searching is allowed
             try:
-                objects, last_page = await self.search(module, position, ldap_filter, superordinate, scope, hidden, items_per_page, page, by, reverse)
+                objects, length, last_page = await self.search(module, position, ldap_filter, superordinate, scope, hidden, items_per_page, page, by or module.default_search_property, reverse)
             except ObjectDoesNotExist as exc:
                 self.raise_sanitization_error('position', str(exc), type='query')
             except SuperordinateDoesNotExist as exc:
                 self.raise_sanitization_error('superordinate', str(exc), type='query')
+            result['results'] = length
 
         for obj in objects or []:
             if obj is None:
@@ -1434,13 +1439,14 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
             self.add_resource(result, 'udm:object', entry)
 
         if items_per_page:
-            self.add_link(result, 'first', self.urljoin('', page='1'), title=_('First page'))
+            self.add_link(result, 'first', self.urljoin('', page='1'), page='1', title=_('First page'))
+            self.add_link(result, 'current', self.urljoin('', page=str(page)), page=str(page), title=_('Current page'))
             if page > 1:
-                self.add_link(result, 'prev', self.urljoin('', page=str(page - 1)), title=_('Previous page'))
-            if not last_page:
-                self.add_link(result, 'next', self.urljoin('', page=str(page + 1)), title=_('Next page'))
-            else:
-                self.add_link(result, 'last', self.urljoin('', page=str(last_page)), title=_('Last page'))
+                self.add_link(result, 'prev', self.urljoin('', page=str(page - 1)), page=str(page - 1), title=_('Previous page'))
+            if last_page != page:
+                self.add_link(result, 'next', self.urljoin('', page=str(page + 1)), page=str(page + 1), title=_('Next page'))
+            if last_page:
+                self.add_link(result, 'last', self.urljoin('', page=str(last_page)), page=str(last_page), title=_('Last page'))
 
         if search:
             for i, report_type in enumerate(sorted(self.reports_cfg.get_report_names(object_type)), 1):
@@ -1475,16 +1481,14 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         self.add_form_element(form, 'hidden', '1', type='checkbox', checked=bool(hidden), label=_('Include hidden objects'))
         # self.add_form_element(form, 'fields', list(fields))
         if module.supports_pagination:
-            self.add_form_element(form, 'limit', str(items_per_page or '0'), type='number', label=_('Limit'), **{'data-size': 'OneThird'})
-            self.add_form_element(form, 'page', str(page or '1'), type='number', label=_('Selected page'), **{'data-size': 'OneThird'})
-            self.add_form_element(form, 'by', by or '', element='select', options=searchable_properties, label=_('Sort by'), **{'data-size': 'OneThird'})
+            self.add_form_element(form, 'limit', str(items_per_page or '0'), type='number', min="0", label=_('Limit'), **{'data-size': 'OneThird'})
+            self.add_form_element(form, 'page', str(page or '1'), type='number', min="1", max=str(last_page), label=_('Selected page'), **{'data-size': 'OneThird'})
+            self.add_form_element(form, 'by', by or module.default_search_property or '', element='select', options=searchable_properties, label=_('Sort by'), **{'data-size': 'OneThird'})
             self.add_form_element(form, 'dir', direction if direction in ('ASC', 'DESC') else 'ASC', element='select', options=[{'value': 'ASC', 'label': _('Ascending')}, {'value': 'DESC', 'label': _('Descending')}], label=_('Direction'), **{'data-size': 'OneThird'})
             search_layout.append(['page', 'limit', 'by', 'dir'])
         self.add_form_element(form, '', _('Search'), type='submit', **{'data-size': 'OneThird'})
 
-        if search:
-            result['results'] = len(self.get_resources(result, 'udm:object'))
-        else:
+        if not search:
             self.add_link(result, 'udm:layout', self.urljoin('layout'), title=_('Module layout'))
             self.add_link(result, 'udm:properties', self.urljoin('properties'), title=_('Module properties'))
             for policy_module in module.policies:
@@ -1498,33 +1502,41 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         ctrls = {}
         serverctrls = []
         hashed = (self.request.user_dn, module.name, container or None, ldap_filter or None, superordinate or None, scope or None, hidden or None, items_per_page or None, by or None, reverse or None)
-        session = shared_memory.search_sessions.get(hashed, {})
-        last_cookie = session.get('last_cookie', '')
-        current_page = session.get('page', 0)
-        page_ctrl = SimplePagedResultsControl(True, size=items_per_page, cookie=last_cookie)  # TODO: replace with VirtualListViewRequest
+        context_id = shared_memory.search_sessions.get(hashed, None)
         if module.supports_pagination:
             if items_per_page:
-                serverctrls.append(page_ctrl)
-            if by in ('uid', 'uidNumber', 'cn'):
-                rule = ':caseIgnoreOrderingMatch' if by not in ('uidNumber',) else ''
-                serverctrls.append(SSSRequestControl(ordering_rules=['%s%s%s' % ('-' if reverse else '', by, rule)]))
+                offset = (((page or 1) - 1) * items_per_page)
+                serverctrls.append(VLVRequestControl(
+                    after_count=items_per_page - 1,
+                    before_count=0,
+                    offset=offset + 1,
+                    content_count=0,
+                    criticality=True,
+                    context_id=context_id,
+                ))
+
+            rule, by = module.get_search_by_property(by)
+            if by:
+                serverctrls.append(SSSRequestControl(ordering_rules=['%s%s%s%s' % ('-' if reverse else '', by, ':' if rule else '', rule)]))
         objects = []
-        # TODO: we have to store the results of the previous pages (or make them cacheable)
-        # FIXME: we have to store the session across all processes
         ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
-        last_page = page
-        for _i in range(current_page, page or 1):
+        try:
             objects = await self.pool_submit(module.search, container, superordinate=superordinate, filter=ldap_filter, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
-            for control in ctrls.get('ctrls', []):
-                if control.controlType == SimplePagedResultsControl.controlType:
-                    page_ctrl.cookie = control.cookie
-            if not page_ctrl.cookie:
-                shared_memory.search_sessions.pop(hashed, None)
-                break
-        else:
-            shared_memory.search_sessions[hashed] = {'last_cookie': page_ctrl.cookie, 'page': page}
-            last_page = 0
-        return (objects, last_page)
+        except udm_errors.ldapError as exc:
+            if isinstance(exc.original_exception, ldap.BUSY):
+                raise ServiceUnavailable(str(exc))  # too many parallel VLV searches
+            elif isinstance(exc.original_exception, ldap.VLV_ERROR):
+                self.raise_sanitization_error('page', str(exc), type='query')
+            raise
+
+        length = len(objects)
+        for control in ctrls.get('ctrls', []):
+            if control.controlType == VLVResponseControl.controlType:
+                shared_memory.search_sessions[hashed] = control.context_id
+                length = control.content_count
+
+        last_page = math.ceil(length / (items_per_page or length))
+        return (objects, len(objects), last_page)
 
     def get_html(self, response):
         if self.request.method not in ('GET', 'HEAD'):

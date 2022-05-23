@@ -104,6 +104,7 @@ property_descriptions = dict({
         required=True,
         identifies=True,
         readonly_when_synced=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'uidNumber': univention.admin.property(
         short_description=_('User ID'),
@@ -111,6 +112,7 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.integer,
         may_change=False,
         dontsearch=True,
+        ordering_matching_rule='',
     ),
     'gidNumber': univention.admin.property(
         short_description=_('Group ID of the primary group'),
@@ -120,6 +122,7 @@ property_descriptions = dict({
         editable=False,
         dontsearch=True,
         readonly_when_synced=True,
+        ordering_matching_rule='',
     ),
     'firstname': univention.admin.property(
         short_description=_('First name'),
@@ -127,6 +130,7 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.TwoThirdsString,
         include_in_default_search=True,
         readonly_when_synced=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'lastname': univention.admin.property(
         short_description=_('Last name'),
@@ -135,6 +139,7 @@ property_descriptions = dict({
         include_in_default_search=True,
         required=True,
         readonly_when_synced=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'gecos': univention.admin.property(
         short_description=_('GECOS'),
@@ -142,6 +147,7 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.IA5string,
         default='<firstname> <lastname><:umlauts,strip>',
         dontsearch=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'displayName': univention.admin.property(
         short_description=_('Display name'),
@@ -149,22 +155,26 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.string,
         default='<firstname> <lastname><:strip>',
         readonly_when_synced=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'title': univention.admin.property(
         short_description=_('Title'),
         long_description='',
         syntax=univention.admin.syntax.OneThirdString,
         readonly_when_synced=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'initials': univention.admin.property(
         short_description=_('Initials'),
         long_description='',
         syntax=univention.admin.syntax.string6,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'preferredDeliveryMethod': univention.admin.property(
         short_description=_('Preferred delivery method'),
         long_description='',
         syntax=univention.admin.syntax.string,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'sambaPrivileges': univention.admin.property(
         short_description=_('Samba privilege'),
@@ -181,6 +191,7 @@ property_descriptions = dict({
         include_in_default_search=True,
         readonly_when_synced=True,
         copyable=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'organisation': univention.admin.property(
         short_description=_('Organisation'),
@@ -188,6 +199,7 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.string64,
         readonly_when_synced=True,
         copyable=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'userexpiry': univention.admin.property(
         short_description=_('Account expiry date'),
@@ -281,12 +293,14 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.string,
         readonly_when_synced=True,
         copyable=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'e-mail': univention.admin.property(
         short_description=_('E-mail address'),
         long_description=_('This e-mail address serves only as contact information. This address has no effect on the UCS mail stack and is not related to a local mailbox.'),
         syntax=univention.admin.syntax.emailAddress,
         multivalue=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'postcode': univention.admin.property(
         short_description=_('Postal code'),
@@ -294,6 +308,7 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.OneThirdString,
         readonly_when_synced=True,
         copyable=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'postOfficeBox': univention.admin.property(
         short_description=_('Post office box'),
@@ -301,6 +316,7 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.string,
         multivalue=True,
         copyable=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'city': univention.admin.property(
         short_description=_('City'),
@@ -308,6 +324,7 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.TwoThirdsString,
         readonly_when_synced=True,
         copyable=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'country': univention.admin.property(
         short_description=_('Country'),
@@ -315,6 +332,7 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.Country,
         readonly_when_synced=True,
         copyable=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'state': univention.admin.property(
         short_description=_('State'),
@@ -322,6 +340,7 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.string,
         readonly_when_synced=True,
         copyable=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'phone': univention.admin.property(
         short_description=_('Telephone number'),
@@ -330,11 +349,13 @@ property_descriptions = dict({
         multivalue=True,
         readonly_when_synced=True,
         copyable=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'employeeNumber': univention.admin.property(
         short_description=_('Employee number'),
         long_description='',
         syntax=univention.admin.syntax.string,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'roomNumber': univention.admin.property(
         short_description=_('Room number'),
@@ -342,6 +363,7 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.OneThirdString,
         multivalue=True,
         copyable=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'secretary': univention.admin.property(
         short_description=_('Superior'),
@@ -349,6 +371,7 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.UserDN,
         multivalue=True,
         copyable=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'departmentNumber': univention.admin.property(
         short_description=_('Department number'),
@@ -356,12 +379,14 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.OneThirdString,
         multivalue=True,
         copyable=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'employeeType': univention.admin.property(
         short_description=_('Employee type'),
         long_description='',
         syntax=univention.admin.syntax.string,
         copyable=True,
+        ordering_matching_rule='caseIgnoreOrderingMatch',
     ),
     'homePostalAddress': univention.admin.property(
         short_description=_('Private postal address'),

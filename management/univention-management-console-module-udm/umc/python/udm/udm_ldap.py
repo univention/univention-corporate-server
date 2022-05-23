@@ -1142,6 +1142,23 @@ class UDM_Module:
                 return mod.name
         return self.name
 
+    def get_search_by_property(self, by):
+        prop = self.get_property(by)
+        if prop and not prop.dontsearch:
+            rule = prop.ordering_matching_rule  # TODO: or better as part of the mapping?
+            attr = self.mapping.mapName(by)
+            if attr in ('uidNumber',):
+                rule = ''
+            if attr and rule is not None:
+                return (rule, attr)
+        return (None, None)
+
+    @property
+    def default_search_property(self):
+        identifies = self.identifies
+        if identifies and not self.get_property(identifies).dontsearch:
+            return identifies
+
     @property
     def mapping(self):
         if hasattr(self.module, 'mapping'):

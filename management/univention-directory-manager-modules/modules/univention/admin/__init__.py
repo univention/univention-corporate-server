@@ -234,6 +234,7 @@ class property:
             size=None,  # type: str | None
             copyable=False,  # type: bool
             type_class=None,  # type: Type[TypeHint] | None
+            ordering_matching_rule=None,  # type: str | None
     ):  # type: (...) -> None
         """
         |UDM| property.
@@ -265,6 +266,7 @@ class property:
         :param size: The |UMC| widget size; one of :py:data:`univention.admin.syntax.SIZES`.
         :param copyable: With `True` the property is copied when the object is cloned; with `False` the new object will use the default value.
         :param type_class: An optional Typing class which overwrites the syntax class specific type.
+        :param ordering_matching_rule: An optional LDAP matching rule used for order search results (e.g. "caseIgnoreOrderingMatch" or "integerOrderingMatch")
         """
         self.short_description = short_description
         self.long_description = long_description
@@ -298,6 +300,7 @@ class property:
         self.size = size
         self.copyable = copyable
         self.type_class = type_class
+        self.ordering_matching_rule = ordering_matching_rule
 
     def new(self):
         # type: () -> list[str] | None
