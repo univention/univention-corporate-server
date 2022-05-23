@@ -557,12 +557,12 @@ record` can be used to create a new record.
        In a network with a 24-bit network prefix (subnet mask ``255.255.255.0``)
        a pointer should be created for the ``client001`` computer with the IP
        address ``192.0.2.101``. ``101`` must then be entered in the
-       :guilabel:`Address field` and ``client001.company.com.`` in
-       :guilabel:`Pointer`.
+       *Address field* and ``client001.company.com.`` in
+       *Pointer*.
 
        Example:
 
        For a network with a 16-bit network prefix (subnet mask ``255.255.0.0``)
        the last two octets should be entered in reverse order for this computer
        (here ``101.1``). ``client001.company.com.`` also needs to be entered in
-       the :guilabel:`Pointer` field here.
+       the *Pointer* field here.

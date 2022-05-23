@@ -152,7 +152,7 @@ LDAP server authentication
    Direct authentication against the LDAP server. This is done by setting the
    |UCSUCRV| :envvar:`squid/basicauth` to ``yes`` and restarting Squid.
 
-NTML authentication
+NTLM authentication
    Authentication is performed via the NTLM interface. Users logged in on a
    Windows client then do not need to authenticate themselves again when
    accessing the proxy. NTLM authentication is enabled by setting the |UCSUCRV|
