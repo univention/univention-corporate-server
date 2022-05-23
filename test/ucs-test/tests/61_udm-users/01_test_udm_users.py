@@ -752,12 +752,14 @@ def test_udm_users_ldap_mspolicy(udm, ucr, module):
 
 
 @pytest.mark.tags('apptest')
+@pytest.mark.exposure('dangerous')
 def test_user_username_case_modification(udm):
-	# bugs: [54673]
 	"""Test modifying the case of a character in a user name with a single operation"""
+	# bugs: [54673]
 	name = uts.random_username().lower()
 	user, uid = udm.create_user(username=name)
 	name = name[0].upper() + name[1:]
 
-	udm.modify_object('users/user', dn=user, username=name)
+	dn = udm.modify_object('users/user', dn=user, username=name)
+	assert dn.startswith("uid={}".format(name)), "The dn returned by `modify_object` does not contain the updated name"
 	utils.verify_ldap_object(user, {'uid' : [name]})

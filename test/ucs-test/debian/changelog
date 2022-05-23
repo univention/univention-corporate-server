@@ -1,3 +1,10 @@
+ucs-test (10.0.6-113) unstable; urgency=medium
+
+  * Bug #54673: Added test that modifies the case of a character in a user
+    name with a single operation
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Mon, 23 May 2022 10:32:33 +0200
+
 ucs-test (10.0.6-112) unstable; urgency=medium
 
   * Bug #52875: Skip some tests on samba
