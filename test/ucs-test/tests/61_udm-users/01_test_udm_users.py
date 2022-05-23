@@ -749,3 +749,15 @@ def test_udm_users_ldap_mspolicy(udm, ucr, module):
 	if module == 'users/user':
 		with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):
 			udm.modify_object(module, dn=dn, password='Uni.1test1')
+
+
+@pytest.mark.tags('apptest')
+def test_user_username_case_modification(udm):
+	# bugs: [54673]
+	"""Test modifying the case of a character in a user name with a single operation"""
+	name = uts.random_username().lower()
+	user, uid = udm.create_user(username=name)
+	name = name[0].upper() + name[1:]
+
+	udm.modify_object('users/user', dn=user, username=name)
+	utils.verify_ldap_object(user, {'uid' : [name]})
