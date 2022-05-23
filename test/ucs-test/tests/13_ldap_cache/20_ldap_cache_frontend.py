@@ -4,6 +4,8 @@
 ## exposure: dangerous
 ## packages:
 ##   - univention-group-membership-cache
+## packages-not:
+##   - univention-samba
 
 
 from univention.ldap_cache.frontend import groups_for_user, users_in_group

@@ -5,6 +5,8 @@
 ## roles:
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave
+## packages-not:
+##  - univention-samba4
 ## exposure: dangerous
 
 import subprocess
