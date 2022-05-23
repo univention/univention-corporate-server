@@ -19,6 +19,9 @@ from functools import reduce
 from json import load
 
 from ldap import NO_SUCH_OBJECT, LDAPError
+from ldap.controls import SimplePagedResultsControl
+from ldap.controls.sss import SSSRequestControl
+from ldap.controls.vlv import VLVRequestControl, VLVResponseControl
 from ldap.dn import explode_dn
 from ldap.filter import filter_format
 
@@ -820,6 +823,28 @@ class UDM_Module:
     def supports_pagination(self):
         return not self.virtual
 
+    def pagination_controls(self, context_id, page, items_per_page, reverse, sort_keys, simple=False):
+        serverctrls = []
+        if not sort_keys and items_per_page:
+            sort_keys = (self.default_search_property,)
+        if sort_keys:
+            serverctrls.append(sort_request([self.get_search_by_property(sk) for sk in sort_keys], reverse=reverse))
+        if items_per_page and self.supports_pagination:
+            if simple:
+                serverctrls.append(SimplePagedResultsControl(True, size=items_per_page, cookie=context_id or b''))
+            else:
+                serverctrls.append(virtual_list_view(page, items_per_page, context_id=context_id))
+
+        return serverctrls
+
+    def pagination_context(self, controls, simple=False):
+        for control in controls.get('ctrls', []):
+            if control.controlType == VLVResponseControl.controlType:
+                return control, control.context_id
+            if control.controlType == SimplePagedResultsControl.controlType:
+                return control, control.cookie
+        return None, None
+
     @property
     def childs(self):
         return bool(getattr(self.module, 'childs', False))
@@ -1196,6 +1221,30 @@ class UDM_Module:
                 return mod.name
         return self.name
 
+    def get_search_by_property(self, by):
+        prop = self.get_property(by)
+        if not prop or not prop.sortable:
+            exc = udm_errors.valueMismatch(_('It is not allowed to sort by this property.'))
+            exc.message = ''
+            raise exc
+
+        # we must prevent errors for LDAP attributes which don't have a ORDERING matching rule defined in their schema
+        # sssvlv: no ordering rule specified and no default ordering rule for attribute "uid" serverSort control: No ordering rule
+        attr = self.mapping.mapName(by)
+        if attr:
+            lo, _po = self.get_ldap_connection()
+            rule = prop.ordering_matching_rule or udm_modules._ldap_ordering_rules(lo).get(attr.lower())
+            return (attr, rule or '')
+        # TODO: sort by what by default? entryDN, entryUUID, createTimestamp, univentionObjectIdentifier
+        return ('createTimestamp', 'generalizedTimeOrderingMatch')
+        # return ('univentionObjectIdentifier', 'UUIDOrderingMatch')
+
+    @property
+    def default_search_property(self):
+        identifies = self.identifies
+        if identifies and not self.get_property(identifies).dontsearch:
+            return identifies
+
     @property
     def mapping(self):
         if hasattr(self.module, 'mapping'):
@@ -1296,6 +1345,27 @@ def _get_module(flavor, ldap_dn, attributes=None, ldap_connection=None, ldap_pos
     MODULE.error('Identified modules %r for %s (flavor=%s) does not have a relating UDM module.', modules, ldap_dn, flavor)
 
 
+def sort_request(sort_keys, rule='', reverse=False):
+    return SSSRequestControl(
+        ordering_rules=[
+            '%s%s%s%s' % ('-' if reverse else '', sort_key, ':' if rule else '', rule)
+            for sort_key, rule in sort_keys
+        ],
+    )
+
+
+def virtual_list_view(page, items_per_page, context_id=None):
+    offset = (((page or 1) - 1) * items_per_page)
+    return VLVRequestControl(
+        after_count=items_per_page - 1,
+        before_count=0,
+        offset=offset + 1,
+        content_count=0,
+        criticality=True,
+        context_id=context_id,
+    )
+
+
 def list_objects(container, object_type=None, ldap_connection=None, ldap_position=None):
     """Yields UDM objects"""
     try:
@@ -1310,6 +1380,7 @@ def list_objects(container, object_type=None, ldap_connection=None, ldap_positio
         raise SearchLimitReached()
     except udm_errors.base as exc:
         UDM_Error(exc).reraise()
+
     for dn, attrs in result:
         modules = udm_modules.objectType(None, ldap_connection, dn, attrs)
         if not modules:

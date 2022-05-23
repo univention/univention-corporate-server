@@ -533,6 +533,10 @@ class access:
             raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), filter))
         except ldap.INVALID_DN_SYNTAX as msg:
             raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), base), original_exception=msg)
+        except ldap.BUSY as msg:
+            raise univention.admin.uexceptions.busy(_err2str(msg), original_exception=msg)
+        except ldap.VLV_ERROR as msg:
+            raise univention.admin.uexceptions.PaginationError(_err2str(msg), original_exception=msg)
         except ldap.LDAPError as msg:
             raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
@@ -572,6 +576,10 @@ class access:
             raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), filter))
         except ldap.INVALID_DN_SYNTAX as msg:
             raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), base), original_exception=msg)
+        except ldap.BUSY as msg:
+            raise univention.admin.uexceptions.busy(_err2str(msg), original_exception=msg)
+        except ldap.VLV_ERROR as msg:
+            raise univention.admin.uexceptions.PaginationError(_err2str(msg), original_exception=msg)
         except ldap.LDAPError as msg:
             raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 

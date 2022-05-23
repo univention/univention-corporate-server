@@ -1,3 +1,9 @@
+univention-management-console-module-udm (12.6.4) unstable; urgency=medium
+
+  * Bug #50240: support pagination in UDM REST API
+
+ -- Florian Best <best@univention.de>  Thu, 16 Jul 2026 14:23:58 +0200
+
 univention-management-console-module-udm (12.6.3) unstable; urgency=medium
 
   * Bug #59579: inspect also keyword-only arguments

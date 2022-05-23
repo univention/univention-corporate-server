@@ -2087,3 +2087,9 @@ msgstr ""
 
 #~ msgid "Target attribute"
 #~ msgstr "Ziel-Attribut"
+
+msgid "Busy"
+msgstr "Beschäftigt"
+
+msgid "Pagination Error"
+msgstr "Paginierungsfehler"

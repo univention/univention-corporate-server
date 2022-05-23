@@ -216,7 +216,7 @@ class Server:
         parser.add_argument('-d', '--debug', type=int, default=ucr.get_int('directory/manager/rest/debug/level'), help='debug level')
         parser.add_argument('-l', '--language', default='C', help='The process locale')
         parser.add_argument('-s', '--unix-socket', help='Bind to a UNIX socket')
-        parser.add_argument('-p', '--port', help='Bind to a TCP port')
+        parser.add_argument('-p', '--port', help='Bind to a TCP port (standard port would be: %d)' % (ucr.get_int('directory/manager/rest/server/port'),))
         parser.add_argument('-c', '--processes', type=int, default=ucr.get_int('directory/manager/rest/processes'), help='How many processes should be forked')
 
         args = parser.parse_args()

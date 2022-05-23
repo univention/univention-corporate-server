@@ -71,9 +71,17 @@ class UnprocessableEntity(UMC_Error):
     status = 422
 
 
+class TooManyRequests(UMC_Error):
+    status = 429
+
+
 class ServerError(UMC_Error):
     msg = _('Internal error')
     status = 500
+
+
+class ServiceNotImplemented(UMC_Error):
+    status = 501
 
 
 class BadGateway(UMC_Error):

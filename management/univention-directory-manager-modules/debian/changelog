@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.6.10) unstable; urgency=medium
+
+  * Bug #50240: support pagination in UDM REST API
+
+ -- Florian Best <best@univention.de>  Thu, 16 Jul 2026 14:24:05 +0200
+
 univention-directory-manager-modules (17.6.9) unstable; urgency=medium
 
   * Bug #59633: fix displaying of actual DNs in license count

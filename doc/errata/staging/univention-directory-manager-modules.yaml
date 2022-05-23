@@ -3,9 +3,16 @@ release: "5.2"
 version: [6]
 scope: ucs_5.2-0-errata5.2-6
 src: univention-directory-manager-modules
-fix: 17.6.9
+fix: 17.6.10
 desc: |
  This update addresses the following issues:
  * The `--list-dns` option of `univention-license-check` was broken by erratum
    394 and has been repaired.
-bug: [59633]
+ * The experimental paginated object search has been enhanced by using LDAP
+   Server Side Sorting (SSS) together with either Simple Paged Results (SPR)
+   or Virtual List View (VLV). This functionality is intended for evaluation
+   only and is not yet supported for production use. It has known limitations
+   regarding scalability, process-local pagination state, recovery after LDAP
+   server restarts, and VLV additionally requires the LDAP SSSVLV overlay to
+   be enabled and configured appropriately.
+bug: [59633, 50240]

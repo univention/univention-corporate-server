@@ -186,6 +186,7 @@ class property:
         default: bool | int | str | list[str] | tuple[Any, list[str]] | tuple[Callable, list[str], Any] | None = None,
         copyable: bool = False,
         dontsearch: bool = False,
+        sortable: bool | None = None,
         size: str | None = None,
         type_class: type[TypeHint] | None = None,
         show_in_lists: bool = True,
@@ -195,6 +196,7 @@ class property:
         nonempty_is_default: bool = False,
         readonly_when_synced: bool = False,
         lazy_loading_fn: str | None = None,
+        ordering_matching_rule: str | None = None,
         # obsolete
         module_search: None = None,
         one_only: bool = False,
@@ -219,6 +221,7 @@ class property:
         :param default: The default value for the property when a new object is created.
         :param copyable: With `True` the property is copied when the object is cloned; with `False` the new object will use the default value.
         :param dontsearch: `True` to prevent searches using the property.
+        :param sortable: `True` allows that paginated searches are allowed to sort by this property. Defaults to wheather the value is searchable.
         :param size: The |UMC| widget size; one of :py:data:`univention.admin.syntax.SIZES`.
         :param type_class: An optional Typing class which overwrites the syntax class specific type.
         :param show_in_lists: `False` to prevent it from being shown in the CLI.
@@ -228,6 +231,7 @@ class property:
         :param nonempty_is_default: `True` selects the first non-empty value as the default. `False` always selects the first default value, even if it is empty.
         :param readonly_when_synced: `True` only shows the value as read-only when synchronized from some upstream database.
         :param lazy_loading_fn: An optional function name that implements loading additional expensive properties if requested.
+        :param ordering_matching_rule: An optional LDAP matching rule used for ordering search results (e.g. "caseIgnoreOrderingMatch" or "integerOrderingMatch")
         :param module_search: UNUSED
         :param one_only: UNUSED
         :param parent: UNUSED
@@ -254,6 +258,7 @@ class property:
         self.base_default = default
         self.prevent_umc_default_popup = prevent_umc_default_popup
         self.dontsearch = dontsearch
+        self.sortable = sortable if sortable is not None else self.searchable
         self.show_in_lists = show_in_lists
         self.cli_enabled = cli_enabled
         self.editable = editable
@@ -268,6 +273,14 @@ class property:
         self.copyable = copyable
         self.type_class = type_class
         self.lazy_loading_fn = lazy_loading_fn
+        self.ordering_matching_rule = ordering_matching_rule
+        assert self.ordering_matching_rule in {None, 'integerOrderingMatch', 'caseIgnoreOrderingMatch', 'generalizedTimeOrderingMatch', 'caseExactOrderingMatch', 'UUIDOrderingMatch', 'CSNOrderingMatch'}
+        # numericStringOrderingMatch
+        # octetStringOrderingMatch
+
+    @property
+    def searchable(self):
+        return not self.dontsearch
 
     def new(self) -> list[str] | None:
         return [] if self.multivalue else None

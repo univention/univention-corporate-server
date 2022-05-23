@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.6.6) unstable; urgency=medium
+
+  * Bug #50240: support pagination in UDM REST API
+
+ -- Florian Best <best@univention.de>  Thu, 16 Jul 2026 14:24:56 +0200
+
 univention-directory-manager-rest (12.6.5) unstable; urgency=medium
 
   * Bug #59575: add missing `opened` query parameter to the OpenAPI/Swagger

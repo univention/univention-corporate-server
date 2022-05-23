@@ -93,6 +93,91 @@ def _ldap_operational_attribute_names(lo: univention.admin.uldap.access) -> set[
     return {n.lower() for a in attrs for n in a.names if a.usage in usages}
 
 
+ORDERING_BY_MATCHING_RULE = {
+    # Equality
+    'caseIgnoreMatch': 'caseIgnoreOrderingMatch',
+    'caseExactMatch': 'caseExactOrderingMatch',
+    'integerMatch': 'integerOrderingMatch',
+    'generalizedTimeMatch': 'generalizedTimeOrderingMatch',
+    'UUIDMatch': 'UUIDOrderingMatch',
+    'uuidMatch': 'UUIDOrderingMatch',
+    'CSNMatch': 'CSNOrderingMatch',
+
+    # Substring
+    'caseIgnoreSubstringsMatch': 'caseIgnoreOrderingMatch',
+    'caseExactSubstringsMatch': 'caseExactOrderingMatch',
+    'numericStringSubstringsMatch': 'numericStringOrderingMatch',
+    'octetStringSubstringsMatch': 'octetStringOrderingMatch',
+}
+ORDERING_BY_SYNTAX = {
+    '1.3.6.1.4.1.1466.115.121.1.15': 'caseIgnoreOrderingMatch',  # Directory String
+    '1.3.6.1.4.1.1466.115.121.1.27': 'integerOrderingMatch',  # Integer
+    '1.3.6.1.4.1.1466.115.121.1.24': 'generalizedTimeOrderingMatch',  # Generalized Time
+}
+
+
+@univention.admin._ldap_cache(ttl=3600)
+def _ldap_ordering_rules(lo: univention.admin.uldap.access) -> dict[str, str]:
+    """
+    Get a heuristic mapping of lowercased attribute names and their possible ORDERING matching rules.
+    For Server Side Sorting we need to specify an ORDERING matching rule for the attributes.
+    But most attributes don't specify it in the schema, which enforces the client to specify one explicitly.
+    We use this best-guess-from-schema-introspection instead of forcing all UDM module properties to specify them, adding a lot of redundancy
+    or problems for third-party modules not being extended yet.
+    """
+    schema = lo.authz_connection.get_schema()
+    attr_cls = ldap.schema.models.AttributeType
+
+    def first(value):
+        if isinstance(value, (tuple, list)):
+            return value[0] if value else None
+        return value
+
+    def effective(attr, field):
+        seen = set()
+
+        while attr:
+            value = first(getattr(attr, field, None))
+            if value is not None:
+                return value
+
+            sup = first(getattr(attr, 'sup', None))
+            if not sup or sup in seen:
+                return None
+
+            seen.add(sup)
+            attr = schema.get_obj(attr_cls, sup)
+
+        return None
+
+    ordering_rules = {}
+    for oid in schema.listall(attr_cls):
+        attr = schema.get_obj(attr_cls, oid)
+        if not attr:
+            continue
+
+        # if schema already defines ORDERING, no heuristic is needed.
+        if effective(attr, 'ordering'):
+            continue
+
+        equality = effective(attr, 'equality')
+        substr = effective(attr, 'substr')
+        syntax = effective(attr, 'syntax')
+
+        ordering = (
+            ORDERING_BY_MATCHING_RULE.get(equality)
+            or ORDERING_BY_MATCHING_RULE.get(substr)
+            or ORDERING_BY_SYNTAX.get(syntax)
+        )
+        if not ordering:
+            continue
+
+        for name in attr.names:
+            ordering_rules[name.lower()] = ordering
+
+    return ordering_rules
+
+
 def update() -> None:
     """Scan file system and update internal list of |UDM| handler modules."""
     global modules, _superordinates

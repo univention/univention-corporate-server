@@ -73,6 +73,14 @@ class ldapError(base):
         super().__init__(*args, **kwargs)
 
 
+class busy(ldapError):
+    message = _('Busy')
+
+
+class PaginationError(ldapError):
+    message = _('Pagination Error')
+
+
 class ldapTimeout(base):
     message = _('The specified timeout for the LDAP search has been exceeded.')
 
