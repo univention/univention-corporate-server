@@ -419,3 +419,23 @@ Description[en]=List of group dn's that have read access to all objects beneath 
 Type=list
 Separator=|
 Categories=service-ldap
+
+[ldap/overlay/sssvlv/max]
+Description[de]=Legen Sie die maximale Anzahl gleichzeitiger Sortieranfragen fest, die für alle Verbindungen zulässig sind. Der Standardwert ist die Hälfte der Anzahl der Server-Threads.
+Description[en]=Set the maximum number of concurrent sort requests allowed across all connections. The default is one half of the number of server threads.
+Type=int
+Categories=service-ldap
+
+[ldap/overlay/sssvlv/maxkeys]
+Description[de]=Legen Sie die maximale Anzahl von Schlüsseln fest, die in einer Sortieranfrage zulässig sind.
+Description[en]=Set the maximum number of keys allowed in a sort request.
+Default=5
+Type=int
+Categories=service-ldap
+
+[ldap/overlay/sssvlv/maxperconn]
+Description[de]=Legen Sie die maximale Anzahl der gleichzeitigen Suchanfragen pro Verbindung fest. Die Anzahl der gleichzeitigen Anfragen bleibt durch sssvlv-max begrenzt.
+Description[en]=Set the maximum number of concurrent paged search requests per connection. The number of concurrent requests remains limited by sssvlv-max.
+Default=5
+Type=int
+Categories=service-ldap

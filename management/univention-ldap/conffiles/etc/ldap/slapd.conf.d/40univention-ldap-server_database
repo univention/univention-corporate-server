@@ -42,6 +42,12 @@ if configRegistry.is_true('ldap/overlay/lastbind'):
 else:
     print('# lastbind overlay module has been disabled by UCR')
 
+print('overlay sssvlv')
+if configRegistry.get_int('ldap/overlay/sssvlv/max', -1) != -1:
+    print('sssvlv-max %d' % (configRegistry.get_int('ldap/overlay/sssvlv/max'),))
+print('sssvlv-maxkeys %d' % (configRegistry.get_int('ldap/overlay/sssvlv/maxkeys', 20),))
+print('sssvlv-maxperconn %d' % (configRegistry.get_int('ldap/overlay/sssvlv/maxperconn', 200),))
+
 print('\n')
 if configRegistry['ldap/database/type'] == "mdb":
     print("maxsize\t%(ldap/database/mdb/maxsize)s" % configRegistry)
