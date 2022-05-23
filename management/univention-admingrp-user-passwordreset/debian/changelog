@@ -1,3 +1,9 @@
+univention-admingrp-user-passwordreset (10.0.0-4) unstable; urgency=medium
+
+  * Bug #54744: Ensure Python2 backward compatibility
+
+ -- Arvid <requate@univention.de>  Mon, 23 May 2022 13:14:44 +0200
+
 univention-admingrp-user-passwordreset (10.0.0-3) unstable; urgency=medium
 
   * Bug #54744: Avoid slapd not starting due to exceeding line length
