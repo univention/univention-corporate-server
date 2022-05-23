@@ -1,3 +1,9 @@
+univention-join (12.0.3-13) unstable; urgency=medium
+
+  * Bug #33255: make Domain Join progress bar show currently executed join script
+
+ -- Christian Castens <castens@univention.de>  Mon, 23 May 2022 13:03:00 +0200
+
 univention-join (12.0.3-12) unstable; urgency=medium
 
   * Bug #53100: Code cleanup

@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-join
+fix:
+desc: |
+ This update addresses the following issue:
+ * When executing join scripts via UMC module `Domain Join` the progress bar will
+   now display the name of the currently running script instead of the last script
+   that was finished.
+bug: [33255]

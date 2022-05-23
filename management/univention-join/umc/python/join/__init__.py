@@ -31,29 +31,31 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import traceback
-import subprocess
-import os
-import tempfile
-import socket
+import errno
+import fcntl
 import glob
+import os
 import re
-import dns.resolver
-import dns.exception
-
-import notifier.threads
-import apt_pkg
-
-import univention.management.console as umc
-from univention.management.console.log import MODULE
-from univention.management.console.modules import Base, UMC_Error
-from univention.management.console.config import ucr
-from univention.management.console.modules.decorators import simple_response, sanitize
-from univention.management.console.modules.sanitizers import StringSanitizer, ListSanitizer, BooleanSanitizer
-
-
+import select
+import socket
+import subprocess
+import tempfile
+import traceback
 from typing import Any, Callable, Dict, List, Union  # noqa: F401
 
+import apt_pkg
+import dns.exception
+import dns.resolver
+import notifier.threads
+
+import univention.management.console as umc
+from univention.management.console.config import ucr
+from univention.management.console.log import MODULE
+from univention.management.console.modules import Base, UMC_Error
+from univention.management.console.modules.decorators import sanitize, simple_response
+from univention.management.console.modules.sanitizers import (
+	BooleanSanitizer, ListSanitizer, StringSanitizer,
+)
 
 _ = umc.Translation('univention-management-console-module-join').translate
 
@@ -156,9 +158,10 @@ def system_join(
 	hostname: str, username: str, password: str, info_handler: Callable = _dummyFunc,
 	error_handler: Callable = _dummyFunc, critical_handler: Callable = _dummyFunc,
 	step_handler: Callable = _dummyFunc, component_handler: Callable = _dummyFunc) -> bool:
+
 	# get the number of join scripts
-	nJoinScripts = len(glob.glob(f'{INSTDIR}/*.inst'))
-	stepsPerScript = 100.0 / (nJoinScripts + 1)
+	n_joinscripts = len(glob.glob(f'{INSTDIR}/*.inst'))
+	steps_per_script = 100.0 / (n_joinscripts + 1)
 
 	with tempfile.NamedTemporaryFile() as passwordFile:
 		passwordFile.write(password.encode('UTF-8'))
@@ -167,7 +170,7 @@ def system_join(
 		MODULE.process('Performing system join...')
 		cmd = ['/usr/sbin/univention-join', '-dcname', hostname, '-dcaccount', username, '-dcpwd', passwordFile.name]
 
-		return run(cmd, stepsPerScript, info_handler, error_handler, critical_handler, step_handler, component_handler)
+		return run(cmd, steps_per_script, info_handler, error_handler, critical_handler, step_handler, component_handler)
 
 
 def run_join_scripts(
@@ -191,14 +194,14 @@ def run_join_scripts(
 		else:
 			# we need the number of join scripts for the progressbar
 			scripts = os.listdir(INSTDIR)
-		stepsPerScript = 100.0 / (len(scripts) + 1)
+		steps_per_script = 100.0 / (len(scripts) + 1)
 
 		MODULE.process('Executing join scripts ...')
-		return run(cmd, stepsPerScript, info_handler, error_handler, critical_handler, step_handler, component_handler)
+		return run(cmd, steps_per_script, info_handler, error_handler, critical_handler, step_handler, component_handler)
 
 
 def run(
-	cmd: List, stepsPerScript: float, info_handler: Callable = _dummyFunc, error_handler: Callable = _dummyFunc,
+	cmd: List, steps_per_script: float, info_handler: Callable = _dummyFunc, error_handler: Callable = _dummyFunc,
 	critical_handler: Callable = _dummyFunc, step_handler: Callable = _dummyFunc, component_handler: Callable = _dummyFunc) -> bool:
 	# disable restart of UMC server/web-server
 	MODULE.info('disabling restart of UMC server/web-server')
@@ -206,26 +209,24 @@ def run(
 
 	try:
 		# regular expressions for output parsing
-		regError = re.compile(r'^\* Message:\s*(?P<message>.*)\s*$')
-		regJoinScript = re.compile(r'(Configure|Running)\s+(?P<script>.*)\.inst.*$')
-		regInfo = re.compile(r'^(?P<message>.*?)\s*:?\s*\x1b.*$')
+		error_pattern = re.compile(r'^\* Message:\s*(?P<message>.*)\s*$')
+		joinscript_pattern = re.compile(r'(Configure|Running)\s+(?P<script>.*)\.inst.*$')
+		info_pattern = re.compile(r'^(?P<message>.*?)\s*:?\s*\x1b.*$')
 
 		# call to univention-join
 		MODULE.info('calling "%s"' % ' '.join(cmd))
 		process = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-		failedJoinScripts = []
-		while True:
-			# get the next line
-			line = process.stdout.readline()
-			if not line:
-				# no more text from stdout
-				break
-			line = line.decode('utf-8', errors='replace')
-			MODULE.process(line.strip())
+		failed_join_scripts = []
+		executed_join_scripts = set()
+
+		def parse(line):
+			if not line.strip():
+				return
+			MODULE.process(repr(line.strip()).strip('"\''))
 
 			# parse output... first check for errors
-			matches = regError.match(line)
+			matches = error_pattern.match(line)
 			if matches:
 				message = matches.groupdict().get('message')
 				error_handler(_("The system join process could not be completed:<br/><br/><i>%s</i><br/><br/> More details can be found in the log file <i>/var/log/univention/join.log</i>.<br/>Please retry after resolving any conflicting issues.") % message)
@@ -233,40 +234,71 @@ def run(
 					# invalid credentials or non existent user
 					# do a critical error, the script will stop here
 					critical_handler(True)
-
-				continue
+				return
 
 			# check for currently called join script
-			matches = regJoinScript.match(line)
+			matches = joinscript_pattern.match(line)
 			if matches:
+				current_script = matches.groupdict().get("script")
 				component_handler(_('Executing join scripts'))
-				info_handler(_('Executing join script %s') % matches.groupdict().get('script'))
-				step_handler(stepsPerScript)
+				info_handler(_('Executing join script %s') % (current_script,))
+				if current_script not in executed_join_scripts:
+					executed_join_scripts.add(current_script)
+					step_handler(steps_per_script)
 				if 'failed' in line:
-					failedJoinScripts.append(matches.groupdict().get('script'))
-				continue
+					failed_join_scripts.append(current_script)
+				return
 
 			# check for other information
-			matches = regInfo.match(line)
+			matches = info_pattern.match(line)
 			if matches:
 				info_handler(matches.groupdict().get('message'))
-				step_handler(stepsPerScript / 10)
-				continue
+				step_handler(steps_per_script / 10)
+				return
+
+		# make stdout file descriptor of the process non-blocking
+		fd = process.stdout.fileno()
+		fl = fcntl.fcntl(fd, fcntl.F_GETFL)
+		fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
+
+		unfinished_line = ''
+		while True:
+			try:
+				fd = select.select([process.stdout], [], [])[0][0]
+			except IndexError:
+				continue  # not ready / no further data
+			except select.error as exc:
+				if exc.args[0] == errno.EINTR:
+					continue
+				raise
+
+			# get the next line
+			line = fd.read().decode('utf-8', 'replace')
+
+			if not line:
+				break  # no more text from stdout
+
+			unfinished_line = '' if line.endswith('\n') else '%s%s' % (unfinished_line, line.rsplit('\n', 1)[-1])
+			for line in line.splitlines():
+				parse(line)
+			if unfinished_line:
+				parse(unfinished_line)
 
 		# get all remaining output
 		stdout, stderr = process.communicate()
+		stdout, stderr = stdout.decode('UTF-8', 'replace'), stderr.decode('UTF-8', 'replace')
 		if stderr:
 			# write stderr into the log file
-			MODULE.warn(f'stderr: {stderr.decode("UTF-8", "replace")}')
+			MODULE.warn(f'stderr: {stderr}')
 
 		success = True
 		# check for errors
 		if process.returncode != 0:
 			# error case
-			MODULE.warn(f'Could not perform system join: {stdout.decode("UTF-8", "replace")}{stderr.decode("UTF-8", "replace")}')
+			MODULE.warn(f'Could not perform system join: {stdout}{stderr}')
 			success = False
-		elif failedJoinScripts:
-			MODULE.warn(f'The following join scripts could not be executed: {failedJoinScripts}')
+		elif failed_join_scripts:
+			MODULE.warn(f'The following join scripts could not be executed: {failed_join_scripts}')
 			error_handler(_('Some join scripts could not be executed. More details can be found in the log file <i>/var/log/univention/join.log</i>.<br/>Please retry to execute the join scripts after resolving any conflicting issues.'))
 
 			success = False
