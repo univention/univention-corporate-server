@@ -63,8 +63,8 @@ msgid ""
 "A host name or FQDN must start with a letter and end with a letter or number."
 " In between additionally dashes, dots and underscores are allowed."
 msgstr ""
-"Ein Hostname oder FQDN muss mit einem Buchstaben oder einer Zahl beginnen "
-"und mit einem Buchstaben oder einer Zahl enden. Dazwischen sind zusätzlich "
+"Ein Hostname oder FQDN muss mit einem Buchstaben beginnen und mit einem "
+"Buchstaben oder einer Zahl enden. Dazwischen sind zusätzlich "
 "Bindestriche, Unterstriche und Punkte erlaubt."
 
 #: modules/univention/admin/syntax.py:6687
