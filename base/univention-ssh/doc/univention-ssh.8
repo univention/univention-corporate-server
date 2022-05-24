@@ -39,10 +39,10 @@ For backward compatibility this is disabled by default, which results in all arg
 Enabling this option disables this backward compatible processing and directly passes all arguments as-is to
 .BR ssh (1),
 .BR scp (1),\ or
-.BR rsynv (1).
+.BR rsync (1).
 .br
 Note:
-Using ssh still invokes a shell at the remote host using its \fB\-c\fP option, so arguments must be properly quoted to not be expanded by the remote shell!
+Using \fBssh\fP still invokes a shell at the remote host using its \fB\-c\fP option, so arguments must be properly quoted to not be expanded by the remote shell!
 
 .SH EXAMPLES
 Without the \fB\-\-no\-split\fP option, the arguments are first locally split, and then again by the remote shell:
