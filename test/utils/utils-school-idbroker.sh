@@ -39,10 +39,6 @@ ansible_preperation () {
 	local kc2_ip="${7:?missing kc2_ip}"
 	local db_extern="${8:?missing domain}"
 	local rv=0
-	# Setup passwordless ssh login for ansible
-	ssh-keygen -t rsa -b 4096 -f /root/.ssh/id_rsa -q -N ""
-	cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
-	ssh -o "StrictHostKeyChecking=accept-new" localhost true
 	# Download ansible scripts
 	wget -e robots=off --user "$repo_user" \
 		--password="$(< "$repo_password_file")" \
