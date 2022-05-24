@@ -4,6 +4,8 @@
 ## exposure: dangerous
 ## packages:
 ##   - univention-group-membership-cache
+## packages-not:
+##   - univention-samba
 
 from univention.testing.strings import random_name
 from univention.udm import UDM
