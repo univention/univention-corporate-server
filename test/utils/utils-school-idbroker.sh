@@ -44,11 +44,11 @@ ansible_preperation () {
 	cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 	ssh -o "StrictHostKeyChecking=accept-new" localhost true
 	# Download ansible scripts
-	wget -e robots=off --cut-dirs=3 -np -R "index.html*" --user "$repo_user" \
-		--password="$(< "$repo_password_file")" -r -l 10 \
-		"https://service.software-univention.de/apt/00342/docs/keycloak/" || rv=$?
-	cd service.software-univention.de/keycloak || rv=$?
-	# check the jenkins-data repo for the following files
+	wget -e robots=off --user "$repo_user" \
+		--password="$(< "$repo_password_file")" \
+		"https://service.software-univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz" || rv=$?
+	tar -xf ansible_playbook.tar.gz || rv=$?
+	cd deployment || rv=$?
 	cp /root/hosts.ini hosts.ini
 	cp /root/idps.yml schools_saml_IDP/idps.yml
 	cp /root/clients.yml clients.yml
@@ -106,8 +106,8 @@ apache_custom_vhosts () {
 
 ansible_run_keycloak_configuration () {
 	local rv=0
-	cd service.software-univention.de/keycloak || rv=$?
-	/usr/local/bin/ansible-playbook -i hosts.ini main.yml || rv=$?
+	cd deployment || rv=$?
+	/usr/local/bin/ansible-playbook -i environments/jenkins main.yml || rv=$?
 	return $rv
 }
 
