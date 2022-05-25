@@ -1,6 +1,6 @@
 product: ucs
 release: "4.4"
-version: [8, 9]
+version: [9]
 scope: ucs_4.4-0-errata4.4-9
 src: imagemagick
 fix: 8:6.9.7.4+dfsg-11+deb9u14
