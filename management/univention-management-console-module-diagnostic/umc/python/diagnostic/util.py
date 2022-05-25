@@ -62,7 +62,7 @@ def run_with_output(cmd):
 	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	(stdout, stderr) = process.communicate()
 	if stdout:
-		output.append('\nSTDOUT:\n{}'.format(stdout))
+		output.append('\nSTDOUT:\n{}'.format(stdout.decode('UTF-8', 'replace')))
 	if stderr:
-		output.append('\nSTDERR:\n{}'.format(stderr))
+		output.append('\nSTDERR:\n{}'.format(stderr.decode('UTF-8', 'replace')))
 	return (process.returncode == 0, '\n'.join(output))

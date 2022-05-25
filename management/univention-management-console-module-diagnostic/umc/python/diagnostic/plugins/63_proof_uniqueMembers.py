@@ -79,7 +79,7 @@ def run(_umc_instance, rerun=False, fix_log=''):
 	if not success:
 		error = _('`/usr/share/univention-directory-manager-tools/proof_uniqueMembers -c` found an error with the LDAP database group membership attributes.')
 		error_descriptions.append(error)
-		error_descriptions.append(output.decode('utf-8', 'replace'))
+		error_descriptions.append(output)
 		if not rerun:
 			fix = _('You can run `/usr/share/univention-directory-manager-tools/proof_uniqueMembers` to fix the issue.')
 			error_descriptions.append(fix)

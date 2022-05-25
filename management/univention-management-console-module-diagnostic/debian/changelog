@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.0-33) unstable; urgency=medium
+
+  * Bug #48652: fixed decode error in 63_proof_uniqueMembers
+
+ -- Maximilian Janßen <janssen@univention.de>  Wed, 25 May 2022 17:10:34 +0200
+
 univention-management-console-module-diagnostic (6.0.0-32) unstable; urgency=medium
 
   * Bug #48652: let group membership attribute consistency only run on
