@@ -5,10 +5,9 @@ scope: ucs_5.0-0-errata5.0-1
 src: univention-web
 fix: 4.0.2-51A~5.0.0.202204220150
 desc: |
- This update addresses the following issue:
- * The logic for mapping UDM syntax classes to UMC frontend widgets has been
-   moved into the UDM syntax classes.
-   The logic to get the dynamic choices for a UDM syntax has been moved into
-   the UDM syntax classes.
- * A new widget for suggesting mail domains during typing has been introduced.
+ This update addresses the following issues:
+ * The logic for mapping UDM syntax classes to UMC frontend widgets and to get
+   the dynamic choices for a UDM syntax have been moved into the UDM syntax
+   classes.
+ * A new widget suggesting mail domains while typing has been introduced.
 bug: [38762, 54467]
