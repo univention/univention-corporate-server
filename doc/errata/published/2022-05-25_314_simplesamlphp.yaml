@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Added support for RFC6265bis SameSite cookie attribute.
 bug: [54483]
+erratum: 314
+announced: 2022-05-25
