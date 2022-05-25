@@ -49,26 +49,58 @@ def display_help(out=sys.stdout):
 		Copyright (c) 2001-2022 Univention GmbH, Germany
 
 		Syntax:
-		  %(cmd)s [-timeout timeout] [--no-split] <pwd_file> [options] [user@]host <command>
+		  %(cmd)s [-timeout <seconds>] [--no-split] <pwd_file> [ssh-options] [user@]<host> <command> [<arguments>...]
 		  %(cmd)s [--help] [--version]
 
 		Parameters:
 		  pwd_file                         file containing the password
 		  options                          optional options to %(cmd)s
+		  ssh-options                      additional options to ssh
 		  user                             user to log in as on the remote system
 		  host                             name or ip address of the remote system
 		  command                          command to be executed on remote system
+		  arguments                        additional arguments to remote command
 
 		Options:
-		  -timeout:                        timeout for operation in seconds
+		  -timeout SECONDS:                Specify a timeout in seconds, after
+		                                   with the ssh connection is forcefuly terminated.
 		  --no-split:                      don't word-split command
 		  -h | --help | -?:                print this usage message
 		  --version:                       print version information
 
 		Description:
-		  %(cmd)s is an internal managing tool which is used to
-		  execute commands on remote computer systems,
+		  %(cmd)s is an internal command to use SSH with plain text password
+		  authentication, which is used to execute commands on remote computer systems,
 		  e.g. %(cmd)s /tmp/pwd root@192.168.0.31 ls -la /
+		'''  # noqa: E101
+	elif cmd == 'univention-scp':
+		text = '''
+		%(cmd)s: internal managing tool for UCS clients
+		Copyright (c) 2001-2022 Univention GmbH, Germany
+
+		Syntax:
+		  %(cmd)s [-timeout <seconds>] [--no-split] <pwd_file> [scp-options] files [user@]host:[path]
+		  %(cmd)s [--help] [--version]
+
+		Parameters:
+		  pwd_file                         file containing the password
+		  scp-options                      additional options to scp
+		  files                            source files or directories
+		  user                             user to log in as on the remote system
+		  host                             name or ip address of the remote system
+		  path                             destination on the remote system
+
+		Options:
+		  -timeout SECONDS:                Specify a timeout in seconds, after
+		                                   with the ssh connection is forcefuly terminated.
+		  --no-split:                      don't word-split command
+		  -h | --help | -?:                print this usage message
+		  --version:                       print version information
+
+		Description:
+		  %(cmd)s is an internal command to use SCP with plain text password
+		  authentication, which is used to copy files from/to remote computer systems,
+		  e.g. %(cmd)s /tmp/pwd file.txt root@192.168.0.31:
 		'''  # noqa: E101
 	else:
 		text = '''
@@ -76,29 +108,30 @@ def display_help(out=sys.stdout):
 		Copyright (c) 2001-2022 Univention GmbH, Germany
 
 		Syntax:
-		  %(cmd)s [-timeout timeout] [--no-split] <pwd_file> [options] files [user@]host:[path]
+		  %(cmd)s [-timeout <seconds>] [--no-split] <pwd_file> [rsync-options] files [user@]host:[path]
 		  %(cmd)s [--help] [--version]
 
 		Parameters:
 		  pwd_file                         file containing the password
-		  options                          optional options to %(cmd)s
+		  rsync-options                    additional options to rsync
 		  files                            source files or directories
 		  user                             user to log in as on the remote system
 		  host                             name or ip address of the remote system
 		  path                             destination on the remote system
 
 		Options:
-		  -timeout:                        timeout for operation in seconds
+		  -timeout SECONDS:                Specify a timeout in seconds, after
+		                                   with the ssh connection is forcefuly terminated.
 		  --no-split:                      don't word-split command
 		  -h | --help | -?:                print this usage message
 		  --version:                       print version information
 
 		Description:
-		  %(cmd)s is an internal managing tool which is used to
-		  copy files from/to remote computer systems,
+		  %(cmd)s is an internal command to use RSYNC with plain text password
+		  authentication, which is used to copy files from/to remote computer systems,
 		  e.g. %(cmd)s /tmp/pwd file.txt root@192.168.0.31:
 		'''  # noqa: E101
-	print(dedent(text).strip("\n"), file=out)
+	print(dedent(text % {'cmd': cmd}).strip("\n"), file=out)
 
 
 def display_version(out=sys.stdout):
