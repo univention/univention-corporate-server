@@ -1,3 +1,10 @@
+univention-ssh (11.0.0-5) unstable; urgency=medium
+
+  * Bug #54588: Add --no-split option before password file  on univention-scp
+    and univention-rsync
+
+ -- Eric Monne Mesalles <monne-mesalles.extern@univention.de>  Wed, 25 May 2022 11:45:53 +0200
+
 univention-ssh (11.0.0-4) unstable; urgency=medium
 
   * Bug #54588: Add --no-split option before password file
