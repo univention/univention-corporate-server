@@ -487,7 +487,7 @@ def import_all(opt):
             s_tid = translog.last
         log.debug("size.tid=%d off=%d size=%d", s_tid, s_offset, opt.size)
 
-        start = max(1, min(c_tid, p_tid, s_tid), translog.first)
+        start = max(1, min(c_tid, p_tid, s_tid), translog.first, opt.min)
         assert translog.first <= start <= translog.last, start
         end = min(opt.max or translog.last, translog.last)
 

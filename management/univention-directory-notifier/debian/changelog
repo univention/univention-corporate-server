@@ -1,3 +1,9 @@
+univention-directory-notifier (13.0.3-9) unstable; urgency=low
+
+  * Bug #54794: Heed univention-translog import --min <TID>
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 25 May 2022 07:30:53 +0200
+
 univention-directory-notifier (13.0.3-8) unstable; urgency=medium
 
   * Bug #53821: Fix partial import when index < notifier_cache_size
