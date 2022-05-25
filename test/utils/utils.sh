@@ -1085,6 +1085,14 @@ prepare_results () {
 	dump_systemd_journal
 }
 
+add_ucsschool_dev_repo () {
+	local majorminor="$(ucr get version/version)"
+	cat << EOF > /etc/apt/sources.list.d/ucsschool-dev-repo.list
+deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-ucs-school-${majorminor}/all/
+deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-ucs-school-${majorminor}/\$(ARCH)/
+EOF
+}
+
 add_branch_repository () {
 	local extra_list="/root/apt-get-branch-repo.list"
 	if [ -s "$extra_list" ]; then
