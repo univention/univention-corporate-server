@@ -9,3 +9,5 @@ desc: |
  * The Univention Configuration Registry template for the file `/etc/hosts`
    now always produces the same output given the same configuration.
 bug: [54558]
+erratum: 315
+announced: 2022-05-25
