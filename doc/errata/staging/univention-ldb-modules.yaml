@@ -6,10 +6,9 @@ src: univention-ldb-modules
 fix: 8.0.0-7A~5.0.0.202205181802
 desc: |
  This update addresses the following issue:
- * Joining a backup node into a single server UCS@school environment
-   failed because the ldb module univention_samaccountname_ldap_check
-   attempted to create an object of type computers/windows for it
-   which always failed because the account name was already taken
-   by the computers/domaincontroller_backup object.
-
+ * Joining a backup node into a single server UCS@school environment failed
+   because the ldb module `univention_samaccountname_ldap_check` attempted to
+   create an object of type `computers/windows` for it which always failed
+   because the account name was already taken by the
+   `computers/domaincontroller_backup` object.
 bug: [54768]
