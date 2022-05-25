@@ -1326,12 +1326,12 @@ def parse_args(args=None):
     parser_import = subparsers.add_parser("import", help="Import transaction file into LDAP")
     parser_import.add_argument("--index", "-i", action="store_false", help="Do not use index to find transactions")
     import_amount = parser_import.add_argument_group("minimum", description="Amount of transactions to import")
-    import_amount.add_argument("--count", "-c", action="store", type=parse_count, help="Minimum number of transaction [%(default)s]", default=100000)
-    import_amount.add_argument("--percent", "-p", action="store", type=parse_percent, help="Minimum percentage of transaction file [%(default)s%%]", default="0")
-    import_amount.add_argument("--size", "-s", action="store", type=parse_size, help="Minimum number of bytes from transaction file [%(default)s]", default="10M")
+    import_amount.add_argument("--count", "-c", type=parse_count, help="Minimum number of transaction [%(default)s]", default=100000)
+    import_amount.add_argument("--percent", "-p", type=parse_percent, help="Minimum percentage of transaction file [%(default)s%%]", default="0")
+    import_amount.add_argument("--size", "-s", type=parse_size, help="Minimum number of bytes from transaction file [%(default)s]", default="10M")
     import_limit = parser_import.add_argument_group("limit", description="Limit transactions to process")
-    import_limit.add_argument("--min", "-m", action="store", type=parse_count, help="First transaction ID to process [%(default)s]", default=1)
-    import_limit.add_argument("--max", "-M", action="store", type=parse_count, help="Last transaction ID to process")
+    import_limit.add_argument("--min", "-m", type=parse_count, help="First transaction ID to process [%(default)s]", default=1)
+    import_limit.add_argument("--max", "-M", type=parse_count, help="Last transaction ID to process")
     parser_import.set_defaults(func=import_all)
 
     parser_load = subparsers.add_parser("load", help="Load specified transactions into LDAP")
@@ -1351,8 +1351,8 @@ def parse_args(args=None):
     parser_stat.set_defaults(func=show_stat)
 
     parser_index = subparsers.add_parser("index", help="Dump index file")
-    parser_index.add_argument("--min", "-m", action="store", type=parse_count, help="First transaction ID to process [%(default)s]", default=1)
-    parser_index.add_argument("--max", "-M", action="store", type=parse_count, help="Last transaction ID to process")
+    parser_index.add_argument("--min", "-m", type=parse_count, help="First transaction ID to process [%(default)s]", default=1)
+    parser_index.add_argument("--max", "-M", type=parse_count, help="Last transaction ID to process")
     parser_index.set_defaults(func=dump_index)
 
     parser_check = subparsers.add_parser("check", help="Check transaction files")
