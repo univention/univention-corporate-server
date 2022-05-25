@@ -1,8 +1,7 @@
-#!/bin/sh
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 #
-#
-# Univention Nagios Plugin
-#  check_univention_joinstatus: check join status
+# Univention Monitoring
 #
 # Copyright 2007-2022 Univention GmbH
 #
@@ -30,124 +29,142 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
-#
-
-VERSION="1.00"
-PROGNAME=`/usr/bin/basename $0`
-VERBOSE=0
-
-STATE_OK=0
-STATE_WARNING=1
-STATE_CRITICAL=2
-STATE_UNKNOWN=3
-
-get_state_string() {
-	if [ "$1" = "$STATE_OK" ] ; then
-		STATE_STRING="OK"
-	elif [ "$1" = "$STATE_WARNING" ] ; then
-		STATE_STRING="WARNING"
-	elif [ "$1" = "$STATE_CRITICAL" ] ; then
-		STATE_STRING="CRITICAL"
-	else
-		STATE_STRING="UNKNOWN"
-    fi
-}
-
-print_revision() {
-    echo "$PROGNAME: version $VERSION"
-}
-
-print_usage() {
-    echo "Usage: $PROGNAME --help"
-    echo "Usage: $PROGNAME --version"
-}
-
-print_help() {
-    print_revision
-    echo ""
-    print_usage
-}
-
-exit_with_msg() {
-	get_state_string $1
-	echo "${STATE_STRING}: $2"
-	exit $1
-}
 
 
-eval "$(univention-config-registry shell)"
-LDAPSERVER="$ldap_master"
-LDAPPORT="$ldap_master_port"
+import os.path
+import pipes
+import re
+import subprocess
+from enum import IntEnum
+from os import listdir
 
-while test -n "$1"; do
-    case "$1" in
-        --help)
-            print_help
-            exit $STATE_OK
-            ;;
-        -h)
-            print_help
-            exit $STATE_OK
-            ;;
-        --version)
-            print_revision
-            exit $STATE_OK
-            ;;
-        -V)
-            print_revision
-            exit $STATE_OK
-            ;;
-        -L)
-            LDAPSERVER="$2"
-            shift
-            ;;
-        -P)
-            LDAPPORT="$2"
-            shift
-            ;;
-    esac
-    shift
-done
+from univention.config_registry import ucr
+from univention.monitoring import Alert
 
 
-
-if [ ! -e /etc/machine.secret ]; then
-	exit_with_msg $STATE_CRITICAL "/etc/machine.secret not found - system not joined yet?"
-fi
-
-ldapsearch -x -h "$LDAPSERVER" -p "$LDAPPORT" -D "$ldap_hostdn" -w $(cat /etc/machine.secret) -b "$ldap_base" -s base 2> /dev/null > /dev/null
-if [ $? != 0 ]; then
-	exit_with_msg $STATE_CRITICAL "auth failed: ldapsearch -x -h $LDAPSERVER -p $LDAPPORT -D <ldap_hostdn>"
-fi
-
-
-ldapsearch -x -ZZ -h "$LDAPSERVER" -p "$LDAPPORT" -D "$ldap_hostdn" -w $(cat /etc/machine.secret) -b "$ldap_base" -s base 2> /dev/null > /dev/null
-if [ $? != 0 ]; then
-	exit_with_msg $STATE_CRITICAL "auth or TLS failed: ldapsearch -x -ZZ -h $LDAPSERVER -p $LDAPPORT -D <ldap_hostdn>"
-fi
-
-if [ ! -e /usr/share/univention-join/.joined -a ! -e /var/univention-join/joined ]; then
-	exit_with_msg $STATE_CRITICAL "Cannot find /usr/share/univention-join/.joined or /var/univention-join/joined"
-fi
-
-ldapsearch -x -ZZ -D "$ldap_hostdn" -w $(cat /etc/machine.secret) -b "$ldap_base" -s base  2> /dev/null > /dev/null
-if [ $? != 0 ]; then
-	exit_with_msg $STATE_CRITICAL "auth failed: ldapsearch -x -ZZ -D <ldap_hostdn>"
-fi
-
-CNT=0
-for i in /usr/lib/univention-install/*.inst ; do
-	VERSION=$(egrep "^VERSION=" $i | head -n1 | sed -e 's|VERSION=||' | tr -d -c "[0-9]")
-	SERVICE=$(basename $i .inst | cut -b3-)
-	grep -q "$SERVICE v$VERSION successful" /usr/lib/univention-install/.index.txt
-	if [ ! "$?" = "0" ] ; then
-		CNT=$(($CNT + 1))
-	fi
-done
-if [ $CNT -gt 0 ] ; then
-	exit_with_msg $STATE_WARNING "$CNT join scripts have to be called"
-fi
+class RC(IntEnum):
+    OK = 0
+    OS_ERROR = -1
+    SECRET_NOT_FOUND = 1
+    LDAP_AUTH = 2
+    LDAP_AUTH_TLS = 3
+    NO_JOIN_FILE = 4
+    LDAP_HOST_DN = 5
+    JOIN_SCRIPT_MISSING = 6
 
 
-exit_with_msg $STATE_OK "system joined successfully"
+class JoinStatusError(Exception):
+    pass
+
+
+class JoinStatusCheck(Alert):
+
+    def write_metrics(self):
+        self.secret = None
+        for func, status in (
+            (self.check_machine_secret_exists, RC.SECRET_NOT_FOUND),
+            (self.check_ldapsearch, RC.LDAP_AUTH),
+            (self.check_ldapsearch_tls, RC.LDAP_AUTH_TLS),
+            (self.check_ldapsearch_without_hostdn, RC.LDAP_HOST_DN),
+            (self.check_joined_file_exists, RC.NO_JOIN_FILE),
+            (self.check_missing_joinscripts, RC.JOIN_SCRIPT_MISSING)
+        ):
+            try:
+                func()
+            except OSError:
+                self.write_metric('univention_join_status', int(RC.OS_ERROR))
+                break
+            except JoinStatusError as exc:
+                self.write_metric('univention_join_status', int(status))
+                self.log.debug(str(exc))
+                break
+        else:
+            self.write_metric('univention_join_status', int(RC.OK))
+
+    def check_machine_secret_exists(self):
+        try:
+            with open('/etc/machine.secret') as fd:
+                self.secret = fd.read()
+        except OSError:
+            raise JoinStatusError('/etc/machine.secret not found - system not joined yet?')
+
+    def check_ldapsearch(self):
+        cmd = [
+            'ldapsearch',
+            '-x',
+            '-h', ucr['ldap/server/name'],
+            '-p', ucr['ldap/server/port'],
+            '-D', ucr['ldap/hostdn'],
+            '-w', self.secret,
+            '-b', ucr['ldap/base'],
+            's', 'base'
+        ]
+        try:
+            subprocess.check_call(cmd)
+        except subprocess.CalledProcessError:
+            raise JoinStatusError('auth failed: %s' % ' '.join(pipes.quote(x) for x in cmd))
+
+    def check_ldapsearch_tls(self):
+        cmd = [
+            'ldapsearch',
+            '-x',
+            '-ZZ',
+            '-h', ucr['ldap/server/name'],
+            '-p', ucr['ldap/server/port'],
+            '-D', ucr['ldap/hostdn'],
+            '-w', self.secret,
+            '-b', ucr['ldap/base'],
+            's', 'base'
+        ]
+        try:
+            subprocess.check_call(cmd)
+        except subprocess.CalledProcessError:
+            raise JoinStatusError('auth or TLS failed: %s' % ' '.join(pipes.quote(x) for x in cmd))
+
+    def check_joined_file_exists(self):
+        if not os.path.exists('/usr/share/univention-join/.joined') or not os.path.exists('/var/univention-join/joined'):
+            raise JoinStatusError("Cannot find /usr/share/univention-join/.joined or /var/univention-join/joined")
+
+    def check_ldapsearch_without_hostdn(self):
+        cmd = [
+            'ldapsearch',
+            '-x',
+            '-ZZ',
+            '-D', ucr['ldap/hostdn'],
+            '-w', self.secret,
+            '-b', ucr['ldap/base'],
+            's', 'base'
+        ]
+        try:
+            subprocess.check_call(cmd)
+        except subprocess.CalledProcessError:
+            raise JoinStatusError('auth failed: %s' % ' '.join(pipes.quote(x) for x in cmd))
+
+    def check_missing_joinscripts(self):
+        install_files = [
+            os.path.join('/usr/lib/univention-install/', fd)
+            for fd in listdir('/usr/lib/univention-install/')
+            if os.path.splitext(fd)[1] == '.inst'
+        ]
+        with open('/usr/lib/univention-install/.index.txt', 'r') as fd:
+            index_file_content = fd.read()
+
+        join_error_count = 0
+        for install_file in install_files:
+            with open(install_file) as fd:
+                service = os.path.splitext(os.path.basename(install_file))[0].lstrip('0123456789')
+                version = ""
+                for line in fd.readlines():
+                    match = re.match('^VERSION=[^0-9]*([0-9]+).*?$', line)
+                    if match:
+                        version = match.group(1)
+                        break
+                if "{} v{} successful".format(service, version) not in index_file_content:
+                    join_error_count += 1
+
+        if join_error_count > 0:
+            raise JoinStatusError("{} join scripts have to be called".format(join_error_count))
+
+
+if __name__ == '__main__':
+    JoinStatusCheck.main()
