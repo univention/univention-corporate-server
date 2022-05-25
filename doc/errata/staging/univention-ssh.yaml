@@ -3,9 +3,11 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-ssh
-fix: 11.0.0-4A~5.0.0.202205111018
+fix:
 desc: |
- This update addresses the following issue:
- * Update the `univention-ssh --help` message to specify that the
-   `--no-split` option must be set before the password file parameter
+ This update addresses the following issues:
+ * Update the `univention-scp --help` and `univention-rsync` message to specify
+   that the `--no-split` option must be set before the password file parameter
+ * Fix spelling mistake in doc/univention-ssh.8: rsyn{v → c}
+ * Improve message consistency between the man page and the `--help` messages
 bug: [54588]
