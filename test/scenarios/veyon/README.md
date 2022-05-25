@@ -66,7 +66,17 @@ For internet access a egress internet gateway (`eigw-0b68f6acf5258500a`) is
 used. This eigw supports only IPv6. Therefor the subnet assigns IPv6 addresses
 automatically to all instances.
 
-### Access to EC2 instances
+## Passwords
+
+### KVM
+
+Windows/root/Administrator - the standard password.
+
+### EC2
+
+Windows/root/Administrator - the password from stdout of the job (`[windows] Get password: done (thepassword)`)
+
+## Access to EC2 instances
 
 Access to the instances is possible via the public ip
 (`eipalloc-07d5af32fb6f5a4ac` -> 34.249.17.195) as proxy.
