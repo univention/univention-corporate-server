@@ -1328,33 +1328,33 @@ def parse_args(args=None):
     parser_import = subparsers.add_parser("import", help="Import transaction file into LDAP")
     parser_import.add_argument("--index", "-i", action="store_false", help="Do not use index to find transactions")
     import_amount = parser_import.add_argument_group("minimum", description="Amount of transactions to import")
-    import_amount.add_argument("--count", "-c", type=parse_count, help="Minimum number of transaction [%(default)s]", default=100000)
+    import_amount.add_argument("--count", "-c", type=parse_int_pos, help="Minimum number of transaction [%(default)s]", default=100000)
     import_amount.add_argument("--percent", "-p", type=parse_percent, help="Minimum percentage of transaction file [%(default)s%%]", default="0")
     import_amount.add_argument("--size", "-s", type=parse_size, help="Minimum number of bytes from transaction file [%(default)s]", default="10M")
     import_limit = parser_import.add_argument_group("limit", description="Limit transactions to process")
-    import_limit.add_argument("--min", "-m", type=parse_count, help="First transaction ID to process [%(default)s]", default=1)
-    import_limit.add_argument("--max", "-M", type=parse_count, help="Last transaction ID to process")
+    import_limit.add_argument("--min", "-m", metavar="TID", type=parse_int_pos, help="First transaction ID to process [%(default)s]", default=1)
+    import_limit.add_argument("--max", "-M", metavar="TID", type=parse_int_pos, help="Last transaction ID to process")
     parser_import.set_defaults(func=import_all)
 
     parser_load = subparsers.add_parser("load", help="Load specified transactions into LDAP")
-    parser_load.add_argument("trans", metavar="tid", type=int, nargs='+', help="Transaction number to process")
+    parser_load.add_argument("trans", metavar="TID", type=parse_int_pos, nargs='+', help="Transaction number to process")
     parser_load.add_argument("--index", "-i", action="store_false", help="Do not use index to find transactions")
     parser_load.set_defaults(func=load_single)
 
     parser_lookup = subparsers.add_parser("lookup", help="Lookup transaction in file")
-    parser_lookup.add_argument("trans", metavar="tid", type=int, nargs='+', help="Transaction number to lookup")
+    parser_lookup.add_argument("trans", metavar="TID", type=parse_int_pos, nargs='+', help="Transaction number to lookup")
     parser_lookup.set_defaults(func=lookup)
 
     parser_ldap = subparsers.add_parser("ldap", help="Lookup transaction in LDAP")
-    parser_ldap.add_argument("trans", metavar="tid", type=int, nargs='+', help="Transaction number to lookup")
+    parser_ldap.add_argument("trans", metavar="TID", type=parse_int_pos, nargs='+', help="Transaction number to lookup")
     parser_ldap.set_defaults(func=lookup_ldap)
 
     parser_stat = subparsers.add_parser("stat", help="Show statistics")
     parser_stat.set_defaults(func=show_stat)
 
     parser_index = subparsers.add_parser("index", help="Dump index file")
-    parser_index.add_argument("--min", "-m", type=parse_count, help="First transaction ID to process [%(default)s]", default=1)
-    parser_index.add_argument("--max", "-M", type=parse_count, help="Last transaction ID to process")
+    parser_index.add_argument("--min", "-m", metavar="TID", type=parse_int_pos, help="First transaction ID to process [%(default)s]", default=1)
+    parser_index.add_argument("--max", "-M", metavar="TID", type=parse_int_pos, help="Last transaction ID to process")
     parser_index.set_defaults(func=dump_index)
 
     parser_check = subparsers.add_parser("check", help="Check transaction files")
@@ -1368,7 +1368,7 @@ def parse_args(args=None):
     parser_check.set_defaults(func=check)
 
     parser_prune = subparsers.add_parser("prune", help="Prune transaction files")
-    parser_prune.add_argument("trans", metavar="tid", type=int, help="Oldest transaction number to keep (negative numbers: the number of transactions to keep)")
+    parser_prune.add_argument("trans", metavar="TID", type=int, help="Oldest transaction number to keep (negative numbers: the number of transactions to keep)")
     parser_prune.add_argument("--role", "-r", metavar="ROLE", help="Server role [%(default)s]", default=ucr['server/role'])
     parser_prune.set_defaults(func=prune, fix=True)
 
@@ -1377,22 +1377,22 @@ def parse_args(args=None):
     return opt
 
 
-def parse_count(string):
+def parse_int_pos(string):
     # type: (str) -> int
     """
-    Parse count string.
+    Parse positive integer string.
 
     :param string: The command line string.
-    :returns: The parsed count.
+    :returns: The parsed integer.
     :raises ArgumentTypeError: if the string is valid.
     """
     try:
         val = int(string)
-        if not 0 < val:
-            raise ValueError
+        if 0 < val:
+            return val
     except ValueError:
-        raise ArgumentTypeError("Invalid count")
-    return val
+        pass
+    raise ArgumentTypeError("Positive integer required")
 
 
 def parse_percent(string):
