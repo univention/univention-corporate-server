@@ -29,5 +29,5 @@ fi
 # start
 ./scenarios/veyon/create_veyon_cfg.py  \
 	-w "$UCS_ENV_VEYON_WINDOWS_HOST" \
-	-v kvm > "$cfg_file"
+	-v ec2 > "$cfg_file"
 exec ./utils/start-test.sh "$cfg_file"
