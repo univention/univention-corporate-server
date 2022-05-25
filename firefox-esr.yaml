@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [8, 9]
+scope: ucs_4.4-0-errata4.4-9
+src: firefox-esr
+fix: 91.9.1esr-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * Untrusted input used in JavaScript object indexing, leading to prototype
+   pollution (CVE-2022-1529)
+ * Prototype pollution in Top-Level Await implementation (CVE-2022-1802)
+bug: [54800]
+cve:
+- CVE-2022-1529
+- CVE-2022-1802
