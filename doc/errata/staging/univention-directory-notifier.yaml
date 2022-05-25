@@ -1,10 +1,10 @@
 product: ucs
-release: "4.4"
+release: '4.4'
 version: [9]
 scope: ucs_4.4-0-errata4.4-9
 src: univention-directory-notifier
-fix: 13.0.3-9
+fix: 13.0.3-9A~4.4.0.202205250738
 desc: |
- This update addresses the following issue:
- * `univention-translog import --min <TID>` had no effect.
-bug: [54794]
+  This update addresses the following issue:
+  * `univention-translog import --min <TID>` had no effect.
+bug: [54795]
