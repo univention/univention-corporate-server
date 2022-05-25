@@ -38,12 +38,11 @@ def main():
 
     # copy windows section
     windows_section = list(config.items("windows"))
-    config.remove_section("windows")
 
-    # add windows sections
-    ip_list = ""
+    # add additional windows sections
+    ip_list = "[windows_IP] "
     section = ""
-    for i in range(1, args.windows_clients + 1):
+    for i in range(2, args.windows_clients + 1):
         section = "windows{}".format(i)
         ip_list += "[{}_IP] ".format(section)
         config.add_section(section)
@@ -56,11 +55,8 @@ def main():
     for env in environment.split("\n"):
         if env.startswith("UCS_ENV_WINDOWS_CLIENTS="):
             continue
-        if env.startswith("UCS_ENV_WIN_PASSWORD="):
-            continue
         new_environment += "{}\n".format(env)
     new_environment += "UCS_ENV_WINDOWS_CLIENTS={}\n".format(ip_list)
-    new_environment += "UCS_ENV_WIN_PASSWORD=[ENV:{}_PASSWORD]".format(section)
     config.set("Global", "environment", new_environment)
 
     config.write(sys.stdout)

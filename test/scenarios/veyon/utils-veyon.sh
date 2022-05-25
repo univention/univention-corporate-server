@@ -17,23 +17,31 @@ ucs-winrm () {
 install_veyon () {
 	local client=$1
 	local server=$2
-	# copy setup and config file and key
-	ucs-winrm run-ps --credssp --client "$client" --cmd "
-		New-PSDrive -Name R -PSProvider FileSystem -Root \\\\$server\Veyon-Installation
-		Copy-Item R:\\veyon-*-setup.exe -Destination C:\\
-		Copy-Item R:\\veyon.json -Destination C:\\
-		Copy-Item R:\\veyon-cert_*.pem C:\\
-	"
+	local local_file remote_file
+
+	# copy files to server
+	for local_file in \
+		/usr/share/ucs-school-veyon-windows/*setup.exe \
+		/root/veyon.json \
+		"/var/lib/samba/sysvol/$(ucr get domainname)/scripts/veyon-cert_$(hostname).pem"
+	do
+		remote_file="$(basename "$local_file")"
+		smbclient \
+		        -U"Administrator%${UCS_ENV_WIN_PASSWORD}" \
+		        "//$client/C\$" \
+		        -c "prompt; put $local_file $remote_file"
+	done
+
 	# install veyon
 	ucs-winrm run-ps --client "$client" --cmd 'C:\veyon-*-setup.exe  /S /NoMaster'
 	# authkeys import always throws an error, ignore
-	ucs-winrm run-ps --credssp --client "$client" --cmd "
+	ucs-winrm run-ps --client "$client" --cmd "
 		\$ErrorActionPreference = \"silentlycontinue\"
 		cd C:\\'Program Files'\\Veyon
 		.\\veyon-cli authkeys import teacher/public C:\\veyon-cert_$server.pem
 	"
 	# apply config
-	ucs-winrm run-ps --credssp --client "$client" --cmd "
+	ucs-winrm run-ps --client "$client" --cmd "
 		cd C:\\'Program Files'\\Veyon
 		.\\veyon-cli config import C:\\veyon.json
 		.\\veyon-cli config upgrade
@@ -49,17 +57,16 @@ rename_and_join () {
 	local dns_server="$3"
 	local domain_user="$4"
 	local domain_password="$5"
+	local school="$6"
+	local school_group
+	school_group="$(ucr get windows/domain)/Domain Users $school"
 	ucs-winrm rename-computer --name "$name" --client "$ip"
 	ucs-winrm domain-join \
 		--client "$ip" \
 		--domainpassword "$domain_password" \
 		--domainuser "$domain_user" \
 		--dnsserver "$dns_server"
-}
-
-add_group_to_rdp_group () {
-	local client=${1:?missing client}
-	local group=${2:?missing group}
+	# add school group to local rdp group
 	# shellcheck disable=SC2016
 	ucs-winrm run-ps --client "$client" --cmd '
 		$computer = $env:COMPUTERNAME
@@ -67,7 +74,7 @@ add_group_to_rdp_group () {
 		$auth = New-Object System.Security.Principal.SecurityIdentifier("S-1-5-32-555")
 		$local_group_name = $auth.Translate([System.Security.Principal.NTAccount]).Value.Split("\")[1]
 		$local_group = $ADSIComputer.psbase.children.find($local_group_name, "Group")
-		$domain_users_name = "'"$group"'"
+		$domain_users_name = "'"$school_group"'"
 		$local_group.add("WinNT://$domain_users_name")
 	'
 }
@@ -89,7 +96,8 @@ import_windows_clients () {
 	local name_counter=1 import_file="/tmp/import_windows_clients.csv"
 	rm -f "$import_file"
 	for ip in $UCS_ENV_WINDOWS_CLIENTS; do
-		ping -c 4 "$ip"
+		# TODO, how to get the mac address?
+		ping -c 4 "$ip" || true
 		name="win${name_counter}"
 		mac="$(arp -a| grep "$ip" | sed 's/.*\(..:..:..:..:..:..\).*/\1/')"
 		printf '%s\t%s\t%s\t%s\t%s\n' "${type}" "${name}" "${mac}" "${school}" "${ip}" >> "$import_file"
@@ -107,26 +115,14 @@ setup_windows () {
 	local domain_password="$2"
 	local school="$3"
 	local name_counter=1 name my_ip pids
-	# setup veyon key and config
-	cp "/var/lib/samba/sysvol/$(ucr get domainname)/scripts/veyon-cert_$(hostname).pem" /usr/share/ucs-school-veyon-windows/
-	cp /root/veyon.json /usr/share/ucs-school-veyon-windows/
 	# rename and join windows clients
 	my_ip="$(ucr get interfaces/"$(ucr get interfaces/primary)"/address)"
 	pids=()
 	for client in $UCS_ENV_WINDOWS_CLIENTS; do
 		name="win${name_counter}"
-		rename_and_join "$client" "$name" "$my_ip" "$domain_user" "$domain_password" &
+		rename_and_join "$client" "$name" "$my_ip" "$domain_user" "$domain_password" "$school" &
 		pids+=($!)
 		((name_counter=name_counter+1))
-	done
-	for pid in "${pids[@]}"; do
-		wait -n "$pid"
-	done
-	# add school domain users group to local rdp group
-	pids=()
-	for client in $UCS_ENV_WINDOWS_CLIENTS; do
-		add_group_to_rdp_group "$client" "$(ucr get windows/domain)/Domain Users $school" &
-		pids+=($!)
 	done
 	for pid in "${pids[@]}"; do
 		wait -n "$pid"
@@ -194,4 +190,14 @@ create_school () {
 		--teachers 2 \
 		--classes 2 \
 		"$school"
+}
+
+aws_ipv6 () {
+	local ipv6_address=${1:?missing ipv6}
+	if [[ "$(dmidecode --string system-uuid)" == ec2* ]]; then
+		ucr set \
+			interfaces/eth0/ipv6/default/address="$ipv6_address" \
+			interfaces/eth0/ipv6/default/prefix="128"
+		service networking restart
+	fi
 }

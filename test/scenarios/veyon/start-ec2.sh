@@ -5,6 +5,7 @@ set -e
 cfg_file="$(mktemp)"
 export UCS_ENV_VEYON_WINDOWS_HOST="${UCS_ENV_VEYON_WINDOWS_HOST:=3}"
 export KVM_BUILD_SERVER="EC2"
+export HALT=false
 
 # until
 # https://git.knut.univention.de/univention/dist/ucs-ec2-tools/-/merge_requests/31

@@ -6,6 +6,7 @@ set -e
 cfg_file="$(mktemp)"
 export UCS_ENV_VEYON_WINDOWS_HOST="${UCS_ENV_VEYON_WINDOWS_HOST:=3}"
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=ranarp.knut.univention.de}"
+export HALT=false
 
 ./scenarios/veyon/create_veyon_cfg.py  \
 	-w "$UCS_ENV_VEYON_WINDOWS_HOST" \
