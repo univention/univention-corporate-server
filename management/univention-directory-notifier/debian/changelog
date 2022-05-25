@@ -1,3 +1,9 @@
+univention-directory-notifier (14.0.5-9) unstable; urgency=low
+
+  * Bug #54794: Heed univention-translog import --min <TID>
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 25 May 2022 06:47:25 +0200
+
 univention-directory-notifier (14.0.5-8) unstable; urgency=medium
 
   * Bug #49868: listener/listener.priv is now processed in smaller chunks,
