@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-1
 src: univention-base-files
 fix: 9.0.3-8A~5.0.0.202205161733
 desc: |
- This update addresses the following issues:
- * The Univention Config Registry template now always produces the same output given the same
- configuration for the /etc/hosts file.
+ This update addresses the following issue:
+ * The Univention Configuration Registry template for the file `/etc/hosts`
+   now always produces the same output given the same configuration.
 bug: [54558]
