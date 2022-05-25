@@ -6,21 +6,21 @@ src: univention-directory-manager-modules
 fix: 15.0.11-49A~5.0.0.202205241555
 desc: |
  This update addresses the following issues:
- * Changing the case of name or email attributes will not be prevented by
-   the locking anymore.
- * A crash during accessing a user with multiple user certificates has been
+ * Changing the case of the name or email attributes will no longer be
+   prevented by the locking mechanism.
+ * A crash while accessing an user with multiple user certificates has been
    repaired.
- * The logic for mapping UDM syntax classes to UMC frontend widgets has been
-   moved into the UDM syntax classes.
-   The logic to get the dynamic choices for a UDM syntax has been moved into
-   the UDM syntax classes.
- * Syntax classes can now depend on another UDM property and restrict its
+ * The logic for mapping UDM syntax classes to UMC frontend widgets and to get
+   the dynamic choices for a UDM syntax have been moved into the UDM syntax
+   classes.
+ * Syntax classes can now depend on another UDM property and restrict their
    choices based on that.
  * The available mail domains are now suggested when entering values for the
-   `mailPrimaryAddress` of users/user obects.
- * Improve the error message for invalid dates by specifying the valid range.
+   attribute `mailPrimaryAddress` of objects `users/user`.
+ * The error message for invalid dates has been improved by specifying the
+   valid range.
  * Clarified error message for invalid host name or FQDN. The host name or
    FQDN must begin with a letter.
- * The error handling of the `jpegPhoto` syntax class was broken since
-   UCS 5.0-0 and has been repaired.
+ * The error handling of the syntax class `jpegPhoto` was broken since UCS
+   5.0-0 and has been repaired.
 bug: [52760, 54617, 38762, 53843, 54467, 54668, 54663, 54769]
