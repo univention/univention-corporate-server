@@ -14,7 +14,9 @@ from univention.lib.umc import Forbidden
 from univention.testing.umc import Client
 
 
+@pytest.mark.roles('domaincontroller_master')
 def test_acls(udm, ucr):
+	"""Test UMC ACLs"""
 	test_user, username = udm.create_user(wait_for_replication=False, check_for_drs_replication=False, wait_for=False)
 	hostname = ucr.get('hostname')
 
