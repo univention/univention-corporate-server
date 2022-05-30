@@ -6,7 +6,7 @@ src: python-django
 fix: 1:1.10.7-2+deb9u17
 desc: |
  This update addresses the following issue:
- * potential SQL injection via "tolerance" parameter in GIS functions and
+ * Potential SQL injection via "tolerance" parameter in GIS functions and
    aggregates on Oracle (CVE-2020-9402)
 bug: [54805]
 cve:
