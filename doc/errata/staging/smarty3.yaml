@@ -1,0 +1,17 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: smarty3
+fix: 3.1.31+20161214.1.c7d42e4+selfpack1-2+deb9u6
+desc: |
+ This update addresses the following issue:
+ * Smarty is a template engine for PHP, facilitating the separation of
+   presentation (HTML/CSS) from application logic. Prior to versions 3.1.45
+   and 4.1.1, template authors could inject php code by choosing a malicious
+   {block} name or {include} file name. Sites that cannot fully trust template
+   authors should upgrade to versions 3.1.45 or 4.1.1 to receive a patch for
+   this issue. There are currently no known workarounds. (CVE-2022-29221)
+bug: [54804]
+cve:
+- CVE-2022-29221
