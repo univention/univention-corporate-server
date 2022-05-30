@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-13 10:13+0200\n"
-"PO-Revision-Date: 2022-05-19 16:05+0200\n"
+"POT-Creation-Date: 2022-05-30 12:50+0200\n"
+"PO-Revision-Date: 2022-05-30 12:53+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -690,7 +690,7 @@ msgstr ""
 msgid "Subsequent running of join scripts"
 msgstr "Nachträgliches Ausführen von Join-/Unjoin-Skripten"
 
-#: ../../domain-ldap/domain-join.rst:128
+#: ../../domain-ldap/domain-join.rst:129
 msgid ""
 "If there are join/unjoin scripts on a system which have not yet been run "
 "or which can only be run for an older version, a warning message is shown"
@@ -700,7 +700,7 @@ msgstr ""
 "ausgeführt wurden oder die nur für eine ältere Version ausgeführt wurden,"
 " wird beim Öffnen eines UMC-Moduls eine Warnmeldung ausgegeben."
 
-#: ../../domain-ldap/domain-join.rst:132
+#: ../../domain-ldap/domain-join.rst:133
 msgid ""
 "Join scripts that have not been run can be executed via the UMC module "
 ":guilabel:`Domain join` by clicking on the menu entry :guilabel:`Execute "
@@ -710,7 +710,7 @@ msgstr ""
 ":guilabel:`Domänenbeitritt` aufgerufen werden, in dem der Menüpunkt "
 ":guilabel:`Alle Skripte ausführen` aufgerufen wird."
 
-#: ../../domain-ldap/domain-join.rst:136
+#: ../../domain-ldap/domain-join.rst:137
 msgid ""
 "The :command:`univention-run-join-scripts` command is used to run all of "
 "the join/unjoin scripts installed on a system. The scripts check "
@@ -720,7 +720,7 @@ msgstr ""
 "auf einem System installierten Join-/Unjoin-Skripte ausführen. Ob sie "
 "bereits gestartet wurden, prüfen die Skripte selbständig."
 
-#: ../../domain-ldap/domain-join.rst:140
+#: ../../domain-ldap/domain-join.rst:141
 msgid ""
 "The name of the join/unjoin script and the output of the script are also "
 "recorded in :file:`/var/log/univention/join.log`."
@@ -728,7 +728,7 @@ msgstr ""
 "Der Name des Join/Unjoin-Skripts und die Skriptausgabe werden auch in "
 ":file:`/var/log/univention/join.log` festgehalten."
 
-#: ../../domain-ldap/domain-join.rst:143
+#: ../../domain-ldap/domain-join.rst:144
 msgid ""
 "If :command:`univention-run-join-scripts` is run on another system role "
 "than the |UCSPRIMARYDN|, the user will be asked to input a username and "
@@ -740,11 +740,11 @@ msgstr ""
 "Benutzernamen und einem Passwort gefragt. Auf dem |UCSPRIMARYDN| kann "
 "dies durch die Option ``--ask-pass`` erreicht werden."
 
-#: ../../domain-ldap/domain-join.rst:150
+#: ../../domain-ldap/domain-join.rst:151
 msgid "Windows domain joins"
 msgstr "Windows-Domänenbeitritt"
 
-#: ../../domain-ldap/domain-join.rst:152
+#: ../../domain-ldap/domain-join.rst:153
 msgid ""
 "The procedure for joining a Windows system to a UCS domain made available"
 " via Samba is now described as an example for Windows 10 and Windows 2012"
@@ -763,7 +763,7 @@ msgstr ""
 "Systems als Domänencontroller wird nicht unterstützt. Weitere Hinweise "
 "finden sich in :ref:`windows-services-for-windows`."
 
-#: ../../domain-ldap/domain-join.rst:160
+#: ../../domain-ldap/domain-join.rst:161
 msgid ""
 "Only domain-compatible Windows versions can join the UCS domain, i.e., it"
 " is not possible for the Home versions of Windows to join a domain."
@@ -772,7 +772,7 @@ msgstr ""
 " ein Domänenbeitritt mit den Home-Versionen von Windows ist nicht "
 "möglich."
 
-#: ../../domain-ldap/domain-join.rst:163
+#: ../../domain-ldap/domain-join.rst:164
 msgid ""
 "A host account is created for the Windows client automatically when it "
 "joins the domain (see :ref:`computers-hostaccounts`). Information "
@@ -784,7 +784,7 @@ msgstr ""
 "und IP-Adresse, Netzwerk, DHCP oder DNS können vor oder nach dem "
 "Domänenbeitritt durch UMC-Module ergänzt werden."
 
-#: ../../domain-ldap/domain-join.rst:168
+#: ../../domain-ldap/domain-join.rst:169
 msgid ""
 "Domain joining is usually performed with the local Administrator account "
 "on the Windows system."
@@ -792,7 +792,7 @@ msgstr ""
 "Der Domänenbeitritt wird in der Regel mit dem lokalen Administrator-Konto"
 " des Windows-Systems durchgeführt."
 
-#: ../../domain-ldap/domain-join.rst:171
+#: ../../domain-ldap/domain-join.rst:172
 msgid ""
 "Joining the domain takes some time and the process must not be canceled "
 "prematurely. After successful joining a small window appears with the "
@@ -806,7 +806,7 @@ msgstr ""
 "Domain>*, die mit :guilabel:`OK` bestätigt werden muss. Abschließend muss"
 " der Rechner neu gestartet werden, um die Änderungen in Kraft zu setzen."
 
-#: ../../domain-ldap/domain-join.rst:177
+#: ../../domain-ldap/domain-join.rst:178
 msgid ""
 "Domain names must be limited to 13 characters as they are otherwise "
 "truncated at the Windows client and this can lead to sign in errors."
@@ -815,7 +815,7 @@ msgstr ""
 " der Windows-Clients ansonsten verkürzt dargestellt werden, was zu "
 "Anmeldefehlern führen kann."
 
-#: ../../domain-ldap/domain-join.rst:180
+#: ../../domain-ldap/domain-join.rst:181
 msgid ""
 "For a domain join against a domain controller based on Samba/AD, the DNS "
 "configuration of the client must be set up in such a way that DNS entries"
@@ -829,11 +829,11 @@ msgstr ""
 "können. Außerdem muss die Zeit auf dem Client-System mit der Zeit auf dem"
 " Domänencontroller synchronisiert sein."
 
-#: ../../domain-ldap/domain-join.rst:189
+#: ../../domain-ldap/domain-join.rst:190
 msgid "Windows 10"
 msgstr "Windows 10"
 
-#: ../../domain-ldap/domain-join.rst:191
+#: ../../domain-ldap/domain-join.rst:192
 msgid ""
 "The joining of domains is only possible with the Pro and Enterprise "
 "editions of Windows 10."
@@ -841,7 +841,7 @@ msgstr ""
 "Der Domänenbeitritt ist nur mit der Pro und Enterprise-Edition von "
 "Windows 10 möglich."
 
-#: ../../domain-ldap/domain-join.rst:194
+#: ../../domain-ldap/domain-join.rst:195
 msgid ""
 "The control panel can be reached via the search field :guilabel:`Search "
 "the web and Windows`, which can be found in the start bar. Under "
@@ -854,7 +854,7 @@ msgstr ""
 "muss auf :menuselection:`Einstellungen ändern --> Ändern` geklickt "
 "werden."
 
-#: ../../domain-ldap/domain-join.rst:199
+#: ../../domain-ldap/domain-join.rst:200
 msgid ""
 "The :guilabel:`Domain` option field must be ticked and the name of the "
 "domain must be entered in the input field for the domain join. The full "
@@ -875,11 +875,11 @@ msgstr ""
 "Passwort des Domänen Administrator eingetragen werden. Abschließend kann "
 "der Domänenbeitritt mit einem Klick auf :guilabel:`OK` gestartet werden."
 
-#: ../../domain-ldap/domain-join.rst:211
+#: ../../domain-ldap/domain-join.rst:212
 msgid "Windows Server 2012 / 2016 / 2019"
 msgstr "Windows Server 2012 / 2016 / 2019"
 
-#: ../../domain-ldap/domain-join.rst:213
+#: ../../domain-ldap/domain-join.rst:214
 msgid ""
 "The control panel can be reached by moving the cursor to the bottom "
 "right-hand corner of the screen. The *Control Panel* can then be searched"
@@ -893,7 +893,7 @@ msgstr ""
 "Unter :menuselection:`System und Sicherheit --> System` muss auf "
 ":guilabel:`Einstellungen ändern --> Netzwerk ID` geklickt werden."
 
-#: ../../domain-ldap/domain-join.rst:218
+#: ../../domain-ldap/domain-join.rst:219
 msgid ""
 "The *Domain* option field must be ticked and the name of the Samba domain"
 " entered in the input field for the domain join. After clicking on the "
@@ -911,11 +911,11 @@ msgstr ""
 "Abschließend kann der Domänenbeitritt mit einem Klick auf :guilabel:`OK` "
 "gestartet werden."
 
-#: ../../domain-ldap/domain-join.rst:228
+#: ../../domain-ldap/domain-join.rst:229
 msgid "Ubuntu domain joins"
 msgstr "Ubuntu-Domänenbeitritt"
 
-#: ../../domain-ldap/domain-join.rst:230
+#: ../../domain-ldap/domain-join.rst:231
 msgid ""
 "Univention provides the :program:`Univention Domain Join Assistant` to "
 "integrate Ubuntu clients into a UCS domain. Documentation and "
@@ -927,11 +927,11 @@ msgstr ""
 "Dokumentation und Installationshinweise sind auf `Github <github-"
 "univention-domain-join_>`_ zu finden."
 
-#: ../../domain-ldap/domain-join.rst:237
+#: ../../domain-ldap/domain-join.rst:238
 msgid "macOS domain joins"
 msgstr "macOS-Domänenbeitritt"
 
-#: ../../domain-ldap/domain-join.rst:239
+#: ../../domain-ldap/domain-join.rst:240
 msgid ""
 "UCS supports domain joins of macOS clients into a UCS environment using "
 "Samba/AD. This documentation refers to macOS 10.8.2."
@@ -939,7 +939,7 @@ msgstr ""
 "UCS unterstützt den Domänenbeitritt von macOS-Clients in eine UCS-"
 "Umgebung mit Samba 4. Diese Anleitung bezieht sich auf macOS 10.8.2."
 
-#: ../../domain-ldap/domain-join.rst:242
+#: ../../domain-ldap/domain-join.rst:243
 msgid ""
 "The domain join can be performed using the system preferences menu or the"
 " :command:`dsconfigad` command line tool."
@@ -947,7 +947,7 @@ msgstr ""
 "Der Domänenbeitritt kann über das Systemeinstellungsmenü oder den "
 "Kommandozeilenbefehl :command:`dsconfigad` erfolgen."
 
-#: ../../domain-ldap/domain-join.rst:245
+#: ../../domain-ldap/domain-join.rst:246
 msgid ""
 "After the domain join it is possible to automatically mount CIFS shares "
 "to subfolders in :file:`/Volumes` when logging in with a domain user. For"
@@ -960,11 +960,11 @@ msgstr ""
 "muss die folgende Zeile in die Datei :file:`/etc/auto_master` eingefügt "
 "werden:"
 
-#: ../../domain-ldap/domain-join.rst:252
+#: ../../domain-ldap/domain-join.rst:253
 msgid "/Volumes     auto_custom"
 msgstr "/Volumes     auto_custom"
 
-#: ../../domain-ldap/domain-join.rst:255
+#: ../../domain-ldap/domain-join.rst:256
 msgid ""
 "In addition, the file :file:`/etc/auto_custom` needs to be created and "
 "the shares which should be mounted have to be listed in it in the "
@@ -973,11 +973,11 @@ msgstr ""
 "Außerdem muss die Datei :file:`/etc/auto_custom` angelegt werden und die "
 "einzubindenden Freigaben dort in der folgenden Form aufgeführt werden:"
 
-#: ../../domain-ldap/domain-join.rst:260
+#: ../../domain-ldap/domain-join.rst:261
 msgid "<SUBFOLDER_NAME>    -fstype=smbfs    ://<FQDN>/<SHARE_NAME>"
 msgstr "<SUBFOLDER_NAME>    -fstype=smbfs    ://<FQDN>/<SHARE_NAME>"
 
-#: ../../domain-ldap/domain-join.rst:263
+#: ../../domain-ldap/domain-join.rst:264
 msgid ""
 "Note that the automatically mounted shares are not displayed in the "
 "finder's sidebar."
@@ -985,11 +985,11 @@ msgstr ""
 "Die eingebundenen Freigaben werden nicht in der Seitenleiste des Finders "
 "angezeigt."
 
-#: ../../domain-ldap/domain-join.rst:268
+#: ../../domain-ldap/domain-join.rst:269
 msgid "Domain join using the system preferences GUI"
 msgstr "Domänenbeitritt über das Systemeinstellungen-Menü"
 
-#: ../../domain-ldap/domain-join.rst:270
+#: ../../domain-ldap/domain-join.rst:271
 msgid ""
 "In the System Preferences via the :guilabel:`Users & Groups` entry, the "
 ":guilabel:`Login menu` can be reached. After authenticating by clicking "
@@ -1004,11 +1004,11 @@ msgstr ""
 "das lokale Administrator-Konto und dessen Passwort angegeben und "
 ":guilabel:`Netzwerk-Account-Server: Verbinden` angeklickt werden."
 
-#: ../../domain-ldap/domain-join.rst:282
+#: ../../domain-ldap/domain-join.rst:283
 msgid "Domain join of a macOS system"
 msgstr "Domänenbeitritt eines macOS-Systems"
 
-#: ../../domain-ldap/domain-join.rst:284
+#: ../../domain-ldap/domain-join.rst:285
 msgid ""
 "In the advanced options section, the option *Create mobile account at "
 "login* should be activated. A mobile account has the advantage that, when"
@@ -1020,7 +1020,7 @@ msgstr ""
 "ohne Verbindung zur Domäne eine Anmeldung mit der Domänenbenutzerkennung "
 "erfolgen kann."
 
-#: ../../domain-ldap/domain-join.rst:289
+#: ../../domain-ldap/domain-join.rst:290
 msgid ""
 "After filling in the domain name in the field *Active Directory Domain* "
 "and the hostname of the macOS client in the field *Computer ID*, the join"
@@ -1034,11 +1034,11 @@ msgstr ""
 "  Für den Domänenbeitritt muss ein Konto aus der Gruppe ``Domain Admins``"
 " verwendet werden, z.B. ``Administrator``."
 
-#: ../../domain-ldap/domain-join.rst:298
+#: ../../domain-ldap/domain-join.rst:299
 msgid "Domain join on the command line"
 msgstr "Domänenbeitritt auf den Kommandozeile"
 
-#: ../../domain-ldap/domain-join.rst:300
+#: ../../domain-ldap/domain-join.rst:301
 msgid ""
 "The domain join can also be performed on the command line using "
 ":command:`dsconfigad`:"
@@ -1046,7 +1046,7 @@ msgstr ""
 "Der Domänenbeitritt kann auch auf der Kommandozeile mit dem Befehl "
 ":command:`dsconfigad` erfolgen:"
 
-#: ../../domain-ldap/domain-join.rst:303
+#: ../../domain-ldap/domain-join.rst:304
 msgid ""
 "$ dsconfigad -a <MAC HOSTNAME> \\\n"
 "> -domain <FQDN> \\\n"
@@ -1060,7 +1060,7 @@ msgstr ""
 "> -u <Domain Administrator> \\\n"
 "> -mobile enable"
 
-#: ../../domain-ldap/domain-join.rst:311
+#: ../../domain-ldap/domain-join.rst:312
 msgid ""
 "Additional configuration options are available through "
 ":command:`dsconfigad -help`."
@@ -2738,19 +2738,19 @@ msgstr "Anmelden per Single Sign-On"
 
 #: ../../domain-ldap/saml.rst:73
 msgid ""
-"The *single sign-on* is the default login for |UCSWEB|\\ s, as long as "
-":samp:`ucs-sso.{[Domain name]}` can be reached. To login the domain "
-"credentials must be provided. For the login directly at the UCS system "
-"(i.e., without *single sign-on*), follow the link :guilabel:`Login "
-"without Single Sign On`."
+"The activation of *single sign-on* for the portal is described in :ref"
+":`central-management-umc-login`. For this, :samp:`ucs-sso.{[Domain "
+"name]}` must be reachable. To login the domain credentials must be "
+"provided. For the login directly at the UCS system (i.e., without *single"
+" sign-on*), follow the link :guilabel:`Login without Single Sign On`."
 msgstr ""
-"Der *Single Sign-On* ist der Standard-Login für |UCSWEB|\\ n, sofern "
-":samp:`ucs-sso.{[domainname]}` erreicht werden kann. Zum Login werden die"
-" Anmeldedaten des Domänenkontos verwendet. Für den Login direkt am UCS-"
-"System (also ohne *Single Sign-On*) gelangt man über den Link "
-":guilabel:`Ohne Single Sign-On anmelden`."
+"Die Aktivieriung von *Single Sign-On* für das Portal wird in "
+":ref:`central-management-umc-login` beschrieben. Dafür muss "
+":samp:`ucs-sso.{[Domain name]}` erreichbar sein. Anmeldedaten des "
+"Domänenkontos verwendet. Für den Login direkt am UCS-System (also ohne *Single "
+"Sign-On*) gelangt man über den Link :guilabel:`Ohne Single Sign-On anmelden`."
 
-#: ../../domain-ldap/saml.rst:78
+#: ../../domain-ldap/saml.rst:79
 msgid ""
 "The design of the login dialog can be changed by editing "
 ":file:`/usr/share/univention-management-console-login/css/custom.css`. "
@@ -2760,7 +2760,7 @@ msgstr ""
 "login/css/custom.css` kann das Design des Anmeldedialogs angepasst "
 "werden. Diese Datei wird niemals automatisch überschrieben."
 
-#: ../../domain-ldap/saml.rst:82
+#: ../../domain-ldap/saml.rst:83
 msgid ""
 "Other web services will redirect to the UCS identity provider login page "
 "in a similar fashion in order to carry out a *single sign-on*. After "
@@ -2775,7 +2775,7 @@ msgstr ""
 ":`domain-saml-additional-serviceprovider` beschrieben, registriert "
 "werden."
 
-#: ../../domain-ldap/saml.rst:87
+#: ../../domain-ldap/saml.rst:88
 msgid ""
 "The *single sign-on* for a particular service can be initiated from the "
 "UCS identity provider, as well. This saves an extra visit at the external"
@@ -2793,11 +2793,11 @@ msgstr ""
 "sso.{[domainname]}/simplesamlphp/saml2/idp/SSOService.php?spentityid={[Service"
 " provider identifier]}` aufgerufen werden."
 
-#: ../../domain-ldap/saml.rst:97
+#: ../../domain-ldap/saml.rst:98
 msgid "Adding a new external service provider"
 msgstr "Hinzufügen eines neuen externen Service Providers"
 
-#: ../../domain-ldap/saml.rst:99
+#: ../../domain-ldap/saml.rst:100
 msgid ""
 "The UMC module :guilabel:`SAML identity provider` allows to manage all "
 "service providers that are registered at the UCS identity provider. Users"
@@ -2818,7 +2818,7 @@ msgstr ""
 "dazu unter *SAML Einstellungen* der Service Provider Eintrag hinzugefügt "
 "werden."
 
-#: ../../domain-ldap/saml.rst:107
+#: ../../domain-ldap/saml.rst:108
 msgid ""
 "To register the UCS identity provider at an external service provider, "
 "the public part of the SAML certificate is required by the service "
@@ -2837,7 +2837,7 @@ msgstr ""
 "://ucs-sso.{[domainname]}/simplesamlphp/saml2/idp/metadata.php` "
 "heruntergeladen werden."
 
-#: ../../domain-ldap/saml.rst:115
+#: ../../domain-ldap/saml.rst:116
 msgid ""
 "The following attributes can be configured when adding a new service "
 "provider."
@@ -2845,23 +2845,23 @@ msgstr ""
 "Die folgenden Attribute können beim Anlegen eines neuen Service Provider-"
 "Eintrags konfiguriert werden."
 
-#: ../../domain-ldap/saml.rst:117
+#: ../../domain-ldap/saml.rst:118
 msgid "General options when configuring a service provider"
 msgstr "Allgemeine Felder bei der Anbindung eines Service Providers"
 
-#: ../../domain-ldap/saml.rst:121 ../../domain-ldap/saml.rst:167
+#: ../../domain-ldap/saml.rst:122 ../../domain-ldap/saml.rst:168
 msgid "Attribute"
 msgstr "Attribut"
 
-#: ../../domain-ldap/saml.rst:122 ../../domain-ldap/saml.rst:168
+#: ../../domain-ldap/saml.rst:123 ../../domain-ldap/saml.rst:169
 msgid "Description"
 msgstr "Beschreibung"
 
-#: ../../domain-ldap/saml.rst:124
+#: ../../domain-ldap/saml.rst:125
 msgid "Service provider activation status"
 msgstr "Service Provider aktivieren"
 
-#: ../../domain-ldap/saml.rst:125
+#: ../../domain-ldap/saml.rst:126
 msgid ""
 "If activated, the configuration for the service provider is activated and"
 " is ready for authentication."
@@ -2869,11 +2869,11 @@ msgstr ""
 "Ist diese Option gesetzt, wird die Konfiguration des Service Providers "
 "aktiviert und steht für die Anmeldung bereit."
 
-#: ../../domain-ldap/saml.rst:128
+#: ../../domain-ldap/saml.rst:129
 msgid "Service provider identifier"
 msgstr "Bezeichner des Service Providers"
 
-#: ../../domain-ldap/saml.rst:129
+#: ../../domain-ldap/saml.rst:130
 msgid ""
 "Defines the internal name of the service provider. The name is later "
 "selected at user objects, when giving them access to a service provider. "
@@ -2883,11 +2883,11 @@ msgstr ""
 " Benutzerobjekt angezeigt und ausgewählt, um Benutzer für die Verbindung "
 "freizuschalten.  Der Bezeichner kann später nicht mehr geändert werden."
 
-#: ../../domain-ldap/saml.rst:133
+#: ../../domain-ldap/saml.rst:134
 msgid "Respond to this service provider URL after login"
 msgstr "Antwort an diese Service Provider URL nach dem Login"
 
-#: ../../domain-ldap/saml.rst:134
+#: ../../domain-ldap/saml.rst:135
 msgid ""
 "After successful authentication, the user’s browser is redirected to the "
 "service provider. The redirection is done to this provided URL."
@@ -2896,11 +2896,11 @@ msgstr ""
 " zum Service Provider geleitet. Die Weiterleitung erfolgt an die hier "
 "angegebene URL."
 
-#: ../../domain-ldap/saml.rst:137
+#: ../../domain-ldap/saml.rst:138
 msgid "Single logout URL for service provider"
 msgstr "Single logout URL des Service Providers"
 
-#: ../../domain-ldap/saml.rst:138
+#: ../../domain-ldap/saml.rst:139
 msgid ""
 "Service providers can offer a URL endpoint at which the session at the "
 "service provider can be terminated. If a user logs out at the UCS "
@@ -2912,11 +2912,11 @@ msgstr ""
 "Identity Provider aus, wird über die hier übergebene URL ein Logout am "
 "Service Provider durchgeführt."
 
-#: ../../domain-ldap/saml.rst:143
+#: ../../domain-ldap/saml.rst:144
 msgid "Format of ``NameID`` attribute"
 msgstr "Format des ``NameID`` Attributs"
 
-#: ../../domain-ldap/saml.rst:144
+#: ../../domain-ldap/saml.rst:145
 msgid ""
 "The value ``NameIDFormat`` that the service provider receives. The "
 "service provider’s documentation should contain information about "
@@ -2929,11 +2929,11 @@ msgstr ""
 "Beispiel: ``urn:oasis:names:tc:SAML:2.0:nameid-format:transient`` oder "
 "``urn:oasis:names:tc :SAML:1.1:nameid-format:unspecified``."
 
-#: ../../domain-ldap/saml.rst:149
+#: ../../domain-ldap/saml.rst:150
 msgid "Name of the attribute that is used as ``NameID``"
 msgstr "Name des Attributs, das als ``NameID`` verwendet wird"
 
-#: ../../domain-ldap/saml.rst:150
+#: ../../domain-ldap/saml.rst:151
 msgid ""
 "The LDAP attribute that is used to uniquely identify the user is provided"
 " here, e.g., ``uid``."
@@ -2942,11 +2942,11 @@ msgstr ""
 "Identifizierung des Benutzers am Service Provider verwendet wird, "
 "beispielsweise ``uid``."
 
-#: ../../domain-ldap/saml.rst:153
+#: ../../domain-ldap/saml.rst:154
 msgid "Name of the organization for service provider"
 msgstr "Name der Organisation des Service Providers"
 
-#: ../../domain-ldap/saml.rst:154
+#: ../../domain-ldap/saml.rst:155
 msgid ""
 "The value provided here will be shown on the UCS single sign-on login "
 "page. It helps the user to identify for which service they enter "
@@ -2956,11 +2956,11 @@ msgstr ""
 "angezeigt. Dem Benutzer wird so dargestellt, für welchen Dienst er sich "
 "authentifiziert."
 
-#: ../../domain-ldap/saml.rst:158
+#: ../../domain-ldap/saml.rst:159
 msgid "Description of this service provider"
 msgstr "Beschreibung dieses Service Providers"
 
-#: ../../domain-ldap/saml.rst:159
+#: ../../domain-ldap/saml.rst:160
 msgid ""
 "The value provided here will be shown on the UCS single sign-on login "
 "page. A longer description about the service provider can be given here. "
@@ -2970,15 +2970,15 @@ msgstr ""
 "angezeigt. Hier kann eine längere Beschreibung über den Dienst angegeben "
 "werden, der auf der Login Seite in einem eigenen Absatz angezeigt wird."
 
-#: ../../domain-ldap/saml.rst:163
+#: ../../domain-ldap/saml.rst:164
 msgid "Advanced settings when configuring a service provider"
 msgstr "Erweiterte Felder bei der Anbindung eines Service Providers"
 
-#: ../../domain-ldap/saml.rst:170
+#: ../../domain-ldap/saml.rst:171
 msgid "URL to the service provider’s privacy policy"
 msgstr "URL zur Datenschutzrichtlinie des Service Providers"
 
-#: ../../domain-ldap/saml.rst:171
+#: ../../domain-ldap/saml.rst:172
 msgid ""
 "If a URL is entered here, the UCS identity provider login page will "
 "contain a link to this URL."
@@ -2986,11 +2986,11 @@ msgstr ""
 "Wird hier eine URL eingetragen, wird dem Benutzer ein Link zu dieser "
 "Seite auf der UCS Identity Provider-Login-Seite angezeigt."
 
-#: ../../domain-ldap/saml.rst:174
+#: ../../domain-ldap/saml.rst:175
 msgid "Allow transmission of LDAP attributes to the service provider"
 msgstr "Erlaube die Übertragung von LDAP Attributen an den Service Provider"
 
-#: ../../domain-ldap/saml.rst:175
+#: ../../domain-ldap/saml.rst:176
 msgid ""
 "By default, the UCS identity provider transmits only the ``NameID`` "
 "attribute entered on the *General* page to the service provider. If "
@@ -3004,11 +3004,11 @@ msgstr ""
 "Checkbox aktiviert werden. Die zu übertragenen Attribute werden dann "
 "unter *Liste der zu übermittelnden LDAP Attribute* eingetragen."
 
-#: ../../domain-ldap/saml.rst:181
+#: ../../domain-ldap/saml.rst:182
 msgid "Value for ``attribute format`` field"
 msgstr "Der Wert des ``attribute format`` Feldes"
 
-#: ../../domain-ldap/saml.rst:182
+#: ../../domain-ldap/saml.rst:183
 msgid ""
 "In case the transmitted attributes need to be sent in a particular format"
 " value, this format can be entered here. Example: ``urn:oasis:names "
@@ -3020,11 +3020,11 @@ msgstr ""
 "``urn:oasis:names:tc:SAML:2.0:nameid-format:transient`` oder "
 "``urn:oasis:names:tc :SAML:1.1:nameid-format:unspecified``."
 
-#: ../../domain-ldap/saml.rst:187
+#: ../../domain-ldap/saml.rst:188
 msgid "List of LDAP attributes to transmit"
 msgstr "Liste der zu übermittelnden LDAP-Attribute"
 
-#: ../../domain-ldap/saml.rst:188
+#: ../../domain-ldap/saml.rst:189
 msgid ""
 "Every LDAP attribute that should be transmitted to the service provider "
 "can be entered here. Additionally, one or more service attribute names "
@@ -3047,11 +3047,11 @@ msgstr ""
 " DN]}` eingetragen werden. Dort eingetragene LDAP Attribute können vom "
 "Identity Provider ausgelesen und übertragen werden."
 
-#: ../../domain-ldap/saml.rst:202
+#: ../../domain-ldap/saml.rst:203
 msgid "Extended Configuration"
 msgstr "Erweiterte Konfiguration"
 
-#: ../../domain-ldap/saml.rst:204
+#: ../../domain-ldap/saml.rst:205
 msgid ""
 "Some environments may require the UCS Identity Provider to provide "
 "multiple logical Identity Provider instances. Logical separation is "
@@ -3062,7 +3062,7 @@ msgstr ""
 "logische Trennung wird erreicht, indem der Identity Provider "
 "unterschiedliche URIs als Endpunkt anbietet."
 
-#: ../../domain-ldap/saml.rst:208
+#: ../../domain-ldap/saml.rst:209
 msgid ""
 "The default endpoint is :samp:`https://ucs-sso.{[Domain "
 "name]}/simplesamlphp/saml2/idp/metadata.php`. Further entries can be "
@@ -3081,7 +3081,7 @@ msgstr ""
 "|UCSPRIMARYDN| und alle Server der Rolle |UCSBACKUPDN|. Anschließend muss"
 " der :program:`apache2` Dienst neu geladen werden."
 
-#: ../../domain-ldap/saml.rst:215
+#: ../../domain-ldap/saml.rst:216
 msgid ""
 "For example, to set up another entry under the URI :samp:`https://ucs-"
 "sso.{[Domain name]}/simplesamlphp/{[secondIDP]}/saml2/idp/metadata.php``,"

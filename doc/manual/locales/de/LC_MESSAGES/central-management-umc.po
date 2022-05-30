@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-20 10:47+0200\n"
+"POT-Creation-Date: 2022-05-30 12:50+0200\n"
 "PO-Revision-Date: 2022-05-20 10:48+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -79,8 +79,8 @@ msgstr "Richtlinie *UMC*"
 #: ../../central-management-umc/extended-attributes.rst:110
 #: ../../central-management-umc/extended-attributes.rst:148
 #: ../../central-management-umc/extended-attributes.rst:238
-#: ../../central-management-umc/user-defined-ldap-structures.rst:29
-#: ../../central-management-umc/user-defined-ldap-structures.rst:44
+#: ../../central-management-umc/user-defined-ldap-structures.rst:32
+#: ../../central-management-umc/user-defined-ldap-structures.rst:50
 msgid "Attribute"
 msgstr "Attribut"
 
@@ -90,9 +90,9 @@ msgstr "Attribut"
 #: ../../central-management-umc/extended-attributes.rst:111
 #: ../../central-management-umc/extended-attributes.rst:149
 #: ../../central-management-umc/extended-attributes.rst:239
-#: ../../central-management-umc/user-defined-ldap-structures.rst:30
-#: ../../central-management-umc/user-defined-ldap-structures.rst:35
-#: ../../central-management-umc/user-defined-ldap-structures.rst:45
+#: ../../central-management-umc/user-defined-ldap-structures.rst:33
+#: ../../central-management-umc/user-defined-ldap-structures.rst:38
+#: ../../central-management-umc/user-defined-ldap-structures.rst:51
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -339,7 +339,7 @@ msgid "Extended attributes - General tab"
 msgstr "Erweiterte Attribute - Reiter Allgemein"
 
 #: ../../central-management-umc/extended-attributes.rst:34
-#: ../../central-management-umc/user-defined-ldap-structures.rst:25
+#: ../../central-management-umc/user-defined-ldap-structures.rst:28
 msgid "*General* tab"
 msgstr "Reiter *Allgemein*"
 
@@ -1321,14 +1321,10 @@ msgid ""
 "UCS. The supported services in UCS are the Apache Web server, the Postfix"
 " SMTP mail server and the Dovecot IMAP mail server."
 msgstr ""
-"Die :program:`Let's Encrypt` App im Univention "
-"App Center bietet eine weitgehend "
-"automatisierte Integration des acme-tiny "
-"Let's Encrypt Clients in UCS. "
-"Unterstützte Dienste in UCS sind der "
-"Apache Webserver, der Postfix SMTP "
-"Mailserver und der Dovecot IMAP "
-"Mailserver."
+"Die :program:`Let's Encrypt` App im Univention App Center bietet eine "
+"weitgehend automatisierte Integration des acme-tiny Let's Encrypt Clients"
+" in UCS. Unterstützte Dienste in UCS sind der Apache Webserver, der "
+"Postfix SMTP Mailserver und der Dovecot IMAP Mailserver."
 
 #: ../../central-management-umc/login.rst:4
 msgid "Login"
@@ -1799,6 +1795,16 @@ msgstr ""
 
 #: ../../central-management-umc/portal.rst:22
 msgid ""
+"To change the displayed portal, the |UCSUCRV| :envvar:`portal/default-dn`"
+" must be adjusted. After a change, the :program:`univention-portal-"
+"server` service must be restarted."
+msgstr ""
+"Um das angezeigte Portal zu ändern, muss die |UCSUCRV| "
+":envvar:`portal/default-dn` angepasst werden. Nach einer Änderung muss der "
+"Dienst :program:`univention-portal-server` neugestartet werden."
+
+#: ../../central-management-umc/portal.rst:26
+msgid ""
 "Custom portals and portal entries can be defined and managed either via "
 "the UMC module :guilabel:`Portal` or directly on the portal site."
 msgstr ""
@@ -1806,7 +1812,7 @@ msgstr ""
 ":guilabel:`Portal` oder direkt auf der Portalseite angelegt und verwaltet"
 " werden."
 
-#: ../../central-management-umc/portal.rst:25
+#: ../../central-management-umc/portal.rst:29
 msgid ""
 "After logging in to the portal on the |UCSPRIMARYDN| or |UCSBACKUPDN|, "
 "members of the ``Domain Admins`` group can edit the portal after clicking"
@@ -1820,7 +1826,7 @@ msgstr ""
 " neue Einträge auf dem Portal erstellen, vorhandene Einträge "
 "modifizieren, sowie die Reihenfolge oder das Design modifizieren."
 
-#: ../../central-management-umc/portal.rst:30
+#: ../../central-management-umc/portal.rst:34
 msgid ""
 "Advanced settings, such as adding new portals or setting which group "
 "members can see which portal entries can be made using the UMC portal "
@@ -1831,7 +1837,7 @@ msgstr ""
 "ihre Gruppenmitgliedschaft), können über das UMC-Modul :guilabel:`Portal`"
 " durchgeführt werden."
 
-#: ../../central-management-umc/portal.rst:33
+#: ../../central-management-umc/portal.rst:37
 msgid ""
 "By default, all portal entries are displayed for everyone. In the UMC "
 "module :guilabel:`Portal` in the category *Login*, it can be configured "
@@ -1848,7 +1854,7 @@ msgstr ""
 "``memberOf``. Eine Auswertung von verschachtelten "
 "Gruppenmitgliedsschaften (also Gruppen in Gruppen) findet statt."
 
-#: ../../central-management-umc/portal.rst:40
+#: ../../central-management-umc/portal.rst:44
 msgid ""
 "Further design adjustments can be made in the file :file:`/usr/share"
 "/univention-portal/css/custom.css`. This file will not be overwritten "
@@ -1858,11 +1864,11 @@ msgstr ""
 "/univention-portal/css/custom.css` vorgenommen werden. Dieses Datei wird "
 "während eines Updates nicht überschrieben."
 
-#: ../../central-management-umc/portal.rst:49
+#: ../../central-management-umc/portal.rst:53
 msgid "Schema of the portal concept in UCS"
 msgstr "Schema des Portal-Konzepts in UCS"
 
-#: ../../central-management-umc/portal.rst:49
+#: ../../central-management-umc/portal.rst:53
 msgid ""
 "Schema of the portal concept in UCS: Portals can be independently defined"
 " and assigned to UCS systems as start site; a link entry can be displayed"
@@ -1872,11 +1878,11 @@ msgstr ""
 "Systemen als Startseite zugewiesen werden; ein Verweis kann auf mehreren "
 "Portalen angezeigt werden."
 
-#: ../../central-management-umc/portal.rst:56
+#: ../../central-management-umc/portal.rst:60
 msgid "Assign rights for portal settings"
 msgstr "Rechte für Portaleinstellungen vergeben"
 
-#: ../../central-management-umc/portal.rst:57
+#: ../../central-management-umc/portal.rst:62
 msgid ""
 "The following describes how to make the UMC module :guilabel:`Portal` "
 "accessible to selected groups or users. This example assumes that a group"
@@ -1889,7 +1895,7 @@ msgstr ""
 "ausgegangen, dass eine Gruppe ``Portal Admins`` erstellt wurde und "
 "Mitglieder dieser Gruppe Zugang zu den Portaleinstellungen haben sollen."
 
-#: ../../central-management-umc/portal.rst:62
+#: ../../central-management-umc/portal.rst:67
 msgid ""
 "On a |UCSPRIMARYDN| an ACL file has to be created first, for example "
 ":file:`/opt/62my-portal-acl.acl`. This file has to have the following "
@@ -1899,7 +1905,7 @@ msgstr ""
 ":file:`/opt/62my-portal-acl.acl`.  Diese Datei hat folgenden Inhalt "
 "aufzuweisen, um die nötigen ACL-Änderungen zu ermöglichen:"
 
-#: ../../central-management-umc/portal.rst:66
+#: ../../central-management-umc/portal.rst:71
 msgid ""
 "access to dn=\"cn=portal,cn=univention,@%@ldap/base@%@\" attrs=children\n"
 "  by group/univentionGroup/uniqueMember=\"cn=Portal "
@@ -1925,7 +1931,7 @@ msgstr ""
 "Admins,cn=groups,@%@ldap/base@%@\" write\n"
 "  by * +0 break"
 
-#: ../../central-management-umc/portal.rst:78
+#: ../../central-management-umc/portal.rst:83
 msgid ""
 "Then execute the following command to create an LDAP object for the LDAP "
 "ACLs:"
@@ -1933,7 +1939,7 @@ msgstr ""
 "Danach ist folgender Befehl auszuführen, um ein LDAP-Objekt für die LDAP-"
 "ACLs zu erzeugen:"
 
-#: ../../central-management-umc/portal.rst:80
+#: ../../central-management-umc/portal.rst:85
 msgid ""
 "$ udm settings/ldapacl create \\\n"
 "> --position \"cn=ldapacl,cn=univention,$(ucr get ldap/base)\" \\\n"
@@ -1951,13 +1957,13 @@ msgstr ""
 "> --set package=\"62my-portal-acl\" \\\n"
 "> --set packageversion=1"
 
-#: ../../central-management-umc/portal.rst:91
+#: ../../central-management-umc/portal.rst:96
 msgid "If the ACL is to be deleted again, the following command can be used:"
 msgstr ""
 "Wenn die ACL wieder gelöscht werden soll, kann folgender Befehl verwendet"
 " werden:"
 
-#: ../../central-management-umc/portal.rst:93
+#: ../../central-management-umc/portal.rst:98
 msgid ""
 "udm settings/ldapacl remove \\\n"
 "  --dn \"cn=62my-portal-acl,cn=ldapacl,cn=univention,$(ucr get "
@@ -1967,7 +1973,7 @@ msgstr ""
 "  --dn \"cn=62my-portal-acl,cn=ldapacl,cn=univention,$(ucr get "
 "ldap/base)\""
 
-#: ../../central-management-umc/portal.rst:98
+#: ../../central-management-umc/portal.rst:103
 msgid ""
 "An appropriate UMC policy can now be created via UMC. The following *UMC "
 "operations* must be allowed within the policy:"
@@ -1976,23 +1982,23 @@ msgstr ""
 "folgenden *UMC-Operationen* müssen dafür innerhalb der Richtlinie erlaubt"
 " werden:"
 
-#: ../../central-management-umc/portal.rst:101
+#: ../../central-management-umc/portal.rst:106
 msgid "*udm-portal*"
 msgstr "*udm-portal*"
 
-#: ../../central-management-umc/portal.rst:102
+#: ../../central-management-umc/portal.rst:107
 msgid "*udm-syntax*"
 msgstr "*udm-syntax*"
 
-#: ../../central-management-umc/portal.rst:103
+#: ../../central-management-umc/portal.rst:108
 msgid "*udm-validate*"
 msgstr "*udm-validate*"
 
-#: ../../central-management-umc/portal.rst:104
+#: ../../central-management-umc/portal.rst:109
 msgid "*udm-license*"
 msgstr "*udm-license*"
 
-#: ../../central-management-umc/portal.rst:106
+#: ../../central-management-umc/portal.rst:111
 msgid ""
 "How to create a policy is described in :ref:`central-management-umc-"
 "create-policy`. Now the newly created policy only needs to be assigned to"
@@ -3412,35 +3418,35 @@ msgstr ""
 " eingefügt werden, OUs können aber nicht unterhalb von Containern "
 "angelegt werden."
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:24
+#: ../../central-management-umc/user-defined-ldap-structures.rst:26
 msgid "General tab"
 msgstr "Reiter Allgemein"
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:32
+#: ../../central-management-umc/user-defined-ldap-structures.rst:35
 msgid "Name"
 msgstr "Name"
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:33
+#: ../../central-management-umc/user-defined-ldap-structures.rst:36
 msgid "A random name for the container / organizational unit."
 msgstr "Ein beliebiger Name für den Container / die Organisationseinheit."
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:36
+#: ../../central-management-umc/user-defined-ldap-structures.rst:39
 msgid "A random description for the container / organizational unit."
 msgstr "Eine beliebige Beschreibung für den Container / die Organisationseinheit."
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:39
+#: ../../central-management-umc/user-defined-ldap-structures.rst:44
 msgid "Advanced settings tab"
 msgstr "Reiter Erweiterte Einstellungen"
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:40
+#: ../../central-management-umc/user-defined-ldap-structures.rst:46
 msgid "*Advanced settings* tab"
 msgstr "Reiter *Erweiterte Einstellungen*"
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:47
+#: ../../central-management-umc/user-defined-ldap-structures.rst:53
 msgid "Add to standard ``[object type]`` containers"
 msgstr "Zu Standard ``[Objekttyp]``-Container hinzufügen"
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:48
+#: ../../central-management-umc/user-defined-ldap-structures.rst:54
 msgid ""
 "If this option is activated, the container or organizational unit will be"
 " regarded as a standard container for a certain object type. If the "
@@ -3453,11 +3459,11 @@ msgstr ""
 "in den Masken zum Suchen und Anlegen von Benutzern dieser Container "
 "ebenfalls angezeigt."
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:54
+#: ../../central-management-umc/user-defined-ldap-structures.rst:62
 msgid "Policies tab"
 msgstr "Reiter Richtlinien"
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:55
+#: ../../central-management-umc/user-defined-ldap-structures.rst:64
 msgid "The *Policies* tab is described in :ref:`central-policies-assign`."
 msgstr "Diese Karteikarte wird in :ref:`central-policies-assign` beschrieben."
 
