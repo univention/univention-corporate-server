@@ -3,9 +3,12 @@ release: "4.4"
 version: [9]
 scope: ucs_4.4-0-errata4.4-9
 src: cups
-fix: 2.2.1-8+deb9u7A~4.4.0.202205241713
+fix: 2.2.1-8+deb9u8A~4.4.9.202205300938
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * Server crash on CUPS reload if duplicate jobs are found in `job.cache`. Do
    not allow adding duplicate jobs.
-bug: [53647]
+ * authorization bypass when using "local" authorization (CVE-2022-26691)
+bug: [53647, 54803]
+cve:
+- CVE-2022-26691
