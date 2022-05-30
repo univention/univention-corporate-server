@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: python-django
+fix: 1:1.10.7-2+deb9u17
+desc: |
+ This update addresses the following issue:
+ * potential SQL injection via "tolerance" parameter in GIS functions and
+   aggregates on Oracle (CVE-2020-9402)
+bug: [54805]
+cve:
+- CVE-2020-9402
