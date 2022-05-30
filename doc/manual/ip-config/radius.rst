@@ -162,7 +162,7 @@ VLAN IDs
 Virtual Local Area Networks (VLANs) can be used to separate the traffic of users
 at the network level. UCS can be configured to return a VLAN ID in the Radius
 response of the Radius authentication process according to :rfc:`RFC 3580 / IEEE 802.1X
-<3580>`.
+<3580>`. You find further information in :ref:`computers-network-complex-vlan`.
 
 The VLAN ID for a user can be configured by assigning the user to a group with a VLAN ID.
 
