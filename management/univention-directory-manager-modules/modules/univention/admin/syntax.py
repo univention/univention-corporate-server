@@ -708,7 +708,7 @@ class _UDMObjectOrAttribute(object):
 		if callable(cls.udm_filter):
 			filter_s = cls.udm_filter(options)
 		else:
-			filter_s = cls.udm_filter % options  # FIXME: missing LDAP filter escaping
+			filter_s = cls.udm_filter % _EscapedDict(options)
 
 		object_properties = []
 		if 'property' in options:
@@ -5872,7 +5872,9 @@ class LDAP_Search(select):
 			filter_mod = univention.admin.modules.identifyOne(options['dn'], lo.get(options['dn']))
 			if filter_mod:
 				obj = univention.admin.objects.get(filter_mod, None, lo, None, options['dn'])
-				filter_s = univention.admin.pattern_replace(filter_s, obj)  # FIXME: LDAP filter is not escaped
+				eobj = _EscapedDict(obj)
+				eobj.dn = escape_filter_chars(obj.dn)
+				filter_s = univention.admin.pattern_replace(filter_s, eobj)
 
 		choices = []
 		for dn in lo.searchDn(filter=filter_s, base=cls.base):
@@ -6799,3 +6801,16 @@ class UDM_Syntax(combobox):
 
 
 __register_choice_update_function(UDM_Syntax.update_choices)
+
+
+class _EscapedDict(dict):
+
+	def __init__(self, _dict):
+		self._dict = _dict
+		super(_EscapedDict, self).__init__()
+
+	def __contains__(self, key):
+		return key in self._dict
+
+	def __missing__(self, key):
+		return escape_filter_chars(self._dict[key], 0)
