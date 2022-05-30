@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: atftp
+fix: 0.7.git20120829-3.1~deb9u3
+desc: |
+ This update addresses the following issue:
+ * options.c in atftp before 0.7.5 reads past the end of an array, and
+   consequently discloses server-side /etc/group data to a remote client.
+   (CVE-2021-46671)
+bug: [54807]
+cve:
+- CVE-2021-46671
