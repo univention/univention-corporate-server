@@ -9,9 +9,10 @@ desc: |
  * Smarty is a template engine for PHP, facilitating the separation of
    presentation (HTML/CSS) from application logic. Prior to versions 3.1.45
    and 4.1.1, template authors could inject php code by choosing a malicious
-   {block} name or {include} file name. Sites that cannot fully trust template
-   authors should upgrade to versions 3.1.45 or 4.1.1 to receive a patch for
-   this issue. There are currently no known workarounds. (CVE-2022-29221)
+   `{block}` name or `{include}` file name. Sites that cannot fully trust
+   template authors should upgrade to versions 3.1.45 or 4.1.1 to receive a
+   patch for this issue. There are currently no known workarounds.
+   (CVE-2022-29221)
 bug: [54804]
 cve:
 - CVE-2022-29221
