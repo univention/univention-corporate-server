@@ -6,7 +6,9 @@ src: dpkg
 fix: 1.18.26
 desc: |
  This update addresses the following issue:
- * dpkg (CVE-2022-1664)
+ * Prevent directory traversal for in-place extracts. This affects extracting
+   untrusted source packages in the v2 and v3 source package formats that
+   include a debian.tar. (CVE-2022-1664)
 bug: [54806]
 cve:
 - CVE-2022-1664
