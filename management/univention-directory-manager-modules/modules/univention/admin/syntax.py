@@ -697,13 +697,11 @@ class _UDMObjectOrAttribute(object):
 			return ret
 		hidden_filter = '!(objectFlag=hidden)'
 		if ret:
-			if not ret.startswith('('):
-				ret = '(%s)' % ret
-			return '(&(%s)%s)' % (hidden_filter, ret)
+			return '(&(%s)%s)' % (hidden_filter, cls.wrap_filter(ret))
 		return hidden_filter
 
 	@classmethod
-	def _create_ldap_filter(cls, options, module=None):
+	def _create_ldap_filter(cls, options, module):
 		if cls.depends and cls.depends not in options:
 			return None
 
@@ -712,21 +710,38 @@ class _UDMObjectOrAttribute(object):
 		else:
 			filter_s = cls.udm_filter % options  # FIXME: missing LDAP filter escaping
 
-		object_property = options.get('property')
+		object_properties = []
+		if 'property' in options:
+			object_properties = [options['property']] if options['property'] else [
+				key for key, prop in module.property_descriptions.items()
+				if prop.include_in_default_search
+			]
 		object_property_value = options.get('value')
-		if object_property and object_property_value:
-			prop = module.property_descriptions.get(object_property)
-			syn = prop.syntax if prop else cls
-			property_filter_s = syn.get_object_property_filter(object_property, object_property_value, allow_asterisks=options.get('allow_asterisks', True))
+		if object_properties and object_property_value:
+			property_filters = []
+			for object_property in object_properties:
+				prop = module.property_descriptions.get(object_property)
+				syn = prop.syntax if prop else cls
+				property_filter = syn.get_object_property_filter(object_property, object_property_value, allow_asterisks=options.get('allow_asterisks', True))
+				if property_filter:
+					property_filters.append(property_filter)
+
+			if not property_filters:
+				property_filter_s = ''
+			else:
+				property_filter_s = cls.wrap_filter(property_filters[0]) if len(property_filters) == 1 else '(|%s)' % ''.join(cls.wrap_filter(x) for x in property_filters)
+
 			if not options.get('hidden', True):
 				property_filter_s = cls._append_hidden_filter(module, property_filter_s)
-			if property_filter_s and not property_filter_s.startswith('('):
-				# make sure that the LDAP filter is wrapped in brackets
-				property_filter_s = '(%s)' % property_filter_s
-			if filter_s and not filter_s.startswith('('):
-				# make sure that the LDAP filter is wrapped in brackets
-				filter_s = '(%s)' % filter_s
-			filter_s = '(&%s%s)' % (property_filter_s, filter_s)
+
+			filter_s = '(&%s%s)' % (cls.wrap_filter(property_filter_s), cls.wrap_filter(filter_s))
+		return filter_s
+
+	@classmethod
+	def wrap_filter(cls, filter_s):
+		if filter_s and not filter_s.startswith('('):
+			# make sure that the LDAP filter is wrapped in brackets
+			filter_s = '(%s)' % filter_s
 		return filter_s
 
 

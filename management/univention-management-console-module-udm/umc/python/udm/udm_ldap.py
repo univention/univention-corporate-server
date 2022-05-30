@@ -1339,7 +1339,7 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
 		options['base'] = options.pop('container') if options['container'] != 'all' else None
 	if 'objectProperty' in options:
 		options['property'] = options.pop('objectProperty') if options['objectProperty'] != 'None' else None
-	if 'objectPropertyValue' in options:
+	if 'objectPropertyValue' in options and 'objectProperty' in options:
 		options['value'] = options.pop('objectPropertyValue')
 	# only for syntax_choices_key
 	options['allow_asterisks'] = options.pop('allow_asterisks', True)
