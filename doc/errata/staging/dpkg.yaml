@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: dpkg
+fix: 1.19.8
+desc: |
+ This update addresses the following issue:
+ * dpkg (CVE-2022-1664)
+bug: [54810]
+cve:
+- CVE-2022-1664
