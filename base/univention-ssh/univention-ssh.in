@@ -63,7 +63,7 @@ def display_help(out=sys.stdout):
 
 		Options:
 		  -timeout SECONDS:                Specify a timeout in seconds, after
-		                                   with the ssh connection is forcefuly terminated.
+		                                   which the ssh connection is forcefully terminated.
 		  --no-split:                      don't word-split command
 		  -h | --help | -?:                print this usage message
 		  --version:                       print version information
@@ -92,7 +92,7 @@ def display_help(out=sys.stdout):
 
 		Options:
 		  -timeout SECONDS:                Specify a timeout in seconds, after
-		                                   with the ssh connection is forcefuly terminated.
+		                                   which the ssh connection is forcefully terminated.
 		  --no-split:                      don't word-split command
 		  -h | --help | -?:                print this usage message
 		  --version:                       print version information
@@ -121,7 +121,7 @@ def display_help(out=sys.stdout):
 
 		Options:
 		  -timeout SECONDS:                Specify a timeout in seconds, after
-		                                   with the ssh connection is forcefuly terminated.
+		                                   which the ssh connection is forcefully terminated.
 		  --no-split:                      don't word-split command
 		  -h | --help | -?:                print this usage message
 		  --version:                       print version information
