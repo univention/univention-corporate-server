@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-ssh
-fix:
+fix: 11.0.0-5
 desc: |
  This update addresses the following issues:
  * Update the `univention-scp --help` and `univention-rsync` message to specify
