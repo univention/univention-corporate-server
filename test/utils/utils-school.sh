@@ -43,6 +43,13 @@ install_kelvin_api () {
   # do not rename function: used as install_[ENV:TEST_API]_api in autotest-241-ucsschool-HTTP-API.cfg
   . utils.sh && switch_to_test_app_center || true
   echo -n univention > /tmp/univention
+  # use brach image if given
+  if [ -n "$UCS_ENV_KELVIN_IMAGE" ]; then
+    if [[ $UCS_ENV_KELVIN_IMAGE =~ ^gitregistry.knut.univention.de.* ]]; then
+        docker login -u "$GITLAB_REGISTRY_TOKEN" -p "$GITLAB_REGISTRY_TOKEN_SECRET" gitregistry.knut.univention.de
+    fi
+    univention-app dev-set ucsschool-kelvin-rest-api "DockerImage=$UCS_ENV_KELVIN_IMAGE"
+  fi
   univention-app install --noninteractive --username Administrator --pwdfile /tmp/univention ucsschool-kelvin-rest-api
   docker images
   docker ps -a

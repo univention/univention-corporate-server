@@ -1086,7 +1086,8 @@ prepare_results () {
 }
 
 add_ucsschool_dev_repo () {
-	local majorminor="$(ucr get version/version)"
+	local majorminor
+	majorminor="$(ucr get version/version)"
 	cat << EOF > /etc/apt/sources.list.d/ucsschool-dev-repo.list
 deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-ucs-school-${majorminor}/all/
 deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-ucs-school-${majorminor}/\$(ARCH)/
@@ -1252,6 +1253,23 @@ basic_setup_ucs_joined () {
 	fi
 
 	return $rv
+}
+
+# add entry to ssh environment to pass variables via env
+add_to_ssh_environment () {
+	local entry="${1:?missing entry}"
+	# add newline if missing
+	[ -n "$(tail -c1 /root/.ssh/environment)" ] && printf '\n' >>/root/.ssh/environment
+	echo "$entry" >> /root/.ssh/environment
+}
+
+# make env file available in ssh session
+set_env_variables_from_env_file () {
+	local env_file="${1:?missing env file}"
+	while read -r entry; do
+		add_to_ssh_environment "$entry"
+	done < "$env_file"
+	return 0
 }
 
 ################################################################################
