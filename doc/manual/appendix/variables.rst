@@ -103,7 +103,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    Configures the number of cycles that the UCS AD Connector attempts to
    synchronize an object from the AD domain when it can't be synchronized. The
    default value is ``10`` cycles. For more information, see
-   :ref:`ad-connector-ad-connector-setup`
+   :ref:`ad-connector-ad-connector-setup`.
 
 
 .. envvar:: cups/cups-pdf/anonymous
@@ -287,7 +287,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
 .. envvar:: google-apps/debug/werror
 
-   Configure additional debug error for the Google Apps for Work. For more
+   Configure additional debug error messages for the Google Apps for Work. For more
    information, see :ref:`idmcloud-gsuite-debug`.
 
 
@@ -497,9 +497,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
 .. envvar:: ldap/master
 
-   TBD
-
-.. TODO : Define UCRV server/role
+   Contains the FQDN of the domain's |UCSPRIMARYDN| system.
 
 .. envvar:: ldap/overlay/lastbind
 
@@ -632,7 +630,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 .. envvar:: mail/antivir/spam
 
    Configures, if spam filtering is running. To deactivate spam filtering, set
-   the value to ``no``. For more inform
+   the value to ``no``. For more information, see :ref:`mail-virus`.
 
 
 .. envvar:: mail/archivefolder
@@ -1049,8 +1047,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 .. envvar:: password/quality/credit/digits
 
    Defines the minimum number of digits for a new password. For more
-   information, see :ref:`users-passwords`. For more information, see
-   :ref:`users-passwords`.
+   information, see :ref:`users-passwords`.
 
 
 .. envvar:: password/quality/credit/lower
@@ -1273,9 +1270,8 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
 .. envvar:: server/role
 
-   TBD
-
-.. TODO : Define UCRV server/role
+   Contains the name of the UCS system's server role. For more information, see
+   :ref:`system-roles`.
 
 
 .. envvar:: squid/auth/allowed_groups
