@@ -1,3 +1,9 @@
+univention-ssl (14.0.2-4) unstable; urgency=medium
+
+  * Bug #54697: Order SAN names by length
+
+ -- Eric Monne Mesalles <monne-mesalles.extern@univention.de>  Wed, 01 Jun 2022 17:10:29 +0200
+
 univention-ssl (14.0.2-3) unstable; urgency=medium
 
   * Bug #53288: Fix wildcard certificate creation

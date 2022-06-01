@@ -34,10 +34,15 @@
 # http://www.ibiblio.org/pub/Linux/docs/HOWTO/other-formats/html_single/SSL-Certificates-HOWTO.html
 # http://www.pca.dfn.de/dfnpca/certify/ssl/handbuch/ossl092/
 
+die () {
+	echo "$0: FATAL: $*" >&2
+	exit 2
+}
+
 SSLBASE="${sslbase:-/etc/univention/ssl}"
-case "$SSLBASE" in /*) ;; *) echo "$0: FATAL: Invalid SSLBASE=$SSLBASE" >&2 ; exit 2 ;; esac
+case "$SSLBASE" in /*) ;; *) die "Invalid SSLBASE=$SSLBASE" ;; esac
 CA=ucsCA
-case "$CA" in /*) echo "$0: FATAL: Invalid CA=$CA" >&2 ; exit 2 ;; esac
+case "$CA" in /*) die "Invalid CA=$CA" ;; esac
 
 DEFAULT_CRL_DAYS="$(/usr/sbin/univention-config-registry get ssl/crl/validity)"
 : "${DEFAULT_CRL_DAYS:=10}"
@@ -81,9 +86,23 @@ mk_config () {
 	local subjectAltName="${5:-}"
 
 	check_ssl_parameters "$name" || return $?
+
+	declare -a subjectAltNameArray
 	IFS=', ' read -r -a subjectAltNameArray <<< "$subjectAltName"
-	local SAN_txt san
-	for san in "${subjectAltNameArray[@]}"
+	local SAN_txt='' san
+
+	# Order the SANs by label count and length
+	declare -a sortedSan
+	mapfile -t sortedSan < <(
+		for san in "${subjectAltNameArray[@]}"
+		do
+  		printf ".%s %d %s\n" "${san//[!.]}" "${#san}" "${san}"
+		done |
+  		LC_ALL=C sort -k1r -k2nr |
+  		cut -d' ' -f3
+		)
+
+	for san in "${sortedSan[@]}"
 	do
 		SAN_txt="${SAN_txt:+${SAN_txt}, }DNS:${san}"
 	done
@@ -345,7 +364,7 @@ list_cert_names_all () {
 }
 
 get_cert_name_from_id () {
-	if ! [ -z "$1" ]; then
+	if [ -n "$1" ]; then
 		list_cert_names_all | awk -v id="$1" '$1 == id {print $2}'
 	fi
 }
@@ -510,11 +529,7 @@ gencert () {
 		# Add DNS alias names
 		local san
 		san="$(univention-ldapsearch -LLLo ldif-wrap=no "(cNAMERecord=${fqdn%.}.)" 1.1 | sed -rne 's/^dn: relativeDomainName=([^,]+),zoneName=([^,]+),.*/\1 \1.\2/p' | tr '\n' ' ')"
-		if [ "$hostname" = '*' ]; then
-			mk_config "$name/openssl.cnf" "" "$days" "$cn" "$fqdn $hostname $san"
-		else
-			mk_config "$name/openssl.cnf" "" "$days" "$cn" "$fqdn $hostname $san"
-		fi
+		mk_config "$name/openssl.cnf" "" "$days" "$cn" "$fqdn $hostname $san"
 		# generate a key pair
 		openssl genrsa -out "$name/private.key" "$DEFAULT_BITS"
 		openssl req -batch -config "$name/openssl.cnf" -new -key "$name/private.key" -out "$name/req.pem"

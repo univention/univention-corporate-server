@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-ssl
+fix:
+desc: |
+ This update addresses the following issue:
+ * Browsers check the certificate using the Subject Alternative Names (SAN).
+   They are verified in order, which stops on first match. Order the SANs by
+   length to prioritize the most specific values first.
+bug: [54697]
