@@ -36,6 +36,8 @@ VERSION=1
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/all.sh
+. /usr/share/univention-lib/umc.sh
+
 joinscript_init
 
 eval "$(univention-config-registry shell)"
@@ -64,7 +66,15 @@ ucs_registerLDAPExtension "$@" \
 	--ucsversionstart 5.0-0 \
 	--ucsversionend 5.99-0 \
 	--udm_module /usr/lib/univention-monitoring-client/udm/alert.py \
-	--messagecatalog /usr/lib/univention-monitoring-client/udm/de.mo || die
+	--messagecatalog /usr/lib/univention-monitoring-client/udm/de.mo \
+	--umcregistration /usr/lib/univention-monitoring-client/umc/udm-monitoring.xml \
+	--umcmessagecatalog /usr/lib/univention-monitoring-client/umc/de-udm-monitoring.mo \
+	--icon /usr/lib/univention-monitoring-client/umc/icons/16x16/monitoring.png \
+	--icon /usr/lib/univention-monitoring-client/umc/icons/50x50/monitoring.png \
+	--icon /usr/lib/univention-monitoring-client/umc/icons/16x16/udm-monitoring-alert.png \
+	--icon /usr/lib/univention-monitoring-client/umc/icons/50x50/udm-monitoring-alert.png \
+	--icon /usr/lib/univention-monitoring-client/umc/icons/scalable/monitoring.svg \
+	--icon /usr/lib/univention-monitoring-client/umc/icons/scalable/udm-monitoring-alert.svg || die
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=custom attributes,cn=univention,$ldap_base" \
@@ -96,6 +106,10 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set overwriteTab=0 || die
 
 ucs_addServiceToLocalhost "UCS Monitoring" || die
+
+umc_init
+umc_operation_create "udm-monitoring" "UDM - Alert Monitoring" "monitoring/alerts" "udm/*:objectType=monitoring/*" \
+	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*" || die
 
 if is_ucr_false monitoring/common/defaultalerts/autocreate; then
 	joinscript_save_current_version

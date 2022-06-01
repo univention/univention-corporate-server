@@ -421,6 +421,7 @@ define([
 					'shares/print'      : _('Printers managed here are used by the application "%(name)s" which is currently not installed.', params),
 					'mail/mail'         : _('Mail objects managed here are used by the application "%(name)s" which is currently not installed.', params),
 					'nagios/nagios'     : _('Nagios objects managed here are used by the application "%(name)s" which is currently not installed.', params),
+					'monitoring/alert'  : _('Alerts managed here are used by the application "%(name)s" which is currently not installed.', params),
 					'policies/policy'   : _('Policies managed here are used by the application "%(name)s" which is currently not installed.', params)
 				}[this.moduleFlavor];
 				if (!warningText) {
@@ -576,6 +577,7 @@ define([
 					'shares/print'        : _('Add a new printer.'),
 					'mail/mail'           : _('Add a new mail object.'),
 					'nagios/nagios'       : _('Add a new Nagios object.'),
+					'monitoring/alert'    : _('Add a new alert.'),
 					'policies/policy'     : _('Add a new policy.'),
 					'portals/all' : _('Add a new portal object.')
 				}[this.moduleFlavor];
@@ -596,6 +598,7 @@ define([
 					'shares/print'        : _('Edit the printer.'),
 					'mail/mail'           : _('Edit the mail object.'),
 					'nagios/nagios'       : _('Edit the Nagios object.'),
+					'monitoring/alert'    : _('Edit the alert.'),
 					'policies/policy'     : _('Edit the policy.'),
 					'portals/all' : _('Edit the portal object.')
 				}[this.moduleFlavor];
@@ -616,6 +619,7 @@ define([
 					'shares/print'        : _('Delete the selected printers.'),
 					'mail/mail'           : _('Delete the selected mail objects.'),
 					'nagios/nagios'       : _('Delete the selected Nagios objects.'),
+					'monitoring/alert'    : _('Delete the selected alerts.'),
 					'policies/policy'     : _('Delete the selected policies.'),
 					'portals/all' : _('Delete the selected portal object.')
 				}[this.moduleFlavor];
@@ -639,6 +643,7 @@ define([
 						'shares/print'        : _('No printers could be found.'),
 						'mail/mail'           : _('No mail objects could be found.'),
 						'nagios/nagios'       : _('No Nagios objects could be found.'),
+						'monitoring/alert'    : _('No alerts could be found.'),
 						'policies/policy'     : _('No policies could be found.'),
 						'portals/all' : _('No portal object could be found.')
 					}[this.moduleFlavor];
@@ -657,6 +662,7 @@ define([
 						'shares/print'        : _.ngettext('One printer of %d selected.', '%d printers of %d selected.', nItems, nItemsTotal),
 						'mail/mail'           : _.ngettext('One mail object of %d selected.', '%d mail objects of %d selected.', nItems, nItemsTotal),
 						'nagios/nagios'       : _.ngettext('One Nagios object of %d selected.', '%d Nagios objects of %d selected.', nItems, nItemsTotal),
+						'monitoring/alert'    : _.ngettext('One alert of %d selected.', '%d alerts of %d selected.', nItems, nItemsTotal),
 						'policies/policy'     : _.ngettext('One policy of %d selected.', '%d policies of %d selected.', nItems, nItemsTotal),
 						'portals/all' : _.ngettext('One portal object of %d selected.', '%d portal objects of %d selected.', nItems, nItemsTotal)
 					}[this.moduleFlavor];
@@ -867,6 +873,7 @@ define([
 					'shares/print'        : _('Search printers...'),
 					'mail/mail'           : _('Search mail objects...'),
 					'nagios/nagios'       : _('Search Nagios objects...'),
+					'monitoring/alert'    : _('Search alerts...'),
 					'policies/policy'     : _('Search policies...'),
 					'portals/all' : _('Search portal objects...')
 				}[this.moduleFlavor];
@@ -1159,6 +1166,7 @@ define([
 					'shares/print'      : _('Printers'),
 					'mail/mail'         : _('Mail objects'),
 					'nagios/nagios'     : _('Nagios objects'),
+					'monitoring/alert'  : _('Alerts'),
 					'policies/policy'   : _('Policies')
 				}[this.moduleFlavor];
 				if (!text) {
@@ -1407,6 +1415,8 @@ define([
 					                                    'Please select an LDAP destination for the %d selected mail objects:', n),
 					'nagios/nagios'       : _.ngettext('Please select an LDAP destination for the Nagios object:',
 					                                    'Please select an LDAP destination for the %d selected Nagios objects:', n),
+					'monitoring/alert'    : _.ngettext('Please select an LDAP destination for the alert:',
+					                                    'Please select an LDAP destination for the %d selected alerts:', n),
 					'policies/policy'     : _.ngettext('Please select an LDAP destination for the policy:',
 					                                    'Please select an LDAP destination for the %d selected policies:', n),
 					'portals/all' : _.ngettext('Please select an LDAP destination for the portal object:',
@@ -1430,6 +1440,7 @@ define([
 					'shares/print'        : _.ngettext('Move printer', 'Move printers', n),
 					'mail/mail'           : _.ngettext('Move mail object', 'Move mail objects', n),
 					'nagios/nagios'       : _.ngettext('Move Nagios object', 'Move Nagios objects', n),
+					'monitoring/alert'    : _.ngettext('Move alert', 'Move alerts', n),
 					'policies/policy'     : _.ngettext('Move policy', 'Move policies', n),
 					'portals/all' : _.ngettext('Move portal object', 'Move portal objects', n)
 				}[this.moduleFlavor];
@@ -1748,6 +1759,8 @@ define([
 					                                    'Please confirm the removal of the %d selected mail objects', n),
 					'nagios/nagios'       : _.ngettext('Please confirm the removal of the Nagios object:',
 					                                    'Please confirm the removal of the %d selected Nagios objects', n),
+					'monitoring/alert'    : _.ngettext('Please confirm the removal of the alert:',
+					                                    'Please confirm the removal of the %d selected alerts', n),
 					'policies/policy'     : _.ngettext('Please confirm the removal of the policy:',
 					                                    'Please confirm the removal of the %d selected ploicies', n),
 					'portals/all' : _.ngettext('Please confirm the removal of the portal object:',

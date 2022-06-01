@@ -242,6 +242,7 @@ define([
 					'shares/print'      : _('printers'),
 					'mail/mail'         : _('mail objects'),
 					'nagios/nagios'     : _('Nagios objects'),
+					'monitoring/alert'  : _('Alerts'),
 					'policies/policy'   : _('policies')
 				}[this.moduleFlavor];
 				if (!text) {
@@ -321,6 +322,7 @@ define([
 					'shares/print'      : _('Printer template'),
 					'mail/mail'         : _('Mail object template'),
 					'nagios/nagios'     : _('Nagios object template'),
+					'monitoring/alert'  : _('Alert template'),
 					'policies/policy'   : _('Policy template')
 				}[this.moduleFlavor];
 				if (!text) {
@@ -483,6 +485,7 @@ define([
 					'shares/print'      : _('printer'),
 					'mail/mail'         : _('mail object'),
 					'nagios/nagios'     : _('Nagios object'),
+					'monitoring/alert'  : _('Alert'),
 					'policies/policy'   : _('policy')
 				}[this.moduleFlavor];
 				if (!text) {

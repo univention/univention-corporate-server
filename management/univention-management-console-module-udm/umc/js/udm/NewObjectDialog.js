@@ -100,6 +100,7 @@ define([
 					'shares/print'        : _('Add a new printer.'),
 					'mail/mail'           : _('Add a new mail object.'),
 					'nagios/nagios'       : _('Add a new Nagios object.'),
+					'monitoring/alert'    : _('Add a new alert.'),
 					'policies/policy'     : _('Add a new policy.'),
 					'portals/all' : _('Add a new portal object.')
 				}[this.moduleFlavor];

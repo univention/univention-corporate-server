@@ -828,6 +828,8 @@ define([
 					                                    'The mail objects are part of the Active Directory domain.', n, value),
 					'nagios/nagios'       : _.ngettext('The Nagios object "%s" is part of the Active Directory domain.',
 					                                    'The Nagios objects are part of the Active Directory domain.', n, value),
+					'monitoring/alert'    : _.ngettext('The alert "%s" is part of the Active Directory domain.',
+					                                    'The alerts are part of the Active Directory domain.', n, value),
 					'policies/policy'     : _.ngettext('The policy "%s" is part of the Active Directory domain.',
 					                                    'The policies are part of the Active Directory domain.', n, value),
 					'portals/all' : _.ngettext('The portal object "%s" is part of the Active Directory domain.',
@@ -1367,6 +1369,7 @@ define([
 					'shares/print'      : _('Create printer'),
 					'mail/mail'         : _('Create mail object'),
 					'nagios/nagios'     : _('Create Nagios object'),
+					'monitoring/alert'  : _('Create alert'),
 					'policies/policy'   : _('Create policy')
 				}[this.moduleFlavor];
 				if (!text && this.moduleFlavor === 'portals/all') {
@@ -2059,6 +2062,7 @@ define([
 					'shares/print'        : _('Failed to retrieve the printer from the server.'),
 					'mail/mail'           : _('Failed to retrieve the mail object from the server.'),
 					'nagios/nagios'       : _('Failed to retrieve the Nagios object from the server.'),
+					'monitoring/alert'    : _('Failed to retrieve the alert from the server.'),
 					'policies/policy'     : _('Failed to retrieve the policy from the server.'),
 					'portals/all' : _('Failed to retrieve the portal object from the server.')
 				}[this.moduleFlavor];

@@ -4,3 +4,4 @@ src/univention/admin/syntax.d/*.py usr/lib/univention-monitoring-client/udm/synt
 univention-monitoring.schema usr/lib/univention-monitoring-client/schema/
 monitoring-client.py usr/lib/univention-directory-listener/system/
 migrate-nagios-services-to-alerts usr/lib/univention-monitoring-client
+umc/udm-monitoring.xml usr/lib/univention-monitoring-client/umc/

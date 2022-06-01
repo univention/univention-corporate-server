@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm 10.0.0-3\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2021-04-11 04:04+0200\n"
+"POT-Creation-Date: 2022-06-23 17:59+0200\n"
 "PO-Revision-Date: 2020-09-05 16:24+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -12,27 +12,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
 
-#: umc/js/udm/DetailPage.js:840
+#: umc/js/udm/DetailPage.js:842
 msgid " UCS can only change certain attributes."
 msgstr "UCS kann nur bestimmte Attribute verändern."
 
-#: umc/js/udm.js:429
+#: umc/js/udm.js:430
 msgid " You can install the application using the %(link)s"
 msgstr " Die Anwendung kann im %(link)s installiert werden"
 
-#: umc/js/udm/DetailPage.js:2017
+#: umc/js/udm/DetailPage.js:2020
 msgid "%(attribute)s: %(message)s\n"
 msgstr "%(attribute)s: %(message)s\n"
 
-#: umc/js/udm/LicenseDialog.js:198
+#: umc/js/udm/LicenseDialog.js:197
 msgid "%(limit)s (used: %(used)s)"
 msgstr "%(limit)s (genutzt: %(used)s)"
 
-#: umc/js/udm/DetailPage.js:990
+#: umc/js/udm/DetailPage.js:992
 msgid "(multi-edit)"
 msgstr "(Mehrfachbearbeitung)"
 
-#: umc/js/udm/DetailPage.js:840
+#: umc/js/udm/DetailPage.js:842
 msgid "<b>Attention:</b> "
 msgstr "<b>Hinweis:</b> "
 
@@ -44,8 +44,8 @@ msgstr "<b>Position</b>: <i>%(path)s</i>"
 msgid "<b>Type</b>: <i>%(type)s</i>"
 msgstr "<b>Typ</b>: <i>%(type)s</i>"
 
-#: umc/js/udm.js:493 umc/js/udm/wizards/FirstPageWizard.js:290
-#: umc/js/udm/wizards/FirstPageWizard.js:296
+#: umc/js/udm.js:494 umc/js/udm/wizards/FirstPageWizard.js:291
+#: umc/js/udm/wizards/FirstPageWizard.js:297
 msgid "<b>Warning!</b>"
 msgstr "<b>Warnung!</b>"
 
@@ -59,7 +59,7 @@ msgstr ""
 "auf einem Windows-Gerät ist dadurch nicht möglich. Bitte ziehen Sie in "
 "Erwägung den Benutzernamen zu kürzen."
 
-#: umc/js/udm.js:492
+#: umc/js/udm.js:493
 msgid ""
 "<p><b>Add and modify are disabled in this session.</b></p><p>You have too "
 "many user accounts for your license. Carry out the following steps to re-"
@@ -75,7 +75,7 @@ msgstr ""
 "ol><p>Wenn Sie eine neue Lizenz benötigen, kontaktieren Sie bitte Ihren UCS "
 "Partner."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:361
+#: umc/js/udm/wizards/FirstPageWizard.js:363
 #, javascript-format
 msgid ""
 "<p>The LDAP object will be created in the container:</p><p><i>%s</i></p>"
@@ -83,7 +83,7 @@ msgstr ""
 "<p>Das LDAP-Objekt wird in dem folgenden Container angelegt:</p><p><i>%s</"
 "i></p>"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:344
+#: umc/js/udm/wizards/FirstPageWizard.js:346
 #, javascript-format
 msgid "<p>The LDAP object will be created underneath of <i>%s</i>.</p>"
 msgstr "<p>Das LDAP-Objekt wird unterhalb von <i>%s</i> angelegt.</p>"
@@ -92,19 +92,19 @@ msgstr "<p>Das LDAP-Objekt wird unterhalb von <i>%s</i> angelegt.</p>"
 msgid "A portal category has to be selected"
 msgstr "Eine Portal-Kategorie muss ausgewählt sein"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:429
+#: umc/js/udm/wizards/FirstPageWizard.js:431
 msgid "A template defines rules for default object properties."
 msgstr "Eine Vorlage definiert Regeln für Vorgabewerte eines neuen Objektes."
 
-#: umc/js/udm/wizards/users/user.js:89
+#: umc/js/udm/wizards/users/user.js:101
 msgid "Account disabled"
 msgstr "Konto deaktiviert"
 
-#: umc/js/udm/DetailPage.js:942
+#: umc/js/udm/DetailPage.js:944
 msgid "Activate apps and options"
 msgstr "Apps und Optionen aktivieren"
 
-#: umc/js/udm/DetailPage.js:935
+#: umc/js/udm/DetailPage.js:937
 msgid "Activated Apps"
 msgstr "Aktivierte Apps"
 
@@ -112,71 +112,75 @@ msgstr "Aktivierte Apps"
 msgid "Activation of UCS"
 msgstr "UCS-Aktivierung"
 
-#: umc/js/udm.js:698
+#: umc/js/udm.js:704
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: umc/js/udm.js:574 umc/js/udm/NewObjectDialog.js:98
+#: umc/js/udm.js:575 umc/js/udm/NewObjectDialog.js:98
 msgid "Add a new DHCP object."
 msgstr "Neues DHCP-Objekt hinzufügen."
 
-#: umc/js/udm.js:573 umc/js/udm/NewObjectDialog.js:97
+#: umc/js/udm.js:574 umc/js/udm/NewObjectDialog.js:97
 msgid "Add a new DNS object."
 msgstr "Neues DNS-Objekt hinzufügen."
 
-#: umc/js/udm.js:583 umc/js/udm/NewObjectDialog.js:107
+#: umc/js/udm.js:585 umc/js/udm/NewObjectDialog.js:108
 msgid "Add a new LDAP object."
 msgstr "Neues LDAP-Objekt hinzufügen."
 
-#: umc/js/udm.js:578 umc/js/udm/NewObjectDialog.js:102
+#: umc/js/udm.js:579 umc/js/udm/NewObjectDialog.js:102
 msgid "Add a new Nagios object."
 msgstr "Neues Nagios-Objekt hinzufügen."
 
-#: umc/js/udm.js:571 umc/js/udm/NewObjectDialog.js:95
+#: umc/js/udm.js:580 umc/js/udm/NewObjectDialog.js:103
+msgid "Add a new alert."
+msgstr "Neuen Alarm hinzufügen."
+
+#: umc/js/udm.js:572 umc/js/udm/NewObjectDialog.js:95
 msgid "Add a new computer."
 msgstr "Neuen Rechner hinzufügen."
 
-#: umc/js/udm.js:570 umc/js/udm/NewObjectDialog.js:94
+#: umc/js/udm.js:571 umc/js/udm/NewObjectDialog.js:94
 msgid "Add a new group."
 msgstr "Neue Gruppe hinzufügen."
 
-#: umc/js/udm.js:577 umc/js/udm/NewObjectDialog.js:101
+#: umc/js/udm.js:578 umc/js/udm/NewObjectDialog.js:101
 msgid "Add a new mail object."
 msgstr "Neues Mail-Objekt hinzufügen."
 
-#: umc/js/udm.js:572 umc/js/udm/NewObjectDialog.js:96
+#: umc/js/udm.js:573 umc/js/udm/NewObjectDialog.js:96
 msgid "Add a new network object."
 msgstr "Neues Netz-Objekt hinzufügen."
 
-#: umc/js/udm.js:579 umc/js/udm/NewObjectDialog.js:103
+#: umc/js/udm.js:581 umc/js/udm/NewObjectDialog.js:104
 msgid "Add a new policy."
 msgstr "Neue Richtlinie hinzufügen."
 
-#: umc/js/udm.js:580 umc/js/udm/NewObjectDialog.js:104
+#: umc/js/udm.js:582 umc/js/udm/NewObjectDialog.js:105
 msgid "Add a new portal object."
 msgstr "Neues Portal-Objekt hinzufügen."
 
-#: umc/js/udm.js:576 umc/js/udm/NewObjectDialog.js:100
+#: umc/js/udm.js:577 umc/js/udm/NewObjectDialog.js:100
 msgid "Add a new printer."
 msgstr "Neuen Drucker hinzufügen."
 
-#: umc/js/udm.js:575 umc/js/udm/NewObjectDialog.js:99
+#: umc/js/udm.js:576 umc/js/udm/NewObjectDialog.js:99
 msgid "Add a new share."
 msgstr "Neue Freigabe hinzufügen."
 
-#: umc/js/udm.js:569 umc/js/udm/NewObjectDialog.js:93
+#: umc/js/udm.js:570 umc/js/udm/NewObjectDialog.js:93
 msgid "Add a new user."
 msgstr "Neuen Benutzer hinzufügen."
 
-#: umc/js/udm/wizards/CreateWizard.js:194
+#: umc/js/udm/wizards/CreateWizard.js:195
 msgid "Advanced"
 msgstr "Erweitert"
 
-#: umc/js/udm/ComboBox.js:342
+#: umc/js/udm/ComboBox.js:340
 msgid "Advanced Search"
 msgstr "Erweiterte Suche"
 
-#: umc/js/udm.js:1351
+#: umc/js/udm.js:1369
 msgid "Advanced options"
 msgstr "Erweiterte Optionen"
 
@@ -184,44 +188,64 @@ msgstr "Erweiterte Optionen"
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"
 
-#: umc/js/udm.js:904 umc/js/udm.js:921
+#: umc/js/udm/wizards/FirstPageWizard.js:488
+msgid "Alert"
+msgstr "Alarm"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:325
+msgid "Alert template"
+msgstr "Alarm-Vorlage"
+
+#: umc/js/udm.js:1169 umc/js/udm/wizards/FirstPageWizard.js:245
+msgid "Alerts"
+msgstr "Alarme"
+
+#: umc/js/udm.js:424
+msgid ""
+"Alerts managed here are used by the application \"%(name)s\" which is "
+"currently not installed."
+msgstr ""
+"Hier verwaltete Alarme werden von der Applikation \"%(name)s\" benutzt, "
+"welche momentan nicht installiert ist."
+
+#: umc/js/udm.js:911 umc/js/udm.js:928
 msgid "All containers"
 msgstr "Alle Container"
 
-#: umc/js/udm.js:903 umc/js/udm.js:906 umc/js/udm.js:918 umc/js/udm.js:933
+#: umc/js/udm.js:910 umc/js/udm.js:913 umc/js/udm.js:925 umc/js/udm.js:940
 msgid "All types"
 msgstr "Alle Objekttypen"
 
-#: umc/js/udm/DetailPage.js:941
+#: umc/js/udm/DetailPage.js:943
 msgid "Apps"
 msgstr "Apps"
 
-#: umc/js/udm/DetailPage.js:1391 umc/js/udm/wizards/CreateWizard.js:185
+#: umc/js/udm/DetailPage.js:1394 umc/js/udm/wizards/CreateWizard.js:186
 msgid "Back"
 msgstr "Zurück"
 
-#: umc/js/udm.js:1485 umc/js/udm.js:1848 umc/js/udm/CreateReportDialog.js:97
-#: umc/js/udm/DetailPage.js:1393
+#: umc/js/udm.js:1506 umc/js/udm.js:1871 umc/js/udm/CreateReportDialog.js:95
+#: umc/js/udm/DetailPage.js:1396
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/udm/DetailPage.js:1516
+#: umc/js/udm/DetailPage.js:1519
 msgid "Click to edit the inherited properties of the policy"
 msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 
-#: umc/js/udm/LicenseDialog.js:151
+#: umc/js/udm/LicenseDialog.js:150
 msgid "Clients"
 msgstr "Clients"
 
-#: umc/js/udm/LicenseImportDialog.js:124 umc/js/udm/LicenseDialog.js:69
+#: umc/js/udm/LicenseDialog.js:68 umc/js/udm/LicenseImportDialog.js:123
 msgid "Close"
 msgstr "Schließen"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:316
+#: umc/js/udm/wizards/FirstPageWizard.js:317
 msgid "Computer template"
 msgstr "Rechner-Vorlage"
 
-#: umc/js/udm.js:1144
+#: umc/js/udm.js:1161
 msgid "Computers"
 msgstr "Rechner"
 
@@ -233,59 +257,63 @@ msgstr ""
 "Hier verwaltete Rechner werden von der Applikation \"%(name)s\" benutzt, "
 "welche momentan nicht installiert ist."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:372
+#: umc/js/udm/wizards/FirstPageWizard.js:374
 msgid "Container"
 msgstr "Container"
 
-#: umc/js/udm/DetailPage.js:2163
+#: umc/js/udm/DetailPage.js:2167
 msgid "Continue editing"
 msgstr "Bearbeiten fortführen"
 
-#: umc/js/udm.js:774
+#: umc/js/udm.js:780
 msgid "Copy"
 msgstr "Kopieren"
 
-#: umc/js/udm/LicenseDialog.js:171
+#: umc/js/udm/LicenseDialog.js:170
 msgid "Corporate Clients"
 msgstr "Corporate Clients"
 
-#: umc/js/udm/CreateReportDialog.js:103
+#: umc/js/udm/CreateReportDialog.js:101
 msgid "Create"
 msgstr "Erstellen"
 
-#: umc/js/udm/DetailPage.js:1365
+#: umc/js/udm/DetailPage.js:1367
 msgid "Create DHCP object"
 msgstr "DHCP-Objekt erzeugen"
 
-#: umc/js/udm/DetailPage.js:1364
+#: umc/js/udm/DetailPage.js:1366
 msgid "Create DNS object"
 msgstr "DNS-Objekt erzeugen"
 
-#: umc/js/udm/DetailPage.js:1380
+#: umc/js/udm/DetailPage.js:1383
 msgid "Create LDAP object"
 msgstr "LDAP-Objekt erzeugen"
 
-#: umc/js/udm/DetailPage.js:1369
+#: umc/js/udm/DetailPage.js:1371
 msgid "Create Nagios object"
 msgstr "Nagios-Objekt erzeugen"
 
-#: umc/js/udm.js:775
+#: umc/js/udm.js:781
 msgid "Create a copy of the LDAP object."
 msgstr "Eine Kopie des LDAP-Objekts erstellen."
 
-#: umc/js/udm/DetailPage.js:1362
+#: umc/js/udm/DetailPage.js:1372
+msgid "Create alert"
+msgstr "Alarm erstellen"
+
+#: umc/js/udm/DetailPage.js:1364
 msgid "Create computer"
 msgstr "Rechner erzeugen"
 
-#: umc/js/udm/DetailPage.js:1361
+#: umc/js/udm/DetailPage.js:1363
 msgid "Create group"
 msgstr "Gruppe erstellen"
 
-#: umc/js/udm/DetailPage.js:1368
+#: umc/js/udm/DetailPage.js:1370
 msgid "Create mail object"
 msgstr "Mail-Objekt erzeugen"
 
-#: umc/js/udm/DetailPage.js:1363
+#: umc/js/udm/DetailPage.js:1365
 msgid "Create network object"
 msgstr "Netz-Objekt erzeugen"
 
@@ -293,51 +321,51 @@ msgstr "Netz-Objekt erzeugen"
 msgid "Create new policy"
 msgstr "Neue Richtlinie erstellen"
 
-#: umc/js/udm/DetailPage.js:1370
+#: umc/js/udm/DetailPage.js:1373
 msgid "Create policy"
 msgstr "Richtlinie erstellen"
 
-#: umc/js/udm/DetailPage.js:1374
+#: umc/js/udm/DetailPage.js:1377
 msgid "Create portal"
 msgstr "Portal erstellen"
 
-#: umc/js/udm/DetailPage.js:1376
+#: umc/js/udm/DetailPage.js:1379
 msgid "Create portal category"
 msgstr "Portalkategorie erstellen"
 
-#: umc/js/udm/DetailPage.js:1375
+#: umc/js/udm/DetailPage.js:1378
 msgid "Create portal entry"
 msgstr "Portaleintrag erstellen"
 
-#: umc/js/udm/DetailPage.js:1367
+#: umc/js/udm/DetailPage.js:1369
 msgid "Create printer"
 msgstr "Drucker erstellen"
 
-#: umc/js/udm.js:798
+#: umc/js/udm.js:804
 msgid "Create report"
 msgstr "Report erstellen"
 
-#: umc/js/udm/DetailPage.js:1366
+#: umc/js/udm/DetailPage.js:1368
 msgid "Create share"
 msgstr "Freigabe erstellen"
 
-#: umc/js/udm/DetailPage.js:1360
+#: umc/js/udm/DetailPage.js:1362
 msgid "Create user"
 msgstr "Benutzer erstellen"
 
-#: umc/js/udm/CreateReportDialog.js:176
+#: umc/js/udm/CreateReportDialog.js:174
 msgid "Creating the report..."
 msgstr "Erstelle den Report..."
 
-#: umc/js/udm/DetailPage.js:1427
+#: umc/js/udm/DetailPage.js:1430
 msgid "Customize this page"
 msgstr "Diese Seite anpassen"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:481
+#: umc/js/udm/wizards/FirstPageWizard.js:483
 msgid "DHCP object"
 msgstr "DHCP-Objekt"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:319
+#: umc/js/udm/wizards/FirstPageWizard.js:320
 msgid "DHCP object template"
 msgstr "DHCP-Objekt-Vorlage"
 
@@ -353,15 +381,15 @@ msgstr ""
 "Hier verwaltete DHCP-Objekte werden von der Applikation \"%(name)s\" "
 "benutzt, welche momentan nicht installiert ist."
 
-#: umc/js/udm.js:1147
+#: umc/js/udm.js:1164
 msgid "DHCP services"
 msgstr "DHCP-Dienste"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:480
+#: umc/js/udm/wizards/FirstPageWizard.js:482
 msgid "DNS object"
 msgstr "DNS-Objekt"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:318
+#: umc/js/udm/wizards/FirstPageWizard.js:319
 msgid "DNS object template"
 msgstr "DNS-Objekt-Vorlage"
 
@@ -377,91 +405,95 @@ msgstr ""
 "Hier verwaltete DNS-Objekte werden von der Applikation \"%(name)s\" benutzt, "
 "welche momentan nicht installiert ist."
 
-#: umc/js/udm.js:1146
+#: umc/js/udm.js:1163
 msgid "DNS zones"
 msgstr "DNS-Zonen"
 
-#: umc/js/udm.js:935 umc/js/udm/MultiObjectSelect.js:109
+#: umc/js/udm.js:942 umc/js/udm/MultiObjectSelect.js:109
 msgid "Default properties"
 msgstr "Standardeigenschaften"
 
-#: umc/js/udm.js:754 umc/js/udm.js:1213 umc/js/udm.js:1852
+#: umc/js/udm.js:760 umc/js/udm.js:1231 umc/js/udm.js:1875
 msgid "Delete"
 msgstr "Löschen"
 
-#: umc/js/udm.js:1859
+#: umc/js/udm.js:1882
 msgid "Delete objects"
 msgstr "Objekte löschen"
 
-#: umc/js/udm.js:1842
+#: umc/js/udm.js:1865
 msgid "Delete referring objects."
 msgstr "Zugehörige Objekte löschen."
 
-#: umc/js/udm.js:614
+#: umc/js/udm.js:617
 msgid "Delete the selected DHCP objects."
 msgstr "Die ausgewählten DHCP-Objekte löschen"
 
-#: umc/js/udm.js:613
+#: umc/js/udm.js:616
 msgid "Delete the selected DNS objects."
 msgstr "Die ausgewählten DNS-Objekte löschen"
 
-#: umc/js/udm.js:623
+#: umc/js/udm.js:627
 msgid "Delete the selected LDAP objects."
 msgstr "Die ausgewählten LDAP-Objekte löschen"
 
-#: umc/js/udm.js:618
+#: umc/js/udm.js:621
 msgid "Delete the selected Nagios objects."
 msgstr "Die ausgewählten Nagios-Objekte löschen"
 
-#: umc/js/udm.js:611
+#: umc/js/udm.js:622
+msgid "Delete the selected alerts."
+msgstr "Die ausgewählten Alarm löschen"
+
+#: umc/js/udm.js:614
 msgid "Delete the selected computers."
 msgstr "Die ausgewählten Rechner löschen"
 
-#: umc/js/udm.js:610
+#: umc/js/udm.js:613
 msgid "Delete the selected groups."
 msgstr "Die ausgewählten Gruppen löschen"
 
-#: umc/js/udm.js:617
+#: umc/js/udm.js:620
 msgid "Delete the selected mail objects."
 msgstr "Die ausgewählten Mail-Objekte löschen"
 
-#: umc/js/udm.js:612
+#: umc/js/udm.js:615
 msgid "Delete the selected network objects."
 msgstr "Die ausgewählten Netz-Objekte löschen"
 
-#: umc/js/udm.js:619
+#: umc/js/udm.js:623
 msgid "Delete the selected policies."
 msgstr "Die ausgewählten Richtlinien löschen"
 
-#: umc/js/udm.js:620
+#: umc/js/udm.js:624
 msgid "Delete the selected portal object."
 msgstr "Die ausgewählten Portal-Objekte löschen"
 
-#: umc/js/udm.js:616
+#: umc/js/udm.js:619
 msgid "Delete the selected printers."
 msgstr "Die ausgewählten Drucker löschen"
 
-#: umc/js/udm.js:615
+#: umc/js/udm.js:618
 msgid "Delete the selected shares."
 msgstr "Die ausgewählten Freigaben löschen"
 
-#: umc/js/udm.js:609
+#: umc/js/udm.js:612
 msgid "Delete the selected users."
 msgstr "Die ausgewählten Benutzer löschen"
 
-#: umc/js/udm/LicenseDialog.js:152
+#: umc/js/udm/LicenseDialog.js:151
 msgid "Desktops"
 msgstr "Desktops"
 
-#: umc/js/udm/DetailPage.js:2166
+#: umc/js/udm/DetailPage.js:2170
 msgid "Discard changes"
 msgstr "Änderungen verwerfen"
 
-#: umc/js/udm.js:706 umc/js/udm.js:1206
+#: umc/js/udm.js:712 umc/js/udm.js:1224
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: umc/js/udm.js:733
+#: umc/js/udm.js:739
 msgid "Edit in new tab"
 msgstr "Bearbeiten in neuem Reiter"
 
@@ -469,119 +501,127 @@ msgstr "Bearbeiten in neuem Reiter"
 msgid "Edit policy"
 msgstr "Richtlinie bearbeiten"
 
-#: umc/js/udm.js:594
+#: umc/js/udm.js:596
 msgid "Edit the DHCP object."
 msgstr "DHCP-Objekt bearbeiten."
 
-#: umc/js/udm.js:593
+#: umc/js/udm.js:595
 msgid "Edit the DNS object."
 msgstr "DNS-Objekt bearbeiten."
 
-#: umc/js/udm.js:603
+#: umc/js/udm.js:606
 msgid "Edit the LDAP object."
 msgstr "LDAP-Objekt bearbeiten."
 
-#: umc/js/udm.js:598
+#: umc/js/udm.js:600
 msgid "Edit the Nagios object."
 msgstr "Nagios-Objekt bearbeiten."
 
-#: umc/js/udm.js:591
+#: umc/js/udm.js:601
+msgid "Edit the alert."
+msgstr "Alarm bearbeiten."
+
+#: umc/js/udm.js:593
 msgid "Edit the computer."
 msgstr "Rechner bearbeiten."
 
-#: umc/js/udm.js:590
+#: umc/js/udm.js:592
 msgid "Edit the group."
 msgstr "Gruppe bearbeiten."
 
-#: umc/js/udm.js:597
+#: umc/js/udm.js:599
 msgid "Edit the mail object."
 msgstr "Mail-Objekt bearbeiten."
 
-#: umc/js/udm.js:592
+#: umc/js/udm.js:594
 msgid "Edit the network object."
 msgstr "Netz-Objekt bearbeiten."
 
-#: umc/js/udm.js:599
+#: umc/js/udm.js:602
 msgid "Edit the policy."
 msgstr "Richtlinie bearbeiten."
 
-#: umc/js/udm.js:600
+#: umc/js/udm.js:603
 msgid "Edit the portal object."
 msgstr "Portal-Objekt bearbeiten."
 
-#: umc/js/udm.js:596
+#: umc/js/udm.js:598
 msgid "Edit the printer."
 msgstr "Drucker bearbeiten."
 
-#: umc/js/udm.js:595
+#: umc/js/udm.js:597
 msgid "Edit the share."
 msgstr "Freigabe bearbeiten."
 
-#: umc/js/udm.js:589
+#: umc/js/udm.js:591
 msgid "Edit the user."
 msgstr "Benutzer bearbeiten."
 
-#: umc/js/udm/DetailPage.js:2011
+#: umc/js/udm/DetailPage.js:2014
 msgid "Error"
 msgstr "Fehler"
 
-#: umc/js/udm/LicenseDialog.js:153 umc/js/udm/LicenseDialog.js:173
+#: umc/js/udm/LicenseDialog.js:152 umc/js/udm/LicenseDialog.js:172
 msgid "Expiry date"
 msgstr "Ablaufdatum"
 
-#: umc/js/udm.js:1522
+#: umc/js/udm.js:1543
 msgid "Failed to move the following objects:"
 msgstr "Die folgenden Objekte konnten nicht verschoben werden:"
 
-#: umc/js/udm/DetailPage.js:2057
+#: umc/js/udm/DetailPage.js:2060
 msgid "Failed to retrieve the DHCP object from the server."
 msgstr "Fehler beim Laden des DHCP-Objekts vom Server."
 
-#: umc/js/udm/DetailPage.js:2056
+#: umc/js/udm/DetailPage.js:2059
 msgid "Failed to retrieve the DNS object from the server."
 msgstr "Fehler beim Laden des DNS-Objekts vom Server."
 
-#: umc/js/udm/DetailPage.js:2066
+#: umc/js/udm/DetailPage.js:2070
 msgid "Failed to retrieve the LDAP object from the server."
 msgstr "Fehler beim Laden des LDAP-Objekts vom Server."
 
-#: umc/js/udm/DetailPage.js:2061
+#: umc/js/udm/DetailPage.js:2064
 msgid "Failed to retrieve the Nagios object from the server."
 msgstr "Fehler beim Laden des Nagios-Objekts vom Server."
 
-#: umc/js/udm/DetailPage.js:2054
+#: umc/js/udm/DetailPage.js:2065
+msgid "Failed to retrieve the alert from the server."
+msgstr "Fehler beim Laden des Alarms vom Server."
+
+#: umc/js/udm/DetailPage.js:2057
 msgid "Failed to retrieve the computer from the server."
 msgstr "Fehler beim Laden des Rechners vom Server."
 
-#: umc/js/udm/DetailPage.js:2053
+#: umc/js/udm/DetailPage.js:2056
 msgid "Failed to retrieve the group from the server."
 msgstr "Fehler beim Laden der Gruppe vom Server."
 
-#: umc/js/udm/DetailPage.js:2060
+#: umc/js/udm/DetailPage.js:2063
 msgid "Failed to retrieve the mail object from the server."
 msgstr "Fehler beim Laden des Mail-Objekts vom Server."
 
-#: umc/js/udm/DetailPage.js:2055
+#: umc/js/udm/DetailPage.js:2058
 msgid "Failed to retrieve the network object from the server."
 msgstr "Fehler beim Laden des Netz-Objekts vom Server."
 
-#: umc/js/udm/DetailPage.js:2062
+#: umc/js/udm/DetailPage.js:2066
 msgid "Failed to retrieve the policy from the server."
 msgstr "Fehler beim Laden der Richtlinie vom Server."
 
-#: umc/js/udm/DetailPage.js:2063
+#: umc/js/udm/DetailPage.js:2067
 msgid "Failed to retrieve the portal object from the server."
 msgstr "Fehler beim Laden des Portal-Objekts vom Server."
 
-#: umc/js/udm/DetailPage.js:2059
+#: umc/js/udm/DetailPage.js:2062
 msgid "Failed to retrieve the printer from the server."
 msgstr "Fehler beim Laden des Druckers vom Server."
 
-#: umc/js/udm/DetailPage.js:2058
+#: umc/js/udm/DetailPage.js:2061
 msgid "Failed to retrieve the share from the server."
 msgstr "Fehler beim Laden der Freigabe vom Server."
 
-#: umc/js/udm/DetailPage.js:2052
+#: umc/js/udm/DetailPage.js:2055
 msgid "Failed to retrieve the user from the server."
 msgstr "Fehler beim Laden des Benutzers vom Server."
 
@@ -589,103 +629,103 @@ msgstr "Fehler beim Laden des Benutzers vom Server."
 msgid "Failed to upload certificate"
 msgstr "Fehler beim Hochladen des Zertifikates"
 
-#: umc/js/udm/DetailPage.js:1294
+#: umc/js/udm/DetailPage.js:1296
 msgid "Further settings"
 msgstr "Weiterte Einstellungen"
 
-#: umc/js/udm/LicenseDialog.js:115
+#: umc/js/udm/LicenseDialog.js:114
 msgid "GPL"
 msgstr "GPL"
 
-#: umc/js/udm/CreateReportDialog.js:153
+#: umc/js/udm/CreateReportDialog.js:151
 #, javascript-format
 msgid "Generating DHCP object report for one object."
 msgid_plural "Generating DHCP object report for %d objects."
 msgstr[0] "Generiere DHCP-Objekt-Report für ein Objekt."
 msgstr[1] "Generiere DHCP-Objekt-Report für %d Objekte."
 
-#: umc/js/udm/CreateReportDialog.js:151
+#: umc/js/udm/CreateReportDialog.js:149
 #, javascript-format
 msgid "Generating DNS object report for one object."
 msgid_plural "Generating DNS object report for %d objects."
 msgstr[0] "Generiere DNS-Objekt-Report für ein Objekt."
 msgstr[1] "Generiere DNS-Objekt-Report für %d Objekte."
 
-#: umc/js/udm/CreateReportDialog.js:167
+#: umc/js/udm/CreateReportDialog.js:165
 #, javascript-format
 msgid "Generating LDAP object report for one object."
 msgid_plural "Generating LDAP object report for %d objects."
 msgstr[0] "Generiere LDAP-Objekt-Report für ein Objekt."
 msgstr[1] "Generiere LDAP-Objekt-Report für %d Objekte."
 
-#: umc/js/udm/CreateReportDialog.js:161
+#: umc/js/udm/CreateReportDialog.js:159
 #, javascript-format
 msgid "Generating Nagios object report for one object."
 msgid_plural "Generating Nagios object report for %d objects."
 msgstr[0] "Generiere Nagios-Objekt-Report für ein Objekt."
 msgstr[1] "Generiere Nagios-Objekt-Report für %d Objekte."
 
-#: umc/js/udm/CreateReportDialog.js:147
+#: umc/js/udm/CreateReportDialog.js:145
 #, javascript-format
 msgid "Generating computer report for one object."
 msgid_plural "Generating computer report for %d objects."
 msgstr[0] "Erzeuge Rechner-Report für ein Objekt."
 msgstr[1] "Erzeuge Rechner-Report für %d Objekte."
 
-#: umc/js/udm/CreateReportDialog.js:145
+#: umc/js/udm/CreateReportDialog.js:143
 #, javascript-format
 msgid "Generating group report for one object."
 msgid_plural "Generating group report for %d objects."
 msgstr[0] "Erzeuge Gruppen-Report für ein Objekt."
 msgstr[1] "Erzeuge Gruppen-Report für %d Objekte."
 
-#: umc/js/udm/CreateReportDialog.js:159
+#: umc/js/udm/CreateReportDialog.js:157
 #, javascript-format
 msgid "Generating mail object report for one object."
 msgid_plural "Generating mail object report for %d objects."
 msgstr[0] "Erzeuge Mail-Objekt-Report für ein Objekt."
 msgstr[1] "Erzeuge Mail-Objekt-Report für %d Objekte."
 
-#: umc/js/udm/CreateReportDialog.js:149
+#: umc/js/udm/CreateReportDialog.js:147
 #, javascript-format
 msgid "Generating network object report for one object."
 msgid_plural "Generating network object report for %d objects."
 msgstr[0] "Erzeuge Netz-Objekt-Report für ein Objekt."
 msgstr[1] "Erzeuge Netz-Objekt-Report für %d Objekte."
 
-#: umc/js/udm/CreateReportDialog.js:163
+#: umc/js/udm/CreateReportDialog.js:161
 #, javascript-format
 msgid "Generating policy report for one object."
 msgid_plural "Generating policy report for %d objects."
 msgstr[0] "Erzeuge Richtlinien-Report für ein Objekt."
 msgstr[1] "Erzeuge Richtlinien-Report für %d Objekte."
 
-#: umc/js/udm/CreateReportDialog.js:157
+#: umc/js/udm/CreateReportDialog.js:155
 #, javascript-format
 msgid "Generating printer report for one object."
 msgid_plural "Generating printer report for %d objects."
 msgstr[0] "Erzeuge Drucker-Report für ein Objekt."
 msgstr[1] "Erzeuge Drucker-Report für %d Objekte."
 
-#: umc/js/udm/CreateReportDialog.js:155
+#: umc/js/udm/CreateReportDialog.js:153
 #, javascript-format
 msgid "Generating share report for one object."
 msgid_plural "Generating share report for %d objects."
 msgstr[0] "Erzeuge Freigaben-Report für ein Objekt."
 msgstr[1] "Erzeuge Freigaben-Report für %d Objekte."
 
-#: umc/js/udm/CreateReportDialog.js:143
+#: umc/js/udm/CreateReportDialog.js:141
 #, javascript-format
 msgid "Generating user report for one object."
 msgid_plural "Generating user report for %d objects."
 msgstr[0] "Erzeuge Benutzer-Report für ein Objekt."
 msgstr[1] "Erzeuge Benutzer-Report für %d Objekte."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:315
+#: umc/js/udm/wizards/FirstPageWizard.js:316
 msgid "Group template"
 msgstr "Gruppen-Vorlage"
 
-#: umc/js/udm.js:1143
+#: umc/js/udm.js:1160
 msgid "Groups"
 msgstr "Gruppen"
 
@@ -697,11 +737,11 @@ msgstr ""
 "Hier verwaltete Gruppen werden von der Applikation \"%(name)s\" benutzt, "
 "welche momentan nicht installiert ist."
 
-#: umc/js/udm.js:472 umc/js/udm/DetailPage.js:1407
+#: umc/js/udm.js:473 umc/js/udm/DetailPage.js:1410
 msgid "Help"
 msgstr "Hilfe"
 
-#: umc/js/udm/DetailPage.js:938
+#: umc/js/udm/DetailPage.js:940
 msgid ""
 "Here you can activate the user for one of the installed apps. The user can "
 "then log on to the app and use it."
@@ -709,11 +749,11 @@ msgstr ""
 "Hier können Sie den Benutzer für eine der installierten Apps aktivieren. Der "
 "Benutzer kann sich anschließend an der App anmelden und sie nutzen."
 
-#: umc/js/udm/LicenseImportDialog.js:93
+#: umc/js/udm/LicenseImportDialog.js:92
 msgid "Import from file..."
 msgstr "Importieren aus Datei..."
 
-#: umc/js/udm/LicenseImportDialog.js:105
+#: umc/js/udm/LicenseImportDialog.js:104
 msgid "Import from text field"
 msgstr "Importieren aus Textfeld"
 
@@ -721,15 +761,15 @@ msgstr "Importieren aus Textfeld"
 msgid "Import new license"
 msgstr "Neue Lizenz importieren"
 
-#: umc/js/udm/LicenseImportDialog.js:112
+#: umc/js/udm/LicenseImportDialog.js:111
 msgid "Importing license data..."
 msgstr "Importieren der Lizenzdaten..."
 
-#: umc/js/udm.js:942 umc/js/udm/MultiObjectSelect.js:142
+#: umc/js/udm.js:949 umc/js/udm/MultiObjectSelect.js:154
 msgid "Include hidden objects"
 msgstr "Versteckte Objekte anzeigen"
 
-#: umc/js/udm/LicenseDialog.js:129
+#: umc/js/udm/LicenseDialog.js:128
 msgid ""
 "Information about the <a href=\"https://www.univention.com/downloads/license-"
 "models/ucs-core-edition\" target=\"_blank\">terms of use</a> for this free "
@@ -744,39 +784,39 @@ msgstr ""
 "enterprise-subskriptionen\" target=\"_blank\">UCS Enterprise Subskriptionen</"
 "a>."
 
-#: umc/js/udm/LicenseDialog.js:65
+#: umc/js/udm/LicenseDialog.js:64
 msgid "Information about the current UCS license"
 msgstr "Informationen über die aktuelle UCS-Lizenz"
 
-#: umc/js/udm/wizards/users/user.js:97
+#: umc/js/udm/wizards/users/user.js:109
 msgid "Invite user via e-mail. Password will be set by the user"
 msgstr "Benutzer per E-Mail einladen. Das Passwort wird vom Benutzer gesetzt"
 
-#: umc/js/udm/LicenseDialog.js:172
+#: umc/js/udm/LicenseDialog.js:171
 msgid "Key ID"
 msgstr "Key ID"
 
-#: umc/js/udm.js:1155
+#: umc/js/udm.js:1173
 msgid "LDAP Objects"
 msgstr "LDAP-Objekte"
 
-#: umc/js/udm/LicenseDialog.js:149 umc/js/udm/LicenseDialog.js:167
+#: umc/js/udm/LicenseDialog.js:148 umc/js/udm/LicenseDialog.js:166
 msgid "LDAP base"
 msgstr "LDAP-Basis"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:489
+#: umc/js/udm/wizards/FirstPageWizard.js:492
 msgid "LDAP object"
 msgstr "LDAP-Objekt"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:327
+#: umc/js/udm/wizards/FirstPageWizard.js:329
 msgid "LDAP object template"
 msgstr "LDAP-Objekt-Vorlage"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:248
+#: umc/js/udm/wizards/FirstPageWizard.js:249
 msgid "LDAP objects"
 msgstr "LDAP-Objekte"
 
-#: umc/js/udm.js:427
+#: umc/js/udm.js:428
 msgid ""
 "LDAP objects managed here are used by the application \"%(name)s\" which is "
 "currently not installed."
@@ -792,8 +832,8 @@ msgstr "Lizenz"
 msgid "License information"
 msgstr "Lizenzinformation"
 
-#: umc/js/udm/LicenseDialog.js:115 umc/js/udm/LicenseDialog.js:148
-#: umc/js/udm/LicenseDialog.js:166
+#: umc/js/udm/LicenseDialog.js:114 umc/js/udm/LicenseDialog.js:147
+#: umc/js/udm/LicenseDialog.js:165
 msgid "License type"
 msgstr "Lizenztyp"
 
@@ -821,13 +861,17 @@ msgstr "Lade DHCP-Objekt..."
 msgid "Loading DNS object..."
 msgstr "Lade DNS-Objekt..."
 
-#: umc/js/udm/wizards/CreateWizard.js:148
+#: umc/js/udm/wizards/CreateWizard.js:149
 msgid "Loading LDAP object..."
 msgstr "Lade LDAP-Objekt..."
 
 #: umc/js/udm/wizards/CreateWizard.js:144
 msgid "Loading Nagios object..."
 msgstr "Lade Nagios-Objekt..."
+
+#: umc/js/udm/wizards/CreateWizard.js:145
+msgid "Loading alert..."
+msgstr "Lade Alarm..."
 
 #: umc/js/udm/wizards/CreateWizard.js:137
 msgid "Loading computer..."
@@ -845,7 +889,7 @@ msgstr "Lade Mail-Objekt..."
 msgid "Loading network object..."
 msgstr "Lade Netz-Objekt..."
 
-#: umc/js/udm/wizards/CreateWizard.js:145
+#: umc/js/udm/wizards/CreateWizard.js:146
 msgid "Loading policy..."
 msgstr "Lade Richtlinie..."
 
@@ -861,15 +905,15 @@ msgstr "Lade Freigabe..."
 msgid "Loading user..."
 msgstr "Lade Benutzer..."
 
-#: umc/js/udm/wizards/users/user.js:117
+#: umc/js/udm/wizards/users/user.js:129
 msgid "Mail address to which the invitation link is sent to"
 msgstr "Mail-Adresse, an die der Einladungs-Link gesendet wird"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:322
+#: umc/js/udm/wizards/FirstPageWizard.js:323
 msgid "Mail object template"
 msgstr "Mail-Objekt-Vorlage"
 
-#: umc/js/udm.js:1150
+#: umc/js/udm.js:1167
 msgid "Mail objects"
 msgstr "Mail-Objekte"
 
@@ -881,105 +925,111 @@ msgstr ""
 "Hier verwaltete Mail-Objekte werden von der Applikation \"%(name)s\" "
 "benutzt, welche momentan nicht installiert ist."
 
-#: umc/js/udm/LicenseDialog.js:170
+#: umc/js/udm/LicenseDialog.js:169
 msgid "Managed Clients"
 msgstr "Managed Clients"
 
-#: umc/js/udm.js:1418
+#: umc/js/udm.js:1438
 msgid "Move DHCP object"
 msgid_plural "Move DHCP objects"
 msgstr[0] "DHCP-Objekt verschieben"
 msgstr[1] "DHCP-Objekte verschieben"
 
-#: umc/js/udm.js:1417
+#: umc/js/udm.js:1437
 msgid "Move DNS object"
 msgid_plural "Move DNS objects"
 msgstr[0] "DNS-Objekt verschieben"
 msgstr[1] "DNS-Objekte verschieben"
 
-#: umc/js/udm.js:1427
+#: umc/js/udm.js:1448
 msgid "Move LDAP object"
 msgid_plural "Move LDAP objects"
 msgstr[0] "LDAP-Objekt verschieben"
 msgstr[1] "LDAP-Objekte verschieben"
 
-#: umc/js/udm.js:1422
+#: umc/js/udm.js:1442
 msgid "Move Nagios object"
 msgid_plural "Move Nagios objects"
 msgstr[0] "Nagios-Objekt verschieben"
 msgstr[1] "Nagios-Objekte verschieben"
 
-#: umc/js/udm.js:1415
+#: umc/js/udm.js:1443
+msgid "Move alert"
+msgid_plural "Move alerts"
+msgstr[0] "Alarm verschieben"
+msgstr[1] "Alarme verschieben"
+
+#: umc/js/udm.js:1435
 msgid "Move computer"
 msgid_plural "Move computers"
 msgstr[0] "Rechner verschieben"
 msgstr[1] "Rechner verschieben"
 
-#: umc/js/udm.js:1414
+#: umc/js/udm.js:1434
 msgid "Move group"
 msgid_plural "Move groups"
 msgstr[0] "Gruppe verschieben"
 msgstr[1] "Gruppen verschieben"
 
-#: umc/js/udm.js:1421
+#: umc/js/udm.js:1441
 msgid "Move mail object"
 msgid_plural "Move mail objects"
 msgstr[0] "Mail-Objekt verschieben"
 msgstr[1] "Mail-Objekte verschieben"
 
-#: umc/js/udm.js:1416
+#: umc/js/udm.js:1436
 msgid "Move network object"
 msgid_plural "Move network objects"
 msgstr[0] "Netz-Objekt verschieben"
 msgstr[1] "Netz-Objekte verschieben"
 
-#: umc/js/udm.js:766
+#: umc/js/udm.js:772
 msgid "Move objects to a different LDAP position."
 msgstr "Objekte an eine andere LDAP-Position verschieben."
 
-#: umc/js/udm.js:1423
+#: umc/js/udm.js:1444
 msgid "Move policy"
 msgid_plural "Move policies"
 msgstr[0] "Richtlinie verschieben"
 msgstr[1] "Richtlinien verschieben"
 
-#: umc/js/udm.js:1424
+#: umc/js/udm.js:1445
 msgid "Move portal object"
 msgid_plural "Move portal objects"
 msgstr[0] "Portal-Objekt verschieben"
 msgstr[1] "Portal-Objekte verschieben"
 
-#: umc/js/udm.js:1420
+#: umc/js/udm.js:1440
 msgid "Move printer"
 msgid_plural "Move printers"
 msgstr[0] "Drucker verschieben"
 msgstr[1] "Drucker verschieben"
 
-#: umc/js/udm.js:1419
+#: umc/js/udm.js:1439
 msgid "Move share"
 msgid_plural "Move shares"
 msgstr[0] "Freigabe verschieben"
 msgstr[1] "Freigaben verschieben"
 
-#: umc/js/udm.js:765 umc/js/udm.js:1220
+#: umc/js/udm.js:771 umc/js/udm.js:1238
 msgid "Move to..."
 msgstr "Verschieben nach..."
 
-#: umc/js/udm.js:1413
+#: umc/js/udm.js:1433
 msgid "Move user"
 msgid_plural "Move users"
 msgstr[0] "Benutzer verschieben"
 msgstr[1] "Benutzer verschieben"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:485
+#: umc/js/udm/wizards/FirstPageWizard.js:487
 msgid "Nagios object"
 msgstr "Nagios-Objekt"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:323
+#: umc/js/udm/wizards/FirstPageWizard.js:324
 msgid "Nagios object template"
 msgstr "Nagios-Objekt-Vorlage"
 
-#: umc/js/udm.js:1151 umc/js/udm/wizards/FirstPageWizard.js:244
+#: umc/js/udm.js:1168 umc/js/udm/wizards/FirstPageWizard.js:244
 msgid "Nagios objects"
 msgstr "Nagios-Objekte"
 
@@ -991,19 +1041,19 @@ msgstr ""
 "Hier verwaltete Nagios-Objekte werden von der Applikation \"%(name)s\" "
 "benutzt, welche momentan nicht installiert ist."
 
-#: umc/js/udm.js:1634
+#: umc/js/udm.js:1655
 msgid "Name"
 msgstr "Name"
 
-#: umc/js/udm.js:1635
+#: umc/js/udm.js:1656
 msgid "Name of the LDAP object."
 msgstr "Name des LDAP-Objekts."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:317
+#: umc/js/udm/wizards/FirstPageWizard.js:318
 msgid "Network object template"
 msgstr "Netz-Objekt-Vorlage"
 
-#: umc/js/udm.js:1145
+#: umc/js/udm.js:1162
 msgid "Network objects"
 msgstr "Netz-Objekte"
 
@@ -1015,7 +1065,7 @@ msgstr ""
 "Hier verwaltete Netz-Objekte werden von der Applikation \"%(name)s\" "
 "benutzt, welche momentan nicht installiert ist."
 
-#: umc/js/udm/LicenseImportDialog.js:85
+#: umc/js/udm/LicenseImportDialog.js:84
 msgid ""
 "New license keys can be imported here. You receive these keys after the "
 "activation of UCS or after a license purchase. The key can either be "
@@ -1027,7 +1077,7 @@ msgstr ""
 "Er kann entweder direkt als Datei hochgeladen oder per copy and paste in das "
 "Textfeld importiert werden."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:297
+#: umc/js/udm/wizards/FirstPageWizard.js:298
 #, javascript-format
 msgid ""
 "Newly created %s will only be available on UCS systems and not in the Active "
@@ -1036,7 +1086,7 @@ msgstr ""
 "Neu erzeugte %s werden nur auf UCS-Systemen und nicht in der Active "
 "Directory Domäne vorhanden sein."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:291
+#: umc/js/udm/wizards/FirstPageWizard.js:292
 msgid ""
 "Newly created LDAP objects of this type will only be available on UCS "
 "systems and not in the Active Directory domain."
@@ -1044,75 +1094,79 @@ msgstr ""
 "Neu erzeugte LDAP-Objekte dieses Typs werden nur auf UCS-Systemen und nicht "
 "in der Active Directory Domäne vorhanden sein."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:523
+#: umc/js/udm/wizards/FirstPageWizard.js:526
 msgid "Next"
 msgstr "Weiter"
 
-#: umc/js/udm.js:637
+#: umc/js/udm.js:641
 msgid "No DHCP objects could be found."
 msgstr "Es wurden keine DHCP-Objekte gefunden."
 
-#: umc/js/udm.js:636
+#: umc/js/udm.js:640
 msgid "No DNS objects could be found."
 msgstr "Es wurden keine DNS-Objekte gefunden."
 
-#: umc/js/udm.js:646
+#: umc/js/udm.js:651
 msgid "No LDAP objects could be found."
 msgstr "Es wurden keine LDAP-Objekte gefunden."
 
-#: umc/js/udm.js:1498
+#: umc/js/udm.js:1519
 msgid "No LDAP position has been selected."
 msgstr "Kein LDAP-Position wurde ausgewählt."
 
-#: umc/js/udm.js:641
+#: umc/js/udm.js:645
 msgid "No Nagios objects could be found."
 msgstr "Es wurden keine Nagios-Objekte gefunden."
 
-#: umc/js/udm.js:634
+#: umc/js/udm.js:646
+msgid "No alerts could be found."
+msgstr "Es wurden keine Alarme gefunden"
+
+#: umc/js/udm.js:638
 msgid "No computers could be found."
 msgstr "Es wurden keine Rechner gefunden."
 
-#: umc/js/udm.js:633
+#: umc/js/udm.js:637
 msgid "No groups could be found."
 msgstr "Es wurden keine Gruppen gefunden."
 
-#: umc/js/udm.js:640
+#: umc/js/udm.js:644
 msgid "No mail objects could be found."
 msgstr "Es wurden keine Mail-Objekte gefunden."
 
-#: umc/js/udm.js:635
+#: umc/js/udm.js:639
 msgid "No network objects could be found."
 msgstr "Es wurden keine Netz-Objekte gefunden."
 
-#: umc/js/udm.js:642
+#: umc/js/udm.js:647
 msgid "No policies could be found."
 msgstr "Es wurden keine Richtlinien gefunden."
 
-#: umc/js/udm.js:643
+#: umc/js/udm.js:648
 msgid "No portal object could be found."
 msgstr "Es wurden keine Portal-Objekte gefunden."
 
-#: umc/js/udm.js:639
+#: umc/js/udm.js:643
 msgid "No printers could be found."
 msgstr "Es wurden keine Drucker gefunden."
 
-#: umc/js/udm/ReferencingObjects.js:65
+#: umc/js/udm/ReferencingObjects.js:67
 msgid "No referencing objects"
 msgstr "Keine zugehörigen Objekte"
 
-#: umc/js/udm.js:638
+#: umc/js/udm.js:642
 msgid "No shares could be found."
 msgstr "Es wurden keine Freigaben gefunden."
 
-#: umc/js/udm.js:632
+#: umc/js/udm.js:636
 msgid "No users could be found."
 msgstr "Es wurden keine Benutzer gefunden"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:441
+#: umc/js/udm/wizards/FirstPageWizard.js:443
 msgid "None"
 msgstr "Keine"
 
-#: umc/js/udm.js:1471
+#: umc/js/udm.js:1492
 msgid "Note that moving a container can take some time."
 msgstr "Das Verschieben von Containern kann einige Zeit in Anspruch nehmen."
 
@@ -1120,111 +1174,117 @@ msgstr "Das Verschieben von Containern kann einige Zeit in Anspruch nehmen."
 msgid "Object property"
 msgstr "Objekteigenschaft"
 
-#: umc/js/udm.js:655
+#: umc/js/udm.js:660
 #, javascript-format
 msgid "One DHCP object of %d selected."
 msgid_plural "%d DHCP objects of %d selected."
 msgstr[0] "Ein DHCP-Objekt von %d ausgewählt."
 msgstr[1] "%d DHCP-Objekte von %d ausgewählt."
 
-#: umc/js/udm.js:654
+#: umc/js/udm.js:659
 #, javascript-format
 msgid "One DNS object of %d selected."
 msgid_plural "%d DNS objects of %d selected."
 msgstr[0] "Ein DNS-Objekt von %d ausgewählt."
 msgstr[1] "%d DNS-Objekte von %d ausgewählt."
 
-#: umc/js/udm.js:664
+#: umc/js/udm.js:670
 #, javascript-format
 msgid "One LDAP object of %d selected."
 msgid_plural "%d LDAP objects of %d selected."
 msgstr[0] "Ein LDAP-Objekt von %d ausgewählt."
 msgstr[1] "%d LDAP-Objekte von %d ausgewählt."
 
-#: umc/js/udm.js:659
+#: umc/js/udm.js:664
 #, javascript-format
 msgid "One Nagios object of %d selected."
 msgid_plural "%d Nagios objects of %d selected."
 msgstr[0] "Ein Nagios-Objekt von %d ausgewählt."
 msgstr[1] "%d Nagios-Objekte von %d ausgewählt."
 
-#: umc/js/udm.js:652
+#: umc/js/udm.js:665
+msgid "One alert of %d selected."
+msgid_plural "%d alerts of %d selected."
+msgstr[0] "Ein Alarm von %d ausgewählt."
+msgstr[1] "%d Alarme von %d ausgewählt."
+
+#: umc/js/udm.js:657
 #, javascript-format
 msgid "One computer of %d selected."
 msgid_plural "%d computers of %d selected."
 msgstr[0] "Ein Rechner von %d ausgewählt."
 msgstr[1] "%d Rechner von %d ausgewählt."
 
-#: umc/js/udm.js:651
+#: umc/js/udm.js:656
 #, javascript-format
 msgid "One group of %d selected."
 msgid_plural "%d groups of %d selected."
 msgstr[0] "Eine Gruppe von %d ausgewählt."
 msgstr[1] "%d Gruppen von %d ausgewählt."
 
-#: umc/js/udm.js:658
+#: umc/js/udm.js:663
 #, javascript-format
 msgid "One mail object of %d selected."
 msgid_plural "%d mail objects of %d selected."
 msgstr[0] "Ein Mail-Objekt von %d ausgewählt."
 msgstr[1] "%d Mail-Objekte von %d ausgewählt."
 
-#: umc/js/udm.js:653
+#: umc/js/udm.js:658
 #, javascript-format
 msgid "One network object of %d selected."
 msgid_plural "%d network objects of %d selected."
 msgstr[0] "Ein Netz-Objekt von %d ausgewählt."
 msgstr[1] "%d Netz-Objekte von %d ausgewählt."
 
-#: umc/js/udm.js:660
+#: umc/js/udm.js:666
 #, javascript-format
 msgid "One policy of %d selected."
 msgid_plural "%d policies of %d selected."
 msgstr[0] "Eine Richtlinie von %d ausgewählt."
 msgstr[1] "%d Richtlinien von %d ausgewählt."
 
-#: umc/js/udm.js:661
+#: umc/js/udm.js:667
 #, javascript-format
 msgid "One portal object of %d selected."
 msgid_plural "%d portal objects of %d selected."
 msgstr[0] "Ein Portal-Objekt von %d ausgewählt."
 msgstr[1] "%d Portal-Objekte von %d ausgewählt."
 
-#: umc/js/udm.js:657
+#: umc/js/udm.js:662
 #, javascript-format
 msgid "One printer of %d selected."
 msgid_plural "%d printers of %d selected."
 msgstr[0] "Ein Drucker von %d ausgewählt."
 msgstr[1] "%d Drucker von %d ausgewählt."
 
-#: umc/js/udm.js:656
+#: umc/js/udm.js:661
 #, javascript-format
 msgid "One share of %d selected."
 msgid_plural "%d shares of %d selected."
 msgstr[0] "Eine Freigabe von %d ausgewählt."
 msgstr[1] "%d Freigaben von %d ausgewählt."
 
-#: umc/js/udm.js:650
+#: umc/js/udm.js:655
 #, javascript-format
 msgid "One user of %d selected."
 msgid_plural "%d users of %d selected."
 msgstr[0] "Ein Nutzer von %d ausgewählt."
 msgstr[1] "%d Nutzer von %d ausgewählt."
 
-#: umc/js/udm.js:723
+#: umc/js/udm.js:729
 msgid "Only objects of the same type can be edited together"
 msgstr "Nur Objekte des gleichen Typs können zusammen bearbeitet werden"
 
-#: umc/js/udm.js:734
+#: umc/js/udm.js:740
 msgid "Open a new tab in order to edit the UDM-object"
 msgstr ""
 "Öffnet einen neuen Reiter, in dem das LDAP-Objekt bearbeitet werden kann."
 
-#: umc/js/udm/DetailPage.js:926 umc/js/udm/DetailPage.js:948
+#: umc/js/udm/DetailPage.js:928 umc/js/udm/DetailPage.js:950
 msgid "Options"
 msgstr "Optionen"
 
-#: umc/js/udm/DetailPage.js:927
+#: umc/js/udm/DetailPage.js:929
 msgid "Options describing the basic features of the LDAP object"
 msgstr "Optionen für grundlegende LDAP-Objekt-Eigenschaften"
 
@@ -1232,40 +1292,40 @@ msgstr "Optionen für grundlegende LDAP-Objekt-Eigenschaften"
 msgid "Overwrite"
 msgstr "Überschreiben"
 
-#: umc/js/udm.js:682 umc/js/udm.js:1162
+#: umc/js/udm.js:688 umc/js/udm.js:1180
 msgid "Parent container"
 msgstr "Übergeordneter Container"
 
-#: umc/js/udm.js:1644
+#: umc/js/udm.js:1665
 msgid "Path"
 msgstr "Pfad"
 
-#: umc/js/udm.js:1645
+#: umc/js/udm.js:1666
 msgid "Path of the LDAP object."
 msgstr "Pfad des LDAP-Objekts."
 
-#: umc/js/udm.js:1731
+#: umc/js/udm.js:1752
 #, javascript-format
 msgid "Please confirm the removal of the DHCP object:"
 msgid_plural "Please confirm the removal of the %d selected DHCP objects"
 msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten DHCP-Objekts:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten DHCP-Objekte:"
 
-#: umc/js/udm.js:1729
+#: umc/js/udm.js:1750
 #, javascript-format
 msgid "Please confirm the removal of the DNS object:"
 msgid_plural "Please confirm the removal of the %d selected DNS objects"
 msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten DNS-Objekts:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten DNS-Objekte:"
 
-#: umc/js/udm.js:1747
+#: umc/js/udm.js:1770
 #, javascript-format
 msgid "Please confirm the removal of the LDAP object:"
 msgid_plural "Please confirm the removal of the %d selected LDAP objects"
 msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten LDAP-Objekts:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten LDAP-Objekte:"
 
-#: umc/js/udm.js:1739
+#: umc/js/udm.js:1760
 #, javascript-format
 msgid "Please confirm the removal of the Nagios object:"
 msgid_plural "Please confirm the removal of the %d selected Nagios objects"
@@ -1273,42 +1333,49 @@ msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten Nagios-Objekts:"
 msgstr[1] ""
 "Bitte bestätigen Sie das Löschen der %d ausgewählten Nagios-Objekte:"
 
-#: umc/js/udm.js:1725
+#: umc/js/udm.js:1762
+#, javascript-format
+msgid "Please confirm the removal of the alert:"
+msgid_plural "Please confirm the removal of the %d selected alerts"
+msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten Alarms:"
+msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten Alarme:"
+
+#: umc/js/udm.js:1746
 #, javascript-format
 msgid "Please confirm the removal of the computer:"
 msgid_plural "Please confirm the removal of the %d selected computers"
 msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten Rechners:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten Rechner :"
 
-#: umc/js/udm.js:1723
+#: umc/js/udm.js:1744
 #, javascript-format
 msgid "Please confirm the removal of the group:"
 msgid_plural "Please confirm the removal of the %d selected groups"
 msgstr[0] "Bitte bestätigen Sie das Löschen der ausgewählten Gruppe:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten Gruppen:"
 
-#: umc/js/udm.js:1737
+#: umc/js/udm.js:1758
 #, javascript-format
 msgid "Please confirm the removal of the mail object:"
 msgid_plural "Please confirm the removal of the %d selected mail objects"
 msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten Mail-Objekts:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten Mail-Objekte:"
 
-#: umc/js/udm.js:1727
+#: umc/js/udm.js:1748
 #, javascript-format
 msgid "Please confirm the removal of the network object:"
 msgid_plural "Please confirm the removal of the %d selected network objects"
 msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten Netz-Objekts:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten Netz-Objekte:"
 
-#: umc/js/udm.js:1741
+#: umc/js/udm.js:1764
 #, javascript-format
 msgid "Please confirm the removal of the policy:"
 msgid_plural "Please confirm the removal of the %d selected ploicies"
 msgstr[0] "Bitte bestätigen Sie das Löschen der ausgewählten Richtlinie:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten Richtlinien:"
 
-#: umc/js/udm.js:1743
+#: umc/js/udm.js:1766
 #, javascript-format
 msgid "Please confirm the removal of the portal object:"
 msgid_plural "Please confirm the removal of the %d selected portal objects"
@@ -1316,28 +1383,28 @@ msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten Portal-Objekts:"
 msgstr[1] ""
 "Bitte bestätigen Sie das Löschen der %d ausgewählten Portal-Objekte:"
 
-#: umc/js/udm.js:1735
+#: umc/js/udm.js:1756
 #, javascript-format
 msgid "Please confirm the removal of the printer:"
 msgid_plural "Please confirm the removal of the %d selected printers"
 msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten Druckers:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten Drucker:"
 
-#: umc/js/udm.js:1733
+#: umc/js/udm.js:1754
 #, javascript-format
 msgid "Please confirm the removal of the share:"
 msgid_plural "Please confirm the removal of the %d selected shares"
 msgstr[0] "Bitte bestätigen Sie das Löschen der ausgewählten Freigabe:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten Freigaben:"
 
-#: umc/js/udm.js:1721
+#: umc/js/udm.js:1742
 #, javascript-format
 msgid "Please confirm the removal of the user:"
 msgid_plural "Please confirm the removal of the %d selected users"
 msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten Benutzers:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten Benutzer:"
 
-#: umc/js/udm.js:1886
+#: umc/js/udm.js:1908
 msgid ""
 "Please select a container in the LDAP directory tree. The new object will be "
 "placed at this location."
@@ -1345,7 +1412,7 @@ msgstr ""
 "Bitte wählen Sie einen Container aus dem LDAP-Verzeichnisbaum aus. Das neue "
 "Objekte wird an dieser Stelle erzeugt."
 
-#: umc/js/udm.js:1390
+#: umc/js/udm.js:1408
 #, javascript-format
 msgid "Please select an LDAP destination for the DHCP object:"
 msgid_plural ""
@@ -1354,7 +1421,7 @@ msgstr[0] "Bitte wählen Sie ein LDAP-Ziel für das ausgewählte DHCP-Objekt:"
 msgstr[1] ""
 "Bitte wählen Sie ein LDAP-Ziel für die %d ausgewählten DHCP-Objekte:"
 
-#: umc/js/udm.js:1388
+#: umc/js/udm.js:1406
 #, javascript-format
 msgid "Please select an LDAP destination for the DNS object:"
 msgid_plural ""
@@ -1362,7 +1429,7 @@ msgid_plural ""
 msgstr[0] "Bitte wählen Sie ein LDAP-Ziel für das ausgewählte DNS-Objekt:"
 msgstr[1] "Bitte wählen Sie ein LDAP-Ziel für die %d ausgewählten DNS-Objekte:"
 
-#: umc/js/udm.js:1406
+#: umc/js/udm.js:1426
 #, javascript-format
 msgid "Please select an LDAP destination for the LDAP object:"
 msgid_plural ""
@@ -1371,7 +1438,7 @@ msgstr[0] "Bitte wählen Sie ein LDAP-Ziel für das ausgewählte LDAP-Objekt:"
 msgstr[1] ""
 "Bitte wählen Sie ein LDAP-Ziel für die %d ausgewählten LDAP-Objekte:"
 
-#: umc/js/udm.js:1398
+#: umc/js/udm.js:1416
 #, javascript-format
 msgid "Please select an LDAP destination for the Nagios object:"
 msgid_plural ""
@@ -1380,21 +1447,28 @@ msgstr[0] "Bitte wählen Sie ein LDAP-Ziel für das ausgewählte Nagios-Objekt:"
 msgstr[1] ""
 "Bitte wählen Sie ein LDAP-Ziel für die %d ausgewählten Nagios-Objekte:"
 
-#: umc/js/udm.js:1384
+#: umc/js/udm.js:1418
+#, javascript-format
+msgid "Please select an LDAP destination for the alert:"
+msgid_plural "Please select an LDAP destination for the %d selected alerts:"
+msgstr[0] "Bitte wählen Sie ein LDAP-Ziel für den ausgewählten Alarm:"
+msgstr[1] "Bitte wählen Sie ein LDAP-Ziel für die %d ausgewählten Alarme:"
+
+#: umc/js/udm.js:1402
 #, javascript-format
 msgid "Please select an LDAP destination for the computer:"
 msgid_plural "Please select an LDAP destination for the %d selected computers:"
 msgstr[0] "Bitte wählen Sie ein LDAP-Ziel für den ausgewählten Rechner:"
 msgstr[1] "Bitte wählen Sie ein LDAP-Ziel für die %d ausgewählten Rechner:"
 
-#: umc/js/udm.js:1382
+#: umc/js/udm.js:1400
 #, javascript-format
 msgid "Please select an LDAP destination for the group:"
 msgid_plural "Please select an LDAP destination for the %d selected groups:"
 msgstr[0] "Bitte wählen Sie ein LDAP-Ziel für die ausgewählte Gruppe:"
 msgstr[1] "Bitte wählen Sie ein LDAP-Ziel für die %d ausgewählten Gruppen:"
 
-#: umc/js/udm.js:1396
+#: umc/js/udm.js:1414
 #, javascript-format
 msgid "Please select an LDAP destination for the mail object:"
 msgid_plural ""
@@ -1403,7 +1477,7 @@ msgstr[0] "Bitte wählen Sie ein LDAP-Ziel für das ausgewählte Mail-Objekt:"
 msgstr[1] ""
 "Bitte wählen Sie ein LDAP-Ziel für die %d ausgewählten Mail-Objekte:"
 
-#: umc/js/udm.js:1386
+#: umc/js/udm.js:1404
 #, javascript-format
 msgid "Please select an LDAP destination for the network object:"
 msgid_plural ""
@@ -1412,14 +1486,14 @@ msgstr[0] "Bitte wählen Sie ein LDAP-Ziel für das ausgewählte Netz-Objekt:"
 msgstr[1] ""
 "Bitte wählen Sie ein LDAP-Ziel für die %d ausgewählten Netz-Objekte:"
 
-#: umc/js/udm.js:1400
+#: umc/js/udm.js:1420
 #, javascript-format
 msgid "Please select an LDAP destination for the policy:"
 msgid_plural "Please select an LDAP destination for the %d selected policies:"
 msgstr[0] "Bitte wählen Sie ein LDAP-Ziel für die ausgewählte Richtlinie:"
 msgstr[1] "Bitte wählen Sie ein LDAP-Ziel für die %d ausgewählten Richtlinien:"
 
-#: umc/js/udm.js:1402
+#: umc/js/udm.js:1422
 #, javascript-format
 msgid "Please select an LDAP destination for the portal object:"
 msgid_plural ""
@@ -1428,28 +1502,28 @@ msgstr[0] "Bitte wählen Sie ein LDAP-Ziel für das ausgewählte Portal-Objekt:"
 msgstr[1] ""
 "Bitte wählen Sie ein LDAP-Ziel für die %d ausgewählten Portal-Objekte:"
 
-#: umc/js/udm.js:1394
+#: umc/js/udm.js:1412
 #, javascript-format
 msgid "Please select an LDAP destination for the printer:"
 msgid_plural "Please select an LDAP destination for the %d selected printers:"
 msgstr[0] "Bitte wählen Sie ein LDAP-Ziel für den ausgewählten Drucker:"
 msgstr[1] "Bitte wählen Sie ein LDAP-Ziel für die %d ausgewählten Drucker:"
 
-#: umc/js/udm.js:1392
+#: umc/js/udm.js:1410
 #, javascript-format
 msgid "Please select an LDAP destination for the share:"
 msgid_plural "Please select an LDAP destination for the %d selected shares:"
 msgstr[0] "Bitte wählen Sie ein LDAP-Ziel für die ausgewählte Freigabe:"
 msgstr[1] "Bitte wählen Sie ein LDAP-Ziel für die %d ausgewählten Freigaben:"
 
-#: umc/js/udm.js:1380
+#: umc/js/udm.js:1398
 #, javascript-format
 msgid "Please select an LDAP destination for the user:"
 msgid_plural "Please select an LDAP destination for the %d selected users:"
 msgstr[0] "Bitte wählen Sie ein LDAP-Ziel für den ausgewählten Benutzer:"
 msgstr[1] "Bitte wählen Sie ein LDAP-Ziel für die %d ausgewählten Benutzer:"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:298
+#: umc/js/udm/wizards/FirstPageWizard.js:299
 #, javascript-format
 msgid ""
 "Please use the Active Directory administration utilities to create new "
@@ -1458,7 +1532,7 @@ msgstr ""
 "Bitte benutzen Sie die Active Directory Administrations-Tools um neue "
 "Domänen-%s anzulegen."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:292
+#: umc/js/udm/wizards/FirstPageWizard.js:293
 msgid ""
 "Please use the Active Directory administration utilities to create new "
 "domain LDAP objects of this type."
@@ -1466,11 +1540,11 @@ msgstr ""
 "Bitte benutzen Sie die Active Directory Administrations-Tools um neue "
 "Domänen-LDAP-Objekte dieses Typs anzulegen."
 
-#: umc/js/udm.js:1152 umc/js/udm/DetailPage.js:447
+#: umc/js/udm.js:1170 umc/js/udm/DetailPage.js:447
 msgid "Policies"
 msgstr "Richtlinien"
 
-#: umc/js/udm.js:424
+#: umc/js/udm.js:425
 msgid ""
 "Policies managed here are used by the application \"%(name)s\" which is "
 "currently not installed."
@@ -1478,16 +1552,16 @@ msgstr ""
 "Hier verwaltete Richtlinien werden von der Applikation \"%(name)s\" benutzt, "
 "welche momentan nicht installiert ist."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:324
+#: umc/js/udm/wizards/FirstPageWizard.js:326
 msgid "Policy template"
 msgstr "Richtlinien-Vorlage"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:299
+#: umc/js/udm/wizards/FirstPageWizard.js:300
 #, javascript-format
 msgid "Press <i>Next</i> to create %s only available on UCS systems."
 msgstr "Klicken Sie auf <i>Weiter</i>, um %s nur für UCS-Systeme anzulegen."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:293
+#: umc/js/udm/wizards/FirstPageWizard.js:294
 msgid ""
 "Press <i>Next</i> to create an LDAP object of this type only available on "
 "UCS systems."
@@ -1495,11 +1569,11 @@ msgstr ""
 "Klicken Sie auf <i>Weiter</i>, um ein neues LDAP-Objekt dieses Typs nur für "
 "UCS-Systeme anzulegen."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:321
+#: umc/js/udm/wizards/FirstPageWizard.js:322
 msgid "Printer template"
 msgstr "Drucker-Vorlage"
 
-#: umc/js/udm.js:1149
+#: umc/js/udm.js:1166
 msgid "Printers"
 msgstr "Drucker"
 
@@ -1515,16 +1589,16 @@ msgstr ""
 msgid "Properties inherited from policies"
 msgstr "Durch Richtlinien ererbte Eigenschaften"
 
-#: umc/js/udm.js:990
+#: umc/js/udm.js:997
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: umc/js/udm.js:1013 umc/js/udm/MultiObjectSelect.js:117
+#: umc/js/udm.js:1020 umc/js/udm/MultiObjectSelect.js:117
 #: umc/js/udm/MultiObjectSelect.js:132
 msgid "Property value"
 msgstr "Eigenschaftswert"
 
-#: umc/js/udm.js:1226
+#: umc/js/udm.js:1244
 msgid "Reload"
 msgstr "Neu laden"
 
@@ -1532,147 +1606,151 @@ msgstr "Neu laden"
 msgid "Remove certificate"
 msgstr "Zertifikat entfernen"
 
-#: umc/js/udm/CreateReportDialog.js:127
+#: umc/js/udm/CreateReportDialog.js:125
 #, javascript-format
 msgid "Report for DHCP object"
 msgid_plural "Report for %d DHCP objects"
 msgstr[0] "Report für DHCP-Objekt"
 msgstr[1] "Report für %d DHCP-Objekte"
 
-#: umc/js/udm/CreateReportDialog.js:126
+#: umc/js/udm/CreateReportDialog.js:124
 #, javascript-format
 msgid "Report for DNS object"
 msgid_plural "Report for %d DNS objects"
 msgstr[0] "Report für DNS-Objekt"
 msgstr[1] "Report für %d DNS-Objekte"
 
-#: umc/js/udm/CreateReportDialog.js:135
+#: umc/js/udm/CreateReportDialog.js:133
 #, javascript-format
 msgid "Report for LDAP object"
 msgid_plural "Report for %d LDAP objects"
 msgstr[0] "Report für LDAP-Objekt"
 msgstr[1] "Report für %d LDAP-Objekte"
 
-#: umc/js/udm/CreateReportDialog.js:131
+#: umc/js/udm/CreateReportDialog.js:129
 #, javascript-format
 msgid "Report for Nagios object"
 msgid_plural "Report for %d Nagios objects"
 msgstr[0] "Report für Nagios-Objekt"
 msgstr[1] "Report für %d Nagios-Objekte"
 
-#: umc/js/udm/CreateReportDialog.js:124
+#: umc/js/udm/CreateReportDialog.js:122
 #, javascript-format
 msgid "Report for computer"
 msgid_plural "Report for %d computers"
 msgstr[0] "Report für Rechner"
 msgstr[1] "Report für %d Rechner"
 
-#: umc/js/udm/CreateReportDialog.js:123
+#: umc/js/udm/CreateReportDialog.js:121
 #, javascript-format
 msgid "Report for group"
 msgid_plural "Report for %d groups"
 msgstr[0] "Report für Gruppe"
 msgstr[1] "Report für %d Gruppen"
 
-#: umc/js/udm/CreateReportDialog.js:130
+#: umc/js/udm/CreateReportDialog.js:128
 #, javascript-format
 msgid "Report for mail object"
 msgid_plural "Report for %d mail objects"
 msgstr[0] "Report für Mail-Objekt"
 msgstr[1] "Report für %d Mail-Objekte"
 
-#: umc/js/udm/CreateReportDialog.js:125
+#: umc/js/udm/CreateReportDialog.js:123
 #, javascript-format
 msgid "Report for network object"
 msgid_plural "Report for %d network objects"
 msgstr[0] "Report für Netz-Objekt"
 msgstr[1] "Report für %d Netz-Objekte"
 
-#: umc/js/udm/CreateReportDialog.js:132
+#: umc/js/udm/CreateReportDialog.js:130
 #, javascript-format
 msgid "Report for policy"
 msgid_plural "Report for %d policies"
 msgstr[0] "Report für Richtlinie"
 msgstr[1] "Report für %d Richtlinien"
 
-#: umc/js/udm/CreateReportDialog.js:129
+#: umc/js/udm/CreateReportDialog.js:127
 #, javascript-format
 msgid "Report for printer"
 msgid_plural "Report for %d printers"
 msgstr[0] "Report für Drucker"
 msgstr[1] "Report für %d Drucker"
 
-#: umc/js/udm/CreateReportDialog.js:128
+#: umc/js/udm/CreateReportDialog.js:126
 #, javascript-format
 msgid "Report for share"
 msgid_plural "Report for %d shares"
 msgstr[0] "Report für Freigaben"
 msgstr[1] "Report für %d Freigaben"
 
-#: umc/js/udm/CreateReportDialog.js:122
+#: umc/js/udm/CreateReportDialog.js:120
 #, javascript-format
 msgid "Report for user"
 msgid_plural "Report for %d users"
 msgstr[0] "Report für Benutzer"
 msgstr[1] "Report für %d Benutzer"
 
-#: umc/js/udm/DetailPage.js:1389
+#: umc/js/udm/DetailPage.js:1392
 msgid "Save"
 msgstr "Speichern"
 
-#: umc/js/udm.js:865
+#: umc/js/udm.js:871
 msgid "Search DHCP objects..."
 msgstr "Suche DHCP-Objekte..."
 
-#: umc/js/udm.js:864
+#: umc/js/udm.js:870
 msgid "Search DNS objects..."
 msgstr "Suche DNS-Objekte..."
 
-#: umc/js/udm.js:874
+#: umc/js/udm.js:881
 msgid "Search LDAP objects..."
 msgstr "Suche LDAP-Objekte..."
 
-#: umc/js/udm.js:869
+#: umc/js/udm.js:875
 msgid "Search Nagios objects..."
 msgstr "Suche Nagios-Objekte..."
 
-#: umc/js/udm.js:862
+#: umc/js/udm.js:876
+msgid "Search alerts..."
+msgstr "Suche Alarme..."
+
+#: umc/js/udm.js:868
 msgid "Search computers..."
 msgstr "Suche Rechner..."
 
-#: umc/js/udm.js:861
+#: umc/js/udm.js:867
 msgid "Search groups..."
 msgstr "Suche Gruppen..."
 
-#: umc/js/udm.js:927
+#: umc/js/udm.js:934
 msgid "Search in:"
 msgstr "Suche in:"
 
-#: umc/js/udm.js:868
+#: umc/js/udm.js:874
 msgid "Search mail objects..."
 msgstr "Suche Mail-Objekte..."
 
-#: umc/js/udm.js:863
+#: umc/js/udm.js:869
 msgid "Search network objects..."
 msgstr "Suche Netz-Objekte..."
 
-#: umc/js/udm.js:870
+#: umc/js/udm.js:877
 msgid "Search policies..."
 msgstr "Suche Richtlinien..."
 
-#: umc/js/udm.js:871
+#: umc/js/udm.js:878
 msgid "Search portal objects..."
 msgstr "Suche Portal-Objekte..."
 
-#: umc/js/udm.js:867
+#: umc/js/udm.js:873
 msgid "Search printers..."
 msgstr "Suche Drucker..."
 
-#: umc/js/udm.js:866
+#: umc/js/udm.js:872
 msgid "Search shares..."
 msgstr "Suche Freigaben..."
 
-#: umc/js/udm.js:860
+#: umc/js/udm.js:866
 msgid "Search users..."
 msgstr "Suche Benutzer..."
 
@@ -1687,15 +1765,15 @@ msgstr ""
 msgid "Select policy configuration"
 msgstr "Richtlinien-Konfiguration"
 
-#: umc/js/udm/LicenseImportDialog.js:153
+#: umc/js/udm/LicenseImportDialog.js:152
 msgid "Server error message:"
 msgstr "Server-Fehlermeldung:"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:320
+#: umc/js/udm/wizards/FirstPageWizard.js:321
 msgid "Share template"
 msgstr "Freigaben-Vorlage"
 
-#: umc/js/udm.js:1148
+#: umc/js/udm.js:1165
 msgid "Shares"
 msgstr "Freigaben"
 
@@ -1707,15 +1785,15 @@ msgstr ""
 "Hier verwaltete Freigaben werden von der Applikation \"%(name)s\" benutzt, "
 "welche momentan nicht installiert ist."
 
-#: umc/js/udm.js:1343
+#: umc/js/udm.js:1361
 msgid "Simplified options"
 msgstr "Vereinfachte Optionen"
 
-#: umc/js/udm.js:913
+#: umc/js/udm.js:920
 msgid "Superordinate"
 msgstr "Übergeordnetes Objekt"
 
-#: umc/js/udm/NewObjectDialog.js:250
+#: umc/js/udm/NewObjectDialog.js:251
 #, javascript-format
 msgid "The %s has been created."
 msgstr "%s wurde erstellt."
@@ -1734,14 +1812,14 @@ msgid_plural "The DNS objects are part of the Active Directory domain."
 msgstr[0] "Das DNS-Objekt \"%s\" ist Teil einer Active Directory Domäne."
 msgstr[1] "Die DNS-Objekte sind Teil einer Active Directory Domäne."
 
-#: umc/js/udm/DetailPage.js:837
+#: umc/js/udm/DetailPage.js:839
 #, javascript-format
 msgid "The LDAP object \"%s\" is part of the Active Directory domain."
 msgid_plural "The LDAP objects are part of the Active Directory domain."
 msgstr[0] "Das LDAP-Objekt \"%s\" ist Teil einer Active Directory Domäne."
 msgstr[1] "Die LDAP-Objekte sind Teil einer Active Directory Domäne."
 
-#: umc/js/udm/DetailPage.js:1929
+#: umc/js/udm/DetailPage.js:1932
 msgid "The LDAP object could not be saved: %(details)s"
 msgstr "Das LDAP-Objekt konnte nicht gespeichert werden: %(details)s"
 
@@ -1752,7 +1830,14 @@ msgid_plural "The Nagios objects are part of the Active Directory domain."
 msgstr[0] "Das Nagios-Objekt \"%s\" ist Teil einer Active Directory Domäne."
 msgstr[1] "Die Nagios-Objekte sind Teil einer Active Directory Domäne."
 
-#: umc/js/udm/DetailPage.js:1937
+#: umc/js/udm/DetailPage.js:831
+#, javascript-format
+msgid "The alert \"%s\" is part of the Active Directory domain."
+msgid_plural "The alerts are part of the Active Directory domain."
+msgstr[0] "Der Alarm \"%s\" ist Teil einer Active Directory Domäne."
+msgstr[1] "Die Alarme sind Teil einer Active Directory Domäne."
+
+#: umc/js/udm/DetailPage.js:1940
 msgid "The changes have been successfully applied."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
@@ -1763,15 +1848,15 @@ msgid_plural "The computers are part of the Active Directory domain."
 msgstr[0] "Der Rechner \"%s\" ist Teil einer Active Directory Domäne."
 msgstr[1] "Die Rechner sind Teil einer Active Directory Domäne."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:373
+#: umc/js/udm/wizards/FirstPageWizard.js:375
 msgid "The container in which the LDAP object shall be created."
 msgstr "Der Container, in dem das LDAP-Objekt erzeugt wird."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:402
+#: umc/js/udm/wizards/FirstPageWizard.js:404
 msgid "The exact object type of the new LDAP object."
 msgstr "Der genaue Objekttyp des neuen LDAP-Objekts."
 
-#: umc/js/udm/DetailPage.js:1918
+#: umc/js/udm/DetailPage.js:1921
 msgid "The following LDAP objects could not be saved:"
 msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht gespeichert werden:"
 
@@ -1783,15 +1868,15 @@ msgstr ""
 "Die folgenden leeren Eigenschaften wurden im Formular auf Vorgabewerte "
 "gesetzt. Die Werte werden beim Speichern angewendet."
 
-#: umc/js/udm.js:1811
+#: umc/js/udm.js:1834
 msgid "The following object(s) could not be deleted:"
 msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht gelöscht werden:"
 
-#: umc/js/udm/DetailPage.js:1986
+#: umc/js/udm/DetailPage.js:1989
 msgid "The following properties could not be validated:"
 msgstr "Die folgenden Eigenschaften konnten nicht validiert werden:"
 
-#: umc/js/udm/DetailPage.js:1828
+#: umc/js/udm/DetailPage.js:1831
 msgid "The following properties need to be specified or are invalid:"
 msgstr ""
 "Die folgenden Eigenschaften wurden nicht angegeben oder sind nicht gültig:"
@@ -1803,7 +1888,7 @@ msgid_plural "The groups are part of the Active Directory domain."
 msgstr[0] "Die Gruppe \"%s\" ist Teil einer Active Directory Domäne."
 msgstr[1] "Die Gruppen sind Teil einer Active Directory Domäne."
 
-#: umc/js/udm/LicenseImportDialog.js:151
+#: umc/js/udm/LicenseImportDialog.js:150
 msgid ""
 "The import of the license failed. Check the integrity of the original file "
 "given to you. If this error persists, please contact Univention or your "
@@ -1817,11 +1902,11 @@ msgstr ""
 msgid "The license has already been activated."
 msgstr "Die Lizenz wurde bereits aktiviert."
 
-#: umc/js/udm/LicenseImportDialog.js:147
+#: umc/js/udm/LicenseImportDialog.js:146
 msgid "The license has been imported successfully."
 msgstr "Die Lizenz wurde erfolgreich importiert."
 
-#: umc/js/udm/LicenseDialog.js:128
+#: umc/js/udm/LicenseDialog.js:127
 msgid ""
 "The license type \"Free for personal use\" can be upgraded to the latest <a "
 "href=\"https://www.univention.com/downloads/license-models/ucs-core-edition"
@@ -1851,14 +1936,14 @@ msgid_plural "The network objects are part of the Active Directory domain."
 msgstr[0] "Das Netz-Objekt \"%s\" ist Teil einer Active Directory Domäne."
 msgstr[1] "Die Netz-Objekte sind Teil einer Active Directory Domäne."
 
-#: umc/js/udm/DetailPage.js:831
+#: umc/js/udm/DetailPage.js:833
 #, javascript-format
 msgid "The policy \"%s\" is part of the Active Directory domain."
 msgid_plural "The policies are part of the Active Directory domain."
 msgstr[0] "Die Richtlinie  \"%s\" ist Teil einer Active Directory Domäne."
 msgstr[1] "Die Richtlinien sind Teil einer Active Directory Domäne."
 
-#: umc/js/udm/DetailPage.js:833
+#: umc/js/udm/DetailPage.js:835
 #, javascript-format
 msgid "The portal object \"%s\" is part of the Active Directory domain."
 msgid_plural "The portal objects are part of the Active Directory domain."
@@ -1872,7 +1957,7 @@ msgid_plural "The printers are part of the Active Directory domain."
 msgstr[0] "Der Drucker \"%s\" ist Teil einer Active Directory Domäne."
 msgstr[1] "Die Drucker sind Teil einer Active Directory Domäne."
 
-#: umc/js/udm/CreateReportDialog.js:89
+#: umc/js/udm/CreateReportDialog.js:87
 msgid "The report template that should be used for the report."
 msgstr "Die zuverwendende Reportvorlage"
 
@@ -1883,7 +1968,7 @@ msgid_plural "The shares are part of the Active Directory domain."
 msgstr[0] "Die Freigabe \"%s\" ist Teil einer Active Directory Domäne."
 msgstr[1] "Die Freigaben sind Teil einer Active Directory Domäne."
 
-#: umc/js/udm/LicenseImportDialog.js:109
+#: umc/js/udm/LicenseImportDialog.js:108
 msgid ""
 "The text field is empty. Please copy all lines of the license file into the "
 "text field and retry to import the data."
@@ -1898,40 +1983,40 @@ msgid_plural "The users are part of the Active Directory domain."
 msgstr[0] "Der Benutzer \"%s\" ist Teil einer Active Directory Domäne."
 msgstr[1] "Die Benutzer sind Teil einer Active Directory Domäne."
 
-#: umc/js/udm/DetailPage.js:2162
+#: umc/js/udm/DetailPage.js:2166
 msgid "There are unsaved changes. Are you sure to cancel?"
 msgstr "Einige Änderungen sind noch nicht gespeichert. Möchten Sie abbrechen?"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:276
+#: umc/js/udm/wizards/FirstPageWizard.js:277
 msgid "This UCS system is part of an Active Directory domain"
 msgstr "Dieses UCS-System ist Teil einer Active Directory-Domäne"
 
-#: umc/js/udm/CreateReportDialog.js:170
+#: umc/js/udm/CreateReportDialog.js:168
 msgid "This may take a while."
 msgstr "Die Aktion kann einen Moment dauern."
 
-#: umc/js/udm.js:1093
+#: umc/js/udm.js:1110
 msgid "Toggle visual presentation"
 msgstr "Darstellungsart ändern"
 
-#: umc/js/udm.js:949 umc/js/udm.js:1640
-#: umc/js/udm/wizards/FirstPageWizard.js:401
+#: umc/js/udm.js:956 umc/js/udm.js:1661
+#: umc/js/udm/wizards/FirstPageWizard.js:403
 msgid "Type"
 msgstr "Typ"
 
-#: umc/js/udm/LicenseDialog.js:137
+#: umc/js/udm/LicenseDialog.js:136
 msgid "UCS License"
 msgstr "UCS-Lizenz"
 
-#: umc/js/udm/LicenseImportDialog.js:63
+#: umc/js/udm/LicenseImportDialog.js:62
 msgid "UCS license import"
 msgstr "UCS-Lizenz-Import"
 
-#: umc/js/udm/LicenseImportDialog.js:144
+#: umc/js/udm/LicenseImportDialog.js:143
 msgid "Updating session data..."
 msgstr "Aktualisieren der Sitzungsdaten..."
 
-#: umc/js/udm/LicenseDialog.js:103
+#: umc/js/udm/LicenseDialog.js:102
 msgid "Updating the license information has failed"
 msgstr "Die Aktualisierung der Lizenzinformationen ist fehlgeschlagen"
 
@@ -1943,15 +2028,15 @@ msgstr "Zertifikat hochladen"
 msgid "Upload profile image"
 msgstr "Profilbild hochladen"
 
-#: umc/js/udm/LicenseDialog.js:150 umc/js/udm/LicenseDialog.js:169
+#: umc/js/udm/LicenseDialog.js:149 umc/js/udm/LicenseDialog.js:168
 msgid "User accounts"
 msgstr "Benutzerkonten"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:314
+#: umc/js/udm/wizards/FirstPageWizard.js:315
 msgid "User template"
 msgstr "Benutzer-Vorlage"
 
-#: umc/js/udm.js:1142
+#: umc/js/udm.js:1159
 msgid "Users"
 msgstr "Benutzer"
 
@@ -1963,19 +2048,19 @@ msgstr ""
 "Hier verwaltete Benutzer werden von der Applikation \"%(name)s\" benutzt, "
 "welche momentan nicht installiert ist."
 
-#: umc/js/udm/LicenseDialog.js:154 umc/js/udm/LicenseDialog.js:174
+#: umc/js/udm/LicenseDialog.js:153 umc/js/udm/LicenseDialog.js:173
 msgid "Valid product types"
 msgstr "Gültige Produkttypen"
 
-#: umc/js/udm.js:1649
+#: umc/js/udm.js:1670
 msgid "Value"
 msgstr "Wert"
 
-#: umc/js/udm.js:1657
+#: umc/js/udm.js:1678
 msgid "Value of the LDAP object."
 msgstr "Wert des LDAP-Objekts."
 
-#: umc/js/udm/DetailPage.js:1640
+#: umc/js/udm/DetailPage.js:1643
 msgid ""
 "You are currently editing a policy. Changing its properties affects all "
 "referenced objects and may affect your system globally."
@@ -1984,7 +2069,7 @@ msgstr ""
 "alle referenzierende Objekte aus und kann ggf. das System global "
 "beeinflussen."
 
-#: umc/js/udm/LicenseDialog.js:116
+#: umc/js/udm/LicenseDialog.js:115
 msgid ""
 "You are using a GPL license which is not eligible for maintenance or support "
 "claims."
@@ -1992,7 +2077,7 @@ msgstr ""
 "Sie verwenden eine GPL Lizenz, die zu keinem Anspruch auf Support oder "
 "Maintenance-Unterstützung berechtigt."
 
-#: umc/js/udm/wizards/FirstPageWizard.js:478
+#: umc/js/udm/wizards/FirstPageWizard.js:480
 msgid "computer"
 msgstr "Rechner"
 
@@ -2000,11 +2085,11 @@ msgstr "Rechner"
 msgid "computers"
 msgstr "Rechner"
 
-#: umc/js/udm/DetailPage.js:1517
+#: umc/js/udm/DetailPage.js:1520
 msgid "edit"
 msgstr "bearbeiten"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:477
+#: umc/js/udm/wizards/FirstPageWizard.js:479
 msgid "group"
 msgstr "Gruppe"
 
@@ -2012,18 +2097,18 @@ msgstr "Gruppe"
 msgid "groups"
 msgstr "Gruppen"
 
-#: umc/js/udm/DetailPage.js:1430
+#: umc/js/udm/DetailPage.js:1433
 #, javascript-format
 msgid ""
 "https://docs.software-univention.de/manual-%s.html#central:extendedattrs"
 msgstr ""
 "https://docs.software-univention.de/handbuch-%s.html#central:extendedattrs"
 
-#: umc/js/udm/ComboBox.js:340
+#: umc/js/udm/ComboBox.js:338
 msgid "in {size} objects"
 msgstr "insgesamt {size} Objekte"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:484
+#: umc/js/udm/wizards/FirstPageWizard.js:486
 msgid "mail object"
 msgstr "Mail-Objekt"
 
@@ -2031,7 +2116,7 @@ msgstr "Mail-Objekt"
 msgid "mail objects"
 msgstr "Mail-Objekte"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:479
+#: umc/js/udm/wizards/FirstPageWizard.js:481
 msgid "network object"
 msgstr "Netz-Objekt"
 
@@ -2039,23 +2124,23 @@ msgstr "Netz-Objekt"
 msgid "network objects"
 msgstr "Netz-Objekte"
 
-#: umc/js/udm/DetailPage.js:1524
+#: umc/js/udm/DetailPage.js:1527
 msgid "not defined"
 msgstr "nicht gesetzt"
 
-#: umc/js/udm/ComboBox.js:338
+#: umc/js/udm/ComboBox.js:336
 msgid "number exceeded configured limit"
 msgstr "Anzahl über konfigurierter Grenze"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:245
+#: umc/js/udm/wizards/FirstPageWizard.js:246
 msgid "policies"
 msgstr "Richtlinien"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:486
+#: umc/js/udm/wizards/FirstPageWizard.js:489
 msgid "policy"
 msgstr "Richtlinie"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:483
+#: umc/js/udm/wizards/FirstPageWizard.js:485
 msgid "printer"
 msgstr "Drucker"
 
@@ -2063,7 +2148,7 @@ msgstr "Drucker"
 msgid "printers"
 msgstr "Drucker"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:482
+#: umc/js/udm/wizards/FirstPageWizard.js:484
 msgid "share"
 msgstr "Freigabe"
 
@@ -2071,11 +2156,11 @@ msgstr "Freigabe"
 msgid "shares"
 msgstr "Freigaben"
 
-#: umc/js/udm/LicenseDialog.js:196
+#: umc/js/udm/LicenseDialog.js:195
 msgid "unlimited"
 msgstr "unbegrenzt"
 
-#: umc/js/udm/wizards/FirstPageWizard.js:476
+#: umc/js/udm/wizards/FirstPageWizard.js:478
 msgid "user"
 msgstr "Benutzer"
 

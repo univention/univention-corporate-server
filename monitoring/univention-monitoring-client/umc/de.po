@@ -1,0 +1,21 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: udm-monitoring\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: Thu, 23 Jun 2022 17:16:12 +0200\n"
+"PO-Revision-Date: 2022-06-14 23:47+0200\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language-Team: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Configuration of Monitoring alert settings in the domain"
+msgstr "Konfiguration von Monitoring-Einstellungen in der Domäne"
+
+msgid "Monitoring"
+msgstr "Monitoring"
+
+msgid "alert,monitoring,prometheus"
+msgstr "alert,alarm,monitoring,prometheus"

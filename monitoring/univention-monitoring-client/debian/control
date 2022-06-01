@@ -9,6 +9,7 @@ Build-Depends:
  univention-config-dev,
  univention-join-dev,
  univention-l10n-dev,
+ univention-management-console-dev,
 Standards-Version: 4.3.0.3
 
 Package: univention-monitoring-client

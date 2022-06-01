@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <module id="udm" icon="monitoring" version="1.0" translationId="udm-monitoring">
+    <!-- Translation currently broken due to Bug #35061 -->
+    <flavor icon="udm-monitoring-alert" id="monitoring/alert">
+      <name>Monitoring</name>
+      <description>Configuration of Monitoring alert settings in the domain</description>
+      <keywords>alert,monitoring,prometheus</keywords>
+      <categories>
+         <category name="devices"/>
+      </categories>
+    </flavor>
+  </module>
+</umc>

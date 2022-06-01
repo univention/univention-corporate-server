@@ -142,6 +142,7 @@ define([
 					'shares/print'      : _('Loading printer...'),
 					'mail/mail'         : _('Loading mail object...'),
 					'nagios/nagios'     : _('Loading Nagios object...'),
+					'monitoring/alert'  : _('Loading alert...'),
 					'policies/policy'   : _('Loading policy...')
 				}[this.detailPage.moduleFlavor];
 				if (!text) {

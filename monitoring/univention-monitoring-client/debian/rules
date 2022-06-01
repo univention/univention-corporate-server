@@ -31,5 +31,12 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+override_dh_install:
+	dh_install
+	mv debian/univention-monitoring-client/usr/share/univention-management-console/i18n/de/udm.mo debian/univention-monitoring-client/usr/lib/univention-monitoring-client/umc/de-udm-monitoring.mo
+	mv debian/univention-monitoring-client/usr/share/univention-management-console/modules/udm-monitoring.xml debian/univention-monitoring-client/usr/lib/univention-monitoring-client/umc/
+	mv debian/univention-monitoring-client/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/ debian/univention-monitoring-client/usr/lib/univention-monitoring-client/umc/
+	rm -rf debian/univention-monitoring-client/usr/share/univention-management-console debian/univention-monitoring-client/usr/share/univention-management-console-frontend
+
 %:
-	dh $@ --with ucr,univention-join,univention-l10n,python3
+	dh $@ --with ucr,univention-join,univention-l10n,python3,umc
