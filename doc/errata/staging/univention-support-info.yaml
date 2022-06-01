@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-support-info
+fix: 6.0.0-3
+desc: |
+ This update addresses the following issue:
+ * The script `univention-support-info` has been migrated to Python 3.
+bug: [53358]

@@ -1,3 +1,9 @@
+univention-support-info (6.0.0-3) unstable; urgency=low
+
+  * Bug #53358: Migrate to Python 3
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 01 Jun 2022 18:23:09 +0200
+
 univention-support-info (6.0.0-2) unstable; urgency=medium
 
   * Bug #53839: upgrade to latest USI + GPG key
@@ -45,4 +51,3 @@ univention-support-info (0.1.0) UNRELEASED; urgency=low
   * Initial package (Bug #26684)
 
  -- Arvid Requate <requate@univention.de>  Wed, 14 Aug 2013 15:04:20 +0200
-

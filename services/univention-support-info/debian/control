@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- debhelper,
+ debhelper-compat (= 12),
 Standards-Version: 3.8.2
 
 Package: univention-support-info
@@ -11,8 +11,21 @@ Architecture: all
 Depends:
  dmidecode,
  iproute2,
- kmod,
- pciutils,
+ python3,
+ python3-apt,
+ python3-m2crypto,
+ python3-univention-config-registry,
+ python3-univention-lib,
+ ${misc:Depends},
+Recommends:
+ dnsutils,
+ univention-config,
+ univention-system-info,
+Suggests:
+ lvm2,
+ univention-directory-listener,
+ univention-directory-notifier,
+ univention-join,
 Description: UCS - collect support information
  This package contains a skcript to collect support information
  .
