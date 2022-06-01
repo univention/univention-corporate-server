@@ -35,9 +35,6 @@ ansible_preperation () {
 	local repo_user="${3:?missing repo_user}"
 	local repo_password_file="${4:?missing repo_password_file}"
 	local keycloak_password="${5:?missing keycloak_password}"
-	local kc1_ip="${6:?missing kc1_ip}"
-	local kc2_ip="${7:?missing kc2_ip}"
-	local db_extern="${8:?missing domain}"
 	local rv=0
 	# Download ansible scripts
 	wget -e robots=off --user "$repo_user" \
@@ -52,10 +49,6 @@ ansible_preperation () {
 	cp /root/id-broker-TESTING.key id-broker.key
 	# shellcheck disable=SC1091
 	source /root/id-broker-secrets.sh
-	sed -i "s/KEYCLOAK_IP/$kc1_ip/g" hosts.ini
-	sed -i "s/KEYCLOAK2_IP/$kc2_ip/g" hosts.ini
-	sed -i "s/DOMAIN/$db_extern/g" hosts.ini
-	sed -i "s/hostssl keycloak keycloak KEYCLOAK2_IP/hostssl keycloak keycloak $kc2_ip/g" database.yml
 	sed -i "s/BETTERMARKS_CLIENT_SECRET/$BETTERMARKS_CLIENT_SECRET/g" clients.yml
 	sed -i "s/UTA_CLIENT_SECRET/$UTA_CLIENT_SECRET/g" clients.yml
 	sed -i "s/UTA_REDIRECT/https:\/\/$(hostname -f)\/univention-test-app\/authorize/g" clients.yml
@@ -70,7 +63,7 @@ ansible_preperation () {
 }
 
 create_certificate_kc_vhost () {
-	univention-certificate new -name kc.broker.local -id 658b0aaf-48dc-4a32-991f-db46648b22a5 -days 365 || return 1
+	univention-certificate new -name kc."$(hostname -d)" -id 658b0aaf-48dc-4a32-991f-db46648b22a5 -days 365 || return 1
 	return 0
 }
 
@@ -78,7 +71,7 @@ wait_for_certificate_replication () {
 	local end=$(($(date +%s)+300))
 	while [ "$(date +%s)" -lt "$end" ]
 	do
-		if [ -d "/etc/univention/ssl/kc.broker.local/" ]; then
+		if [ -d "/etc/univention/ssl/kc.$(hostname -d)/" ]; then
 			return 0
 		fi
 		sleep 5
@@ -87,15 +80,10 @@ wait_for_certificate_replication () {
 }
 
 apache_custom_vhosts () {
-	local keycloak2_ip="${1:?missing keycloak2_ip}"
-	local domain="${2:?missing domain}"
-	univention-add-vhost --conffile /var/lib/keycloak/keycloak_ProxyPass.conf kc.broker.local 443
-	cd /etc/apache2/sites-available/ || return 1
-	cp /root/univention-vhosts.conf.example univention-vhosts.conf
-	sed -i "s/KEYCLOAK2_IP/$keycloak2_ip/g" univention-vhosts.conf
-	sed -i "s/DOMAIN/$domain/g" univention-vhosts.conf
-	cp /root/keycloak_ProxyPass.conf.example /var/lib/keycloak/keycloak_ProxyPass.conf
-	sed -i "s/DOMAIN/$domain/g" /var/lib/keycloak/keycloak_ProxyPass.conf
+	univention-add-vhost --conffile /var/lib/keycloak/keycloak_balanced.conf kc."$(hostname -d)" 443
+	mkdir -p /var/lib/keycloak/
+	cp /root/keycloak_balanced.conf /var/lib/keycloak/keycloak_balanced.conf
+	sed -i "s/DOMAIN/$(hostname -d)/g" /var/lib/keycloak/keycloak_balanced.conf
 	service apache2 restart || return 1
 	return 0
 }
