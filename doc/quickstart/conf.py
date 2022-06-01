@@ -89,7 +89,7 @@ if "linkcheck" in sys.argv:
 root_doc = "contents"
 
 html_sidebars = {
-    "**": ["sidebar-logo.html", "search-field.html", "_templates/sidebar-links.html", "sbt-sidebar-footer.html"],
+    "**": ["sidebar-logo.html", "search-field.html", "_templates/sidebar-links.html"],
 }
 
 latex_engine = 'lualatex'
