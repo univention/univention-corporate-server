@@ -10,3 +10,5 @@ desc: |
    have blanks in their filenames. This lead to error messages during package
    upgrades and inconsistent cache behavior.
 bug: [54047]
+erratum: 323
+announced: 2022-06-01
