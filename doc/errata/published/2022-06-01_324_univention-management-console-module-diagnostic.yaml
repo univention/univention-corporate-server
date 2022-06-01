@@ -11,3 +11,5 @@ desc: |
    membership attributes 'uniqueMember' and 'memberUid' are no longer
    consistent.
 bug: [54675, 48652]
+erratum: 324
+announced: 2022-06-01
