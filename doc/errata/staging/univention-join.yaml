@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-join
-fix: 12.0.3-13A~5.0.0.202205271847
+fix: 12.0.3-14A~5.0.0.202206011612
 desc: |
  This update addresses the following issue:
  * When executing join scripts via UMC module `Domain Join` the progress bar will
