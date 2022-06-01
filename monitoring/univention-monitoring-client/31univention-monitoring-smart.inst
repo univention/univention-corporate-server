@@ -1,0 +1,104 @@
+#!/bin/sh
+#
+# Univention Monitoring Client
+#  join script
+#
+# Copyright 2022 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+## joinscript api: bindpwdfile
+
+VERSION=1
+
+. /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/all.sh
+joinscript_init
+
+eval "$(univention-config-registry shell)"
+
+MONITORINGCONTAINER="cn=monitoring,$ldap_base"
+
+univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
+  --set name="UNIVENTION_SMART_SDA_HEALTHY" \
+  --set description="Default Service: check if /dev/sda is healthy" \
+  --set summary="Default Service: check if /dev/sda is healthy" \
+  --append labels='"severity" "critical"' \
+  --set query='smartmon_device_smart_healthy{disk="/dev/sda"} != 1' || die
+
+univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
+  --set name="UNIVENTION_SMART_SDB_HEALTHY" \
+  --set description="Default Service: check if /dev/sdb is healthy" \
+  --set summary="Default Service: check if /dev/sdb is healthy" \
+  --append labels='"severity" "critical"' \
+  --set query='smartmon_device_smart_healthy{disk="/dev/sdb"} != 1' || die
+
+univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
+  --set name="UNIVENTION_SMART_SDC_HEALTHY" \
+  --set description="Default Service: check if /dev/sdc is healthy" \
+  --set summary="Default Service: check if /dev/sdc is healthy" \
+  --append labels='"severity" "critical"' \
+  --set query='smartmon_device_smart_healthy{disk="/dev/sdc"} != 1' || die
+
+univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
+  --set name="UNIVENTION_SMART_SDD_HEALTHY" \
+  --set description="Default Service: check if /dev/sdd is healthy" \
+  --set summary="Default Service: check if /dev/sdd is healthy" \
+  --append labels='"severity" "critical"' \
+  --set query='smartmon_device_smart_healthy{disk="/dev/sdd"} != 1' || die
+
+
+univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
+  --set name="UNIVENTION_SMART_SDA_PENDINGSECTOR_WARNING" \
+  --set description="Default Service: check if /dev/sda has sectors pending re-allocation" \
+  --set summary="Default Service: check if /dev/sda has sectors pending re-allocation" \
+  --append labels='"severity" "warning"' \
+  --set query='absent(smartmon_current_pending_sector{disk="/dev/sda"}) != 1' || die
+
+univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
+  --set name="UNIVENTION_SMART_SDB_PENDINGSECTOR_WARNING" \
+  --set description="Default Service: check if /dev/sdb has sectors pending re-allocation" \
+  --set summary="Default Service: check if /dev/sdb has sectors pending re-allocation" \
+  --append labels='"severity" "warning"' \
+  --set query='absent(smartmon_current_pending_sector{disk="/dev/sdb"}) != 1' || die
+
+univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
+  --set name="UNIVENTION_SMART_SDC_PENDINGSECTOR_WARNING" \
+  --set description="Default Service: check /dev/sdc has sectors pending re-allocation" \
+  --set summary="Default Service: check /dev/sdc has sectors pending re-allocation" \
+  --append labels='"severity" "warning"' \
+  --set query='absent(smartmon_current_pending_sector{disk="/dev/sdc"}) != 1' || die
+
+univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
+  --set name="UNIVENTION_SMART_SDD_PENDINGSECTOR_WARNING" \
+  --set description="Default Service: check /dev/sdd has sectors pending re-allocation" \
+  --set summary="Default Service: check /dev/sdd has sectors pending re-allocation" \
+  --append labels='"severity" "warning"' \
+  --set query='absent(smartmon_current_pending_sector{disk="/dev/sdd"}) != 1' || die
+
+joinscript_save_current_version
+
+exit 0
