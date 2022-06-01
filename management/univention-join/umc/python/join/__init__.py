@@ -157,7 +157,7 @@ def _dummyFunc(*args: List) -> None:
 def system_join(
 	hostname: str, username: str, password: str, info_handler: Callable = _dummyFunc,
 	error_handler: Callable = _dummyFunc, critical_handler: Callable = _dummyFunc,
-	step_handler: Callable = _dummyFunc, component_handler: Callable = _dummyFunc) -> bool:
+	step_handler: Callable = _dummyFunc, component_handler: Callable = _dummyFunc) -> None:
 
 	# get the number of join scripts
 	n_joinscripts = len(glob.glob(f'{INSTDIR}/*.inst'))
@@ -176,7 +176,7 @@ def system_join(
 def run_join_scripts(
 	scripts: List, force: bool, username: str, password: str, info_handler: Callable = _dummyFunc,
 	error_handler: Callable = _dummyFunc, critical_handler: Callable = _dummyFunc,
-	step_handler: Callable = _dummyFunc, component_handler: Callable = _dummyFunc) -> bool:
+	step_handler: Callable = _dummyFunc, component_handler: Callable = _dummyFunc) -> None:
 	with tempfile.NamedTemporaryFile() as passwordFile:
 		cmd = ['/usr/sbin/univention-run-join-scripts']
 		if username and password:
@@ -202,7 +202,7 @@ def run_join_scripts(
 
 def run(
 	cmd: List, steps_per_script: float, info_handler: Callable = _dummyFunc, error_handler: Callable = _dummyFunc,
-	critical_handler: Callable = _dummyFunc, step_handler: Callable = _dummyFunc, component_handler: Callable = _dummyFunc) -> bool:
+	critical_handler: Callable = _dummyFunc, step_handler: Callable = _dummyFunc, component_handler: Callable = _dummyFunc) -> None:
 	# disable restart of UMC server/web-server
 	MODULE.info('disabling restart of UMC server/web-server')
 	subprocess.call(CMD_DISABLE_EXEC)
@@ -217,13 +217,12 @@ def run(
 		MODULE.info('calling "%s"' % ' '.join(cmd))
 		process = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-		failed_join_scripts = []
+		failed_join_scripts = set()
 		executed_join_scripts = set()
 
 		def parse(line):
 			if not line.strip():
 				return
-			MODULE.process(repr(line.strip()).strip('"\''))
 
 			# parse output... first check for errors
 			matches = error_pattern.match(line)
@@ -240,13 +239,13 @@ def run(
 			matches = joinscript_pattern.match(line)
 			if matches:
 				current_script = matches.groupdict().get("script")
-				component_handler(_('Executing join scripts'))
-				info_handler(_('Executing join script %s') % (current_script,))
 				if current_script not in executed_join_scripts:
 					executed_join_scripts.add(current_script)
+					component_handler(_('Executing join scripts'))
+					info_handler(_('Executing join script %s') % (current_script,))
 					step_handler(steps_per_script)
-				if 'failed' in line:
-					failed_join_scripts.append(current_script)
+				if '\x1b[60Gfailed' in line:
+					failed_join_scripts.add(current_script)
 				return
 
 			# check for other information
@@ -256,12 +255,14 @@ def run(
 				step_handler(steps_per_script / 10)
 				return
 
+			MODULE.process(repr(line.strip()).strip('"\''))
+
 		# make stdout file descriptor of the process non-blocking
 		fd = process.stdout.fileno()
 		fl = fcntl.fcntl(fd, fcntl.F_GETFL)
 		fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
 
-		unfinished_line = ''
+		buf = ''
 		while True:
 			try:
 				fd = select.select([process.stdout], [], [])[0][0]
@@ -272,28 +273,30 @@ def run(
 					continue
 				raise
 
-			# get the next line
+			# get the next lines
 			line = fd.read().decode('utf-8', 'replace')
+			eof = not line
+			buf += line
+			lines, newline, buf = buf.rpartition('\n')
 
-			if not line:
-				break  # no more text from stdout
-
-			unfinished_line = '' if line.endswith('\n') else '%s%s' % (unfinished_line, line.rsplit('\n', 1)[-1])
-			for line in line.splitlines():
+			# parse completed joinscript executions
+			for line in lines.splitlines():
 				parse(line)
-			if unfinished_line:
-				parse(unfinished_line)
+
+			# parse the currently executed joinscript
+			if buf:
+				parse(buf)
+
+			if eof:
+				break  # no more text from stdout
 
 		# get all remaining output
 		stdout, stderr = process.communicate()
 		stdout, stderr = stdout.decode('UTF-8', 'replace'), stderr.decode('UTF-8', 'replace')
 		if stderr:
-			# write stderr into the log file
 			MODULE.warn(f'stderr: {stderr}')
 
-		# check for errors
 		if process.returncode != 0:
-			# error case
 			MODULE.warn(f'Could not perform system join: {stdout}{stderr}')
 			error_handler(_('The join process could not be executed. More details can be found in the log file <i>/var/log/univention/join.log</i>.<br/>Please retry to join the system after resolving any conflicting issues.'))
 		elif failed_join_scripts:
