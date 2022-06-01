@@ -12,3 +12,5 @@ desc: |
    because the account name was already taken by the
    `computers/domaincontroller_backup` object.
 bug: [54768]
+erratum: 322
+announced: 2022-06-01
