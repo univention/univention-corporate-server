@@ -186,10 +186,18 @@ DNS UMC module forward lookup - General tab
    * - Zone time to live
      - The time to live specifies how long these files may be cached by other
        DNS servers. The value is specified in seconds.
+
    * - Name servers
      - The fully qualified domain name with a full stop at the end of the
        relative domain name of the responsible name server. The first entry in
        the line is the primary name server for the zone.
+
+.. For German spell checker only relevant in this section.
+
+.. spelling::
+
+   Time
+   to
 
 .. _networks-dns-forwardzone-start-of-authority-tab:
 

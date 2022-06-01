@@ -80,8 +80,8 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
 .. envvar:: connector/ad/mapping/user/ignorefilter
 
-   Defines a filter for usernames that the AD Connector excempt matching users
-   from the synchronisation. For more information, see
+   Defines a filter for usernames so that the AD Connector excepts matching users
+   from the synchronization. For more information, see
    :ref:`ad-connector-details-on-preconfigured-synchronization`:
 
 

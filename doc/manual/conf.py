@@ -91,6 +91,7 @@ if "spelling" in sys.argv:
     spelling_word_list = []
     # Don't load extension to speed up the job
     extensions.remove("sphinx_last_updated_by_git")
+    extensions.remove("sphinx_sitemap")
     # Warnings may come up by sphinx-last-updated-by-git. Shall be suppressed in spelling job
     suppress_warnings = ['git.too_shallow', "bibtex"]
 

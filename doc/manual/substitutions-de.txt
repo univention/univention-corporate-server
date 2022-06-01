@@ -1,4 +1,4 @@
-.. |UCSADC| replace:: Univention AD connector
+.. |UCSADC| replace:: Univention AD Connector
 .. |UCSAPPC| replace:: Univention App Center
 .. |UCSBACKUPDN| replace:: Backup Directory Node
 .. |UCSMANAGEDNODE| replace:: Managed Node

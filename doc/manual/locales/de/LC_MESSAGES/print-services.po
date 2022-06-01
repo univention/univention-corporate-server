@@ -4,7 +4,7 @@ msgstr ""
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-28 12:42+0200\n"
-"PO-Revision-Date: 2022-04-28 12:49+0200\n"
+"PO-Revision-Date: 2022-05-31 15:55+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "MIME-Version: 1.0\n"
@@ -69,7 +69,7 @@ msgstr ""
 "Clients wie normale Drucker. Eine Druckergruppe erhöht die Verfügbarkeit des "
 "Druckdienstes. Wird auf eine Druckergruppe gedruckt, wird der Auftrag an den "
 "ersten verfügbaren Drucker der Druckergruppe geschickt. Die Auswahl der "
-"Drucker erfolgt nach dem Round-Robin-Prinzip, so dass eine gleichmäßige "
+"Drucker erfolgt nach dem *Round Robin Prinzip*, so dass eine gleichmäßige "
 "Auslastung angestrebt wird."
 
 #: ../../print-services/group.rst:18
@@ -628,7 +628,7 @@ msgid ""
 "creates a PDF document from all the print jobs. The setup is documented in :"
 "ref:`pdf-printer`."
 msgstr ""
-"Das Protokoll ``cups-pdf`` wird zur Anbindung eines Pseudo-Druckers verwendet, "
+"Das Protokoll ``cups-pdf`` wird zur Anbindung eines Pseudodruckers verwendet, "
 "der aus allen Druckaufträgen ein PDF-Dokument erzeugt. Die Einrichtung ist in :"
 "ref:`pdf-printer` dokumentiert."
 
@@ -658,7 +658,7 @@ msgstr ""
 "*win01* einzubinden, muss als Ziel *win01/laser01* angegeben werden. Dabei "
 "sollten Hersteller und Modell-Typ entsprechend des verwendeten Geräts gewählt "
 "werden. Der Druckserver nutzt dabei die verwendeten Druckermodell-"
-"Einstellungen um die Druckaufträge ggf. umzuwandeln und sendet diese "
+"Einstellungen um die Druckaufträge gegebenenfalls umzuwandeln und sendet diese "
 "anschließend an die URI ``smb://win01/laser01``. Hierbei werden keine Windows-"
 "Treiber verwendet."
 
@@ -748,7 +748,7 @@ msgstr ""
 
 #: ../../print-services/share.rst:142
 msgid "Printers UMC module - Access control tab"
-msgstr "Drucker UMC Modul - Reiter Zugriffskontrollo"
+msgstr "Drucker UMC Modul - Reiter Zugriffskontrolle"
 
 #: ../../print-services/share.rst:146
 msgid "*Access control* tab"
@@ -834,7 +834,7 @@ msgstr ""
 "vorhandenen Drucker ausgewählt werden können. In der Ergebnisliste wird zu dem "
 "jeweiligen Drucker der Server, der Name, der Status, der Standort und die "
 "Beschreibung angezeigt. Durch Markieren der Drucker und Ausführen einer der "
-"beiden Aktionen *deaktivieren* bzw. *aktivieren*, kann der Status mehrerer "
+"beiden Aktionen *deaktivieren* oder *aktivieren*, kann der Status mehrerer "
 "Drucker gleichzeitig geändert werden."
 
 #: ../../print-services/umc.rst:23

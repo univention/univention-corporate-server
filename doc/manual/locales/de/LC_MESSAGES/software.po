@@ -5,7 +5,7 @@ msgstr ""
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-29 11:29+0200\n"
-"PO-Revision-Date: 2022-04-29 11:10+0200\n"
+"PO-Revision-Date: 2022-05-31 18:12+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -252,7 +252,7 @@ msgid ""
 "menu for doing so can be opened using the :guilabel:`App Settings` button"
 " of an installed app."
 msgstr ""
-"Darüber hinaus können Apps ggf. über weitere Parameter angepasst werden."
+"Darüber hinaus können Apps häufig über weitere Parameter angepasst werden."
 "  Das Menü dafür ist über den Button App-Einstellungen einer "
 "installierten App zu erreichen."
 
@@ -682,7 +682,7 @@ msgstr ""
 "Die in einer Paketliste definierten Softwarepakete werden zu dem in der "
 ":guilabel:`Paketpflege`-Richtlinie definierten Zeitpunkt (zur "
 "Konfiguration siehe :ref:`computers-softwaremanagement-maintenance-"
-"policy`) installiert, bzw. deinstalliert."
+"policy`) installiert oder deinstalliert."
 
 #: ../../software/further-software.rst:178
 msgid ""
@@ -786,7 +786,7 @@ msgid ""
 "softwaremanagement-release-policy`) and, if applicable, installation."
 msgstr ""
 "Prüfung auf verfügbare und zu installierende Release-Updates (siehe :ref"
-":`computers-softwaremanagement-release-policy`) und ggf. Installation"
+":`computers-softwaremanagement-release-policy`) und gegebenenfalls Installation"
 
 #: ../../software/package-maintenance-policy.rst:14
 msgid ""
@@ -1257,7 +1257,7 @@ msgstr "Vier Arten von UCS-Updates werden unterschieden:"
 
 #: ../../software/ucs-versions.rst:11
 msgid "Major releases"
-msgstr "Major releases"
+msgstr "Major Releases"
 
 #: ../../software/ucs-versions.rst:9
 msgid ""
@@ -1272,7 +1272,7 @@ msgstr ""
 
 #: ../../software/ucs-versions.rst:21
 msgid "Minor releases"
-msgstr "Minor releases"
+msgstr "Minor Releases"
 
 #: ../../software/ucs-versions.rst:14
 msgid ""
@@ -1297,7 +1297,7 @@ msgstr ""
 
 #: ../../software/ucs-versions.rst:25
 msgid "Patchlevel releases"
-msgstr "Patchlevel releases"
+msgstr "Patchlevel Releases"
 
 #: ../../software/ucs-versions.rst:24
 msgid ""
@@ -1309,7 +1309,7 @@ msgstr ""
 
 #: ../../software/ucs-versions.rst:31
 msgid "Errata updates"
-msgstr "Errata updates"
+msgstr "Errata Updates"
 
 #: ../../software/ucs-versions.rst:28
 msgid ""
@@ -1350,7 +1350,7 @@ msgstr ""
 "Vor jedem Release-Update wird das *Pre-update-Skript* :file:`preup.sh` "
 "aufgerufen. Dieses prüft z.B. ob Probleme bestehen und bricht das Update "
 "dann kontrolliert ab. Nach dem Update wird das *Post-Update-Skript* "
-":file:`postup.sh` aufgerufen, das ggf. weitere Aufräumarbeiten "
+":file:`postup.sh` aufgerufen, das gegebenenfalls weitere Aufräumarbeiten "
 "durchführt."
 
 #: ../../software/ucs-versions.rst:44
@@ -1531,7 +1531,7 @@ msgid ""
 msgstr ""
 "Ein einzelnes UCS-System kann auf der Kommandozeile mit dem Befehl "
 ":command:`univention-upgrade` aktualisiert werden. Es wird geprüft, ob "
-"neue Release- oder Applikations-Updates vorliegen, die dann nach "
+"neue Release- oder Applikationsupdates vorliegen, die dann nach "
 "Bestätigung einer Nachfrage installiert werden. Außerdem werden Paket-"
 "Aktualisierungen durchgeführt, z.B. im Rahmen eines Errata-Updates."
 

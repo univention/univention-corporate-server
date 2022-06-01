@@ -5,7 +5,7 @@ msgstr ""
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-05-23 10:24+0200\n"
-"PO-Revision-Date: 2022-05-20 13:20+0200\n"
+"PO-Revision-Date: 2022-06-01 16:15+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -104,7 +104,7 @@ msgid ""
 "current status of a system service and to start or stop it as required."
 msgstr ""
 "Mit dem UMC-Modul :guilabel:`Systemdienste` kann der aktuelle Status "
-"eines Systemdienstes geprüft und dieser ggf. gestartet oder gestoppt "
+"eines Systemdienstes geprüft und dieser gegebenenfalls gestartet oder gestoppt "
 "werden."
 
 #: ../../computers/basic-system-services.rst:60
@@ -305,7 +305,7 @@ msgstr ""
 "benannt werden und ältere Logdateien anschließend gelöscht werden. Die "
 "aktuelle Logdatei für den |UCSUDL| findet sich beispielsweise in der "
 "Datei :file:`listener.log`, die der Vorwoche in :file:`listener.log.1` "
-"usw."
+"und so weiter."
 
 #: ../../computers/basic-system-services.rst:163
 msgid ""
@@ -579,8 +579,8 @@ msgid ""
 "specification runs an action every two minutes."
 msgstr ""
 "Die Zeitangaben können dabei in verschiedenen Formaten vorgenommen "
-"werden. Es kann entweder eine konkrete Minute/Stunde/etc. vorgegeben "
-"werden oder mit einem ``*`` eine Aktion zu jeder Minute/Stunde/etc. "
+"werden. Es kann entweder eine konkrete Minute oder Stunde vorgegeben "
+"werden oder mit einem ``*`` eine Aktion zu jeder Minute oder Stunde "
 "ausgeführt werden. Es können auch Intervalle definiert werden, ``*/2`` "
 "führt als Minutenangabe beispielsweise dazu, dass eine Aktion jede zweite"
 " Minute ausgeführt wird."
@@ -647,7 +647,7 @@ msgid ""
 "If an email address is specified under :samp:`cron/{JOBNAME}/mailto`, the"
 " output of the cron job is sent there per email."
 msgstr ""
-"Wird unter :samp:`cron/{JOBNAME}/mailto` eine Email-Adresse hinterlegt, "
+"Wird unter :samp:`cron/{JOBNAME}/mailto` eine E-Mail-Adresse hinterlegt, "
 "wird die Ausgabe des Cron-Jobs per E-Mail dorthin gesendet."
 
 #: ../../computers/basic-system-services.rst:329
@@ -1364,7 +1364,7 @@ msgstr ":envvar:`interfaces/ethX/ipv6/prefix`,"
 
 #: ../../computers/configure-hardware.rst:202
 msgid ":envvar:`interfaces/ethX/ipv6/acceptRA` activates SLAAC"
-msgstr ":envvar:`interfaces/ethX/ipv6/acceptRA` activates SLAAC"
+msgstr ":envvar:`interfaces/ethX/ipv6/acceptRA` aktiviert SLAAC"
 
 #: ../../computers/configure-hardware.rst:204
 msgid ""
@@ -1453,11 +1453,11 @@ msgstr ""
 
 #: ../../computers/configure-hardware.rst:243
 msgid ":envvar:`nameserver1` to :envvar:`nameserver3`"
-msgstr ":envvar:`nameserver1` to :envvar:`nameserver3`"
+msgstr ":envvar:`nameserver1` bis :envvar:`nameserver3`"
 
 #: ../../computers/configure-hardware.rst:244
 msgid ":envvar:`dns/forwarder1` to :envvar:`dns/forwarder3`,"
-msgstr ":envvar:`dns/forwarder1` to :envvar:`dns/forwarder3`,"
+msgstr ":envvar:`dns/forwarder1` bis :envvar:`dns/forwarder3`,"
 
 #: ../../computers/configure-hardware.rst:249
 msgid "Bridges, bonding, VLANs"
@@ -1778,7 +1778,7 @@ msgstr ""
 #: ../../computers/configure-hardware.rst:396
 msgid "This type of connection is primarily used between switches/servers."
 msgstr ""
-"Diese Verbindungsart wird vornehmlich zwischen Switches bzw. Servern "
+"Diese Verbindungsart wird vornehmlich zwischen Switches und Servern "
 "eingesetzt."
 
 #: ../../computers/configure-hardware.rst:398
@@ -2793,7 +2793,7 @@ msgid ""
 "configuration file. The data saved in |UCSUCR| can be requested via the "
 "``ConfigRegistry`` object, e.g.:"
 msgstr ""
-"Alle mit der print-Funktion ausgegebenen Daten werden dabei in die "
+"Alle mit der ``print``-Funktion ausgegebenen Daten werden dabei in die "
 "generierte Konfigurationsdatei geschrieben. Die in |UCSUCR| gespeicherten"
 " Daten können über das ``ConfigRegistry``-Objekt abgefragt werden, z.B.:"
 
@@ -2968,7 +2968,7 @@ msgstr "Attribut"
 #: ../../computers/umc.rst:218 ../../computers/umc.rst:248
 #: ../../computers/umc.rst:278
 msgid "Description"
-msgstr "Beschreiung"
+msgstr "Beschreibung"
 
 #: ../../computers/umc.rst:75
 msgid "Name"
@@ -3244,7 +3244,7 @@ msgstr ""
 
 #: ../../computers/umc.rst:200
 msgid "Login shell"
-msgstr "Login shell"
+msgstr "Login Shell"
 
 #: ../../computers/umc.rst:201
 msgid ""

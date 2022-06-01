@@ -56,6 +56,15 @@ move
 The possible options of a UDM module and the operations which can be used on it
 can be output by specifying the operation name, e.g.,
 
+.. For German spelling needed, only locally at this place
+
+.. spelling::
+
+   create
+   modify
+   remove
+   move
+
 .. code-block::
 
    $ univention-directory-manager users/user move

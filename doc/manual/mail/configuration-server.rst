@@ -255,6 +255,12 @@ email address is changed:
      - A new, empty mailbox will be created. The old one will be deleted from
        the hard disk.
 
+.. spelling::
+
+   mail
+   dovecot
+   mailbox
+
 .. _mail-homeserver:
 
 Distribution of an installation on several mail servers

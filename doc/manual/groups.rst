@@ -369,3 +369,7 @@ must be invoked on all servers.
 By default the user attribute ``memberOf`` is shown. The |UCSUCRV|
 :envvar:`ldap/overlay/memberof/memberof` can be used to configure a different
 attribute.
+
+.. spelling::
+
+   Domänenlokal
