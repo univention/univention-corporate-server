@@ -19,26 +19,14 @@ ucr.load()
 ldap_base = ucr['ldap/base']
 
 
-@pytest.fixture
-def udm_dn_objects():
+@pytest.fixture(scope='class')
+def udm_class():
 	with UCSTestUDM() as udm:
-		return {
-			'base_container_dn': base_container_dn,
-			'intermediate_container_dn': intermediate_container_dn,
-			'base_policy_dn': base_policy_dn,
-			'intermediate_policy_dn': intermediate_policy_dn,
-			'user_policy_dn': user_policy_dn,
-			'user_dn': user_dn,
-		}
+		yield udm
 
 
-@pytest.mark.parametrize('dn_type, policy_reference_type, length, pwLength', [
-	('base_container_dn', 'base_policy_dn', '5', '5')
-])
-def test_udm_non_ucr_policies(udm, udm_dn_objects, dn_type, policy_reference_type, length, pwLength):
-	# create test users
-	print('\n\ntest policy_reference_type: ', udm_dn_objects[policy_reference_type])
-	print('\ntype: ', type(udm_dn_objects[policy_reference_type]))
+@pytest.fixture(scope='class')
+def create_test_containers_in_ldap(udm):
 	base_container_dn = udm.create_object(
 		'container/cn',
 		name='base_test_container',
@@ -49,55 +37,104 @@ def test_udm_non_ucr_policies(udm, udm_dn_objects, dn_type, policy_reference_typ
 		name='intermediate_test_container',
 		position=base_container_dn
 	)
-	print('\n\nintermediate1: ', intermediate_container_dn)
+	return {'base': base_container_dn, 'intermediate': intermediate_container_dn}
+
+
+# 	def check_fixed_and_empty_attributes(self, user_dn):
+# 		self.UDM.modify_object(
+# 			'policies/pwhistory',
+# 			dn=self.base_policy_dn,
+# 			fixedAttributes=['univentionPWLength']
+# 		)
+# 		check_policies('4', '5', user_dn)
+
+# 		self.UDM.modify_object(
+# 			'policies/pwhistory',
+# 			dn=self.intermediate_policy_dn,
+# 			emptyAttributes=['univentionPWLength']
+# 		)
+# 		check_policies('4', '5', user_dn)
+# 		self.UDM.modify_object(
+# 			'policies/pwhistory',
+# 			dn=self.base_policy_dn,
+# 			set={'fixedAttributes': ""}
+# 		)
+# 		check_policies('4', '', user_dn)
+
+# 	def check_required_excluded_object_classes(self, user_dn):
+# 		self.UDM.modify_object(
+# 			'policies/pwhistory',
+# 			dn=self.intermediate_policy_dn,
+# 			requiredObjectClasses=["sambaSamAccount"]
+# 		)
+# 		check_policies('4', '', user_dn)
+# 		self.UDM.modify_object(
+# 			'policies/pwhistory',
+# 			dn=self.base_policy_dn,
+# 			prohibitedObjectClasses=["sambaSamAccount"]
+# 		)
+# 		check_policies('4', '', user_dn)
+
+
+@pytest.mark.parametrize('container_type, length, pwLength', [
+	('base', '5', '5'),
+	('intermediate', '4', '4'),
+])
+def test_udm_non_ucr_policies(udm, container_type, length, pwLength):
+	# def test_check_single_and_multiple_policies(udm): # user_dn, base_container_dn, intermediate_container_dn):
+	container_dn = create_test_containers_in_ldap(udm)
+
+	# create_test_policies()
 	base_policy_dn = udm.create_object(
 		'policies/pwhistory',
 		position="cn=policies," + ldap_base,
 		name='umc_test_policy_base',
-		length="5",
+		length=length,
 		pwQualityCheck=False,
-		pwLength="5",
+		pwLength=pwLength,
 		**{"$policies$": {}}
 	)
-	print('\n\ntest policy_reference_type: ', base_policy_dn)
-	print('\ntype: ', type(base_policy_dn))
-	intermediate_policy_dn = udm.create_object(
-		'policies/pwhistory',
-		position="cn=policies," + ldap_base,
-		name='umc_test_policy_intermediate',
-		length="4",
-		pwQualityCheck=False,
-		pwLength="4",
-		**{"$policies$": {}}
-	)
-	user_policy_dn = udm.create_object(
-		'policies/pwhistory',
-		position="cn=policies," + ldap_base,
-		name='umc_test_user_policy',
-		length="3",
-		pwQualityCheck=False,
-		pwLength="3",
-		**{"$policies$": {}}
-	)
-	print('\n\nintermediate2: ', intermediate_container_dn)
+	# intermediate_policy_dn = udm.create_object(
+	# 	'policies/pwhistory',
+	# 	position="cn=policies," + ldap_base,
+	# 	name='umc_test_policy_intermediate',
+	# 	length="4",
+	# 	pwQualityCheck=False,
+	# 	pwLength="4",
+	# 	**{"$policies$": {}}
+	# )
+	# user_policy_dn = udm.create_object(
+	# 	'policies/pwhistory',
+	# 	position="cn=policies," + ldap_base,
+	# 	name='umc_test_user_policy',
+	# 	length="3",
+	# 	pwQualityCheck=False,
+	# 	pwLength="3",
+	# 	**{"$policies$": {}}
+	# )
+
+	# create test users
 	user_dn = udm.create_user(
-		position=intermediate_container_dn,
+		position=container_dn['base'],
 		username='umc_test_user_' + random_username()
 	)[0]
 
-	# def check_single_and_multiple_policies(self, user_dn, base_container_dn, intermediate_container_dn):
+	# check stuff
 	udm.modify_object(
 		'container/cn',
-		dn=base_policy_dn,
-		policy_reference=udm_dn_objects[policy_reference_type]
+		dn=container_dn[container_type],
+		policy_reference=base_policy_dn
 	)
 
-	# check policies
+	# def check_policies(length, pwLength, user_dn):
+	# def get_user_policy(user_dn):
+	# check_policies('5', '5', user_dn)
+
 	options = [{
 		"objectType": "users/user",
 		"policies": [None],
 		"policyType": "policies/pwhistory",
-		"objectDN": udm_dn_objects['user_dn'],
+		"objectDN": user_dn,
 		"container": None
 	}]
 
@@ -107,49 +144,13 @@ def test_udm_non_ucr_policies(udm, udm_dn_objects, dn_type, policy_reference_typ
 
 	assert length == object_policy[0]['length']['value']
 	assert pwLength == object_policy[0]['pwLength']['value']
-	# check_policies('5', '5', user_dn)
 
 	# udm.modify_object(
 	# 	'container/cn',
 	# 	dn=intermediate_container_dn,
-	# 	policy_reference=self.intermediate_policy_dn
+	# 	policy_reference=intermediate_policy_dn
 	# )
 	# check_policies('4', '4', user_dn)
 
-			# self.check_fixed_and_empty_attributes(user_dn)
-			# self.check_required_excluded_object_classes(user_dn)
-	# def check_fixed_and_empty_attributes(self, user_dn):
-	# 	self.UDM.modify_object(
-	# 		'policies/pwhistory',
-	# 		dn=self.base_policy_dn,
-	# 		fixedAttributes=['univentionPWLength']
-	# 	)
-	# 	check_policies('4', '5', user_dn)
-
-	# 	self.UDM.modify_object(
-	# 		'policies/pwhistory',
-	# 		dn=self.intermediate_policy_dn,
-	# 		emptyAttributes=['univentionPWLength']
-	# 	)
-	# 	check_policies('4', '5', user_dn)
-	# 	self.UDM.modify_object(
-	# 		'policies/pwhistory',
-	# 		dn=self.base_policy_dn,
-	# 		set={'fixedAttributes': ""}
-	# 	)
-	# 	check_policies('4', '', user_dn)
-
-	# def check_required_excluded_object_classes(self, user_dn):
-	# 	self.UDM.modify_object(
-	# 		'policies/pwhistory',
-	# 		dn=self.intermediate_policy_dn,
-	# 		requiredObjectClasses=["sambaSamAccount"]
-	# 	)
-	# 	check_policies('4', '', user_dn)
-	# 	self.UDM.modify_object(
-	# 		'policies/pwhistory',
-	# 		dn=self.base_policy_dn,
-	# 		prohibitedObjectClasses=["sambaSamAccount"]
-	# 	)
-	# 	check_policies('4', '', user_dn)
-
+	# self.check_fixed_and_empty_attributes(user_dn)
+	# self.check_required_excluded_object_classes(user_dn)
