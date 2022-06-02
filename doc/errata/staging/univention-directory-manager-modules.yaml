@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-directory-manager-modules
-fix:
+fix: 15.0.11-51A~5.0.0.202206021502
 desc: |
  This update addresses the following issues:
  * Changing the case of the name or email attributes will no longer be
