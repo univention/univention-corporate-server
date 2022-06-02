@@ -3,7 +3,7 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-directory-manager-modules
-fix: 15.0.11-50A~5.0.0.202206021026
+fix:
 desc: |
  This update addresses the following issues:
  * Changing the case of the name or email attributes will no longer be
@@ -17,9 +17,7 @@ desc: |
    choices based on that.
  * The available mail domains are now suggested when entering values for the
    attribute `mailPrimaryAddress` of objects `users/user`.
- * The error message for invalid dates has been improved by specifying the
-   valid range.
  * Clarified error message for invalid host name or FQDN.
  * The error handling of the syntax class `jpegPhoto` was broken since UCS
    5.0-0 and has been repaired.
-bug: [52760, 54617, 38762, 53843, 54467, 54668, 54663, 54769]
+bug: [52760, 54617, 38762, 53843, 54467, 54663, 54769]

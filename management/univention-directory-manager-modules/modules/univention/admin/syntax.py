@@ -2916,9 +2916,7 @@ class date2(date):  # fixes the century
 				if year >= 70:  # Epoch 0
 					return '19%02d-%02d-%02d' % (year, month, day)
 				return '20%02d-%02d-%02d' % (year, month, day)
-		raise univention.admin.uexceptions.valueError(_(
-			"Not a valid Date. Year must be between 1961 and 2099, month between 1 and 12 and day between 1 and 31."
-		))
+		raise univention.admin.uexceptions.valueError(_("Not a valid Date"))
 
 	@classmethod
 	def to_datetime(cls, value):
