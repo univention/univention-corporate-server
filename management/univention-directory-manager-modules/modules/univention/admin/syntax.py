@@ -3036,7 +3036,8 @@ class dnsHostname(dnsName):
 	>>> dnsHostname.parse('-') # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
-	valueError: A host name or FQDN must start with a letter and end with a letter or number. In between additionally dashes, dots and underscores are allowed.
+	valueError: A hostname or any part of a FQDN, separated by dots, starts and ends with a letter or a digit.
+				In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.
 	"""
 
 	LABEL = re.compile(r'^(?![0-9]+$|[_-])[a-zA-Z0-9_-]{1,63}(?<![_-])$')
@@ -3050,8 +3051,8 @@ class dnsHostname(dnsName):
 		labels = (text[:-1] if text.endswith('.') else text).split('.')
 		if not all(self.LABEL.match(label) for label in labels):
 			raise univention.admin.uexceptions.valueError(_(
-				"A host name or FQDN must start with a letter and end with a letter or number. In between additionally dashes, dots "
-				"and underscores are allowed."
+				"A hostname or any part of a FQDN, separated by dots, starts and ends with a letter or a digit. "
+				"In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed."
 			))
 		return text
 
@@ -3065,23 +3066,26 @@ class dnsName_umlauts(simple):
 	>>> dnsName_umlauts.parse('0') # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
-	valueError: A host name or FQDN must start with a letter and end with a letter or number. In between additionally dashes, dots and underscores are allowed.
+	valueError: A hostname or any part of a FQDN, separated by dots, starts and ends with a letter or a digit.
+				In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.
 	>>> dnsName_umlauts.parse('-') # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
-	valueError: A host name or FQDN must start with a letter and end with a letter or number. In between additionally dashes, dots and underscores are allowed.
+	valueError: A hostname or any part of a FQDN, separated by dots, starts and ends with a letter or a digit.
+				In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.
 	>>> dnsName_umlauts.parse('_') # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
-	valueError: A host name or FQDN must start with a letter and end with a letter or number. In between additionally dashes, dots and underscores are allowed.
+	valueError: A hostname or any part of a FQDN, separated by dots, starts and ends with a letter or a digit.
+				In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.
 	"""
 
 	min_length = 1
 	max_length = 63
 	regex = re.compile(r"^(?![0-9]+$|[_-])[\w_-]{1,63}(?<![_-])$", re.UNICODE)
 	error_message = _(
-		"A host name or FQDN must start with a letter and end with a letter or number. In between additionally dashes, dots "
-		"and underscores are allowed."
+		"A hostname or any part of a FQDN, separated by dots, starts and ends with a letter or a digit. "
+		"In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed."
 	)
 
 
