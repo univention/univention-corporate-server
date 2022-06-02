@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.11-50) unstable; urgency=medium
+
+  * Bug #54663: clarify hostname/FQDN validation error
+
+ -- Carlos García-Mauriño <garcia-maurino.extern@univention.de>  Thu, 02 Jun 2022 08:27:23 +0300
+
 univention-directory-manager-modules (15.0.11-49) unstable; urgency=medium
 
   * Bug #54663: Updated german translation in de.po
