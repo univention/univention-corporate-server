@@ -472,11 +472,9 @@ msgstr "Kein gültiges Datum"
 
 #: modules/univention/admin/syntax.py:2920
 msgid ""
-"Not a valid Date. Year must be between 1961 and 2099, month between 1 and 12 "
-"and day between 1 and 31."
+"Not a valid Date."
 msgstr ""
-"Kein gültiges Datum. Jahr muss zwischen 2961 und 2099, Monat zwischen 1 und "
-"12 sowie Tag zwischen 1 und 31 sein."
+"Kein gültiges Datum."
 
 #: modules/univention/admin/syntax.py:2946
 msgid ""
