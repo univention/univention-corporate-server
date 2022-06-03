@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Samba 4
 #
@@ -28,6 +28,8 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+. /usr/lib/univention-server/server_password_change_debug
 
 eval "$(univention-config-registry shell)"
 

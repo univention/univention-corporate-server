@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+. /usr/lib/univention-server/server_password_change_debug
 
 if [ "$1" = "nochange" ]; then
 	/usr/sbin/univention-admin-diary-entry-create --event SERVER_PASSWORD_CHANGED_FAILED --arg "hostname=$(ucr get hostname)"
