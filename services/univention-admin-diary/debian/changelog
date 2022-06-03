@@ -1,3 +1,9 @@
+univention-admin-diary (2.0.4-6) unstable; urgency=medium
+
+  * Bug #49016: Enhanced exception handling in admin diary
+
+ -- Peter Stoll <stoll.extern@univention.de>  Thu, 15 Sep 2022 16:28:13 +0200
+
 univention-admin-diary (2.0.4-5) unstable; urgency=medium
 
   * Bug #51902: The UMC module "Admin Diary" now consumes less RAM

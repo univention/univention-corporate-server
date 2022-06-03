@@ -48,7 +48,7 @@ import univention.management.console as umc
 from univention.management.console.log import MODULE
 
 from univention.admindiary.client import add_comment
-from univention.admindiary.backend import get_client, get_engine, get_query_limit
+from univention.admindiary.backend import get_client, get_engine, get_query_limit, NoDBConnection
 from univention.admindiary.events import DiaryEvent
 
 
@@ -110,8 +110,11 @@ class Instance(Base):
 
 	@simple_response
 	def options(self):
-		with get_client(version=1) as client:
-			return client.options()
+		try:
+			with get_client(version=1) as client:
+				return client.options()
+		except NoDBConnection as exc:
+			raise umcm.UMC_Error(str(exc), status=500)
 
 	@simple_response
 	def get(self, context_id):

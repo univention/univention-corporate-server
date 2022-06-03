@@ -83,7 +83,10 @@ def get_engine():
 	db_url = '%s://admindiary:%s@%s/admindiary' % (dbms, password, dbhost)
 	if dbms == 'mysql':
 		db_url = db_url + '?charset=utf8mb4'
-	return sqlalchemy.create_engine(db_url, poolclass=NullPool)
+	try:
+		return sqlalchemy.create_engine(db_url, poolclass=NullPool)
+	except sqlalchemy.exc.NoSuchModuleError:
+		raise NoDBConnection()
 
 
 def windowed_query(q, column, windowsize, single_entity=True):
@@ -121,12 +124,16 @@ def windowed_query(q, column, windowsize, single_entity=True):
 @contextmanager
 def get_session(auto_commit=True):
 	# type: (bool) -> Iterator[sqlalchemy.Session]
-	session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=get_engine()))
-	yield session
-	if auto_commit:
-		session.commit()
-	session.remove()
-	session.bind.dispose()
+	session = None
+	try:
+		session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=get_engine()))
+		yield session
+	finally:
+		if session is not None:
+			if auto_commit:
+				session.commit()
+			session.remove()
+			session.bind.dispose()
 
 
 Base = declarative_base()
@@ -415,3 +422,8 @@ def get_client(version):
 class UnsupportedVersion(Exception):
 	def __str__(self):
 		return 'Version %s of the Admin Diary Backend is not supported' % (self.args[0])
+
+
+class NoDBConnection(Exception):
+	def __str__(self):
+		return "Database Connection cannot be established !\nPlease refer to https://help.univention.com/t/admin-diary-how-to-seperate-frontend-and-backend/11331"
