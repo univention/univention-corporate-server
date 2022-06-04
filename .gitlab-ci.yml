@@ -4,17 +4,18 @@ stages:
 
 include:
   - template: 'Workflows/Branch-Pipelines.gitlab-ci.yml'
+  - project: univention/dist/docker-services
+    file: kaniko.yml
   - local: '/.gitlab-ci/base.yml'
 
 variables:
   pipeline:
     value: ""
     description: "Skip or force jobs: '(skip|force)-(doc|ucslint|build)'"
+  BUILD: docker-registry.knut.univention.de/knut/deb-builder
 
 generate-config:
   stage: prepare
-  rules:
-    - when: always
   image:
     name: $BUILD
     entrypoint: [""]
@@ -35,8 +36,6 @@ generate-config:
 prepare aptly:
   stage: prepare
   interruptible: false
-  rules:
-    - when: always
   image:
     name: $BUILD
     entrypoint: [""]
@@ -68,28 +67,13 @@ drop aptly:
 prepare ucslint:
   stage: prepare
   interruptible: false
-  extends: .docker
-  script:
-    - docker build --pull -t $LINT_REF -f .gitlab-ci/Dockerfile.ucslint --build-arg ucs=$ucs packaging/ucslint
-    - docker push $LINT_REF
+  extends: .kaniko_knut
+  variables:
+    KANIKO_BUILD_CONTEXT: packaging/ucslint
+    KANIKO_ARGS: --build-arg ucs=$ucs
+    IMAGE_TAG: $LINT_REF
   rules:
     - changes:
-      - packaging/ucslint/**/*
-
-push ucslint:
-  stage: prepare
-  extends: .docker
-  needs:
-    - job: prepare ucslint
-  variables:
-    GIT_STRATEGY: none
-  script:
-    - docker pull $LINT_REF
-    - docker tag $LINT_REF $LINT_UCS
-    - docker push $LINT_UCS
-  rules:
-    - if: $CI_COMMIT_REF_NAME =~ /^[1-9][0-9]*[.][0-9]+[-][0-9]+$/
-      changes:
       - packaging/ucslint/**/*
 
 doc-pipeline:
