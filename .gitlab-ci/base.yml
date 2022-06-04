@@ -5,7 +5,6 @@ default:
   retry:
     max: 2
     when:
-      - script_failure
       - api_failure
       - stuck_or_timeout_failure
       - runner_system_failure
@@ -18,19 +17,7 @@ variables:
   DOC: docker-registry.knut.univention.de/docbook
   DEB: docker-registry.knut.univention.de/phahn/ucs-debbase:$ucs
   LINT: docker-registry.knut.univention.de/ucslint
-  BUILD: docker-registry.knut.univention.de/knut/deb-builder
   LINT_REF: $LINT:$CI_COMMIT_REF_SLUG
   LINT_UCS: $LINT:$ucs
   APTLY: http://omar.knut.univention.de:11620/api
   APT: http://omar.knut.univention.de/build2/git
-
-.docker:
-  services:
-    - name: docker-registry.knut.univention.de/ucs/docker:dind
-      alias: docker
-  variables:
-    DOCKER_HOST: tcp://docker:2375/
-  tags:
-    - docker
-  image: docker-registry.knut.univention.de/docker:stable
-
