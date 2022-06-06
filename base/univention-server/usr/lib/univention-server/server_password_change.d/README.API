@@ -7,3 +7,7 @@ change failed, or "postchange" if the password was changed.
 
 /etc/machine.secret contains the password currently used.
 /etc/machine.secret.old contains the list of previous password prefixed by timestamp.
+
+To enable debugging in shell scripts use /bin/bash instead of /bin/sh
+and include the following line at the beginning of the script
+`. /usr/lib/univention-server/server_password_change_debug`.
