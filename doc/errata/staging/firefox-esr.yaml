@@ -1,13 +1,11 @@
 product: ucs
 release: "4.4"
-version: [8, 9]
+version: [9]
 scope: ucs_4.4-0-errata4.4-9
 src: firefox-esr
 fix: 91.10.0esr-1~deb9u1
 desc: |
  This update addresses the following issues:
- 91.9.1esr-1~deb9u1 (Mon, 23 May 2022 10:08:32 +0200)
- * Backport to stretch.
  * Cross-Origin resource's length leaked (CVE-2022-31736)
  * Heap buffer overflow in WebGL (CVE-2022-31737)
  * Browser window spoof using fullscreen mode (CVE-2022-31738)
