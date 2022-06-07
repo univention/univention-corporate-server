@@ -1,3 +1,9 @@
+univention-postgresql (12.0.3-1) unstable; urgency=medium
+
+  * Bug #54273: Include debug script in univention-postgresql-password subscript
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Tue, 05 Jul 2022 12:25:08 +0200
+
 univention-postgresql (12.0.2-2) unstable; urgency=low
 
   * Bug #54255: Restart PostgreSQL after upgrade to UCS 5.0-1

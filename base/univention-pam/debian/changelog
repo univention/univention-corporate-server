@@ -1,3 +1,9 @@
+univention-pam (13.0.4-1) unstable; urgency=medium
+
+  * Bug #54273: Include debug script in univention-nscd and univention-libnss-ldap subscripts
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Tue, 05 Jul 2022 12:25:08 +0200
+
 univention-pam (13.0.3-3) unstable; urgency=low
 
   * Bug #43211: Deprecate univention-skel

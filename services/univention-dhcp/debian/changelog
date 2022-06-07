@@ -1,3 +1,9 @@
+univention-dhcp (14.0.5-1) unstable; urgency=medium
+
+  * Bug #54273: Include debug script in server_password_change.d/univention-dhcp subscript
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Tue, 05 Jul 2022 12:25:08 +0200
+
 univention-dhcp (14.0.4-2) unstable; urgency=medium
 
   * Bug #53182: Add timestamps to server_password_change log messages

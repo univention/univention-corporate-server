@@ -11,3 +11,6 @@ change failed, or "postchange" if the password was changed.
 To enable debugging in shell scripts use /bin/bash instead of /bin/sh
 and include the following line at the beginning of the script
 `. /usr/lib/univention-server/lib/server_password_change/debug.sh`.
+
+If the script evaluates ucr shell, import the debug script after it to obtain
+a cleaner output.

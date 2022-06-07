@@ -1,3 +1,9 @@
+univention-mail-postfix (14.0.2-1) unstable; urgency=medium
+
+  * Bug #54273: Include debug script in server_password_change.d/50univention-mail-server subscript
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Tue, 05 Jul 2022 12:25:08 +0200
+
 univention-mail-postfix (14.0.1-4) unstable; urgency=medium
 
   * Bug #54560: fix defer_if_permit_service unavailable error message

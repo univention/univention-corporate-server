@@ -1,3 +1,9 @@
+univention-portal (4.0.7-5) unstable; urgency=medium
+
+  * Bug #54273: Include debug script in portal-server-password-rotate subscript
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Tue, 05 Jul 2022 12:25:08 +0200
+
 univention-portal (4.0.7-4) unstable; urgency=medium
 
   * Bug #54295: Fix regarding keywords in entry forms
