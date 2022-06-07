@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libdbi-perl
+fix: 1.636-1+deb9u2
+desc: |
+ This update addresses the following issues:
+ * Incomplete fix for CVE-2014-10401 (CVE-2014-10402)
+bug: [54822]
+cve:
+- CVE-2014-10402
+- CVE-2014-10401
