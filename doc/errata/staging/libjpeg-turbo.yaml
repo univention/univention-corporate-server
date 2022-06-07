@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libjpeg-turbo
+fix: 1:1.5.1-2+deb9u2
+desc: |
+ This update addresses the following issue:
+ * several integer overflows and subsequent segfaults when attempting to
+   compress/decompress gigapixel images (CVE-2019-2201)
+bug: [54826]
+cve:
+- CVE-2019-2201
