@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: glib2.0
+fix: 2.50.3-2+deb9u3
+desc: |
+ This update addresses the following issues:
+ * integer overflow in g_byte_array_new_take function when called with a
+   buffer of 4GB or more on a 64-bit platform (CVE-2021-27218)
+ * integer overflow in g_bytes_new function on 64-bit platforms due to an
+   implicit cast from 64 bits to 32 bits (CVE-2021-27219)
+ * g_file_replace() with G_FILE_CREATE_REPLACE_DESTINATION creates empty
+   target for dangling symlink (CVE-2021-28153)
+bug: [54824]
+cve:
+- CVE-2021-27218
+- CVE-2021-27219
+- CVE-2021-28153
