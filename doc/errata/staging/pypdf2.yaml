@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: pypdf2
+fix: 1.26.0-2+deb9u1
+desc: |
+ This update addresses the following issue:
+ * infinite loop vulnerability (CVE-2022-24859)
+bug: [54825]
+cve:
+- CVE-2022-24859
