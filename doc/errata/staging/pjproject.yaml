@@ -11,8 +11,7 @@ desc: |
    vulnerability that affects PJSIP users that consume PJSIP's XML parsing in
    their apps. Users are advised to update. There are no known workarounds.
    (CVE-2022-24763)
- * PJSIP is a free and open source multimedia communication library written in
-   C. A denial-of-service vulnerability affects applications on a 32-bit
+ * A denial-of-service vulnerability affects applications on a 32-bit
    systems that use PJSIP versions 2.12 and prior to play/read invalid WAV
    files. The vulnerability occurs when reading WAV file data chunks with
    length greater than 31-bit integers. The vulnerability does not affect
@@ -20,8 +19,7 @@ desc: |
    patch is available on the `master` branch of the `pjsip/project` GitHub
    repository. As a workaround, apps can reject a WAV file received from an
    unknown source or validate the file first. (CVE-2022-24792)
- * PJSIP is a free and open source multimedia communication library written in
-   C. A buffer overflow vulnerability in versions 2.12 and prior affects
+ * A buffer overflow vulnerability in versions 2.12 and prior affects
    applications that uses PJSIP DNS resolution. It doesn't affect PJSIP users
    who utilize an external resolver. A patch is available in the `master`
    branch of the `pjsip/pjproject` GitHub repository. A workaround is to
