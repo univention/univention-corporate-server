@@ -1,0 +1,34 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: pjproject
+fix: 2.5.5~dfsg-6+deb9u5
+desc: |
+ This update addresses the following issues:
+ * PJSIP is a free and open source multimedia communication library written in
+   the C language. Versions 2.12 and prior contain a denial-of-service
+   vulnerability that affects PJSIP users that consume PJSIP's XML parsing in
+   their apps. Users are advised to update. There are no known workarounds.
+   (CVE-2022-24763)
+ * PJSIP is a free and open source multimedia communication library written in
+   C. A denial-of-service vulnerability affects applications on a 32-bit
+   systems that use PJSIP versions 2.12 and prior to play/read invalid WAV
+   files. The vulnerability occurs when reading WAV file data chunks with
+   length greater than 31-bit integers. The vulnerability does not affect
+   64-bit apps and should not affect apps that only plays trusted WAV files. A
+   patch is available on the `master` branch of the `pjsip/project` GitHub
+   repository. As a workaround, apps can reject a WAV file received from an
+   unknown source or validate the file first. (CVE-2022-24792)
+ * PJSIP is a free and open source multimedia communication library written in
+   C. A buffer overflow vulnerability in versions 2.12 and prior affects
+   applications that uses PJSIP DNS resolution. It doesn't affect PJSIP users
+   who utilize an external resolver. A patch is available in the `master`
+   branch of the `pjsip/pjproject` GitHub repository. A workaround is to
+   disable DNS resolution in PJSIP config (by setting `nameserver_count` to
+   zero) or use an external resolver instead. (CVE-2022-24793)
+bug: [54827]
+cve:
+- CVE-2022-24763
+- CVE-2022-24792
+- CVE-2022-24793
