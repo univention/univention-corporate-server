@@ -29,7 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-. /usr/lib/univention-server/server_password_change_debug
+. /usr/lib/univention-server/lib/server_password_change/debug.sh
 . /usr/share/univention-lib/base.sh
 
 case "$1" in

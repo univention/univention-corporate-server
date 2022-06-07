@@ -1,6 +1,7 @@
 etc/bootsplash/themes/domaincontroller_master/config/*cfg etc/bootsplash/themes/domaincontroller_master/config/
 etc/bootsplash/themes/domaincontroller_master/images/*jpg etc/bootsplash/themes/domaincontroller_master/images/
 server_password_change usr/lib/univention-server/
+debug.sh /usr/lib/univention-server/lib/server_password_change/
 univention-ldap-server-available usr/sbin/
 usr/lib/univention-server/server_password_change.d/README.API usr/lib/univention-server/server_password_change.d/
 reregister_ox_ldap_schema.sh usr/share/univention-server-master/

@@ -32,8 +32,4 @@ function debug_info()
     echo "DEBUG - COMMAND: \" $BASH_COMMAND \" - at ${BASH_SOURCE[1]}:${BASH_LINENO[0]}:${FUNCNAME[1]} ">&3
 }
 
-if [ -n "${SPCDEBUG:-}" ]
-then
-    exec 3>&2 # debug to console
-    trap debug_info DEBUG
-fi
+trap debug_info DEBUG
