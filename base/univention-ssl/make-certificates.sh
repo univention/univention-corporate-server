@@ -81,9 +81,9 @@ mk_config () {
 	local subjectAltName="${5:-}"
 
 	check_ssl_parameters "$name" || return $?
-
-	local SAN_txt san IFS=' '
-	for san in $subjectAltName # IFS
+	IFS=', ' read -r -a subjectAltNameArray <<< "$subjectAltName"
+	local SAN_txt san
+	for san in "${subjectAltNameArray[@]}"
 	do
 		SAN_txt="${SAN_txt:+${SAN_txt}, }DNS:${san}"
 	done
@@ -510,9 +510,8 @@ gencert () {
 		# Add DNS alias names
 		local san
 		san="$(univention-ldapsearch -LLLo ldif-wrap=no "(cNAMERecord=${fqdn%.}.)" 1.1 | sed -rne 's/^dn: relativeDomainName=([^,]+),zoneName=([^,]+),.*/\1 \1.\2/p' | tr '\n' ' ')"
-		# generate config, ignore san for wildcard certs
 		if [ "$hostname" = '*' ]; then
-			mk_config "$name/openssl.cnf" "" "$days" "$cn" ""
+			mk_config "$name/openssl.cnf" "" "$days" "$cn" "$fqdn $hostname $san"
 		else
 			mk_config "$name/openssl.cnf" "" "$days" "$cn" "$fqdn $hostname $san"
 		fi
