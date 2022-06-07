@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-server
+fix:
+desc: |
+ This update addresses the following issues:
+ * The information provided by the server_password_change script is
+   not good enough for debugging errors. A new script has been added
+   that will track and log the execution allowing a better understanding
+   of failed operations.
+bug: [54273]

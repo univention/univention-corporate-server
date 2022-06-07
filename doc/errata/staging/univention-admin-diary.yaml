@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-admin-diary
+fix:
+desc: |
+ This update addresses the following issues:
+ * The server_password_change/univention-admin-diary script
+   has been updated to generate more useful debug information.
+bug: [54273]
