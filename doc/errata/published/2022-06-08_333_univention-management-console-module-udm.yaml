@@ -13,3 +13,5 @@ desc: |
  * Syntax classes can now depend on another UDM property and restrict their
    choices based on that.
 bug: [54109, 38762, 53843]
+erratum: 333
+announced: 2022-06-08
