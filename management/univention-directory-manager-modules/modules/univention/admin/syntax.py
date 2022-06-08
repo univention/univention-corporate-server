@@ -102,63 +102,6 @@ def import_syntax_files():
 				finally:
 					_ = gettext
 
-	__ucr_overwrite_widgets()
-
-
-def __ucr_overwrite_widgets():
-	"""Setting widget definitions via UCR variables.
-	Do not use this! Only used by one customer. We should remove it.
-
-	.. deprecated:: 5.0-1
-		overwrite syntax class instead
-	"""
-	# FIXME: remove this method completely
-	from univention.admin._ucr import configRegistry as ucr
-	identifier = 'directory/manager/web/widget/'
-	syntaxes = {}
-	for key, val in ucr.items():
-		if not key.startswith(identifier):
-			continue
-		key = key[len(identifier):]
-		try:
-			name, key = key.split('/', 1)
-		except ValueError:
-			continue
-		syntaxes.setdefault(name, {}).setdefault(key, val)
-
-	for name, props in syntaxes.items():
-		try:
-			widget = props['widget']
-		except KeyError:
-			ud.debug(ud.ADMIN, ud.WARN, 'Ignoring syntax-widget overwrite: %s (does not define widget)' % (name,))
-			continue
-
-		default = props.get('default', '')
-		subclasses = ucr.is_true(None, False, props.get('subclasses', 'false').lower())
-		syntax_classes = []
-		for syntax in props.get('syntax', '').split(','):
-			if not syntax:
-				continue
-			syntax = getattr(univention.admin.syntax, syntax)
-			if syntax:
-				syntax_classes.append(syntax)
-
-		for scls in syntax_classes:
-			if getattr(scls, '_ucr_overwritten', False):
-				continue
-			org_get_widget = scls.get_widget
-
-			@classmethod
-			def get_widget(cls, prop):
-				if subclasses or cls is scls:
-					return widget
-				return org_get_widget(cls, prop)
-
-			ud.debug(ud.ADMIN, ud.INFO, 'Found ucr widget definition %r for syntax class %r' % (widget, scls, ))
-			scls.widget_default_search_pattern = default
-			scls.get_widget = get_widget
-			scls._ucr_overwritten = True
-
 
 choice_update_functions = []  # type: List[Callable]
 
