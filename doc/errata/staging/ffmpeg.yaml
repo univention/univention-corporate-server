@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: ffmpeg
+fix: 7:3.2.18-0+deb9u1
+desc: |
+ This update addresses the following issue:
+ * New upstream version 3.2.18 fixes a number of issues found by the OSS-Fuzz
+   project. The new ffmpeg version is required for the latest pjproject
+   security update.
+bug: [54835]
