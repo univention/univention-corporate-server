@@ -135,6 +135,7 @@ def process_dellog(dn):
 			if pathname.endswith(".fail"): continue
 			(dellog_stamp, dellog_id, dellog_dn, modifier, action) = _parse_dellog_file(pathname)
 		except EnvironmentError:
+			os.rename(pathname, '%s.fail' % pathname)
 			continue
 		except ValueError:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Corrupted file: %s. Invalid format' % (filename))
@@ -150,6 +151,7 @@ def process_dellog(dn):
 		dellog_id = '<NoID>'
 		modifier = '<unknown>'
 		action = '<unknown>'
+
 
 	return (timestamp, dellog_id, modifier, action)
 
