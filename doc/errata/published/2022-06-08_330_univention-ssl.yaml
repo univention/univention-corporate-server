@@ -10,3 +10,5 @@ desc: |
    `univention-certificates` because the information was only stored
    in "common name" but required in "subject alternative names", too.
 bug: [53288]
+erratum: 330
+announced: 2022-06-08
