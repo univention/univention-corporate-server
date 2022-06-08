@@ -6,8 +6,9 @@ src: imagemagick
 fix: 8:6.9.7.4+dfsg-11+deb9u14
 desc: |
  This update addresses the following issues:
- * NULL pointer dereference in ReadSVGImage() in coders/svg.c (CVE-2021-3596)
- * heap-buffer-overflow in PushLongPixel() of quantum-private.h
+ * NULL pointer dereference in `ReadSVGImage()` in `coders/svg.c`
+   (CVE-2021-3596)
+ * Heap-buffer-overflow in `PushLongPixel()` of `quantum-private.h`
    (CVE-2022-28463)
 bug: [54760]
 cve:
