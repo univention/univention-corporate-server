@@ -138,11 +138,10 @@ def process_dellog(dn):
 			continue
 		except ValueError:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Corrupted file: %s. Invalid format' % (filename))
-			continue
-		finally:
 			os.unlink(pathname)
-
+			continue
 		if dellog_dn == dn:
+			os.unlink(pathname)
 			timestamp = ldapTime2string(dellog_stamp)
 			break
 	else:
