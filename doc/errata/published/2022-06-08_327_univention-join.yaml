@@ -10,3 +10,5 @@ desc: |
    bar will now display the name of the currently running script instead
    of the last script that was finished.
 bug: [33255]
+erratum: 327
+announced: 2022-06-08
