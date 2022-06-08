@@ -7,9 +7,7 @@ univention-appcenter (9.0.2-76) unstable; urgency=medium
 
 univention-appcenter (9.0.2-75) unstable; urgency=medium
 
-  * Bug #54669: Use app configuration to determine if app uses docker compose
-    instead checking for a compose file in the cache which could be there from
-    an older version.
+  * reverted
 
  -- Carlos García-Mauriño <garcia-maurino.extern@univention.de>  Mon, 18 Apr 2022 08:41:12 +0300
 

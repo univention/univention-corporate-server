@@ -6,8 +6,6 @@ src: univention-appcenter
 fix: 9.0.2-76A~5.0.0.202204271331
 desc: |
  This update addresses the following issues:
- * A crash has been fixed, when updating apps, that used to be based on Docker
-   compose but aren't anymore.
  * The reason why servers are excluded from the app-installation drop-down
    menu is displayed again.
-bug: [54669, 54460]
+bug: [54460]
