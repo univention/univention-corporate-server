@@ -6,9 +6,9 @@ src: cifs-utils
 fix: 2:6.8-2+deb10u1
 desc: |
  This update addresses the following issues:
- * stack-based buffer overflow mount.cifs may lead to local privilege
-   escalation to root (CVE-2022-27239)
- * crafted input may cause an information leak (CVE-2022-29869)
+ * Stack-based buffer overflow `mount.cifs` may lead to local privilege
+   escalation to user `root` (CVE-2022-27239)
+ * Crafted input may cause an information leak (CVE-2022-29869)
 bug: [54818]
 cve:
 - CVE-2022-27239
