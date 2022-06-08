@@ -9,3 +9,5 @@ desc: |
  * The script `univention-support-info` has been migrated to Python 3.
 bug: [53358]
 maintained: true
+erratum: 331
+announced: 2022-06-08
