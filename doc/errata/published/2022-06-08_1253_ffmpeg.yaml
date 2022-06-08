@@ -10,3 +10,5 @@ desc: |
    project. The new ffmpeg version is required for the latest pjproject
    security update.
 bug: [54835]
+erratum: 1253
+announced: 2022-06-08
