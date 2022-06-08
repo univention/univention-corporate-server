@@ -6,7 +6,7 @@ src: pypdf2
 fix: 1.26.0-2+deb9u1
 desc: |
  This update addresses the following issue:
- * infinite loop vulnerability (CVE-2022-24859)
+ * INfinite loop vulnerability (CVE-2022-24859)
 bug: [54825]
 cve:
 - CVE-2022-24859
