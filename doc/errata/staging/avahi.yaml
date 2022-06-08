@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: avahi
+fix: 0.6.32-2+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Local DoS by event-busy-loop from writing long lines to
+   /run/avahi-daemon/socket (CVE-2021-3468)
+ * avahi-daemon-check-dns.sh in the Debian avahi package through 0.8-4 is
+   executed as root via /etc/network/if-up.d/avahi-daemon, and allows a local
+   attacker to cause a denial of service or create arbitrary empty files via a
+   symlink attack on files under /run/avahi-daemon. NOTE: this only affects
+   the packaging for Debian GNU/Linux (used indirectly by SUSE), not the
+   upstream Avahi product. (CVE-2021-26720)
+bug: [54831]
+cve:
+- CVE-2021-3468
+- CVE-2021-26720
