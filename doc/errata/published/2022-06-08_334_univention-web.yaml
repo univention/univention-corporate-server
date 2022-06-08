@@ -11,3 +11,5 @@ desc: |
    classes.
  * A new widget suggesting mail domains while typing has been introduced.
 bug: [38762, 54467]
+erratum: 334
+announced: 2022-06-08
