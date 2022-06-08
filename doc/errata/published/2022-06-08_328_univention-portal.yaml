@@ -9,3 +9,5 @@ desc: |
  * The Portal server now fetches user information from the UMC server
    asynchronously.
 bug: [53853]
+erratum: 328
+announced: 2022-06-08
