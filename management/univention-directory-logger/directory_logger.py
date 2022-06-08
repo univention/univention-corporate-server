@@ -119,7 +119,8 @@ def _parse_dellog_file(pathname):
 		if len(lines) == DELLOG_FILE_LINE_NUMBERS:
 			return [line.rstrip() for line in lines]
 		else:
-			raise ValueError('')
+			# create custom error
+			raise ValueError('Expected 5 lines, but received %i' % len(lines))
 
 
 def process_dellog(dn):
@@ -131,10 +132,12 @@ def process_dellog(dn):
 		pathname = os.path.join(dellog, filename)
 
 		try:
+			if pathname.endswith(".fail"): continue
 			(dellog_stamp, dellog_id, dellog_dn, modifier, action) = _parse_dellog_file(pathname)
 		except EnvironmentError:
 			continue
 		except ValueError:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Corrupted file: %s. Invalid format' % (filename))
 			continue
 		finally:
 			os.unlink(pathname)
