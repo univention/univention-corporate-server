@@ -12,3 +12,5 @@ desc: |
  * Fix spelling mistake in doc/univention-ssh.8: rsyn{v → c}
  * Improve message consistency between the man page and the `--help` messages
 bug: [54588]
+erratum: 329
+announced: 2022-06-08
