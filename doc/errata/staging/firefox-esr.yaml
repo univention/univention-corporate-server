@@ -13,8 +13,7 @@ desc: |
  * Uninitialized variable leads to invalid memory read (CVE-2022-31741)
  * Querying a WebAuthn token with a large number of allowCredential entries
    may have leaked cross-origin information (CVE-2022-31742)
- * Memory safety bugs fixed in Firefox 101 and Firefox ESR 91.10
-   (CVE-2022-31747)
+ * Memory safety bugs fixed (CVE-2022-31747)
 bug: [54823]
 cve:
 - CVE-2022-31736
