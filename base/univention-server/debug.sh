@@ -25,11 +25,29 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-# . /usr/share/univention-lib/all.sh
-
-function debug_info()
+function debug_info ()
 {
-    echo "DEBUG - COMMAND: \" $BASH_COMMAND \" - at ${BASH_SOURCE[1]}:${BASH_LINENO[0]}:${FUNCNAME[1]} ">&3
+    IFS='.,' read ESEC NSEC <<<"$EPOCHREALTIME"
+    printf "[%(%F %T)T.%06.0f]  DEBUG at %s:%s:%s: %s\n" "$ESEC" "$NSEC" "${BASH_SOURCE[1]}" "${BASH_LINENO[0]}" "${FUNCNAME[1]}" "$BASH_COMMAND" >&4
 }
 
-trap debug_info DEBUG
+
+PAUSE_DEBUG ()
+{
+    set +o functrace
+    trap - DEBUG
+    IFS='.,' read ESEC NSEC <<<"$EPOCHREALTIME"
+    printf "[%(%F %T)T.%06.0f]  PAUSE DEBUG\n" "$ESEC" "$NSEC" >&4
+}
+
+RESUME_DEBUG ()
+{
+    IFS='.,' read ESEC NSEC <<<"$EPOCHREALTIME"
+    printf "[%(%F %T)T.%06.0f]  RESUME DEBUG\n" "$ESEC" "$NSEC" >&4
+    set -o functrace
+    trap "debug_info" DEBUG
+}
+
+
+set -o functrace
+trap "debug_info" DEBUG
