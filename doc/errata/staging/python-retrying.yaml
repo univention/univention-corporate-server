@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: python-retrying
+fix: 1.3.3-2A~4.4.0.202206091226
+desc: |
+ This update addresses the following issues:
+ * Move the package python-retrying to maintained
+bug: [54847]
+maintained: true
