@@ -130,6 +130,6 @@ def test_host_auth(udm_session, ucr_session, credentials, vlg1, vlg2, ucr_vlan_i
 	name, password = credentials
 	vlanid = radius_auth(name, password, 'computer', None)
 	# Remove group objects manually as existing groups are impacting test results of subsequent runs
-	udm_session.remove_object('groups/group', dn=group1dn, wait_for=True)
-	udm_session.remove_object('groups/group', dn=group2dn, wait_for=True)
+	udm_session.remove_object('groups/group', dn=group1dn)
+	udm_session.remove_object('groups/group', dn=group2dn)
 	assert vlanid == expected_vlan_id
