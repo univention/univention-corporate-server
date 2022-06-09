@@ -125,7 +125,6 @@ def _parse_dellog_file(pathname):
 
 def process_dellog(dn):
 	dellog = configRegistry['ldap/logging/dellogdir']
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'test')
 
 	dellist = sorted(os.listdir(dellog))
 
