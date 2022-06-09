@@ -137,7 +137,7 @@ def process_dellog(dn):
 				continue
 			(dellog_stamp, dellog_id, dellog_dn, modifier, action) = _parse_dellog_file(pathname)
 		except EnvironmentError:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'EnvironmentError: Renaming %s to %s.fail' % (filename,filename))
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'EnvironmentError: Renaming %s to %s.fail' % (filename, filename))
 			os.rename(pathname, '%s.fail' % pathname)
 			continue
 		except ValueError:
