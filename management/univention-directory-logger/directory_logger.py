@@ -120,11 +120,12 @@ def _parse_dellog_file(pathname):
 			return [line.rstrip() for line in lines]
 		else:
 			# create custom error
-			raise ValueError('Expected 5 lines, but received %i' % len(lines))
+			raise ValueError('Expected 5 lines, but received %d' % len(lines))
 
 
 def process_dellog(dn):
 	dellog = configRegistry['ldap/logging/dellogdir']
+	univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'test')
 
 	dellist = sorted(os.listdir(dellog))
 
@@ -132,13 +133,15 @@ def process_dellog(dn):
 		pathname = os.path.join(dellog, filename)
 
 		try:
-			if pathname.endswith(".fail"): continue
+			if pathname.endswith(".fail"):
+				continue
 			(dellog_stamp, dellog_id, dellog_dn, modifier, action) = _parse_dellog_file(pathname)
 		except EnvironmentError:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'EnvironmentError: Renaming %s to %s.fail' % (filename,filename))
 			os.rename(pathname, '%s.fail' % pathname)
 			continue
 		except ValueError:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Corrupted file: %s. Invalid format' % (filename))
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Corrupted file: %s. Invalid format' % (filename,))
 			os.unlink(pathname)
 			continue
 		if dellog_dn == dn:
@@ -151,7 +154,6 @@ def process_dellog(dn):
 		dellog_id = '<NoID>'
 		modifier = '<unknown>'
 		action = '<unknown>'
-
 
 	return (timestamp, dellog_id, modifier, action)
 
