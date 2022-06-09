@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -vvv
 # -*- coding: utf-8 -*-
 ## desc: Test that school replica server can't create a Samba Administrator on the primary server
-## tags: [samba4,apptest]
+## tags: [samba4,apptest,SKIP]
 ## roles: [domaincontroller_slave]
 ## exposure: dangerous
 ## packages:
