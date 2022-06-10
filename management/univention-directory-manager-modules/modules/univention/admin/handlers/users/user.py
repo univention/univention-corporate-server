@@ -860,6 +860,25 @@ layout = [
 ]
 
 
+def get_primary_group_dn(lo, gid_number):
+	ttl = 10
+	key = id(lo), gid_number
+	cache = get_primary_group_dn._cache
+	now = time.time()
+	for cache_key, cache_val in list(cache.items()):
+		if cache_val['expire'] < now:
+			cache.pop(cache_key)
+
+	if key not in cache or cache[key]['expire'] < now:
+		groups = lo.searchDn(filter=filter_format(u'(&(cn=*)(|(objectClass=posixGroup)(objectClass=sambaGroupMapping))(gidNumber=%s))', [gid_number]))
+		value = {'value': groups[0] if groups else None, 'expire': time.time() + ttl}
+		cache[key] = value
+	return cache[key]['value']
+
+
+get_primary_group_dn._cache = {}
+
+
 def check_prohibited_username(lo, username):
 	"""check if the username is allowed"""
 	module = univention.admin.modules.get('settings/prohibited_username')
@@ -1384,9 +1403,9 @@ class object(univention.admin.handlers.simpleLdap):
 			self.groupsLoaded = loadGroups
 			primaryGroupNumber = self.oldattr.get('gidNumber', [b''])[0].decode('ASCII')
 			if primaryGroupNumber:
-				primaryGroupResult = self.lo.searchDn(filter=filter_format(u'(&(cn=*)(|(objectClass=posixGroup)(objectClass=sambaGroupMapping))(gidNumber=%s))', [primaryGroupNumber]))
-				if primaryGroupResult:
-					self['primaryGroup'] = primaryGroupResult[0]
+				primary_group = get_primary_group_dn(self.lo, primaryGroupNumber)
+				if primary_group:
+					self['primaryGroup'] = primary_group
 				else:
 					try:
 						primaryGroup = self.lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup'])

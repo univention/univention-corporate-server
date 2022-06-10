@@ -38,7 +38,12 @@ def default_container_for_objects(lo, domain):
 	ttl = 2
 	cache = default_container_for_objects._cache
 	key = id(lo), domain
-	if key not in cache or cache[key]['expire'] < time.time():
+	now = time.time()
+	for cache_key, cache_val in list(cache.items()):
+		if cache_val['expire'] < now:
+			cache.pop(cache_key)
+
+	if key not in cache or cache[key]['expire'] < now:
 		pathResult = lo.get('cn=directory,cn=univention,' + domain)
 		default_dn = 'cn=directory,cn=univention,' + domain
 		if not pathResult:
