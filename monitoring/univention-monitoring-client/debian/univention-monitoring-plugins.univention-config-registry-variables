@@ -15,3 +15,10 @@ Description[de]=Die Variable konfiguriert, ob alle NFS mounts im NFS status chec
 Description[en]=The variable configures whether all NFS mounts should be included in the NFS status check or only all automatically mounted mounts.
 Type=bool
 Categories=service-monitoring
+
+[monitoring/dns/lookup-domain]
+Description[de]=Die Variable konfiguriert, welche Domain für den Test der DNS-Verfügbarkeit verwendet wird.
+Description[en]=The variable configures which domain is used for the DNS resolving test.
+Type=str
+Default=www.univention.de
+Categories=service-monitoring
