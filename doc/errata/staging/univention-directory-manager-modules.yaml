@@ -7,4 +7,5 @@ fix:
 desc: |
  This update addresses the following issues:
  * The performance of fetching group memberships of users has been improoved.
-bug: [54853]
+ * The `entryUUID` of an LDAP object is now exposed by the UDM API.
+bug: [54853, 54883]
