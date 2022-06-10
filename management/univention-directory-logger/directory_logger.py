@@ -42,7 +42,7 @@ import grp
 import subprocess
 import os
 
-import univention.debug
+import univention.debug as ud
 
 name = 'directory_logger'
 description = 'Log directory transactions'
@@ -87,7 +87,7 @@ def ldapTime2string(timestamp):
 	try:
 		timestruct = time.strptime(timestamp, "%Y%m%d%H%M%SZ")
 	except ValueError:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: could not parse timestamp %s, expected LDAP format' % (name, timestamp))
+		ud.debug(ud.LISTENER, ud.ERROR, '%r: could not parse timestamp %r, expected LDAP format' % (name, timestamp))
 		return timestamp  # return it as it was
 	return time.strftime(timestampfmt, timestruct)
 
@@ -119,7 +119,6 @@ def _parse_dellog_file(pathname):
 		if len(lines) == DELLOG_FILE_LINE_NUMBERS:
 			return [line.rstrip() for line in lines]
 		else:
-			# create custom error
 			raise ValueError('Expected 5 lines, but received %d' % len(lines))
 
 
@@ -136,11 +135,11 @@ def process_dellog(dn):
 				continue
 			(dellog_stamp, dellog_id, dellog_dn, modifier, action) = _parse_dellog_file(pathname)
 		except EnvironmentError:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'EnvironmentError: Renaming %s to %s.fail' % (filename, filename))
+			ud.debug(ud.LISTENER, ud.ERROR, 'EnvironmentError: Renaming %s to %s.fail' % (filename, filename))
 			os.rename(pathname, '%s.fail' % pathname)
 			continue
 		except ValueError:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Corrupted file: %s. Invalid format' % (filename,))
+			ud.debug(ud.LISTENER, ud.ERROR, 'Corrupted file: %r. Invalid format' % (filename,))
 			os.unlink(pathname)
 			continue
 		if dellog_dn == dn:
@@ -148,7 +147,7 @@ def process_dellog(dn):
 			timestamp = ldapTime2string(dellog_stamp)
 			break
 	else:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Did not find matching dn "%s" in dellog directory %s.' % (dn, dellog))
+		ud.debug(ud.LISTENER, ud.ERROR, 'Did not find matching dn %r in dellog directory %r.' % (dn, dellog))
 		timestamp = time.strftime(timestampfmt, time.gmtime())
 		dellog_id = '<NoID>'
 		modifier = '<unknown>'
