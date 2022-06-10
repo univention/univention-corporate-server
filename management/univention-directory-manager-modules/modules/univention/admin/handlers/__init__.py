@@ -123,6 +123,7 @@ class simpleLdap(object):
 
 		:param attributes:
 			The LDAP attributes of the LDAP object as dict. This should by default be omitted. To save performance when an LDAP search is done this can be used, e.g. by the lookup() method.
+			If given make sure the dict contains all attributes which are required by :meth:`_ldap_attributes`.
 		:type attributes: None or dict
 
 		The following attributes hold information about the state of this object:
@@ -235,6 +236,12 @@ class simpleLdap(object):
 	@property
 	def descriptions(self):  # type: () -> Dict[Text, univention.admin.property]
 		return univention.admin.modules.get(self.module).property_descriptions
+
+	@property
+	def entry_uuid(self):  # type: () -> Optional[str]
+		"""The entry UUID of the object (if object exists)"""
+		if 'entryUUID' in self.oldattr:
+			return self.oldattr['entryUUID'][0].decode('ASCII')
 
 	def save(self):  # type: () -> None
 		"""Saves the current internal object state as old state for later comparison when e.g. modifying this object.
@@ -1880,7 +1887,7 @@ class simpleLdap(object):
 
 	@classmethod
 	def _ldap_attributes(cls):
-		return []
+		return ['*', 'entryUUID']
 
 
 class simpleComputer(simpleLdap):
