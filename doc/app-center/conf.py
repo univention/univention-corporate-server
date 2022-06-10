@@ -84,7 +84,7 @@ git_last_updated_timezone = 'Europe/Berlin'
 root_doc = "contents"
 
 rst_epilog = """
-.. include:: /substitutions.txt
+.. include:: /../substitutions.txt
 
 .. include:: /links.txt
 """
