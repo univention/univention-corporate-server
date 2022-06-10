@@ -38,7 +38,7 @@ for example). Prior to the installation of :program:`univention-samba4`, the
    $ univention-install univention-samba4
    $ univention-run-join-scripts
 
-.. _ext-win-s4-uninstall:
+.. _ext-win-s4-deinstall:
 
 Deinstallation of a Samba/AD domain controller
 ==============================================
