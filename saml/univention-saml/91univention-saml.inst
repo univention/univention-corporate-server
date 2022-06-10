@@ -34,11 +34,70 @@
 
 VERSION="10"
 
+
+tmpfile=$(mktemp /tmp/91univention-saml.inst.debug.XXXXXXX)
+exec 4>>$tmpfile
+exec 5>&2
+exec &> >(tee -ia /var/log/univention/join.log >&4)
+
+
+function debug_info ()
+{
+    IFS='.,' read ESEC NSEC <<<"$EPOCHREALTIME"
+    printf "[%(%F %T)T.%06.0f]  DEBUG at %s:%s:%s: %s\n" "$ESEC" "$NSEC" "${BASH_SOURCE[1]}" "${BASH_LINENO[0]}" "${FUNCNAME[1]}" "$BASH_COMMAND" >&4
+}
+
+
+PAUSE_DEBUG ()
+{
+    set +o functrace
+    trap - DEBUG
+    IFS='.,' read ESEC NSEC <<<"$EPOCHREALTIME"
+    printf "[%(%F %T)T.%06.0f]  PAUSE DEBUG\n" "$ESEC" "$NSEC" >&4
+}
+
+RESUME_DEBUG ()
+{
+    IFS='.,' read ESEC NSEC <<<"$EPOCHREALTIME"
+    printf "[%(%F %T)T.%06.0f]  RESUME DEBUG\n" "$ESEC" "$NSEC" >&4
+    set -o functrace
+    trap "debug_info" DEBUG
+}
+
+
+set -o functrace
+trap "debug_info" DEBUG
+
+check_exit () { #dump debug file if there is an error.
+	return_code=$?
+
+	set +o functrace
+	trap - DEBUG
+
+	if [ $return_code -ne 0 ]; then
+		printf "#========================================================================#\n" >&5
+		echowithtimestamp "ERROR during execution, see below for more detailed debug output" >&5
+		printf "\n" >&5
+		cat "$tmpfile" >&5
+		printf "#========================================================================#\n" >&5
+	fi
+
+	exec 4<&-
+
+	rm "$tmpfile"
+
+	return $return_code
+}
+
+trap check_exit EXIT
+
 . /usr/share/univention-lib/all.sh
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
+PAUSE_DEBUG
 eval "$(ucr shell)"
+RESUME_DEBUG
 
 spn_account_name="ucs-sso"
 servicePrincipalName="HTTP/$spn_account_name.$domainname"
@@ -124,7 +183,9 @@ ucr set saml/idp/certificate/privatekey?"/etc/simplesamlphp/${ucs_server_sso_fqd
 		saml/idp/entityID?"https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/idp/metadata.php" \
 		ucs/server/sso/fqdn?"${ucs_server_sso_fqdn}"
 
+PAUSE_DEBUG
 eval "$(ucr shell)"  # as variables were changed we need the new ones
+RESUME_DEBUG
 
 SECRETFILE="/etc/idp-ldap-user.secret"
 HOSTPWD="/etc/machine.secret"
