@@ -702,7 +702,7 @@ class _UDMObjectOrAttribute(object):
 
 	@classmethod
 	def _create_ldap_filter(cls, options, module):
-		if cls.depends and cls.depends not in options:
+		if cls.depends and cls.depends not in options.get('dependencies', {}):
 			return None
 
 		if callable(cls.udm_filter):
@@ -1031,7 +1031,7 @@ class UDM_Attribute(ISyntax, _UDMObjectOrAttribute):
 
 		ud.debug(ud.ADMIN, ud.INFO, 'Found syntax %s with udm_module property' % (cls.name,))
 		if cls.udm_filter == 'dn':
-			obj = module.object(None, lo, None, options[cls.depends])
+			obj = module.object(None, lo, None, options.get('dependencies', {})[cls.depends])
 			choices = map_choice(obj)
 		else:
 			filter_s = cls._create_ldap_filter(options, module)
