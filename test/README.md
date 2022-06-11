@@ -3,9 +3,9 @@
 
 ## UCS
 
-### [Default](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/)
+### [Default](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-0/)
 
-#### [MultiEnv: AMI<5.0, join, upgrade=5.0, Autotest](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/AutotestUpgrade/)
+#### [MultiEnv: AMI<5.0, join, upgrade=5.0, Autotest](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-0/job/AutotestUpgrade/)
 
 1. previous AMI
 2. join
@@ -22,8 +22,8 @@
 * [scenarios/autotest-076-update-member-no-samba.cfg](scenarios/autotest-076-update-member-no-samba.cfg)
 * [scenarios/autotest-077-update-member-s4.cfg](scenarios/autotest-077-update-member-s4.cfg)
 
-#### [MultiEnv: AMI=5.0, errata, join, Autotest](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/AutotestJoin/)
-#### [MultiEnv: AMI=5.0, only released errata, join, Autotest](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/AutotestJoinReleased/)
+#### [MultiEnv: AMI=5.0, errata, join, Autotest](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-0/job/AutotestJoin/)
+#### [MultiEnv: AMI=5.0, only released errata, join, Autotest](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-0/job/AutotestJoinReleased/)
 
 1. current AMI
 2. errata
@@ -40,7 +40,7 @@
 * [scenarios/autotest-096-member-no-samba.cfg](scenarios/autotest-096-member-no-samba.cfg)
 * [scenarios/autotest-097-member-s4.cfg](scenarios/autotest-097-member-s4.cfg)
 
-#### [Tests - AD Connector (ec2)](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/ADConnectorMultiEnv/)
+#### [Tests - AD Connector (ec2)](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-0/job/ADConnectorMultiEnv/)
 
 1. AD connector setups with different windows versions
 
@@ -54,7 +54,7 @@
 * [scenarios/ad-connector/autotest-237-adsync-s4connector-w2k8r2-german.cfg](scenarios/ad-connector/autotest-237-adsync-s4connector-w2k8r2-german.cfg)
 * [scenarios/ad-connector/autotest-adsync-w2012-german.cfg](scenarios/ad-connector/autotest-adsync-w2012-german.cfg)
 
-#### [Tests - AD Member Mode (ec2)](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/ADMemberMultiEnv/)
+#### [Tests - AD Member Mode (ec2)](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-0/job/ADMemberMultiEnv/)
 
 1. AD member setups for installation/module with different windows versions
 
@@ -64,14 +64,14 @@
 * [scenarios/ad-membermode/autotest-224-admember-w2k12-german-other-join-user.cfg](scenarios/ad-membermode/autotest-224-admember-w2k12-german-other-join-user.cfg)
 * [scenarios/ad-membermode/autotest-225-admember-w2k12r2-france.cfg](scenarios/ad-membermode/autotest-225-admember-w2k12r2-france.cfg)
 
-#### [Tests - App Appliance](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/App%20Appliance%20Tests/)
+#### [Tests - App Appliance](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-0/job/App%20Appliance%20Tests/)
 
 UCS with pre-installed App, to check if changes in UCS break the appliance setup
 
 * [scenarios/appliance-testing/app-appliance-errata-test.cfg](scenarios/appliance-testing/app-appliance-errata-test.cfg)
 * [scenarios/appliance-testing/app-appliance-only-released.cfg](scenarios/appliance-testing/app-appliance-only-released.cfg)
 
-#### [Tests - DVD Installation](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/Installation%20Tests/)
+#### [Tests - DVD Installation](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-0/job/Installation%20Tests/)
 
 1. Various UCS installation tests (fail immediately if one setup step fails, only basic tests)
 
@@ -86,7 +86,7 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [scenarios/install-testing/school-dev.cfg](scenarios/install-testing/school-dev.cfg)
 * [scenarios/install-testing/school-scope.cfg](scenarios/install-testing/school-scope.cfg)
 
-#### [Tests - S4Connector](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/S4Connector/)
+#### [Tests - S4Connector](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-0/job/S4Connector/)
 
 1. Install/Update/OnlyReleasedErrata scenario for S4Connector tests.
 
@@ -94,7 +94,7 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [scenarios/s4-connector/master-s4connector.cfg](scenarios/s4-connector/master-s4connector.cfg)
 * [scenarios/s4-connector/update-master-s4connector.cfg](scenarios/s4-connector/update-master-s4connector.cfg)
 
-### [Tests - UCS update](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/Update%20Tests/)
+### [Tests - UCS update](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-0/job/Update%20Tests/)
 
 1. Various UCS update tests (fail immediately if one setup step fails, only basic tests)
 
@@ -103,8 +103,8 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [scenarios/update-testing/update-from-1.2-start-4.3-4.cfg](scenarios/update-testing/update-from-1.2-start-4.3-4.cfg): Update from old UCS-1.2 system
 * [scenarios/update-testing/update-from-4.2-4.cfg](scenarios/update-testing/update-from-4.2-4.cfg): Update system with all UCS components
 
-### [MultiEnv: IPv6 AMI\<5.0, upgrade=5.0, Autotest](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/view/All/job/AutotestIPv6Update/)
-### [MultiEnv: IPv6 AMI=5.0, Autotest](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/view/All/job/AutotestIPv6/)
+### [MultiEnv: IPv6 AMI\<5.0, upgrade=5.0, Autotest](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-0/view/All/job/AutotestIPv6Update/)
+### [MultiEnv: IPv6 AMI=5.0, Autotest](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-0/view/All/job/AutotestIPv6/)
 
 1. (Master / Backup / Slave / Member) × (IPv4 + IPv& / IPv6 only)
 2. previous AMI
@@ -128,20 +128,20 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 
 -----
 
-### [Appliances](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/view/Appliances/)
+### [Appliances](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-0/view/Appliances/)
 
 * [scenarios/app-appliance.cfg](scenarios/app-appliance.cfg): Create App Appliance (Stable.ISO → $mm-99 → +App → `$BS2/mirror/appcenter.test/univention-apps/current/`KVM,VMware,ESX,VirtualBox)
 * [scenarios/ucs-appliance.cfg](scenarios/ucs-appliance.cfg): Create UCS Appliance (Stable.ISO → $mm-99 → `$BS2/temp/build/appliance/`KVM,VMware,ESX,VirtualBox,HyperV)
 * [scenarios/appliances/ec2-appliance.cfg](scenarios/appliances/ec2-appliance.cfg): Create UCS ec2 image (Stable.ISO → `$VIRT/images/`KVM → EC2)
 * [scenarios/cloud-init-image.cfg](scenarios/cloud-init-image.cfg)
 
-#### [Test UCS Appliance](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/view/Appliances/job/TestUCSAppliance/)
+#### [Test UCS Appliance](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-0/view/Appliances/job/TestUCSAppliance/)
 
 * [scenarios/ucs-appliance-testing/ad-member.cfg](scenarios/ucs-appliance-testing/ad-member.cfg)
 * [scenarios/ucs-appliance-testing/master.cfg](scenarios/ucs-appliance-testing/master.cfg)
 * [scenarios/ucs-appliance-testing/master-slave.cfg](scenarios/ucs-appliance-testing/master-slave.cfg)
 
-#### [Test EC2 UCS Appliance](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/view/Appliances/job/TestEC2UCSAppliance/)
+#### [Test EC2 UCS Appliance](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-0/view/Appliances/job/TestEC2UCSAppliance/)
 
 * [scenarios/ucs-appliance-testing/ad-member-ec2.cfg](scenarios/ucs-appliance-testing/ad-member-ec2.cfg)
 * [scenarios/ucs-appliance-testing/master-ec2.cfg](scenarios/ucs-appliance-testing/master-ec2.cfg)
@@ -149,7 +149,7 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 
 -----
 
-### [KVM Templates](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/view/KVM%20Templates/)
+### [KVM Templates](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-0/view/KVM%20Templates/)
 
 * [scenarios/appliances/generic-kvm-template.cfg](scenarios/appliances/generic-kvm-template.cfg): Create generiv ucs-kt-get template
 * [scenarios/appliances/joined-kvm-templates.cfg](scenarios/appliances/joined-kvm-templates.cfg): Create ucs-kt-get templates for joined ucs roles
@@ -207,9 +207,9 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 
 ## Apps
 
-### [App testing](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/Apps/)
+### [App testing](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/Apps/)
 
-#### [App Autotest MultiEnv](ttps://jenkins.knut.univention.de:8181/job/UCS-5.0/job/Apps/job/admin-dashboard/job/App%20Autotest%20MultiEnv/)
+#### [App Autotest MultiEnv](ttps://jenkins2022.knut.univention.de/job/UCS-5.0/job/Apps/job/admin-dashboard/job/App%20Autotest%20MultiEnv/)
 
 * [scenarios/app-testing/autotest-100-app-master-no-samba.cfg](scenarios/app-testing/autotest-100-app-master-no-samba.cfg)
 * [scenarios/app-testing/autotest-101-app-master-s4.cfg](scenarios/app-testing/autotest-101-app-master-s4.cfg)
@@ -220,7 +220,7 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [scenarios/app-testing/autotest-106-app-member-no-samba.cfg](scenarios/app-testing/autotest-106-app-member-no-samba.cfg)
 * [scenarios/app-testing/autotest-107-app-member-s4.cfg](scenarios/app-testing/autotest-107-app-member-s4.cfg)
 
-#### [App Autotest MultiEnv Release Update](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/Apps/job/admin-dashboard/job/App%20Autotest%20MultiEnv%20Release%20Update/)
+#### [App Autotest MultiEnv Release Update](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/Apps/job/admin-dashboard/job/App%20Autotest%20MultiEnv%20Release%20Update/)
 
 * [scenarios/app-testing/autotest-110-release-appupdate-master-no-samba.cfg](scenarios/app-testing/autotest-110-release-appupdate-master-no-samba.cfg)
 * [scenarios/app-testing/autotest-111-release-appupdate-master-s4.cfg](scenarios/app-testing/autotest-111-release-appupdate-master-s4.cfg)
@@ -231,7 +231,7 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [scenarios/app-testing/autotest-116-release-appupdate-member-no-samba.cfg](scenarios/app-testing/autotest-116-release-appupdate-member-no-samba.cfg)
 * [scenarios/app-testing/autotest-117-release-appupdate-member-s4.cfg](scenarios/app-testing/autotest-117-release-appupdate-member-s4.cfg)
 
-#### [App Autotest Update MultiEnv](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/Apps/job/admin-dashboard/job/App%20Autotest%20Update%20MultiEnv/)
+#### [App Autotest Update MultiEnv](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/Apps/job/admin-dashboard/job/App%20Autotest%20Update%20MultiEnv/)
 
 * [scenarios/app-testing/autotest-120-appupdate-master-no-samba.cfg](scenarios/app-testing/autotest-120-appupdate-master-no-samba.cfg)
 * [scenarios/app-testing/autotest-121-appupdate-master-s4.cfg](scenarios/app-testing/autotest-121-appupdate-master-s4.cfg)
@@ -242,7 +242,7 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [scenarios/app-testing/autotest-126-appupdate-member-no-samba.cfg](scenarios/app-testing/autotest-126-appupdate-member-no-samba.cfg)
 * [scenarios/app-testing/autotest-127-appupdate-member-s4.cfg](scenarios/app-testing/autotest-127-appupdate-member-s4.cfg)
 
-#### [App Appliances Tests](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/App%20Appliances%20Tests/)
+#### [App Appliances Tests](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/App%20Appliances%20Tests/)
 
 * [scenarios/appliance-testing/ad-member.cfg](scenarios/appliance-testing/ad-member.cfg)
 * [scenarios/appliance-testing/master.cfg](scenarios/appliance-testing/master.cfg)
@@ -274,7 +274,7 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 
 -----
 
-## [Product tests](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/view/Product%20Tests/)
+## [Product tests](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-0/view/Product%20Tests/)
 
 1. Last minute tests before new release
 
