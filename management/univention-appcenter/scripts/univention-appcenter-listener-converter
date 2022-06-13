@@ -38,10 +38,13 @@
 import sys
 import os
 import os.path
+import time
 from argparse import ArgumentParser
 from glob import glob
 import json
 import shutil
+import pyinotify
+import asyncio
 
 from univention.listener.handler_logging import get_logger
 
@@ -53,6 +56,8 @@ from univention.appcenter.listener import LISTENER_DUMP_DIR
 
 
 logger = None
+
+DEFAULT_WAIT_TIME: int = 600
 
 
 def get_app_connection(app):
@@ -173,6 +178,56 @@ def find_and_convert_files(app):
 				os.unlink(filename)
 
 
+async def wait_for_end(app):
+	wait_from_ucr = ucr_get(app.id + "/listener-wait-time", DEFAULT_WAIT_TIME)
+	try:
+		wait_time = int(wait_from_ucr)
+	except ValueError:
+		wait_time = DEFAULT_WAIT_TIME
+	logger.debug("Wait Time = %s" % wait_time)
+	await asyncio.sleep(wait_time)
+
+
+class EventHandler(pyinotify.ProcessEvent):
+
+	def my_init(self, **kargs):
+		self.app = kargs["app"]
+		self.name = kargs["name"]
+		self.initial_version = kargs["version"]
+
+	def process_IN_CREATE(self, event):
+		time.sleep(0.1)
+		logger.debug("initial version = %s, actual version = %s" % (self.initial_version, self.app.version))
+		if self.initial_version != self.app.version:
+			logger.info("New version of %s detected, restarting" % self.name)
+			sys.exit(0)
+		with open(event.pathname) as j:
+			try:
+				dumped = json.load(j)
+			except json.JSONDecodeError:
+				logger.debug("JSONDecodeError for %s" % event.pathname)
+				return
+		lo, pos = get_app_connection(self.app)
+		if convert(self.app, dumped, event.pathname, lo, pos):
+			logger.debug('Deleting used %s' % event.pathname)
+			os.unlink(event.pathname)
+			run_trigger(self.app)
+
+
+def wait_for_file_events(app, app_name, initial_version):
+	watch_manager = pyinotify.WatchManager()
+	loop = asyncio.get_event_loop()
+	event_notifier = pyinotify.AsyncioNotifier(watch_manager, loop, default_proc_fun=EventHandler(app=app, name=app_name, version=initial_version))
+	watch_manager.add_watch(os.path.join(LISTENER_DUMP_DIR, app.id), pyinotify.IN_CREATE)
+	logger.debug("Eventloop starting ...")
+	try:
+		loop.run_until_complete(wait_for_end(app))
+	finally:
+		logger.debug("Eventloop ending ...")
+		loop.close()
+		event_notifier.stop()
+
+
 def main():
 	usage = '%(prog)s'
 	description = '%(prog)s converts files written by the App Center listener integration to files that can be processed be the App itself. Logs to the corresponding listener log file.'
@@ -183,6 +238,8 @@ def main():
 	global logger
 	logger = get_logger(args.app)
 	app = Apps().find(args.app)
+	initial_version = app.version
+	logger.debug("Initial app version: %s" % app.version)
 	if not app:
 		logger.critical('App not found')
 		sys.exit(1)
@@ -191,6 +248,7 @@ def main():
 		sys.exit(2)
 	find_and_convert_files(app)
 	run_trigger(app)
+	wait_for_file_events(app, args.app, initial_version)
 
 
 if __name__ == '__main__':

@@ -195,6 +195,14 @@ def stop(container):
 	return call(['docker', 'stop', container])
 
 
+def pause(container):
+	return call(['docker', 'pause', container])
+
+
+def unpause(container):
+	return call(['docker', 'unpause', container])
+
+
 def commit(container, new_base_image):
 	args = ['docker', 'commit', container, new_base_image]
 	out = check_output(args)
@@ -399,6 +407,14 @@ class Docker(object):
 	def stop(self):
 		if self.container:
 			return stop(self.container)
+
+	def pause(self):
+		if self.container:
+			return pause(self.container)
+
+	def unpause(self):
+		if self.container:
+			return unpause(self.container)
 
 	def rm(self):
 		if self.container:

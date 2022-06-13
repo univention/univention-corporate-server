@@ -1,3 +1,9 @@
+ucs-test (10.0.7-24) unstable; urgency=medium
+
+  * Bug #52000: Added test for passive wait in univention-appcenter-listener-converter
+
+ -- Peter Stoll <stoll.extern@univention.de>  Thu, 08 Sep 2022 10:47:29 +0200
+
 ucs-test (10.0.7-23) unstable; urgency=medium
 
   * Bug #55127: Added "external-junit"
