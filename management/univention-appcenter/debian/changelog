@@ -1,3 +1,10 @@
+univention-appcenter (9.0.3-3) unstable; urgency=medium
+
+  * Bug #52000: univention-appcenter-listener-converter : added logic
+    for passive wait for new files to be converted
+
+ -- Peter Stoll <stoll.extern@univention.de>  Thu, 08 Sep 2022 10:54:52 +0200
+
 univention-appcenter (9.0.3-2) unstable; urgency=medium
 
   * Bug #55020: fix StoreAppAction
