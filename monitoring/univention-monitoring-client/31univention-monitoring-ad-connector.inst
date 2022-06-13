@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Monitoring Client
 #  join script
@@ -58,6 +58,20 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--set for="5m" \
 	--append labels='"severity" "warning"' \
 	--set query="univention_ad_connector_running == 1 or univention_ad_connector_rejects > 0" || die
+
+CHECKS=(
+	"UNIVENTION_ADCONNECTOR"
+	"UNIVENTION_ADCONNECTOR_WARNING"
+)
+
+if ! is_ucr_false monitoring/client/autoregister; then
+	# univention-directory-manager "computers/${server_role}" modify "$@" --dn "$ldap_hostdn" --append-option="monitoring" || die
+	for name in "${CHECKS[@]}"; do
+		univention-directory-manager monitoring/alert modify "$@" \
+			--dn "cn=$name,cn=monitoring,$ldap_base" \
+			--append assignedHosts="${ldap_hostdn}" || die
+	done
+fi
 
 joinscript_save_current_version
 

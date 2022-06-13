@@ -1,0 +1,6 @@
+[monitoring/client/autoregister]
+Description[en]=Automatically register alerts for this server.
+Description[de]=Warnmeldungen automatisch für diesen Server registrieren.
+Type=bool
+Default=true
+Categories=service-monitoring

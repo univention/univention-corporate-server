@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Univention Monitoring Client
-#  join script
+#  unjoin script
 #
 # Copyright 2022 Univention GmbH
 #
@@ -40,26 +40,19 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-univention-directory-manager monitoring/alert create "$@" --ignore_exists \
-	--position "cn=monitoring,$ldap_base" \
-	--set name="UNIVENTION_SAMBA_REPLICATION" \
-	--set description="Additional Service: check for samba drs failures" \
-	--set summary="Additional Service: check for samba drs failures" \
-	--append labels='"severity" "critical"' \
-	--set query="univention_samba_drs_failures != 0" || die
-
 CHECKS=(
-	"UNIVENTION_SAMBA_REPLICATION"
+	"UNIVENTION_ADCONNECTOR"
+	"UNIVENTION_ADCONNECTOR_WARNING"
 )
 
 if ! is_ucr_false monitoring/client/autoregister; then
-	# univention-directory-manager "computers/${server_role}" modify "$@" --dn "$ldap_hostdn" --append-option="monitoring" || die
 	for name in "${CHECKS[@]}"; do
-		univention-directory-manager monitoring/alert modify "$@" \
+		univention-directory-manager monitoring/alert modify --ignore_not_exists "$@" \
 			--dn "cn=$name,cn=monitoring,$ldap_base" \
-			--append assignedHosts="${ldap_hostdn}" || die
+			--remove assignedHosts="${ldap_hostdn}" || die
 	done
 fi
-joinscript_save_current_version
+
+joinscript_remove_script_from_status_file univention-monitoring-ad-connector
 
 exit 0

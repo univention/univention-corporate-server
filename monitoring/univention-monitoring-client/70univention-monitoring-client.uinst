@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Monitoring Client
 #  unjoin script
@@ -39,7 +39,48 @@ VERSION=1
 
 joinscript_init
 
+eval "$(univention-config-registry shell)"
+
 ucs_removeServiceFromLocalhost "UCS Monitoring" || die
+
+CHECKS=(
+	"UNIVENTION_PING"
+	"UNIVENTION_DISK_ROOT"
+	"UNIVENTION_DISK_ROOT_WARNING"
+	"UNIVENTION_DNS"
+	"UNIVENTION_SWAP_WARNING"
+	"UNIVENTION_SWAP"
+	"UNIVENTION_LDAP_AUTH"
+	"UNIVENTION_NTP"
+	"UNIVENTION_NTP_WARNING"
+	"UNIVENTION_SMTP"
+	"UNIVENTION_SSL_WARNING"
+	"UNIVENTION_SSL"
+	"UNIVENTION_LOAD_WARNING"
+	"UNIVENTION_LOAD"
+	"UNIVENTION_REPLICATION_WARNING"
+	"UNIVENTION_REPLICATION"
+	"UNIVENTION_NSCD"
+	"UNIVENTION_NSCD2"
+	"UNIVENTION_KPASSWDD"
+	"UNIVENTION_WINBIND"
+	"UNIVENTION_SMBD"
+	"UNIVENTION_NMBD"
+	"UNIVENTION_JOINSTATUS"
+	"UNIVENTION_PACKAGE_STATUS"
+	"UNIVENTION_SLAPD_MDB_MAXSIZE_WARNING"
+	"UNIVENTION_SLAPD_MDB_MAXSIZE"
+	"UNIVENTION_LISTENER_MDB_MAXSIZE_WARNING"
+	"UNIVENTION_LISTENER_MDB_MAXSIZE"
+)
+
+if ! is_ucr_false monitoring/client/autoregister; then
+	for name in "${CHECKS[@]}"; do
+		univention-directory-manager monitoring/alert modify --ignore_not_exists "$@" \
+			--dn "cn=$name,cn=monitoring,$ldap_base" \
+			--remove assignedHosts="${ldap_hostdn}" || die
+	done
+fi
 
 joinscript_remove_script_from_status_file univention-monitoring-client
 

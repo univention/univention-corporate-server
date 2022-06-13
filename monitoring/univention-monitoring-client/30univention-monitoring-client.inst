@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Monitoring Client
 #  join script
@@ -97,8 +97,12 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 
 ucs_addServiceToLocalhost "UCS Monitoring" || die
 
-MONITORINGCONTAINER="cn=monitoring,$ldap_base"
+if is_ucr_false monitoring/common/defaultalerts/autocreate; then
+	joinscript_save_current_version
+	exit 0
+fi
 
+MONITORINGCONTAINER="cn=monitoring,$ldap_base"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_PING" \
@@ -343,6 +347,74 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check listener mdb database size" \
 	--append labels='"severity" "critical"' \
 	--set query="univention_listener_mdb_size_used_ratio > 90" || die
+
+CHECKS=(
+	"UNIVENTION_PING"
+	"UNIVENTION_DISK_ROOT"
+	"UNIVENTION_DISK_ROOT_WARNING"
+	"UNIVENTION_DNS"
+	"UNIVENTION_SWAP_WARNING"
+	"UNIVENTION_SWAP"
+	"UNIVENTION_LDAP_AUTH"
+	"UNIVENTION_NTP"
+	"UNIVENTION_NTP_WARNING"
+	"UNIVENTION_SMTP"
+	"UNIVENTION_SSL_WARNING"
+	"UNIVENTION_SSL"
+	"UNIVENTION_LOAD_WARNING"
+	"UNIVENTION_LOAD"
+	"UNIVENTION_REPLICATION_WARNING"
+	"UNIVENTION_REPLICATION"
+	"UNIVENTION_NSCD"
+	"UNIVENTION_NSCD2"
+	"UNIVENTION_KPASSWDD"
+	"UNIVENTION_WINBIND"
+	"UNIVENTION_SMBD"
+	"UNIVENTION_NMBD"
+	"UNIVENTION_JOINSTATUS"
+	"UNIVENTION_PACKAGE_STATUS"
+	"UNIVENTION_SLAPD_MDB_MAXSIZE_WARNING"
+	"UNIVENTION_SLAPD_MDB_MAXSIZE"
+	"UNIVENTION_LISTENER_MDB_MAXSIZE_WARNING"
+	"UNIVENTION_LISTENER_MDB_MAXSIZE"
+)
+
+case "$server_role" in
+	domaincontroller_master)
+		ROLE_IGNORE=()
+		;;
+	domaincontroller_backup)
+		ROLE_IGNORE=()
+		;;
+	domaincontroller_slave)
+		ROLE_IGNORE=(
+			"UNIVENTION_SSL_WARNING"
+			"UNIVENTION_SSL"
+		)
+		;;
+	memberserver)
+		ROLE_IGNORE=(
+			"UNIVENTION_LDAP_AUTH"
+			"UNIVENTION_SSL_WARNING"
+			"UNIVENTION_SSL"
+			"UNIVENTION_SLAPD_MDB_MAXSIZE_WARNING"
+			"UNIVENTION_LISTENER_MDB_MAXSIZE_WARNING"
+			"UNIVENTION_LISTENER_MDB_MAXSIZE"
+		)
+		;;
+esac
+
+if ! is_ucr_false monitoring/client/autoregister; then
+	# univention-directory-manager "computers/${server_role}" modify "$@" --dn "$ldap_hostdn" --append-option="monitoring" || die
+	for name in "${CHECKS[@]}"; do
+		if printf '%s\0' "${ROLE_IGNORE[@]}" | grep -Fxqz "$name"; then
+			continue
+		fi
+		univention-directory-manager monitoring/alert modify "$@" \
+			--dn "cn=$name,$MONITORINGCONTAINER" \
+			--append assignedHosts="${ldap_hostdn}" || die
+	done
+fi
 
 joinscript_save_current_version
 
