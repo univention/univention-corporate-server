@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: vlc
+fix: 3.0.12-0+deb9u1
+desc: |
+ This update addresses the following issue:
+ * A vulnerability in EbmlTypeDispatcher::send in VideoLAN VLC media player
+   3.0.11 allows attackers to trigger a heap-based buffer overflow via a
+   crafted .mkv file. (CVE-2020-26664)
+bug: [54854]
+cve:
+- CVE-2020-26664
