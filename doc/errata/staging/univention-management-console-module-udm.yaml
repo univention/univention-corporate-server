@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-management-console-module-udm
+fix:
+desc: |
+ This update addresses the following issues:
+ * The `entryUUID` of an LDAP object is now exposed by the UDM API.
+bug: [54883]

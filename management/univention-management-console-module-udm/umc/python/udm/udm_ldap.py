@@ -1212,8 +1212,10 @@ def get_module(flavor, ldap_dn, ldap_connection=None, ldap_position=None):
 
 
 def get_obj_module(flavor, ldap_dn, ldap_connection=None, ldap_position=None):
-	attr = ldap_connection.get(ldap_dn)
+	attr = ldap_connection.get(ldap_dn, ['*', '+'])  # TODO: we should use module.object._ldap_attributes() here but we don't have the module yet
 	module = _get_module(flavor, ldap_dn, attr, ldap_connection, ldap_position)
+	if module is None:
+		return None, None
 	return module.get(ldap_dn, attributes=attr), module
 
 
