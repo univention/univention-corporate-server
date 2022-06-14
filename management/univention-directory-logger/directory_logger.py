@@ -147,7 +147,7 @@ def process_dellog(dn):
 				timestamp = ldapTime2string(dellog_stamp)
 				break
 		except Exception as exc:
-			ud.debug(ud.LISTENER, ud.ERROR, 'Unknown Exception: %s.' % (exc))
+			ud.debug(ud.LISTENER, ud.ERROR, 'Unknown Exception: %s.' % (exc,))
 			ud.debug(ud.LISTENER, ud.ERROR, 'Renaming %s to %s.fail' % (filename, filename))
 			os.rename(pathname, '%s.fail' % pathname)
 			continue
