@@ -6,8 +6,6 @@ src: univention-directory-logger
 fix:
 desc: |
  This update addresses the following issue:
- * Add logs to detect when a corrupted file
-   is found
- * Add `.fail` to fail logs files to
-   improve error handling
+ * Improved handling of corrupt files; those files are
+   suffixed ".fail"
 bug: [51772]
