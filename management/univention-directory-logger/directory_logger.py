@@ -188,7 +188,7 @@ def handler(dn, new_copy, old_copy):
 		# Start processing
 		# 1. read previous hash
 		if not os.path.exists(cachename):
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: %s vanished mid-run, stop.' % (name, cachename))
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: %s vanished mid-run, stop.' % (name, cachename))
 			return  # really bad, stop it.
 		cachefile = open(cachename, 'r+')
 		previoushash = cachefile.read()
@@ -257,7 +257,7 @@ def createFile(filename):
 		try:
 			gidNumber = int(grp.getgrnam(preferedGroup)[2])
 		except Exception:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: Failed to get groupID for "%s"' % (name, preferedGroup))
+			ud.debug(ud.LISTENER, ud.WARN, '%s: Failed to get groupID for "%s"' % (name, preferedGroup))
 			gidNumber = 0
 
 	basedir = os.path.dirname(filename)
@@ -265,7 +265,7 @@ def createFile(filename):
 		os.makedirs(basedir)
 
 	if subprocess.call(["/bin/touch", filename]) or not os.path.exists(filename):
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: %s could not be created.' % (name, filename))
+		ud.debug(ud.LISTENER, ud.ERROR, '%s: %s could not be created.' % (name, filename))
 		return 1
 	os.chown(filename, uidNumber, gidNumber)
 	os.chmod(filename, filemode)
@@ -275,7 +275,7 @@ def createFile(filename):
 def initialize():
 	# type: () -> None
 	timestamp = time.strftime(timestampfmt, time.gmtime())
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'init %s' % name)
+	ud.debug(ud.LISTENER, ud.INFO, 'init %s' % name)
 
 	with SetUID(0):
 		if not os.path.exists(logname):
@@ -317,5 +317,5 @@ with SetUID(0):
 	if not os.path.exists(logname):
 		createFile(logname)
 	if not os.path.exists(cachename):
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: %s vanished, creating it' % (name, cachename))
+		ud.debug(ud.LISTENER, ud.WARN, '%s: %s vanished, creating it' % (name, cachename))
 		createFile(cachename)
