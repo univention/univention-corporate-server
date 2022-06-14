@@ -1,3 +1,10 @@
+ucs-test (10.0.6-114) unstable; urgency=medium
+
+  * Bug #54742: Warning about expiring key: Reduce time to action from 5 years
+    to 4 years
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 14 Jun 2022 17:02:40 +0200
+
 ucs-test (10.0.6-113) unstable; urgency=medium
 
   * Bug #54673: Added test that modifies the case of a character in a user
