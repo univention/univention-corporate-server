@@ -138,8 +138,8 @@ def process_dellog(dn):
 			ud.debug(ud.LISTENER, ud.ERROR, 'EnvironmentError: Renaming %s to %s.fail' % (filename, filename))
 			os.rename(pathname, '%s.fail' % pathname)
 			continue
-		except ValueError:
-			ud.debug(ud.LISTENER, ud.ERROR, 'Corrupted file: %r. Invalid format' % (filename,))
+		except ValueError as exc:
+			ud.debug(ud.LISTENER, ud.ERROR, 'Corrupted file: %r: %s' % (filename, exc))
 			os.unlink(pathname)
 			continue
 		if dellog_dn == dn:
