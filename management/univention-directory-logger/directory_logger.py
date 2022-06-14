@@ -123,45 +123,41 @@ def _parse_dellog_file(pathname):
 
 
 def process_dellog(dn):
-	try:
-		dellog = configRegistry['ldap/logging/dellogdir']
+	dellog = configRegistry['ldap/logging/dellogdir']
 
-		dellist = sorted(os.listdir(dellog))
+	dellist = sorted(os.listdir(dellog))
 
-		for filename in dellist:
-			pathname = os.path.join(dellog, filename)
+	for filename in dellist:
+		pathname = os.path.join(dellog, filename)
+		try:
 			try:
-				try:
-					if pathname.endswith(".fail"):
-						continue
-					(dellog_stamp, dellog_id, dellog_dn, modifier, action) = _parse_dellog_file(pathname)
-				except EnvironmentError:
-					ud.debug(ud.LISTENER, ud.ERROR, 'EnvironmentError: Renaming %s to %s.fail' % (filename, filename))
-					os.rename(pathname, '%s.fail' % pathname)
+				if pathname.endswith(".fail"):
 					continue
-				except ValueError as exc:
-					ud.debug(ud.LISTENER, ud.ERROR, 'Corrupted file: %r: %s' % (filename, exc))
-					os.unlink(pathname)
-					continue
-				if dellog_dn == dn:
-					os.unlink(pathname)
-					timestamp = ldapTime2string(dellog_stamp)
-					break
-			except Exception as exc:
-				ud.debug(ud.LISTENER, ud.ERROR, 'Unknown Exception on file %s, renamint to %s.fail' % (filename, filename))
+				(dellog_stamp, dellog_id, dellog_dn, modifier, action) = _parse_dellog_file(pathname)
+			except EnvironmentError:
+				ud.debug(ud.LISTENER, ud.ERROR, 'EnvironmentError: Renaming %s to %s.fail' % (filename, filename))
 				os.rename(pathname, '%s.fail' % pathname)
 				continue
-		else:
-			ud.debug(ud.LISTENER, ud.ERROR, 'Did not find matching dn %r in dellog directory %r.' % (dn, dellog))
-			timestamp = time.strftime(timestampfmt, time.gmtime())
-			dellog_id = '<NoID>'
-			modifier = '<unknown>'
-			action = '<unknown>'
+			except ValueError as exc:
+				ud.debug(ud.LISTENER, ud.ERROR, 'Corrupted file: %r: %s' % (filename, exc))
+				os.unlink(pathname)
+				continue
+			if dellog_dn == dn:
+				os.unlink(pathname)
+				timestamp = ldapTime2string(dellog_stamp)
+				break
+		except Exception as exc:
+			ud.debug(ud.LISTENER, ud.ERROR, 'Unknown Exception on file %s, renamint to %s.fail' % (filename, filename))
+			os.rename(pathname, '%s.fail' % pathname)
+			continue
+	else:
+		ud.debug(ud.LISTENER, ud.ERROR, 'Did not find matching dn %r in dellog directory %r.' % (dn, dellog))
+		timestamp = time.strftime(timestampfmt, time.gmtime())
+		dellog_id = '<NoID>'
+		modifier = '<unknown>'
+		action = '<unknown>'
 
-		return (timestamp, dellog_id, modifier, action)
-	except Exception as exc:
-		ud.debug(ud.LISTENER, ud.ERROR, 'Unknown error: %s.' % (exc))
-		raise Exception(exc)
+	return (timestamp, dellog_id, modifier, action)
 
 
 def prefix_record(record, identifier):
