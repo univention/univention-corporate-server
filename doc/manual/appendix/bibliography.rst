@@ -6,7 +6,7 @@ Bibliography
 
 .. spelling::
 
-   O'Reilly
+   Reilly
    Heitbrink
    Jelmer
    Vernooij
