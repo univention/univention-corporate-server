@@ -294,3 +294,12 @@ Further information
 .. Link references without translation
 
 .. _ext-doc-inst: https://docs.software-univention.de/installation-5.0.html
+
+
+.. Fix an error in the German spell check. The term "Sign-On" is not tokenized
+   correctly and only "Sign" is checked and marked as failed term. But it is
+   correct.
+
+.. spelling::
+
+   Sign
