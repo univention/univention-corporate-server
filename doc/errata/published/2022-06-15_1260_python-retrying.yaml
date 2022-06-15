@@ -9,3 +9,5 @@ desc: |
  * Move the package python-retrying to maintained
 bug: [54847]
 maintained: true
+erratum: 1260
+announced: 2022-06-15
