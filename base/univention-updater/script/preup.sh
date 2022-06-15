@@ -165,6 +165,10 @@ deactivate_old_package_sources () {
 }
 deactivate_old_package_sources
 
+if udm "computers/$server_role" list --position "$ldap_hostdn" --filter 'objectClass=univentionNagiosHostClass' | grep -q "^DN:"; then
+	ucr set monitoring/client/nagios-automigration=true
+fi
+
 # Pre-upgrade
 preups=""
 ${update_commands_update:-false} >&3 2>&3

@@ -1,0 +1,99 @@
+#!/bin/bash
+#
+# Univention Monitoring Client
+#
+# Copyright 2022 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+eval "$(ucr shell ldap/base ldap/hostdn hostname domainname)"
+
+NAGIOS_CHECKS=(
+	"UNIVENTION_PING"
+	"UNIVENTION_DISK_ROOT"
+	"UNIVENTION_DNS"
+	"UNIVENTION_SWAP"
+	"UNIVENTION_LDAP_AUTH"
+	"UNIVENTION_NTP"
+	"UNIVENTION_SMTP2"
+	"UNIVENTION_SSL"
+	"UNIVENTION_LOAD"
+	"UNIVENTION_REPLICATION"
+	"UNIVENTION_NSCD"
+	"UNIVENTION_NSCD2"
+	"UNIVENTION_KPASSWDD"
+	"UNIVENTION_WINBIND"
+	"UNIVENTION_SMBD"
+	"UNIVENTION_NMBD"
+	"UNIVENTION_JOINSTATUS"
+	"UNIVENTION_PACKAGE_STATUS"
+	"UNIVENTION_SLAPD_MDB_MAXSIZE"
+	"UNIVENTION_LISTENER_MDB_MAXSIZE"
+	"UNIVENTION_ADCONNECTOR"
+	"UNIVENTION_CUPS"
+	"UNIVENTION_OPSI"
+	"UNIVENTION_RAID"
+	"UNIVENTION_S4CONNECTOR"
+	"UNIVENTION_SAMBA_REPLICATION"
+	"UNIVENTION_SMART_SDA"
+	"UNIVENTION_SMART_SDB"
+	"UNIVENTION_SMART_SDC"
+	"UNIVENTION_SMART_SDD"
+	"UNIVENTION_SQUID"
+)
+
+CHECKS_UNIVENTION_PING=(UNIVENTION_PING UNIVENTION_PING_WARNING)
+CHECKS_UNIVENTION_DISK_ROOT=(UNIVENTION_DISK_ROOT UNIVENTION_DISK_ROOT_WARNING)
+CHECKS_UNIVENTION_SWAP=(UNIVENTION_SWAP UNIVENTION_SWAP_WARNING)
+CHECKS_UNIVENTION_NTP=(UNIVENTION_NTP UNIVENTION_NTP_WARNING)
+CHECKS_UNIVENTION_SMTP2=(UNIVENTION_SMTP)
+CHECKS_UNIVENTION_SSL=(UNIVENTION_SSL UNIVENTION_SSL_WARNING)
+CHECKS_UNIVENTION_LOAD=(UNIVENTION_LOAD UNIVENTION_LOAD_WARNING)
+CHECKS_UNIVENTION_REPLICATION=(UNIVENTION_REPLICATION UNIVENTION_REPLICATION_WARNING)
+CHECKS_UNIVENTION_SLAPD_MDB_MAXSIZE=(UNIVENTION_SLAPD_MDB_MAXSIZE UNIVENTION_SLAPD_MDB_MAXSIZE_WARNING)
+CHECKS_UNIVENTION_LISTENER_MDB_MAXSIZE=(UNIVENTION_LISTENER_MDB_MAXSIZE UNIVENTION_LISTENER_MDB_MAXSIZE_WARNING)
+CHECKS_UNIVENTION_ADCONNECTOR=(UNIVENTION_ADCONNECTOR UNIVENTION_ADCONNECTOR_WARNING)
+CHECKS_UNIVENTION_RAID=(UNIVENTION_RAID UNIVENTION_RAID_WARNING)
+CHECKS_UNIVENTION_S4CONNECTOR=(UNIVENTION_S4CONNECTOR UNIVENTION_S4CONNECTOR_WARNING)
+CHECKS_UNIVENTION_SMART_SDA=(UNIVENTION_SMART_SDA_HEALTHY UNIVENTION_SMART_SDA_PENDINGSECTOR_WARNING)
+CHECKS_UNIVENTION_SMART_SDB=(UNIVENTION_SMART_SDB_HEALTHY UNIVENTION_SMART_SDB_PENDINGSECTOR_WARNING)
+CHECKS_UNIVENTION_SMART_SDC=(UNIVENTION_SMART_SDC_HEALTHY UNIVENTION_SMART_SDC_PENDINGSECTOR_WARNING)
+CHECKS_UNIVENTION_SMART_SDD=(UNIVENTION_SMART_SDD_HEALTHY UNIVENTION_SMART_SDD_PENDINGSECTOR_WARNING)
+
+for nagiosname in "${NAGIOS_CHECKS[@]}"; do
+	if udm nagios/service list --filter "(&(name=$nagiosname)(univentionNagiosHostname=$hostname.$domainname))" | grep -q '^DN:'; then
+		variable="CHECKS_${nagiosname}"
+		names=""
+		names="${!variable}"
+		[ -z "$names" ] && names=("$nagiosname")
+		for name in "${names[@]}"; do
+			# TODO: --ignore_not_exists ?
+			univention-directory-manager monitoring/alert modify "$@" \
+				--dn "cn=$name,cn=monitoring,$ldap_base" \
+				--append assignedHosts="${ldap_hostdn}" # TODO?: || exit $?
+		done
+	fi
+done
