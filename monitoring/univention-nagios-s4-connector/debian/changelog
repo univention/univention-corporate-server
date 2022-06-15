@@ -1,3 +1,9 @@
+univention-nagios-s4-connector (5.0.1-1) unstable; urgency=medium
+
+  * Bug #54748: add dependencies to monitoring packages
+
+ -- Florian Best <best@univention.de>  Thu, 23 Jun 2022 18:46:36 +0200
+
 univention-nagios-s4-connector (5.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

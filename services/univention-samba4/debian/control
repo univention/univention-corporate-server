@@ -37,6 +37,7 @@ Depends:
  winbind,
  ${misc:Depends},
 Recommends:
+ univention-monitoring-samba,
  univention-nagios-samba,
 Description: UCS - Samba4 integration package
  This package contains the scripts and patches

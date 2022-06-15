@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.10-1) unstable; urgency=medium
+
+  * Bug #54748: add dependencies to monitoring packages
+
+ -- Florian Best <best@univention.de>  Thu, 23 Jun 2022 18:46:37 +0200
+
 univention-ad-connector (14.0.9-2) unstable; urgency=medium
 
   * Bug #54682: option --debug-stderr became default, option has been removed

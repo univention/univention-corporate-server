@@ -13,6 +13,7 @@ Depends:
  shell-univention-lib (>> 3.0),
  univention-directory-manager-tools (>> 7.0.147),
  univention-nagios-client,
+ univention-monitoring-ad-connector,
  ${misc:Depends},
 Description: nagios plugin for UCS AD connector
  This package installs a nagios plugin to monitor the state

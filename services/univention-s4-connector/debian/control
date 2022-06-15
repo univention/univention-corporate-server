@@ -64,6 +64,7 @@ Depends:
  ${misc:Depends},
 Recommends:
  sqlite3,
+ univention-monitoring-s4-connector,
  univention-nagios-s4-connector,
 Description: UCS - Modules for sync UCS and Samba4 LDB directory
  This package contains the modules that implement the

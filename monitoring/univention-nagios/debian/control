@@ -22,6 +22,7 @@ Depends:
  univention-config,
  univention-directory-listener,
  univention-directory-manager-tools (>> 7.0.147),
+ univention-monitoring-client,
  univention-nagios-common (= ${binary:Version}),
  ${misc:Depends},
  ${python:Depends},

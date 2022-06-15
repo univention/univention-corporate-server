@@ -12,6 +12,7 @@ Architecture: any
 Depends:
  shell-univention-lib (>> 3.0),
  univention-directory-manager-tools (>> 7.0.147),
+ univention-monitoring-s4-connector,
  univention-nagios-client,
  ${misc:Depends},
 Description: nagios plugin for UCS S4 connector

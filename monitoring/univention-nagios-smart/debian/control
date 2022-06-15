@@ -13,6 +13,7 @@ Architecture: any
 Depends:
  smartmontools,
  univention-directory-manager-tools (>> 7.0.147),
+ univention-monitoring-smart,
  univention-nagios-client,
  ${misc:Depends},
 Description: nagios smart plugin

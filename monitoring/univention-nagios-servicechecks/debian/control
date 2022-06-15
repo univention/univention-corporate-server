@@ -11,6 +11,7 @@ Package: univention-nagios-cups
 Architecture: all
 Depends:
  univention-directory-manager-tools (>> 7.0.147),
+ univention-monitoring-cups,
  ${misc:Depends},
 Description: nagios plugin for monitoring cups daemon and webservice
  This package installs a nagios plugin to monitor CUPS
@@ -25,6 +26,7 @@ Package: univention-nagios-squid
 Architecture: all
 Depends:
  univention-directory-manager-tools (>> 7.0.147),
+ univention-monitoring-squid,
  ${misc:Depends},
 Description: nagios plugin for monitoring squid daemon and webservice
  This package installs a nagios plugin to monitor squid
@@ -39,6 +41,7 @@ Package: univention-nagios-opsi
 Architecture: all
 Depends:
  univention-directory-manager-tools (>> 7.0.147),
+ univention-monitoring-opsi,
  ${misc:Depends},
 Description: nagios plugin for monitoring opsi daemons and webservice
  This package installs a nagios plugin to monitor OPSI

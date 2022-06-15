@@ -38,6 +38,7 @@ Depends:
 Conflicts:
  univention-management-console (<< 0.9.33-1),
 Recommends:
+ univention-monitoring-cups,
  univention-nagios-cups,
 Description: UCS - print server
  This packages provides the printer configuration. Printers

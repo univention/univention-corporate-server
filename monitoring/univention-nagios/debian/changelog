@@ -1,3 +1,9 @@
+univention-nagios (13.0.3-1) unstable; urgency=medium
+
+  * Bug #54748: add dependencies to monitoring packages
+
+ -- Florian Best <best@univention.de>  Thu, 23 Jun 2022 18:46:37 +0200
+
 univention-nagios (13.0.2-6) unstable; urgency=medium
 
   * Bug #53681: fix nagios configuration files
