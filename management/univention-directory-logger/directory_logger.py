@@ -42,7 +42,7 @@ import grp
 import subprocess
 import os
 
-import univention.debug as ud
+import univention.debug
 
 name = 'directory_logger'
 description = 'Log directory transactions'
@@ -87,7 +87,7 @@ def ldapTime2string(timestamp):
 	try:
 		timestruct = time.strptime(timestamp, "%Y%m%d%H%M%SZ")
 	except ValueError:
-		ud.debug(ud.LISTENER, ud.ERROR, '%r: could not parse timestamp %r, expected LDAP format' % (name, timestamp))
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: could not parse timestamp %s, expected LDAP format' % (name, timestamp))
 		return timestamp  # return it as it was
 	return time.strftime(timestampfmt, timestruct)
 
@@ -119,7 +119,7 @@ def _parse_dellog_file(pathname):
 		if len(lines) == DELLOG_FILE_LINE_NUMBERS:
 			return [line.rstrip() for line in lines]
 		else:
-			raise ValueError('Expected 5 lines, but received %d' % len(lines))
+			raise ValueError('')
 
 
 def process_dellog(dn):
@@ -129,30 +129,21 @@ def process_dellog(dn):
 
 	for filename in dellist:
 		pathname = os.path.join(dellog, filename)
+
 		try:
-			try:
-				if pathname.endswith(".fail"):
-					continue
-				(dellog_stamp, dellog_id, dellog_dn, modifier, action) = _parse_dellog_file(pathname)
-			except EnvironmentError:
-				ud.debug(ud.LISTENER, ud.ERROR, 'EnvironmentError: Renaming %s to %s.fail' % (filename, filename))
-				os.rename(pathname, '%s.fail' % pathname)
-				continue
-			except ValueError as exc:
-				ud.debug(ud.LISTENER, ud.ERROR, 'Corrupted file: %r: %s' % (filename, exc))
-				os.unlink(pathname)
-				continue
-			if dellog_dn == dn:
-				os.unlink(pathname)
-				timestamp = ldapTime2string(dellog_stamp)
-				break
-		except Exception as exc:
-			ud.debug(ud.LISTENER, ud.ERROR, 'Unknown Exception: %s.' % (exc,))
-			ud.debug(ud.LISTENER, ud.ERROR, 'Renaming %s to %s.fail' % (filename, filename))
-			os.rename(pathname, '%s.fail' % pathname)
+			(dellog_stamp, dellog_id, dellog_dn, modifier, action) = _parse_dellog_file(pathname)
+		except EnvironmentError:
 			continue
+		except ValueError:
+			continue
+		finally:
+			os.unlink(pathname)
+
+		if dellog_dn == dn:
+			timestamp = ldapTime2string(dellog_stamp)
+			break
 	else:
-		ud.debug(ud.LISTENER, ud.ERROR, 'Did not find matching dn %r in dellog directory %r.' % (dn, dellog))
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Did not find matching dn "%s" in dellog directory %s.' % (dn, dellog))
 		timestamp = time.strftime(timestampfmt, time.gmtime())
 		dellog_id = '<NoID>'
 		modifier = '<unknown>'
@@ -188,7 +179,7 @@ def handler(dn, new_copy, old_copy):
 		# Start processing
 		# 1. read previous hash
 		if not os.path.exists(cachename):
-			ud.debug(ud.LISTENER, ud.ERROR, '%s: %s vanished mid-run, stop.' % (name, cachename))
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: %s vanished mid-run, stop.' % (name, cachename))
 			return  # really bad, stop it.
 		cachefile = open(cachename, 'r+')
 		previoushash = cachefile.read()
@@ -257,7 +248,7 @@ def createFile(filename):
 		try:
 			gidNumber = int(grp.getgrnam(preferedGroup)[2])
 		except Exception:
-			ud.debug(ud.LISTENER, ud.WARN, '%s: Failed to get groupID for "%s"' % (name, preferedGroup))
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: Failed to get groupID for "%s"' % (name, preferedGroup))
 			gidNumber = 0
 
 	basedir = os.path.dirname(filename)
@@ -265,7 +256,7 @@ def createFile(filename):
 		os.makedirs(basedir)
 
 	if subprocess.call(["/bin/touch", filename]) or not os.path.exists(filename):
-		ud.debug(ud.LISTENER, ud.ERROR, '%s: %s could not be created.' % (name, filename))
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: %s could not be created.' % (name, filename))
 		return 1
 	os.chown(filename, uidNumber, gidNumber)
 	os.chmod(filename, filemode)
@@ -275,7 +266,7 @@ def createFile(filename):
 def initialize():
 	# type: () -> None
 	timestamp = time.strftime(timestampfmt, time.gmtime())
-	ud.debug(ud.LISTENER, ud.INFO, 'init %s' % name)
+	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'init %s' % name)
 
 	with SetUID(0):
 		if not os.path.exists(logname):
@@ -317,5 +308,5 @@ with SetUID(0):
 	if not os.path.exists(logname):
 		createFile(logname)
 	if not os.path.exists(cachename):
-		ud.debug(ud.LISTENER, ud.WARN, '%s: %s vanished, creating it' % (name, cachename))
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: %s vanished, creating it' % (name, cachename))
 		createFile(cachename)
