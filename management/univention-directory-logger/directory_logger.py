@@ -138,7 +138,6 @@ def process_dellog(dn):
 	return (timestamp, dellog_id, modifier, action)
 
 
-
 def prefix_record(record, identifier):
 	if not configRegistry.is_true('ldap/logging/id-prefix', False):
 		return record
