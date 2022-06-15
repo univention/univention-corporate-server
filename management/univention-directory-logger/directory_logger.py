@@ -64,10 +64,10 @@ uidNumber = 0
 preferedGroup = "adm"
 gidNumber = 0  # fallback
 filemode = 0o640
+cleanupDellog = True
 digest = configRegistry.get('ldap/logging/hash', 'md5')
 
 SAFE_STRING_RE = re.compile(r'^(?:\000|\n|\r| |:|<)|[\000\n\r\200-\377]+|[ ]+$'.encode('ASCII'))
-DELLOG_FILE_LINE_NUMBERS = 5
 
 
 def ldapEntry2string(entry):
@@ -111,54 +111,32 @@ def filterOutUnchangedAttributes(old_copy, new_copy):
 			new_copy[key].remove(value)
 
 
-def _parse_dellog_file(pathname):
-	"""Extract data from a dellog file."""
-	with open(pathname, 'r') as f:
-		lines = f.readlines()
-		# A dellog file must have DELLOG_FILE_LINE_NUMBERS lines
-		if len(lines) == DELLOG_FILE_LINE_NUMBERS:
-			return [line.rstrip() for line in lines]
-		else:
-			raise ValueError('Expected 5 lines, but received %d' % len(lines))
-
-
 def process_dellog(dn):
 	dellog = configRegistry['ldap/logging/dellogdir']
 
 	dellist = sorted(os.listdir(dellog))
-
 	for filename in dellist:
 		pathname = os.path.join(dellog, filename)
 		try:
-			try:
-				if pathname.endswith(".fail"):
-					continue
-				(dellog_stamp, dellog_id, dellog_dn, modifier, action) = _parse_dellog_file(pathname)
-			except EnvironmentError:
-				ud.debug(ud.LISTENER, ud.ERROR, 'EnvironmentError: Renaming %s to %s.fail' % (filename, filename))
-				os.rename(pathname, '%s.fail' % pathname)
-				continue
-			except ValueError as exc:
-				ud.debug(ud.LISTENER, ud.ERROR, 'Corrupted file: %r: %s' % (filename, exc))
+			with open(pathname, 'r') as f:
+				(dellog_stamp, dellog_id, dellog_dn, modifier, action) = [line.rstrip() for line in f]
+
+			if cleanupDellog:
 				os.unlink(pathname)
-				continue
-			if dellog_dn == dn:
-				os.unlink(pathname)
-				timestamp = ldapTime2string(dellog_stamp)
-				break
-		except Exception as exc:
-			ud.debug(ud.LISTENER, ud.ERROR, 'Unknown Exception: %s.' % (exc,))
-			ud.debug(ud.LISTENER, ud.ERROR, 'Renaming %s to %s.fail' % (filename, filename))
-			os.rename(pathname, '%s.fail' % pathname)
+		except EnvironmentError:
 			continue
+
+		if dellog_dn == dn:
+			timestamp = ldapTime2string(dellog_stamp)
+			break
 	else:
-		ud.debug(ud.LISTENER, ud.ERROR, 'Did not find matching dn %r in dellog directory %r.' % (dn, dellog))
 		timestamp = time.strftime(timestampfmt, time.gmtime())
 		dellog_id = '<NoID>'
 		modifier = '<unknown>'
 		action = '<unknown>'
 
 	return (timestamp, dellog_id, modifier, action)
+
 
 
 def prefix_record(record, identifier):
