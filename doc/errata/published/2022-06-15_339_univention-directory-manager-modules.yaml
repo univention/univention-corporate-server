@@ -10,3 +10,5 @@ desc: |
    e.g. the selection list of printer model in the printer shares module
    could not be fetched.
 bug: [54849]
+erratum: 339
+announced: 2022-06-15
