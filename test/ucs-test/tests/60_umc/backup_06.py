@@ -19,19 +19,20 @@ ucr.load()
 ldap_base = ucr['ldap/base']
 
 
+def stuff(udm):
+	base_container_dn = udm.create_object(
+		'container/cn',
+		name='base_test_container',
+		position=ldap_base
+	)
+	intermediate_container_dn = udm.create_object(
+		'container/cn',
+		name='intermediate_test_container',
+		position=base_container_dn
+	)
+	return (base_container_dn, intermediate_container_dn)
 
-def test_check_single_and_multiple_policies(): # user_dn, base_container_dn, intermediate_container_dn):
-	with UCSTestUDM() as udm:
-		base_container_dn = udm.create_object(
-			'container/cn',
-			name='base_test_container',
-			position=ldap_base
-		)
-		intermediate_container_dn = udm.create_object(
-			'container/cn',
-			name='intermediate_test_container',
-			position=base_container_dn
-		)
+def test_check_single_and_multiple_policies(udm): # user_dn, base_container_dn, intermediate_container_dn):
 
 		# create_test_policies()
 		base_policy_dn = udm.create_object(

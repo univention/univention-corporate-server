@@ -15,25 +15,16 @@ from univention.testing.umc import Client
 from univention.config_registry import ConfigRegistry
 
 
-@pytest.fixture
+@pytest.fixture(scope='class')
 def udm_class():
 	# the udm object needs to persist throuout the test.
 	with UCSTestUDM() as udm:
 		yield udm
 
 
-# might not be needed if I can use the existing fixture :thinking:
-@pytest.fixture
-def ldap_base():
-	with ConfigRegistry() as ucr:
-		ucr.load()
-		return ucr['ldap/base']
-
-
-@pytest.fixture
-def udm_objects():
+@pytest.fixture(scope='class')
+def udm_objects(udm_class, ldap_base):
 	# creating all udm objects at the test start saves replication time.
-	print(type(udm_class))
 	udm_objects = {}
 	udm_objects['base_container_dn'] = udm_class.create_object(
 		'container/cn',
@@ -47,14 +38,14 @@ def udm_objects():
 	)
 
 	udm_objects['base_policy_dn'] = udm_class.create_object(
-			'policies/pwhistory',
-			position="cn=policies," + ldap_base,
-			name='umc_test_policy_base',
-			length="5",
-			pwQualityCheck=False,
-			pwLength="5",
-			**{"$policies$": {}}
-		)
+		'policies/pwhistory',
+		position="cn=policies," + ldap_base,
+		name='umc_test_policy_base',
+		length="5",
+		pwQualityCheck=False,
+		pwLength="5",
+		**{"$policies$": {}}
+	)
 	udm_objects['intermediate_policy_dn'] = udm_class.create_object(
 		'policies/pwhistory',
 		position="cn=policies," + ldap_base,
@@ -81,44 +72,6 @@ def udm_objects():
 
 	return udm_objects
 
-
-def test_check_single_and_multiple_policies(udm_class, udm_objects, ldap_base):
-	"""Test UMC object policies with non-UCR-policies"""
-	# bugs: [35314]
-	udm_class.modify_object(
-		'container/cn',
-		dn=udm_objects['base_container_dn'],
-		policy_reference=udm_objects['base_policy_dn'],
-	)
-	# check_policies('5', '5', user_dn)
-	# def check_policies(length, pwLength, user_dn):
-	# def get_user_policy(user_dn):
-	options = [{
-		"objectType": "users/user",
-		"policies": [None],
-		"policyType": "policies/pwhistory",
-		"objectDN": udm_objects['user_dn'],
-		"container": None
-	}]
-
-	client = Client.get_test_connection()
-	object_policy = client.umc_command('udm/object/policies', options, 'navigation').result
-	assert object_policy, "The object policy response result should not be empty"
-	print(object_policy)
-
-	length = '5'
-	pwLength = '5'
-	assert object_policy[0]['length']['value'] == length
-	assert object_policy[0]['pwLength']['value'] == pwLength
-
-
-	# udm_class.modify_object(
-	# 	'container/cn',
-	# 	dn=intermediate_container_dn,
-	# 	policy_reference=intermediate_policy_dn
-	# )
-	# check_policies('4', '4', user_dn)
-
 	# def check_fixed_and_empty_attributes(, user_dn):
 	# 	udm_class.modify_object(
 	# 		'policies/pwhistory',
@@ -140,25 +93,50 @@ def test_check_single_and_multiple_policies(udm_class, udm_objects, ldap_base):
 	# 	)
 	# 	check_policies('4', '', user_dn)
 
-	# def check_required_excluded_object_classes(, user_dn):
-	# 	udm_class.modify_object(
-	# 		'policies/pwhistory',
-	# 		dn=intermediate_policy_dn,
-	# 		requiredObjectClasses=["sambaSamAccount"]
-	# 	)
-	# 	check_policies('4', '', user_dn)
-	# 	udm_class.modify_object(
-	# 		'policies/pwhistory',
-	# 		dn=base_policy_dn,
-	# 		prohibitedObjectClasses=["sambaSamAccount"]
-	# 	)
-	# 	check_policies('4', '', user_dn)
 
-	# def main():
+class Test_UCR:
+	@pytest.mark.parametrize('dn, kwargs, length, pwLength', [
+		# ('base_container_dn', 'base_policy_dn', '5', '5'),
+		# ('intermediate_container_dn', 'intermediate_policy_dn', '4', '4'),
 
+		('base_policy_dn', {'fixedAttributes': ['univentionPWLength']}, '4', '5'),
+		# ('intermediate_policy_dn', {'emptyAttributes': ['univentionPWLength']}, '4', '5'),
+		# ('base_policy_dn', {'set': {'fixedAttributes': ""}}, '4', ''),
 
-	# 		check_single_and_multiple_policies(user_dn, base_container_dn, intermediate_container_dn)
-	# 		check_fixed_and_empty_attributes(user_dn)
-	# 		check_required_excluded_object_classes(user_dn)
+		# ('intermediate_policy_dn', {'requiredObjectClasses': ['sambaSamAccount']}, '4', '4'),
+		# ('base_policy_dn', {'prohibitedObjectClasses': ['sambaSamAccount']}, '4', ''),
+	])
+	def test_udm_non_ucr_policies(self, udm_class, udm_objects, dn, kwargs, length, pwLength):
+		"""Test UMC object policies with non-UCR-policies"""
+		# bugs: [35314]
 
+		# unfortunately, objects provided by fixtures cant be parametrized
+		if kwargs in ('base_policy_dn', 'intermediate_policy_dn'):
+			kwargs = {'policy_reference': udm_objects[kwargs]}
+		print('\n\n', kwargs)
+		print(type(kwargs), '\n\n')
 
+		udm_class.modify_object(
+			'container/cn',
+			dn=udm_objects[dn],
+			fixedAttributes=['univentionPWLength']
+			# **kwargs
+		)
+		# check_policies('5', '5', user_dn)
+		# def check_policies(length, pwLength, user_dn):
+		# def get_user_policy(user_dn):
+		options = [{
+			"objectType": "users/user",
+			"policies": [None],
+			"policyType": "policies/pwhistory",
+			"objectDN": udm_objects['user_dn'],
+			"container": None
+		}]
+
+		client = Client.get_test_connection()
+		object_policy = client.umc_command('udm/object/policies', options, 'navigation').result
+		assert object_policy, "The object policy response result should not be empty"
+		print(object_policy)
+
+		assert object_policy[0]['length']['value'] == length
+		assert object_policy[0]['pwLength']['value'] == pwLength

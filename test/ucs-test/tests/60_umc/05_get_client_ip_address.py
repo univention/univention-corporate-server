@@ -34,6 +34,7 @@ def test_get_client_ip_address(addr2):
 
 @pytest.mark.exposure('dangerous')
 def test_get_client_ip_address_localhost():
+	# TODO: Change docstring
 	"""Check if UMC is able to return correct IP address"""
 	print('*** Check with localhost')
 	account = utils.UCSTestDomainAdminCredentials()
