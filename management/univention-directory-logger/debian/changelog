@@ -1,3 +1,10 @@
+univention-directory-logger (11.0.3-3) unstable; urgency=medium
+
+  * Bug #51772: Improve corrupted log files handling, delete
+    corrupted files and log the error
+
+ -- Eric Monne Mesalles <monne-mesalles.extern@univention.de>  Thu, 09 Jun 2022 11:11:39 +0200
+
 univention-directory-logger (11.0.3-2) unstable; urgency=medium
 
   * Bug #51772: Fix crashing on corrupted log files in OpenLDAP "delete
