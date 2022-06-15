@@ -9,7 +9,7 @@ desc: |
  * The portal now integrates the self service functionality: Reset passwords,
    change profile, verify accounts, etc is now possible from within the
    portal.
- * Fixed drag'n'drop behaviour when using the keyboard, added screenreader
+ * Fixed drag'n'drop behavior when using the keyboard, added screen reader
    support.
  * Improved the translation widget when editing portal entries.
  * Added new tooltips. They comply with accessibility requirements.
