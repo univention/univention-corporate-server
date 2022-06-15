@@ -7,7 +7,7 @@ fix: 10.0.2-7A~5.0.0.202201262001
 desc: |
  This update addresses the following issues:
  * The UDM REST API now supports multiprocessing via the UCR variable
-   `directory/manager/rest/processes`. Futher details can be found in the
+   `directory/manager/rest/processes`. Further details can be found in the
    performance guide.
  * The `entryUUID` and `dn` of newly created objects are now included in the
    response.
