@@ -2,7 +2,6 @@
 MAIN :=
 MAIN += domain-5.0
 MAIN += installation-5.0
-MAIN += networks-5.0
 MAIN += performance-guide-5.0
 STYLESHEET := univention_extdocs
 OPTIONS += --stringparam callout.graphics 0
