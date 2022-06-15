@@ -9,3 +9,5 @@ desc: |
  * The reason why servers are excluded from the app-installation drop-down
    menu is displayed again.
 bug: [54460]
+erratum: 338
+announced: 2022-06-15
