@@ -3,9 +3,8 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-directory-logger
-fix: 11.0.3-3A~5.0.0.202206142128
+fix:
 desc: |
  This update addresses the following issue:
- * Improved handling of corrupt files; those files are
-   suffixed ".fail"
+ * Revert changes applied to fix Bug 51772
 bug: [51772]

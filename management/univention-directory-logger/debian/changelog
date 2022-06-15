@@ -1,3 +1,9 @@
+univention-directory-logger (11.0.3-4) unstable; urgency=medium
+
+  * Bug #51722: Revert changes
+
+ -- Eric Monne Mesalles <monne-mesalles.extern@univention.de>  Wed, 15 Jun 2022 11:00:23 +0200
+
 univention-directory-logger (11.0.3-3) unstable; urgency=medium
 
   * Bug #51772: Improve corrupted log files handling, delete
