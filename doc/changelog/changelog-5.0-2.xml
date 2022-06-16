@@ -242,6 +242,15 @@
 		</itemizedlist>
 	</section>
 
+	<section id="changelog:installer">
+		<title>Univention Installer</title>
+		<itemizedlist>
+			<listitem><simpara>
+				Remove left-over static host configuration for <systemitem class="ipaddress">127.0.1.1</systemitem> (<u:bug>49042</u:bug>).
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
 	<section id="changelog:basic">
 		<title>Basic system services</title>
 
