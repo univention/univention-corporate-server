@@ -1,3 +1,9 @@
+univention-self-service (5.0.2-1) unstable; urgency=medium
+
+  * Bug #54466: switched self-service to Python 3
+
+ -- Johannes Lohmer <lohmer@univention.de>  Thu, 16 Jun 2022 12:50:00 +0200
+
 univention-self-service (5.0.1-25) unstable; urgency=medium
 
   * Bug #38762: move widget<>syntax mapping into UDM syntax classes

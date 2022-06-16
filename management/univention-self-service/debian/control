@@ -6,8 +6,6 @@ Build-Depends:
  debhelper,
  dh-python,
  node-stylus,
- python-all,
- python-polib,
  python3-all,
  python3-polib,
  univention-config-dev (>= 15.0.3),
@@ -24,7 +22,6 @@ Depends:
  univention-join,
  univention-self-service-passwordreset-umc,
  ${misc:Depends},
- ${python:Depends},
  ${python3:Depends},
 Description: Univention Self Service
  This package contains the password self service module that
@@ -43,7 +40,7 @@ Depends:
  univention-postgresql,
  univention-self-service-invitation,
  univention-self-service-passwordreset-umc,
- python-univention-directory-manager-rest(>> 10.0.2-8),
+ python3-univention-directory-manager-rest(>> 10.0.2-8),
  ${misc:Depends},
 Description: Univention Self Service
  This package contains the required dependencies for the Primary Directory Node
@@ -58,18 +55,14 @@ Package: univention-self-service-passwordreset-umc
 Architecture: all
 Depends:
  memcached,
- python-psycopg2,
- python-pylibmc,
  python3-psycopg2,
  python3-pylibmc,
  shell-univention-lib,
  univention-config,
  univention-join,
  ${misc:Depends},
- ${python:Depends},
  ${python3:Depends},
 Provides:
- ${python:Provides},
  ${python3:Provides},
 Description: Password reset module for Univention Self Service.
  This package contains a UMC module that is the backend for the
@@ -84,10 +77,8 @@ Description: Password reset module for Univention Self Service.
 Package: univention-self-service-invitation
 Architecture: all
 Depends:
- python-six,
  python3-six,
  ${misc:Depends},
- ${python:Depends},
  ${python3:Depends},
 Description: Invitation module for Univention Self Service.
  This package contains a listener and a daemon for the
