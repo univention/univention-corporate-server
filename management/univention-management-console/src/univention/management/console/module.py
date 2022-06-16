@@ -323,9 +323,9 @@ class XML_Definition(ET.ElementTree):
 	@property
 	def python_version(self):
 		try:
-			return int(float(self.root.get('python', 2)))
+			return int(float(self.root.get('python', 3)))
 		except ValueError:
-			return 2
+			return 3
 
 	@property
 	def icon(self):

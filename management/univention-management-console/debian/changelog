@@ -1,3 +1,10 @@
+univention-management-console (12.0.14-1) unstable; urgency=medium
+
+  * Bug #54706: execute UMC modules with Python 3 if not explicitly
+    stated to execute with Python 2
+
+ -- Florian Best <best@univention.de>  Thu, 16 Jun 2022 10:51:18 +0200
+
 univention-management-console (12.0.13-1) unstable; urgency=medium
 
   * Bug #54706: drop Python 3 package files in templates
