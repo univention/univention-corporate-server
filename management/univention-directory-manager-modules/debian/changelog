@@ -2,7 +2,7 @@ univention-directory-manager-modules (15.0.12-2) unstable; urgency=medium
 
   * Bug #54706: drop Python 2 package
 
- -- Florian Best <best@univention.de>  Wed, 04 May 2022 09:15:53 +0200
+ -- Florian Best <best@univention.de>  Thu, 16 Jun 2022 10:39:07 +0200
 
 univention-directory-manager-modules (15.0.12-1) unstable; urgency=medium
 
