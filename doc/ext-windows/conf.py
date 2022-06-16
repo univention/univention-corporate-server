@@ -68,7 +68,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-pdf_doc_base = "windows"
+pdf_doc_base = "ext-windows"
 
 html_theme = 'univention_sphinx_book_theme'
 html_context = {
