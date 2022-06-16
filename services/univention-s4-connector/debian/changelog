@@ -1,3 +1,10 @@
+univention-s4-connector (14.0.9-1) unstable; urgency=medium
+
+  * Bug #54748: make sure Python 2.7 UDM modules are written again by
+    the listener
+
+ -- Florian Best <best@univention.de>  Thu, 16 Jun 2022 12:15:03 +0200
+
 univention-s4-connector (14.0.8-2) unstable; urgency=medium
 
   * Bug #54706: drop Python 2 packages
