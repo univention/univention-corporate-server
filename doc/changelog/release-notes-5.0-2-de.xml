@@ -6,10 +6,10 @@
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
 	%entities;
 ]>
-<book lang="de" id="releasenotes-de-5.0-1">
+<book lang="de" id="releasenotes-de-5.0-2">
 	<bookinfo>
 		<title>UCS 5.0 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 5.0-1</subtitle>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 5.0-2</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -43,14 +43,14 @@
 	<chapter id="relnotes:highlights">
 		<title>Release-Highlights</title>
 		<para>
-			Mit &ucsUCS; 5.0-1 steht das erste Point-Release für &ucsUCS; (UCS) 5.0 zur Verfügung.
+			Mit &ucsUCS; 5.0-2 steht das erste Point-Release für &ucsUCS; (UCS) 5.0 zur Verfügung.
 			Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen.
 			Die wichtigsten Änderungen im Überblick:
 		</para>
 		<itemizedlist>
 			<listitem><para>
 					UCS 5 Design im hellen <foreignphrase>Theme</foreignphrase>.
-					Wie zum Release von UCS 5.0-0 angekündigt, gibt es neben dem <foreignphrase>Dark Theme</foreignphrase> auch ein <foreignphrase>Light Theme</foreignphrase> für UCS 5.0.
+					Wie zum Release von UCS 5.0-1 angekündigt, gibt es neben dem <foreignphrase>Dark Theme</foreignphrase> auch ein <foreignphrase>Light Theme</foreignphrase> für UCS 5.0.
 					Nutzer des UCS Managementsystems können damit zwischen den beiden <foreignphrase>Themes</foreignphrase> umschalten.
 			</para></listitem>
 			<listitem><para>
@@ -93,7 +93,7 @@
 					Dieses &ucsUCS; Release basiert auf Debian 10.11 <wordasword>Buster</wordasword>.
 			</para></listitem>
 			<listitem><para>
-					Diverse Security Updates wurden in UCS 5.0-1 integriert, bspw. für <application>Samba4</application>, OpenSSL, PHP und den Linux Kernel.
+					Diverse Security Updates wurden in UCS 5.0-2 integriert, bspw. für <application>Samba4</application>, OpenSSL, PHP und den Linux Kernel.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -206,11 +206,11 @@
 		</para>
 		<screen><![CDATA[
 # download
-curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-1{.gpg,}
+curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-2{.gpg,}
 
 # verify and run script
-apt-key verify pre-update-checks-5.0-1{.gpg,} &&
-  bash pre-update-checks-5.0-1
+apt-key verify pre-update-checks-5.0-2{.gpg,} &&
+  bash pre-update-checks-5.0-2
 
 ...
 
@@ -292,9 +292,9 @@ Checking ldap_schema ...                          OK
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS <productnumber>5.0-0</productnumber>:
+			Aufgeführt sind die Änderungen seit UCS <productnumber>5.0-1</productnumber>:
 		</para>
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-5.0-1.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-5.0-2.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 
 	<bibliography id="bibliography">

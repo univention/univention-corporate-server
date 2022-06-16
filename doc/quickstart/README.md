@@ -4,8 +4,8 @@ The legacy DocBook text for the quickstart guide was published at
 <https://docs.software-univention.de/quickstart-en-5.0.html> and
 <https://docs.software-univention.de/quickstart-de-5.0.html>. The
 generic links to the latest documentation were
-<https://docs.software-univention.de/quickstart-en.html> and
-<https://docs.software-univention.de/quickstart-de.html>.
+<https://docs.software-univention.de/quickstart-en-5.0.html> and
+<https://docs.software-univention.de/quickstart-de-5.0.html>.
 
 Links to the documentation are spread in Univention products, Univention
 forum, blog postings, reader's bookmark lists and so on. For readers'
