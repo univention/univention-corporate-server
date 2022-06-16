@@ -10,7 +10,7 @@ default:
       - runner_system_failure
 
 variables:
-  ucs: 501
+  ucs: 502
   GIT_STRATEGY: fetch
   GIT_SUBMODULE_STRATEGY: none
   GIT_DEPTH: "3"

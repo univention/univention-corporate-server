@@ -1136,10 +1136,10 @@ msgstr "http://sdb.univention.de/1298"
 
 #: umc/python/diagnostic/plugins/21_check_join_status.py:44
 msgid ""
-"https://docs.software-univention.de/manual-4.4.html#domain:listenernotifier:"
+"https://docs.software-univention.de/manual-5.0.html#domain:listenernotifier:"
 "erroranalysis"
 msgstr ""
-"https://docs.software-univention.de/manual-4.4.html#domain:listenernotifier:"
+"https://docs.software-univention.de/manual-5.0.html#domain:listenernotifier:"
 "erroranalysis"
 
 #: umc/python/diagnostic/plugins/58_check_memberOf.py:44
