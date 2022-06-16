@@ -55,7 +55,7 @@ if [ "$1" = "configure" ]; then
 		repository/credentials/'Univention Software Repository'/uris?'updates.software-univention.de updates-test.software-univention.de appcenter.software-univention.de appcenter-test.software-univention.de' \
 		update/available?no \
 		version/version?5.0 \
-		version/patchlevel?1 \
+		version/patchlevel?2 \
 		version/erratalevel?0
 fi
 

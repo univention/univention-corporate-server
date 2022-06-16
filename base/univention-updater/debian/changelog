@@ -1,3 +1,9 @@
+univention-updater (15.0.3-78) unstable; urgency=medium
+
+  * Bug #54861: Adapt links and components for 5.0-2
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 16 Jun 2022 08:06:51 +0200
+
 univention-updater (15.0.3-77) unstable; urgency=medium
 
   * Bug #49061: univention-upgrade: validating updateto param in parsing method now, sysexit(1) on wrong param
