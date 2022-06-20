@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: cyrus-imapd
+fix: 2.5.10-3+deb9u3
+desc: |
+ This update addresses the following issues:
+ * privilege escalation in HTTP request (CVE-2019-18928)
+ * Denial of service via string hashing algorithm collisions (CVE-2021-33582)
+bug: [54881]
+cve:
+- CVE-2019-18928
+- CVE-2021-33582
