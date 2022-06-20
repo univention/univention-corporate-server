@@ -11,9 +11,9 @@ export HALT=false
 # extra label for instances names so that the instances
 # are user specific
 if [ -n "$BUILD_URL" ]; then
-	# -> if started via jenkins KVM_LABEL_SUFFIX="username_"
-	USER="$(curl -k -s "$BUILD_URL/api/json" | awk -F '"userId":"' '{print $2}'| awk -F '"' '{print $1}')"
-	export USER="$USER"
+	# -> if started via jenkins "...-username"
+	my_name="$(curl -k -s "$BUILD_URL/api/json" | awk -F '"userId":"' '{print $2}'| awk -F '"' '{print $1}')"
+	export UCS_ENV_MY_USERNAME="-${my_name}"
 fi
 
 ./scenarios/veyon/create_veyon_cfg.py  \
