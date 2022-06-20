@@ -1886,7 +1886,7 @@ class simpleLdap(object):
 
 	@classmethod
 	def _ldap_attributes(cls):
-		return ['*', 'entryUUID']
+		return ['*', 'entryUUID', 'entryCSN', 'modifyTimestamp']
 
 
 class simpleComputer(simpleLdap):
