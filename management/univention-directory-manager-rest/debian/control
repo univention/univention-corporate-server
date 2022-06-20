@@ -62,11 +62,11 @@ Depends:
  python3-setproctitle,
  python3-six,
  python3-tornado,
- python3-univention-directory-manager (>= 15.0.11-43),
+ python3-univention-directory-manager (>= 15.0.11-54),
  python3-univention-directory-reports,
  python3-univention-management-console,
  python3-uritemplate,
- univention-management-console-module-udm (>= 10.0.1-25),
+ univention-management-console-module-udm (>= 10.0.1-27),
  ${misc:Depends},
  ${python3:Depends},
 Description: REST service for UCS Directory Manager

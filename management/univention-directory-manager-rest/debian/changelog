@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.2-12) unstable; urgency=medium
+
+  * Bug #54883: use UDM builtin metadata
+
+ -- Florian Best <best@univention.de>  Tue, 21 Jun 2022 20:44:05 +0200
+
 univention-directory-manager-rest (10.0.2-11) unstable; urgency=medium
 
   * Bug #38762: move widget<>syntax mapping into UDM syntax classes
