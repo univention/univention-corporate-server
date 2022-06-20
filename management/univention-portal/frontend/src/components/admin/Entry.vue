@@ -103,6 +103,11 @@ export default defineComponent({
         label: _('Description'),
         i18nLabel: _('Description'),
       }, {
+        type: 'LocaleInput',
+        name: 'keywords',
+        label: _('Keywords'),
+        i18nLabel: _('Keywords'),
+      }, {
         type: 'CheckBox',
         name: 'activated',
         label: _('Activated'),
@@ -234,6 +239,7 @@ export default defineComponent({
     }
     this.formValues.title = { ...(this.modelValue.title ?? this.formValues.title) };
     this.formValues.description = { ...(this.modelValue.description ?? this.formValues.description) };
+    this.formValues.keywords = { ...(this.modelValue.keywords || {}) };
     this.formValues.activated = this.modelValue.activated ?? this.formValues.activated;
     this.formValues.linkTarget = this.modelValue.originalLinkTarget ?? this.formValues.linkTarget;
     this.formValues.logo = this.modelValue.pathToLogo ?? this.formValues.logo;
@@ -282,6 +288,7 @@ export default defineComponent({
         name: this.formValues.name,
         displayName: Object.entries(this.formValues.title),
         description: Object.entries(this.formValues.description),
+        keywords: Object.entries(this.formValues.keywords),
         activated: this.formValues.activated,
         link: links,
         linkTarget: this.formValues.linkTarget,

@@ -65,6 +65,7 @@ function makeEntry(
       selectedGroups: [], // needed for storing selected groups
       backgroundColor: entry.backgroundColor,
       description: entry.description,
+      keywords: entry.keywords,
       links: entry.links,
       linkTarget: entry.linkTarget === 'useportaldefault' ? defaultLinkTarget : entry.linkTarget,
       originalLinkTarget: entry.linkTarget,

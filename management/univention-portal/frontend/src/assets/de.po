@@ -12,6 +12,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "Keywords"
+msgstr "Schlüsselwörter"
+
 #: src/tmp/ts/src/components/globals/PortalButton.vue:35
 #: src/tmp/ts/src/components/modal/ModalDialog.vue:37
 msgid "%(key1)s"

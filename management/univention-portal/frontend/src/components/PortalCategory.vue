@@ -91,6 +91,7 @@
           :super-dn="dn"
           :title="tile.title"
           :description="tile.description"
+          :keywords="tile.keywords"
           :activated="tile.activated"
           :anonymous="tile.anonymous"
           :background-color="tile.backgroundColor"
@@ -128,6 +129,7 @@ import {
   Tile,
   FolderTile,
   Description,
+  Keywords,
   BaseTile,
 } from '@/store/modules/portalData/portalData.models';
 
@@ -229,13 +231,18 @@ export default defineComponent({
       return this.$localized(description).toLowerCase()
         .includes(this.searchQuery.toLowerCase());
     },
+    keywordsMatchesQuery(keywords: Keywords): boolean {
+      return this.$localized(keywords).toLowerCase()
+        .includes(this.searchQuery.toLowerCase());
+    },
     tileMatchesQuery(tile: Tile): boolean {
       // Todo Refactor tileMatch Logic into some kind of helper function, because it's used twice (in Portalfolder.vue)
       const titleMatch = this.titleMatchesQuery(tile.title);
       const descriptionMatch = (tile as BaseTile).description ? this.descriptionMatchesQuery((tile as BaseTile).description as Description) : false;
+      const keywordsMatch = (tile as BaseTile).keywords ? this.keywordsMatchesQuery((tile as BaseTile).keywords as Keywords) : false;
       const folderMatch = tile.isFolder && (tile as FolderTile).tiles.some((t) => this.titleMatchesQuery(t.title) ||
         this.descriptionMatchesQuery((t as BaseTile).description as Description));
-      return titleMatch || descriptionMatch || folderMatch;
+      return titleMatch || descriptionMatch || folderMatch || keywordsMatch;
     },
   },
 });

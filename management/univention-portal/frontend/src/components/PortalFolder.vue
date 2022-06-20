@@ -75,6 +75,7 @@
             :super-dn="dn"
             :title="tile.title"
             :description="tile.description"
+            :keywords="tile.keywords"
             :activated="tile.activated"
             :anonymous="tile.anonymous"
             :background-color="tile.backgroundColor"
