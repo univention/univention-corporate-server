@@ -1,3 +1,9 @@
+univention-saml (7.0.5-2) unstable; urgency=medium
+
+  * Bug #54706: revert. Python 2 is used by UCR template
+
+ -- Florian Best <best@univention.de>  Mon, 20 Jun 2022 08:30:04 +0200
+
 univention-saml (7.0.5-1) unstable; urgency=medium
 
   * Bug #54706: drop Python 2 package files

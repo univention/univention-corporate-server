@@ -5,6 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  dh-python,
+ python-all,
  python3-all,
  univention-config-dev (>= 15.0.3),
  univention-join-dev,
@@ -26,6 +27,8 @@ Depends:
  php-ldap,
  php-memcache,
  php-xml,
+ python-six,
+ python-univention-lib,
  python3-six,
  python3-univention-lib,
  shell-univention-lib,
@@ -36,6 +39,8 @@ Depends:
  univention-heimdal-common,
  univention-saml-schema (= ${source:Version}),
  ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
 Breaks:
  univention-saml-schema (<< 3.0.16-1),
 Description: Integrates simpleSAMLphp Identity Provider into UCS
@@ -61,10 +66,8 @@ Description: Integrates simpleSAMLphp Identity Provider into UCS
 Package: univention-saml-schema
 Architecture: all
 Depends:
- python3-univention-directory-manager (>= 14.0.14-14),
  univention-config,
  ${misc:Depends},
- ${python3:Depends},
 Description: UCS simpleSAMLphp ldap integration
  This package integrates the simpleSAMLphp ldap schema into the domain
  .
