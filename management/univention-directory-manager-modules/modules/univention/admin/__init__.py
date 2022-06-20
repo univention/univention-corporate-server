@@ -36,6 +36,7 @@ from __future__ import absolute_import, print_function
 import copy
 import sys
 import re
+import time
 from typing import TYPE_CHECKING, Any, Callable, Container, Iterable, List, Match, Optional, Tuple, Type, Union  # noqa: F401
 
 import six
@@ -621,6 +622,26 @@ class policiesGroup:
 			self.short_description = short_description
 		self.long_description = long_description
 		self.members = members
+
+
+def _ldap_cache(ttl=10):
+	def _decorator(func):
+		func._cache = {}
+
+		def _decorated(lo, *args):
+			cache = func._cache
+			key = tuple([id(lo)] + list(args))
+			now = time.time()
+			for cache_key, cache_val in list(cache.items()):
+				if cache_val['expire'] < now:
+					cache.pop(cache_key)
+
+			if key not in cache or cache[key]['expire'] < now:
+				value = {'value': func(lo, *args), 'expire': time.time() + ttl}
+				cache[key] = value
+			return cache[key]['value']
+		return _decorated
+	return _decorator
 
 
 univention.admin = sys.modules[__name__]
