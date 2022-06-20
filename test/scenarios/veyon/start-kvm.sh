@@ -27,7 +27,7 @@ fi
 # are user specific
 if [ -n "$BUILD_URL" ]; then
 	# -> if started via jenkins KVM_LABEL_SUFFIX="username_"
-	USER="$(curl -k -s "$BUILD_URL/api/json" | awk -F '"userId":"' '{print $2}'| awk -F '"' '{print $1}')_"
+	USER="$(curl -k -s "$BUILD_URL/api/json" | awk -F '"userId":"' '{print $2}'| awk -F '"' '{print $1}')"
 	export USER="$USER"
 fi
 
