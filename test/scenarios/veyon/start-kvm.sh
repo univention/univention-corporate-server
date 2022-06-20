@@ -12,9 +12,8 @@ export HALT=false
 # are user specific
 if [ -n "$BUILD_URL" ]; then
 	# -> if started via jenkins KVM_LABEL_SUFFIX="username_"
-	KVM_LABEL_SUFFIX="$(curl -k -s "$BUILD_URL/api/json" | awk -F '"userId":"' '{print $2}'| awk -F '"' '{print $1}')_"
-	export KVM_LABEL_SUFFIX
-	export USER="$KVM_LABEL_SUFFIX"
+	USER="$(curl -k -s "$BUILD_URL/api/json" | awk -F '"userId":"' '{print $2}'| awk -F '"' '{print $1}')_"
+	export USER="$USER"
 fi
 
 ./scenarios/veyon/create_veyon_cfg.py  \
