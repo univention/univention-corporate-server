@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-portal\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2022-01-04 16:05+0100\n"
+"POT-Creation-Date: 2022-06-22 13:49+0200\n"
 "PO-Revision-Date: 2020-05-01 00:20+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -16,7 +16,7 @@ msgstr ""
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: udm/handlers/entry.py:148
+#: udm/handlers/entry.py:154
 msgid "Advanced"
 msgstr "Erweitert"
 
@@ -28,7 +28,7 @@ msgstr "Erscheinung"
 msgid "Background"
 msgstr "Hintergrund"
 
-#: udm/handlers/entry.py:122
+#: udm/handlers/entry.py:127
 msgid "Background color"
 msgstr "Hintergrundfarbe"
 
@@ -60,7 +60,7 @@ msgstr "Optionen für Kategorie"
 msgid "Default browser tab for portal entries"
 msgstr "Standard Browser-Tab für Portaleinträge"
 
-#: udm/handlers/entry.py:72 udm/handlers/entry.py:138
+#: udm/handlers/entry.py:72 udm/handlers/entry.py:143
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -74,7 +74,7 @@ msgstr ""
 
 #: udm/handlers/category.py:67 udm/handlers/all.py:64
 #: udm/handlers/folder.py:67 udm/handlers/folder.py:86
-#: udm/handlers/entry.py:65 udm/handlers/entry.py:135
+#: udm/handlers/entry.py:65 udm/handlers/entry.py:140
 #: udm/handlers/portal.py:66
 msgid "Display name"
 msgstr "Anzeigename"
@@ -107,13 +107,13 @@ msgstr "Einträge im Benutzermenü"
 msgid "Entry"
 msgstr "Eintrag"
 
-#: udm/handlers/folder.py:82 udm/handlers/entry.py:129
+#: udm/handlers/folder.py:82 udm/handlers/entry.py:134
 msgid "Entry options"
 msgstr "Optionen für Eintrag"
 
 #: udm/handlers/category.py:82 udm/handlers/category.py:86
 #: udm/handlers/all.py:71 udm/handlers/folder.py:82 udm/handlers/folder.py:83
-#: udm/handlers/entry.py:129 udm/handlers/entry.py:130
+#: udm/handlers/entry.py:134 udm/handlers/entry.py:135
 #: udm/handlers/portal.py:121
 msgid "General"
 msgstr "Allgemein"
@@ -163,7 +163,8 @@ msgstr ""
 msgid "Internal name"
 msgstr "Interner Name"
 
-#: udm/handlers/entry.py:79 udm/handlers/entry.py:141
+#: udm/syntax/univention-portal.py:122 udm/handlers/entry.py:79
+#: udm/handlers/entry.py:146
 msgid "Keywords"
 msgstr "Schlüsselwörter"
 
@@ -171,17 +172,21 @@ msgstr "Schlüsselwörter"
 msgid "Keywords of the entry used during search."
 msgstr "Schlüsselwörter des Eintrags, die für die Suche genutzt werden."
 
-#: udm/syntax/univention-portal.py:114
+#: udm/syntax/univention-portal.py:114 udm/syntax/univention-portal.py:122
 msgid "Language code (e.g. en_US)"
 msgstr "Sprachcode (z.B. de_DE)"
 
-#: udm/syntax/univention-portal.py:114 udm/handlers/entry.py:144
+#: udm/syntax/univention-portal.py:114 udm/handlers/entry.py:149
 msgid "Link"
 msgstr "Link"
 
 #: udm/handlers/portal.py:130
 msgid "Link behaviour"
 msgstr "Link-Verhalten"
+
+#: udm/handlers/entry.py:122
+msgid "Link target name"
+msgstr "Link-Ziel Name"
 
 #: udm/handlers/entry.py:85
 msgid "Links (best pick based on locale / protocol / hostname)"

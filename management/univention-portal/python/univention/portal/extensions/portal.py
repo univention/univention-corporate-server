@@ -317,6 +317,7 @@ class UMCPortal(Portal):
 					locale: ' '.join(module["keywords"]),
 				},
 				"linkTarget": "embedded",
+				"target": None,
 				"logo_name": logo_name,
 				"backgroundColor": color,
 				"links": [{

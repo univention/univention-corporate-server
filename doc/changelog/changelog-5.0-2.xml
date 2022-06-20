@@ -412,6 +412,9 @@
 				<listitem><simpara>
 					Some requests have been excluded from <envar>apache2/force_https</envar>, so that the portal tiles in the UMC are shown even if https is forced (<u:bug>53296</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The Portal server now provides a navigation endpoint (<u:bug>54618</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 

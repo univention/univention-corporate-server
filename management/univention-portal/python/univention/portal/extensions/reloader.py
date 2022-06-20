@@ -230,6 +230,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 					"allowedGroups": entry.props.allowedGroups,
 					"links": entry.props.link,
 					"linkTarget": entry.props.linkTarget,
+					"target": entry.props.target,
 					"backgroundColor": entry.props.backgroundColor,
 				}
 

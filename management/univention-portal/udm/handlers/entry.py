@@ -118,6 +118,11 @@ property_descriptions = {
 		default='useportaldefault',
 		dontsearch=True,
 	),
+	'target': univention.admin.property(
+		short_description=_('Link target name'),
+		syntax=univention.admin.syntax.string,
+		dontsearch=True,
+	),
 	'backgroundColor': univention.admin.property(
 		short_description=_('Background color'),
 		syntax=univention.admin.syntax.string,
@@ -143,6 +148,7 @@ layout = [
 		]),
 		Group(_('Link'), layout=[
 			["linkTarget"],
+			["target"],
 			["link"],
 		]),
 		Group(_('Advanced'), layout=[
@@ -168,6 +174,7 @@ mapping.register('description', 'univentionNewPortalEntryDescription', mapTransl
 mapping.register('keywords', 'univentionNewPortalEntryKeywords', mapTranslationValue, unmapTranslationValue)
 mapping.register('link', 'univentionNewPortalEntryLink', mapTranslationValue, unmapTranslationValue)
 mapping.register('linkTarget', 'univentionNewPortalEntryLinkTarget', None, univention.admin.mapping.ListToString)
+mapping.register('target', 'univentionNewPortalEntryTarget', None, univention.admin.mapping.ListToString)
 mapping.register('activated', 'univentionNewPortalEntryActivate', None, univention.admin.mapping.ListToString)
 mapping.register('anonymous', 'univentionNewPortalEntryOnlyAnonymous', None, univention.admin.mapping.ListToString)
 mapping.register('allowedGroups', 'univentionNewPortalEntryAllowedUserGroup')

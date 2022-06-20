@@ -29,12 +29,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import base64
+import binascii
+import hashlib
 import json
 
 from six import with_metaclass
 from tornado.httpclient import AsyncHTTPClient, HTTPError, HTTPRequest
 
-from univention.portal import Plugin
+from univention.portal import config, Plugin
 from univention.portal.log import get_logger
 from univention.portal.user import User
 
@@ -150,3 +153,38 @@ class UMCAuthenticator(Authenticator):
 			get_logger("user").warning("session unknown!")
 		else:
 			return username
+
+
+class UMCAndSecretAuthenticator(UMCAuthenticator):
+	"""Authenticate with a private secret and become any user (god mode)"""
+
+	async def get_user(self, request):
+		user = await super(UMCAndSecretAuthenticator, self).get_user(request)
+		if user and user.username:
+			return user
+
+		authorization = self.request.headers.get('Authorization')
+		if not authorization:
+			return user
+
+		try:
+			if not authorization.lower().startswith('basic '):
+				raise ValueError()
+			username, password = base64.b64decode(authorization.split(' ', 1)[1].encode('ISO8859-1')).decode('UTF-8').split(':', 1)
+		except (ValueError, IndexError, binascii.Error):
+			raise HTTPError(400)
+
+		get_logger("user").debug("received basic auth request with username=%r", username)
+		try:
+			with open(config.fetch("portal-secret-file")) as fd:
+				config_secret = fd.read().strip()
+		except (KeyError, AttributeError):
+			return user
+
+		# compare hashed password to prevent time based side channel attack
+		if hashlib.sha512(password.encode('utf-8')) != hashlib.sha512(config_secret.encode('utf-8')):
+			get_logger("user").warning("password mismatch")
+			return user
+
+		groups = self.group_cache.get().get(username, [])
+		return User(username, None, groups, None)
