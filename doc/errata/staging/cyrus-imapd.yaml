@@ -6,7 +6,7 @@ src: cyrus-imapd
 fix: 2.5.10-3+deb9u3
 desc: |
  This update addresses the following issues:
- * privilege escalation in HTTP request (CVE-2019-18928)
+ * Privilege escalation in HTTP request (CVE-2019-18928)
  * Denial of service via string hashing algorithm collisions (CVE-2021-33582)
 bug: [54881]
 cve:
