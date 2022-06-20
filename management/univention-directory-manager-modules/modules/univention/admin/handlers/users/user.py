@@ -860,23 +860,10 @@ layout = [
 ]
 
 
+@univention.admin._ldap_cache(ttl=10)
 def get_primary_group_dn(lo, gid_number):
-	ttl = 10
-	key = id(lo), gid_number
-	cache = get_primary_group_dn._cache
-	now = time.time()
-	for cache_key, cache_val in list(cache.items()):
-		if cache_val['expire'] < now:
-			cache.pop(cache_key)
-
-	if key not in cache or cache[key]['expire'] < now:
-		groups = lo.searchDn(filter=filter_format(u'(&(cn=*)(|(objectClass=posixGroup)(objectClass=sambaGroupMapping))(gidNumber=%s))', [gid_number]))
-		value = {'value': groups[0] if groups else None, 'expire': time.time() + ttl}
-		cache[key] = value
-	return cache[key]['value']
-
-
-get_primary_group_dn._cache = {}
+	groups = lo.searchDn(filter=filter_format(u'(&(cn=*)(|(objectClass=posixGroup)(objectClass=sambaGroupMapping))(gidNumber=%s))', [gid_number]))
+	return groups[0] if groups else None
 
 
 def check_prohibited_username(lo, username):

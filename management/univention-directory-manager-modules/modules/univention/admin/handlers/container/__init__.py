@@ -31,29 +31,17 @@
 help tools for the containers
 """
 
-import time
+from univention.admin import _ldap_cache
 
 
+@_ldap_cache(ttl=2)
 def default_container_for_objects(lo, domain):
-	ttl = 2
-	cache = default_container_for_objects._cache
-	key = id(lo), domain
-	now = time.time()
-	for cache_key, cache_val in list(cache.items()):
-		if cache_val['expire'] < now:
-			cache.pop(cache_key)
+	pathResult = lo.get('cn=directory,cn=univention,' + domain)
+	default_dn = 'cn=directory,cn=univention,' + domain
+	if not pathResult:
+		pathResult = lo.get('cn=default containers,cn=univention,' + domain)
+		default_dn = 'cn=default containers,cn=univention,' + domain
+	return (pathResult, default_dn)
 
-	if key not in cache or cache[key]['expire'] < now:
-		pathResult = lo.get('cn=directory,cn=univention,' + domain)
-		default_dn = 'cn=directory,cn=univention,' + domain
-		if not pathResult:
-			pathResult = lo.get('cn=default containers,cn=univention,' + domain)
-			default_dn = 'cn=default containers,cn=univention,' + domain
-		value = {'value': (pathResult, default_dn), 'expire': time.time() + ttl}
-		cache[key] = value
-	return cache[key]['value']
-
-
-default_container_for_objects._cache = {}
 
 __path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore
