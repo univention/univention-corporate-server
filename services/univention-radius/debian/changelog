@@ -1,3 +1,9 @@
+univention-radius (7.0.2-2) unstable; urgency=medium
+
+  * Bug #54662: Increase Joinscript version: VLAN in RADIUS
+
+ -- Peter Stoll <stoll.extern@univention.de>  Mon, 20 Jun 2022 16:22:05 +0200
+
 univention-radius (7.0.2-1) unstable; urgency=medium
 
   * Bug #54706: drop Python 2 packages

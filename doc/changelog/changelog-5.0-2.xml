@@ -803,7 +803,7 @@
 			<title>RADIUS</title>
 			<itemizedlist>
 				<listitem><simpara>
-					For new installations of the package, the RADIUS server can now assign VLAN IDs to user connections if their group has set the attribute <property>vlanId</property>.
+					The RADIUS server can now assign VLAN IDs to user connections if their group has set the attribute <property>vlanId</property>.
 					The &ucsUCRV; <envar>freeradius/vlan-id</envar> has been added to set a VLAN ID even if the user is no member of any such group (<u:bug>25916</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
