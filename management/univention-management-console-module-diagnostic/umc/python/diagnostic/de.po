@@ -717,7 +717,7 @@ msgstr ""
 #: umc/python/diagnostic/plugins/62_check_slapschema.py:67
 msgid ""
 "The LDAP schema validation failed with the following errors or warnings:\n"
-msgstr "Die LDAP-Schema Validierung ist mit den Folgenden Fehlern oder Warnungen fehlgeschlagen:\n"
+msgstr "Die LDAP-Schema-Validierung ist mit den folgenden Fehlern oder Warnungen fehlgeschlagen:\n"
 
 #: umc/python/diagnostic/plugins/43_connectors4_rejects.py:101
 msgid ""
