@@ -365,10 +365,48 @@ reopen:
 	sigaction(SIGPIPE, &oldact, NULL);
 }
 
+
+void build_index()
+{
+	char* buffer = NULL;
+	unsigned long id;
+	FILE *index = NULL;
+	size_t pos, bufflen;
+
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK from notify_build_index");
+	if ((notify.tf = fopen_with_lockfile(FILE_NAME_TF, "r", &(notify.l_tf))) == NULL) {
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to lock tf");
+		return;
+	}
+	if ( ( index = index_open(FILE_NAME_TF_IDX) ) == NULL ) {
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to open index");
+		goto error;
+	}
+
+
+	fseek(notify.tf, 0, SEEK_SET);
+	pos = 0;
+
+	while (getline(&buffer, &bufflen, notify.tf) != -1) {
+		sscanf(buffer, "%ld", &id) ;
+		index_set(index, id, pos);
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Index set (build_index) %ld", id);
+		pos=ftell(notify.tf);
+	}
+
+	free(buffer);
+
+error:
+	if (index)
+		fclose(index);
+	fclose_with_lockfile(FILE_NAME_TF, &notify.tf, &notify.l_tf);
+}
+
 void notify_init ( Notify_t *notify )
 {
 	notify->tf    = NULL;
 	notify->l_tf  = NULL;
+	build_index();
 }
 
 
@@ -406,11 +444,21 @@ int notify_transaction_get_last_notify_id ( Notify_t *notify, NotifyId_t *notify
 	return 0;
 }
 
+void reverse(char *buff, size_t len)
+{
+	if (len == 0)
+		return;
+	for (size_t first = 0, last=len; first < last ; --last) {
+		buff[first] ^= buff[last];
+		buff[last]  ^= buff[first];
+		buff[first] ^= buff[last];
+	}
+}
 
 char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 {
 	char buffer[2048];
-	int i;
+	int i, idx;
 	char c;
 	unsigned long id;
 	bool found = false;
@@ -428,6 +476,7 @@ char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 	}
 
 	i=0;
+	idx=0;
 	memset(buffer, 0, sizeof(buffer));
 
 	if ((pos = index_get(index, last_known_id)) != -1) {
@@ -445,15 +494,18 @@ char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 		}
 	}
 
-	fseek(notify.tf, 0, SEEK_SET);
-	pos = 0;
-	while (!found && (c=fgetc(notify.tf)) != EOF ) {
-		if ( c == 255 ) {
-			break;
-		}
 
-		if ( c == '\n' ) {
+	while ( !found && c != -1 && c != 255 && ftell(notify.tf) != 1) {
+		i++;
+		fseek( notify.tf, -i, SEEK_END);
+		c = fgetc ( notify.tf ) ;
+
+		if (c == '\n')
+		{
+			reverse(buffer, idx-1);
 			sscanf(buffer, "%ld", &id) ;
+
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "notify_transaction_get_one_dn %s", buffer);
 
 			index_set(index, id, pos);
 
@@ -463,12 +515,12 @@ char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 				break;
 			}
 
-			i=0;
 			pos=ftell(notify.tf);
 			memset(buffer, 0, 2048);
+			idx=0;
 		} else {
-			buffer[i] = c;
-			i++;
+			buffer[idx] = c;
+			idx++;
 		}
 	}
 

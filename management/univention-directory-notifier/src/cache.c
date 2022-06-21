@@ -57,7 +57,7 @@ static inline notify_cache_t *lookup(unsigned long id) {
 
 int notifier_cache_init ( unsigned long max_id)
 {
-	unsigned long id;
+	unsigned long id, max_filled=0;
 
 	cache = calloc(notifier_cache_size, sizeof(notify_cache_t));
 
@@ -72,18 +72,17 @@ int notifier_cache_init ( unsigned long max_id)
 			continue;
 		}
 
-		sscanf(buffer, "%ld", &(entry->id));
+		sscanf(buffer, "%lu", &(entry->id));
 		entry->command = buffer[strlen(buffer) - 1];
 		p = index(buffer, ' ') + 1;
 		pp = rindex(p, ' ');
 		entry->dn = strndup(p, pp - p);
 
 		free(buffer);
-
+		max_filled++;
 	}
 
-	max_filled=count;
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "max_filled = %d", max_filled);
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "max_filled = %ld", max_filled);
 
 	return 0;
 }
