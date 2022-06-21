@@ -10,7 +10,7 @@
 .. _grafana: https://grafana.com/
 .. _isc-dhcp-failover: https://kb.isc.org/docs/aa-00502
 .. _kernel-bonding: https://www.kernel.org/doc/Documentation/networking/bonding.txt
-.. _lastbind-overlay: http://manpages.ubuntu.com/manpages/xenial/man5/slapo-lastbind.5.html
+.. _lastbind-overlay: https://manpages.ubuntu.com/manpages/xenial/man5/slapo-lastbind.5.html
 .. _ldap-generalized-time: https://ldapwiki.com/wiki/GeneralizedTime
 .. _microsoft-domain-verify: https://docs.microsoft.com/de-de/azure/active-directory/fundamentals/add-custom-domain
 .. _microsoft-rsat-tools: https://www.microsoft.com/en-us/download/details.aspx?id=45520
