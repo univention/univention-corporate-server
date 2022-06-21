@@ -31,7 +31,6 @@ from __future__ import absolute_import
 import inspect
 import string
 from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Type  # noqa: F401
-import warnings
 
 import listener
 from .exceptions import ListenerModuleConfigurationError
@@ -97,35 +96,6 @@ class ListenerModuleConfiguration(object):
 			)
 		if not inspect.isclass(self.get_listener_module_class()):
 			raise ListenerModuleConfigurationError('Attribute "listener_module_class" must be a class.')
-
-	def get_configuration(self):
-		# type: () -> Dict[str, Any]
-		"""
-		Get the configuration as dictionary - *deprecated*.
-
-		.. deprecated:: 5.0-2
-			Will be removed in UCS 5.0-2.
-
-		:return: configuration of listener module
-		:rtype: dict
-		"""
-		warnings.warn(
-			"The method ListenerModuleConfiguration.get_configuration() is deprecated and will be "
-			"removed with UCS 5.0-2.",
-			PendingDeprecationWarning,
-		)
-		res = {}
-		for key in self.get_configuration_keys():
-			getter = getattr(self, 'get_{}'.format(key), None)
-			if getter and callable(getter):
-				value = getter()
-			elif hasattr(self, key):
-				value = getattr(self, key)
-			else:
-				raise ListenerModuleConfigurationError(
-					'Neither "get_{0}" method nor class attribute found for configuration key {0!r}.'.format(key))
-			res[key] = value
-		return res
 
 	@classmethod
 	def get_configuration_keys(cls):
