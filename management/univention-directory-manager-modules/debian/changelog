@@ -10,6 +10,12 @@ univention-directory-manager-modules (15.0.12-1) unstable; urgency=medium
 
  -- Florian Best <best@univention.de>  Mon, 13 Jun 2022 12:17:27 +0200
 
+univention-directory-manager-modules (15.0.11-53) unstable; urgency=medium
+
+  * Bug #54853: improove speed when fetching group memberships
+
+ -- Florian Best <best@univention.de>  Sun, 12 Jun 2022 20:26:24 +0200
+
 univention-directory-manager-modules (15.0.11-52) unstable; urgency=medium
 
   * Bug #54849: fix error resolving dependencies of UDM_Attributes based
