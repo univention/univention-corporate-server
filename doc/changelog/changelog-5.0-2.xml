@@ -343,6 +343,15 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+
+		<section id="changelog:domain:listener">
+			<title>Univention Directory Listener</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The unused method <function>get_configuration()</function> has been removed from the <classname>ListenerModuleConfiguration</classname>  class in the <filename class="libraryfile">univention.listener.handler_configuration</filename> module (<u:bug>54501</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
 	</section>
 
 	<section id="changelog:umc">
