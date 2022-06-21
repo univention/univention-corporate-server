@@ -76,7 +76,7 @@ config_repo \
 	grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.list
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	2"
 	test "${_version_version}" = "$(ucr get version/version)"
-	test 1 = "$(ucr get version/patchlevel)"
+	test "${_version_patchlevel}" = "$(ucr get version/patchlevel)"
 	checkdeb "${pkgname}" 1 2
 )
 # shellcheck disable=SC2181

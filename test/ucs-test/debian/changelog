@@ -1,3 +1,9 @@
+ucs-test (10.0.7-1) unstable; urgency=medium
+
+  * Bug #54868: Adapt updater tests for 5.0-2
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 21 Jun 2022 17:31:02 +0200
+
 ucs-test (10.0.6-114) unstable; urgency=medium
 
   * Bug #54742: Warning about expiring key: Reduce time to action from 5 years
