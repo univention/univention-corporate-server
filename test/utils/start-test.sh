@@ -243,7 +243,6 @@ if [ -n "$UCSSCHOOL_BRANCH" ] || [ -n "$UCS_BRANCH" ]; then
 	# check branch test
 	ssh "jenkins@${BUILD_HOST}" /home/jenkins/build -r "${BUILD_REPO}" -b "${BUILD_BRANCH}" > utils/apt-get-branch-repo.list ||
 		die 'Branch build failed'
-	# replace non deb lines
 	sed -i '/^deb /!d' utils/apt-get-branch-repo.list
 fi
 
@@ -262,7 +261,8 @@ fi
 
 # start the test
 declare -a cmd=()
-if "$docker"; then
+if "$docker"
+then
 	# get latest version of image
 	case "$image" in *.*/*) docker pull "$image" ;; esac
 	# create env file

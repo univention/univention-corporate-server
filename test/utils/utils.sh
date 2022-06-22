@@ -902,18 +902,15 @@ import_license () {
 }
 
 umc_apps () {
-	local version retval=0
+	local version
 	version=$(ucr get version/version)
 	if [ "${version%%.*}" -ge 5 ]; then
 		# umc appcenter with UCS 5.0
 		python3 umc-appcenter.py "$@"
-		retval=$?
 	else
 		# legacy umc appcenter, neede for app release tests
 		python -m shared-utils/apps "$@"
-		retval=$?
 	fi
-	return $retval
 }
 
 install_apps_via_umc () {
@@ -1096,12 +1093,10 @@ EOF
 
 add_branch_repository () {
 	local extra_list="/root/apt-get-branch-repo.list"
-	if [ -s "$extra_list" ]; then
-		cp "$extra_list" /etc/apt/sources.list.d/
-		chmod a+r "/etc/apt/sources.list.d/$(basename "$extra_list")"
-		apt-get update
-		return $?
-	fi
+	[ -s "$extra_list" ] ||
+		return 0
+	install -m644 "$extra_list" /etc/apt/sources.list.d/
+	apt-get -qq update
 }
 
 restart_services_bug_47762 () {
@@ -1172,7 +1167,6 @@ basic_setup_ucs_role () {
 ucs-winrm () {
 	local image="docker.software-univention.de/ucs-winrm"
 	docker run --rm -v /etc/localtime:/etc/localtime:ro -v "$HOME/.ucs-winrm.ini:/root/.ucs-winrm.ini:ro" "$image" "$@"
-	return $?
 }
 
 add_extra_apt_scope () {
