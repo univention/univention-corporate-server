@@ -1,5 +1,5 @@
 <!--
-Copyright 2021-2022 Univention GmbH
+Copyright 2022 Univention GmbH
 
 https://www.univention.de/
 
@@ -27,39 +27,70 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <modal-wrapper
-    :is-active="loadingState"
-    :modal-level="2"
-    class="modal-wrapper--loading"
+  <div
+    class="standbyCircle"
   >
-    <standby-wrapper />
-  </modal-wrapper>
+    <svg
+      viewBox="0 0 100 100"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle
+        cx="50"
+        cy="50"
+        r="45"
+      />
+    </svg>
+  </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { mapGetters } from 'vuex';
-
-import ModalWrapper from '@/components/modal/ModalWrapper.vue';
-import StandbyWrapper from '@/components/StandbyWrapper.vue';
-
-export default defineComponent({
-  name: 'LoadingOverlay',
-  components: {
-    ModalWrapper,
-    StandbyWrapper,
-  },
-  computed: {
-    ...mapGetters({
-      loadingState: 'getLoadingState',
-    }),
-  },
-});
-</script>
-
 <style lang="stylus">
-.modal-wrapper--loading
-  --bgc-loading-circle: rgba(255, 255, 255, 0.4)
-  &.modal-wrapper--isVisible
-    z-index: $zindex-10
+.standbyCircle
+  width: 2rem
+  height: 2rem
+  display: flex
+  color: var(--bgc-loading-circle)
+
+  svg
+    animation: 2s linear infinite svg-animation
+    width: 100%
+    height: 100%
+
+  circle
+    animation: 1.4s ease-in-out infinite both circle-animation
+    display: block
+    fill: transparent
+    stroke: currentColor
+    stroke-linecap: round
+    stroke-dasharray: 283
+    stroke-dashoffset: 280
+    stroke-width: 10px
+    transform-origin: 50% 50%
+
+@keyframes svg-animation {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(360deg)
+  }
+}
+
+@keyframes circle-animation {
+  0%,
+  25% {
+    stroke-dashoffset: 280;
+    transform: rotate(0);
+  }
+
+  50%,
+  75% {
+    stroke-dashoffset: 75;
+    transform: rotate(45deg);
+  }
+
+  100% {
+    stroke-dashoffset: 280;
+    transform: rotate(360deg);
+  }
+}
 </style>

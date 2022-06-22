@@ -36,7 +36,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Portal from '@/views/Portal.vue';
 import CookieBanner from '@/components/globals/CookieBanner.vue';
 
 import { getCookie } from '@/jsHelper/tools';
@@ -50,7 +49,6 @@ interface AppData {
 export default defineComponent({
   name: 'App',
   components: {
-    Portal,
     CookieBanner,
   },
   data(): AppData {

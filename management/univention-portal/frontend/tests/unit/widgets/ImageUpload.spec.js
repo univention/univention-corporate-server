@@ -37,13 +37,26 @@ const imageUploadProps = {
   forAttrOfLabel: '',
   invalidMessageId: '',
 };
+const $store = {
+  getters: {
+    'metaData/getMeta': function () {
+      return {
+        'umc/server/upload/max': '2048',
+      };
+    },
+  },
+};
 
 const imageResult = 'data:image/png;base64__TEST';
 
 let wrapper;
-
 beforeEach(async () => {
   wrapper = await mount(ImageUploader, {
+    global: {
+      mocks: {
+        $store,
+      },
+    },
     propsData: imageUploadProps,
   });
 });
@@ -71,15 +84,15 @@ describe('ImageUploader.vue', () => {
       this.readAsDataURL = jest.fn();
     });
 
-    // Spy on handleFile method
-    const handleFileSpy = jest.spyOn(wrapper.vm, 'handleFile');
+    // Spy on setFile method
+    const setFileSpy = jest.spyOn(wrapper.vm, 'setFile');
 
     let imagePreview = wrapper.find(`[data-test="imagePreview--${imageUploadProps.extraLabel}"]`);
 
     expect(imagePreview.exists()).toBe(false);
 
     // trigger upload event with test data
-    wrapper.vm.upload(event);
+    wrapper.vm.onUpload(event);
     const reader = FileReader.mock.instances[0];
 
     expect(reader.readAsDataURL).toHaveBeenCalledWith(event.target.files[0]);
@@ -90,8 +103,8 @@ describe('ImageUploader.vue', () => {
     // expect update emmiter to be triggered
     expect(wrapper.emitted()).toHaveProperty('update:modelValue');
 
-    // expect handleFile() to be called
-    expect(handleFileSpy).toHaveBeenCalledWith(event.target.files[0]);
+    // expect setFile() to be called
+    expect(setFileSpy).toHaveBeenCalledWith(event.target.files[0]);
 
     // await instance to update
     await wrapper.vm.$nextTick();

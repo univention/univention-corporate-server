@@ -27,39 +27,31 @@ License with the Debian GNU/Linux or Univention distribution in file
 <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <modal-wrapper
-    :is-active="loadingState"
-    :modal-level="2"
-    class="modal-wrapper--loading"
+  <div
+    class="standbyWrapper"
   >
-    <standby-wrapper />
-  </modal-wrapper>
+    <standby-circle />
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapGetters } from 'vuex';
 
-import ModalWrapper from '@/components/modal/ModalWrapper.vue';
-import StandbyWrapper from '@/components/StandbyWrapper.vue';
+import StandbyCircle from '@/components/StandbyCircle.vue';
 
 export default defineComponent({
-  name: 'LoadingOverlay',
+  name: 'StandyWrapper',
   components: {
-    ModalWrapper,
-    StandbyWrapper,
-  },
-  computed: {
-    ...mapGetters({
-      loadingState: 'getLoadingState',
-    }),
+    StandbyCircle,
   },
 });
 </script>
 
 <style lang="stylus">
-.modal-wrapper--loading
-  --bgc-loading-circle: rgba(255, 255, 255, 0.4)
-  &.modal-wrapper--isVisible
-    z-index: $zindex-10
+.standbyWrapper
+  width: 100%
+  height: 100%
+  display: flex
+  align-items: center
+  justify-content: center
 </style>

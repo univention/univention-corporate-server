@@ -49,7 +49,6 @@ import _ from '@/jsHelper/translate';
 import { removeEntryFromSuperObj, addEntryToSuperObj, put, add, remove } from '@/jsHelper/admin';
 import activity from '@/jsHelper/activity';
 import EditWidget from '@/components/admin/EditWidget.vue';
-import LinkWidget, { LocaleAndValue } from '@/components/widgets/LinkWidget.vue';
 import { validateAll, allValid, validateInternalName } from '@/jsHelper/forms';
 
 interface AdminEntryData {
@@ -61,7 +60,6 @@ export default defineComponent({
   name: 'FormEntryEdit',
   components: {
     EditWidget,
-    LinkWidget,
   },
   props: {
     label: {
@@ -102,6 +100,11 @@ export default defineComponent({
         required: true,
         label: _('Description'),
         i18nLabel: _('Description'),
+      }, {
+        type: 'LocaleInput',
+        name: 'keywords',
+        label: _('Keywords'),
+        i18nLabel: _('Keywords'),
       }, {
         type: 'CheckBox',
         name: 'activated',
@@ -151,6 +154,9 @@ export default defineComponent({
           en_US: '',
         },
         description: {
+          en_US: '',
+        },
+        keywords: {
           en_US: '',
         },
         activated: true,
@@ -234,6 +240,7 @@ export default defineComponent({
     }
     this.formValues.title = { ...(this.modelValue.title ?? this.formValues.title) };
     this.formValues.description = { ...(this.modelValue.description ?? this.formValues.description) };
+    this.formValues.keywords = { ...(this.modelValue.keywords ?? this.formValues.keywords) };
     this.formValues.activated = this.modelValue.activated ?? this.formValues.activated;
     this.formValues.linkTarget = this.modelValue.originalLinkTarget ?? this.formValues.linkTarget;
     this.formValues.logo = this.modelValue.pathToLogo ?? this.formValues.logo;
@@ -282,6 +289,7 @@ export default defineComponent({
         name: this.formValues.name,
         displayName: Object.entries(this.formValues.title),
         description: Object.entries(this.formValues.description),
+        keywords: Object.entries(this.formValues.keywords),
         activated: this.formValues.activated,
         link: links,
         linkTarget: this.formValues.linkTarget,

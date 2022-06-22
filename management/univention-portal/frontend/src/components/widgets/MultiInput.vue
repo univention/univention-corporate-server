@@ -58,7 +58,7 @@ import { defineComponent } from 'vue';
 import _ from '@/jsHelper/translate';
 
 import IconButton from '@/components/globals/IconButton.vue';
-import InputErrorMessage from 'components/forms/InputErrorMessage.vue';
+import InputErrorMessage from '@/components/forms/InputErrorMessage.vue';
 
 import ComboBox from '@/components/widgets/ComboBox.vue';
 import DateBox from '@/components/widgets/DateBox.vue';

@@ -66,16 +66,12 @@
 import { defineComponent } from 'vue';
 import _ from '@/jsHelper/translate';
 
-import Region from '@/components/activity/Region.vue';
 import ModalDialog from '@/components/modal/ModalDialog.vue';
-import ModalWrapper from '@/components/modal/ModalWrapper.vue';
 
 export default defineComponent({
   name: 'ConfirmDialog',
   components: {
     ModalDialog,
-    ModalWrapper,
-    Region,
   },
   props: {
     title: {

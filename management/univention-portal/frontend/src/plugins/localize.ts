@@ -29,26 +29,21 @@
 // plugins/localize
 import { Locale } from '@/store/modules/locale/locale.models';
 import { App } from 'vue';
-import { store } from '../store';
+import { store } from '@/store';
 
 type Localized = (input: Record<Locale, string>) => string;
 
 // expects an object, returns a string
-const localize = {
-  install: (app: App): void => {
-    const localized: Localized = (input: Record<Locale, string>) => {
-      const curLocale = store.getters['locale/getLocale'];
-      const shortLocale = curLocale.split('_')[0];
-      let ret = '';
+export function localized(input: Record<Locale, string>): string {
+  const curLocale = store.getters['locale/getLocale'];
+  const shortLocale = curLocale.split('_')[0];
+  let ret = '';
 
-      if (input) {
-        ret = input[curLocale] || input[shortLocale] || input.en || input.en_US || '';
-      }
-      return ret;
-    };
-    app.config.globalProperties.$localized = localized;
-  },
-};
+  if (input) {
+    ret = input[curLocale] || input[shortLocale] || input.en || input.en_US || '';
+  }
+  return ret;
+}
 
 declare module '@vue/runtime-core' {
   // Bind to `this` keyword
@@ -59,4 +54,8 @@ declare module '@vue/runtime-core' {
 
 // Usage example:
 // {{ $localized(label) }}
-export default localize;
+export default {
+  install: (app: App): void => {
+    app.config.globalProperties.$localized = localized;
+  },
+};

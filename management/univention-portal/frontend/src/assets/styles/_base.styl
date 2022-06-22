@@ -58,7 +58,7 @@ h2
   line-height: var(--font-lineheight-normal)
   font-weight: 600
 
-input, select
+input, select, textarea
   box-sizing: border-box
   width: var(--inputfield-width)
   height: var(--inputfield-size)
@@ -176,6 +176,11 @@ input[type=checkbox]
     font-weight: bold
     text-align: center
     color: var(--color-accent)
+
+textarea
+  max-width: 100%
+  padding-top: calc(3 * var(--layout-spacing-unit-small)) !important
+  height: calc(10 * var(--font-size-3))
 
 // --------------
 // global classes

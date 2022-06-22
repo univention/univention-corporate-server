@@ -28,7 +28,7 @@
  */
 import { PortalModule, RootState } from '@/store/root.models';
 import { ActionContext } from 'vuex';
-import { PortalBaseLayout, PortalLayout, Title } from '@/store/modules/portalData/portalData.models';
+import { PortalBaseLayout, PortalLayout } from '@/store/modules/portalData/portalData.models';
 
 export interface DraggedItem {
   layoutId: string,

@@ -30,6 +30,7 @@
 import {
   BaseTile,
   Category,
+  FolderTile,
   LinkTarget,
   PortalCategory,
   PortalEntry,
@@ -38,9 +39,10 @@ import {
   PortalLayoutEntry,
   TileOrFolder,
 } from '@/store/modules/portalData/portalData.models';
+import { localized } from '@/plugins/localize';
 
-function isBaseTile(value: any): value is BaseTile {
-  return (value !== null) && !value.isFolder;
+function isBaseTile(value: TileOrFolder | null): boolean {
+  return !value?.isFolder;
 }
 
 function makeEntry(
@@ -65,8 +67,10 @@ function makeEntry(
       selectedGroups: [], // needed for storing selected groups
       backgroundColor: entry.backgroundColor,
       description: entry.description,
+      keywords: entry.keywords,
       links: entry.links,
       linkTarget: entry.linkTarget === 'useportaldefault' ? defaultLinkTarget : entry.linkTarget,
+      target: entry.target,
       originalLinkTarget: entry.linkTarget,
       pathToLogo: entry.logo_name || './questionMark.svg',
       key: {
@@ -103,7 +107,29 @@ function makeEntry(
   return null;
 }
 
-export default function createCategories(
+export function doesTitleMatch(entry: TileOrFolder, searchQuery: string): boolean {
+  return localized(entry.title)
+    .toLowerCase()
+    .includes(searchQuery.toLowerCase());
+}
+
+export function doesDescriptionMatch(entry: TileOrFolder, searchQuery: string): boolean {
+  return !entry.isFolder && localized((entry as BaseTile).description)
+    .toLowerCase()
+    .includes(searchQuery.toLowerCase());
+}
+
+export function doesKeywordsMatch(entry: TileOrFolder, searchQuery: string): boolean {
+  return !entry.isFolder && localized((entry as BaseTile).keywords)
+    .toLowerCase()
+    .includes(searchQuery.toLowerCase());
+}
+
+export function doesFolderMatch(entry: TileOrFolder, searchQuery: string): boolean {
+  return entry.isFolder && (entry as FolderTile).tiles.some((t) => doesTitleMatch(t, searchQuery) || doesDescriptionMatch(t, searchQuery));
+}
+
+export function createCategories(
   portalLayout: PortalLayout,
   portalCategories: PortalCategory[],
   portalEntries: PortalEntry[],

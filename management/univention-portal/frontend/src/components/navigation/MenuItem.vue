@@ -154,9 +154,6 @@ export default defineComponent({
         embedded: _('iFrame'),
         download: _('Download'),
       };
-      console.log('this.link', this.link);
-      console.log('->>> target', target);
-      console.log('->>> target', linkTypes[target]);
       return linkTypes[target];
     },
   },

@@ -29,56 +29,46 @@
 
 import { mount } from '@vue/test-utils';
 
-import PasswordBox from '@/components/widgets/PasswordBox.vue';
-import ToggleButton from '@/components/widgets/ToggleButton.vue';
-import Vuex from 'vuex';
-import activity from '@/store/modules/activity';
+import TimeBox from '@/components/widgets/TimeBox.vue';
 
-const store = new Vuex.Store({
-  modules: {
-    activity: {
-      getters: activity.getters,
-      namespaced: true,
-    },
-  },
-});
-
-describe('PasswordBox Component', () => {
-  test('input value', async () => {
+describe('TimeBox Component', () => {
+  test('user can type in input field', async () => {
     // to check focus, we need to attach to an actual document, normally we don't do this
     const div = document.createElement('div');
     div.id = 'root';
     document.body.appendChild(div);
 
-    const wrapper = await mount(PasswordBox, {
+    const wrapper = await mount(TimeBox, {
       propsData: {
         modelValue: '',
-        name: 'password',
         forAttrOfLabel: '',
+        name: 'timeBox',
         invalidMessageId: '',
       },
       attachTo: '#root',
     });
 
-    const passwordBox = await wrapper.find('[data-test="password-box"]');
+    const timeBox = await wrapper.find('[data-test="time-box"]');
 
     // Expect input value to be empty on mount.
-    expect(passwordBox.element.value).toBe('');
+    expect(timeBox.element.value).toBe('');
 
-    await passwordBox.setValue('test input value');
+    await timeBox.setValue('test input value');
+    expect(timeBox.element.value).toBe('');
 
-    expect(passwordBox.element.value).toBe('test input value');
+    await timeBox.setValue('13:00');
+    expect(timeBox.element.value).toBe('13:00');
 
     wrapper.unmount();
   });
 
-  test('computed property', async () => {
-    const wrapper = await mount(PasswordBox, {
+  test('computed property "invalid" is working', async () => {
+    const wrapper = await mount(TimeBox, {
       propsData: {
         modelValue: '',
-        name: 'password',
         forAttrOfLabel: '',
         invalidMessageId: '',
+        name: 'timeBox',
       },
     });
 
@@ -88,44 +78,31 @@ describe('PasswordBox Component', () => {
     expect(wrapper.vm.invalid).toBe(true);
   });
 
-  test('its actually a password input field', async () => {
-    const wrapper = await mount(PasswordBox, {
+  test('input field has id attribute with value (needed for A11y reasons)', async () => {
+    const wrapper = await mount(TimeBox, {
       propsData: {
         modelValue: '',
-        name: 'password',
-        forAttrOfLabel: '',
+        forAttrOfLabel: 'testString',
+        name: 'timeBox',
         invalidMessageId: '',
       },
     });
-    const passwordBox = await wrapper.find('[data-test="password-box"]');
-
-    expect(passwordBox.attributes('type')).toBe('password');
+    const timeBox = await wrapper.find('[data-test="time-box"]');
+    expect(timeBox.attributes('id')).toBe('testString');
   });
 
-  test('show/hide password icon button', async () => {
-    const wrapper = await mount(PasswordBox, {
+  test('Can set seconds, also if steps prop has been set.', async () => {
+    const wrapper = await mount(TimeBox, {
       propsData: {
         modelValue: '',
-        name: 'password',
-        forAttrOfLabel: '',
+        forAttrOfLabel: 'testString',
+        name: 'timeBox',
         invalidMessageId: '',
-        canShowPassword: true,
-      },
-      children: [ToggleButton],
-      global: {
-        plugins: [store],
+        steps: 5,
       },
     });
-
-    const passwordBox = await wrapper.find('[data-test="password-box"]');
-    const passwordBoxButton = await wrapper.find('[data-test="password-box-icon"]');
-
-    expect(passwordBoxButton.attributes('aria-label')).toBe('Show password');
-    expect(passwordBox.attributes('type')).toBe('password');
-
-    await passwordBoxButton.trigger('click');
-
-    expect(passwordBoxButton.attributes('aria-label')).toBe('Hide password');
-    expect(passwordBox.attributes('type')).toBe('text');
+    const timeBox = await wrapper.find('[data-test="time-box"]');
+    await timeBox.setValue('13:00:05');
+    expect(timeBox.element.value).toBe('13:00:05');
   });
 });

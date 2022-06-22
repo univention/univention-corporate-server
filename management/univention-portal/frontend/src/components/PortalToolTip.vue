@@ -50,6 +50,7 @@ License with the Debian GNU/Linux or Univention distribution in file
           data-test="portal-tooltip-arrow"
           :style="arrowPosition"
         />
+        <div class="cheat" />
         <div
           class="portal-tooltip__header"
         >
@@ -299,6 +300,7 @@ export default defineComponent({
   padding: calc(2 * var(--layout-spacing-unit))
   box-shadow: var(--box-shadow)
   z-index: $zindex-3
+  z-index: 99999
   display: block
   border: 1px solid var(--font-color-contrast-high)
 
@@ -379,6 +381,13 @@ export default defineComponent({
     width: 0.8rem
     &--same-tab
       transform: rotate(90deg)
+  .cheat
+    width: calc(100%);
+    height: calc(100% + 75%);
+    position absolute
+    z-index: -1
+    top: -38%;
+    left: 0;
 
 .fade-enter-active {
   transition: all 0.25s ease-out

@@ -43,6 +43,10 @@ const tileClickMixin = {
     linkTarget: {
       type: String,
     },
+    target: {
+      type: String,
+      default: '',
+    },
     pathToLogo: {
       type: String,
       required: false,
@@ -58,6 +62,7 @@ const tileClickMixin = {
       metaData: 'metaData/getMeta',
       editMode: 'portalData/editMode',
       locale: 'locale/getLocale',
+      tooltipID: 'tooltip/getTooltipID',
     }),
     link() {
       return bestLink(this.links, this.metaData.fqdn, this.locale);
@@ -66,7 +71,7 @@ const tileClickMixin = {
       if (this.editMode || this.linkTarget !== 'newwindow') {
         return null;
       }
-      return '_blank';
+      return this.target || '_blank';
     },
   },
   emits: [
@@ -82,6 +87,9 @@ const tileClickMixin = {
       if (this.minified) {
         evt.preventDefault();
         return false;
+      }
+      if (this.tooltipID) {
+        clearTimeout(this.tooltipID);
       }
       this.$store.dispatch('tooltip/unsetTooltip');
       // this.$store.dispatch('modal/hideAndClearModal');
@@ -106,11 +114,13 @@ const tileClickMixin = {
         backgroundColor: this.backgroundColor,
         logo: this.pathToLogo,
         iframeLink: this.link,
+        target: this.target,
       };
       this.$store.dispatch('navigation/setActiveButton', '');
       this.$store.dispatch('tabs/addTab', tab);
       this.$store.dispatch('modal/hideAndClearModal');
-      this.$store.dispatch('modal/hideAndClearModal');
+      // get tooltip id and clear timeoout
+      clearTimeout(this.tooltipID);
       this.$store.dispatch('tooltip/setHoverOnTooltip', false);
       this.$store.dispatch('tooltip/unsetTooltip');
     },

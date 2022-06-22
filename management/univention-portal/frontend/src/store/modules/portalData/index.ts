@@ -26,15 +26,26 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import { Commit, Dispatch, ActionContext } from 'vuex';
+import { Commit, Dispatch } from 'vuex';
 import { put, getAdminState } from '@/jsHelper/admin';
 import _ from '@/jsHelper/translate';
 import { randomId } from '@/jsHelper/tools';
-import createCategories from '@/jsHelper/createCategories';
-import setScreenReaderAccouncement from './portalData.helper';
+import { createCategories, doesDescriptionMatch, doesKeywordsMatch, doesFolderMatch, doesTitleMatch } from '@/jsHelper/portalCategories';
+import { PortalModule, RootState } from '@/store/root.models';
 
-import { PortalModule } from '../../root.models';
-import { PortalDataState, PortalImageDataBlob, LocalizedString, PortalContent, PortalBaseLayout, PortalLayout, Position, PortalDataActionContext } from './portalData.models';
+import setScreenReaderAccouncement from './portalData.helper';
+import {
+  PortalDataState,
+  PortalImageDataBlob,
+  LocalizedString,
+  PortalContent,
+  PortalBaseLayout,
+  PortalLayout,
+  Position,
+  PortalDataActionContext,
+  Category,
+  TileOrFolder,
+} from './portalData.models';
 
 function isEqual(arr1, arr2) {
   if (arr1.length !== arr2.length) {
@@ -140,7 +151,7 @@ function getPosition(layout, id: string, targetIdx: null | number = null, fromPo
   return position;
 }
 
-function getContext(layout, route: Position): any[] {
+function getContext(layout, route: Position): TileOrFolder[] {
   let context = layout;
 
   if (route.categoryIdx !== null) {
@@ -328,6 +339,7 @@ const portalData: PortalModule<PortalDataState> = {
     menuLinks: (state) => state.portal.menuLinks,
     editMode: (state) => state.editMode,
     cacheId: (state) => state.cacheId,
+    loaded: (state) => state.cacheId !== '',
     errorContentType: (state) => state.errorContentType,
     portalBaseLayout: (state) => state.portal.baseLayout,
     portalLayout: (state) => state.portal.layout,
@@ -339,6 +351,23 @@ const portalData: PortalModule<PortalDataState> = {
       getters.portalDefaultLinkTarget,
       getters.editMode,
     ),
+    portalFinalLayoutFiltered: (state: PortalDataState, getters: any, rootState: RootState, rootGetters: any): Category[] => {
+      if (state.editMode) {
+        return getters.portalFinalLayout;
+      }
+      const searchQuery = rootGetters['search/searchQuery'];
+      return getters.portalFinalLayout
+        .map((category: Category) => {
+          category.tiles = category.tiles.filter((entry) => (
+            doesTitleMatch(entry, searchQuery) ||
+            doesDescriptionMatch(entry, searchQuery) ||
+            doesKeywordsMatch(entry, searchQuery) ||
+            doesFolderMatch(entry, searchQuery)
+          ));
+          return category;
+        })
+        .filter((category: Category) => category.tiles.length > 0);
+    },
   },
 
   actions: {
@@ -358,7 +387,7 @@ const portalData: PortalModule<PortalDataState> = {
       commit('SETLAYOUT', layout);
       dispatch('changeLayoutUpdateFolder');
     },
-    changeLayout({ commit, dispatch, rootGetters, getters }: PortalDataActionContext, payload: { fromId: string, toId: string, position: null | number }) {
+    changeLayout({ commit, dispatch, getters }: PortalDataActionContext, payload: { fromId: string, toId: string, position: null | number }): void {
       function move(layout, fromRoute: Position, toRoute: Position): boolean {
         if (fromRoute.entryIdx === null || toRoute.entryIdx === null) {
           return false;
@@ -443,7 +472,7 @@ const portalData: PortalModule<PortalDataState> = {
 
       dispatch('changeLayoutUpdateFolder');
     },
-    changeLayoutDirection({ commit, dispatch, rootGetters, getters }: PortalDataActionContext, payload: { fromId: string, direction: 'left' | 'right' | 'up' | 'down'}) {
+    changeLayoutDirection({ dispatch, getters }: PortalDataActionContext, payload: { fromId: string, direction: 'left' | 'right' | 'up' | 'down'}): void {
       const fromId = payload.fromId;
       const direction = payload.direction;
 

@@ -28,7 +28,6 @@
 -->
 <template>
   <div
-    v-if="hasTiles || editMode"
     class="portal-folder"
     :draggable="editMode && !inModal"
     :class="[
@@ -75,12 +74,14 @@
             :super-dn="dn"
             :title="tile.title"
             :description="tile.description"
+            :keywords="tile.keywords"
             :activated="tile.activated"
             :anonymous="tile.anonymous"
             :background-color="tile.backgroundColor"
             :links="tile.links"
             :allowed-groups="tile.allowedGroups"
             :link-target="tile.linkTarget"
+            :target="tile.target"
             :original-link-target="tile.originalLinkTarget"
             :path-to-logo="tile.pathToLogo"
             :minified="!inModal"
@@ -143,8 +144,9 @@ import PortalTile from '@/components/PortalTile.vue';
 import Draggable from '@/mixins/Draggable.vue';
 import IconButton from '@/components/globals/IconButton.vue';
 import TileAdd from '@/components/admin/TileAdd.vue';
-import { Title, Tile, Description, BaseTile } from '@/store/modules/portalData/portalData.models';
+import { LocalizedString, Tile, TileOrFolder } from '@/store/modules/portalData/portalData.models';
 import _ from '@/jsHelper/translate';
+import { doesTitleMatch, doesKeywordsMatch, doesDescriptionMatch } from '@/jsHelper/portalCategories';
 import { mapGetters } from 'vuex';
 
 export default defineComponent({
@@ -177,7 +179,7 @@ export default defineComponent({
       required: true,
     },
     title: {
-      type: Object as PropType<Title>,
+      type: Object as PropType<LocalizedString>,
       required: true,
     },
     tiles: {
@@ -195,9 +197,6 @@ export default defineComponent({
       searchQuery: 'search/searchQuery',
 
     }),
-    hasTiles(): boolean {
-      return this.tiles.length > 0;
-    },
     activeAt(): string[] {
       if (this.editMode) {
         return ['portal'];
@@ -227,10 +226,15 @@ export default defineComponent({
       return _('Move Folder: %(folder)s', { folder: this.$localized(this.title) });
     },
     filteredTiles(): Tile[] {
-      if (this.tiles.filter((tile) => this.tileMatchesQuery(tile)).length === 0) {
+      const filteredTiles = this.tiles.filter((tile) => (
+        doesTitleMatch(tile as TileOrFolder, this.searchQuery) ||
+        doesDescriptionMatch(tile as TileOrFolder, this.searchQuery) ||
+        doesKeywordsMatch(tile as TileOrFolder, this.searchQuery)
+      ));
+      if (filteredTiles.length === 0) {
         return this.tiles;
       }
-      return this.tiles.filter((tile) => this.tileMatchesQuery(tile));
+      return filteredTiles;
     },
     ariaRole(): string {
       if (this.inModal && this.editMode) {
@@ -300,19 +304,6 @@ export default defineComponent({
       // MOBILE ZOOM DEFAULT: 100 - 150
       // BROWSER ZOOM WCAG2.1 AA: 200
       return !!browserZoomLevel && browserZoomLevel >= 200;
-    },
-    titleMatchesQuery(title: Title): boolean {
-      return this.$localized(title).toLowerCase()
-        .includes(this.searchQuery.toLowerCase());
-    },
-    descriptionMatchesQuery(description: Description): boolean {
-      return this.$localized(description).toLowerCase()
-        .includes(this.searchQuery.toLowerCase());
-    },
-    tileMatchesQuery(tile: Tile): boolean {
-      const titleMatch = this.titleMatchesQuery(tile.title);
-      const descriptionMatch = this.descriptionMatchesQuery((tile as BaseTile).description);
-      return titleMatch || descriptionMatch;
     },
   },
 });

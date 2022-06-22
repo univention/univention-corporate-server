@@ -42,8 +42,14 @@
       :aria-role="portalRole"
       class="portal-categories"
     >
+      <h2
+        v-if="noSearchResults"
+        class="portal-category__title"
+      >
+        {{ NO_SEARCH_RESULTS }}
+      </h2>
       <portal-category
-        v-for="(category, index) in portalFinalLayout"
+        v-for="(category, index) in portalFinalLayoutFiltered"
         :key="category.id"
         :layout-id="category.layoutId"
         :title="category.title"
@@ -88,7 +94,6 @@
       v-if="tooltip"
       v-bind="tooltip"
     />
-
     <portal-sidebar />
     <portal-modal />
     <portal-modal
@@ -106,15 +111,14 @@ import _ from '@/jsHelper/translate';
 
 import IconButton from '@/components/globals/IconButton.vue';
 import Region from '@/components/activity/Region.vue';
-import ModalWrapper from '@/components/modal/ModalWrapper.vue';
-import Notifications from 'components/notifications/Notifications.vue';
+import Notifications from '@/components/notifications/Notifications.vue';
 import PortalBackground from '@/components/PortalBackground.vue';
-import PortalCategory from 'components/PortalCategory.vue';
+import PortalCategory from '@/components/PortalCategory.vue';
 import PortalHeader from '@/components/PortalHeader.vue';
-import PortalIframe from 'components/PortalIframe.vue';
-import PortalModal from 'components/modal/PortalModal.vue';
+import PortalIframe from '@/components/PortalIframe.vue';
+import PortalModal from '@/components/modal/PortalModal.vue';
 import PortalSidebar from '@/components/PortalSidebar.vue';
-import PortalToolTip from 'components/PortalToolTip.vue';
+import PortalToolTip from '@/components/PortalToolTip.vue';
 import ScreenReaderAnnouncer from '@/components/globals/ScreenReaderAnnouncer.vue';
 import PortalError from '@/components/globals/PortalError.vue';
 import LoadingOverlay from '@/components/globals/LoadingOverlay.vue';
@@ -124,7 +128,6 @@ export default defineComponent({
   components: {
     IconButton,
     LoadingOverlay,
-    ModalWrapper,
     Notifications,
     PortalBackground,
     PortalCategory,
@@ -139,7 +142,8 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
-      portalFinalLayout: 'portalData/portalFinalLayout',
+      portalFinalLayoutFiltered: 'portalData/portalFinalLayoutFiltered',
+      portalLoaded: 'portalData/loaded',
       errorContentType: 'portalData/errorContentType',
       tabs: 'tabs/allTabs',
       activeTabIndex: 'tabs/activeTabIndex',
@@ -151,6 +155,12 @@ export default defineComponent({
     }),
     ADD_CATEGORY(): string {
       return _('Add category');
+    },
+    NO_SEARCH_RESULTS(): string {
+      return _('No search results');
+    },
+    noSearchResults(): boolean {
+      return this.portalLoaded && this.portalFinalLayoutFiltered.length === 0;
     },
     isSecondModalActive(): boolean {
       return this.getModalState('secondLevelModal');

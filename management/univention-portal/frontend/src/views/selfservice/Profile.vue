@@ -32,11 +32,12 @@
     :subtitle="SUBTITLE"
   >
     <my-form
+      v-if="!attributesLoaded"
       ref="loginForm"
       v-model="loginValues"
       :widgets="loginWidgetsWithTabindex"
     >
-      <footer v-if="!attributesLoaded">
+      <footer>
         <button
           type="submit"
           :tabindex="tabindex"
@@ -118,7 +119,7 @@ interface Data {
   initiated: boolean,
   forceLogin: boolean,
   loginWidgets: WidgetDefinition[],
-  loginValues: Record<string, string>,
+  loginValues: Record<string, any>,
   attributeWidgets: WidgetDefinition[],
   attributeValues: Record<string, unknown>,
   origFormValues: Record<string, unknown>,
@@ -170,7 +171,7 @@ export default defineComponent({
       return isTrue(this.metaData['umc/self-service/account-deregistration/enabled'] ?? false);
     },
     TITLE(): string {
-      return _('Profile');
+      return `${_('Profile')} ${this.displayUsername}`;
     },
     SUBTITLE(): string {
       return _('Customize your profile');
@@ -204,6 +205,9 @@ export default defineComponent({
     },
     errorDialog(): typeof ErrorDialog {
       return this.$refs.errorDialog as typeof ErrorDialog;
+    },
+    displayUsername(): string {
+      return this.attributesLoaded ? `: ${this.loginValues.username}` : '';
     },
     confirmDeregistrationDialog(): typeof ConfirmDeregistration {
       return this.$refs.confirmDeregistrationDialog as typeof ConfirmDeregistration;

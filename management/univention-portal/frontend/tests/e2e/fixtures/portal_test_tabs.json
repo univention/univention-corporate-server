@@ -1,0 +1,93 @@
+{
+  "auth_mode": "ucs",
+  "cache_id": "abc:123",
+  "categories": [
+    {
+      "display_name": {
+        "de_DE": "Test Tabs",
+        "en_US": "Test Tabs"
+      },
+      "dn": "cn=test-category,cn=category,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "entries": [
+        "cn=wiki1,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=wiki2,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "en_US": "Wikipedia Test Page"
+      },
+      "dn": "cn=wiki1,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "linkTarget": "useportaldefault",
+      "links": [
+        {
+          "locale": "en_US",
+          "value": "https://de.wikipedia.org/wiki/Test"
+        }
+      ],
+      "logo_name": null,
+      "name": {
+        "en_US": "Wikipedia Test"
+      }
+    },
+    {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "en_US": "Wikipedia Vue Page"
+      },
+      "dn": "cn=wiki2,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "linkTarget": "useportaldefault",
+      "links": [
+        {
+          "locale": "en_US",
+          "value": "https://de.wikipedia.org/wiki/Vue"
+        }
+      ],
+      "logo_name": null,
+      "name": {
+        "en_US": "Wikipedia Vue"
+      }
+    }
+  ],
+  "filtered": true,
+  "folders": [],
+  "may_edit_portal": true,
+  "menu_links": [],
+  "portal": {
+    "background": null,
+    "categories": [
+      "cn=test-category,cn=category,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
+    ],
+    "content": [
+      [
+        "cn=test-category,cn=category,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        [
+          "cn=wiki1,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+          "cn=wiki2,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
+        ]
+      ]
+    ],
+    "defaultLinkTarget": "embedded",
+    "dn": "cn=domain,cn=portal,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+    "ensureLogin": false,
+    "logo": "./data/icons/logo.svg",
+    "name": {
+      "de_DE": "Univention Portal DE",
+      "en_US": "Univention Portal EN",
+      "fr_FR": "Portail Univention FR"
+    },
+    "showUmc": true
+  },
+  "user_displayname": "Administrator",
+  "user_links": [],
+  "username": "administrator"
+}

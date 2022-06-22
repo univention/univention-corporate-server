@@ -28,16 +28,15 @@
 -->
 <template>
   <div
-    :class="{'portal-category--empty': (!editMode && !hasTiles), 'portal-category--dragging': isBeingDragged }"
+    :class="{'portal-category--dragging': isBeingDragged}"
     class="portal-category"
     @drop="dropped"
     @dragover.prevent
     @dragenter.prevent
   >
     <h2
-      v-if="editMode || showCategoryHeadline || hasTiles"
       class="portal-category__title"
-      :class="{'portal-category__title-virtual': virtual }"
+      :class="{'portal-category__title-virtual': virtual}"
     >
       <icon-button
         v-if="editMode && !virtual && showEditButtonWhileDragging"
@@ -71,7 +70,7 @@
       class="portal-category__tiles"
     >
       <template
-        v-for="tile in filteredTiles"
+        v-for="tile in tiles"
         :key="tile.id"
       >
         <portal-folder
@@ -97,6 +96,7 @@
           :links="tile.links"
           :allowed-groups="tile.allowedGroups"
           :link-target="tile.linkTarget"
+          :target="tile.target"
           :original-link-target="tile.originalLinkTarget"
           :path-to-logo="tile.pathToLogo"
         />
@@ -107,9 +107,6 @@
         :super-layout-id="layoutId"
       />
     </div>
-    <template v-if="hasNoSearchResults && categoryIndex === 0">
-      <h1>{{ NO_RESULTS }}</h1>
-    </template>
   </div>
 </template>
 
@@ -124,16 +121,9 @@ import PortalFolder from '@/components/PortalFolder.vue';
 import PortalTile from '@/components/PortalTile.vue';
 import Draggable from '@/mixins/Draggable.vue';
 import {
-  Title,
   Tile,
-  FolderTile,
-  Description,
-  BaseTile,
+  LocalizedString,
 } from '@/store/modules/portalData/portalData.models';
-
-interface PortalCategoryData {
-  showCategoryHeadline: boolean,
-}
 
 export default defineComponent({
   name: 'PortalCategory',
@@ -156,7 +146,7 @@ export default defineComponent({
       required: true,
     },
     title: {
-      type: Object as PropType<Title>,
+      type: Object as PropType<LocalizedString>,
       required: true,
     },
     virtual: {
@@ -172,11 +162,6 @@ export default defineComponent({
       required: true,
     },
   },
-  data(): PortalCategoryData {
-    return {
-      showCategoryHeadline: false,
-    };
-  },
   computed: {
     ...mapGetters({
       searchQuery: 'search/searchQuery',
@@ -184,23 +169,11 @@ export default defineComponent({
     isTouchDevice(): boolean {
       return 'ontouchstart' in document.documentElement;
     },
-    hasTiles(): boolean {
-      return this.tiles.some((tile) => this.tileMatchesQuery(tile));
-    },
     MOVE_CATEGORY(): string {
       return _('Move category: %(category)s', { category: this.$localized(this.title) });
     },
     EDIT_CATEGORY(): string {
       return _('Edit category: %(category)s', { category: this.$localized(this.title) });
-    },
-    NO_RESULTS(): string {
-      return _('No search results');
-    },
-    filteredTiles(): Tile[] {
-      return this.tiles.filter((tile) => this.tileMatchesQuery(tile));
-    },
-    hasNoSearchResults(): boolean {
-      return this.filteredTiles.length === 0;
     },
   },
   methods: {
@@ -221,22 +194,6 @@ export default defineComponent({
         },
       });
     },
-    titleMatchesQuery(title: Title): boolean {
-      return this.$localized(title).toLowerCase()
-        .includes(this.searchQuery.toLowerCase());
-    },
-    descriptionMatchesQuery(description: Description): boolean {
-      return this.$localized(description).toLowerCase()
-        .includes(this.searchQuery.toLowerCase());
-    },
-    tileMatchesQuery(tile: Tile): boolean {
-      // Todo Refactor tileMatch Logic into some kind of helper function, because it's used twice (in Portalfolder.vue)
-      const titleMatch = this.titleMatchesQuery(tile.title);
-      const descriptionMatch = (tile as BaseTile).description ? this.descriptionMatchesQuery((tile as BaseTile).description as Description) : false;
-      const folderMatch = tile.isFolder && (tile as FolderTile).tiles.some((t) => this.titleMatchesQuery(t.title) ||
-        this.descriptionMatchesQuery((t as BaseTile).description as Description));
-      return titleMatch || descriptionMatch || folderMatch;
-    },
   },
 });
 </script>
@@ -244,9 +201,6 @@ export default defineComponent({
 <style lang="stylus">
 .portal-category
   margin-bottom: calc(8 * var(--layout-spacing-unit));
-
-  &--empty
-    margin-bottom: 0
 
   &--dragging
     .portal-tile__box,

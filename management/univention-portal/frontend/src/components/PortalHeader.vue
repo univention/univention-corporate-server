@@ -134,12 +134,10 @@ import { mapGetters } from 'vuex';
 import _ from '@/jsHelper/translate';
 
 import Region from '@/components/activity/Region.vue';
-import TabindexElement from '@/components/activity/TabindexElement.vue';
 import HeaderButton from '@/components/navigation/HeaderButton.vue';
 import HeaderTab from '@/components/navigation/HeaderTab.vue';
 import PortalSearch from '@/components/search/PortalSearch.vue';
 import ChooseTabs from '@/components/ChooseTabs.vue';
-import PortalIcon from '@/components/globals/PortalIcon.vue';
 import PortalTitle from '@/components/header/PortalTitle.vue';
 import IconButton from '@/components/globals/IconButton.vue';
 
@@ -157,9 +155,7 @@ export default defineComponent({
     HeaderTab,
     PortalSearch,
     ChooseTabs,
-    PortalIcon,
     Region,
-    TabindexElement,
     PortalTitle,
     IconButton,
   },

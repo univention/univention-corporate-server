@@ -31,7 +31,7 @@
 
 import _ from '@/jsHelper/translate';
 
-type WidgetType = 'TextBox' | 'PasswordBox' | 'DateBox' | 'ComboBox' | 'RadioBox' | 'ImageUploader' | 'LocaleInput' | 'CheckBox' | 'MultiInput' | 'LinkWidget' | 'MultiSelect';
+type WidgetType = 'TextBox' | 'TextArea' | 'PasswordBox' | 'DateBox' | 'ComboBox' | 'RadioBox' | 'ImageUploader' | 'LocaleInput' | 'CheckBox' | 'MultiInput' | 'LinkWidget' | 'MultiSelect' | 'NumberSpinner' | 'TimeBox';
 
 interface OptionsDefinition {
   id: string,
@@ -44,6 +44,7 @@ export interface WidgetDefinition {
   type: WidgetType,
   name: string,
   label: string,
+  extraLabel?: string,
   ariaLabel?: string,
   invalidMessage?: string | { all: string, values: string[] },
   required?: boolean,
@@ -54,16 +55,26 @@ export interface WidgetDefinition {
   subtypes?: WidgetDefinition[],
   tabindex?: number,
   disabled?: boolean,
+  canShowPassword?: boolean,
+  description?: string,
+  [attribute: string]: any, // for native HTML attributes
+}
+
+export interface WidgetTimeBox extends WidgetDefinition {
+  step: number,
 }
 
 export function isEmpty(widget, value): boolean {
   switch (widget.type) {
     case 'TextBox':
+    case 'TextArea':
     case 'DateBox':
     case 'ComboBox':
     case 'PasswordBox':
     case 'RadioBox':
     case 'ImageUploader':
+    case 'NumberSpinner':
+    case 'TimeBox':
       return value === '';
     case 'MultiInput':
       return value.every((row) => {
@@ -91,6 +102,7 @@ export function isValid(widget): boolean {
   }
   switch (widget.type) {
     case 'TextBox':
+    case 'TextArea':
     case 'DateBox':
     case 'ComboBox':
     case 'PasswordBox':
@@ -100,6 +112,8 @@ export function isValid(widget): boolean {
     case 'CheckBox':
     case 'MultiSelect':
     case 'LinkWidget':
+    case 'NumberSpinner':
+    case 'TimeBox':
       return widget.invalidMessage === '';
     case 'MultiInput':
       return widget.invalidMessage.all === '' &&
@@ -128,6 +142,7 @@ export function validate(widget, value, widgets, values): void {
   function required(_widget, _value) {
     switch (_widget.type) {
       case 'TextBox':
+      case 'TextArea':
       case 'DateBox':
       case 'ComboBox':
       case 'PasswordBox':
@@ -138,6 +153,8 @@ export function validate(widget, value, widgets, values): void {
       case 'MultiSelect':
       case 'LinkWidget':
       case 'CheckBox':
+      case 'NumberSpinner':
+      case 'TimeBox':
         return _widget.required && isEmpty(_widget, _value) ? _('This value is required') : '';
       default:
         return '';
@@ -160,6 +177,7 @@ export function validate(widget, value, widgets, values): void {
 
   switch (widget.type) {
     case 'TextBox':
+    case 'TextArea':
     case 'DateBox':
     case 'ComboBox':
     case 'PasswordBox':
@@ -169,6 +187,8 @@ export function validate(widget, value, widgets, values): void {
     case 'CheckBox':
     case 'MultiSelect':
     case 'LinkWidget':
+    case 'TimeBox':
+    case 'NumberSpinner':
       widget.invalidMessage = getFirstInvalidMessage(widget, value);
       break;
     case 'MultiInput':
@@ -197,17 +217,21 @@ export function validateAll(widgets, values): boolean {
 export function initialValue(widget, value): any {
   switch (widget.type) {
     case 'TextBox':
+    case 'TextArea':
     case 'DateBox':
     case 'ComboBox':
     case 'PasswordBox':
     case 'RadioBox':
     case 'ImageUploader':
+    case 'TimeBox':
       return typeof value === 'string' ? value : '';
     case 'LocaleInput':
       // TODO typecheck of value
       return value ?? { en_US: '' };
     case 'CheckBox':
       return typeof value === 'boolean' ? value : false;
+    case 'NumberSpinner':
+      return typeof value === 'number' ? value : false;
     case 'MultiInput':
       if (!Array.isArray(value)) {
         const row = widget.subtypes.map((subtype) => initialValue(subtype, null));
@@ -237,6 +261,7 @@ export function invalidMessage(widget): string {
   }
   switch (widget.type) {
     case 'TextBox':
+    case 'TextArea':
     case 'DateBox':
     case 'ComboBox':
     case 'PasswordBox':
@@ -245,7 +270,9 @@ export function invalidMessage(widget): string {
     case 'LocaleInput':
     case 'CheckBox':
     case 'MultiSelect':
+    case 'NumberSpinner':
     case 'LinkWidget':
+    case 'TimeBox':
       return widget.invalidMessage;
     case 'MultiInput':
       return widget.invalidMessage.all;

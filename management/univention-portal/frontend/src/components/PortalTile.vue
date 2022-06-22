@@ -134,7 +134,7 @@ import TabindexElement from '@/components/activity/TabindexElement.vue';
 import TileClick from '@/mixins/TileClick.vue';
 import Draggable from '@/mixins/Draggable.vue';
 
-import { Title, Description } from '@/store/modules/portalData/portalData.models';
+import { LocalizedString } from '@/store/modules/portalData/portalData.models';
 
 interface PortalTile {
   tileId: string,
@@ -169,11 +169,11 @@ export default defineComponent({
       required: true,
     },
     title: {
-      type: Object as PropType<Title>,
+      type: Object as PropType<LocalizedString>,
       required: true,
     },
     description: {
-      type: Object as PropType<Description>,
+      type: Object as PropType<LocalizedString>,
       required: true,
     },
     activated: {
@@ -211,6 +211,7 @@ export default defineComponent({
     ...mapGetters({
       tooltip: 'tooltip/tooltip',
       tooltipIsHovered: 'tooltip/tooltipIsHovered',
+      tooltipID: 'tooltip/getTooltipID',
       lastDir: 'dragndrop/getLastDir',
     }),
     wrapperTag(): string {
@@ -226,7 +227,7 @@ export default defineComponent({
       return 'ontouchstart' in document.documentElement;
     },
     ariaLabelPortalTile(): null | string {
-      return (this.minified || this.editMode) ? null : `${this.$localized(this.title)} ${this.LINK_TYPE(this.linkTarget)}`;
+      return (this.minified || this.editMode) ? null : `${this.$localized(this.title)} ${this.LINK_TYPE(this.linkTarget).label}`;
     },
     activeAtEdit(): string[] {
       if (!this.editMode) {
@@ -258,8 +259,8 @@ export default defineComponent({
     SHOW_TOOLTIP(): string {
       return _('Show tooltip');
     },
-    anchorTarget(): string {
-      return this.linkTarget === 'newwindow' ? '_blank' : '';
+    LINK_TYPE_LABEL(): string {
+      return this.LINK_TYPE(this.linkTarget).label;
     },
     isMobile(): boolean {
       return this.isTouchDevice && !this.minified;
@@ -277,13 +278,13 @@ export default defineComponent({
   methods: {
     hideTooltip(): void {
       this.mouseIsOverTile = false;
-      setTimeout(() => {
-        if (!this.tooltipIsHovered) {
-          this.$store.dispatch('tooltip/unsetTooltip');
-        }
-      }, 350);
+      if (this.tooltipID && !this.tooltipIsHovered) {
+        this.$store.dispatch('tooltip/unsetTooltip');
+      }
     },
     showTooltip(): void {
+      this.$store.dispatch('tooltip/unsetTooltip');
+      clearTimeout(this.tooltipID);
       this.mouseIsOverTile = true;
       if (!this.editMode && !this.minified) {
         const portalTileNameRect = this.$el.querySelector('.portal-tile__name').getBoundingClientRect();
@@ -305,12 +306,17 @@ export default defineComponent({
             y: portalTileRect.y,
           },
         };
-        setTimeout(() => {
-          if (this.mouseIsOverTile === true) {
-            this.$store.dispatch('tooltip/setTooltip', { tooltip });
-          }
-        }, 650);
+        this.setToolTipTimeOut(tooltip);
       }
+    },
+    setToolTipTimeOut(tooltip): void {
+      const id = setTimeout(() => {
+        console.log('Already IN');
+        if (this.mouseIsOverTile === true) {
+          this.$store.dispatch('tooltip/setTooltip', { tooltip });
+        }
+      }, 650);
+      this.$store.dispatch('tooltip/setTooltipID', id);
     },
     editTile() {
       this.$store.dispatch('modal/setAndShowModal', {
@@ -345,7 +351,7 @@ export default defineComponent({
     removeAriaDescribedBy():void {
       this.tileId = '';
     },
-    LINK_TYPE(linkTarget): string {
+    LINK_TYPE(linkTarget): Record<string, string> {
       const target = (linkTarget === 'samewindow') && ((this.link as string).includes('.crt') || (this.link as string).includes('.crl')) ? 'download' : linkTarget;
       const linkTypes = {
         samewindow: {

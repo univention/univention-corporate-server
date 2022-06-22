@@ -60,7 +60,7 @@ vueConfig.configureWebpack = (config) => {
 
   config.module.rules.push({
     test: /\.ya?ml$/,
-    loader: 'json-loader!yaml-loader',
+    use: ['json-loader', 'yaml-loader'],
   });
 };
 

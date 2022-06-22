@@ -30,24 +30,24 @@
 import { WidgetDefinition } from '@/jsHelper/forms';
 
 interface BackendWidgetDefinition {
-  // description: string, not used atm
   // multivalue: boolean, not used atm
   // size: string, not used atm
   // syntax: string, not used atm
   editable: boolean,
   readonly: boolean,
   type: string,
+  syntax: string,
   id: string,
   label: string,
   required: boolean,
   staticValues?: any[],
   subtypes?: BackendWidgetDefinition[],
+  description: string,
 }
 
 export function sanitizeBackendWidget(widget: BackendWidgetDefinition): WidgetDefinition {
   const w: any = {
     // TODO unhandled fields that come from command/passwordreset/get_user_attributes_descriptions
-    // description: ""
     // multivalue: false
     // size: "TwoThirds"
     // syntax: "TwoThirdsString"
@@ -56,6 +56,7 @@ export function sanitizeBackendWidget(widget: BackendWidgetDefinition): WidgetDe
     label: widget.label ?? '',
     required: widget.required ?? false,
     readonly: !(widget.editable ?? true) || (widget.readonly ?? false),
+    description: widget.description,
   };
   if (widget.type === 'ImageUploader') {
     w.extraLabel = w.label;
@@ -66,6 +67,12 @@ export function sanitizeBackendWidget(widget: BackendWidgetDefinition): WidgetDe
   if (widget.type === 'MultiInput') {
     w.extraLabel = w.label;
     w.subtypes = widget.subtypes?.map((subtype) => sanitizeBackendWidget(subtype));
+  }
+
+  // syntax specific adjustments
+  if (widget.syntax === 'jpegPhoto') {
+    // it says the syntax is 'jpegPhoto' but pngs will be converted in the backend so they can still be uploaded
+    w.accept = 'image/png,image/jpeg';
   }
   return w;
 }

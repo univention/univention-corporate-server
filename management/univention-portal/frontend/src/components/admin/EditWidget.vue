@@ -158,6 +158,7 @@ export default defineComponent({
 .admin-entry
   .form-element
     input[type="text"],
+    textarea,
     select
       width: 100%
 </style>

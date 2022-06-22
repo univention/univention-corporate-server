@@ -97,6 +97,7 @@
           :sub-menu="item.subMenu"
           :links="item.links || []"
           :link-target="item.linkTarget"
+          :target="item.target"
           :path-to-logo="item.pathToLogo"
           :internal-function="item.internalFunction"
           :background-color="item.backgroundColor"

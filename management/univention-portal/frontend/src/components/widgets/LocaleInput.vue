@@ -154,7 +154,6 @@ export default defineComponent({
         .finally(() => {
           this.$store.dispatch('modal/hideAndClearModal', this.translationEditingDialogLevel);
           this.$store.dispatch('activity/setRegion', 'modal-wrapper--isVisible-1');
-          console.log('SET REGION');
         });
       this.$store.dispatch('activity/setLevel', 'modal2');
       this.$store.dispatch('activity/saveFocus', {

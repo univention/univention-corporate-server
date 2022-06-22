@@ -27,7 +27,7 @@
   <https://www.gnu.org/licenses/>.
 -->
 
-<script lang="ts">
+<script>
 import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 

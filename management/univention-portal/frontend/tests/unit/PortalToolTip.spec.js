@@ -33,6 +33,7 @@ import PortalToolTip from '@/components/PortalToolTip.vue';
 import IconButton from '@/components/globals/IconButton.vue';
 
 import Vuex from 'vuex';
+import activity from '@/store/modules/activity';
 
 const tooltipProps = {
   title: 'Tooltip title',
@@ -50,15 +51,19 @@ const tooltipProps = {
   linkType: {
     label: 'embedded',
     icon: 'layout',
-  }
+  },
 };
 
-const state = { tooltip: tooltipProps, hoverOnToolip: false };
+const state = { tooltip: tooltipProps, hoverOnToolip: false, tooltipID: 1 };
 
 const store = new Vuex.Store({
   modules: {
     tooltip: {
       state,
+      namespaced: true,
+    },
+    activity: {
+      getters: activity.getters,
       namespaced: true,
     },
   },
