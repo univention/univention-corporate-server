@@ -2720,7 +2720,7 @@ class Object(FormBase, Resource):
 
 	def set_entity_tags(self, obj):
 		self.set_header('Etag', self.get_etag(obj))
-		modified = self.modified_from_timestamp(obj.oldattr['modifyTimestamp'][0].decode('utf-8', 'replace'))
+		modified = self.modified_from_timestamp(obj._simpleLdap__operational['modifyTimestamp'][0].decode('utf-8', 'replace'))
 		if modified:
 			self.set_header('Last-Modified', last_modified(modified))
 		self.check_conditional_requests()
@@ -2732,7 +2732,7 @@ class Object(FormBase, Resource):
 		etag = hashlib.sha1()
 		etag.update(obj.dn.encode('utf-8', 'replace'))
 		etag.update(obj.module.encode('utf-8', 'replace'))
-		etag.update(b''.join(obj.oldattr.get('entryCSN', [])))
+		etag.update(b''.join(obj._simpleLdap__operational.get('entryCSN', [])))
 		etag.update((obj.entry_uuid or '').encode('utf-8'))
 		etag.update(json.dumps(obj.info, sort_keys=True).encode('utf-8'))
 		return u'"%s"' % etag.hexdigest()
