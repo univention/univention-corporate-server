@@ -49,18 +49,31 @@
 		</para>
 		<itemizedlist>
 			<listitem><para>
-				The usability of several UMC modules have been improved.
-				For example e-mail addresses now support auto-completion.
+				The User Self Service was integrated into the UCS portal. Furthermore,
+				the support for additional placeholders was extended among others, such
+				as firstname and lastname in the email template for password reset.
+			</para></listitem>
+			<listitem><para>
+				For RADIUS, users can assign a so-called service specific password. And
+				administrators can assign dedicated VLANs to user groups to increase
+				network security.
+			</para></listitem>
+			<listitem><para>
+				SameSite Cookies can now be configured for UMC and SAML.
+			</para></listitem>
+			<listitem><para>
+				The AD Takeover has been made more robust.
+			</para></listitem>
+			<listitem><para>
+				Numerous performance improvements have been implemented regarding DNS,
+				LDAP and during the sign in to UMC.
+			</para></listitem>
+			<listitem><para>
+				The French translation for the UCS management system was updated.
 			</para></listitem>
 			<listitem><para>
 				The UMC system diagnostics has been extended:
 				Several new checks have been added and some older have been improved.
-			</para></listitem>
-			<listitem><para>
-				RADIUS can now assign VLAN IDs and use application specific password.
-			</para></listitem>
-			<listitem><para>
-				The robustness and performance of the Listener/Notifier replication mechanism has been improved.
 			</para></listitem>
 			<listitem><para>
 				Most packages have been migrated to Python 3.

@@ -49,22 +49,35 @@
 		</para>
 		<itemizedlist>
 			<listitem><para>
-				Die Benutzbarkeit mehrerer UMC-Module wurde verbessert.
-				Z.B. können E-Mail-Adressen automatisch vervollständigt werden.
+				Der User Self Service wurde in das UCS-Portal integriert. Darüber hinaus
+				wurde unter anderem die Unterstützung für zusätzliche Platzhalter wie Vorname und
+				Nachname in der E-Mail-Vorlage zum Zurücksetzen des Passworts erweitert.
+			</para></listitem>
+			<listitem><para>
+				Für RADIUS können Benutzer ein soganntes Service-spezfisches Passwort
+				vergeben. Und Administratoren können Benutzergruppen dedizierte VLANs
+				zuweisen und damit die Netzwerksicherheit erhöhen.
+			</para></listitem>
+			<listitem><para>
+				SameSite Cookies können jetzt für UMC und SAML konfiguriert werden.
+			</para></listitem>
+			<listitem><para>
+				Die AD-Übernahme wurde robuster gestaltet.
+			</para></listitem>
+			<listitem><para>
+				Zahlreiche Leistungsverbesserungen bezüglich DNS, LDAP und bei der
+				Anmeldung an der UMC wurden vorgenommen.
+			</para></listitem>
+			<listitem><para>
+				Die französischen Übersetzung für das UCS-Managementsystem wurde aktualisiert.
 			</para></listitem>
 			<listitem><para>
 				Die UMC System-Diagnose wurde ausgebaut:
 				Mehrere neue Checks wurden hinzugefügt und einige ältere verbessert.
 			</para></listitem>
 			<listitem><para>
-				RADIUS kann nun VLAN IDs zuweisen und anwendungsspezifische Passwörter verwenden.
-			</para></listitem>
-			<listitem><para>
-				Die Robustheit und Geschwindigkeit der Replikation per Listener/Notifier wurde verbessert.
-			</para></listitem>
-			<listitem><para>
-					Die meisten Pakete wurden auf Python 3 migriert.
-					Deren Python 2 Varianten werden nicht länger standardmäßig installiert und werden entfernt.
+				Die meisten Pakete wurden auf Python 3 migriert.
+				Deren Python 2 Varianten werden nicht länger standardmäßig installiert und werden entfernt.
 			</para></listitem>
 			<listitem><para>
 				Dieses &ucsUCS; Release basiert auf Debian 10.12 <wordasword>Buster</wordasword>.
