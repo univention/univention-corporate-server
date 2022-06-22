@@ -624,7 +624,7 @@ class policiesGroup:
 		self.members = members
 
 
-def _ldap_cache(ttl=10):
+def _ldap_cache(ttl=10, cache_none=True):
 	def _decorator(func):
 		func._cache = {}
 
@@ -638,6 +638,8 @@ def _ldap_cache(ttl=10):
 
 			if key not in cache or cache[key]['expire'] < now:
 				value = {'value': func(lo, *args), 'expire': time.time() + ttl}
+				if value['value'] is None and not cache_none:
+					return
 				cache[key] = value
 			return cache[key]['value']
 		return _decorated

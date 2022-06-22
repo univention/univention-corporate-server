@@ -860,7 +860,7 @@ layout = [
 ]
 
 
-@univention.admin._ldap_cache(ttl=10)
+@univention.admin._ldap_cache(ttl=10, cache_none=False)
 def get_primary_group_dn(lo, gid_number):
 	groups = lo.searchDn(filter=filter_format(u'(&(|(objectClass=posixGroup)(objectClass=sambaGroupMapping))(gidNumber=%s))', [gid_number]))
 	return groups[0] if groups else None
