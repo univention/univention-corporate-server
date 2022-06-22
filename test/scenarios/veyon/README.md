@@ -11,6 +11,9 @@ computerroom module where all the windows clients should be available.
 ## Jenkins Jobs
 
 * create test environment in KVM `UCSschool-5.0 -> VeyonEnv -> Create Veyon Environment in KVM`
+  * creates instances with `-$username` (build_windows-veyon-5.0-1-fbotner) so
+    that this job can be used to create personal environemts
+  * Instances have to be removed manually!!
 * create test environment in EC2 `UCSschool-5.0 -> VeyonEnv -> Create Veyon Environment in EC2`
 * get running EC2 test instances `UCSschool-5.0 -> VeyonEnv -> Get EC2 Veyon Environment`
 * delete running EC2 test instances `UCSschool-5.0 -> VeyonEnv -> Destroy EC2 Veyon Environment`
