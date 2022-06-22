@@ -245,7 +245,7 @@ class simpleLdap(object):
 	@property
 	def entry_uuid(self):  # type: () -> Optional[str]
 		"""The entry UUID of the object (if object exists)"""
-		if 'entryUUID' in self.oldattr:
+		if 'entryUUID' in self.__operational:
 			return self.__operational['entryUUID'][0].decode('ASCII')
 
 	def save(self):  # type: () -> None
