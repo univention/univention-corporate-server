@@ -41,17 +41,18 @@ then
 	RED="$(term setaf 1)"
 	GREEN="$(term setaf 2)"
 	BLUE="$(term setaf 4)"
-	NORM="$(term op)"
+	BOLD="$(term bold)"
+	NORM="$(term sgr0)"
 fi
 
 usage () {
-	echo "${GREEN}Usage:${NORM} [ENV_VAR=setting] ... ${0##*/} [options] scenario.cfg"
+	echo "${GREEN}Usage:${NORM} [ENV_VAR=setting] ... ${0##*/} [options] <scenario.cfg>"
 	echo ""
-	echo "Start scenario defined in scenario.cfg"
+	echo "Start scenario defined in <scenario.cfg>"
 	echo ""
 	echo "${GREEN}Options:${NORM}"
-	echo "  -h, --help    show this help message and exit"
-	echo "  -I, --ignore  Ignore missing files"
+	echo "  ${BOLD}-h${NORM}, ${BOLD}--help${NORM}    show this help message and exit"
+	echo "  ${BOLD}-I${NORM}, ${BOLD}--ignore${NORM}  Ignore missing files"
 	echo ""
 	echo "${GREEN}Example:${NORM}"
 	echo ""
@@ -61,66 +62,69 @@ usage () {
 	echo "  # start scenario with docker mode on KVM server lattjo"
 	echo "  KVM_BUILD_SERVER=lattjo DOCKER=true ./utils/start-test.sh scenarios/autotest-090-master-no-samba.cfg"
 	echo ""
-	echo "  These ENV_VARs can than be used in the cfg file ([ENV:KVM_BUILD_SERVER]) or if added to the section"
-	echo "  environment in the cfg file as env variables in the virtuale instance (ucs)."
-	echo ""
-	echo "${GREEN}ENV_VARS:${NORM}"
+	echo "${GREEN}Environment variables:${NORM}"
+	echo "  Environment variables maked '<' are used to modify the default behavior."
+	echo "  Several additional variables marked '>' get derived and exported."
+	echo "  Other variables marked '|' get just passed through."
+	echo "  All can also be referenced in the .cfg file via [ENV:KVM_BUILD_SERVER]."
+	echo "  The key 'environment:' in each VM section gets exported to the VM (UCS)."
 	echo ""
 	echo "  ec2"
-	echo "    CURRENT_AMI          - the ec2 ami for the current UCS release (default: $current_ami)"
-	echo "    OLD_AMI              - the ec2 ami for the release before the current (default: $old_ami)"
+	echo "    <>${BOLD}CURRENT_AMI${NORM}          - the ec2 ami for the current UCS release (default: $current_ami)"
+	echo "    <>${BOLD}OLD_AMI${NORM}              - the ec2 ami for the release before the current (default: $old_ami)"
 	echo ""
 	echo "  ucs"
-	echo "    TARGET_VERSION       - the version to we expect to update during update tests (default: $release)"
-	echo "    UCS_VERSION          - the current UCS version (default: $release)"
-	echo "    UCS_MINORRELEASE     - the current minor version (default: ${release%%-*})"
-	echo "    OLD_VERSION          - the UCS version before the current UCS release (default: $old_release)"
+	echo "    <>${BOLD}TARGET_VERSION${NORM}       - the version to we expect to update during update tests (default: $release)"
+	echo "    <>${BOLD}UCS_VERSION${NORM}          - the current UCS version (default: $release)"
+	echo "     >${BOLD}UCS_MINORRELEASE${NORM}     - the current minor version (default: ${release%%-*})"
+	echo "    <>${BOLD}OLD_VERSION${NORM}          - the UCS version before the current UCS release (default: $old_release)"
 	echo ""
 	echo "  kvm"
-	echo "    KVM_TEMPLATE         - the KVM ucs-kt-get template to use (default: $kvm_template)"
-	echo "    KVM_UCSVERSION       - the KVM ucs-kt-get template version (default: $kvm_template_version)"
-	echo "    KVM_OLDUCSVERSION    - the KVM ucs-kt-get template version for the UCS release before the current release (default: $old_release)"
-	echo "    KVM_BUILD_SERVER     - the KVM build server to use (default: $kvm_build_server)"
-	echo "    KVM_MEMORY           - ram for the KVM instance (default: $kvm_memory)"
-	echo "    KVM_CPUS             - cpu's for the KVM instance (default: $kvm_cpus)"
-	echo "    KVM_LABEL_SUFFIX     - additional label for instance name (default: $kvm_label_suffix)"
-	echo "    KVM_KEYPAIR_PASSPHRASE - ssh key password, also used as a fallback password for the ssh connection"
-	echo "    SOURCE_ISO           - an iso to mount (default: None)"
+	echo "    <>${BOLD}KVM_TEMPLATE${NORM}         - the KVM ucs-kt-get template to use (default: $kvm_template)"
+	echo "    <>${BOLD}KVM_UCSVERSION${NORM}       - the KVM ucs-kt-get template version (default: $kvm_template_version)"
+	echo "    <>${BOLD}KVM_OLDUCSVERSION${NORM}    - the KVM ucs-kt-get template version for the UCS release before the current release (default: $old_release)"
+	echo "    <>${BOLD}KVM_BUILD_SERVER${NORM}     - the KVM build server to use (default: $kvm_build_server)"
+	echo "    <>${BOLD}KVM_MEMORY${NORM}           - ram for the KVM instance (default: $kvm_memory)"
+	echo "    <>${BOLD}KVM_CPUS${NORM}             - cpu's for the KVM instance (default: $kvm_cpus)"
+	echo "    <>${BOLD}KVM_LABEL_SUFFIX${NORM}     - additional label for instance name (default: $kvm_label_suffix)"
+	echo "    | ${BOLD}KVM_KEYPAIR_PASSPHRASE${NORM} - ssh key password, also used as a fallback password for the ssh connection"
+	echo "    | ${BOLD}SOURCE_ISO${NORM}           - an iso to mount (default: None)"
 	echo ""
 	echo "  ucs-*-create"
-	echo "    EXACT_MATCH          - if true, add -e (only look for exact matches in template names) option to ucs-kvm-create (default: $exact_match)"
-	echo "    SHUTDOWN             - if true, add -s (shutdown VMs after run) option to ucs-*-create (default: $shutdown)"
-	echo "    HALT                 - if true, add -t (Terminate VMs after run) option to ucs-*-create (default: true for jenkins, otherwise false)"
-	echo "    TERMINATE_ON_SUCCESS - if true, add --terminate-on-success ( Terminate VMs after run only if setup has been successful)"
+	echo "    <>${BOLD}EXACT_MATCH${NORM}          - if true, add -e (only look for exact matches in template names) option to ucs-kvm-create (default: $exact_match)"
+	echo "    <>${BOLD}SHUTDOWN${NORM}             - if true, add -s (shutdown VMs after run) option to ucs-*-create (default: $shutdown)"
+	echo "    <>${BOLD}HALT${NORM}                 - if true, add -t (Terminate VMs after run) option to ucs-*-create (default: true for jenkins, otherwise false)"
+	echo "    <>${BOLD}TERMINATE_ON_SUCCESS${NORM} - if true, add --terminate-on-success (Terminate VMs after run only if setup has been successful)"
 	echo "                           to ucs-*-create (default: true for jenkins, otherwise false)"
-	echo "    REPLACE              - if true, add --replace (if set, tries to terminate an instance similar to the to be created one)"
+	echo "    <>${BOLD}REPLACE${NORM}              - if true, add --replace (if set, tries to terminate an instance similar to the to be created one)"
 	echo "                           to ucs-*-create (default: true for jenkins, otherwise false)"
 	echo ""
 	echo "  update behaviour/dev or released version"
 	# TODO make the env var a captial letter, -> modify jenkins seed job(s) and cfg files
-	echo "    release_update       - public, testing or none for release updates (default: public)"
+	echo "    <>${BOLD}release_update${NORM}       - public, testing or none for release updates (default: public)"
 	# TODO see RELEASE_UPDATE
-	echo "    errata_update        - public, testing or none for errata updates (default: testing)"
-	echo "    UCSSCHOOL_RELEASE    - ucs school release (default: $ucsschool_release)"
-	echo "    COMPONENT_VERSION    - update component? should indicate dev/released version of non ucs component (app, ...) (default: testing)"
-	echo "    SCOPE                - defines a extra apt repo/scope that can be included during the test (default: None)"
-	echo "    TESTING              - indicates unreleased UCS version (e.g. testing)"
+	echo "    <>${BOLD}errata_update${NORM}        - public, testing or none for errata updates (default: testing)"
+	echo "    <>${BOLD}UCSSCHOOL_RELEASE${NORM}    - ucs school release (default: $ucsschool_release)"
+	echo "    <>${BOLD}COMPONENT_VERSION${NORM}    - update component? should indicate dev/released version of non ucs component (app, ...) (default: testing)"
+	echo "    | ${BOLD}SCOPE${NORM}                - defines a extra apt repo/scope that can be included during the test (default: None)"
+	echo "    | ${BOLD}TESTING${NORM}              - indicates unreleased UCS version (e.g. testing)"
 	echo ""
 	echo "  ucs-test/fetch-results"
-	echo "    UCS_TEST_RUN         - if true, start ucs-test in utils/utils.sh::run_tests and copy log files from instance"
+	echo "    <>${BOLD}UCS_TEST_RUN${NORM}         - if true, start ucs-test in utils/utils.sh::run_tests and copy log files from instance"
 	echo "                           in utils/utils-local.sh::fetch-results (default: true for jenkins, otherwise false)"
 	echo ""
 	echo "  internal"
-	echo "    DOCKER               - use docker container instead if local ucs-ec2-tools (default: true)"
-	echo "    DEBUG                - debug mode (default: false)"
+	echo "    <>${BOLD}DOCKER${NORM}               - use docker container instead if local ucs-ec2-tools (default: true)"
+	echo "    < ${BOLD}DIMAGE${NORM}               - docker image (default: ${DIMAGE:--})"
+	echo "    <>${BOLD}DEBUG${NORM}                - debug mode (default: ${DEBUG:--})"
 	echo ""
 	echo "  branch tests:"
-	echo "    BUILD_BRANCH         - Name of the git branch to build"
-	echo "    BUILD_REPO           - Repository to build packages from"
+	echo "    < ${BOLD}UCSSCHOOL_BRANCH${NORM}     - Name of U@S git branch to build"
+	echo "    < ${BOLD}UCS_BRANCH${NORM}           - Name of UCS git branch to build"
 	echo ""
 	echo "  apps"
-	echo "    APP_ID               - An app ID, wekan"
-	echo "    COMBINED_APP_ID      - ???"
+	echo "    | ${BOLD}APP_ID${NORM}               - An app ID, wekan"
+	echo "    | ${BOLD}COMBINED_APP_ID${NORM}      - ???"
 }
 
 die () {
@@ -228,23 +232,23 @@ fi
 
 
 # if the default branch of UCS@school is given, then build UCS else build UCS@school
-if [ -n "$UCSSCHOOL_BRANCH" ] || [ -n "$UCS_BRANCH" ]; then
-	BUILD_HOST='buildvm.knut.univention.de'
-	REPO_UCS='git@git.knut.univention.de:univention/ucs.git'
-	REPO_UCSSCHOOL='git@git.knut.univention.de:univention/ucsschool.git'
+build_git () {
+	local build_branch build_repo
 	if [[ "$UCSSCHOOL_BRANCH" = [0-9].[0-9] ]]
 	then
-		BUILD_BRANCH="$UCS_BRANCH"
-		BUILD_REPO="$REPO_UCS"
+		build_branch="$UCS_BRANCH"
+		build_repo='git@git.knut.univention.de:univention/ucs.git'
 	else
-		BUILD_BRANCH="$UCSSCHOOL_BRANCH"
-		BUILD_REPO="$REPO_UCSSCHOOL"
+		build_branch="$UCSSCHOOL_BRANCH"
+		build_repo='git@git.knut.univention.de:univention/ucsschool.git'
 	fi
 	# check branch test
-	ssh "jenkins@${BUILD_HOST}" /home/jenkins/build -r "${BUILD_REPO}" -b "${BUILD_BRANCH}" > utils/apt-get-branch-repo.list ||
+	ssh jenkins@buildvm.knut.univention.de /home/jenkins/build -r "${build_repo}" -b "${build_branch}" > utils/apt-get-branch-repo.list ||
 		die 'Branch build failed'
 	sed -i '/^deb /!d' utils/apt-get-branch-repo.list
-fi
+}
+[ -n "${UCSSCHOOL_BRANCH}${UCS_BRANCH}" ] &&
+	build_git
 
 # create the command and run in ec2 or kvm depending on cfg
 KVM=false
