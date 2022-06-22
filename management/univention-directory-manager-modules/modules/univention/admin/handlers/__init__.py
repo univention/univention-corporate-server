@@ -227,6 +227,11 @@ class simpleLdap(object):
 			oldinfo = self._falsy_boolean_extended_attributes(oldinfo)
 			self.info.update(oldinfo)
 
+		self.__operational = {}
+		for key in ("hasSubordinates", "subschemaSubentry", "entryDN", "modifiersName", "modifyTimestamp", "entryCSN", "memberOf", "createTimestamp", "creatorsName", "entryUUID", "structuralObjectClass",):
+			if key in self.oldattr:
+				self.__operational[key] = self.oldattr.pop(key)
+
 		self.policies = [x.decode('utf-8') for x in self.oldattr.get('univentionPolicyReference', [])]
 		self.__set_options()
 		self.save()
@@ -241,7 +246,7 @@ class simpleLdap(object):
 	def entry_uuid(self):  # type: () -> Optional[str]
 		"""The entry UUID of the object (if object exists)"""
 		if 'entryUUID' in self.oldattr:
-			return self.oldattr['entryUUID'][0].decode('ASCII')
+			return self.__operational['entryUUID'][0].decode('ASCII')
 
 	def save(self):  # type: () -> None
 		"""Saves the current internal object state as old state for later comparison when e.g. modifying this object.
