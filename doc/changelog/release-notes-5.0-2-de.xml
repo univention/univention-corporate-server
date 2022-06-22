@@ -17,7 +17,7 @@
 			</para>
 
 			<para>
-				(c) 2002-2021 Univention GmbH
+				(c) 2002-2022 Univention GmbH
 			</para>
 
 			<para>
@@ -43,57 +43,34 @@
 	<chapter id="relnotes:highlights">
 		<title>Release-Highlights</title>
 		<para>
-			Mit &ucsUCS; 5.0-2 steht das erste Point-Release für &ucsUCS; (UCS) 5.0 zur Verfügung.
+			Mit &ucsUCS; 5.0-2 steht das zweite Point-Release für &ucsUCS; (UCS) 5.0 zur Verfügung.
 			Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen.
 			Die wichtigsten Änderungen im Überblick:
 		</para>
 		<itemizedlist>
 			<listitem><para>
-					UCS 5 Design im hellen <foreignphrase>Theme</foreignphrase>.
-					Wie zum Release von UCS 5.0-1 angekündigt, gibt es neben dem <foreignphrase>Dark Theme</foreignphrase> auch ein <foreignphrase>Light Theme</foreignphrase> für UCS 5.0.
-					Nutzer des UCS Managementsystems können damit zwischen den beiden <foreignphrase>Themes</foreignphrase> umschalten.
+				Die Benutzbarkeit mehrerer UMC-Module wurde verbessert.
+				Z.B. können E-Mail-Adressen automatisch vervollständigt werden.
 			</para></listitem>
 			<listitem><para>
-					Zeitgesteuerte Aktivierung von Benutzerkonten.
-					UCS Administratoren können Benutzerkonten anlegen und mit Datum und Uhrzeit definieren, wann sie aktiviert werden.
-					Das Anlegen von Benutzerkonten kann somit besser geplant werden und im Voraus erfolgen, ohne dass die Benutzerkonten gleich aktiv sind.
-			</para></listitem>
-			<listitem>
-				<para>
-					Zahlreiche Verbesserungen am UCS Portal.
-					Nutzer des UCS Portals können sich an zahlreichen Verbesserung erfreuen.
-					Nennenswert sind hier:
-				</para>
-				<itemizedlist>
-					<listitem><para>
-							Verbesserungen bei der Barrierefreiheit des Portals, zum Beispiel bei der Bedienung mit der Tastatur
-					</para></listitem>
-					<listitem><para>
-							Verbesserte Handhabung der Übersetzung in einem separaten Dialog, um den Bearbeitungsdialog zu "entschlacken"
-					</para></listitem>
-					<listitem><para>
-							Verbesserte Handhabung von Benachrichtigungen.
-					</para></listitem>
-					<listitem><para>
-							Anpassung des Cookie Banners an das Portal Layout.
-					</para></listitem>
-				</itemizedlist>
-			</listitem>
-			<listitem><para>
-					App Center:
-					Zahlreiche Bugfixes in der Handhabung der <foreignphrase>App Settings</foreignphrase>.
+				Die UMC System-Diagnose wurde ausgebaut:
+				Mehrere neue Checks wurden hinzugefügt und einige ältere verbessert.
 			</para></listitem>
 			<listitem><para>
-					Wizard zur Benutzerstellung:
-					Anzeige von als benötigt markierten Attributen.
-					Per UCR Variable kann konfiguriert werden, welche Benutzerattribute welche Standardwerte haben und bei der Erstellung eines Benutzerkontos sichtbar sind.
-					Damit kann ein Administrator zum Beispiel festlegen, welche Parameter auf jeden Fall explizit beim Erstellen eines Benutzerkontos abgefragt werden und Werte enthalten müssen, z.B. die E-Mailadresse, die standardmäßig nicht erforderlich ist.
+				RADIUS kann nun VLAN IDs zuweisen und anwendungsspezifische Passwörter verwenden.
 			</para></listitem>
 			<listitem><para>
-					Dieses &ucsUCS; Release basiert auf Debian 10.11 <wordasword>Buster</wordasword>.
+				Die Robustheit und Geschwindigkeit der Replikation per Listener/Notifier wurde verbessert.
 			</para></listitem>
 			<listitem><para>
-					Diverse Security Updates wurden in UCS 5.0-2 integriert, bspw. für <application>Samba4</application>, OpenSSL, PHP und den Linux Kernel.
+					Die meisten Pakete wurden auf Python 3 migriert.
+					Deren Python 2 Varianten werden nicht länger standardmäßig installiert und werden entfernt.
+			</para></listitem>
+			<listitem><para>
+				Dieses &ucsUCS; Release basiert auf Debian 10.12 <wordasword>Buster</wordasword>.
+			</para></listitem>
+			<listitem><para>
+				Diverse Security Updates wurden in UCS 5.0-2 integriert, bspw. für <application>Samba4</application>, OpenLDAP, OpenSSL, und den Linux Kernel.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>

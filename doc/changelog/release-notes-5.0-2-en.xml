@@ -17,7 +17,7 @@
 			</para>
 
 			<para>
-				(c) 2002-2021 Univention GmbH
+				(c) 2002-2022 Univention GmbH
 			</para>
 
 			<para>
@@ -43,55 +43,34 @@
 	<chapter id="relnotes:highlights">
 		<title>Release Highlights</title>
 		<para>
-			With &ucsUCS; 5.0-2, the first point release for &ucsUCS; (UCS) 5.0 is now available.
+			With &ucsUCS; 5.0-2, the second point release for &ucsUCS; (UCS) 5.0 is now available.
 			It provides several feature improvements and extensions, new properties as well as various improvements and bugfixes.
 			Here is an overview of the most important changes:
 		</para>
 		<itemizedlist>
 			<listitem><para>
-					UCS 5 light theme design.
-					As announced with the release of UCS 5.0-1, in addition to the dark theme, there is also a light theme for UCS 5.0, allowing users of the UCS management system to switch between the two themes.
+				The usability of several UMC modules have been improved.
+				For example e-mail addresses now support auto-completion.
 			</para></listitem>
 			<listitem><para>
-					Scheduled user account activation.
-					UCS administrators can create user accounts and define the date and time when they will be activated.
-					User account creation can thus be better scheduled and done in advance without the user accounts being active right away.
-			</para></listitem>
-			<listitem>
-				<para>
-					Numerous improvements to the UCS Portal.
-					Users of the UCS Portal can enjoy numerous improvement.
-					Worth mentioning here are:
-				</para>
-				<itemizedlist>
-					<listitem><para>
-							Improvements in the accessibility of the portal, for example, in the operation with the keyboard.
-					</para></listitem>
-					<listitem><para>
-							Improved handling of translation in a separate dialog to <wordasword>declutter</wordasword> the editing dialog.
-					</para></listitem>
-					<listitem><para>
-							Improved handling of notifications.
-					</para></listitem>
-					<listitem><para>
-							The cookie banner layout has been adapted to match the portal layout.
-					</para></listitem>
-				</itemizedlist>
-			</listitem>
-			<listitem><para>
-					App Center:
-					Several bugfixes in the handling of app settings.
+				The UMC system diagnostics has been extended:
+				Several new checks have been added and some older have been improved.
 			</para></listitem>
 			<listitem><para>
-					User creation wizard: display attributes marked as required.
-					UCR variables can be used to configure which user attributes have which default values and are visible when a user account is created.
-					This allows an administrator to specify, for example, which parameters must be explicitly set and contain values in any case when creating a user account, e.g. the email address, which is not required by default.
+				RADIUS can now assign VLAN IDs and use application specific password.
 			</para></listitem>
 			<listitem><para>
-					This &ucsUCS; release is based on Debian 10.11 <wordasword>Buster</wordasword>.
+				The robustness and performance of the Listener/Notifier replication mechanism has been improved.
 			</para></listitem>
 			<listitem><para>
-					Various security updates have been integrated into UCS 5.0-2, for example for <application>Samba4</application>, OpenSSL, PHP and the Linux kernel.
+				Most packages have been migrated to Python 3.
+				Their Python 2 counterparts are no longer installed by default and will be removed.
+			</para></listitem>
+			<listitem><para>
+				This &ucsUCS; release is based on Debian 10.12 <wordasword>Buster</wordasword>.
+			</para></listitem>
+			<listitem><para>
+				Various security updates have been integrated into UCS 5.0-2, for example for <application>Samba4</application>, OpenLDAP, OpenSSL, and the Linux kernel.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>

@@ -155,6 +155,7 @@
 						<member><package>djvulibre</package></member>
 						<member><package>ecdsautils</package></member>
 						<member><package>evolution-data-server</package></member>
+						<member><package>exo</package></member>
 						<member><package>faad2</package></member>
 						<member><package>ffmpeg</package></member>
 						<member><package>gerbv</package></member>
@@ -221,6 +222,7 @@
 						<member><package>uriparser</package></member>
 						<member><package>usbview</package></member>
 						<member><package>varnish</package></member>
+						<member><package>vlc</package></member>
 						<member><package>waitress</package></member>
 						<member><package>wavpack</package></member>
 						<member><package>webkit2gtk</package></member>
@@ -361,9 +363,6 @@
 				<listitem><simpara>
 					In case of a long-lasting login, certain UMC modules do not work properly.
 						If this happens, a message will be displayed to the user containing a link to <ulink url="https://help.univention.com/t/6413"/> (<u:bug>54032</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The logic for mapping UDM syntax classes to UMC frontend widgets and to get the dynamic choices for a UDM syntax have been moved into the UDM syntax classes (<u:bug>38762</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					A new method has been added to generate and set a service specific password for a user (<u:bug>54438</u:bug>).
