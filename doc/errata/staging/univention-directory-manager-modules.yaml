@@ -3,9 +3,9 @@ release: "5.0"
 version: [1]
 scope: ucs_5.0-0-errata5.0-1
 src: univention-directory-manager-modules
-fix:
+fix: 15.0.11-54A~5.0.0.202206212049
 desc: |
  This update addresses the following issues:
- * The performance of fetching group memberships of users has been improoved.
+ * The performance of fetching group memberships of users has been improved.
  * The `entryUUID` of an LDAP object is now exposed by the UDM API.
 bug: [54853, 54883]
