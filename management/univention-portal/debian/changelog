@@ -1,3 +1,9 @@
+univention-portal (4.0.6-2) unstable; urgency=medium
+
+  * Bug #54633: Include patches from Phoenix Q2/22
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 22 Jun 2022 13:55:16 +0200
+
 univention-portal (4.0.6-1) unstable; urgency=medium
 
   * Bug #54295: add keywords to portal entries
