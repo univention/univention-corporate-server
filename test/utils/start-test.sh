@@ -137,17 +137,23 @@ trap cleanup EXIT
 
 # read arguments
 opts=$(getopt \
-	--longoptions "help" \
+	--longoptions "help,ignore" \
 	--name "$(basename "$0")" \
-	--options "h" \
+	--options "hI" \
 	-- "$@"
 ) || die "see -h|--help"
 eval set -- "$opts"
-while true; do
+check_missing=true
+while true
+do
 	case "$1" in
 		-h|--help)
 			usage
 			exit 0
+			;;
+		-I|--ignore)
+			check_missing=false
+			shift
 			;;
 		--)
 			shift
@@ -155,13 +161,25 @@ while true; do
 			;;
 	esac
 done
+[ -n "${1:-}" ] ||
+	die "Missing test configuration file!"
+CFG="$(readlink -f "$1")"
+[ -s "$CFG" ] ||
+	die "Missing test configuration file '$CFG'!"
 
-[ -f "$1" ] || die "Missing test config file!"
-[ -f ~/.boto ] || die "Missing ~/.boto file for ec2 access!"
-[ -f ~/ec2/scripts/activate-errata-test-scope.sh ] || "Missing script ~/ec2/scripts/activate-errata-test-scope.sh to activate test errata repo!"
-[ -f ~/ec2/license/license.secret ] || "Missing secret file ~/ec2/license/license.secret for getting test license!"
-[ -f ~/ec2/keys/tech.pem ] || "Missing key file ~/ec2/keys/tech.pem for access to ec2 instances!"
-[ -d ./utils ] || die "./utils dir is missing!"
+if "$check_missing"
+then
+	[ -f ~/ec2/scripts/activate-errata-test-scope.sh ] ||
+		die "Missing script ~/ec2/scripts/activate-errata-test-scope.sh to activate test errata repo!"
+	[ -f ~/ec2/license/license.secret ] ||
+		die "Missing secret file ~/ec2/license/license.secret for getting test license!"
+	[ -f ~/ec2/keys/tech.pem ] ||
+		die "Missing key file ~/ec2/keys/tech.pem to access instances!"
+fi
+[ -d ./utils ] ||
+	cd "${0%/*}/../utils/.." ||
+	! "$check_missing" ||
+	die "./utils dir is missing!"
 
 export CURRENT_AMI=${CURRENT_AMI:=$current_ami}
 export OLD_AMI=${OLD_AMI:=$old_ami}
@@ -182,7 +200,6 @@ export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
 export COMPONENT_VERSION="${COMPONENT_VERSION:=testing}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=$ucsschool_release}
-CFG="$(readlink -f "$1")"
 
 # get image from cfg if not explicitly as env var
 if [ -z "$DIMAGE" ]; then
@@ -234,8 +251,14 @@ fi
 KVM=false
 grep -q '^\w*kvm_template' "$CFG" && KVM=true # if kvm is configure in cfg, use kvm
 [ "$KVM_BUILD_SERVER" = "EC2" ] && KVM=false
-exe='ucs-ec2-create'
-"$KVM" && exe='ucs-kvm-create'
+if "$KVM"
+then
+	exe='ucs-kvm-create'
+else
+	exe='ucs-ec2-create'
+	[ -f ~/.boto ] ||
+		die "Missing ~/.boto file for ec2 access!"
+fi
 
 # start the test
 declare -a cmd=()
