@@ -146,55 +146,6 @@ done
 [ -f ~/ec2/keys/tech.pem ] || "Missing key file ~/ec2/keys/tech.pem for access to ec2 instances!"
 [ -d ./utils ] || die "./utils dir is missing!"
 
-# a list of important env vars that are passed to the docker container
-declare -a env_vars=(
-	# POSIX
-	HOME
-	USER
-	# Jenkins
-	BUILD_NUMBER
-	BUILD_URL
-	JOB_NAME
-	JOB_URL
-	NODE_NAME
-	# Job
-	APP_ID
-	BUILD_BRANCH
-	BUILD_REPO
-	COMBINED_APP_ID
-	COMPONENT_VERSION
-	CURRENT_AMI
-	ERRATA_UPDATE
-	EXACT_MATCH
-	HALT
-	KVM_BUILD_SERVER
-	KVM_CPUS
-	KVM_KEYPAIR_PASSPHRASE
-	KVM_LABEL_SUFFIX
-	KVM_MEMORY
-	KVM_OLDUCSVERSION
-	KVM_TEMPLATE
-	KVM_UCSVERSION
-	KVM_USER
-	MAIN_APP
-	OLD_AMI
-	OLD_VERSION
-	RELEASE_UPDATE
-	REPLACE
-	REPOSITORY_SERVER
-	SCOPE
-	SHUTDOWN
-	SOURCE_ISO
-	TARGET_VERSION
-	TERMINATE_ON_SUCCESS
-	TEST_GROUP
-	TESTING
-	UCS_MINORRELEASE
-	UCSSCHOOL_RELEASE
-	UCS_TEST_RUN
-	UCS_VERSION
-)
-
 export CURRENT_AMI=${CURRENT_AMI:=$current_ami}
 export OLD_AMI=${OLD_AMI:=$old_ami}
 export UCS_MINORRELEASE="${release%%-*}"
@@ -276,15 +227,12 @@ if "$docker"; then
 	case "$image" in *.*/*) docker pull "$image" ;; esac
 	# create env file
 	{
-		for env_var in "${env_vars[@]}"
-		do
-			echo "$env_var=${!env_var}"
-		done
-		# pass all variable with prefix UCS_ENV_
-		env | grep ^UCS_ENV_
 		# get aws credentials
-		sed -rne '/^\[Credentials\]/,${/^\[Credentials\]/d;s/^ *(aws_(secret_)?access_key(_id)?) *= *(.*)/\U\1\E=\4/p;/^\[/q}' ~/.boto
+		"$KVM" ||
+			sed -rne '/^\[Credentials\]/,${/^\[Credentials\]/d;s/^ *(aws_(secret_)?access_key(_id)?) *= *(.*)/\U\1\E=\4/p;/^\[/q}' ~/.boto
 		echo "AWS_DEFAULT_REGION=eu-west-1"
+		env |
+			grep -Eve '^(HOSTNAME|PATH|PWD|OLDPWD|SHELL|SHLVL|TEMP|TEMPDIR|TMPDIR)=|^(KDE|GTK[0-9]*|QT|XDG)_'
 	} >"$docker_env_file"
 	# TODO add ~/ec2/keys/tech.pem via env
 	# TODO add personal ssh key for kvm server access via env
@@ -334,10 +282,7 @@ cmd+=("$exe" -c "$CFG")
 "$SHUTDOWN" && cmd+=("-s")
 
 echo "starting test with ${cmd[*]}"
-for env_var in "${env_vars[@]}"
-do
-	echo "  $env_var=${!env_var}"
-done
+sort -s -t= -k1 <"$docker_env_file"
 
 if [ -n "$JOB_URL" ]; then
 	header="$JOB_URL+++++++++++++++++++++++++++++++++++"
