@@ -286,9 +286,6 @@ if "$docker"; then
 		-v "$HOME/ec2:$HOME/ec2:ro"
 		-v "$CFG:$CFG:ro"
 		--network host
-		--dns '192.168.0.124'
-		--dns '192.168.0.97'
-		--dns-search 'knut.univention.de'
 		-u "${UID:-$(id -u)}"
 		--env-file "$docker_env_file"
 	)
