@@ -383,14 +383,13 @@ void build_index()
 		goto error;
 	}
 
-
 	fseek(notify.tf, 0, SEEK_SET);
 	pos = 0;
 
 	while (getline(&buffer, &bufflen, notify.tf) != -1) {
 		sscanf(buffer, "%ld", &id) ;
 		index_set(index, id, pos);
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Index set (build_index) %ld", id);
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Index set (build_index) id: %ld pos: %ld", id, pos);
 		pos=ftell(notify.tf);
 	}
 
@@ -444,15 +443,17 @@ int notify_transaction_get_last_notify_id ( Notify_t *notify, NotifyId_t *notify
 	return 0;
 }
 
-void reverse(char *buff, size_t len)
+void reverse_trim_nl(char *buff, size_t len)
 {
 	if (len == 0)
 		return;
-	for (size_t first = 0, last=len; first < last ; --last) {
+	for (size_t first = 0, last=len; first < last ; --last, ++first) {
 		buff[first] ^= buff[last];
 		buff[last]  ^= buff[first];
 		buff[first] ^= buff[last];
 	}
+	if ( buff[len] == '\n' )
+		buff[len] = '\0';
 }
 
 char* notify_transcation_get_one_dn ( unsigned long last_known_id )
@@ -490,37 +491,46 @@ char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 			if (id == last_known_id) {
 				found = true;
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Found (get_one_dn, index) %ld", id);
+			} else {
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Not Found (get_one_dn, index) id: %ld, last_known_id:%ld at pos: %ld", id, last_known_id, pos);
 			}
+		} else {
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "BUFFER is null at pos =%lu", pos);
 		}
 	}
 
+	//TODO: Is this even useful anymore?
+	if (!found ){
+		memset(buffer, 0, 2048);
+		while (c != -1 && c != 255 && ftell(notify.tf) != 1) {
+			i++;
+			fseek( notify.tf, -i, SEEK_END);
+			c = fgetc ( notify.tf ) ;
 
-	while ( !found && c != -1 && c != 255 && ftell(notify.tf) != 1) {
-		i++;
-		fseek( notify.tf, -i, SEEK_END);
-		c = fgetc ( notify.tf ) ;
+			if (c == '\n' && idx != 0)
+			{
+				reverse_trim_nl(buffer, idx-1);
+				sscanf(buffer, "%ld", &id);
+				pos=ftell(notify.tf);
+				index_set(index, id, pos);
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Index set (get_one_dn) %ld %ld", id, pos);
 
-		if (c == '\n')
-		{
-			reverse(buffer, idx-1);
-			sscanf(buffer, "%ld", &id) ;
+				if ( id == last_known_id ) {
+					found = true;
+					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Found (get_one_dn) %ld", id);
+					break;
+				} else if (id < last_known_id) {
+					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO,
+						"Not found in the index or in the transaction file (get_one_dn) %ld", last_known_id);
+					break;
+				}
 
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "notify_transaction_get_one_dn %s", buffer);
-
-			index_set(index, id, pos);
-
-			if ( id == last_known_id ) {
-				found = true;
-				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Found (get_one_dn) %ld", id);
-				break;
+				memset(buffer, 0, 2048);
+				idx=0;
+			} else {
+				buffer[idx] = c;
+				idx++;
 			}
-
-			pos=ftell(notify.tf);
-			memset(buffer, 0, 2048);
-			idx=0;
-		} else {
-			buffer[idx] = c;
-			idx++;
 		}
 	}
 

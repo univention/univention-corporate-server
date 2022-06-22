@@ -361,53 +361,6 @@ int network_client_dump ( )
 	return 0;
 }
 
-int network_client_check_clients ( unsigned long last_known_id )
-{
-	NetworkClient_t *tmp = network_client_first;
-	int rc;
-	char string[8192];
-	while ( tmp != NULL ) {
-		if ( tmp->notify ) {
-			if ( tmp->next_id <= last_known_id ) {
-				char *dn_string = NULL;
-
-				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "try to read %ld from cache", tmp->next_id);
-
-				/* try to read from cache */
-				if ( (dn_string = notifier_cache_get(tmp->next_id)) == NULL ) {
-					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld not found in cache", tmp->next_id);
-					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld get one dn", tmp->next_id);
-
-					/* read from transaction file, because not in cache */
-					if( (dn_string=notify_transcation_get_one_dn ( tmp->next_id )) == NULL ) {
-						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld failed ", tmp->next_id);
-						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%d closed, read from transaction file failed ", tmp->fd);
-						/* TODO: maybe close connection? */
-					}
-				}
-
-				if ( dn_string != NULL ) {
-					snprintf(string, sizeof(string), "MSGID: %ld\n%s\n\n",tmp->msg_id,dn_string);
-
-					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "--> %d: [%s]", tmp->fd, string);
-					rc = send(tmp->fd, string, strlen(string), 0);
-					free(dn_string);
-					if (rc < 0) {
-						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Failed send(%d), closing.", tmp->fd);
-						int fd = tmp->fd;
-						tmp = tmp->next;
-						network_client_del(fd);
-						continue;
-					}
-				}
-				tmp->notify=0;
-				tmp->msg_id=0;
-			}
-		}
-		tmp=tmp->next;
-	}
-	return 0;
-}
 
 int network_client_all_write ( unsigned long id, char *buf, long l_buf)
 {

@@ -70,6 +70,8 @@ int notifier_cache_init ( unsigned long max_id)
 		if (buffer == NULL) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Failed lookup: %ld", id);
 			continue;
+		} else {
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "lookup: %ld, %s", id, buffer);
 		}
 
 		sscanf(buffer, "%lu", &(entry->id));
