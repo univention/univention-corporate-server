@@ -28,15 +28,32 @@ debug="${DEBUG:=false}"
 docker="${DOCKER:=true}"
 docker_env_file="$(mktemp)"
 
+have () {
+	command -v "$1" >/dev/null 2>&1
+}
+
+RED='' GREEN='' BLUE='' NORM=''
+if [ -n "${TERM:-}" ] && [ -t 1 ] && have tput
+then
+	term () {
+		tput "$@"
+	}
+	RED="$(term setaf 1)"
+	GREEN="$(term setaf 2)"
+	BLUE="$(term setaf 4)"
+	NORM="$(term op)"
+fi
+
 usage () {
-	echo "Usage: [ENV_VAR=setting] ... ${0##*/} [options] scenario.cfg"
+	echo "${GREEN}Usage:${NORM} [ENV_VAR=setting] ... ${0##*/} [options] scenario.cfg"
 	echo ""
 	echo "Start scenario defined in scenario.cfg"
 	echo ""
-	echo "Options:"
-	echo "  -h, --help  show this help message and exit"
+	echo "${GREEN}Options:${NORM}"
+	echo "  -h, --help    show this help message and exit"
+	echo "  -I, --ignore  Ignore missing files"
 	echo ""
-	echo "Example:"
+	echo "${GREEN}Example:${NORM}"
 	echo ""
 	echo "  # start scenario with default options"
 	echo "  ./utils/start-test.sh scenarios/autotest-090-master-no-samba.cfg"
@@ -47,7 +64,7 @@ usage () {
 	echo "  These ENV_VARs can than be used in the cfg file ([ENV:KVM_BUILD_SERVER]) or if added to the section"
 	echo "  environment in the cfg file as env variables in the virtuale instance (ucs)."
 	echo ""
-	echo "ENV_VARS:"
+	echo "${GREEN}ENV_VARS:${NORM}"
 	echo ""
 	echo "  ec2"
 	echo "    CURRENT_AMI          - the ec2 ami for the current UCS release (default: $current_ami)"
@@ -107,7 +124,7 @@ usage () {
 }
 
 die () {
-	echo "$*" >&2
+	echo "${RED}$*${NORM}" >&2
 	exit 1
 }
 
@@ -281,8 +298,9 @@ cmd+=("$exe" -c "$CFG")
 "$EXACT_MATCH" && cmd+=("-e")
 "$SHUTDOWN" && cmd+=("-s")
 
-echo "starting test with ${cmd[*]}"
+echo "${BLUE}Starting test"
 sort -s -t= -k1 <"$docker_env_file"
+echo "${cmd[*]}${NORM}"
 
 if [ -n "$JOB_URL" ]; then
 	header="$JOB_URL+++++++++++++++++++++++++++++++++++"
