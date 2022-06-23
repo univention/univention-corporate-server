@@ -119,21 +119,6 @@ fi
 MONITORINGCONTAINER="cn=monitoring,$ldap_base"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
-	--set name="UNIVENTION_PING" \
-	--set description="Default Service: check if host is alive" \
-	--set summary="Default Service: check if host is alive" \
-	--append labels='"severity" "critical"' \
-	--set query="univention_ping_status != 1" || die
-
-univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
-	--set name="UNIVENTION_PING_WARNING" \
-	--set alertGroup="UNIVENTION_PING" \
-	--set description="Default Service: check if host is alive" \
-	--set summary="Default Service: check if host is alive" \
-	--append labels='"severity" "warning"' \
-	--set query="univention_ping_status != 1" || die
-
-univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_DISK_ROOT" \
 	--set description="Default Service: check if / is out of diskspace" \
 	--set summary="Default Service: check if / is out of diskspace" \
@@ -363,7 +348,6 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set query="univention_listener_mdb_size_used_ratio > 90" || die
 
 CHECKS=(
-	"UNIVENTION_PING"
 	"UNIVENTION_DISK_ROOT"
 	"UNIVENTION_DISK_ROOT_WARNING"
 	"UNIVENTION_DNS"

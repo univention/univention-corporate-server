@@ -44,7 +44,6 @@ eval "$(univention-config-registry shell)"
 ucs_removeServiceFromLocalhost "UCS Monitoring" || die
 
 CHECKS=(
-	"UNIVENTION_PING"
 	"UNIVENTION_DISK_ROOT"
 	"UNIVENTION_DISK_ROOT_WARNING"
 	"UNIVENTION_DNS"
