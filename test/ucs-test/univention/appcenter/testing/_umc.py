@@ -1,16 +1,5 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Univention common Python library to manage
-connections to remote |UMC| servers
-
->>> umc = Client()
->>> umc.authenticate_with_machine_account()
->>> response = umc.umc_get('session-info')
->>> response.status
-2000
->>> umc.umc_logout()
-"""
 # Copyright 2017-2022 Univention GmbH
 #
 # https://www.univention.de/
@@ -38,28 +27,47 @@ connections to remote |UMC| servers
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import ssl
+"""
+Univention common Python library to manage connections to remote |UMC| servers.
+
+>>> umc = Client()
+>>> umc.authenticate_with_machine_account()
+>>> response = umc.umc_get('session-info')
+>>> response.status
+2000
+>>> umc.umc_logout()
+"""
+
+import httplib
 import json
 import locale
+import ssl
 from http.cookies import SimpleCookie
 from http.client import HTTPSConnection, HTTPException
+from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union  # noqa: F401
+
+from univention.config_registry import ConfigRegistry
+
+_T = TypeVar("_T")
 
 
 def _get_ucr():
-	from univention.config_registry import ConfigRegistry
+	# type: () -> ConfigRegistry
 	ucr = ConfigRegistry()
 	ucr.load()
 	return ucr
 
 
 def _get_useragent():
+	# type: () -> str
 	ucr = _get_ucr()
-	return 'UCS/%s (univention.lib.umc/%s-errata%s)' % (ucr.get('version/version', '0.0'), ucr.get('version/patchlevel', '0'), ucr.get('version/erratalevel', '0')),
+	return 'UCS/%s (univention.lib.umc/%s-errata%s)' % (ucr.get('version/version', '0.0'), ucr.get('version/patchlevel', '0'), ucr.get('version/erratalevel', '0'))
 
 
 def _get_fqdn():
+	# type: () -> str
 	ucr = _get_ucr()
-	return '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+	return '%(hostname)s.%(domainname)s' % ucr
 
 
 class _HTTPType(type):
@@ -263,7 +271,7 @@ class Response(object):
 
 	:param int status: |HTTP| status code between 200 and 599.
 	:param str reason: string with the reason phrase e.g. 'OK'
-	:param str body: the raw response body
+	:param bytes body: the raw response body
 	:param list headers: the response headers as list of tuples
 	:param httplib.HTTPResponse _response: The original |HTTP| response.
 	"""
@@ -291,7 +299,7 @@ class Response(object):
 			return self.data.get('message')
 
 	def __init__(self, status, reason, body, headers, _response):
-		# type: (int, str, str, List[Tuple[str, str]], httplib.HTTPResponse) -> None
+		# type: (int, str, bytes, List[Tuple[str, str]], httplib.HTTPResponse) -> None
 		self.status = status
 		self.reason = reason
 		self.body = body
@@ -312,7 +320,7 @@ class Response(object):
 		return self._response.getheader(name, default)
 
 	def decode_body(self):
-		# type: () -> Union[str, dict]
+		# type: () -> Union[bytes, dict]
 		"""
 		Decode |HTTP| response and return |JSON| data as dictionary.
 
@@ -354,7 +362,7 @@ class Client(object):
 	ConnectionType = HTTPSConnection
 
 	def __init__(self, hostname=None, username=None, password=None, language=None, timeout=None, automatic_reauthentication=False, useragent=None):
-		# type: (Optional[str], Optional[str], Optional[str], Optional[str], Optional[float], bool) -> None
+		# type: (Optional[str], Optional[str], Optional[str], Optional[str], Optional[float], bool, Optional[str]) -> None
 		self.hostname = hostname or _get_fqdn()
 		self._language = language or locale.getdefaultlocale()[0] or ''
 		self._headers = {
@@ -402,7 +410,7 @@ class Client(object):
 		:param str username: A user name.
 		:param str password: The password of the user.
 		"""
-		self._headers['Authorization'] = 'Basic %s' % ('%s:%s' % (username, password)).encode('base64').rstrip()
+		self._headers['Authorization'] = 'Basic %s' % ('%s:%s' % (username, password)).encode('base64').rstrip().decode('ascii')
 
 	def authenticate_saml(self, username, password):
 		# type: (str, str) -> None
@@ -562,10 +570,10 @@ class Client(object):
 		"""
 		Parse cookies from |HTTP| response and store for next request.
 
-		:param httplib.HTTPResponse: The |HTTP| response.
+		:param httplib.HTTPResponse response: The |HTTP| response.
 		"""
 		# FIXME: this cookie handling doesn't respect path, domain and expiry
-		cookies = SimpleCookie()
+		cookies = SimpleCookie()  # type: SimpleCookie[Any]
 		cookies.load(response.getheader('set-cookie', ''))
 		self.cookies.update({cookie.key: cookie.value for cookie in cookies.values()})
 
