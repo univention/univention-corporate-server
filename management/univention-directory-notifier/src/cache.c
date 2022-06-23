@@ -57,11 +57,11 @@ static inline notify_cache_t *lookup(unsigned long id) {
 
 int notifier_cache_init ( unsigned long max_id)
 {
-	unsigned long id, max_filled=0;
+	unsigned long id, max_filled = 0;
 
 	cache = calloc(notifier_cache_size, sizeof(notify_cache_t));
 
-	id=max_id - MIN(max_id, notifier_cache_size) + 1;
+	id = max_id - MIN(max_id, notifier_cache_size) + 1;
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Loading cache %ld..%ld", id, max_id);
 	for (; id <= max_id; id++) {
 		char *p, *pp;

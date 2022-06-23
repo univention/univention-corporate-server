@@ -476,8 +476,8 @@ char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 		goto error;
 	}
 
-	i=0;
-	idx=0;
+	i = 0;
+	idx = 0;
 	memset(buffer, 0, sizeof(buffer));
 
 	if ((pos = index_get(index, last_known_id)) != -1) {
@@ -499,23 +499,23 @@ char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 		}
 	}
 
-	//TODO: Is this even useful anymore?
-	if (!found ){
+	// TODO: Is this even useful anymore?
+	if (!found){
 		memset(buffer, 0, 2048);
 		while (c != -1 && c != 255 && ftell(notify.tf) != 1) {
 			i++;
-			fseek( notify.tf, -i, SEEK_END);
-			c = fgetc ( notify.tf ) ;
+			fseek(notify.tf, -i, SEEK_END);
+			c = fgetc(notify.tf);
 
 			if (c == '\n' && idx != 0)
 			{
 				reverse_trim_nl(buffer, idx-1);
 				sscanf(buffer, "%ld", &id);
-				pos=ftell(notify.tf);
+				pos = ftell(notify.tf);
 				index_set(index, id, pos);
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Index set (get_one_dn) %ld %ld", id, pos);
 
-				if ( id == last_known_id ) {
+				if (id == last_known_id) {
 					found = true;
 					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Found (get_one_dn) %ld", id);
 					break;
@@ -526,7 +526,7 @@ char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 				}
 
 				memset(buffer, 0, 2048);
-				idx=0;
+				idx = 0;
 			} else {
 				buffer[idx] = c;
 				idx++;
