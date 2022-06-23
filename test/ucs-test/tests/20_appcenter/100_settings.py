@@ -43,13 +43,13 @@ class Configuring(object):
 
 	def __exit__(self, exc_type, exc_val, exc_tb):
 		if self.revert == 'configure':
-			config = dict((key, None) for key in self.settings)
+			config = {key: None for key in self.settings}
 			configure = get_action('configure')
 			configure.call(app=self.app, set_vars=config, run_script='no')
 			for setting in self.settings:
 				assert ucr_get(setting) is None
 		elif self.revert == 'ucr':
-			config = dict((key, None) for key in self.settings)
+			config = {key: None for key in self.settings}
 			ucr_save(config)
 
 

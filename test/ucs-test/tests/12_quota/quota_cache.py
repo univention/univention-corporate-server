@@ -41,16 +41,15 @@ def get_cache_values(dn):
 	with open(filename, 'rb') as fd:
 		dn, attrs, policy_result = pickle.load(fd)
 
-	share = {}
-	share['univentionSharePath'] = attrs['univentionSharePath'][0]
-	share['inodeSoftLimit'] = policy_result.get('univentionQuotaSoftLimitInodes', [None])[0]
-	share['inodeHardLimit'] = policy_result.get('univentionQuotaHardLimitInodes', [None])[0]
-	share['spaceSoftLimit'] = policy_result.get('univentionQuotaSoftLimitSpace', [None])[0]
-	share['spaceHardLimit'] = policy_result.get('univentionQuotaHardLimitSpace', [None])[0]
-	share['reapplyQuota'] = policy_result.get('univentionQuotaReapplyEveryLogin', [None])[0]
-	share = dict((key, value.decode('UTF-8') if isinstance(value, bytes) else value) for key, value in share.items())
-
-	return share
+	share = {
+		'univentionSharePath': attrs['univentionSharePath'][0],
+		'inodeSoftLimit': policy_result.get('univentionQuotaSoftLimitInodes', [None])[0],
+		'inodeHardLimit': policy_result.get('univentionQuotaHardLimitInodes', [None])[0],
+		'spaceSoftLimit': policy_result.get('univentionQuotaSoftLimitSpace', [None])[0],
+		'spaceHardLimit': policy_result.get('univentionQuotaHardLimitSpace', [None])[0],
+		'reapplyQuota': policy_result.get('univentionQuotaReapplyEveryLogin', [None])[0],
+	}
+	return {key: value.decode('UTF-8') if isinstance(value, bytes) else value for key, value in share.items()}
 
 
 def check_values(dn, inodeSoftLimit, inodeHardLimit, spaceSoftLimit, spaceHardLimit, reapplyQuota):

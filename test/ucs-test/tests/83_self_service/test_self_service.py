@@ -28,7 +28,7 @@ class SelfServiceUser(object):
 		# TODO: kill all self-service UMC module processes because 1 process per request sums up and blocks resources for 15 minutes
 
 	def get_contact(self):
-		return dict((data['id'], data['value']) for data in self.request('passwordreset/get_contact').result)
+		return {data['id']: data['value'] for data in self.request('passwordreset/get_contact').result}
 
 	def set_contact(self, email='', mobile=''):
 		return self.request('passwordreset/set_contact', email=email, mobile=mobile).result

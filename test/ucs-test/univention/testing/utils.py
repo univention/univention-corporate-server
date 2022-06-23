@@ -272,7 +272,7 @@ def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=T
 		if intersection:
 			unexpected_values[attribute] = intersection
 
-	mixed = dict((key, (values_missing.get(key), unexpected_values.get(key))) for key in list(values_missing) + list(unexpected_values))
+	mixed = {key: (values_missing.get(key), unexpected_values.get(key)) for key in list(values_missing) + list(unexpected_values)}
 	msg = u'DN: %s\n%s\n' % (
 		baseDn,
 		u'\n'.join(
@@ -501,7 +501,7 @@ def wait_for_replication_from_local_samba_to_local_openldap(replication_postrun=
 	# the order matters!
 	ucr = UCR
 	ucr.load()
-	if ucr.get('server/role') in ('domaincontroller_backup', 'domaincontroller_slave'):
+	if ucr.get('server/role') in {'domaincontroller_backup', 'domaincontroller_slave'}:
 		conditions.append((ReplicationType.DRS, ldap_filter))
 	if ucr.get('samba4/ldap/base'):
 		conditions.append((ReplicationType.S4C_FROM_UCS, ldap_filter))

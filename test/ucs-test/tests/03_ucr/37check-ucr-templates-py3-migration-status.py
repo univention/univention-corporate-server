@@ -58,7 +58,7 @@ def tmpfile(request):
 @pytest.fixture(scope="module")
 def python_versions(tmpfile):
 	result = [
-		(pyver, dict((suf, tmpfile(pyver, suf)) for suf in ("py", "tmp", "out", "ret")))
+		(pyver, {suf: tmpfile(pyver, suf) for suf in ("py", "tmp", "out", "ret")})
 		for pyver in VERSIONS
 	]
 	for (pyver, fn) in result:

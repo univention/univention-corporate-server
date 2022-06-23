@@ -567,7 +567,7 @@ class Client(object):
 		# FIXME: this cookie handling doesn't respect path, domain and expiry
 		cookies = SimpleCookie()
 		cookies.load(response.getheader('set-cookie', ''))
-		self.cookies.update(dict((cookie.key, cookie.value) for cookie in cookies.values()))
+		self.cookies.update({cookie.key: cookie.value for cookie in cookies.values()})
 
 	def __request(self, request):
 		# type: (Request) -> httplib.HTTPResponse

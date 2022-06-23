@@ -351,7 +351,12 @@ class Module(Client):
 		raise NotImplementedError()
 
 	def search(self, filter=None, position=None, scope='sub', hidden=False, superordinate=None, opened=False):
-		data = {}
+		# type: (Union[Dict[str, str], Text, bytes, None], Optional[str], Optional[str], bool, Optional[str], bool) -> Iterator[Union[Object, ShallowObject]]
+		data = {
+			'position': position,
+			'scope': scope,
+			'hidden': '1' if hidden else '0',
+		}
 		if isinstance(filter, dict):
 			for prop, val in filter.items():
 				data['query[%s]' % (prop,)] = val
@@ -359,9 +364,6 @@ class Module(Client):
 			data['filter'] = filter
 		if superordinate:
 			data['superordinate'] = superordinate
-		data['position'] = position
-		data['scope'] = scope
-		data['hidden'] = '1' if hidden else '0'
 		if not opened:
 			data['properties'] = 'dn'
 		self.load_relations()
@@ -482,9 +484,10 @@ class Object(Client):
 		super(Object, self).__init__(udm.client, *args, **kwargs)
 		self.udm = udm
 		self.representation = representation
-		self.hal = {}
-		self.hal['_links'] = representation.pop('_links', {})
-		self.hal['_embedded'] = representation.pop('_embedded', {})
+		self.hal = {
+			'_links': representation.pop('_links', {}),
+			'_embedded': representation.pop('_embedded', {}),
+		}
 		self.etag = etag
 		self.last_modified = last_modified
 
@@ -513,10 +516,10 @@ class Object(Client):
 		self.save()
 
 	def _modify(self, reload=True):
-		headers = dict((key, value) for key, value in {
+		headers = {key: value for key, value in {
 			'If-Unmodified-Since': self.last_modified,
 			'If-Match': self.etag,
-		}.items() if value)
+		}.items() if value}
 
 		response = self.client.make_request('PUT', self.uri, data=self.representation, **headers)
 		response = self._follow_redirection(response)  # move() causes multiple redirections!

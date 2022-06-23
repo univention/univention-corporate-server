@@ -118,7 +118,7 @@ class LDAPConnection:
 		return {}
 
 	def create(self, dn, attrs):
-		# attrs = dict((key, [value] if isinstance(value, (str, bytes)) else value) for key, value in attrs.items())
+		# attrs = {key,:[value] if isinstance(value, (str, bytes)) else value for key, value in attrs.items()}
 		ldif = modlist.addModlist(attrs)
 		print('Creating %r with %r' % (dn, ldif), file=sys.stderr)
 		self.lo.add_ext_s(dn, ldif, serverctrls=self.serverctrls_for_add_and_modify)
@@ -145,7 +145,7 @@ class LDAPConnection:
 
 	def set_attributes(self, dn, **attributes):
 		old_attributes = self.get(dn, attr=attributes.keys())
-		attributes = dict((name, [attr] if not isinstance(attr, (list, tuple)) else attr) for name, attr in attributes.items())
+		attributes = {name: [attr] if not isinstance(attr, (list, tuple)) else attr for name, attr in attributes.items()}
 		ldif = modlist.modifyModlist(old_attributes, attributes)
 		comp_dn = dn
 		if ldif:
