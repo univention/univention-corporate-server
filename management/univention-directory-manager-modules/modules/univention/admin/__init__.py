@@ -645,7 +645,7 @@ def _ldap_cache(ttl=10):
 
 
 univention.admin = sys.modules[__name__]
-from univention.admin import modules, objects, syntax, hook, mapping  # noqa: F401
+from univention.admin import modules, objects, syntax, hook, mapping  # noqa: F401,E402
 syntax.import_syntax_files()
 hook.import_hook_files()
 
