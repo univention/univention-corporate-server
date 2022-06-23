@@ -878,6 +878,9 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Samba has been updated to version <productnumber>4.16.2</productnumber> (<u:bug>54682</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					In some cases, in UCS@school the <filename>log.smbd</filename> filled with a message because a Windows 10 client attempted to access user files, which is denied by the NTACLs.
 					While the origin of that behavior is still unknown, no negative side effects are known.
 					To avoid overflowing the log file, we adjusted the log message to only start appearing at the debug level 2.
