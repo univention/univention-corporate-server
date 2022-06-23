@@ -254,7 +254,7 @@ create_ec2_image () {
 	_ssh -l "$KVM_USER" "$KVM_SERVER" "qemu-img convert -p -c -O qcow2 $KT_CREATE_IMAGE $TMP_KVM_IMAGE"
 
 	# copy to image convert server for later steps and remove tmp image from kvm server
-	_scp -r ${KVM_USER}@${KVM_SERVER}:/${TMP_DIR} ${KVM_USER}@${IMAGE_SERVER}:/tmp
+	_scp -r "${KVM_USER}@${KVM_SERVER}:/${TMP_DIR}" "${KVM_USER}@${IMAGE_SERVER}:/tmp"
 	_ssh -l "$KVM_USER" "${KVM_SERVER}" "rm -rf ${TMP_DIR}"
 
 	_ec2_image
