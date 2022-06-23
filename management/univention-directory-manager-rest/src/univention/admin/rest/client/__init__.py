@@ -69,7 +69,7 @@ else:
 class HTTPError(Exception):
 
 	def __init__(self, code, message, response):
-		# type: (int, str, requests.Response) -> None
+		# type: (int, str, Optional[requests.Response]) -> None
 		self.code = code
 		self.response = response
 		super(HTTPError, self).__init__(message)
@@ -172,7 +172,7 @@ class Session(object):
 
 	def request(self, method, uri, data=None, expect_json=False, **headers):
 		# type: (str, str, Dict, bool, **str) -> Any
-		return self.make_request(method, uri, data, expect_json=expect_json, **headers).data
+		return self.make_request(method, uri, data, expect_json=expect_json, **headers).data  # type: ignore # <https://github.com/python/mypy/issues/10008>
 
 	def make_request(self, method, uri, data=None, expect_json=False, allow_redirects=True, **headers):
 		# type: (str, str, Dict, bool, bool, **str) -> Response
@@ -199,11 +199,13 @@ class Session(object):
 				if not self.reconnect:
 					raise
 				try:
+					assert exc.response
 					retry_after = min(5, int(exc.response.headers.get('Retry-After', 1)))
 				except ValueError:
 					retry_after = 1
 				time.sleep(retry_after)
-			return doit()
+
+		return doit()
 
 	def eval_response(self, response, expect_json=False):
 		# type: (requests.Response, bool) -> Any
@@ -258,8 +260,8 @@ class Session(object):
 				yield x
 			return
 
-		for relation in self.get_relations(entry, relation, name, template):
-			yield self.make_request('GET', relation['href']).data
+		for rel in self.get_relations(entry, relation, name, template):
+			yield self.make_request('GET', rel['href']).data
 
 	def resolve_relation(self, entry, relation, name=None, template=None):
 		# type: (Dict, str, Optional[str], Optional[Dict[str, Any]]) -> Any
@@ -331,9 +333,14 @@ class UDM(Client):
 		for module in self.modules(name):
 			return module
 
+		return None
+
 	def get_object(self, object_type, dn):
 		# type: (str, str) -> Optional[Object]
-		return self.get(object_type).get(dn)
+		mod = self.get(object_type)
+		assert mod
+		obj = mod.get(dn)
+		return obj
 
 	def __repr__(self):
 		# type: () -> str
@@ -373,15 +380,15 @@ class Module(Client):
 	def get(self, dn):
 		# type: (str) -> Optional[Object]
 		# TODO: use a link relation instead of a search
-		for obj in self.search(position=dn, scope='base'):
+		for obj in self._search_closed(position=dn, scope='base'):
 			return obj.open()
 		raise NotFound(404, 'Wrong object type!?', None)  # FIXME: object exists but is of different module. should be fixed on the server.
 
 	def get_by_entry_uuid(self, uuid):
 		# type: (str) -> Optional[Object]
 		# TODO: use a link relation instead of a search
-		#return self.udm.get_by_uuid(uuid)
-		for obj in self.search(filter={'entryUUID': uuid}, scope='base'):
+		# return self.udm.get_by_uuid(uuid)
+		for obj in self._search_closed(filter={'entryUUID': uuid}, scope='base'):
 			return obj.open()
 		raise NotFound(404, 'Wrong object type!?', None)  # FIXME: object exists but is of different module. should be fixed on the server.
 
@@ -391,7 +398,27 @@ class Module(Client):
 		raise NotImplementedError()
 
 	def search(self, filter=None, position=None, scope='sub', hidden=False, superordinate=None, opened=False):
-		# type: (Union[Dict[str, str], Text, bytes, None], Optional[str], Optional[str], bool, Optional[str], bool) -> Iterator[Union[Object, ShallowObject]]
+		# type: (Union[Dict[str, str], Text, bytes, None], Optional[str], Optional[str], bool, Optional[str], bool) -> Iterator[Any]
+		if opened:
+			return self._search_opened(filter, position, scope, hidden, superordinate)
+		else:
+			return self._search_closed(filter, position, scope, hidden, superordinate)
+
+	def _search_opened(self, filter=None, position=None, scope='sub', hidden=False, superordinate=None):
+		# type: (Union[Dict[str, str], Text, bytes, None], Optional[str], Optional[str], bool, Optional[str]) -> Iterator[Object]
+		for obj in self._search(filter, position, scope, hidden, superordinate, True):
+			yield Object.from_data(self.udm, obj)  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
+
+	def _search_closed(self, filter=None, position=None, scope='sub', hidden=False, superordinate=None):
+		# type: (Union[Dict[str, str], Text, bytes, None], Optional[str], Optional[str], bool, Optional[str]) -> Iterator[ShallowObject]
+		for obj in self._search(filter, position, scope, hidden, superordinate, False):
+			objself = self.client.get_relation(obj, 'self')
+			uri = objself['href']
+			dn = objself['name']
+			yield ShallowObject(self.udm, dn, uri)
+
+	def _search(self, filter=None, position=None, scope='sub', hidden=False, superordinate=None, opened=False):
+		# type: (Union[Dict[str, str], Text, bytes, None], Optional[str], Optional[str], bool, Optional[str], bool) -> Iterator[Any]
 		data = {
 			'position': position,
 			'scope': scope,
@@ -409,13 +436,7 @@ class Module(Client):
 		self.load_relations()
 		entries = self.client.resolve_relation(self.relations, 'search', template=data)
 		for obj in self.client.resolve_relations(entries, 'udm:object'):
-			if opened:
-				yield Object.from_data(self.udm, obj)  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
-			else:
-				objself = self.client.get_relation(obj, 'self')
-				uri = objself['href']
-				dn = objself['name']
-				yield ShallowObject(self.udm, dn, uri)
+			yield obj
 
 	def get_layout(self):
 		# type: () -> Optional[Any]
@@ -479,6 +500,8 @@ class References(object):
 
 	def __getitem__(self, item):
 		# type: (str) -> List[ShallowObject]
+		assert self.obj
+		assert self.udm
 		return [
 			ShallowObject(self.obj.udm, x['name'], x['href'])
 			for x in self.udm.client.get_relations(self.obj.hal, 'udm:object/property/reference/%s' % (item,))
@@ -605,6 +628,7 @@ class Object(Client):
 
 	def delete(self, remove_referring=False):
 		# type: (bool) -> bytes
+		assert self.uri
 		return self.client.request('DELETE', self.uri)
 
 	def move(self, position):
@@ -614,12 +638,13 @@ class Object(Client):
 
 	def _modify(self, reload=True):
 		# type: (bool) -> Response
+		assert self.uri
 		headers = {key: value for key, value in {
 			'If-Unmodified-Since': self.last_modified,
 			'If-Match': self.etag,
 		}.items() if value}
 
-		response = self.client.make_request('PUT', self.uri, data=self.representation, allow_redirects=False, **headers)
+		response = self.client.make_request('PUT', self.uri, data=self.representation, allow_redirects=False, **headers)  # type: ignore # <https://github.com/python/mypy/issues/10008>
 		response = self._follow_redirection(response, reload)  # move() causes multiple redirections!
 		return response
 
