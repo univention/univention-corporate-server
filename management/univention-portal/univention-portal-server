@@ -181,6 +181,8 @@ class NavigationHandler(PortalResource):
 
 	def _get_entry(self, entry_data, entry_dn):
 		icon_url = entry_data["logo_name"] or None
+		if icon_url and icon_url.startswith('.'):  # most icons are referenced as ./portal/foo.svg
+			icon_url = icon_url[1:]
 		icons = {self._portal_lang: [icon_url] if icon_url else []}
 
 		links = {}
