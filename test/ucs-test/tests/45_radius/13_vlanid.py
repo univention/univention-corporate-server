@@ -15,18 +15,6 @@ from univention.config_registry import handler_set as ucr_set
 from univention.config_registry import handler_unset as ucr_unset
 
 
-def test_run_joinscript():
-	cre = Credentials()
-	ret = subprocess.run([
-		'/usr/share/univention-join/univention-run-join-scripts',
-		'-dcaccount', cre.username,
-		'-dcpwd', cre.pwdfile,
-		'--force',
-		'--run-scripts', '80univention-radius.inst',
-	], check=True)
-	assert ret != 0
-
-
 @pytest.fixture
 def credentials(ucr, lo):
 	krb5PrincipalName = lo.search(filter='(&(objectClass=univentionHost)(cn={}))'.format(ucr.get('hostname')))[0][1]['krb5PrincipalName'][0].decode('UTF-8')
