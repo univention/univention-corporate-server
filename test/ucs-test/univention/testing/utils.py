@@ -32,7 +32,6 @@ Common functions used by tests.
 from __future__ import print_function
 
 import functools
-import inspect
 import os
 import socket
 import subprocess
@@ -212,7 +211,6 @@ def verify_ldap_object(
 	:raises LDAPObjectValueMissing: when a value listed in `expected_attr` is missing in the LDAP object
 	:raises LDAPObjectUnexpectedValue: if `strict=True` and a multi-value attribute of the LDAP object
 		has more values than were listed in `expected_attr` or an `not_expected_attr` was found
-	:raises TypeError: if the value of `pre_check` is not a function object
 	"""
 	ucr = UCR
 	ucr.load()
@@ -220,8 +218,6 @@ def verify_ldap_object(
 	delay = int(ucr.get("tests/verify_ldap_object/delay", delay))
 
 	if pre_check:
-		if not inspect.isfunction(pre_check) or inspect.ismethod(pre_check):
-			raise TypeError("Value of argument 'pre_check' is not a function: {!r}".format(pre_check))
 		pre_check(**(pre_check_kwargs or {}))
 
 	return retry_on_error(
