@@ -790,9 +790,14 @@
 			</itemizedlist>
 		</section>
 
-		<section id="changelog:service:nagios">
-			<title>Nagios</title>
+		<section id="changelog:service:monitoring">
+			<title>Monitoring / Nagios</title>
 			<itemizedlist>
+				<listitem><simpara>
+					 A new monitoring system has been implemented based on Prometheus, Prometheus-Alertmanager and Grafana.
+					 During the upgrade all current Nagios services are migrated to Monitoring alerts
+					(<u:bug>54748</u:bug>, <u:bug>54749</u:bug>, <u:bug>54750</u:bug>).
+				</simpara></listitem>
 				<listitem><simpara>
 					The configuration of NRPE plugin definitions was broken due to the migration to Python 3 and has been repaired (<u:bug>53681</u:bug>).
 				</simpara></listitem>
