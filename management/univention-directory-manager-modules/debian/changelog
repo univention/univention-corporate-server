@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.13-1) unstable; urgency=medium
+
+  * Bug #54840: remove UCR widget mapping directory/manager/web/widget/.*
+
+ -- Florian Best <best@univention.de>  Thu, 23 Jun 2022 11:34:31 +0200
+
 univention-directory-manager-modules (15.0.12-2) unstable; urgency=medium
 
   * Bug #54706: drop Python 2 package
