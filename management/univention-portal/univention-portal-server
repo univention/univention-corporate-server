@@ -195,6 +195,7 @@ class NavigationHandler(PortalResource):
 			"display_name": self._choose_language(entry_data["name"]),
 			"link": self._choose_url(links, self._portal_base),
 			"target": entry_data.get("target") or '_blank',
+			"keywords": entry_data.get("keywords"),
 		}
 
 	def _choose_language(self, entry):
