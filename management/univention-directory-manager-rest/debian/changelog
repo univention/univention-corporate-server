@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.4-1) unstable; urgency=medium
+
+  * Bug #54706: split into python3-univention-directory-manager-rest-client
+
+ -- Florian Best <best@univention.de>  Thu, 23 Jun 2022 19:20:50 +0200
+
 univention-directory-manager-rest (10.0.3-1) unstable; urgency=medium
 
   * Bug #54706: drop Python 2 package

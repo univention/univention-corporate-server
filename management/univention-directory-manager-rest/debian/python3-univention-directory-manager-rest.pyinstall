@@ -1,0 +1,2 @@
+src/univention/admin/rest/*.py univention.admin.rest
+src/univention/admin/rest/server/*.py univention.admin.rest.server

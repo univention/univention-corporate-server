@@ -16,6 +16,7 @@ Package: univention-directory-manager-rest
 Architecture: all
 Depends:
  python3-univention-directory-manager-rest (= ${binary:Version}),
+ python3-univention-directory-manager-rest-client (= ${binary:Version}),
  systemd,
  ${misc:Depends},
 Description: REST service for UCS Directory Manager
@@ -49,12 +50,30 @@ Depends:
  python3-univention-directory-manager (>= 15.0.11-54),
  python3-univention-directory-reports,
  python3-univention-management-console,
- python3-uritemplate,
  univention-management-console-module-udm (>= 10.0.1-27),
  ${misc:Depends},
  ${python3:Depends},
 Description: REST service for UCS Directory Manager
  This package contains the REST service for UCS Directory Manager.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python3-univention-directory-manager-rest-client
+Architecture: all
+Breaks:
+ python3-univention-directory-manager-rest (<< 10.0.4-1),
+Replaces:
+ python3-univention-directory-manager-rest (<< 10.0.4-1),
+Depends:
+ python3-six,
+ python3-uritemplate,
+ ${misc:Depends},
+ ${python3:Depends},
+Description: Python 3 Client library for the REST service for UCS Directory Manager
+ This package contains the Python 3 Client library for REST service for UCS Directory Manager.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
