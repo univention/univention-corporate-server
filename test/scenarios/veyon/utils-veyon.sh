@@ -60,6 +60,12 @@ rename_and_join () {
 	local school="$6"
 	local school_group
 	school_group="$(ucr get windows/domain)/Domain Users $school"
+	# disable update service, so that the reboot (including updates)
+	# doesn't take forever
+	ucs-winrm run-ps --client "$client" --cmd '
+		sc.exe config wuauserv start=disabled
+		sc.exe stop wuauserv
+	'
 	ucs-winrm rename-computer --name "$name" --client "$ip"
 	ucs-winrm domain-join \
 		--client "$ip" \

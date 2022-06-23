@@ -10,11 +10,13 @@ export HALT=false
 
 # extra label for instances names so that the instances
 # are user specific
+UCS_ENV_MY_USERNAME="$USER"
 if [ -n "$BUILD_URL" ]; then
 	# -> if started via jenkins "...-username"
 	my_name="$(curl -k -s "$BUILD_URL/api/json" | awk -F '"userId":"' '{print $2}'| awk -F '"' '{print $1}')"
-	export UCS_ENV_MY_USERNAME="-${my_name}"
+	export UCS_ENV_MY_USERNAME="${my_name}"
 fi
+export UCS_ENV_MY_USERNAME="$UCS_ENV_MY_USERNAME"
 
 ./scenarios/veyon/create_veyon_cfg.py  \
 	-w "$UCS_ENV_VEYON_WINDOWS_HOST" \
