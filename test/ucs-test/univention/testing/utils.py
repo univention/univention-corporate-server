@@ -232,7 +232,7 @@ def verify_ldap_object(
 
 
 def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True, primary=False, not_expected_attr=None):
-	# type: (str, Optional[Dict[str, str]], bool, bool, bool) -> None
+	# type: (str, Optional[Dict[str, str]], bool, bool, bool, Optional[Dict[str, str]]) -> None
 	if expected_attr is None:
 		expected_attr = {}
 	if not_expected_attr is None:
