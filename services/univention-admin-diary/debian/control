@@ -127,6 +127,7 @@ Description: Univention Admin Diary lib
 Package: python3-univention-admin-diary
 Architecture: all
 Depends:
+ shell-univention-lib,
  ${misc:Depends},
  ${python3:Depends},
 Breaks:

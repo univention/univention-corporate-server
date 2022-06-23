@@ -30,7 +30,7 @@
 #DEBHELPER#
 
 # shellcheck source=/dev/null
-. /usr/share/univention-lib/all.sh
+. /usr/share/univention-lib/base.sh
 
 create_logfile /var/log/univention/admindiary.log "root:adm" 640
 
