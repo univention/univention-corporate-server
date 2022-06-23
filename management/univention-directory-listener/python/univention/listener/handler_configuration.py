@@ -33,8 +33,8 @@ import string
 from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Type  # noqa: F401
 
 import listener
-from univention.listener.handler_logging import get_logger
-from univention.listener.exceptions import ListenerModuleConfigurationError
+from .exceptions import ListenerModuleConfigurationError
+from .handler_logging import get_logger
 
 if TYPE_CHECKING:
 	from .handler import ListenerModuleHandler  # noqa: F401
@@ -57,10 +57,7 @@ class ListenerModuleConfiguration(object):
 	and create a `get_<attribute>` method.
 
 	The listener server will use an object of your subclass to access your
-	listener module through:
-
-	1. :py:meth:`get_configuration()`
-	2. :py:meth:`get_listener_module_instance()`
+	listener module through :py:meth:`get_listener_module_instance()`.
 	"""
 
 	name = ''                     # (*) name of the listener module
@@ -84,10 +81,7 @@ class ListenerModuleConfiguration(object):
 
 	def __repr__(self):
 		# type: () -> str
-		return '{}({})'.format(
-			self.__class__.__name__,
-			', '.join('{}={!r}'.format(k, v) for k, v in self.get_configuration().items())
-		)
+		return '{}(name={!r})'.format(self.__class__.__name__, self.get_name())
 
 	def _run_checks(self):
 		# type: () -> None
@@ -102,29 +96,6 @@ class ListenerModuleConfiguration(object):
 			)
 		if not inspect.isclass(self.get_listener_module_class()):
 			raise ListenerModuleConfigurationError('Attribute "listener_module_class" must be a class.')
-
-	def get_configuration(self):
-		# type: () -> Dict[str, Any]
-		"""
-		Get the configuration of a listener module.
-
-		:return: configuration of listener module
-		:rtype: dict
-		"""
-		res = {}
-		for key in self.get_configuration_keys():
-			getter = getattr(self, 'get_{}'.format(key), None)
-			if getter and callable(getter):
-				value = getter()
-			else:
-				if hasattr(self, key):
-					self.logger.warn("No 'get_%s' method found, using value of attribute %r directly.", key, key)
-					value = getattr(self, key)
-				else:
-					raise ListenerModuleConfigurationError(
-						'Neither "get_{0}" method nor class attribute found for configuration key {0!r}.'.format(key))
-			res[key] = value
-		return res
 
 	@classmethod
 	def get_configuration_keys(cls):
@@ -197,7 +168,7 @@ class ListenerModuleConfiguration(object):
 		:rtype: ListenerModuleHandler
 		"""
 		cls = self.get_listener_module_class()
-		return cls(self, *args, **kwargs)
+		return cls(*args, **kwargs)
 
 	def get_listener_module_class(self):
 		# type: () -> Type[ListenerModuleHandler]

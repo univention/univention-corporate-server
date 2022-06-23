@@ -33,14 +33,14 @@ import os
 import types  # noqa: F401
 from contextlib import contextmanager
 from six import reraise, with_metaclass
-from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Mapping, Optional, Sequence, Tuple, Type, Union  # noqa: F401
+from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Mapping, Optional, Sequence, Tuple, Type, Union, cast  # noqa: F401
 
 import listener
 from univention.admin.uldap import access, position
-from univention.listener.handler_logging import get_logger
-from univention.listener.exceptions import ListenerModuleConfigurationError, ListenerModuleRuntimeError
-from univention.listener.handler_configuration import ListenerModuleConfiguration
-from univention.listener.api_adapter import ListenerModuleAdapter
+from .api_adapter import ListenerModuleAdapter
+from .exceptions import ListenerModuleConfigurationError, ListenerModuleRuntimeError
+from .handler_configuration import ListenerModuleConfiguration
+from .handler_logging import get_logger
 
 
 listener.configRegistry.load()
@@ -48,11 +48,12 @@ listener.configRegistry.load()
 
 class HandlerMetaClass(type):
 	"""
-	Read handler configuration and invoke adapter.
+	Read handler configuration, invoke adapter and set global variables in module to
+	fulfill original API.
 	"""
-	def __new__(cls, clsname, bases, attrs):
-		# type: (str, List[Type[Any]], Dict[str, str]) -> Any # Union[Type[Any], Type[ListenerModuleHandler]]
-		kls = super(HandlerMetaClass, cls).__new__(cls, clsname, bases, attrs)
+	def __new__(mcs, clsname, bases, attrs):
+		# type: (str, Tuple[type, ...], Dict[str, Any]) -> Type[ListenerModuleHandler]
+		kls = cast(Type["ListenerModuleHandler"], super().__new__(mcs, clsname, bases, attrs))
 		is_listener_module = getattr(kls, '_is_listener_module', lambda: False)
 		if is_listener_module():
 			kls.config = kls._get_configuration()
@@ -87,8 +88,8 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 
 	class Configuration(ListenerModuleConfiguration):
 		"""
-		Overwrite this with your own class of the same name. It can be an
-		any Python class with just the require attributes (`name`, `description`,
+		Overwrite this with your own class of the same name. It can be
+		any Python class with just the required attributes (`name`, `description`,
 		`ldap_filter`) or a subclass of :py:class:`ListenerModuleConfiguration`.
 		"""
 		pass
@@ -348,7 +349,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 			cls.Configuration.listener_module_class = cls
 			return cls.Configuration()
 		else:
-			conf_obj = cls.Configuration()
+			conf_obj = conf_class()
 			attrs = cls._configuration_class.get_configuration_keys()
 			kwargs = dict(listener_module_class=cls)
 			for attr in attrs:
