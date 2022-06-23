@@ -5,7 +5,7 @@
 ## exposure: safe
 ## versions:
 ##  4.2-0: skip
-##  5.0-1: fixed
+##  5.0-2: fixed
 
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
