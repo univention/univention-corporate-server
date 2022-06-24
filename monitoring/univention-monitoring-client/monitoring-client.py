@@ -73,8 +73,9 @@ class MonitoringClient(ListenerModuleHandler):
 			self._remove_config(old)
 
 	def _write_config(self, attrs):
-		if ucr['ldap/hostdn'].encode('UTf-8') not in attrs.get('univentionMonitoringAlertHosts', []):
+		if ucr['ldap/hostdn'].encode('UTF-8') not in attrs.get('univentionMonitoringAlertHosts', []):
 			return
+
 		name = attrs['cn'][0].decode('UTF-8')
 		expr = attrs['univentionMonitoringAlertQuery'][0].decode('UTF-8')
 		alert_group = attrs.get('univentionMonitoringAlertGroup', attrs['cn'])[0].decode('UTF-8')
@@ -101,12 +102,17 @@ class MonitoringClient(ListenerModuleHandler):
 			}]
 		}
 
-		with open(os.path.join(DIRECTORY, safe_path("alert_{}.yml".format(name))), "w") as fd:
+		filename = os.path.join(DIRECTORY, safe_path("alert_{}.yml".format(name)))
+		with open(filename, "w") as fd:
 			fd.write(yaml.dump(alert_config, default_style=None, default_flow_style=False))
 
 	def _remove_config(self, attrs):
 		name = attrs['cn'][0].decode('UTF-8')
-		os.remove(os.path.join(DIRECTORY, safe_path("alert_{}.yml".format(name))))
+		filename = os.path.join(DIRECTORY, safe_path("alert_{}.yml".format(name)))
+		try:
+			os.remove(filename)
+		except FileNotFoundError:
+			ud.debug(ud.LISTENER, ud.WARN, 'alert definition does not exists: %s' % (filename,))
 
 	def post_run(self):
 		# type: () -> None
