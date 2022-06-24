@@ -396,7 +396,7 @@ further performance analyses. The system status is logged every *30 minutes*.
 If more regular logging is required, it can be controlled via the UCR variable
 :envvar:`system/stats/cron`.
 
-.. _dovecot-highperformance:
+.. _dovecot-high-performance:
 
 Dovecot high-performance mode
 =============================
@@ -443,6 +443,8 @@ The number of instances to configure depends on the workload and the server
 system. As a general rule of thumb these should not be higher than the machines
 CPU cores. With ``directory/manager/rest/processes=0`` all available CPU cores
 are used.
+
+.. _biblio:
 
 ************
 Bibliography
