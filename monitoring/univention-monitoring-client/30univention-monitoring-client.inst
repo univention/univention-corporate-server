@@ -105,7 +105,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set deleteObjectClass=0 \
 	--set overwriteTab=0 || die
 
-ucs_addServiceToLocalhost "UCS Monitoring" || die
+ucs_addServiceToLocalhost "UCS Monitoring" "$@" || die "Monitoring service"
 
 umc_init
 umc_operation_create "udm-monitoring" "UDM - Alert Monitoring" "monitoring/alerts" "udm/*:objectType=monitoring/*" \
