@@ -59,7 +59,7 @@
 				network security.
 			</para></listitem>
 			<listitem><para>
-				SameSite Cookies can now be configured for UMC and SAML.
+				<property>SameSite</property> Cookies can now be configured for UMC and SAML.
 			</para></listitem>
 			<listitem><para>
 				The AD Takeover has been made more robust.

@@ -794,8 +794,8 @@
 			<title>Monitoring / Nagios</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 A new monitoring system has been implemented based on Prometheus, Prometheus-Alertmanager and Grafana.
-					 During the upgrade all current Nagios services are migrated to Monitoring alerts
+					A new monitoring system has been implemented based on <application>Prometheus</application>, <application>Prometheus Alertmanager</application> and <application>Grafana</application>.
+					During the upgrade all current Nagios services are migrated to Monitoring alerts
 					(<u:bug>54748</u:bug>, <u:bug>54749</u:bug>, <u:bug>54750</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>

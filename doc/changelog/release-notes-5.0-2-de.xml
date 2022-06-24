@@ -49,17 +49,17 @@
 		</para>
 		<itemizedlist>
 			<listitem><para>
-				Der User Self Service wurde in das UCS-Portal integriert. Darüber hinaus
+				Der User Self-Service wurde in das UCS Portal integriert. Darüber hinaus
 				wurde unter anderem die Unterstützung für zusätzliche Platzhalter wie Vorname und
 				Nachname in der E-Mail-Vorlage zum Zurücksetzen des Passworts erweitert.
 			</para></listitem>
 			<listitem><para>
-				Für RADIUS können Benutzer ein soganntes Service-spezfisches Passwort
+				Für RADIUS können Benutzer ein sogenanntes Service spezifisches Passwort
 				vergeben. Und Administratoren können Benutzergruppen dedizierte VLANs
 				zuweisen und damit die Netzwerksicherheit erhöhen.
 			</para></listitem>
 			<listitem><para>
-				SameSite Cookies können jetzt für UMC und SAML konfiguriert werden.
+				<property>SameSite</property> Cookies können jetzt für UMC und SAML konfiguriert werden.
 			</para></listitem>
 			<listitem><para>
 				Die AD-Übernahme wurde robuster gestaltet.
