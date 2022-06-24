@@ -2335,7 +2335,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	@classmethod
 	def _ldap_attributes(cls):
-		return super(object, cls)._ldap_attributes() + ['pwdAccountLockedTime']
+		return [u'*', u'pwdAccountLockedTime']
 
 	@classmethod
 	def rewrite_filter(cls, filter, mapping):

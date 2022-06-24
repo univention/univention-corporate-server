@@ -258,7 +258,6 @@ class GenericObject(BaseObject):
 		:return: None
 		"""
 		self.dn = self._orig_udm_object.dn
-		self.entry_uuid = self._orig_udm_object.entry_uuid
 		self.options = self._orig_udm_object.options
 		if self._udm_module.meta.used_api_version > 0:
 			# encoders exist from API version 1 on

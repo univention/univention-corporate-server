@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.11-55) unstable; urgency=medium
+
+  * Bug #54883: revert
+
+ -- Florian Best <best@univention.de>  Fri, 24 Jun 2022 10:38:09 +0200
+
 univention-directory-manager-modules (15.0.11-54) unstable; urgency=medium
 
   * Bug #54883: provide access to entryUUID for UDM objects
