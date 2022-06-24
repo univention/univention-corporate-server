@@ -6,5 +6,5 @@ src: univention-management-console-module-udm
 fix: 10.0.1-27A~5.0.0.202206212052
 desc: |
  This update addresses the following issues:
- * The `entryUUID` of an LDAP object is now exposed by the UDM API.
-bug: [54883]
+ * The performance of fetching group memberships of users has been improved.
+bug: [54853]
