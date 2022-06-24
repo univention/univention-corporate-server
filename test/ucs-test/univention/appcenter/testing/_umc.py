@@ -38,13 +38,14 @@ Univention common Python library to manage connections to remote |UMC| servers.
 >>> umc.umc_logout()
 """
 
-import httplib
 import json
 import locale
 import ssl
 from http.cookies import SimpleCookie
 from http.client import HTTPSConnection, HTTPException
 from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union  # noqa: F401
+
+from six.moves import http_client as httplib
 
 from univention.config_registry import ConfigRegistry
 
