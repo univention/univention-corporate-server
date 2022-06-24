@@ -12,7 +12,7 @@
 		<title>General</title>
 		<itemizedlist>
 			<listitem><simpara>
-				Various unused Python 2 modules has been removed from the debian packages (<u:bug>54706</u:bug>).
+				Various unused Python 2 modules has been removed from the Debian packages (<u:bug>54706</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The <phrase>server password change</phrase> mechanism has been adjusted to first validate that the new machine password successfully replicated in OpenLDAP before finally changing the password locally in Samba/AD.
