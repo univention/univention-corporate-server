@@ -123,7 +123,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set description="Default Service: check if / is out of diskspace" \
 	--set summary="Default Service: check if / is out of diskspace" \
 	--append labels='"severity" "critical"' \
-	--set query='(100 / node_filesystem_size_bytes{mountpoint="/"}) * node_filesystem_free_bytes{mountpoint="/"} >= 90' || die "UNIVENTION_DISK_ROOT"
+	--set query='(100 / node_filesystem_size_bytes{mountpoint="/"}) * node_filesystem_free_bytes{mountpoint="/"} < 10' || die "UNIVENTION_DISK_ROOT"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_DISK_ROOT_WARNING" \
@@ -131,7 +131,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set description="Default Service: check if / is out of diskspace" \
 	--set summary="Default Service: check if / is out of diskspace" \
 	--append labels='"severity" "warning"' \
-	--set query='(100 / node_filesystem_size_bytes{mountpoint="/"}) * node_filesystem_free_bytes{mountpoint="/"} >= 75' || die "UNIVENTION_DISK_ROOT_WARNING"
+	--set query='(100 / node_filesystem_size_bytes{mountpoint="/"}) * node_filesystem_free_bytes{mountpoint="/"} < 25' || die "UNIVENTION_DISK_ROOT_WARNING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_DNS" \
