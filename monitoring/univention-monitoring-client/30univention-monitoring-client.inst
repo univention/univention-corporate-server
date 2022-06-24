@@ -45,22 +45,22 @@ eval "$(univention-config-registry shell)"
 univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position="$ldap_base" \
 	--set name="monitoring" \
-	--set description="Monitoring objects" || die
+	--set description="Monitoring objects" || die "monitoring container"
 
 ucs_registerLDAPExtension "$@" \
 	--ucsversionstart 4.4-1 \
 	--ucsversionend 5.99-0 \
-	--schema /usr/lib/univention-monitoring-client/schema/univention-monitoring.schema || die
+	--schema /usr/lib/univention-monitoring-client/schema/univention-monitoring.schema || die "LDAP Schema"
 
 ucs_registerLDAPExtension "$@" \
 	--ucsversionstart 5.0-0 \
 	--ucsversionend 5.99-0 \
-	--udm_syntax /usr/lib/univention-monitoring-client/udm/syntax/monitoring.py || die
+	--udm_syntax /usr/lib/univention-monitoring-client/udm/syntax/monitoring.py || die "UDM Syntax"
 
 ucs_registerLDAPExtension "$@" \
 	--ucsversionstart 5.0-0 \
 	--ucsversionend 5.99-0 \
-	--udm_hook /usr/lib/univention-monitoring-client/udm/hooks/monitoring.py || die
+	--udm_hook /usr/lib/univention-monitoring-client/udm/hooks/monitoring.py || die "UDM hooks"
 
 ucs_registerLDAPExtension "$@" \
 	--ucsversionstart 5.0-0 \
@@ -74,7 +74,7 @@ ucs_registerLDAPExtension "$@" \
 	--icon /usr/lib/univention-monitoring-client/umc/icons/16x16/udm-monitoring-alert.png \
 	--icon /usr/lib/univention-monitoring-client/umc/icons/50x50/udm-monitoring-alert.png \
 	--icon /usr/lib/univention-monitoring-client/umc/icons/scalable/monitoring.svg \
-	--icon /usr/lib/univention-monitoring-client/umc/icons/scalable/udm-monitoring-alert.svg || die
+	--icon /usr/lib/univention-monitoring-client/umc/icons/scalable/udm-monitoring-alert.svg || die "UDM and UMC modules"
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=custom attributes,cn=univention,$ldap_base" \
@@ -103,13 +103,13 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set objectClass=univentionHost \
 	--set ldapMapping=univentionDoesNotExists \
 	--set deleteObjectClass=0 \
-	--set overwriteTab=0 || die
+	--set overwriteTab=0 || die "Extended attribute for computers"
 
 ucs_addServiceToLocalhost "UCS Monitoring" "$@" || die "Monitoring service"
 
 umc_init
 umc_operation_create "udm-monitoring" "UDM - Alert Monitoring" "monitoring/alerts" "udm/*:objectType=monitoring/*" \
-	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*" || die
+	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*" || die "UMC operation sets"
 
 if is_ucr_false monitoring/common/defaultalerts/autocreate; then
 	joinscript_save_current_version
@@ -123,7 +123,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set description="Default Service: check if / is out of diskspace" \
 	--set summary="Default Service: check if / is out of diskspace" \
 	--append labels='"severity" "critical"' \
-	--set query='(100 / node_filesystem_size_bytes{mountpoint="/"}) * node_filesystem_free_bytes{mountpoint="/"} >= 90' || die
+	--set query='(100 / node_filesystem_size_bytes{mountpoint="/"}) * node_filesystem_free_bytes{mountpoint="/"} >= 90' || die "UNIVENTION_DISK_ROOT"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_DISK_ROOT_WARNING" \
@@ -131,7 +131,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set description="Default Service: check if / is out of diskspace" \
 	--set summary="Default Service: check if / is out of diskspace" \
 	--append labels='"severity" "warning"' \
-	--set query='(100 / node_filesystem_size_bytes{mountpoint="/"}) * node_filesystem_free_bytes{mountpoint="/"} >= 75' || die
+	--set query='(100 / node_filesystem_size_bytes{mountpoint="/"}) * node_filesystem_free_bytes{mountpoint="/"} >= 75' || die "UNIVENTION_DISK_ROOT_WARNING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_DNS" \
@@ -139,7 +139,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if service dns is ok" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_dns_resolveable != 1" || die
+	--set query="univention_dns_resolveable != 1" || die "UNIVENTION_DNS"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SWAP_WARNING" \
@@ -148,14 +148,14 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if swap device is out of free space" \
 	--set for="5m" \
 	--append labels='"severity" "warning"' \
-	--set query="(node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) * 100 / node_memory_SwapTotal_bytes <= 40" || die
+	--set query="(node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) * 100 / node_memory_SwapTotal_bytes <= 40" || die "UNIVENTION_SWAP"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SWAP" \
 	--set description="Default Service: check if swap device is out of free space" \
 	--set summary="Default Service: check if swap device is out of free space" \
 	--append labels='"severity" "critical"' \
-	--set query="(node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) * 100 / node_memory_SwapTotal_bytes <= 20" || die
+	--set query="(node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) * 100 / node_memory_SwapTotal_bytes <= 20" || die "UNIVENTION_SWAP"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_LDAP_AUTH" \
@@ -163,7 +163,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if service ldap is ok using authenticated bind" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_ldap_reachable != 1" || die
+	--set query="univention_ldap_reachable != 1" || die "UNIVENTION_LDAP_AUTH"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_NTP" \
@@ -171,7 +171,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if service ntp is ok" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_ntp_offset_seconds >= 60" || die
+	--set query="univention_ntp_offset_seconds >= 60" || die "UNIVENTION_NTP"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_NTP_WARNING" \
@@ -180,7 +180,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if service ntp is ok" \
 	--set for="5m" \
 	--append labels='"severity" "warning"' \
-	--set query="univention_ntp_offset_seconds >= 10" || die
+	--set query="univention_ntp_offset_seconds >= 10" || die "UNIVENTION_NTP_WARNING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SMTP" \
@@ -188,7 +188,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if service smtp is ok" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_smtp_reachable != 1" || die
+	--set query="univention_smtp_reachable != 1" || die "UNIVENTION_SMTP"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SSL_WARNING" \
@@ -196,14 +196,14 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set description="Default Service: check if ssl certificate is valid" \
 	--set summary="Default Service: check if ssl certificate is valid" \
 	--append labels='"severity" "warning"' \
-	--set query="univention_ssl_certificate_expiry_seconds >= 3456000" || die # 40 days
+	--set query="univention_ssl_certificate_expiry_seconds >= 3456000" || die "UNIVENTION_SSL_WARNING" # 40 days
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SSL" \
 	--set description="Default Service: check if ssl certificate is valid" \
 	--set summary="Default Service: check if ssl certificate is valid" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_ssl_certificate_expiry_seconds >= 1728000" || die # 20 days
+	--set query="univention_ssl_certificate_expiry_seconds >= 1728000" || die "UNIVENTION_SSL" # 20 days
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_LOAD_WARNING" \
@@ -212,7 +212,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if cpu load exceeds specified limits" \
 	--set for="5m" \
 	--append labels='"severity" "warning"' \
-	--set query="node_load1 > 3 or node_load5 > 2 or node_load15 > 1" || die
+	--set query="node_load1 > 3 or node_load5 > 2 or node_load15 > 1" || die "UNIVENTION_LOAD_WARNING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_LOAD" \
@@ -220,7 +220,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if cpu load exceeds specified limits" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="node_load1 > 6 or node_load5 > 4 or node_load15 > 2" || die
+	--set query="node_load1 > 6 or node_load5 > 4 or node_load15 > 2" || die "UNIVENTION_LOAD"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_REPLICATION_WARNING" \
@@ -229,7 +229,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if ldap replication is uptodate" \
 	--set for="5m" \
 	--append labels='"severity" "warning"' \
-	--set query="univention_listener_replication_difference > 10" || die
+	--set query="univention_listener_replication_difference > 10" || die "UNIVENTION_REPLICATION_WARNING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_REPLICATION" \
@@ -239,15 +239,13 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--append labels='"severity" "critical"' \
 	--set query="univention_listener_replication_difference > 50 or univention_listener_replication_difference == -1 or univention_listener_failed_ldif_exists == 1" || die
 
-# TODO UNIVENTION_REPLICATION: what about "CRITICAL if no change of transaction ID over last <cnt> checks"
-
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_NSCD" \
 	--set description="Default Service: check if nscd process is present" \
 	--set summary="Default Service: check if nscd process is present" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_nscd_running != 1" || die
+	--set query="univention_nscd_running != 1" || die "UNIVENTION_NSCD"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_NSCD2" \
@@ -255,21 +253,21 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if nscd process is present (ignores docker)" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_nscd_responding != 1" || die
+	--set query="univention_nscd_responding != 1" || die "UNIVENTION_NSCD2"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_KPASSWDD" \
 	--set description="Default Service: check if kpasswdd process is present" \
 	--set summary="Default Service: check if kpasswdd process is present" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_kpasswdd_running != 1" || die
+	--set query="univention_kpasswdd_running != 1" || die "UNIVENTION_KPASSWDD"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_WINBIND" \
 	--set description="Default Service: check if winbind is functional" \
 	--set summary="Default Service: check if winbind is functional" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_winbind_secret_ok != 1" || die
+	--set query="univention_winbind_secret_ok != 1" || die "UNIVENTION_WINBIND"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SMBD" \
@@ -277,7 +275,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if smbd is functional" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_smbd_accessible != 1" || die
+	--set query="univention_smbd_accessible != 1" || die "UNIVENTION_SMBD"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_NMBD" \
@@ -285,7 +283,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if nmbd is functional" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_nmbd_running != 1" || die
+	--set query="univention_nmbd_running != 1" || die "UNIVENTION_NMBD"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_JOINSTATUS" \
@@ -310,42 +308,42 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	' \
 	--set summary="Default Service: check if system has been joined successfully" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_join_status != 0" || die
+	--set query="univention_join_status != 0" || die "UNIVENTION_JOINSTATUS"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_PACKAGE_STATUS" \
 	--set description="Default Service: check if dpkg status of system is healthy" \
 	--set summary="Default Service: check if dpkg status of system is healthy" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_package_status_ok != 1" || die
+	--set query="univention_package_status_ok != 1" || die "UNIVENTION_PACKAGE_STATUS"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SLAPD_MDB_MAXSIZE_WARNING" \
 	--set description="Default Service: check slapd mdb database size" \
 	--set summary="Default Service: check slapd mdb database size" \
 	--append labels='"severity" "warning"' \
-	--set query="univention_slapd_mdb_size_used_ratio > 75 or univention_slapd_translog_mdb_size_used_ratio > 75" || die
+	--set query="univention_slapd_mdb_size_used_ratio > 75 or univention_slapd_translog_mdb_size_used_ratio > 75" || die "UNIVENTION_SLAPD_MDB_MAXSIZE_WARNING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SLAPD_MDB_MAXSIZE" \
 	--set description="Default Service: check slapd mdb database size" \
 	--set summary="Default Service: check slapd mdb database size" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_slapd_mdb_size_used_ratio > 90 or univention_slapd_translog_mdb_size_used_ratio > 90" || die
+	--set query="univention_slapd_mdb_size_used_ratio > 90 or univention_slapd_translog_mdb_size_used_ratio > 90" || die "UNIVENTION_SLAPD_MDB_MAXSIZE"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_LISTENER_MDB_MAXSIZE_WARNING" \
 	--set description="Default Service: check listener mdb database size" \
 	--set summary="Default Service: check listener mdb database size" \
 	--append labels='"severity" "warning"' \
-	--set query="univention_listener_mdb_size_used_ratio > 75" || die
+	--set query="univention_listener_mdb_size_used_ratio > 75" || die "UNIVENTION_LISTENER_MDB_MAXSIZE_WARNING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_LISTENER_MDB_MAXSIZE" \
 	--set description="Default Service: check listener mdb database size" \
 	--set summary="Default Service: check listener mdb database size" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_listener_mdb_size_used_ratio > 90" || die
+	--set query="univention_listener_mdb_size_used_ratio > 90" || die "UNIVENTION_LISTENER_MDB_MAXSIZE"
 
 CHECKS=(
 	"UNIVENTION_DISK_ROOT"
@@ -412,7 +410,7 @@ elif ! is_ucr_false monitoring/client/autoregister; then
 		fi
 		univention-directory-manager monitoring/alert modify "$@" \
 			--dn "cn=$name,$MONITORINGCONTAINER" \
-			--append assignedHosts="${ldap_hostdn}" || die
+			--append assignedHosts="${ldap_hostdn}" || die "Assigning $name failed"
 	done
 fi
 
