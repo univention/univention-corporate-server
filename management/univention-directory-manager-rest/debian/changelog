@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.2-13) unstable; urgency=medium
+
+  * Bug #54883: revert
+
+ -- Florian Best <best@univention.de>  Fri, 24 Jun 2022 10:39:07 +0200
+
 univention-directory-manager-rest (10.0.2-12) unstable; urgency=medium
 
   * Bug #54883: use UDM builtin metadata

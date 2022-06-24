@@ -2649,6 +2649,7 @@ class Object(FormBase, Resource):
 		if object_type not in ('users/self', 'users/passwd') and not univention.admin.modules.recognize(object_type, obj.dn, obj.oldattr):
 			raise NotFound(object_type, dn)
 
+		self.set_metadata(obj)
 		self.set_entity_tags(obj)
 
 		props = {}
@@ -2718,6 +2719,9 @@ class Object(FormBase, Resource):
 			self.set_header('Accept-Patch', 'application/json-patch+json, application/json')
 		return props
 
+	def set_metadata(self, obj):  # FIXME: move into UDM core!
+		obj.oldattr.update(self.ldap_connection.get(obj.dn, attr=['+']))
+
 	def set_entity_tags(self, obj):
 		self.set_header('Etag', self.get_etag(obj))
 		modified = self.modified_from_timestamp(obj.oldattr['modifyTimestamp'][0].decode('utf-8', 'replace'))
@@ -2733,7 +2737,7 @@ class Object(FormBase, Resource):
 		etag.update(obj.dn.encode('utf-8', 'replace'))
 		etag.update(obj.module.encode('utf-8', 'replace'))
 		etag.update(b''.join(obj.oldattr.get('entryCSN', [])))
-		etag.update((obj.entry_uuid or '').encode('utf-8'))
+		etag.update(b''.join(obj.oldattr.get('entryUUID', [])))
 		etag.update(json.dumps(obj.info, sort_keys=True).encode('utf-8'))
 		return u'"%s"' % etag.hexdigest()
 
@@ -2793,8 +2797,8 @@ class Object(FormBase, Resource):
 					props['policies'].setdefault(pol_mod.name, []).append(policy)
 		if superordinate_names(module):
 			props['superordinate'] = obj.superordinate and obj.superordinate.dn
-		if obj.entry_uuid:
-			props['uuid'] = obj.entry_uuid
+		if obj.oldattr.get('entryUUID'):
+			props['uuid'] = obj.oldattr['entryUUID'][0].decode('utf-8', 'replace')
 		# TODO: objectFlag is available for every module. remove the extended attribute and always map it.
 		# alternative: add some other meta information to this object, e.g. is_hidden_object: True, is_synced_from_active_directory: True, ...
 		props['properties'].setdefault('objectFlag', [x.decode('utf-8', 'replace') for x in obj.oldattr.get('univentionObjectFlag', [])])
@@ -2842,6 +2846,7 @@ class Object(FormBase, Resource):
 			})
 			return
 
+		self.set_metadata(obj)
 		self.set_entity_tags(obj)
 
 		position = self.request.body_arguments['position']
@@ -2874,6 +2879,7 @@ class Object(FormBase, Resource):
 		if not obj:
 			raise NotFound(object_type, dn)
 
+		self.set_metadata(obj)
 		self.set_entity_tags(obj)
 
 		entry = Object.get_representation(module, obj, ['*'], self.ldap_connection, False)
