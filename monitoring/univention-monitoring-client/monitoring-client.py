@@ -111,7 +111,7 @@ class MonitoringClient(ListenerModuleHandler):
 	def post_run(self):
 		# type: () -> None
 		ud.debug(ud.LISTENER, ud.INFO, 'Reloading prometheus alert manager')
-		url = 'https://%(hostname)s.%(domainname)s/metrics-prometheus/-/reload' % ucr
+		url = 'http://localhost/metrics-prometheus/-/reload'
 		with SetUID(0), open('/etc/machine.secret') as fd:
 			requests.get(url, auth=('%(hostname)ss$' % ucr, fd.read().strip()))
 
