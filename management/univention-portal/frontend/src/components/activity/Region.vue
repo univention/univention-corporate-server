@@ -112,6 +112,9 @@ export default defineComponent({
       }
     },
     goUp(ev?: KeyboardEvent): void {
+      if (document.activeElement?.id === 'portal-search-input') {
+        return;
+      }
       if (this.inDragnDropMode) {
         return;
       }
@@ -123,6 +126,9 @@ export default defineComponent({
       }
     },
     goDown(ev?: KeyboardEvent): void {
+      if (document.activeElement?.id === 'portal-search-input') {
+        return;
+      }
       if (this.inDragnDropMode) {
         return;
       }
@@ -134,6 +140,9 @@ export default defineComponent({
       }
     },
     goLeft(ev?: KeyboardEvent): void {
+      if (document.activeElement?.id === 'portal-search-input') {
+        return;
+      }
       if (this.inDragnDropMode) {
         return;
       }
@@ -145,6 +154,9 @@ export default defineComponent({
       }
     },
     goRight(ev?: KeyboardEvent): void {
+      if (document.activeElement?.id === 'portal-search-input') {
+        return;
+      }
       if (this.inDragnDropMode) {
         return;
       }

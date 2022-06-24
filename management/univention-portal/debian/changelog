@@ -1,3 +1,9 @@
+univention-portal (4.0.7-2) unstable; urgency=medium
+
+  * Bug #54633: QA Feedback
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 24 Jun 2022 16:05:55 +0200
+
 univention-portal (4.0.7-1) unstable; urgency=medium
 
   * Bug #54618: add portal navigation endpoint

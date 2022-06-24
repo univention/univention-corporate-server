@@ -57,7 +57,7 @@
         :id="`${id}-content`"
         :aria-role="ariaRole"
         class="portal-folder__thumbnails"
-        :tabindex="inModal ? 0 : -1"
+        tabindex="-1"
         role="none"
         :class="{ 'portal-folder__thumbnails--in-modal': inModal }"
       >

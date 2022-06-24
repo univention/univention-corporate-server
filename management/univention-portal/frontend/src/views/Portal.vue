@@ -150,7 +150,7 @@ export default defineComponent({
       editMode: 'portalData/editMode',
       tooltip: 'tooltip/tooltip',
       metaData: 'metaData/getMeta',
-      getModalState: 'modal/getModalState',
+      inFolderModal: 'modal/inFolderModal',
       userState: 'user/userState',
     }),
     ADD_CATEGORY(): string {
@@ -160,10 +160,7 @@ export default defineComponent({
       return _('No search results');
     },
     noSearchResults(): boolean {
-      return this.portalLoaded && this.portalFinalLayoutFiltered.length === 0;
-    },
-    isSecondModalActive(): boolean {
-      return this.getModalState('secondLevelModal');
+      return this.portalLoaded && this.portalFinalLayoutFiltered.length === 0 && !this.inFolderModal;
     },
     portalRole(): string {
       return this.editMode ? 'application' : '';

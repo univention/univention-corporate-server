@@ -124,6 +124,7 @@ const modal: PortalModule<ModalState> = {
   },
 
   getters: {
+    inFolderModal: (state) => state.firstLevelModal.modalComponent === 'PortalFolder',
     getModalState: (state) => (level: string) => state[level].modalVisible,
     getModalComponent: (state) => (level: string) => state[level].modalComponent,
     getModalProps: (state) => (level: string) => state[level].modalProps,
@@ -170,7 +171,7 @@ const modal: PortalModule<ModalState> = {
       commit('DISABLE_BODY_SCROLLING');
     },
     closeFolder({ getters, dispatch }: ModalActionContext): void {
-      if (getters.getModalComponent('firstLevelModal') === 'PortalFolder') {
+      if (getters.inFolderModal) {
         dispatch('modal/hideAndClearModal', null, { root: true });
         dispatch('tooltip/unsetTooltip', null, { root: true });
         dispatch('activity/setRegion', 'portalCategories', { root: true });

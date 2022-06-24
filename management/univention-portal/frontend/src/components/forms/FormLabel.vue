@@ -38,6 +38,7 @@
     >*</span>
     <button
       v-if="showHelpIcon"
+      type="button"
       class="form-label__button"
       @click="toggleHelpText"
     >

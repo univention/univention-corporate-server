@@ -551,7 +551,7 @@ const portalData: PortalModule<PortalDataState> = {
     },
     async saveLayout({ getters, rootGetters, dispatch }: PortalDataActionContext, payload): Promise<void> {
       let folderPosition: Position | null = null;
-      if (rootGetters['modal/getModalComponent']('firstLevelModal') === 'PortalFolder') {
+      if (rootGetters['modal/inFolderModal']) {
         folderPosition = getPosition(getters.portalLayout, rootGetters['modal/getModalProps']('firstLevelModal').layoutId);
       }
       dispatch('dragndrop/dropped', null, { root: true });
@@ -634,7 +634,7 @@ const portalData: PortalModule<PortalDataState> = {
       }
     },
     changeLayoutUpdateFolder({ dispatch, getters, rootGetters }: PortalDataActionContext, folderLayoutId = ''): void {
-      if (rootGetters['modal/getModalComponent']('firstLevelModal') === 'PortalFolder') {
+      if (rootGetters['modal/inFolderModal']) {
         const newLayout = getters.portalFinalLayout;
         const layoutId = folderLayoutId || rootGetters['modal/getModalProps']('firstLevelModal').layoutId;
         let folder;

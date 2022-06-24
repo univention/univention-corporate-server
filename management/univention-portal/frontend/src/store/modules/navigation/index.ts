@@ -47,18 +47,26 @@ const navigation: PortalModule<NavigationState> = {
   getters: { getActiveButton: (state) => state.activeButton },
 
   actions: {
-    setActiveButton({ commit, dispatch } : { commit: Commit, dispatch: Dispatch }, id: NavigationButton): void {
-      dispatch('modal/hideAndClearModal', undefined, { root: true });
+    setActiveButton({ commit, dispatch, rootGetters } : { commit: Commit, dispatch: Dispatch, rootGetters: any }, id: NavigationButton): void {
+      let folderIsOpen = rootGetters['modal/inFolderModal'];
+      const willBeSearchAndFolderIsOpen = id === 'search' && folderIsOpen;
+      const wasSearchAndFolderIsOpen = !id && folderIsOpen;
+      if (!(willBeSearchAndFolderIsOpen || wasSearchAndFolderIsOpen)) {
+        dispatch('modal/hideAndClearModal', undefined, { root: true });
+        folderIsOpen = false;
+      }
       if (id === 'search') {
         dispatch('tabs/setActiveTab', 0, { root: true });
       }
       if (id === 'bell') {
         dispatch('notifications/hideAllNotifications', undefined, { root: true });
       }
-      if (id) {
-        dispatch('activity/setLevel', `header-${id}`, { root: true });
-      } else {
-        dispatch('activity/setLevel', 'portal', { root: true });
+      if (!folderIsOpen) {
+        if (id) {
+          dispatch('activity/setLevel', `header-${id}`, { root: true });
+        } else {
+          dispatch('activity/setLevel', 'portal', { root: true });
+        }
       }
       commit('ACTIVEBUTTON', id);
     },

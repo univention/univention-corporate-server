@@ -84,7 +84,11 @@ const tabs: PortalModule<TabState> = {
   },
 
   actions: {
-    setActiveTab({ commit, dispatch }: { commit: Commit, dispatch: Dispatch }, index: number): void {
+    setActiveTab({ getters, commit, dispatch }: { getters: any, commit: Commit, dispatch: Dispatch }, index: number): void {
+      if (getters.activeTabIndex === index) {
+        return;
+      }
+      dispatch('navigation/setActiveButton', '', { root: true });
       dispatch('modal/hideAndClearModal', undefined, { root: true });
       if (index > 0) {
         commit('SAVE_SCROLL_POSITION', window.scrollY);
