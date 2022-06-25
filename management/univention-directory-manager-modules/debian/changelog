@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.13-2) unstable; urgency=medium
+
+  * Bug #54668: improve error validation message of date2
+
+ -- Tobias Wenzel <wenzel@univention.de>  Sat, 25 Jun 2022 14:26:02 +0200
+
 univention-directory-manager-modules (15.0.13-1) unstable; urgency=medium
 
   * Bug #54840: remove UCR widget mapping directory/manager/web/widget/.*

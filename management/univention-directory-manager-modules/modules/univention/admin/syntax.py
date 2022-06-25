@@ -2859,7 +2859,8 @@ class date2(date):  # fixes the century
 				if year >= 70:  # Epoch 0
 					return '19%02d-%02d-%02d' % (year, month, day)
 				return '20%02d-%02d-%02d' % (year, month, day)
-		raise univention.admin.uexceptions.valueError(_("Not a valid Date"))
+		raise univention.admin.uexceptions.valueError(_("Not a valid Date. The date must have the format 'YYYY-MM-DD' or 'DD.MM.YY'."
+		" The Year must be between 1961 and 2099, the month between 1 and 12 and the day between 1 and 31."))
 
 	@classmethod
 	def to_datetime(cls, value):
@@ -5682,7 +5683,7 @@ class LDAP_Search(select):
 	>>> if os.path.exists('/etc/machine.secret'):
 	...     lo, pos = getMachineConnection()
 	...     syntax._load(lo)
-	...     any(dn.startswith('uid=' + custom_username('Administrator')) for dn, value, attrs in syntax.get_choices(lo, {}))
+	...     any(dn.startswith('uid=' + custom_username('Administrator')) for dn, value in syntax.get_choices(lo, {}))
 	... else:
 	...     True
 	True
