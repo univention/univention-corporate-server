@@ -5682,7 +5682,7 @@ class LDAP_Search(select):
 	>>> if os.path.exists('/etc/machine.secret'):
 	...     lo, pos = getMachineConnection()
 	...     syntax._load(lo)
-	...     any(dn.startswith('uid=' + custom_username('Administrator')) for dn, value, attrs in syntax.get_choices(lo, {}))
+	...     any(dn.startswith('uid=' + custom_username('Administrator')) for dn, value in syntax.get_choices(lo, {}))
 	... else:
 	...     True
 	True
