@@ -72,6 +72,7 @@ def test_inline_creation(chrome, admin_username, admin_password, udm):
     tile_name = 'internal-name-for-a-tile'
     tile_display = 'Tile Name'
     tile_description = 'Tile Description'
+    tile_keyword = 'Keyword'
     tile_link = 'https://example.com'
     chrome.send_keys(tile_name)
     chrome.enter_tab()
@@ -81,7 +82,10 @@ def test_inline_creation(chrome, admin_username, admin_password, udm):
     chrome.send_keys(tile_description + ' EN')
     _add_german_text(chrome, tile_description + ' DE')
     chrome.enter_tab()
+    chrome.send_keys(tile_keyword + ' EN')
+    _add_german_text(chrome, tile_keyword + ' DE')
     chrome.enter_tab()
+    chrome.enter_tab()  # activated
     chrome.send_keys(tile_link)
     chrome.click_element('form.admin-entry button.primary')
     time.sleep(.2)
@@ -99,7 +103,9 @@ def test_inline_creation(chrome, admin_username, admin_password, udm):
         'icon': None,
         'linkTarget': 'useportaldefault',
         'backgroundColor': None,
-        'objectFlag': []
+        'target': None,
+        'keywords': {'de_DE': 'Keyword DE', 'en_US': 'Keyword EN'},
+        'objectFlag': [],
     }
     assert entry.properties == expected
 
