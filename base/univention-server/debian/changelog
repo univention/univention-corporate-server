@@ -1,3 +1,9 @@
+univention-server (15.0.5-1) unstable; urgency=medium
+
+  * Bug #54748: add dependencies to monitoring packages
+
+ -- Florian Best <best@univention.de>  Mon, 27 Jun 2022 17:41:36 +0200
+
 univention-server (15.0.4-8) unstable; urgency=medium
 
   * Bug #53205: move samba call to the end of changes queue in server_password_change
