@@ -114,6 +114,9 @@
 						<package>samba</package> (<u:cve>2021-43566</u:cve> <u:cve>2021-44142</u:cve> <u:cve>2022-0336</u:cve>) (<u:bug>53629</u:bug> <u:bug>54015</u:bug> <u:bug>54200</u:bug> <u:bug>54278</u:bug> <u:bug>54369</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
+						<package>squid</package> (<u:cve>2021-28116</u:cve> <u:cve>2021-46784</u:cve>) (<u:bug>54907</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
 						<package>tiff</package> (<u:cve>2022-0561</u:cve> <u:cve>2022-0562</u:cve> <u:cve>2022-0865</u:cve> <u:cve>2022-0891</u:cve> <u:cve>2022-0907</u:cve> <u:cve>2022-0908</u:cve> <u:cve>2022-0909</u:cve> <u:cve>2022-0924</u:cve> <u:cve>2022-22844</u:cve>) (<u:bug>54595</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
