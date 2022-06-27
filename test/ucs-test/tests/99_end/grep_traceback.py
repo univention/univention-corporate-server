@@ -178,6 +178,8 @@ COMMON_EXCEPTIONS = (
 	E(r"ldap.NO_SUCH_OBJECT: .*matched\'\: \'dc\=.*", ['^  File "/usr/lib/python3/dist-packages/univention/admin/uldap.py", line .*, in add']),
 	E(r"ldap.NO_SUCH_OBJECT: .*matched\'\: \'cn\=users,dc\=.*", ['^  File "/usr/lib/python3/dist-packages/univention/admin/uldap.py", line .*, in search']),  # s4c
 	E(r'^univention.admin.uexceptions.noObject: No such object$', ['^  File "/usr/lib/python3/dist-packages/univention/admin/objects.py", line .*, in get']),  # s4c
+	# during upgrade to UCS 5.0-2
+	E("^AttributeError: 'PortalsPortalEntryObjectProperties' object has no attribute 'keywords'", ['reloader.py.*in refresh'], (54295,)),
 	# during upgrade to UCS 5.0-0
 	E("^(apt.cache.FetchFailedException|apt_pkg.Error): E:The repository 'http://localhost/univention-repository.* Release' is not signed."),
 	E('ImportError: No module named client', [
