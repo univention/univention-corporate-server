@@ -401,7 +401,7 @@ case "$server_role" in
 esac
 
 if [ $JS_LAST_EXECUTED_VERSION -le 0 ] && is_ucr_true monitoring/client/nagios-automigration; then
-	/usr/share/univention-monitoring-client/migrate-nagios-services-to-alerts "$@"
+	/usr/share/univention-monitoring-client/migrate-nagios-services-to-alerts "$@" || die "Could not migrate nagios service to alerts"
 elif ! is_ucr_false monitoring/client/autoregister; then
 	# univention-directory-manager "computers/${server_role}" modify "$@" --dn "$ldap_hostdn" --append-option="monitoring" || die
 	for name in "${CHECKS[@]}"; do
