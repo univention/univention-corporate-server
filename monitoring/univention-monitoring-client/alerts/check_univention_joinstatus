@@ -100,7 +100,7 @@ class JoinStatusCheck(Alert):
             's', 'base'
         ]
         try:
-            subprocess.check_call(cmd)
+            subprocess.check_call(cmd, stdout=subprocess.DEVNULL)
         except subprocess.CalledProcessError:
             raise JoinStatusError('auth failed: %s' % ' '.join(pipes.quote(x) for x in cmd))
 
@@ -117,7 +117,7 @@ class JoinStatusCheck(Alert):
             's', 'base'
         ]
         try:
-            subprocess.check_call(cmd)
+            subprocess.check_call(cmd, stdout=subprocess.DEVNULL)
         except subprocess.CalledProcessError:
             raise JoinStatusError('auth or TLS failed: %s' % ' '.join(pipes.quote(x) for x in cmd))
 
@@ -136,7 +136,7 @@ class JoinStatusCheck(Alert):
             's', 'base'
         ]
         try:
-            subprocess.check_call(cmd)
+            subprocess.check_call(cmd, stdout=subprocess.DEVNULL)
         except subprocess.CalledProcessError:
             raise JoinStatusError('auth failed: %s' % ' '.join(pipes.quote(x) for x in cmd))
 
