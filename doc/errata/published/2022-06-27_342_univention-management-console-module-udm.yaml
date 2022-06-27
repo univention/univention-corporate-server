@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * The performance of fetching group memberships of users has been improved.
 bug: [54853]
+erratum: 342
+announced: 2022-06-27
