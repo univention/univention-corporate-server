@@ -1,3 +1,9 @@
+univention-updater (15.0.4-2) unstable; urgency=medium
+
+  * Bug #54883: Update preup.sh to block ucsschool in certain versions
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 27 Jun 2022 14:54:21 +0200
+
 univention-updater (15.0.4-1) unstable; urgency=medium
 
   * Bug #54749: migrate nagios systems to alerts
