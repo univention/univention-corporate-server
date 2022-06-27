@@ -96,7 +96,7 @@
 						<package>openldap</package> (<u:cve>2022-29155</u:cve> ) (<u:bug>54627</u:bug> <u:bug>54783</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>openssl</package> (<u:cve>2021-4160</u:cve> <u:cve>2022-0778</u:cve> <u:cve>2022-1292</u:cve>) (<u:bug>54557</u:bug> <u:bug>54764</u:bug>)
+						<package>openssl</package> (<u:cve>2021-4160</u:cve> <u:cve>2022-0778</u:cve> <u:cve>2022-1292</u:cve> <u:cve>CVE-2022-2068</u:cve>) (<u:bug>54557</u:bug> <u:bug>54764</u:bug> <u:bug>54901</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>pillow</package> (<u:cve>2022-22815</u:cve> <u:cve>2022-22816</u:cve> <u:cve>2022-22817</u:cve>) (<u:bug>54366</u:bug>)
@@ -158,6 +158,7 @@
 						<member><package>exo</package></member>
 						<member><package>faad2</package></member>
 						<member><package>ffmpeg</package></member>
+						<member><package>firejail</package></member>
 						<member><package>gerbv</package></member>
 						<member><package>glibc</package></member>
 						<member><package>graphicsmagick</package></member>
