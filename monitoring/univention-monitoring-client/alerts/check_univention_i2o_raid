@@ -85,7 +85,7 @@ class I2O_RAIDCheck(Alert):
 			result = self.re_other.match(line) if option in ['physical', 'logical', 'raid'] else self.re_controller.match(line)
 			if not result:
 				continue
-			(addr, device, type, size_or_serial, status) = result.groups()
+			(addr, device, type_, size_or_serial, status) = result.groups()
 			if int(device) not in devices:
 				continue
 			state = self.STATUS.get(status, -1)

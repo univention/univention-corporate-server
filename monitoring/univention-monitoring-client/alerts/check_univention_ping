@@ -30,7 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.config_registry import ucr
 from univention.monitoring import Alert
 
 
