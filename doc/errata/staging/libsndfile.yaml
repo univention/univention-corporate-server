@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libsndfile
+fix: 1.0.27-3+deb9u3
+desc: |
+ This update addresses the following issues:
+ * Heap-based Buffer Overflow in psf_binheader_writef function in common.c
+   (CVE-2017-12562)
+ * heap out-of-bounds read in src/flac.c in flac_buffer_copy (CVE-2021-4156)
+bug: [54899]
+cve:
+- CVE-2017-12562
+- CVE-2021-4156
