@@ -6,7 +6,7 @@ pull_ucs_winrm () {
 	docker pull "$WINRM_IMAGE"
 }
 
-ucs-winrm () {
+ucs_winrm () {
 	docker run --rm -v /etc/localtime:/etc/localtime:ro \
 		-v "$HOME/.ucs-winrm.ini:/root/.ucs-winrm.ini:ro" "$WINRM_IMAGE" "$@"
 }
@@ -33,21 +33,21 @@ install_veyon () {
 	done
 
 	# install veyon
-	ucs-winrm run-ps --client "$client" --cmd 'C:\veyon-*-setup.exe  /S /NoMaster'
+	ucs_winrm run-ps --client "$client" --cmd 'C:\veyon-*-setup.exe  /S /NoMaster'
 	# authkeys import always throws an error, ignore
-	ucs-winrm run-ps --client "$client" --cmd "
+	ucs_winrm run-ps --client "$client" --cmd "
 		\$ErrorActionPreference = \"silentlycontinue\"
 		cd C:\\'Program Files'\\Veyon
 		.\\veyon-cli authkeys import teacher/public C:\\veyon-cert_$server.pem
 	"
 	# apply config
-	ucs-winrm run-ps --client "$client" --cmd "
+	ucs_winrm run-ps --client "$client" --cmd "
 		cd C:\\'Program Files'\\Veyon
 		.\\veyon-cli config import C:\\veyon.json
 		.\\veyon-cli config upgrade
 	"
 	# reboot, just to be sure
-	ucs-winrm reboot --client "$client"
+	ucs_winrm reboot --client "$client"
 }
 
 # rename windows computer with IPto $name and
@@ -60,21 +60,17 @@ rename_and_join () {
 	local school="$6"
 	local school_group
 	school_group="$(ucr get windows/domain)/Domain Users $school"
-	# disable update service, so that the reboot (including updates)
-	# doesn't take forever
-	ucs-winrm run-ps --client "$client" --cmd '
-		sc.exe config wuauserv start=disabled
-		sc.exe stop wuauserv
-	'
-	ucs-winrm rename-computer --name "$name" --client "$ip"
-	ucs-winrm domain-join \
+
+	ucs_winrm wait_for_client --client "$ip" --timeout 3600
+	ucs_winrm rename-computer --timeout 3600 --name "$name" --client "$ip"
+	ucs_winrm domain-join \
 		--client "$ip" \
 		--domainpassword "$domain_password" \
 		--domainuser "$domain_user" \
 		--dnsserver "$dns_server"
 	# add school group to local rdp group
 	# shellcheck disable=SC2016
-	ucs-winrm run-ps --client "$client" --cmd '
+	ucs_winrm run-ps --client "$client" --cmd '
 		$computer = $env:COMPUTERNAME
 		$ADSIComputer = [ADSI]("WinNT://$computer,computer")
 		$auth = New-Object System.Security.Principal.SecurityIdentifier("S-1-5-32-555")
@@ -112,6 +108,28 @@ import_windows_clients () {
 	# TODO Bug?
 	sed -i 's/escape_dn_chars(network\.network_address)/escape_dn_chars(str(network\.network_address))/' /usr/share/ucs-school-import/scripts/import_computer
 	/usr/share/ucs-school-import/scripts/import_computer "$import_file"
+}
+
+disable_wuauserv  () {
+	local client="$1"
+	ucs_winrm wait_for_client --client "$client" --timeout 3600
+	ucs_winrm run-ps  --client "$client" --cmd '
+		sc.exe config wuauserv start=disabled
+		sc.exe stop wuauserv
+		Restart-Computer -Force
+    '
+}
+
+prepare_windows () {
+	local pids client
+	pids=()
+	for client in $UCS_ENV_WINDOWS_CLIENTS; do
+		disable_wuauserv "$client" &
+		pids+=($!)
+	done
+	for pid in "${pids[@]}"; do
+		wait -n "$pid"
+	done
 }
 
 # uses
