@@ -1,0 +1,31 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: vim
+fix: 2:8.0.0197-4+deb9u7
+desc: |
+ This update addresses the following issues:
+ * heap-based buffer overflow vulnerability (CVE-2021-3903)
+ * heap-based-buffer-overflow in ex_retab() of src/indent.c (CVE-2022-0417)
+ * Heap-based Buffer Overflow occurs in vim (CVE-2022-0943)
+ * Buffer Over-read in function grab_file_name in GitHub repository vim/vim
+   prior to 8.2.4956. This vulnerability is capable of crashing the software,
+   memory modification, and possible remote execution. (CVE-2022-1720)
+ * out-of-bounds read in gchar_cursor() in misc1.c (CVE-2022-1851)
+ * use-after-free in find_pattern_in_path() in search.c (CVE-2022-1898)
+ * use-after-free in function utf_ptr2char at mbyte.c:1794 (CVE-2022-1968)
+ * Buffer Over-read in GitHub repository vim/vim prior to 8.2. (CVE-2022-2124)
+ * Out-of-bounds Read in GitHub repository vim/vim prior to 8.2.
+   (CVE-2022-2126)
+bug: [54900]
+cve:
+- CVE-2021-3903
+- CVE-2022-0417
+- CVE-2022-0943
+- CVE-2022-1720
+- CVE-2022-1851
+- CVE-2022-1898
+- CVE-2022-1968
+- CVE-2022-2124
+- CVE-2022-2126
