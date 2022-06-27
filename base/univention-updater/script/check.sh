@@ -335,6 +335,21 @@ if blocking_computers or blocking_objects:
     exit(1)'
 }
 
+update_check_required_ucsschool_version () {  # Bug #54883 Bug #54896
+	if ! python3 -c '
+import sys
+from distutils.version import LooseVersion
+from univention.appcenter.app_cache import Apps
+ucsschool = Apps().find("ucsschool")
+
+if ucsschool.is_installed():
+	sys.exit(LooseVersion(ucsschool.version) <= LooseVersion("5.0 v1"))
+	'; then
+		echo "UCS@school is installed. To upgrade to UCS 5.0-2 as least UCS@school 5.0 v2 is required."
+		echo "Please upgrade the UCS@school app first!"
+		return 1
+	fi
+}
 
 checks () {
 	# stderr to log
