@@ -47,7 +47,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--set summary="Additional Service: check if Opsi is functional" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_opsi_running != 1 or univention_opsiguard_running != 1 or univention_opsi_reachable != 1" || die "UNIVENTION_OPSI"
+	--set query="univention_opsi_running != 1 or univention_opsi_reachable != 1" || die "UNIVENTION_OPSI"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--position "cn=monitoring,$ldap_base" \
@@ -56,7 +56,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--set summary="Additional Service: check if metrics regarding Opsi are missing" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_opsi_running) == 1 or absent(univention_opsiguard_running) == 1 or absent(univention_opsi_reachable) == 1" || die "UNIVENTION_OPSI_MISSING"
+	--set query="absent(univention_opsi_running) == 1 or absent(univention_opsi_reachable) == 1" || die "UNIVENTION_OPSI_MISSING"
 
 CHECKS=(
 	"UNIVENTION_OPSI"
