@@ -53,7 +53,7 @@ class Squid(Alert):
 						break
 					match = re.match(r'^\s*http_port\s+(\d+)', line)
 					if match:
-						port = match.group(0)
+						port = match.group(1)
 						break
 		except FileNotFoundError:
 			pass
