@@ -6,5 +6,6 @@ src: univention-directory-manager-modules
 fix:
 desc: |
  This update addresses the following issues:
- * Improve the error message for invalid dates by specifying the valid range and stating the allowed date formats.
+ * Improve the error message for invalid dates by specifying
+   the valid range and stating the allowed date formats.
 bug: [54668]
