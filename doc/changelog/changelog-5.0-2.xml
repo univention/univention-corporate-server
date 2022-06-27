@@ -535,6 +535,9 @@
 				<listitem><simpara>
 					The French translation of UDM extended attributes has been updated (<u:bug>54029</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The <property>entryUUID</property> of an LDAP object is now exposed by the UDM API (<u:bug>54883</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
