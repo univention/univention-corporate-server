@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/python3
 #
 # Univention Monitoring Client
 #
@@ -28,70 +28,87 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+"""
+Migrate Nagios services which are assigned to this host to corresponding monitoring alerts.
+"""
 
-eval "$(ucr shell ldap/base ldap/hostdn hostname domainname)"
+import argparse
+from typing import Dict, Tuple
 
-NAGIOS_CHECKS=(
-	"UNIVENTION_DISK_ROOT"
-	"UNIVENTION_DNS"
-	"UNIVENTION_SWAP"
-	"UNIVENTION_LDAP_AUTH"
-	"UNIVENTION_NTP"
-	"UNIVENTION_SMTP2"
-	"UNIVENTION_SSL"
-	"UNIVENTION_LOAD"
-	"UNIVENTION_REPLICATION"
-	"UNIVENTION_NSCD"
-	"UNIVENTION_NSCD2"
-	"UNIVENTION_KPASSWDD"
-	"UNIVENTION_WINBIND"
-	"UNIVENTION_SMBD"
-	"UNIVENTION_NMBD"
-	"UNIVENTION_JOINSTATUS"
-	"UNIVENTION_PACKAGE_STATUS"
-	"UNIVENTION_SLAPD_MDB_MAXSIZE"
-	"UNIVENTION_LISTENER_MDB_MAXSIZE"
-	"UNIVENTION_ADCONNECTOR"
-	"UNIVENTION_CUPS"
-	"UNIVENTION_OPSI"
-	"UNIVENTION_RAID"
-	"UNIVENTION_S4CONNECTOR"
-	"UNIVENTION_SAMBA_REPLICATION"
-	"UNIVENTION_SMART_SDA"
-	"UNIVENTION_SMART_SDB"
-	"UNIVENTION_SMART_SDC"
-	"UNIVENTION_SMART_SDD"
-	"UNIVENTION_SQUID"
-)
+from ldap.filter import filter_format
 
-CHECKS_UNIVENTION_DISK_ROOT=(UNIVENTION_DISK_ROOT UNIVENTION_DISK_ROOT_WARNING)
-CHECKS_UNIVENTION_SWAP=(UNIVENTION_SWAP UNIVENTION_SWAP_WARNING)
-CHECKS_UNIVENTION_NTP=(UNIVENTION_NTP UNIVENTION_NTP_WARNING)
-CHECKS_UNIVENTION_SMTP2=(UNIVENTION_SMTP)
-CHECKS_UNIVENTION_SSL=(UNIVENTION_SSL UNIVENTION_SSL_WARNING)
-CHECKS_UNIVENTION_LOAD=(UNIVENTION_LOAD UNIVENTION_LOAD_WARNING)
-CHECKS_UNIVENTION_REPLICATION=(UNIVENTION_REPLICATION UNIVENTION_REPLICATION_WARNING)
-CHECKS_UNIVENTION_SLAPD_MDB_MAXSIZE=(UNIVENTION_SLAPD_MDB_MAXSIZE UNIVENTION_SLAPD_MDB_MAXSIZE_WARNING)
-CHECKS_UNIVENTION_LISTENER_MDB_MAXSIZE=(UNIVENTION_LISTENER_MDB_MAXSIZE UNIVENTION_LISTENER_MDB_MAXSIZE_WARNING)
-CHECKS_UNIVENTION_ADCONNECTOR=(UNIVENTION_ADCONNECTOR UNIVENTION_ADCONNECTOR_WARNING)
-CHECKS_UNIVENTION_RAID=(UNIVENTION_RAID UNIVENTION_RAID_WARNING)
-CHECKS_UNIVENTION_S4CONNECTOR=(UNIVENTION_S4CONNECTOR UNIVENTION_S4CONNECTOR_WARNING)
-CHECKS_UNIVENTION_SMART_SDA=(UNIVENTION_SMART_SDA_HEALTHY UNIVENTION_SMART_SDA_PENDINGSECTOR_WARNING)
-CHECKS_UNIVENTION_SMART_SDB=(UNIVENTION_SMART_SDB_HEALTHY UNIVENTION_SMART_SDB_PENDINGSECTOR_WARNING)
-CHECKS_UNIVENTION_SMART_SDC=(UNIVENTION_SMART_SDC_HEALTHY UNIVENTION_SMART_SDC_PENDINGSECTOR_WARNING)
-CHECKS_UNIVENTION_SMART_SDD=(UNIVENTION_SMART_SDD_HEALTHY UNIVENTION_SMART_SDD_PENDINGSECTOR_WARNING)
+from univention.udm import UDM
+from univention.udm.exceptions import NoObject
+from univention.config_registry import ucr
 
-for nagiosname in "${NAGIOS_CHECKS[@]}"; do
-	if udm nagios/service list --filter "(&(name=$nagiosname)(univentionNagiosHostname=$hostname.$domainname))" | grep -q '^DN:'; then
-		variable="CHECKS_${nagiosname}"
-		names=""
-		names="${!variable}"
-		[ -z "$names" ] && names=("$nagiosname")
-		for name in "${names[@]}"; do
-			# TODO: --ignore_not_exists ?
-			univention-directory-manager monitoring/alert modify "$@" \
-				--dn "cn=$name,cn=monitoring,$ldap_base" \
-				--append assignedHosts="${ldap_hostdn}" # TODO?: || exit $?
-		done
-	fi
-done
+CHECKS: Dict[str, Tuple[str, ...]] = {
+    "UNIVENTION_DISK_ROOT": ("UNIVENTION_DISK_ROOT", "UNIVENTION_DISK_ROOT_WARNING"),
+    "UNIVENTION_DNS": (),
+    "UNIVENTION_SWAP": ("UNIVENTION_SWAP", "UNIVENTION_SWAP_WARNING"),
+    "UNIVENTION_LDAP_AUTH": (),
+    "UNIVENTION_NTP": ("UNIVENTION_NTP", "UNIVENTION_NTP_WARNING"),
+    "UNIVENTION_SMTP2": ("UNIVENTION_SMTP",),
+    "UNIVENTION_SSL": ("UNIVENTION_SSL", "UNIVENTION_SSL_WARNING"),
+    "UNIVENTION_LOAD": ("UNIVENTION_LOAD", "UNIVENTION_LOAD_WARNING"),
+    "UNIVENTION_REPLICATION": ("UNIVENTION_REPLICATION", "UNIVENTION_REPLICATION_WARNING"),
+    "UNIVENTION_NSCD": (),
+    "UNIVENTION_NSCD2": (),
+    "UNIVENTION_KPASSWDD": (),
+    "UNIVENTION_WINBIND": (),
+    "UNIVENTION_SMBD": (),
+    "UNIVENTION_NMBD": (),
+    "UNIVENTION_JOINSTATUS": (),
+    "UNIVENTION_PACKAGE_STATUS": (),
+    "UNIVENTION_SLAPD_MDB_MAXSIZE": ("UNIVENTION_SLAPD_MDB_MAXSIZE", "UNIVENTION_SLAPD_MDB_MAXSIZE_WARNING"),
+    "UNIVENTION_LISTENER_MDB_MAXSIZE": ("UNIVENTION_LISTENER_MDB_MAXSIZE", "UNIVENTION_LISTENER_MDB_MAXSIZE_WARNING"),
+    "UNIVENTION_ADCONNECTOR": ("UNIVENTION_ADCONNECTOR", "UNIVENTION_ADCONNECTOR_WARNING"),
+    "UNIVENTION_CUPS": (),
+    "UNIVENTION_OPSI": (),
+    "UNIVENTION_RAID": ("UNIVENTION_RAID", "UNIVENTION_RAID_WARNING"),
+    "UNIVENTION_S4CONNECTOR": ("UNIVENTION_S4CONNECTOR", "UNIVENTION_S4CONNECTOR_WARNING"),
+    "UNIVENTION_SAMBA_REPLICATION": (),
+    "UNIVENTION_SMART_SDA": ("UNIVENTION_SMART_SDA_HEALTHY", "UNIVENTION_SMART_SDA_PENDINGSECTOR_WARNING"),
+    "UNIVENTION_SMART_SDB": ("UNIVENTION_SMART_SDB_HEALTHY", "UNIVENTION_SMART_SDB_PENDINGSECTOR_WARNING"),
+    "UNIVENTION_SMART_SDC": ("UNIVENTION_SMART_SDC_HEALTHY", "UNIVENTION_SMART_SDC_PENDINGSECTOR_WARNING"),
+    "UNIVENTION_SMART_SDD": ("UNIVENTION_SMART_SDD_HEALTHY", "UNIVENTION_SMART_SDD_PENDINGSECTOR_WARNING"),
+    "UNIVENTION_SQUID": (),
+}
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--binddn', metavar="DN", default=ucr['ldap/hostdn'], help="LDAP simple BIND DN")
+    parser.add_argument('--bindpwdfile', metavar="PWFILE", type=argparse.FileType('r'), default='/etc/machine.secret', help="LDAP simple BIND password file")
+    args = parser.parse_args()
+
+    udm = UDM.credentials(args.binddn, args.bindpwdfile.read().strip(), server=ucr['ldap/master'], port=ucr.get_int('ldap/master/port', 7389)).version(2)
+    udm_nagios = udm.get('nagios/service')
+    udm_alert = udm.get('monitoring/alert')
+
+    fqhn = "%(hostname)s.%(domainname)s" % ucr
+    basedn = ucr['ldap/base']
+    hostdn = ucr["ldap/hostdn"]
+
+    for nagios, names in CHECKS.items():
+        if not any(udm_nagios.search(filter_format("(&(name=%s)(univentionNagiosHostname=%s))", [nagios, fqhn]))):
+            print(f"Skipped Nagios service {nagios}.")
+            continue
+
+        for service in names or (nagios,):
+            try:
+                obj = udm_alert.get(f"cn={service},cn=monitoring,{basedn}")
+            except NoObject:
+                print(f"Skipping alerting rule {service}.")
+                continue
+
+            if hostdn in obj.props.assignedHosts:
+                print(f"Already in alerting rule {service}.")
+                continue
+
+            obj.props.assignedHosts.append(hostdn)
+            obj.save()
+            print(f"Added to alerting rule {service}.")
+
+
+if __name__ == "__main__":
+    main()
