@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: openssl
+fix: 1.1.1n-0+deb10u3
+desc: |
+ This update addresses the following issue:
+ * the c_rehash script allows command injection (CVE-2022-2068)
+bug: [54901]
+cve:
+- CVE-2022-2068
