@@ -47,10 +47,20 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--set summary="Additional Service: check if CUPS is functional" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_cups_running != 1 or univention_cups_reachable != 1" || die
+	--set query="univention_cups_running != 1 or univention_cups_reachable != 1" || die "UNIVENTION_CUPS"
+
+univention-directory-manager monitoring/alert create "$@" --ignore_exists \
+	--position "cn=monitoring,$ldap_base" \
+	--set name="UNIVENTION_CUPS_MISSING" \
+	--set description="Additional Service: check if metrics regarding CUPS are missing" \
+	--set summary="Additional Service: check if metrics regarding CUPS are missing" \
+	--set for="5m" \
+	--append labels='"severity" "critical"' \
+	--set query="absent(univention_cups_running) == 1 or abesnt(univention_cups_reachable) == 1" || die "UNIVENTION_CUPS_MISSING"
 
 CHECKS=(
 	"UNIVENTION_CUPS"
+	"UNIVENTION_CUPS_MISSING"
 )
 
 if [ $JS_LAST_EXECUTED_VERSION -le 0 ] && is_ucr_true monitoring/client/nagios-automigration; then

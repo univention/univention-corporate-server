@@ -47,57 +47,84 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
   --set description="Default Service: check if /dev/sda is healthy" \
   --set summary="Default Service: check if /dev/sda is healthy" \
   --append labels='"severity" "critical"' \
-  --set query='smartmon_device_smart_healthy{disk="/dev/sda"} != 1' || die
+  --set query='smartmon_device_smart_healthy{disk="/dev/sda"} != 1' || die "UNIVENTION_SMART_SDA_HEALTHY"
+
+univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
+--set name="UNIVENTION_SMART_SDA_HEALTHY_METRIC_MISSING" \
+--set description="Default Service: check if metric regarding /dev/sda is missing" \
+--set summary="Default Service: check if metric regarding /dev/sda is missing" \
+--append labels='"severity" "critical"' \
+--set query='absent(smartmon_device_smart_healthy{disk="/dev/sda"}) == 1' || die "UNIVENTION_SMART_SDA_HEALTHY_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
   --set name="UNIVENTION_SMART_SDB_HEALTHY" \
   --set description="Default Service: check if /dev/sdb is healthy" \
   --set summary="Default Service: check if /dev/sdb is healthy" \
   --append labels='"severity" "critical"' \
-  --set query='smartmon_device_smart_healthy{disk="/dev/sdb"} != 1' || die
+  --set query='smartmon_device_smart_healthy{disk="/dev/sdb"} != 1' || die "UNIVENTION_SMART_SDB_HEALTHY"
+
+univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
+  --set name="UNIVENTION_SMART_SDB_HEALTHY_METRIC_MISSING" \
+  --set description="Default Service: check if metric regarding /dev/sdb is missing" \
+  --set summary="Default Service: check if metric regarding /dev/sdb is missing" \
+  --append labels='"severity" "critical"' \
+  --set query='absent(smartmon_device_smart_healthy{disk="/dev/sdb"}) == 1' || die "UNIVENTION_SMART_SDB_HEALTHY_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
   --set name="UNIVENTION_SMART_SDC_HEALTHY" \
   --set description="Default Service: check if /dev/sdc is healthy" \
   --set summary="Default Service: check if /dev/sdc is healthy" \
   --append labels='"severity" "critical"' \
-  --set query='smartmon_device_smart_healthy{disk="/dev/sdc"} != 1' || die
+  --set query='smartmon_device_smart_healthy{disk="/dev/sdc"} != 1' || die "UNIVENTION_SMART_SDC_HEALTHY"
+
+univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
+  --set name="UNIVENTION_SMART_SDC_HEALTHY_METRIC_MISSING" \
+  --set description="Default Service: check if metric regarding /dev/sdc is missing" \
+  --set summary="Default Service: check if metric regarding /dev/sdc is missing" \
+  --append labels='"severity" "critical"' \
+  --set query='absent(smartmon_device_smart_healthy{disk="/dev/sdc"}) == 1' || die "UNIVENTION_SMART_SDC_HEALTHY"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
   --set name="UNIVENTION_SMART_SDD_HEALTHY" \
   --set description="Default Service: check if /dev/sdd is healthy" \
   --set summary="Default Service: check if /dev/sdd is healthy" \
   --append labels='"severity" "critical"' \
-  --set query='smartmon_device_smart_healthy{disk="/dev/sdd"} != 1' || die
+  --set query='smartmon_device_smart_healthy{disk="/dev/sdd"} != 1' || die "UNIVENTION_SMART_SDD_HEALTHY"
 
+univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
+  --set name="UNIVENTION_SMART_SDD_HEALTHY_METRIC_MISSING" \
+  --set description="Default Service: check if metric regarding /dev/sdd is misisng" \
+  --set summary="Default Service: check if metric regarding /dev/sdd is misisng" \
+  --append labels='"severity" "critical"' \
+  --set query='absent(smartmon_device_smart_healthy{disk="/dev/sdd"}) == 1' || die "UNIVENTION_SMART_SDD_HEALTHY_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
   --set name="UNIVENTION_SMART_SDA_PENDINGSECTOR_WARNING" \
   --set description="Default Service: check if /dev/sda has sectors pending re-allocation" \
   --set summary="Default Service: check if /dev/sda has sectors pending re-allocation" \
   --append labels='"severity" "warning"' \
-  --set query='absent(smartmon_current_pending_sector{disk="/dev/sda"}) != 1' || die
+  --set query='absent(smartmon_current_pending_sector{disk="/dev/sda"}) != 1' || die "UNIVENTION_SMART_SDA_PENDINGSECTOR_WARNING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
   --set name="UNIVENTION_SMART_SDB_PENDINGSECTOR_WARNING" \
   --set description="Default Service: check if /dev/sdb has sectors pending re-allocation" \
   --set summary="Default Service: check if /dev/sdb has sectors pending re-allocation" \
   --append labels='"severity" "warning"' \
-  --set query='absent(smartmon_current_pending_sector{disk="/dev/sdb"}) != 1' || die
+  --set query='absent(smartmon_current_pending_sector{disk="/dev/sdb"}) != 1' || die "UNIVENTION_SMART_SDB_PENDINGSECTOR_WARNING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
   --set name="UNIVENTION_SMART_SDC_PENDINGSECTOR_WARNING" \
   --set description="Default Service: check /dev/sdc has sectors pending re-allocation" \
   --set summary="Default Service: check /dev/sdc has sectors pending re-allocation" \
   --append labels='"severity" "warning"' \
-  --set query='absent(smartmon_current_pending_sector{disk="/dev/sdc"}) != 1' || die
+  --set query='absent(smartmon_current_pending_sector{disk="/dev/sdc"}) != 1' || die "UNIVENTION_SMART_SDC_PENDINGSECTOR_WARNING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
   --set name="UNIVENTION_SMART_SDD_PENDINGSECTOR_WARNING" \
   --set description="Default Service: check /dev/sdd has sectors pending re-allocation" \
   --set summary="Default Service: check /dev/sdd has sectors pending re-allocation" \
   --append labels='"severity" "warning"' \
-  --set query='absent(smartmon_current_pending_sector{disk="/dev/sdd"}) != 1' || die
+  --set query='absent(smartmon_current_pending_sector{disk="/dev/sdd"}) != 1' || die "UNIVENTION_SMART_SDD_PENDINGSECTOR_WARNING"
 
 CHECKS=(
 	"UNIVENTION_SMART_SDA_HEALTHY"
@@ -108,6 +135,10 @@ CHECKS=(
 	"UNIVENTION_SMART_SDB_PENDINGSECTOR_WARNING"
 	"UNIVENTION_SMART_SDC_PENDINGSECTOR_WARNING"
 	"UNIVENTION_SMART_SDD_PENDINGSECTOR_WARNING"
+	"UNIVENTION_SMART_SDA_HEALTHY_METRIC_MISSING"
+	"UNIVENTION_SMART_SDB_HEALTHY_METRIC_MISSING"
+	"UNIVENTION_SMART_SDC_HEALTHY_METRIC_MISSING"
+	"UNIVENTION_SMART_SDD_HEALTHY_METRIC_MISSING"
 )
 
 if [ $JS_LAST_EXECUTED_VERSION -le 0 ] && is_ucr_true monitoring/client/nagios-automigration; then

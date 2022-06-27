@@ -47,10 +47,20 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--set summary="check if squid is functional" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_squid_running != 1 or univention_squid_reachable != 1" || die
+	--set query="univention_squid_running != 1 or univention_squid_reachable != 1" || die "UNIVENTION_SQUID"
+
+univention-directory-manager monitoring/alert create "$@" --ignore_exists \
+	--position "cn=monitoring,$ldap_base" \
+	--set name="UNIVENTION_SQUID_METRIC_MISSING" \
+	--set description="check if metrics regarding squid are missing" \
+	--set summary="check if metrics regarding squid are missing" \
+	--set for="5m" \
+	--append labels='"severity" "critical"' \
+	--set query="absent(univention_squid_running) == 1 or absent(univention_squid_reachable) == 1" || die "UNIVENTION_SQUID_METRIC_MISSING"
 
 CHECKS=(
 	"UNIVENTION_SQUID"
+	"UNIVENTION_SQUID_METRIC_MISSING"
 )
 
 if [ $JS_LAST_EXECUTED_VERSION -le 0 ] && is_ucr_true monitoring/client/nagios-automigration; then

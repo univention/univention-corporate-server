@@ -47,7 +47,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--set summary="Additional Service: check if S4-Connector is functional" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_s4_connector_samba_reachable != 1 or univention_s4_connector_running == 2" || die
+	--set query="univention_s4_connector_samba_reachable != 1 or univention_s4_connector_running == 2" || die "UNIVENTION_S4CONNECTOR"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--position "cn=monitoring,$ldap_base" \
@@ -57,11 +57,21 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--set summary="Additional Service: check if S4-Connector is functional" \
 	--set for="5m" \
 	--append labels='"severity" "warning"' \
-	--set query="univention_s4_connector_running == 1 or univention_s4_connector_rejects > 0" || die
+	--set query="univention_s4_connector_running == 1 or univention_s4_connector_rejects > 0" || die "UNIVENTION_S4CONNECTOR_WARNING"
+
+univention-directory-manager monitoring/alert create "$@" --ignore_exists \
+	--position "cn=monitoring,$ldap_base" \
+	--set name="UNIVENTION_S4CONNECTOR_MISSING" \
+	--set description="Additional Service: check if metrics regarding S4-Connector are missing" \
+	--set summary="Additional Service: check if metrics regarding S4-Connector are missing" \
+	--set for="5m" \
+	--append labels='"severity" "critical"' \
+	--set query="absent(univention_s4_connector_samba_reachable) == 1 or absent(univention_s4_connector_running) == 1" || die "UNIVENTION_S4CONNECTOR_MISSING"
 
 CHECKS=(
 	"UNIVENTION_S4CONNECTOR"
 	"UNIVENTION_S4CONNECTOR_WARNING"
+	"UNIVENTION_S4CONNECTOR_MISSING"
 )
 
 if [ $JS_LAST_EXECUTED_VERSION -le 0 ] && is_ucr_true monitoring/client/nagios-automigration; then

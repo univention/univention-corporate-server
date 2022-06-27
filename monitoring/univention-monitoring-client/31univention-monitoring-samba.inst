@@ -48,8 +48,17 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--append labels='"severity" "critical"' \
 	--set query="univention_samba_drs_failures != 0" || die
 
+univention-directory-manager monitoring/alert create "$@" --ignore_exists \
+	--position "cn=monitoring,$ldap_base" \
+	--set name="UNIVENTION_SAMBA_REPLICATION_MISSING" \
+	--set description="Additional Service: check if metrics regarding samba drs failures are misisng" \
+	--set summary="Additional Service: check if metrics regarding samba drs failures are misisng" \
+	--append labels='"severity" "critical"' \
+	--set query="absent(univention_samba_drs_failures) == 1" || die "UNIVENTION_SAMBA_REPLICATION_MISSING"
+
 CHECKS=(
 	"UNIVENTION_SAMBA_REPLICATION"
+	"UNIVENTION_SAMBA_REPLICATION_MISSING"
 )
 
 if [ $JS_LAST_EXECUTED_VERSION -le 0 ] && is_ucr_true monitoring/client/nagios-automigration; then
