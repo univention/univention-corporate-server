@@ -77,11 +77,16 @@ CHECKS: Dict[str, Tuple[str, ...]] = {
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--binddn', metavar="DN", default=ucr['ldap/hostdn'], help="LDAP simple BIND DN")
-    parser.add_argument('--bindpwdfile', metavar="PWFILE", type=argparse.FileType('r'), default='/etc/machine.secret', help="LDAP simple BIND password file")
+    parser.add_argument('--binddn', metavar="DN", help="LDAP simple BIND DN")
+    parser.add_argument('--bindpwdfile', metavar="PWFILE", type=argparse.FileType('r'), help="LDAP simple BIND password file")
     args = parser.parse_args()
 
-    udm = UDM.credentials(args.binddn, args.bindpwdfile.read().strip(), server=ucr['ldap/master'], port=ucr.get_int('ldap/master/port', 7389)).version(2)
+    if args.binddn and args.bindpwdfile:
+        udm = UDM.credentials(args.binddn, args.bindpwdfile.read().strip(), server=ucr['ldap/master'], port=ucr.get_int('ldap/master/port', 7389)).version(2)
+    elif ucr['server/role'] == 'domaincontroller_master':
+        udm = UDM.admin().version(2)
+    else:
+        udm = UDM.machine().version(2)
     udm_nagios = udm.get('nagios/service')
     udm_alert = udm.get('monitoring/alert')
 
