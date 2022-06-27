@@ -54,11 +54,10 @@ def safe_path(filename):
 class MonitoringClient(ListenerModuleHandler):
 
 	def initialize(self):
-		dirname = os.path.dirname(DIRECTORY)
-		if os.path.exists(dirname):
+		if os.path.exists(DIRECTORY):
 			return
 		with self.as_root():
-			os.makedirs(dirname)
+			os.makedirs(DIRECTORY)
 
 	def create(self, dn, new):
 		with self.as_root():
