@@ -1,0 +1,3 @@
+Type: file
+File: etc/cron.d/univention-monitoring-client
+Variables: monitoring/client/cron

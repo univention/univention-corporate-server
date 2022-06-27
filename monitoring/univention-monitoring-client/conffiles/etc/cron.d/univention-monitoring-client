@@ -1,0 +1,10 @@
+@%@UCRWARNING=# @%@
+
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
+# runs prometheus node exporter scripts for univention-monitoring-client
+MAILTO=root
+@!@
+interval = configRegistry.get("monitoring/client/cron", "*/5 * * * *")
+if interval:
+	print("%s root run-parts /usr/share/univention-monitoring-client/scripts/" % (interval,))
+@!@

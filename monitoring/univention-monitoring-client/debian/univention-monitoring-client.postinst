@@ -31,13 +31,6 @@
 
 #DEBHELPER#
 
-univention-config-registry set \
-	cron/univention-monitoring-client/description?'runs prometheus node exporter scripts for univention-monitoring-client' \
-	cron/univention-monitoring-client/command?'run-parts /usr/share/univention-monitoring-client/scripts/' \
-	cron/univention-monitoring-client/time?'*/5 * * * *' \
-	cron/univention-monitoring-client/user?'root'
-#	cron/univention-monitoring-client/mailto?'root@localhost'
-
 service univention-directory-listener restart
 
 exit 0
