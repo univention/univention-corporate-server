@@ -199,7 +199,7 @@ class Session(object):
 				if not self.reconnect:
 					raise
 				try:
-					assert exc.response
+					assert exc.response is not None
 					retry_after = min(5, int(exc.response.headers.get('Retry-After', 1)))
 				except ValueError:
 					retry_after = 1
