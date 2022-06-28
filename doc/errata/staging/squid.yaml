@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: squid
+fix: 4.6-1+deb10u7A~5.0.1.202206281116
+desc: |
+ This update addresses the following issues:
+ * out-of-bounds read in WCCP protocol data may lead to information disclosure
+   (CVE-2021-28116)
+ * DoS when processing gopher server responses (CVE-2021-46784)
+bug: [54907]
+cve:
+- CVE-2021-28116
+- CVE-2021-46784
