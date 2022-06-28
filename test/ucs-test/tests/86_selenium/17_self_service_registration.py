@@ -188,7 +188,7 @@ def test_user_creation(selenium, mails, get_registration_info, verification_proc
 	utils.verify_ldap_object(info['dn'], {
 		'univentionRegisteredThroughSelfService': ['TRUE'],
 		'univentionPasswordRecoveryEmailVerified': ['FALSE'],
-	}, retry_count=1, delay=2)
+	}, retry_count=4, delay=2)
 	selenium.wait_for_text('Account creation successful')
 	# tests email
 	mail = _get_mail(mails)
@@ -210,7 +210,7 @@ def test_user_creation(selenium, mails, get_registration_info, verification_proc
 	utils.verify_ldap_object(info['dn'], {
 		'univentionRegisteredThroughSelfService': ['TRUE'],
 		'univentionPasswordRecoveryEmailVerified': ['TRUE'],
-	}, retry_count=1, delay=2)
+	}, retry_count=4, delay=2)
 
 
 def test_account_verifyaccount_page_errors(selenium, udm, get_registration_info):
@@ -280,7 +280,7 @@ def test_email_change(selenium, mails, get_registration_info, change_email):
 	utils.verify_ldap_object(info['dn'], {
 		'univentionRegisteredThroughSelfService': ['TRUE'],
 		'univentionPasswordRecoveryEmailVerified': ['TRUE'],
-	}, retry_count=1, delay=2)
+	}, retry_count=4, delay=2)
 	_navigate_self_service(selenium, 'protectaccount')
 	selenium.wait_until_standby_animation_appears_and_disappears()
 	selenium.enter_input('username', info['attributes']['username'])
