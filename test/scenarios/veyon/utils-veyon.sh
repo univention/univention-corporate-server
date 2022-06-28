@@ -1,4 +1,5 @@
 set -e
+set -x
 
 WINRM_IMAGE="docker.software-univention.de/ucs-winrm"
 
@@ -101,7 +102,7 @@ import_windows_clients () {
 		# TODO, how to get the mac address?
 		ping -c 4 "$ip" || true
 		name="win${name_counter}"
-		mac="$(arp -a| grep "$ip" | sed 's/.*\(..:..:..:..:..:..\).*/\1/')"
+		mac="$(arp -a| grep "($ip)" | sed 's/.*\(..:..:..:..:..:..\).*/\1/')"
 		printf '%s\t%s\t%s\t%s\t%s\n' "${type}" "${name}" "${mac}" "${school}" "${ip}" >> "$import_file"
 		((name_counter=name_counter+1))
 	done
@@ -116,6 +117,7 @@ disable_wuauserv  () {
 	ucs_winrm run-ps  --client "$client" --cmd '
 		sc.exe config wuauserv start=disabled
 		sc.exe stop wuauserv
+		netsh advfirewall set allprofiles state off
 		Restart-Computer -Force
     '
 }
@@ -219,9 +221,13 @@ create_school () {
 aws_ipv6 () {
 	local ipv6_address=${1:?missing ipv6}
 	if [[ "$(dmidecode --string system-uuid)" == ec2* ]]; then
+		# do it manually, so that we don't interfere with
+		# the normal startup
+		ucr set interfaces/restart/auto=false
 		ucr set \
 			interfaces/eth0/ipv6/default/address="$ipv6_address" \
 			interfaces/eth0/ipv6/default/prefix="128"
-		service networking restart
+		ip -6 addr add "$ipv6_address"/128 dev eth0
+		ucr unset interfaces/restart/auto
 	fi
 }
