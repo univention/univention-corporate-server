@@ -139,7 +139,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set description="Default Service: check if metrics regarding diskspace are missing" \
 	--set summary="Default Service: check if metrics regarding diskspace are missing" \
 	--append labels='"severity" "critical"' \
-	--set query='(absent(node_filesystem_size_bytes{mountpoint="/"}) == 1) or (absent(node_filesystem_free_bytes{mountpoint="/"} == 1)' || die "UNIVENTION_DISK_ROOT_METRIC_MISSING"
+	--set query='(absent(node_filesystem_size_bytes{mountpoint="/"}) == 1) or (absent(node_filesystem_free_bytes{mountpoint="/"}) == 1)' || die "UNIVENTION_DISK_ROOT_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_DNS" \
