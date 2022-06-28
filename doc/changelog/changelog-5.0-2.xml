@@ -428,6 +428,12 @@
 				<listitem><simpara>
 					The Portal server now provides a navigation endpoint (<u:bug>54618</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Keywords can now be added to portal entries. They are not visible, but searchable (<u:bug>54295</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Entries can now be opened in new tabs with a specific internal name ("target") (<u:bug>54633</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
