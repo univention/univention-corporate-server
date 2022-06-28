@@ -229,5 +229,6 @@ aws_ipv6 () {
 			interfaces/eth0/ipv6/default/prefix="128"
 		ip -6 addr add "$ipv6_address"/128 dev eth0
 		ucr unset interfaces/restart/auto
+		sleep 30
 	fi
 }
