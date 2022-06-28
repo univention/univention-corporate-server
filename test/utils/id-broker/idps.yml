@@ -1,7 +1,0 @@
-register_idps:
-  - alias: traeger1
-    ucsschoolSourceUID: Traeger1
-    path: schools_saml_IDP/traeger1_metadata.xml
-  - alias: traeger2
-    ucsschoolSourceUID: Traeger2
-    path: schools_saml_IDP/traeger2_metadata.xml

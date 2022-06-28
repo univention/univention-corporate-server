@@ -34,36 +34,23 @@ ansible_preperation () {
 	local traeger2_domain="${2:?missing traeger2_domain}"
 	local repo_user="${3:?missing repo_user}"
 	local repo_password_file="${4:?missing repo_password_file}"
-	local keycloak_password="${5:?missing keycloak_password}"
-	local kc1_ip="${6:?missing kc1_ip}"
-	local kc2_ip="${7:?missing kc2_ip}"
-	local db_extern="${8:?missing domain}"
 	local rv=0
 	# Setup passwordless ssh login for ansible
 	ssh-keygen -t rsa -b 4096 -f /root/.ssh/id_rsa -q -N ""
 	cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 	ssh -o "StrictHostKeyChecking=accept-new" localhost true
 	# Download ansible scripts
-	wget -e robots=off --cut-dirs=3 -np -R "index.html*" --user "$repo_user" \
-		--password="$(< "$repo_password_file")" -r -l 10 \
-		"https://service.software-univention.de/apt/00342/docs/keycloak/" || rv=$?
-	cd service.software-univention.de/keycloak || rv=$?
+    wget "http://service.knut.univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz"
+	#wget --user "$repo_user" --password="$(< "$repo_password_file")" \
+    #    "https://service.software-univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz" || rv=$?
+    tar -xf ansible_playbook.tar.gz
+	cd deployment || rv=$?
 	# check the jenkins-data repo for the following files
-	cp /root/hosts.ini hosts.ini
-	cp /root/idps.yml schools_saml_IDP/idps.yml
-	cp /root/clients.yml clients.yml
 	cp /root/id-broker-TESTING.cert id-broker.cert
 	cp /root/id-broker-TESTING.key id-broker.key
 	# shellcheck disable=SC1091
 	source /root/id-broker-secrets.sh
-	sed -i "s/KEYCLOAK_IP/$kc1_ip/g" hosts.ini
-	sed -i "s/KEYCLOAK2_IP/$kc2_ip/g" hosts.ini
-	sed -i "s/DOMAIN/$db_extern/g" hosts.ini
-	sed -i "s/hostssl keycloak keycloak KEYCLOAK2_IP/hostssl keycloak keycloak $kc2_ip/g" database.yml
-	sed -i "s/BETTERMARKS_CLIENT_SECRET/$BETTERMARKS_CLIENT_SECRET/g" clients.yml
-	sed -i "s/UTA_CLIENT_SECRET/$UTA_CLIENT_SECRET/g" clients.yml
-	sed -i "s/UTA_REDIRECT/https:\/\/$(hostname -f)\/univention-test-app\/authorize/g" clients.yml
-	sed -i "s/keycloak_password: admin/keycloak_password: $keycloak_password/g" vars.yml
+	sed -i "s/broker.local/$(hostname -d)/g" environments/jenkins/hosts
 	sed -i "s/CLIENT_SECRET=CLIENT_SECRET/CLIENT_SECRET=$UTA_CLIENT_SECRET/g" /etc/univention-test-app.conf
 	sed -i "s/ID_BROKER_KEYCLOAK_FQDN=ID_BROKER_KEYCLOAK_FQDN/ID_BROKER_KEYCLOAK_FQDN=kc.$(hostname -d)/g" /etc/univention-test-app.conf
 	sed -i "s/ID_BROKER_SDAPI_FQDN=ID_BROKER_SDAPI_FQDN/ID_BROKER_SDAPI_FQDN=self-disclosure1.$(hostname -d)/g" /etc/univention-test-app.conf
@@ -106,8 +93,8 @@ apache_custom_vhosts () {
 
 ansible_run_keycloak_configuration () {
 	local rv=0
-	cd service.software-univention.de/keycloak || rv=$?
-	/usr/local/bin/ansible-playbook -i hosts.ini main.yml || rv=$?
+	cd deployment || rv=$?
+	/usr/local/bin/ansible-playbook site.yml --vault-password-file /root/idbroker_jenkins_ansible.password -i inventories/jenkins || rv=$?
 	return $rv
 }
 
