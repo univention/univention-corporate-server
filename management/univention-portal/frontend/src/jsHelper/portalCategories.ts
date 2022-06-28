@@ -126,7 +126,7 @@ export function doesKeywordsMatch(entry: TileOrFolder, searchQuery: string): boo
 }
 
 export function doesFolderMatch(entry: TileOrFolder, searchQuery: string): boolean {
-  return entry.isFolder && (entry as FolderTile).tiles.some((t) => doesTitleMatch(t, searchQuery) || doesDescriptionMatch(t, searchQuery));
+  return entry.isFolder && (entry as FolderTile).tiles.some((t) => doesTitleMatch(t, searchQuery) || doesDescriptionMatch(t, searchQuery) || doesKeywordsMatch(t, searchQuery));
 }
 
 export function createCategories(

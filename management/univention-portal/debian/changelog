@@ -1,3 +1,9 @@
+univention-portal (4.0.7-3) unstable; urgency=medium
+
+  * Bug #54295: Fix regarding keywords in tiles in folders
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 28 Jun 2022 12:44:41 +0200
+
 univention-portal (4.0.7-2) unstable; urgency=medium
 
   * Bug #54633: QA Feedback
