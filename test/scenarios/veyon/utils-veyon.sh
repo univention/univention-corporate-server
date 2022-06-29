@@ -176,8 +176,8 @@ aws_ec2 () {
 get_veyon_aws_instances () {
 	local output="${1:-text}"
 	local filter=()
-	filter+=("Name=tag:usecase,Values=veyon-test-environment")
-	filter+=("Name=instance-state-name,Values=running")
+	#filter+=("Name=tag:usecase,Values=veyon-test-environment")
+	#filter+=("Name=instance-state-name,Values=running")
 	filter+=("Name=network-interface.subnet-id,Values=subnet-0c8e0b6088ba000b2")
 	aws_ec2 describe-instances \
 		--query "Reservations[*].Instances[*].{

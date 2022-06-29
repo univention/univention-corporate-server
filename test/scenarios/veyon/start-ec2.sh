@@ -30,4 +30,5 @@ fi
 ./scenarios/veyon/create_veyon_cfg.py  \
 	-w "$UCS_ENV_VEYON_WINDOWS_HOST" \
 	-v ec2 > "$cfg_file"
+export USER=veyon
 exec ./utils/start-test.sh "$cfg_file"
