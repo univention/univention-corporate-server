@@ -44,7 +44,7 @@ univention-config-registry set ssl/country?"${country:-DE}" \
 	ssl/organization?"${country:-DE}" \
 	ssl/organizationalunit?"Univention Corporate Server" \
 	ssl/common?"Univention Corporate Server Root CA (ID=$random_id)" \
-	ssl/email?"ssl@$domainname" \
+	ssl/email?"ssl@${domainname:-}" \
 	ssl/default/days?1825 \
 	ssl/validity/warning?30 \
 	ssl/validity/check?yes \
@@ -58,11 +58,12 @@ univention-config-registry set ssl/country?"${country:-DE}" \
 
 eval "$(univention-config-registry shell)"
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/base.sh
 create_logfile_if_missing /var/log/univention/ssl-sync.log "root:adm" 640
-case "$server_role" in
+case "${server_role:-}" in
 domaincontroller_master|basesystem|'')
-	if [ ! -s $CERTPATH/00.pem ] && [ ! -e "/etc/univention/ssl/$hostname.$domainname" ]; then
+	if [ ! -s $CERTPATH/00.pem ] && [ ! -e "/etc/univention/ssl/${hostname:-}.${domainname:-}" ]; then
 
 		# try to set the clock before generating the root CA, otherwise it is possible that the certificate is not valid at the end of the installation
 		# Bug #13549
@@ -71,6 +72,7 @@ domaincontroller_master|basesystem|'')
 			timeout -k 5 15 rdate 130.133.1.10 ||
 			true
 
+		# shellcheck source=../make-certificates.sh
 		. /usr/share/univention-ssl/make-certificates.sh
 		init
 		univention-certificate new -name "$hostname.$domainname"
@@ -91,6 +93,7 @@ then
 
 	if dpkg --compare-versions "$2" lt-nl 10.0.0-12
 	then
+		# shellcheck disable=SC2016
 		find /etc/univention/ssl -name openssl.cnf -exec sed -r \
 			-e 's/^(default_bits\s*=\s*)\d+$/\1$ENV::DEFAULT_BITS/' \
 			-e 's/^(default_md\s*=\s*)\S+$/\1$ENV::DEFAULT_MD/' \

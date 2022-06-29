@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e -u
-. ${0%/*}/common.sh
+# shellcheck source=common.sh
+. "${0%/*}/common.sh"
 
 fqdn="$(rnd 10).$(rnd 10)"
 name="${fqdn%%.*}"

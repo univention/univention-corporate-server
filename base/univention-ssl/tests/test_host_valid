@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e -u
-. ${0%/*}/common.sh
+# shellcheck source=common.sh
+. "${0%/*}/common.sh"
 
 name="${R64}"
 init
@@ -13,7 +14,7 @@ list_cert_names | grep -F -e "${R64}"
 [ 02 = "$(has_valid_cert "${R64}")" ]
 
 revoke_cert "${name}"
-has_valid_cert "${R64}" && exit 1
-list_cert_names | grep -F -e "${R64}" && exit 1
+FAIL has_valid_cert "${R64}"
+list_cert_names | FAIL grep -F -e "${R64}"
 
 :

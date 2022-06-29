@@ -29,9 +29,13 @@
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
 rv=0 tmp=$(mktemp)
-trap "rm -f '$tmp'" EXIT
+cleanup () {
+	rm -f "$tmp"
+}
+trap cleanup EXIT
 exec 3>&1 >"$tmp" 2>&1
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/ucr.sh
 if ! is_ucr_false ssl/validity/check
 then
@@ -44,6 +48,7 @@ check_gen_crl () {
 	interval=$(ucr get ssl/crl/interval)
 	[ "${interval:-0}" -ge 1 ] || return 0
 	[ -f "$crl" ] && [ -n "$(find "$crl" -mtime "-$interval")" ] && return 0
+	# shellcheck source=../make-certificates.sh
 	. /usr/share/univention-ssl/make-certificates.sh
 	gencrl
 }

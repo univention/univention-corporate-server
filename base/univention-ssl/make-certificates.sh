@@ -34,10 +34,15 @@
 # http://www.ibiblio.org/pub/Linux/docs/HOWTO/other-formats/html_single/SSL-Certificates-HOWTO.html
 # http://www.pca.dfn.de/dfnpca/certify/ssl/handbuch/ossl092/
 
+die () {
+	echo "$0: FATAL: $*" >&2
+	exit 2
+}
+
 SSLBASE="${sslbase:-/etc/univention/ssl}"
-case "$SSLBASE" in /*) ;; *) echo "$0: FATAL: Invalid SSLBASE=$SSLBASE" >&2 ; exit 2 ;; esac
+case "$SSLBASE" in /*) ;; *) die "Invalid SSLBASE=$SSLBASE" ;; esac
 CA=ucsCA
-case "$CA" in /*) echo "$0: FATAL: Invalid CA=$CA" >&2 ; exit 2 ;; esac
+case "$CA" in /*) die "Invalid CA=$CA" ;; esac
 
 DEFAULT_CRL_DAYS="$(/usr/sbin/univention-config-registry get ssl/crl/validity)"
 : "${DEFAULT_CRL_DAYS:=10}"
@@ -345,7 +350,7 @@ list_cert_names_all () {
 }
 
 get_cert_name_from_id () {
-	if ! [ -z "$1" ]; then
+	if [ -n "$1" ]; then
 		list_cert_names_all | awk -v id="$1" '$1 == id {print $2}'
 	fi
 }

@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e -u
-. ${0%/*}/common.sh
+# shellcheck source=common.sh
+. "${0%/*}/common.sh"
 
 init
 
@@ -10,7 +11,7 @@ id="01"
 faketime 'last week' univention-certificate new -name "$name" -days 1
 univention-certificate list | grep $name
 univention-certificate update-expired
-univention-certificate list | grep $name && exit 1
+univention-certificate list | FAIL grep "$name"
 univention-certificate list-all | grep "$id.*$name.*(E)"
 univention-certificate renew -name "$name" -days 1000
 test "$(univention-certificate list | grep -c $name)" -eq 1
@@ -33,6 +34,6 @@ univention-certificate renew -name "$name" -days 1000
 test "$(univention-certificate list | grep -c $name)" -eq 2
 faketime 'next week' univention-certificate update-expired
 test "$(univention-certificate list | grep -c $name)" -eq 1
-! univention-certificate list | grep "$name" | grep "$id"
+univention-certificate list | grep "$name" | FAIL grep "$id"
 
 :
