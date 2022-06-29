@@ -176,6 +176,10 @@ export default defineComponent({
       type: Object as PropType<LocalizedString>,
       required: true,
     },
+    keywords: {
+      type: Object as PropType<LocalizedString>,
+      required: true,
+    },
     activated: {
       type: Boolean,
       required: false,
