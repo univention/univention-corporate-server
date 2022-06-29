@@ -9,7 +9,8 @@
 <book lang="en" id="releasenotes-en-5.0-2">
 	<bookinfo>
 		<title>UCS 5.0 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 5.0-2, published on 30. June 2022</subtitle>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 5.0-2</subtitle>
+		<pubdate>2022-06-30</pubdate>
 
 		<legalnotice lang="">
 			<para>
