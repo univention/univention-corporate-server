@@ -1,6 +1,7 @@
 univention-portal (4.0.7-4) unstable; urgency=medium
 
   * Bug #54295: Fix regarding keywords in entry forms
+  * Bug #54633: Tabindex for new descriptions
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 29 Jun 2022 11:53:15 +0200
 

@@ -40,6 +40,7 @@
       v-if="showHelpIcon"
       type="button"
       class="form-label__button"
+      :tabindex="tabindex"
       @click="toggleHelpText"
     >
       <span class="sr-only sr-only-mobile">{{ HELP_TEXT }}</span>
@@ -85,6 +86,10 @@ export default defineComponent({
     displayDescription: {
       type: Boolean,
       default: false,
+    },
+    tabindex: {
+      type: Number,
+      default: 0,
     },
   },
   emits: ['toggleDescription'],
