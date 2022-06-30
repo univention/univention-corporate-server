@@ -164,14 +164,14 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if swap device is out of free space" \
 	--set for="5m" \
 	--append labels='"severity" "warning"' \
-	--set query="(node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) * 100 / node_memory_SwapTotal_bytes <= 40" || die "UNIVENTION_SWAP"
+	--set query="(node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) * 100 / node_memory_SwapTotal_bytes > 60" || die "UNIVENTION_SWAP"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SWAP" \
 	--set description="Default Service: check if swap device is out of free space" \
 	--set summary="Default Service: check if swap device is out of free space" \
 	--append labels='"severity" "critical"' \
-	--set query="(node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) * 100 / node_memory_SwapTotal_bytes <= 20" || die "UNIVENTION_SWAP"
+	--set query="(node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) * 100 / node_memory_SwapTotal_bytes > 80" || die "UNIVENTION_SWAP"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SWAP_METRIC_MISSING" \
@@ -243,14 +243,14 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set description="Default Service: check if ssl certificate is valid" \
 	--set summary="Default Service: check if ssl certificate is valid" \
 	--append labels='"severity" "warning"' \
-	--set query="univention_ssl_certificate_expiry_seconds >= 3456000" || die "UNIVENTION_SSL_WARNING" # 40 days
+	--set query="univention_ssl_certificate_expiry_seconds < 3456000" || die "UNIVENTION_SSL_WARNING" # 40 days
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SSL" \
 	--set description="Default Service: check if ssl certificate is valid" \
 	--set summary="Default Service: check if ssl certificate is valid" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_ssl_certificate_expiry_seconds >= 1728000" || die "UNIVENTION_SSL" # 20 days
+	--set query="univention_ssl_certificate_expiry_seconds < 1728000" || die "UNIVENTION_SSL" # 20 days
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SSL_METRIC_MISSING" \

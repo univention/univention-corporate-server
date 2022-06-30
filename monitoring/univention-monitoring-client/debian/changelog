@@ -1,3 +1,9 @@
+univention-monitoring-client (1.0.0-2) unstable; urgency=medium
+
+  * Bug #54919: fixed expressions of ssl and swap checks
+
+ -- Florian Best <best@univention.de>  Fri, 01 Jul 2022 12:06:50 +0200
+
 univention-monitoring-client (1.0.0-1) unstable; urgency=medium
 
   * Bug #54748: initial release

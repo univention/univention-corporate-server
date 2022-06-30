@@ -33,4 +33,21 @@
 
 service univention-directory-listener restart
 
+eval "$(ucr shell server/role ldap/base)"
+
+if [ "$server_role" = "domaincontroller_master" ] && dpkg --compare-versions "$2" lt-nl 1.0.0-2; then
+	udm monitoring/alert modify --ignore_not_exists \
+		--dn "cn=UNIVENTION_SWAP_WARNING,cn=monitoring,$ldap_base" \
+		--set query="(node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) * 100 / node_memory_SwapTotal_bytes > 60"
+	udm monitoring/alert modify --ignore_not_exists \
+		--dn "cn=UNIVENTION_SWAP,cn=monitoring,$ldap_base" \
+		--set query="(node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) * 100 / node_memory_SwapTotal_bytes > 80"
+	udm monitoring/alert modify --ignore_not_exists \
+		--dn "cn=UNIVENTION_SSL_WARNING,cn=monitoring,$ldap_base" \
+		--set query="univention_ssl_certificate_expiry_seconds < 3456000"
+	udm monitoring/alert modify --ignore_not_exists \
+		--dn "cn=UNIVENTION_SSL,cn=monitoring,$ldap_base" \
+		--set query="univention_ssl_certificate_expiry_seconds < 1728000"
+fi
+
 exit 0
