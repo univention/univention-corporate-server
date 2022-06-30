@@ -95,7 +95,6 @@ html_sidebars = {
 latex_engine = 'lualatex'
 latex_show_pagerefs = True
 latex_show_urls = "footnote"
-latex_logo = "_static/univention_logo.pdf"
 latex_documents = [(root_doc, f'{pdf_doc_base}.tex', "", author, "howto", False)]
 latex_elements = {
     "papersize": "a4paper",
