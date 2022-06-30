@@ -131,4 +131,22 @@ ssh veyon-proxy -L 2000:WINDOWS_PRIVATE_IP:3389 -N
      the session. But as the veyon service only starts if a RDP session exists, the port is 
      not reachable if nobody is logged in (via RDP) and the for the client it looks like
      the computer is down.
+     To activate RDP sessions in the veyon software, use the following config on windows:
+     ```
+     {
+       "AccessControl": {
+         "DomainGroupsEnabled": true
+       },
+       "Authentication": {
+         "Method": 1
+       },
+       "Network": {
+         "FirewallExceptionEnabled": "1",
+         "VeyonServerPort": 11099
+       },
+       "Service": {
+         "MultiSession": "true"
+       }
+     }
+     ```
 
