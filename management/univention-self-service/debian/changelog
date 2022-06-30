@@ -1,3 +1,10 @@
+univention-self-service (5.0.2-2) unstable; urgency=medium
+
+  * Bug # 53227: add ucr variable to customize the mail subject
+    of the password reset mail
+
+ -- Johannes Lohmer <lohmer@univention.de>  Wed, 13 Jul 2022 10:15:35 +0200
+
 univention-self-service (5.0.2-1) unstable; urgency=medium
 
   * Bug #54466: switched self-service to Python 3

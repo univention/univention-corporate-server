@@ -118,7 +118,7 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
 		msg = MIMENonMultipart('text', 'plain', charset='utf-8')
 		cs = email.charset.Charset("utf-8")
 		cs.body_encoding = email.charset.QP
-		msg["Subject"] = "Password reset"
+		msg["Subject"] = self.ucr.get("umc/self-service/passwordreset/email/subject", "Password reset")
 		msg["Date"] = formatdate(localtime=True)
 		msg["From"] = self.ucr.get("umc/self-service/passwordreset/email/sender_address", "Password Reset Service <noreply@{}>".format(fqdn))
 		msg["To"] = self.data["address"]

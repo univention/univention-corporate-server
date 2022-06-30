@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-self-service
+fix:
+desc: |
+ This update addresses the following issues:
+ * The email subject of the self-service password reset email is now
+   configurable via the UCR variable
+   `umc/self-service/passwordreset/email/subject`.
+bug: [53227]
