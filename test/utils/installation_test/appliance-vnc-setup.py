@@ -64,7 +64,7 @@ class UCSSetup(UCSInstallation):
 		self.screenshot('language-setup.png')
 		#self.next()
 		self.tab_to_next_and_enter(2)
-		self.client.waitForText('Default system locale', timeout=self.timeout)
+		self.client.waitForText('Localization', timeout=self.timeout)
 		#self.next()
 		self.tab_to_next_and_enter(4)
 
