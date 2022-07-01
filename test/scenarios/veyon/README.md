@@ -11,6 +11,8 @@ computerroom module where all the windows clients should be available.
 ## Jenkins Jobs
 
 * create test environment in KVM `UCSschool-5.0 -> VeyonEnv -> Create Veyon Environment in KVM`
+  * creates a personal instances (username_windows-veyon-5.0-1)
+  * Instances have to be removed manually!!
 * create test environment in EC2 `UCSschool-5.0 -> VeyonEnv -> Create Veyon Environment in EC2`
 * get running EC2 test instances `UCSschool-5.0 -> VeyonEnv -> Get EC2 Veyon Environment`
 * delete running EC2 test instances `UCSschool-5.0 -> VeyonEnv -> Destroy EC2 Veyon Environment`
@@ -105,3 +107,45 @@ SSH tunnel for RDP on localhost:2000:
 ```
 ssh veyon-proxy -L 2000:WINDOWS_PRIVATE_IP:3389 -N
 ```
+
+## Known issues
+
+### EC2
+
+* Error during login with roaming profiles (because in ec2 the windows
+  instances get another dns domain), can be ignored for now, best to
+  deactivate roam profiles.
+* RDP session: By default the veyon software on the windows clients does not
+  support RDP. There are two ways to tackle this problem.
+  1. Non-interactive logon on windows, but as we can never access this session
+     (ec2 does not support VNC to the local session) this may not be to helpful.
+     ```
+     ucs-winrm logon-as --username student --userpwd password --client ...
+
+     ```
+  2. Activte remote sessions in veyon software on the windows client. The problem with
+     that is, that the we have to change the default port for the veyon service on windows
+     in order for our veyon client to find the RDP session. Normally the default port is for
+     the local session. We can change this to the (first) RDP session, then our client finds
+     the session. But as the veyon service only starts if a RDP session exists, the port is
+     not reachable if nobody is logged in (via RDP) and the for the client it looks like
+     the computer is down.
+     To activate RDP sessions in the veyon software, use the following config on windows:
+     ```
+     {
+       "AccessControl": {
+         "DomainGroupsEnabled": true
+       },
+       "Authentication": {
+         "Method": 1
+       },
+       "Network": {
+         "FirewallExceptionEnabled": "1",
+         "VeyonServerPort": 11099
+       },
+       "Service": {
+         "MultiSession": "true"
+       }
+     }
+     ```
+* RDP sessions can't handle users with `pwdChangeNextLogin` (user has to change password on next logi)
