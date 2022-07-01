@@ -8,7 +8,7 @@
 ## - domaincontroller_master
 ## - domaincontroller_backup
 ## - domaincontroller_slave
-## tags: [basic]
+## tags: [basic,udm]
 # shellcheck source=../../lib/user.sh
 . "$TESTLIBPATH/user.sh" || exit 137
 # shellcheck source=../../lib/shares.sh

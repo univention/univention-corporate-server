@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner pytest-3
 ## desc: Test UDM shares/printer
-## tags: [udm, apptest]
+## tags: [udm, apptest, udm-printers]
 ## roles:
 ##   - domaincontroller_master
 ##   - domaincontroller_backup

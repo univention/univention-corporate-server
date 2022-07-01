@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 # -*- coding: utf-8 -*-
 ## desc: Create container/ou
-## tags: [udm,apptest]
+## tags: [udm,apptest,udm-containers]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

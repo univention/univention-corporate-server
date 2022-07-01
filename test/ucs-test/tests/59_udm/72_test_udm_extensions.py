@@ -676,9 +676,9 @@ class Test_UDMExtensionsJoinscript:
 				package.remove()
 
 	TEST_DATA = (
-		('umcregistration', '32_file_integrity_udm_module.xml', '/usr/share/univention-management-console/modules/udm-%s.xml'),
-		('icon', '32_file_integrity_udm_module-16.png', '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/udm-%s.png'),
-		('icon', '32_file_integrity_udm_module-50.png', '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/50x50/udm-%s.png'),
+		('umcregistration', '72_file_integrity_udm_module.xml', '/usr/share/univention-management-console/modules/udm-%s.xml'),
+		('icon', '72_file_integrity_udm_module-16.png', '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/udm-%s.png'),
+		('icon', '72_file_integrity_udm_module-50.png', '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/50x50/udm-%s.png'),
 		('messagecatalog', 'it.mo', '/usr/share/locale/it/LC_MESSAGES/univention-admin-handlers-%s.mo'),
 		('messagecatalog', 'de.mo', '/usr/share/locale/de/LC_MESSAGES/univention-admin-handlers-%s.mo'),
 		('messagecatalog', 'es.mo', '/usr/share/locale/es/LC_MESSAGES/univention-admin-handlers-%s.mo'),
@@ -781,7 +781,7 @@ class Test_UDMExtensionsJoinscript:
 	dHVuZyB2b24gS29wYW5vIG5vbi1hY3RpdmUgS29udGVuLCBSZXNzb3VyY2VuIHVuZCBTaGFyZWQgU3RvcmVzAA==''')
 
 	TEST_DATA_2 = (
-		('umcregistration', '32_file_integrity_udm_module.xml', '/usr/share/univention-management-console/modules/udm-%s.xml'),
+		('umcregistration', '72_file_integrity_udm_module.xml', '/usr/share/univention-management-console/modules/udm-%s.xml'),
 		('umcmessagecatalog', 'de-ucs-test.mo', '/usr/share/univention-management-console/i18n/de/ucs-test.mo'),
 		('umcmessagecatalog', 'fr-ucs-test.mo', '/usr/share/univention-management-console/i18n/fr/ucs-test.mo'),
 	)

@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner pytest-3
 ## desc: Create a valid ldap schema object
-## tags: [udm-ldapextensions,apptest]
+## tags: [udm,udm-settings,udm-ldapextensions,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:

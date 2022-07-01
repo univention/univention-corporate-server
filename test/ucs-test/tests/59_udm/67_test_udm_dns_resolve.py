@@ -6,8 +6,7 @@
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
-## tags:
-##  - skip_admember
+## tags: [udm,udm-dns,skip_admember]
 ## exposure: careful
 
 import re

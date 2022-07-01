@@ -306,214 +306,6 @@ Provides:
 Description: Test scripts for univention directory notifier
  This package includes some scripts for testing univention directory notifier.
 
-Package: ucs-test-udm-users
-Architecture: all
-Recommends:
- ucs-test-framework,
-Depends:
- python3-ldap,
- python3-psutil,
- python3-pycountry,
- python3-pytest,
- python3-univention-directory-manager,
- ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
-Provides:
- ucs-test-module,
-Description: Test scripts for the users/user-module of the UDM
- This package includes some scripts for testing the functionality of the
- users/user-module of the UDM.
-
-Package: ucs-test-udm-groups
-Architecture: all
-Recommends:
- ucs-test-framework,
-Depends:
- python3-ldap,
- python3-univention-directory-manager,
- ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
-Provides:
- ucs-test-module,
-Description: Test scripts for the groups/group-module of the UDM
- This package includes some scripts for testing the functionality of the
- groups/group-module of the UDM.
-
-Package: ucs-test-udm-dns
-Architecture: all
-Recommends:
- ucs-test-framework,
-Depends:
- ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
-Provides:
- ucs-test-module,
-Description: Test scripts for the dns/* modules of the UDM.
- This package includes some scripts for testing the functionality of the domain
- name services of the UDM.
-
-Package: ucs-test-udm-printers
-Architecture: all
-Recommends:
- ucs-test-framework,
-Depends:
- ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
-Provides:
- ucs-test-module,
-Description: Test scripts for the shares/printer* modules of the UDM.
- This package includes some scripts for testing the functionality of the
- printers services of the UDM.
-
-Package: ucs-test-udm-shares
-Architecture: all
-Recommends:
- ucs-test-framework,
-Depends:
- ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
-Provides:
- ucs-test-module,
-Description: Test scripts for the shares/share module of the UDM.
- This package includes some scripts for testing the functionality of the
- file share services of the UDM.
-
-Package: ucs-test-udm-dhcp
-Architecture: all
-Recommends:
- ucs-test-framework,
-Depends:
- ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
-Provides:
- ucs-test-module,
-Description: Test scripts for the dhcp/* modules of the UDM.
- This package includes some scripts for testing the functionality of the DHCP
- services of the UDM.
-
-Package: ucs-test-udm-computers
-Architecture: all
-Recommends:
- ucs-test-framework,
-Depends:
- python-ipaddress,
- python-passlib,
- python-pytest,
- python3-passlib,
- python3-pytest,
- ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
-Provides:
- ucs-test-module,
-Description: Test scripts for the computers/* modules of UDM.
- This package includes some scripts for testing the functionality of the
- computers of the UDM.
-
-Package: ucs-test-udm-containers
-Architecture: all
-Recommends:
- ucs-test-framework,
-Depends:
- ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
-Provides:
- ucs-test-module,
-Description: Test scripts for UDM containers.
- This package includes some scripts for testing the functionality of the
- default containers (OU/CN) of the UDM.
-
-Package: ucs-test-udm-net
-Architecture: all
-Recommends:
- ucs-test-framework,
-Depends:
- ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
-Provides:
- ucs-test-module,
-Description: Test scripts for udm net.
- This package includes some scripts for testing the functionality of the
- Network module of the UDM.
-
-Package: ucs-test-udm-settings
-Architecture: all
-Recommends:
- ucs-test-framework,
-Depends:
- python3-unidecode,
- ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
-Provides:
- ucs-test-module,
-Description: Test scripts for udm settings.
- This package includes some scripts for testing the functionality of the
- settings modules of the UDM.
-
-Package: ucs-test-udm-extensions
-Architecture: all
-Recommends:
- ucs-test-framework,
-Depends:
- ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
-Provides:
- ucs-test-module,
-Description: Test scripts for udm extensions.
- This package includes some scripts for testing the functionality of the
- UDM extension modules for UDM modules, syntaxes and hooks.
-
-Package: ucs-test-updater
-Architecture: all
-Recommends:
- ucs-test-framework,
-Depends:
- dpkg-dev,
- libwww-perl,
- ucs-test-libs (= ${source:Version}),
- univention-updater,
- ${misc:Depends},
-Provides:
- ucs-test-module,
-Description: Test scripts for the updater.
- This package includes some scripts for testing the system updater.
-
-Package: ucs-test-udm-extendedattribute
-Architecture: all
-Recommends:
- ucs-test-framework,
-Depends:
- python3-pytest,
- ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
-Provides:
- ucs-test-module,
-Description: Test scripts for the settings/extended_attribute module of UDM.
- This package includes some scripts for testing UDM extended attributes.
-
-Package: ucs-test-udm-syntax
-Architecture: all
-Recommends:
- ucs-test-framework,
-Depends:
- ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
-Provides:
- ucs-test-module,
-Description: Test scripts for the UDM syntax classes.
- This package includes some scripts for testing UDM syntax classes.
-
-Package: ucs-test-udm-customattribute
-Architecture: all
-Recommends:
- ucs-test-framework,
-Depends:
- ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
-Provides:
- ucs-test-module,
-Description: Test scripts for the settings/customattribute module of UDM.
- This package includes some scripts for testing UDM custom attributes.
-
 Package: ucs-test-umc
 Architecture: all
 Recommends:
@@ -603,8 +395,8 @@ Recommends:
  ucs-test-framework,
 Depends:
  python3-pytest,
- univention-group-membership-cache,
  ucs-test-libs (= ${source:Version}),
+ univention-group-membership-cache,
  ${misc:Depends},
 Provides:
  ucs-test-module,
@@ -645,8 +437,7 @@ Depends:
  ucs-test-base,
  ucs-test-ldap,
  ucs-test-libs (= ${source:Version}),
- ucs-test-udm-groups,
- ucs-test-udm-users,
+ ucs-test-udm,
  ${misc:Depends},
 Provides:
  ucs-test-module,
@@ -695,11 +486,31 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
+ python3-ldap,
+ python3-passlib,
+ python3-psutil,
+ python3-pycountry,
  python3-pytest,
+ python3-unidecode,
+ python3-univention-directory-manager,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Provides:
  ucs-test-module,
+ ucs-test-udm-computers,
+ ucs-test-udm-containers,
+ ucs-test-udm-customattribute,
+ ucs-test-udm-dhcp,
+ ucs-test-udm-dns,
+ ucs-test-udm-extendedattribute,
+ ucs-test-udm-extensions,
+ ucs-test-udm-groups,
+ ucs-test-udm-net,
+ ucs-test-udm-printers,
+ ucs-test-udm-settings,
+ ucs-test-udm-shares,
+ ucs-test-udm-syntax,
+ ucs-test-udm-users,
 Description: Test scripts to test basic Univention Directory Manager
  This package includes test-cases for the Univention Directory Manager.
 

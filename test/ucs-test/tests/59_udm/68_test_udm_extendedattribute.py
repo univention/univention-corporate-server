@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: test UDM settings/extended_attribute
-## tags: [udm, apptest]
+## tags: [udm, apptest, udm-extendedattribute]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

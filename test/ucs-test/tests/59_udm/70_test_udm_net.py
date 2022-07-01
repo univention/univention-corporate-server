@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner pytest-3 -s
-## tags: [udm-net,apptest]
+## tags: [udm,udm-net,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

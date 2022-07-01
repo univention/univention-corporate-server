@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test all computer role modifications of udm
-## tags: [udm-computers,apptest]
+## tags: [udm,udm-computers,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
@@ -79,13 +79,13 @@ def get_ssl(name):
 @pytest.mark.parametrize('role', COMPUTER_MODULES)
 class Test_ComputerAllRoles:
 
-	@pytest.mark.tags('udm-computers', 'apptest')
+	@pytest.mark.tags('udm', 'udm-computers', 'apptest')
 	def test_all_roles_creation(self, udm, verify_ldap_object, role):
 		"""Create minimal object for all computer roles"""
 		computer = udm.create_object(role, name=random_string())
 		verify_ldap_object(computer)
 
-	@pytest.mark.tags('udm-computers')
+	@pytest.mark.tags('udm', 'udm-computers')
 	def test_all_roles_removal(self, udm, verify_ldap_object, role):
 		"""Remove object for all computer roles"""
 		computer = udm.create_object(role, name=random_string())
@@ -93,7 +93,7 @@ class Test_ComputerAllRoles:
 
 		SetTimeout(verify_ldap_object)(computer, should_exist=False)
 
-	@pytest.mark.tags('udm-computers')
+	@pytest.mark.tags('udm', 'udm-computers')
 	def test_all_roles_check_nagios(self, udm, lo, verify_ldap_object, role):
 		"""Validate nagios for all computer roles"""
 
@@ -133,7 +133,7 @@ class Test_ComputerAllRoles:
 		verify_ldap_object(nagiosService, {'univentionNagiosHostname': [b'%s.%s' % (computerProperties['name'].encode('UTF-8'), lo.getAttr(computer, 'associatedDomain')[0])]})
 
 	@pytest.mark.skip(reason=" disabled since 2014, issues when running on AWS instances. See Bug #37365 git:8666c032e7e.")
-	@pytest.mark.tags('udm-computers')
+	@pytest.mark.tags('udm', 'udm-computers')
 	@pytest.mark.parametrize('ip_subnet,ip_network,ip_netmask,ip_range', [
 		('10.20.30', '10.20.30.0', '24', '10.20.30.2 10.20.30.254'),
 		('2001:0001:0002:0003', '2001:1:2:3::', '64', '2001:1:2:3::2 2001:1:2:3:0:ffff:ffff:ffff'),
@@ -212,7 +212,7 @@ class Test_ComputerAllRoles:
 				{'univentionDhcpFixedAddress': [str(ipaddress.IPv6Address(aaaRecord))]}
 			)
 
-	@pytest.mark.tags('udm-computers')
+	@pytest.mark.tags('udm', 'udm-computers')
 	def test_all_roles_ip_and_mac_lock_removal(self, udm, ucr, verify_ldap_object, role):
 		"""Check if IP and MAC address locks are removed after computer creation and modification for all computer roles"""
 		# bugs: [15743]
@@ -236,7 +236,7 @@ class Test_ComputerAllRoles:
 		verify_ldap_object('cn=%s,cn=aRecord,%s' % (newProperties['ip'], lockContainer), should_exist=False)
 		verify_ldap_object('cn=%s,cn=mac,%s' % (newProperties['mac'], lockContainer), should_exist=False)
 
-	@pytest.mark.tags('udm-computers', 'apptest')
+	@pytest.mark.tags('udm', 'udm-computers', 'apptest')
 	def test_all_roles_modification_append_macs(self, udm, verify_ldap_object, role):
 		"""Append macs during modification for all computer roles"""
 		macAddresses = ['11:11:11:11:11:11', '22:22:22:22:22:22']
@@ -249,7 +249,7 @@ class Test_ComputerAllRoles:
 		udm.modify_object(role, dn=computer, append={'mac': macAddresses[:2]})
 		verify_ldap_object(computer, {'macAddress': macAddresses})
 
-	@pytest.mark.tags('udm-computers')
+	@pytest.mark.tags('udm', 'udm-computers')
 	def test_all_roles_modification_set_inventoryNumber(self, udm, verify_ldap_object, role):
 		"""Test setting inventoryNumber during modification for all computer roles"""
 		inventoryNumber = random_string()
@@ -258,7 +258,7 @@ class Test_ComputerAllRoles:
 		udm.modify_object(role, dn=computer, inventoryNumber=inventoryNumber)
 		verify_ldap_object(computer, {'univentionInventoryNumber': [inventoryNumber]})
 
-	@pytest.mark.tags('udm-computers', 'apptest')
+	@pytest.mark.tags('udm', 'udm-computers', 'apptest')
 	def test_all_roles_modification_append_and_remove_ip(self, udm, verify_ldap_object, role):
 		"""Test appending and removing IP addresses for all computer roles"""
 		ipAddresses = ('10.20.30.40', '10.20.30.41', '10.20.30.42', '10.20.30.43')
@@ -274,7 +274,7 @@ class Test_ComputerAllRoles:
 		udm.modify_object(role, dn=computer, remove={'ip': ipAddresses[:2]})
 		verify_ldap_object(computer, {'aRecord': ipAddresses[2:]})
 
-	@pytest.mark.tags('udm-computers')
+	@pytest.mark.tags('udm', 'udm-computers')
 	def test_all_roles_modification_append_and_remove_dhcpEntryZone(self, udm, verify_ldap_object, role):
 		"""Test appending and removing dhcpEntryZone for all computer roles"""
 		computerName = random_name()
@@ -313,7 +313,7 @@ class Test_ComputerAllRoles:
 				'dhcpHWAddress': ['ethernet %s' % mac]
 			})
 
-	@pytest.mark.tags('udm-computers', 'apptest')
+	@pytest.mark.tags('udm', 'udm-computers', 'apptest')
 	def test_all_roles_modification_description(self, udm, verify_ldap_object, role):
 		"""Test modifying description for all computer roles"""
 		description = random_string()
@@ -322,7 +322,7 @@ class Test_ComputerAllRoles:
 		udm.modify_object(role, dn=computer, description=description)
 		verify_ldap_object(computer, {'description': [description]})
 
-	@pytest.mark.tags('udm-computers')
+	@pytest.mark.tags('udm', 'udm-computers')
 	def test_all_roles_modification_append_and_remove_nagios_services(self, udm, lo, verify_ldap_object, role):
 		"""Test modifying nagiosServices for all computer roles"""
 		nagiosServices = (
@@ -365,7 +365,7 @@ class Test_ComputerAllRoles:
 
 	UNIQUE = range(2, 254).__iter__()
 
-	@pytest.mark.tags('udm-computers')
+	@pytest.mark.tags('udm', 'udm-computers')
 	@pytest.mark.parametrize(
 		'ip,manual_network,manual_dhcp', [
 			(False, True, False),
@@ -416,7 +416,7 @@ class Test_ComputerAllRoles:
 			result_ip = lo.getAttr(dn, 'univentionDhcpFixedAddress')[0].decode('ASCII')
 			assert result_ip.startswith(NET)
 
-		@pytest.mark.tags('udm-computers')
+		@pytest.mark.tags('udm', 'udm-computers')
 		def test_nameserver_update_in_zone_on_delete(self, udm, verify_ldap_object, role):
 			"""Check if nameservers in forward/reverse DNS zones are updated when deleting the nameserver"""
 			# create zones and computer
@@ -444,7 +444,7 @@ class Test_ComputerAllRoles:
 			verify_ldap_object(forward, {'nSRecord': ['aaa.aa.', ]})
 			verify_ldap_object(reverse, {'nSRecord': ['aaa.aa.', ]})
 
-		@pytest.mark.tags('udm-computers')
+		@pytest.mark.tags('udm', 'udm-computers')
 		def test_multiple_dhcp_entry_zones(self, udm, verify_ldap_object, role):
 			"""
 			Test appending and removing dhcpEntryZone for all computer roles
@@ -495,7 +495,7 @@ class Test_ComputerAllRoles:
 					'dhcpHWAddress': ['ethernet %s' % mac]
 				})
 
-	@pytest.mark.tags('udm-computers', 'apptest')
+	@pytest.mark.tags('udm', 'udm-computers', 'apptest')
 	def test_all_roles_univentionLastUsedValue(self, udm, ucr, lo, verify_ldap_object, wait_for_replication_cleanup, role):
 		"""Create minimal object for all computer roles and check univentionLastUsedValue"""
 
@@ -529,7 +529,7 @@ class Test_ComputerAllRoles:
 class Test_ComputerRolesExceptMacos:
 	COMPUTER_MODULES_EXCEPT_MACOS = [i for i in COMPUTER_MODULES if i != 'computers/macos']
 
-	@pytest.mark.tags('udm-computers', 'apptest')
+	@pytest.mark.tags('udm', 'udm-computers', 'apptest')
 	@pytest.mark.parametrize(
 		'role,rand_ip,rand_mac',
 		list(zip(
@@ -636,7 +636,7 @@ class Test_ComputerRolesExceptMacos:
 				verify_ldap_object(group, {'memberUid': ['%s$' % properties['name']], 'uniqueMember': [computer_DN]})
 
 	@pytest.mark.skip(reason="Fails due to a bug in the UDM-CLI, see Bug #25163. Issues when running on AWS instances, see Bug #37365 git:8666c032e7e")
-	@pytest.mark.tags('udm-computers')
+	@pytest.mark.tags('udm', 'udm-computers')
 	@pytest.mark.parametrize('role', COMPUTER_MODULES_EXCEPT_MACOS)
 	def test_all_roles_creation_set_network(self, udm, ucr, verify_ldap_object, lo, role):
 		"""Validate adoption of network properties during creation for all computer roles"""
@@ -693,7 +693,7 @@ class Test_ComputerRolesExceptMacos:
 		)
 
 
-@pytest.mark.tags('udm-computers')
+@pytest.mark.tags('udm', 'udm-computers')
 @pytest.mark.roles('domaincontroller_master')
 @pytest.mark.exposure('careful')
 @pytest.mark.parametrize('role', [i for i in COMPUTER_MODULES if i != 'computers/ipmanagedclient'])
@@ -740,7 +740,7 @@ class Test_ComputerRolesExceptIpmanagedclient:
 		verify_ldap_object(computer, {'loginShell': [shell]})
 
 
-@pytest.mark.tags('udm-computers', 'apptest')
+@pytest.mark.tags('udm', 'udm-computers', 'apptest')
 @pytest.mark.roles('domaincontroller_master')
 @pytest.mark.exposure('careful')
 @pytest.mark.parametrize('role', ('computers/domaincontroller_master', 'computers/domaincontroller_slave', 'computers/domaincontroller_backup', 'computers/memberserver'))
@@ -775,7 +775,7 @@ class Test_UCSServerRoles:
 		assert old_seq == new_seq, 'New SSL certificate for "%s": %x -> %x' % (name, old_seq, new_seq)
 
 
-@pytest.mark.tags('udm-computers')
+@pytest.mark.tags('udm', 'udm-computers')
 @pytest.mark.roles('domaincontroller_master')
 @pytest.mark.exposure('careful')
 def test_windows_check_ntCompatibility(udm, verify_ldap_object):
@@ -784,7 +784,7 @@ def test_windows_check_ntCompatibility(udm, verify_ldap_object):
 	verify_ldap_object(udm.create_object('computers/windows', name=windowsHostName, ntCompatibility='1'), {'sambaNTPassword': [passlib.hash.nthash.hash(windowsHostName.lower()).upper()]})
 
 
-@pytest.mark.tags('udm-computers', 'apptest')
+@pytest.mark.tags('udm', 'udm-computers', 'apptest')
 @pytest.mark.roles('domaincontroller_master')
 @pytest.mark.exposure('careful')
 def test_modify_dns_forward_zone_ptr_record(udm, lo):
@@ -807,7 +807,7 @@ def test_modify_dns_forward_zone_ptr_record(udm, lo):
 		assert not entry.startswith(computerName.encode('UTF-8')), 'Found entry of the modified computer in the PTR record. PTR: %r' % ptr
 
 
-@pytest.mark.tags('udm-computers', 'apptest')
+@pytest.mark.tags('udm', 'udm-computers', 'apptest')
 @pytest.mark.roles('domaincontroller_master')
 @pytest.mark.exposure('careful')
 def test_modify_ip_ptr_record(udm, lo):
@@ -825,7 +825,7 @@ def test_modify_ip_ptr_record(udm, lo):
 	assert len(ptr) >= 1, 'Test FAILED. Could not find PTR record created anymore after modifying computers IP'
 
 
-@pytest.mark.tags('udm-computers')
+@pytest.mark.tags('udm', 'udm-computers')
 @pytest.mark.roles('domaincontroller_master')
 @pytest.mark.exposure('careful')
 def test_concurrent_rename_and_group_change(udm, verify_ldap_object):
@@ -849,7 +849,7 @@ def test_concurrent_rename_and_group_change(udm, verify_ldap_object):
 	verify_ldap_object(groupdn_a, {'uniqueMember': []})
 
 
-@pytest.mark.tags('udm-computers', 'apptest')
+@pytest.mark.tags('udm', 'udm-computers', 'apptest')
 @pytest.mark.roles('domaincontroller_master')
 @pytest.mark.exposure('careful')
 def test_removal_of_leftover_ptr_record_with_multiple_ip_addresses(udm, verify_ldap_object):
@@ -886,7 +886,7 @@ def test_removal_of_leftover_ptr_record_with_multiple_ip_addresses(udm, verify_l
 	})
 
 
-@pytest.mark.tags('udm-computers')
+@pytest.mark.tags('udm', 'udm-computers')
 @pytest.mark.roles('domaincontroller_master')
 @pytest.mark.exposure('careful')
 @pytest.mark.parametrize('remove_ip,expected_ptr', [
@@ -917,7 +917,7 @@ def test_remove_ipv4_ptr(udm, remove_ip, expected_ptr, verify_ldap_object):
 	verify_ldap_object(ptr_record, should_exist=False)
 
 
-@pytest.mark.tags('udm-computers')
+@pytest.mark.tags('udm', 'udm-computers')
 @pytest.mark.roles('domaincontroller_master')
 @pytest.mark.exposure('careful')
 def test_create_empty_dhcp(udm):

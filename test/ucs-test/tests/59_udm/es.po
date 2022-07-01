@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: ucs-test 1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2013-10-19 23:37+0200\n"
-"PO-Revision-Date: 2020-09-05 16:24+0200\n"
+"PO-Revision-Date: 2020-09-05 16:28+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
 "Language: de\n"
@@ -12,6 +12,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: 32_file_integrity_udm_module:42
+#: 72_file_integrity_udm_module:42
 msgid "TEST"
-msgstr "DE"
+msgstr "ES"

@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner pytest-3
 ## desc: Create dhcp/service
-## tags: [udm]
+## tags: [udm, udm-dhcp]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

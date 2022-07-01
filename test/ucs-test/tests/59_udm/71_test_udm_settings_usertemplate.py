@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner pytest-3
 ## desc: Create a usertemplate object and remove it
-## tags: [udm,udm-ldapextensions,apptest]
+## tags: [udm,udm-settings,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

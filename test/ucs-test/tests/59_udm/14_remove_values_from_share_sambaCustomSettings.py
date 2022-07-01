@@ -3,7 +3,7 @@
 ## bugs: [41072]
 ## roles:
 ##  - domaincontroller_master
-## tags: [apptest]
+## tags: [udm,apptest]
 ## exposure: dangerous
 
 import pytest

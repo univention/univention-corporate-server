@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test UDM shares/share
-## tags: [udm]
+## tags: [udm, udm-shares]
 ## roles:
 ##   - domaincontroller_master
 ##   - domaincontroller_backup

@@ -2,8 +2,7 @@
 # shellcheck shell=bash
 ## desc: "Test univention-dnsedit"
 ## exposure: dangerous
-## tags:
-##  - basic
+## tags: [udm,udm-dns,basic]
 ## packages:
 ## - univention-directory-manager-tools
 ## roles:
