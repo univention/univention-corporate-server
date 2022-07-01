@@ -1,79 +1,51 @@
-#!/bin/bash
+#!/bin/sh
 
-set -x
-set -e
+set -e -x
 
-env
-
-export UCS_VERSION="${UCS_VERSION}"
-export KVM_USER="${KVM_USER:=$USER}"
-export KVM_BUILD_SERVER="${KVM_BUILD_SERVER}"
-
-test "$KVM_USER" = "jenkins" && KVM_USER="build"
-
-if [ -z "${UCS_VERSION}" ]; then
-	echo "ERR: missing UCS_VERSION env variable!" >2
+die () {
+	echo "ERR: $*" >&2
 	exit 1
-fi
-
-if [ -z "${KVM_BUILD_SERVER}" ]; then
-	echo "ERR: missing KVM_BUILD_SERVER env variable!" >2
-	exit 1
-fi
-
-
-mssh () {
-	ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -n -l "$KVM_USER" "$KVM_BUILD_SERVER" "$@"
+}
+have () {
+	command -v "$1" >/dev/null 2>&1
 }
 
+[ "${KVM_USER:=$USER}" = 'jenkins' ] &&
+	KVM_USER='build'
 
-mssh '
+have guestfish ||
+	exec ssh -l "${KVM_USER:?}" "${KVM_BUILD_SERVER:?missing}" "UCS_VERSION=${UCS_VERSION:?missing} ${SHELL}" <"$0"
 
-set -x
-set -e
-
-
-TEMPLATE_SRC="/mnt/omar/vmwares/kvm/ucs-appliance/UCS-'$UCS_VERSION'-KVM-Image.qcow2"
-TEMPLATE_BUILD="/var/univention/buildsystem2/temp/build-kt-get-template"
+TEMPLATE_SRC="/mnt/omar/vmwares/kvm/ucs-appliance/UCS-${UCS_VERSION:?missing}-KVM-Image.qcow2"
 TEMPLATE_TARGET="/mnt/omar/vmwares/kvm/single/UCS/"
 
-mkdir -p "$TEMPLATE_BUILD"
+tmp="$(mktemp -d)"
+cleanup () {
+	rm -rf "$tmp"
+}
+trap cleanup EXIT
 
-rm -f $TEMPLATE_BUILD/*_generic-unsafe.xml
-rm -f $TEMPLATE_BUILD/*_generic-unsafe-0.qcow2
-rm -f $TEMPLATE_BUILD/*_amd64.tar.gz
-
-cp "$TEMPLATE_SRC" "$TEMPLATE_BUILD/image.qcow2"
-
-version="$(guestfish add $TEMPLATE_BUILD/image.qcow2 : run : mount /dev/vg_ucs/root / : command "/usr/sbin/ucr get version/version")"
-patchlevel="$(guestfish add $TEMPLATE_BUILD/image.qcow2 : run : mount /dev/vg_ucs/root / : command "/usr/sbin/ucr get version/patchlevel")"
-erratalevel="$(guestfish add $TEMPLATE_BUILD/image.qcow2 : run : mount /dev/vg_ucs/root / : command "/usr/sbin/ucr get version/erratalevel")"
-
-name="${version}-${patchlevel}+e${erratalevel}_generic-unsafe"
+name="$(guestfish add-ro "$TEMPLATE_SRC" : run : mount /dev/vg_ucs/root / : command "sh -c 'echo -n @%@version/version@%@-@%@version/patchlevel@%@+e@%@version/erratalevel@%@_generic-unsafe|ucr filter'")"
+case "$name" in
+[1-9].[0-9]-[0-9]*+e[0-9]*_generic-unsafe) ;;
+*) die "Invalid name: '$name'" ;;
+esac
 archive="${name}_amd64.tar.gz"
 hd="${name}-0.qcow2"
 xml="${name}.xml"
 
-if [ -e "$TEMPLATE_TARGET/$archive" ]; then
-	echo "template already exists, aborting ..."
-	rm "$TEMPLATE_BUILD/image.qcow2"
-	exit 1
-fi
+[ -e "$TEMPLATE_TARGET/$archive" ] &&
+	die "template already exists, aborting ..."
 
-guestfish add "$TEMPLATE_BUILD/image.qcow2" : run : mount /dev/vg_ucs/root / : command "/usr/sbin/ucr set repository/online/server=updates.knut.univention.de nameserver1=192.168.0.3"
-guestfish add "$TEMPLATE_BUILD/image.qcow2" : run : mount /dev/vg_ucs/root / : command "usermod -p "$(mkpasswd -H sha-512 univention)" root"
-mv "$TEMPLATE_BUILD/image.qcow2" "$TEMPLATE_BUILD/$hd"
+install -m 0644 "$TEMPLATE_SRC" "$tmp/$hd"
+guestfish add "$tmp/$hd" : run : mount /dev/vg_ucs/root / : command "/usr/sbin/ucr set repository/online/server=updates.knut.univention.de nameserver1=192.168.0.124 nameserver2=192.168.0.97" : command "usermod -p '$(mkpasswd -H sha-512 univention)' root"
 
 # create xml
-cat << EOF > "$TEMPLATE_BUILD/${xml}"
+cat <<__XML__ >"$tmp/${xml}"
 <?xml version="1.0" ?><domain type="kvm">
   <name>${name}</name>
-  <memory unit="KiB">2097152</memory>
-  <currentMemory unit="KiB">2097152</currentMemory>
+  <memory unit="GiB">2</memory>
   <vcpu placement="static">1</vcpu>
-  <resource>
-    <partition>/machine</partition>
-  </resource>
   <os>
     <type arch="x86_64" machine="pc">hvm</type>
     <boot dev="cdrom"/>
@@ -93,49 +65,33 @@ cat << EOF > "$TEMPLATE_BUILD/${xml}"
   <devices>
     <emulator>/usr/bin/kvm</emulator>
     <disk device="disk" type="file">
-      <driver cache="unsafe" name="qemu" type="qcow2"/>
+      <driver cache="unsafe" name="qemu" type="qcow2" discard="unmap"/>
       <source file="${hd}"/>
       <target bus="virtio" dev="vda"/>
-      <address bus="0x00" domain="0x0000" function="0x0" slot="0x04" type="pci"/>
     </disk>
-    <controller index="0" type="ide">
-      <address bus="0x00" domain="0x0000" function="0x1" slot="0x01" type="pci"/>
-    </controller>
-    <controller index="0" model="piix3-uhci" type="usb">
-      <address bus="0x00" domain="0x0000" function="0x2" slot="0x01" type="pci"/>
-    </controller>
-    <controller index="0" model="pci-root" type="pci"/>
+    <controller index="0" type="ide"/>
     <interface type="bridge">
       <source bridge="eth0"/>
       <model type="virtio"/>
-      <address bus="0x00" domain="0x0000" function="0x0" slot="0x03" type="pci"/>
     </interface>
-    <input bus="usb" type="tablet">
-      <address bus="0" port="1" type="usb"/>
-    </input>
+    <input bus="usb" type="tablet"/>
     <input bus="ps2" type="mouse"/>
-    <input bus="ps2" type="keyboard"/>
-    <graphics autoport="yes" keymap="de" listen="0.0.0.0" port="-1" type="vnc">
-      <listen address="0.0.0.0" type="address"/>
-    </graphics>
+    <console type="pty"/>
+    <graphics autoport="yes" keymap="de" listen="0.0.0.0" port="-1" type="vnc"/>
     <video>
-      <model heads="1" primary="yes" type="cirrus" vram="16384"/>
-      <address bus="0x00" domain="0x0000" function="0x0" slot="0x02" type="pci"/>
+      <model heads="1" primary="yes" type="vga" vram="9216"/>
     </video>
-    <memballoon model="virtio">
-      <address bus="0x00" domain="0x0000" function="0x0" slot="0x05" type="pci"/>
-    </memballoon>
+    <channel type="unix">
+      <source mode="bind"/>
+      <target type="virtio" name="org.qemu.guest_agent.0"/>
+    </channel>
+    <rng model="virtio">
+      <backend model="random">/dev/urandom</backend>
+    </rng>
+    <memballoon model="virtio"/>
   </devices>
 </domain>
-EOF
+__XML__
 
-# build template and clean up
-cd "$TEMPLATE_BUILD"
-tar -cvzf "$archive" "$hd" "$xml"
-mv "$TEMPLATE_BUILD/$archive" "$TEMPLATE_TARGET/$archive"
-rm -f "$TEMPLATE_BUILD/$hd"
-rm -f "$TEMPLATE_BUILD/$xml"
-
-exit 0'
-
-exit  0
+tar -c -v -z -f "$tmp/$archive" --remove-files -C "$tmp" "$xml" "$hd"
+install -m 0444 "$tmp/$archive" "$TEMPLATE_TARGET/$archive"
