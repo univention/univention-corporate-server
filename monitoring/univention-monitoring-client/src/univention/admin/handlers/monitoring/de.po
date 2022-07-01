@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-admin-handlers-monitoring-alert\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2022-06-23 15:44+0200\n"
+"POT-Creation-Date: 2022-07-28 18:27+0200\n"
 "PO-Revision-Date: 2022-06-14 23:47+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Alarm Beschreibung, wird im Alarm Dashboard sowie der Alarm-E-Mail-"
 "Benachrichtigung gezeigt."
 
-#: src/univention/admin/handlers/monitoring/alert.py:100
+#: src/univention/admin/handlers/monitoring/alert.py:104
 msgid "Alert group"
 msgstr "Alarm-Gruppe"
 
@@ -32,7 +32,7 @@ msgstr "Alarm-Gruppe"
 msgid "Alert name"
 msgstr "Alarm Name"
 
-#: src/univention/admin/handlers/monitoring/alert.py:83
+#: src/univention/admin/handlers/monitoring/alert.py:84
 msgid ""
 "Alert summary, shown in alert dashboard and alert e-mail notifications."
 msgstr ""
@@ -43,45 +43,45 @@ msgstr ""
 msgid "Alerts"
 msgstr "Alarme"
 
-#: src/univention/admin/handlers/monitoring/alert.py:112
-#: src/univention/admin/handlers/monitoring/alert.py:131
-#: src/univention/admin/handlers/monitoring/alert.py:132
+#: src/univention/admin/handlers/monitoring/alert.py:116
+#: src/univention/admin/handlers/monitoring/alert.py:141
+#: src/univention/admin/handlers/monitoring/alert.py:142
 msgid "Assigned hosts"
 msgstr "Zugeordnete Rechner"
 
-#: src/univention/admin/handlers/monitoring/alert.py:121
+#: src/univention/admin/handlers/monitoring/alert.py:131
 msgid "Basic settings"
 msgstr "Basiseinstellungen"
 
 #: src/univention/admin/handlers/monitoring/alert.py:76
 msgid "Description template"
-msgstr "Beschreibungs-Template"
+msgstr "Vorlage für Beschreibung"
 
-#: src/univention/admin/handlers/monitoring/alert.py:94
+#: src/univention/admin/handlers/monitoring/alert.py:97
 msgid "For clause"
 msgstr "For-Clause"
 
-#: src/univention/admin/handlers/monitoring/alert.py:121
+#: src/univention/admin/handlers/monitoring/alert.py:131
 msgid "General"
 msgstr "Allgemein"
 
-#: src/univention/admin/handlers/monitoring/alert.py:122
+#: src/univention/admin/handlers/monitoring/alert.py:132
 msgid "General monitoring settings"
 msgstr "Allgemeine Monitoring-Einstellungen"
 
-#: src/univention/admin/handlers/monitoring/alert.py:131
+#: src/univention/admin/handlers/monitoring/alert.py:141
 msgid "Hosts"
 msgstr "Rechner"
 
-#: src/univention/admin/handlers/monitoring/alert.py:113
+#: src/univention/admin/handlers/monitoring/alert.py:117
 msgid "Hosts where this alert is activated for."
 msgstr "Rechner für die dieser Alarm aktiviert ist."
 
-#: src/univention/admin/handlers/monitoring/alert.py:106
+#: src/univention/admin/handlers/monitoring/alert.py:110
 msgid "Labels"
 msgstr "Labels"
 
-#: src/univention/admin/handlers/monitoring/alert.py:107
+#: src/univention/admin/handlers/monitoring/alert.py:111
 msgid ""
 "Labels will be attached to alerts. They can be used for querying alerts."
 msgstr ""
@@ -92,7 +92,7 @@ msgstr ""
 msgid "Name"
 msgstr "Name"
 
-#: src/univention/admin/handlers/monitoring/alert.py:89
+#: src/univention/admin/handlers/monitoring/alert.py:91
 msgid ""
 "Prometheus query expression, which causes the alert to fire. Alert fires "
 "when the given query returns a non-empty vector."
@@ -101,15 +101,19 @@ msgstr ""
 "wird ausgelöst, wenn die angegebene Abfrage einen nicht leeren Vektor "
 "liefert."
 
-#: src/univention/admin/handlers/monitoring/alert.py:88
+#: src/univention/admin/handlers/monitoring/alert.py:90
 msgid "Query expression"
 msgstr "Abfrageausdruck"
 
-#: src/univention/admin/handlers/monitoring/alert.py:82
+#: src/univention/admin/handlers/monitoring/alert.py:83
 msgid "Summary template"
-msgstr "Zusammenfassung-Template"
+msgstr "Vorlage für Zusammenfassung"
 
-#: src/univention/admin/handlers/monitoring/alert.py:95
+#: src/univention/admin/handlers/monitoring/alert.py:122
+msgid "Template Values"
+msgstr "Vorlagenwerte"
+
+#: src/univention/admin/handlers/monitoring/alert.py:98
 msgid ""
 "The amount of time the result of the query expression must be non-empty "
 "until the alert fires."
@@ -117,10 +121,16 @@ msgstr ""
 "Die Zeitspanne, in der das Ergebnis des Abfrageausdrucks nicht leer sein "
 "darf, bevor der Alarm ausgelöst wird."
 
-#: src/univention/admin/handlers/monitoring/alert.py:101
+#: src/univention/admin/handlers/monitoring/alert.py:105
 msgid ""
 "The group into which an alarm is inserted. Multiple alarms can belong to the"
 " same group."
 msgstr ""
 "Die Gruppe, in die ein Alarm eingefügt wird. Mehrere Alarme können zur "
 "selben Gruppe gehören."
+
+#: src/univention/admin/handlers/monitoring/alert.py:123
+msgid ""
+"Values inserted into the query expression, description and summary. "
+"References can be done like %name%."
+msgstr "Variable Werte, die in den Abfrageausdruck, Beschreibung und Zusammenfassung eingesetzt werden. Referenzierungen können z.B. durch ``%max%`` gemacht werden."

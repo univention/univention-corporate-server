@@ -14,7 +14,7 @@ of the domain or server.
 Installation
 ------------
 
-The UCS Dashboard consists of three parts:
+The UCS Dashboard consists of the following parts:
 
 UCS Dashboard
    The *UCS Dashboard* app for the visualization of data from the central
@@ -30,12 +30,9 @@ UCS Dashboard Client
    This is based on the Prometheus Node Exporter.
 
 The app *UCS Dashboard* can be installed from the Univention App Center on a
-server in the domain. Currently, the installation is only possible on the system
-roles Primary, Backup or |UCSREPLICADN|. The apps *UCS Dashboard Database* and
+server in the domain. The installation is only supported on the system
+roles |UCSPRIMARYDN|, |UCSBACKUPDN| or |UCSREPLICADN|. The apps *UCS Dashboard Database* and
 *UCS Dashboard Client* are automatically installed on the same system.
-
-The app *UCS Dashboard Client* should be installed on every UCS system. Only
-then will the system data be displayed on the dashboard.
 
 .. _dashboard-usage:
 
@@ -92,13 +89,30 @@ or memory usage or network throughput.
 The servers can be selected in the drop down *server*. Then the graphics show the
 details about the selected server.
 
+.. _dashboard-use-alert:
+
+Alert dashboard
+~~~~~~~~~~~~~~~~
+
+.. _dashboard-alert:
+
+.. figure:: /images/dashboard-alert.*
+   :alt: Alert Dashboard
+
+   *Alert Dashboard*
+
+By default, the :program:`UCS Dashboard` app configures the *Alert Dashboard*.
+The *Alert Dashboard* shows detailed information about the status of all alerts,
+configured in UCS.
+
 .. _dashboard-usage-mydashboard:
 
 Own dashboards
 ~~~~~~~~~~~~~~
 
-The two included dashboards *Domain Dashboard* and *Server Dashboard* can't be
-changed, because they are updated by Univention with updates.
+Administrators can't change the three included dashboards *Domain Dashboard*,
+*Server Dashboard* and *Alert Dashboard*, because Univention provides updates
+for them.
 
 Instead, you can create your own dashboards. On these dashboards you can then
 either add already existing elements or new elements can be created. All you

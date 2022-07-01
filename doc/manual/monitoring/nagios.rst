@@ -21,7 +21,7 @@ plugins can be subsequently installed with the following packages:
 * :program:`univention-nagios-smart`: Test of the S.M.A.R.T. status of hard
   drives
 
-* :program:`univention-nagios-opsi`: Test of software distribution opsi
+* :program:`univention-nagios-opsi`: Test of software distribution OPSI
 
 * :program:`univention-nagios-ad-connector`: Test of the AD Connector
 
@@ -70,7 +70,7 @@ UCS systems.
 
    * - ``UNIVENTION_NTP``
      - Requests the time from the NTP service on the monitored UCS system. If
-       this deviates by more than 60 or 120 seconds, the error status is
+       this deviates by more than ``60`` or ``120`` seconds, the error status is
        attained.
 
    * - ``UNIVENTION_SMTP``
@@ -114,7 +114,7 @@ UCS systems.
        CRITICAL event is triggered; if non-run join scripts are available, a
        WARNING event is returned.
 
-   * - ``UNIVENTION_KPASSWD``
+   * - ``UNIVENTION_KPASSWDD``
      - Tests the availability of the Kerberos password service (only available
        on Primary/|UCSBACKUPDN|\ s). If fewer or more than one process is running,
        a CRITICAL event is triggered.
@@ -140,7 +140,7 @@ once additional packages have been installed (see :ref:`nagios-installation`):
      - Description
 
    * - ``UNIVENTION_OPSI``
-     - Monitors the opsi daemon. If no opsi process is running or the opsi proxy
+     - Monitors the OPSI Daemon. If no OPSI process is running or the OPSI proxy
        is not accessible, the CRITICAL status is returned.
 
    * - ``UNIVENTION_SMART_SDA``
@@ -150,7 +150,7 @@ once additional packages have been installed (see :ref:`nagios-installation`):
 
    * - ``UNIVENTION_RAID``
      - Tests the status of the software RAID via :file:`/proc/mdadm` and returns
-       CRITICAL is one of the hard drives in the RAID association has failed or
+       CRITICAL if one of the hard drives in the RAID association has failed or
        WARNING if a recovery procedure is in progress.
 
    * - ``UNIVENTION_ADCONNECTOR``

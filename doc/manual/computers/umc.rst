@@ -252,6 +252,23 @@ Computer management module - DNS alias tab
        *Forward zone for DNS entry* field, the additional alias entries via
        which the host can be reached can be configured here.
 
+.. _computers-management-table-monitoring-alert:
+
+Computer management module - Alerts tab
+---------------------------------------
+
+.. _computers-management-table-alerts-tab:
+
+.. list-table:: *Alerts* tab (advanced settings)
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Attribute
+     - Description
+
+   * - Assigned monitoring alerts
+     - Specifies which Monitoring alert checks should be performed for this computer, see :ref:`monitoring-alert-configuration`.
+
 .. _computers-management-table-groups:
 
 Computer management module - Groups tab
