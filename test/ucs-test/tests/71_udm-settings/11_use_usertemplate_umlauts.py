@@ -1,17 +1,17 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 # coding=utf-8
 ## desc: Test umlauts for usertemplate object
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## bugs: [52878]
 
+import pytest
 import unidecode
 
 import univention.admin.modules as udm_modules
 import univention.testing.utils as utils
 from univention.admin.uldap import getAdminConnection
 from univention.testing.strings import random_int, random_name
-from univention.testing.udm import UCSTestUDM
 
 PASSWORD = 'Univention@99'
 MOD_TMPL = 'settings/usertemplate'
@@ -19,7 +19,7 @@ MOD_USER = 'users/user'
 MAIL_DOMAIN = '%s.%s' % (random_name(), random_name())
 
 
-def pre_test():
+def test_replacements():
 	previously_hard_coded_umlauts = {
 		'À': 'A',
 		'Á': 'A',
@@ -119,53 +119,52 @@ def create_template(udm, host, path):
 	return properties, dn_template
 
 
-def template_umlauts_test():
-	with UCSTestUDM() as udm:
-		host = random_name()
-		path = '/%s' % (random_name(),)
-		properties, dn_template = create_template(udm, host, path)
-		co = None
-		lo, po = getAdminConnection()
-		udm_modules.update()
-		# get udm module settings/usertemplate
-		mod_tmpl = udm_modules.get(MOD_TMPL)
-		# the mod_tmpl module is being initialized here
-		udm_modules.init(lo, po, mod_tmpl)
-		obj_tmpl = mod_tmpl.object(co, lo, po, dn=dn_template)
-		mod_user = udm_modules.get(MOD_USER)
-		udm_modules.init(lo, po, mod_user, template_object=obj_tmpl)
-		usernames = [
-			(u"Pınar", u"Ağrı", "pinar", "agri"),
-			(u"ÇçĞğ", u"İıŞş", "ccgg", "iiss"),
-			(u"Fryderyk", u"Krępa", "fryderyk", "krepa"),
-			(u"Kübra", u"Gümuşay", "kuebra", "guemusay"),
-			(u"Зиновьев Селиверст", u"Терентьевич", "zinov'ev seliverst", "terent'evich"),
-			(u"Ýlang", u"Müstèrmánn", "ylang", "muestermann"),
-			(u"Öle", u"Mästèrmànn", "oele", "maestermann"),
-			(u"Nînä", u"Müstèrfräú", "ninae", "muesterfraeu"),
-			(u"Ǹanâ", u"Mästérfrâü", "nana", "maesterfraue"),
-			(u"Daniel", "Groß", "daniel", "gross"),
-			(u"Üwe", "Äpfelmann", "uewe", "aepfelmann"),
-		]
-		for firstname, lastname, expected_firstname, expected_lastname in usernames:
-			user_properties = {
-				'lastname': lastname,
-				'firstname': firstname,
-				'password': PASSWORD,
-				'username': random_name(),
-			}
-			obj_user = mod_user.object(None, lo, po)
-			obj_user.open()
-			obj_user.info.update(user_properties)
-			dn_user = obj_user.create()
-			udm._cleanup.setdefault(MOD_USER, []).append(dn_user)
-			print('verify that email attributes of dn_user=%s are set as expected' % (dn_user,))
-			utils.verify_ldap_object(dn_user, {
-				'mailPrimaryAddress': ['%s.%s@%s' % (expected_firstname, expected_lastname, MAIL_DOMAIN)],
-				'mailAlternativeAddress': ['%s@%s' % (user_properties['username'], MAIL_DOMAIN), '%s@%s' % (expected_lastname, MAIL_DOMAIN)],
-			})
-
-
-if __name__ == '__main__':
-	pre_test()
-	template_umlauts_test()
+@pytest.mark.tags()
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('careful')
+# @pytest.mark.bugs(52878)
+def test_use_usertemplate_umlauts(udm):
+	"""Test umlauts for usertemplate object"""
+	host = random_name()
+	path = '/%s' % (random_name(),)
+	properties, dn_template = create_template(udm, host, path)
+	co = None
+	lo, po = getAdminConnection()
+	udm_modules.update()
+	# get udm module settings/usertemplate
+	mod_tmpl = udm_modules.get(MOD_TMPL)
+	# the mod_tmpl module is being initialized here
+	udm_modules.init(lo, po, mod_tmpl)
+	obj_tmpl = mod_tmpl.object(co, lo, po, dn=dn_template)
+	mod_user = udm_modules.get(MOD_USER)
+	udm_modules.init(lo, po, mod_user, template_object=obj_tmpl)
+	usernames = [
+		(u"Pınar", u"Ağrı", "pinar", "agri"),
+		(u"ÇçĞğ", u"İıŞş", "ccgg", "iiss"),
+		(u"Fryderyk", u"Krępa", "fryderyk", "krepa"),
+		(u"Kübra", u"Gümuşay", "kuebra", "guemusay"),
+		(u"Зиновьев Селиверст", u"Терентьевич", "zinov'ev seliverst", "terent'evich"),
+		(u"Ýlang", u"Müstèrmánn", "ylang", "muestermann"),
+		(u"Öle", u"Mästèrmànn", "oele", "maestermann"),
+		(u"Nînä", u"Müstèrfräú", "ninae", "muesterfraeu"),
+		(u"Ǹanâ", u"Mästérfrâü", "nana", "maesterfraue"),
+		(u"Daniel", "Groß", "daniel", "gross"),
+		(u"Üwe", "Äpfelmann", "uewe", "aepfelmann"),
+	]
+	for firstname, lastname, expected_firstname, expected_lastname in usernames:
+		user_properties = {
+			'lastname': lastname,
+			'firstname': firstname,
+			'password': PASSWORD,
+			'username': random_name(),
+		}
+		obj_user = mod_user.object(None, lo, po)
+		obj_user.open()
+		obj_user.info.update(user_properties)
+		dn_user = obj_user.create()
+		udm._cleanup.setdefault(MOD_USER, []).append(dn_user)
+		print('verify that email attributes of dn_user=%s are set as expected' % (dn_user,))
+		utils.verify_ldap_object(dn_user, {
+			'mailPrimaryAddress': ['%s.%s@%s' % (expected_firstname, expected_lastname, MAIL_DOMAIN)],
+			'mailAlternativeAddress': ['%s@%s' % (user_properties['username'], MAIL_DOMAIN), '%s@%s' % (expected_lastname, MAIL_DOMAIN)],
+		})

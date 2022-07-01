@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Try to create invalid ldap acl objects
 ## tags: [udm-ldapextensions,apptest]
 ## roles: [domaincontroller_master]
@@ -9,38 +9,31 @@
 import base64
 import bz2
 
+import pytest
+
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
 
-if __name__ == '__main__':
-	with udm_test.UCSTestUDM() as udm:
-		acl_name = uts.random_name()
-		filename = '/90%s' % uts.random_name()
-		data = '# acl test'
-		try:
-			acl = udm.create_object('settings/ldapacl', name=acl_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'))
-		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
-			pass
-		else:
-			utils.fail('settings/ldapacl object with / in filename was created')
 
-		acl_name = uts.random_name()
-		filename = '90%s' % uts.random_name()
-		data = '# acl test'
-		try:
-			acl = udm.create_object('settings/ldapacl', name=acl_name, filename=filename, data=base64.b64encode(data.encode('UTF-8')).decode('ASCII'))
-		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
-			pass
-		else:
-			utils.fail('settings/ldapacl object with invalid data was created')
+@pytest.mark.tags('udm-ldapextensions', 'apptest')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('dangerous')
+def test_create_invalid_ldap_acl(udm):
+	"""Try to create invalid ldap acl objects"""
+	acl_name = uts.random_name()
+	filename = '/90%s' % uts.random_name()
+	data = '# acl test'
+	with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
+		udm.create_object('settings/ldapacl', name=acl_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'))
 
-		acl_name = uts.random_name()
-		filename = '90%s' % uts.random_name()
-		data = '# acl test'
-		try:
-			acl = udm.create_object('settings/ldapacl', name=acl_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'), active='YES')
-		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
-			pass
-		else:
-			utils.fail('settings/ldapacl object with invalid active attribute was created')
+	acl_name = uts.random_name()
+	filename = '90%s' % uts.random_name()
+	data = '# acl test'
+	with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
+		udm.create_object('settings/ldapacl', name=acl_name, filename=filename, data=base64.b64encode(data.encode('UTF-8')).decode('ASCII'))
+
+	acl_name = uts.random_name()
+	filename = '90%s' % uts.random_name()
+	data = '# acl test'
+	with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
+		udm.create_object('settings/ldapacl', name=acl_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'), active='YES')

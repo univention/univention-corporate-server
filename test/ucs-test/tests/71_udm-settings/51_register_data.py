@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Register a settings/data object
 ## tags: [udm-ldapextensions,apptest]
 ## roles: [domaincontroller_master]
@@ -12,19 +12,18 @@ import pipes
 import shutil
 import subprocess
 
-import atexit
+import pytest
 
 import univention.testing.strings as uts
-import univention.testing.ucr as ucr_test
-import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 file_name = uts.random_name()
 file_path = os.path.join('/tmp', file_name)
 
 
-@atexit.register
+@pytest.fixture
 def remove_tmp_file():
+	yield
 	try:
 		os.remove(file_path)
 	except OSError:
@@ -40,8 +39,6 @@ kwargs = dict(
 	package=uts.random_name(),
 	packageversion=uts.random_version(),
 )
-with ucr_test.UCSTestConfigRegistry() as ucr:
-	ldap_base = ucr['ldap/base']
 
 
 def run_cmd(cmd):
@@ -54,7 +51,12 @@ def run_cmd(cmd):
 	print('stderr:-----\n{}\n-----'.format(cmd_err))
 
 
-with udm_test.UCSTestUDM() as udm:
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('dangerous')
+@pytest.mark.tags('udm-ldapextensions', 'apptest')
+def test_register_data(udm, ucr, remove_tmp_file):
+	"""Register a settings/data object"""
+	ldap_base = ucr['ldap/base']
 	# make sure object is remove at the end
 	dn = 'cn={},cn=data,cn=univention,{}'.format(file_name, ldap_base)
 	udm._cleanup.setdefault('settings/data', []).append(dn)

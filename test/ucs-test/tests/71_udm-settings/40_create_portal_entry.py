@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Create a UMC portal entry
 ## tags: [udm-ldapextensions,apptest]
 ## roles: [domaincontroller_master]
@@ -8,9 +8,9 @@
 
 import base64
 
+import pytest
+
 import univention.testing.strings as uts
-import univention.testing.ucr as ucr_test
-import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 
@@ -39,25 +39,25 @@ class Bunch(object):
 		return str(self)
 
 
-if __name__ == '__main__':
-	with ucr_test.UCSTestConfigRegistry() as ucr:
-		with udm_test.UCSTestUDM() as udm:
-			portal = Bunch(
-				name=uts.random_name(),
-				displayName='"de_DE" "%s"' % (uts.random_name(),),
-				logo=base64.b64encode(uts.random_name().encode('utf-8')).decode('ASCII'),
-				background=base64.b64encode(uts.random_name().encode('utf-8')).decode('ASCII'),
-			)
+@pytest.mark.tags('udm-ldapextensions', 'apptest')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('dangerous')
+def test_create_portal_entry(udm, ucr):
+	"""Create a UMC portal entry"""
+	portal = Bunch(
+		name=uts.random_name(),
+		displayName='"de_DE" "%s"' % (uts.random_name(),),
+		logo=base64.b64encode(uts.random_name().encode('utf-8')).decode('ASCII'),
+		background=base64.b64encode(uts.random_name().encode('utf-8')).decode('ASCII'),
+	)
 
-			kwargs = portal.__dict__.copy()
-			kwargs['portalComputers'] = [ucr.get('ldap/hostdn')]
+	kwargs = portal.__dict__.copy()
+	kwargs['portalComputers'] = [ucr.get('ldap/hostdn')]
 
-			dn = udm.create_object('portals/portal', **kwargs)
-			utils.verify_ldap_object(
-				dn,
-				{
-					'cn': [portal.name],
-					'univentionNewPortalLogo': [portal.logo],
-					'univentionNewPortalDisplayName': [portal.displayName.replace('"', '')],
-					'univentionNewPortalBackground': [portal.background],
-				})
+	dn = udm.create_object('portals/portal', **kwargs)
+	utils.verify_ldap_object(dn, {
+		'cn': [portal.name],
+		'univentionNewPortalLogo': [portal.logo],
+		'univentionNewPortalDisplayName': [portal.displayName.replace('"', '')],
+		'univentionNewPortalBackground': [portal.background],
+	})
