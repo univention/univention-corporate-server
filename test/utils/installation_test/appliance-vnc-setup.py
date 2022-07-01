@@ -75,7 +75,7 @@ class UCSSetup(UCSInstallation):
 			self.connect()
 			self.client.waitForText('Domain and network', timeout=self.timeout)
 		self.screenshot('network-setup.png')
-		self.click('Preferred DNS')
+		self.click('Preferred')
 		if self.args.role in ['admember', 'slave']:
 			self.client.enterText(self.args.dns)
 		self.enter()
