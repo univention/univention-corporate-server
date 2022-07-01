@@ -1,3 +1,9 @@
+ucs-test (10.0.7-5) unstable; urgency=medium
+
+  * Bug #53538: Migrated 66_udm-computers to pytest
+
+ -- Johannes Lohmer <lohmer@univention.de>  Fri, 01 Jul 2022 16:48:24 +0200
+
 ucs-test (10.0.7-4) unstable; urgency=medium
 
   * Bug #54295: Keywords are now in the portal entry form
