@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test extension update with correct version order
 ## tags: [udm,udm-extensions,apptest]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
@@ -10,6 +10,8 @@
 
 import random
 
+import pytest
+
 from univention.testing.debian_package import DebianPackage
 from univention.testing.strings import random_name, random_ucs_version, random_version
 from univention.testing.udm_extensions import (
@@ -17,10 +19,16 @@ from univention.testing.udm_extensions import (
 	get_extension_buffer, get_extension_filename, get_extension_name, get_join_script_buffer,
 	get_package_name, remove_extension_by_name,
 )
-from univention.testing.utils import fail, verify_ldap_object, wait_for_replication
+from univention.testing.utils import verify_ldap_object, wait_for_replication
 
 
-def test_extension(extension_type):
+@pytest.mark.tags('udm', 'udm-extensions', 'apptest')
+@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
+@pytest.mark.exposure('dangerous')
+@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES)
+def test_update_extension_via_package(extension_type):
+	"""Test extension update with correct version order"""
+	print('========================= TESTING EXTENSION %s =============================' % extension_type)
 	package_name = get_package_name()
 	version = random_version()
 	package_version_LOW = '%s.%d' % (version, random.randint(0, 4))
@@ -64,8 +72,7 @@ def test_extension(extension_type):
 			wait_for_replication()
 
 			dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-			if not dnlist:
-				fail('Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name))
+			assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name)
 			verify_ldap_object(dnlist[0], {
 				'cn': [extension_name],
 				'univentionUCSVersionStart': [version_start],
@@ -73,8 +80,7 @@ def test_extension(extension_type):
 			})
 
 			content = open(get_absolute_extension_filename(extension_type, extension_filename)).read()
-			if extension_identifier not in content:
-				fail('ERROR: UDM extension of package %d has not been written to disk (%s)' % (len(packages), extension_filename,))
+			assert not extension_identifier not in content, 'ERROR: UDM extension of package %d has not been written to disk (%s)' % (len(packages), extension_filename,)
 
 	finally:
 		print('Removing UDM extension from LDAP')
@@ -87,9 +93,3 @@ def test_extension(extension_type):
 		print('Removing source package')
 		for package in packages:
 			package.remove()
-
-
-if __name__ == '__main__':
-	for extension_type in VALID_EXTENSION_TYPES:
-		print('========================= TESTING EXTENSION %s =============================' % extension_type)
-		test_extension(extension_type)

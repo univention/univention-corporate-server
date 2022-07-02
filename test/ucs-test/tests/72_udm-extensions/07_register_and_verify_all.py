@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Register and verify all UDM extension in one step
 ## tags: [udm,udm-extensions,apptest]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
@@ -10,16 +10,22 @@
 
 import bz2
 
+import pytest
+
 from univention.testing.debian_package import DebianPackage
 from univention.testing.udm_extensions import (
 	VALID_EXTENSION_TYPES, call_join_script, get_dn_of_extension_by_name, get_extension_buffer,
 	get_extension_filename, get_extension_name, get_package_name, get_package_version,
 	remove_extension_by_name,
 )
-from univention.testing.utils import fail, verify_ldap_object, wait_for_replication
+from univention.testing.utils import verify_ldap_object, wait_for_replication
 
 
-def test_all():
+@pytest.mark.tags('udm', 'udm-extensions', 'apptest')
+@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
+@pytest.mark.exposure('dangerous')
+def test_register_and_verify_all():
+	"""Register and verify all UDM extension in one step"""
 	package_name = get_package_name()
 	package_version = get_package_version()
 	# extension_name = get_extension_name(extension_type)
@@ -61,8 +67,7 @@ exit 0
 
 		for extension_type in VALID_EXTENSION_TYPES:
 			dnlist = get_dn_of_extension_by_name(extension_type, extension_name[extension_type])
-			if not dnlist:
-				fail('Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name[extension_type]))
+			assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name[extension_type])
 			verify_ldap_object(dnlist[0], {
 				'cn': [extension_name[extension_type]],
 				'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename[extension_type]],
@@ -82,7 +87,3 @@ exit 0
 
 		print('Removing source package')
 		package.remove()
-
-
-if __name__ == '__main__':
-	test_all()

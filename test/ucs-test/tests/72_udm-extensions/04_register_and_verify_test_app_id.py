@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Check setting of UNIVENTION_APP_ID for UDM extensions
 ## tags: [udm,udm-extensions,apptest]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
@@ -10,6 +10,8 @@
 
 import bz2
 
+import pytest
+
 from univention.testing.debian_package import DebianPackage
 from univention.testing.strings import random_name, random_version
 from univention.testing.udm_extensions import (
@@ -17,10 +19,16 @@ from univention.testing.udm_extensions import (
 	get_extension_filename, get_extension_name, get_join_script_buffer, get_package_name,
 	get_package_version, remove_extension_by_name,
 )
-from univention.testing.utils import fail, verify_ldap_object, wait_for_replication
+from univention.testing.utils import verify_ldap_object, wait_for_replication
 
 
-def test_extension(extension_type):
+@pytest.mark.tags('udm', 'udm-extensions', 'apptest')
+@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
+@pytest.mark.exposure('dangerous')
+@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES)
+def test_register_and_verify_test_app_id(extension_type):
+	"""Check setting of UNIVENTION_APP_ID for UDM extensions"""
+	print('========================= TESTING EXTENSION %s =============================' % extension_type)
 	package_name = get_package_name()
 	package_version = get_package_version()
 	extension_name = get_extension_name(extension_type)
@@ -48,8 +56,7 @@ def test_extension(extension_type):
 		wait_for_replication()
 
 		dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-		if not dnlist:
-			fail('Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name))
+		assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name)
 		verify_ldap_object(dnlist[0], {
 			'cn': [extension_name],
 			'univentionUDM%sFilename' % extension_type.capitalize(): ['%s.py' % extension_name],
@@ -68,9 +75,3 @@ def test_extension(extension_type):
 
 		print('Removing source package')
 		package.remove()
-
-
-if __name__ == '__main__':
-	for extension_type in VALID_EXTENSION_TYPES:
-		print('========================= TESTING EXTENSION %s =============================' % extension_type)
-		test_extension(extension_type)

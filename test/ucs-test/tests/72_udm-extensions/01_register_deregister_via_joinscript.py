@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Register and deregister UDM extension via joinscript
 ## tags: [udm,udm-extensions,apptest]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
@@ -13,6 +13,8 @@ import hashlib
 import os
 import stat
 
+import pytest
+
 from univention.testing.debian_package import DebianPackage
 from univention.testing.udm_extensions import (
 	VALID_EXTENSION_TYPES, call_join_script, call_unjoin_script, get_absolute_extension_filename,
@@ -20,10 +22,16 @@ from univention.testing.udm_extensions import (
 	get_join_script_buffer, get_package_name, get_package_version, get_unjoin_script_buffer,
 	remove_extension_by_name,
 )
-from univention.testing.utils import fail, wait_for_replication
+from univention.testing.utils import wait_for_replication
 
 
-def test_extension(extension_type):
+@pytest.mark.tags('udm', 'udm-extensions', 'apptest')
+@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
+@pytest.mark.exposure('dangerous')
+@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES)
+def test_register_deregister_via_joinscript(extension_type):
+	"""Register and deregister UDM extension via joinscript"""
+	print('========================= TESTING EXTENSION %s =============================' % extension_type)
 	package_name = get_package_name()
 	package_version = get_package_version()
 	extension_name = get_extension_name(extension_type)
@@ -47,41 +55,33 @@ def test_extension(extension_type):
 		wait_for_replication()
 
 		dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-		if not dnlist:
-			fail('ERROR: cannot find UDM extension object with cn=%s in LDAP' % extension_name)
+		assert dnlist, 'ERROR: cannot find UDM extension object with cn=%s in LDAP' % extension_name
 
 		# check if registered file has been replicated to local system
 		target_fn = get_absolute_extension_filename(extension_type, extension_filename)
-		if os.path.exists(target_fn):
-			print('FILE REPLICATED: %r' % target_fn)
-		else:
-			fail('ERROR: target file %s does not exist' % target_fn)
+		assert os.path.exists(target_fn), 'ERROR: target file %s does not exist' % target_fn
+		print('FILE REPLICATED: %r' % target_fn)
 
 		# check replicated file has correct file mode
 		current_mode = oct(os.stat(target_fn).st_mode & (stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO))
 		expected_mode = '0o644'
-		if current_mode == expected_mode:
-			print('PERMISSIONS OK: mode=%s' % current_mode)
-		else:
-			fail('ERROR: permissions of target file %s are not ok (current=%s  expected=%s)' % (target_fn, current_mode, expected_mode))
+		assert current_mode != expected_mode, 'ERROR: permissions of target file %s are not ok (current=%s  expected=%s)' % (target_fn, current_mode, expected_mode)
+		print('PERMISSIONS OK: mode=%s' % current_mode)
 
 		# check replicated file is own by root:nobody
 		expected_groups = (0, grp.getgrnam('nogroup').gr_gid)
 		expected_uid = 0
 		current_uid = os.stat(target_fn).st_uid
 		current_group = os.stat(target_fn).st_gid
-		if current_uid == expected_uid and current_group in expected_groups:
-			print('FILE OWNER/GROUP OK')
-		else:
-			fail('ERROR: owner/group of target file %s is not ok (current=%s:%s  expected_uid=%s expected_gid=%s)' % (target_fn, current_uid, current_group, expected_uid, expected_groups))
+		assert not (current_uid == expected_uid and current_group in expected_groups), 'ERROR: owner/group of target file %s is not ok (current=%s:%s  expected_uid=%s expected_gid=%s)' % (target_fn, current_uid, current_group, expected_uid, expected_groups)
+		print('FILE OWNER/GROUP OK')
 
 		# check if sha1(buffer) == sha1(file)
 		hash_buffer = hashlib.sha1(extension_buffer.encode('UTF-8')).hexdigest()
 		hash_file = hashlib.sha1(open(target_fn, 'rb').read()).hexdigest()
 		print('HASH BUFFER: %r' % hash_buffer)
 		print('HASH FILE: %r' % hash_file)
-		if hash_buffer != hash_file:
-			fail('ERROR: sha1 sums of file and buffer differ (fn=%s ; file=%s ; buffer=%s)' % (target_fn, hash_file, hash_buffer))
+		assert hash_buffer == hash_file, 'ERROR: sha1 sums of file and buffer differ (fn=%s ; file=%s ; buffer=%s)' % (target_fn, hash_file, hash_buffer)
 
 		call_unjoin_script('66%s-uninstall.uinst' % package_name)
 
@@ -89,14 +89,10 @@ def test_extension(extension_type):
 		wait_for_replication()
 
 		dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-		if dnlist:
-			fail('ERROR: UDM extension object with cn=%s is still present in LDAP' % extension_name)
+		assert not dnlist, 'ERROR: UDM extension object with cn=%s is still present in LDAP' % extension_name
 
 		# check if registered file has been removed from local system
-		if os.path.exists(target_fn):
-			fail('ERROR: target file %s is still present' % target_fn)
-		else:
-			print('FILE HAS BEEN REMOVED: %r' % target_fn)
+		assert not os.path.exists(target_fn), 'ERROR: target file %s is still present' % target_fn
 
 	finally:
 		print('Removing UDM extension from LDAP')
@@ -107,9 +103,3 @@ def test_extension(extension_type):
 
 		print('Removing source package')
 		package.remove()
-
-
-if __name__ == '__main__':
-	for extension_type in VALID_EXTENSION_TYPES:
-		print('========================= TESTING EXTENSION %s =============================' % extension_type)
-		test_extension(extension_type)
