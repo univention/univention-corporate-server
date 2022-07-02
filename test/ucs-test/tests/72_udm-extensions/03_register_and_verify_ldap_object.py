@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python3
 ## desc: Register UDM extension and perform simple LDAP verification
-## tags: [udm-extensions,apptest]
+## tags: [udm,udm-extensions,apptest]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
 ## exposure: dangerous
 ## packages:

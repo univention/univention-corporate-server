@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python3
 ## desc: Create Py2-only UDM syntax extension object, expect it to get removed
-## tags: [udm-ldapextensions,apptest]
+## tags: [udm,udm-ldapextensions,apptest]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
 ## exposure: dangerous
 ## packages:

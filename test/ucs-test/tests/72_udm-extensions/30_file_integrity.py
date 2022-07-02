@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python3
 ## desc: Check permissions of distributed extension file
-## tags: [udm-ldapextensions,apptest]
+## tags: [udm,udm-ldapextensions,apptest]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
 ## exposure: dangerous
 ## packages:

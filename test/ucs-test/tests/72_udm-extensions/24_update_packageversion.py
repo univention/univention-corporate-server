@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python3
 ## desc: Change version of an existing extension
-## tags: [udm-ldapextensions,apptest]
+## tags: [udm,udm-ldapextensions,apptest]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
 ## exposure: dangerous
 ## packages:

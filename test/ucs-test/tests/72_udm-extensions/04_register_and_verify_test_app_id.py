@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python3
 ## desc: Check setting of UNIVENTION_APP_ID for UDM extensions
-## tags: [udm-extensions,apptest]
+## tags: [udm,udm-extensions,apptest]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
 ## exposure: dangerous
 ## packages:

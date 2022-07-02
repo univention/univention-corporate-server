@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python3
 ## desc: Register and deregister UDM extension via postinst
-## tags: [udm-extensions,apptest]
+## tags: [udm,udm-extensions,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:

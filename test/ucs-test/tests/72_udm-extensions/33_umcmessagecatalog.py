@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python3
 ## desc: Register UMCMessageCatalog via joinscript
-## tags: [udm-extensions,apptest]
+## tags: [udm,udm-extensions,apptest]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
 ## exposure: dangerous
 ## packages:
