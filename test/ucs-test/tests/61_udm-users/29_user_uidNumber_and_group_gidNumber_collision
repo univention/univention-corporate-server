@@ -116,5 +116,4 @@ if __name__ == '__main__':
 	failure_msg = '\n'.join(
 		failure.message for failure in FAILURES)
 
-	if any(FAILURES):
-		utils.fail(failure_msg)
+	assert not any(FAILURES), failure_msg

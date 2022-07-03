@@ -158,11 +158,9 @@ def test_execute_udm_users_list_as_administrator(ucr):
 	udm = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 	output = udm.communicate()[0].decode('utf-8', 'replace')
 
-	if udm.returncode != 0:
-		utils.fail('UDM-CLI returned "%d" while trying to execute "%s" as Administrator. Returncode "0" was expected.' % (udm.returncode, cmd[3:]))
+	assert udm.returncode == 0, 'UDM-CLI returned "%d" while trying to execute "%s" as Administrator. Returncode "0" was expected.' % (udm.returncode, cmd[3:])
 
-	if ('DN: uid=' + admin_username) not in output:
-		utils.fail('Could not find DN of "%s" user in the UDM-CLI output:\n%s' % (admin_username, output))
+	assert ('DN: uid=' + admin_username) in output, 'Could not find DN of "%s" user in the UDM-CLI output:\n%s' % (admin_username, output)
 
 
 def test_user_removal(udm):
@@ -183,38 +181,32 @@ def test_ignore_user_with_functional_flag(stopped_s4_connector, udm):
 	user_dn = udm.create_user(check_for_drs_replication=False, wait_for=False)[0]
 	utils.verify_ldap_object(user_dn)
 	stdout = subprocess.Popen([udm_test.UCSTestUDM.PATH_UDM_CLI_CLIENT, 'users/user', 'list'], stdout=subprocess.PIPE).communicate()[0]
-	if not user_dn.lower().encode('UTF-8') in stdout.lower():
-		utils.fail('Cannot find user DN %s in output of "udm users/user list":\n%s' % (user_dn, stdout))
+	assert user_dn.lower().encode('UTF-8') in stdout.lower(), 'Cannot find user DN %s in output of "udm users/user list":\n%s' % (user_dn, stdout)
 
 	# perform a license check
 	license_after = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
-	if license_before == license_after:
-		utils.fail('License check failed to detect normal user')
+	assert license_before != license_after, 'License check failed to detect normal user'
 
 	# add 'functional' flag to user
 	lo = utils.get_ldap_connection()
 	lo.modify(user_dn, (('univentionObjectFlag', b'', b'functional'),))
 	utils.wait_for_replication()
 	stdout = subprocess.Popen([udm_test.UCSTestUDM.PATH_UDM_CLI_CLIENT, 'users/user', 'list'], stdout=subprocess.PIPE).communicate()[0]
-	if user_dn.lower().encode('UTF-8') in stdout.lower():
-		utils.fail('"udm users/user list" still finds user object with functional flag')
+	assert user_dn.lower().encode('UTF-8') not in stdout.lower(), '"udm users/user list" still finds user object with functional flag'
 
 	# perform a license check
 	license_after = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
-	if license_before != license_after:
-		utils.fail('License check detected to "functional" user')
+	assert license_before == license_after, 'License check detected to "functional" user'
 
 	# remove 'functional' flag to user
 	lo.modify(user_dn, (('univentionObjectFlag', b'functional', b''),))
 	utils.wait_for_replication()
 	stdout = subprocess.Popen([udm_test.UCSTestUDM.PATH_UDM_CLI_CLIENT, 'users/user', 'list'], stdout=subprocess.PIPE).communicate()[0]
-	if not user_dn.lower().encode('UTF-8') in stdout.lower():
-		utils.fail('Cannot find user DN %s in output of "udm users/user list" after removing flag:\n%s' % (user_dn, stdout))
+	assert user_dn.lower().encode('UTF-8') in stdout.lower(), 'Cannot find user DN %s in output of "udm users/user list" after removing flag:\n%s' % (user_dn, stdout)
 
 	# perform a license check
 	license_after = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
-	if license_before == license_after:
-		utils.fail('License check failed to detect normal user')
+	assert license_before != license_after, 'License check failed to detect normal user'
 
 
 @pytest.mark.exposure('dangerous')
@@ -263,8 +255,7 @@ def test_script_lock_expired_accounts(stopped_s4_connector, udm):  # TODO: param
 		utils.fail('Did not find all users prior to script execution!')
 	for entry in results:
 		entry.open()
-		if not entry['locked'] == userdata[entry['username']][0]:
-			utils.fail('uid=%s should not be locked for posix prior to script execution!' % (entry['username'],))
+		assert entry['locked'] == userdata[entry['username']][0], 'uid=%s should not be locked for posix prior to script execution!' % (entry['username'],)
 
 	print('Calling lock_expired_accounts...')
 	subprocess.check_call(['/usr/share/univention-directory-manager-tools/lock_expired_accounts', '--only-last-week'])
@@ -276,8 +267,7 @@ def test_script_lock_expired_accounts(stopped_s4_connector, udm):  # TODO: param
 		utils.fail('Did not find all users after script execution!')
 	for entry in results:
 		entry.open()
-		if not entry['locked'] == userdata[entry['username']][1]:
-			utils.fail('The account uid=%r is not in expected locking state: expected=%r  current=%r' % (entry['username'], userdata[entry['username']][1], entry['locked']))
+		assert entry['locked'] == userdata[entry['username']][1], 'The account uid=%r is not in expected locking state: expected=%r  current=%r' % (entry['username'], userdata[entry['username']][1], entry['locked'])
 
 
 @pytest.mark.exposure('dangerous')
@@ -300,8 +290,7 @@ def test_script_lock_expired_accounts(stopped_s4_connector, udm):  # TODO: param
 def test_script_lock_expired_passwords(udm, ucr, delta, disabled, expected):
 	"""Check if ldap auth is denied for expired passwords"""
 	# bugs: [35088]
-	if not ucr.is_true('ldap/shadowbind', True):
-		utils.fail('UCR variable ldap/shadowbind is disabled (%s), test will not work' % ucr['ldap/shadowbind'])
+	assert ucr.is_true('ldap/shadowbind', True), 'UCR variable ldap/shadowbind is disabled (%s), test will not work' % ucr['ldap/shadowbind']
 
 	print(time.ctime())
 	lo, position = univention.admin.uldap.getAdminConnection()
@@ -481,14 +470,12 @@ def test_check_univentionDefaultGroup_membership_after_create(udm):
 	lo = utils.get_ldap_connection()
 	pos = position(lo.base)
 	searchResult = lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + pos.getDomain(), attr=['univentionDefaultGroup'])
-	if not searchResult or not searchResult[0][1]:
-		utils.fail('Test system is broken: univentionDefaultGroup value not found')
+	assert searchResult and searchResult[0][1], 'Test system is broken: univentionDefaultGroup value not found'
 	groupdn = searchResult[0][1]['univentionDefaultGroup'][0].decode('utf-8')
 
 	# lookup previous members for comparison
 	searchResult = lo.search(base=groupdn, scope='base', attr=['uniqueMember', 'memberUid'])
-	if not searchResult or not searchResult[0][1]:
-		utils.fail('Test system is broken: univentionDefaultGroup object missing: %s' % groupdn)
+	assert searchResult and searchResult[0][1], 'Test system is broken: univentionDefaultGroup object missing: %s' % groupdn
 	uniqueMember = searchResult[0][1]['uniqueMember']
 	memberUid = searchResult[0][1]['memberUid']
 
@@ -554,16 +541,14 @@ def test_user_univentionLastUsedValue(udm, ucr):
 	user_dn = udm.create_user()[0]
 	utils.verify_ldap_object(user_dn)
 	lastUsedValue_new = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
-	if lastUsedValue_old == lastUsedValue_new:
-		utils.fail('Create user with automatic uidNumber: univentionLastUsedValue did not change, but it should!')
+	assert lastUsedValue_old != lastUsedValue_new, 'Create user with automatic uidNumber: univentionLastUsedValue did not change, but it should!'
 
 	lastUsedValue_old = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
 	uidNumber = str(random.randint(100000, 200000))
 	user_dn = udm.create_user(uidNumber=uidNumber)[0]
 	utils.verify_ldap_object(user_dn, expected_attr={'uidNumber': [uidNumber]})
 	lastUsedValue_new = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
-	if lastUsedValue_old != lastUsedValue_new:
-		utils.fail('Create user with specified uidNumber: univentionLastUsedValue did change, but it should not!')
+	assert lastUsedValue_old == lastUsedValue_new, 'Create user with specified uidNumber: univentionLastUsedValue did change, but it should not!'
 
 
 @pytest.mark.exposure('dangerous')

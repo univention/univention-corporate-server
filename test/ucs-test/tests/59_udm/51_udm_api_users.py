@@ -239,8 +239,7 @@ class TestUdmUsersBasic(TestCase):
 			expected_properties['mailUserQuota'] = 0
 		for k, v in expected_properties.items():
 			got = getattr(obj.props, k)
-			if got != v:
-				utils.fail('Expected for {!r}: {!r} got: {!r}'.format(k, v, got))
+			assert got == v, 'Expected for {!r}: {!r} got: {!r}'.format(k, v, got)
 		with self.assertRaises(UnknownProperty):
 			obj.props.unknown = 'Unknown'
 		with self.assertRaises(AttributeError):
