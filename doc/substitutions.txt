@@ -15,4 +15,5 @@
 .. |UCSUDN| replace:: Univention Directory Notifier
 .. |UCSUMC| replace:: Univention Management Console
 .. |UCSUMS| replace:: UCS Management System
+.. |UCSUSS| replace:: Univention System Setup
 .. |UCSWEB| replace:: UCS web interface
