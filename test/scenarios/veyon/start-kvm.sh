@@ -11,6 +11,15 @@ export UCS_TEST_RUN=false
 
 export DIMAGE="docker-registry.knut.univention.de/ucs-ec2-tools:branch-fbotner-issue-13"
 
+# 4.4 support
+ucs44="${UCS44:=false}"
+if $ucs44; then
+	export UCS_VERSION="4.4-9"
+	export KVM_TEMPLATE="generic-unsafe"
+	export KVM_UCSVERSION="4.4-9"
+	export TARGET_VERSION="4.4-9"
+fi
+
 # extra label for instances names so that the instances
 # are user specific
 if [ -n "$BUILD_URL" ]; then
