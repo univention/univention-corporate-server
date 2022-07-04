@@ -8,15 +8,10 @@ from univention.admin import uldap
 from univention.udm import UDM
 
 
-def create_room(
-    lo: uldap.getAdminConnection,
-    name: str,
-    school: str,
-    hosts: list,
-) -> None:
-    obj = ComputerRoom(name=f"{school}-{name}", school=school, hosts=hosts)
+def create_room(lo, name, school, hosts):
+    obj = ComputerRoom(name="{}-{}".format(school, name), school=school, hosts=hosts)
     result = obj.create(lo)
-    assert result, f"create returned {result} for {obj}"
+    assert result, "create returned {} for {}".format(result, obj)
 
 
 def main():
@@ -41,7 +36,7 @@ def main():
         for i in range(0, len(all_hosts), computers_in_room)
     ]
     for room, hosts in enumerate(chunked_host_list):
-        create_room(lo, f"room{room}", args.school, hosts)
+        create_room(lo, "room{}".format(room), args.school, hosts)
 
 
 if __name__ == "__main__":
