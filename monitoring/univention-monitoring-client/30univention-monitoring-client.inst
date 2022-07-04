@@ -411,21 +411,21 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_JOINSTATUS" \
 	--set description='Default Service: check if system has been joined successfully
-    {{ range query "univention_join_status" }}
-        {{if or (eq .Value -1) (eq .Value 1)}}
-          univention_join_status has value -1 or 1 => /etc/machine.secret not found - system not joined yet?
-        {{end}}
-        {{if (eq .Value 2)}}
-          univention_join_status has value 2 => ldapsearch auth failed
-        {{end}}
-        {{if (eq .Value 3)}}
-          univention_join_status has value 3 => ldapsearch auth or TLS failed
-        {{end}}
-        {{if (eq .Value 4)}}
-          univention_join_status has value 4 => Cannot find /usr/share/univention-join/.joined or /var/univention-join/joined
-        {{end}}
-    {{ end }}
-	' \
+{{ range query "univention_join_status" }}
+    univention_join_status has value {{.Value}}
+    {{if or (eq .Value -1) (eq .Value 1)}}
+    => /etc/machine.secret not found - system not joined yet?
+    {{end}}
+    {{if (eq .Value 2)}}
+    => ldapsearch auth failed
+    {{end}}
+    {{if (eq .Value 3)}}
+    => ldapsearch auth or TLS failed
+    {{end}}
+    {{if (eq .Value 4)}}
+    => Cannot find /usr/share/univention-join/.joined or /var/univention-join/joined
+    {{end}}
+{{ end }}' \
 	--set summary="Default Service: check if system has been joined successfully" \
 	--append labels='"severity" "critical"' \
 	--set query="univention_join_status != 0 and univention_join_status != 6" || die "UNIVENTION_JOINSTATUS"

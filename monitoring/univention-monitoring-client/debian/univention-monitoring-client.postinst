@@ -48,6 +48,31 @@ if [ "$server_role" = "domaincontroller_master" ] && dpkg --compare-versions "$2
 	udm monitoring/alert modify --ignore_not_exists \
 		--dn "cn=UNIVENTION_SSL,cn=monitoring,$ldap_base" \
 		--set query="univention_ssl_certificate_expiry_seconds < 1728000"
+    udm monitoring/alert modify --ignore_not_exists \
+		--dn "cn=UNIVENTION_JOINSTATUS,cn=monitoring,$ldap_base" \
+		--set query="univention_join_status != 0 and univention_join_status != 6" \
+		--set description='Default Service: check if system has been joined successfully
+{{ range query "univention_join_status" }}
+    univention_join_status has value {{.Value}}
+    {{if or (eq .Value -1) (eq .Value 1)}}
+    => /etc/machine.secret not found - system not joined yet?
+    {{end}}
+    {{if (eq .Value 2)}}
+    => ldapsearch auth failed
+    {{end}}
+    {{if (eq .Value 3)}}
+    => ldapsearch auth or TLS failed
+    {{end}}
+    {{if (eq .Value 4)}}
+    => Cannot find /usr/share/univention-join/.joined or /var/univention-join/joined
+    {{end}}
+{{ end }}'
+    univention-directory-manager monitoring/alert create "$@" --ignore_not_exists --position="cn=monitoring,$ldap_base" \
+        --set name="UNIVENTION_JOINSTATUS_WARNING" \
+        --set description='Default Service: check if system has been joined successfully: some join scripts must be called' \
+        --set summary="Default Service: check if system has been joined successfully" \
+        --append labels='"severity" "warning"' \
+        --set query="univention_join_status == 6"
 fi
 
 exit 0
