@@ -42,7 +42,12 @@ extensions = [
     "sphinx_sitemap",
     "sphinx_copybutton",
     "sphinxcontrib.bibtex",
+    "sphinx.ext.intersphinx",
 ]
+
+intersphinx_mapping = {
+    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None)
+}
 
 bibtex_bibfiles = ["../bibliography.bib"]
 bibtex_encoding = "utf-8"
