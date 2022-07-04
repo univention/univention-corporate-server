@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: systemd
+fix: 232-25+deb9u14A~4.4.9.202207040803
+desc: |
+ This update addresses the following issue:
+ * use-after-free when asynchronous polkit queries are performed
+   (CVE-2020-1712)
+bug: [54925]
+cve:
+- CVE-2020-1712
