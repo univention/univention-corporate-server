@@ -38,9 +38,9 @@ questions. The installer will either use internal default values or the values
 from the profile. To perform the installation fully unattended all required
 answers must be provided through the installation profile. Therefore
 ``priority=critical`` should be specified under *additional start
-options* for UCS systems using the profile from :ref:`profile-example`.
+options* for UCS systems using the profile from :ref:`example`.
 
-.. _profile-structure:
+.. _structure:
 
 Structure of profile files
 ==========================
@@ -62,7 +62,7 @@ The *question type* depends on the questions and can be ``boolean``, ``string``
 or ``select``. Any questions not answered by the preseed file is asked
 interactively and will prevent an unattended installation.
 
-.. _profile-example:
+.. _example:
 
 Example installation profile
 ============================
@@ -267,14 +267,14 @@ additional software will be installed.
    configured through |UCSUSS|. For an unattended installation the graphical
    installer is disabled. All other values starting with ``uss/`` are copied to
    the installation profile. The variables are described in
-   :ref:`profile-variables`.
+   :ref:`variables`.
 
-.. _profile-variables:
+.. _variables:
 
 Overview of profile variables
 =============================
 
-.. _profile-variables-system:
+.. _variables-system:
 
 Profile variables - System properties
 -------------------------------------
@@ -285,6 +285,7 @@ domain and the name of the domain the computer should join.
 
 .. list-table:: Profile variables - System properties
    :header-rows: 1
+   :widths: 3 9
 
    * - Name
      - Function
@@ -330,7 +331,7 @@ domain and the name of the domain the computer should join.
      - The password for the ``root`` user for this computer. On a |UCSPRIMARYDN|,
        this password is also used for the ``Administrator`` password.
 
-.. _profile-variables-join:
+.. _variables-join:
 
 Profile variables - LDAP settings and domain joins
 --------------------------------------------------
@@ -340,6 +341,7 @@ supported for security reasons.
 
 .. list-table:: Profile variables - LDAP settings and domain joins
    :header-rows: 1
+   :widths: 3 9
 
    * - Name
      - Function
@@ -354,7 +356,7 @@ supported for security reasons.
        ``dc=example,dc=com`` is used in a domain ``example.com``. This variable
        is only evaluated on the system role |UCSPRIMARYDN|.
 
-.. _profile-variables-network:
+.. _variables-network:
 
 Profile variables - Network configuration
 -----------------------------------------
@@ -372,6 +374,7 @@ the device ``eth0`` in the profile, in addition to the IP address, the
 
 .. list-table:: Profile variables - Network configuration
    :header-rows: 1
+   :widths: 5 7
 
    * - Name
      - Function
@@ -446,7 +449,7 @@ the device ``eth0`` in the profile, in addition to the IP address, the
        servers; e.g., the installation program for the Flash plugin. Example:
        ``proxy/http="http://proxy.example.com:8080"``
 
-.. _profile-variables-software:
+.. _variables-software:
 
 Profile variables - Software selection
 --------------------------------------
@@ -456,6 +459,7 @@ be installed on the computer.
 
 .. list-table:: Profile variables - Software selection
    :header-rows: 1
+   :widths: 3 9
 
    * - Name
      - Function
@@ -469,7 +473,7 @@ be installed on the computer.
      - This settings names packages which should be removed. If more than one
        package is specified, the packages are separated by blank spaces.
 
-.. _profile-variables-ssl:
+.. _variables-ssl:
 
 Profile variables - SSL
 -----------------------
@@ -480,6 +484,7 @@ for the certificate.
 
 .. list-table:: Profile variables - SSL
    :header-rows: 1
+   :widths: 4 8
 
    * - Name
      - Function
@@ -505,7 +510,7 @@ for the certificate.
    * - ``ssl/email``
      - Email address that appears in the certificate of the root CA.
 
-.. _profile-netinstaller:
+.. _netinstaller:
 
 Network-based PXE installations with Univention Net Installer
 =============================================================
@@ -569,7 +574,7 @@ https://updates.software-univention.de/ or a local repository
 server. The later one is advisable as it reduces the amount of data
 needing to be downloaded for each installation.
 
-.. _profile-netinstaller-local:
+.. _netinstaller-local:
 
 Local repository
 ----------------
@@ -609,7 +614,7 @@ installations will still start with an older release, which might require extra
 time for updating. For more information on local repositories, see the software
 deployment chapter of the :cite:t:`ucs-manual`.
 
-.. _profile-netinstaller-public:
+.. _netinstaller-public:
 
 Public repository
 -----------------
@@ -699,7 +704,7 @@ layout:
    d-i mirror/http/directory string /
 
 
-.. _profile-assign:
+.. _assign:
 
 Assignment of a computer for automatic installation
 ---------------------------------------------------

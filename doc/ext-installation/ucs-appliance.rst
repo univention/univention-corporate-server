@@ -10,7 +10,7 @@ for simple commissioning in a virtualization solution such as VMware and for
 providing a cloud instance.
 
 Appliances can be created with minimal effort. This is described in
-:ref:`appliance-create`.
+:ref:`create`.
 
 Whilst some of the settings can be preconfigured globally in the image, it is
 still necessary for the end user to make final adjustments to the configuration,
@@ -18,7 +18,7 @@ e.g., to set the computer name or the domain used. For this reason, a basic
 system is installed for the appliance image and a component set up, which then
 allows the end user to finalize the configuration. Alternatively, the
 configuration can also be performed automatically without user interaction. This
-is described in :ref:`appliance-use-auto`.
+is described in :ref:`use-auto`.
 
 The interactive configuration can be performed in two ways:
 

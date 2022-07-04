@@ -1,4 +1,4 @@
-.. _appliance-create:
+.. _create:
 .. _appliance-intro:
 
 ************************************
@@ -8,9 +8,9 @@ Creating a UCS appliance/cloud image
 This section describes how to set up an appliance based on UCS 5.0. This type of
 appliance can also be used to provide preconfigured instances as a cloud service
 provider. The creation of images for typical virtualization solutions is another
-possible application scenario, see :ref:`appliance-create-virt`.
+possible application scenario, see :ref:`create-virt`.
 
-.. _appliance-installbase:
+.. _installbase:
 
 Performing the basic installation
 =================================
@@ -21,7 +21,7 @@ installation should be performed in a virtualization solution. In this example,
 the installation is performed in QEMU. A ``qcow2`` image should be selected for the
 hard drive for the virtual machine. ``qcow2`` images can be converted to different
 virtualization formats such as VirtualBox or VMware using a tool provided by
-Univention, see :ref:`appliance-create-virt`.
+Univention, see :ref:`create-virt`.
 
 The following settings are configured for the basic image:
 
@@ -91,10 +91,10 @@ the *default* storage pool of ``libvirtd`` was used, the image is stored in the
 directory :file:`/var/lib/libvirt/images/`.
 
 Additional steps are required if the image is to be used in Amazon EC2 (see
-:ref:`appliance-create-ec2`), OpenStack (see :ref:`appliance-create-openstack`)
-or as a VMware / VirtualBox appliance (see :ref:`appliance-create-virt`).
+:ref:`create-ec2`), OpenStack (see :ref:`create-openstack`)
+or as a VMware / VirtualBox appliance (see :ref:`create-virt`).
 
-.. _appliance-create-ec2:
+.. _create-ec2:
 
 Providing an image for Amazon EC2
 ---------------------------------
@@ -149,13 +149,13 @@ timeout when waiting for a DHCP request answer is lowered.
    $ ucr set timeserver=169.254.169.123  # AWS internal
 
 
-.. _appliance-create-openstack:
+.. _create-openstack:
 
 Providing an image for OpenStack
 --------------------------------
 
 The provisioning for OpenStack images occurs via Cloud-Init (see
-:ref:`appliance-use-cloudinit`). Cloud-Init is a standardized solution for
+:ref:`use-cloudinit`). Cloud-Init is a standardized solution for
 configuration of an image. Cloud-Init checks a range of data sources for an
 existing configuration. The :program:`univention-cloud-init` package must be
 installed to prepare an image for provisioning via Cloud-Init:
@@ -183,7 +183,7 @@ removed.
    $ usermod -p \* root
 
 
-.. _appliance-create-virt:
+.. _create-virt:
 
 Providing an image for VMware/VirtualBox
 ----------------------------------------
@@ -220,7 +220,7 @@ respectively given option:
 * :program:`VMware ESX` OVA image, can be suppressed with
   ``--no-ova-esxi``
 
-.. _appliance-use-auto:
+.. _use-auto:
 
 Automatic configuration of an appliance
 =======================================
@@ -230,7 +230,7 @@ also be performed automatically. The automatic configuration can either be
 performed via :program:`cloud-init` (a general tool for the provision of cloud
 images) or a Univention appliance mode profile file.
 
-.. _appliance-use-auto-profile:
+.. _use-auto-profile:
 
 Automatic configuration with a UCS appliance mode profile file
 --------------------------------------------------------------
@@ -273,7 +273,7 @@ needs to be run once. Then Apache and the UMC server need to be restarted:
    $ systemctl restart apache2 univention-management-console-server
 
 
-.. _appliance-use-cloudinit:
+.. _use-cloudinit:
 
 Automatic configuration of an appliance with Cloud-Init
 -------------------------------------------------------
@@ -296,7 +296,7 @@ provided. In addition, several files are generated on the system: the UCS
 license to be installed and a file with the apps to be installed from the
 Univention App Center. The license in this example is the default *core edition
 license*. More information about requesting a proper license can be found in
-:ref:`appliance-license`.
+:ref:`license`.
 
 Two example hook scripts are generated which are called after setup is finished:
 One calls :command:`wget` for a given URL, which could be used to signal an
@@ -360,11 +360,11 @@ external service that the provisioning of the instance is done.
 
 
 The file with the apps to be installed contains a list of IDs of applications
-from the |UCSAPPC|, see :ref:`appliance-installbase`. The list in the example
+from the |UCSAPPC|, see :ref:`installbase`. The list in the example
 above installs the :program:`AD Connector` and the :program:`SAML integration` on the
 provided |UCSPRIMARYDN|.
 
-.. _appliance-license:
+.. _license:
 
 License management in cloud instances
 -------------------------------------
@@ -382,7 +382,7 @@ requested from `Univention contact <https://www.univention.com/contact/>`_.
 In this document, ``https://license.univention.de/shop/example/`` is used as an
 example URL for the license server.
 
-.. _appliance-license-api:
+.. _license-api:
 
 API for retrieving UCS licenses
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
