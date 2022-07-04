@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issue:
  * The alert expressions for checking the SSL validity and the swap usage
    have been repaired.
-bug: [54919]
+ * When `prometheus-node-exporter` was not installed error mails by cron were
+   sent due to a missing directory.
+bug: [54919, 54927]

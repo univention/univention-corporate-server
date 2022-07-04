@@ -1,3 +1,10 @@
+univention-monitoring-client (1.0.0-3) unstable; urgency=medium
+
+  * Bug #54927: prevent errors if prometheus node exporter is not
+    installed
+
+ -- Florian Best <best@univention.de>  Mon, 04 Jul 2022 10:42:59 +0200
+
 univention-monitoring-client (1.0.0-2) unstable; urgency=medium
 
   * Bug #54919: fixed expressions of ssl and swap checks
