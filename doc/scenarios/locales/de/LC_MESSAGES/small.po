@@ -1,0 +1,368 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Scenarios for Univention Corporate Server \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-07-05 13:22+0200\n"
+"PO-Revision-Date: 2022-07-05 15:27+0200\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
+"Language-Team: Univention GmbH <packages@univention.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../small.rst:6
+msgid "Lawyer's office"
+msgstr "Anwaltskanzlei"
+
+#: ../../small.rst:8
+msgid ""
+"Hemmerlein & Sons lawyer's office has a total of ten employees. The "
+"employees work predominantly with office applications and a legal "
+"workflow management system, which is only available for Microsoft "
+"Windows. Windows is employed as the client operating system. All the data"
+" is to be stored centrally on a server and backed up. As there is only "
+"limited technical expertise available and it is not viable to finance an "
+"in-house administrator team, particular value is placed on simple "
+"administration. The administrative duties described below can be "
+"configured completely through simple-to-use, web-based interfaces after a"
+" successful initial installation."
+msgstr ""
+"Die Anwaltskanzlei Hemmerlein & Söhne verfügt über insgesamt zehn Mitarbeiter. "
+"Die Mitarbeiter arbeiten im Wesentlichen mit Office-Applikationen und einer "
+"juristischen Vorgangsbearbeitung, die nur für Microsoft Windows verfügbar ist. "
+"Als Client-Betriebssystem wird Microsoft Windows eingesetzt. Alle Daten "
+"sollen zentral auf einem Server gespeichert und gesichert werden. Da nur "
+"geringes technisches Know-How verfügbar und eigenes technisches Personal nicht "
+"finanzierbar ist, wird Wert auf eine einfache Administration gelegt. Die "
+"nachfolgend beschriebenen administrativen Tätigkeiten können nach erfolgter "
+"Erstinstallation komplett durch einfach zu bedienende webbasierte "
+"Schnittstellen konfiguriert werden."
+
+#: ../../small.rst:18
+msgid ""
+"The company has a total of three laser printers (two identical "
+"black/white models and one color laser printer), which are all installed "
+"in a central office. Large documents with high volumes are printed often."
+msgstr ""
+"In der Firma existieren insgesamt drei Laserdrucker (zwei baugleiche "
+"Schwarz/Weiss-Modelle und ein Farblaserdrucker), die alle in einem zentralen "
+"Büro aufgebaut sind. Es werden häufig sehr große Schriftsätze mit hohem Volumen "
+"gedruckt."
+
+#: ../../small.rst:25
+msgid "Systems and services"
+msgstr "Systeme und Dienste"
+
+#: ../../small.rst:27
+msgid ""
+"UCS offers the required services and applications out of the box as a "
+"complete solution. A single UCS system is used, which provides the logon "
+"and file services for the Windows clients, administrates the printers and"
+" automates the data backup."
+msgstr ""
+"Univention Corporate Server (UCS) stellt die benötigten Dienste und Anwendungen "
+"als Komplettlösung zur Verfügung. Es kommt ein einzelnes UCS-System zum "
+"Einsatz, das für die Windows-Clients Anmelde- und Dateidienste bereitstellt, "
+"die Drucker verwaltet und das Backup der Daten automatisiert."
+
+#: ../../small.rst:37
+msgid "System overview of the lawyer's office Hemmerlein and Sons"
+msgstr "Systemübersicht der Kanzlei Hemmerlein und Söhne"
+
+#: ../../small.rst:42
+msgid "Management of user accounts"
+msgstr "Verwaltung der Benutzerdaten"
+
+#: ../../small.rst:44
+msgid ""
+"User accounts for the ten employees are created in the |UCSUMC| web "
+"interface. Each employee can set the password with the :program:`Self "
+"Service` app from the App Center. Like all user data the password is "
+"saved to a LDAP directory server and requested when logging on to the "
+"Windows client."
+msgstr ""
+"Für die zehn Mitarbeiter werden im Web-Interface der |UCSUMC| Benutzerkonten "
+"angelegt. Jeder Mitarbeiter kann sich über die :program:`Self-Service` App aus "
+"dem App Center sein Passwort selbst setzen, das — wie alle Benutzerdaten — in "
+"einem LDAP-Verzeichnisdienst gespeichert und bei der Anmeldung am "
+"Windows-Client abgefragt wird."
+
+#: ../../small.rst:54
+msgid "Creating a user in Univention Directory Manager"
+msgstr "Anlegen eines Benutzers in der Univention Management Console"
+
+#: ../../small.rst:59
+msgid "Managing the Windows computers"
+msgstr "Verwaltung der Microsoft Windows-Rechner"
+
+#: ../../small.rst:61
+msgid ""
+"Samba 4 is used on the UCS system for the integration of Microsoft "
+"Windows clients. Samba 4 offers domain, directory and authentication "
+"services which are compatible with Microsoft Active Directory. These also"
+" allow the use of the tools provided by Microsoft for the management of "
+"group policies (GPOs)."
+msgstr ""
+"Auf dem UCS-System wird Samba 4 für die Anbindung der Windows-Clients "
+"eingesetzt. Samba 4 bietet Domänen-, Verzeichnis- und "
+"Authentifizierungsdienste, die kompatibel zu Microsoft Active Directory sind. "
+"Diese ermöglichen auch die Verwendung der von Microsoft bereitgestellten "
+"Werkzeuge für die Verwaltung von Gruppenrichtlinien (GPOs)."
+
+#: ../../small.rst:66
+msgid ""
+"Microsoft Windows clients can join the Active Directory-compatible domain"
+" provided by UCS and can be centrally configured through group policies. "
+"From the client point of view, the domain join procedure is identical to "
+"joining a Microsoft Windows-based domain."
+msgstr ""
+"Windows-Clients können direkt der durch UCS bereitgestellten "
+"Active Directory kompatiblen Domäne beitreten und über Gruppenrichtlinien "
+"zentral konfiguriert werden. Der Domänen-Join ist aus Client-Sicht identisch "
+"mit dem Beitritt zu einer Windows-basierten Domäne."
+
+#: ../../small.rst:74
+msgid "Storage management"
+msgstr "Datenverwaltung"
+
+#: ../../small.rst:76
+msgid ""
+"Samba provides every user with a home directory on the UCS system as a "
+"file share through the CIFS protocol. The users thus always receive the "
+"same data irrespective of the computer they are logged in to. In "
+"addition, the central file storage allows central backups."
+msgstr ""
+"Samba stellt für jeden Benutzer auf dem UCS-System ein Heimatverzeichnis als "
+"Dateifreigabe über das CIFS-Protokoll bereit. Der Benutzer erhält so unabhängig "
+"vom angemeldeten Rechner immer dieselben Daten. Die Datenhaltung auf einer "
+"Freigabe ermöglicht außerdem eine zentrale Datensicherung."
+
+#: ../../small.rst:81
+msgid ""
+"Moreover, there is a central share with legal literature, which is "
+"mounted on every client."
+msgstr ""
+"Darüberhinaus existiert ein zentrale Freigabe mit juristischer Fachliteratur im "
+"PDF-Format, die auf jedem Client eingebunden wird."
+
+#: ../../small.rst:84
+msgid ""
+"Similar to users, shares can also be created and managed web-based in the"
+" |UCSUMC|."
+msgstr ""
+"Freigaben können wie Benutzer ebenfalls webbasiert in der |UCSUMC| "
+"angelegt werden."
+
+#: ../../small.rst:90
+msgid "Single sign-on with a specialist legal application"
+msgstr "Single Sign-On mit einer juristischen Fachanwendung"
+
+#: ../../small.rst:92
+msgid ""
+"The chambers connect to a web-based legal service. This service has its "
+"own user administration system. To avoid having to take care of the user "
+"identities and password twice, the UCS SAML Identity Provider is used. "
+"SAML (Security Assertion Markup Language) is an XML-based standard for "
+"exchanging authentication information, which allows single sign-on across"
+" domain boundaries among other things. The legal service is registered "
+"with a cryptographic certificate and then trusted by the UCS Identity "
+"Provider. The users then only need to authenticate themselves in UCS and "
+"can use the legal service without renewed authentication. The SAML "
+"Identity Provider can be installed through the Univention App Center."
+msgstr ""
+"Die Kanzlei greift auf einen webbasierten juristischen Fachdienst zu. Dieser "
+"benutzt eine eigenständige Benutzerverwaltung. Um zu vermeiden, dass "
+"Benutzerkennungen und Passwörter doppelt gepflegt werden müssen, wird der UCS "
+"SAML Identity Provider eingebunden. SAML (Security Assertion Markup Language) "
+"ist ein XML-basierter Standard zum Austausch von "
+"Authentifizierungsinformationen, der u.a. Single Sign-On über Domänengrenzen "
+"hinweg erlaubt. Der juristische Fachdienst wird über ein kryptografisches "
+"Zertifikat fest registriert und vertraut dann dem UCS Identity Provider. Der "
+"Benutzer authentifiziert sich dann nur noch in UCS und kann den eingebundenen "
+"juristischen Dienst ohne erneute Authentifizierung nutzen. Der SAML Identity "
+"Provider kann über das Univention App Center installiert werden."
+
+#: ../../small.rst:106
+msgid "Printer services"
+msgstr "Druckdienste"
+
+#: ../../small.rst:108
+msgid ""
+"The UCS system provides print services through the CUPS software. Both "
+"network-capable printers and printers connected locally to a computer can"
+" be centrally administrated. The three printers can be configured "
+"conveniently through the |UCSUMC| and are directly available to the users"
+" on their Microsoft Windows clients."
+msgstr ""
+"Das UCS-System stellt über die Software CUPS Druckdienste bereit. Es "
+"können sowohl netzwerkfähige Drucker, als auch lokal an einen Rechner "
+"angeschlossene Drucker zentral administriert werden. Die drei Drucker "
+"können bequem über die |UCSUMC| konfiguriert werden und stehen den "
+"Benutzern auf ihren Windows-Clients direkt zur Verfügung."
+
+#: ../../small.rst:115
+msgid ""
+"The two black and white laser printers are grouped together in a printer "
+"group: this means that, in addition to the targeted selection of a "
+"printer, users also have the opportunity of printing on a pseudo-printer."
+" This is where the print jobs are distributed in turn between the two "
+"printers in the printer group. If one printers is busy, the free printer "
+"is selected instead, which cuts down waiting times."
+msgstr ""
+"Die beiden baugleichen Laserdrucker werden dabei zu einer Druckergruppe "
+"zusammengefasst: Das bedeutet, dass die Benutzer neben der gezielten Auswahl "
+"eines Druckers auch die Möglichkeit erhalten, auf einem Pseudodrucker zu "
+"drucken. Die Druckaufträge werden dabei reihum auf die beiden Drucker der "
+"Druckergruppe verteilt. Bei belegten Druckern wird auf einen freien Drucker "
+"ausgewichen, sodass Wartezeiten vermieden werden."
+
+#: ../../small.rst:125
+msgid "Groupware"
+msgstr "Groupware"
+
+#: ../../small.rst:127
+msgid ""
+"On the UCS system the groupware solution :program:`Kopano` is installed "
+"as app from the App Center. Kopano accesses the user data of the UCS "
+"directory service. The administration integrates seamlessly in the "
+"|UCSUMC|. The employees use the web-based :program:`Kopano WebApp` for "
+"calendaring, also available in the App Center."
+msgstr ""
+"Auf dem UCS-System wird über das App Center :program:`Kopano` installiert, eine "
+"Groupware mit Integration in UCS. Kopano greift dabei auf die "
+"Benutzerkontoinformationen des UCS-Verzeichnisdienstes zu. Die Verwaltung "
+"integriert sich nahtlos in die |UCSUMC|. Die Mitarbeiter verwenden die "
+"webbasierte :program:`Kopano WebApp` für ihren Kalender, die auch als App im "
+"App Center verfügbar ist."
+
+#: ../../small.rst:133
+msgid ""
+"Virus detection including signature updates and spam filters are "
+"integrated at no additional cost."
+msgstr ""
+"Virenerkennung inklusive Signaturen-Updates und Spamfilterung sind ohne weitere "
+"Folgekosten integriert."
+
+#: ../../small.rst:139
+msgid "Web proxy and web cache"
+msgstr "Web Proxy und Webcache"
+
+#: ../../small.rst:141
+msgid ""
+"A web proxy server and web cache based on Squid is available with the app"
+" :program:`Proxy server` in UCS. Response times for regular calling the "
+"same web pages is reduced. Likewise, the data transfer volume through "
+"internet connections can be reduced. Furthermore, the view of internet "
+"content can be controlled and managed. For example, it can be defined, "
+"which users or user groups view which websites."
+msgstr ""
+"Ein Web Proxyserver und Web-Cache auf Basis von Squid steht mit der App "
+":program:`Proxyserver` in UCS zur Verfügung. Antwortzeiten für den regelmäßigen "
+"Aufruf gleicher Webseiten werden verringert. Ebenso kann das "
+"Daten-Transfervolumen über den Internetzugang reduziert werden. Darüber hinaus "
+"wird die Kontrolle und Administration des Zugriffs auf Internetinhalte "
+"ermöglicht. So kann beispielsweise festgelegt werden, welche Benutzer oder "
+"Benutzergruppen auf welche Webseiten zugreifen."
+
+#: ../../small.rst:151
+msgid "Backup"
+msgstr "Backup"
+
+#: ../../small.rst:153
+msgid ""
+"All files, both the users' files in the home directory and the legal "
+"literature files in the central share, are stored on the UCS system and "
+"can thus be centrally saved on a tape drive. The App Center in UCS offers"
+" several solutions like for example :program:`Bareos Backup Server` and "
+":program:`SEP sesam Backup Server` that can be used flexibly for "
+"different backup and archiving strategies."
+msgstr ""
+"Alle Daten, sowohl die Daten der Benutzer im Heimatverzeichnis als auch die "
+"Daten auf der zentralen Freigabe für Fachliteratur, liegen auf dem UCS-System "
+"und können deshalb zentral auf einen Streamer gesichert werden. Im App Center "
+"von UCS gibt es dazu verschiedene Backup-Lösungen wie zum Beispiel :program:`Bareos "
+"Backup Server` und :program:`SEP sesam Backup Server`, die flexibel auf verschiedene "
+"Sicherungs- und Archivierungsstrategien angewendet werden können."
+
+#: ../../small.rst:162
+msgid "Outlook"
+msgstr "Ausblick"
+
+#: ../../small.rst:164
+msgid ""
+"With regard to a planned merger of another office in Munich, it will be "
+"simple to install a further UCS system in this branch. All LDAP data is "
+"then automatically transferred to the site server allowing the employees "
+"to logon at on-site meetings in Munich with their standard user "
+"credentials."
+msgstr ""
+"Für den geplanten Zusammenschluss mit einem weiteren Büro in München kann "
+"einfach ein weiteres UCS-System in dieser Filliale installiert werden. Alle "
+"LDAP-Daten werden dann automatisch und verschlüsselt an den Standortserver "
+"übertragen, sodass Mitarbeiter sich bei Vorort-Terminen am Münchner Standort "
+"mit ihren gewohnten Benutzerkennungen anmelden."
+
+#: ../../small.rst:169
+msgid ""
+"The existing Active Directory installation at the Munich office can be "
+"migrated to the UCS domain fully automated using :program:`Univention AD "
+"Takeover`."
+msgstr ""
+"Das am Münchner Standort schon bestehende Active Directory kann mit "
+":program:`Univention AD Takeover` automatisiert in die UCS-Domäne migriert werden."
+
+#: ../../small.rst:175
+msgid "References"
+msgstr "Referenzen"
+
+#: ../../small.rst:177
+msgid ":ref:`UCS Manual <uv-manual:introduction>`"
+msgstr ":ref:`UCS Handbuch <uv-handbuch:introduction>`"
+
+#: ../../small.rst:179
+msgid ":ref:`uv-manual:windows-ad-takeover`"
+msgstr ":ref:`uv-handbuch:windows-ad-takeover`"
+
+#: ../../small.rst:181
+msgid ""
+"`Bareos Backup Server <https://www.univention.com/products/univention-"
+"app-center/app-catalog/bareos/>`_"
+msgstr ""
+"`Bareos Backup Server <https://www.univention.de/produkte/univention-app-center/app-katalog/bareos/>`_"
+
+#: ../../small.rst:184
+msgid ""
+"`Kopano Core <https://www.univention.com/products/univention-app-center"
+"/app-catalog/kopano-core/>`_"
+msgstr ""
+"`Kopano Core <https://www.univention.de/produkte/univention-app-center/app-katalog/kopano-core/>`_"
+
+#: ../../small.rst:187
+msgid ""
+"`Kopano WebApp <https://www.univention.com/products/univention-app-center"
+"/app-catalog/kopano-webapp/>`_"
+msgstr ""
+"`Kopano WebApp <https://www.univention.de/produkte/univention-app-center/app-katalog/kopano-webapp/>`_"
+
+#: ../../small.rst:190
+msgid ""
+"`Proxyserver / Webcache (Squid) <https://www.univention.com/products"
+"/univention-app-center/app-catalog/squid/>`_"
+msgstr ""
+"`Proxyserver / Webcache (Squid) <https://www.univention.de/produkte/univention-app-center/app-katalog/squid/>`_"
+
+#: ../../small.rst:193
+msgid ""
+"`Self Service <https://www.univention.com/products/univention-app-center"
+"/app-catalog/self-service/>`_"
+msgstr ""
+"`Self Service <https://www.univention.de/produkte/univention-app-center/app-katalog/self-service/>`_"
+
+#: ../../small.rst:195
+msgid ""
+"`SEP sesam Backup Server <https://www.univention.com/products/univention-"
+"app-center/app-catalog/sep-sesam/>`_"
+msgstr ""
+"`SEP sesam Backup Server <https://www.univention.de/produkte/univention-app-center/app-katalog/sep-sesam/>`_"

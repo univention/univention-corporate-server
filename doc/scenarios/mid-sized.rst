@@ -61,7 +61,7 @@ Directory Nodes / LDAP directory
 ================================
 
 The company implements an infrastructure composed of a UCS |UCSPRIMARYDN|, a UCS
-|UCSBACKUPDN|, several UCS |UCSREPLICADN| and desktop systems consisting of
+|UCSBACKUPDN|, several UCS |UCSREPLICADN|\ s and desktop systems consisting of
 desktop computers and notebooks. Microsoft Windows and Ubuntu Linux are used on
 those systems.
 
@@ -149,8 +149,8 @@ Outlook
 =======
 
 At a later point in time, the plan is to monitor the internet traffic centrally
-through a web proxy. For this purpose, UCS provides the app *Proxy server/ web cache
-(Squid)*.
+through a web proxy. For this purpose, UCS provides the app :program:`Proxy server/ web cache
+(Squid)`.
 
 Alternatively, it is also possible to procure a specialized appliance, which can
 authenticate the users against the UCS LDAP server.

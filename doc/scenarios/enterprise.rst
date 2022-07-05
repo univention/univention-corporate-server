@@ -47,12 +47,12 @@ Implementation
 ==============
 
 The company implements an infrastructure composed of a UCS |UCSPRIMARYDN|, a UCS
-|UCSBACKUPDN|, several UCS |UCSREPLICADN| and 150 thin clients.
+|UCSBACKUPDN|, several UCS |UCSREPLICADN|\ s and 150 thin clients.
 
 The |UCSPRIMARYDN| is the centerpiece of the UCS domain. The central, writable
 LDAP directory is provided on this system.
 
-.. _versicherung-gesamt:
+.. _insurance-overview:
 
 .. figure:: /images/versicherung.*
    :alt: General overview (excluded: storage, DNS, DHCP, print services, virtualization, backup)
@@ -131,7 +131,7 @@ installed through PXE.
 Active Directory synchronization
 ================================
 
-The Univention Active Directory connector makes it possible to synchronize
+The :program:`Univention Active Directory Connector` makes it possible to synchronize
 directory service objects between a Microsoft Windows 2012/2016/2019 server with
 Microsoft Active Directory (AD) and an open source LDAP directory service in
 |UCSUCS|.
@@ -243,7 +243,7 @@ The installation is operated as a |UCSREPLICADN| system on the Amazon EC2 cloud.
 This ensures high availability and allows flexible scaling to growing
 performance and storage requirements.
 
-.. _insurance-rev:
+.. _insurance-ref:
 
 References
 ==========

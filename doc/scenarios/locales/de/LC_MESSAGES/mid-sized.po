@@ -1,0 +1,339 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Scenarios for Univention Corporate Server \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-07-05 13:22+0200\n"
+"PO-Revision-Date: 2022-07-05 20:36+0200\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
+"Language-Team: Univention GmbH <packages@univention.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../mid-sized.rst:6
+msgid "Medium-sized mechanical engineering company"
+msgstr "Mittelständische Maschinenbau-Firma"
+
+#: ../../mid-sized.rst:8
+msgid ""
+"Ganupa Technologies is one of the leading manufacturers of rolled steel "
+"mills. At the company headquarters in Germany, 260 people are employed in"
+" *Production*, *Administration*, *Design* and *Sales*. In addition, there"
+" are also local offices in the USA, Argentina and India, each with 5-10 "
+"employees."
+msgstr ""
+"Ganupa Technologies ist einer der wichtigsten Hersteller für Walzstahlfräsen. "
+"Am Firmensitz in Deutschland arbeiten 260 Mitarbeiter in *Produktion*, "
+"*Verwaltung*, *Konstruktion* und *Vertrieb*. Außerdem gibt es in den USA, Argentinien "
+"und Indien lokale Standorte mit je 5 bis 10 Mitarbeitern."
+
+#: ../../mid-sized.rst:13
+msgid ""
+"Linux is predominantly used on the desktops. The employees from *Design* "
+"and *Development* are dependent on Linux software and require a freely "
+"configurable desktop."
+msgstr ""
+"Auf dem Desktop kommt überwiegend Linux zum Einsatz. Die Mitarbeiter aus "
+"*Konstruktion* und *Entwicklung* sind auf Linux-Software angewiesen und benötigen "
+"einen frei konfigurierbaren Desktop."
+
+#: ../../mid-sized.rst:17
+msgid ""
+"The employees from *Administration* and *Sales* will only be offered an "
+"office suite, an email client and a web browser."
+msgstr ""
+"Für die Mitarbeiter aus der *Verwaltung* und dem *Vertrieb* soll nur eine "
+"Office-Suite, ein E-Mail-Client und ein Browser angeboten werden."
+
+#: ../../mid-sized.rst:20
+msgid ""
+"An accounting software required by some users is only available for "
+"Microsoft Windows. Part of the design process is performed with a CAD "
+"software, which is only available for Oracle Solaris."
+msgstr ""
+"Eine Buchhaltungssoftware, die von einigen Benutzern benötigt wird, ist nur "
+"unter Microsoft Windows verfügbar. Ein Teil der Konstruktion muss mit einer "
+"CAD-Software erfolgen, die nur für Oracle Solaris verfügbar ist."
+
+#: ../../mid-sized.rst:24
+msgid ""
+"The administration of the computers needs to be as central as possible. "
+"Whilst there are two IT technicians in the headquarters, there are no "
+"technical personnel at the other three branch offices."
+msgstr ""
+"Die Administration der Rechner soll möglichst zentralisiert erfolgen. Während "
+"in der Zentrale zwei IT-Mitarbeiter arbeiten, ist an den drei externen "
+"Standorten kein technisches Personal verfügbar."
+
+#: ../../mid-sized.rst:28
+msgid ""
+"To avoid non-productive times caused by malfunctions, the majority of the"
+" offered services must be provided redundantly."
+msgstr ""
+"Um Arbeitsausfälle durch Störungen zu vermeiden, muss der Großteil der "
+"angebotenen Dienste redundant bereitgestellt werden."
+
+#: ../../mid-sized.rst:31
+msgid ""
+"A proxy server will buffer the network traffic in a cache and provide "
+"virus protection."
+msgstr ""
+"Ein Proxy-Server soll den Netzwerkverkehr in einem Cache zwischenspeichern und "
+"Virenschutz anbieten."
+
+#: ../../mid-sized.rst:34
+msgid ""
+"A groupware solution is required for the coordination of the globally "
+"distributed work procedures."
+msgstr ""
+"Für die Koordination der weltweit verteilten Arbeitsabläufe wird eine "
+"Groupwarelösung benötigt."
+
+#: ../../mid-sized.rst:37
+msgid "All user data is centrally saved on an Storage Area Network device (SAN)."
+msgstr "Alle Nutzdaten werden zentral auf einem Storage Area Network (SAN) gespeichert."
+
+#: ../../mid-sized.rst:42
+msgid "Implementation"
+msgstr "Umsetzung"
+
+#: ../../mid-sized.rst:49
+msgid ""
+"System overview of Ganupa Technologies headquarters (virtualization is "
+"not considered)"
+msgstr ""
+"Systemübersicht von Ganupa Technologies am zentralen Standort (die "
+"Virtualisierung wird in diesem Schaubild nicht berücksichtigt)"
+
+#: ../../mid-sized.rst:56
+msgid "Global organization scheme of Ganupa Technologies"
+msgstr "Globaler Systemaufbau von Ganupa Technologies"
+
+#: ../../mid-sized.rst:61
+msgid "Directory Nodes / LDAP directory"
+msgstr "Directory Nodes / LDAP-Verzeichnis"
+
+#: ../../mid-sized.rst:63
+msgid ""
+"The company implements an infrastructure composed of a UCS "
+"|UCSPRIMARYDN|, a UCS |UCSBACKUPDN|, several UCS |UCSREPLICADN|\ s and "
+"desktop systems consisting of desktop computers and notebooks. Microsoft "
+"Windows and Ubuntu Linux are used on those systems."
+msgstr ""
+"Das Unternehmen implementiert eine Infrastruktur bestehend aus einem UCS "
+"|UCSPRIMARYDN|, einem UCS |UCSBACKUPDN|, mehreren UCS |UCSREPLICADN|\ s und "
+"Arbeitsplatzsystemen für Mitarbeiter bestehend aus Desktop-Computern und "
+"Notebooks. Zum Einsatz kommen Microsoft Windows und Ubuntu Linux."
+
+#: ../../mid-sized.rst:68
+msgid ""
+"The |UCSPRIMARYDN| is the centerpiece of the UCS domain. The central, "
+"writable copy of the LDAP directory service is maintained on this system."
+msgstr ""
+"Der |UCSPRIMARYDN| ist das Kernstück der UCS-Domäne. Auf diesem System wird die "
+"zentrale schreibbare Kopie des LDAP-Verzeichnisdienstes vorgehalten."
+
+#: ../../mid-sized.rst:71
+msgid ""
+"The |UCSBACKUPDN| largely represents a copy of the |UCSPRIMARYDN|. In "
+"this way, the important services are available doubled on the network, "
+"the availability of the services is thus further increased and the load "
+"is distributed between the UCS Directory Nodes."
+msgstr ""
+"Der |UCSBACKUPDN| stellt weitgehend eine Kopie des |UCSPRIMARYDN| dar. Dadurch "
+"sind alle wichtigen Dienste doppelt im Netzwerk vorhanden, die Verfügbarkeit "
+"der Dienste wird also weiter erhöht und die Last zwischen den UCS Directory "
+"Nodes verteilt."
+
+#: ../../mid-sized.rst:76
+msgid ""
+"If the |UCSPRIMARYDN| fails as a result of a hardware defect, the "
+"|UCSBACKUPDN| can be converted to the |UCSPRIMARYDN| in a very short "
+"time."
+msgstr ""
+"Sollte der |UCSPRIMARYDN| durch einen Hardwaredefekt ausfallen, kann der "
+"|UCSBACKUPDN| innerhalb kürzester Zeit zu einem |UCSPRIMARYDN| umgewandelt "
+"werden."
+
+#: ../../mid-sized.rst:79
+msgid ""
+"The |UCSPRIMARYDN| and |UCSBACKUPDN| are both installed at the company "
+"headquarters. The two UCS systems operate an LDAP server and provide "
+"login services for the domains. A DNS and DHCP server maintained with "
+"data from the LDAP directory runs on both systems and provides central IP"
+" management. A print server is set up on the |UCSBACKUPDN|."
+msgstr ""
+"Der |UCSPRIMARYDN| und der |UCSBACKUPDN| stehen in der Firmenzentrale. Die "
+"beiden UCS-Systeme betreiben einen LDAP-Server und bieten Anmeldedienste für "
+"die Domäne an. Für ein zentrales IP-Management läuft auf beiden Systemen ein "
+"mit Daten aus dem LDAP-Verzeichnis gepflegter und somit redundanter DNS- und "
+"DHCP-Server. Auf dem |UCSBACKUPDN| ist ein Druckserver eingerichtet."
+
+#: ../../mid-sized.rst:88
+msgid "Print services"
+msgstr "Druckdienste"
+
+#: ../../mid-sized.rst:90
+msgid ""
+"Print jobs are forwarded to the requested printer through a print server."
+" The print servers are realized with CUPS, which manages the different "
+"printers in a central spooling."
+msgstr ""
+"Druckaufträge werden über einen Print-Server an den gewünschten Drucker "
+"weiterleitet. Die Print-Server werden mit CUPS realisiert, das die "
+"verschiedenen Drucker in ein zentrales Spooling einbindet."
+
+#: ../../mid-sized.rst:94
+msgid ""
+"In some larger offices several printers are grouped together into a "
+"printer group; the users simply print on this group, whereby the print "
+"jobs are equally distributed and the next free printer is used. This "
+"saves the users from having to check whether a particular printer is "
+"already in use."
+msgstr ""
+"In einigen Großraumbüros sind mehrere Drucker zu einer Druckergruppe "
+"zusammengefasst. Die Benutzer drucken einfach auf diese Gruppe, wobei die "
+"Druckaufträge gleichmäßig verteilt werden und der nächste freie Drucker "
+"verwendet wird. Die Benutzer müssen so nicht prüfen, ob ein Drucker gerade in "
+"Verwendung ist."
+
+#: ../../mid-sized.rst:102
+msgid "Integration of Oracle Solaris systems"
+msgstr "Einbindung von Oracle-Solaris-Systemen"
+
+#: ../../mid-sized.rst:104
+msgid ""
+"A specialist application for CAD design is only available for Oracle "
+"Solaris. The name services on the Solaris system have been adapted to "
+"query the UCS LDAP for authentication. Users can sign in to the Solaris "
+"system with their domain user identification and password. This negates "
+"the need for the additional maintenance of local Solaris user accounts."
+msgstr ""
+"Eine Fachanwendung für CAD-Konstruktionen ist nur für Oracle Solaris verfügbar. "
+"Die Namensdienste auf dem Solaris-System wurden auf eine Authentifizierung "
+"gegen den UCS LDAP-Verzeichnisdienst angepasst, d.h. Benutzer können sich auf dem Solaris-System "
+"mit ihrer Domänen-Benutzerkennung und -Passwort anmelden. Die zusätzliche "
+"Pflege lokaler Benutzerkonten auf dem Solaris-System entfällt so."
+
+#: ../../mid-sized.rst:110
+msgid ""
+"The Solaris system is assigned its IP address from the UCS DHCP servers "
+"through DHCP. The files are saved on the UCS file servers through a NFS "
+"share."
+msgstr ""
+"Das Solaris-System erhält seine IP-Adresse über DHCP von den UCS DHCP-Servern "
+"zugewiesen. Die Datenspeicherung erfolgt auf den UCS Dateiservern über eine "
+"NFS-Freigabe."
+
+#: ../../mid-sized.rst:116
+msgid "Data management"
+msgstr "Datenhaltung"
+
+#: ../../mid-sized.rst:118
+msgid ""
+"All user data is stored on a central Storage Area Network (SAN) system. "
+"The different shares are registered and administrated in the |UCSUMC|. "
+"The Linux and Solaris clients connect to individual shares through the "
+"network file system (NFS), the Windows clients through the CIFS protocol."
+msgstr ""
+"Die Speicherung aller Benutzerdaten erfolgt auf einem zentralen SAN-System. Die "
+"verschiedenen Freigaben werden in der |UCSUMC| angelegt und verwaltet. Die "
+"Linux- und Solaris-Clients greifen über das Network Filesystem (NFS) auf die "
+"einzelnen Freigaben zu, die Windows-Clients über das CIFS-Protokoll."
+
+#: ../../mid-sized.rst:126
+msgid "Groupware"
+msgstr "Groupware"
+
+#: ../../mid-sized.rst:128
+msgid ""
+"Ganupa Technologies uses the groupware solution :program:`Open-Xchange "
+"App Suite` for arranging meetings and organizing contacts and tasks."
+msgstr ""
+"Ganupa Technologies verwendet die Groupwarelösung :program:`Open-Xchange App "
+"Suite` zur Abstimmung von Terminen, Kontakten und Aufgaben."
+
+#: ../../mid-sized.rst:131
+msgid ""
+"The groupware server is operated as a |UCSREPLICADN| system on the Amazon"
+" EC2 cloud. This allows flexible scaling of the groupware system to "
+"growing performance and storage requirements. The installation can be "
+"performed with a few clicks using the App Center."
+msgstr ""
+"Der Groupware-Server wird als |UCSREPLICADN| in der Amazon EC2-Cloud betrieben. "
+"Dies erlaubt eine flexible Skalierung des Groupwaresystems auf wachsende "
+"Leistungs- und Speicherplatzanforderungen. Die Installation erfolgt mit wenigen "
+"Klicks aus dem App Center."
+
+#: ../../mid-sized.rst:136
+msgid ""
+"The administration of the groupware-related attributes integrates "
+"seamlessly in the |UCSUMC|. The employees connect to the groupware "
+"through the OX App Suite web client and Mozilla Thunderbird."
+msgstr ""
+"Die Verwaltung der Groupware relevanten Attribute integriert sich nahtlos in "
+"die |UCSUMC|. Die Mitarbeiter greifen auf die Groupware über den Open-Xchange "
+"App Suite Web-Client und Mozilla Thunderbird zu."
+
+#: ../../mid-sized.rst:140
+msgid ""
+"Mobile devices like smartphones and tablets are integrated through the "
+"Microsoft ActiveSync protocol."
+msgstr ""
+"Mobile Endgeräte wie Smartphones und Tablets werden über das "
+"ActiveSync-Protokoll von Microsoft integriert."
+
+#: ../../mid-sized.rst:143
+msgid ""
+"Virus detection including signature updates and spam filters are "
+"integrated at no additional cost."
+msgstr ""
+"Virenerkennung inklusive Signaturen-Updates und Spamfilterung sind ohne weitere "
+"Folgekosten integriert."
+
+#: ../../mid-sized.rst:149
+msgid "Outlook"
+msgstr "Ausblick"
+
+#: ../../mid-sized.rst:151
+msgid ""
+"At a later point in time, the plan is to monitor the internet traffic "
+"centrally through a web proxy. For this purpose, UCS provides the app "
+":program:`Proxy server/ web cache (Squid)`."
+msgstr ""
+"Zu einem späteren Zeitpunkt soll der Internet-Zugriff zentral über einen "
+"Web-Proxy kanalisiert und auf Viren und Malware geprüft werden. UCS bietet "
+"hierfür eine Integration über die App :program:`Proxyserver / Webcache (Squid)`."
+
+#: ../../mid-sized.rst:155
+msgid ""
+"Alternatively, it is also possible to procure a specialized appliance, "
+"which can authenticate the users against the UCS LDAP server."
+msgstr ""
+"Alternativ kann auch die Anschaffung einer spezialisierten Appliance erwogen "
+"werden, die die Benutzer dann gegen den UCS LDAP-Server authentifizieren kann."
+
+#: ../../mid-sized.rst:161
+msgid "References"
+msgstr "Referenzen"
+
+#: ../../mid-sized.rst:163
+msgid ":ref:`UCS Manual <uv-manual:introduction>`"
+msgstr ":ref:`UCS Handbuch <uv-handbuch:introduction>`"
+
+#: ../../mid-sized.rst:165
+msgid ""
+"`OX App Suite <https://www.univention.com/products/univention-app-center"
+"/app-catalog/oxseforucs/>`_"
+msgstr ""
+"`OX App Suite <https://www.univention.de/produkte/univention-app-center/app-katalog/oxseforucs/>`_"
+
+#: ../../mid-sized.rst:168
+msgid ""
+"`Proxy server/ web cache (Squid) <https://www.univention.com/products"
+"/univention-app-center/app-catalog/squid/>`_"
+msgstr ""
+"`Proxy server/ web cache (Squid) <https://www.univention.de/produkte/univention-app-center/app-katalog/squid/>`_"
+

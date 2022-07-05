@@ -46,7 +46,8 @@ extensions = [
 ]
 
 intersphinx_mapping = {
-    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None)
+    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None),
+    "uv-handbuch": ("https://docs.software-univention.de/manual/5.0/de", None),
 }
 
 bibtex_bibfiles = ["../bibliography.bib"]
