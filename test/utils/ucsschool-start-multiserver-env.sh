@@ -13,12 +13,9 @@ export UCS_TEST_RUN=false
 # TODO remove
 export DIMAGE="docker-registry.knut.univention.de/ucs-ec2-tools:branch-fbotner-issue-13"
 
-# TODO move to utils or use jenkins plugin
-# extra label for instances names so that the instances
-# are user specific
-if [ -n "$BUILD_URL" ]; then
-	my_name="$(curl -k -s "$BUILD_URL/api/json" | awk -F '"userId":"' '{print $2}'| awk -F '"' '{print $1}')"
-	export UCS_ENV_UCS_KT_GET_USERNAME="${my_name}"
+# user specific instances "username_..."
+if [ -n "$BUILD_USER_ID" ]; then
+	export UCS_ENV_UCS_KT_GET_USERNAME="$BUILD_USER_ID"
 fi
 
 cfg="scenarios/autotest-203-ucsschool-multiserver-s4.cfg"
