@@ -68,7 +68,7 @@ class S4Connector(Alert):
 
 		self.write_metric('univention_s4_connector_rejects', rejects)
 		if rejects:
-			self.debug('Found %d reject(s)! Please check output of univention-s4connector-list-rejected.' % (rejects,))
+			self.log.debug('Found %d reject(s)! Please check output of univention-s4connector-list-rejected.' % (rejects,))
 
 
 if __name__ == '__main__':
