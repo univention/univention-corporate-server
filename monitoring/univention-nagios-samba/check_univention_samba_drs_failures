@@ -105,7 +105,7 @@ if __name__ == '__main__':
 	except RuntimeError as error:
 		nagios_exit(NAGIOS_STATE_CRITICAL, error)
 	except Exception as ex:
-		nagios_exit(NAGIOS_STATE_CRITICAL, ex.message)
+		nagios_exit(NAGIOS_STATE_CRITICAL, str(ex))
 
 	if failures:
 		nagios_exit(NAGIOS_STATE_CRITICAL, msg)
