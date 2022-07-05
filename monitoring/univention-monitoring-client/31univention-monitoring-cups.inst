@@ -56,7 +56,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--set summary="Additional Service: check if metrics regarding CUPS are missing" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_cups_running) == 1 or abesnt(univention_cups_reachable) == 1" || die "UNIVENTION_CUPS_MISSING"
+	--set query="absent(univention_cups_running) == 1 or absent(univention_cups_reachable) == 1" || die "UNIVENTION_CUPS_MISSING"
 
 CHECKS=(
 	"UNIVENTION_CUPS"
