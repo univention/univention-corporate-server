@@ -7,7 +7,8 @@ fix:
 desc: |
  This update addresses the following issue:
  * The alert expressions for checking the SSL validity and the swap usage
-   have been repaired.
+   have been repaired. The join status check has been split into two checks.
+   An error in `check_univention_samba_drs_failures` has been fixed.
  * When `prometheus-node-exporter` was not installed error mails by cron were
    sent due to a missing directory.
 bug: [54919, 54927]
