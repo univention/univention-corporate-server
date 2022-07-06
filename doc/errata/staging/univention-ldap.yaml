@@ -9,4 +9,6 @@ desc: |
   * The ownership, group and permissions of LDAP backups are now
     configurable via the UCR variables `slapd/backup/owner`,
     `slapd/backup/group"`and `slapd/backup/permissions`.
-bug: [54782]
+  * The UCR variable description for the variable "ldap/database/type"
+    has been updated and now contains deprecated and recommended values.
+bug: [54782, 54821]

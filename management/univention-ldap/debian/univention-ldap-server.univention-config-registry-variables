@@ -67,8 +67,9 @@ Type=str
 Categories=service-ldap
 
 [ldap/database/type]
-Description[de]=Diese Variable konfiguriert das Datenbank-Backend des LDAP-Servers ('bdb' oder 'hdb'). Diese Variable sollte nur in Ausnahmefällen angepasst werden.
-Description[en]=This variable configures the database backend of the LDAP server ('bdb' or 'hdb'). This variable should only be modified in exceptional cases.
+Description[de]=Diese Variable konfiguriert das Datenbank-Backend des LDAP-Servers. Der Standardwert ist "mdb", was empfohlen wird. Die Backends "bdb" und "hdb" sind veraltet. Diese Variable sollte nur in Ausnahmefällen geändert werden.
+Description[en]=This variable configures the database backend of the LDAP server. Defaults to 'mdb', which is recommended. Older 'bdb' and 'hdb' have been deprecated. This variable should only be modified in exceptional cases.
+Default=mdb
 Type=str
 Categories=service-ldap
 
