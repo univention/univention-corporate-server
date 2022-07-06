@@ -18,9 +18,9 @@ import univention.testing.udm as udm_test
 	('integer', ('5', '3000', '0', ''), ('one', 'somestring', '-5', '1.9')),
 	('TrueFalse', ('true', 'false', ''), ('True', 'False', 'TRUE', 'FALSE', 'tRue', 'fAlse', 'yes', 'no', 'Yes', 'No', 'YES', 'NO', '1', '0')),
 	('TrueFalseUpper', ('TRUE', 'FALSE', ''), ('True', 'False', 'TrUE', 'FaLSE', 'Yes', 'No', 'YES', 'NO', 'YeS', 'nO', '1', '0')),
-	('boolean', ('1', '0', ''), ('True', 'False', 'TRUE', 'FALSE', 'true', 'false', 'yes', 'no', 'Yes', 'No', 'YES', 'NO'))
-	('emailAddress', ('foo@example.com', 'foo+bar@example.com', 'foo-bar@example.com', 'foo@sub.sub.sub.domain.example.com', ''), ('foo', 'example.com', '@', 'foo', 'foo@', '@example.com'))
-	('emailAddressTemplate', ('foo@example.com', 'foo+bar@example.com', 'foo-bar@example.com', 'foo@sub.sub.sub.domain.example.com', ''), ('foo', 'example.com', '@', 'foo', 'foo@', '@example.com'))
+	('boolean', ('1', '0', ''), ('True', 'False', 'TRUE', 'FALSE', 'true', 'false', 'yes', 'no', 'Yes', 'No', 'YES', 'NO')),
+	('emailAddress', ('foo@example.com', 'foo+bar@example.com', 'foo-bar@example.com', 'foo@sub.sub.sub.domain.example.com', ''), ('foo', 'example.com', '@', 'foo', 'foo@', '@example.com')),
+	('emailAddressTemplate', ('foo@example.com', 'foo+bar@example.com', 'foo-bar@example.com', 'foo@sub.sub.sub.domain.example.com', ''), ('foo', 'example.com', '@', 'foo', 'foo@', '@example.com')),
 ])
 def test_udm_syntax(udm, syntax, valid_values, invalid_values, verify_ldap_object):
 	"""Apply valid/invalid values for various UDM syntaxes"""
