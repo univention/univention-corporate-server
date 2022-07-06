@@ -1,0 +1,6 @@
+.. _biblio:
+
+Bibliography
+============
+
+.. bibliography::
