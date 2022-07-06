@@ -10,3 +10,5 @@ desc: |
    been changed to `--recursion` in prior Samba releases. This repairs the
    Nagios check `UNIVENTION_NMBD`.
 bug: [54919]
+erratum: 344
+announced: 2022-07-06
