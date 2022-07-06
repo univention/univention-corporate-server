@@ -1,6 +1,6 @@
 product: ucs
 release: "5.0"
-version: [1]
+version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-squid
 fix:

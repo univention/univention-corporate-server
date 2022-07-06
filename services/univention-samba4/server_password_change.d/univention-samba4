@@ -31,7 +31,9 @@
 
 . /usr/lib/univention-server/lib/server_password_change/debug.sh
 
+PAUSE_DEBUG
 eval "$(univention-config-registry shell)"
+RESUME_DEBUG
 
 . /usr/share/univention-lib/base.sh
 
