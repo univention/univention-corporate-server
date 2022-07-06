@@ -53,7 +53,7 @@ class Alert(object):
 	def __init__(self, args):
 		self.args = args
 		self.log = logging.getLogger(self.args.prog)
-		self.default_labels = {'hostname': '%(hostname)s.%(domainname)s' % ucr}
+		self.default_labels = {'instance': '%(hostname)s.%(domainname)s' % ucr}
 		self._fd = None
 
 	@classmethod
