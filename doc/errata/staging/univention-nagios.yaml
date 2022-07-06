@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-nagios
+fix:
+desc: |
+ This update addresses the following issue:
+ * The arguments for calling `nmblookup` have been fixed. The flag `-R` has
+   been changed to `--recursion` in prior Samba releases. This repairs the
+   Nagios check `UNIVENTION_NMBD`.
+bug: [54919]

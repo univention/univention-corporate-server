@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import pipes
 import re
 import subprocess
 
@@ -44,25 +45,28 @@ class NMBD(Alert):
 		if ucr_hosts:
 			hosts = [ent.strip().split(' ', 1) for ent in ucr_hosts.split(',')]
 		else:
-			query_host = wins_host = subprocess.check_output('/bin/hostname').decode('UTF-8')
+			query_host = wins_host = subprocess.check_output('/bin/hostname').strip().decode('UTF-8')
 			hosts = [(query_host, wins_host)]
 
 		for query_host, wins_host in hosts:
+			cmd = ['/usr/bin/nmblookup', '-U', wins_host, '--recursion', query_host]
 			try:
-				output = subprocess.check_output(['/usr/bin/nmblookup', '-U', wins_host, '-R', query_host], stderr=subprocess.DEVNULL).decode('UTF-8', 'replace')
+				output = subprocess.check_output(cmd, stderr=subprocess.DEVNULL).decode('UTF-8', 'replace')
 			except FileNotFoundError:
 				self.write_metric('univention_nmbd_running', -1, query_host=query_host, wins_host=wins_host)
 				self.log.debug('Cannot find nmblookup executable')
-				return
+				continue
 			except subprocess.CalledProcessError as exc:
 				output = exc.output.decode('UTF-8', 'replace')
 
 			output = output.replace('\n', ';')
 			if 'failed to find name' in output:
-				self.log.debug('nmblookup for %s at host %s failed: %s' % (wins_host, query_host, output))
+				self.log.debug('nmblookup for %s at host %s failed (%s): %s' % (wins_host, query_host, ' '.join(pipes.quote(x) for x in cmd), output))
 				self.write_metric('univention_nmbd_running', 0, query_host=query_host, wins_host=wins_host)
+				continue
 
-			if re.search('[0-9]+.[0-9]+.[0-9]+.[0-9]+ %s' % (re.escape(query_host),), output):
+			# FIXME: IPv6 possible?
+			if re.search(r'[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+ %s' % (re.escape(query_host),), output):
 				self.log.debug('nmblookup for %s at host %s ok' % (wins_host, query_host))
 				self.write_metric('univention_nmbd_running', 1, query_host=query_host, wins_host=wins_host)
 			else:

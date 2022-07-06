@@ -110,7 +110,7 @@ if [ -z "$CMD" ] ; then
 	exit $STATE_UNKNOWN
 fi
 
-output=$($CMD -U "$WINS_HOST" -R "$QUERY_HOST" 2> /dev/null)
+output=$($CMD -U "$WINS_HOST" --recursion "$QUERY_HOST" 2> /dev/null)
 msg=$(echo "$output" | tr '\n' ';')
 
 echo "$output" | grep -qc "failed to find name"
