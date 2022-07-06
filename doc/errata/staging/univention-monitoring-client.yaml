@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-monitoring-client
-fix:
+fix: 1.0.0-3A~5.0.0.202207061416
 desc: |
  This update addresses the following issue:
  * The alert expressions for checking the SSL validity and the swap usage
