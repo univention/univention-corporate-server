@@ -33,7 +33,7 @@
 
 service univention-directory-listener restart
 
-eval "$(ucr shell server/role ldap/base)"
+eval "$(ucr shell server/role ldap/base ldap/hostdn)"
 
 if [ "$server_role" = "domaincontroller_master" ] && dpkg --compare-versions "$2" lt-nl 1.0.0-2; then
 	udm monitoring/alert modify --ignore_not_exists \
@@ -74,6 +74,12 @@ if [ "$server_role" = "domaincontroller_master" ] && dpkg --compare-versions "$2
         --set summary="Default Service: check if system has been joined successfully" \
         --append labels='"severity" "warning"' \
         --set query="univention_join_status == 6"
+
+	if udm monitoring/alert list --filter "(&(cn=UNIVENTION_JOINSTATUS)(assignedHosts=$ldap_hostdn))" | grep -q ^DN:; then
+		udm monitoring/alert modify --ignore_not_exists \
+			--dn "cn=UNIVENTION_JOINSTATUS_WARNING,cn=monitoring,$ldap_base" \
+			--append assignedHosts="$ldap_hostdn"
+	fi
 fi
 
 exit 0
