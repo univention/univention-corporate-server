@@ -1,3 +1,10 @@
+univention-saml (7.0.6-1) unstable; urgency=medium
+
+  * Bug #44669: Add debug trace to improve error information in
+    91univention-saml.inst
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Wed, 06 Jul 2022 11:03:06 +0200
+
 univention-saml (7.0.5-2) unstable; urgency=medium
 
   * Bug #54706: revert. Python 2 is used by UCR template

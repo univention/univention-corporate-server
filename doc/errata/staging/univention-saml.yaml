@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-saml
+fix:
+desc: |
+ This update addresses the following issues:
+ * Add debug trace to the joinscript 91univention-saml.inst
+   to improve error reporting.
+bug: [44669]
