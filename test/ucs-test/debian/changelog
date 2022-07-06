@@ -1,3 +1,9 @@
+ucs-test (10.0.7-6) unstable; urgency=medium
+
+  * Bug #53538: merged 66_udm-computers tests into one file
+
+ -- Johannes Lohmer <lohmer@univention.de>  Wed, 13 Jul 2022 09:39:17 +0200
+
 ucs-test (10.0.7-5) unstable; urgency=medium
 
   * Bug #53538: Migrated 66_udm-computers to pytest
