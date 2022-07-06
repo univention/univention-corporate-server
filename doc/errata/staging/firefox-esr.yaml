@@ -1,0 +1,31 @@
+product: ucs
+release: "5.0"
+version: [1, 2]
+scope: ucs_5.0-0-errata5.0-2
+src: firefox-esr
+fix: 91.11.0esr-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ * Undesired attributes could be set as part of prototype pollution
+   (CVE-2022-2200)
+ * CSP bypass enabling stylesheet injection (CVE-2022-31744)
+ * CSP sandbox header without `allow-scripts` can be bypassed via retargeted
+   javascript: URI (CVE-2022-34468)
+ * Use-after-free in nsSHistory (CVE-2022-34470)
+ * Unavailable PAC file resulted in OCSP requests being blocked
+   (CVE-2022-34472)
+ * A popup window could be resized in a way to overlay the address bar with
+   web content (CVE-2022-34479)
+ * Potential integer overflow in ReplaceElementsAt (CVE-2022-34481)
+ * Memory safety bugs fixed in Firefox 102 and Firefox ESR 91.11
+   (CVE-2022-34484)
+bug: [54955]
+cve:
+- CVE-2022-2200
+- CVE-2022-31744
+- CVE-2022-34468
+- CVE-2022-34470
+- CVE-2022-34472
+- CVE-2022-34479
+- CVE-2022-34481
+- CVE-2022-34484
