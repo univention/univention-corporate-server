@@ -627,76 +627,77 @@ continue fetching files from the next server. Historically this had to be a
 ``TFTP`` server, but nowadays this also can be any ``HTTP`` server. This has the
 benefit that ``HTTP`` is faster, more reliable and also works over the internet.
 
-Install the ``HTTP`` capable boot loader :file:`lpxelinux.0`
+.. _netinstaller-public-proc:
+
+#. Install the ``HTTP`` capable boot loader :file:`lpxelinux.0`
 
 .. code-block:: console
 
    $ ln -s /usr/lib/PXELINUX/lpxelinux.0 \
    > /var/lib/univention-client-boot/
 
+#. Setup the *DHCP Boot* policy to use :file:`lpxelinux.0`. Depending on the
+   capabilities of the network card boot code the boot loader can either be
+   fetched over the ``HTTP`` or ``TFTP`` protocol:
 
-Setup the *DHCP Boot* policy to use :file:`lpxelinux.0`. Depending on the
-capabilities of the network card boot code the boot loader can either be fetched
-over the ``HTTP`` or ``TFTP`` protocol:
+   a. For ``HTTP`` configure the absolute URL as the ``boot filename``:
 
-For ``HTTP`` configure the absolute URL as the ``boot filename``:
+      .. code-block:: console
 
-.. code-block:: console
-
-   $ HOST="$(hostname -f)"
-   $ LDAP="$(ucr get ldap/base)"
-   $ HTTP="http://$HOST/univention-client-boot/lpxelinux.0"
-   $ udm policies/dhcp_boot modify \
-   > --dn "cn=default-settings,cn=boot,cn=dhcp,cn=policies,$LDAP" \
-   > --set boot_filename="$HTTP" \
-   > --set boot_server=
-
-
-The installer performs its own second DHCP request. This again retrieves the
-DHCP option ``boot filename``, which now contains the *URL* to the PXE loader.
-The installer wrongly interprets this as the URL for the profile
-:file:`preseed`, which breaks the installation. Therefore the option needs to be
-overwritten when the installer performs this second query:
-
-.. code-block:: console
-
-   $ STMT='if substring (option vendor-class-identifier, 0, 3) = "d-i" { filename ""; }'
-   $ udm dhcp/subnet list |
-   > sed -ne 's/^DN: //p' |
-   >   xargs -d '\n' -n1 udm dhcp/subnet modify \
-   >     --option options \
-   >     --append statements="$STMT" \
-   >     --dn
+         $ HOST="$(hostname -f)"
+         $ LDAP="$(ucr get ldap/base)"
+         $ HTTP="http://$HOST/univention-client-boot/lpxelinux.0"
+         $ udm policies/dhcp_boot modify \
+         > --dn "cn=default-settings,cn=boot,cn=dhcp,cn=policies,$LDAP" \
+         > --set boot_filename="$HTTP" \
+         > --set boot_server=
 
 
-For ``TFTP`` change ``boot filename`` to point to :file:`lpxelinux.0`:
+   b. The installer performs its own second DHCP request. This again retrieves
+      the DHCP option ``boot filename``, which now contains the *URL* to the PXE
+      loader. The installer wrongly interprets this as the URL for the profile
+      :file:`preseed`, which breaks the installation. Therefore the option needs
+      to be overwritten when the installer performs this second query:
 
-.. code-block:: console
+      .. code-block:: console
 
-   $ HOST="$(hostname -f)"
-   $ LDAP="$(ucr get ldap/base)"
-   $ udm policies/dhcp_boot modify \
-   > --dn "cn=default-settings,cn=boot,cn=dhcp,cn=policies,$LDAP" \
-   > --set boot_filename='lpxelinux.0' \
-   > --set boot_server="$HOST"
-
-
-Configure the boot loader to load the Linux kernel and initial ram disk from the
-public repository server:
-
-.. code-block:: console
-
-   $ PXE='http://updates.software-univention.de/pxe'
-   $ PXE="$PXE/5.0-2/amd64/gtk/debian-installer/amd64"
-   $ ucr set \
-   > pxe/installer/kernel="$PXE/linux" \
-   > pxe/installer/initrd="$PXE/initrd.gz" \
-   > pxe/installer/ipappend=3
+         $ STMT='if substring (option vendor-class-identifier, 0, 3) = "d-i" { filename ""; }'
+         $ udm dhcp/subnet list |
+         > sed -ne 's/^DN: //p' |
+         >   xargs -d '\n' -n1 udm dhcp/subnet modify \
+         >     --option options \
+         >     --append statements="$STMT" \
+         >     --dn
 
 
-In the profile file the settings for ``mirror/http/hostname`` and
-``mirror/http/directory`` must be changed to use the public server and its
-layout:
+   * For ``TFTP`` change ``boot filename`` to point to :file:`lpxelinux.0`:
+
+     .. code-block:: console
+
+        $ HOST="$(hostname -f)"
+        $ LDAP="$(ucr get ldap/base)"
+        $ udm policies/dhcp_boot modify \
+        > --dn "cn=default-settings,cn=boot,cn=dhcp,cn=policies,$LDAP" \
+        > --set boot_filename='lpxelinux.0' \
+        > --set boot_server="$HOST"
+
+
+#. Configure the boot loader to load the Linux kernel and initial ram disk from
+   the public repository server:
+
+   .. code-block:: console
+
+      $ PXE='http://updates.software-univention.de/pxe'
+      $ PXE="$PXE/5.0-2/amd64/gtk/debian-installer/amd64"
+      $ ucr set \
+      > pxe/installer/kernel="$PXE/linux" \
+      > pxe/installer/initrd="$PXE/initrd.gz" \
+      > pxe/installer/ipappend=3
+
+
+#. In the profile file the settings for ``mirror/http/hostname`` and
+   ``mirror/http/directory`` must be changed to use the public server and its
+   layout:
 
 ::
 
