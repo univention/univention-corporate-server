@@ -2,6 +2,7 @@ src/univention/admin/handlers/monitoring/*.py usr/lib/univention-monitoring-clie
 src/univention/admin/hooks.d/*.py usr/lib/univention-monitoring-client/udm/hooks/
 src/univention/admin/syntax.d/*.py usr/lib/univention-monitoring-client/udm/syntax/
 univention-monitoring.schema usr/lib/univention-monitoring-client/schema/
+62univention-monitoring.acl usr/lib/univention-monitoring-client/schema/
 monitoring-client.py usr/lib/univention-directory-listener/system/
 migrate-nagios-services-to-alerts usr/share/univention-monitoring-client
 umc/udm-monitoring.xml usr/lib/univention-monitoring-client/umc/

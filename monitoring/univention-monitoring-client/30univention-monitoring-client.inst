@@ -32,7 +32,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=1
+VERSION=2
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/all.sh
@@ -50,7 +50,8 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 ucs_registerLDAPExtension "$@" \
 	--ucsversionstart 4.4-1 \
 	--ucsversionend 5.99-0 \
-	--schema /usr/lib/univention-monitoring-client/schema/univention-monitoring.schema || die "LDAP Schema"
+	--schema /usr/lib/univention-monitoring-client/schema/univention-monitoring.schema \
+	--acl /usr/lib/univention-monitoring-client/schema/62univention-monitoring.acl || die "LDAP Schema/ACL"
 
 ucs_registerLDAPExtension "$@" \
 	--ucsversionstart 5.0-0 \

@@ -1,0 +1,6 @@
+access to dn.exact="cn=monitoring,@%@ldap/base@%@" attrs=children
+    by set="user/univentionObjectType & ([computers/domaincontroller_master] | [computers/domaincontroller_backup] | [computers/domaincontroller_slave] | [computers/memberserver])" write
+    by * +0 break
+access to dn.children="cn=monitoring,@%@ldap/base@%@" attrs=entry,children,@univentionObject,@univentionMonitoringAlert
+    by set="user/univentionObjectType & ([computers/domaincontroller_master] | [computers/domaincontroller_backup] | [computers/domaincontroller_slave] | [computers/memberserver])" write
+    by * +0 break
