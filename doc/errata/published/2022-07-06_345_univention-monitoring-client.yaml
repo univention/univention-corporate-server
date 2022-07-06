@@ -12,3 +12,5 @@ desc: |
  * When `prometheus-node-exporter` was not installed error mails by cron were
    sent due to a missing directory.
 bug: [54919, 54927]
+erratum: 345
+announced: 2022-07-06
