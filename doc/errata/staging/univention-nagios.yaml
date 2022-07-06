@@ -1,7 +1,7 @@
 product: ucs
 release: "5.0"
-version: [1]
-scope: ucs_5.0-0-errata5.0-1
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
 src: univention-nagios
 fix: 13.0.3-2A~5.0.0.202207061345
 desc: |
