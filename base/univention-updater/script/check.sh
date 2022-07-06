@@ -1117,20 +1117,23 @@ ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 edu_dc_dns = lo.getAttr("cn=DC-Edukativnetz,cn=ucsschool,cn=groups,{}".format(ucr["ldap/base"]), "uniqueMember")
 host_dn = ucr['ldap/hostdn']
+
 if ucr.is_true("ucsschool/singlemaster", False) or (host_dn in edu_dc_dns):
 	# host is replica in a multi-server environment or a single server
-	computerroom_dns = []
+	italc_computerroom_dns = []
+
 	for school in School.get_all(lo):
 			rooms = ComputerRoom.get_all(lo, school.name)
-			computerroom_dns.extend([room.dn for room in rooms])
+			italc_computerroom_dns.extend([room.dn for room in rooms if not room.veyon_backend])
 
-	if computerroom_dns:
-		print("Updating to UCS@school 5.0 with computer rooms is not yet supported. An update, which enables this, will follow.")
+	if italc_computerroom_dns:
+		print("Updating to UCS@school 5.0 is only supported if all computer rooms use the Veyon backend.")
 		print("The following UCS@school computer room objects prevent the upgrade to UCS@school 5.0:\n")
-		for dn in computerroom_dns:
+		for dn in italc_computerroom_dns:
 			print("\t\t{}".format(dn))
-		print("\nINFO: In preparation for this upgrade, all computer rooms, which are configured to have iTALC as it's backend, should be migrated to Veyon.")
+		print("\nINFO: All computer rooms, which are configured to have iTALC as its backend, should be migrated to Veyon.")
 		print("iTALC computer rooms will still be usable in mixed environments with the primary upgraded to UCS@school 5.0 with school replica nodes running UCS@school 4.4. iTALC computer rooms won't be usable in UCS@school 5.0 replica nodes.")
+		print("iTALC computer rooms will be supported as long as UCS@School 4.4 is supported.")
 		print("Please visit https://help.univention.com/t/16937 for more information.")
 		exit(1)
 EOF
