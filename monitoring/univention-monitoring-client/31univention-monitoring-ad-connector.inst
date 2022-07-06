@@ -43,8 +43,8 @@ eval "$(univention-config-registry shell)"
 univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--position "cn=monitoring,$ldap_base" \
 	--set name="UNIVENTION_ADCONNECTOR" \
-	--set description="Additional Service: check if ad-connector is functional" \
-	--set summary="Additional Service: check if ad-connector is functional" \
+	--set description="Too few or no AD connector instances are running" \
+	--set summary="check if AD connector is functional" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
 	--set query="univention_ad_connector_ad_reachable{%instance%} != 1 or univention_ad_connector_running{%instance%} == 2" || die "UNIVENTION_ADCONNECTOR"
@@ -53,8 +53,8 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--position "cn=monitoring,$ldap_base" \
 	--set name="UNIVENTION_ADCONNECTOR_WARNING" \
 	--set alertGroup="UNIVENTION_ADCONNECTOR" \
-	--set description="Additional Service: check if ad-connector is functional" \
-	--set summary="Additional Service: check if ad-connector is functional" \
+	--set description="There are rejects in the AD connector or too many AD connector instances are running" \
+	--set summary="check for AD connector rejects" \
 	--set for="5m" \
 	--append labels='"severity" "warning"' \
 	--set query="univention_ad_connector_running{%instance%} == 1 or univention_ad_connector_rejects{%instance%} > 0" || die "UNIVENTION_ADCONNECTOR_WARNING"
@@ -62,8 +62,8 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--position "cn=monitoring,$ldap_base" \
 	--set name="UNIVENTION_ADCONNECTOR_METRIC_MISSING" \
-	--set description="Additional Service: check if metrics regarding ad-connector are missing" \
-	--set summary="Additional Service: check if metrics regarding ad-connector are missing" \
+	--set description="metrics regarding ad-connector are missing" \
+	--set summary="check if metrics regarding ad-connector are missing" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
 	--set query="absent(univention_ad_connector_ad_reachable{%instance%}) == 1 or absent(univention_ad_connector_running{%instance%}) == 1 or absent(univention_ad_connector_rejects{%instance%}) == 1" || die "UNIVENTION_ADCONNECTOR_METRIC_MISSING"

@@ -43,16 +43,16 @@ eval "$(univention-config-registry shell)"
 univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--position "cn=monitoring,$ldap_base" \
 	--set name="UNIVENTION_SAMBA_REPLICATION" \
-	--set description="Additional Service: check for samba drs failures" \
-	--set summary="Additional Service: check for samba drs failures" \
+	--set description="There are Samba DRS failures" \
+	--set summary="check for Samba DRS failures" \
 	--append labels='"severity" "critical"' \
 	--set query="univention_samba_drs_failures{%instance%} != 0" || die
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--position "cn=monitoring,$ldap_base" \
 	--set name="UNIVENTION_SAMBA_REPLICATION_MISSING" \
-	--set description="Additional Service: check if metrics regarding samba drs failures are misisng" \
-	--set summary="Additional Service: check if metrics regarding samba drs failures are misisng" \
+	--set description="metrics regarding Samba DRS failures are misisng" \
+	--set summary="check if metrics regarding Samba DRS failures are misisng" \
 	--append labels='"severity" "critical"' \
 	--set query="absent(univention_samba_drs_failures{%instance%}) == 1" || die "UNIVENTION_SAMBA_REPLICATION_MISSING"
 

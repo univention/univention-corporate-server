@@ -44,24 +44,24 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--position "cn=monitoring,$ldap_base" \
 	--set name="UNIVENTION_RAID_WARNING" \
 	--set alertGroup="UNIVENTION_RAID" \
-	--set description="check raid status in /proc/mdstat" \
-	--set summary="check raid status in /proc/mdstat" \
+	--set description="RAID status in /proc/mdstat" \
+	--set summary="check RAID status in /proc/mdstat" \
 	--append labels='"severity" "warning"' \
 	--set query='{__name__=~"univention_i2o_raid_.+",%instance%} >= 11 and {__name__=~"univention_i2o_raid_.+",%instance%} < 20' || die "UNIVENTION_RAID_WARNING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--position "cn=monitoring,$ldap_base" \
 	--set name="UNIVENTION_RAID" \
-	--set description="check raid status in /proc/mdstat" \
-	--set summary="check raid status in /proc/mdstat" \
+	--set description="RAID status in /proc/mdstat" \
+	--set summary="check RAID status in /proc/mdstat" \
 	--append labels='"severity" "critical"' \
 	--set query='{__name__=~"univention_i2o_raid_.+",%instance%} >= 20' || die "UNIVENTION_RAID_WARNING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--position "cn=monitoring,$ldap_base" \
 	--set name="UNIVENTION_RAID_MISSING" \
-	--set description="check raid status in /proc/mdstat" \
-	--set summary="check raid status in /proc/mdstat" \
+	--set description="metrics for RAID status are missing" \
+	--set summary="check metrics for RAID status exists" \
 	--append labels='"severity" "critical"' \
 	--set query='absent(univention_i2o_raid_physical{%instance%}) == 1 or absent(univention_i2o_raid_logical{%instance%}) == 1 or absent(univention_i2o_raid_controller{%instance%}) == 1 or absent(univention_i2o_raid_raid{%instance%}) == 1' || die "UNIVENTION_RAID_MISSING"
 

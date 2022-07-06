@@ -43,8 +43,8 @@ eval "$(univention-config-registry shell)"
 univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--position "cn=monitoring,$ldap_base" \
 	--set name="UNIVENTION_SQUID" \
-	--set description="check if squid is functional" \
-	--set summary="check if squid is functional" \
+	--set description="Squid is not running or reachable" \
+	--set summary="check if Squid is functional" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
 	--set query="univention_squid_running{%instance%} != 1 or univention_squid_reachable{%instance%} != 1" || die "UNIVENTION_SQUID"
@@ -52,7 +52,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--position "cn=monitoring,$ldap_base" \
 	--set name="UNIVENTION_SQUID_METRIC_MISSING" \
-	--set description="check if metrics regarding squid are missing" \
+	--set description="metrics regarding squid are missing" \
 	--set summary="check if metrics regarding squid are missing" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \

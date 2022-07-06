@@ -43,8 +43,8 @@ eval "$(univention-config-registry shell)"
 univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--position "cn=monitoring,$ldap_base" \
 	--set name="UNIVENTION_OPSI" \
-	--set description="Additional Service: check if Opsi is functional" \
-	--set summary="Additional Service: check if Opsi is functional" \
+	--set description="OPSI is not reachable or runnning" \
+	--set summary="check if OPSI is functional" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
 	--set query="univention_opsi_running{%instance%} != 1 or univention_opsi_reachable{%instance%} != 1" || die "UNIVENTION_OPSI"
@@ -52,8 +52,8 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--position "cn=monitoring,$ldap_base" \
 	--set name="UNIVENTION_OPSI_MISSING" \
-	--set description="Additional Service: check if metrics regarding Opsi are missing" \
-	--set summary="Additional Service: check if metrics regarding Opsi are missing" \
+	--set description="metrics regarding Opsi are missing" \
+	--set summary="check if metrics regarding Opsi are missing" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
 	--set query="absent(univention_opsi_running{%instance%}) == 1 or absent(univention_opsi_reachable{%instance%}) == 1" || die "UNIVENTION_OPSI_MISSING"

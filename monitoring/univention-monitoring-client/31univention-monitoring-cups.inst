@@ -43,8 +43,8 @@ eval "$(univention-config-registry shell)"
 univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--position "cn=monitoring,$ldap_base" \
 	--set name="UNIVENTION_CUPS" \
-	--set description="Additional Service: check if CUPS is functional" \
-	--set summary="Additional Service: check if CUPS is functional" \
+	--set description="CUPS is not running or not reachable" \
+	--set summary="check if CUPS is functional" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
 	--set query="univention_cups_running{%instance%} != 1 or univention_cups_reachable{%instance%} != 1" || die "UNIVENTION_CUPS"
@@ -52,8 +52,8 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--position "cn=monitoring,$ldap_base" \
 	--set name="UNIVENTION_CUPS_MISSING" \
-	--set description="Additional Service: check if metrics regarding CUPS are missing" \
-	--set summary="Additional Service: check if metrics regarding CUPS are missing" \
+	--set description="metrics regarding CUPS are missing" \
+	--set summary="check if metrics regarding CUPS are missing" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
 	--set query="absent(univention_cups_running{%instance%}) == 1 or absent(univention_cups_reachable{%instance%}) == 1" || die "UNIVENTION_CUPS_MISSING"
