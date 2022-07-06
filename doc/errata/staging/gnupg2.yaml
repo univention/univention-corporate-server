@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [1, 2]
+scope: ucs_5.0-0-errata5.0-2
+src: gnupg2
+fix: 2.2.12-1+deb10u2
+desc: |
+ This update addresses the following issue:
+ * GnuPG through 2.3.6, in unusual situations where an attacker possesses any
+   secret-key information from a victim's keyring and other constraints (e.g.,
+   use of GPGME) are met, allows signature forgery via injection into the
+   status line. (CVE-2022-34903)
+bug: [54957]
+cve:
+- CVE-2022-34903
