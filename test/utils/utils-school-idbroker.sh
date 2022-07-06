@@ -40,10 +40,10 @@ ansible_preperation () {
 	cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 	ssh -o "StrictHostKeyChecking=accept-new" localhost true
 	# Download ansible scripts
-    #wget "http://service.knut.univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz"
-    wget --user "$repo_user" --password="$(< "$repo_password_file")" \
-        "https://service.software-univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz" || rv=$?
-    tar -xf ansible_playbook.tar.gz
+	#wget "http://service.knut.univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz"
+	wget --user "$repo_user" --password="$(< "$repo_password_file")" \
+		"https://service.software-univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz" || rv=$?
+	tar -xf ansible_playbook.tar.gz
 	cd deployment || rv=$?
 	# check the jenkins-data repo for the following files
 	cp /root/id-broker-TESTING.cert id-broker.cert
@@ -94,6 +94,7 @@ apache_custom_vhosts () {
 ansible_run_keycloak_configuration () {
 	local rv=0
 	cd deployment || rv=$?
+	/usr/local/bin/ansible-galaxy install -r requirements.yml
 	/usr/local/bin/ansible-playbook site.yml --vault-password-file /root/idbroker_jenkins_ansible.password -i inventories/jenkins || rv=$?
 	return $rv
 }
