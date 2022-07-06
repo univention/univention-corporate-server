@@ -65,7 +65,7 @@ def test_register_deregister_via_joinscript(extension_type):
 		# check replicated file has correct file mode
 		current_mode = oct(os.stat(target_fn).st_mode & (stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO))
 		expected_mode = '0o644'
-		assert current_mode != expected_mode, 'ERROR: permissions of target file %s are not ok (current=%s  expected=%s)' % (target_fn, current_mode, expected_mode)
+		assert current_mode == expected_mode, 'ERROR: permissions of target file %s are not ok (current=%s  expected=%s)' % (target_fn, current_mode, expected_mode)
 		print('PERMISSIONS OK: mode=%s' % current_mode)
 
 		# check replicated file is own by root:nobody
