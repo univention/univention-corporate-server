@@ -1,0 +1,24 @@
+product: ucs
+release: "5.0"
+version: [1, 2]
+scope: ucs_5.0-0-errata5.0-2
+src: intel-microcode
+fix: 3.20220510.1~deb10u1
+desc: |
+ This update addresses the following issues:
+ * cpu: Incomplete cleanup of multi-core shared buffers (aka SBDR)
+   (CVE-2022-21123)
+ * cpu: Incomplete cleanup of microarchitectural fill buffers (aka SBDS)
+   (CVE-2022-21125)
+ * cpu: Incomplete cleanup in specific special register read operations (aka
+   SRBDS update) (CVE-2022-21127)
+ * cpu: information disclosure in certain Intel processors (CVE-2022-21151)
+ * cpu: Incomplete cleanup in specific special register write operations (aka
+   DRPW) (CVE-2022-21166)
+bug: [54960]
+cve:
+- CVE-2022-21123
+- CVE-2022-21125
+- CVE-2022-21127
+- CVE-2022-21151
+- CVE-2022-21166
