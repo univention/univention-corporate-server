@@ -112,6 +112,13 @@ class UMC_Module(dict):
                 self[key] = self[key][0]
 
     @property
+    def languages(self):
+        # type: () -> tuple[str]
+        if self.get('target_language'):
+            return (self['target_language'],)
+        return LANGUAGES
+
+    @property
     def package(self):
         # type: () -> str
         """Return the name of the Debian binary package."""
@@ -218,7 +225,7 @@ class UMC_Module(dict):
             path = '%(Python)s/%(Module)s/' % self
         except KeyError:
             return
-        for lang in LANGUAGES:
+        for lang in self.languages:
             yield os.path.join(path, '%s.po' % lang)
 
     @property
@@ -228,7 +235,7 @@ class UMC_Module(dict):
         path = self.get(JAVASCRIPT)
         if not path:  # might be an empty string
             return
-        for lang in LANGUAGES:
+        for lang in self.languages:
             yield os.path.join(path, '%s.po' % lang)
 
     @property
@@ -238,7 +245,7 @@ class UMC_Module(dict):
         if self.xml_definition is None:
             return
         dirpath = os.path.dirname(self.xml_definition)
-        for lang in LANGUAGES:
+        for lang in self.languages:
             path = os.path.join(dirpath, '%s.po' % lang)
             yield (lang, path)
 
