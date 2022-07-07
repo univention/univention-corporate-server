@@ -51,6 +51,12 @@ def safe_path(filename):
 	return quote(filename, safe='')
 
 
+def escape_prometheus_regex(string):
+	for char in r'.^$*+?()[]{}\|':
+		string = string.replace(char, '\\' + char)
+	return string
+
+
 class MonitoringClient(ListenerModuleHandler):
 
 	def initialize(self):
@@ -71,15 +77,38 @@ class MonitoringClient(ListenerModuleHandler):
 		with self.as_root():
 			self._remove_config(old)
 
-	def _write_config(self, attrs):
-		if ucr['ldap/hostdn'].encode('UTF-8') not in attrs.get('univentionMonitoringAlertHosts', []):
-			return
+	def get_fqdn(self, dn):
+		obj = self.lo.get(dn, ['cn', 'associatedDomain'])
+		try:
+			return '%s.%s' % (obj['cn'][0].decode('UTF-8'), obj['associatedDomain'][0].decode('UTF-8'))
+		except KeyError:
+			pass
 
+	def replace_template(self, string, template_values):
+		for key, value in template_values:
+			string = string.replace('%{}%'.format(key), value)
+		return string
+
+	def _write_config(self, attrs):
 		name = attrs['cn'][0].decode('UTF-8')
+		template_values = [
+			label.decode('UTF-8').split('=', 1)
+			for label in attrs.get('univentionMonitoringAlertTemplateValue', [b''])
+			if label
+		]
 		expr = attrs['univentionMonitoringAlertQuery'][0].decode('UTF-8')
+		if '%instance%' in expr:
+			assigned_hosts = [self.get_fqdn(x.decode('UTF-8')) for x in attrs.get('univentionMonitoringAlertHosts', [])]
+			assigned_hosts = [x for x in assigned_hosts if x]
+			if not assigned_hosts:
+				return
+			# FIXME: regex DoS possible?
+			template_values.append(('instance', 'instance=~"(%s)"' % '|'.join(escape_prometheus_regex(host) for host in assigned_hosts)))
+
+		expr = self.replace_template(expr, template_values)
 		alert_group = attrs.get('univentionMonitoringAlertGroup', attrs['cn'])[0].decode('UTF-8')
-		description = attrs.get('description', [b''])[0].decode('UTF-8')
-		summary = attrs.get('univentionMonitoringAlertSummary', [b''])[0].decode('UTF-8')
+		description = self.replace_template(attrs.get('description', [b''])[0].decode('UTF-8'), template_values)
+		summary = self.replace_template(attrs.get('univentionMonitoringAlertSummary', [b''])[0].decode('UTF-8'), template_values)
 		for_ = attrs.get('univentionMonitoringAlertFor', [b'10s'])[0].decode('UTF-8')
 		labels = [
 			label.decode('UTF-8').split('=', 1)

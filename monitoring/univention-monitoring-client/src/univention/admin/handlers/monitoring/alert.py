@@ -117,7 +117,13 @@ property_descriptions = {
 		long_description=_('Hosts where this alert is activated for.'),
 		syntax=univention.admin.syntax.monitoringEnabledHosts,
 		multivalue=True,
-	)
+	),
+	'templateValues': univention.admin.property(
+		short_description=_('Template Values'),
+		long_description=_('Values inserted into the query expression, description and summary. References can be done like %name%.'),
+		syntax=univention.admin.syntax.keyAndValue,
+		multivalue=True,
+	),
 }
 
 
@@ -166,6 +172,7 @@ mapping.register('alertGroup', 'univentionMonitoringAlertGroup', None, univentio
 mapping.register('summary', 'univentionMonitoringAlertSummary', None, univention.admin.mapping.ListToString)
 mapping.register('labels', 'univentionMonitoringAlertLabel', mapKeyAndValue, unmapKeyAndValue)
 mapping.register('for', 'univentionMonitoringAlertFor', None, univention.admin.mapping.ListToString)
+mapping.register('templateValues', 'univentionMonitoringAlertTemplateValue', mapKeyAndValue, unmapKeyAndValue)
 mapping.register('assignedHosts', 'univentionMonitoringAlertHosts')
 
 

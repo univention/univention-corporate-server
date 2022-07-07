@@ -46,7 +46,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--set description="Additional Service: check for samba drs failures" \
 	--set summary="Additional Service: check for samba drs failures" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_samba_drs_failures != 0" || die
+	--set query="univention_samba_drs_failures{%instance%} != 0" || die
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--position "cn=monitoring,$ldap_base" \
@@ -54,7 +54,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--set description="Additional Service: check if metrics regarding samba drs failures are misisng" \
 	--set summary="Additional Service: check if metrics regarding samba drs failures are misisng" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_samba_drs_failures) == 1" || die "UNIVENTION_SAMBA_REPLICATION_MISSING"
+	--set query="absent(univention_samba_drs_failures{%instance%}) == 1" || die "UNIVENTION_SAMBA_REPLICATION_MISSING"
 
 CHECKS=(
 	"UNIVENTION_SAMBA_REPLICATION"

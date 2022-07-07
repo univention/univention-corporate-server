@@ -124,7 +124,8 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set description="Default Service: check if / is out of diskspace" \
 	--set summary="Default Service: check if / is out of diskspace" \
 	--append labels='"severity" "critical"' \
-	--set query='(100 / node_filesystem_size_bytes{mountpoint="/"}) * node_filesystem_free_bytes{mountpoint="/"} < 10' || die "UNIVENTION_DISK_ROOT"
+	--append templateValues='"min" "10"' \
+	--set query='(100 / node_filesystem_size_bytes{mountpoint="/",%instance%}) * node_filesystem_free_bytes{mountpoint="/",%instance%} < %min%' || die "UNIVENTION_DISK_ROOT"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_DISK_ROOT_WARNING" \
@@ -132,7 +133,8 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set description="Default Service: check if / is out of diskspace" \
 	--set summary="Default Service: check if / is out of diskspace" \
 	--append labels='"severity" "warning"' \
-	--set query='(100 / node_filesystem_size_bytes{mountpoint="/"}) * node_filesystem_free_bytes{mountpoint="/"} < 25' || die "UNIVENTION_DISK_ROOT_WARNING"
+	--append templateValues='"min" "25"' \
+	--set query='(100 / node_filesystem_size_bytes{mountpoint="/",%instance%}) * node_filesystem_free_bytes{mountpoint="/",%instance%} < %min%' || die "UNIVENTION_DISK_ROOT_WARNING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_DISK_ROOT_METRIC_MISSING" \
@@ -140,7 +142,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set description="Default Service: check if metrics regarding diskspace are missing" \
 	--set summary="Default Service: check if metrics regarding diskspace are missing" \
 	--append labels='"severity" "critical"' \
-	--set query='(absent(node_filesystem_size_bytes{mountpoint="/"}) == 1) or (absent(node_filesystem_free_bytes{mountpoint="/"}) == 1)' || die "UNIVENTION_DISK_ROOT_METRIC_MISSING"
+	--set query='(absent(node_filesystem_size_bytes{mountpoint="/",%instance%}) == 1) or (absent(node_filesystem_free_bytes{mountpoint="/",%instance%}) == 1)' || die "UNIVENTION_DISK_ROOT_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_DNS" \
@@ -148,7 +150,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if service dns is ok" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_dns_resolveable != 1" || die "UNIVENTION_DNS"
+	--set query="univention_dns_resolveable{%instance%} != 1" || die "UNIVENTION_DNS"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_DNS_METRIC_MISSING" \
@@ -156,7 +158,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if metrics regarding dns are missing" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_dns_resolveable) == 1" || die "UNIVENTION_DNS_METRIC_MISSING"
+	--set query="absent(univention_dns_resolveable{%instance%}) == 1" || die "UNIVENTION_DNS_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SWAP_WARNING" \
@@ -165,21 +167,23 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if swap device is out of free space" \
 	--set for="5m" \
 	--append labels='"severity" "warning"' \
-	--set query="(node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) * 100 / node_memory_SwapTotal_bytes > 60" || die "UNIVENTION_SWAP"
+	--append templateValues='"max" "60"' \
+	--set query="(node_memory_SwapTotal_bytes{%instance%} - node_memory_SwapFree_bytes{%instance%}) * 100 / node_memory_SwapTotal_bytes > %max%" || die "UNIVENTION_SWAP"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SWAP" \
 	--set description="Default Service: check if swap device is out of free space" \
 	--set summary="Default Service: check if swap device is out of free space" \
 	--append labels='"severity" "critical"' \
-	--set query="(node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) * 100 / node_memory_SwapTotal_bytes > 80" || die "UNIVENTION_SWAP"
+	--append templateValues='"max" "80"' \
+	--set query="(node_memory_SwapTotal_bytes{%instance%} - node_memory_SwapFree_bytes{%instance%}) * 100 / node_memory_SwapTotal_bytes{%instance%} > %max%" || die "UNIVENTION_SWAP"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SWAP_METRIC_MISSING" \
 	--set description="Default Service: check if metrics regarding swap are missing" \
 	--set summary="Default Service: check if metrics regarding swap are missing" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(node_memory_SwapTotal_bytes) == 1 or absent(node_memory_SwapFree_bytes) == 1" || die "UNIVENTION_SWAP_METRIC_MISSING"
+	--set query="absent(node_memory_SwapTotal_bytes{%instance%}) == 1 or absent(node_memory_SwapFree_bytes{%instance%}) == 1" || die "UNIVENTION_SWAP_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_LDAP_AUTH" \
@@ -187,7 +191,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if service ldap is ok using authenticated bind" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_ldap_reachable != 1" || die "UNIVENTION_LDAP_AUTH"
+	--set query="univention_ldap_reachable{%instance%} != 1" || die "UNIVENTION_LDAP_AUTH"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_LDAP_AUTH_METRIC_MISSING" \
@@ -195,7 +199,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if metrics regarding ldap are missing" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_ldap_reachable) == 1" || die "UNIVENTION_LDAP_AUTH_METRIC_MISSING"
+	--set query="absent(univention_ldap_reachable{%instance%}) == 1" || die "UNIVENTION_LDAP_AUTH_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_NTP" \
@@ -203,7 +207,8 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if service ntp is ok" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_ntp_offset_seconds >= 60" || die "UNIVENTION_NTP"
+	--append templateValues='"max" "60"' \
+	--set query="univention_ntp_offset_seconds{%instance%} >= %max%" || die "UNIVENTION_NTP"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_NTP_WARNING" \
@@ -212,7 +217,8 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if service ntp is ok" \
 	--set for="5m" \
 	--append labels='"severity" "warning"' \
-	--set query="univention_ntp_offset_seconds >= 10" || die "UNIVENTION_NTP_WARNING"
+	--append templateValues='"max" "10"' \
+	--set query="univention_ntp_offset_seconds{%instance%} >= %max%" || die "UNIVENTION_NTP_WARNING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_NTP_METRIC_MISSING" \
@@ -220,7 +226,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if metrics regarding  ntp are missing" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_ntp_offset_seconds) == 1" || die "UNIVENTION_NTP_METRIC_MISSING"
+	--set query="absent(univention_ntp_offset_seconds{%instance%}) == 1" || die "UNIVENTION_NTP_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SMTP" \
@@ -228,7 +234,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if service smtp is ok" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_smtp_reachable != 1" || die "UNIVENTION_SMTP"
+	--set query="univention_smtp_reachable{%instance%} != 1" || die "UNIVENTION_SMTP"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SMTP_METRIC_MISSING" \
@@ -236,7 +242,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if metrics regarding smtp are missing" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_smtp_reachable) == 1" || die "UNIVENTION_SMTP_METRIC_MISSING"
+	--set query="absent(univention_smtp_reachable{%instance%}) == 1" || die "UNIVENTION_SMTP_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SSL_WARNING" \
@@ -244,21 +250,23 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set description="Default Service: check if ssl certificate is valid" \
 	--set summary="Default Service: check if ssl certificate is valid" \
 	--append labels='"severity" "warning"' \
-	--set query="univention_ssl_certificate_expiry_seconds < 3456000" || die "UNIVENTION_SSL_WARNING" # 40 days
+	--append templateValues='"max" "3456000"' \
+	--set query="univention_ssl_certificate_expiry_seconds{%instance%} < %max%" || die "UNIVENTION_SSL_WARNING" # 40 days
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SSL" \
 	--set description="Default Service: check if ssl certificate is valid" \
 	--set summary="Default Service: check if ssl certificate is valid" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_ssl_certificate_expiry_seconds < 1728000" || die "UNIVENTION_SSL" # 20 days
+	--append templateValues='"max" "1728000"' \
+	--set query="univention_ssl_certificate_expiry_seconds{%instance%} < %max%" || die "UNIVENTION_SSL" # 20 days
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SSL_METRIC_MISSING" \
 	--set description="Default Service: check if metrics regarding ssl are missing" \
 	--set summary="Default Service: check if metrics regarding ssl are missing" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_ssl_certificate_expiry_seconds) == 1" || die "UNIVENTION_SSL_METRIC_MISSING"
+	--set query="absent(univention_ssl_certificate_expiry_seconds{%instance%}) == 1" || die "UNIVENTION_SSL_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_LOAD_WARNING" \
@@ -292,7 +300,8 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if ldap replication is uptodate" \
 	--set for="5m" \
 	--append labels='"severity" "warning"' \
-	--set query="univention_listener_replication_difference > 10" || die "UNIVENTION_REPLICATION_WARNING"
+	--append templateValues='"max" "10"' \
+	--set query="univention_listener_replication_difference{%instance%} > %max%" || die "UNIVENTION_REPLICATION_WARNING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_REPLICATION" \
@@ -300,7 +309,8 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if ldap replication is uptodate" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_listener_replication_difference > 50 or univention_listener_replication_difference == -1 or univention_listener_failed_ldif_exists == 1" || die "UNIVENTION_REPLICATION"
+	--append templateValues='"max" "50"' \
+	--set query="univention_listener_replication_difference{%instance%} > %max% or univention_listener_replication_difference{%instance%} == -1 or univention_listener_failed_ldif_exists{%instance%} == 1" || die "UNIVENTION_REPLICATION"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_REPLICATION_METRIC_MISSING" \
@@ -308,7 +318,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if metrics regarding replication ldap are missing" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_listener_replication_difference) == 1 or absent(univention_listener_failed_ldif_exists) == 1" || die "UNIVENTION_REPLICATION_METRIC_MISSING"
+	--set query="absent(univention_listener_replication_difference{%instance%}) == 1 or absent(univention_listener_failed_ldif_exists{%instance%}) == 1" || die "UNIVENTION_REPLICATION_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_NSCD" \
@@ -316,7 +326,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if nscd process is present" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_nscd_running != 1" || die "UNIVENTION_NSCD"
+	--set query="univention_nscd_running{%instance%} != 1" || die "UNIVENTION_NSCD"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_NSCD_METRIC_MISSING" \
@@ -324,7 +334,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if metric regarding nscd are missing" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_nscd_running) == 1" || die "UNIVENTION_NSCD_METRIC_MISSING"
+	--set query="absent(univention_nscd_running{%instance%}) == 1" || die "UNIVENTION_NSCD_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_NSCD2" \
@@ -332,7 +342,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if nscd process is present (ignores docker)" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_nscd_responding != 1" || die "UNIVENTION_NSCD2"
+	--set query="univention_nscd_responding{%instance%} != 1" || die "UNIVENTION_NSCD2"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_NSCD2_METRIC_MISSING" \
@@ -340,35 +350,35 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if metrics regarding nscd are missing" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_nscd_responding) == 1" || die "UNIVENTION_NSCD2_METRIC_MISSING"
+	--set query="absent(univention_nscd_responding{%instance%}) == 1" || die "UNIVENTION_NSCD2_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_KPASSWDD" \
 	--set description="Default Service: check if kpasswdd process is present" \
 	--set summary="Default Service: check if kpasswdd process is present" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_kpasswdd_running != 1" || die "UNIVENTION_KPASSWDD"
+	--set query="univention_kpasswdd_running{%instance%} != 1" || die "UNIVENTION_KPASSWDD"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_KPASSWDD_METRIC_MISSING" \
 	--set description="Default Service: check if metrics regarding kpasswdd are missing" \
 	--set summary="Default Service: check if metrics regarding kpasswdd are missing" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_kpasswdd_running) == 1" || die "UNIVENTION_KPASSWDD_METRIC_MISSING"
+	--set query="absent(univention_kpasswdd_running{%instance%}) == 1" || die "UNIVENTION_KPASSWDD_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_WINBIND" \
 	--set description="Default Service: check if winbind is functional" \
 	--set summary="Default Service: check if winbind is functional" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_winbind_secret_ok != 1" || die "UNIVENTION_WINBIND"
+	--set query="univention_winbind_secret_ok{%instance%} != 1" || die "UNIVENTION_WINBIND"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_WINBIND_METRIC_MISSING" \
 	--set description="Default Service: check if metrics regarding winbind are missing" \
 	--set summary="Default Service: check if metrics regarding winbind are missing" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_winbind_secret_ok) == 1" || die "UNIVENTION_WINBIND_METRIC_MISSING"
+	--set query="absent(univention_winbind_secret_ok{%instance%}) == 1" || die "UNIVENTION_WINBIND_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SMBD" \
@@ -376,7 +386,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if smbd is functional" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_smbd_accessible != 1" || die "UNIVENTION_SMBD"
+	--set query="univention_smbd_accessible{%instance%} != 1" || die "UNIVENTION_SMBD"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SMBD_METRIC_MISSING" \
@@ -384,7 +394,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if metrics regaridng smbd are missing" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_smbd_accessible) == 1" || die "UNIVENTION_SMBD_METRIC_MISSING"
+	--set query="absent(univention_smbd_accessible{%instance%}) == 1" || die "UNIVENTION_SMBD_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_NMBD" \
@@ -392,7 +402,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if nmbd is functional" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_nmbd_running != 1" || die "UNIVENTION_NMBD"
+	--set query="univention_nmbd_running{%instance%} != 1" || die "UNIVENTION_NMBD"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_NMBD_METRIC_MISSING" \
@@ -400,14 +410,14 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set summary="Default Service: check if metrics regarding nmbd are missing" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_nmbd_running) == 1" || die "UNIVENTION_NMBD_METRIC_MISSING"
+	--set query="absent(univention_nmbd_running{%instance%}) == 1" || die "UNIVENTION_NMBD_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_JOINSTATUS_WARNING" \
 	--set description='Default Service: check if system has been joined successfully: some join scripts must be called' \
 	--set summary="Default Service: check if system has been joined successfully" \
 	--append labels='"severity" "warning"' \
-	--set query="univention_join_status == 6" || die "UNIVENTION_JOINSTATUS"
+	--set query="univention_join_status{%instance%} == 6" || die "UNIVENTION_JOINSTATUS"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_JOINSTATUS" \
@@ -429,70 +439,74 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 {{ end }}' \
 	--set summary="Default Service: check if system has been joined successfully" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_join_status != 0 and univention_join_status != 6" || die "UNIVENTION_JOINSTATUS"
+	--set query="univention_join_status{%instance%} != 0 and univention_join_status{%instance%} != 6" || die "UNIVENTION_JOINSTATUS"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_JOINSTATUS_METRIC_MISSING" \
 	--set description='Default Service: check if metrics regarding joinstatus are missing' \
 	--set summary="Default Service: check if metrics regarding joinstatus are missing" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_join_status) == 1" || die "UNIVENTION_JOINSTATUS_METRIC_MISSING"
+	--set query="absent(univention_join_status{%instance%}) == 1" || die "UNIVENTION_JOINSTATUS_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_PACKAGE_STATUS" \
 	--set description="Default Service: check if dpkg status of system is healthy" \
 	--set summary="Default Service: check if dpkg status of system is healthy" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_package_status_ok != 1" || die "UNIVENTION_PACKAGE_STATUS"
+	--set query="univention_package_status_ok{%instance%} != 1" || die "UNIVENTION_PACKAGE_STATUS"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_PACKAGE_STATUS_METRIC_MISSING" \
 	--set description="Default Service: check if metrics regarding dpkg status are missing" \
 	--set summary="Default Service: check if metrics regarding dpkg status are missing" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_package_status_ok) == 1" || die "UNIVENTION_PACKAGE_STATUS_METRIC_MISSING"
+	--set query="absent(univention_package_status_ok{%instance%}) == 1" || die "UNIVENTION_PACKAGE_STATUS_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SLAPD_MDB_MAXSIZE_WARNING" \
 	--set description="Default Service: check slapd mdb database size" \
 	--set summary="Default Service: check slapd mdb database size" \
 	--append labels='"severity" "warning"' \
-	--set query="univention_slapd_mdb_size_used_ratio > 75 or univention_slapd_translog_mdb_size_used_ratio > 75" || die "UNIVENTION_SLAPD_MDB_MAXSIZE_WARNING"
+	--append templateValues='"max" "75"' \
+	--set query="univention_slapd_mdb_size_used_ratio{%instance%} > %max% or univention_slapd_translog_mdb_size_used_ratio{%instance%} > %max%" || die "UNIVENTION_SLAPD_MDB_MAXSIZE_WARNING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SLAPD_MDB_MAXSIZE" \
 	--set description="Default Service: check slapd mdb database size" \
 	--set summary="Default Service: check slapd mdb database size" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_slapd_mdb_size_used_ratio > 90 or univention_slapd_translog_mdb_size_used_ratio > 90" || die "UNIVENTION_SLAPD_MDB_MAXSIZE"
+	--append templateValues='"max" "90"' \
+	--set query="univention_slapd_mdb_size_used_ratio{%instance%} > %max% or univention_slapd_translog_mdb_size_used_ratio{%instance%} > %max%" || die "UNIVENTION_SLAPD_MDB_MAXSIZE"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_SLAPD_MDB_MAXSIZE_METRIC_MISSING" \
 	--set description="Default Service: check if metrics regarding slapd mdb database size are missing" \
 	--set summary="Default Service: check if metrics regarding slapd mdb database size are missing" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_slapd_mdb_size_used_ratio) == 1 or absent(univention_slapd_translog_mdb_size_used_ratio) == 1" || die "UNIVENTION_SLAPD_MDB_MAXSIZE_METRIC_MISSING"
+	--set query="absent(univention_slapd_mdb_size_used_ratio{%instance%}) == 1 or absent(univention_slapd_translog_mdb_size_used_ratio{%instance%}) == 1" || die "UNIVENTION_SLAPD_MDB_MAXSIZE_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_LISTENER_MDB_MAXSIZE_WARNING" \
 	--set description="Default Service: check listener mdb database size" \
 	--set summary="Default Service: check listener mdb database size" \
 	--append labels='"severity" "warning"' \
-	--set query="univention_listener_mdb_size_used_ratio > 75" || die "UNIVENTION_LISTENER_MDB_MAXSIZE_WARNING"
+	--append templateValues='"max" "75"' \
+	--set query="univention_listener_mdb_size_used_ratio{%instance%} > %max%" || die "UNIVENTION_LISTENER_MDB_MAXSIZE_WARNING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_LISTENER_MDB_MAXSIZE" \
 	--set description="Default Service: check listener mdb database size" \
 	--set summary="Default Service: check listener mdb database size" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_listener_mdb_size_used_ratio > 90" || die "UNIVENTION_LISTENER_MDB_MAXSIZE"
+	--append templateValues='"max" "90"' \
+	--set query="univention_listener_mdb_size_used_ratio{%instance%} > %max%" || die "UNIVENTION_LISTENER_MDB_MAXSIZE"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_LISTENER_MDB_MAXSIZE_METRIC_MISSING" \
 	--set description="Default Service: check if metrics regarding listener mdb database size are missing" \
 	--set summary="Default Service: check if metrics regarding listener mdb database size are missing" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_listener_mdb_size_used_ratio) ==  1" || die "UNIVENTION_LISTENER_MDB_MAXSIZE_METRIC_MISSING"
+	--set query="absent(univention_listener_mdb_size_used_ratio{%instance%}) ==  1" || die "UNIVENTION_LISTENER_MDB_MAXSIZE_METRIC_MISSING"
 
 CHECKS=(
 	"UNIVENTION_DISK_ROOT"

@@ -47,7 +47,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--set summary="check if squid is functional" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="univention_squid_running != 1 or univention_squid_reachable != 1" || die "UNIVENTION_SQUID"
+	--set query="univention_squid_running{%instance%} != 1 or univention_squid_reachable{%instance%} != 1" || die "UNIVENTION_SQUID"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--position "cn=monitoring,$ldap_base" \
@@ -56,7 +56,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--set summary="check if metrics regarding squid are missing" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_squid_running) == 1 or absent(univention_squid_reachable) == 1" || die "UNIVENTION_SQUID_METRIC_MISSING"
+	--set query="absent(univention_squid_running{%instance%}) == 1 or absent(univention_squid_reachable{%instance%}) == 1" || die "UNIVENTION_SQUID_METRIC_MISSING"
 
 CHECKS=(
 	"UNIVENTION_SQUID"
