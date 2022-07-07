@@ -17,8 +17,7 @@ desc: |
  * A popup window could be resized in a way to overlay the address bar with
    web content (CVE-2022-34479)
  * Potential integer overflow in ReplaceElementsAt (CVE-2022-34481)
- * Memory safety bugs fixed in Firefox 102 and Firefox ESR 91.11
-   (CVE-2022-34484)
+ * Memory safety bugs fixed (CVE-2022-34484)
 bug: [54955]
 cve:
 - CVE-2022-2200
