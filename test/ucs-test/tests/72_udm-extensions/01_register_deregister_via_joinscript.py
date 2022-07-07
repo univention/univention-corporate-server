@@ -73,7 +73,7 @@ def test_register_deregister_via_joinscript(extension_type):
 		expected_uid = 0
 		current_uid = os.stat(target_fn).st_uid
 		current_group = os.stat(target_fn).st_gid
-		assert not (current_uid == expected_uid and current_group in expected_groups), 'ERROR: owner/group of target file %s is not ok (current=%s:%s  expected_uid=%s expected_gid=%s)' % (target_fn, current_uid, current_group, expected_uid, expected_groups)
+		assert current_uid == expected_uid and current_group in expected_groups, 'ERROR: owner/group of target file %s is not ok (current=%s:%s  expected_uid=%s expected_gid=%s)' % (target_fn, current_uid, current_group, expected_uid, expected_groups)
 		print('FILE OWNER/GROUP OK')
 
 		# check if sha1(buffer) == sha1(file)
