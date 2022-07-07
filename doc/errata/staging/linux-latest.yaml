@@ -79,7 +79,7 @@ desc: |
    (CVE-2022-32981)
  * floppy: disable FDRAWCMD by default (CVE-2022-33981)
 note: This is the 3rd of three parts.
-bug: [54956]
+bug: [54958]
 cve:
 - CVE-2022-23960
 - CVE-2022-26490
