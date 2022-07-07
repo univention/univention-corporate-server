@@ -9,4 +9,5 @@ Univention Developer Reference
    index
    packaging
    ucr/index
+   join/index
    appendix/index
