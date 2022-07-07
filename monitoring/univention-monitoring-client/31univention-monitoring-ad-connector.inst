@@ -66,7 +66,7 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--set summary="Additional Service: check if metrics regarding ad-connector are missing" \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
-	--set query="absent(univention_ad_connector_ad_reachable) == 1 or absent(univention_ad_connector_running) == 1" || die "UNIVENTION_ADCONNECTOR_METRIC_MISSING"
+	--set query="absent(univention_ad_connector_ad_reachable) == 1 or absent(univention_ad_connector_running) == 1 or absent(univention_ad_connector_rejects) == 1" || die "UNIVENTION_ADCONNECTOR_METRIC_MISSING"
 
 CHECKS=(
 	"UNIVENTION_ADCONNECTOR"
