@@ -126,17 +126,19 @@ class TestSet(object):
 				try:
 					for fname in cases:
 						count += 1
+						test_case = TestCase(fname)
+						test_result = TestResult(test_case, self.test_environment)
 						try:
-							test_case = TestCase(fname).load()
+							test_case.load()
 						except TestError as ex:
 							logger = logging.getLogger('test')
-							logger.critical(
-								'Failed to load test "%s": %s',
-								fname, ex)
-							continue
+							failed_message = 'Failed to load test "%s": %s' % (fname, ex)
+							logger.critical(failed_message)
+							check = True
+						else:
+							failed_message = ""
+							check = test_result.check()
 
-						test_result = TestResult(test_case, self.test_environment)
-						check = test_result.check()
 						if filter_condition and not check:
 							continue
 
@@ -146,7 +148,10 @@ class TestSet(object):
 							self.format.begin_test(test_case)
 
 						try:
-							if not dry_run:
+							if failed_message:
+								test_result.fail()
+								test_result.attach('stdout', 'text/plain', failed_message)
+							elif not dry_run:
 								test_result.run()
 								if stop_on_failure and test_result.eofs in 'EF':
 									return 1
