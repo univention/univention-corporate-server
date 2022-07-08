@@ -80,10 +80,10 @@ class FSMountCheck(Alert):
 			state = -1
 		elif umounted == 0:
 			state = 0
-			msg = '%s OK, %s %s - all nfs shares are correctly mounted' % (mounted, umounted, self.errorstate)
+			msg = '%s OK, %s - all nfs shares are correctly mounted' % (mounted, umounted)
 		else:
 			state = 1
-			msg = '%s OK, %s %s - %s' % (mounted, umounted, self.errorstate, msg)
+			msg = '%s OK, %s - %s' % (mounted, umounted, msg)
 
 		self.write_metric('univention_nfsstatus', state)
 		self.log.debug(msg)
