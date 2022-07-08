@@ -37,7 +37,9 @@ from univention.monitoring import Alert
 class LDAP(Alert):
 
 	def write_metrics(self):
-		slapd_port = ucr['slapd/port'].split(',')[0]
+		if ucr['server/role'] == 'memberserver':
+			return
+		slapd_port = ucr.get('slapd/port', '7389').split(',')[0]
 		rc, output = self.exec_command([
 			'/usr/lib/nagios/plugins/check_ldap',
 			'-H', '%(hostname)s.%(domainname)s' % ucr,

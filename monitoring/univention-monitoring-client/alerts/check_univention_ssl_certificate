@@ -39,6 +39,9 @@ from univention.monitoring import Alert
 class SSLCertificateCheck(Alert):
 
 	def write_metrics(self):
+		if ucr['server/role'] not in ('domaincontroller_master', 'domaincontroller_backup'):
+			return
+
 		today = int(time.time()) // 60 // 60 // 24
 		rootc = ucr.get_int("ssl/validity/root", -1)
 		hostc = ucr.get_int("ssl/validity/host", -1)

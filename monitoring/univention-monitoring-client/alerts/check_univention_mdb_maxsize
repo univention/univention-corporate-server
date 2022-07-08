@@ -40,6 +40,8 @@ from univention.monitoring import Alert
 class MDBMaxsize(Alert):
 
 	def write_metrics(self):
+		if ucr['server/role'] not in ('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'):
+			return
 		self.write_metric_for_folder('univention_listener_mdb_size_used_ratio', '/var/lib/univention-directory-listener/cache')
 		if ucr.get('ldap/database/type') == 'mdb':
 			self.write_metric_for_folder('univention_slapd_mdb_size_used_ratio', '/var/lib/univention-ldap/ldap')
