@@ -180,6 +180,7 @@ COMMON_EXCEPTIONS = (
 	E(r'^univention.admin.uexceptions.noObject: No such object$', ['^  File "/usr/lib/python3/dist-packages/univention/admin/objects.py", line .*, in get']),  # s4c
 	# during upgrade to UCS 5.0-2
 	E("^AttributeError: 'PortalsPortalEntryObjectProperties' object has no attribute 'keywords'", ['reloader.py.*in refresh'], (54295,)),
+	E("ImportError: cannot import name '_ldap_cache' from 'univention.admin'", ['in update'], (54853,)),
 	# during upgrade to UCS 5.0-0
 	E("^(apt.cache.FetchFailedException|apt_pkg.Error): E:The repository 'http://localhost/univention-repository.* Release' is not signed."),
 	E('ImportError: No module named client', [
@@ -197,7 +198,7 @@ COMMON_EXCEPTIONS = (
 	E("ssl.SSLCertVerificationError.*self signed certificate in certificate chain", ['univention/lib/umc.py.*in send'], 53670),
 	E("univention.lib.umc.ConnectionError: .*Could not send request.*SSLCertVerificationError", ['univention-self-service-invitation'], 53670),
 	E("FileNotFoundError: \\[Errno 2\\] No such file or directory: '/etc/machine.secret'", ['univention/lib/umc.py.*in authenticate_with_machine_account'], 53670),
-	E("TypeError: modify\(\) got an unexpected keyword argument 'rename_callback'", ['_register_app'], 54578),
+	E(r"TypeError: modify\(\) got an unexpected keyword argument 'rename_callback'", ['_register_app'], 54578),
 	# during UCS 5.0-0-errata updates
 	E(r"TypeError: __init__\(\) got an unexpected keyword argument 'cli_enabled'", ['_register_app'], 54584),
 
