@@ -10,4 +10,5 @@ Univention Developer Reference
    packaging
    ucr/index
    join/index
+   ldap
    appendix/index
