@@ -69,8 +69,8 @@ def main():
     options = parser.parse_args()
 
     # update the list of languages
-    if options.lang and len(options.lang):
-        dh_umc.LANGUAGES = options.lang
+    if not options.lang:
+        options.lang = ('de',)
 
     # set the po/mo/json file names and the correct function for generating the
     # final output
@@ -81,7 +81,7 @@ def main():
     }[options.type]
 
     # build translation files
-    for lang in dh_umc.LANGUAGES:
+    for lang in options.lang:
         ipo_file = os.path.join(options.outdir, '%s.po' % lang)
         if options.args:
             # only re-create po files if javascript files are given

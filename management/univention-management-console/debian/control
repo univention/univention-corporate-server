@@ -155,7 +155,7 @@ Depends:
  python3-polib,
  python3-univention-config-registry,
  univention-join-dev,
- univention-l10n-dev (>= 7.0.1),
+ univention-l10n-dev (>= 7.0.2-1),
  ${misc:Depends},
  ${python:Depends},
 Description: UCS Management Console - development files

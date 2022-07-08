@@ -30,6 +30,7 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
 from __future__ import print_function
 
 import argparse
@@ -39,7 +40,6 @@ import shutil
 import sys
 
 import univention.l10n as tlh
-import univention.l10n.umc as dh_umc
 
 
 try:
@@ -128,7 +128,6 @@ end with two character language code, e.g. univention-l10n-fr. Exiting.""")
             sys.exit("Error during handling of legacy translation package. Exiting.")
 
     # generate {lang}_tomerge
-    dh_umc.LANGUAGES = (lang_code, )
     modules_upstream = tlh.find_base_translation_modules(args.upstream)
     output_dir = os.path.join(args.translation, '{}_merge'.format(lang_code))
     modules = []

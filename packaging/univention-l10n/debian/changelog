@@ -1,5 +1,6 @@
-univention-l10n (7.0.2-2) unstable; urgency=medium
+univention-l10n (7.0.2-1) unstable; urgency=medium
 
+  * Bug #54961: remove global univention.l10n.umc.LANGUAGES
   * Bug #54961: fix univention-l10n-build building correct language if
     UMC module specification exists
 

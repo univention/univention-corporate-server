@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-management-console
+fix:
+desc: |
+ This update addresses the following issues:
+ * `univention-l10n-build` now supports other language codes than `de` when
+   executed in a UMC package.
+bug: [54961]

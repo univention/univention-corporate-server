@@ -1,3 +1,9 @@
+univention-management-console (12.0.17-4) unstable; urgency=medium
+
+  * Bug #54961: remove global univention.l10n.umc.LANGUAGES
+
+ -- Florian Best <best@univention.de>  Tue, 14 Feb 2023 22:21:59 +0100
+
 univention-management-console (12.0.17-3) unstable; urgency=low
 
   * Bug #53885: Use sd_notidy() to signal services are ready

@@ -87,8 +87,6 @@ JAVASCRIPT = 'Javascript'
 CATEGORY = 'Category'
 ICONS = 'Icons'
 
-LANGUAGES = ('de', )
-
 PO_METADATA = {
     'Project-Id-Version': '',
     'Report-Msgid-Bugs-To': 'packages@univention.de',
@@ -116,7 +114,7 @@ class UMC_Module(dict):
         # type: () -> tuple[str]
         if self.get('target_language'):
             return (self['target_language'],)
-        return LANGUAGES
+        return ('de', )
 
     @property
     def package(self):

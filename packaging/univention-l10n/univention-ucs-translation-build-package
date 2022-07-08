@@ -37,7 +37,6 @@ import os
 from argparse import ArgumentParser, Namespace  # noqa: F401
 
 import univention.l10n as tlh
-import univention.l10n.umc as dh_umc
 
 
 try:
@@ -78,7 +77,6 @@ def main():
 
     # find all module files and move them to a language specific directory
     base_translation_modules = tlh.find_base_translation_modules(options.source_dir)
-    dh_umc.LANGUAGES = (options.target_language, )
     all_modules = []  # type: List[tlh.UMCModuleTranslation]
     output_dir = os.path.join(os.getcwd(), options.target_language)
     for module_attrs in base_translation_modules:

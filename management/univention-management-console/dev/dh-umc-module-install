@@ -57,12 +57,12 @@ class Module(object):
         # type: () -> bool
         return self.module.module_name == 'umc-core'
 
-    def __init__(self, module):
-        # type: (dh_umc.UMC_Module) -> None
+    def __init__(self, module, languages):
+        # type: (dh_umc.UMC_Module, tuple) -> None
         self.module = module
         self.destdir = os.path.join('debian', self.module.package)
         self.python_destdirs = [os.path.join(self.destdir, 'usr/lib/python%s/dist-packages/' % (version,)) for version in self.module.python_versions]
-        self.languages = dh_umc.LANGUAGES
+        self.languages = languages
 
     def dh_module_install(self):
         # type: () -> None
@@ -206,11 +206,12 @@ def main():
     group.add_argument("--arch", "-a", action="store_true", help="Act on all architecture dependent packages.")
     group.add_argument("--indep", "-i", action="store_true", help="Act on all architecture independent packages.")
     group.add_argument("--option", "-O", action="append", help="Additional debhelper options.")
+    parser.add_argument('--lang', '-l', action='append', help='Specifies the languages that are processed (default: de)')
 
     args = parser.parse_args()
     for package in dh_ucs.binary_packages():
         for module in dh_umc.read_modules(package, args.core):
-            Module(module).dh_module_install()
+            Module(module, args.lang or ('de',)).dh_module_install()
 
 
 if __name__ == '__main__':
