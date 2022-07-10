@@ -1,3 +1,9 @@
+univention-ldap (16.0.7-19) unstable; urgency=low
+
+  * Bug #54782: Make group owner configurable for LDAP backup files
+
+ -- Jaime Conde Segovia <conde-segovia.extern@univention.de>  Sun, 10 Jul 2022 23:40:47 +0200
+
 univention-ldap (16.0.7-18) unstable; urgency=medium
 
   * Bug #54395: Add schema for univention-radius-password

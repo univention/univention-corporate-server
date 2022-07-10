@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-ldap
+fix:
+desc: |
+  This update addresses the following issues:
+  * The ownership, group and permissions of LDAP backups are now
+    configurable via the UCR variables `slapd/backup/owner`,
+    `slapd/backup/group"`and `slapd/backup/permissions`.
+bug: [54782]

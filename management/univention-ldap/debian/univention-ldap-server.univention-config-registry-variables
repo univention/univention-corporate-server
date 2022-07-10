@@ -264,6 +264,27 @@ Description[en]=Cron interval for the slapd database backup. Default is '0 0 * *
 Type=str
 Categories=service-ldap
 
+[slapd/backup/owner]
+Description[de]=Besitzer der Sicherungsdatei der slapd-Datenbank.
+Description[en]=Owner for the slapd database backup file.
+Default=root
+Type=str
+Categories=service-ldap
+
+[slapd/backup/group]
+Description[de]=Gruppe für die Sicherungsdatei der slapd-Datenbank.
+Description[en]=Group for the slapd database backup file.
+Default=root
+Type=str
+Categories=service-ldap
+
+[slapd/backup/permissions]
+Description[de]=Dateiberechtigungen für die Sicherungsdatei der slapd-Datenbank.
+Description[en]=File permissions for the slapd database backup file.
+Default=0600
+Type=str
+Categories=service-ldap
+
 [ldap/shadowbind]
 Description[de]=Aktiviert/Deaktiviert das Overlay-Modul shadowbind (diese Overlay prüft shadowExpire und shadowMax/shadowLastChange am Objekt der Bind-DN und verbietet den Login ggf.)
 Description[en]=To enable/disable the shadowbind overlay module (shadowbind checks shadowExpire and shadowMax/shadowLastChange of the bind DN object during bind and denies the login possibly)

@@ -1,3 +1,9 @@
+ucs-test (10.0.7-7) unstable; urgency=medium
+
+  * Bug #54782: Added tests for univention-ldap-backup
+
+ -- Jaime Conde Segovia <conde-segovia.extern@univention.de>  Fri, 15 Jul 2022 09:46:43 +0200
+
 ucs-test (10.0.7-6) unstable; urgency=medium
 
   * Bug #53538: merged 66_udm-computers tests into one file

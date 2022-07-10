@@ -1,5 +1,4 @@
 #!/bin/sh
-#
 # Univention LDAP Server
 #  creates an LDIF backup on UCS Primary and Backup Directory Nodes
 #
@@ -31,24 +30,50 @@
 # <https://www.gnu.org/licenses/>.
 
 . /usr/share/univention-lib/backup.sh
-eval "$(univention-config-registry shell server/role)"
+eval "$(univention-config-registry shell server/role slapd/backup/owner slapd/backup/group slapd/backup/permissions)"
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 	currentdate=$(date +%Y%m%d)
 	ldapbackupname="/var/univention-backup/ldap-backup_${currentdate}.ldif"
 	ldapbackuplog="/var/univention-backup/ldap-backup_${currentdate}.log"
 
+	# Default backup
 	touch "$ldapbackupname" "$ldapbackuplog"
 	chmod 600 "$ldapbackupname" "$ldapbackuplog"
 
 	slapcat -l "$ldapbackupname" 2>"$ldapbackuplog"
 	rc=$?
-	gzip -9 "$ldapbackupname" "$ldapbackuplog" 2>/dev/null
+	gzip -9 "$ldapbackupname" "$ldapbackuplog" -f 2>/dev/null
+
 	if [ $rc -ne 0 ]
 	then
 		echo "LDAP could not be dumped!" >&2
 		exit 1
 	fi
 
+	chmod 600 "${ldapbackupname}.gz" "${ldapbackuplog}.gz"
 	clean_old_backups 'ldap-backup_.*\.\(log\|ldif\)\(\.gz\)?'
+
+	# Attempt backup with user variables
+	if ! echo "$slapd_backup_permissions" | grep -Eq '^[0-7]{3,4}$'; then
+		echo "Invalid permissions. Please check slapd/backup/permissions UCR variable"
+		exit 1
+	fi
+
+	touch "$ldapbackupname" "$ldapbackuplog"
+	chmod "$slapd_backup_permissions" "$ldapbackupname" "$ldapbackuplog"
+
+	slapcat -l "$ldapbackupname" 2>"$ldapbackuplog"
+	rc=$?
+	gzip -9 "$ldapbackupname" "$ldapbackuplog" -f 2>/dev/null
+	if [ $rc -ne 0 ]; then
+		echo "LDAP could not be dumped!" >&2
+		exit 1
+	fi
+
+	clean_old_backups 'ldap-backup_.*\.\(log\|ldif\)\(\.gz\)?'
+
+	chown "${slapd_backup_owner}":"${slapd_backup_group}" "${ldapbackupname}.gz" "${ldapbackuplog}.gz"
+	chmod "${slapd_backup_permissions}" "${ldapbackupname}.gz" "${ldapbackuplog}.gz"
+
 fi
