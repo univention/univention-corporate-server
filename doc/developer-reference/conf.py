@@ -53,7 +53,8 @@ bibtex_default_style = "unsrt"
 bibtex_reference_style = "label"
 
 intersphinx_mapping = {
-    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None)
+    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None),
+    "python": ("https://docs.python.org/3.7/", None),
 }
 
 copybutton_prompt_text = r"\$ |> |.+# "

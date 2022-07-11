@@ -13,6 +13,7 @@
 .. |UCSUDL| replace:: Univention Directory Listener
 .. |UCSUDM| replace:: Univention Directory Manager
 .. |UCSUDN| replace:: Univention Directory Notifier
+.. |UCSUDN_e| replace:: *Univention Directory Notifier*
 .. |UCSUMC| replace:: Univention Management Console
 .. |UCSUMS| replace:: UCS Management System
 .. |UCSUSS| replace:: Univention System Setup
