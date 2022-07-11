@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-monitoring-client
+fix:
+desc: |
+ This update addresses the following issues:
+ * The script execution is now restricted to valid system roles. A missing
+   metric has been added to the `UNIVENTION_ADCONNECTOR_METRIC_MISSING` alert.
+   A leftover nagios reference has been removed in in
+   `check_univention_nfsstatus`.
+bug: [54968]

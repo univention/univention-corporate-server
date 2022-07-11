@@ -1,3 +1,13 @@
+univention-monitoring-client (1.0.0-4) unstable; urgency=medium
+
+  * Bug #54968: add missing metric to
+    UNIVENTION_ADCONNECTOR_METRIC_MISSING query
+  * Bug #54968: fix leftover nagios reference in
+    check_univention_nfsstatus
+  * Bug #54968: restrict check execution to valid system roles
+
+ -- Florian Best <best@univention.de>  Mon, 11 Jul 2022 11:41:30 +0200
+
 univention-monitoring-client (1.0.0-3) unstable; urgency=medium
 
   * Bug #54927: prevent errors if prometheus node exporter is not
