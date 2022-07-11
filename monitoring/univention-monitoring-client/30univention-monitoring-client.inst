@@ -378,12 +378,12 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists --posi
 	--set query="univention_smbd_accessible != 1" || die "UNIVENTION_SMBD"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
---set name="UNIVENTION_SMBD_METRIC_MISSING" \
---set description="Default Service: check if metrics regaridng smbd are missing" \
---set summary="Default Service: check if metrics regaridng smbd are missing" \
---set for="5m" \
---append labels='"severity" "critical"' \
---set query="absent(univention_smbd_accessible) == 1" || die "UNIVENTION_SMBD_METRIC_MISSING"
+	--set name="UNIVENTION_SMBD_METRIC_MISSING" \
+	--set description="Default Service: check if metrics regaridng smbd are missing" \
+	--set summary="Default Service: check if metrics regaridng smbd are missing" \
+	--set for="5m" \
+	--append labels='"severity" "critical"' \
+	--set query="absent(univention_smbd_accessible) == 1" || die "UNIVENTION_SMBD_METRIC_MISSING"
 
 univention-directory-manager monitoring/alert create "$@" --ignore_exists --position="$MONITORINGCONTAINER" \
 	--set name="UNIVENTION_NMBD" \
