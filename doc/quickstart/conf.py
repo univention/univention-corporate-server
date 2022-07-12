@@ -107,7 +107,9 @@ figure_language_filename = "{root}-{language}{ext}"
 univention_use_doc_base = True
 
 intersphinx_mapping = {
-    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None)
+    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None),
+    "uv-domain": ("https://docs.software-univention.de/ext-domain/5.0/en/", None),
+    "uv-inst": ("https://docs.software-univention.de/ext-installation/5.0/en/", None),
 }
 
 
@@ -116,8 +118,9 @@ def fix_title_translation(app, config):
         config.project = "Quickstart Guide für Univention Corporate Server"
         config.html_title = config.project
         config.tokenizer_lang = "de_DE"
-        # TODO : Uncomment, once the German translation is available
-        # config.intersphinx_mapping["uv-manual"] = ("https://docs.software-univention.de/manual/5.0/de", None)
+        config.intersphinx_mapping["uv-manual"] = (
+                "https://docs.software-univention.de/manual/5.0/de", None
+            )
 
 
 def setup(app):

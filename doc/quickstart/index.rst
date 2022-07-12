@@ -34,7 +34,7 @@ Installation
 
 The installation is performed via a menu-driven installer and can be
 used both interactively and completely profile-based, see the
-`Extended installation documentation <ext-doc-inst_>`_.
+:external+uv-inst:doc:`Extended installation documentation <index>`.
 
 The system language, keyboard layout and time zone can be selected in
 accordance with local requirements.
@@ -225,11 +225,9 @@ different clients. The following clients are supported:
   found in :ref:`UCS Manual - Mac OS X domain joins
   <uv-manual:macos-domain-join>`.
 
-- Ubuntu systems (see `Integration of Ubuntu clients into a UCS domain
-  <https://docs.software-univention.de/domain-5.0.html#ext-dom-ubuntu>`_) and
+- Ubuntu systems (see :ref:`ext-dom-ubuntu`) and
   other Linux distributions like Debian, SUSE or Red Hat can also be integrated
-  into the domain, see `Integration of Linux/Unix systems into a UCS domain
-  <https://docs.software-univention.de/domain-5.0.html#ext-dom-unix>`_.
+  into the domain, see :ref:`ext-dom-unix`.
 
 .. _quickstart-extend:
 
@@ -265,21 +263,21 @@ Further information
 
 |UCSUCS| provides comprehensive documentation:
 
-- The primary source of information on UCS is the `UCS Manual for users and
-  administrators <https://docs.software-univention.de/manual-5.0.html>`_.
+* The primary source of information on UCS is the :external+uv-manual:doc:`UCS
+  Manual for users and administrators <index>`.
 
-- Further documentation for advanced scenarios can be found in the extended
+* Further documentation for advanced scenarios can be found in the extended
   documentation. The various documents are linked at
   https://docs.software-univention.de/.
 
-- The `Univention Wiki <https://wiki.univention.de/index.php/Hauptseite>`_ contains several
+* The `Univention Wiki <https://wiki.univention.de/index.php/Hauptseite>`_ contains several
   HOWTOs and hands-on tips.
 
-- Answers to frequently asked questions can be found in the `support and
+* Answers to frequently asked questions can be found in the `support and
   knowledge database (SDB)
   <https://help.univention.com/c/knowledge-base/supported/48>`_.
 
-- Questions on UCS can be asked at `Univention Help
+* Questions on UCS can be asked at `Univention Help
   <https://help.univention.com/>`_.
 
 .. Macro substitutions
@@ -290,8 +288,3 @@ Further information
 .. |UCSUDM| replace:: Univention Directory Manager
 .. |UCSUCS| replace:: Univention Corporate Server
 .. |UCSUCR| replace:: Univention Configuration Registry
-
-.. Link references without translation
-
-.. _ext-doc-inst: https://docs.software-univention.de/installation-5.0.html
-
