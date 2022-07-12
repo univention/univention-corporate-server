@@ -29,57 +29,37 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-TITLE=pam_runasroot
+TITLE := pam_runasroot
 
-DYNAMIC_LIBPAM=yes
-MKDIR=mkdir -p
-CFLAGS=-O2 -D_GNU_SOURCE -D_REENTRANT -DLINUX_PAM  -Wall -fPIC -Dlinux
-DYNAMIC=-DPAM_DYNAMIC
-CPPFLAGS=
-TARGET_ARCH=-Di386
-LD_D=gcc -shared -Wl,-x
-INSTALL=install
-LINKLIBS=
-DESTDIR=
-SECUREDIR=/lib/security
-SHLIBMODE=0644
+CFLAGS += -O2 -DLINUX_PAM -DPAM_DYNAMIC -Wall -fPIC
+CPPFLAGS ?=
+LD_D ?= gcc -shared -Wl,-x
+INSTALL ?= install
+INSTALL_D ?= $(INSTALL) -d
+LINKLIBS ?= -lpam
+DESTDIR ?=
+SECUREDIR ?= /lib/$(MULTIARCH)/security
+SHLIBMODE ?= 0644
 
-LIBSRC = $(TITLE).c
-LIBOBJ = $(TITLE).o
-LIBOBJD = $(addprefix dynamic/,$(LIBOBJ))
+LIBSRC := $(TITLE).c
+LIBOBJ := $(TITLE).o
+LIBSHARED := $(TITLE).so
 
-dynamic/%.o : %.c
-	$(CC) $(CFLAGS) $(DYNAMIC) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+all: $(LIBSHARED)
 
-LIBSHARED = $(TITLE).so
+$(LIBOBJ): $(LIBSRC)
 
-####################### don't edit below #######################
+$(LIBSHARED): $(LIBOBJ)
+	$(LD_D) -o $@ $(LIBOBJ) $(LINKLIBS)
 
-all: dirs $(LIBSHARED)
-
-dirs:
-	$(MKDIR) ./dynamic
-
-
-$(LIBOBJD): $(LIBSRC)
-
-$(LIBSHARED):	$(LIBOBJD)
-		$(LD_D) -o $@ $(LIBOBJD) $(LINKLIBS) -lpam
-
-install: all
-	$(MKDIR) $(DESTDIR)$(SECUREDIR)
+install: $(LIBSHARED)
+	$(INSTALL_D) $(DESTDIR)$(SECUREDIR)
 	$(INSTALL) -m $(SHLIBMODE) $(LIBSHARED) $(DESTDIR)$(SECUREDIR)
 
-remove:
-	rm -f $(DESTDIR)$(SECUREDIR)/$(TITLE).so
+uninstall:
+	$(RM) $(DESTDIR)$(SECUREDIR)/$(LIBSHARED)
 
 clean:
-	rm -f $(LIBOBJD) $(LIBOBJS) core *~ ${LIBSHARED}
-	rm -rf ./dynamic
-
-
-extraclean: clean
-	rm -f *.a *.o *.so *.bak
-
-.c.o:
-	$(CC) $(CFLAGS) -c $<
+	$(RM) $(LIBOBJ) ${LIBSHARED}
+	$(RM) *~ *.bak core
+	$(RM) *.a *.o *.so *.bak
