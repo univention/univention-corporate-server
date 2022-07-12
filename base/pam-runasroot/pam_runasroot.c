@@ -30,27 +30,23 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#include <stdarg.h>
-#include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <fcntl.h>
-#include <unistd.h>
 #include <pwd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <dirent.h>
 #include <signal.h>
-#include <wait.h>
-#include <security/pam_appl.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <syslog.h>
+#include <unistd.h>
 
 #define PAM_SM_AUTH
 #define PAM_SM_SESSION
 
 #include <security/pam_modules.h>
-#include <security/_pam_macros.h>
-
-#include <syslog.h>
+#include <security/_pam_types.h>
 
 static unsigned int exp_pass;
 static unsigned int save_pass;
