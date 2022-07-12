@@ -242,7 +242,7 @@ int run_program(pam_handle_t * pamh, int ctrl, char *prog, const char * user, un
 				open ("/dev/null", O_RDWR); /* open stderr - fd 2 */
 				// sigprocmask (SIG_SETMASK, &sysmask, NULL);
 
-				execl ( prog, NULL );
+				execl ( prog, prog, NULL );
 			}
 			else {
 				_log_err ( LOG_ERR, "could not set uid/gid");
