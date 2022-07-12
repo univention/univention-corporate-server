@@ -351,7 +351,7 @@ int pam_sm_authenticate(pam_handle_t *pamh, int flags,
 			return PAM_USER_UNKNOWN;
 		}
 		_log_err(LOG_NOTICE, "continuing as demo user");
-		if ( demouserscript && *demouserscript != '\0')
+		if (*demouserscript != '\0')
 			run_program ( pamh, ctrl, demouserscript, user, exp_pass, pass_string, run_in_user_context );
 	} else if (strncmp(auth_user, demouser, len) == 0 && auth_user[len] == '-') {
 		_log_err(LOG_NOTICE, "rejected specific demouser");
