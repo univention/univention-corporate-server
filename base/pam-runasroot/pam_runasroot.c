@@ -52,12 +52,12 @@
 
 #include <syslog.h>
 
-static unsigned int exp_pass = 0;
-static unsigned int save_pass = 0;
-static unsigned int run_in_user_context = 0;
-static char program[BUFSIZ] = "";
-static char saved_pass[BUFSIZ] = "";
-static char demouser[BUFSIZ] = "";
+static unsigned int exp_pass;
+static unsigned int save_pass;
+static unsigned int run_in_user_context;
+static char program[BUFSIZ];
+static char saved_pass[BUFSIZ];
+static char demouser[BUFSIZ];
 static char demouserscript[BUFSIZ];
 
 #define RUNASROOT_QUIET 020
@@ -182,7 +182,7 @@ int run_program(pam_handle_t * pamh, int ctrl, char *prog, const char * user, un
 {
 	pid_t pid;
 	int status, i;
-	const struct passwd *pwd;
+	struct passwd *pwd;
 
 
 	sigchld_block_push ();
