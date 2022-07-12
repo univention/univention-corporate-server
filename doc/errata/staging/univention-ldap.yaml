@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-ldap
-fix: 16.0.7-19A~5.0.0.202207151309
+fix: 
 desc: |
  This update addresses the following issues:
  * The ownership, group and permissions of LDAP backups are now configurable
@@ -11,4 +11,6 @@ desc: |
    `slapd/backup/permissions`.
  * The UCR variable description for the variable `ldap/database/type` has been
    updated and now describes deprecated and recommended values.
-bug: [54782, 54821]
+ * Create initial fake schema in unjoined Backup/Replica servers
+   too to avoid invalid slapd configurations that may break upgrades.
+bug: [54782, 54821, 54465]
