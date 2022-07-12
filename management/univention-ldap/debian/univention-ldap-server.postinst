@@ -73,10 +73,26 @@ restart_slapd ()
 }
 # } # end of function definitions
 
+# Bug #54465: Move fake_initial_schema from 01univention-ldap-server-init.inst
+# here so unjoined backups/slaves upgrades don't fail.
+# slap* needs schema information, which is later fetched by replication.py
+fake_initial_schema () {
+	[ "$ldap_server_type" = master ] && return
+	[ -s /var/lib/univention-ldap/schema.conf ] && return
+	local tmp=$(mktemp)
+	printf '# univention_dummy.conf\n\nldap/server/type: master' >"$tmp"
+	UNIVENTION_BASECONF="$tmp" univention-config-registry filter \
+		</etc/univention/templates/files/etc/ldap/slapd.conf.d/10univention-ldap-server_schema \
+		>/var/lib/univention-ldap/schema.conf
+	rm -f "$tmp"
+}
+fake_initial_schema
+
+
 # Replication: password for rootdn/updatedn and schema from Primary
 case "$ldap_server_type" in
 master) ;;
-slave|*) touch /etc/ldap/rootpw.conf /var/lib/univention-ldap/schema.conf ;;
+slave|*) touch /etc/ldap/rootpw.conf ;;
 esac
 
 #DEBHELPER#
@@ -205,6 +221,7 @@ upgrade_license () {
 		return 1
 	fi
 }
+
 
 if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/01univention-ldap-server-init.inst || true
