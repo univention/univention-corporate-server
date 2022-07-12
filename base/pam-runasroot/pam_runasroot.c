@@ -120,32 +120,6 @@ static int _pam_parse(int flags, int argc, const char **argv)
 	return ctrl;
 }
 
-/* This common function is used to send a message to the applications
-   conversion function. Our only use is to ask the application to print
-   an informative message that we are creating a home directory */
-static int converse(pam_handle_t * pamh, int ctrl, int nargs
-		,struct pam_message **message
-		,struct pam_response **response)
-{
-	int retval;
-	struct pam_conv *conv;
-
-	retval = pam_get_item(pamh, PAM_CONV, (const void **) &conv);
-	if (retval == PAM_SUCCESS)
-	{
-
-		retval = conv->conv(nargs, (const struct pam_message **) message
-				,response, conv->appdata_ptr);
-	}
-	else
-	{
-		_log_err(LOG_ERR, "couldn't obtain coversation function [%s]"
-				,pam_strerror(pamh, retval));
-	}
-
-	return retval;		/* propagate error status */
-}
-
 static int sigchld_blocked = 0;
 static sigset_t sigchldblock_mask, sigchldblock_oldmask;
 
