@@ -225,7 +225,10 @@ int run_program(pam_handle_t * pamh, int ctrl, char *prog, const char * user, un
 				}
 
 				umask (022);
-				chdir ( "/" );
+				if (chdir ( "/" )) {
+					_log_err(LOG_ERR, "could not chdir()");
+					exit (128);
+				}
 
 				/* do we need to delete the PAM environment here?
 				   The following line will end the forked process
