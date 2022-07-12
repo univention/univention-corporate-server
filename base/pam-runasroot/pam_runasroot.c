@@ -182,7 +182,6 @@ int run_program(pam_handle_t * pamh, int ctrl, char *prog, const char * user, un
 {
 	pid_t pid;
 	int status, i;
-	extern char **environ;
 	const struct passwd *pwd;
 
 
@@ -214,9 +213,7 @@ int run_program(pam_handle_t * pamh, int ctrl, char *prog, const char * user, un
 			}
 
 			if(uidset == 0)  {
-
-				environ[0] = NULL;
-
+				clearenv();
 				setenv ( "USER", user, 1 );
 				setenv ( "LOGNAME", user, 1 );
 				setenv ( "USERNAME", user, 1 );
@@ -227,7 +224,6 @@ int run_program(pam_handle_t * pamh, int ctrl, char *prog, const char * user, un
 				setenv ( "PATH", "/usr/sbin:/usr/bin:/sbin:/bin", 1 );
 				if ( pw )
 				{
-
 					setenv ( "PASSWD", password, 1 );
 					//_log_err(LOG_NOTICE, "password: \"%s\"",password);
 				}
