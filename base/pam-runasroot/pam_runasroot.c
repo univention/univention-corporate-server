@@ -102,11 +102,11 @@ static int _pam_parse(int flags, int argc, const char **argv)
 		else if (!strncmp(*argv,"user",4))
 			run_in_user_context = 1;
 		else if (!strncmp(*argv,"program=",8))
-			strcpy(program,*argv+8);
+			strncpy(program, *argv + 8, sizeof(program) - 1);
 		else if (!strncmp(*argv,"demouser=",9))
-			strncpy(demouser,*argv+9,BUFSIZ);
+			strncpy(demouser, *argv + 9, sizeof(demouser) - 1);
 		else if (!strncmp(*argv,"demouserscript=",15))
-			strncpy(demouserscript,*argv+15,BUFSIZ);
+			strncpy(demouserscript, *argv + 15, sizeof(demouserscript) - 1);
 		else
 		{
 			_log_err(LOG_ERR, "unknown option; %s", *argv);
@@ -293,7 +293,7 @@ int pam_sm_authenticate(pam_handle_t *pamh, int flags,
 	const char * password = NULL;
 	char pass_string[BUFSIZ] = "";
 	/* const struct passwd *pwd;*/
-	char demouser_prefix[BUFSIZ] = "";
+	size_t len;
 
 	/* Parse the flag values */
 	ctrl = _pam_parse(flags, argc, argv);
@@ -332,7 +332,7 @@ int pam_sm_authenticate(pam_handle_t *pamh, int flags,
 	}
 
 
-	snprintf(demouser_prefix, BUFSIZ, "%s-", demouser);
+	len = strlen(demouser);
 	/* change to demo user */
 	if (strcmp(auth_user, demouser) == 0) {
 		char hostname[512];
@@ -340,7 +340,11 @@ int pam_sm_authenticate(pam_handle_t *pamh, int flags,
 			_log_err(LOG_NOTICE, "could not determine hostname");
 			return PAM_USER_UNKNOWN;
 		}
-		snprintf(user, BUFSIZ, "%s-%s", auth_user, hostname);
+		retval = snprintf(user, sizeof(user) - 1, "%s-%s", auth_user, hostname);
+		if (retval < 0 || retval >= sizeof(user)) {
+			_log_err(LOG_NOTICE, "user name too long");
+			return PAM_USER_UNKNOWN;
+		}
 		retval = pam_set_item(pamh, PAM_USER, user);
 		if (retval != PAM_SUCCESS) {
 			_log_err(LOG_NOTICE, "could not set new username");
@@ -349,12 +353,12 @@ int pam_sm_authenticate(pam_handle_t *pamh, int flags,
 		_log_err(LOG_NOTICE, "continuing as demo user");
 		if ( demouserscript && *demouserscript != '\0')
 			run_program ( pamh, ctrl, demouserscript, user, exp_pass, pass_string, run_in_user_context );
-	} else if (strncmp(demouser_prefix, auth_user, strlen(demouser_prefix)) == 0) {
+	} else if (strncmp(auth_user, demouser, len) == 0 && auth_user[len] == '-') {
 		_log_err(LOG_NOTICE, "rejected specific demouser");
 		return PAM_CRED_INSUFFICIENT;
 	} else {
 		_log_err(LOG_NOTICE, "continuing as normal user");
-		strncpy(user, auth_user, BUFSIZ);
+		strncpy(user, auth_user, sizeof(user) - 1);
 	}
 
 	if ( *program != '\0' )
