@@ -1,0 +1,9 @@
+@import 'styles/univention.css';
+
+table.grid td {
+    border:1px solid rgb(222, 226, 230);
+}
+
+table.grid th {
+    border:1px solid rgb(222, 226, 230);
+}

@@ -56,6 +56,7 @@ bibtex_reference_style = "label"
 intersphinx_mapping = {
     "uv-manual": (f"https://docs.software-univention.de/manual/{version}/en", None),
     "python": ("https://docs.python.org/3.7/", None),
+    "python-general": ("https://docs.python.org/3/", None),
 }
 
 copybutton_prompt_text = r"\$ |> |.+# "
@@ -82,10 +83,12 @@ html_context = {
     "pdf_download_filename": f"{pdf_doc_base}.pdf",
 }
 
+html_style = 'custom.css'
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = []  # value usually is ['_static']
+html_static_path = ['_static', ]  # value usually is ['_static']
 html_last_updated_fmt = "%a, %d. %b %Y at %H:%M (UTC%z)"
 
 # https://github.com/mgeier/sphinx-last-updated-by-git
