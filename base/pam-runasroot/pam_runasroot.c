@@ -108,9 +108,9 @@ static int _pam_parse(int flags, int argc, const char **argv)
 		else if (!strncmp(*argv,"program=",8))
 			strcpy(program,*argv+8);
 		else if (!strncmp(*argv,"demouser=",9))
-			strncpy(demouser,*argv+9,BUFSIZ);
+			snprintf(demouser, BUFSIZ, "%s", *argv+9);
 		else if (!strncmp(*argv,"demouserscript=",15))
-			strncpy(demouserscript,*argv+15,BUFSIZ);
+			snprintf(demouserscript, BUFSIZ, "%s", *argv+15);
 		else
 		{
 			_log_err(LOG_ERR, "unknown option; %s", *argv);
@@ -118,32 +118,6 @@ static int _pam_parse(int flags, int argc, const char **argv)
 	}
 
 	return ctrl;
-}
-
-/* This common function is used to send a message to the applications
-   conversion function. Our only use is to ask the application to print
-   an informative message that we are creating a home directory */
-static int converse(pam_handle_t * pamh, int ctrl, int nargs
-		,struct pam_message **message
-		,struct pam_response **response)
-{
-	int retval;
-	struct pam_conv *conv;
-
-	retval = pam_get_item(pamh, PAM_CONV, (const void **) &conv);
-	if (retval == PAM_SUCCESS)
-	{
-
-		retval = conv->conv(nargs, (const struct pam_message **) message
-				,response, conv->appdata_ptr);
-	}
-	else
-	{
-		_log_err(LOG_ERR, "couldn't obtain coversation function [%s]"
-				,pam_strerror(pamh, retval));
-	}
-
-	return retval;		/* propagate error status */
 }
 
 static int sigchld_blocked = 0;
@@ -328,7 +302,7 @@ int pam_sm_authenticate(pam_handle_t *pamh, int flags,
 	const char * password = NULL;
 	char pass_string[BUFSIZ] = "";
 	/* const struct passwd *pwd;*/
-	char demouser_prefix[BUFSIZ] = "";
+	char demouser_prefix[BUFSIZ+1] = "";
 
 	/* Parse the flag values */
 	ctrl = _pam_parse(flags, argc, argv);
@@ -367,7 +341,7 @@ int pam_sm_authenticate(pam_handle_t *pamh, int flags,
 	}
 
 
-	snprintf(demouser_prefix, BUFSIZ, "%s-", demouser);
+	snprintf(demouser_prefix, BUFSIZ+1, "%s-", demouser);
 	/* change to demo user */
 	if (strcmp(auth_user, demouser) == 0) {
 		char hostname[512];
@@ -382,14 +356,14 @@ int pam_sm_authenticate(pam_handle_t *pamh, int flags,
 			return PAM_USER_UNKNOWN;
 		}
 		_log_err(LOG_NOTICE, "continuing as demo user");
-		if ( demouserscript && *demouserscript != '\0')
+		if ( *demouserscript != '\0')
 			run_program ( pamh, ctrl, demouserscript, user, exp_pass, pass_string, run_in_user_context );
 	} else if (strncmp(demouser_prefix, auth_user, strlen(demouser_prefix)) == 0) {
 		_log_err(LOG_NOTICE, "rejected specific demouser");
 		return PAM_CRED_INSUFFICIENT;
 	} else {
 		_log_err(LOG_NOTICE, "continuing as normal user");
-		strncpy(user, auth_user, BUFSIZ);
+		snprintf(user, BUFSIZ, "%s", auth_user);
 	}
 
 	if ( *program != '\0' )
