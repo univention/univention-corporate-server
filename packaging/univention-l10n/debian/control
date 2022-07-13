@@ -17,6 +17,7 @@ Depends:
  python-debian,
  python-lxml,
  python-magic,
+ python-pathlib,
  python-polib,
  python-univention-config-registry,
  python3-debian,

@@ -37,6 +37,7 @@ import getpass
 import json
 import mimetypes
 import os
+import pathlib
 import re
 import shutil
 import socket
@@ -192,19 +193,18 @@ class SpecialCase():
     :param target_language: 2-letter language code.
     """
 
-    RE_L10N = re.compile(r'(.+/)?debian/([^/]+).univention-l10n$')
-
     def __init__(self, special_case_definition, source_dir, path_to_definition, target_language):
         # type: (Dict[str, str], str, str, str) -> None
         # FIXME: this would circumvent custom getters and setter?
         self.__dict__.update(special_case_definition)
-        def_relative = os.path.relpath(path_to_definition, start=source_dir)
-        matches = self.RE_L10N.match(def_relative)
-        if not matches:
-            raise ValueError(def_relative)
+        def_relative = pathlib.Path(os.path.relpath(path_to_definition, start=source_dir))
+        try:
+            path = next(def_relative.parent.parent.rglob('debian/*.univention-l10n'))
+        except StopIteration:
+            raise ValueError(str(def_relative))
 
-        pdir, self.binary_package_name = matches.groups()
-        self.package_dir = os.getcwd() if pdir is None else pdir.rstrip('/')  # type: str
+        self.binary_package_name = path.with_suffix('').name
+        self.package_dir = str(path.parent.parent.absolute())
 
         self.source_dir = source_dir
         if hasattr(self, 'po_path'):
