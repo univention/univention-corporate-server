@@ -1,3 +1,9 @@
+univention-join (12.0.4-2) unstable; urgency=medium
+
+  * Bug #54967: fix univention-server-join with multiple MAC addresses
+
+ -- Florian Best <best@univention.de>  Wed, 13 Jul 2022 11:51:13 +0200
+
 univention-join (12.0.4-1) unstable; urgency=medium
 
   * Bug #54706: drop Python 3 package files
