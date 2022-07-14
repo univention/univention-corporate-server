@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-admin-diary
-fix:
+fix: 2.0.4-4A~5.0.0.202207141212
 desc: |
  This update addresses the following issues:
  * The server_password_change/univention-admin-diary script

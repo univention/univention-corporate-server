@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-squid
-fix:
+fix: 13.0.4-2A~5.0.0.202207141235
 desc: |
  This update addresses the following issues:
  * The squid-pw-rotate script has been updated

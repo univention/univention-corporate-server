@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-postgresql
-fix:
+fix: 12.0.3-1A~5.0.0.202207141230
 desc: |
  This update addresses the following issues:
  * The univention-postgresql-password script has been updated
