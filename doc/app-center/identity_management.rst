@@ -133,8 +133,16 @@ All files are JSON with one dictionary and the following content:
    The type of the object, i.e., "users/user", or "groups/group".
 
 ``object``
-   A dictionary of the attributes of this object. The
-   content is defined by the UDM (Univention Directory Manager)
+   A dictionary of the attributes of this object.
+   This is only set with versions lower than ``2`` in the ``ListenerUDMVersion`` app definition.
+   The content is defined by the UDM (Univention Directory Manager)
+   representation of the object. If it is null instead, the object has
+   been deleted.
+
+``properties``
+   A dictionary of the attributes of this object.
+   This is only set starting with Version ``2`` of the ``ListenerUDMVersion`` app definition.
+   The content is defined by the UDM (Univention Directory Manager) REST API
    representation of the object. If it is null instead, the object has
    been deleted.
 
@@ -205,7 +213,6 @@ but should clarify the idea.
            "mailForwardCopyToSelf": "0",
            "mailPrimaryAddress": "admin@sparka-43.intranet",
            "mailUserQuota": "0",
-           "password": "{crypt}$6$0kS4GowCZEAJRqWG$8LkK6iBeKFCInoxy9bCG1SFfGpajOy//Zg[...]",
            "passwordexpiry": null,
            "primaryGroup": "cn=Domain Admins,cn=groups,dc=sparka-43,dc=intranet",
            "sambaRID": "500",
@@ -230,6 +237,88 @@ but should clarify the idea.
            "userexpiry": null,
            "username": "Administrator",
            "webweaverActivated": "TRUE"
+       },
+       "properties": {
+           "accountActivationDate": {
+               "activation-date": null,
+               "activation-time": null,
+               "activation-timezone": "Europe/Berlin"
+           },
+           "birthday": null,
+           "city": null,
+           "country": null,
+           "departmentNumber": [],
+           "description": null,
+           "disabled": false,
+           "displayName": "Administrator",
+           "e-mail": [],
+           "employeeNumber": null,
+           "employeeType": null,
+           "firstname": null,
+           "gecos": "Administrator",
+           "gidNumber": 5000,
+           "groups": [
+               "cn=Domain Admins,cn=groups,dc=demo,dc=univention,dc=de",
+               "cn=Domain Users,cn=groups,dc=demo,dc=univention,dc=de",
+               "cn=DC Backup Hosts,cn=groups,dc=demo,dc=univention,dc=de"
+           ],
+           "homePostalAddress": [],
+           "homeShare": null,
+           "homeSharePath": "Administrator",
+           "homeTelephoneNumber": [],
+           "homedrive": null,
+           "initials": null,
+           "jpegPhoto": null,
+           "lastbind": null,
+           "lastname": "Administrator",
+           "locked": false,
+           "lockedTime": "0",
+           "mailAlternativeAddress": [],
+           "mailForwardAddress": [],
+           "mailForwardCopyToSelf": "0",
+           "mailHomeServer": null,
+           "mailPrimaryAddress": null,
+           "mobileTelephoneNumber": [],
+           "objectFlag": [
+               "hidden"
+           ],
+           "organisation": null,
+           "overridePWHistory": null,
+           "overridePWLength": null,
+           "pagerTelephoneNumber": [],
+           "password": null,
+           "passwordexpiry": null,
+           "phone": [],
+           "physicalDeliveryOfficeName": null,
+           "postOfficeBox": [],
+           "postcode": null,
+           "preferredDeliveryMethod": null,
+           "preferredLanguage": null,
+           "primaryGroup": "cn=Domain Admins,cn=groups,dc=demo,dc=univention,dc=de",
+           "profilepath": null,
+           "pwdChangeNextLogin": null,
+           "roomNumber": [],
+           "sambaLogonHours": null,
+           "sambaPrivileges": [],
+           "sambaRID": 500,
+           "sambaUserWorkstations": [],
+           "sambahome": null,
+           "scriptpath": null,
+           "secretary": [],
+           "serviceprovider": [],
+           "shell": "/bin/bash",
+           "street": null,
+           "title": null,
+           "uidNumber": 2002,
+           "umcProperty": {
+               "appcenterSeen": "false",
+               "udmUserGridView": "tile"
+           },
+           "unixhome": "/home/Administrator",
+           "unlock": false,
+           "unlockTime": "",
+           "userexpiry": null,
+           "username": "Administrator"
        },
        "udm_object_type": "users/user"
    }
