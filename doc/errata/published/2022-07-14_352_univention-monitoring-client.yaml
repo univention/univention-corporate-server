@@ -11,3 +11,5 @@ desc: |
    A leftover nagios reference has been removed in in
    `check_univention_nfsstatus`.
 bug: [54968]
+erratum: 352
+announced: 2022-07-14
