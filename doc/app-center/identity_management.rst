@@ -133,10 +133,12 @@ All files are JSON with one dictionary and the following content:
    The type of the object, i.e., "users/user", or "groups/group".
 
 ``object``
-   A dictionary of the attributes of this object. The
-   content is defined by the UDM (Univention Directory Manager)
-   representation of the object. If it is null instead, the object has
-   been deleted.
+   A dictionary of the attributes of this object.
+   For versions lower than ``2`` in the ``ListenerUDMVersion`` app definition the content is
+   defined by the UDM (Univention Directory Manager) representation of the object. For all other
+   versions the UDM REST API representation of the object is used.
+   If it is null instead, the object has been deleted.
+
 
 Logging information about the listener can found in
 :file:`/var/log/univention/listener_modules/$appid.log`.
@@ -179,10 +181,104 @@ JSON example
 This is an example of a JSON file for a user change. It is not complete,
 but should clarify the idea.
 
+For versions higher than ``1``:
+
 .. code:: js
 
    {
-       "dn": "uid=Administrator,cn=users,dc=sparka-43,dc=intranet",
+       "dn": "uid=Administrator,cn=users,dc=demo,dc=univention,dc=de",
+       "id": "b2f13544-e3cb-1037-810e-23ad4765aade",
+       "properties": {
+           "accountActivationDate": {
+               "activation-date": null,
+               "activation-time": null,
+               "activation-timezone": "Europe/Berlin"
+           },
+           "birthday": null,
+           "city": null,
+           "country": null,
+           "departmentNumber": [],
+           "description": null,
+           "disabled": false,
+           "displayName": "Administrator",
+           "e-mail": [],
+           "employeeNumber": null,
+           "employeeType": null,
+           "firstname": null,
+           "gecos": "Administrator",
+           "gidNumber": 5000,
+           "groups": [
+               "cn=Domain Admins,cn=groups,dc=demo,dc=univention,dc=de",
+               "cn=Domain Users,cn=groups,dc=demo,dc=univention,dc=de",
+               "cn=DC Backup Hosts,cn=groups,dc=demo,dc=univention,dc=de"
+           ],
+           "homePostalAddress": [],
+           "homeShare": null,
+           "homeSharePath": "Administrator",
+           "homeTelephoneNumber": [],
+           "homedrive": null,
+           "initials": null,
+           "jpegPhoto": null,
+           "lastbind": null,
+           "lastname": "Administrator",
+           "locked": false,
+           "lockedTime": "0",
+           "mailAlternativeAddress": [],
+           "mailForwardAddress": [],
+           "mailForwardCopyToSelf": "0",
+           "mailHomeServer": null,
+           "mailPrimaryAddress": null,
+           "mobileTelephoneNumber": [],
+           "objectFlag": [
+               "hidden"
+           ],
+           "organisation": null,
+           "overridePWHistory": null,
+           "overridePWLength": null,
+           "pagerTelephoneNumber": [],
+           "password": null,
+           "passwordexpiry": null,
+           "phone": [],
+           "physicalDeliveryOfficeName": null,
+           "postOfficeBox": [],
+           "postcode": null,
+           "preferredDeliveryMethod": null,
+           "preferredLanguage": null,
+           "primaryGroup": "cn=Domain Admins,cn=groups,dc=demo,dc=univention,dc=de",
+           "profilepath": null,
+           "pwdChangeNextLogin": null,
+           "roomNumber": [],
+           "sambaLogonHours": null,
+           "sambaPrivileges": [],
+           "sambaRID": 500,
+           "sambaUserWorkstations": [],
+           "sambahome": null,
+           "scriptpath": null,
+           "secretary": [],
+           "serviceprovider": [],
+           "shell": "/bin/bash",
+           "street": null,
+           "title": null,
+           "uidNumber": 2002,
+           "umcProperty": {
+               "appcenterSeen": "false",
+               "udmUserGridView": "tile"
+           },
+           "unixhome": "/home/Administrator",
+           "unlock": false,
+           "unlockTime": "",
+           "userexpiry": null,
+           "username": "Administrator"
+       },
+       "udm_object_type": "users/user"
+   }
+
+For versions lower than ``2``:
+
+.. code:: js
+
+   {
+       "dn": "uid=Administrator,cn=users,dc=demo,dc=univention,dc=de",
        "id": "b2f13544-e3cb-1037-810e-23ad4765aade",
        "object": {
            "description": "Built-in account for administering the computer/domain",
@@ -191,13 +287,13 @@ but should clarify the idea.
            "gecos": "Administrator",
            "gidNumber": "5000",
            "groups": [
-               "cn=Domain Admins,cn=groups,dc=sparka-43,dc=intranet",
-               "cn=Domain Users,cn=groups,dc=sparka-43,dc=intranet",
-               "cn=DC Backup Hosts,cn=groups,dc=sparka-43,dc=intranet",
-               "cn=Schema Admins,cn=groups,dc=sparka-43,dc=intranet",
-               "cn=Enterprise Admins,cn=groups,dc=sparka-43,dc=intranet",
-               "cn=Group Policy Creator Owners,cn=groups,dc=sparka-43,dc=intranet",
-               "cn=Administrators,cn=Builtin,dc=sparka-43,dc=intranet"
+               "cn=Domain Admins,cn=groups,dc=demo,dc=univention,dc=de",
+               "cn=Domain Users,cn=groups,dc=demo,dc=univention,dc=de",
+               "cn=DC Backup Hosts,cn=groups,dc=demo,dc=univention,dc=de",
+               "cn=Schema Admins,cn=groups,dc=demo,dc=univention,dc=de",
+               "cn=Enterprise Admins,cn=groups,dc=demo,dc=univention,dc=de",
+               "cn=Group Policy Creator Owners,cn=groups,dc=demo,dc=univention,dc=de",
+               "cn=Administrators,cn=Builtin,dc=demo,dc=univention,dc=de"
            ],
            "lastname": "Administrator",
            "locked": "0",
@@ -205,9 +301,8 @@ but should clarify the idea.
            "mailForwardCopyToSelf": "0",
            "mailPrimaryAddress": "admin@sparka-43.intranet",
            "mailUserQuota": "0",
-           "password": "{crypt}$6$0kS4GowCZEAJRqWG$8LkK6iBeKFCInoxy9bCG1SFfGpajOy//Zg[...]",
            "passwordexpiry": null,
-           "primaryGroup": "cn=Domain Admins,cn=groups,dc=sparka-43,dc=intranet",
+           "primaryGroup": "cn=Domain Admins,cn=groups,dc=demo,dc=univention,dc=de",
            "sambaRID": "500",
            "shell": "/bin/bash",
            "uidNumber": "2002",
@@ -233,6 +328,7 @@ but should clarify the idea.
        },
        "udm_object_type": "users/user"
    }
+
 
 .. _authentication:
 
