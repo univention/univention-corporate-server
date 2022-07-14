@@ -132,7 +132,7 @@ All files are JSON with one dictionary and the following content:
 ``type``
    The type of the object, i.e., "users/user", or "groups/group".
 
-``attributes``
+``object``
    A dictionary of the attributes of this object. The
    content is defined by the UDM (Univention Directory Manager)
    representation of the object. If it is null instead, the object has
