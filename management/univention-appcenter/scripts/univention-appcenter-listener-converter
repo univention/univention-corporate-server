@@ -145,6 +145,10 @@ def convert(app, dumped, filename, lo, pos):
 			'dn': dn,
 			'udm_object_type': udm_type,
 		}
+		if app.listener_udm_version < 2:
+			attrs.pop('properties')
+		else:
+			attrs.pop('object')
 		json.dump(attrs, fd, sort_keys=True, indent=4)
 	shutil.move(tmp, dst)
 	logger.info('%s of %s (id: %s, file: %s)' % ('conversion', dn, entry_uuid, dst))
