@@ -147,7 +147,11 @@ class MonitoringClient(ListenerModuleHandler):
 		ud.debug(ud.LISTENER, ud.INFO, 'Reloading prometheus alert manager')
 		url = 'http://localhost/metrics-prometheus/-/reload'
 		with SetUID(0), open('/etc/machine.secret') as fd:
-			requests.get(url, auth=('%(hostname)ss$' % ucr, fd.read().strip()))
+			response = requests.post(url, auth=('%(hostname)s$' % ucr, fd.read().strip()))
+			try:
+				response.raise_for_status()
+			except requests.HTTPError as exc:
+				ud.debug(ud.LISTENER, ud.ERROR, 'Error reloading prometheus alert rules: %s' % (exc,))
 
 	class Configuration(ListenerModuleHandler.Configuration):
 		name = name
