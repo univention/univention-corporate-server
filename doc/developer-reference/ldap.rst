@@ -9,7 +9,7 @@ An LDAP server provides authenticated and controlled access to directory objects
 over the network. LDAP objects consist of a collection of attributes which
 conform to so called LDAP schemata. An in depth documentation of LDAP is beyond
 the scope of this document. Other resources cover this topic exhaustively, for
-example `<http://www.zytrax.com/books/ldap/>`_ or the manual pages
+example `<https://www.zytrax.com/books/ldap/>`_ or the manual pages
 :manpage:`slapd.conf.5` and :manpage:`slapd.access.5`.
 
 At least it should be noted that OpenLDAP offers two fundamentally different

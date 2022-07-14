@@ -24,7 +24,8 @@ copyright = '2021-{}, Univention GmbH'.format(date.today().year)
 author = ''
 
 # The full version, including alpha/beta/rc tags
-release = '5.0'
+release = '5.0-2'
+version = '5.0'
 
 html_show_copyright = True
 language = 'en'
@@ -53,7 +54,7 @@ bibtex_default_style = "unsrt"
 bibtex_reference_style = "label"
 
 intersphinx_mapping = {
-    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None),
+    "uv-manual": (f"https://docs.software-univention.de/manual/{version}/en", None),
     "python": ("https://docs.python.org/3.7/", None),
 }
 
@@ -105,6 +106,17 @@ if "spelling" in sys.argv:
 
 if "linkcheck" in sys.argv:
     suppress_warnings = ['git.too_shallow', "bibtex"]
+
+linkcheck_ignore = [
+    r"https://errata\.software-univention\.de/#/\?erratum=\d\.\dx\d{1,3}",
+]
+
+linkcheck_allowed_redirects = {
+    r"https://help\.univention\.com/c/knowledge-base/supported/":
+        r"https://help\.univention\.com/c/knowledge-base/supported/48",
+    r"https://help\.univention\.com/t/13149":
+        r"https://help\.univention\.com/t/howto-update-listener-cachemasterentry/13149",
+}
 
 root_doc = "contents"
 
