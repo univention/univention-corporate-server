@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.13-2) unstable; urgency=medium
+
+  * Bug #54597: fix dictionary changed size during iteration
+
+ -- Jaime Conde Segovia <conde-segovia.extern@univention.de>  Thu, 14 Jul 2022 15:38:31 +0200
+
 univention-directory-manager-modules (15.0.13-1) unstable; urgency=medium
 
   * Bug #54840: remove UCR widget mapping directory/manager/web/widget/.*
