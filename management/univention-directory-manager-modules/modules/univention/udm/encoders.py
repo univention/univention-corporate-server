@@ -41,7 +41,8 @@ from typing import Any, Callable, Dict, List, Optional, Type, TypeVar  # noqa: F
 import lazy_object_proxy
 
 import univention.admin.modules
-from univention.admin.syntax import sambaGroupType
+from univention.admin.syntax import Base64Bzip2Text, Base64Bzip2XML, sambaGroupType
+from univention.admin.types import Base64Type, DistinguishedNameType, SetType, TypeHint
 from univention.admin.uexceptions import valueInvalidSyntax
 
 from .binary_props import Base64BinaryProperty, Base64Bzip2BinaryProperty
@@ -71,6 +72,42 @@ class BaseEncoder:
     def decode(self, value=None):
         # type: (Optional[Any]) -> Optional[Any]
         raise NotImplementedError()
+
+
+class GenericTypeEncoder(BaseEncoder):
+
+    static = True
+
+    def __init__(self, property_name, property_, type_hint, udm_obj):
+        self.udm_obj = udm_obj
+        self.type_hint = type_hint
+        super(GenericTypeEncoder, self).__init__(property_name)
+
+    @classmethod
+    def detect_encoder(cls, property_name, property_, udm_obj):
+        type_hint = TypeHint.detect(property_, property_name)
+        # TODO: we could also change the class here instead of in decode/encode but then syntax.parse() wouldn't be called anymore
+        return cls(property_name, property_, type_hint, udm_obj)
+
+    def decode(self, value=None):
+        value = self.type_hint.decode(value)
+        if value and isinstance(self.type_hint, DistinguishedNameType):
+            return dn_property_encoder_for(self.type_hint.syntax.udm_modules[0])(self.property_name, self.udm_obj._udm_module.connection, self.udm_obj._udm_module.meta.used_api_version, value).decode(value)
+        if value and isinstance(self.type_hint, SetType) and issubclass(self.type_hint.item_type, DistinguishedNameType):
+            return dn_list_property_encoder_for(self.type_hint.syntax.udm_modules[0])(self.property_name, self.udm_obj._udm_module.connection, self.udm_obj._udm_module.meta.used_api_version, value).decode(value)
+        if value and isinstance(self.type_hint, Base64Type):
+            cls = Base64Bzip2BinaryProperty if isinstance(self.type_hint.syntax, (Base64Bzip2Text, Base64Bzip2XML)) else Base64BinaryProperty
+            return cls(self.property_name, value)
+        return value
+
+    def encode(self, value=None):
+        value = self.type_hint.encode(value)
+        if value and isinstance(self.type_hint, Base64Type):
+            cls = Base64Bzip2BinaryProperty if isinstance(self.type_hint.syntax, (Base64Bzip2Text, Base64Bzip2XML)) else Base64BinaryProperty
+            if not isinstance(value, cls):
+                value = cls(self.property_name, raw_value=value)
+            return value.encoded
+        return value
 
 
 class Base64BinaryPropertyEncoder(BaseEncoder):

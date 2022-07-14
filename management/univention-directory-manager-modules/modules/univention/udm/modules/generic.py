@@ -54,7 +54,7 @@ import univention.config_registry
 
 from ..base import BaseModule, BaseModuleMetadata, BaseObject, BaseObjectProperties, LdapMapping, ModuleMeta
 from ..encoders import (  # noqa: F401
-    BaseEncoder, DnPropertyEncoder, PoliciesEncoder, dn_list_property_encoder_for, dn_property_encoder_for,
+    BaseEncoder, DnPropertyEncoder, GenericTypeEncoder, PoliciesEncoder, dn_list_property_encoder_for, dn_property_encoder_for,
 )
 from ..exceptions import (
     CreateError, DeletedError, DeleteError, ModifyError, MoveError, NoObject, NoSuperordinate, NotYetSavedError,
@@ -94,6 +94,16 @@ class GenericObjectProperties(BaseObjectProperties):
                 module_name=self._udm_obj._udm_module.name,
             )
         super().__setattr__(key, value)
+
+
+class GenericTypeObjectProperties(GenericObjectProperties):
+
+    def __init__(self, udm_obj):
+        self._encoders = {
+            key: GenericTypeEncoder.detect_encoder(key, value, udm_obj)
+            for key, value in udm_obj._orig_udm_object.descriptions.items()
+        }
+        super(GenericTypeObjectProperties, self).__init__(udm_obj)
 
 
 class GenericObject(BaseObject):
@@ -437,6 +447,10 @@ class GenericObject(BaseObject):
             return encoder_class(**kwargs)
 
 
+class GenericTypeObject(GenericObject):
+    udm_prop_class = GenericTypeObjectProperties
+
+
 class GenericModuleMetadata(BaseModuleMetadata):
     def __init__(self, meta):
         # type: (GenericModule.Meta) -> None
@@ -767,3 +781,11 @@ class GenericModule(BaseModule, metaclass=GenericModuleMeta):
         uni_obj_type = getattr(orig_udm_obj, 'oldinfo', {}).get('univentionObjectType')
         if uni_obj_type and self.name.split('/', 1)[0] not in [uot.split('/', 1)[0] for uot in uni_obj_type]:
             raise WrongObjectType(dn=orig_udm_obj.dn, module_name=self.name, univention_object_type=', '.join(uni_obj_type))
+
+
+class GenericModule4(GenericModule):
+    _udm_object_class = GenericTypeObject
+
+    class Meta:
+        supported_api_versions = [4]
+        suitable_for = ['*/*']
