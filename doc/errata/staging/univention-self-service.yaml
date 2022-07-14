@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-self-service
-fix:
+fix: 5.0.2-2A~5.0.0.202207141901
 desc: |
  This update addresses the following issues:
  * The email subject of the self-service password reset email is now
