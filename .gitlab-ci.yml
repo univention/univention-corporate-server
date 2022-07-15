@@ -2,11 +2,34 @@ stages:
   - prepare
   - build
 
+workflow:
+  rules:
+    - if: $CI_OPEN_MERGE_REQUESTS
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+
 include:
-  - template: 'Workflows/Branch-Pipelines.gitlab-ci.yml'
   - project: univention/dist/docker-services
     file: kaniko.yml
   - local: '/.gitlab-ci/base.yml'
+
+debug:
+  stage: prepare
+  script:
+    - env | sort
+
+debug-mr:
+  stage: prepare
+  script:
+    - env | sort
+  rules:
+    - if: $CI_OPEN_MERGE_REQUESTS
+
+debug-prot:
+  stage: prepare
+  script:
+    - env | sort
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
 
 variables:
   pipeline:
