@@ -2,8 +2,12 @@ stages:
   - prepare
   - build
 
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_OPEN_MERGE_REQUESTS
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_PROTECTED == "true"
+
 include:
-  - template: 'Workflows/Branch-Pipelines.gitlab-ci.yml'
   - project: univention/dist/docker-services
     file: kaniko.yml
   - local: '/.gitlab-ci/base.yml'
@@ -67,11 +71,10 @@ drop aptly:
 prepare ucslint:
   stage: prepare
   interruptible: false
-  extends: .kaniko_knut
+  extends: .kaniko
   variables:
     KANIKO_BUILD_CONTEXT: packaging/ucslint
-    KANIKO_ARGS: --build-arg ucs=$ucs
-    IMAGE_TAG: $LINT_REF
+    KANIKO_ARGS: --build-arg ucs=$ucs --cache=true
   rules:
     - changes:
       - packaging/ucslint/**/*
@@ -92,13 +95,13 @@ doc-pipeline:
       - "doc/errata?*/**/*"
   needs:
     - job: generate-config
-  variables:
-    pipeline: $pipeline
   trigger:
     include:
       - artifact: generated-config-doc.yml
         job: generate-config
     strategy: depend
+    forward:
+      pipeline_variables: true
 
 deb-pipeline:
   stage: build
@@ -125,10 +128,10 @@ deb-pipeline:
     - job: prepare aptly
     - job: prepare ucslint
       optional: true
-  variables:
-    pipeline: $pipeline
   trigger:
     include:
       - artifact: generated-config-deb.yml
         job: generate-config
     strategy: depend
+    forward:
+      pipeline_variables: true

@@ -17,8 +17,6 @@ variables:
   DOC: docker-registry.knut.univention.de/docbook
   SPHINX_DOC: docker-registry.knut.univention.de/sphinx
   DEB: docker-registry.knut.univention.de/phahn/ucs-debbase:$ucs
-  LINT: docker-registry.knut.univention.de/ucslint
-  LINT_REF: $LINT:$CI_COMMIT_REF_SLUG
-  LINT_UCS: $LINT:$ucs
   APTLY: http://omar.knut.univention.de:11620/api
   APT: http://omar.knut.univention.de/build2/git
+  IMAGE_TAG: $CI_REGISTRY_IMAGE

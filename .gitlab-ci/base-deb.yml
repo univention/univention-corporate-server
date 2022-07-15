@@ -5,7 +5,7 @@ stages:
 .lint:
   stage: lint
   image:
-    name: $LINT:$CI_COMMIT_REF_SLUG
+    name: $IMAGE_TAG
     entrypoint: [""]
   script:
     - ucslint -j ucslint.xml $base

@@ -13,7 +13,7 @@ doc_job () { # <extends> [<suffix> [<language>]]
 	echo "    base: $path"
 	echo "    DOC_NAME: ${path##*/}"
 	echo '    DOC_TARGET_VERSION: "5.0"'
-    [ -n "${3+empty}" ] && echo "    language: $3"
+	[ -n "${3+empty}" ] && echo "    language: $3"
 	echo "  extends: ${1:?extends}"
 	echo '  rules:'
 	echo '    - if: "$CI_COMMIT_MESSAGE =~ /skip-doc/ || $pipeline =~ /skip-doc/"'
@@ -44,5 +44,5 @@ do
 	elif [ -f "${path}/Makefile" ]
 	then
 		doc_job '.doc'
-    fi
+	fi
 done
