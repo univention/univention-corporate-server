@@ -397,7 +397,7 @@ performance_optimizations_broker () {
 		cron/portal_groups/time='30 4 * * *' \
 		cron/portal_groups/description='Update UCS portal group cache.'
 	# TODO activate once Bug 54696 is fixed
-	#ucr set listener/module/portal_groups/deactivate=yes
+	ucr set listener/module/portal_groups/deactivate=yes
 }
 
 performance_optimizations_traeger () {
