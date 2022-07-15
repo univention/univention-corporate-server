@@ -44,6 +44,7 @@ import univention.admin.mapping
 import univention.admin.uexceptions
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.reverse_zone
+from univention.admin.certificate import register_pki_integration, PKIIntegration
 
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
 _ = translation.translate
@@ -95,12 +96,15 @@ mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 
+register_pki_integration(property_descriptions, mapping, options, layout)
 
-class object(univention.admin.handlers.simpleLdap):
+
+class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 	module = module
 
 	def open(self):
 		super(object, self).open()
+		self.pki_open()
 
 		self.options = ['samba']  # FIXME/TODO
 		self.modifypassword = 1

@@ -45,6 +45,7 @@ import univention.admin.nagios as nagios
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.networks.network
+from univention.admin.certificate import register_pki_integration, PKIIntegration
 
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
 _ = translation.translate
@@ -186,9 +187,10 @@ mapping.register('domain', 'associatedDomain', None, univention.admin.mapping.Li
 
 # add Nagios extension
 nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
+register_pki_integration(property_descriptions, mapping, options, layout)
 
 
-class object(univention.admin.handlers.simpleComputer, nagios.Support):
+class object(univention.admin.handlers.simpleComputer, nagios.Support, PKIIntegration):
 	module = module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
@@ -196,6 +198,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		nagios.Support.__init__(self)
 
 	def open(self):
+		self.pki_open()
 		univention.admin.handlers.simpleComputer.open(self)
 		self.nagios_open()
 

@@ -48,6 +48,7 @@ import univention.admin.syntax
 import univention.admin.allocators
 import univention.admin.localization
 import univention.admin.uexceptions
+from univention.admin.certificate import PKIIntegration, register_pki_integration
 from univention.admin.handlers.users.user import check_prohibited_username
 
 translation = univention.admin.localization.translation('univention.admin.handlers.users')
@@ -68,7 +69,7 @@ options = {
 		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'person', 'univentionPWHistory', 'simpleSecurityObject', 'uidObject'],
-	)
+	),
 }
 property_descriptions = {
 	'username': univention.admin.property(
@@ -178,17 +179,19 @@ mapping.register('lastname', 'sn', None, univention.admin.mapping.ListToString)
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('password', 'userPassword', univention.admin.mapping.dontMap(), univention.admin.mapping.ListToString)
-
 mapping.registerUnmapping('locked', unmapLocked)
 
+register_pki_integration(property_descriptions, mapping, options, layout)
 
-class object(univention.admin.handlers.simpleLdap):
+
+class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 	module = module
 
 	password_length = 8
 
 	def open(self):
 		super(object, self).open()
+		self.pki_open()
 		if self.exists():
 			self.info['disabled'] = u'1' if univention.admin.password.is_locked(self['password']) else u'0'
 		self.save()

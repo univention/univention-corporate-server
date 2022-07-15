@@ -52,6 +52,7 @@ import univention.admin.handlers.groups.group
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.networks.network
+from univention.admin.certificate import PKIIntegration
 
 import univention.debug as ud
 
@@ -59,7 +60,7 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 
-class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
+class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, PKIIntegration):
 	"""
 	|UDM| module for generic computer objects.
 	"""
@@ -74,6 +75,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 	def open(self):
 		univention.admin.handlers.simpleComputer.open(self)
 		self.nagios_open()
+		self.pki_open()
 
 		if self.exists():
 			if 'posix' in self.options and not self.info.get('primaryGroup'):

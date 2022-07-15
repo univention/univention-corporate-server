@@ -80,7 +80,22 @@ class TestUsers(object):
 		udm.verify_udm_object("users/user", user, {"homeShare": share, "homeSharePath": homeSharePath})
 		udm.verify_ldap_object(user, {'automountInformation': ['-rw %s:%s/%s' % (host, path.rstrip('/'), homeSharePath)]})
 
-	def test_unmap_user_certificate(self, udm, ucr):
+	@pytest.mark.parametrize('module', [
+		'users/user',
+		'users/ldap',
+		# 'computers/domaincontroller_backup',
+		# 'computers/domaincontroller_master',
+		'computers/domaincontroller_slave',
+		# 'computers/ipmanagedclient',
+		# 'computers/linux',
+		# 'computers/macos',
+		# 'computers/memberserver',
+		# 'computers/trustaccount',
+		# 'computers/ubuntu',
+		'computers/windows',
+		# 'computers/windows_domaincontroller',
+	])
+	def test_unmap_user_certificate(self, udm, ucr, module, random_name):
 		certificate_binary = subprocess.check_output(['openssl', 'x509', '-inform', 'pem', '-in', '/etc/univention/ssl/%(hostname)s/cert.pem' % ucr, '-outform', 'der', '-out', '-'])
 		x509 = X509.load_cert_string(certificate_binary, X509.FORMAT_DER)
 		certificateSerial = x509.get_serial_number()
@@ -115,9 +130,9 @@ class TestUsers(object):
 				'certificateDateNotAfter': parser.parse(dates['notAfter']).strftime('%Y-%m-%d'),
 				'certificateDateNotBefore': parser.parse(dates['notBefore']).strftime('%Y-%m-%d'),
 			})
-		user = udm.create_user()[0]
-		udm.modify_object('users/user', dn=user, append_option=['pki'], userCertificate=certificate)
-		udm.verify_udm_object('users/user', user, certificate_ldap)
+		user = udm.create_object(module, username=random_name(), name=random_name(), password=random_name(), lastname=random_name())
+		udm.modify_object(module, dn=user, append_option=['pki'], userCertificate=certificate)
+		udm.verify_udm_object(module, user, certificate_ldap)
 
 	def test_unmap_locked(self):
 		pass

@@ -42,6 +42,7 @@ import univention.admin.mapping
 import univention.admin.syntax
 import univention.admin.nagios as nagios
 from univention.admin.handlers.computers.__base import ComputerObject
+from univention.admin.certificate import register_pki_integration
 
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
 _ = translation.translate
@@ -75,7 +76,7 @@ options = {
 		editable=True,
 		default=True,
 		objectClasses=('sambaSamAccount',),
-	)
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -277,6 +278,7 @@ mapping.register('operatingSystemVersion', 'univentionOperatingSystemVersion', N
 
 # add Nagios extension
 nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
+register_pki_integration(property_descriptions, mapping, options, layout)
 
 
 class object(ComputerObject):
