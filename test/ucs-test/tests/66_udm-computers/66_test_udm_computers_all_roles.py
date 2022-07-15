@@ -889,7 +889,7 @@ def test_removal_of_leftover_ptr_record_with_multiple_ip_addresses(udm, verify_l
 @pytest.mark.tags('udm-computers')
 @pytest.mark.roles('domaincontroller_master')
 @pytest.mark.exposure('careful')
-@pytest.mark.paramaetrize('remove_ip,expected_ptr', [
+@pytest.mark.parametrize('remove_ip,expected_ptr', [
 	(IP4, '40.40'),
 	(IP6, 'f.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'),
 ])
