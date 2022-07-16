@@ -2859,7 +2859,7 @@ class date2(date):  # fixes the century
 				if year >= 70:  # Epoch 0
 					return '19%02d-%02d-%02d' % (year, month, day)
 				return '20%02d-%02d-%02d' % (year, month, day)
-		raise univention.admin.uexceptions.valueError(_("Not a valid Date. The date must have the format 'YYYY-MM-DD' or 'DD.MM.YY'."
+		raise univention.admin.uexceptions.valueError(_('Not a valid Date. The date must have the format "YYYY-MM-DD" or "DD.MM.YY".'
 		" The Year must be between 1961 and 2099, the month between 1 and 12 and the day between 1 and 31."))
 
 	@classmethod
