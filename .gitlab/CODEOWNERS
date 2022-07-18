@@ -1,0 +1,186 @@
+# last entry per sections wins
+
+# /base/
+# /base/pam-runasroot/
+/base/pam-univentionmailcyrus/ @dtroeder @sschwardt
+# /base/univention-app-appliance/
+/base/univention-archive-key/ @phahn
+/base/univention-base-files/ @phahn
+# /base/univention-bootsplash/
+/base/univention-config-registry/ @phahn @fbest
+/base/univention-debmirror/ @phahn
+/base/univention-debug/ @phahn @fbest
+/base/univention-debug-python/ @phahn @fbest
+/base/univention-dvd/ @phahn
+/base/univention-errata-level/ @phahn
+# /base/univention-firewall/
+# /base/univention-group-membership-cache/
+/base/univention-grub/ @phahn
+/base/univention-heimdal/ @arequate @jbremer
+# /base/univention-home-mounter/
+/base/univention-initrd/ @phahn
+# /base/univention-ipcalc/
+/base/univention-l10n-fr/ @fbest @jlohmer
+/base/univention-lib/ @fbest
+/base/univention-licence/ @phahn
+/base/univention-licence-python/ @phahn
+# /base/univention-maintenance/
+# /base/univention-maintenance-mode/
+/base/univention-network-manager/ @phahn
+# /base/univention-newsid/
+/base/univention-pam/ @fbest
+/base/univention-policy/ @fbest
+# /base/univention-printclient/
+/base/univention-python/ @fbest
+/base/univention-python-heimdal/ @fbest @phahn @arequate
+/base/univention-quota/ @fbest
+# /base/univention-server/
+# /base/univention-skel/ @phahn
+/base/univention-ssh/ @phahn
+/base/univention-ssl/ @phahn
+# /base/univention-sudo/
+# /base/univention-system-activation/
+/base/univention-system-setup/ @fbest
+/base/univention-updater/ @phahn
+/base/univention-updater/umc/ @phahn @fbest
+
+/container/ @arequate
+
+/mail/ @dtroeder @sschwardt
+
+# /management/
+/management/*/ @fbest
+# /management/univention-admingrp-user-passwordreset/
+/management/univention-appcenter/ @dwiesent @fbest
+/management/univention-directory-listener/ @phahn @dtroeder @arequate
+/management/univention-directory-logger/ @fbest
+/management/univention-directory-manager-modules/ @fbest
+/management/univention-directory-manager-rest/ @fbest @dtroeder
+/management/univention-directory-notifier/ @phahn
+# /management/univention-directory-policy/
+# /management/univention-directory-replication/
+/management/univention-directory-reports/ @fbest
+/management/univention-dojo/ @jkeiser @fbest
+/management/univention-join/ @fbest
+/management/univention-ldap/ @arequate
+/management/univention-ldap-overlay-memberof/ @arequate
+/management/univention-management-console/ @fbest
+/management/univention-management-console-module-adtakeover/ @arequate @fbest
+/management/univention-management-console-module-diagnostic/ @arequate @fbest
+/management/univention-management-console-module-ipchange/ @fbest
+/management/univention-management-console-module-lib/ @fbest
+/management/univention-management-console-module-passwordchange/ @fbest
+/management/univention-management-console-module-reboot/ @fbest
+/management/univention-management-console-module-services/ @jkeiser @fbest
+/management/univention-management-console-module-top/ @jkeiser @fbest
+/management/univention-management-console-module-ucr/ @jkeiser @fbest
+/management/univention-management-console-module-udm/ @fbest @jkeiser
+/management/univention-management-console-module-welcome/ @jkeiser @fbest
+/management/univention-portal/ @dwiesent @jkeiser
+/management/univention-self-service/ @fbest @jkeiser
+/management/univention-server-overview/ @fbest @jkeiser
+/management/univention-system-info/ @fbest
+/management/univention-web/ @jkeiser @fbest
+
+# /monitoring/
+/monitoring/univention-monitoring-client/ @fbest
+# /monitoring/univention-nagios/
+/monitoring/univention-nagios-ad-connector/ @arequate
+# /monitoring/univention-nagios-raid/
+/monitoring/univention-nagios-s4-connector/ @arequate
+/monitoring/univention-nagios-samba/ @arequate
+# /monitoring/univention-nagios-servicechecks/
+# /monitoring/univention-nagios-smart/
+
+/oidc/ @arequate
+
+# /packaging/
+/packaging/ucslint/ @phahn @fbest @sschwardt
+/packaging/univention-debhelper/ @phahn @fbest
+/packaging/univention-directory-manager-module-example/ @fbest
+/packaging/univention-l10n/ @fbest @jlohmer
+/packaging/univention-package-template/ @fbest
+/packaging/univention-package-template-python/ @fbest
+
+/saml/ @edamrose @fbest
+
+# /services/
+/services/univention-ad-connector/ @arequate @jbremer @fbest
+/services/univention-admin-diary/ @arequate
+/services/univention-apache/ @fbest
+/services/univention-bind/ @jbroders
+/services/univention-cloud-init/ @edamrose @phahn
+/services/univention-dhcp/ @phahn
+/services/univention-foomatic-ppds/ @fbotner
+/services/univention-ldb-modules/ @arequate @fbest @jbremer
+# /services/univention-mariadb/
+/services/univention-net-installer/ @phahn
+# /services/univention-nfs/
+# /services/univention-pkgdb/
+/services/univention-pkgdb/umc/ @fbest
+# /services/univention-postgresql/
+/services/univention-printserver/ @fbotner
+/services/univention-printserver/umc/ @fbest
+/services/univention-radius/ @jbroders @sschwardt
+/services/univention-s4-connector/ @arequate @jbremer @fbest
+/services/univention-samba/ @arequate @jbremer
+/services/univention-samba4/ @arequate @jbremer
+# /services/univention-sasl/
+/services/univention-squid/ @sschwardt
+/services/univention-squid-kerberos/ @sschwardt
+/services/univention-support-info/ @fbest
+/services/univention-tftp/ @phahn
+
+^[Testing]
+/packaging/univention-unittests/ @dwiesent @fbest @oschwieg
+# /test/
+# /test/branch-tests/
+# /test/generate-appliance/
+# /test/product-tests/
+# /test/scenarios/
+# /test/ucs-gui-tests/
+# /test/ucs-test/
+# /test/ucs-test-tools/
+/test/univention-demo-configuration/ @fbest
+/test/utils/ @fbotner @phahn
+
+[GitLab]
+/.gitlab-ci.yml @univention/dist
+/.gitlab-ci/ @univention/dist
+/.gitlab/ @univention/dist
+/.git* @univention/dist
+/PULL_REQUEST_TEMPLATE.md @univention/dist
+
+[Code style]
+/.isort.cfg @dtroeder @phahn @fbest
+/.pre-commit-config.yaml @dtroeder @phahn @fbest
+# /CODE_OF_CONDUCT.md
+# /CONTRIBUTING.md
+
+^[Documentation]
+/doc/ @ngulden
+/doc/app-center/ @ngulden @dwiesent
+/doc/changelog/ @phahn @edamrose
+/doc/developer-reference/ @fbest @phahn
+/doc/errata/ @all
+/doc/errata/published/ @univention/dist
+# /README.md
+# /README.dev.md
+
+^[C]
+*.c @phahn
+*.h @phahn
+
+[CPython]
+py_*.c @phahn
+
+^[Debian]
+/base/univention-archive-key/ @phahn
+/base/univention-debmirror/ @phahn
+/base/univention-dvd/ @phahn
+/packaging/univention-debhelper/ @phahn
+/**/debian/* @phahn
+
+^[Licence]
+/**/debian/copyright @phahn
+/LICENSE @phahn
