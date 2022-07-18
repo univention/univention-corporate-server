@@ -1,10 +1,10 @@
 product: ucs
-release: "4.4"
+release: '4.4'
 version: [9]
 scope: ucs_4.4-0-errata4.4-9
 src: univention-ssl
-fix: 13.0.0-9
+fix: 13.0.0-9A~4.4.0.202207181119
 desc: |
- This update addresses the following issue:
- * Run cron.daily/univention-ssl using `bash`.
+  This update addresses the following issue:
+  * Run cron.daily/univention-ssl using `bash`.
 bug: [54932]
