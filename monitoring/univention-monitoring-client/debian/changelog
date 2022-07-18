@@ -1,3 +1,13 @@
+univention-monitoring-client (1.0.0-5) unstable; urgency=medium
+
+  * Bug #54947: register ACL which allows DC hosts to change/add alerts
+  * Bug #54947: add temlating of query expression
+  * Bug #54947: enhance alert descriptions
+  * Bug #54947: fix authentication when reloading metrics
+  * Bug #54985: fix unassigning monitoringAlerts from computer objects
+
+ -- Florian Best <best@univention.de>  Mon, 18 Jul 2022 15:24:50 +0200
+
 univention-monitoring-client (1.0.0-4) unstable; urgency=medium
 
   * Bug #54968: add missing metric to

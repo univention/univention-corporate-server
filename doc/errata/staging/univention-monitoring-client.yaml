@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-monitoring-client
+fix:
+desc: |
+ This update addresses the following issues:
+ * Unassigning alerts from computer objects has been fixed.
+ * LDAP ACL's allowing DCs and Memberservers to change alerts have been added.
+   The alert descriptions have been improved.
+   The authentication when trying to reload prometheus alerts has been fixed.
+   Query expressions are now templated and restrict the metrics to the
+   assigned hostnames.
+bug: [54985, 54947]
