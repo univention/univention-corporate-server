@@ -1,3 +1,9 @@
+univention-ssl (13.0.0-9) unstable; urgency=low
+
+  * Bug #54932: Source make-certificates.sh with bash
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 18 Jul 2022 10:32:08 +0200
+
 univention-ssl (13.0.0-8) unstable; urgency=low
 
   * Bug #53810: Timeout SSL certificate download
