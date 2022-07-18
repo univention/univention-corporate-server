@@ -32,7 +32,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=1
+VERSION=2
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/all.sh
@@ -67,6 +67,27 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
 	--set query="absent(univention_s4_connector_samba_reachable{%instance%}) == 1 or absent(univention_s4_connector_running{%instance%}) == 1" || die "UNIVENTION_S4CONNECTOR_MISSING"
+
+if [ $JS_LAST_EXECUTED_VERSION -eq 1 ]; then
+	univention-directory-manager monitoring/alert modify "$@" \
+		--dn "cn=UNIVENTION_S4CONNECTOR,cn=monitoring,$ldap_base" \
+		--set description="The S4 connector is not reachable or running" \
+		--set summary="check if S4-Connector is functional" \
+		--set query="univention_s4_connector_samba_reachable{%instance%} != 1 or univention_s4_connector_running{%instance%} == 2"
+
+	univention-directory-manager monitoring/alert modify "$@" \
+		--dn "cn=UNIVENTION_S4CONNECTOR_WARNING,cn=monitoring,$ldap_base" \
+		--set alertGroup="UNIVENTION_S4CONNECTOR" \
+		--set description="There are rejects in the S4 connector or too many S4 connector instances are running" \
+		--set summary="check if S4-Connector is functional" \
+		--set query="univention_s4_connector_running{%instance%} == 1 or univention_s4_connector_rejects{%instance%} > 0"
+
+	univention-directory-manager monitoring/alert modify "$@" \
+		--dn "cn=UNIVENTION_S4CONNECTOR_MISSING,cn=monitoring,$ldap_base" \
+		--set description="metrics regarding S4-Connector are missing" \
+		--set summary="check if metrics regarding S4-Connector are missing" \
+		--set query="absent(univention_s4_connector_samba_reachable{%instance%}) == 1 or absent(univention_s4_connector_running{%instance%}) == 1"
+fi
 
 CHECKS=(
 	"UNIVENTION_S4CONNECTOR"

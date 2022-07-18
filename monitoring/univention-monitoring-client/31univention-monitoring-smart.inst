@@ -32,7 +32,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=1
+VERSION=2
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/all.sh
@@ -66,6 +66,27 @@ for device in sda sdb sdc sdd; do
 		--append labels='"severity" "warning"' \
 		--set query="absent(smartmon_current_pending_sector{disk="'"/dev/'"${device}"'",%instance%}) != 1' || die "UNIVENTION_SMART_${dev}_PENDINGSECTOR_WARNING"
 done
+
+if [ $JS_LAST_EXECUTED_VERSION -eq 1 ]; then
+	for device in sda sdb sdc sdd; do
+		dev=$(echo $device | tr '[:lower:]' '[:upper:]')
+
+		univention-directory-manager monitoring/alert modify "$@" --dn "cn=UNIVENTION_SMART_${dev}_HEALTHY,$MONITORINGCONTAINER" \
+			--set description="/dev/${device} is not healthy" \
+			--set summary="check if /dev/${device} is healthy" \
+			--set query="smartmon_device_smart_healthy{disk="'"/dev/'"${device}"'",%instance%} != 1'
+
+		univention-directory-manager monitoring/alert modify "$@" --dn "cn=UNIVENTION_SMART_${dev}_HEALTHY_METRIC_MISSING,$MONITORINGCONTAINER" \
+			--set description="metric regarding /dev/${device} is missing" \
+			--set summary="check if metric regarding /dev/${device} is missing" \
+			--set query="absent(smartmon_device_smart_healthy{disk="'"/dev/'"${device}"'",%instance%}) == 1'
+
+		univention-directory-manager monitoring/alert modify "$@" --dn "cn=UNIVENTION_SMART_${dev}_PENDINGSECTOR_WARNING,$MONITORINGCONTAINER" \
+			--set description="/dev/${device} has sectors pending re-allocation" \
+			--set summary="check if /dev/${device} has sectors pending re-allocation" \
+			--set query="absent(smartmon_current_pending_sector{disk="'"/dev/'"${device}"'",%instance%}) != 1'
+	done
+fi
 
 
 CHECKS=(

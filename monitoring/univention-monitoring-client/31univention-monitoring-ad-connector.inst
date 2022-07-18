@@ -32,7 +32,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=1
+VERSION=2
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/all.sh
@@ -67,6 +67,27 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--set for="5m" \
 	--append labels='"severity" "critical"' \
 	--set query="absent(univention_ad_connector_ad_reachable{%instance%}) == 1 or absent(univention_ad_connector_running{%instance%}) == 1 or absent(univention_ad_connector_rejects{%instance%}) == 1" || die "UNIVENTION_ADCONNECTOR_METRIC_MISSING"
+
+if [ $JS_LAST_EXECUTED_VERSION -eq 1 ]; then
+	univention-directory-manager monitoring/alert modify "$@" \
+		--dn "cn=UNIVENTION_ADCONNECTOR,cn=monitoring,$ldap_base" \
+		--set description="Too few or no AD connector instances are running" \
+		--set summary="check if AD connector is functional" \
+		--set query="univention_ad_connector_ad_reachable{%instance%} != 1 or univention_ad_connector_running{%instance%} == 2"
+
+	univention-directory-manager monitoring/alert modify "$@" \
+		--dn "cn=UNIVENTION_ADCONNECTOR_WARNING,cn=monitoring,$ldap_base" \
+		--set alertGroup="UNIVENTION_ADCONNECTOR" \
+		--set description="There are rejects in the AD connector or too many AD connector instances are running" \
+		--set summary="check for AD connector rejects" \
+		--set query="univention_ad_connector_running{%instance%} == 1 or univention_ad_connector_rejects{%instance%} > 0"
+
+	univention-directory-manager monitoring/alert modify "$@" \
+		--dn "cn=UNIVENTION_ADCONNECTOR_METRIC_MISSING,cn=monitoring,$ldap_base" \
+		--set description="metrics regarding ad-connector are missing" \
+		--set summary="check if metrics regarding ad-connector are missing" \
+		--set query="absent(univention_ad_connector_ad_reachable{%instance%}) == 1 or absent(univention_ad_connector_running{%instance%}) == 1 or absent(univention_ad_connector_rejects{%instance%}) == 1"
+fi
 
 CHECKS=(
 	"UNIVENTION_ADCONNECTOR"

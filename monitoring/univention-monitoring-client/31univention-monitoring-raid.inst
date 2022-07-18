@@ -32,7 +32,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=1
+VERSION=2
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/all.sh
@@ -64,6 +64,26 @@ univention-directory-manager monitoring/alert create "$@" --ignore_exists \
 	--set summary="check metrics for RAID status exists" \
 	--append labels='"severity" "critical"' \
 	--set query='absent(univention_i2o_raid_physical{%instance%}) == 1 or absent(univention_i2o_raid_logical{%instance%}) == 1 or absent(univention_i2o_raid_controller{%instance%}) == 1 or absent(univention_i2o_raid_raid{%instance%}) == 1' || die "UNIVENTION_RAID_MISSING"
+
+if [ $JS_LAST_EXECUTED_VERSION -eq 1 ]; then
+	univention-directory-manager monitoring/alert modify "$@" \
+		--dn "cn=UNIVENTION_RAID_WARNING,cn=monitoring,$ldap_base" \
+		--set description="RAID status in /proc/mdstat" \
+		--set summary="check RAID status in /proc/mdstat" \
+		--set query='{__name__=~"univention_i2o_raid_.+",%instance%} >= 11 and {__name__=~"univention_i2o_raid_.+",%instance%} < 20'
+
+	univention-directory-manager monitoring/alert modify "$@" \
+		--dn "cn=UNIVENTION_RAID,cn=monitoring,$ldap_base" \
+		--set description="RAID status in /proc/mdstat" \
+		--set summary="check RAID status in /proc/mdstat" \
+		--set query='{__name__=~"univention_i2o_raid_.+",%instance%} >= 20'
+
+	univention-directory-manager monitoring/alert modify "$@" \
+		--dn "cn=UNIVENTION_RAID_MISSING,cn=monitoring,$ldap_base" \
+		--set description="metrics for RAID status are missing" \
+		--set summary="check metrics for RAID status exists" \
+		--set query='absent(univention_i2o_raid_physical{%instance%}) == 1 or absent(univention_i2o_raid_logical{%instance%}) == 1 or absent(univention_i2o_raid_controller{%instance%}) == 1 or absent(univention_i2o_raid_raid{%instance%}) == 1'
+fi
 
 CHECKS=(
 	"UNIVENTION_RAID"
