@@ -1,3 +1,9 @@
+univention-l10n (7.0.1-4) unstable; urgency=low
+
+  * Bug #54882: fixed crash when called without arguments or subcommand
+
+ -- Jaime Conde Segovia <conde-segovia.extern@univention.de>  Fri, 15 Jul 2022 20:28:39 +0200
+
 univention-l10n (7.0.1-3) unstable; urgency=medium
 
   * Bug #54029 fixed univention-ucs-translation-build-package

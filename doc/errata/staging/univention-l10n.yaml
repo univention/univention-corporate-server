@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-l10n
+fix:
+desc: |
+ This update addresses the following issues:
+ * Fixed error when calling univention-l10n with
+ no arguments or subcommand.
+bug: [54882]

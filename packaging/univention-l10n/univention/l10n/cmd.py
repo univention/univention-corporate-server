@@ -69,7 +69,7 @@ def parse_args(cmd):  # type: (str) -> None
     group.add_argument("--option", "-O", action="append", help="Additional debhelper options.")
 
     parser = argparse.ArgumentParser(description=__doc__, prog="univention-l10n", formatter_class=argparse.RawDescriptionHelpFormatter)
-    subparsers = parser.add_subparsers(help="sub-command help", dest="subcmd")  # required=True
+    subparsers = parser.add_subparsers(help="sub-command help", dest="subcmd", required=True)  # required=True
 
     parser_build = subparsers.add_parser("build", description=build.__doc__, prog="univention-l10n-build", parents=[parser_common], formatter_class=argparse.RawDescriptionHelpFormatter)
     parser_build.add_argument("--pot", "-t", action="store_true", help="Keep template file")
