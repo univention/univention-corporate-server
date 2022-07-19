@@ -620,7 +620,7 @@
 					Starting with UCS 5.0 the UCS repository is no longer divided into the 2 sections <emphasis>maintained</emphasis> and <emphasis>unmaintained</emphasis>.
 					Instead, all packages are kept in one section and the maintenance status of the packages is technically defined in a different way.
 					Therefore, the &ucsUCRV; <envar>repository/online/unmaintained</envar> is no longer in use as of UCS 5.0.
-					However, the &ucsUCRV; for components (<envar>repository/online/component/<replaceable>$comp</replaceable>/parts</envar>) are still in use (<u:bug>51316</u:bug>).
+					However, the &ucsUCRV; for components (<envar>repository/online/component/<replaceable>$comp</replaceable>/unmaintained</envar>) are still in use (<u:bug>51316</u:bug>).
 					To check if <emphasis>unmaintained</emphasis> packages are installed, the command <command>univention-list-installed-unmaintained-packages</command> can be executed (<u:bug>52715</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
