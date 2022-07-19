@@ -101,7 +101,8 @@ class MonitoringClient(ListenerModuleHandler):
 			assigned_hosts = [self.get_fqdn(x.decode('UTF-8')) for x in attrs.get('univentionMonitoringAlertHosts', [])]
 			assigned_hosts = [x for x in assigned_hosts if x]
 			if not assigned_hosts:
-				return
+				return self._remove_config(attrs)
+
 			# FIXME: regex DoS possible?
 			template_values.append(('instance', 'instance=~"(%s)"' % '|'.join(escape_prometheus_regex(host) for host in assigned_hosts)))
 
