@@ -1,3 +1,9 @@
+univention-portal (4.0.7-6) unstable; urgency=medium
+
+  * Bug #55010: fix password hash comparision
+
+ -- Florian Best <best@univention.de>  Tue, 19 Jul 2022 14:46:27 +0200
+
 univention-portal (4.0.7-5) unstable; urgency=medium
 
   * Bug #54273: Include debug script in portal-server-password-rotate subscript

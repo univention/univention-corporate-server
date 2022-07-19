@@ -163,7 +163,7 @@ class UMCAndSecretAuthenticator(UMCAuthenticator):
 		if user and user.username:
 			return user
 
-		authorization = self.request.headers.get('Authorization')
+		authorization = request.request.headers.get('Authorization')
 		if not authorization:
 			return user
 
@@ -182,8 +182,8 @@ class UMCAndSecretAuthenticator(UMCAuthenticator):
 			return user
 
 		# compare hashed password to prevent time based side channel attack
-		if hashlib.sha512(password.encode('utf-8')) != hashlib.sha512(config_secret.encode('utf-8')):
-			get_logger("user").warning("password mismatch")
+		if hashlib.sha512(password.encode('utf-8')).hexdigest() != hashlib.sha512(config_secret.encode('utf-8')).hexdigest():
+			get_logger("user").warning("password mismatch: %s != %s", config_secret, password)
 			return user
 
 		groups = self.group_cache.get().get(username, [])
