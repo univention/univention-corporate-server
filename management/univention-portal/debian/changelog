@@ -1,3 +1,9 @@
+univention-portal (4.0.7-7) unstable; urgency=medium
+
+  * Bug #55010: fix normalization of username
+
+ -- Florian Best <best@univention.de>  Tue, 19 Jul 2022 15:06:08 +0200
+
 univention-portal (4.0.7-6) unstable; urgency=medium
 
   * Bug #55010: fix password hash comparision

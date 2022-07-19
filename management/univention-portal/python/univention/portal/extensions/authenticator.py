@@ -170,10 +170,11 @@ class UMCAndSecretAuthenticator(UMCAuthenticator):
 		try:
 			if not authorization.lower().startswith('basic '):
 				raise ValueError()
-			username, password = base64.b64decode(authorization.split(' ', 1)[1].encode('ISO8859-1')).decode('UTF-8').split(':', 1)
+			display_name, password = base64.b64decode(authorization.split(' ', 1)[1].encode('ISO8859-1')).decode('UTF-8').split(':', 1)
 		except (ValueError, IndexError, binascii.Error):
 			raise HTTPError(400)
 
+		username = display_name.lower()
 		get_logger("user").debug("received basic auth request with username=%r", username)
 		try:
 			with open(config.fetch("portal-secret-file")) as fd:
@@ -187,4 +188,4 @@ class UMCAndSecretAuthenticator(UMCAuthenticator):
 			return user
 
 		groups = self.group_cache.get().get(username, [])
-		return User(username, None, groups, None)
+		return User(username, display_name, groups, headers=dict(request.request.headers))
