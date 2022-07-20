@@ -6,8 +6,6 @@ src: univention-server
 fix: 15.0.5-2A~5.0.0.202207141236
 desc: |
  This update addresses the following issues:
- * The information provided by the server_password_change script is
-   not good enough for debugging errors. A new script has been added
-   that will track and log the execution allowing a better understanding
-   of failed operations.
+ * The server password change script has been improved to track and log the
+   execution, allowing a better understanding of failed operations.
 bug: [54273]
