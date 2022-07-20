@@ -9,3 +9,5 @@ desc: |
  * The squid-pw-rotate script has been updated
    to generate more useful debug information.
 bug: [54273]
+erratum: 366
+announced: 2022-07-20
