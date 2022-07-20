@@ -10,3 +10,5 @@ desc: |
    configurable via the UCR variable
    `umc/self-service/passwordreset/email/subject`.
 bug: [53227]
+erratum: 355
+announced: 2022-07-20
