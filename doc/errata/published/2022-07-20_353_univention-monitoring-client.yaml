@@ -13,3 +13,5 @@ desc: |
    Query expressions are now templated and restrict the metrics to the
    assigned hostnames.
 bug: [54985, 54947]
+erratum: 353
+announced: 2022-07-20
