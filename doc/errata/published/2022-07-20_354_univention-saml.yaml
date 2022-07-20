@@ -9,3 +9,5 @@ desc: |
  * Add debug trace to the joinscript 91univention-saml.inst
    to improve error reporting.
 bug: [44669]
+erratum: 354
+announced: 2022-07-20
