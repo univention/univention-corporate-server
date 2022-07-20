@@ -9,3 +9,5 @@ desc: |
  * The server_password_change.d/univention-bind script has been
   updated to generate more useful debug information.
 bug: [54273]
+erratum: 361
+announced: 2022-07-20
