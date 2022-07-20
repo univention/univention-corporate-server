@@ -3,7 +3,7 @@ release: "4.4"
 version: [9]
 scope: ucs_4.4-0-errata4.4-9
 src: univention-network-manager
-fix:
+fix: 11.0.0-3A~4.4.0.202207201501
 desc: |
  This update addresses the following issues:
  * IP addresses received via DHCP are now registered in the LDAP via the HTTP
