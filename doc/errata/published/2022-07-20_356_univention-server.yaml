@@ -9,3 +9,5 @@ desc: |
  * The server password change script has been improved to track and log the
    execution, allowing a better understanding of failed operations.
 bug: [54273]
+erratum: 356
+announced: 2022-07-20
