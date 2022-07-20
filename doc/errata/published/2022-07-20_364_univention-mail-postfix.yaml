@@ -9,3 +9,5 @@ desc: |
  * The server_password_change.d/50univention-mail-server script
    has been updated to generate more useful debug information.
 bug: [54273]
+erratum: 364
+announced: 2022-07-20
