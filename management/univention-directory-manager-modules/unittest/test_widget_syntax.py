@@ -526,7 +526,7 @@ from univention.admin import modules, property as prop
             ('groups/group', 'nestedGroup', 'umc/modules/udm/MultiObjectSelect', True),
             ('groups/group', 'allowedEmailUsers', 'umc/modules/udm/MultiObjectSelect', False),
             ('groups/group', 'allowedEmailGroups', 'umc/modules/udm/MultiObjectSelect', False),
-            ('groups/group', 'allowedEmailGroups', 'umc/modules/udm/MultiObjectSelect',True),
+            ('groups/group', 'allowedEmailGroups', 'umc/modules/udm/MultiObjectSelect', True),
             # dns
             # dns/dns
             ('dns/dns', 'name', 'TextBox', False),
