@@ -1,0 +1,81 @@
+# No Debian:
+
+20_create_via_udm_cli.py
+21_listener_version_start_end.py
+22_listener_version_change.py
+23_rename_object.py
+24_update_packageversion.py
+25_listener_check_active.py
+26_create_with_invalid_ucsversions.py
+30_file_integrity.py
+31_filename_attack.py
+40_keep_but_dont_activate_py2_only_udm_hook.py
+40_remove_py2_only_udm_hook.py
+40_test_py2_and_3_udm_hook.py
+40_test_py3_only_udm_hook.py
+41_keep_but_dont_activate_py2_only_udm_module.py
+41_remove_py2_only_udm_module.py
+41_test_py2_and_3_udm_module.py
+41_test_py3_only_udm_module.py
+42_keep_but_dont_activate_py2_only_udm_syntax.py
+42_remove_py2_only_udm_syntax.py
+42_test_py2_and_3_udm_syntax.py
+42_test_py3_only_udm_syntax.py
+
+
+# With join script section:
+
+01_register_deregister_via_joinscript.py
+03_register_and_verify_ldap_object.py
+04_register_and_verify_test_app_id.py
+05_register_and_verify_version_start_end.py
+
+needs to be rewritten a little:
+06_register_with_non_join_accounts.py
+07_register_and_verify_all.py
+08_register_with_special_name_and_verify_all.py
+10_update_extension_via_package.py
+11_update_extension_via_package_expected_fail.py
+12_update_extension_via_other_packagename.py
+32_file_integrity_udm_module.py
+33_umcmessagecatalog.py
+
+# Kein Plan:
+
+02_
+22_
+24_
+31_
+
+
+# extensio_dn = udm.create_object(
+
+don't need the object
+20_create_via_udm_cli.py
+21_listener_version_start_end.py
+23_rename_object.py
+25_listener_check_active.py
+26_create_with_invalid_ucsversions.py
+30_file_integrity.py
+
+
+(extension_name,...
+41_test_py2_and_3_udm_module.py
+41_test_py3_only_udm_module.py
+
+(\n
+40_keep_but_dont_activate_py2_only_udm_hook.py
+40_remove_py2_only_udm_hook.py
+40_test_py2_and_3_udm_hook.py
+40_test_py3_only_udm_hook.py
+42_keep_but_dont_activate_py2_only_udm_syntax.py
+42_remove_py2_only_udm_syntax.py
+42_test_py2_and_3_udm_syntax.py
+42_test_py3_only_udm_syntax.py
+
+# TODO:
+- [ ] refactor 06 and parametrize different password types
+- [ ] refactor 11 and parametrize high and low packages
+
+
+
