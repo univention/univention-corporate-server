@@ -1,4 +1,4 @@
-.. _central-udm_rest_api:
+.. _central-udm-rest-api:
 
 HTTP API of domain management
 =============================
