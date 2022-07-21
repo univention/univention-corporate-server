@@ -496,37 +496,29 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
 	ud.set_level(ud.LDAP, debug_level)
 	ud.set_level(ud.ADMIN, debug_level)
 
-	if binddn and bindpwd:
-		ud.debug(ud.ADMIN, ud.INFO, "using %s account" % binddn)
-		try:
-			lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, start_tls=tls, bindpw=bindpwd)
-		except Exception as exc:
-			ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc,))
-			raise OperationFailed('authentication error: %s' % (exc,))
-		policyOptions.extend(['-D', binddn, '-w', bindpwd])  # FIXME not so nice
+	if not binddn or not bindpwd:
+		for _binddn, secret_filename in (
+			('cn=admin,' + baseDN, '/etc/ldap.secret'),
+			(configRegistry['ldap/hostdn'], '/etc/machine.secret'),
+		):
+			if os.path.exists(secret_filename):
+				binddn = _binddn
+				try:
+					with open(secret_filename, 'r') as secretFile:
+						bindpwd = secretFile.read().strip('\n')
+				except IOError:
+					raise OperationFailed('E: Permission denied, try --binddn and --bindpwd')
+				policyOptions.extend(['-D', binddn, '-y', secret_filename])
+				break
 	else:
-		if os.path.exists('/etc/ldap.secret'):
-			ud.debug(ud.ADMIN, ud.INFO, "using cn=admin,%s account" % baseDN)
-			secretFileName = '/etc/ldap.secret'
-			binddn = 'cn=admin,' + baseDN
-			policyOptions.extend(['-D', binddn, '-y', secretFileName])
-		elif os.path.exists('/etc/machine.secret'):
-			ud.debug(ud.ADMIN, ud.INFO, "using %s account" % configRegistry['ldap/hostdn'])
-			secretFileName = '/etc/machine.secret'
-			binddn = configRegistry['ldap/hostdn']
-			policyOptions.extend(['-D', binddn, '-y', secretFileName])
+		policyOptions.extend(['-D', binddn, '-w', bindpwd])  # FIXME: not so nice
 
-		try:
-			with open(secretFileName, 'r') as secretFile:
-				pwd = secretFile.read().strip('\n')
-		except IOError:
-			raise OperationFailed('E: Permission denied, try --binddn and --bindpwd')
-
-		try:
-			lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, bindpw=pwd, start_tls=tls)
-		except Exception as exc:
-			ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc,))
-			raise OperationFailed('authentication error: %s' % (exc,))
+	ud.debug(ud.ADMIN, ud.INFO, "using %s account" % binddn)
+	try:
+		lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, start_tls=tls, bindpw=bindpwd)
+	except Exception as exc:
+		ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc,))
+		raise OperationFailed('authentication error: %s' % (exc,))
 
 	if not position_dn and superordinate_dn:
 		position_dn = superordinate_dn
