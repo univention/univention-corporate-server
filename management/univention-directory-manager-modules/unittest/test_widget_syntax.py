@@ -1308,5 +1308,4 @@ def test_widget_choices_options(object, property, expected_widget_choices_option
     m = modules.get(object)
     p = m.property_descriptions.get(property)
     widget_choices_options = p.syntax.get_widget_choices_options(p)
-    print(widget_choices_options)
     assert widget_choices_options == expected_widget_choices_options
