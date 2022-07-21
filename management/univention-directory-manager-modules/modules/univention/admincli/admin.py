@@ -227,10 +227,10 @@ def module_usage(information, action='', stream=sys.stdout):
 						_print_property(module, action, item, stream)
 
 
-def module_information(module, identifies_only=0):
+def module_information(module, identifies_only=False):
 	information = {module: [{}, {}]}
 	for superordinate in univention.admin.modules.superordinates(module):
-		information.update(module_information(superordinate, identifies_only=1))
+		information.update(module_information(superordinate, identifies_only=True))
 
 	if not identifies_only:
 		for name, property in module.property_descriptions.items():
@@ -400,8 +400,8 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
 		list_available_modules(stdout)
 		return
 
-	remove_referring = 0
-	recursive = 1
+	remove_referring = False
+	recursive = True
 	# parse options
 	longopts = ['position=', 'dn=', 'set=', 'append=', 'remove=', 'superordinate=', 'option=', 'append-option=', 'remove-option=', 'filter=', 'tls=', 'ignore_exists', 'ignore_not_exists', 'logfile=', 'policies=', 'binddn=', 'bindpwd=', 'bindpwdfile=', 'policy-reference=', 'policy-dereference=', 'remove_referring', 'recursive']
 	try:
@@ -424,7 +424,7 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
 	policyOptions = []
 	logfile = '/var/log/univention/directory-manager-cmd.log'
 	tls = 2
-	ignore_exists = 0
+	ignore_exists = False
 	ignore_not_exists = False
 	superordinate_dn = ''
 	parsed_append_options = []
@@ -462,7 +462,7 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
 		elif opt == '--tls':
 			tls = val
 		elif opt == '--ignore_exists':
-			ignore_exists = 1
+			ignore_exists = True
 		elif opt == '--ignore_not_exists':
 			ignore_not_exists = True
 		elif opt == '--superordinate':
@@ -697,7 +697,6 @@ class CLI(object):
 
 		object.policy_reference(*policy_reference)
 
-		exists = False
 		exists_msg = None
 		created = False
 		try:
@@ -708,38 +707,26 @@ class CLI(object):
 			dn = exc.args[0]
 			if not ignore_exists:
 				raise OperationFailed('E: Object exists: %s' % exists_msg)
-			else:
-				exists = 1
 		except univention.admin.uexceptions.uidAlreadyUsed as user:
 			exists_msg = '(uid) %s' % user
 			if not ignore_exists:
 				raise OperationFailed('E: Object exists: %s' % exists_msg)
-			else:
-				exists = 1
 		except univention.admin.uexceptions.groupNameAlreadyUsed as group:
 			exists_msg = '(group) %s' % group
 			if not ignore_exists:
 				raise OperationFailed('E: Object exists: %s' % exists_msg)
-			else:
-				exists = 1
 		except univention.admin.uexceptions.dhcpServerAlreadyUsed as name:
 			exists_msg = '(dhcpserver) %s' % name
 			if not ignore_exists:
 				raise OperationFailed('E: Object exists: %s' % exists_msg)
-			else:
-				exists = 1
 		except univention.admin.uexceptions.macAlreadyUsed as mac:
 			exists_msg = '(mac) %s' % mac
 			if not ignore_exists:
 				raise OperationFailed('E: Object exists: %s' % exists_msg)
-			else:
-				exists = 1
 		except univention.admin.uexceptions.noLock as e:
 			exists_msg = '(nolock) %s' % (e,)
 			if not ignore_exists:
 				raise OperationFailed('E: Object exists: %s' % exists_msg)
-			else:
-				exists = 1
 		except univention.admin.uexceptions.invalidDhcpEntry:
 			raise OperationFailed('E: The DHCP entry for this host should contain the zone dn, the ip address and the mac address.')
 		except univention.admin.uexceptions.invalidOptions as e:
@@ -755,11 +742,8 @@ class CLI(object):
 		except univention.admin.uexceptions.invalidChild as e:
 			raise OperationFailed('E: %s' % e)
 
-		if exists:
-			if exists_msg:
-				print('Object exists: %s' % exists_msg, file=self.stdout)
-			else:
-				print('Object exists', file=self.stdout)
+		if exists_msg:
+			print('Object exists: %s' % exists_msg, file=self.stdout)
 		elif created:
 			print('Object created: %s' % dn, file=self.stdout)
 
