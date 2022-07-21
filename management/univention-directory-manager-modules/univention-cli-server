@@ -45,6 +45,7 @@ import traceback
 import signal
 import json
 from argparse import ArgumentParser
+from io import StringIO
 
 from six.moves import socketserver
 
@@ -201,19 +202,23 @@ def doit(sarglist, conn):
 				continue
 		else:
 			if not show_help:
-				send_message(["E: Permission denied, try --logfile, --binddn and --bindpwd"])
+				send_message(["E: Permission denied, try --logfile, --binddn and --bindpwd", "OPERATION FAILED"])
 				sys.exit(1)
 
 	if logfile != oldlogfile:
 		ud.exit()
 		ud.init(logfile, ud.FLUSH, ud.NO_FUNCTION)
 
+	stdout = StringIO()
+	stderr = StringIO()
+
+	output = []
 	cmdfile = os.path.basename(arglist[0])
 	try:
 		if cmdfile in ('univention-admin', 'univention-directory-manager', 'udm'):
 			ud.debug(ud.ADMIN, ud.PROCESS, 'daemon [%s] [%s] Calling univention-directory-manager' % (os.getppid(), os.getpid()))
 			ud.debug(ud.ADMIN, ud.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
-			output = univention.admincli.admin.doit(arglist)
+			univention.admincli.admin.main(arglist, stdout, stderr)
 		elif cmdfile == 'univention-passwd':
 			ud.debug(ud.ADMIN, ud.PROCESS, 'daemon [%s] [%s] Calling univention-passwd' % (os.getppid(), os.getpid()))
 			ud.debug(ud.ADMIN, ud.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
@@ -226,10 +231,19 @@ def doit(sarglist, conn):
 			ud.debug(ud.ADMIN, ud.PROCESS, 'daemon [%s] [%s] Calling univention-adduser' % (os.getppid(), os.getpid()))
 			ud.debug(ud.ADMIN, ud.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
 			output = univention.admincli.adduser.doit(arglist)
+	except univention.admincli.admin.OperationFailed as exc:
+		print(str(exc), file=stderr)
+		output.append("OPERATION FAILED")
 	except Exception:
-		output = traceback.format_exc().splitlines()
+		tb = traceback.format_exc()
+		ud.debug(ud.ADMIN, ud.ERROR, tb)
+		print(tb, file=stderr)
 		output.append("OPERATION FAILED")
 
+	if isinstance(stdout, StringIO):
+		output += stdout.getvalue().splitlines()
+	if isinstance(stderr, StringIO):
+		output += stderr.getvalue().splitlines()
 	send_message(output)
 
 	if show_help and not secret:
