@@ -268,21 +268,21 @@ class CLIClient(object):
 		report = module.create_report(args.report_type, args.dns)
 		args.output.write(report)
 
-	def print_line(self, key, value='', prefix=''):
+	def print_line(self, key, value='', prefix='', stream=sys.stdout):
 		# prints and makes sure that no ANSI escape sequences or binary data is printed
 		if key:
 			key = '%s: ' % (key,)
 		value = '%s%s%s' % (prefix, key, value)
 		value = value.replace('\n', '\n%s' % (prefix,))
-		print(''.join(v for v in value if v not in '\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x7f'))
+		print(''.join(v for v in value if v not in '\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x7f'), file=stream)
 
 	def print_warning(self, value='', prefix='Warning'):
-		self.print_line('', value, prefix)
+		self.print_line('', value, prefix, stream=sys.stderr)
 
 	def print_error(self, value='', prefix='Error'):
-		self.print_line(prefix, value, '')
+		self.print_line(prefix, value, '', stream=sys.stderr)
 
-	def get_info(self, args, file=sys.stdout):
+	def get_info(self, args, stream=sys.stdout):
 		module = self.get_module(args.object_type)
 		module.load_relations()
 		# mod = self.udm.client.resolve_relation(module.relations, 'create-form', template={'position': '', 'superordinate': ''})  # TODO: integrate in client.py?
@@ -290,12 +290,12 @@ class CLIClient(object):
 		layout = module.get_layout()
 
 		for layout in layout:
-			print('  %s - %s:' % (layout['label'], layout['description']), file=file)
+			print('  %s - %s:' % (layout['label'], layout['description']), file=stream)
 			for sub in layout['layout']:
-				self.print_layout(sub, properties, file=file)
-			print('', file=file)
+				self.print_layout(sub, properties, stream=stream)
+			print('', file=stream)
 
-	def print_layout(self, sub, properties, indent=1, file=None):
+	def print_layout(self, sub, properties, indent=1, stream=None):
 		def _print_prop(prop):
 			def _get_flags(vals):
 				flags = []
@@ -313,10 +313,10 @@ class CLIClient(object):
 
 			def _print(prop):
 				if isinstance(prop, dict):
-					print(repr(prop), file=file)
+					print(repr(prop), file=stream)
 					return
 				vals = properties.get(prop, {})
-				print('\t\t%s%s' % ((prop + _get_flags(vals)).ljust(41), vals.get('label')), file=file)
+				print('\t\t%s%s' % ((prop + _get_flags(vals)).ljust(41), vals.get('label')), file=stream)
 
 			if isinstance(prop, list):
 				for prop in prop:
@@ -325,15 +325,15 @@ class CLIClient(object):
 				_print(prop)
 
 		if isinstance(sub, dict):
-			print('\t%s %s' % (sub['label'], sub['description']), file=file)
+			print('\t%s %s' % (sub['label'], sub['description']), file=stream)
 			for prop in sub['layout']:
 				if isinstance(prop, dict):
-					self.print_layout(prop, properties, indent + 1, file=file)
+					self.print_layout(prop, properties, indent + 1, stream=stream)
 				else:
 					_print_prop(prop)
 		else:
 			if isinstance(sub, dict):
-				self.print_layout(prop, properties, indent + 1, file=file)
+				self.print_layout(prop, properties, indent + 1, stream=stream)
 			else:
 				_print_prop(sub)
 

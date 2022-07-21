@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.4-3) unstable; urgency=medium
+
+  * Bug #4498: write error messages of UDM REST API CLI to stderr
+
+ -- Florian Best <best@univention.de>  Wed, 10 Aug 2022 21:23:23 +0200
+
 univention-directory-manager-rest (10.0.4-2) unstable; urgency=medium
 
   * Bug #54273: Include debug script in server_password_change.d/univention-directory-manager-rest subscript

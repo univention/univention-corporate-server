@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-directory-manager-rest
+fix:
+desc: |
+ This update addresses the following issues:
+ * The UDM command line client now writes error messages and warnings to
+   stdandard error.
+bug: [4498]
