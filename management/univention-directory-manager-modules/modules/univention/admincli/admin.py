@@ -620,15 +620,15 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
 			recursive = True
 
 	cli = CLI(module_name, module, dn, lo, position, superordinate, stdout=stdout, stderr=stderr)
-	if action == 'create' or action == 'new':
+	if action in ('create', 'new'):
 		cli.create(input, append, ignore_exists, parsed_options, parsed_append_options, parsed_remove_options, policy_reference)
-	elif action == 'modify' or action == 'edit':
+	elif action in ('modify', 'edit'):
 		cli.modify(input, append, remove, parsed_append_options, parsed_remove_options, parsed_options, policy_reference, policy_dereference, ignore_not_exists=ignore_not_exists)
 	elif action == 'move':
 		cli.move(position_dn)
-	elif action == 'remove' or action == 'delete':
+	elif action in ('remove', 'delete'):
 		cli.remove(remove_referring=remove_referring, recursive=recursive, ignore_not_exists=ignore_not_exists, filter=filter)
-	elif action == 'list' or action == 'lookup':
+	elif action in ('list', 'lookup'):
 		cli.list(list_policies, filter, superordinate_dn, policyOptions, policies_with_DN)
 	else:
 		print("Unknown or no action defined", file=stderr)
@@ -813,7 +813,7 @@ class CLI(object):
 
 		object.open()
 
-		if (len(input) + len(append) + len(remove) + len(parsed_append_options) + len(parsed_remove_options) + len(parsed_options) + len(policy_reference) + len(policy_dereference)) > 0:
+		if any((input, append, remove, parsed_append_options, parsed_remove_options, parsed_options, policy_reference, policy_dereference)):
 			if parsed_options:
 				object.options = parsed_options
 			for option in parsed_append_options:
