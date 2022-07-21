@@ -167,7 +167,7 @@ def _print_property(module, action, name, stream):
 		required['editable'] = False
 
 	flags = ''
-	if action in required and required[action]:
+	if required.get(action):
 		flags = '*'
 	elif action not in required:
 		if required['create']:
@@ -178,18 +178,14 @@ def _print_property(module, action, name, stream):
 			flags += 'r'
 		if not required['editable']:
 			flags += 'e'
+	flags = [flags] if flags else []
 	if property.options:
-		if flags:
-			flags += ','
-		flags += ','.join(property.options)
+		flags.extend(property.options)
 	if property.multivalue:
-		if flags:
-			flags += ','
-		flags += '[]'
-	if flags:
-		flags = '(' + flags + ')'
+		flags.append('[]')
+	flags = ' (%s)' % (','.join(flags),) if flags else ''
 
-	print('		%-40s %s' % (name + ' ' + flags, property.short_description), file=stream)
+	print('		%-40s %s' % (name + flags, property.short_description), file=stream)
 
 
 def module_usage(information, action='', stream=sys.stdout):
