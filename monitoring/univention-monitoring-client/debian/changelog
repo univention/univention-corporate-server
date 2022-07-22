@@ -1,3 +1,9 @@
+univention-monitoring-client (1.0.0-6) unstable; urgency=medium
+
+  * Bug #55017: fix check_univention_ntp in error conditions
+
+ -- Florian Best <best@univention.de>  Fri, 22 Jul 2022 10:49:20 +0200
+
 univention-monitoring-client (1.0.0-5) unstable; urgency=medium
 
   * Bug #54947: register ACL which allows DC hosts to change/add alerts
