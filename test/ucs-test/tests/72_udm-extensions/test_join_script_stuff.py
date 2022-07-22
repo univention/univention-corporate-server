@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Register and deregister UDM extension via joinscript
+## desc: Test joinscript stuff and so on #TODO: fix description
 ## tags: [udm,udm-extensions,apptest]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
 ## exposure: dangerous
@@ -8,21 +8,35 @@
 ##   - univention-directory-manager-tools
 ##   - shell-univention-lib
 
+import base64
+import bz2
+import difflib
 import grp
 import hashlib
 import os
+import random
 import stat
 
 import pytest
 
 from univention.testing.debian_package import DebianPackage
+from univention.testing.strings import random_name, random_ucs_version, random_version
 from univention.testing.udm_extensions import (
-	VALID_EXTENSION_TYPES, call_join_script, call_unjoin_script, get_absolute_extension_filename,
-	get_dn_of_extension_by_name, get_extension_buffer, get_extension_filename, get_extension_name,
-	get_join_script_buffer, get_package_name, get_package_version, get_unjoin_script_buffer,
+	VALID_EXTENSION_TYPES,
+	call_join_script,
+	call_unjoin_script,
+	get_absolute_extension_filename,
+	get_dn_of_extension_by_name,
+	get_extension_buffer,
+	get_extension_filename,
+	get_extension_name,
+	get_join_script_buffer,
+	get_package_name,
+	get_package_version,
+	get_unjoin_script_buffer,
 	remove_extension_by_name,
 )
-from univention.testing.utils import wait_for_replication
+from univention.testing.utils import verify_ldap_object, wait_for_replication
 
 
 @pytest.mark.tags('udm', 'udm-extensions', 'apptest')
@@ -103,27 +117,6 @@ def test_register_deregister_via_joinscript(extension_type):
 
 		print('Removing source package')
 		package.remove()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Register UDM extension and perform simple LDAP verification
-## tags: [udm,udm-extensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-config
-##   - univention-directory-manager-tools
-##   - shell-univention-lib
-
-import bz2
-
-import pytest
-
-from univention.testing.debian_package import DebianPackage
-from univention.testing.udm_extensions import (
-	VALID_EXTENSION_TYPES, call_join_script, get_dn_of_extension_by_name, get_extension_buffer,
-	get_extension_filename, get_extension_name, get_join_script_buffer, get_package_name,
-	get_package_version, remove_extension_by_name,
-)
-from univention.testing.utils import verify_ldap_object, wait_for_replication
 
 
 @pytest.mark.tags('udm', 'udm-extensions', 'apptest')
@@ -173,28 +166,6 @@ def test_register_and_verify_ldap_object(extension_type):
 
 		print('Removing source package')
 		package.remove()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Check setting of UNIVENTION_APP_ID for UDM extensions
-## tags: [udm,udm-extensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-config
-##   - univention-directory-manager-tools
-##   - shell-univention-lib
-
-import bz2
-
-import pytest
-
-from univention.testing.debian_package import DebianPackage
-from univention.testing.strings import random_name, random_version
-from univention.testing.udm_extensions import (
-	VALID_EXTENSION_TYPES, call_join_script, get_dn_of_extension_by_name, get_extension_buffer,
-	get_extension_filename, get_extension_name, get_join_script_buffer, get_package_name,
-	get_package_version, remove_extension_by_name,
-)
-from univention.testing.utils import verify_ldap_object, wait_for_replication
 
 
 @pytest.mark.tags('udm', 'udm-extensions', 'apptest')
@@ -250,28 +221,6 @@ def test_register_and_verify_test_app_id(extension_type):
 
 		print('Removing source package')
 		package.remove()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Check setting of a version range for UDM extensions
-## tags: [udm,udm-extensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-config
-##   - univention-directory-manager-tools
-##   - shell-univention-lib
-
-import bz2
-
-import pytest
-
-from univention.testing.debian_package import DebianPackage
-from univention.testing.strings import random_name, random_ucs_version, random_version
-from univention.testing.udm_extensions import (
-	VALID_EXTENSION_TYPES, call_join_script, get_dn_of_extension_by_name, get_extension_buffer,
-	get_extension_filename, get_extension_name, get_join_script_buffer, get_package_name,
-	get_package_version, remove_extension_by_name,
-)
-from univention.testing.utils import verify_ldap_object, wait_for_replication
 
 
 @pytest.mark.tags('udm', 'udm-extensions', 'apptest')
@@ -330,25 +279,6 @@ def test_register_and_verify_version_start_end(extension_type):
 
 		print('Removing source package')
 		package.remove()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Register UDM extension with non-join-accounts
-## tags: [udm,udm-extensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-config
-##   - univention-directory-manager-tools
-##   - shell-univention-lib
-
-import pytest
-
-from univention.testing.debian_package import DebianPackage
-from univention.testing.udm_extensions import (
-	VALID_EXTENSION_TYPES, call_cmd, get_dn_of_extension_by_name, get_extension_buffer,
-	get_extension_filename, get_extension_name, get_join_script_buffer, get_package_name,
-	get_package_version, remove_extension_by_name,
-)
-from univention.testing.utils import wait_for_replication
 
 
 @pytest.mark.tags('udm', 'udm-extensions', 'apptest')
@@ -398,27 +328,6 @@ def _test_extension(extension_type, dn, password):
 
 		print('Removing source package')
 		package.remove()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Register and verify all UDM extension in one step
-## tags: [udm,udm-extensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-config
-##   - univention-directory-manager-tools
-##   - shell-univention-lib
-
-import bz2
-
-import pytest
-
-from univention.testing.debian_package import DebianPackage
-from univention.testing.udm_extensions import (
-	VALID_EXTENSION_TYPES, call_join_script, get_dn_of_extension_by_name, get_extension_buffer,
-	get_extension_filename, get_extension_name, get_package_name, get_package_version,
-	remove_extension_by_name,
-)
-from univention.testing.utils import verify_ldap_object, wait_for_replication
 
 
 @pytest.mark.tags('udm', 'udm-extensions', 'apptest')
@@ -487,28 +396,6 @@ exit 0
 
 		print('Removing source package')
 		package.remove()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Register and verify all UDM extension in one step
-## tags: [udm,udm-extensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-config
-##   - univention-directory-manager-tools
-##   - shell-univention-lib
-
-import bz2
-
-import pytest
-
-from univention.testing.debian_package import DebianPackage
-from univention.testing.strings import random_name
-from univention.testing.udm_extensions import (
-	VALID_EXTENSION_TYPES, call_join_script, get_dn_of_extension_by_name, get_extension_buffer,
-	get_extension_filename, get_extension_name, get_package_name, get_package_version,
-	remove_extension_by_name,
-)
-from univention.testing.utils import verify_ldap_object, wait_for_replication
 
 
 @pytest.mark.tags('udm', 'udm-extensions', 'apptest')
@@ -580,28 +467,6 @@ exit 0
 
 		print('Removing source package')
 		package.remove()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Test extension update with correct version order
-## tags: [udm,udm-extensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-config
-##   - univention-directory-manager-tools
-##   - shell-univention-lib
-
-import random
-
-import pytest
-
-from univention.testing.debian_package import DebianPackage
-from univention.testing.strings import random_name, random_ucs_version, random_version
-from univention.testing.udm_extensions import (
-	VALID_EXTENSION_TYPES, call_join_script, get_absolute_extension_filename, get_dn_of_extension_by_name,
-	get_extension_buffer, get_extension_filename, get_extension_name, get_join_script_buffer,
-	get_package_name, remove_extension_by_name,
-)
-from univention.testing.utils import verify_ldap_object, wait_for_replication
 
 
 @pytest.mark.tags('udm', 'udm-extensions', 'apptest')
@@ -675,28 +540,6 @@ def test_update_extension_via_package(extension_type):
 		print('Removing source package')
 		for package in packages:
 			package.remove()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Test extension update with wrong version order
-## tags: [udm,udm-extensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-config
-##   - univention-directory-manager-tools
-##   - shell-univention-lib
-
-import random
-
-import pytest
-
-from univention.testing.debian_package import DebianPackage
-from univention.testing.strings import random_name, random_version
-from univention.testing.udm_extensions import (
-	VALID_EXTENSION_TYPES, call_join_script, get_absolute_extension_filename, get_extension_buffer,
-	get_extension_filename, get_extension_name, get_join_script_buffer, get_package_name,
-	remove_extension_by_name,
-)
-from univention.testing.utils import wait_for_replication
 
 
 @pytest.mark.tags('udm', 'udm-extensions', 'apptest')
@@ -763,28 +606,6 @@ def test_update_extension_via_package_expected_fail(extension_type):
 		print('Removing source package')
 		for package in packages:
 			package.remove()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Test extension update with other package name
-## tags: [udm,udm-extensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-config
-##   - univention-directory-manager-tools
-##   - shell-univention-lib
-
-import random
-
-import pytest
-
-from univention.testing.debian_package import DebianPackage
-from univention.testing.strings import random_name, random_ucs_version, random_version
-from univention.testing.udm_extensions import (
-	VALID_EXTENSION_TYPES, call_join_script, get_absolute_extension_filename, get_extension_buffer,
-	get_extension_filename, get_extension_name, get_join_script_buffer, get_package_name,
-	remove_extension_by_name,
-)
-from univention.testing.utils import wait_for_replication
 
 
 @pytest.mark.tags('udm', 'udm-extensions', 'apptest')
@@ -850,29 +671,7 @@ def test_update_extension_via_other_packagename(extension_type):
 		print('Removing source package')
 		for package in packages:
 			package.remove()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Register and deregister UDM extension via joinscript
-## tags: [udm,udm-extensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-config
-##   - univention-directory-manager-tools
-##   - shell-univention-lib
 
-import difflib
-import hashlib
-import os
-
-import pytest
-
-from univention.testing.debian_package import DebianPackage
-from univention.testing.udm_extensions import (
-	call_join_script, call_unjoin_script, get_absolute_extension_filename, get_dn_of_extension_by_name,
-	get_extension_buffer, get_extension_filename, get_extension_name, get_join_script_buffer,
-	get_package_name, get_package_version, get_unjoin_script_buffer, remove_extension_by_name,
-)
-from univention.testing.utils import wait_for_replication
 
 TEST_DATA = (
 	('umcregistration', '32_file_integrity_udm_module.xml', '/usr/share/univention-management-console/modules/udm-%s.xml'),
@@ -966,29 +765,7 @@ def test_file_integrity_udm_module():
 
 		print('Removing source package')
 		package.remove()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Register UMCMessageCatalog via joinscript
-## tags: [udm,udm-extensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-config
-##   - univention-directory-manager-tools
-##   - shell-univention-lib
 
-import base64
-import os
-
-import pytest
-
-from univention.testing.debian_package import DebianPackage
-from univention.testing.strings import random_ucs_version
-from univention.testing.udm_extensions import (
-	call_join_script, call_unjoin_script, get_absolute_extension_filename, get_dn_of_extension_by_name,
-	get_extension_buffer, get_extension_filename, get_extension_name, get_join_script_buffer,
-	get_package_name, get_package_version, get_unjoin_script_buffer, remove_extension_by_name,
-)
-from univention.testing.utils import verify_ldap_object, wait_for_replication
 
 mo_file = base64.b64decode('''
 3hIElQAAAAAFAAAAHAAAAEQAAAAHAAAAbAAAAAAAAACIAAAADwAAAIkAAAAaAAAAmQAAAB0AAAC0AAAARQAAANIAAA
