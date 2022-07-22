@@ -1,3 +1,10 @@
+# Infos:
+
+`package_version = get_package_version()`
+is the same as:
+`version = random_version()`
+
+
 # No Debian:
 
 20_create_via_udm_cli.py
