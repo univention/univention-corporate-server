@@ -8,15 +8,50 @@
 
 import base64
 import bz2
+import difflib
+import grp
+import hashlib
+import os
+import random
+import stat
+import subprocess
 
 import pytest
 
+from univention.config_registry import ucr
+from univention.testing.debian_package import DebianPackage
+# TODO: refactor so that this is no longer needed. use udm_extensions instead!
 from univention.testing.strings import random_name, random_ucs_version, random_version
+from univention.testing.udm import UCSTestUDM_CreateUDMObjectFailed, UCSTestUDM_ModifyUDMObjectFailed
 from univention.testing.udm_extensions import (
-	VALID_EXTENSION_TYPES, get_extension_buffer, get_extension_filename, get_extension_name,
-	get_package_name, get_package_version,
+	VALID_EXTENSION_TYPES,
+	call_cmd,
+	call_join_script,
+	call_unjoin_script,
+	get_absolute_extension_filename,
+	get_dn_of_extension_by_name,
+	get_extension_buffer,
+	get_extension_filename,
+	get_extension_name,
+	get_join_script_buffer,
+	get_package_name,
+	get_package_version,
+	get_unjoin_script_buffer,
+	remove_extension_by_name,
 )
-from univention.testing.utils import verify_ldap_object
+from univention.testing.utils import(
+	verify_ldap_object,
+	wait_for_replication,
+	wait_for_replication_and_postrun,
+	wait_for_s4connector_replication
+)
+
+
+@pytest.fixture
+def wait_before(wait_for_replication):
+	yield
+	# wait for replicate before test starts
+	wait_for_replication()
 
 
 @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
@@ -62,34 +97,6 @@ def test_create_via_udm_cli(udm, ucr, extension_type):
 			'univentionUCSVersionStart': [version_start],
 			'univentionUCSVersionEnd': [version_end],
 		})
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Create extensions with different version ranges
-## tags: [udm,udm-ldapextensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-directory-manager-tools
-
-import base64
-import bz2
-import os
-
-import pytest
-
-from univention.config_registry import ucr
-from univention.testing.strings import random_name, random_version
-from univention.testing.udm_extensions import (
-	VALID_EXTENSION_TYPES, get_absolute_extension_filename, get_extension_buffer, get_extension_filename,
-	get_extension_name, get_package_name, get_package_version,
-)
-from univention.testing.utils import wait_for_replication
-
-
-@pytest.fixture
-def wait_before(wait_for_replication):
-	yield
-	# wait for replicate before test starts
-	wait_for_replication()
 
 
 @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
@@ -142,27 +149,6 @@ def test_listener_version_start_end(udm, ucr, extension_type, version_start, ver
 	udm.cleanup()
 	wait_for_replication()
 	assert not os.path.exists(target_fn), 'ERROR: file %s should not exist' % target_fn
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Rename UDM extension object
-## tags: [udm,udm-ldapextensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-directory-manager-tools
-
-import base64
-import bz2
-import os
-
-import pytest
-
-from univention.testing.strings import random_name, random_ucs_version
-from univention.testing.udm_extensions import (
-	VALID_EXTENSION_TYPES, get_absolute_extension_filename, get_dn_of_extension_by_name,
-	get_extension_buffer, get_extension_filename, get_extension_name, get_package_name, get_package_version,
-	remove_extension_by_name,
-)
-from univention.testing.utils import verify_ldap_object, wait_for_replication
 
 
 @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
@@ -234,25 +220,6 @@ def test_rename_object(udm, extension_type, ucr):
 	# check if registered file has been removed
 	target_fn = get_absolute_extension_filename(extension_type, extension_filename)
 	assert not os.path.exists(target_fn), 'ERROR: file exists unexpectedly (%s)' % (target_fn)
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Change active flag to TRUE by domaincontroller master
-## tags: [udm,udm-ldapextensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-directory-manager-tools
-
-import base64
-import bz2
-
-import pytest
-
-from univention.testing.strings import random_name, random_ucs_version, random_version
-from univention.testing.udm_extensions import (
-	VALID_EXTENSION_TYPES, get_extension_buffer, get_extension_filename, get_extension_name,
-	get_package_name, get_package_version,
-)
-from univention.testing.utils import verify_ldap_object, wait_for_replication_and_postrun
 
 
 @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
@@ -300,25 +267,6 @@ def test_listener_check_active(udm, extension_type, ucr):
 		'univentionUCSVersionEnd': [version_end],
 		'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
 	})
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Create full UDM extension objects via CLI
-## tags: [udm,udm-ldapextensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-directory-manager-tools
-
-import base64
-import bz2
-
-import pytest
-
-import univention.testing.udm as udm_test
-from univention.testing.strings import random_name, random_ucs_version, random_version
-from univention.testing.udm_extensions import (
-	VALID_EXTENSION_TYPES, get_extension_buffer, get_extension_filename, get_extension_name,
-	get_package_name, get_package_version,
-)
 
 
 @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
@@ -341,7 +289,7 @@ def test_create_with_invalid_ucsversions(udm, extension_type, version_start, ver
 	package_version = get_package_version()
 	app_id = '%s-%s' % (random_name(), random_version())
 
-	with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
+	with pytest.raises(UCSTestUDM_CreateUDMObjectFailed):
 		udm.create_object(
 			'settings/udm_%s' % extension_type,
 			name=extension_name,
@@ -354,36 +302,6 @@ def test_create_with_invalid_ucsversions(udm, extension_type, version_start, ver
 			ucsversionend=version_end,
 			active='FALSE'
 		)
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Check permissions of distributed extension file
-## tags: [udm,udm-ldapextensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-directory-manager-tools
-
-import base64
-import bz2
-import grp
-import hashlib
-import os
-import stat
-
-import pytest
-
-from univention.testing.strings import random_name, random_ucs_version, random_version
-from univention.testing.udm_extensions import (
-	VALID_EXTENSION_TYPES, get_absolute_extension_filename, get_extension_buffer, get_extension_filename,
-	get_extension_name, get_package_name, get_package_version,
-)
-from univention.testing.utils import wait_for_replication
-
-
-@pytest.fixture
-def wait_before(wait_for_replication):
-	yield
-	# wait for replicate before test starts
-	wait_for_replication()
 
 
 @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
@@ -445,25 +363,6 @@ def test_file_integrity(udm, ucr, extension_type, wait_before):
 	# wait for replication before local filesystem is checked
 	wait_for_replication()
 	assert not os.path.exists(target_fn), 'ERROR: file %s should not exist' % target_fn
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Create UDM module extension object and test it via CLI
-## tags: [udm,udm-ldapextensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-directory-manager-tools
-
-import base64
-import bz2
-import subprocess
-
-import pytest
-
-from univention.testing.strings import random_name, random_ucs_version, random_version
-from univention.testing.udm_extensions import (
-	get_extension_buffer, get_extension_filename, get_extension_name, get_package_name, get_package_version,
-)
-from univention.testing.utils import verify_ldap_object, wait_for_replication
 
 
 @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
@@ -531,25 +430,6 @@ def test_test_py2_and_3_udm_module(udm, ucr):
 
 	# test if user/user module is still ok after removing UDM module extension
 	udm.create_user()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Create Py3-only UDM module extension object and test it via CLI
-## tags: [udm,udm-ldapextensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-directory-manager-tools
-
-import base64
-import bz2
-import subprocess
-
-import pytest
-
-from univention.testing.strings import random_name, random_version
-from univention.testing.udm_extensions import (
-	get_extension_buffer, get_extension_filename, get_extension_name, get_package_name, get_package_version,
-)
-from univention.testing.utils import verify_ldap_object, wait_for_replication
 
 
 @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
@@ -617,25 +497,6 @@ def test_test_py3_only_udm_module(udm, ucr):
 
 	# test if user/user module is still ok after removing UDM module extension
 	udm.create_user()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Create Py2-only UDM hook extension object, expect it to be present in LDAP but not committed locally
-## tags: [udm-ldapextensions]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-directory-manager-tools
-
-import base64
-import bz2
-import os
-
-import pytest
-
-from univention.testing.strings import random_name, random_ucs_version, random_version
-from univention.testing.udm_extensions import (
-	get_extension_buffer, get_extension_filename, get_extension_name, get_package_name, get_package_version,
-)
-from univention.testing.utils import verify_ldap_object, wait_for_replication_and_postrun
 
 
 @pytest.mark.tags('udm-ldapextensions')
@@ -711,24 +572,6 @@ def test_keep_but_dont_activate_py2_only_udm_hook(udm, ucr):
 	udm.cleanup()
 	wait_for_replication_and_postrun()
 	udm.stop_cli_server()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Create Py2-only UDM hook extension object, expect it to get removed
-## tags: [udm-ldapextensions]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-directory-manager-tools
-
-import base64
-import bz2
-
-import pytest
-
-from univention.testing.strings import random_name, random_ucs_version, random_version
-from univention.testing.udm_extensions import (
-	get_extension_buffer, get_extension_filename, get_extension_name, get_package_name, get_package_version,
-)
-from univention.testing.utils import verify_ldap_object, wait_for_replication_and_postrun
 
 
 @pytest.mark.tags('udm-ldapextensions')
@@ -802,27 +645,6 @@ def test_remove_py2_only_udm_hook(udm, ucr):
 	udm.cleanup()
 	wait_for_replication_and_postrun()
 	udm.stop_cli_server()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Create UDM hook extension object and test it via CLI
-## tags: [udm-ldapextensions]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-directory-manager-tools
-
-import base64
-import bz2
-
-import pytest
-
-from univention.testing.strings import random_name, random_ucs_version, random_version
-from univention.testing.udm_extensions import (
-	get_extension_buffer, get_extension_filename, get_extension_name, get_package_name, get_package_version,
-)
-from univention.testing.utils import (
-	verify_ldap_object, wait_for_replication, wait_for_replication_and_postrun,
-	wait_for_s4connector_replication,
-)
 
 
 @pytest.mark.tags('udm-ldapextensions')
@@ -937,28 +759,8 @@ def test_test_py2_and_3_udm_hook(udm, ucr):
 	udm = udm.__enter__()
 
 	# test if user/user module is still ok after removing UDM module extension
+	# TODO: can't use fixture because of that
 	udm.create_user()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Create Py3-only UDM hook extension object and test it via CLI
-## tags: [udm-ldapextensions]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-directory-manager-tools
-
-import base64
-import bz2
-
-import pytest
-
-from univention.testing.strings import random_name, random_version
-from univention.testing.udm_extensions import (
-	get_extension_buffer, get_extension_filename, get_extension_name, get_package_name, get_package_version,
-)
-from univention.testing.utils import (
-	verify_ldap_object, wait_for_replication, wait_for_replication_and_postrun,
-	wait_for_s4connector_replication,
-)
 
 
 @pytest.mark.tags('udm-ldapextensions')
@@ -1073,25 +875,6 @@ def test_test_py3_only_udm_hook(udm, ucr):
 
 	# test if user/user module is still ok after removing UDM module extension
 	udm.create_user()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Create Py2-only UDM syntax extension object, expect it to get removed
-## tags: [udm,udm-ldapextensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-directory-manager-tools
-
-import base64
-import bz2
-import os
-
-import pytest
-
-from univention.testing.strings import random_name, random_ucs_version, random_version
-from univention.testing.udm_extensions import (
-	get_extension_buffer, get_extension_filename, get_extension_name, get_package_name, get_package_version,
-)
-from univention.testing.utils import verify_ldap_object, wait_for_replication_and_postrun
 
 
 @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
@@ -1165,24 +948,6 @@ def test_keep_but_dont_activate_py2_only_udm_syntax(udm, ucr):
 	udm.cleanup()
 	wait_for_replication_and_postrun()
 	udm.stop_cli_server()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Create Py2-only UDM syntax extension object, expect it to get removed
-## tags: [udm,udm-ldapextensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-directory-manager-tools
-
-import base64
-import bz2
-
-import pytest
-
-from univention.testing.strings import random_name, random_ucs_version, random_version
-from univention.testing.udm_extensions import (
-	get_extension_buffer, get_extension_filename, get_extension_name, get_package_name, get_package_version,
-)
-from univention.testing.utils import verify_ldap_object, wait_for_replication_and_postrun
 
 
 @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
@@ -1254,25 +1019,6 @@ def test_remove_py2_only_udm_syntax(udm, ucr):
 	udm.cleanup()
 	wait_for_replication_and_postrun()
 	udm.stop_cli_server()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Create UDM syntax extension object and test it via CLI
-## tags: [udm,udm-ldapextensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-directory-manager-tools
-
-import base64
-import bz2
-
-import pytest
-
-import univention.testing.udm as udm_test
-from univention.testing.strings import random_name, random_ucs_version, random_version
-from univention.testing.udm_extensions import (
-	get_extension_buffer, get_extension_filename, get_extension_name, get_package_name, get_package_version,
-)
-from univention.testing.utils import verify_ldap_object, wait_for_replication_and_postrun
 
 
 @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
@@ -1358,7 +1104,7 @@ def test_test_py2_and_3_udm_syntax(udm, ucr):
 
 	# modify user and set extended attribute with invalid value (according to assigned syntax)
 	userargs = {'ucstest%s' % extension_name.upper(): random_name()}
-	with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed) as exc:
+	with pytest.raises(UCSTestUDM_ModifyUDMObjectFailed) as exc:
 		udm.modify_object('users/user', dn=user_dn, **userargs)
 	assert 'Wrong value given for ucs-test-syntax' in str(exc.value)
 
@@ -1369,25 +1115,6 @@ def test_test_py2_and_3_udm_syntax(udm, ucr):
 
 	# test if user/user module is still ok after removing UDM module extension
 	udm.create_user()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Create Py3-only UDM syntax extension object and test it via CLI
-## tags: [udm,udm-ldapextensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-directory-manager-tools
-
-import base64
-import bz2
-
-import pytest
-
-import univention.testing.udm as udm_test
-from univention.testing.strings import random_name, random_version
-from univention.testing.udm_extensions import (
-	get_extension_buffer, get_extension_filename, get_extension_name, get_package_name, get_package_version,
-)
-from univention.testing.utils import verify_ldap_object, wait_for_replication_and_postrun
 
 
 @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
@@ -1472,7 +1199,7 @@ def test_test_py3_only_udm_syntax(udm, ucr):
 
 	# modify user and set extended attribute with invalid value (according to assigned syntax)
 	userargs = {'ucstest%s' % extension_name.upper(): random_name()}
-	with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed) as exc:
+	with pytest.raises(UCSTestUDM_ModifyUDMObjectFailed) as exc:
 		udm.modify_object('users/user', dn=user_dn, **userargs)
 	assert 'Wrong value given for ucs-test-syntax' in str(exc.value)
 
@@ -1483,25 +1210,6 @@ def test_test_py3_only_udm_syntax(udm, ucr):
 
 	# test if user/user module is still ok after removing UDM module extension
 	udm.create_user()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Create Py2-only UDM module extension object, expect it to get removed
-## tags: [udm,udm-ldapextensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-directory-manager-tools
-
-import base64
-import bz2
-import os
-
-import pytest
-
-from univention.testing.strings import random_name, random_ucs_version, random_version
-from univention.testing.udm_extensions import (
-	get_extension_buffer, get_extension_filename, get_extension_name, get_package_name, get_package_version,
-)
-from univention.testing.utils import verify_ldap_object, wait_for_replication
 
 
 @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
@@ -1551,24 +1259,6 @@ def test_keep_but_dont_activate_py2_only_udm_module(udm, ucr):
 	udm.cleanup()
 	wait_for_replication()
 	udm.stop_cli_server()
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Create Py2-only UDM module extension object, expect it to get removed
-## tags: [udm,udm-ldapextensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
-## exposure: dangerous
-## packages:
-##   - univention-directory-manager-tools
-
-import base64
-import bz2
-
-import pytest
-
-from univention.testing.strings import random_name, random_ucs_version, random_version
-from univention.testing.udm_extensions import (
-	get_extension_buffer, get_extension_filename, get_extension_name, get_package_name, get_package_version,
-)
-from univention.testing.utils import verify_ldap_object, wait_for_replication
 
 
 @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
