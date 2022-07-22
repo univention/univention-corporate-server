@@ -65,24 +65,58 @@ def wait_before(wait_for_replication):
 	wait_for_replication()
 
 
+# make the extension_type parameter inheritable by other fixtures
+@pytest.fixture
+def extension_type(request):
+	print('========================= TESTING EXTENSION %s =============================' % extension_type)
+	print(request.param)
+	print(type(request.param))
+	print(str(request.param))
+	return request.param
+
+
+@pytest.fixture
+def package_name():
+	return get_package_name()
+
+
+@pytest.fixture
+def package_version():
+	return get_package_version()
+
+
+@pytest.fixture
+def extension_name(extension_type):
+	return get_extension_name(extension_type)
+
+
+@pytest.fixture
+def extension_filename(extension_type, extension_name):
+	return get_extension_filename(extension_type, extension_name)
+
+
+@pytest.fixture
+def extension_buffer(extension_type, extension_name):
+	return get_extension_buffer(extension_type, extension_name)
+
+
+@pytest.fixture
+def package(package_name, package_version):
+	return DebianPackage(name=package_name, version=package_version)
+
+
 @pytest.mark.tags('udm', 'udm-extensions', 'apptest')
 @pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 @pytest.mark.exposure('dangerous')
 class Test_UDMExtensionsJoinscript:
 
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_register_deregister_via_joinscript(self, extension_type):
+	def test_register_deregister_via_joinscript(self, extension_type, package_name, extension_name, extension_filename, extension_buffer, package):
 		"""Register and deregister UDM extension via joinscript"""
-		package_name = get_package_name()
-		package_version = get_package_version()
-		extension_name = get_extension_name(extension_type)
-		extension_filename = get_extension_filename(extension_type, extension_name)
+		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		joinscript_buffer = get_join_script_buffer(extension_type, '/usr/share/%s/%s' % (package_name, extension_filename), version_start='5.0-0')
 		unjoinscript_buffer = get_unjoin_script_buffer(extension_type, extension_name, package_name)
-		extension_buffer = get_extension_buffer(extension_type, extension_name)
 
-		package = DebianPackage(name=package_name, version=package_version)
-		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		try:
 			# create package and install it
 			package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
@@ -145,22 +179,17 @@ class Test_UDMExtensionsJoinscript:
 
 			print('Removing source package')
 			package.remove()
+			assert False
 
 	@pytest.mark.tags('udm', 'udm-extensions', 'apptest')
 	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 	@pytest.mark.exposure('dangerous')
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_register_and_verify_ldap_object(self, extension_type):
+	def test_register_and_verify_ldap_object(extension_type, package_name, package_version, extension_name, extension_filename, extension_buffer, package):
 		"""Register UDM extension and perform simple LDAP verification"""
 		print('========================= TESTING EXTENSION %s =============================' % extension_type)
-		package_name = get_package_name()
-		package_version = get_package_version()
-		extension_name = get_extension_name(extension_type)
-		extension_filename = get_extension_filename(extension_type, extension_name)
 		joinscript_buffer = get_join_script_buffer(extension_type, '/usr/share/%s/%s' % (package_name, extension_filename), version_start='5.0-0')
-		extension_buffer = get_extension_buffer(extension_type, extension_name)
 
-		package = DebianPackage(name=package_name, version=package_version)
 		try:
 			# create package and install it
 			package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
@@ -198,7 +227,7 @@ class Test_UDMExtensionsJoinscript:
 	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 	@pytest.mark.exposure('dangerous')
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_register_and_verify_test_app_id(self, extension_type):
+	def test_register_and_verify_test_app_id(self, extension_type, package_name, package_version, extension_name, extension_filename, extension_buffer, package):
 		"""Check setting of UNIVENTION_APP_ID for UDM extensions"""
 		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		package_name = get_package_name()
@@ -252,7 +281,7 @@ class Test_UDMExtensionsJoinscript:
 	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 	@pytest.mark.exposure('dangerous')
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_register_and_verify_version_start_end(self, extension_type):
+	def test_register_and_verify_version_start_end(self, extension_type, package_name, package_version, extension_name, extension_filename, extension_buffer, package):
 		"""Check setting of a version range for UDM extensions"""
 		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		package_name = get_package_name()
@@ -309,7 +338,7 @@ class Test_UDMExtensionsJoinscript:
 	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 	@pytest.mark.exposure('dangerous')
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_register_with_non_join_accounts(self, udm, extension_type, ucr):
+	def test_register_with_non_join_accounts(self, udm, extension_type, package_name, package_version, extension_name, extension_filename, extension_buffer, package, ucr):
 		"""Register UDM extension with non-join-accounts"""
 		password = 'univention'
 		dn, username = udm.create_user(password=password)
@@ -493,7 +522,7 @@ class Test_UDMExtensionsJoinscript:
 	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 	@pytest.mark.exposure('dangerous')
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_update_extension_via_package(self, extension_type):
+	def test_update_extension_via_package(self, extension_type, package_name, package_version, extension_name, extension_filename, extension_buffer, package):
 		"""Test extension update with correct version order"""
 		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		package_name = get_package_name()
@@ -566,6 +595,7 @@ class Test_UDMExtensionsJoinscript:
 	@pytest.mark.exposure('dangerous')
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
 	def test_update_extension_via_package_expected_fail(self, extension_type):
+	def test_update_extension_via_package_expected_fail(self, extension_type, package_name, package_version, extension_name, extension_filename, extension_buffer, package):
 		"""Test extension update with wrong version order"""
 		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		package_name = get_package_name()
@@ -630,7 +660,7 @@ class Test_UDMExtensionsJoinscript:
 	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 	@pytest.mark.exposure('dangerous')
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_update_extension_via_other_packagename(self, extension_type):
+	def test_update_extension_via_other_packagename(self, extension_type, package_name, package_version, extension_name, extension_filename, extension_buffer, package):
 		"""Test extension update with other package name"""
 		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		version = random_version()
@@ -881,7 +911,7 @@ class Test_UDMExtensions:
 	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 	@pytest.mark.exposure('dangerous')
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_create_via_udm_cli(self, udm, ucr, extension_type):
+	def test_create_via_udm_cli(self, udm, ucr, extension_type, package_name, package_version, extension_name, extension_filename, extension_buffer, package):
 		"""Create full UDM extension objects via CLI"""
 		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		for active in ['TRUE', 'FALSE']:
@@ -932,7 +962,7 @@ class Test_UDMExtensions:
 		('1.0-0', '%s-%s' % (ucr.get('version/version'), ucr.get('version/patchlevel')), True),  # upper limit of range is current version
 		('%s-%s' % (ucr.get('version/version'), ucr.get('version/patchlevel')), '9.9-9', True),  # lower limit of range is current version
 	])
-	def test_listener_version_start_end(self, udm, ucr, extension_type, version_start, version_end, should_exist, wait_before):
+	def test_listener_version_start_end(self, udm, ucr, extension_type, package_name, package_version, extension_name, extension_filename, extension_buffer, package, version_start, version_end, should_exist, wait_before):
 		"""Create extensions with different version ranges"""
 
 		print('========================= TESTING EXTENSION %s =============================' % extension_type)
@@ -976,7 +1006,7 @@ class Test_UDMExtensions:
 	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 	@pytest.mark.exposure('dangerous')
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_rename_object(self, udm, extension_type, ucr):
+	def test_rename_object(self, udm, extension_type, package_name, package_version, extension_name, extension_filename, extension_buffer, package, ucr):
 		"""Rename UDM extension object"""
 		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		extension_name = get_extension_name(extension_type)
@@ -1046,7 +1076,7 @@ class Test_UDMExtensions:
 	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 	@pytest.mark.exposure('dangerous')
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_listener_check_active(self, udm, extension_type, ucr):
+	def test_listener_check_active(self, udm, extension_type, package_name, package_version, extension_name, extension_filename, extension_buffer, package, ucr):
 		"""Change active flag to TRUE by domaincontroller master"""
 		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		extension_name = get_extension_name(extension_type)
@@ -1097,7 +1127,7 @@ class Test_UDMExtensions:
 		(random_name(), random_ucs_version(min_major=5)),
 		(random_name(), random_name())
 	])
-	def test_create_with_invalid_ucsversions(self, udm, extension_type, version_start, version_end):
+	def test_create_with_invalid_ucsversions(self, udm, extension_type, package_name, package_version, extension_name, extension_filename, extension_buffer, package, version_start, version_end):
 		"""Create full UDM extension objects via CLI"""
 		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		extension_name = get_extension_name(extension_type)
@@ -1126,7 +1156,7 @@ class Test_UDMExtensions:
 	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 	@pytest.mark.exposure('dangerous')
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_file_integrity(self, udm, ucr, extension_type, wait_before):
+	def test_file_integrity(self, udm, ucr, extension_type, package_name, package_version, extension_name, extension_filename, extension_buffer, package, wait_before):
 		"""Check permissions of distributed extension file"""
 		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		package_name = get_package_name()

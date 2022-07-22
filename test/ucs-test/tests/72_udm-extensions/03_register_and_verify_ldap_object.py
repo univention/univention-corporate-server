@@ -22,7 +22,7 @@ from univention.testing.udm_extensions import (
 from univention.testing.utils import verify_ldap_object, wait_for_replication
 
 
-# make extension_type inheritable by other fixtures
+# make the extension_type parameter inheritable by other fixtures
 @pytest.fixture
 def extension_type(request):
 	return request.param
