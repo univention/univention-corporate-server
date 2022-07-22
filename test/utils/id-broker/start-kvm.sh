@@ -18,7 +18,7 @@ export DIMAGE="docker-registry.knut.univention.de/ucs-ec2-tools:branch-fbotner-i
 
 # user specific instances "username_..."
 if [ -n "$BUILD_USER_ID" ]; then
-	export UCS_ENV_UCS_KT_GET_USERNAME="$BUILD_USER_ID"
+	export KVM_OWNER="$BUILD_USER_ID"
 fi
 
 exec ./utils/start-test.sh scenarios/autotest-247-ucsschool-id-broker.cfg

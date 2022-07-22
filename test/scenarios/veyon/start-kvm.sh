@@ -22,7 +22,7 @@ fi
 
 # user specific instances "username_..."
 if [ -n "$BUILD_USER_ID" ]; then
-	export UCS_ENV_UCS_KT_GET_USERNAME="$BUILD_USER_ID"
+	export KVM_OWNER="$BUILD_USER_ID"
 fi
 
 ./scenarios/veyon/create_veyon_cfg.py  \
