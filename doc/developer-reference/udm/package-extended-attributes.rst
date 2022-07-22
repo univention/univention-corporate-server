@@ -1,7 +1,7 @@
 .. _udm-ea:
 
-Packaging extended attributes
-=============================
+Package extended attributes
+===========================
 
 .. index::
    single: extended attributes

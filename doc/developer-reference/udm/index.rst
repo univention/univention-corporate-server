@@ -91,9 +91,11 @@ This chapter has the following content:
 
 .. toctree::
 
-   extended-attributes
    udm-modules
    syntax
+   package-extended-attributes
    package-hooks
    package-extension-modules
    package-syntax-extension
+   rest-api
+   python3-migration
