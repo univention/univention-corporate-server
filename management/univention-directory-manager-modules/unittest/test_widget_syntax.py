@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
-# Copyright 2020-2022 Univention GmbH
+# Copyright 2022 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -29,15 +29,13 @@
 # <https://www.gnu.org/licenses/>.
 
 
-from importlib import import_module
-
 import pytest
 
-from univention.admin import modules, property as prop
+from univention.admin import modules, property as prop, syntax
 
 
 @pytest.mark.parametrize(
-        'object, property, expected_widget',
+        'module, property, expected_widget',
         [
             # users
             # users/user
@@ -1167,7 +1165,6 @@ from univention.admin import modules, property as prop
             ('shares/printer', 'ACLtype', 'ComboBox'),
             ('shares/printer', 'ACLUsers', 'umc/modules/udm/MultiObjectSelect'),
             ('shares/printer', 'ACLGroups', 'umc/modules/udm/MultiObjectSelect'),
-            ('shares/printer', 'ACLGroups', 'umc/modules/udm/MultiObjectSelect'),
             # shares/print
             ('shares/print', 'name', 'TextBox'),
             ('shares/print', 'spoolHost', 'umc/modules/udm/ComboBox'),
@@ -1227,85 +1224,99 @@ from univention.admin import modules, property as prop
             ('shares/share', 'nfsCustomSettings', 'TextBox'),
             ('shares/share', 'appendACL', 'TextBox'),
         ])
-def test_widget_from_property_syntax(object, property, expected_widget, load_modules):
-    m = modules.get(object)
-    p = m.property_descriptions.get(property)
-    widget = p.syntax.get_widget(p)
+def test_widget_from_property_syntax(module, property, expected_widget, load_modules):
+    """Test for checking the expected widget based on the module syntax"""
+    mod = modules.get(module)
+    prop = mod.property_descriptions.get(property)
+    widget = prop.syntax.get_widget(prop)
     assert widget == expected_widget
 
 
 @pytest.mark.parametrize(
-        'object, property, expected_widget_choices_options',
+        'module, property, expected_widget_choices_options',
         [
             # users
             # users/user
+            # Test case for the GroupDN syntax, which overwrites get_widget_choices_options()
             ('users/user', 'groups', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'objectType': 'groups/group'}),
             ('users/user', 'primaryGroup', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
+            # Test case for the MailHomeServer syntax, which overwrites get_widget_choices_options()
             ('users/user', 'mailHomeServer', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'MailHomeServer'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
+            # Test case for the primaryEmailAddressValidDomain syntax, which overwrites get_widget_choices_options()
             ('users/user', 'mailPrimaryAddress', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'primaryEmailAddressValidDomain'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
+            # Test case for the emailAddressValidDomain syntax, which overwrites get_widget_choices_options()
             ('users/user', 'mailAlternativeAddress', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'emailAddressValidDomain'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
             # computers
-            # computers/ipmanagedclient
-            ('computers/ipmanagedclient', 'network', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'network'}, 'dynamicValuesInfo': 'udm/syntax/choices/info', 'onChange': 'javascript:umc/modules/udm/callbacks:setNetwork'}),
-            ('computers/ipmanagedclient', 'groups', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'objectType': 'groups/group'}),
             # computers/linux
+            # Test case for the network syntax, since it contains the onChange callback for the frontend and overwrites get_widget_choices_options()
             ('computers/linux', 'network', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'network'}, 'dynamicValuesInfo': 'udm/syntax/choices/info', 'onChange': 'javascript:umc/modules/udm/callbacks:setNetwork'}),
-            ('computers/linux', 'primaryGroup', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
-            ('computers/linux', 'groups', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'objectType': 'groups/group'}),
-            # computers/macos
-            ('computers/macos', 'network', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'network'}, 'dynamicValuesInfo': 'udm/syntax/choices/info', 'onChange': 'javascript:umc/modules/udm/callbacks:setNetwork'}),
-            ('computers/macos', 'primaryGroup', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
-            ('computers/macos', 'groups', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'objectType': 'groups/group'}),
-            # computers/windows
-            ('computers/windows', 'network', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'network'}, 'dynamicValuesInfo': 'udm/syntax/choices/info', 'onChange': 'javascript:umc/modules/udm/callbacks:setNetwork'}),
-            ('computers/windows', 'primaryGroup', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
-            ('computers/windows', 'groups', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'objectType': 'groups/group'}),
-            # computers/ubuntu
-            ('computers/ubuntu', 'network', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'network'}, 'dynamicValuesInfo': 'udm/syntax/choices/info', 'onChange': 'javascript:umc/modules/udm/callbacks:setNetwork'}),
-            ('computers/ubuntu', 'primaryGroup', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
-            ('computers/ubuntu', 'groups', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'objectType': 'groups/group'}),
-            # computers/domaincontroller_master
-            ('computers/domaincontroller_master', 'network', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'network'}, 'dynamicValuesInfo': 'udm/syntax/choices/info', 'onChange': 'javascript:umc/modules/udm/callbacks:setNetwork'}),
-            ('computers/domaincontroller_master', 'primaryGroup', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
-            ('computers/domaincontroller_master', 'groups', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'objectType': 'groups/group'}),
-            # computers/domaincontroller_slave
-            ('computers/domaincontroller_slave', 'network', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'network'}, 'dynamicValuesInfo': 'udm/syntax/choices/info', 'onChange': 'javascript:umc/modules/udm/callbacks:setNetwork'}),
-            ('computers/domaincontroller_slave', 'primaryGroup', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
-            ('computers/domaincontroller_slave', 'groups', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'objectType': 'groups/group'}),
-            # computers/domaincontroller_backup
-            ('computers/domaincontroller_backup', 'network', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'network'}, 'dynamicValuesInfo': 'udm/syntax/choices/info', 'onChange': 'javascript:umc/modules/udm/callbacks:setNetwork'}),
-            ('computers/domaincontroller_backup', 'primaryGroup', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
-            ('computers/domaincontroller_backup', 'groups', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'objectType': 'groups/group'}),
-            # computers/memberserver
-            ('computers/memberserver', 'network', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'network'}, 'dynamicValuesInfo': 'udm/syntax/choices/info', 'onChange': 'javascript:umc/modules/udm/callbacks:setNetwork'}),
-            ('computers/memberserver', 'primaryGroup', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
-            ('computers/memberserver', 'groups', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'objectType': 'groups/group'}),
-            # computers/windows_domaincontroller
-            ('computers/windows_domaincontroller', 'network', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'network'}, 'dynamicValuesInfo': 'udm/syntax/choices/info', 'onChange': 'javascript:umc/modules/udm/callbacks:setNetwork'}),
-            ('computers/windows_domaincontroller', 'primaryGroup', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
-            ('computers/windows_domaincontroller', 'groups', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'objectType': 'groups/group'}),
-            # groups
-            # groups/group
-            ('groups/group', 'memberOf', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'objectType': 'groups/group'}),
-            ('groups/group', 'nestedGroup', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'objectType': 'groups/group'}),
-            # settingd
-            # settings/default
-            ('settings/default', 'defaultGroup', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
-            ('settings/default', 'defaultComputerGroup', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
-            ('settings/default', 'defaultDomainControllerGroup', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
-            ('settings/default', 'defaultDomainControllerMBGroup', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
-            ('settings/default', 'defaultMemberServerGroup', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
-            ('settings/default', 'defaultClientGroup', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
+            # settings
             # settings/portal_entry
+            # Test case for the GroupDNOrEmpty syntax, which overwrites get_widget_choices_options()
             ('settings/portal_entry', 'allowedGroups', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDNOrEmpty'}, 'objectType': 'groups/group'}),
-            # settings/usertemplate
-            ('settings/usertemplate', 'groups', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'objectType': 'groups/group'}),
-            ('settings/usertemplate', 'primaryGroup', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'dynamicValuesInfo': 'udm/syntax/choices/info'}),
-            # shares/printer
-            ('shares/printer', 'ACLGroups', {'dynamicValues': 'udm/syntax/choices', 'dynamicOptions': {'syntax': 'GroupDN'}, 'objectType': 'groups/group'}),
         ])
-def test_widget_choices_options(object, property, expected_widget_choices_options, load_modules):
-    m = modules.get(object)
-    p = m.property_descriptions.get(property)
-    widget_choices_options = p.syntax.get_widget_choices_options(p)
+def test_widget_choices_options(module, property, expected_widget_choices_options, load_modules):
+    """Test for syntaxes which overwrite the get_widget_choices_options method"""
+    mod = modules.get(module)
+    prop = mod.property_descriptions.get(property)
+    widget_choices_options = prop.syntax.get_widget_choices_options(prop)
     assert widget_choices_options == expected_widget_choices_options
+
+
+@pytest.mark.parametrize(
+        'module, property, expected_depends',
+        [
+            ('shares/printer', 'model', 'producer'),
+            ('settings/extended_attribute', 'ldapMapping', 'objectClass'),
+            ('settings/extended_attribute', 'options', 'module'),
+            ('shares/printergroup', 'groupMember', 'spoolHost'),
+        ])
+def test_widget_depends(module, property, expected_depends, load_modules):
+    """Test for syntaxes which overwrite the depends attribute"""
+    mod = modules.get(module)
+    prop = mod.property_descriptions.get(property)
+    dep = prop.syntax.depends
+    assert dep == expected_depends
+
+
+@pytest.mark.parametrize(
+        'module, property, expected_subsyntaxes',
+        [
+            ('shares/printer', 'uri', [('Protocol', syntax.PrinterProtocol), ('Destination', syntax.string)]),
+            ('settings/portal', 'links', [('Position', syntax.PortalLinksPosition), ('Link', syntax.string), ('Locale', syntax.languageCode), ('Name', syntax.string)]),
+            ('settings/portal', 'content', [('Portal Category', syntax.PortalCategoryV2), ('Portal Entry', syntax.PortalEntrySelection)]),
+            ('settings/portal_entry', 'displayName', [('Language code (e.g. en_US)', syntax.languageCode), ('Display Name', syntax.string)]),
+            ('settings/portal_entry', 'description', [('Language code (e.g. en_US)', syntax.languageCode), ('Description', syntax.string)]),
+            ('settings/portal', 'anonymousEmpty', [('Language code (e.g. en_US)', syntax.languageCode), ('Message that is shown to anonymous visitors when the portal is empty', syntax.TwoEditor)]),
+            ('users/user', 'accountActivationDate', [('Date', syntax.iso8601Date), ('Time', syntax.TimeString), ('Timezone', syntax.TimeZone)]),
+            ('settings/udm_hook', 'messagecatalog', [('Locale subdir name', syntax.Localesubdirname), ('GNU message catalog', syntax.GNUMessageCatalog)]),
+            ('settings/udm_module', 'umcmessagecatalog', [('UMCMessageCatalogFilename', syntax.UMCMessageCatalogFilename), ('GNU message catalog', syntax.GNUMessageCatalog)]),
+            ('networks/network', 'ipRange', (('First address', syntax.ipAddress), ('Last address', syntax.ipAddress),)),
+            ('dhcp/subnet', 'range', (('First address', syntax.ipv4Address), ('Last address', syntax.ipv4Address),)),
+            ('users/user', 'umcProperty', [('Key', syntax.string), ('Value', syntax.string)]),
+            ('dns/forward_zone', 'mx', [('Priority', syntax.integer), ('Mail server', syntax.dnsHostname)]),
+            ('dns/srv_record', 'name', [('Service', syntax.string), ('Protocol', syntax.ipProtocolSRV), ('Extension', syntax.string)]),
+            ('users/contact', 'homePostalAddress', [('Street', syntax.string), ('Postal code', syntax.OneThirdString), ('City', syntax.TwoThirdsString)]),
+            ('dns/srv_record', 'location', [('Priority', syntax.integer), ('Weighting', syntax.integer), ('Port', syntax.integer), ('Server', syntax.dnsHostname)]),
+            ('settings/sambaconfig', 'minPasswordAge', (('', syntax.integerOrEmpty), ('', syntax.TimeUnits))),
+            ('dhcp/host', 'hwaddress', (('Type', syntax.NetworkType), ('Address', syntax.MAC_Address))),
+            ('settings/umc_operationset', 'operation', (('Command pattern', syntax.string), ('Option Pattern', syntax.string))),
+            ('mail/folder', 'sharedFolderUserACL', (('User', syntax.UserMailAddress), ('Access right', syntax.IMAP_Right))),
+            ('mail/folder', 'sharedFolderGroupACL', (('Group', syntax.GroupName), ('Access right', syntax.IMAP_Right))),
+            ('computers/windows', 'dnsEntryZoneReverse', (('DNS reverse zone', syntax.DNS_ReverseZoneNonempty), ('IP address', syntax.IP_AddressList))),
+            ('computers/ubuntu', 'dnsEntryZoneForward', (('DNS forward zone', syntax.DNS_ForwardZoneNonempty), ('IP address', syntax.IP_AddressList))),
+            ('computers/macos', 'dnsEntryZoneAlias', (('Zone of existing host record', syntax.DNS_ForwardZoneList), ('DNS forward zone', syntax.DNS_ForwardZone), ('Alias', syntax.DNS_Name))),
+            ('policies/registry', 'registry', (('Variable', syntax.string), ('Value', syntax.string))),
+            ('policies/nfsmounts', 'nfsMounts', [('NFS share', syntax.nfsShare), ('Mount point', syntax.string)]),
+            ('settings/extended_options', 'translationShortDescription', [('Language code (e.g. en_US)', syntax.languageCode), ('Translated short description', syntax.string)]),
+            ('settings/extended_options', 'translationLongDescription', [('Language code (e.g. en_US)', syntax.languageCode), ('Translated long description', syntax.string)]),
+            ('settings/extended_attribute', 'translationTabName', [('Language code (e.g. en_US)', syntax.languageCode), ('Translated tab name', syntax.string)]),
+            ('settings/extended_attribute', 'translationGroupName', [('Language code (e.g. en_US)', syntax.languageCode), ('Translated group name', syntax.string)]),
+            ('settings/printermodel', 'printmodel', [('Driver', syntax.string), ('Description', syntax.string)]),
+        ])
+def test_widget_depends(module, property, expected_subsyntaxes, load_modules):
+    """Test for syntaxes which have subsyntaxes"""
+    mod = modules.get(module)
+    prop = mod.property_descriptions.get(property)
+    subsyntaxes = prop.syntax.subsyntaxes
+    assert [s for _, s in subsyntaxes] == [s for _, s in expected_subsyntaxes]
