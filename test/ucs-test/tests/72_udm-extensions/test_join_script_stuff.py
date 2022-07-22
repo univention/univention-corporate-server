@@ -23,6 +23,7 @@ from univention.testing.debian_package import DebianPackage
 from univention.testing.strings import random_name, random_ucs_version, random_version
 from univention.testing.udm_extensions import (
 	VALID_EXTENSION_TYPES,
+	call_cmd,
 	call_join_script,
 	call_unjoin_script,
 	get_absolute_extension_filename,
@@ -780,7 +781,7 @@ bGFpbjsgY2hhcnNldD1VVEYtOApDb250ZW50LVRyYW5zZmVyLUVuY29kaW5nOiB1bmljb2RlCgBLb3Bh
 FrdGUAS29wYW5vIE5vbi1BY3RpdmUgS29udGVuAFZlcndhbHR1bmcgdm9uIEtvcGFubyBLb250YWt0ZW4AVmVyd2Fs
 dHVuZyB2b24gS29wYW5vIG5vbi1hY3RpdmUgS29udGVuLCBSZXNzb3VyY2VuIHVuZCBTaGFyZWQgU3RvcmVzAA==''')
 
-TEST_DATA = (
+TEST_DATA_2 = (
 	('umcregistration', '32_file_integrity_udm_module.xml', '/usr/share/univention-management-console/modules/udm-%s.xml'),
 	('umcmessagecatalog', 'de-ucs-test.mo', '/usr/share/univention-management-console/i18n/de/ucs-test.mo'),
 	('umcmessagecatalog', 'fr-ucs-test.mo', '/usr/share/univention-management-console/i18n/fr/ucs-test.mo'),
@@ -800,7 +801,7 @@ def test_umcmessagecatalog():
 
 	options = {}
 	buffers = {}
-	for option_type, filename, target_filename in TEST_DATA:
+	for option_type, filename, target_filename in TEST_DATA_2:
 		buffers[filename] = open('/usr/share/ucs-test/72_udm-extensions/%s' % filename, 'rb').read()
 		options.setdefault(option_type, []).append('/usr/share/%s/%s' % (package_name, filename))
 	joinscript_buffer = get_join_script_buffer(
@@ -838,7 +839,7 @@ def test_umcmessagecatalog():
 		assert os.path.exists(target_fn), 'ERROR: target file %s does not exist' % target_fn
 		print('FILE REPLICATED: %r' % target_fn)
 
-		for option_type, src_fn, filename in TEST_DATA:
+		for option_type, src_fn, filename in TEST_DATA_2:
 			assert not (option_type == 'umcmessagecatalog' and not os.path.exists(filename)), 'ERROR: file %r of type %r does not exist' % (filename, option_type)
 		dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
 
