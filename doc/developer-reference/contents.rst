@@ -17,4 +17,5 @@ Univention Developer Reference
    www
    app-center
    repositories
+   translation/index
    appendix/index
