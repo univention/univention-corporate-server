@@ -6,6 +6,7 @@
 .. |UCSPRIMARYDN| replace:: Primary Directory Node
 .. |UCSREPLICADN| replace:: Replica Directory Node
 .. |UCSS4C| replace:: Univention S4 connector
+.. |UCSUAS| replace:: UCS\@school
 .. |UCSUCRVs| replace:: Univention Configuration Registry Variables
 .. |UCSUCRV| replace:: Univention Configuration Registry Variable
 .. |UCSUCR| replace:: Univention Configuration Registry

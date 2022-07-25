@@ -16,4 +16,5 @@ Univention Developer Reference
    umc/index
    www
    app-center
+   repositories
    appendix/index
