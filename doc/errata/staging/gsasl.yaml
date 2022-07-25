@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [1, 2]
+scope: ucs_5.0-0-errata5.0-2
+src: gsasl
+fix: 1.8.0-8+deb10u1
+desc: |
+ This update addresses the following issue:
+ * GNU SASL libgsasl server-side read-out-of-bounds with malicious
+   authenticated GSS-API client (CVE-2022-2469)
+bug: [55023]
+cve:
+- CVE-2022-2469
