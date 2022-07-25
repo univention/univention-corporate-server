@@ -6,6 +6,5 @@ src: univention-l10n
 fix:
 desc: |
  This update addresses the following issues:
- * Fixed error when calling univention-l10n with
- no arguments or subcommand.
+ * Fixed error when calling univention-l10n by itself and is now more verbose.
 bug: [54882]
