@@ -35,7 +35,7 @@
 
 from __future__ import print_function
 
-import locale
+import array
 import socket
 import stat
 import time
@@ -151,12 +151,10 @@ def process_output(output, cmdfile):
 				result = 2
 			print(line)
 	else:
-		if output[-1] == "OPERATION FAILED":
+		if output and output[-1] == "OPERATION FAILED":
 			result = 3
 			output = output[:-1]
 		for line in output:
-			if six.PY2 and isinstance(line, unicode):  # noqa: F821
-				line = line.encode(locale.getpreferredencoding(), 'replace')
 			print(line)
 	return result
 
@@ -182,6 +180,10 @@ def _re_create_socket():
 		sys.exit(1)
 
 
+def send_fds(sock, msg, fds):
+	return sock.sendmsg([msg], [(socket.SOL_SOCKET, socket.SCM_RIGHTS, array.array("i", fds))])
+
+
 def main():
 	"""Forward request to udm-cli-server."""
 
@@ -199,7 +201,7 @@ def main():
 	data = json.dumps(sys.argv, ensure_ascii=True)
 	if not isinstance(data, bytes):
 		data = data.encode('ASCII')
-	sock.send(data + b'\0')
+	send_fds(sock, data + b'\0', [sys.stdout.fileno(), sys.stderr.fileno()])
 	data = receive_answer(sock)
 	sock.close()
 

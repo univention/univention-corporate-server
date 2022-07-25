@@ -38,7 +38,9 @@
 from __future__ import print_function
 
 from select import select
+import array
 import os
+import socket
 import sys
 import errno
 import traceback
@@ -59,6 +61,16 @@ import univention.admincli.license_check
 logfile = ''
 
 
+def recv_fds(sock, msglen, maxfds):
+	fds = array.array("i")   # Array of ints
+	msg, ancdata, flags, addr = sock.recvmsg(msglen, socket.CMSG_LEN(maxfds * fds.itemsize))
+	for cmsg_level, cmsg_type, cmsg_data in ancdata:
+		if cmsg_level == socket.SOL_SOCKET and cmsg_type == socket.SCM_RIGHTS:
+			# Append data, ignoring any truncated integers at the end.
+			fds.frombytes(cmsg_data[:len(cmsg_data) - (len(cmsg_data) % fds.itemsize)])
+	return msg, list(fds)
+
+
 class MyRequestHandler(socketserver.BaseRequestHandler):
 
 	"""Handle request on listening socket to open new connection."""
@@ -66,15 +78,21 @@ class MyRequestHandler(socketserver.BaseRequestHandler):
 	def handle(self):
 		ud.debug(ud.ADMIN, ud.INFO, 'daemon [%s] new connection [%s]' % (os.getppid(), os.getpid()))
 		sarglist = b''
+		fds = []
 		while True:
-			buf = self.request.recv(1024)
+			buf, _fds = recv_fds(self.request, 1024, 2)
+			fds.extend(_fds)
 			if buf[-1:] == b'\0':
 				buf = buf[:-1]
 				sarglist += buf
 				break
 			else:
 				sarglist += buf
-		doit(sarglist, self.request)
+		try:
+			stdout, stderr = [os.fdopen(fd, 'w') for fd in fds]
+		except ValueError:
+			stdout, stderr = None, None
+		doit(sarglist, self.request, stdout, stderr)
 		ud.debug(ud.ADMIN, ud.INFO, 'daemon [%s] connection closed [%s]' % (os.getppid(), os.getpid()))
 
 
@@ -162,7 +180,7 @@ def server_main(args):
 		ud.exit()
 
 
-def doit(sarglist, conn):
+def doit(sarglist, conn, stdout=None, stderr=None):
 	"""Process single UDM request."""
 
 	def send_message(output):
@@ -209,8 +227,10 @@ def doit(sarglist, conn):
 		ud.exit()
 		ud.init(logfile, ud.FLUSH, ud.NO_FUNCTION)
 
-	stdout = StringIO()
-	stderr = StringIO()
+	if not stdout:
+		stdout = StringIO()
+	if not stderr:
+		stderr = StringIO()
 
 	output = []
 	cmdfile = os.path.basename(arglist[0])
@@ -218,7 +238,7 @@ def doit(sarglist, conn):
 		if cmdfile in ('univention-admin', 'univention-directory-manager', 'udm'):
 			ud.debug(ud.ADMIN, ud.PROCESS, 'daemon [%s] [%s] Calling univention-directory-manager' % (os.getppid(), os.getpid()))
 			ud.debug(ud.ADMIN, ud.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
-			univention.admincli.admin.main(arglist, stdout, stderr)
+			univention.admincli.admin.main(arglist, stdout, stdout)
 		elif cmdfile == 'univention-passwd':
 			ud.debug(ud.ADMIN, ud.PROCESS, 'daemon [%s] [%s] Calling univention-passwd' % (os.getppid(), os.getpid()))
 			ud.debug(ud.ADMIN, ud.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
@@ -239,6 +259,9 @@ def doit(sarglist, conn):
 		ud.debug(ud.ADMIN, ud.ERROR, tb)
 		print(tb, file=stderr)
 		output.append("OPERATION FAILED")
+	finally:
+		stdout.flush()
+		stderr.flush()
 
 	if isinstance(stdout, StringIO):
 		output += stdout.getvalue().splitlines()
