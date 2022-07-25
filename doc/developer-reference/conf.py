@@ -55,6 +55,7 @@ bibtex_reference_style = "label"
 
 intersphinx_mapping = {
     "uv-manual": (f"https://docs.software-univention.de/manual/{version}/en", None),
+    "uv-app-center": (f"https://docs.software-univention.de/app-center/{version}/en/", None),
     "python": ("https://docs.python.org/3.7/", None),
     "python-general": ("https://docs.python.org/3/", None),
 }
