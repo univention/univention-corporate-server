@@ -70,6 +70,13 @@ print('    by * none break')
 print('')
 @!@
 
+# Bug #54140: There are systems with a large amount (>50000) of DNS-Zone objects,
+# the following access directive provides a faster access for services which have to
+# read all of them via the machine account (like Bind9 on nodes without samba).
+access to dn.children="cn=dns,@%@ldap/base@%@" filter="(objectClass=dNSZone)"
+    by dn="@%@ldap/hostdn@%@" read
+    by * +0 break
+
 access to attrs=univentionRadiusPassword
     by set="user/univentionObjectType & [computers/domaincontroller_master]" read
     by set="user/univentionObjectType & [computers/domaincontroller_backup]" read

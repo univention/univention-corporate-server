@@ -1,3 +1,9 @@
+univention-ldap (16.0.7-23) unstable; urgency=medium
+
+  * Bug #54140: Fast access to dns zone objects for the machine account
+
+ -- Johannes Königer <koeniger@univention.de>  Tue, 06 Sep 2022 12:01:14 +0200
+
 univention-ldap (16.0.7-22) unstable; urgency=medium
 
   * Bug #55154: New univentionObject attributes univentionObjectIdentifier and
