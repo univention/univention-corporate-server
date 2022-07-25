@@ -110,7 +110,7 @@ def server_main(args):
 			sys.exit(1)
 
 	ud.set_level(ud.ADMIN, args.debug_level)
-	ud.debug(ud.ADMIN, ud.INFO, 'daemon [%s] forked to background' % os.getpid())
+	ud.debug(ud.ADMIN, ud.INFO, 'server is running as process %d' % os.getpid())
 
 	try:
 		os.mkdir(socket_dir)
