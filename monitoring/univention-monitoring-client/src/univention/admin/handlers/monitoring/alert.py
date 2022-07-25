@@ -39,7 +39,7 @@ import univention.admin.syntax
 import univention.admin.localization
 import univention.admin.uexceptions
 
-translation = univention.admin.localization.translation('univention.admin.handlers.monitoring')
+translation = univention.admin.localization.translation('univention.admin.handlers.monitoring.alert')
 _ = translation.translate
 
 module = 'monitoring/alert'

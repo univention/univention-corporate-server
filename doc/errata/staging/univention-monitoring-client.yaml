@@ -7,5 +7,6 @@ fix:
 desc: |
  This update addresses the following issues:
  * The check script `check_univention_ntp` now hanles errors e.g. when the
-   NTP service is not reachable.
+   NTP service is not reachable. The translation of the UDM module has been
+   fixed.
 bug: [55017]
