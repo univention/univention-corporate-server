@@ -87,7 +87,7 @@ def fork_server(sock, socket_path):
 			argv.extend(['-s', socket_path])
 		os.execv('/usr/share/univention-directory-manager-tools/univention-cli-server', argv)
 	else:  # parent
-		os.waitpid(pid, os.P_NOWAIT)
+		os.waitpid(pid, os.WNOHANG)
 
 	ucr = ConfigRegistry()
 	ucr.load()
