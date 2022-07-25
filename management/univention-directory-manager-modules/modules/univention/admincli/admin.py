@@ -918,39 +918,8 @@ class CLI(object):
 						print('  %s: %s' % ('univentionPolicyReference', el), file=self.stdout)
 
 				if list_policies:
-					policyResults = subprocess.check_output(['univention_policy_result'] + policyOptions + [univention.admin.objects.dn(object)], close_fds=True).decode('utf-8').split(u'\n')
-
 					print("  Policy-based Settings:", file=self.stdout)
-					policy = ''
-					attribute = ''
-					value = []
-					client = {}
-					for line in policyResults:
-						line = line.strip()
-						if not line or line.startswith("DN: ") or line.startswith("POLICY "):
-							continue
-						print("    %s" % line, file=self.stdout)
-
-						if not policies_with_DN:
-							ckey, cval = line.split('=', 1)
-							client.setdefault(ckey, []).append(cval)
-							continue
-
-						ckey, cval = line.split(': ', 1)
-						if ckey == 'Policy':
-							if policy:
-								client[attribute] = [policy, value]
-								value = []
-							policy = cval
-						elif ckey == 'Attribute':
-							attribute = cval
-						elif ckey == 'Value':
-							value.append(cval)
-
-					if policies_with_DN:
-						client[attribute] = [policy, value]
-						value = []
-
+					client = get_policy(univention.admin.objects.dn(object), self.stdout, policyOptions, policies_with_DN)
 					print('', file=self.stdout)
 
 					if module_name == 'dhcp/host':
@@ -961,37 +930,9 @@ class CLI(object):
 							ip_ = IPv4Address(u"%s" % (ip,))
 							for subnet in univention.admin.modules.lookup(subnet_module, None, lo, scope='sub', superordinate=superordinate, base=superordinate_dn, filter=''):
 								if ip_ in IPv4Network(u"%(subnet)s/%(subnetmask)s" % subnet, strict=False):
-									policyResults = subprocess.check_output(['univention_policy_result'] + policyOptions + [subnet.dn], close_fds=True).decode('utf-8').split(u'\n')
 									print("  Subnet-based Settings:", file=self.stdout)
-									ddict = {}
-									policy = ''
-									value = []
-									for line in policyResults:
-										if not (line.strip() == "" or line.strip()[:4] == "DN: " or line.strip()[:7] == "POLICY "):
-											print("    %s" % line.strip(), file=self.stdout)
-											if policies_with_DN:
-												subsplit = line.strip().split(': ', 1)
-												if subsplit[0] == 'Policy':
-													if policy:
-														ddict[attribute] = [policy, value]
-														value = []
-													policy = subsplit[1]
-												elif subsplit[0] == 'Attribute':
-													attribute = subsplit[1]
-												elif subsplit[0] == 'Value':
-													value.append(subsplit[1])
-											else:
-												subsplit = line.strip().split('=', 1)
-												if subsplit[0] not in ddict:
-													ddict[subsplit[0]] = []
-												ddict[subsplit[0]].append(subsplit[1])
-
+									ddict = get_policy(subnet.dn, self.stdout, policyOptions, policies_with_DN)
 									print('', file=self.stdout)
-
-									if policies_with_DN:
-										ddict[attribute] = [policy, value]
-										value = []
-
 									print("  Merged Settings:", file=self.stdout)
 
 									for key in ddict.keys():
@@ -1015,6 +956,48 @@ class CLI(object):
 			raise OperationFailed('%s' % (errmsg,))
 		except univention.admin.uexceptions.valueInvalidSyntax as errmsg:
 			raise OperationFailed('%s' % (errmsg.message,))
+
+
+def get_policy(dn, stream=sys.stdout, policyOptions=None, policies_with_DN=False):
+	cmd = ['univention_policy_result']
+	if policyOptions:
+		cmd.extend(policyOptions)
+	cmd.append(dn)
+
+	policy = ''
+	attribute = ''
+	value = []
+	client = {}
+
+	proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+	for line in proc.stdout:
+		line = line.decode('utf-8').strip()
+		if not line or line.startswith("DN: ") or line.startswith("POLICY "):
+			continue
+		print("    %s" % line, file=stream)
+
+		if not policies_with_DN:
+			ckey, cval = line.split('=', 1)
+			client.setdefault(ckey, []).append(cval)
+			continue
+
+		ckey, cval = line.split(': ', 1)
+		if ckey == 'Policy':
+			if policy:
+				client[attribute] = [policy, value]
+				value = []
+			policy = cval
+		elif ckey == 'Attribute':
+			attribute = cval
+		elif ckey == 'Value':
+			value.append(cval)
+
+	proc.wait()
+
+	if policies_with_DN:
+		client[attribute] = [policy, value]
+		value = []
+	return client
 
 
 if __name__ == '__main__':
