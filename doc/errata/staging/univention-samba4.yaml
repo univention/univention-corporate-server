@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-samba4
+fix: 9.0.8-3A~5.0.0.202207251614
+desc: |
+ This update addresses the following issue:
+ * Added a dependency on a specific samba-dsdb-modules package version
+   to prevent issues with new package installations.
+bug: [54994]
