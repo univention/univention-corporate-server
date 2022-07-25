@@ -47,7 +47,7 @@ For this, packages need to ship additional files:
    For more information, see :ref:`ucr-categories`.
 
 In addition to these files, code needs to be inserted into the package maintainer
-scripts (see :ref:`deb-scripts`), which registers and unregisters these files.
+scripts (see :ref:`deb-scripts`), which registers and un-registers these files.
 This is done by calling :command:`univention-install-config-registry` from
 :file:`debian/rules` during the package build ``binary`` phase. The command is
 part of the :program:`univention-config-dev` package, which needs to be added as

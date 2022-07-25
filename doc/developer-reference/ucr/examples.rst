@@ -79,7 +79,7 @@ Source code: :uv:src:`doc/developer-reference/ucr/papersize/`
    Invoke :command:`univention-install-config-registry` during package build to
    install the files to the appropriate location. It also creates the required
    commands for the maintainer scripts (see :ref:`deb-scripts`) to register and
-   unregister the templates during package installation and removal.
+   un-register the templates during package installation and removal.
 
    .. code-block:: makefile
 
@@ -129,13 +129,13 @@ Multifile example
 
 This example provides templates for :file:`/etc/hosts.allow` and
 :file:`/etc/hosts.deny`, which is used to control access to system services. See
-hosts_access5 for more details.
+:manpage:`hosts_access.5` for more details.
 
 Source code: :uv:src:`doc/developer-reference/ucr/hosts/`
 
 :file:`conffiles/etc/hosts.allow.d/00header`; :file:`conffiles/etc/hosts.deny.d/00header`
    The first file fragment of the file. It starts with ``@%@UCRWARNING=# @%@``,
-   which is replaced by the warning text and a list of all subfiles.
+   which is replaced by the warning text and a list of all sub-files.
 
    .. code-block::
 

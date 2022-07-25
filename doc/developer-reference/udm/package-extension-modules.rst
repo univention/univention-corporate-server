@@ -41,7 +41,7 @@ create these objects (see :ref:`join-libraries-shell`).
    ``newapp/someobject.py``).
 
 ``messagecatalog`` (optional)
-   Multivalued property to supply message translation files (syntax:
+   Multi-valued property to supply message translation files (syntax:
    ``<language tag> <base64 encoded GNU message catalog>``).
 
 ``umcregistration`` (optional)
@@ -49,7 +49,7 @@ create these objects (see :ref:`join-libraries-shell`).
    Univention Management Console (base64 encoded XML)
 
 ``icon`` (optional)
-   Multivalued property to supply icons for the Univention Management
+   Multi-valued property to supply icons for the Univention Management
    Console (base64 encoded :file:`png`, :file:`jpeg` or :file:`svgz`).
 
 ``package`` (required)

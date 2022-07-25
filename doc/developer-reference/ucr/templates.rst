@@ -63,7 +63,7 @@ following kinds of markers:
    It should be inserted once at the top to prevent the user from editing the
    generated file. For single File templates, it should be on the top of the
    template file itself. For multi file templates, it should only be on the top
-   the first subfile.
+   the first sub-file.
 
    Everything between the equal sign and the closing ``@%@`` defines the
    :samp:`{PREFIX}`, which is inserted at the beginning of each line of the warning

@@ -34,7 +34,7 @@ Creating object
       $ udm container/ou create --position "$ldap_base" --set name="xxx"
 
 
-   Multiple ``--set``\ s may be used to set the values of a multivalued property.
+   Multiple ``--set``\ s may be used to set the values of a multi-valued property.
 
    The equivalent LDAP command would look like this:
 
@@ -69,7 +69,7 @@ Modify object
       $ udm container/ou modify --dn "cn=xxx,$ldap_base" --set name="xxx"
 
 
-   For multivalued attributes ``--append`` and ``--remove`` can be used to add
+   For multi-valued attributes ``--append`` and ``--remove`` can be used to add
    additional values or remove existing values. ``--set`` overwrites any
    previous value, but can also be used multiple times to specify further
    values. ``--set`` and ``--append`` should not be mixed for any property in

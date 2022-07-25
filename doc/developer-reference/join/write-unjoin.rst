@@ -51,7 +51,7 @@ installed.
 For example the package :program:`univention-fetchmail` uses
 :command:`ucs_addServiceFromLocalhost "Fetchmail" "$@"` in the join script to
 register and :command:`ucs_removeServiceFromLocalhost "Fetchmail" "$@"` in the
-unjoin script to unregister a service for the host. The data is removed from
+unjoin script to un-register a service for the host. The data is removed from
 LDAP, when in the unjoin script :command:`ucs_isServiceUnused "Fetchmail" "$@"`
 returns ``0``. As a side effect adding the service also allows using this
 information to find and list those servers currently providing the Fetchmail

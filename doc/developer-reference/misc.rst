@@ -80,52 +80,52 @@ and the test. The module is given as four digits, which is followed by a dash
 and the number of the test in that module. Currently the following modules
 exist:
 
-0001-CheckJoinScript
+``0001-CheckJoinScript``
    Checks join file issues
 
-0002-CopyPasteErrors
-   Checks for copy&paste error from example files
+``0002-CopyPasteErrors``
+   Checks for copy & paste error from example files
 
-0004-CheckUCR
+``0004-CheckUCR``
    Checks UCR info files
 
-0006-CheckPostinst
+``0006-CheckPostinst``
    Checks Debian maintainer scripts
 
-0007-Changelog
+``0007-Changelog``
    Checks :file:`debian/changelog` file for conformance with Univention rules
 
-0008-Translations
+``0008-Translations``
    Checks translation files for completeness and errors
 
-0009-Python
+``0009-Python``
    Checks Python files for common errors
 
-0010-Copyright
+``0010-Copyright``
    Checks for Univention copyright
 
-0011-Control
+``0011-Control``
    Checks :file:`debian/control` file for errors
 
-0013-bashism
+``0013-bashism``
    Checks files using :file:`/bin/sh` for BASH constructs
 
-0014-Depends
+``0014-Depends``
    Checks files for missing runtime dependencies on UCS packages
 
-0015-FuzzyNames
-   Checks for mis-spellings of Univention
+``0015-FuzzyNames``
+   Checks for spelling of Univention
 
-0016-Deprecated
+``0016-Deprecated``
    Checks files for usage of deprecated functions
 
-0017-Shell
+``0017-Shell``
    Checks shell scripts for quoting errors
 
-0018-Debian
+``0018-Debian``
    Checks for Debian packaging issues
 
-0020-flake8
+``0020-flake8``
    Checks Python scripts for :command:`flake8` issues
 
 The module and test number may be optionally followed by a filename, line
@@ -181,7 +181,7 @@ This package (and several others) provides shell libraries in
 
 :file:`/usr/share/univention-lib/ldap.sh`
    This file contains some helpers to query data from LDAP, register and
-   unregister service entries, LDAP schema and LDAP ACL extensions.
+   un-register service entries, LDAP schema and LDAP ACL extensions.
 
 :file:`/usr/share/univention-lib/samba.sh`
    This file contains a helper to check is Samba4 is used.
@@ -312,8 +312,8 @@ The following values need to be filled in:
    The name of the package providing the rule.
 
 :samp:`{protocol}`
-   Can be either ``tcp`` for server services using the Transmission Control
-   Protocol or ``udp`` for services using the stateless User Datagram Protocol.
+   Can be either ``tcp`` for server services using the *Transmission Control
+   Protocol* or ``udp`` for services using the stateless *User Datagram Protocol*.
 
 :samp:`{port}`; :samp:`min-port}:{max-port}`
    Ports can be defined either as a single number between 1 and 65535 or as a
@@ -383,7 +383,7 @@ with the following command: :samp:`nmap {HOSTNAME} -p {PORT(s)}`
 A UDP port can be tested with the following command: :samp:`nmap {HOSTNAME} -sU -p {PORT(s)}`
 
 .. code-block:: console
-   :caption: Using :program:`nmap` for firewal port testing
+   :caption: Using :program:`nmap` for firewall port testing
    :name: misc:firewall-testing
 
    $ nmap 192.0.2.100 -p 400

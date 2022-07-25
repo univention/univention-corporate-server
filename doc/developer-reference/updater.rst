@@ -116,8 +116,8 @@ verify {script}.sh.gpg {script}.sh`
 
 .. _updater-release-update:
 
-Release update walkthrough
-==========================
+Release update walk-through
+===========================
 
 For an release update, the following steps are performed. It assumes a single
 component is enabled. If multiple components are enabled, the order in which

@@ -379,7 +379,7 @@ the following functions might be important:
    respective ``filename`` are passed on as-is.
 
    .. code-block:: bash
-      :caption: Service unregistration in unjoin script
+      :caption: Service un-registration in unjoin script
       :name: join-remove-service
 
       ucs_removeServiceFromLocalhost "MyService" "$@"
@@ -523,7 +523,7 @@ the following functions might be important:
 
    Before calling the shell, function the shell variable
    :envvar:`UNIVENTION_APP_IDENTIFIER` should be set to the versioned app
-   identifier (and exported to the environment of subprocesses). The shell
+   identifier (and exported to the environment of sub-processes). The shell
    function will then register the specified app identifier with the extension
    object to indicate that the extension object is required as long as this app
    is installed anywhere in the UCS domain.
@@ -569,13 +569,13 @@ the following functions might be important:
 
 :command:`ucs_unregisterLDAPExtension` :samp:`[--binddn {bind-dn} --bindpwdfile {filename}]` ``{`` :samp:`--schema {objectname} | --acl {objectname} | --udm_syntax {objectname} | --udm_hook {objectname} | --udm_module {objectname}` ``...}``
    There is a corresponding :command:`ucs_unregisterLDAPExtension` function,
-   which can be used to unregister extension objects. This only works if no app
+   which can be used to un-register extension objects. This only works if no app
    is registered any longer for the object. It must not be called unless it has
    been verified that no object in LDAP still requires this schema extension.
    For this reason it should generally not be called in unjoin scripts.
 
    .. code-block:: bash
-      :caption: Schema unregistration in unjoin script
+      :caption: Schema un-registration in unjoin script
       :name: join-unregister-extensions
 
       . /usr/share/univention-lib/ldap.sh

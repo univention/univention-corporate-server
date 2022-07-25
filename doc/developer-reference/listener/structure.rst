@@ -95,7 +95,7 @@ required by the |UCSUDL| to handle each module.
    (low-level API, optional)
 
    Setting this variable to the string ``1`` changes the signature of the
-   function :py:func:`handler`. It receives an additional 4th argument, which
+   function :py:func:`handler`. It receives an additional forth argument, which
    specifies the LDAP operation triggering the change.
 
 

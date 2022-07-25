@@ -124,7 +124,7 @@ three methods to retrieve the values.
    .. py:attribute:: label_format
 
       A Python format string, which is used to format the UDM properties to a
-      label string presented to the user. :samp:``%({property-name})s`` should
+      label string presented to the user. :samp:`%({property-name})s` should
       be used to reference properties. The special property name ``$attribute$``
       is replaced by the value of variable ``attribute`` declared above.
 
@@ -289,7 +289,7 @@ three methods to retrieve the values.
    .. py:attribute:: appendEmptyValue
 
       Same as ``addEmptyValue`` but added at the end. Used to automatically
-      choose an existing entry in the frontend.
+      choose an existing entry in the front end.
 
    .. code-block:: python
 
@@ -335,14 +335,14 @@ three methods to retrieve the values.
 
    .. py:attribute:: attribute
 
-      (optional, multivalued)
+      (optional, multi-valued)
 
       The name of UDM properties, which are display as a label to the user.
       Alternatively LDAP attribute names may be used directly.
 
    .. py:attribute:: ldapattribute
 
-      (optional, multivalued)
+      (optional, multi-valued)
 
       Description, see :py:attr:`attribute`.
 

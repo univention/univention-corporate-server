@@ -77,8 +77,8 @@ Mandatory variables
 .. py:data:: operations
 
    A list of strings which contains all LDAP operations allowed with this
-   object. Available operations are add, edit, remove, search, subtree_move,
-   copy.
+   object. Available operations are ``add``, ``edit``, ``remove``, ``search``,
+   ``subtree_move``, and ``copy``.
 
 .. py:data:: short_description
 
@@ -528,7 +528,7 @@ In this case, the ``default`` and ``redirection`` options are created, whose
 functions will be explained later. To configure the parameters, the
 :py:class:`univention.admin.option` object is passed to the
 ``short_description`` option for a short description. ``default`` defines the
-preconfiguration. ``True`` activates the option while ``False`` deactivates it.
+pre-configuration. ``True`` activates the option while ``False`` deactivates it.
 
 .. code-block:: python
 
