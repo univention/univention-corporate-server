@@ -18,4 +18,5 @@ Univention Developer Reference
    app-center
    repositories
    translation/index
+   updater
    appendix/index

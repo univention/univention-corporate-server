@@ -32,7 +32,7 @@ empty or unset or ``current``
    of the system will not be hindered by such components. Multiple versions can
    be given using comma as delimiter.
 
-   For example ``5.1, 5.2`` would only include the component with UCS 5.1 and 5.2
+   For example ``5.1 5.2`` would only include the component with UCS 5.1 and 5.2
    but not if UCS 5.0 or UCS 5.3 is in use.
 
 .. _integration-of-repository-components-through-umc:
