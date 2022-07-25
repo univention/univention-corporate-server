@@ -1,7 +1,9 @@
+# shellcheck shell=bash
 createHostExtensionsFile () {
 	local fqdn="$1"
 	local hostname=${fqdn%%.*}
-	local extFile=$(mktemp)
+	local extFile
+	extFile=$(mktemp)
 
 	cat <<EOF >>"$extFile"
 extensions = myx509v3

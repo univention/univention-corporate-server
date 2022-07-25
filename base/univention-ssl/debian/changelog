@@ -1,3 +1,9 @@
+univention-ssl (14.0.2-5) unstable; urgency=medium
+
+  * Bug #54932: Fix cron daily task execution
+
+ -- Eric Monne Mesalles <monne-mesalles.extern@univention.de>  Tue, 19 Jul 2022 11:39:29 +0200
+
 univention-ssl (14.0.2-4) unstable; urgency=medium
 
   * Bug #54697: Order SAN names by length

@@ -32,14 +32,13 @@
 
 eval "$(/usr/sbin/univention-config-registry shell ldap/master server/role hostname)"
 
-if [ "$server_role" != "domaincontroller_backup" ]; then
+[ "${server_role:-}" = "domaincontroller_backup" ] ||
 	exit 0
-fi
 
 SSL_PATH=/etc/univention/ssl
 
 # copy ssl directory
-univention-ssh-rsync /etc/machine.secret -az --delete "$hostname\$@$ldap_master:$SSL_PATH/" "$SSL_PATH"
+univention-ssh-rsync /etc/machine.secret -az --delete "${hostname:-}\$@${ldap_master:-}:$SSL_PATH/" "$SSL_PATH"
 
 # copy root certificate and revoke list to /var/www (linked to by overview.html)
 cp "$SSL_PATH/ucsCA/CAcert.pem" /var/www/ucs-root-ca.crt || true

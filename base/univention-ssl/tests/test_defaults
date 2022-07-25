@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e -u
-. ${0%/*}/common.sh
+# shellcheck source=common.sh
+. "${0%/*}/common.sh"
 
 run () {
 	local id="$1" name="$2" pem="${SSLBASE}/${2}/cert.pem"

@@ -107,6 +107,7 @@ do
 	shift
 done
 
+# shellcheck source=make-certificates.sh
 . "${MAKE_CERTIFICATES_SH_INCLUDE:=/usr/share/univention-ssl/make-certificates.sh}"
 
 case "$command" in
@@ -143,7 +144,7 @@ revoke () {
 
 renew () {
 		run_only master exclusive
-		: ${days:?Missing argument -days}
+		: "${days:?Missing argument -days}"
 		echo "Renew certificate: $name"
 		renew_cert "$name" "$days"
 		if getent group "DC Backup Hosts" >/dev/null 2>&1
@@ -157,7 +158,8 @@ check () {
 		: "${id:="$(has_cert "$name")"}"
 		local exitcode=1
 		run_only backup shared
-		while read line; do
+		while read -r line
+		do
 			local rv=0
 			echo -n "Certificate \"$name\" with serial number $line is "
 			is_valid "$line" || rv=$?
@@ -193,7 +195,8 @@ update_expired () {
 
 dump () {
 		: "${id:="$(has_cert "$name")"}"
-		while read line; do
+		while read -r line
+		do
 			local filename="$SSLBASE/$CA/certs/$line.pem"
 			[ -r "$filename" ] ||
 				die "Can not read file '$filename'"
