@@ -5,5 +5,11 @@ Appendix
 .. toctree::
 
    bug
+   debian-packaging
    bibliography
-   indices
+
+.. only:: html
+
+   .. toctree::
+
+      indices

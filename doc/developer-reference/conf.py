@@ -48,7 +48,7 @@ extensions = [
     "sphinxcontrib.inkscapeconverter",
 ]
 
-bibtex_bibfiles = ["../bibliography.bib"]
+bibtex_bibfiles = ["../bibliography.bib", "bibliography.bib"]
 bibtex_encoding = "utf-8"
 bibtex_default_style = "unsrt"
 bibtex_reference_style = "label"
@@ -126,6 +126,7 @@ root_doc = "contents"
 
 rst_epilog = """
 .. include:: /../substitutions.txt
+.. include:: /links.txt
 """
 
 latex_engine = 'lualatex'

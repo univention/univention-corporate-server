@@ -1,0 +1,6 @@
+.. _debian-dep5: https://dep-team.pages.debian.net/deps/dep5/
+.. _debian-policy-priority: ttps://www.debian.org/doc/debian-policy/ch-archive.html#s-priorities
+.. _debian-policy-subsection: https://www.debian.org/doc/debian-policy/ch-archive.html#s-subsections
+.. _dojo-store: https://dojotoolkit.org/reference-guide/1.10/dojo/store.html
+.. _dojo-object-store: https://www.sitepen.com/blog/2011/02/15/dojo-object-stores/
+.. _netfilter: https://www.netfilter.org/
