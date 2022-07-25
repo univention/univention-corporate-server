@@ -24,7 +24,7 @@ Depends:
  python3-univention,
  python3-univention-heimdal,
  samba (>= 2:4.13.13-1),
- samba-dsdb-modules,
+ samba-dsdb-modules (>= 2:4.16.2-1A~5.0.0.202207191731),
  samba-vfs-modules,
  python-univention-lib (>= 9.0.11-9),
  python3-univention-lib (>= 9.0.11-9),

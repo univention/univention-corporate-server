@@ -1,3 +1,10 @@
+univention-samba4 (9.0.8-3) unstable; urgency=medium
+
+  * Bug #54994: Add dependency on specific samba-dsdb-modules version, to
+    avoid dependency problems during installation
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 25 Jul 2022 16:08:12 +0200
+
 univention-samba4 (9.0.8-2) unstable; urgency=medium
 
   * Bug #54273: Include debug script in server_password_change.d/univention-samba4 subscript
