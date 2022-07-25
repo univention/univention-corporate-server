@@ -207,9 +207,9 @@ In order to encapsulate and ease the access to module data from the JavaScript
 side, a store object offers a unified way to query and modify module data.
 
 The UMC JavaScript API comes with an object store implementation of the `Dojo
-store API <http://dojotoolkit.org/reference-guide/dojo/store.html>`_. This
-allows the JavaScript code to access/modify module data and to observe changes
-on the data in order to react immediately. The following methods are supported:
+store API <dojo-store_>`_. This allows the JavaScript code to access/modify
+module data and to observe changes on the data in order to react immediately.
+The following methods are supported:
 
 .. js:function:: get(id)
 
@@ -271,14 +271,11 @@ with the Python module if the following methods are implemented:
 
 Further references:
 
-* `Dojo object store reference guide
-  <http://dojotoolkit.org/reference-guide/dojo/store.html>`_
+* `Dojo object store reference guide <dojo-store_>`_
 
-* `Object store tutorial
-  <http://www.sitepen.com/blog/2011/02/15/dojo-object-stores/>`_
+* `Object store tutorial <dojo-object-store_>`_
 
-* `HTML5 IndexedDB object store API
-  <http://www.w3.org/TR/IndexedDB/#object-store>`_
+* `HTML5 IndexedDB object store API <w3-object-store_>`_
 
 .. _umc-module-packaging:
 

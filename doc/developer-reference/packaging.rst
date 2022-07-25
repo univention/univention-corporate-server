@@ -501,7 +501,7 @@ Building packages through the openSUSE Build Service
 
 The openSUSE Build Service (OBS) is a framework to generate packages for a wide
 range of distributions. Additional information can be found at
-`<https://build.opensuse.org/>`_.
+`OpenSUSE Build Service <open-suse-build-service_>`_.
 
 If OBS is already used to build packages for other distributions, it can also be
 used for |UCSUCS| builds. The build target for UCS 4.4 is called *Univention UCS

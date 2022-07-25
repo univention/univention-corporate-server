@@ -365,7 +365,7 @@ shell scripts which execute the corresponding :command:`iptables` for IPv4 and
 a |UCSUCR| template as described in :ref:`ucr-file`.
 
 Full documentation for IPTables can be found at the `netfilter/iptables project
-<http://www.netfilter.org/>`_.
+<netfilter_>`_.
 
 .. _misc-nacl-test:
 

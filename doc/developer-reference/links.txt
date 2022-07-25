@@ -4,3 +4,13 @@
 .. _dojo-store: https://dojotoolkit.org/reference-guide/1.10/dojo/store.html
 .. _dojo-object-store: https://www.sitepen.com/blog/2011/02/15/dojo-object-stores/
 .. _netfilter: https://www.netfilter.org/
+.. _univention-bugzilla: https://forge.univention.org/bugzilla/index.cgi
+.. _univention-kb : https://help.univention.com/c/knowledge-base/supported/
+.. _univention-wiki: https://wiki.univention.de/index.php/Main_Page
+.. _univention-help: https://help.univention.com/
+.. _open-suse-build-service: https://build.opensuse.org/
+.. _gnu-gettext: https://www.gnu.org/software/gettext/manual/gettext.html
+.. _ietf-hal: https://datatracker.ietf.org/doc/html/draft-kelly-json-hal-08
+.. _openldap: https://www.openldap.org/
+.. _w3-object-store: http://www.w3.org/TR/IndexedDB/#object-store
+.. _univention-py-notifier: https://github.com/univention/python-notifier

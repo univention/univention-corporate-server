@@ -262,7 +262,7 @@ The following keys can be used:
    There is **no** guarantee that ``Script`` is executed **after** a file has
    been committed. If this is required for example for restarting a service
    place the script instead at the location mentioned at the end of
-   :ref:`ucr-file-script`.
+   :ref:`ucr-file`.
 
 .. note::
 
@@ -319,7 +319,7 @@ The following keys can be used:
 
    There is **no** guarantee that ``Module`` is executed **after** a file has
    been committed. If this is required for e.g. restarting a service use
-   ``Preinst`` or ``Postinst`` as mentioned in :ref:`ucr-file-script` instead.
+   ``Preinst`` or ``Postinst`` as mentioned in :ref:`ucr-file` instead.
 
 .. _ucr-variables:
 

@@ -8,7 +8,7 @@ Bug reporting
    seealso: bug; bugzilla
 
 UCS is neither error free nor feature complete. Issues are tracked using
-`Bugzilla <https://forge.univention.org/bugzilla/index.cgi>`_.
+`Bugzilla <univention-bugzilla_>`_.
 
 #. Create an account.
 
@@ -24,11 +24,11 @@ UCS is neither error free nor feature complete. Issues are tracked using
 
 #. Conduct some research:
 
-   * Search `<https://help.univention.com/c/knowledge-base/supported/>`_
+   * Search `Univention Help Knowledge Base <univention-kb_>`_
 
-   * Search `https://wiki.univention.de/ <https://wiki.univention.de/index.php/Main_Page>`_
+   * Search `https://wiki.univention.de/ <univention-wiki_>`_
 
-   * Search `<https://help.univention.com/>`_ and ask for help. In addition to
+   * Search `Univention Help <univention-help_>`_ and ask for help. In addition to
      our support team many of our partners are also present there. Your
      questions might also help other users while you may profit from issues
      already solved for other users.

@@ -114,7 +114,7 @@ property of the response to a paginated query could contain the *"next"* propert
 which points to the next page.
 
 For more information on *HAL* please refer to the `Internet Draft for HAL
-<https://tools.ietf.org/html/draft-kelly-json-hal-08>`_.
+<ietf-hal_>`_.
 
 .. _udm-rest-api-usage-examples-post:
 

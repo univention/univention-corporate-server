@@ -804,8 +804,8 @@ the following:
        )
 
 Detailed documentation on creating LDAP schema files can be found on the
-`OpenLDAP project website <https://www.openldap.org/>`_ and is not the
-focus of this documentation.
+`OpenLDAP project website <openldap_>`_ and is not the focus of this
+documentation.
 
 .. _udm-modules-example-installation:
 

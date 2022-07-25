@@ -23,6 +23,4 @@ Signals
    events may place a registration.
 
 Further details, examples and a complete API documentation for Python Notifier
-can be found at the `website of Python Notifier
-<https://github.com/univention/python-notifier>`_.
-
+can be found at the `website of Python Notifier <univention-py-notifier_>`_.
