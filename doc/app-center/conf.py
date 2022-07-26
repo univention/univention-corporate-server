@@ -50,8 +50,9 @@ intersphinx_mapping = {
     "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.0/en", None),
 }
 
-copybutton_prompt_text = r"\$ |> "
+copybutton_prompt_text = r"\$ "
 copybutton_prompt_is_regexp = True
+copybutton_line_continuation_character = "\\"
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

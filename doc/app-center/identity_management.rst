@@ -103,7 +103,7 @@ container, this script can be called accordingly, e.g.
 .. code:: sh
 
    #/bin/sh
-   /usr/sbin/app-connector
+   exec /usr/sbin/app-connector
 
 .. _provision-push-mechanism:
 

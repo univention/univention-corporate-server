@@ -221,7 +221,7 @@ interface of UDM can be used easily. Here is an example:
 
 .. code-block:: bash
 
-   #!/bin/bash
+   #!/bin/sh
    set -e
    udm users/user create "$@" \
      --set username=myapp-test-user \
@@ -246,10 +246,10 @@ The test script can be manually tested.
    $ univention-app install my-app
    $ univention-app dev-test-setup  # installs common testing libs like selenium
    $ univention-app dev-test \
-   > --appcenter-server http://appcenter-test.software-univention.de \
-   > my-app \
-   > --binddn "$DN" \
-   > --bindpwd "$BINDPWD"
+     --appcenter-server http://appcenter-test.software-univention.de \
+     my-app \
+     --binddn "$DN" \
+     --bindpwd "$BINDPWD"
 
 .. _testing-debugging:
 
@@ -295,7 +295,7 @@ can be viewed with:
 .. code-block::
 
    $ cd /var/lib/univention-appcenter/apps/$appid/compose
-   $ docker-compose -p $appid logs
+   $ docker-compose -p "$appid" logs
 
 Important log files on the UCS host for debugging are:
 
@@ -443,14 +443,14 @@ The following examples show how the script can be used.
    # Note: jq is an external tool: apt-get install jq
    # you may parse JSON without it, of course
    $ ./univention-appcenter-control get --json 5.0/myapp |
-   > jq '._ini_vars.SupportedUCSVersions'
+     jq '._ini_vars.SupportedUCSVersions'
 
    # creates version 2.0 of myapp based on the (formerly) latest version
    $ ./univention-appcenter-control new-version 5.0/myapp 5.0/myapp=2.0
 
    # sets the DockerImage of the new app
    $ ./univention-appcenter-control set 5.0/myapp=2.0 \
-   > --json '{"DockerImage": "mycompany/myimage:2.0"}'
+     --json '{"DockerImage": "mycompany/myimage:2.0"}'
 
    # copies myapp Version 1.0 from UCS 4.4 to UCS 5.0.
    $ ./univention-appcenter-control new-version 4.4/myapp=1.0 5.0/myapp=1.0
@@ -498,25 +498,25 @@ in a password file which is given as parameter to the script:
 
     # 1. Create a new version in the app provider portal
     $ ./univention-appcenter-control new-version \
-    > --username $MY_USERNAME \
-    > --pwdfile $PWD_FILE \
-    > $UCS_MINOR/$MY_APP \
-    > $UCS_MINOR/$MY_APP=$APP_VERSION
+      --username "$MY_USERNAME" \
+      --pwdfile "$PWD_FILE" \
+      "$UCS_MINOR/$MY_APP" \
+      "$UCS_MINOR/$MY_APP=$APP_VERSION"
 
     ## First example for single container apps
     # 2. Update the reference to the app Docker image
     $ ./univention-appcenter-control set \
-    > --username $MY_USERNAME \
-    > --pwdfile $PWD_FILE \
-    > $UCS_MINOR/$MY_APP=$APP_VERSION \
-    > --json '{"DockerImage": "my_company/$MY_APP:$APP_VERSION"}'
+      --username "$MY_USERNAME" \
+      --pwdfile "$PWD_FILE" \
+      "$UCS_MINOR/$MY_APP=$APP_VERSION" \
+      --json '{"DockerImage": "my_company/'"$MY_APP:$APP_VERSION"'"}'
 
     # 3. Obtain the component id of the new app version.
     # The command asumes the latest component is the new app.
     $ COMPONENT=$(./univention-appcenter-control status \
-    > --username $MY_USERNAME \
-    > --pwdfile $PWD_FILE \
-    > $UCS_MINOR/$MY_APP | grep "COMPONENT" | tail -n 1 | cut -f 2 -d ':' | trim -d ' ')
+      --username "$MY_USERNAME" \
+      --pwdfile "$PWD_FILE" \
+      "$UCS_MINOR/$MY_APP" | sed -rne 's/^ *COMPONENT: +//p;T;q')
 
     # 4. Send the email
     $ SUBJECT="Regarding $UCS_MINOR/$MY_APP=$APP_VERSION ($COMPONENT)"
@@ -526,13 +526,13 @@ in a password file which is given as parameter to the script:
     # 2. Get app configuration data
 
     $ ./univention-appcenter-control get \
-    > $UCS_MINOR/$MY_APP=$APP_VERSION \
-    > --json \
-    > --username $MY_USERNAME \
-    > --pwdfile $PWD_FILE > $MY_APP.json
+      "$UCS_MINOR/$MY_APP=$APP_VERSION" \
+      --json \
+      --username "$MY_USERNAME" \
+      --pwdfile "$PWD_FILE" > "$MY_APP.json"
 
     # 3. Extract the compose content
-    $ cat $MY_APP.json | jq -r .compose > compose
+    $ jq -r .compose < "$MY_APP.json" > compose
 
     # Edit the compose file accordingly. A custom script can help to automate this step.
     # This script depends on the app and the compose file content
@@ -540,9 +540,9 @@ in a password file which is given as parameter to the script:
 
     # 4. Upload altered compose file
     $ ./univention-appcenter-control upload \
-    > --username $MY_USERNAME \
-    > --pwdfile $PWD_FILE \
-    > --non-interactive \
-    > $UCS_MINOR/$MY_APP=$APP_VERSION compose
+      --username "$MY_USERNAME" \
+      --pwdfile "$PWD_FILE" \
+      --non-interactive \
+      "$UCS_MINOR/$MY_APP=$APP_VERSION" compose
 
     # 5. Send the mail and with subject as described above

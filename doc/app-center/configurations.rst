@@ -693,7 +693,7 @@ Example:
 
 .. code:: sh
 
-   #!/bin/bash
+   #!/bin/sh
    # cat the UCS root CA to the app's root CA chain
    cat /etc/univention/ssl/ucsCA/CAcert.pem >> /opt/my-app/ca-bundle.crt
    service my-app-daemon restart
@@ -704,7 +704,7 @@ written locally and then uploaded with the following command:
 
 .. code:: sh
 
-   ./univention-appcenter-control upload --username $your-username 5.0/myapp=1.0 update_certificates
+   ./univention-appcenter-control upload --username "$your_username" 5.0/myapp=1.0 update_certificates
 
 .. _mail-integration:
 
@@ -789,7 +789,7 @@ installed <installation-preinst>`. Example:
 
 .. code:: sh
 
-   #!/bin/bash
+   #!/bin/sh
 
    # stop imap/smtp on docker host
    systemctl stop postfix dovecot
@@ -932,10 +932,10 @@ opened for TCP and UDP:
 .. code-block:: sh
 
    $ univention-config-registry set \
-   > "security/packetfilter/package/$APP/tcp/6644/all=ACCEPT" \
-   > "security/packetfilter/package/$APP/tcp/6644/all/en=$APP" \
-   > "security/packetfilter/package/$APP/udp/6644/all=ACCEPT" \
-   > "security/packetfilter/package/$APP/udp/6644/all/en=$APP"
+     "security/packetfilter/package/$APP/tcp/6644/all=ACCEPT" \
+     "security/packetfilter/package/$APP/tcp/6644/all/en=$APP" \
+     "security/packetfilter/package/$APP/udp/6644/all=ACCEPT" \
+     "security/packetfilter/package/$APP/udp/6644/all/en=$APP"
 
    $ systemctl try-restart univention-firewall
 
