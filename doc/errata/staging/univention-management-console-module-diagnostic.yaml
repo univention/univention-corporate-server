@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-management-console-module-diagnostic
-fix:
+fix: 6.0.2-2A~5.0.0.202207261504
 desc: |
  This update addresses the following issues:
  * The checks `40_samba_tool_dbcheck` and `63_proof_uniqueMembers` no longer
