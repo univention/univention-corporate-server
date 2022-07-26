@@ -9,5 +9,5 @@ desc: |
  * Browsers check the certificate using the Subject Alternative Names (SAN).
    They are verified in order, which stops on first match. Order the SANs by
    length to prioritize the most specific values first.
- * Fix cron daily task executioni, change shell from sh to bash
-bug: [54697, 54932]
+ * Fix cron daily task execution: change shell from `sh` to `bash`.
+bug: [54697, 55030]
