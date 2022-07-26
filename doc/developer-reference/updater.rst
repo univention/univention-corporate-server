@@ -41,7 +41,7 @@ updated.
 
 Additional components can be added as separate repositories using |UCSUCRV|\ s
 :samp:`repository/online/component/…`, which are described in
-:ref:`chap-repoadd` and manual. Setting the variable :samp:`…/version` can be
+:ref:`chap-repo-add` and manual. Setting the variable :samp:`…/version` can be
 used to mark a component as required (for certain UCS versions), which blocks an
 upgrade until the component is available for the specific release(es).
 

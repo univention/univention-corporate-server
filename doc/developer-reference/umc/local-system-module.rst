@@ -128,6 +128,8 @@ The predefined set of categories can be extended by each module.
 
 .. literalinclude:: categories.xml
    :language: xml
+   :caption: UMC module category examples
+   :name: umc-module-api-category-example
 
 .. _umc-module-api-python:
 

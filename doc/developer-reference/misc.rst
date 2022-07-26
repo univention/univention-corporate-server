@@ -384,7 +384,7 @@ A UDP port can be tested with the following command: :samp:`nmap {HOSTNAME} -sU 
 
 .. code-block:: console
    :caption: Using :program:`nmap` for firewall port testing
-   :name: misc:firewall-testing
+   :name: misc-firewall-testing
 
    $ nmap 192.0.2.100 -p 400
    $ nmap 192.0.2.110 -sU -p 400-500

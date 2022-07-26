@@ -1,4 +1,4 @@
-.. _chap-repoadd:
+.. _chap-repo-add:
 
 ************************************
 Integration of external repositories
@@ -68,7 +68,7 @@ Prior to UCS 5 two separate repository branches where provided for *maintained*
 and *unmaintained* software. While UCS 5 no longer uses this distinction, the
 mechanism still exists and is used for component repositories.
 
-.. _computers-softwaremanagement-repoadducr:
+.. _computers-softwaremanagement-repo-add-ucr:
 
 Integrate with |UCSUCR|
 =======================
@@ -121,7 +121,7 @@ configured through the UMC module.
    in this variable.
 
 :samp:`repository/online/component/{NAME}/version`
-   This variable controls the versions to include, see :ref:`chap-repoadd` for
+   This variable controls the versions to include, see :ref:`chap-repo-add` for
    details.
 
 :samp:`repository/online/component/{NAME}/defaultpackages`

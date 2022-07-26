@@ -163,7 +163,7 @@ Source code:
    on configuration files managed through |UCSUCR|, new |UCSUCRV| should be set
    *before* this section.
 
-.. _join-exitcode:
+.. _join-exit-code:
 
 Join script exit codes
 ----------------------
