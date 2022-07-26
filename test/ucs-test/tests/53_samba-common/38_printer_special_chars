@@ -40,11 +40,18 @@ if ! [ -x /bin/nc.openbsd ]; then
 fi
 
 trap '
-user_remove "$username";
-rm -rf "/tmp/$printername"/ /tmp/print_input;
+user_remove "$username"
+rm -rf "/tmp/$printername" "/tmp/$sambaprintername"
 udm-test shares/printer remove --dn="$printerdn"
 ucr unset directory/manager/web/modules/shares/printer/properties/name/syntax directory/manager/web/modules/shares/printer/properties/sambaName/syntax
 wait_for_replication_and_postrun
+if [ -n "$nc_pid" ] && [ "$nc_pid" = "$(pgrep -x nc)" ]; then
+	kill "$nc_pid" >/dev/null 2>&1
+	if [ "$nc_pid" = "$(pgrep -x nc)" ]; then
+		echo "netcat PID $nc_pid did not terminate, sending KILL"
+		kill -9 "$nc_pid" >/dev/null 2>&1
+	fi
+fi
 ' INT TERM EXIT
 
 ucr set directory/manager/web/modules/shares/printer/properties/name/syntax=string directory/manager/web/modules/shares/printer/properties/sambaName/syntax=string
@@ -83,9 +90,8 @@ do
 done
 
 #create input file
-echo "----Creating cups input file"
-
 tmp_filename="$(mktemp)"
+echo "----Creating cups input file $tmp_filename"
 echo "$(uname -a)" > "$tmp_filename"
 
 #create output socket
@@ -97,7 +103,7 @@ echo "initiate print"
 i=0
 while ! lp -d "$printername" -U "$username" "$tmp_filename"
 do
-	echo lp -d "$printername" -U "$username" "$tmp_filename"
+	echo "lp -d \"$printername\" -U \"$username\" \"$tmp_filename\""
 	let i=$i+1
 	if [ $i = 20 ]; then
 		fail_fast 1 "CUPS: Initiate printing has not been successful."
@@ -119,11 +125,14 @@ do
 done
 
 kill "$nc_pid" >/dev/null 2>&1
+if [ "$nc_pid" = "$(pgrep -x nc)" ]; then
+	echo "netcat PID $nc_pid didn't terminate, sending KILL"
+	kill -9 "$nc_pid" >/dev/null 2>&1
+fi
 
 # SAME for samba!
-echo "----Creating samba input file"
-
 tmp_filename="$(mktemp)"
+echo "----Creating samba input file $tmp_filename"
 echo "$(uname -a)" > "$tmp_filename"
 
 #create output socket
@@ -133,13 +142,17 @@ nc_pid=$!
 ## initiate print
 echo "initiate print"
 i=0
+## Important: Wait.. Otherwise, if ONE too early attempt fails, then it seems to get cached for about 5 min.
+sleep 10
 while ! smbclient -U"$username%$password" "//$hostname.$domainname/$sambaprintername" -c "print \"$tmp_filename\""
 do
 	let i=$i+1
-	if [ $i = 20 ]; then
+	echo "SAMBA: Initiate printing has not been successful on attempt $i"
+	echo "smbclient -U\"$username%$password\" \"//$hostname.$domainname/$sambaprintername\" -c \"print \\\"$tmp_filename\\\"\""
+	if [ $i = 3 ]; then
 		fail_fast 1 "SAMBA: Initiate printing has not been successful."
 	fi
-	sleep 1
+	sleep 300
 done
 rm "$tmp_filename"
 
@@ -156,5 +169,9 @@ do
 done
 
 kill "$nc_pid" >/dev/null 2>&1
+if [ "$nc_pid" = "$(pgrep -x nc)" ]; then
+	echo "netcat PID $nc_pid didn't terminate, sending KILL"
+	kill -9 "$nc_pid" >/dev/null 2>&1
+fi
 
 exit $RETVAL

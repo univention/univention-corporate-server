@@ -36,10 +36,17 @@ if ! [ -x /bin/nc.openbsd ]; then
 fi
 
 trap '
-user_remove "$username";
-rm -rf "/tmp/$printername"/ /tmp/print_input;
+user_remove "$username"
+rm -rf "/tmp/$printername"
 udm-test shares/printer remove --dn="cn=$printername,$printsharebasedn"
 wait_for_replication_and_postrun
+if [ -n "$nc_pid" ] && [ "$nc_pid" = "$(pgrep -x nc)" ]; then
+	kill "$nc_pid" >/dev/null 2>&1
+	if [ "$nc_pid" = "$(pgrep -x nc)" ]; then
+		echo "netcat PID $nc_pid did not terminate, sending KILL"
+		kill -9 "$nc_pid" >/dev/null 2>&1
+	fi
+fi
 ' INT TERM EXIT
 
 user_create "$username" || fail_fast 1 "Could not create user $username."
@@ -108,5 +115,10 @@ do
 done
 
 kill "$nc_pid" >/dev/null 2>&1
+if [ "$nc_pid" = "$(pgrep -x nc)" ]; then
+	echo "netcat PID $nc_pid didn't terminate, sending KILL"
+	kill -9 "$nc_pid" >/dev/null 2>&1
+fi
+
 
 exit $RETVAL
