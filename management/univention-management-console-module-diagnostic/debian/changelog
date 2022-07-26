@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.2-2) unstable; urgency=medium
+
+  * Bug #54988: removed duplicate decode of string.
+
+ -- Maximilian Janßen <janssen@univention.de>  Tue, 26 Jul 2022 14:11:05 +0200
+
 univention-management-console-module-diagnostic (6.0.2-1) unstable; urgency=medium
 
   * Bug #54681: added handling for unexpected messages in 62_check_slapschema
