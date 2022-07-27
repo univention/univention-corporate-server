@@ -132,6 +132,7 @@ layout = [
 		Group(_('General monitoring settings'), layout=[
 			["name", "alertGroup"],
 			["query", "for"],
+			"templateValues",
 			"summary",
 			"description",
 			"labels",
