@@ -2078,6 +2078,11 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
                 filter.value = property_descriptions['sambaLogonHours'].syntax.parse(filter.value)
             except univention.admin.uexceptions.valueError:
                 pass
+        if filter.variable == 'accountActivationDate' and filter.value:
+            try:
+                filter.value = property_descriptions['accountActivationDate'].syntax.parse_command_line(filter.value)
+            except univention.admin.uexceptions.valueError:
+                pass
 
         if filter.variable == 'primaryGroup':
             filter.variable = 'gidNumber'
