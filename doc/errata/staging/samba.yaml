@@ -6,18 +6,18 @@ src: samba
 fix: 2:4.10.18-1A~4.4.0.202207261324
 desc: |
  This update addresses the following issues:
- * Samba AD users could bypass certain restrictions
-   associated with changing passwords.
+ * Samba AD users could bypass certain restrictions associated with changing
+   passwords.
    For details see https://www.samba.org/samba/security/CVE-2022-2031.html
  * Server memory information leak via SMB1.
    For details see https://www.samba.org/samba/security/CVE-2022-32742.html
  * Samba AD users can forge password change requests for any user.
    For details see https://www.samba.org/samba/security/CVE-2022-32744.html
- * Samba AD users can crash the server process with an LDAP add
-   or modify request.
+ * Samba AD users can crash the server process with an LDAP add or modify
+   request.
    For details see https://www.samba.org/samba/security/CVE-2022-32745.html
- * Samba AD users can induce a use-after-free in the server process
-   with an LDAP add or modify request.
+ * Samba AD users can induce a use-after-free in the server process with an
+   LDAP add or modify request.
    For details see https://www.samba.org/samba/security/CVE-2022-32746.html
 bug: [54995]
 cve:
