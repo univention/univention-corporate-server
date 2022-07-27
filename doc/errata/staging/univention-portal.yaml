@@ -6,8 +6,7 @@ src: univention-portal
 fix:
 desc: |
  This update addresses the following issues:
- * The portal-server-password-rotate script has been updated
-   to generate more useful debug information.
- * The password hash comparision in `UMCAndSecretAuthenticator` has been
-   fixed.
+ * The script `portal-server-password-rotate` has been updated to generate
+   more useful debug information.
+ * The password hash comparison in `UMCAndSecretAuthenticator` has been fixed.
 bug: [54273, 55010]
