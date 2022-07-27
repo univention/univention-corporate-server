@@ -328,4 +328,4 @@ LDAP*.
 In this case, it is also possible to create individual extended
 attributes during the setup process. This should be done in the join
 script. Further information on extended attributes can be found in the
-`Univention Developer Reference <univention-dev-reference_>`_.
+:external+uv-dev-ref:doc:`Univention Developer Reference <index>`.

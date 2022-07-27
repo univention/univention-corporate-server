@@ -120,17 +120,15 @@ for error logging.
 Join script
 ~~~~~~~~~~~
 
-The joinscript :file:`inst` is executed on the UCS host system after the
-Docker container is configured. Please refer to the `Developer
-Reference <univention-dev-reference-join_>`_
-about how to write a join script. In principle a join script is a script
-that runs after the installation of an app and it has write access to
-the LDAP directory service. If it runs successfully, the join script may
-save this information in a status file. If this does not happen, the
-user is constantly reminded to re-run the join script. So the join
-script does not need to run successfully. The installation will not be
-aborted at this point. But of course at some point it should run through
-successfully.
+The joinscript :file:`inst` is executed on the UCS host system after the Docker
+container is configured. Please refer to :ref:`chap-join` in the UCS Developer
+Reference about how to write a join script. In principle a join script is a
+script that runs after the installation of an app and it has write access to the
+LDAP directory service. If it runs successfully, the join script may save this
+information in a status file. If this does not happen, the user is constantly
+reminded to re-run the join script. So the join script does not need to run
+successfully. The installation will not be aborted at this point. But of course
+at some point it should run through successfully.
 
 .. _installation-joinscript-helper:
 
@@ -329,11 +327,10 @@ Unjoin script
 ~~~~~~~~~~~~~
 
 The unjoin script :file:`uinst` is executed on the UCS host system after the
-Docker container is removed. See the `Univention Developer Reference
-<univention-dev-reference_>`_ for how to write an unjoin script.
-It should revert most (if not all) changes done in the join script. With
-the notable exception of schema registration. An LDAP schema extension
-should never be removed once it was registered.
+Docker container is removed. See :ref:`join-unjoin` in UCS Developer Reference
+for how to write an unjoin script. It should revert most (if not all) changes
+done in the join script. With the notable exception of schema registration. An
+LDAP schema extension should never be removed once it was registered.
 
 .. _upgrade-scripts:
 

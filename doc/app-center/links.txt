@@ -10,9 +10,6 @@
 .. _ucs-quickstart: https://docs.software-univention.de/quickstart-en-5.0.html
 .. _univention-app-catalog-recommended: https://www.univention.com/products/univention-app-center/app-catalog/?recommended_app=1
 .. _univention-app-catalog: https://www.univention.com/products/univention-app-center/app-catalog/
-.. _univention-dev-reference-join: https://docs.software-univention.de/developer-reference-5.0.html#chap:join
-.. _univention-dev-reference-nacl: https://docs.software-univention.de/developer-reference-5.0.html#misc:nacl
-.. _univention-dev-reference: https://docs.software-univention.de/developer-reference-5.0.html
 .. _univention-forum-apps: https://help.univention.com/c/apps/dev/50
 .. _univention-portal-account-request: https://www.univention.com/products/univention-app-center/for-solution-providers/
 .. _univention-provider-portal-script: https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-control

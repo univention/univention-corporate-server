@@ -266,9 +266,8 @@ For example, the solution exposes the API under the dedicated port
 
 With the port definition the App Center also takes care to open them in
 the UCS firewall. If additional firewall rules for ports are needed,
-they can be defined in the app join script. Please refer to the `Network
-Packet Filter section in the UCS Development
-Reference <univention-dev-reference-nacl_>`_.
+they can be defined in the app join script. Please refer to
+:ref:`misc-nacl` in the UCS Developer Reference.
 
 .. _create-app-with-docker-database:
 
@@ -454,10 +453,9 @@ that no longer matches 100% of the App Provider's input. The modified
 .. rubric:: UCR Template docker-compose file
 
 As stated above, the ``docker-compose.yml`` is a UCR template. This means that
-you are able to match the file to the environment of the Docker host. The
-`Univention Developer Reference
-<univention-dev-reference_>`_ contains
-more about UCR templates, but the core mechanics are:
+you are able to match the file to the environment of the Docker host. The UCS
+Developer Reference contains more information about :ref:`UCR templates
+<chap-ucr>`, but the core mechanics are:
 
 1. Although every ``docker-compose.yml`` is a UCR template, you may not
    notice it: Where no specific tags are used, the very content is used.
