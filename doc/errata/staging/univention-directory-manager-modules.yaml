@@ -6,7 +6,7 @@ src: univention-directory-manager-modules
 fix:
 desc: |
  This update addresses the following issue:
- * The global uniqueness of mailAlternativeAdress with mailPrimaryAddress is
-   now configurable via the UCR variable
+ * The global uniqueness of `mailAlternativeAdress` with `mailPrimaryAddress`
+   is now configurable via the UCR variable
    `directory/manager/mail-primary-alternative-address/uniqueness`.
 bug: [54596]
