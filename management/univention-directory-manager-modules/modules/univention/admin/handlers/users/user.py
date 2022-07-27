@@ -2074,6 +2074,12 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
     @classmethod
     def rewrite_filter(cls, filter, mapping):
         # type: (univention.admin.filter.expression, univention.admin.mapping.mapping) -> None
+        if filter.variable == 'sambaLogonHours' and filter.value:
+            try:
+                filter.value = property_descriptions['sambaLogonHours'].syntax.parse(filter.value)
+            except univention.admin.uexceptions.valueError:
+                pass
+
         if filter.variable == u'primaryGroup':
             filter.variable = u'gidNumber'
         elif filter.variable == u'groups':
