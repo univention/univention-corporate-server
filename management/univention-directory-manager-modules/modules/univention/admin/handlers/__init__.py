@@ -1869,7 +1869,7 @@ class simpleLdap(object):
 			return
 
 		filter.variable = mapping.mapName(key)
-		if filter.value == '*' and property_ and issubclass(property_.syntax if inspect.isclass(property_.syntax) else type(property_.syntax), (univention.admin.syntax.IStates, univention.admin.syntax.boolean)):
+		if filter.operator == '=*' and property_ and issubclass(property_.syntax if inspect.isclass(property_.syntax) else type(property_.syntax), (univention.admin.syntax.IStates, univention.admin.syntax.boolean)):
 			# special case: properties that are represented as Checkboxes in the
 			# frontend should include '(!(propertyName=*))' in the ldap filter
 			# if the Checkboxe is set to False to also find objects where the property

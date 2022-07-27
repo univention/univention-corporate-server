@@ -2379,7 +2379,7 @@ class object(univention.admin.handlers.simpleLdap):
 				filter.transform_to_conjunction(univention.admin.filter.parse(u'(&(shadowExpire=1)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags==[ULD       ])))'))
 			elif filter.value == u'posix_kerberos':
 				filter.transform_to_conjunction(univention.admin.filter.parse(u'(&(shadowExpire=1)(krb5KDCFlags=254))'))
-			elif filter.value == u'*':
+			elif filter.operator == u'=*':
 				filter.variable = u'uid'
 		elif filter.variable == 'userexpiry':
 			try:
