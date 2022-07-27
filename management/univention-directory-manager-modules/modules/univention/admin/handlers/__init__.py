@@ -1842,17 +1842,30 @@ class simpleLdap(object):
 	@classmethod
 	def rewrite_filter(cls, filter, mapping):
 		key = filter.variable
+
+		try:
+			should_map = mapping.shouldMap(key)
+		except KeyError:
+			should_map = False
+
+		if should_map:
+			filter.variable = mapping.mapName(key)
+
+		if filter.operator == '=*':
+			# 1. presence match. We only need to change the variable name. value is not set
+			# 2. special case for syntax classes IStates and boolean:
+			# properties that are represented as Checkboxes in the
+			# frontend should include '(!(propertyName=*))' in the ldap filter
+			# if the Checkbox is set to False to also find objects where the property
+			# is not set. In that case we don't want to map the '*' to a different value.
+			return
+
 		# management/univention-management-console/src/univention/management/console/acl.py does not call univention.admin.modules.update()
 		mod = univention.admin.modules.get_module(cls.module)
 		property_ = mod.property_descriptions.get(key)
-		if property_ and not isinstance(filter.value, (list, tuple)):
-			if property_.multivalue:
-				# special case: mutlivalue properties need to be a list when map()-ing
-				filter.value = [filter.value]
-			if issubclass(property_.syntax if inspect.isclass(property_.syntax) else type(property_.syntax), univention.admin.syntax.complex):
-				# special case: complex syntax properties need to be a list (of lists, if multivalue)
-				filter.value = [filter.value]
-		elif not property_ and key == 'options' and filter.value in getattr(mod, 'options', {}):
+
+		# map options to corresponding objectClass
+		if not property_ and key == 'options' and filter.value in getattr(mod, 'options', {}):
 			ocs = mod.options[filter.value]
 			filter.variable = u'objectClass'
 			if len(ocs.objectClasses) > 1:
@@ -1862,21 +1875,18 @@ class simpleLdap(object):
 				filter.value = list(ocs.objectClasses)[0]
 			return
 
-		try:
-			if not mapping.shouldMap(filter.variable):
-				return
-		except KeyError:
+		if not should_map:
 			return
 
-		filter.variable = mapping.mapName(key)
-		if filter.operator == '=*' and property_ and issubclass(property_.syntax if inspect.isclass(property_.syntax) else type(property_.syntax), (univention.admin.syntax.IStates, univention.admin.syntax.boolean)):
-			# special case: properties that are represented as Checkboxes in the
-			# frontend should include '(!(propertyName=*))' in the ldap filter
-			# if the Checkboxe is set to False to also find objects where the property
-			# is not set. In that case we don't want to map the '*' to a different value.
-			pass
-		else:
-			filter.value = mapping.mapValueDecoded(key, filter.value, encoding_errors='ignore')
+		if property_ and not isinstance(filter.value, (list, tuple)):
+			if property_.multivalue:
+				# special case: mutlivalue properties need to be a list when map()-ing
+				filter.value = [filter.value]
+			if issubclass(property_.syntax if inspect.isclass(property_.syntax) else type(property_.syntax), univention.admin.syntax.complex):
+				# special case: complex syntax properties need to be a list (of lists, if multivalue)
+				filter.value = [filter.value]
+
+		filter.value = mapping.mapValueDecoded(key, filter.value, encoding_errors='ignore')
 
 		if isinstance(filter.value, (list, tuple)) and filter.value:
 			# complex syntax
