@@ -1,26 +1,28 @@
 .. _translation-umc:
 
-|UCSUMC| translations
-=====================
+Create a translation package for UCS
+====================================
 
 .. index::
    single: translation
    see: localisation; translation
 
-By default UCS includes English and German localizations. Univention provides a
-set of tools that facilitates the process of creating translations for |UCSUMC|.
+UCS provides English and German localization. Univention provides a set of tools
+that facilitates the creation of translation packages. Translation packages can
+provide translations for all translatable strings of UCS for a specific
+language. The |UCSUMC|, more specifically its packages, contains the largest
+share of translatable strings.
 
-This section describes all steps necessary to create a working translation
-package for UCS. We recommend having a running UCS installation where the tools
-can be set up in an easy manner. Further more a current Git checkout of the UCS
-source code is required.
+This section describes all necessary steps to create a translation package for
+UCS. For the setup of the translator's environment, see
+:ref:`translation-dev-setup`.
 
 .. _translation-umc-preparation:
 
 Install needed tools
 --------------------
 
-The package :program:`univention-l10n-dev` contains all tools required to setup
+The package :program:`univention-l10n-dev` contains all tools required to set up
 and update a translation package. It requires some additional Debian tools to
 build the package. Run the following command on your UCS to install all needed
 packages.
