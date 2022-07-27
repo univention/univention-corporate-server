@@ -1188,5 +1188,4 @@ def test_widget_options(module, property, expected_options, load_modules):
     prop = mod.property_descriptions.get(property)
     s = prop.syntax
     widget_options = s.get_widget_options(prop)
-    print(widget_options)
     assert widget_options == expected_options
