@@ -3,10 +3,10 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-monitoring-client
-fix:
+fix: 1.0.0-6A~5.0.0.202207271606
 desc: |
  This update addresses the following issues:
  * The check script `check_univention_ntp` now hanles errors e.g. when the
    NTP service is not reachable. The translation of the UDM module has been
-   fixed.
+   fixed. The template values has been added to the layout of the UDM module.
 bug: [55017]
