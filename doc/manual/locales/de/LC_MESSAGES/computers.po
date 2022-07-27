@@ -4,16 +4,16 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-23 10:24+0200\n"
+"POT-Creation-Date: 2022-07-27 07:12+0000\n"
 "PO-Revision-Date: 2022-06-01 16:15+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.10.3\n"
 
 #: ../../computers/basic-system-services.rst:4
 msgid "Basic system services"
@@ -104,8 +104,8 @@ msgid ""
 "current status of a system service and to start or stop it as required."
 msgstr ""
 "Mit dem UMC-Modul :guilabel:`Systemdienste` kann der aktuelle Status "
-"eines Systemdienstes geprüft und dieser gegebenenfalls gestartet oder gestoppt "
-"werden."
+"eines Systemdienstes geprüft und dieser gegebenenfalls gestartet oder "
+"gestoppt werden."
 
 #: ../../computers/basic-system-services.rst:60
 msgid "Overview of system services"
@@ -160,7 +160,7 @@ msgstr ""
 msgid "Limiting authentication to selected users"
 msgstr "Anmeldebeschränkungen für ausgewählte Benutzer"
 
-#: ../../computers/basic-system-services.rst:88
+#: ../../computers/basic-system-services.rst:89
 msgid ""
 "By default only the ``root`` user and members of the ``Domain Admins`` "
 "group can login remotely via SSH and locally on a ``tty``."
@@ -169,7 +169,7 @@ msgstr ""
 "Mitglieder der Gruppe ``Domain Admins`` remote über SSH und lokal auf "
 "einem ``tty`` anmelden."
 
-#: ../../computers/basic-system-services.rst:91
+#: ../../computers/basic-system-services.rst:92
 msgid ""
 "This restriction can be configured with the |UCSUCRV| "
 ":samp:`auth/{SERVICE}/restrict`. Access to this service can be authorized"
@@ -181,7 +181,7 @@ msgstr ""
 " Variablen :samp:`auth/{DIENST}/user/{BENUTZERNAME}` und "
 ":samp:`auth/{DIENST}/group/{GRUPPENNAME}` auf ``yes`` freigegeben werden."
 
-#: ../../computers/basic-system-services.rst:96
+#: ../../computers/basic-system-services.rst:97
 msgid ""
 "Login restrictions are supported for *SSH* (``sshd``), login on a *tty* "
 "(``login``), *rlogin* (``rlogin``), *PPP* (``ppp``) and other services "
@@ -191,7 +191,7 @@ msgstr ""
 "an einem *tty* (``login``), *rlogin* (``rlogin``), *PPP* (``ppp``) und "
 "andere Dienste (``other``). Ein Beispiel für *SSH*:"
 
-#: ../../computers/basic-system-services.rst:100
+#: ../../computers/basic-system-services.rst:101
 msgid ""
 "auth/sshd/group/Administrators: yes\n"
 "auth/sshd/group/Computers: yes\n"
@@ -207,11 +207,11 @@ msgstr ""
 "auth/sshd/group/Domain Admins: yes\n"
 "auth/sshd/restrict: yes"
 
-#: ../../computers/basic-system-services.rst:113
+#: ../../computers/basic-system-services.rst:114
 msgid "Configuration of the LDAP server in use"
 msgstr "Konfiguration des verwendeten LDAP-Servers"
 
-#: ../../computers/basic-system-services.rst:115
+#: ../../computers/basic-system-services.rst:116
 msgid ""
 "Several LDAP servers can be operated in a UCS domain. The primary one "
 "used is specified with the |UCSUCRV| :envvar:`ldap/server/name`, further "
@@ -223,7 +223,7 @@ msgstr ""
 "festgelegt, weitere Server können über die |UCSUCRV| "
 ":envvar:`ldap/server/addition` angegeben werden."
 
-#: ../../computers/basic-system-services.rst:119
+#: ../../computers/basic-system-services.rst:120
 msgid ""
 "Alternatively, the LDAP servers can also be specified via a *LDAP server*"
 " policy. The order of the servers determines the order of the computer's "
@@ -234,7 +234,7 @@ msgstr ""
 "der Anfragen des Rechners an die Server, falls ein LDAP-Server nicht "
 "erreichbar sein sollte."
 
-#: ../../computers/basic-system-services.rst:123
+#: ../../computers/basic-system-services.rst:124
 msgid ""
 "By default only :envvar:`ldap/server/name` is set following the "
 "installation or the domain join. If there is more than one LDAP server "
@@ -250,11 +250,11 @@ msgstr ""
 " Bei einer auf mehrere Standorte verteilten Umgebung sollte darauf "
 "geachtet werden, möglichst LDAP-Server aus dem lokalen Netz vorzugeben."
 
-#: ../../computers/basic-system-services.rst:133
+#: ../../computers/basic-system-services.rst:134
 msgid "Configuration of the print server in use"
 msgstr "Konfiguration des verwendeten Druckservers"
 
-#: ../../computers/basic-system-services.rst:135
+#: ../../computers/basic-system-services.rst:136
 msgid ""
 "The print server to be used can be specified with the |UCSUCRV| "
 ":envvar:`cups/server`."
@@ -262,7 +262,7 @@ msgstr ""
 "Der zu verwendende Druckserver kann mit der |UCSUCRV| "
 ":envvar:`cups/server` festgelegt werden."
 
-#: ../../computers/basic-system-services.rst:138
+#: ../../computers/basic-system-services.rst:139
 msgid ""
 "Alternatively, the server can also be specified via the *Print server* "
 "policy in the UMC module :guilabel:`Computers`."
@@ -270,15 +270,15 @@ msgstr ""
 "Alternativ kann der Server auch über die Richtlinie *Druckserver* im UMC-"
 "Modul :guilabel:`Rechner` festgelegt werden."
 
-#: ../../computers/basic-system-services.rst:144
+#: ../../computers/basic-system-services.rst:145
 msgid "Logging/retrieval of system messages and system status"
 msgstr "Protokollierung/Abfrage von Systemmeldungen und -zuständen"
 
-#: ../../computers/basic-system-services.rst:149
+#: ../../computers/basic-system-services.rst:150
 msgid "Log files"
 msgstr "Logdateien"
 
-#: ../../computers/basic-system-services.rst:151
+#: ../../computers/basic-system-services.rst:152
 msgid ""
 "All UCS-specific log files (e.g., for the listener/notifier replication) "
 "are stored in the :file:`/var/log/univention/` directory. Services write "
@@ -290,7 +290,7 @@ msgstr ""
 "  Serverdienste protokollieren in ihre jeweilige Standard-Logdateien; "
 "Apache beispielsweise in die Datei :file:`/var/log/apache2/error.log`."
 
-#: ../../computers/basic-system-services.rst:156
+#: ../../computers/basic-system-services.rst:157
 msgid ""
 "The log files are managed by :program:`logrotate`. It ensures that log "
 "files are named in series in intervals (can be configured in weeks using "
@@ -307,7 +307,7 @@ msgstr ""
 "Datei :file:`listener.log`, die der Vorwoche in :file:`listener.log.1` "
 "und so weiter."
 
-#: ../../computers/basic-system-services.rst:163
+#: ../../computers/basic-system-services.rst:164
 msgid ""
 "Alternatively, log files can also be rotated only once they have reached "
 "a certain size. For example, if they are only to be rotated once they "
@@ -319,7 +319,7 @@ msgstr ""
 "rotiert werden, kann dazu die |UCSUCRV| :envvar:`logrotate/rotates` auf "
 "``size 50M`` gesetzt werden."
 
-#: ../../computers/basic-system-services.rst:167
+#: ../../computers/basic-system-services.rst:168
 msgid ""
 "The |UCSUCRV| :envvar:`logrotate/compress` is used to configure whether "
 "the older log files are additionally zipped with :command:`gzip`."
@@ -328,11 +328,11 @@ msgstr ""
 " ob die älteren Logdateien zusätzlich mit :command:`gzip` komprimiert "
 "werden sollen."
 
-#: ../../computers/basic-system-services.rst:173
+#: ../../computers/basic-system-services.rst:174
 msgid "Logging the system status"
 msgstr "Protokollierung des Systemzustands"
 
-#: ../../computers/basic-system-services.rst:175
+#: ../../computers/basic-system-services.rst:176
 msgid ""
 ":command:`univention-system-stats` can be used to document the current "
 "system status in the :file:`/var/log/univention/system-stats.log` file. "
@@ -342,15 +342,15 @@ msgstr ""
 " die Datei :file:`/var/log/univention/system-stats.log` protokolliert "
 "werden. Protokolliert werden dabei folgende Werte:"
 
-#: ../../computers/basic-system-services.rst:179
+#: ../../computers/basic-system-services.rst:180
 msgid "The free disk space on the system partitions (:command:`df -lhT`)"
 msgstr "Der freie Speicherplatz auf den Systempartitionen (:command:`df -lhT`)"
 
-#: ../../computers/basic-system-services.rst:182
+#: ../../computers/basic-system-services.rst:183
 msgid "The current process list (:command:`ps auxf`)"
 msgstr "Die aktuelle Prozessliste (:command:`ps auxf`)"
 
-#: ../../computers/basic-system-services.rst:184
+#: ../../computers/basic-system-services.rst:185
 msgid ""
 "Two :command:`top` lists of the current processes and system load "
 "(:command:`top -b -n2`)"
@@ -358,15 +358,15 @@ msgstr ""
 "Zwei :command:`top`-Aufstellungen der aktuellen Prozesse und Auslastung "
 "(:command:`top -b -n2`)"
 
-#: ../../computers/basic-system-services.rst:187
+#: ../../computers/basic-system-services.rst:188
 msgid "The current free system memory (:command:`free`)"
 msgstr "Den aktuell freien Arbeitsspeicher (:command:`free`)"
 
-#: ../../computers/basic-system-services.rst:189
+#: ../../computers/basic-system-services.rst:190
 msgid "The time elapsed since the system was started (:command:`uptime`)"
 msgstr "Die Zeit, die seit dem Start des Systems vergangen ist (:command:`uptime`)"
 
-#: ../../computers/basic-system-services.rst:192
+#: ../../computers/basic-system-services.rst:193
 msgid ""
 "Temperature, fan and voltage indexes from :program:`lm-sensors` "
 "(:command:`sensors`)"
@@ -374,11 +374,11 @@ msgstr ""
 "Temperatur-, Lüfter- und Spannungskennzahlen aus :program:`lm-sensors` "
 "(:command:`sensors`)"
 
-#: ../../computers/basic-system-services.rst:196
+#: ../../computers/basic-system-services.rst:197
 msgid "A list of the current Samba connections (:command:`smbstatus`)"
 msgstr "Eine Aufstellung der aktuellen Samba-Verbindungen (:command:`smbstatus`)"
 
-#: ../../computers/basic-system-services.rst:199
+#: ../../computers/basic-system-services.rst:200
 msgid ""
 "The runtime in which the system status should be logged can be defined in"
 " Cron syntax via the |UCSUCRV| :envvar:`system/stats/cron`, e.g., ``0,30 "
@@ -393,11 +393,11 @@ msgstr ""
 "der |UCSUCRV| :envvar:`system/stats` auf ``yes`` aktiviert und ist bei "
 "Neuinstallationen ab UCS 3.0 die Grundeinstellung."
 
-#: ../../computers/basic-system-services.rst:207
+#: ../../computers/basic-system-services.rst:208
 msgid "Process overview via |UCSUMC| module"
 msgstr "Prozessübersicht über |UCSUMC| Modul"
 
-#: ../../computers/basic-system-services.rst:209
+#: ../../computers/basic-system-services.rst:210
 msgid ""
 "The UMC module :guilabel:`Process overview` displays a table of the "
 "current processes on the system. The processes can be sorted based on the"
@@ -408,23 +408,23 @@ msgstr ""
 "folgenden Eigenschaften sortiert werden, in dem auf den entsprechenden "
 "Tabellenkopf geklickt wird:"
 
-#: ../../computers/basic-system-services.rst:213
+#: ../../computers/basic-system-services.rst:214
 msgid "CPU utilization in percent"
 msgstr "Die CPU-Nutzung in Prozent"
 
-#: ../../computers/basic-system-services.rst:215
+#: ../../computers/basic-system-services.rst:216
 msgid "The username under which the process is running"
 msgstr "Der Benutzername, unter dem der Prozess läuft"
 
-#: ../../computers/basic-system-services.rst:217
+#: ../../computers/basic-system-services.rst:218
 msgid "Memory consumption in percent"
 msgstr "Speicherverbrauch in Prozent"
 
-#: ../../computers/basic-system-services.rst:219
+#: ../../computers/basic-system-services.rst:220
 msgid "The process ID"
 msgstr "Die Prozess-ID"
 
-#: ../../computers/basic-system-services.rst:221
+#: ../../computers/basic-system-services.rst:222
 msgid ""
 "The menu item *more* can be used to terminate processes. Two different "
 "types of termination are possible:"
@@ -432,11 +432,11 @@ msgstr ""
 "Unter dem Menüpunkt :guilabel:`mehr` können Prozesse beendet werden. "
 "Hierbei werden zwei Arten der Terminierung unterschieden:"
 
-#: ../../computers/basic-system-services.rst:226
+#: ../../computers/basic-system-services.rst:227
 msgid "Terminate"
 msgstr "Beenden"
 
-#: ../../computers/basic-system-services.rst:225
+#: ../../computers/basic-system-services.rst:226
 msgid ""
 "The action :guilabel:`Terminate` sends the process a ``SIGTERM`` signal; "
 "this is the standard method for the controlled termination of programs."
@@ -445,11 +445,11 @@ msgstr ""
 "vom Typ ``SIGTERM``, dies ist der Regelfall bei der kontrollierten "
 "Beendigung von Programmen."
 
-#: ../../computers/basic-system-services.rst:232
+#: ../../computers/basic-system-services.rst:233
 msgid "Force terminate"
 msgstr "Beenden erzwingen"
 
-#: ../../computers/basic-system-services.rst:229
+#: ../../computers/basic-system-services.rst:230
 msgid ""
 "Sometimes, it may be the case that a program - e.g., after crashing - can"
 " no longer be terminated with this procedure. In this case, the action "
@@ -461,7 +461,7 @@ msgstr ""
 " Fall kann mit der Aktion :guilabel:`Beenden erzwingen` das Signal "
 "``SIGKILL`` geschickt werden, um den Prozess forciert zu beenden."
 
-#: ../../computers/basic-system-services.rst:234
+#: ../../computers/basic-system-services.rst:235
 msgid ""
 "As a general rule, terminating the program with ``SIGTERM`` is preferable"
 " as many programs then stop the program in a controlled manner and, for "
@@ -471,11 +471,11 @@ msgstr ""
 "Programme dann einen kontrollierten Programmabbruch einleiten und z.B. "
 "ein Speichern von Dateien o.ä.  durchführen."
 
-#: ../../computers/basic-system-services.rst:241
+#: ../../computers/basic-system-services.rst:242
 msgid "System diagnostic via |UCSUMC| module"
 msgstr "Systemdiagnose über |UCSUMC| Modul"
 
-#: ../../computers/basic-system-services.rst:243
+#: ../../computers/basic-system-services.rst:244
 msgid ""
 "The UMC module :guilabel:`System diagnostic` offers a corresponding user "
 "interface to analyze a UCS system for a range of known problems."
@@ -484,7 +484,7 @@ msgstr ""
 "bietet das UMC-Modul :guilabel:`Systemdiagnose` eine entsprechende "
 "Benutzerschnittstelle."
 
-#: ../../computers/basic-system-services.rst:246
+#: ../../computers/basic-system-services.rst:247
 msgid ""
 "The module evaluates a range of problem scenarios known to it and "
 "suggests solutions if it is able to resolve the identified solutions "
@@ -498,11 +498,11 @@ msgstr ""
 "Schaltflächen dargestellt. Darüber hinaus werden Links zu weiterführenden"
 " Artikeln und zu entsprechenden UMC-Modulen angezeigt."
 
-#: ../../computers/basic-system-services.rst:254
+#: ../../computers/basic-system-services.rst:255
 msgid "Executing recurring actions with Cron"
 msgstr "Ausführen von wiederkehrenden Aktionen mit Cron"
 
-#: ../../computers/basic-system-services.rst:256
+#: ../../computers/basic-system-services.rst:257
 msgid ""
 "Regularly recurring actions (e.g., the processing of log files) can be "
 "started at a defined time with the Cron service. Such an action is known "
@@ -512,11 +512,11 @@ msgstr ""
 "Logdateien) können mit dem Cron-Dienst zu einem definierten Zeitpunkt "
 "gestartet werden. Eine solche Aktion bezeichnet man auch als Cron-Job."
 
-#: ../../computers/basic-system-services.rst:263
+#: ../../computers/basic-system-services.rst:264
 msgid "Hourly/daily/weekly/monthly execution of scripts"
 msgstr "Stündliches/tägliches/wöchentliches/monatliches Ausführen von Skripten"
 
-#: ../../computers/basic-system-services.rst:265
+#: ../../computers/basic-system-services.rst:266
 msgid ""
 "Four directories are predefined on every UCS system, "
 ":file:`/etc/cron.hourly/`, :file:`/etc/cron.daily/`, "
@@ -531,11 +531,11 @@ msgstr ""
 "sind, werden automatisch stündlich, täglich, wöchentlich oder monatlich "
 "ausgeführt."
 
-#: ../../computers/basic-system-services.rst:273
+#: ../../computers/basic-system-services.rst:274
 msgid "Defining local cron jobs in :file:`/etc/cron.d/`"
 msgstr "Definition eigener Cron-Jobs in :file:`/etc/cron.d/`"
 
-#: ../../computers/basic-system-services.rst:278
+#: ../../computers/basic-system-services.rst:279
 msgid ""
 "A cron job is defined in a line, which is composed of a total of seven "
 "columns:"
@@ -543,35 +543,35 @@ msgstr ""
 "Ein Cron-Job wird in einer Zeile definiert, die aus insgesamt sieben "
 "Spalten aufgebaut ist:"
 
-#: ../../computers/basic-system-services.rst:280
+#: ../../computers/basic-system-services.rst:281
 msgid "Minute (0-59)"
 msgstr "Minute (0-59)"
 
-#: ../../computers/basic-system-services.rst:282
+#: ../../computers/basic-system-services.rst:283
 msgid "Hour (0-23)"
 msgstr "Stunde (0-23)"
 
-#: ../../computers/basic-system-services.rst:284
+#: ../../computers/basic-system-services.rst:285
 msgid "Day (1-31)"
 msgstr "Tag (1-31)"
 
-#: ../../computers/basic-system-services.rst:286
+#: ../../computers/basic-system-services.rst:287
 msgid "Month (1-12)"
 msgstr "Monat (1-12)"
 
-#: ../../computers/basic-system-services.rst:288
+#: ../../computers/basic-system-services.rst:289
 msgid "Weekday (0-7) (0 and 7 both stand for Sunday)"
 msgstr "Wochentag (0-7) (0 und 7 stehen beide für Sonntag)"
 
-#: ../../computers/basic-system-services.rst:290
+#: ../../computers/basic-system-services.rst:291
 msgid "Name of user executing the job (e.g., ``root``)"
 msgstr "Name des ausführenden Benutzers (z.B. ``root``)"
 
-#: ../../computers/basic-system-services.rst:292
+#: ../../computers/basic-system-services.rst:293
 msgid "The command to be run"
 msgstr "Der auszuführende Befehl"
 
-#: ../../computers/basic-system-services.rst:294
+#: ../../computers/basic-system-services.rst:295
 msgid ""
 "The time specifications can be set in different ways. One can specify a "
 "specific minute/hour/etc. or run an action every minute/hour/etc. with a "
@@ -585,11 +585,11 @@ msgstr ""
 "führt als Minutenangabe beispielsweise dazu, dass eine Aktion jede zweite"
 " Minute ausgeführt wird."
 
-#: ../../computers/basic-system-services.rst:299
+#: ../../computers/basic-system-services.rst:300
 msgid "Example:"
 msgstr "Beispiel:"
 
-#: ../../computers/basic-system-services.rst:301
+#: ../../computers/basic-system-services.rst:302
 msgid ""
 "30 * * * * root /usr/sbin/jitter 600 /usr/share/univention-samba/slave-"
 "sync"
@@ -597,11 +597,11 @@ msgstr ""
 "30 * * * * root /usr/sbin/jitter 600 /usr/share/univention-samba/slave-"
 "sync"
 
-#: ../../computers/basic-system-services.rst:309
+#: ../../computers/basic-system-services.rst:310
 msgid "Defining cron jobs in Univention Configuration Registry"
 msgstr "Definition eigener Cron-Jobs in Univention Configuration Registry"
 
-#: ../../computers/basic-system-services.rst:311
+#: ../../computers/basic-system-services.rst:312
 msgid ""
 "Cron jobs can also be defined in |UCSUCR|. This is particularly useful if"
 " they are set via a |UCSUDM| policy and are thus used on more than one "
@@ -611,7 +611,7 @@ msgstr ""
 "nützlich, wenn sie über eine |UCSUDM|-Richtlinie gesetzt und somit auf "
 "mehr als einen Rechner angewendet werden."
 
-#: ../../computers/basic-system-services.rst:315
+#: ../../computers/basic-system-services.rst:316
 msgid ""
 "Each cron job is composed of at least two |UCSUCR| variables. "
 ":samp:`{JOBNAME}` is a general description."
@@ -619,13 +619,13 @@ msgstr ""
 "Jeder Cron-Job setzt sich dabei aus mindestens zwei |UCSUCR|-Variablen "
 "zusammen. :samp:`JOBNAME` ist dabei ein allgemeiner Bezeichner."
 
-#: ../../computers/basic-system-services.rst:318
+#: ../../computers/basic-system-services.rst:319
 msgid ":samp:`cron/{JOBNAME}/command` specifies the command to be run (required)"
 msgstr ""
 ":samp:`cron/{JOBNAME}/command` legt den auszuführenden Befehl fest "
 "(Angabe erforderlich)"
 
-#: ../../computers/basic-system-services.rst:320
+#: ../../computers/basic-system-services.rst:321
 msgid ""
 ":samp:`cron/{JOBNAME}/time` specifies the execution time (see :ref:`cron-"
 "local`) (required)"
@@ -633,7 +633,7 @@ msgstr ""
 ":samp:`cron/{JOBNAME}/time` setzt die Ausführungszeit fest (siehe :ref"
 ":`cron-local`) (Angabe erforderlich)"
 
-#: ../../computers/basic-system-services.rst:323
+#: ../../computers/basic-system-services.rst:324
 msgid ""
 "As standard, the cron job is run as a user ``root``. "
 ":samp:`cron/{JOBNAME}/user` can be used to specify a different user."
@@ -642,7 +642,7 @@ msgstr ""
 ":samp:`cron/{JOBNAME}/user` kann ein abweichender Benutzer angegeben "
 "werden."
 
-#: ../../computers/basic-system-services.rst:326
+#: ../../computers/basic-system-services.rst:327
 msgid ""
 "If an email address is specified under :samp:`cron/{JOBNAME}/mailto`, the"
 " output of the cron job is sent there per email."
@@ -650,17 +650,17 @@ msgstr ""
 "Wird unter :samp:`cron/{JOBNAME}/mailto` eine E-Mail-Adresse hinterlegt, "
 "wird die Ausgabe des Cron-Jobs per E-Mail dorthin gesendet."
 
-#: ../../computers/basic-system-services.rst:329
+#: ../../computers/basic-system-services.rst:330
 msgid ":samp:`cron/{JOBNAME}/description` can be used to provide a description."
 msgstr ""
 "Mit :samp:`cron/{JOBNAME}/description` kann eine Beschreibung hinterlegt "
 "werden."
 
-#: ../../computers/basic-system-services.rst:334
+#: ../../computers/basic-system-services.rst:335
 msgid "Name service cache daemon"
 msgstr "Name Service Cache Daemon"
 
-#: ../../computers/basic-system-services.rst:336
+#: ../../computers/basic-system-services.rst:337
 msgid ""
 "Data of the NSS service is cached by the *Name Server Cache Daemon* "
 "(NSCD) in order to speed up frequently recurring requests for unchanged "
@@ -674,7 +674,7 @@ msgstr ""
 "vollständige neue LDAP-Anfrage durchgeführt werden, sondern die Daten "
 "können direkt aus dem Cache bezogen werden."
 
-#: ../../computers/basic-system-services.rst:341
+#: ../../computers/basic-system-services.rst:342
 msgid ""
 "Since UCS 3.1, the groups are no longer cached via the NSCD for "
 "performance and stability reasons; instead they are now cached by a local"
@@ -684,7 +684,7 @@ msgstr ""
 " und Stabilitätsgründen nicht mehr über den NSCD, sondern durch einen "
 "lokalen Gruppencache, siehe :ref:`groups-cache`."
 
-#: ../../computers/basic-system-services.rst:345
+#: ../../computers/basic-system-services.rst:346
 msgid ""
 "The central configuration file of the (:file:`/etc/nscd.conf`) is managed"
 " by |UCSUCR|."
@@ -692,7 +692,7 @@ msgstr ""
 "Die zentrale Konfigurations-Datei des NSCD (:file:`/etc/nscd.conf`) wird "
 "durch |UCSUCR| verwaltet."
 
-#: ../../computers/basic-system-services.rst:348
+#: ../../computers/basic-system-services.rst:349
 msgid ""
 "The access to the cache is handled via a hash table. The size of the hash"
 " table can be specified in |UCSUCR|, and should be higher than the number"
@@ -707,29 +707,29 @@ msgstr ""
 "verwendet werden. Die folgende Tabelle führt die Standardwerte der "
 "Variablen auf:"
 
-#: ../../computers/basic-system-services.rst:354
-#: ../../computers/basic-system-services.rst:359
+#: ../../computers/basic-system-services.rst:355
+#: ../../computers/basic-system-services.rst:360
 msgid "Default size of the hash table"
 msgstr "Standardgröße der Hash-Tabelle"
 
-#: ../../computers/basic-system-services.rst:358
+#: ../../computers/basic-system-services.rst:359
 msgid "Variable"
 msgstr "Variable"
 
-#: ../../computers/basic-system-services.rst:361
+#: ../../computers/basic-system-services.rst:362
 msgid "``nscd /hosts/size``"
 msgstr "``nscd /hosts/size``"
 
-#: ../../computers/basic-system-services.rst:362
-#: ../../computers/basic-system-services.rst:365
+#: ../../computers/basic-system-services.rst:363
+#: ../../computers/basic-system-services.rst:366
 msgid "``6007``"
 msgstr "``6007``"
 
-#: ../../computers/basic-system-services.rst:364
+#: ../../computers/basic-system-services.rst:365
 msgid "``nscd/passwd/size``"
 msgstr "``nscd/passwd/size``"
 
-#: ../../computers/basic-system-services.rst:367
+#: ../../computers/basic-system-services.rst:368
 msgid ""
 "With very big caches it may be necessary to increase the size of the "
 "cache database in the system memory. This can be configured through the "
@@ -741,7 +741,7 @@ msgstr ""
 ":envvar:`nscd/hosts/maxdbsize`, :envvar:`nscd/group/maxdbsize` und "
 ":envvar:`nscd/passwd/maxdbsize` konfiguriert werden."
 
-#: ../../computers/basic-system-services.rst:372
+#: ../../computers/basic-system-services.rst:373
 msgid ""
 "As standard, five threads are started by NSCD. In environments with many "
 "accesses it may prove necessary to increase the number via the |UCSUCRV| "
@@ -751,7 +751,7 @@ msgstr ""
 "Zugriffe erfolgen, kann es erforderlich sein, die Anzahl durch die "
 "|UCSUCRV| :envvar:`nscd/threads` zu erhöhen."
 
-#: ../../computers/basic-system-services.rst:376
+#: ../../computers/basic-system-services.rst:377
 msgid ""
 "In the basic setting, a resolved group or hostname is kept in cache for "
 "one hour, a username for ten minutes. With the |UCSUCR| variables "
@@ -767,7 +767,7 @@ msgstr ""
 ":envvar:`nscd/passwd/positive_time_to_live` können diese Zeiträume "
 "erweitert oder verringert werden (die Angabe erfolgt in Sekunden)."
 
-#: ../../computers/basic-system-services.rst:383
+#: ../../computers/basic-system-services.rst:384
 msgid ""
 "From time to time it might be necessary to manually invalidate the cache "
 "of the NSCD. This can be done individually for each cache table with the "
@@ -777,7 +777,7 @@ msgstr ""
 "invalidieren. Dies kann individuell pro Cache-Tabelle durch folgende "
 "Befehle geschehen:"
 
-#: ../../computers/basic-system-services.rst:387
+#: ../../computers/basic-system-services.rst:388
 msgid ""
 "$ nscd -i passwd\n"
 "$ nscd -i hosts"
@@ -785,7 +785,7 @@ msgstr ""
 "$ nscd -i passwd\n"
 "$ nscd -i hosts"
 
-#: ../../computers/basic-system-services.rst:393
+#: ../../computers/basic-system-services.rst:394
 msgid ""
 "The verbosity of the log messages can be configured through the |UCSUCRV|"
 " :envvar:`nscd/debug/level`."
@@ -793,11 +793,11 @@ msgstr ""
 "Der Detailgrad der Logmeldungen kann mit der |UCSUCRV| "
 ":envvar:`nscd/debug/level` konfiguriert werden."
 
-#: ../../computers/basic-system-services.rst:399
+#: ../../computers/basic-system-services.rst:400
 msgid "SSH login to systems"
 msgstr "SSH-Zugriff auf Systeme"
 
-#: ../../computers/basic-system-services.rst:401
+#: ../../computers/basic-system-services.rst:402
 msgid ""
 "When installing a UCS system, an SSH server is also installed per "
 "preselection. SSH is used for realizing encrypted connections to other "
@@ -811,7 +811,7 @@ msgstr ""
 "eine Prüfsumme sichergestellt werden kann. Wesentliche Aspekte der "
 "Konfiguration des SSH-Servers lassen sich über |UCSUCR| anpassen."
 
-#: ../../computers/basic-system-services.rst:406
+#: ../../computers/basic-system-services.rst:407
 msgid ""
 "By default the login of the privileged ``root`` user is permitted by SSH "
 "(e.g. for configuring a newly installed system where no users have been "
@@ -822,7 +822,7 @@ msgstr ""
 "Standort zu konfigurieren, auf dem noch keine weiteren Benutzer angelegt "
 "wurden)."
 
-#: ../../computers/basic-system-services.rst:410
+#: ../../computers/basic-system-services.rst:411
 msgid ""
 "If the |UCSUCRV| :envvar:`sshd/permitroot` is set to ``without-"
 "password``, then no interactive password request will be performed for "
@@ -834,7 +834,7 @@ msgstr ""
 "Abfrage mehr durchgeführt, sondern beispielsweise nur eine Public-Key-"
 "basierte Anmeldung, was Brute-Force-Attacken auf Passwörter vermeidet."
 
-#: ../../computers/basic-system-services.rst:415
+#: ../../computers/basic-system-services.rst:416
 msgid ""
 "To prohibit SSH login completely, this can be deactivated by setting the "
 "|UCSUCRV| :envvar:`auth/sshd/user/root` to ``no``."
@@ -843,7 +843,7 @@ msgstr ""
 " sein, kann dies durch Setzen der |UCSUCRV| :envvar:`auth/sshd/user/root`"
 " auf ``no`` deaktiviert werden."
 
-#: ../../computers/basic-system-services.rst:418
+#: ../../computers/basic-system-services.rst:419
 msgid ""
 "The |UCSUCRV| :envvar:`sshd/xforwarding` can be used to configure whether"
 " an X11 output should be passed on via SSH. This is necessary, for "
@@ -858,7 +858,7 @@ msgstr ""
 "einem entfernten Rechner zu starten. Die möglichen Einstellungen sind "
 "``yes`` und ``no``."
 
-#: ../../computers/basic-system-services.rst:425
+#: ../../computers/basic-system-services.rst:426
 msgid ""
 "The standard port for SSH connections is port 22 via TCP. If a different "
 "port is to be used, this can be arranged via the |UCSUCRV| "
@@ -868,11 +868,11 @@ msgstr ""
 "abweichender Port verwendet werden soll, kann dies über die "
 "|UCSUCR|-Variable :envvar:`sshd/port` konfiguriert werden."
 
-#: ../../computers/basic-system-services.rst:432
+#: ../../computers/basic-system-services.rst:433
 msgid "Configuring the time zone / time synchronization"
 msgstr "Konfiguration der Zeitzone / Zeitsynchronisation"
 
-#: ../../computers/basic-system-services.rst:434
+#: ../../computers/basic-system-services.rst:435
 msgid ""
 "The time zone in which a system is located can be changed in the UMC "
 "module :guilabel:`Language settings` under :menuselection:`Time zone and "
@@ -882,7 +882,7 @@ msgstr ""
 ":guilabel:`Sprach-Einstellungen` unter :menuselection:`Zeitzonen- und "
 "Tastatureinstellungen --> Zeitzone` geändert werden."
 
-#: ../../computers/basic-system-services.rst:438
+#: ../../computers/basic-system-services.rst:439
 msgid ""
 "Asynchronous system times between individual hosts of a domain can be the"
 " source of a large number of errors, for example:"
@@ -890,21 +890,21 @@ msgstr ""
 "Asynchrone Systemzeiten zwischen den einzelnen Rechnern einer Domäne "
 "können die Quelle vielfältiger Fehler bedeuten, zum Beispiel:"
 
-#: ../../computers/basic-system-services.rst:441
+#: ../../computers/basic-system-services.rst:442
 msgid "The reliability of log files is impaired."
 msgstr "Sie verringern beispielsweise die Verlässlichkeit von Log-Dateien."
 
-#: ../../computers/basic-system-services.rst:443
+#: ../../computers/basic-system-services.rst:444
 msgid "Kerberos operation is disrupted."
 msgstr "Der Kerberos-Betrieb ist gestört."
 
-#: ../../computers/basic-system-services.rst:445
+#: ../../computers/basic-system-services.rst:446
 msgid ""
 "The correct evaluation of the validity periods of passwords can be "
 "disturbed."
 msgstr "Die korrekte Auswertung von Passwortablaufintervallen kann gestört sein."
 
-#: ../../computers/basic-system-services.rst:447
+#: ../../computers/basic-system-services.rst:448
 msgid ""
 "Usually the |UCSPRIMARYDN| functions as the time server of a domain. With"
 " the |UCSUCR| variables :envvar:`timeserver`, :envvar:`timeserver2` and "
@@ -916,7 +916,7 @@ msgstr ""
 "und :envvar:`timeserver3` können externe NTP-Server als Zeitquelle "
 "eingebunden werden."
 
-#: ../../computers/basic-system-services.rst:451
+#: ../../computers/basic-system-services.rst:452
 msgid ""
 "Manual time synchronization can be started by the command "
 ":command:`ntpdate`."
@@ -924,7 +924,7 @@ msgstr ""
 "Eine manuelle Zeitsynchronisation kann durch den Befehl "
 ":command:`ntpdate` gestartet werden."
 
-#: ../../computers/basic-system-services.rst:453
+#: ../../computers/basic-system-services.rst:454
 msgid ""
 "Windows clients joined in a Samba/AD domain only accept signed NTP time "
 "requests. If the |UCSUCRV| :envvar:`ntp/signed` is set to ``yes``, the "
@@ -1288,8 +1288,8 @@ msgstr ""
 "DHCP-basierten Server geeignet."
 
 #: ../../computers/configure-hardware.rst:170
-#: ../../computers/configure-hardware.rst:198
-#: ../../computers/configure-hardware.rst:212
+#: ../../computers/configure-hardware.rst:199
+#: ../../computers/configure-hardware.rst:213
 #: ../../computers/configure-hardware.rst:241
 msgid "UCR variables:"
 msgstr "UCR Variablen:"
@@ -1306,7 +1306,11 @@ msgstr ":envvar:`interfaces/ethX/netmask`"
 msgid ":envvar:`interfaces/ethX/type`"
 msgstr ":envvar:`interfaces/ethX/type`"
 
-#: ../../computers/configure-hardware.rst:176
+#: ../../computers/configure-hardware.rst:175
+msgid ":envvar:`gateway`"
+msgstr ":envvar:`gateway`"
+
+#: ../../computers/configure-hardware.rst:177
 msgid ""
 "Besides the physical interfaces, additional virtual interfaces can also "
 "be defined in the form :envvar:`interfaces/ethX_Y/setting`."
@@ -1315,11 +1319,11 @@ msgstr ""
 "Interfaces in der Form :envvar:`interfaces/ethX_Y/setting` definiert "
 "werden."
 
-#: ../../computers/configure-hardware.rst:182
+#: ../../computers/configure-hardware.rst:183
 msgid "Configuration of IPv6 addresses"
 msgstr "Konfiguration von IPv6-Adressen"
 
-#: ../../computers/configure-hardware.rst:184
+#: ../../computers/configure-hardware.rst:185
 msgid ""
 "The IPv6 address can be configured in two ways: Stateless address "
 "autoconfiguration (SLAAC) is employed in the :guilabel:`Autoconfiguration"
@@ -1335,7 +1339,7 @@ msgstr ""
 " auch durch Angabe von *IPv6-Adresse* und *IPv6-Präfix* statisch "
 "konfiguriert werden."
 
-#: ../../computers/configure-hardware.rst:190
+#: ../../computers/configure-hardware.rst:191
 msgid ""
 "In contrast to DHCP, in SLAAC there is no assignment of additional data "
 "such as the DNS server to be used. There is an additional protocol for "
@@ -1354,19 +1358,19 @@ msgstr ""
 "*default*, für alle anderen Adressen können funktionale Bezeichner "
 "vergeben werden, z.B. ``Interface-Mailserver``."
 
-#: ../../computers/configure-hardware.rst:200
+#: ../../computers/configure-hardware.rst:201
 msgid ":envvar:`interfaces/ethX/ipv6/address`"
 msgstr ":envvar:`interfaces/ethX/ipv6/address`"
 
-#: ../../computers/configure-hardware.rst:201
+#: ../../computers/configure-hardware.rst:202
 msgid ":envvar:`interfaces/ethX/ipv6/prefix`,"
 msgstr ":envvar:`interfaces/ethX/ipv6/prefix`,"
 
-#: ../../computers/configure-hardware.rst:202
+#: ../../computers/configure-hardware.rst:203
 msgid ":envvar:`interfaces/ethX/ipv6/acceptRA` activates SLAAC"
 msgstr ":envvar:`interfaces/ethX/ipv6/acceptRA` aktiviert SLAAC"
 
-#: ../../computers/configure-hardware.rst:204
+#: ../../computers/configure-hardware.rst:205
 msgid ""
 "Further network settings can be performed under :guilabel:`Global network"
 " settings`."
@@ -1374,7 +1378,7 @@ msgstr ""
 "Unter :guilabel:`Globale Netzwerk-Einstellungen` können weitere "
 "netzwerkbezogene Einstellungen vorgenommen werden."
 
-#: ../../computers/configure-hardware.rst:207
+#: ../../computers/configure-hardware.rst:208
 msgid ""
 "The IP addresses for the standard gateways in the subnetwork can be "
 "entered under *Gateway (IPv4)* and *Gateway (IPv6)*. It is not obligatory"
@@ -1387,10 +1391,6 @@ msgstr ""
 "werden. Für IPv6 ist die Angabe eines Gateways nicht erforderlich, wird "
 "jedoch empfohlen. Ein hier konfiguriertes IPv6-Gateway hat Vorrang vor "
 "Router Advertisements, die ansonsten die Route ändern könnten."
-
-#: ../../computers/configure-hardware.rst:214
-msgid ":envvar:`gateway`"
-msgstr ":envvar:`gateway`"
 
 #: ../../computers/configure-hardware.rst:215
 msgid ":envvar:`ipv6/gateway`"
@@ -2959,14 +2959,15 @@ msgstr "Reiter *Allgemein*"
 
 #: ../../computers/umc.rst:72 ../../computers/umc.rst:163
 #: ../../computers/umc.rst:192 ../../computers/umc.rst:217
-#: ../../computers/umc.rst:247 ../../computers/umc.rst:277
+#: ../../computers/umc.rst:247 ../../computers/umc.rst:266
+#: ../../computers/umc.rst:294
 msgid "Attribute"
 msgstr "Attribut"
 
 #: ../../computers/umc.rst:73 ../../computers/umc.rst:93
 #: ../../computers/umc.rst:164 ../../computers/umc.rst:193
 #: ../../computers/umc.rst:218 ../../computers/umc.rst:248
-#: ../../computers/umc.rst:278
+#: ../../computers/umc.rst:267 ../../computers/umc.rst:295
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -3318,20 +3319,40 @@ msgstr ""
 "erreichbar ist."
 
 #: ../../computers/umc.rst:258
+msgid "Computer management module - Alerts tab"
+msgstr "Modul Rechnerverwaltung - Reiter Dienste"
+
+#: ../../computers/umc.rst:262
+msgid "*Alerts* tab (advanced settings)"
+msgstr "Reiter *Alerts* (erweiterte Einstellungen)"
+
+#: ../../computers/umc.rst:269
+msgid "Assigned monitoring alerts"
+msgstr "Monitoring Alerts zuweisen"
+
+#: ../../computers/umc.rst:270
+msgid ""
+"Specifies which Monitoring alert checks should be performed for this "
+"computer, see :ref:`monitoring-alert-configuration`."
+msgstr ""
+"Legt fest, welche Monitoring Alert Prüfungen für diesen Rechner "
+"ausgeführt werden, siehe :ref:`monitoring-alert-configuration`."
+
+#: ../../computers/umc.rst:275
 msgid "Computer management module - Groups tab"
 msgstr "Modul Rechnerverwaltung - Reiter Gruppen"
 
-#: ../../computers/umc.rst:260
+#: ../../computers/umc.rst:277
 msgid "The computer can be added into different groups in *Groups* tab."
 msgstr ""
 "In diesem Reiter kann der Rechner in verschiedene Gruppen aufgenommen "
 "werden."
 
-#: ../../computers/umc.rst:265
+#: ../../computers/umc.rst:282
 msgid "Computer management module - Options alias tab"
 msgstr "Modul Rechnerverwaltung - Reiter Optionen"
 
-#: ../../computers/umc.rst:267
+#: ../../computers/umc.rst:284
 msgid ""
 "The *Options* tab allows to disable LDAP object classes for host objects."
 " The entry fields for attributes of disabled object classes are no longer"
@@ -3342,15 +3363,15 @@ msgstr ""
 "werden dann nicht angezeigt. Nicht alle Objektklassen können nachträglich"
 " verändert werden."
 
-#: ../../computers/umc.rst:273
+#: ../../computers/umc.rst:290
 msgid "*(Options)* tab"
 msgstr "Reiter *(Optionen)*"
 
-#: ../../computers/umc.rst:280
+#: ../../computers/umc.rst:297
 msgid "Kerberos principal"
 msgstr "Kerberos Prinzipal"
 
-#: ../../computers/umc.rst:281
+#: ../../computers/umc.rst:298
 msgid ""
 "If this checkbox is not selected the host does not receive the "
 "``krb5Principal`` and ``krb5KDCEntry`` object classes."
@@ -3358,11 +3379,11 @@ msgstr ""
 "Ist dieses Auswahlkästchen nicht markiert, erhält der Rechner die "
 "Objektklassen ``krb5Principal`` und ``krb5KDCEntry`` nicht."
 
-#: ../../computers/umc.rst:284
+#: ../../computers/umc.rst:301
 msgid "POSIX account"
 msgstr "POSIX Konto"
 
-#: ../../computers/umc.rst:285
+#: ../../computers/umc.rst:302
 msgid ""
 "If this checkbox is not selected the host does not receive the "
 "``posixAccount`` object class."
@@ -3370,11 +3391,11 @@ msgstr ""
 "Ist dieses Auswahlkästchen nicht markiert, erhält der Rechner die "
 "Objektklasse ``posixAccount`` nicht."
 
-#: ../../computers/umc.rst:288
+#: ../../computers/umc.rst:305
 msgid "Samba account"
 msgstr "Samba-Konto"
 
-#: ../../computers/umc.rst:289
+#: ../../computers/umc.rst:306
 msgid ""
 "If this checkbox is not selected the host does not receive the "
 "``sambaSamAccount`` object class."
@@ -3382,11 +3403,11 @@ msgstr ""
 "Ist dieses Auswahlkästchen nicht markiert, erhält der Rechner die "
 "Objektklasse ``sambaSamAccount`` nicht."
 
-#: ../../computers/umc.rst:295
+#: ../../computers/umc.rst:312
 msgid "Integration of Ubuntu clients"
 msgstr "Integration von Ubuntu-Clients"
 
-#: ../../computers/umc.rst:297
+#: ../../computers/umc.rst:314
 msgid ""
 "Ubuntu clients can be managed in the UMC module :guilabel:`Computers` "
 "with their own system role. The network properties for DNS/DHCP can also "
@@ -3396,11 +3417,11 @@ msgstr ""
 ":guilabel:`Rechner` verwaltet werden. Die Netzwerkeigenschaften für "
 "DNS/DHCP können dabei ebenfalls dort verwaltet werden."
 
-#: ../../computers/umc.rst:301
+#: ../../computers/umc.rst:318
 msgid "The use of policies is not supported."
 msgstr "Die Anwendung von Richtlinien wird nicht unterstützt."
 
-#: ../../computers/umc.rst:303
+#: ../../computers/umc.rst:320
 msgid ""
 "Some configuration adjustments need to be performed on Ubuntu systems; "
 "these are documented in :cite:t:`ext-doc-domain`."

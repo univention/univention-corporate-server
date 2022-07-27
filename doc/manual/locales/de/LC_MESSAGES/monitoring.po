@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-28 12:06+0200\n"
+"POT-Creation-Date: 2022-07-28 16:36+0000\n"
 "PO-Revision-Date: 2022-06-14 16:17+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.10.3\n"
 
 #: ../../monitoring/dashboard.rst:4 ../../monitoring/dashboard.rst:22
 msgid "UCS Dashboard"
@@ -32,13 +32,14 @@ msgstr ""
 "liefern kontinuierlich aktualisierte Reports über bestimmte Aspekte der "
 "Domäne oder der Server."
 
-#: ../../monitoring/dashboard.rst:15 ../../monitoring/nagios.rst:13
+#: ../../monitoring/dashboard.rst:15 ../../monitoring/monitoring.rst:44
+#: ../../monitoring/nagios.rst:13
 msgid "Installation"
 msgstr "Installation"
 
 #: ../../monitoring/dashboard.rst:17
-msgid "The UCS Dashboard consists of three parts:"
-msgstr "Das UCS Dashboard besteht aus drei Teilen:"
+msgid "The UCS Dashboard consists of the following parts:"
+msgstr "Das UCS Dashboard besteht aus den folgenden Komponenten:"
 
 #: ../../monitoring/dashboard.rst:20
 msgid ""
@@ -78,53 +79,44 @@ msgstr ""
 #: ../../monitoring/dashboard.rst:32
 msgid ""
 "The app *UCS Dashboard* can be installed from the Univention App Center "
-"on a server in the domain. Currently, the installation is only possible "
-"on the system roles Primary, Backup or |UCSREPLICADN|. The apps *UCS "
-"Dashboard Database* and *UCS Dashboard Client* are automatically "
+"on a server in the domain. The installation is only supported on the "
+"system roles |UCSPRIMARYDN|, |UCSBACKUPDN| or |UCSREPLICADN|. The apps "
+"*UCS Dashboard Database* and *UCS Dashboard Client* are automatically "
 "installed on the same system."
 msgstr ""
-"Die App *UCS Dashboard* kann aus dem Univention App Center auf einem "
-"Server in der Domäne installiert werden. Derzeit ist die Installation nur"
-" auf den Systemrollen Primary, Backup oder |UCSREPLICADN| erlaubt. Die "
-"Apps *UCS Dashboard Database* und *UCS Dashboard Client* werden "
-"automatisch auf dem System mitinstalliert."
+"Die *UCS Dashboard* App kann über das Univention App Center auf einem "
+"Server in der Domäne installiert werden. Die Installation wird nur auf "
+"den Systemrollen |UCSPRIMARYDN|, |UCSBACKUPDN| oder |UCSREPLICADN| "
+"unterstützt. Die *UCS Dashboard Database* App und die *UCS Dashboard "
+"Client* App werden automatisch auf demselben System installiert."
 
-#: ../../monitoring/dashboard.rst:37
-msgid ""
-"The app *UCS Dashboard Client* should be installed on every UCS system. "
-"Only then will the system data be displayed on the dashboard."
-msgstr ""
-"Die App *UCS Dashboard Client* sollte auf jedem UCS-System installiert "
-"werden. Nur dadurch werden die Daten des Systems auf dem Dashboard "
-"dargestellt."
-
-#: ../../monitoring/dashboard.rst:43
+#: ../../monitoring/dashboard.rst:40
 msgid "Usage"
 msgstr "Nutzung"
 
-#: ../../monitoring/dashboard.rst:45
+#: ../../monitoring/dashboard.rst:42
 msgid ""
 "After the installation, the UCS Dashboard is linked in the portal. "
 "Alternatively, it can be accessed directly via :samp:`https"
 "://{SERVERNAME-OR-IP}/ucs-dashboard/`."
 msgstr ""
-"Nach der Installation ist das UCS Dashboard im Portal verlinkt.  "
+"Nach der Installation ist das UCS Dashboard im Portal verlinkt. "
 "Alternativ kann es direkt über :samp:`https://{SERVERNAME-OR-IP}/ucs-"
 "dashboard/` erreicht werden."
 
-#: ../../monitoring/dashboard.rst:49
+#: ../../monitoring/dashboard.rst:46
 msgid ""
 "By default access is only granted to users of the group ``Domain Admins``"
 " (e.g. the user Administrator)."
 msgstr ""
 "Der Zugriff wird in der Standardeinstellung ausschließlich Benutzern der "
-"Gruppe ``Domain Admins`` (z.B.  der Benutzer Administrator) gewährt."
+"Gruppe ``Domain Admins`` (z.B. der Benutzer Administrator) gewährt."
 
-#: ../../monitoring/dashboard.rst:55 ../../monitoring/dashboard.rst:62
+#: ../../monitoring/dashboard.rst:52 ../../monitoring/dashboard.rst:59
 msgid "Domain dashboard"
 msgstr "Domain Dashboard"
 
-#: ../../monitoring/dashboard.rst:64
+#: ../../monitoring/dashboard.rst:61
 msgid ""
 "After the login, the *Domain Dashboard* is opened by default. On this "
 "dashboard, general information about the domain is displayed, such as how"
@@ -135,7 +127,7 @@ msgstr ""
 "angezeigt, z.B. wie viele Server und wie viele Benutzer in der Umgebung "
 "existieren."
 
-#: ../../monitoring/dashboard.rst:68
+#: ../../monitoring/dashboard.rst:65
 msgid ""
 "Furthermore, the UCS systems are listed on the dashboard, in a tabular "
 "overview, including further information, such as the server role, the "
@@ -145,7 +137,7 @@ msgstr ""
 "UCS-Systeme aufgelistet inklusive weiterer Informationen, wie z.B. die "
 "Server Rolle, die installierten Apps oder ob ein Update verfügbar ist."
 
-#: ../../monitoring/dashboard.rst:72
+#: ../../monitoring/dashboard.rst:69
 msgid ""
 "In addition, the CPU usage, memory usage, free hard disk space and the "
 "status of the LDAP replication are displayed. In this graphics all "
@@ -155,11 +147,11 @@ msgstr ""
 "Festplattenspeicher und der Status der LDAP-Replikation angezeigt. Dabei "
 "werden in den Grafiken jeweils alle Serversysteme angezeigt."
 
-#: ../../monitoring/dashboard.rst:79 ../../monitoring/dashboard.rst:86
+#: ../../monitoring/dashboard.rst:76 ../../monitoring/dashboard.rst:83
 msgid "Server dashboard"
 msgstr "Server Dashboard"
 
-#: ../../monitoring/dashboard.rst:88
+#: ../../monitoring/dashboard.rst:85
 msgid ""
 "By default, the *Server Dashboard* is also configured. On this dashboard,"
 " detailed information about individual server systems are shown, such as "
@@ -170,7 +162,7 @@ msgstr ""
 "Serversystemen aufgelistet, wie z.B. die CPU- oder Speicherauslastung "
 "oder der Netzwerkdurchsatz."
 
-#: ../../monitoring/dashboard.rst:92
+#: ../../monitoring/dashboard.rst:89
 msgid ""
 "The servers can be selected in the drop down *server*. Then the graphics "
 "show the details about the selected server."
@@ -178,20 +170,43 @@ msgstr ""
 "Die Server können im Dropdown *server* ausgewählt werden. Anschließend "
 "werden die Grafiken entsprechend aktualisiert."
 
-#: ../../monitoring/dashboard.rst:98
+#: ../../monitoring/dashboard.rst:95 ../../monitoring/monitoring.rst:32
+msgid "Alert dashboard"
+msgstr "Alert Dashboard"
+
+#: ../../monitoring/dashboard.rst:102
+msgid "Alert Dashboard"
+msgstr "Alert Dashboard"
+
+#: ../../monitoring/dashboard.rst:102
+msgid "*Alert Dashboard*"
+msgstr "*Alert Dashboard*"
+
+#: ../../monitoring/dashboard.rst:104
+msgid ""
+"By default, the :program:`UCS Dashboard` app configures the *Alert "
+"Dashboard*. The *Alert Dashboard* shows detailed information about the "
+"status of all alerts, configured in UCS."
+msgstr ""
+"Standardmäßig konfiguriert die :program:`UCS Dashboard` App das *Alert "
+"Dashboard*. Das *Alert Dashboard* zeigt detaillierte Informationen über "
+"den Status aller in UCS konfigurierten Alerts."
+
+#: ../../monitoring/dashboard.rst:111
 msgid "Own dashboards"
 msgstr "Eigene Dashboards"
 
-#: ../../monitoring/dashboard.rst:100
+#: ../../monitoring/dashboard.rst:113
 msgid ""
-"The two included dashboards *Domain Dashboard* and *Server Dashboard* "
-"can't be changed, because they are updated by Univention with updates."
+"Administrators can't change the three included dashboards *Domain "
+"Dashboard*, *Server Dashboard* and *Alert Dashboard*, because Univention "
+"provides updates for them."
 msgstr ""
-"Die beiden mitgelieferten Dashboards *Domain Dashboard* und *Server "
-"Dashboard* können nicht verändert werden, da diese von Univention durch "
-"Aktualisierungen ergänzt und verändert werden können."
+"Administratoren können die drei enthaltenen Dashboards *Domain "
+"Dashboard*, *Server Dashboard* und *Alarm Dashboard* nicht ändern, da "
+"Univention Updates für sie bereitstellt."
 
-#: ../../monitoring/dashboard.rst:103
+#: ../../monitoring/dashboard.rst:117
 msgid ""
 "Instead, you can create your own dashboards. On these dashboards you can "
 "then either add already existing elements or new elements can be created."
@@ -204,7 +219,7 @@ msgstr ""
 "das Plus Zeichen am linken Rand geklickt werden. Anschließend existiert "
 "ein neues Dashboard, welches mit Elementen befüllt werden kann."
 
-#: ../../monitoring/dashboard.rst:109
+#: ../../monitoring/dashboard.rst:123
 msgid ""
 "The Grafana Labs Marks are trademarks of Grafana Labs, and are used with "
 "Grafana Labs’ permission. We are not affiliated with, endorsed or "
@@ -215,7 +230,7 @@ msgstr ""
 "noch mit seinen Tochtergesellschaften verbunden, noch werden wir von "
 "ihnen unterstützt oder gefördert."
 
-#: ../../monitoring/index.rst:18
+#: ../../monitoring/index.rst:16
 msgid "Chapter contents:"
 msgstr "Kapitelinhalte:"
 
@@ -235,24 +250,1080 @@ msgid ""
 "the state of domains and individual servers. On the other hand, under UCS"
 " 4.4, with Nagios it is possible to continuously check computers and "
 "services in the background and proactively trigger a notification if a "
-"warning level is reached."
+"warning level is reached. From UCS 5.0-2 onward, Prometheus and "
+"Prometheus Alertmanager are used for monitoring. With UCS 5.0 support for"
+" the Nagios server component has been discontinued."
 msgstr ""
-"Einerseits das UCS Dashboard mit dessen Hilfe Administratoren sehr "
-"schnell den Zustand der Domänen und einzelner Server abzulesen. "
-"Anderseits gibt es in UCS 4.4 mit Nagios die Möglichkeit, fortlaufend im "
-"Hintergrund Rechner und Dienste zu überprüfen und proaktiv eine "
-"Benachrichtigung auszulösen, sollte eine Warnstufe erreicht werden."
+"Das UCS Dashboard hilft einerseits den Administratoren, schnell den "
+"Zustand von Domänen und einzelnen Servern zu erfassen. Zum anderen ist es"
+" unter UCS 4.4 mit Nagios möglich, Rechner und Dienste im Hintergrund zu "
+"überprüfen und proaktiv eine Benachrichtigung auszulösen, wenn eine "
+"Warnstufe erreicht wird. Ab UCS 5.0-2 können Prometheus und Prometheus "
+"Alertmanager zur Überwachung eingesetzt. Mit UCS 5.0 wurde die "
+"Unterstützung für die Nagios-Serverkomponente eingestellt."
 
-#: ../../monitoring/index.rst:14
-msgid ""
-"With UCS 5.0 support for the Nagios server component has been "
-"discontinued, but the systems can still be monitored, e.g. by UCS 4.4 "
-"Nagios servers, as described in the UCS 4.4 manual."
+#: ../../monitoring/monitoring.rst:4
+msgid "Monitoring"
+msgstr "Monitoring"
+
+#: ../../monitoring/monitoring.rst:6
+msgid "UCS 5.0-2 supports monitoring alerts through *Prometheus* metrics."
 msgstr ""
-"In UCS 5.0 ist die Serverkomponente von Nagios nicht mehr unterstützt, "
-"die Systeme können aber als Nagios Client dienen, um sie z.B. von einem "
-"UCS 4.4 Nagios Server überwachen zu lassen, wie im UCS 4.4 Handbuch "
-"beschreiben."
+"UCS 5.0-2 unterstützt die Überwachung von Alarmen durch "
+"*Prometheus*-Metriken."
+
+#: ../../monitoring/monitoring.rst:9
+msgid ""
+"With *Prometheus*, *Prometheus Node Exporter*, and *Prometheus "
+"Alertmanager*, administrators can verify the correct function of complex "
+"IT structures from networks, computers and services continually and "
+"automatically."
+msgstr ""
+"Mit *Prometheus*, *Prometheus Node Exporter*, und *Prometheus "
+"Alertmanager* können Administratoren die korrekte Funktion von komplexen "
+"IT-Strukturen aus Netzwerken, Rechnern und Diensten kontinuierlich und "
+"automatisch überprüfen."
+
+#: ../../monitoring/monitoring.rst:13
+msgid ""
+"Prometheus Node Exporter exports a comprehensive collection of metrics "
+"into the Prometheus database. Besides polling system indicators like CPU,"
+" memory usage, and free disk space, they test availability and operation "
+"of different services like SSH, SMTP, and HTTP. Operation tests generally"
+" perform program steps such as the delivery of a test email or the "
+"resolution of a DNS record. The Prometheus Node Exporter provides UCS "
+"specific alerts in addition to the start metrics already included, for "
+"example an alert for the listener/notifier replication."
+msgstr ""
+"Der Prometheus Node Exporter exportiert eine umfassende Sammlung von "
+"Metriken in die Prometheus-Datenbank. Neben der Abfrage von "
+"Systemindikatoren wie CPU, Speichernutzung und freien Speicherplatz, "
+"testen sie die Verfügbarkeit und den Betrieb von verschiedenen Diensten "
+"wie SSH, SMTP und HTTP. Betriebstests führen im Allgemeinen "
+"Programmschritte wie die Zustellung einer Test-E-Mail oder die Auflösung "
+"eines DNS-Eintrags durch. Der Prometheus Node Exporter bietet UCS "
+"spezifische Alarme zusätzlich zu den bereits enthaltenen Startmetriken, "
+"zum Beispiel einen Alarm für die Listener/Notifier-Replikation."
+
+#: ../../monitoring/monitoring.rst:22
+msgid ""
+"When the operating status changes, the monitoring informs a contact "
+"person specified in advance of the possible malfunction. In addition to "
+"the reactive notification in case of error, administrators can check the "
+"current status at any time continually in the *Grafana UCS Dashboard* web"
+" interface displaying the status information in a compact manner."
+msgstr ""
+"Wenn sich der Betriebszustand ändert, informiert die Überwachung einen "
+"vorher festgelegten Ansprechpartner über die mögliche Störung. Zusätzlich"
+" zur reaktiven Benachrichtigung im Fehlerfall können Administratoren den "
+"aktuellen Status jederzeit kontinuierlich in der Web-Oberfläche *Grafana "
+"UCS Dashboard* , das die Statusinformationen kompakt anzeigt, überprüfen."
+
+#: ../../monitoring/monitoring.rst:34
+msgid ""
+"See UCS-Dashboard :ref:`dashboard-installation` for an overview of all "
+"involved components."
+msgstr ""
+"Siehe UCS-Dashboard :ref:`dashboard-installation` für eine Übersicht über"
+" alle beteiligten Komponenten."
+
+#: ../../monitoring/monitoring.rst:36
+msgid ""
+"Administrators define the alert configuration in |UCSUMC|. A listener "
+"module automatically generates the configuration files from information "
+"stored in the LDAP directory."
+msgstr ""
+"Administratoren definieren die Alarmkonfiguration in |UCSUMC|. Ein "
+"Listener Modul generiert automatisch die Konfigurationsdateien aus den "
+"Informationen im LDAP-Verzeichnis."
+
+#: ../../monitoring/monitoring.rst:46
+msgid ""
+"For installation of the UCS Dashboard components, see :ref:`dashboard-"
+"installation`."
+msgstr ""
+"Zur Installation der UCS Dashboard-Komponenten siehe :ref:`dashboard-"
+"installation`."
+
+#: ../../monitoring/monitoring.rst:48
+msgid ""
+"Additionally to the components of the UCS Dashboard you need to install "
+"the *Prometheus Alertmanager* app and the *univention-monitoring-client*."
+msgstr ""
+"Zusätzlich zu den Komponenten des UCS Dashboards müssen Sie die App "
+"*Prometheus Alertmanager* und den *univention-monitoring-client* "
+"installieren."
+
+#: ../../monitoring/monitoring.rst:51
+msgid ""
+"For every UCS system that the administrator wants to show system data on "
+"the dashboard, they must install the *UCS Dashboard Client* app. The "
+"package :program:`univention-monitoring-client` depends on the *UCS "
+"Dashboard Client* app and is installed on every UCS system by default for"
+" the alert functionality."
+msgstr ""
+"Für jedes UCS-System, das der Administrator auf dem Dashboard anzeigen "
+"möchte, muss er die App *UCS Dashboard Client* installieren. Das Paket "
+":program:`univention-monitoring-client` hängt von *UCS Dashboard Client* "
+"ab und wird standardmäßig auf jedem UCS-System installiert, um die "
+"Alarmfunktionalität bereitzustellen."
+
+#: ../../monitoring/monitoring.rst:58
+msgid "Prometheus Alertmanager"
+msgstr "Prometheus Alertmanager"
+
+#: ../../monitoring/monitoring.rst:57
+msgid ""
+"The *Prometheus Alertmanager* app to send notifications for example "
+"through email for firing alerts. The Alertmanager needs some "
+"configuration to work properly."
+msgstr ""
+"Die *Prometheus Alertmanager* App versendet Benachrichtigungen über "
+"ausgelöste Alarme, zum Beispiel per E-Mail. Der Alertmanager benötigt "
+"einige Einstellungen, um korrekt zu funktionieren."
+
+msgid "Alertmanager Settings"
+msgstr "Alertmanager Einstellungen"
+
+#: ../../monitoring/monitoring.rst:63
+msgid ""
+"The settings include the recipients of the email alert notifications. "
+"Furthermore, the app settings need a value for a SMTP server to send "
+"email notifications. The Alertmanager supports the SMTP authentication "
+"methods ``PLAIN``, ``LOGIN``, and ``CRAM-MD5`` as well as communication "
+"with TLS. No authentication will be used, if you leave all authentication"
+" related fields of the app settings empty."
+msgstr ""
+"Die Einstellungen umfassen die Empfänger der E-Mail-Benachrichtigungen. "
+"Außerdem benötigen die App-Einstellungen einen Wert für einen SMTP-"
+"Server, um E-Mail-Benachrichtigungen zu senden. Der Alertmanager "
+"unterstützt die SMTP-Authentifizierungsmethoden ``PLAIN``, ``LOGIN`` und "
+"``CRAM-MD5`` sowie die Kommunikation via TLS. Keine Authentifizierung "
+"wird verwendet, wenn Sie alle Felder der App-Einstellungen bezüglich "
+"Authentifizierung leer lassen."
+
+#: ../../monitoring/monitoring.rst:72
+msgid ":program:`univention-monitoring-client`"
+msgstr ":program:`univention-monitoring-client`"
+
+#: ../../monitoring/monitoring.rst:71
+msgid ""
+"The package :program:`univention-monitoring-client` provides standard "
+"alert plugins for checking the system health."
+msgstr ""
+"Das Paket :program:`univention-monitoring-client` stellt Standard Alarm "
+"Plugins zur Überprüfung des Systemzustands bereit."
+
+#: ../../monitoring/monitoring.rst:74
+msgid ""
+"Administrators can install plugins with the following packages, that add "
+"alerts beyond the standard plugins provided with the :program"
+":`univention-monitoring-client` package:"
+msgstr ""
+"Administratoren können mit den folgenden Paketen Plugins installieren, "
+"die über die Standard-Plugins hinausgehen, die mit dem :program"
+":`univention-monitoring-client` Paket bereitgestellt werden."
+
+#: ../../monitoring/monitoring.rst:78
+msgid ""
+":program:`univention-monitoring-raid`: Monitoring of the software RAID "
+"status"
+msgstr ""
+":program:`univention-monitoring-raid`: Überwachung des Software-RAID-"
+"Status"
+
+#: ../../monitoring/monitoring.rst:80
+msgid ""
+":program:`univention-monitoring-smart`: Test of the S.M.A.R.T. status of "
+"hard drives"
+msgstr ""
+":program:`univention-monitoring-smart`: Prüfung des S.M.A.R.T.-Status von"
+" Festplatten"
+
+#: ../../monitoring/monitoring.rst:83
+msgid ":program:`univention-monitoring-opsi`: Test of software distribution OPSI"
+msgstr ":program:`univention-monitoring-opsi`: Prüfung der Software OPSI"
+
+#: ../../monitoring/monitoring.rst:85
+msgid ":program:`univention-monitoring-cups`: Test of CUPS printing system"
+msgstr ":program:`univention-monitoring-cups`: Prüfung des Druckerdienstes CUPS"
+
+#: ../../monitoring/monitoring.rst:87
+msgid ":program:`univention-monitoring-squid`: Test of Squid proxy server"
+msgstr ":program:`univention-monitoring-squid`: Prüfung des Squid proxy Servers"
+
+#: ../../monitoring/monitoring.rst:89
+msgid ":program:`univention-monitoring-samba`: Test of the Samba 4 services"
+msgstr ":program:`univention-monitoring-samba`: Prüfung des Samba 4 Dienstes"
+
+#: ../../monitoring/monitoring.rst:91
+msgid ":program:`univention-monitoring-s4-connector`: Test of the S4 Connector"
+msgstr ":program:`univention-monitoring-s4-connector`: Prüfung des S4-Connector"
+
+#: ../../monitoring/monitoring.rst:93
+msgid ":program:`univention-monitoring-ad-connector`: Test of the AD Connector"
+msgstr ":program:`univention-monitoring-ad-connector`: Prüfung des AD Connectors"
+
+#: ../../monitoring/monitoring.rst:95
+msgid ""
+"Some services already automatically setup their respective package during"
+" installation. For example, if administrators setup the :program:`UCS AD "
+"Connector`, it automatically includes the monitoring plugin."
+msgstr ""
+"Einige Dienste richten ihr jeweiliges Paket zur Überwachung bereits bei "
+"der Installation ein. Wenn Administratoren zum Beispiel den :program:`UCS"
+" AD Connector einrichten, enthält es automatisch das Plugin für die "
+"Überwachung."
+
+#: ../../monitoring/monitoring.rst:103
+msgid "Preconfigured monitoring checks"
+msgstr "Vorkonfigurierte Überwachungstests"
+
+#: ../../monitoring/monitoring.rst:105
+msgid ""
+"The installation automatically sets up basic monitoring tests for UCS "
+"systems. All alerts have label *severity* with value ``critical`` or "
+"``warning``."
+msgstr ""
+"Die Installation richtet automatisch grundlegende Überwachungstests für "
+"UCS Systeme ein. Alle Alarme haben ein Label *severity* mit dem Wert "
+"``critical`` oder ``warning``."
+
+#: ../../monitoring/monitoring.rst:108
+msgid "Preconfigured alerts"
+msgstr "Vorkonfigurierte Alarme"
+
+#: ../../monitoring/monitoring.rst:112 ../../monitoring/monitoring.rst:206
+msgid "Alert"
+msgstr "Alarm"
+
+#: ../../monitoring/monitoring.rst:113 ../../monitoring/monitoring.rst:207
+#: ../../monitoring/monitoring.rst:317 ../../monitoring/monitoring.rst:359
+#: ../../monitoring/monitoring.rst:388 ../../monitoring/nagios.rst:45
+#: ../../monitoring/nagios.rst:140
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../monitoring/monitoring.rst:115 ../../monitoring/nagios.rst:47
+msgid "``UNIVENTION_PING``"
+msgstr "``UNIVENTION_PING``"
+
+#: ../../monitoring/monitoring.rst:116 ../../monitoring/nagios.rst:48
+#, python-format
+msgid ""
+"Tests the availability of the monitored UCS system with the command "
+":command:`ping`. By default an error status is attained if the response "
+"time exceeds 50 ms or 100 ms or package losses of 20% or 40% occur."
+msgstr ""
+"Testet die Erreichbarkeit des überwachten UCS-Systems mit dem Kommando "
+":command:`ping`. In der Standardeinstellung wird der Fehlerzustand "
+"erreicht, wenn die Antwortzeit 50 ms oder 100 ms überschreitet oder "
+"Paketverluste von 20% oder 40% auftreten."
+
+#: ../../monitoring/monitoring.rst:121
+msgid "``UNIVENTION_DISK_ROOT`` and ``UNIVENTION_DISK_ROOT_WARNING``"
+msgstr "``UNIVENTION_DISK_ROOT`` und ``UNIVENTION_DISK_ROOT_WARNING``"
+
+#: ../../monitoring/monitoring.rst:122 ../../monitoring/nagios.rst:54
+#, python-format
+msgid ""
+"Monitors how full the :file:`/` partition is. An error status is raised "
+"if the remaining free space falls below 25% or 10% by default."
+msgstr ""
+"Überwacht den Füllstand der :file:`/`-Partition. Unterschreitet der "
+"verbleibende freie Platz in der Standardeinstellung 25% oder 10% wird der"
+" Fehlerzustand gesetzt."
+
+#: ../../monitoring/monitoring.rst:125 ../../monitoring/nagios.rst:57
+msgid "``UNIVENTION_DNS``"
+msgstr "``UNIVENTION_DNS``"
+
+#: ../../monitoring/monitoring.rst:126
+msgid ""
+"Tests the function of the local DNS server and the accessibility of the "
+"public DNS server by querying the hostname ``www.univention.de``. If no "
+"DNS forwarder is defined for the UCS domain, this request fails. In this "
+"case, ``www.univention.de`` can be replaced with the FQDN of the "
+"|UCSPRIMARYDN| for example, in the :envvar:`monitoring/dns/lookup-domain`"
+" to test the function of the name resolution."
+msgstr ""
+"Testet die Funktion des lokalen DNS-Servers und die Erreichbarkeit des "
+"öffentlichen DNS-Servers durch Abfrage des Hostnamens "
+"``www.univention.de``. Wenn kein DNS-Forwarder für die UCS-Domäne "
+"definiert ist, schlägt diese Anfrage fehl. In diesem Fall kann "
+"``www.univention.de`` durch den FQDN des |UCSPRIMARYDN| ersetzt werden, "
+"zum Beispiel in der :envvar:`monitoring/dns/lookup-domain` um die "
+"Funktion der Namensauflösung zu testen."
+
+#: ../../monitoring/monitoring.rst:133
+msgid "``UNIVENTION_LDAP_AUTH``"
+msgstr "``UNIVENTION_LDAP_AUTH``"
+
+#: ../../monitoring/monitoring.rst:134 ../../monitoring/nagios.rst:66
+msgid "Monitors the LDAP server running on UCS Directory Nodes."
+msgstr "Überwacht den auf Directory Nodes laufenden LDAP-Server."
+
+#: ../../monitoring/monitoring.rst:136
+msgid "``UNIVENTION_LOAD`` and ``UNIVENTION_LOAD_WARNING``"
+msgstr "``UNIVENTION_LOAD`` und ``UNIVENTION_LOAD_WARNING``"
+
+#: ../../monitoring/monitoring.rst:137 ../../monitoring/nagios.rst:69
+msgid "Monitors the system load."
+msgstr "Überwacht die Systemlast."
+
+#: ../../monitoring/monitoring.rst:139
+msgid "``UNIVENTION_NTP`` and ``UNIVENTION_NTP_WARNING``"
+msgstr "``UNIVENTION_NTP`` und ``UNIVENTION_NTP_WARNING``"
+
+#: ../../monitoring/monitoring.rst:140 ../../monitoring/nagios.rst:72
+msgid ""
+"Requests the time from the NTP service on the monitored UCS system. If "
+"this deviates by more than ``60`` or ``120`` seconds, the error status is"
+" attained."
+msgstr ""
+"Fragt auf dem überwachten UCS-System die Uhrzeit beim NTP-Dienst ab. "
+"Tritt eine Abweichung von mehr als ``60`` oder ``120`` Sekunden auf, wird"
+" der Fehlerzustand erreicht."
+
+#: ../../monitoring/monitoring.rst:144 ../../monitoring/nagios.rst:76
+msgid "``UNIVENTION_SMTP``"
+msgstr "``UNIVENTION_SMTP``"
+
+#: ../../monitoring/monitoring.rst:145
+msgid ""
+"Tests if the SMTP server is reachable. The alert fires if it is not "
+"reachable."
+msgstr ""
+"Testet, ob der SMTP-Server erreichbar ist. Der Alarm wird ausgelöst, wenn"
+" er nicht erreichbar ist."
+
+#: ../../monitoring/monitoring.rst:147
+msgid "``UNIVENTION_SSL`` and ``UNIVENTION_SSL_WARNING``"
+msgstr "``UNIVENTION_SSL`` und ``UNIVENTION_SSL_WARNING``"
+
+#: ../../monitoring/monitoring.rst:148 ../../monitoring/nagios.rst:80
+msgid ""
+"Tests the remaining validity period of the UCS SSL certificates. This "
+"plugin is only suitable for |UCSPRIMARYDN| and |UCSBACKUPDN| systems."
+msgstr ""
+"Testet die verbleibende Gültigkeitsdauer der UCS-SSL-Zertifikate. Dieses "
+"Plugin ist nur für |UCSPRIMARYDN| und |UCSBACKUPDN|\\ s geeignet."
+
+#: ../../monitoring/monitoring.rst:151
+msgid "``UNIVENTION_SWAP`` and ``UNIVENTION_SWAP_WARNING``"
+msgstr "``UNIVENTION_SWAP`` und ``UNIVENTION_SWAP_WARNING``"
+
+#: ../../monitoring/monitoring.rst:152 ../../monitoring/nagios.rst:84
+#, python-format
+msgid ""
+"Monitors the utilization of the swap partition. An error status is raised"
+" if the remaining free space falls below the threshold (40% or 20% by "
+"default)."
+msgstr ""
+"Überwacht die Auslastung der Swap-Partition. Unterschreitet der "
+"verbleibende freie Platz den Schwellwert (in der Standardeinstellung 40% "
+"oder 20%), wird der Fehlerzustand gesetzt."
+
+#: ../../monitoring/monitoring.rst:156
+msgid "``UNIVENTION_REPLICATION`` and ``UNIVENTION_REPLICATION_WARNING``"
+msgstr "``UNIVENTION_REPLICATION`` und ``UNIVENTION_REPLICATION_WARNING``"
+
+#: ../../monitoring/monitoring.rst:157 ../../monitoring/nagios.rst:89
+msgid ""
+"Monitors the status of the LDAP replication and recognizes the creation "
+"of a :file:`failed.ldif` file and the standstill of the replication and "
+"warns of large differences between the transaction IDs."
+msgstr ""
+"Überwacht den Status der LDAP-Replikation, erkennt das Vorhandensein "
+"einer :file:`failed.ldif`-Datei sowie den Stillstand der Replikation und "
+"warnt vor zu großen Differenzen der Transaktions-IDs."
+
+#: ../../monitoring/monitoring.rst:162
+msgid "``UNIVENTION_NSCD`` and ``UNIVENTION_NSCD2``"
+msgstr "``UNIVENTION_NSCD`` und ``UNIVENTION_NSCD2``"
+
+#: ../../monitoring/monitoring.rst:163
+msgid ""
+"Tests the availability of the name server cache daemon (NSCD). If there "
+"is no NSCD process running, a *critical* alert is fired; if more than one"
+" process is running, a *warning* alert is fired."
+msgstr ""
+"Testet die Verfügbarkeit des Name Server Cache Dienstes (NSCD). Läuft "
+"kein NSCD-Prozess wird ein *critical* Alarm ausgelöst, läuft mehr als ein"
+" Prozess, wird ein *warning* Alarm ausgelöst."
+
+#: ../../monitoring/monitoring.rst:167 ../../monitoring/nagios.rst:99
+msgid "``UNIVENTION_WINBIND``"
+msgstr "``UNIVENTION_WINBIND``"
+
+#: ../../monitoring/monitoring.rst:168
+msgid ""
+"Tests the availability of the Winbind service. If no process is running, "
+"a *critical* alert is fired."
+msgstr ""
+"Testet die Verfügbarkeit des Winbind-Dienstes. Läuft kein Prozess, wird "
+"ein *critical* Alarm ausgelöst."
+
+#: ../../monitoring/monitoring.rst:171 ../../monitoring/nagios.rst:103
+msgid "``UNIVENTION_SMBD``"
+msgstr "``UNIVENTION_SMBD``"
+
+#: ../../monitoring/monitoring.rst:172
+msgid ""
+"Tests the availability of the Samba service. If no process is running, an"
+" alert is fired."
+msgstr ""
+"Testet die Verfügbarkeit des Samba-Dienstes. Läuft kein Prozess, wird ein"
+" Alarm ausgelöst."
+
+#: ../../monitoring/monitoring.rst:175 ../../monitoring/nagios.rst:107
+msgid "``UNIVENTION_NMBD``"
+msgstr "``UNIVENTION_NMBD``"
+
+#: ../../monitoring/monitoring.rst:176
+msgid ""
+"Tests the availability of the NMBD service, which is responsible for the "
+"NetBIOS service in Samba. If no process is running, an alert is fired."
+msgstr ""
+"Testet die Verfügbarkeit des NMBD-Dienstes, der in Samba für den NetBIOS-"
+"Dienst zuständig ist. Läuft kein Prozess, wird ein Alarm ausgelöst."
+
+#: ../../monitoring/monitoring.rst:179
+msgid "``UNIVENTION_JOINSTATUS`` and ``UNIVENTION_JOINSTATUS_WARNING``"
+msgstr "``UNIVENTION_JOINSTATUS`` und ``UNIVENTION_JOINSTATUS_WARNING``"
+
+#: ../../monitoring/monitoring.rst:180
+msgid ""
+"Tests the join status of a system. If a system has yet to join, a "
+"*critical* alert is fired; if non-run join scripts are available, a "
+"*warning* alert is fired."
+msgstr ""
+"Prüft den Join-Status eines Systems. Ist ein System noch nicht Mitglied "
+"der Domäne, wird ein *critical* Alarm ausgelöst, sind nicht-aufgerufene "
+"Joinskripte vorhanden, wird ein *warning* Alarm ausgelöst."
+
+#: ../../monitoring/monitoring.rst:183 ../../monitoring/nagios.rst:117
+msgid "``UNIVENTION_KPASSWDD``"
+msgstr "``UNIVENTION_KPASSWDD``"
+
+#: ../../monitoring/monitoring.rst:184
+msgid ""
+"Tests the availability of the Kerberos password service (only available "
+"on Primary/|UCSBACKUPDN|\\ s). If fewer or more than one process is "
+"running, an alert is fired."
+msgstr ""
+"Prüft die Verfügbarkeit des Kerberos-Passwort-Dienstes (nur verfügbar auf"
+" Primary/|UCSBACKUPDN|). Läuft weniger oder mehr als ein Prozess, wird "
+"ein Alarm ausgelöst."
+
+#: ../../monitoring/monitoring.rst:188
+msgid "``UNIVENTION_PACKAGE_STATUS``"
+msgstr "``UNIVENTION_PACKAGE_STATUS``"
+
+#: ../../monitoring/monitoring.rst:189
+msgid ""
+"Monitors the status of installed debian packages. If any package has "
+"status *half-installed* an alert is fired."
+msgstr ""
+"Überwacht den Status der installierten Debian-Pakete. Wenn ein Paket den "
+"Status *half-installed* hat, wird ein Alarm ausgelöst."
+
+#: ../../monitoring/monitoring.rst:192
+msgid ""
+"``UNIVENTION_SLAPD_MDB_MAXSIZE`` and "
+"``UNIVENTION_SLAPD_MDB_MAXSIZE_WARNING``"
+msgstr ""
+"``UNIVENTION_SLAPD_MDB_MAXSIZE`` und "
+"``UNIVENTION_SLAPD_MDB_MAXSIZE_WARNING``"
+
+#: ../../monitoring/monitoring.rst:193
+msgid ""
+"Monitors the share of free memory pages of the *mdb* back end of SLAPD "
+"for multiple directories."
+msgstr ""
+"Überwacht den Anteil der freien Speicherseiten des *mdb* Backends von "
+"SLAPD für mehrere Verzeichnisse."
+
+#: ../../monitoring/monitoring.rst:195
+msgid ""
+"``UNIVENTION_LISTENER_MDB_MAXSIZE`` and "
+"``UNIVENTION_LISTENER_MDB_MAXSIZE_WARNING``"
+msgstr ""
+"``UNIVENTION_LISTENER_MDB_MAXSIZE`` und "
+"``UNIVENTION_LISTENER_MDB_MAXSIZE_WARNING``"
+
+#: ../../monitoring/monitoring.rst:196
+msgid ""
+"Monitors the share of free memory pages of the *mdb* back end of SLAPD "
+"for multiple directories regarding the Univention listener."
+msgstr ""
+"Überwacht den Anteil der freien Speicherseiten des *mdb* Backends von "
+"SLAPD für mehrere Verzeichnisse."
+
+#: ../../monitoring/monitoring.rst:198
+msgid ""
+"The following monitoring alerts are only available once additional "
+"packages have been installed (see :ref:`Monitoring installation "
+"<monitoring-installation>`)."
+msgstr ""
+"Die folgenden Alarme sind nur verfügbar, sobald zusätzliche Pakete "
+"installiert wurden (siehe :ref:`Monitoring installation <monitoring-"
+"installation>`)"
+
+#: ../../monitoring/monitoring.rst:202
+msgid "Additional alerts"
+msgstr "Zusätzliche Alarme"
+
+#: ../../monitoring/monitoring.rst:209 ../../monitoring/nagios.rst:142
+msgid "``UNIVENTION_OPSI``"
+msgstr "``UNIVENTION_OPSI``"
+
+#: ../../monitoring/monitoring.rst:210
+msgid ""
+"Monitors the OPSI daemon. If no OPSI process is running or the OPSI proxy"
+" is not accessible, the alert is fired."
+msgstr ""
+"Überwacht den OPSI-Daemon. Läuft kein OPSI-Prozess oder die OPSI-"
+"Weboberfläche ist nicht erreichbar, wird ein Alarm zurückgegeben."
+
+#: ../../monitoring/monitoring.rst:213 ../../monitoring/nagios.rst:146
+msgid "``UNIVENTION_SMART_SDA``"
+msgstr "``UNIVENTION_SMART_SDA``"
+
+#: ../../monitoring/monitoring.rst:214
+msgid ""
+"Tests the S.M.A.R.T. status of the hard drive :file:`/dev/sda`. "
+"Corresponding alerts exist for the hard drives :file:`sdb`, :file:`sdc` "
+"and :file:`sdd`."
+msgstr ""
+"Prüft den S.M.A.R.T.-Status der Festplatte :file:`/dev/sda`. Für die "
+"Festplatten :file:`sdb`, :file:`sdc` und :file:`sdd` existieren "
+"entsprechende Alarme."
+
+#: ../../monitoring/monitoring.rst:218 ../../monitoring/monitoring.rst:241
+msgid "``UNIVENTION_RAID`` and ``UNIVENTION_RAID_WARNING``"
+msgstr "``UNIVENTION_RAID`` und ``UNIVENTION_RAID_WARNING``"
+
+#: ../../monitoring/monitoring.rst:219
+msgid ""
+"Tests the status of the software RAID through :file:`/proc/mdadm` and "
+"fires a *critical* alert if one of the hard drives in the RAID "
+"association has failed or a *warning* alert if a recovery procedure is in"
+" progress."
+msgstr ""
+"Prüft den Status des Software-RAIDs über :file:`/proc/mdadm` und löst "
+"einen *critical* Alarm aus, sofern eine Festplatte des RAID-Verbunds "
+"ausgefallen ist, oder einen *warning* Alarm, wenn der Recovery-Vorgang "
+"läuft."
+
+#: ../../monitoring/monitoring.rst:223
+msgid "``UNIVENTION_ADCONNECTOR`` and ``UNIVENTION_ADCONNECTOR_WARNING``"
+msgstr "``UNIVENTION_ADCONNECTOR`` und ``UNIVENTION_ADCONNECTOR_WARNING``"
+
+#: ../../monitoring/monitoring.rst:224 ../../monitoring/nagios.rst:157
+msgid "Checks the status of the AD connector:"
+msgstr "Prüft den Status des Active Directory Connectors:"
+
+#: ../../monitoring/monitoring.rst:226
+msgid "If no connector process is running, the alert is fired."
+msgstr "Läuft kein Connector-Prozess, wird ein Alarm zurückgegeben."
+
+#: ../../monitoring/monitoring.rst:227
+msgid ""
+"If more than one process is running per connector instance, a *warning* "
+"is fired."
+msgstr ""
+"Existiert mehr als ein Prozess pro Connector-Instanz, wird ein *warning* "
+"Alarm ausgelöst."
+
+#: ../../monitoring/monitoring.rst:228
+msgid "If rejects occur, a *warning* alert is fired."
+msgstr "Treten Rejects auf, wird ein *warning* Alarm ausgelöst."
+
+#: ../../monitoring/monitoring.rst:229
+msgid "If the AD server can't be reached, an alert is fired."
+msgstr "Kann der AD-Server nicht erreicht werden, wird ein Alarm zurückgegeben."
+
+#: ../../monitoring/monitoring.rst:231
+msgid "The plugin can also be used in multi-connector instances."
+msgstr "Das Plugin kann auch in Multi-Connector-Instanzen verwendet werden."
+
+#: ../../monitoring/monitoring.rst:233 ../../monitoring/nagios.rst:122
+msgid "``UNIVENTION_CUPS``"
+msgstr "``UNIVENTION_CUPS``"
+
+#: ../../monitoring/monitoring.rst:234
+msgid ""
+"Monitors the CUPS daemon. If there is no :program:`cupsd` process running"
+" or the web interface is not accessible, a *critical* alert is fired."
+msgstr ""
+"Überwacht den CUPS-Druckdienst. Läuft der :program:`cupsd`-Prozess nicht "
+"oder ist die Weboberfläche nicht erreichbar, wird ein *critical* Alarm "
+"ausgelöst."
+
+#: ../../monitoring/monitoring.rst:237 ../../monitoring/nagios.rst:127
+msgid "``UNIVENTION_SQUID``"
+msgstr "``UNIVENTION_SQUID``"
+
+#: ../../monitoring/monitoring.rst:238
+msgid ""
+"Monitors the Squid proxy. If no squid process is running or the Squid "
+"proxy is not accessible, the alert is fired."
+msgstr ""
+"Überwacht den Proxy Squid. Läuft kein Squid-Prozess oder der Squid-Proxy "
+"ist nicht erreichbar, wird ein Alarm zurückgegeben."
+
+#: ../../monitoring/monitoring.rst:242
+msgid ""
+"Monitors the status of present raid devices. The *warning* alert is fired"
+" in case of the following RAID statuses:"
+msgstr ""
+"Überwacht den Status der vorhandenen Raid-Geräte. Der *warning* Alarm "
+"wird im Falle folgender RAID Stati ausgelöst:"
+
+#: ../../monitoring/monitoring.rst:245
+msgid "'Rebuilding'"
+msgstr "'Rebuilding'"
+
+#: ../../monitoring/monitoring.rst:246
+msgid "'Reconstruct'"
+msgstr "'Reconstruct'"
+
+#: ../../monitoring/monitoring.rst:247
+msgid "'Replaced Drive'"
+msgstr "'Replaced Drive'"
+
+#: ../../monitoring/monitoring.rst:248
+msgid "'Expanding'"
+msgstr "'Expanding'"
+
+#: ../../monitoring/monitoring.rst:249
+msgid "'Warning'"
+msgstr "'Warning'"
+
+#: ../../monitoring/monitoring.rst:250
+msgid "'Verify'"
+msgstr "'Verify'"
+
+#: ../../monitoring/monitoring.rst:252
+msgid "The *critical* alert is fired in case of the following RAID statuses:"
+msgstr "Der *critical* Alarm wird für folgende RAID Status ausgelöst:"
+
+#: ../../monitoring/monitoring.rst:254
+msgid "'Degraded'"
+msgstr "'Degraded'"
+
+#: ../../monitoring/monitoring.rst:255
+msgid "'Dead'"
+msgstr "'Dead'"
+
+#: ../../monitoring/monitoring.rst:256
+msgid "'Failed'"
+msgstr "'Failed'"
+
+#: ../../monitoring/monitoring.rst:257
+msgid "'Error'"
+msgstr "'Error'"
+
+#: ../../monitoring/monitoring.rst:258
+msgid "'Missing'"
+msgstr "'Missing'"
+
+#: ../../monitoring/monitoring.rst:260
+msgid "``UNIVENTION_S4CONNECTOR`` and ``UNIVENTION_S4CONNECTOR_WARNING``"
+msgstr "``UNIVENTION_S4CONNECTOR`` und ``UNIVENTION_S4CONNECTOR_WARNING``"
+
+#: ../../monitoring/monitoring.rst:261
+msgid ""
+"Monitors the status of Samba 4 server. A *warning* alert is fired if the "
+"Samba 4 is reachable and if any rejects are present. A *critical* alert "
+"is fired, if the server is not reachable."
+msgstr ""
+"Überwacht den Status des Samba 4 Servers. Ein *warning* Alarm wird "
+"ausgelöst, wenn der Samba 4 erreichbar ist, aber keine Ablehnungen "
+"(*rejects*) vorhanden sind. Ein *critical* Alarm wird ausgelöst, wenn der"
+" Server nicht erreichbar ist."
+
+#: ../../monitoring/monitoring.rst:264
+msgid "``UNIVENTION_SAMBA_REPLICATION``"
+msgstr "``UNIVENTION_SAMBA_REPLICATION``"
+
+#: ../../monitoring/monitoring.rst:265
+msgid ""
+"Monitors the status of the samba replication. the alert is fired if any "
+"replication failures are present."
+msgstr ""
+"Überwacht den Status der Samba-Replikation. Der Alarm wird ausgelöst, "
+"wenn ein Fehler der Replikation vorliegt."
+
+#: ../../monitoring/monitoring.rst:269
+msgid "Configuration"
+msgstr "Konfiguration"
+
+#: ../../monitoring/monitoring.rst:271
+msgid "|UCSUMC| offers the following settings:"
+msgstr "|UCSUMC| bietet die folgenden Einstellungen:"
+
+#: ../../monitoring/monitoring.rst:273
+msgid ""
+"Administrators must configure the alert (see :ref:`Monitoring "
+"installation <monitoring-installation>`) and define on which computers of"
+" the domain an alert shall be active (see :ref:`monitoring-assign-"
+"alerts`)."
+msgstr ""
+"Administratoren müssen den Alarm konfigurieren (siehe :ref:`Monitoring "
+"installation <monitoring-installation>`) und festlegen, auf welchen "
+"Computern der Domäne ein Alarm aktiv sein soll (siehe :ref:`monitoring-"
+"assign-alerts`)."
+
+#: ../../monitoring/monitoring.rst:278
+msgid ""
+"To configure the contact person that the *Alertmanager* notifies in case "
+"of errors or alerts, set the appropriate app setting in the "
+":program:`Prometheus Alertmanager` app (see :ref:`Monitoring installation"
+" <monitoring-installation>`)."
+msgstr ""
+"Um die Kontaktperson zu konfigurieren, die der *Alertmanager* im Falle "
+"von Fehlern und Alarmen benachrichtigt, muss die entsprechende "
+"Einstellung in der :program:`Prometheus Alertmanager` App gesetzt werden "
+"(siehe :ref:`Monitoring installation <monitoring-installation>`)."
+
+#: ../../monitoring/monitoring.rst:283
+msgid ""
+"Administrators can silence firing alerts for a defined time. See the "
+"`Prometheus Alertmanager documentation "
+"<https://prometheus.io/docs/alerting/latest/alertmanager/#silences>`_. "
+"Use the *Prometheus Alertmanager* web interface for those settings."
+msgstr ""
+"Administratoren können Alarme für eine bestimmte Zeit stumm schalten. "
+"Siehe die `Prometheus Alertmanager Dokumentation "
+"<https://prometheus.io/docs/alerting/latest/alertmanager/#silences>`_. "
+"Benutzen Sie das *Prometheus Alertmanager* Webinterface für diese "
+"Einstellungen."
+
+#: ../../monitoring/monitoring.rst:288
+msgid ""
+"The basic settings already define a large number of tests for each "
+"computer, for example an alert basic configuration without the need for "
+"any further adjustments."
+msgstr ""
+"Die Grundeinstellungen definieren bereits eine Vielzahl von Tests für "
+"jeden Computer, z.B. eine Grundkonfiguration der Alarme, ohne dass "
+"weitere Anpassungen vorgenommen werden müssen."
+
+#: ../../monitoring/monitoring.rst:295
+msgid "Configure monitoring alerts"
+msgstr "Konfiguration der Alarme"
+
+#: ../../monitoring/monitoring.rst:297
+msgid ""
+"An alert defines the monitoring of a service or a status, for example "
+"free disk space. Administrators can assign any number of computers to "
+"such an alert object."
+msgstr ""
+"Ein Alert definiert die Überwachung eines Dienstes oder eines Zustandes, "
+"zum Beispiel freier Festplattenspeicher. Administratoren können eine "
+"beliebige Anzahl von Computern einem solchen Alert-Objekt zuordnen."
+
+#: ../../monitoring/monitoring.rst:301
+msgid ""
+"Administrators manage monitoring alerts in the UMC module "
+":guilabel:`Monitoring` with the object type *Alert*, see :ref:`computers-"
+"management-table-monitoring-alert`. Prometheus has no LDAP interface for "
+"the monitoring configuration. Instead, a listener module generates the "
+"configuration files when administrators add, edit, or remove alerts."
+msgstr ""
+"Administratoren verwalten Alarme im UMC-Modul :guilabel:`Monitoring` mit "
+"dem Objekttyp *Alert*, siehe :ref:`computers-management-table-monitoring-"
+"alert`. Prometheus hat keine LDAP-Schnittstelle für die "
+"Überwachungskonfiguration. Stattdessen generiert ein Listener-Modul die "
+"Konfigurationsdateien, wenn Administratoren Alarme hinzufügen, bearbeiten"
+" oder entfernen."
+
+#: ../../monitoring/monitoring.rst:310
+msgid "Configuring an alert"
+msgstr "Konfiguration eines Alarms"
+
+#: ../../monitoring/monitoring.rst:312
+msgid "*General* tab"
+msgstr "Reiter *Allgemein*"
+
+#: ../../monitoring/monitoring.rst:316 ../../monitoring/monitoring.rst:358
+#: ../../monitoring/monitoring.rst:387
+msgid "Attribute"
+msgstr "Attribut"
+
+#: ../../monitoring/monitoring.rst:319
+msgid "``Name``"
+msgstr "``Name``"
+
+#: ../../monitoring/monitoring.rst:320
+msgid "An unambiguous name for the alert."
+msgstr "Eine eindeutige Bezeichnung für den Alarm."
+
+#: ../../monitoring/monitoring.rst:322
+msgid "``Alert group``"
+msgstr "``Alarm-Gruppe``"
+
+#: ../../monitoring/monitoring.rst:323
+msgid ""
+"Defines the group that includes the alert. Multiple alarms can belong to "
+"the same group."
+msgstr ""
+"Legt die Gruppe fest, die den Alarm enthält. Mehrere Alarme können "
+"derselben Gruppe angehören."
+
+#: ../../monitoring/monitoring.rst:326
+msgid "``Query expression``"
+msgstr "``Abfrageausdruck``"
+
+#: ../../monitoring/monitoring.rst:327
+msgid ""
+"Prometheus query expression, which triggers the alert. The alert triggers"
+" when the given query returns a non-empty vector."
+msgstr ""
+"Prometheus Abfrage, die den Alarm auslöst. Der Alarm wird ausgelöst, wenn"
+" die angegebene Abfrage einen nicht leeren Vektor zurückgibt."
+
+#: ../../monitoring/monitoring.rst:330
+msgid ""
+"For details about the syntax, see the `Prometheus documentation "
+"<prometheus-query-expression_>`_."
+msgstr ""
+"Für Details zur Syntax, siehe die `Prometheus documentation <prometheus-"
+"query-expression_>`_."
+
+#: ../../monitoring/monitoring.rst:333
+msgid "``For clause``"
+msgstr "``For-Clause``"
+
+#: ../../monitoring/monitoring.rst:334
+msgid ""
+"Defines the time that the query expression result is non-empty until the "
+"alert triggers."
+msgstr ""
+"Definiert die Zeit, in der das Ergebnis des Abfrageausdrucks nicht leer "
+"sein muss, bis der Alarm ausgelöst wird."
+
+#: ../../monitoring/monitoring.rst:337
+msgid "``Summary template``"
+msgstr "``Vorlage für Zusammenfassung``"
+
+#: ../../monitoring/monitoring.rst:338
+msgid ""
+"The title of the alert, shown in alert dashboard and alert email "
+"notifications."
+msgstr ""
+"Der Titel des Alarms, der im Dashboard und in den E-Mail-"
+"Benachrichtigungen für Alarme angezeigt wird."
+
+#: ../../monitoring/monitoring.rst:341
+msgid "``Description template``"
+msgstr "``Vorlage für Beschreibung``"
+
+#: ../../monitoring/monitoring.rst:342
+msgid ""
+"The description of the alert, shown in alert dashboard and alert email "
+"notifications."
+msgstr ""
+"Die Beschreibung des Alarms, die im Dashboard und in den E-Mail-"
+"Benachrichtigungen für Alarme angezeigt wird."
+
+#: ../../monitoring/monitoring.rst:345
+msgid "``Labels``"
+msgstr "``Labels``"
+
+#: ../../monitoring/monitoring.rst:346
+msgid ""
+"*Prometheus* attaches labels to alerts. Labels help in queries for "
+"alerts. For example: *severity* with the value ``critical`` or "
+"``warning``."
+msgstr ""
+"Prometheus fügt den Alarmen Labels hinzu. Labels helfen bei der Abfrage "
+"von Alerts. Zum Beispiel: *severity* mit dem Wert ``critical`` oder "
+"``warning``."
+
+#: ../../monitoring/monitoring.rst:350
+msgid "``Template Values``"
+msgstr "``Vorlagenwerte``"
+
+#: ../../monitoring/monitoring.rst:351
+msgid ""
+"Query expressions, descriptions and summaries can use variable values. "
+"For example: Reference ``max`` through ``%max%``."
+msgstr ""
+"Abfrageausdrücke, Beschreibungen und Zusammenfassungen können variable "
+"Werte verwenden. Zum Beispiel: Referenziere ``max`` durch ``%max%``."
+
+#: ../../monitoring/monitoring.rst:354
+msgid "*Hosts* tab"
+msgstr "Reiter *Rechner*"
+
+#: ../../monitoring/monitoring.rst:361
+msgid "``Assigned hosts``"
+msgstr "``Zugeordnete Rechner``"
+
+#: ../../monitoring/monitoring.rst:362
+#, python-format
+msgid ""
+"*Prometheus* executes the query on the computers referenced here. The "
+"listener module runs the tests for the alert. It replaces the term "
+"``%instance%`` in the query expression with a regular expression that "
+"matches the assigned hosts."
+msgstr ""
+"*Prometheus* führt die Abfrage auf den hier referenzierten Rechnern aus. "
+"Das Listener Modul führt die Tests für den Alert aus. Es ersetzt den "
+"Begriff ``%instance%`` im Abfrageausdruck durch einen regulären Ausdruck,"
+" der mit den zugewiesenen Rechnern übereinstimmt."
+
+#: ../../monitoring/monitoring.rst:370
+msgid "Assign monitoring alerts to computers"
+msgstr "Zuweisung von Alarmen an Computer"
+
+#: ../../monitoring/monitoring.rst:372
+msgid "*Prometheus* can monitor all computers administered with |UCSUMC|."
+msgstr ""
+"*Prometheus* kann alle Computer überwachen, die mit |UCSUMC| verwaltet "
+"werden."
+
+#: ../../monitoring/monitoring.rst:374
+msgid ""
+"Navigate in the |UCSUMC| to :guilabel:`Computers` and choose the computer"
+" you want to activate alerts on. Choose and add all alerts you like in "
+"the tab *Advanced settings* under *Alerts* and save your changes."
+msgstr ""
+"Navigieren Sie in |UCSUMC| zu :guilabel:`Computers` und wählen Sie den "
+"Computer aus, auf dem Sie Alarme aktivieren möchten. Wählen und fügen Sie"
+" die gewünschten Alarme im Reiter *Erweiterte Einstellungen* unter "
+"*Warnmeldungen* aus und speichern Sie Ihre Änderungen."
+
+#: ../../monitoring/monitoring.rst:381
+msgid "Assigning alert to a host"
+msgstr "Zuweisung eines Alarms an einen Computer"
+
+#: ../../monitoring/monitoring.rst:383
+msgid "*Advanced settings* tab"
+msgstr "Reiter *Erweiterte Einstellungen*"
+
+#: ../../monitoring/monitoring.rst:390
+msgid "``Assigned monitoring alerts``"
+msgstr "``zugewiesene Warnmeldungen``"
+
+#: ../../monitoring/monitoring.rst:391
+msgid ""
+"Lists all assigned monitoring alerts for the current computer. Add or "
+"remove alerts."
+msgstr ""
+"Listet alle zugewiesenen Alarme für den aktuellen Computer auf. Fügen Sie"
+" hier Alarme hinzu oder entfernen Sie sie."
+
+#: ../../monitoring/monitoring.rst:397
+msgid "Create new alerts"
+msgstr "Neue Alarme erstellen"
+
+#: ../../monitoring/monitoring.rst:399
+msgid ""
+"This section describes how to add a custom script to collect new metrics "
+"and create new alerts."
+msgstr ""
+"In diesem Abschnitt wird beschrieben, wie Sie ein benutzerdefiniertes "
+"Skript hinzufügen, um neue Metriken zu sammeln und Alarme zu erstellen."
+
+#: ../../monitoring/monitoring.rst:401
+msgid ""
+"As administrator, you can complement the preconfigured alerts supplied "
+"with UCS with additional alerts. An alert check script exports metrics "
+"about the machine it runs on to *Prometheus*. A *PromQL* query on metrics"
+" defines an alert in *Prometheus*. For more information about how to "
+"write custom checks, see `Querying basis <prometheus-query-"
+"expression_>`_."
+msgstr ""
+"Als Administrator können Sie die vorkonfigurierten Alarme, die mit UCS "
+"geliefert werden, durch zusätzliche Alarme ergänzen. Ein Alarmprüfung "
+"Skript exportiert Metriken über den Rechner, auf dem es läuft, an "
+"*Prometheus*. Eine *PromQL*-Abfrage auf Metriken definiert einen Alarm in"
+" *Prometheus*. Für weitere Informationen darüber, wie man eigene "
+"benutzerdefinierte Checks schreibt, siehe `Querying basis <prometheus-"
+"query-expression_>`_."
+
+#: ../../monitoring/monitoring.rst:407
+msgid ""
+"Copy the custom alert check script into the directory :file:`/usr/share"
+"/univention-monitoring-client/scripts/` on the UCS system that shall "
+"export the custom metrics. Change the file mode to *executable* with "
+":command:`chmod a+x PLUGIN`."
+msgstr ""
+"Kopieren Sie das benutzerdefinierte Alarmprüfung Skript in das "
+"Verzeichnis :file:`/usr/share/univention-monitoring-client/scripts/` auf "
+"dem UCS-System, das die benutzerdefinierten Metriken exportieren soll. "
+"Ändern Sie den Dateimodus auf *ausführbar* mit :command:`chmod a+x "
+"PLUGIN`."
+
+#: ../../monitoring/monitoring.rst:412
+msgid ""
+"All alert checks delivered by UCS use Python. Custom checks can use Perl,"
+" Python, or Shell and don't require any external libraries or programs. "
+"All UCS systems always provide the needed interpreters."
+msgstr ""
+"Alle von UCS gelieferten Alert Checks verwenden Python. "
+"Benutzerdefinierte Prüfungen können Perl, Python oder Shell verwenden und"
+" benötigen keine externen Bibliotheken oder Programme. Alle UCS-Systeme "
+"stellen immer die benötigten Interpreter zur Verfügung."
+
+#: ../../monitoring/monitoring.rst:416
+msgid ""
+"In contrast, if the custom alert check uses external programs or "
+"libraries, ensure you install them on all UCS systems that use the custom"
+" alert check."
+msgstr ""
+"Verwendet die benutzerdefinierte Alarmprüfung dagegen externe Programme "
+"oder Bibliotheken, müssen Sie diese auf allen UCS-Systemen installieren, "
+"die die benutzerdefinierte Prüfung verwenden sollen."
+
+#: ../../monitoring/monitoring.rst:419
+msgid ""
+"The alert check script exports one or multiple metrics by writing them to"
+" a text file. It must write valid *Prometheus* metrics into a "
+":file:`.prom` file in the :file:`/var/lib/prometheus/node-exporter/` "
+"directory. *Prometheus* imports this file."
+msgstr ""
+"Das Skript für die Alarmprüfung exportiert eine oder mehrere Metriken, "
+"indem es sie in eine Textdatei schreibt. Es muss gültige *Prometheus* "
+"Metriken in eine :file:`.prom` Datei im :file:`/var/lib/prometheus/node-"
+"exporter/` Verzeichnis schreiben. *Prometheus* importiert diese Datei."
+
+#: ../../monitoring/monitoring.rst:424
+msgid ""
+"You need to configure the custom alert in |UCSUMC|, see :ref:`monitoring-"
+"alert-configuration`. You must enter a Prometheus expression for the "
+"metric of the script to the *Query expression* field. To assign the "
+"custom alert to UCS systems, see :ref:`monitoring-assign-alerts`."
+msgstr ""
+"Sie müssen den benutzerdefinierten Alarm in |UCSUMC| konfigurieren, siehe"
+" :ref:`monitoring-alert-configuration`. Sie müssen einen Prometheus-"
+"Ausdruck für die Metrik des Skripts in das Feld *Query expression* "
+"eingeben. Um den benutzerdefinierten Alert zu UCS-Systemen zuzuordnen, "
+"siehe see :ref:`monitoring-assign-alerts`."
+
+#: ../../monitoring/monitoring.rst:433
+msgid "Prometheus naming conventions"
+msgstr "Prometheus Namenskonventionen"
+
+#: ../../monitoring/monitoring.rst:433
+msgid "`Metric and label naming <https://prometheus.io/docs/practices/naming/>`_"
+msgstr "`Metric and label naming <https://prometheus.io/docs/practices/naming/>`_"
+
+#: ../../monitoring/monitoring.rst:436
+msgid "Text-based format of a :file:`.prom` file"
+msgstr "Textbasiertes Format einer :file:`.prom`-Datei"
+
+#: ../../monitoring/monitoring.rst:436
+msgid ""
+"`Exposition formats "
+"<https://prometheus.io/docs/instrumenting/exposition_formats/>`_"
+msgstr ""
+"`Exposition formats "
+"<https://prometheus.io/docs/instrumenting/exposition_formats/>`_"
 
 #: ../../monitoring/nagios.rst:4
 msgid "Nagios"
@@ -264,7 +1335,7 @@ msgid ""
 "discontinued. Yet, the systems can still be monitored, e.g. by UCS 4.4 "
 "Nagios servers, as described in the UCS 4.4 manual."
 msgstr ""
-"In UCS 5.0 ist die Serverkomponente von Nagios nicht mehr unterstützt.  "
+"In UCS 5.0 ist die Serverkomponente von Nagios nicht mehr unterstützt. "
 "Die Systeme können aber als Nagios Client dienen, um sie z.B. von einem "
 "UCS 4.4 Nagios Server überwachen zu lassen, wie im UCS 4.4 Handbuch "
 "beschreiben."
@@ -292,12 +1363,12 @@ msgstr ""
 "Festplatten"
 
 #: ../../monitoring/nagios.rst:24
-msgid ":program:`univention-nagios-opsi`: Test of software distribution opsi"
-msgstr ":program:`univention-nagios-opsi` Prüfung der Softwareverteilung opsi"
+msgid ":program:`univention-nagios-opsi`: Test of software distribution OPSI"
+msgstr ":program:`univention-nagios-opsi` Prüfung der Softwareverteilung OPSI"
 
 #: ../../monitoring/nagios.rst:26
 msgid ":program:`univention-nagios-ad-connector`: Test of the AD Connector"
-msgstr ":program:`univention-nagios-ad-connector` Prüfung des AD Connectors"
+msgstr ":program:`univention-nagios-ad-connector` Prüfung des AD-Connectors"
 
 #: ../../monitoring/nagios.rst:28
 msgid ""
@@ -326,43 +1397,9 @@ msgstr ""
 msgid "Nagios service"
 msgstr "Nagios-Dienst"
 
-#: ../../monitoring/nagios.rst:45 ../../monitoring/nagios.rst:140
-msgid "Description"
-msgstr "Beschreibung"
-
-#: ../../monitoring/nagios.rst:47
-msgid "``UNIVENTION_PING``"
-msgstr "``UNIVENTION_PING``"
-
-#: ../../monitoring/nagios.rst:48
-#, python-format
-msgid ""
-"Tests the availability of the monitored UCS system with the command "
-":command:`ping`. By default an error status is attained if the response "
-"time exceeds 50 ms or 100 ms or package losses of 20% or 40% occur."
-msgstr ""
-"Testet die Erreichbarkeit des überwachten UCS-Systems mit dem Kommando "
-":command:`ping`. In der Standardeinstellung wird der Fehlerzustand "
-"erreicht, wenn die Antwortzeit 50 ms oder 100 ms überschreitet oder "
-"Paketverluste von 20% oder 40% auftreten."
-
 #: ../../monitoring/nagios.rst:53
 msgid "``UNIVENTION_DISK_ROOT``"
 msgstr "``UNIVENTION_DISK_ROOT``"
-
-#: ../../monitoring/nagios.rst:54
-#, python-format
-msgid ""
-"Monitors how full the :file:`/` partition is. An error status is raised "
-"if the remaining free space falls below 25% or 10% by default."
-msgstr ""
-"Überwacht den Füllstand der :file:`/`-Partition.  Unterschreitet der "
-"verbleibende freie Platz in der Standardeinstellung 25% oder 10% wird der"
-" Fehlerzustand gesetzt."
-
-#: ../../monitoring/nagios.rst:57
-msgid "``UNIVENTION_DNS``"
-msgstr "``UNIVENTION_DNS``"
 
 #: ../../monitoring/nagios.rst:58
 msgid ""
@@ -384,35 +1421,13 @@ msgstr ""
 msgid "``UNIVENTION_LDAP``"
 msgstr "``UNIVENTION_LDAP``"
 
-#: ../../monitoring/nagios.rst:66
-msgid "Monitors the LDAP server running on UCS Directory Nodes."
-msgstr "Überwacht den auf Directory Nodes laufenden LDAP-Server."
-
 #: ../../monitoring/nagios.rst:68
 msgid "``UNIVENTION_LOAD``"
 msgstr "``UNIVENTION_LOAD``"
 
-#: ../../monitoring/nagios.rst:69
-msgid "Monitors the system load."
-msgstr "Überwacht die Systemlast."
-
 #: ../../monitoring/nagios.rst:71
 msgid "``UNIVENTION_NTP``"
 msgstr "``UNIVENTION_NTP``"
-
-#: ../../monitoring/nagios.rst:72
-msgid ""
-"Requests the time from the NTP service on the monitored UCS system. If "
-"this deviates by more than 60 or 120 seconds, the error status is "
-"attained."
-msgstr ""
-"Fragt auf dem überwachten UCS-System die Uhrzeit beim NTP-Dienst ab. "
-"Tritt eine Abweichung von mehr als 60 oder 120 Sekunden auf, wird der "
-"Fehlerzustand erreicht."
-
-#: ../../monitoring/nagios.rst:76
-msgid "``UNIVENTION_SMTP``"
-msgstr "``UNIVENTION_SMTP``"
 
 #: ../../monitoring/nagios.rst:77
 msgid "Tests the mail server."
@@ -422,42 +1437,13 @@ msgstr "Testet den Mailserver."
 msgid "``UNIVENTION_SSL``"
 msgstr "``UNIVENTION_SSL``"
 
-#: ../../monitoring/nagios.rst:80
-msgid ""
-"Tests the remaining validity period of the UCS SSL certificates. This "
-"plugin is only suitable for |UCSPRIMARYDN| and |UCSBACKUPDN| systems."
-msgstr ""
-"Testet die verbleibende Gültigkeitsdauer der UCS-SSL-Zertifikate. Dieses "
-"Plugin ist nur für |UCSPRIMARYDN| und |UCSBACKUPDN|\\ s geeignet."
-
 #: ../../monitoring/nagios.rst:83
 msgid "``UNIVENTION_SWAP``"
 msgstr "``UNIVENTION_SWAP``"
 
-#: ../../monitoring/nagios.rst:84
-#, python-format
-msgid ""
-"Monitors the utilization of the swap partition. An error status is raised"
-" if the remaining free space falls below the threshold (40% or 20% by "
-"default)."
-msgstr ""
-"Überwacht die Auslastung der Swap-Partition. Unterschreitet der "
-"verbleibende freie Platz den Schwellwert (in der Standardeinstellung 40% "
-"oder 20%), wird der Fehlerzustand gesetzt."
-
 #: ../../monitoring/nagios.rst:88
 msgid "``UNIVENTION_REPLICATION``"
 msgstr "``UNIVENTION_REPLICATION``"
-
-#: ../../monitoring/nagios.rst:89
-msgid ""
-"Monitors the status of the LDAP replication and recognizes the creation "
-"of a :file:`failed.ldif` file and the standstill of the replication and "
-"warns of large differences between the transaction IDs."
-msgstr ""
-"Überwacht den Status der LDAP-Replikation, erkennt das Vorhandensein "
-"einer :file:`failed.ldif`-Datei sowie den Stillstand der Replikation und "
-"warnt vor zu großen Differenzen der Transaktions-IDs."
 
 #: ../../monitoring/nagios.rst:94
 msgid "``UNIVENTION_NSCD``"
@@ -473,10 +1459,6 @@ msgstr ""
 "kein NSCD-Prozess wird ein CRITICAL-Event ausgelöst, läuft mehr als ein "
 "Prozess, wird ein WARNING-Event ausgelöst."
 
-#: ../../monitoring/nagios.rst:99
-msgid "``UNIVENTION_WINBIND``"
-msgstr "``UNIVENTION_WINBIND``"
-
 #: ../../monitoring/nagios.rst:100
 msgid ""
 "Tests the availability of the Winbind service. If no process is running, "
@@ -485,10 +1467,6 @@ msgstr ""
 "Testet die Verfügbarkeit des Winbind-Dienstes. Läuft kein Prozess, wird "
 "ein CRITICAL-Event ausgelöst."
 
-#: ../../monitoring/nagios.rst:103
-msgid "``UNIVENTION_SMBD``"
-msgstr "``UNIVENTION_SMBD``"
-
 #: ../../monitoring/nagios.rst:104
 msgid ""
 "Tests the availability of the Samba service. If no process is running, a "
@@ -496,10 +1474,6 @@ msgid ""
 msgstr ""
 "Testet die Verfügbarkeit des Samba-Dienstes. Läuft kein Prozess, wird ein"
 " CRITICAL-Event ausgelöst."
-
-#: ../../monitoring/nagios.rst:107
-msgid "``UNIVENTION_NMBD``"
-msgstr "``UNIVENTION_NMBD``"
 
 #: ../../monitoring/nagios.rst:108
 msgid ""
@@ -525,10 +1499,6 @@ msgstr ""
 "der Domäne, wird ein CRITICAL-Event ausgelöst, sind nicht-aufgerufene "
 "Joinskripte vorhanden, wird ein WARNING-Event zurückgeliefert."
 
-#: ../../monitoring/nagios.rst:117
-msgid "``UNIVENTION_KPASSWD``"
-msgstr "``UNIVENTION_KPASSWD``"
-
 #: ../../monitoring/nagios.rst:118
 msgid ""
 "Tests the availability of the Kerberos password service (only available "
@@ -539,10 +1509,6 @@ msgstr ""
 " Primary/|UCSBACKUPDN|). Läuft weniger oder mehr als ein Prozess, wird "
 "ein CRITICAL-Event ausgelöst."
 
-#: ../../monitoring/nagios.rst:122
-msgid "``UNIVENTION_CUPS``"
-msgstr "``UNIVENTION_CUPS``"
-
 #: ../../monitoring/nagios.rst:123
 msgid ""
 "Monitors the CUPS daemon. If there is no :program:`cupsd` process running"
@@ -552,10 +1518,6 @@ msgstr ""
 "Überwacht den CUPS-Druckdienst. Läuft :program:`cupsd`-Prozess oder ist "
 "die Weboberfläche auf Port 631 nicht erreichbar, wird der Status CRITICAL"
 " zurückgegeben."
-
-#: ../../monitoring/nagios.rst:127
-msgid "``UNIVENTION_SQUID``"
-msgstr "``UNIVENTION_SQUID``"
 
 #: ../../monitoring/nagios.rst:128
 msgid ""
@@ -579,22 +1541,14 @@ msgstr ""
 msgid "Additional Nagios checks"
 msgstr "Zusätzliche Nagios Checks"
 
-#: ../../monitoring/nagios.rst:142
-msgid "``UNIVENTION_OPSI``"
-msgstr "``UNIVENTION_OPSI``"
-
 #: ../../monitoring/nagios.rst:143
 msgid ""
-"Monitors the opsi daemon. If no opsi process is running or the opsi proxy"
+"Monitors the OPSI Daemon. If no OPSI process is running or the OPSI proxy"
 " is not accessible, the CRITICAL status is returned."
 msgstr ""
-"Überwacht den opsi-Daemon. Läuft kein opsi-Prozess oder die opsi-"
+"Überwacht den OPSI-Daemon. Läuft kein OPSI-Prozess oder die OPSI-"
 "Weboberfläche ist nicht erreichbar, wird der Status CRITICAL "
 "zurückgegeben."
-
-#: ../../monitoring/nagios.rst:146
-msgid "``UNIVENTION_SMART_SDA``"
-msgstr "``UNIVENTION_SMART_SDA``"
 
 #: ../../monitoring/nagios.rst:147
 msgid ""
@@ -613,21 +1567,17 @@ msgstr "``UNIVENTION_RAID``"
 #: ../../monitoring/nagios.rst:152
 msgid ""
 "Tests the status of the software RAID via :file:`/proc/mdadm` and returns"
-" CRITICAL is one of the hard drives in the RAID association has failed or"
+" CRITICAL if one of the hard drives in the RAID association has failed or"
 " WARNING if a recovery procedure is in progress."
 msgstr ""
-"Prüft den Status des Software-RAIDs über :file:`/proc/mdadm` und gibt den"
-" Status CRITICAL zurück, sofern eine Festplatte des RAID-Verbunds "
-"ausgefallen ist, oder den Status WARNING zurück, wenn der Recovery-"
+"Prüft den Status des Software-RAIDs über :file:`/proc/mdadm` und gibt "
+"einen CRITICAL Alarm zurück, sofern eine Festplatte des RAID-Verbunds "
+"ausgefallen ist, oder einen WARNING Alarm zurück, wenn der Recovery-"
 "Vorgang läuft."
 
 #: ../../monitoring/nagios.rst:156
 msgid "``UNIVENTION_ADCONNECTOR``"
 msgstr "``UNIVENTION_ADCONNECTOR``"
-
-#: ../../monitoring/nagios.rst:157
-msgid "Checks the status of the AD connector:"
-msgstr "Prüft den Status des Active Directory Connectors:"
 
 #: ../../monitoring/nagios.rst:159
 msgid "If no connector process is running, CRITICAL is reported."
@@ -637,9 +1587,7 @@ msgstr "Läuft kein Connector-Prozess, wird der Status CRITICAL zurückgegeben."
 msgid ""
 "If more than one process is running per connector instance, a WARNING is "
 "given."
-msgstr ""
-"Existiert mehr mehr als ein Prozess pro Connector-Instanz gibt es eine "
-"WARNING."
+msgstr "Existiert mehr als ein Prozess pro Connector-Instanz gibt es eine WARNING."
 
 #: ../../monitoring/nagios.rst:161
 msgid "If rejects occur, a WARNING is given."
@@ -656,4 +1604,3 @@ msgid ""
 msgstr ""
 "Das Plugin kann auch in Multi-Connector-Instanzen verwendet werden. Dabei"
 " muss der Name der Instanz als Parameter übergeben werden."
-
