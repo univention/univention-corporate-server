@@ -12,8 +12,6 @@ desc: |
  * Samba AD users can induce a use-after-free in the server process
    with an LDAP add or modify request.
    For details see https://www.samba.org/samba/security/CVE-2022-32746.html
- * Systems with UCS 5.0-1 are also affected and need to be updated to
-   UCS 5.0-2, which has a significantly more recent Samba version.
 bug: [54995]
 cve:
  - CVE-2022-32745
