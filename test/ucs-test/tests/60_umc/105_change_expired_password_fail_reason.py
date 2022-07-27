@@ -14,6 +14,7 @@ from univention.admin.uldap import getAdminConnection
 from univention.config_registry import ConfigRegistry
 from univention.lib.umc import Unauthorized
 from univention.testing import utils
+from samba import generate_random_machine_password
 
 samba4_installed = utils.package_installed('univention-samba4')
 ucr = ConfigRegistry()
@@ -73,7 +74,7 @@ def test_password_changing_failure_reason(new_password, reason, udm, Client, ran
 
 
 def _test_password_changing_failure_reason(new_password, reason, udm, Client, random_string):
-	password = random_string()
+	password = generate_random_machine_password(14,14)
 	userdn, username = udm.create_user(password=password, pwdChangeNextLogin=1)
 	client = Client(language='en-US')
 	if samba4_installed:
