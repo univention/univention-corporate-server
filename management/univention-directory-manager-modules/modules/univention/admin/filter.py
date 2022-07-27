@@ -147,6 +147,10 @@ class expression(object):
 		>>> e = expression('uidNumber', '10', '<') # < <= > >=
 		"""
 		assert operator in self.OPS
+		if operator == '=' and value == '*':
+			operator, value = '=*', ''
+		if operator == '=*' and value:
+			raise univention.admin.uexceptions.valueInvalidSyntax(value)
 		self.variable = variable
 		self.value = value
 		self.operator = operator
@@ -170,6 +174,8 @@ class expression(object):
 		>>> str(expression('uidNumber', '10', '<'))
 		'(!(uidNumber>=10))'
 		>>> str(expression('cn', '', '=*'))
+		'(cn=*)'
+		>>> str(expression('cn', '*', '='))
 		'(cn=*)'
 		>>> str(expression('cn', r'*\2A*', '='))
 		'(cn=*\\2A*)'
@@ -206,10 +212,14 @@ class expression(object):
 		"""
 		Return canonical representation.
 
-		>>> expression('objectClass', '*', escape=False)
-		expression('objectClass', '*', '=')
+		>>> expression('objectClass', 'foo*', escape=False)
+		expression('objectClass', 'foo*', '=')
 		>>> expression('objectClass', '*', '!=', escape=False)
 		expression('objectClass', '*', '!=')
+		>>> expression('objectClass', '*', '=', escape=False)
+		expression('objectClass', '', '=*')
+		>>> expression('objectClass', '', '=*', escape=False)
+		expression('objectClass', '', '=*')
 		"""
 		return '%s(%r, %r, %r)' % (self.__class__.__name__, self.variable, self.value, self.operator)
 
