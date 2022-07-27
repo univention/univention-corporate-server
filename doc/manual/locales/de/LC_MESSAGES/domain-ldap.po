@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-30 12:50+0200\n"
-"PO-Revision-Date: 2022-06-14 16:16+0200\n"
+"POT-Creation-Date: 2022-07-27 21:02+0200\n"
+"PO-Revision-Date: 2022-07-27 21:07+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -510,11 +510,11 @@ msgid ""
 "joinscripts`)."
 msgstr ""
 "Beim Beitritt eines Rechners wird für diesen ein Rechnerkonto angelegt, "
-"die SSL-Zertifikate synchronisiert und eine LDAP-Replikation "
-"angestoßen. Außerdem werden am Ende des Join-Vorgangs *Join-Skripte* "
-"ausgeführt. Diese registrieren anhand der auf dem System installierten "
-"Software-Pakete z.B. weitere Objekte im Verzeichnisdienst (siehe :ref"
-":`domain-ldap-joinscripts`)."
+"die SSL-Zertifikate synchronisiert und eine LDAP-Replikation angestoßen. "
+"Außerdem werden am Ende des Join-Vorgangs *Join-Skripte* ausgeführt. "
+"Diese registrieren anhand der auf dem System installierten Software-"
+"Pakete z.B. weitere Objekte im Verzeichnisdienst (siehe :ref:`domain-"
+"ldap-joinscripts`)."
 
 #: ../../domain-ldap/domain-join.rst:41
 msgid ""
@@ -922,8 +922,8 @@ msgid ""
 "installation instructions are available at `Github <github-univention-"
 "domain-join_>`_."
 msgstr ""
-"Univention stellt den :program:`Univention Domain Join Assistant` für die "
-"Integration von Ubuntu-Clients in eine UCS-Domäne bereit. Die "
+"Univention stellt den :program:`Univention Domain Join Assistant` für die"
+" Integration von Ubuntu-Clients in eine UCS-Domäne bereit. Die "
 "Dokumentation und Installationshinweise sind auf `Github <github-"
 "univention-domain-join_>`_ zu finden."
 
@@ -1080,10 +1080,10 @@ msgid ""
 msgstr ""
 "Einige Dienste in einer Domäne sind zentral für das Funktionieren von "
 "deren Mitgliedern. Redundanz ist ein Mittel um diesen potenziellen "
-"Bruchstellen (*single points of failure*) zu entfernen. Ein Artikel in der "
-"Univention Support Datenbank erklärt das Vorgehen um die Dienste LDAP, "
-"Kerberos, DNS, DHCP und Active Directory-kompatible Domain Controller "
-"abzusichern: :uv:kb:`Fail-safe domain setup <6682>`."
+"Bruchstellen (*single points of failure*) zu entfernen. Ein Artikel in "
+"der Univention Support Datenbank erklärt das Vorgehen um die Dienste "
+"LDAP, Kerberos, DNS, DHCP und Active Directory-kompatible Domain "
+"Controller abzusichern: :uv:kb:`Fail-safe domain setup <6682>`."
 
 #: ../../domain-ldap/index.rst:40
 msgid "Chapter contents:"
@@ -1205,8 +1205,8 @@ msgstr ""
 "potentiell unsichere Verbindungen eine sichere Identifikation zu "
 "erlauben. Alle Clients verwenden dabei eine gemeinsame Vertrauensbasis, "
 "das *Key Distribution Centre* (KDC). Ein Client authentifiziert sich bei "
-"diesem KDC und erhält ein Authentifizierungstoken, das sogenannte Ticket, "
-"das zur Authentizierung innerhalb einer Kerberos-Umgebung (der "
+"diesem KDC und erhält ein Authentifizierungstoken, das sogenannte Ticket,"
+" das zur Authentizierung innerhalb einer Kerberos-Umgebung (der "
 "sogenannten Kerberos Realm) verwendet werden kann. Der Name der Kerberos "
 "Realm wird im Rahmen der Installation des |UCSPRIMARYDN| konfiguriert und"
 " in der |UCSUCRV| :envvar:`kerberos/realm` gespeichert. Der Name der "
@@ -1366,20 +1366,19 @@ msgid ""
 "If LDAP schema extensions are to be delivered as part of software "
 "packages, there is also the possibility of packaging them and "
 "distributing them to all the |UCSBACKUPDN| servers in the domain using a "
-"|UCSUDL| module. Further information is available in `Packaging LDAP "
-"Schema Extensions <univention-docs-dev-ref-ldapschema_>`_."
+"|UCSUDL| module. Further information is available in :ref:`settings-"
+"ldapschema`."
 msgstr ""
 "Wenn LDAP-Schema-Erweiterungen als Teil von Softwarepaketen ausgeliefert "
 "werden sollen, besteht auch die Möglichkeit diese zu paketieren und durch"
 " ein |UCSUDL|-Modul an alle |UCSBACKUPDN|\\ s der Domäne zu verteilen. "
-"Weitere Hinweise finden sich in `Packaging LDAP Schema Extensions "
-"<univention-docs-dev-ref-ldapschema_>`_."
+"Weitere Hinweise finden sich in :ref:`settings-ldapschema`."
 
-#: ../../domain-ldap/ldap-directory.rst:50
+#: ../../domain-ldap/ldap-directory.rst:49
 msgid "LDAP schema replication"
 msgstr "LDAP-Schema-Replikation"
 
-#: ../../domain-ldap/ldap-directory.rst:52
+#: ../../domain-ldap/ldap-directory.rst:51
 msgid ""
 "The replication of the LDAP schemas is also automated via the "
 "listener/notifier mechanism (see :ref:`domain-listener-notifier`). This "
@@ -1396,7 +1395,7 @@ msgstr ""
 "wird sichergestellt, dass diese nicht aufgrund fehlender Objektklassen "
 "oder Attribute scheitert."
 
-#: ../../domain-ldap/ldap-directory.rst:59
+#: ../../domain-ldap/ldap-directory.rst:58
 msgid ""
 "On the |UCSPRIMARYDN|, a checksum for all the directories with schema "
 "definitions is performed when the OpenLDAP server is started. This "
@@ -1408,7 +1407,7 @@ msgstr ""
 "Prüfsumme wird mit der letzten in der Datei :file:`/var/lib/univention-"
 "ldap/schema/md5` gespeicherten Prüfsumme verglichen."
 
-#: ../../domain-ldap/ldap-directory.rst:64
+#: ../../domain-ldap/ldap-directory.rst:63
 msgid ""
 "The actual replication of the schema definitions is initiated by the "
 "|UCSUDL|. Prior to every request from the |UCSUDN| for a new transaction "
@@ -1422,7 +1421,7 @@ msgstr ""
 "die Schema-ID auf der Listener-Seite, wird über eine LDAP-Suche vom LDAP-"
 "Server des Notifier-Systems dessen aktuell verwendetes Subschema bezogen."
 
-#: ../../domain-ldap/ldap-directory.rst:70
+#: ../../domain-ldap/ldap-directory.rst:69
 msgid ""
 "The output sub-schema is included on the listener system in LDIF format "
 "in the :file:`/var/lib/univention-ldap/schema.conf` file and the local "
@@ -1435,11 +1434,11 @@ msgstr ""
 "diesem Schritt abgeschlossen, wird die Replikation der LDAP-Objekte "
 "fortgeführt."
 
-#: ../../domain-ldap/ldap-directory.rst:78
+#: ../../domain-ldap/ldap-directory.rst:77
 msgid "Audit-proof logging of LDAP changes"
 msgstr "Revisionssichere LDAP-Protokollierung"
 
-#: ../../domain-ldap/ldap-directory.rst:80
+#: ../../domain-ldap/ldap-directory.rst:79
 msgid ""
 "The :program:`univention-directory-logger` package allows the logging of "
 "all changes in the LDAP directory service. As each data record contains "
@@ -1452,7 +1451,7 @@ msgstr ""
 "Manipulationen an der Logdatei - etwa entfernte Einträge - aufgedeckt "
 "werden."
 
-#: ../../domain-ldap/ldap-directory.rst:85
+#: ../../domain-ldap/ldap-directory.rst:84
 msgid ""
 "Individual areas of the directory service can be excluded from the "
 "logging. These branches can be configured using the |UCSUCR| variables "
@@ -1465,13 +1464,13 @@ msgstr ""
 "Einzelne Teilbereiche des Verzeichnisdienstes können von der "
 "Protokollierung ausgenommen werden. Diese Zweige können durch die "
 "|UCSUCR|-Variablen :envvar:`ldap/logging/exclude1`, "
-":envvar:`ldap/logging/excludeN` konfiguriert werden.  Standardmässig"
-" ist der Container exkludiert, in dem die temporären Objekte gespeichert "
+":envvar:`ldap/logging/excludeN` konfiguriert werden.  Standardmässig ist "
+"der Container exkludiert, in dem die temporären Objekte gespeichert "
 "werden (``cn=temporary,cn=univention``). Die Protokollierung der LDAP-"
 "Änderungen erfolgt durch ein |UCSUDL|-Modul. Nach |UCSUCR|-Änderungen "
 "muss der |UCSUDL|-Dienst neu gestartet werden."
 
-#: ../../domain-ldap/ldap-directory.rst:93
+#: ../../domain-ldap/ldap-directory.rst:92
 msgid ""
 "The logging is made in the :file:`/var/log/univention/directory-"
 "logger.log` file in the following format:"
@@ -1479,7 +1478,7 @@ msgstr ""
 "Die Protokollierung erfolgt in die Datei :file:`/var/log/univention"
 "/directory-logger.log` im folgenden Format:"
 
-#: ../../domain-ldap/ldap-directory.rst:96
+#: ../../domain-ldap/ldap-directory.rst:95
 msgid ""
 "START\n"
 "Old Hash: Hash sum of the previous data record\n"
@@ -1509,7 +1508,7 @@ msgstr ""
 " Liste der neuen Attribute, ist leer wenn ein Objekt gelöscht wird\n"
 "END"
 
-#: ../../domain-ldap/ldap-directory.rst:113
+#: ../../domain-ldap/ldap-directory.rst:112
 msgid ""
 "A hash sum is calculated for each logged data record and also logged in "
 "the ``daemon.info`` section of the syslog service."
@@ -1518,7 +1517,7 @@ msgstr ""
 "zusätzlich in die Sektion ``daemon.info`` des Syslog-Dienstes "
 "protokolliert."
 
-#: ../../domain-ldap/ldap-directory.rst:116
+#: ../../domain-ldap/ldap-directory.rst:115
 msgid ""
 "As of :uv:erratum:`4.4x536` the respective transaction ID of the entry is"
 " added to the file :file:`/var/log/univention/directory-logger.log` "
@@ -1528,7 +1527,7 @@ msgstr ""
 "/directory-logger.log` vor jede Zeile als Präfix die jeweilige "
 "Transaktions-ID des Eintrags hinzugefügt:"
 
-#: ../../domain-ldap/ldap-directory.rst:120
+#: ../../domain-ldap/ldap-directory.rst:119
 msgid ""
 "ID 342: START\n"
 "ID 342: Old Hash: 70069d51a7e2e168d7c7defd19349985\n"
@@ -1568,7 +1567,7 @@ msgstr ""
 "ID 342: modifyTimestamp: 20200415092040Z\n"
 "ID 342: END"
 
-#: ../../domain-ldap/ldap-directory.rst:142
+#: ../../domain-ldap/ldap-directory.rst:141
 msgid ""
 "If :program:`univention-directory-logger` was installed before this UCS "
 "version, the old behavior (no prefix) is retained by default. By setting "
@@ -1585,11 +1584,11 @@ msgstr ""
 "einer Weiterverarbeitung des Protokolls in Analyse- und Monitoring-"
 "Software."
 
-#: ../../domain-ldap/ldap-directory.rst:151
+#: ../../domain-ldap/ldap-directory.rst:150
 msgid "Timeout for inactive LDAP connections"
 msgstr "Timeout für inaktive LDAP-Verbindungen"
 
-#: ../../domain-ldap/ldap-directory.rst:153
+#: ../../domain-ldap/ldap-directory.rst:152
 msgid ""
 "The |UCSUCRV| :envvar:`ldap/idletimeout` is used to configure a time "
 "period in seconds after which the LDAP connection is cut off on the "
@@ -1602,11 +1601,11 @@ msgstr ""
 " kein Ablaufzeitraum angewendet. Der Ablaufzeitraum beträgt standardmäßig"
 " sechs Minuten."
 
-#: ../../domain-ldap/ldap-directory.rst:161
+#: ../../domain-ldap/ldap-directory.rst:160
 msgid "LDAP command line tools"
 msgstr "LDAP-Kommandozeilen-Tools"
 
-#: ../../domain-ldap/ldap-directory.rst:163
+#: ../../domain-ldap/ldap-directory.rst:162
 msgid ""
 "In addition to the UMC web interface, there are also a range of programs "
 "with which one can access the LDAP directory from the command line."
@@ -1614,7 +1613,7 @@ msgstr ""
 "Neben den UMC-Modulen gibt es auch eine Reihe von Programmen, mit denen "
 "auf der Kommandozeile auf das LDAP-Verzeichnis zugegriffen werden kann."
 
-#: ../../domain-ldap/ldap-directory.rst:166
+#: ../../domain-ldap/ldap-directory.rst:165
 msgid ""
 "The :command:`univention-ldapsearch` tool simplifies the authenticated "
 "search in the LDAP directory. A search filter needs to be specified as an"
@@ -1626,11 +1625,11 @@ msgstr ""
 "Suchfilter übergeben werden, im folgenden Beispiel wird der Administrator"
 " anhand der User-ID gesucht:"
 
-#: ../../domain-ldap/ldap-directory.rst:170
+#: ../../domain-ldap/ldap-directory.rst:169
 msgid "$ univention-ldapsearch uid=Administrator"
 msgstr "$ univention-ldapsearch uid=Administrator"
 
-#: ../../domain-ldap/ldap-directory.rst:175
+#: ../../domain-ldap/ldap-directory.rst:174
 msgid ""
 "The :command:`slapcat` command makes it possible to save the current LDAP"
 " data in a text file in LDIF format, e.g.:"
@@ -1638,15 +1637,15 @@ msgstr ""
 "Der Befehl :command:`slapcat` ermöglicht die Speicherung der aktuellen "
 "LDAP-Daten in einer Textdatei im LDIF-Format, z.B.:"
 
-#: ../../domain-ldap/ldap-directory.rst:178
+#: ../../domain-ldap/ldap-directory.rst:177
 msgid "$ slapcat > ldapdata.txt"
 msgstr "$ slapcat > ldapdata.txt"
 
-#: ../../domain-ldap/ldap-directory.rst:186
+#: ../../domain-ldap/ldap-directory.rst:185
 msgid "Access control for the LDAP directory"
 msgstr "Zugriffskontrolle auf das LDAP-Verzeichnis"
 
-#: ../../domain-ldap/ldap-directory.rst:188
+#: ../../domain-ldap/ldap-directory.rst:187
 msgid ""
 "Access to the information contained in the LDAP directory is controlled "
 "by Access Control Lists (ACLs) on the server side. The ACLs are defined "
@@ -1658,7 +1657,7 @@ msgstr ""
 "zentralen Konfigurationsdatei :file:`/etc/ldap/slapd.conf` definiert und "
 "über |UCSUCR| verwaltet."
 
-#: ../../domain-ldap/ldap-directory.rst:193
+#: ../../domain-ldap/ldap-directory.rst:192
 msgid ""
 "The :file:`slapd.conf` is managed using a multifile template; further ACL"
 " elements can be added below "
@@ -1674,21 +1673,19 @@ msgstr ""
 ":`70univention-ldap-server_acl-master-end` eingefügt oder die bestehenden"
 " Templates erweitert werden."
 
-#: ../../domain-ldap/ldap-directory.rst:200
+#: ../../domain-ldap/ldap-directory.rst:199
 msgid ""
 "If LDAP ACL extensions are to be delivered as part of software packages, "
 "there is also the possibility of packaging them and distributing them to "
 "all the LDAP servers in the domain using a |UCSUDL| module. Further "
-"information is available in `Packaging LDAP ACL Extensions <univention-"
-"docs-dev-ref-ldapacl_>`_."
+"information is available in :ref:`settings-ldapacl`."
 msgstr ""
 "Wenn LDAP-ACL-Erweiterungen als Teil von Softwarepaketen ausgeliefert "
 "werden sollen, besteht auch die Möglichkeit diese zu paketieren und durch"
 " ein |UCSUDL|-Modul an alle LDAP-Server der Domäne zu verteilen. Weitere "
-"Hinweise finden sich in `Packaging LDAP ACL Extensions <univention-docs-"
-"dev-ref-ldapacl_>`_."
+"Hinweise finden sich in :ref:`settings-ldapacl`."
 
-#: ../../domain-ldap/ldap-directory.rst:205
+#: ../../domain-ldap/ldap-directory.rst:204
 msgid ""
 "The default setting of the LDAP server after new installations with UCS "
 "does not allow anonymous access to the LDAP directory. This behavior is "
@@ -1703,7 +1700,7 @@ msgstr ""
 ":envvar:`ldap/acl/read/ips` für den anonymen Lesezugriff freigeschaltet "
 "werden."
 
-#: ../../domain-ldap/ldap-directory.rst:211
+#: ../../domain-ldap/ldap-directory.rst:210
 msgid ""
 "Following successful authentication on the LDAP server, all attributes of"
 " a user account can be read out by this user."
@@ -1711,7 +1708,7 @@ msgstr ""
 "Nach erfolgreicher Authentifizierung am LDAP-Server können alle Attribute"
 " eines Benutzerkontos von diesem Benutzer ausgelesen werden."
 
-#: ../../domain-ldap/ldap-directory.rst:214
+#: ../../domain-ldap/ldap-directory.rst:213
 msgid ""
 "In addition, an extra, internal account, the root DN, also has full write"
 " access."
@@ -1719,7 +1716,7 @@ msgstr ""
 "Ein zusätzlicher, interner Account, der Root-DN, besitzt darüber hinaus "
 "auch schreibenden Vollzugriff."
 
-#: ../../domain-ldap/ldap-directory.rst:217
+#: ../../domain-ldap/ldap-directory.rst:216
 msgid ""
 "In addition, UCS offers a number of further ACLs installed as standard "
 "which suppress access to sensitive files (e.g., the user password) and "
@@ -1735,7 +1732,7 @@ msgstr ""
 "schreibende Zugriff auf diese sensitiven Daten ist nur für die Mitglieder"
 " der Gruppe ``Domain Admins`` vorgesehen."
 
-#: ../../domain-ldap/ldap-directory.rst:224
+#: ../../domain-ldap/ldap-directory.rst:223
 msgid ""
 "Nested groups are also supported. The |UCSUCRV| "
 ":envvar:`ldap/acl/nestedgroups` can be used to deactivate the nested "
@@ -1748,11 +1745,11 @@ msgstr ""
 "Geschwindigkeitssteigerung bei den Verzeichnisdienstanfragen zu erwarten "
 "ist."
 
-#: ../../domain-ldap/ldap-directory.rst:231
+#: ../../domain-ldap/ldap-directory.rst:230
 msgid "Delegation of the privilege to reset user passwords"
 msgstr "Delegation des Zurücksetzens von Benutzerpasswörtern"
 
-#: ../../domain-ldap/ldap-directory.rst:233
+#: ../../domain-ldap/ldap-directory.rst:232
 msgid ""
 "To facilitate the delegation of the privilege to reset user passwords, "
 "the :program:`univention-admingrp-user-passwordreset` package can be "
@@ -1765,7 +1762,7 @@ msgstr ""
 "installiert werden. Es legt über ein Joinskript die Benutzergruppe ``User"
 " Password Admins`` an, sofern diese noch nicht existiert."
 
-#: ../../domain-ldap/ldap-directory.rst:238
+#: ../../domain-ldap/ldap-directory.rst:237
 msgid ""
 "Members of this group receive the permission via additional LDAP ACLs to "
 "reset the passwords of other users. These LDAP ACLs are activated "
@@ -1784,7 +1781,7 @@ msgstr ""
 "eingetragen werden. Nach der Änderung ist ein Neustart des LDAP-Servers "
 "erforderlich."
 
-#: ../../domain-ldap/ldap-directory.rst:246
+#: ../../domain-ldap/ldap-directory.rst:245
 msgid ""
 "Passwords can be reset via the UMC module :guilabel:`Users`. By default "
 "the module is only accessible to the ``Administrator`` user. During the "
@@ -1803,7 +1800,7 @@ msgstr ""
 " Weitere Hinweise zur Konfiguration von UMC-Richtlinien finden sich in "
 "Kapitel :ref:`delegated-administration`."
 
-#: ../../domain-ldap/ldap-directory.rst:253
+#: ../../domain-ldap/ldap-directory.rst:252
 msgid ""
 "The policy makes it possible to search for users and create an overview "
 "of all the attributes of a user object. If an attempt is made to modify "
@@ -1818,7 +1815,7 @@ msgstr ""
 "Schreibzugriff vom |UCSUDM| mit der Meldung *Zugriff verweigert* "
 "abgelehnt."
 
-#: ../../domain-ldap/ldap-directory.rst:261
+#: ../../domain-ldap/ldap-directory.rst:260
 msgid ""
 "The package should be installed on the |UCSPRIMARYDN| and the "
 "|UCSBACKUPDN|\\ s. During the installation, the LDAP server is restarted "
@@ -1828,7 +1825,7 @@ msgstr ""
 "installieren. Während der Installation wird der LDAP-Server neu gestartet"
 " und ist kurzzeitig nicht erreichbar."
 
-#: ../../domain-ldap/ldap-directory.rst:265
+#: ../../domain-ldap/ldap-directory.rst:264
 msgid ""
 "Password resets via the password group can be prevented for sensitive "
 "users or groups (e.g., domain administrators). The |UCSUCR| variables "
@@ -1851,7 +1848,7 @@ msgstr ""
 " In der Standardeinstellung werden die Mitglieder der Gruppe ``Domain "
 "Admins`` vor Passwortänderungen geschützt."
 
-#: ../../domain-ldap/ldap-directory.rst:274
+#: ../../domain-ldap/ldap-directory.rst:273
 msgid ""
 "If access to additional LDAP attributes should be necessary for changing "
 "the password, the attribute names can be expanded in |UCSUCRV| "
@@ -1867,11 +1864,11 @@ msgstr ""
 "notwendig. Für eine UCS-Standard-Installation ist diese Variable bereits "
 "passend gesetzt."
 
-#: ../../domain-ldap/ldap-directory.rst:283
+#: ../../domain-ldap/ldap-directory.rst:282
 msgid "Name Service Switch / LDAP NSS module"
 msgstr "Name Service Switch / LDAP-NSS-Modul"
 
-#: ../../domain-ldap/ldap-directory.rst:285
+#: ../../domain-ldap/ldap-directory.rst:284
 msgid ""
 "With the *Name Service Switch*, the GNU C standard library "
 "(:program:`glibc`) used in Univention Corporate Server offers a modular "
@@ -1881,7 +1878,7 @@ msgstr ""
 "(:program:`glibc`) bietet eine modulare Schnittstelle zur Auflösung von "
 "Namen von Benutzern, Gruppen und Rechnern, den *Name Service Switch*."
 
-#: ../../domain-ldap/ldap-directory.rst:289
+#: ../../domain-ldap/ldap-directory.rst:288
 msgid ""
 "The LDAP NSS module is used on UCS systems for access to the domain data "
 "(e.g., users) as standard. The module queries the LDAP server specified "
@@ -1890,10 +1887,11 @@ msgid ""
 msgstr ""
 "Das LDAP-NSS-Modul wird auf UCS-Systemen standardmäßig für den Zugriff "
 "auf die Domänen-Daten (z.B. Benutzer) verwendet. Das Modul greift dabei "
-"auf den in der |UCSUCRV| :envvar:`ldap/server/name` (und falls nötig zusätzlich"
-" der :envvar:`ldap/server/addition`) festgelegten LDAP-Server zu."
+"auf den in der |UCSUCRV| :envvar:`ldap/server/name` (und falls nötig "
+"zusätzlich der :envvar:`ldap/server/addition`) festgelegten LDAP-Server "
+"zu."
 
-#: ../../domain-ldap/ldap-directory.rst:294
+#: ../../domain-ldap/ldap-directory.rst:293
 msgid ""
 "What measures should be taken if the LDAP server cannot be reached can be"
 " specified by the |UCSUCRV| :envvar:`nssldap/bindpolicy`. As standard, if"
@@ -1910,11 +1908,11 @@ msgstr ""
 "LDAP-Server - z.B. in einer abgeschottenen Testumgebung - deutlich "
 "beschleunigen."
 
-#: ../../domain-ldap/ldap-directory.rst:304
+#: ../../domain-ldap/ldap-directory.rst:303
 msgid "Syncrepl for synchronization with non-UCS OpenLDAP servers"
 msgstr "Syncrepl zur Anbindung von Nicht-UCS OpenLDAP-Servern"
 
-#: ../../domain-ldap/ldap-directory.rst:306
+#: ../../domain-ldap/ldap-directory.rst:305
 msgid ""
 "The syncrepl replication service can also be activated parallel to the "
 "notifier service for the synchronization of OpenLDAP servers not "
@@ -1924,15 +1922,15 @@ msgid ""
 msgstr ""
 "Für die Anbindung von nicht auf UCS-Systemen installierten OpenLDAP-"
 "Servern an das UCS-Managementsystem kann parallel zum Notifier-Dienst der"
-" Syncrepl-Replikationsdienst aktiviert werden. Dieser ist Bestandteil "
-"von OpenLDAP, registriert Veränderungen im lokalen Verzeichnisdienst und "
+" Syncrepl-Replikationsdienst aktiviert werden. Dieser ist Bestandteil von"
+" OpenLDAP, registriert Veränderungen im lokalen Verzeichnisdienst und "
 "überträgt diese auf weitere OpenLDAP-Server."
 
-#: ../../domain-ldap/ldap-directory.rst:315
+#: ../../domain-ldap/ldap-directory.rst:314
 msgid "Configuration of the directory service when using Samba/AD"
 msgstr "Konfiguration des Verzeichnis-Dienstes bei Verwendung von Samba/AD"
 
-#: ../../domain-ldap/ldap-directory.rst:317
+#: ../../domain-ldap/ldap-directory.rst:316
 msgid ""
 "As standard, the OpenLDAP server is configured in such a way that it also"
 " accepts requests from ports ``7389`` and ``7636`` in addition to the "
@@ -1942,7 +1940,7 @@ msgstr ""
 " zu den Standard-Ports ``389`` und ``636`` auch auf den Ports ``7389`` "
 "und ``7636`` Anfragen entgegen nimmt."
 
-#: ../../domain-ldap/ldap-directory.rst:321
+#: ../../domain-ldap/ldap-directory.rst:320
 msgid ""
 "If Samba/AD is used, the Samba/AD domain controller service occupies the "
 "ports ``389`` and ``636``. In this case, OpenLDAP is automatically "
@@ -1958,11 +1956,11 @@ msgstr ""
 "syncrepl zu beachten (siehe :ref:`domain-ldap-syncrepl`). :command"
 ":`univention-ldapsearch` verwendet automatisch den Standard-Port."
 
-#: ../../domain-ldap/ldap-directory.rst:331
+#: ../../domain-ldap/ldap-directory.rst:330
 msgid "Daily backup of LDAP data"
 msgstr "Tägliche Sicherung der LDAP-Daten"
 
-#: ../../domain-ldap/ldap-directory.rst:333
+#: ../../domain-ldap/ldap-directory.rst:332
 msgid ""
 "The content of the LDAP directory is backed up daily on the "
 "|UCSPRIMARYDN| and all |UCSBACKUPDN| systems via a Cron job. If Samba 4 "
@@ -1972,7 +1970,7 @@ msgstr ""
 "LDAP-Verzeichnisses durch einen Cron-Job täglich gesichert. Falls Samba 4"
 " eingesetzt wird, werden auch dessen Daten-Verzeichnis gesichert."
 
-#: ../../domain-ldap/ldap-directory.rst:337
+#: ../../domain-ldap/ldap-directory.rst:336
 msgid ""
 "The LDAP data are stored in the :file:`/var/univention-backup/` directory"
 " in the naming scheme :file:`ldap-backup_DATE.ldif.gz` in LDIF format. "
@@ -1985,7 +1983,7 @@ msgstr ""
 "Backup-Dateien werden im Verzeichnis :file:`/var/univention-"
 "backup/samba/` gesichert."
 
-#: ../../domain-ldap/ldap-directory.rst:342
+#: ../../domain-ldap/ldap-directory.rst:341
 msgid ""
 "The |UCSUCRV| :envvar:`backup/clean/max_age` can be used to define how "
 "long old backup files are kept (e.g. ``backup/clean/max_age=365``, all "
@@ -2744,11 +2742,11 @@ msgid ""
 "provided. For the login directly at the UCS system (i.e., without *single"
 " sign-on*), follow the link :guilabel:`Login without Single Sign On`."
 msgstr ""
-"Die Aktivierung von *Single Sign-On* für das Portal wird in "
-":ref:`central-management-umc-login` beschrieben. Dafür muss "
-":samp:`ucs-sso.{[Domain name]}` erreichbar sein. Anmeldedaten des "
-"Domänenkontos verwendet. Für den Login direkt am UCS-System (also ohne *Single "
-"Sign-On*) gelangt man über den Link :guilabel:`Ohne Single Sign-On anmelden`."
+"Die Aktivierung von *Single Sign-On* für das Portal wird in :ref"
+":`central-management-umc-login` beschrieben. Dafür muss :samp:`ucs-"
+"sso.{[Domain name]}` erreichbar sein. Anmeldedaten des Domänenkontos "
+"verwendet. Für den Login direkt am UCS-System (also ohne *Single Sign-"
+"On*) gelangt man über den Link :guilabel:`Ohne Single Sign-On anmelden`."
 
 #: ../../domain-ldap/saml.rst:79
 msgid ""
@@ -2909,8 +2907,8 @@ msgid ""
 msgstr ""
 "Service Provider können einen URL Endpunkt anbieten, mit dem die Session "
 "am Service Provider beendet werden kann. Loggt sich der Benutzer am UCS "
-"Identity Provider aus, wird über die hier übergebene URL eine Abmeldung am "
-"Service Provider durchgeführt."
+"Identity Provider aus, wird über die hier übergebene URL eine Abmeldung "
+"am Service Provider durchgeführt."
 
 #: ../../domain-ldap/saml.rst:144
 msgid "Format of ``NameID`` attribute"
@@ -3015,8 +3013,8 @@ msgid ""
 ":tc:SAML:2.0:nameid-format:transient`` or ``urn:oasis:names:tc:SAML:1.1"
 ":nameid-format:unspecified``."
 msgstr ""
-"Sollen die übertragenen Attribute mit einem besonderen Format "
-"übertragen werden, kann dieser hier eingetragen werden. Beispiel: "
+"Sollen die übertragenen Attribute mit einem besonderen Format übertragen "
+"werden, kann dieser hier eingetragen werden. Beispiel: "
 "``urn:oasis:names:tc:SAML:2.0:nameid-format:transient`` oder "
 "``urn:oasis:names:tc :SAML:1.1:nameid-format:unspecified``."
 

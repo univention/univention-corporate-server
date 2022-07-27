@@ -41,8 +41,7 @@ in connection with any LDAP object (e.g., a user object).
 If LDAP schema extensions are to be delivered as part of software packages,
 there is also the possibility of packaging them and distributing them to all the
 |UCSBACKUPDN| servers in the domain using a |UCSUDL| module. Further information
-is available in `Packaging LDAP Schema Extensions
-<univention-docs-dev-ref-ldapschema_>`_.
+is available in :ref:`settings-ldapschema`.
 
 .. _domain-ldap-schema-replication:
 
@@ -200,7 +199,7 @@ expanded upon.
 If LDAP ACL extensions are to be delivered as part of software packages, there
 is also the possibility of packaging them and distributing them to all the LDAP
 servers in the domain using a |UCSUDL| module. Further information is available
-in `Packaging LDAP ACL Extensions <univention-docs-dev-ref-ldapacl_>`_.
+in :ref:`settings-ldapacl`.
 
 The default setting of the LDAP server after new installations with UCS
 does not allow anonymous access to the LDAP directory. This behavior is

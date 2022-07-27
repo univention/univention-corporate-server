@@ -20,8 +20,6 @@
 .. _postfix-smtp-recipient-restrictions: http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions
 .. _python2-re: https://docs.python.org/2/library/re.html
 .. _ucs-documentation-overview: https://docs.software-univention.de/
-.. _univention-docs-dev-ref-ldapacl: https://docs.software-univention.de/developer-reference-5.0.html#settings:ldapacl
-.. _univention-docs-dev-ref-ldapschema: https://docs.software-univention.de/developer-reference-5.0.html#settings:ldapschema
 .. _univention-kb-admin-diary-separate-frontend-backend: https://help.univention.com/t/admin-diary-how-to-seperate-frontend-and-backend/11331
 .. _univention-kb: https://help.univention.com/c/knowledge-base/supported/48
 .. _univention-wiki: https://wiki.univention.de/index.php/Main_Page
