@@ -1422,23 +1422,6 @@ The complete table is:
 </itemizedlist>
 </section>
 
-<section id="windows:groups:CustomMappings"><title>Custom Mappings</title>
-<para>
-    It is also possible to modify and append custom mappings.
-    For that to work a file has to be created named
-	<filename>/etc/univention/connector/ad/localmapping.py</filename>.
-	Within that file the following function should be implemented:
-
-<programlisting><![CDATA[
-def mapping_hook(ad_mapping):
-    return ad_mapping
-]]>
-</programlisting>
-
-    The contents of the <command>ad_mapping</command> variable can be modified to
-    influence the mapping.
-</para>
-</section>
 </section>
 
 <section id="ad-connector:benutzer"><title>Users</title>
