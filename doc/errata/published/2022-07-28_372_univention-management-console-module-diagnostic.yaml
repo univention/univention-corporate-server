@@ -9,3 +9,5 @@ desc: |
  * The checks `40_samba_tool_dbcheck` and `63_proof_uniqueMembers` no longer
    crash due to duplicate decoding of strings during problem resolving.
 bug: [54988]
+erratum: 372
+announced: 2022-07-28
