@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * Rebuilt for libldb1 version 1.5.9
 bug: [54995]
+erratum: 1275
+announced: 2022-07-28
