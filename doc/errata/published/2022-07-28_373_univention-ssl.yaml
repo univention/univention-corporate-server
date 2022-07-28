@@ -11,3 +11,5 @@ desc: |
    length to prioritize the most specific values first.
  * Fix cron daily task execution: change shell from `sh` to `bash`.
 bug: [54697, 55030]
+erratum: 373
+announced: 2022-07-28
