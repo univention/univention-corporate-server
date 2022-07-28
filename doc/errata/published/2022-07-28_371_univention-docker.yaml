@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The docker daemon will now be restarted after changing proxy settings.
 bug: [51033]
+erratum: 371
+announced: 2022-07-28
