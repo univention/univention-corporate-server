@@ -676,7 +676,7 @@ Depends:
  python3-pip,
  python3-pytest,
  ucs-test-libs (= ${source:Version}),
- ucs-test-udm-users,
+ ucs-test-udm,
  ${misc:Depends},
 Recommends:
  ucs-test-framework,
