@@ -544,7 +544,11 @@ nmap 192.0.2.110 -sU -p 400-500
 			</example>
 		</section>
 	</section>
-  <section id="windows:groups:CustomMappings"><title>Custom Mappings</title>
+	<section id="windows:groups:CustomMappings"><title>Active Directory Connection custom mappings</title>
+	<para>
+		For general overview about the <emphasis>Active Directory Connection</emphasis> app,
+		see <ulink url="https://docs.software-univention.de/manual-4.4.html#ad-connector:general">Active Directory Connection</ulink>.
+	</para>
   <para>
       It is also possible to modify and append custom mappings.
       For that to work a file has to be created named
