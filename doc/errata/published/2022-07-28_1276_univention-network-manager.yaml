@@ -9,3 +9,5 @@ desc: |
  * IP addresses received via DHCP are now registered in the LDAP via the HTTP
    interface of the Univention Management Console.
 bug: [54664]
+erratum: 1276
+announced: 2022-07-28
