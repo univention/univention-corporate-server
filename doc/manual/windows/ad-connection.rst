@@ -620,6 +620,14 @@ Take the following particularities into account:
   :samp:`{B}` will be lost. Since :program:`Windows 2008` this limitation no
   longer exists and thus global groups can also be nested in Active Directory.
 
+.. _windows-groups-custom-mappings:
+
+Custom mappings
+"""""""""""""""
+
+For custom mappings, see :ref:`ad-connection-custom-mappings` in
+:cite:t:`developer-reference`.
+
 .. _ad-connector-users:
 
 Users

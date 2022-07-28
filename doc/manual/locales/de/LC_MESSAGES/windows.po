@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-28 12:38+0200\n"
-"PO-Revision-Date: 2022-07-28 12:40+0200\n"
+"POT-Creation-Date: 2022-07-28 13:51+0200\n"
+"PO-Revision-Date: 2022-07-28 14:13+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -1154,7 +1154,7 @@ msgstr ""
 "(:menuselection:`Ansicht --> Erweiterte Funktionen`)."
 
 #: ../../windows/ad-connection.rst:541 ../../windows/ad-connection.rst:565
-#: ../../windows/ad-connection.rst:641
+#: ../../windows/ad-connection.rst:649
 msgid "Take the following particularities into account:"
 msgstr "Berücksichtigen Sie die folgenden Besonderheiten:"
 
@@ -1334,10 +1334,22 @@ msgstr ""
 "können im Active Directory auch globale Gruppen verschachtelt werden."
 
 #: ../../windows/ad-connection.rst:626
+msgid "Custom mappings"
+msgstr "Benutzerdefinierte Mappings"
+
+#: ../../windows/ad-connection.rst:628
+msgid ""
+"For custom mappings, see :ref:`ad-connection-custom-mappings` in :cite:t"
+":`developer-reference`."
+msgstr ""
+"Für benutzerdefinierte Mappings, siehe :ref:`ad-connection-custom-mappings` "
+"in :cite:t:`developer-reference`."
+
+#: ../../windows/ad-connection.rst:634
 msgid "Users"
 msgstr "Benutzer"
 
-#: ../../windows/ad-connection.rst:628
+#: ../../windows/ad-connection.rst:636
 msgid ""
 "Users are synchronized like groups using the username or using the AD pre"
 " Windows 2000 name. The *First name*, *Last name*, *Primary group* (in so"
@@ -1360,11 +1372,11 @@ msgstr ""
 "der Mapping-Konfiguration auskommentiert, sind *Primäre Mail-Adresse* und"
 " *Telefonnummer*."
 
-#: ../../windows/ad-connection.rst:637
+#: ../../windows/ad-connection.rst:645
 msgid "The ``root`` and ``Administrator`` users are exempted."
 msgstr "Ausgenommen werden die Benutzer ``root`` und ``Administrator``."
 
-#: ../../windows/ad-connection.rst:643
+#: ../../windows/ad-connection.rst:651
 msgid ""
 "Users are also identified using the name, so that for users created "
 "before the first synchronization on both sides, the same process applies "
@@ -1375,7 +1387,7 @@ msgstr ""
 "wurden, hinsichtlich der Position im LDAP das gleiche Verhalten gilt wie "
 "bei Gruppen."
 
-#: ../../windows/ad-connection.rst:647
+#: ../../windows/ad-connection.rst:655
 msgid ""
 "In some cases, a user to be created under AD, for which the password has "
 "been rejected, is deleted from AD immediately after creation. The "
@@ -1396,7 +1408,7 @@ msgstr ""
 "Rückübertragung gelöscht. Das Auftreten dieses Verhaltens ist abhängig "
 "von dem eingestellten Abfrageintervall des Connectors."
 
-#: ../../windows/ad-connection.rst:656
+#: ../../windows/ad-connection.rst:664
 msgid ""
 "AD and UCS create new users in a specific primary group (usually ``Domain"
 " Users`` or ``Domänen-Benutzer``) depending on the presetting. During the"
