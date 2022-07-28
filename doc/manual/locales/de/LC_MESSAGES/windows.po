@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-13 14:42+0200\n"
-"PO-Revision-Date: 2022-05-31 16:40+0200\n"
+"POT-Creation-Date: 2022-07-28 12:38+0200\n"
+"PO-Revision-Date: 2022-07-28 12:40+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -306,8 +306,8 @@ msgid ""
 msgstr ""
 "Nach dieser Einrichtung kann das UMC-Modul :guilabel:`Active Directory-"
 "Verbindung` zur weiteren Administration verwendet werden, z.B. um zu "
-"prüfen, ob der Dienst läuft und ihn gegebenenfalls neu zu starten (siehe :ref:`ad-"
-"connector-restart`)."
+"prüfen, ob der Dienst läuft und ihn gegebenenfalls neu zu starten (siehe "
+":ref:`ad-connector-restart`)."
 
 #: ../../windows/ad-connection.rst:143
 msgid ""
@@ -1153,8 +1153,8 @@ msgstr ""
 "Container anzulegen. AD zeigt diese im erweiterten Modus aber an "
 "(:menuselection:`Ansicht --> Erweiterte Funktionen`)."
 
-#: ../../windows/ad-connection.rst:541 ../../windows/ad-connection.rst:564
-#: ../../windows/ad-connection.rst:659
+#: ../../windows/ad-connection.rst:541 ../../windows/ad-connection.rst:565
+#: ../../windows/ad-connection.rst:641
 msgid "Take the following particularities into account:"
 msgstr "Berücksichtigen Sie die folgenden Besonderheiten:"
 
@@ -1199,7 +1199,7 @@ msgstr "Zusätzlich wird die Beschreibung der Gruppe synchronisiert."
 msgid "Particularities"
 msgstr "Besonderheiten"
 
-#: ../../windows/ad-connection.rst:566
+#: ../../windows/ad-connection.rst:567
 msgid ""
 "The *pre Windows 2000 name* (LDAP attribute ``samAccountName``) is used "
 "in AD, which means that a group in Active Directory can appear under a "
@@ -1209,7 +1209,7 @@ msgstr ""
 "``samAccountName``) verwendet, daher kann eine Gruppe im Active Directory"
 " mit anderem Namen erscheinen als unter UCS."
 
-#: ../../windows/ad-connection.rst:570
+#: ../../windows/ad-connection.rst:571
 msgid ""
 "The connector ignores groups, which have been configured as a *Well-Known"
 " Group* under :guilabel:`Samba group type` in |UCSUDM|. There is no "
@@ -1219,7 +1219,7 @@ msgstr ""
 "Gruppentyp` als *Bekannte Gruppe* konfiguriert wurden. Eine "
 "Synchronisation von SID oder RID findet nicht statt."
 
-#: ../../windows/ad-connection.rst:574
+#: ../../windows/ad-connection.rst:575
 msgid ""
 "Groups which were configured as *Local Group* under :guilabel:`Samba "
 "group type` in |UCSUDM| are synchronized as a *global group* in the "
@@ -1229,7 +1229,7 @@ msgstr ""
 "Gruppe* konfiguriert wurden, werden vom Connector als *globale Gruppen* "
 "in das Active Directory synchronisiert."
 
-#: ../../windows/ad-connection.rst:578
+#: ../../windows/ad-connection.rst:579
 msgid ""
 "Newly created or moved groups are always saved in the same subcontainer "
 "on the opposite side. If several groups with the same name are present in"
@@ -1247,7 +1247,7 @@ msgstr ""
 "auf der anderen Seite identisch, so dass sich die DNs der Gruppen ab "
 "diesem Zeitpunkt nicht mehr unterscheiden."
 
-#: ../../windows/ad-connection.rst:585
+#: ../../windows/ad-connection.rst:586
 msgid ""
 "Certain group names are converted using a mapping table so that, for "
 "example in a German language setup, the UCS group ``Domain Users`` is "
@@ -1264,43 +1264,43 @@ msgstr ""
 "Dazu kann die |UCSUCRV| :envvar:`connector/ad/mapping/group/language` "
 "verwendet werden."
 
-#: ../../windows/ad-connection.rst:592
+#: ../../windows/ad-connection.rst:593
 msgid "The complete table is:"
 msgstr "Die vollständige Tabelle ist:"
 
-#: ../../windows/ad-connection.rst:598
+#: ../../windows/ad-connection.rst:599
 msgid "*UCS group*"
 msgstr "*UCS-Gruppe*"
 
-#: ../../windows/ad-connection.rst:599
+#: ../../windows/ad-connection.rst:600
 msgid "*AD group*"
 msgstr "*AD-Gruppe*"
 
-#: ../../windows/ad-connection.rst:601
+#: ../../windows/ad-connection.rst:602
 msgid "``Domain Users``"
 msgstr "``Domain Users``"
 
-#: ../../windows/ad-connection.rst:602
+#: ../../windows/ad-connection.rst:603
 msgid "``Domänen-Benutzer``"
 msgstr "``Domänen-Benutzer``"
 
-#: ../../windows/ad-connection.rst:604
+#: ../../windows/ad-connection.rst:605
 msgid "``Domain Admins``"
 msgstr "``Domain Admins``"
 
-#: ../../windows/ad-connection.rst:605
+#: ../../windows/ad-connection.rst:606
 msgid "``Domänen-Admins``"
 msgstr "``Domänen-Admins``"
 
-#: ../../windows/ad-connection.rst:607
+#: ../../windows/ad-connection.rst:608
 msgid "``Windows Hosts``"
 msgstr "``Windows Hosts``"
 
-#: ../../windows/ad-connection.rst:608
+#: ../../windows/ad-connection.rst:609
 msgid "``Domänencomputer``"
 msgstr "``Domänencomputer``"
 
-#: ../../windows/ad-connection.rst:610
+#: ../../windows/ad-connection.rst:611
 msgid ""
 "Nested groups are represented differently in AD and UCS. In UCS, if "
 "groups are members of groups, these objects can not always be "
@@ -1315,7 +1315,7 @@ msgstr ""
 "daher aufgrund der in Active Directory vorliegenden Einschränkungen immer"
 " nur dort zugewiesen werden."
 
-#: ../../windows/ad-connection.rst:615
+#: ../../windows/ad-connection.rst:616
 msgid ""
 "If a global group :samp:`{A}` is accepted as a member of another global "
 "group :samp:`{B}` in |UCSUDM|, this membership does not appear in Active "
@@ -1333,49 +1333,11 @@ msgstr ""
 ":program:`Windows 2008` besteht diese Einschränkung nicht mehr, dort "
 "können im Active Directory auch globale Gruppen verschachtelt werden."
 
-#: ../../windows/ad-connection.rst:625
-msgid "Custom mappings"
-msgstr "Benutzerdefinierte Mappings"
-
 #: ../../windows/ad-connection.rst:626
-msgid ""
-"It is also possible to modify and append custom mappings. For that to "
-"work a file has to be created named "
-":file:`/etc/univention/connector/ad/localmapping.py`. Within that file "
-"the following function should be implemented:"
-msgstr ""
-"Es ist auch möglich Mappings zu verändern oder neue hinzuzufügen. Dazu "
-"muss eine Datei erstellt werden mit dem Namen "
-":file:`/etc/univention/connector/ad/localmapping.py`. In dieser Datei "
-"sollte die folgende Funktion implementiert werden:"
-
-#: ../../windows/ad-connection.rst:631
-msgid ""
-"def mapping_hook(ad_mapping):\n"
-"    return ad_mapping"
-msgstr ""
-"def mapping_hook(ad_mapping):\n"
-"    return ad_mapping"
-
-#: ../../windows/ad-connection.rst:636
-msgid ""
-"The contents of the ``ad_mapping`` variable can be modified to influence "
-"the mapping. The resulting mapping gets written to "
-":file:`/var/log/univention/connector-ad-mapping.log` when the |UCSADC| is"
-" restarted."
-msgstr ""
-"Der Inhalt der Variable ``ad_mapping``"
-" kann damit verändert werden, um das"
-" Mapping zu beeinflussen. Das resultierende"
-" Mapping wird bei Neustart des "
-"|UCSADC| unter :file:`/var/log/univention/connector-"
-"ad-mapping.log` ausgegeben."
-
-#: ../../windows/ad-connection.rst:644
 msgid "Users"
 msgstr "Benutzer"
 
-#: ../../windows/ad-connection.rst:646
+#: ../../windows/ad-connection.rst:628
 msgid ""
 "Users are synchronized like groups using the username or using the AD pre"
 " Windows 2000 name. The *First name*, *Last name*, *Primary group* (in so"
@@ -1398,11 +1360,11 @@ msgstr ""
 "der Mapping-Konfiguration auskommentiert, sind *Primäre Mail-Adresse* und"
 " *Telefonnummer*."
 
-#: ../../windows/ad-connection.rst:655
+#: ../../windows/ad-connection.rst:637
 msgid "The ``root`` and ``Administrator`` users are exempted."
 msgstr "Ausgenommen werden die Benutzer ``root`` und ``Administrator``."
 
-#: ../../windows/ad-connection.rst:661
+#: ../../windows/ad-connection.rst:643
 msgid ""
 "Users are also identified using the name, so that for users created "
 "before the first synchronization on both sides, the same process applies "
@@ -1413,7 +1375,7 @@ msgstr ""
 "wurden, hinsichtlich der Position im LDAP das gleiche Verhalten gilt wie "
 "bei Gruppen."
 
-#: ../../windows/ad-connection.rst:665
+#: ../../windows/ad-connection.rst:647
 msgid ""
 "In some cases, a user to be created under AD, for which the password has "
 "been rejected, is deleted from AD immediately after creation. The "
@@ -1434,7 +1396,7 @@ msgstr ""
 "Rückübertragung gelöscht. Das Auftreten dieses Verhaltens ist abhängig "
 "von dem eingestellten Abfrageintervall des Connectors."
 
-#: ../../windows/ad-connection.rst:674
+#: ../../windows/ad-connection.rst:656
 msgid ""
 "AD and UCS create new users in a specific primary group (usually ``Domain"
 " Users`` or ``Domänen-Benutzer``) depending on the presetting. During the"
@@ -1442,15 +1404,15 @@ msgid ""
 "member in this group."
 msgstr ""
 "AD und UCS legen neue Benutzer per Voreinstellung in eine bestimmte "
-"primäre Gruppe (meist ``Domain Users`` und ``Domänen Benutzer``). "
-"Während der ersten Synchronisation von UCS nach AD werden die Benutzer "
-"daher immer in dieser Gruppe Mitglied."
+"primäre Gruppe (meist ``Domain Users`` und ``Domänen Benutzer``). Während"
+" der ersten Synchronisation von UCS nach AD werden die Benutzer daher "
+"immer in dieser Gruppe Mitglied."
 
 #: ../../windows/ad-takeover.rst:4
 msgid "Migrating an Active Directory domain to UCS using Univention AD Takeover"
 msgstr "Migration einer Active Directory-Domäne zu UCS mit Univention AD Takeover"
 
-#: ../../windows/ad-takeover.rst:6
+#: ../../windows/ad-takeover.rst:8
 msgid ""
 "UCS supports the takeover of user, group and computer objects as well as "
 "Group Policy Objects (GPOs) from a Microsoft Active Directory (AD) "
@@ -1463,25 +1425,25 @@ msgstr ""
 "beitreten. Diese Übernahme ist ein interaktiver Prozess, der aus drei "
 "Phasen besteht:"
 
-#: ../../windows/ad-takeover.rst:11
+#: ../../windows/ad-takeover.rst:13
 msgid "Copy all objects from Active Directory to UCS"
 msgstr "Kopieren aller Objekte aus Active Directory nach UCS"
 
-#: ../../windows/ad-takeover.rst:13
+#: ../../windows/ad-takeover.rst:15
 msgid "Copy of the group policy files from the AD server to UCS"
 msgstr "Kopieren der Gruppenrichtliniendateien aus Active Directory nach UCS"
 
-#: ../../windows/ad-takeover.rst:15
+#: ../../windows/ad-takeover.rst:17
 msgid "Deactivate the AD server and assign all FSMO roles to the UCS DC"
 msgstr ""
 "Abschalten des AD-Servers und Zuweisung der FSMO-Rollen auf den UCS "
 "Directory Node"
 
-#: ../../windows/ad-takeover.rst:17
+#: ../../windows/ad-takeover.rst:19
 msgid "The following requirements must be met for the takeover:"
 msgstr "Die folgenden Voraussetzungen müssen für die Übernahme erfüllt sein:"
 
-#: ../../windows/ad-takeover.rst:19
+#: ../../windows/ad-takeover.rst:21
 msgid ""
 "The UCS Directory Node (|UCSPRIMARYDN|) needs to be installed with a "
 "unique hostname, not used in the AD domain."
@@ -1490,7 +1452,7 @@ msgstr ""
 "Rechnernamen installiert werden, der nicht in der AD-Domäne vorhanden "
 "ist."
 
-#: ../../windows/ad-takeover.rst:22
+#: ../../windows/ad-takeover.rst:24
 msgid ""
 "The UCS Directory Node needs to be installed with the same DNS domain "
 "name, NetBIOS (pre Windows 2000) domain name and Kerberos realm as the AD"
@@ -1500,7 +1462,7 @@ msgstr ""
 "Domänennamen und Kerberos-Domänennamen installiert werden wie die AD-"
 "Domäne. Es wird empfohlen auch die selbe LDAP-Basis-DN zu verwenden."
 
-#: ../../windows/ad-takeover.rst:26
+#: ../../windows/ad-takeover.rst:28
 msgid ""
 "The UCS Directory Node needs to be installed with a unique IPv4 address "
 "in the same IP subnet as the Active Directory domain controller that is "
@@ -1509,7 +1471,7 @@ msgstr ""
 "Der UCS Directory Node muss eine IPv4-Adresse im selben Subnetz wie der "
 "zu übernehmende Active Directory-Domänencontroller verwenden."
 
-#: ../../windows/ad-takeover.rst:32
+#: ../../windows/ad-takeover.rst:34
 msgid ""
 "If the system is already a member of an Active Directory Domain, "
 "installing the *Active Directory Takeover* application removes this "
@@ -1522,23 +1484,23 @@ msgstr ""
 "*Takeover* Applikation erst kurz vor der eigentlichen Übernahme der "
 "Active Directory Domäne erfolgen."
 
-#: ../../windows/ad-takeover.rst:37
+#: ../../windows/ad-takeover.rst:39
 msgid ""
 "The *Active Directory Takeover* application must be installed from the "
 "Univention App Center for the migration. It must be installed on the "
 "system where the Univention S4 Connector is running (see "
 ":ref:`windows-s4-connector`, usually the |UCSPRIMARYDN|)."
 msgstr ""
-"Für die Migration muss die Applikation :program:`Active Directory Takeover` aus "
-"dem Univention App Center installiert werden. Sie muss auf dem System "
-"installiert werden, auf dem der Univention S4 Connector läuft (siehe "
-":ref:`windows-s4-connector`, normalerweise der |UCSPRIMARYDN|)."
+"Für die Migration muss die Applikation :program:`Active Directory "
+"Takeover` aus dem Univention App Center installiert werden. Sie muss auf "
+"dem System installiert werden, auf dem der Univention S4 Connector läuft "
+"(siehe :ref:`windows-s4-connector`, normalerweise der |UCSPRIMARYDN|)."
 
-#: ../../windows/ad-takeover.rst:45
+#: ../../windows/ad-takeover.rst:47
 msgid "Preparation"
 msgstr "Vorbereitung"
 
-#: ../../windows/ad-takeover.rst:47
+#: ../../windows/ad-takeover.rst:49
 msgid ""
 "The following steps are strongly recommended before attempting the "
 "takeover:"
@@ -1546,11 +1508,11 @@ msgstr ""
 "Es wird empfohlen die folgenden Schritte durchzuführen, bevor die "
 "Übernahme initiiert wird:"
 
-#: ../../windows/ad-takeover.rst:49
+#: ../../windows/ad-takeover.rst:51
 msgid "A backup of the AD server(s) should be performed."
 msgstr "Ein Backup des/der AD-Server(s) sollte durchgeführt werden."
 
-#: ../../windows/ad-takeover.rst:51
+#: ../../windows/ad-takeover.rst:53
 msgid ""
 "If user logins to the AD server are possible (e.g. through domain logins "
 "or terminal server sessions) it is recommended to deactivate them and to "
@@ -1559,12 +1521,12 @@ msgid ""
 "original snapshot/backup."
 msgstr ""
 "Sind Benutzeranmeldungen auf dem AD-Server erlaubt (durch "
-"Domänenanmeldungen oder Terminalserversitzungen), wird empfohlen, diese zu "
-"deaktivieren und alle Dienste zu stoppen, die Daten verarbeiten (z.B. "
+"Domänenanmeldungen oder Terminalserversitzungen), wird empfohlen, diese "
+"zu deaktivieren und alle Dienste zu stoppen, die Daten verarbeiten (z.B. "
 "Mailserver). Dies stellt sicher das durch den Rollback auf ein Backup "
 "oder einen Snapshot keine Daten verloren gehen."
 
-#: ../../windows/ad-takeover.rst:56
+#: ../../windows/ad-takeover.rst:58
 msgid ""
 "It is recommended to set the same password for the ``Administrator`` "
 "account on the AD server as the corresponding account in the UCS domain. "
@@ -1577,7 +1539,7 @@ msgstr ""
 "verwendet, wird anhand der Zeitstempel verglichen, welches Passwort "
 "aktueller ist und dieses verwendet."
 
-#: ../../windows/ad-takeover.rst:62
+#: ../../windows/ad-takeover.rst:64
 msgid ""
 "In a default installation the ``Administrator`` account of the AD server "
 "is deactivated. It should be activated in the local user management "
@@ -1587,7 +1549,7 @@ msgstr ""
 "AD-Server deaktiviert. Es sollte in der lokalen Benutzerverwaltung "
 "aktiviert werden."
 
-#: ../../windows/ad-takeover.rst:65
+#: ../../windows/ad-takeover.rst:67
 msgid ""
 "The activation of the ``Administrator`` account on the AD server is "
 "recommended because this account has all the required privileges to copy "
@@ -1601,7 +1563,7 @@ msgstr ""
 " AD-Verwaltungs-Tool für Benutzer und Gruppen oder mit den folgenden "
 "Kommandos auf der Kommandozeile aktiviert werden:"
 
-#: ../../windows/ad-takeover.rst:70
+#: ../../windows/ad-takeover.rst:72
 msgid ""
 "> net user administrator /active:yes\n"
 "> net user administrator PASSWORD"
@@ -1609,11 +1571,11 @@ msgstr ""
 "> net user administrator /active:yes\n"
 "> net user administrator PASSWORD"
 
-#: ../../windows/ad-takeover.rst:79
+#: ../../windows/ad-takeover.rst:81
 msgid "Domain migration"
 msgstr "Domänenmigration"
 
-#: ../../windows/ad-takeover.rst:81
+#: ../../windows/ad-takeover.rst:83
 msgid ""
 "The takeover must be initiated on the UCS Directory Node that runs the "
 "Univention S4 Connector (by default the |UCSPRIMARYDN|). During the "
@@ -1630,7 +1592,7 @@ msgstr ""
 "werden. Dies ist wichtig um replikationsbedingte Dateninkonsistenzen zu "
 "vermeiden."
 
-#: ../../windows/ad-takeover.rst:89
+#: ../../windows/ad-takeover.rst:91
 msgid ""
 "Other UCS Samba/AD systems can be stopped by logging into each of the "
 "other UCS Directory Nodes as the ``root`` user and running"
@@ -1638,11 +1600,11 @@ msgstr ""
 "Andere UCS Samba/AD-Systeme können gestoppt werden, indem auf jedem UCS "
 "Directory Node als Benutzer ``root`` folgender Befehl ausgeführt wird"
 
-#: ../../windows/ad-takeover.rst:92
+#: ../../windows/ad-takeover.rst:94
 msgid "$ /etc/init.d/samba4 stop"
 msgstr "$ /etc/init.d/samba4 stop"
 
-#: ../../windows/ad-takeover.rst:97
+#: ../../windows/ad-takeover.rst:99
 msgid ""
 "After ensuring that only the Univention S4 Connector host runs Samba/AD, "
 "the takeover process can be started. If the UCS domain was installed "
@@ -1651,14 +1613,14 @@ msgid ""
 msgstr ""
 "Nachdem sichergestellt wurde, dass keine anderen Samba/AD-"
 "Domänencontroller laufen, kann die Übernahme beginnen. Wurde die UCS-"
-"Domäne mit einer UCS-Version vor 3.2 installiert, muss zuerst die folgende"
-" |UCSUCRV| gesetzt werden:"
+"Domäne mit einer UCS-Version vor 3.2 installiert, muss zuerst die "
+"folgende |UCSUCRV| gesetzt werden:"
 
-#: ../../windows/ad-takeover.rst:101
+#: ../../windows/ad-takeover.rst:103
 msgid "$ ucr set connector/s4/mapping/group/grouptype=false"
 msgstr "$ ucr set connector/s4/mapping/group/grouptype=false"
 
-#: ../../windows/ad-takeover.rst:105
+#: ../../windows/ad-takeover.rst:107
 msgid ""
 "The takeover is performed with the UMC module :guilabel:`Active Directory"
 " Takeover`. The IP address of the AD system must be specified under *Name"
@@ -1669,18 +1631,18 @@ msgid ""
 "Administrator password*."
 msgstr ""
 "Die Übernahme erfolgt mit dem UMC-Modul :guilabel:`Active Directory "
-"Takeover`. Unter *Name oder Adresse des Domänencontrollers* "
-"muss die IP-Adresse des AD-Systems angegeben werden. Unter "
-"*Active Directory Administratorkonto* muss ein Konto der AD-"
-"Domäne angegeben werden, das Mitglied der AD-Gruppe ``Domain Admins`` ist"
-" (z.B. der ``Administrator``) und unter *Active Directory "
-"Administratorpasswort* das dazugehörige Passwort."
+"Takeover`. Unter *Name oder Adresse des Domänencontrollers* muss die IP-"
+"Adresse des AD-Systems angegeben werden. Unter *Active Directory "
+"Administratorkonto* muss ein Konto der AD-Domäne angegeben werden, das "
+"Mitglied der AD-Gruppe ``Domain Admins`` ist (z.B. der ``Administrator``)"
+" und unter *Active Directory Administratorpasswort* das dazugehörige "
+"Passwort."
 
-#: ../../windows/ad-takeover.rst:117
+#: ../../windows/ad-takeover.rst:119
 msgid "First phase of domain migration"
 msgstr "Erste Phase der Domänenmigration"
 
-#: ../../windows/ad-takeover.rst:119
+#: ../../windows/ad-takeover.rst:121
 msgid ""
 "The module checks whether the AD domain controller can be accessed and "
 "displays the domain data to be migrated."
@@ -1688,11 +1650,11 @@ msgstr ""
 "Das Modul prüft, ob der AD-Domänencontroller erreicht werden kann und "
 "zeigt die zu migrierenden Domänendaten an."
 
-#: ../../windows/ad-takeover.rst:127
+#: ../../windows/ad-takeover.rst:129
 msgid "Overview of the data to be migrated"
 msgstr "Übersicht über die zu migrierenden Daten"
 
-#: ../../windows/ad-takeover.rst:129
+#: ../../windows/ad-takeover.rst:131
 msgid ""
 "When :guilabel:`Next` is clicked, the following steps are performed "
 "automatically:"
@@ -1700,7 +1662,7 @@ msgstr ""
 "Nach einem Klick auf :guilabel:`Weiter` werden die folgenden Schritte "
 "automatisch durchgeführt:"
 
-#: ../../windows/ad-takeover.rst:132
+#: ../../windows/ad-takeover.rst:134
 msgid ""
 "Adjust the system time of the UCS system to the system time of the Active"
 " Directory domain controller in case the UCS time is behind by more than "
@@ -1709,11 +1671,11 @@ msgstr ""
 "Anpassung der Systemzeit des UCS-Systems auf die Systemzeit der Active "
 "Directory-Domäne (wenn diese um mehr als drei Minuten nachgeht)."
 
-#: ../../windows/ad-takeover.rst:136
+#: ../../windows/ad-takeover.rst:138
 msgid "Join the UCS Directory Node into the Active Directory domain."
 msgstr "Beitritt des UCS Directory Nodes in die Active Directory-Domäne."
 
-#: ../../windows/ad-takeover.rst:138
+#: ../../windows/ad-takeover.rst:140
 msgid ""
 "Start Samba and the Univention S4 connector to replicate the Active "
 "Directory objects into the UCS OpenLDAP directory."
@@ -1721,7 +1683,7 @@ msgstr ""
 "Start von Samba und dem Univention S4 Connector zur Replikation der AD-"
 "Objekte in das UCS-OpenLDAP-Verzeichnis."
 
-#: ../../windows/ad-takeover.rst:141
+#: ../../windows/ad-takeover.rst:143
 msgid ""
 "When \"*Well Known*\" account and group objects (identified by their "
 "special RIDs) are synchronized into the UCS OpenLDAP, a listener module "
@@ -1733,7 +1695,7 @@ msgstr ""
 " UCS-System lokal eine |UCSUCR| Variable, die dem englischen Namen den "
 "nicht-englischen Namen zuordnet."
 
-#: ../../windows/ad-takeover.rst:146
+#: ../../windows/ad-takeover.rst:148
 msgid ""
 "These variables are used to translate the English names used in the UCS "
 "configuration files to the specific names used in Active Directory. To "
@@ -1749,7 +1711,7 @@ msgstr ""
 ":envvar:`groups/default/domainadmins` auf den spezifischen Namen gesetzt "
 "(analog für Benutzer, z.B.  :envvar:`users/default/administrator`)."
 
-#: ../../windows/ad-takeover.rst:153
+#: ../../windows/ad-takeover.rst:155
 msgid ""
 "Additional information is logged to :file:`/var/log/univention/ad-"
 "takeover.log` as well as to :file:`/var/log/univention/management-"
@@ -1759,7 +1721,7 @@ msgstr ""
 "takeover.log` sowie nach :file:`/var/log/univention/management-console-"
 "module-adtakeover.log` protokolliert."
 
-#: ../../windows/ad-takeover.rst:157
+#: ../../windows/ad-takeover.rst:159
 msgid ""
 "The UCS Directory Node now contains all users, groups and computers of "
 "the Active Directory domain. In the next step, the SYSVOL share is "
@@ -1769,7 +1731,7 @@ msgstr ""
 " der Active Directory-Domäne. Im nächsten Schritt wird die SYSVOL-"
 "Freigabe kopiert, in der u.a. die Gruppenrichtlinien gespeichert werden."
 
-#: ../../windows/ad-takeover.rst:161
+#: ../../windows/ad-takeover.rst:163
 msgid ""
 "This phase requires the login to the Active Directory domain controller "
 "as the ``Administrator`` (or the equivalent non-English name). There a "
@@ -1781,7 +1743,7 @@ msgstr ""
 "Gruppenrichtlinien aus der SYSVOL-Freigabe des AD-Servers auf den UCS-"
 "Server kopiert werden."
 
-#: ../../windows/ad-takeover.rst:166
+#: ../../windows/ad-takeover.rst:168
 msgid ""
 "The command to be run in shown in the UMC module. If it has been "
 "successfully run, it must be confirmed with :guilabel:`Next`."
@@ -1790,11 +1752,11 @@ msgstr ""
 "erfolgreich aufgerufen wurde, muss mit :guilabel:`Weiter` bestätigt "
 "werden."
 
-#: ../../windows/ad-takeover.rst:174
+#: ../../windows/ad-takeover.rst:176
 msgid "Copying the SYSVOL share"
 msgstr "Kopieren der SYSVOL-Freigabe"
 
-#: ../../windows/ad-takeover.rst:176
+#: ../../windows/ad-takeover.rst:178
 msgid ""
 "It may be necessary to install the required :command:`robocopy` tool, "
 "which is part of the Windows Server 2003 Resource Kit Tools. Starting "
@@ -1804,7 +1766,7 @@ msgstr ""
 "Server 2003 Resource Kit Tools nachinstalliert werden. Ab Windows 2008 "
 "ist es vorinstalliert."
 
-#: ../../windows/ad-takeover.rst:182
+#: ../../windows/ad-takeover.rst:184
 msgid ""
 "The ``/mir`` option of :command:`robocopy` mirrors the specified source "
 "directory to the destination directory. Please be aware that if you "
@@ -1812,11 +1774,11 @@ msgid ""
 "time, this data will also be deleted in the destination directory."
 msgstr ""
 "Hinweis: Die :command:`robocopy`-Option ``/mir`` spiegelt das "
-"Quellverzeichnis mit dem Zielverzeichnis. Es muss beachtet werden, dass bei"
-" einem erneuten Aufruf des Tools Dateien, die im Quellverzeichnis "
+"Quellverzeichnis mit dem Zielverzeichnis. Es muss beachtet werden, dass "
+"bei einem erneuten Aufruf des Tools Dateien, die im Quellverzeichnis "
 "gelöscht wurden, auch im Zielverzeichnis gelöscht werden."
 
-#: ../../windows/ad-takeover.rst:187
+#: ../../windows/ad-takeover.rst:189
 msgid ""
 "After successful completion of this step, it is now necessary to shutdown"
 " all domain controllers of the Active Directory domain. Then "
@@ -1826,15 +1788,15 @@ msgstr ""
 "Domänencontroller heruntergefahren werden. Anschließend muss im UMC-Modul"
 " auf :guilabel:`Weiter` geklickt werden."
 
-#: ../../windows/ad-takeover.rst:196
+#: ../../windows/ad-takeover.rst:198
 msgid "Shutdown of the AD server(s)"
 msgstr "Herunterfahren des/der AD-Systeme"
 
-#: ../../windows/ad-takeover.rst:198
+#: ../../windows/ad-takeover.rst:200
 msgid "The following steps are now automatically performed:"
 msgstr "Die folgenden Schritte werden nun automatisch durchgeführt:"
 
-#: ../../windows/ad-takeover.rst:200
+#: ../../windows/ad-takeover.rst:202
 msgid ""
 "Claiming all FSMO roles for the UCS Directory Node. These describe "
 "different tasks that a server can take on in an AD domain."
@@ -1843,7 +1805,7 @@ msgstr ""
 "kennzeichnen verschiedene Aufgaben, die ein Server in einer AD-Domäne "
 "übernehmen kann."
 
-#: ../../windows/ad-takeover.rst:203
+#: ../../windows/ad-takeover.rst:205
 msgid ""
 "Register the name of the Active Directory domain controller as a DNS "
 "alias (see :ref:`ip-config-cname-record-alias-records`) for the UCS DNS "
@@ -1852,7 +1814,7 @@ msgstr ""
 "Einrichten des Rechnernamens des AD-Servers als DNS-Alias (siehe :ref"
 ":`ip-config-cname-record-alias-records`) für den UCS-Server."
 
-#: ../../windows/ad-takeover.rst:206
+#: ../../windows/ad-takeover.rst:208
 msgid ""
 "Configure the IP address of the Active Directory domain controller as a "
 "virtual Ethernet interface."
@@ -1860,7 +1822,7 @@ msgstr ""
 "Konfiguration der IP-Adresse des AD-Servers als zusätzliche virtuelle IP-"
 "Adresse des UCS-Servers."
 
-#: ../../windows/ad-takeover.rst:209
+#: ../../windows/ad-takeover.rst:211
 msgid ""
 "Perform some cleanup, e.g. removal of the AD domain controller account "
 "and related objects in the Samba SAM account database."
@@ -1868,19 +1830,19 @@ msgstr ""
 "Verschiedene Anpassungen, z.B. Entfernen des alten AD-Domänencontroller-"
 "Eintrags aus der Samba SAM-Datenbank."
 
-#: ../../windows/ad-takeover.rst:212
+#: ../../windows/ad-takeover.rst:214
 msgid "Finally restart Samba and the DNS server."
 msgstr "Abschließender Neustart von Samba und DNS-Server."
 
-#: ../../windows/ad-takeover.rst:217
+#: ../../windows/ad-takeover.rst:219
 msgid "Final steps of the takeover"
 msgstr "Abschluss der Übernahme"
 
-#: ../../windows/ad-takeover.rst:219
+#: ../../windows/ad-takeover.rst:221
 msgid "Finally the following steps are required:"
 msgstr "Abschließend müssen noch die folgenden Schritte durchgeführt werden:"
 
-#: ../../windows/ad-takeover.rst:221
+#: ../../windows/ad-takeover.rst:223
 msgid ""
 "The domain function level of the migrated Active Directory domain needs "
 "to be checked by running the following command:"
@@ -1888,11 +1850,11 @@ msgstr ""
 "Der Domänenfunktionslevel der migrierten AD-Domäne muss mit dem folgenden"
 " Kommando geprüft werden:"
 
-#: ../../windows/ad-takeover.rst:224
+#: ../../windows/ad-takeover.rst:226
 msgid "> samba-tool domain level show"
 msgstr "> samba-tool domain level show"
 
-#: ../../windows/ad-takeover.rst:229
+#: ../../windows/ad-takeover.rst:231
 msgid ""
 "In case this command returns the message ``ATTENTION: You run SAMBA 4 on "
 "a forest function level lower than Windows 2000 (Native).`` the following"
@@ -1902,7 +1864,7 @@ msgstr ""
 "function level lower than Windows 2000 (Native)`` anzeigt, müssen die "
 "folgenden Befehle aufgerufen werden:"
 
-#: ../../windows/ad-takeover.rst:233
+#: ../../windows/ad-takeover.rst:235
 msgid ""
 "> samba-tool domain level raise --forest-level=2003 --domain-level=2003\n"
 "> samba-tool dbcheck --fix --yes"
@@ -1910,7 +1872,7 @@ msgstr ""
 "> samba-tool domain level raise --forest-level=2003 --domain-level=2003\n"
 "> samba-tool dbcheck --fix --yes"
 
-#: ../../windows/ad-takeover.rst:238
+#: ../../windows/ad-takeover.rst:240
 msgid ""
 "In case there has been more than one Active Directory domain controller "
 "in the original Active Directory domain, all the host accounts of the "
@@ -1922,13 +1884,13 @@ msgid ""
 msgstr ""
 "Gab es in der migrierten AD-Domäne mehr als einen Domänencontroller, "
 "müssen die Rechnerkonten der weiteren Domänencontroller im UMC-Modul "
-"*Rechnerverwaltung* gelöscht werden. Außerdem müssen sie aus "
-"der Samba SAM-Datenbank gelöscht werden. Dies kann erreicht werden, indem von "
-"einem migrierten Windows-Client eine Anmeldung als Mitglied der Gruppe "
+"*Rechnerverwaltung* gelöscht werden. Außerdem müssen sie aus der Samba "
+"SAM-Datenbank gelöscht werden. Dies kann erreicht werden, indem von einem"
+" migrierten Windows-Client eine Anmeldung als Mitglied der Gruppe "
 "``Domain Admins`` erfolgt und das AD-Verwaltungstool für Benutzer und "
 "Computer aufgerufen wird."
 
-#: ../../windows/ad-takeover.rst:246
+#: ../../windows/ad-takeover.rst:248
 msgid ""
 "If more than one UCS Directory Node with Samba/AD has been installed, "
 "these servers need to be re-joined."
@@ -1936,15 +1898,15 @@ msgstr ""
 "Gibt es weitere Samba-Domänencontroller, müssen diese neu der Domäne "
 "beitreten."
 
-#: ../../windows/ad-takeover.rst:249
+#: ../../windows/ad-takeover.rst:251
 msgid "All Windows clients need to be rebooted."
 msgstr "Alle Windows-Clients müssen neu gestartet werden."
 
-#: ../../windows/ad-takeover.rst:254
+#: ../../windows/ad-takeover.rst:256
 msgid "Tests"
 msgstr "Tests"
 
-#: ../../windows/ad-takeover.rst:256
+#: ../../windows/ad-takeover.rst:258
 msgid ""
 "It is recommended to perform thorough tests with Windows client systems, "
 "e.g."
@@ -1952,23 +1914,23 @@ msgstr ""
 "Es wird empfohlen nach der Übernahme gründliche Tests mit Windows-Clients"
 " durchzuführen, z.B."
 
-#: ../../windows/ad-takeover.rst:259
+#: ../../windows/ad-takeover.rst:261
 msgid "Login to a migrated client as a migrated user."
 msgstr "Anmeldung auf einem migrierten Client mit einem migrierten Benutzer."
 
-#: ../../windows/ad-takeover.rst:261
+#: ../../windows/ad-takeover.rst:263
 msgid "Login to a migrated client as the *Administrator*."
 msgstr "Anmeldung auf einem migrierten Client als *Administrator*."
 
-#: ../../windows/ad-takeover.rst:263
+#: ../../windows/ad-takeover.rst:265
 msgid "Test group policies."
 msgstr "Test der Gruppenrichtlinien."
 
-#: ../../windows/ad-takeover.rst:265
+#: ../../windows/ad-takeover.rst:267
 msgid "Join of a new Windows client."
 msgstr "Domänenbeitritt eines neuen Windows-Clients."
 
-#: ../../windows/ad-takeover.rst:267
+#: ../../windows/ad-takeover.rst:269
 msgid "Create a new UCS user and login to a Windows client."
 msgstr "Anlegen eines neuen Benutzers und Anmeldung an einem Windows-Client."
 
@@ -2953,9 +2915,9 @@ msgid ""
 msgstr ""
 "Das folgende Beispiel für eine ADM-Datei definiert eine Rechner-"
 "Richtlinie, in der ein Registry-Key des (fiktiven) Univention RDP-Client "
-"konfiguriert wird. ADM-Dateien können über Drittwerkzeuge in das "
-"neuere ADMX-Format umgewandelt werden. Die administrativen Vorlagen "
-"müssen die Dateiendung :file:`.adm` verwenden:"
+"konfiguriert wird. ADM-Dateien können über Drittwerkzeuge in das neuere "
+"ADMX-Format umgewandelt werden. Die administrativen Vorlagen müssen die "
+"Dateiendung :file:`.adm` verwenden:"
 
 #: ../../windows/samba-domain.rst:427
 msgid ""
@@ -3257,8 +3219,8 @@ msgstr ""
 "gegenseitig per DNS identifizieren können. Zumindest die voll "
 "qualifizierten DNS Namen der Domänencontroller der jeweils anderen Domäne"
 " müssen auflösbar sein, damit die Kommunikation zwischen den Domänen "
-"funktioniert. In beiden Domänen richtet man zu diesem Zweck eine "
-"bedingte DNS Weiterleitung ein."
+"funktioniert. In beiden Domänen richtet man zu diesem Zweck eine bedingte"
+" DNS Weiterleitung ein."
 
 #: ../../windows/trust.rst:28
 msgid ""
@@ -3383,4 +3345,3 @@ msgstr ""
 "Active Directory Domäne anmelden können. Als Login-Name muss dabei "
 "entweder das Format ``UCSDOM\\username`` oder der Kerberos Prinzipal in "
 "der Notation ``username@ucsdom.example`` angegeben werden."
-

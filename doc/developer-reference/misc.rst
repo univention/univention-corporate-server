@@ -42,7 +42,7 @@ databases from maintainer scripts.
 .. _misc-ucslint:
 
 UCS lint
-=====================================
+========
 
 .. index::
    single: packaging; check for errors
@@ -388,3 +388,25 @@ A UDP port can be tested with the following command: :samp:`nmap {HOSTNAME} -sU 
 
    $ nmap 192.0.2.100 -p 400
    $ nmap 192.0.2.110 -sU -p 400-500
+
+.. _ad-connection-custom-mappings:
+
+Active Directory Connection custom mappings
+===========================================
+
+For general overview about the :program:`Active Directory Connection` app, see
+:ref:`ad-connector-general` in :cite:t:`ucs-manual`.
+
+It is possible to modify and append custom mappings. Administrators need to
+create the file :file:`/etc/univention/connector/ad/localmapping.py`. Within
+that file, they must implement the following function:
+
+.. code-block:: python
+
+   def mapping_hook(ad_mapping):
+       return ad_mapping
+
+The variable ``ad_mapping`` influences the mapping. The Active Directory
+Connection app logs the resulting mapping to
+:file:`/var/log/univention/connector-ad-mapping.log`, when the administrator
+restarts |UCSADC|.

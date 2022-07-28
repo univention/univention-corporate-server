@@ -620,26 +620,6 @@ Take the following particularities into account:
   :samp:`{B}` will be lost. Since :program:`Windows 2008` this limitation no
   longer exists and thus global groups can also be nested in Active Directory.
 
-.. _windows-groups-custom-mappings:
-
-Custom mappings
-"""""""""""""""
-
-It is also possible to modify and append custom mappings. For that to work a
-file has to be created named
-:file:`/etc/univention/connector/ad/localmapping.py`. Within that file the
-following function should be implemented:
-
-.. code-block:: python
-
-   def mapping_hook(ad_mapping):
-       return ad_mapping
-
-The contents of the ``ad_mapping`` variable can be modified to influence
-the mapping. The resulting mapping gets written to
-:file:`/var/log/univention/connector-ad-mapping.log` when the |UCSADC| is
-restarted.
-
 .. _ad-connector-users:
 
 Users
