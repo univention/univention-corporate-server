@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * Rebuilt for libldb2 version 2.5.2
 bug: [54994]
+erratum: 369
+announced: 2022-07-28
