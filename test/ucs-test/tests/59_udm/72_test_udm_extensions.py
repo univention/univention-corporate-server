@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test all udm extensions functionality
-## tags: [udm,udm-extensions,udm-ldapextensions,apptest]
+## tags: [udm,udm-extensions,udm-ldapextensions,apptest,fbest]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
 ## exposure: dangerous
 ## packages:
@@ -34,6 +34,8 @@ from univention.testing.utils import (
 	verify_ldap_object, wait_for_replication, wait_for_replication_and_postrun,
 	wait_for_s4connector_replication,
 )
+
+CWD = os.path.dirname(os.path.abspath(__file__))
 
 
 @pytest.fixture
@@ -684,7 +686,7 @@ class Test_UDMExtensionsJoinscript:
 		('messagecatalog', 'es.mo', '/usr/share/locale/es/LC_MESSAGES/univention-admin-handlers-%s.mo'),
 	)
 
-	@pytest.mark.tags('udm', 'udm-extensions', 'apptest')
+	@pytest.mark.tags('udm', 'udm-extensions', 'apptest', 'fbest')
 	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 	@pytest.mark.exposure('dangerous')
 	def test_file_integrity_udm_module(self):
@@ -698,7 +700,7 @@ class Test_UDMExtensionsJoinscript:
 		options = {}
 		buffers = {}
 		for option_type, filename, target_filename in self.TEST_DATA:
-			buffers[filename] = open('/usr/share/ucs-test/72_udm-extensions/%s' % filename, 'rb').read()
+			buffers[filename] = open('%s/%s' % (CWD, filename), 'rb').read()
 			options.setdefault(option_type, []).append('/usr/share/%s/%s' % (package_name, filename))
 
 		joinscript_buffer = get_join_script_buffer(extension_type, '/usr/share/%s/%s' % (package_name, extension_filename), options=options, version_start='5.0-0')
@@ -800,7 +802,7 @@ class Test_UDMExtensionsJoinscript:
 		options = {}
 		buffers = {}
 		for option_type, filename, target_filename in self.TEST_DATA_2:
-			buffers[filename] = open('/usr/share/ucs-test/72_udm-extensions/%s' % filename, 'rb').read()
+			buffers[filename] = open('%s/%s' % (CWD, filename), 'rb').read()
 			options.setdefault(option_type, []).append('/usr/share/%s/%s' % (package_name, filename))
 		joinscript_buffer = get_join_script_buffer(
 			extension_type,

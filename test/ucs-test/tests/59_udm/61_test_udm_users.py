@@ -9,6 +9,7 @@
 ##   - univention-directory-manager-tools
 
 import base64
+import os
 import pprint
 import random
 import subprocess
@@ -24,6 +25,8 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 from univention.admin.uldap import position
 from univention.testing.umc import Client
+
+CWD = os.path.dirname(os.path.abspath(__file__))
 
 
 @pytest.fixture
@@ -120,7 +123,7 @@ class Test_UserModification(object):
 		"""Set jpegPhoto during users/user modification"""
 		user = udm.create_user()[0]
 
-		with open('/usr/share/ucs-test/61_udm-users/example_user_jpeg_photo.jpg', "rb") as jpeg:
+		with open('%s/example_user_jpeg_photo.jpg' % (CWD,), "rb") as jpeg:
 			jpeg_data = jpeg.read()
 
 		udm.modify_object('users/user', dn=user, jpegPhoto=base64.b64encode(jpeg_data).decode('ascii'))
@@ -747,4 +750,4 @@ def test_user_username_case_modification(udm):
 
 	dn = udm.modify_object('users/user', dn=user, username=name)
 	assert dn.startswith("uid={}".format(name)), "The dn returned by `modify_object` does not contain the updated name"
-	utils.verify_ldap_object(user, {'uid' : [name]})
+	utils.verify_ldap_object(user, {'uid': [name]})

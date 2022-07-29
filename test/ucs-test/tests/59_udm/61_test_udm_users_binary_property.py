@@ -7,6 +7,7 @@
 ## packages: [python3-univention-directory-manager]
 ## bugs: [47316]
 
+import os
 from collections import namedtuple
 
 from unittest import TestCase, main
@@ -18,6 +19,7 @@ from univention.udm import UDM
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
 ud.set_level(ud.ADMIN, ud.ALL)
 
+CWD = os.path.dirname(os.path.abspath(__file__))
 
 PostalAddress = namedtuple('PostalAddress', ['street', 'zipcode', 'city'])
 
@@ -36,7 +38,7 @@ class TestUdmUsersBasic(TestCase):
 		obj.props.username = obj.props.lastname
 		obj.props.password = random_string()
 
-		jpg_content = open('/usr/share/ucs-test/61_udm-users/example_user_jpeg_photo.jpg', 'rb').read()
+		jpg_content = open('%s/example_user_jpeg_photo.jpg' % (CWD,), 'rb').read()
 		obj.props.jpegPhoto = jpg_content
 		obj.save()
 		try:
