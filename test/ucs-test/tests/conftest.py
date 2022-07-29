@@ -92,6 +92,16 @@ def udm():
 		yield udm
 
 
+@pytest.fixture(scope='session')
+def udm_session():
+	# type: () -> Iterator[_udm.UCSTestUDM]
+	"""
+	Auto-reverting UDM wrapper.
+	"""
+	with _udm.UCSTestUDM() as udm:
+		yield udm
+
+
 @pytest.fixture
 def selenium():
 	# type: () -> Iterator[_sel.UMCSeleniumTest]
