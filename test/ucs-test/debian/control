@@ -306,6 +306,21 @@ Provides:
 Description: Test scripts for univention directory notifier
  This package includes some scripts for testing univention directory notifier.
 
+Package: ucs-test-updater
+Architecture: all
+Recommends:
+ ucs-test-framework,
+Depends:
+ dpkg-dev,
+ libwww-perl,
+ ucs-test-libs (= ${source:Version}),
+ univention-updater,
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
+Description: Test scripts for the updater.
+ This package includes some scripts for testing the system updater.
+
 Package: ucs-test-umc
 Architecture: all
 Recommends:
