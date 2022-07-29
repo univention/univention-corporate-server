@@ -19,10 +19,10 @@ router2 = '192.168.2.254'
 @pytest.fixture(scope='session')
 def service_subnet_routing(udm_session):
 	udm = udm_session
-	service = udm.create_object('dhcp/service', service=uts.random_name())
-	subnet = udm.create_object('dhcp/subnet', subnet=NET, subnetmask='255.255.255.0', superordinate=service)
-	dhcp_routing = udm.create_object('policies/dhcp_routing', position=subnet, name='p1', routers=router)
-	udm.modify_object('dhcp/service', dn=service, policy_reference=dhcp_routing)
+	service = udm.create_object('dhcp/service', service=uts.random_name(), wait_for_replication=False)
+	subnet = udm.create_object('dhcp/subnet', subnet=NET, subnetmask='255.255.255.0', superordinate=service, wait_for_replication=False)
+	dhcp_routing = udm.create_object('policies/dhcp_routing', position=subnet, name='p1', routers=router, wait_for_replication=False)
+	udm.modify_object('dhcp/service', dn=service, policy_reference=dhcp_routing, wait_for_replication=False)
 	return service, subnet, dhcp_routing
 
 
@@ -60,11 +60,11 @@ def test_policy_object_classes_and_filter(udm_session, lo, prop, propval, servic
 ])
 def test_policy_fixed_empty_attributes(udm, lo, pol1_attributes, pol2_attributes, expected_policy, expected_router, expected_fixed):
 	"""Test fixedAttributes and emptyAttributes in UMC policy"""
-	service = udm.create_object('dhcp/service', service=uts.random_name())
-	subnet = udm.create_object('dhcp/subnet', subnet=NET, subnetmask='255.255.255.0', superordinate=service)
-	dhcp_routing = udm.create_object('policies/dhcp_routing', position=subnet, name='p1', routers=router, **pol1_attributes)
-	udm.modify_object('dhcp/service', dn=service, policy_reference=dhcp_routing)
-	dhcp_routing2 = udm.create_object('policies/dhcp_routing', position=subnet, name='p2', routers=router2, **pol2_attributes)
+	service = udm.create_object('dhcp/service', service=uts.random_name(), wait_for_replication=False)
+	subnet = udm.create_object('dhcp/subnet', subnet=NET, subnetmask='255.255.255.0', superordinate=service, wait_for_replication=False)
+	dhcp_routing = udm.create_object('policies/dhcp_routing', position=subnet, name='p1', routers=router, wait_for_replication=False, **pol1_attributes)
+	udm.modify_object('dhcp/service', dn=service, policy_reference=dhcp_routing, wait_for_replication=False)
+	dhcp_routing2 = udm.create_object('policies/dhcp_routing', position=subnet, name='p2', routers=router2, **pol2_attributes, wait_for_replication=False)
 	udm.modify_object('dhcp/subnet', dn=subnet, policy_reference=dhcp_routing2)
 	expected_policy = dhcp_routing if expected_policy == '1' else dhcp_routing2
 
@@ -85,12 +85,12 @@ def test_policy_fixed_empty_attributes(udm, lo, pol1_attributes, pol2_attributes
 
 def test_policy_inheritance(udm, lo):
 	"""Test policy inheritance in UMC policy"""
-	service = udm.create_object('dhcp/service', service=uts.random_name())
-	subnet = udm.create_object('dhcp/subnet', subnet=NET, subnetmask='255.255.255.0', superordinate=service)
-	pool = udm.create_object('dhcp/pool', name='pool', range='192.168.2.2 192.168.2.253', superordinate=subnet)
-	dhcp_routing = udm.create_object('policies/dhcp_routing', position=subnet, name='p1', routers=router, fixedAttributes='univentionDhcpRouters')
-	udm.modify_object('dhcp/service', dn=service, policy_reference=dhcp_routing)
-	dhcp_routing2 = udm.create_object('policies/dhcp_routing', position=subnet, name='p2', routers=router2)
+	service = udm.create_object('dhcp/service', service=uts.random_name(), wait_for_replication=False)
+	subnet = udm.create_object('dhcp/subnet', subnet=NET, subnetmask='255.255.255.0', superordinate=service, wait_for_replication=False)
+	pool = udm.create_object('dhcp/pool', name='pool', range='192.168.2.2 192.168.2.253', superordinate=subnet, wait_for_replication=False)
+	dhcp_routing = udm.create_object('policies/dhcp_routing', position=subnet, name='p1', routers=router, fixedAttributes='univentionDhcpRouters', wait_for_replication=False)
+	udm.modify_object('dhcp/service', dn=service, policy_reference=dhcp_routing, wait_for_replication=False)
+	dhcp_routing2 = udm.create_object('policies/dhcp_routing', position=subnet, name='p2', routers=router2, wait_for_replication=False)
 	udm.modify_object('dhcp/pool', dn=pool, policy_reference=dhcp_routing2)
 
 	result = policy_result(pool)
@@ -104,7 +104,7 @@ def test_policy_inheritance(udm, lo):
 def test_policy_object_class_order(udm, lo):
 	"""Test policy ignores ordering of objectClasses"""
 	## bugs: [41641]
-	service = udm.create_object('dhcp/service', service=uts.random_name())
+	service = udm.create_object('dhcp/service', service=uts.random_name(), wait_for_replication=False)
 	dhcp_routing = f'cn=p1,{service}'
 	dhcp_routing2 = f'cn=p2,{service}'
 	proc = subprocess.Popen(['ldapadd', '-x', '-D', f'cn=admin,{lo.base}', '-y', '/etc/ldap.secret'], stdin=subprocess.PIPE)
