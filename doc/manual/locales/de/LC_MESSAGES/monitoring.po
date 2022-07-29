@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-28 16:36+0000\n"
-"PO-Revision-Date: 2022-06-14 16:17+0200\n"
+"POT-Creation-Date: 2022-07-29 09:21+0200\n"
+"PO-Revision-Date: 2022-07-29 09:27+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: ../../monitoring/dashboard.rst:4 ../../monitoring/dashboard.rst:22
 msgid "UCS Dashboard"
@@ -190,7 +190,7 @@ msgid ""
 msgstr ""
 "Standardmäßig konfiguriert die :program:`UCS Dashboard` App das *Alert "
 "Dashboard*. Das *Alert Dashboard* zeigt detaillierte Informationen über "
-"den Status aller in UCS konfigurierten Alerts."
+"den Status aller in UCS konfigurierten Alarme."
 
 #: ../../monitoring/dashboard.rst:111
 msgid "Own dashboards"
@@ -260,7 +260,7 @@ msgstr ""
 "überprüfen und proaktiv eine Benachrichtigung auszulösen, wenn eine "
 "Warnstufe erreicht wird. Ab UCS 5.0-2 können Prometheus und Prometheus "
 "Alertmanager zur Überwachung eingesetzt. Mit UCS 5.0 wurde die "
-"Unterstützung für die Nagios-Serverkomponente eingestellt."
+"Unterstützung für die Nagios Serverkomponente eingestellt."
 
 #: ../../monitoring/monitoring.rst:4
 msgid "Monitoring"
@@ -296,7 +296,7 @@ msgid ""
 "example an alert for the listener/notifier replication."
 msgstr ""
 "Der Prometheus Node Exporter exportiert eine umfassende Sammlung von "
-"Metriken in die Prometheus-Datenbank. Neben der Abfrage von "
+"Metriken in die Prometheus Datenbank. Neben der Abfrage von "
 "Systemindikatoren wie CPU, Speichernutzung und freien Speicherplatz, "
 "testen sie die Verfügbarkeit und den Betrieb von verschiedenen Diensten "
 "wie SSH, SMTP und HTTP. Betriebstests führen im Allgemeinen "
@@ -324,7 +324,7 @@ msgid ""
 "See UCS-Dashboard :ref:`dashboard-installation` for an overview of all "
 "involved components."
 msgstr ""
-"Siehe UCS-Dashboard :ref:`dashboard-installation` für eine Übersicht über"
+"Siehe UCS Dashboard :ref:`dashboard-installation` für eine Übersicht über"
 " alle beteiligten Komponenten."
 
 #: ../../monitoring/monitoring.rst:36
@@ -342,7 +342,7 @@ msgid ""
 "For installation of the UCS Dashboard components, see :ref:`dashboard-"
 "installation`."
 msgstr ""
-"Zur Installation der UCS Dashboard-Komponenten siehe :ref:`dashboard-"
+"Zur Installation der UCS Dashboard Komponenten siehe :ref:`dashboard-"
 "installation`."
 
 #: ../../monitoring/monitoring.rst:48
@@ -472,7 +472,7 @@ msgid ""
 msgstr ""
 "Einige Dienste richten ihr jeweiliges Paket zur Überwachung bereits bei "
 "der Installation ein. Wenn Administratoren zum Beispiel den :program:`UCS"
-" AD Connector einrichten, enthält es automatisch das Plugin für die "
+" AD Connector` einrichten, enthält es automatisch das Plugin für die "
 "Überwachung."
 
 #: ../../monitoring/monitoring.rst:103
@@ -486,7 +486,7 @@ msgid ""
 "``warning``."
 msgstr ""
 "Die Installation richtet automatisch grundlegende Überwachungstests für "
-"UCS Systeme ein. Alle Alarme haben ein Label *severity* mit dem Wert "
+"UCS Systeme ein. Alle Alarme haben die Bezeichnung (*Label*) *severity* mit dem Wert "
 "``critical`` oder ``warning``."
 
 #: ../../monitoring/monitoring.rst:108
@@ -548,7 +548,7 @@ msgid ""
 " to test the function of the name resolution."
 msgstr ""
 "Testet die Funktion des lokalen DNS-Servers und die Erreichbarkeit des "
-"öffentlichen DNS-Servers durch Abfrage des Hostnamens "
+"öffentlichen DNS-Servers durch Abfrage des Rechnernamens "
 "``www.univention.de``. Wenn kein DNS-Forwarder für die UCS-Domäne "
 "definiert ist, schlägt diese Anfrage fehl. In diesem Fall kann "
 "``www.univention.de`` durch den FQDN des |UCSPRIMARYDN| ersetzt werden, "
@@ -878,56 +878,56 @@ msgid ""
 "Monitors the status of present raid devices. The *warning* alert is fired"
 " in case of the following RAID statuses:"
 msgstr ""
-"Überwacht den Status der vorhandenen Raid-Geräte. Der *warning* Alarm "
-"wird im Falle folgender RAID Stati ausgelöst:"
+"Überwacht den Status der vorhandenen RAID Geräte. Der *warning* Alarm "
+"wird im Falle folgender RAID Status ausgelöst:"
 
 #: ../../monitoring/monitoring.rst:245
-msgid "'Rebuilding'"
-msgstr "'Rebuilding'"
+msgid "``Rebuilding``"
+msgstr "``Rebuilding``"
 
 #: ../../monitoring/monitoring.rst:246
-msgid "'Reconstruct'"
-msgstr "'Reconstruct'"
+msgid "``Reconstruct``"
+msgstr "``Reconstruct``"
 
 #: ../../monitoring/monitoring.rst:247
-msgid "'Replaced Drive'"
-msgstr "'Replaced Drive'"
+msgid "``Replaced Drive``"
+msgstr "``Replaced Drive``"
 
 #: ../../monitoring/monitoring.rst:248
-msgid "'Expanding'"
-msgstr "'Expanding'"
+msgid "``Expanding``"
+msgstr "``Expanding``"
 
 #: ../../monitoring/monitoring.rst:249
-msgid "'Warning'"
-msgstr "'Warning'"
+msgid "``Warning``"
+msgstr "``Warning``"
 
 #: ../../monitoring/monitoring.rst:250
-msgid "'Verify'"
-msgstr "'Verify'"
+msgid "``Verify``"
+msgstr "``Verify``"
 
 #: ../../monitoring/monitoring.rst:252
 msgid "The *critical* alert is fired in case of the following RAID statuses:"
 msgstr "Der *critical* Alarm wird für folgende RAID Status ausgelöst:"
 
 #: ../../monitoring/monitoring.rst:254
-msgid "'Degraded'"
-msgstr "'Degraded'"
+msgid "``Degraded``"
+msgstr "``Degraded``"
 
 #: ../../monitoring/monitoring.rst:255
-msgid "'Dead'"
-msgstr "'Dead'"
+msgid "``Dead``"
+msgstr "``Dead``"
 
 #: ../../monitoring/monitoring.rst:256
-msgid "'Failed'"
-msgstr "'Failed'"
+msgid "``Failed``"
+msgstr "``Failed``"
 
 #: ../../monitoring/monitoring.rst:257
-msgid "'Error'"
-msgstr "'Error'"
+msgid "``Error``"
+msgstr "``Error``"
 
 #: ../../monitoring/monitoring.rst:258
-msgid "'Missing'"
-msgstr "'Missing'"
+msgid "``Missing``"
+msgstr "``Missing``"
 
 #: ../../monitoring/monitoring.rst:260
 msgid "``UNIVENTION_S4CONNECTOR`` and ``UNIVENTION_S4CONNECTOR_WARNING``"
@@ -1083,7 +1083,7 @@ msgid ""
 " when the given query returns a non-empty vector."
 msgstr ""
 "Prometheus Abfrage, die den Alarm auslöst. Der Alarm wird ausgelöst, wenn"
-" die angegebene Abfrage einen nicht leeren Vektor zurückgibt."
+" die angegebene Abfrage einen nicht leeren Vektor zurück gibt."
 
 #: ../../monitoring/monitoring.rst:330
 msgid ""
@@ -1139,8 +1139,8 @@ msgid ""
 "alerts. For example: *severity* with the value ``critical`` or "
 "``warning``."
 msgstr ""
-"Prometheus fügt den Alarmen Labels hinzu. Labels helfen bei der Abfrage "
-"von Alerts. Zum Beispiel: *severity* mit dem Wert ``critical`` oder "
+"Prometheus fügt den Alarmen Bezeichnungen (*Labels*) hinzu. Bezeichnungen helfen bei der Abfrage "
+"von Alarmen. Zum Beispiel: *severity* mit dem Wert ``critical`` oder "
 "``warning``."
 
 #: ../../monitoring/monitoring.rst:350
@@ -1300,10 +1300,10 @@ msgid ""
 "custom alert to UCS systems, see :ref:`monitoring-assign-alerts`."
 msgstr ""
 "Sie müssen den benutzerdefinierten Alarm in |UCSUMC| konfigurieren, siehe"
-" :ref:`monitoring-alert-configuration`. Sie müssen einen Prometheus-"
+" :ref:`monitoring-alert-configuration`. Sie müssen einen Prometheus "
 "Ausdruck für die Metrik des Skripts in das Feld *Query expression* "
 "eingeben. Um den benutzerdefinierten Alert zu UCS-Systemen zuzuordnen, "
-"siehe see :ref:`monitoring-assign-alerts`."
+"siehe :ref:`monitoring-assign-alerts`."
 
 #: ../../monitoring/monitoring.rst:433
 msgid "Prometheus naming conventions"
@@ -1315,7 +1315,7 @@ msgstr "`Metric and label naming <https://prometheus.io/docs/practices/naming/>`
 
 #: ../../monitoring/monitoring.rst:436
 msgid "Text-based format of a :file:`.prom` file"
-msgstr "Textbasiertes Format einer :file:`.prom`-Datei"
+msgstr "Text-basiertes Format einer :file:`.prom`-Datei"
 
 #: ../../monitoring/monitoring.rst:436
 msgid ""
@@ -1604,3 +1604,16 @@ msgid ""
 msgstr ""
 "Das Plugin kann auch in Multi-Connector-Instanzen verwendet werden. Dabei"
 " muss der Name der Instanz als Parameter übergeben werden."
+
+#~ msgid "'Verify'"
+#~ msgstr "'Verify'"
+
+#~ msgid "'Dead'"
+#~ msgstr "'Dead'"
+
+#~ msgid "'Failed'"
+#~ msgstr "'Failed'"
+
+#~ msgid "'Error'"
+#~ msgstr "'Error'"
+

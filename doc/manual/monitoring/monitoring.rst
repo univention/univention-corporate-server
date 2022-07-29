@@ -242,20 +242,20 @@ once additional packages have been installed (see :ref:`Monitoring installation 
      - Monitors the status of present raid devices.
        The *warning* alert is fired in case of the following RAID statuses:
 
-       * 'Rebuilding'
-       * 'Reconstruct'
-       * 'Replaced Drive'
-       * 'Expanding'
-       * 'Warning'
-       * 'Verify'
+       * ``Rebuilding``
+       * ``Reconstruct``
+       * ``Replaced Drive``
+       * ``Expanding``
+       * ``Warning``
+       * ``Verify``
 
        The *critical* alert is fired in case of the following RAID statuses:
 
-       * 'Degraded'
-       * 'Dead'
-       * 'Failed'
-       * 'Error'
-       * 'Missing'
+       * ``Degraded``
+       * ``Dead``
+       * ``Failed``
+       * ``Error``
+       * ``Missing``
 
    * - ``UNIVENTION_S4CONNECTOR`` and ``UNIVENTION_S4CONNECTOR_WARNING``
      - Monitors the status of Samba 4 server. A *warning* alert is fired if the Samba 4 is reachable and if any rejects are present.

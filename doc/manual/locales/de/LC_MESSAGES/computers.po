@@ -5,7 +5,7 @@ msgstr ""
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-07-27 07:12+0000\n"
-"PO-Revision-Date: 2022-06-01 16:15+0200\n"
+"PO-Revision-Date: 2022-07-29 09:03+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -3328,7 +3328,7 @@ msgstr "Reiter *Alerts* (erweiterte Einstellungen)"
 
 #: ../../computers/umc.rst:269
 msgid "Assigned monitoring alerts"
-msgstr "Monitoring Alerts zuweisen"
+msgstr "Überwachungsalarme zuweisen"
 
 #: ../../computers/umc.rst:270
 msgid ""
