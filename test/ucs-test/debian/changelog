@@ -1,3 +1,11 @@
+ucs-test (9.0.7-90) unstable; urgency=medium
+
+  * Bug #53826: alpine keys have been rotated, apk update fails because
+    the new keys are not trusted yet. After apk upgrade everything work
+    as expected.
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 01 Aug 2022 09:07:08 +0200
+
 ucs-test (9.0.7-89) unstable; urgency=medium
 
   * Bug #54561: ldap-group-cache returns empty list instead of none - adapt tests
