@@ -101,6 +101,7 @@ def test_policy_inheritance(udm, lo):
 	assert pol_result.get('value') == [router.encode()]
 
 
+@pytest.mark.roles('domaincontroller_master')
 def test_policy_object_class_order(udm, lo):
 	"""Test policy ignores ordering of objectClasses"""
 	## bugs: [41641]
