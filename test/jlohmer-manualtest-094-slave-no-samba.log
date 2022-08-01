@@ -1,0 +1,114 @@
+Created instance master094 at 2022-07-19T12:42:31.260835
+Failed to connect to skurup.knut.univention.de  # lattjo.knut.univention.de as jlohmer...
+Created instance master094 at 2022-07-19T12:43:04.706776
+Failed to connect to skurup.knut.univention.de  # lattjo.knut.univention.de as jlohmer...
+Created instance master094 at 2022-07-19T12:49:09.681515
+Failed to connect to skurup.knut.univention.de  # skurup.knut.univention.de as jlohmer...
+Created instance master094 at 2022-07-19T12:49:25.988048
+<OTHER> 2022-07-19T12:49:26.674438	=> Execute: "ucs-kt-get --no-start --yes --version '4.4-9  # 5.0-2+e339' --architecture amd64 --label master094-jlohmer-manualtest-094-slave-no-samba-5.0-2 --onlyone --resultfile /proc/self/fd/221 generic-unsafe 221>&1 1>&2"
+<OTHER> 2022-07-19T12:49:26.769802	Searching for template ...[31mERROR (no template found)[0m
+*** Failed 1: "ucs-kt-get --no-start --yes --version '4.4-9  # 5.0-2+e339' --architecture amd64 --label master094-jlohmer-manualtest-094-slave-no-samba-5.0-2 --onlyone --resultfile /proc/self/fd/221 generic-unsafe 221>&1 1>&2"
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/univention/ec2/kvm.py", line 467, in start
+    stdout, stderr = self.run_on_server("%s %d>&1 1>&2" % (quoted(cmd), FD))
+  File "/usr/lib/python3/dist-packages/univention/ec2/kvm.py", line 579, in run_on_server
+    exit('fail:\ncmd=%s\nret=%d\nstdout=%s\nstderr=%s' % (cmd, ret, stdout, stderr))
+  File "/usr/lib/python3.7/_sitebuiltins.py", line 26, in __call__
+    raise SystemExit(code)
+SystemExit: fail:
+cmd=ucs-kt-get --no-start --yes --version '4.4-9  # 5.0-2+e339' --architecture amd64 --label master094-jlohmer-manualtest-094-slave-no-samba-5.0-2 --onlyone --resultfile /proc/self/fd/221 generic-unsafe 221>&1 1>&2
+ret=1
+stdout=
+stderr=Searching for template ...[31mERROR (no template found)[0m
+
+Created instance slave094 at 2022-07-19T12:49:25.988252
+Created instance master094 at 2022-07-19T12:49:39.366454
+<OTHER> 2022-07-19T12:49:40.046628	=> Execute: "ucs-kt-get --no-start --yes --version '4.4-9  # 5.0-2+e339' --architecture amd64 --label master094-jlohmer-manualtest-094-slave-no-samba-5.0-2 --onlyone --resultfile /proc/self/fd/221 generic-unsafe 221>&1 1>&2"
+<OTHER> 2022-07-19T12:49:40.210101	Searching for template ...[31mERROR (no template found)[0m
+*** Failed 1: "ucs-kt-get --no-start --yes --version '4.4-9  # 5.0-2+e339' --architecture amd64 --label master094-jlohmer-manualtest-094-slave-no-samba-5.0-2 --onlyone --resultfile /proc/self/fd/221 generic-unsafe 221>&1 1>&2"
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/univention/ec2/kvm.py", line 467, in start
+    stdout, stderr = self.run_on_server("%s %d>&1 1>&2" % (quoted(cmd), FD))
+  File "/usr/lib/python3/dist-packages/univention/ec2/kvm.py", line 579, in run_on_server
+    exit('fail:\ncmd=%s\nret=%d\nstdout=%s\nstderr=%s' % (cmd, ret, stdout, stderr))
+  File "/usr/lib/python3.7/_sitebuiltins.py", line 26, in __call__
+    raise SystemExit(code)
+SystemExit: fail:
+cmd=ucs-kt-get --no-start --yes --version '4.4-9  # 5.0-2+e339' --architecture amd64 --label master094-jlohmer-manualtest-094-slave-no-samba-5.0-2 --onlyone --resultfile /proc/self/fd/221 generic-unsafe 221>&1 1>&2
+ret=1
+stdout=
+stderr=Searching for template ...[31mERROR (no template found)[0m
+
+Created instance slave094 at 2022-07-19T12:49:39.366671
+Created instance master094 at 2022-07-19T12:50:24.691524
+<OTHER> 2022-07-19T12:50:25.602510	=> Execute: "ucs-kt-get --no-start --yes --version '4.4-9  # 5.0-2+e339' --architecture amd64 --label master094-jlohmer-manualtest-094-slave-no-samba-5.0-2 --onlyone --resultfile /proc/self/fd/221 autotest-094-slave-no-samba 221>&1 1>&2"
+<OTHER> 2022-07-19T12:50:25.703109	Searching for template ...[31mERROR (no template found)[0m
+*** Failed 1: "ucs-kt-get --no-start --yes --version '4.4-9  # 5.0-2+e339' --architecture amd64 --label master094-jlohmer-manualtest-094-slave-no-samba-5.0-2 --onlyone --resultfile /proc/self/fd/221 autotest-094-slave-no-samba 221>&1 1>&2"
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/univention/ec2/kvm.py", line 467, in start
+    stdout, stderr = self.run_on_server("%s %d>&1 1>&2" % (quoted(cmd), FD))
+  File "/usr/lib/python3/dist-packages/univention/ec2/kvm.py", line 579, in run_on_server
+    exit('fail:\ncmd=%s\nret=%d\nstdout=%s\nstderr=%s' % (cmd, ret, stdout, stderr))
+  File "/usr/lib/python3.7/_sitebuiltins.py", line 26, in __call__
+    raise SystemExit(code)
+SystemExit: fail:
+cmd=ucs-kt-get --no-start --yes --version '4.4-9  # 5.0-2+e339' --architecture amd64 --label master094-jlohmer-manualtest-094-slave-no-samba-5.0-2 --onlyone --resultfile /proc/self/fd/221 autotest-094-slave-no-samba 221>&1 1>&2
+ret=1
+stdout=
+stderr=Searching for template ...[31mERROR (no template found)[0m
+
+Created instance slave094 at 2022-07-19T12:50:24.691723
+Created instance master094 at 2022-07-19T12:51:22.263706
+<OTHER> 2022-07-19T12:51:22.957768	=> Execute: "ucs-kt-get --no-start --yes --version '4.4-9  # 5.0-2+e339' --architecture amd64 --label master094-jlohmer-manualtest-094-slave-no-samba-5.0-2 --onlyone --resultfile /proc/self/fd/221 generic-unsafe 221>&1 1>&2"
+<OTHER> 2022-07-19T12:51:23.113460	Searching for template ...[31mERROR (no template found)[0m
+*** Failed 1: "ucs-kt-get --no-start --yes --version '4.4-9  # 5.0-2+e339' --architecture amd64 --label master094-jlohmer-manualtest-094-slave-no-samba-5.0-2 --onlyone --resultfile /proc/self/fd/221 generic-unsafe 221>&1 1>&2"
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/univention/ec2/kvm.py", line 467, in start
+    stdout, stderr = self.run_on_server("%s %d>&1 1>&2" % (quoted(cmd), FD))
+  File "/usr/lib/python3/dist-packages/univention/ec2/kvm.py", line 579, in run_on_server
+    exit('fail:\ncmd=%s\nret=%d\nstdout=%s\nstderr=%s' % (cmd, ret, stdout, stderr))
+  File "/usr/lib/python3.7/_sitebuiltins.py", line 26, in __call__
+    raise SystemExit(code)
+SystemExit: fail:
+cmd=ucs-kt-get --no-start --yes --version '4.4-9  # 5.0-2+e339' --architecture amd64 --label master094-jlohmer-manualtest-094-slave-no-samba-5.0-2 --onlyone --resultfile /proc/self/fd/221 generic-unsafe 221>&1 1>&2
+ret=1
+stdout=
+stderr=Searching for template ...[31mERROR (no template found)[0m
+
+Created instance slave094 at 2022-07-19T12:51:22.263979
+Created instance master094 at 2022-07-19T12:54:43.869672
+<OTHER> 2022-07-19T12:54:44.538850	=> Execute: "ucs-kt-get --no-start --yes --version '4.4-9  # 5.0-2+e339' --architecture amd64 --label master094-jlohmer-manualtest-094-slave-no-samba-5.0-2 --onlyone --resultfile /proc/self/fd/221 generic-unsafe 221>&1 1>&2"
+<OTHER> 2022-07-19T12:54:44.707111	Searching for template ...[31mERROR (no template found)[0m
+*** Failed 1: "ucs-kt-get --no-start --yes --version '4.4-9  # 5.0-2+e339' --architecture amd64 --label master094-jlohmer-manualtest-094-slave-no-samba-5.0-2 --onlyone --resultfile /proc/self/fd/221 generic-unsafe 221>&1 1>&2"
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/univention/ec2/kvm.py", line 467, in start
+    stdout, stderr = self.run_on_server("%s %d>&1 1>&2" % (quoted(cmd), FD))
+  File "/usr/lib/python3/dist-packages/univention/ec2/kvm.py", line 579, in run_on_server
+    exit('fail:\ncmd=%s\nret=%d\nstdout=%s\nstderr=%s' % (cmd, ret, stdout, stderr))
+  File "/usr/lib/python3.7/_sitebuiltins.py", line 26, in __call__
+    raise SystemExit(code)
+SystemExit: fail:
+cmd=ucs-kt-get --no-start --yes --version '4.4-9  # 5.0-2+e339' --architecture amd64 --label master094-jlohmer-manualtest-094-slave-no-samba-5.0-2 --onlyone --resultfile /proc/self/fd/221 generic-unsafe 221>&1 1>&2
+ret=1
+stdout=
+stderr=Searching for template ...[31mERROR (no template found)[0m
+
+Created instance slave094 at 2022-07-19T12:54:43.869883
+Created instance master094 at 2022-07-19T12:56:50.907874
+<OTHER> 2022-07-19T12:56:52.050542	=> Execute: "ucs-kt-get --no-start --yes --version '4.4-9  # 5.0-2+e339' --architecture amd64 --label master094-jlohmer-manualtest-094-slave-no-samba-5.0-2 --onlyone --resultfile /proc/self/fd/221 generic-unsafe 221>&1 1>&2"
+<OTHER> 2022-07-19T12:56:52.222341	Searching for template ...[31mERROR (no template found)[0m
+*** Failed 1: "ucs-kt-get --no-start --yes --version '4.4-9  # 5.0-2+e339' --architecture amd64 --label master094-jlohmer-manualtest-094-slave-no-samba-5.0-2 --onlyone --resultfile /proc/self/fd/221 generic-unsafe 221>&1 1>&2"
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/univention/ec2/kvm.py", line 467, in start
+    stdout, stderr = self.run_on_server("%s %d>&1 1>&2" % (quoted(cmd), FD))
+  File "/usr/lib/python3/dist-packages/univention/ec2/kvm.py", line 579, in run_on_server
+    exit('fail:\ncmd=%s\nret=%d\nstdout=%s\nstderr=%s' % (cmd, ret, stdout, stderr))
+  File "/usr/lib/python3.7/_sitebuiltins.py", line 26, in __call__
+    raise SystemExit(code)
+SystemExit: fail:
+cmd=ucs-kt-get --no-start --yes --version '4.4-9  # 5.0-2+e339' --architecture amd64 --label master094-jlohmer-manualtest-094-slave-no-samba-5.0-2 --onlyone --resultfile /proc/self/fd/221 generic-unsafe 221>&1 1>&2
+ret=1
+stdout=
+stderr=Searching for template ...[31mERROR (no template found)[0m
+
+Created instance slave094 at 2022-07-19T12:56:50.908097
