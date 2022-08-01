@@ -45,6 +45,21 @@ def extension_type(request):
 
 
 @pytest.fixture
+def version_start(request):
+	return request.param
+
+
+@pytest.fixture
+def version_end(request):
+	return request.param
+
+
+@pytest.fixture
+def active(request):
+	return request.param
+
+
+@pytest.fixture
 def wait_before(wait_for_replication):
 	yield
 	# wait for replicate before test starts
@@ -97,6 +112,30 @@ def package(package_name, package_version):
 	package.remove()
 
 
+@pytest.fixture
+def app_id():
+	return '%s-%s' % (random_name(), random_version())
+
+
+@pytest.fixture
+def extension_dn(udm, ucr, extension_type, extension_name, extension_buffer, extension_filename, package_version, package_name, app_id, version_start, version_end):
+	dn = udm.create_object(
+		'settings/udm_%s' % extension_type,
+		name=extension_name,
+		data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
+		filename=extension_filename,
+		packageversion=package_version,
+		appidentifier=app_id,
+		package=package_name,
+		ucsversionstart=version_start,
+		ucsversionend=version_end,
+		active='FALSE',
+		position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base'])
+			)
+
+	return dn
+
+
 @pytest.mark.tags('udm', 'udm-extensions', 'apptest')
 @pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 @pytest.mark.exposure('dangerous')
@@ -125,4 +164,30 @@ class Test_UDMExtensionsJoinscript:
 			'univentionObjectType': ['settings/udm_%s' % extension_type],
 			'univentionOwnedByPackageVersion': [package_version],
 			'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
+		})
+
+
+class Test_UDMExtensions:
+
+	@pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
+	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
+	@pytest.mark.exposure('dangerous')
+	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
+	@pytest.mark.parametrize('version_start, version_end, active', [(random_ucs_version(max_major=2), random_ucs_version(min_major=5), 'FALSE')], indirect=True)
+	def test_listener_check_active(self, udm, extension_type, version_start, version_end, extension_name, extension_filename, extension_buffer, package_name, package_version, app_id, extension_dn, active):
+		"""Change active flag to TRUE by domaincontroller master"""
+
+		wait_for_replication_and_postrun()
+
+		verify_ldap_object(extension_dn, {
+			'cn': [extension_name],
+			'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+			'univentionOwnedByPackage': [package_name],
+			'univentionObjectType': ['settings/udm_%s' % extension_type],
+			'univentionOwnedByPackageVersion': [package_version],
+			'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
+			'univentionAppIdentifier': [app_id],
+			'univentionUCSVersionStart': [version_start],
+			'univentionUCSVersionEnd': [version_end],
+			'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
 		})
