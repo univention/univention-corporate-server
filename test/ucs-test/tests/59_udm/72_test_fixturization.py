@@ -40,9 +40,8 @@ CWD = os.path.dirname(os.path.abspath(__file__))
 
 @pytest.fixture
 def extension_type(request):
-	result = request.param
-	assert isinstance(result, str)
-	return result
+	print('========================= TESTING EXTENSION %s =============================' % extension_type)
+	return request.param
 
 
 @pytest.fixture
@@ -52,52 +51,78 @@ def wait_before(wait_for_replication):
 	wait_for_replication()
 
 
+@pytest.fixture
+def package_name():
+	return get_package_name()
+
+
+@pytest.fixture
+def package_version():
+	return get_package_version()
+
+
+@pytest.fixture
+def extension_name(extension_type):
+	extension_name = get_extension_name(extension_type)
+	yield extension_name
+
+	print('Removing UDM extension from LDAP')
+	remove_extension_by_name(extension_type, extension_name, fail_on_error=False)
+
+
+@pytest.fixture
+def extension_filename(extension_type, extension_name):
+	return get_extension_filename(extension_type, extension_name)
+
+
+@pytest.fixture
+def joinscript_buffer(extension_type, package_name, extension_filename):
+	return get_join_script_buffer(extension_type, '/usr/share/%s/%s' % (package_name, extension_filename), version_start='5.0-0')
+
+
+@pytest.fixture
+def extension_buffer(extension_type, extension_name):
+	return get_extension_buffer(extension_type, extension_name)
+
+
+@pytest.fixture
+def package(package_name, package_version):
+	package = DebianPackage(name=package_name, version=package_version)
+	yield package
+
+	print('Uninstalling binary package %r' % package_name)
+	package.uninstall()
+
+	print('Removing source package')
+	package.remove()
+
+
 @pytest.mark.tags('udm', 'udm-extensions', 'apptest')
 @pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 @pytest.mark.exposure('dangerous')
 class Test_UDMExtensionsJoinscript:
 
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_register_and_verify_ldap_object(self, extension_type):
+	def test_register_and_verify_ldap_object(self, extension_type, package_name, package_version, extension_name, extension_filename, joinscript_buffer, extension_buffer, package):
 		"""Register UDM extension and perform simple LDAP verification"""
-		print('========================= TESTING EXTENSION %s =============================' % extension_type)
-		package_name = get_package_name()
-		package_version = get_package_version()
-		extension_name = get_extension_name(extension_type)
-		extension_filename = get_extension_filename(extension_type, extension_name)
-		joinscript_buffer = get_join_script_buffer(extension_type, '/usr/share/%s/%s' % (package_name, extension_filename), version_start='5.0-0')
-		extension_buffer = get_extension_buffer(extension_type, extension_name)
+		# create package and install it
+		package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
+		package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
+		package.build()
+		package.install()
 
-		package = DebianPackage(name=package_name, version=package_version)
-		try:
-			# create package and install it
-			package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
-			package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
-			package.build()
-			package.install()
+		call_join_script('66%s.inst' % package_name)
 
-			call_join_script('66%s.inst' % package_name)
+		# wait until removed object has been handled by the listener
+		wait_for_replication()
 
-			# wait until removed object has been handled by the listener
-			wait_for_replication()
-
-			dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-			assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name)
-			verify_ldap_object(dnlist[0], {
-				'cn': [extension_name],
-				'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
-				'univentionOwnedByPackage': [package_name],
-				'univentionObjectType': ['settings/udm_%s' % extension_type],
-				'univentionOwnedByPackageVersion': [package_version],
-				'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
-			})
-
-		finally:
-			print('Removing UDM extension from LDAP')
-			remove_extension_by_name(extension_type, extension_name, fail_on_error=False)
-
-			print('Uninstalling binary package %r' % package_name)
-			package.uninstall()
-
-			print('Removing source package')
-			package.remove()
+		dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
+		assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name)
+		verify_ldap_object(dnlist[0], {
+			'cn': [extension_name],
+			'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+			'univentionOwnedByPackage': [package_name],
+			'univentionObjectType': ['settings/udm_%s' % extension_type],
+			'univentionOwnedByPackageVersion': [package_version],
+			'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
+		})
