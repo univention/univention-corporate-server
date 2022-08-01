@@ -135,3 +135,36 @@ deb-pipeline:
     strategy: depend
     forward:
       pipeline_variables: true
+
+errata validation:
+  stage: build
+  tags:
+    - omar
+  resource_group: omar
+  rules:
+    - changes:
+      - doc/errata/staging/*.yaml
+  needs: []
+  variables:
+    VAULT_AUTH_ROLE: ucs-production
+  secrets:
+    BUGZILLA_CFG:
+      vault:
+        engine:
+          name: kv-v2
+          path: secret
+        path: dist/repo-ng/production/bugzilla
+        field: cfg
+  script:
+    - set -- doc/errata/staging/[!0]*.yaml && [ $# -ge 1 ] && [ -f "$1" ] || exit 0
+    - check_errata_for_release --html=errata.html --mail=errata.txt "$@" || [ $? -eq 10 ]
+    - for y in "$@"; do /usr/sbin/announce_errata --validate-xml="$(basename "$y" .yaml).xml" -BB -V "$y" || true; done
+  artifacts:
+    paths:
+      - errata.html
+      - errata.txt
+    expire_in: 1 week
+    expose_as: 'Errata Validation'
+    name: 'errata-validation'
+    reports:
+      junit: "*.xml"
