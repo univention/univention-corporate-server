@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [1, 2]
+scope: ucs_5.0-0-errata5.0-2
+src: firefox-esr
+fix: 91.12.0esr-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ * Directory indexes for bundled resources reflected URL parameters
+   (CVE-2022-36318)
+ * Mouse Position spoofing with CSS transforms (CVE-2022-36319)
+bug: [55049]
+cve:
+- CVE-2022-36318
+- CVE-2022-36319
