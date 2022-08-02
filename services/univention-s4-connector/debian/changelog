@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-91) unstable; urgency=medium
+
+  * Bug #55137: Add flag --first to resync_object script
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 02 Aug 2022 11:01:05 +0200
+
 univention-s4-connector (13.0.2-90) unstable; urgency=medium
 
   * Bug #54433: Fix accountExpires synchronisation between LDAP - S4
