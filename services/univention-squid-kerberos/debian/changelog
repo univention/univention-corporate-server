@@ -1,3 +1,9 @@
+univention-squid-kerberos (9.0.0-2) unstable; urgency=medium
+
+  *  Bug #54791: Sync DNS objects needed for join directly
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 02 Aug 2022 15:02:22 +0200
+
 univention-squid-kerberos (9.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

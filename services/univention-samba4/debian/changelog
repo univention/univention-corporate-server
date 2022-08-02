@@ -1,3 +1,9 @@
+univention-samba4 (9.0.8-4) unstable; urgency=medium
+
+  * Bug #54791: Sync DNS objects needed for join directly
+
+ -- Julia Bremer <bremer@knut.univention.de>  Tue, 02 Aug 2022 11:00:27 +0200
+
 univention-samba4 (9.0.8-3) unstable; urgency=medium
 
   * Bug #54994: Add dependency on specific samba-dsdb-modules version, to
