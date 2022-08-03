@@ -6,7 +6,7 @@ src: univention-monitoring-client
 fix: 1.0.0-6A~5.0.0.202207271606
 desc: |
  This update addresses the following issues:
- * The check script `check_univention_ntp` now handles errors e.g. when the
+ * The check script `check_univention_ntp` now handles errors when the
    NTP service is not reachable. The translation of the UDM module has been
-   fixed. The template values has been added to the layout of the UDM module.
+   fixed. The property `templateValues` is now exposed by the UDM module.
 bug: [55017]
