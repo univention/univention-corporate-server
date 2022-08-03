@@ -7,10 +7,10 @@ fix: 9.0.8-4A~5.0.0.202208021731
 desc: |
  This update addresses the following issue:
  * Joining UCS@School replica servers into environments with many objects
-   often failed due to timeouts in the join scripts
-   `97univention-s4-connector,98univention-samba4-dn` and
-   `98univention-squid-samba4`: the synchronisation of existing objects
-   blocked the synchronisation of new objects which are created during the
+   could fail due to timeouts in the join scripts
+   `97univention-s4-connector`,`98univention-samba4-dn` and
+   `98univention-squid-samba4`. The synchronisation of existing objects
+   delayed the synchronisation of new objects which are created during the
    join and necessary for its completion. The S4-Connector and the join
    scripts have been modified to sync these vital objects first, which speeds
    up the join process considerably.
