@@ -10,3 +10,5 @@ desc: |
    NTP service is not reachable. The translation of the UDM module has been
    fixed. The property `templateValues` is now exposed by the UDM module.
 bug: [55017]
+erratum: 376
+announced: 2022-08-03
