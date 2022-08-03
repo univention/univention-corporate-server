@@ -50,10 +50,10 @@ create_spn_account () {
 
 		Options:
 		--samaccountname <account>:		Account name
-		--serviceprincipalname <spn>:	servicePrincipalName
+		--serviceprincipalname <spn>:		servicePrincipalName
 		--privatekeytab <filename>:		privateKeytab
-		--resync:		resync object in s4connector
-		-h | --help | -?:        print this usage message and exit program
+		--resync:				resync object in s4connector
+		-h | --help | -?:			print this usage message and exit program
 
 		Description:
 		$command_name creates a Samba account with a given servicePrincipalName
