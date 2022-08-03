@@ -10,3 +10,5 @@ desc: |
    more useful debug information.
  * The password hash comparison in `UMCAndSecretAuthenticator` has been fixed.
 bug: [54273, 55010]
+erratum: 377
+announced: 2022-08-03
