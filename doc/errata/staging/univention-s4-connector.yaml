@@ -5,14 +5,13 @@ scope: ucs_5.0-0-errata5.0-2
 src: univention-s4-connector
 fix: 14.0.10-3A~5.0.0.202208021732
 desc: |
- This update addresses the following issues:
- * The join of UCS@School replica servers into environments with many objects
-   often failed due to timeouts in the joinscripts
-   97univention-s4-connector,98univention-samba4-dn
-   and 98univention-squid-samba4, because the synchronisation of
-   the newly replicated objects blocked the synchronisation of
-   objects which are created during the join and necessary for
-   its completion. The S4-Connector and the joinscripts have been
-   modified to sync these vital objects first, which speeds up
-   the join process considerably.
+ This update addresses the following issue:
+ * Joining UCS@School replica servers into environments with many objects
+   often failed due to timeouts in the join scripts
+   `97univention-s4-connector,98univention-samba4-dn` and
+   `98univention-squid-samba4`: the synchronisation of existing objects
+   blocked the synchronisation of new objects which are created during the
+   join and necessary for its completion. The S4-Connector and the join
+   scripts have been modified to sync these vital objects first, which speeds
+   up the join process considerably.
 bug: [54791]
