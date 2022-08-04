@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-updater
+fix: 15.0.4-3
+desc: |
+ This update addresses the following issue:
+ * Updating a local repository server failed when additional components hosted
+   on a separate server like `service.software-univention.de` were enabled:
+   Calling `univention-repository-update net` failed with a
+   `ConfigurationError` pointing to a wrong URL on
+   `updates.software-univention.de` instead.
+bug: [55069]

@@ -168,7 +168,7 @@ class UniventionMirror(UniventionUpdater):
         """
         Mirrors the :file:`preup.sh` and :file:`postup.sh` scripts.
         """
-        scripts = self.get_sh_files(self.version_start, self.version_end)
+        scripts = self.get_sh_files(self.version_start, self.version_end, mirror=True)
         for server, struct, phase, path, script in scripts:
             self.log.info('Mirroring %s:%r/%s to %s', server, struct, phase, path)
             assert script is not None, 'No script'

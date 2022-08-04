@@ -82,17 +82,19 @@ def http(mocker):
     """
     ressources = {}
 
-    def extra(uris={}, **kwargs):
-        uris.update(kwargs)
+    def extra(uris={}, netloc=""):
         uris = {join('/', key): value for key, value in uris.items()}
-        ressources.update(uris)
-        ressources.update(kwargs)
+        ressources.setdefault(netloc, {}).update(uris)
 
     def fopen(req, *args, **kwargs):
         url = req.get_full_url()
         p = urllib_parse.urlparse(url)
         try:
-            res = ressources[p.path]
+            try:
+                res = ressources[p.netloc][p.path]
+            except LookupError:
+                res = ressources[""][p.path]
+
             if isinstance(res, Exception):
                 raise res
             elif isinstance(res, bytes):

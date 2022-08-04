@@ -1,3 +1,10 @@
+univention-updater (15.0.4-3) unstable; urgency=low
+
+  * Bug #55069: Fix local repository mirror when externel components are
+    enabled.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 04 Aug 2022 13:37:13 +0200
+
 univention-updater (15.0.4-2) unstable; urgency=medium
 
   * Bug #54883: Update preup.sh to block ucsschool in certain versions

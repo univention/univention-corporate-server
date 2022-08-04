@@ -116,6 +116,42 @@ class TestUniventionMirror(object):
             filename = tmpdir / "repo" / 'mirror' / key
             assert filename.read_binary() == value
 
+    def test_mirror_update_scripts_component_server(self, tmpdir, ucr, http, m):
+        ucr({
+            'local/repository': 'yes',
+            'repository/online/component/a': 'yes',
+            'repository/online/component/a/server': 'service.univention.de',
+            'repository/online/component/a/prefix': 'apt/00000',
+            'repository/mirror/version/start': '%d.%d-%d' % (MAJOR, 0, 0),
+            'repository/mirror/version/end': '%d.%d-%d' % (MAJOR, 0, 0),
+        })
+        uris = {
+            '/dists/ucs%d%d%d/preup.sh' % (MAJOR, MINOR, 0, ): b'#!r_pre',
+            '/dists/ucs%d%d%d/postup.sh' % (MAJOR, MINOR, 0, ): b'#!r_post',
+            '/dists/ucs%d%d%d/main/binary-%s/Packages.gz' % (MAJOR, MINOR, 0, ARCH): DATA,
+            RJSON: gen_releases([(MAJOR, MINOR, 0), ])
+        }
+        http(uris)
+        uris2 = {
+            '/apt/00000/': DATA,
+            '/apt/00000/%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, 0, 'a', 'all'): DATA,
+            '/apt/00000/%d.%d/maintained/component/%s/%s/preup.sh' % (MAJOR, 0, 'a', 'all'): b'#!a_pre',
+            '/apt/00000/%d.%d/maintained/component/%s/%s/postup.sh' % (MAJOR, 0, 'a', 'all'): b'#!a_post',
+            '/apt/00000/%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, 0, 'a', ARCH): DATA,
+        }
+        http(uris2, netloc="service.univention.de")
+        m._get_releases()
+        del uris[RJSON]
+        m.mirror_update_scripts()
+        for key, value in list(uris.items()) + list(uris2.items()):
+            if value == DATA:
+                continue
+            # "base_dir+mock" for the mock_open redirector
+            # "base_dir+repo+mirror" as the configured repository_root
+            # "mock+key" from the remote host prefix and struct
+            filename = tmpdir / "repo" / 'mirror' / key
+            assert filename.read_binary() == value
+
     def test_write_releases_json(self, tmpdir, http, m):
         releases = gen_releases([(MAJOR, MINOR, 0), (MAJOR, MINOR, 1)])
         http({RJSON: releases})
