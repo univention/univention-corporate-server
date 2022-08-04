@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issues:
  * Fixed ldapsearch call in check_univention_joinstatus.
    Wrong parameters created periodically high load on slapd.
-bug: []
+bug: [55068]
