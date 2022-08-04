@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-monitoring-client
+fix: 1.0.0-7A~5.0.0.202208041426
+desc: |
+ This update addresses the following issues:
+ * Fixed ldapsearch call in check_univention_joinstatus.
+   Wrong parameters created periodically high load on slapd.
+bug: []
