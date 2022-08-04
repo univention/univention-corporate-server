@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-updater
-fix: 15.0.4-3
+fix: 15.0.4-3A~5.0.0.202208041621
 desc: |
  This update addresses the following issue:
  * Updating a local repository server failed when additional components hosted
