@@ -97,7 +97,7 @@ class JoinStatusCheck(Alert):
             '-D', ucr['ldap/hostdn'],
             '-w', self.secret,
             '-b', ucr['ldap/base'],
-            's', 'base'
+            '-s', 'base'
         ]
         try:
             subprocess.check_call(cmd, stdout=subprocess.DEVNULL)
@@ -114,7 +114,7 @@ class JoinStatusCheck(Alert):
             '-D', ucr['ldap/hostdn'],
             '-w', self.secret,
             '-b', ucr['ldap/base'],
-            's', 'base'
+            '-s', 'base'
         ]
         try:
             subprocess.check_call(cmd, stdout=subprocess.DEVNULL)
@@ -133,7 +133,7 @@ class JoinStatusCheck(Alert):
             '-D', ucr['ldap/hostdn'],
             '-w', self.secret,
             '-b', ucr['ldap/base'],
-            's', 'base'
+            '-s', 'base'
         ]
         try:
             subprocess.check_call(cmd, stdout=subprocess.DEVNULL)
