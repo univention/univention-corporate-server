@@ -9,3 +9,5 @@ desc: |
  * Fixed ldapsearch call in check_univention_joinstatus.
    Wrong parameters created periodically high load on slapd.
 bug: [55068]
+erratum: 379
+announced: 2022-08-05
