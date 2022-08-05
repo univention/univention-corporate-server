@@ -39,17 +39,70 @@ CWD = os.path.dirname(os.path.abspath(__file__))
 
 
 @pytest.fixture
-def extension_type(request):
-	result = request.param
-	assert isinstance(result, str)
-	return result
-
-
-@pytest.fixture
 def wait_before(wait_for_replication):
 	yield
 	# wait for replicate before test starts
 	wait_for_replication()
+
+
+@pytest.fixture
+def extension_type(request):
+	print('========================= TESTING EXTENSION %s =============================' % extension_type)
+	return request.param
+
+
+@pytest.fixture
+def package_name():
+	return get_package_name()
+
+
+@pytest.fixture
+def package_version(request):
+	try:
+		return request.param
+	except AttributeError:
+		return get_package_version()
+
+
+@pytest.fixture
+def extension_name(extension_type):
+	extension_name = get_extension_name(extension_type)
+	yield extension_name
+
+	print('Removing UDM extension from LDAP')
+	remove_extension_by_name(extension_type, extension_name, fail_on_error=False)
+
+
+@pytest.fixture
+def extension_filename(extension_type, extension_name):
+	return get_extension_filename(extension_type, extension_name)
+
+
+@pytest.fixture
+def joinscript_buffer(extension_type, package_name, extension_filename):
+	return get_join_script_buffer(extension_type, '/usr/share/%s/%s' % (package_name, extension_filename), version_start='5.0-0')
+
+
+@pytest.fixture
+def extension_buffer(extension_type, extension_name):
+	return get_extension_buffer(extension_type, extension_name)
+
+
+@pytest.fixture
+def package(package_name, package_version):
+	package = DebianPackage(name=package_name, version=package_version)
+	yield package
+
+	print('Uninstalling binary package %r' % package_name)
+	package.uninstall()
+
+	print('Removing source package')
+	package.remove()
+
+
+@pytest.fixture
+def app_id():
+	return '%s-%s' % (random_name(), random_version())
 
 
 @pytest.mark.tags('udm', 'udm-extensions', 'apptest')
@@ -58,294 +111,178 @@ def wait_before(wait_for_replication):
 class Test_UDMExtensionsJoinscript:
 
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_register_deregister_via_joinscript(self, extension_type):
+	def test_register_deregister_via_joinscript(self, extension_type, package_name, package_version, extension_name, extension_filename, joinscript_buffer, extension_buffer, package):
 		"""Register and deregister UDM extension via joinscript"""
-		package_name = get_package_name()
-		package_version = get_package_version()
-		extension_name = get_extension_name(extension_type)
-		extension_filename = get_extension_filename(extension_type, extension_name)
-		joinscript_buffer = get_join_script_buffer(extension_type, '/usr/share/%s/%s' % (package_name, extension_filename), version_start='5.0-0')
 		unjoinscript_buffer = get_unjoin_script_buffer(extension_type, extension_name, package_name)
-		extension_buffer = get_extension_buffer(extension_type, extension_name)
 
-		package = DebianPackage(name=package_name, version=package_version)
-		print('========================= TESTING EXTENSION %s =============================' % extension_type)
-		try:
-			# create package and install it
-			package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
-			package.create_unjoin_script_from_buffer('66%s-uninstall.uinst' % package_name, unjoinscript_buffer)
-			package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
-			package.build()
-			package.install()
+		# create package and install it
+		package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
+		package.create_unjoin_script_from_buffer('66%s-uninstall.uinst' % package_name, unjoinscript_buffer)
+		package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
+		package.build()
+		package.install()
 
-			call_join_script('66%s.inst' % package_name)
+		call_join_script('66%s.inst' % package_name)
 
-			# wait until removed object has been handled by the listener
-			wait_for_replication()
+		# wait until removed object has been handled by the listener
+		wait_for_replication()
 
-			dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-			assert dnlist, 'ERROR: cannot find UDM extension object with cn=%s in LDAP' % extension_name
+		dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
+		assert dnlist, 'ERROR: cannot find UDM extension object with cn=%s in LDAP' % extension_name
 
-			# check if registered file has been replicated to local system
-			target_fn = get_absolute_extension_filename(extension_type, extension_filename)
-			assert os.path.exists(target_fn), 'ERROR: target file %s does not exist' % target_fn
-			print('FILE REPLICATED: %r' % target_fn)
+		# check if registered file has been replicated to local system
+		target_fn = get_absolute_extension_filename(extension_type, extension_filename)
+		assert os.path.exists(target_fn), 'ERROR: target file %s does not exist' % target_fn
+		print('FILE REPLICATED: %r' % target_fn)
 
-			# check replicated file has correct file mode
-			current_mode = oct(os.stat(target_fn).st_mode & (stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO))
-			expected_mode = '0o644'
-			assert current_mode == expected_mode, 'ERROR: permissions of target file %s are not ok (current=%s  expected=%s)' % (target_fn, current_mode, expected_mode)
-			print('PERMISSIONS OK: mode=%s' % current_mode)
+		# check replicated file has correct file mode
+		current_mode = oct(os.stat(target_fn).st_mode & (stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO))
+		expected_mode = '0o644'
+		assert current_mode == expected_mode, 'ERROR: permissions of target file %s are not ok (current=%s  expected=%s)' % (target_fn, current_mode, expected_mode)
+		print('PERMISSIONS OK: mode=%s' % current_mode)
 
-			# check replicated file is own by root:nobody
-			expected_groups = (0, grp.getgrnam('nogroup').gr_gid)
-			expected_uid = 0
-			current_uid = os.stat(target_fn).st_uid
-			current_group = os.stat(target_fn).st_gid
-			assert current_uid == expected_uid and current_group in expected_groups, 'ERROR: owner/group of target file %s is not ok (current=%s:%s  expected_uid=%s expected_gid=%s)' % (target_fn, current_uid, current_group, expected_uid, expected_groups)
-			print('FILE OWNER/GROUP OK')
+		# check replicated file is own by root:nobody
+		expected_groups = (0, grp.getgrnam('nogroup').gr_gid)
+		expected_uid = 0
+		current_uid = os.stat(target_fn).st_uid
+		current_group = os.stat(target_fn).st_gid
+		assert current_uid == expected_uid and current_group in expected_groups, 'ERROR: owner/group of target file %s is not ok (current=%s:%s  expected_uid=%s expected_gid=%s)' % (target_fn, current_uid, current_group, expected_uid, expected_groups)
+		print('FILE OWNER/GROUP OK')
 
-			# check if sha1(buffer) == sha1(file)
-			hash_buffer = hashlib.sha1(extension_buffer.encode('UTF-8')).hexdigest()
-			hash_file = hashlib.sha1(open(target_fn, 'rb').read()).hexdigest()
-			print('HASH BUFFER: %r' % hash_buffer)
-			print('HASH FILE: %r' % hash_file)
-			assert hash_buffer == hash_file, 'ERROR: sha1 sums of file and buffer differ (fn=%s ; file=%s ; buffer=%s)' % (target_fn, hash_file, hash_buffer)
+		# check if sha1(buffer) == sha1(file)
+		hash_buffer = hashlib.sha1(extension_buffer.encode('UTF-8')).hexdigest()
+		hash_file = hashlib.sha1(open(target_fn, 'rb').read()).hexdigest()
+		print('HASH BUFFER: %r' % hash_buffer)
+		print('HASH FILE: %r' % hash_file)
+		assert hash_buffer == hash_file, 'ERROR: sha1 sums of file and buffer differ (fn=%s ; file=%s ; buffer=%s)' % (target_fn, hash_file, hash_buffer)
 
-			call_unjoin_script('66%s-uninstall.uinst' % package_name)
+		call_unjoin_script('66%s-uninstall.uinst' % package_name)
 
-			# wait until removed object has been handled by the listener
-			wait_for_replication()
+		# wait until removed object has been handled by the listener
+		wait_for_replication()
 
-			dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-			assert not dnlist, 'ERROR: UDM extension object with cn=%s is still present in LDAP' % extension_name
+		dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
+		assert not dnlist, 'ERROR: UDM extension object with cn=%s is still present in LDAP' % extension_name
 
-			# check if registered file has been removed from local system
-			assert not os.path.exists(target_fn), 'ERROR: target file %s is still present' % target_fn
+		# check if registered file has been removed from local system
+		assert not os.path.exists(target_fn), 'ERROR: target file %s is still present' % target_fn
 
-		finally:
-			print('Removing UDM extension from LDAP')
-			remove_extension_by_name(extension_type, extension_name, fail_on_error=False)
-
-			print('Uninstalling binary package %r' % package_name)
-			package.uninstall()
-
-			print('Removing source package')
-			package.remove()
-
-	@pytest.mark.tags('udm', 'udm-extensions', 'apptest')
-	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
-	@pytest.mark.exposure('dangerous')
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_register_and_verify_ldap_object(self, extension_type):
+	def test_register_and_verify_ldap_object(self, extension_type, package_name, package_version, extension_name, extension_filename, joinscript_buffer, extension_buffer, package):
 		"""Register UDM extension and perform simple LDAP verification"""
-		print('========================= TESTING EXTENSION %s =============================' % extension_type)
-		package_name = get_package_name()
-		package_version = get_package_version()
-		extension_name = get_extension_name(extension_type)
-		extension_filename = get_extension_filename(extension_type, extension_name)
-		joinscript_buffer = get_join_script_buffer(extension_type, '/usr/share/%s/%s' % (package_name, extension_filename), version_start='5.0-0')
-		extension_buffer = get_extension_buffer(extension_type, extension_name)
+		# create package and install it
+		package.create_join_script_from_buffer('67%s.inst' % package_name, joinscript_buffer)
+		package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
+		package.build()
+		package.install()
 
-		package = DebianPackage(name=package_name, version=package_version)
-		try:
-			# create package and install it
-			package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
-			package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
-			package.build()
-			package.install()
+		call_join_script('66%s.inst' % package_name)
 
-			call_join_script('66%s.inst' % package_name)
+		# wait until removed object has been handled by the listener
+		wait_for_replication()
 
-			# wait until removed object has been handled by the listener
-			wait_for_replication()
+		dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
+		assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name)
+		verify_ldap_object(dnlist[0], {
+			'cn': [extension_name],
+			'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+			'univentionOwnedByPackage': [package_name],
+			'univentionObjectType': ['settings/udm_%s' % extension_type],
+			'univentionOwnedByPackageVersion': [package_version],
+			'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
+		})
 
-			dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-			assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name)
-			verify_ldap_object(dnlist[0], {
-				'cn': [extension_name],
-				'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
-				'univentionOwnedByPackage': [package_name],
-				'univentionObjectType': ['settings/udm_%s' % extension_type],
-				'univentionOwnedByPackageVersion': [package_version],
-				'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
-			})
-
-		finally:
-			print('Removing UDM extension from LDAP')
-			remove_extension_by_name(extension_type, extension_name, fail_on_error=False)
-
-			print('Uninstalling binary package %r' % package_name)
-			package.uninstall()
-
-			print('Removing source package')
-			package.remove()
-
-	@pytest.mark.tags('udm', 'udm-extensions', 'apptest')
-	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
-	@pytest.mark.exposure('dangerous')
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_register_and_verify_test_app_id(self, extension_type):
+	def test_register_and_verify_test_app_id(self, extension_type, package_name, package_version, extension_name, extension_filename, joinscript_buffer, extension_buffer, package, app_id):
 		"""Check setting of UNIVENTION_APP_ID for UDM extensions"""
-		print('========================= TESTING EXTENSION %s =============================' % extension_type)
-		package_name = get_package_name()
-		package_version = get_package_version()
-		extension_name = get_extension_name(extension_type)
-		extension_filename = get_extension_filename(extension_type, extension_name)
-		app_id = '%s-%s' % (random_name(), random_version())
-		joinscript_buffer = get_join_script_buffer(
-			extension_type,
-			'/usr/share/%s/%s' % (package_name, extension_filename),
-			app_id=app_id,
-			version_start='5.0-0'
-		)
-		extension_buffer = get_extension_buffer(extension_type, extension_name)
+		# create package and install it
+		package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
+		package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
+		package.build()
+		package.install()
 
-		package = DebianPackage(name=package_name, version=package_version)
-		try:
-			# create package and install it
-			package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
-			package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
-			package.build()
-			package.install()
+		call_join_script('66%s.inst' % package_name)
 
-			call_join_script('66%s.inst' % package_name)
+		# wait until removed object has been handled by the listener
+		wait_for_replication()
 
-			# wait until removed object has been handled by the listener
-			wait_for_replication()
+		dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
+		assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name)
+		verify_ldap_object(dnlist[0], {
+			'cn': [extension_name],
+			'univentionUDM%sFilename' % extension_type.capitalize(): ['%s.py' % extension_name],
+			'univentionOwnedByPackage': [package_name],
+			'univentionObjectType': ['settings/udm_%s' % extension_type],
+			'univentionOwnedByPackageVersion': [package_version],
+			'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
+			'univentionAppIdentifier': [app_id],
+		})
 
-			dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-			assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name)
-			verify_ldap_object(dnlist[0], {
-				'cn': [extension_name],
-				'univentionUDM%sFilename' % extension_type.capitalize(): ['%s.py' % extension_name],
-				'univentionOwnedByPackage': [package_name],
-				'univentionObjectType': ['settings/udm_%s' % extension_type],
-				'univentionOwnedByPackageVersion': [package_version],
-				'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
-				'univentionAppIdentifier': [app_id],
-			})
-		finally:
-			print('Removing UDM extension from LDAP')
-			remove_extension_by_name(extension_type, extension_name, fail_on_error=False)
-
-			print('Uninstalling binary package %r' % package_name)
-			package.uninstall()
-
-			print('Removing source package')
-			package.remove()
-
-	@pytest.mark.tags('udm', 'udm-extensions', 'apptest')
-	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
-	@pytest.mark.exposure('dangerous')
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_register_and_verify_version_start_end(self, extension_type):
+	def test_register_and_verify_version_start_end(self, extension_type, package_name, package_version, extension_name, extension_filename, joinscript_buffer, extension_buffer, package, app_id):
 		"""Check setting of a version range for UDM extensions"""
-		print('========================= TESTING EXTENSION %s =============================' % extension_type)
-		package_name = get_package_name()
-		package_version = get_package_version()
-		extension_name = get_extension_name(extension_type)
-		extension_filename = get_extension_filename(extension_type, extension_name)
 		version_start = random_ucs_version(max_major=2)
 		version_end = random_ucs_version(min_major=5)
-		app_id = '%s-%s' % (random_name(), random_version())
 		joinscript_buffer = get_join_script_buffer(
 			extension_type,
 			'/usr/share/%s/%s' % (package_name, extension_filename),
 			app_id=app_id, version_start=version_start, version_end=version_end
 		)
-		extension_buffer = get_extension_buffer(extension_type, extension_name)
 		print(joinscript_buffer)
 
-		package = DebianPackage(name=package_name, version=package_version)
-		try:
-			# create package and install it
-			package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
-			package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
-			package.build()
-			package.install()
+		# create package and install it
+		package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
+		package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
+		package.build()
+		package.install()
 
-			call_join_script('66%s.inst' % package_name)
+		call_join_script('66%s.inst' % package_name)
 
-			# wait until removed object has been handled by the listener
-			wait_for_replication()
+		# wait until removed object has been handled by the listener
+		wait_for_replication()
 
-			dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-			assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name)
-			verify_ldap_object(dnlist[0], {
-				'cn': [extension_name],
-				'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
-				'univentionOwnedByPackage': [package_name],
-				'univentionObjectType': ['settings/udm_%s' % extension_type],
-				'univentionOwnedByPackageVersion': [package_version],
-				'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
-				'univentionUCSVersionStart': [version_start],
-				'univentionUCSVersionEnd': [version_end],
-			})
-		finally:
-			print('Removing UDM extension from LDAP')
-			remove_extension_by_name(extension_type, extension_name, fail_on_error=False)
+		dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
+		assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name)
+		verify_ldap_object(dnlist[0], {
+			'cn': [extension_name],
+			'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+			'univentionOwnedByPackage': [package_name],
+			'univentionObjectType': ['settings/udm_%s' % extension_type],
+			'univentionOwnedByPackageVersion': [package_version],
+			'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
+			'univentionUCSVersionStart': [version_start],
+			'univentionUCSVersionEnd': [version_end],
+		})
 
-			print('Uninstalling binary package %r' % package_name)
-			package.uninstall()
-
-			print('Removing source package')
-			package.remove()
-
-	@pytest.mark.tags('udm', 'udm-extensions', 'apptest')
-	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
-	@pytest.mark.exposure('dangerous')
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_register_with_non_join_accounts(self, udm, extension_type, ucr):
+	@pytest.mark.parametrize('manual_password', [True, False])
+	def test_register_with_non_join_accounts(self, udm, extension_type, package_name, extension_name, extension_filename, joinscript_buffer, extension_buffer, package, ucr, manual_password):
 		"""Register UDM extension with non-join-accounts"""
-		password = 'univention'
-		dn, username = udm.create_user(password=password)
-		print('========================= TESTING EXTENSION %s =============================' % extension_type)
-		self._test_extension(extension_type, dn, password)
-		self._test_extension(extension_type, ucr.get('ldap/hostdn'), open('/etc/machine.secret', 'r').read())
+		if manual_password:
+			password = 'univention'
+			dn, username = udm.create_user(password=password)
+		else:
+			password = open('/etc/machine.secret', 'r').read()
+			dn = ucr.get('ldap/hostdn')
 
-	def _test_extension(self, extension_type, dn, password):
-		package_name = get_package_name()
-		package_version = get_package_version()
-		extension_name = get_extension_name(extension_type)
-		extension_filename = get_extension_filename(extension_type, extension_name)
-		joinscript_buffer = get_join_script_buffer(extension_type, '/usr/share/%s/%s' % (package_name, extension_filename), version_start='5.0-0')
-		extension_buffer = get_extension_buffer(extension_type, extension_name)
+		# create package and install it
+		package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
+		package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
+		package.build()
+		package.install()
 
-		package = DebianPackage(name=package_name, version=package_version)
-		try:
-			# create package and install it
-			package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
-			package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
-			package.build()
-			package.install()
+		exitcode = call_cmd(['/usr/lib/univention-install/66%s.inst' % package_name, '--binddn', dn, '--bindpwd', password], fail_on_error=False)
+		assert exitcode, 'ERROR: registerLDAPExtension() did not fail even if machine account is used'
 
-			exitcode = call_cmd(['/usr/lib/univention-install/66%s.inst' % package_name, '--binddn', dn, '--bindpwd', password], fail_on_error=False)
-			assert exitcode, 'ERROR: registerLDAPExtension() did not fail even if machine account is used'
+		# wait until removed object has been handled by the listener
+		wait_for_replication()
 
-			# wait until removed object has been handled by the listener
-			wait_for_replication()
+		dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
+		assert not dnlist, 'ERROR: Machine account is able to create UDM %s extension' % (extension_type,)
 
-			dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-			assert not dnlist, 'ERROR: Machine account is able to create UDM %s extension' % (extension_type,)
-
-		finally:
-			print('Removing UDM extension from LDAP')
-			remove_extension_by_name(extension_type, extension_name, fail_on_error=False)
-
-			print('Uninstalling binary package %r' % package_name)
-			package.uninstall()
-
-			print('Removing source package')
-			package.remove()
-
-	@pytest.mark.tags('udm', 'udm-extensions', 'apptest')
-	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
-	@pytest.mark.exposure('dangerous')
-	def test_register_and_verify_all(self):
+	def test_register_and_verify_all(self, package_name, package_verison):
 		"""Register and verify all UDM extension in one step"""
-		package_name = get_package_name()
-		package_version = get_package_version()
+		# TODO: parametrize for loop
 		# extension_name = get_extension_name(extension_type)
 		# extension_filename = get_extension_filename(extension_type, extension_name)
 		extension_name = {}
@@ -406,14 +343,9 @@ class Test_UDMExtensionsJoinscript:
 			print('Removing source package')
 			package.remove()
 
-	@pytest.mark.tags('udm', 'udm-extensions', 'apptest')
-	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
-	@pytest.mark.exposure('dangerous')
-	def test_register_with_special_name_and_verify_all(self):
+	def test_register_with_special_name_and_verify_all(self, package_name, package_version):
 		"""Register and verify all UDM extension in one step"""
 		objectname = "/".join([random_name(), random_name()])  # slash reqired for 'module'
-		package_name = get_package_name()
-		package_version = get_package_version()
 		# extension_name = get_extension_name(extension_type)
 		# extension_filename = get_extension_filename(extension_type, extension_name)
 		extension_name = {}
@@ -476,148 +408,92 @@ class Test_UDMExtensionsJoinscript:
 			print('Removing source package')
 			package.remove()
 
-	@pytest.mark.tags('udm', 'udm-extensions', 'apptest')
-	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
-	@pytest.mark.exposure('dangerous')
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_update_extension_via_package(self, extension_type):
+	@pytest.mark.parametrize('package_version, joinscript_version', [
+		(f'{random_version()}.{random.randint(0, 4)}', 1),
+		(f'{random_version()}.{random.randint(5, 9)}', 2)
+	])
+	def test_update_extension_via_package(self, extension_type, package_name, package_version, extension_name, extension_filename, package, app_id, joinscript_version):
 		"""Test extension update with correct version order"""
-		print('========================= TESTING EXTENSION %s =============================' % extension_type)
-		package_name = get_package_name()
-		version = random_version()
-		package_version_LOW = '%s.%d' % (version, random.randint(0, 4))
-		package_version_HIGH = '%s.%d' % (version, random.randint(5, 9))
-		extension_name = get_extension_name(extension_type)
-		extension_filename = get_extension_filename(extension_type, extension_name)
-		app_id = '%s-%s' % (random_name(), random_version())
-		joinscript_version = 1
 
-		packages = []
-		try:
-			for package_version in (package_version_LOW, package_version_HIGH):
+		version_start = random_ucs_version(max_major=2)
+		version_end = random_ucs_version(min_major=5)
 
-				version_start = random_ucs_version(max_major=2)
-				version_end = random_ucs_version(min_major=5)
+		# create unique extension identifier
+		extension_identifier = '%s_%s' % (extension_name, package_version.replace('.', '_'))
+		extension_buffer = get_extension_buffer(extension_type, extension_name, extension_identifier)
+		joinscript_buffer = get_join_script_buffer(
+			extension_type,
+			'/usr/share/%s/%s' % (package_name, extension_filename),
+			app_id=app_id,
+			joinscript_version=joinscript_version,
+			version_start=version_start,
+			version_end=version_end
+		)
 
-				# create unique extension identifier
-				extension_identifier = '%s_%s' % (extension_name, package_version.replace('.', '_'))
-				extension_buffer = get_extension_buffer(extension_type, extension_name, extension_identifier)
-				joinscript_buffer = get_join_script_buffer(
-					extension_type,
-					'/usr/share/%s/%s' % (package_name, extension_filename),
-					app_id=app_id,
-					joinscript_version=joinscript_version,
-					version_start=version_start,
-					version_end=version_end
-				)
-				joinscript_version += 1
+		# create package and install it
+		package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
+		package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
+		package.build()
+		package.install()
 
-				# create package and install it
-				package = DebianPackage(name=package_name, version=package_version)
-				packages.append(package)
-				package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
-				package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
-				package.build()
-				package.install()
+		call_join_script('66%s.inst' % package_name)
 
-				call_join_script('66%s.inst' % package_name)
+		# wait until removed object has been handled by the listener
+		wait_for_replication()
 
-				# wait until removed object has been handled by the listener
-				wait_for_replication()
+		dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
+		assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name)
+		verify_ldap_object(dnlist[0], {
+			'cn': [extension_name],
+			'univentionUCSVersionStart': [version_start],
+			'univentionUCSVersionEnd': [version_end],
+		})
 
-				dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-				assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name)
-				verify_ldap_object(dnlist[0], {
-					'cn': [extension_name],
-					'univentionUCSVersionStart': [version_start],
-					'univentionUCSVersionEnd': [version_end],
-				})
+		content = open(get_absolute_extension_filename(extension_type, extension_filename)).read()
+		assert not extension_identifier not in content, 'ERROR: UDM extension of package has not been written to disk (%s)' % (extension_filename,)
 
-				content = open(get_absolute_extension_filename(extension_type, extension_filename)).read()
-				assert not extension_identifier not in content, 'ERROR: UDM extension of package %d has not been written to disk (%s)' % (len(packages), extension_filename,)
-
-		finally:
-			print('Removing UDM extension from LDAP')
-			remove_extension_by_name(extension_type, extension_name, fail_on_error=False)
-
-			for package in packages:
-				print('Uninstalling binary package %r' % package.get_package_name())
-				package.uninstall()
-
-			print('Removing source package')
-			for package in packages:
-				package.remove()
-
-	@pytest.mark.tags('udm', 'udm-extensions', 'apptest')
-	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
-	@pytest.mark.exposure('dangerous')
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_update_extension_via_package_expected_fail(self, extension_type):
+	@pytest.mark.parametrize('package_version, joinscript_version', [
+		(f'{random_version()}.{random.randint(0, 4)}', 1),
+		(f'{random_version()}.{random.randint(5, 9)}', 2)
+	])
+	def test_update_extension_via_package_expected_fail(self, extension_type, package_name, package_version, extension_name, extension_filename, package, app_id, joinscript_version):
 		"""Test extension update with wrong version order"""
-		print('========================= TESTING EXTENSION %s =============================' % extension_type)
-		package_name = get_package_name()
-		version = random_version()
-		package_version_LOW = '%s.%d' % (version, random.randint(0, 4))
-		package_version_HIGH = '%s.%d' % (version, random.randint(5, 9))
-		extension_name = get_extension_name(extension_type)
-		extension_filename = get_extension_filename(extension_type, extension_name)
-		app_id = '%s-%s' % (random_name(), random_version())
-		joinscript_version = 1
+		# create unique extension identifier
+		extension_identifier = '%s_%s' % (extension_name, package_version.replace('.', '_'))
+		extension_buffer = get_extension_buffer(extension_type, extension_name, extension_identifier)
+		joinscript_buffer = get_join_script_buffer(
+			extension_type,
+			'/usr/share/%s/%s' % (package_name, extension_filename),
+			app_id=app_id,
+			joinscript_version=joinscript_version,
+			version_start='5.0-0'
+		)
 
-		packages = []
-		try:
-			for package_version in (package_version_HIGH, package_version_LOW):
-				# create unique extension identifier
-				extension_identifier = '%s_%s' % (extension_name, package_version.replace('.', '_'))
-				extension_buffer = get_extension_buffer(extension_type, extension_name, extension_identifier)
-				joinscript_buffer = get_join_script_buffer(
-					extension_type,
-					'/usr/share/%s/%s' % (package_name, extension_filename),
-					app_id=app_id,
-					joinscript_version=joinscript_version,
-					version_start='5.0-0'
-				)
-				joinscript_version += 1
+		# create package and install it
+		package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
+		package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
+		package.build()
+		package.install()
 
-				# create package and install it
-				package = DebianPackage(name=package_name, version=package_version)
-				packages.append(package)
-				package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
-				package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
-				package.build()
-				package.install()
+		breakpoint()
+		exitcode = call_join_script('66%s.inst' % package_name, fail_on_error=False)
+		if package_version == package_version_HIGH:
+			assert not exitcode, 'The join script failed with exitcode %s' % exitcode
+		else:
+			if not exitcode:
+				print('\nWARNING: a failure of the joinscript has been expected but in ran through\n')
 
-				exitcode = call_join_script('66%s.inst' % package_name, fail_on_error=False)
-				if package_version == package_version_HIGH:
-					assert not exitcode, 'The join script failed with exitcode %s' % exitcode
-				else:
-					if not exitcode:
-						print('\nWARNING: a failure of the joinscript has been expected but in ran through\n')
+		# wait until removed object has been handled by the listener
+		wait_for_replication()
 
-				# wait until removed object has been handled by the listener
-				wait_for_replication()
+		content = open(get_absolute_extension_filename(extension_type, extension_filename)).read()
+		assert not (package_version == package_version_HIGH and extension_identifier not in content), 'ERROR: UDM extension of package %d has not been written to disk (%s)' % (len(packages), extension_filename,)
+		assert not (package_version == package_version_LOW and extension_identifier in content), 'ERROR: the extension update has been performed but should not (old version=%s ; new version=%s)' % (package_version_HIGH, package_version_LOW)
 
-				content = open(get_absolute_extension_filename(extension_type, extension_filename)).read()
-				assert not (package_version == package_version_HIGH and extension_identifier not in content), 'ERROR: UDM extension of package %d has not been written to disk (%s)' % (len(packages), extension_filename,)
-				assert not (package_version == package_version_LOW and extension_identifier in content), 'ERROR: the extension update has been performed but should not (old version=%s ; new version=%s)' % (package_version_HIGH, package_version_LOW)
-
-		finally:
-			print('Removing UDM extension from LDAP')
-			remove_extension_by_name(extension_type, extension_name, fail_on_error=False)
-
-			for package in packages:
-				print('Uninstalling binary package %r' % package.get_package_name())
-				package.uninstall()
-
-			print('Removing source package')
-			for package in packages:
-				package.remove()
-
-	@pytest.mark.tags('udm', 'udm-extensions', 'apptest')
-	@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
-	@pytest.mark.exposure('dangerous')
 	@pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
-	def test_update_extension_via_other_packagename(self, extension_type):
+	def test_update_extension_via_other_packagename(self, extension_type, package_name, package_version, extension_name, extension_filename, joinscript_buffer, extension_buffer, package):
 		"""Test extension update with other package name"""
 		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		version = random_version()
