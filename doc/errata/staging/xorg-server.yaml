@@ -6,8 +6,8 @@ src: xorg-server
 fix: 2:1.20.4-1+deb10u5
 desc: |
  This update addresses the following issues:
- * X.Org Server ProcXkbSetGeometry out-of-bounds access (CVE-2022-2319)
- * out-of-bounds access in ProcXkbSetDeviceInfo request handler of the Xkb
+ * X.Org server ProcXkbSetGeometry out-of-bounds access (CVE-2022-2319)
+ * Out-of-bounds access in ProcXkbSetDeviceInfo request handler of the Xkb
    extension (CVE-2022-2320)
 bug: [55072]
 cve:
