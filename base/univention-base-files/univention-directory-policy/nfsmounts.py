@@ -4,6 +4,9 @@
 # Univention Configuration Registry
 #  add and remove nfs shares from the LDAP directory to /etc/fstab
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2004-2022 Univention GmbH
 #
 # https://www.univention.de/

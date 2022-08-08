@@ -2,6 +2,9 @@
  * Univention Directory Listener
  *  header information for cache_dn.c
  *
+ * Like what you see? Join us!
+ * https://www.univention.com/about-us/careers/vacancies/
+ *
  * Copyright 2016-2022 Univention GmbH
  * Copyright 2016-2017 Arvid Requate
  *

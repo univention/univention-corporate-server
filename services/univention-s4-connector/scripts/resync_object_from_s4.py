@@ -4,6 +4,9 @@
 # Univention S4 Connector
 #  Resync object from S4 to OpenLDAP
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2014-2022 Univention GmbH
 #
 # https://www.univention.de/

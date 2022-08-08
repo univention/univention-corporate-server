@@ -3,6 +3,9 @@
 # Univention Management Console
 # Listener module to set save all UMC service providers in UCR
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2015-2022 Univention GmbH
 #
 # https://www.univention.de/

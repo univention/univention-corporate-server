@@ -1,3 +1,6 @@
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright (C) 2006-2022 Univention GmbH
 # Univention GmbH <packages@univention.de>
 # This file is distributed under the same license as this package.

@@ -4,6 +4,9 @@
 #  Service information: read information about registered Config Registry
 #  variables
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2007-2022 Univention GmbH
 #
 # https://www.univention.de/

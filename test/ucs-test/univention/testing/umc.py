@@ -3,6 +3,9 @@
 #
 # UCS test connections to remote UMC Servers
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2016-2022 Univention GmbH
 #
 # https://www.univention.de/

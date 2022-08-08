@@ -2,6 +2,9 @@
  * PAM Run As Root
  *  C source for the PAM module runasroot
  *
+ * Like what you see? Join us!
+ * https://www.univention.com/about-us/careers/vacancies/
+ *
  * Copyright 2001-2022 Univention GmbH
  *
  * https://www.univention.de/

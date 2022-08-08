@@ -4,6 +4,9 @@
 # Univention Mail Stack
 #  listener module: mail domain configuration
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2005-2022 Univention GmbH
 #
 # https://www.univention.de/

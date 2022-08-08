@@ -13,6 +13,9 @@ connections to remote |UMC| servers
 >>> response.status
 303
 """
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2017-2022 Univention GmbH
 #
 # https://www.univention.de/

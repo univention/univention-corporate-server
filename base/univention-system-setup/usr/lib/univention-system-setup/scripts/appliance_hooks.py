@@ -4,6 +4,9 @@
 # Univention System Setup
 # appliance hook script called at the end of appliance wizard setup
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2016-2022 Univention GmbH
 #
 # https://www.univention.de/

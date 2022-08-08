@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright (C) 2008-2022 Univention GmbH
 #
 # https://www.univention.de/

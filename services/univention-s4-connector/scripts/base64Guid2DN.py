@@ -5,6 +5,9 @@
 #  Upgrade script for gPLink
 #  Convert base64 objectGuid to S4 DN as used in s4cache.sqlite
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2014-2022 Univention GmbH
 #
 # https://www.univention.de/

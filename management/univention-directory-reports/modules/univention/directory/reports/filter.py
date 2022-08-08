@@ -3,6 +3,9 @@
 # Univention Directory Reports
 #  write an interpreted token structure to a file
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2007-2022 Univention GmbH
 #
 # https://www.univention.de/

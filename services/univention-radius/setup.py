@@ -4,6 +4,9 @@
 # Univention RADIUS
 #  setup.py
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright (C) 2019-2022 Univention GmbH
 #
 # https://www.univention.de/

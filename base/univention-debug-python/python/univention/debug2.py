@@ -5,6 +5,9 @@ Python native Univention debugging library.
 See :py:mod:`univention.debug` for an alternative being a wrapper for the C
 implementation.
 """
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2008-2022 Univention GmbH
 #
 # https://www.univention.de/

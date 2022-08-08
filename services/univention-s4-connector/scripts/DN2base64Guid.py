@@ -4,6 +4,9 @@
 # Univention S4 Connector
 #  Convert S4 DN to base64 objectGuid as used in s4cache.sqlite
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2014-2022 Univention GmbH
 #
 # https://www.univention.de/

@@ -5,6 +5,9 @@
 #  univention-app module for updating the list of available apps
 #  (Docker version)
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2017-2022 Univention GmbH
 #
 # https://www.univention.de/

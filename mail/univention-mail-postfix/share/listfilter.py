@@ -3,6 +3,9 @@
 # Univention mail Postfix Policy
 #  check allowed email senders for groups and distlist
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2005-2022 Univention GmbH
 #
 # https://www.univention.de/

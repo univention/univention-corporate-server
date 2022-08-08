@@ -4,6 +4,9 @@
 # Univention Updater
 #  Dump key id from license to local UCR variable
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2013-2022 Univention GmbH
 #
 # https://www.univention.de/

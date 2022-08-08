@@ -3,6 +3,9 @@
 # Univention Monitoring
 #  listener module: update configuration of prometheus alert manager
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2022 Univention GmbH
 #
 # https://www.univention.de/

@@ -4,6 +4,9 @@
 # Univention S4 Connector
 #  this file defines the mapping between S4 and UCS
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2004-2022 Univention GmbH
 #
 # https://www.univention.de/

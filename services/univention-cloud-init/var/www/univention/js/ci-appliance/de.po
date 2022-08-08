@@ -1,4 +1,7 @@
 # Univention Cloud init
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright (C) 2015-2022 Univention GmbH
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #

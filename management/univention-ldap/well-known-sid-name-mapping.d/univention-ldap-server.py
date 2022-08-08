@@ -2,6 +2,9 @@
 # Univention LDAP
 #  restart the slapd server after well-known-sid-name-mapping made UCR changes
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2014-2022 Univention GmbH
 #
 # https://www.univention.de/

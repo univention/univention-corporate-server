@@ -4,6 +4,9 @@
 # Univention Management Console
 #  Mixins for UMC 2.0 modules
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2013-2022 Univention GmbH
 #
 # https://www.univention.de/

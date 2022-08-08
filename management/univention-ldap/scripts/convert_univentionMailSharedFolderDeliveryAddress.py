@@ -3,6 +3,9 @@
 #
 # Univention LDAP
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2004-2022 Univention GmbH
 #
 # https://www.univention.de/

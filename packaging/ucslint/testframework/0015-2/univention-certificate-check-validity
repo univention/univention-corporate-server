@@ -1,6 +1,9 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 # SPDX-License-Identifier: AGPL-3.0
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright (C) 2006-2022 Univention GmbH
 
 import time

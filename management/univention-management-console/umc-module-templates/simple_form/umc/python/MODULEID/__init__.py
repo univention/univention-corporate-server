@@ -3,6 +3,9 @@
 # Univention Management Console
 #  MODULEDESC
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2012-2022 Univention GmbH
 #
 # https://www.univention.de/

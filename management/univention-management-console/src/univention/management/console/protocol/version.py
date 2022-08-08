@@ -4,6 +4,9 @@
 # Univention Management Console
 #  version information for the UMC protocol
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2007-2022 Univention GmbH
 #
 # https://www.univention.de/

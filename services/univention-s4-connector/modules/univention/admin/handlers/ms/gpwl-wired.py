@@ -3,6 +3,9 @@
 # Univention S4 Connector
 #  UDM module for XML-based wired Group Policy
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2019-2022 Univention GmbH
 #
 # https://www.univention.de/

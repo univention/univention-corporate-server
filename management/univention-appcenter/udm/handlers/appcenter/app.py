@@ -3,6 +3,9 @@
 # Univention Directory Manager Modules
 #  directory manager module for App Metadata
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2013-2022 Univention GmbH
 #
 # https://www.univention.de/

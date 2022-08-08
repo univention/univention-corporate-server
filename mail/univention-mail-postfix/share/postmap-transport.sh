@@ -3,6 +3,9 @@
 # Univention Mail Postfix
 #  call postmap on transport map and reload postfix
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # Copyright 2004-2022 Univention GmbH
 #
 # https://www.univention.de/
