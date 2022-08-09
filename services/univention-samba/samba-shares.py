@@ -110,11 +110,11 @@ def handler(dn, new, old, command):
 		try:
 			# object was renamed -> save old object
 			if command == "r" and old:
-				with open(tmpFile, "w+") as fd:
+				with open(tmpFile, "wb+") as fd:
 					os.chmod(tmpFile, 0o600)
 					pickle.dump({"dn": dn, "old": old}, fd)
 			elif command == "a" and not old and os.path.isfile(tmpFile):
-				with open(tmpFile, "r") as fd:
+				with open(tmpFile, "rb") as fd:
 					p = pickle.load(fd)
 				oldObject = p.get("old", {})
 				os.remove(tmpFile)
