@@ -308,18 +308,18 @@ create_entry () {
 		log 0 "	Create new $desc "
 
 		if [ -n "$IP" ]; then
-			args+=(--append ip="$IP")
+			args+=(--set ip="$IP")
 			# DNS
 			if [ -n "$forwardZone" ]; then
-				args+=(--append dnsEntryZoneForward="$forwardZone")
+				args+=(--set dnsEntryZoneForward="$forwardZone")
 				if [ -n "$reverseZone" ]; then
-					args+=(--append dnsEntryZoneReverse="$reverseZone")
+					args+=(--set dnsEntryZoneReverse="$reverseZone")
 				fi
 			fi
 		fi
 		if [ -n "$MAC" ]; then
 			for i in "${MAC[@]}"; do
-				args+=(--append mac="$i")
+				args+=(--set mac="$i")
 			done
 		fi
 
@@ -367,11 +367,11 @@ create_entry () {
 
 		if [ -n "$MAC" ]; then
 			for i in "${MAC[@]}"; do
-				args+=(--append mac="$i")
+				args+=(--set mac="$i")
 			done
 		fi
 		if [ -n "$IP" ]; then
-			args+=(--append ip="$IP")
+			args+=(--set ip="$IP")
 		fi
 		rc="$(univention-directory-manager "$module" modify \
 			--dn "$old_dn" \
