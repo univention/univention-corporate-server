@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-# SPDX-License-Identifier: AGPL-3.0
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
+# SPDX-License-Identifier: AGPL-3.0
 # Copyright (C) 2004-2022 Univention GmbH
 
 import os

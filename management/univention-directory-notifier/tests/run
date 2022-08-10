@@ -2,8 +2,8 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2019-2022 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0
+# Copyright 2019-2022 Univention GmbH
 
 set -e -u  # -x
 
