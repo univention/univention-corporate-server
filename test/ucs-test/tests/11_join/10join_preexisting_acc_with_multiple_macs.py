@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vvv
 ## desc: Call univention-server-join on preexisting computer account with multiple macs
 ## bugs: [47338]
 ## roles: [domaincontroller_master]
@@ -11,26 +11,24 @@ import subprocess
 import pytest
 
 import univention.testing.strings as uts
-import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 
-def main():
-	with udm_test.UCSTestUDM() as udm:
-		memberserver1 = {
-			"name": uts.random_string(),
-			"mac": (uts.random_mac(), uts.random_mac(), ),
-			"ip": "127.0.0.121",
-		}
-		memberserver2 = {
-			"name": uts.random_string(),
-			"mac": memberserver1["mac"],
-			"ip": "127.0.0.122",
-		}
-		memberserver1["dn"] = udm.create_object("computers/memberserver", set=memberserver1)
-		utils.verify_ldap_object(memberserver1["dn"], expected_attr={"macAddress": memberserver1["mac"]})
-		join_member_with_preexisting_acc(memberserver1, udm)
-		join_member_with_conflicting_mac(memberserver2)
+def test_join_preexisting_acc_with_multiple_macs(udm):
+	memberserver1 = {
+		"name": uts.random_string(),
+		"mac": (uts.random_mac(), uts.random_mac(), ),
+		"ip": "127.0.0.121",
+	}
+	memberserver2 = {
+		"name": uts.random_string(),
+		"mac": memberserver1["mac"],
+		"ip": "127.0.0.122",
+	}
+	memberserver1["dn"] = udm.create_object("computers/memberserver", set=memberserver1)
+	utils.verify_ldap_object(memberserver1["dn"], expected_attr={"macAddress": memberserver1["mac"]})
+	join_member_with_preexisting_acc(memberserver1, udm)
+	join_member_with_conflicting_mac(memberserver2)
 
 
 def join_member_with_preexisting_acc(memberserver, udm):
@@ -54,17 +52,14 @@ def join_member_with_conflicting_mac(memberserver):
 	for mac in memberserver["mac"]:
 		with pytest.raises(subprocess.CalledProcessError) as exc:
 			# This should fail because the macs conflict between memberserver1 and memberserver2
-			subprocess.check_output([
+			print(subprocess.check_output([
 				"/usr/share/univention-join/univention-server-join",
 				"-role", "memberserver",
 				"-hostname", memberserver["name"],
 				"-ip", memberserver["ip"],
 				"-mac", mac,
-			])
+			]))
 
 		expected_error = "E: failed to create Managed Node (1) [E: Object exists: (mac) {}]".format(mac)
-		assert expected_error in exc.value.output.decode('UTF-8'), "Join failed, but for the wrong reason:\n{}\ninstead of:\n{}".format(exc.value.output, expected_error)
-
-
-if __name__ == "__main__":
-	main()
+		error_message = exc.value.output.decode('UTF-8')
+		assert expected_error in error_message
