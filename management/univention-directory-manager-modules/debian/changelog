@@ -1,5 +1,6 @@
 univention-directory-manager-modules (15.0.13-3) unstable; urgency=medium
 
+  * Bug #4498: write error messages of UDM CLI to stderr
   * Bug #33224: stream output of UDM CLI
   * Bug #33224: pass stdout and stderr of CLI client to CLI server
 

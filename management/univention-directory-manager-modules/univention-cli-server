@@ -238,7 +238,7 @@ def doit(sarglist, conn, stdout=None, stderr=None):
 		if cmdfile in ('univention-admin', 'univention-directory-manager', 'udm'):
 			ud.debug(ud.ADMIN, ud.PROCESS, 'daemon [%s] [%s] Calling univention-directory-manager' % (os.getppid(), os.getpid()))
 			ud.debug(ud.ADMIN, ud.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
-			univention.admincli.admin.main(arglist, stdout, stdout)
+			univention.admincli.admin.main(arglist, stdout, stderr)
 		elif cmdfile == 'univention-passwd':
 			ud.debug(ud.ADMIN, ud.PROCESS, 'daemon [%s] [%s] Calling univention-passwd' % (os.getppid(), os.getpid()))
 			ud.debug(ud.ADMIN, ud.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
