@@ -106,6 +106,8 @@ DOMAINNAME=""
 log 0 "univention-server-join called"
 echo "Parameter: $@" >>"$LOGFILE"
 
+set -o pipefail
+
 while [ $# -gt 0 ]
 do
 	case "$1" in
@@ -333,7 +335,7 @@ create_entry () {
 			--set primaryGroup="$primaryGroup" \
 			"${args[@]}" "${ADMINOPTIONS[@]}")
 		#log 0 "${cmd[@]}"
-		if ! rc="$("${cmd[@]}")"
+		if ! rc="$("${cmd[@]}" 2>&1 | grep -v 'WARNING:')"
 		then
 			log 1 "E: failed to create $desc (1) [$rc]"
 			exit 1
@@ -356,7 +358,7 @@ create_entry () {
 			rc="$(univention-directory-manager groups/group modify \
 				--dn="$group" \
 				--append users="$ldap_dn" \
-				"${ADMINOPTIONS[@]}")"
+				"${ADMINOPTIONS[@]}" 2>&1 | grep -v 'WARNING:')"
 			if [ $? -gt 0 ]; then
 				log 1 "E: failed to modify groups/group for $desc [$rc]"
 				exit 1
@@ -377,7 +379,7 @@ create_entry () {
 			--dn "$old_dn" \
 			--set password="$computerPassword" \
 			--set domain="$DOMAINNAME" \
-			"${args[@]}" "${ADMINOPTIONS[@]}")"
+			"${args[@]}" "${ADMINOPTIONS[@]}" 2>&1 | grep -v 'WARNING:')"
 		if [ $? -gt 0 ]; then
 			log 1 "E: failed to modify $desc $old_dn [$rc]"
 			exit 1

@@ -1,3 +1,9 @@
+univention-join (12.0.4-3) unstable; urgency=medium
+
+  * Bug #54967: filter out UDM warnings in univention-server-join
+
+ -- Florian Best <best@univention.de>  Thu, 11 Aug 2022 13:40:59 +0200
+
 univention-join (12.0.4-2) unstable; urgency=medium
 
   * Bug #54967: fix univention-server-join with multiple MAC addresses
