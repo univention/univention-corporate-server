@@ -9,4 +9,8 @@ desc: |
  * The global uniqueness of `mailAlternativeAdress` with `mailPrimaryAddress`
    is now configurable via the UCR variable
    `directory/manager/mail-primary-alternative-address/uniqueness`.
-bug: [54596]
+ * The performance and debuggability of the UDM command line client has been
+   improved.
+ * The UDM command line client now writes error messages and warnings to
+   stdandard error.
+bug: [54596, 33224, 4498]
