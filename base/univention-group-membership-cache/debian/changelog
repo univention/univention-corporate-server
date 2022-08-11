@@ -1,3 +1,10 @@
+univention-group-membership-cache (2.0.0-7) unstable; urgency=medium
+
+  * Bug #54497: Use univention-group-membership-cache to obtain groups
+    user belongs to
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Wed, 10 Aug 2022 19:10:34 +0200
+
 univention-group-membership-cache (2.0.0-6) unstable; urgency=medium
 
   * Bug #54561: Return empty list instead of None

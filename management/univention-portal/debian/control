@@ -26,6 +26,7 @@ Depends:
  univention-config,
  univention-directory-listener,
  univention-directory-manager-tools,
+ univention-group-membership-cache,
  univention-management-console-server,
  ${misc:Depends},
 Description: Univention Portal - Central portal web page for a UCS domain

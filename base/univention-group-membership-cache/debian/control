@@ -7,6 +7,7 @@ Build-Depends:
  debhelper,
  dh-python,
  python3-ldap,
+ python3-gdbm,
  python3-univention,
  python3-all
 

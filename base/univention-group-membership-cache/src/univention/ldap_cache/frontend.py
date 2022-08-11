@@ -33,6 +33,7 @@
 #
 
 
+from collections import defaultdict
 from univention.ldap_cache.cache import get_cache
 
 
@@ -90,3 +91,29 @@ def users_in_group(group_dn, consider_nested_groups=True, readers=(None, None)):
 				if consider_nested_groups:
 					ret.update(users_in_group(member, consider_nested_groups, readers=(member_uid_reader, unique_member_reader)))
 		return sorted(ret)
+
+
+def users_groups():
+	"""
+	Find all user-group relationship, including implicit ones:
+	if Group1 have Group2 as a subgroup, all users from Group2
+	are also considered members of Group1.
+	"""
+	res = defaultdict(set)
+
+	# load all cached users/groups/computers
+	cache = get_cache()
+	cache = cache.get_sub_cache('uniqueMembers').load()
+	cache = dict((key, set(val.lower() for val in values)) for key, values in cache.items())
+
+	# populate all groups belonging to users
+	for group, members in cache.items():
+		for member in members:
+			if member.startswith('uid='):
+				res[member] |= set(groups_for_user(member, True, cache))
+
+	# order(sort) group users
+	for user, groups in res.items():
+		res[user] = sorted(groups)
+
+	return res

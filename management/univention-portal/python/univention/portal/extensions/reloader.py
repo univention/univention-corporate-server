@@ -40,8 +40,6 @@ import shutil
 import tempfile
 from imghdr import what
 
-import ldap
-from ldap.dn import str2dn
 from six import BytesIO, with_metaclass
 from six.moves.urllib.parse import quote
 from univention.portal import Plugin
@@ -307,7 +305,12 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
 	"""
 	Specialized class that reloads a cache file with the content of group object
-	in LDAP. Reacts on the reason "ldap:group"
+	in LDAP. Reacts on the reason "ldap:group".
+
+	.. warnings:: As of 4.0.7-8 we use univention-group-membership-cache to
+	obtain groups user belongs to; but we cannot change the constructor kwargs
+	because customers may have added entries to
+	/usr/share/univention-portal/portals.json that still uses them.
 
 	ldap_uri:
 		URI for the LDAP connection, e.g. "ldap://ucs:7369"
@@ -323,10 +326,6 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
 
 	def __init__(self, ldap_uri, binddn, password_file, ldap_base, cache_file):
 		super(GroupsReloaderLDAP, self).__init__(cache_file)
-		self._ldap_uri = ldap_uri
-		self._bind_dn = binddn
-		self._password_file = password_file
-		self._ldap_base = ldap_base
 
 	def _check_reason(self, reason, content=None):
 		if super(GroupsReloaderLDAP, self)._check_reason(reason, content):
@@ -337,50 +336,9 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
 			return True
 
 	def _refresh(self):
-		try:
-			with open(self._password_file) as fd:
-				password = fd.read().rstrip("\n")
-		except EnvironmentError:
-			get_logger("cache").warning("Unable to read {}".format(self._password_file))
-			return None
-		con = ldap.initialize(self._ldap_uri)
-		con.simple_bind_s(self._bind_dn, password)
-		ldap_content = {}
-		users = {}
-		groups = con.search_s(self._ldap_base, ldap.SCOPE_SUBTREE, u"(objectClass=posixGroup)")
-		for dn, attrs in groups:
-			usernames = []
-			groups = []
-			member_uids = [member.decode("utf-8").lower() for member in attrs.get("memberUid", [])]
-			unique_members = [
-				member.decode("utf-8").lower() for member in attrs.get("uniqueMember", [])
-			]
-			for member in member_uids:
-				if not member.endswith("$"):
-					usernames.append(member.lower())
-			for member in unique_members:
-				if member.startswith("cn="):
-					member_uid = str2dn(member)[0][0][1]
-					if "{}$".format(member_uid) not in member_uids:
-						groups.append(member)
-			ldap_content[dn.lower()] = {"usernames": usernames, "groups": groups}
-		groups_with_nested_groups = {}
-		for group_dn in ldap_content:
-			self._nested_groups(group_dn, ldap_content, groups_with_nested_groups)
-		for group_dn, attrs in ldap_content.items():
-			for user in attrs["usernames"]:
-				groups = users.setdefault(user, set())
-				groups.update(groups_with_nested_groups[group_dn])
-		users = dict((user, list(groups)) for user, groups in users.items())
+		from univention.ldap_cache.frontend import users_groups
+
+		users = users_groups()
 		with tempfile.NamedTemporaryFile(mode="w", delete=False) as fd:
 			json.dump(users, fd, sort_keys=True, indent=4)
 		return fd
-
-	def _nested_groups(self, dn, ldap_content, nested_groups_cache):
-		if dn in nested_groups_cache:
-			return nested_groups_cache[dn]
-		ret = set([dn])
-		for group_dn in ldap_content.get(dn, {}).get("groups", []):
-			ret.update(self._nested_groups(group_dn, ldap_content, nested_groups_cache))
-		nested_groups_cache[dn] = ret
-		return ret

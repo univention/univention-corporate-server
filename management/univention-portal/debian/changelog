@@ -1,3 +1,10 @@
+univention-portal (4.0.7-8) unstable; urgency=medium
+
+  * Bug #54497: Use univention-group-membership-cache to obtain groups
+    user belongs to
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Wed, 10 Aug 2022 19:10:34 +0200
+
 univention-portal (4.0.7-7) unstable; urgency=medium
 
   * Bug #55010: fix normalization of username
