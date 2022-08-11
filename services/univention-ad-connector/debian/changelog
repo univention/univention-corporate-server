@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.10-3) unstable; urgency=medium
+
+  * Bug #55087: Fix regression in group_members_sync_to_ucs
+
+ -- Arvid <requate@univention.de>  Thu, 11 Aug 2022 23:21:56 +0200
+
 univention-ad-connector (14.0.10-2) unstable; urgency=medium
 
   * Bug #54780: get mapping with respect to configbasename

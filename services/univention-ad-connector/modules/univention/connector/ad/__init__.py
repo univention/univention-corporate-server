@@ -1528,7 +1528,7 @@ class ad(univention.connector.ucs):
 			ud.debug(ud.LDAP, ud.PROCESS, 'group_members_sync_to_ucs:: The AD object (%s) was not found. The object was removed.' % ad_object_dn)
 			return
 
-		ad_members = self.get_ad_members(object['dn'], ldap_object_ad)
+		ad_members = self.get_ad_members(ad_object_dn, ldap_object_ad)
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ad_members %s" % ad_members)
 
 		# search and add members which have this as their primaryGroup
