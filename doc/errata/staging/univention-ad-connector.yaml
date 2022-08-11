@@ -9,4 +9,5 @@ desc: |
  * The mapping now evaluates UCR variables with respect to the configbasename.
    Therefore it is now possible again to create additional AD connector
    instances via `prepare-new-instance`, which was broken since UCS 5.0-0.
-bug: [54780]
+ * The function `group_members_sync_to_ucs` used the UCS DN to search in AD.
+bug: [54780, 55087]
