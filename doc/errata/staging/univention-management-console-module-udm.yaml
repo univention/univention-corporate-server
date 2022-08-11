@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-management-console-module-udm
+fix: 
+desc: |
+ This update addresses the following issues:
+ * `LDAP_Syntax` classes with `addEmptyValue` or `appendEmptyValue`
+   caused an error when opening e.g. the users/user module.
+bug: [54981]

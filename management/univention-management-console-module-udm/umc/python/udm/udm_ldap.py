@@ -1353,12 +1353,16 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
 		if isinstance(syn, udm_syntax.LDAP_Search):
 			choices = []
 			for choice in syn.get_umc_choices(ldap_connection, options):
-				module = UDM_Module(choice['objectType'], ldap_connection=ldap_connection, ldap_position=ldap_position)
-				choice.update({
-					'module': 'udm',
-					'flavor': module.flavor,
-					'icon': 'udm-%s' % module.name.replace('/', '-'),
-				})
+				try:
+					module = UDM_Module(choice['objectType'], ldap_connection=ldap_connection, ldap_position=ldap_position)
+				except KeyError:
+					pass
+				else:
+					choice.update({
+						'module': 'udm',
+						'flavor': module.flavor,
+						'icon': 'udm-%s' % module.name.replace('/', '-'),
+					})
 				choices.append(choice)
 		else:
 			choices = syn.get_choices(ldap_connection, options)
