@@ -105,7 +105,7 @@ class VerifyEmail(UniventionSelfServiceTokenEmitter):
 		msg = MIMENonMultipart('text', 'plain', charset='utf-8')
 		cs = email.charset.Charset("utf-8")
 		cs.body_encoding = email.charset.QP
-		msg["Subject"] = "Account verification"
+		msg["Subject"] = self.ucr.get("umc/self-service/account-verification/email/subject", "Account verification")
 		msg["Date"] = formatdate(localtime=True)
 		msg["From"] = self.ucr.get("umc/self-service/account-verification/email/sender_address", "Account Verification Service <noreply@{}>".format(fqdn))
 		msg["To"] = self.data["address"]

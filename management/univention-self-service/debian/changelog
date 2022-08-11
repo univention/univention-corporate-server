@@ -1,3 +1,10 @@
+univention-self-service (5.0.2-3) unstable; urgency=medium
+
+  * Bug #55028: add UCR variables to customize mail subjects of the
+    deregistration, account-verification, and email-change email
+
+ -- Maximilian Janßen <janssen@univention.de>  Tue, 13 Sep 2022 14:12:46 +0200
+
 univention-self-service (5.0.2-2) unstable; urgency=medium
 
   * Bug # 53227: add ucr variable to customize the mail subject
