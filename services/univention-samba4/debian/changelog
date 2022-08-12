@@ -1,3 +1,9 @@
+univention-samba4 (9.0.8-5) unstable; urgency=medium
+
+  * Bug #55077: fixed pickle handling in the listener when renaming a share
+
+ -- Mika Westphal <westphal@univention.de>  Fri, 12 Aug 2022 14:02:18 +0200
+
 univention-samba4 (9.0.8-4) unstable; urgency=medium
 
   * Bug #54791: Sync DNS objects needed for join directly
