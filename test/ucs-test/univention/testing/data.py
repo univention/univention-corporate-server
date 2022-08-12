@@ -211,6 +211,7 @@ class CheckExecutable(Check):
     def __init__(self, filename):  # type: (str) -> None
         super().__init__()
         self.filename = filename
+        self.executable_args = []
 
     def check(self, _environment):  # type: (TestEnvironment) -> Iterator[Verdict]
         """Check environment for required executable."""
@@ -222,6 +223,8 @@ class CheckExecutable(Check):
             else:
                 yield Verdict(Verdict.ERROR, f'Unknown executable: {self.filename}', TestCodes.REASON_INSTALL)
                 return
+        if self.filename.startswith('/usr/bin/python3'):
+            self.executable_args.append('-u')
         if os.path.isfile(self.filename):
             yield Verdict(Verdict.INFO, f'Executable: {self.filename}')
         else:
@@ -693,7 +696,7 @@ class TestCase:
         """Run the test case and fill in result."""
         base = os.path.basename(self.filename)
         dirname = os.path.dirname(self.filename)
-        cmd = [self.exe.filename, base] + self.args
+        cmd = [self.exe.filename] + self.exe.executable_args + [base] + self.args
 
         if self.is_pytest:
             cmd = PytestRunner.extend_command(self, cmd)

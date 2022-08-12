@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python3 -u
 """UCS Testrunner - run UCS test in sane environment."""
 
 import argparse

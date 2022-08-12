@@ -4,4 +4,4 @@ UCSTEST_SELENIUM=local \
 UCSTEST_SELENIUM_BROWSER=chrome \
 	exec /usr/bin/xvfb-run \
 		-e /dev/stderr \
-			/usr/bin/python3 "$@"
+			/usr/bin/python3 -u "$@"
