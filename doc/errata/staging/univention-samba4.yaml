@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-samba4
-fix:
+fix: 9.0.8-5A~5.0.0.202208121530
 desc: |
  This update addresses the following issues:
  * Renaming a share works again. This was broken in UCS 5.0-0 due to an error in
