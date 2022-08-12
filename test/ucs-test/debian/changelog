@@ -1,3 +1,10 @@
+ucs-test (10.0.7-16) unstable; urgency=medium
+
+  * Bug #43432: unify common S4/AD-Connector LDAP connections into
+    univention.testing.ldap_glue
+
+ -- Florian Best <best@univention.de>  Thu, 25 Aug 2022 18:50:13 +0200
+
 ucs-test (10.0.7-15) unstable; urgency=medium
 
   * Bug #54928: report critical ucs-test failures as failed tests

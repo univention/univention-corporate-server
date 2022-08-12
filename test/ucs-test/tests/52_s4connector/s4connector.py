@@ -4,6 +4,7 @@ import sys
 from time import sleep
 
 import ldap
+from ldap.controls import LDAPControl
 
 import univention.admin.modules
 import univention.admin.objects
@@ -14,8 +15,7 @@ import univention.testing.connector_common as tcommon
 import univention.testing.ucr as testing_ucr
 import univention.testing.utils as utils
 from univention.config_registry import handler_set as ucr_set
-
-import ldap_glue_s4
+from univention.testing import ldap_glue
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
@@ -35,7 +35,7 @@ def get_first(value):
 	return value
 
 
-class S4Connection(ldap_glue_s4.LDAPConnection):
+class S4Connection(ldap_glue.LDAPConnection):
 	'''helper functions to modify AD-objects'''
 
 	def __init__(self, configbase='connector', no_starttls=False):
@@ -46,10 +46,17 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		self.pw_file = configRegistry['%s/s4/ldap/bindpw' % configbase]
 		self.host = configRegistry['%s/s4/ldap/host' % configbase]
 		self.port = configRegistry['%s/s4/ldap/port' % configbase]
-		self.ssl = configRegistry.get('%s/s4/ldap/ssl', "no")
 		self.ca_file = configRegistry['%s/s4/ldap/certificate' % configbase]
 		self.protocol = configRegistry.get('%s/s4/ldap/protocol' % self.configbase, 'ldap').lower()
 		self.socket = configRegistry.get('%s/s4/ldap/socket' % self.configbase, '')
+
+		self.serverctrls_for_add_and_modify = []
+		if 'univention_samaccountname_ldap_check' in configRegistry.get('samba4/ldb/sam/module/prepend', '').split():
+			# The S4 connector must bypass this LDB module if it is activated via samba4/ldb/sam/module/prepend
+			# The OID of the 'bypass_samaccountname_ldap_check' control is defined in ldb.h
+			ldb_ctrl_bypass_samaccountname_ldap_check = LDAPControl('1.3.6.1.4.1.10176.1004.0.4.1', criticality=0)
+			self.serverctrls_for_add_and_modify.append(ldb_ctrl_bypass_samaccountname_ldap_check)
+
 		self.connect(no_starttls)
 
 	def createuser(self, username, position=None, **attributes):

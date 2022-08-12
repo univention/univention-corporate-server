@@ -15,16 +15,10 @@ import univention.connector.ad as ad
 import univention.testing.connector_common as tcommon
 import univention.testing.ucr as testing_ucr
 from univention.config_registry import handler_set as ucr_set
+from univention.testing import ldap_glue
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
-
-
-TEST_LIB_PATH = os.getenv('TESTLIBPATH', '/usr/share/ucs-test/lib/')
-if TEST_LIB_PATH is not None:
-	sys.path.append(TEST_LIB_PATH)
-
-import ldap_glue  # noqa: E402
 
 
 def to_bytes(value):
