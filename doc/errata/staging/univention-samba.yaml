@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-samba
+fix:
+desc: |
+ This update addresses the following issues:
+ * Renaming a share works again. This was broken in UCS 5.0-0 due to an error in
+   the listener module writing the share configuration.
+bug: [55077]
