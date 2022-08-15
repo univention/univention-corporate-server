@@ -80,7 +80,7 @@ class StoreAppAction(Action):
 			if self.cache_class:
 				app = self.cache_class.find_by_string(val)
 			else:
-				app = self.cache_class.split_app_string(val)
+				app = Apps.split_app_string(val)
 			if app is None:
 				parser.error('Unable to find app %s. Maybe "%s update" to get the latest list of applications?' % (val, sys.argv[0]))
 			apps.append(app)
