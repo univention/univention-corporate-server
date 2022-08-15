@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-group-membership-cache
-fix: 2.0.0-7A~5.0.0.202208112152
+fix: 2.0.0-7A~5.0.0.202208151846
 desc: |
  This update addresses the following issue:
  * Tiles in portal were not displayed correctly due to a bug while
