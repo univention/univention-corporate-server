@@ -150,7 +150,7 @@ Docker image
 
 3. Enter the name of the image to :guilabel:`Docker image`. Grab the name of the
    image from Docker hub for example
-   ``univention/ucs-master-amd64:4.2-2``.
+   ``python:3.7-bullseye``.
 
 .. important::
 
