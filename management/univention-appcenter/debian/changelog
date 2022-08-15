@@ -1,3 +1,9 @@
+univention-appcenter (9.0.3-2) unstable; urgency=medium
+
+  * Bug #55020: fix StoreAppAction
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Mon, 15 Aug 2022 11:31:58 +0200
+
 univention-appcenter (9.0.3-1) unstable; urgency=medium
 
   * Bug #54706: move essential files into Python 3 package

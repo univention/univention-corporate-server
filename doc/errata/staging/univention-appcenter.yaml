@@ -1,0 +1,12 @@
+product: ucs
+release: '5.0'
+version:
+- 1
+scope: ucs_5.0-0-errata5.0-2
+src: univention-appcenter
+fix:
+desc: |-
+  This update addresses the following issue:
+  * Fixed function StoreAppAction, if cache_class is None call the function
+    using the class Apps.
+bug: [55020]
