@@ -110,7 +110,8 @@ def users_groups():
 	for group, members in cache.items():
 		for member in members:
 			if member.startswith('uid='):
-				res[member] |= set(groups_for_user(member, True, cache))
+				rdn = _extract_id_from_dn(member).lower()
+				res[rdn] |= set(groups_for_user(member, True, cache))
 
 	# order(sort) group users
 	for user, groups in res.items():
