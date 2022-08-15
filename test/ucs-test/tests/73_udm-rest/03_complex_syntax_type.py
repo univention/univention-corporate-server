@@ -60,7 +60,7 @@ class UCSTESTComplexMultiValueDict(complex):
 class UCSTESTComplexList(complex):
 	subsyntaxes = [('Type-string', string), ('Type-integer', integer)]
 ''',
-		}
+	}
 
 
 @pytest.fixture(scope="class", autouse=True)
