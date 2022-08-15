@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: libtirpc
+fix: 1.1.4-0.4+deb10u1
+desc: |
+ This update addresses the following issue:
+ * DoS vulnerability with lots of connections (CVE-2021-46828)
+bug: [55094]
+cve:
+- CVE-2021-46828
