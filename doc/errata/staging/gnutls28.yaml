@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: gnutls28
+fix: 3.6.7-4+deb10u9
+desc: |
+ This update addresses the following issues:
+ * Null pointer dereference in MD_UPDATE (CVE-2021-4209)
+ * Double free during gnutls_pkcs7_verify. (CVE-2022-2509)
+bug: [55095]
+cve:
+- CVE-2021-4209
+- CVE-2022-2509
