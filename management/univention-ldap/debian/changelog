@@ -1,11 +1,11 @@
-univention-ldap (16.0.8-2) unstable; urgency=medium
+univention-ldap (16.0.7-20) unstable; urgency=medium
 
   * Bug #54465: Create initial fake schema in unjoined backup/replica
     servers
 
  -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Tue, 12 Jul 2022 12:01:22 +0200
 
-univention-ldap (16.0.8-1) unstable; urgency=low
+univention-ldap (16.0.7-19) unstable; urgency=low
 
   * Bug #54782: Make group owner configurable for LDAP backup files
   * Bug #54821: Update UCR variable info of ldap/database/type
