@@ -35,12 +35,10 @@ def restart_udmrest():
 			get_openapi_schema()
 		except requests.HTTPError as exc:
 			if exc.response.status_code != 503:
-				break
+				raise
 		else:
 			break
 		time.sleep(1)
-	else:
-		raise
 
 
 def get_syntax_buffers():
@@ -146,23 +144,26 @@ class Test_ComplexSyntaxTypes():
 
 	def test_ComplexMultiValueKeyValueDictType(self):
 		expected_type_definition = {
-			'additionalProperties': True,
+			'additionalProperties': {'type': 'string', 'nullable': True},
 			'type': 'object',
 			'nullable': True
 		}
 		openapi_schema = get_openapi_schema()
-		user_props = openapi_schema["components"]["schemas"]["users-user"]["properties"]["properties"]["properties"]
+		user_props = openapi_schema["components"]["schemas"]["users-user.request-patch"]["properties"]["properties"]["properties"]
 		assert "UCSTESTComplexMultiValueKeyValueDict" in user_props
 		assert user_props["UCSTESTComplexMultiValueKeyValueDict"] == expected_type_definition
 
 	def test_ComplexMultiValueDictType(self):
 		expected_type_definition = {
-			'additionalProperties': True,
 			'type': 'object',
-			'nullable': True
+			'nullable': True,
+			'additionalProperties': False,
+			'properties': {
+				'priority': {'type': 'integer', 'nullable': True},
+				'mailserver': {'type': 'string', 'nullable': True}}
 		}
 		openapi_schema = get_openapi_schema()
-		user_props = openapi_schema["components"]["schemas"]["users-user"]["properties"]["properties"]["properties"]
+		user_props = openapi_schema["components"]["schemas"]["users-user.request-patch"]["properties"]["properties"]["properties"]
 		assert "UCSTESTComplexMultiValueDict" in user_props
 		assert user_props["UCSTESTComplexMultiValueDict"] == expected_type_definition
 
@@ -178,6 +179,6 @@ class Test_ComplexSyntaxTypes():
 			'nullable': True
 		}
 		openapi_schema = get_openapi_schema()
-		user_props = openapi_schema["components"]["schemas"]["users-user"]["properties"]["properties"]["properties"]
+		user_props = openapi_schema["components"]["schemas"]["users-user.request-patch"]["properties"]["properties"]["properties"]
 		assert "UCSTESTComplexList" in user_props
 		assert user_props["UCSTESTComplexList"] == expected_type_definition

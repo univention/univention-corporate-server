@@ -234,6 +234,8 @@ class TypeHint(object):
 		definition['readOnly'] = self._openapi_readonly
 		definition['writeOnly'] = self._openapi_writeonly
 		definition['nullable'] = self._openapi_nullable
+		#if self._openapi_type == 'string' and not self._openapi_example and isinstance(self.syntax, univention.admin.syntax.select) and getattr(self.syntax, 'choices', None):
+		#	definition['example'] = self.syntax.choices[0][0]
 		return definition
 
 	def get_choices(self, lo, options):
@@ -349,8 +351,10 @@ class PasswordType(StringType):
 
 
 class DistinguishedNameType(StringType):
-	_openapi_format = 'ldap-dn'
+	_openapi_format = 'dn'
 	_openapi_example = 'dc=example,dc=net'
+	_openapi_regex = '^.+=.+$'
+	_minimum = 3
 
 	def encode_value(self, value):
 		value = super(DistinguishedNameType, self).encode_value(value)
@@ -602,20 +606,31 @@ class DictionaryType(TypeHint):
 
 	def openapi_definition(self):
 		definition = super(DictionaryType, self).openapi_definition()
-		definition['properties'] = []
-		definition['required'] = []
-		if not definition['properties']:
-			definition['additionalProperties'] = True
-			definition['minProperties'] = self._minimum
-			definition['maxProperties'] = self._maximum
-			definition.pop('properties', None)
-			definition.pop('required', None)
+		definition['additionalProperties'] = True
+		definition['minProperties'] = self._minimum
+		definition['maxProperties'] = self._maximum
+
+		if self.properties:
+			definition['properties'] = {
+				name: prop(self.property, self.property_name).get_openapi_definition() if prop else {'description': '%s:%s has no definition' % (self.property_name, name,)}
+				for name, prop in self.properties.items()
+			}
+			definition['additionalProperties'] = False
+			if self.syntax.all_required:
+				definition['required'] = list(definition['properties'])
+
 		return definition
 
 
 class KeyValueDictionaryType(DictionaryType):
 	key_type = None  # type: Optional[_Types]
 	value_type = None  # type: Optional[_Types]
+
+	def openapi_definition(self):
+		definition = super(DictionaryType, self).openapi_definition()
+		definition['additionalProperties'] = self.value_type(self.property, self.property_name).get_openapi_definition()
+		definition.pop('properties', None)
+		return definition
 
 
 class SambaLogonHours(ListType):

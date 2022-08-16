@@ -53,7 +53,7 @@ import time
 import traceback
 import zlib
 from io import BytesIO
-from typing import TYPE_CHECKING, Any, Callable, Iterable, List, Optional, Pattern, Sequence, Set, Tuple, Type, Union  # noqa: F401
+from typing import TYPE_CHECKING, Any, Callable, List, Optional, Pattern, Sequence, Set, Tuple, Type, Union  # noqa: F401
 
 import dateutil
 import ldap

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.13-13) unstable; urgency=medium
+
+  * Bug #55096: fix presence of nested properties / subsyntaxes in
+    openapi.schema
+
+ -- Florian Best <best@univention.de>  Fri, 04 Nov 2022 14:02:50 +0100
+
 univention-directory-manager-modules (15.0.13-12) unstable; urgency=low
 
   * Bug #55279: Remove UDM template code from Python backend
