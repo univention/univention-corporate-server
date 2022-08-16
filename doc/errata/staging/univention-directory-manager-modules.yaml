@@ -3,7 +3,7 @@ release: "4.4"
 version: [9]
 scope: ucs_4.4-0-errata4.4-9
 src: univention-directory-manager-modules
-fix: 
+fix: 14.0.20-32A~4.4.0.202208151214
 desc: |
  This update addresses the following issue:
  * The UDM REST API type definition for complex syntaxes without
