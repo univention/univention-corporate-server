@@ -95,8 +95,8 @@ Type=bool
 Categories=management-udm
 
 [directory/manager/mail-primary-alternative-address/uniqueness]
-Description[de]=Ist diese Option aktiviert, müssen mailPrimaryAddress und mailAlternativeAddress global unterschiedlich und mailAlternativeAddress global unique sein.
-Description[en]=If this option is activated, mailPrimaryAddress and mailAlternativeAddress must be globally disjunct and mailAlternativeAddress must be globally unique.
+Description[de]=Standardmäßig muss nur die "Primäre E-Mail-Adresse" global eindeutig sein. Ist diese Option aktiviert, müssen auch die "Alternativen E-Mail-Adressen" eindeutig sein und dürfen sich zudem nicht mit irgendwelchen primären Adressen überlappen.
+Description[en]=By default only the "Primary email address" must be globally unique. If this option is enabled, the "Alternative email addresses" must be unique as well and may no longer overlap any primary address.
 Type=bool
 Default=false
 Categories=management-udm
