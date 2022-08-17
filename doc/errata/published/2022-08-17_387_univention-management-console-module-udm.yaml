@@ -9,3 +9,5 @@ desc: |
  * `LDAP_Syntax` classes with `addEmptyValue` or `appendEmptyValue`
    caused an error when opening e.g. the users/user module.
 bug: [54981]
+erratum: 387
+announced: 2022-08-17
