@@ -337,6 +337,7 @@ COMMON_EXCEPTIONS = (
 	# Tracebacks caused by specific UCS@school bugs:
 	E(r"_ldb.LdbError: \(1, 'LDAP client internal error: NT_STATUS_INVALID_PARAMETER'\)", ['univention-samba4-site-tool.py'], 54592),
 	E(r"AssertionError: Attribute \(username\) is parsed wrong as.*", ['103_ucsschool_smbstatus_parser.py'], 54591),
+	E(r"optparse.OptionConflictError: option.*authentication-file", ['univention-samba4-site-tool.py'], 55082),
 )
 
 
