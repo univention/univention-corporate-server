@@ -6,7 +6,8 @@ src: postgresql-11
 fix: 11.17-0+deb10u1
 desc: |
  This update addresses the following issue:
- * postgresql-11 (CVE-2022-2625)
+ * Do not let extension scripts replace objects not already belonging to
+   the extension (CVE-2022-2625)
 bug: [55093]
 cve:
 - CVE-2022-2625
