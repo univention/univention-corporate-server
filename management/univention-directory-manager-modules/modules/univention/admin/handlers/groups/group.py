@@ -439,7 +439,7 @@ class object(univention.admin.handlers.simpleLdap):
 		super(object, self)._ldap_pre_ready()
 
 		# get lock for name
-		if not self.exists() or self.hasChanged('name') and self['name'].lower() != self.oldinfo['name'].lower():
+		if self['name'] and (not self.exists() or self.hasChanged('name') and self['name'].lower() != self.oldinfo['name'].lower()):
 			try:
 				self.request_lock('groupName', self['name'])
 			except univention.admin.uexceptions.noLock:
