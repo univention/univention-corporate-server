@@ -118,7 +118,6 @@ app from there.
 .. _testing-install-app-center-umc-module:
 
 .. figure:: /images/umc-module-app-center.png
-   :scale: 80%
    :alt: Univention Management Console overview with App Center Module
 
    Univention Management Console overview with App Center Module
@@ -357,33 +356,33 @@ follow these steps:
 1. Go to the :guilabel:`Apps` UMC module in the App Provider Portal and search for
    the app.
 
-2. Create a new version of the app: Mouse over the app's tile, click the
-   menu in the upper right corner of the tile and select :guilabel:`New App
-   Version`.
+2. To create a new version of the app, mouse over the app's tile, right click
+   and select :guilabel:`New App Version`.
+
+   .. _app-life-cycle-update-create-new-version:
+
+   .. figure:: /images/app_portal_create_new_version.png
+      :scale: 80%
+      :alt: Menu to add a new App
+
+      Menu to add a new App
 
 3. Enter the values for source and target version. The App Provider
    Portal will then copy the source app configuration to the target.
+
+   .. _app-life-cycle-update-new-version:
+
+   .. figure:: /images/app_portal_new_version.png
+      :scale: 80%
+      :alt: Add a new App version
+
+      Add a new App version
 
 4. Open the new app version and make the appropriate changes, e.g. the
    version tag for the Docker image. Usual places for changes involve
    the scripts and maybe the integration. Texts and logos should be
    checked if they are still up to date.
 
-.. _app-life-cycle-update-create-new-version:
-
-.. figure:: /images/app_portal_create_new_version.png
-   :scale: 80%
-   :alt: Menu to add a new App
-
-   Menu to add a new App
-
-.. _app-life-cycle-update-new-version:
-
-.. figure:: /images/app_portal_new_version.png
-   :scale: 80%
-   :alt: Add a new App version
-
-   Add a new App version
 
 .. _termination:
 
