@@ -9,3 +9,5 @@ desc: |
  * Renaming a share works again. This was broken in UCS 5.0-0 due to an error
    in the listener module writing the share configuration.
 bug: [55077]
+erratum: 391
+announced: 2022-08-17
