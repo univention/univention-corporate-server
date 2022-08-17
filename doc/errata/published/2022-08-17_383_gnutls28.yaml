@@ -12,3 +12,5 @@ bug: [55095]
 cve:
 - CVE-2021-4209
 - CVE-2022-2509
+erratum: 383
+announced: 2022-08-17
