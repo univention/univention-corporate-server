@@ -9,3 +9,5 @@ desc: |
  * Tiles in portal were not displayed correctly due to a bug while
    loading user's group membership.
 bug: [54497]
+erratum: 389
+announced: 2022-08-17
