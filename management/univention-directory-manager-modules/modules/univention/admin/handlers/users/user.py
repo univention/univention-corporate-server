@@ -38,9 +38,7 @@ from __future__ import absolute_import
 
 import base64
 import calendar
-import codecs
 import copy
-import hashlib
 import os
 import re
 import time
@@ -1911,11 +1909,6 @@ class object(univention.admin.handlers.simpleLdap):
 		password_nt, password_lm = password_nt.encode('ASCII'), password_lm.encode('ASCII')
 		ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [b''])[0], password_nt))
 		ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [b''])[0], password_lm))
-
-		if pwhistoryPolicy.pwhistoryLength is not None:
-			smbpwhistory = self.oldattr.get('sambaPasswordHistory', [b''])[0].decode('ASCII')
-			newsmbPWHistory = self._get_samba_password_history(password_nt, smbpwhistory, pwhistoryPolicy.pwhistoryLength)
-			ml.append(('sambaPasswordHistory', self.oldattr.get('sambaPasswordHistory', [b''])[0], newsmbPWHistory.encode('ASCII')))
 		return ml
 
 	def _modlist_kerberos_password(self, ml):
@@ -2272,43 +2265,6 @@ class object(univention.admin.handlers.simpleLdap):
 				raise
 
 		return dn
-
-	@classmethod
-	def _get_samba_password_history(cls, newpassword, smbpwhistory, smbpwhlen):
-		"""Get history of previously used passwords.
-
-#		>>> object._get_samba_password_history('186CB09181E2C2ECAAC768C47C729904', 'A047EE4A9DB8BC8B4F3F8A03D72DEB80', 0)
-#		...
-#		>>> object._get_samba_password_history('186CB09181E2C2ECAAC768C47C729904', '', 1)
-#		...
-#		>>> object._get_samba_password_history('186CB09181E2C2ECAAC768C47C729904', 'A047EE4A9DB8BC8B4F3F8A03D72DEB80', 1)
-#		...
-#		>>> object._get_samba_password_history('186CB09181E2C2ECAAC768C47C729904', 'A047EE4A9DB8BC8B4F3F8A03D72DEB80', 2)
-#		...
-		"""
-
-		# calculate the password hash & salt
-		# in binary for calculating the md5:
-		salt = os.urandom(16)
-		# we have to have that in hex:
-		hexsalt = codecs.encode(salt, 'hex').upper().decode('ASCII')
-		# we need the ntpwd binary data to
-		pwd = codecs.decode(newpassword, 'hex')
-		# calculating hash. stored as a 32byte hex in sambaPasswordHistory,
-		# syntax like that: [Salt][MD5(Salt+Hash)]
-		#	First 16bytes ^		^ last 16bytes.
-		pwdhash = hashlib.md5(salt + pwd).hexdigest().upper()
-		smbpwhash = hexsalt + pwdhash
-
-		# split the history
-		pwlist = smbpwhistory.strip().split(' ')
-		# append new hash
-		pwlist.append(smbpwhash)
-		# strip old hashes
-		pwlist = pwlist[-smbpwhlen:]
-		# build history
-		smbpwhistory = ''.join(pwlist)
-		return smbpwhistory
 
 	def __allocate_rid(self, rid):
 		searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
