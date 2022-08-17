@@ -12,3 +12,5 @@ desc: |
    `ConfigurationError` pointing to a wrong URL on
    `updates.software-univention.de` instead.
 bug: [55069]
+erratum: 388
+announced: 2022-08-17
