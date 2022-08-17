@@ -543,16 +543,24 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 
 	pwd_set = False
 	filter_expr = format_escaped('(objectSid={0!e})', objectSid)
-	res = s4connector.lo_s4.search(filter=filter_expr, attr=['unicodePwd', 'userPrincipalName', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])
+	res = s4connector.lo_s4.search(filter=filter_expr, attr=['unicodePwd', 'userPrincipalName', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd', 'ntPwdHistory', 'msDS-ResultantPSO'])
 	s4_search_attributes = res[0][1]
 
 	unicodePwd_attr = s4_search_attributes.get('unicodePwd', [None])[0]
 	dBCSPwd_attr = s4_search_attributes.get('dBCSPwd', [None])[0]
 	userPrincipalName_attr = s4_search_attributes.get('userPrincipalName', [None])[0]
 	supplementalCredentials = s4_search_attributes.get('supplementalCredentials', [None])[0]
-	#msDS_KeyVersionNumber = s4_search_attributes.get('msDS-KeyVersionNumber', [0])[0]
-	# ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Password-Hash from S4: %s" % unicodePwd_attr)
+	ntPwdHistory = s4_search_attributes.get('ntPwdHistory', [b''])[0]
+	msDSResultantPSO = s4_search_attributes.get('msDS-ResultantPSO', [None])[0]
 
+	# get pwdhistorylength
+	pwdHistoryLength = 0
+	if msDSResultantPSO:
+		res = s4connector.lo_s4.get(msDSResultantPSO.decode('UTF-8'), attr=['msDS-PasswordHistoryLength'])
+		pwdHistoryLength = int(res.get('msDS-PasswordHistoryLength', [0])[0])
+	else:
+		res = s4connector.lo_s4.search(filter='(objectClass=domain)', attr=['pwdHistoryLength'])
+		pwdHistoryLength = int(res[0][1].get('pwdHistoryLength', [0])[0])
 	s4NThash = None
 	if unicodePwd_attr:
 		s4NThash = binascii.b2a_hex(unicodePwd_attr).upper()
@@ -594,6 +602,19 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 					else:
 						raise
 			if pwd_set and unicodePwd_new:
+				if pwdHistoryLength:
+					userobject = s4connector.get_ucs_object(key, ucs_object['dn'])
+					pwhistoryPolicy = userobject.loadPolicyObject('policies/pwhistory')
+					pwhistory_length = int(pwhistoryPolicy['length'])
+					if pwhistory_length != pwdHistoryLength:
+						ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs_to_s4: Mismatch between UCS pwhistoryPolicy (%s) and S4 pwhistoryPolicy (%s). Using the larger one." % (pwhistory_length, pwdHistoryLength))
+					des_len = max(pwdHistoryLength, pwhistory_length) * 16
+					ntPwdHistory_new = unicodePwd_new + ntPwdHistory
+					ntPwdHistory_new = ntPwdHistory_new[:des_len]
+					ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Update ntPwdHistory.")
+					modlist.append((ldap.MOD_REPLACE, 'ntPwdHistory', ntPwdHistory_new))
+				else:
+					ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: PwdHistoryLength is 0, do not update history.")
 				modlist.append((ldap.MOD_REPLACE, 'unicodePwd', unicodePwd_new))
 	if ucsLMhash != s4LMhash:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: LM Hash S4: %r LM Hash UCS: %r" % (s4LMhash, ucsLMhash))
@@ -647,7 +668,6 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 			if newpwdlastset != pwdLastSet and abs(newpwdlastset - pwdLastSet) >= 10000000:
 				modlist.append((ldap.MOD_REPLACE, 'pwdLastSet', str(newpwdlastset).encode('ASCII')))
 
-	# TODO: Password History
 	ctrl_bypass_password_hash = LDAPControl('1.3.6.1.4.1.7165.4.3.12', criticality=0)
 	ud.debug(ud.LDAP, ud.ALL, "password_sync_ucs_to_s4: modlist: %r" % (modlist,))
 	if modlist:
@@ -677,7 +697,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 	objectSid = univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0])
 
 	filter_expr = format_escaped('(objectSid={0!e})', objectSid)
-	res = s4connector.lo_s4.search(filter=filter_expr, attr=['unicodePwd', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])
+	res = s4connector.lo_s4.search(filter=filter_expr, attr=['unicodePwd', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd', 'msDS-ResultantPSO', 'ntPwdHistory'])
 	s4_search_attributes = res[0][1]
 
 	unicodePwd_attr = s4_search_attributes.get('unicodePwd', [None])[0]
@@ -697,7 +717,9 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 		krb5Principal = b''
 		#userPassword = b''
 		modlist = []
-		ucs_object_attributes = s4connector.lo.get(ucs_object['dn'], ['sambaPwdMustChange', 'sambaPwdLastSet', 'sambaNTPassword', 'sambaLMPassword', 'krb5PrincipalName', 'krb5Key', 'krb5KeyVersionNumber', 'userPassword', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd', 'univentionService'])
+		ucs_object_attributes = s4connector.lo.get(ucs_object['dn'], ['sambaPwdMustChange', 'sambaPwdLastSet', 'sambaNTPassword', 'sambaLMPassword', 'krb5PrincipalName', 'krb5Key', 'krb5KeyVersionNumber', 'userPassword', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd', 'univentionService', 'pwhistory'])
+
+		pwhistory_ucs = ucs_object_attributes.get('pwhistory', [b''])[0]
 
 		services = ucs_object_attributes.get('univentionService', [])
 		if 'S4 SlavePDC' in services:
@@ -744,6 +766,47 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 
 			# Append modification as well to modlist, to apply in one transaction
 			if modifyUserPassword:
+				userobject = s4connector.get_ucs_object(key, ucs_object['dn'])
+				pwhistoryPolicy = None
+				if userobject:
+					pwhistoryPolicy = userobject.loadPolicyObject('policies/pwhistory')
+					pwhistory_length = int(pwhistoryPolicy['length'])
+					if pwhistory_length > 0:
+						msDSResultantPSO = s4_search_attributes.get('msDS-ResultantPSO', [None])[0]
+
+						# get pwdhistorylength from s4 object
+						s4_pwhistory_length = 0
+						if msDSResultantPSO:
+							res = s4connector.lo_s4.get(msDSResultantPSO.decode(), attr=['msDS-PasswordHistoryLength'])
+							s4_pwhistory_length = int(res.get('msDS-PasswordHistoryLength', [0])[0])
+						else:
+							res = s4connector.lo_s4.search(filter='(objectClass=domain)', attr=['pwdHistoryLength'])
+							s4_pwhistory_length = int(res[0][1].get('pwdHistoryLength', [0])[0])
+
+						if pwhistory_length != s4_pwhistory_length:
+							ud.debug(ud.LDAP, ud.WARN, "password_sync_s4_to_ucs: Mismatch between UCS pwhistoryPolicy (%s) and S4 pwhistoryPolicy (%s). Using the larger one." % (pwhistory_length, s4_pwhistory_length))
+						pwhistory_length = max(pwhistory_length, s4_pwhistory_length)
+
+						ntPwdHistory = s4_search_attributes.get('ntPwdHistory', [b''])[0]
+						ntPwdHistory_hex = binascii.hexlify(ntPwdHistory).upper()
+						ntPwdHistory_len = len(ntPwdHistory_hex) // 32
+
+						pwhistory_list = pwhistory_ucs.decode('ASCII').strip().split(' ')
+						pwhistory_len = len(pwhistory_list)
+						pwhistory_new = None
+
+						if ntPwdHistory_len and pwhistory_len == 1 and object.get('old_s4_object', {}).get('pwdLastSet', [None])[0] is None:
+							# In the first synchronization from S4->UCS the password history from the S4 User
+							# can have more than one entry.
+							pwhistory_new = b''
+							hist = [ntPwdHistory_hex[i: i + 32] for i in range(0, len(ntPwdHistory_hex), 32)]
+							for nt_hash in reversed(hist):
+								pwhistory_new = univention.admin.password.get_password_history('{NT}$' + nt_hash.decode('ASCII'), pwhistory_new.decode('ASCII'), pwhistory_length).encode('ASCII')
+						else:
+							pwhistory_new = univention.admin.password.get_password_history('{NT}$' + ntPwd.decode('ASCII'), pwhistory_ucs.decode('ASCII'), pwhistory_length).encode('ASCII')
+
+						modlist.append(('pwhistory', pwhistory_ucs, pwhistory_new))
+
 				modlist.append(('userPassword', userPassword_ucs, b'{K5KEY}'))
 		else:
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: No password change to sync to UCS")
