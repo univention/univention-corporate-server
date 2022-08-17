@@ -53,6 +53,12 @@ Alternative email addresses
    :guilabel:`Mail` (see :ref:`mail-management-domains`). To receive emails to
    alternative email addresses, a user must have a primary email address.
 
+.. note::
+
+   When setting the |UCSUCRV| :envvar:`directory/manager/mail-address/uniqueness`
+   to ``true`` the *Alternative email addresses* must be unique across the domain.
+   No other user can have the same alternative address assigned.
+
 Forward email addresses
    If *forward email addresses* are configured for a user, emails received
    through the primary or alternative email addresses are forwarded to them. A

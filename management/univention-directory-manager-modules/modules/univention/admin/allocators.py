@@ -198,7 +198,7 @@ def acquireUnique(lo, position, type, value, attr, scope='base'):
 		if all(ldap.dn.str2dn(x)[0][0][0] not in attrs for x in lo.searchDn(base=base, filter='(|%s)' % ''.join(filter_format('(%s=%s)', (attr, value)) for attr in attrs), scope=scope)):
 			return value
 		raise univention.admin.uexceptions.alreadyUsedInSubtree('name=%r position=%r' % (value, base))
-	elif type in ('mailPrimaryAddress', 'mailAlternativeAddress') and configRegistry.is_true('directory/manager/mail-primary-alternative-address/uniqueness'):
+	elif type in ('mailPrimaryAddress', 'mailAlternativeAddress') and configRegistry.is_true('directory/manager/mail-address/uniqueness'):
 		ud.debug(ud.ADMIN, ud.INFO, 'LOCK univention.admin.locking.lock scope = %s' % scope)
 		univention.admin.locking.lock(lo, position, 'mailPrimaryAddress', value.encode('utf-8'), scope=scope)
 		other = 'mailPrimaryAddress' if type == 'mailAlternativeAddress' else 'mailAlternativeAddress'

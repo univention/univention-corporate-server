@@ -4,16 +4,16 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-06 12:43+0200\n"
+"POT-Creation-Date: 2022-08-26 08:20+0000\n"
 "PO-Revision-Date: 2022-06-14 16:17+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.10.3\n"
 
 #: ../../mail/configuration-client.rst:4
 msgid "Configuration of mail clients for the mail server"
@@ -215,8 +215,8 @@ msgstr ""
 "Standardmäßig ist die Authentifikation an diesem Port deaktiviert. Wenn "
 "das Einliefern von E-Mails an Port 25 erlaubt werden soll, kann die "
 "|UCSUCRV| "
-":envvar:`mail/postfix/mastercf/options/smtp/smtpd_sasl_auth_enable` auf ``yes`` "
-"gesetzt werden."
+":envvar:`mail/postfix/mastercf/options/smtp/smtpd_sasl_auth_enable` auf "
+"``yes`` gesetzt werden."
 
 #: ../../mail/configuration-server.rst:97
 msgid "Port 465 - SMTPS"
@@ -563,14 +563,14 @@ msgid ""
 "A new, empty mailbox will be created. The old one will be deleted from "
 "the hard disk."
 msgstr ""
-"Eine neue, leere Mailbox wird erzeugt. Die alte Mailbox wird inklusive aller "
-"enthaltenen Mails von der Festplatte gelöscht."
+"Eine neue, leere Mailbox wird erzeugt. Die alte Mailbox wird inklusive "
+"aller enthaltenen Mails von der Festplatte gelöscht."
 
-#: ../../mail/configuration-server.rst:261
+#: ../../mail/configuration-server.rst:267
 msgid "Distribution of an installation on several mail servers"
 msgstr "Verteilung einer Installation auf mehrere Mailserver"
 
-#: ../../mail/configuration-server.rst:263
+#: ../../mail/configuration-server.rst:269
 msgid ""
 "The UCS mail system offers the possibility of distributing users across "
 "several mail servers. To this end, each user is assigned a so-called mail"
@@ -584,7 +584,7 @@ msgstr ""
 "werden. Beim Zustellen einer E-Mail wird der zuständige Home Server "
 "automatisch aus dem LDAP-Verzeichnis ermittelt."
 
-#: ../../mail/configuration-server.rst:268
+#: ../../mail/configuration-server.rst:274
 msgid ""
 "It must be observed that global IMAP folders (see :ref:`mail-management-"
 "shared-folder`) are assigned to a mail home server."
@@ -592,7 +592,7 @@ msgstr ""
 "Es ist zu beachten, dass globale IMAP-Ordner (siehe :ref:`mail-"
 "management-shared-folder`) einem Mail Home Server zugeordnet sind."
 
-#: ../../mail/configuration-server.rst:271
+#: ../../mail/configuration-server.rst:277
 msgid ""
 "If the mail home server changes for a user, the user's mail data is *not*"
 " moved to the server automatically."
@@ -600,11 +600,11 @@ msgstr ""
 "Beim Ändern des Mail Home Servers eines Benutzers werden dessen E-Mails "
 "*nicht* automatisch auf den neuen Server verschoben."
 
-#: ../../mail/configuration-server.rst:277
+#: ../../mail/configuration-server.rst:283
 msgid "Mail storage on NFS"
 msgstr "Mailserver-Speicher auf NFS"
 
-#: ../../mail/configuration-server.rst:279
+#: ../../mail/configuration-server.rst:285
 msgid ""
 "Dovecot supports storing emails and index files on cluster file systems "
 "and on NFS. Some settings are necessary to prevent data loss in certain "
@@ -614,7 +614,7 @@ msgstr ""
 "Cluster-Dateisystemen und NFS. Einige Einstellungen sind jedoch nötig, um"
 " Datenverluste in bestimmten Situationen zu vermeiden."
 
-#: ../../mail/configuration-server.rst:282
+#: ../../mail/configuration-server.rst:288
 msgid ""
 "The following settings assume that mailboxes are not accessed "
 "simultaneously by multiple servers. This is the case if for each user "
@@ -624,19 +624,19 @@ msgstr ""
 "gleichzeitig von mehreren Servern aus zugegriffen wird. Das ist der Fall,"
 " wenn jedem Benutzer ein Mail Home Server zugeordnet ist."
 
-#: ../../mail/configuration-server.rst:286
+#: ../../mail/configuration-server.rst:292
 msgid ":envvar:`mail/dovecot/process/mmap_disable`\\ ``=yes``"
 msgstr ":envvar:`mail/dovecot/process/mmap_disable`\\ ``=yes``"
 
-#: ../../mail/configuration-server.rst:288
+#: ../../mail/configuration-server.rst:294
 msgid ":envvar:`mail/dovecot/process/dotlock_use_excl`\\ ``=yes``"
 msgstr ":envvar:`mail/dovecot/process/dotlock_use_excl`\\ ``=yes``"
 
-#: ../../mail/configuration-server.rst:290
+#: ../../mail/configuration-server.rst:296
 msgid ":envvar:`mail/dovecot/process/mail_fsync`\\ ``=always``"
 msgstr ":envvar:`mail/dovecot/process/mail_fsync`\\ ``=always``"
 
-#: ../../mail/configuration-server.rst:292
+#: ../../mail/configuration-server.rst:298
 msgid ""
 "To achieve higher performance, index files can be kept on the local "
 "servers disk, instead of storing them together with the messages on NFS. "
@@ -650,7 +650,7 @@ msgstr ""
 "zu finden. Setzen Sie dafür die |UCSUCRV| "
 ":envvar:`mail/dovecot/location/separate_index`\\ ``=yes``."
 
-#: ../../mail/configuration-server.rst:297
+#: ../../mail/configuration-server.rst:303
 msgid ""
 "With the above settings the mail server should work without problems on "
 "NFS. There are however a lot of different client and server systems in "
@@ -662,7 +662,7 @@ msgstr ""
 "sind jedoch so vielfältig, dass hier noch ein paar Hinweise folgen, wie "
 "bei Schwierigkeiten weiter vorgegangen werden kann:"
 
-#: ../../mail/configuration-server.rst:301
+#: ../../mail/configuration-server.rst:307
 msgid ""
 "If NFSv2 is in use (not the case if the NFS server is a |UCSUCS|), please"
 " set :envvar:`mail/dovecot/process/dotlock_use_excl`\\ ``=no``."
@@ -671,7 +671,7 @@ msgstr ""
 "|UCSUCS| ist), setzen Sie bitte "
 ":envvar:`mail/dovecot/process/dotlock_use_excl`\\ ``=no``."
 
-#: ../../mail/configuration-server.rst:304
+#: ../../mail/configuration-server.rst:310
 msgid ""
 "If *lockd* is not in use (not the case on |UCSUCS| systems) or if even "
 "with *lockd* in use locking error are encountered, set "
@@ -684,7 +684,7 @@ msgstr ""
 "verringert die Performance, aber behebt die meisten Locking-bezogenen "
 "Probleme."
 
-#: ../../mail/configuration-server.rst:309
+#: ../../mail/configuration-server.rst:315
 msgid ""
 "Dovecot flushes NFS caches when needed if you set "
 ":envvar:`mail/dovecot/process/mail_nfs_storage`\\ ``=yes``, but "
@@ -699,7 +699,7 @@ msgstr ""
 "von Index-Dateien: :envvar:`mail/dovecot/process/mail_nfs_index`\\ "
 "``=yes``."
 
-#: ../../mail/configuration-server.rst:315
+#: ../../mail/configuration-server.rst:321
 msgid ""
 "The Dovecot documentation has more information on the topic: `Dovecot "
 "Wiki: Mail storage on shared disks <dovecot-mail-storage-shared-disk_>`_ "
@@ -709,11 +709,11 @@ msgstr ""
 " `Dovecot Wiki: Mail storage on shared disks <dovecot-mail-storage-"
 "shared-disk_>`_ und `Dovecot Wiki: NFS <dovecot-nfs_>`_."
 
-#: ../../mail/configuration-server.rst:322
+#: ../../mail/configuration-server.rst:328
 msgid "Connection limits"
 msgstr "Beschränkung der Verbindungsanzahl"
 
-#: ../../mail/configuration-server.rst:324
+#: ../../mail/configuration-server.rst:330
 msgid ""
 "In a default |UCSUCS| configuration Dovecot allows ``400`` concurrent "
 "IMAP and POP3 connections each. That is enough to serve at least 100 "
@@ -724,7 +724,7 @@ msgstr ""
 "sicher aus, um 100 gleichzeitig eingeloggte IMAP-Benutzer zu bedienen, "
 "unter Umständen deutlich mehr."
 
-#: ../../mail/configuration-server.rst:328
+#: ../../mail/configuration-server.rst:334
 msgid ""
 "How many IMAP connections are opened by a user depends on the clients "
 "they use:"
@@ -732,17 +732,17 @@ msgstr ""
 "Wie viele IMAP-Verbindungen Benutzer gleichzeitig geöffnet haben, hängt "
 "von den eingesetzten Clients ab:"
 
-#: ../../mail/configuration-server.rst:330
+#: ../../mail/configuration-server.rst:336
 msgid "Web mail opens just a few short lived connections."
 msgstr "Webmail öffnet nur einzelne, kurzlebige Verbindungen."
 
-#: ../../mail/configuration-server.rst:332
+#: ../../mail/configuration-server.rst:338
 msgid "Desktop clients keep multiple connections open over a long period of time."
 msgstr ""
 "Desktop E-Mail-Programme halten über lange Zeit mehrere Verbindungen "
 "offen."
 
-#: ../../mail/configuration-server.rst:334
+#: ../../mail/configuration-server.rst:340
 msgid ""
 "Mobile clients keep just a few connections open over a long period of "
 "time. But they tend to never close them, unnecessarily wasting resources."
@@ -751,7 +751,7 @@ msgstr ""
 "beenden diese oft nicht von sich aus, so dass sie unnötig lang Ressourcen"
 " belegen."
 
-#: ../../mail/configuration-server.rst:337
+#: ../../mail/configuration-server.rst:343
 msgid ""
 "The limits exist mainly to resist denial of service attacks that open a "
 "lot of connections and create lots of processes."
@@ -760,25 +760,25 @@ msgstr ""
 "durch sehr viele geöffnete Prozesse und Netzwerkverbindungen zu "
 "widerstehen."
 
-#: ../../mail/configuration-server.rst:340
+#: ../../mail/configuration-server.rst:346
 msgid "To list the open connections, run:"
 msgstr ""
 "Um die in diesem Augenblick offenen Verbindungen zu sehen, kann folgender"
 " Befehl ausgeführt werden:"
 
-#: ../../mail/configuration-server.rst:342
+#: ../../mail/configuration-server.rst:348
 msgid "$ doveadm who"
 msgstr "$ doveadm who"
 
-#: ../../mail/configuration-server.rst:346
+#: ../../mail/configuration-server.rst:352
 msgid "To display the total amount of open connections, run:"
 msgstr "Um die Gesamtanzahl auszugeben:"
 
-#: ../../mail/configuration-server.rst:348
+#: ../../mail/configuration-server.rst:354
 msgid "$ doveadm who -1 | wc -l"
 msgstr "$ doveadm who -1 | wc -l"
 
-#: ../../mail/configuration-server.rst:352
+#: ../../mail/configuration-server.rst:358
 msgid ""
 "The |UCSUCRV|\\ s :envvar:`mail/dovecot/limits`\\ ``/*`` can be set to "
 "modify the limits. The process of adapting those variables is only semi "
@@ -787,12 +787,12 @@ msgid ""
 "services_>`_."
 msgstr ""
 "Um die Beschränkungen zu verändern, können die |UCSUCRV|\\ n "
-":envvar:`mail/dovecot/limits`\\ ``/*`` angepasst werden. Der Vorgang ist auf "
-"Grund des komplexen Zusammenspiels dieser Variablen nur halb automatisch."
-" Die Bedeutung aller Variablen kann in `Dovecot Wiki: Service "
-"configuration <dovecot-services_>`_ nachgelesen werden."
+":envvar:`mail/dovecot/limits`\\ ``/*`` angepasst werden. Der Vorgang ist "
+"auf Grund des komplexen Zusammenspiels dieser Variablen nur halb "
+"automatisch. Die Bedeutung aller Variablen kann in `Dovecot Wiki: Service"
+" configuration <dovecot-services_>`_ nachgelesen werden."
 
-#: ../../mail/configuration-server.rst:357
+#: ../../mail/configuration-server.rst:363
 msgid ""
 "Dovecot uses separate processes for login and to access emails. The "
 "limits for these can be configured separately. The maximum number of "
@@ -817,7 +817,7 @@ msgstr ""
 "betreut. Da standardmäßig nur 400 Prozesse erlaubt sind, können auch "
 "nicht mehr Verbindungen geöffnet werden."
 
-#: ../../mail/configuration-server.rst:368
+#: ../../mail/configuration-server.rst:374
 msgid ""
 "To allow 3000 clients to connect to their emails, another |UCSUCRV| has "
 "to be set:"
@@ -825,7 +825,7 @@ msgstr ""
 "Um 3000 Verbindungen von Benutzern zu ihren E-Mails zu erlauben, muss "
 "daher eine weitere |UCSUCRV| gesetzt werden:"
 
-#: ../../mail/configuration-server.rst:371
+#: ../../mail/configuration-server.rst:377
 msgid ""
 "$ ucr set mail/dovecot/limits/default_client_limit=3000\n"
 "$ ucr set mail/dovecot/limits/default_process_limit=3000\n"
@@ -835,11 +835,11 @@ msgstr ""
 "$ ucr set mail/dovecot/limits/default_process_limit=3000\n"
 "$ doveadm reload"
 
-#: ../../mail/configuration-server.rst:378
+#: ../../mail/configuration-server.rst:384
 msgid "Reading :file:`/var/log/dovecot.info` reveals a warning:"
 msgstr "Ein Blick in :file:`/var/log/dovecot.info` offenbart nun eine Warnung:"
 
-#: ../../mail/configuration-server.rst:382
+#: ../../mail/configuration-server.rst:388
 msgid ""
 "config: Warning: service auth { client_limit=2000 } is lower than "
 "required under max. load (15000)\n"
@@ -851,7 +851,7 @@ msgstr ""
 "config: Warning: service anvil { client_limit=1603 } is lower than "
 "required under max. load (12003)"
 
-#: ../../mail/configuration-server.rst:385
+#: ../../mail/configuration-server.rst:391
 msgid ""
 "The services ``auth`` (responsible for login and SSL connections) and "
 "``anvil`` (responsible for statistics collection) are set to their "
@@ -865,7 +865,7 @@ msgstr ""
 "aber die Anzahl der Prozesse für Login und SSL ist nun zu niedrig um sie "
 "alle zu bedienen. Dies wird dazu führen, dass Logins fehlschlagen."
 
-#: ../../mail/configuration-server.rst:391
+#: ../../mail/configuration-server.rst:397
 msgid ""
 "The values are so high, because ``default_client_limit`` and "
 "``default_process_limit`` do not only lift limits for IMAP and POP3, but "
@@ -884,13 +884,13 @@ msgstr ""
 "gleichzeitiger Verbindungen zu den Diensten ``auth`` und ``anvil`` "
 "erhöht."
 
-#: ../../mail/configuration-server.rst:398
+#: ../../mail/configuration-server.rst:404
 msgid "The values have to be adapted, using the numbers from the log file:"
 msgstr ""
 "Die Werte für die Dienste müssen nun der Fehlermeldung entsprechend "
 "angepasst werden:"
 
-#: ../../mail/configuration-server.rst:400
+#: ../../mail/configuration-server.rst:406
 msgid ""
 "$ ucr set mail/dovecot/limits/auth/client_limit=15000\n"
 "$ ucr set mail/dovecot/limits/anvil/client_limit=12003\n"
@@ -900,13 +900,13 @@ msgstr ""
 "$ ucr set mail/dovecot/limits/anvil/client_limit=12003\n"
 "$ doveadm reload"
 
-#: ../../mail/configuration-server.rst:406
+#: ../../mail/configuration-server.rst:412
 msgid "Another warning appears in :file:`/var/log/dovecot.info`:"
 msgstr ""
 "Ein Blick in :file:`/var/log/dovecot.info` offenbart nun noch eine letzte"
 " Warnung:"
 
-#: ../../mail/configuration-server.rst:411
+#: ../../mail/configuration-server.rst:417
 msgid ""
 "master: Warning: fd limit (ulimit -n) is lower than required under max. "
 "load (2000 < 15000),…\n"
@@ -916,7 +916,7 @@ msgstr ""
 "load (2000 < 15000),…\n"
 " because of service auth { client_limit }"
 
-#: ../../mail/configuration-server.rst:414
+#: ../../mail/configuration-server.rst:420
 msgid ""
 "The Linux kernel controlled setting ``ulimit`` setting (limit on the "
 "number of files/connections a process is allowed to open) is changed only"
@@ -926,11 +926,11 @@ msgstr ""
 "gleichzeitig geöffneter Dateien/Verbindungen pro Prozess) wird nur bei "
 "einem Neustart des Dovecot-Dienstes verändert, daher:"
 
-#: ../../mail/configuration-server.rst:418
+#: ../../mail/configuration-server.rst:424
 msgid "$ systemctl restart dovecot"
 msgstr "$ systemctl restart dovecot"
 
-#: ../../mail/configuration-server.rst:422
+#: ../../mail/configuration-server.rst:428
 msgid ""
 "No more warnings are written to the log file and both IMAP and POP3 "
 "servers now accept 3000 client connections each."
@@ -938,7 +938,7 @@ msgstr ""
 "Nun erscheint keine Fehlermeldung mehr, und IMAP- und POP3-Server "
 "akzeptieren nun beide je 3000 Verbindungen."
 
-#: ../../mail/configuration-server.rst:425
+#: ../../mail/configuration-server.rst:431
 msgid ""
 "|UCSUCS| configures Dovecot to run in \"High-security mode\" by default. "
 "For installations with 10.000s of users, Dovecot offers the \"High-"
@@ -946,8 +946,8 @@ msgid ""
 "configure it, see :cite:t:`ucs-performance-guide`."
 msgstr ""
 "|UCSUCS| konfiguriert Dovecot so, dass es standardmäßig im *High-security"
-" mode* läuft. In Installationen mit zehntausenden Benutzern kann Dovecot im "
-"*High-performance mode* betrieben werden. Der Performance-Leitfaden "
+" mode* läuft. In Installationen mit zehntausenden Benutzern kann Dovecot "
+"im *High-performance mode* betrieben werden. Der Performance-Leitfaden "
 "beschreibt, wie dieser konfiguriert werden kann, siehe :cite:t:`ucs-"
 "performance-guide`."
 
@@ -969,9 +969,9 @@ msgid ""
 " DNSBLs <postfix-reject-rbl-client_>`_."
 msgstr ""
 "Eine weitere Möglichkeit gegen Spam vorzugehen ist die Verwendung von "
-"*DNS-based Blackhole List* (DNSBL) oder *Real-time Blackhole Lists* (RBL)."
-" DNSBL sind Listen von IP Adressen, von denen der Betreiber denkt, dass "
-"sie (potentiell) Quellen von Spam sind. Die Listen werden per DNS "
+"*DNS-based Blackhole List* (DNSBL) oder *Real-time Blackhole Lists* "
+"(RBL). DNSBL sind Listen von IP Adressen, von denen der Betreiber denkt, "
+"dass sie (potentiell) Quellen von Spam sind. Die Listen werden per DNS "
 "abgefragt.  Ist dem DNS-Server die IP des sendenden E-Mail-Servers "
 "bekannt, so wird die Nachricht abgelehnt. Der Check einer IP-Adresse ist "
 "schnell und vergleichsweise ressourcenschonend. Er findet *vor* dem "
@@ -1082,10 +1082,10 @@ msgid ""
 "that."
 msgstr ""
 "Nach Abschluss der Installation finden sich in der Benutzerverwaltung im "
-"Reiter :menuselection:`Erweiterte Einstellungen --> Mailabruf von externen "
-"Servern` zusätzliche Eingabefelder, mit denen der Mailabruf von einem "
-"externen Server konfiguriert werden kann. Die Mails werden dabei in die "
-"Postfächer der jeweiligen Benutzer eingeliefert (die primäre E-Mail-"
+"Reiter :menuselection:`Erweiterte Einstellungen --> Mailabruf von "
+"externen Servern` zusätzliche Eingabefelder, mit denen der Mailabruf von "
+"einem externen Server konfiguriert werden kann. Die Mails werden dabei in"
+" die Postfächer der jeweiligen Benutzer eingeliefert (die primäre E-Mail-"
 "Adresse muss dafür konfiguriert sein)."
 
 #: ../../mail/fetchmail.rst:19
@@ -1108,13 +1108,13 @@ msgstr ""
 msgid "*Remote mail retrieval* tab"
 msgstr "Reiter *Mailabruf von externen Servern*"
 
-#: ../../mail/fetchmail.rst:29 ../../mail/management.rst:192
-#: ../../mail/management.rst:233
+#: ../../mail/fetchmail.rst:29 ../../mail/management.rst:199
+#: ../../mail/management.rst:241
 msgid "Attribute"
 msgstr "Attribut"
 
-#: ../../mail/fetchmail.rst:30 ../../mail/management.rst:193
-#: ../../mail/management.rst:234
+#: ../../mail/fetchmail.rst:30 ../../mail/management.rst:200
+#: ../../mail/management.rst:242
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -1201,8 +1201,8 @@ msgid ""
 "from the local server and they can also only be delivered to local system"
 " users."
 msgstr ""
-"Für den Mailempfang und -versand wird :program:`Postfix` verwendet. In der "
-"Grundinstallation wird auf jedem UCS-System eine für die lokale "
+"Für den Mailempfang und -versand wird :program:`Postfix` verwendet. In "
+"der Grundinstallation wird auf jedem UCS-System eine für die lokale "
 "Mailzustellung ausgelegte Konfiguration eingerichtet. Postfix nimmt in "
 "dieser Konfiguration E-Mails nur vom lokalen System entgegen, und auch "
 "die Zustellung erfolgt nur für lokale Systembenutzer."
@@ -1236,15 +1236,16 @@ msgid ""
 " of the mail server is performed via |UCSUCR|, as well, see :ref:`mail-"
 "serverconfig-general`."
 msgstr ""
-"Mit der Mailserver-Komponente wird ebenfalls der IMAP-Dienst :program:`Dovecot` "
-"auf dem System installiert. Dieser stellt E-Mailkonten für die Benutzer "
-"der Domäne bereit und bietet entsprechende Schnittstellen für den Zugriff"
-" durch E-Mail-Clients an. Dovecot ist für den Abruf von E-Mails über IMAP"
-" und POP3 vorkonfiguriert. Der Zugriff über POP3 kann durch Setzen der "
-"|UCSUCRV| :envvar:`mail/dovecot/pop3` auf ``no`` deaktiviert werden. Das "
-"gleiche gilt für IMAP und die |UCSUCRV| :envvar:`mail/dovecot/imap`. Auch"
-" die weitere Konfiguration der Mailserver erfolgt über |UCSUCR| (siehe "
-":ref:`mail-serverconfig-general`)."
+"Mit der Mailserver-Komponente wird ebenfalls der IMAP-Dienst "
+":program:`Dovecot` auf dem System installiert. Dieser stellt E-Mailkonten"
+" für die Benutzer der Domäne bereit und bietet entsprechende "
+"Schnittstellen für den Zugriff durch E-Mail-Clients an. Dovecot ist für "
+"den Abruf von E-Mails über IMAP und POP3 vorkonfiguriert. Der Zugriff "
+"über POP3 kann durch Setzen der |UCSUCRV| :envvar:`mail/dovecot/pop3` auf"
+" ``no`` deaktiviert werden. Das gleiche gilt für IMAP und die |UCSUCRV| "
+":envvar:`mail/dovecot/imap`. Auch die weitere Konfiguration der "
+"Mailserver erfolgt über |UCSUCR| (siehe :ref:`mail-serverconfig-"
+"general`)."
 
 #: ../../mail/index.rst:31
 msgid ""
@@ -1279,9 +1280,10 @@ msgid ""
 msgstr ""
 "Optional können durch Postfix empfangene E-Mails vor der weiteren "
 "Verarbeitung durch Dovecot auf Spam-Inhalte und Viren hin untersucht "
-"werden. Spam-Mails werden über die Klassifizierungssoftware :program:`SpamAssassin` "
-"erkannt (:ref:`mail-spam`), für die Erkennung von Viren und anderer "
-"Malware wird :program:`ClamAV` eingesetzt (:ref:`mail-virus`)."
+"werden. Spam-Mails werden über die Klassifizierungssoftware "
+":program:`SpamAssassin` erkannt (:ref:`mail-spam`), für die Erkennung von"
+" Viren und anderer Malware wird :program:`ClamAV` eingesetzt (:ref:`mail-"
+"virus`)."
 
 #: ../../mail/index.rst:47
 msgid ""
@@ -1308,8 +1310,8 @@ msgstr ""
 "Das UCS-Mailsystem bietet keine Groupware-Funktionalität wie gemeinsam "
 "genutzte Kalender oder Termineinladungen. Es existieren aber auf UCS "
 "basierende Groupwaresysteme, die sich in das UCS-Managementsystem "
-"integrieren, z.B. Kopano oder Open-Xchange. Weiterführende Informationen"
-" finden sich im Univention App Center (siehe :ref:`software-appcenter`)."
+"integrieren, z.B. Kopano oder Open-Xchange. Weiterführende Informationen "
+"finden sich im Univention App Center (siehe :ref:`software-appcenter`)."
 
 #: ../../mail/install.rst:4
 msgid "Installation"
@@ -1460,11 +1462,23 @@ msgstr ""
 "-Mail-Adressen zu erhalten, muss ein Benutzer eine primäre E-Mail-Adresse"
 " besitzen."
 
-#: ../../mail/management.rst:61
+#: ../../mail/management.rst:58
+msgid ""
+"When setting the |UCSUCRV| :envvar:`directory/manager/mail-"
+"address/uniqueness` to ``true`` the *Alternative email addresses* must be"
+" unique across the domain. No other user can have the same alternative "
+"address assigned."
+msgstr ""
+"Wenn die |UCSUCRV| :envvar:`directory/manager/mail-address/uniqueness` "
+"auf ``true`` gesetzt wird, müssen die *Alternativen E-Mail-Adressen* in "
+"der gesamten Domäne eindeutig sein. Keinem anderen Benutzer kann die "
+"gleiche alternative Adresse zugewiesen werden."
+
+#: ../../mail/management.rst:67
 msgid "Forward email addresses"
 msgstr "E-Mailadressen zur Weiterleitung"
 
-#: ../../mail/management.rst:57
+#: ../../mail/management.rst:63
 msgid ""
 "If *forward email addresses* are configured for a user, emails received "
 "through the primary or alternative email addresses are forwarded to them."
@@ -1480,7 +1494,7 @@ msgstr ""
 "E-Mailadressen zur Weiterleitung müssen weder eindeutig, noch muss ihr "
 "Domänenanteil im UMC-Modul registriert sein."
 
-#: ../../mail/management.rst:65
+#: ../../mail/management.rst:71
 msgid ""
 "Email addresses can consist of the following characters: letters ``a-z``,"
 " figures ``0-9``, dots (``.``), hyphens (``-``) and underscores (``_``). "
@@ -1495,7 +1509,7 @@ msgstr ""
 "muss vorher mindestens eine Mail-Domäne registriert werden (siehe :ref"
 ":`mail-management-domains`)."
 
-#: ../../mail/management.rst:71
+#: ../../mail/management.rst:77
 msgid ""
 "Email addresses are managed in the UMC module :guilabel:`Users`. The "
 "*primary email address* is entered in the *General* tab in the *User "
@@ -1507,7 +1521,7 @@ msgstr ""
 "*Benutzer-Konto* eingetragen. *Alternative E-Mail-Adressen* können unter "
 ":menuselection:`Erweiterte Einstellungen --> Mail` eingetragen werden."
 
-#: ../../mail/management.rst:78
+#: ../../mail/management.rst:84
 msgid ""
 "Once the user account is properly configured, authentication to the mail "
 "stack is possible (``IMAP``/``POP3``/``SMTP``). Please keep in mind that "
@@ -1518,15 +1532,15 @@ msgstr ""
 "Sobald das Benutzerkonto konfiguriert ist, kann eine Anmeldung am UCS-"
 "Mail-Stack (``IMAP``/``POP3``/``SMTP``) erfolgen. Wurde das Benutzerkonto"
 " deaktiviert (oder das Passwort geändert), ist eine Anmeldung am Mail-"
-"Stack für eine Dauer von 5 Minuten weiterhin möglich. Der Grund hierfür ist "
-"der Authentifizierungscache des Mail-Stacks. Um den Cache zu "
+"Stack für eine Dauer von 5 Minuten weiterhin möglich. Der Grund hierfür "
+"ist der Authentifizierungscache des Mail-Stacks. Um den Cache zu "
 "invalidieren, führen Sie"
 
-#: ../../mail/management.rst:84
+#: ../../mail/management.rst:90
 msgid "$ doveadm auth cache flush"
 msgstr "$ doveadm auth cache flush"
 
-#: ../../mail/management.rst:89
+#: ../../mail/management.rst:95
 msgid ""
 "on the mail server. The expiration time of the authentication cache can "
 "be configured on the mail server with the |UCSUCRV| "
@@ -1537,11 +1551,11 @@ msgstr ""
 " mit der |UCSUCRV| :envvar:`mail/dovecot/auth/cache_ttl` sowie "
 ":envvar:`mail/dovecot/auth/cache_negative_ttl` konfiguriert werden."
 
-#: ../../mail/management.rst:97
+#: ../../mail/management.rst:103
 msgid "Management of mailing lists"
 msgstr "Verwaltung von Mailinglisten"
 
-#: ../../mail/management.rst:99
+#: ../../mail/management.rst:105
 msgid ""
 "Mailing lists are used to exchange emails in closed groups. Each mailing "
 "list has its own email address. If an email is sent to this address, it "
@@ -1552,11 +1566,11 @@ msgstr ""
 "Wird an diese Adresse eine E-Mail gesendet, empfangen sie alle Mitglieder"
 " der Mailingliste."
 
-#: ../../mail/management.rst:108
+#: ../../mail/management.rst:114
 msgid "Creating a mailing list"
 msgstr "Einrichtung einer Mailingliste"
 
-#: ../../mail/management.rst:110
+#: ../../mail/management.rst:116
 msgid ""
 "Mail domains are managed in the UMC module :guilabel:`Mail` with the "
 "*Mailing list* object type. A name of your choice can be entered for the "
@@ -1579,7 +1593,7 @@ msgstr ""
 "aufgenommen werden. Nach dem Anlegen einer Mailingliste ist diese "
 "umgehend verfügbar."
 
-#: ../../mail/management.rst:120
+#: ../../mail/management.rst:126
 msgid ""
 "By default everyone can write to the mailing list. To prevent misuse, "
 "there is the possibility of restricting the circle of people who can send"
@@ -1600,11 +1614,11 @@ msgstr ""
 "diese Liste zu versenden* festgelegt werden. Ist hier ein Feld gesetzt, "
 "ist das Senden nur den berechtigten Nutzern/Gruppen erlaubt."
 
-#: ../../mail/management.rst:131
+#: ../../mail/management.rst:137
 msgid "Management of mail groups"
 msgstr "Verwaltung von Mailgruppen"
 
-#: ../../mail/management.rst:133
+#: ../../mail/management.rst:139
 msgid ""
 "There is the possibility of creating a mail group: This is where an email"
 " address is assigned to a group of users. Emails to this address are "
@@ -1615,7 +1629,7 @@ msgstr ""
 "werden dann allen Gruppenmitgliedern an ihre primäre E-Mail-Adresse "
 "zugestellt."
 
-#: ../../mail/management.rst:137
+#: ../../mail/management.rst:143
 msgid ""
 "Mail groups are managed in the UMC module :guilabel:`Groups` (see "
 ":ref:`groups`)."
@@ -1623,7 +1637,7 @@ msgstr ""
 "Mailgruppen werden im UMC-Modul :guilabel:`Gruppen` verwaltet (siehe auch"
 " :ref:`groups`)."
 
-#: ../../mail/management.rst:140
+#: ../../mail/management.rst:146
 msgid ""
 "The email address of the mail group is specified in the *mail address* "
 "input field under *Advanced settings*. The domain part of the address "
@@ -1633,7 +1647,7 @@ msgstr ""
 "unter *Erweiterte Einstellungen* festgelegt. Der Domänenteil der Adresse "
 "muss einer der verwalteten Mail-Domänen entsprechen."
 
-#: ../../mail/management.rst:144
+#: ../../mail/management.rst:150
 msgid ""
 "By default everyone can write to the mail group. To prevent misuse, there"
 " is the possibility of restricting the circle of people who can send "
@@ -1646,7 +1660,7 @@ msgstr ""
 ":envvar:`mail/postfix/policy/listfilter` auf dem Mailserver auf ``yes`` "
 "gesetzt und Postfix neu gestartet werden."
 
-#: ../../mail/management.rst:149
+#: ../../mail/management.rst:155
 msgid ""
 "*Users that are allowed to send emails to the group* and *Groups that are"
 " allowed to send emails to the group* can be specified under *Advanced "
@@ -1659,11 +1673,11 @@ msgstr ""
 "Feld gesetzt, ist das Senden nur den berechtigten Nutzern/Gruppen "
 "erlaubt."
 
-#: ../../mail/management.rst:157
+#: ../../mail/management.rst:163
 msgid "Management of shared IMAP folders"
 msgstr "Verwaltung von globalen IMAP-Ordnern"
 
-#: ../../mail/management.rst:159
+#: ../../mail/management.rst:165
 msgid ""
 "Shared email access forms the basis for cooperation in many work groups. "
 "In UCS, users can create folders in their own mailboxes and assign "
@@ -1676,7 +1690,7 @@ msgstr ""
 "dass es weiteren Benutzern gestattet ist, E-Mails in diesen Ordnern zu "
 "lesen oder weitere E-Mails in diesen Ordnern abzulegen."
 
-#: ../../mail/management.rst:164
+#: ../../mail/management.rst:170
 msgid ""
 "Alternatively, individual IMAP folders can be shared for users or user "
 "groups. This type of folder is described as a shared IMAP folder. Shared "
@@ -1688,7 +1702,7 @@ msgstr ""
 "bezeichnet. Globale IMAP-Ordner werden im UMC-Modul :guilabel:`Mail` mit "
 "dem Objekttyp *Mail-Ordner (IMAP)* verwaltet."
 
-#: ../../mail/management.rst:169
+#: ../../mail/management.rst:175
 msgid ""
 "Shared folders cannot be renamed, therefore the |UCSUCRV| "
 ":envvar:`mail/dovecot/mailbox/rename` is not taken into account. When a "
@@ -1702,23 +1716,23 @@ msgstr ""
 "(Standard ist ``no``), wird ein globaler IMAP-Ordner beim Löschen im UMC-"
 "Modul :guilabel:`Mail` auch tatsächlich von der Festplatte gelöscht."
 
-#: ../../mail/management.rst:180
+#: ../../mail/management.rst:186
 msgid "Creating a shared IMAP folder"
 msgstr "Einrichtung eines globalen IMAP-Ordners"
 
-#: ../../mail/management.rst:185
+#: ../../mail/management.rst:191
 msgid "Shared IMAP folder - General tab"
 msgstr "Globaler IMAP-Ordner - Reiter Allgemein"
 
-#: ../../mail/management.rst:188
+#: ../../mail/management.rst:195
 msgid "*General* tab"
 msgstr "Reiter *Allgemein*"
 
-#: ../../mail/management.rst:195 ../../mail/management.rst:236
+#: ../../mail/management.rst:202 ../../mail/management.rst:244
 msgid "Name (*)"
 msgstr "Name (*)"
 
-#: ../../mail/management.rst:196
+#: ../../mail/management.rst:203
 msgid ""
 "The name under which the IMAP folder is available in the email clients. "
 "The name displayed in the IMAP client differs depending on if an email "
@@ -1734,11 +1748,11 @@ msgstr ""
 "``name@domain/INBOX``. Wird eine Mail-Adresse verwendet, wird der Name "
 "die Form ``shared/name@domain`` haben."
 
-#: ../../mail/management.rst:203
+#: ../../mail/management.rst:210
 msgid "Mail domain (*)"
 msgstr "Mail-Domäne (*)"
 
-#: ../../mail/management.rst:204
+#: ../../mail/management.rst:211
 msgid ""
 "Every shared IMAP folder is assigned to a mail domain. The management of "
 "the domains is documented in the :ref:`mail-management-domains`."
@@ -1747,11 +1761,11 @@ msgstr ""
 "Verwaltung der Domänen ist in :ref:`mail-management-domains` "
 "dokumentiert."
 
-#: ../../mail/management.rst:207
+#: ../../mail/management.rst:214
 msgid "Mail home server (*)"
 msgstr "Mail Home Server (*)"
 
-#: ../../mail/management.rst:208
+#: ../../mail/management.rst:215
 msgid ""
 "An IMAP folder is assigned to a mail home server. Further information can"
 " be found in :ref:`mail-homeserver`."
@@ -1759,11 +1773,11 @@ msgstr ""
 "Ein IMAP-Ordner ist einem Mail Home Server zugeordnet. Weitere Hinweise "
 "finden sich in :ref:`mail-homeserver`."
 
-#: ../../mail/management.rst:211
+#: ../../mail/management.rst:218
 msgid "Quota in MB"
 msgstr "Quota in MB"
 
-#: ../../mail/management.rst:212
+#: ../../mail/management.rst:219
 msgid ""
 "This setting can be used to set the maximum total size of all emails in "
 "this folder."
@@ -1771,11 +1785,11 @@ msgstr ""
 "Mit dieser Einstellung kann die maximale Gesamtgröße aller E-Mails in "
 "diesem Ordner festgelegt werden."
 
-#: ../../mail/management.rst:215
+#: ../../mail/management.rst:222
 msgid "Email address"
 msgstr "E-Mailadresse"
 
-#: ../../mail/management.rst:216
+#: ../../mail/management.rst:223
 msgid ""
 "An email address can be entered here via which emails can be sent "
 "directly to the IMAP folder. If no address is set here, it is only "
@@ -1786,7 +1800,7 @@ msgstr ""
 "gesetzt, so kann nur aus E-Mail-Clients heraus in den Ordner geschrieben "
 "werden."
 
-#: ../../mail/management.rst:220
+#: ../../mail/management.rst:227
 msgid ""
 "The domain part of the email address must be registered in the UMC module"
 " :guilabel:`Mail` (see :ref:`mail-management-domains`)."
@@ -1794,15 +1808,15 @@ msgstr ""
 "Der Domänenanteil der E-Mail-Adresse muss im UMC-Modul :guilabel:`E-Mail`"
 " registriert sein (siehe :ref:`mail-management-domains`)."
 
-#: ../../mail/management.rst:226
+#: ../../mail/management.rst:233
 msgid "Shared IMAP folder - Access rights tab"
 msgstr "Globale IMAP-Ordner - Reiter Zugriffsrechte"
 
-#: ../../mail/management.rst:229
+#: ../../mail/management.rst:237
 msgid "*Access rights* tab"
 msgstr "Reiter *Zugriffsrechte*"
 
-#: ../../mail/management.rst:237
+#: ../../mail/management.rst:245
 msgid ""
 "Access permissions based on users or groups can be entered here. Users "
 "are entered with their username; the groups saved in the UMC module "
@@ -1813,7 +1827,7 @@ msgstr ""
 "als Gruppen werden die im UMC-Modul :guilabel:`Gruppen` angelegten "
 "Gruppen verwendet."
 
-#: ../../mail/management.rst:241
+#: ../../mail/management.rst:249
 msgid ""
 "The access permissions have the following consequences for individual "
 "users or members of the specified group:"
@@ -1821,39 +1835,39 @@ msgstr ""
 "Die Zugriffsrechte haben folgende Auswirkungen für einzelne Benutzer oder"
 " Mitglieder der angegebenen Gruppe:"
 
-#: ../../mail/management.rst:245
+#: ../../mail/management.rst:253
 msgid "No access"
 msgstr "Keine"
 
-#: ../../mail/management.rst:245
+#: ../../mail/management.rst:253
 msgid "No access is possible. The folder is not displayed in the folder list."
 msgstr ""
 "Es ist kein Zugriff möglich. Der Ordner wird nicht in der Ordnerliste "
 "angezeigt."
 
-#: ../../mail/management.rst:248
+#: ../../mail/management.rst:256
 msgid "Read"
 msgstr "Lesen"
 
-#: ../../mail/management.rst:248
+#: ../../mail/management.rst:256
 msgid "The user may only perform read access to existing entries."
 msgstr "Es darf nur lesend auf bestehende Einträge zugegriffen werden."
 
-#: ../../mail/management.rst:251
+#: ../../mail/management.rst:259
 msgid "Append"
 msgstr "Anhängen"
 
-#: ../../mail/management.rst:251
+#: ../../mail/management.rst:259
 msgid "Existing entries may not be edited; only new entries may be created."
 msgstr ""
 "Bestehende Einträge dürfen nicht verändert werden, nur neue Einträge "
 "erzeugt werden."
 
-#: ../../mail/management.rst:255
+#: ../../mail/management.rst:263
 msgid "Write"
 msgstr "Schreiben"
 
-#: ../../mail/management.rst:254
+#: ../../mail/management.rst:262
 msgid ""
 "New entries may be created in this directory; existing entries may be "
 "edited or deleted."
@@ -1861,11 +1875,11 @@ msgstr ""
 "Neue Einträge in diesem Ordner anlegen, bestehende verändern oder "
 "bestehende löschen ist erlaubt."
 
-#: ../../mail/management.rst:259
+#: ../../mail/management.rst:267
 msgid "Post"
 msgstr "Senden"
 
-#: ../../mail/management.rst:258
+#: ../../mail/management.rst:266
 msgid ""
 "Sending an email to this directory as a recipient is permitted. This "
 "function is not supported by all the clients."
@@ -1873,11 +1887,11 @@ msgstr ""
 "Eine E-Mail an diesen Ordner als Empfänger senden ist zugelassen. Dies "
 "wird nicht von jedem Client unterstützt."
 
-#: ../../mail/management.rst:262
+#: ../../mail/management.rst:270
 msgid "All"
 msgstr "Alles"
 
-#: ../../mail/management.rst:262
+#: ../../mail/management.rst:270
 msgid ""
 "Encompasses all permissions of *write* and also allows the changing of "
 "access permissions."
@@ -1885,11 +1899,11 @@ msgstr ""
 "Umfasst alle Berechtigungen von *Schreiben* und erlaubt zusätzlich das "
 "Ändern von Zugriffsrechten."
 
-#: ../../mail/management.rst:268
+#: ../../mail/management.rst:276
 msgid "Mail quota"
 msgstr "Mail-Quota"
 
-#: ../../mail/management.rst:270
+#: ../../mail/management.rst:278
 msgid ""
 "The size of the users' mailboxes can be restricted via the mail quota. "
 "When this is attained, no further emails can be accepted for the mailbox "
@@ -1900,7 +1914,7 @@ msgstr ""
 " Postfach angenommen werden, bis der Benutzer alte Mails aus seinem Konto"
 " entfernt hat."
 
-#: ../../mail/management.rst:274
+#: ../../mail/management.rst:282
 msgid ""
 "The limit is specified in megabytes in the *Mail quota* field under "
 ":menuselection:`Advanced settings --> Mail`. The default value is ``0`` "
@@ -1908,14 +1922,14 @@ msgid ""
 " used to assign a quota to multiple users at one time, see :ref:`central-"
 "user-interface-edit`."
 msgstr ""
-"Die Grenze wird in Megabytes im Feld *Mail-Quota* festgelegt, "
-"die unter :menuselection:`Erweiterte Einstellungen --> Mail` verwaltet "
-"wird. Der Standardwert ist ``0`` und bedeutet, dass keine Beschränkung "
-"aktiv ist. Für das Zuweisen einer Quota an mehrere Benutzer auf einmal, "
-"kann der Mehrfachbearbeitungsmodus von UMC-Modulen verwendet werden, "
-"siehe :ref:`central-user-interface-edit`."
+"Die Grenze wird in Megabytes im Feld *Mail-Quota* festgelegt, die unter "
+":menuselection:`Erweiterte Einstellungen --> Mail` verwaltet wird. Der "
+"Standardwert ist ``0`` und bedeutet, dass keine Beschränkung aktiv ist. "
+"Für das Zuweisen einer Quota an mehrere Benutzer auf einmal, kann der "
+"Mehrfachbearbeitungsmodus von UMC-Modulen verwendet werden, siehe :ref"
+":`central-user-interface-edit`."
 
-#: ../../mail/management.rst:280
+#: ../../mail/management.rst:288
 msgid ""
 "The user can be warned once a specified portion of the mailbox is "
 "attained and then receives a message that their available storage space "
@@ -1928,7 +1942,7 @@ msgstr ""
 "Schwellwert in Prozent, den Betreff der Nachricht und ihren Inhalt "
 "angeben:"
 
-#: ../../mail/management.rst:285
+#: ../../mail/management.rst:293
 msgid ""
 "The threshold for when the warning message should be issued can be "
 "configured in the |UCSUCRV| :envvar:`mail/dovecot/quota/warning/text`, "
@@ -1939,13 +1953,13 @@ msgstr ""
 "werden soll, zum Beispiel: "
 ":samp:`mail/dovecot/quota/warning/text/{PROZENT}={TEXT}`"
 
-#: ../../mail/management.rst:289
+#: ../../mail/management.rst:297
 msgid "``PERCENT`` must be a number between 0 and 100 without the percent sign."
 msgstr ""
 "``PROZENT`` muss als Zahl zwischen 0 und 100 ohne Prozentzeichen "
 "angegeben werden."
 
-#: ../../mail/management.rst:291
+#: ../../mail/management.rst:299
 msgid ""
 "``TEXT`` will be the content of the email. If the value ``TEXT`` contains"
 " the string ``$PERCENT``, it will be replaced in the email with the value"
@@ -1955,7 +1969,7 @@ msgstr ""
 "``$PERCENT`` enthält, wird diese in der E-Mail mit dem überschrittenen "
 "Wert ersetzt."
 
-#: ../../mail/management.rst:295
+#: ../../mail/management.rst:303
 msgid ""
 "The value of the |UCSUCRV| :envvar:`mail/dovecot/quota/warning/subject` "
 "will be used for the subject of the email."
@@ -1963,7 +1977,7 @@ msgstr ""
 "Der Wert der |UCSUCRV| :envvar:`mail/dovecot/quota/warning/subject` wird "
 "als Betreff der E-Mails verwendet."
 
-#: ../../mail/management.rst:298
+#: ../../mail/management.rst:306
 msgid ""
 "When the mail server package is installed, a subject and two warning "
 "messages are automatically configured:"
@@ -1971,11 +1985,11 @@ msgstr ""
 "Bei der Installation des Mail-Server-Paketes werden Betreff und zwei "
 "Warn-Nachrichten automatisch konfiguriert:"
 
-#: ../../mail/management.rst:301
+#: ../../mail/management.rst:309
 msgid "``mail/dovecot/quota/warning/subject`` is set to ``Quota-Warning``"
 msgstr "``mail/dovecot/quota/warning/subject`` wird gesetzt auf ``Quota-Warning``"
 
-#: ../../mail/management.rst:303
+#: ../../mail/management.rst:311
 msgid ""
 "``mail/dovecot/quota/warning/text/80`` is set to ``Your mailbox has "
 "filled up to over $PERCENT%.``"
@@ -1983,7 +1997,7 @@ msgstr ""
 "``mail/dovecot/quota/warning/text/80`` wird gesetzt auf ``Your mailbox "
 "has filled up to over $PERCENT%.``"
 
-#: ../../mail/management.rst:306
+#: ../../mail/management.rst:314
 msgid ""
 "``mail/dovecot/quota/warning/text/95`` is set to ``Attention: Your "
 "mailbox has already filled up to over $PERCENT%. Please delete some "
@@ -2005,11 +2019,12 @@ msgid ""
 "be used with the separate OX App Suite app from the App Center, because "
 "it has synchronization already included."
 msgstr ""
-":program:`OX Connector` ist eine App im Univention App Center. Sie synchronisiert "
-"ausgewählte Benutzer und Gruppen zu einer entfernten OX App Suite "
-"Installation wie zum Beispiel ein OX App Suite bei einem Hosting Anbieter. Die App sollte"
-" nicht mit der separaten OX App Suite App aus dem App Center verwendet "
-"werden, weil diese bereits eine Synchronisation enthält."
+":program:`OX Connector` ist eine App im Univention App Center. Sie "
+"synchronisiert ausgewählte Benutzer und Gruppen zu einer entfernten OX "
+"App Suite Installation wie zum Beispiel ein OX App Suite bei einem "
+"Hosting Anbieter. Die App sollte nicht mit der separaten OX App Suite App"
+" aus dem App Center verwendet werden, weil diese bereits eine "
+"Synchronisation enthält."
 
 #: ../../mail/spam.rst:4
 msgid "Spam detection and filtering"
