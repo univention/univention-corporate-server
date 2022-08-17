@@ -9,3 +9,5 @@ desc: |-
   * Fixed an internal function for parsing the app argument in the CLI
     univention-app.
 bug: [55020]
+erratum: 386
+announced: 2022-08-17
