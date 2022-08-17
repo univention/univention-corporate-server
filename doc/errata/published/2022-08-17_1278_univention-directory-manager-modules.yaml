@@ -9,3 +9,5 @@ desc: |
  * The UDM REST API type definition for complex syntaxes without
    subsyntax_key_value has been fixed.
 bug: [53513]
+erratum: 1278
+announced: 2022-08-17
