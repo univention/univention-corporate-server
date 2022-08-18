@@ -112,12 +112,6 @@ All alerts have label *severity* with value ``critical`` or ``warning``.
    * - Alert
      - Description
 
-   * - ``UNIVENTION_PING``
-     - Tests the availability of the monitored UCS system with the command
-       :command:`ping`. By default an error status is attained if the response
-       time exceeds 50 ms or 100 ms or package losses of 20% or 40%
-       occur.
-
    * - ``UNIVENTION_DISK_ROOT`` and ``UNIVENTION_DISK_ROOT_WARNING``
      - Monitors how full the :file:`/` partition is. An error status is raised
        if the remaining free space falls below 25% or 10% by default.
