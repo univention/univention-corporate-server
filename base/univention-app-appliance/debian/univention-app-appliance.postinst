@@ -90,4 +90,8 @@ case "$1" in
 		;;
 esac
 
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "4.0.1-2"; then
+	univention-app-appliance --only-configure-portal "$(ucr get umc/web/appliance/id)"
+fi
+
 exit 0

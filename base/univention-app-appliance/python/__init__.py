@@ -37,6 +37,7 @@
 
 import univention.appcenter.app as app
 import univention.appcenter.app_cache as app_cache
+import codecs
 import struct
 import os
 import json
@@ -104,7 +105,7 @@ class Apps(app_cache.Apps):
 
 def get_luminance(hexcolor):
 	hexcolor = hexcolor.strip(' #')
-	red, green, blue = struct.unpack('BBB', hexcolor.decode('hex'))
+	red, green, blue = struct.unpack('BBB', codecs.decode(hexcolor, 'hex'))
 	# Taken from: http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color
 	return (0.299 * red + 0.587 * green + 0.114 * blue) / 255
 
@@ -126,9 +127,9 @@ def get_app_style_properties(app):
 		if not os.path.exists(os.path.join(get_cache_dir_name(app), local_cache_name)):
 			print('Properties loaded from web for %s' % local_cache_name)
 		else:
-			print('Warning: ' + exc)
+			print('Warning: ', exc)
 
-	props = dict()
+	props = {}
 	for i in (
 		'primary_color',
 		'secondary_color',

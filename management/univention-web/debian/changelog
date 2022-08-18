@@ -1,3 +1,10 @@
+univention-web (4.0.2-52) unstable; urgency=medium
+
+  * Bug #55107: expose /usr/share/univention-web/themes to enable the
+    import of the Portal css by the univention-app-appliance css
+
+ -- Johannes Lohmer <lohmer@univention.de>  Tue, 30 Aug 2022 12:36:22 +0200
+
 univention-web (4.0.2-51) unstable; urgency=medium
 
   * Bug #54467: add widget for users/user:mailPrimaryAddress

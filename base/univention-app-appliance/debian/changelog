@@ -1,3 +1,10 @@
+univention-app-appliance (4.0.1-2) unstable; urgency=medium
+
+  * Bug #55107: migrated the Plymouth Bootsplash and Welcome screen to UCS 5.0
+    and finished the Python3 migration
+
+ -- Johannes Lohmer <lohmer@univention.de>  Tue, 30 Aug 2022 12:27:58 +0200
+
 univention-app-appliance (4.0.1-1) unstable; urgency=medium
 
   * Bug #54706: drop Python 2 packages

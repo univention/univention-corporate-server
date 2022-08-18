@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-web
+fix:
+desc: |
+ This update addresses the following issues:
+ * All CSS themes can now be requested by clients.
+   This makes it possible to base a theme on another and is used by the
+   `univention-app-appliance` themes.
+bug: [55107]
