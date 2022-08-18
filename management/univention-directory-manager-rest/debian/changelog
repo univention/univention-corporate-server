@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.4-6) unstable; urgency=medium
+
+  * Bug #55115: fix URI template for search query
+
+ -- Florian Best <best@univention.de>  Mon, 24 Oct 2022 18:24:19 +0200
+
 univention-directory-manager-rest (10.0.4-5) unstable; urgency=medium
 
   * Bug #55186: set X-Request-Id header for traceability

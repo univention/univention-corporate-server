@@ -422,7 +422,7 @@ class Module(Client):
 		}
 		if isinstance(filter, dict):
 			for prop, val in filter.items():
-				data[f'query[{prop}]'] = val
+				data.setdefault('query', {})[f'query[{prop}]'] = val
 		elif isinstance(filter, str):
 			data['filter'] = filter
 		if superordinate:

@@ -2447,10 +2447,10 @@ class Objects(FormBase, ReportingBase):
 			search_layout.append(['superordinate'])
 		searchable_properties = [{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')]
 		self.add_form_element(form, 'property', property_ or '', element='select', options=searchable_properties, label=_('Property'))
-		self.add_form_element(form, 'query[]', self.request.decoded_query_arguments['query'].get('', '*'), label=_('Search for'), placeholder=_('Search value (e.g. *)'))
+		self.add_form_element(form, 'query*', self.request.decoded_query_arguments['query'].get('', '*'), label=_('Search for'), placeholder=_('Search value (e.g. *)'))
 		self.add_form_element(form, 'scope', scope, element='select', options=[{'value': 'sub'}, {'value': 'one'}, {'value': 'base'}, {'value': 'base+one'}], label=_('Search scope'))
 		self.add_form_element(form, 'hidden', '1', type='checkbox', checked=bool(hidden), label=_('Include hidden objects'))
-		search_layout.append(['property', 'query[]'])
+		search_layout.append(['property', 'query*'])
 		#self.add_form_element(form, 'fields', list(fields))
 		if module.supports_pagination:
 			self.add_form_element(form, 'limit', str(items_per_page or '0'), type='number', label=_('Limit'))
@@ -2569,7 +2569,7 @@ class Objects(FormBase, ReportingBase):
 		self.add_link(result, 'self', self.urljoin(''), name=module.name, title=module.object_name_plural)
 		self.add_link(result, 'describedby', self.urljoin(''), title=_('%s module') % (module.name,), method='OPTIONS')
 		if 'search' in module.operations:
-			searchfields = ['position', 'query[]', 'filter', 'scope', 'hidden', 'properties']
+			searchfields = ['position', 'query*', 'filter', 'scope', 'hidden', 'properties']
 			if superordinate_names(module):
 				searchfields.append('superordinate')
 			if module.supports_pagination:
