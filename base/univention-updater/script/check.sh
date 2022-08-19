@@ -538,7 +538,7 @@ update_check_package_status () {
 	return 1
 }
 
-# Bug 53129: check defaultPackagesMaster of kopano-core and openvpn4ucs
+# Bug 53129: check defaultPackagesMaster of kopano-core
 update_check_default_master_packages () {
 	[ "$server_role" != "domaincontroller_master" ] && return 0
 	[ -f /var/univention-join/joined ] || return 0
@@ -548,23 +548,13 @@ update_check_default_master_packages () {
 	# kopano-core
 	status=$(dpkg-query -W -f '${db:Status-Status}' "kopano4ucs-udm" 2>/dev/null)
 	if [ "$status" = 'installed' ]; then
-		echo
-		echo "  The Kopano App is or was installed in your domain."
-		echo "  A newer version of the Kopano App is needed in order to update to UCS 5.0."
-		echo "  Kopano and Univention are currently working on providing this new version"
-		echo "  as soon a possible."
-		echo
-		echo "  If the Kopano App is no longer used and has already been removed from the domain"
-		echo "  the package kopano4ucs-udm can be removed from this server"
-		echo "  in order to update to UCS 5.0: univention-remove --purge kopano4ucs-udm"
+		echo "  The Kopano App is installed in your domain."
+		echo "  In order to update to UCS 5.0 the Kopano Apps have to be updated to"
+		echo "  the latest version available in UCS 4.4. Once all systems are updated"
+		echo "  the package kopano4ucs-udm has to be removed from this server:"
+		echo "  univention-remove --purge kopano4ucs-udm"
 		echo
 		echo "  This check can be disabled by setting the UCR variable '$var' to 'yes'."
-		# once the update is available, we can change the message to something like
-		#echo "The Kopano App is installed in your domain."
-		#echo "In order to update to UCS 5.0 the Kopano App has to be updated to"
-		#echo "version x.x. Once all systems are updated the package"
-		#echo "  kopano4ucs-udm"
-		#echo "has to be removed from this server: univention-remove --purge kopano4ucs-udm"
 		ret=1
 	fi
 	return $ret
