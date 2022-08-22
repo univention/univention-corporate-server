@@ -3,8 +3,9 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-group-membership-cache
-fix: 2.0.0-8A~5.0.0.202208221641
+fix: 2.0.0-9A~5.0.0.202208222055
 desc: |
  This update addresses the following issue:
- * Resolving users belonging to groups took too much time
+ * Improved performance of the function `users_groups` which is used in
+   univention-portal.
 bug: [55120]
