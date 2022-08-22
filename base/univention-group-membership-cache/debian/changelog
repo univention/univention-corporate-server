@@ -1,3 +1,9 @@
+univention-group-membership-cache (2.0.0-8) unstable; urgency=medium
+
+  * Bug #55120: users_groups consumes all CPU time
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Mon, 22 Aug 2022 15:01:32 +0200
+
 univention-group-membership-cache (2.0.0-7) unstable; urgency=medium
 
   * Bug #54497: Use univention-group-membership-cache to obtain groups

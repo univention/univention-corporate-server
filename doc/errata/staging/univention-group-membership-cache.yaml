@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-group-membership-cache
+fix:
+desc: |
+ This update addresses the following issue:
+ * Resolving users belonging to groups took too much time
+bug: [55120]

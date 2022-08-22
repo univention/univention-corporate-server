@@ -99,19 +99,26 @@ def users_groups():
 	if Group1 have Group2 as a subgroup, all users from Group2
 	are also considered members of Group1.
 	"""
-	res = defaultdict(set)
 
 	# load all cached users/groups/computers
 	cache = get_cache()
 	cache = cache.get_sub_cache('uniqueMembers').load()
 	cache = dict((key, set(val.lower() for val in values)) for key, values in cache.items())
 
-	# populate all groups belonging to users
-	for group, members in cache.items():
+	group_users = {}
+
+	_cache = get_cache()
+	member_uid_cache, unique_member_cache = [_cache.get_sub_cache(name) for name in ['memberUids', 'uniqueMembers']]
+	with member_uid_cache.reading() as member_uid_reader, unique_member_cache.reading() as unique_member_reader:
+		for group in cache:
+			group_users[group] = users_in_group(group, readers=(member_uid_reader, unique_member_reader))
+
+	res = {}
+	for group, members in group_users.items():
 		for member in members:
 			if member.startswith('uid='):
 				rdn = _extract_id_from_dn(member).lower()
-				res[rdn] |= set(groups_for_user(member, True, cache))
+				res[rdn] |= set(members)
 
 	# order(sort) group users
 	for user, groups in res.items():
