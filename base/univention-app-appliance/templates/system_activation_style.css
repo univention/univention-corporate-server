@@ -16,6 +16,10 @@ if app and has_required_props:
 
 /* additional CSS rules for the app appliance branding */
 
+ol {
+	padding-inline-start: 4ch !important;
+}
+
 .umc .umcHeader {
 	background-color: %(primary_color)s;
 }
@@ -26,13 +30,12 @@ if app and has_required_props:
 	background-size: auto 20px;
 }
 
-.umc .umcWizard.umcInlineDialog .dijitDefaultButton .dijitButtonText,
-.umc .umcWizard.umcInlineDialog .dijitUploader .dijitButtonText {
-	color: %(primary_color)s;
+.umc.umcWizard {
+	margin: 48px auto;
 }
 
 .umc .umc-setup-page .umcPageIcon {
-	background-position: center top
+	background-position: center top;
 }
 ''' % app_props)
 @!@

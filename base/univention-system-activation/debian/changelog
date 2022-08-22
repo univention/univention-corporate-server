@@ -1,3 +1,10 @@
+univention-system-activation (5.0.2-2) unstable; urgency=medium
+
+  * Bug #55107: make the system activation frontend compatible with
+    the UCS 5.0 Portal
+
+ -- Johannes Lohmer <lohmer@univention.de>  Tue, 30 Aug 2022 12:32:12 +0200
+
 univention-system-activation (5.0.2-1) unstable; urgency=medium
 
   * Bug #54706: drop Python 3 UMC package files

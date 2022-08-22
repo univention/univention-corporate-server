@@ -1,13 +1,51 @@
+#!/usr/bin/python3
 # coding: UTF-8
+#
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
+# Copyright 2016-2022 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+#
 
-from __future__ import print_function
 import cgi
 import subprocess
 import traceback
 import json
 import re
+
 from ldif import LDIFParser
-from univention.config_registry import ConfigRegistry
+
+from univention.config_registry import ucr
+
+
+LICENSE_UPLOAD_PATH = '/var/cache/univention-system-activation/license.ldif'
+
+reg_exp_app_key = re.compile(r'^appliance/apps/(?P<id>[^/]*)/(?P<key>.*)$')
 
 
 class LicenseLDIF(LDIFParser):
@@ -15,7 +53,7 @@ class LicenseLDIF(LDIFParser):
 	def __init__(self, input, ucr):
 		LDIFParser.__init__(self, input)
 		self.ucr = ucr
-		self.uuid = u'00000000-0000-0000-0000-000000000000'
+		self.uuid = '00000000-0000-0000-0000-000000000000'
 
 	def handle(self, dn, entry):
 		if dn == 'cn=admin,cn=license,cn=univention,%s' % self.ucr.get('ldap/base'):
@@ -25,14 +63,6 @@ class LicenseLDIF(LDIFParser):
 
 class LdapLicenseFetchError(Exception):
 	pass
-
-
-ucr = ConfigRegistry()
-ucr.load()
-
-LICENSE_UPLOAD_PATH = '/var/cache/univention-system-activation/license.ldif'
-
-reg_exp_app_key = re.compile(r'^appliance/apps/(?P<id>[^/]*)/(?P<key>.*)$')
 
 
 def get_installed_apps():
@@ -57,17 +87,17 @@ def clean_license_output(out):
 	# the output might contain the message of the day, as well
 	# ... let's clean up that!
 	ldif = []
-	for line in out.split(u'\n'):
+	for line in out.split('\n'):
 		if ldif and not line:
 			# first empty line after the LDIF -> stop
 			break
-		matchesLdifStart = line.startswith(u'dn:')
+		matchesLdifStart = line.startswith('dn:')
 		if not ldif and not matchesLdifStart:
 			# we have not yet found the beginning of the LDIF -> inspect next line
 			continue
 		# this line is part of the LDIF -> append to LDIF ldifput
 		ldif.append(line)
-	return u'\n'.join(ldif)
+	return '\n'.join(ldif)
 
 
 def application(environ, start_response):
@@ -137,7 +167,7 @@ def application(environ, start_response):
 	with open(LICENSE_UPLOAD_PATH, 'w') as license_file:
 		# Replace non-breaking space with a normal space
 		# https://forge.univention.org/bugzilla/show_bug.cgi?id=30098
-		license_data = formdata.getvalue('license', '').replace(chr(160), ' ')
+		license_data = formdata.getvalue('license', b'').decode('UTF-8').replace(chr(160), ' ')
 		license_file.write(license_data)
 
 	# import the uploaded license file

@@ -38,6 +38,7 @@ define([
 	"dojo/Deferred",
 	"dojo/io-query",
 	"dojo/query",
+	"dojo/dom-class",
 	"dojo/request",
 	"dojo/request/xhr",
 	"dojo/request/script",
@@ -49,14 +50,14 @@ define([
 	"umc/widgets/TextBox",
 	"put-selector/put",
 	"umc/i18n!systemactivation"
-], function(declare, lang, array, Deferred, ioQuery, domQuery, request, xhr, script, Uploader, dialog, tools, Wizard, Text, TextBox, put, _) {
+], function(declare, lang, array, Deferred, ioQuery, domQuery, domClass, request, xhr, script, Uploader, dialog, tools, Wizard, Text, TextBox, put, _) {
 	return declare("ActivationWizard", [ Wizard ], {
 		autoFocus: true,
 		entries: null,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			var version = '4.4';
+			var version = '5.0';
 			lang.mixin(this, {
 				pages: [{
 					name: 'register',
@@ -67,14 +68,15 @@ define([
 						name: 'helpText'
 					}, {
 						type: TextBox,
-						inlineLabel: _('E-mail address'),
+						label: _('E-mail address'),
+						inlineLabel: _('mail@example.org'),
 						regExp: '.+@.+',
 						invalidMessage: _('No valid email address.'),
 						required: true,
 						name: 'email'
 					}, {
 						type: Text,
-						content: _('More details about the activation can be found in the <a href="https://docs.software-univention.de/manual-%s.html#central:license" target="_blank">UCS manual</a>.', version),
+						content: _('More details about the activation can be found in the <a href="https://docs.software-univention.de/manual/%s/de/central-management-umc/umc.html#central-license" target="_blank">UCS manual</a>.', version),
 						name: 'moreDetails'
 					}, {
 						type: Text,
@@ -104,17 +106,22 @@ define([
 						url: '/license',
 						name: 'license',
 						label: _('Upload license file'),
+						'class': 'ucsButton ucsPrimaryButton',
 						uploadOnSelect: true,
 						getForm: function() {
 							// make sure that the Uploader does not find any of our encapsulating forms
 							return null;
-						},
-						visible: false
+						}
 					}],
-					layout: [['helpText'], ['back'], ['license']],
+					layout: [['helpText'], ['back']],
 					fullWidth: true,
 					buttons: [{
 						name: 'submit',
+						visible: false
+					}],
+					footerButtons: [{
+						name: 'fake',
+						align: 'right',
 						visible: false
 					}]
 				}, {
@@ -128,6 +135,7 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+			domClass.add(this.domNode, 'umcWizardCard');
 			this._alterPageButtons();
 			this._registerEvents();
 		},

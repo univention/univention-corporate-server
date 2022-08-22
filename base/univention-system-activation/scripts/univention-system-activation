@@ -32,7 +32,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-declare -a UCR_ARRRAY=()
+declare -a UCR_ARRAY=()
 
 function ucr_build_array(){
 	for service in "gdm" "kdm" "login" "other" "sshd"; do
