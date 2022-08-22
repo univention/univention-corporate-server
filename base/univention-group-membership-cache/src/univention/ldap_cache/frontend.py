@@ -116,12 +116,8 @@ def users_groups():
 	res = {}
 	for group, members in group_users.items():
 		for member in members:
-			if member.startswith('uid='):
-				rdn = _extract_id_from_dn(member).lower()
-				res[rdn] |= set(members)
+			groups = res.setdefault(member, set())
+			groups.add(group)
 
-	# order(sort) group users
-	for user, groups in res.items():
-		res[user] = sorted(groups)
-
-	return res
+	# return groups as sorted list
+	return {_extract_id_from_dn(user): sorted(groups) for user, groups in res.items()}
