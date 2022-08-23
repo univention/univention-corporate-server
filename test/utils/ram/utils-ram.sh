@@ -17,5 +17,4 @@ install_ucschool_bff_users () {
   univention-app install --noninteractive --username Administrator --pwdfile /tmp/univention ucsschool-bff-users
   docker images
   docker ps -a
-  univention-app shell ucsschool-bff-users ps aux
 }
