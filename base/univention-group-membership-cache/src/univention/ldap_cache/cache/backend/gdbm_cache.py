@@ -137,12 +137,17 @@ class GdbmCache(LdapCache):
 				except KeyError:
 					pass
 
-	def __iter__(self):
+	def keys(self):
 		with self.reading() as reader:
 			key = _s(reader.firstkey())
 			while key is not None:
-				yield key, self.get(key, reader)
+				yield key
 				key = _s(reader.nextkey(key))
+
+	def __iter__(self):
+		with self.reading() as reader:
+			for key in self.keys():
+				yield key, self.get(key, reader)
 
 	def get(self, key, reader=None):
 		with self.reading(reader) as reader:

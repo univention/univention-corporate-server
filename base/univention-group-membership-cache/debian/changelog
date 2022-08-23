@@ -1,3 +1,9 @@
+univention-group-membership-cache (2.0.0-10) unstable; urgency=medium
+
+  * Bug #55120: Further improve performance
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 23 Aug 2022 23:10:27 +0200
+
 univention-group-membership-cache (2.0.0-9) unstable; urgency=medium
 
   * Bug #55120: Fix users_groups

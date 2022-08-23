@@ -70,7 +70,7 @@ def groups_for_user(user_dn, consider_nested_groups=True, cache=None):
 	return sorted(found)
 
 
-def users_in_group(group_dn, consider_nested_groups=True, readers=(None, None)):
+def users_in_group(group_dn, consider_nested_groups=True, readers=(None, None), group_cache={}):
 	group_dn = group_dn.lower()
 	cache = get_cache()
 	member_uid_cache, unique_member_cache = [cache.get_sub_cache(name) for name in ['memberUids', 'uniqueMembers']]
@@ -89,7 +89,12 @@ def users_in_group(group_dn, consider_nested_groups=True, readers=(None, None)):
 				continue
 			else:
 				if consider_nested_groups:
-					ret.update(users_in_group(member, consider_nested_groups, readers=(member_uid_reader, unique_member_reader)))
+						if member in group_cache:
+								ret.update(group_cache[member])
+						else:
+								members = users_in_group(member, consider_nested_groups, readers=(member_uid_reader, unique_member_reader), group_cache=group_cache)
+								group_cache[member] = members
+								ret.update(members)
 		return sorted(ret)
 
 
@@ -100,18 +105,14 @@ def users_groups():
 	are also considered members of Group1.
 	"""
 
-	# load all cached users/groups/computers
 	cache = get_cache()
-	cache = cache.get_sub_cache('uniqueMembers').load()
-	cache = dict((key, set(val.lower() for val in values)) for key, values in cache.items())
+	member_uid_cache, unique_member_cache = [cache.get_sub_cache(name) for name in ['memberUids', 'uniqueMembers']]
 
 	group_users = {}
-
-	_cache = get_cache()
-	member_uid_cache, unique_member_cache = [_cache.get_sub_cache(name) for name in ['memberUids', 'uniqueMembers']]
+	_group_cache = {}
 	with member_uid_cache.reading() as member_uid_reader, unique_member_cache.reading() as unique_member_reader:
-		for group in cache:
-			group_users[group] = users_in_group(group, readers=(member_uid_reader, unique_member_reader))
+		for group in unique_member_cache.keys():
+			group_users[group] = users_in_group(group, readers=(member_uid_reader, unique_member_reader), group_cache=_group_cache)
 
 	res = {}
 	for group, members in group_users.items():
