@@ -85,6 +85,26 @@ def decode_unicodePwd(value, kvno=0):
 	print("#\tkrb5Key:: %s" % binascii.b2a_base64(krb5key).strip())
 
 
+def decode_ntPwdHistory(value, kvno=0):
+	global krb5_context
+	if not krb5_context:
+			krb5_context = Krb5Context()
+	hist_b64 = binascii.a2b_base64(value)
+	hist_hex = binascii.hexlify(hist_b64).upper().strip()
+	hist = [hist_hex[i: i + 32] for i in range(0, len(hist_hex), 32)]
+	print("# decoded:")
+	print("#\tntPwdHistory size: %s" % len(hist))
+	for idx, hash in enumerate(hist):
+			print("#\tntPwdHistory(idx_%s):: %s" % (idx, hash.decode('ASCII')))
+	print("# ntPwdHistory recoded as krb5key:")
+	print("#\tkeytype: arcfour-hmac-md5")
+	idx = 0
+	for idx, i in enumerate(range(0, len(hist_b64), 16)):
+			keyblock = heimdal.keyblock_raw(krb5_context.ctx, 23, hist_b64[i : i + 16])
+			krb5key = heimdal.asn1_encode_key(keyblock, None, kvno)
+			print("#\tkrb5Key(idx_%s):: %s" % (idx, binascii.b2a_base64(krb5key).strip().decode('ASCII')))
+
+
 def decode_krb5Key(value):
 	global krb5_context
 	if not krb5_context:
@@ -209,6 +229,7 @@ objecttypes = {
 	'replUpToDateVector': decode_drsblob(drsblobs.replUpToDateVectorBlob),
 	'supplementalCredentials': decode_supplementalCredentials,
 	'unicodePwd': decode_unicodePwd,
+	'ntPwdHistory': decode_ntPwdHistory,
 	'krb5Key': decode_krb5Key,
 	'pwdLastSet': decode_pwdLastSet,
 	'accountExpires': decode_accountExpires,
