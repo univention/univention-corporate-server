@@ -13,9 +13,6 @@ export KVM_KEYPAIR_PASSPHRASE=univention
 export UCS_ENV_PASSWORD=univention
 export UCS_TEST_RUN=false
 
-# TODO remove
-export DIMAGE="docker-registry.knut.univention.de/ucs-ec2-tools:branch-fbotner-issue-13"
-
 # user specific instances "username_..."
 if [ -n "$BUILD_USER_ID" ]; then
 	export KVM_OWNER="$BUILD_USER_ID"

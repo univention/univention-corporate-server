@@ -9,8 +9,6 @@ export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=ranarp.knut.univention.de}"
 export HALT=false
 export UCS_TEST_RUN=false
 
-export DIMAGE="docker-registry.knut.univention.de/ucs-ec2-tools:branch-fbotner-issue-13"
-
 # 4.4 support
 ucs44="${UCS44:=false}"
 if $ucs44; then
