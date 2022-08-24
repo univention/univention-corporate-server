@@ -9,3 +9,5 @@ desc: |
  * Improved performance of the function `users_groups` which is used in
    univention-portal.
 bug: [55120]
+erratum: 393
+announced: 2022-08-24
