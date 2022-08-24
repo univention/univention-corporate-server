@@ -63,6 +63,7 @@ Depends:
  python3-apt,
  python3-coverage,
  python3-psutil,
+ python3-pytest,
  python3-selenium,
  python3-six,
  python3-univention,

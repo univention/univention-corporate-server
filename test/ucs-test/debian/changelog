@@ -1,3 +1,9 @@
+ucs-test (10.0.7-14) unstable; urgency=medium
+
+  * Bug #53538: let ucs-test-framework depend on pytest
+
+ -- Florian Best <best@univention.de>  Wed, 24 Aug 2022 20:53:35 +0200
+
 ucs-test (10.0.7-13) unstable; urgency=low
 
   * Bug #55082: Ignore traceback from optparse.OptionConflictError
