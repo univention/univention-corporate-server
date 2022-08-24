@@ -39,14 +39,14 @@ import os.path
 import shutil
 import tempfile
 from imghdr import what
+from io import BytesIO
+from urllib.parse import quote
 
-from six import BytesIO, with_metaclass
-from six.moves.urllib.parse import quote
 from univention.portal import Plugin
 from univention.portal.log import get_logger
 
 
-class Reloader(with_metaclass(Plugin)):
+class Reloader(metaclass=Plugin):
 	"""
 	Our base class for reloading
 

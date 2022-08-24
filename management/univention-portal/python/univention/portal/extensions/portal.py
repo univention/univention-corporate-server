@@ -38,14 +38,13 @@ import time
 
 import requests
 import requests.exceptions
-from six import with_metaclass
 
 import univention.portal.config as config
 from univention.portal import Plugin
 from univention.portal.log import get_logger
 
 
-class Portal(with_metaclass(Plugin)):
+class Portal(metaclass=Plugin):
 	"""
 	Base (and maybe only) class for a Portal.
 	It is the only interface exposed to the portal tools, so you could

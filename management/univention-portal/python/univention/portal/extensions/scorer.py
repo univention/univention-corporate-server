@@ -33,11 +33,10 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from six import with_metaclass
 from univention.portal import Plugin
 
 
-class Scorer(with_metaclass(Plugin)):
+class Scorer(metaclass=Plugin):
 	"""
 	Base class for portal scoring
 

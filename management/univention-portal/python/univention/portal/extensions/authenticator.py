@@ -37,7 +37,6 @@ import binascii
 import hashlib
 import json
 
-from six import with_metaclass
 from tornado.httpclient import AsyncHTTPClient, HTTPError, HTTPRequest
 
 from univention.portal import config, Plugin
@@ -54,7 +53,7 @@ class Session(object):
 		return True
 
 
-class Authenticator(with_metaclass(Plugin)):
+class Authenticator(metaclass=Plugin):
 	"""
 	Our base class for authentication
 	May hold all the sessions, set cookies, etc.

@@ -37,12 +37,11 @@ import json
 import os
 from copy import deepcopy
 
-from six import with_metaclass
 from univention.portal import Plugin
 from univention.portal.log import get_logger
 
 
-class Cache(with_metaclass(Plugin)):
+class Cache(metaclass=Plugin):
 	"""
 	Base class for Caching in general
 
