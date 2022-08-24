@@ -1361,9 +1361,18 @@ class ucs(object):
 							if attr not in object['changed_attributes']:
 								object['changed_attributes'].append(attr)
 					if not (set(object['changed_attributes']) - self.irrelevant_attributes):
-						ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: ignore %r" % (original_object['dn'],))
-						ud.debug(ud.LDAP, ud.ALL, "sync_to_ucs: changed_attributes=%s" % (object['changed_attributes'],))
-						return True
+						if property_type == "user" \
+						   and self.configRegistry.is_false('connector/ad/mapping/user/password/disabled', True) \
+						   and not self.configRegistry.is_true('connector/ad/mapping/user/password/kinit', False):
+							if object['attributes'].get('pwdLastSet', [b'1'])[0] == b'0':
+								ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: pwdLastSet is 0. Do not ignore %r" % (original_object['dn'],))
+							else:
+								ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: ignore %r" % (original_object['dn'],))
+								return True
+						else:
+							ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: ignore %r" % (original_object['dn'],))
+							ud.debug(ud.LDAP, ud.ALL, "sync_to_ucs: changed_attributes=%s" % (object['changed_attributes'],))
+							return True
 				else:
 					object['changed_attributes'] = list(original_attributes.keys())
 			ud.debug(ud.LDAP, ud.INFO, "The following attributes have been changed: %s" % object['changed_attributes'])
