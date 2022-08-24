@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.10-4) unstable; urgency=medium
+
+  * Bug #55131: Don't use UCS group dn to search in Samba/AD
+
+ -- Arvid <requate@univention.de>  Wed, 24 Aug 2022 23:12:14 +0200
+
 univention-s4-connector (14.0.10-3) unstable; urgency=medium
 
   * Bug #54791: Add flag --first to resync_object script

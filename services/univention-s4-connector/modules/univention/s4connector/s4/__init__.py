@@ -1537,7 +1537,7 @@ class s4(univention.s4connector.ucs):
 			ud.debug(ud.LDAP, ud.PROCESS, 'group_members_sync_to_ucs:: The S4 object (%s) was not found. The object was removed.' % ad_object_dn)
 			return
 
-		s4_members = self.get_s4_members(object['dn'], ldap_object_s4)
+		s4_members = self.get_s4_members(ad_object_dn, ldap_object_s4)
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: s4_members %s" % s4_members)
 
 		# search and add members which have this as their primaryGroup
