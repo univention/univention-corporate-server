@@ -164,7 +164,7 @@ class GdbmCache(LdapCache):
 
 	def load(self):
 		debug('%s - Loading', self.name)
-		return dict(self)
+		return dict(list(self))
 
 
 class GdbmShard(Shard):

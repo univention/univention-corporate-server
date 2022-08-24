@@ -1,3 +1,9 @@
+univention-group-membership-cache (2.0.0-11) unstable; urgency=medium
+
+  * Bug #55120: Fix load()
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 24 Aug 2022 10:25:35 +0200
+
 univention-group-membership-cache (2.0.0-10) unstable; urgency=medium
 
   * Bug #55120: Further improve performance
