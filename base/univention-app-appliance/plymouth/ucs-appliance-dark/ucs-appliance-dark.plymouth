@@ -8,4 +8,12 @@ ImageDir=/usr/share/plymouth/themes/ucs-appliance-dark
 ScriptFile=/usr/share/plymouth/themes/ucs-appliance-dark/ucs-appliance-dark.script
 
 [script-env-vars]
-example_env_var=example env var value
+setting_text_color_red=1
+setting_text_color_green=1
+setting_text_color_blue=1
+setting_text_color_light_red=0.738
+setting_text_color_light_green=0.738
+setting_text_color_light_blue=0.738
+setting_background_color_red=0.195
+setting_background_color_green=0.195
+setting_background_color_blue=0.191

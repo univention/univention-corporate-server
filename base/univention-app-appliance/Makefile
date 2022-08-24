@@ -30,16 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-build: usr/share/univention-web/js/umc/hooks/appliance.css ucs-appliance-dark.script ucs-appliance-light.script
+build: usr/share/univention-web/js/umc/hooks/appliance.css
 
 %.css: %.styl
 	stylus "$<"
-
-ucs-appliance-dark.script:
-	sed "s/\$${FONT_COLOR}/ 1, 1, 1,/g" plymouth/ucs-appliance-TEMPLATE.script > plymouth/ucs-appliance-dark/ucs-appliance-dark.script
-
-ucs-appliance-light.script:
-	sed "s/\$${FONT_COLOR}/ 0, 0, 0,/g" plymouth/ucs-appliance-TEMPLATE.script > plymouth/ucs-appliance-light/ucs-appliance-light.script
 
 clean:
 	rm -f usr/share/univention-web/js/umc/hooks/appliance.css
