@@ -1,10 +1,17 @@
+ucs-test (10.0.7-19) unstable; urgency=medium
+
+  * Bug #52192: Do not unset irrelevant attributes in
+    55_adconnector/503test_password_change_next_logon
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Mon, 29 Aug 2022 11:47:37 +0200
+
 ucs-test (10.0.7-18) unstable; urgency=medium
 
   * Bug #52230: Add tests for AD-connector and S4-connector
     password history synchronization
 
  -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Mon, 29 Aug 2022 9:52:00 +0200
- 
+
 ucs-test (10.0.7-17) unstable; urgency=medium
 
   * Bug #55048: added 53_samba-common/39_upload_printer_driver
