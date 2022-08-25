@@ -21,22 +21,10 @@ configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
 
-def to_bytes(value):
-	if isinstance(value, list):
-		return [to_bytes(item) for item in value]
-	if not isinstance(value, bytes):
-		return value.encode('utf-8')
-	return value
-
-
-def get_first(value):
-	if isinstance(value, (list, tuple)):
-		return value[0]
-	return value
-
-
-class S4Connection(ldap_glue.LDAPConnection):
+class S4Connection(ldap_glue.ADConnection):
 	'''helper functions to modify AD-objects'''
+
+	decode_sid = s4.decode_sid
 
 	def __init__(self, configbase='connector', no_starttls=False):
 		self.configbase = configbase
@@ -58,137 +46,6 @@ class S4Connection(ldap_glue.LDAPConnection):
 			self.serverctrls_for_add_and_modify.append(ldb_ctrl_bypass_samaccountname_ldap_check)
 
 		self.connect(no_starttls)
-
-	def createuser(self, username, position=None, **attributes):
-		"""
-		Create a S4 user with attributes as given by the keyword-args
-		`attributes`. The created user will be populated with some defaults if
-		not otherwise set.
-
-		Returns the dn of the created user.
-		"""
-		cn = to_bytes(attributes.get('cn', username))
-		sn = to_bytes(attributes.get('sn', b'SomeSurName'))
-
-		new_position = position or 'cn=users,%s' % self.adldapbase
-		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(get_first(cn).decode("UTF-8")), new_position)
-
-		defaults = (
-			('objectclass', [b'top', b'user', b'person', b'organizationalPerson']),
-			('cn', cn),
-			('sn', sn),
-			('sAMAccountName', to_bytes(username)),
-			('userPrincipalName', b'%s@%s' % (to_bytes(username), to_bytes(self.addomain))),
-			('displayName', b'%s %s' % (to_bytes(username), get_first(sn))))
-		new_attributes = dict(defaults)
-		new_attributes.update(attributes)
-		self.create(new_dn, new_attributes)
-		return new_dn
-
-	def rename_or_move_user_or_group(self, dn, name=None, position=None):
-		exploded = ldap.dn.str2dn(dn)
-		new_rdn = [("cn", name, ldap.AVA_STRING)] if name else exploded[0]
-		new_position = ldap.dn.str2dn(position) if position else exploded[1:]
-		new_dn = ldap.dn.dn2str([new_rdn] + new_position)
-		self.move(dn, new_dn)
-		return new_dn
-
-	def group_create(self, groupname, position=None, **attributes):
-		"""
-		Create a S4 group with attributes as given by the keyword-args
-		`attributes`. The created group will be populated with some defaults if
-		not otherwise set.
-
-		Returns the dn of the created group.
-		"""
-		new_position = position or 'cn=groups,%s' % self.adldapbase
-		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(groupname), new_position)
-
-		defaults = (('objectclass', [b'top', b'group']), ('sAMAccountName', to_bytes(groupname)))
-		new_attributes = dict(defaults)
-		new_attributes.update(attributes)
-		self.create(new_dn, new_attributes)
-		return new_dn
-
-	def getprimarygroup(self, user_dn):
-		try:
-			res = self.lo.search_ext_s(user_dn, ldap.SCOPE_BASE, timeout=10)
-		except Exception:
-			return None
-		primaryGroupID = res[0][1]['primaryGroupID'][0].decode('UTF-8')
-		res = self.lo.search_ext_s(
-			self.adldapbase,
-			ldap.SCOPE_SUBTREE,
-			'objectClass=group',
-			timeout=10
-		)
-
-		import re
-		regex = '^(.*?)-%s$' % primaryGroupID
-		for r in res:
-			if r[0] is None or r[0] == 'None':
-				continue  # Referral
-			if re.search(regex, s4.decode_sid(r[1]['objectSid'][0])):
-				return r[0]
-
-	def setprimarygroup(self, user_dn, group_dn):
-		res = self.lo.search_ext_s(group_dn, ldap.SCOPE_BASE, timeout=10)
-		import re
-		groupid = (re.search('^(.*)-(.*?)$', s4.decode_sid(res[0][1]['objectSid'][0]))).group(2)
-		self.set_attribute(user_dn, 'primaryGroupID', groupid.encode('UTF-8'))
-
-	def container_create(self, name, position=None, description=None):
-
-		if not position:
-			position = self.adldapbase
-
-		attrs = {}
-		attrs['objectClass'] = [b'top', b'container']
-		attrs['cn'] = to_bytes(name)
-		if description:
-			attrs['description'] = to_bytes(description)
-
-		container_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(name), position)
-		self.create(container_dn, attrs)
-		return container_dn
-
-	def createou(self, name, position=None, description=None):
-
-		if not position:
-			position = self.adldapbase
-
-		attrs = {}
-		attrs['objectClass'] = [b'top', b'organizationalUnit']
-		attrs['ou'] = to_bytes(name)
-		if description:
-			attrs['description'] = to_bytes(description)
-
-		self.create('ou=%s,%s' % (ldap.dn.escape_dn_chars(name), position), attrs)
-
-	def verify_object(self, dn, expected_attributes):
-		"""
-		Verify an object exists with the given `dn` and attributes in the
-		S4-LDAP. Setting `expected_attributes` to `None` requires the object to
-		not exist. `expected_attributes` is a dictionary of
-		`attribute`:`list-of-values`.
-
-		This will throw an `AssertionError` in case of a mismatch.
-		"""
-		if expected_attributes is None:
-			assert not self.exists(dn), "S4 object {} should not exist".format(dn)
-		else:
-			s4_object = self.get(dn)
-			for (key, value) in expected_attributes.items():
-				s4_value = set(tcommon.to_unicode(x).lower() for x in s4_object.get(key, []))
-				expected = set((tcommon.to_unicode(v).lower() for v in value) if isinstance(value, (list, tuple)) else (tcommon.to_unicode(value).lower(),))
-				if not expected.issubset(s4_value):
-					try:
-						s4_value = set(tcommon.normalize_dn(dn) for dn in s4_value)
-						expected = set(tcommon.normalize_dn(dn) for dn in expected)
-					except ldap.DECODING_ERROR:
-						pass
-				error_msg = '{}: {} not in {}, object {}'.format(key, expected, s4_value, s4_object)
-				assert expected.issubset(s4_value), error_msg
 
 
 def check_object(object_dn, sid=None, old_object_dn=None):
