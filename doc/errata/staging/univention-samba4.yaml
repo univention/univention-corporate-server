@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-samba4
+fix:
+desc: |
+ This update addresses the following issue:
+ * The script univention-samba4-site-tool.py attempted to parse the option `-A`
+   (for providing an authentication file), which is now already handled by the
+   samba package in UCS. This have been fixed.
+bug: [55082]

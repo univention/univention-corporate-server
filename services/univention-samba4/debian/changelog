@@ -1,3 +1,9 @@
+univention-samba4 (9.0.8-6) unstable; urgency=medium
+
+  * Bug #55082: Option for authentication file is part of (patched) samba
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Tue, 22 Aug 2022 11:55:27 +0200
+
 univention-samba4 (9.0.8-5) unstable; urgency=medium
 
   * Bug #55077: fixed pickle handling in the listener when renaming a share
