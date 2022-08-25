@@ -1313,13 +1313,14 @@ class ucs:
 
 			# Check if the object on UCS side should be synchronized
 			#  https://forge.univention.org/bugzilla/show_bug.cgi?id=37351
-			old_ucs_ldap_object = {}
-			old_ucs_ldap_object['dn'] = object.get('olddn', object['dn'])
-			old_ucs_ldap_object['attributes'] = self.get_ucs_ldap_object(old_ucs_ldap_object['dn'])
+			if property_type == "windowscomputer":
+				old_ucs_ldap_object = {}
+				old_ucs_ldap_object['dn'] = object.get('olddn', object['dn'])
+				old_ucs_ldap_object['attributes'] = self.get_ucs_ldap_object(old_ucs_ldap_object['dn'])
 
-			if old_ucs_ldap_object['attributes'] and self._ignore_object(property_type, old_ucs_ldap_object):
-				ud.debug(ud.LDAP, ud.PROCESS, 'The object %r will be ignored because a valid match filter for this object was not found.' % (old_ucs_ldap_object['dn'],))
-				return True
+				if old_ucs_ldap_object['attributes'] and self._ignore_object(property_type, old_ucs_ldap_object):
+					ud.debug(ud.LDAP, ud.PROCESS, 'The object %r will be ignored because _ignore_object matched the old object state in OpenLDAP.' % (old_ucs_ldap_object['dn'],))
+					return True
 
 			old_object = self.get_ucs_object(property_type, object.get('olddn', object['dn']))
 
