@@ -1,0 +1,23 @@
+product: ucs
+release: '4.4'
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: univention-ad-connector
+fix:
+desc: |-
+  This update addresses the following issues:
+  * When objects where changed in Microsoft Active Directory, the AD-Connector
+    checked if the object should be ignored. The decision is based on three
+    criteria, `match_filter`, `ignoresubtree` and the `ignorelist` from which the
+    `ignore_filter` is constructed. Since Bug 37351 has been fixed in `errata4.0-1`
+    this check is not only applied to the new object, but also to the object existing
+    in UDM, which represents the old state at the time of sync.
+    In scenarios where an object is present in UDM and Microsoft Active Directory but
+    matches the `ignore_filter` this had the negative side effect, that the AD object
+    would still be ignored even if the administrator changed an attribute in a way
+    that the new object did not match the `ignore_filter` any longer. This affected
+    user objects.
+    This problem has been fixed by restricting the change for Bug 37351 to apply
+    only to objects matching the criteria of a `windowscomputer`, as these don't
+    have an `ignore_filter`.
+bug: [52263]
