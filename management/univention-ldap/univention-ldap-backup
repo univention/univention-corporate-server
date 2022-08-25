@@ -47,6 +47,7 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 	slapcat -l "$ldapbackupname" 2>"$ldapbackuplog"
 	rc=$?
 	gzip -9 "$ldapbackupname" "$ldapbackuplog" -f 2>/dev/null
+	chmod 600 "${ldapbackupname}.gz" "${ldapbackuplog}.gz"
 
 	if [ $rc -ne 0 ]
 	then
@@ -54,29 +55,10 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 		exit 1
 	fi
 
-	chmod 600 "${ldapbackupname}.gz" "${ldapbackuplog}.gz"
 	clean_old_backups 'ldap-backup_.*\.\(log\|ldif\)\(\.gz\)?'
 
 	# Attempt backup with user variables
-	if ! echo "$slapd_backup_permissions" | grep -Eq '^[0-7]{3,4}$'; then
-		echo "Invalid permissions. Please check slapd/backup/permissions UCR variable"
-		exit 1
-	fi
-
-	touch "$ldapbackupname" "$ldapbackuplog"
-	chmod "$slapd_backup_permissions" "$ldapbackupname" "$ldapbackuplog"
-
-	slapcat -l "$ldapbackupname" 2>"$ldapbackuplog"
-	rc=$?
-	gzip -9 "$ldapbackupname" "$ldapbackuplog" -f 2>/dev/null
-	if [ $rc -ne 0 ]; then
-		echo "LDAP could not be dumped!" >&2
-		exit 1
-	fi
-
-	clean_old_backups 'ldap-backup_.*\.\(log\|ldif\)\(\.gz\)?'
-
-	chown "${slapd_backup_owner}":"${slapd_backup_group}" "${ldapbackupname}.gz" "${ldapbackuplog}.gz"
-	chmod "${slapd_backup_permissions}" "${ldapbackupname}.gz" "${ldapbackuplog}.gz"
-
+	chown "${slapd_backup_owner}":"${slapd_backup_group}" "${ldapbackupname}.gz" "${ldapbackuplog}.gz" &&
+		chmod "${slapd_backup_permissions}" "${ldapbackupname}.gz" "${ldapbackuplog}.gz" ||
+		chown 0:0 "${ldapbackupname}.gz" "${ldapbackuplog}.gz"
 fi

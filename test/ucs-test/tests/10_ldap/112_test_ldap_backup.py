@@ -8,12 +8,11 @@
 ## exposure: careful
 
 import os
-import re
 import subprocess
 from datetime import datetime
 from os.path import exists
 from pathlib import Path
-from random import randint
+from stat import S_IMODE
 
 import pytest
 
@@ -54,19 +53,9 @@ def create_group(udm):
     return group_name
 
 
-def create_random_permissions(sticky_bit=None):
-    """Generate random permissions"""
-    if sticky_bit is None:
-        return "".join([str(randint(0, 7)) for _ in range(randint(3, 4))])
-    if sticky_bit is True:
-        return "".join([str(randint(0, 7)) for _ in range(4)])
-    else:
-        return "".join([str(randint(0, 7)) for _ in range(3)])
-
-
 def are_valid_permissions(permissions):
     """Check if permissions are valid"""
-    return re.match(r'^[0-7]{3,4}$', permissions) is not None
+    return 0o100 <= permissions <= 0o7777
 
 
 def create_backup():
@@ -95,14 +84,12 @@ def check_ldap_backup_group(group="root"):
     assert group == ldap_backup_log_path.group()
 
 
-def check_ldap_backup_permissions(permissions="0600"):
+def check_ldap_backup_permissions(permissions=0o600):
     """Check backup file permissions are the expected"""
     print(f"** Checking expected permissions ({permissions})")
-    permissions = f"0{permissions}" if len(permissions) == 3 else permissions
-    status = os.stat(ldap_backup_path)
-    assert permissions == str(oct(status.st_mode)[4:])
-    status = os.stat(ldap_backup_log_path)
-    assert permissions == str(oct(status.st_mode)[4:])
+    for path in [ldap_backup_path, ldap_backup_log_path]:
+        stat = os.stat(path)
+        assert S_IMODE(stat.st_mode) == permissions
 
 
 @pytest.mark.tags('slapd-backup', 'univention-ldap-backup')
@@ -116,8 +103,8 @@ def test_run_default_backup(udm, ucr, cleanup):
     # Expected default values
     group = "root"
     owner = "root"
-    permissions = "0600"
-    print(f"** Creating default backup with {owner}:{group} {permissions}")
+    permissions = 0o600
+    print(f"** Creating default backup with {owner}:{group} {permissions:04o}")
     exit_code = create_backup()
     check_backup_exists()
     check_ldap_backup_owner(owner)
@@ -132,9 +119,11 @@ def test_run_default_backup(udm, ucr, cleanup):
 @pytest.mark.parametrize(
     "permissions",
     [
-        create_random_permissions(sticky_bit=True),
-        create_random_permissions(sticky_bit=False),
-        "0888"
+        0o400,
+        0o600,
+        0o640,
+        0o440,
+        0o7777 + 1,  # an invalid case
     ]
 )
 def test_run_custom_backup(owner, group, permissions, udm, ucr, cleanup):
@@ -144,21 +133,20 @@ def test_run_custom_backup(owner, group, permissions, udm, ucr, cleanup):
     ucr.handler_set([
         "slapd/backup/group=%s" % (group),
         "slapd/backup/owner=%s" % (owner),
-        "slapd/backup/permissions=%s" % (permissions),
+        "slapd/backup/permissions=%o" % (permissions,),
     ])
-    print(f"** Creating custom backup with {owner}:{group} {permissions}")
+    print(f"** Creating custom backup with {owner}:{group} {permissions:04o}")
     exit_code = create_backup()
     check_backup_exists()
     if are_valid_permissions(permissions):
         check_ldap_backup_permissions(permissions)
         check_ldap_backup_owner(owner)
         check_ldap_backup_group(group)
-        assert exit_code == 0
     else:
-        check_ldap_backup_permissions("0600")
+        check_ldap_backup_permissions()
         check_ldap_backup_owner("root")
         check_ldap_backup_group("root")
-        assert exit_code == 1
+    assert exit_code == 0
 
 
 @pytest.mark.tags('slapd-backup', 'univention-ldap-backup')
@@ -172,8 +160,10 @@ def test_run_custom_backup(owner, group, permissions, udm, ucr, cleanup):
 @pytest.mark.parametrize(
     "permissions",
     [
-        create_random_permissions(sticky_bit=True),
-        create_random_permissions(sticky_bit=False),
+        0o400,
+        0o600,
+        0o640,
+        0o440,
     ]
 )
 def test_non_existing_owner_group(owner, group, permissions, udm, ucr, cleanup):
@@ -182,11 +172,11 @@ def test_non_existing_owner_group(owner, group, permissions, udm, ucr, cleanup):
     ucr.handler_set([
         "slapd/backup/group=%s" % (group),
         "slapd/backup/owner=%s" % (owner),
-        "slapd/backup/permissions=%s" % (permissions),
+        "slapd/backup/permissions=%o" % (permissions,),
     ])
     exit_code = create_backup()
     check_backup_exists()
     check_ldap_backup_owner("root")
     check_ldap_backup_group("root")
-    check_ldap_backup_permissions(permissions)
+    check_ldap_backup_permissions(0o600)
     assert exit_code == 0

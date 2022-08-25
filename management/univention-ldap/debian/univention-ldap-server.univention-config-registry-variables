@@ -283,7 +283,7 @@ Categories=service-ldap
 Description[de]=Dateiberechtigungen für die Sicherungsdatei der slapd-Datenbank.
 Description[en]=File permissions for the slapd database backup file.
 Default=0600
-Type=str
+Type=int
 Categories=service-ldap
 
 [ldap/shadowbind]
