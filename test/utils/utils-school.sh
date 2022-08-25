@@ -239,3 +239,14 @@ EOF
 		--data /tmp/repo-test.sh \
 		--data_type="join/pre-join"
 }
+
+create_virtual_schools () {
+	local number_of_schools=${1:?missing number of schools to create}
+	local formated_school_number
+        rm -f ./virtual_schools.txt
+	for ((i=1; i <= number_of_schools; i++)); do
+		printf -v formated_school_number "%0${#number_of_schools}d" "$i"
+		/usr/share/ucs-school-import/scripts/create_ou --verbose "SchoolVirtual$formated_school_number" "r300-sV$formated_school_number" --displayName "SchuleVirtual$formated_school_number"
+		printf "SchoolVirtual%0${#number_of_schools}d\n" "$i" >> ./virtual_schools.txt  # Later used for the import script
+	done
+}
