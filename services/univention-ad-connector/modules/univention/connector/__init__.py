@@ -73,7 +73,7 @@ def make_lower(mlValue):
 	'''
 	if hasattr(mlValue, 'lower'):
 		return mlValue.lower()
-	if isinstance(mlValue, type([])):
+	if isinstance(mlValue, list):
 		return [make_lower(x) for x in mlValue]
 	return mlValue
 
@@ -121,37 +121,22 @@ def set_primary_group_user(connector, key, ucs_object):
 # helper
 
 
-def dictonary_lowercase(dict):
-	if isinstance(dict, type({})):
-		ndict = {}
-		for key in dict.keys():
-			ndict[key] = []
-			for val in dict[key]:
-				ndict[key].append(val.lower())
-		return ndict
-	elif isinstance(dict, type([])):
-		nlist = []
-		for d in dict:
-			nlist.append(d.lower())
-		return nlist
+def dictonary_lowercase(value):
+	if isinstance(value, dict):
+		return {k.lower(): dictonary_lowercase(v) for k, v in value.items()}
+	elif isinstance(value, list):
+		return [x.lower() for x in value]
 	else:
 		try:  # should be string
-			return dict.lower()
-		except (ldap.SERVER_DOWN, SystemExit):
-			raise
-		except:  # FIXME: which exception is to be caught?
+			return value.lower()
+		except AttributeError:
 			pass
 
 
 def compare_lowercase(val1, val2):
 	try:  # TODO: fails if conversion to ascii-str raises exception
-		if dictonary_lowercase(val1) == dictonary_lowercase(val2):
-			return True
-		else:
-			return False
-	except (ldap.SERVER_DOWN, SystemExit):
-		raise
-	except:  # FIXME: which exception is to be caught?
+		return dictonary_lowercase(val1) == dictonary_lowercase(val2)
+	except Exception:  # FIXME: which exception is to be caught?
 		return False
 
 # helper classes
@@ -164,7 +149,7 @@ class configdb:
 		self._dbcon = lite.connect(self.filename)
 
 	def get(self, section, option):
-		for i in [1, 2]:
+		for _ in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (option,))
@@ -180,7 +165,7 @@ class configdb:
 				self._dbcon = lite.connect(self.filename)
 
 	def set(self, section, option, value):
-		for i in [1, 2]:
+		for _ in [1, 2]:
 			cmd = "INSERT OR REPLACE INTO '%s' (key, value) VALUES (?, ?);" % (section,)
 			val = [option, value]
 			if section == "AD rejected":
@@ -200,7 +185,7 @@ class configdb:
 				self._dbcon = lite.connect(self.filename)
 
 	def items(self, section):
-		for i in [1, 2]:
+		for _ in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT * FROM '%s'" % (section))
@@ -215,7 +200,7 @@ class configdb:
 				self._dbcon = lite.connect(self.filename)
 
 	def remove_option(self, section, option):
-		for i in [1, 2]:
+		for _ in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("DELETE FROM '%s' WHERE key=?" % section, (option,))
@@ -229,7 +214,7 @@ class configdb:
 				self._dbcon = lite.connect(self.filename)
 
 	def has_section(self, section):
-		for i in [1, 2]:
+		for _ in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='%s';" % section)
@@ -247,7 +232,7 @@ class configdb:
 				self._dbcon = lite.connect(self.filename)
 
 	def add_section(self, section):
-		for i in [1, 2]:
+		for _ in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				if section == "AD rejected":
@@ -264,7 +249,7 @@ class configdb:
 				self._dbcon = lite.connect(self.filename)
 
 	def has_option(self, section, option):
-		for i in [1, 2]:
+		for _ in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (option,))
@@ -1261,7 +1246,7 @@ class ucs:
 								ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed")
 							return False
 
-				return delete_in_ucs(property_type, object, module, position)
+				return self.delete_in_ucs(property_type, object, module, position)
 			elif str(e) == "noObject":  # already deleted #TODO: check if it's really match
 				return True
 			else:
@@ -1472,7 +1457,7 @@ class ucs:
 				attribute_value = attributes.get(attribute_name)
 				if attribute_value:
 					try:
-						if isinstance(attribute_value, type([])):
+						if isinstance(attribute_value, list):
 							attribute_value = int(attribute_value[0])
 						int_value = int(value)
 						if ((attribute_value & int_value) == int_value):
@@ -1685,7 +1670,7 @@ class ucs:
 						# mapping_table
 						if self.property[key].mapping_table and attr_key in self.property[key].mapping_table.keys():
 							for ucsval, conval in self.property[key].mapping_table[attr_key]:
-								if isinstance(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute], type([])):
+								if isinstance(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute], list):
 
 									ucsval_lower = make_lower(ucsval)
 									objectval_lower = make_lower(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute])
@@ -1728,7 +1713,7 @@ class ucs:
 							# mapping_table
 							if self.property[key].mapping_table and attr_key in self.property[key].mapping_table.keys():
 								for ucsval, conval in self.property[key].mapping_table[attr_key]:
-									if isinstance(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute], type([])):
+									if isinstance(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute], list):
 
 										conval_lower = make_lower(conval)
 										objectval_lower = make_lower(object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute])
