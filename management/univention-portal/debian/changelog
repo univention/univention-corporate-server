@@ -1,6 +1,6 @@
 univention-portal (4.0.7-9) unstable; urgency=medium
 
-  * Bug #55063: removed dependency and use of python-six 
+  * Bug #55063: removed dependency and use of python-six
 
  -- Mika Westphal <westphal@univention.de>  Thu, 25 Aug 2022 11:12:56 +0200
 
