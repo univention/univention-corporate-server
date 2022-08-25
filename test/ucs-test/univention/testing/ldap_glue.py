@@ -43,6 +43,12 @@ def to_bytes(value):
 	return value
 
 
+def get_first(value):
+	if isinstance(value, (list, tuple)):
+		return value[0]
+	return value
+
+
 class LDAPConnection(object):
 	'''helper functions to modify LDAP-objects intended as glue for shell-scripts'''
 
@@ -271,20 +277,19 @@ class ADConnection(LDAPConnection):
 
 		Returns the dn of the created user.
 		"""
-		cn = attributes.get('cn', username)
-		sn = attributes.get('sn', 'SomeSurName')
+		cn = to_bytes(attributes.get('cn', username))
+		sn = to_bytes(attributes.get('sn', b'SomeSurName'))
 
 		new_position = position or 'cn=users,%s' % self.adldapbase
-		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(tcommon.to_unicode(cn)), new_position)
+		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(get_first(cn).decode("UTF-8")), new_position)
 
 		defaults = (
 			('objectclass', [b'top', b'user', b'person', b'organizationalPerson']),
-			('cn', to_bytes(cn)),
-			('sn', to_bytes(sn)),
+			('cn', cn),
+			('sn', sn),
 			('sAMAccountName', to_bytes(username)),
-			('userPrincipalName', to_bytes('%s@%s' % (tcommon.to_unicode(username), tcommon.to_unicode(self.addomain)))),
-			('displayName', to_bytes('%s %s' % (tcommon.to_unicode(username), tcommon.to_unicode(sn))))
-		)
+			('userPrincipalName', b'%s@%s' % (to_bytes(username), to_bytes(self.addomain))),
+			('displayName', b'%s %s' % (to_bytes(username), get_first(sn))))
 		new_attributes = dict(defaults)
 		new_attributes.update(attributes)
 		self.create(new_dn, new_attributes)
@@ -307,7 +312,7 @@ class ADConnection(LDAPConnection):
 		Returns the dn of the created group.
 		"""
 		new_position = position or 'cn=groups,%s' % self.adldapbase
-		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(tcommon.to_unicode(groupname)), new_position)
+		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(groupname), new_position)
 
 		defaults = (('objectclass', [b'top', b'group']), ('sAMAccountName', to_bytes(groupname)))
 		new_attributes = dict(defaults)
@@ -353,7 +358,7 @@ class ADConnection(LDAPConnection):
 		if description:
 			attrs['description'] = to_bytes(description)
 
-		container_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(tcommon.to_unicode(name)), position)
+		container_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(name), position)
 		self.create(container_dn, attrs)
 		return container_dn
 
@@ -368,7 +373,7 @@ class ADConnection(LDAPConnection):
 		if description:
 			attrs['description'] = to_bytes(description)
 
-		self.create('ou=%s,%s' % (ldap.dn.escape_dn_chars(tcommon.to_unicode(name)), position), attrs)
+		self.create('ou=%s,%s' % (ldap.dn.escape_dn_chars(name), position), attrs)
 
 	def verify_object(self, dn, expected_attributes):
 		"""
