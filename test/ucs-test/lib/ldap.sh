@@ -12,6 +12,7 @@ ldap_exists () {
 	local dn=${1?:missing parameter: dn}
 
 	"$PYTHON" -c "
+import sys
 from univention.testing import ldap_glue
 ldapconnection = ldap_glue.LDAPConnection()
 if ldapconnection.exists('$dn'):
@@ -50,6 +51,7 @@ ldap_move () {
 	local newdn=${2?:missing parameter: new dn}
 
 	"$PYTHON" -c "
+import sys
 from univention.testing import ldap_glue
 ldapconnection = ldap_glue.LDAPConnection()
 ldapconnection.move('$dn', '$newdn')
@@ -72,6 +74,7 @@ ldap_set_attribute () {
 	local encoding="${6:-UTF-8}"
 
 	"$PYTHON" -c "
+import sys
 from univention.testing import ldap_glue
 value = u'$value'.encode('$encoding')
 ldapconnection = ldap_glue.LDAPConnection()
@@ -93,6 +96,7 @@ ldap_delete_attribute () {
 	local name=${2?:missing parameter: attribute name}
 
 	"$PYTHON" -c "
+import sys
 from univention.testing import ldap_glue
 ldapconnection = ldap_glue.LDAPConnection()
 ldapconnection.delete_attribute('$dn', '$name')
@@ -114,6 +118,7 @@ ldap_append_to_attribute () {
 	local value=${3?:missing parameter: attribute value}
 
 	"$PYTHON" -c "
+import sys
 from univention.testing import ldap_glue
 ldapconnection = ldap_glue.LDAPConnection()
 ldapconnection.append_to_attribute('$dn', '$name', b'$value')
@@ -135,6 +140,7 @@ ldap_remove_from_attribute () {
 	local value=${3?:missing parameter: attribute value}
 
 	"$PYTHON" -c "
+import sys
 from univention.testing import ldap_glue
 ldapconnection = ldap_glue.LDAPConnection()
 ldapconnection.remove_from_attribute('$dn', '$name', b'$value')
@@ -156,6 +162,7 @@ ldap_get_attribute () {
 	local encoding="${3:-UTF-8}"
 
 	"$PYTHON" -c "
+import sys
 from univention.testing import ldap_glue
 ldapconnection = ldap_glue.LDAPConnection()
 for value in ldapconnection.get_attribute('$dn', '$attribute'):
