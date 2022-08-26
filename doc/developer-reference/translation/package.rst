@@ -42,9 +42,8 @@ Skip the next section and continue with :ref:`translation-dev-workflow`.
 Setup on a non-UCS machine
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-First, install `Git <https://git-scm.com/downloads>`_, `Python 3.7 or later
-<https://www.python.org/downloads/>`_ and ``pip``. For example, run the
-following command on Ubuntu 20.04:
+First, install `Git <git_>`_, `Python 3.7 or later <python-download_>`_ and `pip
+<pip-install_>`_. For example, run the following command on Ubuntu 20.04:
 
 .. code-block:: console
 
@@ -138,11 +137,14 @@ Add and/or update supplementary files
 The program :command:`univention-l10n-build` needs to know which source files
 target which ``de.po`` file. ``de.po`` files associate translatable strings with
 their translations and are meant to be edited manually. For more information,
-see the `gettext <https://www.gnu.org/software/gettext/>`_ framework upon which
-:command:`univention-l10n-build` is based. For a UMC package, :file:`de.po`
-files are automatically created for its associated XML file, the JavaScript
-files and the Python module, see :ref:`umc-modules` about UMC modules. Other
-source files have to be declared with ``.univention-l10n`` files that are
+see the `gettext <gettext_>`_ framework upon which
+:command:`univention-l10n-build` is based.
+
+For a UMC package, :file:`de.po` files are automatically created for its
+associated XML file, the JavaScript files and the Python module, see
+:ref:`umc-modules` about UMC modules.
+
+Other source files have to be declared with ``.univention-l10n`` files that are
 located in the ``debian`` directory and structured like the following example
 from the package ``univention-appcenter``:
 

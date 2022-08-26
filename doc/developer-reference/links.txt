@@ -1,16 +1,24 @@
 .. _debian-dep5: https://dep-team.pages.debian.net/deps/dep5/
 .. _debian-policy-priority: https://www.debian.org/doc/debian-policy/ch-archive.html#s-priorities
 .. _debian-policy-subsection: https://www.debian.org/doc/debian-policy/ch-archive.html#s-subsections
-.. _dojo-store: https://dojotoolkit.org/reference-guide/1.10/dojo/store.html
 .. _dojo-object-store: https://www.sitepen.com/blog/2011/02/15/dojo-object-stores/
-.. _netfilter: https://www.netfilter.org/
-.. _univention-bugzilla: https://forge.univention.org/bugzilla/index.cgi
-.. _univention-kb : https://help.univention.com/c/knowledge-base/supported/
-.. _univention-wiki: https://wiki.univention.de/index.php/Main_Page
-.. _univention-help: https://help.univention.com/
-.. _open-suse-build-service: https://build.opensuse.org/
-.. _gnu-gettext: https://www.gnu.org/software/gettext/manual/gettext.html
+.. _dojo-store: https://dojotoolkit.org/reference-guide/1.10/dojo/store.html
+.. _gettext-header-entries: https://www.gnu.org/software/gettext/manual/html_node/Header-Entry.html#Header-Entry
+.. _gettext-manual: https://www.gnu.org/software/gettext/manual/gettext.html
+.. _gettext-po-files: https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html
+.. _gettext: https://www.gnu.org/software/gettext/
+.. _git: https://git-scm.com/downloads
 .. _ietf-hal: https://datatracker.ietf.org/doc/html/draft-kelly-json-hal-08
+.. _netfilter: https://www.netfilter.org/
+.. _open-suse-build-service: https://build.opensuse.org/
 .. _openldap: https://www.openldap.org/
-.. _w3-object-store: http://www.w3.org/TR/IndexedDB/#object-store
+.. _pip-install: https://pip.pypa.io/en/stable/installation/
+.. _poedit: https://poedit.net/
+.. _python-download: https://www.python.org/downloads/
+.. _univention-bugzilla: https://forge.univention.org/bugzilla/index.cgi
+.. _univention-help: https://help.univention.com/
+.. _univention-kb : https://help.univention.com/c/knowledge-base/supported/
 .. _univention-py-notifier: https://github.com/univention/python-notifier
+.. _univention-wiki: https://wiki.univention.de/index.php/Main_Page
+.. _w-iso-639-1: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+.. _w3-object-store: http://www.w3.org/TR/IndexedDB/#object-store
