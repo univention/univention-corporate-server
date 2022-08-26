@@ -700,7 +700,7 @@ msgid ""
 msgstr ""
 "Prüft den Join-Status eines Systems. Ist ein System noch nicht Mitglied "
 "der Domäne, wird ein *critical* Alarm ausgelöst, sind nicht-aufgerufene "
-"Joinskripte vorhanden, wird ein *warning* Alarm ausgelöst."
+"Join-Skripte vorhanden, wird ein *warning* Alarm ausgelöst."
 
 #: ../../monitoring/monitoring.rst:183 ../../monitoring/nagios.rst:117
 msgid "``UNIVENTION_KPASSWDD``"
@@ -1497,7 +1497,7 @@ msgid ""
 msgstr ""
 "Prüft den Join-Status eines Systems. Ist ein System noch nicht Mitglied "
 "der Domäne, wird ein CRITICAL-Event ausgelöst, sind nicht-aufgerufene "
-"Joinskripte vorhanden, wird ein WARNING-Event zurückgeliefert."
+"Join-Skripte vorhanden, wird ein WARNING-Event zurückgeliefert."
 
 #: ../../monitoring/nagios.rst:118
 msgid ""

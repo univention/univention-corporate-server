@@ -1759,7 +1759,7 @@ msgstr ""
 "Um einer Teilgruppe von Administratoren mit eingeschränkten Rechten, z.B."
 " einem Helpdesk, das Zurücksetzen von Benutzerpasswörtern zu ermöglichen,"
 " kann das Paket :program:`univention-admingrp-user-passwordreset` "
-"installiert werden. Es legt über ein Joinskript die Benutzergruppe ``User"
+"installiert werden. Es legt über ein Join-Skript die Benutzergruppe ``User"
 " Password Admins`` an, sofern diese noch nicht existiert."
 
 #: ../../domain-ldap/ldap-directory.rst:237
