@@ -3,10 +3,12 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-samba4
-fix: 9.0.8-6A~5.0.0.202208251203
+fix: 9.0.8-7
 desc: |
  This update addresses the following issue:
  * The script univention-samba4-site-tool.py attempted to parse the option `-A`
    (for providing an authentication file), which is now already handled by the
    samba package in UCS. This have been fixed.
-bug: [55082]
+ * The script s4search-decode can now be used to decode the attribute
+   ntPwdHistory.
+bug: [55082, 52230]

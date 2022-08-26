@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.13-5) unstable; urgency=medium
+
+  * Bug #52230: Support NT hashes in pwhistory attribute
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Fri, 26 Aug 2022 10:45:06 +0200
+
 univention-directory-manager-modules (15.0.13-4) unstable; urgency=medium
 
   * Bug #55037: fix evaluation of LDAP presence filters when rewriting

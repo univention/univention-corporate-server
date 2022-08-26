@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-ad-connector
-fix: 14.0.10-3A~5.0.0.202208242250
+fix: 14.0.10-4
 desc: |
  This update addresses the following issues:
  * The mapping now evaluates UCR variables with respect to the configbasename.
@@ -11,4 +11,5 @@ desc: |
    instances via `prepare-new-instance`, which was broken since UCS 5.0-0.
  * The function `group_members_sync_to_ucs` used the UCS DN to search in AD,
    this regression introduced in UCS 5.0-0 has been fixed.
-bug: [54780, 55087]
+ * The connector now synchronizes the password history between AD and UCS.
+bug: [54780, 55087, 52230]

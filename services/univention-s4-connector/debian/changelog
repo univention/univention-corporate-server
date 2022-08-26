@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.10-5) unstable; urgency=medium
+
+  * Bug #52230: Synchronize password history between S4 and UCS
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Fri, 26 Aug 2022 10:38:24 +0200
+
 univention-s4-connector (14.0.10-4) unstable; urgency=medium
 
   * Bug #55131: Don't use UCS group dn to search in Samba/AD

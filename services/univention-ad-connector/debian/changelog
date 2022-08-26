@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.10-4) unstable; urgency=medium
+
+  * Bug #52230: Synchronize password history from AD to UCS
+
+ -- Juan Carlos García García  <garcia-garcia.extern@univention.de>  Fri, 26 Aug 2022 10:36:37 +0200
+
 univention-ad-connector (14.0.10-3) unstable; urgency=medium
 
   * Bug #55087: Fix regression in group_members_sync_to_ucs

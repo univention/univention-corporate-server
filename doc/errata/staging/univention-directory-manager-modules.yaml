@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-directory-manager-modules
-fix: 15.0.13-3A~5.0.0.202208161105
+fix: 15.0.13-5
 desc: |
  This update addresses the following issue:
  * The global uniqueness of `mailAlternativeAdress` with `mailPrimaryAddress`
@@ -16,4 +16,5 @@ desc: |
  * A regression in UCS 5.0 for LDAP presence filters (`attribute=*`) has been
    fixed. UDM modules which rewrite filters can now reliably test for LDAP
    presence filters.
-bug: [54596, 33224, 4498, 55037]
+ * The attribute pwhistory can store and interpret NT hashes.
+bug: [54596, 33224, 4498, 55037, 52230]
