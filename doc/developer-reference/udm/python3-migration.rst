@@ -4,7 +4,7 @@ UCS 5.0: Python 3 migration of modules and extensions
 =====================================================
 
 .. index::
-   single: python 3; migration
+   single: Python 3; migration
 
 UCS 5.0 switched from Python 2 to Python 3. This also affects |UCSUDM|. Starting
 with UCS 5.0 the modules and extensions like syntax classes and hooks must be

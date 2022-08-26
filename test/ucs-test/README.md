@@ -21,7 +21,7 @@ For every test a single executable file exists, which implements the test.
   * The (integer) return value of the test script is converted to a human readable message.
 
 ## Framework
-Next to the test files some shell and python libraries are provided below [/usr/share/ucs-test/lib/](lib/), which can be re-used by several tests.
+Next to the test files some shell and Python libraries are provided below [/usr/share/ucs-test/lib/](lib/), which can be re-used by several tests.
 
 [/usr/sbin/ucs-test](bin/ucs-test) is a program to run several tests at once.
 It collects their output and creates some summary information.

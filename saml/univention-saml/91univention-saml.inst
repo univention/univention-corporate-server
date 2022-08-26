@@ -203,7 +203,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		chown root:"DC Backup Hosts" "$SECRETFILE"
 		chmod 640 "$SECRETFILE"
 		printf '%s' "$PASSWORD" > "$SECRETFILE"
-		# written in python to ignore extended attributes with required fields
+		# written in Python to ignore extended attributes with required fields
 		(python3 - "$PASSWORD" "$ldap_base" || die) <<- EOF
 # -*- coding: utf-8 -*-
 import sys

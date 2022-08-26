@@ -38,7 +38,7 @@ import pytest
 
 
 def pytest_addoption(parser):
-	parser.addoption("--installed-lib", action="store_true", help="Test against installed python lib installation (not src)")
+	parser.addoption("--installed-lib", action="store_true", help="Test against installed Python lib installation (not src)")
 
 
 def import_lib_module(name):

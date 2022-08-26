@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention System Setup
-#  python setup script base
+#  Python setup script base
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/

@@ -53,7 +53,7 @@ class _SharedMemory(managers.SyncManager):
 		finally:
 			setproctitle(proctitle)
 
-		# we must create the parent dictionary instance before forking but after python importing
+		# we must create the parent dictionary instance before forking but after Python importing
 		self.children = self.dict()
 		self.queue = self.dict()
 		self.search_sessions = self.dict()

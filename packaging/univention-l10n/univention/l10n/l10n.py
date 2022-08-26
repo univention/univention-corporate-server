@@ -328,7 +328,7 @@ def update_package_translation_files(module, output_dir, template=False):
 					make_parent_dir(po_path)
 					umc.create_po_file(po_path, module['module_name'], src_files, language, template)
 
-			# build python po files
+			# build Python po files
 			_create_po_files(module.python_po_files, module.python_files, 'Python')
 			_create_po_files(module.js_po_files, module.js_files, 'JavaScript')
 

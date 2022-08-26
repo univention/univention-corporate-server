@@ -200,7 +200,7 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, se
 
 
 def _fix_reconnect_handling(func):
-	# Bug #47926: python ldap does not reconnect on ldap.UNAVAILABLE
+	# Bug #47926: Python LDAP does not reconnect on ldap.UNAVAILABLE
 	# We need this until https://github.com/python-ldap/python-ldap/pull/267 is fixed
 	@wraps(func)
 	def _decorated(self, *args, **kwargs):

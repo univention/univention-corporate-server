@@ -10,7 +10,7 @@ web interface. Depending on the access policies for the user the visible
 modules for management tasks will differ.
 
 In the following the technical details of the architecture and the
-python API for modules are described.
+Python API for modules are described.
 
 .. only:: internal
 

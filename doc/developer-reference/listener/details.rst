@@ -316,7 +316,7 @@ Python 3 migration
 ------------------
 
 .. index::
-   single: python 3; migration
+   single: Python 3; migration
 
 Since UCS 5.0 the |UCSUDL| uses Python 3 to execute listener modules.
 

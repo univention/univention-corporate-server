@@ -116,7 +116,7 @@ definition has two attributes:
    message it is the first argument after the UMCP ``COMMAND``.
 
 ``function``
-   defines the method to be invoked within the python module when the command is
+   defines the method to be invoked within the Python module when the command is
    called.
 
 .. _umc-module-api-xml-category:
@@ -323,7 +323,7 @@ The keys in this file of the following meaning:
    The internal name of the module
 
 ``Python``
-   A directory that contains the python package for the UMC module
+   A directory that contains the Python package for the UMC module
 
 ``Definition``
    The filename of the XML file with the module definition

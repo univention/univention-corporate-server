@@ -59,7 +59,7 @@ class LockingDB(object):
 		if not uuid:
 			return None
 
-		# The SQLite python module should do the escaping, that's
+		# The SQLite Python module should do the escaping, that's
 		# the reason why we use the tuple ? syntax.
 		# I've chosen the str call because I want to make sure
 		# that we use the same SQL value as before switching

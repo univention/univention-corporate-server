@@ -43,7 +43,7 @@ def get_code_position(depth=1, line_length=80, fill_char='.', prefix="# ", color
 	"""
 
 	if hasattr(sys, '_getframe'):
-		# not every python version has a _getframe function. We will only
+		# not every Python version has a _getframe function. We will only
 		# return a separator, if we cannot determine the position.
 		return((color_start + prefix + "%-*s" + color_stop) % (
 			line_length - len(prefix),

@@ -267,7 +267,7 @@ def parse_args(argv=sys.argv):  # type: (Sequence[str]) -> Namespace
 	group = parser.add_argument_group('Request arguments')
 	group.add_argument(
 		'-e', '--eval-option', action='store_true',
-		help='if set the only given option is evalulated as python code')
+		help='if set the only given option is evalulated as Python code')
 	group.add_argument(
 		'-f', '--flavor',
 		help='set the required flavor')

@@ -1,4 +1,4 @@
-E:0009-3: strings2.py:1: file specifies wrong python version in hashbang
+E:0009-3: strings2.py:1: file specifies wrong Python version in hashbang
 W:0009-10: strings2.py:10:1: invalid Python string literal: uR" "
 W:0009-10: strings2.py:11:1: invalid Python string literal: UR" "
 W:0009-10: strings2.py:22:1: invalid Python string literal: ur' '

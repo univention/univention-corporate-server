@@ -43,7 +43,7 @@ different components that deliver their own translation files this
 module provides a simple way for the UMC server to get the required
 translations. Components that provide their own translation files:
 
-* the UMC core --- python code directly imported by the UMC server
+* the UMC core --- Python code directly imported by the UMC server
 * categories
 * module definitions
 """

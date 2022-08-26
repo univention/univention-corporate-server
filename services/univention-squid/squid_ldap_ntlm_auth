@@ -630,7 +630,7 @@ if __name__ == '__main__':
 							answer = kerbPipe.stdout.readline().decode("UTF-8")
 							debug("answer %r" % (answer,))
 						# this whole stuff could also be done by
-						# python kerberos
+						# Python Kerberos
 						#  result, context = kerberos.authGSSServerInit('HTTP')
 						#  r = kerberos.authGSSServerStep(context, data.replace(b"YR ", b"", 1))
 						#  gssstring = kerberos.authGSSServerResponse(context)

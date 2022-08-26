@@ -39,7 +39,7 @@
 Module definitions
 ==================
 
-The UMC server does not load the python modules to get the details about
+The UMC server does not load the Python modules to get the details about
 the modules name, description and functionality. Therefore each UMC
 module must provide an XML file containing this kind of information.
 
@@ -110,7 +110,7 @@ name
 	the UMCP message it is the first argument after the UMCP COMMAND.
 
 function
-	defines the method to be invoked within the python module when the
+	defines the method to be invoked within the Python module when the
 	command is called.
 
 keywords

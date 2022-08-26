@@ -1107,7 +1107,7 @@ class UniventionUDMModule(UniventionUDMExtension):
 			try:
 				self.target_udm_module = module_name = mod.module
 			except AttributeError:
-				print("ERROR: python variable 'module' undefined in given file:", filename)
+				print("ERROR: Python variable 'module' undefined in given file:", filename)
 				sys.exit(1)
 		finally:
 			sys.dont_write_bytecode = saved_value

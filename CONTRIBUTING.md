@@ -43,7 +43,7 @@ You have influence on the time we take:
 
 ## Styleguide
 
-For python code we are aligning on [PEP8](https://www.python.org/dev/peps/pep-0008/) with the following exceptions:
+For Python code we are aligning on [PEP8](https://www.python.org/dev/peps/pep-0008/) with the following exceptions:
 
 * Indentation must use tabulators instead of spaces.
 * The maximum line length is not specified, but we suggest to keep it below 120.

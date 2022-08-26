@@ -5,7 +5,7 @@ The UDM REST API starts one gateway process and one subprocess for all possible 
 All HTTP requests are forwarded to the language specific process by evaluating the `Accept-Language` header.
 Each main process also starts another subprocess for sharing memory between those processes via a `multiprocessing.SyncManager`.
 
-UDM currently translates strings at python import time which makes it impossible to use two languages in one process.
+UDM currently translates strings at Python import time which makes it impossible to use two languages in one process.
 
 The gateway is defined in `src/univention/admin/rest/server/__init__.py`.
 The server is defined in `src/univention/admin/rest/__main__.py`.

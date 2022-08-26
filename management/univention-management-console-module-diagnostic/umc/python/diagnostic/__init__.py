@@ -144,9 +144,9 @@ class Instance(Base, ProgressMixin):
 
 class Plugin(object):
 
-	u"""A wrapper for a python module underneath of "univention.management.console.modules.diagnostic.plugins".
+	u"""A wrapper for a Python module underneath of "univention.management.console.modules.diagnostic.plugins".
 
-	These python modules (plugins) may have the following properties:
+	These Python modules (plugins) may have the following properties:
 
 	:attr dict actions:
 		A mapping of valid action names to function callbacks.

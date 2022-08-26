@@ -88,7 +88,7 @@ def test(ctx):
     cmd = 'tests/test-soloading.sh'
     ret = samba_utils.RUN_COMMAND(cmd)
     print("testsuite returned %d" % ret)
-    # FIXME: Run python testsuite
+    # FIXME: Run Python testsuite
     sys.exit(ret)
 
 

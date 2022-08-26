@@ -49,7 +49,7 @@ class SettingsPortalObjectProperties(GenericObjectProperties):
 		'displayName': ListOfListOflTextToDictPropertyEncoder,
 		'logo': Base64BinaryPropertyEncoder,
 		'portalComputers': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
-		'portalEntriesOrder': dn_list_property_encoder_for('settings/portal_entry'),  # not really sure about this as it's not exposed through the cli or python frontend, guessed it from the syntax
+		'portalEntriesOrder': dn_list_property_encoder_for('settings/portal_entry'),  # not really sure about this as it's not exposed through the cli or Python frontend, guessed it from the syntax
 		'showApps': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 		'showLogin': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 		'showMenu': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,

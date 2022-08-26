@@ -4,7 +4,7 @@ Python 3 migration
 ==================
 
 .. index::
-   single: python 3; migration
+   single: Python 3; migration
 
 |UCSUMC| modules and the Python API for them support both Python 2 and Python 3.
 The code of |UCSUMC| modules has to be migrated to Python 3. There is nothing

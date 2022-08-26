@@ -112,7 +112,7 @@ class Module(object):
 		python_files = list(self.module.python_files)
 
 		if not python_files:
-			print('I: no python files found in %s' % (self.module.python_path,), file=sys.stderr)
+			print('I: no Python files found in %s' % (self.module.python_path,), file=sys.stderr)
 			return
 
 		for target in self.python_destdirs:

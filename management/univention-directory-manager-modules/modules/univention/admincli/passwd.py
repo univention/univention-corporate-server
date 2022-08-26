@@ -86,17 +86,17 @@ def doit(arglist):
 		out.append('authentication error: %s' % (exc,))
 		return out
 
-	if isinstance(user, bytes):  # python 2
+	if isinstance(user, bytes):  # Python 2
 		user = user.decode('utf-8')
 
 	if configRegistry.get('samba/charset/unix', 'utf8') in ['utf8', 'latin']:
 		ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: known charset given: %s' % configRegistry.get('samba/charset/unix'))
-		if not isinstance(pwd, bytes):  # python 3
+		if not isinstance(pwd, bytes):  # Python 3
 			pwd = pwd.encode('UTF-8')
 		pwd = pwd.decode(configRegistry.get('samba/charset/unix', 'utf8'))
 	else:
 		ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: unknown charset given, try fallback')
-		if isinstance(pwd, bytes):  # python 2
+		if isinstance(pwd, bytes):  # Python 2
 			pwd = pwd.decode('utf-8')
 
 	try:

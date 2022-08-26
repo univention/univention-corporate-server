@@ -67,7 +67,7 @@ fi
 
 # update to UCS 5.0
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 12.0.0-1; then
-	# Delete old python2 cache which is incompatible with python3
+	# Delete old Python 2 cache which is incompatible with Python 3
 	rm -f /var/cache/univention-management-console/saml-*.bdb
 fi
 

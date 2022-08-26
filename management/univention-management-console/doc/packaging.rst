@@ -43,7 +43,7 @@ The meaning of the keys in this file are described in the following:
 Module
 	The internal name of the module
 Python
-	A directory that contains the python package for the UMC module
+	A directory that contains the Python package for the UMC module
 Definition
 	The filename of the XML file with the module definition
 Javascript

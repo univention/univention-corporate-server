@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Lib
-#  python module
+#  Python module
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/

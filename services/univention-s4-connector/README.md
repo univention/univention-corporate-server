@@ -19,7 +19,7 @@
 * During each replication cycle the S4-Connector polls the Samba/AD-LDAP for changes (`usnChanged`/`usnCreated` higher
   than the last value of `highestCommittedUSN` the S4-Connector has seen during the previous replication cycle.
   The last seen value of `highestCommittedUSN` is stored in `s4internal.sqlite`. The S4-Connector attempts to write
-  the change to OpenLDAP. If possible it uses the python UDM API to write changes to OpenLDAP. If object modification
+  the change to OpenLDAP. If possible it uses the Python UDM API to write changes to OpenLDAP. If object modification
   fails, e.g. with a Python traceback, its DN is stored into a table `UCS rejected` in `s4internal.sqlite`.
 
 ## Developer Information

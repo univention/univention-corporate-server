@@ -76,7 +76,7 @@ from univention.testing.ucs_samba import wait_for_drs_replication, DRSReplicatio
 try:
 	from inspect import getfullargspec as getargspec
 except ImportError:
-	from inspect import getargspec  # python 2
+	from inspect import getargspec  # Python 2
 
 
 class UCSTestUDM_Exception(Exception):

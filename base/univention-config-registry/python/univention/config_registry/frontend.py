@@ -617,7 +617,7 @@ Actions:
     no file is specified ALL configuration files are rebuilt
 
   filter [file]:
-    evaluate a template file, expects python inline code in UTF-8 or US-ASCII
+    evaluate a template file, expects Python inline code in UTF-8 or US-ASCII
 
 Description:
   univention-config-registry is a tool to handle the basic configuration for

@@ -504,7 +504,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		parser.add_argument('--ignore', default=cls.DEFAULT_IGNORE, help='Comma-separated list of errors and warnings to ignore (or skip) [%(default)s]')
 		parser.add_argument('--max-line-length', default=cls.MAX_LINE_LENGTH, help='Maximum line length [%(default)s]')
 		parser.add_argument('--graceful', action='store_true', default=False, help='behave like calling ucslint would do: do not fail on certain errors')
-		parser.add_argument('--versions', default='2,3', help='Which python versions to run [%(default)s]')
+		parser.add_argument('--versions', default='2,3', help='Which Python versions to run [%(default)s]')
 		args, args.arguments = parser.parse_known_args()  # type: ignore
 
 		cls.DEFAULT_IGNORE = args.ignore

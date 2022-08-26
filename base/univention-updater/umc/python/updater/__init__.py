@@ -584,7 +584,7 @@ class HookManager:
 	"""
 	This class tries to provide a simple interface to load and call hooks within existing code.
 	Python modules are loaded from specified `module_dir` and automatically registered.
-	These python modules have to contain at least a global method `register_hooks()` that returns
+	These Python modules have to contain at least a global method `register_hooks()` that returns
 	a list of tuples (`hook_name`, `callable`).
 
 	Simple hook file example::
@@ -630,8 +630,8 @@ class HookManager:
 
 	def __init__(self, module_dir: str, raise_exceptions: bool = True) -> None:
 		"""
-		:param module_dir:				path to directory that contains python modules with hook functions
-		:param raise_exceptions:		if `False`, all exceptions while loading python modules will be dropped and all exceptions while calling hooks will be caught and returned in result list
+		:param module_dir:				path to directory that contains Python modules with hook functions
+		:param raise_exceptions:		if `False`, all exceptions while loading Python modules will be dropped and all exceptions while calling hooks will be caught and returned in result list
 		"""
 		self.__loaded_modules = {}  # type: Dict[str, ModuleType]
 		self.__registered_hooks = {}  # type: Dict[str, List[Callable[..., Any]]]
@@ -642,7 +642,7 @@ class HookManager:
 
 	def __load_hooks(self) -> None:
 		"""
-		loads all python modules in specified module dir
+		loads all Python modules in specified module directory.
 		"""
 		if os.path.exists(self.__module_dir) and os.path.isdir(self.__module_dir):
 			for f in os.listdir(self.__module_dir):
@@ -683,7 +683,7 @@ class HookManager:
 
 	def get_hook_list(self) -> Iterable[str]:
 		"""
-		returns a list of hook names that have been defined by loaded python modules
+		returns a list of hook names that have been defined by loaded Python modules.
 		"""
 		return self.__registered_hooks.keys()
 

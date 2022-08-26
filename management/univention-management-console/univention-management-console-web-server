@@ -791,7 +791,7 @@ class CPgeneric(Ressource):
 			cherrypy.response.headers.update(response.headers)
 		for key, item in response.cookies.items():
 			if six.PY2 and not isinstance(key, bytes):
-				key = key.encode('utf-8')  # bug in python Cookie!
+				key = key.encode('utf-8')  # bug in Python cookie!
 			if isinstance(item, dict):
 				cherrypy.response.cookie[key] = item.pop('value', '')
 				cherrypy.response.cookie[key].update(item)

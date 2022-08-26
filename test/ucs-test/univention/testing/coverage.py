@@ -79,7 +79,7 @@ class Coverage(object):
 
 	def write_config_file(self):
 		# type: () -> None
-		"""Write a python .pth file which is invoked before any python process"""
+		"""Write a Python .pth file which is invoked before any Python process"""
 		with open(self.COVERAGE_PTH, 'w') as fd:
 			fd.write(self.COVERAGE_PTH_CONTENT)
 
@@ -107,7 +107,7 @@ directory = {directory}
 
 	def restart_python_services(self):
 		# type: () -> None
-		"""Restart currently running python services, so that they start/stop measuring code"""
+		"""Restart currently running Python services, so that they start/stop measuring code"""
 		for service in self.services:
 			try:
 				subprocess.call(['/usr/sbin/service', service, 'restart'])
@@ -178,7 +178,7 @@ directory = {directory}
 	@classmethod  # noqa: C901
 	def startup(cls):
 		# type: () -> None
-		"""Startup function which is invoked by every(!) python process during coverage measurement. If the process is relevant we start measuring coverage."""
+		"""Startup function which is invoked by every(!) Python process during coverage measurement. If the process is relevant we start measuring coverage."""
 		argv = open('/proc/%s/cmdline' % os.getpid()).read().split('\x00')
 		if not cls.is_candidate(argv):
 			return

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Python Heimdal
-#  setup description for the python distutils
+#  setup description for the Python distutils
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/

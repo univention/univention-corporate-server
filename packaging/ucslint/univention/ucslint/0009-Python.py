@@ -46,9 +46,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	def getMsgIds(self) -> uub.MsgIds:
 		return {
 			'0009-1': (uub.RESULT_WARN, 'failed to open file'),
-			'0009-2': (uub.RESULT_ERROR, 'python file does not specify python version in hashbang'),
-			'0009-3': (uub.RESULT_ERROR, 'python file specifies wrong python version in hashbang'),
-			'0009-4': (uub.RESULT_WARN, 'python file contains whitespace and maybe arguments after python command'),
+			'0009-2': (uub.RESULT_ERROR, 'Python file does not specify Python version in hashbang'),
+			'0009-3': (uub.RESULT_ERROR, 'Python file specifies wrong Python version in hashbang'),
+			'0009-4': (uub.RESULT_WARN, 'Python file contains whitespace and maybe arguments after Python command'),
 			'0009-5': (uub.RESULT_ERROR, 'dict.has_key is deprecated in python3 - please use "if key in dict:"'),
 			'0009-6': (uub.RESULT_ERROR, 'raise "text" is deprecated in python3'),
 			'0009-7': (uub.RESULT_STYLE, 'fragile comparison with None'),
@@ -103,11 +103,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			if match:
 				version, space, option, tail = match.groups()
 				if not version:
-					self.addmsg('0009-2', 'file does not specify python version in hashbang', fn, 1)
+					self.addmsg('0009-2', 'file does not specify Python version in hashbang', fn, 1)
 				elif version not in {'2.7', '3'}:
-					self.addmsg('0009-3', 'file specifies wrong python version in hashbang', fn, 1)
+					self.addmsg('0009-3', 'file specifies wrong Python version in hashbang', fn, 1)
 				if space and not option:
-					self.addmsg('0009-4', 'file contains whitespace after python command', fn, 1)
+					self.addmsg('0009-4', 'file contains whitespace after Python command', fn, 1)
 				if tail:
 					self.addmsg('0009-9', 'hashbang contains more than one option', fn, 1)
 

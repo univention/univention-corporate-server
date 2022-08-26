@@ -763,7 +763,7 @@ class simpleLdap(object):
 				pattern = re.compile(u'%s$' % (re.escape(self.dn),), flags=re.I)
 				try:
 					for subolddn, suboldattrs in subelements:
-						# Convert the DNs to lowercase before the replacement. The cases might be mixed up if the python lib is
+						# Convert the DNs to lowercase before the replacement. The cases might be mixed up if the Python lib is
 						# used by the connector, for example:
 						#   subolddn: uid=user_test_h80,ou=TEST_H81,$LDAP_BASE
 						#   self.dn: ou=test_h81,$LDAP_BASE

@@ -250,12 +250,12 @@ def remove_object(udm_module_name, object_dn):
 
 
 def install_python_file(objectclass, target_subdir, target_filename, data):
-	"""Install a python module file"""
+	"""Install a Python module file"""
 
 	# input validation
 	relative_filename = os.path.join(target_subdir, target_filename)
 	if not relative_filename:
-		ud.debug(ud.LISTENER, ud.ERROR, '%s: No python file to install.' % (name,))
+		ud.debug(ud.LISTENER, ud.ERROR, '%s: No Python file to install.' % (name,))
 		return False
 
 	if relative_filename.startswith('/'):
@@ -285,7 +285,7 @@ def install_python_file(objectclass, target_subdir, target_filename, data):
 
 
 def remove_python_file(objectclass, target_subdir, target_filename):
-	"""Remove python module files"""
+	"""Remove Python module files"""
 	remove_python_files(PYTHON_DIR, target_subdir, target_filename)
 	return remove_python_files(PYTHON3_DIR, target_subdir, target_filename)
 
@@ -294,7 +294,7 @@ def remove_python_files(python_basedir, target_subdir, target_filename):
 	# input validation
 	relative_filename = os.path.join(target_subdir, target_filename)
 	if not relative_filename:
-		ud.debug(ud.LISTENER, ud.ERROR, '%s: No python file to remove.' % (name,))
+		ud.debug(ud.LISTENER, ud.ERROR, '%s: No Python file to remove.' % (name,))
 		return False
 
 	if relative_filename.startswith('/'):

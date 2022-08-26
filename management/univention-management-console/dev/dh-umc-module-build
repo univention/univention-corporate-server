@@ -53,7 +53,7 @@ def do_package(package, core):
 	modules = dh_umc.read_modules(package, core)
 
 	if not core:
-		# build python PO files
+		# build Python PO files
 		for module in modules:
 			for po_file in module.python_po_files:
 				if os.path.exists(po_file):

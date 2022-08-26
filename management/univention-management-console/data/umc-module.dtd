@@ -10,7 +10,7 @@
 	icon:     base directory
 	version:  only "1.0"
 	notifier: use specific notifier loop 'qt'
-	python: python version the module runs with ('3' or '2')
+	python: Python version the module runs with ('3' or '2')
 	-->
 <!ATTLIST module
 	id CDATA #REQUIRED
@@ -64,7 +64,7 @@
 >
 <!ELEMENT command EMPTY>
 <!-- name: name of UMC function
-	function: name of python function
+	function: name of Python function
 	allow_anonymous: if command can be executed without being authenticated -->
 <!ATTLIST command
 	name CDATA #REQUIRED

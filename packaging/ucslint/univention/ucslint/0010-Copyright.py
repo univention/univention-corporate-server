@@ -96,7 +96,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				f in ['preinst', 'postinst', 'prerm', 'postrm', 'copyright']:
 				check_files.append(fn)
 
-		# looking for python files
+		# looking for Python files
 		for fn in uub.FilteredDirWalkGenerator(path, reHashBang=RE_HASHBANG, readSize=100):
 			check_files.append(fn)
 

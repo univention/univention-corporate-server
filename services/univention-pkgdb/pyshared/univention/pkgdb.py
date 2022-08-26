@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 '''Univention Package Database
-python module for the package database'''
+Python module for the package database'''
 from __future__ import print_function
 #
 # Like what you see? Join us!

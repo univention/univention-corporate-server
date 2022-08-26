@@ -743,7 +743,7 @@ class Instance(Base, ProgressMixin):
 	@simple_response()
 	def containers(self, module):
 		"""Returns the list of default containers for the given object
-		type. Therefore the python module and the default object in the
+		type. Therefore the Python module and the default object in the
 		LDAP directory are searched.
 
 		requests.options = {}
@@ -837,7 +837,7 @@ class Instance(Base, ProgressMixin):
 		requests.options = {}
 			'objectType' -- The UDM module name. If not available the flavor is used
 
-		return: <layout data structure (see UDM python modules)>
+		return: <layout data structure (see UDM Python modules)>
 		"""
 		module = self._get_module_by_request(request)
 		module.load(force_reload=True)  # reload for instant extended attributes

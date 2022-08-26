@@ -1,9 +1,9 @@
-E:0009-2: src/irgendwas.py:1: file does not specify python version in hashbang
-E:0009-3: src/mitWhitespace.py:1: file specifies wrong python version in hashbang
-E:0009-3: src/nur24.py:1: file specifies wrong python version in hashbang
-E:0009-3: src/nur25.py:1: file specifies wrong python version in hashbang
-E:0009-3: src/py35.py:1: file specifies wrong python version in hashbang
-E:0009-3: src/py37.py:1: file specifies wrong python version in hashbang
+E:0009-2: src/irgendwas.py:1: file does not specify Python version in hashbang
+E:0009-3: src/mitWhitespace.py:1: file specifies wrong Python version in hashbang
+E:0009-3: src/nur24.py:1: file specifies wrong Python version in hashbang
+E:0009-3: src/nur25.py:1: file specifies wrong Python version in hashbang
+E:0009-3: src/py35.py:1: file specifies wrong Python version in hashbang
+E:0009-3: src/py37.py:1: file specifies wrong Python version in hashbang
 E:0009-5: src/haskey-without-hashbang.py:7:6: dict.has_key is deprecated in python3 - please use "if key in dict:"
 	        if y.has_key ( 'foo ' ):
 	            ^^^^^^^^^^
@@ -35,4 +35,4 @@ E:0009-6: src/nur25.py:11:2: raise "text" is deprecated in python3
 	        raise "Error"
 	        ^^^^^^^^^^^^^
 E:0009-9: src/extra.py:1: hashbang contains more than one option
-W:0009-4: src/mitWhitespace.py:1: file contains whitespace after python command
+W:0009-4: src/mitWhitespace.py:1: file contains whitespace after Python command

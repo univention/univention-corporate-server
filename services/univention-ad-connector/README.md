@@ -20,7 +20,7 @@
   usnCreated` higher than the last value of `highestCommittedUSN` the AD-Connector has seen during the previous
   replication cycle.
   The last seen value of `highestCommittedUSN` is stored in `internal.sqlite`. The AD-Connector attempts to write
-  the change to OpenLDAP. If possible it uses the python UDM API to write changes to OpenLDAP. If object modification
+  the change to OpenLDAP. If possible it uses the Python UDM API to write changes to OpenLDAP. If object modification
   fails, e.g. with a Python traceback, its DN is stored into a table `UCS rejected` in `internal.sqlite`.
 
 ## Developer Information

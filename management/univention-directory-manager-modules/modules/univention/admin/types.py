@@ -66,7 +66,7 @@ class TypeHint(object):
 
 	@property
 	def _json_type(self):
-		# in most cases, the python type is equivalent to the JSON type
+		# in most cases, the Python type is equivalent to the JSON type
 		return self._python_types
 
 	_openapi_type = None  # type: Optional[str]
@@ -110,7 +110,7 @@ class TypeHint(object):
 
 	def decode(self, value):
 		"""
-		Decode the given value from an UDM object's property into a python type.
+		Decode the given value from an UDM object's property into a Python type.
 		This must be graceful. Invalid values set at UDM object properties should not cause an exception!
 
 		.. note:: Do not overwrite in subclass!
@@ -122,7 +122,7 @@ class TypeHint(object):
 		return self.decode_value(value)
 
 	def encode(self, value):
-		"""Encode a value of python type into a string / list / None / etc. suitable for setting at the UDM object.
+		"""Encode a value of Python type into a string / list / None / etc. suitable for setting at the UDM object.
 
 		.. note:: Do not overwrite in subclass!
 
@@ -144,7 +144,7 @@ class TypeHint(object):
 	def to_json_type(self, value):
 		"""Transform the value resulting from :func:`self.decode` into something suitable to transmit via JSON.
 
-			For example, a python datetime.date object into the JSON string with a date format "2019-08-30".
+			For example, a Python :class:`datetime.date` object into the JSON string with a date format "2019-08-30".
 		"""
 		if value is None:
 			return
@@ -156,9 +156,9 @@ class TypeHint(object):
 		return value
 
 	def from_json_type(self, value):
-		"""Transform a value from a JSON object into the internal python type.
+		"""Transform a value from a JSON object into the internal Python type.
 
-			For example, converts a JSON string "2019-08-30" into a python datetime.date object.
+			For example, converts a JSON string "2019-08-30" into a Python :class:`datetime.date` object.
 
 			.. warning:: When overwriting the type must be checked!
 		"""
@@ -169,7 +169,7 @@ class TypeHint(object):
 		return value
 
 	def decode_value(self, value):
-		"""Decode the value into a python object.
+		"""Decode the value into a Python object.
 
 		.. note:: suitable for subclassing.
 		"""
@@ -193,7 +193,7 @@ class TypeHint(object):
 		return value
 
 	def type_check(self, value, types=None):
-		"""Checks if the value has the correct python type"""
+		"""Checks if the value has the correct Python type."""
 		if not isinstance(value, types or self._python_types):
 			must = '%s (%s)' % (self._openapi_type, self._openapi_format) if self._openapi_format else '%s' % (self._openapi_type,)
 			actual = type(value).__name__

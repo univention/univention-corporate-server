@@ -1,6 +1,6 @@
 /*
  * Python Heimdal
- *	module definitions for the heimdal python bindungs
+ * module definitions for the Heimdal Python bindungs
  *
  * Like what you see? Join us!
  * https://www.univention.com/about-us/careers/vacancies/

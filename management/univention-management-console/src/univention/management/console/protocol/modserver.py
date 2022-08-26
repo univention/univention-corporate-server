@@ -108,14 +108,14 @@ class ModuleServer(Server):
 
 	def _load_module(self):
 		# type: () -> None
-		MODULE.process('Loading python module.')
+		MODULE.process('Loading Python module.')
 		modname = self.__module
 		from ..error import UMC_Error
 		try:
 			try:
 				file_ = 'univention.management.console.modules.%s' % (modname,)
 				self.__module = __import__(file_, {}, {}, modname)
-				MODULE.process('Imported python module.')
+				MODULE.process('Imported Python module.')
 				self.__handler = self.__module.Instance()
 				MODULE.process('Module instance created.')
 			except Exception as exc:

@@ -3,7 +3,7 @@
 
 try:
 	from distutils.version import LooseVersion as parse
-except ImportError:  # python 3
+except ImportError:  # Python 3
 	from packaging.version import parse
 from univention.management.console.config import ucr
 from univention.management.console.modules.diagnostic import Critical, MODULE, Warning

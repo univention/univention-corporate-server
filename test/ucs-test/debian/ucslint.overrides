@@ -1,7 +1,7 @@
 # Invalid domain name
 0002-3: debian/changelog
 0002-3: debian/rules
-# Generic python version
+# Generic Python version
 0009-2: bin/ldiff
 0009-2: bin/runner
 0009-2: bin/ucs-test

@@ -37,8 +37,8 @@
 Python API for UMC modules
 ==========================
 
-The python API for UMC modules primary consists of one base class that
-must be implemented. As an addition the python API provides some helper
+The Python API for UMC modules primary consists of one base class that
+must be implemented. As an addition the Python API provides some helper
 functions and classes:
 
 * exception classes
@@ -50,7 +50,7 @@ The XML file defining the UMC module specifies functions for the
 commands provided by the module. These functions must be implemented as
 methods of a class named *Instance* that inherits :class:`.Base`.
 
-The following python code example matches the definition in the previous section::
+The following Python code example matches the definition in the previous section::
 
 	from univention.management.console import Translation
 	from univention.management.console.config import ucr
