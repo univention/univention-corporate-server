@@ -98,18 +98,18 @@ download_packages ()
 
 app_get_ini ()
 {
-	local app="$1"
-	python3 -c "from univention.appcenter.app_cache import Apps
-app = Apps().find('$app')
-print app.get_ini_file()"
+	exec python3 -c "import sys
+from univention.appcenter.app_cache import Apps
+app = Apps().find(sys.argv[1])
+print(app.get_ini_file())" "$1"
 }
 
 app_appliance_hook ()
 {
-	local app="$1"
-	python3 -c "from univention.appcenter.app_cache import Apps
-app = Apps().find('$app')
-print app.get_cache_file('appliance_hook')"
+	exec python3 -c "import sys
+from univention.appcenter.app_cache import Apps
+app = Apps().find(sys.argv[1])
+print(app.get_cache_file('appliance_hook'))" "$1"
 }
 
 get_app_attr_raw_line ()
@@ -135,34 +135,32 @@ get_app_attr ()
 
 app_get_database_packages_for_docker_host ()
 {
-	local app="$1"
-	python3 -c "
+	exec python3 -c "import sys
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.database import DatabaseConnector
 
-app=Apps().find('$app')
+app=Apps().find(sys.argv[1])
 d = DatabaseConnector.get_connector(app)
 if d:
-	print(' '.join(d._get_software_packages()))"
+	print(' '.join(d._get_software_packages()))" "$1"
 }
 
 app_get_component ()
 {
-	local app="$1"
-	python3 -c "
+	exec python3 -c "import sys
 from univention.appcenter.app_cache import Apps
-app = Apps().find('$app')
-print(app.component_id)"
+app = Apps().find(sys.argv[1])
+print(app.component_id)" "$1"
 }
 
 app_get_appliance_hook_download_link ()
 {
-	local app="$1" server
+	local server
 	server="$(ucr get repository/app_center/server)"
-	python3 -c "
+	exec python3 -c "import sys
 from univention.appcenter.app_cache import Apps
-app = Apps().find('$app')
-print('https://$server/univention-repository/%s/maintained/component/%s/appliance_hook' % (app.ucs_version, app.component_id))"
+app = Apps().find(sys.argv[1])
+print('https://$server/univention-repository/%s/maintained/component/%s/appliance_hook' % (app.ucs_version, app.component_id))" "$1"
 }
 
 app_download_appliance_hook ()
@@ -174,11 +172,10 @@ app_download_appliance_hook ()
 
 app_get_compose_file ()
 {
-	local app="$1"
-	python3 -c "
+	exec python3 -c "import sys
 from univention.appcenter.app_cache import Apps
-app = Apps().find('$app')
-print(app.get_cache_file('compose'))"
+app = Apps().find(sys.argv[1])
+print(app.get_cache_file('compose'))" "$1"
 }
 
 app_appliance_is_software_blacklisted ()
