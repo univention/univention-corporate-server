@@ -26,7 +26,7 @@ class S4Connection(ldap_glue.ADConnection):
 
 	decode_sid = s4.decode_sid
 
-	def __init__(self, configbase='connector', no_starttls=False):
+	def __init__(self, configbase='connector'):
 		self.configbase = configbase
 		self.adldapbase = configRegistry['%s/s4/ldap/base' % configbase]
 		self.addomain = self.adldapbase.replace(',DC=', '.').replace('DC=', '')
@@ -36,6 +36,7 @@ class S4Connection(ldap_glue.ADConnection):
 		self.port = configRegistry['%s/s4/ldap/port' % configbase]
 		self.ca_file = configRegistry['%s/s4/ldap/certificate' % configbase]
 		self.protocol = configRegistry.get('%s/s4/ldap/protocol' % self.configbase, 'ldap').lower()
+		self.kerberos = False
 		self.socket = configRegistry.get('%s/s4/ldap/socket' % self.configbase, '')
 
 		self.serverctrls_for_add_and_modify = []
@@ -45,7 +46,7 @@ class S4Connection(ldap_glue.ADConnection):
 			ldb_ctrl_bypass_samaccountname_ldap_check = LDAPControl('1.3.6.1.4.1.10176.1004.0.4.1', criticality=0)
 			self.serverctrls_for_add_and_modify.append(ldb_ctrl_bypass_samaccountname_ldap_check)
 
-		self.connect(no_starttls)
+		self.connect(configRegistry.is_False('%s/s4/ldap/ssl' % self.configbase, True))
 
 
 def check_object(object_dn, sid=None, old_object_dn=None):
