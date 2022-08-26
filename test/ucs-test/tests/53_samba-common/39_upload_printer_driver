@@ -1,0 +1,46 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: "Upload printer driver via rpcclient"
+## exposure: dangerous
+## packages:
+##  - univention-samba | univention-samba4
+## bugs: [55048]
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+## - memberserver
+
+# shellcheck disable=SC1091
+. "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck disable=SC2154
+admin_account="$(echo "$tests_domainadmin_account" | sed -e 's|uid=||;s|,.*||')"
+# shellcheck disable=SC2154
+admin_passwd="$tests_domainadmin_pwd"
+
+driver_dir="/var/lib/samba/drivers/x64"
+driver_name="test-driver-$(makepasswd)"
+driver_file="$(mktemp -p $driver_dir)"
+data_file="$(mktemp -p $driver_dir)"
+config_file="$(mktemp -p $driver_dir)"
+help_file="$(mktemp -p $driver_dir)"
+language_monitor_file="$(mktemp -p $driver_dir)"
+
+driver_settings="$driver_name"
+driver_settings+=":$(basename "$driver_file")"
+driver_settings+=":$(basename "$data_file")"
+driver_settings+=":$(basename "$config_file")"
+driver_settings+=":$(basename "$help_file")"
+driver_settings+=":$(basename "$language_monitor_file")"
+driver_settings+=":RAW:"
+
+# upload driver
+rpcclient -U "$admin_account%$admin_passwd" localhost -c "adddriver 'Windows x64' '$driver_settings'" || fail_fast 1 "adddriver failed"
+
+# check uploaded driver
+rpcclient -U "$admin_account%$admin_passwd" localhost -c "enumdrivers 3"
+rpcclient -U "$admin_account%$admin_passwd" localhost -c "enumdrivers 3" |
+	grep "Driver Name: \[$driver_name\]" ||
+	fail_fast 1 "could not find new driver in enumdrivers"
+
+exit "$RETVAL"

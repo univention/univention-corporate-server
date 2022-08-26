@@ -1,3 +1,9 @@
+ucs-test (10.0.7-17) unstable; urgency=medium
+
+  * Bug #55048: added 53_samba-common/39_upload_printer_driver
+
+ -- Felix Botner <botner@univention.de>  Fri, 26 Aug 2022 14:40:53 +0200
+
 ucs-test (10.0.7-16) unstable; urgency=medium
 
   * Bug #43432: unify common S4/AD-Connector LDAP connections into
