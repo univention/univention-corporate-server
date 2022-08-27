@@ -46,7 +46,7 @@ class S4Connection(ldap_glue.ADConnection):
 			ldb_ctrl_bypass_samaccountname_ldap_check = LDAPControl('1.3.6.1.4.1.10176.1004.0.4.1', criticality=0)
 			self.serverctrls_for_add_and_modify.append(ldb_ctrl_bypass_samaccountname_ldap_check)
 
-		self.connect(configRegistry.is_False('%s/s4/ldap/ssl' % self.configbase, True))
+		self.connect(configRegistry.is_false('%s/s4/ldap/ssl' % self.configbase, True))
 
 
 def check_object(object_dn, sid=None, old_object_dn=None):
