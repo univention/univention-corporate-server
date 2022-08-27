@@ -1,5 +1,5 @@
-usr/share/ucs-test/61_udm-users/01_test_udm_users.py usr/share/ucs-test/21_appcenter-uninstall/01_test_udm_users.py
-usr/share/ucs-test/62_udm-groups/01_test_udm_groups.py usr/share/ucs-test/21_appcenter-uninstall/01_test_udm_groups.py
+usr/share/ucs-test/59_udm/61_test_udm_users.py usr/share/ucs-test/21_appcenter-uninstall/61_test_udm_users.py
+usr/share/ucs-test/59_udm/62_test_udm_groups.py usr/share/ucs-test/21_appcenter-uninstall/62_test_udm_groups.py
 usr/share/ucs-test/10_ldap/40replication usr/share/ucs-test/21_appcenter-uninstall/20_replication
 usr/share/ucs-test/23_apache/83apache_configtest usr/share/ucs-test/21_appcenter-uninstall/30_apache_configtest
 usr/share/ucs-test/23_apache/84apache_reload usr/share/ucs-test/21_appcenter-uninstall/35_apache_reload
