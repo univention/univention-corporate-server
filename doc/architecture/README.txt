@@ -35,7 +35,7 @@ Prepare local Python environment once:
 
    .. code-block::
 
-      python -m pip install --upgrade pip
+      python3 -m pip install --upgrade pip
       pip install -r requirements.txt --cert /etc/ssl/certs/ca-certificates
 
 With the requirements, `Univention Sphinx Book theme

@@ -200,7 +200,7 @@ attribute ``gecos``:
 
 .. code-block:: bash
 
-   python -c '
+   python3 -c '
    from univention.uldap import getMachineConnection
    from ldap.schema import AttributeType
    conn = getMachineConnection()
