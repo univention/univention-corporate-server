@@ -24,7 +24,9 @@ configRegistry.load()
 class S4Connection(ldap_glue.ADConnection):
 	'''helper functions to modify AD-objects'''
 
-	decode_sid = s4.decode_sid
+	@classmethod
+	def decode_sid(cls, sid):
+		return s4.decode_sid(sid)
 
 	def __init__(self, configbase='connector'):
 		self.configbase = configbase
