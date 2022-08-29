@@ -43,8 +43,5 @@ all: univention-directory-notifier
 univention-directory-notifier: index.o cache.o callback.o network.o notify.o univention-directory-notifier.o
 	$(CC) $(CFLAGS) -o $@ $^ $(NOTIFIER_LDADD)
 
-univention-directory-notifier-index-dump: index.o index-dump.o
-	$(CC) $(CFLAGS) -o $@ $^ $(DUMP_LDADD)
-
 clean:
-	$(RM) *.o core univention-directory-notifier univention-directory-notifier-index-dump
+	$(RM) *.o core univention-directory-notifier
