@@ -7,7 +7,6 @@ StartLimitIntervalSec=1000
 
 [Service]
 EnvironmentFile=/etc/default/univention-directory-notifier
-ExecStartPre=/usr/share/univention-directory-notifier/import_translog.sh
 ExecStart=/usr/sbin/univention-directory-notifier -F $UDN_OPTS
 Restart=always
 RestartSec=10s
