@@ -1,0 +1,30 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: curl
+fix: 7.64.0-4+deb10u3
+desc: |
+ This update addresses the following issues:
+ * TELNET stack contents disclosure (CVE-2021-22898)
+ * bad connection reuse due to flawed path name checks (CVE-2021-22924)
+ * protocol downgrade required TLS bypassed (CVE-2021-22946)
+ * STARTTLS protocol injection via MITM (CVE-2021-22947)
+ * OAUTH2 bearer bypass in connection re-use (CVE-2022-22576)
+ * auth/cookie leak on redirect (CVE-2022-27776)
+ * CERTINFO never-ending busy-loop (CVE-2022-27781)
+ * TLS and SSH connection too eager reuse (CVE-2022-27782)
+ * HTTP compression denial of service (CVE-2022-32206)
+ * FTP-KRB bad message verification (CVE-2022-32208)
+bug: [55140]
+cve:
+- CVE-2021-22898
+- CVE-2021-22924
+- CVE-2021-22946
+- CVE-2021-22947
+- CVE-2022-22576
+- CVE-2022-27776
+- CVE-2022-27781
+- CVE-2022-27782
+- CVE-2022-32206
+- CVE-2022-32208
