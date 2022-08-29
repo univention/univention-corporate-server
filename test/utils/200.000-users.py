@@ -10,9 +10,9 @@ ucr = ConfigRegistry()
 ucr.load()
 base = ucr.get('ldap/base')
 number_of_users = 200000
-# every 100th group is a big group containing all users -> 200
-# every 300th group is a group that contains 3 nested groups -> 66
-# every 900th group also contains a nested group as a nested group -> 22
+# every 200th group is a big group containing all users -> 100
+# every 350th group is a group that contains 3 nested groups -> 57
+# every 880th group also contains a nested group as a nested group -> 22
 number_of_groups = 20000
 username = "testuser"
 groupname = "testgroup"
@@ -54,12 +54,12 @@ for i in range(0, number_of_groups):
 	group = groups.lookup(None, lo, "cn=%s" % name)
 	new_members = group_member.get(i, [])
 	nested_group = False
-	if i and not i % 100:
+	if i and not i % 200:
 		new_members = all_users
-	if i and not i % 300:
+	if i and not i % 550:
 		new_members = new_members + [all_groups[i-1], all_groups[i-2], all_groups[i-3]]
 		nested_group = True
-	if i and not i % 900:
+	if i and not i % 880:
 		new_members = new_members + [has_nested_group[:1][0]]
 		nested_group = True
 	if not group:
