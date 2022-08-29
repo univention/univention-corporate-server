@@ -377,8 +377,8 @@ three methods to retrieve the values.
 
       $ eval "$(ucr shell)"
       $ udm settings/syntax create "$@" --ignore_exists \
-      > --position "cn=custom attributes,cn=univention,$ldap_base" \
-      > --set name="MyServers" \
-      > --set filter='(&(univentionService=MyService)(univentionServerRole=member))' \
-      > --set attribute='computers/memberserver: fqdn' \
-      > --set value='computers/memberserver: dn'
+        --position "cn=custom attributes,cn=univention,$ldap_base" \
+        --set name="MyServers" \
+        --set filter='(&(univentionService=MyService)(univentionServerRole=member))' \
+        --set attribute='computers/memberserver: fqdn' \
+        --set value='computers/memberserver: dn'

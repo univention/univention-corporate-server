@@ -28,17 +28,17 @@ see the following example:
 
    $ eval "$(ucr shell)"
    $ udm saml/serviceprovider create "$@" \
-   > --ignore_exists \
-   > --position "cn=saml-serviceprovider,cn=univention,$ldap_base" \
-   > --set isActivated=TRUE \
-   > --set Identifier="MyServiceProviderIdentifier" \
-   > --set NameIDFormat="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" \
-   > --set simplesamlAttributes="false" \
-   > --set AssertionConsumerService="https://$hostname.$domainname/sso-login-page" \
-   > --set simplesamlNameIDAttribute="uid" \
-   > --set privacypolicyURL="https://example.com/policy.html" \
-   > --set serviceProviderOrganizationName="My Service Name" \
-   > --set serviceproviderdescription="A long description shown to the user on the Single Sign-On page." || die
+     --ignore_exists \
+     --position "cn=saml-serviceprovider,cn=univention,$ldap_base" \
+     --set isActivated=TRUE \
+     --set Identifier="MyServiceProviderIdentifier" \
+     --set NameIDFormat="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" \
+     --set simplesamlAttributes="false" \
+     --set AssertionConsumerService="https://$hostname.$domainname/sso-login-page" \
+     --set simplesamlNameIDAttribute="uid" \
+     --set privacypolicyURL="https://example.com/policy.html" \
+     --set serviceProviderOrganizationName="My Service Name" \
+     --set serviceproviderdescription="A long description shown to the user on the Single Sign-On page." || die
 
 .. _sso-idpinfo:
 
@@ -53,8 +53,8 @@ downloaded with the following call:
 
    $ eval "$(ucr shell)"
    $ wget --ca-certificate /etc/univention/ssl/ucsCA/CAcert.pem \
-   > -O /etc/idp.cert \
-   > https://"${ucs_server_sso_fqdn:-ucs-sso.$domainname}"/simplesamlphp/saml2/idp/certificate
+     -O /etc/idp.cert \
+     https://"${ucs_server_sso_fqdn:-ucs-sso.$domainname}"/simplesamlphp/saml2/idp/certificate
 
 The XML metadata is available for example from
 
@@ -62,8 +62,8 @@ The XML metadata is available for example from
 
    $ eval "$(ucr shell)"
    $ wget --ca-certificate /etc/univention/ssl/ucsCA/CAcert.pem \
-   > -O /etc/idp.metadata \
-   > https://"${ucs_server_sso_fqdn:-ucs-sso.$domainname}"/simplesamlphp/saml2/idp/metadata.php
+     -O /etc/idp.metadata \
+     https://"${ucs_server_sso_fqdn:-ucs-sso.$domainname}"/simplesamlphp/saml2/idp/metadata.php
 
 The *single sign-on* login page to be configured in the service provider is
 :samp:`https://ucs-sso.{domainname}/simplesamlphp/saml2/idp/SSOService.php`.
@@ -81,11 +81,11 @@ the following :command:`ucr` command may be used:
    $ fqdn="ucs-sso.domainname"
    $ myspi="MyServiceProviderIdentifier"
    $ ucr set ucs/web/overview/entries/service/SP/description="External Service Login" \
-   > ucs/web/overview/entries/service/SP/label="External Service SSO" \
-   > ucs/web/overview/entries/service/SP/link="https://$fqdn/simplesamlphp/saml2/idp/SSOService.php?spentityid=$myspi" \
-   > ucs/web/overview/entries/service/SP/description/de="Externer Dienst Login" \
-   > ucs/web/overview/entries/service/SP/label/de="Externer Dienst SSO" \
-   > ucs/web/overview/entries/service/SP/priority=50
+     ucs/web/overview/entries/service/SP/label="External Service SSO" \
+     ucs/web/overview/entries/service/SP/link="https://$fqdn/simplesamlphp/saml2/idp/SSOService.php?spentityid=$myspi" \
+     ucs/web/overview/entries/service/SP/description/de="Externer Dienst Login" \
+     ucs/web/overview/entries/service/SP/label/de="Externer Dienst SSO" \
+     ucs/web/overview/entries/service/SP/priority=50
 
 where ``MyServiceProviderIdentifier`` is the identifier used when creating the
 UDM service provider object.

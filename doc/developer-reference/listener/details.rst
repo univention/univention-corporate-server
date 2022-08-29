@@ -132,9 +132,9 @@ command line. For example, the following command would use the machine password:
 .. code-block:: console
 
    $ univention-directory-listener-verify \
-   > -b "$(ucr get ldap/base)" \
-   > -D "$(ucr get ldap/hostdn)" \
-   > -w "$(cat /etc/machine.secret)"
+     -b "$(ucr get ldap/base)" \
+     -D "$(ucr get ldap/hostdn)" \
+     -w "$(cat /etc/machine.secret)"
 
 
 .. _listener-commands-getnid:

@@ -33,8 +33,8 @@ you haven't already, create the group you want to authorize:
 .. code-block:: console
 
    $ udm groups/group create \
-   > --position="cn=groups,$(ucr get ldap/base)" \
-   > --set name="UDM API Users"
+     --position="cn=groups,$(ucr get ldap/base)" \
+     --set name="UDM API Users"
 
 
 Now set the UCR variable to allow the group members to use the API.
@@ -42,7 +42,7 @@ Now set the UCR variable to allow the group members to use the API.
 .. code-block:: console
 
    $ ucr set directory/manager/rest/authorized-groups/udm-api-users= \
-   > "cn=UDM API Users,cn=groups,$(ucr get ldap/base)"
+     "cn=UDM API Users,cn=groups,$(ucr get ldap/base)"
 
 
 .. note::
@@ -129,7 +129,7 @@ You can get the template for an UDM module with:
 .. code-block:: console
 
    $ curl -X GET -H "Accept: application/json" \
-   > https://${USER}:${PASSWORD}@${FQHN}/univention/udm/${module}/add
+     https://${USER}:${PASSWORD}@${FQHN}/univention/udm/${module}/add
 
 
 So for the users/user module you get the template with:
@@ -137,7 +137,7 @@ So for the users/user module you get the template with:
 .. code-block:: console
 
    $ curl -X GET -H "Accept: application/json" \
-   > https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/add
+     https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/add
 
 
 To work with the template, you can save it into a file. To make it
@@ -147,8 +147,8 @@ more readable, you can use something like Pythons
 .. code-block:: console
 
    $ curl -X GET -H "Accept: application/json" \
-   > https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/add |
-   > python -m json.tool > user_template.json
+     https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/add |
+     python -m json.tool > user_template.json
 
 
 The JSON file contains meta information (keys that start with underscore
@@ -159,11 +159,11 @@ such a condensed template:
 .. code-block:: console
 
    $ curl -X GET -H "Accept: application/json" \
-   > https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/add |
-   > python -c 'import sys, json; \
-   >   template = json.load(sys.stdin); \
-   >   template = {key:value for key, value in template.items() if not key.startswith("_")}; \
-   >   json.dump(template, sys.stdout, indent=4)' > user_template.json
+     https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/add |
+     python -c 'import sys, json; \
+       template = json.load(sys.stdin); \
+       template = {key:value for key, value in template.items() if not key.startswith("_")}; \
+       json.dump(template, sys.stdout, indent=4)' > user_template.json
 
 
 The content of :file:`user_template.json` should look something like this.
@@ -272,7 +272,7 @@ template, through a :command:`POST` request, to create a new user.
 .. code-block:: console
 
    $ curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" \
-   > https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/ --data @user_template.json
+     https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/ --data @user_template.json
 
 
 .. _udm-rest-api-usage-examples-get:
@@ -287,7 +287,7 @@ In this example you search for a users/user object where the property
 .. code-block:: console
 
    $ curl -X GET -H "Accept: application/json" \
-   > "http://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/?query\[firstname\]=Al%2A&query\[lastname\]=%2Aer"
+     "http://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/?query\[firstname\]=Al%2A&query\[lastname\]=%2Aer"
 
 
 The response should look something like this (some fields where omitted for
@@ -397,8 +397,8 @@ a specific version of a resource.
 .. code-block:: console
 
    $ curl -X GET -H "Accept: application/json" --dump-header user.headers \
-   > https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/<dn> \
-   > | python -m json.tool > user.json
+     https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/<dn> \
+     | python -m json.tool > user.json
 
 
 .. caution::
@@ -414,7 +414,7 @@ send the value of the *Etag* header, which you saved earlier in the
 .. code-block:: console
 
    $ curl -X PUT -H "Accept: application/json" -H "Content-Type: application/json" -H 'If-Match: "<Etag>"' \
-   > "https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/<dn>" --data @user.json
+     "https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/<dn>" --data @user.json
 
 
 .. caution::

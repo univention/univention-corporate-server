@@ -360,54 +360,54 @@ creates an *Extended Attribute* for user objects using this syntax.
    $ base="cn=univention,$(ucr get ldap/base)"
 
    $udm container/ou create \
-   > --position "$base" \
-   > --set name="$syntax" \
-   > --set description='UCS profession level'
-   > dn="ou=$syntax,$base"
+     --position "$base" \
+     --set name="$syntax" \
+     --set description='UCS profession level'
+     dn="ou=$syntax,$base"
 
    $ udm container/cn create \
-   > --position "$dn" \
-   > --set name="value1" \
-   > --set description='UCS Guru (> 5)'
+     --position "$dn" \
+     --set name="value1" \
+     --set description='UCS Guru (> 5)'
 
    $ udm container/cn create \
-   > --position "$dn" \
-   > --set name="value2"
-   > --set description='UCS Regular (1..5)'
+     --position "$dn" \
+     --set name="value2"
+     --set description='UCS Regular (1..5)'
 
    $ udm container/cn create \
-   > --position "$dn" \
-   > --set name="value3" \
-   > --set description='UCS Beginner (< 1)'
+     --position "$dn" \
+     --set name="value3" \
+     --set description='UCS Beginner (< 1)'
 
    $ udm container/cn create \
-   > --ignore_exists \
-   > --position "$base" \
-   > --set name='udm_syntax'
-   > dn="cn=udm_syntax,$base"
+     --ignore_exists \
+     --position "$base" \
+     --set name='udm_syntax'
+     dn="cn=udm_syntax,$base"
 
    $ udm settings/udm_syntax create \
-   > --position "$dn" \
-   > --set name="$syntax" \
-   > --set filename="DynamicSelection.py" \
-   > --set data="$(bzip2 <DynamicSelection.py | base64)" \
-   > --set package="$syntax" --set packageversion="1"
+     --position "$dn" \
+     --set name="$syntax" \
+     --set filename="DynamicSelection.py" \
+     --set data="$(bzip2 <DynamicSelection.py | base64)" \
+     --set package="$syntax" --set packageversion="1"
 
    $ udm settings/extended_attribute create \
-   > --position "cn=custom attributes,$base" \
-   > --set name='Profession' \
-   > --set module='users/user' \
-   > --set tabName='General' \
-   > --set translationTabName='"de_DE" "Allgemein"' \
-   > --set groupName='Personal information' \
-   > --set translationGroupName='"de_DE" "Persönliche Informationen"' \
-   > --set shortDescription='UCS profession level' \
-   > --set translationShortDescription='"de_DE" "UCS Erfahrung"' \
-   > --set longDescription='Select a level of UCS experience' \
-   > --set translationLongDescription='"de_DE" "Wählen Sie den Level der Erfahrung mit UCS"' \
-   > --set objectClass='univentionFreeAttributes' \
-   > --set ldapMapping='univentionFreeAttribute1' \
-   > --set syntax="$syntax" --set mayChange=1 --set valueRequired=0
+     --position "cn=custom attributes,$base" \
+     --set name='Profession' \
+     --set module='users/user' \
+     --set tabName='General' \
+     --set translationTabName='"de_DE" "Allgemein"' \
+     --set groupName='Personal information' \
+     --set translationGroupName='"de_DE" "Persönliche Informationen"' \
+     --set shortDescription='UCS profession level' \
+     --set translationShortDescription='"de_DE" "UCS Erfahrung"' \
+     --set longDescription='Select a level of UCS experience' \
+     --set translationLongDescription='"de_DE" "Wählen Sie den Level der Erfahrung mit UCS"' \
+     --set objectClass='univentionFreeAttributes' \
+     --set ldapMapping='univentionFreeAttribute1' \
+     --set syntax="$syntax" --set mayChange=1 --set valueRequired=0
 
 
 .. _udm-ea-issues:
@@ -497,16 +497,16 @@ The module ``settings/extended_options`` has the following properties:
 
    $ eval "$(ucr shell)"
    $ udm settings/extended_options create "$@" --ignore_exists \
-   > --position "cn=custom attributes,cn=univention,$ldap_base" \
-   > --set name="My Option" \
-   > --set shortDescription="Example option" \
-   > --set translationShortDescription='"de_DE" "Beispieloption"' \
-   > --set longDescription="An example option" \
-   > --set translationLongDescription='"de_DE" "Eine Beispieloption"' \
-   > --set default=0 \
-   > --set editable=0 \
-   > --set module="users/user" \
-   > --set objectClass=univentionExamplesUdmOC
+     --position "cn=custom attributes,cn=univention,$ldap_base" \
+     --set name="My Option" \
+     --set shortDescription="Example option" \
+     --set translationShortDescription='"de_DE" "Beispieloption"' \
+     --set longDescription="An example option" \
+     --set translationLongDescription='"de_DE" "Eine Beispieloption"' \
+     --set default=0 \
+     --set editable=0 \
+     --set module="users/user" \
+     --set objectClass=univentionExamplesUdmOC
 
 
 .. _udm-hook:
@@ -651,6 +651,6 @@ property of an *Extended Attribute* to ``RemoveObjClassUnused``:
 .. code-block:: console
 
    $ udm settings/extended_attribute modify \
-   > --dn ... \
-   > --set hook=RemoveObjClassUnused
+     --dn ... \
+     --set hook=RemoveObjClassUnused
 

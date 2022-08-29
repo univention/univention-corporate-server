@@ -25,7 +25,7 @@ invoked directly from shell. The most commonly used functions are:
       :name: ucr-set
 
       $ ucr set print/papersize?a4 \
-      > variable/name=value
+        variable/name=value
 
 
 :command:`ucr get` :samp:`{key}`

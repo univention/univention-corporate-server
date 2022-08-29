@@ -42,10 +42,10 @@ translation (often referred to as PO file or Portable Objects).
    $ mkdir ~/translation
    $ cd ~/translation
    $ git clone \
-   > --single-branch \
-   > --depth 1 \
-   > --shallow-submodules \
-   > https://github.com/univention/univention-corporate-server
+     --single-branch \
+     --depth 1 \
+     --shallow-submodules \
+     https://github.com/univention/univention-corporate-server
 
 
 .. _translation-umc-create-package:
@@ -60,10 +60,10 @@ directory, the following command must be executed:
 
    $ cd ~/translation
    $ univention-ucs-translation-build-package \
-   > --source ~/translation/univention-corporate-server \
-   > --languagecode fr \
-   > --locale fr_FR.UTF-8:UTF-8 \
-   > --language-name French
+     --source ~/translation/univention-corporate-server \
+     --languagecode fr \
+     --locale fr_FR.UTF-8:UTF-8 \
+     --language-name French
 
 
 This creates a new directory :file:`~/translation/univention-l10n-fr/` which
@@ -103,8 +103,8 @@ The following example updates the translation package
 .. code-block:: console
 
    $ univention-ucs-translation-merge \
-   > ~/translation/univention-corporate-server \
-   > ~/translation/univention-l10n-fr
+     ~/translation/univention-corporate-server \
+     ~/translation/univention-l10n-fr
 
 
 .. _translation-umc-build-package:

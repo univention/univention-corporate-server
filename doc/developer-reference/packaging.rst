@@ -455,10 +455,10 @@ commands create a repository for UCS version 5.0 with the component name
    $ install -m755 -d "$WWW_BASE/$TESTCOMP"
    $ install -m644 -t "$WWW_BASE/$TESTCOMP" *.deb
    $ ( cd "$WWW_BASE"
-   > rm -f "$TESTCOMP/Packages"*
-   > apt-ftparchive packages "$TESTCOMP" > "Packages"
-   > gzip -9 < "Packages" > "$TESTCOMP/Packages.gz"
-   > mv "Packages" "$TESTCOMP/Packages" )
+     rm -f "$TESTCOMP/Packages"*
+     apt-ftparchive packages "$TESTCOMP" > "Packages"
+     gzip -9 < "Packages" > "$TESTCOMP/Packages.gz"
+     mv "Packages" "$TESTCOMP/Packages" )
 
 
 This repository can be included on any UCS system by appending the following
@@ -490,9 +490,9 @@ For the repository above the following variables need to be set:
 .. code-block:: console
 
    $ ucr set \
-   > repository/online/component/testcomp=yes \
-   > repository/online/component/testcomp/server=repository.server \
-   > repository/online/component/testcomp/prefix=repository
+     repository/online/component/testcomp=yes \
+     repository/online/component/testcomp/server=repository.server \
+     repository/online/component/testcomp/prefix=repository
 
 .. _pkg-obs:
 

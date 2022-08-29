@@ -554,17 +554,17 @@ the following functions might be important:
       $ . /usr/share/univention-lib/ldap.sh
 
       $ ucs_registerLDAPExtension "$@" \
-      > --schema /path/to/appschemaextension.schema \
-      > --acl /path/to/appaclextension.acl \
-      > --udm_syntax /path/to/appudmsyntax.py
+        --schema /path/to/appschemaextension.schema \
+        --acl /path/to/appaclextension.acl \
+        --udm_syntax /path/to/appudmsyntax.py
 
       $ ucs_registerLDAPExtension "$@" \
-      > --udm_module /path/to/appudmmodule.py \
-      > --messagecatalog /path/to/de.mo \
-      > --messagecatalog /path/to/eo.mo \
-      > --umcregistration /path/to/module-object.xml \
-      > --icon /path/to/moduleicon16x16.png \
-      > --icon /path/to/moduleicon50x50.png
+        --udm_module /path/to/appudmmodule.py \
+        --messagecatalog /path/to/de.mo \
+        --messagecatalog /path/to/eo.mo \
+        --umcregistration /path/to/module-object.xml \
+        --icon /path/to/moduleicon16x16.png \
+        --icon /path/to/moduleicon50x50.png
 
 
 :command:`ucs_unregisterLDAPExtension` :samp:`[--binddn {bind-dn} --bindpwdfile {filename}]` ``{`` :samp:`--schema {objectname} | --acl {objectname} | --udm_syntax {objectname} | --udm_hook {objectname} | --udm_module {objectname}` ``...}``
