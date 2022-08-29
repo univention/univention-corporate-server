@@ -1,7 +1,7 @@
 #!/bin/sh -e
 #
 # Univention Directory Notifier
-#  Replicate one DN
+#  Replicate one or multiple DN
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -35,9 +35,13 @@
 
 eval "$(ucr shell)"
 
-usage()
-{
-	echo "Usage: $0 --dn <ldap dn>"
+fail () {
+	echo "Abort: $*" >&2
+	exit 1
+}
+
+usage () {
+	echo "Usage: $0 { --dn <ldap-dn> | <file-name> }"
 	echo
 	echo "The given LDAP DN will be re-replicated by the Univention Directory Notifier to all UCS systems in this UCS domain. This tool must be run on the Primary Directory Node."
 	echo
@@ -45,22 +49,64 @@ usage()
 	echo
 }
 
-if [ "$server_role" != "domaincontroller_master" ]; then
-	echo "Abort: This tool must be run on the Primary Directory Node!" >&2
-	exit 1
+TEMP=$(getopt -o h --long 'help,dn:' -n "$0" -- "$@") ||
+	fail "failed to parse command line arguments: $*"
+eval set -- "$TEMP"
+unset TEMP
+dn=
+dnfile=
+while [ $# -ge 1 ]
+do
+	case "$1" in
+	--help|-h)
+		usage
+		exit 0
+		;;
+	--dn)
+		dn="$2"
+		shift 2
+		;;
+	--)
+		shift
+		break
+		;;
+	*)
+		fail "invalid command line argument"
+		;;
+	esac
+done
+
+if [ -n "$dn" ]
+then
+	f=one
+elif [ -n "$1" ] && [ -s "$1" ]
+then
+	dnfile="$1"
+	f=many
+else
+	fail 'expected --dn <dn> or <file>'
 fi
 
-if [ ! -e /var/lib/univention-ldap/notify/transaction ]; then
-	echo "Abort: /var/lib/univention-ldap/notify/transaction was not found." >&2
-	exit 1
-fi
+[ "${server_role:?}" = "domaincontroller_master" ] ||
+	fail "This tool must be run on the Primary Directory Node!" >&2
 
-if [ "$#" != 2 ] || [ "$1" != "--dn" ]; then
-	usage >&2
-	exit 1
-fi
+one () {
+	tid=$((tid+1))
+	echo "$tid $dn m" >>/var/lib/univention-ldap/listener/listener
+	echo -n "$tid" >/var/lib/univention-ldap/last_id
+}
 
-dn="$2"
+many () {
+	local fn
+	while read -r dn
+	do
+		[ -n "$dn" ] ||
+			continue
+		slapdn "$dn" ||
+			continue
+		one
+	done <"$dnfile"
+}
 
 RESTART_NOTIFIER=0
 if pidof univention-directory-notifier >/dev/null ; then
@@ -70,8 +116,7 @@ if pidof univention-directory-notifier >/dev/null ; then
 	sleep 1
 	if pidof univention-directory-notifier >/dev/null ; then
 		echo "failed"
-		echo "Abort: Failed to stop the notifier daemon. Please check stop the daemon manually and try again." >&2
-		exit 1
+		fail "Failed to stop the notifier daemon. Please check stop the daemon manually and try again."
 	fi
 	echo "done"
 fi
@@ -80,47 +125,55 @@ RESTART_SLAPD=0
 if pidof slapd >/dev/null ; then
 	echo -n "Stopping slapd: "
 	RESTART_SLAPD=1
-	/etc/init.d/slapd stop >/dev/null
+	systemctl stop slapd >/dev/null
 	sleep 1
 	if pidof slapd >/dev/null ; then
 		echo "failed"
-		echo "Abort: Failed to stop the OpenLDAP daemon. Please check stop the daemon manually and try again." >&2
-		exit 1
+		fail "Failed to stop the OpenLDAP daemon. Please check stop the daemon manually and try again."
 	fi
 	echo "done"
 fi
 
+get_last () {
+	local fn _
+	for fn in /var/lib/univention-ldap/last_id /var/lib/univention-ldap/listener/listener /var/lib/univention-ldap/listener/istener.priv
+	do
+		[ -s "$fn" ] ||
+			continue
+		# shellcheck disable=SC2046
+		set -- $(tail -n 1 "$fn")
+		tid="$1"
+		[ 1 -le "$tid" ] ||
+			fail "Invalid last transcation ID: $tid"
+		return 0
+	done
+	fail "Failed to get last transaction ID"
+}
+get_last
 
-echo -n "Write $dn to listener file: "
-id="$(tail -n 1 /var/lib/univention-ldap/notify/transaction | awk '{print $1}')"
-
-last_line="$(tail -n 1 /var/lib/univention-ldap/listener/listener)"
-if [ -n "$last_line" ]; then
-	id_listener="$(tail -n 1 /var/lib/univention-ldap/listener/listener | awk '{print $1}')"
-fi
-
-if [ -n "$id_listener" ] && [ "$id_listener" -gt "$id" ]; then
-	nextid=$((id_listener+1))
-else
-	nextid=$((id+1))
-fi
-
-echo "$nextid $dn m" >>/var/lib/univention-ldap/listener/listener
-echo -n "$nextid" >/var/lib/univention-ldap/last_id
-echo "done"
+"$f"
 
 rc=0
-
-if [ "$RESTART_NOTIFIER" = 1 ]; then
-	echo -n "Starting notifier: "
-	systemctl start univention-directory-notifier >/dev/null || rc=1
-	echo "done"
-fi
-
 if [ "$RESTART_SLAPD" = 1 ]; then
 	echo -n "Starting slapd: "
-	/etc/init.d/slapd start >/dev/null || rc=1
-	echo "done"
+	if systemctl start slapd; then
+		echo "done"
+	else
+		echo "failed"
+		rc=1
+	fi
+else
+	echo "Warning: slapd remains stopped."
 fi
-
+if [ "$RESTART_NOTIFIER" = 1 ]; then
+	echo -n "Starting notifier: "
+	if systemctl start univention-directory-notifier; then
+		echo "done"
+	else
+		echo "failed"
+		rc=1
+	fi
+else
+	echo "Warning: notifier remains stopped."
+fi
 exit $rc

@@ -2,6 +2,5 @@
 15univention-directory-notifier-post.inst	usr/lib/univention-install/
 etc/network/if-post-down.d/univention-directory-notifier	etc/network/if-post-down.d/
 src/univention-directory-notifier	usr/sbin/
-univention-replicate-many	usr/sbin/
 univention-replicate-one	usr/sbin/
 univention-translog	usr/share/univention-directory-notifier/
