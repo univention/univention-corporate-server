@@ -109,9 +109,9 @@ in this format additionally. The boot loader configuration is also adapted:
 
    $ DEV='/dev/xvda' GRUB='(hd0)'
    $ grub-mkdevicemap ||
-   > echo "${GRUB} ${DEV}" >/boot/grub/device.map
+     echo "${GRUB} ${DEV}" >/boot/grub/device.map
    $ append="$(ucr get grub/append |
-   > sed -re "s|/dev/sda|${DEV}|g;s|(no)?splash||g")"
+     sed -re "s|/dev/sda|${DEV}|g;s|(no)?splash||g")"
    $ xargs -d'\n' ucr set <<__UCR__
    grub/append=${append}
    grub/boot=${DEV}
@@ -398,11 +398,11 @@ possible to request more than one license in one session.
 .. code-block:: console
 
    $ wget \
-   > --keep-session-cookies \
-   > --save-cookies cookie.db \
-   > --load-cookies cookie.db \
-   > --post-data='username=univention&password=secret' \
-   > https://license.univention.de/shop/example/
+     --keep-session-cookies \
+     --save-cookies cookie.db \
+     --load-cookies cookie.db \
+     --post-data='username=univention&password=secret' \
+     https://license.univention.de/shop/example/
 
 
 A license can also be ordered with a POST request via
@@ -417,23 +417,23 @@ A license can also be ordered with a POST request via
 .. code-block:: console
 
    $ wget \
-   > --keep-session-cookies \
-   > --save-cookies cookie.db \
-   > --load-cookies cookie.db \
-   > --post-data='kundeEmail=customer@example&'\
-   > 'kundeUnternehmen=New%20Customern&'\
-   > 'EndDate=27.11.2015&'\
-   > 'BaseDN=dc%3Ddrei%2Cdc%3Dzwei%2Cdc%3Dtest&'\
-   > 'Servers=0&'\
-   > 'Support=0&'\
-   > 'PremiumSupport=0&'\
-   > 'Users=100&'\
-   > 'ManagedClients=0&'\
-   > 'CorporateClients=0&'\
-   > 'VirtualDesktopUsers=0&'\
-   > 'VirtualDesktopClients=0&'\
-   > 'Type=UCS' \
-   > https://license.univention.de/shop/example/order
+     --keep-session-cookies \
+     --save-cookies cookie.db \
+     --load-cookies cookie.db \
+     --post-data='kundeEmail=customer@example&'\
+     'kundeUnternehmen=New%20Customern&'\
+     'EndDate=27.11.2015&'\
+     'BaseDN=dc%3Ddrei%2Cdc%3Dzwei%2Cdc%3Dtest&'\
+     'Servers=0&'\
+     'Support=0&'\
+     'PremiumSupport=0&'\
+     'Users=100&'\
+     'ManagedClients=0&'\
+     'CorporateClients=0&'\
+     'VirtualDesktopUsers=0&'\
+     'VirtualDesktopClients=0&'\
+     'Type=UCS' \
+     https://license.univention.de/shop/example/order
 
 
 If the order is successful, the HTTP status code ``202`` is returned. The HTML
@@ -469,9 +469,9 @@ license for up to sixty seconds:
 .. code-block:: console
 
    $ wget \
-   > --keep-session-cookies \
-   > --save-cookies cookie.db \
-   > --load-cookies cookie.db \
-   > https://license.univention.de/shop/example/orders/465.ldif
+     --keep-session-cookies \
+     --save-cookies cookie.db \
+     --load-cookies cookie.db \
+     https://license.univention.de/shop/example/orders/465.ldif
 
 

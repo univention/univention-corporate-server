@@ -588,9 +588,9 @@ the correct location in :file:`/var/lib/univention-client-boot/installer/`.
 
    $ mount /dev/cdrom /media/cdrom0
    $ install -m644 /media/cdrom0/netboot/linux \
-   > /var/lib/univention-client-boot/
+     /var/lib/univention-client-boot/
    $ install -m644 /media/cdrom0/netboot/initrd.gz \
-   > /var/lib/univention-client-boot/
+     /var/lib/univention-client-boot/
    $ umount /media/cdrom0
 
 
@@ -634,7 +634,7 @@ benefit that ``HTTP`` is faster, more reliable and also works over the internet.
 .. code-block:: console
 
    $ ln -s /usr/lib/PXELINUX/lpxelinux.0 \
-   > /var/lib/univention-client-boot/
+     /var/lib/univention-client-boot/
 
 #. Setup the *DHCP Boot* policy to use :file:`lpxelinux.0`. Depending on the
    capabilities of the network card boot code the boot loader can either be
@@ -648,9 +648,9 @@ benefit that ``HTTP`` is faster, more reliable and also works over the internet.
          $ LDAP="$(ucr get ldap/base)"
          $ HTTP="http://$HOST/univention-client-boot/lpxelinux.0"
          $ udm policies/dhcp_boot modify \
-         > --dn "cn=default-settings,cn=boot,cn=dhcp,cn=policies,$LDAP" \
-         > --set boot_filename="$HTTP" \
-         > --set boot_server=
+           --dn "cn=default-settings,cn=boot,cn=dhcp,cn=policies,$LDAP" \
+           --set boot_filename="$HTTP" \
+           --set boot_server=
 
 
    b. The installer performs its own second DHCP request. This again retrieves
@@ -663,11 +663,11 @@ benefit that ``HTTP`` is faster, more reliable and also works over the internet.
 
          $ STMT='if substring (option vendor-class-identifier, 0, 3) = "d-i" { filename ""; }'
          $ udm dhcp/subnet list |
-         > sed -ne 's/^DN: //p' |
-         >   xargs -d '\n' -n1 udm dhcp/subnet modify \
-         >     --option options \
-         >     --append statements="$STMT" \
-         >     --dn
+           sed -ne 's/^DN: //p' |
+             xargs -d '\n' -n1 udm dhcp/subnet modify \
+               --option options \
+               --append statements="$STMT" \
+               --dn
 
 
    * For ``TFTP`` change ``boot filename`` to point to :file:`lpxelinux.0`:
@@ -677,9 +677,9 @@ benefit that ``HTTP`` is faster, more reliable and also works over the internet.
         $ HOST="$(hostname -f)"
         $ LDAP="$(ucr get ldap/base)"
         $ udm policies/dhcp_boot modify \
-        > --dn "cn=default-settings,cn=boot,cn=dhcp,cn=policies,$LDAP" \
-        > --set boot_filename='lpxelinux.0' \
-        > --set boot_server="$HOST"
+         --dn "cn=default-settings,cn=boot,cn=dhcp,cn=policies,$LDAP" \
+         --set boot_filename='lpxelinux.0' \
+         --set boot_server="$HOST"
 
 
 #. Configure the boot loader to load the Linux kernel and initial ram disk from
@@ -690,9 +690,9 @@ benefit that ``HTTP`` is faster, more reliable and also works over the internet.
       $ PXE='http://updates.software-univention.de/pxe'
       $ PXE="$PXE/5.0-2/amd64/gtk/debian-installer/amd64"
       $ ucr set \
-      > pxe/installer/kernel="$PXE/linux" \
-      > pxe/installer/initrd="$PXE/initrd.gz" \
-      > pxe/installer/ipappend=3
+        pxe/installer/kernel="$PXE/linux" \
+        pxe/installer/initrd="$PXE/initrd.gz" \
+        pxe/installer/ipappend=3
 
 
 #. In the profile file the settings for ``mirror/http/hostname`` and
