@@ -207,8 +207,7 @@ The following steps occur on changes:
    to keep track of the last transaction number.
 
    As a fallback the transaction number of the last entry from the file
-   :file:`/var/lib/univention-ldap/listener/listener` or
-   :file:`/var/lib/univention-ldap/notify/transaction` is used. The module
+   :file:`/var/lib/univention-ldap/listener/listener` is used. The module
    appends the transaction ID, DN and change type to the file
    :file:`/var/lib/univention-ldap/listener/listener`.
 
@@ -219,10 +218,7 @@ The following steps occur on changes:
    is then renamed to :file:`/var/lib/univention-ldap/listener/listener.priv`
    (referred to as ``FILE_NAME_NOTIFIER_PRIV``) and the original files is
    re-created empty. The transactions from the renamed file are processed
-   line-by-line and are appended to the file
-   :file:`/var/lib/univention-ldap/notify/transaction` (referred to as
-   ``FILE_NAME_TF`` in the source code), including the DN. Since protocol
-   version 3 the notifier also stores the same information within the LDAP
+   line-by-line and since protocol version 3 stored within the LDAP
    server by creating the entry :samp:`reqSession={ID},cn=translog`. After
    successful processing the renamed file is deleted. For efficient access by
    transaction ID the index :file:`transaction.index` is updated.

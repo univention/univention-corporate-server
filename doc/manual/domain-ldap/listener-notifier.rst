@@ -93,16 +93,6 @@ being replicated to, for example, a |UCSREPLICADN| is barely noticeable. An
 incomplete replication can be identified by comparing the transaction IDs of the
 listener and notifier services.
 
-The transactions registered by the notifier service are written in the
-:file:`/var/lib/univention-ldap/notify/transaction` file in ascending order on
-the |UCSPRIMARYDN|. An example:
-
-.. code-block::
-
-   root@primary:~# tail -1 /var/lib/univention-ldap/notify/transaction
-   836 cn=replica3,cn=dc,cn=computers,dc=firma,dc=de m
-
-
 The last transaction received by the listener system is stored in the
 :file:`/var/lib/univention-directory-listener/notifier_id` file:
 

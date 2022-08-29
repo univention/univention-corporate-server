@@ -8,7 +8,7 @@ msgstr ""
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-30 14:32+0000\n"
-"PO-Revision-Date: 2023-02-02 14:58+0100\n"
+"PO-Revision-Date: 2023-06-08 11:14+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -2237,24 +2237,6 @@ msgstr ""
 "merkbar. Eine möglicherweise unvollständige Replikation kann durch einen "
 "Vergleich der Transaktions-IDs von Listener- und Notifier-Dienst "
 "identifiziert werden."
-
-#: ../../domain-ldap/listener-notifier.rst:92
-msgid ""
-"The transactions registered by the notifier service are written in the "
-":file:`/var/lib/univention-ldap/notify/transaction` file in ascending "
-"order on the |UCSPRIMARYDN|. An example:"
-msgstr ""
-"Auf dem |UCSPRIMARYDN| werden die vom Notifier-Dienst registrierten "
-"Transaktionen in aufsteigender Reihenfolge in die Datei :file:`/var/lib"
-"/univention-ldap/notify/transaction` geschrieben. Ein Beispiel:"
-
-#: ../../domain-ldap/listener-notifier.rst:96
-msgid ""
-"root@primary:~# tail -1 /var/lib/univention-ldap/notify/transaction\n"
-"836 cn=replica3,cn=dc,cn=computers,dc=firma,dc=de m"
-msgstr ""
-"root@primary:~# tail -1 /var/lib/univention-ldap/notify/transaction\n"
-"836 cn=replica3,cn=dc,cn=computers,dc=firma,dc=de m"
 
 #: ../../domain-ldap/listener-notifier.rst:102
 msgid ""
