@@ -135,7 +135,7 @@ instance is operated with a self-contained configuration base. The
 .. code-block:: console
 
    $ /usr/share/univention-ad-connector/scripts/prepare-new-instance \
-   > -a create -c connector2
+     -a create -c connector2
 
 This script creates an additional init script for the second connector instance
 :file:`/etc/init.d/univention-ad-connector2`, a configuration directory
@@ -159,7 +159,7 @@ The filename of the converted certificate then needs to be stored in |UCSUCR|:
 .. code-block:: console
 
    $ univention-config-registry set \
-   > connector2/ad/ldap/certificate=/etc/univention/ad-connector2.pem
+     connector2/ad/ldap/certificate=/etc/univention/ad-connector2.pem
 
 If a UCS synchronization is performed towards Active Directory, the replication
 of the listener module must be restarted after a further connector instance is
