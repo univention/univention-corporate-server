@@ -9,8 +9,7 @@ desc: |
  * Address bar spoofing via XSLT error handling (CVE-2022-38472)
  * Cross-origin XSLT Documents would have inherited the parent's permissions
    (CVE-2022-38473)
- * Memory safety bugs fixed in Firefox 104, Firefox ESR 102.2, and Firefox ESR
-   91.13 (CVE-2022-38478)
+ * Memory safety bugs fixed (CVE-2022-38478)
 bug: [55143]
 cve:
 - CVE-2022-38472
