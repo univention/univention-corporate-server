@@ -252,8 +252,8 @@ it can be beneficial to start multiple instances. Set the following |UCSUCRV|\ s
 .. code-block:: console
 
    $ systemctl restart apache2 \
-   > univention-management-console-web-server \
-   > univention-management-console-server
+     univention-management-console-web-server \
+     univention-management-console-server
 
 The number of instances to configure depends on the workload and the server
 system. As a general rule of thumb these should not be higher than the machines
