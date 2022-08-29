@@ -1,0 +1,18 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: firefox-esr
+fix: 91.13.0esr-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ * Address bar spoofing via XSLT error handling (CVE-2022-38472)
+ * Cross-origin XSLT Documents would have inherited the parent's permissions
+   (CVE-2022-38473)
+ * Memory safety bugs fixed in Firefox 104, Firefox ESR 102.2, and Firefox ESR
+   91.13 (CVE-2022-38478)
+bug: [55143]
+cve:
+- CVE-2022-38472
+- CVE-2022-38473
+- CVE-2022-38478
