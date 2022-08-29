@@ -124,14 +124,14 @@ of a file. This section describes how a CSR is signed by the UCS CA.
 .. code-block:: console
 
    $ openssl req \
-   > -inform  der -in  request.der \
-   > -outform pem -out req.pem
+     -inform  der -in  request.der \
+     -outform pem -out req.pem
 
 The following command then processes the CSR and creates the certificate:
 
 .. code-block:: console
 
    $ openssl ca -batch -config /etc/univention/ssl/openssl.cnf \
-   > -in REQUEST -out CERTIFICATE \
-   > -passin file:/etc/univention/ssl/password
+     -in REQUEST -out CERTIFICATE \
+     -passin file:/etc/univention/ssl/password
 
