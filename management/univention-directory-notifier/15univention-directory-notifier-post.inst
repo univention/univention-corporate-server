@@ -63,20 +63,6 @@ fi
 
 sleep 2
 
-i=notify/transaction
-if [ ! -e "/var/lib/univention-ldap/$i" ]; then
-	touch "/var/lib/univention-ldap/$i"
-fi
-if [ -e "/var/lib/univention-ldap/$i" ]; then
-	chmod 640 "/var/lib/univention-ldap/$i"
-	chgrp "DC Backup Hosts" "/var/lib/univention-ldap/$i"
-fi
-if [ ! -e "/var/lib/univention-ldap/$i.lock" ]; then
-	touch "/var/lib/univention-ldap/$i.lock"
-	chmod 600 "/var/lib/univention-ldap/$i.lock"
-fi
-
-
 if [ "${server_role:-}" = "domaincontroller_master" ]; then
 	# Wait for the listener initialization on Primary Directory Node
 	# https://forge.univention.org/bugzilla/show_bug.cgi?id=35723

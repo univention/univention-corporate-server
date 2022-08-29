@@ -49,20 +49,6 @@ if [ ! -e /var/lib/univention-ldap/schema/md5 ]; then
 	touch /var/lib/univention-ldap/schema/md5
 fi
 
-i=notify/transaction
-if [ ! -e "/var/lib/univention-ldap/$i" ]; then
-	touch "/var/lib/univention-ldap/$i"
-fi
-if [ -e "/var/lib/univention-ldap/$i" ]; then
-	chmod 640 "/var/lib/univention-ldap/$i"
-	chgrp "DC Backup Hosts" "/var/lib/univention-ldap/$i"
-fi
-if [ ! -e "/var/lib/univention-ldap/$i.lock" ]; then
-	touch "/var/lib/univention-ldap/$i.lock"
-	chmod 600 "/var/lib/univention-ldap/$i.lock"
-fi
-
-
 univention-config-registry set notifier/debug/level?1
 
 create_logfile /var/log/univention/notifier.log "root:adm" 640
@@ -76,8 +62,7 @@ call_joinscript 02univention-directory-notifier.inst
 
 if [ "$1" = "configure" ]
 then
-	ucr set notifier/protocol/version?3
-	systemctl restart univention-directory-notifier || :
+	systemctl try-restart univention-directory-notifier || :
 fi
 
 exit 0
