@@ -139,7 +139,7 @@ A range of standard parameters are defined for every module:
    .. code-block::
 
       $ univention-directory-manager users/user remove \
-      > --dn "uid=ldapadmin,cn=users,dc=company,dc=example"
+        --dn "uid=ldapadmin,cn=users,dc=company,dc=example"
 
 .. option:: --position
 
@@ -151,8 +151,8 @@ A range of standard parameters are defined for every module:
    .. code-block::
 
       $ univention-directory-manager computers/ipmanagedclient move \
-      > --dn "cn=desk01,cn=management,cn=computers,dc=company,dc=com" \
-      > --position "cn=finance,cn=computers,dc=company,dc=example"
+        --dn "cn=desk01,cn=management,cn=computers,dc=company,dc=com" \
+        --position "cn=finance,cn=computers,dc=company,dc=example"
 
 .. option:: --set
 
@@ -163,11 +163,11 @@ A range of standard parameters are defined for every module:
    .. code-block::
 
       $ univention-directory-manager users/user create \
-      > --position "cn=users,dc=compaby,dc=example" \
-      > --set username="jsmith" \
-      > --set firstname="John" \
-      > --set lastname="Smith" \
-      > --set password="12345678"
+        --position "cn=users,dc=compaby,dc=example" \
+        --set username="jsmith" \
+        --set firstname="John" \
+        --set lastname="Smith" \
+        --set password="12345678"
 
 .. option:: --option
 
@@ -192,8 +192,8 @@ A range of standard parameters are defined for every module:
    .. code-block::
 
       $ univention-directory-manager [category | modulename] [Operation] \
-      > --policy-reference "cn=sales,cn=pwhistory," \
-      > "cn=users,cn=policies,dc=company,dc=example"
+        --policy-reference "cn=sales,cn=pwhistory," \
+        "cn=users,cn=policies,dc=company,dc=example"
 
 .. option:: --ignore-exists
 
@@ -209,9 +209,9 @@ A range of standard parameters are defined for every module:
    .. code-block::
 
       $ univention-directory-manager groups/group modify \
-      > --dn "cn=staff,cn=groups,dc=company,dc=example" \
-      > --append users="uid=smith,cn=users,dc=company,dc=example" \
-      > --remove users="uid=miller,cn=users,dc=company,dc=example"
+        --dn "cn=staff,cn=groups,dc=company,dc=example" \
+        --append users="uid=smith,cn=users,dc=company,dc=example" \
+        --remove users="uid=miller,cn=users,dc=company,dc=example"
 
 .. option:: --remove
 
@@ -236,23 +236,23 @@ Creating a user in the standard user container:
 .. code-block::
 
    $ univention-directory-manager users/user create \
-   > --position "cn=users,dc=example,dc=com" \
-   > --set username="user01" \
-   > --set firstname="Random" \
-   > --set lastname="User" \
-   > --set organisation="Example company LLC" \
-   > --set mailPrimaryAddress="mail@example.com" \
-   > --set password="secretpassword"
+     --position "cn=users,dc=example,dc=com" \
+     --set username="user01" \
+     --set firstname="Random" \
+     --set lastname="User" \
+     --set organisation="Example company LLC" \
+     --set mailPrimaryAddress="mail@example.com" \
+     --set password="secretpassword"
 
 Subsequent addition of the postal address for an existing user:
 
 .. code-block::
 
    $ univention-directory-manager users/user modify \
-   > --dn "uid=user01,cn=users,dc=example,dc=com" \
-   > --set street="Exemplary Road 42" \
-   > --set postcode="28239" \
-   > --set city="Bremen"
+     --dn "uid=user01,cn=users,dc=example,dc=com" \
+     --set street="Exemplary Road 42" \
+     --set postcode="28239" \
+     --set city="Bremen"
 
 This command can be used to display all the users whose username begins with
 *user*:
@@ -260,7 +260,7 @@ This command can be used to display all the users whose username begins with
 .. code-block::
 
    $ univention-directory-manager users/user list \
-   > --filter uid=user*
+     --filter uid=user*
 
 Searching for objects with the ``--filter`` can also be limited to a position in
 the LDAP directory; in this case, to all users in the container
@@ -269,15 +269,15 @@ the LDAP directory; in this case, to all users in the container
 .. code-block::
 
    $ univention-directory-manager users/user list \
-   > --filter uid="user*" \
-   > --position "cn=bremen,cn=users,dc=example,dc=com"
+     --filter uid="user*" \
+     --position "cn=bremen,cn=users,dc=example,dc=com"
 
 This call removes the user ``user04``:
 
 .. code-block::
 
    $ univention-directory-manager users/user remove \
-   > --dn "uid=user04,cn=users,dc=example,dc=com"
+     --dn "uid=user04,cn=users,dc=example,dc=com"
 
 A company has two sites with containers created for each. The following command
 can be used to transfer a user from the container for the site "Hamburg" to the
@@ -286,8 +286,8 @@ container for the site "Bremen":
 .. code-block::
 
    $ univention-directory-manager users/user move \
-   > --dn "uid=user03,cn=hamburg,cn=users,dc=example,dc=com" \
-   > --position "cn=bremen,cn=users,dc=example,dc=com"
+     --dn "uid=user03,cn=hamburg,cn=users,dc=example,dc=com" \
+     --position "cn=bremen,cn=users,dc=example,dc=com"
 
 .. _central-udm-example-groups:
 
@@ -299,17 +299,17 @@ Creating a group ``Example Users`` and adding the user ``user01`` to this group:
 .. code-block::
 
    $ univention-directory-manager groups/group create \
-   > --position "cn=groups,dc=example,dc=com" \
-   > --set name="Example Users" \
-   > --set users="uid=user01,cn=users,dc=example,dc=com"
+     --position "cn=groups,dc=example,dc=com" \
+     --set name="Example Users" \
+     --set users="uid=user01,cn=users,dc=example,dc=com"
 
 Subsequent addition of the user ``user02`` to the existing group:
 
 .. code-block::
 
    $ univention-directory-manager groups/group modify \
-   > --dn "cn=Example Users,cn=groups,dc=example,dc=com" \
-   > --append users="uid=user02,cn=users,dc=example,dc=com"
+     --dn "cn=Example Users,cn=groups,dc=example,dc=com" \
+     --append users="uid=user02,cn=users,dc=example,dc=com"
 
 .. caution::
 
@@ -321,8 +321,8 @@ Subsequent removal of the user ``user01`` from the group:
 .. code-block::
 
    $ univention-directory-manager groups/group modify \
-   > --dn "cn=Example Users,cn=groups,dc=example,dc=com" \
-   > --remove users="uid=user01,cn=users,dc=example,dc=com"
+     --dn "cn=Example Users,cn=groups,dc=example,dc=com" \
+     --remove users="uid=user01,cn=users,dc=example,dc=com"
 
 .. _central-udm-example-cn-policies:
 
@@ -337,9 +337,9 @@ container for computer objects (see :ref:`central-cn-and-ous`):
 .. code-block::
 
    $ univention-directory-manager container/cn create \
-   > --position "cn=computers,dc=example,dc=com" \
-   > --set name="bremen" \
-   > --set computerPath=1
+     --position "cn=computers,dc=example,dc=com" \
+     --set name="bremen" \
+     --set computerPath=1
 
 This command creates a disk quota policy with soft and hard limits and the name
 *Default quota*:
@@ -347,18 +347,18 @@ This command creates a disk quota policy with soft and hard limits and the name
 .. code-block::
 
    $ univention-directory-manager policies/share_userquota create \
-   > --position "cn=policies,dc=example,dc=com" \
-   > --set name="Default quota" \
-   > --set softLimitSpace=5GB \
-   > --set hardLimitSpace=10GB
+     --position "cn=policies,dc=example,dc=com" \
+     --set name="Default quota" \
+     --set softLimitSpace=5GB \
+     --set hardLimitSpace=10GB
 
 This policy is now linked to the user container ``cn=users``:
 
 .. code-block::
 
    $ univention-directory-manager container/cn modify \
-   > --dn "cn=users,dc=example,dc=com" \
-   > --policy-reference "cn=Default quota,cn=policies,dc=example,dc=com"
+     --dn "cn=users,dc=example,dc=com" \
+     --policy-reference "cn=Default quota,cn=policies,dc=example,dc=com"
 
 Creating a |UCSUCR| policy with which the storage time for log files can be set
 to one year. One space is used to separate the name and value of the variable:
@@ -366,17 +366,17 @@ to one year. One space is used to separate the name and value of the variable:
 .. code-block::
 
    $ univention-directory-manager policies/registry create \
-   > --position "cn=config-registry,cn=policies,dc=example,dc=com" \
-   > --set name="default UCR settings" \
-   > --set registry="logrotate/rotate/count 52"
+     --position "cn=config-registry,cn=policies,dc=example,dc=com" \
+     --set name="default UCR settings" \
+     --set registry="logrotate/rotate/count 52"
 
 This command can be used to attach an additional value to the created policy:
 
 .. code-block::
 
    $ univention-directory-manager policies/registry modify \
-   > --dn "cn=default UCR settings,cn=config-registry,cn=policies,dc=example,dc=com" \
-   > --append registry='"logrotate/compress" "no"'
+     --dn "cn=default UCR settings,cn=config-registry,cn=policies,dc=example,dc=com" \
+     --append registry='"logrotate/compress" "no"'
 
 .. _central-udm-example-cn-computers:
 
@@ -390,10 +390,10 @@ computer account is then automatically used:
 .. code-block::
 
    $ univention-directory-manager computers/windows create \
-   > --position "cn=computers,dc=example,dc=com" \
-   > --set name=WinClient01 \
-   > --set mac=aa:bb:cc:aa:bb:cc \
-   > --set ip=192.0.2.10
+     --position "cn=computers,dc=example,dc=com" \
+     --set name=WinClient01 \
+     --set mac=aa:bb:cc:aa:bb:cc \
+     --set ip=192.0.2.10
 
 .. _central-udm-example-shares:
 
@@ -407,10 +407,10 @@ yet exist on the server, it is also created automatically:
 .. code-block::
 
    $ univention-directory-manager shares/share create \
-   > --position "cn=shares,dc=example,dc=com" \
-   > --set name="Documentation" \
-   > --set host="fileserver.example.com" \
-   > --set path="/var/shares/documentation"
+     --position "cn=shares,dc=example,dc=com" \
+     --set name="Documentation" \
+     --set host="fileserver.example.com" \
+     --set path="/var/shares/documentation"
 
 .. _central-udm-example-printer:
 
@@ -426,13 +426,13 @@ connected via the IPP protocol.
 .. code-block::
 
    $ univention-directory-manager shares/printer create \
-   > --position "cn=printers,dc=example,dc=com" \
-   > --set name="LaserPrinter01"  \
-   > --set spoolHost="printserver.example.com" \
-   > --set uri="ipp:// 192.0.2.100" \
-   > --set model="foomatic-rip/HP-Color_LaserJet_9500-Postscript.ppd" \
-   > --set location="Head office" \
-   > --set producer="producer: cn=HP,cn=cups,cn=univention,dc=example,dc=com"
+     --position "cn=printers,dc=example,dc=com" \
+     --set name="LaserPrinter01"  \
+     --set spoolHost="printserver.example.com" \
+     --set uri="ipp:// 192.0.2.100" \
+     --set model="foomatic-rip/HP-Color_LaserJet_9500-Postscript.ppd" \
+     --set location="Head office" \
+     --set producer="producer: cn=HP,cn=cups,cn=univention,dc=example,dc=com"
 
 .. note::
 
@@ -446,10 +446,10 @@ information on printer groups can be found in :ref:`printer-groups`.
 .. code-block::
 
    $ univention-directory-manager shares/printergroup create \
-   > --set name=LaserPrinters \
-   > --set spoolHost="printserver.example.com" \
-   > --append groupMember=LaserPrinter01 \
-   > --append groupMember=LaserPrinter02
+     --set name=LaserPrinters \
+     --set spoolHost="printserver.example.com" \
+     --append groupMember=LaserPrinter01 \
+     --append groupMember=LaserPrinter02
 
 .. _central-udm-example-dnsdhcp:
 
@@ -463,10 +463,10 @@ for the MAC address. Further information on DHCP can be found in
 .. code-block::
 
    $ univention-directory-manager dhcp/host create \
-   > --superordinate "cn=example.com,cn=dhcp,dc=example,dc=com" \
-   > --set host="Client222" \
-   > --set fixedaddress="192.0.2.110" \
-   > --set hwaddress="ethernet 00:11:22:33:44:55"
+     --superordinate "cn=example.com,cn=dhcp,dc=example,dc=com" \
+     --set host="Client222" \
+     --set fixedaddress="192.0.2.110" \
+     --set hwaddress="ethernet 00:11:22:33:44:55"
 
 If it should be possible for a computer name to be resolved via DNS, the
 following commands can be used to configure a forward (host record) and reverse
@@ -475,14 +475,14 @@ resolution (PTR record).
 .. code-block::
 
    $ univention-directory-manager dns/host_record create \
-   > --superordinate "zoneName=example.com,cn=dns,dc=example,dc=com" \
-   > --set name="Client222" \
-   > --set a="192.0.2.110"
+     --superordinate "zoneName=example.com,cn=dns,dc=example,dc=com" \
+     --set name="Client222" \
+     --set a="192.0.2.110"
 
    $ univention-directory-manager dns/ptr_record create \
-   > --superordinate "zoneName=0.168.192.in-addr.arpa,cn=dns,dc=example,dc=com" \
-   > --set address="110" \
-   > --set ptr_record="Client222.example.com."
+     --superordinate "zoneName=0.168.192.in-addr.arpa,cn=dns,dc=example,dc=com" \
+     --set address="110" \
+     --set ptr_record="Client222.example.com."
 
 Further information on DNS can be found in :ref:`networks-dns`.
 
@@ -500,14 +500,14 @@ created specially for this purpose:
 .. code-block::
 
    $ univention-directory-manager settings/extended_attribute create \
-   > --position "cn=custom attributes,cn=univention,dc=example,dc=com" \
-   > --set name="CarLicense" \
-   > --set module="users/user" \
-   > --set ldapMapping="univentionFreeAttribute1" \
-   > --set objectClass="univentionFreeAttributes" \
-   > --set longDescription="License plate number of the company car" \
-   > --set tabName="Company car" \
-   > --set multivalue=0 \
-   > --set syntax="string" \
-   > --set shortDescription="Car license"
+     --position "cn=custom attributes,cn=univention,dc=example,dc=com" \
+     --set name="CarLicense" \
+     --set module="users/user" \
+     --set ldapMapping="univentionFreeAttribute1" \
+     --set objectClass="univentionFreeAttributes" \
+     --set longDescription="License plate number of the company car" \
+     --set tabName="Company car" \
+     --set multivalue=0 \
+     --set syntax="string" \
+     --set shortDescription="Car license"
 

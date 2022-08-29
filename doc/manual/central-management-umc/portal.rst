@@ -85,12 +85,12 @@ Then execute the following command to create an LDAP object for the LDAP ACLs:
 .. code-block:: console
 
    $ udm settings/ldapacl create \
-   > --position "cn=ldapacl,cn=univention,$(ucr get ldap/base)" \
-   > --set name=62my-portal-acl \
-   > --set filename=62my-portal-acl \
-   > --set data="$(bzip2 -c /opt/62my-portal-acl.acl | base64)" \
-   > --set package="62my-portal-acl" \
-   > --set packageversion=1
+     --position "cn=ldapacl,cn=univention,$(ucr get ldap/base)" \
+     --set name=62my-portal-acl \
+     --set filename=62my-portal-acl \
+     --set data="$(bzip2 -c /opt/62my-portal-acl.acl | base64)" \
+     --set package="62my-portal-acl" \
+     --set packageversion=1
 
 
 If the ACL is to be deleted again, the following command can be used:

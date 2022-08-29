@@ -177,9 +177,9 @@ rewritten once.
 .. code-block:: console
 
    $ univention-config-registry set \
-   > dns/forwarder1=192.0.2.2 \
-   > sshd/xforwarding="no" \
-   > sshd/port=2222
+     dns/forwarder1=192.0.2.2 \
+     sshd/xforwarding="no" \
+     sshd/port=2222
 
 A conditional setting is also possible. For example, if a value should only be
 saved in a |UCSUCR| variable when the variable does not yet exist, this can be

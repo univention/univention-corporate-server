@@ -304,10 +304,10 @@ The domain join can also be performed on the command line using
 .. code-block::
 
    $ dsconfigad -a <MAC HOSTNAME> \
-   > -domain <FQDN> \
-   > -ou "CN=Computers,<LDAP base DN>" \
-   > -u <Domain Administrator> \
-   > -mobile enable
+     -domain <FQDN> \
+     -ou "CN=Computers,<LDAP base DN>" \
+     -u <Domain Administrator> \
+     -mobile enable
 
 Additional configuration options are available through :command:`dsconfigad
 -help`.

@@ -62,7 +62,7 @@ command executed on the |UCSPRIMARYDN| will list all affected packages:
 .. code-block::
 
    $ dpkg -S /etc/ldap/schema/*.schema \
-   > /usr/share/univention-ldap/schema/*.schema
+     /usr/share/univention-ldap/schema/*.schema
 
 
 To simply install all packages of the |UCSPRIMARYDN| also on the |UCSBACKUPDN|,

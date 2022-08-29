@@ -126,9 +126,9 @@ attributes and their mapping can be fetched from the following command:
 .. code-block:: console
 
    $ python3 -c 'from univention.admin.handlers.users.user import mapping;\
-   > print("\n".join( \
-   > map("{0[0]:>30s} {0[1][0]:<30s}".format, sorted(mapping._map.items()))) \
-   > )'
+     print("\n".join( \
+     map("{0[0]:>30s} {0[1][0]:<30s}".format, sorted(mapping._map.items()))) \
+     )'
 
 .. _user-management-password-changes-by-users-selfregistration:
 
@@ -333,8 +333,8 @@ older than 5 days and 2 hours:
 .. code-block::
 
    $ /usr/share/univention-self-service/delete_deregistered_accounts.py \
-   > --timedelta-days 5 \
-   > --timedelta-hours 2
+     --timedelta-days 5 \
+     --timedelta-hours 2
 
 For all possible arguments to the script see:
 
@@ -348,9 +348,9 @@ The script can be run regularly by creating a cron job via |UCSUCR|.
 .. code-block::
 
    $ ucr set cron/delete_deregistered_accounts/command=\
-   > /usr/share/univention-self-service/delete_deregistered_accounts.py\
-   > ' --timedelta-days 30' \
-   > cron/delete_deregistered_accounts/time='00 06 * * *'  # daily at 06:00
+     /usr/share/univention-self-service/delete_deregistered_accounts.py\
+     ' --timedelta-days 30' \
+     cron/delete_deregistered_accounts/time='00 06 * * *'  # daily at 06:00
 
 
 More information on how to set cron jobs via |UCSUCR| can be found in

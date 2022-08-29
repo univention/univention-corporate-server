@@ -38,9 +38,9 @@ up-to-date is by creating a cron job via UCR:
 .. code-block:: console
 
    $ ucr set cron/update_lastbind_attribute/command='\
-   > /usr/share/univention-ldap/univention_lastbind.py \
-   > --allusers' \
-   > cron/update_lastbind_attribute/time='00 06 * * *'  # daily at 06:00 a.m.
+     /usr/share/univention-ldap/univention_lastbind.py \
+     --allusers' \
+     cron/update_lastbind_attribute/time='00 06 * * *'  # daily at 06:00 a.m.
 
 
 More information on how to set cron jobs via UCR can be found in

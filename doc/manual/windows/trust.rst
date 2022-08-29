@@ -70,8 +70,8 @@ from the command line of the UCS Samba/AD DC using the tool
 .. code-block:: console
 
    $ samba-tool domain trust create addom.example \
-   > -k no -UADDOM\\Administrator%ADAdminPassword \
-   > --type=external --direction=incoming
+     -k no -UADDOM\\Administrator%ADAdminPassword \
+     --type=external --direction=incoming
 
 The trust can be checked using the following commands:
 
