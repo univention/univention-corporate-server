@@ -2,7 +2,7 @@
 ## desc: Create and delete
 ## bugs: [34835]
 main () {
-	tail_log /var/lib/univention-ldap/notify/transaction /var/lib/univention-ldap/listener/listener
+	tail_log /var/lib/univention-ldap/listener/listener
 	udm settings/packages create --position "cn=VISIBLE,$BASE" --set name=test 4<&-
 	check_tx "cn=test,cn=VISIBLE" a
 	udm settings/packages remove --dn "cn=test,cn=VISIBLE,$BASE" 4<&-

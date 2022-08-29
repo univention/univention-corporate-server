@@ -90,12 +90,6 @@ state () {
 		rv="$FAIL"
 	printf 'Last Notifier ID processed by local Listener:\n %s%s%s\n\n' "${rv:-$OKAY}" "$local_id" "$RSET"
 
-	rv='' last_trans=$(tail -n1 /var/lib/univention-ldap/notify/transaction) &&
-		[ -n "$last_trans" ] &&
-		[ "${last_trans%% *}" -eq "$local_id" ] ||
-		rv="$FAIL"
-	printf 'Last transaction processed:\n %s%s%s\n\n' "${rv:-$OKAY}" "$last_trans" "$RSET"
-
 	modules 0
 }
 

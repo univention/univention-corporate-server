@@ -70,11 +70,6 @@ FILES () {
 
 	chown openldap:openldap /var/lib/univention-ldap/last_id /var/lib/univention-ldap/listener/listener*
 	chmod 0660 /var/lib/univention-ldap/last_id /var/lib/univention-ldap/listener/listener*
-
-	install -o root -g openldap -m 0755 -d /var/lib/univention-ldap/notify
-	truncate -s 0 /var/lib/univention-ldap/notify/transaction  # RW=UDN RO=translog
-	chown root:openldap /var/lib/univention-ldap/notify/transaction*
-	chmod 0640 /var/lib/univention-ldap/notify/transaction*
 }
 FILES
 
