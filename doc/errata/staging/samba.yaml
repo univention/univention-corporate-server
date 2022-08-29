@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: samba
+fix: 2:4.16.2-1A~5.0.0.202208290938
+desc: |
+ This update addresses the following issues:
+ * A segmentation fault in rpcd_spoolss has been fixed.
+   Adding printer drivers is possible again.
+bug: [55048]
