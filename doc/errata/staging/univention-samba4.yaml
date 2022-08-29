@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-samba4
-fix: 9.0.8-7
+fix: 9.0.8-7A~5.0.0.202208291040
 desc: |
  This update addresses the following issue:
  * The script univention-samba4-site-tool.py attempted to parse the option `-A`
