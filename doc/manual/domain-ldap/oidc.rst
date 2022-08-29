@@ -38,11 +38,11 @@ The same is also possible from the command line:
 
    $ udm oidc/rpservice create --set name=$UCS_internal_identifier \
      --position="cn=oidc,cn=univention,$(ucr get ldap/base)" \
-     --set clientid=$ClientID \
-     --set clientsecret=$a_long_password \
+     --set clientid="$ClientID" \
+     --set clientsecret="$a_long_password" \
      --set trusted=yes \
      --set applicationtype=web \
-     --set redirectURI=$URL_from_services_documentation
+     --set redirectURI="$URL_from_services_documentation"
 
 The command parameters are:
 

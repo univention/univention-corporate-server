@@ -50,7 +50,7 @@ attempts, the tool :command:`samba-tool` can be used.
 
   .. code-block::
 
-     samba-tool domain passwordsettings set --reset-account-lockout-after=5
+     $ samba-tool domain passwordsettings set --reset-account-lockout-after=5
 
   If an account gets automatically unlocked after the lockout duration, the
   counter is not reset immediately, to keep the account under strict monitoring

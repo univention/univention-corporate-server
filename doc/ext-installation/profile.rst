@@ -662,8 +662,8 @@ benefit that ``HTTP`` is faster, more reliable and also works over the internet.
       .. code-block:: console
 
          $ STMT='if substring (option vendor-class-identifier, 0, 3) = "d-i" { filename ""; }'
-         $ udm dhcp/subnet list |
-           sed -ne 's/^DN: //p' |
+         $ udm dhcp/subnet list | \
+           sed -ne 's/^DN: //p' | \
              xargs -d '\n' -n1 udm dhcp/subnet modify \
                --option options \
                --append statements="$STMT" \

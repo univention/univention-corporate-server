@@ -193,7 +193,7 @@ A range of standard parameters are defined for every module:
 
       $ univention-directory-manager [category | modulename] [Operation] \
         --policy-reference "cn=sales,cn=pwhistory," \
-        "cn=users,cn=policies,dc=company,dc=example"
+      "cn=users,cn=policies,dc=company,dc=example"
 
 .. option:: --ignore-exists
 
@@ -260,7 +260,7 @@ This command can be used to display all the users whose username begins with
 .. code-block::
 
    $ univention-directory-manager users/user list \
-     --filter uid=user*
+     --filter uid='user*'
 
 Searching for objects with the ``--filter`` can also be limited to a position in
 the LDAP directory; in this case, to all users in the container

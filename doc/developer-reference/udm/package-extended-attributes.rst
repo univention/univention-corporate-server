@@ -359,11 +359,11 @@ creates an *Extended Attribute* for user objects using this syntax.
    $ syntax='DynamicSelection'
    $ base="cn=univention,$(ucr get ldap/base)"
 
-   $udm container/ou create \
+   $ udm container/ou create \
      --position "$base" \
      --set name="$syntax" \
      --set description='UCS profession level'
-     dn="ou=$syntax,$base"
+   $ dn="ou=$syntax,$base"
 
    $ udm container/cn create \
      --position "$dn" \
@@ -372,7 +372,7 @@ creates an *Extended Attribute* for user objects using this syntax.
 
    $ udm container/cn create \
      --position "$dn" \
-     --set name="value2"
+     --set name="value2" \
      --set description='UCS Regular (1..5)'
 
    $ udm container/cn create \
@@ -384,14 +384,15 @@ creates an *Extended Attribute* for user objects using this syntax.
      --ignore_exists \
      --position "$base" \
      --set name='udm_syntax'
-     dn="cn=udm_syntax,$base"
+   $ dn="cn=udm_syntax,$base"
 
    $ udm settings/udm_syntax create \
      --position "$dn" \
      --set name="$syntax" \
      --set filename="DynamicSelection.py" \
      --set data="$(bzip2 <DynamicSelection.py | base64)" \
-     --set package="$syntax" --set packageversion="1"
+     --set package="$syntax" \
+     --set packageversion="1"
 
    $ udm settings/extended_attribute create \
      --position "cn=custom attributes,$base" \
@@ -407,7 +408,9 @@ creates an *Extended Attribute* for user objects using this syntax.
      --set translationLongDescription='"de_DE" "Wählen Sie den Level der Erfahrung mit UCS"' \
      --set objectClass='univentionFreeAttributes' \
      --set ldapMapping='univentionFreeAttribute1' \
-     --set syntax="$syntax" --set mayChange=1 --set valueRequired=0
+     --set syntax="$syntax" \
+     --set mayChange=1 \
+     --set valueRequired=0
 
 
 .. _udm-ea-issues:

@@ -108,9 +108,9 @@ in this format additionally. The boot loader configuration is also adapted:
 .. code-block:: console
 
    $ DEV='/dev/xvda' GRUB='(hd0)'
-   $ grub-mkdevicemap ||
+   $ grub-mkdevicemap || \
      echo "${GRUB} ${DEV}" >/boot/grub/device.map
-   $ append="$(ucr get grub/append |
+   $ append="$(ucr get grub/append | \
      sed -re "s|/dev/sda|${DEV}|g;s|(no)?splash||g")"
    $ xargs -d'\n' ucr set <<__UCR__
    grub/append=${append}
@@ -421,18 +421,18 @@ A license can also be ordered with a POST request via
      --save-cookies cookie.db \
      --load-cookies cookie.db \
      --post-data='kundeEmail=customer@example&'\
-     'kundeUnternehmen=New%20Customern&'\
-     'EndDate=27.11.2015&'\
-     'BaseDN=dc%3Ddrei%2Cdc%3Dzwei%2Cdc%3Dtest&'\
-     'Servers=0&'\
-     'Support=0&'\
-     'PremiumSupport=0&'\
-     'Users=100&'\
-     'ManagedClients=0&'\
-     'CorporateClients=0&'\
-     'VirtualDesktopUsers=0&'\
-     'VirtualDesktopClients=0&'\
-     'Type=UCS' \
+   'kundeUnternehmen=New%20Customern&'\
+   'EndDate=27.11.2015&'\
+   'BaseDN=dc%3Ddrei%2Cdc%3Dzwei%2Cdc%3Dtest&'\
+   'Servers=0&'\
+   'Support=0&'\
+   'PremiumSupport=0&'\
+   'Users=100&'\
+   'ManagedClients=0&'\
+   'CorporateClients=0&'\
+   'VirtualDesktopUsers=0&'\
+   'VirtualDesktopClients=0&'\
+   'Type=UCS' \
      https://license.univention.de/shop/example/order
 
 

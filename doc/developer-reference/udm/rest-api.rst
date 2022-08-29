@@ -41,8 +41,8 @@ Now set the UCR variable to allow the group members to use the API.
 
 .. code-block:: console
 
-   $ ucr set directory/manager/rest/authorized-groups/udm-api-users= \
-     "cn=UDM API Users,cn=groups,$(ucr get ldap/base)"
+   $ ucr set directory/manager/rest/authorized-groups/udm-api-users=\
+   "cn=UDM API Users,cn=groups,$(ucr get ldap/base)"
 
 
 .. note::
@@ -147,8 +147,8 @@ more readable, you can use something like Pythons
 .. code-block:: console
 
    $ curl -X GET -H "Accept: application/json" \
-     https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/add |
-     python -m json.tool > user_template.json
+     https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/add | \
+     python3 -m json.tool > user_template.json
 
 
 The JSON file contains meta information (keys that start with underscore
@@ -159,8 +159,8 @@ such a condensed template:
 .. code-block:: console
 
    $ curl -X GET -H "Accept: application/json" \
-     https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/add |
-     python -c 'import sys, json; \
+     https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/add | \
+     python3 -c 'import sys, json; \
        template = json.load(sys.stdin); \
        template = {key:value for key, value in template.items() if not key.startswith("_")}; \
        json.dump(template, sys.stdout, indent=4)' > user_template.json
@@ -398,7 +398,7 @@ a specific version of a resource.
 
    $ curl -X GET -H "Accept: application/json" --dump-header user.headers \
      https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/<dn> \
-     | python -m json.tool > user.json
+     | python3 -m json.tool > user.json
 
 
 .. caution::
@@ -413,7 +413,9 @@ send the value of the *Etag* header, which you saved earlier in the
 
 .. code-block:: console
 
-   $ curl -X PUT -H "Accept: application/json" -H "Content-Type: application/json" -H 'If-Match: "<Etag>"' \
+   $ curl -X PUT -H "Accept: application/json" \
+     -H "Content-Type: application/json" \
+     -H 'If-Match: "<Etag>"' \
      "https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/<dn>" --data @user.json
 
 
