@@ -139,6 +139,8 @@ then
 	fi
     fi
 
+    mkdir -p /etc/univention/"$CONFIGBASENAME"/ad
+
     echo "-- initialise UCR"
     univention-config-registry set "$CONFIGBASENAME"/ad/ldap/port?389 "$CONFIGBASENAME"/ad/ldap/ssl?yes "$CONFIGBASENAME"/ad/listener/dir?/var/lib/univention-"$CONFIGBASENAME"/ad "$CONFIGBASENAME"/ad/mapping/group/language?de "$CONFIGBASENAME"/ad/mapping/group/primarymail?false "$CONFIGBASENAME"/ad/mapping/syncmode?sync "$CONFIGBASENAME"/ad/mapping/user/primarymail?false "$CONFIGBASENAME"/ad/poll/sleep?5 "$CONFIGBASENAME"/ad/retryrejected?10 "$CONFIGBASENAME"/debug/function?0 "$CONFIGBASENAME"/debug/level?1 "$CONFIGBASENAME"/password/service/encoding?iso8859-15
 
