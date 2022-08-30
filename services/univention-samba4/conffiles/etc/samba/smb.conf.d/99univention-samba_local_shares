@@ -1,6 +1,6 @@
 @!@
 import os
 for includefilepath in ('/etc/samba/local.conf', ):
-	if os.path.exists(includefilepath):
-		print("\tinclude = %s" % (includefilepath,))
+    if os.path.exists(includefilepath):
+        print("\tinclude = %s" % (includefilepath,))
 @!@

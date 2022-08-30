@@ -1,17 +1,17 @@
 @!@
 ROLES = {
-	"domaincontroller_master": "Univention Primary Directory Node",
-	"domaincontroller_slave": "Univention Replica Directory Node",
-	"domaincontroller_backup": "Univention Backup Directory Node",
-	"memberserver": "Univention Managed Node",
+    "domaincontroller_master": "Univention Primary Directory Node",
+    "domaincontroller_slave": "Univention Replica Directory Node",
+    "domaincontroller_backup": "Univention Backup Directory Node",
+    "memberserver": "Univention Managed Node",
 }
 
 role = configRegistry.get('server/role')
 menutitle = ROLES.get(role, "Univention Corporate Server")
 
 if configRegistry.get('version/version'):
-	print('%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel')))
+    print('%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel')))
 else:
-	print(menutitle)
+    print(menutitle)
 @!@
 

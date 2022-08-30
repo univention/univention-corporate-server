@@ -121,9 +121,9 @@ DefaultLanguage de
 ErrorPolicy = ['stop-printer', 'abort-job', 'retry-job', 'retry-current-job']
 ucr_errorpolicy = configRegistry.get('cups/errorpolicy')
 for i in ErrorPolicy:
-	if ucr_errorpolicy == i:
-		print("ErrorPolicy %s " % ucr_errorpolicy)
-		break
+    if ucr_errorpolicy == i:
+        print("ErrorPolicy %s " % ucr_errorpolicy)
+        break
 @!@
 
 #
@@ -546,12 +546,12 @@ Browsing Off
 from univention.config_registry.interfaces import Interfaces
 allow = configRegistry.get('cups/location/base')
 if allow and allow != "networks":
-	for addr in allow.split():
-		print('    Allow From %s' % (addr,))
+    for addr in allow.split():
+        print('    Allow From %s' % (addr,))
 else:
-	interfaces = Interfaces(configRegistry)
-	for _name, iface in interfaces.ipv4_interfaces:
-		print('    Allow From %s' % (iface.ipv4_address().network,))
+    interfaces = Interfaces(configRegistry)
+    for _name, iface in interfaces.ipv4_interfaces:
+        print('    Allow From %s' % (iface.ipv4_address().network,))
 @!@
     Allow From 127.0.0.1
     Deny From All
@@ -580,16 +580,16 @@ else:
 
 @!@
 for printer in configRegistry.get('cups/restrictedprinters', '').split():
-	if not printer:
-		continue
-	print('<Location /printers/%s>' % printer)
-	print('    Order Allow,Deny')
-	print('    Allow From localhost')
-	print('    Allow From %(hostname)s.%(domainname)s' % configRegistry)
-	print('    AuthType Basic')
-	print('    Require valid-user')
-	print('    Satisfy any')
-	print('</Location>')
+    if not printer:
+        continue
+    print('<Location /printers/%s>' % printer)
+    print('    Order Allow,Deny')
+    print('    Allow From localhost')
+    print('    Allow From %(hostname)s.%(domainname)s' % configRegistry)
+    print('    AuthType Basic')
+    print('    Require valid-user')
+    print('    Satisfy any')
+    print('</Location>')
 @!@
 
 #<Location /printers/name>
@@ -643,12 +643,12 @@ Require user @SYSTEM
 from univention.config_registry.interfaces import Interfaces
 allow = configRegistry.get('cups/location/admin')
 if allow and allow != "networks":
-	for addr in allow.split():
-		print('    Allow From %s' % (addr,))
+    for addr in allow.split():
+        print('    Allow From %s' % (addr,))
 else:
-	interfaces = Interfaces(configRegistry)
-	for _name, iface in interfaces.ipv4_interfaces:
-		print('    Allow From %s' % (iface.ipv4_address().network,))
+    interfaces = Interfaces(configRegistry)
+    for _name, iface in interfaces.ipv4_interfaces:
+        print('    Allow From %s' % (iface.ipv4_address().network,))
 @!@
     Allow From 127.0.0.1
     Deny From All

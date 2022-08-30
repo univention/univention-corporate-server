@@ -8,22 +8,22 @@ write_translog = server_role != 'domaincontroller_master' and find_executable('u
 ignore_master = configRegistry.is_true('listener/ignoremaster')
 debug_level = configRegistry.get('listener/debug/level', None)
 if server_role in ('domaincontroller_master', 'domaincontroller_backup'):
-	dn = 'cn=admin,{ldap/base}'.format(**configRegistry)
-	secret = '/etc/ldap.secret'
+    dn = 'cn=admin,{ldap/base}'.format(**configRegistry)
+    secret = '/etc/ldap.secret'
 else:
-	dn = configRegistry.get('ldap/hostdn', '')
-	secret = '/etc/machine.secret'
+    dn = configRegistry.get('ldap/hostdn', '')
+    secret = '/etc/machine.secret'
 udl_opts = ' '.join(quote(arg) for args in [
-	() if debug_level is None else ('-d', debug_level),
-	('-b', configRegistry['ldap/base']),
-	('-m', '/usr/lib/univention-directory-listener/system'),
-	('-c', '/var/lib/univention-directory-listener'),
-	('-o',) if write_translog else (),
-	('-B',) if ignore_master else (),
-	('-ZZ',),
-	('-x',),
-	('-D', dn),
-	('-y', secret),
+    () if debug_level is None else ('-d', debug_level),
+    ('-b', configRegistry['ldap/base']),
+    ('-m', '/usr/lib/univention-directory-listener/system'),
+    ('-c', '/var/lib/univention-directory-listener'),
+    ('-o',) if write_translog else (),
+    ('-B',) if ignore_master else (),
+    ('-ZZ',),
+    ('-x',),
+    ('-D', dn),
+    ('-y', secret),
 ] for arg in args)
 print('UDL_OPTS="{}"'.format(udl_opts))
 @!@

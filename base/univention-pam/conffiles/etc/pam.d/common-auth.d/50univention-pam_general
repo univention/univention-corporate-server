@@ -18,21 +18,21 @@ auth     [success=<succ> new_authtok_reqd=ok \
 
 
 def pam_section(template, last):
-	succ='done'
-	unavail='die'
-	fail='die'
-	unknown = 'die' if last else 'ignore'
+    succ='done'
+    unavail='die'
+    fail='die'
+    unknown = 'die' if last else 'ignore'
 
-	return template.replace('<succ>', succ).replace('<unavail>', unavail).replace('<fail>', fail).replace('<unknown>', unknown)
+    return template.replace('<succ>', succ).replace('<unavail>', unavail).replace('<fail>', fail).replace('<unknown>', unknown)
 
 methods = [x for x in configRegistry['auth/methods'].split(' ') if x in ['krb5', 'ldap', 'winbind']]
 
 # if no other authentication mechanism but unix is active it is required
 if not methods:
-	print('''# local unix authentication
+    print('''# local unix authentication
 auth     required                         pam_unix.so''')
 else:
-	print('''# local unix authentication
+    print('''# local unix authentication
 auth     sufficient                           pam_unix.so''')
 
 print('''
@@ -40,11 +40,11 @@ print('''
 # - is not aware of the user, proceed with the next service''')
 
 if 'krb5' in methods:
-	last = 'ldap' not in methods and 'winbind' not in methods
-	print(pam_section(pam_krb5, last))
+    last = 'ldap' not in methods and 'winbind' not in methods
+    print(pam_section(pam_krb5, last))
 if 'ldap' in methods:
-	last = 'winbind' not in methods
-	print(pam_section(pam_ldap, last))
+    last = 'winbind' not in methods
+    print(pam_section(pam_ldap, last))
 if 'winbind' in methods:
-	print(pam_section(pam_winbind, True))
+    print(pam_section(pam_winbind, True))
 @!@

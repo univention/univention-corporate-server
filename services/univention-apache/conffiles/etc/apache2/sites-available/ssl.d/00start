@@ -11,19 +11,19 @@
 	SSLProxyCheckPeerExpire off
 @!@
 if configRegistry.get('apache2/ssl/certificate'):
-	print('	SSLCertificateFile %s' % configRegistry.get('apache2/ssl/certificate'))
+    print('	SSLCertificateFile %s' % configRegistry.get('apache2/ssl/certificate'))
 else:
-	print('	SSLCertificateFile /etc/univention/ssl/%(hostname)s.%(domainname)s/cert.pem' % configRegistry)
+    print('	SSLCertificateFile /etc/univention/ssl/%(hostname)s.%(domainname)s/cert.pem' % configRegistry)
 if configRegistry.get('apache2/ssl/key'):
-	print('	SSLCertificateKeyFile %s' % configRegistry.get('apache2/ssl/key'))
+    print('	SSLCertificateKeyFile %s' % configRegistry.get('apache2/ssl/key'))
 else:
-	print('	SSLCertificateKeyFile /etc/univention/ssl/%(hostname)s.%(domainname)s/private.key' % configRegistry)
+    print('	SSLCertificateKeyFile /etc/univention/ssl/%(hostname)s.%(domainname)s/private.key' % configRegistry)
 if configRegistry.get('apache2/ssl/ca'):
-	print('	SSLCACertificateFile %s' % configRegistry.get('apache2/ssl/ca'))
+    print('	SSLCACertificateFile %s' % configRegistry.get('apache2/ssl/ca'))
 else:
-	print('	SSLCACertificateFile /etc/univention/ssl/ucsCA/CAcert.pem')
+    print('	SSLCACertificateFile /etc/univention/ssl/ucsCA/CAcert.pem')
 if configRegistry.get('apache2/ssl/certificatechain'):
-	print('	SSLCertificateChainFile %s' % configRegistry.get('apache2/ssl/certificatechain'))
+    print('	SSLCertificateChainFile %s' % configRegistry.get('apache2/ssl/certificatechain'))
 @!@
 	#SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown
 

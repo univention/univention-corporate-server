@@ -3,9 +3,9 @@ import glob
 grace = int(configRegistry.get('umc/saml/grace_time', 600))
 args = ['idp=%s' % (g,) for g in glob.glob('/usr/share/univention-management-console/saml/idp/*.xml')]
 if args:
-	sp_fqdn = configRegistry.get('umc/saml/sp-server')
-	if not sp_fqdn:
-		sp_fqdn = '%(hostname)s.%(domainname)s' % configRegistry
-	args.append('trusted_sp=https://%s/univention/saml/metadata' % sp_fqdn)
-	print('auth sufficient pam_saml.so grace=%d userid=urn:oid:0.9.2342.19200300.100.1.1 %s' % (grace, ' '.join(args),))
+    sp_fqdn = configRegistry.get('umc/saml/sp-server')
+    if not sp_fqdn:
+        sp_fqdn = '%(hostname)s.%(domainname)s' % configRegistry
+    args.append('trusted_sp=https://%s/univention/saml/metadata' % sp_fqdn)
+    print('auth sufficient pam_saml.so grace=%d userid=urn:oid:0.9.2342.19200300.100.1.1 %s' % (grace, ' '.join(args),))
 @!@

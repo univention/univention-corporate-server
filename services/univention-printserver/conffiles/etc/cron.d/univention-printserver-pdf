@@ -10,7 +10,7 @@ INTERVAL = configRegistry.get('cups/cups-pdf/cleanup/interval', '@daily')
 KEEP = configRegistry.get('cups/cups-pdf/cleanup/keep', '30')
 DISABLED = ''
 if not configRegistry.is_true('cups/cups-pdf/cleanup/enabled', False) or not os.path.exists(CUPSPDF_DIR):
-	DISABLED = '# '
+    DISABLED = '# '
 
 print('%s%s root find %s -type f -name "*.pdf" -mtime +%s -delete' % (DISABLED, INTERVAL, CUPSPDF_DIR, KEEP))
 @!@

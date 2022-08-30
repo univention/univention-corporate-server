@@ -10,14 +10,14 @@ TLSCACertificateFile	/etc/univention/ssl/ucsCA/CAcert.pem
 @!@
 ciphers = configRegistry.get("ldap/tls/ciphersuite")
 if ciphers:
-	print('TLSCipherSuite	%s' % (ciphers,))
+    print('TLSCipherSuite	%s' % (ciphers,))
 protocol = configRegistry.get("ldap/tls/minprotocol")
 if protocol:
-	print('TLSProtocolMin	%s' % (protocol,))
+    print('TLSProtocolMin	%s' % (protocol,))
 from os.path import exists
 filename = configRegistry.get("ldap/tls/dh/paramfile")
 if filename and exists(filename):
-	print('TLSDHParamFile	%s' % (filename,))
+    print('TLSDHParamFile	%s' % (filename,))
 @!@
 
 sizelimit @%@ldap/sizelimit@%@

@@ -58,9 +58,9 @@ nat_core_rules() {
 @!@
 import ipaddress
 try:
-	unicode
+    unicode
 except NameError:
-	unicode = str
+    unicode = str
 # UCR returns str/bytes in py2 and unicode/str in py3 ==> always convert UCR value to unicode
 docker0_net = ipaddress.IPv4Interface(unicode(configRegistry.get('docker/daemon/default/opts/bip', '172.17.42.1/16'))).network
 docker_compose_net = ipaddress.IPv4Interface(unicode(configRegistry.get('appcenter/docker/compose/network', '172.16.1.1/16'))).network

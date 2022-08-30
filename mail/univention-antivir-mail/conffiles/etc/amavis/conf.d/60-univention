@@ -164,9 +164,9 @@ $child_timeout=5*60;  # abort child if it does not complete each task in n sec
 # @bypass_spam_checks_acl  = qw( . );    # No default dependency on spamassassin
 @!@
 if configRegistry.is_true('mail/antivir/spam'):
-	print('#@bypass_spam_checks_acl  = qw( . );    ')
+    print('#@bypass_spam_checks_acl  = qw( . );    ')
 else:
-	print('@bypass_spam_checks_acl  = qw( . );    ')
+    print('@bypass_spam_checks_acl  = qw( . );    ')
 @!@
 
 
@@ -193,10 +193,10 @@ else:
 @!@
 key = 'mail/hosteddomains'
 if configRegistry.get(key):
-	print('@local_domains_acl = qw( %s );  # hosted mail domains' % configRegistry[key])
-	print('# @local_domains_acl = ( ".$mydomain" );  # $mydomain and its subdomains')
+    print('@local_domains_acl = qw( %s );  # hosted mail domains' % configRegistry[key])
+    print('# @local_domains_acl = ( ".$mydomain" );  # $mydomain and its subdomains')
 else:
-	print('@local_domains_acl = ( ".$mydomain" );  # $mydomain and its subdomains')
+    print('@local_domains_acl = ( ".$mydomain" );  # $mydomain and its subdomains')
 @!@
 # @local_domains_acl = ( ".$mydomain", "my.other.domain" );
 # @local_domains_acl = qw();  # default is empty, no recipient treated as local
@@ -491,9 +491,9 @@ $viruses_that_fake_sender_re = new_RE(
 
 @!@
 if configRegistry.get('mail/antivir/virus_admin'):
-	print("$virus_admin = '%s';" % configRegistry['mail/antivir/virus_admin'])
+    print("$virus_admin = '%s';" % configRegistry['mail/antivir/virus_admin'])
 else:
-	print('$virus_admin = "postmaster\@%s.$mydomain";' % configRegistry['hostname'])
+    print('$virus_admin = "postmaster\@%s.$mydomain";' % configRegistry['hostname'])
 @!@
 
 # equivalent to $virus_admin, but for spam admin notifications:
@@ -620,13 +620,13 @@ $QUARANTINEDIR = '/var/lib/amavis/virusmails';
 @!@
 key = 'mail/antivir/quarantine_to'
 if key in configRegistry and configRegistry[key] and configRegistry[key] != 'virus-quarantine':
-	to = configRegistry['mail/antivir/quarantine_to']
-	if to.find('@') == -1:
-		to += '@'
-	print("$virus_quarantine_to  = '%s';\t# forward to MTA for delivery" % to)
-	print("#$virus_quarantine_to = 'virus-quarantine';    # traditional local quarantine")
+    to = configRegistry['mail/antivir/quarantine_to']
+    if to.find('@') == -1:
+        to += '@'
+    print("$virus_quarantine_to  = '%s';\t# forward to MTA for delivery" % to)
+    print("#$virus_quarantine_to = 'virus-quarantine';    # traditional local quarantine")
 else:
-	print("$virus_quarantine_to  = 'virus-quarantine';    # traditional local quarantine")
+    print("$virus_quarantine_to  = 'virus-quarantine';    # traditional local quarantine")
 @!@
 #$virus_quarantine_to = 'infected@';           # forward to MTA for delivery
 #$virus_quarantine_to = "virus-quarantine\@$mydomain";   # similar
@@ -710,21 +710,21 @@ $keep_decoded_original_re = new_RE(
 @!@
 v = {}
 spec = (
-	('double', 'double_ext', ' '),
-	('basic', 'basic_ext', ' '),
-	('long', 'long_ext', '#'),
-	('file', 'file_type', '#'),
-	('mime', 'mime_type', '#'),
-	('rfc', 'rfc2046', ' '))
+    ('double', 'double_ext', ' '),
+    ('basic', 'basic_ext', ' '),
+    ('long', 'long_ext', '#'),
+    ('file', 'file_type', '#'),
+    ('mime', 'mime_type', '#'),
+    ('rfc', 'rfc2046', ' '))
 for n, x, d in spec:
-	y = 'mail/antivir/banned/%s' % x
-	if y in configRegistry:
-		if configRegistry.is_true(y):
-			v[n] = ' '
-		else:
-			v[n] = '#'
-	else:
-		v[n] = d
+    y = 'mail/antivir/banned/%s' % x
+    if y in configRegistry:
+        if configRegistry.is_true(y):
+            v[n] = ' '
+        else:
+            v[n] = '#'
+    else:
+        v[n] = d
 values = (v['double'], v['basic'], v['long'], v['long'], v['long'], v['file'], v['mime'], v['rfc'])
 print('''$banned_filename_re = new_RE(
 %s  qr'\.[a-zA-Z][a-zA-Z0-9]{0,3}\.(vbs|pif|scr|bat|com|exe|dll)$'i, # double extension
@@ -750,12 +750,12 @@ print('''$banned_filename_re = new_RE(
 @!@
 key = 'mail/antivir/banned_to'
 if configRegistry.get(key):
-	to = configRegistry['mail/antivir/banned_to']
-	if to.find('@') == -1:
-		print("$banned_quarantine_to = '%s';" % to)
-	else:
-		print("$banned_files_quarantine_method='smtp:127.0.0.1:10025';")
-		print("$banned_quarantine_to = '%s';" % to)
+    to = configRegistry['mail/antivir/banned_to']
+    if to.find('@') == -1:
+        print("$banned_quarantine_to = '%s';" % to)
+    else:
+        print("$banned_files_quarantine_method='smtp:127.0.0.1:10025';")
+        print("$banned_quarantine_to = '%s';" % to)
 
 @!@
 
@@ -1178,9 +1178,9 @@ $sa_kill_level_deflt = $sa_tag2_level_deflt; # triggers spam evasive actions
                                 # and recipient is in local_domains*)
 @!@
 if configRegistry.get('mail/antispam/headertag'):
-	print("$sa_spam_subject_tag = '%s';" % configRegistry['mail/antispam/headertag'])
+    print("$sa_spam_subject_tag = '%s';" % configRegistry['mail/antispam/headertag'])
 else:
-	print('$sa_spam_subject_tag = undef;')
+    print('$sa_spam_subject_tag = undef;')
 @!@
 
 # don't add ***UNCHECKED*** to the subject
@@ -1247,292 +1247,292 @@ $undecipherable_subject_tag = undef;
 
 @!@
 if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/scanner'] not in ['', 'none']:
-	scanner = configRegistry['mail/antivir/scanner'].split(' ')
+    scanner = configRegistry['mail/antivir/scanner'].split(' ')
 
-	if 'sophie' in scanner:
-		print("### http://www.vanja.com/tools/sophie/")
-		print(" ['Sophie',")
-		print("   \\&ask_daemon, [\"{}/\\n\", '/var/run/sophie'],")
-		print("   qr/(?x)^ 0+ ( : | [\\000\\r\\n]* $)/,  qr/(?x)^ 1 ( : | [\\000\\r\\n]* $)/,")
-		print("   qr/(?x)^ [-+]? \\d+ : (.*?) [\\000\\r\\n]* $/ ],")
+    if 'sophie' in scanner:
+        print("### http://www.vanja.com/tools/sophie/")
+        print(" ['Sophie',")
+        print("   \\&ask_daemon, [\"{}/\\n\", '/var/run/sophie'],")
+        print("   qr/(?x)^ 0+ ( : | [\\000\\r\\n]* $)/,  qr/(?x)^ 1 ( : | [\\000\\r\\n]* $)/,")
+        print("   qr/(?x)^ [-+]? \\d+ : (.*?) [\\000\\r\\n]* $/ ],")
 
-	if 'sophos_savi' in scanner:
-		print("### http://www.csupomona.edu/~henson/www/projects/SAVI-Perl/")
-		print(" ['Sophos SAVI', \\&sophos_savi ],")
+    if 'sophos_savi' in scanner:
+        print("### http://www.csupomona.edu/~henson/www/projects/SAVI-Perl/")
+        print(" ['Sophos SAVI', \\&sophos_savi ],")
 
-	if 'clamav' in scanner and not configRegistry.is_false('clamav/daemon/autostart'):
-		print("### http://clamav.elektrapro.com/")
-		print(" ['Clam Antivirus-clamd',")
-		print("   \\&ask_daemon, [\"CONTSCAN {}\\n\", '/var/run/clamav/clamd.ctl'],")
-		print("   qr/\\bOK$/, qr/\\bFOUND$/,")
-		print("   qr/^.*?: (?!Infected Archive)(.*) FOUND$/ ],")
+    if 'clamav' in scanner and not configRegistry.is_false('clamav/daemon/autostart'):
+        print("### http://clamav.elektrapro.com/")
+        print(" ['Clam Antivirus-clamd',")
+        print("   \\&ask_daemon, [\"CONTSCAN {}\\n\", '/var/run/clamav/clamd.ctl'],")
+        print("   qr/\\bOK$/, qr/\\bFOUND$/,")
+        print("   qr/^.*?: (?!Infected Archive)(.*) FOUND$/ ],")
 
-	if 'openantivirus' in scanner:
-		print("### http://www.openantivirus.org/")
-		print("['OpenAntiVirus ScannerDaemon (OAV)',")
-		print("  \\&ask_daemon, [\"SCAN {}\\n\", '127.0.0.1:8127'],")
-		print("  qr/^OK/, qr/^FOUND: /, qr/^FOUND: (.+)/ ],")
+    if 'openantivirus' in scanner:
+        print("### http://www.openantivirus.org/")
+        print("['OpenAntiVirus ScannerDaemon (OAV)',")
+        print("  \\&ask_daemon, [\"SCAN {}\\n\", '127.0.0.1:8127'],")
+        print("  qr/^OK/, qr/^FOUND: /, qr/^FOUND: (.+)/ ],")
 
-	if 'trophie' in scanner:
-		print("### http://www.vanja.com/tools/trophie/")
-		print("['Trophie',")
-		print("  \&ask_daemon, [\"{}/\\n\", '/var/run/trophie'],")
-		print("  qr/(?x)^ 0+ ( : | [\\000\\r\\n]* $)/,  qr/(?x)^ 1 ( : | [\\000\\r\\n]* $)/,")
-		print("  qr/(?x)^ [-+]? \\d+ : (.*?) [\\000\\r\\n]* $/ ],")
+    if 'trophie' in scanner:
+        print("### http://www.vanja.com/tools/trophie/")
+        print("['Trophie',")
+        print("  \&ask_daemon, [\"{}/\\n\", '/var/run/trophie'],")
+        print("  qr/(?x)^ 0+ ( : | [\\000\\r\\n]* $)/,  qr/(?x)^ 1 ( : | [\\000\\r\\n]* $)/,")
+        print("  qr/(?x)^ [-+]? \\d+ : (.*?) [\\000\\r\\n]* $/ ],")
 
-	if 'AVG' in scanner:
-		print("### http://www.grisoft.com/")
-		print("['AVG Anti-Virus',")
-		print("  \\&ask_daemon, [\"SCAN {}\\n\", '127.0.0.1:55555'],")
-		print("  qr/^200/, qr/^403/, qr/^403 .*?: (.+)/ ],")
+    if 'AVG' in scanner:
+        print("### http://www.grisoft.com/")
+        print("['AVG Anti-Virus',")
+        print("  \\&ask_daemon, [\"SCAN {}\\n\", '127.0.0.1:55555'],")
+        print("  qr/^200/, qr/^403/, qr/^403 .*?: (.+)/ ],")
 
-	if 'f-prot' in scanner:
-		print("### http://www.f-prot.com/")
-		print("['FRISK F-Prot Daemon',")
-		print("  \\&ask_daemon,")
-		print("  [\"GET {}/*?-dumb%20-archive%20-packed HTTP/1.0\r\n\r\n\",")
-		print("    ['127.0.0.1:10200','127.0.0.1:10201','127.0.0.1:10202',")
-		print("     '127.0.0.1:10203','127.0.0.1:10204'] ],")
-		print("  qr/(?i)<summary[^>]*>clean<\\/summary>/,")
-		print("  qr/(?i)<summary[^>]*>infected<\\/summary>/,")
-		print("  qr/(?i)<name>(.+)<\\/name>/ ],")
+    if 'f-prot' in scanner:
+        print("### http://www.f-prot.com/")
+        print("['FRISK F-Prot Daemon',")
+        print("  \\&ask_daemon,")
+        print("  [\"GET {}/*?-dumb%20-archive%20-packed HTTP/1.0\r\n\r\n\",")
+        print("    ['127.0.0.1:10200','127.0.0.1:10201','127.0.0.1:10202',")
+        print("     '127.0.0.1:10203','127.0.0.1:10204'] ],")
+        print("  qr/(?i)<summary[^>]*>clean<\\/summary>/,")
+        print("  qr/(?i)<summary[^>]*>infected<\\/summary>/,")
+        print("  qr/(?i)<name>(.+)<\\/name>/ ],")
 
-	if 'kavscanner' in scanner:  # default
-		print("  ['KasperskyLab kavscanner', 'kavscanner',")
-		print("    '-i0 {}', [0,10,15], [5,20,21,25],")
-		print("    qr/(?:CURED|INFECTED|CUREFAILED|WARNING|SUSPICION) (.*)/ ,")
-		print("    sub {chdir('/usr/bin') or die \"Can't chdir to kav: $!\"},")
-		print("    sub {chdir($TEMPBASE) or die \"Can't chdir back to $TEMPBASE $!\"},")
-		print("  ],")
+    if 'kavscanner' in scanner:  # default
+        print("  ['KasperskyLab kavscanner', 'kavscanner',")
+        print("    '-i0 {}', [0,10,15], [5,20,21,25],")
+        print("    qr/(?:CURED|INFECTED|CUREFAILED|WARNING|SUSPICION) (.*)/ ,")
+        print("    sub {chdir('/usr/bin') or die \"Can't chdir to kav: $!\"},")
+        print("    sub {chdir($TEMPBASE) or die \"Can't chdir back to $TEMPBASE $!\"},")
+        print("  ],")
 
-	if 'kaspersky_avp' in scanner:
-		print(" ['KasperskyLab AntiViral Toolkit Pro (AVP)', ['avp'],")
-		print("   '-* -P -B -Y -O- {}', [0,3,6,8], [2,4],    # any use for -A -K   ?")
-		print("   qr/infected: (.+)/,")
-		print("   sub {chdir('/opt/AVP') or die \"Can't chdir to AVP: $!\"},")
-		print("   sub {chdir($TEMPBASE) or die \"Can't chdir back to $TEMPBASE $!\"},")
-		print(" ],")
+    if 'kaspersky_avp' in scanner:
+        print(" ['KasperskyLab AntiViral Toolkit Pro (AVP)', ['avp'],")
+        print("   '-* -P -B -Y -O- {}', [0,3,6,8], [2,4],    # any use for -A -K   ?")
+        print("   qr/infected: (.+)/,")
+        print("   sub {chdir('/opt/AVP') or die \"Can't chdir to AVP: $!\"},")
+        print("   sub {chdir($TEMPBASE) or die \"Can't chdir back to $TEMPBASE $!\"},")
+        print(" ],")
 
-	# The kavdaemon and AVPDaemonClient have been removed from Kasperky
-	# products and replaced by aveserver and aveclient
-	if 'kaspersky_avd' in scanner:
-		print(" ['KasperskyLab AVPDaemonClient',")
-		print("   [ '/opt/AVP/kavdaemon',       'kavdaemon',")
-		print("     '/opt/AVP/AvpDaemonClient', 'AvpDaemonClient',")
-		print("     '/opt/AVP/AvpTeamDream',    'AvpTeamDream',")
-		print("     '/opt/AVP/avpdc', 'avpdc' ],")
-		print("   \"-f=$TEMPBASE {}\", [0,8], [3,4,5,6], qr/infected: ([^\\r\\n]+)/ ],")
-	# change the startup-script in /etc/init.d/kavd to:
-	#   DPARMS="-* -Y -dl -f=/var/amavis /var/amavis"
-	#   (or perhaps:   DPARMS="-I0 -Y -* /var/amavis" )
-	# adjusting /var/amavis above to match your $TEMPBASE.
-	# The '-f=/var/amavis' is needed if not running it as root, so it
-	# can find, read, and write its pid file, etc., see 'man kavdaemon'.
-	# defUnix.prf: there must be an entry "*/var/amavis" (or whatever
-	#   directory $TEMPBASE specifies) in the 'Names=' section.
-	# cd /opt/AVP/DaemonClients; configure; cd Sample; make
-	# cp AvpDaemonClient /opt/AVP/
-	# su - vscan -c "${PREFIX}/kavdaemon ${DPARMS}"
+    # The kavdaemon and AVPDaemonClient have been removed from Kasperky
+    # products and replaced by aveserver and aveclient
+    if 'kaspersky_avd' in scanner:
+        print(" ['KasperskyLab AVPDaemonClient',")
+        print("   [ '/opt/AVP/kavdaemon',       'kavdaemon',")
+        print("     '/opt/AVP/AvpDaemonClient', 'AvpDaemonClient',")
+        print("     '/opt/AVP/AvpTeamDream',    'AvpTeamDream',")
+        print("     '/opt/AVP/avpdc', 'avpdc' ],")
+        print("   \"-f=$TEMPBASE {}\", [0,8], [3,4,5,6], qr/infected: ([^\\r\\n]+)/ ],")
+    # change the startup-script in /etc/init.d/kavd to:
+    #   DPARMS="-* -Y -dl -f=/var/amavis /var/amavis"
+    #   (or perhaps:   DPARMS="-I0 -Y -* /var/amavis" )
+    # adjusting /var/amavis above to match your $TEMPBASE.
+    # The '-f=/var/amavis' is needed if not running it as root, so it
+    # can find, read, and write its pid file, etc., see 'man kavdaemon'.
+    # defUnix.prf: there must be an entry "*/var/amavis" (or whatever
+    #   directory $TEMPBASE specifies) in the 'Names=' section.
+    # cd /opt/AVP/DaemonClients; configure; cd Sample; make
+    # cp AvpDaemonClient /opt/AVP/
+    # su - vscan -c "${PREFIX}/kavdaemon ${DPARMS}"
 
-	if 'hbedv' in scanner:
-		print("### http://www.hbedv.com/ or http://www.centralcommand.com/")
-		print(" ['H+BEDV AntiVir or CentralCommand Vexira Antivirus',")
-		print("   ['antivir','vexira'],")
-		print("   '--allfiles -noboot -nombr -rs -s -z {}', [0], qr/ALERT:|VIRUS:/,")
-		print("   qr/(?x)^\\s* (?: ALERT: \\s* (?: \\[ | [^']* ' ) |")
-		print("        (?i) VIRUS:\\ .*?\\ virus\\ '?) ( [^\\]\\s']+ )/ ],")
-	# NOTE: remove the -z if you only have a demo version
+    if 'hbedv' in scanner:
+        print("### http://www.hbedv.com/ or http://www.centralcommand.com/")
+        print(" ['H+BEDV AntiVir or CentralCommand Vexira Antivirus',")
+        print("   ['antivir','vexira'],")
+        print("   '--allfiles -noboot -nombr -rs -s -z {}', [0], qr/ALERT:|VIRUS:/,")
+        print("   qr/(?x)^\\s* (?: ALERT: \\s* (?: \\[ | [^']* ' ) |")
+        print("        (?i) VIRUS:\\ .*?\\ virus\\ '?) ( [^\\]\\s']+ )/ ],")
+    # NOTE: remove the -z if you only have a demo version
 
-	if 'csav' in scanner:
-		print("### http://www.commandsoftware.com/")
-		print(" ['Command AntiVirus for Linux', 'csav',")
-		print("   '-all -archive -packed {}', [50], [51,52,53],")
-		print("   qr/Infection: (.+)/ ],")
+    if 'csav' in scanner:
+        print("### http://www.commandsoftware.com/")
+        print(" ['Command AntiVirus for Linux', 'csav',")
+        print("   '-all -archive -packed {}', [50], [51,52,53],")
+        print("   qr/Infection: (.+)/ ],")
 
-	if 'cscmdline' in scanner:
-		print("### http://www.symantec.com/")
-		print(" ['Symantec CarrierScan via Symantec CommandLineScanner',")
-		print("   'cscmdline', '-a scan -i 1 -v -s 127.0.0.1:7777 {}',")
-		print("   qr/^Files Infected:\\s+0$/, qr/^Infected\\b/,")
-		print("   qr/^(?:Info|Virus Name):\\s+(.+)/ ],")
+    if 'cscmdline' in scanner:
+        print("### http://www.symantec.com/")
+        print(" ['Symantec CarrierScan via Symantec CommandLineScanner',")
+        print("   'cscmdline', '-a scan -i 1 -v -s 127.0.0.1:7777 {}',")
+        print("   qr/^Files Infected:\\s+0$/, qr/^Infected\\b/,")
+        print("   qr/^(?:Info|Virus Name):\\s+(.+)/ ],")
 
-	if 'savsce' in scanner:
-		print("### http://www.symantec.com/")
-		print(" ['Symantec AntiVirus Scan Engine',")
-		print("   'savsecls', '-server 127.0.0.1:7777 -mode scanrepair -details -verbose {}',")
-		print("   [0], qr/^Infected\\b/,")
-		print("   qr/^(?:Info|Virus Name):\\s+(.+)/ ],")
-	# NOTE: check options and patterns to see which entry better applies
+    if 'savsce' in scanner:
+        print("### http://www.symantec.com/")
+        print(" ['Symantec AntiVirus Scan Engine',")
+        print("   'savsecls', '-server 127.0.0.1:7777 -mode scanrepair -details -verbose {}',")
+        print("   [0], qr/^Infected\\b/,")
+        print("   qr/^(?:Info|Virus Name):\\s+(.+)/ ],")
+    # NOTE: check options and patterns to see which entry better applies
 
-	if 'drweb' in scanner:
-		print("### http://drweb.imshop.de/")
-		print(" ['Dr.Web Antivirus for Linux/FreeBSD/Solaris', 'drweb',")
-		print("   '-al -ar -fm -go -ha -ml -ni -ot -sd -up {}',")
-		print("   [0], [1], sub {('no-name')} ],")
+    if 'drweb' in scanner:
+        print("### http://drweb.imshop.de/")
+        print(" ['Dr.Web Antivirus for Linux/FreeBSD/Solaris', 'drweb',")
+        print("   '-al -ar -fm -go -ha -ml -ni -ot -sd -up {}',")
+        print("   [0], [1], sub {('no-name')} ],")
 
-	if 'drwebdaemon' in scanner:
-		print("['Dr.Web Daemon', \\&ask_daemon,")
-		print("  [pack('N',1).  # DRWEBD_SCAN_CMD - 1")
-		print("   pack('N',1).  # DRWEBD_RETURN_VIRUSES")
-		print("   pack('N',     # path length")
-		print("     length(\"$TEMPBASE/amavis-yyyymmddTHHMMSS-xxxxx/parts/part-xxxxx\")).")
-		print("   '{}/*'.       # path")
-		print("   pack('N',0) . pack('N',0),")
-		print("   '/usr/local/drweb/run/drwebd.sock'],")
-		print("  qr/^\\x00(\\x00|\\x01)\\x00\\x00/,")
-		print("  qr/^\\x00(\\x00|\\x01)\\x00(\\x20|\\x40|\\x80)/,")
-		print("  qr/infected with ([^\\x00]+)\\x00\\z/")
-		print("],")
+    if 'drwebdaemon' in scanner:
+        print("['Dr.Web Daemon', \\&ask_daemon,")
+        print("  [pack('N',1).  # DRWEBD_SCAN_CMD - 1")
+        print("   pack('N',1).  # DRWEBD_RETURN_VIRUSES")
+        print("   pack('N',     # path length")
+        print("     length(\"$TEMPBASE/amavis-yyyymmddTHHMMSS-xxxxx/parts/part-xxxxx\")).")
+        print("   '{}/*'.       # path")
+        print("   pack('N',0) . pack('N',0),")
+        print("   '/usr/local/drweb/run/drwebd.sock'],")
+        print("  qr/^\\x00(\\x00|\\x01)\\x00\\x00/,")
+        print("  qr/^\\x00(\\x00|\\x01)\\x00(\\x20|\\x40|\\x80)/,")
+        print("  qr/infected with ([^\\x00]+)\\x00\\z/")
+        print("],")
 
-	if 'fsav' in scanner:
-		print("### http://www.f-secure.com/products/anti-virus/")
-		print(" ['F-Secure Antivirus', 'fsav',")
-		print("   '--dumb --archive {}', [0], [3,8],")
-		print("   qr/infection: (.+)/ ],")
+    if 'fsav' in scanner:
+        print("### http://www.f-secure.com/products/anti-virus/")
+        print(" ['F-Secure Antivirus', 'fsav',")
+        print("   '--dumb --archive {}', [0], [3,8],")
+        print("   qr/infection: (.+)/ ],")
 
-	if 'inocucmd' in scanner:
-		print(" ['CAI InoculateIT', 'inocucmd',")
-		print("   '-sec -nex {}', [0], [100],")
-		print("   qr/was infected by virus (.+)/ ],")
+    if 'inocucmd' in scanner:
+        print(" ['CAI InoculateIT', 'inocucmd',")
+        print("   '-sec -nex {}', [0], [100],")
+        print("   qr/was infected by virus (.+)/ ],")
 
-	if 'mks' in scanner:
-		print(" ['MkS_Vir for Linux (beta)', ['mks32','mks'],")
-		print("   '-s {}/*', [0], [1,2],    # any use for options: -a -c  ?")
-		print("   qr/--[ \t]*(.+)/ ], ")
+    if 'mks' in scanner:
+        print(" ['MkS_Vir for Linux (beta)', ['mks32','mks'],")
+        print("   '-s {}/*', [0], [1,2],    # any use for options: -a -c  ?")
+        print("   qr/--[ \t]*(.+)/ ], ")
 
-	if 'nod32' in scanner:
-		print("### http://www.nod32.com/")
-		print(" ['ESET Software NOD32', 'nod32',")
-		print("   '-all -subdir+ {}', [0], [1,2],")
-		print("   qr/^.+? - (.+?)\\s*(?:backdoor|joke|trojan|virus|worm)/ ],")
+    if 'nod32' in scanner:
+        print("### http://www.nod32.com/")
+        print(" ['ESET Software NOD32', 'nod32',")
+        print("   '-all -subdir+ {}', [0], [1,2],")
+        print("   qr/^.+? - (.+?)\\s*(?:backdoor|joke|trojan|virus|worm)/ ],")
 
-	if 'nod32cli' in scanner:
-		print("### http://www.nod32.com/")
-		print(" ['ESET Software NOD32 - Client/Server Version', 'nod32cli',")
-		print("   '-a -r -d recurse --heur standard {}', [0], [10,11],")
-		print("   qr/^\\S+\\s+infected:\\s+(.+)/ ],")
+    if 'nod32cli' in scanner:
+        print("### http://www.nod32.com/")
+        print(" ['ESET Software NOD32 - Client/Server Version', 'nod32cli',")
+        print("   '-a -r -d recurse --heur standard {}', [0], [10,11],")
+        print("   qr/^\\S+\\s+infected:\\s+(.+)/ ],")
 
-	if 'nvccmd' in scanner:
-		print("### http://www.norman.com/products_nvc.shtml")
-		print(" ['Norman Virus Control v5 / Linux', 'nvccmd',")
-		print("   '-c -l:0 -s -u {}', [0], [1],")
-		print("   qr/(?i).* virus in .* -> \\'(.+)\\'/ ],")
+    if 'nvccmd' in scanner:
+        print("### http://www.norman.com/products_nvc.shtml")
+        print(" ['Norman Virus Control v5 / Linux', 'nvccmd',")
+        print("   '-c -l:0 -s -u {}', [0], [1],")
+        print("   qr/(?i).* virus in .* -> \\'(.+)\\'/ ],")
 
-	if 'pavcl' in scanner:
-		print("### http://www.pandasoftware.com/")
-		print(" ['Panda Antivirus for Linux', ['pavcl'],")
-		print("   '-aut -aex -heu -cmp -nbr -nor -nso -eng {}',")
-		print("   qr/Number of files infected[ \\.]*: 0(?!\\d)/,")
-		print("   qr/Number of files infected[ \\.]*: 0*[1-9]/,")
-		print("   qr/Found virus :\\s*(\S+)/ ],")
+    if 'pavcl' in scanner:
+        print("### http://www.pandasoftware.com/")
+        print(" ['Panda Antivirus for Linux', ['pavcl'],")
+        print("   '-aut -aex -heu -cmp -nbr -nor -nso -eng {}',")
+        print("   qr/Number of files infected[ \\.]*: 0(?!\\d)/,")
+        print("   qr/Number of files infected[ \\.]*: 0*[1-9]/,")
+        print("   qr/Found virus :\\s*(\S+)/ ],")
 
-	# GeCAD AV technology is acquired by Microsoft; RAV has been discontinued.
-	# Check your RAV license terms before fiddling with the following two lines!
-	#		print("['GeCAD RAV AntiVirus 8', 'ravav',")
-	#		print("  '--all --archive --mail {}', [1], [2,3,4,5], qr/Infected: (.+)/ ],")
-	# # NOTE: the command line switches changed with scan engine 8.5 !
-	# # (btw, assigning stdin to /dev/null causes RAV to fail)
+    # GeCAD AV technology is acquired by Microsoft; RAV has been discontinued.
+    # Check your RAV license terms before fiddling with the following two lines!
+    #		print("['GeCAD RAV AntiVirus 8', 'ravav',")
+    #		print("  '--all --archive --mail {}', [1], [2,3,4,5], qr/Infected: (.+)/ ],")
+    # # NOTE: the command line switches changed with scan engine 8.5 !
+    # # (btw, assigning stdin to /dev/null causes RAV to fail)
 
-	if 'uvscan' in scanner:
-		print("### http://www.nai.com/")
-		print(" ['NAI McAfee AntiVirus (uvscan)', 'uvscan',")
-		print("   '--secure -rv --summary --noboot - {}', [0], [13],")
-		print("   qr/(?x) Found (?:")
-		print("       \\ the\\ (.+)\\ (?:virus|trojan)  |")
-		print("       \\ (?:virus|trojan)\\ or\\ variant\\ ([^ ]+)  |")
-		print("       :\\ (.+)\ NOT\\ a\\ virus)/,")
-		print("sub {$ENV{LD_PRELOAD}='/lib/libc.so.6'},")
-		print("sub {delete $ENV{LD_PRELOAD}},")
-		print(" ],")
+    if 'uvscan' in scanner:
+        print("### http://www.nai.com/")
+        print(" ['NAI McAfee AntiVirus (uvscan)', 'uvscan',")
+        print("   '--secure -rv --summary --noboot - {}', [0], [13],")
+        print("   qr/(?x) Found (?:")
+        print("       \\ the\\ (.+)\\ (?:virus|trojan)  |")
+        print("       \\ (?:virus|trojan)\\ or\\ variant\\ ([^ ]+)  |")
+        print("       :\\ (.+)\ NOT\\ a\\ virus)/,")
+        print("sub {$ENV{LD_PRELOAD}='/lib/libc.so.6'},")
+        print("sub {delete $ENV{LD_PRELOAD}},")
+        print(" ],")
 
-	if 'vbuster' in scanner:
-		print("### http://www.virusbuster.hu/en/")
-		print(" ['VirusBuster', ['vbuster', 'vbengcl'],")
-		# VirusBuster Ltd. does not support the daemon version for the workstation
-		# engine (vbuster-eng-1.12-linux-i386-libc6.tgz) any longer. The names of
-		# binaries, some parameters AND return codes (from 3 to 1) changed.
-		print("   \"{} -ss -i '*' -log=$MYHOME/vbuster.log\", [0], [1],")
-		print("   qr/: '(.*)' - Virus/ ],")
+    if 'vbuster' in scanner:
+        print("### http://www.virusbuster.hu/en/")
+        print(" ['VirusBuster', ['vbuster', 'vbengcl'],")
+        # VirusBuster Ltd. does not support the daemon version for the workstation
+        # engine (vbuster-eng-1.12-linux-i386-libc6.tgz) any longer. The names of
+        # binaries, some parameters AND return codes (from 3 to 1) changed.
+        print("   \"{} -ss -i '*' -log=$MYHOME/vbuster.log\", [0], [1],")
+        print("   qr/: '(.*)' - Virus/ ],")
 
-	if 'vbengd' in scanner:
-		print("### http://www.virusbuster.hu/en/")
-		print("['VirusBuster (Client + Daemon)', 'vbengd',")
-		print("  # HINT: for an infected file it returns always 3,")
-		print("  # although the man-page tells a different story")
-		print("  '-f -log scandir {}', [0], [3],")
-		print("  qr/Virus found = (.*);/ ],")
+    if 'vbengd' in scanner:
+        print("### http://www.virusbuster.hu/en/")
+        print("['VirusBuster (Client + Daemon)', 'vbengd',")
+        print("  # HINT: for an infected file it returns always 3,")
+        print("  # although the man-page tells a different story")
+        print("  '-f -log scandir {}', [0], [3],")
+        print("  qr/Virus found = (.*);/ ],")
 
-	if 'vfind' in scanner:
-		print("### http://www.cyber.com/")
-		print(" ['CyberSoft VFind', 'vfind',")
-		print("   '--vexit {}/*', [0], [23], qr/##==>>>> VIRUS ID: CVDL (.+)/,")
-		print("sub {$ENV{VSTK_HOME}='/usr/lib/vstk'},")
-		print(" ],")
+    if 'vfind' in scanner:
+        print("### http://www.cyber.com/")
+        print(" ['CyberSoft VFind', 'vfind',")
+        print("   '--vexit {}/*', [0], [23], qr/##==>>>> VIRUS ID: CVDL (.+)/,")
+        print("sub {$ENV{VSTK_HOME}='/usr/lib/vstk'},")
+        print(" ],")
 
-	if 'ikarus' in scanner:
-		print("### http://www.ikarus-software.com/)")
-		print(" ['Ikarus AntiVirus for Linux', 'ikarus',")
-		print("   '{}', [0], [40], qr/Signature (.+) found/ ],")
+    if 'ikarus' in scanner:
+        print("### http://www.ikarus-software.com/)")
+        print(" ['Ikarus AntiVirus for Linux', 'ikarus',")
+        print("   '{}', [0], [40], qr/Signature (.+) found/ ],")
 
-	if 'bdc' in scanner:
-		print("### http://www.bitdefender.com/")
-		print(" ['BitDefender', 'bdc',")
-		print("   '--all --arc {}', qr/^Infected files *:0(?!\\d)/,")
-		print("   qr/^(?:Infected files|Identified viruses|Suspect files) *:0*[1-9]/,")
-		print("   qr/(?:suspected|infected): (.*)\\033/ ],")
+    if 'bdc' in scanner:
+        print("### http://www.bitdefender.com/")
+        print(" ['BitDefender', 'bdc',")
+        print("   '--all --arc {}', qr/^Infected files *:0(?!\\d)/,")
+        print("   qr/^(?:Infected files|Identified viruses|Suspect files) *:0*[1-9]/,")
+        print("   qr/(?:suspected|infected): (.*)\\033/ ],")
 
-		# If no virus scanners from the @av_scanners list produce 'clean' nor
-		# 'infected' status (e.g. they all fail to run or the list is empty),
-		# then _all_ scanners from the @av_scanners_backup list are tried.
-		# When there are both daemonized and command-line scanners available,
-		# it is customary to place slower command-line scanners in the
-		# @av_scanners_backup list. The default choice is somewhat arbitrary,
-		# move entries from one list to another as desired.
+        # If no virus scanners from the @av_scanners list produce 'clean' nor
+        # 'infected' status (e.g. they all fail to run or the list is empty),
+        # then _all_ scanners from the @av_scanners_backup list are tried.
+        # When there are both daemonized and command-line scanners available,
+        # it is customary to place slower command-line scanners in the
+        # @av_scanners_backup list. The default choice is somewhat arbitrary,
+        # move entries from one list to another as desired.
 @!@
 );
 
 @av_scanners_backup = (
 @!@
 if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/scanner'] not in ['', 'none']:
-	scanner = configRegistry['mail/antivir/scanner'].split(' ')
+    scanner = configRegistry['mail/antivir/scanner'].split(' ')
 
-	if 'clamscan' in scanner:
-		print("### http://clamav.elektrapro.com/")
-		print("['Clam Antivirus - clamscan', 'clamscan',")
-		print("'--stdout --disable-summary -r {}', [0], [1],")
-		print("qr/^.*?: (?!Infected Archive)(.*) FOUND$/ ],")
+    if 'clamscan' in scanner:
+        print("### http://clamav.elektrapro.com/")
+        print("['Clam Antivirus - clamscan', 'clamscan',")
+        print("'--stdout --disable-summary -r {}', [0], [1],")
+        print("qr/^.*?: (?!Infected Archive)(.*) FOUND$/ ],")
 
-	if 'f-prot.sh' in scanner:
-		print("### http://www.f-prot.com/")
-		print("['FRISK F-Prot Antivirus', ['f-prot','f-prot.sh'],")
-		print("'-dumb -archive -packed {}', [0,8], [3,6],")
-		print("qr/Infection: (.+)/ ],")
+    if 'f-prot.sh' in scanner:
+        print("### http://www.f-prot.com/")
+        print("['FRISK F-Prot Antivirus', ['f-prot','f-prot.sh'],")
+        print("'-dumb -archive -packed {}', [0,8], [3,6],")
+        print("qr/Infection: (.+)/ ],")
 
-	if 'trendmicro' in scanner:
-		print("### http://www.trendmicro.com/")
-		print("#  ['Trend Micro FileScanner', ['/etc/iscan/vscan','vscan'],")
-		print("'-a {}', [0], qr/Found virus/, qr/Found virus (.+) in/ ],")
+    if 'trendmicro' in scanner:
+        print("### http://www.trendmicro.com/")
+        print("#  ['Trend Micro FileScanner', ['/etc/iscan/vscan','vscan'],")
+        print("'-a {}', [0], qr/Found virus/, qr/Found virus (.+) in/ ],")
 
-	if 'kavscanner' in scanner:
-		print("['KasperskyLab kavscanner', 'kavscanner',")
-		print("'-i1 -xp {}', [0,10,15], [5,20,21,25],")
-		print("qr/(?:CURED|INFECTED|CUREFAILED|WARNING|SUSPICION) (.*)/ ,")
-		print("sub {chdir('/usr/bin') or die \"Can't chdir to kav: $!\"},")
-		print("sub {chdir($TEMPBASE) or die  \"Can't chdir back to $TEMPBASE $!\"},")
-		print("],")
+    if 'kavscanner' in scanner:
+        print("['KasperskyLab kavscanner', 'kavscanner',")
+        print("'-i1 -xp {}', [0,10,15], [5,20,21,25],")
+        print("qr/(?:CURED|INFECTED|CUREFAILED|WARNING|SUSPICION) (.*)/ ,")
+        print("sub {chdir('/usr/bin') or die \"Can't chdir to kav: $!\"},")
+        print("sub {chdir($TEMPBASE) or die  \"Can't chdir back to $TEMPBASE $!\"},")
+        print("],")
 
 # Commented out because the name 'sweep' clashes with the Debian package of
 # the same name. Make sure the correct sweep is found in the path when enabling
 #
 
-	if 'sweep' in scanner:
-		print("### http://www.sophos.com/")
-		print(" ['Sophos Anti Virus (sweep)', '/usr/local/bin/sweep',")
-		print("   '-nb -f -all -rec -ss -sc -archive {}',")
-		print("   [0,2], qr/Virus .*? found/,")
-		print("   qr/^>>> Virus(?:(?: fragment)? '?(.+?)'? found)/,")
-		print(" sub {$ENV{SAV_IDE}='/usr/local/sav'},")
-		print(" ],")
+    if 'sweep' in scanner:
+        print("### http://www.sophos.com/")
+        print(" ['Sophos Anti Virus (sweep)', '/usr/local/bin/sweep',")
+        print("   '-nb -f -all -rec -ss -sc -archive {}',")
+        print("   [0,2], qr/Virus .*? found/,")
+        print("   qr/^>>> Virus(?:(?: fragment)? '?(.+?)'? found)/,")
+        print(" sub {$ENV{SAV_IDE}='/usr/local/sav'},")
+        print(" ],")
 
 # always succeeds (uncomment to avoid mail requeue if all other scanners fail)
 # ['always-clean', sub {0}],

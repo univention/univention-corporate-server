@@ -7,28 +7,28 @@ name = "connector-tracebacks"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 print("/var/log/univention/%s.log {" % name)
 for setting in sorted(settings):
-	print("\t%s" % settings[setting])
+    print("\t%s" % settings[setting])
 print("}")
 
 name = "ad-connector-certificate"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 print("/var/log/univention/%s.log {" % name)
 for setting in sorted(settings):
-	print("\t%s" % settings[setting])
+    print("\t%s" % settings[setting])
 print("}")
 
 name = "connector-status"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 print("/var/log/univention/%s.log {" % name)
 for setting in sorted(settings):
-	print("\t%s" % settings[setting])
+    print("\t%s" % settings[setting])
 print("}")
 
 name = "connector-ad"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig("connector", configRegistry)
 print("/var/log/univention/%s.log {" % name)
 for setting in sorted(settings):
-	print("\t%s" % settings[setting])
+    print("\t%s" % settings[setting])
 print('\tpostrotate')
 print('\t\tinvoke-rc.d univention-ad-connector crestart > /dev/null')
 print('\tendscript')

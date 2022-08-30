@@ -24,7 +24,7 @@ $config = array (
 @!@
 saml20_enabled = 'false'
 if configRegistry.is_true('saml/idp/enableSAML20-IdP'):
-	saml20_enabled = 'true'
+    saml20_enabled = 'true'
 print("	'enable.saml20-idp'	=> %s," % saml20_enabled)
 
 print("	'timezone'		=> '%s'," % configRegistry.get('saml/idp/timezone', 'Europe/Berlin'))
@@ -687,9 +687,9 @@ print("\t'store.type' => '%s'," % (configRegistry.get('saml/idp/session-type', '
 @!@
 fqdn = '%(hostname)s.%(domainname)s' % configRegistry
 for key, server in configRegistry.items():
-	if not key.startswith('ucs/server/saml-idp-server/') or server == fqdn:
-		continue
-	print('''
+    if not key.startswith('ucs/server/saml-idp-server/') or server == fqdn:
+        continue
+    print('''
 		array(
 			array('hostname' => 'unix:///var/run/univention-saml/%s.socket'),
 		),
