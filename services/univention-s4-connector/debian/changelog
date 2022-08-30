@@ -1,3 +1,10 @@
+univention-s4-connector (14.0.10-6) unstable; urgency=medium
+
+  * Bug #52230: Initialize the udm user module in
+    univention-password_sync_ucs_to_s4 script
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Tue, 30 Aug 2022 14:53:00 +0200
+
 univention-s4-connector (14.0.10-5) unstable; urgency=medium
 
   * Bug #52230: Synchronize password history between S4 and UCS
