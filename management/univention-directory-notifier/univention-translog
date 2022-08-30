@@ -36,21 +36,18 @@ from __future__ import print_function
 from argparse import ArgumentParser, ArgumentTypeError
 from collections import namedtuple
 from contextlib import contextmanager
-from ctypes import Structure, c_bool, c_ulong, sizeof
 from errno import ENOENT
-from itertools import chain
 from logging import CRITICAL, DEBUG, basicConfig, getLogger
 from os import SEEK_SET, environ, fstat, rename, unlink
 from os.path import exists
 from subprocess import call
 from sys import exit, stderr
-from time import strftime, time
+from time import strftime
 
 import ldap
 from ldap.controls import SimplePagedResultsControl
 from ldap.dn import is_dn, str2dn
 from ldap.ldapobject import ReconnectLDAPObject
-from ldap.modlist import addModlist
 
 from univention.config_registry import ConfigRegistry
 
@@ -77,170 +74,15 @@ SERVICES = {
 }  # type: Dict[str, Tuple[str, ...]]
 
 
-class IndexHeader(Structure):
-    """
-    Header for index file.
-
-    .. warning::
-
-        The header is architecture dependant due to the use of `c_ulong`.
-    """
-
-    MAGIC = 0x3395e0d4
-    _fields_ = [("magic", c_ulong)]
-    _pack_ = 1
-
-
-class IndexEntry(Structure):
-    """
-    Entry of index file.
-
-    .. warning::
-
-        The header is architecture dependant due to the use of `c_ulong`.
-
-    .. warning::
-
-        The source is compiled with `-D_FILE_OFFSET_BITS=64` which makes `off_t` 64 bit on i386, too, but `ulong` remains 32 bit.
-    """
-
-    _fields_ = [("valid", c_bool), ("offset", c_ulong)]
-    _pack_ = 1
-
-
-class Index(object):
-    """
-    Index to efficiently lookup transactions in the translog file.
-    :file:`/var/lib/univention-ldap/notify/transaction.index`
-    """
-
-    def __init__(self, filename):
-        # type: (str) -> None
-        self.filename = filename + ".index"
-        self.log = getLogger(__name__).getChild("Index")
-        self.index = None  # type: Optional[IO[bytes]]
-        self.size = 0
-        self.count = 0
-
-    def __enter__(self):
-        # type: () -> Index
-        try:
-            self.index = index = open(self.filename, 'rb')
-
-            data = index.read(sizeof(IndexHeader))
-            assert data, "Empty index"
-            header = IndexHeader.from_buffer_copy(data)
-            assert header.magic == header.MAGIC, header.magic
-
-            stat = fstat(index.fileno())
-            self.size = size = stat.st_size
-        except EnvironmentError as ex:
-            self.log.warning("Failed to open %s: %s", self.filename, ex)
-            if ex.errno != ENOENT:
-                raise
-
-            self.log.info("Creating empty %s", self.filename)
-            self.index = index = open(self.filename, 'wb+')
-
-            header = IndexHeader(IndexHeader.MAGIC)
-            data = bytes(header)
-            self.index.write(data)
-
-            self.size = size = len(data)
-
-        count, reminder = divmod(size - sizeof(IndexHeader), sizeof(IndexEntry))
-        self.log.info("Index of size %d, last entry: %d", size, count - 1)
-        self.count = count - 1 if count else 0  # transaction 0 is never used
-        assert reminder == 0, reminder
-
-        return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
-        assert self.index
-        self.index.close()
-
-    def __getitem__(self, tid):
-        # type: (int) -> IndexEntry
-        """
-        Return index entry for given transaction.
-
-        :param tid: Transaction id.
-        :returns: The index entry.
-        :raises IndexEntry: for transactions before 1 or after the current count.
-        """
-        if tid < 1 or tid > self.count:
-            raise IndexError(tid)
-
-        assert self.index
-        self.seek(tid)
-
-        data = self.index.read(sizeof(IndexEntry))
-        assert data, "Invalid index entry"
-        entry = IndexEntry.from_buffer_copy(data)
-        self.log.debug("Transaction %d is %s and at position %d", tid, entry.valid, entry.offset)
-
-        return entry
-
-    def __setitem__(self, tid, offset):
-        # type: (int, int) -> None
-        """
-        Set index entry for given transaction.
-
-        :param tid: Transaction id.
-        :param offset: File offset.
-        :raises IndexEntry: for transactions before 1.
-        """
-        if tid < 1:
-            raise IndexError(tid)
-
-        if tid > self.count:
-            self.count = tid
-
-        assert self.index
-        self.seek(tid)
-
-        entry = IndexEntry(True, offset)
-        data = bytes(entry)
-        self.index.write(data)
-        self.log.debug("Transaction %d is %s and at position %d", tid, entry.valid, entry.offset)
-
-    def seek(self, tid):
-        # type: (int) -> None
-        """
-        Seek to given transaction id.
-
-        :param tid: Transaction id.
-        """
-        assert 1 <= tid <= self.count
-        assert self.index
-
-        pos = sizeof(IndexHeader) + tid * sizeof(IndexEntry)
-        self.log.debug("Looking up transaction %d at position %d in index", tid, pos)
-        self.index.seek(pos, SEEK_SET)
-
-    def remove(self):
-        # type: () -> None
-        """Remove `.index` file."""
-        self.log.info('Removing %s ...', self.filename)
-        try:
-            unlink(self.filename)
-        except EnvironmentError as ex:
-            self.log.debug('unlink %s: %s', self.filename, ex)
-            if ex.errno != ENOENT:
-                raise
-
-
 class Translog(object):
     """
     Transactions log file.
     :file:`/var/lib/univention-ldap/notify/transaction`
     """
 
-    def __init__(self, filename, index=None):
-        # type: (str, Optional[Index]) -> None
+    def __init__(self, filename):
+        # type: (str) -> None
         self.filename = filename
-        self.index = index or Index(filename).__enter__()  # type: Index
         self.log = getLogger(__name__).getChild("Log")
         self.translog = None  # type: Optional[IO[str]]
         self.size = 0
@@ -448,97 +290,6 @@ def ldapi(opt):
     ld.unbind_ext_s()
 
 
-def import_all(opt):
-    # type: (Namespace) -> None
-    """
-    Load transaction from file into LDAP server.
-
-    :param opt: Command line options.
-    """
-    log = getLogger(__name__).getChild("import")
-    log.info("Reading transactions from file '%s'...", opt.translog_file)
-
-    with Index(opt.translog_file) as index, Translog(opt.translog_file, index) as translog, ldapi(opt) as ld:
-        if not translog.size:
-            log.debug("File is empty; no transactions to process.")
-            return
-
-        c_tid = max(1, translog.last - opt.count + 1)
-        log.debug("count.tid=%d count=%d", c_tid, opt.count)
-
-        p_offset = int(translog.size * (1.0 - opt.percent))
-        try:
-            p_trans = translog.read(p_offset)
-            p_tid = p_trans.tid
-        except EOFError:
-            p_tid = translog.last
-        log.debug("percent.tid=%d off=%d percent=%f", p_tid, p_offset, opt.percent)
-
-        s_offset = max(0, translog.size - opt.size)
-        try:
-            s_trans = translog.read(s_offset)
-            s_tid = s_trans.tid
-        except EOFError:
-            s_tid = translog.last
-        log.debug("size.tid=%d off=%d size=%d", s_tid, s_offset, opt.size)
-
-        start = max(1, min(c_tid, p_tid, s_tid), translog.first, opt.min)
-        assert translog.first <= start <= translog.last, start
-        end = min(opt.max or translog.last, translog.last)
-
-        if opt.index and index.count:
-            log.info("Processing transactions %d .. %d", start, end)
-            translog.seek(start)
-            lead = []  # type: List[Transaction]
-        else:
-            offset = min(p_offset, s_offset)
-            log.info("Processing transaction from offset %d .. %d", offset, end)
-            rec = translog.read(offset)
-            lead = [rec]
-
-        t_begin = t_last = time()
-        count = end - start
-        for rec in chain(lead, translog):
-            if rec.tid < start:
-                continue
-            if rec.tid > end:
-                break
-
-            add_transaction(opt, ld, rec)
-
-            if stderr.isatty():
-                t_now = time()
-                if t_now - t_last >= 5.0:
-                    p_done = float(rec.tid - start) / count
-                    t_used = t_now - t_begin
-                    stderr.write('\rprocessed {:d} of {:d} [{:.1f}%] in {:.1f}s, {:d} remaining in {:.1f}s  \r'.format(
-                        rec.tid - start,
-                        count,
-                        p_done * 100.0,
-                        t_used,
-                        end - rec.tid,
-                        t_used / p_done - t_used,
-                    ))
-                    t_last = t_now
-
-
-def load_single(opt):
-    # type: (Namespace) -> None
-    """
-    Load given transactions into LDAP server.
-
-    :param opt: Command line options.
-    """
-    with Index(opt.translog_file) as index, Translog(opt.translog_file, index) as translog, ldapi(opt) as ld:
-        for tid in opt.trans:
-            try:
-                rec = translog[tid]
-            except IndexError:
-                continue
-
-            add_transaction(opt, ld, rec)
-
-
 def show_stat(opt):
     # type: (Namespace) -> None
     """
@@ -546,19 +297,9 @@ def show_stat(opt):
 
     :param opt: Command line options.
     """
-    with Index(opt.translog_file) as index, Translog(opt.translog_file, index) as translog:
-        print("Index.file: %s" % index.filename)
-        print("Index.size: %d" % index.size)
-        print("Index.count: %d" % index.count)
-        print("Index.okay: %s" % ('yes' if index.count == translog.last else 'no',))
-        print("Translog.file: %s" % translog.filename)
-        print("Translog.size: %d" % translog.size)
-        print("Translog.first: %d" % translog.first)
-        print("Translog.last: %d" % translog.last)
-        print("Translog.count: %d" % translog.count)
-        first, last = translog.first, translog.last
-
-    tid = last
+    first = 1  # FIXME
+    last = 1  # FIXME
+    tid = 1  # FIXME
     with ldapi(opt) as ld:
         while tid >= first:
             dn = f"reqSession={tid},{opt.translog_base}"
@@ -569,59 +310,6 @@ def show_stat(opt):
                 tid -= 1
     print("Ldap.last: %d" % tid)
     print("Ldap.okay: %s" % ('yes' if last == tid else 'no',))
-
-
-def dump_index(opt):
-    # type: (Namespace) -> None
-    """
-    Dump transaction index
-
-    :param opt: Command line options.
-    """
-    log = getLogger(__name__).getChild("INDEX")
-
-    with Index(opt.translog_file) as index:
-        begin = opt.min
-        end = min(opt.max or index.count, index.count)
-        log.debug('Dumping index from [%d, %d] ...', begin, end)
-        for tid in range(begin, end + 1):
-            rec = index[tid]
-            print('%8d[%c]: %d' % (tid, 'x' if rec.valid else ' ', rec.offset))
-
-
-def reindex(opt):
-    # type: (Namespace) -> None
-    """
-    Re-build transaction index
-
-    :param opt: Command line options.
-    """
-    log = getLogger(__name__).getChild("REINDEX")
-
-    index = Index(opt.translog_file)
-    log.warning("Ignore the following 2 WARNINGS about the missing and mismatching index")
-    with stopped(opt, (UDN,)), rewrite(index.filename) as index.filename:
-        with index, Translog(opt.translog_file, index) as translog:
-            log.warning("Re-building index %s now...", index.filename)
-            assert translog.translog is not None
-            pos = 0
-            for lnr, line in enumerate(translog.translog, start=1):
-                rec = translog.parse_line(line)
-                log.info("%d: tid=%d @ %d", lnr, rec.tid, pos)
-                index[rec.tid] = pos
-                pos += len(line.encode())
-
-
-def lookup(opt):
-    # type: (Namespace) -> None
-    """
-    Lookup transactions.
-
-    :param opt: Command line options.
-    """
-    with Index(opt.translog_file) as index, Translog(opt.translog_file, index) as translog:
-        for tid in opt.trans:
-            print(translog[tid])
 
 
 def lookup_ldap(opt):
@@ -646,40 +334,6 @@ def lookup_ldap(opt):
             print('tid={0[reqSession][0]} dn={0[reqDN][0]} command={0[reqType][0]}'.format(attrs))
 
 
-def add_transaction(opt, ld, rec):
-    # type: (Namespace, ReconnectLDAPObject, Transaction) -> None
-    """
-    Load single transaction into LDAP server.
-
-    :param opt: Command line options.
-    :param ld: LDAP server connection.
-    :param rec: Transaction to add.
-    :raises Abort: on fatal errors.
-    """
-    log = getLogger(__name__).getChild("LDAP")
-
-    dn = f"reqSession={rec.tid},{opt.translog_base}"
-    modlist = addModlist({
-        "objectClass": [b"auditObject"],
-        "reqStart": [opt.datetime.encode("utf-8")],
-        "reqType": [f"{rec.command}".encode("utf-8")],
-        "reqSession": [f"{rec.tid}".encode("utf-8")],
-        "reqDN": [f"{rec.dn}".encode("utf-8")],
-    })
-    try:
-        log.debug("ldap_add(%s)", dn)
-        if not opt.dry_run:
-            ld.add_ext_s(dn, modlist)
-    except (ldap.ALREADY_EXISTS, ldap.INVALID_SYNTAX) as ex:
-        if not opt.lenient:
-            log.critical("ldap_add(%s): %s", rec, ex.args[0]["desc"])
-            raise Abort()
-        log.error("ldap_add(%s): %s", rec, ex.args[0]["desc"])
-    except ldap.LDAPError as ex:
-        log.critical("ldap_add(%s): %s", rec, ex)
-        raise Abort()
-
-
 def check(opt):
     # type: (Namespace) -> None
     """
@@ -692,9 +346,6 @@ def check(opt):
         exit(0)
 
     with stopped(opt, SERVICES[opt.role]):
-        translog = CheckTranslog(opt, opt.translog_file)
-        translog.run()
-
         listener = CheckListener(opt, opt.listener_file)
 
         if exists(opt.listener_private_file):
@@ -1088,42 +739,6 @@ class CheckGeneric(object):
         raise NotImplementedError()
 
 
-class CheckTranslog(CheckGeneric):
-    """
-    Check transactions log file for consistency.
-    :file:`/var/lib/univention-ldap/notify/transaction`
-    """
-
-    def check_transaction(self, rec):
-        # type: (Transaction) -> None
-        """
-        Check committed transaction.
-
-        :param rec: The transaction record to check.
-        """
-        if self.lnr == 1:
-            self.log.info("%s:%d: Starts with: %r", self.filename, self.lnr, self.line)
-        elif rec.tid <= self.last_tid:
-            self.error("Repeated line after %r", self.last_line, sort=True)
-        elif self.last_tid + 1 != rec.tid:
-            self.error("Hole after %r", self.last_line, fill=True)
-
-    def fixit(self):
-        # type: () -> None
-        """Fix transactions."""
-        if self.needs_syntax:
-            self.fix_syntax()
-        if self.needs_sort:
-            self.fix_sort()
-        if self.needs_fill:
-            self.fix_fill()
-
-    def remove_index(self):
-        # type: () -> None
-        """Remove `.index` file."""
-        Index(self.filename).remove()
-
-
 class CheckListener(CheckGeneric):
     """
     Check pending transactions log file for consistency.
@@ -1205,49 +820,7 @@ def prune(opt):
         print('This command is only for UCS Primary and Backup Nodes.')
         exit(0)
 
-    opt.skip_services = opt.dry_run
-    with stopped(opt, (UDN,)):
-        try:
-            prune_file(opt)
-        except DryRun:
-            pass
-        prune_ldap(opt)
-
-
-def prune_file(opt):
-    """
-    Prune old transactions from file.
-
-    :param opt: Command line options.
-    """
-    log = getLogger(__name__).getChild("prune").getChild("file")
-
-    with Index(opt.translog_file) as index, Translog(opt.translog_file, index) as translog:
-        if opt.trans < 0:
-            log.info('Keeping last %d transactions before %d', -opt.trans, translog.last)
-            opt.trans = translog.last + opt.trans + 1
-
-        log.info('Purging/keeping %d..%d..%d', translog.first, opt.trans, translog.last)
-        if opt.trans <= translog.first:
-            log.info('Already purged, nothing to do.')
-            return
-        if opt.trans >= translog.last:
-            log.info('Nothing to purge.')
-            return
-        assert translog.first < opt.trans < translog.last
-
-        with rewrite(opt.translog_file) as tmp, open(tmp, 'w') as new:
-            for rec in translog:
-                if rec.tid < opt.trans:
-                    log.debug('Dropping %d', rec.tid)
-                    continue
-                line = Translog.format_line(rec)
-                new.write(line)
-
-            if opt.dry_run:
-                raise DryRun()
-
-        index.remove()
+    prune_ldap(opt)
 
 
 def prune_ldap(opt):
@@ -1320,41 +893,12 @@ def parse_args(args=None):
     parser.add_argument("--datetime", "-d", help="Overwrite time-stamp for import [%(default)s]", default=strftime("%Y%m%d%H%M%SZ"))
     subparsers = parser.add_subparsers(title="subcommands", description="valid subcommands", required=True, dest="command")
 
-    parser_import = subparsers.add_parser("import", help="Import transaction file into LDAP")
-    parser_import.add_argument("--index", "-i", action="store_false", help="Do not use index to find transactions")
-    import_amount = parser_import.add_argument_group("minimum", description="Amount of transactions to import")
-    import_amount.add_argument("--count", "-c", type=parse_int_pos, help="Minimum number of transaction [%(default)s]", default=100000)
-    import_amount.add_argument("--percent", "-p", type=parse_percent, help="Minimum percentage of transaction file [%(default)s%%]", default="0")
-    import_amount.add_argument("--size", "-s", type=parse_size, help="Minimum number of bytes from transaction file [%(default)s]", default="10M")
-    import_limit = parser_import.add_argument_group("limit", description="Limit transactions to process")
-    import_limit.add_argument("--min", "-m", metavar="TID", type=parse_int_pos, help="First transaction ID to process [%(default)s]", default=1)
-    import_limit.add_argument("--max", "-M", metavar="TID", type=parse_int_pos, help="Last transaction ID to process")
-    parser_import.set_defaults(func=import_all)
-
-    parser_load = subparsers.add_parser("load", help="Load specified transactions into LDAP")
-    parser_load.add_argument("trans", metavar="TID", type=parse_int_pos, nargs='+', help="Transaction number to process")
-    parser_load.add_argument("--index", "-i", action="store_false", help="Do not use index to find transactions")
-    parser_load.set_defaults(func=load_single)
-
-    parser_lookup = subparsers.add_parser("lookup", help="Lookup transaction in file")
-    parser_lookup.add_argument("trans", metavar="TID", type=parse_int_pos, nargs='+', help="Transaction number to lookup")
-    parser_lookup.set_defaults(func=lookup)
-
     parser_ldap = subparsers.add_parser("ldap", help="Lookup transaction in LDAP")
     parser_ldap.add_argument("trans", metavar="TID", type=parse_int_pos, nargs='+', help="Transaction number to lookup")
     parser_ldap.set_defaults(func=lookup_ldap)
 
     parser_stat = subparsers.add_parser("stat", help="Show statistics")
     parser_stat.set_defaults(func=show_stat)
-
-    parser_index = subparsers.add_parser("index", help="Dump index file")
-    parser_index.add_argument("--min", "-m", metavar="TID", type=parse_int_pos, help="First transaction ID to process [%(default)s]", default=1)
-    parser_index.add_argument("--max", "-M", metavar="TID", type=parse_int_pos, help="Last transaction ID to process")
-    parser_index.set_defaults(func=dump_index)
-
-    parser_reindex = subparsers.add_parser("reindex", help="Re-build index file")
-    parser_reindex.add_argument("--skip-services", "-S", action="store_true", help="Skip stopping and starting services")
-    parser_reindex.set_defaults(func=reindex, fix=True)
 
     parser_check = subparsers.add_parser("check", help="Check transaction files")
     parser_check.add_argument("--fix", "-f", action="store_true", help="Try to fix issues")
@@ -1392,51 +936,6 @@ def parse_int_pos(string):
     except ValueError:
         pass
     raise ArgumentTypeError("Positive integer required")
-
-
-def parse_percent(string):
-    # type: (str) -> float
-    """
-    Parse percentage string.
-
-    :param string: The command line string.
-    :returns: The parsed percentage.
-    :raises ArgumentTypeError: if the string is valid.
-    """
-    try:
-        val = float(string.rstrip('%'))
-        if not 0.0 <= val <= 100.0:
-            raise ValueError()
-    except ValueError:
-        raise ArgumentTypeError("Invalid percentage")
-    return val / 100.0
-
-
-def parse_size(string):
-    # type: (str) -> int
-    """
-    Parse size string.
-
-    :param string: The command line string.
-    :returns: The parsed size.
-    :raises ArgumentTypeError: if the string is valid.
-    """
-    suffix = string.lstrip(".0123456789")
-    try:
-        unit = suffix.upper().rstrip("IB") or ' '
-        scale = 1 << (10 * (" ", "K", "M", "G", "T", "P", "E").index(unit))
-    except ValueError:
-        raise ArgumentTypeError("Invalid unit")
-
-    prefix = string[:-len(suffix)] if suffix else string
-    try:
-        value = float(prefix)
-        if not value >= 0.0:
-            raise ValueError()
-    except ValueError:
-        raise ArgumentTypeError("Invalid value")
-
-    return int(value * scale)
 
 
 if __name__ == "__main__":
