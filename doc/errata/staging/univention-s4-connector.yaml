@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-s4-connector
-fix: 14.0.10-5A~5.0.0.202208291038
+fix: 14.0.10-6A~5.0.0.202208301457
 desc: |
  This update addresses the following issues:
  * The function `group_members_sync_to_ucs` used the UCS DN to search in Samba,
