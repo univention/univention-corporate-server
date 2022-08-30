@@ -12,7 +12,7 @@ desc: |
  * The performance and debuggability of the UDM command line client has been
    improved.
  * The UDM command line client now writes error messages and warnings to
-   stdandard error.
+   standard error.
  * A regression in UCS 5.0 for LDAP presence filters (`attribute=*`) has been
    fixed. UDM modules which rewrite filters can now reliably test for LDAP
    presence filters.
