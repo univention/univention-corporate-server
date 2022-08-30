@@ -98,6 +98,8 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'/var/log/univention/ucs-school-import.*'=
 		'/var/log/univention/ucs-school-import-*'=
 		'/var/log/univention/ucsschool-apis'
+		'/var/log/univention/ucsschool-bff-groups'
+		'/var/log/univention/ucsschool-bff-users'
 		'/var/log/univention/ucsschool-id-connector'
 		'/var/log/univention/ucsschool-kelvin-rest-api'
 		'/var/log/univention/reload-service.log'
