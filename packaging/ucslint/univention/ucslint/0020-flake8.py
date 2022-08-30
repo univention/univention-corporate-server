@@ -32,10 +32,12 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
+import pipes
 import re
 import subprocess
 import sys
 from argparse import ArgumentParser
+from tempfile import NamedTemporaryFile
 from typing import Any, Dict, Iterable, List, Tuple  # noqa: F401
 
 import univention.ucslint.base as uub
@@ -436,22 +438,77 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		text = stdout.decode('utf-8', 'replace')
 		return text.splitlines()
 
-	def fix(self, path: str, *args: str) -> None:
-		for ignore, pathes in self._iter_pathes(path):
-			cmd = [
-				'autopep8',
-				'-i',
-				'-aaa',
-				'--max-line-length', str(self.MAX_LINE_LENGTH),
-			]
+	def fix_conffiles(self, path: str | List[str], *args: str, use_ruff: bool = False) -> None:
+		for conffile in path if isinstance(path, list) else uub.FilteredDirWalkGenerator(os.path.join(path, 'conffiles')):
+			with open(conffile) as fd:
+				try:
+					text = fd.read()
+				except UnicodeDecodeError:
+					print('Cannot fix conffile %s: not UTF-8' % (conffile,))
+					continue
+
+			parts = []
+			for i, match in enumerate(EXECUTE_TOKEN.findall(text)):
+				filename = f'{conffile}[{i}]'
+				with NamedTemporaryFile(mode='w') as tmp:
+					tmp.write(match)
+					tmp.flush()
+					if use_ruff:
+						self.ruff([tmp.name], *args, filename=filename)
+					else:
+						self.autopep8([tmp.name], *args, filename=filename)
+					with open(tmp.name) as fd:
+						parts.append(fd.read())
+					if parts[-1].endswith('\n') and not match.endswith('\n'):
+						parts.append(parts.pop()[:-1])
+
+			delim = '@!!@'
+			for part in parts:
+				text = EXECUTE_TOKEN.sub(lambda x, part=part: delim + part + delim, text, 1)
+			text = text.replace(delim, '@!@')
+
+			with open(conffile, 'w') as fd:
+				fd.write(text)
+
+	def fix(self, path: str | List[str], *args: str, use_ruff: bool = False) -> None:
+		ignore_pathes = self._iter_pathes(path) if isinstance(path, str) else {self.DEFAULT_IGNORE: path}.items():
+		for ignore, pathes in ignore_pathes:
 			if ignore:
-				cmd.extend(['--ignore', ignore])
-			if self.DEFAULT_SELECT:
-				cmd.extend(['--select', self.DEFAULT_SELECT])
-			cmd.extend(args)
-			cmd.append('--')
-			cmd.extend(pathes)
-			subprocess.call(cmd)
+				args.extend(['--ignore', ignore])
+			if use_ruff:
+				self.ruff(ignore, pathes, *args)
+			else:
+				self.autopep8(ignore, pathes, *args)
+
+	def ruff(self, pathes, *args: str, filename: str = None) -> None:
+		cmd = [
+			'ruff',
+			'--fix',
+			'--extend-ignore', 'ERA,RUF005,UP008,UP031,UP032',
+			'--line-length', str(self.MAX_LINE_LENGTH),
+		]
+		if self.DEFAULT_SELECT:
+			cmd.extend(['--select', self.DEFAULT_SELECT])
+		cmd.extend(args)
+		cmd.append('--')
+		cmd.extend(pathes)
+		print('Executing %s' % (' '.join(pipes.quote(c) for c in cmd + [filename] if c)), file=sys.stderr)
+		subprocess.call(cmd)
+
+	def autopep8(self, pathes, *args: str, filename: str = None) -> None:
+		cmd = [
+			'autopep8',
+			'-i',
+			'-aaa',
+			'--max-line-length', str(self.MAX_LINE_LENGTH),
+		]
+		if self.DEFAULT_SELECT:
+			cmd.extend(['--select', self.DEFAULT_SELECT])
+		cmd.extend(args)
+		cmd.append('--')
+		cmd.extend(pathes)
+		print('Executing %s' % (' '.join(pipes.quote(c) for c in cmd + [filename] if c)), file=sys.stderr)
+		subprocess.call(cmd)
 
 	def _iter_pathes(self, path: str) -> Iterable[Tuple[str, List[str]]]:
 		files = [path for path in python_files(path) if not self.ignore_path(path)]
@@ -497,7 +554,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		parser = ArgumentParser()
 		parser.add_argument('-d', '--debug', default=0, type=int, help='debuglevel (to show also source lines)')
 		parser.add_argument('--statistics', default=False, action='store_true', help='Show a summary at the end.')
+		parser.add_argument('--ruff', default=False, action='store_true', help="Use ruff instead of autopep8 for fixing")
 		parser.add_argument('--fix', default=False, action='store_true', help="Run autopep8 to automatically fix issues")
+		parser.add_argument('--fix-conffiles', default=False, action='store_true', help="Run autopep8 automatically on conffiles to fix issues")
 		parser.add_argument('--check', default=False, action='store_true', help="Check files - explicitly required with --fix")
 		parser.add_argument('--path', default='.', help="Base path [%(default)s]")
 		parser.add_argument('--select', default=cls.DEFAULT_SELECT, help='Comma-separated list of errors and warnings to enable [%(default)s]')
@@ -505,6 +564,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		parser.add_argument('--max-line-length', default=cls.MAX_LINE_LENGTH, help='Maximum line length [%(default)s]')
 		parser.add_argument('--graceful', action='store_true', default=False, help='behave like calling ucslint would do: do not fail on certain errors')
 		parser.add_argument('--versions', default='2,3', help='Which Python versions to run [%(default)s]')
+		parser.add_argument('files', nargs='*', help='Apply --fix/--fix-conffiles on specified files')
 		args, args.arguments = parser.parse_known_args()  # type: ignore
 
 		cls.DEFAULT_IGNORE = args.ignore
@@ -517,8 +577,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		self.setdebug(args.debug)
 		self.postinit(args.path)
 		if args.fix:
-			self.fix(args.path, *args.arguments)
-		if args.check or not args.fix:
+			self.fix(args.files or args.path, *args.arguments, use_ruff=args.ruff)
+		elif args.fix_conffiles:
+			self.fix_conffiles(args.files or args.path, *args.arguments, use_ruff=args.ruff)
+		elif args.check:
 			self.check(args.path)
 		msgids = self.getMsgIds()
 		exitcode = 0
