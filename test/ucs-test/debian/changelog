@@ -1,3 +1,9 @@
+ucs-test (10.0.7-20) unstable; urgency=low
+
+  * Bug #54782: Update test for univention-ldap-backup
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 30 Aug 2022 14:15:15 +0200
+
 ucs-test (10.0.7-19) unstable; urgency=medium
 
   * Bug #52192: Do not unset irrelevant attributes in
