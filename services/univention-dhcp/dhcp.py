@@ -41,21 +41,23 @@ import univention.debug as ud
 
 name = 'dhcp'
 description = 'Restart the dhcp service if a dhcp subnet or a policy was changed'
-filter = '''(|
-	(objectClass=univentionDhcpSubnet)
-	(objectClass=univentionDhcpService)
-	(objectClass=univentionPolicyDhcpBoot)
-	(objectClass=univentionPolicyDhcpDns)
-	(objectClass=univentionPolicyDhcpDnsUpdate)
-	(objectClass=univentionPolicyDhcpLeaseTime)
-	(objectClass=univentionPolicyDhcpNetbios)
-	(objectClass=univentionPolicyDhcpRouting)
-	(objectClass=univentionPolicyDhcpScope)
-	(objectClass=univentionPolicyDhcpStatements)
-	(objectClass=univentionDhcpPool)
-	(cn=dhcp)
-	(objectClass=domain)
-	)'''.replace('\n', '').replace('\t', '')
+filter = (
+	'(|'
+	'(objectClass=univentionDhcpSubnet)'
+	'(objectClass=univentionDhcpService)'
+	'(objectClass=univentionPolicyDhcpBoot)'
+	'(objectClass=univentionPolicyDhcpDns)'
+	'(objectClass=univentionPolicyDhcpDnsUpdate)'
+	'(objectClass=univentionPolicyDhcpLeaseTime)'
+	'(objectClass=univentionPolicyDhcpNetbios)'
+	'(objectClass=univentionPolicyDhcpRouting)'
+	'(objectClass=univentionPolicyDhcpScope)'
+	'(objectClass=univentionPolicyDhcpStatements)'
+	'(objectClass=univentionDhcpPool)'
+	'(cn=dhcp)'
+	'(objectClass=domain)'
+	')'
+)
 attributes = []
 
 
