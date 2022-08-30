@@ -41,24 +41,24 @@ from univention.monitoring import Alert
 
 class SMBD(Alert):
 
-	def write_metrics(self):
-		smb_host = ucr['hostname']
-		# TODO: ? smb_user = 'guest'
+    def write_metrics(self):
+        smb_host = ucr['hostname']
+        # TODO: ? smb_user = 'guest'
 
-		# See Bug #45454, since samba erratum 165 this no longer works
-		# for now only remove the -U "$SMB_USER"
-		try:
-			subprocess.check_output(['/usr/bin/smbclient', '-N', '-L', smb_host], stderr=subprocess.DEVNULL).decode('UTF-8', 'replace')
-		except FileNotFoundError:
-			self.write_metric('univention_smbd_accessible', -1)
-			self.log.debug('Cannot find smbclient executable')
-			return
-		except subprocess.CalledProcessError as exc:
-			self.write_metric('univention_smbd_accessible', 0)
-			self.log.debug('smbclient failed: %s' % (exc.output.decode('UTF-8', 'replace'),))
-			return
-		self.write_metric('univention_smbd_accessible', 1)
+        # See Bug #45454, since samba erratum 165 this no longer works
+        # for now only remove the -U "$SMB_USER"
+        try:
+            subprocess.check_output(['/usr/bin/smbclient', '-N', '-L', smb_host], stderr=subprocess.DEVNULL).decode('UTF-8', 'replace')
+        except FileNotFoundError:
+            self.write_metric('univention_smbd_accessible', -1)
+            self.log.debug('Cannot find smbclient executable')
+            return
+        except subprocess.CalledProcessError as exc:
+            self.write_metric('univention_smbd_accessible', 0)
+            self.log.debug('smbclient failed: %s' % (exc.output.decode('UTF-8', 'replace'),))
+            return
+        self.write_metric('univention_smbd_accessible', 1)
 
 
 if __name__ == '__main__':
-	SMBD.main()
+    SMBD.main()

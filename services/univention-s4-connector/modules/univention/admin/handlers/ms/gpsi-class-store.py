@@ -48,70 +48,70 @@ childs = True
 short_description = _('Software Installation Group Policy: Class Store')
 long_description = ''
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['classStore', 'top']
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['classStore', 'top']
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		required=True,
-		identifies=True,
-	),
-	'displayName': univention.admin.property(
-		short_description=_('Display name'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'description': univention.admin.property(
-		short_description=_('Description'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'versionNumber': univention.admin.property(
-		short_description=_('Version number'),
-		long_description='',
-		syntax=univention.admin.syntax.integer,
-	),
-	'nextLevelStore': univention.admin.property(
-		short_description=_('Next level store'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'lastUpdateSequence': univention.admin.property(
-		short_description=_('Last update sequence'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'extensionName': univention.admin.property(
-		short_description=_('Extension name'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		multivalue=True,
-	),
-	'appSchemaVersion': univention.admin.property(
-		short_description=_('App schema version'),
-		long_description='',
-		syntax=univention.admin.syntax.integer,
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        required=True,
+        identifies=True,
+    ),
+    'displayName': univention.admin.property(
+        short_description=_('Display name'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'description': univention.admin.property(
+        short_description=_('Description'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'versionNumber': univention.admin.property(
+        short_description=_('Version number'),
+        long_description='',
+        syntax=univention.admin.syntax.integer,
+    ),
+    'nextLevelStore': univention.admin.property(
+        short_description=_('Next level store'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'lastUpdateSequence': univention.admin.property(
+        short_description=_('Last update sequence'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'extensionName': univention.admin.property(
+        short_description=_('Extension name'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        multivalue=True,
+    ),
+    'appSchemaVersion': univention.admin.property(
+        short_description=_('App schema version'),
+        long_description='',
+        syntax=univention.admin.syntax.integer,
+    ),
 }
 
 layout = [
-	Tab(_('General'), _('Basic settings'), layout=[
-		Group(_('General'), layout=[
-			["name", "displayName"],
-			["description"],
-			'versionNumber',
-			'nextLevelStore',
-			'lastUpdateSequence',
-			'extensionName',
-			'appSchemaVersion',
-		]),
-	]),
+    Tab(_('General'), _('Basic settings'), layout=[
+        Group(_('General'), layout=[
+            ["name", "displayName"],
+            ["description"],
+            'versionNumber',
+            'nextLevelStore',
+            'lastUpdateSequence',
+            'extensionName',
+            'appSchemaVersion',
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -126,11 +126,11 @@ mapping.register('appSchemaVersion', 'appSchemaVersion', None, univention.admin.
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module = module
+    module = module
 
-	def _ldap_pre_modify(self):
-		if self.hasChanged('name'):
-			self.move(self._ldap_dn())
+    def _ldap_pre_modify(self):
+        if self.hasChanged('name'):
+            self.move(self._ldap_dn())
 
 
 identify = object.identify

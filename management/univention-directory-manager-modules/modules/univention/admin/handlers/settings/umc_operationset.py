@@ -56,77 +56,77 @@ object_name = _('UMC operation set')
 object_name_plural = _('UMC operation sets')
 long_description = _('List of Operations for UMC')
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'umcOperationSet'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'umcOperationSet'],
+    ),
 }
 
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=udm_syntax.string,
-		include_in_default_search=True,
-		required=True,
-		identifies=True,
-	),
-	'description': univention.admin.property(
-		short_description=_('Description'),
-		long_description='',
-		syntax=udm_syntax.string,
-		include_in_default_search=True,
-		dontsearch=True,
-		required=True,
-	),
-	'operation': univention.admin.property(
-		short_description=_('UMC commands'),
-		long_description=_('List of UMC command names or patterns'),
-		syntax=udm_syntax.UMC_CommandPattern,
-		multivalue=True,
-		dontsearch=True,
-	),
-	'flavor': univention.admin.property(
-		short_description=_('Flavor'),
-		long_description=_('Defines a specific flavor of the UMC module. If given the operations are permitted only if the flavor matches.'),
-		syntax=udm_syntax.string,
-		include_in_default_search=True,
-		dontsearch=True,
-	),
-	'hosts': univention.admin.property(
-		short_description=_('Restrict to host'),
-		long_description=_('Defines on which hosts this operations are permitted on. The value can be either a host name (as filename pattern e.g. server1*), a server role (e.g. serverrole:domaincontroller_slave) or a service, which must run on the host, (e.g. service:LDAP). Leaving this empty causes all hosts to be allowed.'),
-		syntax=udm_syntax.string,
-		multivalue=True,
-		dontsearch=True,
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=udm_syntax.string,
+        include_in_default_search=True,
+        required=True,
+        identifies=True,
+    ),
+    'description': univention.admin.property(
+        short_description=_('Description'),
+        long_description='',
+        syntax=udm_syntax.string,
+        include_in_default_search=True,
+        dontsearch=True,
+        required=True,
+    ),
+    'operation': univention.admin.property(
+        short_description=_('UMC commands'),
+        long_description=_('List of UMC command names or patterns'),
+        syntax=udm_syntax.UMC_CommandPattern,
+        multivalue=True,
+        dontsearch=True,
+    ),
+    'flavor': univention.admin.property(
+        short_description=_('Flavor'),
+        long_description=_('Defines a specific flavor of the UMC module. If given the operations are permitted only if the flavor matches.'),
+        syntax=udm_syntax.string,
+        include_in_default_search=True,
+        dontsearch=True,
+    ),
+    'hosts': univention.admin.property(
+        short_description=_('Restrict to host'),
+        long_description=_('Defines on which hosts this operations are permitted on. The value can be either a host name (as filename pattern e.g. server1*), a server role (e.g. serverrole:domaincontroller_slave) or a service, which must run on the host, (e.g. service:LDAP). Leaving this empty causes all hosts to be allowed.'),
+        syntax=udm_syntax.string,
+        multivalue=True,
+        dontsearch=True,
+    ),
 }
 
 layout = [
-	Tab(_('General'), _('UMC Operation Set'), layout=[
-		Group(_('General UMC operation set settings'), layout=[
-			['name', 'description'],
-			'operation',
-			'flavor',
-			'hosts',
-		]),
-	]),
+    Tab(_('General'), _('UMC Operation Set'), layout=[
+        Group(_('General UMC operation set settings'), layout=[
+            ['name', 'description'],
+            'operation',
+            'flavor',
+            'hosts',
+        ]),
+    ]),
 ]
 
 
 def mapUMC_CommandPattern(udm_value, encoding=()):
-	return [u':'.join(x).encode(*encoding) for x in udm_value]
+    return [u':'.join(x).encode(*encoding) for x in udm_value]
 
 
 def unmapUMC_CommandPattern(ldap_value, encoding=()):
-	unmapped = []
-	for item in [x.decode(*encoding) for x in ldap_value]:
-		if u':' in item:
-			unmapped.append(item.split(u':', 1))
-		else:
-			unmapped.append((item, u''))
-	return unmapped
+    unmapped = []
+    for item in [x.decode(*encoding) for x in ldap_value]:
+        if u':' in item:
+            unmapped.append(item.split(u':', 1))
+        else:
+            unmapped.append((item, u''))
+    return unmapped
 
 
 mapping = udm_mapping.mapping()
@@ -138,7 +138,7 @@ mapping.register('hosts', 'umcOperationSetHost')
 
 
 class object(simpleLdap):
-	module = module
+    module = module
 
 
 lookup = object.lookup

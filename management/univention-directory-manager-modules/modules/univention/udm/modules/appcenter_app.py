@@ -35,33 +35,33 @@ Module and object specific for "appcenter/app" UDM module.
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import (
-	Base64BinaryPropertyEncoder, MultiLanguageTextAppcenterPropertyEncoder
+    Base64BinaryPropertyEncoder, MultiLanguageTextAppcenterPropertyEncoder
 )
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class AppcenterAppObjectProperties(GenericObjectProperties):
-	"""appcenter/app UDM properties."""
+    """appcenter/app UDM properties."""
 
-	_encoders = {
-		'icon': Base64BinaryPropertyEncoder,
-		'longDescription': MultiLanguageTextAppcenterPropertyEncoder,
-		'name': MultiLanguageTextAppcenterPropertyEncoder,
-		'shortDescription': MultiLanguageTextAppcenterPropertyEncoder,
-		'website': MultiLanguageTextAppcenterPropertyEncoder,
-		'websiteVendor': MultiLanguageTextAppcenterPropertyEncoder,
-	}
+    _encoders = {
+        'icon': Base64BinaryPropertyEncoder,
+        'longDescription': MultiLanguageTextAppcenterPropertyEncoder,
+        'name': MultiLanguageTextAppcenterPropertyEncoder,
+        'shortDescription': MultiLanguageTextAppcenterPropertyEncoder,
+        'website': MultiLanguageTextAppcenterPropertyEncoder,
+        'websiteVendor': MultiLanguageTextAppcenterPropertyEncoder,
+    }
 
 
 class AppcenterAppObject(GenericObject):
-	"""Better representation of appcenter/app properties."""
-	udm_prop_class = AppcenterAppObjectProperties
+    """Better representation of appcenter/app properties."""
+    udm_prop_class = AppcenterAppObjectProperties
 
 
 class AppcenterAppModule(GenericModule):
-	"""AppcenterAppObject factory"""
-	_udm_object_class = AppcenterAppObject
+    """AppcenterAppObject factory"""
+    _udm_object_class = AppcenterAppObject
 
-	class Meta:
-		supported_api_versions = [1, 2, 3]
-		suitable_for = ['appcenter/app']
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        suitable_for = ['appcenter/app']

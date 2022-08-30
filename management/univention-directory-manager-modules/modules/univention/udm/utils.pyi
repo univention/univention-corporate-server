@@ -41,48 +41,48 @@ is_interactive = bool()
 
 
 class UDebug(object):
-	"""univention.debug convenience wrapper"""
-	target = 0x0A  # type: int
-	level2str = {
-		4: 'DEBUG',
-		0: 'ERROR',
-		3: 'INFO',
-		2: 'INFO',
-		1: 'WARN',
-	}
+    """univention.debug convenience wrapper"""
+    target = 0x0A  # type: int
+    level2str = {
+        4: 'DEBUG',
+        0: 'ERROR',
+        3: 'INFO',
+        2: 'INFO',
+        1: 'WARN',
+    }
 
-	@classmethod
-	def all(cls, msg):  # type: (Text) -> None
-		...
+    @classmethod
+    def all(cls, msg):  # type: (Text) -> None
+        ...
 
-	debug = all
+    debug = all
 
-	@classmethod
-	def error(cls, msg):  # type: (Text) -> None
-		...
+    @classmethod
+    def error(cls, msg):  # type: (Text) -> None
+        ...
 
-	@classmethod
-	def info(cls, msg):  # type: (Text) -> None
-		...
+    @classmethod
+    def info(cls, msg):  # type: (Text) -> None
+        ...
 
-	@classmethod
-	def process(cls, msg):  # type: (Text) -> None
-		...
+    @classmethod
+    def process(cls, msg):  # type: (Text) -> None
+        ...
 
-	@classmethod
-	def warn(cls, msg):  # type: (Text) -> None
-		...
+    @classmethod
+    def warn(cls, msg):  # type: (Text) -> None
+        ...
 
-	warning = warn
+    warning = warn
 
-	@classmethod
-	def _log(cls, level, msg):  # type: (int, Text) -> None
-		...
+    @classmethod
+    def _log(cls, level, msg):  # type: (int, Text) -> None
+        ...
 
 
 def load_class(module_path, class_name):  # type: (str, str) -> type
-	...
+    ...
 
 
 def get_connection(connection_config):  # type: (ConnectionConfig) -> Any
-	...
+    ...

@@ -59,94 +59,94 @@ _ = Translation('univention-self-service-passwordreset-umc').translate
 
 class SendSMS(UniventionSelfServiceTokenEmitter):
 
-	def __init__(self, *args, **kwargs):
-		super(SendSMS, self).__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super(SendSMS, self).__init__(*args, **kwargs)
 
-		self.cmd = self.ucr.get("umc/self-service/passwordreset/sms/command", "").split()
-		if not self.cmd:
-			raise ValueError("SendSMS: UCR umc/self-service/passwordreset/sms/command must contain the path to the program to execute.")
+        self.cmd = self.ucr.get("umc/self-service/passwordreset/sms/command", "").split()
+        if not self.cmd:
+            raise ValueError("SendSMS: UCR umc/self-service/passwordreset/sms/command must contain the path to the program to execute.")
 
-		self.country_code = self.ucr.get("umc/self-service/passwordreset/sms/country_code")
-		if not self.country_code.isdigit():
-			raise ValueError("SendSMS: UCR umc/self-service/passwordreset/sms/country_code must contain a number.")
-		self.read_sms_secret()
+        self.country_code = self.ucr.get("umc/self-service/passwordreset/sms/country_code")
+        if not self.country_code.isdigit():
+            raise ValueError("SendSMS: UCR umc/self-service/passwordreset/sms/country_code must contain a number.")
+        self.read_sms_secret()
 
-	def read_sms_secret(self):
-		self.password_file = self.ucr.get("umc/self-service/passwordreset/sms/password_file")
-		if self.password_file is None:
-			self.log("SendSMS: No sms secret file set")
-			self.sms_username = ""
-			self.sms_password = ""
-			return
+    def read_sms_secret(self):
+        self.password_file = self.ucr.get("umc/self-service/passwordreset/sms/password_file")
+        if self.password_file is None:
+            self.log("SendSMS: No sms secret file set")
+            self.sms_username = ""
+            self.sms_password = ""
+            return
 
-		try:
-			with open(self.password_file) as pw_file:
-				self.sms_username, self.sms_password = pw_file.readline().strip().split(":")
-		except ValueError as ve:
-			self.log("SendSMS: Format of sms secrets file ({}) is 'username:password'. Error: {}").format(self.password_file, ve)
-			self.log("SendSMS: Format error in sms secrets file ({}): {}".format(self.password_file, ve))
-			raise
-		except (OSError, IOError) as e:
-			self.log("SendSMS: Error reading sms secrets file ({}): {}".format(self.password_file, e))
-			raise
+        try:
+            with open(self.password_file) as pw_file:
+                self.sms_username, self.sms_password = pw_file.readline().strip().split(":")
+        except ValueError as ve:
+            self.log("SendSMS: Format of sms secrets file ({}) is 'username:password'. Error: {}").format(self.password_file, ve)
+            self.log("SendSMS: Format error in sms secrets file ({}): {}".format(self.password_file, ve))
+            raise
+        except (OSError, IOError) as e:
+            self.log("SendSMS: Error reading sms secrets file ({}): {}".format(self.password_file, e))
+            raise
 
-	@staticmethod
-	def send_method():
-		return "mobile"
+    @staticmethod
+    def send_method():
+        return "mobile"
 
-	@staticmethod
-	def send_method_label():
-		return _("Mobile number")
+    @staticmethod
+    def send_method_label():
+        return _("Mobile number")
 
-	@staticmethod
-	def is_enabled():
-		ucr = ConfigRegistry()
-		ucr.load()
-		return ucr.is_true("umc/self-service/passwordreset/sms/enabled")
+    @staticmethod
+    def is_enabled():
+        ucr = ConfigRegistry()
+        ucr.load()
+        return ucr.is_true("umc/self-service/passwordreset/sms/enabled")
 
-	@property
-	def udm_property(self):
-		return "PasswordRecoveryMobile"
+    @property
+    def udm_property(self):
+        return "PasswordRecoveryMobile"
 
-	@property
-	def token_length(self):
-		length = self.ucr.get("umc/self-service/passwordreset/sms/token_length", 12)
-		try:
-			length = int(length)
-		except ValueError:
-			length = 12
-		return length
+    @property
+    def token_length(self):
+        length = self.ucr.get("umc/self-service/passwordreset/sms/token_length", 12)
+        try:
+            length = int(length)
+        except ValueError:
+            length = 12
+        return length
 
-	def send(self):
-		env = os.environ.copy()
-		env["selfservice_username"] = self.data["username"]
-		env["selfservice_address"] = self.data["address"]
-		env["selfservice_token"] = self.data["token"]
-		env["sms_country_code"] = self.country_code
-		env["sms_username"] = self.sms_username
-		env["sms_password"] = self.sms_password
+    def send(self):
+        env = os.environ.copy()
+        env["selfservice_username"] = self.data["username"]
+        env["selfservice_address"] = self.data["address"]
+        env["selfservice_token"] = self.data["token"]
+        env["sms_country_code"] = self.country_code
+        env["sms_username"] = self.sms_username
+        env["sms_password"] = self.sms_password
 
-		#
-		#
-		# ATTENTION                                                                 #
-		# The environment is inherited by all programs that are started by your     #
-		# program. Your program should remove the token from its environment,       #
-		# before starting any other program.                                        #
-		#
-		#
+        #
+        #
+        # ATTENTION                                                                 #
+        # The environment is inherited by all programs that are started by your     #
+        # program. Your program should remove the token from its environment,       #
+        # before starting any other program.                                        #
+        #
+        #
 
-		print("Starting external program {}...".format(self.cmd))
-		cmd_proc = subprocess.Popen(self.cmd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-		cmd_out, cmd_err = cmd_proc.communicate()
-		cmd_out, cmd_err = cmd_out.decode('UTF-8', 'replace'), cmd_err.decode('UTF-8', 'replace')
-		cmd_exit = cmd_proc.wait()
+        print("Starting external program {}...".format(self.cmd))
+        cmd_proc = subprocess.Popen(self.cmd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd_out, cmd_err = cmd_proc.communicate()
+        cmd_out, cmd_err = cmd_out.decode('UTF-8', 'replace'), cmd_err.decode('UTF-8', 'replace')
+        cmd_exit = cmd_proc.wait()
 
-		if cmd_out:
-			self.log("STDOUT of {}: {}".format(self.cmd, cmd_out))
-		if cmd_err:
-			self.log("STDERR of {}: {}".format(self.cmd, cmd_err))
+        if cmd_out:
+            self.log("STDOUT of {}: {}".format(self.cmd, cmd_out))
+        if cmd_err:
+            self.log("STDERR of {}: {}".format(self.cmd, cmd_err))
 
-		if cmd_exit == 0:
-			return True
-		else:
-			raise Exception("Error sending token.")
+        if cmd_exit == 0:
+            return True
+        else:
+            raise Exception("Error sending token.")

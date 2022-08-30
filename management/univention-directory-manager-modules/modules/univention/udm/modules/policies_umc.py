@@ -39,22 +39,22 @@ from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class PoliciesUmcObjectProperties(GenericObjectProperties):
-	"""policies/umc UDM properties."""
+    """policies/umc UDM properties."""
 
-	_encoders = {
-		'allow': dn_list_property_encoder_for('settings/umc_operationset'),
-	}
+    _encoders = {
+        'allow': dn_list_property_encoder_for('settings/umc_operationset'),
+    }
 
 
 class PoliciesUmcObject(GenericObject):
-	"""Better representation of policies/umc properties."""
-	udm_prop_class = PoliciesUmcObjectProperties
+    """Better representation of policies/umc properties."""
+    udm_prop_class = PoliciesUmcObjectProperties
 
 
 class PoliciesUmcModule(GenericModule):
-	"""PoliciesUmcObject factory"""
-	_udm_object_class = PoliciesUmcObject
+    """PoliciesUmcObject factory"""
+    _udm_object_class = PoliciesUmcObject
 
-	class Meta:
-		supported_api_versions = [1, 2, 3]
-		suitable_for = ['policies/umc']
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        suitable_for = ['policies/umc']

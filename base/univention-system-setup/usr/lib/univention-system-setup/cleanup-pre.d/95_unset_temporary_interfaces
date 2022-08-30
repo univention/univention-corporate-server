@@ -45,20 +45,20 @@ RE_IPV4_TYPE = re.compile('^interfaces/[^/]*/type$')
 
 
 def unset_temporary_interfaces():
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
+    ucr = univention.config_registry.ConfigRegistry()
+    ucr.load()
 
-	# unset the temporary interface if set
-	for var in ucr.keys():
-		if RE_IPV4_TYPE.match(var) and ucr.get(var) == 'appliance-mode-temporary':
-			print('unset %s' % var)
-			keys = [var]
-			for k in ['netmask', 'address', 'broadcast', 'network']:
-				keys.append(var.replace('/type', '/%s' % k))
-			univention.config_registry.handler_unset(keys)
-			# Shut down temporary interface
-			subprocess.call(['ifconfig', var.split('/')[1].replace('_', ':'), 'down'])
+    # unset the temporary interface if set
+    for var in ucr.keys():
+        if RE_IPV4_TYPE.match(var) and ucr.get(var) == 'appliance-mode-temporary':
+            print('unset %s' % var)
+            keys = [var]
+            for k in ['netmask', 'address', 'broadcast', 'network']:
+                keys.append(var.replace('/type', '/%s' % k))
+            univention.config_registry.handler_unset(keys)
+            # Shut down temporary interface
+            subprocess.call(['ifconfig', var.split('/')[1].replace('_', ':'), 'down'])
 
 
 if __name__ == "__main__":
-	unset_temporary_interfaces()
+    unset_temporary_interfaces()

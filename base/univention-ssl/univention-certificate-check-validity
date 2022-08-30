@@ -46,36 +46,36 @@ _bc.load()
 
 
 def get_validity_date(certFile):
-	""" returns the validity date fo the locale SSL certificate or None on failure"""
-	try:
-		x509 = X509.load_cert(certFile)
-		return str(x509.get_not_after())
-	except Exception:
-		return None
+    """ returns the validity date fo the locale SSL certificate or None on failure"""
+    try:
+        x509 = X509.load_cert(certFile)
+        return str(x509.get_not_after())
+    except Exception:
+        return None
 
 
 def get_validity_days(certFile):
-	"""returns the validity of the local SSL certificate in days. If the
-	validity could not be determined 0 is returned"""
-	after = get_validity_date(certFile)
-	if after:
-		time_after = time.strptime(after, "%b %d %H:%M:%S %Y %Z")
-		return calendar.timegm(time_after) // 60 // 60 // 24
+    """returns the validity of the local SSL certificate in days. If the
+    validity could not be determined 0 is returned"""
+    after = get_validity_date(certFile)
+    if after:
+        time_after = time.strptime(after, "%b %d %H:%M:%S %Y %Z")
+        return calendar.timegm(time_after) // 60 // 60 // 24
 
-	return 0
+    return 0
 
 
 if __name__ == '__main__':
-	fqdn = '.'.join([_bc['hostname'], _bc['domainname']])
-	caExpiry = False
+    fqdn = '.'.join([_bc['hostname'], _bc['domainname']])
+    caExpiry = False
 
-	days = get_validity_days('/etc/univention/ssl/%s/cert.pem' % fqdn)
-	days_ca = get_validity_days('/etc/univention/ssl/ucsCA/CAcert.pem')
+    days = get_validity_days('/etc/univention/ssl/%s/cert.pem' % fqdn)
+    days_ca = get_validity_days('/etc/univention/ssl/ucsCA/CAcert.pem')
 
-	if days and days != _bc.get('ssl/validity/host', -1):
-		_bc['ssl/validity/host'] = str(days)
-		_bc.save()
+    if days and days != _bc.get('ssl/validity/host', -1):
+        _bc['ssl/validity/host'] = str(days)
+        _bc.save()
 
-	if days_ca and days_ca != _bc.get('ssl/validity/root', -1):
-		_bc['ssl/validity/root'] = str(days_ca)
-		_bc.save()
+    if days_ca and days_ca != _bc.get('ssl/validity/root', -1):
+        _bc['ssl/validity/root'] = str(days_ca)
+        _bc.save()

@@ -39,22 +39,22 @@ from .container_cn import ContainerCnModule, ContainerCnObject, ContainerCnObjec
 
 
 class ContainerOuObjectProperties(ContainerCnObjectProperties):
-	"""container/ou UDM properties."""
+    """container/ou UDM properties."""
 
-	_encoders = ContainerCnObjectProperties._encoders
-	_encoders['ucsschoolClassShareFileServer'] = dn_property_encoder_for('auto')
-	_encoders['ucsschoolHomeShareFileServer'] = dn_property_encoder_for('auto')
+    _encoders = ContainerCnObjectProperties._encoders
+    _encoders['ucsschoolClassShareFileServer'] = dn_property_encoder_for('auto')
+    _encoders['ucsschoolHomeShareFileServer'] = dn_property_encoder_for('auto')
 
 
 class ContainerOuObject(ContainerCnObject):
-	"""Better representation of container/ou properties."""
-	udm_prop_class = ContainerOuObjectProperties
+    """Better representation of container/ou properties."""
+    udm_prop_class = ContainerOuObjectProperties
 
 
 class ContainerOuModule(ContainerCnModule):
-	"""ContainerOuObject factory"""
-	_udm_object_class = ContainerOuObject
+    """ContainerOuObject factory"""
+    _udm_object_class = ContainerOuObject
 
-	class Meta:
-		supported_api_versions = [1, 2, 3]
-		suitable_for = ['containers/ou']
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        suitable_for = ['containers/ou']

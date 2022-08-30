@@ -38,150 +38,150 @@ from univentionunittests import import_module
 
 @pytest.fixture
 def db_module(mocker):
-	sys.modules['gdbm'] = mocker.Mock()
-	return sys.modules['gdbm']
+    sys.modules['gdbm'] = mocker.Mock()
+    return sys.modules['gdbm']
 
 
 @pytest.fixture
 def backend(db_module):
-	module = import_module("univention.ldap_cache.cache.backend", "src/", "univention.ldap_cache.cache.backend", use_installed=False)
-	return module
+    module = import_module("univention.ldap_cache.cache.backend", "src/", "univention.ldap_cache.cache.backend", use_installed=False)
+    return module
 
 
 @pytest.fixture
 def mocked_getMachineConnection(mocker):
-	mocked_getMachineConnection = mocker.patch('univention.ldap_cache.cache.backend.getMachineConnection')
-	return mocked_getMachineConnection
+    mocked_getMachineConnection = mocker.patch('univention.ldap_cache.cache.backend.getMachineConnection')
+    return mocked_getMachineConnection
 
 
 @pytest.fixture()
 def caches(backend):
-	caches = backend.Caches()
-	return caches
+    caches = backend.Caches()
+    return caches
 
 
 @pytest.fixture
 def cache(mocker):
-	cache = mocker.Mock()
-	cache.ldap_filter = "ldap_filter"
-	cache.value = "the_value"
-	cache.db_name = "db_name"
-	return cache
+    cache = mocker.Mock()
+    cache.ldap_filter = "ldap_filter"
+    cache.value = "the_value"
+    cache.db_name = "db_name"
+    return cache
 
 
 def test__init__(backend, caches):
-	"""
-	Test __init__ method.
-	"""
-	assert caches._directory == backend.DB_DIRECTORY
-	assert caches._caches == {}
+    """
+    Test __init__ method.
+    """
+    assert caches._directory == backend.DB_DIRECTORY
+    assert caches._caches == {}
 
 
 def test_get_shards_for_query(caches, cache, mocker):
-	"""
-	test get_shards_for_query method.
-	"""
-	# get unexisting query
-	result = caches.get_shards_for_query("a")
-	assert result == []
+    """
+    test get_shards_for_query method.
+    """
+    # get unexisting query
+    result = caches.get_shards_for_query("a")
+    assert result == []
 
-	# get existing query but No
-	shard = mocker.Mock()
-	shard.ldap_filter = "ldap_filter for query"
-	shard.db_name = "db_name for query"
-	cache.shards = [shard]
-	with pytest.raises(NotImplementedError):
-		caches.add(cache)
+    # get existing query but No
+    shard = mocker.Mock()
+    shard.ldap_filter = "ldap_filter for query"
+    shard.db_name = "db_name for query"
+    cache.shards = [shard]
+    with pytest.raises(NotImplementedError):
+        caches.add(cache)
 
-	caches._caches[cache.db_name] = cache
-	result = caches.get_shards_for_query("ldap_filter for query")
-	assert result == [shard]
+    caches._caches[cache.db_name] = cache
+    result = caches.get_shards_for_query("ldap_filter for query")
+    assert result == [shard]
 
 
 def test_get_queries(caches, cache, mocker):
-	"""
-	Test if the queries are returned correctly.
-	"""
-	result = caches.get_queries("a")
-	assert result == {}
+    """
+    Test if the queries are returned correctly.
+    """
+    result = caches.get_queries("a")
+    assert result == {}
 
-	shard = mocker.Mock()
-	shard.ldap_filter = "ldap_filter for query"
-	shard.db_name = "db_name for query"
-	shard.key = "shard_key"
-	shard.value = "shard_value"
-	shard.attributes = {"attr1": "value1", "attr2": "value2"}
-	cache.shards = [shard]
-	caches._caches[cache.db_name] = cache
+    shard = mocker.Mock()
+    shard.ldap_filter = "ldap_filter for query"
+    shard.db_name = "db_name for query"
+    shard.key = "shard_key"
+    shard.value = "shard_value"
+    shard.attributes = {"attr1": "value1", "attr2": "value2"}
+    cache.shards = [shard]
+    caches._caches[cache.db_name] = cache
 
-	attributes = {shard.key, shard.value}
-	attributes.update(shard.attributes)
-	# test cache_names None
-	result = caches.get_queries()
-	assert result == {shard.ldap_filter: ([shard], attributes)}
+    attributes = {shard.key, shard.value}
+    attributes.update(shard.attributes)
+    # test cache_names None
+    result = caches.get_queries()
+    assert result == {shard.ldap_filter: ([shard], attributes)}
 
-	# test cache_names not None and existing
-	result = caches.get_queries([cache.db_name])
-	assert result == {shard.ldap_filter: ([shard], attributes)}
+    # test cache_names not None and existing
+    result = caches.get_queries([cache.db_name])
+    assert result == {shard.ldap_filter: ([shard], attributes)}
 
-	# test cache_names not None and not existing
-	result = caches.get_queries(["non_existing_name"])
-	assert result == {}
+    # test cache_names not None and not existing
+    result = caches.get_queries(["non_existing_name"])
+    assert result == {}
 
 
 def test_rebuild(caches, mocker):
-	"""
-	Test if the rebuild method is called correctly.
-	"""
-	# Create a couple of mocked cache
-	cache1 = mocker.Mock()
-	cache1.db_name = "db_name1"
-	cache1.ldap_filter = "ldap_filter1"
-	cache1.value = "value1"
-	cache2 = mocker.Mock()
-	cache2.db_name = "db_name2"
-	cache2.ldap_filter = "ldap_filter2"
-	cache2.value = "value2"
-	# Add them to the caches
-	caches._caches[cache1.db_name] = cache1
-	caches._caches[cache2.db_name] = cache2
-	# Rebuild the caches
-	caches.rebuild()
-	# Check if the caches were rebuild
-	assert cache1.clear.call_count == 1
-	assert cache2.clear.call_count == 1
-	assert caches.get_queries()
+    """
+    Test if the rebuild method is called correctly.
+    """
+    # Create a couple of mocked cache
+    cache1 = mocker.Mock()
+    cache1.db_name = "db_name1"
+    cache1.ldap_filter = "ldap_filter1"
+    cache1.value = "value1"
+    cache2 = mocker.Mock()
+    cache2.db_name = "db_name2"
+    cache2.ldap_filter = "ldap_filter2"
+    cache2.value = "value2"
+    # Add them to the caches
+    caches._caches[cache1.db_name] = cache1
+    caches._caches[cache2.db_name] = cache2
+    # Rebuild the caches
+    caches.rebuild()
+    # Check if the caches were rebuild
+    assert cache1.clear.call_count == 1
+    assert cache2.clear.call_count == 1
+    assert caches.get_queries()
 
 
 # TODO: need some more tests here
 
 
 def test__query_objects(caches, mocked_getMachineConnection):
-	"""
-	Test _query_objects method.
-	"""
-	mocked_getMachineConnection.search.retun_value = "returned value"
-	caches._query_objects("query", "attrs")
-	assert mocked_getMachineConnection.search.call_count == 1
-	mocked_getMachineConnection.search.assert_called_with("query", "attrs")
+    """
+    Test _query_objects method.
+    """
+    mocked_getMachineConnection.search.retun_value = "returned value"
+    caches._query_objects("query", "attrs")
+    assert mocked_getMachineConnection.search.call_count == 1
+    mocked_getMachineConnection.search.assert_called_with("query", "attrs")
 
 
 def test_get_sub_cache(caches, cache):
-	"""
-	Test if _get_sub_cache returns the correct cache.
-	"""
-	result = caches.get_sub_cache("a")
-	assert result is None
-	caches.add(cache)
-	result = caches.get_sub_cache(cache.db_name)
-	assert result == cache
+    """
+    Test if _get_sub_cache returns the correct cache.
+    """
+    result = caches.get_sub_cache("a")
+    assert result is None
+    caches.add(cache)
+    result = caches.get_sub_cache(cache.db_name)
+    assert result == cache
 
 
 def test_add(caches, cache, mocker):
-	"""
-	Test add method.
-	"""
+    """
+    Test add method.
+    """
 
-	caches.add(cache)
+    caches.add(cache)
 
-	assert cache.add_shard.call_count == 1
+    assert cache.add_shard.call_count == 1

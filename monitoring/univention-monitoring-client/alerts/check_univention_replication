@@ -43,29 +43,29 @@ FAILED_LDIF_FN = '/var/lib/univention-directory-replication/failed.ldif'
 
 class ReplicationCheck(Alert):
 
-	def write_metrics(self):
-		# CRITICAL if failed.ldif exists
-		self.write_metric('univention_listener_failed_ldif_exists', 1 if os.path.exists(FAILED_LDIF_FN) else 0)
+    def write_metrics(self):
+        # CRITICAL if failed.ldif exists
+        self.write_metric('univention_listener_failed_ldif_exists', 1 if os.path.exists(FAILED_LDIF_FN) else 0)
 
-		# get actual transaction id
-		try:
-			result = subprocess.check_output(['/usr/share/univention-directory-listener/get_notifier_id.py'])
-			notifier_id = int(result.decode("utf-8", "replace").rstrip())
-		except (ValueError, subprocess.CalledProcessError) as exc:
-			self.log.debug('Could not get notifier ID: %s', exc)
-			self.write_metric('univention_listener_replication_difference', -1)  # FIXME:
-			return
+        # get actual transaction id
+        try:
+            result = subprocess.check_output(['/usr/share/univention-directory-listener/get_notifier_id.py'])
+            notifier_id = int(result.decode("utf-8", "replace").rstrip())
+        except (ValueError, subprocess.CalledProcessError) as exc:
+            self.log.debug('Could not get notifier ID: %s', exc)
+            self.write_metric('univention_listener_replication_difference', -1)  # FIXME:
+            return
 
-		try:
-			with open('/var/lib/univention-directory-listener/notifier_id') as fd:
-				listener_id = int(fd.read().rstrip())
-		except (ValueError, OSError) as exc:
-			self.log.debug('Could not get listener ID: %s', exc)
-			self.write_metric('univention_listener_replication_difference', -1)  # FIXME:
-			return
+        try:
+            with open('/var/lib/univention-directory-listener/notifier_id') as fd:
+                listener_id = int(fd.read().rstrip())
+        except (ValueError, OSError) as exc:
+            self.log.debug('Could not get listener ID: %s', exc)
+            self.write_metric('univention_listener_replication_difference', -1)  # FIXME:
+            return
 
-		self.write_metric('univention_listener_replication_difference', notifier_id - listener_id)
+        self.write_metric('univention_listener_replication_difference', notifier_id - listener_id)
 
 
 if __name__ == '__main__':
-	ReplicationCheck.main()
+    ReplicationCheck.main()

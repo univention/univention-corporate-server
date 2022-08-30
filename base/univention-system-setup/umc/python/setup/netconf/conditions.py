@@ -44,149 +44,149 @@ from univention.uldap import getMachineConnection
 
 class AddressChange(with_metaclass(ABCMeta, Phase)):
 
-	"""
-	Check for at least one removed or added address.
-	"""
+    """
+    Check for at least one removed or added address.
+    """
 
-	def check(self):
-		super(AddressChange, self).check()
-		old_ipv4s = {_.ip for _ in self.changeset.old_ipv4s}
-		new_ipv4s = {_.ip for _ in self.changeset.new_ipv4s}
-		old_ipv6s = {_.ip for _ in self.changeset.old_ipv6s}
-		new_ipv6s = {_.ip for _ in self.changeset.new_ipv6s}
-		if old_ipv4s == new_ipv4s and old_ipv6s == new_ipv6s:
-			raise SkipPhase("No address change")
+    def check(self):
+        super(AddressChange, self).check()
+        old_ipv4s = {_.ip for _ in self.changeset.old_ipv4s}
+        new_ipv4s = {_.ip for _ in self.changeset.new_ipv4s}
+        old_ipv6s = {_.ip for _ in self.changeset.old_ipv6s}
+        new_ipv6s = {_.ip for _ in self.changeset.new_ipv6s}
+        if old_ipv4s == new_ipv4s and old_ipv6s == new_ipv6s:
+            raise SkipPhase("No address change")
 
 
 class Server(with_metaclass(ABCMeta, Phase)):
 
-	"""
-	Check server role for being a UCS server.
-	"""
+    """
+    Check server role for being a UCS server.
+    """
 
-	def check(self):
-		super(Server, self).check()
-		role = self.changeset.ucr.get("server/role")
-		if role not in (
-			"domaincontroller_master",
-			"domaincontroller_backup",
-			"domaincontroller_slave",
-			"memberserver",
-		):
-			raise SkipPhase("Wrong server/role")
+    def check(self):
+        super(Server, self).check()
+        role = self.changeset.ucr.get("server/role")
+        if role not in (
+                "domaincontroller_master",
+                "domaincontroller_backup",
+                "domaincontroller_slave",
+                "memberserver",
+        ):
+            raise SkipPhase("Wrong server/role")
 
 
 class Executable(with_metaclass(ABCMeta, Phase)):
 
-	"""
-	Check executable exists.
-	"""
-	executable = None
+    """
+    Check executable exists.
+    """
+    executable = None
 
-	def check(self):
-		super(Executable, self).check()
-		if not os.path.exists(self.executable):
-			raise SkipPhase("Missing executable %s" % (self.executable,))
+    def check(self):
+        super(Executable, self).check()
+        if not os.path.exists(self.executable):
+            raise SkipPhase("Missing executable %s" % (self.executable,))
 
 
 class Dhcp(with_metaclass(ABCMeta, Phase)):
 
-	"""
-	Check for interfaces using DHCP.
-	"""
+    """
+    Check for interfaces using DHCP.
+    """
 
-	@property
-	def old_dhcps(self):
-		return set(self._find_dhcp_interfaces(self.changeset.old_interfaces))
+    @property
+    def old_dhcps(self):
+        return set(self._find_dhcp_interfaces(self.changeset.old_interfaces))
 
-	@property
-	def new_dhcps(self):
-		return set(self._find_dhcp_interfaces(self.changeset.new_interfaces))
+    @property
+    def new_dhcps(self):
+        return set(self._find_dhcp_interfaces(self.changeset.new_interfaces))
 
-	@staticmethod
-	def _find_dhcp_interfaces(interfaces):
-		for name, iface in interfaces.ipv4_interfaces:
-			if iface.type in ("dhcp", "dynamic"):
-				yield name
+    @staticmethod
+    def _find_dhcp_interfaces(interfaces):
+        for name, iface in interfaces.ipv4_interfaces:
+            if iface.type in ("dhcp", "dynamic"):
+                yield name
 
 
 class NotNetworkOnly(with_metaclass(ABCMeta, Phase)):
 
-	"""
-	Skip when not in network only mode.
-	"""
+    """
+    Skip when not in network only mode.
+    """
 
-	def check(self):
-		super(NotNetworkOnly, self).check()
-		if self.changeset.options.network_only:
-			raise SkipPhase("Network only mode")
+    def check(self):
+        super(NotNetworkOnly, self).check()
+        if self.changeset.options.network_only:
+            raise SkipPhase("Network only mode")
 
 
 class Ldap(with_metaclass(ABCMeta, Phase)):
 
-	"""
-	Check LDAP server is available.
-	"""
-	binddn = None
-	bindpwd = None
-	available = None
+    """
+    Check LDAP server is available.
+    """
+    binddn = None
+    bindpwd = None
+    available = None
 
-	def check(self):
-		super(Ldap, self).check()
-		if self.available is None:
-			self.load_state()
-		if not self.available:
-			raise SkipPhase("Missing LDAP")
+    def check(self):
+        super(Ldap, self).check()
+        if self.available is None:
+            self.load_state()
+        if not self.available:
+            raise SkipPhase("Missing LDAP")
 
-	def load_state(self):
-		self.check_available()
-		if self.available:
-			self.load_credentials()
+    def load_state(self):
+        self.check_available()
+        if self.available:
+            self.load_credentials()
 
-	def check_available(self):
-		self.available = not os.path.exists("/var/run/univention-system-setup.ldap")
+    def check_available(self):
+        self.available = not os.path.exists("/var/run/univention-system-setup.ldap")
 
-	def load_credentials(self):
-		if self.is_master_or_backup():
-			self.load_admin_credentials()
-		else:
-			self.load_remote_credentials()
+    def load_credentials(self):
+        if self.is_master_or_backup():
+            self.load_admin_credentials()
+        else:
+            self.load_remote_credentials()
 
-	def is_master(self):
-		role = self.changeset.ucr.get("server/role")
-		return role == "domaincontroller_master"
+    def is_master(self):
+        role = self.changeset.ucr.get("server/role")
+        return role == "domaincontroller_master"
 
-	def is_master_or_backup(self):
-		role = self.changeset.ucr.get("server/role")
-		return role in (
-			"domaincontroller_master",
-			"domaincontroller_backup",
-		)
+    def is_master_or_backup(self):
+        role = self.changeset.ucr.get("server/role")
+        return role in (
+            "domaincontroller_master",
+            "domaincontroller_backup",
+        )
 
-	def load_admin_credentials(self):
-		self.binddn = "cn=admin,%(ldap/base)s" % self.changeset.ucr
-		try:
-			self.bindpwd = open("/etc/ldap.secret").read()
-		except IOError:
-			self.available = False
+    def load_admin_credentials(self):
+        self.binddn = "cn=admin,%(ldap/base)s" % self.changeset.ucr
+        try:
+            self.bindpwd = open("/etc/ldap.secret").read()
+        except IOError:
+            self.available = False
 
-	def load_remote_credentials(self):
-		try:
-			username = self.changeset.profile["ldap_username"]
-			self.bindpwd = self.changeset.profile["ldap_password"]
-			self.lookup_user(username)
-		except KeyError:
-			self.available = False
+    def load_remote_credentials(self):
+        try:
+            username = self.changeset.profile["ldap_username"]
+            self.bindpwd = self.changeset.profile["ldap_password"]
+            self.lookup_user(username)
+        except KeyError:
+            self.available = False
 
-	def lookup_user(self, username):
-		try:
-			ldap = getMachineConnection(ldap_master=True)
-			ldap_filter = filter_format(
-				"(&(objectClass=person)(uid=%s))",
-				(username,)
-			)
-			result = ldap.searchDn(ldap_filter)
-			self.binddn = result[0]
-		except LDAPError as ex:
-			self.logger.warn("Failed LDAP search for '%s': %s", username, ex)
-			self.available = False
+    def lookup_user(self, username):
+        try:
+            ldap = getMachineConnection(ldap_master=True)
+            ldap_filter = filter_format(
+                "(&(objectClass=person)(uid=%s))",
+                (username,)
+            )
+            result = ldap.searchDn(ldap_filter)
+            self.binddn = result[0]
+        except LDAPError as ex:
+            self.logger.warn("Failed LDAP search for '%s': %s", username, ex)
+            self.available = False

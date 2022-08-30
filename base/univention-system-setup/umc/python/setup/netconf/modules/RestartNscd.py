@@ -2,5 +2,5 @@ from univention.management.console.modules.setup.netconf.common import RestartSe
 
 
 class PhaseRestartNscd(RestartService):
-	service = "nscd"
-	priority = 18
+    service = "nscd"
+    priority = 18

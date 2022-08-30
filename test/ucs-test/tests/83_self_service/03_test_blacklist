@@ -20,27 +20,27 @@ error_set_password = 'The token you supplied is either expired or invalid. Pleas
 
 
 def main():
-	account = utils.UCSTestDomainAdminCredentials()
-	user = SelfServiceUser(account.username, account.bindpw)
+    account = utils.UCSTestDomainAdminCredentials()
+    user = SelfServiceUser(account.username, account.bindpw)
 
-	assert_raises(HTTPError, error_get_contact, user.get_contact)
-	assert_raises(HTTPError, error_set_contact, user.set_contact)
-	assert_raises(HTTPError, error_get_reset_methods, user.get_reset_methods)
-	assert_raises(HTTPError, error_send_token, user.send_token, method='email')
-	assert_raises(HTTPError, error_set_password, user.set_password, token='A', password='B')
+    assert_raises(HTTPError, error_get_contact, user.get_contact)
+    assert_raises(HTTPError, error_set_contact, user.set_contact)
+    assert_raises(HTTPError, error_get_reset_methods, user.get_reset_methods)
+    assert_raises(HTTPError, error_send_token, user.send_token, method='email')
+    assert_raises(HTTPError, error_set_password, user.set_password, token='A', password='B')
 
 
 def assert_raises(exc_type, message, callback, *args, **kwargs):
-	try:
-		callback(*args, **kwargs)
-	except exc_type as exc:
-		if message:
-			# TODO check actual message
-			print(str(exc))
-			# assert str(exc) and message in str(exc), 'Exception %r does not contain %r' % (str(exc), message)
-	else:
-		raise AssertionError(f'did not raise {exc_type!r}')
+    try:
+        callback(*args, **kwargs)
+    except exc_type as exc:
+        if message:
+            # TODO check actual message
+            print(str(exc))
+            # assert str(exc) and message in str(exc), 'Exception %r does not contain %r' % (str(exc), message)
+    else:
+        raise AssertionError(f'did not raise {exc_type!r}')
 
 
 if __name__ == '__main__':
-	main()
+    main()

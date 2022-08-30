@@ -56,204 +56,204 @@ from univention.config_registry import ConfigRegistry
 
 @contextlib.contextmanager
 def bind_stdout(options, statuslogfile):
-	if options.daemonize:
-		with open(statuslogfile, 'w+') as sys.stdout:
-			yield
-	else:
-		yield
+    if options.daemonize:
+        with open(statuslogfile, 'w+') as sys.stdout:
+            yield
+    else:
+        yield
 
 
 def daemon(lock_file, options):
-	try:
-		pid = os.fork()
-	except OSError as e:
-		print('Daemon Mode Error: %s' % e.strerror)
+    try:
+        pid = os.fork()
+    except OSError as e:
+        print('Daemon Mode Error: %s' % e.strerror)
 
-	if (pid == 0):
-		os.setsid()
-		signal.signal(signal.SIGHUP, signal.SIG_IGN)
-		try:
-			pid = os.fork()
-		except OSError as e:
-			print('Daemon Mode Error: %s' % e.strerror)
-		if (pid == 0):
-			os.chdir("/")
-			os.umask(0o022)
-		else:
-			pf = open('/var/run/univention-s4-%s' % options.configbasename, 'w+')
-			pf.write(str(pid))
-			pf.close()
-			os._exit(0)
-	else:
-		os._exit(0)
+    if (pid == 0):
+        os.setsid()
+        signal.signal(signal.SIGHUP, signal.SIG_IGN)
+        try:
+            pid = os.fork()
+        except OSError as e:
+            print('Daemon Mode Error: %s' % e.strerror)
+        if (pid == 0):
+            os.chdir("/")
+            os.umask(0o022)
+        else:
+            pf = open('/var/run/univention-s4-%s' % options.configbasename, 'w+')
+            pf.write(str(pid))
+            pf.close()
+            os._exit(0)
+    else:
+        os._exit(0)
 
-	try:
-		maxfd = os.sysconf("SC_OPEN_MAX")
-	except (AttributeError, ValueError):
-		maxfd = 256  # default maximum
+    try:
+        maxfd = os.sysconf("SC_OPEN_MAX")
+    except (AttributeError, ValueError):
+        maxfd = 256  # default maximum
 
-	for fd in range(0, maxfd):
-		if fd == lock_file.fileno():
-			continue
-		try:
-			os.close(fd)
-		except OSError:  # ERROR (ignore)
-			pass
+    for fd in range(0, maxfd):
+        if fd == lock_file.fileno():
+            continue
+        try:
+            os.close(fd)
+        except OSError:  # ERROR (ignore)
+            pass
 
-	os.open("/dev/null", os.O_RDONLY)
-	os.open("/dev/null", os.O_RDWR)
-	os.open("/dev/null", os.O_RDWR)
+    os.open("/dev/null", os.O_RDONLY)
+    os.open("/dev/null", os.O_RDWR)
+    os.open("/dev/null", os.O_RDWR)
 
 
 def connect(options):
-	print(time.ctime())
+    print(time.ctime())
 
-	ucr = ConfigRegistry()
-	ucr.load()
+    ucr = ConfigRegistry()
+    ucr.load()
 
-	poll_sleep = int(ucr['%s/s4/poll/sleep' % options.configbasename])
-	s4_init = None
-	while not s4_init:
-		try:
-			s4 = univention.s4connector.s4.s4.main(ucr, options.configbasename, logfilename=options.log_file, debug_level=options.debug)
-			s4.init_ldap_connections()
-			s4.init_group_cache()
-			s4_init = True
-		except ldap.SERVER_DOWN:
-			print("Warning: Can't initialize LDAP-Connections, wait...")
-			sys.stdout.flush()
-			time.sleep(poll_sleep)
+    poll_sleep = int(ucr['%s/s4/poll/sleep' % options.configbasename])
+    s4_init = None
+    while not s4_init:
+        try:
+            s4 = univention.s4connector.s4.s4.main(ucr, options.configbasename, logfilename=options.log_file, debug_level=options.debug)
+            s4.init_ldap_connections()
+            s4.init_group_cache()
+            s4_init = True
+        except ldap.SERVER_DOWN:
+            print("Warning: Can't initialize LDAP-Connections, wait...")
+            sys.stdout.flush()
+            time.sleep(poll_sleep)
 
-	# log the active mapping
-	with open('/var/log/univention/%s-s4-mapping.log' % options.configbasename, 'w+') as fd:
-		print(repr(univention.s4connector.Mapping(s4.property)), file=fd)
+    # log the active mapping
+    with open('/var/log/univention/%s-s4-mapping.log' % options.configbasename, 'w+') as fd:
+        print(repr(univention.s4connector.Mapping(s4.property)), file=fd)
 
-	with s4 as s4:
-		_connect(s4, poll_sleep, ucr.get('%s/s4/retryrejected' % options.configbasename, 10))
+    with s4 as s4:
+        _connect(s4, poll_sleep, ucr.get('%s/s4/retryrejected' % options.configbasename, 10))
 
 
 def _connect(s4, poll_sleep, baseconfig_retry_rejected):
-	# Initialisierung auf UCS und S4 Seite durchfuehren
-	s4_init = None
-	ucs_init = None
+    # Initialisierung auf UCS und S4 Seite durchfuehren
+    s4_init = None
+    ucs_init = None
 
-	while not ucs_init:
-		try:
-			s4.initialize_ucs()
-			ucs_init = True
-		except ldap.SERVER_DOWN:
-			print("Can't contact LDAP server during ucs-poll, sync not possible.")
-			sys.stdout.flush()
-			time.sleep(poll_sleep)
-			s4.open_s4()
-			s4.open_ucs()
+    while not ucs_init:
+        try:
+            s4.initialize_ucs()
+            ucs_init = True
+        except ldap.SERVER_DOWN:
+            print("Can't contact LDAP server during ucs-poll, sync not possible.")
+            sys.stdout.flush()
+            time.sleep(poll_sleep)
+            s4.open_s4()
+            s4.open_ucs()
 
-	while not s4_init:
-		try:
-			s4.initialize()
-			s4_init = True
-		except ldap.SERVER_DOWN:
-			print("Can't contact LDAP server during ucs-poll, sync not possible.")
-			sys.stdout.flush()
-			time.sleep(poll_sleep)
-			s4.open_s4()
-			s4.open_ucs()
+    while not s4_init:
+        try:
+            s4.initialize()
+            s4_init = True
+        except ldap.SERVER_DOWN:
+            print("Can't contact LDAP server during ucs-poll, sync not possible.")
+            sys.stdout.flush()
+            time.sleep(poll_sleep)
+            s4.open_s4()
+            s4.open_ucs()
 
-	retry_rejected = 0
-	connected = True
-	while connected:
-		print(time.ctime())
-		# Aenderungen pollen
-		sys.stdout.flush()
-		while True:
-			# Read changes from OpenLDAP
-			try:
-				change_counter = s4.poll_ucs()
-				if change_counter > 0:
-					# UCS changes, read again from UCS
-					retry_rejected = 0
-					time.sleep(1)
-					continue
-				else:
-					break
-			except ldap.SERVER_DOWN:
-				print("Can't contact LDAP server during ucs-poll, sync not possible.")
-				connected = False
-				sys.stdout.flush()
-				break
+    retry_rejected = 0
+    connected = True
+    while connected:
+        print(time.ctime())
+        # Aenderungen pollen
+        sys.stdout.flush()
+        while True:
+            # Read changes from OpenLDAP
+            try:
+                change_counter = s4.poll_ucs()
+                if change_counter > 0:
+                    # UCS changes, read again from UCS
+                    retry_rejected = 0
+                    time.sleep(1)
+                    continue
+                else:
+                    break
+            except ldap.SERVER_DOWN:
+                print("Can't contact LDAP server during ucs-poll, sync not possible.")
+                connected = False
+                sys.stdout.flush()
+                break
 
-		while True:
-			try:
-				change_counter = s4.poll()
-				if change_counter > 0:
-					# S4 changes, read again from S4
-					retry_rejected = 0
-					time.sleep(1)
-					continue
-				else:
-					break
-			except ldap.SERVER_DOWN:
-				print("Can't contact LDAP server during s4-poll, sync not possible.")
-				connected = False
-				sys.stdout.flush()
-				break
+        while True:
+            try:
+                change_counter = s4.poll()
+                if change_counter > 0:
+                    # S4 changes, read again from S4
+                    retry_rejected = 0
+                    time.sleep(1)
+                    continue
+                else:
+                    break
+            except ldap.SERVER_DOWN:
+                print("Can't contact LDAP server during s4-poll, sync not possible.")
+                connected = False
+                sys.stdout.flush()
+                break
 
-		try:
-			if str(retry_rejected) == baseconfig_retry_rejected:  # FIXME: if the UCR variable is not set this compares string with integer (default value)
-				s4.resync_rejected_ucs()
-				s4.resync_rejected()
-				retry_rejected = 0
-			else:
-				retry_rejected += 1
-		except ldap.SERVER_DOWN:
-			print("Can't contact LDAP server during resync rejected, sync not possible.")
-			connected = False
-			sys.stdout.flush()
-			change_counter = 0
-			retry_rejected += 1
+        try:
+            if str(retry_rejected) == baseconfig_retry_rejected:  # FIXME: if the UCR variable is not set this compares string with integer (default value)
+                s4.resync_rejected_ucs()
+                s4.resync_rejected()
+                retry_rejected = 0
+            else:
+                retry_rejected += 1
+        except ldap.SERVER_DOWN:
+            print("Can't contact LDAP server during resync rejected, sync not possible.")
+            connected = False
+            sys.stdout.flush()
+            change_counter = 0
+            retry_rejected += 1
 
-		print('- sleep %s seconds (%s/%s until resync) -' % (poll_sleep, retry_rejected, baseconfig_retry_rejected))
-		sys.stdout.flush()
-		time.sleep(poll_sleep)
+        print('- sleep %s seconds (%s/%s until resync) -' % (poll_sleep, retry_rejected, baseconfig_retry_rejected))
+        sys.stdout.flush()
+        time.sleep(poll_sleep)
 
 
 @contextlib.contextmanager
 def lock(filename):
-	try:
-		lock_file = open(filename, "a+")
-		fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-	except IOError:
-		print('Error: Another S4 connector process is already running.', file=sys.stderr)
-		sys.exit(1)
-	with lock_file as lock_file:
-		yield lock_file
+    try:
+        lock_file = open(filename, "a+")
+        fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except IOError:
+        print('Error: Another S4 connector process is already running.', file=sys.stderr)
+        sys.exit(1)
+    with lock_file as lock_file:
+        yield lock_file
 
 
 def main():
-	parser = ArgumentParser()
-	parser.add_argument("--configbasename", help="", metavar="CONFIGBASENAME", default="connector")
-	parser.add_argument('-n', '--no-daemon', dest='daemonize', default=True, action='store_false', help='Start process in foreground')
-	parser.add_argument('-d', '--debug', help='debug level', type=int)
-	parser.add_argument('-L', '--log-file', metavar='LOGFILE', help='Specifies an alternative logfile')
-	options = parser.parse_args()
+    parser = ArgumentParser()
+    parser.add_argument("--configbasename", help="", metavar="CONFIGBASENAME", default="connector")
+    parser.add_argument('-n', '--no-daemon', dest='daemonize', default=True, action='store_false', help='Start process in foreground')
+    parser.add_argument('-d', '--debug', help='debug level', type=int)
+    parser.add_argument('-L', '--log-file', metavar='LOGFILE', help='Specifies an alternative logfile')
+    options = parser.parse_args()
 
-	with lock('/var/lock/univention-s4-%s' % options.configbasename) as lock_file:
-		if options.daemonize:
-			daemon(lock_file, options)
+    with lock('/var/lock/univention-s4-%s' % options.configbasename) as lock_file:
+        if options.daemonize:
+            daemon(lock_file, options)
 
-		with bind_stdout(options, "/var/log/univention/%s-s4-status.log" % options.configbasename):
-			while True:
-				try:
-					connect(options)
-				except Exception:
-					print(time.ctime())
+        with bind_stdout(options, "/var/log/univention/%s-s4-status.log" % options.configbasename):
+            while True:
+                try:
+                    connect(options)
+                except Exception:
+                    print(time.ctime())
 
-					print(" --- connect failed, failure was: ---")
-					print(traceback.format_exc())
-					print(" ---     retry in 30 seconds      ---")
-					sys.stdout.flush()
-					time.sleep(30)
+                    print(" --- connect failed, failure was: ---")
+                    print(traceback.format_exc())
+                    print(" ---     retry in 30 seconds      ---")
+                    sys.stdout.flush()
+                    time.sleep(30)
 
 
 if __name__ == "__main__":
-	main()
+    main()

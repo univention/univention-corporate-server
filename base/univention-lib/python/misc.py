@@ -40,123 +40,123 @@ from univention.config_registry import ConfigRegistry
 
 
 def createMachinePassword():
-	# type: () -> str
-	"""
-	Returns a $(pwgen) generated password according to the
-	requirements in |UCR| variables
-	`machine/password/length` and `machine/password/complexity`.
+    # type: () -> str
+    """
+    Returns a $(pwgen) generated password according to the
+    requirements in |UCR| variables
+    `machine/password/length` and `machine/password/complexity`.
 
-	:returns: A password.
-	:rtype: str
-	"""
-	ucr = ConfigRegistry()
-	ucr.load()
-	length = ucr.get('machine/password/length', '20')
-	compl = ucr.get('machine/password/complexity', 'scn')
-	p = subprocess.Popen(["pwgen", "-1", "-" + compl, length], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	(stdout, stderr) = p.communicate()
-	if not isinstance(stdout, str):  # Python 3
-		return stdout.decode('ASCII', 'replace').strip()
-	return stdout.strip()
+    :returns: A password.
+    :rtype: str
+    """
+    ucr = ConfigRegistry()
+    ucr.load()
+    length = ucr.get('machine/password/length', '20')
+    compl = ucr.get('machine/password/complexity', 'scn')
+    p = subprocess.Popen(["pwgen", "-1", "-" + compl, length], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (stdout, stderr) = p.communicate()
+    if not isinstance(stdout, str):  # Python 3
+        return stdout.decode('ASCII', 'replace').strip()
+    return stdout.strip()
 
 
 def getLDAPURIs(ucr=None):
-	# type: (Optional[ConfigRegistry]) -> str
-	"""
-	Returns a space separated list of all configured |LDAP| servers, according to |UCR| variables
-	`ldap/server/name` and `ldap/server/addition`.
+    # type: (Optional[ConfigRegistry]) -> str
+    """
+    Returns a space separated list of all configured |LDAP| servers, according to |UCR| variables
+    `ldap/server/name` and `ldap/server/addition`.
 
-	:param ConfigRegistry ucr: An optional |UCR| instance.
-	:returns: A space separated list of |LDAP| |URI|.
-	:rtype: str
-	"""
-	if ucr is None:
-		ucr = ConfigRegistry()
-		ucr.load()
+    :param ConfigRegistry ucr: An optional |UCR| instance.
+    :returns: A space separated list of |LDAP| |URI|.
+    :rtype: str
+    """
+    if ucr is None:
+        ucr = ConfigRegistry()
+        ucr.load()
 
-	uri_string = ''
-	ldaphosts = []
-	port = ucr.get('ldap/server/port', '7389')
-	ldap_server_name = ucr.get('ldap/server/name')
-	ldap_server_addition = ucr.get('ldap/server/addition')
+    uri_string = ''
+    ldaphosts = []
+    port = ucr.get('ldap/server/port', '7389')
+    ldap_server_name = ucr.get('ldap/server/name')
+    ldap_server_addition = ucr.get('ldap/server/addition')
 
-	if ldap_server_name:
-		ldaphosts.append(ldap_server_name)
-	if ldap_server_addition:
-		ldaphosts.extend(ldap_server_addition.split())
-	if ldaphosts:
-		urilist = ["ldap://%s:%s" % (host, port) for host in ldaphosts]
-		uri_string = ' '.join(urilist)
+    if ldap_server_name:
+        ldaphosts.append(ldap_server_name)
+    if ldap_server_addition:
+        ldaphosts.extend(ldap_server_addition.split())
+    if ldaphosts:
+        urilist = ["ldap://%s:%s" % (host, port) for host in ldaphosts]
+        uri_string = ' '.join(urilist)
 
-	return uri_string
+    return uri_string
 
 
 def getLDAPServersCommaList(ucr=None):
-	# type: (Optional[ConfigRegistry]) -> str
-	"""
-	Returns a comma-separated string with all configured |LDAP| servers,
-	`ldap/server/name` and `ldap/server/addition`.
+    # type: (Optional[ConfigRegistry]) -> str
+    """
+    Returns a comma-separated string with all configured |LDAP| servers,
+    `ldap/server/name` and `ldap/server/addition`.
 
-	:param ConfigRegistry ucr: An optional |UCR| instance.
-	:returns: A space separated list of |LDAP| host names.
-	:rtype: str
-	"""
-	if ucr is None:
-		ucr = ConfigRegistry()
-		ucr.load()
+    :param ConfigRegistry ucr: An optional |UCR| instance.
+    :returns: A space separated list of |LDAP| host names.
+    :rtype: str
+    """
+    if ucr is None:
+        ucr = ConfigRegistry()
+        ucr.load()
 
-	ldap_servers = ''
-	ldaphosts = []
-	ldap_server_name = ucr.get('ldap/server/name')
-	ldap_server_addition = ucr.get('ldap/server/addition')
+    ldap_servers = ''
+    ldaphosts = []
+    ldap_server_name = ucr.get('ldap/server/name')
+    ldap_server_addition = ucr.get('ldap/server/addition')
 
-	if ldap_server_name:
-		ldaphosts.append(ldap_server_name)
-	if ldap_server_addition:
-		ldaphosts.extend(ldap_server_addition.split())
-	if ldaphosts:
-		ldap_servers = ','.join(ldaphosts)
+    if ldap_server_name:
+        ldaphosts.append(ldap_server_name)
+    if ldap_server_addition:
+        ldaphosts.extend(ldap_server_addition.split())
+    if ldaphosts:
+        ldap_servers = ','.join(ldaphosts)
 
-	return ldap_servers
+    return ldap_servers
 
 
 def custom_username(name, ucr=None):
-	# type: (str, Optional[ConfigRegistry]) -> str
-	"""
-	Returns the customized user name configured via |UCR| `users/default/*`.
+    # type: (str, Optional[ConfigRegistry]) -> str
+    """
+    Returns the customized user name configured via |UCR| `users/default/*`.
 
-	:param str name: A user name.
-	:param ConfigRegistry ucr: An optional |UCR| instance.
-	:returns: The translated user name.
-	:rtype: str
-	:raises ValueError: if no name is given.
-	"""
-	if not name:
-		raise ValueError()
+    :param str name: A user name.
+    :param ConfigRegistry ucr: An optional |UCR| instance.
+    :returns: The translated user name.
+    :rtype: str
+    :raises ValueError: if no name is given.
+    """
+    if not name:
+        raise ValueError()
 
-	if ucr is None:
-		ucr = ConfigRegistry()
-		ucr.load()
+    if ucr is None:
+        ucr = ConfigRegistry()
+        ucr.load()
 
-	return ucr.get("users/default/" + name.lower().replace(" ", ""), name)
+    return ucr.get("users/default/" + name.lower().replace(" ", ""), name)
 
 
 def custom_groupname(name, ucr=None):
-	# type: (str, Optional[ConfigRegistry]) -> str
-	"""
-	Returns the customized group name configured via |UCR| `groups/default/*`.
+    # type: (str, Optional[ConfigRegistry]) -> str
+    """
+    Returns the customized group name configured via |UCR| `groups/default/*`.
 
-	:param str name: A group name.
-	:param ConfigRegistry ucr: An optional |UCR| instance.
-	:returns: The translated group name.
-	:rtype: str
-	:raises ValueError: if no name is given.
-	"""
-	if not name:
-		raise ValueError()
+    :param str name: A group name.
+    :param ConfigRegistry ucr: An optional |UCR| instance.
+    :returns: The translated group name.
+    :rtype: str
+    :raises ValueError: if no name is given.
+    """
+    if not name:
+        raise ValueError()
 
-	if ucr is None:
-		ucr = ConfigRegistry()
-		ucr.load()
+    if ucr is None:
+        ucr = ConfigRegistry()
+        ucr.load()
 
-	return ucr.get("groups/default/" + name.lower().replace(" ", ""), name)
+    return ucr.get("groups/default/" + name.lower().replace(" ", ""), name)

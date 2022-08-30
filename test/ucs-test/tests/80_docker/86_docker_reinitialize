@@ -43,36 +43,36 @@ InitialValue =
 '''
 
 if __name__ == '__main__':
-	with Appcenter() as appcenter:
+    with Appcenter() as appcenter:
 
-		name = get_app_name()
-		store_data = '#!/bin/sh'
-		configure_host = '''#!/bin/sh
+        name = get_app_name()
+        store_data = '#!/bin/sh'
+        configure_host = '''#!/bin/sh
 if [ "$1" = "settings" ]; then
 univention-app reinitialize %s
 fi
 ''' % name
 
-		app = App(name=name, version='1', build_package=False, call_join_scripts=False)
-		try:
-			app.set_ini_parameter(
-				DockerMainService='test1',
-				DockerScriptSetup='',
-			)
-			app.add_script(compose=DOCKER_COMPOSE.format(image='docker-test.software-univention.de/alpine:3.6'))
-			app.add_script(settings=SETTINGS)
-			app.add_script(store_data=store_data)
-			app.add_script(configure_host=configure_host)
-			app.add_to_local_appcenter()
-			appcenter.update()
-			app.install()
-			app.verify(joined=False)
-			env = subprocess.check_output('univention-app shell %s env' % name, shell=True, text=True)
-			assert 'TEST_KEY=1' in env, env
-			subprocess.call('univention-app configure %s --set TEST_KEY=2' % name, shell=True)
-			env = subprocess.check_output('univention-app shell %s env' % name, shell=True, text=True)
-			assert 'TEST_KEY=2' in env, env
-			assert 'EMPTY_KEY' not in env, env
-		finally:
-			app.uninstall()
-			app.remove()
+        app = App(name=name, version='1', build_package=False, call_join_scripts=False)
+        try:
+            app.set_ini_parameter(
+                DockerMainService='test1',
+                DockerScriptSetup='',
+            )
+            app.add_script(compose=DOCKER_COMPOSE.format(image='docker-test.software-univention.de/alpine:3.6'))
+            app.add_script(settings=SETTINGS)
+            app.add_script(store_data=store_data)
+            app.add_script(configure_host=configure_host)
+            app.add_to_local_appcenter()
+            appcenter.update()
+            app.install()
+            app.verify(joined=False)
+            env = subprocess.check_output('univention-app shell %s env' % name, shell=True, text=True)
+            assert 'TEST_KEY=1' in env, env
+            subprocess.call('univention-app configure %s --set TEST_KEY=2' % name, shell=True)
+            env = subprocess.check_output('univention-app shell %s env' % name, shell=True, text=True)
+            assert 'TEST_KEY=2' in env, env
+            assert 'EMPTY_KEY' not in env, env
+        finally:
+            app.uninstall()
+            app.remove()

@@ -49,72 +49,72 @@ import univention.l10n.umc as dh_umc
 
 
 def do_package(package, core):
-	"""Compile translation files for package."""
-	modules = dh_umc.read_modules(package, core)
+    """Compile translation files for package."""
+    modules = dh_umc.read_modules(package, core)
 
-	if not core:
-		# build Python PO files
-		for module in modules:
-			for po_file in module.python_po_files:
-				if os.path.exists(po_file):
-					dh_umc.create_po_file(po_file, package, module.python_files)
-					dh_umc.create_mo_file(po_file)
+    if not core:
+        # build Python PO files
+        for module in modules:
+            for po_file in module.python_po_files:
+                if os.path.exists(po_file):
+                    dh_umc.create_po_file(po_file, package, module.python_files)
+                    dh_umc.create_mo_file(po_file)
 
-		# build javascript PO files
-		for module in modules:
-			for po_file in module.js_po_files:
-				if os.path.exists(po_file):
-					dh_umc.create_po_file(po_file, package, module.js_files, 'Javascript')
-					dh_umc.create_json_file(po_file)
+        # build javascript PO files
+        for module in modules:
+            for po_file in module.js_po_files:
+                if os.path.exists(po_file):
+                    dh_umc.create_po_file(po_file, package, module.js_files, 'Javascript')
+                    dh_umc.create_json_file(po_file)
 
-	# build xml PO files
-	for module in modules:
-		for lang, po_file in module.xml_po_files:
-			if os.path.exists(po_file):
-				dh_umc.module_xml2po(module, po_file, lang)
-				dh_umc.create_mo_file(po_file)
+    # build xml PO files
+    for module in modules:
+        for lang, po_file in module.xml_po_files:
+            if os.path.exists(po_file):
+                dh_umc.module_xml2po(module, po_file, lang)
+                dh_umc.create_mo_file(po_file)
 
-	# create missing images
-	for module in modules:
-		if not module.icons:
-			continue
-		for path, _directories, files in os.walk(os.path.join(module.icons, 'scalable')):
-			for filename in files:
-				name, ext = os.path.splitext(filename)
-				if ext not in ('.svg', '.svgz'):
-					continue
-				for size in (16, 50):
-					png_path = os.path.join(module.icons, '%dx%d' % (size, size), '%s.png' % (name,))
-					if os.path.exists(png_path):
-						continue
-					try:
-						os.makedirs(os.path.dirname(png_path))
-					except EnvironmentError:
-						pass
-					print('I: Creating missing image %s' % (png_path,))
-					dh_ucs.doIt('convert', '-background', 'none', os.path.join(path, filename), '-resize', '%dx%d' % (size, size), '-define', 'png:exclude-chunk=date,time', png_path)
+    # create missing images
+    for module in modules:
+        if not module.icons:
+            continue
+        for path, _directories, files in os.walk(os.path.join(module.icons, 'scalable')):
+            for filename in files:
+                name, ext = os.path.splitext(filename)
+                if ext not in ('.svg', '.svgz'):
+                    continue
+                for size in (16, 50):
+                    png_path = os.path.join(module.icons, '%dx%d' % (size, size), '%s.png' % (name,))
+                    if os.path.exists(png_path):
+                        continue
+                    try:
+                        os.makedirs(os.path.dirname(png_path))
+                    except EnvironmentError:
+                        pass
+                    print('I: Creating missing image %s' % (png_path,))
+                    dh_ucs.doIt('convert', '-background', 'none', os.path.join(path, filename), '-resize', '%dx%d' % (size, size), '-define', 'png:exclude-chunk=date,time', png_path)
 
 
 def main():
-	# parse all options
-	parser = ArgumentParser()
-	parser.add_argument('-c', '--core', action='store_true', dest='core', help='If specified only XML files are evaluated')
-	group = parser.add_argument_group("debhelper", "Common debhelper options")
-	group.add_argument("--arch", "-a", action="store_true", help="Act on all architecture dependent packages.")
-	group.add_argument("--indep", "-i", action="store_true", help="Act on all architecture independent packages.")
-	group.add_argument("--option", "-O", action="append", help="Additional debhelper options.")
+    # parse all options
+    parser = ArgumentParser()
+    parser.add_argument('-c', '--core', action='store_true', dest='core', help='If specified only XML files are evaluated')
+    group = parser.add_argument_group("debhelper", "Common debhelper options")
+    group.add_argument("--arch", "-a", action="store_true", help="Act on all architecture dependent packages.")
+    group.add_argument("--indep", "-i", action="store_true", help="Act on all architecture independent packages.")
+    group.add_argument("--option", "-O", action="append", help="Additional debhelper options.")
 
-	options = parser.parse_args()
-	for package in dh_ucs.binary_packages():
-		do_package(package, options.core)
+    options = parser.parse_args()
+    for package in dh_ucs.binary_packages():
+        do_package(package, options.core)
 
 
 if __name__ == '__main__':
-	if not sys.warnoptions:
-		import warnings
-		warnings.filterwarnings("ignore", category=UserWarning, module="debian.deb822")
-	try:
-		main()
-	except dh_umc.Error as exc:
-		print('Error: %s' % (exc,), file=sys.stderr)
-		sys.exit(1)
+    if not sys.warnoptions:
+        import warnings
+        warnings.filterwarnings("ignore", category=UserWarning, module="debian.deb822")
+    try:
+        main()
+    except dh_umc.Error as exc:
+        print('Error: %s' % (exc,), file=sys.stderr)
+        sys.exit(1)

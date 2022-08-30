@@ -50,15 +50,15 @@ parser.add_argument("-w", "--password", help="password")
 options = parser.parse_args()
 
 if not options.keytab:
-	parser.error("keytab argument missing")
+    parser.error("keytab argument missing")
 if not options.principal:
-	parser.error("principal argument missing")
+    parser.error("principal argument missing")
 if not options.service_principal_names:
-	parser.error("alias argument missing")
+    parser.error("alias argument missing")
 if not options.kvno:
-	parser.error("kvno argument missing")
+    parser.error("kvno argument missing")
 if not options.password:
-	parser.error("password argument missing")
+    parser.error("password argument missing")
 
 keytab_filename = options.keytab
 
@@ -67,14 +67,14 @@ permitted_enctypes = krb5_context.get_permitted_enctypes()
 permitted_enctypes.reverse()
 temp_keytab_filename = tempfile.mktemp()
 for krb5_enctype in permitted_enctypes:
-	enctype = str(krb5_enctype)
-	if enctype in ('des-cbc-md4', 'des3-cbc-md5', 'des3-cbc-sha1'):
-		continue
-	call(['ktutil', '-k', temp_keytab_filename, 'add', '-p', options.principal, '-V', str(options.kvno), '-e', enctype, '-w', options.password])
+    enctype = str(krb5_enctype)
+    if enctype in ('des-cbc-md4', 'des3-cbc-md5', 'des3-cbc-sha1'):
+        continue
+    call(['ktutil', '-k', temp_keytab_filename, 'add', '-p', options.principal, '-V', str(options.kvno), '-e', enctype, '-w', options.password])
 
 keytab = heimdal.keytab(krb5_context, temp_keytab_filename)
 for (kvno, enctype, _principal, _timestamp, keyblock) in keytab.list():
-	keyblock_hex = binascii.b2a_hex(keyblock)
-	for spn in options.service_principal_names:
-		call(['ktutil', '-k', keytab_filename, 'add', '-p', spn, '-V', str(kvno), '-e', enctype, '-w', keyblock_hex, '--hex'])
+    keyblock_hex = binascii.b2a_hex(keyblock)
+    for spn in options.service_principal_names:
+        call(['ktutil', '-k', keytab_filename, 'add', '-p', spn, '-V', str(kvno), '-e', enctype, '-w', keyblock_hex, '--hex'])
 os.unlink(temp_keytab_filename)

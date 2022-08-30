@@ -34,14 +34,14 @@ UDM_MODULE = 'computers/ipmanagedclient'
 name = random_name()
 dn = 'cn=%s,cn=memberserver,cn=computers,%s' % (name, ucr.get('ldap/base'))
 modlist = [
-	(ldap.MOD_REPLACE, 'entryUUID', b'76944348-ea2e-1032-95ad-000000000000')
+    (ldap.MOD_REPLACE, 'entryUUID', b'76944348-ea2e-1032-95ad-000000000000')
 ]
 
 
 def get_entryUUID(lo, dn):
-	result = lo.search_s(base=dn, scope=ldap.SCOPE_BASE, attrlist=['*', '+'])
-	print('DN: %s\n%s' % (dn, result))
-	return result[0][1].get('entryUUID')[0].decode('ASCII')
+    result = lo.search_s(base=dn, scope=ldap.SCOPE_BASE, attrlist=['*', '+'])
+    print('DN: %s\n%s' % (dn, result))
+    return result[0][1].get('entryUUID')[0].decode('ASCII')
 
 
 lo_local = univention.uldap.getRootDnConnection().lo
@@ -65,10 +65,10 @@ new_local_UUID = get_entryUUID(lo_local, new_dn)
 new_remote_UUID = get_entryUUID(lo_remote, new_dn)
 
 if new_local_UUID != new_remote_UUID:
-	print('ERROR: local and remote UUID do not match')
-	print('  local_UUID: %s' % new_local_UUID)
-	print(' remote_UUID: %s' % new_remote_UUID)
-	success = False
+    print('ERROR: local and remote UUID do not match')
+    print('  local_UUID: %s' % new_local_UUID)
+    print(' remote_UUID: %s' % new_remote_UUID)
+    success = False
 
 utils.verify_ldap_object(dn, should_exist=False)
 utils.verify_ldap_object(new_dn, should_exist=True)
@@ -77,6 +77,6 @@ udm.cleanup()
 wait_for_replication()
 
 if not success:
-	sys.exit(1)
+    sys.exit(1)
 
 # vim: set ft=python :

@@ -39,22 +39,22 @@ from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class PoliciesRegistryObjectProperties(GenericObjectProperties):
-	"""policies/registry UDM properties."""
+    """policies/registry UDM properties."""
 
-	_encoders = {
-		'registry': ListOfListOflTextToDictPropertyEncoder,
-	}
+    _encoders = {
+        'registry': ListOfListOflTextToDictPropertyEncoder,
+    }
 
 
 class PoliciesRegistryObject(GenericObject):
-	"""Better representation of policies/registry properties."""
-	udm_prop_class = PoliciesRegistryObjectProperties
+    """Better representation of policies/registry properties."""
+    udm_prop_class = PoliciesRegistryObjectProperties
 
 
 class PoliciesRegistryModule(GenericModule):
-	"""PoliciesRegistryObject factory"""
-	_udm_object_class = PoliciesRegistryObject
+    """PoliciesRegistryObject factory"""
+    _udm_object_class = PoliciesRegistryObject
 
-	class Meta:
-		supported_api_versions = [1, 2, 3]
-		suitable_for = ['policies/registry']
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        suitable_for = ['policies/registry']

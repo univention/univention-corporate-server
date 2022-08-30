@@ -41,44 +41,44 @@ from univention.ucslint.python import python_files
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	"""Python specific checks."""
+    """Python specific checks."""
 
-	def getMsgIds(self) -> uub.MsgIds:
-		return {
-			'0009-1': (uub.RESULT_WARN, 'failed to open file'),
-			'0009-2': (uub.RESULT_ERROR, 'Python file does not specify Python version in hashbang'),
-			'0009-3': (uub.RESULT_ERROR, 'Python file specifies wrong Python version in hashbang'),
-			'0009-4': (uub.RESULT_WARN, 'Python file contains whitespace and maybe arguments after Python command'),
-			'0009-5': (uub.RESULT_ERROR, 'dict.has_key is deprecated in python3 - please use "if key in dict:"'),
-			'0009-6': (uub.RESULT_ERROR, 'raise "text" is deprecated in python3'),
-			'0009-7': (uub.RESULT_STYLE, 'fragile comparison with None'),
-			'0009-8': (uub.RESULT_STYLE, 'use ucr.is_true() or .is_false()'),
-			'0009-9': (uub.RESULT_ERROR, 'hashbang contains more than one option'),
-			'0009-10': (uub.RESULT_WARN, 'invalid Python string literal escape sequence'),
-			'0009-11': (uub.RESULT_STYLE, 'Use uldap.searchDn() instead of uldap.search(attr=["dn"])'),
-			'0009-12': (uub.RESULT_ERROR, 'variable names must not use reserved Python keywords'),
-			'0009-13': (uub.RESULT_STYLE, 'variable names should not use internal Python keywords'),
-		}
+    def getMsgIds(self) -> uub.MsgIds:
+        return {
+            '0009-1': (uub.RESULT_WARN, 'failed to open file'),
+            '0009-2': (uub.RESULT_ERROR, 'Python file does not specify Python version in hashbang'),
+            '0009-3': (uub.RESULT_ERROR, 'Python file specifies wrong Python version in hashbang'),
+            '0009-4': (uub.RESULT_WARN, 'Python file contains whitespace and maybe arguments after Python command'),
+            '0009-5': (uub.RESULT_ERROR, 'dict.has_key is deprecated in python3 - please use "if key in dict:"'),
+            '0009-6': (uub.RESULT_ERROR, 'raise "text" is deprecated in python3'),
+            '0009-7': (uub.RESULT_STYLE, 'fragile comparison with None'),
+            '0009-8': (uub.RESULT_STYLE, 'use ucr.is_true() or .is_false()'),
+            '0009-9': (uub.RESULT_ERROR, 'hashbang contains more than one option'),
+            '0009-10': (uub.RESULT_WARN, 'invalid Python string literal escape sequence'),
+            '0009-11': (uub.RESULT_STYLE, 'Use uldap.searchDn() instead of uldap.search(attr=["dn"])'),
+            '0009-12': (uub.RESULT_ERROR, 'variable names must not use reserved Python keywords'),
+            '0009-13': (uub.RESULT_STYLE, 'variable names should not use internal Python keywords'),
+        }
 
-	RE_HASHBANG = re.compile(r'''^#!\s*/usr/bin/python(?:([0-9.]+))?(?:(\s+)(?:(\S+)(\s.*)?)?)?$''')
-	RE_STRING = PythonVer.matcher()
+    RE_HASHBANG = re.compile(r'''^#!\s*/usr/bin/python(?:([0-9.]+))?(?:(\s+)(?:(\S+)(\s.*)?)?)?$''')
+    RE_STRING = PythonVer.matcher()
 
-	def check(self, path: str) -> None:
-		""" the real check """
-		super(UniventionPackageCheck, self).check(path)
+    def check(self, path: str) -> None:
+        """ the real check """
+        super(UniventionPackageCheck, self).check(path)
 
-		tester = uub.UPCFileTester()
-		tester.addTest(re.compile(r'\.has_key\s*\('), '0009-5', 'dict.has_key is deprecated in python3 - please use "if key in dict:"', cntmax=0)
-		tester.addTest(re.compile(r'''\braise\s*(?:'[^']+'|"[^"]+")'''), '0009-6', 'raise "text" is deprecated in python3', cntmax=0)
-		tester.addTest(re.compile(r"""\b(?:if|while)\b.*(?:(?:!=|<>|==)\s*None\b|\bNone\s*(?:!=|<>|==)).*:"""), '0009-7', 'fragile comparison with None', cntmax=0)
-		tester.addTest(re.compile(
-			r'''(?:baseConfig|configRegistry|ucr)(?:\[.+\]|\.get\(.+\)).*\bin\s*
+        tester = uub.UPCFileTester()
+        tester.addTest(re.compile(r'\.has_key\s*\('), '0009-5', 'dict.has_key is deprecated in python3 - please use "if key in dict:"', cntmax=0)
+        tester.addTest(re.compile(r'''\braise\s*(?:'[^']+'|"[^"]+")'''), '0009-6', 'raise "text" is deprecated in python3', cntmax=0)
+        tester.addTest(re.compile(r"""\b(?:if|while)\b.*(?:(?:!=|<>|==)\s*None\b|\bNone\s*(?:!=|<>|==)).*:"""), '0009-7', 'fragile comparison with None', cntmax=0)
+        tester.addTest(re.compile(
+            r'''(?:baseConfig|configRegistry|ucr)(?:\[.+\]|\.get\(.+\)).*\bin\s*
 			[\[\(]
 			(?:\s*(['"])(?:yes|no|1|0|true|false|on|off|enabled?|disabled?)\1\s*,?\s*){3,}
 			[\]\)]''', re.VERBOSE | re.IGNORECASE),
-			'0009-8', 'use ucr.is_true() or .is_false()', cntmax=0)
-		tester.addTest(re.compile(
-			r'''\.search\s*\(
+            '0009-8', 'use ucr.is_true() or .is_false()', cntmax=0)
+        tester.addTest(re.compile(
+            r'''\.search\s*\(
 			.*?\b
 			attr
 			\s*=\s*
@@ -90,64 +90,64 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			\s*
 			(?(list)\])(?(tuple)\))
 			''', re.VERBOSE),
-			'0009-11', 'Use uldap.searchDn() instead of uldap.search(attr=["dn"])', cntmax=0)
+            '0009-11', 'Use uldap.searchDn() instead of uldap.search(attr=["dn"])', cntmax=0)
 
-		for fn in python_files(path):
-			tester.open(fn)
-			if not tester.raw:
-				continue
-			msglist = tester.runTests()
-			self.msg.extend(msglist)
+        for fn in python_files(path):
+            tester.open(fn)
+            if not tester.raw:
+                continue
+            msglist = tester.runTests()
+            self.msg.extend(msglist)
 
-			match = self.RE_HASHBANG.match(tester.lines[0])
-			if match:
-				version, space, option, tail = match.groups()
-				if not version:
-					self.addmsg('0009-2', 'file does not specify Python version in hashbang', fn, 1)
-				elif version not in {'2.7', '3'}:
-					self.addmsg('0009-3', 'file specifies wrong Python version in hashbang', fn, 1)
-				if space and not option:
-					self.addmsg('0009-4', 'file contains whitespace after Python command', fn, 1)
-				if tail:
-					self.addmsg('0009-9', 'hashbang contains more than one option', fn, 1)
+            match = self.RE_HASHBANG.match(tester.lines[0])
+            if match:
+                version, space, option, tail = match.groups()
+                if not version:
+                    self.addmsg('0009-2', 'file does not specify Python version in hashbang', fn, 1)
+                elif version not in {'2.7', '3'}:
+                    self.addmsg('0009-3', 'file specifies wrong Python version in hashbang', fn, 1)
+                if space and not option:
+                    self.addmsg('0009-4', 'file contains whitespace after Python command', fn, 1)
+                if tail:
+                    self.addmsg('0009-9', 'hashbang contains more than one option', fn, 1)
 
-			for row, col, m in uub.line_regexp(tester.raw, RE_LENIENT):
-				txt = m.group("str")
-				if not txt:
-					continue
-				if self.RE_STRING.match(txt):
-					continue
+            for row, col, m in uub.line_regexp(tester.raw, RE_LENIENT):
+                txt = m.group("str")
+                if not txt:
+                    continue
+                if self.RE_STRING.match(txt):
+                    continue
 
-				self.addmsg('0009-10', 'invalid Python string literal: %s' % (txt,), fn, row, col)
+                self.addmsg('0009-10', 'invalid Python string literal: %s' % (txt,), fn, row, col)
 
-			try:
-				tree = ast.parse(tester.raw, fn)
-				visitor = FindAssign(self, fn)
-				visitor.visit(tree)
-			except Exception as ex:
-				self.addmsg('0009-1', 'Parsing failed: %s' % ex, fn)
+            try:
+                tree = ast.parse(tester.raw, fn)
+                visitor = FindAssign(self, fn)
+                visitor.visit(tree)
+            except Exception as ex:
+                self.addmsg('0009-1', 'Parsing failed: %s' % ex, fn)
 
 
 class FindVariables(ast.NodeVisitor):
-	def __init__(self, check: uub.UniventionPackageCheckDebian, fn: str) -> None:
-		self.check = check
-		self.fn = fn
+    def __init__(self, check: uub.UniventionPackageCheckDebian, fn: str) -> None:
+        self.check = check
+        self.fn = fn
 
-	def visit_Name(self, node: ast.Name) -> None:
-		if node.id in PYTHON_RESERVED:
-			self.check.addmsg('0009-12', 'Variable uses reserved Python keyword: %r' % node.id, self.fn, node.lineno, node.col_offset)
+    def visit_Name(self, node: ast.Name) -> None:
+        if node.id in PYTHON_RESERVED:
+            self.check.addmsg('0009-12', 'Variable uses reserved Python keyword: %r' % node.id, self.fn, node.lineno, node.col_offset)
 
-		if node.id in PYTHON_INTERNAL:
-			self.check.addmsg('0009-13', 'Variable uses internal Python keyword: %r' % node.id, self.fn, node.lineno, node.col_offset)
+        if node.id in PYTHON_INTERNAL:
+            self.check.addmsg('0009-13', 'Variable uses internal Python keyword: %r' % node.id, self.fn, node.lineno, node.col_offset)
 
 
 class FindAssign(ast.NodeVisitor):
-	def __init__(self, check: uub.UniventionPackageCheckDebian, fn: str) -> None:
-		self.visitor = FindVariables(check, fn)
+    def __init__(self, check: uub.UniventionPackageCheckDebian, fn: str) -> None:
+        self.visitor = FindVariables(check, fn)
 
-	def visit_Assign(self, node: ast.Assign) -> None:
-		for target in node.targets:
-			self.visitor.visit(target)
+    def visit_Assign(self, node: ast.Assign) -> None:
+        for target in node.targets:
+            self.visitor.visit(target)
 
 
 PYTHON_RESERVED = """

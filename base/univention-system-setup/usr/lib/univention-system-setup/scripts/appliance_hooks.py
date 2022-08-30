@@ -45,12 +45,12 @@ PATH_APPLIANCE_HOOKS = '/usr/lib/univention-system-setup/appliance-hooks.d/'
 
 
 def appliance_hooks():
-	temp_dir = os.path.join(mkdtemp(), 'pre')
-	shutil.copytree(PATH_APPLIANCE_HOOKS, temp_dir)
-	util.run_scripts_in_path(temp_dir, sys.stdout, "appliance hook")
-	shutil.rmtree(temp_dir)
-	sys.exit(0)
+    temp_dir = os.path.join(mkdtemp(), 'pre')
+    shutil.copytree(PATH_APPLIANCE_HOOKS, temp_dir)
+    util.run_scripts_in_path(temp_dir, sys.stdout, "appliance hook")
+    shutil.rmtree(temp_dir)
+    sys.exit(0)
 
 
 if __name__ == "__main__":
-	appliance_hooks()
+    appliance_hooks()

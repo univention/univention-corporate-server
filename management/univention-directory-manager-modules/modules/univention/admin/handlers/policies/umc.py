@@ -42,9 +42,9 @@ from univention.admin.handlers import simplePolicy
 import univention.admin.localization
 
 from univention.admin.policy import (
-	register_policy_mapping, policy_object_tab,
-	requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    register_policy_mapping, policy_object_tab,
+    requiredObjectClassesProperty, prohibitedObjectClassesProperty,
+    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
 )
 
 
@@ -53,9 +53,9 @@ _ = translation.translate
 
 
 class umcFixedAttributes(udm_syntax.select):
-	choices = (
-		('umcPolicyGrantedOperationSet', _('Allowed UMC operation sets')),
-	)
+    choices = (
+        ('umcPolicyGrantedOperationSet', _('Allowed UMC operation sets')),
+    )
 
 
 module = 'policies/umc'
@@ -73,45 +73,45 @@ policy_short_description = _('Defines a set of allowed UMC operations')
 long_description = ''
 
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'univentionPolicy', 'umcPolicy'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'univentionPolicy', 'umcPolicy'],
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=udm_syntax.policyName,
-		include_in_default_search=True,
-		required=True,
-		may_change=False,
-		identifies=True,
-	),
-	'allow': univention.admin.property(
-		short_description=_('List of allowed UMC operation sets'),
-		long_description='',
-		syntax=udm_syntax.UMC_OperationSet,
-		multivalue=True,
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=udm_syntax.policyName,
+        include_in_default_search=True,
+        required=True,
+        may_change=False,
+        identifies=True,
+    ),
+    'allow': univention.admin.property(
+        short_description=_('List of allowed UMC operation sets'),
+        long_description='',
+        syntax=udm_syntax.UMC_OperationSet,
+        multivalue=True,
+    ),
 }
 property_descriptions.update(dict([
-	requiredObjectClassesProperty(),
-	prohibitedObjectClassesProperty(),
-	fixedAttributesProperty(syntax=umcFixedAttributes),
-	emptyAttributesProperty(syntax=umcFixedAttributes),
-	ldapFilterProperty(),
+    requiredObjectClassesProperty(),
+    prohibitedObjectClassesProperty(),
+    fixedAttributesProperty(syntax=umcFixedAttributes),
+    emptyAttributesProperty(syntax=umcFixedAttributes),
+    ldapFilterProperty(),
 ]))
 
 layout = [
-	Tab(_('General'), _('Basic settings'), layout=[
-		Group(_('General UMC settings'), layout=[
-			'name',
-			'allow',
-		]),
-	]),
-	policy_object_tab()
+    Tab(_('General'), _('Basic settings'), layout=[
+        Group(_('General UMC settings'), layout=[
+            'name',
+            'allow',
+        ]),
+    ]),
+    policy_object_tab()
 ]
 
 mapping = udm_mapping.mapping()
@@ -121,7 +121,7 @@ register_policy_mapping(mapping)
 
 
 class object(simplePolicy):
-	module = module
+    module = module
 
 
 lookup = object.lookup

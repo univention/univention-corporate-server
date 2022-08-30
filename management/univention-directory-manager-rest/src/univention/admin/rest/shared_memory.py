@@ -40,23 +40,23 @@ proctitle = getproctitle()
 
 class _SharedMemory(managers.SyncManager):
 
-	children = {}
-	queue = {}
-	search_sessions = {}
-	authenticated = {}
+    children = {}
+    queue = {}
+    search_sessions = {}
+    authenticated = {}
 
-	def start(self, *args, **kwargs):
-		setproctitle(proctitle + '   # multiprocessing manager')
-		try:
-			super().start(*args, **kwargs)
-		finally:
-			setproctitle(proctitle)
+    def start(self, *args, **kwargs):
+        setproctitle(proctitle + '   # multiprocessing manager')
+        try:
+            super().start(*args, **kwargs)
+        finally:
+            setproctitle(proctitle)
 
-		# we must create the parent dictionary instance before forking but after Python importing
-		self.children = self.dict()
-		self.queue = self.dict()
-		self.search_sessions = self.dict()
-		self.authenticated = self.dict()
+        # we must create the parent dictionary instance before forking but after Python importing
+        self.children = self.dict()
+        self.queue = self.dict()
+        self.search_sessions = self.dict()
+        self.authenticated = self.dict()
 
 
 shared_memory = _SharedMemory()
@@ -64,9 +64,9 @@ shared_memory = _SharedMemory()
 
 class JsonEncoder(json.JSONEncoder):
 
-	def default(self, o):
-		if isinstance(o, managers.DictProxy):
-			return dict(o)
-		if isinstance(o, managers.ListProxy):
-			return list(o)
-		raise TypeError(f'Object of type {type(o).__name__} is not JSON serializable')
+    def default(self, o):
+        if isinstance(o, managers.DictProxy):
+            return dict(o)
+        if isinstance(o, managers.ListProxy):
+            return list(o)
+        raise TypeError(f'Object of type {type(o).__name__} is not JSON serializable')

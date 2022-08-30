@@ -47,24 +47,24 @@ dsc = Deb822(io.open('debian/control', 'r', encoding='utf-8'))
 realname, email_address = parseaddr(dsc['Maintainer'])
 
 setup(
-	name=dch.package,
-	version=dch.version.full_version,
-	description='Heimdal Kerberos Python bindings',
-	maintainer=realname,
-	maintainer_email=email_address,
-	url='https://www.univention.de/',
+    name=dch.package,
+    version=dch.version.full_version,
+    description='Heimdal Kerberos Python bindings',
+    maintainer=realname,
+    maintainer_email=email_address,
+    url='https://www.univention.de/',
 
-	ext_modules=[
-		Extension(
-			'heimdal',
-			['module.c', 'error.c', 'context.c', 'principal.c',
-				'creds.c', 'ticket.c', 'keytab.c', 'ccache.c',
-				'salt.c', 'enctype.c', 'keyblock.c', 'asn1.c'],
-			libraries=['krb5', 'hdb', 'asn1'],
-			library_dirs=d['library_dirs'],
-			include_dirs=d['include_dirs'],
-		)
-	],
+    ext_modules=[
+        Extension(
+                'heimdal',
+                ['module.c', 'error.c', 'context.c', 'principal.c',
+                 'creds.c', 'ticket.c', 'keytab.c', 'ccache.c',
+                 'salt.c', 'enctype.c', 'keyblock.c', 'asn1.c'],
+                libraries=['krb5', 'hdb', 'asn1'],
+                library_dirs=d['library_dirs'],
+                include_dirs=d['include_dirs'],
+        )
+    ],
 
-	test_suite='test',
+    test_suite='test',
 )

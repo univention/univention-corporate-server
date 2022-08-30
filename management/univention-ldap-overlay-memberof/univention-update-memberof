@@ -44,41 +44,41 @@ import univention.uldap
 
 
 def main():  # type: () -> int
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
+    ucr = univention.config_registry.ConfigRegistry()
+    ucr.load()
 
-	if ucr.get("server/role", "dummy") not in {"domaincontroller_master", "domaincontroller_backup", "domaincontroller_slave"}:
-		return 0
+    if ucr.get("server/role", "dummy") not in {"domaincontroller_master", "domaincontroller_backup", "domaincontroller_slave"}:
+        return 0
 
-	# ldap connection
-	try:
-		lo = univention.uldap.getRootDnConnection()
-	except Exception as ex:
-		print("failed to get ldap connection: %s" % (ex,), file=stderr)
-		return 1
+    # ldap connection
+    try:
+        lo = univention.uldap.getRootDnConnection()
+    except Exception as ex:
+        print("failed to get ldap connection: %s" % (ex,), file=stderr)
+        return 1
 
-	# search groups and del/add uniqueMember
-	group_oc = ucr.get("ldap/overlay/memberof/objectclass", "posixGroup")
-	member_ad = ucr.get("ldap/overlay/memberof/member", "uniqueMember")
-	filterstr = filter_format("(&(objectClass=%s)(%s=*))", (group_oc, member_ad))
-	results = lo.search(attr=[member_ad], filter=filterstr)
-	for dn, attrs in results:
-		uniqueMember = attrs.get(member_ad, [])
-		if uniqueMember:
-			try:
-				# update groups
-				ml = [
-					(MOD_REPLACE, member_ad, uniqueMember),
-				]
-				print('modify {}'.format(dn))
-				lo.modify_s(dn, ml)
-			except Exception as e:
-				print("E: modifying %s failed error with %s" % (dn, e), file=stderr)
-				print("   please check the membership of this group", file=stderr)
-				return 1
+    # search groups and del/add uniqueMember
+    group_oc = ucr.get("ldap/overlay/memberof/objectclass", "posixGroup")
+    member_ad = ucr.get("ldap/overlay/memberof/member", "uniqueMember")
+    filterstr = filter_format("(&(objectClass=%s)(%s=*))", (group_oc, member_ad))
+    results = lo.search(attr=[member_ad], filter=filterstr)
+    for dn, attrs in results:
+        uniqueMember = attrs.get(member_ad, [])
+        if uniqueMember:
+            try:
+                # update groups
+                ml = [
+                    (MOD_REPLACE, member_ad, uniqueMember),
+                ]
+                print('modify {}'.format(dn))
+                lo.modify_s(dn, ml)
+            except Exception as e:
+                print("E: modifying %s failed error with %s" % (dn, e), file=stderr)
+                print("   please check the membership of this group", file=stderr)
+                return 1
 
-	return 0
+    return 0
 
 
 if __name__ == '__main__':
-	exit(main())
+    exit(main())

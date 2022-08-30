@@ -37,16 +37,16 @@ from univention.monitoring import Alert
 
 class CUPS(Alert):
 
-	def write_metrics(self):
-		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '1:', '-c', '1:', '-C', 'cupsd'])
-		self.write_metric('univention_cups_running', 1 if rc == 0 else 0)
-		self.log.debug(output)
+    def write_metrics(self):
+        rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '1:', '-c', '1:', '-C', 'cupsd'])
+        self.write_metric('univention_cups_running', 1 if rc == 0 else 0)
+        self.log.debug(output)
 
-		# check HTTP service
-		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_http', '-H', '127.0.0.1:631', '-I', '127.0.0.1', '-p', '631', '-S'])
-		self.write_metric('univention_cups_reachable', 1 if rc == 0 else 0)
-		self.log.debug(output)
+        # check HTTP service
+        rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_http', '-H', '127.0.0.1:631', '-I', '127.0.0.1', '-p', '631', '-S'])
+        self.write_metric('univention_cups_reachable', 1 if rc == 0 else 0)
+        self.log.debug(output)
 
 
 if __name__ == '__main__':
-	CUPS.main()
+    CUPS.main()

@@ -50,10 +50,10 @@ ucr.load()
 
 
 def get_int(variable, default):
-	try:
-		return int(ucr.get(variable, default))
-	except (ValueError, TypeError):
-		return default
+    try:
+        return int(ucr.get(variable, default))
+    except (ValueError, TypeError):
+        return default
 
 
 SERVER_DEBUG_LEVEL = get_int('umc/server/debug/level', 2)

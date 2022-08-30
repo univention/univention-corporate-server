@@ -3,5 +3,5 @@ from univention.management.console.modules.setup.netconf.conditions import NotNe
 
 
 class PhaseRestartKerberos(RestartService, NotNetworkOnly):
-	service = "heimdal-kdc"
-	priority = 28
+    service = "heimdal-kdc"
+    priority = 28

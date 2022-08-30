@@ -41,9 +41,9 @@ import univention.admin.handlers
 import univention.admin.localization
 
 from univention.admin.policy import (
-	register_policy_mapping, policy_object_tab,
-	requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    register_policy_mapping, policy_object_tab,
+    requiredObjectClassesProperty, prohibitedObjectClassesProperty,
+    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
 )
 
 
@@ -52,10 +52,10 @@ _ = translation.translate
 
 
 class dhcp_routingFixedAttributes(univention.admin.syntax.select):
-	name = 'dhcp_routingFixedAttributes'
-	choices = [
-		('univentionDhcpRouters', _('Routers'))
-	]
+    name = 'dhcp_routingFixedAttributes'
+    choices = [
+        ('univentionDhcpRouters', _('Routers'))
+    ]
 
 
 module = 'policies/dhcp_routing'
@@ -72,45 +72,45 @@ object_name_plural = _('DHCP routing policies')
 policy_short_description = _('Routing')
 long_description = ''
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpRouting'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpRouting'],
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=univention.admin.syntax.policyName,
-		include_in_default_search=True,
-		required=True,
-		may_change=False,
-		identifies=True,
-	),
-	'routers': univention.admin.property(
-		short_description=_('Routers'),
-		long_description='',
-		syntax=univention.admin.syntax.hostOrIP,
-		multivalue=True,
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=univention.admin.syntax.policyName,
+        include_in_default_search=True,
+        required=True,
+        may_change=False,
+        identifies=True,
+    ),
+    'routers': univention.admin.property(
+        short_description=_('Routers'),
+        long_description='',
+        syntax=univention.admin.syntax.hostOrIP,
+        multivalue=True,
+    ),
 }
 property_descriptions.update(dict([
-	requiredObjectClassesProperty(),
-	prohibitedObjectClassesProperty(),
-	fixedAttributesProperty(syntax=dhcp_routingFixedAttributes),
-	emptyAttributesProperty(syntax=dhcp_routingFixedAttributes),
-	ldapFilterProperty(),
+    requiredObjectClassesProperty(),
+    prohibitedObjectClassesProperty(),
+    fixedAttributesProperty(syntax=dhcp_routingFixedAttributes),
+    emptyAttributesProperty(syntax=dhcp_routingFixedAttributes),
+    ldapFilterProperty(),
 ]))
 
 layout = [
-	Tab(_('General'), _('DHCP routing'), layout=[
-		Group(_('General DHCP routing settings'), layout=[
-			'name',
-			'routers',
-		]),
-	]),
-	policy_object_tab()
+    Tab(_('General'), _('DHCP routing'), layout=[
+        Group(_('General DHCP routing settings'), layout=[
+            'name',
+            'routers',
+        ]),
+    ]),
+    policy_object_tab()
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -120,7 +120,7 @@ register_policy_mapping(mapping)
 
 
 class object(univention.admin.handlers.simplePolicy):
-	module = module
+    module = module
 
 
 lookup = object.lookup

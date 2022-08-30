@@ -42,33 +42,33 @@ import univention.uldap
 
 
 class ObjectNotFound(BaseException):
-	pass
+    pass
 
 
 def remove_s4_rejected(s4_dn):
-	config = univention.s4connector.configdb('/etc/univention/connector/s4internal.sqlite')
-	found = False
-	for usn, rejected_dn in config.items('S4 rejected'):
-		if univention.uldap.access.compare_dn(s4_dn, rejected_dn):
-			config.remove_option('S4 rejected', usn)
-			found = True
+    config = univention.s4connector.configdb('/etc/univention/connector/s4internal.sqlite')
+    found = False
+    for usn, rejected_dn in config.items('S4 rejected'):
+        if univention.uldap.access.compare_dn(s4_dn, rejected_dn):
+            config.remove_option('S4 rejected', usn)
+            found = True
 
-	if not found:
-		raise ObjectNotFound()
+    if not found:
+        raise ObjectNotFound()
 
 
 if __name__ == '__main__':
-	parser = ArgumentParser()
-	parser.add_argument('dn')
-	args = parser.parse_args()
+    parser = ArgumentParser()
+    parser.add_argument('dn')
+    args = parser.parse_args()
 
-	s4_dn = args.dn
+    s4_dn = args.dn
 
-	try:
-		remove_s4_rejected(s4_dn)
-	except ObjectNotFound:
-		print('ERROR: The object %s was not found.' % s4_dn)
-		sys.exit(1)
+    try:
+        remove_s4_rejected(s4_dn)
+    except ObjectNotFound:
+        print('ERROR: The object %s was not found.' % s4_dn)
+        sys.exit(1)
 
-	print('The rejected S4 object %s has been removed.' % s4_dn)
-	sys.exit(0)
+    print('The rejected S4 object %s has been removed.' % s4_dn)
+    sys.exit(0)

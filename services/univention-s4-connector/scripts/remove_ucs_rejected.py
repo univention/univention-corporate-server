@@ -45,35 +45,35 @@ import univention.uldap
 
 
 class ObjectNotFound(BaseException):
-	pass
+    pass
 
 
 def remove_ucs_rejected(ucs_dn):
-	config = univention.s4connector.configdb('/etc/univention/connector/s4internal.sqlite')
-	found = False
-	for filename, rejected_dn in config.items('UCS rejected'):
-		if univention.uldap.access.compare_dn(ucs_dn, rejected_dn):
-			if os.path.exists(filename):
-				os.remove(filename)
-			config.remove_option('UCS rejected', filename)
-			found = True
+    config = univention.s4connector.configdb('/etc/univention/connector/s4internal.sqlite')
+    found = False
+    for filename, rejected_dn in config.items('UCS rejected'):
+        if univention.uldap.access.compare_dn(ucs_dn, rejected_dn):
+            if os.path.exists(filename):
+                os.remove(filename)
+            config.remove_option('UCS rejected', filename)
+            found = True
 
-	if not found:
-		raise ObjectNotFound()
+    if not found:
+        raise ObjectNotFound()
 
 
 if __name__ == '__main__':
-	parser = ArgumentParser()
-	parser.add_argument('dn')
-	args = parser.parse_args()
+    parser = ArgumentParser()
+    parser.add_argument('dn')
+    args = parser.parse_args()
 
-	ucs_dn = args.dn
+    ucs_dn = args.dn
 
-	try:
-		remove_ucs_rejected(ucs_dn)
-	except ObjectNotFound:
-		print('ERROR: The object %s was not found.' % ucs_dn)
-		sys.exit(1)
+    try:
+        remove_ucs_rejected(ucs_dn)
+    except ObjectNotFound:
+        print('ERROR: The object %s was not found.' % ucs_dn)
+        sys.exit(1)
 
-	print('The rejected UCS object %s has been removed.' % ucs_dn)
-	sys.exit(0)
+    print('The rejected UCS object %s has been removed.' % ucs_dn)
+    sys.exit(0)

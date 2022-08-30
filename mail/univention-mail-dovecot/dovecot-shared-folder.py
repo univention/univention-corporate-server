@@ -132,34 +132,34 @@ filter = '(objectClass=univentionMailSharedFolder)'
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-	# ignore object, if this local system is not affected
+    # ignore object, if this local system is not affected
 
-	new_mail_home_server = new.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower()
-	old_mail_home_server = old.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower()
+    new_mail_home_server = new.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower()
+    old_mail_home_server = old.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower()
 
-	if fqdn not in (new_mail_home_server, old_mail_home_server):
-		return
+    if fqdn not in (new_mail_home_server, old_mail_home_server):
+        return
 
-	listener.configRegistry.load()
-	dl = DovecotSharedFolderListener(listener, name)
+    listener.configRegistry.load()
+    dl = DovecotSharedFolderListener(listener, name)
 
-	#
-	# Create a new shared folder
-	#
-	if (new and not old) or (new_mail_home_server != old_mail_home_server and new_mail_home_server == fqdn):
-		dl.add_shared_folder(new)
-		return
+    #
+    # Create a new shared folder
+    #
+    if (new and not old) or (new_mail_home_server != old_mail_home_server and new_mail_home_server == fqdn):
+        dl.add_shared_folder(new)
+        return
 
-	#
-	# Delete existing shared folder
-	#
-	if (old and not new) or new_mail_home_server != fqdn:
-		dl.del_shared_folder(old)
-		return
+    #
+    # Delete existing shared folder
+    #
+    if (old and not new) or new_mail_home_server != fqdn:
+        dl.del_shared_folder(old)
+        return
 
-	#
-	# Modify a shared folder
-	#
-	if old and new:
-		dl.mod_shared_folder(old, new)
-		return
+    #
+    # Modify a shared folder
+    #
+    if old and new:
+        dl.mod_shared_folder(old, new)
+        return

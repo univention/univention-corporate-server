@@ -19,16 +19,16 @@ attrs = lo.get(dn)
 print(('Attrs=', attrs))
 subprocess.call(['service', 'slapd', 'stop'])
 try:
-	try:
-		lo.get(dn)
-	except ldap.SERVER_DOWN:
-		print('LDAP server is down!')
-	else:
-		raise ValueError('did not raise SERVER_DOWN')
+    try:
+        lo.get(dn)
+    except ldap.SERVER_DOWN:
+        print('LDAP server is down!')
+    else:
+        raise ValueError('did not raise SERVER_DOWN')
 
-	subprocess.call(['service', 'slapd', 'start'])
-	new_attrs = lo.get(dn)
-	print(('New Attrs=', new_attrs))
-	assert attrs == new_attrs
+    subprocess.call(['service', 'slapd', 'start'])
+    new_attrs = lo.get(dn)
+    print(('New Attrs=', new_attrs))
+    assert attrs == new_attrs
 finally:
-	subprocess.call(['service', 'slapd', 'restart'])
+    subprocess.call(['service', 'slapd', 'restart'])

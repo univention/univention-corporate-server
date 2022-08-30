@@ -41,9 +41,9 @@ import univention.admin.handlers
 import univention.admin.localization
 
 from univention.admin.policy import (
-	register_policy_mapping, policy_object_tab,
-	requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    register_policy_mapping, policy_object_tab,
+    requiredObjectClassesProperty, prohibitedObjectClassesProperty,
+    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
 )
 
 
@@ -52,11 +52,11 @@ _ = translation.translate
 
 
 class masterPackagesFixedAttributes(univention.admin.syntax.select):
-	name = 'masterPackagesFixedAttributes'
-	choices = [
-		('univentionMasterPackages', _('Package installation list')),
-		('univentionMasterPackagesRemove', _('Package removal list')),
-	]
+    name = 'masterPackagesFixedAttributes'
+    choices = [
+        ('univentionMasterPackages', _('Package installation list')),
+        ('univentionMasterPackagesRemove', _('Package removal list')),
+    ]
 
 
 module = 'policies/masterpackages'
@@ -73,53 +73,53 @@ object_name_plural = _('Primary/Backup Node packages policies')
 policy_short_description = _('Packages for Primary/Backup Nodes')
 long_description = ''
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'univentionPolicy', 'univentionPolicyPackagesMaster'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyPackagesMaster'],
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=univention.admin.syntax.policyName,
-		include_in_default_search=True,
-		required=True,
-		may_change=False,
-		identifies=True,
-	),
-	'masterPackages': univention.admin.property(
-		short_description=_('Package installation list'),
-		long_description='',
-		syntax=univention.admin.syntax.Packages,
-		multivalue=True,
-	),
-	'masterPackagesRemove': univention.admin.property(
-		short_description=_('Package removal list'),
-		long_description='',
-		syntax=univention.admin.syntax.PackagesRemove,
-		multivalue=True,
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=univention.admin.syntax.policyName,
+        include_in_default_search=True,
+        required=True,
+        may_change=False,
+        identifies=True,
+    ),
+    'masterPackages': univention.admin.property(
+        short_description=_('Package installation list'),
+        long_description='',
+        syntax=univention.admin.syntax.Packages,
+        multivalue=True,
+    ),
+    'masterPackagesRemove': univention.admin.property(
+        short_description=_('Package removal list'),
+        long_description='',
+        syntax=univention.admin.syntax.PackagesRemove,
+        multivalue=True,
+    ),
 
 }
 property_descriptions.update(dict([
-	requiredObjectClassesProperty(),
-	prohibitedObjectClassesProperty(),
-	fixedAttributesProperty(syntax=masterPackagesFixedAttributes),
-	emptyAttributesProperty(syntax=masterPackagesFixedAttributes),
-	ldapFilterProperty(),
+    requiredObjectClassesProperty(),
+    prohibitedObjectClassesProperty(),
+    fixedAttributesProperty(syntax=masterPackagesFixedAttributes),
+    emptyAttributesProperty(syntax=masterPackagesFixedAttributes),
+    ldapFilterProperty(),
 ]))
 
 layout = [
-	Tab(_('General'), policy_short_description, layout=[
-		Group(_('General Primary/Backup Node packages settings'), layout=[
-			'name',
-			'masterPackages',
-			'masterPackagesRemove'
-		]),
-	]),
-	policy_object_tab()
+    Tab(_('General'), policy_short_description, layout=[
+        Group(_('General Primary/Backup Node packages settings'), layout=[
+            'name',
+            'masterPackages',
+            'masterPackagesRemove'
+        ]),
+    ]),
+    policy_object_tab()
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -130,7 +130,7 @@ register_policy_mapping(mapping)
 
 
 class object(univention.admin.handlers.simplePolicy):
-	module = module
+    module = module
 
 
 lookup = object.lookup

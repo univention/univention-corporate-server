@@ -42,19 +42,19 @@ configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
 if configRegistry.is_true('cups/printserver', False):
-	# This host is a printserver. We don't overwrite the UCR variable for the printserver,
-	# because in most instances this makes no sense. Bug #10124
-	sys.exit(0)
+    # This host is a printserver. We don't overwrite the UCR variable for the printserver,
+    # because in most instances this makes no sense. Bug #10124
+    sys.exit(0)
 
 ldap_hostdn = configRegistry.get('ldap/hostdn')
 if ldap_hostdn:
-	try:
-		result, policies = policy_result(ldap_hostdn)
-	except PolicyResultFailed as exc:
-		print(exc, file=sys.stderr)
-		sys.exit(exc.returncode)
+    try:
+        result, policies = policy_result(ldap_hostdn)
+    except PolicyResultFailed as exc:
+        print(exc, file=sys.stderr)
+        sys.exit(exc.returncode)
 
-	new_print_server = result.get('univentionPrintServer', [''])[0]
-	cups_server = configRegistry.get('cups/server')
-	if not cups_server or new_print_server != cups_server:
-		univention.config_registry.handler_set(['cups/server=%s' % new_print_server])
+    new_print_server = result.get('univentionPrintServer', [''])[0]
+    cups_server = configRegistry.get('cups/server')
+    if not cups_server or new_print_server != cups_server:
+        univention.config_registry.handler_set(['cups/server=%s' % new_print_server])

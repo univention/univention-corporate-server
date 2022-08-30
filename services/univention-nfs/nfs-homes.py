@@ -54,49 +54,49 @@ attributes = ["uid", "automountInformation", "gidNumber", "uidNumber"]
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-	if not listener.configRegistry.is_true("nfs/create/homesharepath"):
-		return
+    if not listener.configRegistry.is_true("nfs/create/homesharepath"):
+        return
 
-	# new and modify
-	if new and new.get("uid"):
-		uid = new.get("uid")
-		uidNumber = new.get("uidNumber")
-		gidNumber = new.get("gidNumber")
-		automountInformation = new.get("automountInformation")
+    # new and modify
+    if new and new.get("uid"):
+        uid = new.get("uid")
+        uidNumber = new.get("uidNumber")
+        gidNumber = new.get("gidNumber")
+        automountInformation = new.get("automountInformation")
 
-		if not uidNumber or not len(uidNumber) == 1:
-			return
-		if not gidNumber or not len(gidNumber) == 1:
-			return
-		if not uid or not len(uid) == 1:
-			return
-		if not automountInformation or not len(automountInformation) == 1:
-			return
+        if not uidNumber or not len(uidNumber) == 1:
+            return
+        if not gidNumber or not len(gidNumber) == 1:
+            return
+        if not uid or not len(uid) == 1:
+            return
+        if not automountInformation or not len(automountInformation) == 1:
+            return
 
-		uid = uid[0].decode('UTF-8')
-		automountInformation = automountInformation[0].decode('ASCII')
-		gidNumber = gidNumber[0].decode('ASCII')
-		uidNumber = uidNumber[0].decode('ASCII')
+        uid = uid[0].decode('UTF-8')
+        automountInformation = automountInformation[0].decode('ASCII')
+        gidNumber = gidNumber[0].decode('ASCII')
+        uidNumber = uidNumber[0].decode('ASCII')
 
-		try:
-			gidNumber = int(gidNumber)
-			uidNumber = int(uidNumber)
-		except ValueError:
-			return
+        try:
+            gidNumber = int(gidNumber)
+            uidNumber = int(uidNumber)
+        except ValueError:
+            return
 
-		unc = automountInformation
-		if " " in automountInformation:
-			flags, unc = automountInformation.split(" ", 1)
-		if ":" in unc:
-			host, path = unc.split(':', 1)
-			if host and host == fqdn and not os.path.exists(path):
-				ud.debug(ud.LISTENER, ud.INFO, "%s: creating share path %s for user %s" % (name, path, uid))
-				listener.setuid(0)
-				try:
-					os.makedirs(path)
-					os.chmod(path, stat.S_IRWXU | stat.S_IXGRP | stat.S_IXOTH)
-					os.chown(path, uidNumber, gidNumber)
-				except Exception as exc:
-					ud.debug(ud.LISTENER, ud.ERROR, "%s: failed to create home path %s for user %s (%s)" % (name, path, uid, exc))
-				finally:
-					listener.unsetuid()
+        unc = automountInformation
+        if " " in automountInformation:
+            flags, unc = automountInformation.split(" ", 1)
+        if ":" in unc:
+            host, path = unc.split(':', 1)
+            if host and host == fqdn and not os.path.exists(path):
+                ud.debug(ud.LISTENER, ud.INFO, "%s: creating share path %s for user %s" % (name, path, uid))
+                listener.setuid(0)
+                try:
+                    os.makedirs(path)
+                    os.chmod(path, stat.S_IRWXU | stat.S_IXGRP | stat.S_IXOTH)
+                    os.chown(path, uidNumber, gidNumber)
+                except Exception as exc:
+                    ud.debug(ud.LISTENER, ud.ERROR, "%s: failed to create home path %s for user %s (%s)" % (name, path, uid, exc))
+                finally:
+                    listener.unsetuid()

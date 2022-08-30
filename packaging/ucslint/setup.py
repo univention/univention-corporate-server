@@ -35,6 +35,6 @@ from setuptools import setup
 VER = open('debian/changelog', 'r').readline().split()[1][1:-1]
 
 setup(
-	package_dir={'': '.'},
-	version=VER,
+    package_dir={'': '.'},
+    version=VER,
 )

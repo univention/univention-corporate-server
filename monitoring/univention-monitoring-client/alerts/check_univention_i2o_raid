@@ -40,60 +40,60 @@ from univention.monitoring import Alert
 
 class I2O_RAIDCheck(Alert):
 
-	STATUS = {
-		# OK:
-		'Optimal': 0,
-		# Warnings:
-		'Rebuilding': 11,
-		'Reconstruct': 12,
-		'Reconstructing': 13,
-		'Replaced Drive': 14,
-		'Expanding': 15,
-		'Warning': 16,
-		'Verify': 17,
-		# Errors:
-		'Degraded': 20,
-		'Dead': 21,
-		'Failed': 22,
-		'Error': 23,
-		'Missing': 24,
-	}
+    STATUS = {
+        # OK:
+        'Optimal': 0,
+        # Warnings:
+        'Rebuilding': 11,
+        'Reconstruct': 12,
+        'Reconstructing': 13,
+        'Replaced Drive': 14,
+        'Expanding': 15,
+        'Warning': 16,
+        'Verify': 17,
+        # Errors:
+        'Degraded': 20,
+        'Dead': 21,
+        'Failed': 22,
+        'Error': 23,
+        'Missing': 24,
+    }
 
-	re_other = re.compile(r'^\s*(d(\d{1,2})b\d{1,2}t\d{1,2}d\d{1,2})\s+(RAID|Disk).*\W(\d+MB)\s+\W(.*?)(?: \d{1,3}%)?$')
-	re_controller = re.compile(r'^(d(\d{1,2})) -- --\s+(\w+)\s+\w+\s+\w+\s+\w+\s+[\w\.\_\-]+\s+([\.\-\_\w]+)\s*(%s)\s*$' % (
-		'|'.join(re.escape(s) for s in STATUS)
-	))
+    re_other = re.compile(r'^\s*(d(\d{1,2})b\d{1,2}t\d{1,2}d\d{1,2})\s+(RAID|Disk).*\W(\d+MB)\s+\W(.*?)(?: \d{1,3}%)?$')
+    re_controller = re.compile(r'^(d(\d{1,2})) -- --\s+(\w+)\s+\w+\s+\w+\s+\w+\s+[\w\.\_\-]+\s+([\.\-\_\w]+)\s*(%s)\s*$' % (
+        '|'.join(re.escape(s) for s in STATUS)
+    ))
 
-	def write_metrics(self):
-		device = ucr.get_int('monitoring/raid/device')  # TODO: do we need to support more than one device?
-		options = ('physical', 'logical', 'controller', 'raid')
-		cmd = ['/usr/sbin/raidutil']
-		for option in options:
-			cmd.extend(['-L', option])
-		try:
-			rc, output = self.exec_command(cmd)
-		except OSError as err:
-			self.log.debug('error executing raidutil: %s' % (err,))
-			for option in options:
-				self.write_metric('univention_i2o_raid_%s' % (option,), -1, device=device)
-			return
+    def write_metrics(self):
+        device = ucr.get_int('monitoring/raid/device')  # TODO: do we need to support more than one device?
+        options = ('physical', 'logical', 'controller', 'raid')
+        cmd = ['/usr/sbin/raidutil']
+        for option in options:
+            cmd.extend(['-L', option])
+        try:
+            rc, output = self.exec_command(cmd)
+        except OSError as err:
+            self.log.debug('error executing raidutil: %s' % (err,))
+            for option in options:
+                self.write_metric('univention_i2o_raid_%s' % (option,), -1, device=device)
+            return
 
-		for option, text in zip(options, output.split('\n\n')[0:4]):
-			self.write_option_metric([device], option, text)  # test status of device
+        for option, text in zip(options, output.split('\n\n')[0:4]):
+            self.write_option_metric([device], option, text)  # test status of device
 
-	def write_option_metric(self, devices, option, txt):
-		for line in txt.splitlines():
-			line = line.strip()
+    def write_option_metric(self, devices, option, txt):
+        for line in txt.splitlines():
+            line = line.strip()
 
-			result = self.re_other.match(line) if option in ['physical', 'logical', 'raid'] else self.re_controller.match(line)
-			if not result:
-				continue
-			(addr, device, type_, size_or_serial, status) = result.groups()
-			if int(device) not in devices:
-				continue
-			state = self.STATUS.get(status, -1)
-			self.write_metric('univention_i2o_raid_%s' % (option,), state, device=device)
+            result = self.re_other.match(line) if option in ['physical', 'logical', 'raid'] else self.re_controller.match(line)
+            if not result:
+                continue
+            (addr, device, type_, size_or_serial, status) = result.groups()
+            if int(device) not in devices:
+                continue
+            state = self.STATUS.get(status, -1)
+            self.write_metric('univention_i2o_raid_%s' % (option,), state, device=device)
 
 
 if __name__ == '__main__':
-	I2O_RAIDCheck.main()
+    I2O_RAIDCheck.main()

@@ -15,7 +15,7 @@
 from time import sleep
 
 from ldap_extension_utils import (
-	call_join_script, call_unjoin_script, get_package_name, get_schema_attribute_id, get_schema_name,
+    call_join_script, call_unjoin_script, get_package_name, get_schema_attribute_id, get_schema_name,
 )
 
 import univention.testing.udm as udm_test

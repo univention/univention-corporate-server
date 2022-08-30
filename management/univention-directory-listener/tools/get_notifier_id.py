@@ -43,53 +43,53 @@ import sys
 
 
 def parse_args():
-	# type: () -> argparse.Namespace
-	parser = argparse.ArgumentParser(description=__doc__)
-	parser.add_argument('-m', '--master', help='LDAP Server address')
-	parser.add_argument(
-		'-s', '--schema',
-		dest='cmd',
-		action='store_const',
-		const='GET_SCHEMA_ID',
-		default='GET_ID',
-		help='Fetch LDAP Schema ID')
-	parser.add_argument('arg', nargs='?', help=argparse.SUPPRESS)
-	options = parser.parse_args()
+    # type: () -> argparse.Namespace
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('-m', '--master', help='LDAP Server address')
+    parser.add_argument(
+        '-s', '--schema',
+        dest='cmd',
+        action='store_const',
+        const='GET_SCHEMA_ID',
+        default='GET_ID',
+        help='Fetch LDAP Schema ID')
+    parser.add_argument('arg', nargs='?', help=argparse.SUPPRESS)
+    options = parser.parse_args()
 
-	if not options.master:
-		if options.arg:
-			options.master = options.arg
-		else:
-			from univention.config_registry import ConfigRegistry
-			configRegistry = ConfigRegistry()
-			configRegistry.load()
-			options.master = configRegistry.get('ldap/master')
+    if not options.master:
+        if options.arg:
+            options.master = options.arg
+        else:
+            from univention.config_registry import ConfigRegistry
+            configRegistry = ConfigRegistry()
+            configRegistry.load()
+            options.master = configRegistry.get('ldap/master')
 
-	if not options.master:
-		parser.error('ldap/master or --master not set')
+    if not options.master:
+        parser.error('ldap/master or --master not set')
 
-	return options
+    return options
 
 
 def main():
-	# type: () -> None
-	"""Retrieve current Univention Directory Notifier transaction ID."""
-	options = parse_args()
-	try:
-		sock = socket.create_connection((options.master, 6669), 60.0)
+    # type: () -> None
+    """Retrieve current Univention Directory Notifier transaction ID."""
+    options = parse_args()
+    try:
+        sock = socket.create_connection((options.master, 6669), 60.0)
 
-		sock.send(b'Version: 3\nCapabilities: \n\n')
-		sock.recv(100)
+        sock.send(b'Version: 3\nCapabilities: \n\n')
+        sock.recv(100)
 
-		sock.send(b'MSGID: 1\n%s\n\n' % (options.cmd.encode('UTF-8'),))
-		notifier_result = sock.recv(100)
+        sock.send(b'MSGID: 1\n%s\n\n' % (options.cmd.encode('UTF-8'),))
+        notifier_result = sock.recv(100)
 
-		if notifier_result:
-			print("%s" % notifier_result.decode('UTF-8', 'replace').splitlines()[1])
-	except socket.error as ex:
-		print('Error: %s' % (ex,), file=sys.stderr)
-		sys.exit(1)
+        if notifier_result:
+            print("%s" % notifier_result.decode('UTF-8', 'replace').splitlines()[1])
+    except socket.error as ex:
+        print('Error: %s' % (ex,), file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == '__main__':
-	main()
+    main()

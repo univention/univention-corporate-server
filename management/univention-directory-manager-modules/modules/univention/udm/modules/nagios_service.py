@@ -39,31 +39,31 @@ from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class NagiosServiceObjectProperties(GenericObjectProperties):
-	"""nagios/service UDM properties."""
+    """nagios/service UDM properties."""
 
-	_encoders = {
-		'assignedHosts': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
-		'maxCheckAttempts': StringIntPropertyEncoder,
-		'normalCheckInterval': StringIntPropertyEncoder,
-		'notificationInterval': StringIntPropertyEncoder,
-		'notificationOptionCritical': DisabledPropertyEncoder,
-		'notificationOptionRecovered': DisabledPropertyEncoder,
-		'notificationOptionUnreachable': DisabledPropertyEncoder,
-		'notificationOptionWarning': DisabledPropertyEncoder,
-		'retryCheckInterval': StringIntPropertyEncoder,
-		'useNRPE': DisabledPropertyEncoder,
-	}
+    _encoders = {
+        'assignedHosts': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
+        'maxCheckAttempts': StringIntPropertyEncoder,
+        'normalCheckInterval': StringIntPropertyEncoder,
+        'notificationInterval': StringIntPropertyEncoder,
+        'notificationOptionCritical': DisabledPropertyEncoder,
+        'notificationOptionRecovered': DisabledPropertyEncoder,
+        'notificationOptionUnreachable': DisabledPropertyEncoder,
+        'notificationOptionWarning': DisabledPropertyEncoder,
+        'retryCheckInterval': StringIntPropertyEncoder,
+        'useNRPE': DisabledPropertyEncoder,
+    }
 
 
 class NagiosServiceObject(GenericObject):
-	"""Better representation of nagios/service properties."""
-	udm_prop_class = NagiosServiceObjectProperties
+    """Better representation of nagios/service properties."""
+    udm_prop_class = NagiosServiceObjectProperties
 
 
 class NagiosServiceModule(GenericModule):
-	"""NagiosServiceObject factory"""
-	_udm_object_class = NagiosServiceObject
+    """NagiosServiceObject factory"""
+    _udm_object_class = NagiosServiceObject
 
-	class Meta:
-		supported_api_versions = [1, 2, 3]
-		suitable_for = ['nagios/service']
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        suitable_for = ['nagios/service']

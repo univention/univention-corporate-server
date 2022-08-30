@@ -35,41 +35,41 @@ Module and object specific for "settings/portal" UDM module.
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import (
-	dn_list_property_encoder_for, Base64BinaryPropertyEncoder, StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
-	ListOfListOflTextToDictPropertyEncoder,
+    dn_list_property_encoder_for, Base64BinaryPropertyEncoder, StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
+    ListOfListOflTextToDictPropertyEncoder,
 )
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class SettingsPortalObjectProperties(GenericObjectProperties):
-	"""settings/portal UDM properties."""
+    """settings/portal UDM properties."""
 
-	_encoders = {
-		'background': Base64BinaryPropertyEncoder,
-		'displayName': ListOfListOflTextToDictPropertyEncoder,
-		'logo': Base64BinaryPropertyEncoder,
-		'portalComputers': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
-		'portalEntriesOrder': dn_list_property_encoder_for('settings/portal_entry'),  # not really sure about this as it's not exposed through the cli or Python frontend, guessed it from the syntax
-		'showApps': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
-		'showLogin': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
-		'showMenu': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
-		'showSearch': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
-		'showServers': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
-		'ensureLogin': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
-		'anonymousEmpty': ListOfListOflTextToDictPropertyEncoder,
-		'autoLayoutCategories': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
-	}
+    _encoders = {
+        'background': Base64BinaryPropertyEncoder,
+        'displayName': ListOfListOflTextToDictPropertyEncoder,
+        'logo': Base64BinaryPropertyEncoder,
+        'portalComputers': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
+        'portalEntriesOrder': dn_list_property_encoder_for('settings/portal_entry'),  # not really sure about this as it's not exposed through the cli or Python frontend, guessed it from the syntax
+        'showApps': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
+        'showLogin': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
+        'showMenu': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
+        'showSearch': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
+        'showServers': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
+        'ensureLogin': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
+        'anonymousEmpty': ListOfListOflTextToDictPropertyEncoder,
+        'autoLayoutCategories': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
+    }
 
 
 class SettingsPortalObject(GenericObject):
-	"""Better representation of settings/portal properties."""
-	udm_prop_class = SettingsPortalObjectProperties
+    """Better representation of settings/portal properties."""
+    udm_prop_class = SettingsPortalObjectProperties
 
 
 class SettingsPortalModule(GenericModule):
-	"""SettingsPortalObject factory"""
-	_udm_object_class = SettingsPortalObject
+    """SettingsPortalObject factory"""
+    _udm_object_class = SettingsPortalObject
 
-	class Meta:
-		supported_api_versions = [1, 2, 3]
-		suitable_for = ['settings/portal']
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        suitable_for = ['settings/portal']

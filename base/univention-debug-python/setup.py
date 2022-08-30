@@ -44,19 +44,19 @@ dsc = Deb822(io.open('debian/control', 'r', encoding='utf-8'))
 realname, email_address = parseaddr(dsc['Maintainer'])
 
 setup(
-	package_dir={'': 'python'},
-	description='Univention debugging and logging library',
+    package_dir={'': 'python'},
+    description='Univention debugging and logging library',
 
-	py_modules=['univention.debug', 'univention.debug2'],
-	ext_modules=[Extension(
-		'univention._debug', ['python/univention/py_debug.c'],
-		libraries=['univentiondebug'])],
+    py_modules=['univention.debug', 'univention.debug2'],
+    ext_modules=[Extension(
+        'univention._debug', ['python/univention/py_debug.c'],
+        libraries=['univentiondebug'])],
 
-	url='https://www.univention.de/',
-	license='GNU Affero General Public License v3',
+    url='https://www.univention.de/',
+    license='GNU Affero General Public License v3',
 
-	name=dch.package,
-	version=dch.version.full_version,
-	maintainer=realname,
-	maintainer_email=email_address,
+    name=dch.package,
+    version=dch.version.full_version,
+    maintainer=realname,
+    maintainer_email=email_address,
 )

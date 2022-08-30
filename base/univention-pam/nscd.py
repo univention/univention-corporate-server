@@ -49,19 +49,19 @@ attributes = ['uniqueMember', 'cn']
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-	pass
+    pass
 
 
 def postrun() -> None:
-	configRegistry = ConfigRegistry()  # TODO: why not listener.configRegistry?
-	configRegistry.load()
+    configRegistry = ConfigRegistry()  # TODO: why not listener.configRegistry?
+    configRegistry.load()
 
-	if configRegistry.is_true('nscd/group/invalidate_cache_on_changes', False) and configRegistry.is_false('nss/group/cachefile', True):
-		listener.setuid(0)
-		try:
-			ud.debug(ud.LISTENER, ud.INFO, "calling 'nscd -i group'")
-			listener.run('/usr/sbin/nscd', ['nscd', '-i', 'group'], uid=0)
-		except Exception:
-			ud.debug(ud.LISTENER, ud.ERROR, "nscd -i group was not successful")
-		finally:
-			listener.unsetuid()
+    if configRegistry.is_true('nscd/group/invalidate_cache_on_changes', False) and configRegistry.is_false('nss/group/cachefile', True):
+        listener.setuid(0)
+        try:
+            ud.debug(ud.LISTENER, ud.INFO, "calling 'nscd -i group'")
+            listener.run('/usr/sbin/nscd', ['nscd', '-i', 'group'], uid=0)
+        except Exception:
+            ud.debug(ud.LISTENER, ud.ERROR, "nscd -i group was not successful")
+        finally:
+            listener.unsetuid()

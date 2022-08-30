@@ -39,12 +39,12 @@ from univention.admin import _ldap_cache
 
 @_ldap_cache(ttl=2)
 def default_container_for_objects(lo, domain):
-	pathResult = lo.get('cn=directory,cn=univention,' + domain)
-	default_dn = 'cn=directory,cn=univention,' + domain
-	if not pathResult:
-		pathResult = lo.get('cn=default containers,cn=univention,' + domain)
-		default_dn = 'cn=default containers,cn=univention,' + domain
-	return (pathResult, default_dn)
+    pathResult = lo.get('cn=directory,cn=univention,' + domain)
+    default_dn = 'cn=directory,cn=univention,' + domain
+    if not pathResult:
+        pathResult = lo.get('cn=default containers,cn=univention,' + domain)
+        default_dn = 'cn=default containers,cn=univention,' + domain
+    return (pathResult, default_dn)
 
 
 __path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore

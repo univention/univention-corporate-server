@@ -47,80 +47,80 @@ zone = sys.argv[2]
 ttl = sys.argv[3]
 
 ldap_types = {
-	'NS': 'nSRecord',
-	'SOA': 'sOARecord',
-	'CNAME': 'cNAMERecord',
-	'A': 'aRecord',
-	'MX': 'mXRecord',
-	'SRV': 'sRVRecord',
-	'TXT': 'tXTRecord',
-	'PTR': 'pTRRecord'
+    'NS': 'nSRecord',
+    'SOA': 'sOARecord',
+    'CNAME': 'cNAMERecord',
+    'A': 'aRecord',
+    'MX': 'mXRecord',
+    'SRV': 'sRVRecord',
+    'TXT': 'tXTRecord',
+    'PTR': 'pTRRecord'
 }
 record_pattern = re.compile('^([^\t ]+)[\t ]+([0-9]+)[\t ]+([^\t ]+)[\t ]+([^\t ]+)[\t ]+(.+)$')
 
 _all = {}
 
 for line in sys.stdin.readlines():
-	line = line[0:-1]
-	records = record_pattern.findall(line)
-	if not records:
-		print('WARNING:', line)
-		continue
-	record = records[0]
+    line = line[0:-1]
+    records = record_pattern.findall(line)
+    if not records:
+        print('WARNING:', line)
+        continue
+    record = records[0]
 
-	r_full_name = record[0]
+    r_full_name = record[0]
 
-	pos = r_full_name.rfind(zone + '.')
-	if pos == -1:
-		print('WARNING: %s not in zone' % r_full_name)
-		continue
-	r_name = r_full_name[:pos]
-	if r_name == '':
-		r_name = '@'
-	elif r_name[-1]:
-		r_name = r_name[:-1]
-	else:
-		print('WARNING: %s is not valid' % r_full_name)
+    pos = r_full_name.rfind(zone + '.')
+    if pos == -1:
+        print('WARNING: %s not in zone' % r_full_name)
+        continue
+    r_name = r_full_name[:pos]
+    if r_name == '':
+        r_name = '@'
+    elif r_name[-1]:
+        r_name = r_name[:-1]
+    else:
+        print('WARNING: %s is not valid' % r_full_name)
 
-	r_ttl = record[1]
-	r_class = record[2].upper()
+    r_ttl = record[1]
+    r_class = record[2].upper()
 
-	r_type = record[3].upper()
+    r_type = record[3].upper()
 
-	r_record = record[4]
+    r_record = record[4]
 
-	if r_name not in _all:
-		_all[r_name] = {}
-	if r_type not in _all[r_name]:
-		_all[r_name][r_type] = []
+    if r_name not in _all:
+        _all[r_name] = {}
+    if r_type not in _all[r_name]:
+        _all[r_name][r_type] = []
 
-	if r_record not in _all[r_name][r_type]:
-		_all[r_name][r_type].append(r_record)
+    if r_record not in _all[r_name][r_type]:
+        _all[r_name][r_type].append(r_record)
 
-	if r_ttl == ttl:
-		pass
-	elif 'ttl' in _all[r_name] and _all[r_name]['ttl'] != r_ttl:
-		print('WARNING: %s: TTLs do not match: %s %s' % (r_name, _all[r_name]['ttl'], r_ttl))
-	else:
-		_all[r_name]['ttl'] = r_ttl
+    if r_ttl == ttl:
+        pass
+    elif 'ttl' in _all[r_name] and _all[r_name]['ttl'] != r_ttl:
+        print('WARNING: %s: TTLs do not match: %s %s' % (r_name, _all[r_name]['ttl'], r_ttl))
+    else:
+        _all[r_name]['ttl'] = r_ttl
 
 
 def print_record(name, record):
-	print('objectClass: top')
-	print('objectClass: dNSZone')
-	print('zoneName: %s' % (zone,))
-	print('relativeDomainName: %s' % (name,))
-	for r_type, r_records in record.items():
-		ldap_type = ldap_types[r_type]
-		for r_record in r_records:
-			print('%s: %s' % (ldap_type, r_record))
-	print()
+    print('objectClass: top')
+    print('objectClass: dNSZone')
+    print('zoneName: %s' % (zone,))
+    print('relativeDomainName: %s' % (name,))
+    for r_type, r_records in record.items():
+        ldap_type = ldap_types[r_type]
+        for r_record in r_records:
+            print('%s: %s' % (ldap_type, r_record))
+    print()
 
 
 print('dn: zoneName=%s,%s' % (zone, ldapbase))
 print_record('@', _all['@'])
 for name, record in _all.items():
-	if name == '@':
-		continue
-	print('dn: relativeDomainName=%s,zoneName=%s,%s' % (name, zone, ldapbase))
-	print_record(name, record)
+    if name == '@':
+        continue
+    print('dn: relativeDomainName=%s,zoneName=%s,%s' % (name, zone, ldapbase))
+    print_record(name, record)

@@ -45,68 +45,68 @@ import univention.uldap
 
 
 def main():
-	# type: () -> None
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
+    # type: () -> None
+    ucr = univention.config_registry.ConfigRegistry()
+    ucr.load()
 
-	baseDN = ucr['ldap/base']
+    baseDN = ucr['ldap/base']
 
-	lo = univention.uldap.getAdminConnection().lo
+    lo = univention.uldap.getAdminConnection().lo
 
-	# check for dhcp records without matching computer object
-	computers = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionDhcpHost', ['dhcpHWAddress'])
+    # check for dhcp records without matching computer object
+    computers = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionDhcpHost', ['dhcpHWAddress'])
 
-	print("Found no computer objects for these dhcp records:\n")
+    print("Found no computer objects for these dhcp records:\n")
 
-	for comp in computers:
-		mac = comp[1]["dhcpHWAddress"][0]
-		if mac.find(b" ") >= 0:
-			mac = mac.split(b" ")[1].decode('utf-8')
+    for comp in computers:
+        mac = comp[1]["dhcpHWAddress"][0]
+        if mac.find(b" ") >= 0:
+            mac = mac.split(b" ")[1].decode('utf-8')
 
-		match_cmp_rec = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, filter_format('(&(objectClass=univentionHost)(macAddress=%s))', [mac]), [])
+        match_cmp_rec = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, filter_format('(&(objectClass=univentionHost)(macAddress=%s))', [mac]), [])
 
-		if len(match_cmp_rec) == 0:
-			print("\t%s" % comp[0])
-	print()
+        if len(match_cmp_rec) == 0:
+            print("\t%s" % comp[0])
+    print()
 
-	# check for dns host records without matching computers objects (match IP)
+    # check for dns host records without matching computers objects (match IP)
 
-	deadEndRecords = {}  # needed later for reverse lookup checks
-	allRecords = {}
+    deadEndRecords = {}  # needed later for reverse lookup checks
+    allRecords = {}
 
-	computers = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=dNSZone', ['aRecord', 'relativeDomainName', 'zoneName'])
+    computers = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=dNSZone', ['aRecord', 'relativeDomainName', 'zoneName'])
 
-	print("Found no computer objects for these dns records:\n")
+    print("Found no computer objects for these dns records:\n")
 
-	for comp in computers:
-		if "aRecord" in comp[1]:
-			relative_domain_name = comp[1]['relativeDomainName'][0].decode('utf-8')
-			zone_name = comp[1]['zoneName'][0].decode('utf-8')
-			allRecords[relative_domain_name + u"." + zone_name] = comp
-			match_cmp_rec = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, filter_format('(&(objectClass=univentionHost)(aRecord=%s))', (comp[1]["aRecord"][0].decode('utf-8'),)), [])
-			if len(match_cmp_rec) == 0:
-				deadEndRecords[relative_domain_name + u"." + zone_name] = comp
-				print("\t%s" % comp[0])
-	print()
+    for comp in computers:
+        if "aRecord" in comp[1]:
+            relative_domain_name = comp[1]['relativeDomainName'][0].decode('utf-8')
+            zone_name = comp[1]['zoneName'][0].decode('utf-8')
+            allRecords[relative_domain_name + u"." + zone_name] = comp
+            match_cmp_rec = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, filter_format('(&(objectClass=univentionHost)(aRecord=%s))', (comp[1]["aRecord"][0].decode('utf-8'),)), [])
+            if len(match_cmp_rec) == 0:
+                deadEndRecords[relative_domain_name + u"." + zone_name] = comp
+                print("\t%s" % comp[0])
+    print()
 
-	# check for dns reverse lookup records without match computer names
+    # check for dns reverse lookup records without match computer names
 
-	computers = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=dNSZone', ['pTRRecord'])
+    computers = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=dNSZone', ['pTRRecord'])
 
-	print("Found no computer objects for these dns reverse lookup records:\n")
+    print("Found no computer objects for these dns reverse lookup records:\n")
 
-	for comp in computers:
-		if 'pTRRecord' in comp[1]:
-			parts = comp[1]['pTRRecord'][0].split(b".")
-			relative_domain_name = parts[0].decode('utf-8')
-			zone_name = b".".join(parts[1:-1]).decode('utf-8')
+    for comp in computers:
+        if 'pTRRecord' in comp[1]:
+            parts = comp[1]['pTRRecord'][0].split(b".")
+            relative_domain_name = parts[0].decode('utf-8')
+            zone_name = b".".join(parts[1:-1]).decode('utf-8')
 
-			# check if there is a corresponding valid forward entry for this object
-			if relative_domain_name + "." + zone_name in deadEndRecords:
-				print("\t%s" % comp[0])
-			elif not (relative_domain_name + "." + zone_name in allRecords):
-				print("\t%s" % comp[0])
+            # check if there is a corresponding valid forward entry for this object
+            if relative_domain_name + "." + zone_name in deadEndRecords:
+                print("\t%s" % comp[0])
+            elif not (relative_domain_name + "." + zone_name in allRecords):
+                print("\t%s" % comp[0])
 
 
 if __name__ == "__main__":
-	main()
+    main()

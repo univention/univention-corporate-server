@@ -39,32 +39,32 @@ from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class SettingsDirectoryObjectProperties(GenericObjectProperties):
-	"""settings/directory UDM properties."""
+    """settings/directory UDM properties."""
 
-	_encoders = {
-		'computers': dn_list_property_encoder_for('container/cn'),
-		'dhcp': dn_list_property_encoder_for('container/cn'),
-		'dns': dn_list_property_encoder_for('container/cn'),
-		'groups': dn_list_property_encoder_for('container/cn'),
-		'license': dn_list_property_encoder_for('container/cn'),
-		'mail': dn_list_property_encoder_for('container/cn'),
-		'networks': dn_list_property_encoder_for('container/cn'),
-		'policies': dn_list_property_encoder_for('auto'),
-		'printers': dn_list_property_encoder_for('container/cn'),
-		'shares': dn_list_property_encoder_for('container/cn'),
-		'users': dn_list_property_encoder_for('container/cn'),
-	}
+    _encoders = {
+        'computers': dn_list_property_encoder_for('container/cn'),
+        'dhcp': dn_list_property_encoder_for('container/cn'),
+        'dns': dn_list_property_encoder_for('container/cn'),
+        'groups': dn_list_property_encoder_for('container/cn'),
+        'license': dn_list_property_encoder_for('container/cn'),
+        'mail': dn_list_property_encoder_for('container/cn'),
+        'networks': dn_list_property_encoder_for('container/cn'),
+        'policies': dn_list_property_encoder_for('auto'),
+        'printers': dn_list_property_encoder_for('container/cn'),
+        'shares': dn_list_property_encoder_for('container/cn'),
+        'users': dn_list_property_encoder_for('container/cn'),
+    }
 
 
 class SettingsDirectoryObject(GenericObject):
-	"""Better representation of settings/directory properties."""
-	udm_prop_class = SettingsDirectoryObjectProperties
+    """Better representation of settings/directory properties."""
+    udm_prop_class = SettingsDirectoryObjectProperties
 
 
 class SettingsDirectoryModule(GenericModule):
-	"""SettingsDirectoryObject factory"""
-	_udm_object_class = SettingsDirectoryObject
+    """SettingsDirectoryObject factory"""
+    _udm_object_class = SettingsDirectoryObject
 
-	class Meta:
-		supported_api_versions = [1, 2, 3]
-		suitable_for = ['settings/directory']
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        suitable_for = ['settings/directory']

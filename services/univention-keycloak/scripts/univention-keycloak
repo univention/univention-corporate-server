@@ -48,1316 +48,1316 @@ from keycloak.exceptions import KeycloakError, KeycloakGetError, raise_error_fro
 from ldap.dn import explode_rdn
 
 try:
-	from univention.config_registry import ucr
+    from univention.config_registry import ucr
 except ModuleNotFoundError:
-	ucr = {}
+    ucr = {}
 
 DEFAULT_REALM = "master"
 
 
 def check_and_create_component(kc_client, name, prov_id, payload_):
-	ldap_component_filter = {'name': name, 'providerId': prov_id}
-	ldap_component_list = kc_client.get_components(ldap_component_filter)
-	if not ldap_component_list:
-		kc_client.create_component(payload=payload_)
-		ldap_component_list = kc_client.get_components(ldap_component_filter)
+    ldap_component_filter = {'name': name, 'providerId': prov_id}
+    ldap_component_list = kc_client.get_components(ldap_component_filter)
+    if not ldap_component_list:
+        kc_client.create_component(payload=payload_)
+        ldap_component_list = kc_client.get_components(ldap_component_filter)
 
-	ldap_component = ldap_component_list.pop()
-	return ldap_component.get("id")
+    ldap_component = ldap_component_list.pop()
+    return ldap_component.get("id")
 
 
 def modify_component(kc_client, payload_):
-	name = payload_["name"]
-	prov_id = payload_['providerId']
-	ldap_component_filter = {'name': name, 'providerId': prov_id, 'parentId': payload_['parentId']}
-	ldap_component_list = kc_client.get_components(ldap_component_filter)
-	if ldap_component_list:
-		ldap_component = ldap_component_list.pop()
-		kc_client.update_component(ldap_component.get("id"), payload=payload_)
-		ldap_component_list = kc_client.get_components(ldap_component_filter)
+    name = payload_["name"]
+    prov_id = payload_['providerId']
+    ldap_component_filter = {'name': name, 'providerId': prov_id, 'parentId': payload_['parentId']}
+    ldap_component_list = kc_client.get_components(ldap_component_filter)
+    if ldap_component_list:
+        ldap_component = ldap_component_list.pop()
+        kc_client.update_component(ldap_component.get("id"), payload=payload_)
+        ldap_component_list = kc_client.get_components(ldap_component_filter)
 
-	ldap_component = ldap_component_list.pop()
-	return ldap_component.get("id")
+    ldap_component = ldap_component_list.pop()
+    return ldap_component.get("id")
 
 
 def get_realm_id(kc_client, name):
-	ldap_realms_list = kc_client.get_realms()
-	realm_info = [realm for realm in ldap_realms_list if realm['realm'] == name]
-	return realm_info[0]["id"]
+    ldap_realms_list = kc_client.get_realms()
+    realm_info = [realm for realm in ldap_realms_list if realm['realm'] == name]
+    return realm_info[0]["id"]
 
 
 def extract_endpoints_xml(metadata_url, metadata_file, no_ssl_verify):
-	if not metadata_file:
-		xml_content = requests.get(metadata_url, verify=no_ssl_verify).content
-	else:
-		with open(metadata_file, 'r') as fd:
-			xml_content = fd.read().strip()
-	saml_descriptor_xml = ElementTree.fromstring(xml_content)
-	logout_endpoint = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}SingleLogoutService').attrib["Location"]
-	acs_endpoint = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}AssertionConsumerService').attrib["Location"]
+    if not metadata_file:
+        xml_content = requests.get(metadata_url, verify=no_ssl_verify).content
+    else:
+        with open(metadata_file, 'r') as fd:
+            xml_content = fd.read().strip()
+    saml_descriptor_xml = ElementTree.fromstring(xml_content)
+    logout_endpoint = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}SingleLogoutService').attrib["Location"]
+    acs_endpoint = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}AssertionConsumerService').attrib["Location"]
 
-	endpoints = {"logout": logout_endpoint, "acs": acs_endpoint}
-	return endpoints
+    endpoints = {"logout": logout_endpoint, "acs": acs_endpoint}
+    return endpoints
 
 
 def create_SAML_client(opt):
-	print("CREATING KEYCLOAK SAML CLIENT.....")
-	client_id = opt.metadata_url
-	valid_redirect_urls = [client_id[:client_id.rfind("/") + 1:] + "*"]
-	endpoints = extract_endpoints_xml(client_id, opt.metadata_file, opt.no_ssl_verify)
-	# build urls
-	single_logout_service_url_post = endpoints["logout"]
-	single_logout_service_url_redirect = endpoints["logout"]
-	assertion_consumer_url_post = endpoints["acs"]
+    print("CREATING KEYCLOAK SAML CLIENT.....")
+    client_id = opt.metadata_url
+    valid_redirect_urls = [client_id[:client_id.rfind("/") + 1:] + "*"]
+    endpoints = extract_endpoints_xml(client_id, opt.metadata_file, opt.no_ssl_verify)
+    # build urls
+    single_logout_service_url_post = endpoints["logout"]
+    single_logout_service_url_redirect = endpoints["logout"]
+    assertion_consumer_url_post = endpoints["acs"]
 
-	umc_uid_mapper = [{
-		"name": "userid_mapper",
-		"protocol": "saml",
-		"protocolMapper": "saml-user-attribute-mapper",
-		"consentRequired": False,
-		"config": {
-			"attribute.name": "urn:oid:0.9.2342.19200300.100.1.1",
-			"attribute.nameformat": "URI Reference",
-			"friendly.name": "uid",
-			"user.attribute": "uid"
-		}
-	}]
+    umc_uid_mapper = [{
+        "name": "userid_mapper",
+        "protocol": "saml",
+        "protocolMapper": "saml-user-attribute-mapper",
+        "consentRequired": False,
+        "config": {
+                "attribute.name": "urn:oid:0.9.2342.19200300.100.1.1",
+                    "attribute.nameformat": "URI Reference",
+                    "friendly.name": "uid",
+                    "user.attribute": "uid"
+        }
+    }]
 
-	client_payload_saml = {
-		"clientId": client_id,
-		"surrogateAuthRequired": False,
-		"enabled": True,
-		"alwaysDisplayInConsole": False,
-		"clientAuthenticatorType": "client-secret",
-		"redirectUris": valid_redirect_urls,
-		"webOrigins": [],
-		"notBefore": 0,
-		"bearerOnly": False,
-		"consentRequired": False,
-		"standardFlowEnabled": True,
-		"implicitFlowEnabled": False,
-		"directAccessGrantsEnabled": True,
-		"serviceAccountsEnabled": False,
-		"publicClient": True,
-		"frontchannelLogout": True,
-		"protocol": "saml",
-		"attributes": {
-			"saml_name_id_format": "transient",
-			"saml.multivalued.roles": "false",
-			"saml.force.post.binding": "true",
-			"oauth2.device.authorization.grant.enabled": "false",
-			"backchannel.logout.revoke.offline.tokens": "false",
-			"saml.server.signature.keyinfo.ext": "false",
-			"use.refresh.tokens": "true",
-			"oidc.ciba.grant.enabled": "false",
-			"backchannel.logout.session.required": "true",
-			"client_credentials.use_refresh_token": "false",
-			"saml.signature.algorithm": "RSA_SHA256",
-			"saml.client.signature": "false",
-			"require.pushed.authorization.requests": "false",
-			"id.token.as.detached.signature": "false",
-			"saml.assertion.signature": "true",
-			"saml_single_logout_service_url_post": single_logout_service_url_post,
-			"saml.encrypt": "false",
-			"saml_assertion_consumer_url_post": assertion_consumer_url_post,
-			"saml.server.signature": "true",
-			"exclude.session.state.from.auth.response": "false",
-			"saml.artifact.binding": "false",
-			"saml_single_logout_service_url_redirect": single_logout_service_url_redirect,
-			"saml_force_name_id_format": "false",
-			"tls.client.certificate.bound.access.tokens": "false",
-			"acr.loa.map": "{}",
-			"saml.authnstatement": "true",
-			"display.on.consent.screen": "false",
-			"saml.assertion.lifespan": "300",
-			"token.response.type.bearer.lower-case": "false",
-			"saml.onetimeuse.condition": "false",
-			"saml_signature_canonicalization_method": "http://www.w3.org/2001/10/xml-exc-c14n#"
-		},
-		"authenticationFlowBindingOverrides": {},
-		"fullScopeAllowed": True,
-		"nodeReRegistrationTimeout": -1,
-		"defaultClientScopes": [
-		],
-		"optionalClientScopes": [],
-		"access": {
-			"view": True,
-			"configure": True,
-			"manage": True
-		}
-	}
+    client_payload_saml = {
+        "clientId": client_id,
+        "surrogateAuthRequired": False,
+        "enabled": True,
+        "alwaysDisplayInConsole": False,
+        "clientAuthenticatorType": "client-secret",
+        "redirectUris": valid_redirect_urls,
+        "webOrigins": [],
+        "notBefore": 0,
+        "bearerOnly": False,
+        "consentRequired": False,
+        "standardFlowEnabled": True,
+        "implicitFlowEnabled": False,
+        "directAccessGrantsEnabled": True,
+        "serviceAccountsEnabled": False,
+        "publicClient": True,
+        "frontchannelLogout": True,
+        "protocol": "saml",
+        "attributes": {
+            "saml_name_id_format": "transient",
+            "saml.multivalued.roles": "false",
+            "saml.force.post.binding": "true",
+            "oauth2.device.authorization.grant.enabled": "false",
+            "backchannel.logout.revoke.offline.tokens": "false",
+            "saml.server.signature.keyinfo.ext": "false",
+            "use.refresh.tokens": "true",
+            "oidc.ciba.grant.enabled": "false",
+            "backchannel.logout.session.required": "true",
+            "client_credentials.use_refresh_token": "false",
+            "saml.signature.algorithm": "RSA_SHA256",
+            "saml.client.signature": "false",
+            "require.pushed.authorization.requests": "false",
+            "id.token.as.detached.signature": "false",
+            "saml.assertion.signature": "true",
+            "saml_single_logout_service_url_post": single_logout_service_url_post,
+            "saml.encrypt": "false",
+                    "saml_assertion_consumer_url_post": assertion_consumer_url_post,
+                    "saml.server.signature": "true",
+                    "exclude.session.state.from.auth.response": "false",
+                    "saml.artifact.binding": "false",
+                    "saml_single_logout_service_url_redirect": single_logout_service_url_redirect,
+                    "saml_force_name_id_format": "false",
+                    "tls.client.certificate.bound.access.tokens": "false",
+                    "acr.loa.map": "{}",
+                    "saml.authnstatement": "true",
+                    "display.on.consent.screen": "false",
+                    "saml.assertion.lifespan": "300",
+                    "token.response.type.bearer.lower-case": "false",
+                    "saml.onetimeuse.condition": "false",
+                    "saml_signature_canonicalization_method": "http://www.w3.org/2001/10/xml-exc-c14n#"
+        },
+        "authenticationFlowBindingOverrides": {},
+        "fullScopeAllowed": True,
+        "nodeReRegistrationTimeout": -1,
+        "defaultClientScopes": [
+        ],
+        "optionalClientScopes": [],
+        "access": {
+            "view": True,
+            "configure": True,
+            "manage": True
+        }
+    }
 
-	default_uid_mapper = [
-		{
-			"name": "userid_mapper",
-			"protocol": "saml",
-			"protocolMapper": "saml-user-attribute-mapper",
-			"consentRequired": False,
-			"config": {
-				"aggregate.attrs": "",
-				"attribute.name": "uid",
-				"attribute.nameformat": "Basic",
-				"friendly.name": "uid",
-				"user.attribute": "uid"
-			}
-		},
-	]
+    default_uid_mapper = [
+        {
+            "name": "userid_mapper",
+            "protocol": "saml",
+                    "protocolMapper": "saml-user-attribute-mapper",
+                    "consentRequired": False,
+                    "config": {
+                        "aggregate.attrs": "",
+                        "attribute.name": "uid",
+                        "attribute.nameformat": "Basic",
+                        "friendly.name": "uid",
+                        "user.attribute": "uid"
+                    }
+        },
+    ]
 
-	role_mapper_single = {"config": {
-		"attribute.name": "Role",
-		"attribute.nameformat": "Basic",
-		"friendly.name": "role list mapper",
-		"single": "true"
-	},
-		"name": "role_list_mapper",
-		"protocol": "saml",
-		"protocolMapper": "saml-role-list-mapper"
-	}
+    role_mapper_single = {"config": {
+        "attribute.name": "Role",
+        "attribute.nameformat": "Basic",
+        "friendly.name": "role list mapper",
+        "single": "true"
+    },
+        "name": "role_list_mapper",
+        "protocol": "saml",
+        "protocolMapper": "saml-role-list-mapper"
+    }
 
-	if opt.umc_uid_mapper:
-		client_payload_saml["protocolMappers"] = umc_uid_mapper
-	else:
-		client_payload_saml["protocolMappers"] = default_uid_mapper
+    if opt.umc_uid_mapper:
+        client_payload_saml["protocolMappers"] = umc_uid_mapper
+    else:
+        client_payload_saml["protocolMappers"] = default_uid_mapper
 
-	if opt.command == "saml/sp" and opt.role_mapping_single_value:
-		client_payload_saml["protocolMappers"].append(role_mapper_single)
-	if opt.command == "saml/sp" and opt.client_signature_required:
-		client_payload_saml["attributes"]["saml.client.signature"] = "true"
+    if opt.command == "saml/sp" and opt.role_mapping_single_value:
+        client_payload_saml["protocolMappers"].append(role_mapper_single)
+    if opt.command == "saml/sp" and opt.client_signature_required:
+        client_payload_saml["attributes"]["saml.client.signature"] = "true"
 
-	# log into default realm in case UCS realm doesn't exist yet
-	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
+    # log into default realm in case UCS realm doesn't exist yet
+    kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 
-	kc_admin.create_client(payload=client_payload_saml, skip_exists=True)
+    kc_admin.create_client(payload=client_payload_saml, skip_exists=True)
 
 
 def create_oidc_client(opt):
-	print("CREATING KEYCLOAK OIDC CLIENT.....")
+    print("CREATING KEYCLOAK OIDC CLIENT.....")
 
-	# build urls
-	server_url = f"https://{opt.host_fqdn}"
-	valid_redirect_urls = [opt.app_url, server_url]
+    # build urls
+    server_url = f"https://{opt.host_fqdn}"
+    valid_redirect_urls = [opt.app_url, server_url]
 
-	client_payload_oidc = {
-		"clientId": opt.client_id,
-		"rootUrl": opt.app_url,
-		"adminUrl": "",
-		"baseUrl": opt.app_url,
-		"surrogateAuthRequired": False,
-		"enabled": True,
-		"alwaysDisplayInConsole": False,
-		"clientAuthenticatorType": "client-secret",
-		"redirectUris": valid_redirect_urls,
-		"webOrigins": valid_redirect_urls,
-		"notBefore": 0,
-		"bearerOnly": False,
-		"consentRequired": False,
-		"standardFlowEnabled": True,
-		"implicitFlowEnabled": False,
-		"directAccessGrantsEnabled": True,
-		"serviceAccountsEnabled": False,
-		"publicClient": False,
-		"frontchannelLogout": True,
-		"protocol": "openid-connect",
-		"attributes": {
-			"saml.multivalued.roles": "false",
-			"saml.force.post.binding": "false",
-			"frontchannel.logout.session.required": "false",
-			"oauth2.device.authorization.grant.enabled": "false",
-			"backchannel.logout.revoke.offline.tokens": "false",
-			"saml.server.signature.keyinfo.ext": "false",
-			"use.refresh.tokens": "true",
-			"oidc.ciba.grant.enabled": "false",
-			"backchannel.logout.session.required": "false",
-			"client_credentials.use_refresh_token": "false",
-			"saml.client.signature": "false",
-			"require.pushed.authorization.requests": "false",
-			"saml.allow.ecp.flow": "false",
-			"saml.assertion.signature": "false",
-			"id.token.as.detached.signature": "false",
-			"client.secret.creation.time": "1661514856",
-			"saml.encrypt": "false",
-			"saml.server.signature": "false",
-			"exclude.session.state.from.auth.response": "false",
-			"saml.artifact.binding": "false",
-			"saml_force_name_id_format": "false",
-			"tls.client.certificate.bound.access.tokens": "false",
-			"acr.loa.map": "{}",
-			"saml.authnstatement": "false",
-			"display.on.consent.screen": "false",
-			"token.response.type.bearer.lower-case": "false",
-			"saml.onetimeuse.condition": "false",
-		},
-		"authenticationFlowBindingOverrides": {},
-		"fullScopeAllowed": True,
-		"nodeReRegistrationTimeout": -1,
-		"protocolMappers": [
-			{
-				"name": "uid",
-				"protocol": "openid-connect",
-				"protocolMapper": "oidc-usermodel-attribute-mapper",
-				"consentRequired": False,
-				"config": {
-					"userinfo.token.claim": "true",
-					"user.attribute": "uid",
-					"id.token.claim": "true",
-					"access.token.claim": "true",
-					"claim.name": "uid",
-					"jsonType.label": "String"
-				}
-			},
-			{
-				"name": "username",
-				"protocol": "openid-connect",
-				"protocolMapper": "oidc-usermodel-property-mapper",
-				"consentRequired": False,
-				"config": {
-					"userinfo.token.claim": "true",
-					"user.attribute": "username",
-					"id.token.claim": "true",
-					"access.token.claim": "true",
-					"claim.name": "preferred_username",
-					"jsonType.label": "String"
-				}
-			},
-			{
-				"name": "email",
-				"protocol": "openid-connect",
-				"protocolMapper": "oidc-usermodel-property-mapper",
-				"consentRequired": False,
-				"config": {
-					"userinfo.token.claim": "true",
-					"user.attribute": "email",
-					"id.token.claim": "true",
-					"access.token.claim": "true",
-					"claim.name": "email",
-					"jsonType.label": "String"
-				}
-			}
-		],
-		"defaultClientScopes": [
-			"web-origins",
-			"acr",
-			"profile",
-			"roles",
-			"email"
-		],
-		"optionalClientScopes": [
-			"address",
-			"phone",
-			"offline_access",
-			"microprofile-jwt"
-		],
-		"access": {
-			"view": True,
-			"configure": True,
-			"manage": True
-		},
-		"authorizationServicesEnabled": ""
-	}
+    client_payload_oidc = {
+        "clientId": opt.client_id,
+        "rootUrl": opt.app_url,
+        "adminUrl": "",
+        "baseUrl": opt.app_url,
+        "surrogateAuthRequired": False,
+        "enabled": True,
+        "alwaysDisplayInConsole": False,
+        "clientAuthenticatorType": "client-secret",
+        "redirectUris": valid_redirect_urls,
+        "webOrigins": valid_redirect_urls,
+        "notBefore": 0,
+        "bearerOnly": False,
+        "consentRequired": False,
+        "standardFlowEnabled": True,
+        "implicitFlowEnabled": False,
+        "directAccessGrantsEnabled": True,
+        "serviceAccountsEnabled": False,
+        "publicClient": False,
+        "frontchannelLogout": True,
+        "protocol": "openid-connect",
+        "attributes": {
+            "saml.multivalued.roles": "false",
+            "saml.force.post.binding": "false",
+            "frontchannel.logout.session.required": "false",
+                    "oauth2.device.authorization.grant.enabled": "false",
+                    "backchannel.logout.revoke.offline.tokens": "false",
+                    "saml.server.signature.keyinfo.ext": "false",
+                    "use.refresh.tokens": "true",
+                    "oidc.ciba.grant.enabled": "false",
+                    "backchannel.logout.session.required": "false",
+                    "client_credentials.use_refresh_token": "false",
+                    "saml.client.signature": "false",
+                    "require.pushed.authorization.requests": "false",
+                    "saml.allow.ecp.flow": "false",
+                    "saml.assertion.signature": "false",
+                    "id.token.as.detached.signature": "false",
+                    "client.secret.creation.time": "1661514856",
+                    "saml.encrypt": "false",
+                    "saml.server.signature": "false",
+                    "exclude.session.state.from.auth.response": "false",
+                    "saml.artifact.binding": "false",
+                    "saml_force_name_id_format": "false",
+                    "tls.client.certificate.bound.access.tokens": "false",
+                    "acr.loa.map": "{}",
+                    "saml.authnstatement": "false",
+                    "display.on.consent.screen": "false",
+                    "token.response.type.bearer.lower-case": "false",
+                    "saml.onetimeuse.condition": "false",
+        },
+        "authenticationFlowBindingOverrides": {},
+        "fullScopeAllowed": True,
+        "nodeReRegistrationTimeout": -1,
+        "protocolMappers": [
+            {
+                "name": "uid",
+                "protocol": "openid-connect",
+                "protocolMapper": "oidc-usermodel-attribute-mapper",
+                            "consentRequired": False,
+                            "config": {
+                                "userinfo.token.claim": "true",
+                                "user.attribute": "uid",
+                                "id.token.claim": "true",
+                                "access.token.claim": "true",
+                                "claim.name": "uid",
+                                "jsonType.label": "String"
+                            }
+            },
+            {
+                "name": "username",
+                "protocol": "openid-connect",
+                "protocolMapper": "oidc-usermodel-property-mapper",
+                            "consentRequired": False,
+                            "config": {
+                                "userinfo.token.claim": "true",
+                                "user.attribute": "username",
+                                "id.token.claim": "true",
+                                "access.token.claim": "true",
+                                "claim.name": "preferred_username",
+                                "jsonType.label": "String"
+                            }
+            },
+            {
+                "name": "email",
+                "protocol": "openid-connect",
+                "protocolMapper": "oidc-usermodel-property-mapper",
+                            "consentRequired": False,
+                            "config": {
+                                "userinfo.token.claim": "true",
+                                "user.attribute": "email",
+                                "id.token.claim": "true",
+                                "access.token.claim": "true",
+                                "claim.name": "email",
+                                "jsonType.label": "String"
+                            }
+            }
+        ],
+        "defaultClientScopes": [
+            "web-origins",
+            "acr",
+            "profile",
+            "roles",
+            "email"
+        ],
+        "optionalClientScopes": [
+            "address",
+            "phone",
+            "offline_access",
+            "microprofile-jwt"
+        ],
+        "access": {
+            "view": True,
+            "configure": True,
+            "manage": True
+        },
+        "authorizationServicesEnabled": ""
+    }
 
-	if opt.client_secret:
-		client_payload_oidc["secret"] = opt.client_secret
+    if opt.client_secret:
+        client_payload_oidc["secret"] = opt.client_secret
 
-	# log into default realm in case UCS realm doesn't exist yet
-	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
-	kc_admin.create_client(payload=client_payload_oidc, skip_exists=True)
+    # log into default realm in case UCS realm doesn't exist yet
+    kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
+    kc_admin.create_client(payload=client_payload_oidc, skip_exists=True)
 
 
 def modify_client_scope_mapper(opt):
-	# log into default realm in case UCS realm doesn't exist yet
-	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
+    # log into default realm in case UCS realm doesn't exist yet
+    kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 
-	scopes = kc_admin.get_client_scopes()
-	id_role_list = [scope["id"] for scope in scopes if scope["name"] == "role_list"][0]
+    scopes = kc_admin.get_client_scopes()
+    id_role_list = [scope["id"] for scope in scopes if scope["name"] == "role_list"][0]
 
-	scope_id = id_role_list
-	data_raw = kc_admin.raw_get(
-		f"admin/realms/{opt.realm}/client-scopes/{scope_id}/protocol-mappers/models"
-	)
-	mappers = data_raw.json()
+    scope_id = id_role_list
+    data_raw = kc_admin.raw_get(
+        f"admin/realms/{opt.realm}/client-scopes/{scope_id}/protocol-mappers/models"
+    )
+    mappers = data_raw.json()
 
-	mapper_test = [mapper for mapper in mappers if mapper["name"] == "role list"][0]
-	id_mapper_role_list = [mapper["id"] for mapper in mappers if mapper["name"] == "role list"][0]
+    mapper_test = [mapper for mapper in mappers if mapper["name"] == "role list"][0]
+    id_mapper_role_list = [mapper["id"] for mapper in mappers if mapper["name"] == "role list"][0]
 
-	mapper_test["config"]["single"] = True
+    mapper_test["config"]["single"] = True
 
-	protocol_mapper_id = id_mapper_role_list
-	data_raw = kc_admin.raw_put(
-		f"admin/realms/{opt.realm}/client-scopes/{scope_id}/protocol-mappers/models/{protocol_mapper_id}",
-		data=json.dumps(mapper_test),
-	)
+    protocol_mapper_id = id_mapper_role_list
+    data_raw = kc_admin.raw_put(
+        f"admin/realms/{opt.realm}/client-scopes/{scope_id}/protocol-mappers/models/{protocol_mapper_id}",
+        data=json.dumps(mapper_test),
+    )
 
 
 def download_cert_oidc(opt):
-	print("Downloading KEYCLOAK OIDC CERT.....")
-	if opt.oidc_url:
-		oidc_conf_url = opt.oidc_url
-	else:
-		oidc_conf_url = "https://{}/realms/ucs/.well-known/openid-configuration".format(opt.keycloak_sso_fqdn)
+    print("Downloading KEYCLOAK OIDC CERT.....")
+    if opt.oidc_url:
+        oidc_conf_url = opt.oidc_url
+    else:
+        oidc_conf_url = "https://{}/realms/ucs/.well-known/openid-configuration".format(opt.keycloak_sso_fqdn)
 
-	oidc_conf = requests.get(oidc_conf_url)
-	certs_oidc = oidc_conf.json()["jwks_uri"]
-	oidc_cert_json = requests.get(certs_oidc).json()
+    oidc_conf = requests.get(oidc_conf_url)
+    certs_oidc = oidc_conf.json()["jwks_uri"]
+    oidc_cert_json = requests.get(certs_oidc).json()
 
-	cert_list = [key["x5c"][0] for key in oidc_cert_json["keys"] if key["use"] == "sig"]
-	cert = cert_list[0] + "\n"
+    cert_list = [key["x5c"][0] for key in oidc_cert_json["keys"] if key["use"] == "sig"]
+    cert = cert_list[0] + "\n"
 
-	if opt.as_pem:
-		cert_der = b64decode(cert)
-		p = Popen(['openssl', 'x509', '-inform', 'DER', '-out', opt.output, '-outform', 'PEM'], stdin=PIPE)
-		p.communicate(input=cert_der)
-	else:
-		with open(opt.output, 'w') as fd:
-			fd.write(cert)
+    if opt.as_pem:
+        cert_der = b64decode(cert)
+        p = Popen(['openssl', 'x509', '-inform', 'DER', '-out', opt.output, '-outform', 'PEM'], stdin=PIPE)
+        p.communicate(input=cert_der)
+    else:
+        with open(opt.output, 'w') as fd:
+            fd.write(cert)
 
 
 def download_cert_saml(opt):
-	print("Downloading KEYCLOAK SAML CERT.....")
-	if opt.saml_url:
-		saml_descriptor_url = opt.saml_url
-	else:
-		saml_descriptor_url = "https://{}/realms/ucs/protocol/saml/descriptor".format(opt.keycloak_sso_fqdn)
+    print("Downloading KEYCLOAK SAML CERT.....")
+    if opt.saml_url:
+        saml_descriptor_url = opt.saml_url
+    else:
+        saml_descriptor_url = "https://{}/realms/ucs/protocol/saml/descriptor".format(opt.keycloak_sso_fqdn)
 
-	saml_descriptor = requests.get(saml_descriptor_url)
-	saml_descriptor_xml = ElementTree.fromstring(saml_descriptor.content)
+    saml_descriptor = requests.get(saml_descriptor_url)
+    saml_descriptor_xml = ElementTree.fromstring(saml_descriptor.content)
 
-	cert = saml_descriptor_xml.find('.//{http://www.w3.org/2000/09/xmldsig#}X509Certificate').text + "\n"
+    cert = saml_descriptor_xml.find('.//{http://www.w3.org/2000/09/xmldsig#}X509Certificate').text + "\n"
 
-	if opt.as_pem:
-		cert_der = b64decode(cert)
-		p = Popen(['openssl', 'x509', '-inform', 'DER', '-out', opt.output, '-outform', 'PEM'], stdin=PIPE)
-		p.communicate(input=cert_der)
-	else:
-		with open(opt.output, 'w') as fd:
-			fd.write(cert)
+    if opt.as_pem:
+        cert_der = b64decode(cert)
+        p = Popen(['openssl', 'x509', '-inform', 'DER', '-out', opt.output, '-outform', 'PEM'], stdin=PIPE)
+        p.communicate(input=cert_der)
+    else:
+        with open(opt.output, 'w') as fd:
+            fd.write(cert)
 
 
 def get_client_secret(opt):
-	print("Obtaining secret for client ...")
+    print("Obtaining secret for client ...")
 
-	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
-	kc_admin.realm_name = "ucs"
+    kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
+    kc_admin.realm_name = "ucs"
 
-	print(kc_admin.get_client_secrets(kc_admin.get_client_id(opt.client_name)))
+    print(kc_admin.get_client_secrets(kc_admin.get_client_id(opt.client_name)))
 
 
 def parse_args(args=None):
-	# type: (list[str]) -> Namespace
-	"""
-	Parse command line arguments.
+    # type: (list[str]) -> Namespace
+    """
+    Parse command line arguments.
 
-	:param args: the list of arguments to process (default: `sys.argv[1:]`)
-	:returns: a Namespace instance.
-	"""
+    :param args: the list of arguments to process (default: `sys.argv[1:]`)
+    :returns: a Namespace instance.
+    """
 
-	ldap_base = ucr.get("ldap/base")
-	domainname = ucr.get("domainname")
-	host_fqdn = "%s.%s" % (ucr.get("hostname"), ucr.get("domainname"))
-	keycloak_fqdn = ucr.get("keycloak/server/sso/fqdn", f"ucs-sso-ng.{domainname}")
-	no_ucr_available = not (ucr and ldap_base)
+    ldap_base = ucr.get("ldap/base")
+    domainname = ucr.get("domainname")
+    host_fqdn = "%s.%s" % (ucr.get("hostname"), ucr.get("domainname"))
+    keycloak_fqdn = ucr.get("keycloak/server/sso/fqdn", f"ucs-sso-ng.{domainname}")
+    no_ucr_available = not (ucr and ldap_base)
 
-	parser = ArgumentParser(description=__doc__)
-	parser.add_argument("--binddn", default="")
-	parser.add_argument("--binduser", default="admin")
-	parser.add_argument("--bindpwd", default="")
-	parser.add_argument("--bindpwdfile", default="/etc/keycloak.secret")
-	parser.add_argument("--realm", default="ucs")
-	parser.add_argument("--keycloak-pwd", default="")
-	parser.add_argument("--keycloak-url", required=no_ucr_available, default=f"https://{keycloak_fqdn}:443")
-	parser.add_argument("--no-ssl-verify", action='store_false')
-	subparsers = parser.add_subparsers(title="subcommands", description="valid subcommands", required=True, dest="command")
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("--binddn", default="")
+    parser.add_argument("--binduser", default="admin")
+    parser.add_argument("--bindpwd", default="")
+    parser.add_argument("--bindpwdfile", default="/etc/keycloak.secret")
+    parser.add_argument("--realm", default="ucs")
+    parser.add_argument("--keycloak-pwd", default="")
+    parser.add_argument("--keycloak-url", required=no_ucr_available, default=f"https://{keycloak_fqdn}:443")
+    parser.add_argument("--no-ssl-verify", action='store_false')
+    subparsers = parser.add_subparsers(title="subcommands", description="valid subcommands", required=True, dest="command")
 
-	parser_saml = subparsers.add_parser("saml/sp", help="configure a SAML SP")
-	operation_subparsers = parser_saml.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
-	create_saml_parser = operation_subparsers.add_parser("create", help="create a new SAML SP in Keycloak")
-	create_saml_parser.add_argument("--client-signature-required", action="store_true")
-	create_saml_parser.add_argument("--metadata-file")
-	create_saml_parser.add_argument("--metadata-url", required=True)
-	create_saml_parser.add_argument("--umc-uid-mapper", action="store_true")
-	create_saml_parser.add_argument("--role-mapping-single-value", action="store_true")
-	create_saml_parser.set_defaults(func=create_SAML_client)
+    parser_saml = subparsers.add_parser("saml/sp", help="configure a SAML SP")
+    operation_subparsers = parser_saml.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
+    create_saml_parser = operation_subparsers.add_parser("create", help="create a new SAML SP in Keycloak")
+    create_saml_parser.add_argument("--client-signature-required", action="store_true")
+    create_saml_parser.add_argument("--metadata-file")
+    create_saml_parser.add_argument("--metadata-url", required=True)
+    create_saml_parser.add_argument("--umc-uid-mapper", action="store_true")
+    create_saml_parser.add_argument("--role-mapping-single-value", action="store_true")
+    create_saml_parser.set_defaults(func=create_SAML_client)
 
-	parser_oidc = subparsers.add_parser("oidc/rp", help="configure a OIDC RP")
-	operation_subparsers = parser_oidc.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
-	create_oidc_parser = operation_subparsers.add_parser("create", help="create a new OIDC client in Keycloak")
-	create_oidc_parser.add_argument("client_id", metavar='CLIENT_ID')
-	create_oidc_parser.add_argument("--client-secret", default="")
-	create_oidc_parser.add_argument("--app-url", required=True)
-	create_oidc_parser.add_argument("--host-fqdn", required=no_ucr_available, default=host_fqdn)
-	create_oidc_parser.set_defaults(func=create_oidc_client)
+    parser_oidc = subparsers.add_parser("oidc/rp", help="configure a OIDC RP")
+    operation_subparsers = parser_oidc.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
+    create_oidc_parser = operation_subparsers.add_parser("create", help="create a new OIDC client in Keycloak")
+    create_oidc_parser.add_argument("client_id", metavar='CLIENT_ID')
+    create_oidc_parser.add_argument("--client-secret", default="")
+    create_oidc_parser.add_argument("--app-url", required=True)
+    create_oidc_parser.add_argument("--host-fqdn", required=no_ucr_available, default=host_fqdn)
+    create_oidc_parser.set_defaults(func=create_oidc_client)
 
-	create_saml_parser = operation_subparsers.add_parser("secret", help="get client secret from Keycloak")
-	create_saml_parser.add_argument("--client-name", required=True)
-	create_saml_parser.set_defaults(func=get_client_secret)
+    create_saml_parser = operation_subparsers.add_parser("secret", help="get client secret from Keycloak")
+    create_saml_parser.add_argument("--client-name", required=True)
+    create_saml_parser.set_defaults(func=get_client_secret)
 
-	parser_saml_idp_cert = subparsers.add_parser("saml/idp/cert", help="SAML IdP certificate")
-	operation_subparsers = parser_saml_idp_cert.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
-	get_cert_saml_parser = operation_subparsers.add_parser("get", help="download the SAML IdP signing certificate")
-	get_cert_saml_parser.add_argument("--as-pem", action='store_true')
-	get_cert_saml_parser.add_argument("--saml-url", default="")
-	get_cert_saml_parser.add_argument("--output", required=True)
-	get_cert_saml_parser.add_argument("--keycloak-sso-fqdn", required=no_ucr_available, default=keycloak_fqdn)
-	get_cert_saml_parser.set_defaults(func=download_cert_saml)
+    parser_saml_idp_cert = subparsers.add_parser("saml/idp/cert", help="SAML IdP certificate")
+    operation_subparsers = parser_saml_idp_cert.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
+    get_cert_saml_parser = operation_subparsers.add_parser("get", help="download the SAML IdP signing certificate")
+    get_cert_saml_parser.add_argument("--as-pem", action='store_true')
+    get_cert_saml_parser.add_argument("--saml-url", default="")
+    get_cert_saml_parser.add_argument("--output", required=True)
+    get_cert_saml_parser.add_argument("--keycloak-sso-fqdn", required=no_ucr_available, default=keycloak_fqdn)
+    get_cert_saml_parser.set_defaults(func=download_cert_saml)
 
-	parser_oidc_op_cert = subparsers.add_parser("oidc/op/cert", help="OIDC provider certificate")
-	operation_subparsers = parser_oidc_op_cert.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
-	get_cert_oidc_parser = operation_subparsers.add_parser("get", help="download the OIDC signing certificate")
-	get_cert_oidc_parser.add_argument("--as-pem", action='store_true')
-	get_cert_oidc_parser.add_argument("--oidc-url", default="")
-	get_cert_oidc_parser.add_argument("--output", required=True)
-	get_cert_oidc_parser.add_argument("--keycloak-sso-fqdn", required=no_ucr_available, default=keycloak_fqdn)
-	get_cert_oidc_parser.set_defaults(func=download_cert_oidc)
+    parser_oidc_op_cert = subparsers.add_parser("oidc/op/cert", help="OIDC provider certificate")
+    operation_subparsers = parser_oidc_op_cert.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
+    get_cert_oidc_parser = operation_subparsers.add_parser("get", help="download the OIDC signing certificate")
+    get_cert_oidc_parser.add_argument("--as-pem", action='store_true')
+    get_cert_oidc_parser.add_argument("--oidc-url", default="")
+    get_cert_oidc_parser.add_argument("--output", required=True)
+    get_cert_oidc_parser.add_argument("--keycloak-sso-fqdn", required=no_ucr_available, default=keycloak_fqdn)
+    get_cert_oidc_parser.set_defaults(func=download_cert_oidc)
 
-	init_parser = subparsers.add_parser("init", help="configure a Keycloak app")
-	init_parser.add_argument("--reverse-proxy-url", default="")
-	init_parser.add_argument("--ldap", default="")
-	init_parser.add_argument("--ldap-base", required=no_ucr_available, default=ldap_base)
-	init_parser.add_argument("--ldap-system-user-dn", required=no_ucr_available, default=f"uid=sys-idp-user,cn=users,{ldap_base}")
-	init_parser.add_argument("--ldap-system-user-pwdfile", default="/etc/idp-ldap-user.secret")
-	init_parser.add_argument("--host-fqdn", required=no_ucr_available, default=host_fqdn)
-	init_parser.add_argument("--domainname", required=no_ucr_available, default=domainname)
-	init_parser.add_argument("--locales", required=no_ucr_available, default=ucr.get("locale"))
-	init_parser.add_argument("--default-locale", required=no_ucr_available, default=ucr.get("locale/default"))
-	init_parser.set_defaults(func=init_keycloak_ucs)
+    init_parser = subparsers.add_parser("init", help="configure a Keycloak app")
+    init_parser.add_argument("--reverse-proxy-url", default="")
+    init_parser.add_argument("--ldap", default="")
+    init_parser.add_argument("--ldap-base", required=no_ucr_available, default=ldap_base)
+    init_parser.add_argument("--ldap-system-user-dn", required=no_ucr_available, default=f"uid=sys-idp-user,cn=users,{ldap_base}")
+    init_parser.add_argument("--ldap-system-user-pwdfile", default="/etc/idp-ldap-user.secret")
+    init_parser.add_argument("--host-fqdn", required=no_ucr_available, default=host_fqdn)
+    init_parser.add_argument("--domainname", required=no_ucr_available, default=domainname)
+    init_parser.add_argument("--locales", required=no_ucr_available, default=ucr.get("locale"))
+    init_parser.add_argument("--default-locale", required=no_ucr_available, default=ucr.get("locale/default"))
+    init_parser.set_defaults(func=init_keycloak_ucs)
 
-	adhoc_parser = subparsers.add_parser("ad-hoc", help="configure the ad-hoc federation login flow")
-	operation_subparsers = adhoc_parser.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
-	adhoc_parser_opp = operation_subparsers.add_parser("enable", help="create a login flow that uses ad-hoc federation")
-	adhoc_parser_opp.add_argument("--udm-user", required=True)
-	adhoc_parser_opp.add_argument("--udm-pwd", required=True)
-	adhoc_parser_opp.add_argument("--host-fqdn", required=no_ucr_available, default=host_fqdn)
-	adhoc_parser_opp.set_defaults(func=create_adhoc_flow)
-	adhoc_parser_opp = operation_subparsers.add_parser("create", help="create and configure an Identity Provider")
-	adhoc_parser_opp.add_argument("--alias", default="ADFS", required=True)
-	adhoc_parser_opp.add_argument("--metadata-url", required=True)
-	adhoc_parser_opp.add_argument("--keycloak-federation-remote-identifier", required=no_ucr_available, default=ucr.get("keycloak/federation/remote/identifier"))
-	adhoc_parser_opp.add_argument("--keycloak-federation-source-identifier", required=no_ucr_available, default=ucr.get("keycloak/federation/source/identifier"))
-	adhoc_parser_opp.set_defaults(func=create_adhoc_idp)
+    adhoc_parser = subparsers.add_parser("ad-hoc", help="configure the ad-hoc federation login flow")
+    operation_subparsers = adhoc_parser.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
+    adhoc_parser_opp = operation_subparsers.add_parser("enable", help="create a login flow that uses ad-hoc federation")
+    adhoc_parser_opp.add_argument("--udm-user", required=True)
+    adhoc_parser_opp.add_argument("--udm-pwd", required=True)
+    adhoc_parser_opp.add_argument("--host-fqdn", required=no_ucr_available, default=host_fqdn)
+    adhoc_parser_opp.set_defaults(func=create_adhoc_flow)
+    adhoc_parser_opp = operation_subparsers.add_parser("create", help="create and configure an Identity Provider")
+    adhoc_parser_opp.add_argument("--alias", default="ADFS", required=True)
+    adhoc_parser_opp.add_argument("--metadata-url", required=True)
+    adhoc_parser_opp.add_argument("--keycloak-federation-remote-identifier", required=no_ucr_available, default=ucr.get("keycloak/federation/remote/identifier"))
+    adhoc_parser_opp.add_argument("--keycloak-federation-source-identifier", required=no_ucr_available, default=ucr.get("keycloak/federation/source/identifier"))
+    adhoc_parser_opp.set_defaults(func=create_adhoc_idp)
 
-	fa_parser = subparsers.add_parser("2fa", help="configure 2FA on a group given by --group-2fa (default: \"2FA group\")")
-	operation_subparsers = fa_parser.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
-	adhoc_parser_opp = operation_subparsers.add_parser("enable", help="create a login flow that uses 2FA and activate it")
-	adhoc_parser_opp.add_argument("--group-2fa", default="2FA group")
-	adhoc_parser_opp.add_argument("--ldap-base", required=no_ucr_available, default=ldap_base)
-	adhoc_parser_opp.set_defaults(func=enable_2fa)
+    fa_parser = subparsers.add_parser("2fa", help="configure 2FA on a group given by --group-2fa (default: \"2FA group\")")
+    operation_subparsers = fa_parser.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
+    adhoc_parser_opp = operation_subparsers.add_parser("enable", help="create a login flow that uses 2FA and activate it")
+    adhoc_parser_opp.add_argument("--group-2fa", default="2FA group")
+    adhoc_parser_opp.add_argument("--ldap-base", required=no_ucr_available, default=ldap_base)
+    adhoc_parser_opp.set_defaults(func=enable_2fa)
 
-	opt = parser.parse_args(args)
-	if opt.binddn:
-		opt.binduser = explode_rdn(opt.binddn, 1)[0]
-	if not exists(opt.bindpwdfile):
-		if not opt.bindpwd:
-			parser.error(f"Passwordfile {opt.bindpwdfile} for user {opt.binduser} does not exist.")
-	else:
-		with open(opt.bindpwdfile) as fd:
-			opt.bindpwd = fd.read().strip()
-	if opt.command == "init":
-		if not exists(opt.ldap_system_user_pwdfile):
-			if not opt.ldap_system_user_pwdfile:
-				parser.error(f"Passwordfile {opt.ldap_system_user_pwdfile} for user {opt.ldap_system_user_dn} does not exist.")
-		else:
-			with open(opt.ldap_system_user_pwdfile) as fd:
-				opt.ldap_system_user_pwd = fd.read().strip()
-	return opt
+    opt = parser.parse_args(args)
+    if opt.binddn:
+        opt.binduser = explode_rdn(opt.binddn, 1)[0]
+    if not exists(opt.bindpwdfile):
+        if not opt.bindpwd:
+            parser.error(f"Passwordfile {opt.bindpwdfile} for user {opt.binduser} does not exist.")
+    else:
+        with open(opt.bindpwdfile) as fd:
+            opt.bindpwd = fd.read().strip()
+    if opt.command == "init":
+        if not exists(opt.ldap_system_user_pwdfile):
+            if not opt.ldap_system_user_pwdfile:
+                parser.error(f"Passwordfile {opt.ldap_system_user_pwdfile} for user {opt.ldap_system_user_dn} does not exist.")
+        else:
+            with open(opt.ldap_system_user_pwdfile) as fd:
+                opt.ldap_system_user_pwd = fd.read().strip()
+    return opt
 
 
 def create_adhoc_idp(opt):
-	print("Creating ad hoc federation identity provider...")
-	# realm config
-	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
-	kc_admin.realm_name = "ucs"
+    print("Creating ad hoc federation identity provider...")
+    # realm config
+    kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
+    kc_admin.realm_name = "ucs"
 
-	metadata_info = extract_metadata(opt.metadata_url, opt.no_ssl_verify)
+    metadata_info = extract_metadata(opt.metadata_url, opt.no_ssl_verify)
 
-	idp_payload = {
-		"addReadTokenRoleOnCreate": False,
-		"alias": opt.alias,
-		"authenticateByDefault": False,
-		"config": {
-			"addExtensionsElementWithKeyInfo": "false",
-			"allowCreate": "true",
-			"allowedClockSkew": "",
-			"attributeConsumingServiceIndex": "",
-			"authnContextComparisonType": "exact",
-			"backchannelSupported": "",
-			"encryptionPublicKey": metadata_info["encryption"],
-			"entityId": "keycloak_ucs",
-			"forceAuthn": "false",
-			"hideOnLoginPage": "",
-			"loginHint": "false",
-			"nameIDPolicyFormat": "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
-			"postBindingAuthnRequest": "true",
-			"postBindingLogout": "false",
-			"postBindingResponse": "true",
-			"principalAttribute": "sAMAccountName",
-			"principalType": "ATTRIBUTE",
-			"signatureAlgorithm": "RSA_SHA256",
-			"signingCertificate": metadata_info["signing"],
-			"signSpMetadata": "false",
-			"singleSignOnServiceUrl": metadata_info["sso_logout_url"],
-			"syncMode": "IMPORT",
-			"useJwksUrl": "true",
-			"validateSignature": "true",
-			"wantAssertionsEncrypted": "false",
-			"wantAssertionsSigned": "false",
-			"wantAuthnRequestsSigned": "true",
-			"xmlSigKeyInfoKeyNameTransformer": "CERT_SUBJECT"
-		},
-		"displayName": opt.alias,
-		"enabled": True,
-		"firstBrokerLoginFlowAlias": "Univention-Authenticator ad hoc federation flow",
-		"linkOnly": False,
-		"postBrokerLoginFlowAlias": "",
-		"providerId": "saml",
-		"storeToken": False,
-		"trustEmail": False,
-		"updateProfileFirstLoginMode": "on"
-	}
-	kc_admin.create_idp(idp_payload)
+    idp_payload = {
+        "addReadTokenRoleOnCreate": False,
+        "alias": opt.alias,
+        "authenticateByDefault": False,
+        "config": {
+            "addExtensionsElementWithKeyInfo": "false",
+            "allowCreate": "true",
+            "allowedClockSkew": "",
+            "attributeConsumingServiceIndex": "",
+            "authnContextComparisonType": "exact",
+            "backchannelSupported": "",
+            "encryptionPublicKey": metadata_info["encryption"],
+            "entityId": "keycloak_ucs",
+            "forceAuthn": "false",
+            "hideOnLoginPage": "",
+            "loginHint": "false",
+            "nameIDPolicyFormat": "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
+            "postBindingAuthnRequest": "true",
+            "postBindingLogout": "false",
+            "postBindingResponse": "true",
+            "principalAttribute": "sAMAccountName",
+            "principalType": "ATTRIBUTE",
+            "signatureAlgorithm": "RSA_SHA256",
+            "signingCertificate": metadata_info["signing"],
+            "signSpMetadata": "false",
+            "singleSignOnServiceUrl": metadata_info["sso_logout_url"],
+            "syncMode": "IMPORT",
+            "useJwksUrl": "true",
+            "validateSignature": "true",
+            "wantAssertionsEncrypted": "false",
+            "wantAssertionsSigned": "false",
+            "wantAuthnRequestsSigned": "true",
+            "xmlSigKeyInfoKeyNameTransformer": "CERT_SUBJECT"
+        },
+        "displayName": opt.alias,
+        "enabled": True,
+        "firstBrokerLoginFlowAlias": "Univention-Authenticator ad hoc federation flow",
+        "linkOnly": False,
+        "postBrokerLoginFlowAlias": "",
+        "providerId": "saml",
+        "storeToken": False,
+        "trustEmail": False,
+        "updateProfileFirstLoginMode": "on"
+    }
+    kc_admin.create_idp(idp_payload)
 
-	mapper_payload = {
-		"config": {
-			"attribute.friendly.name": "",
-			"attribute.name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
-			"attributes": "[]",
-			"syncMode": "IMPORT",
-			"user.attribute": "email"
-		},
-		"identityProviderAlias": opt.alias,
-		"identityProviderMapper": "saml-user-attribute-idp-mapper",
-		"name": "email"
-	}
-	kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
+    mapper_payload = {
+        "config": {
+            "attribute.friendly.name": "",
+            "attribute.name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
+            "attributes": "[]",
+            "syncMode": "IMPORT",
+            "user.attribute": "email"
+        },
+        "identityProviderAlias": opt.alias,
+        "identityProviderMapper": "saml-user-attribute-idp-mapper",
+        "name": "email"
+    }
+    kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
 
-	mapper_payload = {
-		"config": {
-			"attribute.friendly.name": "",
-			"attribute.name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
-			"attributes": "[]",
-			"syncMode": "IMPORT",
-			"user.attribute": "firstName"
-		},
-		"identityProviderAlias": opt.alias,
-		"identityProviderMapper": "saml-user-attribute-idp-mapper",
-		"name": "firstName"
-	}
-	kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
+    mapper_payload = {
+        "config": {
+            "attribute.friendly.name": "",
+            "attribute.name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
+            "attributes": "[]",
+            "syncMode": "IMPORT",
+            "user.attribute": "firstName"
+        },
+        "identityProviderAlias": opt.alias,
+        "identityProviderMapper": "saml-user-attribute-idp-mapper",
+        "name": "firstName"
+    }
+    kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
 
-	mapper_payload = {
-		"config": {
-			"attribute.friendly.name": "",
-			"attribute.name": "objectGuid",
-			"attributes": "[]",
-			"syncMode": "IMPORT",
-			"user.attribute": opt.keycloak_federation_remote_identifier
-		},
-		"identityProviderAlias": opt.alias,
-		"identityProviderMapper": "saml-user-attribute-idp-mapper",
-		"name": "remoteIdentifier"
-	}
-	kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
+    mapper_payload = {
+        "config": {
+            "attribute.friendly.name": "",
+            "attribute.name": "objectGuid",
+            "attributes": "[]",
+            "syncMode": "IMPORT",
+            "user.attribute": opt.keycloak_federation_remote_identifier
+        },
+        "identityProviderAlias": opt.alias,
+        "identityProviderMapper": "saml-user-attribute-idp-mapper",
+        "name": "remoteIdentifier"
+    }
+    kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
 
-	mapper_payload = {
-		"config": {
-			"attribute.friendly.name": "",
-			"attribute.name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
-			"attributes": "[]",
-			"syncMode": "IMPORT",
-			"user.attribute": "lastName"
-		},
-		"identityProviderAlias": opt.alias,
-		"identityProviderMapper": "saml-user-attribute-idp-mapper",
-		"name": "lastName"
-	}
-	kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
+    mapper_payload = {
+        "config": {
+            "attribute.friendly.name": "",
+            "attribute.name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
+            "attributes": "[]",
+            "syncMode": "IMPORT",
+            "user.attribute": "lastName"
+        },
+        "identityProviderAlias": opt.alias,
+        "identityProviderMapper": "saml-user-attribute-idp-mapper",
+        "name": "lastName"
+    }
+    kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
 
-	mapper_payload = {
-		"config": {
-			"attribute": "sourceID",
-			"attribute.value": "ADFS",
-			"attributes": "[]",
-			"syncMode": "INHERIT"
-		},
-		"identityProviderAlias": opt.alias,
-		"identityProviderMapper": "hardcoded-attribute-idp-mapper",
-		"name": opt.keycloak_federation_source_identifier
-	}
-	kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
+    mapper_payload = {
+        "config": {
+            "attribute": "sourceID",
+            "attribute.value": "ADFS",
+            "attributes": "[]",
+            "syncMode": "INHERIT"
+        },
+        "identityProviderAlias": opt.alias,
+        "identityProviderMapper": "hardcoded-attribute-idp-mapper",
+        "name": opt.keycloak_federation_source_identifier
+    }
+    kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
 
-	mapper_payload = {
-		"config": {
-			"attributes": "[]",
-			"syncMode": "IMPORT",
-			"target": "LOCAL",
-			"template": "external-${ALIAS}-${ATTRIBUTE.sAMAccountName}"
-		},
-		"identityProviderAlias": opt.alias,
-		"identityProviderMapper": "saml-username-idp-mapper",
-		"name": "username mapper"
-	}
-	kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
+    mapper_payload = {
+        "config": {
+            "attributes": "[]",
+            "syncMode": "IMPORT",
+            "target": "LOCAL",
+            "template": "external-${ALIAS}-${ATTRIBUTE.sAMAccountName}"
+        },
+        "identityProviderAlias": opt.alias,
+        "identityProviderMapper": "saml-username-idp-mapper",
+        "name": "username mapper"
+    }
+    kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
 
 
 def extract_metadata(metadata_url, no_ssl_verify):
-	xml_content = requests.get(metadata_url, verify=no_ssl_verify).content
-	saml_descriptor_xml = ElementTree.fromstring(xml_content)
-	signing_cert = saml_descriptor_xml.find('.//{http://www.w3.org/2000/09/xmldsig#}X509Certificate').text
-	encryption_cert = saml_descriptor_xml.findall(".//{http://www.w3.org/2000/09/xmldsig#}X509Certificate")[1].text
-	sso_url = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}SingleLogoutService').attrib["Location"]
+    xml_content = requests.get(metadata_url, verify=no_ssl_verify).content
+    saml_descriptor_xml = ElementTree.fromstring(xml_content)
+    signing_cert = saml_descriptor_xml.find('.//{http://www.w3.org/2000/09/xmldsig#}X509Certificate').text
+    encryption_cert = saml_descriptor_xml.findall(".//{http://www.w3.org/2000/09/xmldsig#}X509Certificate")[1].text
+    sso_url = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}SingleLogoutService').attrib["Location"]
 
-	metadata_info = {"encryption": encryption_cert, "signing": signing_cert, "sso_logout_url": sso_url}
-	return metadata_info
+    metadata_info = {"encryption": encryption_cert, "signing": signing_cert, "sso_logout_url": sso_url}
+    return metadata_info
 
 
 def enable_2fa(opt):
-	print("Enabling 2FA ...")
-	print(f"Using KC_URL: {opt.keycloak_url}")
+    print("Enabling 2FA ...")
+    print(f"Using KC_URL: {opt.keycloak_url}")
 
-	# realm config
-	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
-	kc_admin.realm_name = "ucs"
-	realm_2fa_role = "2FA role"
-	ldap_2fa_group = opt.group_2fa  # FIXME: Check group to use for 2FA
+    # realm config
+    kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
+    kc_admin.realm_name = "ucs"
+    realm_2fa_role = "2FA role"
+    ldap_2fa_group = opt.group_2fa  # FIXME: Check group to use for 2FA
 
-	ldap_component_filter = {'name': 'ldap-provider', 'providerId': 'ldap'}
-	ldap_component_list = kc_admin.get_components(ldap_component_filter)
-	provider = ldap_component_list.pop()
-	provider_id = provider["id"]
-	mapper_id = add_or_replace_ldap_group_mapper(opt, kc_admin, provider, "univention-groups", ldap_2fa_group)
+    ldap_component_filter = {'name': 'ldap-provider', 'providerId': 'ldap'}
+    ldap_component_list = kc_admin.get_components(ldap_component_filter)
+    provider = ldap_component_list.pop()
+    provider_id = provider["id"]
+    mapper_id = add_or_replace_ldap_group_mapper(opt, kc_admin, provider, "univention-groups", ldap_2fa_group)
 
-	# Synchronize LDAP groups to Keycloak
-	kc_admin.raw_post(f'/admin/realms/ucs/user-storage/{provider_id}/mappers/{mapper_id}/sync?direction=fedToKeycloak', data={})
+    # Synchronize LDAP groups to Keycloak
+    kc_admin.raw_post(f'/admin/realms/ucs/user-storage/{provider_id}/mappers/{mapper_id}/sync?direction=fedToKeycloak', data={})
 
-	create_realm_role(kc_admin, opt.realm, realm_2fa_role)
-	create_realm_group(kc_admin, opt.realm, ldap_2fa_group)  # FIXME: This could be removed if we only use UDM groups
-	assign_group_realm_role_by_group_name(kc_admin, opt.realm, ldap_2fa_group, realm_2fa_role)
+    create_realm_role(kc_admin, opt.realm, realm_2fa_role)
+    create_realm_group(kc_admin, opt.realm, ldap_2fa_group)  # FIXME: This could be removed if we only use UDM groups
+    assign_group_realm_role_by_group_name(kc_admin, opt.realm, ldap_2fa_group, realm_2fa_role)
 
-	# switch to default flow before changing anything
-	flow_name = "2fa-browser"
-	kc_admin.update_realm(opt.realm, {"browserFlow": "browser"})
+    # switch to default flow before changing anything
+    flow_name = "2fa-browser"
+    kc_admin.update_realm(opt.realm, {"browserFlow": "browser"})
 
-	# create browser flow
-	create_conditional_2fa_flow(kc_admin, opt.realm, realm_2fa_role, flow_name)
+    # create browser flow
+    create_conditional_2fa_flow(kc_admin, opt.realm, realm_2fa_role, flow_name)
 
-	# change authentication binding to conditional 2fa flow
-	kc_admin.update_realm(opt.realm, {"browserFlow": flow_name})
+    # change authentication binding to conditional 2fa flow
+    kc_admin.update_realm(opt.realm, {"browserFlow": flow_name})
 
 
 def create_or_replace_realm_role(kc_admin, realm, role):
-	REALM_ROLE_BASE = {
-		"name": None,
-		"composite": False,
-		"clientRole": False,
-		# "containerId": None,
-		"attributes": {}
-	}
+    REALM_ROLE_BASE = {
+        "name": None,
+        "composite": False,
+        "clientRole": False,
+        # "containerId": None,
+        "attributes": {}
+    }
 
-	# check for existing role
-	roles = kc_admin.get_realm_roles()
-	for iter_role in roles:
-		if role == iter_role["name"]:
-			kc_admin.delete_realm_role(role)
+    # check for existing role
+    roles = kc_admin.get_realm_roles()
+    for iter_role in roles:
+        if role == iter_role["name"]:
+            kc_admin.delete_realm_role(role)
 
-	# create payload
-	payload = REALM_ROLE_BASE
-	payload["name"] = role
-	#payload["containerId"] = role
+    # create payload
+    payload = REALM_ROLE_BASE
+    payload["name"] = role
+    #payload["containerId"] = role
 
-	url = f"admin/realms/{realm}/roles"
-	data_raw = kc_admin.raw_post(url, data=json.dumps(payload))
-	return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
+    url = f"admin/realms/{realm}/roles"
+    data_raw = kc_admin.raw_post(url, data=json.dumps(payload))
+    return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
 
 
 def create_realm_role(kc_admin, realm, role):
-	REALM_ROLE_BASE = {
-		"name": None,
-		"composite": False,
-		"clientRole": False,
-		# "containerId": None,
-		"attributes": {}
-	}
+    REALM_ROLE_BASE = {
+        "name": None,
+        "composite": False,
+        "clientRole": False,
+        # "containerId": None,
+        "attributes": {}
+    }
 
-	# check for existing role
-	roles = kc_admin.get_realm_roles()
-	for iter_role in roles:
-		if role == iter_role["name"]:
-			print("Group already exists")  # Avoid deleting the role, it will cause to unbind role from groups already bind
-			return
+    # check for existing role
+    roles = kc_admin.get_realm_roles()
+    for iter_role in roles:
+        if role == iter_role["name"]:
+            print("Group already exists")  # Avoid deleting the role, it will cause to unbind role from groups already bind
+            return
 
-	# create payload
-	payload = REALM_ROLE_BASE
-	payload["name"] = role
+    # create payload
+    payload = REALM_ROLE_BASE
+    payload["name"] = role
 
-	url = f"admin/realms/{realm}/roles"
-	data_raw = kc_admin.raw_post(url, data=json.dumps(payload))
-	return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
+    url = f"admin/realms/{realm}/roles"
+    data_raw = kc_admin.raw_post(url, data=json.dumps(payload))
+    return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
 
 
 def create_realm_group(kc_admin, realm, group):
-	"""
-	Create or replace if exists a realm group
-	:param kc_admin: Keycloak client
-	:param realm: String
-	:param group: String
-	:return: Keycloak server response (RealmRepresentation)
-	"""
+    """
+    Create or replace if exists a realm group
+    :param kc_admin: Keycloak client
+    :param realm: String
+    :param group: String
+    :return: Keycloak server response (RealmRepresentation)
+    """
 
-	REALM_GROUP_BASE = {
-		"name": None
-	}
+    REALM_GROUP_BASE = {
+        "name": None
+    }
 
-	# check for existing group
-	groups = kc_admin.get_groups()
-	for iter_group in groups:
-		if group == iter_group["name"]:
-			print("Group already exists")  # Avoid deleting the group, it will cause to unbind ldap users if the group already exists
-			return
+    # check for existing group
+    groups = kc_admin.get_groups()
+    for iter_group in groups:
+        if group == iter_group["name"]:
+            print("Group already exists")  # Avoid deleting the group, it will cause to unbind ldap users if the group already exists
+            return
 
-	# create payload
-	payload = REALM_GROUP_BASE
-	payload["name"] = group
+    # create payload
+    payload = REALM_GROUP_BASE
+    payload["name"] = group
 
-	return kc_admin.create_group(payload)
+    return kc_admin.create_group(payload)
 
 
 def assign_group_realm_role_by_group_name(kc_admin, realm, group_name, role):
-	"""
-	Assign a keycloak realm role to a group by it's name (rather than it's internal id).
-	Users in this group will automatically be part of the assinged role.
-	:param kc_admin: Keycloak client
-	:param realm: String
-	:param group_name: String
-	:param role: String
-	:return: Keycloak server response (RealmRepresentation)
-	"""
+    """
+    Assign a keycloak realm role to a group by it's name (rather than it's internal id).
+    Users in this group will automatically be part of the assinged role.
+    :param kc_admin: Keycloak client
+    :param realm: String
+    :param group_name: String
+    :param role: String
+    :return: Keycloak server response (RealmRepresentation)
+    """
 
-	groups = kc_admin.get_groups()  # query={"name": group_name}
-	groups = [group for group in groups if group["name"] == group_name]
+    groups = kc_admin.get_groups()  # query={"name": group_name}
+    groups = [group for group in groups if group["name"] == group_name]
 
-	if not groups:
-		print("Warning: Groupname does not exist, realm role can not be linked")
-		return
-	try:
-		group_id = [g["id"] for g in groups if g["name"] == group_name][0]
-	except IndexError:
-		group_id = None  # why is group ID allowed to be none?
+    if not groups:
+        print("Warning: Groupname does not exist, realm role can not be linked")
+        return
+    try:
+        group_id = [g["id"] for g in groups if g["name"] == group_name][0]
+    except IndexError:
+        group_id = None  # why is group ID allowed to be none?
 
-	# get role id
-	try:
-		realm_role_id = [r["id"] for r in kc_admin.get_realm_roles() if r["name"] == role][0]
-	except IndexError:
-		print(f"WARNING: role {role} does not exist")
-		return
+    # get role id
+    try:
+        realm_role_id = [r["id"] for r in kc_admin.get_realm_roles() if r["name"] == role][0]
+    except IndexError:
+        print(f"WARNING: role {role} does not exist")
+        return
 
-	payload = [
-		{
-			"id": realm_role_id,
-			"containerId": realm,
-			"clientRole": False,
-			"name": role
-		}
-	]
+    payload = [
+        {
+            "id": realm_role_id,
+            "containerId": realm,
+            "clientRole": False,
+            "name": role
+        }
+    ]
 
-	data_raw = kc_admin.raw_post(f"admin/realms/{realm}/groups/{group_id}/role-mappings/realm", data=json.dumps(payload))
-	return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204])
+    data_raw = kc_admin.raw_post(f"admin/realms/{realm}/groups/{group_id}/role-mappings/realm", data=json.dumps(payload))
+    return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204])
 
 
 def add_or_replace_ldap_group_mapper(opt, kc_admin, ldap_sp, name, ldap_group):
-	"""
-	Add or replace if exists component mapper of type ldap-attribute-mapper
-	:param kc_admin: Keycloak client
-	:param ldap_sp: KeycloakREST_LDAPComponentRepresentation
-	:param name: String
-	:param ldap_group: String
-	:return: Keycloak server response (RealmRepresentation)
-	"""
+    """
+    Add or replace if exists component mapper of type ldap-attribute-mapper
+    :param kc_admin: Keycloak client
+    :param ldap_sp: KeycloakREST_LDAPComponentRepresentation
+    :param name: String
+    :param ldap_group: String
+    :return: Keycloak server response (RealmRepresentation)
+    """
 
-	LDAP_GROUP_MAPPER = {
-		"name": None,
-		"parentId": None,
-		"providerId": "group-ldap-mapper",
-		"providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
-		"config": {
-			"membership.attribute.type": [
-				"UID"
-			],
-			"group.name.ldap.attribute": [
-				"cn"
-			],
-			"preserve.group.inheritance": [
-				"false"
-			],
-			"membership.user.ldap.attribute": [
-				"uid"
-			],
-			"groups.dn": [
-				None
-			],
-			"mode": [
-				"READ_ONLY"
-			],
-			"user.roles.retrieve.strategy": [
-				"LOAD_GROUPS_BY_MEMBER_ATTRIBUTE"
-			],
-			"ignore.missing.groups": [
-				"false"
-			],
-			"membership.ldap.attribute": [
-				"memberUid"
-			],
-			"memberof.ldap.attribute": [
-				"memberOf"
-			],
-			"group.object.classes": [
-				"univentionGroup"
-			],
-			"groups.path": [
-				"/"
-			],
-			"drop.non.existing.groups.during.sync": [
-				"false"
-			]
-		}
-	}
+    LDAP_GROUP_MAPPER = {
+        "name": None,
+        "parentId": None,
+        "providerId": "group-ldap-mapper",
+        "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+        "config": {
+            "membership.attribute.type": [
+                "UID"
+            ],
+            "group.name.ldap.attribute": [
+                "cn"
+            ],
+            "preserve.group.inheritance": [
+                "false"
+            ],
+            "membership.user.ldap.attribute": [
+                "uid"
+            ],
+            "groups.dn": [
+                None
+            ],
+            "mode": [
+                "READ_ONLY"
+            ],
+            "user.roles.retrieve.strategy": [
+                "LOAD_GROUPS_BY_MEMBER_ATTRIBUTE"
+            ],
+            "ignore.missing.groups": [
+                "false"
+            ],
+            "membership.ldap.attribute": [
+                "memberUid"
+            ],
+            "memberof.ldap.attribute": [
+                "memberOf"
+            ],
+            "group.object.classes": [
+                "univentionGroup"
+            ],
+            "groups.path": [
+                "/"
+            ],
+            "drop.non.existing.groups.during.sync": [
+                "false"
+            ]
+        }
+    }
 
-	payload = LDAP_GROUP_MAPPER
-	payload["parentId"] = ldap_sp["id"]
-	payload["name"] = name
-	payload["config"]["groups.dn"] = [f"cn=groups,{opt.ldap_base}"]
+    payload = LDAP_GROUP_MAPPER
+    payload["parentId"] = ldap_sp["id"]
+    payload["name"] = name
+    payload["config"]["groups.dn"] = [f"cn=groups,{opt.ldap_base}"]
 
-	add_or_replace_mapper(kc_admin, component=payload)
+    add_or_replace_mapper(kc_admin, component=payload)
 
-	mapper_component_filter = {'name': name, 'parentId': payload['parentId']}
-	component_list = kc_admin.get_components(mapper_component_filter)
-	return component_list[0]["id"]
+    mapper_component_filter = {'name': name, 'parentId': payload['parentId']}
+    component_list = kc_admin.get_components(mapper_component_filter)
+    return component_list[0]["id"]
 
 
 def add_or_replace_mapper(kc_admin, component):
-	"""
-	Add or replace if exists any component mapper
-	:param kc_admin: Keycloak client
-	:param component: KeycloakREST_ComponentRepresentation
-	:return:  Keycloak server response (RealmRepresentation)
-	"""
+    """
+    Add or replace if exists any component mapper
+    :param kc_admin: Keycloak client
+    :param component: KeycloakREST_ComponentRepresentation
+    :return:  Keycloak server response (RealmRepresentation)
+    """
 
-	mapper_component_filter = {'name': component["name"], 'parentId': component['parentId']}
-	component_list = kc_admin.get_components(mapper_component_filter)
-	for mapper in component_list:
-		kc_admin.delete_component(mapper["id"])
+    mapper_component_filter = {'name': component["name"], 'parentId': component['parentId']}
+    component_list = kc_admin.get_components(mapper_component_filter)
+    for mapper in component_list:
+        kc_admin.delete_component(mapper["id"])
 
-	return kc_admin.create_component(payload=component)
+    return kc_admin.create_component(payload=component)
 
 
 def create_conditional_2fa_flow(kc_admin, realm, conditional_role, flow_name):
-	"""
-	Create a conditional 2FA-require authentication flow for a given role
-	:param kc_admin: Keycloak client
-	:param realm: String
-	:param conditional_role: String
-	:param flow_name: String
-	:return: None
-	"""
+    """
+    Create a conditional 2FA-require authentication flow for a given role
+    :param kc_admin: Keycloak client
+    :param realm: String
+    :param conditional_role: String
+    :param flow_name: String
+    :return: None
+    """
 
-	# delete old flow/subflows
-	flows = kc_admin.get_authentication_flows()
-	for flow in flows:
-		if flow["alias"].startswith(flow_name):
-			delete_authentication_flow(kc_admin, flow["id"])
-			print("Deleted: ", flow["alias"])
+    # delete old flow/subflows
+    flows = kc_admin.get_authentication_flows()
+    for flow in flows:
+        if flow["alias"].startswith(flow_name):
+            delete_authentication_flow(kc_admin, flow["id"])
+            print("Deleted: ", flow["alias"])
 
-	# copy default browser flow
-	kc_admin.copy_authentication_flow(payload=json.dumps({"newName": flow_name}), flow_alias="browser")
+    # copy default browser flow
+    kc_admin.copy_authentication_flow(payload=json.dumps({"newName": flow_name}), flow_alias="browser")
 
-	# create role condition
-	master_subflow = f"{flow_name} Browser - Conditional OTP"
-	payload = {"provider": "conditional-user-role", "requirement": "REQUIRED"}
-	kc_admin.create_authentication_flow_execution(payload=json.dumps(payload), flow_alias=master_subflow)
+    # create role condition
+    master_subflow = f"{flow_name} Browser - Conditional OTP"
+    payload = {"provider": "conditional-user-role", "requirement": "REQUIRED"}
+    kc_admin.create_authentication_flow_execution(payload=json.dumps(payload), flow_alias=master_subflow)
 
-	# determine user role execution id
-	condition_user_role_id = None
-	for exe in kc_admin.get_authentication_flow_executions(flow_name):
-		if exe.get("authenticationFlow"):
-			continue
-		if exe["providerId"] == "conditional-user-role":
-			condition_user_role_id = exe["id"]
+    # determine user role execution id
+    condition_user_role_id = None
+    for exe in kc_admin.get_authentication_flow_executions(flow_name):
+        if exe.get("authenticationFlow"):
+            continue
+        if exe["providerId"] == "conditional-user-role":
+            condition_user_role_id = exe["id"]
 
-	# raise role condition prio (twice)
-	execution_raise_priority(kc_admin, condition_user_role_id)
-	execution_raise_priority(kc_admin, condition_user_role_id)
+    # raise role condition prio (twice)
+    execution_raise_priority(kc_admin, condition_user_role_id)
+    execution_raise_priority(kc_admin, condition_user_role_id)
 
-	# FIXME: bug in keycloak API means requirement = REQUIRED can not be set at creation
-	# if this bug is fixed the following lines may be deleted
-	payload_update_required_state = {
-		"id": condition_user_role_id,
-		"requirement": "REQUIRED"
-	}
-	try:
-		kc_admin.update_authentication_flow_executions(payload=json.dumps(payload_update_required_state), flow_alias=flow_name)
-	except KeycloakGetError as exc:
-		if exc.response_code != 202:
-			raise
-	# FIXME end
+    # FIXME: bug in keycloak API means requirement = REQUIRED can not be set at creation
+    # if this bug is fixed the following lines may be deleted
+    payload_update_required_state = {
+        "id": condition_user_role_id,
+        "requirement": "REQUIRED"
+    }
+    try:
+        kc_admin.update_authentication_flow_executions(payload=json.dumps(payload_update_required_state), flow_alias=flow_name)
+    except KeycloakGetError as exc:
+        if exc.response_code != 202:
+            raise
+    # FIXME end
 
-	# config role condition
-	config = {
-		"alias": "2fa-role-mapping",
-		"config": {
-			"condUserRole": conditional_role,
-			"negate": ""
-		}
-	}
-	create_config_for_execution(kc_admin, config, condition_user_role_id)
+    # config role condition
+    config = {
+        "alias": "2fa-role-mapping",
+        "config": {
+            "condUserRole": conditional_role,
+            "negate": ""
+        }
+    }
+    create_config_for_execution(kc_admin, config, condition_user_role_id)
 
-	# disable user configured
-	condition_user_configured_id = None
-	for exe in kc_admin.get_authentication_flow_executions(flow_name):
-		if exe.get("authenticationFlow"):
-			continue
-		if exe["providerId"] == "conditional-user-configured":
-			condition_user_configured_id = exe["id"]
+    # disable user configured
+    condition_user_configured_id = None
+    for exe in kc_admin.get_authentication_flow_executions(flow_name):
+        if exe.get("authenticationFlow"):
+            continue
+        if exe["providerId"] == "conditional-user-configured":
+            condition_user_configured_id = exe["id"]
 
-	payload_condition_user = {"id": condition_user_configured_id, "requirement": "DISABLED"}
+    payload_condition_user = {"id": condition_user_configured_id, "requirement": "DISABLED"}
 
-	# FIXME: keycloak API bug, responds with 202
-	try:
-		kc_admin.update_authentication_flow_executions(json.dumps(payload_condition_user), flow_name)
-	except KeycloakGetError as exc:
-		if exc.response_code != 202:
-			raise exc
+    # FIXME: keycloak API bug, responds with 202
+    try:
+        kc_admin.update_authentication_flow_executions(json.dumps(payload_condition_user), flow_name)
+    except KeycloakGetError as exc:
+        if exc.response_code != 202:
+            raise exc
 
 
 def create_config_for_execution(kc_admin, config, execution_id):
-	"""
-	Create an extended config for an existing flow execution
-	:param kc_admin: Keycloak client
-	:param config: KeycloakREST_ExecutionConfigRepresentation
-	:param execution_id: String
-	:return: Keycloak server response (RealmRepresentation)
-	"""
+    """
+    Create an extended config for an existing flow execution
+    :param kc_admin: Keycloak client
+    :param config: KeycloakREST_ExecutionConfigRepresentation
+    :param execution_id: String
+    :return: Keycloak server response (RealmRepresentation)
+    """
 
-	url = f"admin/realms/{kc_admin.realm_name}/authentication/executions/{execution_id}/config"
-	data_raw = kc_admin.raw_post(url, data=json.dumps(config))
-	return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
+    url = f"admin/realms/{kc_admin.realm_name}/authentication/executions/{execution_id}/config"
+    data_raw = kc_admin.raw_post(url, data=json.dumps(config))
+    return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
 
 
 def configure_login_page(opt, kc_admin):
-	# english
-	url = f"admin/realms/{kc_admin.realm_name}/localization/en"
-	data = {"loginTitleHtml": f"Login at {opt.domainname}", "loginTitle": "Univention Corporate Server Single-Sign On"}
-	data_raw = kc_admin.raw_post(url, data=json.dumps(data))
-	raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
-	# german
-	url = f"admin/realms/{kc_admin.realm_name}/localization/de"
-	data = {"loginTitleHtml": f"Anmelden bei {opt.domainname}", "loginTitle": "Univention Corporate Server Single-Sign On"}
-	data_raw = kc_admin.raw_post(url, data=json.dumps(data))
-	raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
+    # english
+    url = f"admin/realms/{kc_admin.realm_name}/localization/en"
+    data = {"loginTitleHtml": f"Login at {opt.domainname}", "loginTitle": "Univention Corporate Server Single-Sign On"}
+    data_raw = kc_admin.raw_post(url, data=json.dumps(data))
+    raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
+    # german
+    url = f"admin/realms/{kc_admin.realm_name}/localization/de"
+    data = {"loginTitleHtml": f"Anmelden bei {opt.domainname}", "loginTitle": "Univention Corporate Server Single-Sign On"}
+    data_raw = kc_admin.raw_post(url, data=json.dumps(data))
+    raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
 
 
 def delete_authentication_flow(kc_admin, flow_id):
-	data_raw = kc_admin.raw_delete(f"admin/realms/{kc_admin.realm_name}/authentication/flows/{flow_id}")
-	return raise_error_from_response(data_raw, KeycloakError, expected_codes=[204])
+    data_raw = kc_admin.raw_delete(f"admin/realms/{kc_admin.realm_name}/authentication/flows/{flow_id}")
+    return raise_error_from_response(data_raw, KeycloakError, expected_codes=[204])
 
 
 def execution_raise_priority(kc_admin, execution_id):
-	"""
-	Raise the priority of a give execution within it's subflow.
-	Calling this for the top priority execution has no effect, but will not fail.
-	:param kc_admin: Keycloak client
-	:param execution_id: String
-	:return: Keycloak server response (RealmRepresentation)
-	"""
+    """
+    Raise the priority of a give execution within it's subflow.
+    Calling this for the top priority execution has no effect, but will not fail.
+    :param kc_admin: Keycloak client
+    :param execution_id: String
+    :return: Keycloak server response (RealmRepresentation)
+    """
 
-	payload = {"realm": kc_admin.realm_name, "execution": execution_id}
+    payload = {"realm": kc_admin.realm_name, "execution": execution_id}
 
-	url = f"admin/realms/{kc_admin.realm_name}/authentication/executions/{execution_id}/raise-priority"
-	data_raw = kc_admin.raw_post(url, data=json.dumps(payload))
-	return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
+    url = f"admin/realms/{kc_admin.realm_name}/authentication/executions/{execution_id}/raise-priority"
+    data_raw = kc_admin.raw_post(url, data=json.dumps(payload))
+    return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
 
 
 def create_adhoc_flow(opt):
-	print("Creating ad hoc federation authentication flow...")
+    print("Creating ad hoc federation authentication flow...")
 
-	print(f"Using KC_URL: {opt.keycloak_url}")
+    print(f"Using KC_URL: {opt.keycloak_url}")
 
-	# realm config
-	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
-	kc_admin.realm_name = "ucs"
+    # realm config
+    kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
+    kc_admin.realm_name = "ucs"
 
-	payload_authflow = {
-		"newName": "Univention-Authenticator ad hoc federation flow"
-	}
+    payload_authflow = {
+        "newName": "Univention-Authenticator ad hoc federation flow"
+    }
 
-	kc_admin.copy_authentication_flow(payload=json.dumps(payload_authflow), flow_alias='first broker login')
+    kc_admin.copy_authentication_flow(payload=json.dumps(payload_authflow), flow_alias='first broker login')
 
-	payload_exec_flow = {
-		'provider': "univention-authenticator"
-	}
-	kc_admin.create_authentication_flow_execution(payload=json.dumps(payload_exec_flow), flow_alias='Univention-Authenticator ad hoc federation flow')
+    payload_exec_flow = {
+        'provider': "univention-authenticator"
+    }
+    kc_admin.create_authentication_flow_execution(payload=json.dumps(payload_exec_flow), flow_alias='Univention-Authenticator ad hoc federation flow')
 
-	execution_list = kc_admin.get_authentication_flow_executions("Univention-Authenticator ad hoc federation flow")
-	ua_execution = [flow for flow in execution_list if flow["displayName"] == "Univention Authenticator"][0]
-	payload_exec_flow = {
-		"id": ua_execution["id"],
-		"requirement": "REQUIRED",
-		"displayName": "Univention Authenticator",
-		"requirementChoices": [
-			"REQUIRED",
-			"DISABLED"
-		],
-		"configurable": "true",
-		"providerId": "univention-authenticator",
-		"level": 0,
-		"index": 2
-	}
-	try:
-		kc_admin.update_authentication_flow_executions(payload=json.dumps(payload_exec_flow), flow_alias='Univention-Authenticator ad hoc federation flow')
-	except KeycloakError as exc:
-		print(exc)
-		if exc.response_code != 202:  # FIXME: function expected 204 response it gets 202
-			raise
+    execution_list = kc_admin.get_authentication_flow_executions("Univention-Authenticator ad hoc federation flow")
+    ua_execution = [flow for flow in execution_list if flow["displayName"] == "Univention Authenticator"][0]
+    payload_exec_flow = {
+        "id": ua_execution["id"],
+        "requirement": "REQUIRED",
+        "displayName": "Univention Authenticator",
+        "requirementChoices": [
+            "REQUIRED",
+            "DISABLED"
+        ],
+        "configurable": "true",
+        "providerId": "univention-authenticator",
+        "level": 0,
+        "index": 2
+    }
+    try:
+        kc_admin.update_authentication_flow_executions(payload=json.dumps(payload_exec_flow), flow_alias='Univention-Authenticator ad hoc federation flow')
+    except KeycloakError as exc:
+        print(exc)
+        if exc.response_code != 202:  # FIXME: function expected 204 response it gets 202
+            raise
 
-	# config_id from 'authenticationConfig' in get_authentication_flow_executions
-	config_ua = {
-		"config": {
-			"udm_endpoint": f"https://{opt.host_fqdn}/univention/udm",
-			"udm_user": opt.UDM_user,
-			"udm_password": opt.UDM_pwd
-		},
-		"alias": "localhost config"
-	}
+    # config_id from 'authenticationConfig' in get_authentication_flow_executions
+    config_ua = {
+        "config": {
+            "udm_endpoint": f"https://{opt.host_fqdn}/univention/udm",
+            "udm_user": opt.UDM_user,
+            "udm_password": opt.UDM_pwd
+        },
+        "alias": "localhost config"
+    }
 
-	#  check raise error
-	data_raw = kc_admin.raw_post("admin/realms/{}/authentication/executions/{}/config".format(kc_admin.realm_name, ua_execution["id"]), json.dumps(config_ua))
-	print("Response code from config Univention-Authenticator: ", data_raw.status_code)
+    #  check raise error
+    data_raw = kc_admin.raw_post("admin/realms/{}/authentication/executions/{}/config".format(kc_admin.realm_name, ua_execution["id"]), json.dumps(config_ua))
+    print("Response code from config Univention-Authenticator: ", data_raw.status_code)
 
 
 def init_keycloak_ucs(opt):
-	locales = opt.locales.split()
-	locales_format = [locale[:locale.index("_")] for locale in locales]
-	default_locale = opt.default_locale[:opt.default_locale.index("_")]
-	if opt.reverse_proxy_url:
-		opt.keycloak_url = opt.reverse_proxy_url
+    locales = opt.locales.split()
+    locales_format = [locale[:locale.index("_")] for locale in locales]
+    default_locale = opt.default_locale[:opt.default_locale.index("_")]
+    if opt.reverse_proxy_url:
+        opt.keycloak_url = opt.reverse_proxy_url
 
-	# user federation
-	if opt.ldap:
-		ucs_ldap_url = opt.ldap
-	else:
-		ucs_ldap_url = f"ldap://{opt.host_fqdn}:7389"  # "ldap://{FQDN}:{port}"
+    # user federation
+    if opt.ldap:
+        ucs_ldap_url = opt.ldap
+    else:
+        ucs_ldap_url = f"ldap://{opt.host_fqdn}:7389"  # "ldap://{FQDN}:{port}"
 
-	print(f"Using bind-dn: {opt.binddn}")
+    print(f"Using bind-dn: {opt.binddn}")
 
-	# log into default realm in case UCS realm doesn't exist yet
-	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
+    # log into default realm in case UCS realm doesn't exist yet
+    kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 
-	server_url = f"https://{opt.host_fqdn}"
+    server_url = f"https://{opt.host_fqdn}"
 
-	# set locale languages
-	realm_payload = {
-		"id": DEFAULT_REALM,
-		"realm": DEFAULT_REALM,
-		"enabled": True,
-		"internationalizationEnabled": True,
-		"supportedLocales": locales_format,
-		"defaultLocale": default_locale,
-		"adminTheme": "keycloak",
-		"accountTheme": "keycloak",
-		"emailTheme": "keycloak",
-		"loginTheme": "UCS",
-		"browserSecurityHeaders": {
-			"contentSecurityPolicyReportOnly": "",
-			"xContentTypeOptions": "nosniff",
-			"xRobotsTag": "none",
-			"xFrameOptions": "",
-			"contentSecurityPolicy": f"frame-src 'self'; frame-ancestors 'self' {server_url}/univention; object-src 'none';",
-			"xXSSProtection": "1; mode=block",
-			"strictTransportSecurity": "max-age=31536000; includeSubDomains"
-		}
-	}
-	kc_admin.update_realm(DEFAULT_REALM, payload=realm_payload)
+    # set locale languages
+    realm_payload = {
+        "id": DEFAULT_REALM,
+        "realm": DEFAULT_REALM,
+        "enabled": True,
+        "internationalizationEnabled": True,
+        "supportedLocales": locales_format,
+        "defaultLocale": default_locale,
+        "adminTheme": "keycloak",
+        "accountTheme": "keycloak",
+        "emailTheme": "keycloak",
+        "loginTheme": "UCS",
+        "browserSecurityHeaders": {
+            "contentSecurityPolicyReportOnly": "",
+            "xContentTypeOptions": "nosniff",
+            "xRobotsTag": "none",
+            "xFrameOptions": "",
+            "contentSecurityPolicy": f"frame-src 'self'; frame-ancestors 'self' {server_url}/univention; object-src 'none';",
+            "xXSSProtection": "1; mode=block",
+            "strictTransportSecurity": "max-age=31536000; includeSubDomains"
+        }
+    }
+    kc_admin.update_realm(DEFAULT_REALM, payload=realm_payload)
 
-	# create ucs realm
-	realm_payload["id"] = opt.realm
-	realm_payload["realm"] = opt.realm
-	kc_admin.create_realm(payload=realm_payload, skip_exists=True)
+    # create ucs realm
+    realm_payload["id"] = opt.realm
+    realm_payload["realm"] = opt.realm
+    kc_admin.create_realm(payload=realm_payload, skip_exists=True)
 
-	configure_login_page(opt, kc_admin)
-	# create portal saml client
-	opt.metadata_url = server_url + "/univention/saml/metadata"
-	opt.metadata_file = None
-	opt.umc_uid_mapper = True
-	create_SAML_client(opt)
+    configure_login_page(opt, kc_admin)
+    # create portal saml client
+    opt.metadata_url = server_url + "/univention/saml/metadata"
+    opt.metadata_file = None
+    opt.umc_uid_mapper = True
+    create_SAML_client(opt)
 
-	# user federation ldap provider payload
-	ldap_federation_payload = {
-		"name": "ldap-provider",
-		"providerId": "ldap",
-		"providerType": "org.keycloak.storage.UserStorageProvider",
-		"parentId": get_realm_id(kc_admin, opt.realm),
-		"config": {
-			"pagination": ["true"],
-			"fullSyncPeriod": ["-1"],
-			"startTls": ["true"],
-			"connectionPooling": ["true"],
-			"usersDn": [opt.ldap_base],
-			"cachePolicy": ["MAX_LIFESPAN"],
-			"maxLifespan": ["300000"],
-			"useKerberosForPasswordAuthentication": ["false"],
-			"importEnabled": ["false"],
-			"enabled": ["true"],
-			"bindCredential": [opt.ldap_system_user_pwd],
-			"bindDn": [opt.ldap_system_user_dn],
-			"changedSyncPeriod": ["-1"],
-			"usernameLDAPAttribute": ["uid"],
-			"vendor": ["other"],
-			"uuidLDAPAttribute": ["entryUUID"],
-			"allowKerberosAuthentication": ["false"],
-			"connectionUrl": [ucs_ldap_url],
-			"syncRegistrations": ["false"],
-			"authType": ["simple"],
-			"debug": ["false"],
-			"searchScope": ["2"],
-			"useTruststoreSpi": ["ldapsOnly"],
-			"usePasswordModifyExtendedOp": ["true"],
-			"trustEmail": ["false"],
-			"priority": ["0"],
-			"userObjectClasses": ["inetOrgPerson, organizationalPerson"],
-			"rdnLDAPAttribute": ["uid"],
-			"editMode": ["READ_ONLY"],
-			"validatePasswordPolicy": ["false"],
-			"batchSizeForSync": ["1000"]
-		}
-	}
+    # user federation ldap provider payload
+    ldap_federation_payload = {
+        "name": "ldap-provider",
+        "providerId": "ldap",
+        "providerType": "org.keycloak.storage.UserStorageProvider",
+        "parentId": get_realm_id(kc_admin, opt.realm),
+        "config": {
+                "pagination": ["true"],
+                "fullSyncPeriod": ["-1"],
+                "startTls": ["true"],
+            "connectionPooling": ["true"],
+            "usersDn": [opt.ldap_base],
+            "cachePolicy": ["MAX_LIFESPAN"],
+            "maxLifespan": ["300000"],
+            "useKerberosForPasswordAuthentication": ["false"],
+            "importEnabled": ["false"],
+            "enabled": ["true"],
+            "bindCredential": [opt.ldap_system_user_pwd],
+            "bindDn": [opt.ldap_system_user_dn],
+            "changedSyncPeriod": ["-1"],
+            "usernameLDAPAttribute": ["uid"],
+            "vendor": ["other"],
+            "uuidLDAPAttribute": ["entryUUID"],
+            "allowKerberosAuthentication": ["false"],
+            "connectionUrl": [ucs_ldap_url],
+            "syncRegistrations": ["false"],
+            "authType": ["simple"],
+            "debug": ["false"],
+            "searchScope": ["2"],
+            "useTruststoreSpi": ["ldapsOnly"],
+            "usePasswordModifyExtendedOp": ["true"],
+            "trustEmail": ["false"],
+            "priority": ["0"],
+            "userObjectClasses": ["inetOrgPerson, organizationalPerson"],
+            "rdnLDAPAttribute": ["uid"],
+            "editMode": ["READ_ONLY"],
+            "validatePasswordPolicy": ["false"],
+            "batchSizeForSync": ["1000"]
+        }
+    }
 
-	# find existing ldap provider or just create if none exists
-	ldap_component_id = check_and_create_component(kc_admin, ldap_federation_payload["name"], ldap_federation_payload["providerId"], ldap_federation_payload)
-	print(f"LDAP User Federation Added: {ucs_ldap_url}")
+    # find existing ldap provider or just create if none exists
+    ldap_component_id = check_and_create_component(kc_admin, ldap_federation_payload["name"], ldap_federation_payload["providerId"], ldap_federation_payload)
+    print(f"LDAP User Federation Added: {ucs_ldap_url}")
 
-	# User federation mapper (LDAP)
-	payload_ldap_mapper = {
-		"name": "uid",
-		"parentId": ldap_component_id,
-		"providerId": "user-attribute-ldap-mapper",
-		"providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
-		"config": {
-			"ldap.attribute": [
-				"uid"
-			],
-			"is.mandatory.in.ldap": [
-				"false"
-			],
-			"read.only": [
-				"true"
-			],
-			"user.model.attribute": [
-				"uid"
-			]
-		}
-	}
+    # User federation mapper (LDAP)
+    payload_ldap_mapper = {
+        "name": "uid",
+        "parentId": ldap_component_id,
+        "providerId": "user-attribute-ldap-mapper",
+        "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+        "config": {
+                "ldap.attribute": [
+                    "uid"
+                ],
+            "is.mandatory.in.ldap": [
+                    "false"
+                    ],
+            "read.only": [
+                    "true"
+                    ],
+            "user.model.attribute": [
+                    "uid"
+                    ]
+        }
+    }
 
-	firstname_ldap_mapper = {
-		"name": "first name",
-		"parentId": ldap_component_id,
-		"providerId": "user-attribute-ldap-mapper",
-		"providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
-		"config": {
-			"ldap.attribute": [
-				"givenName"
-			],
-			"is.mandatory.in.ldap": [
-				"false"
-			],
-			"read.only": [
-				"true"
-			],
-			"user.model.attribute": [
-				"firstName"
-			]
-		}
-	}
-	mail_ldap_mapper = {
-		"name": "email",
-		"parentId": ldap_component_id,
-		"providerId": "user-attribute-ldap-mapper",
-		"providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
-		"config": {
-			"ldap.attribute": [
-				"mailPrimaryAddress"
-			],
-			"is.mandatory.in.ldap": [
-				"false"
-			],
-			"read.only": [
-				"true"
-			],
-			"user.model.attribute": [
-				"email"
-			]
-		}
-	}
-	lastname_ldap_mapper = {
-		"name": "last name",
-		"parentId": ldap_component_id,
-		"providerId": "user-attribute-ldap-mapper",
-		"providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
-		"config": {
-			"ldap.attribute": [
-				"lastname"
-			],
-			"is.mandatory.in.ldap": [
-				"false"
-			],
-			"read.only": [
-				"true"
-			],
-			"user.model.attribute": [
-				"lastName"
-			]
-		}
-	}
-	# find existing uid->uid mapper or create if none exits
-	check_and_create_component(kc_admin, payload_ldap_mapper["name"], payload_ldap_mapper["providerId"], payload_ldap_mapper)
+    firstname_ldap_mapper = {
+        "name": "first name",
+        "parentId": ldap_component_id,
+        "providerId": "user-attribute-ldap-mapper",
+        "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+        "config": {
+                "ldap.attribute": [
+                    "givenName"
+                ],
+            "is.mandatory.in.ldap": [
+                    "false"
+                    ],
+            "read.only": [
+                    "true"
+                    ],
+            "user.model.attribute": [
+                    "firstName"
+                    ]
+        }
+    }
+    mail_ldap_mapper = {
+        "name": "email",
+        "parentId": ldap_component_id,
+        "providerId": "user-attribute-ldap-mapper",
+        "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+        "config": {
+                "ldap.attribute": [
+                    "mailPrimaryAddress"
+                ],
+            "is.mandatory.in.ldap": [
+                    "false"
+                    ],
+            "read.only": [
+                    "true"
+                    ],
+            "user.model.attribute": [
+                    "email"
+                    ]
+        }
+    }
+    lastname_ldap_mapper = {
+        "name": "last name",
+        "parentId": ldap_component_id,
+        "providerId": "user-attribute-ldap-mapper",
+        "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+        "config": {
+                "ldap.attribute": [
+                    "lastname"
+                ],
+            "is.mandatory.in.ldap": [
+                    "false"
+                    ],
+            "read.only": [
+                    "true"
+                    ],
+            "user.model.attribute": [
+                    "lastName"
+                    ]
+        }
+    }
+    # find existing uid->uid mapper or create if none exits
+    check_and_create_component(kc_admin, payload_ldap_mapper["name"], payload_ldap_mapper["providerId"], payload_ldap_mapper)
 
-	# Modify default mappers to correct ones
-	modify_component(kc_admin, firstname_ldap_mapper)
-	modify_component(kc_admin, mail_ldap_mapper)
-	modify_component(kc_admin, lastname_ldap_mapper)
+    # Modify default mappers to correct ones
+    modify_component(kc_admin, firstname_ldap_mapper)
+    modify_component(kc_admin, mail_ldap_mapper)
+    modify_component(kc_admin, lastname_ldap_mapper)
 
-	# Setting admin level to all Domain Admins
-	# Change realm to master
-	kc_admin.realm_name = DEFAULT_REALM
+    # Setting admin level to all Domain Admins
+    # Change realm to master
+    kc_admin.realm_name = DEFAULT_REALM
 
-	# Admins federation ldap provider payload
-	ldap_federation_payload["name"] = "ldap-master-admin"
-	ldap_federation_payload["parentId"] = get_realm_id(kc_admin, DEFAULT_REALM)
-	ldap_federation_payload["config"]["customUserSearchFilter"] = [f"(memberOf=cn=Domain Admins,cn=groups,{opt.ldap_base})"]
+    # Admins federation ldap provider payload
+    ldap_federation_payload["name"] = "ldap-master-admin"
+    ldap_federation_payload["parentId"] = get_realm_id(kc_admin, DEFAULT_REALM)
+    ldap_federation_payload["config"]["customUserSearchFilter"] = [f"(memberOf=cn=Domain Admins,cn=groups,{opt.ldap_base})"]
 
-	# find existing ldap provider or just create if none exists
-	ldap_component_id = check_and_create_component(kc_admin, ldap_federation_payload["name"], ldap_federation_payload["providerId"], ldap_federation_payload)
-	print(f"LDAP Domain Admins Federation Added: {ucs_ldap_url}")
-	print("Filter: {}".format(ldap_federation_payload["config"]["customUserSearchFilter"]))
+    # find existing ldap provider or just create if none exists
+    ldap_component_id = check_and_create_component(kc_admin, ldap_federation_payload["name"], ldap_federation_payload["providerId"], ldap_federation_payload)
+    print(f"LDAP Domain Admins Federation Added: {ucs_ldap_url}")
+    print("Filter: {}".format(ldap_federation_payload["config"]["customUserSearchFilter"]))
 
-	payload_ldap_mapper["name"] = "admin-role"
-	payload_ldap_mapper["parentId"] = ldap_component_id
-	payload_ldap_mapper["providerId"] = "hardcoded-ldap-role-mapper"
-	payload_ldap_mapper["config"] = {"role": ["admin"]}
+    payload_ldap_mapper["name"] = "admin-role"
+    payload_ldap_mapper["parentId"] = ldap_component_id
+    payload_ldap_mapper["providerId"] = "hardcoded-ldap-role-mapper"
+    payload_ldap_mapper["config"] = {"role": ["admin"]}
 
-	# find existing mapper or create if none exits
-	check_and_create_component(kc_admin, payload_ldap_mapper["name"], payload_ldap_mapper["providerId"], payload_ldap_mapper)
-	firstname_ldap_mapper["parentId"] = ldap_component_id
-	mail_ldap_mapper["parentId"] = ldap_component_id
-	lastname_ldap_mapper["parentId"] = ldap_component_id
-	modify_component(kc_admin, firstname_ldap_mapper)
-	modify_component(kc_admin, mail_ldap_mapper)
-	modify_component(kc_admin, lastname_ldap_mapper)
+    # find existing mapper or create if none exits
+    check_and_create_component(kc_admin, payload_ldap_mapper["name"], payload_ldap_mapper["providerId"], payload_ldap_mapper)
+    firstname_ldap_mapper["parentId"] = ldap_component_id
+    mail_ldap_mapper["parentId"] = ldap_component_id
+    lastname_ldap_mapper["parentId"] = ldap_component_id
+    modify_component(kc_admin, firstname_ldap_mapper)
+    modify_component(kc_admin, mail_ldap_mapper)
+    modify_component(kc_admin, lastname_ldap_mapper)
 
 
 def main():
-	# type: () -> int
-	"""
-	CLI tool to interact with Keycloak.
-	"""
-	opt = parse_args()
-	return opt.func(opt) or 0
+    # type: () -> int
+    """
+    CLI tool to interact with Keycloak.
+    """
+    opt = parse_args()
+    return opt.func(opt) or 0
 
 
 if __name__ == "__main__":
-	sys.exit(main())
+    sys.exit(main())

@@ -55,52 +55,52 @@ object_name = _('Printer Driver List')
 object_name_plural = _('Printer Driver Lists')
 long_description = _('List of drivers for printers')
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'univentionPrinterModels'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'univentionPrinterModels'],
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description=_('Name'),
-		syntax=univention.admin.syntax.string,
-		include_in_default_search=True,
-		required=True,
-		identifies=True,
-	),
-	'printmodel': univention.admin.property(
-		short_description=_('Printer Model'),
-		long_description=_('Printer Model'),
-		syntax=univention.admin.syntax.printerModel,
-		multivalue=True,
-		include_in_default_search=True,
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description=_('Name'),
+        syntax=univention.admin.syntax.string,
+        include_in_default_search=True,
+        required=True,
+        identifies=True,
+    ),
+    'printmodel': univention.admin.property(
+        short_description=_('Printer Model'),
+        long_description=_('Printer Model'),
+        syntax=univention.admin.syntax.printerModel,
+        multivalue=True,
+        include_in_default_search=True,
+    ),
 }
 
 layout = [
-	Tab(_('General'), _('Printer List'), layout=[
-		Group(_('General printer driver list settings'), layout=[
-			'name',
-			'printmodel',
-		]),
-	]),
+    Tab(_('General'), _('Printer List'), layout=[
+        Group(_('General printer driver list settings'), layout=[
+            'name',
+            'printmodel',
+        ]),
+    ]),
 ]
 
 
 def unmapDriverList(ldap_value, encoding=()):
-	return [shlex.split(x.decode(*encoding)) for x in ldap_value]
+    return [shlex.split(x.decode(*encoding)) for x in ldap_value]
 
 
 def mapDriverList(udm_value, encoding=()):
-	def q(s):
-		return s.replace(u'"', u'\\"')
-	ldap_attr_list = []
-	for x in udm_value:
-		value = u'"%s" "%s"' % (q(x[0]), q(x[1]))
-		ldap_attr_list.append(value.encode(*encoding))
-	return ldap_attr_list
+    def q(s):
+        return s.replace(u'"', u'\\"')
+    ldap_attr_list = []
+    for x in udm_value:
+        value = u'"%s" "%s"' % (q(x[0]), q(x[1]))
+        ldap_attr_list.append(value.encode(*encoding))
+    return ldap_attr_list
 
 
 mapping = univention.admin.mapping.mapping()
@@ -109,14 +109,14 @@ mapping.register('printmodel', 'printerModel', mapDriverList, unmapDriverList)
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module = module
+    module = module
 
-	@classmethod
-	def rewrite_filter(cls, filter, mapping):
-		if filter.variable == 'printmodel':
-			filter.variable = 'printerModel'
-		else:
-			super(object, cls).rewrite_filter(filter, mapping)
+    @classmethod
+    def rewrite_filter(cls, filter, mapping):
+        if filter.variable == 'printmodel':
+            filter.variable = 'printerModel'
+        else:
+            super(object, cls).rewrite_filter(filter, mapping)
 
 
 lookup = object.lookup

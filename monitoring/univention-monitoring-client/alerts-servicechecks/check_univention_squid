@@ -40,38 +40,38 @@ from univention.monitoring import Alert
 
 class Squid(Alert):
 
-	def write_metrics(self):
-		# check for at least one squid process
-		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '1:', '-c', '1:', '-C', 'squid'])
-		self.write_metric('univention_squid_running', 1 if rc == 0 else 0)
-		self.log.debug(output)
+    def write_metrics(self):
+        # check for at least one squid process
+        rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '1:', '-c', '1:', '-C', 'squid'])
+        self.write_metric('univention_squid_running', 1 if rc == 0 else 0)
+        self.log.debug(output)
 
-		# check HTTP service
-		port = '3128'
-		try:
-			with open('/etc/squid/squid.conf') as fd:
-				while True:
-					line = fd.readline()
-					if not line:
-						break
-					match = re.match(r'^\s*http_port\s+(\d+)', line)
-					if match:
-						port = match.group(1)
-						break
-		except FileNotFoundError:
-			pass
+        # check HTTP service
+        port = '3128'
+        try:
+            with open('/etc/squid/squid.conf') as fd:
+                while True:
+                    line = fd.readline()
+                    if not line:
+                        break
+                    match = re.match(r'^\s*http_port\s+(\d+)', line)
+                    if match:
+                        port = match.group(1)
+                        break
+        except FileNotFoundError:
+            pass
 
-		# check if authentication is required
-		auth = []
-		for authtype in ('squid/ntlmauth', 'squid/basicauth', 'squid/krb5auth'):
-			if ucr.is_true(authtype):
-				auth.extend(['-e', '407'])
-				break
+        # check if authentication is required
+        auth = []
+        for authtype in ('squid/ntlmauth', 'squid/basicauth', 'squid/krb5auth'):
+            if ucr.is_true(authtype):
+                auth.extend(['-e', '407'])
+                break
 
-		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_http', '-I', '127.0.0.1', '-p', port, '-u', 'http://127.0.0.1'] + auth)
-		self.write_metric('univention_squid_reachable', 1 if rc == 0 else 0)
-		self.log.debug(output)
+        rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_http', '-I', '127.0.0.1', '-p', port, '-u', 'http://127.0.0.1'] + auth)
+        self.write_metric('univention_squid_reachable', 1 if rc == 0 else 0)
+        self.log.debug(output)
 
 
 if __name__ == '__main__':
-	Squid.main()
+    Squid.main()

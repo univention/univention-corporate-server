@@ -38,55 +38,55 @@ import subprocess
 
 # TODO: Use the pycountry library here. (Adds additional dependency...)
 def iso_639_1_to_iso_639_2(language_code):
-	if language_code == 'en':
-		return 'eng'
-	elif language_code == 'de':
-		return 'deu'
-	elif language_code == 'fr':
-		return 'fra'
+    if language_code == 'en':
+        return 'eng'
+    elif language_code == 'de':
+        return 'deu'
+    elif language_code == 'fr':
+        return 'fra'
 
 
 def iso_639_1_to_english_name(language_code):
-	if language_code == 'en':
-		return "English"
-	elif language_code == 'de':
-		return "German"
-	elif language_code == 'fr':
-		return "French"
+    if language_code == 'en':
+        return "English"
+    elif language_code == 'de':
+        return "German"
+    elif language_code == 'fr':
+        return "French"
 
 
 def execute_through_ssh(password, command, ip):
-	p = subprocess.Popen((
-		'sshpass',
-		'-p', password,
-		'ssh',
-		'-o', 'StrictHostKeyChecking=no',
-		'root@%s' % (ip,),
-		command
-	), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-	stdout, _ = p.communicate()
-	if p.returncode:
-		p = subprocess.Popen((
-			'ps', 'aux'
-		), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-		stdout_ps, _ = p.communicate()
-		raise Exception(p.returncode, stdout, stdout_ps)
+    p = subprocess.Popen((
+        'sshpass',
+        '-p', password,
+        'ssh',
+        '-o', 'StrictHostKeyChecking=no',
+        'root@%s' % (ip,),
+        command
+    ), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    stdout, _ = p.communicate()
+    if p.returncode:
+        p = subprocess.Popen((
+            'ps', 'aux'
+        ), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        stdout_ps, _ = p.communicate()
+        raise Exception(p.returncode, stdout, stdout_ps)
 
 
 def copy_through_ssh(password, source_file, target_file):
-	subprocess.check_call((
-		'sshpass',
-		'-p', password,
-		'scp',
-		'-r',
-		'-o', 'StrictHostKeyChecking=no',
-		source_file, target_file
-	))
+    subprocess.check_call((
+        'sshpass',
+        '-p', password,
+        'scp',
+        '-r',
+        '-o', 'StrictHostKeyChecking=no',
+        source_file, target_file
+    ))
 
 
 def remove_old_sshkey(ip):
-	subprocess.check_call((
-		'ssh-keygen',
-		'-R',
-		ip
-	))
+    subprocess.check_call((
+        'ssh-keygen',
+        '-R',
+        ip
+    ))

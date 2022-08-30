@@ -54,49 +54,49 @@ object_name = _('DHCP subnet')
 object_name_plural = _('DHCP subnets')
 long_description = _('The IP address range used in a dedicated (non-shared) physical network.')
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'univentionDhcpSubnet'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'univentionDhcpSubnet'],
+    ),
 }
 property_descriptions = {
-	'subnet': univention.admin.property(
-		short_description=_('Subnet address'),
-		long_description=_('The network address.'),
-		syntax=univention.admin.syntax.ipv4Address,
-		include_in_default_search=True,
-		required=True,
-		may_change=False,
-		identifies=True
-	),
-	'subnetmask': univention.admin.property(
-		short_description=_('Address prefix length (or Netmask)'),
-		long_description=_('The number of leading bits of the IP address used to identify the network.'),
-		syntax=univention.admin.syntax.v4netmask,
-		required=True,
-	),
-	'broadcastaddress': univention.admin.property(
-		short_description=_('Broadcast address'),
-		long_description=_('The IP addresses used to send data to all hosts inside the network.'),
-		syntax=univention.admin.syntax.ipv4Address,
-	),
-	'range': univention.admin.property(
-		short_description=_('Dynamic address assignment'),
-		long_description=_('Define a pool of addresses available for dynamic address assignment.'),
-		syntax=univention.admin.syntax.IPv4_AddressRange,
-		multivalue=True,
-	),
+    'subnet': univention.admin.property(
+        short_description=_('Subnet address'),
+        long_description=_('The network address.'),
+        syntax=univention.admin.syntax.ipv4Address,
+        include_in_default_search=True,
+        required=True,
+        may_change=False,
+        identifies=True
+    ),
+    'subnetmask': univention.admin.property(
+        short_description=_('Address prefix length (or Netmask)'),
+        long_description=_('The number of leading bits of the IP address used to identify the network.'),
+        syntax=univention.admin.syntax.v4netmask,
+        required=True,
+    ),
+    'broadcastaddress': univention.admin.property(
+        short_description=_('Broadcast address'),
+        long_description=_('The IP addresses used to send data to all hosts inside the network.'),
+        syntax=univention.admin.syntax.ipv4Address,
+    ),
+    'range': univention.admin.property(
+        short_description=_('Dynamic address assignment'),
+        long_description=_('Define a pool of addresses available for dynamic address assignment.'),
+        syntax=univention.admin.syntax.IPv4_AddressRange,
+        multivalue=True,
+    ),
 }
 
 layout = [
-	Tab(_('General'), _('Basic settings'), layout=[
-		Group(_('General DHCP subnet settings'), layout=[
-			['subnet', 'subnetmask'],
-			'broadcastaddress',
-			'range'
-		]),
-	]),
+    Tab(_('General'), _('Basic settings'), layout=[
+        Group(_('General DHCP subnet settings'), layout=[
+            ['subnet', 'subnetmask'],
+            'broadcastaddress',
+            'range'
+        ]),
+    ]),
 ]
 
 
@@ -109,18 +109,18 @@ add_dhcp_options(__name__)
 
 
 class object(DHCPBaseSubnet):
-	module = module
+    module = module
 
-	@staticmethod
-	def unmapped_lookup_filter():
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionDhcpSubnet'),
-			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionDhcpSharedSubnet')])
-		])
+    @staticmethod
+    def unmapped_lookup_filter():
+        return univention.admin.filter.conjunction('&', [
+            univention.admin.filter.expression('objectClass', 'univentionDhcpSubnet'),
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionDhcpSharedSubnet')])
+        ])
 
 
 def identify(dn, attr):
-	return b'univentionDhcpSubnet' in attr.get('objectClass', []) and b'univentionDhcpSharedSubnet' not in attr.get('objectClass', [])
+    return b'univentionDhcpSubnet' in attr.get('objectClass', []) and b'univentionDhcpSharedSubnet' not in attr.get('objectClass', [])
 
 
 lookup_filter = object.lookup_filter

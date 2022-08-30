@@ -38,31 +38,31 @@ from univention.config_registry import ConfigRegistry
 
 
 def get_colors():
-	ucr = ConfigRegistry()
-	ucr.load()
-	light_theme = ucr.get('bootsplash/theme') in ['ucs-light', 'ucs-appliance-light']
-	if light_theme:
-		colors = {
-			'color_normal': ucr.get('grub/color/normal', 'black/black'),
-			'color_highlight': ucr.get('grub/color/highlight', 'black/green'),
-			'menu_color_normal': ucr.get('grub/menu/color/normal', 'black/black'),
-			'menu_color_highlight': ucr.get('grub/menu/color/highlight', 'black/green'),
-		}
-	else:
-		colors = {
-			'color_normal': ucr.get('grub/color/normal', 'light-gray/black'),
-			'color_highlight': ucr.get('grub/color/highlight', 'black/green'),
-			'menu_color_normal': ucr.get('grub/menu/color/normal', 'light-gray/black'),
-			'menu_color_highlight': ucr.get('grub/menu/color/highlight', 'black/green'),
-		}
-	return colors
+    ucr = ConfigRegistry()
+    ucr.load()
+    light_theme = ucr.get('bootsplash/theme') in ['ucs-light', 'ucs-appliance-light']
+    if light_theme:
+        colors = {
+            'color_normal': ucr.get('grub/color/normal', 'black/black'),
+            'color_highlight': ucr.get('grub/color/highlight', 'black/green'),
+            'menu_color_normal': ucr.get('grub/menu/color/normal', 'black/black'),
+            'menu_color_highlight': ucr.get('grub/menu/color/highlight', 'black/green'),
+        }
+    else:
+        colors = {
+            'color_normal': ucr.get('grub/color/normal', 'light-gray/black'),
+            'color_highlight': ucr.get('grub/color/highlight', 'black/green'),
+            'menu_color_normal': ucr.get('grub/menu/color/normal', 'light-gray/black'),
+            'menu_color_highlight': ucr.get('grub/menu/color/highlight', 'black/green'),
+        }
+    return colors
 
 
 def main():
-	colors = get_colors()
-	for position, color in colors.items():
-		print('set {}={}'.format(position, color))
+    colors = get_colors()
+    for position, color in colors.items():
+        print('set {}={}'.format(position, color))
 
 
 if __name__ == '__main__':
-	main()
+    main()

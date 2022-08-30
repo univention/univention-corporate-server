@@ -39,9 +39,9 @@ import univention.admin.uexceptions
 
 class SignedInteger(integer):  # Workaround for Bug #50591
 
-	@classmethod
-	def parse(cls, text):
-		try:
-			return str(int(text))
-		except ValueError:
-			raise univention.admin.uexceptions.valueError(_("Value must be a number!"))
+    @classmethod
+    def parse(cls, text):
+        try:
+            return str(int(text))
+        except ValueError:
+            raise univention.admin.uexceptions.valueError(_("Value must be a number!"))

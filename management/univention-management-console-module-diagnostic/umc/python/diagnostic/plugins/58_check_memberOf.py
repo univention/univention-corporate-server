@@ -40,18 +40,18 @@ title = _('Check LDAP attribute memberOf')
 description = _('Check whether the LDAP overlay memberOf is locally activated.')
 warning_message = _('The "memberOf" group membership attribute is not available in the LDAP server on this host. This feature is activated by default in new installations since UCS version 4.3-0, and serveral services depend on it. This feature will be a prerequisite in future UCS releases. You may want to consider activating the memberOf feature for the LDAP server according to:')
 links = [{
-	'name': 'activateMemberOf',
-	'href': _('https://help.univention.com/t/memberof-attribute-group-memberships-of-user-and-computer-objects/6439'),
-	'label': _('Activate the memberOf LDAP overlay')
+    'name': 'activateMemberOf',
+    'href': _('https://help.univention.com/t/memberof-attribute-group-memberships-of-user-and-computer-objects/6439'),
+    'label': _('Activate the memberOf LDAP overlay')
 }]
 
 
 def run(_umc_instance: Instance) -> None:
-	if util.is_service_active('LDAP') and not ucr.is_true('ldap/overlay/memberof'):
-	    MODULE.error(warning_message)
-	    raise Warning(description=warning_message)
+    if util.is_service_active('LDAP') and not ucr.is_true('ldap/overlay/memberof'):
+        MODULE.error(warning_message)
+        raise Warning(description=warning_message)
 
 
 if __name__ == '__main__':
-	from univention.management.console.modules.diagnostic import main
-	main()
+    from univention.management.console.modules.diagnostic import main
+    main()

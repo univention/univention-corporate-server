@@ -10,67 +10,67 @@ import os
 from univention.testing.utils import fail, get_ldap_connection
 
 from dockertest import (
-	App, Appcenter, get_app_name, get_app_version, get_docker_appbox_image, get_docker_appbox_ucs,
+    App, Appcenter, get_app_name, get_app_version, get_docker_appbox_image, get_docker_appbox_ucs,
 )
 
 
 def fail_if_file_exists(f):
-	if os.path.exists(f):
-		fail('%s still exists' % f)
+    if os.path.exists(f):
+        fail('%s still exists' % f)
 
 
 if __name__ == '__main__':
 
-	with Appcenter() as appcenter:
-		app_name = get_app_name()
-		app_version = get_app_version()
+    with Appcenter() as appcenter:
+        app_name = get_app_name()
+        app_version = get_app_version()
 
-		app = App(name=app_name, version=app_version, container_version=get_docker_appbox_ucs())
+        app = App(name=app_name, version=app_version, container_version=get_docker_appbox_ucs())
 
-		try:
-			app.set_ini_parameter(
-				DockerImage=get_docker_appbox_image(),
-				DockerScriptSetup='/usr/sbin/%s-setup' % app_name,
-			)
+        try:
+            app.set_ini_parameter(
+                DockerImage=get_docker_appbox_image(),
+                DockerScriptSetup='/usr/sbin/%s-setup' % app_name,
+            )
 
-			app.add_script(setup='''#!/bin/bash
+            app.add_script(setup='''#!/bin/bash
 set -x -e
 echo "Test 123 Data" >/var/lib/univention-appcenter/apps/%(app_name)s/data/test123
 echo "Test 123 Conf" >/var/lib/univention-appcenter/apps/%(app_name)s/conf/test123
 /usr/share/univention-docker-container-mode/setup "$@"
 ''' % {'app_name': app.app_name})
-			app.add_to_local_appcenter()
+            app.add_to_local_appcenter()
 
-			appcenter.update()
+            appcenter.update()
 
-			app.install()
-			app.verify()
+            app.install()
+            app.verify()
 
-			lo = get_ldap_connection()
-			print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app_name[:5], unique=True, required=True))
+            lo = get_ldap_connection()
+            print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app_name[:5], unique=True, required=True))
 
-		finally:
-			app.uninstall()
-			app.remove()
+        finally:
+            app.uninstall()
+            app.remove()
 
-		# fail_if_file_exists('/var/lib/univention-appcenter/apps/%s/data/test123' % app.app_name)
-		fail_if_file_exists('/var/lib/univention-appcenter/apps/%s/conf/test123' % app.app_name)
-		fail_if_file_exists('/var/lib/univention-appcenter/apps/%s/conf/base.conf' % app.app_name)
+        # fail_if_file_exists('/var/lib/univention-appcenter/apps/%s/data/test123' % app.app_name)
+        fail_if_file_exists('/var/lib/univention-appcenter/apps/%s/conf/test123' % app.app_name)
+        fail_if_file_exists('/var/lib/univention-appcenter/apps/%s/conf/base.conf' % app.app_name)
 
-		found_conf = False
-		backup_dir = '/var/lib/univention-appcenter/backups/'
-		for d in os.listdir(backup_dir):
-			if d.startswith('appcenter-backup-%s:' % app.app_name):
-				conffile = os.path.join(backup_dir, d, 'conf', 'test123')
-				if os.path.exists(conffile):
-					f = open(conffile)
-					res = f.readlines()
-					if res == ['Test 123 Conf\n']:
-						found_conf = True
-		if not found_conf:
-			fail('Conf backup file not found')
+        found_conf = False
+        backup_dir = '/var/lib/univention-appcenter/backups/'
+        for d in os.listdir(backup_dir):
+            if d.startswith('appcenter-backup-%s:' % app.app_name):
+                conffile = os.path.join(backup_dir, d, 'conf', 'test123')
+                if os.path.exists(conffile):
+                    f = open(conffile)
+                    res = f.readlines()
+                    if res == ['Test 123 Conf\n']:
+                        found_conf = True
+        if not found_conf:
+            fail('Conf backup file not found')
 
-		lo = get_ldap_connection()
-		res = lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app.app_name[:5])
-		if res:
-			fail('The LDAP object has not been removed: %s' % res)
+        lo = get_ldap_connection()
+        res = lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app.app_name[:5])
+        if res:
+            fail('The LDAP object has not been removed: %s' % res)

@@ -40,4 +40,4 @@ _ = Translation('PACKAGENAME').translate
 
 
 class Instance(Base):
-	pass
+    pass

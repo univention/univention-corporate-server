@@ -47,103 +47,103 @@ import time
 
 
 def _sysvol_directory(ucr):
-	return '/var/lib/samba/sysvol/%s/Policies/' % ucr.get('domainname')
+    return '/var/lib/samba/sysvol/%s/Policies/' % ucr.get('domainname')
 
 
 def getLDAPGPOs(options):
-	ldapGPOs = []
+    ldapGPOs = []
 
-	p1 = subprocess.Popen(['univention-s4search', 'objectClass=groupPolicyContainer', 'cn'], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	stdout, stderr = p1.communicate()
-	if p1.returncode != 0:
-		if options.verbose:
-			print('Failed to search via univention-s4search.')
-			print(stderr.decode('UTF-8', 'replace'))
-		return None
+    p1 = subprocess.Popen(['univention-s4search', 'objectClass=groupPolicyContainer', 'cn'], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = p1.communicate()
+    if p1.returncode != 0:
+        if options.verbose:
+            print('Failed to search via univention-s4search.')
+            print(stderr.decode('UTF-8', 'replace'))
+        return None
 
-	plainGPOAttribute = []
-	currentGPO = None
-	for line in stdout.decode('UTF-8', 'replace').split('\n'):
-		# The result looks like this:
-		# record 1
-		#   dn: CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System,DC=deadlock50,DC=local
-		#   cn: {31B2F340-016D-11D2-945F-00C04FB984F9}
-		#   ...
-		#
+    plainGPOAttribute = []
+    currentGPO = None
+    for line in stdout.decode('UTF-8', 'replace').split('\n'):
+        # The result looks like this:
+        # record 1
+        #   dn: CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System,DC=deadlock50,DC=local
+        #   cn: {31B2F340-016D-11D2-945F-00C04FB984F9}
+        #   ...
+        #
 
-		if line.lower().startswith('cn: '):
-			currentGPO = line[4:]
-		elif line.startswith(' '):
-			# if the attributes value uses more than one line
-			currentGPO += line.split(' ', 1)[1]
-		else:
-			if currentGPO:
-				plainGPOAttribute.append(currentGPO)
-			currentGPO = None
+        if line.lower().startswith('cn: '):
+            currentGPO = line[4:]
+        elif line.startswith(' '):
+            # if the attributes value uses more than one line
+            currentGPO += line.split(' ', 1)[1]
+        else:
+            if currentGPO:
+                plainGPOAttribute.append(currentGPO)
+            currentGPO = None
 
-	# Get GPO ID
-	for gpo in plainGPOAttribute:
-		bracketOpen = gpo.find('{')
-		bracketClose = gpo.find('}')
+    # Get GPO ID
+    for gpo in plainGPOAttribute:
+        bracketOpen = gpo.find('{')
+        bracketClose = gpo.find('}')
 
-		if bracketOpen < 0 or bracketClose < 0:
-			if options.verbose:
-				print('Unknown GPO format: "%s"' % gpo)
-			continue
+        if bracketOpen < 0 or bracketClose < 0:
+            if options.verbose:
+                print('Unknown GPO format: "%s"' % gpo)
+            continue
 
-		ldapGPOs.append(gpo[bracketOpen:bracketClose + 1])
+        ldapGPOs.append(gpo[bracketOpen:bracketClose + 1])
 
-	return ldapGPOs
+    return ldapGPOs
 
 
 def getFileSystemGPOs(sysvolDirectory):
-	return [x for x in os.listdir(sysvolDirectory) if x.startswith('{')]
+    return [x for x in os.listdir(sysvolDirectory) if x.startswith('{')]
 
 
 if __name__ == '__main__':
-	parser = ArgumentParser()
-	parser.add_argument("--move", action="store", dest="target_directory", help="Move unused GPOs to given directory")
-	parser.add_argument("--verbose", action="store_true", default=False, help="Print verbose messages")
-	options = parser.parse_args()
+    parser = ArgumentParser()
+    parser.add_argument("--move", action="store", dest="target_directory", help="Move unused GPOs to given directory")
+    parser.add_argument("--verbose", action="store_true", default=False, help="Print verbose messages")
+    options = parser.parse_args()
 
-	# load UCR
-	ucr = config_registry.ConfigRegistry()
-	ucr.load()
+    # load UCR
+    ucr = config_registry.ConfigRegistry()
+    ucr.load()
 
-	sysvolDirectory = _sysvol_directory(ucr)
+    sysvolDirectory = _sysvol_directory(ucr)
 
-	ldapGPOs = getLDAPGPOs(options)
+    ldapGPOs = getLDAPGPOs(options)
 
-	if not ldapGPOs:
-		print('No LDAP GPOs found. Abort!')
-		sys.exit(1)
+    if not ldapGPOs:
+        print('No LDAP GPOs found. Abort!')
+        sys.exit(1)
 
-	fileSystemGPOs = getFileSystemGPOs(sysvolDirectory)
+    fileSystemGPOs = getFileSystemGPOs(sysvolDirectory)
 
-	if options.verbose:
-		print('The following LDAP GPOs were found:')
-		for ldapGPO in ldapGPOs:
-			print(' - %s' % ldapGPO)
-		print('')
+    if options.verbose:
+        print('The following LDAP GPOs were found:')
+        for ldapGPO in ldapGPOs:
+            print(' - %s' % ldapGPO)
+        print('')
 
-		print('The following file system GPOs were found:')
-		for fileSystemGPO in fileSystemGPOs:
-			print(' - %s' % fileSystemGPO)
-		print('')
+        print('The following file system GPOs were found:')
+        for fileSystemGPO in fileSystemGPOs:
+            print(' - %s' % fileSystemGPO)
+        print('')
 
-	for fileSystemGPO in fileSystemGPOs:
-		if fileSystemGPO in ldapGPOs:
-			# LDAP GPO is also available in sysvol directory
-			continue
+    for fileSystemGPO in fileSystemGPOs:
+        if fileSystemGPO in ldapGPOs:
+            # LDAP GPO is also available in sysvol directory
+            continue
 
-		if not options.target_directory:
-			# In this case we print only
-			print('Found unused GPO: %s' % fileSystemGPO)
-			continue
+        if not options.target_directory:
+            # In this case we print only
+            print('Found unused GPO: %s' % fileSystemGPO)
+            continue
 
-		# Move GPO
-		src = os.path.join(sysvolDirectory, fileSystemGPO)
-		dest = os.path.join(options.target_directory, '%s_%s' % (fileSystemGPO, time.strftime("%Y%m%d%H%M", time.localtime())))
-		if options.verbose:
-			print('Move unused GPO %s to %s' % (fileSystemGPO, dest))
-		shutil.move(src, dest)
+        # Move GPO
+        src = os.path.join(sysvolDirectory, fileSystemGPO)
+        dest = os.path.join(options.target_directory, '%s_%s' % (fileSystemGPO, time.strftime("%Y%m%d%H%M", time.localtime())))
+        if options.verbose:
+            print('Move unused GPO %s to %s' % (fileSystemGPO, dest))
+        shutil.move(src, dest)

@@ -48,24 +48,24 @@ breakline = 0
 
 opts, args = getopt.getopt(sys.argv[1:], 'f:m:r:l:b:n')
 for opt, val in opts:
-	if opt == '-f':
-		if val[-1] == '-':
-			functions.append((val[:-1], 0))
-		elif val[-1] == '+':
-			functions.append((val[:-1], 2))
-		else:
-			functions.append((val, 1))
-	elif opt == '-m':
-		if val[-1] == '-':
-			exclude_modules.append(val[:-1])
-		else:
-			include_modules.append(val)
-	elif opt == '-r':
-		regexps.append(re.compile(val))
-	elif opt == '-b':
-		breakline = int(val)
-	elif opt == '-n':
-		only = True
+    if opt == '-f':
+        if val[-1] == '-':
+            functions.append((val[:-1], 0))
+        elif val[-1] == '+':
+            functions.append((val[:-1], 2))
+        else:
+            functions.append((val, 1))
+    elif opt == '-m':
+        if val[-1] == '-':
+            exclude_modules.append(val[:-1])
+        else:
+            include_modules.append(val)
+    elif opt == '-r':
+        regexps.append(re.compile(val))
+    elif opt == '-b':
+        breakline = int(val)
+    elif opt == '-n':
+        only = True
 
 # level
 skip = True
@@ -74,80 +74,80 @@ msg_pattern = re.compile(r'^([^ ]+) *\( ([^ ]+) +\) : (.+)$')
 
 
 def suspended(levels):
-	suspend = 1
-	priority = 0
-	for pattern, type in functions:
-		for level in levels:
-			if type != 1 and re.match(pattern, level):
-				suspend = type
-		priority += 1
+    suspend = 1
+    priority = 0
+    for pattern, type in functions:
+        for level in levels:
+            if type != 1 and re.match(pattern, level):
+                suspend = type
+        priority += 1
 
-	return suspend < 1
+    return suspend < 1
 
 
 def spacing(depth):
-	if depth == 0:
-		return ''
-	else:
-		return '   ' * depth
+    if depth == 0:
+        return ''
+    else:
+        return '   ' * depth
 
 
 def split(line, length):
-	if len(line) < length:
-		return [line]
-	res = []
-	ls = len(line) / length
-	for i in range(0, ls + 1):
-		n = line[i * length:(i + 1) * length]
-		if not n:
-			break
-		res.append(n)
-	return res
+    if len(line) < length:
+        return [line]
+    res = []
+    ls = len(line) / length
+    for i in range(0, ls + 1):
+        n = line[i * length:(i + 1) * length]
+        if not n:
+            break
+        res.append(n)
+    return res
 
 
 while True:
-	line = sys.stdin.readline()
-	if line == '':
-		break
-	line = line[0:-1]
-	if line.startswith('DEBUG_INIT'):
-		if not breakline:
-			print('-' * 80)
-		else:
-			print('-' * breakline)
-		skip = False
-	elif skip:
-		pass
-	elif line.startswith('UNIVENTION_DEBUG_BEGIN  : '):
-		function = line[line.find(':') + 2:]
-		levels.append(function)
+    line = sys.stdin.readline()
+    if line == '':
+        break
+    line = line[0:-1]
+    if line.startswith('DEBUG_INIT'):
+        if not breakline:
+            print('-' * 80)
+        else:
+            print('-' * breakline)
+        skip = False
+    elif skip:
+        pass
+    elif line.startswith('UNIVENTION_DEBUG_BEGIN  : '):
+        function = line[line.find(':') + 2:]
+        levels.append(function)
 
-		if not suspended(levels):
-			if breakline:
-				s = spacing(len(levels) - 1)
-				sl = breakline - len(s) - 3
-				c = 1
-				for i in split(function, sl):
-					if c:
-						print(s, '+', i)
-						c = 0
-					else:
-						print(s, ' ', i)
-			else:
-				print(spacing(len(levels) - 1), '+', function)
+        if not suspended(levels):
+            if breakline:
+                s = spacing(len(levels) - 1)
+                sl = breakline - len(s) - 3
+                c = 1
+                for i in split(function, sl):
+                    if c:
+                        print(s, '+', i)
+                        c = 0
+                    else:
+                        print(s, ' ', i)
+            else:
+                print(spacing(len(levels) - 1), '+', function)
 
-	elif line.startswith('UNIVENTION_DEBUG_END    : '):
-		function = line[line.find(':') + 2:]
-		levels.pop()
+    elif line.startswith('UNIVENTION_DEBUG_END    : '):
+        function = line[line.find(':') + 2:]
+        levels.pop()
 
-	else:
-		if not suspended(levels):
-			# ADMIN       ( INFO    ) : writing XML
-			msgs = msg_pattern.findall(line)
-			if msgs:
-				module, level, msg = msgs[0]
-				if regexps:
-					for regexp in regexps:
-						if not regexp.match(msg):
-							continue
-				print(spacing(len(levels)), msg)
+    else:
+        if not suspended(levels):
+            # ADMIN       ( INFO    ) : writing XML
+            msgs = msg_pattern.findall(line)
+            if msgs:
+                module, level, msg = msgs[0]
+                if regexps:
+                    for regexp in regexps:
+                        if not regexp.match(msg):
+                            continue
+                print(spacing(len(levels)), msg)

@@ -41,18 +41,18 @@ import os
 
 class DeviceInfo(object):
 
-	def __init__(self, path):
-		self.path = path
-		self._statvfs = os.statvfs(self.path)
+    def __init__(self, path):
+        self.path = path
+        self._statvfs = os.statvfs(self.path)
 
-	def free(self):
-		return (self._statvfs.f_bfree * self._statvfs.f_bsize)
+    def free(self):
+        return (self._statvfs.f_bfree * self._statvfs.f_bsize)
 
-	def available(self):
-		return (self._statvfs.f_bavail * self._statvfs.f_bsize)
+    def available(self):
+        return (self._statvfs.f_bavail * self._statvfs.f_bsize)
 
-	def size(self):
-		return (self._statvfs.f_blocks * self._statvfs.f_bsize)
+    def size(self):
+        return (self._statvfs.f_blocks * self._statvfs.f_bsize)
 
-	def block_size(self):
-		return self._statvfs.f_bsize
+    def block_size(self):
+        return self._statvfs.f_bsize

@@ -20,47 +20,47 @@ run_time = 10.0
 
 
 def search_thread():
-	global failed
-	lo = getMachineConnection()
-	lo.lo._retry_max = 10E4
-	lo.lo._retry_delay = .001
-	x = 0
-	lo.search(filter="uid=Administrator", attr=["uid"])
-	s = time.time()
-	print("go")
-	while (time.time() - s) < run_time:
-		x += 1
-		try:
-			lo.search(filter="uid=Administrator", attr=["uid"])
-		except LDAPError:
-			failed = True
-	print(f"Searches per sec: {x / run_time}")
+    global failed
+    lo = getMachineConnection()
+    lo.lo._retry_max = 10E4
+    lo.lo._retry_delay = .001
+    x = 0
+    lo.search(filter="uid=Administrator", attr=["uid"])
+    s = time.time()
+    print("go")
+    while (time.time() - s) < run_time:
+        x += 1
+        try:
+            lo.search(filter="uid=Administrator", attr=["uid"])
+        except LDAPError:
+            failed = True
+    print(f"Searches per sec: {x / run_time}")
 
 
 def main():
-	thread_count = 100
-	my_thread = [None] * thread_count
-	for i in range(0, thread_count):
-		my_thread[i] = threading.Thread(target=search_thread)
-	for t in my_thread:
-		t.start()
+    thread_count = 100
+    my_thread = [None] * thread_count
+    for i in range(0, thread_count):
+        my_thread[i] = threading.Thread(target=search_thread)
+    for t in my_thread:
+        t.start()
 
-	print("warmup")
-	time.sleep(3)
+    print("warmup")
+    time.sleep(3)
 
-	print("restart slapd")
-	subprocess.check_call(["systemctl", "restart", "slapd.service"])
-	print("restarted")
+    print("restart slapd")
+    subprocess.check_call(["systemctl", "restart", "slapd.service"])
+    print("restarted")
 
-	for t in my_thread:
-		t.join()
+    for t in my_thread:
+        t.join()
 
-	print("done")
-	assert not failed
+    print("done")
+    assert not failed
 
 
 if __name__ == '__main__':
-	try:
-		main()
-	finally:
-		subprocess.check_call(["systemctl", "restart", "slapd.service"])
+    try:
+        main()
+    finally:
+        subprocess.check_call(["systemctl", "restart", "slapd.service"])

@@ -43,4 +43,4 @@ _ = Translation('univention-management-console-module-lib').translate
 
 
 class Instance(Base, Server):
-	pass
+    pass

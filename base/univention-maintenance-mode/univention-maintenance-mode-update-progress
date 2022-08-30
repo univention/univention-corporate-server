@@ -46,95 +46,95 @@ available_updates = uu.get_all_available_release_updates()[0]
 
 
 def read_progress():
-	updater_status = UpdaterStatus()
-	if updater_status.status == 'DONE':
-		return 0.0
-	ret = 0.0
-	with open('/var/lib/univention-updater/univention-updater.status.details') as fd:
-		for line in fd:
-			bits = line.split(':')
-			if len(bits) > 3:
-				try:
-					if bits[0] == 'dlstatus':
-						ret = float(bits[2]) / 2.0
-					elif bits[0] == 'pmstatus':
-						ret = 50.0 + float(bits[2]) / 2.0
-				except ValueError:
-					pass
-	return ret
+    updater_status = UpdaterStatus()
+    if updater_status.status == 'DONE':
+        return 0.0
+    ret = 0.0
+    with open('/var/lib/univention-updater/univention-updater.status.details') as fd:
+        for line in fd:
+            bits = line.split(':')
+            if len(bits) > 3:
+                try:
+                    if bits[0] == 'dlstatus':
+                        ret = float(bits[2]) / 2.0
+                    elif bits[0] == 'pmstatus':
+                        ret = 50.0 + float(bits[2]) / 2.0
+                except ValueError:
+                    pass
+    return ret
 
 
 class UpdaterStatus(object):
-	def __init__(self):
-		self.target_version = None
-		with open('/var/lib/univention-updater/univention-updater.status') as fd:
-			for line in fd:
-				try:
-					key, value = line.split('=', 1)
-				except ValueError:
-					continue
-				if key == 'current_version':
-					self.current_version = value
-				elif key == 'next_version':
-					self.next_version = value
-				elif key == 'target_version':
-					self.target_version = value
-				elif key == 'type':
-					self.updatetype = value
-				elif key == 'status':
-					self.status = value
-				elif key == 'errorsource':
-					self.errorsource = value
-		self.overall_updates = available_updates
-		if self.target_version in self.overall_updates:
-			self.overall_updates = self.overall_updates[:self.overall_updates.index(self.target_version)]
+    def __init__(self):
+        self.target_version = None
+        with open('/var/lib/univention-updater/univention-updater.status') as fd:
+            for line in fd:
+                try:
+                    key, value = line.split('=', 1)
+                except ValueError:
+                    continue
+                if key == 'current_version':
+                    self.current_version = value
+                elif key == 'next_version':
+                    self.next_version = value
+                elif key == 'target_version':
+                    self.target_version = value
+                elif key == 'type':
+                    self.updatetype = value
+                elif key == 'status':
+                    self.status = value
+                elif key == 'errorsource':
+                    self.errorsource = value
+        self.overall_updates = available_updates
+        if self.target_version in self.overall_updates:
+            self.overall_updates = self.overall_updates[:self.overall_updates.index(self.target_version)]
 
-	def finished_updates(self):
-		if self.current_version in self.overall_updates:
-			return self.overall_updates.index(self.current_version) + 1
-		return 0
+    def finished_updates(self):
+        if self.current_version in self.overall_updates:
+            return self.overall_updates.index(self.current_version) + 1
+        return 0
 
 
 def add_updater_context(percentage):
-	updater_status = UpdaterStatus()
-	if updater_status.target_version == updater_status.current_version:
-		return 100.0
-	finished_updates = float(updater_status.finished_updates())
-	return (finished_updates * 100.0 + percentage) / float(len(updater_status.overall_updates))
+    updater_status = UpdaterStatus()
+    if updater_status.target_version == updater_status.current_version:
+        return 100.0
+    finished_updates = float(updater_status.finished_updates())
+    return (finished_updates * 100.0 + percentage) / float(len(updater_status.overall_updates))
 
 
 def write_json(percentage):
-	with open('/var/www/univention/maintenance/updater.json', 'w') as fd:
-		json.dump({'v1': {'percentage': percentage}}, fd)
+    with open('/var/www/univention/maintenance/updater.json', 'w') as fd:
+        json.dump({'v1': {'percentage': percentage}}, fd)
 
 
 def compute():
-	try:
-		percentage = read_progress()
-	except EnvironmentError as exc:
-		print('Error while reading progress: %s' % exc)
-	else:
-		try:
-			percentage = add_updater_context(percentage)
-		except EnvironmentError as exc:
-			print('Error while adding context: %s' % exc)
-		else:
-			try:
-				write_json(percentage)
-			except EnvironmentError as exc:
-				print('Error while writing json: %s' % exc)
+    try:
+        percentage = read_progress()
+    except EnvironmentError as exc:
+        print('Error while reading progress: %s' % exc)
+    else:
+        try:
+            percentage = add_updater_context(percentage)
+        except EnvironmentError as exc:
+            print('Error while adding context: %s' % exc)
+        else:
+            try:
+                write_json(percentage)
+            except EnvironmentError as exc:
+                print('Error while writing json: %s' % exc)
 
 
 def main():
-	try:
-		os.unlink('/var/www/univention/maintenance/updater.json')
-	except EnvironmentError:
-		print('Failed to delete the status file /var/www/univention/maintenance/updater.json')
-	duration = 2
-	while True:
-		compute()
-		time.sleep(duration)
+    try:
+        os.unlink('/var/www/univention/maintenance/updater.json')
+    except EnvironmentError:
+        print('Failed to delete the status file /var/www/univention/maintenance/updater.json')
+    duration = 2
+    while True:
+        compute()
+        time.sleep(duration)
 
 
 if __name__ == '__main__':
-	main()
+    main()

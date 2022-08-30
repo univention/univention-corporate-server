@@ -56,35 +56,35 @@ from io import BytesIO
 from typing import IO, Any, Callable, Dict, Iterator, List, Optional, Tuple, TypeVar, Union, cast  # noqa: F401
 
 try:
-	from argparse import BooleanOptionalAction
+    from argparse import BooleanOptionalAction
 except ImportError:
-	from argparse import Action
+    from argparse import Action
 
-	# <https://github.com/python/cpython/blob/3.9/Lib/argparse.py#L862>
-	class BooleanOptionalAction(Action):  # type: ignore
-		def __init__(self, option_strings, dest, default=None, type=None, choices=None, required=False, help=None, metavar=None):
-			# type: (str, str, Optional[bool], Any, Any, bool, Optional[str], Optional[str]) -> None
-			_option_strings = []
-			for option_string in option_strings:
-				_option_strings.append(option_string)
+    # <https://github.com/python/cpython/blob/3.9/Lib/argparse.py#L862>
+    class BooleanOptionalAction(Action):  # type: ignore
+        def __init__(self, option_strings, dest, default=None, type=None, choices=None, required=False, help=None, metavar=None):
+            # type: (str, str, Optional[bool], Any, Any, bool, Optional[str], Optional[str]) -> None
+            _option_strings = []
+            for option_string in option_strings:
+                _option_strings.append(option_string)
 
-				if option_string.startswith('--'):
-					option_string = '--no-' + option_string[2:]
-					_option_strings.append(option_string)
+                if option_string.startswith('--'):
+                    option_string = '--no-' + option_string[2:]
+                    _option_strings.append(option_string)
 
-			if help is not None and default is not None:
-				help += " (default: %(default)s)"
+            if help is not None and default is not None:
+                help += " (default: %(default)s)"
 
-			Action.__init__(self, option_strings=_option_strings, dest=dest, nargs=0, default=default, type=type, choices=choices, required=required, help=help, metavar=metavar)
+            Action.__init__(self, option_strings=_option_strings, dest=dest, nargs=0, default=default, type=type, choices=choices, required=required, help=help, metavar=metavar)
 
-		def __call__(self, parser, namespace, values, option_string=None):
-			# type: (ArgumentParser, Namespace, Any, Optional[str]) -> None
-			if option_string is not None and option_string in self.option_strings:
-				setattr(namespace, self.dest, not option_string.startswith('--no-'))
+        def __call__(self, parser, namespace, values, option_string=None):
+            # type: (ArgumentParser, Namespace, Any, Optional[str]) -> None
+            if option_string is not None and option_string in self.option_strings:
+                setattr(namespace, self.dest, not option_string.startswith('--no-'))
 
-		def format_usage(self):
-			# type: () -> str
-			return ' | '.join(self.option_strings)
+        def format_usage(self):
+            # type: () -> str
+            return ' | '.join(self.option_strings)
 
 
 import boto
@@ -98,104 +98,104 @@ F = TypeVar("F", bound=Callable[..., Any])
 
 
 class Lazy(object):
-	"""
-	base class for delayed file/image actions
-	"""
+    """
+    base class for delayed file/image actions
+    """
 
-	def __init__(self):
-		# type: () -> None
-		self._available = False
+    def __init__(self):
+        # type: () -> None
+        self._available = False
 
-	@staticmethod
-	def lazy(fun):
-		# type: (F) -> F
-		def newfun(self, *args, **kwargs):
-			# type: (File, *Any, **Any) -> Any
-			if not self._available:
-				self._create()
-				self._available = True
-			return fun(self, *args, **kwargs)
+    @staticmethod
+    def lazy(fun):
+        # type: (F) -> F
+        def newfun(self, *args, **kwargs):
+            # type: (File, *Any, **Any) -> Any
+            if not self._available:
+                self._create()
+                self._available = True
+            return fun(self, *args, **kwargs)
 
-		return cast(F, newfun)
+        return cast(F, newfun)
 
-	def _create(self):
-		# type: () -> None
-		raise NotImplementedError()
+    def _create(self):
+        # type: () -> None
+        raise NotImplementedError()
 
 
 class File(Lazy):
-	"""
-	base class for delayed file/image actions
-	"""
+    """
+    base class for delayed file/image actions
+    """
 
-	def __init__(self):
-		# type: () -> None
-		Lazy.__init__(self)
-		self._path = ""
+    def __init__(self):
+        # type: () -> None
+        Lazy.__init__(self)
+        self._path = ""
 
-	@staticmethod
-	def hashed(fun):
-		# type: (Callable[..., Any]) -> Callable[..., str]
-		def newfun(self, *args, **kwargs):
-			# type: (File, *Any, **Any) -> str
-			ret = fun(self, *args, **kwargs)
-			return hashlib.sha256(repr(ret).encode("UTF-8")).hexdigest()
+    @staticmethod
+    def hashed(fun):
+        # type: (Callable[..., Any]) -> Callable[..., str]
+        def newfun(self, *args, **kwargs):
+            # type: (File, *Any, **Any) -> str
+            ret = fun(self, *args, **kwargs)
+            return hashlib.sha256(repr(ret).encode("UTF-8")).hexdigest()
 
-		return newfun
+        return newfun
 
-	def hash(self):
-		# type: () -> str
-		raise NotImplementedError()
+    def hash(self):
+        # type: () -> str
+        raise NotImplementedError()
 
-	@Lazy.lazy
-	def path(self):
-		# type: () -> str
-		return self._path
+    @Lazy.lazy
+    def path(self):
+        # type: () -> str
+        return self._path
 
-	@Lazy.lazy
-	def size(self):
-		# type: () -> int
-		return os.stat(self._path).st_size
+    @Lazy.lazy
+    def size(self):
+        # type: () -> int
+        return os.stat(self._path).st_size
 
-	@Lazy.lazy
-	def used_size(self):
-		# type: () -> int
-		return os.stat(self._path).st_blocks * 512
+    @Lazy.lazy
+    def used_size(self):
+        # type: () -> int
+        return os.stat(self._path).st_blocks * 512
 
 
 class Raw(File):
-	"""
-	represents a "RAW" disk image
-	"""
+    """
+    represents a "RAW" disk image
+    """
 
-	def __init__(self, inputfile):
-		# type: (IO[bytes]) -> None
-		self._inputfile = inputfile
-		File.__init__(self)
+    def __init__(self, inputfile):
+        # type: (IO[bytes]) -> None
+        self._inputfile = inputfile
+        File.__init__(self)
 
-	@File.hashed
-	def hash(self):
-		# type: () -> Tuple[Any, ...]
-		return (Raw, self._inputfile)
+    @File.hashed
+    def hash(self):
+        # type: () -> Tuple[Any, ...]
+        return (Raw, self._inputfile)
 
-	def _create(self):
-		# type: () -> None
-		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
-		store = os.path.join(STOREDIR, self.hash())
-		target = os.path.join(store, 'image.raw')
-		if not os.path.exists(store):
-			log('Creating RAW')
-			os.mkdir(store)
-			cmd = ('qemu-img', 'convert', '-p', '-O', 'raw', '/dev/stdin', 'image.raw')
-			subprocess.check_call(cmd, cwd=TEMPDIR, stdin=self._inputfile, stdout=sys.stderr)
-			output = os.path.join(TEMPDIR, 'image.raw')
-			os.rename(output, target)
-		self._path = target
-		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
+    def _create(self):
+        # type: () -> None
+        assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
+        store = os.path.join(STOREDIR, self.hash())
+        target = os.path.join(store, 'image.raw')
+        if not os.path.exists(store):
+            log('Creating RAW')
+            os.mkdir(store)
+            cmd = ('qemu-img', 'convert', '-p', '-O', 'raw', '/dev/stdin', 'image.raw')
+            subprocess.check_call(cmd, cwd=TEMPDIR, stdin=self._inputfile, stdout=sys.stderr)
+            output = os.path.join(TEMPDIR, 'image.raw')
+            os.rename(output, target)
+        self._path = target
+        assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
 
 
 class Vmdk(File):
-	DESCRIPTOR = '''# Description file created by VMDK stream converter
+    DESCRIPTOR = '''# Description file created by VMDK stream converter
 version=1
 # Believe this is random
 CID=7e5b80a7
@@ -215,283 +215,283 @@ ddb.geometry.sectors = "63"
 ddb.longContentID = "8f15b3d0009d9a3f456ff7b28d324d2a"
 ddb.virtualHWVersion = "11"'''
 
-	def __init__(self, raw, image_descriptor="", streamOptimized=False):
-		# type: (Raw, str, bool) -> None
-		assert isinstance(raw, Raw)
-		self._raw = raw
-		self.image_descriptor = image_descriptor or self.DESCRIPTOR
-		self._streamOptimized = streamOptimized
-		File.__init__(self)
+    def __init__(self, raw, image_descriptor="", streamOptimized=False):
+        # type: (Raw, str, bool) -> None
+        assert isinstance(raw, Raw)
+        self._raw = raw
+        self.image_descriptor = image_descriptor or self.DESCRIPTOR
+        self._streamOptimized = streamOptimized
+        File.__init__(self)
 
-	@File.hashed
-	def hash(self):
-		# type: () -> Tuple[Any, ...]
-		return (Vmdk, self.image_descriptor, self._raw.hash, self._streamOptimized)
+    @File.hashed
+    def hash(self):
+        # type: () -> Tuple[Any, ...]
+        return (Vmdk, self.image_descriptor, self._raw.hash, self._streamOptimized)
 
-	def _create(self):
-		# type: () -> None
-		self._raw.path()
-		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
-		store = os.path.join(STOREDIR, self.hash())
-		target = os.path.join(store, 'image.vmdk')
-		if not os.path.exists(store):
-			os.mkdir(store)
-			output = os.path.join(TEMPDIR, 'image.vmdk')
-			fmt = "streamOptimized" if self._streamOptimized else "monolithicSparse"
-			log('Creating VMDK (%s)' % (fmt,))
-			cmd = ('qemu-img', 'convert', '-p', '-f', 'raw', '-O', 'vmdk', '-o', 'subformat=%s' % (fmt,), self._raw.path(), 'image.vmdk')
-			subprocess.check_call(cmd, cwd=TEMPDIR, stdout=sys.stderr)
-			os.rename(output, target)
-		self._path = target
-		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
+    def _create(self):
+        # type: () -> None
+        self._raw.path()
+        assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
+        store = os.path.join(STOREDIR, self.hash())
+        target = os.path.join(store, 'image.vmdk')
+        if not os.path.exists(store):
+            os.mkdir(store)
+            output = os.path.join(TEMPDIR, 'image.vmdk')
+            fmt = "streamOptimized" if self._streamOptimized else "monolithicSparse"
+            log('Creating VMDK (%s)' % (fmt,))
+            cmd = ('qemu-img', 'convert', '-p', '-f', 'raw', '-O', 'vmdk', '-o', 'subformat=%s' % (fmt,), self._raw.path(), 'image.vmdk')
+            subprocess.check_call(cmd, cwd=TEMPDIR, stdout=sys.stderr)
+            os.rename(output, target)
+        self._path = target
+        assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
 
 
 class Tar(File):
-	def __init__(self, file_list, fileformat=tarfile.USTAR_FORMAT):
-		# type: (List[Tuple[str, Union[File, bytes]]], int) -> None
-		for _, source_file in file_list:
-			assert isinstance(source_file, (File, bytes))
-		self._file_list = file_list
-		self._format = fileformat
-		File.__init__(self)
+    def __init__(self, file_list, fileformat=tarfile.USTAR_FORMAT):
+        # type: (List[Tuple[str, Union[File, bytes]]], int) -> None
+        for _, source_file in file_list:
+            assert isinstance(source_file, (File, bytes))
+        self._file_list = file_list
+        self._format = fileformat
+        File.__init__(self)
 
-	@File.hashed
-	def hash(self):
-		# type: () -> Tuple[Any, ...]
-		def hashed(thing):
-			# type: (Union[File, bytes]) -> str
-			if isinstance(thing, bytes):
-				return hashlib.sha256(thing).hexdigest()
-			return thing.hash()
+    @File.hashed
+    def hash(self):
+        # type: () -> Tuple[Any, ...]
+        def hashed(thing):
+            # type: (Union[File, bytes]) -> str
+            if isinstance(thing, bytes):
+                return hashlib.sha256(thing).hexdigest()
+            return thing.hash()
 
-		return (Tar, [(name, hashed(source_file)) for name, source_file in self._file_list])
+        return (Tar, [(name, hashed(source_file)) for name, source_file in self._file_list])
 
-	def _create(self):
-		# type: () -> None
-		[source_file.path() for _, source_file in self._file_list if isinstance(source_file, File)]
-		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
-		store = os.path.join(STOREDIR, self.hash())
-		target = os.path.join(store, 'archive.tar')
-		if not os.path.exists(store):
-			log('Creating TAR')
-			os.mkdir(store)
-			archive = tarfile.TarFile(name=target, mode='w', format=self._format)
-			for name, source_file in self._file_list:
-				log('  %s' % (name,))
-				info = tarfile.TarInfo(name)
-				info.uname = info.gname = 'someone'
-				info.mode = stat.S_IRUSR | stat.S_IWUSR
-				if isinstance(source_file, bytes):
-					info.size = len(source_file)
-					handle = BytesIO(source_file)  # type: IO[bytes]
-				else:
-					info.size = source_file.size()
-					handle = open(source_file.path(), 'rb')
+    def _create(self):
+        # type: () -> None
+        [source_file.path() for _, source_file in self._file_list if isinstance(source_file, File)]
+        assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
+        store = os.path.join(STOREDIR, self.hash())
+        target = os.path.join(store, 'archive.tar')
+        if not os.path.exists(store):
+            log('Creating TAR')
+            os.mkdir(store)
+            archive = tarfile.TarFile(name=target, mode='w', format=self._format)
+            for name, source_file in self._file_list:
+                log('  %s' % (name,))
+                info = tarfile.TarInfo(name)
+                info.uname = info.gname = 'someone'
+                info.mode = stat.S_IRUSR | stat.S_IWUSR
+                if isinstance(source_file, bytes):
+                    info.size = len(source_file)
+                    handle = BytesIO(source_file)  # type: IO[bytes]
+                else:
+                    info.size = source_file.size()
+                    handle = open(source_file.path(), 'rb')
 
-				archive.addfile(info, handle)
+                archive.addfile(info, handle)
 
-			archive.close()
+            archive.close()
 
-		self._path = target
-		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
+        self._path = target
+        assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
 
 
 class Pkzip(File):
-	def __init__(self, file_list):
-		# type: (List[Tuple[str, Union[File, bytes]]]) -> None
-		for _, source_file in file_list:
-			if source_file is not None:
-				assert isinstance(source_file, (File, bytes))
-		self._file_list = file_list
-		File.__init__(self)
+    def __init__(self, file_list):
+        # type: (List[Tuple[str, Union[File, bytes]]]) -> None
+        for _, source_file in file_list:
+            if source_file is not None:
+                assert isinstance(source_file, (File, bytes))
+        self._file_list = file_list
+        File.__init__(self)
 
-	@File.hashed
-	def hash(self):
-		# type: () -> Tuple[Any, ...]
-		def hashed(thing):
-			# type: (Union[File, bytes]) -> Any
-			if isinstance(thing, bytes):
-				return hashlib.sha256(thing).hexdigest()
-			return thing.hash()
-		return (Tar, [(name, hashed(source_file)) for name, source_file in self._file_list])
+    @File.hashed
+    def hash(self):
+        # type: () -> Tuple[Any, ...]
+        def hashed(thing):
+            # type: (Union[File, bytes]) -> Any
+            if isinstance(thing, bytes):
+                return hashlib.sha256(thing).hexdigest()
+            return thing.hash()
+        return (Tar, [(name, hashed(source_file)) for name, source_file in self._file_list])
 
-	def _create(self):
-		# type: () -> None
-		[source_file.path() for _, source_file in self._file_list if isinstance(source_file, File)]
-		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
-		store = os.path.join(STOREDIR, self.hash())
-		target = os.path.join(store, 'archive.zip')
-		if not os.path.exists(store):
-			log('Creating PKZIP')
-			os.mkdir(store)
-			with ZipFile(target, mode="w") as archive:
-				for name, source_file in self._file_list:
-					if isinstance(source_file, bytes):
-						archive.writestr(name, source_file)
-					else:
-						archive.write(source_file.path(), name)
-		self._path = target
-		assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
+    def _create(self):
+        # type: () -> None
+        [source_file.path() for _, source_file in self._file_list if isinstance(source_file, File)]
+        assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
+        store = os.path.join(STOREDIR, self.hash())
+        target = os.path.join(store, 'archive.zip')
+        if not os.path.exists(store):
+            log('Creating PKZIP')
+            os.mkdir(store)
+            with ZipFile(target, mode="w") as archive:
+                for name, source_file in self._file_list:
+                    if isinstance(source_file, bytes):
+                        archive.writestr(name, source_file)
+                    else:
+                        archive.write(source_file.path(), name)
+        self._path = target
+        assert not os.listdir(TEMPDIR), os.listdir(TEMPDIR)
 
 
 class Target(object):
-	"""
-	represents the process for creating a complete image for a platform
-	"""
+    """
+    represents the process for creating a complete image for a platform
+    """
 
-	default = True
+    default = True
 
-	def create(self, image, options):
-		# type: (Raw, Namespace) -> None
-		raise NotImplementedError()
+    def create(self, image, options):
+        # type: (Raw, Namespace) -> None
+        raise NotImplementedError()
 
 
 def encode_vmware_uuid(u):
-	# type: (uuid.UUID) -> str
-	# <https://kb.vmware.com/s/article/1880>
-	FMT = "-".join([" ".join(["{}{}"] * 8)] * 2)
-	return FMT.format(*u.hex)
+    # type: (uuid.UUID) -> str
+    # <https://kb.vmware.com/s/article/1880>
+    FMT = "-".join([" ".join(["{}{}"] * 8)] * 2)
+    return FMT.format(*u.hex)
 
 
 def create_vmxf(machine_uuid, image_name):
-	# type: (uuid.UUID, str) -> bytes
-	E = lxml.builder.ElementMaker()
-	foundry = E.Foundry(
-		E.VM(
-			E.VMId(
-				encode_vmware_uuid(machine_uuid),
-				type='string',
-			),
-			E.ClientMetaData(
-				E.clientMetaDataAttributes(),
-				E.HistoryEventList(),
-			),
-			E.vmxPathName(
-				'%s.vmx' % (image_name,),
-				type='string',
-			),
-		),
-	)
-	return cast(bytes, lxml.etree.tostring(foundry, encoding='UTF-8', xml_declaration=True, pretty_print=True))
+    # type: (uuid.UUID, str) -> bytes
+    E = lxml.builder.ElementMaker()
+    foundry = E.Foundry(
+        E.VM(
+            E.VMId(
+                encode_vmware_uuid(machine_uuid),
+                type='string',
+            ),
+            E.ClientMetaData(
+                E.clientMetaDataAttributes(),
+                E.HistoryEventList(),
+            ),
+            E.vmxPathName(
+                '%s.vmx' % (image_name,),
+                type='string',
+            ),
+        ),
+    )
+    return cast(bytes, lxml.etree.tostring(foundry, encoding='UTF-8', xml_declaration=True, pretty_print=True))
 
 
 def encode_vmx_file(vmx):
-	# type: (Dict[str, str]) -> bytes
-	output = '.encoding = "UTF-8"\n'
-	for key, value, in sorted(vmx.items()):
-		output += '%s = "%s"\n' % (key, value)
-	return output.encode('UTF-8')
+    # type: (Dict[str, str]) -> bytes
+    output = '.encoding = "UTF-8"\n'
+    for key, value, in sorted(vmx.items()):
+        output += '%s = "%s"\n' % (key, value)
+    return output.encode('UTF-8')
 
 
 def create_vmx(image_name, image_uuid, options):
-	# type: (str, uuid.UUID, Namespace) -> bytes
-	machine_name = options.product
-	if options.version is not None:
-		machine_name += ' ' + options.version
-	vmx = {
-		'config.version': "8",
-		'virtualHW.version': "9",
-		'numvcpus': "%d" % (options.cpu_count,),
-		'vcpu.hotadd': "TRUE",
-		'scsi0.present': "TRUE",
-		'scsi0.virtualDev': "lsilogic",
-		'memsize': "%d" % (options.memory_size,),
-		'mem.hotadd': "TRUE",
-		'scsi0:0.present': "TRUE",
-		'scsi0:0.fileName': "%s.vmdk" % (image_name,),
-		'ide1:0.present': "FALSE",
-		'floppy0.present': "FALSE",
-		'ethernet0.present': "TRUE",
-		'ethernet0.wakeOnPcktRcv': "FALSE",
-		'ethernet0.addressType': "generated",
-		'usb.present': "TRUE",
-		'ehci.present': "TRUE",
-		'ehci.pciSlotNumber': "34",
-		'pciBridge0.present': "TRUE",
-		'pciBridge4.present': "TRUE",
-		'pciBridge4.virtualDev': "pcieRootPort",
-		'pciBridge4.functions': "8",
-		'pciBridge5.present': "TRUE",
-		'pciBridge5.virtualDev': "pcieRootPort",
-		'pciBridge5.functions': "8",
-		'pciBridge6.present': "TRUE",
-		'pciBridge6.virtualDev': "pcieRootPort",
-		'pciBridge6.functions': "8",
-		'pciBridge7.present': "TRUE",
-		'pciBridge7.virtualDev': "pcieRootPort",
-		'pciBridge7.functions': "8",
-		'vmci0.present': "TRUE",
-		'hpet0.present': "TRUE",
-		'usb.vbluetooth.startConnected': "TRUE",
-		'displayName': machine_name,
-		'guestOS': "other26xlinux-64",
-		'nvram': "%s.nvram" % (image_name,),
-		'virtualHW.productCompatibility': "hosted",
-		'gui.exitOnCLIHLT': "FALSE",
-		'powerType.powerOff': "hard",
-		'powerType.powerOn': "hard",
-		'powerType.suspend': "hard",
-		'powerType.reset': "hard",
-		'extendedConfigFile': "%s.vmxf" % (image_name,),
-		'scsi0.pciSlotNumber': "16",
-		'ethernet0.generatedAddress': "00:0C:29:DD:56:97",
-		'ethernet0.pciSlotNumber': "33",
-		'usb.pciSlotNumber': "32",
-		'vmci0.id': "417158807",
-		'vmci0.pciSlotNumber': "35",
-		'uuid.location': encode_vmware_uuid(image_uuid),
-		'uuid.bios': encode_vmware_uuid(image_uuid),
-		'uuid.action': "create",
-		'cleanShutdown': "TRUE",
-		'replay.supported': "FALSE",
-		'replay.filename': "",
-		'scsi0:0.redo': "",
-		'pciBridge0.pciSlotNumber': "17",
-		'pciBridge4.pciSlotNumber': "21",
-		'pciBridge5.pciSlotNumber': "22",
-		'pciBridge6.pciSlotNumber': "23",
-		'pciBridge7.pciSlotNumber': "24",
-		'usb:1.present': "TRUE",
-		'ethernet0.generatedAddressOffset': "0",
-		'softPowerOff': "TRUE",
-		'usb:1.speed': "2",
-		'usb:1.deviceType': "hub",
-		'usb:1.port': "1",
-		'usb:1.parent': "-1",
-		'usb:0.present': "TRUE",
-		'usb:0.deviceType': "hid",
-		'usb:0.port': "0",
-		'usb:0.parent': "-1",
-	}
-	return encode_vmx_file(vmx)
+    # type: (str, uuid.UUID, Namespace) -> bytes
+    machine_name = options.product
+    if options.version is not None:
+        machine_name += ' ' + options.version
+    vmx = {
+        'config.version': "8",
+        'virtualHW.version': "9",
+        'numvcpus': "%d" % (options.cpu_count,),
+        'vcpu.hotadd': "TRUE",
+        'scsi0.present': "TRUE",
+        'scsi0.virtualDev': "lsilogic",
+        'memsize': "%d" % (options.memory_size,),
+        'mem.hotadd': "TRUE",
+        'scsi0:0.present': "TRUE",
+        'scsi0:0.fileName': "%s.vmdk" % (image_name,),
+        'ide1:0.present': "FALSE",
+        'floppy0.present': "FALSE",
+        'ethernet0.present': "TRUE",
+        'ethernet0.wakeOnPcktRcv': "FALSE",
+        'ethernet0.addressType': "generated",
+        'usb.present': "TRUE",
+        'ehci.present': "TRUE",
+        'ehci.pciSlotNumber': "34",
+        'pciBridge0.present': "TRUE",
+        'pciBridge4.present': "TRUE",
+        'pciBridge4.virtualDev': "pcieRootPort",
+        'pciBridge4.functions': "8",
+        'pciBridge5.present': "TRUE",
+        'pciBridge5.virtualDev': "pcieRootPort",
+        'pciBridge5.functions': "8",
+        'pciBridge6.present': "TRUE",
+        'pciBridge6.virtualDev': "pcieRootPort",
+        'pciBridge6.functions': "8",
+        'pciBridge7.present': "TRUE",
+        'pciBridge7.virtualDev': "pcieRootPort",
+        'pciBridge7.functions': "8",
+        'vmci0.present': "TRUE",
+        'hpet0.present': "TRUE",
+        'usb.vbluetooth.startConnected': "TRUE",
+        'displayName': machine_name,
+        'guestOS': "other26xlinux-64",
+        'nvram': "%s.nvram" % (image_name,),
+        'virtualHW.productCompatibility': "hosted",
+        'gui.exitOnCLIHLT': "FALSE",
+        'powerType.powerOff': "hard",
+        'powerType.powerOn': "hard",
+        'powerType.suspend': "hard",
+        'powerType.reset': "hard",
+        'extendedConfigFile': "%s.vmxf" % (image_name,),
+        'scsi0.pciSlotNumber': "16",
+        'ethernet0.generatedAddress': "00:0C:29:DD:56:97",
+        'ethernet0.pciSlotNumber': "33",
+        'usb.pciSlotNumber': "32",
+        'vmci0.id': "417158807",
+        'vmci0.pciSlotNumber': "35",
+        'uuid.location': encode_vmware_uuid(image_uuid),
+        'uuid.bios': encode_vmware_uuid(image_uuid),
+        'uuid.action': "create",
+        'cleanShutdown': "TRUE",
+        'replay.supported': "FALSE",
+        'replay.filename': "",
+        'scsi0:0.redo': "",
+        'pciBridge0.pciSlotNumber': "17",
+        'pciBridge4.pciSlotNumber': "21",
+        'pciBridge5.pciSlotNumber': "22",
+        'pciBridge6.pciSlotNumber': "23",
+        'pciBridge7.pciSlotNumber': "24",
+        'usb:1.present': "TRUE",
+        'ethernet0.generatedAddressOffset': "0",
+        'softPowerOff': "TRUE",
+        'usb:1.speed': "2",
+        'usb:1.deviceType': "hub",
+        'usb:1.port': "1",
+        'usb:1.parent': "-1",
+        'usb:0.present': "TRUE",
+        'usb:0.deviceType': "hid",
+        'usb:0.port': "0",
+        'usb:0.parent': "-1",
+    }
+    return encode_vmx_file(vmx)
 
 
 class VMware(Target):
-	"""
-	Zipped VMware®-compatible (VMDK based)
-	"""
+    """
+    Zipped VMware®-compatible (VMDK based)
+    """
 
-	def create(self, image, options):
-		# type: (Raw, Namespace) -> None
-		if options.no_target_specific_filename:
-			archive_name = options.filename
-		else:
-			archive_name = '%s-vmware.zip' % (options.filename,)
-		machine_uuid = uuid.uuid4()
-		image_uuid = uuid.uuid4()
-		if os.path.exists(archive_name):
-			raise IOError('Output file %r exists' % (archive_name,))
-		vmdk = Vmdk(image)
-		files = [
-			('%s/' % (options.product,), b""),
-			('%s/%s.vmdk' % (options.product, options.product), vmdk),
-			('%s/%s.vmxf' % (options.product, options.product), create_vmxf(machine_uuid, options.product)),
-			('%s/%s.vmx' % (options.product, options.product), create_vmx(options.product, image_uuid, options)),
-			('%s/%s.vmsd' % (options.product, options.product), b""),
-		]  # type: List[Tuple[str, Union[File, bytes]]]
-		pkzip = Pkzip(files)
-		shutil.copyfile(pkzip.path(), archive_name)
-		log('Generated "%s" appliance as\n  %s' % (self, archive_name))
+    def create(self, image, options):
+        # type: (Raw, Namespace) -> None
+        if options.no_target_specific_filename:
+            archive_name = options.filename
+        else:
+            archive_name = '%s-vmware.zip' % (options.filename,)
+        machine_uuid = uuid.uuid4()
+        image_uuid = uuid.uuid4()
+        if os.path.exists(archive_name):
+            raise IOError('Output file %r exists' % (archive_name,))
+        vmdk = Vmdk(image)
+        files = [
+            ('%s/' % (options.product,), b""),
+            ('%s/%s.vmdk' % (options.product, options.product), vmdk),
+            ('%s/%s.vmxf' % (options.product, options.product), create_vmxf(machine_uuid, options.product)),
+            ('%s/%s.vmx' % (options.product, options.product), create_vmx(options.product, image_uuid, options)),
+            ('%s/%s.vmsd' % (options.product, options.product), b""),
+        ]  # type: List[Tuple[str, Union[File, bytes]]]
+        pkzip = Pkzip(files)
+        shutil.copyfile(pkzip.path(), archive_name)
+        log('Generated "%s" appliance as\n  %s' % (self, archive_name))
 
 
 LICENSE = """The complete source code of Univention Corporate Server is provided
@@ -533,176 +533,176 @@ on-premises."""
 
 
 def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image_uuid, options):
-	# type: (uuid.UUID, str, int, uuid.UUID, Namespace) -> bytes
-	machine_name = options.product
-	if options.version is not None:
-		machine_name += ' ' + options.version
+    # type: (uuid.UUID, str, int, uuid.UUID, Namespace) -> bytes
+    machine_name = options.product
+    if options.version is not None:
+        machine_name += ' ' + options.version
 
-	OVF_NAMESPACE = 'http://schemas.dmtf.org/ovf/envelope/1'
-	RASD_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_ResourceAllocationSettingData'
-	VBOX_NAMESPACE = 'http://www.virtualbox.org/ovf/machine'
-	VSSD_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_VirtualSystemSettingData'
-	XML_NAMESPACE = 'http://www.w3.org/XML/1998/namespace'
-	XSI_NAMESPACE = 'http://www.w3.org/2001/XMLSchema-instance'
+    OVF_NAMESPACE = 'http://schemas.dmtf.org/ovf/envelope/1'
+    RASD_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_ResourceAllocationSettingData'
+    VBOX_NAMESPACE = 'http://www.virtualbox.org/ovf/machine'
+    VSSD_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_VirtualSystemSettingData'
+    XML_NAMESPACE = 'http://www.w3.org/XML/1998/namespace'
+    XSI_NAMESPACE = 'http://www.w3.org/2001/XMLSchema-instance'
 
-	E = lxml.builder.ElementMaker(nsmap={
-		None: OVF_NAMESPACE,
-		'ovf': OVF_NAMESPACE,
-		'rasd': RASD_NAMESPACE,
-		'vbox': VBOX_NAMESPACE,
-		'vssd': VSSD_NAMESPACE,
-		'xsi': XSI_NAMESPACE,
-	})
+    E = lxml.builder.ElementMaker(nsmap={
+        None: OVF_NAMESPACE,
+        'ovf': OVF_NAMESPACE,
+        'rasd': RASD_NAMESPACE,
+        'vbox': VBOX_NAMESPACE,
+        'vssd': VSSD_NAMESPACE,
+        'xsi': XSI_NAMESPACE,
+    })
 
-	OVF = '{%s}' % (OVF_NAMESPACE,)
-	VBOX = '{%s}' % (VBOX_NAMESPACE,)
-	XML = '{%s}' % (XML_NAMESPACE,)
-	Erasd = lxml.builder.ElementMaker(namespace=RASD_NAMESPACE)
-	Evbox = lxml.builder.ElementMaker(namespace=VBOX_NAMESPACE)
-	Evssd = lxml.builder.ElementMaker(namespace=VSSD_NAMESPACE)
+    OVF = '{%s}' % (OVF_NAMESPACE,)
+    VBOX = '{%s}' % (VBOX_NAMESPACE,)
+    XML = '{%s}' % (XML_NAMESPACE,)
+    Erasd = lxml.builder.ElementMaker(namespace=RASD_NAMESPACE)
+    Evbox = lxml.builder.ElementMaker(namespace=VBOX_NAMESPACE)
+    Evssd = lxml.builder.ElementMaker(namespace=VSSD_NAMESPACE)
 
-	envelope = E.Envelope(
-		E.References(
-			E.File(**{
-				OVF + 'href': image_name,
-				OVF + 'id': 'file1',
-			}),
-		),
-		E.DiskSection(
-			E.Info('List of the virtual disks used in the package'),
-			E.Disk(**{
-				OVF + 'capacity': '%d' % (image_size,),
-				OVF + 'diskId': 'vmdisk1',
-				OVF + 'fileRef': 'file1',
-				OVF + 'format': 'http://www.vmware.com/interfaces/specifications/vmdk.html#streamOptimized',
-				VBOX + 'uuid': str(image_uuid),
-			}),
-		),
-		E.NetworkSection(
-			E.Info('Logical networks used in the package'),
-			E.Network(
-				E.Description('Logical network used by this appliance.'),
-				**{
-					OVF + 'name': 'Bridged',
-				}
-			),
-		),
-		E.VirtualSystem(
-			E.Info('A virtual machine'),
-			E.ProductSection(
-				E.Info('Meta-information about the installed software'),
-				E.Product(options.product),
-				E.Vendor(options.vendor),
-				E.Version(options.version) if options.version is not None else '',
-				E.ProductUrl(options.product_url),
-				E.VendorUrl(options.vendor_url),
-			),
-			E.AnnotationSection(
-				E.Info('A human-readable annotation'),
-				E.Annotation(ANNOTATION),
-			),
-			E.EulaSection(
-				E.Info('License agreement for the virtual system'),
-				E.License(LICENSE),
-			),
-			E.OperatingSystemSection(
-				E.Info('The kind of installed guest operating system'),
-				E.Description('Debian_64'),
-				Evbox.OSType(
-					'Debian_64',
-					**{
-						OVF + 'required': 'false',
-					}
-				),
-				**{
-					OVF + 'id': '96',
-				}
-			),
-			E.VirtualHardwareSection(
-				E.Info('Virtual hardware requirements for a virtual machine'),
-				E.System(
-					Evssd.ElementName('Virtual Hardware Family'),
-					Evssd.InstanceID('0'),
-					Evssd.VirtualSystemIdentifier(machine_name),
-					Evssd.VirtualSystemType('virtualbox-2.2'),
-				),
-				E.Item(
-					Erasd.Caption('%d virtual CPU' % (options.cpu_count,)),
-					Erasd.Description('Number of virtual CPUs'),
-					Erasd.ElementName('%d virtual CPU' % (options.cpu_count,)),
-					Erasd.InstanceID('1'),
-					Erasd.ResourceType('3'),
-					Erasd.VirtualQuantity('%d' % (options.cpu_count,)),
-				),
-				E.Item(
-					Erasd.AllocationUnits('MegaBytes'),
-					Erasd.Caption('%d MB of memory' % (options.memory_size,)),
-					Erasd.Description('Memory Size'),
-					Erasd.ElementName('%d MB of memory' % (options.memory_size,)),
-					Erasd.InstanceID('2'),
-					Erasd.ResourceType('4'),
-					Erasd.VirtualQuantity('%d' % (options.memory_size,)),
-				),
-				E.Item(
-					Erasd.Address('0'),
-					Erasd.Caption('ideController0'),
-					Erasd.Description('IDE Controller'),
-					Erasd.ElementName('ideController0'),
-					Erasd.InstanceID('3'),
-					Erasd.ResourceSubType('PIIX4'),
-					Erasd.ResourceType('5'),
-				),
-				E.Item(
-					Erasd.AutomaticAllocation('true'),
-					Erasd.Caption("Ethernet adapter on 'Bridged'"),
-					Erasd.Connection('Bridged'),
-					Erasd.ElementName("Ethernet adapter on 'Bridged'"),
-					Erasd.InstanceID('5'),
-					Erasd.ResourceSubType('PCNet32'),
-					Erasd.ResourceType('10'),
-				),
-				E.Item(
-					Erasd.AddressOnParent('0'),
-					Erasd.Caption('disk1'),
-					Erasd.Description('Disk Image'),
-					Erasd.ElementName('disk1'),
-					Erasd.HostResource('/disk/vmdisk1'),
-					Erasd.InstanceID('7'),
-					Erasd.Parent('3'),
-					Erasd.ResourceType('17'),
-				),
-			),
-			**{
-				OVF + 'id': machine_name,
-			}
-		),
-		**{
-			XML + 'lang': 'en-US',
-			OVF + 'version': '1.0',
-		}
-	)
-	return cast(bytes, lxml.etree.tostring(envelope, encoding='UTF-8', xml_declaration=True, pretty_print=True))
+    envelope = E.Envelope(
+        E.References(
+            E.File(**{
+                OVF + 'href': image_name,
+                OVF + 'id': 'file1',
+            }),
+        ),
+        E.DiskSection(
+            E.Info('List of the virtual disks used in the package'),
+            E.Disk(**{
+                OVF + 'capacity': '%d' % (image_size,),
+                OVF + 'diskId': 'vmdisk1',
+                OVF + 'fileRef': 'file1',
+                OVF + 'format': 'http://www.vmware.com/interfaces/specifications/vmdk.html#streamOptimized',
+                VBOX + 'uuid': str(image_uuid),
+            }),
+        ),
+        E.NetworkSection(
+            E.Info('Logical networks used in the package'),
+            E.Network(
+                E.Description('Logical network used by this appliance.'),
+                **{
+                    OVF + 'name': 'Bridged',
+                }
+            ),
+        ),
+        E.VirtualSystem(
+            E.Info('A virtual machine'),
+            E.ProductSection(
+                E.Info('Meta-information about the installed software'),
+                E.Product(options.product),
+                E.Vendor(options.vendor),
+                E.Version(options.version) if options.version is not None else '',
+                E.ProductUrl(options.product_url),
+                E.VendorUrl(options.vendor_url),
+            ),
+            E.AnnotationSection(
+                E.Info('A human-readable annotation'),
+                E.Annotation(ANNOTATION),
+            ),
+            E.EulaSection(
+                E.Info('License agreement for the virtual system'),
+                E.License(LICENSE),
+            ),
+            E.OperatingSystemSection(
+                E.Info('The kind of installed guest operating system'),
+                E.Description('Debian_64'),
+                Evbox.OSType(
+                    'Debian_64',
+                    **{
+                        OVF + 'required': 'false',
+                    }
+                ),
+                **{
+                    OVF + 'id': '96',
+                }
+            ),
+            E.VirtualHardwareSection(
+                E.Info('Virtual hardware requirements for a virtual machine'),
+                E.System(
+                    Evssd.ElementName('Virtual Hardware Family'),
+                    Evssd.InstanceID('0'),
+                    Evssd.VirtualSystemIdentifier(machine_name),
+                    Evssd.VirtualSystemType('virtualbox-2.2'),
+                ),
+                E.Item(
+                    Erasd.Caption('%d virtual CPU' % (options.cpu_count,)),
+                    Erasd.Description('Number of virtual CPUs'),
+                    Erasd.ElementName('%d virtual CPU' % (options.cpu_count,)),
+                    Erasd.InstanceID('1'),
+                    Erasd.ResourceType('3'),
+                    Erasd.VirtualQuantity('%d' % (options.cpu_count,)),
+                ),
+                E.Item(
+                    Erasd.AllocationUnits('MegaBytes'),
+                    Erasd.Caption('%d MB of memory' % (options.memory_size,)),
+                    Erasd.Description('Memory Size'),
+                    Erasd.ElementName('%d MB of memory' % (options.memory_size,)),
+                    Erasd.InstanceID('2'),
+                    Erasd.ResourceType('4'),
+                    Erasd.VirtualQuantity('%d' % (options.memory_size,)),
+                ),
+                E.Item(
+                    Erasd.Address('0'),
+                    Erasd.Caption('ideController0'),
+                    Erasd.Description('IDE Controller'),
+                    Erasd.ElementName('ideController0'),
+                    Erasd.InstanceID('3'),
+                    Erasd.ResourceSubType('PIIX4'),
+                    Erasd.ResourceType('5'),
+                ),
+                E.Item(
+                    Erasd.AutomaticAllocation('true'),
+                    Erasd.Caption("Ethernet adapter on 'Bridged'"),
+                    Erasd.Connection('Bridged'),
+                    Erasd.ElementName("Ethernet adapter on 'Bridged'"),
+                    Erasd.InstanceID('5'),
+                    Erasd.ResourceSubType('PCNet32'),
+                    Erasd.ResourceType('10'),
+                ),
+                E.Item(
+                    Erasd.AddressOnParent('0'),
+                    Erasd.Caption('disk1'),
+                    Erasd.Description('Disk Image'),
+                    Erasd.ElementName('disk1'),
+                    Erasd.HostResource('/disk/vmdisk1'),
+                    Erasd.InstanceID('7'),
+                    Erasd.Parent('3'),
+                    Erasd.ResourceType('17'),
+                ),
+            ),
+            **{
+                OVF + 'id': machine_name,
+            }
+        ),
+        **{
+            XML + 'lang': 'en-US',
+            OVF + 'version': '1.0',
+        }
+    )
+    return cast(bytes, lxml.etree.tostring(envelope, encoding='UTF-8', xml_declaration=True, pretty_print=True))
 
 
 class OVA_Virtualbox(Target):
-	"""
-	VirtualBox OVA (VMDK based)
-	"""
+    """
+    VirtualBox OVA (VMDK based)
+    """
 
-	def create(self, image, options):
-		# type: (Raw, Namespace) -> None
-		image_name = '%s-virtualbox-disk1.vmdk' % (options.product,)
-		descriptor_name = '%s-virtualbox.ovf' % (options.product,)
-		if options.no_target_specific_filename:
-			archive_name = options.filename
-		else:
-			archive_name = '%s-virtualbox.ova' % (options.filename,)
-		machine_uuid = uuid.uuid4()
-		image_uuid = uuid.uuid4()
-		if os.path.exists(archive_name):
-			raise IOError('Output file %r exists' % (archive_name,))
-		# change image descriptor to expected format
-		image_descriptor = """# Disk DescriptorFile
+    def create(self, image, options):
+        # type: (Raw, Namespace) -> None
+        image_name = '%s-virtualbox-disk1.vmdk' % (options.product,)
+        descriptor_name = '%s-virtualbox.ovf' % (options.product,)
+        if options.no_target_specific_filename:
+            archive_name = options.filename
+        else:
+            archive_name = '%s-virtualbox.ova' % (options.filename,)
+        machine_uuid = uuid.uuid4()
+        image_uuid = uuid.uuid4()
+        if os.path.exists(archive_name):
+            raise IOError('Output file %r exists' % (archive_name,))
+        # change image descriptor to expected format
+        image_descriptor = """# Disk DescriptorFile
 version=1
 CID=4fd3c93e
 parentCID=ffffffff
@@ -728,358 +728,358 @@ ddb.uuid.modification="00000000-0000-0000-0000-000000000000"
 ddb.uuid.parentmodification="00000000-0000-0000-0000-000000000000"
 ddb.comment=""
 """ % (image_uuid,)
-		descriptor = create_ovf_descriptor_virtualbox(
-			machine_uuid,
-			image_name, image.size(), image_uuid,
-			options,
-		)
-		vmdk = Vmdk(image, image_descriptor, streamOptimized=True)
-		files = [
-			(descriptor_name, descriptor),
-			(image_name, vmdk),
-		]  # type: List[Tuple[str, Union[File, bytes]]]
-		ova = Tar(files)
-		shutil.copyfile(ova.path(), archive_name)
-		log('Generated "%s" appliance as\n  %s' % (self, archive_name))
+        descriptor = create_ovf_descriptor_virtualbox(
+            machine_uuid,
+            image_name, image.size(), image_uuid,
+            options,
+        )
+        vmdk = Vmdk(image, image_descriptor, streamOptimized=True)
+        files = [
+            (descriptor_name, descriptor),
+            (image_name, vmdk),
+        ]  # type: List[Tuple[str, Union[File, bytes]]]
+        ova = Tar(files)
+        shutil.copyfile(ova.path(), archive_name)
+        log('Generated "%s" appliance as\n  %s' % (self, archive_name))
 
 
 def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_used_size, options):
-	# type: (str, int, int, int, Namespace) -> bytes
-	machine_name = options.product
-	if options.version is not None:
-		machine_name += ' ' + options.version
+    # type: (str, int, int, int, Namespace) -> bytes
+    machine_name = options.product
+    if options.version is not None:
+        machine_name += ' ' + options.version
 
-	CIM_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/common'
-	OVF_NAMESPACE = 'http://schemas.dmtf.org/ovf/envelope/1'
-	RASD_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_ResourceAllocationSettingData'
-	VMW_NAMESPACE = 'http://www.vmware.com/schema/ovf'
-	VSSD_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_VirtualSystemSettingData'
-	XSI_NAMESPACE = 'http://www.w3.org/2001/XMLSchema-instance'
+    CIM_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/common'
+    OVF_NAMESPACE = 'http://schemas.dmtf.org/ovf/envelope/1'
+    RASD_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_ResourceAllocationSettingData'
+    VMW_NAMESPACE = 'http://www.vmware.com/schema/ovf'
+    VSSD_NAMESPACE = 'http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_VirtualSystemSettingData'
+    XSI_NAMESPACE = 'http://www.w3.org/2001/XMLSchema-instance'
 
-	E = lxml.builder.ElementMaker(nsmap={
-		None: OVF_NAMESPACE,
-		'ovf': OVF_NAMESPACE,
-		'cim': CIM_NAMESPACE,
-		'rasd': RASD_NAMESPACE,
-		'vmw': VMW_NAMESPACE,
-		'vssd': VSSD_NAMESPACE,
-		'xsi': XSI_NAMESPACE,
-	})
+    E = lxml.builder.ElementMaker(nsmap={
+        None: OVF_NAMESPACE,
+        'ovf': OVF_NAMESPACE,
+        'cim': CIM_NAMESPACE,
+        'rasd': RASD_NAMESPACE,
+        'vmw': VMW_NAMESPACE,
+        'vssd': VSSD_NAMESPACE,
+        'xsi': XSI_NAMESPACE,
+    })
 
-	OVF = '{%s}' % (OVF_NAMESPACE,)
-	VMW = '{%s}' % (VMW_NAMESPACE,)
-	Erasd = lxml.builder.ElementMaker(namespace=RASD_NAMESPACE)
-	Evmw = lxml.builder.ElementMaker(namespace=VMW_NAMESPACE)
-	Evssd = lxml.builder.ElementMaker(namespace=VSSD_NAMESPACE)
+    OVF = '{%s}' % (OVF_NAMESPACE,)
+    VMW = '{%s}' % (VMW_NAMESPACE,)
+    Erasd = lxml.builder.ElementMaker(namespace=RASD_NAMESPACE)
+    Evmw = lxml.builder.ElementMaker(namespace=VMW_NAMESPACE)
+    Evssd = lxml.builder.ElementMaker(namespace=VSSD_NAMESPACE)
 
-	envelope = E.Envelope(
-		E.References(
-			E.File(**{
-				OVF + 'href': image_name,
-				OVF + 'id': 'file1',
-				OVF + 'size': '%d' % (image_packed_size,),
-			}),
-		),
-		E.DiskSection(
-			E.Info('Virtual disk information'),
-			E.Disk(**{
-				OVF + 'capacityAllocationUnits': 'byte * 2^30',
-				OVF + 'capacity': '%d' % (image_size / 2**30,),
-				OVF + 'populatedSize': '%d' % (image_used_size,),
-				OVF + 'diskId': 'vmdisk1',
-				OVF + 'fileRef': 'file1',
-				OVF + 'format': 'http://www.vmware.com/interfaces/specifications/vmdk.html#streamOptimized',
-			}),
-		),
-		E.NetworkSection(
-			E.Info('The list of logical networks'),
-			E.Network(
-				E.Description('The VM Network network'),
-				**{
-					OVF + 'name': 'VM Network',
-				}
-			),
-		),
-		E.VirtualSystem(
-			E.Info('A virtual machine'),
-			E.Name(machine_name),
-			E.ProductSection(
-				E.Info('Meta-information about the installed software'),
-				E.Product(options.product),
-				E.Vendor(options.vendor),
-				E.Version(options.version) if options.version is not None else '',
-				E.ProductUrl(options.product_url),
-				E.VendorUrl(options.vendor_url),
-			),
-			E.AnnotationSection(
-				E.Info('A human-readable annotation'),
-				E.Annotation(ANNOTATION),
-			),
-			E.EulaSection(
-				E.Info('License agreement for the virtual system'),
-				E.License(LICENSE),
-			),
-			E.OperatingSystemSection(
-				E.Info('The kind of installed guest operating system'),
-				**{
-					OVF + 'id': '100',
-					VMW + 'osType': 'other26xLinux64Guest',
-				}
-			),
-			E.VirtualHardwareSection(
-				E.Info('Virtual hardware requirements'),
-				E.System(
-					Evssd.ElementName('Virtual Hardware Family'),
-					Evssd.InstanceID('0'),
-					Evssd.VirtualSystemIdentifier(machine_name),
-					Evssd.VirtualSystemType('vmx-07'),
-				),
-				E.Item(
-					Erasd.AllocationUnits('hertz * 10^6'),
-					Erasd.Description('Number of Virtual CPUs'),
-					Erasd.ElementName('%d virtual CPU(s)' % (options.cpu_count,)),
-					Erasd.InstanceID('1'),
-					Erasd.ResourceType('3'),
-					Erasd.VirtualQuantity('%d' % (options.cpu_count,)),
-				),
-				E.Item(
-					Erasd.AllocationUnits('byte * 2^20'),
-					Erasd.Description('Memory Size'),
-					Erasd.ElementName('%dMB of memory' % (options.memory_size,)),
-					Erasd.InstanceID('2'),
-					Erasd.ResourceType('4'),
-					Erasd.VirtualQuantity('%d' % (options.memory_size,)),
-				),
-				E.Item(
-					Erasd.Address('0'),
-					Erasd.Description('SCSI Controller'),
-					Erasd.ElementName('SCSI Controller 0'),
-					Erasd.InstanceID('3'),
-					Erasd.ResourceSubType('lsilogic'),
-					Erasd.ResourceType('6'),
-				),
-				E.Item(
-					Erasd.Address('0'),
-					Erasd.Description('USB Controller (EHCI)'),
-					Erasd.ElementName('USB Controller'),
-					Erasd.InstanceID('4'),
-					Erasd.ResourceSubType('vmware.usb.ehci'),
-					Erasd.ResourceType('23'),
-					Evmw.Config(**{
-						OVF + 'required': 'false',
-						VMW + 'key': 'autoConnectDevices',
-						VMW + 'value': 'false',
-					}),
-					Evmw.Config(**{
-						OVF + 'required': 'false',
-						VMW + 'key': 'ehciEnabled',
-						VMW + 'value': 'true',
-					}),
-					Evmw.Config(**{
-						OVF + 'required': 'false',
-						VMW + 'key': 'slotInfo.ehciPciSlotNumber',
-						VMW + 'value': '-1',
-					}),
-					Evmw.Config(**{
-						OVF + 'required': 'false',
-						VMW + 'key': 'slotInfo.pciSlotNumber',
-						VMW + 'value': '-1',
-					}),
-					**{
-						OVF + 'required': 'false',
-					}
-				),
-				E.Item(
-					Erasd.AutomaticAllocation('false'),
-					Erasd.ElementName('VirtualVideoCard'),
-					Erasd.InstanceID('7'),
-					Erasd.ResourceType('24'),
-					Evmw.Config(**{
-						OVF + 'required': 'false',
-						VMW + 'key': 'enable3DSupport',
-						VMW + 'value': 'false',
-					}),
-					Evmw.Config(**{
-						OVF + 'required': 'false',
-						VMW + 'key': 'enableMPTSupport',
-						VMW + 'value': 'false',
-					}),
-					Evmw.Config(**{
-						OVF + 'required': 'false',
-						VMW + 'key': 'use3dRenderer',
-						VMW + 'value': 'automatic',
-					}),
-					Evmw.Config(**{
-						OVF + 'required': 'false',
-						VMW + 'key': 'useAutoDetect',
-						VMW + 'value': 'false',
-					}),
-					Evmw.Config(**{
-						OVF + 'required': 'false',
-						VMW + 'key': 'videoRamSizeInKB',
-						VMW + 'value': '16384',
-					}),
-					**{
-						OVF + 'required': 'false',
-					}
-				),
-				E.Item(
-					Erasd.AutomaticAllocation('false'),
-					Erasd.ElementName('VirtualVMCIDevice'),
-					Erasd.InstanceID('8'),
-					Erasd.ResourceSubType('vmware.vmci'),
-					Erasd.ResourceType('1'),
-					Evmw.Config(**{
-						OVF + 'required': 'false',
-						VMW + 'key': 'allowUnrestrictedCommunication',
-						VMW + 'value': 'false',
-					}),
-					**{
-						OVF + 'required': 'false',
-					}
-				),
-				E.Item(
-					Erasd.AddressOnParent('0'),
-					Erasd.ElementName('Hard Disk 1'),
-					Erasd.HostResource('ovf:/disk/vmdisk1'),
-					Erasd.InstanceID('10'),
-					Erasd.Parent('3'),
-					Erasd.ResourceType('17'),
-					Evmw.Config(**{
-						OVF + 'required': 'false',
-						VMW + 'key': 'backing.writeThrough',
-						VMW + 'value': 'false',
-					}),
-				),
-				E.Item(
-					Erasd.AddressOnParent('7'),
-					Erasd.AutomaticAllocation('true'),
-					Erasd.Connection('VM Network'),
-					Erasd.Description('PCNet32 ethernet adapter on "VM Network"'),
-					Erasd.ElementName('Ethernet 1'),
-					Erasd.InstanceID('12'),
-					Erasd.ResourceSubType('PCNet32'),
-					Erasd.ResourceType('10'),
-					Evmw.Config(**{
-						OVF + 'required': 'false',
-						VMW + 'key': 'wakeOnLanEnabled',
-						VMW + 'value': 'true',
-					}),
-				),
-				Evmw.Config(**{
-					OVF + 'required': 'false',
-					VMW + 'key': 'cpuHotAddEnabled',
-					VMW + 'value': 'true',
-				}),
-				Evmw.Config(**{
-					OVF + 'required': 'false',
-					VMW + 'key': 'cpuHotRemoveEnabled',
-					VMW + 'value': 'false',
-				}),
-				Evmw.Config(**{
-					OVF + 'required': 'false',
-					VMW + 'key': 'firmware',
-					VMW + 'value': 'bios',
-				}),
-				Evmw.Config(**{
-					OVF + 'required': 'false',
-					VMW + 'key': 'virtualICH7MPresent',
-					VMW + 'value': 'false',
-				}),
-				Evmw.Config(**{
-					OVF + 'required': 'false',
-					VMW + 'key': 'virtualSMCPresent',
-					VMW + 'value': 'false',
-				}),
-				Evmw.Config(**{
-					OVF + 'required': 'false',
-					VMW + 'key': 'memoryHotAddEnabled',
-					VMW + 'value': 'true',
-				}),
-				Evmw.Config(**{
-					OVF + 'required': 'false',
-					VMW + 'key': 'nestedHVEnabled',
-					VMW + 'value': 'false',
-				}),
-				Evmw.Config(**{
-					OVF + 'required': 'false',
-					VMW + 'key': 'powerOpInfo.powerOffType',
-					VMW + 'value': 'hard',
-				}),
-				Evmw.Config(**{
-					OVF + 'required': 'false',
-					VMW + 'key': 'powerOpInfo.resetType',
-					VMW + 'value': 'hard',
-				}),
-				Evmw.Config(**{
-					OVF + 'required': 'false',
-					VMW + 'key': 'powerOpInfo.standbyAction',
-					VMW + 'value': 'checkpoint',
-				}),
-				Evmw.Config(**{
-					OVF + 'required': 'false',
-					VMW + 'key': 'powerOpInfo.suspendType',
-					VMW + 'value': 'hard',
-				}),
-				Evmw.Config(**{
-					OVF + 'required': 'false',
-					VMW + 'key': 'tools.afterPowerOn',
-					VMW + 'value': 'false',
-				}),
-				Evmw.Config(**{
-					OVF + 'required': 'false',
-					VMW + 'key': 'tools.afterResume',
-					VMW + 'value': 'false',
-				}),
-				Evmw.Config(**{
-					OVF + 'required': 'false',
-					VMW + 'key': 'tools.beforeGuestShutdown',
-					VMW + 'value': 'false',
-				}),
-				Evmw.Config(**{
-					OVF + 'required': 'false',
-					VMW + 'key': 'tools.beforeGuestStandby',
-					VMW + 'value': 'false',
-				}),
-				Evmw.Config(**{
-					OVF + 'required': 'false',
-					VMW + 'key': 'tools.syncTimeWithHost',
-					VMW + 'value': 'false',
-				}),
-				Evmw.Config(**{
-					OVF + 'required': 'false',
-					VMW + 'key': 'tools.toolsUpgradePolicy',
-					VMW + 'value': 'manual',
-				}),
-			),
-			**{
-				OVF + 'id': machine_name,
-			}
-		),
-		**{
-			VMW + 'buildId': 'build-1331820',
-		}
-	)
-	return cast(bytes, lxml.etree.tostring(envelope, encoding='UTF-8', xml_declaration=True, pretty_print=True))
+    envelope = E.Envelope(
+        E.References(
+            E.File(**{
+                OVF + 'href': image_name,
+                OVF + 'id': 'file1',
+                OVF + 'size': '%d' % (image_packed_size,),
+            }),
+        ),
+        E.DiskSection(
+            E.Info('Virtual disk information'),
+            E.Disk(**{
+                OVF + 'capacityAllocationUnits': 'byte * 2^30',
+                OVF + 'capacity': '%d' % (image_size / 2**30,),
+                OVF + 'populatedSize': '%d' % (image_used_size,),
+                OVF + 'diskId': 'vmdisk1',
+                OVF + 'fileRef': 'file1',
+                OVF + 'format': 'http://www.vmware.com/interfaces/specifications/vmdk.html#streamOptimized',
+            }),
+        ),
+        E.NetworkSection(
+            E.Info('The list of logical networks'),
+            E.Network(
+                E.Description('The VM Network network'),
+                **{
+                    OVF + 'name': 'VM Network',
+                }
+            ),
+        ),
+        E.VirtualSystem(
+            E.Info('A virtual machine'),
+            E.Name(machine_name),
+            E.ProductSection(
+                E.Info('Meta-information about the installed software'),
+                E.Product(options.product),
+                E.Vendor(options.vendor),
+                E.Version(options.version) if options.version is not None else '',
+                E.ProductUrl(options.product_url),
+                E.VendorUrl(options.vendor_url),
+            ),
+            E.AnnotationSection(
+                E.Info('A human-readable annotation'),
+                E.Annotation(ANNOTATION),
+            ),
+            E.EulaSection(
+                E.Info('License agreement for the virtual system'),
+                E.License(LICENSE),
+            ),
+            E.OperatingSystemSection(
+                E.Info('The kind of installed guest operating system'),
+                **{
+                    OVF + 'id': '100',
+                    VMW + 'osType': 'other26xLinux64Guest',
+                }
+            ),
+            E.VirtualHardwareSection(
+                E.Info('Virtual hardware requirements'),
+                E.System(
+                    Evssd.ElementName('Virtual Hardware Family'),
+                    Evssd.InstanceID('0'),
+                    Evssd.VirtualSystemIdentifier(machine_name),
+                    Evssd.VirtualSystemType('vmx-07'),
+                ),
+                E.Item(
+                    Erasd.AllocationUnits('hertz * 10^6'),
+                    Erasd.Description('Number of Virtual CPUs'),
+                    Erasd.ElementName('%d virtual CPU(s)' % (options.cpu_count,)),
+                    Erasd.InstanceID('1'),
+                    Erasd.ResourceType('3'),
+                    Erasd.VirtualQuantity('%d' % (options.cpu_count,)),
+                ),
+                E.Item(
+                    Erasd.AllocationUnits('byte * 2^20'),
+                    Erasd.Description('Memory Size'),
+                    Erasd.ElementName('%dMB of memory' % (options.memory_size,)),
+                    Erasd.InstanceID('2'),
+                    Erasd.ResourceType('4'),
+                    Erasd.VirtualQuantity('%d' % (options.memory_size,)),
+                ),
+                E.Item(
+                    Erasd.Address('0'),
+                    Erasd.Description('SCSI Controller'),
+                    Erasd.ElementName('SCSI Controller 0'),
+                    Erasd.InstanceID('3'),
+                    Erasd.ResourceSubType('lsilogic'),
+                    Erasd.ResourceType('6'),
+                ),
+                E.Item(
+                    Erasd.Address('0'),
+                    Erasd.Description('USB Controller (EHCI)'),
+                    Erasd.ElementName('USB Controller'),
+                    Erasd.InstanceID('4'),
+                    Erasd.ResourceSubType('vmware.usb.ehci'),
+                    Erasd.ResourceType('23'),
+                    Evmw.Config(**{
+                        OVF + 'required': 'false',
+                        VMW + 'key': 'autoConnectDevices',
+                        VMW + 'value': 'false',
+                    }),
+                    Evmw.Config(**{
+                        OVF + 'required': 'false',
+                        VMW + 'key': 'ehciEnabled',
+                        VMW + 'value': 'true',
+                    }),
+                    Evmw.Config(**{
+                        OVF + 'required': 'false',
+                        VMW + 'key': 'slotInfo.ehciPciSlotNumber',
+                        VMW + 'value': '-1',
+                    }),
+                    Evmw.Config(**{
+                        OVF + 'required': 'false',
+                        VMW + 'key': 'slotInfo.pciSlotNumber',
+                        VMW + 'value': '-1',
+                    }),
+                    **{
+                        OVF + 'required': 'false',
+                    }
+                ),
+                E.Item(
+                    Erasd.AutomaticAllocation('false'),
+                    Erasd.ElementName('VirtualVideoCard'),
+                    Erasd.InstanceID('7'),
+                    Erasd.ResourceType('24'),
+                    Evmw.Config(**{
+                        OVF + 'required': 'false',
+                        VMW + 'key': 'enable3DSupport',
+                        VMW + 'value': 'false',
+                    }),
+                    Evmw.Config(**{
+                        OVF + 'required': 'false',
+                        VMW + 'key': 'enableMPTSupport',
+                        VMW + 'value': 'false',
+                    }),
+                    Evmw.Config(**{
+                        OVF + 'required': 'false',
+                        VMW + 'key': 'use3dRenderer',
+                        VMW + 'value': 'automatic',
+                    }),
+                    Evmw.Config(**{
+                        OVF + 'required': 'false',
+                        VMW + 'key': 'useAutoDetect',
+                        VMW + 'value': 'false',
+                    }),
+                    Evmw.Config(**{
+                        OVF + 'required': 'false',
+                        VMW + 'key': 'videoRamSizeInKB',
+                        VMW + 'value': '16384',
+                    }),
+                    **{
+                        OVF + 'required': 'false',
+                    }
+                ),
+                E.Item(
+                    Erasd.AutomaticAllocation('false'),
+                    Erasd.ElementName('VirtualVMCIDevice'),
+                    Erasd.InstanceID('8'),
+                    Erasd.ResourceSubType('vmware.vmci'),
+                    Erasd.ResourceType('1'),
+                    Evmw.Config(**{
+                        OVF + 'required': 'false',
+                        VMW + 'key': 'allowUnrestrictedCommunication',
+                        VMW + 'value': 'false',
+                    }),
+                    **{
+                        OVF + 'required': 'false',
+                    }
+                ),
+                E.Item(
+                    Erasd.AddressOnParent('0'),
+                    Erasd.ElementName('Hard Disk 1'),
+                    Erasd.HostResource('ovf:/disk/vmdisk1'),
+                    Erasd.InstanceID('10'),
+                    Erasd.Parent('3'),
+                    Erasd.ResourceType('17'),
+                    Evmw.Config(**{
+                        OVF + 'required': 'false',
+                        VMW + 'key': 'backing.writeThrough',
+                        VMW + 'value': 'false',
+                    }),
+                ),
+                E.Item(
+                    Erasd.AddressOnParent('7'),
+                    Erasd.AutomaticAllocation('true'),
+                    Erasd.Connection('VM Network'),
+                    Erasd.Description('PCNet32 ethernet adapter on "VM Network"'),
+                    Erasd.ElementName('Ethernet 1'),
+                    Erasd.InstanceID('12'),
+                    Erasd.ResourceSubType('PCNet32'),
+                    Erasd.ResourceType('10'),
+                    Evmw.Config(**{
+                        OVF + 'required': 'false',
+                        VMW + 'key': 'wakeOnLanEnabled',
+                        VMW + 'value': 'true',
+                    }),
+                ),
+                Evmw.Config(**{
+                    OVF + 'required': 'false',
+                    VMW + 'key': 'cpuHotAddEnabled',
+                    VMW + 'value': 'true',
+                }),
+                Evmw.Config(**{
+                    OVF + 'required': 'false',
+                    VMW + 'key': 'cpuHotRemoveEnabled',
+                    VMW + 'value': 'false',
+                }),
+                Evmw.Config(**{
+                    OVF + 'required': 'false',
+                    VMW + 'key': 'firmware',
+                    VMW + 'value': 'bios',
+                }),
+                Evmw.Config(**{
+                    OVF + 'required': 'false',
+                    VMW + 'key': 'virtualICH7MPresent',
+                    VMW + 'value': 'false',
+                }),
+                Evmw.Config(**{
+                    OVF + 'required': 'false',
+                    VMW + 'key': 'virtualSMCPresent',
+                    VMW + 'value': 'false',
+                }),
+                Evmw.Config(**{
+                    OVF + 'required': 'false',
+                    VMW + 'key': 'memoryHotAddEnabled',
+                    VMW + 'value': 'true',
+                }),
+                Evmw.Config(**{
+                    OVF + 'required': 'false',
+                    VMW + 'key': 'nestedHVEnabled',
+                    VMW + 'value': 'false',
+                }),
+                Evmw.Config(**{
+                    OVF + 'required': 'false',
+                    VMW + 'key': 'powerOpInfo.powerOffType',
+                    VMW + 'value': 'hard',
+                }),
+                Evmw.Config(**{
+                    OVF + 'required': 'false',
+                    VMW + 'key': 'powerOpInfo.resetType',
+                    VMW + 'value': 'hard',
+                }),
+                Evmw.Config(**{
+                    OVF + 'required': 'false',
+                    VMW + 'key': 'powerOpInfo.standbyAction',
+                    VMW + 'value': 'checkpoint',
+                }),
+                Evmw.Config(**{
+                    OVF + 'required': 'false',
+                    VMW + 'key': 'powerOpInfo.suspendType',
+                    VMW + 'value': 'hard',
+                }),
+                Evmw.Config(**{
+                    OVF + 'required': 'false',
+                    VMW + 'key': 'tools.afterPowerOn',
+                    VMW + 'value': 'false',
+                }),
+                Evmw.Config(**{
+                    OVF + 'required': 'false',
+                    VMW + 'key': 'tools.afterResume',
+                    VMW + 'value': 'false',
+                }),
+                Evmw.Config(**{
+                    OVF + 'required': 'false',
+                    VMW + 'key': 'tools.beforeGuestShutdown',
+                    VMW + 'value': 'false',
+                }),
+                Evmw.Config(**{
+                    OVF + 'required': 'false',
+                    VMW + 'key': 'tools.beforeGuestStandby',
+                    VMW + 'value': 'false',
+                }),
+                Evmw.Config(**{
+                    OVF + 'required': 'false',
+                    VMW + 'key': 'tools.syncTimeWithHost',
+                    VMW + 'value': 'false',
+                }),
+                Evmw.Config(**{
+                    OVF + 'required': 'false',
+                    VMW + 'key': 'tools.toolsUpgradePolicy',
+                    VMW + 'value': 'manual',
+                }),
+            ),
+            **{
+                OVF + 'id': machine_name,
+            }
+        ),
+        **{
+            VMW + 'buildId': 'build-1331820',
+        }
+    )
+    return cast(bytes, lxml.etree.tostring(envelope, encoding='UTF-8', xml_declaration=True, pretty_print=True))
 
 
 class OVA_ESXi(Target):
-	"""
-	VMware ESXi OVA (VMDK based)
-	"""
+    """
+    VMware ESXi OVA (VMDK based)
+    """
 
-	def create(self, image, options):
-		# type: (Raw, Namespace) -> None
-		image_name = '%s-ESX-disk1.vmdk' % (options.product,)
-		descriptor_name = '%s-ESX.ovf' % (options.product,)
-		if options.no_target_specific_filename:
-			archive_name = options.filename
-		else:
-			archive_name = '%s-ESX.ova' % (options.filename,)
-		if os.path.exists(archive_name):
-			raise IOError('Output file %r exists' % (archive_name,))
-		# change image descriptor to expected format
-		image_descriptor = """# Disk DescriptorFile
+    def create(self, image, options):
+        # type: (Raw, Namespace) -> None
+        image_name = '%s-ESX-disk1.vmdk' % (options.product,)
+        descriptor_name = '%s-ESX.ovf' % (options.product,)
+        if options.no_target_specific_filename:
+            archive_name = options.filename
+        else:
+            archive_name = '%s-ESX.ova' % (options.filename,)
+        if os.path.exists(archive_name):
+            raise IOError('Output file %r exists' % (archive_name,))
+        # change image descriptor to expected format
+        image_descriptor = """# Disk DescriptorFile
 version=1\x20
 CID=b9478e33\x20
 parentCID=ffffffff\x20
@@ -1102,332 +1102,332 @@ ddb.geometry.sectors="63"
 ddb.longContentID = "6c27be515acd422fbdb62c0afffffffe"
 ddb.virtualHWVersion = "7"
 """
-		vmdk = Vmdk(image, image_descriptor, streamOptimized=True)
-		descriptor = create_ovf_descriptor_esxi(
-			image_name, image.size(), vmdk.size(),
-			image.used_size(),
-			options,
-		)
-		files = [
-			(descriptor_name, descriptor),
-			(image_name, vmdk),
-		]  # type: List[Tuple[str, Union[File, bytes]]]
-		ova = Tar(files)
-		shutil.copyfile(ova.path(), archive_name)
-		log('Generated "%s" appliance as\n  %s' % (self, archive_name))
+        vmdk = Vmdk(image, image_descriptor, streamOptimized=True)
+        descriptor = create_ovf_descriptor_esxi(
+            image_name, image.size(), vmdk.size(),
+            image.used_size(),
+            options,
+        )
+        files = [
+            (descriptor_name, descriptor),
+            (image_name, vmdk),
+        ]  # type: List[Tuple[str, Union[File, bytes]]]
+        ova = Tar(files)
+        shutil.copyfile(ova.path(), archive_name)
+        log('Generated "%s" appliance as\n  %s' % (self, archive_name))
 
 
 def create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_size, part_size, url_lifetime):
-	# type: (Raw, Vmdk, boto.s3.bucket.Bucket, uuid.UUID, str, int, int, int) -> bytes
-	# <http://docs.aws.amazon.com/AWSEC2/latest/APIReference/manifest.html>
-	E = lxml.builder.ElementMaker()
-	part_count = int(math.ceil(float(vmdk.size()) / part_size))
-	parts = []
-	for index, offset in enumerate(x * part_size for x in range(part_count)):
-		key = boto.s3.key.Key(bucket, '%s/%s.part%d' % (folder_name, image_name, index))  # TODO: redundant code
-		parts.append(
-			E.part(
-				# Complex type defining the starting and ending byte count of a part.
-				E(
-					'byte-range',
-					# Offset of a part's first byte in the disk image.
-					start='%d' % (offset,),
-					# Offset of a part's last byte in the disk image.
-					end='%d' % (min(offset + part_size, vmdk.size()) - 1,),
-				),
-				# The S3 object name of the part.
-				E.key(key.name),
-				# Signed URLs for issuing a HEAD request on the S3 object containing this part.
-				E('head-url', key.generate_url(url_lifetime, 'HEAD')),
-				# Signed URLs for issuing a GET request on the S3 object containing this part.
-				E('get-url', key.generate_url(url_lifetime, 'GET')),
-				# Signed URLs for issuing a DELETE request on the S3 object containing this part.
-				E('delete-url', key.generate_url(url_lifetime, 'DELETE')),
-				# Index number of this part.
-				index='%d' % (index,),
-			),
-		)
-	manifest_key = boto.s3.key.Key(bucket, '%s/%smanifest.xml' % (folder_name, image_name))  # TODO: redundant code
-	manifest = E.manifest(
-		# Version designator for the manifest file,
-		E.version('2010-11-15'),
-		# File format of volume to be imported, with value RAW, VHD, or VMDK.
-		E('file-format', 'VMDK'),
-		# Complex type describing the software that created the manifest.
-		E.importer(
-			# Name of the software that created the manifest.
-			E.name('generate_appliance'),
-			# Version of the software that created the manifest.
-			E.version('2.1'),
-			# Release number of the software that created the manifest.
-			E.release('1'),
-		),
-		# Signed URL used to delete the stored manifest file.
-		E('self-destruct-url', manifest_key.generate_url(url_lifetime, 'DELETE')),
-		# Complex type describing the size and chunking of the volume file.
-		E(
-			'import',
-			# Exact size of the file to be imported (bytes on disk).
-			E.size('%d' % (vmdk.size(),)),
-			# Rounded size in gigabytes of volume to be imported.
-			# - assumed meaning: size of the volume in GiB, because EC2 EBS volumes are provisioned in GiB
-			E('volume-size', '%d' % (volume_size,)),
-			# Complex type describing and counting the parts into which the file is split.
-			E.parts(
-				# Definition of a particular part. Any number of parts may be defined.
-				*parts,
-				# Total count of the parts.
-				count='%d' % (part_count,)
-			),
-		),
-	)
-	return cast(bytes, lxml.etree.tostring(manifest, encoding='UTF-8', xml_declaration=False, pretty_print=True))
+    # type: (Raw, Vmdk, boto.s3.bucket.Bucket, uuid.UUID, str, int, int, int) -> bytes
+    # <http://docs.aws.amazon.com/AWSEC2/latest/APIReference/manifest.html>
+    E = lxml.builder.ElementMaker()
+    part_count = int(math.ceil(float(vmdk.size()) / part_size))
+    parts = []
+    for index, offset in enumerate(x * part_size for x in range(part_count)):
+        key = boto.s3.key.Key(bucket, '%s/%s.part%d' % (folder_name, image_name, index))  # TODO: redundant code
+        parts.append(
+            E.part(
+                # Complex type defining the starting and ending byte count of a part.
+                E(
+                    'byte-range',
+                    # Offset of a part's first byte in the disk image.
+                    start='%d' % (offset,),
+                    # Offset of a part's last byte in the disk image.
+                    end='%d' % (min(offset + part_size, vmdk.size()) - 1,),
+                ),
+                # The S3 object name of the part.
+                E.key(key.name),
+                # Signed URLs for issuing a HEAD request on the S3 object containing this part.
+                E('head-url', key.generate_url(url_lifetime, 'HEAD')),
+                # Signed URLs for issuing a GET request on the S3 object containing this part.
+                E('get-url', key.generate_url(url_lifetime, 'GET')),
+                # Signed URLs for issuing a DELETE request on the S3 object containing this part.
+                E('delete-url', key.generate_url(url_lifetime, 'DELETE')),
+                # Index number of this part.
+                index='%d' % (index,),
+            ),
+        )
+    manifest_key = boto.s3.key.Key(bucket, '%s/%smanifest.xml' % (folder_name, image_name))  # TODO: redundant code
+    manifest = E.manifest(
+        # Version designator for the manifest file,
+        E.version('2010-11-15'),
+        # File format of volume to be imported, with value RAW, VHD, or VMDK.
+        E('file-format', 'VMDK'),
+        # Complex type describing the software that created the manifest.
+        E.importer(
+            # Name of the software that created the manifest.
+            E.name('generate_appliance'),
+            # Version of the software that created the manifest.
+            E.version('2.1'),
+            # Release number of the software that created the manifest.
+            E.release('1'),
+        ),
+        # Signed URL used to delete the stored manifest file.
+        E('self-destruct-url', manifest_key.generate_url(url_lifetime, 'DELETE')),
+        # Complex type describing the size and chunking of the volume file.
+        E(
+            'import',
+            # Exact size of the file to be imported (bytes on disk).
+            E.size('%d' % (vmdk.size(),)),
+            # Rounded size in gigabytes of volume to be imported.
+            # - assumed meaning: size of the volume in GiB, because EC2 EBS volumes are provisioned in GiB
+            E('volume-size', '%d' % (volume_size,)),
+            # Complex type describing and counting the parts into which the file is split.
+            E.parts(
+                # Definition of a particular part. Any number of parts may be defined.
+                *parts,
+                # Total count of the parts.
+                count='%d' % (part_count,)
+            ),
+        ),
+    )
+    return cast(bytes, lxml.etree.tostring(manifest, encoding='UTF-8', xml_declaration=False, pretty_print=True))
 
 
 def chunks(imagefile, chunksize):
-	# type: (Vmdk, int) -> Iterator[bytes]
-	handle = open(imagefile.path(), 'rb')
-	while True:
-		chunk = handle.read(chunksize)
-		yield chunk
-		if len(chunk) < chunksize:
-			break
+    # type: (Vmdk, int) -> Iterator[bytes]
+    handle = open(imagefile.path(), 'rb')
+    while True:
+        chunk = handle.read(chunksize)
+        yield chunk
+        if len(chunk) < chunksize:
+            break
 
 
 class EC2_EBS(Target):
-	"""
-	Amazon AWS EC2 AMI (EBS based) (HVM x64_64)
-	"""
+    """
+    Amazon AWS EC2 AMI (EBS based) (HVM x64_64)
+    """
 
-	default = False
+    default = False
 
-	def create(self, image, options):
-		# type: (Raw, Namespace) -> None
-		machine_name = options.product
-		if options.version is not None:
-			machine_name += ' ' + options.version
-		image_name = '%s-disk1.vmdk' % (options.product,)
-		part_size = 10 * 1000 * 1000  # 10 MB
-		url_lifetime = 24 * 60 * 60  # 1 day
+    def create(self, image, options):
+        # type: (Raw, Namespace) -> None
+        machine_name = options.product
+        if options.version is not None:
+            machine_name += ' ' + options.version
+        image_name = '%s-disk1.vmdk' % (options.product,)
+        part_size = 10 * 1000 * 1000  # 10 MB
+        url_lifetime = 24 * 60 * 60  # 1 day
 
-		volume_size = int(math.ceil(float(image.size()) / 1024 / 1024 / 1024))  # GiB
-		folder_name = uuid.uuid4()
-		s3 = boto.s3.connect_to_region(boto.connect_s3().get_bucket(options.bucket).get_location())  # type: ignore[no-untyped-call]
-		ec2 = boto.ec2.connect_to_region(options.region)  # type: ignore[no-untyped-call]
-		bucket = s3.get_bucket(options.bucket)
-		vmdk = Vmdk(image)
-		keys_to_delete = []
-		manifest = create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_size, part_size, url_lifetime)
+        volume_size = int(math.ceil(float(image.size()) / 1024 / 1024 / 1024))  # GiB
+        folder_name = uuid.uuid4()
+        s3 = boto.s3.connect_to_region(boto.connect_s3().get_bucket(options.bucket).get_location())  # type: ignore[no-untyped-call]
+        ec2 = boto.ec2.connect_to_region(options.region)  # type: ignore[no-untyped-call]
+        bucket = s3.get_bucket(options.bucket)
+        vmdk = Vmdk(image)
+        keys_to_delete = []
+        manifest = create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_size, part_size, url_lifetime)
 
-		log('Uploading manifest…')
-		manifest_key = boto.s3.key.Key(bucket, '%s/%smanifest.xml' % (folder_name, image_name))  # TODO: redundant code
-		manifest_key.storage_class = 'REDUCED_REDUNDANCY'
-		manifest_key.set_contents_from_string(manifest)
-		keys_to_delete.append(manifest_key)
-		log('  OK')
+        log('Uploading manifest…')
+        manifest_key = boto.s3.key.Key(bucket, '%s/%smanifest.xml' % (folder_name, image_name))  # TODO: redundant code
+        manifest_key.storage_class = 'REDUCED_REDUNDANCY'
+        manifest_key.set_contents_from_string(manifest)
+        keys_to_delete.append(manifest_key)
+        log('  OK')
 
-		part_count = int(math.ceil(float(vmdk.size()) / part_size))
-		for index, part in enumerate(chunks(vmdk, part_size)):
-			log('Uploading part %d/%d…' % (index, part_count))
-			key = boto.s3.key.Key(bucket, '%s/%s.part%d' % (folder_name, image_name, index))  # TODO: redundant code
-			key.storage_class = 'REDUCED_REDUNDANCY'
-			key.set_contents_from_string(part)
-			keys_to_delete.append(key)
-			log('  OK')
+        part_count = int(math.ceil(float(vmdk.size()) / part_size))
+        for index, part in enumerate(chunks(vmdk, part_size)):
+            log('Uploading part %d/%d…' % (index, part_count))
+            key = boto.s3.key.Key(bucket, '%s/%s.part%d' % (folder_name, image_name, index))  # TODO: redundant code
+            key.storage_class = 'REDUCED_REDUNDANCY'
+            key.set_contents_from_string(part)
+            keys_to_delete.append(key)
+            log('  OK')
 
-		log('Generating volume ', False)
-		manifest_url = manifest_key.generate_url(url_lifetime, 'GET')
-		zone = ec2.get_all_zones()[0]
-		task = ec2.import_volume(
-			volume_size,
-			zone,
-			description=machine_name,
-			image_size=vmdk.size(),
-			manifest_url=manifest_url
-		)
-		# wait for volume
-		while True:
-			for task in ec2.get_all_conversion_tasks(task_ids=[task.id]):
-				pass  # just fill <task> variable
-			if task.state != 'active':
-				log(' done')
-				break
-			time.sleep(32)  # TODO adaptive and jittery
-			# TODO: abort if no progress after some time?
-			log('.', False)
-		if task.state == 'completed':
-			log('  %s' % (task.volume_id,))
-		else:
-			log('  Failed (%r, %r, %r, %r)' % (task.id, task.bytes_converted, task.state, getattr(task, 'statusMessage', None)))
+        log('Generating volume ', False)
+        manifest_url = manifest_key.generate_url(url_lifetime, 'GET')
+        zone = ec2.get_all_zones()[0]
+        task = ec2.import_volume(
+            volume_size,
+            zone,
+            description=machine_name,
+            image_size=vmdk.size(),
+            manifest_url=manifest_url
+        )
+        # wait for volume
+        while True:
+            for task in ec2.get_all_conversion_tasks(task_ids=[task.id]):
+                pass  # just fill <task> variable
+            if task.state != 'active':
+                log(' done')
+                break
+            time.sleep(32)  # TODO adaptive and jittery
+            # TODO: abort if no progress after some time?
+            log('.', False)
+        if task.state == 'completed':
+            log('  %s' % (task.volume_id,))
+        else:
+            log('  Failed (%r, %r, %r, %r)' % (task.id, task.bytes_converted, task.state, getattr(task, 'statusMessage', None)))
 
-		for index, key in enumerate(keys_to_delete):
-			log('Deleting part %d/%d… ' % (index, len(keys_to_delete)), False)
-			if key.delete():
-				log('OK')
-			else:
-				log('Failed')
-		if task.state != 'completed':
-			return  # abort
+        for index, key in enumerate(keys_to_delete):
+            log('Deleting part %d/%d… ' % (index, len(keys_to_delete)), False)
+            if key.delete():
+                log('OK')
+            else:
+                log('Failed')
+        if task.state != 'completed':
+            return  # abort
 
-		log('Generating snapshot ', False)
-		snapshot = ec2.create_snapshot(task.volume_id, description=machine_name)
-		# wait for snapshot
-		while True:
-			snapshot.update()
-			if snapshot.status != 'pending':
-				log(' done')
-				break
-			time.sleep(32)  # TODO adaptive and jittery
-			# TODO: abort if no progress after some time?
-			log('.', False)
-		if snapshot.status == 'completed':
-			log('  %s' % (snapshot.id,))
-		else:
-			log('  Failed (%r, %r, %r, %r)' % (snapshot.id, snapshot.volume_id, snapshot.status, snapshot.progress))
-			return  # abort
-		if ec2.delete_volume(task.volume_id):
-			log('Deleted volume %s' % (task.volume_id,))
-		else:
-			log('Could not delete volume %s' % (task.volume_id,))
+        log('Generating snapshot ', False)
+        snapshot = ec2.create_snapshot(task.volume_id, description=machine_name)
+        # wait for snapshot
+        while True:
+            snapshot.update()
+            if snapshot.status != 'pending':
+                log(' done')
+                break
+            time.sleep(32)  # TODO adaptive and jittery
+            # TODO: abort if no progress after some time?
+            log('.', False)
+        if snapshot.status == 'completed':
+            log('  %s' % (snapshot.id,))
+        else:
+            log('  Failed (%r, %r, %r, %r)' % (snapshot.id, snapshot.volume_id, snapshot.status, snapshot.progress))
+            return  # abort
+        if ec2.delete_volume(task.volume_id):
+            log('Deleted volume %s' % (task.volume_id,))
+        else:
+            log('Could not delete volume %s' % (task.volume_id,))
 
-		log('Generating image', False)
-		ami_id = ec2.register_image(
-			name=machine_name,
-			description='%s' % (
-				options.vendor_url,
-			),
-			architecture='x86_64',
-			root_device_name='/dev/xvda',
-			virtualization_type='hvm',
-			snapshot_id=snapshot.id,
-		)
-		# wait for image
-		while True:
-			amis = [ami for ami in ec2.get_all_images(image_ids=[ami_id]) if ami.state != 'pending']
-			if amis:
-				break
-			time.sleep(32)  # TODO adaptive and jittery
-			# TODO: abort if no progress after some time?
-			log('.', False)
-		log(' done')
+        log('Generating image', False)
+        ami_id = ec2.register_image(
+            name=machine_name,
+            description='%s' % (
+                options.vendor_url,
+            ),
+            architecture='x86_64',
+            root_device_name='/dev/xvda',
+            virtualization_type='hvm',
+            snapshot_id=snapshot.id,
+        )
+        # wait for image
+        while True:
+            amis = [ami for ami in ec2.get_all_images(image_ids=[ami_id]) if ami.state != 'pending']
+            if amis:
+                break
+            time.sleep(32)  # TODO adaptive and jittery
+            # TODO: abort if no progress after some time?
+            log('.', False)
+        log(' done')
 
-		for ami in amis:
-			if ami.state == 'available':
-				log('Generated "%s" appliance as\n  %s' % (self, ami.id))
-			else:
-				log('Could not generate image (%r, %r, %r)' % (self, ami.id, ami.state))
+        for ami in amis:
+            if ami.state == 'available':
+                log('Generated "%s" appliance as\n  %s' % (self, ami.id))
+            else:
+                log('Could not generate image (%r, %r, %r)' % (self, ami.id, ami.state))
 
 
 class Docker(Target):
-	"""Docker Image (tgz)"""
+    """Docker Image (tgz)"""
 
-	default = False
+    default = False
 
-	def create(self, image, options):
-		# type: (Raw, Namespace) -> None
-		archive_name = os.path.join(os.getcwd(), '%s-docker.tar' % (options.filename,))
-		if os.path.exists(archive_name):
-			raise IOError('Output file %r exists' % (archive_name,))
+    def create(self, image, options):
+        # type: (Raw, Namespace) -> None
+        archive_name = os.path.join(os.getcwd(), '%s-docker.tar' % (options.filename,))
+        if os.path.exists(archive_name):
+            raise IOError('Output file %r exists' % (archive_name,))
 
-		image_path = image.path()
-		log('Guestfishing')
-		cmd = [
-			'guestfish',
-			'add-ro', image_path, ':',
-			'run', ':',
-			'mount', '/dev/vg_ucs/root', '/', ':',
-			'mount', '/dev/sda1', '/boot', ':',
-			'tar-out', '/', archive_name,
-		]
-		subprocess.check_call(cmd, stdout=sys.stderr)
-		log('Generated "%s" appliance as\n  %s' % (self, archive_name))
+        image_path = image.path()
+        log('Guestfishing')
+        cmd = [
+            'guestfish',
+            'add-ro', image_path, ':',
+            'run', ':',
+            'mount', '/dev/vg_ucs/root', '/', ':',
+            'mount', '/dev/sda1', '/boot', ':',
+            'tar-out', '/', archive_name,
+        ]
+        subprocess.check_call(cmd, stdout=sys.stderr)
+        log('Generated "%s" appliance as\n  %s' % (self, archive_name))
 
 
 def parse_options():
-	# type: () -> Namespace
-	parser = ArgumentParser(description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter)
-	parser.add_argument('-s', '--source', type=FileType("rb"), help='source image', required=True)
-	group = parser.add_argument_group("VM sizing")
-	group.add_argument('-m', '--memory-size', default=1024, type=int, help='size of virtual memory [MiB]')
-	group.add_argument('-c', '--cpu-count', default=1, type=int, help='virtual CPU count')
-	group = parser.add_argument_group("Output options")
-	group.add_argument('-f', '--filename', help='filename of appliance (default: derived from product)')
-	group.add_argument('-n', '--no-target-specific-filename', action="store_true", help='do not append hypervisor target to filename of appliance. This is the default if only one target is chosen.')
-	group = parser.add_argument_group("Metadata settings")
-	group.add_argument('-p', '--product', help='product name of appliance', default='Univention Corporate Server (UCS)')
-	group.add_argument('--product-url', help='product URL of appliance', default='https://www.univention.com/products/ucs/')
-	group.add_argument('-v', '--version', help='version string of appliance')
-	group.add_argument('--vendor', help='vendor string of appliance', default='Univention GmbH')
-	group.add_argument('--vendor-url', help='vendor URL of appliance', default='At least 2GB of RAM are required. https://www.univention.com/')
-	parser.add_argument('-t', '--tempdir', help='temporary directory to use')
-	group = parser.add_argument_group("AWS settings")
-	group.add_argument('--region', help='EC2 region to use', default='eu-west-1')
-	group.add_argument('--bucket', help='S3 bucket to use', default='generate-appliance')
+    # type: () -> Namespace
+    parser = ArgumentParser(description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter)
+    parser.add_argument('-s', '--source', type=FileType("rb"), help='source image', required=True)
+    group = parser.add_argument_group("VM sizing")
+    group.add_argument('-m', '--memory-size', default=1024, type=int, help='size of virtual memory [MiB]')
+    group.add_argument('-c', '--cpu-count', default=1, type=int, help='virtual CPU count')
+    group = parser.add_argument_group("Output options")
+    group.add_argument('-f', '--filename', help='filename of appliance (default: derived from product)')
+    group.add_argument('-n', '--no-target-specific-filename', action="store_true", help='do not append hypervisor target to filename of appliance. This is the default if only one target is chosen.')
+    group = parser.add_argument_group("Metadata settings")
+    group.add_argument('-p', '--product', help='product name of appliance', default='Univention Corporate Server (UCS)')
+    group.add_argument('--product-url', help='product URL of appliance', default='https://www.univention.com/products/ucs/')
+    group.add_argument('-v', '--version', help='version string of appliance')
+    group.add_argument('--vendor', help='vendor string of appliance', default='Univention GmbH')
+    group.add_argument('--vendor-url', help='vendor URL of appliance', default='At least 2GB of RAM are required. https://www.univention.com/')
+    parser.add_argument('-t', '--tempdir', help='temporary directory to use')
+    group = parser.add_argument_group("AWS settings")
+    group.add_argument('--region', help='EC2 region to use', default='eu-west-1')
+    group.add_argument('--bucket', help='S3 bucket to use', default='generate-appliance')
 
-	group = parser.add_argument_group("Targets")
-	group.add_argument(
-		'-o', '--only', action='store_true',
-		help='ignore default selections, only create selected targets',
-	)
-	for target in Target.__subclasses__():
-		group.add_argument(
-			'--%s' % (target.__name__.lower(),),
-			help='create "%s"%s"' % (
-				(target.__doc__ or "").strip(),
-				' (selected by default)' if target.default else '',
-			),
-			action=BooleanOptionalAction,
-		)
+    group = parser.add_argument_group("Targets")
+    group.add_argument(
+        '-o', '--only', action='store_true',
+        help='ignore default selections, only create selected targets',
+    )
+    for target in Target.__subclasses__():
+        group.add_argument(
+            '--%s' % (target.__name__.lower(),),
+            help='create "%s"%s"' % (
+                (target.__doc__ or "").strip(),
+                ' (selected by default)' if target.default else '',
+            ),
+            action=BooleanOptionalAction,
+        )
 
-	options = parser.parse_args()
+    options = parser.parse_args()
 
-	options.choices = {
-		target()
-		for target in Target.__subclasses__()
-		if getattr(options, target.__name__.lower()) or target.default and not options.only
-	}
+    options.choices = {
+        target()
+        for target in Target.__subclasses__()
+        if getattr(options, target.__name__.lower()) or target.default and not options.only
+    }
 
-	if len(options.choices) == 1:
-		options.no_target_specific_filename = True
+    if len(options.choices) == 1:
+        options.no_target_specific_filename = True
 
-	if options.tempdir is not None:
-		options.tempdir = os.path.realpath(options.tempdir)
-		if not os.path.isdir(options.tempdir):
-			parser.error('Tempdir %r is not a directory!')
+    if options.tempdir is not None:
+        options.tempdir = os.path.realpath(options.tempdir)
+        if not os.path.isdir(options.tempdir):
+            parser.error('Tempdir %r is not a directory!')
 
-	if options.filename is None:
-		fn = "-".join(p for p in [options.product, options.version] if p)
-		options.filename = RE_INVALID.sub('-', fn)
+    if options.filename is None:
+        fn = "-".join(p for p in [options.product, options.version] if p)
+        options.filename = RE_INVALID.sub('-', fn)
 
-	return options
+    return options
 
 
 def log(text, newline=True):
-	# type: (str, bool) -> None
-	sys.stderr.write(text)
-	if newline:
-		sys.stderr.write('\n')
-	sys.stderr.flush()
+    # type: (str, bool) -> None
+    sys.stderr.write(text)
+    if newline:
+        sys.stderr.write('\n')
+    sys.stderr.flush()
 
 
 def main():
-	# type: () -> None
-	global WORKDIR, TEMPDIR, STOREDIR
-	options = parse_options()
-	WORKDIR = tempfile.mkdtemp(prefix='imagestore ', dir=options.tempdir)
-	TEMPDIR = os.path.join(WORKDIR, 'tmp')
-	os.mkdir(TEMPDIR)
-	STOREDIR = os.path.join(WORKDIR, 'store')
-	os.mkdir(STOREDIR)
-	try:
-		source_image = Raw(options.source)
-		for choice in options.choices:
-			choice.create(source_image, options)
-	finally:
-		log('Cleanup')
-		cmd = ('find', WORKDIR, '(', '-type', 'f', '-printf', '  %f\\n', '-o', '-true', ')', '-delete')
-		subprocess.call(cmd, stdout=sys.stderr)
+    # type: () -> None
+    global WORKDIR, TEMPDIR, STOREDIR
+    options = parse_options()
+    WORKDIR = tempfile.mkdtemp(prefix='imagestore ', dir=options.tempdir)
+    TEMPDIR = os.path.join(WORKDIR, 'tmp')
+    os.mkdir(TEMPDIR)
+    STOREDIR = os.path.join(WORKDIR, 'store')
+    os.mkdir(STOREDIR)
+    try:
+        source_image = Raw(options.source)
+        for choice in options.choices:
+            choice.create(source_image, options)
+    finally:
+        log('Cleanup')
+        cmd = ('find', WORKDIR, '(', '-type', 'f', '-printf', '  %f\\n', '-o', '-true', ')', '-delete')
+        subprocess.call(cmd, stdout=sys.stderr)
 
 
 if __name__ == "__main__":
-	main()
+    main()

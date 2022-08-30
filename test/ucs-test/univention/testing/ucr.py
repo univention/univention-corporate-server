@@ -53,102 +53,102 @@ from univention.config_registry import ConfigRegistry
 
 
 class UCSTestConfigRegistry(ConfigRegistry):
-	"""
-		Extension to ConfigRegistry to be able to clean up after
-		several changes to UCR variables have been done.
-	"""
+    """
+            Extension to ConfigRegistry to be able to clean up after
+            several changes to UCR variables have been done.
+    """
 
-	def __init__(self, *args, **kwargs):
-		# type: (*Any, **Any) -> None
-		""" initialise object """
-		ConfigRegistry.__init__(self, *args, **kwargs)
-		self.__original_registry = None  # type: Optional[Dict[int, Dict[str, str]]]
+    def __init__(self, *args, **kwargs):
+        # type: (*Any, **Any) -> None
+        """ initialise object """
+        ConfigRegistry.__init__(self, *args, **kwargs)
+        self.__original_registry = None  # type: Optional[Dict[int, Dict[str, str]]]
 
-	def ucr_update(self, *args):
-		return univention.config_registry.frontend.ucr_update(*args)
+    def ucr_update(self, *args):
+        return univention.config_registry.frontend.ucr_update(*args)
 
-	def handler_set(self, *args):
-		return univention.config_registry.handler_set(*args)
+    def handler_set(self, *args):
+        return univention.config_registry.handler_set(*args)
 
-	def handler_unset(self, *args):
-		return univention.config_registry.handler_unset(*args)
+    def handler_unset(self, *args):
+        return univention.config_registry.handler_unset(*args)
 
-	def load(self):
-		# type: () -> None
-		""" call load() of superclass and save original registry values """
-		ConfigRegistry.load(self)
-		if self.__original_registry is None:
-			self.__original_registry = {
-				regtype: copy.deepcopy(dict(reg))
-				for (regtype, reg) in self._walk()
-			}
+    def load(self):
+        # type: () -> None
+        """ call load() of superclass and save original registry values """
+        ConfigRegistry.load(self)
+        if self.__original_registry is None:
+            self.__original_registry = {
+                regtype: copy.deepcopy(dict(reg))
+                for (regtype, reg) in self._walk()
+            }
 
-	def revert_to_original_registry(self):
-		# type: () -> None
-		""" revert UCR values back to original state """
-		# load current values again to perform correct comparison
-		self.load()
-		assert self.__original_registry is not None
-		for regtype, option in (
-			(ConfigRegistry.NORMAL, ''),
-			(ConfigRegistry.LDAP, 'ldap-policy'),
-			(ConfigRegistry.FORCED, 'force'),
-			(ConfigRegistry.SCHEDULE, 'schedule')
-		):
-			# remove new variables
-			keylist = set(self._registry[regtype]) - set(self.__original_registry[regtype])
-			if keylist:
-				self.handler_unset(list(keylist), {option: True})
+    def revert_to_original_registry(self):
+        # type: () -> None
+        """ revert UCR values back to original state """
+        # load current values again to perform correct comparison
+        self.load()
+        assert self.__original_registry is not None
+        for regtype, option in (
+                (ConfigRegistry.NORMAL, ''),
+                (ConfigRegistry.LDAP, 'ldap-policy'),
+                (ConfigRegistry.FORCED, 'force'),
+                (ConfigRegistry.SCHEDULE, 'schedule')
+        ):
+            # remove new variables
+            keylist = set(self._registry[regtype]) - set(self.__original_registry[regtype])
+            if keylist:
+                self.handler_unset(list(keylist), {option: True})
 
-			# add/revert existing variables
-			changes = [
-				f'{key}={origval}'
-				for key, origval in self.__original_registry[regtype].items()
-				if origval != self._registry[regtype].get(key)
-			]
-			if changes:
-				self.handler_set(changes, {option: True})
-		# load new/original values
-		self.load()
+            # add/revert existing variables
+            changes = [
+                f'{key}={origval}'
+                for key, origval in self.__original_registry[regtype].items()
+                if origval != self._registry[regtype].get(key)
+            ]
+            if changes:
+                self.handler_set(changes, {option: True})
+        # load new/original values
+        self.load()
 
-	def __enter__(self):
-		# type: () -> UCSTestConfigRegistry
-		self.load()
-		return self
+    def __enter__(self):
+        # type: () -> UCSTestConfigRegistry
+        self.load()
+        return self
 
-	def __exit__(self, exc_type, exc_value, traceback):
-		# type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
-		self.revert_to_original_registry()
+    def __exit__(self, exc_type, exc_value, traceback):
+        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
+        self.revert_to_original_registry()
 
 
 if __name__ == '__main__':
-	import time
+    import time
 
-	# Usage variant 1 "the manual way"
+    # Usage variant 1 "the manual way"
 
-	print('Loading UCR...')
-	ucr = UCSTestConfigRegistry()
-	ucr.load()
-	print('Setting some variables...')
-	ucr.handler_set(['foo/bar=ding/dong'])
-	ucr.handler_set(['repository/online/server=ftp.debian.org'])
-	ucr.handler_unset(['server/role'])
-	print('Waiting for 3 seconds...')
-	time.sleep(3)
-	print('Cleanup...')
-	ucr.revert_to_original_registry()
+    print('Loading UCR...')
+    ucr = UCSTestConfigRegistry()
+    ucr.load()
+    print('Setting some variables...')
+    ucr.handler_set(['foo/bar=ding/dong'])
+    ucr.handler_set(['repository/online/server=ftp.debian.org'])
+    ucr.handler_unset(['server/role'])
+    print('Waiting for 3 seconds...')
+    time.sleep(3)
+    print('Cleanup...')
+    ucr.revert_to_original_registry()
 
-	# Usage variant 2 "with statement"
+    # Usage variant 2 "with statement"
 
-	with UCSTestConfigRegistry() as ucr2:
-		print('Old values...')
-		print(ucr2.get('foo/bar', '<unset>'))
-		print(ucr2.get('repository/online/server', '<unset>'))
-		print(ucr2.get('server/role', '<unset>'))
-		print('Setting some variables...')
-		ucr2.handler_set(['foo/bar=ding/dong'])
-		ucr2.handler_set(['repository/online/server=ftp.debian.org'])
-		ucr2.handler_unset(['server/role'])
-		print('Waiting for 3 seconds...')
-		time.sleep(3)
-		print('Cleanup...')
+    with UCSTestConfigRegistry() as ucr2:
+        print('Old values...')
+        print(ucr2.get('foo/bar', '<unset>'))
+        print(ucr2.get('repository/online/server', '<unset>'))
+        print(ucr2.get('server/role', '<unset>'))
+        print('Setting some variables...')
+        ucr2.handler_set(['foo/bar=ding/dong'])
+        ucr2.handler_set(['repository/online/server=ftp.debian.org'])
+        ucr2.handler_unset(['server/role'])
+        print('Waiting for 3 seconds...')
+        time.sleep(3)
+        print('Cleanup...')

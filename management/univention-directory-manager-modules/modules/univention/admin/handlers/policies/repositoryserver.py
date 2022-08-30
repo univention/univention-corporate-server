@@ -41,9 +41,9 @@ import univention.admin.handlers
 import univention.admin.localization
 
 from univention.admin.policy import (
-	register_policy_mapping, policy_object_tab,
-	requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    register_policy_mapping, policy_object_tab,
+    requiredObjectClassesProperty, prohibitedObjectClassesProperty,
+    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
 )
 
 
@@ -52,10 +52,10 @@ _ = translation.translate
 
 
 class ldapServerFixedAttributes(univention.admin.syntax.select):
-	name = 'updateFixedAttributes'
-	choices = [
-		('univentionRepositoryServer', _('Repository server')),
-	]
+    name = 'updateFixedAttributes'
+    choices = [
+        ('univentionRepositoryServer', _('Repository server')),
+    ]
 
 
 module = 'policies/repositoryserver'
@@ -72,46 +72,46 @@ object_name_plural = _('Repository server policies')
 policy_short_description = _('Repository server')
 long_description = ''
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'univentionPolicy', 'univentionPolicyRepositoryServer'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyRepositoryServer'],
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=univention.admin.syntax.policyName,
-		include_in_default_search=True,
-		required=True,
-		may_change=False,
-		identifies=True,
-	),
-	'repositoryServer': univention.admin.property(
-		short_description=_('Repository server'),
-		long_description='',
-		syntax=univention.admin.syntax.UCS_Server,
-		include_in_default_search=True,
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=univention.admin.syntax.policyName,
+        include_in_default_search=True,
+        required=True,
+        may_change=False,
+        identifies=True,
+    ),
+    'repositoryServer': univention.admin.property(
+        short_description=_('Repository server'),
+        long_description='',
+        syntax=univention.admin.syntax.UCS_Server,
+        include_in_default_search=True,
+    ),
 
 }
 property_descriptions.update(dict([
-	requiredObjectClassesProperty(),
-	prohibitedObjectClassesProperty(),
-	fixedAttributesProperty(syntax=ldapServerFixedAttributes),
-	emptyAttributesProperty(syntax=ldapServerFixedAttributes),
-	ldapFilterProperty(),
+    requiredObjectClassesProperty(),
+    prohibitedObjectClassesProperty(),
+    fixedAttributesProperty(syntax=ldapServerFixedAttributes),
+    emptyAttributesProperty(syntax=ldapServerFixedAttributes),
+    ldapFilterProperty(),
 ]))
 
 layout = [
-	Tab(_('General'), _('Update'), layout=[
-		Group(_('General repository server settings'), layout=[
-			'name',
-			'repositoryServer'
-		]),
-	]),
-	policy_object_tab()
+    Tab(_('General'), _('Update'), layout=[
+        Group(_('General repository server settings'), layout=[
+            'name',
+            'repositoryServer'
+        ]),
+    ]),
+    policy_object_tab()
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -121,7 +121,7 @@ register_policy_mapping(mapping)
 
 
 class object(univention.admin.handlers.simplePolicy):
-	module = module
+    module = module
 
 
 lookup = object.lookup

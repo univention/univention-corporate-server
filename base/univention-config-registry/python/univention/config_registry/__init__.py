@@ -41,10 +41,10 @@ from univention.config_registry.handler import run_filter as filter, ConfigHandl
 from univention.config_registry.misc import key_shell_escape, validate_key, INVALID_KEY_CHARS as invalid_key_chars  # noqa: F401
 from univention.config_registry.filters import filter_shell, filter_keys_only, filter_sort  # noqa: F401
 from univention.config_registry.frontend import (  # noqa: F401
-	REPLOG_FILE, UnknownKeyException, main,
-	handler_set, handler_unset, handler_commit, handler_filter,
-	handler_get, handler_dump, handler_search,
-	handler_register, handler_unregister, handler_update,
+        REPLOG_FILE, UnknownKeyException, main,
+        handler_set, handler_unset, handler_commit, handler_filter,
+        handler_get, handler_dump, handler_search,
+        handler_register, handler_unregister, handler_update,
 )
 from univention.debhelper import parseRfc822  # noqa: F401
 
@@ -53,11 +53,11 @@ ucr_live = Proxy(lambda: _RCR().load(autoload=Load.ALWAYS))  # type: _RCR
 
 
 def ucr_factory():  # type: () -> ConfigRegistry
-	"""
-	Factory method to return private loaded UCR instance.
+    """
+    Factory method to return private loaded UCR instance.
 
-	:returns: A private UCR instance.
-	"""
-	return ConfigRegistry().load()
+    :returns: A private UCR instance.
+    """
+    return ConfigRegistry().load()
 
 # vim:set sw=4 ts=4 noet:

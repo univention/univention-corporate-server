@@ -40,9 +40,9 @@ import univention.admin.handlers
 import univention.admin.localization
 
 from univention.admin.policy import (
-	register_policy_mapping, policy_object_tab,
-	requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    register_policy_mapping, policy_object_tab,
+    requiredObjectClassesProperty, prohibitedObjectClassesProperty,
+    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
 )
 
 
@@ -51,10 +51,10 @@ _ = translation.translate
 
 
 class printServerFixedAttributes(univention.admin.syntax.select):
-	name = 'updateFixedAttributes'
-	choices = [
-		('univentionPrintServer', _('Print server')),
-	]
+    name = 'updateFixedAttributes'
+    choices = [
+        ('univentionPrintServer', _('Print server')),
+    ]
 
 
 module = 'policies/printserver'
@@ -71,46 +71,46 @@ object_name_plural = _('Print server policies')
 policy_short_description = _('Print server')
 long_description = ''
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'univentionPolicy', 'univentionPolicyPrintServer'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyPrintServer'],
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=univention.admin.syntax.policyName,
-		include_in_default_search=True,
-		required=True,
-		may_change=False,
-		identifies=True,
-	),
-	'printServer': univention.admin.property(
-		short_description=_('Print server'),
-		long_description='',
-		syntax=univention.admin.syntax.ServicePrint_FQDN,
-		include_in_default_search=True,
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=univention.admin.syntax.policyName,
+        include_in_default_search=True,
+        required=True,
+        may_change=False,
+        identifies=True,
+    ),
+    'printServer': univention.admin.property(
+        short_description=_('Print server'),
+        long_description='',
+        syntax=univention.admin.syntax.ServicePrint_FQDN,
+        include_in_default_search=True,
+    ),
 
 }
 property_descriptions.update(dict([
-	requiredObjectClassesProperty(),
-	prohibitedObjectClassesProperty(),
-	fixedAttributesProperty(syntax=printServerFixedAttributes),
-	emptyAttributesProperty(syntax=printServerFixedAttributes),
-	ldapFilterProperty(),
+    requiredObjectClassesProperty(),
+    prohibitedObjectClassesProperty(),
+    fixedAttributesProperty(syntax=printServerFixedAttributes),
+    emptyAttributesProperty(syntax=printServerFixedAttributes),
+    ldapFilterProperty(),
 ]))
 
 layout = [
-	Tab(_('General'), _('Basic settings'), layout=[
-		Group(_('General print server settings'), layout=[
-			'name',
-			'printServer'
-		]),
-	]),
-	policy_object_tab()
+    Tab(_('General'), _('Basic settings'), layout=[
+        Group(_('General print server settings'), layout=[
+            'name',
+            'printServer'
+        ]),
+    ]),
+    policy_object_tab()
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -120,7 +120,7 @@ register_policy_mapping(mapping)
 
 
 class object(univention.admin.handlers.simplePolicy):
-	module = module
+    module = module
 
 
 lookup = object.lookup

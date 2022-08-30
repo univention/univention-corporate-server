@@ -39,117 +39,117 @@ import os
 import subprocess
 
 try:
-	from typing import Dict, List, Optional, Sequence, Text  # noqa: F401
+    from typing import Dict, List, Optional, Sequence, Text  # noqa: F401
 except ImportError:
-	pass
+    pass
 
 
 def doIt(*argv):
-	# type: (*str) -> int
-	"""
-	Execute argv and wait.
+    # type: (*str) -> int
+    """
+    Execute argv and wait.
 
-	:param args: List of command and arguments.
+    :param args: List of command and arguments.
 
-	>>> doIt('true')
-	0
-	"""
-	if os.environ.get('DH_VERBOSE', False):
-		print('\t%s' % ' '.join(argv))
-	return subprocess.check_call(argv)
+    >>> doIt('true')
+    0
+    """
+    if os.environ.get('DH_VERBOSE', False):
+        print('\t%s' % ' '.join(argv))
+    return subprocess.check_call(argv)
 
 
 def binary_packages():
-	# type: () -> List[str]
-	"""
-	Get list of binary packages from debian/control file.
+    # type: () -> List[str]
+    """
+    Get list of binary packages from debian/control file.
 
-	>>> binary_packages() #doctest: +ELLIPSIS
-	[...]
-	"""
-	_prefix = 'Package: '
-	packages = []
-	with open('debian/control', 'r') as f:
-		for line in f:
-			if not line.startswith(_prefix):
-				continue
-			packages.append(line[len(_prefix): -1])
+    >>> binary_packages() #doctest: +ELLIPSIS
+    [...]
+    """
+    _prefix = 'Package: '
+    packages = []
+    with open('debian/control', 'r') as f:
+        for line in f:
+            if not line.startswith(_prefix):
+                continue
+            packages.append(line[len(_prefix): -1])
 
-	return packages
+    return packages
 
 
 def parseRfc822(f):
-	# type: (str) -> List[Dict[str, List[str]]]
-	r"""
-	Parses string `f` as a :rfc:`822` conforming file and returns list of sections, each a dict mapping keys to lists of values.
-	Splits file into multiple sections separated by blank line.
+    # type: (str) -> List[Dict[str, List[str]]]
+    r"""
+    Parses string `f` as a :rfc:`822` conforming file and returns list of sections, each a dict mapping keys to lists of values.
+    Splits file into multiple sections separated by blank line.
 
-	:param f: The messate to parse.
-	:returns: A list of dictionaries.
+    :param f: The messate to parse.
+    :returns: A list of dictionaries.
 
-	.. note::
-		For real Debian files, use the :py:mod:`debian.deb822` module from the `python-debian` package.
+    .. note::
+            For real Debian files, use the :py:mod:`debian.deb822` module from the `python-debian` package.
 
-	>>> res = parseRfc822('Type: file\nFile: /etc/fstab\n\nType: Script\nScript: /bin/false\n')
-	>>> res == [{'Type': ['file'], 'File': ['/etc/fstab']}, {'Type': ['Script'], 'Script': ['/bin/false']}]
-	True
-	>>> parseRfc822('')
-	[]
-	>>> parseRfc822('\n')
-	[]
-	>>> parseRfc822('\n\n')
-	[]
-	"""
-	res = []  # type: List[Dict[str, List[str]]]
-	ent = {}  # type: Dict[str, List[str]]
-	for line in f.splitlines():
-		if line:
-			try:
-				key, value = line.split(': ', 1)
-			except ValueError:
-				pass
-			else:
-				ent.setdefault(key, []).append(value)
-		elif ent:
-			res.append(ent)
-			ent = {}
+    >>> res = parseRfc822('Type: file\nFile: /etc/fstab\n\nType: Script\nScript: /bin/false\n')
+    >>> res == [{'Type': ['file'], 'File': ['/etc/fstab']}, {'Type': ['Script'], 'Script': ['/bin/false']}]
+    True
+    >>> parseRfc822('')
+    []
+    >>> parseRfc822('\n')
+    []
+    >>> parseRfc822('\n\n')
+    []
+    """
+    res = []  # type: List[Dict[str, List[str]]]
+    ent = {}  # type: Dict[str, List[str]]
+    for line in f.splitlines():
+        if line:
+            try:
+                key, value = line.split(': ', 1)
+            except ValueError:
+                pass
+            else:
+                ent.setdefault(key, []).append(value)
+        elif ent:
+            res.append(ent)
+            ent = {}
 
-	if ent:
-		res.append(ent)
+    if ent:
+        res.append(ent)
 
-	return res
+    return res
 
 
 def parser_dh_sequence(parser, argv=None):
-	# type: (ArgumentParser, Optional[Sequence[Text]]) -> Namespace
-	"""
-	Add common argument for Debian helper sequence.
+    # type: (ArgumentParser, Optional[Sequence[Text]]) -> Namespace
+    """
+    Add common argument for Debian helper sequence.
 
-	:param parser: argument parser
-	:returns: parsed arguments
+    :param parser: argument parser
+    :returns: parsed arguments
 
-	>>> parser = ArgumentParser()
-	>>> args = parser_dh_sequence(parser, ["-v"])
-	>>> args.verbose
-	True
-	"""
-	parser.add_argument(
-		'--verbose', '-v',
-		action='store_true',
-		help='Verbose mode: show all commands that modify the package build directory.')
-	group = parser.add_argument_group("debhelper", "Common debhelper options")
-	group.add_argument("--arch", "-a", action="store_true", help="Act on all architecture dependent packages.")
-	group.add_argument("--indep", "-i", action="store_true", help="Act on all architecture independent packages.")
-	group.add_argument("--option", "-O", action="append", help="Additional debhelper options.")
+    >>> parser = ArgumentParser()
+    >>> args = parser_dh_sequence(parser, ["-v"])
+    >>> args.verbose
+    True
+    """
+    parser.add_argument(
+        '--verbose', '-v',
+        action='store_true',
+        help='Verbose mode: show all commands that modify the package build directory.')
+    group = parser.add_argument_group("debhelper", "Common debhelper options")
+    group.add_argument("--arch", "-a", action="store_true", help="Act on all architecture dependent packages.")
+    group.add_argument("--indep", "-i", action="store_true", help="Act on all architecture independent packages.")
+    group.add_argument("--option", "-O", action="append", help="Additional debhelper options.")
 
-	args = parser.parse_args(argv)
+    args = parser.parse_args(argv)
 
-	if args.verbose:
-		os.environ['DH_VERBOSE'] = '1'
+    if args.verbose:
+        os.environ['DH_VERBOSE'] = '1'
 
-	return args
+    return args
 
 
 if __name__ == '__main__':
-	import doctest
-	doctest.testmod()
+    import doctest
+    doctest.testmod()

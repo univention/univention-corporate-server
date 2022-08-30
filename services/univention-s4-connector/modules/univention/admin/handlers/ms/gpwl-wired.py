@@ -48,54 +48,54 @@ childs = True
 short_description = _('MS wired Group Policy')
 long_description = ''
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['ms-net-ieee-8023-GroupPolicy', 'top']
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['ms-net-ieee-8023-GroupPolicy', 'top']
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		required=True,
-		identifies=True,
-	),
-	'description': univention.admin.property(
-		short_description=_('Description'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'ms-net-ieee-8023-GP-PolicyReserved': univention.admin.property(
-		short_description=_('Policy Reserved'),
-		long_description='',
-		syntax=univention.admin.syntax.TextArea,
-	),
-	'ms-net-ieee-8023-GP-PolicyData': univention.admin.property(
-		short_description=_('Policy Data'),
-		long_description='',
-		syntax=univention.admin.syntax.TextArea,
-		size='Two',
-	),
-	'ms-net-ieee-8023-GP-PolicyGUID': univention.admin.property(
-		short_description=_('Policy GUID'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        required=True,
+        identifies=True,
+    ),
+    'description': univention.admin.property(
+        short_description=_('Description'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'ms-net-ieee-8023-GP-PolicyReserved': univention.admin.property(
+        short_description=_('Policy Reserved'),
+        long_description='',
+        syntax=univention.admin.syntax.TextArea,
+    ),
+    'ms-net-ieee-8023-GP-PolicyData': univention.admin.property(
+        short_description=_('Policy Data'),
+        long_description='',
+        syntax=univention.admin.syntax.TextArea,
+        size='Two',
+    ),
+    'ms-net-ieee-8023-GP-PolicyGUID': univention.admin.property(
+        short_description=_('Policy GUID'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
 }
 
 layout = [
-	Tab(_('General'), _('Basic settings'), layout=[
-		Group(_('General'), layout=[
-			["name", "description"],
-		]),
-		Group(_('Policy settings'), layout=[
-			"ms-net-ieee-8023-GP-PolicyGUID",
-			'ms-net-ieee-8023-GP-PolicyData',
-			"ms-net-ieee-8023-GP-PolicyReserved",
-		]),
-	]),
+    Tab(_('General'), _('Basic settings'), layout=[
+        Group(_('General'), layout=[
+            ["name", "description"],
+        ]),
+        Group(_('Policy settings'), layout=[
+            "ms-net-ieee-8023-GP-PolicyGUID",
+            'ms-net-ieee-8023-GP-PolicyData',
+            "ms-net-ieee-8023-GP-PolicyReserved",
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -107,11 +107,11 @@ mapping.register('ms-net-ieee-8023-GP-PolicyGUID', 'ms-net-ieee-8023-GP-PolicyGU
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module = module
+    module = module
 
-	def _ldap_pre_modify(self):
-		if self.hasChanged('name'):
-			self.move(self._ldap_dn())
+    def _ldap_pre_modify(self):
+        if self.hasChanged('name'):
+            self.move(self._ldap_dn())
 
 
 identify = object.identify

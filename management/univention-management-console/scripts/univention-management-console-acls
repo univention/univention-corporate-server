@@ -66,50 +66,50 @@ filename = os.path.join(_cache_dir, options.user.replace('/', ''))
 
 acls = []
 if os.path.isfile(filename) and operation in ('show', 'allow', 'remove', 'upgrade-to-json'):
-	try:
-		with open(filename) as fd:
-			acls = json.load(fd)
-		print('loaded json file', filename)
-	except Exception:
-		if six.PY2:
-			try:
-				with open(filename) as fd:
-					acls = pickle.load(fd)
-				print('loaded pickle file', filename)
-			except Exception:
-				acls = []
+    try:
+        with open(filename) as fd:
+            acls = json.load(fd)
+        print('loaded json file', filename)
+    except Exception:
+        if six.PY2:
+            try:
+                with open(filename) as fd:
+                    acls = pickle.load(fd)
+                print('loaded pickle file', filename)
+            except Exception:
+                acls = []
 
 # convert old format
 new_acls = []
 if isinstance(acls, dict):
-	for rule in acls['allow']:
-		rule = Rule(rule)
-		if rule not in new_acls:
-			new_acls.append(rule)
+    for rule in acls['allow']:
+        rule = Rule(rule)
+        if rule not in new_acls:
+            new_acls.append(rule)
 else:  # check for duplicates
-	for rule in acls:
-		rule = Rule(rule)
-		if rule not in new_acls:
-			new_acls.append(rule)
+    for rule in acls:
+        rule = Rule(rule)
+        if rule not in new_acls:
+            new_acls.append(rule)
 acls = new_acls
 
 if operation == 'show':
-	print('Username: %s' % options.user)
-	for acl in acls:
-		print('     Host: %-10s Command: %-15s Flavor: %-14s Options: %s' % (acl.host, acl.command, acl.flavor, str(acl.options)))
-	sys.exit(0)
+    print('Username: %s' % options.user)
+    for acl in acls:
+        print('     Host: %-10s Command: %-15s Flavor: %-14s Options: %s' % (acl.host, acl.command, acl.flavor, str(acl.options)))
+    sys.exit(0)
 elif operation == 'allow':
-	for command in options.commands:
-		rule = Rule({'fromUser': False, 'host': options.host, 'command': command, 'flavor': options.flavor})
-		if rule not in acls:
-			acls.append(rule)
-			print('info: rule %s appended' % command)
-		else:
-			print('warning: rule %s already exists' % command)
+    for command in options.commands:
+        rule = Rule({'fromUser': False, 'host': options.host, 'command': command, 'flavor': options.flavor})
+        if rule not in acls:
+            acls.append(rule)
+            print('info: rule %s appended' % command)
+        else:
+            print('warning: rule %s already exists' % command)
 elif operation == 'remove':
-	acls = [item for item in acls if item.command not in options.commands]
+    acls = [item for item in acls if item.command not in options.commands]
 elif operation == 'reset':
-	pass  # nothing todo as the acls dict is already "reset" and will be written in the next step
+    pass  # nothing todo as the acls dict is already "reset" and will be written in the next step
 
 with open(filename, 'w') as fd:
-	fd.write(json.dumps(acls))
+    fd.write(json.dumps(acls))

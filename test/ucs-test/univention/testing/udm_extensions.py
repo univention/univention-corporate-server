@@ -42,86 +42,86 @@ VALID_EXTENSION_TYPES = ('hook', 'syntax', 'module')
 
 
 def get_package_name():
-	# type: () -> str
-	""" returns a valid package name """
-	return random_name()
+    # type: () -> str
+    """ returns a valid package name """
+    return random_name()
 
 
 def get_package_version():
-	# type: () -> str
-	return random_version()
+    # type: () -> str
+    return random_version()
 
 
 def get_extension_name(extension_type):
-	# type: (str) -> str
-	"""
-	Returns a valid extension name for the given extension type.
-	>>> get_extension_name('hook')
-	'jcvuardfqx'
-	>>> get_extension_name('syntax')
-	'hwvkm29tde'
-	>>> get_extension_name('module')
-	'ucstest/r3jkljngcp'
-	"""
-	assert extension_type in VALID_EXTENSION_TYPES
-	if extension_type == 'module':
-		return 'ucstest/%s' % random_name()
-	else:
-		return random_name()
+    # type: (str) -> str
+    """
+    Returns a valid extension name for the given extension type.
+    >>> get_extension_name('hook')
+    'jcvuardfqx'
+    >>> get_extension_name('syntax')
+    'hwvkm29tde'
+    >>> get_extension_name('module')
+    'ucstest/r3jkljngcp'
+    """
+    assert extension_type in VALID_EXTENSION_TYPES
+    if extension_type == 'module':
+        return 'ucstest/%s' % random_name()
+    else:
+        return random_name()
 
 
 def get_extension_filename(extension_type, extension_name):
-	# type: (str, str) -> str
-	assert extension_type in VALID_EXTENSION_TYPES
-	return '%s.py' % extension_name
+    # type: (str, str) -> str
+    assert extension_type in VALID_EXTENSION_TYPES
+    return '%s.py' % extension_name
 
 
 def call_cmd(cmd, fail_on_error=True):
-	# type: (Sequence[str], bool) -> int
-	"""
-	Calls the given cmd (list of strings).
-	"""
-	print('CMD: %r' % cmd)
-	sys.stdout.flush()
-	exitcode = subprocess.call(cmd)
-	if fail_on_error and exitcode:
-		fail(f'EXITCODE of script {cmd[0]}: {exitcode!r}')
-	return exitcode
+    # type: (Sequence[str], bool) -> int
+    """
+    Calls the given cmd (list of strings).
+    """
+    print('CMD: %r' % cmd)
+    sys.stdout.flush()
+    exitcode = subprocess.call(cmd)
+    if fail_on_error and exitcode:
+        fail(f'EXITCODE of script {cmd[0]}: {exitcode!r}')
+    return exitcode
 
 
 def call_join_script(name, fail_on_error=True):
-	# type: (str, bool) -> int
-	"""
-	Calls the given join script (e.g. name='66foobar.inst').
-	If fail is true, then the function fail() is called if the exitcode is not zero.
-	"""
-	ucr = ConfigRegistry()
-	ucr.load()
-	return call_cmd(['/usr/lib/univention-install/%s' % name, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], fail_on_error=fail_on_error)
+    # type: (str, bool) -> int
+    """
+    Calls the given join script (e.g. name='66foobar.inst').
+    If fail is true, then the function fail() is called if the exitcode is not zero.
+    """
+    ucr = ConfigRegistry()
+    ucr.load()
+    return call_cmd(['/usr/lib/univention-install/%s' % name, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], fail_on_error=fail_on_error)
 
 
 def call_unjoin_script(name, fail_on_error=True):
-	# type: (str, bool) -> int
-	"""
-	Calls the given unjoin script (e.g. name='66foobar-uninstall.uinst').
-	If fail is true, then the function fail() is called if the exitcode is not zero.
-	"""
-	ucr = ConfigRegistry()
-	ucr.load()
-	return call_cmd(['/usr/lib/univention-uninstall/%s' % name, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], fail_on_error=fail_on_error)
+    # type: (str, bool) -> int
+    """
+    Calls the given unjoin script (e.g. name='66foobar-uninstall.uinst').
+    If fail is true, then the function fail() is called if the exitcode is not zero.
+    """
+    ucr = ConfigRegistry()
+    ucr.load()
+    return call_cmd(['/usr/lib/univention-uninstall/%s' % name, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], fail_on_error=fail_on_error)
 
 
 def get_syntax_buffer(name=None, identifier=None):
-	# type: (Optional[str], Optional[str]) -> str
-	"""
-	Returns a UDM syntax with given name (e.g. 'MySimpleHook'). If name is omitted,
-	a randomly generated name is used.
-	"""
-	if name is None:
-		name = random_name()
-	if identifier is None:
-		identifier = name
-	return '''# UCS-TEST SYNTAX %(syntax_identifier)s
+    # type: (Optional[str], Optional[str]) -> str
+    """
+    Returns a UDM syntax with given name (e.g. 'MySimpleHook'). If name is omitted,
+    a randomly generated name is used.
+    """
+    if name is None:
+        name = random_name()
+    if identifier is None:
+        identifier = name
+    return '''# UCS-TEST SYNTAX %(syntax_identifier)s
 class %(syntax_name)s(simple):
 		regex = re.compile('^ucstest-[0-9A-Za-z]+$')
 		error_message = 'Wrong value given for ucs-test-syntax!'
@@ -129,16 +129,16 @@ class %(syntax_name)s(simple):
 
 
 def get_hook_buffer(name=None, identifier=None):
-	# type: (Optional[str], Optional[str]) -> str
-	"""
-	Returns a UDM hook with given name (e.g. 'MySimpleHook'). If name is omitted,
-	a randomly generated name is used.
-	"""
-	if name is None:
-		name = random_name()
-	if identifier is None:
-		identifier = name
-	return '''# UCS-TEST HOOK %(hook_identifier)s
+    # type: (Optional[str], Optional[str]) -> str
+    """
+    Returns a UDM hook with given name (e.g. 'MySimpleHook'). If name is omitted,
+    a randomly generated name is used.
+    """
+    if name is None:
+        name = random_name()
+    if identifier is None:
+        identifier = name
+    return '''# UCS-TEST HOOK %(hook_identifier)s
 from univention.admin.hook import simpleHook
 
 class %(hook_name)s(simpleHook):
@@ -151,17 +151,17 @@ class %(hook_name)s(simpleHook):
 
 
 def get_module_buffer(name=None, identifier=None):
-	# type: (Optional[str], Optional[str]) -> str
-	"""
-	Returns a UDM module with given name (e.g. 'testing/mytest'). If name is omitted,
-	a randomly generated name is used ('ucstest/%(randomstring)s').
-	"""
-	if name is None:
-		name = f'ucstest/{random_name()}'
-	assert '/' in name
-	if identifier is None:
-		identifier = name
-	return '''# this UDM module has been created by ucs-test
+    # type: (Optional[str], Optional[str]) -> str
+    """
+    Returns a UDM module with given name (e.g. 'testing/mytest'). If name is omitted,
+    a randomly generated name is used ('ucstest/%(randomstring)s').
+    """
+    if name is None:
+        name = f'ucstest/{random_name()}'
+    assert '/' in name
+    if identifier is None:
+        identifier = name
+    return '''# this UDM module has been created by ucs-test
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
@@ -213,47 +213,47 @@ identify = object.identify
 
 
 def get_extension_buffer(extension_type, name=None, identifier=None):
-	# type: (str, Optional[str], Optional[str]) -> str
-	"""
-	Get UDM extension of specified type with specified name.
-	In case the name is omitted, a random name will be used.
-	"""
-	assert extension_type in VALID_EXTENSION_TYPES
-	return {
-		'hook': get_hook_buffer,
-		'syntax': get_syntax_buffer,
-		'module': get_module_buffer,
-	}[extension_type](name, identifier)
+    # type: (str, Optional[str], Optional[str]) -> str
+    """
+    Get UDM extension of specified type with specified name.
+    In case the name is omitted, a random name will be used.
+    """
+    assert extension_type in VALID_EXTENSION_TYPES
+    return {
+        'hook': get_hook_buffer,
+        'syntax': get_syntax_buffer,
+        'module': get_module_buffer,
+    }[extension_type](name, identifier)
 
 
 def get_postinst_script_buffer(extension_type, filename, app_id=None, version_start=None, version_end=None, options=None):
-	# type: (str, str, Optional[str], Optional[str], Optional[str], Mapping[str, Union[str, Iterable[str]]]) -> str
-	"""
-	Returns a postinst script that registers the given file as UDM extension with extension type ('hook', 'syntax' or 'module').
-	Optionally UNIVENTION_APP_ID, UCS version start and UCS version end may be specified.
-	"""
-	assert extension_type in VALID_EXTENSION_TYPES
-	if not app_id:
-		app_id = ''
-	else:
-		app_id = 'export UNIVENTION_APP_IDENTIFIER="%s"' % app_id
-	if not version_start:
-		version_start = ''
-	else:
-		version_start = '--ucsversionstart %s' % version_start
-	if not version_end:
-		version_end = ''
-	else:
-		version_end = '--ucsversionend %s' % version_end
-	other_options = ''
-	if options:
-		for key in options:
-			if isinstance(options[key], str):
-				other_options += ' --%s %s' % (key, options[key])
-			else:
-				other_options += ' --%s ' % (key,) + ' --%s '.join(options[key])
+    # type: (str, str, Optional[str], Optional[str], Optional[str], Mapping[str, Union[str, Iterable[str]]]) -> str
+    """
+    Returns a postinst script that registers the given file as UDM extension with extension type ('hook', 'syntax' or 'module').
+    Optionally UNIVENTION_APP_ID, UCS version start and UCS version end may be specified.
+    """
+    assert extension_type in VALID_EXTENSION_TYPES
+    if not app_id:
+        app_id = ''
+    else:
+        app_id = 'export UNIVENTION_APP_IDENTIFIER="%s"' % app_id
+    if not version_start:
+        version_start = ''
+    else:
+        version_start = '--ucsversionstart %s' % version_start
+    if not version_end:
+        version_end = ''
+    else:
+        version_end = '--ucsversionend %s' % version_end
+    other_options = ''
+    if options:
+        for key in options:
+            if isinstance(options[key], str):
+                other_options += ' --%s %s' % (key, options[key])
+            else:
+                other_options += ' --%s ' % (key,) + ' --%s '.join(options[key])
 
-	return '''#!/bin/sh
+    return '''#!/bin/sh
 set -e
 #DEBHELPER#
 %(app_id)s
@@ -261,25 +261,25 @@ set -e
 ucs_registerLDAPExtension "$@" --udm_%(extension_type)s %(filename)s %(version_start)s %(version_end)s %(other_options)s
 exit 0
 ''' % {
-		'filename': filename,
-		'extension_type': extension_type,
-		'app_id': app_id,
-		'version_start': version_start,
-		'version_end': version_end,
-		'other_options': other_options
-	}
+        'filename': filename,
+        'extension_type': extension_type,
+        'app_id': app_id,
+        'version_start': version_start,
+        'version_end': version_end,
+        'other_options': other_options
+    }
 
 
 def get_postrm_script_buffer(extension_type, extension_name, package_name):
-	# type: (str, str, str) -> str
-	"""
-	Returns an postrm script that deregisters the given UDM extension. The type of the extension
-	has to be specified ('hook', 'syntax' or 'module').
-	"""
-	assert extension_type in VALID_EXTENSION_TYPES
-	if extension_type == 'module':
-		assert '/' in extension_name
-	return '''#!/bin/sh
+    # type: (str, str, str) -> str
+    """
+    Returns an postrm script that deregisters the given UDM extension. The type of the extension
+    has to be specified ('hook', 'syntax' or 'module').
+    """
+    assert extension_type in VALID_EXTENSION_TYPES
+    if extension_type == 'module':
+        assert '/' in extension_name
+    return '''#!/bin/sh
 set -e
 #DEBHELPER#
 . /usr/share/univention-lib/ldap.sh
@@ -289,33 +289,33 @@ exit 0
 
 
 def get_join_script_buffer(extension_type, filename, app_id=None, joinscript_version=1, version_start=None, version_end=None, options=None):
-	# type: (str, str, Optional[str], int, Optional[str], Optional[str], Mapping[str, Union[str, Iterable[str]]]) -> str
-	"""
-	Returns a join script that registers the given file as UDM extension with extension type ('hook', 'syntax' or 'module').
-	Optionally a joinscript version, UNIVENTION_APP_ID, UCS version start and UCS version end may be specified.
-	"""
-	assert extension_type in VALID_EXTENSION_TYPES
-	if not app_id:
-		app_id = ''
-	else:
-		app_id = 'export UNIVENTION_APP_IDENTIFIER="%s"' % app_id
-	if not version_start:
-		version_start = ''
-	else:
-		version_start = '--ucsversionstart %s' % version_start
-	if not version_end:
-		version_end = ''
-	else:
-		version_end = '--ucsversionend %s' % version_end
-	other_options = ''
-	if options:
-		for key in options:
-			if isinstance(options[key], str):
-				other_options += ' --%s %s' % (key, options[key])
-			else:
-				other_options += ' --%s ' % (key,) + (' --%s ' % (key,)).join(options[key])
+    # type: (str, str, Optional[str], int, Optional[str], Optional[str], Mapping[str, Union[str, Iterable[str]]]) -> str
+    """
+    Returns a join script that registers the given file as UDM extension with extension type ('hook', 'syntax' or 'module').
+    Optionally a joinscript version, UNIVENTION_APP_ID, UCS version start and UCS version end may be specified.
+    """
+    assert extension_type in VALID_EXTENSION_TYPES
+    if not app_id:
+        app_id = ''
+    else:
+        app_id = 'export UNIVENTION_APP_IDENTIFIER="%s"' % app_id
+    if not version_start:
+        version_start = ''
+    else:
+        version_start = '--ucsversionstart %s' % version_start
+    if not version_end:
+        version_end = ''
+    else:
+        version_end = '--ucsversionend %s' % version_end
+    other_options = ''
+    if options:
+        for key in options:
+            if isinstance(options[key], str):
+                other_options += ' --%s %s' % (key, options[key])
+            else:
+                other_options += ' --%s ' % (key,) + (' --%s ' % (key,)).join(options[key])
 
-	return '''#!/bin/sh
+    return '''#!/bin/sh
 VERSION=%(joinscript_version)s
 set -e
 . /usr/share/univention-join/joinscripthelper.lib
@@ -326,26 +326,26 @@ ucs_registerLDAPExtension "$@" --udm_%(extension_type)s %(filename)s %(version_s
 joinscript_save_current_version
 exit 0
 ''' % {
-		'filename': filename,
-		'joinscript_version': joinscript_version,
-		'extension_type': extension_type,
-		'app_id': app_id,
-		'version_start': version_start,
-		'version_end': version_end,
-		'other_options': other_options
-	}
+        'filename': filename,
+        'joinscript_version': joinscript_version,
+        'extension_type': extension_type,
+        'app_id': app_id,
+        'version_start': version_start,
+        'version_end': version_end,
+        'other_options': other_options
+    }
 
 
 def get_unjoin_script_buffer(extension_type, extension_name, package_name):
-	# type: (str, str, str) -> str
-	"""
-	Returns an unjoin script that deregisters the given UDM extension. The type of the extension
-	has to be specified ('hook', 'syntax' or 'module').
-	"""
-	assert extension_type in VALID_EXTENSION_TYPES
-	if extension_type == 'module':
-		assert '/' in extension_name
-	return '''#!/bin/sh
+    # type: (str, str, str) -> str
+    """
+    Returns an unjoin script that deregisters the given UDM extension. The type of the extension
+    has to be specified ('hook', 'syntax' or 'module').
+    """
+    assert extension_type in VALID_EXTENSION_TYPES
+    if extension_type == 'module':
+        assert '/' in extension_name
+    return '''#!/bin/sh
 VERSION=1
 set -e
 . /usr/share/univention-join/joinscripthelper.lib
@@ -358,48 +358,48 @@ exit 0
 
 
 def get_absolute_extension_filename(extension_type, filename):
-	# type: (str, str) -> str
-	"""
-	Returns the absolute path to an extentension of the given type and filename.
-	"""
-	assert extension_type in VALID_EXTENSION_TYPES
-	if extension_type == 'module':
-		assert '/' in filename
-	return '/usr/lib/python2.7/dist-packages%s' % ({
-		'hook': '/univention/admin/hooks.d/%s',
-		'syntax': '/univention/admin/syntax.d/%s',
-		'module': '/univention/admin/handlers/%s',
-	}[extension_type] % filename)
+    # type: (str, str) -> str
+    """
+    Returns the absolute path to an extentension of the given type and filename.
+    """
+    assert extension_type in VALID_EXTENSION_TYPES
+    if extension_type == 'module':
+        assert '/' in filename
+    return '/usr/lib/python2.7/dist-packages%s' % ({
+        'hook': '/univention/admin/hooks.d/%s',
+        'syntax': '/univention/admin/syntax.d/%s',
+        'module': '/univention/admin/handlers/%s',
+    }[extension_type] % filename)
 
 
 def get_dn_of_extension_by_name(extension_type, name):
-	# type: (str, str) -> str
-	"""
-	Returns a list of DNs of UDM extension objects with given type an name, or [] if no object has been found.
-	"""
-	assert extension_type in VALID_EXTENSION_TYPES
-	if extension_type == 'module':
-		assert '/' in name
-	searchfilter = {
-		'hook': '(&(objectClass=univentionUDMHook)(cn=%s))' % name,
-		'syntax': '(&(objectClass=univentionUDMSyntax)(cn=%s))' % name,
-		'module': '(&(objectClass=univentionUDMModule)(cn=%s))' % name,
-	}[extension_type]
-	return get_ldap_connection().searchDn(filter=searchfilter)
+    # type: (str, str) -> str
+    """
+    Returns a list of DNs of UDM extension objects with given type an name, or [] if no object has been found.
+    """
+    assert extension_type in VALID_EXTENSION_TYPES
+    if extension_type == 'module':
+        assert '/' in name
+    searchfilter = {
+        'hook': '(&(objectClass=univentionUDMHook)(cn=%s))' % name,
+        'syntax': '(&(objectClass=univentionUDMSyntax)(cn=%s))' % name,
+        'module': '(&(objectClass=univentionUDMModule)(cn=%s))' % name,
+    }[extension_type]
+    return get_ldap_connection().searchDn(filter=searchfilter)
 
 
 def remove_extension_by_name(extension_type, extension_name, fail_on_error=True):
-	# type: (str, str, bool) -> None
-	"""
-	Remove all extensions of given type and name from LDAP.
-	"""
-	assert extension_type in VALID_EXTENSION_TYPES
-	for dn in get_dn_of_extension_by_name(extension_type, extension_name):
-		cmd = ['/usr/sbin/udm-test', 'settings/udm_%s' % extension_type, 'remove', '--dn', dn]
-		print('CMD: %r' % cmd)
-		sys.stdout.flush()
-		if subprocess.call(cmd):
-			if fail_on_error:
-				fail('Failed to remove %s' % dn)
-			else:
-				print('ERROR: failed to remove %s' % dn)
+    # type: (str, str, bool) -> None
+    """
+    Remove all extensions of given type and name from LDAP.
+    """
+    assert extension_type in VALID_EXTENSION_TYPES
+    for dn in get_dn_of_extension_by_name(extension_type, extension_name):
+        cmd = ['/usr/sbin/udm-test', 'settings/udm_%s' % extension_type, 'remove', '--dn', dn]
+        print('CMD: %r' % cmd)
+        sys.stdout.flush()
+        if subprocess.call(cmd):
+            if fail_on_error:
+                fail('Failed to remove %s' % dn)
+            else:
+                print('ERROR: failed to remove %s' % dn)

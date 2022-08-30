@@ -43,25 +43,25 @@ import univention.config_registry
 
 
 def run():
-	lo = univention.uldap.getAdminConnection()
+    lo = univention.uldap.getAdminConnection()
 
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
+    ucr = univention.config_registry.ConfigRegistry()
+    ucr.load()
 
-	searchResult = lo.search(base=ucr.get('ldap/base'), filter='(&(objectClass=univentionMailSharedFolder)(univentionMailSharedFolderDeliveryAddress=*))', attr=['univentionMailSharedFolderDeliveryAddress'])
-	for dn, attr in searchResult:
-		ml = []
-		oldval = attr['univentionMailSharedFolderDeliveryAddress']
-		newval = [x.lower() for x in oldval]
-		if oldval != newval:
-			ml.append(('univentionMailSharedFolderDeliveryAddress', oldval, newval))
-			try:
-				print('Updating %s' % dn)
-				lo.modify(dn, ml)
-			except Exception:
-				print('E: Failed to modify %s' % dn, file=sys.stderr)
+    searchResult = lo.search(base=ucr.get('ldap/base'), filter='(&(objectClass=univentionMailSharedFolder)(univentionMailSharedFolderDeliveryAddress=*))', attr=['univentionMailSharedFolderDeliveryAddress'])
+    for dn, attr in searchResult:
+        ml = []
+        oldval = attr['univentionMailSharedFolderDeliveryAddress']
+        newval = [x.lower() for x in oldval]
+        if oldval != newval:
+            ml.append(('univentionMailSharedFolderDeliveryAddress', oldval, newval))
+            try:
+                print('Updating %s' % dn)
+                lo.modify(dn, ml)
+            except Exception:
+                print('E: Failed to modify %s' % dn, file=sys.stderr)
 
-	print('done')
+    print('done')
 
 
 description = '''This script converts LDAP attribute univentionMailSharedFolderDeliveryAddress of

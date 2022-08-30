@@ -39,21 +39,21 @@ from univention.monitoring import Alert
 
 class LDAP(Alert):
 
-	def write_metrics(self):
-		if ucr['server/role'] == 'memberserver':
-			return
-		slapd_port = ucr.get('slapd/port', '7389').split(',')[0]
-		rc, output = self.exec_command([
-			'/usr/lib/nagios/plugins/check_ldap',
-			'-H', '%(hostname)s.%(domainname)s' % ucr,
-			'-p', slapd_port,
-			'-b', ucr['ldap/base'],
-			'-D', ucr['ldap/hostdn'],
-			'-y', '/etc/machine.secret'
-		])
-		self.write_metric('univention_ldap_reachable', 1 if rc == 0 else 0)
-		self.log.debug(output)
+    def write_metrics(self):
+        if ucr['server/role'] == 'memberserver':
+            return
+        slapd_port = ucr.get('slapd/port', '7389').split(',')[0]
+        rc, output = self.exec_command([
+            '/usr/lib/nagios/plugins/check_ldap',
+            '-H', '%(hostname)s.%(domainname)s' % ucr,
+            '-p', slapd_port,
+            '-b', ucr['ldap/base'],
+            '-D', ucr['ldap/hostdn'],
+            '-y', '/etc/machine.secret'
+        ])
+        self.write_metric('univention_ldap_reachable', 1 if rc == 0 else 0)
+        self.log.debug(output)
 
 
 if __name__ == '__main__':
-	LDAP.main()
+    LDAP.main()

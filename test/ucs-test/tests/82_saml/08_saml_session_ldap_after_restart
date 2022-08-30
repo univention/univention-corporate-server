@@ -15,14 +15,14 @@ import samltest
 
 def main():
 
-	account = utils.UCSTestDomainAdminCredentials()
+    account = utils.UCSTestDomainAdminCredentials()
 
-	SamlSession = samltest.SamlTest(account.username, account.bindpw)
-	SamlSession.login_with_new_session_at_IdP()
-	subprocess.call(['/etc/init.d/slapd', 'restart'])
-	SamlSession.test_login()
+    SamlSession = samltest.SamlTest(account.username, account.bindpw)
+    SamlSession.login_with_new_session_at_IdP()
+    subprocess.call(['/etc/init.d/slapd', 'restart'])
+    SamlSession.test_login()
 
 
 if __name__ == '__main__':
-	main()
-	print("Success: SSO session is still working after slapd restart")
+    main()
+    print("Success: SSO session is still working after slapd restart")

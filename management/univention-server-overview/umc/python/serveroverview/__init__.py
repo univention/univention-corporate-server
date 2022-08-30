@@ -42,18 +42,18 @@ from univention.management.console.ldap import get_machine_connection
 
 class Instance(Base):
 
-	@simple_response
-	def query(self):
-		udm_modules.update()
-		lo, po = get_machine_connection()
-		servers = udm_modules.lookup('computers/computer', None, lo, filter='(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(!(univentionObjectFlag=docker)))', base=ucr['ldap/base'], scope='sub')
+    @simple_response
+    def query(self):
+        udm_modules.update()
+        lo, po = get_machine_connection()
+        servers = udm_modules.lookup('computers/computer', None, lo, filter='(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(!(univentionObjectFlag=docker)))', base=ucr['ldap/base'], scope='sub')
 
-		result = [dict(
-			dn=i.dn,
-			hostname=i.info.get('name'),
-			domain=i.info.get('domain'),
-			ip=i.info.get('ip'),
-			version=i.info.get('operatingSystemVersion'),
-			serverRole=i.info.get('serverRole'),
-		) for i in servers]
-		return result
+        result = [dict(
+            dn=i.dn,
+            hostname=i.info.get('name'),
+            domain=i.info.get('domain'),
+            ip=i.info.get('ip'),
+            version=i.info.get('operatingSystemVersion'),
+            serverRole=i.info.get('serverRole'),
+        ) for i in servers]
+        return result

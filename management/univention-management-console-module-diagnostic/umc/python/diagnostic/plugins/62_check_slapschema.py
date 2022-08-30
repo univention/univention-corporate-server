@@ -46,27 +46,27 @@ RE_ERROR = re.compile("^[0-9a-f]{8} ")
 
 
 def run(_umc_instance: Instance) -> None:
-	if not os.path.exists('/usr/sbin/slapschema'):
-		return
+    if not os.path.exists('/usr/sbin/slapschema'):
+        return
 
-	process = Popen(['/usr/sbin/slapschema', '-f', '/etc/ldap/slapd.conf'], stdout=PIPE, stderr=PIPE, env={'LANG': 'C'}, shell=True)
-	stdout, stderr_ = process.communicate()
-	stderr = stderr_.decode('UTF-8', 'replace')
+    process = Popen(['/usr/sbin/slapschema', '-f', '/etc/ldap/slapd.conf'], stdout=PIPE, stderr=PIPE, env={'LANG': 'C'}, shell=True)
+    stdout, stderr_ = process.communicate()
+    stderr = stderr_.decode('UTF-8', 'replace')
 
-	if not stderr:
-		return
+    if not stderr:
+        return
 
-	errors = [
-		line.split(' ', 1)[1]
-		for line in stderr.splitlines()
-		if RE_ERROR.search(line)
-	]
+    errors = [
+        line.split(' ', 1)[1]
+        for line in stderr.splitlines()
+        if RE_ERROR.search(line)
+    ]
 
-	if errors:
-		raise Warning(_('The LDAP schema validation failed with the following errors or warnings:\n') + "\n".join(errors))
+    if errors:
+        raise Warning(_('The LDAP schema validation failed with the following errors or warnings:\n') + "\n".join(errors))
 
 
 if __name__ == '__main__':
-	from univention.management.console.modules.diagnostic import main
+    from univention.management.console.modules.diagnostic import main
 
-	main()
+    main()

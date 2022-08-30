@@ -40,9 +40,9 @@ umc = import_lib_module('umc')
 
 
 def test_HTTError():
-	_resp = Namespace(**{'getheader': lambda a, b: b})
-	req = umc.Request('GET', '/')
-	for code, Error in umc.HTTPError.codes.items():
-		resp = umc.Response(code, 'reason', 'no body', {}, _resp)
-		with pytest.raises(Error):
-			raise umc.HTTPError(req, resp, 'theHostname')
+    _resp = Namespace(**{'getheader': lambda a, b: b})
+    req = umc.Request('GET', '/')
+    for code, Error in umc.HTTPError.codes.items():
+        resp = umc.Response(code, 'reason', 'no body', {}, _resp)
+        with pytest.raises(Error):
+            raise umc.HTTPError(req, resp, 'theHostname')

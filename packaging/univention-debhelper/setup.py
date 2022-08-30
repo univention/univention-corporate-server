@@ -34,16 +34,16 @@
 from distutils.core import setup
 
 setup(
-	py_modules=[
-		'univention.debhelper',
-	],
-	description='Univention helper programs for debian/rules',
+    py_modules=[
+        'univention.debhelper',
+    ],
+    description='Univention helper programs for debian/rules',
 
-	url='https://www.univention.de/',
-	license='GNU Affero General Public License v3',
+    url='https://www.univention.de/',
+    license='GNU Affero General Public License v3',
 
-	name='univention-debhelper',
-	version='1.0.0',
-	maintainer='Univention GmbH',
-	maintainer_email='packages@univention.de',
+    name='univention-debhelper',
+    version='1.0.0',
+    maintainer='Univention GmbH',
+    maintainer_email='packages@univention.de',
 )

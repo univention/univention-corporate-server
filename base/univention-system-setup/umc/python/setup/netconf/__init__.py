@@ -42,150 +42,150 @@ from univention.config_registry.interfaces import Interfaces
 
 class ChangeSet(object):
 
-	def __init__(self, ucr, profile, options):
-		self.ucr = ucr
-		self.profile = profile
-		self.options = options
-		self.ucr_changes = {}
-		self.old_interfaces = Interfaces(ucr)
-		self.logger = logging.getLogger("uss.network.change")
+    def __init__(self, ucr, profile, options):
+        self.ucr = ucr
+        self.profile = profile
+        self.options = options
+        self.ucr_changes = {}
+        self.old_interfaces = Interfaces(ucr)
+        self.logger = logging.getLogger("uss.network.change")
 
-		self.update_config(self.only_network_config(profile))
+        self.update_config(self.only_network_config(profile))
 
-	@staticmethod
-	def only_network_config(profile):
-		config = dict()
-		for key, value in profile.items():
-			if key.startswith("interfaces/"):
-				config[key] = value or None
-		return config
+    @staticmethod
+    def only_network_config(profile):
+        config = dict()
+        for key, value in profile.items():
+            if key.startswith("interfaces/"):
+                config[key] = value or None
+        return config
 
-	def update_config(self, changes):
-		self.ucr_changes.update(changes)
-		new_ucr = dict(self.ucr.items())  # Bug #33101
-		new_ucr.update(changes)
-		self.new_interfaces = Interfaces(new_ucr)
+    def update_config(self, changes):
+        self.ucr_changes.update(changes)
+        new_ucr = dict(self.ucr.items())  # Bug #33101
+        new_ucr.update(changes)
+        self.new_interfaces = Interfaces(new_ucr)
 
-	@property
-	def no_act(self):
-		return self.options.no_act
+    @property
+    def no_act(self):
+        return self.options.no_act
 
-	@property
-	def old_names(self):
-		return {name for name, _iface in self.old_interfaces.all_interfaces}
+    @property
+    def old_names(self):
+        return {name for name, _iface in self.old_interfaces.all_interfaces}
 
-	@property
-	def new_names(self):
-		return {name for name, _iface in self.new_interfaces.all_interfaces}
+    @property
+    def new_names(self):
+        return {name for name, _iface in self.new_interfaces.all_interfaces}
 
-	@property
-	def old_ipv4s(self):
-		return [iface.ipv4_address() for _name, iface in self.old_interfaces.ipv4_interfaces]
+    @property
+    def old_ipv4s(self):
+        return [iface.ipv4_address() for _name, iface in self.old_interfaces.ipv4_interfaces]
 
-	@property
-	def new_ipv4s(self):
-		return [iface.ipv4_address() for _name, iface in self.new_interfaces.ipv4_interfaces]
+    @property
+    def new_ipv4s(self):
+        return [iface.ipv4_address() for _name, iface in self.new_interfaces.ipv4_interfaces]
 
-	@property
-	def old_ipv6s(self):
-		return [iface.ipv6_address(name) for iface, name in self.old_interfaces.ipv6_interfaces]
+    @property
+    def old_ipv6s(self):
+        return [iface.ipv6_address(name) for iface, name in self.old_interfaces.ipv6_interfaces]
 
-	@property
-	def new_ipv6s(self):
-		return [iface.ipv6_address(name) for iface, name in self.new_interfaces.ipv6_interfaces]
+    @property
+    def new_ipv6s(self):
+        return [iface.ipv6_address(name) for iface, name in self.new_interfaces.ipv6_interfaces]
 
 
 class SkipPhase(Exception):
-	pass
+    pass
 
 
 class Phase(with_metaclass(ABCMeta, object)):
 
-	"""
-	Base-class for all phases.
-	"""
-	priority = 0
+    """
+    Base-class for all phases.
+    """
+    priority = 0
 
-	def __init__(self, changeset):
-		self.changeset = changeset
-		self.logger = logging.getLogger("uss.network.phase.%s" % (self,))
+    def __init__(self, changeset):
+        self.changeset = changeset
+        self.logger = logging.getLogger("uss.network.phase.%s" % (self,))
 
-	def __lt__(self, other):
-		"""
-		Order phases by priority.
+    def __lt__(self, other):
+        """
+        Order phases by priority.
 
-		>>> Phase(None) < Phase(None)
-		False
-		>>> Phase(None) <= Phase(None)
-		True
-		>>> Phase(None) == Phase(None)
-		True
-		>>> Phase(None) != Phase(None)
-		False
-		>>> Phase(None) >= Phase(None)
-		True
-		>>> Phase(None) > Phase(None)
-		False
-		"""
-		return (self.priority, str(self)) < (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+        >>> Phase(None) < Phase(None)
+        False
+        >>> Phase(None) <= Phase(None)
+        True
+        >>> Phase(None) == Phase(None)
+        True
+        >>> Phase(None) != Phase(None)
+        False
+        >>> Phase(None) >= Phase(None)
+        True
+        >>> Phase(None) > Phase(None)
+        False
+        """
+        return (self.priority, str(self)) < (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
 
-	def __le__(self, other):
-		return (self.priority, str(self)) <= (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+    def __le__(self, other):
+        return (self.priority, str(self)) <= (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
 
-	def __eq__(self, other):
-		return (self.priority, str(self)) == (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+    def __eq__(self, other):
+        return (self.priority, str(self)) == (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
 
-	def __ne__(self, other):
-		return (self.priority, str(self)) != (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+    def __ne__(self, other):
+        return (self.priority, str(self)) != (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
 
-	def __ge__(self, other):
-		return (self.priority, str(self)) >= (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+    def __ge__(self, other):
+        return (self.priority, str(self)) >= (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
 
-	def __gt__(self, other):
-		return (self.priority, str(self)) > (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+    def __gt__(self, other):
+        return (self.priority, str(self)) > (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
 
-	def __str__(self):
-		name = self.__class__.__name__
-		if name.startswith("Phase"):
-			name = name[len("Phase"):]
-		return name
+    def __str__(self):
+        name = self.__class__.__name__
+        if name.startswith("Phase"):
+            name = name[len("Phase"):]
+        return name
 
-	@classmethod
-	def _check_valid(cls, other):
-		try:
-			if not issubclass(other, cls):
-				raise SkipPhase('Invalid super-class')
-			if not other.priority:
-				raise SkipPhase('Missing priority')
-			#if type(other) is ABCMeta:
-			#	raise SkipPhase('Abstract class')
-		except TypeError:
-			raise SkipPhase('Not a class')
+    @classmethod
+    def _check_valid(cls, other):
+        try:
+            if not issubclass(other, cls):
+                raise SkipPhase('Invalid super-class')
+            if not other.priority:
+                raise SkipPhase('Missing priority')
+            #if type(other) is ABCMeta:
+            #	raise SkipPhase('Abstract class')
+        except TypeError:
+            raise SkipPhase('Not a class')
 
-	def check(self):
-		"""
-		Check if the phase should be activated.
-		Throw SkipPhase to skip this phase.
-		"""
+    def check(self):
+        """
+        Check if the phase should be activated.
+        Throw SkipPhase to skip this phase.
+        """
 
-	def pre(self):
-		"""
-		Called before the changes are applied to UCR.
-		"""
+    def pre(self):
+        """
+        Called before the changes are applied to UCR.
+        """
 
-	def post(self):
-		"""
-		Called after the changes have been applied to UCR.
-		"""
+    def post(self):
+        """
+        Called after the changes have been applied to UCR.
+        """
 
-	def call(self, command):
-		"""
-		Call external command using subprocess.call(shell=False).
-		"""
-		self.logger.debug("Running %r", command)
-		if self.changeset.no_act:
-			ret = 0
-		else:
-			ret = subprocess.call(command)
-			self.logger.debug("%r returned %d", command, ret)
-		return ret
+    def call(self, command):
+        """
+        Call external command using subprocess.call(shell=False).
+        """
+        self.logger.debug("Running %r", command)
+        if self.changeset.no_act:
+            ret = 0
+        else:
+            ret = subprocess.call(command)
+            self.logger.debug("%r returned %d", command, ret)
+        return ret

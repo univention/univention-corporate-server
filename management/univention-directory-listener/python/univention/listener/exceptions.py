@@ -31,12 +31,12 @@
 
 
 class ListenerModuleError(Exception):
-	pass
+    pass
 
 
 class ListenerModuleConfigurationError(ListenerModuleError):
-	pass
+    pass
 
 
 class ListenerModuleRuntimeError(ListenerModuleError):
-	pass
+    pass

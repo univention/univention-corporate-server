@@ -33,49 +33,49 @@
 import os
 import subprocess
 try:
-	from typing import Any  # noqa: F401
+    from typing import Any  # noqa: F401
 except ImportError:
-	pass
+    pass
 
 
 class Error(SystemExit):
-	pass
+    pass
 
 
 def make_parent_dir(path):
-	# type: (str) -> None
-	"""
-	Create parent directories for file.
+    # type: (str) -> None
+    """
+    Create parent directories for file.
 
-	:param path: Path for a file.
-	"""
-	dir_path = os.path.dirname(path)
-	try:
-		os.makedirs(dir_path)
-	except EnvironmentError:
-		if not os.path.isdir(dir_path):
-			raise
+    :param path: Path for a file.
+    """
+    dir_path = os.path.dirname(path)
+    try:
+        os.makedirs(dir_path)
+    except EnvironmentError:
+        if not os.path.isdir(dir_path):
+            raise
 
 
 def call(*argv, **kwargs):
-	# type: (*str, **Any) -> int
-	"""
-	Execute argv and wait.
+    # type: (*str, **Any) -> int
+    """
+    Execute argv and wait.
 
-	:param args: List of command and arguments.
-	:param kwargs: Optiona key-word argument for :py:func:`subprocess.check_call`.
+    :param args: List of command and arguments.
+    :param kwargs: Optiona key-word argument for :py:func:`subprocess.check_call`.
 
-	>>> call('true')
-	0
-	"""
-	errmsg = kwargs.pop('errmsg', 'Gettext failed {0.cmd}')
+    >>> call('true')
+    0
+    """
+    errmsg = kwargs.pop('errmsg', 'Gettext failed {0.cmd}')
 
-	verbose = os.environ.get('DH_VERBOSE', False)
-	if verbose:
-		print('\t%s' % ' '.join(argv))
-	try:
-		return subprocess.check_call(argv, **kwargs)
-	except subprocess.CalledProcessError as ex:
-		if verbose:
-			print(ex)
-		raise Error(errmsg.format(ex))
+    verbose = os.environ.get('DH_VERBOSE', False)
+    if verbose:
+        print('\t%s' % ' '.join(argv))
+    try:
+        return subprocess.check_call(argv, **kwargs)
+    except subprocess.CalledProcessError as ex:
+        if verbose:
+            print(ex)
+        raise Error(errmsg.format(ex))

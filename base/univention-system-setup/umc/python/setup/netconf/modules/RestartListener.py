@@ -3,5 +3,5 @@ from univention.management.console.modules.setup.netconf.conditions import NotNe
 
 
 class PhaseRestartListener(RestartService, NotNetworkOnly):
-	service = "univention-directory-listener"
-	priority = 22
+    service = "univention-directory-listener"
+    priority = 22

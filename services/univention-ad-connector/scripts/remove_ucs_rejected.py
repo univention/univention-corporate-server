@@ -45,41 +45,41 @@ import univention.uldap
 
 
 class ObjectNotFound(BaseException):
-	pass
+    pass
 
 
 def remove_ucs_rejected(ucs_dn):
-	config = univention.connector.configdb('/etc/univention/%s/internal.sqlite' % CONFIGBASENAME)
-	found = False
-	for filename, rejected_dn in config.items('UCS rejected'):
-		if univention.uldap.access.compare_dn(ucs_dn, rejected_dn):
-			if os.path.exists(filename):
-				os.remove(filename)
-			config.remove_option('UCS rejected', filename)
-			found = True
+    config = univention.connector.configdb('/etc/univention/%s/internal.sqlite' % CONFIGBASENAME)
+    found = False
+    for filename, rejected_dn in config.items('UCS rejected'):
+        if univention.uldap.access.compare_dn(ucs_dn, rejected_dn):
+            if os.path.exists(filename):
+                os.remove(filename)
+            config.remove_option('UCS rejected', filename)
+            found = True
 
-	if not found:
-		raise ObjectNotFound()
+    if not found:
+        raise ObjectNotFound()
 
 
 if __name__ == '__main__':
-	parser = ArgumentParser()
-	parser.add_argument("-c", "--configbasename", metavar="CONFIGBASENAME", default="connector")
-	parser.add_argument('dn')
-	options = parser.parse_args()
+    parser = ArgumentParser()
+    parser.add_argument("-c", "--configbasename", metavar="CONFIGBASENAME", default="connector")
+    parser.add_argument('dn')
+    options = parser.parse_args()
 
-	CONFIGBASENAME = options.configbasename
-	state_directory = '/etc/univention/%s' % CONFIGBASENAME
-	if not os.path.exists(state_directory):
-		parser.error("Invalid configbasename, directory %s does not exist" % state_directory)
-		sys.exit(1)
+    CONFIGBASENAME = options.configbasename
+    state_directory = '/etc/univention/%s' % CONFIGBASENAME
+    if not os.path.exists(state_directory):
+        parser.error("Invalid configbasename, directory %s does not exist" % state_directory)
+        sys.exit(1)
 
-	ucs_dn = options.dn
+    ucs_dn = options.dn
 
-	try:
-		remove_ucs_rejected(ucs_dn)
-	except ObjectNotFound:
-		print('ERROR: The object %s was not found.' % ucs_dn)
-		sys.exit(1)
+    try:
+        remove_ucs_rejected(ucs_dn)
+    except ObjectNotFound:
+        print('ERROR: The object %s was not found.' % ucs_dn)
+        sys.exit(1)
 
-	print('The rejected UCS object %s has been removed.' % ucs_dn)
+    print('The rejected UCS object %s has been removed.' % ucs_dn)

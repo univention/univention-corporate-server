@@ -36,12 +36,12 @@ from typing import Any  # noqa: F401
 
 
 def log(*msgs):
-	# type: (*Any) -> None
-	logger = logging.getLogger('univention.ldap_cache')
-	logger.info(*msgs)
+    # type: (*Any) -> None
+    logger = logging.getLogger('univention.ldap_cache')
+    logger.info(*msgs)
 
 
 def debug(*msgs):
-	# type: (*Any) -> None
-	logger = logging.getLogger('univention.ldap_cache')
-	logger.debug(*msgs)
+    # type: (*Any) -> None
+    logger = logging.getLogger('univention.ldap_cache')
+    logger.debug(*msgs)

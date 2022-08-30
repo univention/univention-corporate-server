@@ -55,44 +55,44 @@ operations = ['search']
 virtual = True
 options = {}
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=univention.admin.syntax.printerName,
-		include_in_default_search=True,
-		required=True,
-		may_change=False,
-		identifies=True
-	),
-	'spoolHost': univention.admin.property(
-		short_description=_('Print server'),
-		long_description='',
-		syntax=univention.admin.syntax.ServicePrint_FQDN,
-		multivalue=True,
-		required=True,
-	),
-	'sambaName': univention.admin.property(
-		short_description=_('Windows name'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		include_in_default_search=True,
-		unique=True
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=univention.admin.syntax.printerName,
+        include_in_default_search=True,
+        required=True,
+        may_change=False,
+        identifies=True
+    ),
+    'spoolHost': univention.admin.property(
+        short_description=_('Print server'),
+        long_description='',
+        syntax=univention.admin.syntax.ServicePrint_FQDN,
+        multivalue=True,
+        required=True,
+    ),
+    'sambaName': univention.admin.property(
+        short_description=_('Windows name'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        include_in_default_search=True,
+        unique=True
+    ),
 }
 
 mapping = univention.admin.mapping.mapping()
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module = module
+    module = module
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	res = []
-	for module in (univention.admin.handlers.shares.printer, univention.admin.handlers.shares.printergroup):
-		res.extend(module.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit))
-	return res
+    res = []
+    for module in (univention.admin.handlers.shares.printer, univention.admin.handlers.shares.printergroup):
+        res.extend(module.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit))
+    return res
 
 
 def identify(dn, attr, canonical=False):
-	pass
+    pass

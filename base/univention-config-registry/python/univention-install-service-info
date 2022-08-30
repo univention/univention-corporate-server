@@ -42,55 +42,55 @@ from argparse import ArgumentParser
 
 
 def install_services(info, package):
-	"""Process debian/$package.univention-service."""
-	cfile = '%s.univention-service' % (package,)
-	source = os.path.join('debian', cfile)
-	if not os.path.exists(source):
-		return
+    """Process debian/$package.univention-service."""
+    cfile = '%s.univention-service' % (package,)
+    source = os.path.join('debian', cfile)
+    if not os.path.exists(source):
+        return
 
-	info.read_services(source)
-	failed = info.check_services()
-	if failed:
-		print('Incomplete entries in services definition %s' % (cfile,), file=sys.stderr)
-		for service, keys in failed.items():
-			print('  [%s]' % (service,), file=sys.stderr)
-			for key in keys:
-				print('    %s' % (key,), file=sys.stderr)
-		sys.exit(1)
-	dest_path = os.path.join(
-		'debian', package,
-		us_info.ServiceInfo.BASE_DIR[1:],
-		us_info.ServiceInfo.SERVICES)
-	dest = os.path.join(dest_path, package + us_info.ServiceInfo.FILE_SUFFIX)
+    info.read_services(source)
+    failed = info.check_services()
+    if failed:
+        print('Incomplete entries in services definition %s' % (cfile,), file=sys.stderr)
+        for service, keys in failed.items():
+            print('  [%s]' % (service,), file=sys.stderr)
+            for key in keys:
+                print('    %s' % (key,), file=sys.stderr)
+        sys.exit(1)
+    dest_path = os.path.join(
+        'debian', package,
+        us_info.ServiceInfo.BASE_DIR[1:],
+        us_info.ServiceInfo.SERVICES)
+    dest = os.path.join(dest_path, package + us_info.ServiceInfo.FILE_SUFFIX)
 
-	doIt('install', '-m', '755', '-d', dest_path)
-	doIt('install', '-m', '644', '-p', source, dest)
+    doIt('install', '-m', '755', '-d', dest_path)
+    doIt('install', '-m', '644', '-p', source, dest)
 
 
 def main():
-	"""Install service files."""
-	epilog = '''univention-install-service-info is a debhelper like program
+    """Install service files."""
+    epilog = '''univention-install-service-info is a debhelper like program
 to install service related description files into the package build directories.
 
 The service descriptions debian/*.univention-service go to
 /etc/univention/service.info/*.cfg.
 	'''
-	parser = ArgumentParser(epilog=epilog)
-	parser.add_argument(
-		'-v', '--verbose', action='store_true',
-		help='Verbose mode: show all commands that modify the package build directory.')
-	options = parser.parse_args()
-	if options.verbose:
-		os.environ['DH_VERBOSE'] = '1'
+    parser = ArgumentParser(epilog=epilog)
+    parser.add_argument(
+        '-v', '--verbose', action='store_true',
+        help='Verbose mode: show all commands that modify the package build directory.')
+    options = parser.parse_args()
+    if options.verbose:
+        os.environ['DH_VERBOSE'] = '1'
 
-	info = us_info.ServiceInfo(install_mode=True)
-	try:
-		for package in binary_packages():
-			install_services(info, package)
-	except IOError as ex:
-		print(ex, file=sys.stderr)
-		sys.exit(1)
+    info = us_info.ServiceInfo(install_mode=True)
+    try:
+        for package in binary_packages():
+            install_services(info, package)
+    except IOError as ex:
+        print(ex, file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == '__main__':
-	main()
+    main()

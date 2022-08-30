@@ -12,19 +12,19 @@ from essential.simplesquid import SimpleSquid
 
 
 def main():
-	squid_guard_config = '/etc/squid/squidGuard.conf'
-	squid_guard_path = '/usr/bin/squidGuard'
-	squid = SimpleSquid()
+    squid_guard_config = '/etc/squid/squidGuard.conf'
+    squid_guard_path = '/usr/bin/squidGuard'
+    squid = SimpleSquid()
 
-	with ucr_test.UCSTestConfigRegistry():
-		redirector = "pyredir"
-		handler_set(['squid/redirect=%s' % redirector])
-		squid.redirector_is(redirector)
+    with ucr_test.UCSTestConfigRegistry():
+        redirector = "pyredir"
+        handler_set(['squid/redirect=%s' % redirector])
+        squid.redirector_is(redirector)
 
-		redirector = "squidguard"
-		handler_set(['squid/redirect=%s' % redirector])
-		squid.redirector_is(f"{squid_guard_path} -c {squid_guard_config}")
+        redirector = "squidguard"
+        handler_set(['squid/redirect=%s' % redirector])
+        squid.redirector_is(f"{squid_guard_path} -c {squid_guard_config}")
 
 
 if __name__ == '__main__':
-	main()
+    main()

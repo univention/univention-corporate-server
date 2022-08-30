@@ -38,16 +38,16 @@ from univention.monitoring import Alert
 
 class NTP(Alert):
 
-	def write_metrics(self):
-		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_ntp_time', '-H', ucr['hostname']], env={'LANG': 'C'})
-		try:
-			ntp_offset = float(output.split('|', 1)[-1].split(';')[0].split('=')[-1].rstrip('s'))
-		except ValueError:
-			self.log.error('Checking NTP time failed: %s', output)
-		else:
-			self.write_metric('univention_ntp_offset_seconds', ntp_offset)
-			self.log.debug(output)
+    def write_metrics(self):
+        rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_ntp_time', '-H', ucr['hostname']], env={'LANG': 'C'})
+        try:
+            ntp_offset = float(output.split('|', 1)[-1].split(';')[0].split('=')[-1].rstrip('s'))
+        except ValueError:
+            self.log.error('Checking NTP time failed: %s', output)
+        else:
+            self.write_metric('univention_ntp_offset_seconds', ntp_offset)
+            self.log.debug(output)
 
 
 if __name__ == '__main__':
-	NTP.main()
+    NTP.main()

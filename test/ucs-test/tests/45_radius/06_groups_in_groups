@@ -13,81 +13,81 @@ import univention.testing.utils as utils
 
 
 def radtest(username):
-	subprocess.check_call([
-		'radtest',
-		'-t',
-		'mschap',
-		username,
-		'univention',
-		'127.0.0.1:18120',
-		'0',
-		'testing123',
-	])
+    subprocess.check_call([
+        'radtest',
+        '-t',
+        'mschap',
+        username,
+        'univention',
+        '127.0.0.1:18120',
+        '0',
+        'testing123',
+    ])
 
 
 def main():
-	with udm_test.UCSTestUDM() as udm:
-		userdn, username = udm.create_user(set={'networkAccess': 0})
-		innergroupdn, innergroupname = udm.create_group(set={
-			'networkAccess': 1,
-			'users': userdn
-		})
-		outergroupdn, outergroupname = udm.create_group(set={
-			'networkAccess': 1,
-			'nestedGroup': innergroupdn
-		})
+    with udm_test.UCSTestUDM() as udm:
+        userdn, username = udm.create_user(set={'networkAccess': 0})
+        innergroupdn, innergroupname = udm.create_group(set={
+            'networkAccess': 1,
+            'users': userdn
+        })
+        outergroupdn, outergroupname = udm.create_group(set={
+            'networkAccess': 1,
+            'nestedGroup': innergroupdn
+        })
 
-		# outer group net access = 1, inner group net access = 1
-		print("### Test 1 ###")
-		try:
-			radtest(username)
-		except Exception:
-			utils.fail("User in group with network access nested in group with network access could not authenticate!")
+        # outer group net access = 1, inner group net access = 1
+        print("### Test 1 ###")
+        try:
+            radtest(username)
+        except Exception:
+            utils.fail("User in group with network access nested in group with network access could not authenticate!")
 
-		# outer group net access = 1, inner group net access = 0
-		print("### Test 2 ###")
-		udm.modify_object(
-			'groups/group',
-			dn=innergroupdn,
-			set={
-				'networkAccess': 0
-			}
-		)
-		try:
-			radtest(username)
-		except Exception:
-			utils.fail("User in group with network access nested in group without network access could not authenticate!")
+        # outer group net access = 1, inner group net access = 0
+        print("### Test 2 ###")
+        udm.modify_object(
+            'groups/group',
+            dn=innergroupdn,
+            set={
+                'networkAccess': 0
+            }
+        )
+        try:
+            radtest(username)
+        except Exception:
+            utils.fail("User in group with network access nested in group without network access could not authenticate!")
 
-		# outer group net access = 0, inner group net access = 0
-		print("### Test 3 ###")
-		udm.modify_object(
-			'groups/group',
-			dn=outergroupdn,
-			set={
-				'networkAccess': 0
-			}
-		)
-		try:
-			radtest(username)
-		except subprocess.CalledProcessError:
-			pass
-		else:
-			utils.fail("User in group without network access nested in group without network access was able to authenticate!")
+        # outer group net access = 0, inner group net access = 0
+        print("### Test 3 ###")
+        udm.modify_object(
+            'groups/group',
+            dn=outergroupdn,
+            set={
+                'networkAccess': 0
+            }
+        )
+        try:
+            radtest(username)
+        except subprocess.CalledProcessError:
+            pass
+        else:
+            utils.fail("User in group without network access nested in group without network access was able to authenticate!")
 
-		# outer group net access = 0, inner group net access = 1
-		print("### Test 4 ###")
-		udm.modify_object(
-			'groups/group',
-			dn=innergroupdn,
-			set={
-				'networkAccess': 1
-			}
-		)
-		try:
-			radtest(username)
-		except Exception:
-			utils.fail("User in group without network access nested in group with network access could not authenticate!")
+        # outer group net access = 0, inner group net access = 1
+        print("### Test 4 ###")
+        udm.modify_object(
+            'groups/group',
+            dn=innergroupdn,
+            set={
+                'networkAccess': 1
+            }
+        )
+        try:
+            radtest(username)
+        except Exception:
+            utils.fail("User in group without network access nested in group with network access could not authenticate!")
 
 
 if __name__ == '__main__':
-	main()
+    main()

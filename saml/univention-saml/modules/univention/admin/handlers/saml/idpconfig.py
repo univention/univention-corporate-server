@@ -48,37 +48,37 @@ default_containers = ["cn=univention"]
 help_text = _(u'You can download the public certificate for this identity provider at %s.') % ('<a href="/simplesamlphp/saml2/idp/certificate" target="_blank">/simplesamlphp/saml2/idp/certificate</a>',)
 
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'univentionSAMLIdpConfig'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'univentionSAMLIdpConfig'],
+    ),
 }
 
 property_descriptions = {
-	'id': univention.admin.property(
-		short_description=_(u'Config object identifier'),
-		long_description=_(u'IdP config object identifier'),
-		syntax=univention.admin.syntax.string,
-		required=True,
-		may_change=False,
-		identifies=True,
-	),
-	'LdapGetAttributes': univention.admin.property(
-		short_description=_(u'LDAP attribute name'),
-		long_description=_(u'A list of ldap attribute names that the IdP is allowed to fetch from LDAP'),
-		syntax=univention.admin.syntax.string,
-		multivalue=True,
-	),
+    'id': univention.admin.property(
+        short_description=_(u'Config object identifier'),
+        long_description=_(u'IdP config object identifier'),
+        syntax=univention.admin.syntax.string,
+        required=True,
+        may_change=False,
+        identifies=True,
+    ),
+    'LdapGetAttributes': univention.admin.property(
+        short_description=_(u'LDAP attribute name'),
+        long_description=_(u'A list of ldap attribute names that the IdP is allowed to fetch from LDAP'),
+        syntax=univention.admin.syntax.string,
+        multivalue=True,
+    ),
 }
 
 layout = [
-	Tab(_(u'General'), _(u'Settings'), layout=[
-		Group(_('SAML identity provider settings'), layout=[
-			["id", ],
-			["LdapGetAttributes", ],
-		]),
-	]),
+    Tab(_(u'General'), _(u'Settings'), layout=[
+        Group(_('SAML identity provider settings'), layout=[
+            ["id", ],
+            ["LdapGetAttributes", ],
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -87,7 +87,7 @@ mapping.register('LdapGetAttributes', 'LdapGetAttributes', None, None, encoding=
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module = module
+    module = module
 
 
 lookup = object.lookup

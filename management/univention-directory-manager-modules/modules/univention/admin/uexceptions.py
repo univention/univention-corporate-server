@@ -44,436 +44,436 @@ _ = translation.translate
 
 
 def _str(string):
-	if six.PY2 and not isinstance(string, bytes):
-		string = string.encode('utf-8')
-	return str(string)
+    if six.PY2 and not isinstance(string, bytes):
+        string = string.encode('utf-8')
+    return str(string)
 
 
 def _strip(string):
-	return string.strip().strip('.:').strip()
+    return string.strip().strip('.:').strip()
 
 
 def _strip_and_append(string, char='.'):
-	string = _strip(string)
-	return '%s%s' % (string, char) if not string.endswith('!') else string
+    string = _strip(string)
+    return '%s%s' % (string, char) if not string.endswith('!') else string
 
 
 class base(Exception):
-	message = ''
+    message = ''
 
-	def __str__(self):
-		args = []
-		if self.message:
-			args = [_(self.message)]  # re-translate because it was done on import-time where the locale is not necessarily set
-		for msg in self.args:
-			if msg is None:
-				continue
-			msg = _str(msg)
-			# avoid duplicate messages
-			if all(_strip(msg) not in arg for arg in args + [self.message]):
-				args.append(msg)
+    def __str__(self):
+        args = []
+        if self.message:
+            args = [_(self.message)]  # re-translate because it was done on import-time where the locale is not necessarily set
+        for msg in self.args:
+            if msg is None:
+                continue
+            msg = _str(msg)
+            # avoid duplicate messages
+            if all(_strip(msg) not in arg for arg in args + [self.message]):
+                args.append(msg)
 
-		# make sure that a ':' is printed if further information follows
-		if len(args) == 1:
-			args[0] = _strip_and_append(args[0])
-		elif len(args) > 1:
-			args[0] = _strip_and_append(args[0], ':')
-			args[1:] = [_strip_and_append(a) for a in args[1:]]
+        # make sure that a ':' is printed if further information follows
+        if len(args) == 1:
+            args[0] = _strip_and_append(args[0])
+        elif len(args) > 1:
+            args[0] = _strip_and_append(args[0], ':')
+            args[1:] = [_strip_and_append(a) for a in args[1:]]
 
-		return ' '.join(args)
+        return ' '.join(args)
 
 
 class objectExists(base):
-	message = _('Object exists.')
+    message = _('Object exists.')
 
-	def __init__(self, *args, **kwargs):
-		super(objectExists, self).__init__(*args, **kwargs)
-		self.dn = self.args[0] if self.args else None
+    def __init__(self, *args, **kwargs):
+        super(objectExists, self).__init__(*args, **kwargs)
+        self.dn = self.args[0] if self.args else None
 
 
 class noObject(base):
-	message = _('No such object.')
+    message = _('No such object.')
 
-	def __init__(self, *args, **kwargs):
-		super(noObject, self).__init__(*args, **kwargs)
-		self.dn = self.args[0] if self.args else None
+    def __init__(self, *args, **kwargs):
+        super(noObject, self).__init__(*args, **kwargs)
+        self.dn = self.args[0] if self.args else None
 
 
 class permissionDenied(base):
-	message = _('Permission denied.')
+    message = _('Permission denied.')
 
 
 class ldapError(base):
-	message = _('LDAP Error')
+    message = _('LDAP Error')
 
-	def __init__(self, *args, **kwargs):
-		self.original_exception = kwargs.pop('original_exception', None)
-		super(ldapError, self).__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        self.original_exception = kwargs.pop('original_exception', None)
+        super(ldapError, self).__init__(*args, **kwargs)
 
 
 class ldapTimeout(base):
-	message = _('The specified timeout for the LDAP search has been exceeded.')
+    message = _('The specified timeout for the LDAP search has been exceeded.')
 
 
 class ldapSizelimitExceeded(base):
-	message = _('The specified size limit for the LDAP search has been exceeded.')
+    message = _('The specified size limit for the LDAP search has been exceeded.')
 
 
 class insufficientInformation(base):
-	message = _('Information provided is not sufficient.')
+    message = _('Information provided is not sufficient.')
 
 
 class noSuperordinate(insufficientInformation):
-	pass
+    pass
 
 
 class noProperty(base):
-	message = _('No such property.')
+    message = _('No such property.')
 
 
 class valueError(base):
 
-	def __init__(self, *args, **kwargs):
-		self.property = kwargs.pop('property', None)
-		super(valueError, self).__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        self.property = kwargs.pop('property', None)
+        super(valueError, self).__init__(*args, **kwargs)
 
 
 class valueMayNotChange(valueError):
-	message = _('Value may not change.')
+    message = _('Value may not change.')
 
 
 class valueInvalidSyntax(valueError):
-	message = _('Invalid syntax.')
+    message = _('Invalid syntax.')
 
 
 class valueRequired(valueError):
-	message = _('Value is required.')
+    message = _('Value is required.')
 
 
 class valueMismatch(valueError):
-	message = _('Values do not match.')
+    message = _('Values do not match.')
 
 
 class noLock(base):
-	message = _('Could not acquire lock.')
+    message = _('Could not acquire lock.')
 
 
 class authFail(base):
-	message = _('Authentication Failed.')
+    message = _('Authentication Failed.')
 
 
 class uidAlreadyUsed(base):
-	if configRegistry.is_true('directory/manager/user_group/uniqueness', True):
-		message = _('The username is already in use as username or as groupname')
-	else:
-		message = _('The username is already in use')
+    if configRegistry.is_true('directory/manager/user_group/uniqueness', True):
+        message = _('The username is already in use as username or as groupname')
+    else:
+        message = _('The username is already in use')
 
 
 class sidAlreadyUsed(base):
-	message = _('The relative ID (SAMBA) is already in use.')
+    message = _('The relative ID (SAMBA) is already in use.')
 
 
 class groupNameAlreadyUsed(base):
-	if configRegistry.is_true('directory/manager/user_group/uniqueness', True):
-		message = _('The groupname is already in use as groupname or as username')
-	else:
-		message = _('The groupname is already in use')
+    if configRegistry.is_true('directory/manager/user_group/uniqueness', True):
+        message = _('The groupname is already in use as groupname or as username')
+    else:
+        message = _('The groupname is already in use')
 
 
 class uidNumberAlreadyUsedAsGidNumber(base):
-	message = _('The uidNumber is already in use as a gidNumber')
+    message = _('The uidNumber is already in use as a gidNumber')
 
 
 class gidNumberAlreadyUsedAsUidNumber(base):
-	message = _('The gidNumber is already in use as a uidNumber')
+    message = _('The gidNumber is already in use as a uidNumber')
 
 
 class adGroupTypeChangeLocalToAny(base):
-	message = _('The AD group type can not be changed from type local to any other type.')
+    message = _('The AD group type can not be changed from type local to any other type.')
 
 
 class adGroupTypeChangeToLocal(base):
-	message = _('The AD group type can not be changed to type local.')
+    message = _('The AD group type can not be changed to type local.')
 
 
 class adGroupTypeChangeGlobalToUniversal(base):
-	message = _('The AD group type can not be changed from global to universal, because the group is member of another global group.')
+    message = _('The AD group type can not be changed from global to universal, because the group is member of another global group.')
 
 
 class adGroupTypeChangeDomainLocalToUniversal(base):
-	message = _("The AD group type can not be changed from domain local to universal, because the group has another domain local group as member.")
+    message = _("The AD group type can not be changed from domain local to universal, because the group has another domain local group as member.")
 
 
 class adGroupTypeChangeUniversalToGlobal(base):
-	message = _("The AD group type can not be changed from universal to global, because the group has another universal group as member.")
+    message = _("The AD group type can not be changed from universal to global, because the group has another universal group as member.")
 
 
 class adGroupTypeChangeGlobalToDomainLocal(base):
-	message = _("The AD group type can not be changed from global to domain local.")
+    message = _("The AD group type can not be changed from global to domain local.")
 
 
 class adGroupTypeChangeDomainLocalToGlobal(base):
-	message = _("The AD group type can not be changed from domain local to global.")
+    message = _("The AD group type can not be changed from domain local to global.")
 
 
 class prohibitedUsername(base):
-	message = _('Prohibited username.')
+    message = _('Prohibited username.')
 
 
 class ipAlreadyUsed(base):
-	message = _('IP address is already in use.')
+    message = _('IP address is already in use.')
 
 
 class dnsAliasAlreadyUsed(base):
-	message = _('DNS alias is already in use.')
+    message = _('DNS alias is already in use.')
 
 
 class invalidDhcpEntry(base):
-	message = _('The DHCP entry for this host should contain the zone DN, the IP address and the MAC address.')
+    message = _('The DHCP entry for this host should contain the zone DN, the IP address and the MAC address.')
 
 
 class invalidDNSAliasEntry(base):
-	message = _('The DNS alias entry for this host should contain the zone name, the alias zone container DN and the alias.')
+    message = _('The DNS alias entry for this host should contain the zone name, the alias zone container DN and the alias.')
 
 
 class InvalidDNS_Information(base):
-	message = _('The provided DNS information are invalid.')
+    message = _('The provided DNS information are invalid.')
 
 
 class nextFreeIp(base):
-	message = _('Next IP address not found.')
+    message = _('Next IP address not found.')
 
 
 class ipOverridesNetwork(base):
-	message = _('The given IP address is not within the range of the selected network')
+    message = _('The given IP address is not within the range of the selected network')
 
 
 class macAlreadyUsed(base):
-	message = _('The MAC address is already in use.')
+    message = _('The MAC address is already in use.')
 
 
 class mailAddressUsed(base):
-	message = _('The mail address is already in use.')
+    message = _('The mail address is already in use.')
 
 
 class dhcpServerAlreadyUsed(base):
-	message = _('DHCP server name already used: ')
+    message = _('DHCP server name already used: ')
 
 
 class kolabHomeServer(base):
-	message = _('Default Kolab home server does not exist')
+    message = _('Default Kolab home server does not exist')
 
 
 class primaryGroup(base):
-	message = _('Default primary group does not exist')
+    message = _('Default primary group does not exist')
 
 
 class primaryGroupUsed(base):
-	message = _('This is a primary group.')
+    message = _('This is a primary group.')
 
 
 class homeShareUsed(base):
-	message = ''
+    message = ''
 
 
 class groupNotFound(base):
-	message = _('The requested group not be found.')
+    message = _('The requested group not be found.')
 
 
 class dhcpNotFound(base):
-	message = _('The DHCP entry was not found.')
+    message = _('The DHCP entry was not found.')
 
 
 class dnsNotFound(base):
-	message = _('The DNS entry was not found')
+    message = _('The DNS entry was not found')
 
 
 class commonNameTooLong(base):
-	message = _('The FQDN of this object is too long, it must have less than 64 characters.')
+    message = _('The FQDN of this object is too long, it must have less than 64 characters.')
 
 
 class missingInformation(base):
-	message = _('Not all needed information was entered.')
+    message = _('Not all needed information was entered.')
 
 
 class policyFixedAttribute(base):
-	message = _('Cannot overwrite a fixed attribute.')
+    message = _('Cannot overwrite a fixed attribute.')
 
 
 class bootpXORFailover(base):
-	message = _('Dynamic BOOTP leases are not compatible with failover.')
+    message = _('Dynamic BOOTP leases are not compatible with failover.')
 
 
 class licenseNotFound(base):
-	message = _('No license found.')
+    message = _('No license found.')
 
 
 class licenseInvalid(base):
-	message = _('The license is invalid.')
+    message = _('The license is invalid.')
 
 
 class licenseExpired(base):
-	message = _('The license is expired.')
+    message = _('The license is expired.')
 
 
 class licenseWrongBaseDn(base):
-	message = _('The license is invalid for the current base DN.')
+    message = _('The license is invalid for the current base DN.')
 
 
 class licenseCoreEdition(base):
-	message = 'UCS Core Edition.'
+    message = 'UCS Core Edition.'
 
 
 class freeForPersonalUse(base):
-	message = 'Free for personal use edition.'
+    message = 'Free for personal use edition.'
 
 
 class licenseAccounts(base):
-	message = _('Too many user accounts')
+    message = _('Too many user accounts')
 
 
 class licenseClients(base):
-	message = _('Too many client accounts')
+    message = _('Too many client accounts')
 
 
 class licenseDesktops(base):
-	message = _('Too many desktop accounts')
+    message = _('Too many desktop accounts')
 
 
 class licenseGroupware(base):
-	message = _('Too many groupware accounts')
+    message = _('Too many groupware accounts')
 
 
 class licenseUsers(base):
-	message = _('Too many users')
+    message = _('Too many users')
 
 
 class licenseServers(base):
-	message = _('Too many servers')
+    message = _('Too many servers')
 
 
 class licenseManagedClients(base):
-	message = _('Too many managed clients')
+    message = _('Too many managed clients')
 
 
 class licenseCorporateClients(base):
-	message = _('Too many corporate clients')
+    message = _('Too many corporate clients')
 
 
 class licenseDVSUsers(base):
-	message = _('Too many DVS users')
+    message = _('Too many DVS users')
 
 
 class licenseDVSClients(base):
-	message = _('Too many DVS clients')
+    message = _('Too many DVS clients')
 
 
 class licenseDisableModify(base):
-	message = _('During this session add and modify are disabled')
+    message = _('During this session add and modify are disabled')
 
 
 class pwalreadyused(base):
-	message = _('Password has been used before. Please choose a different one.')
+    message = _('Password has been used before. Please choose a different one.')
 
 
 class passwordLength(base):
-	message = _('The password is too short, at least 8 character!')
+    message = _('The password is too short, at least 8 character!')
 
 
 class rangeNotInNetwork(base):
-	message = _('Network and IP range are incompatible.')
+    message = _('Network and IP range are incompatible.')
 
 
 class rangeInNetworkAddress(base):
-	message = _('The IP range contains its network address. That is not permitted!')
+    message = _('The IP range contains its network address. That is not permitted!')
 
 
 class rangeInBroadcastAddress(base):
-	message = _('The IP range contains its broadcast address. That is not permitted!')
+    message = _('The IP range contains its broadcast address. That is not permitted!')
 
 
 class rangesOverlapping(base):
-	message = _('Overlapping IP ranges')
+    message = _('Overlapping IP ranges')
 
 
 class invalidOptions(base):
-	message = _('Invalid combination of options.')
+    message = _('Invalid combination of options.')
 
 
 class pwToShort(base):
-	message = _('Password policy error: ')
+    message = _('Password policy error: ')
 
 
 class pwQuality(base):
-	message = _('Password policy error: ')
+    message = _('Password policy error: ')
 
 
 class invalidOperation(base):
-	message = _('This operation is not allowed on this object.')
+    message = _('This operation is not allowed on this object.')
 
 
 class emptyPrinterGroup(base):
-	message = _('Empty printer groups are not possible.')
+    message = _('Empty printer groups are not possible.')
 
 
 class leavePrinterGroup(base):
-	message = _('Printer groups with quota support can only have members with quota support.')
+    message = _('Printer groups with quota support can only have members with quota support.')
 
 
 class notValidPrinter(base):
-	message = _('Only printer objects can be members of a printer group.')
+    message = _('Only printer objects can be members of a printer group.')
 
 
 class notValidGroup(base):
-	message = _('Only existing groups are allowed.')
+    message = _('Only existing groups are allowed.')
 
 
 class notValidUser(base):
-	message = _('Only existing users are allowed.')
+    message = _('Only existing users are allowed.')
 
 
 class templateSyntaxError(base):
-	message = _('Invalid syntax in default value. Check these templates: %s.')
+    message = _('Invalid syntax in default value. Check these templates: %s.')
 
-	def __init__(self, templates):
-		self.templates = templates
+    def __init__(self, templates):
+        self.templates = templates
 
 
 class nagiosTimeperiodUsed(base):
-	message = _('Timeperiod Object still in use!')
+    message = _('Timeperiod Object still in use!')
 
 
 class nagiosARecordRequired(base):
-	message = _('IP address entry required to assign Nagios services!')
+    message = _('IP address entry required to assign Nagios services!')
 
 
 class nagiosDNSForwardZoneEntryRequired(base):
-	message = _('DNS Forward Zone entry required to assign Nagios services!')
+    message = _('DNS Forward Zone entry required to assign Nagios services!')
 
 
 class dnsAliasRecordExists(base):
-	message = _('The DNS forward entry could not be created. Please remove existing alias records or comparable DNS objects with the same name as this host from the forward zone.')
+    message = _('The DNS forward entry could not be created. Please remove existing alias records or comparable DNS objects with the same name as this host from the forward zone.')
 
 
 class circularGroupDependency(base):
-	message = _('Circular group dependency detected: ')
+    message = _('Circular group dependency detected: ')
 
 
 class invalidChild(base):
-	pass
+    pass
 
 
 class primaryGroupWithoutSamba(base):
-	message = _('Need a primary group with samba option to create a user with samba option')
+    message = _('Need a primary group with samba option to create a user with samba option')
 
 
 class wrongObjectType(base):
-	message = _('The object type of this object differs from the specified object type.')
+    message = _('The object type of this object differs from the specified object type.')
 
 
 class noKerberosRealm(base):
-	message = _('There was no valid kerberos realm found.')
+    message = _('There was no valid kerberos realm found.')
 
 
 class alreadyUsedInSubtree(base):
-	message = _('An object with the name already exists in the subtree position')
+    message = _('An object with the name already exists in the subtree position')

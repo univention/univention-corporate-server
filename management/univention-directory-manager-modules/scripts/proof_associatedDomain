@@ -48,79 +48,79 @@ import univention.admin.uldap as uldap
 
 
 def parse_args():
-	parser = ArgumentParser(description=__doc__)
-	parser.add_argument("-v", "--verbose", action="store_true", dest="verbose", help="print more output")
-	parser.add_argument("-a", "--auto-add", action="store_true", dest="auto_add", help="automatically add missing associatedDomain")
-	parser.add_argument("-c", "--complete-search", action="store_true", dest="complete_search", help="search complete ldap for computer objects")
-	options = parser.parse_args()
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("-v", "--verbose", action="store_true", dest="verbose", help="print more output")
+    parser.add_argument("-a", "--auto-add", action="store_true", dest="auto_add", help="automatically add missing associatedDomain")
+    parser.add_argument("-c", "--complete-search", action="store_true", dest="complete_search", help="search complete ldap for computer objects")
+    options = parser.parse_args()
 
-	return options
+    return options
 
 
 def main():
-	# type: () -> None
-	options = parse_args()
+    # type: () -> None
+    options = parse_args()
 
-	lo, position = uldap.getAdminConnection()
-	ldap_base = position.getBase()
+    lo, position = uldap.getAdminConnection()
+    ldap_base = position.getBase()
 
-	if options.complete_search:
-		computers_base = ldap_base
-	else:
-		computers_base = 'cn=computers,' + ldap_base
-	dns_base = ldap_base
+    if options.complete_search:
+        computers_base = ldap_base
+    else:
+        computers_base = 'cn=computers,' + ldap_base
+    dns_base = ldap_base
 
-	# get computer objects without associatedDomain
-	# computers = {{'cn': ['dn']}
-	computers = {}
-	for dn, attribute in lo.search('(&(objectClass=univentionHost)(!(associatedDomain=*)))', attr=['cn'], base=computers_base):
-		cn = attribute['cn'][0]
-		if cn not in computers:
-			computers[cn] = []
-		computers[cn].append(dn)
+    # get computer objects without associatedDomain
+    # computers = {{'cn': ['dn']}
+    computers = {}
+    for dn, attribute in lo.search('(&(objectClass=univentionHost)(!(associatedDomain=*)))', attr=['cn'], base=computers_base):
+        cn = attribute['cn'][0]
+        if cn not in computers:
+            computers[cn] = []
+        computers[cn].append(dn)
 
-	if not computers:
-		print("No Hosts with missing associatedDomain found")
-		sys.exit(0)
+    if not computers:
+        print("No Hosts with missing associatedDomain found")
+        sys.exit(0)
 
-	# get dnszones for computer objects
-	# computer_zones = {{'cn': ['zone', 'zone', '...']}
-	computer_zones = {}
-	for dn, attribute in lo.search('objectClass=dNSZone', attr=['relativeDomainName', 'zoneName'], base=dns_base):
-		computer = attribute['relativeDomainName'][0]
-		if computer in computers:
-			if computer not in computer_zones:
-				computer_zones[computer] = []
-			computer_zones[computer].append(attribute['zoneName'][0])
+    # get dnszones for computer objects
+    # computer_zones = {{'cn': ['zone', 'zone', '...']}
+    computer_zones = {}
+    for dn, attribute in lo.search('objectClass=dNSZone', attr=['relativeDomainName', 'zoneName'], base=dns_base):
+        computer = attribute['relativeDomainName'][0]
+        if computer in computers:
+            if computer not in computer_zones:
+                computer_zones[computer] = []
+            computer_zones[computer].append(attribute['zoneName'][0])
 
-	if not computer_zones:
-		print("No Hosts with associated DNSZOne found.")
-		sys.exit(0)
+    if not computer_zones:
+        print("No Hosts with associated DNSZOne found.")
+        sys.exit(0)
 
-	# add missing associatedDomain attribute if dnszone is obvious
-	modified_objects = 0
-	objects_to_modify = 0
-	for computer in computers:
-		dn = computers[computer][0]
-		try:
-			if len(computer_zones[computer]) == 1:
-				if options.auto_add:
-					lo.modify(dn, [('associatedDomain', b'', computer_zones[computer])])
-					modified_objects += 1
-					if options.verbose:
-						print("Added associatedDomain %s to Host %s" % (computer_zones[computer][0].decode('utf-8'), dn))
-				else:
-					objects_to_modify += 1
-					print("Missing associatedDomain %s at Host %s" % (computer_zones[computer][0].decode('utf-8'), dn))
-			else:
-				if options.verbose:
-					print("Multiple DNSZones for Host %s:" % dn)
-					for dns_zone in computer_zones[computer]:
-						print("DNSZone: %s" % dns_zone.decode('UTF-8'))
-		except Exception:
-			pass  # no zone for host - nothing to do
+    # add missing associatedDomain attribute if dnszone is obvious
+    modified_objects = 0
+    objects_to_modify = 0
+    for computer in computers:
+        dn = computers[computer][0]
+        try:
+            if len(computer_zones[computer]) == 1:
+                if options.auto_add:
+                    lo.modify(dn, [('associatedDomain', b'', computer_zones[computer])])
+                    modified_objects += 1
+                    if options.verbose:
+                        print("Added associatedDomain %s to Host %s" % (computer_zones[computer][0].decode('utf-8'), dn))
+                else:
+                    objects_to_modify += 1
+                    print("Missing associatedDomain %s at Host %s" % (computer_zones[computer][0].decode('utf-8'), dn))
+            else:
+                if options.verbose:
+                    print("Multiple DNSZones for Host %s:" % dn)
+                    for dns_zone in computer_zones[computer]:
+                        print("DNSZone: %s" % dns_zone.decode('UTF-8'))
+        except Exception:
+            pass  # no zone for host - nothing to do
 
-	if options.auto_add:
-		print("%s Objects modified" % modified_objects)
-	else:
-		print("%s Objects could be modified" % objects_to_modify)
+    if options.auto_add:
+        print("%s Objects modified" % modified_objects)
+    else:
+        print("%s Objects could be modified" % objects_to_modify)

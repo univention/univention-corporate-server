@@ -43,217 +43,217 @@ import six
 
 
 class I18N_Error(Exception):
-	"""
-	Error in Internationalization.
-	"""
+    """
+    Error in Internationalization.
+    """
 
 
 class Locale(object):
-	"""
-	Represents a locale specification and provides simple access to
-	language, territory, codeset and modifier.
+    """
+    Represents a locale specification and provides simple access to
+    language, territory, codeset and modifier.
 
-	:param locale: The locale string `language[_territory][.codeset][@modifier]`.
-	:type locale: str or None
+    :param locale: The locale string `language[_territory][.codeset][@modifier]`.
+    :type locale: str or None
 
-	>>> Locale("deu_GER")
-	>>> str(Locale("ca_ES@valencia"))
-	>>> str(Locale(""))
-	"""
+    >>> Locale("deu_GER")
+    >>> str(Locale("ca_ES@valencia"))
+    >>> str(Locale(""))
+    """
 
-	REGEX = re.compile(
-		r'^'
-		r'(?P<language>([a-z]{2}|C|POSIX))'
-		r'(?:_(?P<territory>[A-Z]{2}))?'
-		r'(?:\.(?P<codeset>[a-zA-Z-0-9]+))?'
-		r'(?:@(?P<modifier>.+))?'
-		r'$')
+    REGEX = re.compile(
+        r'^'
+        r'(?P<language>([a-z]{2}|C|POSIX))'
+        r'(?:_(?P<territory>[A-Z]{2}))?'
+        r'(?:\.(?P<codeset>[a-zA-Z-0-9]+))?'
+        r'(?:@(?P<modifier>.+))?'
+        r'$')
 
-	def __init__(self, locale=None):
-		# type: (Optional[str]) -> None
-		self.__reset()
-		if locale is not None:
-			self.parse(locale)
+    def __init__(self, locale=None):
+        # type: (Optional[str]) -> None
+        self.__reset()
+        if locale is not None:
+            self.parse(locale)
 
-	def __reset(self):
-		# type: () -> None
-		self.language = ""
-		self.territory = ""
-		self.codeset = ""
-		self.modifier = ""
+    def __reset(self):
+        # type: () -> None
+        self.language = ""
+        self.territory = ""
+        self.codeset = ""
+        self.modifier = ""
 
-	def parse(self, locale):
-		# type: (str) -> None
-		"""
-		Parse locale string.
+    def parse(self, locale):
+        # type: (str) -> None
+        """
+        Parse locale string.
 
-		:param str locale: The locale string `language[_territory][.codeset][@modifier]`.
-		:raises TypeError: if `locale` is not a string.
-		:raises I18N_Error: if `locale` does not match the format.
-		"""
-		if not isinstance(locale, six.string_types):
-			raise TypeError('locale must be of type string')
-		self.__reset()
-		regex = Locale.REGEX.match(locale)
-		if not regex:
-			raise I18N_Error('attribute does not match locale specification language[_territory][.codeset][@modifier]')
+        :param str locale: The locale string `language[_territory][.codeset][@modifier]`.
+        :raises TypeError: if `locale` is not a string.
+        :raises I18N_Error: if `locale` does not match the format.
+        """
+        if not isinstance(locale, six.string_types):
+            raise TypeError('locale must be of type string')
+        self.__reset()
+        regex = Locale.REGEX.match(locale)
+        if not regex:
+            raise I18N_Error('attribute does not match locale specification language[_territory][.codeset][@modifier]')
 
-		self.codeset = 'UTF-8'  # default encoding
-		for key, value in regex.groupdict().items():
-			if value is None:
-				continue
-			setattr(self, key, value)
+        self.codeset = 'UTF-8'  # default encoding
+        for key, value in regex.groupdict().items():
+            if value is None:
+                continue
+            setattr(self, key, value)
 
-	def __bool__(self):
-		# type: () -> bool
-		return bool(self.language)
-	__nonzero__ = __bool__
+    def __bool__(self):
+        # type: () -> bool
+        return bool(self.language)
+    __nonzero__ = __bool__
 
-	def __str__(self):
-		# type: () -> str
-		text = self.language or ''
-		if self.language not in ('C', 'POSIX') and self.territory:
-			text += '_%s' % self.territory
-		if self.codeset:
-			text += '.%s' % self.codeset
-		if self.modifier:
-			text += '@%s' % self.modifier
-		return text
+    def __str__(self):
+        # type: () -> str
+        text = self.language or ''
+        if self.language not in ('C', 'POSIX') and self.territory:
+            text += '_%s' % self.territory
+        if self.codeset:
+            text += '.%s' % self.codeset
+        if self.modifier:
+            text += '@%s' % self.modifier
+        return text
 
 
 class NullTranslation(object):
-	"""
-	Dummy translation.
+    """
+    Dummy translation.
 
-	:param str namespace: The name of the translation domain.
-	:param str locale_spec: The selected locale.
-	:param str localedir: The name of the directory containing the translation files.
-	"""
+    :param str namespace: The name of the translation domain.
+    :param str locale_spec: The selected locale.
+    :param str localedir: The name of the directory containing the translation files.
+    """
 
-	def __init__(self, namespace, locale_spec=None, localedir=None):
-		# type: (str, Optional[str], Optional[str]) -> None
-		self._set_domain(namespace)  # type: Optional[str]
-		self._translation = None  # type: Optional[gettext.NullTranslations]
-		self._localedir = localedir  # type: Optional[str]
-		self._localespec = None  # type: Optional[Locale]
-		self._locale = locale_spec  # type: Optional[str]
-		if not self._locale:
-			self.set_language()
+    def __init__(self, namespace, locale_spec=None, localedir=None):
+        # type: (str, Optional[str], Optional[str]) -> None
+        self._set_domain(namespace)  # type: Optional[str]
+        self._translation = None  # type: Optional[gettext.NullTranslations]
+        self._localedir = localedir  # type: Optional[str]
+        self._localespec = None  # type: Optional[Locale]
+        self._locale = locale_spec  # type: Optional[str]
+        if not self._locale:
+            self.set_language()
 
-	def _set_domain(self, namespace):
-		# type: (str) -> None
-		"""
-		Select translation domain.
+    def _set_domain(self, namespace):
+        # type: (str) -> None
+        """
+        Select translation domain.
 
-		:param str namespace: The name of the translation domain.
-		"""
-		if namespace is not None:
-			self._domain = namespace.replace('/', '-').replace('.', '-')
-		else:
-			self._domain = None
+        :param str namespace: The name of the translation domain.
+        """
+        if namespace is not None:
+            self._domain = namespace.replace('/', '-').replace('.', '-')
+        else:
+            self._domain = None
 
-	domain = property(fset=_set_domain)
+    domain = property(fset=_set_domain)
 
-	def set_language(self, language=""):
-		# type: (str) -> None
-		"""
-		Select language.
+    def set_language(self, language=""):
+        # type: (str) -> None
+        """
+        Select language.
 
-		:param str language: The language code.
-		"""
+        :param str language: The language code.
+        """
 
-	def _get_locale(self):
-		# type: () -> Optional[Locale]
-		"""
-		Return currently selected locale.
+    def _get_locale(self):
+        # type: () -> Optional[Locale]
+        """
+        Return currently selected locale.
 
-		:returns: The currently selected locale.
-		:rtype: Locale
-		"""
-		return self._localespec
+        :returns: The currently selected locale.
+        :rtype: Locale
+        """
+        return self._localespec
 
-	def _set_locale(self, locale_spec=None):
-		# type: (Optional[str]) -> None
-		"""
-		Select new locale.
+    def _set_locale(self, locale_spec=None):
+        # type: (Optional[str]) -> None
+        """
+        Select new locale.
 
-		:param str locale_spec: The new locale specification.
-		"""
-		if locale_spec is None:
-			return
-		self._localespec = Locale(locale_spec)
+        :param str locale_spec: The new locale specification.
+        """
+        if locale_spec is None:
+            return
+        self._localespec = Locale(locale_spec)
 
-	locale = property(fget=_get_locale, fset=_set_locale)
+    locale = property(fget=_get_locale, fset=_set_locale)
 
-	def translate(self, message):
-		# type: (str) -> Text
-		"""
-		Translate message.
+    def translate(self, message):
+        # type: (str) -> Text
+        """
+        Translate message.
 
-		:param str message: The message to translate.
-		:returns: The localized message.
-		:rtype: str
-		"""
-		if self._translation is None:
-			return message
+        :param str message: The message to translate.
+        :returns: The localized message.
+        :rtype: str
+        """
+        if self._translation is None:
+            return message
 
-		if six.PY2:
-			return self._translation.ugettext(message)
-		return self._translation.gettext(message)
+        if six.PY2:
+            return self._translation.ugettext(message)
+        return self._translation.gettext(message)
 
-	_ = translate
+    _ = translate
 
 
 class Translation(NullTranslation):
-	"""
-	Translation.
-	"""
-	_instances = []
-	locale = Locale()  # type: Locale # type: ignore
+    """
+    Translation.
+    """
+    _instances = []
+    locale = Locale()  # type: Locale # type: ignore
 
-	def set_language(self, language=""):
-		# type: (str) -> None
-		"""
-		Select language.
+    def set_language(self, language=""):
+        # type: (str) -> None
+        """
+        Select language.
 
-		:param str language: The language code.
-		:raises I18N_Error: if the given locale is not valid.
-		"""
-		if language:
-			Translation.locale.parse(language)
+        :param str language: The language code.
+        :raises I18N_Error: if the given locale is not valid.
+        """
+        if language:
+            Translation.locale.parse(language)
 
-		if not Translation.locale:
-			try:
-				lang = getlocale(LC_MESSAGES)
-				language = lang[0] or "C"
-				Translation.locale.parse(language)
-			except Error as exc:
-				raise I18N_Error('The given locale is not valid: %s' % (exc,))
+        if not Translation.locale:
+            try:
+                lang = getlocale(LC_MESSAGES)
+                language = lang[0] or "C"
+                Translation.locale.parse(language)
+            except Error as exc:
+                raise I18N_Error('The given locale is not valid: %s' % (exc,))
 
-		if not self._domain:
-			return
+        if not self._domain:
+            return
 
-		try:
-			self._translation = gettext.translation(self._domain, languages=(Translation.locale.language, ), localedir=self._localedir)
-		except IOError:
-			try:
-				self._translation = gettext.translation(self._domain, languages=('%s_%s' % (Translation.locale.language, Translation.locale.territory), ), localedir=self._localedir)
-			except IOError:
-				self._translation = None
+        try:
+            self._translation = gettext.translation(self._domain, languages=(Translation.locale.language, ), localedir=self._localedir)
+        except IOError:
+            try:
+                self._translation = gettext.translation(self._domain, languages=('%s_%s' % (Translation.locale.language, Translation.locale.territory), ), localedir=self._localedir)
+            except IOError:
+                self._translation = None
 
-	def __new__(cls, *args, **kwargs):
-		self = object.__new__(cls)
-		cls._instances.append(weakref.ref(self))
-		return self
+    def __new__(cls, *args, **kwargs):
+        self = object.__new__(cls)
+        cls._instances.append(weakref.ref(self))
+        return self
 
-	@classmethod
-	def set_all_languages(cls, language):
-		# type: (str) -> None
-		"""
-			Set the language of all existing :class:`Translation` instances.
-			This is required when instances are created during import time but later on the language should be changed.
-		"""
-		for ref in cls._instances:
-			instance = ref()
-			if instance is not None:
-				instance.set_language(language)
+    @classmethod
+    def set_all_languages(cls, language):
+        # type: (str) -> None
+        """
+                Set the language of all existing :class:`Translation` instances.
+                This is required when instances are created during import time but later on the language should be changed.
+        """
+        for ref in cls._instances:
+            instance = ref()
+            if instance is not None:
+                instance.set_language(language)

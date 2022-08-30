@@ -9,18 +9,18 @@ ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
 replacements = {
-	'--ignore_exists': '--ignore-exists',
-	'--ignore_not_exists': '--ignore-not-exists',
-	'--remove_referring': '--remove-referring',
+    '--ignore_exists': '--ignore-exists',
+    '--ignore_not_exists': '--ignore-not-exists',
+    '--remove_referring': '--remove-referring',
 }
 
 sys.argv = [replacements.get(x, x) for x in sys.argv]
 
 if True or ucr['server/role'] not in ('domaincontroller_master', 'domaincontroller_backup'):
-	import ldap.dn
-	sys.argv.insert(1, '--binddn')
-	sys.argv.insert(2, ldap.dn.explode_rdn(ucr['tests/domainadmin/account'], True)[0])
-	sys.argv.insert(3, '--bindpwd')
-	sys.argv.insert(4, ucr['tests/domainadmin/pwd'])
+    import ldap.dn
+    sys.argv.insert(1, '--binddn')
+    sys.argv.insert(2, ldap.dn.explode_rdn(ucr['tests/domainadmin/account'], True)[0])
+    sys.argv.insert(3, '--bindpwd')
+    sys.argv.insert(4, ucr['tests/domainadmin/pwd'])
 
 main()

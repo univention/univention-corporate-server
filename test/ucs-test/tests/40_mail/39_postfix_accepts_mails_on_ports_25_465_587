@@ -16,44 +16,44 @@ from essential.mail import check_delivery, send_mail
 
 
 def main():
-	logfiles = ['/var/log/mail.log']
-	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm, utils.FollowLogfile(logfiles=logfiles):
-		domain = ucr.get('domainname')
-		mail1 = '%s@%s' % (uts.random_name(), domain)
-		password = 'univention'
-		user_dn1, username1 = udm.create_user(
-			set={
-				'password': password,
-				'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
-				'mailPrimaryAddress': mail1
-			},
-		)
-		mail2 = '%s@%s' % (uts.random_name(), domain)
-		user_dn2, username2 = udm.create_user(
-			set={
-				'password': password,
-				'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
-				'mailPrimaryAddress': mail2
-			},
-		)
+    logfiles = ['/var/log/mail.log']
+    with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm, utils.FollowLogfile(logfiles=logfiles):
+        domain = ucr.get('domainname')
+        mail1 = '%s@%s' % (uts.random_name(), domain)
+        password = 'univention'
+        user_dn1, username1 = udm.create_user(
+            set={
+                'password': password,
+                'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+                'mailPrimaryAddress': mail1
+            },
+        )
+        mail2 = '%s@%s' % (uts.random_name(), domain)
+        user_dn2, username2 = udm.create_user(
+            set={
+                'password': password,
+                'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+                'mailPrimaryAddress': mail2
+            },
+        )
 
-		syslog.openlog(facility=syslog.LOG_MAIL)  # get markers in mail.log in case of error
+        syslog.openlog(facility=syslog.LOG_MAIL)  # get markers in mail.log in case of error
 
-		smtp_args = {
-			25: dict(port=25, tls=True, ssl=False, recipients=mail2, sender=mail1, msg=uts.random_name()),
-			465: dict(port=465, tls=False, ssl=True, recipients=mail2, sender=mail1, msg=uts.random_name()),
-			587: dict(port=587, tls=True, ssl=False, recipients=mail2, sender=mail1, msg=uts.random_name()),
-		}
+        smtp_args = {
+            25: dict(port=25, tls=True, ssl=False, recipients=mail2, sender=mail1, msg=uts.random_name()),
+            465: dict(port=465, tls=False, ssl=True, recipients=mail2, sender=mail1, msg=uts.random_name()),
+            587: dict(port=587, tls=True, ssl=False, recipients=mail2, sender=mail1, msg=uts.random_name()),
+        }
 
-		for _port, kwargs in smtp_args.items():
-			syslog.syslog(syslog.LOG_INFO, 'Sending to port {}.'.format(kwargs['port']))
-			send_mail(**kwargs)
-			check_delivery(kwargs['msg'], mail2, True)
-			print('*** OK: mail delivered through port {}.'.format(kwargs['port']))
-			syslog.syslog(syslog.LOG_INFO, 'OK: mail delivered through port {}.'.format(kwargs['port']))
+        for _port, kwargs in smtp_args.items():
+            syslog.syslog(syslog.LOG_INFO, 'Sending to port {}.'.format(kwargs['port']))
+            send_mail(**kwargs)
+            check_delivery(kwargs['msg'], mail2, True)
+            print('*** OK: mail delivered through port {}.'.format(kwargs['port']))
+            syslog.syslog(syslog.LOG_INFO, 'OK: mail delivered through port {}.'.format(kwargs['port']))
 
 
 if __name__ == '__main__':
-	main()
+    main()
 
 # vim: set ft=python ts=4 sw=4 noet :

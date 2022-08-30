@@ -39,22 +39,22 @@ from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class SamlServiceproviderObjectProperties(GenericObjectProperties):
-	"""saml/serviceprovider UDM properties."""
+    """saml/serviceprovider UDM properties."""
 
-	_encoders = {
-		'simplesamlAttributes': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
-	}
+    _encoders = {
+        'simplesamlAttributes': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
+    }
 
 
 class SamlServiceproviderObject(GenericObject):
-	"""Better representation of saml/serviceprovider properties."""
-	udm_prop_class = SamlServiceproviderObjectProperties
+    """Better representation of saml/serviceprovider properties."""
+    udm_prop_class = SamlServiceproviderObjectProperties
 
 
 class SamlServiceproviderModule(GenericModule):
-	"""SamlServiceproviderObject factory"""
-	_udm_object_class = SamlServiceproviderObject
+    """SamlServiceproviderObject factory"""
+    _udm_object_class = SamlServiceproviderObject
 
-	class Meta:
-		supported_api_versions = [1, 2, 3]
-		suitable_for = ['saml/serviceprovider']
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        suitable_for = ['saml/serviceprovider']

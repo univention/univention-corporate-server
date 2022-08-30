@@ -52,20 +52,20 @@ from typing import Dict, Text
 
 
 class MailAllObjectProperties(GenericObjectProperties):
-	"""mail/* UDM properties."""
+    """mail/* UDM properties."""
 
-	_encoders = {}  # type: Dict[Text, BaseEncoderTV]
+    _encoders = {}  # type: Dict[Text, BaseEncoderTV]
 
 
 class MailAllObject(GenericObject):
-	"""Better representation of mail/* properties."""
-	udm_prop_class = MailAllObjectProperties
+    """Better representation of mail/* properties."""
+    udm_prop_class = MailAllObjectProperties
 
 
 class MailAllModule(GenericModule):
-	"""MailAllObject factory"""
-	_udm_object_class = MailAllObject
-	supported_api_versions = ()  # type: Iterable[int]
+    """MailAllObject factory"""
+    _udm_object_class = MailAllObject
+    supported_api_versions = ()  # type: Iterable[int]
 
-	def _verify_univention_object_type(self, orig_udm_obj):  # type: (OriUdmHandlerTV) -> None
-		...
+    def _verify_univention_object_type(self, orig_udm_obj):  # type: (OriUdmHandlerTV) -> None
+        ...

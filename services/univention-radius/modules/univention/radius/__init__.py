@@ -35,10 +35,10 @@
 
 
 def get_NetworkAccess():
-	try:
-		# Use the extended UCS@school network access check if installed
-		from univention.radius.school_networkaccess import SchoolNetworkAccess
-		return SchoolNetworkAccess
-	except ImportError:
-		from univention.radius.networkaccess import NetworkAccess
-		return NetworkAccess
+    try:
+        # Use the extended UCS@school network access check if installed
+        from univention.radius.school_networkaccess import SchoolNetworkAccess
+        return SchoolNetworkAccess
+    except ImportError:
+        from univention.radius.networkaccess import NetworkAccess
+        return NetworkAccess

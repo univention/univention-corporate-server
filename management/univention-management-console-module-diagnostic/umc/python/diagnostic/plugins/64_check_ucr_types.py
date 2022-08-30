@@ -48,47 +48,47 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 run_desc = ["Checking UCR variable values for correctness."]
 title = _('Check UCR variable values for correctness')
 description = "\n".join((
-	_("Some UCR variables currently have invalid values."),
-	_("This check has been added recently; some warning may be unproblematic."),
-	_("Please investigate them if you experience any problems on this system."),
-	_("Use the module {ucr} to correct their values."),
+    _("Some UCR variables currently have invalid values."),
+    _("This check has been added recently; some warning may be unproblematic."),
+    _("Please investigate them if you experience any problems on this system."),
+    _("Use the module {ucr} to correct their values."),
 ))
 umc_modules: List[Dict[str, str]] = [
-	{
-		"module": "ucr",
-	},
+    {
+        "module": "ucr",
+    },
 ]
 
 
 def _get_config_registry_info() -> cri.ConfigRegistryInfo:
-	cri.set_language('en')
-	return cri.ConfigRegistryInfo(install_mode=False)
+    cri.set_language('en')
+    return cri.ConfigRegistryInfo(install_mode=False)
 
 
 def run(_umc_instance: Instance) -> None:
-	error_descriptions: List[str] = []
+    error_descriptions: List[str] = []
 
-	info = _get_config_registry_info()
-	ignore = {typ for typ in (typ.strip() for typ in ucr.get("diagnostic/check/64_check_ucr_types/ignore", "").split(",")) if typ}
-	for name, var in info.variables.items():
-		try:
-			validator = Type(var)
-			if validator.vtype in ignore:
-				continue
-		except (TypeError, ValueError):
-			msg = _('Invalid type %(type)r defined for variable %(variable)r.') % {'type': var.get('type'), 'variable': name}
-			MODULE.error(msg)
-			error_descriptions.append(msg)
-		else:
-			value = ucr.get(name)
-			if value is not None and not validator.check(value):
-				msg = _('The variable %(variable)r has the invalid value %(value)r.') % {'value': value, 'variable': name}
-				MODULE.error(msg)
-				error_descriptions.append(msg)
+    info = _get_config_registry_info()
+    ignore = {typ for typ in (typ.strip() for typ in ucr.get("diagnostic/check/64_check_ucr_types/ignore", "").split(",")) if typ}
+    for name, var in info.variables.items():
+        try:
+            validator = Type(var)
+            if validator.vtype in ignore:
+                continue
+        except (TypeError, ValueError):
+            msg = _('Invalid type %(type)r defined for variable %(variable)r.') % {'type': var.get('type'), 'variable': name}
+            MODULE.error(msg)
+            error_descriptions.append(msg)
+        else:
+            value = ucr.get(name)
+            if value is not None and not validator.check(value):
+                msg = _('The variable %(variable)r has the invalid value %(value)r.') % {'value': value, 'variable': name}
+                MODULE.error(msg)
+                error_descriptions.append(msg)
 
-	if error_descriptions:
-		raise Warning(description + '\n' + '\n'.join(error_descriptions))
+    if error_descriptions:
+        raise Warning(description + '\n' + '\n'.join(error_descriptions))
 
 
 if __name__ == '__main__':
-	main()
+    main()

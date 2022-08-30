@@ -41,9 +41,9 @@ import univention.admin.handlers
 import univention.admin.localization
 
 from univention.admin.policy import (
-	register_policy_mapping, policy_object_tab,
-	requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    register_policy_mapping, policy_object_tab,
+    requiredObjectClassesProperty, prohibitedObjectClassesProperty,
+    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
 )
 
 
@@ -52,11 +52,11 @@ _ = translation.translate
 
 
 class dhcp_bootFixedAttributes(univention.admin.syntax.select):
-	name = 'dvcp_bootFixedAttributes'
-	choices = [
-		(('univentionDhcpBootServer'), _('Boot server')),
-		(('univentionDhcpBootFilename'), _('Boot filename'))
-	]
+    name = 'dvcp_bootFixedAttributes'
+    choices = [
+        (('univentionDhcpBootServer'), _('Boot server')),
+        (('univentionDhcpBootFilename'), _('Boot filename'))
+    ]
 
 
 module = 'policies/dhcp_boot'
@@ -73,50 +73,50 @@ object_name_plural = _('DHCP Boot policies')
 policy_short_description = _('Boot parameters')
 long_description = ''
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpBoot'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpBoot'],
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=univention.admin.syntax.policyName,
-		include_in_default_search=True,
-		required=True,
-		may_change=False,
-		identifies=True,
-	),
-	'boot_server': univention.admin.property(
-		short_description=_('Boot server'),
-		long_description=_('Numeric IP address or name of the \
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=univention.admin.syntax.policyName,
+        include_in_default_search=True,
+        required=True,
+        may_change=False,
+        identifies=True,
+    ),
+    'boot_server': univention.admin.property(
+        short_description=_('Boot server'),
+        long_description=_('Numeric IP address or name of the \
 server from which the initial boot file is retrieved.'),
-		syntax=univention.admin.syntax.string,
-	),
-	'boot_filename': univention.admin.property(
-		short_description=_('Boot filename'),
-		long_description=_('Initial boot file to be loaded by a client'),
-		syntax=univention.admin.syntax.string,
-	),
+        syntax=univention.admin.syntax.string,
+    ),
+    'boot_filename': univention.admin.property(
+        short_description=_('Boot filename'),
+        long_description=_('Initial boot file to be loaded by a client'),
+        syntax=univention.admin.syntax.string,
+    ),
 }
 property_descriptions.update(dict([
-	requiredObjectClassesProperty(),
-	prohibitedObjectClassesProperty(),
-	fixedAttributesProperty(syntax=dhcp_bootFixedAttributes),
-	emptyAttributesProperty(syntax=dhcp_bootFixedAttributes),
-	ldapFilterProperty(),
+    requiredObjectClassesProperty(),
+    prohibitedObjectClassesProperty(),
+    fixedAttributesProperty(syntax=dhcp_bootFixedAttributes),
+    emptyAttributesProperty(syntax=dhcp_bootFixedAttributes),
+    ldapFilterProperty(),
 ]))
 
 layout = [
-	Tab(_('Boot'), _('Boot settings'), layout=[
-		Group(_('General DHCP boot settings'), layout=[
-			'name',
-			['boot_server', 'boot_filename']
-		]),
-	]),
-	policy_object_tab()
+    Tab(_('Boot'), _('Boot settings'), layout=[
+        Group(_('General DHCP boot settings'), layout=[
+            'name',
+            ['boot_server', 'boot_filename']
+        ]),
+    ]),
+    policy_object_tab()
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -127,7 +127,7 @@ register_policy_mapping(mapping)
 
 
 class object(univention.admin.handlers.simplePolicy):
-	module = module
+    module = module
 
 
 lookup = object.lookup

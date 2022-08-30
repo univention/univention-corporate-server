@@ -48,54 +48,54 @@ childs = True
 short_description = _('MS wireless Group Policy blob')
 long_description = ''
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['msieee80211-Policy', 'top']
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['msieee80211-Policy', 'top']
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		required=True,
-		identifies=True,
-	),
-	'description': univention.admin.property(
-		short_description=_('Description'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'msieee80211-ID': univention.admin.property(
-		short_description=_('ID'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'msieee80211-DataType': univention.admin.property(
-		short_description=_('Data type'),
-		long_description='',
-		syntax=univention.admin.syntax.integer,
-	),
-	'msieee80211-Data': univention.admin.property(
-		short_description=_('Data'),
-		long_description='',
-		syntax=univention.admin.syntax.TextArea,
-		size='Two',
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        required=True,
+        identifies=True,
+    ),
+    'description': univention.admin.property(
+        short_description=_('Description'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'msieee80211-ID': univention.admin.property(
+        short_description=_('ID'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'msieee80211-DataType': univention.admin.property(
+        short_description=_('Data type'),
+        long_description='',
+        syntax=univention.admin.syntax.integer,
+    ),
+    'msieee80211-Data': univention.admin.property(
+        short_description=_('Data'),
+        long_description='',
+        syntax=univention.admin.syntax.TextArea,
+        size='Two',
+    ),
 }
 
 layout = [
-	Tab(_('General'), _('Basic settings'), layout=[
-		Group(_('General'), layout=[
-			["name", "description"],
-		]),
-		Group(_('Policy settings'), layout=[
-			'msieee80211-ID',
-			'msieee80211-DataType',
-			'msieee80211-Data',
-		]),
-	]),
+    Tab(_('General'), _('Basic settings'), layout=[
+        Group(_('General'), layout=[
+            ["name", "description"],
+        ]),
+        Group(_('Policy settings'), layout=[
+            'msieee80211-ID',
+            'msieee80211-DataType',
+            'msieee80211-Data',
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -107,11 +107,11 @@ mapping.register('msieee80211-Data', 'msieee80211-Data', univention.admin.mappin
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module = module
+    module = module
 
-	def _ldap_pre_modify(self):
-		if self.hasChanged('name'):
-			self.move(self._ldap_dn())
+    def _ldap_pre_modify(self):
+        if self.hasChanged('name'):
+            self.move(self._ldap_dn())
 
 
 identify = object.identify

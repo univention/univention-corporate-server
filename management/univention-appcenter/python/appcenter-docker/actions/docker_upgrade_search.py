@@ -42,24 +42,24 @@ from univention.appcenter.actions.docker_base import DockerActionMixin
 
 class UpgradeSearch(UpgradeSearch, DockerActionMixin):
 
-	def _check_for_upgrades(self, app):
-		upgrade_available = super(UpgradeSearch, self)._check_for_upgrades(app)
-		docker = self._get_docker(app)
-		if not docker:
-			return upgrade_available
-		if not docker.is_running():
-			self.log('%s: Not running, cannot check further' % app)
-			return upgrade_available or None
-		result = self._execute_container_script(app, 'update_available', credentials=False, output=True)
-		if result is not None:
-			process, log = result
-			if process.returncode != 0:
-				self.fatal('%s: Searching for App upgrade failed!' % app)
-				return upgrade_available or None
-			output = '\n'.join(log.stdout())
-			if output:
-				output = output.strip()
-			if output:
-				self.log('%s: Update available: %s' % (app, output))
-				return True
-		return upgrade_available
+    def _check_for_upgrades(self, app):
+        upgrade_available = super(UpgradeSearch, self)._check_for_upgrades(app)
+        docker = self._get_docker(app)
+        if not docker:
+            return upgrade_available
+        if not docker.is_running():
+            self.log('%s: Not running, cannot check further' % app)
+            return upgrade_available or None
+        result = self._execute_container_script(app, 'update_available', credentials=False, output=True)
+        if result is not None:
+            process, log = result
+            if process.returncode != 0:
+                self.fatal('%s: Searching for App upgrade failed!' % app)
+                return upgrade_available or None
+            output = '\n'.join(log.stdout())
+            if output:
+                output = output.strip()
+            if output:
+                self.log('%s: Update available: %s' % (app, output))
+                return True
+        return upgrade_available

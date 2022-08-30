@@ -42,39 +42,39 @@ from univention.monitoring import Alert
 
 class MDBMaxsize(Alert):
 
-	def write_metrics(self):
-		if ucr['server/role'] not in ('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'):
-			return
-		self.write_metric_for_folder('univention_listener_mdb_size_used_ratio', '/var/lib/univention-directory-listener/cache')
-		if ucr.get('ldap/database/type') == 'mdb':
-			self.write_metric_for_folder('univention_slapd_mdb_size_used_ratio', '/var/lib/univention-ldap/ldap')
-		if sys.maxsize > 2 ** 32:
-			self.write_metric_for_folder('univention_slapd_translog_mdb_size_used_ratio', '/var/lib/univention-ldap/translog')
+    def write_metrics(self):
+        if ucr['server/role'] not in ('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'):
+            return
+        self.write_metric_for_folder('univention_listener_mdb_size_used_ratio', '/var/lib/univention-directory-listener/cache')
+        if ucr.get('ldap/database/type') == 'mdb':
+            self.write_metric_for_folder('univention_slapd_mdb_size_used_ratio', '/var/lib/univention-ldap/ldap')
+        if sys.maxsize > 2 ** 32:
+            self.write_metric_for_folder('univention_slapd_translog_mdb_size_used_ratio', '/var/lib/univention-ldap/translog')
 
-	def write_metric_for_folder(self, metric_name, mdb_dir):
-		try:
-			output = subprocess.check_output(['/usr/bin/mdb_stat', '-ef', mdb_dir], close_fds=True, env={'LC_ALL': 'C'})
-		except FileNotFoundError:
-			self.write_metric(metric_name, -1)
-			self.log.debug('mdb_stat not found, please install lmdb-utils.')
-			return
-		except subprocess.CalledProcessError:
-			self.write_metric(metric_name, 1)
-			self.log.debug('mdb_stat -ef %s failed' % (mdb_dir,))
-			return
+    def write_metric_for_folder(self, metric_name, mdb_dir):
+        try:
+            output = subprocess.check_output(['/usr/bin/mdb_stat', '-ef', mdb_dir], close_fds=True, env={'LC_ALL': 'C'})
+        except FileNotFoundError:
+            self.write_metric(metric_name, -1)
+            self.log.debug('mdb_stat not found, please install lmdb-utils.')
+            return
+        except subprocess.CalledProcessError:
+            self.write_metric(metric_name, 1)
+            self.log.debug('mdb_stat -ef %s failed' % (mdb_dir,))
+            return
 
-		output = output.decode("utf-8", "replace")
-		stat = dict(line.strip().lower().split(': ', 1) for line in output.splitlines() if ': ' in line)
-		try:
-			in_use = (int(stat['number of pages used']) - int(stat['free pages'])) * 100 / int(stat['max pages'])
-		except KeyError:  # API change in the future
-			self.write_metric(metric_name, 1)
-			self.log.debug('output of "mdb_stat -e %s" could not be parsed: %s' % (mdb_dir, output,))
-			return
+        output = output.decode("utf-8", "replace")
+        stat = dict(line.strip().lower().split(': ', 1) for line in output.splitlines() if ': ' in line)
+        try:
+            in_use = (int(stat['number of pages used']) - int(stat['free pages'])) * 100 / int(stat['max pages'])
+        except KeyError:  # API change in the future
+            self.write_metric(metric_name, 1)
+            self.log.debug('output of "mdb_stat -e %s" could not be parsed: %s' % (mdb_dir, output,))
+            return
 
-		self.write_metric(metric_name, in_use)
-		self.log.debug(mdb_dir)
+        self.write_metric(metric_name, in_use)
+        self.log.debug(mdb_dir)
 
 
 if __name__ == '__main__':
-	MDBMaxsize.main()
+    MDBMaxsize.main()

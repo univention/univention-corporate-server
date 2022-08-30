@@ -46,58 +46,58 @@ from univention.mail.dovecot_shared_folder import DovecotSharedFolderListener
 
 class ListenerMockup(object):
 
-	def __init__(self, ucr):
-		self.configRegistry = ucr
+    def __init__(self, ucr):
+        self.configRegistry = ucr
 
-	def unsetuid(self):
-		pass
+    def unsetuid(self):
+        pass
 
-	def setuid(self, uid):
-		pass
+    def setuid(self, uid):
+        pass
 
 
 def main():
-	parser = argparse.ArgumentParser(description='Reapplies the ACLs to all shared IMAP folder on this system.')
-	parser.add_argument("-v", "--verbose", action="store_true", help="show verbose output additionally on stdout")
-	parser.add_argument("-n", "--dry-run", action="store_true", help="perform dry run without changes")
-	options = parser.parse_args()
+    parser = argparse.ArgumentParser(description='Reapplies the ACLs to all shared IMAP folder on this system.')
+    parser.add_argument("-v", "--verbose", action="store_true", help="show verbose output additionally on stdout")
+    parser.add_argument("-n", "--dry-run", action="store_true", help="perform dry run without changes")
+    options = parser.parse_args()
 
-	# open log file
-	ud.init('/var/log/univention/reapply_shared_folder_acls.log', ud.NO_FLUSH, ud.NO_FUNCTION)
-	ud.set_level(ud.MAIN, ud.ALL)
-	ud.set_level(ud.LISTENER, ud.ALL)
+    # open log file
+    ud.init('/var/log/univention/reapply_shared_folder_acls.log', ud.NO_FLUSH, ud.NO_FUNCTION)
+    ud.set_level(ud.MAIN, ud.ALL)
+    ud.set_level(ud.LISTENER, ud.ALL)
 
-	def log(level, msg):
-		ud.debug(ud.MAIN, level, msg)
-		if options.verbose:
-			print(msg)
+    def log(level, msg):
+        ud.debug(ud.MAIN, level, msg)
+        if options.verbose:
+            print(msg)
 
-	ucr = ConfigRegistry()
-	ucr.load()
+    ucr = ConfigRegistry()
+    ucr.load()
 
-	ldapfilter = ldap.filter.filter_format('(&(objectClass=univentionMailSharedFolder)(univentionMailHomeServer=%s.%s))', (
-		ucr['hostname'],
-		ucr['domainname'],
-	))
+    ldapfilter = ldap.filter.filter_format('(&(objectClass=univentionMailSharedFolder)(univentionMailHomeServer=%s.%s))', (
+        ucr['hostname'],
+        ucr['domainname'],
+    ))
 
-	log(ud.INFO, 'Initialising reapply_shared_folder_acls...')
-	lm = ListenerMockup(ucr)
-	dl = DovecotSharedFolderListener(lm, 'reapply_shared_folder_acls')
+    log(ud.INFO, 'Initialising reapply_shared_folder_acls...')
+    lm = ListenerMockup(ucr)
+    dl = DovecotSharedFolderListener(lm, 'reapply_shared_folder_acls')
 
-	# get ldap connection
-	lo = getMachineConnection()
-	log(ud.INFO, 'Looking for objects matching to following LDAP filter:\n   %s' % (ldapfilter,))
-	for dn, attrs_new in lo.search(filter=ldapfilter):
-		log(ud.PROCESS, 'DN: %r' % (dn,))
-		attrs_old = copy.deepcopy(attrs_new)
-		attrs_old[dl.acl_key] = []
-		if not options.dry_run:
-			dl.mod_shared_folder(attrs_old, attrs_new)
-			log(ud.PROCESS, 'ACLs updated')
-		else:
-			log(ud.PROCESS, 'dry-run: skipping object')
-	log(ud.PROCESS, 'Done')
+    # get ldap connection
+    lo = getMachineConnection()
+    log(ud.INFO, 'Looking for objects matching to following LDAP filter:\n   %s' % (ldapfilter,))
+    for dn, attrs_new in lo.search(filter=ldapfilter):
+        log(ud.PROCESS, 'DN: %r' % (dn,))
+        attrs_old = copy.deepcopy(attrs_new)
+        attrs_old[dl.acl_key] = []
+        if not options.dry_run:
+            dl.mod_shared_folder(attrs_old, attrs_new)
+            log(ud.PROCESS, 'ACLs updated')
+        else:
+            log(ud.PROCESS, 'dry-run: skipping object')
+    log(ud.PROCESS, 'Done')
 
 
 if __name__ == '__main__':
-	main()
+    main()

@@ -40,127 +40,127 @@ from univention.management.console.modules.setup.setup_script import SetupScript
 
 
 class AdMemberScript(SetupScript):
-	name = _('Configuring Active Directory connection')
+    name = _('Configuring Active Directory connection')
 
-	def inner_run(self):
-		# WARNING: this is basically services/univention-ad-connector/umc/python/adconnector/__init__.py admember_join()
-		# changes there have to be merged in here
-		if not self.profile.is_true('ad/member'):
-			# nothing to do
-			return True
-		if self.profile.get('server/role') != 'domaincontroller_master':
-			# configure only on Primary Directory Node
-			return True
+    def inner_run(self):
+        # WARNING: this is basically services/univention-ad-connector/umc/python/adconnector/__init__.py admember_join()
+        # changes there have to be merged in here
+        if not self.profile.is_true('ad/member'):
+            # nothing to do
+            return True
+        if self.profile.get('server/role') != 'domaincontroller_master':
+            # configure only on Primary Directory Node
+            return True
 
-		self.steps(100)
+        self.steps(100)
 
-		def _progress(steps, msg=None):
-			self.step(steps)
-			if msg:
-				self.message(msg)
+        def _progress(steps, msg=None):
+            self.step(steps)
+            if msg:
+                self.message(msg)
 
-		def _err(exc, msg=None):
-			self.error(msg or str(exc))
+        def _err(exc, msg=None):
+            self.error(msg or str(exc))
 
-		ud.init("stdout", 1, 0)
-		ud.set_level(ud.MODULE, int(self.ucr.get('umc/module/debug/level', '2')))
+        ud.init("stdout", 1, 0)
+        ud.set_level(ud.MODULE, int(self.ucr.get('umc/module/debug/level', '2')))
 
-		ad_server_address = self.profile.get('ad/address')
-		ad_domain_info = admember.lookup_adds_dc(ad_server_address)
-		ad_server_ip = ad_domain_info['DC IP']
-		username = self.profile.get('ad/username')
-		password = self.profile.get('ad/password')
-		self.profile.hide('ad/password')
+        ad_server_address = self.profile.get('ad/address')
+        ad_domain_info = admember.lookup_adds_dc(ad_server_address)
+        ad_server_ip = ad_domain_info['DC IP']
+        username = self.profile.get('ad/username')
+        password = self.profile.get('ad/password')
+        self.profile.hide('ad/password')
 
-		try:
-			_progress(5, _('Configuring time synchronization...'))
-			try:
-				admember.time_sync(ad_server_ip)
-			except admember.timeSyncronizationFailed:
-				pass
-			admember.set_timeserver(ad_server_ip)
+        try:
+            _progress(5, _('Configuring time synchronization...'))
+            try:
+                admember.time_sync(ad_server_ip)
+            except admember.timeSyncronizationFailed:
+                pass
+            admember.set_timeserver(ad_server_ip)
 
-			_progress(10, _('Configuring DNS server...'))
-			admember.set_nameserver([ad_server_ip])
-			admember.prepare_ucr_settings()
+            _progress(10, _('Configuring DNS server...'))
+            admember.set_nameserver([ad_server_ip])
+            admember.prepare_ucr_settings()
 
-			_progress(15, _('Configuring Kerberos settings...'))
-			admember.disable_local_heimdal()
-			admember.disable_local_samba4()
+            _progress(15, _('Configuring Kerberos settings...'))
+            admember.disable_local_heimdal()
+            admember.disable_local_samba4()
 
-			_progress(20, _('Configuring reverse DNS settings...'))
-			admember.prepare_dns_reverse_settings(ad_domain_info)
+            _progress(20, _('Configuring reverse DNS settings...'))
+            admember.prepare_dns_reverse_settings(ad_domain_info)
 
-			_progress(25, _('Configuring software components...'))
+            _progress(25, _('Configuring software components...'))
 
-			_step_offset = 30.0
-			_nsteps = 35.0
+            _step_offset = 30.0
+            _nsteps = 35.0
 
-			def _step_handler(step):
-				self.step((step / 100.0) * _nsteps + _step_offset)
+            def _step_handler(step):
+                self.step((step / 100.0) * _nsteps + _step_offset)
 
-			def _err_handler(err):
-				self.error(err)
+            def _err_handler(err):
+                self.error(err)
 
-			success = admember.remove_install_univention_samba(info_handler=self.message, error_handler=self.error, step_handler=_step_handler)
-			if not success:
-				raise RuntimeError(_('An error occurred while installing necessary software components.'))
+            success = admember.remove_install_univention_samba(info_handler=self.message, error_handler=self.error, step_handler=_step_handler)
+            if not success:
+                raise RuntimeError(_('An error occurred while installing necessary software components.'))
 
-			_progress(65, _('Configuring synchronization from AD...'))
-			admember.prepare_connector_settings(username, password, ad_domain_info)
-			admember.disable_ssl()
+            _progress(65, _('Configuring synchronization from AD...'))
+            admember.prepare_connector_settings(username, password, ad_domain_info)
+            admember.disable_ssl()
 
-			_progress(70, _('Renaming well known SID objects...'))
-			admember.rename_well_known_sid_objects(username, password)
+            _progress(70, _('Renaming well known SID objects...'))
+            admember.rename_well_known_sid_objects(username, password)
 
-			_progress(75, _('Configuring Administrator account...'))
-			admember.prepare_administrator(username, password)
+            _progress(75, _('Configuring Administrator account...'))
+            admember.prepare_administrator(username, password)
 
-			_progress(80, _('Running Samba join script...'))
-			admember.run_samba_join_script(username, password)
+            _progress(80, _('Running Samba join script...'))
+            admember.run_samba_join_script(username, password)
 
-			_progress(85, _('Configuring DNS entries...'))
-			admember.add_domaincontroller_srv_record_in_ad(ad_server_ip, username, password)
-			admember.add_host_record_in_ad(uid=username, bindpw=password, sso=True)
+            _progress(85, _('Configuring DNS entries...'))
+            admember.add_domaincontroller_srv_record_in_ad(ad_server_ip, username, password)
+            admember.add_host_record_in_ad(uid=username, bindpw=password, sso=True)
 
-			admember.make_deleted_objects_readable_for_this_machine(username, password)
-			admember.synchronize_account_position(ad_domain_info, username, password)
+            admember.make_deleted_objects_readable_for_this_machine(username, password)
+            admember.synchronize_account_position(ad_domain_info, username, password)
 
-			_progress(90, _('Starting Active Directory connection service...'))
-			admember.start_service('univention-ad-connector')
+            _progress(90, _('Starting Active Directory connection service...'))
+            admember.start_service('univention-ad-connector')
 
-			_progress(95, _('Registering LDAP service entry...'))
-			admember.add_admember_service_to_localhost()
+            _progress(95, _('Registering LDAP service entry...'))
+            admember.add_admember_service_to_localhost()
 
-			_progress(100, _('Join has been finished successfully.'))
-		# error handling...
-		except admember.invalidUCSServerRole as exc:
-			_err(exc, _('The AD member mode can only be configured on a Primary Directory Node server.'))
-		except admember.failedADConnect as exc:
-			_err(exc, _('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_domain_info.get('DC DNS Name'))
-		except admember.domainnameMismatch as exc:
-			_err(exc, _('The domain name of the AD Server (%(ad_domain)s) does not match the local UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % {'ad_domain': ad_domain_info["Domain"], 'ucs_domain': self.profile.get('domainname')})
-		except admember.connectionFailed as exc:
-			_err(exc, _('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info.get('DC DNS Name'))
-		except admember.failedToSetAdministratorPassword as exc:
-			_err(exc, _('Failed to set the password of the UCS Administrator to the Active Directory Administrator password.'))
-		except admember.failedToCreateAdministratorAccount as exc:
-			_err(exc, _('Failed to create the Administrator account in UCS.'))
-		except admember.sambaSidNotSetForAdministratorAccount as exc:
-			_err(exc, _('The sambaSID could not set for the Administrator account in UCS.'))
-		except admember.failedToSearchForWellKnownSid as exc:
-			_err(exc, _('Failed to search for the well known SID.'))
-		except admember.failedToAddAdministratorAccountToDomainAdmins as exc:
-			_err(exc, _('Failed to add the Administrator account to the Domain Admins group.'))
-		except admember.timeSyncronizationFailed as exc:
-			_err(exc, _('Could not synchronize the time between the UCS system and the Active Directory domain controller: %s') % exc)
-		except RuntimeError as exc:
-			_err(exc)
-		else:
-			return True
-		return False
+            _progress(100, _('Join has been finished successfully.'))
+        # error handling...
+        except admember.invalidUCSServerRole as exc:
+            _err(exc, _('The AD member mode can only be configured on a Primary Directory Node server.'))
+        except admember.failedADConnect as exc:
+            _err(exc, _('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_domain_info.get('DC DNS Name'))
+        except admember.domainnameMismatch as exc:
+            _err(exc, _('The domain name of the AD Server (%(ad_domain)s) does not match the local UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % {'ad_domain': ad_domain_info["Domain"], 'ucs_domain': self.profile.get('domainname')})
+        except admember.connectionFailed as exc:
+            _err(exc, _('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info.get('DC DNS Name'))
+        except admember.failedToSetAdministratorPassword as exc:
+            _err(exc, _('Failed to set the password of the UCS Administrator to the Active Directory Administrator password.'))
+        except admember.failedToCreateAdministratorAccount as exc:
+            _err(exc, _('Failed to create the Administrator account in UCS.'))
+        except admember.sambaSidNotSetForAdministratorAccount as exc:
+            _err(exc, _('The sambaSID could not set for the Administrator account in UCS.'))
+        except admember.failedToSearchForWellKnownSid as exc:
+            _err(exc, _('Failed to search for the well known SID.'))
+        except admember.failedToAddAdministratorAccountToDomainAdmins as exc:
+            _err(exc, _('Failed to add the Administrator account to the Domain Admins group.'))
+        except admember.timeSyncronizationFailed as exc:
+            _err(exc, _('Could not synchronize the time between the UCS system and the Active Directory domain controller: %s') % exc)
+        except RuntimeError as exc:
+            _err(exc)
+        else:
+            return True
+        return False
 
 
 if __name__ == '__main__':
-	script = AdMemberScript()
-	main(script)
+    script = AdMemberScript()
+    main(script)

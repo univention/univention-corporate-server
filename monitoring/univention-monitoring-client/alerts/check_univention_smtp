@@ -39,14 +39,14 @@ from univention.monitoring import Alert
 
 class SMTP(Alert):
 
-	def write_metrics(self):
-		address = '%(hostname)s.%(domainname)s' % ucr
-		if ucr.get('mail/postfix/inet/interfaces') == '127.0.0.1':
-			address = '127.0.0.1'
-		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_smtp', '-H', address])
-		self.write_metric('univention_smtp_reachable', 1 if rc == 0 else 0)
-		self.log.debug(output)
+    def write_metrics(self):
+        address = '%(hostname)s.%(domainname)s' % ucr
+        if ucr.get('mail/postfix/inet/interfaces') == '127.0.0.1':
+            address = '127.0.0.1'
+        rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_smtp', '-H', address])
+        self.write_metric('univention_smtp_reachable', 1 if rc == 0 else 0)
+        self.log.debug(output)
 
 
 if __name__ == '__main__':
-	SMTP.main()
+    SMTP.main()

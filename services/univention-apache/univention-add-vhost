@@ -39,9 +39,9 @@ import sys
 import subprocess
 import time
 try:
-	from typing import List, Optional  # noqa: F401
+    from typing import List, Optional  # noqa: F401
 except ImportError:
-	pass
+    pass
 
 from dns.resolver import Resolver, NXDOMAIN
 
@@ -70,286 +70,286 @@ _forward_zones = None
 @click.option("--remove", is_flag=True, help="Remove previously created aliases and UCR variables.")
 @click.option("--dont-reload-services", is_flag=True, help="DO NOT reload local services although necessary, i.e., Apache and Bind.")
 def main(fqdn, port, aliases, conffile, binddn, bindpwdfile, ssl, cert, private_key, ca, remove, dont_reload_services):
-	# type: (str, int, List[str], List[str], str, str, bool, str, str, str, bool, bool) -> None
-	"""
-	Create an Apache vhost entry (and DNS alias) with hostname
-	FQDN on port PORT.
+    # type: (str, int, List[str], List[str], str, str, bool, str, str, str, bool, bool) -> None
+    """
+    Create an Apache vhost entry (and DNS alias) with hostname
+    FQDN on port PORT.
 
-	FQDN: Fully qualified domain name the vhost should be created for.
+    FQDN: Fully qualified domain name the vhost should be created for.
 
-	PORT: Port, usually 80 or 443.
-	"""
-	if not os.geteuid() == 0:
-		click.echo(click.style("This script must be executed as root.", fg="red"), err=True)
-		sys.exit(1)
-	if ucr["server/role"] in ("domaincontroller_master", "domaincontroller_backup"):
-		binddn = password = None
-	else:
-		if not binddn:
-			username = click.prompt("Username to use for LDAP connection").strip()
-			mod = UDM.machine().version(1).get("users/user")
-			for obj in mod.search(filter_format("uid=%s", (username,))):
-				binddn = obj.dn
-				break
-			else:
-				click.echo(
-					click.style("Cannot find DN for username '{}'.".format(username), fg="red"),
-					err=True
-				)
-				sys.exit(1)
-		if bindpwdfile:
-			with click.open_file(bindpwdfile, "r") as fp:
-				password = fp.read().strip()
-		else:
-			password = click.prompt("Password for '{}'".format(binddn), hide_input=True).strip()
+    PORT: Port, usually 80 or 443.
+    """
+    if not os.geteuid() == 0:
+        click.echo(click.style("This script must be executed as root.", fg="red"), err=True)
+        sys.exit(1)
+    if ucr["server/role"] in ("domaincontroller_master", "domaincontroller_backup"):
+        binddn = password = None
+    else:
+        if not binddn:
+            username = click.prompt("Username to use for LDAP connection").strip()
+            mod = UDM.machine().version(1).get("users/user")
+            for obj in mod.search(filter_format("uid=%s", (username,))):
+                binddn = obj.dn
+                break
+            else:
+                click.echo(
+                    click.style("Cannot find DN for username '{}'.".format(username), fg="red"),
+                    err=True
+                )
+                sys.exit(1)
+        if bindpwdfile:
+            with click.open_file(bindpwdfile, "r") as fp:
+                password = fp.read().strip()
+        else:
+            password = click.prompt("Password for '{}'".format(binddn), hide_input=True).strip()
 
-	needs_apache_reload = False
-	needs_dns_reload = False
-	dns_should_resolve = None
+    needs_apache_reload = False
+    needs_dns_reload = False
+    dns_should_resolve = None
 
-	if not binddn:
-		udm = UDM.admin().version(1)
-	else:
-		server = ucr["ldap/master"]
-		server_port = ucr["ldap/master/port"]
-		udm = UDM.credentials(binddn, password, server=server, port=server_port).version(1)
+    if not binddn:
+        udm = UDM.admin().version(1)
+    else:
+        server = ucr["ldap/master"]
+        server_port = ucr["ldap/master/port"]
+        udm = UDM.credentials(binddn, password, server=server, port=server_port).version(1)
 
-	if port == "443":
-		ssl = True
-	if remove:
-		aliases = ucr.get("apache2/vhosts/{}/{}/aliases".format(fqdn, port))
-		if aliases:
-			aliases = aliases.split(',')
-		else:
-			aliases = []
-		needs_apache_reload |= unset_ucr_vars(fqdn, port)
-	else:
-		needs_apache_reload |= set_ucr_vars(udm, fqdn, port, ssl, aliases, conffile, cert, private_key, ca)
+    if port == "443":
+        ssl = True
+    if remove:
+        aliases = ucr.get("apache2/vhosts/{}/{}/aliases".format(fqdn, port))
+        if aliases:
+            aliases = aliases.split(',')
+        else:
+            aliases = []
+        needs_apache_reload |= unset_ucr_vars(fqdn, port)
+    else:
+        needs_apache_reload |= set_ucr_vars(udm, fqdn, port, ssl, aliases, conffile, cert, private_key, ca)
 
-	ucr.load()
+    ucr.load()
 
-	for host in [fqdn] + list(aliases):
-		if remove:
-			ns = "apache2/vhosts/{}".format(fqdn)
-			if not any(key.startswith(ns) for key in ucr.keys()):
-				needs_dns_reload |= remove_dns_entry(udm, host)
-				dns_should_resolve = False
-		else:
-			needs_dns_reload |= create_dns_entry(udm, host)
-			dns_should_resolve = True
+    for host in [fqdn] + list(aliases):
+        if remove:
+            ns = "apache2/vhosts/{}".format(fqdn)
+            if not any(key.startswith(ns) for key in ucr.keys()):
+                needs_dns_reload |= remove_dns_entry(udm, host)
+                dns_should_resolve = False
+        else:
+            needs_dns_reload |= create_dns_entry(udm, host)
+            dns_should_resolve = True
 
-	if dont_reload_services:
-		if needs_apache_reload or needs_dns_reload:
-			click.echo(click.style("Please now reload the DNS and the web servers:", bold=True))
-		if needs_apache_reload:
-			click.echo(click.style("$ service apache2 reload", bold=True))
-		if needs_dns_reload:
-			click.echo(click.style("$ nscd -i hosts", bold=True))
-			click.echo(click.style("$ service bind9 reload", bold=True))
-	else:
-		if needs_apache_reload:
-			click.echo('Reloading Apache ...')
-			if subprocess.call(['service', 'apache2', 'reload']) != 0:
-				click.echo(click.style(
-					"Reload failed",
-					fg="red")
-				)
-		if needs_dns_reload:
-			click.echo('Reloading Bind ...')
-			subprocess.call(['nscd', '-i', 'hosts'])
-			subprocess.call(['service', 'bind9', 'reload'])
-			click.echo('Checking on {}...'.format(fqdn))
-			# normally, we would need to check for aliases as well
-			# but checking the most important one should be good enough
-			timeout = 60
-			pause = 5
-			while timeout > 0:
-				if resolve_host(fqdn, pause) == dns_should_resolve:
-					break
-				time.sleep(pause)
-				timeout -= pause
-			else:
-				click.echo(click.style(
-					"DNS reconfiguration not complete.",
-					fg="red")
-				)
-				click.echo("`host {}` did not respond as expected after {} seconds.".format(fqdn, timeout))
-				click.echo(click.style("You may want to try", bold=True))
-				click.echo(click.style("$ nscd -i hosts", bold=True))
-				click.echo(click.style("$ service bind9 reload", bold=True))
+    if dont_reload_services:
+        if needs_apache_reload or needs_dns_reload:
+            click.echo(click.style("Please now reload the DNS and the web servers:", bold=True))
+        if needs_apache_reload:
+            click.echo(click.style("$ service apache2 reload", bold=True))
+        if needs_dns_reload:
+            click.echo(click.style("$ nscd -i hosts", bold=True))
+            click.echo(click.style("$ service bind9 reload", bold=True))
+    else:
+        if needs_apache_reload:
+            click.echo('Reloading Apache ...')
+            if subprocess.call(['service', 'apache2', 'reload']) != 0:
+                click.echo(click.style(
+                    "Reload failed",
+                    fg="red")
+                )
+        if needs_dns_reload:
+            click.echo('Reloading Bind ...')
+            subprocess.call(['nscd', '-i', 'hosts'])
+            subprocess.call(['service', 'bind9', 'reload'])
+            click.echo('Checking on {}...'.format(fqdn))
+            # normally, we would need to check for aliases as well
+            # but checking the most important one should be good enough
+            timeout = 60
+            pause = 5
+            while timeout > 0:
+                if resolve_host(fqdn, pause) == dns_should_resolve:
+                    break
+                time.sleep(pause)
+                timeout -= pause
+            else:
+                click.echo(click.style(
+                    "DNS reconfiguration not complete.",
+                    fg="red")
+                )
+                click.echo("`host {}` did not respond as expected after {} seconds.".format(fqdn, timeout))
+                click.echo(click.style("You may want to try", bold=True))
+                click.echo(click.style("$ nscd -i hosts", bold=True))
+                click.echo(click.style("$ service bind9 reload", bold=True))
 
 
 def resolve_host(hostname, timeout):
-	resolver = Resolver()
-	resolver.lifetime = timeout
-	try:
-		resolver.query(hostname)
-	except NXDOMAIN:
-		return False
-	except Exception as exc:
-		click.echo(click.style(
-			"DNS query resulted in {}.".format(exc),
-			fg="yellow")
-		)
-		# should not happen, retry anyway
-		return None
-	else:
-		return True
+    resolver = Resolver()
+    resolver.lifetime = timeout
+    try:
+        resolver.query(hostname)
+    except NXDOMAIN:
+        return False
+    except Exception as exc:
+        click.echo(click.style(
+            "DNS query resulted in {}.".format(exc),
+            fg="yellow")
+        )
+        # should not happen, retry anyway
+        return None
+    else:
+        return True
 
 
 def get_wildcard_certificate(udm):  # type: (UDM) -> None
-	service = 'Wildcard Certificate'
-	hostobj = udm.obj_by_dn(ucr['ldap/hostdn'])
-	services = udm.get('settings/service')
-	try:
-		services.get_by_id(service)
-	except NoObject:
-		position = 'cn=services,cn=univention,{}'.format(ucr['ldap/base'])
-		service_obj = services.new(superordinate=position)
-		service_obj.props.name = service
-		service_obj.position = position
-		service_obj.save()
-	if service not in hostobj.props.service:
-		hostobj.props.service.append(service)
-		hostobj.save()
-	subprocess.check_call(['univention-fetch-certificate', '*.' + ucr['hostname'], ucr['ldap/master']])
-	print('')
+    service = 'Wildcard Certificate'
+    hostobj = udm.obj_by_dn(ucr['ldap/hostdn'])
+    services = udm.get('settings/service')
+    try:
+        services.get_by_id(service)
+    except NoObject:
+        position = 'cn=services,cn=univention,{}'.format(ucr['ldap/base'])
+        service_obj = services.new(superordinate=position)
+        service_obj.props.name = service
+        service_obj.position = position
+        service_obj.save()
+    if service not in hostobj.props.service:
+        hostobj.props.service.append(service)
+        hostobj.save()
+    subprocess.check_call(['univention-fetch-certificate', '*.' + ucr['hostname'], ucr['ldap/master']])
+    print('')
 
 
 def forward_zones(udm):  # type: (UDM) -> List[BaseObject]
-	global _forward_zones
-	if not _forward_zones:
-		dns_forward_zone_mod = udm.get("dns/forward_zone")  # type: BaseModule
-		_forward_zones = sorted(
-			dns_forward_zone_mod.search(),
-			key=lambda x: len(x.props.zone),
-			reverse=True
-		)
-	return _forward_zones
+    global _forward_zones
+    if not _forward_zones:
+        dns_forward_zone_mod = udm.get("dns/forward_zone")  # type: BaseModule
+        _forward_zones = sorted(
+            dns_forward_zone_mod.search(),
+            key=lambda x: len(x.props.zone),
+            reverse=True
+        )
+    return _forward_zones
 
 
 def superordinate_of_fqdn(udm, fqdn):  # type: (UDM, str) -> Optional[BaseObject]
-	known_zones = forward_zones(udm)
-	for zone in known_zones:
-		if fqdn.endswith(zone.props.zone):
-			return zone
+    known_zones = forward_zones(udm)
+    for zone in known_zones:
+        if fqdn.endswith(zone.props.zone):
+            return zone
 
 
 def host_obj(udm, hostname, superordinate):  # type: (UDM, str, BaseObject) -> Optional[BaseObject]
-	obj_dn = "relativeDomainName={},{}".format(escape_dn_chars(hostname), superordinate.dn)
-	try:
-		return udm.obj_by_dn(obj_dn)
-	except NoObject:
-		pass
+    obj_dn = "relativeDomainName={},{}".format(escape_dn_chars(hostname), superordinate.dn)
+    try:
+        return udm.obj_by_dn(obj_dn)
+    except NoObject:
+        pass
 
 
 def create_dns_entry(udm, fqdn, alias_target=None):  # type: (UDM, str, Optional[str]) -> Optional[BaseObject]
-	if not alias_target:
-		alias_target = "{hostname}.{domainname}".format(**ucr)
-	if fqdn in [alias_target, '*']:
-		return False
-	click.echo("Creating DNS alias for '{}'...".format(fqdn))
-	dns_alias_mod = udm.get("dns/alias")  # type: BaseModule
-	superordinate = superordinate_of_fqdn(udm, fqdn)
-	if not superordinate:
-		click.echo(click.style(
-			"'{}' is not part of any of the hosted DNS zones. Not creating an alias.".format(fqdn),
-			fg="yellow"))
-		return False
-	alias_name = fqdn.replace(superordinate.props.zone, "").rstrip(".")
-	# check for existing dns/alias or dns/host
-	if host_obj(udm, alias_name, superordinate):
-		click.echo(click.style("Alias/Host '{}' exists.".format(fqdn), fg="green"))
-		return False
-	alias_obj = dns_alias_mod.new(superordinate=superordinate)  # type: BaseObject
-	alias_obj.props.name = alias_name
-	alias_obj.props.cname = "{}.".format(alias_target.rstrip("."))
-	alias_obj.save()
-	click.echo(click.style("Created DNS alias '{}' -> '{}'.".format(fqdn, alias_target), fg="green"))
-	return True
+    if not alias_target:
+        alias_target = "{hostname}.{domainname}".format(**ucr)
+    if fqdn in [alias_target, '*']:
+        return False
+    click.echo("Creating DNS alias for '{}'...".format(fqdn))
+    dns_alias_mod = udm.get("dns/alias")  # type: BaseModule
+    superordinate = superordinate_of_fqdn(udm, fqdn)
+    if not superordinate:
+        click.echo(click.style(
+            "'{}' is not part of any of the hosted DNS zones. Not creating an alias.".format(fqdn),
+            fg="yellow"))
+        return False
+    alias_name = fqdn.replace(superordinate.props.zone, "").rstrip(".")
+    # check for existing dns/alias or dns/host
+    if host_obj(udm, alias_name, superordinate):
+        click.echo(click.style("Alias/Host '{}' exists.".format(fqdn), fg="green"))
+        return False
+    alias_obj = dns_alias_mod.new(superordinate=superordinate)  # type: BaseObject
+    alias_obj.props.name = alias_name
+    alias_obj.props.cname = "{}.".format(alias_target.rstrip("."))
+    alias_obj.save()
+    click.echo(click.style("Created DNS alias '{}' -> '{}'.".format(fqdn, alias_target), fg="green"))
+    return True
 
 
 def remove_dns_entry(udm, fqdn):  # type: (UDM, str) -> None
-	alias_target = "{hostname}.{domainname}".format(**ucr)
-	if fqdn in [alias_target, '*']:
-		return False
-	click.echo("Deleting DNS alias for '{}'...".format(fqdn))
-	superordinate = superordinate_of_fqdn(udm, fqdn)
-	if not superordinate:
-		click.echo(click.style("'{}' is not part of any of the hosted DNS zones.".format(fqdn), fg="yellow"))
-		return False
-	alias_name = fqdn.replace(superordinate.props.zone, "").rstrip(".")
-	obj = host_obj(udm, alias_name, superordinate)
-	if not obj:
-		click.echo(click.style("Alias '{}' does not exit (anymore).".format(fqdn), fg="yellow"))
-		return False
-	udm_module = obj._udm_module.name
-	if udm_module == "dns/alias":
-		obj.delete()
-		click.echo(click.style("Deleted DNS alias '{}'.".format(fqdn), fg="green"))
-		return True
-	else:
-		click.echo(click.style(
-			"Not deleting '{}': it is not an alias, but of type '{}'!".format(fqdn, udm_module),
-			fg="red")
-		)
-		return False
+    alias_target = "{hostname}.{domainname}".format(**ucr)
+    if fqdn in [alias_target, '*']:
+        return False
+    click.echo("Deleting DNS alias for '{}'...".format(fqdn))
+    superordinate = superordinate_of_fqdn(udm, fqdn)
+    if not superordinate:
+        click.echo(click.style("'{}' is not part of any of the hosted DNS zones.".format(fqdn), fg="yellow"))
+        return False
+    alias_name = fqdn.replace(superordinate.props.zone, "").rstrip(".")
+    obj = host_obj(udm, alias_name, superordinate)
+    if not obj:
+        click.echo(click.style("Alias '{}' does not exit (anymore).".format(fqdn), fg="yellow"))
+        return False
+    udm_module = obj._udm_module.name
+    if udm_module == "dns/alias":
+        obj.delete()
+        click.echo(click.style("Deleted DNS alias '{}'.".format(fqdn), fg="green"))
+        return True
+    else:
+        click.echo(click.style(
+            "Not deleting '{}': it is not an alias, but of type '{}'!".format(fqdn, udm_module),
+            fg="red")
+        )
+        return False
 
 
 def set_ucr_vars(udm, fqdn, port, ssl, aliases=None, path=None, cert=None, private_key=None, ca=None):
-	# type: (str, str, int, bool, Optional[List[str]], Optional[str], Optional[str], Optional[str], Optional[str]) -> None
-	click.echo("Setting UCR variables for Apache vhost configuration...")
-	ucrvs = []
-	ns = "apache2/vhosts/{}/{}".format(fqdn, port)
-	for key in ucr.keys():
-		if key.startswith(ns):
-			click.echo(click.style("UCR values for '{}' exist. Not setting UCR values.".format(ns), fg="yellow"))
-			return False
-	ucrvs.extend([
-		"{}/enabled=true".format(ns),
-		"{}/aliases={}".format(ns, ",".join(aliases or [])),
-	])
-	if ssl:
-		alias_target = "{hostname}.{domainname}".format(**ucr)
-		if fqdn in [alias_target, '*']:
-			if cert is None:
-				cert = ucr.get("apache2/ssl/certificate", "/etc/univention/ssl/{}.{}/cert.pem".format(ucr["hostname"], ucr["domainname"]))
-			if private_key is None:
-				private_key = ucr.get("apache2/ssl/key", "/etc/univention/ssl/{}.{}/private.key".format(ucr["hostname"], ucr["domainname"]))
-			if ca is None:
-				ca = ucr.get("apache2/ssl/ca", "/etc/univention/ssl/ucsCA/CAcert.pem")
-		elif fqdn.endswith(alias_target):
-			if not os.path.exists("/etc/univention/ssl/*.{}.{}/cert.pem".format(ucr["hostname"], ucr["domainname"])):
-				get_wildcard_certificate(udm)
-			if cert is None:
-				cert = "/etc/univention/ssl/*.{}.{}/cert.pem".format(ucr["hostname"], ucr["domainname"])
-			if private_key is None:
-				private_key = "/etc/univention/ssl/*.{}.{}/private.key".format(ucr["hostname"], ucr["domainname"])
-			if ca is None:
-				ca = ucr.get("apache2/ssl/ca", "/etc/univention/ssl/ucsCA/CAcert.pem")
-	if cert and private_key and ca:
-		ucrvs.extend([
-			"{}/ssl/certificate={}".format(ns, cert),
-			"{}/ssl/key={}".format(ns, private_key),
-			"{}/ssl/ca={}".format(ns, ca),
-		])
-	if path:
-		ucrvs.append("{}/files={}".format(ns, ','.join(path)))
-	handler_set(ucrvs)
-	click.echo(click.style("Done setting UCR variables.", fg="green"))
-	return True
+    # type: (str, str, int, bool, Optional[List[str]], Optional[str], Optional[str], Optional[str], Optional[str]) -> None
+    click.echo("Setting UCR variables for Apache vhost configuration...")
+    ucrvs = []
+    ns = "apache2/vhosts/{}/{}".format(fqdn, port)
+    for key in ucr.keys():
+        if key.startswith(ns):
+            click.echo(click.style("UCR values for '{}' exist. Not setting UCR values.".format(ns), fg="yellow"))
+            return False
+    ucrvs.extend([
+        "{}/enabled=true".format(ns),
+        "{}/aliases={}".format(ns, ",".join(aliases or [])),
+    ])
+    if ssl:
+        alias_target = "{hostname}.{domainname}".format(**ucr)
+        if fqdn in [alias_target, '*']:
+            if cert is None:
+                cert = ucr.get("apache2/ssl/certificate", "/etc/univention/ssl/{}.{}/cert.pem".format(ucr["hostname"], ucr["domainname"]))
+            if private_key is None:
+                private_key = ucr.get("apache2/ssl/key", "/etc/univention/ssl/{}.{}/private.key".format(ucr["hostname"], ucr["domainname"]))
+            if ca is None:
+                ca = ucr.get("apache2/ssl/ca", "/etc/univention/ssl/ucsCA/CAcert.pem")
+        elif fqdn.endswith(alias_target):
+            if not os.path.exists("/etc/univention/ssl/*.{}.{}/cert.pem".format(ucr["hostname"], ucr["domainname"])):
+                get_wildcard_certificate(udm)
+            if cert is None:
+                cert = "/etc/univention/ssl/*.{}.{}/cert.pem".format(ucr["hostname"], ucr["domainname"])
+            if private_key is None:
+                private_key = "/etc/univention/ssl/*.{}.{}/private.key".format(ucr["hostname"], ucr["domainname"])
+            if ca is None:
+                ca = ucr.get("apache2/ssl/ca", "/etc/univention/ssl/ucsCA/CAcert.pem")
+    if cert and private_key and ca:
+        ucrvs.extend([
+            "{}/ssl/certificate={}".format(ns, cert),
+            "{}/ssl/key={}".format(ns, private_key),
+            "{}/ssl/ca={}".format(ns, ca),
+        ])
+    if path:
+        ucrvs.append("{}/files={}".format(ns, ','.join(path)))
+    handler_set(ucrvs)
+    click.echo(click.style("Done setting UCR variables.", fg="green"))
+    return True
 
 
 def unset_ucr_vars(fqdn, port):
-	click.echo("Unsetting UCR variables...")
-	ns = "apache2/vhosts/{}/{}".format(fqdn, port)
-	ucrvs = [key for key in ucr.keys() if key.startswith(ns)]
-	if not ucrvs:
-		return False
-	handler_unset(ucrvs)
-	click.echo(click.style("Done unsetting UCR variables.", fg="green"))
-	return True
+    click.echo("Unsetting UCR variables...")
+    ns = "apache2/vhosts/{}/{}".format(fqdn, port)
+    ucrvs = [key for key in ucr.keys() if key.startswith(ns)]
+    if not ucrvs:
+        return False
+    handler_unset(ucrvs)
+    click.echo(click.style("Done unsetting UCR variables.", fg="green"))
+    return True
 
 
 if __name__ == '__main__':
-	main()
+    main()

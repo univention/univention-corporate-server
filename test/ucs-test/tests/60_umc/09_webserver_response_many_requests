@@ -29,36 +29,36 @@ NUMBER_OF_NOT_RESPONDING_REQUESTS = 100
 
 class AsyncClient(Client):
 
-	def async_request(self, path):
-		cookie = '; '.join(['='.join(x) for x in self.cookies.iteritems()])
-		headers = dict(self._headers, **{'Cookie': cookie, 'Content-Type': 'application/json'})
-		connection = httplib.HTTPSConnection(self.hostname, timeout=10)
-		connection.request('POST', '/univention/command/%s' % path, '{}', headers=headers)
-		return connection
+    def async_request(self, path):
+        cookie = '; '.join(['='.join(x) for x in self.cookies.iteritems()])
+        headers = dict(self._headers, **{'Cookie': cookie, 'Content-Type': 'application/json'})
+        connection = httplib.HTTPSConnection(self.hostname, timeout=10)
+        connection.request('POST', '/univention/command/%s' % path, '{}', headers=headers)
+        return connection
 
 
 def main():
-	print('Setting up the connections ...')
+    print('Setting up the connections ...')
 
-	print('Sending %d not responding requests' % NUMBER_OF_NOT_RESPONDING_REQUESTS)
-	for _request in range(NUMBER_OF_NOT_RESPONDING_REQUESTS):
-		AsyncClient.get_test_connection(timeout=10).async_request('ucstest/norespond')
+    print('Sending %d not responding requests' % NUMBER_OF_NOT_RESPONDING_REQUESTS)
+    for _request in range(NUMBER_OF_NOT_RESPONDING_REQUESTS):
+        AsyncClient.get_test_connection(timeout=10).async_request('ucstest/norespond')
 
-	print('Verfying the webserver still respond to a request ...')
-	try:
-		assert AsyncClient.get_test_connection(timeout=10).umc_command('ucstest/respond').status == 200
-	except ssl.SSLError:
-		utils.fail('ERROR: request timed out')
-	except AssertionError:
-		utils.fail('ERROR: webserver is not responding')
-	finally:
-		subprocess.Popen(['service', 'univention-management-console-web-server', 'restart'])
-		subprocess.Popen(['service', 'univention-management-console-server', 'restart'])
+    print('Verfying the webserver still respond to a request ...')
+    try:
+        assert AsyncClient.get_test_connection(timeout=10).umc_command('ucstest/respond').status == 200
+    except ssl.SSLError:
+        utils.fail('ERROR: request timed out')
+    except AssertionError:
+        utils.fail('ERROR: webserver is not responding')
+    finally:
+        subprocess.Popen(['service', 'univention-management-console-web-server', 'restart'])
+        subprocess.Popen(['service', 'univention-management-console-server', 'restart'])
 
 
 if __name__ == '__main__':
-	joinscript()
-	try:
-		main()
-	finally:
-		unjoinscript()
+    joinscript()
+    try:
+        main()
+    finally:
+        unjoinscript()

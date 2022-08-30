@@ -48,109 +48,109 @@ UCR_IFACE_RESTART = "interfaces/restart/auto"
 
 
 class NetworkSetup(SetupScript):
-	name = _("Configuring IPvX network interfaces")
+    name = _("Configuring IPvX network interfaces")
 
-	def __init__(self):
-		super(NetworkSetup, self).__init__()
-		self.options = None
-		self.changeset = None
-		self.phases = RunPhases()
-		self.logger = logging.getLogger("uss.network")
+    def __init__(self):
+        super(NetworkSetup, self).__init__()
+        self.options = None
+        self.changeset = None
+        self.phases = RunPhases()
+        self.logger = logging.getLogger("uss.network")
 
-	def inner_run(self):
-		self.parse_options()
-		self.setup_logging()
-		self.setup_ud_logging()
-		self.prepare_changeset()
-		self.setup_phases()
-		self.reconfigure_network()
+    def inner_run(self):
+        self.parse_options()
+        self.setup_logging()
+        self.setup_ud_logging()
+        self.prepare_changeset()
+        self.setup_phases()
+        self.reconfigure_network()
 
-	def parse_options(self):
-		parser = ArgumentParser(description=__doc__)
-		parser.add_argument(
-			"--network-only",
-			action="store_true",
-			help="Only re-configure network, but don't modify LDAP data")
-		parser.add_argument(
-			"--appliance-mode",
-			action="store_true",
-			help="Configure new address as additional virtual address instead of replacing current addresses")
-		parser.add_argument(
-			"--verbose", "-v",
-			action="count", default=3,
-			help="Log verbose")
-		parser.add_argument(
-			"--quiet", "-q",
-			action="store_const", dest="verbose", const=0,
-			help="Disable verbose logging")
-		parser.add_argument(
-			"--no-act", "--dry-run", "-n",
-			action="store_true",
-			help="Don't run any commands")
+    def parse_options(self):
+        parser = ArgumentParser(description=__doc__)
+        parser.add_argument(
+            "--network-only",
+            action="store_true",
+            help="Only re-configure network, but don't modify LDAP data")
+        parser.add_argument(
+            "--appliance-mode",
+            action="store_true",
+            help="Configure new address as additional virtual address instead of replacing current addresses")
+        parser.add_argument(
+            "--verbose", "-v",
+            action="count", default=3,
+            help="Log verbose")
+        parser.add_argument(
+            "--quiet", "-q",
+            action="store_const", dest="verbose", const=0,
+            help="Disable verbose logging")
+        parser.add_argument(
+            "--no-act", "--dry-run", "-n",
+            action="store_true",
+            help="Don't run any commands")
 
-		self.options = parser.parse_args()
+        self.options = parser.parse_args()
 
-	LEVEL = (logging.FATAL, logging.ERROR, logging.WARN, logging.INFO, logging.DEBUG)
+    LEVEL = (logging.FATAL, logging.ERROR, logging.WARN, logging.INFO, logging.DEBUG)
 
-	def setup_logging(self):
-		try:
-			level = self.LEVEL[self.options.verbose]
-		except IndexError:
-			level = self.LEVEL[-1]
-		logging.basicConfig(stream=sys.stderr, level=level)
+    def setup_logging(self):
+        try:
+            level = self.LEVEL[self.options.verbose]
+        except IndexError:
+            level = self.LEVEL[-1]
+        logging.basicConfig(stream=sys.stderr, level=level)
 
-	UD_LEVEL = (ud.ERROR, ud.WARN, ud.PROCESS, ud.INFO, ud.ALL)
+    UD_LEVEL = (ud.ERROR, ud.WARN, ud.PROCESS, ud.INFO, ud.ALL)
 
-	def setup_ud_logging(self):
-		try:
-			level = self.UD_LEVEL[self.options.verbose]
-		except IndexError:
-			level = self.UD_LEVEL[-1]
-		ud.init("stderr", ud.NO_FLUSH, ud.NO_FUNCTION)
-		ud.set_level(ud.ADMIN, level)
+    def setup_ud_logging(self):
+        try:
+            level = self.UD_LEVEL[self.options.verbose]
+        except IndexError:
+            level = self.UD_LEVEL[-1]
+        ud.init("stderr", ud.NO_FLUSH, ud.NO_FUNCTION)
+        ud.set_level(ud.ADMIN, level)
 
-	def prepare_changeset(self):
-		# This if clause is only executed on prejoined ucs appliances
-		# We need to update the ldap, and therefore have to supply the
-		# ip address with which the system was initially joined
-		# otherwise, the ldap objects will not be updated with the
-		# new ip address chosen in system setup
-		if self.ucr.ucr.get('system/setup/boot/old_ipv4', None):
-			self.logger.info("Setting old ipv4 address")
-			self.ucr.ucr['interfaces/eth0/address'] = self.ucr.ucr.get('system/setup/boot/old_ipv4')
-			if not self.options.no_act:
-				handler_unset(['system/setup/boot/old_ipv4'])
+    def prepare_changeset(self):
+        # This if clause is only executed on prejoined ucs appliances
+        # We need to update the ldap, and therefore have to supply the
+        # ip address with which the system was initially joined
+        # otherwise, the ldap objects will not be updated with the
+        # new ip address chosen in system setup
+        if self.ucr.ucr.get('system/setup/boot/old_ipv4', None):
+            self.logger.info("Setting old ipv4 address")
+            self.ucr.ucr['interfaces/eth0/address'] = self.ucr.ucr.get('system/setup/boot/old_ipv4')
+            if not self.options.no_act:
+                handler_unset(['system/setup/boot/old_ipv4'])
 
-		self.changeset = ChangeSet(self.ucr.ucr, self.profile, self.options)
-		if not self.changeset.ucr_changes:
-			self.logger.info("No changes to apply. Exiting.")
-			sys.exit(0)
+        self.changeset = ChangeSet(self.ucr.ucr, self.profile, self.options)
+        if not self.changeset.ucr_changes:
+            self.logger.info("No changes to apply. Exiting.")
+            sys.exit(0)
 
-	def setup_phases(self):
-		self.phases.load()
-		self.phases.setup(self.changeset)
+    def setup_phases(self):
+        self.phases.load()
+        self.phases.setup(self.changeset)
 
-	def reconfigure_network(self):
-		old_restart = self.ucr.ucr.get(UCR_IFACE_RESTART, None)
-		try:
-			self.ucr_update({UCR_IFACE_RESTART: "false"})
+    def reconfigure_network(self):
+        old_restart = self.ucr.ucr.get(UCR_IFACE_RESTART, None)
+        try:
+            self.ucr_update({UCR_IFACE_RESTART: "false"})
 
-			self.apply_profile()
-		finally:
-			self.ucr_update({UCR_IFACE_RESTART: old_restart})
+            self.apply_profile()
+        finally:
+            self.ucr_update({UCR_IFACE_RESTART: old_restart})
 
-	def apply_profile(self):
-		self.phases.pre()
+    def apply_profile(self):
+        self.phases.pre()
 
-		self.logger.info("Applying %r", self.changeset.ucr_changes)
-		self.ucr_update(self.changeset.ucr_changes)
+        self.logger.info("Applying %r", self.changeset.ucr_changes)
+        self.ucr_update(self.changeset.ucr_changes)
 
-		self.phases.post()
+        self.phases.post()
 
-	def ucr_update(self, changes):
-		if not self.options.no_act:
-			ucr_update(self.ucr.ucr, changes)
+    def ucr_update(self, changes):
+        if not self.options.no_act:
+            ucr_update(self.ucr.ucr, changes)
 
 
 if __name__ == "__main__":
-	main(NetworkSetup())
+    main(NetworkSetup())

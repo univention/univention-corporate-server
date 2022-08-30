@@ -44,94 +44,94 @@ from base64 import b64decode
 from typing import IO, Iterable, Iterator  # noqa: F401
 
 __all__ = [
-	"ldif_decode",
-	"ldif_unwrap",
-	"ldif_normalize",
+    "ldif_decode",
+    "ldif_unwrap",
+    "ldif_normalize",
 ]
 
 RE_B64 = re.compile(r'^([a-zA-Z0-9-]+):: (.*)')
 
 
 def ldif_decode(src=sys.stdin, dst=sys.stdout.buffer):
-	# type: (IO[str], IO[bytes]) -> None
-	"""Decode bas64 in LDIF."""
-	try:
-		for line in src:
-			dst.write(decode64(line))
-	except BrokenPipeError:
-		pass
+    # type: (IO[str], IO[bytes]) -> None
+    """Decode bas64 in LDIF."""
+    try:
+        for line in src:
+            dst.write(decode64(line))
+    except BrokenPipeError:
+        pass
 
 
 def decode(stream):
-	# type: (Iterable[str]) -> Iterator[bytes]
-	for line in stream:
-		yield decode64(line)
+    # type: (Iterable[str]) -> Iterator[bytes]
+    for line in stream:
+        yield decode64(line)
 
 
 def decode64(line):
-	# type: (str) -> bytes
-	m = RE_B64.search(line)
-	if m:
-		attr, encoded = m.groups()
-		decoded = b64decode(encoded)
-		return b"%s: %s\n" % (attr.encode("utf-8"), decoded)
-	else:
-		return line.encode("utf-8")
+    # type: (str) -> bytes
+    m = RE_B64.search(line)
+    if m:
+        attr, encoded = m.groups()
+        decoded = b64decode(encoded)
+        return b"%s: %s\n" % (attr.encode("utf-8"), decoded)
+    else:
+        return line.encode("utf-8")
 
 
 def ldif_unwrap(src=sys.stdin, dst=sys.stdout.buffer):
-	# type: (IO[str], IO[bytes]) -> None
-	"""Unwrap LDIF."""
-	try:
-		for line in unwrap(src):
-			dst.write(line.encode("utf-8"))
-	except BrokenPipeError:
-		pass
+    # type: (IO[str], IO[bytes]) -> None
+    """Unwrap LDIF."""
+    try:
+        for line in unwrap(src):
+            dst.write(line.encode("utf-8"))
+    except BrokenPipeError:
+        pass
 
 
 def unwrap(stream):
-	# type: (Iterable[str]) -> Iterator[str]
-	prev = ""
-	for line in stream:
-		if line[:1] in (' ', '\t'):
-			prev = prev.rstrip("\n\r") + line[1:]
-		else:
-			if prev:
-				yield prev
-			prev = line
+    # type: (Iterable[str]) -> Iterator[str]
+    prev = ""
+    for line in stream:
+        if line[:1] in (' ', '\t'):
+            prev = prev.rstrip("\n\r") + line[1:]
+        else:
+            if prev:
+                yield prev
+            prev = line
 
-	if prev:
-		yield prev
+    if prev:
+        yield prev
 
 
 def ldif_normalize(src=sys.stdin, dst=sys.stdout.buffer):
-	# type: (IO[str], IO[bytes]) -> None
-	"""Unwrap and base64 decode LDIF."""
-	try:
-		for line in unwrap(src):
-			dst.write(decode64(line))
-	except BrokenPipeError:
-		pass
+    # type: (IO[str], IO[bytes]) -> None
+    """Unwrap and base64 decode LDIF."""
+    try:
+        for line in unwrap(src):
+            dst.write(decode64(line))
+    except BrokenPipeError:
+        pass
 
 
 def main():
-	# type: () -> None
-	parser = ArgumentParser(description=__doc__)
-	parser.add_argument("--src", "-s", type=FileType("r"), default="-", help="Source input")
-	parser.add_argument("--dst", "-d", type=FileType("w"), default="-", help="Destination output")
+    # type: () -> None
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("--src", "-s", type=FileType("r"), default="-", help="Source input")
+    parser.add_argument("--dst", "-d", type=FileType("w"), default="-", help="Destination output")
 
-	parser.set_defaults(func=ldif_normalize)
-	subparsers = parser.add_subparsers(help="Sub-command help")
+    parser.set_defaults(func=ldif_normalize)
+    subparsers = parser.add_subparsers(help="Sub-command help")
 
-	parser_decode = subparsers.add_parser("decode", help=ldif_decode.__doc__)
-	parser_decode.set_defaults(func=ldif_decode)
+    parser_decode = subparsers.add_parser("decode", help=ldif_decode.__doc__)
+    parser_decode.set_defaults(func=ldif_decode)
 
-	parser_unwrap = subparsers.add_parser("unwrap", help=ldif_unwrap.__doc__)
-	parser_unwrap.set_defaults(func=ldif_unwrap)
+    parser_unwrap = subparsers.add_parser("unwrap", help=ldif_unwrap.__doc__)
+    parser_unwrap.set_defaults(func=ldif_unwrap)
 
-	args = parser.parse_args()
-	args.func(args.src, args.dst.buffer)
+    args = parser.parse_args()
+    args.func(args.src, args.dst.buffer)
 
 
 if __name__ == "__main__":
-	main()
+    main()

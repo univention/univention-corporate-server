@@ -63,16 +63,16 @@ mapping = univention.admin.mapping.mapping()
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module = module
+    module = module
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	return [
-		obj
-		for mod in (univention.admin.handlers.settings.directory, univention.admin.handlers.settings.default, univention.admin.handlers.settings.usertemplate, univention.admin.handlers.settings.license)
-		for obj in mod.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
-	]
+    return [
+        obj
+        for mod in (univention.admin.handlers.settings.directory, univention.admin.handlers.settings.default, univention.admin.handlers.settings.usertemplate, univention.admin.handlers.settings.license)
+        for obj in mod.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+    ]
 
 
 def identify(dn, attr, canonical=False):
-	pass
+    pass

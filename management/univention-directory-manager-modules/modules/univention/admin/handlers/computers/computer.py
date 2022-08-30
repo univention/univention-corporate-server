@@ -47,7 +47,7 @@ _ = translation.translate
 module = 'computers/computer'
 childmodules = []
 for computer in univention.admin.handlers.computers.computers:
-	childmodules.append(computer.module)
+    childmodules.append(computer.module)
 
 childs = False
 short_description = _('Computer')
@@ -59,55 +59,55 @@ virtual = True
 options = {
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=univention.admin.syntax.hostName,
-		include_in_default_search=True,
-		required=True,
-		identifies=True
-	),
-	'dnsAlias': univention.admin.property(
-		short_description=_('DNS alias'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		multivalue=True,
-	),
-	'description': univention.admin.property(
-		short_description=_('Description'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		include_in_default_search=True,
-	),
-	'mac': univention.admin.property(
-		short_description=_('MAC address'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		multivalue=True,
-		include_in_default_search=True,
-	),
-	'ip': univention.admin.property(
-		short_description=_('IP address'),
-		long_description='',
-		syntax=univention.admin.syntax.ipAddress,
-		multivalue=True,
-		include_in_default_search=True,
-	),
-	'inventoryNumber': univention.admin.property(
-		short_description=_('Inventory number'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		multivalue=True,
-		include_in_default_search=True,
-	),
-	'fqdn': univention.admin.property(
-		short_description='FQDN',
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		include_in_default_search=True,
-		may_change=False,
-		dontsearch=True
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=univention.admin.syntax.hostName,
+        include_in_default_search=True,
+        required=True,
+        identifies=True
+    ),
+    'dnsAlias': univention.admin.property(
+        short_description=_('DNS alias'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        multivalue=True,
+    ),
+    'description': univention.admin.property(
+        short_description=_('Description'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        include_in_default_search=True,
+    ),
+    'mac': univention.admin.property(
+        short_description=_('MAC address'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        multivalue=True,
+        include_in_default_search=True,
+    ),
+    'ip': univention.admin.property(
+        short_description=_('IP address'),
+        long_description='',
+        syntax=univention.admin.syntax.ipAddress,
+        multivalue=True,
+        include_in_default_search=True,
+    ),
+    'inventoryNumber': univention.admin.property(
+        short_description=_('Inventory number'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        multivalue=True,
+        include_in_default_search=True,
+    ),
+    'fqdn': univention.admin.property(
+        short_description='FQDN',
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        include_in_default_search=True,
+        may_change=False,
+        dontsearch=True
+    ),
 }
 
 mapping = univention.admin.mapping.mapping()
@@ -118,24 +118,24 @@ mapping.register('mac', 'macAddress', encoding='ASCII')
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module = module
+    module = module
 
-	def open(self):
-		super(object, self).open()
-		if 'name' in self.info and 'domain' in self.info:
-			# in syntax.py IComputer_FQDN key and label are '%(name)s.%(domain)s' for
-			#   performance reasons. These statements and this fqdn over here have to
-			#   be in sync.
-			self['fqdn'] = '%s.%s' % (self['name'], self['domain'])
-			self.save()
+    def open(self):
+        super(object, self).open()
+        if 'name' in self.info and 'domain' in self.info:
+            # in syntax.py IComputer_FQDN key and label are '%(name)s.%(domain)s' for
+            #   performance reasons. These statements and this fqdn over here have to
+            #   be in sync.
+            self['fqdn'] = '%s.%s' % (self['name'], self['domain'])
+            self.save()
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	res = []
-	for computer in univention.admin.handlers.computers.computers:
-		res.extend(computer.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit))
-	return res
+    res = []
+    for computer in univention.admin.handlers.computers.computers:
+        res.extend(computer.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit))
+    return res
 
 
 def identify(dn, attr, canonical=False):
-	pass
+    pass

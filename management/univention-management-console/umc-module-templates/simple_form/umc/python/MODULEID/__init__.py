@@ -51,52 +51,52 @@ _ = Translation('PACKAGENAME').translate
 
 class Instance(Base):
 
-	def init(self):
-		# this initialization method is called when the
-		# module process is started and the configuration from the
-		# UMC server is completed
-		pass
+    def init(self):
+        # this initialization method is called when the
+        # module process is started and the configuration from the
+        # UMC server is completed
+        pass
 
-	def configuration(self, request):
-		"""Returns a directionary of initial values for the form."""
-		self.finished(request.id, {
-			'sender': self.username + '@example.com',
-			'subject': 'Test mail from PACKAGENAME',
-			'recipient': 'test@example.com'
-		})
+    def configuration(self, request):
+        """Returns a directionary of initial values for the form."""
+        self.finished(request.id, {
+            'sender': self.username + '@example.com',
+            'subject': 'Test mail from PACKAGENAME',
+            'recipient': 'test@example.com'
+        })
 
-	@sanitize(
-		sender=StringSanitizer(required=True),
-		recipient=StringSanitizer(required=True),
-		subject=StringSanitizer(required=True),
-		message=StringSanitizer(required=True),
-	)
-	def send(self, request):
-		def _send_thread(sender, recipient, subject, message):
-			MODULE.info('sending mail: thread running')
+    @sanitize(
+        sender=StringSanitizer(required=True),
+        recipient=StringSanitizer(required=True),
+        subject=StringSanitizer(required=True),
+        message=StringSanitizer(required=True),
+    )
+    def send(self, request):
+        def _send_thread(sender, recipient, subject, message):
+            MODULE.info('sending mail: thread running')
 
-			msg = MIMENonMultipart('text', 'plain', charset='utf-8')
-			cs = email.charset.Charset("utf-8")
-			cs.body_encoding = email.charset.QP
-			msg["Subject"] = subject
-			msg["From"] = sender
-			msg["To"] = recipient
-			msg.set_payload(message, charset=cs)
+            msg = MIMENonMultipart('text', 'plain', charset='utf-8')
+            cs = email.charset.Charset("utf-8")
+            cs.body_encoding = email.charset.QP
+            msg["Subject"] = subject
+            msg["From"] = sender
+            msg["To"] = recipient
+            msg.set_payload(message, charset=cs)
 
-			server = smtplib.SMTP('localhost')
-			server.set_debuglevel(0)
-			server.sendmail(sender, recipient, msg.as_string())
-			server.quit()
-			return True
+            server = smtplib.SMTP('localhost')
+            server.set_debuglevel(0)
+            server.sendmail(sender, recipient, msg.as_string())
+            server.quit()
+            return True
 
-		func = notifier.Callback(
-			_send_thread,
-			request.options['sender'],
-			request.options['recipient'],
-			request.options['subject'],
-			request.options['message']
-		)
-		MODULE.info('sending mail: starting thread')
-		cb = notifier.Callback(self.thread_finished_callback, request)
-		thread = notifier.threads.Simple('mailing', func, cb)
-		thread.run()
+        func = notifier.Callback(
+            _send_thread,
+            request.options['sender'],
+            request.options['recipient'],
+            request.options['subject'],
+            request.options['message']
+        )
+        MODULE.info('sending mail: starting thread')
+        cb = notifier.Callback(self.thread_finished_callback, request)
+        thread = notifier.threads.Simple('mailing', func, cb)
+        thread.run()

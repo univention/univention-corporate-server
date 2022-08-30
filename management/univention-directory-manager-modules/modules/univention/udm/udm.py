@@ -115,167 +115,167 @@ _MODULES_PATH = 'univention.udm.modules'
 
 
 class UDM(object):
-	"""
-	Dynamic factory for creating :py:class:`BaseModule` objects::
+    """
+    Dynamic factory for creating :py:class:`BaseModule` objects::
 
-		group_mod = UDM.admin().version(2).get('groups/group')
-		folder_mod = UDM.machine().version(2).get('mail/folder')
-		user_mod = UDM.credentials('myuser', 's3cr3t').version(2).get('users/user')
+            group_mod = UDM.admin().version(2).get('groups/group')
+            folder_mod = UDM.machine().version(2).get('mail/folder')
+            user_mod = UDM.credentials('myuser', 's3cr3t').version(2).get('users/user')
 
-	A shortcut exists to get UDM objects directly::
+    A shortcut exists to get UDM objects directly::
 
-		UDM.admin().version(2).obj_by_dn(dn)
-	"""
-	_module_object_cache = {}
+            UDM.admin().version(2).obj_by_dn(dn)
+    """
+    _module_object_cache = {}
 
-	def __init__(self, connection, api_version=None):
-		"""
-		Use the provided connection.
+    def __init__(self, connection, api_version=None):
+        """
+        Use the provided connection.
 
-		:param connection: Any connection object (e.g., univention.admin.uldap.access)
-		:param int api_version: load only UDM modules that support the
-			specified version, can be set later using :py:meth:`version()`.
-		:return: None
-		:rtype: None
-		"""
-		self.connection = connection
-		self._api_version = None
-		if api_version is not None:
-			self.version(api_version)
+        :param connection: Any connection object (e.g., univention.admin.uldap.access)
+        :param int api_version: load only UDM modules that support the
+                specified version, can be set later using :py:meth:`version()`.
+        :return: None
+        :rtype: None
+        """
+        self.connection = connection
+        self._api_version = None
+        if api_version is not None:
+            self.version(api_version)
 
-	@classmethod
-	def admin(cls):
-		"""
-		Use a cn=admin connection.
+    @classmethod
+    def admin(cls):
+        """
+        Use a cn=admin connection.
 
-		:return: a :py:class:`univention.udm.udm.UDM` instance
-		:rtype: univention.udm.udm.UDM
-		:raises univention.udm.exceptions.ConnectionError: Non-Primary systems, server down, etc.
-		"""
-		from .connections import LDAP_connection
-		connection = LDAP_connection.get_admin_connection()
-		return cls(connection)
+        :return: a :py:class:`univention.udm.udm.UDM` instance
+        :rtype: univention.udm.udm.UDM
+        :raises univention.udm.exceptions.ConnectionError: Non-Primary systems, server down, etc.
+        """
+        from .connections import LDAP_connection
+        connection = LDAP_connection.get_admin_connection()
+        return cls(connection)
 
-	@classmethod
-	def machine(cls):
-		"""
-		Use a machine connection.
+    @classmethod
+    def machine(cls):
+        """
+        Use a machine connection.
 
-		:return: a :py:class:`univention.udm.udm.UDM` instance
-		:rtype: univention.udm.udm.UDM
-		:raises univention.udm.exceptions.ConnectionError: File permissions, server down, etc.
-		"""
-		from .connections import LDAP_connection
-		connection = LDAP_connection.get_machine_connection()
-		return cls(connection)
+        :return: a :py:class:`univention.udm.udm.UDM` instance
+        :rtype: univention.udm.udm.UDM
+        :raises univention.udm.exceptions.ConnectionError: File permissions, server down, etc.
+        """
+        from .connections import LDAP_connection
+        connection = LDAP_connection.get_machine_connection()
+        return cls(connection)
 
-	@classmethod
-	def credentials(
-		cls,
-		identity,
-		password,
-		base=None,
-		server=None,
-		port=None,
-	):
-		"""
-		Use the provided credentials to open an LDAP connection.
+    @classmethod
+    def credentials(
+            cls,
+            identity,
+            password,
+            base=None,
+            server=None,
+            port=None,
+    ):
+        """
+        Use the provided credentials to open an LDAP connection.
 
-		`identity` must be either a username or a DN. If it is a username, a
-		machine connection is used to retrieve the DN it belongs to.
+        `identity` must be either a username or a DN. If it is a username, a
+        machine connection is used to retrieve the DN it belongs to.
 
-		:param str identity: username or user dn to use for LDAP connection
-		:param str password: password of user / DN to use for LDAP connection
-		:param str base: optional search base
-		:param str server: optional LDAP server address as FQDN
-		:param int port: optional LDAP server port
-		:return: a :py:class:`univention.udm.udm.UDM` instance
-		:rtype: univention.udm.udm.UDM
-		:raises univention.udm.exceptions.ConnectionError: Invalid credentials, server down, etc.
-		"""
-		from .connections import LDAP_connection
-		connection = LDAP_connection.get_credentials_connection(identity, password, base, server, port)
-		return cls(connection)
+        :param str identity: username or user dn to use for LDAP connection
+        :param str password: password of user / DN to use for LDAP connection
+        :param str base: optional search base
+        :param str server: optional LDAP server address as FQDN
+        :param int port: optional LDAP server port
+        :return: a :py:class:`univention.udm.udm.UDM` instance
+        :rtype: univention.udm.udm.UDM
+        :raises univention.udm.exceptions.ConnectionError: Invalid credentials, server down, etc.
+        """
+        from .connections import LDAP_connection
+        connection = LDAP_connection.get_credentials_connection(identity, password, base, server, port)
+        return cls(connection)
 
-	def version(self, api_version):
-		"""
-		Set the version of the API that the UDM modules must support.
+    def version(self, api_version):
+        """
+        Set the version of the API that the UDM modules must support.
 
-		Use in a chain of methods to get a UDM module::
+        Use in a chain of methods to get a UDM module::
 
-			UDM.get_admin().version(2).get('groups/group')
+                UDM.get_admin().version(2).get('groups/group')
 
-		:param int api_version: load only UDM modules that support the
-			specified version
-		:return: self (the :py:class:`univention.udm.udm.UDM` instance)
-		:rtype: univention.udm.udm.UDM
-		:raises univention.udm.exceptions.ApiVersionMustNotChange: if called twice
-		"""
-		if not isinstance(api_version, int):
-			raise ApiVersionNotSupported("Argument 'api_version' must be an int.", requested_version=api_version)
-		if self._api_version is None:
-			self._api_version = api_version
-		else:
-			raise ApiVersionMustNotChange()
-		return self
+        :param int api_version: load only UDM modules that support the
+                specified version
+        :return: self (the :py:class:`univention.udm.udm.UDM` instance)
+        :rtype: univention.udm.udm.UDM
+        :raises univention.udm.exceptions.ApiVersionMustNotChange: if called twice
+        """
+        if not isinstance(api_version, int):
+            raise ApiVersionNotSupported("Argument 'api_version' must be an int.", requested_version=api_version)
+        if self._api_version is None:
+            self._api_version = api_version
+        else:
+            raise ApiVersionMustNotChange()
+        return self
 
-	def get(self, name):
-		"""
-		Get an object of :py:class:`BaseModule` (or of a subclass) for UDM
-		module `name`.
+    def get(self, name):
+        """
+        Get an object of :py:class:`BaseModule` (or of a subclass) for UDM
+        module `name`.
 
-		:param str name: UDM module name (e.g. `users/user`)
-		:return: object of a subclass of :py:class:`BaseModule`
-		:rtype: BaseModule
-		:raises univention.udm.exceptions.ApiVersionNotSupported: if the Python module for `name` could not be loaded
-		:raises univention.udm.exceptions.NoApiVersionSet: if the API version has not been set
-		"""
-		key = (name, self._api_version, id(self.connection))
-		if key not in self._module_object_cache:
-			suitable_modules = []
-			plugins = Plugins(_MODULES_PATH)
-			for module in plugins:
-				if self.api_version not in module.meta.supported_api_versions:
-					continue
-				for suitable in module.meta.suitable_for:
-					if fnmatch(name, suitable):
-						suitable_modules.append((suitable.count('*'), module))
-						break
-			suitable_modules.sort(key=itemgetter(0))
-			try:
-				klass = suitable_modules[0][1]
-			except IndexError:
-				raise ApiVersionNotSupported(module_name=name, requested_version=self.api_version)
-			else:
-				self._module_object_cache[key] = klass(name, self.connection, self.api_version)
-		return self._module_object_cache[key]
+        :param str name: UDM module name (e.g. `users/user`)
+        :return: object of a subclass of :py:class:`BaseModule`
+        :rtype: BaseModule
+        :raises univention.udm.exceptions.ApiVersionNotSupported: if the Python module for `name` could not be loaded
+        :raises univention.udm.exceptions.NoApiVersionSet: if the API version has not been set
+        """
+        key = (name, self._api_version, id(self.connection))
+        if key not in self._module_object_cache:
+            suitable_modules = []
+            plugins = Plugins(_MODULES_PATH)
+            for module in plugins:
+                if self.api_version not in module.meta.supported_api_versions:
+                    continue
+                for suitable in module.meta.suitable_for:
+                    if fnmatch(name, suitable):
+                        suitable_modules.append((suitable.count('*'), module))
+                        break
+            suitable_modules.sort(key=itemgetter(0))
+            try:
+                klass = suitable_modules[0][1]
+            except IndexError:
+                raise ApiVersionNotSupported(module_name=name, requested_version=self.api_version)
+            else:
+                self._module_object_cache[key] = klass(name, self.connection, self.api_version)
+        return self._module_object_cache[key]
 
-	def obj_by_dn(self, dn):
-		"""
-		Try to load an UDM object from LDAP. Guess the required UDM module
-		from the ``univentionObjectType`` LDAP attribute of the LDAP object.
+    def obj_by_dn(self, dn):
+        """
+        Try to load an UDM object from LDAP. Guess the required UDM module
+        from the ``univentionObjectType`` LDAP attribute of the LDAP object.
 
-		:param str dn: DN of the object to load
-		:return: object of a subclass of :py:class:`BaseObject`
-		:rtype: BaseObject
-		:raises univention.udm.exceptions.NoApiVersionSet: if the API version has not been set
-		:raises univention.udm.exceptions.NoObject: if no object is found at `dn`
-		:raises univention.udm.exceptions.ImportError: if the Python module for ``univentionObjectType``
-			at ``dn`` could not be loaded
-		:raises univention.udm.exceptions.UnknownModuleType: if the LDAP object at ``dn`` had no or
-			empty attribute ``univentionObjectType``
-		"""
-		if self.connection.__module__ != 'univention.admin.uldap':
-			raise NotImplementedError('obj_by_dn() can only be used with an LDAP connection.')
-		ldap_obj = self.connection.get(dn, attr=[str('univentionObjectType')])
-		if not ldap_obj:
-			raise NoObject(dn=dn)
-		uot = ldap_obj['univentionObjectType'][0].decode('utf-8')
-		udm_module = self.get(uot)
-		return udm_module.get(dn)
+        :param str dn: DN of the object to load
+        :return: object of a subclass of :py:class:`BaseObject`
+        :rtype: BaseObject
+        :raises univention.udm.exceptions.NoApiVersionSet: if the API version has not been set
+        :raises univention.udm.exceptions.NoObject: if no object is found at `dn`
+        :raises univention.udm.exceptions.ImportError: if the Python module for ``univentionObjectType``
+                at ``dn`` could not be loaded
+        :raises univention.udm.exceptions.UnknownModuleType: if the LDAP object at ``dn`` had no or
+                empty attribute ``univentionObjectType``
+        """
+        if self.connection.__module__ != 'univention.admin.uldap':
+            raise NotImplementedError('obj_by_dn() can only be used with an LDAP connection.')
+        ldap_obj = self.connection.get(dn, attr=[str('univentionObjectType')])
+        if not ldap_obj:
+            raise NoObject(dn=dn)
+        uot = ldap_obj['univentionObjectType'][0].decode('utf-8')
+        udm_module = self.get(uot)
+        return udm_module.get(dn)
 
-	@property
-	def api_version(self):
-		if self._api_version is None:
-			raise NoApiVersionSet()
-		return self._api_version
+    @property
+    def api_version(self):
+        if self._api_version is None:
+            raise NoApiVersionSet()
+        return self._api_version

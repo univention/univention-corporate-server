@@ -55,43 +55,43 @@ gid = grp.getgrnam("samlcgi").gr_gid
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-	listener.setuid(0)
+    listener.setuid(0)
 
-	try:
-		if os.path.exists(path):
-			with open(path) as group_file:
-				data = json.load(group_file)
-		else:
-			data = {}
+    try:
+        if os.path.exists(path):
+            with open(path) as group_file:
+                data = json.load(group_file)
+        else:
+            data = {}
 
-		new_sp = new.get('enabledServiceProviderIdentifierGroup', [])
-		old_sp = old.get('enabledServiceProviderIdentifierGroup', [])
-		sp_to_add = []
-		sp_to_rm = []
+        new_sp = new.get('enabledServiceProviderIdentifierGroup', [])
+        old_sp = old.get('enabledServiceProviderIdentifierGroup', [])
+        sp_to_add = []
+        sp_to_rm = []
 
-		if new_sp != old_sp:
-			if len(new_sp) > len(old_sp):
-				for sp in list(set(new_sp) - set(old_sp)):
-					sp_to_add.append(sp)
-			else:
-				for sp in list(set(old_sp) - set(new_sp)):
-					sp_to_rm.append(sp)
+        if new_sp != old_sp:
+            if len(new_sp) > len(old_sp):
+                for sp in list(set(new_sp) - set(old_sp)):
+                    sp_to_add.append(sp)
+            else:
+                for sp in list(set(old_sp) - set(new_sp)):
+                    sp_to_rm.append(sp)
 
-		for sp in sp_to_add:
-			group = data.setdefault(sp.decode('UTF-8'), [])
-			if dn not in group:
-				group.append(dn)
+        for sp in sp_to_add:
+            group = data.setdefault(sp.decode('UTF-8'), [])
+            if dn not in group:
+                group.append(dn)
 
-		for sp in sp_to_rm:
-			group = data.setdefault(sp.decode('UTF-8'), [])
-			if dn in group:
-				group.remove(dn)
+        for sp in sp_to_rm:
+            group = data.setdefault(sp.decode('UTF-8'), [])
+            if dn in group:
+                group.remove(dn)
 
-		with open(tmp_path, 'w+') as outfile:
-			json.dump(data, outfile)
+        with open(tmp_path, 'w+') as outfile:
+            json.dump(data, outfile)
 
-		shutil.move(tmp_path, path)
-		os.chmod(path, 0o600)
-		os.chown(path, uid, gid)
-	finally:
-		listener.unsetuid()
+        shutil.move(tmp_path, path)
+        os.chmod(path, 0o600)
+        os.chown(path, uid, gid)
+    finally:
+        listener.unsetuid()

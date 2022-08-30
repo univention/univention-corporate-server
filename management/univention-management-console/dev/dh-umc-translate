@@ -44,54 +44,54 @@ import univention.l10n.umc as dh_umc
 
 
 def main():
-	# parse all options
-	parser = ArgumentParser()
-	parser.add_argument(
-		'-p', '--package',
-		required=True,
-		help='Specifies the package name which is needed for the creation of .po files. (Mandatory)'
-	)
-	parser.add_argument(
-		'-t', '--type',
-		choices=['json', 'mo', 'po'],
-		default='json',
-		help='Type of the final output file; note that "json" and "mo" will both also create .po files [%(default)s]'
-	)
-	parser.add_argument(
-		'-o', '--outdir',
-		required=True,
-		help='Specifies the output directory where translations from all js files are saved to. (Mandatory)')
-	parser.add_argument(
-		'-l', '--lang', action='append',
-		help='Specifies the languages that are processed (default: de)')
-	parser.add_argument('args', metavar='jsFile', nargs='*')
+    # parse all options
+    parser = ArgumentParser()
+    parser.add_argument(
+        '-p', '--package',
+        required=True,
+        help='Specifies the package name which is needed for the creation of .po files. (Mandatory)'
+    )
+    parser.add_argument(
+        '-t', '--type',
+        choices=['json', 'mo', 'po'],
+        default='json',
+        help='Type of the final output file; note that "json" and "mo" will both also create .po files [%(default)s]'
+    )
+    parser.add_argument(
+        '-o', '--outdir',
+        required=True,
+        help='Specifies the output directory where translations from all js files are saved to. (Mandatory)')
+    parser.add_argument(
+        '-l', '--lang', action='append',
+        help='Specifies the languages that are processed (default: de)')
+    parser.add_argument('args', metavar='jsFile', nargs='*')
 
-	options = parser.parse_args()
+    options = parser.parse_args()
 
-	# update the list of languages
-	if options.lang and len(options.lang):
-		dh_umc.LANGUAGES = options.lang
+    # update the list of languages
+    if options.lang and len(options.lang):
+        dh_umc.LANGUAGES = options.lang
 
-	# set the po/mo/json file names and the correct function for generating the
-	# final output
-	create_final_output = {
-		'json': dh_umc.create_json_file,
-		'mo': dh_umc.create_mo_file,
-		'po': lambda x: None,
-	}[options.type]
+    # set the po/mo/json file names and the correct function for generating the
+    # final output
+    create_final_output = {
+        'json': dh_umc.create_json_file,
+        'mo': dh_umc.create_mo_file,
+        'po': lambda x: None,
+    }[options.type]
 
-	# build translation files
-	for lang in dh_umc.LANGUAGES:
-		ipo_file = os.path.join(options.outdir, '%s.po' % lang)
-		if options.args:
-			# only re-create po files if javascript files are given
-			dh_umc.create_po_file(ipo_file, options.package, options.args, 'JavaScript')
-		create_final_output(ipo_file)
+    # build translation files
+    for lang in dh_umc.LANGUAGES:
+        ipo_file = os.path.join(options.outdir, '%s.po' % lang)
+        if options.args:
+            # only re-create po files if javascript files are given
+            dh_umc.create_po_file(ipo_file, options.package, options.args, 'JavaScript')
+        create_final_output(ipo_file)
 
 
 if __name__ == '__main__':
-	try:
-		main()
-	except dh_umc.Error as exc:
-		print(str(exc), file=sys.stderr)
-		sys.exit(1)
+    try:
+        main()
+    except dh_umc.Error as exc:
+        print(str(exc), file=sys.stderr)
+        sys.exit(1)

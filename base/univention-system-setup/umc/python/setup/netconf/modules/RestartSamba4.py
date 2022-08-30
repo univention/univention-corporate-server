@@ -3,5 +3,5 @@ from univention.management.console.modules.setup.netconf.conditions import NotNe
 
 
 class PhaseRestartSamba4(RestartService, NotNetworkOnly):
-	service = "samba-ad-dc"
-	priority = 30
+    service = "samba-ad-dc"
+    priority = 30

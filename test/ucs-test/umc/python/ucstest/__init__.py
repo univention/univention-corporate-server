@@ -42,23 +42,23 @@ from univention.management.console.modules.decorators import simple_response
 
 
 class NonThreadedError(Exception):
-	pass
+    pass
 
 
 class ThreadedError(Exception):
-	pass
+    pass
 
 
 class FakeThread:
-	def __init__(self):
-		self.exc_info = None
-		self.name = "Fake Thread"
-		self.trace = None
+    def __init__(self):
+        self.exc_info = None
+        self.name = "Fake Thread"
+        self.trace = None
 
 
 def joinscript():
-	process = subprocess.Popen(['/bin/sh'], stdin=subprocess.PIPE)
-	process.communicate(b'''
+    process = subprocess.Popen(['/bin/sh'], stdin=subprocess.PIPE)
+    process.communicate(b'''
 	. /usr/share/univention-lib/umc.sh
 
 	umc_init
@@ -69,50 +69,50 @@ def joinscript():
 
 
 def unjoinscript():
-	pass
+    pass
 
 
 class Instance(Base):
 
-	@simple_response
-	def respond(self):
-		return True
+    @simple_response
+    def respond(self):
+        return True
 
-	def norespond(self, request):
-		pass
+    def norespond(self, request):
+        pass
 
-	@simple_response
-	def non_threaded_traceback(self):
-		raise NonThreadedError()
+    @simple_response
+    def non_threaded_traceback(self):
+        raise NonThreadedError()
 
-	@simple_response
-	def threaded_traceback(self):
-		def _throw_exception(_1, _2):
-			raise ThreadedError()
-		return _throw_exception
+    @simple_response
+    def threaded_traceback(self):
+        def _throw_exception(_1, _2):
+            raise ThreadedError()
+        return _throw_exception
 
-	@simple_response
-	def umc_error_traceback(self):
-		raise UMC_Error("This is an UMC Error")
+    @simple_response
+    def umc_error_traceback(self):
+        raise UMC_Error("This is an UMC Error")
 
-	def traceback_as_thread_result(self, request):
-		# UVMM uses this to pass-through traceback from internal umc calls to the frontend
-		result = None
-		try:
-			raise ThreadedError()
-		except ThreadedError:
-			etype, result, _ = sys.exc_info()
-			thread = FakeThread()
-			thread.exc_info = (etype, result, None)
-		self.thread_finished_callback(thread, result, request)
+    def traceback_as_thread_result(self, request):
+        # UVMM uses this to pass-through traceback from internal umc calls to the frontend
+        result = None
+        try:
+            raise ThreadedError()
+        except ThreadedError:
+            etype, result, _ = sys.exc_info()
+            thread = FakeThread()
+            thread.exc_info = (etype, result, None)
+        self.thread_finished_callback(thread, result, request)
 
-	def umc_error_as_thread_result(self, request):
-		# UVMM uses this to pass-through traceback from internal umc calls to the frontend
-		result = None
-		try:
-			raise UMC_Error("This is an UMC Error")
-		except UMC_Error:
-			etype, result, _ = sys.exc_info()
-			thread = FakeThread()
-			thread.exc_info = (etype, result, None)
-		self.thread_finished_callback(thread, result, request)
+    def umc_error_as_thread_result(self, request):
+        # UVMM uses this to pass-through traceback from internal umc calls to the frontend
+        result = None
+        try:
+            raise UMC_Error("This is an UMC Error")
+        except UMC_Error:
+            etype, result, _ = sys.exc_info()
+            thread = FakeThread()
+            thread.exc_info = (etype, result, None)
+        self.thread_finished_callback(thread, result, request)

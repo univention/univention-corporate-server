@@ -53,37 +53,37 @@ object_name = _('Prohibited user name')
 object_name_plural = _('Prohibited user names')
 long_description = _('Univention Prohibited user names')
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'univentionProhibitedUsernames'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'univentionProhibitedUsernames'],
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description=_('Name'),
-		syntax=univention.admin.syntax.string,
-		include_in_default_search=True,
-		required=True,
-		identifies=True,
-	),
-	'usernames': univention.admin.property(
-		short_description=_('Prohibited user name'),
-		long_description=_('Prohibited user name'),
-		syntax=univention.admin.syntax.string,
-		multivalue=True,
-		include_in_default_search=True,
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description=_('Name'),
+        syntax=univention.admin.syntax.string,
+        include_in_default_search=True,
+        required=True,
+        identifies=True,
+    ),
+    'usernames': univention.admin.property(
+        short_description=_('Prohibited user name'),
+        long_description=_('Prohibited user name'),
+        syntax=univention.admin.syntax.string,
+        multivalue=True,
+        include_in_default_search=True,
+    ),
 }
 
 layout = [
-	Tab(_('General'), _('Prohibited user names'), layout=[
-		Group(_('General prohibited user names settings'), layout=[
-			'name',
-			'usernames',
-		]),
-	]),
+    Tab(_('General'), _('Prohibited user names'), layout=[
+        Group(_('General prohibited user names settings'), layout=[
+            'name',
+            'usernames',
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -92,7 +92,7 @@ mapping.register('usernames', 'prohibitedUsername', None, None)
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module = module
+    module = module
 
 
 lookup = object.lookup

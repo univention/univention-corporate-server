@@ -39,22 +39,22 @@ from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class SettingsDataObjectProperties(GenericObjectProperties):
-	"""settings/data UDM properties."""
+    """settings/data UDM properties."""
 
-	_encoders = {
-		'data': Base64Bzip2BinaryPropertyEncoder,
-	}
+    _encoders = {
+        'data': Base64Bzip2BinaryPropertyEncoder,
+    }
 
 
 class SettingsDataObject(GenericObject):
-	"""Better representation of settings/portal properties."""
-	udm_prop_class = SettingsDataObjectProperties
+    """Better representation of settings/portal properties."""
+    udm_prop_class = SettingsDataObjectProperties
 
 
 class SettingsDataModule(GenericModule):
-	"""SettingsDataObject factory"""
-	_udm_object_class = SettingsDataObject
+    """SettingsDataObject factory"""
+    _udm_object_class = SettingsDataObject
 
-	class Meta:
-		supported_api_versions = [1, 2, 3]
-		suitable_for = ['settings/data']
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        suitable_for = ['settings/data']

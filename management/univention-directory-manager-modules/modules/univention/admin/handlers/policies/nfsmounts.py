@@ -41,9 +41,9 @@ import univention.admin.handlers
 import univention.admin.localization
 
 from univention.admin.policy import (
-	register_policy_mapping, policy_object_tab,
-	requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    register_policy_mapping, policy_object_tab,
+    requiredObjectClassesProperty, prohibitedObjectClassesProperty,
+    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
 )
 
 
@@ -52,10 +52,10 @@ _ = translation.translate
 
 
 class ldapServerFixedAttributes(univention.admin.syntax.select):
-	name = 'updateFixedAttributes'
-	choices = [
-		('univentionNFSMounts', _('Mount NFS shares')),
-	]
+    name = 'updateFixedAttributes'
+    choices = [
+        ('univentionNFSMounts', _('Mount NFS shares')),
+    ]
 
 
 module = 'policies/nfsmounts'
@@ -72,55 +72,55 @@ object_name_plural = _('NFS mounts policies')
 policy_short_description = _('NFS mounts')
 long_description = ''
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'univentionPolicy', 'univentionPolicyNFSMounts'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyNFSMounts'],
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=univention.admin.syntax.policyName,
-		include_in_default_search=True,
-		required=True,
-		may_change=False,
-		identifies=True,
-	),
-	'nfsMounts': univention.admin.property(
-		short_description=_('NFS shares to mount'),
-		long_description='',
-		syntax=univention.admin.syntax.nfsMounts,
-		multivalue=True,
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=univention.admin.syntax.policyName,
+        include_in_default_search=True,
+        required=True,
+        may_change=False,
+        identifies=True,
+    ),
+    'nfsMounts': univention.admin.property(
+        short_description=_('NFS shares to mount'),
+        long_description='',
+        syntax=univention.admin.syntax.nfsMounts,
+        multivalue=True,
+    ),
 
 }
 property_descriptions.update(dict([
-	requiredObjectClassesProperty(),
-	prohibitedObjectClassesProperty(),
-	fixedAttributesProperty(syntax=ldapServerFixedAttributes),
-	emptyAttributesProperty(syntax=ldapServerFixedAttributes),
-	ldapFilterProperty(),
+    requiredObjectClassesProperty(),
+    prohibitedObjectClassesProperty(),
+    fixedAttributesProperty(syntax=ldapServerFixedAttributes),
+    emptyAttributesProperty(syntax=ldapServerFixedAttributes),
+    ldapFilterProperty(),
 ]))
 
 layout = [
-	Tab(_('General'), _('Basic settings'), layout=[
-		Group(_('General NFS mounts settings'), layout=[
-			'name',
-			'nfsMounts'
-		]),
-	]),
-	policy_object_tab()
+    Tab(_('General'), _('Basic settings'), layout=[
+        Group(_('General NFS mounts settings'), layout=[
+            'name',
+            'nfsMounts'
+        ]),
+    ]),
+    policy_object_tab()
 ]
 
 
 def unmapMounts(old, encoding=()):
-	return [x.decode(*encoding).split(u' ') for x in old]
+    return [x.decode(*encoding).split(u' ') for x in old]
 
 
 def mapMounts(old, encoding=()):
-	return [u' '.join(x).encode(*encoding) for x in old]
+    return [u' '.join(x).encode(*encoding) for x in old]
 
 
 mapping = univention.admin.mapping.mapping()
@@ -130,7 +130,7 @@ register_policy_mapping(mapping)
 
 
 class object(univention.admin.handlers.simplePolicy):
-	module = module
+    module = module
 
 
 lookup = object.lookup

@@ -44,35 +44,35 @@ RE_REJECT = re.compile(r'^ *[1-9]+: *(S4|UCS) DN:.*')
 
 class S4Connector(Alert):
 
-	def write_metrics(self):
-		# check whether the s4 connector is activated
-		if not ucr.is_true('connector/s4/autostart', False):
-			self.write_metric('univention_s4_connector', 0)
-			self.log.debug('Connector not activated (connector/s4/autostart =! true)')
-			return
+    def write_metrics(self):
+        # check whether the s4 connector is activated
+        if not ucr.is_true('connector/s4/autostart', False):
+            self.write_metric('univention_s4_connector', 0)
+            self.log.debug('Connector not activated (connector/s4/autostart =! true)')
+            return
 
-		# check whether we can connect to the S4
-		# CRITICAL: in case we cannot connect to the S4
-		rc = self.exec_command(['univention-s4search', 'cn=users', 'cn=users'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)[0]
-		self.write_metric('univention_s4_connector_samba_reachable', 1 if rc == 0 else 0)
+        # check whether we can connect to the S4
+        # CRITICAL: in case we cannot connect to the S4
+        rc = self.exec_command(['univention-s4search', 'cn=users', 'cn=users'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)[0]
+        self.write_metric('univention_s4_connector_samba_reachable', 1 if rc == 0 else 0)
 
-		# check whether the s4 connector is running; for this
-		# WARNING: if more than one instance of the same connector is running
-		# CRITICAL: if no process is running
-		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', ':1', '-c', '1:', '--ereg-argument-array', '^([^ ]+)?python.*s4connector.s4.main(.py)?$'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-		output = {1: 'More than one s4 connector instance are running!', 2: 's4 connector is not running!'}.get(rc, 'Unknown state!')
-		self.log.debug(output)
-		self.write_metric('univention_s4_connector_running', rc if rc in (0, 1, 2) else -1)
+        # check whether the s4 connector is running; for this
+        # WARNING: if more than one instance of the same connector is running
+        # CRITICAL: if no process is running
+        rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', ':1', '-c', '1:', '--ereg-argument-array', '^([^ ]+)?python.*s4connector.s4.main(.py)?$'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        output = {1: 'More than one s4 connector instance are running!', 2: 's4 connector is not running!'}.get(rc, 'Unknown state!')
+        self.log.debug(output)
+        self.write_metric('univention_s4_connector_running', rc if rc in (0, 1, 2) else -1)
 
-		# count rejects by parsing the output of univention-s4connector-list-rejected
-		# WARNING: if there are any rejects
-		rc, output = self.exec_command(['univention-s4connector-list-rejected'])
-		rejects = sum(1 for line in output.splitlines() if RE_REJECT.match(line))
+        # count rejects by parsing the output of univention-s4connector-list-rejected
+        # WARNING: if there are any rejects
+        rc, output = self.exec_command(['univention-s4connector-list-rejected'])
+        rejects = sum(1 for line in output.splitlines() if RE_REJECT.match(line))
 
-		self.write_metric('univention_s4_connector_rejects', rejects)
-		if rejects:
-			self.log.debug('Found %d reject(s)! Please check output of univention-s4connector-list-rejected.' % (rejects,))
+        self.write_metric('univention_s4_connector_rejects', rejects)
+        if rejects:
+            self.log.debug('Found %d reject(s)! Please check output of univention-s4connector-list-rejected.' % (rejects,))
 
 
 if __name__ == '__main__':
-	S4Connector.main()
+    S4Connector.main()

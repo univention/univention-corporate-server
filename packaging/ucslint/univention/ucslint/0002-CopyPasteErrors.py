@@ -42,28 +42,28 @@ import univention.ucslint.base as uub
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def getMsgIds(self) -> uub.MsgIds:
-		return {
-			'0002-1': (uub.RESULT_WARN, 'cannot open file'),
-			'0002-2': (uub.RESULT_ERROR, 'found basedn used in QA'),
-			'0002-3': (uub.RESULT_ERROR, 'found domainname used in QA'),
-		}
+    def getMsgIds(self) -> uub.MsgIds:
+        return {
+            '0002-1': (uub.RESULT_WARN, 'cannot open file'),
+            '0002-2': (uub.RESULT_ERROR, 'found basedn used in QA'),
+            '0002-3': (uub.RESULT_ERROR, 'found domainname used in QA'),
+        }
 
-	def check(self, path: str) -> None:
-		""" the real check """
-		super(UniventionPackageCheck, self).check(path)
+    def check(self, path: str) -> None:
+        """ the real check """
+        super(UniventionPackageCheck, self).check(path)
 
-		tester = uub.UPCFileTester()
-		tester.addTest(re.compile(r'dc=univention,dc=(?:local|qa|test)'), '0002-2', 'contains invalid basedn', cntmax=0)
-		tester.addTest(re.compile(r'univention\.(?:local|qa|test)'), '0002-3', 'contains invalid domainname', cntmax=0)
+        tester = uub.UPCFileTester()
+        tester.addTest(re.compile(r'dc=univention,dc=(?:local|qa|test)'), '0002-2', 'contains invalid basedn', cntmax=0)
+        tester.addTest(re.compile(r'univention\.(?:local|qa|test)'), '0002-3', 'contains invalid domainname', cntmax=0)
 
-		for fn in chain(
-			uub.FilteredDirWalkGenerator(join(path, 'conffiles')),
-			uub.FilteredDirWalkGenerator(join(path, 'debian')),
-		):
-			try:
-				tester.open(fn)
-			except EnvironmentError:
-				self.addmsg('0002-1', 'failed to open and read file', fn)
-			else:
-				self.msg += tester.runTests()
+        for fn in chain(
+                uub.FilteredDirWalkGenerator(join(path, 'conffiles')),
+                uub.FilteredDirWalkGenerator(join(path, 'debian')),
+        ):
+            try:
+                tester.open(fn)
+            except EnvironmentError:
+                self.addmsg('0002-1', 'failed to open and read file', fn)
+            else:
+                self.msg += tester.runTests()

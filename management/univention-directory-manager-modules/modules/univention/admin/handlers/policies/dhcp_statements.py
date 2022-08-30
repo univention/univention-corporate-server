@@ -41,9 +41,9 @@ import univention.admin.handlers
 import univention.admin.localization
 
 from univention.admin.policy import (
-	register_policy_mapping, policy_object_tab,
-	requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    register_policy_mapping, policy_object_tab,
+    requiredObjectClassesProperty, prohibitedObjectClassesProperty,
+    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
 )
 
 
@@ -52,15 +52,15 @@ _ = translation.translate
 
 
 class dhcp_statementsFixedAttributes(univention.admin.syntax.select):
-	name = 'dhcp_statementsFixedAttributes'
-	choices = [
-		('univentionDhcpAuthoritative', _('Authoritative')),
-		('univentionDhcpBootUnknownClients', _('Boot unknown clients')),
-		('univentionDhcpPingCheck', _('Ping check')),
-		('univentionDhcpGetLeaseHostnames', _('Add hostnames to leases')),
-		('univentionDhcpServerIdentifier', _('Server identifier')),
-		('univentionDhcpServerName', _('Server name')),
-	]
+    name = 'dhcp_statementsFixedAttributes'
+    choices = [
+        ('univentionDhcpAuthoritative', _('Authoritative')),
+        ('univentionDhcpBootUnknownClients', _('Boot unknown clients')),
+        ('univentionDhcpPingCheck', _('Ping check')),
+        ('univentionDhcpGetLeaseHostnames', _('Add hostnames to leases')),
+        ('univentionDhcpServerIdentifier', _('Server identifier')),
+        ('univentionDhcpServerName', _('Server name')),
+    ]
 
 
 module = 'policies/dhcp_statements'
@@ -77,71 +77,71 @@ object_name_plural = _('DHCP statements policies')
 policy_short_description = _('DHCP statement')
 long_description = ''
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpStatements'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpStatements'],
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=univention.admin.syntax.policyName,
-		include_in_default_search=True,
-		required=True,
-		may_change=False,
-		identifies=True,
-	),
-	'authoritative': univention.admin.property(
-		short_description=_('Authoritative'),
-		long_description=_('Send DHCPNAK messages to misconfigured clients. Disabled by default.'),
-		syntax=univention.admin.syntax.booleanNone,
-	),
-	'boot-unknown-clients': univention.admin.property(
-		short_description=_('Boot unknown clients'),
-		long_description=_('Enable clients for which there is no host declaration to obtain IP addresses. Allow and deny statements within pool declarations will still be respected.'),
-		syntax=univention.admin.syntax.TrueFalse,
-	),
-	'pingCheck': univention.admin.property(
-		short_description=_('Ping check'),
-		long_description=_('First send an ICMP Echo request (a ping) when considering dynamically allocating an IP address. Should only be disabled if the delay of one second introduced by this is a problem for a client.'),
-		syntax=univention.admin.syntax.TrueFalse,
-	),
-	'getLeaseHostnames': univention.admin.property(
-		short_description=_('Add hostnames to leases'),
-		long_description=_('Look up the domain name corresponding to the IP address of each address in the lease pool and use that address for the DHCP hostname option. Disabled by default.'),
-		syntax=univention.admin.syntax.TrueFalse,
-	),
-	'serverIdentifier': univention.admin.property(
-		short_description=_('Server identifier'),
-		long_description=_('The IP address identifying the DHCP server that should be used by the clients. Use this only if auto-detection fails for servers with multiple IP addresses.'),
-		syntax=univention.admin.syntax.hostOrIP,
-	),
-	'serverName': univention.admin.property(
-		short_description=_('Server name'),
-		long_description=_('Define the name of the DHCP server'),
-		syntax=univention.admin.syntax.hostName,
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=univention.admin.syntax.policyName,
+        include_in_default_search=True,
+        required=True,
+        may_change=False,
+        identifies=True,
+    ),
+    'authoritative': univention.admin.property(
+        short_description=_('Authoritative'),
+        long_description=_('Send DHCPNAK messages to misconfigured clients. Disabled by default.'),
+        syntax=univention.admin.syntax.booleanNone,
+    ),
+    'boot-unknown-clients': univention.admin.property(
+        short_description=_('Boot unknown clients'),
+        long_description=_('Enable clients for which there is no host declaration to obtain IP addresses. Allow and deny statements within pool declarations will still be respected.'),
+        syntax=univention.admin.syntax.TrueFalse,
+    ),
+    'pingCheck': univention.admin.property(
+        short_description=_('Ping check'),
+        long_description=_('First send an ICMP Echo request (a ping) when considering dynamically allocating an IP address. Should only be disabled if the delay of one second introduced by this is a problem for a client.'),
+        syntax=univention.admin.syntax.TrueFalse,
+    ),
+    'getLeaseHostnames': univention.admin.property(
+        short_description=_('Add hostnames to leases'),
+        long_description=_('Look up the domain name corresponding to the IP address of each address in the lease pool and use that address for the DHCP hostname option. Disabled by default.'),
+        syntax=univention.admin.syntax.TrueFalse,
+    ),
+    'serverIdentifier': univention.admin.property(
+        short_description=_('Server identifier'),
+        long_description=_('The IP address identifying the DHCP server that should be used by the clients. Use this only if auto-detection fails for servers with multiple IP addresses.'),
+        syntax=univention.admin.syntax.hostOrIP,
+    ),
+    'serverName': univention.admin.property(
+        short_description=_('Server name'),
+        long_description=_('Define the name of the DHCP server'),
+        syntax=univention.admin.syntax.hostName,
+    ),
 }
 property_descriptions.update(dict([
-	requiredObjectClassesProperty(),
-	prohibitedObjectClassesProperty(),
-	fixedAttributesProperty(syntax=dhcp_statementsFixedAttributes),
-	emptyAttributesProperty(syntax=dhcp_statementsFixedAttributes),
-	ldapFilterProperty(),
+    requiredObjectClassesProperty(),
+    prohibitedObjectClassesProperty(),
+    fixedAttributesProperty(syntax=dhcp_statementsFixedAttributes),
+    emptyAttributesProperty(syntax=dhcp_statementsFixedAttributes),
+    ldapFilterProperty(),
 ]))
 
 layout = [
-	Tab(_('DHCP statements'), _('Miscellaneous DHCP statements'), layout=[
-		Group(_('General DHCP statements settings'), layout=[
-			'name',
-			['authoritative', 'boot-unknown-clients'],
-			['pingCheck', 'getLeaseHostnames'],
-			['serverIdentifier', 'serverName']
-		]),
-	]),
-	policy_object_tab()
+    Tab(_('DHCP statements'), _('Miscellaneous DHCP statements'), layout=[
+        Group(_('General DHCP statements settings'), layout=[
+            'name',
+            ['authoritative', 'boot-unknown-clients'],
+            ['pingCheck', 'getLeaseHostnames'],
+            ['serverIdentifier', 'serverName']
+        ]),
+    ]),
+    policy_object_tab()
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -156,7 +156,7 @@ register_policy_mapping(mapping)
 
 
 class object(univention.admin.handlers.simplePolicy):
-	module = module
+    module = module
 
 
 lookup = object.lookup

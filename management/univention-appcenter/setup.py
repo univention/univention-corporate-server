@@ -38,11 +38,11 @@
 from packaging import setup
 
 setup(
-	name='univention-appcenter',
-	description='Library for Univention App Center',  # name != binary package name, therefore we need to do it manually...
-	packages=[
-		'univention.appcenter',
-		'univention.appcenter.actions',
-	],
-	package_dir={'univention.appcenter': 'python/appcenter'},
+    name='univention-appcenter',
+    description='Library for Univention App Center',  # name != binary package name, therefore we need to do it manually...
+    packages=[
+        'univention.appcenter',
+                'univention.appcenter.actions',
+    ],
+    package_dir={'univention.appcenter': 'python/appcenter'},
 )

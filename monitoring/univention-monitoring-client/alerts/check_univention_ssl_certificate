@@ -41,28 +41,28 @@ from univention.monitoring import Alert
 
 class SSLCertificateCheck(Alert):
 
-	def write_metrics(self):
-		if ucr['server/role'] not in ('domaincontroller_master', 'domaincontroller_backup'):
-			return
+    def write_metrics(self):
+        if ucr['server/role'] not in ('domaincontroller_master', 'domaincontroller_backup'):
+            return
 
-		today = int(time.time()) // 60 // 60 // 24
-		rootc = ucr.get_int("ssl/validity/root", -1)
-		hostc = ucr.get_int("ssl/validity/host", -1)
+        today = int(time.time()) // 60 // 60 // 24
+        rootc = ucr.get_int("ssl/validity/root", -1)
+        hostc = ucr.get_int("ssl/validity/host", -1)
 
-		# check root ca or host cert
-		certValid = rootc
-		certType = "SSL root CA"
-		if rootc >= hostc:
-			certValid = hostc
-			certType = "SSL host certificate"
+        # check root ca or host cert
+        certValid = rootc
+        certType = "SSL root CA"
+        if rootc >= hostc:
+            certValid = hostc
+            certType = "SSL host certificate"
 
-		if certValid > 0:
-			diff = certValid - today
-			self.write_metric('univention_ssl_certificate_expiry_seconds', diff * 24 * 60 * 60)
-			self.log.debug("%s expires in %d days" % (certType, diff))
-		else:
-			self.write_metric('univention_ssl_certificate_expiry_seconds', -1, 'unable to determine expire date - ucr variables ssl/validity/host|root are not set')
+        if certValid > 0:
+            diff = certValid - today
+            self.write_metric('univention_ssl_certificate_expiry_seconds', diff * 24 * 60 * 60)
+            self.log.debug("%s expires in %d days" % (certType, diff))
+        else:
+            self.write_metric('univention_ssl_certificate_expiry_seconds', -1, 'unable to determine expire date - ucr variables ssl/validity/host|root are not set')
 
 
 if __name__ == '__main__':
-	SSLCertificateCheck.main()
+    SSLCertificateCheck.main()

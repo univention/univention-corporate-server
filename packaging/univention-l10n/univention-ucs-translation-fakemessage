@@ -43,32 +43,32 @@ import argparse
 
 
 def parse_args():
-	# type: () -> argparse.Namespace
-	parser = argparse.ArgumentParser(description=__doc__, usage='%(prog)s [directory]')
-	parser.add_argument('directory', help="Base directory for recursive search")
-	args = parser.parse_args()
-	return args
+    # type: () -> argparse.Namespace
+    parser = argparse.ArgumentParser(description=__doc__, usage='%(prog)s [directory]')
+    parser.add_argument('directory', help="Base directory for recursive search")
+    args = parser.parse_args()
+    return args
 
 
 def process(po_dir):
-	# type: (str) -> None
-	for _dir, _dns, fns in os.walk(os.path.abspath(po_dir)):
-		for po_file in fns:
-			if not po_file.endswith('.po'):
-				continue
-			po = polib.pofile(os.path.join(_dir, po_file))
-			for entry in po:
-				if entry.msgid == '':
-					continue
-				entry.msgstr = "!TR! " + entry.msgid
-			po.save(os.path.join(_dir, po_file))
+    # type: (str) -> None
+    for _dir, _dns, fns in os.walk(os.path.abspath(po_dir)):
+        for po_file in fns:
+            if not po_file.endswith('.po'):
+                continue
+            po = polib.pofile(os.path.join(_dir, po_file))
+            for entry in po:
+                if entry.msgid == '':
+                    continue
+                entry.msgstr = "!TR! " + entry.msgid
+            po.save(os.path.join(_dir, po_file))
 
 
 def main():
-	# type: () -> None
-	args = parse_args()
-	process(args.directory)
+    # type: () -> None
+    args = parse_args()
+    process(args.directory)
 
 
 if __name__ == '__main__':
-	main()
+    main()

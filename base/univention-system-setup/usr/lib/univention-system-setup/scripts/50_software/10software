@@ -38,52 +38,52 @@ from univention.management.console.modules.setup.setup_script import AptScript, 
 
 
 class SoftwareScript(AptScript):
-	name = _('Configuring software components')
-	brutal_apt_options = False
+    name = _('Configuring software components')
+    brutal_apt_options = False
 
-	def up(self):
-		super(SoftwareScript, self).up()
+    def up(self):
+        super(SoftwareScript, self).up()
 
-		# get this scripts configuration options
-		self.packages_remove = self.profile.get_list('packages_remove')
-		self.packages_install = self.profile.get_list('packages_install')
+        # get this scripts configuration options
+        self.packages_remove = self.profile.get_list('packages_remove')
+        self.packages_install = self.profile.get_list('packages_install')
 
-	def inner_run(self):
-		if not (self.packages_remove or self.packages_install):
-			# nothing to do. don't autoremove either
-			return True
-		# +1 for update + 1 for autoremove
-		ntasks = len(self.packages_remove) + len(self.packages_install) + 2
-		self.steps(ntasks * 100)
+    def inner_run(self):
+        if not (self.packages_remove or self.packages_install):
+            # nothing to do. don't autoremove either
+            return True
+        # +1 for update + 1 for autoremove
+        ntasks = len(self.packages_remove) + len(self.packages_install) + 2
+        self.steps(ntasks * 100)
 
-		# apt-get update
-		if self.update():
-			self.finish_task('Update')
-		else:
-			return False
-		self.base_package = self.get_package_for_role(self.current_server_role)
-		if self.base_package is None:
-			return False
-		else:
-			self.set_always_install(self.base_package)
+        # apt-get update
+        if self.update():
+            self.finish_task('Update')
+        else:
+            return False
+        self.base_package = self.get_package_for_role(self.current_server_role)
+        if self.base_package is None:
+            return False
+        else:
+            self.set_always_install(self.base_package)
 
-		for pkg in self.packages_remove:
-			# apt-get remove pkg
-			self.uninstall(pkg)
-			self.finish_task(pkg)
+        for pkg in self.packages_remove:
+            # apt-get remove pkg
+            self.uninstall(pkg)
+            self.finish_task(pkg)
 
-		# apt-get autoremove
-		self.autoremove()
-		self.finish_task('Autoremove')
+        # apt-get autoremove
+        self.autoremove()
+        self.finish_task('Autoremove')
 
-		for pkg in self.packages_install:
-			# apt-get install pkg
-			self.install(pkg)
-			self.finish_task(pkg)
+        for pkg in self.packages_install:
+            # apt-get install pkg
+            self.install(pkg)
+            self.finish_task(pkg)
 
-		return True
+        return True
 
 
 if __name__ == '__main__':
-	script = SoftwareScript()
-	main(script)
+    script = SoftwareScript()
+    main(script)

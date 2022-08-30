@@ -45,17 +45,17 @@ ucr.load()
 searchResult = lo.search(base=ucr['ldap/base'], filter='(&(objectClass=shadowAccount)(shadowLastChange=*)(shadowMax=*))', attr=['shadowLastChange', 'shadowMax'])
 
 for dn, attributes in searchResult:
-	ml = []
-	if 'shadowLastChange' in attributes and 'shadowMax' in attributes:
-		try:
-			lastChange = int(attributes['shadowLastChange'][0])
-			maximum = int(attributes['shadowMax'][0])
-			if maximum >= lastChange:
-				new_max = maximum - lastChange
-				if new_max == 0:
-					ml.append(('shadowMax', attributes['shadowMax'], []))
-				else:
-					ml.append(('shadowMax', attributes['shadowMax'], [str(new_max).encode('ASCII')]))
-				lo.modify(dn, ml)
-		except Exception:
-			pass
+    ml = []
+    if 'shadowLastChange' in attributes and 'shadowMax' in attributes:
+        try:
+            lastChange = int(attributes['shadowLastChange'][0])
+            maximum = int(attributes['shadowMax'][0])
+            if maximum >= lastChange:
+                new_max = maximum - lastChange
+                if new_max == 0:
+                    ml.append(('shadowMax', attributes['shadowMax'], []))
+                else:
+                    ml.append(('shadowMax', attributes['shadowMax'], [str(new_max).encode('ASCII')]))
+                lo.modify(dn, ml)
+        except Exception:
+            pass

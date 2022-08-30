@@ -15,9 +15,9 @@ PUT_UPDATER_ERROR = 4  # after saving options, any errors related to repositorie
 PUT_UPDATER_NOREPOS = 5  # nothing committed, but not found any valid repository
 
 STATUS_ICONS = {
-	'installed': 'updater-installed',
-	'available': 'updater-available',
-	'access_denied': 'updater-access-denied'
+    'installed': 'updater-installed',
+    'available': 'updater-available',
+    'access_denied': 'updater-access-denied'
 }
 DEFAULT_ICON = 'updater-unknown'  # any states not defined above
 

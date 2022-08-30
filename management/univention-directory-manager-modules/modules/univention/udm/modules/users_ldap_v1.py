@@ -41,22 +41,22 @@ from ..encoders import DisabledPropertyEncoder
 
 
 class UsersLdapObjectProperties(GenericObjectProperties):
-	"""users/ldap UDM properties."""
+    """users/ldap UDM properties."""
 
-	_encoders = {
-		'disabled': DisabledPropertyEncoder,
-	}
+    _encoders = {
+        'disabled': DisabledPropertyEncoder,
+    }
 
 
 class UsersLdapObject(GenericObject):
-	"""Better representation of users/ldap properties."""
-	udm_prop_class = UsersLdapObjectProperties
+    """Better representation of users/ldap properties."""
+    udm_prop_class = UsersLdapObjectProperties
 
 
 class UsersLdapModule(GenericModule):
-	"""UsersLdapObject factory"""
-	_udm_object_class = UsersLdapObject
+    """UsersLdapObject factory"""
+    _udm_object_class = UsersLdapObject
 
-	class Meta:
-		supported_api_versions = [1, 2, 3]
-		suitable_for = ['users/ldap']
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        suitable_for = ['users/ldap']

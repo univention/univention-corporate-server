@@ -1,5 +1,5 @@
 def test_manual_screenshots():
-	pass
+    pass
 #language=${language}
 #case $language in
 #    de)

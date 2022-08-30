@@ -22,26 +22,26 @@ udm_modules.update()
 
 
 def main():
-	account = utils.UCSTestDomainAdminCredentials()
-	SamlSession = samltest.SamlTest(account.username, account.bindpw)
-	lo = utils.get_ldap_connection(admin_uldap=True)
-	master = udm_modules.lookup('computers/domaincontroller_master', None, lo, scope='sub')
-	master_hostname = "%s.%s" % (master[0]['name'], master[0]['domain'])
-	master_ip = socket.gethostbyname(master_hostname)
-	backup_ip = '127.0.0.1'
+    account = utils.UCSTestDomainAdminCredentials()
+    SamlSession = samltest.SamlTest(account.username, account.bindpw)
+    lo = utils.get_ldap_connection(admin_uldap=True)
+    master = udm_modules.lookup('computers/domaincontroller_master', None, lo, scope='sub')
+    master_hostname = "%s.%s" % (master[0]['name'], master[0]['domain'])
+    master_ip = socket.gethostbyname(master_hostname)
+    backup_ip = '127.0.0.1'
 
-	try:
-		with samltest.GuaranteedIdP(master_ip):
-			SamlSession.login_with_new_session_at_IdP()
-			SamlSession.test_login()
-			time.sleep(1)
-		SamlSession.target_sp_hostname = master_hostname
-		with samltest.GuaranteedIdP(backup_ip):
-			SamlSession.login_with_existing_session_at_IdP()
-			SamlSession.test_login()
-	except samltest.SamlError as exc:
-		utils.fail(str(exc))
+    try:
+        with samltest.GuaranteedIdP(master_ip):
+            SamlSession.login_with_new_session_at_IdP()
+            SamlSession.test_login()
+            time.sleep(1)
+        SamlSession.target_sp_hostname = master_hostname
+        with samltest.GuaranteedIdP(backup_ip):
+            SamlSession.login_with_existing_session_at_IdP()
+            SamlSession.test_login()
+    except samltest.SamlError as exc:
+        utils.fail(str(exc))
 
 
 if __name__ == '__main__':
-	main()
+    main()

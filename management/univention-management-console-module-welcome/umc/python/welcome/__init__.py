@@ -41,6 +41,6 @@ _ = Translation('univention-management-console-module-welcome').translate
 
 class Instance(Base):
 
-	@simple_response
-	def welcome(self):
-		return True
+    @simple_response
+    def welcome(self):
+        return True

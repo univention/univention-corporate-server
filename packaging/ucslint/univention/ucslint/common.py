@@ -51,17 +51,17 @@ import re
 WORD_CHARS = '[0-9a-z]'
 NAME_CHARS = '[+.0-9a-z-]'
 RE_DEBIAN_PACKAGE_NAME = re.compile(
-	r'''^
+        r'''^
 	({wc}{nc}*)  # Package name
 	$'''.format(wc=WORD_CHARS, nc=NAME_CHARS), re.VERBOSE)
 RE_DEBIAN_PACKAGE_VERSION = re.compile(
-	r'''^
+        r'''^
 	(?: (?P<epoch>[0-9]+) : )?
 	(?P<upstream> [0-9][+.0-9a-z~-]*? )
 	(?: - (?P<revision>[+.0-9a-z~]+) )?
 	$''', re.VERBOSE)
 RE_DEBIAN_CHANGELOG = re.compile(
-	r'''^
+        r'''^
 	({wc}{nc}*)  # Package name
 	[ ]
 	\( ([^ ()]+) \)  # Package version
@@ -73,5 +73,5 @@ RE_HASHBANG_SHELL = re.compile(r'^#!\s*/bin/(?:a|ba|c|da|z)?sh\b')
 
 
 if __name__ == '__main__':
-	import doctest
-	doctest.testmod()
+    import doctest
+    doctest.testmod()
