@@ -19,7 +19,7 @@ from os import path
 # -- Project information -----------------------------------------------------
 
 project = 'Univention Corporate Server - ' + \
-        'Performance Guide'
+    'Performance Guide'
 copyright = '2021-{}, Univention GmbH'.format(date.today().year)
 author = ''
 
@@ -116,14 +116,14 @@ html_sidebars = {
         "sidebar-logo.html",
         "search-field.html",
         "_templates/sidebar-links.html"
-        ],
+    ],
 }
 
 latex_engine = 'lualatex'
 latex_show_pagerefs = True
 latex_show_urls = "footnote"
 latex_documents = [
-        (root_doc, f'{pdf_doc_base}.tex', "", author, "howto", False)]
+    (root_doc, f'{pdf_doc_base}.tex', "", author, "howto", False)]
 latex_elements = {
     "papersize": "a4paper",
     "babel": "\\usepackage{babel}",

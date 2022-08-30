@@ -119,8 +119,8 @@ def fix_title_translation(app, config):
         config.html_title = config.project
         config.tokenizer_lang = "de_DE"
         config.intersphinx_mapping["uv-manual"] = (
-                "https://docs.software-univention.de/manual/5.0/de", None
-            )
+            "https://docs.software-univention.de/manual/5.0/de", None
+        )
 
 
 def setup(app):

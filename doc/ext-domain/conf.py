@@ -19,7 +19,7 @@ from os import path
 # -- Project information -----------------------------------------------------
 
 project = 'Univention Corporate Server - ' + \
-        'Extended domain services documentation'
+    'Extended domain services documentation'
 copyright = '2021-{}, Univention GmbH'.format(date.today().year)
 author = ''
 
@@ -116,7 +116,8 @@ latex_show_pagerefs = True
 latex_show_urls = "footnote"
 latex_logo = "_static/univention_logo.pdf"
 latex_documents = [
-        (root_doc, f'{pdf_doc_base}.tex', "", author, "manual", False)]
+    (root_doc, f'{pdf_doc_base}.tex', "", author, "manual", False)
+]
 latex_elements = {
     "papersize": "a4paper",
     "babel": "\\usepackage{babel}",
