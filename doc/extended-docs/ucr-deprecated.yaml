@@ -561,3 +561,8 @@
    - ucs/web/overview/entries/admin/nagios/link
    - ucs/web/overview/entries/admin/nagios/priority
    - ucs/web/overview/entries/admin/nagios/icon
+
+- git: xxx
+  desc: univention-directory-notifier
+  vars:
+    - notifier/protocol/version

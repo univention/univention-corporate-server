@@ -53,7 +53,6 @@
 
 #include "notify.h"
 #include "network.h"
-#include "cache.h"
 
 extern fd_set readfds;
 
@@ -153,8 +152,8 @@ int data_on_connection(int fd, callback_remove_handler remove)
 
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "VERSION=%d", version);
 
-			if (version < network_procotol_version) {
-				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Forbidden VERSION=%d < %d, close connection to listener", version, network_procotol_version);
+			if (version < PROTOCOL_3) {
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Forbidden VERSION=%d < %d, close connection to listener", version, PROTOCOL_3);
 				goto close;
 			} else if (version >= PROTOCOL_LAST) {
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Future VERSION=%d", version);
@@ -183,56 +182,6 @@ int data_on_connection(int fd, callback_remove_handler remove)
 			}
 
 			p+=strlen(network_line);
-		} else if ( !strncmp(network_line, "GET_DN ", strlen("GET_DN ")) && msg_id != UINT32_MAX && version > PROTOCOL_UNKNOWN && version < PROTOCOL_3) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: GET_DN");
-
-			id=strtoul(&(network_line[strlen("GET_DN ")]), NULL, 10);
-
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "id: %ld", id);
-
-			if ( id <= notify_last_id.id) {
-				char *dn_string = NULL;
-
-				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "try to read %ld from cache", id);
-
-				/* try to read from cache */
-				if ( (dn_string = notifier_cache_get(id)) == NULL ) {
-					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld not found in cache", id);
-
-					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld get one dn", id);
-
-					/* read from transaction file, because not in cache */
-					if( (dn_string=notify_transcation_get_one_dn ( id )) == NULL ) {
-						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld failed ", id);
-						/* TODO: maybe close connection? */
-
-						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%d failed, close connection to listener ", fd);
-						close(fd);
-						FD_CLR(fd, &readfds);
-						remove(fd);
-						free(network_packet);
-
-						return 0;
-					}
-				}
-
-				if ( dn_string != NULL ) {
-					snprintf(string, sizeof(string), "MSGID: %ld\n%s\n\n",msg_id,dn_string);
-
-					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "--> %d: [%s]", fd, string);
-					rc = send(fd, string, strlen(string), 0);
-					free(dn_string);
-					if (rc < 0)
-						goto failed;
-				}
-			} else {
-				/* set wanted id */
-				network_client_set_next_id(fd, id);
-				network_client_set_msg_id(fd, msg_id);
-			}
-
-			p+=strlen(network_line)+1;
-			msg_id = UINT32_MAX;
 		} else if (!strncmp(p, "WAIT_ID ", 8) && msg_id != UINT32_MAX && version >= PROTOCOL_3) {
 			char *head = network_line, *end;
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: WAIT_ID");

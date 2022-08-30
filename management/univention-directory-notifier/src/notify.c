@@ -50,14 +50,11 @@
 
 #include "notify.h"
 #include "network.h"
-#include "cache.h"
-#include "index.h"
 
 #define MAX_PATH_LEN 4096
 #define MAX_LINE 4096
 
 extern NotifyId_t notify_last_id;
-extern Notify_t notify;
 extern long long notifier_lock_count;
 extern long long notifier_lock_time;
 extern void set_listener_callback(int sig, siginfo_t *si, void *data);
@@ -109,32 +106,6 @@ static FILE* fopen_dotlockfile(const char *name)
 }
 
 
-static FILE* fopen_with_lockfile(const char *name, const char *type, FILE **l_file)
-{
-	FILE *file;
-
-	if ( !(strcmp(name, FILE_NAME_TF)) ) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK %s", FILE_NAME_TF);
-	} else if ( !(strcmp(name, FILE_NAME_TF_IDX)) ) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK %s", FILE_NAME_TF_IDX);
-	}
-
-	if ((*l_file = fopen_dotlockfile(name)) == NULL) {
-		return NULL;
-	}
-
-	if ((file = fopen(name, type)) == NULL) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR Could not open file [%s]", name);
-
-		int l_fd = fileno(*l_file);
-		lockf(l_fd, F_ULOCK, 0);
-		fclose(*l_file);
-		*l_file = NULL;
-	}
-
-	return file;
-}
-
 static int fclose_lock(FILE **file)
 {
 	int rc = 0;
@@ -149,27 +120,6 @@ static int fclose_lock(FILE **file)
 	return rc;
 }
 
-static int fclose_with_lockfile(const char *name, FILE **file, FILE **l_file)
-{
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "FCLOSE start");
-	if (*file != NULL) {
-		fclose(*file);
-		*file = NULL;
-	}
-
-	fclose_lock(l_file);
-
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "FCLOSE end");
-
-	if ( !(strcmp(name, FILE_NAME_TF)) ) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "UNLOCK %s", FILE_NAME_TF);
-	} else if ( !(strcmp(name, FILE_NAME_TF_IDX)) ) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "UNLOCK %s", FILE_NAME_TF_IDX);
-	}
-	return 0;
-}
-
-
 /* Parse "<id> <dn with blanks> <command>\n" */
 static int parse_transaction_line(NotifyEntry_t* entry, char* line)
 {
@@ -180,46 +130,6 @@ static int parse_transaction_line(NotifyEntry_t* entry, char* line)
 	entry->command = last_space_p[1];
 	entry->dn = strndup(first_space_p + 1, size);
 	return sscanf(line, "%ld", &(entry->notify_id.id)) == 1 && entry->notify_id.id > 0 && entry->dn;
-}
-
-static void notify_dump_to_files( Notify_t *notify, NotifyEntry_t *entry)
-{
-	char buffer[2048];
-	FILE *index = NULL;
-
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK from dump_to_files");
-	if ((notify->tf = fopen_with_lockfile(FILE_NAME_TF, "a", &(notify->l_tf))) == NULL) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR on open tf");
-		goto error;
-	}
-	if ((index = index_open(FILE_NAME_TF_IDX)) == NULL) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to open index");
-		goto error;
-	}
-
-	long offset = ftell(notify->tf);
-	int len = snprintf(buffer, sizeof(buffer), "%ld %s %c\n", entry->notify_id.id, entry->dn, entry->command);
-	if (len >= sizeof(buffer)) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "buffer too small");
-		abort();
-	}
-
-	index_set(index, entry->notify_id.id, offset);
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "want to write to transaction file; id=%ld", entry->notify_id.id);
-	if (fallocate(fileno(notify->tf), FALLOC_FL_KEEP_SIZE, offset, len) == -1 && (errno != ENOSYS) && (errno != EOPNOTSUPP)) {
-		perror("Failed fallocate(tf)");
-		abort();
-	}
-	if (fprintf(notify->tf, "%s", buffer) != len) {
-		perror("Failed fprintf(tf)");
-		abort();
-	}
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "wrote to transaction file; id=%ld; dn=%s, cmd=%c", entry->notify_id.id, entry->dn, entry->command);
-
-error:
-	if (index)
-		fclose(index);
-	fclose_with_lockfile(FILE_NAME_TF, &notify->tf, &notify->l_tf);
 }
 
 /*
@@ -368,126 +278,6 @@ reopen:
 	sigaction(SIGPIPE, &oldact, NULL);
 }
 
-void notify_init ( Notify_t *notify )
-{
-	notify->tf    = NULL;
-	notify->l_tf  = NULL;
-}
-
-
-int notify_transaction_get_last_notify_id ( Notify_t *notify, NotifyId_t *notify_id )
-{
-	int i = 2;
-	char c;
-
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK from notify_transaction_get_last_notify_id");
-	if ((notify->tf = fopen_with_lockfile(FILE_NAME_TF, "r", &(notify->l_tf))) == NULL) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to lock notify_id");
-		notify_id->id = 0;
-		return -1;
-	}
-
-	do {
-		i++;
-		fseek( notify->tf, -i, SEEK_END);
-		c = fgetc ( notify->tf ) ;
-	} while ( c != '\n' && c != -1 && c != 255 && ftell(notify->tf) != 1);
-
-	if ( c == -1 || c == 255 ) {
-		/* empty file */
-		notify_id->id = 0;
-	} else if ( ftell(notify->tf) == 1) {
-		/* only one entry */
-		fseek( notify->tf, 0, SEEK_SET);
-		fscanf(notify->tf, "%ld",& (notify_id->id));
-	} else {
-		fscanf(notify->tf, "%ld",& (notify_id->id));
-	}
-
-	fclose_with_lockfile(FILE_NAME_TF, &notify->tf, &notify->l_tf);
-
-	return 0;
-}
-
-
-char* notify_transcation_get_one_dn ( unsigned long last_known_id )
-{
-	char buffer[2048];
-	int i;
-	char c;
-	unsigned long id;
-	bool found = false;
-	FILE *index = NULL;
-	size_t pos;
-
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK from notify_transcation_get_one_dn");
-	if ((notify.tf = fopen_with_lockfile(FILE_NAME_TF, "r", &(notify.l_tf))) == NULL) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to lock tf");
-		return NULL;
-	}
-	if ( ( index = index_open(FILE_NAME_TF_IDX) ) == NULL ) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to open index");
-		goto error;
-	}
-
-	i=0;
-	memset(buffer, 0, sizeof(buffer));
-
-	if ((pos = index_get(index, last_known_id)) != -1) {
-		fseek(notify.tf, pos, SEEK_SET);
-		if (fgets(buffer, sizeof(buffer), notify.tf) != NULL) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "BUFFER=%s", buffer);
-			if ( buffer[strlen(buffer)-1] == '\n' ) {
-				buffer[strlen(buffer)-1] = '\0';
-			}
-			sscanf(buffer, "%ld", &id);
-			if (id == last_known_id) {
-				found = true;
-				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Found (get_one_dn, index) %ld", id);
-			}
-		}
-	}
-
-	fseek(notify.tf, 0, SEEK_SET);
-	pos = 0;
-	while (!found && (c=fgetc(notify.tf)) != EOF ) {
-		if ( c == 255 ) {
-			break;
-		}
-
-		if ( c == '\n' ) {
-			sscanf(buffer, "%ld", &id) ;
-
-			index_set(index, id, pos);
-
-			if ( id == last_known_id ) {
-				found = true;
-				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Found (get_one_dn) %ld", id);
-				break;
-			}
-
-			i=0;
-			pos=ftell(notify.tf);
-			memset(buffer, 0, 2048);
-		} else {
-			buffer[i] = c;
-			i++;
-		}
-	}
-
-error:
-	if (index)
-		fclose(index);
-	fclose_with_lockfile(FILE_NAME_TF, &notify.tf, &notify.l_tf);
-
-	if (found && strlen(buffer) > 0) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Return str [%s]", buffer);
-		return strdup(buffer);
-	} else {
-		return NULL;
-	}
-}
-
 void notify_schema_change_callback(int sig, siginfo_t *si, void *data)
 {
 	FILE *file;
@@ -561,8 +351,6 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data)
 			continue;
 		}
 		notify_dump_to_ldap(&entry);
-		notify_dump_to_files(&notify, &entry);
-		notifier_cache_add(entry.notify_id.id, entry.dn, entry.command);
 		notify_last_id.id = entry.notify_id.id;
 		network_client_all_write(entry.notify_id.id, line, strlen(line));
 		free(entry.dn);

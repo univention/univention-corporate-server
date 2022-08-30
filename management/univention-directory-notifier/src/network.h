@@ -72,6 +72,4 @@ int network_client_set_version( int fd, int version );
 int network_client_get_version( int fd );
 int network_client_check_clients ( unsigned long last_known_id ) ;
 
-extern enum network_protocol network_procotol_version;
-
 #endif

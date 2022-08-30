@@ -9,9 +9,3 @@ Description[de]=Die Variable konfiguriert den Startmodus des Univention Director
 Description[en]=This variable configures the start mode of the Univention Directory Notifier service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.
 Type=str
 Categories=service-ln
-
-[notifier/protocol/version]
-Description[de]=Legt die minimal unterstützte Version der Univention Directory Notifier Protokolls fest. Mögliche Werte: 1-3
-Description[en]=Configures the minimum supported version of the Univention Directory Notifier protocols: Possible values: 1-3
-Type=int
-Categories=service-ln

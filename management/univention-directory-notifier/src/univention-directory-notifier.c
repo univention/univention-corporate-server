@@ -52,14 +52,11 @@
 
 #include "notify.h"
 #include "network.h"
-#include "cache.h"
 
-Notify_t notify;
 NotifyId_t notify_last_id;
 
 long SCHEMA_ID;
 
-unsigned long long notifier_cache_size=1000;
 long long notifier_lock_count=100;
 long long notifier_lock_time=100;
 
@@ -67,13 +64,16 @@ void usage(void)
 {
 	fprintf(stderr, "Usage: univention-directory-notifier [options]\n");
 	fprintf(stderr, "Options:\n");
-	fprintf(stderr, "   -F   run in foreground (intended for process supervision)\n");
-	fprintf(stderr, "   -o          DEPRECATED\n");
-	fprintf(stderr, "   -r          DEPRECATED\n");
-	fprintf(stderr, "   -s          DEPRECATED\n");
-	fprintf(stderr, "   -d   added debug output\n");
-	fprintf(stderr, "   -S   DEPRECATED\n");
-	fprintf(stderr, "   -v <version> Minimum supported protocol\n");
+	fprintf(stderr, "   -F               Run in foreground (intended for process supervision)\n");
+	fprintf(stderr, "   -o               DEPRECATED\n");
+	fprintf(stderr, "   -r               DEPRECATED\n");
+	fprintf(stderr, "   -s               DEPRECATED\n");
+	fprintf(stderr, "   -d <level>       Set debug output level\n");
+	fprintf(stderr, "   -S <sleep>       DEPRECATED\n");
+	fprintf(stderr, "   -C <size>        DEPRECATED\n");
+	fprintf(stderr, "   -v <version>     DEPRECATED\n");
+	fprintf(stderr, "   -L <lock-count>  Number of lock attempts\n");
+	fprintf(stderr, "   -T <lock-time>   Delay between lock attempts\n");
 }
 
 static int SCHEMA_CALLBACK = 0;
@@ -151,30 +151,6 @@ int creating_pidfile(char *file)
 	return 0;
 }
 
-unsigned long long parse_ullong(char *str) {
-	char *endptr;
-
-	notifier_cache_size = strtoull(str, &endptr, 10);
-	if (strtoll(str, NULL, 10) > 0) { // can legitimately return 0, LONG_MAX, or LONG_MIN
-		errno = 0;
-		if ((errno == ERANGE && notifier_cache_size == ULLONG_MAX)
-				|| (errno != 0 && notifier_cache_size == 0)) {
-			perror("strtol");
-			exit(EXIT_FAILURE);
-		} else if (endptr != str + strlen(str)) {
-			fprintf(stderr, "Not all characters of the value given for option -C could be converted: %s\n", str);
-			exit(EXIT_FAILURE);
-		}
-	} else if (endptr == str) {
-			fprintf(stderr, "No digits were found: %s\n", str);
-			exit(EXIT_FAILURE);
-	} else {
-		printf("Error: Argument of -C can only be a positive number: %s\n", str);
-		exit(EXIT_FAILURE);
-	};
-	return notifier_cache_size;
-}
-
 int main(int argc, char* argv[])
 {
 	int foreground = 0;
@@ -184,7 +160,6 @@ int main(int argc, char* argv[])
 
 	for (;;) {
 		int c;
-		char *end;
 
 		c = getopt(argc, argv, "Fosrd:S:C:L:T:v:");
 		if (c < 0)
@@ -197,25 +172,19 @@ int main(int argc, char* argv[])
 			case 'd':
 				debug = atoi(optarg);
 				break;
+			case 'C':
 			case 'o':
 			case 'r':
 			case 's':
 			case 'S':
+			case 'v':
 				fprintf(stderr, "Ignoring deprecated option -%c\n", c);
-				break;
-			case 'C':
-				notifier_cache_size=parse_ullong(optarg);
 				break;
 			case 'L':
 				notifier_lock_count=atoll(optarg);
 				break;
 			case 'T':
 				notifier_lock_time=atoll(optarg);
-				break;
-			case 'v':
-				network_procotol_version = strtoll(optarg, &end, 10);
-				if (!*optarg || *end || network_procotol_version < PROTOCOL_1 || network_procotol_version >= PROTOCOL_LAST)
-					error(EXIT_FAILURE, errno, "Invalid argument '-%c %s'", c, optarg);
 				break;
 			default:
 				usage();
@@ -236,18 +205,8 @@ int main(int argc, char* argv[])
 		exit (1);
 	}
 
-	notify_init ( &notify );
-
-	if ( notify_transaction_get_last_notify_id ( &notify, &notify_last_id )  != 0 ) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Error notify_transaction_get_last_notify_id");
-	}
-
 	/* DEBUG */
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Last transaction id = %ld", notify_last_id.id);
-
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Fill cache");
-	notifier_cache_init(notify_last_id.id);
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "   done");
 
 	network_client_init( 6669 );
 
@@ -258,8 +217,6 @@ int main(int argc, char* argv[])
 	notify_schema_change_callback ( 0, NULL, NULL);
 
 	int terminate = network_client_main_loop();
-
-	notifier_cache_free();
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Normal exit");
 	univention_debug_exit();
