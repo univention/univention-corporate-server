@@ -8,11 +8,11 @@ install_ucschool_bff_users () {
   . utils.sh && switch_to_test_app_center || true
   echo -n univention > /tmp/univention
   # use brach image if given
-  if [ -n "$UCS_ENV_BFF_USERS_IMAGE" ]; then
-    if [[ $UCS_ENV_BFF_USERS_IMAGE =~ ^gitregistry.knut.univention.de.* ]]; then
+  if [ -n "$UCS_ENV_RANKINE_USERS_IMAGE" ]; then
+    if [[ $UCS_ENV_RANKINE_USERS_IMAGE =~ ^gitregistry.knut.univention.de.* ]]; then
         docker login -u "$GITLAB_REGISTRY_TOKEN" -p "$GITLAB_REGISTRY_TOKEN_SECRET" gitregistry.knut.univention.de
     fi
-    univention-app dev-set ucsschool-bff-users "DockerImage=$UCS_ENV_BFF_USERS_IMAGE"
+    univention-app dev-set ucsschool-bff-users "DockerImage=$UCS_ENV_RANKINE_USERS_IMAGE"
   fi
   univention-app install --noninteractive --username Administrator --pwdfile /tmp/univention ucsschool-bff-users
   docker images
