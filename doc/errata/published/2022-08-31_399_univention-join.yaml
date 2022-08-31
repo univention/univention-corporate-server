@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * A server with multiple MAC addresses is now able to join correctly again.
 bug: [54967]
+erratum: 399
+announced: 2022-08-31
