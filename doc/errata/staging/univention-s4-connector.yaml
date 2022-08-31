@@ -6,7 +6,7 @@ src: univention-s4-connector
 fix: 14.0.10-6A~5.0.0.202208301457
 desc: |
  This update addresses the following issues:
- * The function `group_members_sync_to_ucs` used the UCS DN to search in Samba,
+ * The function `group_members_sync_to_ucs` used a UCS DN to search in Samba,
    which usually doesn't cause issues, as long as the group object is located
    in the same position.
  * The connector now synchronizes the password history between Samba and UCS.
