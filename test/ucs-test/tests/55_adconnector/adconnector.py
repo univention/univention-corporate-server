@@ -2,8 +2,6 @@ import contextlib
 import subprocess
 from time import sleep
 
-import ldap
-
 import univention.admin.modules
 import univention.admin.objects
 import univention.admin.uldap
@@ -24,26 +22,6 @@ class ADConnection(ldap_glue.ADConnection):
 	@classmethod
 	def decode_sid(cls, sid):
 		return ad.decode_sid(sid)
-
-	def __init__(self, configbase='connector'):
-		self.configbase = configbase
-		self.adldapbase = configRegistry['%s/ad/ldap/base' % configbase]
-		self.addomain = self.adldapbase.replace(',DC=', '.').replace('DC=', '')
-		self.kerberos = configRegistry.is_true('%s/ad/ldap/kerberos' % configbase)
-		if self.kerberos:  # i.e. if UCR ad/member=true
-			# Note: tests/domainadmin/account is an OpenLDAP DN but
-			#       we only extract the username from it in ldap_glue
-			self.login_dn = configRegistry['tests/domainadmin/account']
-			self.principal = ldap.dn.str2dn(self.login_dn)[0][0][1]
-			self.pw_file = configRegistry['tests/domainadmin/pwdfile']
-		else:
-			self.login_dn = configRegistry['%s/ad/ldap/binddn' % configbase]
-			self.pw_file = configRegistry['%s/ad/ldap/bindpw' % configbase]
-		self.host = configRegistry['%s/ad/ldap/host' % configbase]
-		self.port = configRegistry['%s/ad/ldap/port' % configbase]
-		self.ca_file = configRegistry['%s/ad/ldap/certificate' % configbase]
-		no_starttls = configRegistry.is_false('%s/ad/ldap/ssl' % configbase)
-		self.connect(no_starttls)
 
 
 def connector_running_on_this_host():
