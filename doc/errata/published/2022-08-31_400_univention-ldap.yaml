@@ -14,3 +14,5 @@ desc: |
  * Create initial fake schema in unjoined Backup/Replica servers
    too to avoid invalid slapd configurations that may break upgrades.
 bug: [54782, 54821, 54465]
+erratum: 400
+announced: 2022-08-31
