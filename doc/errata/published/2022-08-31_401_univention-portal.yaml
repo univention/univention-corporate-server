@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * Some convenient code for Python 2 compatibility has been removed.
 bug: [55063]
+erratum: 401
+announced: 2022-08-31
