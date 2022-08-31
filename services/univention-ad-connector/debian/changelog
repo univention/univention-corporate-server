@@ -1,3 +1,11 @@
+univention-ad-connector (14.0.10-6) unstable; urgency=medium
+
+  * Bug #55150: Adjust sync_to_ucs to only apply the ignore_filter to the old
+    object specifically for the situation of Bug #37351 to avoid doing this
+    to user objects as well.
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Wed, 31 Aug 2022 08:19:58 +0200
+
 univention-ad-connector (14.0.10-5) unstable; urgency=medium
 
   * Bug #52192: Check if pwdLastSet is 0 for users before skipping
