@@ -7,7 +7,7 @@ fix: 16.0.7-21A~5.0.0.202208301223
 desc: |
  This update addresses the following issues:
  * The ownership, group and permissions of LDAP backups are now configurable
-   via the UCR variables `slapd/backup/owner`, `slapd/backup/group"`and
+   via the UCR variables `slapd/backup/owner`, `slapd/backup/group` and
    `slapd/backup/permissions`.
  * The UCR variable description for the variable `ldap/database/type` has been
    updated and now describes deprecated and recommended values.
