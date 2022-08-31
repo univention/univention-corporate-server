@@ -1,3 +1,9 @@
+ucs-test (10.0.7-21) unstable; urgency=medium
+
+  * Bug #52230: fix password history sync tests
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Wed, 31 Aug 2022 13:08:08 +0200
+
 ucs-test (10.0.7-20) unstable; urgency=low
 
   * Bug #54782: Update test for univention-ldap-backup
