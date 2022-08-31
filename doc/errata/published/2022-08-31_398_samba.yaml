@@ -9,3 +9,5 @@ desc: |
  * A segmentation fault in rpcd_spoolss has been fixed.
    Adding printer drivers is possible again.
 bug: [55048]
+erratum: 398
+announced: 2022-08-31
