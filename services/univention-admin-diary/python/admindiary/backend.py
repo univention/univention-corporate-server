@@ -37,7 +37,9 @@ from functools import partial
 from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional, Set, Tuple  # noqa: F401
 
 import sqlalchemy
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy import or_, and_
+from sqlalchemy.orm import sessionmaker, relationship, scoped_session, joinedload
+from sqlalchemy.pool import NullPool
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Sequence, Text, DateTime, func, Table
 
@@ -81,27 +83,50 @@ def get_engine():
 	db_url = '%s://admindiary:%s@%s/admindiary' % (dbms, password, dbhost)
 	if dbms == 'mysql':
 		db_url = db_url + '?charset=utf8mb4'
-	return sqlalchemy.create_engine(db_url)
+	return sqlalchemy.create_engine(db_url, poolclass=NullPool)
 
 
-def make_session_class():
-	# type: () -> Callable[[], sqlalchemy.Session]
-	if make_session_class._session is None:
-		engine = get_engine()
-		make_session_class._session = sessionmaker(bind=engine)
-	return make_session_class._session
+def windowed_query(q, column, windowsize, single_entity=True):
+	"""
+	Break a Query into chunks on a given unique column (usually primary key), then fetch chunks using LIMIT only,
+	adding a WHERE clause that will ensure we only fetch rows greater than the last one we fetched. This will work for
+	basically any database backend. The potential downside is that the database needs to sort the full set of remaining
+	rows for each chunk, which may be inefficient, even if the sort column is indexed. However, the approach is very
+	simple and can likely work for most ordinary use cases for a primary key column on a database that does not support
+	window functions.
+	"""
 
+	# TODO: single_entity is implemented in SqlAlchemy 1.3.11 and above.
+	# After updating SqlAlchemy, single_entity should be removed from
+	# function arguments, and resolved locally, as in line below:
+	# single_entity = q.is_single_entity
+	q = q.add_column(column).order_by(column)
+	last_id = None
 
-make_session_class._session = None
+	while True:
+		subq = q
+		if last_id is not None:
+			subq = subq.filter(column > last_id)
+		chunk = subq.limit(windowsize).all()
+		if not chunk:
+			break
+		last_id = chunk[-1][-1]
+		for row in chunk:
+			if single_entity:
+				yield row[0]
+			else:
+				yield row[0:-1]
 
 
 @contextmanager
-def get_session():
-	# type: () -> Iterator[sqlalchemy.Session]
-	session = make_session_class()()
+def get_session(auto_commit=True):
+	# type: (bool) -> Iterator[sqlalchemy.Session]
+	session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=get_engine()))
 	yield session
-	session.commit()
-	session.close()
+	if auto_commit:
+		session.commit()
+	session.remove()
+	session.bind.dispose()
 
 
 Base = declarative_base()
@@ -152,6 +177,7 @@ class Entry(Base):
 	event = relationship('Event')
 	args = relationship('Arg', back_populates='entry')
 	tags = relationship('Tag', secondary=entry_tags, back_populates='entries')
+	comments = relationship('Entry', primaryjoin=context_id == context_id, foreign_keys=context_id, remote_side=context_id)
 
 
 class Tag(Base):
@@ -268,59 +294,66 @@ class Client(object):
 			entry.args.append(Arg(key=key, value=value))
 		get_logger().info('Successfully added %s (%s)' % (diary_entry.context_id, diary_entry.event_name))
 
-	def _one_query(self, ids, result):
-		# type: (Optional[Set[int]], Iterable[Any]) -> Set[int]
-		if ids is not None and not ids:
-			return set()
-		new_ids = set()
-		for entry in result:
-			new_ids.add(entry.id)
-		if ids is None:
-			return new_ids
-		else:
-			return ids.intersection(new_ids)
-
 	def query(self, time_from=None, time_until=None, tag=None, event=None, username=None, hostname=None, message=None, locale='en'):
-		# type: (Optional[datetime], Optional[datetime], Optional[str], Optional[str], Optional[str], Optional[str], Optional[str], str) -> List[Dict[str, Any]]
-		ids = None
-		if time_from:
-			ids = self._one_query(ids, self._session.query(Entry).filter(Entry.timestamp >= time_from))
-		if time_until:
-			ids = self._one_query(ids, self._session.query(Entry).filter(Entry.timestamp < time_until))
-		if tag:
-			ids = self._one_query(ids, self._session.query(Entry).filter(Entry.tags.any(Tag.name == tag)))
-		if event:
-			ids = self._one_query(ids, self._session.query(Entry).filter(Entry.event.has(name=event)))
-		if username:
-			ids = self._one_query(ids, self._session.query(Entry).filter(Entry.username == username))
-		if hostname:
-			ids = self._one_query(ids, self._session.query(Entry).filter(Entry.hostname == hostname))
-		if message:
-			pattern_ids = set()
-			for pat in message.split():
-				pattern_ids.update(self._one_query(None, self._session.query(Entry).filter(Entry.message.ilike('%{}%'.format(pat)))))
-				pattern_ids.update(self._one_query(None, self._session.query(Entry).join(EventMessage, Entry.event_id == EventMessage.event_id).filter(Entry.event_id == EventMessage.event_id, EventMessage.locale == locale, EventMessage.message.ilike('%{}%'.format(pat)))))
-				pattern_ids.update(self._one_query(None, self._session.query(Entry).filter(Entry.args.any(Arg.value == pat))))
-			if ids is None:
-				ids = pattern_ids
-			else:
-				ids.intersection_update(pattern_ids)
-		if ids is None:
-			entries = self._session.query(Entry).filter(Entry.event_id != None)  # noqa: E711
-		else:
-			entries = self._session.query(Entry).filter(Entry.id.in_(ids), Entry.event_id != None)  # noqa: E711
 		limit = get_query_limit()
-		if limit:
-			entries = entries.limit(limit)
+
+		with get_session(False) as session:
+			return self.__query(session, limit, time_from, time_until, tag, event, username, hostname, message, locale)
+
+	def __query(self, session, limit, time_from, time_until, tag, event, username, hostname, message, locale):
+		query = session.query(Entry).\
+			outerjoin(Event, Event.id == Entry.event_id).\
+			outerjoin(Arg, Arg.entry_id == Entry.id).\
+			options(joinedload(Entry.event)).\
+			options(joinedload(Entry.args)).\
+			options(joinedload(Entry.comments)).\
+			order_by(Entry.id)
+
+		if time_from:
+			query = query.filter(Entry.timestamp >= time_from)
+		if time_until:
+			query = query.filter(Entry.timestamp < time_until)
+		if tag:
+			query = query.filter(Entry.tags.any(Tag.name == tag))
+		if event:
+			query = query.filter(Entry.event.has(name=event))
+		if username:
+			query = query.filter(Entry.username == username)
+		if hostname:
+			query = query.filter(Entry.hostname == hostname)
+		if message:
+			# in case message is given, we search in entries, event_messages and args tables
+			query = query.outerjoin(EventMessage, EventMessage.event_id == Entry.event_id)
+
+			# form filters array
+			filters = []
+			for pat in message.split():
+				filters.append(
+					or_(
+						Entry.message.ilike('%{}%'.format(pat)),
+						and_(
+							EventMessage.locale == locale,
+							EventMessage.message.ilike('%{}%'.format(pat))
+						),
+						Entry.args.any(Arg.value == pat),
+					)
+				)
+
+			# find all entries matching given message criterion
+			query = query.filter(or_(*filters))
+
 		res = []
-		for entry in entries:
+		for entry in windowed_query(query, Entry.id, limit):
+			if len(res) >= limit:
+				break
+
 			event = entry.event
 			if event:
 				event_name = event.name
 			else:
 				event_name = 'COMMENT'
 			args = dict((arg.key, arg.value) for arg in entry.args)
-			comments = self._session.query(Entry).filter(Entry.context_id == entry.context_id, Entry.message != None).count()  # noqa: E711
+			comments = sum(1 for e in entry.comments if e.message and e.context_id == entry.context_id)
 			res.append({
 				'id': entry.id,
 				'date': entry.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
@@ -332,12 +365,21 @@ class Client(object):
 				'args': args,
 				'comments': comments > 0,
 			})
-		return res
+
+		return res[:limit]
 
 	def get(self, context_id):
 		# type: (int) -> List[Dict[str, Any]]
 		res = []
-		for entry in self._session.query(Entry).filter(Entry.context_id == context_id).order_by('id'):
+		query = self._session.query(Entry).\
+			outerjoin(Event, Event.id == Entry.event_id).\
+			outerjoin(Arg, Arg.entry_id == Entry.id).\
+			options(joinedload(Entry.event)).\
+			options(joinedload(Entry.args)).\
+			filter(Entry.context_id == context_id).\
+			order_by(Entry.id)
+
+		for entry in query.all():
 			args = dict((arg.key, arg.value) for arg in entry.args)
 			tags = [tag.name for tag in entry.tags]
 			event = entry.event

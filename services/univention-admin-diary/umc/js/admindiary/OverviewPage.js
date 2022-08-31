@@ -251,7 +251,7 @@ define([
 							return;
 						}
 
-						if (limit === this._grid.getAllItems().length) {
+						if (limit <= this._grid.getAllItems().length) {
 							var content = _('The search query has reached the limit of %s entries. The limit can be adjusted with the UCR variable <code>admin/diary/query/limit</code>.', limit);
 							this._queryLimitWarning.set('content', content);
 							this._queryLimitWarning.set('visible', true);

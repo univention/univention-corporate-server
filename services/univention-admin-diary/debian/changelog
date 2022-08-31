@@ -1,3 +1,9 @@
+univention-admin-diary (2.0.4-5) unstable; urgency=medium
+
+  * Bug #51902: The UMC module "Admin Diary" now consumes less RAM
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Thu, 18 Aug 2022 12:22:37 +0200
+
 univention-admin-diary (2.0.4-4) unstable; urgency=medium
 
   * Bug #54273: Include debug script in server_password_change/univention-admin-diary subscript
