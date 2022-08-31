@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-admin-diary
-fix:
+fix: 2.0.4-5A~5.0.0.202208311549
 desc: |
  This update addresses the following issue:
  * Reading records from database is optimized to use less RAM and CPU.
