@@ -11,33 +11,40 @@
 
 import ldap
 import pytest
-import copy
 import subprocess
+import os
+import struct
+import binascii
+import Crypto
+import hashlib
+from tempfile import NamedTemporaryFile
 
 import adconnector
 from adconnector import connector_running_on_this_host, connector_setup
+from univention.connector.ad import kerberosAuthenticationFailed, netbiosDomainnameNotFound
 from univention.connector.ad.password import decrypt, decrypt_history, calculate_krb5keys
 
-AD = adconnector.ADConnection()
-
-import univention.testing.connector_common as tcommon  # noqa: E402
-from univention.testing.connector_common import delete_con_user  # noqa: E402
-from univention.testing.connector_common import (  # noqa: E402
-	create_con_user, create_udm_user, delete_udm_user, map_udm_user_to_con, to_unicode, NormalUser
+import univention.testing.connector_common as tcommon
+from univention.testing.connector_common import delete_con_user
+from univention.testing.connector_common import (
+	create_udm_user, to_unicode, NormalUser
 )
-from univention.testing.udm import UCSTestUDM  # noqa: E402
 
 import univention.config_registry
 import univention.testing.strings as tstrings
-from univention.testing.udm import verify_udm_object
 
-from samba.dcerpc import drsuapi, lsa, misc, security, drsblobs, nbt
+from samba.dcerpc import drsuapi, misc, security, drsblobs, nbt
 from samba.ndr import ndr_unpack
-from samba import NTSTATUSError
 from samba.param import LoadParm
 from samba.net import Net
 from samba.credentials import Credentials, DONT_USE_KERBEROS
 from samba import drs_utils
+
+# This is something weird. The `adconnector.ADConnection()` MUST be
+# instantiated, before `UCSTestUDM` is imported.
+AD = adconnector.ADConnection()
+
+from univention.testing.udm import UCSTestUDM, UCSTestUDM_ModifyUDMObjectFailed  # noqa: E402
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
@@ -50,10 +57,6 @@ class ADHistSync_Exception(Exception):
 		else:
 			return Exception.__str__(self)
 	__repr__ = __str__
-
-
-class UDMModify_Exception(ADHistSync_Exception):
-	pass
 
 
 class ADCreateUser_Exception(ADHistSync_Exception):
@@ -75,10 +78,10 @@ def open_drs_connection():
 	ldaps = configRegistry.is_true('connector/ad/ldap/ldaps', False)  # tls or ssl
 
 	lo_ad = univention.uldap.access(
-				host=ad_ldap_host, port=int(ad_ldap_port),
-				base='', binddn=None, bindpw=None, start_tls=tls_mode,
-				use_ldaps=ldaps, ca_certfile=ad_ldap_certificate,
-			)
+		host=ad_ldap_host, port=int(ad_ldap_port),
+		base='', binddn=None, bindpw=None, start_tls=tls_mode,
+		use_ldaps=ldaps, ca_certfile=ad_ldap_certificate,
+	)
 
 	ad_ldap_binddn = configRegistry.get('connector/ad/ldap/binddn')
 	ad_ldap_bindpw_file = configRegistry.get('connector/ad/ldap/bindpw')
@@ -142,7 +145,6 @@ def open_drs_connection():
 			cldap_res = net.finddc(address=ad_ldap_host, flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
 			ad_netbios_domainname = cldap_res.domain_name
 		except RuntimeError:
-			ud.debug(ud.LDAP, ud.WARN, 'Failed to find Netbios domain name from AD server. Maybe the Windows Active Directory server is rebooting. Othwise please configure the NetBIOS setting  manually: "ucr set connector/ad/netbiosdomainname=<AD NetBIOS Domainname>"')
 			raise
 	if not ad_netbios_domainname:
 		raise netbiosDomainnameNotFound('Failed to find Netbios domain name from AD server. Please configure it manually: "ucr set connector/ad/netbiosdomainname=<AD NetBIOS Domainname>"')
@@ -244,7 +246,7 @@ def get_ad_password(computer_guid, dn, drs, drsuapi_handle):
 def create_ad_user(username, password, **kwargs):
 	#  use samba-tool
 	host = configRegistry.get("connector/ad/ldap/host")
-	admin = configRegistry.get("connector/ad/ldap/binddn").split(",")[0][3:]
+	admin = ldap.dn.explode_rdn(configRegistry.get("connector/ad/ldap/binddn"), notypes=True)[0]
 	passw = open(configRegistry.get("connector/ad/ldap/bindpw"), 'r').read()
 	cmd = ["samba-tool", "user", "create", "--use-username-as-cn", username.decode('UTF-8'), password, "--URL=ldap://%s" % host, "-U'%s'%%'%s'" % (admin, passw)]
 
@@ -268,7 +270,7 @@ def create_ad_user(username, password, **kwargs):
 
 def modify_password_ad(username, password):
 	host = configRegistry.get("connector/ad/ldap/host")
-	admin = configRegistry.get("connector/ad/ldap/binddn").split(",")[0][3:]
+	admin = ldap.dn.explode_rdn(configRegistry.get("connector/ad/ldap/binddn"), notypes=True)[0]
 	passw = open(configRegistry.get("connector/ad/ldap/bindpw"), 'r').read()
 	cmd = ["samba-tool", "user", "setpassword", "--newpassword='%s'" % password, username.decode('UTF-8'), "--URL=ldap://%s" % host, "-U'%s'%%'%s'" % (admin, passw)]
 
@@ -282,33 +284,9 @@ def modify_password_ad(username, password):
 	adconnector.wait_for_sync()
 
 
-def udm_modify(**kwargs):
-	cmd = ['/usr/sbin/udm-test', 'users/user', 'modify']
-	args = copy.deepcopy(kwargs)
-
-	for arg in ('binddn', 'bindpwd', 'bindpwdfile', 'dn', 'position', 'superordinate', 'policy_reference', 'policy_dereference', 'append_option'):
-			if arg not in args:
-				continue
-			value = args.pop(arg)
-			if not isinstance(value, (list, tuple)):
-				value = (value,)
-			for item in value:
-				cmd.extend(['--%s' % arg.replace('_', '-'), item])
-
-	for key, value in args.items():
-		if isinstance(value, (list, tuple)):
-			for item in value:
-				cmd.extend(['--append', '%s=%s' % (key, item)])
-		elif value:
-			cmd.extend(['--set', '%s=%s' % (key, value)])
-
-	child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-	(stdout, stderr) = child.communicate()
-	stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
-
-	if child.returncode:
-		raise UDMModify_Exception({'module': 'users/user', 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
-
+def udm_modify(udm, **kwargs):
+	udm._cleanup.setdefault('users/user', []).append(kwargs['dn'])
+	udm.modify_object(modulename='users/user', **kwargs)
 	adconnector.wait_for_sync()
 
 
@@ -356,8 +334,8 @@ def test_create_user_in_AD_set_same_pwd_in_UDM():
 		(ad_user_dn, udm_user_dn) = create_ad_user(tstrings.random_username().encode('UTF-8'), "Univention.2-")
 
 		print("- Try to set original AD password in UDM. (Should Raise)")
-		with pytest.raises(UDMModify_Exception):
-			udm_modify(dn=udm_user_dn, password="Univention.2-")
+		with pytest.raises(UCSTestUDM_ModifyUDMObjectFailed):
+			udm_modify(udm, dn=udm_user_dn, password="Univention.2-")
 		print("Ok")
 		drs, drs_handle, computer_guid = open_drs_connection()
 		nt_hash, keys, nt_hist = get_ad_password(computer_guid, ad_user_dn, drs, drs_handle)
@@ -380,11 +358,11 @@ def test_set_already_used_password_set_in_AD():
 		(udm_user_dn, ad_user_dn) = create_udm_user(udm, AD, udm_user, adconnector.wait_for_sync)
 
 		print("- Set password in AD.")
-		modify_password_ad(ad_user_dn.split(",")[0][3:].encode('UTF-8'), "Njkxsa12.qad")
+		modify_password_ad(ldap.dn.explode_rdn(ad_user_dn, notypes=True)[0].encode('UTF-8'), "Njkxsa12.qad")
 		print("Ok")
 		print("- Set the same password in UCS. (Should Raise)")
-		with pytest.raises(UDMModify_Exception):
-			udm_modify(dn=udm_user_dn, password="Njkxsa12.qad")
+		with pytest.raises(UCSTestUDM_ModifyUDMObjectFailed):
+			udm_modify(udm, dn=udm_user_dn, password="Njkxsa12.qad")
 		print("Ok")
 		drs, drs_handle, computer_guid = open_drs_connection()
 		nt_hash, keys, nt_hist = get_ad_password(computer_guid, ad_user_dn, drs, drs_handle)
