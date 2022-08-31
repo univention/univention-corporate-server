@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -v
-# # coding: utf-8
+# coding: utf-8
 ## desc: "Test the UCS<->S4 NT password history sync"
 ## exposure: dangerous
 ## packages:
@@ -10,20 +10,18 @@
 
 import ldap
 import pytest
-import copy
 import subprocess
 import binascii
 
-import univention.testing.connector_common as tcommon  # noqa: E402
-from univention.testing.connector_common import delete_con_user  # noqa: E402
-from univention.testing.connector_common import (  # noqa: E402
-	create_con_user, create_udm_user, delete_udm_user, map_udm_user_to_con, to_unicode, NormalUser
+import univention.testing.connector_common as tcommon
+from univention.testing.connector_common import delete_con_user
+from univention.testing.connector_common import (
+	create_udm_user, to_unicode, NormalUser
 )
-from univention.testing.udm import UCSTestUDM  # noqa: E402
+from univention.testing.udm import UCSTestUDM, UCSTestUDM_ModifyUDMObjectFailed
 
 import univention.config_registry
 import univention.testing.strings as tstrings
-from univention.testing.udm import verify_udm_object
 
 import s4connector
 from s4connector import connector_running_on_this_host, connector_setup
@@ -39,10 +37,6 @@ class S4HistSync_Exception(Exception):
 		else:
 			return Exception.__str__(self)
 	__repr__ = __str__
-
-
-class UDMModify_Exception(S4HistSync_Exception):
-	pass
 
 
 class S4CreateUser_Exception(S4HistSync_Exception):
@@ -87,33 +81,9 @@ def modify_password_s4(username, password):
 	s4connector.wait_for_sync()
 
 
-def udm_modify(**kwargs):
-	cmd = ['/usr/sbin/udm-test', 'users/user', 'modify']
-	args = copy.deepcopy(kwargs)
-
-	for arg in ('binddn', 'bindpwd', 'bindpwdfile', 'dn', 'position', 'superordinate', 'policy_reference', 'policy_dereference', 'append_option'):
-			if arg not in args:
-				continue
-			value = args.pop(arg)
-			if not isinstance(value, (list, tuple)):
-				value = (value,)
-			for item in value:
-				cmd.extend(['--%s' % arg.replace('_', '-'), item])
-
-	for key, value in args.items():
-		if isinstance(value, (list, tuple)):
-			for item in value:
-				cmd.extend(['--append', '%s=%s' % (key, item)])
-		elif value:
-			cmd.extend(['--set', '%s=%s' % (key, value)])
-
-	child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-	(stdout, stderr) = child.communicate()
-	stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
-
-	if child.returncode:
-		raise UDMModify_Exception({'module': 'users/user', 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
-
+def udm_modify(udm, **kwargs):
+	udm._cleanup.setdefault('users/user', []).append(kwargs['dn'])
+	udm.modify_object(modulename='users/user', **kwargs)
 	s4connector.wait_for_sync()
 
 
@@ -134,12 +104,12 @@ def test_initial_S4_pwd_is_synced():
 		print("Ok")
 
 		print("- Try to set original S4 password in UDM. (Should Raise, the password is in the history)")
-		with pytest.raises(UDMModify_Exception):
-			udm_modify(dn=udm_user_dn, password="Univention.2-")
+		with pytest.raises(UCSTestUDM_ModifyUDMObjectFailed):
+			udm_modify(udm, dn=udm_user_dn, password="Univention.2-")
 		print("Ok")
 
 		print("- Set a different password in in UDM.")
-		udm_modify(dn=udm_user_dn, password="Univention.3-")
+		udm_modify(udm, dn=udm_user_dn, password="Univention.3-")
 		print("Ok")
 
 		delete_con_user(s4, s4_user_dn, udm_user_dn, s4connector.wait_for_sync)
@@ -152,12 +122,12 @@ def test_UCS_pwd_in_s4_history_synced():
 		(udm_user_dn, s4_user_dn) = create_udm_user(udm, s4, udm_user, s4connector.wait_for_sync)
 
 		print("- Set a different password in in S4.")
-		modify_password_s4(s4_user_dn.split(",")[0][3:].encode("UTF-8"), "Univention.5-")
+		modify_password_s4(ldap.dn.explode_rdn(s4_user_dn, notypes=True)[0].encode("UTF-8"), "Univention.5-")
 		print("Ok")
 
 		print("- Try to set the same password in UDM. (Should Raise, the password is in the history)")
-		with pytest.raises(UDMModify_Exception):
-			udm_modify(dn=udm_user_dn, password="Univention.5-")
+		with pytest.raises(UCSTestUDM_ModifyUDMObjectFailed):
+			udm_modify(udm, dn=udm_user_dn, password="Univention.5-")
 		print("Ok")
 
 		s4_results = s4.get(s4_user_dn, attr=['unicodePwd', 'ntPwdHistory'])
