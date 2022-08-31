@@ -3,7 +3,7 @@ release: '4.4'
 version: [9]
 scope: ucs_4.4-0-errata4.4-9
 src: univention-ad-connector
-fix:
+fix: 13.0.0-68A~4.4.0.202208310742
 desc: |-
   This update addresses the following issues:
   * When objects where changed in Microsoft Active Directory, the AD-Connector
