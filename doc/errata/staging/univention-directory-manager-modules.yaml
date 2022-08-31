@@ -16,5 +16,8 @@ desc: |
  * A regression in UCS 5.0 for LDAP presence filters (`attribute=*`) has been
    fixed. UDM modules which rewrite filters can now reliably test for LDAP
    presence filters.
- * The attribute pwhistory can store and interpret NT hashes.
+ * UDM now can store NT hashes in the attribute `pwhistory`. Until now it
+   used the attribute `sambaPasswordHistory`, which only stores salted
+   hashes of hashes, which doesn't allow synchronization to Samba/AD.
+   UDM now doesn't care about the attribute `sambaPasswordHistory` any longer.
 bug: [54596, 33224, 4498, 55037, 52230]
