@@ -41,11 +41,11 @@ Creating object
    .. code-block:: console
 
       $ eval "$(ucr shell)"
-      $ ldapadd -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<__LDIF__
+      $ ldapadd -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<__EOT__
       dn: uid=xxx,$ldap_base
       objectClass: organizationalRole
       cn: xxx
-      __LDIF__
+      __EOT__
 
 
 List object

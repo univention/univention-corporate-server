@@ -112,7 +112,7 @@ in this format additionally. The boot loader configuration is also adapted:
      echo "${GRUB} ${DEV}" >/boot/grub/device.map
    $ append="$(ucr get grub/append | \
      sed -re "s|/dev/sda|${DEV}|g;s|(no)?splash||g")"
-   $ xargs -d'\n' ucr set <<__UCR__
+   $ xargs -d'\n' ucr set <<__EOT__
    grub/append=${append}
    grub/boot=${DEV}
    grub/root=${DEV}1
@@ -122,7 +122,7 @@ in this format additionally. The boot loader configuration is also adapted:
    grub/timeout=0
    grub/terminal=console serial
    grub/serialcommand=serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1
-   __UCR__
+   __EOT__
    $ update-initramfs -uk all
    $ update-grub
 

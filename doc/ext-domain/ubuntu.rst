@@ -57,33 +57,31 @@ to gain read access to the LDAP directory:
 .. code-block:: console
 
    # Become root
-   $ sudo bash <<"EOF"
+   $ sudo bash
 
-   . /etc/univention/ucr_primary_directory_node
+   $ . /etc/univention/ucr_primary_directory_node
 
    # Download the SSL certificate
-   mkdir -p /etc/univention/ssl/ucsCA/
-   wget -O /etc/univention/ssl/ucsCA/CAcert.pem \
+   $ mkdir -p /etc/univention/ssl/ucsCA/
+   $ wget -O /etc/univention/ssl/ucsCA/CAcert.pem \
        http://${ldap_master}/ucs-root-ca.crt
 
    # Create an account and save the password
-   password="$(tr -dc A-Za-z0-9_ </dev/urandom | head -c20)"
-   ssh -n root@${ldap_master} udm computers/ubuntu create \
+   $ password="$(tr -dc A-Za-z0-9_ </dev/urandom | head -c20)"
+   $ ssh -n root@${ldap_master} udm computers/ubuntu create \
        --position "cn=computers,${ldap_base}" \
        --set name=$(hostname) --set password="${password}" \
        --set operatingSystem="$(lsb_release -is)" \
        --set operatingSystemVersion="$(lsb_release -rs)"
-   printf '%s' "$password" >/etc/ldap.secret
-   chmod 0400 /etc/ldap.secret
+   $ printf '%s' "$password" >/etc/ldap.secret
+   $ chmod 0400 /etc/ldap.secret
 
    # Create ldap.conf
-   cat >/etc/ldap/ldap.conf <<__EOF__
+   $ cat >/etc/ldap/ldap.conf <<__EOF__
    TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem
    URI ldap://$ldap_master:7389
    BASE $ldap_base
    __EOF__
-
-   EOF
 
 .. _ubuntu-sssd:
 
@@ -96,15 +94,15 @@ and authentication mechanisms.
 .. code-block:: console
 
    # Become root
-   $ sudo bash <<"EOF"
+   $ sudo bash
 
-   . /etc/univention/ucr_primary_directory_node
+   $ . /etc/univention/ucr_primary_directory_node
 
    # Install SSSD based configuration
-   DEBIAN_FRONTEND=noninteractive apt-get -y install sssd libnss-sss libpam-sss libsss-sudo
+   $ DEBIAN_FRONTEND=noninteractive apt-get -y install sssd libnss-sss libpam-sss libsss-sudo
 
    # Create sssd.conf
-   cat >/etc/sssd/sssd.conf <<__EOF__
+   $ cat >/etc/sssd/sssd.conf <<__EOF__
    [sssd]
    config_file_version = 2
    reconnection_retries = 3
@@ -135,13 +133,13 @@ and authentication mechanisms.
    ldap_default_authtok_type = password
    ldap_default_authtok = $(cat /etc/ldap.secret)
    __EOF__
-   chmod 600 /etc/sssd/sssd.conf
+   $ chmod 600 /etc/sssd/sssd.conf
 
    # Install auth-client-config
-   DEBIAN_FRONTEND=noninteractive apt-get -y install auth-client-config
+   $ DEBIAN_FRONTEND=noninteractive apt-get -y install auth-client-config
 
    # Create an auth config profile for sssd
-   cat >/etc/auth-client-config/profile.d/sss <<__EOF__
+   $ cat >/etc/auth-client-config/profile.d/sss <<__EOF__
    [sss]
    nss_passwd=   passwd:   compat sss
    nss_group=    group:    compat sss
@@ -175,12 +173,10 @@ and authentication mechanisms.
            session [success=1 default=ignore] pam_sss.so
            session required pam_unix.so
    __EOF__
-   auth-client-config -a -p sss
+   $ auth-client-config -a -p sss
 
    # Restart sssd
-   service sssd restart
-
-   EOF
+   $ service sssd restart
 
 The commands :command:`getent passwd` and :command:`getent
 group` should now also display all users and groups of the UCS
@@ -197,9 +193,9 @@ login:
 .. code-block:: console
 
    # Become root
-   $ sudo bash <<"EOF"
+   $ sudo bash
 
-   cat >/usr/share/pam-configs/ucs_mkhomedir <<__EOF__
+   $ cat >/usr/share/pam-configs/ucs_mkhomedir <<__EOF__
    Name: activate mkhomedir
    Default: yes
    Priority: 900
@@ -208,21 +204,19 @@ login:
        required    pam_mkhomedir.so umask=0022 skel=/etc/skel
    __EOF__
 
-   DEBIAN_FRONTEND=noninteractive pam-auth-update --force
-
-   EOF
+   $ DEBIAN_FRONTEND=noninteractive pam-auth-update --force
 
 During login users should also be added to some system groups:
 
 .. code-block:: console
 
    # Become root
-   $ sudo bash <<"EOF"
+   $ sudo bash
 
-   echo '*;*;*;Al0000-2400;audio,cdrom,dialout,floppy,plugdev,adm' \
+   $ echo '*;*;*;Al0000-2400;audio,cdrom,dialout,floppy,plugdev,adm' \
       >>/etc/security/group.conf
 
-   cat >>/usr/share/pam-configs/local_groups <<__EOF__
+   $ cat >>/usr/share/pam-configs/local_groups <<__EOF__
    Name: activate /etc/security/group.conf
    Default: yes
    Priority: 900
@@ -231,9 +225,7 @@ During login users should also be added to some system groups:
        required    pam_group.so use_first_pass
    __EOF__
 
-   DEBIAN_FRONTEND=noninteractive pam-auth-update --force
-
-   EOF
+   $ DEBIAN_FRONTEND=noninteractive pam-auth-update --force
 
 By default the Ubuntu login manager only displays a list of local users
 during login. After adding the following lines an arbitrary user name
@@ -242,17 +234,15 @@ can be used:
 .. code-block:: console
 
    # Become root
-   $ sudo bash <<"EOF"
+   $ sudo bash
 
    # Add a field for a user name, disable user selection at the login screen
-   mkdir /etc/lightdm/lightdm.conf.d
-   cat >>/etc/lightdm/lightdm.conf.d/99-show-manual-userlogin.conf <<__EOF__
+   $ mkdir /etc/lightdm/lightdm.conf.d
+   $ cat >>/etc/lightdm/lightdm.conf.d/99-show-manual-userlogin.conf <<__EOF__
    [SeatDefaults]
    greeter-show-manual-login=true
    greeter-hide-users=true
    __EOF__
-
-   EOF
 
 Kubuntu 14.04 uses ``AccountService``, a D-Bus interface for user
 account management, which ignores the
@@ -277,15 +267,15 @@ provide an example configuration for Kerberos:
 .. code-block:: console
 
    # Become root
-   $ sudo bash <<"EOF"
+   $ sudo bash
 
-   . /etc/univention/ucr_primary_directory_node
+   $ . /etc/univention/ucr_primary_directory_node
 
    # Install required packages
-   DEBIAN_FRONTEND=noninteractive apt-get install -y heimdal-clients ntpdate
+   $ DEBIAN_FRONTEND=noninteractive apt-get install -y heimdal-clients ntpdate
 
    # Default krb5.conf
-   cat >/etc/krb5.conf <<__EOF__
+   $ cat >/etc/krb5.conf <<__EOF__
    [libdefaults]
        default_realm = $kerberos_realm
        kdc_timesync = 1
@@ -305,16 +295,14 @@ provide an example configuration for Kerberos:
    __EOF__
 
    # Synchronize the time with the UCS system
-   ntpdate -bu $ldap_master
+   $ ntpdate -bu $ldap_master
 
    # Test Kerberos: kinit will ask you for a ticket and the SSH login to the Primary Directory Node should work with ticket authentication:
-   kinit Administrator
-   ssh -n Administrator@$ldap_master ls /etc/univention
+   $ kinit Administrator
+   $ ssh -n Administrator@$ldap_master ls /etc/univention
 
    # Destroy the kerberos ticket
-   kdestroy
-
-   EOF
+   $ kdestroy
 
 .. _ubuntu-limits:
 
@@ -324,7 +312,7 @@ Limitations of the Ubuntu domain integration
 It is currently not possible to change the user password at the LightDM
 login manager. Instead, the password can be changed via the
 :command:`kpasswd` command after login or via the UMC module
-:guilabel:`Change password`.
+*Change password*.
 
 .. _ubuntu-ref:
 

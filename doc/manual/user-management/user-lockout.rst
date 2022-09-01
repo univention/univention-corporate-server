@@ -152,11 +152,11 @@ attempts:
 
    $ LB="$(ucr get ldap/base)"
    $ ldapmodify -x -D "cn=admin,$LB" -y /etc/ldap.secret <<__EOT__
-   > dn: cn=default,cn=ppolicy,cn=univention,$LB
-   > changetype: modify
-   > replace: pwdMaxFailure
-   > pwdMaxFailure: 10
-   > __EOT__
+   dn: cn=default,cn=ppolicy,cn=univention,$LB
+   changetype: modify
+   replace: pwdMaxFailure
+   pwdMaxFailure: 10
+   __EOT__
 
 
 The manual unlocking of a user is done in the user administration on the tab

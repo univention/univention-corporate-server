@@ -54,6 +54,7 @@ bibtex_reference_style = "label"
 copybutton_prompt_text = r"\$ |.+# "
 copybutton_prompt_is_regexp = True
 copybutton_line_continuation_character = "\\"
+copybutton_here_doc_delimiter = "EOF"
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

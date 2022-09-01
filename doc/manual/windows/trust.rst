@@ -35,12 +35,12 @@ On the UCS side the conditional forwarding of DNS queries can be set up as
 
 .. code-block:: console
 
-   $ cat >>/etc/bind/local.conf.samba4 <<__CONF__
-   > zone "addom.example" {
-   >   type forward;
-   >   forwarders { 192.0.2.20; };
-   > };
-   > __CONF__
+   $ cat >>/etc/bind/local.conf.samba4 <<__EOT__
+   zone "addom.example" {
+     type forward;
+     forwarders { 192.0.2.20; };
+   };
+   __EOT__
    $ systemctl restart bind9
 
 The success can be checked by running:
