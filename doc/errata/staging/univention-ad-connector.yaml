@@ -13,22 +13,21 @@ desc: |
    this regression introduced in UCS 5.0-0 has been fixed.
  * The connector now synchronizes the password history between AD and UCS.
  * When the password in Microsoft AD was reset for a user account with the
-   flag `user must change password at next logon` active, the AD-Connector
-   did not synchronize the password hashes to UCS in case the UCR variable
+   flag `user must change password at next logon` active, the AD-Connector did
+   not synchronize the password hashes to UCS in case the UCR variable
    `connector/ad/mapping/attributes/irrelevant` was set to the default value.
    This UCR variable lists a number of attributes that should be ignored for
-   performance reasons, like e.g. changes to the AD attribute `lastLogon`.
-   The AD flag `user must change password at next logon` is mapped to the
-   Univention Directory Manager property `pwdChangeNextLogin`.
-   The behavior of the AD-Connector has been adjusted to always synchronize
-   the `post_attributes` listed in `mapping.py` in this case.
-   Please note that environments running an AD-Connector also run Samba/AD
-   should check that `connector/ad/mapping/user/password/kerberos/enabled`
-   is activated. If that's not activated, only the NT hash is synchronized
-   from AD to UDM and then the S4-Connector only synchronizes the NT-Hash,
-   leaving the previous Kerberos hashes in `supplementalCredentials`
-   untouched, thus not conforming to the desired password reset when
-   Kerberos is used in the UCS Samba/AD domain: Non-Kerberos logons would
-   use the new NT-hashes, but Kerberos auth would still use the previous
-   password hashes.
+   performance reasons, like e.g. changes to the AD attribute `lastLogon`. The
+   AD flag `user must change password at next logon` is mapped to the
+   Univention Directory Manager property `pwdChangeNextLogin`. The behavior of
+   the AD-Connector has been adjusted to always synchronize the
+   `post_attributes` listed in `mapping.py` in this case. Please note that
+   environments running an AD-Connector also run Samba/AD should check that
+   `connector/ad/mapping/user/password/kerberos/enabled` is activated. If
+   that's not activated, only the NT hash is synchronized from AD to UDM and
+   then the S4-Connector only synchronizes the NT-Hash, leaving the previous
+   Kerberos hashes in `supplementalCredentials` untouched, thus not conforming
+   to the desired password reset when Kerberos is used in the UCS Samba/AD
+   domain: Non-Kerberos logons would use the new NT-hashes, but Kerberos auth
+   would still use the previous password hashes.
 bug: [54780, 55087, 52230, 52192]
