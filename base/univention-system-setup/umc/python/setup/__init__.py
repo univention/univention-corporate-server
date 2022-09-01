@@ -704,7 +704,7 @@ class Instance(Base, ProgressMixin):
 	@sanitize(pattern=StringSanitizer(), max_results=IntegerSanitizer(minimum=1, default=5))
 	@simple_response
 	def find_city(self, pattern, max_results):
-		pattern = pattern.decode(self.locale.codeset).lower()
+		pattern = pattern.lower()
 		MODULE.info('pattern: %s' % pattern)
 		if not pattern:
 			return []
@@ -715,7 +715,7 @@ class Instance(Base, ProgressMixin):
 		for icity in city_data:
 			match = None
 			for jlabel in icity.get('label', {}).values():
-				label = jlabel.decode(self.locale.codeset).lower()
+				label = jlabel.lower()
 				if pattern in label:
 					# matching score is the overlap if the search pattern and the matched text
 					# (as fraction between 0 and 1)

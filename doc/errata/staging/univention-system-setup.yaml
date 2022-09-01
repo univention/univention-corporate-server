@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-system-setup
+fix:
+desc: |
+ This update addresses the following issues:
+ * The selection and search for countries and cities during the initial
+   system setup has been repaired. It was broken since the Python 3
+   migration.
+bug: [55156]
