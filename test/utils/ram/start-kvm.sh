@@ -7,8 +7,6 @@ export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=ranarp.knut.univention.de}"
 export HALT=false
 export DOCKER=true
 export REPLACE=true
-export UCS_ENV_PASSWORD=univention
-export KVM_KEYPAIR_PASSPHRASE=univention # Initial appliance password
 export UCS_TEST_RUN=false
 
 # user specific instances "username_..."
