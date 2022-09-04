@@ -28,7 +28,18 @@ UDM_USER_DN="uid=$UDM_users_user_username,cn=users,$ldap_base"
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 
-ad_createuser "$UDM_users_user_username" "$DESCRIPTION" || fail_test 110
+
+function ad_create_user_with_password () {
+	local username="$1"
+	local password="$2"
+	local host="$(ucr get connector/ad/ldap/host)"
+	local admin="$(ucr get connector/ad/ldap/binddn | sed 's/,.*//;s/cn=//i')"
+	local pass="$(cat $(ucr get connector/ad/ldap/bindpw))"
+	samba-tool user create --use-username-as-cn "$username" "$password" --URL="ldap://$host" -U"$admin"%"$pass"
+	return $?
+}
+
+ad_create_user_with_password "$UDM_users_user_username" "Univention.99" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 
 ad_exists "$AD_DN"; fail_bool 0 110
