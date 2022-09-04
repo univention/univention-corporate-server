@@ -5,6 +5,7 @@
 ## packages:
 ##   - univention-group-membership-cache
 ## packages-not:
+##   - univention-samba4
 ##   - univention-samba
 
 import random
