@@ -4,6 +4,8 @@
 ## roles: [domaincontroller_master]
 ## bugs: [49823]
 ## exposure: dangerous
+## tags:
+##  - skip_admember
 ## packages:
 ## - univention-management-console-module-udm
 

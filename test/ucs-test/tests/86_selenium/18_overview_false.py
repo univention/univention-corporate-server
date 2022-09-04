@@ -7,9 +7,12 @@
 ## packages:
 ## - univention-management-console-module-udm
 
+import univention.testing.strings as uts
+
 
 def test_overview_false(udm, selenium):
-	_, username = udm.create_user()
+	name = uts.random_name()
+	_, username = udm.create_user(username=name, displayName=name)
 	selenium.driver.get(selenium.base_url + 'univention/management/?overview=false#module=udm:users/user')
 	selenium.do_login(without_navigation=True)
 	selenium.wait_for_text(username)
