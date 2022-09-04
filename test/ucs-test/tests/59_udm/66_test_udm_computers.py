@@ -6,6 +6,7 @@
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
+## timeout: 0
 
 import ipaddress
 import random
