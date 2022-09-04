@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: run app specific tests with appcenter-dev
-## tags: [apptest]
+## tags: [apptest, app_specific_test]
 ## roles-not: [basesystem]
 ## packages:
 ##   - univention-appcenter-dev
