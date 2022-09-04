@@ -41,6 +41,8 @@ find / \
 		-o -path /var/spool/postfix/dev \
 		-o -path /var/run/postgresql \
 		-o -path /var/lib/collectd/rrd \
+		-o -path /var/lib/docker/overlay2 \
+		-o -path "*__pycache__*" \
 	\) -prune \
 	-o -perm /o+w \
 	! \( -type d -perm /+t \) \
