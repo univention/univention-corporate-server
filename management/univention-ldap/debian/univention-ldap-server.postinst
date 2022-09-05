@@ -273,6 +273,16 @@ if [ "$1" = "configure" ]; then
 			fi
 		fi
 	fi
+
+	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 16.0.7-22; then
+		if [ -e /var/univention-join/joined ] ; then
+			if [ "$server_role" = "domaincontroller_master" ] ; then
+				univention-directory-manager \
+					container/cn create \
+					--position "cn=temporary,cn=univention,$ldap_base" \
+					--set name=univentionObjectIdentifier
+			fi
+		fi
 fi
 
 

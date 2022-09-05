@@ -744,6 +744,20 @@ property_descriptions = {
 		show_in_lists=False,
 		cli_enabled=False,
 	),
+	'univentionObjectIdentifier': univention.admin.property(
+		short_description=_('Immutable Object Identifier'),
+		long_description=_('Immutable attribute to track the identity of an object in UDM'),
+		syntax=univention.admin.syntax.string,
+		may_change=False,
+		dontsearch=True,
+	),
+	'univentionSourceIAM': univention.admin.property(
+		short_description=_('Immutable Identifier of the source IAM'),
+		long_description=_('Immutable attribute to identfy source IAM'),
+		syntax=univention.admin.syntax.string,
+		may_change=False,
+		dontsearch=True,
+	),
 }
 
 default_property_descriptions = copy.deepcopy(property_descriptions)  # for later reset of descriptions
@@ -1331,6 +1345,8 @@ mapping.register('jpegPhoto', 'jpegPhoto', univention.admin.mapping.mapBase64, u
 mapping.register('umcProperty', 'univentionUMCProperty', mapKeyAndValue, unmapKeyAndValue)
 mapping.register('lockedTime', 'sambaBadPasswordTime', mapWindowsFiletime, unmapWindowsFiletime)
 mapping.register('accountActivationDate', 'krb5ValidStart', mapDateTimeTimezoneTupleToUTCDateTimeString, unmapUTCDateTimeToLocaltime, encoding='ASCII')
+mapping.register('univentionObjectIdentifier', 'univentionObjectIdentifier', None, univention.admin.mapping.ListToString)
+mapping.register('univentionSourceIAM', 'univentionSourceIAM', None, univention.admin.mapping.ListToString)
 
 mapping.registerUnmapping('sambaRID', unmapSambaRid)
 mapping.registerUnmapping('passwordexpiry', unmapPasswordExpiry)
@@ -1689,6 +1705,11 @@ class object(univention.admin.handlers.simpleLdap):
 			self.alloc.append(('uidNumber', self['uidNumber'], False))
 		else:
 			self['uidNumber'] = self.request_lock('uidNumber')
+
+		if self['univentionObjectIdentifier']:
+			univention.admin.allocators.acquireUnique(self.lo, self.position, 'univentionObjectIdentifier', self['univentionObjectIdentifier'], 'univentionObjectIdentifier', scope='base')
+			# "False" ==> do not update univentionLastUsedValue in LDAP if a specific value has been specified
+			self.alloc.append(('univentionObjectIdentifier', self['univentionObjectIdentifier'], False))
 
 		self._check_uid_gid_uniqueness()
 

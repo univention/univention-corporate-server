@@ -58,7 +58,8 @@ _type2attr = {
 	'aRecord': 'aRecord',
 	'mac': 'macAddress',
 	'groupName': 'cn',
-	'cn-uid-position': 'cn',  # ['cn', 'uid', 'ou']
+	'cn-uid-position': 'cn',  # ['cn', 'uid', 'ou'],
+	'univentionObjectIdentifier': 'univentionObjectIdentifier',
 }
 _type2scope = {
 	'uidNumber': 'base',
@@ -73,6 +74,7 @@ _type2scope = {
 	'mac': 'domain',
 	'groupName': 'domain',
 	'cn-uid-position': 'one',
+	'univentionObjectIdentifier': 'domain',
 }
 
 

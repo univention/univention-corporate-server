@@ -20,4 +20,10 @@ desc: |
    used the attribute `sambaPasswordHistory`, which only stores salted
    hashes of hashes, which doesn't allow synchronization to Samba/AD.
    UDM now doesn't care about the attribute `sambaPasswordHistory` any longer.
-bug: [54596, 33224, 4498, 55037, 52230]
+ * The UDM modules `users/user` and `groups/group` now offer two additional
+   UDM properties `univentionObjectIdentifier` and `univentionSourceIAM`.
+   `univentionObjectIdentifier` will be used by some apps to track the
+   object identity regardless of the source of the object (e.g. either
+   `entryUUID` or `objectGUID`) and in a way that is independent of
+   implementation of the IAM backend (e.g. OpenLDAP or Active Directory).
+bug: [54596, 33224, 4498, 55037, 52230, 55154]

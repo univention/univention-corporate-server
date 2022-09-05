@@ -1,3 +1,10 @@
+univention-ldap (16.0.7-22) unstable; urgency=medium
+
+  * Bug #55154: New univentionObject attributes univentionObjectIdentifier and
+    univentionSourceIAM.
+
+ -- Arvid <requate@univention.de>  Mon, 05 Sep 2022 17:39:05 +0200
+
 univention-ldap (16.0.7-21) unstable; urgency=medium
 
   * Bug #54782: Improved tests cases and backup script

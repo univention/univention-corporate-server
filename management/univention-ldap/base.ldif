@@ -242,6 +242,13 @@ objectClass: univentionObject
 univentionObjectType: container/cn
 cn: domainSID
 
+dn: cn=univentionObjectIdentifier,cn=temporary,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+objectClass: univentionObject
+univentionObjectType: container/cn
+cn: univentionObjectIdentifier
+
 dn: cn=default,cn=univention,@%@ldap/base@%@
 objectClass: top
 objectClass: univentionDefault

@@ -6,7 +6,18 @@ attributetype ( 1.3.6.1.4.1.10176.1003.2 NAME 'univentionObjectFlag'
 	EQUALITY caseExactMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
+attributetype ( 1.3.6.1.4.1.10176.1003.3 NAME 'univentionObjectIdentifier'
+	DESC 'ASCII string representation of a permanent IAM object identifier, like entryUUID or Active Directroy objectGUID'
+	EQUALITY uuidMatch
+	ORDERING UUIDOrderingMatch
+	SYNTAX 1.3.6.1.1.16.1 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1003.4 NAME 'univentionSourceIAM'
+	DESC 'Identifying name of the source IAM of a user or group object created via ad hoc federation'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
 objectclass ( 1.3.6.1.4.1.10176.1003 NAME 'univentionObject'
 	AUXILIARY
 	MUST ( univentionObjectType )
-	MAY ( univentionObjectFlag) )
+	MAY ( univentionObjectFlag $ univentionObjectIdentifier $ univentionSourceIAM ) )

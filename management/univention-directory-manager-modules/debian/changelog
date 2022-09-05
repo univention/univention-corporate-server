@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.13-6) unstable; urgency=medium
+
+  * Bug #55154: New UDM properties univentionObjectIdentifier and
+    univentionSourceIAM for users/user and groups/group
+
+ -- Arvid <requate@univention.de>  Mon, 05 Sep 2022 15:48:21 +0200
+
 univention-directory-manager-modules (15.0.13-5) unstable; urgency=medium
 
   * Bug #52230: Support NT hashes in pwhistory attribute
