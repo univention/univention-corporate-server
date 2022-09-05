@@ -51,9 +51,7 @@ install_vmware_packages ()
 
 install_virtualbox_packages ()
 {
-	ucr set repository/online/unmaintained="yes"
 	univention-install -y --assume-yes virtualbox-guest-x11
-	ucr set repository/online/unmaintained="no"
 }
 
 install_activation_packages ()
@@ -359,7 +357,6 @@ prepare_docker_app () {
 			#	ucr set umc/web/appliance/data_path?"/var/cache/univention-appcenter/${component}."
 			#fi
 			# provide required packages inside container
-			docker exec "$container_id" apt-get -q update
 			docker exec "$container_id" univention-install --yes apt-utils
 			# shellcheck disable=SC2046,SC2086
 			docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(get_app_attr "${app}" DefaultPackages) $(get_app_attr "${app}" DefaultPackagesMaster) $extra_packages
@@ -665,9 +662,7 @@ appliance_preinstall_non_univention_packages ()
 
 install_haveged ()
 {
-	ucr set repository/online/unmaintained="yes"
 	univention-install -y haveged
-	ucr set repository/online/unmaintained="no"
 }
 
 backup_current_local_packagecache ()
@@ -800,8 +795,6 @@ setup_appliance ()
 	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
 	rm -rf /var/cache/univention-system-setup/packages/
 
-	apt-get -q update
-	apt-get -y autoremove
 	download_system_setup_packages "$@"
 
 	# Cleanup apt archive
@@ -907,11 +900,8 @@ appliance_basesettings ()
 {
 	local main_app="$1" app_fav_list="appcenter:appcenter,updater" a app
 
-	ucr set repository/online/unmaintained='yes'
 	ucr set umc/web/appliance/id?"${main_app}"
 	univention-install -y univention-app-appliance
-	ucr set repository/online/unmaintained='no'
-	apt-get -q update
 
 	/usr/sbin/univention-app-appliance --not-configure-portal "$main_app"
 	ucr set grub/title="Start $main_app"
