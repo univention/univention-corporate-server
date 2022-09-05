@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
-# Univention App Appliance
-#   Apply App Appliance specific configuration and branding to different parts of UCS.
-#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -34,25 +31,34 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import sys
+"""
+Apply App Appliance specific configuration and branding to different parts of UCS.
+"""
+
+from __future__ import print_function
+
+import base64
+import json
 import os
 import shutil
-import requests
-import base64
+from argparse import ArgumentParser, Namespace
 from glob import glob
 from subprocess import call
+
+import requests
+
 import univention.admin.modules as udm_modules
 import univention.admin.uldap as udm_uldap
-from univention.app_appliance import Apps, get_luminance, get_app_style_properties, get_cache_dir_name
+from univention.app_appliance import Apps, get_app_style_properties, get_cache_dir_name, get_luminance
+from univention.appcenter.app import App
+from univention.config_registry import ucr_factory
 from univention.config_registry.frontend import ucr_update
-from univention.config_registry import ConfigRegistry
-import json
-
-UCR = ConfigRegistry()
-UCR.load()
 
 
-def _branding_resources_base_url(app_id, ucs_version):
+UCR = ucr_factory()
+
+
+def _branding_resources_base_url(app_id: str, ucs_version: str) -> str:
 	protocol = 'https://'
 	if '://' in UCR.get('repository/app_center/server'):
 		protocol = ''
@@ -64,7 +70,7 @@ def _branding_resources_base_url(app_id, ucs_version):
 	)
 
 
-def _download_resource(app, resource, dest_path):
+def _download_resource(app: App, resource: str, dest_path: str) -> None:
 	app_cache_dir = get_cache_dir_name(app)
 	cached_file_name = os.path.join(app_cache_dir, resource)
 	if os.path.exists(cached_file_name):
@@ -88,36 +94,36 @@ def _download_resource(app, resource, dest_path):
 		print_status('WARNING: Failed to download %s' % resource_url)
 
 
-def print_status(message):
+def print_status(message: str) -> None:
 	print('univention-app-appliance: %s' % message)
 
 
-def cache_portal(app):
+def cache_portal(app: App) -> None:
 	app_props = get_app_style_properties(app)
 	app_de = app.get_app_cache_obj().copy(locale='de').find_by_component_id(app.component_id)
 	app_props_de = get_app_style_properties(app_de)
 	app_cache_dir = get_cache_dir_name(app)
 	if not os.path.exists(app_cache_dir):
 		os.mkdir(app_cache_dir)
-	with open(os.path.join(app_cache_dir, 'app_props'), 'wb') as fd:
+	with open(os.path.join(app_cache_dir, 'app_props'), 'w') as fd:
 		json.dump(app_props, fd)
-	with open(os.path.join(app_cache_dir, 'app_props_de'), 'wb') as fd:
+	with open(os.path.join(app_cache_dir, 'app_props_de'), 'w') as fd:
 		json.dump(app_props_de, fd)
 
 	# portal background
 	if app_props.get('portal_background_image'):
 		img_name = app_props.get('portal_background_image')
 		dest_path = os.path.join(app_cache_dir, img_name)
-		_download_resource(app, img_name, dest_path),
+		_download_resource(app, img_name, dest_path)
 
 	# portal logo
 	if app_props.get('portal_logo'):
 		img_name = app_props.get('portal_logo')
 		dest_path = os.path.join(app_cache_dir, img_name)
-		_download_resource(app, img_name, dest_path),
+		_download_resource(app, img_name, dest_path)
 
 
-def configure_portal(app):
+def configure_portal(app: App) -> None:
 	lo, po = udm_uldap.getMachineConnection()
 	udm_modules.update()
 	module = udm_modules.get('portals/portal')
@@ -151,7 +157,7 @@ def configure_portal(app):
 		img_name = app_props.get('portal_background_image')
 		ext = os.path.splitext(img_name)[1]
 		dest_path = '/tmp/appliance_portal_background_image_%s.%s' % (os.getpid(), ext)
-		_download_resource(app, img_name, dest_path),
+		_download_resource(app, img_name, dest_path)
 		with open(dest_path, 'rb') as fp:
 			base64_img = base64.b64encode(fp.read()).decode('ASCII')
 		portal_obj['background'] = base64_img
@@ -162,7 +168,7 @@ def configure_portal(app):
 		img_name = app_props.get('portal_logo')
 		ext = os.path.splitext(img_name)[1]
 		dest_path = '/tmp/appliance_portal_logo_%s.%s' % (os.getpid(), ext)
-		_download_resource(app, img_name, dest_path),
+		_download_resource(app, img_name, dest_path)
 		with open(dest_path, 'rb') as fp:
 			base64_img = base64.b64encode(fp.read()).decode('ASCII')
 		portal_obj['logo'] = base64_img
@@ -180,7 +186,6 @@ def configure_portal(app):
 }}
 ''')
 
-		UCR.load()
 		ucr_update(UCR, {
 			'ucs/web/theme': 'ucs-app-appliance'
 		})
@@ -193,7 +198,7 @@ def configure_portal(app):
 	portal_obj.modify()
 
 
-def get_theme(app):
+def get_theme(app: App) -> str:
 	primary_color = app.appliance_primary_color
 	theme = 'light'
 	if app.appliance_welcome_screen_font_color:
@@ -205,15 +210,14 @@ def get_theme(app):
 	return theme
 
 
-def main(app):
+def setup_app(app: App) -> None:
 	# query color information
 	css_background = app.appliance_css_background
 	secondary_color = app.appliance_secondary_color
 
 	theme = get_theme(app)
 
-	def set_appliance_ucr_values():
-		UCR.load()
+	def set_appliance_ucr_values() -> None:
 		ucr_update(UCR, {
 			'system/setup/boot/pages/blacklist': app.appliance_pages_blacklist.replace(', ', ' '),
 			'system/setup/boot/fields/blacklist': app.appliance_fields_blacklist.replace(', ', ' '),
@@ -227,7 +231,7 @@ def main(app):
 			'appliance/apps/%s/notifyVendor' % app.id: str(app.notify_vendor),
 		})
 
-	def adjust_svg_image_colors():
+	def adjust_svg_image_colors() -> None:
 		print_status('Adjusting colors of UMC images.')
 		for src_path in glob('/usr/share/univention-app-appliance/images/*.svg'):
 			filename = os.path.basename(src_path)
@@ -242,7 +246,7 @@ def main(app):
 				src_path = '%s.real' % dest_path
 				shutil.copy(src_path, dest_path)
 
-	def symlink_first_steps():
+	def symlink_first_steps() -> None:
 		for lang in ['_DE', '_EN']:
 			source = app.get_cache_file('README_APPLIANCE%s' % (lang, ))
 			target = '/usr/share/univention-web/js/umc/hooks/appliance_readme%s' % (lang.lower(),)
@@ -256,7 +260,7 @@ def main(app):
 			if os.path.exists(source):
 				os.symlink(source, target)
 
-	def set_plymouth_theme():
+	def set_plymouth_theme() -> None:
 		print_status("Applying branded plymouth theme.")
 		if css_background:
 			call(['/usr/share/univention-app-appliance/render-css-background', '1600x1200', css_background, '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % theme])
@@ -268,7 +272,7 @@ def main(app):
 			shutil.copy('/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen.svg.png.fallback' % theme, '/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen.svg.png' % theme)
 		ucr_update(UCR, {'bootsplash/theme': 'ucs-appliance-%s' % (theme,)})
 
-	def set_grub_theme():
+	def set_grub_theme() -> None:
 		print_status("Applying branded grub theme.")
 		grub_color = 'black/black'
 		if theme == 'dark':
@@ -282,7 +286,7 @@ def main(app):
 		}
 		ucr_update(UCR, ucr_vars)
 
-	def commit_css_template_files():
+	def commit_css_template_files() -> None:
 		print_status('Updating CSS and JSON files')
 		css_files = [
 			('setup_style.css', '/usr/share/univention-system-setup/www/style.css'),
@@ -297,11 +301,11 @@ def main(app):
 			except IOError as exc:
 				print_status('ERROR: Could not update template file %s: %s' % (idest_path, exc))
 
-	def _svg_to_png(source, dest, params, res='800x600'):
+	def _svg_to_png(source: str, dest: str, params: str, res: str = '800x600') -> None:
 		css_background = 'url(file:///{source}) {params}'.format(source=source, params=params)
 		call(['/usr/share/univention-app-appliance/render-css-background', res, css_background, dest])
 
-	def download_logo_images():
+	def download_logo_images() -> None:
 		print_status('Downloading images.')
 		if app.appliance_logo:
 			logo = '/usr/share/univention-system-setup/www/welcome.svg'
@@ -337,37 +341,26 @@ def main(app):
 	commit_css_template_files()
 
 
+def parse_args() -> Namespace:
+	parser = ArgumentParser(description=__doc__)
+	parser.add_argument("--only-configure-portal", "-p", action="store_true")
+	parser.add_argument("--not-configure-portal", "-P", action="store_true")
+	parser.add_argument("app", metavar="APP-ID", type=Apps().find)
+	opt = parser.parse_args()
+	return opt
+
+
+def main() -> None:
+	opt = parse_args()
+
+	if opt.not_configure_portal:
+		cache_portal(opt.app)
+	else:
+		configure_portal(opt.app)
+
+	if not opt.only_configure_portal:
+		setup_app(opt.app)
+
+
 if __name__ == '__main__':
-	if '-h' in sys.argv[1:] or '--help' in sys.argv[1:]:
-		print('Apply initial settings for Univention App Appliances.')
-		print('')
-		print('usage: univention-app-appliance [<options>] <AppID>')
-		print('')
-		print('options:')
-		print('  --only-configure-portal')
-		print('  --not-configure-portal')
-		print('')
-		sys.exit()
-
-	only_config_portal = '--only-configure-portal' in sys.argv or '-p' in sys.argv
-	not_config_portal = '--not-configure-portal' in sys.argv or '-P' in sys.argv
-
-	try:
-		# query app information
-		app_id = sys.argv[-1]
-		app = Apps().find(app_id)
-		if not app:
-			raise RuntimeError('Could not find corresponding app for given ID "%s"' % (app_id, ))
-
-		# launch portal config functions
-		if not_config_portal:
-			cache_portal(app)
-		else:
-			configure_portal(app)
-
-		# launch main config functions
-		if not only_config_portal:
-			main(app)
-	except RuntimeError as err:
-		sys.stderr.write('\nERROR: %s\n' % (err, ))
-		sys.exit(1)
+	main()
