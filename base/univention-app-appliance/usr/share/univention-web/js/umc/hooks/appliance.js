@@ -29,7 +29,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define,document,require,window*/
 
 define([
 	"dojo/_base/lang",
