@@ -13,12 +13,12 @@ desc: |
    this regression introduced in UCS 5.0-0 has been fixed.
  * The connector now synchronizes the password history between AD and UCS.
  * When the password in Microsoft AD was reset for a user account with the
-   flag `user must change password at next logon` active, the AD-Connector did
+   flag "user must change password at next logon" active, the AD-Connector did
    not synchronize the password hashes to UCS in case the UCR variable
    `connector/ad/mapping/attributes/irrelevant` was set to the default value.
    This UCR variable lists a number of attributes that should be ignored for
    performance reasons, like e.g. changes to the AD attribute `lastLogon`. The
-   AD flag `user must change password at next logon` is mapped to the
+   AD flag "user must change password at next logon" is mapped to the
    Univention Directory Manager property `pwdChangeNextLogin`. The behavior of
    the AD-Connector has been adjusted to always synchronize the
    `post_attributes` listed in `mapping.py` in this case. Please note that
@@ -28,20 +28,20 @@ desc: |
    then the S4-Connector only synchronizes the NT-Hash, leaving the previous
    Kerberos hashes in `supplementalCredentials` untouched, thus not conforming
    to the desired password reset when Kerberos is used in the UCS Samba/AD
-   domain: Non-Kerberos logons would use the new NT-hashes, but Kerberos auth
-   would still use the previous password hashes.
+   domain: Non-Kerberos logons would use the new NT-hashes, but Kerberos
+   authentication would still use the previous password hashes.
  * When objects where changed in Microsoft Active Directory, the AD-Connector
    checked if the object should be ignored. The decision is based on three
-   criteria, `match_filter`, `ignoresubtree` and the `ignorelist` from which the
-   `ignore_filter` is constructed. Since Bug 37351 has been fixed in `errata4.0-1`
-   this check is not only applied to the new object, but also to the object existing
-   in UDM, which represents the old state at the time of sync.
-   In scenarios where an object is present in UDM and Microsoft Active Directory but
-   matches the `ignore_filter` this had the negative side effect, that the AD object
-   would still be ignored even if the administrator changed an attribute in a way
-   that the new object did not match the `ignore_filter` any longer. This affected
-   user objects.
-   This problem has been fixed by restricting the change for Bug 37351 to apply
-   only to objects matching the criteria of a `windowscomputer`, as these don't
-   have an `ignore_filter`.
+   criteria, `match_filter`, `ignoresubtree` and the `ignorelist` from which
+   the `ignore_filter` is constructed. Since Bug 37351 has been fixed in UCS
+   4.0-1 erratum 131 this check is not only applied to the new object, but
+   also to the object existing in UDM, which represents the old state at the
+   time of sync. In scenarios where an object is present in UDM and Microsoft
+   Active Directory but matches the `ignore_filter` this had the negative side
+   effect, that the AD object would still be ignored even if the administrator
+   changed an attribute in a way that the new object did not match the
+   `ignore_filter` any longer. This affected user objects. This problem has
+   been fixed by restricting the change for Bug 37351 to apply only to objects
+   matching the criteria of a `windowscomputer`, as these don't have an
+   `ignore_filter`.
 bug: [54780, 55087, 52230, 52192, 55150]
