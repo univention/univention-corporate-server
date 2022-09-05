@@ -18,6 +18,7 @@ install_frontend_apps () {
 		ucsschool/ui_users/kelvin/password=univention \
 		ucsschool/ui_users/kelvin/host="$kelvin_host" \
 		ucsschool/ui_users/kelvin/ssl_verify=0
+	univention-app restart ucsschool-bff-users # TODO, shouldn't this be part of the App's configure_host?
 
 	docker images
 	docker ps -a
