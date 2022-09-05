@@ -505,6 +505,7 @@ class TestCase(object):
 		self.timeout = None  # type: Optional[int]
 		self.signaled = None  # type: Optional[int]
 		self.is_pytest = False  # type: bool
+		self.external_junit = None  # type: Optional[str]
 
 	def load(self):  # type: () -> TestCase
 		"""
@@ -563,6 +564,7 @@ class TestCase(object):
 			self.components = CheckComponents(header.get('components', {}))
 			self.packages = CheckPackages(header.get('packages', []), header.get('packages-not', []))
 			self.exposure = CheckExposure(header.get('exposure', 'dangerous'))
+			self.external_junit = header.get('external-junit', '').strip()
 			try:
 				self.timeout = int(header['timeout'])
 			except LookupError:

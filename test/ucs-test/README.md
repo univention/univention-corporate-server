@@ -269,6 +269,18 @@ This is used to classify tests in different categories:
   This includes — for example — creating users and groups in LDAP, re-configuring essential services like LDAP.
 The default is `dangerous`.
 
+### external-junit
+
+Filename of a junit result file that is provided by the test itself.
+This can be used — for example — if the test starts pytest in a container.
+```
+...
+## external_junit: /tmp/my_test_results.xml
+...
+docker exec pytest --junit-xml=/tmp/junit.xml ...
+docker cp container:/tmp/junit.xml /tmp/my_test_results.xml
+```
+
 ## Return value
 In its simplest case a test should return `0` for success and `1` on failure.
 For backward compatibility to previous versions of `ucs-test` several other special values can be returned as well to provide more detailed information.

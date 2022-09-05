@@ -5,6 +5,7 @@ from __future__ import print_function
 
 import errno
 import os
+import shutil
 import sys
 from codecs import encode as _encode
 from datetime import datetime
@@ -78,6 +79,11 @@ class Junit(TestFormatInterface):
 		except OSError as ex:
 			if ex.errno != errno.EEXIST:
 				raise
+
+		if result.case.external_junit and os.path.exists(result.case.external_junit):
+			shutil.copyfile(result.case.external_junit, filename)
+			return
+
 		with open(filename, 'w') as f_report:
 			xml = XMLGenerator(f_report, encoding='utf-8')
 			xml.startDocument()
