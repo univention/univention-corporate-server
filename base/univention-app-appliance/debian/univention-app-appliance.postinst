@@ -35,6 +35,7 @@
 
 #DEBHELPER#
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/umc.sh
 
 _undivert() {
@@ -50,7 +51,7 @@ _undivert() {
 	local diversion_path="$path/${2:-${1##*/}.real}"
 
 	# make sure an already undiverted file is not remove
-	[ -e "$orig_path" -a -e "$diversion_path" ] && rm -f "$orig_path"
+	[ -e "$orig_path" ] && [ -e "$diversion_path" ] && rm -f "$orig_path"
 	if [ -n "$force_remove" ]
 	then
 		# removal of original file is enforced
@@ -68,7 +69,7 @@ case "$1" in
 			_undivert -f /var/www/ucs-overview/css/ucs.css ucs.real.css
 			_undivert -f /usr/share/univention-system-activation/www/css/ucs.css ucs.real.css
 			for i in account.svg credentials.svg domain.svg done.svg fqdn.svg license.svg locale.svg network.svg summary.svg welcome.svg; do
-				_undivert /usr/share/univention-management-console-frontend/js/umc/modules/setup/$i
+				_undivert "/usr/share/univention-management-console-frontend/js/umc/modules/setup/$i"
 			done
 
 			# re-apply branding

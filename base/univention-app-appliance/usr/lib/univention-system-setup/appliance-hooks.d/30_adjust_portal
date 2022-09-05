@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Univention App Appliance
 #   Setup hook script
@@ -35,5 +35,4 @@
 #
 
 # make sure to re-configure the portal object after running the join scripts
-/usr/sbin/univention-app-appliance --only-configure-portal $(ucr get umc/web/appliance/id)
-
+exec /usr/sbin/univention-app-appliance --only-configure-portal "$(ucr get umc/web/appliance/id)"

@@ -37,7 +37,7 @@
 
 _undivert() {
 	# make sure an already 'un-diverted' file is not removed again
-	[ -e "$1" -a -e "$2" ] && rm -f "$1"
+	[ -e "$1" ] && [ -e "$2" ] && rm -f "$1"
 	dpkg-divert --package univention-app-appliance --remove --rename "$1"
 }
 
@@ -49,7 +49,7 @@ case "$1" in
 	remove|disappear|failed-upgrade|abort-install)
 
 		# remove all diversions associated with this package
-		_list_diverted_files | while read orig_path diversion_path
+		_list_diverted_files | while read -r orig_path diversion_path
 		do
 			_undivert "$orig_path" "$diversion_path"
 		done
