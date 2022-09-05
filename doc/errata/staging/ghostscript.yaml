@@ -7,9 +7,10 @@ fix: 9.27~dfsg-2+deb10u6
 desc: |
  This update addresses the following issue:
  * A heap-based buffer over write vulnerability was found in GhostScript's
-   lp8000_print_page() function in gdevlp8k.c file. An attacker could trick a
-   user to open a crafted PDF file, triggering the heap buffer overflow that
-   could lead to memory corruption or a denial of service. (CVE-2020-27792)
+   function `lp8000_print_page()` in `gdevlp8k.c` file. An attacker could
+   trick a user to open a crafted PDF file, triggering the heap buffer
+   overflow that could lead to memory corruption or a denial of service.
+   (CVE-2020-27792)
 bug: [55168]
 cve:
 - CVE-2020-27792
