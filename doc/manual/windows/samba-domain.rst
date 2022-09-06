@@ -368,9 +368,9 @@ The policies are evaluated in the following order:
    linked to the target object, apply. The following evaluation order applies:
 
    * Assignment of a policy to an Active Directory site
- 
+
    * Settings of the default domain policy
- 
+
    * Assignment of a policy to an organizational unit (OU) (in turn, each
      subordinate OU overrules policies from superordinate OUs).
 
