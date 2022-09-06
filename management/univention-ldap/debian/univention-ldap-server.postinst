@@ -283,6 +283,7 @@ if [ "$1" = "configure" ]; then
 					--set name=univentionObjectIdentifier
 			fi
 		fi
+	fi
 fi
 
 
