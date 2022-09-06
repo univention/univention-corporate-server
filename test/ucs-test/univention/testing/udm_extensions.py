@@ -65,7 +65,7 @@ def get_extension_name(extension_type):
 	>>> get_extension_name('module')
 	'ucstest/r3jkljngcp'
 	"""
-	assert(extension_type in VALID_EXTENSION_TYPES)
+	assert extension_type in VALID_EXTENSION_TYPES
 	if extension_type == 'module':
 		return 'ucstest/%s' % random_name()
 	else:
@@ -74,7 +74,7 @@ def get_extension_name(extension_type):
 
 def get_extension_filename(extension_type, extension_name):
 	# type: (str, str) -> str
-	assert(extension_type in VALID_EXTENSION_TYPES)
+	assert extension_type in VALID_EXTENSION_TYPES
 	return '%s.py' % extension_name
 
 
@@ -160,7 +160,7 @@ def get_module_buffer(name=None, identifier=None):
 	"""
 	if name is None:
 		name = 'ucstest/%s' % (random_name(), )
-	assert('/' in name)
+	assert '/' in name
 	if identifier is None:
 		identifier = name
 	return '''# this UDM module has been created by ucs-test
@@ -220,7 +220,7 @@ def get_extension_buffer(extension_type, name=None, identifier=None):
 	Get UDM extension of specified type with specified name.
 	In case the name is omitted, a random name will be used.
 	"""
-	assert(extension_type in VALID_EXTENSION_TYPES)
+	assert extension_type in VALID_EXTENSION_TYPES
 	return {
 		'hook': get_hook_buffer,
 		'syntax': get_syntax_buffer,
@@ -234,7 +234,7 @@ def get_postinst_script_buffer(extension_type, filename, app_id=None, version_st
 	Returns a postinst script that registers the given file as UDM extension with extension type ('hook', 'syntax' or 'module').
 	Optionally UNIVENTION_APP_ID, UCS version start and UCS version end may be specified.
 	"""
-	assert(extension_type in VALID_EXTENSION_TYPES)
+	assert extension_type in VALID_EXTENSION_TYPES
 	if not app_id:
 		app_id = ''
 	else:
@@ -278,10 +278,10 @@ def get_postrm_script_buffer(extension_type, extension_name, package_name):
 	Returns an postrm script that deregisters the given UDM extension. The type of the extension
 	has to be specified ('hook', 'syntax' or 'module').
 	"""
-	assert(extension_type in VALID_EXTENSION_TYPES)
+	assert extension_type in VALID_EXTENSION_TYPES
 	if extension_type == 'module':
-		assert('/' in extension_name)
-	return'''#!/bin/sh
+		assert '/' in extension_name
+	return '''#!/bin/sh
 set -e
 #DEBHELPER#
 . /usr/share/univention-lib/ldap.sh
@@ -296,7 +296,7 @@ def get_join_script_buffer(extension_type, filename, app_id=None, joinscript_ver
 	Returns a join script that registers the given file as UDM extension with extension type ('hook', 'syntax' or 'module').
 	Optionally a joinscript version, UNIVENTION_APP_ID, UCS version start and UCS version end may be specified.
 	"""
-	assert(extension_type in VALID_EXTENSION_TYPES)
+	assert extension_type in VALID_EXTENSION_TYPES
 	if not app_id:
 		app_id = ''
 	else:
@@ -344,10 +344,10 @@ def get_unjoin_script_buffer(extension_type, extension_name, package_name):
 	Returns an unjoin script that deregisters the given UDM extension. The type of the extension
 	has to be specified ('hook', 'syntax' or 'module').
 	"""
-	assert(extension_type in VALID_EXTENSION_TYPES)
+	assert extension_type in VALID_EXTENSION_TYPES
 	if extension_type == 'module':
-		assert('/' in extension_name)
-	return'''#!/bin/sh
+		assert '/' in extension_name
+	return '''#!/bin/sh
 VERSION=1
 set -e
 . /usr/share/univention-join/joinscripthelper.lib
@@ -364,9 +364,9 @@ def get_absolute_extension_filename(extension_type, filename):
 	"""
 	Returns the absolute path to an extentension of the given type and filename.
 	"""
-	assert(extension_type in VALID_EXTENSION_TYPES)
+	assert extension_type in VALID_EXTENSION_TYPES
 	if extension_type == 'module':
-		assert('/' in filename)
+		assert '/' in filename
 	return '/usr/lib/python2.7/dist-packages%s' % ({
 		'hook': '/univention/admin/hooks.d/%s',
 		'syntax': '/univention/admin/syntax.d/%s',
@@ -379,9 +379,9 @@ def get_dn_of_extension_by_name(extension_type, name):
 	"""
 	Returns a list of DNs of UDM extension objects with given type an name, or [] if no object has been found.
 	"""
-	assert(extension_type in VALID_EXTENSION_TYPES)
+	assert extension_type in VALID_EXTENSION_TYPES
 	if extension_type == 'module':
-		assert('/' in name)
+		assert '/' in name
 	searchfilter = {
 		'hook': '(&(objectClass=univentionUDMHook)(cn=%s))' % name,
 		'syntax': '(&(objectClass=univentionUDMSyntax)(cn=%s))' % name,
@@ -395,7 +395,7 @@ def remove_extension_by_name(extension_type, extension_name, fail_on_error=True)
 	"""
 	Remove all extensions of given type and name from LDAP.
 	"""
-	assert(extension_type in VALID_EXTENSION_TYPES)
+	assert extension_type in VALID_EXTENSION_TYPES
 	for dn in get_dn_of_extension_by_name(extension_type, extension_name):
 		cmd = ['/usr/sbin/udm-test', 'settings/udm_%s' % extension_type, 'remove', '--dn', dn]
 		print('CMD: %r' % cmd)

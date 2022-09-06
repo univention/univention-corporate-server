@@ -104,7 +104,7 @@ def main():
 			# check if there is a corresponding valid forward entry for this object
 			if relative_domain_name + "." + zone_name in deadEndRecords:
 				print("\t%s" % comp[0])
-			elif not(relative_domain_name + "." + zone_name in allRecords):
+			elif not (relative_domain_name + "." + zone_name in allRecords):
 				print("\t%s" % comp[0])
 
 

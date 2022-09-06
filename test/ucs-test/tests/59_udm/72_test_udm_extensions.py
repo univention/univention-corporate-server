@@ -1369,7 +1369,7 @@ class Test_UDMExtensions:
 			'univentionUDM%sActive' % extension_type.capitalize(): ['FALSE'],
 		})
 
-		assert(not os.path.exists('/usr/lib/python2.7/dist-packages/univention/admin/hooks.d/%s' % (extension_filename,)))
+		assert not os.path.exists('/usr/lib/python2.7/dist-packages/univention/admin/hooks.d/%s' % (extension_filename,))
 
 		udm.cleanup()
 		wait_for_replication_and_postrun()
@@ -1741,7 +1741,7 @@ class Test_UDMExtensions:
 			'univentionUDM%sActive' % extension_type.capitalize(): ['FALSE'],
 		})
 
-		assert(not os.path.exists('/usr/lib/python2.7/dist-packages/univention/admin/syntax.d/%s' % (extension_filename,)))
+		assert not os.path.exists('/usr/lib/python2.7/dist-packages/univention/admin/syntax.d/%s' % (extension_filename,))
 
 		udm.cleanup()
 		wait_for_replication_and_postrun()
@@ -2048,7 +2048,7 @@ class Test_UDMExtensions:
 			'univentionUDM%sActive' % extension_type.capitalize(): ['FALSE'],
 		})
 
-		assert(not os.path.exists('/usr/lib/python2.7/dist-packages/univention/admin/handlers/%s' % (extension_filename,)))
+		assert not os.path.exists('/usr/lib/python2.7/dist-packages/univention/admin/handlers/%s' % (extension_filename,))
 
 		udm.cleanup()
 		wait_for_replication()

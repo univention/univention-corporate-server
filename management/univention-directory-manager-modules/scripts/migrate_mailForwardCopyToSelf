@@ -92,7 +92,7 @@ def main():
 		"mail/postfix/activate_unionmap_in_virtual_alias_maps",
 		"mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps",
 	]
-	if not(all([ucr.is_true(value) for value in values])) and modify:
+	if not all([ucr.is_true(value) for value in values]) and modify:
 		print("Please execute the following command lines on the DC master and all mail servers, to complete the migration:")
 		print("$ ucr set directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf=yes")
 		print("$ ucr set mail/postfix/activate_unionmap_in_virtual_alias_maps=yes")

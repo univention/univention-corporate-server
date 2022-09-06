@@ -112,7 +112,7 @@ class BaseMailClient(object):
 			x = acl[0].split('"', 1)[1]
 			y = acl[1].split('"', 1)[0]
 			acl[0] = "%s %s" % (x, y)
-			del(acl[1])
+			del acl[1]
 		i = iter(acl[1:])
 		d = dict(zip(i, i))
 		return {acl[0]: d}

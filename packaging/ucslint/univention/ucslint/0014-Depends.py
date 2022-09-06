@@ -36,7 +36,7 @@ import re
 from glob import glob
 from os import listdir
 from os.path import curdir, exists, join, splitext
-from typing import Dict, Iterable, Iterator, Set, Tuple  # noqa: F401
+from typing import Iterable, Iterator, Set  # noqa: F401
 
 from apt import Cache  # type: ignore
 
@@ -89,10 +89,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		need = set()
 		self.debug('Reading %s' % (fn,))
 		try:
-			with open(fn, 'r') as f:
-				for l in f:
+			with open(fn, 'r') as fd:
+				for line in fd:
 					for (key, (regexp, pkgs)) in self.DEPS.items():
-						if regexp.search(l):
+						if regexp.search(line):
 							self.debug('Found %s in %s' % (key.upper(), fn))
 							need.add(key)
 		except EnvironmentError:
@@ -160,9 +160,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		try:
 			fn = join(self.path, 'debian', '%s.univention-config-registry' % (pkg,))
 			if exists(fn):
-				with open(fn, 'r') as f:
-					for l in f:
-						m = self.RE_INIT.match(l)
+				with open(fn, 'r') as fd:
+					for line in fd:
+						m = self.RE_INIT.match(line)
 						if m:
 							fn = join(self.path, 'conffiles', m.group(1))
 							init_files.add(fn)

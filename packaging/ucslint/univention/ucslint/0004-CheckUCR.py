@@ -782,11 +782,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		count_python = 0
 		count_var = 0
 		try:
-			with open(fn, 'r') as f:
-				for l in f:
-					for _ in self.RE_PYTHON.finditer(l):
+			with open(fn, 'r') as fd:
+				for line in fd:
+					for _ in self.RE_PYTHON.finditer(line):
 						count_python += 1
-					for _ in self.RE_VAR.finditer(l):
+					for _ in self.RE_VAR.finditer(line):
 						count_var += 1
 		except EnvironmentError:
 			# self.addmsg('0004-27', 'cannot open/read file', fn)

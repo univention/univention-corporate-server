@@ -5,8 +5,8 @@ VERSION = '0.0.1'
 
 blddir = 'bin'
 
-import sys  # noqa: F402
-import os  # noqa: F402
+import sys  # noqa: F402,E402
+import os  # noqa: F402,E402
 
 # find the buildtools directory
 srcdir = '.'
@@ -14,9 +14,9 @@ while not os.path.exists(srcdir + '/buildtools') and len(srcdir.split('/')) < 5:
     srcdir = '../' + srcdir
 sys.path.insert(0, srcdir + '/buildtools/wafsamba')
 
-import wafsamba  # noqa: F401
-import samba_dist  # noqa: F402
-import Options  # noqa: F402
+import wafsamba  # noqa: F401,E402
+import samba_dist  # noqa: F402,E402
+import Options  # noqa: F402,E402
 
 
 samba_dist.DIST_DIRS('''lib/ldb:.

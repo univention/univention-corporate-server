@@ -69,7 +69,7 @@ class Mail(object):
 		reply = ''
 		try:
 			buff_size = 1024
-			while(True):
+			while True:
 				part = s.recv(buff_size)
 				reply += part
 				if len(part) < buff_size:
