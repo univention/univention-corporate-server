@@ -293,13 +293,9 @@ def setup_app(app: App) -> None:
 			('system_activation_style.css', '/usr/share/univention-system-activation/style.css'),
 		]
 		for isrc_file, idest_path in css_files:
-			file_in = open(os.path.join('/usr/share/univention-app-appliance/templates', isrc_file))
-			file_out = open(idest_path, 'w')
-			try:
+			with open(os.path.join('/usr/share/univention-app-appliance/templates', isrc_file)) as file_in, open(idest_path, 'w') as file_out:
 				print_status('Creating template file %s' % (idest_path, ))
 				call(['/usr/sbin/ucr', 'filter'], stdin=file_in, stdout=file_out)
-			except IOError as exc:
-				print_status('ERROR: Could not update template file %s: %s' % (idest_path, exc))
 
 	def _svg_to_png(source: str, dest: str, params: str, res: str = '800x600') -> None:
 		css_background = 'url(file:///{source}) {params}'.format(source=source, params=params)
