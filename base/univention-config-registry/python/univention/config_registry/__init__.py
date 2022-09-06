@@ -48,8 +48,8 @@ from univention.config_registry.frontend import (  # noqa: F401
 )
 from univention.debhelper import parseRfc822  # noqa: F401
 
-ucr = Proxy(lambda: _RCR().load(autoload=Load.ONCE))
-ucr_live = Proxy(lambda: _RCR().load(autoload=Load.ALWAYS))
+ucr = Proxy(lambda: _RCR().load(autoload=Load.ONCE))  # type: _RCR
+ucr_live = Proxy(lambda: _RCR().load(autoload=Load.ALWAYS))  # type: _RCR
 
 
 def ucr_factory():  # type: () -> ConfigRegistry
