@@ -21,4 +21,4 @@
 .. _univention-py-notifier: https://github.com/univention/python-notifier
 .. _univention-wiki: https://wiki.univention.de/index.php/Main_Page
 .. _w-iso-639-1: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-.. _w3-object-store: http://www.w3.org/TR/IndexedDB/#object-store
+.. _w3-object-store: https://www.w3.org/TR/IndexedDB/#object-store
