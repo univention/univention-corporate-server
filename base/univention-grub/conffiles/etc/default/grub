@@ -17,7 +17,7 @@ GRUB_TIMEOUT=@%@grub/timeout@%@
 GRUB_DISTRIBUTOR="Univention Corporate Server"
 
 @!@
-defoptions=''
+defoptions = ''
 if configRegistry.is_true('grub/quiet', False):
     defoptions += ' quiet'
 if configRegistry.get('grub/loglevel', False):

@@ -33,7 +33,7 @@ if configRegistry['samba/role'] == 'domaincontroller':
     if (not configRegistry['samba/homedirpath'] or configRegistry['samba/homedirpath'] == 'local') and configRegistry['samba/homedirserver'] and configRegistry['samba/homedirserver'] == 'local':
         print('\tlogon home =')
     elif configRegistry['samba/homedirserver'] and configRegistry['samba/homedirpath']:
-        print('\tlogon home = \\\\%s\%s' % (configRegistry['samba/homedirserver'], configRegistry['samba/homedirpath']))
+        print('\tlogon home = \\\\%s\\%s' % (configRegistry['samba/homedirserver'], configRegistry['samba/homedirpath']))
 
     if configRegistry['samba/homedirletter'] and len(configRegistry['samba/homedirletter']) == 1:
         print('\tlogon drive = %s:' % configRegistry['samba/homedirletter'])
@@ -43,7 +43,7 @@ if configRegistry['samba/role'] == 'domaincontroller':
     if (not configRegistry['samba/profilepath'] or configRegistry['samba/profilepath'] == 'local') and configRegistry['samba/profileserver'] and configRegistry['samba/profileserver'] == 'local':
         print('\tlogon path =')
     elif configRegistry['samba/profileserver'] and configRegistry['samba/profilepath']:
-        print('\tlogon path = \\\\%s\%s' % (configRegistry['samba/profileserver'], configRegistry['samba/profilepath']))
+        print('\tlogon path = \\\\%s\\%s' % (configRegistry['samba/profileserver'], configRegistry['samba/profilepath']))
 
     if configRegistry.get('samba/logonscript'):
         print('\tlogon script = %s' % configRegistry['samba/logonscript'])

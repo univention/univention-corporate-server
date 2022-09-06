@@ -27,7 +27,7 @@ except ImportError:
     # this happens sometimes during release updates
     # ... an empty file is fine then
     apps = []
-except:
+except BaseException:
     # well THIS is weird.
     # Anyway, just use an empty file. The problem will be visible as soon as the UMC module
     # is opened

@@ -1,5 +1,6 @@
 ### database definition
 @!@
+from collections import defaultdict
 print('\n')
 print('database\t%(ldap/database/type)s' % configRegistry)
 print('suffix\t\t"%(ldap/base)s"' % configRegistry)
@@ -61,7 +62,6 @@ elif configRegistry['ldap/database/type'] == "mdb":
     if configRegistry.get('ldap/database/mdb/envflags'):
         print('envflags %(ldap/database/mdb/envflags)s' % configRegistry)
 
-from collections import defaultdict
 attr2index = defaultdict(list)
 for indextype in ('pres', 'eq', 'sub', 'approx'):
     value = configRegistry.get("ldap/index/" + indextype, "").strip()
@@ -89,7 +89,7 @@ elif configRegistry['ldap/server/type'] == "slave":
     print('include\t\t/etc/ldap/rootpw.conf')
     print('updatedn\t"cn=update,%(ldap/base)s"' % configRegistry)
     if configRegistry.is_true("ldap/online/master", True):
-        print('updateref\tldap://%(ldap/master)s:%(ldap/master/port)s'% configRegistry)
+        print('updateref\tldap://%(ldap/master)s:%(ldap/master/port)s' % configRegistry)
 @!@
 
 directory	"/var/lib/univention-ldap/ldap"

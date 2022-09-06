@@ -27,7 +27,7 @@ print("\t\t[ ! -f /var/run/samba/nmbd.pid ] || kill -HUP `cat /var/run/samba/nmb
 print("\tendscript")
 print("}")
 
-filelist = [ "/var/log/samba/%s" % name for name in ('log.samba-dcerpcd', 'log.rpcd_*')]
+filelist = ["/var/log/samba/%s" % name for name in ('log.samba-dcerpcd', 'log.rpcd_*')]
 print(" ".join(filelist) + " {")
 for setting in sorted(settings):
     print("\t%s" % settings[setting])

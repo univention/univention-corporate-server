@@ -1,11 +1,11 @@
 @!@
 import re
 
-reg_user = re.compile('samba/share/([^\/]+)/usergroup/([^\/]+)/invalid')
-reg_options = re.compile('samba/share/([^\/]+)/options/(.*)')
+reg_user = re.compile('samba/share/([^\\/]+)/usergroup/([^\\/]+)/invalid')
+reg_options = re.compile('samba/share/([^\\/]+)/options/(.*)')
 reg_globals = re.compile('samba/global/options/(.*)')
 reg_printmode = re.compile('samba/printmode/usergroup/(.*)')
-reg_othershares = re.compile('samba/othershares/usergroup/([^\/]+)/invalid')
+reg_othershares = re.compile('samba/othershares/usergroup/([^\\/]+)/invalid')
 
 include = False
 include_file = "/etc/samba/local.config.conf"
@@ -33,6 +33,5 @@ for key in configRegistry.keys():
 
 if include:
     print("\tinclude = %s\n" % include_file)
-
 @!@
 

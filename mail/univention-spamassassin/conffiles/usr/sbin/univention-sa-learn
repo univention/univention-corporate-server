@@ -60,29 +60,29 @@ else:
     hamFolder = hamFolder.strip("/").replace("/", ".")
 
 base_folder = "/var/spool/dovecot/private/"
-user_folder = "\*/\*/Maildir/."
+user_folder = "\\*/\\*/Maildir/."
 # find RFC 6154 flagged \Junk folders, add them if they are not there anyway
 if spamFolder.lower() == "none":
     junk = ""
 else:
     junk = "-wholename %s%s" % (user_folder, spamFolder)
 for key, value in configRegistry.items():
-    if key.startswith("mail/dovecot/mailboxes/special/") and value == "\Junk":
+    if key.startswith("mail/dovecot/mailboxes/special/") and value == "\\Junk":
         _folder = key.split("/")[-1]
         if _folder and _folder != spamFolder:
             _folder = _folder.strip("/").replace("/", ".")
             if junk:
                 junk += " -o "
-            junk += "-wholename \*/\*/Maildir/.%s" % _folder
+            junk += "-wholename \\*/\\*/Maildir/.%s" % _folder
 
 if junk:
     print('''
-find %(base)s \( %(junk)s \) \\
-	-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --spam {} \;
+find %(base)s \\( %(junk)s \\) \\
+	-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --spam {} \\;
 ''' % {"base": base_folder, "junk": junk})
 
 if hamFolder.lower() != "none":
     print('''find %(base)s -wholename %(user)s%(hamFolder)s \\
-	-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --ham {} \;
+	-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --ham {} \\;
 ''' % {"base": base_folder, "user": user_folder, "hamFolder": hamFolder})
 @!@

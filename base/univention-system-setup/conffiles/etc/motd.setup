@@ -101,7 +101,7 @@ if configRegistry.is_true('server/amazon', False):
 if not url_list:
     interfaces = Interfaces(configRegistry)
     for ifname, iface in interfaces.all_interfaces:
-        #IPv4
+        # IPv4
         if iface.type == 'dhcp':
             addr = get_ip_address(ifname)
             url_list.append('https://%s/' % (addr,))

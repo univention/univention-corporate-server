@@ -62,6 +62,9 @@ ip6tables --wait -A INPUT -p icmpv6 -j ACCEPT
 
 
 @!@
+import re
+
+
 def print_packetfilter(key, value):
     items = key.split('/')
     addrv6 = items[-1]
@@ -83,7 +86,7 @@ def print_packetfilter(key, value):
 
     if addrv4 is not None:
         if addrv4:
-            addrv4 = '-d ' + ''.join([ x for x in addrv4 if x in set('0123456789.')])
+            addrv4 = '-d ' + ''.join([x for x in addrv4 if x in set('0123456789.')])
         print('iptables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
             'protocol': items[-3],
             'addr_args': addrv4,
@@ -93,7 +96,7 @@ def print_packetfilter(key, value):
 
     if addrv6 is not None:
         if addrv6:
-            addrv6 = '-d ' + ''.join([ x for x in addrv6 if x in set('abcdefABCDEF0123456789:.')])
+            addrv6 = '-d ' + ''.join([x for x in addrv6 if x in set('abcdefABCDEF0123456789:.')])
         print('ip6tables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
             'protocol': items[-3],
             'addr_args': addrv6,
@@ -114,8 +117,7 @@ def print_descriptions(var):
 
 filterlist = {}
 
-import re
-rePort = re.compile('^\d+(:\d+)?$')
+rePort = re.compile('^\\d+(:\\d+)?$')
 
 # get package settings
 if configRegistry.is_true('security/packetfilter/use_packages', True):

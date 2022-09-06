@@ -66,8 +66,8 @@ print('masquerade_exceptions = %s' % configRegistry.get('mail/postfix/masquerade
 
 print('')
 
-transport_maps = re.split(',\s*', configRegistry.get('mail/postfix/maps/transport', 'hash:/etc/postfix/transport' ))
-if configRegistry.is_true('mail/postfix/transport/ldap/enabled',False):
+transport_maps = re.split(',\\s*', configRegistry.get('mail/postfix/maps/transport', 'hash:/etc/postfix/transport'))
+if configRegistry.is_true('mail/postfix/transport/ldap/enabled', False):
     transport_maps.append('ldap:/etc/postfix/ldap.transport')
 print('transport_maps = %s' % ',\n        '.join(transport_maps))
 
@@ -88,7 +88,7 @@ if configRegistry.is_true('mail/relayauth', False):
 @!@
 
 @!@
-yesno = { True: 'yes', False: 'no' }
+yesno = {True: 'yes', False: 'no'}
 print('disable_vrfy_command = %s' % yesno.get(configRegistry.is_true('mail/smtp/VRFY/disabled', False)))
 @!@
 

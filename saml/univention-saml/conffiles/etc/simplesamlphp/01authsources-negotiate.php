@@ -18,7 +18,7 @@ $config['univention-negotiate'] = array(
     print("	'adminUser' => '%s'," % (ldap_user,))
     password = ''
     try:
-        password = open('/etc/idp-ldap-user.secret','r').read().strip()
+        password = open('/etc/idp-ldap-user.secret', 'r').read().strip()
     except (IOError, OSError):
         import sys
         sys.stderr.write('/etc/idp-ldap-user.secret could not be read!')

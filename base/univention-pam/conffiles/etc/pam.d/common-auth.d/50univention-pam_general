@@ -18,12 +18,13 @@ auth     [success=<succ> new_authtok_reqd=ok \
 
 
 def pam_section(template, last):
-    succ='done'
-    unavail='die'
-    fail='die'
+    succ = 'done'
+    unavail = 'die'
+    fail = 'die'
     unknown = 'die' if last else 'ignore'
 
     return template.replace('<succ>', succ).replace('<unavail>', unavail).replace('<fail>', fail).replace('<unknown>', unknown)
+
 
 methods = [x for x in configRegistry['auth/methods'].split(' ') if x in ['krb5', 'ldap', 'winbind']]
 

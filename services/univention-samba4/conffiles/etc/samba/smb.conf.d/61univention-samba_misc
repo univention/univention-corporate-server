@@ -14,7 +14,7 @@ else:
     print('\tmsdfs root = no')
 
 
-## and now the options for smbd:
+# and now the options for smbd:
 
 if configRegistry.get('samba4/service/smb', 'smbd') in ('smbd', 's3fs'):
 
@@ -42,7 +42,7 @@ if configRegistry.get('samba4/service/smb', 'smbd') in ('smbd', 's3fs'):
         if (not configRegistry['samba/homedirpath'] or configRegistry['samba/homedirpath'] == 'local') and configRegistry['samba/homedirserver'] and configRegistry['samba/homedirserver'] == 'local':
             print('\tlogon home =')
         elif configRegistry['samba/homedirserver'] and configRegistry['samba/homedirpath']:
-            print('\tlogon home = \\\\%s\%s' % (configRegistry['samba/homedirserver'], configRegistry['samba/homedirpath']))
+            print('\tlogon home = \\\\%s\\%s' % (configRegistry['samba/homedirserver'], configRegistry['samba/homedirpath']))
 
         if configRegistry['samba/homedirletter'] and len(configRegistry['samba/homedirletter']) == 1:
             print('\tlogon drive = %s:' % configRegistry['samba/homedirletter'])
@@ -52,9 +52,8 @@ if configRegistry.get('samba4/service/smb', 'smbd') in ('smbd', 's3fs'):
         if (not configRegistry['samba/profilepath'] or configRegistry['samba/profilepath'] == 'local') and configRegistry['samba/profileserver'] and configRegistry['samba/profileserver'] == 'local':
             print('\tlogon path =')
         elif configRegistry['samba/profileserver'] and configRegistry['samba/profilepath']:
-            print('\tlogon path = \\\\%s\%s' % (configRegistry['samba/profileserver'], configRegistry['samba/profilepath']))
+            print('\tlogon path = \\\\%s\\%s' % (configRegistry['samba/profileserver'], configRegistry['samba/profilepath']))
 
     print('\tpreserve case = %s' % configRegistry.get('samba/preserve_case', 'yes'))
     print('\tshort preserve case = %s' % configRegistry.get('samba/short_preserve_case', 'yes'))
-
 @!@

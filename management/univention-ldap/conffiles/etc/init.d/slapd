@@ -200,7 +200,7 @@ if configRegistry['ldap/database/type'] == 'bdb':
 	log_action_begin_msg "Starting ldap server(s): slapd "
 
 @!@
-uris=['ldapi:///']
+uris = ['ldapi:///']
 for p in configRegistry.get('slapd/port', '7389').split(','):
     uris.append('ldap://:%s/' % p)
 for p in configRegistry.get('slapd/port/ldaps', '7636').split(','):
@@ -232,7 +232,7 @@ if configRegistry.get('ldap/maxopenfiles'):
 	test -e /var/run/slapd/ldapi && ln -sf /var/run/slapd/ldapi /var/run/ldapi
 
 @!@
-if configRegistry['ldap/server/type']=="master":
+if configRegistry['ldap/server/type'] == "master":
     print('\tlog_action_begin_msg "Checking Schema ID: "')
     print('\tcheck_subschema 2>&1')
     print('\tlog_action_end_msg 0')

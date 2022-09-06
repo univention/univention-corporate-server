@@ -1,18 +1,17 @@
 @!@
 import json
 
+
 def get_selfservice_definitions():
     def get_title_account_unverified():
         variable = 'saml/idp/selfservice/account-verification/error-title'
         fallback = 'Account not verified'
         return configRegistry.get(variable + '/en', configRegistry.get(variable, fallback))
 
-
     def get_descr_account_unverified():
         variable = 'saml/idp/selfservice/account-verification/error-descr'
         fallback = '<span>You must <a href="/univention/selfservice/#/selfservice/verifyaccount">verify your account</a> before you can login.</span>'
         return configRegistry.get(variable + '/en', configRegistry.get(variable, fallback))
-
 
     selfservice_definitions = {
         'title_univention:SELFSERVICE_ACCUNVERIFIED': {

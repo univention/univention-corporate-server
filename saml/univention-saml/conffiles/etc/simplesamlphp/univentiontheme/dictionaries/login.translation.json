@@ -18,7 +18,6 @@ def get_login_translations():
             pass
         return translations
 
-
     login_translations = {
         'loginat': loginat(),
     }

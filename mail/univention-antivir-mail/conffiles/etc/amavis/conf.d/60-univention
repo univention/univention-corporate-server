@@ -493,7 +493,7 @@ $viruses_that_fake_sender_re = new_RE(
 if configRegistry.get('mail/antivir/virus_admin'):
     print("$virus_admin = '%s';" % configRegistry['mail/antivir/virus_admin'])
 else:
-    print('$virus_admin = "postmaster\@%s.$mydomain";' % configRegistry['hostname'])
+    print('$virus_admin = "postmaster\\@%s.$mydomain";' % configRegistry['hostname'])
 @!@
 
 # equivalent to $virus_admin, but for spam admin notifications:
@@ -727,12 +727,12 @@ for n, x, d in spec:
         v[n] = d
 values = (v['double'], v['basic'], v['long'], v['long'], v['long'], v['file'], v['mime'], v['rfc'])
 print('''$banned_filename_re = new_RE(
-%s  qr'\.[a-zA-Z][a-zA-Z0-9]{0,3}\.(vbs|pif|scr|bat|com|exe|dll)$'i, # double extension
-%s  qr'.\.(exe|vbs|pif|scr|bat|com)$'i,               # banned extension - basic
-%s  qr'.\.(ade|adp|bas|bat|chm|cmd|com|cpl|crt|exe|hlp|hta|inf|ins|isp|js|
+%s  qr'\\.[a-zA-Z][a-zA-Z0-9]{0,3}\\.(vbs|pif|scr|bat|com|exe|dll)$'i, # double extension
+%s  qr'.\\.(exe|vbs|pif|scr|bat|com)$'i,               # banned extension - basic
+%s  qr'.\\.(ade|adp|bas|bat|chm|cmd|com|cpl|crt|exe|hlp|hta|inf|ins|isp|js|
 %s         jse|lnk|mdb|mde|msc|msi|msp|mst|pcd|pif|reg|scr|sct|shs|shb|vb|
 %s         vbe|vbs|wsc|wsf|wsh)$'ix,                  # banned extension - long
-%s  qr'^\.(exe|zip|lha|tnef)$'i,                      # banned file(1) types
+%s  qr'^\\.(exe|zip|lha|tnef)$'i,                      # banned file(1) types
 %s  qr'^application/x-msdownload$'i,                  # banned MIME types
 %s  qr'^message/partial$'i, qr'^message/external-body$'i, # rfc2046
 );''' % values)
@@ -756,7 +756,6 @@ if configRegistry.get(key):
     else:
         print("$banned_files_quarantine_method='smtp:127.0.0.1:10025';")
         print("$banned_quarantine_to = '%s';" % to)
-
 @!@
 
 
@@ -1276,7 +1275,7 @@ if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/sca
     if 'trophie' in scanner:
         print("### http://www.vanja.com/tools/trophie/")
         print("['Trophie',")
-        print("  \&ask_daemon, [\"{}/\\n\", '/var/run/trophie'],")
+        print("  \\&ask_daemon, [\"{}/\\n\", '/var/run/trophie'],")
         print("  qr/(?x)^ 0+ ( : | [\\000\\r\\n]* $)/,  qr/(?x)^ 1 ( : | [\\000\\r\\n]* $)/,")
         print("  qr/(?x)^ [-+]? \\d+ : (.*?) [\\000\\r\\n]* $/ ],")
 
@@ -1424,7 +1423,7 @@ if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/sca
         print("   '-aut -aex -heu -cmp -nbr -nor -nso -eng {}',")
         print("   qr/Number of files infected[ \\.]*: 0(?!\\d)/,")
         print("   qr/Number of files infected[ \\.]*: 0*[1-9]/,")
-        print("   qr/Found virus :\\s*(\S+)/ ],")
+        print("   qr/Found virus :\\s*(\\S+)/ ],")
 
     # GeCAD AV technology is acquired by Microsoft; RAV has been discontinued.
     # Check your RAV license terms before fiddling with the following two lines!
@@ -1440,7 +1439,7 @@ if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/sca
         print("   qr/(?x) Found (?:")
         print("       \\ the\\ (.+)\\ (?:virus|trojan)  |")
         print("       \\ (?:virus|trojan)\\ or\\ variant\\ ([^ ]+)  |")
-        print("       :\\ (.+)\ NOT\\ a\\ virus)/,")
+        print("       :\\ (.+)\\ NOT\\ a\\ virus)/,")
         print("sub {$ENV{LD_PRELOAD}='/lib/libc.so.6'},")
         print("sub {delete $ENV{LD_PRELOAD}},")
         print(" ],")

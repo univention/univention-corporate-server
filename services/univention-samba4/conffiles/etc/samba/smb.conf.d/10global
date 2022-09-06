@@ -29,7 +29,7 @@ elif samba4_role == 'MEMBER':
 samba_serverstring = configRegistry.get('samba/serverstring', 'Univention Corporate Server')
 print('\tserver string\t= %s' % (samba_serverstring,))
 
-## build up and set server services option list if non-empty
+# build up and set server services option list if non-empty
 server_services = ['-dns']
 if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
     server_services.append('-smb')
@@ -99,7 +99,7 @@ for key, smbstring in [
 
 print('\tntlm auth\t= %s' % (configRegistry.get('samba/ntlm/auth', 'ntlmv2-only')))
 
-## legacy settings for smbd
+# legacy settings for smbd
 if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
     for key, smbstring in [
             ('samba/charset/display', 'display charset'),

@@ -1,8 +1,8 @@
 
 	; idmap/winbind
 @!@
-### <idmap config v6 for Samba 3.6.0>
-## Note: ldap idmap suffix might be obsoleted by 'idmap config * : ldap_base_dn'
+# <idmap config v6 for Samba 3.6.0>
+# Note: ldap idmap suffix might be obsoleted by 'idmap config * : ldap_base_dn'
 print('\tldap idmap suffix = cn=idmap,cn=univention')
 
 ldap_server_name = configRegistry.get('ldap/server/name', 'localhost')
