@@ -35,8 +35,6 @@
 Apply App Appliance specific configuration and branding to different parts of UCS.
 """
 
-from __future__ import print_function
-
 import base64
 import json
 import os
@@ -44,6 +42,7 @@ import shutil
 from argparse import ArgumentParser, Namespace
 from glob import glob
 from subprocess import call
+from typing import Dict
 
 import requests
 
@@ -60,11 +59,12 @@ UCR = ucr_factory()
 
 def _branding_resources_base_url(app_id: str, ucs_version: str) -> str:
 	protocol = 'https://'
-	if '://' in UCR.get('repository/app_center/server'):
+	server = UCR.get('repository/app_center/server')
+	if '://' in server:
 		protocol = ''
 	return '{protocol}{server}/meta-inf/{version}/{app}'.format(
 		protocol=protocol,
-		server=UCR.get('repository/app_center/server'),
+		server=server,
 		version=ucs_version,
 		app=app_id
 	)
@@ -99,10 +99,10 @@ def print_status(message: str) -> None:
 
 
 def cache_portal(app: App) -> None:
-	app_props = get_app_style_properties(app)
-	app_de = app.get_app_cache_obj().copy(locale='de').find_by_component_id(app.component_id)
-	app_props_de = get_app_style_properties(app_de)
-	app_cache_dir = get_cache_dir_name(app)
+	app_props: Dict[str, str] = get_app_style_properties(app)
+	app_de: App = app.get_app_cache_obj().copy(locale='de').find_by_component_id(app.component_id)
+	app_props_de: Dict[str, str] = get_app_style_properties(app_de)
+	app_cache_dir: str = get_cache_dir_name(app)
 	if not os.path.exists(app_cache_dir):
 		os.mkdir(app_cache_dir)
 	with open(os.path.join(app_cache_dir, 'app_props'), 'w') as fd:
@@ -111,16 +111,16 @@ def cache_portal(app: App) -> None:
 		json.dump(app_props_de, fd)
 
 	# portal background
-	if app_props.get('portal_background_image'):
-		img_name = app_props.get('portal_background_image')
-		dest_path = os.path.join(app_cache_dir, img_name)
-		_download_resource(app, img_name, dest_path)
+	image_name = app_props.get('portal_background_image')
+	if image_name:
+		dest_path = os.path.join(app_cache_dir, image_name)
+		_download_resource(app, image_name, dest_path)
 
 	# portal logo
-	if app_props.get('portal_logo'):
-		img_name = app_props.get('portal_logo')
-		dest_path = os.path.join(app_cache_dir, img_name)
-		_download_resource(app, img_name, dest_path)
+	image_name = app_props.get('portal_logo')
+	if image_name:
+		dest_path = os.path.join(app_cache_dir, image_name)
+		_download_resource(app, image_name, dest_path)
 
 
 def configure_portal(app: App) -> None:
@@ -139,10 +139,11 @@ def configure_portal(app: App) -> None:
 
 	# portal title
 	print_status('Setting portal title...')
-	if app_props.get('portal_title'):
+	portal_title = app_props.get('portal_title')
+	if portal_title:
 		portal_obj['displayName'] = [
-			['en_US', app_props.get('portal_title')],
-			['de_DE', app_props_de.get('portal_title', app_props.get('portal_title'))],
+			['en_US', portal_title],
+			['de_DE', app_props_de.get('portal_title') or app_props.get('portal_title')],
 		]
 	else:
 		# if not specified, use a reasonable fallback
@@ -152,23 +153,23 @@ def configure_portal(app: App) -> None:
 		]
 
 	# portal background image
-	if app_props.get('portal_background_image'):
+	image_name = app_props.get('portal_background_image')
+	if image_name:
 		print_status('Setting portal background image...')
-		img_name = app_props.get('portal_background_image')
-		ext = os.path.splitext(img_name)[1]
+		ext = os.path.splitext(image_name)[1]
 		dest_path = '/tmp/appliance_portal_background_image_%s.%s' % (os.getpid(), ext)
-		_download_resource(app, img_name, dest_path)
+		_download_resource(app, image_name, dest_path)
 		with open(dest_path, 'rb') as fp:
 			base64_img = base64.b64encode(fp.read()).decode('ASCII')
 		portal_obj['background'] = base64_img
 
 	# portal logo
-	if app_props.get('portal_logo'):
+	image_name = app_props.get('portal_logo')
+	if image_name:
 		print_status('Setting portal logo...')
-		img_name = app_props.get('portal_logo')
-		ext = os.path.splitext(img_name)[1]
+		ext = os.path.splitext(image_name)[1]
 		dest_path = '/tmp/appliance_portal_logo_%s.%s' % (os.getpid(), ext)
-		_download_resource(app, img_name, dest_path)
+		_download_resource(app, image_name, dest_path)
 		with open(dest_path, 'rb') as fp:
 			base64_img = base64.b64encode(fp.read()).decode('ASCII')
 		portal_obj['logo'] = base64_img
@@ -190,9 +191,10 @@ def configure_portal(app: App) -> None:
 			'ucs/web/theme': 'ucs-app-appliance'
 		})
 
-	if app_props.get('portal_font_color') and 'fontColor' in module.property_descriptions:
+	portal_font_color = app_props.get('portal_font_color')
+	if portal_font_color and 'fontColor' in module.property_descriptions:
 		print_status('Setting portal font color')
-		portal_obj['fontColor'] = app_props.get('portal_font_color')
+		portal_obj['fontColor'] = portal_font_color
 
 	print_status('Saving modifications to LDAP')
 	portal_obj.modify()
@@ -251,12 +253,12 @@ def setup_app(app: App) -> None:
 			source = app.get_cache_file('README_APPLIANCE%s' % (lang, ))
 			target = '/usr/share/univention-web/js/umc/hooks/appliance_readme%s' % (lang.lower(),)
 			if os.path.islink(target):
-				print("Remove old first steps symlink")
+				print_status("Remove old first steps symlink")
 				try:
 					os.remove(target)
 				except OSError as exc:
 					print_status('WARNING: An error occurred when removing the file %s: %s' % (target, exc))
-			print("Symlink first steps from %s to %s" % (source, target,))
+			print_status("Symlink first steps from %s to %s" % (source, target,))
 			if os.path.exists(source):
 				os.symlink(source, target)
 
