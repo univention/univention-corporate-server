@@ -1,0 +1,523 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version: UCS 5.0 Release Notes 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-09-06 17:49+0200\n"
+"PO-Revision-Date: 2022-09-06 17:49+0200\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language-Team: Univention GmbH <packages@univention.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../index.rst:3
+msgid ""
+"Release notes for the installation and update of Univention Corporate "
+"Server (UCS) |release|"
+msgstr ""
+"Release Notes für die Inbetriebnahme und Aktualisierung von Univention "
+"Corporate Server (UCS) |release|"
+
+#: ../../index.rst:9
+msgid "Release Highlights"
+msgstr "Release-Highlights"
+
+#: ../../index.rst:11
+#, fuzzy
+msgid ""
+"With |UCSUCS| 5.0-2, the second point release for |UCSUCS| (UCS) 5.0 is "
+"now available. It provides several feature improvements and extensions, "
+"new properties as well as various improvements and bug fixes. Here is an "
+"overview of the most important changes:"
+msgstr ""
+"Mit |UCSUCS| 5.0-2 steht das zweite Point-Release für |UCSUCS| (UCS) 5.0 "
+"zur Verfügung. Es umfasst Funktionserweiterungen und Verbesserungen, neue"
+" Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen. "
+"Die wichtigsten Änderungen im Überblick:"
+
+#: ../../index.rst:16
+#, fuzzy
+msgid ""
+"The User Self Service was integrated into the UCS portal. Furthermore, "
+"the support for additional placeholders was extended among others, such "
+"as first name and last name in the email template for password reset."
+msgstr ""
+"Der User Self-Service wurde in das UCS Portal integriert. Darüber hinaus "
+"wurde unter anderem die Unterstützung für zusätzliche Platzhalter wie "
+"Vorname und Nachname in der E-Mail-Vorlage zum Zurücksetzen des Passworts"
+" erweitert."
+
+#: ../../index.rst:20
+msgid ""
+"For RADIUS, users can assign a so-called service specific password. And "
+"administrators can assign dedicated VLANs to user groups to increase "
+"network security."
+msgstr ""
+"Für RADIUS können Benutzer ein sogenanntes Service spezifisches Passwort "
+"vergeben. Und Administratoren können Benutzergruppen dedizierte VLANs "
+"zuweisen und damit die Netzwerksicherheit erhöhen."
+
+#: ../../index.rst:24
+msgid "``SameSite`` Cookies can now be configured for UMC and SAML."
+msgstr "``SameSite`` Cookies können jetzt für UMC und SAML konfiguriert werden. "
+
+#: ../../index.rst:26
+msgid "The AD Takeover has been made more robust."
+msgstr "Die AD-Übernahme wurde robuster gestaltet."
+
+#: ../../index.rst:28
+msgid ""
+"Numerous performance improvements have been implemented regarding DNS, "
+"LDAP and during the sign in to UMC."
+msgstr ""
+"Zahlreiche Leistungsverbesserungen bezüglich DNS, LDAP und bei der "
+"Anmeldung an der UMC wurden vorgenommen."
+
+#: ../../index.rst:31
+msgid "The French translation for the UCS management system was updated."
+msgstr ""
+"Die französischen Übersetzung für das UCS-Managementsystem wurde "
+"aktualisiert."
+
+#: ../../index.rst:33
+msgid ""
+"The UMC system diagnostics has been extended: Several new checks have "
+"been added and some older have been improved."
+msgstr ""
+"Die UMC System-Diagnose wurde ausgebaut: Mehrere neue Checks wurden "
+"hinzugefügt und einige ältere verbessert. "
+
+#: ../../index.rst:36
+msgid ""
+"Most packages have been migrated to Python 3. Their Python 2 counterparts"
+" are no longer installed by default and will be removed."
+msgstr ""
+"Die meisten Pakete wurden auf Python 3 migriert. Deren Python 2 Varianten"
+" werden nicht länger standardmäßig installiert und werden entfernt."
+
+#: ../../index.rst:39
+msgid "This |UCSUCS| release is based on Debian 10.12 Buster."
+msgstr "Dieses |UCSUCS| Release basiert auf Debian 10.12 *Buster*."
+
+#: ../../index.rst:41
+msgid ""
+"Various security updates have been integrated into UCS 5.0-2, for example"
+" for :program:`Samba4`, OpenLDAP, OpenSSL, and the Linux kernel."
+msgstr ""
+"Diverse Security Updates wurden in UCS 5.0-2 integriert, bspw. für "
+":program:`Samba4`, OpenLDAP, OpenSSL, und den Linux Kernel."
+
+#: ../../index.rst:48
+msgid "Notes about the update"
+msgstr "Hinweise zum Update"
+
+#: ../../index.rst:50
+msgid ""
+"During the update some services in the domain may not be available "
+"temporarily, that is why the update should occur in a maintenance window."
+" It is recommended to test the update in a separate test environment "
+"prior to the actual update. The test environment should be identical to "
+"the production environment. Depending on the system performance, network "
+"connection and the installed software the update will take between 20 "
+"minutes and several hours. In large environments it may be useful to "
+"consult :cite:t:`ucs-performance-guide`."
+msgstr ""
+"Während der Aktualisierung kann es zu temporären Ausfällen von Diensten "
+"innerhalb der Domäne kommen. Aus diesem Grund sollte das Update innerhalb"
+" eines Wartungsfensters erfolgen. Grundsätzlich wird empfohlen, das "
+"Update zunächst in einer Testumgebung einzuspielen und zu testen. Die "
+"Testumgebung sollte dabei identisch zur Produktivumgebung sein. Je nach "
+"Systemgeschwindigkeit, Netzwerkanbindung und installierter Software kann "
+"das Update zwischen 20 Minuten und mehreren Stunden dauern. In großen "
+"Umgebungen kann es sinnvoll sein, den :cite:t:`ucs-performance-guide` zu "
+"berücksichtigen."
+
+#: ../../index.rst:61
+msgid "Recommended update order for environments with more than one UCS server"
+msgstr "Empfohlene Update-Reihenfolge für Umgebungen mit mehr als einem UCS System"
+
+#: ../../index.rst:63
+msgid ""
+"In environments with more than one UCS system, the update order of the "
+"UCS systems must be borne in mind:"
+msgstr ""
+"In Umgebungen mit mehr als einem UCS-System muss die Update-Reihenfolge "
+"der UCS-Systeme beachtet werden:"
+
+#: ../../index.rst:66
+msgid ""
+"The authoritative version of the LDAP directory service is maintained on "
+"the |UCSPRIMARYDN| (formerly referred to as master domain controller) and"
+" replicated to all the remaining LDAP servers of the UCS domain. As "
+"changes to the LDAP schema can occur during release updates, the "
+"|UCSPRIMARYDN| must always be the first system to be updated during a "
+"release update."
+msgstr ""
+"Auf dem |UCSPRIMARYDN| (frühere Bezeichnung: Master Domain Controller) "
+"wird die maßgebliche (authoritative) Version des LDAP-Verzeichnisdienstes"
+" vorgehalten, die an alle übrigen LDAP-Server der UCS-Domäne repliziert "
+"wird. Da bei Release-Updates Veränderungen an den LDAP-Schemata auftreten"
+" können, muss der |UCSPRIMARYDN| bei einem Release-Update immer als "
+"erstes System aktualisiert werden."
+
+#: ../../index.rst:75
+msgid "UCS only available for 64 bit"
+msgstr "UCS nur noch als 64-Bit-Variante"
+
+#: ../../index.rst:77
+msgid ""
+"UCS 5 is only provided for the x86 64 bit architecture (*amd64*). "
+"Existing 32 bit UCS systems cannot be updated to UCS 5."
+msgstr ""
+"UCS 5 wird nur noch für 64-Bit-Architekturen bereitgestellt. Vorhandene "
+"32-Bit UCS Systeme können nicht auf UCS 5 aktualisiert werden."
+
+#: ../../index.rst:84
+msgid "Simultaneous operation of UCS and Debian on UEFI systems"
+msgstr "Gleichzeitiger Betrieb von UCS und Debian auf UEFI Systemen"
+
+#: ../../index.rst:86
+msgid ""
+"Please note that simultaneous operation of UCS and Debian on a UEFI "
+"system starting with UCS 5.0 is not supported."
+msgstr ""
+"Beginnend mit UCS 5.0 wird ein gleichzeitiger Betrieb von UCS und Debian "
+"auf einem UEFI System nicht unterstützt."
+
+#: ../../index.rst:89
+msgid ""
+"The reason for this is the GRUB boot loader of |UCSUCS|, which partly "
+"uses the same configuration files as Debian. An already installed Debian "
+"leads to the fact that UCS cannot be booted (any more) after the "
+"installation of or an update to UCS 5.0. A subsequent installation of "
+"Debian will also result in UCS 5.0 not being able to boot."
+msgstr ""
+"Ursache hierfür ist der Bootloader GRUB von |UCSUCS|, der teilweise die "
+"gleichen Konfigurationsdateien wie Debian verwendet. Ein bereits "
+"installiertes Debian führt dazu, dass UCS nach der Installation von bzw. "
+"einem Update auf UCS 5.0 nicht (mehr) gebootet werden kann. Eine "
+"nachträgliche Installation von Debian wird ebenfalls dazu führen, dass "
+"UCS 5.0 nicht mehr gebootet werden kann."
+
+#: ../../index.rst:95
+msgid ""
+"At the following help article further hints to this topic are collected: "
+":uv:kb:`17768`."
+msgstr ""
+"An folgendem Artikel werden weitere Hinweise zu diesem Thema gesammelt: "
+":uv:kb:`17768`."
+
+#: ../../index.rst:102
+msgid "Local package repository"
+msgstr "Lokales Paket Repository"
+
+#: ../../index.rst:104
+msgid ""
+"This section is relevant for environments where a :external+uv-"
+"manual:ref:`local repository <software-create-repo>` is set up. The "
+"installed (major) version of UCS determines which packages a local "
+"repository provides. A repository running on a UCS server with version "
+"4.x will only provide packages up to UCS 4.x, a repository server running"
+" on UCS 5 will only provide packages for UCS 5 and newer versions. To "
+"upgrade systems to UCS 5 in an environment with a local repository, the "
+"following are some of the options. First, a local UCS 5 repository server"
+" must be set up."
+msgstr ""
+"Dieser Abschnitt ist für Umgebungen relevant, in denen ein :external+uv-"
+"manual:ref:`lokales Repository <software-create-repo>` eingerichtet ist. "
+"Die installierte (Major-)Version von UCS bestimmt welche Pakete ein "
+"lokales Repository bereitstellt. Ein Repository das auf einem UCS Server "
+"in Version 4.x betrieben wird stellt nur Pakete bis zur Version UCS 4.x "
+"bereit, ein Repository auf einem UCS 5 Server stellt nur Pakete für UCS 5"
+" und neuere Versionen bereit. Um in einer Umgebung mit lokalem Repository"
+" Systeme auf UCS 5 zu aktualisieren, bestehen unter anderem die folgenden"
+" Möglichkeiten. Zunächst muss ein lokaler UCS 5 Repository Server "
+"aufgesetzt werden."
+
+#: ../../index.rst:113
+msgid ""
+"A new UCS 5 system is installed as a |UCSPRIMARYDN| from the DVD or from "
+"a virtualized base image. Then :external+uv-manual:ref:`a local "
+"repository is set up on this system <software-create-repo>` as described "
+"in :cite:t:`ucs-manual`."
+msgstr ""
+"Ein neues UCS 5 System wird als |UCSPRIMARYDN| von der DVD oder aus einem"
+" virtualisiertem Basisimage installiert. Anschließend wird :external+uv-"
+"manual:ref:`auf diesem System ein lokales Repository <software-create-"
+"repo>` wie in :cite:t:`ucs-manual` beschrieben eingerichtet."
+
+#: ../../index.rst:118
+msgid ""
+"A new UCS 5 system is installed with the system role |UCSBACKUPDN|, "
+"|UCSREPLICADN| or |UCSMANAGEDNODE| from the DVD or from a virtualized "
+"base image. In system setup, select that the system will not join a "
+"domain. Then :external+uv-manual:ref:`set up a local repository on this "
+"system <software-create-repo>` as described in :cite:t:`ucs-manual`. "
+"After the |UCSPRIMARYDN| used in the domain is upgraded to UCS 5, the UCS"
+" 5 repository server can join the domain via :command:`univention-join`."
+msgstr ""
+"Ein neues UCS 5 System wird als Systemrolle |UCSBACKUPDN|, |UCSREPLICADN|"
+" oder |UCSMANAGEDNODE| von der DVD oder aus einem virtualisiertem "
+"Basisimage installiert. Im System-Setup ist auszuwählen, dass das System "
+"keiner Domäne beitritt. Anschließend wird :external+uv-manual:ref:`auf "
+"diesem System ein lokales Repository <software-create-repo>` wie in "
+":cite:t:`ucs-manual` beschrieben eingerichtet. Nachdem der in der Domäne "
+"verwendet |UCSPRIMARYDN| auf UCS 5 aktualisiert wurde, kann der UCS 5 "
+"Repository Server der Domäne über :command:`univention-join` beitreten."
+
+#: ../../index.rst:126
+msgid ""
+"To upgrade a system in the domain to UCS 5, the server should first be "
+"upgraded to the latest package level available for UCS 4.x. Then the "
+"repository server used by the system is switched to the local UCS 5 "
+"repository by changing the |UCSUCRV| :external+uv-"
+"manual:envvar:`repository/online/server`. The system can now be upgraded "
+"to UCS 5 via the |UCSUMC| or via the command line."
+msgstr ""
+"Um ein System in der Domäne auf UCS 5 zu aktualisieren, sollte der Server"
+" zunächst auf den aktuellsten Paketstand unter UCS 4.x aktualisiert "
+"werden. Anschließend wird der vom System verwendete Repository Server "
+"durch das Ändern der |UCSUCRV| :external+uv-"
+"manual:envvar:`repository/online/server` auf das lokale UCS 5 Repository "
+"gesetzt. Das System kann nun über die |UCSUMC| oder über die "
+"Kommandozeile auf UCS 5 aktualisiert werden."
+
+#: ../../index.rst:136
+msgid "Preparation of update"
+msgstr "Vorbereitung des Updates"
+
+#: ../../index.rst:138
+msgid ""
+"Manually crafted Python code needs to be checked for compatibility with "
+"Python 3.7 before the Update and adjusted accordingly. This includes "
+"|UCSUCR| templates containing Python code. Customized AD-Connector "
+"mapping templates are an example for this. See also the :cite:t"
+":`developer-reference` for advice."
+msgstr ""
+"Manuell erstellter Python-Programmcode muss vor dem Update auf "
+"Kompatibilität mit Python 3.7 geprüft und entsprechend angepasst werden. "
+"Das betrifft auch |UCSUCR| Templates, die Python-Code enthalten. "
+"Angepasste |UCSADC| Mapping Templates sind ein Beispiel. In der :cite:t"
+":`developer-reference` finden sich weitere Hinweise."
+
+#: ../../index.rst:143
+msgid ""
+"It must be checked whether sufficient disk space is available. A standard"
+" installation requires a minimum of 6-10 GB of disk space. The update "
+"requires approximately 1-2 GB additional disk space to download and "
+"install the packages, depending on the size of the existing installation."
+msgstr ""
+"Es sollte geprüft werden, ob ausreichend Festplattenplatz verfügbar ist. "
+"Eine Standard-Installation benötigt min. 6-10 GB Speicherplatz. Das "
+"Update benötigt je nach Umfang der vorhanden Installation ungefähr 1-2- "
+"GB zusätzlichen Speicherplatz zum Herunterladen und Installieren der "
+"Pakete."
+
+#: ../../index.rst:148
+msgid ""
+"For the update, a login should be performed on the system's local console"
+" as user ``root``, and the update should be initiated there. "
+"Alternatively, the update can be conducted using |UCSUMC|."
+msgstr ""
+"Für das Update sollte eine Anmeldung auf der lokalen Konsole des Systems "
+"mit dem Benutzer ``root`` durchgeführt und das Update dort gestartet "
+"werden. Alternativ kann das Update über |UCSUMC| durchgeführt werden."
+
+#: ../../index.rst:152
+msgid ""
+"Remote updating via SSH is not recommended as this may result in the "
+"update procedure being canceled, e.g., if the network connection is "
+"interrupted. In consequence, this can affect the system severely. If "
+"updating should occur over a network connection nevertheless, it must be "
+"verified that the update continues in case of disconnection from the "
+"network. This can be achieved, e.g., using the tools :command:`tmux`, "
+":command:`screen` and :command:`at`. These tools are installed on all UCS"
+" system roles by default."
+msgstr ""
+"Eine Remote-Aktualisierung über SSH wird nicht empfohlen, da dies "
+"beispielsweise bei Unterbrechung der Netzverbindung zum Abbruch des "
+"Update-Vorgangs und zu einer Beeinträchtigung des Systems führen kann. "
+"Sollte dennoch eine Aktualisierung über eine Netzverbindung durchgeführt "
+"werden, ist sicherzustellen, dass das Update bei Unterbrechung der "
+"Netzverbindung trotzdem weiterläuft. Hierfür können beispielsweise die "
+"Tools :command:`tmux`, :command:`screen` oder :command:`at` eingesetzt "
+"werden, die auf allen UCS Systemrollen installiert sind."
+
+#: ../../index.rst:160
+msgid ""
+"Univention provides a script that checks for problems which would prevent"
+" the successful update of the system. Prior to the update, this script "
+"can be downloaded and executed on the UCS system."
+msgstr ""
+"Univention bietet ein Skript an, mit dem Probleme, die das Update des UCS"
+" Systems verhindern würden, schon vor dem Update erkannt werden können. "
+"Dieses Skript kann vor dem Update manuell auf das System geladen und "
+"ausgeführt werden:"
+
+#: ../../index.rst:164
+msgid ""
+"# download\n"
+"$ curl -OOf https://updates.software-univention.de/download/univention-"
+"update-checks/pre-update-checks-5.0-2{.gpg,}\n"
+"\n"
+"# verify and run script\n"
+"$ apt-key verify pre-update-checks-5.0-2{.gpg,} && bash pre-update-"
+"checks-5.0-2\n"
+"\n"
+"...\n"
+"\n"
+"Starting pre-update checks ...\n"
+"\n"
+"Checking app_appliance ...                        OK\n"
+"Checking block_update_of_NT_DC ...                OK\n"
+"Checking cyrus_integration ...                    OK\n"
+"Checking disk_space ...                           OK\n"
+"Checking hold_packages ...                        OK\n"
+"Checking ldap_connection ...                      OK\n"
+"Checking ldap_schema ...                          OK\n"
+"..."
+msgstr ""
+"# download\n"
+"$ curl -OOf https://updates.software-univention.de/download/univention-"
+"update-checks/pre-update-checks-5.0-2{.gpg,}\n"
+"\n"
+"# verify and run script\n"
+"$ apt-key verify pre-update-checks-5.0-2{.gpg,} && bash pre-update-"
+"checks-5.0-2\n"
+"\n"
+"...\n"
+"\n"
+"Starting pre-update checks ...\n"
+"\n"
+"Checking app_appliance ...                        OK\n"
+"Checking block_update_of_NT_DC ...                OK\n"
+"Checking cyrus_integration ...                    OK\n"
+"Checking disk_space ...                           OK\n"
+"Checking hold_packages ...                        OK\n"
+"Checking ldap_connection ...                      OK\n"
+"Checking ldap_schema ...                          OK\n"
+"..."
+
+#: ../../index.rst:190
+#, fuzzy
+msgid "Post processing of the update"
+msgstr "Nachbereitung des Updates"
+
+#: ../../index.rst:192
+msgid ""
+"Following the update, new or updated join scripts need to be executed. "
+"This can be done in two ways: Either using the UMC module *Domain join* "
+"or by running the command :command:`univention-run-join-scripts` as user "
+"``root``."
+msgstr ""
+"Nach dem Update müssen die neuen oder aktualisierten Join-Skripte "
+"ausgeführt werden. Dies kann auf zwei Wegen erfolgen: Entweder über das "
+"UMC-Modul *Domänenbeitritt* oder durch Aufruf des Befehls :command"
+":`univention-run-join-scripts` als Benutzer ``root``."
+
+#: ../../index.rst:196
+msgid "Subsequently the UCS system needs to be restarted."
+msgstr "Anschließend muss das UCS-System neu gestartet werden."
+
+#: ../../index.rst:202
+msgid "Notes on selected packages"
+msgstr "Hinweise zum Einsatz einzelner Pakete"
+
+#: ../../index.rst:207
+msgid "Collection of usage statistics"
+msgstr "Erfassung von Nutzungsstatistiken"
+
+#: ../../index.rst:209
+msgid ""
+"Anonymous usage statistics on the use of |UCSUMC| are collected when "
+"using the *UCS Core Edition*. The modules opened get logged to an "
+"instance of the web traffic analysis tool *Matomo*. This makes it "
+"possible for Univention to tailor the development of |UCSUMC| better to "
+"customer needs and carry out usability improvements."
+msgstr ""
+"Bei Verwendung der *UCS Core Edition* werden anonyme Nutzungsstatistiken "
+"zur Verwendung von |UCSUMC| erzeugt. Die aufgerufenen Module werden dabei"
+" von einer Instanz des Web-Traffic-Analyse-Tools Piwik protokolliert. "
+"Dies ermöglicht es Univention die Entwicklung von |UCSUMC| besser auf das"
+" Kundeninteresse zuzuschneiden und Usability-Verbesserungen vorzunehmen."
+
+#: ../../index.rst:215
+msgid ""
+"This logging is only performed when the *UCS Core Edition* license is "
+"used. The license status can be verified via the menu entry "
+":menuselection:`License --> License information` of the user menu in the "
+"upper right corner of |UCSUMC|. If ``UCS Core Edition`` is listed under "
+"*License type*, this version is in use. When a regular UCS license is "
+"used, no usage statistics are collected."
+msgstr ""
+"Diese Protokollierung erfolgt nur bei Verwendung der *UCS Core Edition*. "
+"Der Lizenzstatus kann überprüft werden durch den Eintrag "
+":menuselection:`Lizenz --> Lizenzinformation` des Benutzermenüs in der "
+"rechten, oberen Ecke von |UCSUMC|. Steht hier unter *Lizenztyp* der "
+"Eintrag ``UCS Core Edition`` wird eine solche Edition verwendet. Bei "
+"Einsatz einer regulären UCS-Lizenz erfolgt keine Teilnahme an der "
+"Nutzungsstatistik."
+
+#: ../../index.rst:221
+msgid ""
+"Independent of the license used, the statistics generation can be "
+"deactivated by setting the |UCSUCRV| :envvar:`umc/web/piwik` to *false*."
+msgstr ""
+"Die Protokollierung kann unabhängig von der verwendeten Lizenz durch "
+"Setzen der |UCSUCRV| :envvar:`umc/web/piwik` auf ``false`` deaktiviert "
+"werden."
+
+#: ../../index.rst:227
+msgid "Recommended browsers for the access to |UCSUMC|"
+msgstr "Empfohlene Browser für den Zugriff auf |UCSUMC|"
+
+#: ../../index.rst:229
+msgid ""
+"|UCSUMC| uses numerous JavaScript and CSS functions to display the web "
+"interface. Cookies need to be permitted in the browser. The following "
+"browsers are recommended:"
+msgstr ""
+"|UCSUMC| verwendet für die Darstellung der Web-Oberfläche zahlreiche "
+"JavaScript- und CSS-Funktionen. Cookies müssen im Browser zugelassen "
+"sein. Die folgenden Browser werden empfohlen:"
+
+#: ../../index.rst:233
+msgid "Chrome as of version 85"
+msgstr "Chrome ab Version 85"
+
+#: ../../index.rst:235
+msgid "Firefox as of version 78"
+msgstr "Firefox ab Version 78"
+
+#: ../../index.rst:237
+msgid "Safari and Safari Mobile as of version 13"
+msgstr "Safari und Safari Mobile ab Version 13"
+
+#: ../../index.rst:239
+msgid "Microsoft Edge as of version 88"
+msgstr "Microsoft Edge ab Version 88"
+
+#: ../../index.rst:241
+msgid "Users running older browsers may experience display or performance issues."
+msgstr ""
+"Mit älteren Browsern können Darstellungs- oder Performanceprobleme "
+"auftreten."
+
+#: ../../index.rst:247
+msgid "Changelog"
+msgstr "Changelog"
+
+#: ../../index.rst:249
+msgid ""
+"You find the changes since UCS 5.0-1 in :external+uv-"
+"changelog-5-0-2:document:`index`."
+msgstr ""
+"Die Änderungen seit UCS 5.0-1 finden Sie in :external+uv-"
+"changelog-5-0-2:document:`index`."
+
+#: ../../index.rst:257
+msgid "Bibliography"
+msgstr "Literaturverzeichnis"
+
