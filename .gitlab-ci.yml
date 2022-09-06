@@ -160,7 +160,7 @@ errata validation:
   script:
     - set -- doc/errata/staging/[!0]*.yaml && [ $# -ge 1 ] && [ -f "$1" ] || exit 0
     - check_errata_for_release --html=errata.html --mail=errata.txt "$@" || [ $? -eq 10 ]
-    - for y in "$@"; do /usr/sbin/announce_errata --validate-xml="$(basename "$y" .yaml).xml" -BB -V "$y" || true; done
+    - for y in "$@"; do /usr/sbin/announce_errata --validate-xml="$(basename "$y" .yaml).xml" $("${CI_COMMIT_REF_PROTECTED:-false}" && echo -BB || echo -B --ignore-validate changes --ignore-validate fix --ignore-validate bug) -V "$y" || true; done
   artifacts:
     paths:
       - errata.html
