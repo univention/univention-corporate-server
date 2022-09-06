@@ -93,6 +93,7 @@ class BaseBinaryProperty(object):
 	Internally data is held in the encoded state (the form in which it will be
 	saved to LDAP).
 	"""
+
 	def __init__(self, name, encoded_value=None, raw_value=None):
 		assert not (encoded_value and raw_value), 'Only one of "encoded_value" and "raw_value" must be set.'
 		assert (encoded_value or raw_value), 'One of "encoded_value" or "raw_value" must be set.'

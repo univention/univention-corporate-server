@@ -41,9 +41,11 @@ import glob
 import os.path
 import xml.etree.ElementTree
 from tempfile import NamedTemporaryFile
+from typing import Text
 from subprocess import Popen, PIPE
 
 import univention.debug as ud
+
 
 name = 'univention-saml-simplesamlphp-configuration'
 description = 'Manage simpleSAMLphp service providers'

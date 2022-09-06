@@ -44,9 +44,9 @@ univention_password = import_module('password', 'modules/', 'univention.password
 
 @pytest.fixture
 def mocked_ucr(mock_ucr, mocker):
-		mock = mocker.patch.object(univention_password, 'ucr')
-		mock.ucr = mock_ucr
-		yield mock_ucr
+	mock = mocker.patch.object(univention_password, 'ucr')
+	mock.ucr = mock_ucr
+	yield mock_ucr
 
 
 @pytest.fixture(scope='class')
@@ -130,6 +130,7 @@ class TestScopedPasswordConfigDefaults(object):
 	"""
 	Test all cases of radius 'scope' defaults
 	"""
+
 	def test_radius_digit_count(self, password_radius_config):
 		assert password_radius_config['digits'] == 6
 

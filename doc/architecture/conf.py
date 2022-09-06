@@ -79,7 +79,6 @@ html_context = {
 html_static_path = []  # value usually is ['_static']
 
 
-
 html_last_updated_fmt = "%d. %b %Y at %H:%M (UTC%z)"
 
 # https://github.com/mgeier/sphinx-last-updated-by-git

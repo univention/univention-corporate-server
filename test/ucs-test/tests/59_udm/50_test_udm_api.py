@@ -489,6 +489,7 @@ class TestUdmLDAPConnection(TestCase):
 
 class TestUdmModuleCaching(TestCase):
 	"""Test UDM APIs module caching"""
+
 	def test_caching(self):
 		assert UDM.admin().version(0).get('users/user') is UDM.admin().version(0).get('users/user')
 		assert UDM.admin().version(0).get('users/user') is not UDM.admin().version(1).get('users/user')

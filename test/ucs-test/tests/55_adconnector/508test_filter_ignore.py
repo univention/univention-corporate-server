@@ -19,7 +19,7 @@ AD = adconnector.ADConnection()
 import univention.testing.connector_common as tcommon  # noqa: E402
 from univention.testing.connector_common import delete_con_user  # noqa: E402
 from univention.testing.connector_common import (  # noqa: E402
-	NormalUser, SpecialUser, Utf8User, create_con_user, create_udm_user, delete_udm_user,
+	NormalUser, SpecialUser, Utf8User, create_con_user,
 )
 from univention.config_registry import handler_set as ucr_set  # noqa: E402
 import univention.testing.ucr as testing_ucr  # noqa: E402

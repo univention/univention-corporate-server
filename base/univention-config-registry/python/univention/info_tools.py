@@ -135,7 +135,7 @@ class LocalizedDictionary(__LD):
 		# type: (str) -> Optional[str]
 		pass
 
-	@overload
+	@overload  # noqa: F811
 	def get(self, key, default):  # noqa: F811 # pragma: no cover
 		# type: (str, _VT) -> Union[str, _VT]
 		pass

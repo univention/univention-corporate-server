@@ -58,7 +58,6 @@ import ldb
 import samba.getopt
 from samba.auth import system_session
 from univention import config_registry
-from samba import credentials
 
 
 parser = optparse.OptionParser("$prog [options] <host>")

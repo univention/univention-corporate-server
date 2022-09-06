@@ -58,7 +58,7 @@ def migrate_entry(udm, old_obj):
 	new_obj.props.name = old_obj.props.name
 	new_obj.props.displayName = old_obj.props.displayName
 	new_obj.props.description = old_obj.props.description
-	new_obj.props.link = [{'locale': 'en_US', 'value': l} for l in old_obj.props.link]
+	new_obj.props.link = [{'locale': 'en_US', 'value': locale} for locale in old_obj.props.link]
 	new_obj.props.linkTarget = old_obj.props.linkTarget
 	new_obj.props.activated = old_obj.props.activated
 	new_obj.props.allowedGroups = old_obj.props.allowedGroups

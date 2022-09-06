@@ -353,6 +353,7 @@ class LDAPEscapeFormatter(string.Formatter):
 	Traceback (most recent call last):
 	KeyError: ''
 	"""
+
 	def convert_field(self, value, conversion):
 		if conversion == 'e':
 			if isinstance(value, six.string_types):

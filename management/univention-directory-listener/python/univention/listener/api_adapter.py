@@ -48,6 +48,7 @@ class ListenerModuleAdapter(object):
 
 		globals().update(ListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
 	"""
+
 	def __init__(self, module_configuration, *args, **kwargs):
 		# type: (ListenerModuleConfiguration, *Any, **Any) -> None
 		"""

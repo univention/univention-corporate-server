@@ -53,6 +53,7 @@ class MailSinkGuard(object):
 		msg.add(sink)
 		....use sink....
 	"""
+
 	def __init__(self):
 		# type: () -> None
 		self.mail_sinks = set()  # type: Set[MailSink]
@@ -89,6 +90,7 @@ class MailSink(object):
 	>>> with MailSink('127.0.0.1', 12345, filename='/tmp/sinkfile.eml') as ms:
 	>>> 	<do some stuff>
 	"""
+
 	def __init__(self, address, port, filename=None, target_dir=None, fqdn=None):
 		# type: (str, int, Optional[str], Optional[str], Optional[str]) -> None
 		self.address = address

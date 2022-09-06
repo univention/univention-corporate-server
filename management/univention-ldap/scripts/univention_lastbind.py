@@ -38,6 +38,7 @@ from __future__ import print_function
 import argparse
 import ldap
 import sys
+from typing import List, Iterable, Optional, NoReturn
 
 from univention.udm import UDM
 import univention.udm.exceptions

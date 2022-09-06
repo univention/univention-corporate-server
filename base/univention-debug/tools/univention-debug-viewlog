@@ -92,13 +92,13 @@ def spacing(depth):
 		return '   ' * depth
 
 
-def split(line, l):
-	if len(line) < l:
+def split(line, length):
+	if len(line) < length:
 		return [line]
 	res = []
-	ls = len(line) / l
+	ls = len(line) / length
 	for i in range(0, ls + 1):
-		n = line[i * l:(i + 1) * l]
+		n = line[i * length:(i + 1) * length]
 		if not n:
 			break
 		res.append(n)

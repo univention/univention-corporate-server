@@ -48,7 +48,7 @@ import notifier
 import six
 
 from .server import Server
-from .message import Response, Message, IncompleteMessageError, ParseError
+from .message import Request, Response, Message, IncompleteMessageError, ParseError
 from .definitions import MODULE_ERR_INIT_FAILED, SUCCESS, RECV_BUFFER_SIZE
 
 from univention.management.console.acl import ACLs

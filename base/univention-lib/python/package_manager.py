@@ -82,6 +82,7 @@ class ProgressState(object):
 
 	:param logging.Logger parent_logger: The Logger of the parent.
 	"""
+
 	def __init__(self, parent_logger):
 		# type: (logging.Logger) -> None
 		self._logger = parent_logger.getChild('dpkg')

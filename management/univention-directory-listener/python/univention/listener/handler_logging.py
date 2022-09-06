@@ -69,6 +69,7 @@ class UniFileHandler(TimedRotatingFileHandler):
 	Configuration can be done through the `handler_kwargs` argument of
 	:py:func:`get_listener_logger`.
 	"""
+
 	def _open(self):
 		# type: () -> IO[str]
 		stream = TimedRotatingFileHandler._open(self)

@@ -26,6 +26,7 @@ class Bunch(object):
 	>>> print x.a
 	4
 	"""
+
 	def __init__(self, **kwds):
 		self.__dict__.update(kwds)
 

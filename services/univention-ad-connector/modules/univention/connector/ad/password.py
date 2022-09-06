@@ -41,7 +41,6 @@ import univention.connector.ad
 import hashlib
 import binascii
 import time
-import codecs
 
 from Crypto.Cipher import DES, ARC4
 import Crypto

@@ -51,7 +51,7 @@ import univention.info_tools as uit
 _ = Translation('univention-management-console-module-ucr').translate
 
 
-from typing import Any, Dict, List, Union  # noqa: F401
+from typing import Any, Dict, List, Union  # noqa: E402
 
 
 class UCRKeySanitizer(StringSanitizer):

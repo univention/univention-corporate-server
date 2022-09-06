@@ -108,7 +108,7 @@ def find_licenses(lo, baseDN, module='*'):
 	dirs = ['cn=directory,cn=univention,%s' % baseDN, 'cn=default containers,cn=univention,%s' % baseDN]
 	objects = [o for d in dirs for o in find_wrap(d)]
 	containers = [c.decode('UTF-8') for o in objects for c in lo.get(o)['univentionLicenseObject']]
-	licenses = [l for c in containers for l in lo.searchDn(base=c, filter=filter)]
+	licenses = [license for c in containers for license in lo.searchDn(base=c, filter=filter)]
 	return licenses
 
 

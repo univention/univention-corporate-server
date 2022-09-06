@@ -87,7 +87,6 @@ class TestADCustomMappings(unittest.TestCase):
     def create_extended_attribute(
         self, udm, ldapMapping, module, defaultValue="defaultValue-TestFailed"
     ):
-
         """
         Creates an extended attribute with a default value under module (e.g.
         under 'user/user')
@@ -115,7 +114,6 @@ class TestADCustomMappings(unittest.TestCase):
         )
 
     def test_ldap_to_ad_with_mapping(self):
-
         """
         this test will create a user and set its extended attribute to a random
         value. It will then check if the random value appears in the 'company'

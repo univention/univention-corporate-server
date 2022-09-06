@@ -32,7 +32,7 @@ echo "This message goes to stderr" >&2
 . /usr/share/univention-docker-container-mode/lib.sh
 error_msg "This message goes to ERROR_FILE"
 exit 1
-'''		)
+''')
 		app.add_to_local_appcenter()
 		appcenter.update()
 		try:

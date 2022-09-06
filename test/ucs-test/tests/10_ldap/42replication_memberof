@@ -50,6 +50,7 @@ class AutoStartStopListener(object):
 	"""
 	Stops and starts listener automatically
 	"""
+
 	def __init__(self, dry_run):  # type: (bool) -> None
 		"""
 		The listener is only shut down on __enter__ resp. started on __exit__, if dry_run != True.

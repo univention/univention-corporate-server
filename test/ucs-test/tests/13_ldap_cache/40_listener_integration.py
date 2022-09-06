@@ -22,8 +22,7 @@ def test_listener(udm, ucr, base_user, group1, group2):
 	for x in range(1, 11):
 		if x % 10 == 0:
 			wait_for_replication = not wait_for_replication
-		new_user = udm.create_object('users/user', position=base_user, username=random_username(), lastname=random_username(),
-		                  password=random_username(), wait_for_replication=wait_for_replication)
+		new_user = udm.create_object('users/user', position=base_user, username=random_username(), lastname=random_username(), password=random_username(), wait_for_replication=wait_for_replication)
 		created_users.append(new_user)
 		wait_for_replication = False
 		sleep(1)
@@ -41,13 +40,11 @@ def test_listener(udm, ucr, base_user, group1, group2):
 
 
 def rebuild():
-	subprocess.call(
-		['/usr/share/univention-group-membership-cache/univention-ldap-cache', 'rebuild', 'uniqueMembers'])
+	subprocess.call(['/usr/share/univention-group-membership-cache/univention-ldap-cache', 'rebuild', 'uniqueMembers'])
 
 
 def cleanup():
-	subprocess.call(
-		['/usr/share/univention-group-membership-cache/univention-ldap-cache', 'cleanup'])
+	subprocess.call(['/usr/share/univention-group-membership-cache/univention-ldap-cache', 'cleanup'])
 
 
 def check_logs():

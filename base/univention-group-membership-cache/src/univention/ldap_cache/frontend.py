@@ -33,7 +33,6 @@
 #
 
 
-from collections import defaultdict
 from univention.ldap_cache.cache import get_cache
 
 
@@ -89,12 +88,12 @@ def users_in_group(group_dn, consider_nested_groups=True, readers=(None, None), 
 				continue
 			else:
 				if consider_nested_groups:
-						if member in group_cache:
-								ret.update(group_cache[member])
-						else:
-								members = users_in_group(member, consider_nested_groups, readers=(member_uid_reader, unique_member_reader), group_cache=group_cache)
-								group_cache[member] = members
-								ret.update(members)
+					if member in group_cache:
+						ret.update(group_cache[member])
+					else:
+						members = users_in_group(member, consider_nested_groups, readers=(member_uid_reader, unique_member_reader), group_cache=group_cache)
+						group_cache[member] = members
+						ret.update(members)
 		return sorted(ret)
 
 

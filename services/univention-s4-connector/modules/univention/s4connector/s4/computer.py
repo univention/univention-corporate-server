@@ -52,8 +52,8 @@ def _isAlreadyMac(attributes):
 	return b'computers/macos' in attributes.get('univentionObjectType', [])
 
 
-def _replaceListElement(l, oldValue, newValue):
-	return [x if x != oldValue else newValue for x in l]
+def _replaceListElement(le, oldValue, newValue):
+	return [x if x != oldValue else newValue for x in le]
 
 
 def _convertWinToMac(s4connector, sync_object):

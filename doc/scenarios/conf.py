@@ -125,6 +125,7 @@ figure_language_filename = "{root}-{language}{ext}"
 
 univention_use_doc_base = True
 
+
 def adapt_settings_to_translation(app, config):
     """
     Sets the document title correctly according to the target language.

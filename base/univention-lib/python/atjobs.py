@@ -264,6 +264,7 @@ class AtJob(object):
 	:param datetime.datetime execTime: Planned job execution time.
 	:param bool isRunning: `True` is the jub is currently running, `False` otherwise.
 	"""
+
 	def __init__(self, nr, owner, execTime, isRunning):
 		# type: (int, str, datetime.datetime, bool) -> None
 		self.nr = nr

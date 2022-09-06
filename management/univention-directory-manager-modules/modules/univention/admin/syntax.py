@@ -6477,6 +6477,7 @@ class mailHomeServer(LDAP_Search):
 	.. deprecated:: 3.2-1
 		Use :py:class:`MailHomeServer`.
 	"""
+
 	def __init__(self):
 		LDAP_Search.__init__(
 			self,

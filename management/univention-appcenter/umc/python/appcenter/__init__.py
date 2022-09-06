@@ -84,6 +84,7 @@ class NoneCandidate(object):
 	''' Mock object if package has no candidate
 	(may happen without network connection)
 	'''
+
 	def __init__(self):
 		self.summary = self.version = self.description = self.priority = self.section = _('Package not found in repository')
 		self.installed_size = 0

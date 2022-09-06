@@ -10,7 +10,6 @@ import pytest
 import subprocess
 import re
 
-from univention.testing.utils import UCSTestDomainAdminCredentials as Credentials
 from univention.config_registry import handler_set as ucr_set
 from univention.config_registry import handler_unset as ucr_unset
 

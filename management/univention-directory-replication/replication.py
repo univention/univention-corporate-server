@@ -57,6 +57,7 @@ import subprocess
 import smtplib
 import sys
 from errno import ENOENT
+from typing import Optional
 
 from six.moves.email_mime_text import MIMEText
 

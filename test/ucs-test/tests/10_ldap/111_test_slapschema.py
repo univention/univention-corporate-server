@@ -15,12 +15,7 @@ from subprocess import Popen
 import pytest
 from univention.management.console.modules.diagnostic import Warning
 
-loader = importlib.machinery.SourceFileLoader('62_check_slapschema',
-                                              '/usr/lib/python3/'
-                                              'dist-packages/univention/'
-                                              'management/console/modules/'
-                                              'diagnostic/plugins/'
-                                              '62_check_slapschema.py')
+loader = importlib.machinery.SourceFileLoader('62_check_slapschema', '/usr/lib/python3/dist-packages/univention/management/console/modules/diagnostic/plugins/62_check_slapschema.py')
 check_slap = types.ModuleType(loader.name)
 loader.exec_module(check_slap)
 
@@ -55,7 +50,8 @@ def clean_environment():
 		"udm test/ip_phone remove --dn \"cn=test111,$(ucr get ldap/base)\"",
 		shell=True,
 		stdin=None).communicate()
-	Popen('apt-get -y remove univention-directory-manager-module-example',
+	Popen(
+		'apt-get -y remove univention-directory-manager-module-example',
 		shell=True,
 		stdout=subprocess.DEVNULL,
 		stdin=None).communicate()

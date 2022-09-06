@@ -261,7 +261,7 @@ class Base(signals.Provider, Translation):
 
 		accepted_locales = re.split(r'\s*,\s*', request.headers.get('Accept-Language', ''))
 		if accepted_locales:
-			self.update_language(l.replace('-', '_') for l in accepted_locales)
+			self.update_language(loc.replace('-', '_') for loc in accepted_locales)
 
 	def security_checks(self, request, function):
 		if request.http_method not in (u'POST', u'PUT', u'DELETE') and not getattr(function, 'allow_get', False):

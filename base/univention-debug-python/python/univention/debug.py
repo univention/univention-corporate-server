@@ -48,7 +48,7 @@ from functools import wraps
 from itertools import chain
 from warnings import warn
 from univention import _debug
-from univention._debug import *  # noqa: F403
+from univention._debug import *  # noqa: F403,F401
 
 
 def debug(category, level, message, utf8=True):

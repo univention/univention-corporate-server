@@ -38,7 +38,7 @@ import operator
 import os
 import re
 import sys
-from typing import Any, Callable, Dict, Iterable, List, NoReturn, Optional, Tuple, Union  # noqa: F401
+from typing import Any, Callable, Dict, Iterable, List, Tuple, Union  # noqa: F401
 
 import six
 
@@ -86,8 +86,8 @@ def strip_indent(text):  # type: (str) -> str
 		del lines[0]
 	while lines and not lines[-1].strip():
 		del lines[-1]
-	indent = min((len(l) - len(l.lstrip()) for l in lines if l.lstrip()))
-	return '\n'.join((l[indent:] for l in lines))
+	indent = min((len(line) - len(line.lstrip()) for line in lines if line.lstrip()))
+	return '\n'.join((line[indent:] for line in lines))
 
 
 def get_sections():  # type: () -> Dict[str, str]

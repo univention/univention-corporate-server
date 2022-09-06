@@ -42,7 +42,7 @@ from argparse import REMAINDER, ArgumentParser, RawTextHelpFormatter
 import univention.debug as ud
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, ud.FUNCTION)
 
-from univention.config_registry import ucr  # noqa: F402
+from univention.config_registry import ucr  # noqa: E402
 import univention.admin.uldap as uldap  # noqa: E402
 import univention.admin.config  # noqa: E402
 import univention.admin.modules  # noqa: E402

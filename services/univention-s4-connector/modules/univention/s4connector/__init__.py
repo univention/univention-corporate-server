@@ -1571,8 +1571,8 @@ class ucs(object):
 		def list_lower(elements):
 			if isinstance(elements, list):
 				retlist = []
-				for l in elements:
-					retlist.append(l.lower())
+				for le in elements:
+					retlist.append(le.lower())
 				return retlist
 			else:
 				return elements

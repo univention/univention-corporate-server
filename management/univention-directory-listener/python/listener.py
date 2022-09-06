@@ -126,6 +126,7 @@ class SetUID(object):
 
 	:param int uid: Numeric user ID. Defaults to `root`.
 	"""
+
 	def __init__(self, uid=0):  # type: (int) -> None
 		self.uid = uid if os.geteuid() != uid else -1
 

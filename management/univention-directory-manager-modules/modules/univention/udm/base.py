@@ -47,6 +47,7 @@ LdapMapping = namedtuple('LdapMapping', ('ldap2udm', 'udm2ldap'))
 
 class BaseObjectProperties(object):
 	"""Container for |UDM| properties."""
+
 	def __init__(self, udm_obj):
 		self._udm_obj = udm_obj
 
