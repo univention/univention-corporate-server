@@ -43,3 +43,11 @@ repos:
     -   id: rst-backticks
     -   id: rst-directive-colons
     -   id: rst-inline-touching-normal
+-   repo: https://github.com/pycqa/flake8
+    rev: '5.0.4'
+    hooks:
+    -   id: flake8
+        exclude: "^oidc/python-keycloak/\
+                  |^services/univention-ldb-modules/buildtools/\
+                  |^packaging/ucslint/testframework/\
+                  "

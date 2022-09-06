@@ -1,0 +1,4 @@
+[flake8]
+extend-ignore =
+	# ucs-test headers have E266 too many leading ‘#’ for block comment
+	E266

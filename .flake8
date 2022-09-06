@@ -1,0 +1,22 @@
+[flake8]
+exclude =
+	oidc/python-keycloak/,
+	services/univention-ldb-modules/buildtools/,
+max-complexity = 139
+ignore =
+	# E101 indentation contains mixed spaces and tabs
+	E101,
+	# E501 line too long
+	E501,
+	# W191 indentation contains tabs
+	W191,
+	# E265 block comment should start with '# '
+	E265,
+	# E266 too many leading '#' for block comment
+	E266,
+	# F811 redefinition of unused
+	F811,
+	# W503 line break before binary operator
+	W503,
+	# W504 line break after binary operator
+	W504,
