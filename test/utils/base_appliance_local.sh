@@ -167,8 +167,7 @@ create_app_images () {
 	_ssh -l "$KVM_USER" "$KVM_SERVER" "
 		set -e -x
 		test -d $TMP_DIR && rm -rf $TMP_DIR || true
-		mkdir -p $TMP_DIR
-		mkdir -p $APPS_BASE
+		install -m 2775 -d '$TMP_DIR' '$APPS_BASE'
 		qemu-img convert -p -c -O qcow2 $KT_CREATE_IMAGE $TMP_KVM_IMAGE
 	"
 
@@ -223,17 +222,17 @@ create_ucs_images () {
 
 	# convert image
 	_ssh -l "$KVM_USER" "$KVM_SERVER" "test -d $TMP_DIR && rm -rf $TMP_DIR || true"
-	_ssh -l "$KVM_USER" "$KVM_SERVER" "mkdir -p $TMP_DIR"
+	_ssh -l "$KVM_USER" "$KVM_SERVER" "install -m 2775 -d '$TMP_DIR'"
 	_ssh -l "$KVM_USER" "$KVM_SERVER" "qemu-img convert -p -c -O qcow2 $KT_CREATE_IMAGE $TMP_KVM_IMAGE"
 
 	# copy to image convert server for later steps and remove tmp image from kvm server
 	_ssh -l "$KVM_USER" "$IMAGE_SERVER" "test -d $TMP_DIR && rm -rf $TMP_DIR || true"
-	_ssh -l "$KVM_USER" "$IMAGE_SERVER" "mkdir -p $TMP_DIR"
+	_ssh -l "$KVM_USER" "$IMAGE_SERVER" "install -m 2775 -d '$TMP_DIR'"
 	_scp -r ${KVM_USER}@${KVM_SERVER}:/${TMP_KVM_IMAGE} ${KVM_USER}@${IMAGE_SERVER}:${TMP_DIR}
 	_ssh -l "$KVM_USER" "${KVM_SERVER}" "rm -rf ${TMP_DIR}"
 
 	# create apps dir
-	_ssh -l "$KVM_USER" "$APPS_SERVER" "mkdir -p $APPS_BASE"
+	_ssh -l "$KVM_USER" "$APPS_SERVER" "install -m 2775 -d '$APPS_BASE'"
 
 	_kvm_image "$UPDATER_ID (KVM)"
 	_vmplayer_image "$UPDATER_ID (VMware)"
@@ -253,7 +252,7 @@ create_ec2_image () {
 
 	# convert image
 	_ssh -l "$KVM_USER" "$KVM_SERVER" "test -d $TMP_DIR && rm -rf $TMP_DIR || true"
-	_ssh -l "$KVM_USER" "$KVM_SERVER" "mkdir -p $TMP_DIR"
+	_ssh -l "$KVM_USER" "$KVM_SERVER" "install -m 2775 -d '$TMP_DIR'"
 	_ssh -l "$KVM_USER" "$KVM_SERVER" "qemu-img convert -p -c -O qcow2 $KT_CREATE_IMAGE $TMP_KVM_IMAGE"
 
 	# copy to image convert server for later steps and remove tmp image from kvm server

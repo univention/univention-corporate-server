@@ -69,7 +69,7 @@ install_activation_packages ()
 download_packages ()
 {
 	local package install_cmd
-	mkdir -p /var/cache/univention-system-setup/packages/
+	install -m 0755 -d /var/cache/univention-system-setup/packages/
 	(
 		cd /var/cache/univention-system-setup/packages/
 		touch Packages
@@ -281,7 +281,7 @@ __EOF__
 	chmod 755 "/usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app}"
 
 	# default packages for non-docker apps
-	mkdir -p /var/cache/univention-system-setup/packages/
+	install -m 0755 -d /var/cache/univention-system-setup/packages/
 	(
 		cd /var/cache/univention-system-setup/packages/
 		touch Packages
@@ -578,7 +578,7 @@ download_system_setup_packages ()
 
 	echo "download_system_setup_packages for $app"
 
-	mkdir -p /var/cache/univention-system-setup/packages/
+	install -m 0755 -d /var/cache/univention-system-setup/packages/
 	(
 		cd /var/cache/univention-system-setup/packages/
 		touch Packages
@@ -667,7 +667,7 @@ install_haveged ()
 
 backup_current_local_packagecache ()
 {
-	mkdir -p /var/cache/univention-system-setup/packages_backup
+	install -m 0755 -d /var/cache/univention-system-setup/packages_backup
 	cp -r /var/cache/univention-system-setup/packages/* /var/cache/univention-system-setup/packages_backup
 }
 
