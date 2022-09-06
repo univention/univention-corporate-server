@@ -958,22 +958,17 @@ configfile_base="/var/lib/docker/containers/\$container_id"
 docker stop "\$container_id"
 
 for configfile in "\$configfile_base/config.json" "\$configfile_base/config.v2.json"; do
-	[ -e "\$configfile" ] && python -c "import json
-from univention.config_registry import ConfigRegistry
-ucr = ConfigRegistry()
-ucr.load()
-config = {}
+	[ -e "\$configfile" ] && python3 -c "import json
+from univention.config_registry import ucr
 with open('\$configfile', 'r') as configfile:
   config=json.load(configfile)
-  for i, v in enumerate(config['Config']['Env']):
-    if v.startswith('nameserver1='):
-       config['Config']['Env'][i] = 'nameserver1=%s' % ucr.get('nameserver1')
-    if v.startswith('NAMESERVER1='):
-       config['Config']['Env'][i] = 'NAMESERVER1=%s' % ucr.get('nameserver1')
-    if v.startswith('nameserver2='):
-       config['Config']['Env'][i] = 'nameserver2=%s' % ucr.get('nameserver2')
-    if v.startswith('NAMESERVER2='):
-       config['Config']['Env'][i] = 'NAMESERVER2=%s' % ucr.get('nameserver2')
+
+env = config['Config']['Env']
+for i, s in enumerate(env):
+  envv, _, _ = s.partition("=")
+  ucrv = envv.lower()
+  if ucrv[:-1] == "nameserver" and ucrv[-1] in {'1', '2'}:
+     env[i] = '%s=%s' % (envv, ucr.get(ucrv))
 
 with open('\$configfile', 'w') as configwriter:
   json.dump(config, configwriter)
