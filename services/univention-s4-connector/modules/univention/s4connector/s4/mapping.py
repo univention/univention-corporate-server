@@ -216,13 +216,13 @@ s4_mapping = {
         dn_mapping_function=[univention.s4connector.s4.user_dn_mapping],
         attributes=dict((key, value) for key, value in {
             'samAccountName': univention.s4connector.attribute(
-                        ucs_attribute='username',
-                        ldap_attribute='uid',
-                        con_attribute='sAMAccountName',
-                        required=1,
-                        compare_function=univention.s4connector.compare_lowercase,
-                        single_value=True,
-                        ),
+                ucs_attribute='username',
+                ldap_attribute='uid',
+                con_attribute='sAMAccountName',
+                required=1,
+                compare_function=univention.s4connector.compare_lowercase,
+                single_value=True,
+            ),
             'givenName': univention.s4connector.attribute(
                 ucs_attribute='firstname',
                 ldap_attribute='givenName',

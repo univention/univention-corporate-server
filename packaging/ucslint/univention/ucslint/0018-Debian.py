@@ -325,14 +325,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             yield (fn, join(dst, basename(fn)))
 
     RE_TEST = re.compile(
-            r'''
+        r'''
 		(?:(?P<test>\[{1,2}) | \b test)
 		\s+
 		(?P<cond>.+?)
 		(?(test)\s+\]{1,2} | (?:\s*(?:; | && | \|\| | $)))
 		''', re.VERBOSE)
     RE_CASE = re.compile(
-            r'''
+        r'''
 		\b
 		case
 		\s+
@@ -360,7 +360,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		$''', re.VERBOSE)
     # /usr/share/dh-python/dhpython/tools.py # INSTALL_RE
     RE_NAMESPACE = re.compile(
-            r'''^
+        r'''^
 		(?![0-9])\w+
 		(?:\. (?![0-9])\w+ )*
 		$''', re.VERBOSE)

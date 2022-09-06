@@ -1949,21 +1949,21 @@ class _OpenAPIBase:
             openapi_schemas[f'{model_name}.response-mixin'] = {
                 "type": "object",
                 "properties": {
-                        "_links": {
-                            "$ref": '#/components/schemas/_links',
-                        },
+                    "_links": {
+                        "$ref": '#/components/schemas/_links',
+                    },
                     "_embedded": {
-                            "$ref": '#/components/schemas/_embedded',
-                        },
+                        "$ref": '#/components/schemas/_embedded',
+                    },
                     "uuid": {
-                            "$ref": '#/components/schemas/uuid',
+                        "$ref": '#/components/schemas/uuid',
                     },
                     "objectType": {
-                            "$ref": '#/components/schemas/objectType',
+                        "$ref": '#/components/schemas/objectType',
                     },
                     # "id": {"$ref": '#/components/schemas/id',},
                     "uri": {
-                            "$ref": f'#/components/schemas/{_openapi_quote(model_name + ".uri")}',
+                        "$ref": f'#/components/schemas/{_openapi_quote(model_name + ".uri")}',
                     },
                 },
             }

@@ -19,8 +19,8 @@ from adconnector import connector_running_on_this_host, connector_setup
 AD = adconnector.ADConnection()
 import univention.testing.connector_common as tcommon  # noqa: E402
 from univention.testing.connector_common import (  # noqa: E402
-        NormalGroup, SpecialGroup, SpecialUser, Utf8Group, Utf8User, create_con_group, create_con_user,
-        create_udm_group, create_udm_user, delete_con_group, delete_con_user, delete_udm_group, delete_udm_user,
+    NormalGroup, SpecialGroup, SpecialUser, Utf8Group, Utf8User, create_con_group, create_con_user,
+    create_udm_group, create_udm_user, delete_con_group, delete_con_user, delete_udm_group, delete_udm_user,
 )
 from univention.testing.udm import UCSTestUDM  # noqa: E402
 

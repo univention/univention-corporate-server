@@ -54,7 +54,7 @@ except ImportError:
 
 
 RE_OVERRIDE = re.compile(
-        r'''^
+    r'''^
 	(?P<module> \d+-[BEFNW]?\d+)
 	(?: [:]
 	    (?: \s* (?P<pattern> .+?) \s*

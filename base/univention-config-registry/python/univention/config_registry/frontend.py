@@ -416,7 +416,8 @@ def handler_search(args, opts={}):
             print('E: invalid regular expression: %s' % (ex,), file=sys.stderr)
             sys.exit(1)
     else:
-        search = lambda x: True  # type: ignore # noqa: E731
+        def search(x):
+            return True
 
     info = _get_config_registry_info()
 
