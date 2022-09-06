@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-ldap
-fix: 16.0.7-22A~5.0.0.202209060919
+fix: 16.0.7-23A~5.0.0.202209061339
 desc: |
  This update addresses the following issues:
  * The objectclass `univentionObject` now offers two additional optional
