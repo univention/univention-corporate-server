@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: univention-appcenter
+fix:
+desc: |
+ This update addresses the following issue:
+ * A race condition was fixed, that caused apps to lose their installation
+   status.
+ * Improved GPG error handling
+bug: [54123]

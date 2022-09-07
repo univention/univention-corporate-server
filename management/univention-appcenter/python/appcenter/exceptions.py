@@ -145,7 +145,7 @@ class ConnectionFailedServerDown(ConnectionFailed):
 
 class UpdateSignatureVerificationFailed(Abort):
 	code = 411
-	default_error_msg = 'Signature verification for %(filename)s failed'
+	default_error_msg = 'Signature verification for %(filename)s failed: %(gpg_error)s'
 
 
 class UpdateUnpackArchiveFailed(Abort):

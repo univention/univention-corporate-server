@@ -40,6 +40,7 @@ from contextlib import contextmanager
 from time import sleep
 from glob import glob
 from json import dump, load
+from typing import Dict, Iterable, List, Optional, Tuple  # noqa F401
 from distutils.version import LooseVersion
 
 from six.moves.configparser import NoSectionError
@@ -58,6 +59,7 @@ cache_logger = get_base_logger().getChild('cache')
 
 
 def _cmp_mtimes(mtime1, mtime2):
+	# type: (Optional[float], Optional[float]) -> int
 	if mtime1 is None or mtime2 is None:
 		return cmp(mtime1, mtime2)
 	return cmp(float('{:.3f}'.format(mtime1)), float('{:.3f}'.format(mtime2)))
@@ -65,9 +67,11 @@ def _cmp_mtimes(mtime1, mtime2):
 
 class _AppCache(object):
 	def get_every_single_app(self):
+		# type: () -> Iterable[App]
 		raise NotImplementedError()
 
 	def get_all_apps_with_id(self, app_id):
+		# type: (str) -> List[App]
 		ret = []
 		for app in self.get_every_single_app():
 			if app.id == app_id:
@@ -75,6 +79,7 @@ class _AppCache(object):
 		return ret
 
 	def get_all_locally_installed_apps(self):
+		# type: () -> List[App]
 		ret = []
 		for app in self.get_every_single_app():
 			if app.is_installed():
@@ -82,6 +87,7 @@ class _AppCache(object):
 		return ret
 
 	def find(self, app_id, app_version=None, latest=False):
+		# type: (str, Optional[str], bool) -> Optional[App]
 		apps = self.get_all_apps_with_id(app_id)
 		if app_version:
 			for app in apps:
@@ -125,7 +131,8 @@ class _AppCache(object):
 			return not_permitted_app
 
 	def get_all_apps(self):
-		apps = {}
+		# type: () -> List[App]
+		apps = {}  # type: Dict[str, Tuple[App, bool]]
 		for app in self.get_every_single_app():
 			if app.id in apps:
 				old_app, old_is_installed = apps[app.id]
@@ -139,6 +146,7 @@ class _AppCache(object):
 		return sorted(app for (app, is_installed) in apps.itervalues())
 
 	def find_by_component_id(self, component_id):
+		# type: (str) -> Optional[App]
 		for app in self.get_every_single_app():
 			if app.component_id == component_id:
 				return app
@@ -220,8 +228,11 @@ class AppCache(_AppCache):
 		cache_file = self.get_cache_file()
 		if cache_file:
 			try:
-				with open(cache_file, 'wb') as fd:
+				tmp_file = cache_file + ".tmp"
+				with open(tmp_file, 'w') as fd:
 					dump([app.attrs_dict() for app in self._cache], fd, indent=2)
+
+				os.rename(tmp_file, cache_file)
 				cache_modified = self._cache_modified()
 			except (EnvironmentError, TypeError):
 				return False
@@ -397,6 +408,7 @@ class AppCenterCache(_AppCache):
 		return cls._appcenter_cache_cache[key]
 
 	def _get_current_ucs_version(self):
+		# type: () -> str
 		try:
 			still_running = False
 			next_version = None
@@ -423,14 +435,17 @@ class AppCenterCache(_AppCache):
 		return self._cache_class
 
 	def get_server(self):
+		# type: () -> str
 		if self._server is None:
 			self._server = default_server()
 		return self._server
 
 	def get_server_netloc(self):
+		# type: () -> str
 		return urlsplit(self.get_server()).netloc
 
 	def get_ucs_versions(self):
+		# type: () -> List[str]
 		if self._ucs_versions is None:
 			cache_file = self.get_cache_file('.ucs.ini')
 			ucs_version = self._get_current_ucs_version()
@@ -444,11 +459,13 @@ class AppCenterCache(_AppCache):
 		return self._ucs_versions
 
 	def get_locale(self):
+		# type: () -> str
 		if self._locale is None:
 			self._locale = default_locale()
 		return self._locale
 
 	def get_cache_dir(self):
+		# type: () -> str
 		if self._cache_dir is None:
 			server = self.get_server_netloc()
 			self._cache_dir = os.path.join(CACHE_DIR, server)
@@ -456,6 +473,7 @@ class AppCenterCache(_AppCache):
 		return self._cache_dir
 
 	def get_cache_file(self, fname):
+		# type: (str) -> str
 		return os.path.join(self.get_cache_dir(), fname)
 
 	def get_app_caches(self):
@@ -469,6 +487,7 @@ class AppCenterCache(_AppCache):
 		return self.get_app_cache_class().build(ucs_version=ucs_version, server=self.get_server(), locale=self.get_locale(), cache_dir=cache_dir)
 
 	def get_license_description(self, license_name):
+		# type: (str) -> Optional[str]
 		if self._license_type_cache is None:
 			cache_file = self.get_cache_file('.license_types.ini')
 			self._license_type_cache = LicenseType.all_from_file(cache_file)
@@ -525,6 +544,7 @@ class Apps(_AppCache):
 		return self._cache_class
 
 	def get_locale(self):
+		# type: () -> str
 		if self._locale is None:
 			self._locale = default_locale()
 		return self._locale
@@ -549,6 +569,7 @@ class Apps(_AppCache):
 		return app.supports_ucs_version()
 
 	def clear_cache(self):
+		# type: () -> None
 		for app_cache in self.get_appcenter_caches():
 			app_cache.clear_cache()
 
@@ -572,10 +593,12 @@ class Rating(IniSectionObject):
 
 
 def default_locale():
+	# type: () -> str
 	return get_locale() or 'en'
 
 
 def default_server():
+	# type: () -> str
 	server = ucr_get('repository/app_center/server', 'https://appcenter.software-univention.de')
 	if not server.startswith('http'):
 		server = 'https://%s' % server
@@ -583,5 +606,6 @@ def default_server():
 
 
 def default_ucs_version():
+	# type: () -> str
 	cache = AppCenterCache.build(server=default_server())
 	return cache.get_ucs_versions()[0]

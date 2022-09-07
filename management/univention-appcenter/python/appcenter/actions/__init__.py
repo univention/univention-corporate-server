@@ -39,6 +39,7 @@ from argparse import ArgumentParser, Action, Namespace
 import logging
 import ssl
 from functools import wraps
+from typing import TYPE_CHECKING, Any, Iterator, Mapping, Optional, Sequence, Tuple  # noqa F401
 
 from six.moves import urllib_error, http_client
 
@@ -46,6 +47,9 @@ from univention.appcenter.app_cache import Apps
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.utils import underscore, call_process, verbose_http_error, send_information
 from univention.appcenter.exceptions import Abort, NetworkError
+
+if TYPE_CHECKING:
+	from univention.appcenter.app import App  # noqa F401
 
 _ACTIONS = {}
 JOINSCRIPT_DIR = '/usr/lib/univention-install'
@@ -143,10 +147,12 @@ class UniventionAppAction(object):
 	parent_logger = get_base_logger().getChild('actions')
 
 	def __init__(self):
+		# type: () -> None
 		self._progress_percentage = 0
 
 	@classmethod
 	def get_action_name(cls):
+		# type: () -> str
 		return underscore(cls.__name__).replace('_', '-')
 
 	@classmethod
@@ -178,18 +184,22 @@ class UniventionAppAction(object):
 		cls._log(logger, logging.ERROR, exc, exc_info=1)
 
 	def setup_parser(self, parser):
+		# type: (ArgumentParser) -> None
 		pass
 
 	@property
 	def percentage(self):
+		# type: () -> int
 		return self._progress_percentage
 
 	@percentage.setter
 	def percentage(self, percentage):
+		# type: (int) -> None
 		self._progress_percentage = percentage
 		self.progress.debug(str(percentage))
 
 	def _build_namespace(self, _namespace=None, **kwargs):
+		# type: (Optional[Namespace], Any) -> Namespace
 		parser = ArgumentParser()
 		self.setup_parser(parser)
 		namespace = Namespace()
@@ -208,6 +218,7 @@ class UniventionAppAction(object):
 
 	@classmethod
 	def call_safe(cls, **kwargs):
+		# type: (Any) -> Any
 		try:
 			return cls.call(**kwargs)
 		except Abort:
@@ -215,11 +226,13 @@ class UniventionAppAction(object):
 
 	@classmethod
 	def call(cls, **kwargs):
+		# type: (Any) -> Any
 		obj = cls()
 		namespace = obj._build_namespace(**kwargs)
 		return obj.call_with_namespace(namespace)
 
 	def call_with_namespace(self, namespace):
+		# type: (Namespace) -> Any
 		self.debug('Calling %s' % self.get_action_name())
 		self.percentage = 0
 		try:
@@ -238,6 +251,7 @@ class UniventionAppAction(object):
 			return result
 
 	def _get_joinscript_path(self, app, unjoin=False):
+		# type: (App, bool) -> str
 		number = 50
 		suffix = ''
 		ext = 'inst'
@@ -255,6 +269,7 @@ class UniventionAppAction(object):
 		return self._call_script(fname, *args, **kwargs)
 
 	def _call_script(self, _script, *args, **kwargs):
+		# type: (str, Any, Any) -> Optional[bool]
 		if not os.path.exists(_script):
 			self.debug('%s does not exist' % _script)
 			return None
@@ -272,12 +287,13 @@ class UniventionAppAction(object):
 
 		return process.returncode == 0
 
-	def _subprocess(self, args, logger=None, env=None):
+	def _subprocess(self, args, logger=None, env=None, cwd=None):
+		# type: (Sequence[str], Optional[logging.Logger], Optional[Mapping[str, str]], Optional[str]) -> Any
 		if logger is None:
 			logger = self.logger
 		elif isinstance(logger, basestring):
 			logger = self.logger.getChild(logger)
-		return call_process(args, logger, env)
+		return call_process(args, logger, env, cwd)
 
 	@possible_network_error
 	def _send_information(self, app, status, value=None):
@@ -286,16 +302,20 @@ class UniventionAppAction(object):
 
 
 def get_action(action_name):
+	# type: (str) -> Optional[UniventionAppAction]
 	_import()
 	return _ACTIONS.get(action_name)
 
 
 def all_actions():
+	# type: () -> Iterator[Tuple[str, UniventionAppAction]]
 	_import()
 	for action_name in sorted(_ACTIONS):
 		yield action_name, _ACTIONS[action_name]
 
+
 def _import():
+	# type: () -> None
 	if _ACTIONS:
 		return
 	path = os.path.dirname(__file__)

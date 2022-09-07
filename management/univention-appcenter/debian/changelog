@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-152) unstable; urgency=medium
+
+  * Bug #54123: Update to 5.0 UpdateSignatureVerificationFailed
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Wed, 07 Sep 2022 09:09:44 +0200
+
 univention-appcenter (8.0.11-151) unstable; urgency=medium
 
   * Bug #54667: Order of populating ini file
