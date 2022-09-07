@@ -102,29 +102,6 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [scenarios/update-testing/update-from-1.2-start-4.3-4.cfg](scenarios/update-testing/update-from-1.2-start-4.3-4.cfg): Update from old UCS-1.2 system
 * [scenarios/update-testing/update-from-4.2-4.cfg](scenarios/update-testing/update-from-4.2-4.cfg): Update system with all UCS components
 
-### [MultiEnv: IPv6 AMI\<5.0, upgrade=5.0, Autotest](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-2/view/All/job/AutotestIPv6Update/)
-### [MultiEnv: IPv6 AMI=5.0, Autotest](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-2/view/All/job/AutotestIPv6/)
-
-1. (Master / Backup / Slave / Member) × (IPv4 + IPv& / IPv6 only)
-2. previous AMI
-3. upgrade
-4. join
-
-* [scenarios/ipv6/generic/autotest-300-master46-slave46.cfg](scenarios/ipv6/generic/autotest-300-master46-slave46.cfg)
-* [scenarios/ipv6/generic/autotest-301-master46-backup46.cfg](scenarios/ipv6/generic/autotest-301-master46-backup46.cfg)
-* [scenarios/ipv6/generic/autotest-302-master46-member46.cfg](scenarios/ipv6/generic/autotest-302-master46-member46.cfg)
-* [scenarios/ipv6/generic/autotest-303-master46-slave6.cfg](scenarios/ipv6/generic/autotest-303-master46-slave6.cfg)
-* [scenarios/ipv6/generic/autotest-304-master46-backup6.cfg](scenarios/ipv6/generic/autotest-304-master46-backup6.cfg)
-* [scenarios/ipv6/generic/autotest-305-master46-member6.cfg](scenarios/ipv6/generic/autotest-305-master46-member6.cfg)
-* [scenarios/ipv6/generic/autotest-306-master6-slave46.cfg](scenarios/ipv6/generic/autotest-306-master6-slave46.cfg)
-* [scenarios/ipv6/generic/autotest-307-master6-backup46.cfg](scenarios/ipv6/generic/autotest-307-master6-backup46.cfg)
-* [scenarios/ipv6/generic/autotest-308-master6-member46.cfg](scenarios/ipv6/generic/autotest-308-master6-member46.cfg)
-* [scenarios/ipv6/generic/autotest-309-master6-slave6.cfg](scenarios/ipv6/generic/autotest-309-master6-slave6.cfg)
-* [scenarios/ipv6/generic/autotest-310-master6-backup6.cfg](scenarios/ipv6/generic/autotest-310-master6-backup6.cfg)
-* [scenarios/ipv6/generic/autotest-311-master6-member6.cfg](scenarios/ipv6/generic/autotest-311-master6-member6.cfg)
-* [scenarios/ipv6/generic/autotest-312-master46-masteronly.cfg](scenarios/ipv6/generic/autotest-312-master46-masteronly.cfg)
-* [scenarios/ipv6/generic/autotest-313-master6-masteronly.cfg](scenarios/ipv6/generic/autotest-313-master6-masteronly.cfg)
-
 -----
 
 ### [Appliances](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-2/view/Appliances/)
@@ -173,36 +150,6 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [scenarios/setup-testing/member-s4.cfg](scenarios/setup-testing/member-s4.cfg)
 * [scenarios/setup-testing/slave-no-samba.cfg](scenarios/setup-testing/slave-no-samba.cfg)
 * [scenarios/setup-testing/slave-s4.cfg](scenarios/setup-testing/slave-s4.cfg)
-
-* [scenarios/ipv6/update/autotest-300-master46-slave46.cfg](scenarios/ipv6/update/autotest-300-master46-slave46.cfg)
-* [scenarios/ipv6/update/autotest-301-master46-backup46.cfg](scenarios/ipv6/update/autotest-301-master46-backup46.cfg)
-* [scenarios/ipv6/update/autotest-302-master46-member46.cfg](scenarios/ipv6/update/autotest-302-master46-member46.cfg)
-* [scenarios/ipv6/update/autotest-303-master46-slave6.cfg](scenarios/ipv6/update/autotest-303-master46-slave6.cfg)
-* [scenarios/ipv6/update/autotest-304-master46-backup6.cfg](scenarios/ipv6/update/autotest-304-master46-backup6.cfg)
-* [scenarios/ipv6/update/autotest-305-master46-member6.cfg](scenarios/ipv6/update/autotest-305-master46-member6.cfg)
-* [scenarios/ipv6/update/autotest-306-master6-slave46.cfg](scenarios/ipv6/update/autotest-306-master6-slave46.cfg)
-* [scenarios/ipv6/update/autotest-307-master6-backup46.cfg](scenarios/ipv6/update/autotest-307-master6-backup46.cfg)
-* [scenarios/ipv6/update/autotest-308-master6-member46.cfg](scenarios/ipv6/update/autotest-308-master6-member46.cfg)
-* [scenarios/ipv6/update/autotest-309-master6-slave6.cfg](scenarios/ipv6/update/autotest-309-master6-slave6.cfg)
-* [scenarios/ipv6/update/autotest-310-master6-backup6.cfg](scenarios/ipv6/update/autotest-310-master6-backup6.cfg)
-* [scenarios/ipv6/update/autotest-311-master6-member6.cfg](scenarios/ipv6/update/autotest-311-master6-member6.cfg)
-* [scenarios/ipv6/update/autotest-312-master46-masteronly.cfg](scenarios/ipv6/update/autotest-312-master46-masteronly.cfg)
-* [scenarios/ipv6/update/autotest-313-master6-masteronly.cfg](scenarios/ipv6/update/autotest-313-master6-masteronly.cfg)
-
-* [scenarios/ipv6/autotest-300-master46-slave46.cfg](scenarios/ipv6/autotest-300-master46-slave46.cfg)
-* [scenarios/ipv6/autotest-301-master46-backup46.cfg](scenarios/ipv6/autotest-301-master46-backup46.cfg)
-* [scenarios/ipv6/autotest-302-master46-member46.cfg](scenarios/ipv6/autotest-302-master46-member46.cfg)
-* [scenarios/ipv6/autotest-303-master46-slave6.cfg](scenarios/ipv6/autotest-303-master46-slave6.cfg)
-* [scenarios/ipv6/autotest-304-master46-backup6.cfg](scenarios/ipv6/autotest-304-master46-backup6.cfg)
-* [scenarios/ipv6/autotest-305-master46-member6.cfg](scenarios/ipv6/autotest-305-master46-member6.cfg)
-* [scenarios/ipv6/autotest-306-master6-slave46.cfg](scenarios/ipv6/autotest-306-master6-slave46.cfg)
-* [scenarios/ipv6/autotest-307-master6-backup46.cfg](scenarios/ipv6/autotest-307-master6-backup46.cfg)
-* [scenarios/ipv6/autotest-308-master6-member46.cfg](scenarios/ipv6/autotest-308-master6-member46.cfg)
-* [scenarios/ipv6/autotest-309-master6-slave6.cfg](scenarios/ipv6/autotest-309-master6-slave6.cfg)
-* [scenarios/ipv6/autotest-310-master6-backup6.cfg](scenarios/ipv6/autotest-310-master6-backup6.cfg)
-* [scenarios/ipv6/autotest-311-master6-member6.cfg](scenarios/ipv6/autotest-311-master6-member6.cfg)
-* [scenarios/ipv6/autotest-312-master46-masteronly.cfg](scenarios/ipv6/autotest-312-master46-masteronly.cfg)
-* [scenarios/ipv6/autotest-313-master6-masteronly.cfg](scenarios/ipv6/autotest-313-master6-masteronly.cfg)
 
 ## Apps
 

@@ -69,21 +69,3 @@ Schedule:
 	On demand
 Files:
 	`autotest-22?-admember-${Mode}-${Version}.cfg`
-
-IPv6
-====
-AutotestIPv6Update
-------------------
-Description:
-Schedule:
-	Disabled
-Files:
-	`ipv6/autotest-3??-${RoleMaster}-${RoleOther}.cfg`
-
-AutotestIPv6Update
-------------------
-Description:
-Schedule:
-	Disabled
-Files:
-	`ipv6/autotest-3??-${RoleMaster}-${RoleOther}.cfg`
