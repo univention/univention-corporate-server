@@ -20,9 +20,12 @@ if configRegistry['ldap/hostdn']:
 	print('   by dn.base="%s" read' % configRegistry['ldap/hostdn'])
 @!@   by * none
 
-# Bug #54140: There are systems with a large amount (>50000) of DNS-Zone objects,
-# the following access directive provides a faster access for services which have to
-# read all of them via the machine account (like Bind9).
-access to dn.children="cn=dns,@%@ldap/base@%@" filter="(objectClass=dNSZone)"
-    by dn="@%@ldap/hostdn@%@" read
-    by * +0 break
+@!@
+if configRegistry.get('ldap/hostdn'):
+    print('# Bug #54140: There are systems with a large amount (>50000) of DNS-Zone objects,')
+    print('# the following access directive provides a faster access for services which have to')
+    print('# read all of them via the machine account (like Bind9 on nodes without samba/AD).')
+    print('access to dn.children="cn=dns,%s" filter="(objectClass=dNSZone)"' % configRegistry['ldap/base'])
+    print('    by dn="%s" read' % configRegistry['ldap/hostdn'])
+    print('    by * +0 break')
+@!@

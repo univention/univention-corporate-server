@@ -3,6 +3,7 @@ Multifile: etc/ldap/slapd.conf
 Variables: ldap/server/type
 Variables: ldap/master
 Variables: ldap/base
+Variables: ldap/hostdn
 Variables: slapd/port
 Variables: ldap/debug/level
 Variables: ldap/acl/.*
@@ -14,6 +15,7 @@ Multifile: etc/ldap/slapd.conf
 Subfile: etc/ldap/slapd.conf.d/60univention-ldap-server_acl-master
 Variables: ldap/server/type
 Variables: ldap/master
+Variables: ldap/hostdn
 Variables: slapd/port
 
 Type: subfile

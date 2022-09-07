@@ -1,3 +1,9 @@
+univention-ldap (16.0.7-24) unstable; urgency=medium
+
+  * Bug #54140: Do not use access control entry if ldap/hostdn is not set
+
+ -- Johannes Königer <koeniger@univention.de>  Wed, 07 Sep 2022 10:23:20 +0200
+
 univention-ldap (16.0.7-23) unstable; urgency=medium
 
   * Bug #54140: Fast access to dns zone objects for the machine account
