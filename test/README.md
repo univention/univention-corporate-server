@@ -264,7 +264,6 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [branch-tests/base/singlemaster-all-components.cfg](branch-tests/base/singlemaster-all-components.cfg)
 * [branch-tests/base/singlemaster.cfg](branch-tests/base/singlemaster.cfg)
 * [branch-tests/base/singlemaster-joined.cfg](branch-tests/base/singlemaster-joined.cfg)
-* [branch-tests/create_templates/singlemaster-joined.cfg](branch-tests/create_templates/singlemaster-joined.cfg)
 * [branch-tests/mail/joined-master.cfg](branch-tests/mail/joined-master.cfg)
 * [branch-tests/samba/s4-connector.cfg](branch-tests/samba/s4-connector.cfg)
 * [branch-tests/school/multiserver.cfg](branch-tests/school/multiserver.cfg)
