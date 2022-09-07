@@ -17,7 +17,7 @@ stages:
 
 .sphinx-doc:
   stage: build
-  image: $SPHINX_DOC
+  image: $SPHINX_BASE
   artifacts:
     paths:
       - $base/_build
@@ -34,6 +34,7 @@ stages:
 
 .sphinx-pdf:
   extends: .sphinx-doc
+  image: $SPHINX_FULL
   script:
     - make -C $base -e SPHINXOPTS="-D language='$language'" -e BUILDDIR="_build/$language" latexpdf
     - mkdir -p $CI_PROJECT_DIR/public/$DOC_NAME/$DOC_TARGET_VERSION/$language
