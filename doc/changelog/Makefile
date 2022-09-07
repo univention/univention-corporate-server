@@ -1,8 +1,23 @@
-#!/usr/bin/make -f
-MAIN := release-notes-5.0-2-en release-notes-5.0-2-de
-STYLESHEET := univention_extdocs
-OPTIONS += --stringparam ulink.show 0
-release-notes-5.0-2-de%: lang := de
+# Minimal makefile for Sphinx documentation
+#
 
-COMMON_DIR ?= ../doc-common
-include $(COMMON_DIR)/Makefile
+# You can set these variables from the command line, and also
+# from the environment for the first two.
+SPHINXOPTS    ?=
+SPHINXBUILD   ?= sphinx-build
+SOURCEDIR     = .
+BUILDDIR      = _build
+
+# Put it first so that "make" without argument is like "make help".
+help:
+	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+
+livehtml:
+	sphinx-autobuild "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+
+.PHONY: help Makefile
+
+# Catch-all target: route all unknown targets to Sphinx using the new
+# "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
+%: Makefile
+	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
