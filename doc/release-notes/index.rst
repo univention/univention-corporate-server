@@ -247,7 +247,7 @@ Changelog
 *********
 
 You find the changes since UCS 5.0-1 in
-:external+uv-changelog-5-0-2:document:`index`.
+:external+uv-changelog:doc:`index`.
 
 
 .. _biblio:

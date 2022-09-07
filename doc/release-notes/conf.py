@@ -50,7 +50,7 @@ extensions = [
 intersphinx_mapping = {
     "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.0/en", None),
     "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None),
-    "uv-changelog-5-0-2": ("https://docs.software-univention.de/changelog/5.0-2/en", None),
+    "uv-changelog": ("https://docs.software-univention.de/changelog/5.0-2/en", None),
 }
 
 bibtex_bibfiles = ["../bibliography.bib"]
@@ -144,6 +144,7 @@ univention_use_doc_base = True
 
 gettext_additional_targets = ["literal-block"]
 
+
 def adapt_settings_to_translation(app, config):
     """
     Sets the document title correctly according to the target language.
@@ -161,7 +162,7 @@ def adapt_settings_to_translation(app, config):
         config.intersphinx_mapping = {
             "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.0/en", None),
             "uv-manual": ("https://docs.software-univention.de/manual/5.0/de", None),
-            "uv-changelog-5-0-2": ("https://docs.software-univention.de/changelog/5.0-2/en", None),
+            "uv-changelog": ("https://docs.software-univention.de/changelog/5.0-2/en", None),
         }
         config.bibtex_bibfiles = ["../bibliography-de.bib"]
 
