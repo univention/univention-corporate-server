@@ -28,6 +28,19 @@ FALSE_VALID = sorted({
 FALSE_INVALID = ('no ', ' no', '', "no2", "Off2", "Univention")
 
 
+@pytest.mark.parametrize("layer,name", [
+	("DEFAULTS", "default"),
+	("NORMAL", "normal"),
+	("LDAP", "ldap"),
+	("SCHEDULE", "schedule"),
+	("FORCED", "forced"),
+	("CUSTOM", "custom"),
+])
+def test_scope_names(layer, name):
+	val = getattr(backend.ReadOnlyConfigRegistry, layer)
+	assert backend.SCOPE[val] == name
+
+
 class TestConfigRegistry(object):
 
 	"""

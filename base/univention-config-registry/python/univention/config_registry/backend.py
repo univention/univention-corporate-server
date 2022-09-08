@@ -86,7 +86,7 @@ def exception_occured(out=sys.stderr):
 	sys.exit(1)
 
 
-SCOPE = ['normal', 'ldap', 'schedule', 'forced', 'custom', 'default']
+SCOPE = ['default', 'normal', 'ldap', 'schedule', 'forced', 'custom']
 
 
 class Load(IntEnum):

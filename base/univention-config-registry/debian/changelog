@@ -1,3 +1,9 @@
+univention-config-registry (15.0.7-19) unstable; urgency=low
+
+  * Bug #55174: Fix printing wrong UCR layer names
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 08 Sep 2022 16:40:09 +0200
+
 univention-config-registry (15.0.7-18) unstable; urgency=low
 
   * Bug #54476: Adapt to Linux kernel API change open(O_EXCL): EISDIR->EEXIST

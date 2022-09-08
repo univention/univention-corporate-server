@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-config-registry
+fix: 15.0.7-19
+desc: |
+ This update addresses the following issues:
+ * Fixed printing wrong UCR layer name.
+bug: [55174]
