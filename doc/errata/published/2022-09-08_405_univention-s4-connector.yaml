@@ -11,3 +11,5 @@ desc: |
    in the same position.
  * The connector now synchronizes the password history between Samba and UCS.
 bug: [55131, 52230]
+erratum: 405
+announced: 2022-09-08
