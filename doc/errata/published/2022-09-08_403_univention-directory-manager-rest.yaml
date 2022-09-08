@@ -9,3 +9,5 @@ desc: |
  * The UDM command line client now writes error messages and warnings to
    stdandard error.
 bug: [4498]
+erratum: 403
+announced: 2022-09-08
