@@ -1,3 +1,9 @@
+univention-fetchmail (13.0.1-4) unstable; urgency=medium
+
+  * Bug #55159: remove unnecessary LDAP ACL for cn=admin which always have all access rights
+
+ -- Mika Westphal <westphal@univention.de>  Thu, 08 Sep 2022 11:33:31 +0200
+
 univention-fetchmail (13.0.1-3) unstable; urgency=low
 
   * Bug #54029: Update French translation
