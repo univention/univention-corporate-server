@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Reading records from database is optimized to use less RAM and CPU.
 bug: [51902]
+erratum: 411
+announced: 2022-09-08
