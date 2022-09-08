@@ -12,3 +12,5 @@ desc: |
  * The script s4search-decode can now be used to decode the attribute
    ntPwdHistory.
 bug: [55082, 52230]
+erratum: 402
+announced: 2022-09-08
