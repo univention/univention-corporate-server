@@ -45,3 +45,5 @@ desc: |
    matching the criteria of a `windowscomputer`, as these don't have an
    `ignore_filter`.
 bug: [54780, 55087, 52230, 52192, 55150]
+erratum: 407
+announced: 2022-09-08
