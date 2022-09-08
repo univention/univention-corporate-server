@@ -14,7 +14,7 @@ desc: |
  * Use-after-free in `hw/net/e1000e_core.c` because a guest OS user can
    trigger an e1000e packet with the data's address set to the e1000e's MMIO
    address. (CVE-2020-15859)
- * The patch for CVE-2020-17380/CVE-2020-25085 was found to be ineffective,
+ * The patch for CVE-2020-17380 / CVE-2020-25085 was found to be ineffective,
    thus making QEMU vulnerable to the out-of-bounds read/write access issues
    previously found in the SDHCI controller emulation code. This flaw allows a
    malicious privileged guest to crash the QEMU process on the host, resulting
