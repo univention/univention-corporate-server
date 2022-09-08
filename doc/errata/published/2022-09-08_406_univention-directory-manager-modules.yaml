@@ -27,3 +27,5 @@ desc: |
    `entryUUID` or `objectGUID`) and in a way that is independent of
    implementation of the IAM backend (e.g. OpenLDAP or Active Directory).
 bug: [54596, 33224, 4498, 55037, 52230, 55154]
+erratum: 406
+announced: 2022-09-08
