@@ -15,3 +15,5 @@ desc: |
  * An additional ACL access directive for the machine account provides
    faster access to DNS zone objects.
 bug: [55154, 54140]
+erratum: 404
+announced: 2022-09-08
