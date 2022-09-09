@@ -374,10 +374,12 @@ class Server(signals.Provider):
 			# ensure that the UNIX socket is only accessible by root
 			old_umask = os.umask(0o077)
 			try:
-				self.__realunixsocket.bind(self.__unix)
-			except EnvironmentError:
-				if os.path.exists(self.__unix):
+				try:
 					os.unlink(self.__unix)
+				except EnvironmentError as exc:
+					if exc.errno != errno.ENOENT:
+						raise
+				self.__realunixsocket.bind(self.__unix)
 			finally:
 				# restore old umask
 				os.umask(old_umask)
