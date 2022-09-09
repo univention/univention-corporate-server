@@ -1,4 +1,5 @@
 stages:
+  - test
   - prepare
   - build
 
@@ -13,6 +14,8 @@ include:
   - project: univention/dist/docker-services
     file: kaniko.yml
   - local: '/.gitlab-ci/base.yml'
+  - project: univention/dist/docker-services
+    file: pre-commit.yml
 
 variables:
   pipeline:
@@ -59,7 +62,7 @@ drop aptly:
   interruptible: false
   variables:
     GIT_STRATEGY: none
-  image: docker-registry.knut.univention.de/curlimages/curl
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/curlimages/curl
   script:
     - "curl --silent --show-error -X DELETE $APTLY/publish/$CI_COMMIT_REF_SLUG/git || :"
     - "curl --silent --show-error -X DELETE $APTLY/repos/$CI_COMMIT_REF_SLUG || :"
