@@ -1181,10 +1181,10 @@ add_extra_apt_scope () {
 }
 
 create_version_file_tmp_ucsver () {
-	local testing="${1:?missing testing parameter}"
-	if [ "x$testing" = "xtrue" ]; then
+	local testing="${1:-false}"
+	if [ "$testing" = "true" ]; then
 		echo "ucsver=@%@version/version@%@-@%@version/patchlevel@%@+$(date +%Y-%m-%d)" | ucr filter>/tmp/ucs.ver
-	elif [ "x$testing" = "xfalse" ]; then
+	elif [ "$testing" = "false" ]; then
 		echo 'ucsver=@%@version/version@%@-@%@version/patchlevel@%@+e@%@version/erratalevel@%@' | ucr filter>/tmp/ucs.ver
 	else
 		return 1
@@ -1194,11 +1194,16 @@ create_version_file_tmp_ucsver () {
 basic_setup_ucs_joined () {
 	local masterip="${1:?missing master ip}"
 	local admin_password="${2:-univention}"
-	local rv=0
+	local rv=0 server_role ldap_base domain
+
+	server_role="$(ucr get server/role)"
+	ldap_base="$(ucr get ldap/base)"
+	domain="$(ucr get domainname)"
+
 	# TODO
 	#  ... recreate ssh keys ...
 	# fix ip on non-master systems
-	if [ "$(ucr get server/role)" != "domaincontroller_master" ]; then
+	if [ "$server_role" != "domaincontroller_master" ]; then
 		ucr set "hosts/static/${masterip}=$(ucr get ldap/master)"
 		if [ "$(ucr get server/role)" = "memberserver" ]; then
 			ucr set nameserver1="$masterip"
@@ -1208,13 +1213,22 @@ basic_setup_ucs_joined () {
 		service nscd restart || rv=1
 	fi
 
+	# fix ucs-sso
+	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+		my_old_ip="$(grep "set interfaces/eth0/address=" /var/log/univention/config-registry.replog | tail -1 | awk -F 'old:' '{print $2}')"
+		sso_fqdn="$(ucr get ucs/server/sso/fqdn)"
+		sso_hostname="${sso_fqdn%%.*}"
+		udm dns/host_record modify --binddn "$binddn" --bindpwd "$admin_password" \
+			--dn "relativeDomainName=$sso_hostname,zoneName=$domain,cn=dns,$ldap_base" \
+			--remove a="$my_old_ip"
+	fi
+
 	# fix samba/dns settings on samba DC's
 	# hacky approach, save the old ip addresses during template creation
 	# and fix dns settings until https://forge.univention.org/bugzilla/show_bug.cgi?id=54189
 	# is fixed
 	if [ -e /var/lib/samba/private/sam.ldb ]; then
-		local domain ldap_base old_ip ip binddn master old_ip_master
-		domain="$(ucr get domainname)"
+		local old_ip ip binddn master old_ip_master
 		ldap_base="$(ucr get ldap/base)"
 		old_ip="$(ucr get internal/kvm/template/old/ip)"
 		ip="$(ucr get interfaces/eth0/address)"
@@ -1238,15 +1252,15 @@ basic_setup_ucs_joined () {
 				--remove a="$old_ip" --append a="$ip"
 		fi
 
+		# update primary ip
 		if [ "$(ucr get server/role)" != "domaincontroller_master" ]; then
 			master="$(ucr get ldap/master)"
 			old_ip_master="$(dig +short "$master")"
 			if [ -n "$old_ip_master" ]; then
-				samba-tool dns update -U"Administrator%$admin_password" localhost samba.test primary A "$old_ip_master" "$masterip"
+				samba-tool dns update -U"Administrator%$admin_password" localhost "$domain" "${master%%.*}" A "$old_ip_master" "$masterip"
 				/etc/init.d/samba restart || rv=1
 			fi
 		fi
-
 	fi
 
 	return $rv
