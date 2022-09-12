@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: freeradius
+fix: 3.0.17+dfsg-1.1+deb10u1A~5.0.2.202209120914
+desc: |
+ This update addresses the following issues:
+ * eap-pwd: Information leak due to aborting when needing more than 10
+   iterations (CVE-2019-13456)
+ * eap-pwd: DoS issues due to multithreaded BN_CTX access (CVE-2019-17185)
+bug: [55195]
+cve:
+- CVE-2019-13456
+- CVE-2019-17185
