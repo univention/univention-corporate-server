@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-2
 src: univention-fetchmail
 fix: 13.0.1-4A~5.0.0.202209090938
 desc: |
- This update addresses the following issues:
- * A unnecessary LDAP ACL for the LDAP root DN which caused a warning
-   by `slapschema` has been removed.
+ This update addresses the following issue:
+ * An unnecessary LDAP ACL for the LDAP root DN has been removed, which caused
+   a warning by `slapschema`
 bug: [55159]
