@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: librsvg
+fix: 2.44.10-2.1+deb10u3
+desc: |
+ This update addresses the following issue:
+ * Resource exhaustion via crafted SVG file with nested patterns
+   (CVE-2019-20446)
+bug: [55193]
+cve:
+- CVE-2019-20446
