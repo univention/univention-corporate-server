@@ -7,8 +7,8 @@ fix: 1.0.5-3.1+deb10u2
 desc: |
  This update addresses the following issues:
  * Stack based buffer overflow (CVE-2022-25308)
- * Heap-buffer-overflow in fribidi_cap_rtl_to_unicode (CVE-2022-25309)
- * SEGV in fribidi_remove_bidi_marks (CVE-2022-25310)
+ * Heap-buffer-overflow in `fribidi_cap_rtl_to_unicode` (CVE-2022-25309)
+ * Segmentation violation in `fribidi_remove_bidi_marks` (CVE-2022-25310)
 bug: [55190]
 cve:
 - CVE-2022-25308
