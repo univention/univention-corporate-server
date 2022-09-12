@@ -265,9 +265,9 @@ EOF
 	/usr/share/ucs-school-import/scripts/create_ou "--verbose" "school2" "replica2" --displayName="school2" --sharefileserver="replica2"
 	/usr/share/ucs-school-import/scripts/create_ou "--verbose" "school3" "replica3" --displayName="school3" --sharefileserver="replica3"
 	/usr/share/ucs-school-import/scripts/create_ou "--verbose" "school4" "replica4" --displayName="school4" --sharefileserver="replica4"
-	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import --verbose --classes 100 --students 40000 --teachers 10000 School1 >/tmp/import.log 2>&1
-	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import --verbose --classes 100 --students 20000 --teachers 5000 School2 >/tmp/import.log 2>&1
-	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import --verbose --classes 100 --students 20000 --teachers 5000 School3 >/tmp/import.log 2>&1
+	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import --verbose --classes 100 --students 40000 --teachers 10000 school1 >/tmp/import.log 2>&1
+	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import --verbose --classes 100 --students 20000 --teachers 5000 school2 >/tmp/import.log 2>&1
+	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import --verbose --classes 100 --students 20000 --teachers 5000 school3 >/tmp/import.log 2>&1
 	rm -f /tmp/import.log
 	. utils.sh && wait_for_replication "$(( 10 * 3600 ))" 60
 }
