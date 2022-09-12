@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issues:
  * eap-pwd: Information leak due to aborting when needing more than 10
    iterations (CVE-2019-13456)
- * eap-pwd: DoS issues due to multithreaded BN_CTX access (CVE-2019-17185)
+ * eap-pwd: DoS issues due to multithreaded `BN_CTX` access (CVE-2019-17185)
 bug: [55195]
 cve:
 - CVE-2019-13456
