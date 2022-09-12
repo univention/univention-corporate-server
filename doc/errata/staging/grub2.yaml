@@ -1,0 +1,27 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: grub2
+fix: 2.06-3~deb10u1
+desc: |
+ This update addresses the following issues:
+ * Crafted PNG grayscale images may lead to out-of-bounds write in heap
+   (CVE-2021-3695)
+ * Crafted PNG image may lead to out-of-bound write during huffman table
+   handling (CVE-2021-3696)
+ * Crafted JPEG image can lead to buffer underflow write in the heap
+   (CVE-2021-3697)
+ * Integer underflow in grub_net_recv_ip4_packets (CVE-2022-28733)
+ * Out-of-bound write when handling split HTTP headers (CVE-2022-28734)
+ * shim_lock verifier allows non-kernel files to be loaded (CVE-2022-28735)
+ * use-after-free in grub_cmd_chainloader() (CVE-2022-28736)
+bug: [55191]
+cve:
+- CVE-2021-3695
+- CVE-2021-3696
+- CVE-2021-3697
+- CVE-2022-28733
+- CVE-2022-28734
+- CVE-2022-28735
+- CVE-2022-28736
