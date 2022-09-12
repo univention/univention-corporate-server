@@ -250,3 +250,24 @@ create_virtual_schools () {
 		printf "SchoolVirtual%0${#number_of_schools}d\n" "$i" >> ./virtual_schools.txt  # Later used for the import script
 	done
 }
+
+
+# used in scenarios/kvm-templates/schoolprimary-with-100000-users-kvm-template.cfg
+create_users_in_template_job () {
+	# don't delete users
+	cat <<EOF > /var/lib/ucs-school-import/configs/user_import.json
+{
+  "no_delete": true
+}
+EOF
+	# create school users
+	/usr/share/ucs-school-import/scripts/create_ou "--verbose" "school1" "replica1" --displayName="school1" --sharefileserver="replica1"
+	/usr/share/ucs-school-import/scripts/create_ou "--verbose" "school2" "replica2" --displayName="school2" --sharefileserver="replica2"
+	/usr/share/ucs-school-import/scripts/create_ou "--verbose" "school3" "replica3" --displayName="school3" --sharefileserver="replica3"
+	/usr/share/ucs-school-import/scripts/create_ou "--verbose" "school4" "replica4" --displayName="school4" --sharefileserver="replica4"
+	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import --verbose --classes 100 --students 40000 --teachers 10000 School1 >/tmp/import.log 2>&1
+	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import --verbose --classes 100 --students 20000 --teachers 5000 School2 >/tmp/import.log 2>&1
+	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import --verbose --classes 100 --students 20000 --teachers 5000 School3 >/tmp/import.log 2>&1
+	rm -f /tmp/import.log
+	. utils.sh && wait_for_replication "$(( 10 * 3600 ))" 60
+}
