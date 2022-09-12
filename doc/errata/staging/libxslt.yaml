@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: libxslt
+fix: 1.1.32-2.2~deb10u2
+desc: |
+ This update addresses the following issues:
+ * Heap buffer overflow in Blink (CVE-2019-5815)
+ * Use after free in Blink XSLT in Google Chrome prior to 91.0.4472.164
+   allowed a remote attacker to potentially exploit heap corruption via a
+   crafted HTML page. (CVE-2021-30560)
+bug: [55194]
+cve:
+- CVE-2019-5815
+- CVE-2021-30560
