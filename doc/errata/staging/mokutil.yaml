@@ -2,8 +2,8 @@ product: ucs
 release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
-src: grub2
-fix: 2.06-3~deb10u1
+src: mokutil
+fix: 0.6.0-2~deb10u1
 desc: |
  This update addresses the following issues:
  * Crafted PNG grayscale images may lead to out-of-bounds write in heap
@@ -16,7 +16,7 @@ desc: |
  * Out-of-bound write when handling split HTTP headers (CVE-2022-28734)
  * shim_lock verifier allows non-kernel files to be loaded (CVE-2022-28735)
  * use-after-free in grub_cmd_chainloader() (CVE-2022-28736)
-note: This is the 1st part of three parts.
+note: This is the 3rd part of three parts.
 bug: [55191]
 cve:
 - CVE-2021-3695
