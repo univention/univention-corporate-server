@@ -6,17 +6,17 @@ src: apache2
 fix: 2.4.38-3+deb10u8A~5.0.2.202209111835
 desc: |
  This update addresses the following issues:
- * mod_lua: Use of uninitialized value of in r:parsebody (CVE-2022-22719)
+ * mod_lua: Use of uninitialized value of in `r:parsebody` (CVE-2022-22719)
  * Errors encountered during the discarding of request body lead to HTTP
    request smuggling (CVE-2022-22720)
  * core: Possible buffer overflow with very large or unlimited
-   LimitXMLRequestBody (CVE-2022-22721)
+   `LimitXMLRequestBody` (CVE-2022-22721)
  * mod_sed: Read/write beyond bounds (CVE-2022-23943)
  * mod_proxy_ajp: Possible request smuggling (CVE-2022-26377)
- * out-of-bounds read via ap_rwrite() (CVE-2022-28614)
- * out-of-bounds read in ap_strcmp_match() (CVE-2022-28615)
- * mod_lua: DoS in r:parsebody (CVE-2022-29404)
- * mod_sed: DoS vulnerability (CVE-2022-30522)
+ * out-of-bounds read via `ap_rwrite()` (CVE-2022-28614)
+ * out-of-bounds read in `ap_strcmp_match()` (CVE-2022-28615)
+ * mod_lua: Denial-of-Service in `r:parsebody` (CVE-2022-29404)
+ * mod_sed: Denial-of-Service vulnerability (CVE-2022-30522)
  * mod_lua: Information disclosure with websockets (CVE-2022-30556)
  * mod_proxy: X-Forwarded-For dropped by hop-by-hop mechanism (CVE-2022-31813)
 bug: [55187]
