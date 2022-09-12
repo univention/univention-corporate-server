@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: freetype
+fix: 2.9.1-3+deb10u3
+desc: |
+ This update addresses the following issues:
+ * Buffer Overflow (CVE-2022-27404)
+ * Segementation Fault (CVE-2022-27405)
+ * Segmentation violation (CVE-2022-27406)
+bug: [55192]
+cve:
+- CVE-2022-27404
+- CVE-2022-27405
+- CVE-2022-27406
