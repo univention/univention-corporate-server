@@ -9,3 +9,5 @@ desc: |
  * An unnecessary LDAP ACL for the LDAP root DN has been removed, which caused
    a warning by `slapschema`
 bug: [55159]
+erratum: 421
+announced: 2022-09-13
