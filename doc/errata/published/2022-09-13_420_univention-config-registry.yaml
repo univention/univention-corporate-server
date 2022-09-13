@@ -8,3 +8,5 @@ desc: |
   This update addresses the following issues:
   * Fixed printing wrong UCR layer name.
 bug: [55174]
+erratum: 420
+announced: 2022-09-13
