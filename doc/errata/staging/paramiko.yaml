@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: paramiko
+fix: 2.4.2-0.1+deb10u1
+desc: |
+ This update addresses the following issue:
+ * Race condition in the write_private_key_file function (CVE-2022-24302)
+bug: [55199]
+cve:
+- CVE-2022-24302
