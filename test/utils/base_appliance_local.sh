@@ -33,6 +33,9 @@
 set -x
 set -e
 
+APPS_SERVER="omar.knut.univention.de"
+IMAGE_SERVER="docker.knut.univention.de"
+
 _ssh () {
 	ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o BatchMode=yes -n "$@"
 }
@@ -143,10 +146,7 @@ _set_global_vars () {
 	UCS_VERSION=$4
 	UCS_VERSION_INFO="$5"
 
-	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_app-appliance-${APP_ID}-0.qcow2"
 	APPS_BASE="/var/univention/buildsystem2/mirror/appcenter.test/univention-apps/${UCS_VERSION}/${APP_ID}"
-	APPS_SERVER="omar.knut.univention.de"
-	IMAGE_SERVER="docker.knut.univention.de"
 	TMP_DIR="/var/univention/buildsystem2/temp/build-app-appliance/${APP_ID}"
 	TMP_KVM_IMAGE="$TMP_DIR/master.qcow2"
 	IMAGE_VERSION="${UCS_VERSION}-with-${APP_ID}"
@@ -155,13 +155,12 @@ _set_global_vars () {
 	VBOX_IMAGE="Univention-App-${APP_ID}-virtualbox.ova"
 	ESX_IMAGE="Univention-App-${APP_ID}-ESX.ova"
 	HYPERV_IMAGE_BASE="Univention-App-${APP_ID}-Hyper-V"
-
-	export APP_ID KVM_USER KVM_SERVER UCS_VERSION UCS_VERSION_INFO KT_CREATE_IMAGE APPS_BASE APPS_SERVER IMAGE_SERVER
-	export TMP_DIR VMPLAYER_IMAGE KVM_IMAGE TMP_KVM_IMAGE VBOX_IMAGE ESX_IMAGE IMAGE_VERSION
 }
 
+# Used by scenarios/app-appliance.cfg
 create_app_images () {
 	_set_global_vars "$@"
+	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_app-appliance-${APP_ID}-0.qcow2"
 
 	# convert image
 	_ssh -l "$KVM_USER" "$KVM_SERVER" "
@@ -176,7 +175,6 @@ create_app_images () {
 
 	# get appliance identifier (is saved in /tmp/.identifier in image)
 	IDENTIFIER=$(_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "virt-cat -a '${TMP_KVM_IMAGE}' /.identifier 2>/dev/null || echo '$APP_ID'")
-	export MEMORY IDENTIFIER
 
 	_kvm_image "Univention App ${UCS_VERSION} Appliance ${IDENTIFIER} (KVM)"
 	_vmplayer_image "Univention App ${UCS_VERSION} Appliance ${IDENTIFIER} (VMware)"
@@ -196,6 +194,7 @@ create_app_images () {
 	"
 }
 
+# Used by scenarios/appliances/ucs-appliance.cfg
 create_ucs_images () {
 	UPDATER_ID="$1"
 	KVM_USER="$2"
@@ -203,8 +202,6 @@ create_ucs_images () {
 	UCS_VERSION="$4"
 
 	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_master-ucs-appliance-0.qcow2"
-	APPS_SERVER="omar.knut.univention.de"
-	IMAGE_SERVER="docker.knut.univention.de"
 	TMP_DIR="/tmp/build-ucs-appliance"
 	TMP_KVM_IMAGE="$TMP_DIR/master.qcow2"
 	APPS_BASE="/var/univention/buildsystem2/temp/build/appliance/"
@@ -215,9 +212,6 @@ create_ucs_images () {
 	VBOX_IMAGE="UCS-Virtualbox-Image.ova"
 	ESX_IMAGE="UCS-VMware-ESX-Image.ova"
 	HYPERV_IMAGE_BASE="UCS-Hyper-V-Image"
-
-	export APP_ID KVM_USER KVM_SERVER UCS_VERSION KT_CREATE_IMAGE APPS_BASE APPS_SERVER IMAGE_SERVER
-	export TMP_DIR VMPLAYER_IMAGE KVM_IMAGE TMP_KVM_IMAGE VBOX_IMAGE ESX_IMAGE MEMORY IMAGE_VERSION
 
 	# convert image
 	_ssh -l "$KVM_USER" "$KVM_SERVER" "test -d '$TMP_DIR' && rm -rf '$TMP_DIR' || true"
@@ -245,6 +239,7 @@ create_ucs_images () {
 	echo "## Images available at $APPS_BASE"
 }
 
+# Used by scenarios/appliances/ec2-appliance.cfg
 create_ec2_image () {
 	_set_global_vars "$@"
 	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_${APP_ID}-0.qcow2"
