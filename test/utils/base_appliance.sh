@@ -35,28 +35,25 @@ appliance_default_password="zRMtAmGIb3"
 set -x
 set -e
 
-check_returnvalue ()
-{
-	local rval="$1" errormessage="$2"
+check_returnvalue () {  # <return-value> <error-message>
+	local rval="${1?}" errormessage="${2?}"
 	if [ "${rval}" != 0 ]; then
 		echo "${errormessage}"
 		exit "${rval}"
 	fi
 }
 
-install_vmware_packages ()
-{
+install_vmware_packages () {
 	univention-install -y --assume-yes open-vm-tools
 }
 
-install_virtualbox_packages ()
-{
+install_virtualbox_packages () {
 	univention-install -y --assume-yes virtualbox-guest-x11
 }
 
-install_activation_packages ()
-{
-	if "$1"
+install_activation_packages () {  # <require_activation>
+	local require_activation="${1:-true}"
+	if "$require_activation"
 	then
 		univention-install -y --assume-yes univention-system-activation
 		ucr set --force auth/sshd/user/root=yes
@@ -66,8 +63,7 @@ install_activation_packages ()
 	fi
 }
 
-download_packages ()
-{
+download_packages () {
 	local package install_cmd
 	install -m 0755 -d /var/cache/univention-system-setup/packages/
 	(
@@ -94,45 +90,39 @@ download_packages ()
 	return 0
 }
 
-app_get_ini ()
-{
+app_get_ini () {  # <app_id>
 	exec python3 -c "import sys
 from univention.appcenter.app_cache import Apps
 app = Apps().find(sys.argv[1])
-print(app.get_ini_file())" "$1"
+print(app.get_ini_file())" "${1:?}"
 }
 
-app_appliance_hook ()
-{
+app_appliance_hook () {  # <app_id>
 	exec python3 -c "import sys
 from univention.appcenter.app_cache import Apps
 app = Apps().find(sys.argv[1])
-print(app.get_cache_file('appliance_hook'))" "$1"
+print(app.get_cache_file('appliance_hook'))" "${1:?}"
 }
 
-get_app_attr_raw_line ()
-{
-	local app="$1" attr="$2" ini
+get_app_attr_raw_line () {  # <app_id> <attr>
+	local app="${1:?}" attr="${2:?}" ini
 	ini="$(app_get_ini "$app")"
 	grep -i "^$attr " "$ini" # assumption: ini contains $attr + <space> before the '='
 }
 
-get_app_attr_raw ()
-{
-	local app="$1" attr="$2" line
+get_app_attr_raw () {  # <app_id> <attr>
+	local app="${1:?}" attr="${2:?}" line
 	line="$(get_app_attr_raw_line "$app" "$attr")"
 	echo "${line##*= }"
 }
 
-get_app_attr ()
-{
-	local app="$1" attr="$2" value
+get_app_attr () {  # <app_id> <attr>
+	local app="${1:?}" attr="${2:?}" value
 	value="$(get_app_attr_raw "$app" "$attr")"
 	echo "${value//, / }"
 }
 
-app_get_database_packages_for_docker_host ()
-{
+app_get_database_packages_for_docker_host () {  # <app_id>
 	exec python3 -c "import sys
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.database import DatabaseConnector
@@ -140,75 +130,66 @@ from univention.appcenter.database import DatabaseConnector
 app=Apps().find(sys.argv[1])
 d = DatabaseConnector.get_connector(app)
 if d:
-	print(' '.join(d._get_software_packages()))" "$1"
+	print(' '.join(d._get_software_packages()))" "${1:?}"
 }
 
-app_get_component ()
-{
+app_get_component () {  # <app_id>
 	exec python3 -c "import sys
 from univention.appcenter.app_cache import Apps
 app = Apps().find(sys.argv[1])
-print(app.component_id)" "$1"
+print(app.component_id)" "${1:?}"
 }
 
-app_get_appliance_hook_download_link ()
-{
+app_get_appliance_hook_download_link () {  # <app_id>
 	local server
 	server="$(ucr get repository/app_center/server)"
 	exec python3 -c "import sys
 from univention.appcenter.app_cache import Apps
 app = Apps().find(sys.argv[1])
-print('https://$server/univention-repository/%s/maintained/component/%s/appliance_hook' % (app.ucs_version, app.component_id))" "$1"
+print('https://$server/univention-repository/%s/maintained/component/%s/appliance_hook' % (app.ucs_version, app.component_id))" "${1:?}"
 }
 
-app_download_appliance_hook ()
-{
-	local app="$1" srclink
+app_download_appliance_hook () {  # <app_id>
+	local app="${1:?}" srclink
 	srclink="$(app_get_appliance_hook_download_link "$1")"
 	wget "$srclink" -O "$(app_appliance_hook "$app")" || true
 }
 
-app_get_compose_file ()
-{
+app_get_compose_file () {  # <app_id>
 	exec python3 -c "import sys
 from univention.appcenter.app_cache import Apps
 app = Apps().find(sys.argv[1])
-print(app.get_cache_file('compose'))" "$1"
+print(app.get_cache_file('compose'))" "${1:?}"
 }
 
-app_appliance_is_software_blacklisted ()
-{
-	local app="$1" value
+app_appliance_is_software_blacklisted () {  # <app_id>
+	local app="${1:?}" value
 	[ -z "$app" ] && return 1
 	value="$(get_app_attr "$app" AppliancePagesBlackList)"
 	echo "$value" | grep -qs software
 }
 
-app_has_no_repository ()
-{
-	local app="$1" value
+app_has_no_repository () {  # <app_id>
+	local app="${1:?}" value
 	[ -z "$app" ] && return 1
 	value="$(get_app_attr "$app" WithoutRepository)"
 	echo "$value" | grep -qs True
 }
 
-appliance_dump_memory ()
-{
-	local app="$1" targetfile="$2" value
+appliance_dump_memory () {  # <app_id>
+	local app="${1:?}" value
 	value="$(get_app_attr "$app" ApplianceMemory)"
-	echo "${value:-2048}" > "$targetfile"
+	echo "${value:-2048}"
 }
 
-appliance_dump_identifier()
-{
-	local app="$1" targetfile="$2" value
+appliance_dump_identifier () {  # <app_id>
+	local app="${1:?}" value
 	value="$(get_app_attr "$app" ApplianceIdentifier)"
-	echo "${value:-$app}" > "$targetfile"
+	echo "${value:-$app}"
 }
 
-app_appliance_AllowPreconfiguredSetup ()
-{
-	local app="$1" value
+app_appliance_AllowPreconfiguredSetup () {  # <app_id>
+	local app="${1:?}" value
 	value="$(get_app_attr "$app" ApplianceAllowPreconfiguredSetup)"
 	# shellcheck source=/dev/null
 	. /usr/share/univention-lib/ucr.sh
@@ -219,9 +200,8 @@ app_appliance_AllowPreconfiguredSetup ()
 	esac
 }
 
-app_appliance_IsDockerApp ()
-{
-	local app="$1" image dockercompose
+app_appliance_IsDockerApp () {  # <app_id>
+	local app="${1:?}" image dockercompose
 	[ -z "$app" ] && return 1
 	image="$(get_app_attr "$app" dockerimage)"
 	[ -n "$image" ] && return 0
@@ -229,17 +209,15 @@ app_appliance_IsDockerApp ()
 	[ -e "$dockercompose" ]
 }
 
-appliance_app_has_external_docker_image ()
-{
-	local app="$1"
+appliance_app_has_external_docker_image () {  # <app_id>
+	local app="${1:?}"
 	image="$(get_app_attr "$app" DockerImage)"
 	echo "Docker image: $image"
 	! echo "$image" | grep -qs "ucs-appbox"
 }
 
-prepare_package_app ()
-{
-	local app="$1" counter="$2" packages version ucsversion install_cmd i package
+prepare_package_app () {  # <app_id> <counter>
+	local app="${1:?}" counter="${2:?}" packages version ucsversion install_cmd i package
 	packages="$(get_app_attr "${app}" DefaultPackages) $(get_app_attr "${app}" DefaultPackagesMaster)"
 	version="$(get_app_attr "$app" Version)"
 	ucsversion="$(app_get_ini "$app" | awk -F / '{print $(NF-1)}')"
@@ -301,8 +279,8 @@ __EOF__
 	apt-get -q update
 }
 
-prepare_docker_app () {
-	local app="$1" counter="$2" extra_packages="" dockercompose dockerimage local_app_component_id name component component_prefix="repository/online/component/" packages
+prepare_docker_app () {  # <app_id> <counter>
+	local app="${1:?}" counter="${2:?}" extra_packages="" dockercompose dockerimage local_app_component_id name component component_prefix="repository/online/component/" packages
 	dockercompose="$(app_get_compose_file "$app")"
 	dockerimage="$(get_app_attr "$app" DockerImage)"
 	local_app_component_id="$(app_get_component "$app")"
@@ -457,8 +435,8 @@ __EOF__
 	fi
 }
 
-install_appliance_hook () {
-	local app="$1" counter="$2" hook_file
+install_appliance_hook () {  # <app_id> <counter>
+	local app="${1:?}" counter="${2:?}" hook_file
 	hook_file="$(app_appliance_hook "$app")"
 	app_download_appliance_hook "$app"
 	if [ -e "$hook_file" ]; then
@@ -468,9 +446,8 @@ install_appliance_hook () {
 	fi
 }
 
-register_app_components ()
-{
-	local main_app="$1" app name component component_prefix="repository/online/component/"
+register_app_components () {  # <app_id>
+	local main_app="${1:?}" app name component component_prefix="repository/online/component/"
 
 	# register all non-docker components before package download
 	for app in $(get_app_attr "$main_app" ApplianceAdditionalApps) "$main_app"
@@ -491,9 +468,8 @@ register_app_components ()
 	apt-get -q update
 }
 
-prepare_apps ()
-{
-	local main_app="$1" extra_packages="" packages="" app
+prepare_apps () {  # <app_id>
+	local main_app="${1:?}" extra_packages="" packages="" app
 	declare -i counter=0
 	declare -A applist
 
@@ -566,9 +542,8 @@ __EOF__
 	#fi
 }
 
-download_system_setup_packages ()
-{
-	local app="$1"
+download_system_setup_packages () {  # <app_id>
+	local app="${1:?}"
 
 	# autoremove packages before updating package cache
 	# there is an automatic autoremove after installing
@@ -638,14 +613,12 @@ download_system_setup_packages ()
 	)
 }
 
-appliance_preinstall_common_role ()
-{
+appliance_preinstall_common_role () {
 	DEBIAN_FRONTEND=noninteractive univention-install -y univention-role-common
 	DEBIAN_FRONTEND=noninteractive univention-install -y univention-role-server-common
 }
 
-appliance_preinstall_non_univention_packages ()
-{
+appliance_preinstall_non_univention_packages () {
 	exit 1  # This list if out-dated - see Bug #52834
 	declare -a packages=(
 		libblas3 libcap2-bin libcupsfilters1 libcupsimage2 libdaemon0 libdbi1 libfftw3-double3
@@ -660,25 +633,21 @@ appliance_preinstall_non_univention_packages ()
 	DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends "${packages[@]}"
 }
 
-install_haveged ()
-{
+install_haveged () {
 	univention-install -y haveged
 }
 
-backup_current_local_packagecache ()
-{
+backup_current_local_packagecache () {
 	install -m 0755 -d /var/cache/univention-system-setup/packages_backup
 	cp -r /var/cache/univention-system-setup/packages/* /var/cache/univention-system-setup/packages_backup
 }
 
-restore_current_local_packagecache ()
-{
+restore_current_local_packagecache () {
 	mv /var/cache/univention-system-setup/packages_backup/* /var/cache/univention-system-setup/packages
 	rm -r /var/cache/univention-system-setup/packages_backup
 }
 
-uninstall_packages ()
-{
+uninstall_packages () {
 	# if upgraded, u-basesystem will be installed by postup.sh
 	state="$(dpkg --get-selections univention-basesystem 2>/dev/null | awk '{print $2}')"
 	if [ "$state" = "install" ]; then
@@ -689,12 +658,8 @@ uninstall_packages ()
 	univention-prune-kernels -v
 }
 
-setup_pre_joined_environment ()
-{
-	# $1 = appid
-	# $2 = domainname / derived ldapbase
-	# $3 = fastdemomode ?
-	local main_app="$1" domainname="$2" mode="$3" fastdemomode="unknown" packages ldapbase version ucsversion
+setup_pre_joined_environment () {  # <app_id> <domainname> <fast-demo-mode>
+	local main_app="${1:?}" domainname="${2:?}" mode="${3:-ignore}" fastdemomode="unknown" packages ldapbase version ucsversion
 	ldapbase="dc=${domainname//./,dc=}" # VERY simple ldap base derivation test.domain => dc=test,dc=domain
 	app_appliance_AllowPreconfiguredSetup "$main_app" &&
 		fastdemomode="yes"
@@ -756,12 +721,11 @@ __EOF__
 		fi
 		version="$(get_app_attr "$app" Version)"
 		ucsversion="$(app_get_ini "$app" | awk -F / '{print $(NF-1)}')"
-		univention-app register --do-it "${ucsversion}/${app}=${version}"
+		univention-app register '--do-it' "${ucsversion}/${app}=${version}"
 	done
 }
 
-setup_appliance ()
-{
+setup_appliance () {  # <app_id>
 	# Stop firefox. Not required to run, and resets some UCRv (e.g. system/setup/boot/start)
 	# TODO is this necessary with UCS 5
 	killall -9 firefox-esr || true
@@ -804,8 +768,7 @@ setup_appliance ()
 	ucr set uuid/system="00000000-0000-0000-0000-000000000000"
 }
 
-clear_dhcp_hostname ()
-{
+clear_dhcp_hostname () {
 	# reset hostname and domainname in case it was set through dhcp
 	local default_hostname="unassigned-hostname"
 	local default_domainname="unassigned-domain"
@@ -818,8 +781,7 @@ clear_dhcp_hostname ()
 	fi
 }
 
-appliance_cleanup ()
-{
+appliance_cleanup () {
 	# after system setup is finished, boot in 1024x768 (not 800x600)
 	cat >/usr/lib/univention-system-setup/appliance-hooks.d/screenresolution <<__EOF__
 #!/bin/sh
@@ -896,9 +858,8 @@ __EOF__
 	ucr set system/setup/boot/start=true
 }
 
-appliance_basesettings ()
-{
-	local main_app="$1" app_fav_list="appcenter:appcenter,updater" a app
+appliance_basesettings () {  # <app_id>
+	local main_app="${1:?}" app_fav_list="appcenter:appcenter,updater" a app
 
 	ucr set umc/web/appliance/id?"${main_app}"
 	univention-install -y univention-app-appliance
@@ -998,9 +959,7 @@ __EOF__
 	done
 }
 
-
-setup_ec2 ()
-{
+setup_ec2 () {
 	ucr set grub/append="$(ucr get grub/append) console=tty0 console=ttyS0"
 
 	DEV='/dev/xvda' GRUB='(hd0)'
@@ -1095,19 +1054,17 @@ __EOF__
 	ucr set apache2/startsite="univention/initialsetup/"
 }
 
-install_appreport ()
-{
+install_appreport () {
 	ucr set repository/online/component/appreport=yes \
 		repository/online/component/appreport/version="4.0"
 	cat >/usr/lib/univention-system-setup/appliance-hooks.d/install-appreport <<__EOF__
 #!/bin/sh
-univention-install -y --assume-yes univention-appreport
+exec univention-install -y --assume-yes univention-appreport
 __EOF__
 	chmod +x /usr/lib/univention-system-setup/appliance-hooks.d/install-appreport
 }
 
-appliance_reset_servers ()
-{
+appliance_reset_servers () {  # <reset>
 	local reset="$1"
 	if [ "$reset" = true ]; then
 		ucr set repository/online/server="https://updates.software-univention.de/"
@@ -1120,13 +1077,17 @@ appliance_reset_servers ()
 	fi
 }
 
-disable_root_login_and_poweroff ()
-{
-	if ! "$1" && "$2"
+disable_root_login_and_poweroff () {  # <rootlogin> <require_activation>
+	local rootlogin="${1:-false}" require_activation="${2:-true}"
+	if ! "$rootlogin" && "$require_activation"
 	then
 		ucr set --force auth/sshd/user/root=no
 		echo "root:$appliance_default_password" | chpasswd
 	fi
+	appliance_poweroff
+}
+
+appliance_poweroff () {
 	rm -rf /root/*
 	rm -f /root/.ssh/authorized_keys
 	rm -f /root/.bash_history
@@ -1134,17 +1095,9 @@ disable_root_login_and_poweroff ()
 	echo "halt -p" | at now || true
 }
 
-appliance_poweroff ()
-{
-	rm -rf /root/*
-	rm -f /root/.ssh/authorized_keys
-	rm -f /root/.bash_history
-	history -c
-	echo "halt -p" | at now || true
-}
-
-appliance_test_appcenter () {
-	if "$1"
+appliance_test_appcenter () {  # <test_appcenter>
+	local test_appcenter="${1:-false}"
+	if "$test_appcenter"
 	then
 		univention-install --yes univention-appcenter-dev
 		univention-app dev-use-test-appcenter
