@@ -162,15 +162,15 @@ app = Apps().find(sys.argv[1])
 print(app.get_cache_file('compose'))" "${1:?}"
 }
 
-app_appliance_is_software_blacklisted () {  # <app_id>
-	local app="${1:?}" value
+app_appliance_is_software_blacklisted () {  # [app_id]
+	local app="${1:-}" value
 	[ -z "$app" ] && return 1
 	value="$(get_app_attr "$app" AppliancePagesBlackList)"
 	echo "$value" | grep -qs software
 }
 
-app_has_no_repository () {  # <app_id>
-	local app="${1:?}" value
+app_has_no_repository () {  # [app_id]
+	local app="${1:-}" value
 	[ -z "$app" ] && return 1
 	value="$(get_app_attr "$app" WithoutRepository)"
 	echo "$value" | grep -qs True
@@ -542,8 +542,8 @@ __EOF__
 	#fi
 }
 
-download_system_setup_packages () {  # <app_id>
-	local app="${1:?}"
+download_system_setup_packages () {  # [app_id]
+	local app="${1:-}"
 
 	# autoremove packages before updating package cache
 	# there is an automatic autoremove after installing
@@ -567,17 +567,14 @@ download_system_setup_packages () {  # <app_id>
 			univention-server-backup
 			univention-server-slave
 			univention-server-member
+			# ad member mode
+			univention-ad-connector
+			univention-samba
+			# welcome-screen + dependencies for all roles
+			univention-welcome-screen
+			linux-headers-amd64
+			firefox-esr-l10n-de
 		)
-
-		# ad member mode
-		packages+=(univention-ad-connector univention-samba)
-
-		# welcome-screen + dependencies for all roles
-		# libgif4 is removed upon uninstalling X, so put it in package cache
-		packages+=(univention-welcome-screen linux-headers-amd64)
-
-		packages+=(firefox-esr-l10n-de)
-
 		app_appliance_is_software_blacklisted "$app" ||
 			packages+=(
 				univention-management-console-module-adtakeover
@@ -725,7 +722,7 @@ __EOF__
 	done
 }
 
-setup_appliance () {  # <app_id>
+setup_appliance () {  # [app_id]
 	# Stop firefox. Not required to run, and resets some UCRv (e.g. system/setup/boot/start)
 	# TODO is this necessary with UCS 5
 	killall -9 firefox-esr || true
