@@ -13,12 +13,6 @@ install_frontend_apps () {
 		univention-app dev-set ucsschool-bff-users "DockerImage=$UCS_ENV_RANKINE_USERS_IMAGE"
 	fi
 	univention-app install --noninteractive --username Administrator --pwdfile /tmp/univention ucsschool-bff-users
-	univention-app configure ucsschool-bff-users --set \
-		ucsschool/ui_users/kelvin/username=Administrator \
-		ucsschool/ui_users/kelvin/password=univention \
-		ucsschool/ui_users/kelvin/host="$kelvin_host" \
-		ucsschool/ui_users/kelvin/ssl_verify=0
-	univention-app restart ucsschool-bff-users # TODO, shouldn't this be part of the App's configure_host?
 
 	docker images
 	docker ps -a
