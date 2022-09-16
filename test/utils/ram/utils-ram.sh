@@ -56,9 +56,4 @@ install_all_attributes_primary () {
 
     univention-install -y ucsschool-divis-custom-ldap-extension ucsschool-iserv-custom-ldap-extension ucsschool-moodle-custom-ldap-extension univention-saml
     systemctl restart univention-directory-manager-rest.service
-    univention-install -y univention-appcenter-dev
-    univention-app dev-use-test-appcenter
-    univention-app install --noninteractive --username Administrator --pwdfile /tmp/univention \
-        radius \
-        self-service-backend
 }
