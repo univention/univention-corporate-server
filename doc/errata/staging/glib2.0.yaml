@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: glib2.0
+fix: 2.58.3-2+deb10u4
+desc: |
+ This update addresses the following issue:
+ * Possible privilege escalation thourgh pkexec and aliases (CVE-2021-3800)
+bug: [55208]
+cve:
+- CVE-2021-3800
