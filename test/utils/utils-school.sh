@@ -268,7 +268,7 @@ EOF
 	staff_count=10000
 	schools=()
 	for i in $(seq 1 "$school_count"); do
-		/usr/share/ucs-school-import/scripts/create_ou "--verbose" "school$i" "replica$i"
+		/usr/share/ucs-school-import/scripts/create_ou "--verbose" "school$i" "replica$i" || return 1
 		schools+=("school$i")
 	done
 	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import \
@@ -276,6 +276,7 @@ EOF
 		--students "$students_count" \
 		--teachers "$teachers_count" \
 		--staff "$staff_count" \
-		"${schools[@]}" >/tmp/import.log 2>&1
-	rm -f /tmp/import.log
+		"${schools[@]}" >/tmp/import.log 2>&1 || return 1
+	return 1
+	#rm -f /tmp/import.log
 }
