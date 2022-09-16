@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-admin-diary
+fix: 2.0.4-6A~5.0.0.202209161133
+desc: |
+ This update addresses the following issues:
+ * Instead of an exception now a clear error messsage is displayed in case
+   the admin diary frontend is installed on a different system than the
+   admin diary server and the database connection is not correctly configured.
+
+bug: [49016]
