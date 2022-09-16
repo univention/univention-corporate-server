@@ -269,5 +269,4 @@ EOF
 	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import --verbose --classes 100 --students 20000 --teachers 5000 school2 >/tmp/import.log 2>&1
 	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import --verbose --classes 100 --students 20000 --teachers 5000 school3 >/tmp/import.log 2>&1
 	rm -f /tmp/import.log
-	. utils.sh && wait_for_replication "$(( 10 * 3600 ))" 60
 }

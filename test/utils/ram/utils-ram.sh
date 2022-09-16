@@ -4,8 +4,6 @@ set_udm_properties_for_kelvin () {
 }
 
 install_frontend_apps () {
-	local kelvin_host=${1:?missing kelvin_host}
-
 	echo -n univention > /tmp/univention
 
 	# use brach image if given
