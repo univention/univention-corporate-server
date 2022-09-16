@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: mod-wsgi
+fix: 4.6.5-1+deb10u1
+desc: |
+ This update addresses the following issue:
+ * Trusted Proxy Headers Removing Bypass (CVE-2022-2255)
+bug: [55206]
+cve:
+- CVE-2022-2255
