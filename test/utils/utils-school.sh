@@ -261,12 +261,21 @@ create_users_in_template_job () {
 }
 EOF
 	# create school users
-	/usr/share/ucs-school-import/scripts/create_ou "--verbose" "school1" "replica1" --displayName="school1" --sharefileserver="replica1"
-	/usr/share/ucs-school-import/scripts/create_ou "--verbose" "school2" "replica2" --displayName="school2" --sharefileserver="replica2"
-	/usr/share/ucs-school-import/scripts/create_ou "--verbose" "school3" "replica3" --displayName="school3" --sharefileserver="replica3"
-	/usr/share/ucs-school-import/scripts/create_ou "--verbose" "school4" "replica4" --displayName="school4" --sharefileserver="replica4"
-	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import --verbose --classes 100 --students 40000 --teachers 10000 school1 >/tmp/import.log 2>&1
-	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import --verbose --classes 100 --students 20000 --teachers 5000 school2 >/tmp/import.log 2>&1
-	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import --verbose --classes 100 --students 20000 --teachers 5000 school3 >/tmp/import.log 2>&1
+	school_count=100
+	classes_count=300
+	students_count=100000
+	teachers_count=20000
+	staff_count=10000
+	schools=()
+	for i in $(seq 1 "$school_count"); do
+		/usr/share/ucs-school-import/scripts/create_ou "--verbose" "school$i" "replica$i"
+		schools+=("school$i")
+	done
+	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import \
+		--classes "$classes_count" \
+		--students "$students_count" \
+		--teachers "$teachers_count" \
+		--staff "$staff_count" \
+		"${schools[@]}" >/tmp/import.log 2>&1
 	rm -f /tmp/import.log
 }
