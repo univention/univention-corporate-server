@@ -1,6 +1,24 @@
 set_udm_properties_for_kelvin () {
-	echo '{ "user": ["displayName", "e-mail", "accountActivationDate", "pwdChangeNextLogin", "serviceprovider", "ucsschoolPurgeTimestamp"]}' > /etc/ucsschool/kelvin/mapped_udm_properties.json
-	univention-app restart ucsschool-kelvin-rest-api
+    cat <<EOT > /etc/ucsschool/kelvin/mapped_udm_properties.json
+{
+        "user": [
+                "accountActivationDate",
+                "displayName",
+                "divisNameAffix",
+                "divisNickname",
+                "e-mail",
+                "networkAccess",
+                "PasswordRecoveryEmail",
+                "PasswordRecoveryEmailVerified",
+                "pwdChangeNextLogin",
+                "serviceprovider",
+                "ucsschoolPurgeTimestamp"
+        ]
+}
+
+EOT
+    univention-app shell ucsschool-kelvin-rest-api /var/lib/univention-appcenter/apps/ucsschool-kelvin-rest-api/data/update_openapi_client
+    univention-app shell ucsschool-kelvin-rest-api /etc/init.d/ucsschool-kelvin-rest-api restart
 }
 
 install_frontend_apps () {
@@ -43,28 +61,4 @@ install_all_attributes_primary () {
     univention-app install --noninteractive --username Administrator --pwdfile /tmp/univention \
         radius \
         self-service-backend
-}
-
-enable_all_attributes_kelvin () {
-    cat <<EOT > /etc/ucsschool/kelvin/mapped_udm_properties.json
-{
-        "user": [
-                "accountActivationDate",
-                "displayName",
-                "divisNameAffix",
-                "divisNickname",
-                "e-mail",
-                "networkAccess",
-                "PasswordRecoveryEmail",
-                "PasswordRecoveryEmailVerified",
-                "pwdChangeNextLogin",
-                "serviceprovider",
-                "ucsschoolPurgeTimestamp"
-        ]
-}
-
-EOT
-    univention-app shell ucsschool-kelvin-rest-api /var/lib/univention-appcenter/apps/ucsschool-kelvin-rest-api/data/update_openapi_client
-    univention-app shell ucsschool-kelvin-rest-api /etc/init.d/ucsschool-kelvin-rest-api restart
-
 }
