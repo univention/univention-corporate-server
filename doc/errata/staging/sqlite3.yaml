@@ -1,0 +1,19 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: sqlite3
+fix: 3.27.2-3+deb10u2
+desc: |
+ This update addresses the following issues:
+ * Null pointer derreference in src/select.c (CVE-2020-35525)
+ * Out of bounds access during table rename (CVE-2020-35527)
+ * An issue was found in fts5UnicodeTokenize() in ext/fts5/fts5_tokenize.c in
+   Sqlite. A unicode61 tokenizer configured to treat unicode
+   "control-characters" (class Cc), was treating embedded nul characters as
+   tokens. The issue was fixed in sqlite-3.34.0 and later. (CVE-2021-20223)
+bug: [55207]
+cve:
+- CVE-2020-35525
+- CVE-2020-35527
+- CVE-2021-20223
