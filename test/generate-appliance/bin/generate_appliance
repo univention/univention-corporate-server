@@ -1322,31 +1322,25 @@ class EC2_EBS(Target):
 class Docker(Target):
 	"""Docker Image (tgz)"""
 
+	default = False
+
 	def create(self, image, options):
 		# type: (Raw, Namespace) -> None
 		archive_name = os.path.join(os.getcwd(), '%s-docker.tar' % (options.filename,))
-		temp_image = os.path.join(TEMPDIR, '%s-docker.raw' % (options.filename,))
-		temp_patch_tar = os.path.join(TEMPDIR, '%s-patch.tar' % (options.filename,))
-		for fn in (archive_name, temp_image):
-			if os.path.exists(fn):
-				raise IOError('Output file %r exists' % (fn,))
+		if os.path.exists(archive_name):
+			raise IOError('Output file %r exists' % (archive_name,))
 
 		image_path = image.path()
-		log('Copying file')
-		subprocess.check_call(['cp', '--sparse=always', '--reflink=auto', image_path, temp_image], cwd=TEMPDIR, stdout=sys.stderr)
-		log('Create tar for patching')
-		subprocess.check_call(['tar', 'cf', temp_patch_tar, '.'], cwd='/usr/share/generate-appliance/docker/', stdout=sys.stderr)
 		log('Guestfishing')
 		cmd = [
 			'guestfish',
-			'add', temp_image, ':',
+			'add-ro', image_path, ':',
 			'run', ':',
 			'mount', '/dev/vg_ucs/root', '/', ':',
 			'mount', '/dev/sda1', '/boot', ':',
-			'tar-in', temp_patch_tar, '/', ':',
 			'tar-out', '/', archive_name,
 		]
-		subprocess.check_call(cmd, cwd=TEMPDIR, stdout=sys.stderr)
+		subprocess.check_call(cmd, stdout=sys.stderr)
 		log('Generated "%s" appliance as\n  %s' % (self, archive_name))
 
 
