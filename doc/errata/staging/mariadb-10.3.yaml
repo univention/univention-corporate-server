@@ -6,40 +6,41 @@ src: mariadb-10.3
 fix: 1:10.3.36-0+deb10u1
 desc: |
  This update addresses the following issues:
- * MariaDB through 10.5.9 allows attackers to trigger a convert_const_to_int
-   use-after-free when the BIGINT data type is used (CVE-2021-46669)
- * Server: FTS unspecified vulnerability (CPU Apr 2022) (CVE-2022-21427)
- * assertion failure in Item_args::walk_arg (CVE-2022-27376)
+ * MariaDB allows attackers to trigger a `convert_const_to_int` use-after-free
+   when the BIGINT data type is used (CVE-2021-46669)
+ * server: FTS unspecified vulnerability (CPU Apr 2022) (CVE-2022-21427)
+ * assertion failure in `Item_args::walk_arg` (CVE-2022-27376)
  * use-after-poison when complex conversion is involved in blob
    (CVE-2022-27377)
- * server crash in create_tmp_table::finalize (CVE-2022-27378)
- * server crash in component arg_comparator::compare_real_fixed
+ * server crash in `create_tmp_table::finalize` (CVE-2022-27378)
+ * server crash in component `arg_comparator::compare_real_fixed`
    (CVE-2022-27379)
- * server crash at my_decimal::operator= (CVE-2022-27380)
- * server crash at Field::set_default via specially crafted SQL statements
+ * server crash at `my_decimal::operator=` (CVE-2022-27380)
+ * server crash at `Field::set_default` via specially crafted SQL statements
    (CVE-2022-27381)
- * use-after-poison in my_strcasecmp_8bit() of ctype-simple.c (CVE-2022-27383)
- * crash via component Item_subselect::init_expr_cache_tracker
+ * use-after-poison in `my_strcasecmp_8bit()` of `ctype-simple.c`
+   (CVE-2022-27383)
+ * crash via component `Item_subselect::init_expr_cache_tracker`
    (CVE-2022-27384)
- * server crashes in query_arena::set_query_arena upon SELECT from view
+ * server crashes in `query_arena::set_query_arena` upon `SELECT` from view
    (CVE-2022-27386)
- * assertion failures in decimal_bin_size (CVE-2022-27387)
- * assertion failure in compare_order_elements (CVE-2022-27445)
- * use-after-poison in Binary_string::free_buffer (CVE-2022-27447)
+ * assertion failures in `decimal_bin_size` (CVE-2022-27387)
+ * assertion failure in `compare_order_elements` (CVE-2022-27445)
+ * use-after-poison in `Binary_string::free_buffer` (CVE-2022-27447)
  * crash in multi-update and implicit grouping (CVE-2022-27448)
- * assertion failure in sql/item_func.cc (CVE-2022-27449)
- * assertion failure in sql/item_cmpfunc.cc (CVE-2022-27452)
- * assertion failure in VDec::VDec at /sql/sql_type.cc (CVE-2022-27456)
- * use-after-poison in Binary_string::free_buffer (CVE-2022-27458)
- * server crash at Item_subselect::init_expr_cache_tracker (CVE-2022-32083)
- * segmentation fault via the component sub_select (CVE-2022-32084)
- * server crash in Item_func_in::cleanup/Item::cleanup_processor
+ * assertion failure in `sql/item_func.cc` (CVE-2022-27449)
+ * assertion failure in `sql/item_cmpfunc.cc` (CVE-2022-27452)
+ * assertion failure in `VDec::VDec` at `/sql/sql_type.cc` (CVE-2022-27456)
+ * use-after-poison in `Binary_string::free_buffer` (CVE-2022-27458)
+ * server crash at `Item_subselect::init_expr_cache_tracker` (CVE-2022-32083)
+ * segmentation fault via the component `sub_select` (CVE-2022-32084)
+ * server crash in `Item_func_in::cleanup/Item::cleanup_processor`
    (CVE-2022-32085)
- * server crash in Item_args::walk_args (CVE-2022-32087)
+ * server crash in `Item_args::walk_args` (CVE-2022-32087)
  * segmentation fault in
-   Exec_time_tracker::get_loops/Filesort_tracker::report_use/filesort
+   `Exec_time_tracker::get_loops/Filesort_tracker::report_use/filesort`
    (CVE-2022-32088)
- * server crash in JOIN_CACHE::free or in copy_fields (CVE-2022-32091)
+ * server crash in `JOIN_CACHE::free` or in `copy_fields` (CVE-2022-32091)
 bug: [55210]
 cve:
 - CVE-2021-46669
