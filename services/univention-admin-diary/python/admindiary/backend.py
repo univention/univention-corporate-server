@@ -426,4 +426,4 @@ class UnsupportedVersion(Exception):
 
 class NoDBConnection(Exception):
 	def __str__(self):
-		return "Database Connection cannot be established !\nPlease refer to https://help.univention.com/t/admin-diary-how-to-seperate-frontend-and-backend/11331"
+		return "Database connection cannot be established!\nPlease refer to https://help.univention.com/t/admin-diary-how-to-seperate-frontend-and-backend/11331"
