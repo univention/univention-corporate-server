@@ -64,14 +64,14 @@ webframe:
   interruptible: false
   variables:
     GIT_STRATEGY: none
-  tags:
-    - omar
 
 review:
   stage: review
   rules:
     - if: '$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
   extends: .publish
+  tags:
+    - omar
   script:
     - rsync -av --delete public/ /var/univention/buildsystem2/test_mirror/ftp/download/docs.$CI_BUILD_REF_SLUG
   environment:
@@ -89,6 +89,8 @@ stop_review:
     - review
   allow_failure: true
   extends: .publish
+  tags:
+    - omar
   script:
     - rm -rf /var/univention/buildsystem2/test_mirror/ftp/download/docs.$CI_BUILD_REF_SLUG
   environment:
@@ -98,6 +100,8 @@ stop_review:
 staging:
   stage: staging
   extends: .publish
+  tags:
+    - omar
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
   script:
@@ -115,18 +119,25 @@ production:
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
       when: manual
+  variables:
+    GIT_AUTHOR_NAME: $GITLAB_USER_NAME
+    GIT_AUTHOR_EMAIL: $GITLAB_USER_EMAIL
+    GIT_COMMITTER_NAME: $GITLAB_USER_NAME
+    GIT_COMMITTER_EMAIL: $GITLAB_USER_EMAIL
+  resource_group: prod
+  image: $GIT_SYNC
   script:
-    - '[ -d docs ] || git clone --branch master --depth 1 --single-branch https://ucs-docs-deployment:$DOCS_TOKEN@git.knut.univention.de/univention/docs.univention.de.git docs'
+    - git config --global credential.$CI_SERVER_URL.username ucs-docs-deployment
+    - git config --global credential.$CI_SERVER_URL.helper '!f() { [ "$1" = get ] && echo password="$DOCS_TOKEN"; }; f'
+    - '[ -d docs ] || git clone --branch master --depth 1 --single-branch $CI_SERVER_URL/univention/docs.univention.de.git docs'
     - cd docs
     - git clean -f -d
     - git fetch --no-tags origin
     - git reset --hard origin/master
     - rsync -av ../public/ ./
     - git add -- .
-    - git commit -m "Automatic doc deployment by GitLab commit $CI_COMMIT_SHA"
+    - git commit -m "Automatic doc deployment from $CI_PROJECT_PATH by GitLab commit $CI_COMMIT_SHA"
     - git push
   environment:
     name: production
     url: http://updates.knut.univention.de/download/docs/
-  after_script:
-    - rm -Rf public
