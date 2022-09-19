@@ -6,7 +6,7 @@ src: mod-wsgi
 fix: 4.6.5-1+deb10u1
 desc: |
  This update addresses the following issue:
- * Trusted Proxy Headers Removing Bypass (CVE-2022-2255)
+ * Trusted proxy headers removing bypass (CVE-2022-2255)
 bug: [55206]
 cve:
 - CVE-2022-2255
