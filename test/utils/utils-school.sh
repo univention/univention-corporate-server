@@ -280,6 +280,5 @@ EOF
 		--teachers "$teachers_count" \
 		--staff "$staff_count" \
 		"${schools[@]}" >/tmp/import.log 2>&1 || return 1
-	return 1
-	#rm -f /tmp/import.log
+	rm -f /tmp/import.log
 }
