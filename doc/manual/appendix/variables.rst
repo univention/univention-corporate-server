@@ -1156,7 +1156,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
 .. envvar:: repository/online/component/.*/unmaintained
 
-   Defines how to deal with unmaintained packages from additional repositories.
+   ``DEPRECATED!`` Defines how to deal with unmaintained packages from additional repositories.
    To activate, set the value to ``yes``. For more information see
    :ref:`software-config-repo`.
 

@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-31 15:01+0200\n"
+"POT-Creation-Date: 2022-10-12 08:26+0000\n"
 "PO-Revision-Date: 2022-06-14 16:13+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.10.3\n"
 
 #: ../../appendix/bibliography.rst:2
 msgid "Bibliography"
@@ -34,8 +34,8 @@ msgid ""
 "The :ref:`genindex` provides direct links to curated content topics. It "
 "contains the terms from the word list in bold face."
 msgstr ""
-"Das :ref:`genindex` bietet direkt Links zu den Inhaltsthemen. Sie"
-" enthält die Begriffe aus der Wortliste in Fettschrift."
+"Das :ref:`genindex` bietet direkt Links zu den Inhaltsthemen. Sie enthält"
+" die Begriffe aus der Wortliste in Fettschrift."
 
 #: ../../appendix/variables.rst:3
 msgid "|UCSUCRV|\\ s"
@@ -274,8 +274,8 @@ msgid ""
 " information, see :ref:`users-templates`."
 msgstr ""
 "Definieren Sie eine Erlaubnisliste von Zeichen, die nicht durch die "
-"Option ``:alphanum`` für die Wertedefinition in Benutzervorlagen "
-"entfernt werden. Für weitere Informationen, siehe :ref:`users-templates`."
+"Option ``:alphanum`` für die Wertedefinition in Benutzervorlagen entfernt"
+" werden. Für weitere Informationen, siehe :ref:`users-templates`."
 
 #: ../../appendix/variables.rst:164
 msgid ""
@@ -832,13 +832,13 @@ msgstr ""
 "``yes``. Setzen Sie auch :envvar:`ldap/ppolicy`. Für weitere "
 "Informationen, siehe :ref:`users-faillog-openldap`."
 
-#: ../../appendix/variables.rst:545 ../../appendix/variables.rst:1025
+#: ../../appendix/variables.rst:545 ../../appendix/variables.rst:1021
 msgid ""
 "Activates :program:`bcrypt` as password hashing method when set to "
 "``true``. See :ref:`domain-password-hashes`."
 msgstr ""
-"Aktiviert :program:`bcrypt` als Passworthash-Methode, wenn auf "
-"``true`` gesetzt. Siehe :ref:`domain-password-hashes`."
+"Aktiviert :program:`bcrypt` als Passworthash-Methode, wenn auf ``true`` "
+"gesetzt. Siehe :ref:`domain-password-hashes`."
 
 #: ../../appendix/variables.rst:551
 msgid ""
@@ -877,7 +877,8 @@ msgid ""
 msgstr ""
 "Inhalte bestehender Freigabeverzeichnisse werden verschoben, wenn der "
 "Pfad zu einer Freigabe geändert wird und der Wert auf ``yes`` gesetzt "
-"wird. Für weitere Informationen, siehe :numref:`shares-management-general-tab-table` in :ref:`shares-management-general-tab`."
+"wird. Für weitere Informationen, siehe :numref:`shares-management-"
+"general-tab-table` in :ref:`shares-management-general-tab`."
 
 #: ../../appendix/variables.rst:578
 msgid ""
@@ -892,8 +893,8 @@ msgid ""
 "Controls, if rotated log files are zipped with :command:`gzip`. For more "
 "information, see :ref:`computers-log-files`."
 msgstr ""
-"Steuert, ob rotierte Protokolldateien mit :command:`gzip` komprimiert werden."
-" Für weitere Informationen, siehe :ref:`computers-log-files`."
+"Steuert, ob rotierte Protokolldateien mit :command:`gzip` komprimiert "
+"werden. Für weitere Informationen, siehe :ref:`computers-log-files`."
 
 #: ../../appendix/variables.rst:589
 msgid ""
@@ -959,9 +960,9 @@ msgid ""
 "emails, set the value to ``no``. For more information, see :ref:`mail-"
 "virus`."
 msgstr ""
-"Um die Viren- und Schadsoftware-Erkennung für ein- und ausgehende E-Mails zu "
-"deaktivieren, setzen Sie den Wert auf ``no``. Für weitere Informationen, "
-"siehe :ref:`mail-virus`. "
+"Um die Viren- und Schadsoftware-Erkennung für ein- und ausgehende E-Mails"
+" zu deaktivieren, setzen Sie den Wert auf ``no``. Für weitere "
+"Informationen, siehe :ref:`mail-virus`. "
 
 #: ../../appendix/variables.rst:632
 msgid ""
@@ -1148,8 +1149,8 @@ msgid ""
 msgstr ""
 "Konfiguriert den E-Mail-Textkörper für die E-Mail an den Benutzer, der "
 "die konfigurierte Quotengrenze überschreitet. Prozentuale Werte können "
-"unterschiedliche Texte haben. Um z.B. einen Text für 50 % des "
-"Kontingents zu konfigurieren, setzen Sie "
+"unterschiedliche Texte haben. Um z.B. einen Text für 50 % des Kontingents"
+" zu konfigurieren, setzen Sie "
 ":samp:`mail/dovecot/quota/warning/text/50={Ihr Text}`."
 
 #: ../../appendix/variables.rst:764
@@ -1239,7 +1240,7 @@ msgstr ""
 msgid "For more information, see :ref:`mail-dnsbl`."
 msgstr "Für weitere Informationen, siehe :ref:`mail-dnsbl`."
 
-#: ../../appendix/variables.rst:825
+#: ../../appendix/variables.rst:821
 msgid ""
 "To never return emails after a mail bounce, set the value to ``yes``. For"
 " more information, see :ref:`mail-serverconfig-softbounce`."
@@ -1248,11 +1249,11 @@ msgstr ""
 "Wert auf ``yes``. Für weitere Informationen, siehe :ref:`mail-"
 "serverconfig-softbounce`. "
 
-#: ../../appendix/variables.rst:831
+#: ../../appendix/variables.rst:827
 msgid "For more information, see :ref:`mail-serverconfig-relay`."
 msgstr "Für weitere Informationen, siehe :ref:`mail-serverconfig-relay`."
 
-#: ../../appendix/variables.rst:835
+#: ../../appendix/variables.rst:831
 msgid ""
 "If authentication for the mail relay is needed, set the value to ``yes`` "
 "and add the credentials to :file:`/etc/postfix/smtp_auth`. For more "
@@ -1263,15 +1264,16 @@ msgstr ""
 ":file:`/etc/postfix/smtp_auth` ein. Für weitere Informationen, siehe :ref"
 ":`mail-serverconfig-relay`. "
 
-#: ../../appendix/variables.rst:842
+#: ../../appendix/variables.rst:838
 msgid ""
 "Configures the fully qualified domain name (FQDN) of a mail relay server."
 " For more information, see :ref:`mail-serverconfig-relay`."
 msgstr ""
-"Konfiguriert den voll qualifizierten Domänennamen (FQDN) eines Mail-Relay-"
-"Servers. Für weitere Informationen, siehe :ref:`mail-serverconfig-relay`."
+"Konfiguriert den voll qualifizierten Domänennamen (FQDN) eines Mail-"
+"Relay-Servers. Für weitere Informationen, siehe :ref:`mail-serverconfig-"
+"relay`."
 
-#: ../../appendix/variables.rst:848
+#: ../../appendix/variables.rst:844
 msgid ""
 "Defines the first *Domain DNS Server*. For more information, see :ref"
 ":`computers-configuring-the-name-servers`."
@@ -1279,7 +1281,7 @@ msgstr ""
 "Definiert den ersten *Domain DNS Server*. Weitere Informationen finden "
 "Sie unter :ref:`computers-configuring-the-name-servers`."
 
-#: ../../appendix/variables.rst:854
+#: ../../appendix/variables.rst:850
 msgid ""
 "Defines the second *Domain DNS Server*. For more information, see :ref"
 ":`computers-configuring-the-name-servers`."
@@ -1287,7 +1289,7 @@ msgstr ""
 "Definiert den zweiten *Domain DNS Server*. Weitere Informationen finden "
 "Sie unter :ref:`computers-configuring-the-name-servers`."
 
-#: ../../appendix/variables.rst:860
+#: ../../appendix/variables.rst:856
 msgid ""
 "Defines the third *Domain DNS Server*. For more information, see :ref"
 ":`computers-configuring-the-name-servers`."
@@ -1295,7 +1297,7 @@ msgstr ""
 "Definiert den dritten *Domain DNS Server*. Weitere Informationen finden "
 "Sie unter :ref:`computers-configuring-the-name-servers`."
 
-#: ../../appendix/variables.rst:866
+#: ../../appendix/variables.rst:862
 msgid ""
 "Defines the detail level for log messages of the notifier to "
 ":file:`/var/log/univention/notifier.log`. The possible values are from 0 "
@@ -1307,7 +1309,7 @@ msgstr ""
 "reichen von 0 (nur Fehlermeldungen) bis 4 (alle Statusmeldungen). Nach "
 "einer Änderung des Debug-Levels muss der |UCSUDN| neu gestartet werden."
 
-#: ../../appendix/variables.rst:874
+#: ../../appendix/variables.rst:870
 msgid ""
 "Defines the detail level for log messages of the NSCD. For more "
 "information, see :ref:`computers-nscd`."
@@ -1315,7 +1317,7 @@ msgstr ""
 "Legt die Detailebene für Protokollmeldungen des NSCD fest. Für weitere "
 "Informationen, siehe :ref:`computers-nscd`. "
 
-#: ../../appendix/variables.rst:879
+#: ../../appendix/variables.rst:875
 msgid ""
 "Configures the hash table size of the NSCD for groups. For more "
 "information, see :ref:`computers-nscd`."
@@ -1323,7 +1325,7 @@ msgstr ""
 "Konfiguriert die Größe der Hash-Tabelle des NSCD für Gruppen. Für weitere"
 " Informationen, siehe :ref:`computers-nscd`."
 
-#: ../../appendix/variables.rst:885
+#: ../../appendix/variables.rst:881
 msgid ""
 "Configures the time that a resolved group is kept in the cache of NSCD. "
 "The default is one hour in seconds (``3600``). For more information, see "
@@ -1333,7 +1335,7 @@ msgstr ""
 " wird. Die Voreinstellung ist eine Stunde in Sekunden (``3600``). Für "
 "weitere Informationen, siehe :ref:`computers-nscd`."
 
-#: ../../appendix/variables.rst:892
+#: ../../appendix/variables.rst:888
 msgid ""
 "Configures the hash table size of the NSCD for hosts. The default value "
 "is ``6007``. For more information, see :ref:`computers-nscd`."
@@ -1342,7 +1344,7 @@ msgstr ""
 "Standardwert ist ``6007``. Für weitere Informationen, siehe :ref"
 ":`computers-nscd`."
 
-#: ../../appendix/variables.rst:898
+#: ../../appendix/variables.rst:894
 msgid ""
 "Configures the time that a resolved hostname is kept in the cache of "
 "NSCD. The default is one hour in seconds (``3600``). For more "
@@ -1352,7 +1354,7 @@ msgstr ""
 "gehalten wird. Die Voreinstellung ist eine Stunde in Sekunden (``3600``)."
 " Für weitere Informationen, siehe :ref:`computers-nscd`."
 
-#: ../../appendix/variables.rst:905
+#: ../../appendix/variables.rst:901
 msgid ""
 "Configures the hash table size of the NSCD for usernames. The default "
 "value is ``6007``. For more information, see :ref:`computers-nscd`."
@@ -1361,7 +1363,7 @@ msgstr ""
 "Standardwert ist ``6007``. Für weitere Informationen, siehe :ref"
 ":`computers-nscd`."
 
-#: ../../appendix/variables.rst:910
+#: ../../appendix/variables.rst:906
 msgid ""
 "Configures the time that a resolved username is kept in the cache of "
 "NSCD. The default is ten minutes in seconds (``600``). For more "
@@ -1371,7 +1373,7 @@ msgstr ""
 "gehalten wird. Die Voreinstellung ist zehn Minuten in Sekunden (``600``)."
 " Für weitere Informationen, siehe :ref:`computers-nscd`."
 
-#: ../../appendix/variables.rst:917
+#: ../../appendix/variables.rst:913
 msgid ""
 "Configures the number of threads that NSCD uses. Default value is ``5``. "
 "For more information, see :ref:`computers-nscd`."
@@ -1379,7 +1381,7 @@ msgstr ""
 "Konfiguriert die Anzahl der Threads, die NSCD verwendet. Der Standardwert"
 " ist ``5``. Für weitere Informationen, siehe :ref:`computers-nscd`."
 
-#: ../../appendix/variables.rst:923
+#: ../../appendix/variables.rst:919
 msgid ""
 "When activated with ``true``, the cron job script for exporting the local"
 " group cache also checks, if the group members are still present in the "
@@ -1390,17 +1392,17 @@ msgstr ""
 "Verzeichnis vorhanden sind. Für weitere Informationen, siehe :ref"
 ":`groups-cache`."
 
-#: ../../appendix/variables.rst:930
+#: ../../appendix/variables.rst:926
 msgid ""
 "Defines the invalidation interval to control when the local group cache "
 "is considered invalid and a new export is run. For more information, see "
 ":ref:`groups-cache`."
 msgstr ""
-"Legt das Intervall fest, das bestimmt, wann der lokale "
-"Gruppen-Cache als ungültig gilt und ein neuer Export durchgeführt wird. "
-"Für weitere Informationen, siehe :ref:`groups-cache`."
+"Legt das Intervall fest, das bestimmt, wann der lokale Gruppen-Cache als "
+"ungültig gilt und ein neuer Export durchgeführt wird. Für weitere "
+"Informationen, siehe :ref:`groups-cache`."
 
-#: ../../appendix/variables.rst:937
+#: ../../appendix/variables.rst:933
 msgid ""
 "Activates or deactivates the listener to invalidate the local group "
 "cache. To activate the listener, set the value to ``true``. Else, set it "
@@ -1411,7 +1413,7 @@ msgstr ""
 "auf ``true``. Andernfalls setzen Sie den Wert auf ``false``. Für weitere "
 "Informationen, siehe :ref:`groups-cache`."
 
-#: ../../appendix/variables.rst:944
+#: ../../appendix/variables.rst:940
 msgid ""
 "Controls the measures that the UCS system takes when the LDAP server "
 "cannot be reached. See :ref:`domain-ldap-name-service-switch-ldap-nss-"
@@ -1421,7 +1423,7 @@ msgstr ""
 "nicht erreichbar ist. Siehe :ref:`domain-ldap-name-service-switch-ldap-"
 "nss-module`."
 
-#: ../../appendix/variables.rst:951
+#: ../../appendix/variables.rst:947
 msgid ""
 "The NTP server replies with requests that are signed by Samba/AD when the"
 " value is set to ``yes``. For more information, see :ref:`basicservices-"
@@ -1431,7 +1433,7 @@ msgstr ""
 "wenn der Wert auf ``yes`` gesetzt ist. Für weitere Informationen, siehe "
 ":ref:`basicservices-ntp`."
 
-#: ../../appendix/variables.rst:957
+#: ../../appendix/variables.rst:953
 msgid ""
 "Defines the Azure AD connection alias that is used by the next run of the"
 " Microsoft 365 Configuration Wizard. For more information, see "
@@ -1441,7 +1443,7 @@ msgstr ""
 "des Microsoft 365-Konfigurationsassistenten verwendet wird. Für weitere "
 "Informationen, siehe :ref:`idmcloud-o365-multipleconnections`."
 
-#: ../../appendix/variables.rst:964
+#: ../../appendix/variables.rst:960
 msgid ""
 "Configures the LDAP attributes of a user account that the Microsoft 365 "
 "connector synchronizes, but fills with random data. The value is a comma-"
@@ -1453,19 +1455,19 @@ msgstr ""
 "ist eine kommagetrennte Liste von LDAP-Attributen. Weitere Informationen "
 "finden Sie unter :ref:`idmcloud-o365-users`."
 
-#: ../../appendix/variables.rst:972
+#: ../../appendix/variables.rst:968
 msgid ""
 "Defines a mapping of UCS LDAP attributes of a user account for "
 "synchronization to Azure attributes. The default settings usually suffice"
 " most environment needs. For more information, see "
 ":ref:`idmcloud-o365-users`."
 msgstr ""
-"Definiert eine Zuordnung von LDAP-Attributen eines Benutzerkontos für"
-" die Synchronisierung mit Azure Attributen. Die Standardeinstellungen "
-"reichen in der Regel für die meisten Umgebungsanforderungen aus. Für "
-"weitere Informationen, siehe :ref:`idmcloud-o365-users`."
+"Definiert eine Zuordnung von LDAP-Attributen eines Benutzerkontos für die"
+" Synchronisierung mit Azure Attributen. Die Standardeinstellungen reichen"
+" in der Regel für die meisten Umgebungsanforderungen aus. Für weitere "
+"Informationen, siehe :ref:`idmcloud-o365-users`."
 
-#: ../../appendix/variables.rst:979
+#: ../../appendix/variables.rst:975
 msgid ""
 "Configures the LDAP attributes of a user account that the Microsoft 365 "
 "connector never synchronizes, even if mentioned in "
@@ -1481,7 +1483,7 @@ msgstr ""
 "kommagetrennte Liste von LDAP-Attributen. Weitere Informationen finden "
 "Sie unter :ref:`idmcloud-o365-users`."
 
-#: ../../appendix/variables.rst:988
+#: ../../appendix/variables.rst:984
 msgid ""
 "Configures LDAP attributes for synchronization with predefined values. "
 "For more information, see :ref:`idmcloud-o365-users`."
@@ -1490,7 +1492,7 @@ msgstr ""
 "Werten. Weitere Informationen finden Sie unter "
 ":ref:`idmcloud-o365-users`."
 
-#: ../../appendix/variables.rst:994
+#: ../../appendix/variables.rst:990
 msgid ""
 "Configures the LDAP attributes of a user account that the Microsoft 365 "
 "connector synchronizes. The value is a comma-separated list of LDAP "
@@ -1501,7 +1503,7 @@ msgstr ""
 "LDAP-Attributen. Weitere Informationen finden Sie unter "
 ":ref:`idmcloud-o365-users`."
 
-#: ../../appendix/variables.rst:1001
+#: ../../appendix/variables.rst:997
 msgid ""
 "Configures the default country for the user in Microsoft 365. Values are "
 "2-character abbreviations for countries. For more information, see "
@@ -1511,7 +1513,7 @@ msgstr ""
 "sind 2-Zeichen-Abkürzungen für Länder. Weitere Informationen finden Sie "
 "unter :ref:`idmcloud-o365-users`."
 
-#: ../../appendix/variables.rst:1008
+#: ../../appendix/variables.rst:1004
 msgid ""
 "Configure additional debug error for the Microsoft 365 connector. For "
 "more information, see :ref:`idmcloud-o365-debug`."
@@ -1519,7 +1521,7 @@ msgstr ""
 "Konfigurieren Sie zusätzliche Fehlerbehebungen für den Microsoft 365 "
 "Connector. Für weitere Informationen, siehe :ref:`idmcloud-o365-debug`."
 
-#: ../../appendix/variables.rst:1013
+#: ../../appendix/variables.rst:1009
 msgid ""
 "Configures the default connection alias for Microsoft 365 enabled users "
 "and groups. For more information, see "
@@ -1529,7 +1531,7 @@ msgstr ""
 "Benutzer und Gruppen. Weitere Informationen finden Sie unter "
 ":ref:`idmcloud-o365-multipleconnections`."
 
-#: ../../appendix/variables.rst:1018
+#: ../../appendix/variables.rst:1014
 msgid ""
 "Enables the synchronization of groups of the Microsoft 365 users. To use "
 "teams, set the value to ``yes``. For more information, see "
@@ -1539,7 +1541,7 @@ msgstr ""
 " Teams zu verwenden, setzen Sie den Wert auf ``yes``. Für weitere "
 "Informationen, siehe :ref:`idmcloud-o365-teams`. "
 
-#: ../../appendix/variables.rst:1031
+#: ../../appendix/variables.rst:1027
 msgid ""
 "Defines the :program:`bcrypt` cost factor and defaults to ``12``. See "
 ":ref:`domain-password-hashes`."
@@ -1547,7 +1549,7 @@ msgstr ""
 "Definiert den :program:`bcrypt` Kostenfaktor und ist standardmäßig auf "
 "``12`` eingestellt. Siehe :ref:`domain-password-hashes`."
 
-#: ../../appendix/variables.rst:1037
+#: ../../appendix/variables.rst:1033
 msgid ""
 "Defines the :program:`bcrypt` prefix and defaults to ``2b``. See :ref"
 ":`domain-password-hashes`."
@@ -1555,7 +1557,7 @@ msgstr ""
 "Definiert das Präfix :program:`bcrypt` und ist standardmäßig auf ``2b`` "
 "eingestellt. Siehe :ref:`domain-password-hashes`."
 
-#: ../../appendix/variables.rst:1043
+#: ../../appendix/variables.rst:1039
 msgid ""
 "Defines the hashing method for the password hashes. The default is "
 "``SHA-512``. See :ref:`domain-password-hashes`."
@@ -1563,7 +1565,7 @@ msgstr ""
 "Legt die Hash-Methode für die Passwort-Hashes fest. Die Voreinstellung "
 "ist ``SHA-512``. Siehe :ref:`domain-password-hashes`."
 
-#: ../../appendix/variables.rst:1049
+#: ../../appendix/variables.rst:1045
 msgid ""
 "Defines the minimum number of digits for a new password. For more "
 "information, see :ref:`users-passwords`."
@@ -1571,7 +1573,7 @@ msgstr ""
 "Legt die Mindestanzahl von Ziffern für ein neues Passwort fest. Für "
 "weitere Informationen, siehe :ref:`users-passwords`."
 
-#: ../../appendix/variables.rst:1055
+#: ../../appendix/variables.rst:1051
 msgid ""
 "Defines the minimum number of lowercase letters in the new password. For "
 "more information, see :ref:`users-passwords`."
@@ -1579,7 +1581,7 @@ msgstr ""
 "Legt die Mindestanzahl von Kleinbuchstaben im neuen Kennwort fest. Für "
 "weitere Informationen, siehe :ref:`users-passwords`. "
 
-#: ../../appendix/variables.rst:1061
+#: ../../appendix/variables.rst:1057
 msgid ""
 "Defines the minimum number of characters in the new password which are "
 "neither letters nor digits. For more information, see :ref:`users-"
@@ -1589,7 +1591,7 @@ msgstr ""
 "Buchstaben noch Ziffern sind. Für weitere Informationen, siehe :ref"
 ":`users-passwords`. "
 
-#: ../../appendix/variables.rst:1067
+#: ../../appendix/variables.rst:1063
 msgid ""
 "Defines the minimum number of uppercase letters in the new password. For "
 "more information, see :ref:`users-passwords`."
@@ -1597,7 +1599,7 @@ msgstr ""
 "Legt die Mindestanzahl von Großbuchstaben im neuen Passwort fest. Für "
 "weitere Informationen, siehe :ref:`users-passwords`."
 
-#: ../../appendix/variables.rst:1073
+#: ../../appendix/variables.rst:1069
 msgid ""
 "Defines the characters and digits that are not allowed for passwords. For"
 " more information, see :ref:`users-passwords`."
@@ -1605,7 +1607,7 @@ msgstr ""
 "Definiert die Zeichen und Ziffern, die für Passwörter nicht erlaubt sind."
 " Für weitere Informationen, siehe :ref:`users-passwords`."
 
-#: ../../appendix/variables.rst:1079
+#: ../../appendix/variables.rst:1075
 msgid ""
 "Sets the minimum length default for a password on a per UCS system basis "
 "for users not subject to a UDM password policy. The value ``yes`` applies"
@@ -1619,7 +1621,7 @@ msgstr ""
 "``sufficient`` beinhaltet keine :program:`python-cracklib`-Prüfungen. Für"
 " weitere Informationen, siehe :ref:`users-passwords`."
 
-#: ../../appendix/variables.rst:1088
+#: ../../appendix/variables.rst:1084
 msgid ""
 "Defines the standard Microsoft password complexity criteria. For more "
 "information, see :ref:`users-passwords`."
@@ -1627,7 +1629,7 @@ msgstr ""
 "Definiert die standardmäßigen Microsoft-Kennwortkomplexitätskriterien. "
 "Weitere Informationen finden Sie unter :ref:`users-passwords`."
 
-#: ../../appendix/variables.rst:1093
+#: ../../appendix/variables.rst:1089
 msgid ""
 "Defines individual characters/figures that are compulsory for passwords. "
 "For more information, see :ref:`users-passwords`."
@@ -1635,7 +1637,7 @@ msgstr ""
 "Definiert einzelne Zeichen/Ziffern, die für Passwörter obligatorisch "
 "sind. Für weitere Informationen, siehe :ref:`users-passwords`. "
 
-#: ../../appendix/variables.rst:1099
+#: ../../appendix/variables.rst:1095
 msgid ""
 "Controls if a UCS system stores installation processes in the software "
 "monitor. To turn it off, set the value ``no``. For more information see "
@@ -1645,17 +1647,18 @@ msgstr ""
 "speichert. Um dies zu deaktivieren, setzen Sie den Wert ``no``. Für "
 "weitere Informationen, siehe :ref:`computers-software-monitor`."
 
-#: ../../appendix/variables.rst:1105
+#: ../../appendix/variables.rst:1101
 msgid ""
 "Defines the authentication mode for the UCS portal. Set it to ``saml``, "
 "if you want to activate SAML for single sign-on login. For more "
 "information see :ref:`central-management-umc-login`."
 msgstr ""
 "Legt den Authentifizierungsmodus für das UCS-Portal fest. Setzen Sie ihn "
-"auf ``saml``, wenn Sie SAML für die Single Sign-On Anmeldung aktivieren wollen. "
-"Für weitere Informationen, siehe :ref:`central-management-umc-login`."
+"auf ``saml``, wenn Sie SAML für die Single Sign-On Anmeldung aktivieren "
+"wollen. Für weitere Informationen, siehe :ref:`central-management-umc-"
+"login`."
 
-#: ../../appendix/variables.rst:1111
+#: ../../appendix/variables.rst:1107
 msgid ""
 "Defines the LDAP DN of the portal object that holds the data for the "
 "portal. For more information, see :ref:`central-portal`."
@@ -1663,7 +1666,7 @@ msgstr ""
 "Legt den LDAP-DN des Portalobjekts fest, das die Daten für das Portal "
 "enthält. Weitere Informationen finden Sie unter :ref:`central-portal`."
 
-#: ../../appendix/variables.rst:1117
+#: ../../appendix/variables.rst:1113
 msgid ""
 "Defines the HTTP proxy server on the UCS host system. For more "
 "information, see :ref:`computers-configuring-proxy-access`."
@@ -1671,7 +1674,7 @@ msgstr ""
 "Legt den HTTP-Proxyserver auf dem UCS-Hostsystem fest. Für weitere "
 "Informationen, siehe :ref:`computers-configuring-proxy-access`."
 
-#: ../../appendix/variables.rst:1123
+#: ../../appendix/variables.rst:1119
 msgid ""
 "Defines a list of domains that are not used over a HTTP proxy. Entries "
 "are separated by commas. For more information, see :ref:`computers-"
@@ -1681,7 +1684,7 @@ msgstr ""
 "verwendet werden. Die Einträge werden durch Kommas getrennt. Weitere "
 "Informationen finden Sie unter :ref:`computers-configuring-proxy-access`."
 
-#: ../../appendix/variables.rst:1130
+#: ../../appendix/variables.rst:1126
 msgid ""
 "To log the activation of quotas to a file, specify the file in this "
 "variable. For more information, see :ref:`shares-quota-apply`."
@@ -1690,7 +1693,7 @@ msgstr ""
 " die Datei in dieser Variablen an. Für weitere Informationen, siehe :ref"
 ":`shares-quota-apply`."
 
-#: ../../appendix/variables.rst:1136
+#: ../../appendix/variables.rst:1132
 msgid ""
 "To disable the evaluation of user quota during login, set the value to "
 "``no``. For more information, see :ref:`shares-quota-apply`."
@@ -1699,7 +1702,7 @@ msgstr ""
 "deaktivieren, setzen Sie den Wert auf ``no``. Für weitere Informationen, "
 "siehe :ref:`shares-quota-apply`."
 
-#: ../../appendix/variables.rst:1142
+#: ../../appendix/variables.rst:1138
 msgid ""
 "To only allow specific network devices access to a network through "
 "RADIUS, set the value to ``true``. For more information, see :ref:`ip-"
@@ -1709,7 +1712,7 @@ msgstr ""
 "RADIUS zu erlauben, setzen Sie den Wert auf ``true``. Für weitere "
 "Informationen, siehe :ref:`ip-config-radius-configuration-mac-filtering`."
 
-#: ../../appendix/variables.rst:1149
+#: ../../appendix/variables.rst:1145
 msgid ""
 "To use a dedicated user password for RADIUS instead of the domain "
 "password, set the value to ``true``. For more information, see :ref:`ip-"
@@ -1720,7 +1723,7 @@ msgstr ""
 "weitere Informationen, siehe :ref:`ip-config-radius-configuration-"
 "service-specific-password`."
 
-#: ../../appendix/variables.rst:1156
+#: ../../appendix/variables.rst:1152
 msgid ""
 "Defines another repository server as source for the local mirror. Default"
 " value: ``updates.software-univention.de``. For more information see :ref"
@@ -1730,17 +1733,17 @@ msgstr ""
 "fest. Standardwert: ``updates.software-univention.de``. Für weitere "
 "Informationen, siehe :ref:`software-create-repo`."
 
-#: ../../appendix/variables.rst:1163
+#: ../../appendix/variables.rst:1159
 msgid ""
-"Defines how to deal with unmaintained packages from additional "
-"repositories. To activate, set the value to ``yes``. For more information"
-" see :ref:`software-config-repo`."
+"``DEPRECATED!`` Defines how to deal with unmaintained packages from "
+"additional repositories. To activate, set the value to ``yes``. For more "
+"information see :ref:`software-config-repo`."
 msgstr ""
-"Legt fest, wie mit nicht gewarteten Paketen aus zusätzlichen Repositories"
+"``DEPRECATED!`` Legt fest, wie mit nicht gewarteten Paketen aus zusätzlichen Repositories"
 " verfahren werden soll. Um dies zu aktivieren, setzen Sie den Wert auf "
 "``yes``. Für weitere Informationen, siehe :ref:`software-config-repo`."
 
-#: ../../appendix/variables.rst:1170
+#: ../../appendix/variables.rst:1166
 msgid ""
 "The repository server used to check for updates and download packages. "
 "Default value: ``updates.software-univention.de``. For more information "
@@ -1751,7 +1754,7 @@ msgstr ""
 " Für weitere Informationen, siehe :ref:`computers-configuration-via-"
 "univention-configuration-registry`."
 
-#: ../../appendix/variables.rst:1177
+#: ../../appendix/variables.rst:1173
 msgid ""
 "To enable Microsoft Distributed File System (MSDFS), set the value to "
 "``yes`` and restart Samba. For more information, see :ref:`shares-msdfs`."
@@ -1760,7 +1763,7 @@ msgstr ""
 "Sie den Wert auf ``yes`` und starten Sie Samba neu. Für weitere "
 "Informationen, siehe :ref:`shares-msdfs`."
 
-#: ../../appendix/variables.rst:1183
+#: ../../appendix/variables.rst:1179
 msgid ""
 "Configures the file service protocol that Samba uses on UCS. The allowed "
 "values ``NT1``, ``SMB2``, and ``SMB3``. For more information, see :ref"
@@ -1770,7 +1773,7 @@ msgstr ""
 "Die erlaubten Werte sind ``NT1``, ``SMB2`` und ``SMB3``. Für weitere "
 "Informationen, siehe :ref:`windows-samba4-fileservices`."
 
-#: ../../appendix/variables.rst:1190
+#: ../../appendix/variables.rst:1186
 msgid ""
 "Defines the system architecture for the print spooler in Samba. Set the "
 "values to ``Windows x64`` when your environment contains 64-bit version "
@@ -1782,7 +1785,7 @@ msgstr ""
 "von Microsoft Windows enthält. Für weitere Informationen, siehe :ref"
 ":`print-services-winclients`."
 
-#: ../../appendix/variables.rst:1197
+#: ../../appendix/variables.rst:1193
 msgid ""
 "Configures the synchronization time interval between Samba/AD domain "
 "controllers for the SYSVOL share. Default value is five minutes. For more"
@@ -1793,7 +1796,7 @@ msgstr ""
 "fünf Minuten. Für weitere Informationen, siehe :ref:`windows-"
 "sysvolshare`."
 
-#: ../../appendix/variables.rst:1204
+#: ../../appendix/variables.rst:1200
 msgid ""
 "Allows Kerberos authentication at the SAML identity provider. Change to "
 "``univention-negotiate`` to activate. The default is ``univention-ldap``."
@@ -1804,7 +1807,7 @@ msgstr ""
 " ``univention-ldap``. Für weitere Informationen, siehe :ref:`domain-"
 "saml`."
 
-#: ../../appendix/variables.rst:1210
+#: ../../appendix/variables.rst:1206
 msgid ""
 "Activates additional local identity providers for SAML on a UCS system "
 "serving as UCS Identity provider. To activate set the value to ``true``. "
@@ -1815,7 +1818,7 @@ msgstr ""
 "den Wert auf ``true``. Für weitere Informationen, siehe :ref:`domain-"
 "saml-extended-configuration`."
 
-#: ../../appendix/variables.rst:1217
+#: ../../appendix/variables.rst:1213
 msgid ""
 "Allows to restrict the Kerberos authentication at the SAML identity "
 "provider to certain IP subnetworks in the `CIDR notation <w-classless-"
@@ -1828,7 +1831,7 @@ msgstr ""
 "``127.0.0.0/16,192.168.0.0/16``. Für weitere Informationen, siehe :ref"
 ":`domain-saml`."
 
-#: ../../appendix/variables.rst:1225
+#: ../../appendix/variables.rst:1221
 msgid ""
 "Configures the error message description text for the :program:`Self "
 "Service`. The text shows up for users that login through SSO with an "
@@ -1843,7 +1846,7 @@ msgstr ""
 ":`user-management-password-changes-by-users-selfregistration-account-"
 "verification`."
 
-#: ../../appendix/variables.rst:1233
+#: ../../appendix/variables.rst:1229
 msgid ""
 "Configures the error message title for the :program:`Self Service`. The "
 "title shows up for users that login through SSO with an unverified and "
@@ -1857,19 +1860,19 @@ msgstr ""
 "Informationen finden Sie unter :ref:`user-management-password-changes-by-"
 "users-selfregistration-account-verification`."
 
-#: ../../appendix/variables.rst:1241
+#: ../../appendix/variables.rst:1237
 msgid ""
 "Controls if the SSO login denies logins from unverified and self "
 "registered user accounts. For more information, see :ref:`user-"
 "management-password-changes-by-users-selfregistration-account-"
 "verification`."
 msgstr ""
-"Steuert, ob die Single Sign-On Anmeldungen von nicht verifizierten und selbst "
-"registrierten Benutzerkonten verweigert wird. Weitere Informationen "
-"finden Sie unter :ref:`user-management-password-changes-by-users-"
-"selfregistration-account-verification`."
+"Steuert, ob die Single Sign-On Anmeldungen von nicht verifizierten und "
+"selbst registrierten Benutzerkonten verweigert wird. Weitere "
+"Informationen finden Sie unter :ref:`user-management-password-changes-by-"
+"users-selfregistration-account-verification`."
 
-#: ../../appendix/variables.rst:1247
+#: ../../appendix/variables.rst:1243
 msgid ""
 "To disable Univention firewall, set the value to ``true``. For more "
 "information, see :ref:`ip-config-packet-filter-with-univention-firewall`."
@@ -1878,7 +1881,7 @@ msgstr ""
 " Für weitere Informationen, siehe :ref:`ip-config-packet-filter-with-"
 "univention-firewall`."
 
-#: ../../appendix/variables.rst:1253
+#: ../../appendix/variables.rst:1249
 msgid ""
 "Defines the UCS system where the backend of the :program:`Self Service` "
 "app is installed. For more information, see :ref:`user-management-"
@@ -1888,7 +1891,7 @@ msgstr ""
 ":program:`Self Service` installiert ist. Weitere Informationen finden Sie"
 " unter :ref:`user-management-password-changes-by-users-self-service`."
 
-#: ../../appendix/variables.rst:1259
+#: ../../appendix/variables.rst:1255
 msgid ""
 "Enables or disables the password rotation on a UCS system. Per default "
 "the password rotation is activated. For more information, see :ref"
@@ -1898,7 +1901,7 @@ msgstr ""
 "Standardmäßig ist die Kennwortrotation aktiviert. Für weitere "
 "Informationen, siehe :ref:`computers-hostaccounts`."
 
-#: ../../appendix/variables.rst:1266
+#: ../../appendix/variables.rst:1262
 msgid ""
 "Defines the interval in days to regenerate the computer account password."
 " The default is set to 21 days. For more information, see :ref"
@@ -1908,7 +1911,7 @@ msgstr ""
 "neu generiert wird. Der Standardwert ist auf 21 Tage eingestellt. Weitere"
 " Informationen finden Sie unter :ref:`computers-hostaccounts`."
 
-#: ../../appendix/variables.rst:1273
+#: ../../appendix/variables.rst:1269
 msgid ""
 "Contains the name of the UCS system's server role. For more information, "
 "see :ref:`system-roles`."
@@ -1916,7 +1919,7 @@ msgstr ""
 "Enthält den Namen der Serverrolle des UCS-Systems. Für weitere "
 "Informationen, siehe :ref:`system-roles`."
 
-#: ../../appendix/variables.rst:1279
+#: ../../appendix/variables.rst:1275
 msgid ""
 "To limit the access to the Squid web proxy, define a list of group names "
 "separated by semicolon (``;``). For more information, see :ref:`proxy-"
@@ -1926,7 +1929,7 @@ msgstr ""
 " Liste von Gruppennamen, die durch Semikolon (``;``) getrennt sind. Für "
 "weitere Informationen, siehe :ref:`proxy-userauth`."
 
-#: ../../appendix/variables.rst:1285
+#: ../../appendix/variables.rst:1281
 msgid ""
 "Configures additional networks to allow access to the Squid web proxy. "
 "Separate the entries with blank spaces and use the CIDR notation, for "
@@ -1939,7 +1942,7 @@ msgstr ""
 "Informationen finden Sie unter :ref:`ip-config-restriction-of-access-to-"
 "permitted-networks`."
 
-#: ../../appendix/variables.rst:1292
+#: ../../appendix/variables.rst:1288
 msgid ""
 "To activate direct authentication for the Squid web proxy against the "
 "LDAP server, set the value to ``yes`` and restart Squid. For more "
@@ -1949,7 +1952,7 @@ msgstr ""
 "LDAP-Server zu aktivieren, setzen Sie den Wert auf ``yes`` und starten "
 "Sie Squid neu. Für weitere Informationen, siehe :ref:`proxy-userauth`."
 
-#: ../../appendix/variables.rst:1299
+#: ../../appendix/variables.rst:1295
 msgid ""
 "To deactivate the caching function of the Squid web proxy, set the value "
 "to ``no``. For more information, see :ref:`ip-config-caching-of-web-"
@@ -1959,7 +1962,7 @@ msgstr ""
 "den Wert auf ``no``. Für weitere Informationen, siehe :ref:`ip-config-"
 "caching-of-web-content`."
 
-#: ../../appendix/variables.rst:1305
+#: ../../appendix/variables.rst:1301
 msgid ""
 "Configures the port for Squid web proxy, where the daemon listens for "
 "incoming connections. The default value is ``3128``. For more "
@@ -1969,7 +1972,7 @@ msgstr ""
 "eingehende Verbindungen wartet. Der Standardwert ist ``3128``. Für "
 "weitere Informationen, siehe :ref:`proxy-port`."
 
-#: ../../appendix/variables.rst:1312
+#: ../../appendix/variables.rst:1308
 msgid ""
 "To activate authentication through Kerberos for the Squid web proxy, set "
 "the value to ``yes`` and restart Squid. For more information, see :ref"
@@ -1979,7 +1982,7 @@ msgstr ""
 "aktivieren, setzen Sie den Wert auf ``yes`` und starten Sie Squid neu. "
 "Für weitere Informationen, siehe :ref:`proxy-userauth`."
 
-#: ../../appendix/variables.rst:1319
+#: ../../appendix/variables.rst:1315
 msgid ""
 "To activate authentication for the Squid web proxy against the NTLM "
 "interface, set the value to ``yes`` and restart Squid. For more "
@@ -1989,7 +1992,7 @@ msgstr ""
 "Schnittstelle zu aktivieren, setzen Sie den Wert auf ``yes`` und starten "
 "Sie Squid neu. Für weitere Informationen, siehe :ref:`proxy-userauth`."
 
-#: ../../appendix/variables.rst:1326
+#: ../../appendix/variables.rst:1322
 msgid ""
 "To deactivate further NTML authentication for subsequent HTML requests to"
 " the same website, set the value to ``yes``. For more information, see "
@@ -1999,7 +2002,7 @@ msgstr ""
 "dieselbe Website zu deaktivieren, setzen Sie den Wert auf ``yes``. Für "
 "weitere Informationen, siehe :ref:`proxy-userauth`."
 
-#: ../../appendix/variables.rst:1333
+#: ../../appendix/variables.rst:1329
 msgid ""
 "Configures the list of permitted ports for the Squid web proxy. Separate "
 "entries with blank spaces. For more information, see :ref:`ip-config-"
@@ -2009,7 +2012,7 @@ msgstr ""
 "Trennen Sie die Einträge durch Leerzeichen. Für weitere Informationen, "
 "siehe :ref:`ip-config-permitted-ports`."
 
-#: ../../appendix/variables.rst:1340
+#: ../../appendix/variables.rst:1336
 msgid ""
 "Configures how the SSH daemon permits login for the user ``root``. The "
 "value ``without-password`` does not ask for the password interactively. "
@@ -2021,7 +2024,7 @@ msgstr ""
 "Passwort. Die Anmeldung erfordert den öffentlichen SSH-Schlüssel. Für "
 "weitere Informationen, siehe :ref:`computers-ssh-login-to-systems`."
 
-#: ../../appendix/variables.rst:1348
+#: ../../appendix/variables.rst:1344
 msgid ""
 "Configure the port that the SSH daemon uses to listen for connection. The"
 " default value is ``22``. For more information, see :ref:`computers-ssh-"
@@ -2031,7 +2034,7 @@ msgstr ""
 "Verbindungen zu warten. Der Standardwert ist ``22``. Für weitere "
 "Informationen, siehe :ref:`computers-ssh-login-to-systems`."
 
-#: ../../appendix/variables.rst:1355
+#: ../../appendix/variables.rst:1351
 msgid ""
 "Configures, if the SSH daemon allows X11 forwarding. Valid values are "
 "``yes`` and ``no``. For more information, see :ref:`computers-ssh-login-"
@@ -2041,7 +2044,7 @@ msgstr ""
 "sind ``yes`` und ``no``. Für weitere Informationen, siehe :ref"
 ":`computers-ssh-login-to-systems`."
 
-#: ../../appendix/variables.rst:1361
+#: ../../appendix/variables.rst:1357
 msgid ""
 "Records the expiry date of the local computer certificate on each UCS "
 "system. The value reflects the number of days since the 1970-01-01."
@@ -2050,7 +2053,7 @@ msgstr ""
 "UCS-System auf. Der Wert gibt die Anzahl der Tage seit dem *1. Januar "
 "1970* an."
 
-#: ../../appendix/variables.rst:1367
+#: ../../appendix/variables.rst:1363
 msgid ""
 "Records the expiry date of the root certificate on each UCS system. The "
 "value reflects the number of days since the 1970-01-01."
@@ -2058,7 +2061,7 @@ msgstr ""
 "Zeichnet das Ablaufdatum des Stammzertifikats auf jedem UCS-System auf. "
 "Der Wert gibt die Anzahl der Tage seit dem *1. Januar 1970* an."
 
-#: ../../appendix/variables.rst:1373
+#: ../../appendix/variables.rst:1369
 msgid ""
 "Defines the warning period for the expiration check of the SSL/TLS root "
 "certificate. The default value is ``30`` days. See :ref:`domain-ssl`."
@@ -2066,7 +2069,7 @@ msgstr ""
 "Legt den Warnzeitraum für die Ablaufprüfung des SSL/TLS-Root-Zertifikats "
 "fest. Der Standardwert ist ``30`` Tage. Siehe :ref:`domain-ssl`."
 
-#: ../../appendix/variables.rst:1378
+#: ../../appendix/variables.rst:1374
 msgid ""
 "Enables or disables the logging of the system status. The default value "
 "is ``yes``. For more information, see :ref:`computers-logging-the-system-"
@@ -2076,7 +2079,7 @@ msgstr ""
 "Standardwert ist ``yes``. Für weitere Informationen, siehe :ref"
 ":`computers-logging-the-system-status`."
 
-#: ../../appendix/variables.rst:1385
+#: ../../appendix/variables.rst:1381
 msgid ""
 "Configures the run times when :command:`univention-system-stats` is run. "
 "The value follows the :ref:`cron syntax <cron-syntax>`. For more "
@@ -2087,7 +2090,7 @@ msgstr ""
 "Für weitere Informationen, siehe :ref:`computers-logging-the-system-"
 "status`."
 
-#: ../../appendix/variables.rst:1392
+#: ../../appendix/variables.rst:1388
 msgid ""
 "Configures the first external NTP timeserver. For more information, see "
 ":ref:`basicservices-ntp`."
@@ -2095,7 +2098,7 @@ msgstr ""
 "Konfiguriert den ersten externen NTP-Zeitserver. Für weitere "
 "Informationen, siehe :ref:`basicservices-ntp`."
 
-#: ../../appendix/variables.rst:1398
+#: ../../appendix/variables.rst:1394
 msgid ""
 "Configures the second external NTP timeserver. For more information, see "
 ":ref:`basicservices-ntp`."
@@ -2103,7 +2106,7 @@ msgstr ""
 "Konfiguriert den zweiten externen NTP-Zeitserver. Für weitere "
 "Informationen, siehe :ref:`basicservices-ntp`."
 
-#: ../../appendix/variables.rst:1404
+#: ../../appendix/variables.rst:1400
 msgid ""
 "Configures the third external NTP timeserver. For more information, see "
 ":ref:`basicservices-ntp`."
@@ -2111,7 +2114,20 @@ msgstr ""
 "Konfiguriert den dritten externen NTP-Zeitserver. Für weitere "
 "Informationen, siehe :ref:`basicservices-ntp`."
 
-#: ../../appendix/variables.rst:1410
+#: ../../appendix/variables.rst:1406
+msgid ""
+"If this option is ``yes``, the correctness of type definitions and the "
+"type compatibility of values are always checked in |UCSUCR|. The setting "
+"of the value is aborted for unsuccessful checks. Default is ``no``. For "
+"more information, see :ref:`computers-setting-ucr-variables`."
+msgstr ""
+"Ist diese Option ``Ja``, wird die Korrektheit von Typ-Definitionen und "
+"die Typ-Kompatibilität von Werten immer in |UCSUCR| überprüft. Bei "
+"erfolgloser Prüfung wird das Setzen des Wertes abgebrochen. "
+"Voreinstellung ist ``Nein``. Für weitere Informationen, siehe :ref"
+":`computers-setting-ucr-variables`."
+
+#: ../../appendix/variables.rst:1414
 msgid ""
 "Select the theme for |UCSWEB|. The value corresponds to a CSS file under "
 ":file:`/usr/share/univention-web/themes/` with the same name without "
@@ -2121,7 +2137,7 @@ msgstr ""
 "unter :file:`/usr/share/univention-web/themes/` mit demselben Namen ohne "
 "Erweiterung für den Dateinamen."
 
-#: ../../appendix/variables.rst:1417
+#: ../../appendix/variables.rst:1421
 msgid ""
 "To activate the :program:`Self Service` deregistration, set the variable "
 "to ``True``. For more information, see :ref:`user-management-password-"
@@ -2131,7 +2147,7 @@ msgstr ""
 "die Variable auf ``True``. Weitere Informationen finden Sie unter :ref"
 ":`user-management-password-changes-by-users-selfderegistration`."
 
-#: ../../appendix/variables.rst:1424
+#: ../../appendix/variables.rst:1428
 msgid ""
 "Enables or disables the account verification and request of new "
 "verification tokens for the :program:`Self Service`. For more "
@@ -2143,7 +2159,7 @@ msgstr ""
 "Informationen finden Sie unter :ref:`user-management-password-changes-by-"
 "users-selfregistration-account-verification`."
 
-#: ../../appendix/variables.rst:1431
+#: ../../appendix/variables.rst:1435
 msgid ""
 "Configures the default user name for the domain administrator. The value "
 "might be changed during an AD Takeover. For more information, see :ref"
@@ -2152,7 +2168,4 @@ msgstr ""
 "Legt den Standardbenutzernamen für den Domänenadministrator fest. Der "
 "Wert kann während einer AD-Übernahme geändert werden. Für weitere "
 "Informationen, siehe :ref:`windows-ad-takeover-migrate`."
-
-msgid "If this option is ``yes``, the correctness of type definitions and the type compatibility of values are always checked in |UCSUCR|. The setting of the value is aborted for unsuccessful checks. Default is ``no``. For more information, see :ref:`computers-setting-ucr-variables`."
-msgstr "Ist diese Option ``Ja``, wird die Korrektheit von Typ-Definitionen und die Typ-Kompatibilität von Werten immer in |UCSUCR| überprüft. Bei erfolgloser Prüfung wird das Setzen des Wertes abgebrochen. Voreinstellung ist ``Nein``. Für weitere Informationen, siehe :ref:`computers-setting-ucr-variables`."
 

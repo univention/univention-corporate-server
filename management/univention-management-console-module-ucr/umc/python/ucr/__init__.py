@@ -34,7 +34,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import re
 from io import StringIO
+from typing import Pattern
 
 from univention.lib.i18n import Translation
 from univention.management.console.base import Base, UMC_Error
@@ -52,6 +54,12 @@ _ = Translation('univention-management-console-module-ucr').translate
 
 
 from typing import Any, Dict, List, Union  # noqa: E402
+
+ONLINE_BASE = 'repository/online'
+COMPONENT_BASE = f'{ONLINE_BASE}/component'
+DEPRECATED_VARS = ['prefix', 'username', 'password', 'unmaintained', 'port']
+DEPRECATED_GEN = [f'{ONLINE_BASE}/{dep}' for dep in DEPRECATED_VARS]
+RE_KEY = re.compile(f'{COMPONENT_BASE}/([^/]+)/({"|".join(DEPRECATED_VARS)})')
 
 
 class UCRKeySanitizer(StringSanitizer):
@@ -223,6 +231,11 @@ class Instance(Base):
 		if category in ('all', 'all-registered'):
 			category = None
 
+		def _hidden(name: str, reg: Pattern) -> bool:
+			if name in DEPRECATED_GEN:
+				return True
+			return True if reg.fullmatch(name) else False
+
 		def _match_value(name, var):
 			return var.value and pattern.match(var.value)
 
@@ -238,7 +251,7 @@ class Instance(Base):
 
 		func = locals().get(f'_match_{key}')
 		for name, var in base_info.get_variables(category).items():
-			if func(name, var):
+			if func(name, var) and not _hidden(name, RE_KEY):
 				variables.append({
 					'key': name,
 					'value': var.value,

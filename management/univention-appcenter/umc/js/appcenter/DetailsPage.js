@@ -98,27 +98,8 @@ define([
 				{
 					type: TextBox,
 					name: 'server',
-					label: _("Repository server")
-				},
-				{
-					type: TextBox,
-					name: 'prefix',
-					label: _("Repository prefix")
-				},
-				{
-					type: CheckBox,
-					name: 'unmaintained',
-					label: _("Use unmaintained repositories")
-				},
-				{
-					type: TextBox,
-					name: 'username',
-					label: _("Username")
-				},
-				{
-					type: TextBox,
-					name: 'password',
-					label: _("Password")
+					label: _("Repository server"),
+					size: 'Two'
 				},
 				{
 					type: TextBox,
@@ -136,15 +117,13 @@ define([
 					[
 						['enabled'],
 						['name', 'description'],
-						['server', 'prefix']
+						['server']
 					]
 				},
 				{
 					label: _("Advanced settings"),
 					layout:
 					[
-						['unmaintained'],
-						['username', 'password'],
 						['version']
 					]
 				}
@@ -224,13 +203,8 @@ define([
 					// Empty fields
 					name: '',
 					description: '',
-					prefix: '',
-					username: '',
-					password: '',
-					defaultpackages: '',
-					server: '',
+					server: ''
 					// TODO These have to be copied from the current settings
-					unmaintained: false
 				});
 		}
 

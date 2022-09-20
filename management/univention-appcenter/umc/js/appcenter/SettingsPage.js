@@ -65,20 +65,12 @@ define([
 			var formWidgets = [{
 				type: 'TextBox',
 				name: 'server',
-				label: _("Repository server")
-			}, {
-				type: 'TextBox',
-				name: 'prefix',
-				label: _("Repository prefix")
-			}, {
-				type: 'CheckBox',
-				name: 'unmaintained',
-				label: _("Use unmaintained repositories")
+				label: _("Repository server URL"),
+				size: 'Two'
 			}];
 
 			var formLayout = [
-				['server', 'prefix'],
-				['unmaintained'],
+				['server'],
 				['submit']
 			];
 

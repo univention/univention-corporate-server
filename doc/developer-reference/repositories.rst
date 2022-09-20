@@ -49,12 +49,10 @@ identifies the component on the repository server. A free text can be entered
 under *Description*, for example, for describing the functions of the component
 in more detail.
 
-The hostname of the download server is to be entered in the input field
-*Repository server*, and, if necessary, an
-additional file path in *Repository prefix*.
+The absolute URL of the download server is to be entered in the input field
+*Repository server*, and can also optionally contain a *Username*, *Password*,
+*Repository prefix* (file path) and *port* if required.
 
-A *Username* and *Password* can be configured for repository servers which
-require authentication.
 
 .. warning::
 
@@ -65,8 +63,7 @@ A software component is only available when *Enable this component* has been
 activated.
 
 Prior to UCS 5 two separate repository branches where provided for *maintained*
-and *unmaintained* software. While UCS 5 no longer uses this distinction, the
-mechanism still exists and is used for component repositories.
+and *unmaintained* software. While UCS 5 no longer uses this distinction.
 
 .. _computers-softwaremanagement-repo-add-ucr:
 
@@ -79,7 +76,7 @@ configured through the UMC module.
 :samp:`{NAME}` stands for the component's name:
 
 :samp:`repository/online/component/{NAME}/server`
-   The repository server on which the components are available. If this variable
+   The repository server absolute URL on which the components are available. If this variable
    is not set, the server from |UCSUCRV| :envvar:`repository/online/server` is
    used.
 
@@ -97,8 +94,9 @@ configured through the UMC module.
    A optional description for the repository.
 
 :samp:`repository/online/component/{NAME}/prefix`
-   Defines the URL prefix which is used on the repository server. This variable
-   is usually not set.
+   ``DEPRECATED!`` Defines the URL prefix which is used on the repository server.
+   This variable should no longer be used. The path should be specified as a part
+   of the URL configured in the ``server`` variable.
 
 :samp:`repository/online/component/{NAME}/layout`
    Defines the type of the repository:
@@ -113,12 +111,14 @@ configured through the UMC module.
    This variable is usually not set.
 
 :samp:`repository/online/component/{NAME}/username`
-   If the repository server requires authentication, the username can be entered
-   in this variable.
+   ``DEPRECATED!`` Defines the username if the repository server requires authentication.
+   This variable should no longer be used. The username should be specified as a part
+   of the URL configured in the ``server`` variable.
 
 :samp:`repository/online/component/{NAME}/password`
-   If the repository server requires authentication, the password can be entered
-   in this variable.
+   ``DEPRECATED!`` Defines the password if the repository server requires authentication.
+   This variable should no longer be used. The password should be specified as a part
+   of the URL configured in the ``server`` variable.
 
 :samp:`repository/online/component/{NAME}/version`
    This variable controls the versions to include, see :ref:`chap-repo-add` for

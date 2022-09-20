@@ -5,8 +5,8 @@ Type=str
 Categories=service-software-management
 
 [repository/online/prefix]
-Description[de]=Einige Repositorys verwenden verschiedene Update-Unterverzeichnisse. Mit dieser Variable kann so ein Pfad konfiguriert werden. Ist die Variable nicht gesetzt, wird kein Präfix verwendet.
-Description[en]=Some repositories use several update subdirectories. This variable allows to configure such a prefix path. If the variable is unset, no prefix is used.
+Description[de]=DEPRECATED! Bitte benutzen sie stattdessen einen vollständigen URL String "http(s)://<username>:<password>@<server>:<port>/<path>" in der server Variablen. Einige Repositorys verwenden verschiedene Update-Unterverzeichnisse. Mit dieser Variable kann so ein Pfad konfiguriert werden. Ist die Variable nicht gesetzt, wird kein Präfix verwendet.
+Description[en]=DEPRECATED! Please specify a fully qualified URL string "http(s)://<username>:<password>@<server>:<port>/<path>" in the server variable instead. Some repositories use several update subdirectories. This variable allows to configure such a prefix path. If the variable is unset, no prefix is used.
 Type=str
 Categories=service-software-management
 
@@ -78,8 +78,8 @@ Categories=service-software-management
 Default=no
 
 [repository/online/port]
-Description[de]=Diese Variable konfiguriert den TCP-Port, unter dem das Online-Repository erreichbar ist.
-Description[en]=This variable configures the TCP port under which the online repository is reachable.
+Description[de]=DEPRECATED! Bitte benutzen sie stattdessen einen vollständigen URL String "http(s)://<username>:<password>@<server>:<port>/<path>" in der server Variablen. Diese Variable konfiguriert den TCP-Port, unter dem das Online-Repository erreichbar ist.
+Description[en]=DEPRECATED! Please specify a fully qualified URL string "http(s)://<username>:<password>@<server>:<port>/<path>" in the server variable instead. This variable configures the TCP port under which the online repository is reachable.
 Type=int
 Categories=service-software-management
 Default=80
@@ -117,8 +117,8 @@ Type=str
 Categories=service-software-management
 
 [repository/online/component/.*/unmaintained]
-Description[de]=Für Repository-Komponenten wird zwischen 'maintained' und 'unmaintained' unterschieden. Komponenten, die über das Univention App Center integriert werden, verwenden in der Regel nur 'maintained'. Ist diese Option aktiviert, werden Pakete der Komponente aus 'unmaintained' bereitgestellt.
-Description[en]=Repository components differentiate between 'maintained' and 'unmaintained'. Components which are included through the Univention App Center usually only use 'maintained'. If this option is activated, packages of the component from 'unmaintained' are included.
+Description[de]=DEPRECATED! Diese Variable nicht mehr verwenden. Für Repository-Komponenten wird zwischen 'maintained' und 'unmaintained' unterschieden. Komponenten, die über das Univention App Center integriert werden, verwenden in der Regel nur 'maintained'. Ist diese Option aktiviert, werden Pakete der Komponente aus 'unmaintained' bereitgestellt.
+Description[en]=DEPRECATED! Please do not use any longer. Repository components differentiate between 'maintained' and 'unmaintained'. Components which are included through the Univention App Center usually only use 'maintained'. If this option is activated, packages of the component from 'unmaintained' are included.
 Type=bool
 Categories=service-software-management
 
@@ -135,14 +135,14 @@ Type=str
 Categories=service-software-management
 
 [repository/online/component/.*/port]
-Description[de]=Diese Variable konfiguriert den TCP-Port, unter dem der Server der Repository-Komponente erreichbar ist. Ist die Variable nicht gesetzt, wird '80' verwendet.
-Description[en]=This variable configures the TCP port under which the server of the repository component is reachable. If the variable is unset, '80' is used.
+Description[de]=DEPRECATED! Bitte benutzen sie stattdessen einen vollständigen URL String "http(s)://<username>:<password>@<server>:<port>/<path>" in der server Variablen. Diese Variable konfiguriert den TCP-Port, unter dem der Server der Repository-Komponente erreichbar ist. Ist die Variable nicht gesetzt, wird '80' verwendet.
+Description[en]=DEPRECATED! Please specify a fully qualified URL string "http(s)://<username>:<password>@<server>:<port>/<path>" in the server variable instead. This variable configures the TCP port under which the server of the repository component is reachable. If the variable is unset, '80' is used.
 Type=int
 Categories=service-software-management
 
 [repository/online/component/.*/prefix]
-Description[de]=Einige Repositorys verwenden verschiedene Update-Unterverzeichnisse. Mit dieser Variable kann so ein Pfad für die Komponente konfiguriert werden. Ist die Variable nicht gesetzt, wird kein Präfix verwendet.
-Description[en]=Some repositories use several update subdirectories. This variable allows to configure such a path for the component. If the variable is unset, no prefix is used.
+Description[de]=DEPRECATED! Bitte benutzen sie stattdessen einen vollständigen URL String "http(s)://<username>:<password>@<server>:<port>/<path>" in der server Variablen. Einige Repositorys verwenden verschiedene Update-Unterverzeichnisse. Mit dieser Variable kann so ein Pfad für die Komponente konfiguriert werden. Ist die Variable nicht gesetzt, wird kein Präfix verwendet.
+Description[en]=DEPRECATED! Please specify a fully qualified URL string "http(s)://<username>:<password>@<server>:<port>/<path>" in the server variable instead. Some repositories use several update subdirectories. This variable allows to configure such a path for the component. If the variable is unset, no prefix is used.
 Type=str
 Categories=service-software-management
 
@@ -153,14 +153,14 @@ Type=str
 Categories=service-software-management
 
 [repository/online/component/.*/username]
-Description[de]=Einige Repository-Komponenten verlangen eine Authentifizierung für den Zugriff auf das Repository. Mit dieser Variable kann der Benutzername konfiguriert werden. Siehe auch 'repository/online/component/.*/password'.
-Description[en]=Some repository components require authentication for accessing the repository. The username can be configured with this variable. See also 'repository/online/component/.*/password'.
+Description[de]=DEPRECATED! Bitte benutzen sie stattdessen einen vollständigen URL String "http(s)://<username>:<password>@<server>:<port>/<path>" in der server Variablen. Einige Repository-Komponenten verlangen eine Authentifizierung für den Zugriff auf das Repository. Mit dieser Variable kann der Benutzername konfiguriert werden. Siehe auch 'repository/online/component/.*/password'.
+Description[en]=DEPRECATED! Please specify a fully qualified URL string "http(s)://<username>:<password>@<server>:<port>/<path>" in the server variable instead. Some repository components require authentication for accessing the repository. The username can be configured with this variable. See also 'repository/online/component/.*/password'.
 Type=str
 Categories=service-software-management
 
 [repository/online/component/.*/password]
-Description[de]=Einige Repository-Komponenten verlangen eine Authentifizierung für den Zugriff auf das Repository. Mit dieser Variable kann das Passwort konfiguriert werden. Siehe auch 'repository/online/component/.*/username'.
-Description[en]=Some repository components require authentication for accessing the repository. The password can be configured with this variable. See also 'repository/online/component/.*/username'.
+Description[de]=DEPRECATED! Bitte benutzen sie stattdessen einen vollständigen URL String "http(s)://<username>:<password>@<server>:<port>/<path>" in der server Variablen. Einige Repository-Komponenten verlangen eine Authentifizierung für den Zugriff auf das Repository. Mit dieser Variable kann das Passwort konfiguriert werden. Siehe auch 'repository/online/component/.*/username'.
+Description[en]=DEPRECATED! Please specify a fully qualified URL string "http(s)://<username>:<password>@<server>:<port>/<path>" in the server variable instead. Some repository components require authentication for accessing the repository. The password can be configured with this variable. See also 'repository/online/component/.*/username'.
 Type=str
 Categories=service-software-management
 

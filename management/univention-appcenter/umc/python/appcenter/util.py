@@ -40,6 +40,7 @@ from contextlib import contextmanager
 import socket
 import ssl
 from hashlib import md5
+from urllib.parse import urlparse, ParseResult
 
 # related third party
 from six.moves import urllib_request, http_client
@@ -132,6 +133,27 @@ def get_md5(filename):
 		with open(filename, 'r') as f:
 			m.update(f.read())
 			return m.hexdigest()
+
+
+def create_url(server: str, prefix: str, username: str, password: str, port: str) -> str:
+	surl = urlparse(server)
+	if all([surl.scheme, surl.netloc]):
+		netloc = surl.netloc
+		path = surl.path or prefix
+		if surl.scheme not in ['http', 'https']:
+			scheme = 'https' if port.strip() == '443' else 'http'
+		else:
+			scheme = surl.scheme
+	else:
+		scheme = 'https' if port.strip() == '443' else 'http'
+		netloc = server
+		path = prefix
+	if not surl.username and username:
+		_, _, hostport = netloc.rpartition('@')
+		netloc = f"{username}:{password}@{hostport}"
+	if not surl.port and port.strip() not in ['80', '443', '']:
+		netloc = f'{netloc}:{port}'
+	return ParseResult(scheme=scheme, netloc=netloc, path=path, params='', query='', fragment='').geturl()
 
 
 class HTTPSConnection(http_client.HTTPSConnection):

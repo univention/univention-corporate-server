@@ -1,3 +1,10 @@
+univention-management-console-module-diagnostic (6.0.2-7) unstable; urgency=medium
+
+  * Bug #55044: Simplify repository UCRVs - added diagnostic module to check
+    for deprecated variables
+
+ -- Peter Stoll <stoll.extern@univention.de>  Tue, 08 Nov 2022 20:03:05 +0200
+
 univention-management-console-module-diagnostic (6.0.2-6) unstable; urgency=low
 
   * Bug #49417: Fix 04_saml_certificate_check.py checking SAML certificates

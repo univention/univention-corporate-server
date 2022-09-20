@@ -3,7 +3,8 @@ ONLINE_BASE = 'repository/online'
 COMPONENT_BASE = '%s/component' % ONLINE_BASE
 
 # Parameter names for component definitions
-COMP_PARAMS = ['description', 'server', 'prefix', 'password', 'username', 'defaultpackages', 'version', 'localmirror', 'unmaintained']
+COMP_PARAMS = ['description', 'server', 'prefix', 'password', 'username', 'defaultpackages', 'version', 'localmirror', 'unmaintained', 'port']
+DEPRECATED_PARAMS = ['prefix', 'username', 'password', 'unmaintained', 'port']
 
 # Symbolic error codes for UCR write operations
 PUT_SUCCESS = 0

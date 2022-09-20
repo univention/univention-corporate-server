@@ -74,8 +74,8 @@ from univention.appcenter.settings import FileSetting, PasswordFileSetting
 
 # local application
 from .sanitizers import error_handling, AppSanitizer, basic_components_sanitizer, advanced_components_sanitizer, add_components_sanitizer
-from .util import install_opener, ComponentManager, set_save_commit_load
-from .constants import ONLINE_BASE, PUT_WRITE_ERROR, PUT_UPDATER_ERROR, PUT_SUCCESS, PUT_UPDATER_NOREPOS
+from .util import install_opener, ComponentManager, set_save_commit_load, create_url
+from .constants import ONLINE_BASE, COMPONENT_BASE, DEPRECATED_PARAMS, PUT_WRITE_ERROR, PUT_UPDATER_ERROR, PUT_SUCCESS, PUT_UPDATER_NOREPOS
 
 _ = umc.Translation('univention-management-console-module-appcenter').translate
 
@@ -977,7 +977,11 @@ class Instance(umcm.Base, ProgressMixin):
 		self.get_updater().ucr_reinit()
 		self.ucr.load()
 		for component_id in iterator:
-			yield self.get_component_manager().component(component_id)
+			items = self.get_component_manager().component(component_id).copy()
+			items['server'] = create_url(items['server'], items['prefix'], items['username'], items['password'], items['port'])
+			for deprecated in DEPRECATED_PARAMS:
+				del items[deprecated]
+			yield items
 
 	@sanitize_list(DictSanitizer({'object': advanced_components_sanitizer}))
 	@multi_response
@@ -1010,7 +1014,17 @@ class Instance(umcm.Base, ProgressMixin):
 		#	]
 		with set_save_commit_load(self.ucr) as super_ucr:
 			for object, in iterator:
+				try:
+					name = object['name']
+					named_component_base = '%s/%s' % (COMPONENT_BASE, name)
+					for deprecated in DEPRECATED_PARAMS:
+						if self.ucr.get(f'{named_component_base}/{deprecated}', ''):
+							super_ucr.set_registry_var(f'{named_component_base}/{deprecated}', None)
+				except Exception as e:
+					MODULE.warn("   !! Writing UCR failed: %s" % str(e))
+					return [{'message': str(e), 'status': PUT_WRITE_ERROR}]
 				yield self.get_component_manager().put(object, super_ucr)
+
 		self.package_manager.update()
 
 	# do the same as components_put (update)
@@ -1032,11 +1046,13 @@ class Instance(umcm.Base, ProgressMixin):
 		#	but also to reflect the changes we have made ourselves!
 		self.ucr.load()
 
+		path = self.ucr.get(f'{ONLINE_BASE}/prefix', '')
+		server = self.ucr.get(f'{ONLINE_BASE}/server', '')
+		port = self.ucr.get(f'{ONLINE_BASE}/port', '')
+
 		for _ in iterator:
 			yield {
-				'unmaintained': self.ucr.is_true('repository/online/unmaintained', False),
-				'server': self.ucr.get('repository/online/server', ''),
-				'prefix': self.ucr.get('repository/online/prefix', ''),
+				'server': create_url(server, path, '', '', port)
 			}
 
 	@sanitize_list(
@@ -1056,6 +1072,17 @@ class Instance(umcm.Base, ProgressMixin):
 						MODULE.info("   ++ Setting new value for '%s' to '%s'" % (key, value))
 						super_ucr.set_registry_var('%s/%s' % (ONLINE_BASE, key), value)
 				changed = super_ucr.changed()
+		except Exception as e:
+			MODULE.warn("   !! Writing UCR failed: %s" % str(e))
+			return [{'message': str(e), 'status': PUT_WRITE_ERROR}]
+
+		# delete deprecated ucr variables if still exist.
+		try:
+			with set_save_commit_load(self.ucr) as super_ucr:
+				for deprecated in DEPRECATED_PARAMS:
+					if self.ucr.get(f'{ONLINE_BASE}/{deprecated}', ''):
+						super_ucr.set_registry_var(f'{ONLINE_BASE}/{deprecated}', None)
+				super_ucr.changed()
 		except Exception as e:
 			MODULE.warn("   !! Writing UCR failed: %s" % str(e))
 			return [{'message': str(e), 'status': PUT_WRITE_ERROR}]
