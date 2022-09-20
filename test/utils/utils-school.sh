@@ -260,6 +260,9 @@ create_users_in_template_job () {
   "no_delete": true
 }
 EOF
+	# fix record_uid
+	sed -i 's/"record_uid": "<firstname>.<lastname>"/"record_uid": "<firstname>.<lastname>.<username>"/' \
+		/usr/share/ucs-school-import/configs/ucs-school-testuser-import.json
 	# create school users
 	school_count=100
 	classes_count=300
