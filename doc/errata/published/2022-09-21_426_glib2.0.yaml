@@ -10,3 +10,5 @@ desc: |
 bug: [55208]
 cve:
 - CVE-2021-3800
+erratum: 426
+announced: 2022-09-21
