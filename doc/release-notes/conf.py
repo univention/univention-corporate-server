@@ -23,7 +23,7 @@ release = "5.0-2"
 
 version = "5.0"
 
-project = f'UCS {version} Release Notes'
+project = f'UCS {release} Release Notes'
 copyright = '2021-{}, Univention GmbH'.format(date.today().year)
 author = ''
 
@@ -152,7 +152,7 @@ def adapt_settings_to_translation(app, config):
     See https://github.com/sphinx-doc/sphinx/issues/10282
     """
     if config.language == "de":
-        config.project = f'UCS {version} Release Notes'
+        config.project = f'UCS {release} Release Notes'
         config.html_title = config.project
         config.tokenizer_lang = "de_DE"
         config.rst_epilog = """

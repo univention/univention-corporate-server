@@ -23,7 +23,7 @@ release = "5.0-2"
 
 version = "5.0"
 
-project = f'UCS {version} Changelog'
+project = f'UCS {release} Changelog'
 copyright = '2021-{}, Univention GmbH'.format(date.today().year)
 author = ''
 
