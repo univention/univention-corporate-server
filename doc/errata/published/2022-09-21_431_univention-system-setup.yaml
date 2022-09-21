@@ -9,3 +9,5 @@ desc: |
  * The selection and search for countries and cities during the initial system
    setup has been repaired. It was broken since the Python 3 migration.
 bug: [55156]
+erratum: 431
+announced: 2022-09-21
