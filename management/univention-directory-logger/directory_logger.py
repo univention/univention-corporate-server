@@ -60,7 +60,7 @@ notifier_id = '/var/lib/univention-directory-listener/notifier_id'
 headerfmt = '''START\nOld Hash: %s\nDN: %s\nID: %s\nModifier: %s\nTimestamp: %s\nAction: %s\n'''
 newtag = '\nNew values:\n'
 oldtag = '\nOld values:\n'
-endtag = 'END\n'
+endtag = 'END\n--\n'
 logmsgfmt = '''DN=%s\nID=%s\nModifier=%s\nTimestamp=%s\nNew Hash=%s\n'''
 timestampfmt = '''%d.%m.%Y %H:%M:%S'''
 uidNumber = 0
@@ -149,6 +149,12 @@ def process_dellog(dn):
 				os.unlink(pathname)
 				timestamp = ldapTime2string(dellog_stamp)
 				break
+			# this unlink is actually needed because not all objects that are documented through dellog
+			# are actually processed by the listener. Namely the grandchildren of the cn=temporary container.
+			# since the files are basically timestamps, and we sort them, we can delete all the ones older
+			# than the one we are handeling right now
+			os.unlink(pathname)
+
 		except Exception as exc:
 			ud.debug(ud.LISTENER, ud.ERROR, 'Unknown Exception: %s.' % (exc,))
 			ud.debug(ud.LISTENER, ud.ERROR, 'Renaming %s to %s.fail' % (filename, filename))
@@ -182,7 +188,9 @@ def handler(dn, new_copy, old_copy):
 			for key, value in configRegistry.items()
 			if excludeKeyPattern.match(key)
 		):
-			if not new_copy:  # there should be a dellog entry to remove
+			# only deletes are dumped as files by the dellog overlay module
+			# we delete those files silently
+			if not new_copy:
 				process_dellog(dn)
 			# important: don't return a thing, otherwise this dn
 			# seems to get excluded from future processing by this module

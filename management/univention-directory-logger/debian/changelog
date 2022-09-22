@@ -1,3 +1,10 @@
+univention-directory-logger (11.0.3-5) unstable; urgency=medium
+
+  * Bug #51722: Revert Revert changes, add handling of objects that are
+    ignored by the listener
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 22 Sep 2022 21:21:53 +0200
+
 univention-directory-logger (11.0.3-4) unstable; urgency=medium
 
   * Bug #51722: Revert changes
