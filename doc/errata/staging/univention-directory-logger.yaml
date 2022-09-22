@@ -9,4 +9,4 @@ desc: |
  * The error handling of the univention-directory-logger
    has been improved. Especially in regards to corrupted
    files created by the dellog overlay.
-bug: [51722]
+bug: [51772]
