@@ -22,14 +22,25 @@ EOT
     univention-app shell ucsschool-kelvin-rest-api /etc/init.d/ucsschool-kelvin-rest-api restart
 }
 
+install_frontend_app () {
+	local app="$1"
+	local main_image="$2"
+	local branch_image="$3"
+	if [ -n "$branch_image" ]; then
+		univention-app dev-set "$app" "DockerImage=$branch_image"
+	else
+		if [ "$UCSSCHOOL_RELEASE" = "scope" ]; then
+			univention-app dev-set "$app" "DockerImage=$main_image"
+		fi
+	fi
+	univention-app install --noninteractive --username Administrator --pwdfile /tmp/univention "$app"
+}
+
 install_frontend_apps () {
 	echo -n univention > /tmp/univention
 
-	# use brach image if given
-	if [ -n "$UCS_ENV_RANKINE_USERS_IMAGE" ]; then
-		univention-app dev-set ucsschool-bff-users "DockerImage=$UCS_ENV_RANKINE_USERS_IMAGE"
-	fi
-	univention-app install --noninteractive --username Administrator --pwdfile /tmp/univention ucsschool-bff-users
+	install_frontend_app "ucsschool-bff-users" "gitregistry.knut.univention.de/univention/ucsschool-components/ui-users:latest" "$UCS_ENV_RANKINE_USERS_IMAGE"
+	#install_frontend_app "ucsschool-bff-groups" "gitregistry.knut.univention.de/univention/ucsschool-components/ui-groups:latest" "$UCS_ENV_RANKINE_GROUPS_IMAGE"
 
 	docker images
 	docker ps -a
