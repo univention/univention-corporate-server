@@ -211,6 +211,7 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 		app.verify(joined=False)
 		images = subprocess.check_output(['docker', 'images'], text=True)
 		assert 'stable' in images, images
+		very_old_con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
 		time.sleep(10)
 		with open('/var/lib/univention-directory-listener/handlers/%s' % name, 'r') as f:
 			status = f.readline()
@@ -220,6 +221,7 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 		# check listener/converter restart during update
 		old_li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
 		old_con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
+		assert very_old_con_pid == old_con_pid  # should be the same until now
 		app = App(name=name, version='2', build_package=False, call_join_scripts=False)
 		app.set_ini_parameter(
 			DockerImage='docker-test.software-univention.de/debian:testing',
@@ -241,6 +243,9 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 		assert 'stable' not in images, images
 
 		li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
+		con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
+		assert old_li_pid == li_pid  # app update does not require listener restart
+		assert not old_con_pid == con_pid
 
 		# check handler file/listener restart during remove
 		app.uninstall()

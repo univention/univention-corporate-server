@@ -1,3 +1,10 @@
+ucs-test (10.0.7-24) unstable; urgency=medium
+
+  * Bug #52000: Adjust App Center listener test - it is now a long running
+    process
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 24 Sep 2022 21:36:31 +0200
+
 ucs-test (10.0.7-23) unstable; urgency=medium
 
   * Bug #55127: Added "external-junit"
