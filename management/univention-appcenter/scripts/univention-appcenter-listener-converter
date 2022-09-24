@@ -36,6 +36,7 @@
 #
 
 import sys
+import time
 import os
 import os.path
 from argparse import ArgumentParser
@@ -65,6 +66,8 @@ def get_app_connection(app):
 		docker = Docker(app, logger)
 		if docker.is_running():
 			machine_password = open(docker.path('/etc/machine.secret')).read()
+		else:
+			return None, None
 		logger.info('Using App account connection')
 		return get_read_connection(machine_account, machine_password)
 	else:
@@ -189,8 +192,13 @@ def main():
 	if not app.is_installed():
 		logger.critical('App not installed')
 		sys.exit(2)
-	find_and_convert_files(app)
-	run_trigger(app)
+	logger.info('Started up with %s', app)
+	while True:
+		find_and_convert_files(app)
+		run_trigger(app)
+		if args.once:
+			break
+		time.sleep(5)
 
 
 if __name__ == '__main__':

@@ -1,3 +1,9 @@
+univention-appcenter (9.0.3-3) unstable; urgency=medium
+
+  * Bug #52000: Loop inside the listener converter in order to reduce CPU load
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 24 Sep 2022 20:51:15 +0200
+
 univention-appcenter (9.0.3-2) unstable; urgency=medium
 
   * Bug #55020: fix StoreAppAction
