@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-appcenter
+fix: 9.0.3-2A~5.0.0.202209242139
+desc: |
+ This update addresses the following issues:
+ * The listener converter script is now a long running process, reducing the
+   CPU load that was caused by its constant restart.
+bug: [52000]
