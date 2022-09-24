@@ -148,7 +148,7 @@ class ConnectionFailedServerDown(ConnectionFailed):
 
 class UpdateSignatureVerificationFailed(Abort):
 	code = 411
-	default_error_msg = 'Signature verification for %(filename)s failed'
+	default_error_msg = 'Signature verification for %(filename)s failed. GPG Error:  %(gpg_error)s. File to verify and signature have a mtime offset of: %(time_diff)s.'
 
 
 class UpdateUnpackArchiveFailed(Abort):

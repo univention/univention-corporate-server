@@ -466,6 +466,7 @@ def gpg_verify(filename, signature=None):
 	cmd = (
 		'apt-key',
 		'verify',
+		'--verbose',
 		signature,
 		filename,
 	)

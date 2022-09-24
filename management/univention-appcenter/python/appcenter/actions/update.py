@@ -179,6 +179,14 @@ class Update(UniventionAppAction):
 		fname = os.path.join(cache_dir, ".tmp.tar")
 		sname = os.path.join(cache_dir, ".all.tar.gpg")
 
+		# there have been Signature Verification failures we want to investigate
+		# one theory is, that the signature file and the file to verify do not match,
+		# e.g the signature has been updated but not the file
+		# we put the timestamp diff in the exception to gain some information
+		file_timestamp = os.path.getmtime(fname)
+		signature_timestamp = os.path.getmtime(sname)
+		time_diff = file_timestamp - signature_timestamp
+
 		(rc, gpg_error) = gpg_verify(fname, sname)
 		if not rc:
 			return
@@ -189,7 +197,7 @@ class Update(UniventionAppAction):
 		os.unlink(fname)
 		os.unlink(sname)
 
-		raise UpdateSignatureVerificationFailed(fname)
+		raise UpdateSignatureVerificationFailed(fname, gpg_error, time_diff)
 
 	def _download_apps(self, app_cache):
 		# type: (AppCenterCache) -> bool
