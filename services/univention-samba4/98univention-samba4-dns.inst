@@ -101,7 +101,8 @@ fi
 
 if [ "$samba4_role" != "RODC" ]; then
 	univention_samba4_wait_for_rid_set	## Replication of local RID Pool required for SAM account creation
-	if [ "$s4connectorservicedcs" = "$hostname" ]; then
+	iss4connectorservicedc="$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=S4 Connector)(name=$hostname))" cn)"
+	if [ -n "$iss4connectorservicedc" ]; then
 		/usr/share/univention-samba4/scripts/create_spn_account.sh \
 			--samaccountname "dns-$hostname" \
 			--serviceprincipalname "DNS/$hostname.$domainname" \
