@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-directory-manager-modules
+fix:
+desc: |
+ This update addresses the following issues:
+ * A regression introduced in Bug 54883 which caused that `user/ldap` objects
+   could not be fetched via the UDM REST API has been corrected.
+bug: [55189]
