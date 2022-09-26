@@ -60,7 +60,7 @@ from tornado.netutil import bind_sockets, bind_unix_socket
 # because importing the UDM handlers would cause that the gettext translation gets applied before we set a locale
 from univention.management.console.config import ucr
 from univention.management.console.log import log_init, log_reopen, CORE
-from univention.lib.i18n import Locale
+from univention.lib.i18n import Locale, Translation
 from univention.admin.rest.shared_memory import shared_memory
 
 try:
@@ -83,6 +83,7 @@ class Server(object):
 		language = str(Locale(args.language))
 		locale.setlocale(locale.LC_MESSAGES, language)
 		os.umask(0o077)  # FIXME: should probably be changed, this is what UMC sets
+		Translation.set_all_languages(language)
 
 		# The UMC-Server and module processes are clearing environment variables
 		os.environ.clear()

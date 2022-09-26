@@ -36,6 +36,7 @@ Internationalization (i18n) utilities.
 import gettext
 from locale import getlocale, Error, LC_MESSAGES
 import re
+import weakref
 from typing import Optional, Text  # noqa: F401
 
 import six
@@ -210,6 +211,7 @@ class Translation(NullTranslation):
 	"""
 	Translation.
 	"""
+	_instances = []
 	locale = Locale()  # type: Locale # type: ignore
 
 	def set_language(self, language=""):
@@ -241,3 +243,20 @@ class Translation(NullTranslation):
 				self._translation = gettext.translation(self._domain, languages=('%s_%s' % (Translation.locale.language, Translation.locale.territory), ), localedir=self._localedir)
 			except IOError:
 				self._translation = None
+
+	def __new__(cls, *args, **kwargs):
+		self = object.__new__(cls)
+		cls._instances.append(weakref.ref(self))
+		return self
+
+	@classmethod
+	def set_all_languages(cls, language):
+		# type: (str) -> None
+		"""
+			Set the language of all existing :class:`Translation` instances.
+			This is required when instances are created during import time but later on the language should be changed.
+		"""
+		for ref in cls._instances:
+			instance = ref()
+			if instance is not None:
+				instance.set_language(language)

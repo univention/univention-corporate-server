@@ -91,7 +91,10 @@ class Gateway(tornado.web.RequestHandler):
 
 	@tornado.gen.coroutine
 	def get(self):
-		accepted_language, language_socket = self.select_language()
+		try:
+			accepted_language, language_socket = self.select_language()
+		except univention.lib.i18n.I18N_Error:
+			accepted_language, language_socket = None, None
 		if language_socket is None:  # pragma: no cover
 			raise tornado.web.HTTPError(406)
 
