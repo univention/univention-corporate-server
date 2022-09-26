@@ -1,0 +1,18 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: expat
+fix: 2.2.6-2+deb10u5
+desc: |
+ This update addresses the following issue:
+ 2.2.6-2+deb10u5 (Sat, 24 Sep 2022 11:03:02 +0200)
+ * Non-maintainer upload by the LTS Team.
+ * CVE-2022-40674 heap use-after-free issue in doContent() (based on the
+   backport for Bullseye made by Laszlo Boszormenyi)
+ * update test-* patches to be able to run testsuite
+ * debian/rules: add run of testsuite (but leave it deactivated as I only
+   tested on amd64)
+bug: [55222]
+cve:
+- CVE-2022-40674
