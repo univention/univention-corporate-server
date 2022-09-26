@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-system-activation
-fix:
+fix: 5.0.2-2A~5.0.0.202209261728
 desc: |
  This update addresses the following issues:
  * The `univention-system-activation` frontend is now compatible with the new
