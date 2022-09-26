@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-directory-manager-modules
-fix:
+fix: 15.0.13-7A~5.0.0.202209261451
 desc: |
  This update addresses the following issues:
  * A regression introduced in Bug 54883 which caused that `user/ldap` objects
