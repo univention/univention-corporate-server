@@ -197,10 +197,13 @@ def query(args):
 
 
 def main():
-    usage = '%(prog)s'
     description = 'The LDAP cache stores some portions of the LDAP database so that it can be accessed fast and reliably.'
-    parser = ArgumentParser(usage=usage, description=description)
-    subparsers = parser.add_subparsers(description='type %(prog)s <action> --help for further help and possible arguments', metavar='action')
+    parser = ArgumentParser(description=description)
+    subparsers = parser.add_subparsers(
+        description='type %(prog)s <action> --help for further help and possible arguments',
+        metavar='action',
+        required=True,
+    )
 
     subparser = subparsers.add_parser('query', description='Queries a sub cache and shows the value(s). Mainly for test purposes, this tool is not meant for real applications', help='Query the cache')
     subparser.add_argument('cache_name', help='The name of the sub cache. See "list"')
@@ -239,11 +242,8 @@ def main():
     subparser.set_defaults(func=cleanup)
 
     args = parser.parse_args()
-    try:
-        func = args.func
-        func(args)
-    except AttributeError:
-        parser.error("too few arguments")
+    func = args.func
+    func(args)
 
 
 if __name__ == '__main__':
