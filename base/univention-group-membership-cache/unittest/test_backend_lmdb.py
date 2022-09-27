@@ -29,12 +29,11 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
+
+import sys
 
 import pytest
 from univentionunittests import import_module
-
-import sys
 
 
 # @pytest.fixture

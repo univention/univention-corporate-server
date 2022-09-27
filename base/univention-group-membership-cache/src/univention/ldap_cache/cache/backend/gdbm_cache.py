@@ -30,17 +30,16 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
-import os
-from pwd import getpwnam
-from contextlib import contextmanager
+
 import json
+import os
+from contextlib import contextmanager
+from pwd import getpwnam
 
 from six.moves import dbm_gnu as gdbm
 
 from univention.ldap_cache.cache.backend import Caches, LdapCache, Shard, _s
-from univention.ldap_cache.log import log, debug
-
+from univention.ldap_cache.log import debug, log
 
 MAX_FAIL_COUNT = 5
 

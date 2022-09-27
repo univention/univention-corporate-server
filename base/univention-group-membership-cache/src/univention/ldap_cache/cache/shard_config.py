@@ -30,13 +30,12 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
 
-from contextlib import contextmanager
 import json
+from contextlib import contextmanager
 
-from univention.ldap_cache.log import log
 from univention.ldap_cache.cache import Shard
+from univention.ldap_cache.log import log
 
 CONFIG_FILE = '/usr/share/univention-group-membership-cache/shards.json'
 
