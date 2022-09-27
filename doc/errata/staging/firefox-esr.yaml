@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: firefox-esr
-fix: 102.3.0esr-1~deb10u1
+fix: 102.3.0esr-1~deb10u2
 desc: |
  This update addresses the following issues:
  102.3.0esr-1~deb10u1 (Fri, 23 Sep 2022 11:38:58 +0200)
@@ -162,6 +162,14 @@ desc: |
    CVE-2021-38494.
  * debian/rules: Build against embedded nspr and nss on bullseye.
  * debian/upstream.mk: Add bookworm and trixie.
+ * Content-Security-Policy base-uri bypass (CVE-2022-40956)
+ * Incoherent instruction cache when building WASM on ARM64 (CVE-2022-40957)
+ * Bypassing Secure Context restriction for cookies with __Host and __Secure
+   prefix (CVE-2022-40958)
+ * Bypassing FeaturePolicy restrictions on transient pages (CVE-2022-40959)
+ * Data-race when parsing non-UTF-8 URLs in threads (CVE-2022-40960)
+ * Memory safety bugs fixed in Firefox 105 and Firefox ESR 102.3
+   (CVE-2022-40962)
 bug: [55221]
 cve:
 - CVE-2022-38472
@@ -281,3 +289,9 @@ cve:
 - CVE-2021-38491
 - CVE-2021-38493
 - CVE-2021-38494
+- CVE-2022-40956
+- CVE-2022-40957
+- CVE-2022-40958
+- CVE-2022-40959
+- CVE-2022-40960
+- CVE-2022-40962
