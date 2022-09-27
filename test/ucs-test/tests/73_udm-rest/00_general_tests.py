@@ -14,7 +14,7 @@ import pytest
 from univention.admin.rest.client import UDM as UDMClient, Forbidden, PreconditionFailed, Unauthorized
 from univention.config_registry import ConfigRegistry, handler_set
 from univention.lib.misc import custom_groupname
-from univention.testing.udm import UDM
+from univention.testing.udm import UDM, UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.utils import UCSTestDomainAdminCredentials
 
 ucr = ConfigRegistry()
@@ -127,3 +127,15 @@ def test_special_characters_in_dn(name):
 		obj = udm_client.get('container/cn').get(container)
 		print(obj)
 		assert obj
+
+
+@pytest.mark.parametrize('language,error_message', [
+	('en-US', 'The property gecos has an invalid value: Field must only contain ASCII characters!'),
+	('de-DE', 'Die Eigenschaft gecos hat einen ungültigen Wert: Der Wert darf nur ASCII Buchstaben enthalten!'),
+])
+def test_translation(language, error_message):
+	with UDM(language=language) as udm:
+		with pytest.raises(UCSTestUDM_CreateUDMObjectFailed) as exc:
+			userdn, user = udm.create_user(gecos='foobär')
+
+		assert error_message in str(exc.value)

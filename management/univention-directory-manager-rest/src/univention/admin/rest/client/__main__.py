@@ -40,8 +40,10 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import io
+import os
 import sys
 import json
+import locale
 import argparse
 
 import six
@@ -64,7 +66,7 @@ class CLIClient(object):
 			username = ldap.dn.str2dn(username)[0][0][1]
 		except (ldap.DECODING_ERROR, IndexError):
 			pass
-		self.udm = UDM('https://%(hostname)s.%(domainname)s/univention/udm/' % ucr, username, args.bindpwd, user_agent='univention.cli/%(version/version)s-%(version/patchlevel)s-errata%(version/erratalevel)s' % ucr)
+		self.udm = UDM('https://%(hostname)s.%(domainname)s/univention/udm/' % ucr, username, args.bindpwd, user_agent='univention.cli/%(version/version)s-%(version/patchlevel)s-errata%(version/erratalevel)s' % ucr, language=args.language)
 
 	def get_modules(self):
 		return self.udm.modules()
@@ -383,7 +385,7 @@ def argparse_module_help(client, parser, known_args, subparsers):
 				try:
 					client.init(parser, known_args)
 					x = io.StringIO()
-					client.get_info(known_args, file=x)
+					client.get_info(known_args, stream=x)
 					help_string += '\n' + x.getvalue()
 				except (HTTPError, ConnectionError):
 					pass
@@ -400,6 +402,7 @@ def argparse_module_help(client, parser, known_args, subparsers):
 
 def main():
 	client = CLIClient()
+	locale.setlocale(locale.LC_ALL, os.environ['LANG'])
 	description = '%(prog)s command line interface for managing UCS\ncopyright (c) 2001-2022 Univention GmbH, Germany\n\nUsage:\n %(prog)s module action [options]\n %(prog)s [--help] [--version]\n'
 	parser = argparse.ArgumentParser(
 		prog='univention-directory-manager',
@@ -416,6 +419,7 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 	parser.add_argument('--bindpwd', help='bind password', default='univention', type=Unicode)
 	parser.add_argument('--bindpwdfile', help='file containing bind password', type=Unicode)
 	parser.add_argument('--logfile', help='path and name of the logfile to be used', type=Unicode)
+	parser.add_argument('--language', default=locale.getlocale(locale.LC_MESSAGES)[0].replace('_', '-'), help=argparse.SUPPRESS)
 	parser.add_argument('--tls', choices=['0', '1', '2'], default='2', help='0 (no); 1 (try); 2 (must)')
 	parser.add_argument('--version', action='version', version='%(prog)s VERSION TODO', help='print version information')  # FIXME: version number
 
