@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-management-console
-fix:
+fix: 12.0.13-2A~5.0.0.202209271423
 desc: |
  This update addresses the following issues:
  * SAML Logouts using the `HTTP-POST` SAML binding is now supported.
