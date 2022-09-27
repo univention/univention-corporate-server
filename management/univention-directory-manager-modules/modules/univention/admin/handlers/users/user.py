@@ -1449,6 +1449,7 @@ class object(univention.admin.handlers.simpleLdap):
 					# univentionDefaultGroup because "not self.hasChanged('primaryGroup')"
 
 	def _unmap_pwd_change_next_login(self):
+		self['pwdChangeNextLogin'] = '0'
 		if self.oldattr.get('shadowLastChange', [b''])[0] == b'0':
 			self['pwdChangeNextLogin'] = '1'
 		elif self['passwordexpiry']:

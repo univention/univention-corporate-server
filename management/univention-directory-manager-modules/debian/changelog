@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.13-8) unstable; urgency=medium
+
+  * Bug #55226: unmap users/user pwdChangeNextLogin to "0" by default
+
+ -- Florian Best <best@univention.de>  Tue, 27 Sep 2022 12:42:45 +0200
+
 univention-directory-manager-modules (15.0.13-7) unstable; urgency=medium
 
   * Bug #55189: fix accessing users/ldap objects via UDM REST API

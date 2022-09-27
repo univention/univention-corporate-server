@@ -8,4 +8,7 @@ desc: |
  This update addresses the following issues:
  * A regression introduced in Bug 54883 which caused that `user/ldap` objects
    could not be fetched via the UDM REST API has been corrected.
-bug: [55189]
+ * The `pwdChangeNextLogin` property of `users/user` objects was not correctly
+   unmapped in case it is not set. This resulted in that it was represented as
+   `None` instead of `False` in the UDM REST API.
+bug: [55189, 55226]
