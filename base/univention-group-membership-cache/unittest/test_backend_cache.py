@@ -114,7 +114,7 @@ def test_get_queries(caches, cache, mocker):
 	cache.shards = [shard]
 	caches._caches[cache.db_name] = cache
 
-	attributes = set([shard.key, shard.value])
+	attributes = {shard.key, shard.value}
 	attributes.update(shard.attributes)
 	# test cache_names None
 	result = caches.get_queries()

@@ -54,7 +54,7 @@ def groups_for_user(user_dn, consider_nested_groups=True, cache=None):
 	if cache is None:
 		_cache = get_cache()
 		cache = _cache.get_sub_cache('uniqueMembers').load()
-		cache = dict((key, set(val.lower() for val in values)) for key, values in cache.items())
+		cache = {key: {val.lower() for val in values} for key, values in cache.items()}
 	search_for_dns = [user_dn]
 	found = set()
 	while search_for_dns:
@@ -79,7 +79,7 @@ def users_in_group(group_dn, consider_nested_groups=True, readers=(None, None), 
 		if not members:
 			return []
 		uids = member_uid_cache.get(group_dn, member_uid_reader) or []
-		uids = set([uid.lower() for uid in uids])
+		uids = {uid.lower() for uid in uids}
 		for member in members:
 			rdn = _extract_id_from_dn(member).lower()
 			if rdn in uids:
