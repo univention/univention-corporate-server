@@ -51,17 +51,17 @@ from __future__ import absolute_import
 
 from univention.ldap_cache.listener_module import LdapCacheHandler
 
-name = {}
+name = {name!r}
 
 class QueryHandler(LdapCacheHandler):
     class Configuration(LdapCacheHandler.Configuration):
-        name = {}
+        name = {name!r}
         def get_description(self):
-            return 'Automatically created listener module for the univention-group-membership-member cache ({})'
+            return 'Automatically created listener module for the univention-group-membership-member cache (%s)' % ({desc!r},)
         def get_ldap_filter(self):
-            return {}
+            return {filter!r}
         def get_attributes(self):
-            return {}
+            return {attrs!r}
 '''
 
 
@@ -143,7 +143,12 @@ def create_listener_modules(args):
         existing_listeners.discard(fname)
         print('Writing', fname, 'for', query)
         with open(fname, 'w') as fd:
-            fd.write(listener_template.format(repr(listener_name), repr(listener_name), ', '.join(sorted(set(cache.db_name for cache in _caches))), repr(query), repr(sorted(attrs))))
+            fd.write(listener_template.format(
+                name=listener_name,
+                desc=', '.join(sorted({cache.db_name for cache in _caches})),
+                filter=query,
+                attrs=sorted(attrs),
+            ))
     for fname in existing_listeners:
         print('Removing', fname)
         os.unlink(fname)
