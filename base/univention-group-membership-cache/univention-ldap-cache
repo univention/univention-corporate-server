@@ -38,11 +38,12 @@ import os
 import re
 import subprocess
 import sys
-from argparse import SUPPRESS, ArgumentParser
+from argparse import SUPPRESS, ArgumentParser, Namespace  # noqa: F401
 from glob import glob
 from hashlib import md5
+from typing import Container, Dict, Iterable, List, Optional, Set, Tuple, Union  # noqa: F401
 
-from univention.ldap_cache.cache import get_cache
+from univention.ldap_cache.cache import Caches, get_cache  # noqa: F401
 from univention.ldap_cache.cache.shard_config import add_shard_to_config, rm_shard_from_config
 from univention.uldap import getMachineConnection
 
@@ -66,12 +67,14 @@ class QueryHandler(LdapCacheHandler):
 
 
 def _md5sum(value):
+    # type: (str) -> str
     m = md5()
     m.update(value.encode('utf-8'))
     return m.hexdigest()
 
 
 def _query_objects(query, attrs):
+    # type: (str, Iterable[Union[bytes, str]]) -> List[Tuple[str, Dict[str, List[bytes]]]]
     lo = getMachineConnection()
     attrs = [attr.decode('utf-8') if isinstance(attr, bytes) else attr for attr in attrs]
     print('Querying', query, 'with', attrs)
@@ -79,7 +82,8 @@ def _query_objects(query, attrs):
 
 
 def _get_queries(caches, cache_names=None):
-    queries = {}
+    # type: (Caches, Optional[Container[str]]) -> Dict[str, Tuple[List, Set]]
+    queries = {}  # type: Dict[str, Tuple[List, Set]]
     for name, cache in caches:
         if cache_names is not None and name not in cache_names:
             continue
@@ -94,19 +98,23 @@ def _get_queries(caches, cache_names=None):
 
 
 def add_cache(args):
+    # type: (Namespace) -> None
     add_shard_to_config(args.db_name, args.single_value, args.reverse, args.key, args.value, args.ldap_filter)
 
 
 def rm_cache(args):
+    # type: (Namespace) -> None
     rm_shard_from_config(args.db_name, args.single_value, args.reverse, args.key, args.value, args.ldap_filter)
 
 
 def cleanup(args):
+    # type: (Namespace) -> None
     for name, db in get_cache():
         db.cleanup()
 
 
 def rebuild(args):
+    # type: (Namespace) -> None
     caches = get_cache()
     cache_names = args.cache_name
     if not cache_names:
@@ -133,6 +141,7 @@ def rebuild(args):
 
 
 def create_listener_modules(args):
+    # type: (Namespace) -> None
     listener_dir = '/usr/lib/univention-directory-listener/system/'
     existing_listeners = set(glob(os.path.join(listener_dir, 'ldap-cache-*')))
     for query, (_caches, attrs) in _get_queries(get_cache()).items():
@@ -164,6 +173,7 @@ def create_listener_modules(args):
 
 
 def list_caches(args):
+    # type: (Namespace) -> None
     caches = get_cache()
     for name, cache in caches:
         print(name)
@@ -183,6 +193,7 @@ def list_caches(args):
 
 
 def query(args):
+    # type: (Namespace) -> None
     caches = get_cache()
     cache = caches.get_sub_cache(args.cache_name)
     if not cache:
@@ -202,6 +213,7 @@ def query(args):
 
 
 def main():
+    # type: () -> None
     description = 'The LDAP cache stores some portions of the LDAP database so that it can be accessed fast and reliably.'
     parser = ArgumentParser(description=description)
     subparsers = parser.add_subparsers(

@@ -30,7 +30,8 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
+
+from typing import Optional  # noqa: F401
 
 # choose a backend
 from univention.ldap_cache.cache.backend.gdbm_cache import GdbmCaches as Caches, GdbmCache as Cache, GdbmShard as Shard  # noqa: F401
@@ -42,13 +43,15 @@ from univention.ldap_cache.cache.shard_config import shards_from_config
 
 # Singleton pattern
 def get_cache():
-	if get_cache._cache is None:
+	# type: () -> Caches
+	global _cache
+	if _cache is None:
 		debug('Creating the Caches instance')
 		caches = Caches()
 		for klass in shards_from_config():
 			caches.add(klass)
-		get_cache._cache = caches
-	return get_cache._cache
+		_cache = caches
+	return _cache
 
 
-get_cache._cache = None
+_cache = None  # type: Optional[Caches]

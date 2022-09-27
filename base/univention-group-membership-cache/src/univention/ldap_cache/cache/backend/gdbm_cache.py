@@ -35,6 +35,7 @@ import json
 import os
 from contextlib import contextmanager
 from pwd import getpwnam
+from typing import Any, Dict, Iterator, List, Optional, Tuple  # noqa: F401
 
 from six.moves import dbm_gnu as gdbm
 
@@ -46,6 +47,7 @@ MAX_FAIL_COUNT = 5
 
 class GdbmCaches(Caches):
 	def _add_sub_cache(self, name, single_value, reverse):
+		# type: (str, bool, bool) -> GdbmCache
 		db_file = os.path.join(self._directory, '%s.db' % name)
 		debug('Using GDBM %s', name)
 		cache = GdbmCache(name, single_value, reverse)
@@ -56,17 +58,20 @@ class GdbmCaches(Caches):
 
 class GdbmCache(LdapCache):
 	def __init__(self, *args, **kwargs):
+		# type: (*Any, **Any) -> None
 		self.fail_count = 0
 		super(GdbmCache, self).__init__(*args, **kwargs)
 		log('%s - Recreating!', self.name)
 
 	def _fix_permissions(self):
+		# type: () -> None
 		listener_uid = getpwnam('listener').pw_uid
 		os.chown(self.db_file, listener_uid, -1)
 		os.chmod(self.db_file, 0o640)
 
 	@contextmanager
 	def writing(self, writer=None):
+		# type: (Optional[Any]) -> Iterator[Any]
 		if writer is not None:
 			yield writer
 		else:
@@ -81,6 +86,7 @@ class GdbmCache(LdapCache):
 	reading = writing
 
 	def save(self, key, values):
+		# type: (str, List[str]) -> None
 		with self.writing() as writer:
 			if self.reverse:
 				for value in values:
@@ -101,11 +107,13 @@ class GdbmCache(LdapCache):
 					writer[key] = json.dumps(values)
 
 	def clear(self):
+		# type: () -> None
 		log('%s - Clearing whole DB!', self.name)
 		gdbm.open(self.db_file, 'nu').close()
 		self._fix_permissions()
 
 	def cleanup(self):
+		# type: () -> None
 		with self.writing() as db:
 			try:
 				db.reorganize()
@@ -120,6 +128,7 @@ class GdbmCache(LdapCache):
 		self._fix_permissions()
 
 	def delete(self, key, values, writer=None):
+		# type: (str, List[str], Any) -> None
 		debug('%s - Delete %s', self.name, key)
 		with self.writing(writer) as writer:
 			if self.reverse:
@@ -137,6 +146,7 @@ class GdbmCache(LdapCache):
 					pass
 
 	def keys(self):
+		# type: () -> Iterator[str]
 		with self.reading() as reader:
 			key = _s(reader.firstkey())
 			while key is not None:
@@ -144,11 +154,13 @@ class GdbmCache(LdapCache):
 				key = _s(reader.nextkey(key))
 
 	def __iter__(self):
+		# type: () -> Iterator[Tuple[str, Any]]
 		with self.reading() as reader:
 			for key in self.keys():
 				yield key, self.get(key, reader)
 
 	def get(self, key, reader=None):
+		# type: (str, Any) -> Any
 		with self.reading(reader) as reader:
 			try:
 				value = reader[key]
@@ -162,6 +174,7 @@ class GdbmCache(LdapCache):
 				return _s(json.loads(value))
 
 	def load(self):
+		# type: () -> Dict[str, Any]
 		debug('%s - Loading', self.name)
 		return dict(list(self))
 
