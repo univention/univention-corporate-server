@@ -52,9 +52,9 @@ class TestUsers(object):
 		('0', '0', '1', ['1970-01-01']),
 		('0', '1', '1', ['1970-01-02']),
 		('0', str(utc_days_since_epoch() + 2), '1', (datetime.utcnow() + timedelta(days=2)).strftime('%Y-%m-%d')),
-		('', str(utc_days_since_epoch() + 2), [], []),
-		('', '', [], []),
-		('', str(utc_days_since_epoch() - 2), [], []),
+		('', str(utc_days_since_epoch() + 2), '0', []),
+		('', '', '0', []),
+		('', str(utc_days_since_epoch() - 2), '0', []),
 		('1', str(utc_days_since_epoch() - 2), '1', (datetime.utcnow() - timedelta(days=1)).strftime('%Y-%m-%d')),
 		('0', str(utc_days_since_epoch() - 2), '1', (datetime.utcnow() - timedelta(days=2)).strftime('%Y-%m-%d')),
 	])
