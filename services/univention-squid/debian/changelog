@@ -1,3 +1,9 @@
+univention-squid (13.0.5-1) unstable; urgency=medium
+
+  * Bug #55554: Fix UCR variable typing
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Sep 2022 19:56:37 +0200
+
 univention-squid (13.0.4-2) unstable; urgency=medium
 
   * Bug #54273: Include debug script in squid-pw-rotate subscript
