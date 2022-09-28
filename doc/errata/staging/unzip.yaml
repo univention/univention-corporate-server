@@ -8,8 +8,8 @@ desc: |
  This update addresses the following issues:
  * Heap out-of-bound writes and reads during conversion of wide string to
    local string (CVE-2022-0529)
- * SIGSEGV during the conversion of an utf-8 string to a local string
-   (CVE-2022-0530)
+ * Segmentation fault during the conversion of an UTF-8 string to a local
+   string (CVE-2022-0530)
 bug: [55219]
 cve:
 - CVE-2022-0529
