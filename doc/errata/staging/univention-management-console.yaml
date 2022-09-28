@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-2
 src: univention-management-console
 fix: 12.0.13-2A~5.0.0.202209271423
 desc: |
- This update addresses the following issues:
- * SAML Logouts using the `HTTP-POST` SAML binding is now supported.
-   This is required for the use of UMC with e.g. Keycloak as IDP.
+ This update addresses the following issue:
+ * SAML Logouts using the `HTTP-POST` SAML binding is now supported. This is
+   required for the use of UMC with e.g. Keycloak as an identity provider.
 bug: [55229]
