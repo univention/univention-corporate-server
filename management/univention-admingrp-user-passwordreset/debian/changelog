@@ -1,3 +1,9 @@
+univention-admingrp-user-passwordreset (10.0.1-1) unstable; urgency=medium
+
+  * Bug #55554: Fix UCR variable typing
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Sep 2022 20:00:16 +0200
+
 univention-admingrp-user-passwordreset (10.0.0-4) unstable; urgency=medium
 
   * Bug #54744: Ensure Python2 backward compatibility
