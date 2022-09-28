@@ -6,9 +6,9 @@ src: mako
 fix: 1.0.7+ds1-1+deb10u1
 desc: |
  This update addresses the following issue:
- * Sqlalchemy mako before 1.2.2 is vulnerable to Regular expression Denial of
-   Service when using the Lexer class to parse. This also affects babelplugin
-   and linguaplugin. (CVE-2022-40023)
+ * SQLAlchemy `mako` is vulnerable to regular expression denial of service
+   when using the lexer class to parse. This also affects `babelplugin` and
+   `linguaplugin`. (CVE-2022-40023)
 bug: [55223]
 cve:
 - CVE-2022-40023
