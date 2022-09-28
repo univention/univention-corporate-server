@@ -41,21 +41,24 @@ Type=str
 Categories=service-samba
 
 [samba/max_xmit]
-Description[de]=Die maximale Paketgröße in Bytes, die Samba mit Clients aushandelt. Ist die Variable nicht gesetzt, wird 65535 verwendet.
-Description[en]=Maximum packet size in bytes that will be negotiated by Samba with clients. If the variable is unset, 65535 is used.
-Type=int
+Description[de]=Die maximale Paketgröße in Bytes, die Samba mit Clients aushandelt.
+Description[en]=Maximum packet size in bytes that will be negotiated by Samba with clients.
+Type=pint
+Default=65535
 Categories=service-samba
 
 [samba/max_open_files]
 Description[de]=Die maximale Anzahl an Dateien, die der Samba-Dienst öffnen kann. Wenn der Wert angepasst wird, müssen ggf. auch Unix-Prozesslimits angepasst werden.
 Description[en]=The maximum number of files the Samba service can open. If the value is adapted, Unix process limits might need to be expanded as well.
-Type=int
+Type=pint
 Categories=service-samba
 
 [samba/netbios/aliases]
 Description[de]=Mit dieser Variable können zusätzliche Alias-Namen für einen Samba-Server konfiguriert werden, unter denen dieser im NETBIOS-Namensdienst erscheint. Mehrere Werte müssen durch Leerzeichen getrennt werden.
 Description[en]=This variable allows the configuration of additional alias names for a Samba server in the NetBIOS name service. Multiple values need to be separated by blanks.
-Type=str
+Type=list
+Separator=[ ]
+Elementtype=str
 Categories=service-samba
 
 [samba/oplocks]
@@ -121,7 +124,7 @@ Categories=service-samba
 [samba/max_log_size]
 Description[de]=Eine Maximalgröße in Kilobyte, nach dessen Erreichen Samba die Logdateien nach .old umbenannt. Ist die Variable nicht gesetzt oder auf 0 gesetzt, ist diese Funktion deaktiviert. Es ist nicht empfehlenswert die Funktion zu aktivieren, da die Samba-Logdateien in UCS durch Logrotate rotiert werden.
 Description[en]=The maximum size for Samba log files, after which the old file is renamed to .old. If the variable is unset or set to 0, the function is disabled. It's not advisable to enable this function, since the Samba logfiles in UCS are rotated through Logrotate.
-Type=str
+Type=uint
 Categories=service-samba
 
 [samba/interfaces/bindonly]
@@ -133,7 +136,9 @@ Categories=service-samba
 [samba/interfaces]
 Description[de]=Falls die Variable 'samba/interfaces/bindonly' auf 'yes' gesetzt ist, verwendet Samba nur die hier aufgeführten Interfaces. Mehrere Einträge müssen durch Leerzeichen getrennt werden.
 Description[en]=If the variable 'samba/interfaces/bindonly' is set to 'yes', Samba only binds to the interfaces listed in this variable. Multiple entries need to be separated by blanks.
-Type=str
+Type=list
+Separator=[ ]
+Elementtype=str
 Categories=service-samba
 
 [samba4/function/level]
@@ -149,9 +154,10 @@ Type=str
 Categories=service-samba
 
 [samba/deadtime]
-Description[de]=Die Zeitspanne an Minuten, nach der eine Verbindung als abgelaufen behandelt und geschlossen wird (sofern keine Dateien geöffnet sind). Ist die Variable nicht gesetzt, erfolgt dies nach 15 Minuten.
-Description[en]=A time span of inactivity in minutes until a connection is considered dead and eventually disconnected (unless no files are opened). If the variable is unset it occurs after 15 minutes.
-Type=int
+Description[de]=Die Zeitspanne an Minuten, nach der eine Verbindung als abgelaufen behandelt und geschlossen wird (sofern keine Dateien geöffnet sind).
+Description[en]=A time span of inactivity in minutes until a connection is considered dead and eventually disconnected (unless no files are opened).
+Type=uint
+Default=15
 Categories=service-samba
 
 [samba/enable-privileges]
@@ -199,7 +205,9 @@ Categories=service-samba
 [samba/invalid_users]
 Description[de]=Hier kann eine Liste von Benutzern oder Gruppen angegeben werden (mehrere Einträge werden durch Leerzeichen getrennt), die sich nicht an Samba anmelden dürfen. Gruppennamen muss ein @ vorangestellt werden. Diese Option ist nur in Ausnahmefällen sinnvoll, im Regelfall sollten Benutzerkonten besser über die Konteneinstellungen in der Univention Management Console gesperrt werden.
 Description[en]=A list of users/groups (multiple entries are separated by blanks), which cannot login to Samba. Group names must be preceded with a @. This option is only needed in exceptional cases, normally user accounts should rather be disabled in the account settings of the Univention Management Console.
-Type=str
+Type=list
+Separator=[ ]
+Elementtype=str
 Categories=service-samba
 
 [samba/kernel_oplocks]
@@ -265,7 +273,9 @@ Categories=service-samba
 [samba/adminusers]
 Description[de]=Für die hier angegebenen Benutzer werden alle Zugriffe auf Freigaben mit root-Rechten durchgeführt. Mehrere Benutzernamen müssen durch Leerzeichen getrennt werden.
 Description[en]=For the users specified here all accesses to file shares are performed with root privileges. Multiple user names need to be separated by blanks.
-Type=str
+Type=list
+Separator=[ ]
+Elementtype=str
 Categories=service-samba
 
 [samba/cups/encrypt]
@@ -339,7 +349,7 @@ Categories=service-samba
 [samba/usershare/max_shares]
 Description[de]=Die maximale Anzahl an Freigaben, die von normalen Benutzern über 'net'-Aufrufe angelegt werden können. Weitere Informationen finden sich in 'man smb.conf' unter 'USERSHARES'. Ist die Variable nicht gesetzt oder auf 0 gesetzt, können keine Freigaben auf diesem Weg angelegt werden.
 Description[en]=The maximum number of shares, which can be defined by standard users using 'net' calls. Additional information can be found in 'man smb.conf' under 'USERSHARES'. If the variable is set to 0 or unset, no shares can be defined that way.
-Type=int
+Type=uint
 Categories=service-samba
 
 [samba/usershare/allow_guests]
@@ -419,7 +429,7 @@ Categories=service-samba
 [samba/machine_password_timeout]
 Description[de]=Intervall in Sekunden für die von Samba automatisch durchgeführte Rotation des Maschinenpassworts. Ist die Variable auf 0 gesetzt, wird die Rotation deaktiviert.
 Description[en]=Interval in seconds for the automatic machine password rotation performed by Samba. If set to 0, the rotation is disabled.
-Type=int
+Type=uint
 Categories=service-samba
 
 [samba4/role]
@@ -443,7 +453,7 @@ Categories=service-samba
 [samba4/backup/cron]
 Description[de]=Diese Variable konfiguriert den Zeitpunkt/Intervall, zu dem eine Sicherung des Samba Provision Verzeichnis durchgeführt wird. Das Format ist unter 'man 5 crontab' dokumentiert. Ist die Variable nicht gesetzt, erfolgt keine Sicherung.
 Description[en]=This variable configures the time/interval when to start the backup of the samba provision directory. The format is documented under 'man 5 crontab'. If the variable is unset, no backup is performed.
-Type=str
+Type=cron
 Categories=service-samba
 
 [samba4/backup/cron/options]
@@ -467,7 +477,9 @@ Categories=service-samba
 [samba/register/exclude/interfaces]
 Description[de]=Diese Variable definiert Netzwerk Interfaces  die von Samba ignoriert werden (z.B. eth0). Mehrere Werte müssen durch Leerzeichen getrennt werden.
 Description[en]=This variable defines network interfaces which are ignored by samba (e.g. eth0). Multiple values need to be separated by blanks.
-Type=str
+Type=list
+Separator=[ ]
+Elementtype=str
 Categories=service-samba
 
 [samba/tls/verify/peer]
@@ -527,19 +539,19 @@ Categories=service-samba
 [samba/winbind/max/clients]
 Description[de]=Die maximale Anzahl an Verbindungen, die Winbind bearbeiten kann. Ist die Variable nicht gesetzt, wird die Samba Standard Einstellung verwendet.
 Description[en]=The maximum number of connections Winbind can serve. If the variable is unset, the Samba default applies.
-Type=int
+Type=uint
 Categories=service-samba
 
 [samba/winbind/enum/users]
 Description[de]=Ist diese Variable auf 'yes' gesetzt, vergibt Winbind bei Benutzern einer vertrauten Domäne POSIX IDs. Ist die Variable nicht gesetzt, wird die Samba Standard Einstellung verwendet.
 Description[en]=If this variable is set to 'yes', Winbind will assign POSIX IDs to users of trusted domains. If the variable is unset, the Samba default applies.
-Type=int
+Type=bool
 Categories=service-samba
 
 [samba/winbind/enum/groups]
 Description[de]=Ist diese Variable auf 'yes' gesetzt, vergibt Winbind bei Gruppen einer vertrauten Domäne POSIX IDs. Ist die Variable nicht gesetzt, wird die Samba Standard Einstellung verwendet.
 Description[en]=If this variable is set to 'yes', Winbind will assign POSIX IDs to groups of trusted domains. If the variable is unset, the Samba default applies.
-Type=int
+Type=bool
 Categories=service-samba
 
 [samba4/kccsrv/samba_kcc]
@@ -549,7 +561,8 @@ Type=bool
 Categories=service-samba
 
 [create/spn/account/timeout]
-Description[de]=Diese Variable bestimmt die Dauer (in Sekunden), mit welcher auf die Synchronisation des SPN-Accounts zwischen UCS-System und Samba gewartet wird. Der Standardwert beträgt 10800 Sekunden. Bei sehr großen Umgebungen sollte dieser Wert erhöht werden, um einen erfolgreichen Domänenbeitritt zu gewährleisten.
-Description[en]=This variable sets the duration (in seconds) the system waits for synchronisation of the SPN account between UCS system and Samba. Its default value is 10800 seconds. On bigger environments it is recommended to increase this value to ensure a successful domain join.
-Type=int
+Description[de]=Diese Variable bestimmt die Dauer (in Sekunden), mit welcher auf die Synchronisation des SPN-Accounts zwischen UCS-System und Samba gewartet wird. Bei sehr großen Umgebungen sollte dieser Wert erhöht werden, um einen erfolgreichen Domänenbeitritt zu gewährleisten.
+Description[en]=This variable sets the duration (in seconds) the system waits for synchronisation of the SPN account between UCS system and Samba. On bigger environments it is recommended to increase this value to ensure a successful domain join.
+Type=uint
+Default=10800
 Categories=service-samba

@@ -1,19 +1,19 @@
 [samba4/sysvol/sync/cron]
 Description[de]=Diese Variable konfiguriert den Zeitpunkt/Intervall, zu dem die Sysvol-Replikation durchgeführt werden soll. Das Format ist unter 'man 5 crontab' dokumentiert.
 Description[en]=This variable configures the time/interval when the Sysvol replication occurs. The format is documented under 'man 5 crontab'.
-Type=str
+Type=cron
 Categories=service-samba
 
 [samba4/sysvol/sync/jitter]
 Description[de]=Um zu verhindern das alle Sysvol-Replikationen gleichzeitig stattfinden, wird eine zufällige Zeit zwischen 0 und der in dieser Variable konfigurierten Anzahl an Sekunden gewartet, bevor die Replikation initiiert wird.
 Description[en]=To prevent that all Sysvol replications start at the same time, a random time span between 0 and the number of seconds configured in this variable is waited before the Sysvol replication is initiated.
-Type=int
+Type=uint
 Categories=service-samba
 
 [samba4/sysvol/cleanup/cron]
 Description[de]=Diese Variable konfiguriert den Zeitpunkt/Intervall, zu dem Gruppenrichtlinien-Objekte (GPOs), die nicht mehr LDAP referenziert sind aus der Sysvol-Freigabe entfernt werden. Das Format ist unter 'man 5 crontab' dokumentiert. Ist die Variable nicht gesetzt, erfolgt keine Löschung nicht mehr referenzierter GPOs.
 Description[en]=This variable configures the time/interval when the group policy objects (GPOs), which are no longer referenced in the LDAP are deleted from the Sysvol share. The format is documented under 'man 5 crontab'. If the variable is unset, unreferenced GPOs are not removed.
-Type=str
+Type=cron
 Categories=service-samba
 
 [samba4/sysvol/cleanup/parameters]

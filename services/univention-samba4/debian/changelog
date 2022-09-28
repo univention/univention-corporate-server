@@ -1,3 +1,9 @@
+univention-samba4 (9.0.9-1) unstable; urgency=medium
+
+  * Bug #55554: Fix UCR variable typing
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 18 Jan 2023 09:48:10 +0100
+
 univention-samba4 (9.0.8-10) unstable; urgency=medium
 
   * Bug #55435: rotate new logfiles
