@@ -1,3 +1,9 @@
+univention-docker (5.0.3-1) unstable; urgency=medium
+
+  * Bug #55554: Fix UCR variable typing
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Sep 2022 19:49:36 +0200
+
 univention-docker (5.0.2-2) unstable; urgency=medium
 
   * Bug #51033: added docker daemon restart module on proxy changes
