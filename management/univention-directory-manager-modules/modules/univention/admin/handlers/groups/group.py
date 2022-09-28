@@ -736,7 +736,7 @@ class object(univention.admin.handlers.simpleLdap):
 			return
 
 		# perform check only if enabled via UCR
-		if configRegistry.get('directory/manager/web/modules/groups/group/checks/circular_dependency', 'yes').lower() in ('no', 'false', '0'):
+		if configRegistry.is_false('directory/manager/web/modules/groups/group/checks/circular_dependency', False):
 			return
 
 		grpdn2childgrpdns = {}

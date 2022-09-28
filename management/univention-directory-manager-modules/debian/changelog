@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.14-1) unstable; urgency=medium
+
+  * Bug #55554: Corrected UCR type definitions string -> str
+
+ -- Peter Stoll <stoll.extern@univention.de>  Thu, 02 Feb 2023 11:09:44 +0100
+
 univention-directory-manager-modules (15.0.13-28) unstable; urgency=medium
 
   * Bug #55563: Fix UMC_Objects syntax to allow comma in DN's

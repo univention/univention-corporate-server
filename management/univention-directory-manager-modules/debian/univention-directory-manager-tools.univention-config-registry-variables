@@ -1,6 +1,6 @@
 [directory/manager/user/accountactivation/cron]
 Description[de]=Benutzerkonten können mit der Eigenschaft "accountActivationDate" angelegt so angelegt werden, dass sie erst zum angegebenen Zeitpunkt aktiviert werden. Diese  Variable legt fest, wann das Aktivierungsskript periodisch läuft. Der Wert muss das Zeitformat eines Crontab-Eintrags haben.
 Description[en]=User accounts can be created with the property "accountActivationDate" to keep them disabled until the given point in time. This variable configures the interval at which the activation script is run periodically. The value must have the time format of a crontab entry.
-Type=str
+Type=cron
 Default=*/15 * * * *
 Categories=management-udm

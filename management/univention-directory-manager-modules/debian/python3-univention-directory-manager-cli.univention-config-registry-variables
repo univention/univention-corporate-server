@@ -2,22 +2,26 @@
 Description[de]=Diese Variable konfiguriert den Detailgrad der Logausgaben in /var/log/univention/directory-manager-cmd.log. Mögliche Werte: 0-4 (0: nur Fehlermeldungen bis 4: alle Debugausgaben).
 Description[en]=This variable configures the verbosity of log messages in /var/log/univention/directory-manager-cmd.log. Possible values: 0-4 (0: only error messages to 4: all debug statements).
 Type=int
+Min=0
+Max=4
 Categories=management-udm
 
 [directory/manager/cmd/timeout]
-Description[de]=Die Zeitspanne in Sekunden, nach der sich der Univention Directory Manager-Server bei Nichtbenutzung automatisch beendet. Ist die Variable nicht gesetzt, gelten 300 Sekunden.
-Description[en]=Time span in seconds after which an idle Univention Directory Manager server automatically terminates. If the variable is unset, 300 seconds apply.
-Type=int
+Description[de]=Die Zeitspanne in Sekunden, nach der sich der Univention Directory Manager-Server bei Nichtbenutzung automatisch beendet.
+Description[en]=Time span in seconds after which an idle Univention Directory Manager server automatically terminates.
+Type=uint
+Default=300
 Categories=management-udm
 
 [directory/manager/cmd/sockettimeout]
-Description[de]=Die Zeitspanne in Sekunden, die der Univention Directory Manager-Kommandozeilen-Client auf ein Socketfile des UDM-Servers wartet. Ist die Variable nicht gesetzt, gelten 50 Sekunden.
-Description[en]=The time span in seconds the Univention Directory Manager command line client waits for a socket file of the UDM server. If the variable is unset, 50 seconds apply.
-Type=int
+Description[de]=Die Zeitspanne in Sekunden, die der Univention Directory Manager-Kommandozeilen-Client auf ein Socketfile des UDM-Servers wartet.
+Description[en]=The time span in seconds the Univention Directory Manager command line client waits for a socket file of the UDM server.
+Type=uint
+Default=50
 Categories=management-udm
 
 [ldap/replication/preferredpassword]
 Description[de]=Ist diese Variable auf "true" oder "yes" gesetzt, so ändert das Programm /usr/share/univention-directory-manager-tools/univention-passwd das Passwort im LDAP-Verzeichnis des Primary und im lokalen LDAP-Server ohne auf die LDAP-Replikation zu warten. Dies ist nur für Samba 3-Installationen relevant, bei denen ein Replica Directory Node als PDC betrieben wird. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
 Description[en]=If this variable is set to "true" or "yes" the tool /usr/share/univention-directory-manager-tools/univention-passwd will change the password in the LDAP directory on the Primary Directory Node and on the local LDAP server without waiting for the LDAP replication. This is only relevant for Samba 3 installations using a Replica Directory Node as PDC. If the variable is unset, the option is deactivated.
-Type=str
+Type=bool
 Categories=management-udm
