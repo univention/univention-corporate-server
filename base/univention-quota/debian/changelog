@@ -1,3 +1,9 @@
+univention-quota (14.0.3-1) unstable; urgency=medium
+
+  * Bug #55554: Fix UCR variable typing
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 18 Jan 2023 12:20:06 +0100
+
 univention-quota (14.0.2-1) unstable; urgency=medium
 
   * Bug #54706: drop Python 3 UMC package files
