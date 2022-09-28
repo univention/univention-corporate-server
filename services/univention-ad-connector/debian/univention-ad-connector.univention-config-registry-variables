@@ -7,13 +7,14 @@ Categories=service-adcon
 [con.*/ad/poll/sleep]
 Description[de]=Die Zeit in Sekunden, die nach einem Lauf ohne Änderungen gewartet wird, bis eine erneute Anfrage gestellt wird. Dabei wird auf UCS-Seite im Laufzeitverzeichnis des Univention Directory Listener-Modul gesucht (siehe 'con*/ad/listener/dir') und auf Active Directory-Seite eine LDAP-Anfrage gestellt.
 Description[en]=The time in seconds which is waited after a run without changes until the next request is made. On the UCS side new files are searched in the runtime directory of the Univention Directory listener module (see 'con*/ad/listener/dir'); a LDAP request is made on the Active Directory side.
-Type=int
+Type=uint
 Categories=service-adcon
 
 [con.*/ad/retryrejected]
-Description[de]=Die Anzahl der Anfragen ohne neue Änderungen, nach der versucht wird, zurückgehaltene Änderungen nachträglich einzuspielen. Dieses Verhalten kann in der Datei /var/log/univention/connector-status.log nachvollzogen werden. Ist die Variable nicht gesetzt, tritt dies nach 10 Anfragen ein.
-Description[en]=The number of requests without new changes after which an attempt is made to import retained changes subsequently. This procedure can be monitored in the /var/log/univention/connector-status.log logfile. If the variable is unset, it occurs after 10 requests.
-Type=int
+Description[de]=Die Anzahl der Anfragen ohne neue Änderungen, nach der versucht wird, zurückgehaltene Änderungen nachträglich einzuspielen. Dieses Verhalten kann in der Datei /var/log/univention/connector-status.log nachvollzogen werden.
+Description[en]=The number of requests without new changes after which an attempt is made to import retained changes subsequently. This procedure can be monitored in the /var/log/univention/connector-status.log logfile.
+Type=uint
+Default=10
 Categories=service-adcon
 
 [con.*/ad/max_retry_rejected]
@@ -26,7 +27,7 @@ Default=10
 [con.*/ad/ldap/port]
 Description[de]=Der TCP-Port, über den der LDAP-Dienst des Active Directory-Servers erreichbar ist.
 Description[en]=The port of the LDAP service of the Active Directory server.
-Type=int
+Type=portnumber
 Categories=service-adcon
 
 [con.*/ad/ldap/host]
@@ -45,6 +46,9 @@ Categories=service-adcon
 Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention/connector-ad.log (0-4). Voreingestellt ist 2, so dass der aktuelle Synchronisationsstand in den Logdateien geprüft werden kann.
 Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector-ad.log (0-4). Preset as 2, so that the status of the synchronisation is visible in the log files.
 Type=int
+Min=0
+Max=4
+Default=2
 Categories=service-adcon
 
 [con.*/ad/mapping/user/primarymail]
@@ -188,7 +192,9 @@ Categories=service-adcon
 [con.*/ad/mapping/user/ignorelist]
 Description[de]=Die hier angegebenen Benutzernamen werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden.
 Description[en]=The user names specified here are not synchronised by the connector. Multiple values need to be separated by commas.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-adcon
 
 [con.*/ad/mapping/user/ignorefilter]
@@ -200,19 +206,25 @@ Categories=service-adcon
 [con.*/ad/mapping/group/ignorelist]
 Description[de]=Die hier angegebenen Gruppennamen werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden.
 Description[en]=The group names specified here are not synchronised by the connector. Multiple values need to be separated by commas.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-adcon
 
 [con.*/ad/mapping/container/ignorelist]
 Description[de]=Die hier angegebenen Namen von LDAP-Containern werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden. Der cn= Teil muss nicht angegeben werden. Um etwa 'cn=mail' zu ignorieren muss nur 'mail' angegeben werden.
 Description[en]=The names of LDAP containers specified here are not synchronised by the connector. Multiple values need to be separated by commas. The cn= part is not needed. E.g. to ignore 'cn=mail' simply specify 'mail'.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-adcon
 
 [con.*/ad/mapping/ou/ignorelist]
 Description[de]=Die hier angegebenen Namen von LDAP-Organisationseinheiten werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden. Der ou= Teil muss nicht angegeben werden. Um etwa 'ou=zentrale' zu ignorieren muss nur 'zentrale' angegeben werden.
 Description[en]=The names of LDAP organisational units specified here are not synchronised by the connector. Multiple values need to be separated by commas. The ou= part is not needed. E.g. to ignore 'ou=headquarter' simply specify 'headquarter'.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-adcon
 
 [con.*/ad/password/timestamp/check]
@@ -254,7 +266,7 @@ Categories=service-adcon
 [con.*/ldap/port]
 Description[de]=Der Port des UCS LDAP-Servers, den der Connector verwendet. Ist die Variable nicht gesetzt, wird der Wert aus 'ldap/master/port' verwendet. Der Wert sollte nur angepasst werden, wenn 'con*/ad/mapping/syncmode' auf 'write' gesetzt ist.
 Description[en]=The port of the UCS LDAP server used by the connector. If the variable is not set, the value from 'ldap/master/port' will be used. This value should only by changed if 'con*/ad/mapping/syncmode' is set to 'write'.
-Type=int
+Type=portnumber
 Categories=service-adcon
 
 [con.*/ldap/binddn]
@@ -272,7 +284,9 @@ Categories=service-adcon
 [con.*/ad/binary_attributes]
 Description[de]=Liste von AD LDAP Attributen die zusätzlich in die Liste der binaeren Attribute im Connector aufgenommen wird. Mehrere Werte müssen durch Komma getrennt werden.
 Description[en]=List of additional AD LDAP attributes for the connector binary attributes list. Multiple values need to be separated by commas.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-adcon
 
 [con.*/ad/mapping/sync/userPrincipalName]
@@ -290,5 +304,7 @@ Categories=service-adcon
 [con.*/ad/mapping/attributes/irrelevant]
 Description[de]=Kommaseparierte Liste von AD-Attibuten die für die Synchronisation irrelevant sind und ignoriert werden sollen.
 Description[en]=Comma separated list of AD attributes that are irrelevant for synchronization and shall be ignored.
-Type=bool
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-adcon
