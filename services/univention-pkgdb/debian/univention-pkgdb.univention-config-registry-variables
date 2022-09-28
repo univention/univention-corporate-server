@@ -1,5 +1,7 @@
 [pgsql/pkgdb/networks]
 Description[de]=Mit Leerzeichen getrennte Liste von CIDR-Netzwerken (z.B. 192.168.0.0/24), aus denen Systeme ihren Softwarebestand in der Datenbank des Software-Monitors speichern können.
 Description[en]=List (space separated) of CIDR networks (e.g. 192.168.0.0/24), from which systems may store their software state in the database of the software monitor.
-Type=str
+Type=list
+Separator=[ ]
+Elementtype=str
 Categories=system-swmon
