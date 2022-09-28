@@ -7,7 +7,9 @@ Categories=service-heimdal
 [kerberos/adminusers]
 Description[de]=Mit dieser Variable kann eine Liste von Kerberos-User-Principals konfiguriert werden, die über Kerberos das Passwort von anderen Benutzern ändern dürfen. Mehrere Benutzer werden durch Kommas getrennt. Beispiel: 'admin1@EXAMPLE.REALM,admin2@EXAMPLE.REALM'.
 Description[en]=With this variable a list of Kerberos user principals can be configured which are allowed to modify the password of other users. Multiple users must be separated by a comma. Example: 'admin1@EXAMPLE.REALM,admin2@EXAMPLE.REALM'.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-heimdal
 
 [kerberos/autostart]

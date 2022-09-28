@@ -62,7 +62,9 @@ Categories=service-heimdal
 [kerberos/domain_realms]
 Description[de]=Mit dieser Variable können Abbildungen von DNS-Domänennamen auf Namen von Kerberos-Realms vorgenommen werden. Dies ist z.B. nötig, wenn eine weitere DNS-Forward-Zone in der DNS-Verwaltung angelegt wurde und diese der Kerberos-Realm der Domäne zugeordnet werden soll. Mehrere Einträge müssen durch Komma getrennt werden. Beispiel: 'additionaldomain1.example=EXAMPLEREALM,additionaldomain2.example=EXAMPLEREALM'.
 Description[en]=With this variable DNS domain names can be mapped to names of Kerberos realms. This can be necessary, if e.g. an additional DNS forward zone has been created in the DNS management and this DNS domain should be mapped to the Kerberos realm of the domain. Multiple entries must be separated by a comma. Example: 'additionaldomain1.example=EXAMPLEREALM,additionaldomain2.example=EXAMPLEREALM'.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-heimdal
 
 [kerberos/defaults/dns_lookup_realm]
@@ -116,5 +118,5 @@ Categories=service-heimdal
 [kerberos/defaults/ticket-lifetime]
 Description[de]=Legt die Standardlebensdauer für anfängliche Ticketanfragen in Stunden fest.
 Description[en]=Sets the default lifetime for initial ticket requests, in hours.
-Type=int
+Type=uint
 Categories=service-heimdal

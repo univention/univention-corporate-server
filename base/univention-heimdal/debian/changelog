@@ -1,3 +1,9 @@
+univention-heimdal (13.0.4-1) unstable; urgency=medium
+
+  * Bug #55554: Fix UCR variable typing
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Sep 2022 19:42:41 +0200
+
 univention-heimdal (13.0.3-3) unstable; urgency=medium
 
   * Bug #52987: Configure kerberos ticket lifetime with
