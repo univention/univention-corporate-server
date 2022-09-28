@@ -5,8 +5,9 @@ scope: ucs_5.0-0-errata5.0-2
 src: univention-self-service
 fix:
 desc: |
- This update addresses the following issues:
- * The email subject of all self-service emails is now
-   configurable via the UCR variables
-   `umc/self-service/{account-deregistration,account-verification,email-change-notification}/email/subject`.
+ This update addresses the following issue:
+ * The subject of all self-service emails is now configurable via the UCR
+   variables `umc/self-service/account-deregistration/email/subject`.
+   `umc/self-service/account-verification/email/subject`. and
+   `umc/self-service/email-change-notification/email/subject`.
 bug: [55028]
