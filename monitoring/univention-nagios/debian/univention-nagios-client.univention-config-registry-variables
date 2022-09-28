@@ -7,17 +7,19 @@ Categories=service-nagios
 [nagios/client/allowedhosts]
 Description[de]=Diese Variable beschränkt den Kreis der Rechner, die auf den gestarteten NRPE-Dienst zugreifen dürfen. Die Angabe der erlaubten Rechner erfolgt über ihren Rechnernamen oder ihre IP-Adresse. Ist die Variable nicht gesetzt, wird der Domänencontroller Master zugelassen. Mehrfache Einträge müssen durch Kommata getrennt werden.
 Description[en]=This variable limits the hosts which can access the NRPE service. The hosts need to be specified through their hostname or with an IP address. If the variable is unset, the master domain controller is used. Multiple entries need to be separated by commas.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-nagios
 
 [nagios/client/checkraid]
 Description[de]=Ist diese Variable auf 'yes' gesetzt, wird durch einen Crobjob jede Minute der Zustand des lokalen Festplatten-RAID-Systems geprüft.
 Description[en]=If this variable is set to 'yes' the state of the local harddisk RAID system is checked every minute.
-Type=str
+Type=bool
 Categories=service-nagios
 
 [nagios/client/autoregister]
 Description[de]=Das Join-Skript von univention-nagios-client richtet für den Client die Überwachung der Standarddienste ein. Um dies zu unterbinden, kann vor der Installation des Pakets die Variable auf 'no' gesetzt werden.
 Description[en]=univention-nagios-client registers the client for the monitoring of standard services. To prevent that the variable can be set to 'no' prior to the installation of the package.
-Type=str
+Type=bool
 Categories=service-nagios
