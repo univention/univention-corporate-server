@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.11-1) unstable; urgency=medium
+
+  * Bug #55554: Fix UCR variable typing
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 18 Jan 2023 09:48:10 +0100
+
 univention-s4-connector (14.0.10-7) unstable; urgency=medium
 
   * Bug #55232: Set pwhistory_length to 0 when pwhistorylength

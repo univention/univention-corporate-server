@@ -13,19 +13,20 @@ Categories=service-s4con
 [connector/s4/poll/sleep]
 Description[de]=Die Zeit in Sekunden, die nach einem Lauf ohne Änderungen gewartet wird, bis eine erneute Anfrage gestellt wird. Dabei wird auf UCS-Seite im Laufzeitverzeichnis des Univention Directory Listener-Modul gesucht (siehe 'connector/s4/listener/dir') und auf Samba 4-Seite eine LDAP-Anfrage gestellt.
 Description[en]=The time in seconds which is waited after a run without changes until the next request is made. On the UCS side new files are searched in the runtime directory of the Univention Directory listener module (see 'connector/s4/listener/dir'); a LDAP request is made on the Samba 4 side.
-Type=int
+Type=uint
 Categories=service-s4con
 
 [connector/s4/retryrejected]
-Description[de]=Anzahl der Anfragen ohne neue Änderungen, nach der versucht wird, zurückgehaltene Änderungen nachträglich einzuspielen. Ist die Variable nicht gesetzt, tritt dies nach 10 Anfragen ein.
-Description[en]=Number of requests without new changes after which a new attempt is made to import retained changes. If the variable is unset, it occurs after 10 requests.
-Type=int
+Description[de]=Anzahl der Anfragen ohne neue Änderungen, nach der versucht wird, zurückgehaltene Änderungen nachträglich einzuspielen.
+Description[en]=Number of requests without new changes after which a new attempt is made to import retained changes.
+Type=uint
+Default=10
 Categories=service-s4con
 
 [connector/s4/ldap/port]
 Description[de]=TCP-Port über den der LDAP-Dienst des Samba 4-Servers erreichbar ist.
 Description[en]=The port of the LDAP service of the Samba 4 server.
-Type=int
+Type=portnumber
 Categories=service-s4con
 
 [connector/s4/ldap/host]
@@ -41,9 +42,12 @@ Type=int
 Categories=service-s4con
 
 [connector/debug/level]
-Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention/connector-s4.log. Mögliche Werte sind 0-4. Ist die Variable nicht gesetzt, dann gilt '2'.
-Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector-s4.log. Possible values are 0-4. If the variable is unset, '2' applies.
+Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention/connector-s4.log. Mögliche Werte sind 0-4.
+Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector-s4.log. Possible values are 0-4.
 Type=int
+Min=0
+Max=4
+Default=2
 Categories=service-s4con
 
 [connector/debug/udm/function]
@@ -53,9 +57,12 @@ Type=int
 Categories=service-s4con
 
 [connector/debug/udm/level]
-Description[de]=Debug-Level für UDM-Operationen, protokolliert in /var/log/univention/connector-s4.log. Mögliche Werte sind 0-4. Ist die Variable nicht gesetzt, dann gilt '1'.
-Description[en]=Specifies the debug level for UDM operations to be written to /var/log/univention/connector-s4.log. Possible values are 0-4. If the variable is unset, '1' applies.
+Description[de]=Debug-Level für UDM-Operationen, protokolliert in /var/log/univention/connector-s4.log. Mögliche Werte sind 0-4.
+Description[en]=Specifies the debug level for UDM operations to be written to /var/log/univention/connector-s4.log. Possible values are 0-4.
 Type=int
+Min=0
+Max=4
+Default=1
 Categories=service-s4con
 
 [connector/s4/mapping/syncmode]
@@ -139,13 +146,17 @@ Categories=service-s4con
 [connector/s4/mapping/user/ignorelist]
 Description[de]=Die hier angegebenen Benutzernamen werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden.
 Description[en]=The user names specified here are not synchronised by the connector. Multiple values need to be separated by commas.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-s4con
 
 [connector/s4/mapping/group/ignorelist]
 Description[de]=Die hier angegebenen Gruppennamen werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden.
 Description[en]=The group names specified here are not synchronised by the connector. Multiple values need to be separated by commas.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-s4con
 
 [connector/s4/mapping/group/grouptype]
@@ -157,37 +168,49 @@ Categories=service-s4con
 [connector/s4/mapping/dc/ignorelist]
 Description[de]=Die hier angegebenen Rechnernamen von Windows-Domänencontrollern werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden. Windows-Clients und Memberserver können mit der Variable 'connector/s4/mapping/windowscomputer/ignorelist' konfiguriert werden.
 Description[en]=The host names of Windows domain controllers specified here are not synchronised by the connector. Multiple values need to be separated by commas. Windows clients and member servers can be configured via the variable 'connector/s4/mapping/windowscomputer/ignorelist'.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-s4con
 
 [connector/s4/mapping/windowscomputer/ignorelist]
 Description[de]=Die hier angegebenen Rechnernamen von Windows-Clients und Memberservern werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden. Windows-Domänencontroller können mit der Variable 'connector/s4/mapping/dc/ignorelist' konfiguriert werden.
 Description[en]=The host names of Windows clients and member servers specified here are not synchronised by the connector. Multiple values need to be separated by commas. Windows domain controllers can be configured via the variable 'connector/s4/mapping/dc/ignorelist'.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-s4con
 
 [connector/s4/mapping/container/ignorelist]
 Description[de]=Die hier angegebenen Namen von LDAP-Containern werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden. Der cn= Teil muss nicht angegeben werden. Um etwa 'cn=mail' zu ignorieren muss nur 'mail' angegeben werden.
 Description[en]=The names of LDAP containers specified here are not synchronised by the connector. Multiple values need to be separated by commas. The cn= part is not needed. E.g. to ignore 'cn=mail' simply specify 'mail'.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-s4con
 
 [connector/s4/mapping/ou/ignorelist]
 Description[de]=Die hier angegebenen Namen von LDAP-Organisationseinheiten werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden. Der ou= Teil muss nicht angegeben werden. Um etwa 'ou=zentrale' zu ignorieren muss nur 'zentrale' angegeben werden.
 Description[en]=The names of LDAP organisational units specified here are not synchronised by the connector. Multiple values need to be separated by commas. The ou= part is not needed. E.g. to ignore 'ou=headquarter' simply specify 'headquarter'.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-s4con
 
 [connector/s4/mapping/dns/ignorelist]
 Description[de]=Die hier angegebenen Namen von DNS-Objekten werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden.
 Description[en]=The names of DNS objects specified here are not synchronised by the connector. Multiple values need to be separated by commas.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-s4con
 
 [connector/s4/mapping/gpo/ignorelist]
 Description[de]=Wenn die Synchronisation von GPO-Referenzen aktiviert wurde (siehe 'connector/s4/mapping/gpo'), können hier GPO-Objekte angegeben werden, die durch den Connector nicht synchronisiert werden. Mehrere Werte müssen durch Komma getrennt werden.
 Description[en]=If the synchronisation of GPO objects has been activated (see 'connector/s4/mapping/gpo'), GPO objects can be specified here which are not synchronised by the connector. Multiple values need to be separated by commas.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-s4con
 
 [connector/s4/ldap/base]
@@ -229,13 +252,17 @@ Categories=service-s4con
 [connector/s4/mapping/dns/forward_zone/.*/static/ipv4]
 Description[de]=Nach dem Schema 'connector/s4/mapping/dns/ZONENNAME/static/ipv4=ADRESSEN' kann eine Liste von IPv4-Adressen konfiguriert werden, die an der DNS-Forward-Zone ZONENNAME gesetzt werden. Diese Adressen werden von Windows-Clients zu Lokalisierung des Sysvol-Shares abgerufen. Mehrere Adressen werden durch Leerzeichen getrennt. Diese Einstellung muss nur in UCS@school-Setups mit selektiver Replikation verwendet werden, da dort Schulserver keinen Zugriff auf den zentralen DNS-Container haben.
 Description[en]=Following the scheme 'connector/s4/mapping/dns/ZONENAME/static/ipv4=ADDRESSES' a list of IPv4 addresses can be configured which are set on the DNS forward zone ZONENAME. These addresses are requested by Windows clients for locating the Sysvol share. Multiple addresses are separated by blanks. This setting is only needed in UCS@school setups using selective replication, as school servers don't have access to the central DNS container.
-Type=str
+Type=list
+Separator=[ ]
+Elementtype=str
 Categories=service-s4con
 
 [connector/s4/mapping/dns/forward_zone/.*/static/ipv6]
 Description[de]=Nach dem Schema 'connector/s4/mapping/dns/ZONENNAME/static/ipv6=ADRESSEN' kann eine Liste von IPv6-Adressen konfiguriert werden, die an der DNS-Forward-Zone ZONENNAME gesetzt werden. Diese Adressen werden von Windows-Clients zu Lokalisierung des Sysvol-Shares abgerufen. Mehrere Adressen werden durch Leerzeichen getrennt. Diese Einstellung muss nur in UCS@school-Setups mit selektiver Replikation verwendet werden, da dort Schulserver keinen Zugriff auf den zentralen DNS-Container haben.
 Description[en]=Following the scheme 'connector/s4/mapping/dns/ZONENAME/static/ipv6=ADDRESSES' a list of IPv6 addresses can be configured which are set on the DNS forward zone ZONENAME. These addresses are requested by Windows clients for locating the Sysvol share. Multiple addresses are separated by blanks. This setting is only needed in UCS@school setups using selective replication, as school servers don't have access to the central DNS container.
-Type=str
+Type=list
+Separator=[ ]
+Elementtype=ipv6address
 Categories=service-s4con
 
 [connector/s4/mapping/dns/srv_record/.*/location]
@@ -247,13 +274,17 @@ Categories=service-s4con
 [connector/s4/mapping/dns/host_record/.*/static/ipv4]
 Description[de]=Nach dem Schema 'connector/s4/mapping/dns/FQDN/static/ipv4=ADRESSEN' kann eine Liste von IPv4-Adressen konfiguriert werden, die im Samba/AD dem Hostnamen FQDN zugewiesen werden. Mehrere Adressen werden durch Leerzeichen getrennt. Diese Einstellung muss nur in UCS@school-Setups mit selektiver Replikation verwendet werden, um auf einem Schulserver im DNS-Dienst speziellen Hostnamen Adressen zuweisen zu können, die für den Standort spezifisch sind.
 Description[en]=Following the scheme 'connector/s4/mapping/dns/FQDN/static/ipv4=ADDRESSES' a list of IPv4 addresses can be configured, which are assigned to the FQDN in Samba/AD. Multiple addresses are separated by blanks. This setting is only needed in UCS@school setups using selective replication, to override addresses of special hostnames that are specific to the school server.
-Type=str
+Type=list
+Separator=[ ]
+Elementtype=ipv4address
 Categories=service-s4con
 
 [connector/s4/mapping/dns/host_record/.*/static/ipv6]
 Description[de]=Nach dem Schema 'connector/s4/mapping/dns/FQDN/static/ipv6=ADRESSEN' kann eine Liste von IPv6-Adressen konfiguriert werden, die im Samba/AD dem Hostnamen FQDN zugewiesen werden. Mehrere Adressen werden durch Leerzeichen getrennt. Diese Einstellung muss nur in UCS@school-Setups mit selektiver Replikation verwendet werden, um auf einem Schulserver im DNS-Dienst speziellen Hostnamen Adressen zuweisen zu können, die für den Standort spezifisch sind.
 Description[en]=Following the scheme 'connector/s4/mapping/dns/FQDN/static/ipv6=ADDRESSES' a list of IPv6 addresses can be configured, which are assigned to the FQDN in Samba/AD. Multiple addresses are separated by blanks. This setting is only needed in UCS@school setups using selective replication, to override addresses of special hostnames that are specific to the school server.
-Type=str
+Type=list
+Separator=[ ]
+Elementtype=ipv6address
 Categories=service-s4con
 
 [connector/ldap/server]
@@ -265,7 +296,7 @@ Categories=service-s4con
 [connector/ldap/port]
 Description[de]=Der Port des UCS LDAP-Servers, den der Connector verwendet. Ist die Variable nicht gesetzt, wird der Wert aus 'ldap/master/port' verwendet. Der Wert sollte nur angepasst werden, wenn 'connector/s4/mapping/syncmode' auf 'write' gesetzt ist.
 Description[en]=The port of the UCS LDAP server used by the connector. If the variable is not set, the value from 'ldap/master/port' will be used. This value should only by changed if 'connector/s4/mapping/syncmode' is set to 'write'.
-Type=int
+Type=portnumber
 Categories=service-s4con
 
 [connector/ldap/binddn]
@@ -301,7 +332,9 @@ Categories=service-s4con
 [connector/s4/mapping/msprintconnectionpolicy/ignorelist]
 Description[de]=Wenn die Synchronisation von ms-Print-ConnectionPolicy Objekten aktiviert wurde (siehe 'connector/s4/mapping/msprintconnectionpolicy'), können hier Namen von ms-Print-ConnectionPolicy Objekten angegeben werden, die durch den Connector nicht synchronisiert werden sollen. Mehrere Werte müssen durch Komma getrennt werden.
 Description[en]=If the synchronisation of ms-Print-ConnectionPolicy objects has been activated (see 'connector/s4/mapping/msprintconnectionpolicy'), ms-Print-ConnectionPolicy names can be specified here which shall not be synchronised by the connector. Multiple values need to be separated by commas.
-Type=bool
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-s4con
 
 [connector/s4/mapping/wmifilter]
@@ -313,7 +346,9 @@ Categories=service-s4con
 [connector/s4/mapping/wmifilter/ignorelist]
 Description[de]=Wenn die Synchronisation von WMI-Filtern aktiviert wurde (siehe 'connector/s4/mapping/wmifilter'), können hier IDs von WMI-Filtern angegeben werden, die durch den Connector nicht synchronisiert werden sollen. Mehrere Werte müssen durch Komma getrennt werden.
 Description[en]=If the synchronisation of WMI filters has been activated (see 'connector/s4/mapping/wmifilter'), WMI filter IDs can be specified here which shall not be synchronised by the connector. Multiple values need to be separated by commas.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-s4con
 
 [connector/s4/mapping/gpo/ntsd]
