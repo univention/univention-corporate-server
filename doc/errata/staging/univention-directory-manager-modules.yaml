@@ -6,9 +6,9 @@ src: univention-directory-manager-modules
 fix: 15.0.13-8A~5.0.0.202209271256
 desc: |
  This update addresses the following issues:
- * A regression introduced in Bug 54883 which caused that `user/ldap` objects
-   could not be fetched via the UDM REST API has been corrected.
- * The `pwdChangeNextLogin` property of `users/user` objects was not correctly
-   unmapped in case it is not set. This caused the UDM REST API to wrongly
+ * A regression introduced by Bug 54883 has been fixed which caused that
+   objects `user/ldap` could not be fetched via the UDM REST API.
+ * The property `pwdChangeNextLogin` of `users/user` objects was not correctly
+   unmapped in case it was not set. This caused the UDM REST API to wrongly
    represent it as `None` instead of `False`.
 bug: [55189, 55226]
