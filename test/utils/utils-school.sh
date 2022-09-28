@@ -265,10 +265,10 @@ EOF
 		/usr/share/ucs-school-import/configs/ucs-school-testuser-import.json
 	# create school users
 	school_count=100
-	classes_count=300
-	students_count=100000
-	teachers_count=20000
-	staff_count=10000
+	classes_count=40000
+	students_count=120000
+	teachers_count=15000
+	staff_count=1000
 	schools=()
 	for i in $(seq 1 "$school_count"); do
 		/usr/share/ucs-school-import/scripts/create_ou "--verbose" "school$i" "replica$i" || return 1
