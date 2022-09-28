@@ -1,3 +1,9 @@
+univention-system-setup (13.0.4-1) unstable; urgency=medium
+
+  * Bug #55554: Corrected UCR type definitions string -> str
+
+ -- Peter Stoll <stoll.extern@univention.de>  Thu, 02 Feb 2023 11:09:39 +0100
+
 univention-system-setup (13.0.3-39) unstable; urgency=medium
 
   * Bug #54986: slap tools must also work in case

@@ -7,13 +7,17 @@ Categories=system-base
 [system/setup/packages/whitelist]
 Description[de]=Diese Variable konfiguriert eine Positivliste für die Softwareauswahl im 'Basis-Einstellungen'-Dialog der UMC. Nur Pakete, die hier aufgeführt werden, werden im Dialog angezeigt. Mehrere Einträge müssen mit Leerzeichen getrennt werden. Bei Komponenten, die aus mehreren Paketen bestehen, müssen alle Pakete angegeben werden. Wenn die Variable nicht gesetzt ist, werden alle Softwarekomponenten gezeigt.
 Description[en]=This variable configures a whitelist for the software selection of the 'Basic settings' dialogue of the UMC. Only packages listed here are shown in the dialogue. Multiple entries need to be separated by a blank. For components, which consist of several packages, all packages need to be specified. If the variable is unset, all software packages are shown.
-Type=str
+Type=list
+Separator=[ ]
+Elementtype=str
 Categories=system-base
 
 [system/setup/packages/blacklist]
 Description[de]=Diese Variable konfiguriert eine Negativliste für die Softwareauswahl im 'Basis-Einstellungen'-Dialog der UMC. Pakete, die hier aufgeführt werden, werden im Dialog nicht angezeigt. Mehrere Einträge müssen mit Leerzeichen getrennt werden. Wenn die Variable nicht gesetzt ist, werden alle Softwarekomponenten gezeigt.
 Description[en]=This variable configures a blacklist for the software selection of the 'Basic settings' dialogue of the UMC. Packages listed here are not shown in the dialogue. Multiple entries need to be separated by a blank. If the variable is unset, all software packages are shown.
-Type=str
+Type=list
+Separator=[ ]
+Elementtype=str
 Categories=system-base
 
 [system/setup/showloginmessage]
