@@ -1,3 +1,9 @@
+univention-grub (13.0.1-1) unstable; urgency=medium
+
+  * Bug #55554: Fix UCR variable typing
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Sep 2022 19:42:14 +0200
+
 univention-grub (13.0.0-6) unstable; urgency=low
 
   * Bug #51984: Close gap between Debian SHIM and Univention GRUB2
