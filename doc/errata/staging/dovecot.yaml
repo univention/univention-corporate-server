@@ -6,10 +6,8 @@ src: dovecot
 fix: 1:2.3.4.1-5+deb10u7
 desc: |
  This update addresses the following issues:
- 1:2.3.4.1-5+deb10u7 (Mon, 26 Sep 2022 06:17:50 +0200)
- * Non-maintainer upload by the LTS Security Team.
- * CVE-2022-30550: fix handling passdbs with identical driver/args.
- * CVE-2021-33515: fix STARTTLS command injection vulnerability.
+ * fix handling passdbs with identical driver/args (CVE-2022-30550)
+ * fix STARTTLS command injection vulnerability (CVE-2021-33515)
 bug: [55228]
 cve:
 - CVE-2022-30550
