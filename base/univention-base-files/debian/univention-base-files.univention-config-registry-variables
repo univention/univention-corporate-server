@@ -1,19 +1,21 @@
 [proxy/http]
 Description[de]=Der zu verwendende HTTP-Proxyserver, z.B. <http://192.168.1.100:3128>. Wenn der Proxy eine Authenzifizierung erfordert, kann ein Benutzername und ein Passwort im Format <http://benutzername:passwort@192.168.1.100:3128> angegeben werden.
 Description[en]=The HTTP proxy server, e.g. <http://192.168.1.100:3128>. If the proxy requires authentication, the username and the password can be provided in the format <http://username:password@192.168.1.100:3128>.
-Type=str
+Type=url_proxy
 Categories=system-network
 
 [proxy/https]
 Description[de]=Der zu verwendende Proxyserver für HTTPS-Verbindungen, z.B. <http://192.168.1.100:3128>. Wenn der Proxy eine Authenzifizierung erfordert, kann ein Benutzername und ein Passwort im Format <http://benutzername:passwort@192.168.1.100:3128> angegeben werden.
 Description[en]=The proxy server for HTTPS connections, e.g. <http://192.168.1.100:3128>. If the proxy requires authentication, the username and the password can be provided in the format <http://username:password@192.168.1.100:3128>.
-Type=str
+Type=url_proxy
 Categories=system-network
 
 [proxy/no_proxy]
 Description[de]=Eine Komma-separierte Liste von Domänennamen, für die der Proxy nicht verwendet werden soll. Eine Ausnahme für eine Domäne wie univention.de wirkt sich auch auf eine Unterdomäne wie apt.univention.de aus.
 Description[en]=A comma-separated list of domain names for which the proxy should not be consulted. An exception for a domain like univention.de also applies to a subdomain like apt.univention.de.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=system-network
 
 [umask]
@@ -31,7 +33,7 @@ Categories=service-ssh
 [sshd/port]
 Description[de]=Die Variable konfiguriert den Port, auf dem der SSH-Dienst auf eingehende Verbindungen wartet.
 Description[en]=This variable configures the port on which the SSH daemon is listening for incoming connections.
-Type=int
+Type=portnumber
 Categories=service-ssh
 
 [sshd/permitroot]
@@ -55,13 +57,13 @@ Categories=service-ssh
 [sshd/xdisplayoffset]
 Description[de]=X11-Anzeigeoberflächen (Displays) sind beginnend mit 0 durchnumeriert. Diese Variable legt das erste Display fest, das im Rahmen der X11-Weiterleitung verwendet werden soll.
 Description[en]=X11 displays are numbered starting with 0. This variable specifies the first display to be used during X11 forwarding.
-Type=int
+Type=uint
 Categories=service-ssh
 
 [sshd/X11DisplayOffset]
 Description[de]=X11-Anzeigeoberflächen (Displays) sind beginnend mit 0 durchnumeriert. Diese Variable legt das erste Display fest, das im Rahmen der X11-Weiterleitung verwendet werden soll.
 Description[en]=X11 displays are numbered starting with 0. This variable specifies the first display to be used during X11 forwarding.
-Type=int
+Type=uint
 Categories=service-ssh
 
 [sshd/xuselocalhost]
@@ -109,25 +111,33 @@ Categories=service-ssh
 [sshd/MACs]
 Description[de]=Komma-separierte Liste von verfügbaren MAC (message authentication code) Algorithmen. Siehe `man sshd_config` für Details.
 Description[en]=Comma separated list of available MAC (message authentication code) algorithms. See `man sshd_config for details.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-ssh
 
 [sshd/Ciphers]
 Description[de]=Komma-separierte Liste von Verschlüsselungsverfahren für Protokoll Version 2. Siehe `man sshd_config` für Details.
 Description[en]=Comma separated list of ciphers allowed for protocol version 2. See `man sshd_config for details.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-ssh
 
 [sshd/KexAlgorithms]
 Description[de]=Komma-separierte Liste von verfügbaren KEX (Key Exchange) Algorithmen. Siehe `man sshd_config` für Details.
 Description[en]=Comma separated list of available KEX (Key Exchange) algorithms. See `man sshd_config for details.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-ssh
 
 [sshd/HostKey]
 Description[de]=Komma-separierte Liste von verfügbaren SSH Host Keys. Standard: 'rsa,ecdsa,ed25519'. Siehe `man sshd_config` für Details.
 Description[en]=Comma separated list of available SSH host keys. Default: 'rsa,ecdsa,ed25519'. See `man sshd_config for details.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-ssh
 
 [sshd/TCPKeepAlive]
@@ -145,7 +155,9 @@ Categories=service-ssh
 [sshd/ListenAddress]
 Description[de]=Komma separierte Liste. Legt die OpenSSH Deamon Konfigurationsvariable 'ListenAddress' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
 Description[en]=Comma separated list. Specifies the OpenSSH deamon configuration value 'ListenAddress': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-ssh
 
 [sshd/RekeyLimit]
@@ -421,7 +433,7 @@ Categories=service-ssh
 [sshd/config/.*]
 Description[de]=Spezifiziert zusätzliche Konfigurationsoptionen für /etc/ssh/sshd_config. Siehe `man sshd_config` für Details.
 Description[en]=Specifies additional configuration options for /etc/ssh/sshd_config. See `man sshd_config for details.
-Type=bool
+Type=str
 Categories=service-ssh
 
 [systemd/journald/SplitMode]
@@ -489,13 +501,13 @@ ReadOnly=yes
 [gateway]
 Description[de]=Die IPv4-Adresse des Standard-Gateways.
 Description[en]=The IPv4 address of the standard gateway.
-Type=str
+Type=ipv4address
 Categories=system-network
 
 [ipv6/gateway]
 Description[de]=Die IPv6-Adresse des Standard-Gateways. Für IPv6 ist die Angabe eines Gateways bei statischer Konfiguration erforderlich; bei dynamischer Konfiguration ist diese optional, wird jedoch empfohlen. Ein hier konfiguriertes IPv6-Gateway hat Vorrang vor Router Advertisements, die ansonsten die Route ändern könnten. Ein zone index kann (mittels einem "%") angehängt werden, um die Schnittstelle anzugeben, von der die Adresse erreichbar ist.
 Description[en]=The IPv6 address of the standard gateway. For IPv6, a gateway must be entered in the static configuration; for the dynamic configuration, it is optional, but recommended. A gateway configured here has preference over router advertisements, which might otherwise be able to change the route. A zone index can be appended (with a "%") to specify the interface this address is reachable from.
-Type=str
+Type=ipv6address
 Categories=system-network
 
 [hostname]
@@ -508,13 +520,13 @@ ReadOnly=yes
 [interfaces/.*/address]
 Description[de]=Eine Variable in der Form interfaces/INTERFACE/address konfiguriert die IPv4-Adresse der Netzwerkschnittstelle. Für eine dynamische Vergabe über DHCP siehe 'interfaces/.*/type', bei Verwendung von DHCP wird keine Adresse angegeben.
 Description[en]=A variable in the form interfaces/INTERFACE/address configures the IPv4 address of the network interface. For a dynamic assignment using DHCP, see 'interfaces/.*/type'. If DHCP is used, no address is specified.
-Type=str
+Type=ipv4address
 Categories=system-network
 
 [interfaces/.*/broadcast]
 Description[de]=Eine Variable in der Form interfaces/INTERFACE/broadcast konfiguriert die Broadcast-Adresse der Netzwerkschnittstelle. Die Broadcast-Adresse ist optional.
 Description[en]=A variable in the form interfaces/INTERFACE/broadcast configures the broadcast address of the network interface. The broadcast address is optional.
-Type=str
+Type=ipv4address
 Categories=system-network
 
 [interfaces/.*/mac]
@@ -532,7 +544,7 @@ Categories=system-network
 [interfaces/.*/network]
 Description[de]=Eine Variable in der Form interfaces/INTERFACE/network konfiguriert die Netzwerk-Adresse der Netzwerkschnittstelle. Die Adresse ist optional.
 Description[en]=A variable in the form interfaces/INTERFACE/network configures the network address of the network interface. The address is optional.
-Type=str
+Type=ipv4address
 Categories=system-network
 
 [interfaces/.*/order]
@@ -562,7 +574,7 @@ Categories=system-network
 [interfaces/.*/mtu]
 Description[de]=Eine Variable in der Form interfaces/INTERFACE/mtu erlaubt die Konfiguration der maximalen Transfergröße (MTU) pro Netzwerkschnittstelle.
 Description[en]=A variable in the form interfaces/INTERFACE/mtu allows the configuration the maximum transfer unit (MTU) per network interface.
-Type=int
+Type=pint
 Categories=system-network
 
 [interfaces/.*/options/.*]
@@ -574,13 +586,15 @@ Categories=system-network
 [interfaces/.*/ipv6/.*/address]
 Description[de]=Eine Variable in der Form interfaces/INTERFACE/ipv6/IDENTIFIER/address konfiguriert die statische IPv6-Adresse der Netzwerkschnittstelle. Für eine dynamische Vergabe über SLAAC siehe 'interfaces/eth0/ipv6/acceptRA', bei Verwendung von SLAAC wird keine Adresse angegeben.
 Description[en]=A variable in the form interfaces/INTERFACE/ipv6/IDENTIFIER/address configures the static IPv6 address of the network interface. For a dynamic assignment using SLAAC, see 'interfaces/eth0/ipv6/acceptRA'. If SLAAC is used, no address is specified.
-Type=str
+Type=ipv6address
 Categories=system-network
 
 [interfaces/.*/ipv6/.*/prefix]
 Description[de]=Eine Variable in der Form interfaces/INTERFACE/ipv6/IDENTIFIER/prefix konfiguriert die IPv6-Präfixlänge der Netzschnittstelle (CIDR-Notation). Für eine dynamische Vergabe über SLAAC siehe 'interfaces/eth0/ipv6/acceptRA', bei Verwendung von SLAAC wird kein Präfix angegeben.
 Description[en]=A variable in the form interfaces/INTERFACE/ipv6/IDENTIFIER/prefix configures the IPv6 prefix length of the network interface (CIDR notation). For a dynamic assignment using SLAAC, see 'interfaces/eth0/ipv6/acceptRA'. If SLAAC is used, no prefix is specified.
 Type=int
+Min=0
+Max=128
 Categories=system-network
 
 [interfaces/.*/ipv6/acceptRA]
@@ -616,31 +630,35 @@ Categories=system-base
 [kernel/modules]
 Description[de]=Die zu verwendenden Treiber (Kernel-Module) werden automatisch erkannt und geladen. Mit dieser Variable können Module geladen werden, die nicht automatisch erkannt wurden oder erkannt werden können. Mehrere Einträge müssen durch Semikolon getrennt werden.
 Description[en]=The required drivers (kernel modules) are automatically detected and loaded. This variable allows the loading of modules, which couldn't/cannot be automatically detected. If multiple modules are needed, they must be separated by semicolon.
-Type=str
+Type=list
+Separator=;
+Elementtype=str
 Categories=system-kernel
 
 [kernel/blacklist]
 Description[de]=Die zu verwendenden Treiber (Kernel-Module) werden automatisch erkannt und geladen. In dieser Variable können Module aufgeführt werden, die nicht geladen werden sollen. Mehrere Einträge müssen durch Semikolon getrennt werden.
 Description[en]=The required drivers (kernel modules) are automatically detected and loaded. This variable allows a selection of modules which should not be loaded. If multiple modules are needed, they must be separated by semicolon.
-Type=str
+Type=list
+Separator=;
+Elementtype=str
 Categories=system-kernel
 
 [kernel/fs/inotify/max_user_instances]
 Description[de]=Die Obergrenze an Inotify-Diensten pro Benutzer-ID.
 Description[en]=The upper limit of Inotify services per user ID.
-Type=int
+Type=uint
 Categories=system-kernel
 
 [kernel/fs/inotify/max_user_watches]
 Description[de]=Die Obergrenze an Dateien pro Benutzer-ID, die durch den Inotify-Dienst überwacht werden können.
 Description[en]=The upper limit of files per user which can be watched by the Inotify service.
-Type=int
+Type=uint
 Categories=system-kernel
 
 [kernel/fs/inotify/max_queued_events]
 Description[de]=Die Obergrenze für die Anzahl von vorgehaltenen Events pro Inotify-Instanz.
 Description[en]=The upper limit of queued events per Inotify instance.
-Type=int
+Type=uint
 Categories=system-kernel
 
 [ldap/backup]
@@ -670,7 +688,7 @@ Categories=service-ldap
 [ldap/server/ip]
 Description[de]=Die IP-Adresse des lokalen primären LDAP-Servers (siehe 'ldap/server/name').
 Description[en]=The IP address of the local primary LDAP server (see 'ldap/server/name').
-Type=str
+Type=ipaddress
 Categories=service-ldap
 
 [ldap/base]
@@ -696,8 +714,9 @@ Categories=service-ldap
 [ldap/client/retry/count]
 Description[de]=Diese Variable definiert wie häufig die internen Programme versuchen den LDAP Server zu erreichen, wenn dieser nicht erreichbar ist. Die Programme warten zwischen jedem Versuch eine Sekunde. Ist die Variable nicht gesetzt, wird 10 verwendet.
 Description[en]=This variable defines how often the internal programs are trying to connect the LDAP server if it is not reachable. The programs wait for one second between each attempt. If the variable is not set, 10 is used.
-Type=int
+Type=uint
 Categories=service-ldap
+Default=10
 
 [locale]
 Description[de]=Lokalisierungseigenschaften von Software wie verwendete Datumsformate und die gewünschte Übersetzung werden in Locales festgelegt. Über das UMC-Modul Systemeinstellungen können die installierten Locales ausgewählt werden. Diese Variable speichert die installierten Locales.
@@ -720,7 +739,7 @@ Categories=system-base
 [logrotate/rotate/count]
 Description[de]=Log-Dateien werden mit der gesetzten Anzahl rotiert bevor sie entfernt werden. Steht z.B. 'logrotate/rotate/count' auf 2, werden zwei alte Log-Dateien behalten. Siehe 'man logrotate' für zusätzlichen Informationen.
 Description[en]=Log files are rotated the set number of times before being removed. E.g., if 'logrotate/rotate/count' is set to 2, two old system log files will be kept. See 'man logrotate' for additional information.
-Type=int
+Type=pint
 Categories=system-base
 
 [logrotate/notifempty]
@@ -750,25 +769,25 @@ Categories=system-base
 [nameserver1]
 Description[de]=Der erste zu verwendende DNS-Server.
 Description[en]=The first DNS server to be used.
-Type=str
+Type=ipaddress
 Categories=system-network
 
 [nameserver2]
 Description[de]=Der zweite zu verwendende DNS-Server.
 Description[en]=The second DNS server to be used.
-Type=str
+Type=ipaddress
 Categories=system-network
 
 [nameserver3]
 Description[de]=Der dritte zu verwendende DNS-Server.
 Description[en]=The third DNS server to be used.
-Type=str
+Type=ipaddress
 Categories=system-network
 
 [nameserver/option/timeout]
 Description[de]=Diese Variable konfiguriert die maximale Wartezeit in Sekunden für eine DNS-Anfrage. Nach Ablauf der Zeit wird der nächste DNS-Server abgefragt.
 Description[en]=This variable configures the maximum waiting time in seconds for a DNS request. Once elapsed the next DNS server is queried.
-Type=int
+Type=uint
 Categories=system-network
 
 [server/role]
@@ -854,14 +873,14 @@ Categories=system-base
 [version/patchlevel]
 Description[de]=Vier Arten von UCS-Updates werden unterschieden: Major Releases (erscheinen ca. alle vier Jahre, können auch größere Veränderungen mit sich bringen), Minor Release (erscheinen ca. alle 6-8 Monate, Fehlerkorrekturen und neue Funktionen), Patchlevel Releases (erscheinen ca. alle 2-3 Monate, enthalten gegenüber einem Minor Release weniger Änderungen und der Fokus liegt auf Bugfixes) und Errata-Updates (zeitnahe Fehlerkorrekturen für Sicherheitslücken oder kritische Programmfehler). Diese Variable wird während Updates automatisch gesetzt und enthält den Stand des Patchlevel Releases.
 Description[en]=Four types of Univention Configuration Registry updates are differentiated: Major releases (released approximately every four years, may introduce bigger changes), minor releases (released approximately every 6-8 months, error corrections and new functions), patch level releases (released every 2-3 months, less changes compared to a minor release, focus on bugfixes) and errata updates (timely bugfixes for security problems and critical bugs). This variable is set automatically during updates and contains the version of the installed patch level release.
-Type=int
+Type=uint
 Categories=system-base
 ReadOnly=yes
 
 [version/erratalevel]
 Description[de]=Vier Arten von UCS-Updates werden unterschieden: Major Releases (erscheinen ca. alle vier Jahre, können auch größere Veränderungen mit sich bringen), Minor Release (erscheinen ca. alle 6-8 Monate, Fehlerkorrekturen und neue Funktionen), Patchlevel Releases (erscheinen ca. alle 2-3 Monate, enthalten gegenüber einem Minor Release weniger Änderungen und der Fokus liegt auf Bugfixes) und Errata-Updates (zeitnahe Fehlerkorrekturen für Sicherheitslücken oder kritische Programmfehler). Diese Variable wird während Updates automatisch gesetzt und enthält den Stand der installierten Errata-Updates.
 Description[en]=Four types of UCS updates are differentiated: Major releases (released approximately every four years, may introduce bigger changes), minor releases (released approximately every 6-8 months, error corrections and new functions), patch level releases (released every 2-3 months, less changes compared to a minor release, focus on bugfixes) and errata updates (timely bugfixes for security problems and critical bugs). This variable is set automatically during updates and contains the version of the installed errata updates.
-Type=int
+Type=uint
 Categories=system-base
 ReadOnly=yes
 
@@ -1085,14 +1104,16 @@ Categories=system-base
 [syslog/limit/interval]
 Description[de]=Begrenzt die Log-Rate auf nicht mehr als 'syslog/limit/burst' Nachrichten innerhalb der letzten 'syslog/limit/interval' Sekunden. Standard: 5 [Sekunden]
 Description[en]=Limits the log rate to no more than 'syslog/limit/burst' messages in the last 'syslog/limit/interval' seconds. Default: 5 [seconds]
-Type=int
+Type=uint
 Categories=system-base
+Default=5
 
 [syslog/limit/burst]
 Description[de]=Begrenzt die Log-Rate auf nicht mehr als 'syslog/limit/burst' Nachrichten innerhalb der letzten 'syslog/limit/interval' Sekunden. Standard: 200 [Meldungen]
 Description[en]=Limits the log rate to no more than 'syslog/limit/burst' messages in the last 'syslog/limit/interval' seconds. Default: 200 [messages]
-Type=int
+Type=uint
 Categories=system-base
+Default=200
 
 [syslog/maxmessagesize]
 Description[de]=Maximale Länge der Syslogmeldung. Standard: 4k
@@ -1109,19 +1130,19 @@ Categories=system-base
 [syslog/input/udp]
 Description[de]=Diese Option aktiviert den Empfang von Syslog-Meldungen von entfernten Rechnern auf dem angegebenen UDP Port. UDP ist das standardisierte Verfahren, aber Meldungen können verloren gehen. Standardisiert ist Port ist 514.
 Description[en]=This option enabled receiving syslog messages from remote computers through the given UDP port. UDP is the standardized method, but messages can get lost. Standardized is port 514.
-Type=int
+Type=portnumber
 Categories=system-base
 
 [syslog/input/tcp]
 Description[de]=Diese Option aktiviert den Empfang von Syslog-Meldungen von entfernten Rechnern auf dem angegebenen TCP Port. Meldungen können verloren gehen. Port 10514 wird oft verwendet.
 Description[en]=This option enabled receiving syslog messages from remote computers through the given TCP port. Messages can get lost. Port 10514 is commonly used.
-Type=int
+Type=portnumber
 Categories=system-base
 
 [syslog/input/relp]
 Description[de]=Diese Option aktiviert den Empfang von Syslog-Meldungen von entfernten Rechnern per 'Reliable Event Logging Protocol' (RELP) auf dem angegebenen TCP Port. Das Protokoll ist rsyslog spezifisch. Port 2514 oder 20514 werden oft verwendet.
 Description[en]=This option enabled receiving syslog messages from remote computers using the 'Reliable Event Logging Protocol' (RELP) through the given TCP port. The protocol is rsyslog specific. Port 2514 or 20514 are commonly used.
-Type=int
+Type=portnumber
 Categories=system-base
 
 [xorg/keyboard/options/XkbLayout]
@@ -1187,7 +1208,7 @@ Categories=service-base
 [machine/password/length]
 Description[de]=Das Passwort des Rechnerkontos wird in der Regel automatisch erstellt und rotiert. Es wird in der Datei /etc/machine.secret gespeichert. Diese Variable konfiguriert die Länge des generierten Passworts. Ist die Variable nicht gesetzt, ist das Passwort 20 Zeichen lang.
 Description[en]=The password for the computer account is usually automatically created and rotated. It is stored in the file /etc/machine.secret. This variable configures the length of the generated password. If the variable is unset, the password consists of 20 characters.
-Type=int
+Type=pint
 Categories=service-base
 
 [machine/password/complexity]
