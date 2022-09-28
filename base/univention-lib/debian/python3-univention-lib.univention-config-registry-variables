@@ -5,29 +5,33 @@ Type=bool
 Categories=service-misc
 
 [listener/shares/rename/fstypes]
-Description[de]=Das automatische Verschieben von Dateifreigaben - konfigurierbar über die Variable listener/shares/rename - ist nur für die hier definierten Dateisysteme erlaubt.
-Mehrfache Einträge müssen durch einen Doppelpunkt getrennt werden. Ist die Variable nicht gesetzt, gilt 'ext2/ext3:ext2:ext3:ext4:xfs:btrfs'.
+Description[de]=Das automatische Verschieben von Dateifreigaben - konfigurierbar über die Variable listener/shares/rename - ist nur für die hier definierten Dateisysteme erlaubt. Mehrfache Einträge müssen durch einen Doppelpunkt getrennt werden. Ist die Variable nicht gesetzt, gilt 'ext2/ext3:ext2:ext3:ext4:xfs:btrfs'.
 Description[en]=The automatic move of file shares - configurable through the variable listener/shares/rename - is only allowed for the filesystems defined here. Multiple entries need to be separated by a colon. If the variable isn't set 'ext2/ext3:ext2:ext3:ext4:xfs:btrfs' applies.
-Type=str
+Type=list
+Separator=:
+Elementtype=str
 Categories=service-misc
 
 [listener/shares/whitelist/.*]
 Description[de]=Standardmäßig wird die Erstellung von Freigaben für einige Systemverzeichnisse verhindert. Diese Variablen ermöglichen das Freigeben von Verzeichnissen, die sonst auf der Standard-Blackist stehen. Die Werte der Variablen können eine durch Doppelpunkte separierte Liste von erlaubten Verzeichnissen enthalten (z.B. /var/*:/usr/*). Die Variable listener/shares/whitelist/default liefert eine empfohlene Standardliste für UCS. Nach Änderung der Variablen muss univention-directory-listener neu gestartet werden.
 Description[en]=For security reasons creating shares for some system directories is denied by default. This family of variables allows overriding the default blacklist. The values may contain a colon separated list of allowed directories (e.g. /var/*:/usr/*). The variable listener/shares/whitelist/default specifies the UCS recommended default whitelist. After changing the variables univention-directory-listener needs to be restarted.
-Type=str
+Type=list
+Separator=:
+Elementtype=str
 Categories=service-misc
 
 [backup/clean/max_age]
 Description[en]=Automatic deletion of backup-files in /var/univention-backup/, of files older than backup/clean/max_age. If unset, no files are deleted. If less than backup/clean/min_backups backup-files exist, no files are deleted.
 Description[de]=Automatisches Löschen von Backup-Dateien in /var/univention-backup, die älter als backup/clean/max_age sind. Wenn diese Variable nicht gesetzt ist, werden keine Dateien gelöscht. Wenn weniger als backup/clean/min_backups Backup-Dateien existieren, werden keine Dateien gelöscht.
-Type=int
+Type=uint
 Categories=service-misc
 
 [backup/clean/min_backups]
 Description[en]=Automatic deletion of backup-files in /var/univention-backup/: if backup/clean/max_age is set and less than backup/clean/min_backups backup-files exist, no files are deleted. Defaults to 10.
 Description[de]=Automatisches Löschen von Backup-Dateien in /var/univention-backup: wenn backup/clean/max_age gesetzt ist und weniger als backup/clean/min_backups Backup-Dateien existieren, werden keine Dateien gelöscht. Standardwert ist 10.
-Type=int
+Type=uint
 Categories=service-misc
+Default=10
 
 [groups/default/.*]
 Description[de]=Übersetzung von bekannten Gruppennamen wie "Administrator" in lokalisierten Gruppennamen.
