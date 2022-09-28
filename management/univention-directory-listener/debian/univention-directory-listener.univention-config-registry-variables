@@ -2,6 +2,8 @@
 Description[de]=Diese Variable konfiguriert den Detailgrad der Logausgaben in /var/log/univention/listener.log. Mögliche Werte: 0-4 (0: nur Fehlermeldungen bis 4: alle Debugausgaben).
 Description[en]=This variable configures the verbosity of the log messages in /var/log/univention/listener.log. Possible values: 0-4 (0: only error messages to 4: all debug statements).
 Type=int
+Min=0
+Max=4
 Categories=service-ln
 
 [listener/network/protocol]
@@ -25,7 +27,7 @@ Categories=service-ln
 [listener/uniquemember/skip]
 Description[de]=Ist diese Variable auf 'yes' gesetzt, führt der Univention Directory Listener zusätzliche Konsistenzprüfungen durch, um zu verhindern, das ein Benutzer einer Gruppe mehrfach hinzugefügt wird. Diese Prüfungen können deaktiviert werden, indem die Variablen 'listener/memberuid/skip' und 'listener/uniquemember/skip' auf 'no' gesetzt werden.
 Description[en]=If this variable is set to 'yes', the Univention Directory Listener performs consistency checks to prevent a user name being added into a group multiple times. These checks can be deactivated by setting the variables 'listener/memberuid/skip' and 'listener/uniquemember/skip' to 'no'.
-Type=str
+Type=bool
 Categories=service-ln
 
 [listener/cache/filter]
@@ -35,39 +37,46 @@ Type=str
 Categories=service-ln
 
 [listener/timeout/scans]
-Description[de]=Timeout in Sekunden für lange synchrone LDAP Suchanfragen. Standard: 2h
-Description[en]=Timeout in seconds for long running synchronous LDAP search queries. Default: 2h
+Description[de]=Timeout in Sekunden für lange synchrone LDAP Suchanfragen.
+Description[en]=Timeout in seconds for long running synchronous LDAP search queries.
 Type=int
 Categories=service-ln
+Default=7200
 
 [listener/ldap/retries]
-Description[de]=Anzahl der Versuche zum Verbindungsaufbau zum LDAP-Server im Fall von Fehlern. Standard: 5
-Description[en]=Number of retries to re-connect the LDAP server in case of errors. Default: 5
-Type=int
+Description[de]=Anzahl der Versuche zum Verbindungsaufbau zum LDAP-Server im Fall von Fehlern.
+Description[en]=Number of retries to re-connect the LDAP server in case of errors.
+Type=uint
 Categories=service-ln
+Default=5
 
 [listener/freespace]
-Description[de]=Diese Variable legt die untere Grenze für den freien Speicherplatz in den Verzeichnissen '/var/lib/univention-ldap/' und '/var/lib/univention-directory-listener/', ab der der Listener gestoppt wird. Standard is 10 [MiB].
-Description[en]=This variable configures the lower limit for free space in the directories '/var/lib/univention-ldap/' and '/var/lib/univention-directory-listener/', when the Listener will be stopped. Default is 10 [MiB].
-Type=int
+Description[de]=Diese Variable legt die untere Grenze für den freien Speicherplatz in MiB in den Verzeichnissen '/var/lib/univention-ldap/' und '/var/lib/univention-directory-listener/', ab der der Listener gestoppt wird.
+Description[en]=This variable configures the lower limit for free space in MiB in the directories '/var/lib/univention-ldap/' and '/var/lib/univention-directory-listener/', when the Listener will be stopped.
+Type=uint
 Categories=service-ln
+Default=10
 
 [listener/cache/mdb/maxsize]
 Description[de]=Die maximale Größe der Cache-Datenbank in Bytes. Auf 64 Bit Systemen ist der Default 4 GiB. Auf 32 Bit Systemen ist der Default 1.9 GiB.
 Description[en]=The maximum size of the cache database in bytes. On 64 bit systems the default is 4 GiB. On 32 bit systems the default is 1.9 GiB.
-Type=str
+Type=uint
 Categories=service-ln
 
 [listener/module/<name>/deactivate]
-Description[de]=Deaktiviert das Listener Modul <name>, wenn eingeschaltet. Standard wenn nicht gesetzt: false.
-Description[en]=When enabled, deactivates the listener module <name>. Default when no set: false.
+Description[de]=Deaktiviert das Listener Modul <name>, wenn eingeschaltet.
+Description[en]=When enabled, deactivates the listener module <name>.
 Type=bool
 Categories=service-ln
+Default=false
 
 [listener/module/<name>/debug/level]
 Description[de]=Diese Variable konfiguriert den Detailgrad der Logausgaben für das Listener Modul <name> in /var/log/univention/listener_modules/<name>.log. Mögliche Werte: 0-4 (0: nur Fehlermeldungen bis 4: alle Debugausgaben). Standard: 2 (INFO).
 Description[en]=This variable configures the verbosity of the log messages for the listener module <name> in /var/log/univention/listener_modules/<name>.log. Possible values: 0-4 (0: only error messages to 4: all debug statements). Default: 2 (INFO).
 Type=int
+Min=0
+Max=4
+Default=2
 Categories=service-ln
 
 [listener/init/fake/replication/mdb]
@@ -85,7 +94,9 @@ Categories=service-ln
 [listener/init/fake]
 Description[de]=Eine durch Leerzeichen separierte Liste von Listener Modulen, die durch einen alternativen Mechanismus initialisiert werden sollen. Derzeit ist dies nur für das Modul 'replication' umgesetzt, wofür weitere Einstellungen getätigt werden müssen.
 Description[en]=A space separated list of Listener modules, for which an alternative mechanism should be used to initialize them. Currently this is only supported for the module 'replication', which required additional configuration.
-Type=str
+Type=list
+Separator=[ ]
+Elementtype=str
 Categories=service-ln
 
 [listener/init/fake/helper]
@@ -101,7 +112,8 @@ Type=str
 Categories=service-ln
 
 [listener/init/fake/notifierid/timeout]
-Description[de]=Die Zeitspanne in Sekunden, für die auf die Initialisierung der Listener-Module gewartet wird. Standard: 24h
-Description[en]=The time span in seconds, for which the Listener waits for the modules to be initialized. Default: 24h
-Type=int
+Description[de]=Die Zeitspanne in Sekunden, für die auf die Initialisierung der Listener-Module gewartet wird.
+Description[en]=The time span in seconds, for which the Listener waits for the modules to be initialized.
+Type=uint
+Default=86400
 Categories=service-ln
