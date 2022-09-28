@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-antivir-mail
+fix: 11.0.0-4
+desc: |
+ This update addresses the following issue:
+ * Several UCR variable type annotations have been fixed. Most importantly
+   UCRV `clamav/proxy/http` is now checked for validity as specifying a URL
+   with a path, query or fragment will break ClamAV.
+bug: [54495]

@@ -8,13 +8,17 @@ Categories=service-mail,system-services
 Description[de]=Log Level für amavisd-new. Mögliche Werte sind 0 bis 5. Ist die Variable nicht gesetzt, wird der Standardwert 0 verwendet.
 Description[en]=Log level for amavisd-new. Possible values are 0 to 5. If the variable is unset, the default value 0 is used.
 Type=int
+Min=0
+Max=5
 Categories=service-mail
+Default=0
 
 [mail/antivir/max_servers]
 Description[de]=Maximale Anzahl gleichzeitiger AMaViS-Prozesse. Wenn nicht gesetzt, ist der Standard 2.
 Description[en]=Maximum number of concurrent AMaViS processes. If not set, the default of 2 is used.
-Type=int
+Type=pint
 Categories=service-mail
+Default=2
 
 [clamav/daemon/autostart]
 Description[de]=Die Variable konfiguriert den Startmodus des ClamAV-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
@@ -31,19 +35,21 @@ Categories=service-webproxy,service-mail,system-services
 [mail/antispam/bodysizelimit]
 Description[de]=E-Mails, die größer sind als die hier konfigurierte Größe in Kilobyte werden von der Spamerkennung nicht geprüft.
 Description[en]=E-mails which are bigger than the size in kilobytes configured here are not checked by the spam detection.
-Type=int
+Type=pint
 Categories=service-mail
 
 [clamav/database/mirror]
 Description[de]=Von diesen/diesem Server(n) werden Virensignatur-Updates durch den Freshclam-Dienst heruntergeladen. Mehrere Werte müssen durch Leerzeichen getrennt werden.
 Description[en]=Virus signature updates are downloaded by the Freshclam service from this/these server(s). Multiple values must be separated by spaces.
-Type=str
+Type=list
+Separator=[ ]
+Elementtype=str
 Categories=service-mail
 
 [clamav/proxy/http]
 Description[de]=Der zu verwendende HTTP-Proxyserver für den Download der Virensignaturen durch Freshclam, z.B. <http://192.168.1.100>. Ist die Variable nicht gesetzt, gelten die Proxy-Einstellungen aus 'http/proxy'.
 Description[en]=The HTTP proxy server to be used for downloading the virus signatures through Freshclam, e.g. <http://192.168.1.100>. If the variable is unset, the settings from 'http/proxy' apply.
-Type=str
+Type=url_proxy
 Categories=service-mail
 
 [clamav/proxy/username]
@@ -61,7 +67,7 @@ Categories=service-mail
 [clamav/proxy/port]
 Description[de]=Der Port des zu verwendenden HTTP-Proxyservers für den Download der Virensignaturen durch Freshclam, z.B. 3128. Ist die Variable nicht gesetzt, gelten die Proxy-Einstellungen aus 'http/proxy'.
 Description[en]=The port of the HTTP proxy server to be used for downloading the virus signatures through Freshclam, e.g. 3128. If the variable is unset, the settings from 'http/proxy' apply.
-Type=int
+Type=portnumber
 Categories=service-mail
 
 [mail/antispam/headertag]
