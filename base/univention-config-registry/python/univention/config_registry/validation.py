@@ -37,7 +37,7 @@ import ipaddress
 import json
 import re
 from six.moves.urllib.parse import urlsplit
-from typing import Dict, Iterator, Optional, Pattern, Type as _Type, Union, cast  # noqa: F401
+from typing import Container, Dict, Iterator, Optional, Pattern, Type as _Type, Union, cast  # noqa: F401
 
 import univention.config_registry_info as cri
 from univention.config_registry.backend import BooleanConfigRegistry
@@ -361,6 +361,67 @@ class List(BaseValidator):
 	def __str__(self):
 		# type: () -> str
 		return '%s[%s%s]' % (self.NAME, self.element_type, self.separator.pattern)
+
+
+class Cron(BaseValidator):
+	"""
+	Validator for |UCR| type "cron".
+	"""
+
+	NAME = "cron"
+	PREDEFINED = frozenset("@annually @yearly @monthly @weekly @daily @hourly @reboot".split())
+	MONTHS = frozenset("jan feb mar apr may jun jul aug sep oct nov dec".split())
+	DAYS = frozenset("sun mon tue wed thu fri sat".split())
+
+	def validate(self, value):
+		# type: (str) -> object
+		if value.startswith("#"):
+			pass
+		elif value in self.PREDEFINED:
+			pass
+		else:
+			minutes, hours, days_month, months, days_week = value.split()
+			self._check(minutes, 0, 59)
+			self._check(hours, 0, 23)
+			self._check(days_month, 1, 31)
+			self._check(months, 1, 12, self.MONTHS)
+			self._check(days_week, 0, 7, self.DAYS)
+		return True
+
+	@staticmethod
+	def _check(text, low, high, extra={}):
+		# type: (str, int, int, Container[str]) -> None
+		if text.lower() in extra:
+			return
+
+		for value in text.split(","):
+			base, _, step = value.partition("/")
+			start, _, end = base.partition("-")
+
+			if start == "*":
+				pass
+			elif low <= int(start) <= high:
+				pass
+			else:
+				raise ValueError("start={start!r} not in range [{low}-{high}]".format(**locals()))
+
+			if not end:
+				pass
+			elif start == "*":
+				raise ValueError("end={end!r} not compatible with '*'".format(**locals()))
+			elif low <= int(start) <= int(end) <= high:
+				pass
+			else:
+				raise ValueError("end={end!r} not in range [{low}-{start}-{high}]".format(**locals()))
+
+			if not step:
+				pass
+			elif start != "*" and not end:
+				raise ValueError("step={step!r} requires range".format(**locals()))
+			elif (low or 1) <= int(step) <= high:
+				pass
+			else:
+				raise ValueError("step={step!r} not in range [{low_}-{high}]".format(low_=low or 1, **locals()))
 
 
 class Type(object):

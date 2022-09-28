@@ -1,3 +1,9 @@
+univention-config-registry (15.0.8-1) unstable; urgency=low
+
+  * Bug #55554: Add Type=cron
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 19 Jan 2023 20:22:22 +0100
+
 univention-config-registry (15.0.7-23) unstable; urgency=low
 
   * Bug #55573: Update handler_set to return more specific info regarding

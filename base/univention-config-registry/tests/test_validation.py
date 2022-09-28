@@ -32,6 +32,8 @@
 
 """Unit test for univention.config_registry.validation."""
 
+from re import escape
+
 import pytest
 import univention.config_registry.validation as ttyp
 
@@ -340,6 +342,47 @@ def test_list(value, element_type, separator, expected, var):
 		var['separator'] = separator
 	checker = ttyp.List(var)
 	assert checker.is_valid(value) == expected
+
+
+@pytest.mark.parametrize(
+	('value', 'error'),
+	[
+		("", "not enough values to unpack (expected 5, got 0)|need more than 0 values to unpack"),
+		("#disabled", None),
+		("0 0  0 0 0", "start='0' not in range [1-31]"),
+		("0 0  1 1", "not enough values to unpack (expected 5, got 4)|need more than 4 values to unpack"),
+		("0 0  1 1 0", None),
+		("0 0  1 1 0 1", "too many values to unpack (expected 5)|too many values to unpack"),
+		("59 23  31 12 7", None),
+		("60 24  32 13 8", "start='60' not in range [0-59]"),
+		("0,59 0,23  1,31 1,12 0,7", None),
+		("0-59 0-23  1-31 1-12 0-7", None),
+		("0-60 0-24  1-32 1-13 0-8", "end='60' not in range [0-0-59]"),
+		("0-59/0 0-23/0  1-31/0 1-12/0 0-7/0", "step='0' not in range [1-59]"),
+		("0-59/1 0-23/1  1-31/1 1-12/1 0-7/1", None),
+		("0-59/59 0-23/23  1-31/31 1-12/12 0-7/7", None),
+		("0-59/60 0-23/24  1-31/32 1-12/13 0-7/8", "step='60' not in range [1-59]"),
+		("* *  * * *", None),
+		("*-0 *-0  *-1 *-1 *-0", "end='0' not compatible with '*'"),
+		("*/2 */2  */2 */2 */2", None),
+		("0/1 0/1  1/1 1/1 0/1", "step='1' requires range"),
+		("0 0  1 jan mon", None),
+		("@annually", None),
+		("@yearly", None),
+		("@monthly", None),
+		("@weekly", None),
+		("@daily", None),
+		("@hourly", None),
+		("@reboot", None),
+	]
+)
+def test_cron(value, error):
+	cron = ttyp.Cron({})
+	if error:
+		with pytest.raises(ValueError, match="|".join(map(escape, error.split("|")))):
+			cron.validate(value)
+	else:
+		assert cron.validate(value)
 
 
 @pytest.mark.parametrize(
