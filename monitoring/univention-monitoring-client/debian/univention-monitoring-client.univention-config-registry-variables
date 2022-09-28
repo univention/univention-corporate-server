@@ -1,7 +1,7 @@
 [monitoring/client/cron]
 Description[en]=Specifies the cron interval for the execution of scripts to generate the alert metric data.
 Description[de]=Spezifiziert das cron-Interval für das Ausführen von Skripten zur Alert-Metrik-Daten generierung.
-Type=str
+Type=cron
 Default=*/5 * * * *
 Categories=service-monitoring
 

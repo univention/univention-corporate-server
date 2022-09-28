@@ -1,3 +1,9 @@
+univention-monitoring-client (1.0.1-1) unstable; urgency=medium
+
+  * Bug #55554: Fix UCR variable typing
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 18 Jan 2023 09:48:08 +0100
+
 univention-monitoring-client (1.0.0-8) unstable; urgency=medium
 
   * Bug #55341: restrict UMC flavor to necessary UDM commands
