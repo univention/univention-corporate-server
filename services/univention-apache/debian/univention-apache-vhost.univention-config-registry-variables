@@ -1,17 +1,24 @@
 [apache2/vhosts/.*/enabled]
-Type=bool
 Description[de]=Basis-Variable, die steuert, ob ein VHost für Apache angelegt wird. Der Name der Variablen steuert gleichzeitig auch einen Teil des Eintrags: apache2/vhosts/myvhost.mydomain.intranet/443/enabled legt einen VHost mit ServerName myvhost.mydomain.intranet und Port 443 an. Zusammen bilden den Schlüssel, über den der Eintrag weiter angepasst werden kann.
 Description[en]=Base variable to decide whether the VHost will be added to Apache. The name of the variable also controls a part of the entry: apache2/vhosts/myvhost.mydomain.intranet/443/enabled will add a VHost with ServerName myvhost.mydomain.intranet and port 443. Together, they form the key to further customize the entry.
+Type=bool
+Categories=service-apache
 
 [apache2/vhosts/.*/files]
-Type=str
 Description[de]=Kommaseparierte Liste von Dateinamen, die im VHost eingebunden werden (falls sie existieren).
 Description[en]=Comma-seperated list of file names with apache configs that are included in this vhost (if present).
+Type=list
+Separator=,
+Elementtype=str
+Categories=service-apache
 
 [apache2/vhosts/.*/aliases]
-Type=str
 Description[de]=Kommaseparierte Liste von Servernamen, die als Aliase zum eigenlichen Servernamen dienen.
 Description[en]=Comma-seperated list of server names that act as aliases to the actual server name.
+Type=list
+Separator=,
+Elementtype=str
+Categories=service-apache
 
 [apache2/vhosts/.*/ssl/certificate]
 Description[de]=Der absolute Pfad zur SSL-Zertifikatsdatei für mod_ssl. Das Zertifikat muss PEM-codiert sein. Ist die Variable nicht gesetzt, wird das Zertifikat aus der UCS-CA verwendet (/etc/univention/ssl/FQDN/cert.pem).
