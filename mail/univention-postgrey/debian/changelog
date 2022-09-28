@@ -1,3 +1,9 @@
+univention-postgrey (8.0.1-1) unstable; urgency=medium
+
+  * Bug #55554: Fix UCR variable typing
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Sep 2022 19:51:26 +0200
+
 univention-postgrey (8.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
