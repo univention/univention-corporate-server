@@ -1,21 +1,25 @@
 [portal/admin-groups]
 Description[de]=Gruppen, die als Portal-Admins gelten sollen. Schaltet für diese Benutzer den Edit-Modus frei (falls verfügbar). Mehrere Gruppen werden mit Komma getrennt. Ein leerer Wert schaltet die Funktion ab. Default: "Domain Admins"
 Description[en]=Groups that are regarded as portal admins. Enables the edit mode for these users (if available). Separate multiple groups by comma. An empty value disables the edit mode. Default: "Domain Admins"
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=portal
 
 [portal/port]
 Description[de]=Der Port, auf der der Univention Portal Server läuft.
 Description[en]=The port used by the Univention Portal server.
 Default=8095
-Type=int
+Type=portnumber
 Categories=portal
 
 [portal/paths]
 Description[de]=Pfade, unter denen das Portal erreichbar sein soll. Getrennt durch Kommata. Erfordert möglicherweise weitere Konfigurationen für Apache.
 Description[en]=Paths, which shall be served by the portal. Comma separated. May require additional configuration of Apache.
 Default=/univention/portal/, /univention/umc/
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=portal
 
 [portal/auth-mode]

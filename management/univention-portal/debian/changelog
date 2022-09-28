@@ -1,3 +1,9 @@
+univention-portal (4.0.8-1) unstable; urgency=medium
+
+  * Bug #55554: Fix UCR variable typing
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 18 Jan 2023 09:48:13 +0100
+
 univention-portal (4.0.7-10) unstable; urgency=medium
 
   * Bug #55378: adjust CSS to correctly display the cookie banner
