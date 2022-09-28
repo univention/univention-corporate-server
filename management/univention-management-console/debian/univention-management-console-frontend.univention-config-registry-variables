@@ -12,8 +12,10 @@ Categories=management-umc
 
 [umc/web/favorites/default]
 Description[de]=Die hier konfigurierten UMC-Module werden in der Grundeinstellung als "Favoriten"-Module in der Univention Management Console angezeigt. Mehrere Einträge müssen durch Komma getrennt werden.
-Description[en]=The UMC modules configured here are shown as "Favorites" modules in the default setting of the Univention Management Console. Multiple entries are separated by blanks.
-Type=str
+Description[en]=The UMC modules configured here are shown as "Favorites" modules in the default setting of the Univention Management Console. Multiple entries are separated by comma.
+Type=list
+Separator=,
+Elementtype=str
 Categories=management-umc
 
 [umc/web/piwik]
@@ -25,7 +27,7 @@ Categories=management-umc
 [umc/web/host_referrallimit]
 Description[de]=In der Titelzeile der UMC wird eine Auswahlliste angezeigt, mit der auf eine andere Univention Management Console in der Domäne gewechselt werden kann. Diese Variable konfiguriert die maximale Anzahl an Instanzen, die als Drop-Down-Menü angeboten wird.
 Description[en]=In the title panel of the UMC a selection list is shown. It can be used to navigate to a different Univention Management Console in the domain. This variable configures the maximum number of instances which are presented as a drop down menu.
-Type=int
+Type=uint
 Categories=management-umc
 
 [umc/web/sso/newwindow]

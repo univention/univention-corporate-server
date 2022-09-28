@@ -5,16 +5,18 @@ Type=str
 Categories=management-umc
 
 [umc/http/port]
-Description[de]=Auf diesem Port wartet der UMC-Webserver auf Anfragen. Ist die Variable nicht gesetzt, gilt '8090'.
-Description[en]=The UMC web server is listening on this port. If the variable is unset, '8090' applies.
-Type=int
+Description[de]=Auf diesem Port wartet der UMC-Webserver auf Anfragen.
+Description[en]=The UMC web server is listening on this port.
+Type=portnumber
 Categories=management-umc
+Default=8090
 
 [umc/http/interface]
-Description[de]=Auf diesem Netzwerk-Interface wartet der UMC-Webserver auf Anfragen. Ist die Variable nicht gesetzt, gilt '127.0.0.1'.
-Description[en]=The UMC web server is listening on this network interface. If the variable is unset, '127.0.0.1' applies.
-Type=str
+Description[de]=Auf diesem Netzwerk-Interface wartet der UMC-Webserver auf Anfragen.
+Description[en]=The UMC web server is listening on this network interface.
+Type=ipaddress
 Categories=management-umc
+Default=127.0.0.1
 
 [umc/http/enforce-session-cookie]
 Description[de]=Wenn gesetzt, ist der Cookie zur Anmeldung ein Session-Cookie: Das Schließen des Browsers wird ihn löschen und der Benutzer ist effektiv abgemeldet.
@@ -34,37 +36,43 @@ Default=false
 Description[de]=Legt den Wert des SameSite-Cookie-Attributs für UMC-Cookies fest. Mögliche Werte sind "Strict", "Lax" und "None".
 Description[en]=Sets the SameSite cookie attribute for UMC cookies. Possible values are "Strict", "Lax" and "None".
 Type=str
+Rexex=^(Strict|Lax|None)$
 Categories=management-umc
 
 [umc/http/session/timeout]
-Description[de]=Nach diesem Zeitraum in Sekunden wird die Browser-Sitzung automatisch geschlossen und eine Neuanmeldung ist notwendig. Ist die Variable nicht gesetzt, gilt 300, also fünf Minuten.
-Description[en]=After this time period in seconds the browser session is automatically closed and a renewed login is required. If the variable is unset, 300 applies (i.e. five minutes).
-Type=int
+Description[de]=Nach diesem Zeitraum in Sekunden wird die Browser-Sitzung automatisch geschlossen und eine Neuanmeldung ist notwendig.
+Description[en]=After this time period in seconds the browser session is automatically closed and a renewed login is required.
+Type=uint
 Categories=management-umc
+Default=300
 
 [umc/server/upload/min_free_space]
-Description[de]=Legt die minimale Größe (in KB) an freiem Festplattenspeicher fest, die notwendig ist um Dateien hochladen zu können. Ist die Variable nicht gesetzt, gilt 51200.
-Description[en]=Sets the minimum size of free disk space (in kb) which must be available to upload files. If the variable is unset, 51200 applies.
-Type=int
+Description[de]=Legt die minimale Größe (in KB) an freiem Festplattenspeicher fest, die notwendig ist um Dateien hochladen zu können.
+Description[en]=Sets the minimum size of free disk space (in kb) which must be available to upload files.
+Type=uint
 Categories=management-umc
+Default=51200
 
 [umc/http/maxthreads]
-Description[de]=Definiert die maximale Anzahl an offenen Anfragen, die der UMC-Web-Server parallel verarbeiten wird. Ist die Variable nicht gesetzt, gilt 35.
-Description[en]=Defines the maximum number of open request that the UMC web server will process in parallel. If the variable is unset, 35 applies.
-Type=int
+Description[de]=Definiert die maximale Anzahl an offenen Anfragen, die der UMC-Web-Server parallel verarbeiten wird.
+Description[en]=Defines the maximum number of open request that the UMC web server will process in parallel.
+Type=uint
 Categories=management-umc
+Default=35
 
 [umc/http/requestqueuesize]
-Description[de]=Definiert die Anzahl noch nicht akzeptierter Verbindungen, die der UMC-Web-Server zulässt bevor er neue Verbindungen zurückweist. Ist die Variable nicht gesetzt, gilt 100.
-Description[en]=Defines the number of unaccepted connections that the UMC web server will allow before refusing new connections. If the variable is unset, 100 applies.
-Type=int
+Description[de]=Definiert die Anzahl noch nicht akzeptierter Verbindungen, die der UMC-Web-Server zulässt bevor er neue Verbindungen zurückweist.
+Description[en]=Defines the number of unaccepted connections that the UMC web server will allow before refusing new connections.
+Type=uint
 Categories=management-umc
+Default=100
 
 [umc/http/dispatch-interval]
-Description[de]=Definiert das reguläre Interval für die Abarbeitung wiederkehrender Aufgaben im UMC-Web-Server in Millisekunden (Standard: 100).
-Description[en]=Defined the regular interval for the processing of recurring tasks in the UMC web server in milliseconds (default: 100)
-Type=int
+Description[de]=Definiert das reguläre Interval für die Abarbeitung wiederkehrender Aufgaben im UMC-Web-Server in Millisekunden.
+Description[en]=Defined the regular interval for the processing of recurring tasks in the UMC web server in milliseconds.
+Type=uint
 Categories=management-umc
+Default=100
 
 [umc/saml/idp-server]
 Description[de]=Definiert den SAML 2.0 Identity Provider, der vom UMC-Web-Server für Single sign on verwendet wird.
@@ -79,15 +87,16 @@ Type=str
 Categories=management-umc,saml
 
 [umc/saml/assertion-lifetime]
-Description[de]=Definiert die Gültigkeitsdauer einer SAML-Assertion in Sekunden (Standard: 300).
-Description[en]=Defines the SAML assertion validity time in seconds (default: 300).
-Type=int
+Description[de]=Definiert die Gültigkeitsdauer einer SAML-Assertion in Sekunden.
+Description[en]=Defines the SAML assertion validity time in seconds.
+Type=uint
 Categories=management-umc,saml
+Default=300
 
 [umc/saml/grace_time]
 Description[de]=Definiert die nach Gültigkeitsende der SAML-Assertion akzeptierte Zeitabweichung (in Sekunden) für PAM und LDAP authentifizierung.
 Description[en]=Defines the accepted time difference (in seconds) of the SAML assertion validity time for PAM and LDAP authentication.
-Type=int
+Type=uint
 Categories=management-umc,saml
 
 [umc/saml/in-memory-identity-cache]
@@ -104,16 +113,19 @@ Type=str
 Categories=management-umc
 
 [umc/http/max-open-file-descriptors]
-Description[de]=Definiert die maximale Anzahl an offenen Dateideskriptoren im UMC-Web-Server (Standard: 65535).
-Description[en]=Defines the maximum number of open file descriptors for the UMC-Webserver (default: 65535).
+Description[de]=Definiert die maximale Anzahl an offenen Dateideskriptoren im UMC-Web-Server.
+Description[en]=Defines the maximum number of open file descriptors for the UMC-Webserver.
 Type=int
+Min=-1
 Categories=management-umc
+Default=65535
 
 [umc/http/max_request_body_size]
-Description[de]=Definiert die maximale Größe einer HTTP-Anfrage an den UMC-Webserver in bytes (Standard: 104857600).
-Description[en]=Defines the maximum size in bytes of a HTTP request against the UMC-Webserver (default: 104857600).
-Type=int
+Description[de]=Definiert die maximale Größe einer HTTP-Anfrage an den UMC-Webserver in bytes.
+Description[en]=Defines the maximum size in bytes of a HTTP request against the UMC-Webserver.
+Type=uint
 Categories=management-umc
+Default=104857600
 
 [umc/http/content-security-policy/.*]
 Description[en]=Defines the Content-Security-Policy header of all UMC HTTP responses. Possible subvariables are default-src, script-src, object-src, style-src, img-src, media-src, frame-src, font-src, connect-src, form-action, frame-ancestors.
@@ -134,13 +146,15 @@ Type=bool
 Categories=management-umc
 
 [umc/http/processes]
-Description[de]=Definiert die Anzahl paralleler UMC-Web-Server Prozesse (Standard: keine)
-Description[en]=Defines the number of parallel UMC-Web-Servers processes (default: none).
-Type=int
+Description[de]=Definiert die Anzahl paralleler UMC-Web-Server Prozesse.
+Description[en]=Defines the number of parallel UMC-Web-Servers processes.
+Type=pint
 Categories=management-umc
+Default=1
 
 [umc/http/processes/start-port]
-Description[de]=Definiert den ersten port für parallele UMC-Webserver (Standard: 18200).
-Description[en]=Defines the first port for parallel UMC-Webserver (default: 18200).
-Type=int
+Description[de]=Definiert den ersten port für parallele UMC-Webserver.
+Description[en]=Defines the first port for parallel UMC-Webserver.
+Type=portnumber
 Categories=management-umc
+Default=18200

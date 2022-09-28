@@ -8,36 +8,43 @@ Categories=management-umc
 Description[de]=Diese Variable konfiguriert den Detailgrad der Logmeldungen in /var/log/univention/management-console-server.log. Mögliche Werte: 0-4/99 (0: nur Fehlermeldungen bis 4: alle Debugausgaben, mit 99 werden auch sensible Daten wie Klartext-Passwörter protokolliert).
 Description[en]=This variable configures the verbosity of log messages in /var/log/univention/management-console-server.log. Possible values: 0-4/99 (0: only error messages to 4: all debug statements, with = 99 sensitive data like cleartext passwords is logged as well).
 Type=int
+Min=0
+Max=99
 Categories=management-umc
 
 [umc/server/upload/max]
-Description[de]=Diese Variable konfiguriert die maximale Größe von hochladbaren Dateien in Kilobyte. Ist die Variable nicht gesetzt, gilt 64.
-Description[en]=This variable configures the maximum size of file uploads in kilobyte. If the variable is unset, 64 applies.
-Type=int
+Description[de]=Diese Variable konfiguriert die maximale Größe von hochladbaren Dateien in Kilobyte.
+Description[en]=This variable configures the maximum size of file uploads in kilobyte.
+Type=uint
 Categories=management-umc
+Default=64
 
 [umc/server/dispatch-interval]
-Description[de]=Definiert das reguläre Interval für die Abarbeitung wiederkehrender Aufgaben im UMC-Server in Millisekunden (Standard: 100).
-Description[en]=Defined the regular interval for the processing of recurring tasks in the UMC server in milliseconds (default: 100)
-Type=int
+Description[de]=Definiert das reguläre Interval für die Abarbeitung wiederkehrender Aufgaben im UMC-Server in Millisekunden.
+Description[en]=Defined the regular interval for the processing of recurring tasks in the UMC server in milliseconds.
+Type=uint
 Categories=management-umc
+Default=100
 
 [umc/server/processes]
-Description[de]=Definiert die Anzahl an UMC-Server Prozessen, die parallel gestartet werden (Standard: 1).
-Description[en]=Defined the number of UMC-Server processes, which are started in parallel (default: 1).
-Type=int
+Description[de]=Definiert die Anzahl an UMC-Server Prozessen, die parallel gestartet werden.
+Description[en]=Defined the number of UMC-Server processes, which are started in parallel.
+Type=uint
 Categories=management-umc
+Default=1
 
 [umc/module/debug/level]
 Description[de]=Der Detailgrad der Logmeldungen in /var/log/univention/management-console-module-*. Mögliche Werte: 0-4/99 (0: nur Fehlermeldungen bis 4: alle Debugausgaben, mit 99 werden auch sensible Daten wie Klartext-Passwörter protokolliert).
 Description[en]=The verbosity of log messages in /var/log/univention/management-console-module-*. Possible values: 0-4/99 (0: only error messages to 4: all debug statements, with = 99 sensitive data like cleartext passwords is logged as well).
 Type=int
+Min=0
+Max=99
 Categories=management-umc
 
 [umc/module/timeout]
 Description[de]=Die Univention Management Console öffnet verschiedene Prozesse für die einzelnen Module (z.B. für die Benutzerverwaltung). Wird ein Modul für den hier konfigurierten Zeitraum in Sekunden nicht benutzt, wird der Prozess beendet und bei einem erneuten Zugriff auf das Modul automatisch wieder gestartet.
 Description[en]=The Univention Management Console opens various processes for its modules (e.g. for user management). If a module isn't used for the time period configured here, the process is terminated and automatically restarted if the module is opened again.
-Type=int
+Type=uint
 Categories=management-umc
 
 [umc/module/.*/.*/disabled]
