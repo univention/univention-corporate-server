@@ -11,21 +11,24 @@ Type=bool
 Categories=management
 
 [ucs/server/sso/autoregistraton]
-Description[de]=Wenn diese Variable auf 'true' gesetzt ist, registriert dieses UCS System die eigene IP-Adresse am FQDN des Identity Provider (ucs/server/sso/fqdn). (default: true)
-Description[en]=If this variable is set to 'true', this UCS system tregisters its IP address at the fqdn of the identity provider (ucs/server/sso/fqdn). (default: true)
+Description[de]=Wenn diese Variable auf 'true' gesetzt ist, registriert dieses UCS System die eigene IP-Adresse am FQDN des Identity Provider (ucs/server/sso/fqdn).
+Description[en]=If this variable is set to 'true', this UCS system tregisters its IP address at the fqdn of the identity provider (ucs/server/sso/fqdn).
 Type=bool
+Default=true
 Categories=management
 
 [ucs/server/sso/certificate/generation]
-Description[de]=Wenn diese Variable auf 'true' gesetzt ist, wird das Zertifikat für den FQDN des Identity Provider (ucs/server/sso/fqdn) automatisch erstellt. (default: true)
-Description[en]=If this variable is set to 'true', the certificate for the fqdn of the identity provider (ucs/server/sso/fqdn) is created automatically. (default: true)
+Description[de]=Wenn diese Variable auf 'true' gesetzt ist, wird das Zertifikat für den FQDN des Identity Provider (ucs/server/sso/fqdn) automatisch erstellt.
+Description[en]=If this variable is set to 'true', the certificate for the fqdn of the identity provider (ucs/server/sso/fqdn) is created automatically.
 Type=bool
+Default=true
 Categories=management
 
 [ucs/server/sso/certificate/download]
-Description[de]=Wenn diese Variable auf 'true' gesetzt ist, wird das Zertifikat für den FQDN des Identity Provider (ucs/server/sso/fqdn) automatisch heruntergeladen. (default: true)
-Description[en]=If this variable is set to 'true', the certificate for the fqdn of the identity provider (ucs/server/sso/fqdn) is downloaded automatically. (default: true)
+Description[de]=Wenn diese Variable auf 'true' gesetzt ist, wird das Zertifikat für den FQDN des Identity Provider (ucs/server/sso/fqdn) automatisch heruntergeladen.
+Description[en]=If this variable is set to 'true', the certificate for the fqdn of the identity provider (ucs/server/sso/fqdn) is downloaded automatically.
 Type=bool
+Default=true
 Categories=management
 
 [saml/idp/entityID]
@@ -36,14 +39,15 @@ Categories=saml
 
 [saml/idp/entityID/supplement/.*]
 Description[de]=Mit diesen Variablen lassen sich zusätzliche entityIDs für den SAML Identity Provider festlegen (z.B.: saml/idp/entityID/supplement/o365=true).
-Description[en]=This variable can be used to define additional entityIDs for the SAML identity provider (example: saml/idp/entityID/supplement/o365=true)
+Description[en]=This variable can be used to define additional entityIDs for the SAML identity provider (example: saml/idp/entityID/supplement/o365=true).
 Type=str
 Categories=saml
 
 [saml/idp/enableSAML20-IdP]
-Description[de]=Wenn diese Variable auf 'true' gesetzt ist, ist der SAML 2.0 Identity Provider aktiviert. (default: true)
-Description[en]=If this variable is set to 'true', the SAML 2.0 identity provider is activated. (default: true)
-Type=str
+Description[de]=Wenn diese Variable auf 'true' gesetzt ist, ist der SAML 2.0 Identity Provider aktiviert.
+Description[en]=If this variable is set to 'true', the SAML 2.0 identity provider is activated.
+Type=bool
+Default=true
 Categories=saml
 
 [saml/idp/negotiate]
@@ -55,7 +59,9 @@ Categories=saml
 [saml/idp/negotiate/filter-subnets]
 Description[de]=Beschränkt die Anmeldung per Kerberos / HTTP Negotiate auf Anfragen aus dem angegebenen Subnetz. Der Wert ist eine kommaseparierte Liste von Netzwerken (z.B.: 127.0.0.0/16,192.168.0.0/16).
 Description[en]=Restrict single sign on via Kerberos / HTTP negotiate only to clients requesting from the specified subnet. The value is a comma spearated list of networks (example: 127.0.0.0/16,192.168.0.0/16).
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=saml
 
 [saml/idp/timezone]
@@ -65,9 +71,10 @@ Type=str
 Categories=saml
 
 [saml/idp/log/debug/enabled]
-Description[de]=Aktivieren oder deaktivieren von Debugausgaben. (default: false)
-Description[en]=Activation or deactivation of debug output. (default: false)
+Description[de]=Aktivieren oder deaktivieren von Debugausgaben.
+Description[en]=Activation or deactivation of debug output.
 Type=bool
+Default=false
 Categories=saml
 
 [saml/idp/log/level]
@@ -95,10 +102,11 @@ Type=str
 Categories=saml
 
 [saml/idp/technicalcontactname]
-Description[de]=Name des Kontaktes der bei Problemen Hilfestellung leistet. (default: Administrator)
-Description[en]=Name of the contact who offers help with problems. (default: Administrator)
+Description[de]=Name des Kontaktes der bei Problemen Hilfestellung leistet.
+Description[en]=Name of the contact who offers help with problems.
 Type=str
 Categories=saml
+Default=Administrator
 
 [saml/idp/technicalcontactemail]
 Description[de]=Kontakt E-Mailadresse um Probleme zu melden. (default: root@[domainname])
@@ -107,27 +115,33 @@ Type=str
 Categories=saml
 
 [saml/idp/ldap/enable_tls]
-Description[de]=Ist diese Variable auf 'true' gesetzt, wird eine verschlüsselte Verbindung zum LDAP Server aufgebaut. (default: true)
-Description[en]=If this variable is set to 'true', the ldap connection will be encrypted. (default: true)
+Description[de]=Ist diese Variable auf 'true' gesetzt, wird eine verschlüsselte Verbindung zum LDAP Server aufgebaut.
+Description[en]=If this variable is set to 'true', the ldap connection will be encrypted.
 Type=bool
+Default=true
 Categories=saml
 
 [saml/idp/ldap/debug]
-Description[de]=Wenn diese Variable auf 'true' gesetzt ist, wird das Debugging für die LDAP Verbindung eingeschaltet. (default: false)
-Description[en]=If this variable is set to 'true', ldap server connection debugging is activated. (default: false)
+Description[de]=Wenn diese Variable auf 'true' gesetzt ist, wird das Debugging für die LDAP Verbindung eingeschaltet.
+Description[en]=If this variable is set to 'true', ldap server connection debugging is activated.
 Type=bool
+Default=false
 Categories=saml
 
 [saml/idp/ldap/search_attributes]
 Description[de]=Eine Liste von LDAP Attributen, die als Filter für den angegebenen Benutzernamen verwendet werden (z.B.: "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress')
 Description[en]=A list of ldap attributes that are filtered for the provided username (i.e. "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress')
-Type=str
+Type=list
+Separator=[, ]+
+Elementtype=str
 Categories=saml
 
 [saml/idp/ldap/get_attributes]
 Description[de]=Eine Liste von LDAP Benutzerattributen, die aus dem LDAP gelesen werden (z.B.: "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'). Die Einstellungen dieser UCRv werden domänenweit von einem LDAP object verwaltet, standardmäßig id=default-saml-idp,cn=univention,LDAPBASE
 Description[en]=A list of ldap user attributes that are read from ldap after succesful user authentication (i.e.: "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'). This settings for this UCRv are managed domain wide by an ldap object, the default is id=default-saml-idp,cn=univention,LDAPBASE
-Type=str
+Type=list
+Separator=[, ]+
+Elementtype=str
 Categories=saml
 
 [saml/idp/ldap/user]
@@ -149,9 +163,10 @@ Type=str
 Categories=saml
 
 [saml/idp/https]
-Description[de]=Wenn diese Variable auf true gesetzt ist, werden HTTP Verbindungen zu /simplesamlphp automatisch auf HTTPS umgeleitet (default: true)
-Description[en]=If this variable is set to true, HTTP connections to /simplesamlphp will be automatically redirected to HTTPS (default: true)
-Type=str
+Description[de]=Wenn diese Variable auf true gesetzt ist, werden HTTP Verbindungen zu /simplesamlphp automatisch auf HTTPS umgeleitet.
+Description[en]=If this variable is set to true, HTTP connections to /simplesamlphp will be automatically redirected to HTTPS.
+Type=bool
+Default=true
 Categories=saml
 
 [saml/idp/authsource]
@@ -161,9 +176,12 @@ Type=str
 Categories=saml
 
 [stunnel/debuglevel]
-Description[de]=Der Debuglevel des stunnel daemons. Gültige Werte 0-7 (default: 4)
-Description[en]=Debug level of the stunnel daemon. Valid values are 0-7 (default: 4)
+Description[de]=Der Debuglevel des stunnel daemons. Gültige Werte 0-7
+Description[en]=Debug level of the stunnel daemon. Valid values are 0-7
 Type=int
+Min=0
+Max=7
+Default=4
 Categories=stunnel
 
 [saml/apache2/ssl/certificate]
@@ -197,15 +215,16 @@ Type=str
 Categories=self-service
 
 [saml/idp/session-duration]
-Description[de]=Konfiguriert die vom SAML Identity Provider definierte Dauer einer Login Session, in Sekunden. Nach Ablauf dieser Zeit müssen sich Benutzer neu am UCS SAML Identity Provider authentifizieren. (Standard: '43200', das entspricht 12 Stunden)
-Description[en]=Configures the duration of a login session defined by the SAML Identity Provider, in seconds. After this time has elapsed, users must re-authenticate to the UCS SAML Identity Provider. (Default: '43200', this corresponds to 12 hours)
-Type=str
+Description[de]=Konfiguriert die vom SAML Identity Provider definierte Dauer einer Login Session, in Sekunden. Nach Ablauf dieser Zeit müssen sich Benutzer neu am UCS SAML Identity Provider authentifizieren.
+Description[en]=Configures the duration of a login session defined by the SAML Identity Provider, in seconds. After this time has elapsed, users must re-authenticate to the UCS SAML Identity Provider.
+Type=uint
+Default=43200
 Categories=saml
 
 [saml/idp/selfservice/check_email_verification]
 Description[de]=Wenn diese Variable auf true gesetzt ist, müssen Nutzer, die Ihr Konto über den Self-Service selbst erstellt haben, über eine verifizierte Email-Adresse verfügen. Sonst wird der Login verweigert.
 Description[en]=If this variable is set to true, users which have registered their account themself through the selfservice need a verified email address. Otherwise the login is denied.
-Type=str
+Type=bool
 Categories=saml
 
 [saml/idp/selfservice/account-verification/error-title]
