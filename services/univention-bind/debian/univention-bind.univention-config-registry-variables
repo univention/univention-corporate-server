@@ -8,24 +8,25 @@ Categories=service-bind,system-services
 Description[de]=Bind kann verschiedene Backends für seine Konfigurationsdateien verwenden: 'ldap' konfiguriert die Verwendung des UCS-OpenLDAP-Verzeichnis. 'samba4' verwendet die Samba-interne LDB-Datenbank. Bei Verwendung des Samba-Backends wird für jede DNS-Anfrage eine Suche im LDAP durchgeführt. Bei Verwendung des OpenLDAP-Backends wird nur bei Änderungen der DNS-Daten im Verzeichnisdienst gesucht. Auf Directory Nodes, auf denen samba4 läuft, darf der Wert nicht auf 'ldap' gesetzt werden.
 Description[en]=Bind can use different backends for its configuration: 'ldap' configures the use of the UCS OpenLDAP directory. 'samba4' uses the Samba 4 LDB database. When using the Samba backend, a search is performed in the LDAP for every DNS request. With the OpenLDAP backend, a search is only performed in the directory service if the DNS data has changed. On Directory Nodes running 'samba4', the backend must not be changed to 'ldap'.
 Type=str
+Regex=^(ldap|samba4)$
 Categories=Network
 
 [dns/forwarder1]
 Description[de]=Zwei Typen von DNS-Servern werden unterschieden: Ein externer DNS-Server wird für die Auflösung von Rechnernamen und Adressen außerhalb der UCS-Domäne verwendet (typischerweise der Nameserver des Internet-Providers). Ein Domänen-DNS-Server ist ein lokaler Nameserver der UCS-Domäne. Dort werden die Rechnernamen und IP-Adressen der UCS-Domäne verwaltet. Wird eine Adresse im lokalen Datenbestand nicht aufgefunden, wird automatisch ein externer DNS-Server angefragt. Diese Variable konfiguriert den ersten externen DNS-Server.
 Description[en]=There are two types of DNS servers: An external DNS server is employed for the resolution of host names and addresses outside of the UCS domain (usually a name server operated by the internet service provider). A domain DNS server is a local name server in the UCS domain. This name server usually administrates host names and IP addresses belonging to the UCS domain. If an address is not found in the local inventory, an external DNS server is automatically queried. This variable configures the first external DNS server.
-Type=str
+Type=ipaddress
 Categories=service-bind
 
 [dns/forwarder2]
 Description[de]=Zwei Typen von DNS-Servern werden unterschieden: Ein externer DNS-Server wird für die Auflösung von Rechnernamen und Adressen außerhalb der UCS-Domäne verwendet (typischerweise der Nameserver des Internet-Providers). Ein Domänen-DNS-Server ist ein lokaler Nameserver der UCS-Domäne. Dort werden die Rechnernamen und IP-Adressen der UCS-Domäne verwaltet. Wird eine Adresse im lokalen Datenbestand nicht aufgefunden, wird automatisch ein externer DNS-Server angefragt. Diese Variable konfiguriert den zweiten externen DNS-Server.
 Description[en]=There are two types of DNS servers: An external DNS server is employed for the resolution of host names and addresses outside of the UCS domain (usually a name server operated by the internet service provider). A domain DNS server is a local name server in the UCS domain. This name server usually administrates host names and IP addresses belonging to the UCS domain. If an address is not found in the local inventory, an external DNS server is automatically queried. This variable configures the second external DNS server.
-Type=str
+Type=ipaddress
 Categories=service-bind
 
 [dns/forwarder3]
 Description[de]=Zwei Typen von DNS-Servern werden unterschieden: Ein externer DNS-Server wird für die Auflösung von Rechnernamen und Adressen außerhalb der UCS-Domäne verwendet (typischerweise der Nameserver des Internet-Providers). Ein Domänen-DNS-Server ist ein lokaler Nameserver der UCS-Domäne. Dort werden die Rechnernamen und IP-Adressen der UCS-Domäne verwaltet. Wird eine Adresse im lokalen Datenbestand nicht aufgefunden, wird automatisch ein externer DNS-Server angefragt. Diese Variable konfiguriert den dritten externen DNS-Server.
 Description[en]=There are two types of DNS servers: An external DNS server is employed for the resolution of host names and addresses outside of the UCS domain (usually a name server operated by the internet service provider). A domain DNS server is a local name server in the UCS domain. This name server usually administrates host names and IP addresses belonging to the UCS domain. If an address is not found in the local inventory, an external DNS server is automatically queried. This variable configures the third external DNS server.
-Type=str
+Type=ipaddress
 Categories=service-bind
 
 [dns/fakeroot]
@@ -37,19 +38,25 @@ Categories=service-bind
 [dns/allow/transfer]
 Description[de]=Diese Variable konfiguriert, welche Systeme die DNS-Zonen-Informationen über einen Zonen-Transfer abrufen dürfen. 'any' erlaubt den Abruf von allen Systemen. 'none' verbietet den Abruf für alle Systeme. Alternativ kann eine Liste von IP-Adressen oder Netzen definiert werden, denen der Abruf erlaubt wird. Zusätzlich kann eine ACL in /etc/bind/local.conf definiert und hier referenziert werden. Mehrere Werte müssen durch Semikolon getrennt werden. Diese Option greift nur bei Verwendung des LDAP-Backends (siehe 'dns/backend').
 Description[en]=This variable configures which systems may request the DNS zone information using a zone transfer. 'any' allows the transfer for everyone. 'none' denies the zone transfer altogether. Alternatively a list of allowed IP addresses or networks can be defined. In addition an ACL can be defined in /etc/bind/local.conf and referenced in the variable. Multiple entries need to be separated by semicolons. This option only applies when using the LDAP-Backend (see 'dns/backend').
-Type=str
+Type=list
+Separator=;
+Elementtype=str
 Categories=Network
 
 [dns/allow/query]
 Description[de]=Diese Variable konfiguriert, welche Systeme Anfragen an den DNS-Server stellen dürfen. 'any' erlaubt den Abruf von allen Systemen. 'none' verbietet den Abruf für alle Systeme. Alternativ kann eine Liste von IP-Adressen oder Netzen definiert werden, denen Abfragen erlaubt werden. Zusätzlich kann eine ACL in /etc/bind/local.conf definiert und hier referenziert werden. Mehrfache Werte müssen durch Semikolon getrennt werden. Diese Option greift nur bei Verwendung des LDAP-Backends (siehe 'dns/backend').
 Description[en]=This variable configures which systems may query the DNS server. 'any' allows the transfer for everyone. 'none' denies the zone transfer altogether. Alternatively a list of allowed IP addresses or networks can be defined. In addition an ACL can be defined in /etc/bind/local.conf and referenced in the variable. Multiple entries need to be separated by semicolons. This option only applies when using the LDAP-Backend (see 'dns/backend').
-Type=str
+Type=list
+Separator=;
+Elementtype=str
 Categories=Network
 
 [dns/allow/query/cache]
 Description[de]=Diese Variable konfiguriert, welche Systeme Anfragen an den Cache des DNS-Servers stellen dürfen. 'any' erlaubt den Abruf von allen Systemen. 'none' verbietet den Abruf für alle Systeme. Alternativ kann eine Liste von IP-Adressen oder Netzen definiert werden, denen Abfragen erlaubt werden. Zusätzlich kann eine ACL in /etc/bind/local.conf definiert und hier referenziert werden. Mehrfache Werte müssen durch ein Semikolon getrennt werden. Diese Option greift nur bei Verwendung des LDAP-Backends (siehe 'dns/backend').
 Description[en]=This variable configures which systems may query the cache of the DNS server. 'any' allows the transfer for everyone. 'none' denies the zone transfer altogether. Alternatively a list of allowed IP addresses or networks can be defined. In addition an ACL can be defined in /etc/bind/local.conf and referenced in the variable. In addition an ACL can be defined in /etc/bind/local.conf and referenced in the variable. Multiple entries need to be separated by a semicolon. This option only applies when using the LDAP-Backend (see 'dns/backend').
-Type=str
+Type=list
+Separator=;
+Elementtype=str
 Categories=Network
 
 [dns/ipv6]
@@ -62,12 +69,16 @@ Categories=service-bind
 Description[de]=Der Detailgrad der Debugausgaben von Bind. Die möglichen Werte reichen von 0 (keine Debug-Ausgaben) bis 11. Eine komplette Aufstellung der Detailgrade findet sich unter <http://www.diablotin.com/librairie/networking/dnsbind/ch12_01.htm>.
 Description[en]=The level of detail of the Bind debug output. The possible values are between 0 (no debug tasks) to 11. A complete list of levels can be found at <http://www.diablotin.com/librairie/networking/dnsbind/ch12_01.htm>.
 Type=int
+Min=0
+Max=11
 Categories=service-bind
 
 [dns/dlz/debug/level]
 Description[de]=Der Detailgrad der Debugausgaben der Samba4-Schnittstelle von Bind. Die möglichen Werte reichen von 0 (keine Debug-Ausgaben) bis 11. Eine komplette Aufstellung der Detailgrade findet sich unter <http://www.diablotin.com/librairie/networking/dnsbind/ch12_01.htm>.
 Description[en]=Description[en]=The level of detail of the debug output of the Samba 4 interface of Bind. The possible values are between 0 (no debug tasks) to 11. A complete list of levels can be found at <http://www.diablotin.com/librairie/networking/dnsbind/ch12_01.htm>.
 Type=int
+Min=0
+Max=11
 Categories=service-bind
 
 [dns/master/address]
@@ -79,7 +90,7 @@ Categories=service-bind
 [dns/max-socks]
 Description[de]=Anzahl Sockets die der DNS-Dienst öffnen darf. Der in den DNS-Dienst eingebaute Standard ist 4096. Der Standard für diese UCR Variable ist nicht gesetzt zu sein.
 Description[en]=Number of sockets the nameserver to allowed to open. The default value built into named is 4096. The default for this UCR variable is to be unset.
-Type=int
+Type=pint
 Categories=service-bind
 
 [dns/nameserver/registration/forward_zone]
@@ -97,6 +108,6 @@ Categories=service-bind
 [dns/timeout-start]
 Description[de]=Diese Variable konfiguriert die maximale Wartezeit in Sekunden für den Start des DNS-Dienstes, der OpenLDAP als backend verwendet. Nach Anpassen der Variable ist ein "systemctl daemon-reload" notwendig.
 Description[en]=This variable configures the maximum waiting time in seconds for the DNS-Service to start, which is using OpenLDAP as backend. After changing the variable, a "systemctl daemon-reload" is required.
-Type=int
+Type=pint
 Categories=service-bind
 
