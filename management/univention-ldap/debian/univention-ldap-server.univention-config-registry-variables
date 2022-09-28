@@ -40,28 +40,28 @@ Categories=service-ldap
 Description[de]=Die maximale Anzahl von Einträgen, die von einer LDAP-Suchoperation zurückgegeben werden.
 Description[en]=The maximum number of entries returned by an LDAP search operation.
 Default=400000
-Type=int
+Type=pint
 Categories=service-ldap
 
 [ldap/threads]
 Description[de]=Die Anzahl der verwendeten Server-Threads im LDAP-Server.
 Description[en]=The number of server threads used by the LDAP server.
 Default=16
-Type=int
+Type=pint
 Categories=service-ldap
 
 [ldap/tool-threads]
 Description[de]=Die Anzahl der verwendeten Tool-Threads (slapadd, slapindex).
 Description[en]=The maximum number of threads to use in tool mode (slapadd, slapindex).
 Default=1
-Type=int
+Type=pint
 Categories=service-ldap
 
 [ldap/maxopenfiles]
 Description[de]=Die maximale Anzahl an Dateien, die der LDAP-Server öffnen kann. Wenn der Wert angepasst wird, müssen ggf. auch Unix-Prozesslimits angepasst werden.
 Description[en]=The maximum of files the LDAP server can open. If the value is adapted, Unix process limits might need to be expanded as well.
 Default=8192
-Type=int
+Type=pint
 Categories=service-ldap
 
 [ldap/monitor]
@@ -99,44 +99,54 @@ Categories=service-ldap
 [ldap/database/bdb/set_lg_bsize]
 Description[de]=Diese Variable konfiguriert die maximale Größe der BDB-Transaction-Logdateien. Änderungen sind nur in Ausnahmefällen nötig und sollten sorgfältig getestet werden. Die Syntax ist unter <http://www.openldap.org/faq/data/cache/1072.html> beschrieben.
 Description[en]=This variable defines the maximum size of the BDB transaction logs. Changes are only needed in exceptional cases and should be tested carefully. The syntax is documented at <http://www.openldap.org/faq/data/cache/1072.html>.
-Type=int
+Type=pint
 Categories=service-ldap
 
 [ldap/database/bdb/set_lg_max]
 Description[de]=Diese Variable konfiguriert das maximale Alter der BDB-Transaction-Logdateien. Änderungen sind nur in Ausnahmefällen nötig und sollten sorgfältig getestet werden. Die Syntax ist unter <http://www.openldap.org/faq/data/cache/1072.html> beschrieben.
 Description[en]=This variable defines the maximum age of the BDB transaction logs. Changes are only needed in exceptional cases and should be tested carefully. The syntax is documented at <http://www.openldap.org/faq/data/cache/1072.html>.
-Type=int
+Type=pint
 Categories=service-ldap
 
 [ldap/database/bdb/db_config_options]
 Description[de]=Mit dieser Variable kann eine Liste von zusätzlichen BDB-Optionen konfiguriert werden. Mehrere Einträge müssen durch Komma getrennt werden. Änderungen sind nur in Ausnahmefällen nötig und sollten sorgfältig getestet werden. Die Syntax ist unter <http://www.openldap.org/faq/data/cache/1072.html> beschrieben.
 Description[en]=This variable allows the configuration of a list of additional BDB options. Multiple entries are separated by commas. Changes are only needed in exceptional cases and should be tested carefully. The syntax is documented at <http://www.openldap.org/faq/data/cache/1072.html>.
 Default=set_flags
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-ldap
 
 [ldap/index/approx]
 Description[de]=Die Liste der LDAP-Attribute, die für die Suche nach ähnlichen Werte indiziert werden. Mehrere Attribute werden durch Komma getrennt.
 Description[en]=A list of LDAP attributes which are indexed for the search for approximate values. Multiple attributes are separated by commas.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-ldap
 
 [ldap/index/eq]
 Description[de]=Die Liste der LDAP-Attribute, die für die Suche nach einem exakten Wert indiziert werden. Mehrere Attribute werden durch Komma getrennt.
 Description[en]=A list of LDAP attributes which are indexed for the search for an exact value. Multiple attributes are separated by commas.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-ldap
 
 [ldap/index/pres]
 Description[de]=Die Liste der LDAP-Attribute, die für die Suche nach dem Vorhandensein eines Wert indiziert werden. Mehrere Attribute werden durch Komma getrennt.
 Description[en]=A list of LDAP attributes which are indexed for the search for the presence of value. Multiple attributes are separated by commas.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-ldap
 
 [ldap/index/sub]
 Description[de]=Die Liste der LDAP-Attribute, die für die  Suche nach Teilausdrücken indiziert werden. Mehrere Werte werden durch Komma getrennt.
 Description[en]=A list of LDAP attributes which are indexed for the search for substring matches. Multiple values are separated by commas.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-ldap
 
 [ldap/index/autorebuild]
@@ -171,7 +181,7 @@ Description[de]=Wenn die LDAP-Suche nur authentifiziert möglich ist (siehe 'lda
 Description[en]=If only authenticated LDAP searches are allowed (see 'ldap/acl/read/anonymous'), individual IP addresses can be granted anonymous read permissions via this variable. Multiple values are separated by commas (e.g. ldap/acl/read/ips='127.0.0.1,192.168.0.0%255.255.255.0').
 Type=list
 Separator=,
-Elementtype=str
+Elementtype=ipv4address
 Categories=service-ldap
 
 [ldap/autostart]
@@ -185,28 +195,28 @@ Categories=service-ldap
 Description[de]=Die Variable konfiguriert die Anzahl der Einträge, die der LDAP-Server in seinem internen Cache vorhält.
 Description[en]=This variable configures the number of entries the LDAP server holds in the internal cache.
 Default=20000
-Type=int
+Type=pint
 Categories=service-ldap
 
 [ldap/idlcachesize]
 Description[de]=Die Variable konfiguriert die Anzahl der Suchergebnisse, die der LDAP-Server in seinem internen Cache vorhält.
 Description[en]=This variable configures the number of search results the LDAP server holds in the internal cache.
 Default=20000
-Type=int
+Type=pint
 Categories=service-ldap
 
 [ldap/idletimeout]
 Description[de]=Mit dieser Variable kann ein Zeitraum in Sekunden konfiguriert werden, nach dessen Ablauf eine LDAP-Verbindung serverseitig geschlossen wird. Wenn der Wert auf 0 gesetzt wird, wird kein Ablaufzeitraum angewendet.
 Description[en]=This variable is used to configure a time period in seconds after which the LDAP connection is closed on the server side. When the value is set to 0, no expiry period is in use.
 Default=360
-Type=int
+Type=uint
 Categories=service-ldap
 
 [ldap/database/mdb/maxsize]
 Description[de]=Die maximale Größe der Datenbank in Bytes.
 Description[en]=The maximum size of the database in bytes.
 Default=4295000000
-Type=int
+Type=pint
 Categories=service-ldap
 
 [ldap/database/mdb/checkpoint]
@@ -218,7 +228,9 @@ Categories=service-ldap
 [ldap/database/mdb/envflags]
 Description[de]=Mit dieser Variable können detailliertere Einstellungen zum MDB Datenbank-Backend konfiguriert werden. Mehrere Werte werden durch Leerzeichen getrennt. Mögliche Werte sind  nosync, nometasync, writemap, mapasync und nordahead. Weiter eInmformationen sind im UCS Performance Guide unter <https://docs.software-univention.de/performance-guide-5.0.html> zu finden.
 Description[en]=This variable specifies flags for finer-grained control of the mdb database backend handling. Multiple attributes are separated by spaces. Possible values are nosync, nometasync, writemap, mapasync and nordahead. More details can be found in the UCS performance guide at <https://docs.software-univention.de/performance-guide-5.0.html>.
-Type=str
+Type=list
+Separator=[ ]
+Elementtype=str
 Categories=service-ldap
 
 [ldap/ppolicy]
@@ -263,7 +275,7 @@ Categories=service-ldap
 [ldap/tls/dh/cron]
 Description[de]=Cronjob Intervall für die Erneuerung der DH Parameter Dateien (Forward Secrecy).
 Description[en]=Cronjob interval for recreating DH parameter files (forward secrecy).
-Type=str
+Type=cron
 Categories=service-ldap
 
 [ldap/tls/dh/restart]
@@ -290,7 +302,7 @@ Categories=service-ldap
 Description[de]=Cron-Intervall für das Backup der slapd Datenbank. Standard ist '0 0 * * *' (jede Tag um 00:00 Uhr).
 Description[en]=Cron interval for the slapd database backup. Default is '0 0 * * *' (midnight, every day).
 Default=0 0 * * *
-Type=str
+Type=cron
 Categories=service-ldap
 
 [slapd/backup/owner]
@@ -311,7 +323,8 @@ Categories=service-ldap
 Description[de]=Dateiberechtigungen für die Sicherungsdatei der slapd-Datenbank.
 Description[en]=File permissions for the slapd database backup file.
 Default=0600
-Type=int
+Type=str
+Regex=^[0-7]{3,5}$
 Categories=service-ldap
 
 [ldap/shadowbind]
@@ -364,5 +377,5 @@ Categories=service-ldap
 [ldap/pw-bcrypt]
 Description[de]=Aktiviert/Deaktiviert das Passwort-Modul bcrypt, standardmäßig deaktiviert.
 Description[en]=To enable/disable the bcrypt passwd scheme module. Disabled by default.
-Type=str
+Type=bool
 Categories=service-ldap
