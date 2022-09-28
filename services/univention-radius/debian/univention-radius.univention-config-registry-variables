@@ -5,51 +5,60 @@ Type=str
 Categories=service-radius,system-services
 
 [freeradius/conf/max_requests]
-Description[de]=Die höchste Anzahl von Anfragen die der Server verwaltet. Dies sollte 256 pro Client sein, z.B. bei 4 Clients sollte es 1024 sein. (Standard: 1024)
-Description[en]=The maximum number of requests which the server keeps track of. This should be 256 multiplied by the number of clients, e.g. With 4 clients, this number should be 1024. (Default: 1024)
-Type=str
+Description[de]=Die höchste Anzahl von Anfragen die der Server verwaltet. Dies sollte 256 pro Client sein, z.B. bei 4 Clients sollte es 1024 sein.
+Description[en]=The maximum number of requests which the server keeps track of. This should be 256 multiplied by the number of clients, e.g. With 4 clients, this number should be 1024.
+Type=uint
+Default=1024
 Categories=service-radius
 
 [freeradius/conf/port]
-Description[de]=Der Port auf dem der Server horcht, z.B. 1812. Bei 0 wird der Port aus der /etc/services gelesen (Standard: 0)
-Description[en]=The port the server listens on, e.g. 1812. If 0 the port is read from /etc/services (Default: 0)
-Type=str
+Description[de]=Der Port auf dem der Server horcht, z.B. 1812. Bei 0 wird der Port aus der /etc/services gelesen.
+Description[en]=The port the server listens on, e.g. 1812. If 0 the port is read from /etc/services.
+Type=portnumber
+Default=0
 Categories=service-radius
 
 [freeradius/conf/accountingport]
-Description[de]=Der Accounting-Port auf dem der Server horcht, z.B. 1813. Bei 0 wird der Port aus der /etc/services gelesen (Standard: 0)
-Description[en]=The accounting port the server listens on, e.g. 1813. If 0 the port is read from /etc/services (Default: 0)
-Type=str
+Description[de]=Der Accounting-Port auf dem der Server horcht, z.B. 1813. Bei 0 wird der Port aus der /etc/services gelesen.
+Description[en]=The accounting port the server listens on, e.g. 1813. If 0 the port is read from /etc/services.
+Type=portnumber
+Default=0
 Categories=service-radius
 
 [freeradius/conf/inner-tunnel-port]
-Description[de]=Der Port für den inneren RADIUS-Tunnel, nur auf localhost. (Standard: 18120)
-Description[en]=The port for the inner RADIUS tunnel, only on localhost. (Default: 18120)
-Type=str
+Description[de]=Der Port für den inneren RADIUS-Tunnel, nur auf localhost.
+Description[en]=The port for the inner RADIUS tunnel, only on localhost.
+Type=portnumber
+Default=18120
 Categories=service-radius
 
 [radius/mac/whitelisting]
 Description[de]=Ob die Station ID (MAC Adresse) von RADIUS-Clients auch auf Zugriffserlaubnis geprüft werden soll.
 Description[en]=Whether to check the station ID (MAC address) of RADIUS clients for access too.
-Type=str
+Type=bool
 Categories=service-radius
 
 [freeradius/conf/auth-type/mschap]
-Description[de]=Aktiviert die Authentifizierung über MSCHAPv2-in-EAP-in-PEAP-in-EAP-in-RADIUS (Dies überstimmt freeradius/conf/auth-type/ttls) (Standard: false)
-Description[en]=Activates the authentication over MSCHAPv2-in-EAP-in-PEAP-in-EAP-in-RADIUS (This takes precedence over freeradius/conf/auth-type/ttls) (Default: false)
-Type=str
+Description[de]=Aktiviert die Authentifizierung über MSCHAPv2-in-EAP-in-PEAP-in-EAP-in-RADIUS (Dies überstimmt freeradius/conf/auth-type/ttls)
+Description[en]=Activates the authentication over MSCHAPv2-in-EAP-in-PEAP-in-EAP-in-RADIUS (This takes precedence over freeradius/conf/auth-type/ttls)
+Type=bool
+Default=false
 Categories=service-radius
 
 [freeradius/conf/auth-type/ttls]
-Description[de]=Aktiviert die Authentifizierung über MD5-in-EAP-in-TTLS-in-EAP-in-RADIUS (Nur wirksam wenn freeradius/conf/auth-type/mschap false ist) (Standard: true)
-Description[en]=Activates the authentication over MD5-in-EAP-in-TTLS-in-EAP-in-RADIUS (Only applicable if freeradius/conf/auth-type/mschap is false) (Default: true)
-Type=str
+Description[de]=Aktiviert die Authentifizierung über MD5-in-EAP-in-TTLS-in-EAP-in-RADIUS (Nur wirksam wenn freeradius/conf/auth-type/mschap false ist)
+Description[en]=Activates the authentication over MD5-in-EAP-in-TTLS-in-EAP-in-RADIUS (Only applicable if freeradius/conf/auth-type/mschap is false)
+Type=bool
+Default=true
 Categories=service-radius
 
 [freeradius/auth/helper/ntlm/debug]
-Description[de]=Debuglevel für die RADIUS-NTLM-Authentifizierung. Mögliche Werte: 0-4 (0: nur Fehlermeldungen bis 4: alle Debugausgaben). (Standard: 2 [INFO]).
-Description[en]=Debuglevel for the RADIUS NTLM authentication. Possible values: 0-4 (0: only error messages to 4: all debug statements). (Default: 2 [INFO]).
+Description[de]=Debuglevel für die RADIUS-NTLM-Authentifizierung. Mögliche Werte: 0-4 (0: nur Fehlermeldungen bis 4: alle Debugausgaben).
+Description[en]=Debuglevel for the RADIUS NTLM authentication. Possible values: 0-4 (0: only error messages to 4: all debug statements).
 Type=int
+Min=0
+Max=4
+Default=2
 Categories=service-radius
 
 [freeradius/conf/auth-type/mschap/mppe]
@@ -73,31 +82,31 @@ Categories=service-radius
 [freeradius/conf/auth-type/mschap/ntdomainhack]
 Description[de]=Ist diese Option gesetzt, wird dem Benutzernamen der Domainname während der MS-CHAP challenge/response Authentifizierung vorangestellt, z.B. `DOMAIN/User` anstatt nur `User`. Mögliche Werte: no, yes
 Description[en]=If this option is set the username is prepended by its domain name during the MS-CHAP challenge/response authentication is added, e.g. `DOMAIN/User` instead of `User`. Possible values: no, yes
-Type=str
+Type=bool
 Categories=service-radius
 
 [freeradius/conf/log/auth]
 Description[de]=Durch Setzen dieser Option werden Authentifizierungsanfragen in die Logdatei protokolliert. Mögliche Werte: no, yes
 Description[en]=By setting this option authentication requests are recorded into the log file. Possible values: no, yes
-Type=str
+Type=bool
 Categories=service-radius
 
 [freeradius/conf/log/auth/badpass]
 Description[de]=Durch Setzen dieser Option werden falsch eingegebene Passwörter in die Logdatei protokolliert. Mögliche Werte: no, yes
 Description[en]=By setting this option wrong passwords are recorded into the log file. Possible values: no, yes
-Type=str
+Type=bool
 Categories=service-radius
 
 [freeradius/conf/log/auth/goodpass]
 Description[de]=Durch Setzen dieser Option werden korrekte Passwörter in die Logdatei protokolliert (nicht empfohlen). Mögliche Werte: no, yes
 Description[en]=By setting this option correct password are recorded into the log file (not recommend). Possible values: no, yes
-Type=str
+Type=bool
 Categories=service-radius
 
 [freeradius/conf/log/strippednames]
 Description[de]=Loggt den gesamten Benutzernamen (genau wie in der Anfrage) in die Logdatei. Mögliche Werte: no, yes
 Description[en]=Logs the full User-Name (exactly as in the request) into the log file. Possible values: no, yes
-Type=str
+Type=bool
 Categories=service-radius
 
 [freeradius/conf/private/key/file]
@@ -115,31 +124,31 @@ Categories=service-radius
 [freeradius/conf/servers/maxrequests]
 Description[de]=Die maximale Anzahl an Anfragen, die der Server gleichzeitig unterhalten kann.
 Description[en]=The maximum number of requests of which the server can simultaneously keep track of.
-Type=int
+Type=pint
 Categories=service-radius
 
 [freeradius/conf/servers/spare/min]
 Description[de]=Die minimale Anzahl an vorgehaltenen Verbindungen im Verbindungspool.
 Description[en]=The minimum number of reserved connections in the connection pool.
-Type=int
+Type=pint
 Categories=service-radius
 
 [freeradius/conf/servers/spare/max]
 Description[de]=Die maximale Anzahl an vorgehaltenen Verbindungen im Verbindungspool.
 Description[en]=The maximum number of reserved connections in the connection pool.
-Type=int
+Type=pint
 Categories=service-radius
 
 [freeradius/conf/servers/start]
 Description[de]=Die minimale Anzahl an Verbindungen beim Starten des Serves. Ist dieser Wert 0 startet der Server auch ohne jede Datenbankanbindung.
 Description[en]=The minimum amount of connections during the server start. If this value is set to zero the server will even start without a database connection.
-Type=int
+Type=uint
 Categories=service-radius
 
 [freeradius/conf/starttls]
-Description[de]=Verwende TLS-verschlüsselte Verbindungen zum LDAP-Verzeichnis. Mögliche Werte: no, yes
-Description[en]=Make use of TLS encrypted connections to the LDAP database. Possible values: no, yes
-Type=str
+Description[de]=Verwende TLS-verschlüsselte Verbindungen zum LDAP-Verzeichnis.
+Description[en]=Make use of TLS encrypted connections to the LDAP database.
+Type=bool
 Categories=service-radius
 
 [freeradius/conf/users]
@@ -149,9 +158,11 @@ Type=str
 Categories=service-radius
 
 [freeradius/vlan-id]
-Description[de]=Standard VLan-ID, die allen Clients zugewiesen wird, für die keine andere konfigurierte VLAN-ID gefunden wird. Mögliche Werte: 1,..,4096
-Description[en]=Default VLAN-ID assigned to all clients not having any other VLAN-ID configured. Possible values: 1,..,4096
+Description[de]=Standard VLan-ID, die allen Clients zugewiesen wird, für die keine andere konfigurierte VLAN-ID gefunden wird. Mögliche Werte: 1,..,4094
+Description[en]=Default VLAN-ID assigned to all clients not having any other VLAN-ID configured. Possible values: 1,..,4094
 Type=int
+Min=1
+Max=4094
 Categories=service-radius
 
 [radius/use-service-specific-password]
@@ -163,28 +174,28 @@ Categories=service-radius
 [password/radius/quality/credit/digits]
 Description[de]=Wenn "radius/use-service-specific-password" angeschaltet ist, bestimmt diese Variable die minimale Anzahl an Ziffern bei einem neuen Passwort. Der Wert "0" bedeutet, dass keine Ziffern verwendet werden.
 Description[en]=If "radius/use-service-specific-password" is enabled, this variable configures the minimum number of digits in the new password. The value "0" means that no digits will be used.
-Type=int
+Type=uint
 Default=6
 Categories=service-radius
 
 [password/radius/quality/credit/lower]
 Description[de]=Wenn "radius/use-service-specific-password" angeschaltet ist, bestimmt diese Variable die minimale Anzahl an Kleinbuchstaben bei einem neuen Passwort. Der Wert "0" bedeutet, dass keine Kleinbuchstaben verwendet werden.
 Description[en]=If "radius/use-service-specific-password" is enabled, this variable configures the minimum number of lower case letters in the new password. The value "0" means that no lower case letters will be used.
-Type=int
+Type=uint
 Default=6
 Categories=service-radius
 
 [password/radius/quality/credit/other]
 Description[de]=Wenn "radius/use-service-specific-password" angeschaltet ist, bestimmt diese Variable die minimale Anzahl an Zeichen, die weder Buchstaben noch Ziffern sind, bei einem neuen Passwort. Der Wert "0" bedeutet, dass keine solchen Zeichen verwendet werden.
 Description[en]=If "radius/use-service-specific-password" is enabled, this variable configures the minimum number of characters in the new password which are neither letters nor digits. The value "0" means that no such letters will be used.
-Type=int
+Type=uint
 Default=0
 Categories=service-radius
 
 [password/radius/quality/credit/upper]
 Description[de]=Wenn "radius/use-service-specific-password" angeschaltet ist, bestimmt diese Variable die minimale Anzahl an Großbuchstaben bei einem neuen Passwort. Der Wert "0" bedeutet, dass keine Großbuchstaben verwendet werden.
 Description[en]=If "radius/use-service-specific-password" is enabled, this variable configures the minimum number of upper case letters in the new password. The value "0" means that no upper case letters will be used.
-Type=int
+Type=uint
 Default=6
 Categories=service-radius
 
@@ -198,6 +209,6 @@ Categories=service-radius
 [password/radius/quality/length/min]
 Description[de]=Wenn "radius/use-service-specific-password" angeschaltet ist, bestimmt diese Variable die minimale Länge bei einem neuen Passwort.
 Description[en]=If "radius/use-service-specific-password" is enabled, this variable configures the minimum length of the new password.
-Type=int
+Type=uint
 Default=24
 Categories=service-radius

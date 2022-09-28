@@ -1,3 +1,9 @@
+univention-radius (7.0.3-1) unstable; urgency=medium
+
+  * Bug #55554: Fix UCR variable typing
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Sep 2022 19:55:58 +0200
+
 univention-radius (7.0.2-2) unstable; urgency=medium
 
   * Bug #54662: Increase Joinscript version: VLAN in RADIUS
