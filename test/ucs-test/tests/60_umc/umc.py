@@ -119,24 +119,6 @@ class UMCBase(object):
 		sys.exit(TestCodes.RESULT_SKIP)
 
 
-class ServiceModule(UMCBase):
-
-	def query(self):
-		return self.request('services/query')
-
-	def check_service_presence(self, request_result, service_name):
-		"""
-		Check if the service with 'service_name' was listed in the response
-		'request_result'. Returns 'missing software' code 137 when missing.
-		"""
-		for result in request_result:
-			if result['service'] == service_name:
-				break
-		else:
-			print("The '%s' service is missing in the UMC response: %s" % (service_name, request_result))
-			sys.exit(TestCodes.REASON_INSTALL)
-
-
 class TopModule(UMCBase):
 	pass
 
