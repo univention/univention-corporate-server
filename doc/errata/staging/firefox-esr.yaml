@@ -6,170 +6,49 @@ src: firefox-esr
 fix: 102.3.0esr-1~deb10u2
 desc: |
  This update addresses the following issues:
- 102.3.0esr-1~deb10u1 (Fri, 23 Sep 2022 11:38:58 +0200)
- * Backport to buster.
- * Use internal libevent, the system one is too old.
- 102.2.0esr-1 (Wed, 24 Aug 2022 06:35:58 +0900)
- * New upstream release.
- * Fixes for mfsa2022-34, also known as: CVE-2022-38472, CVE-2022-38473,
-   CVE-2022-38477, CVE-2022-38478.
- * debian/rules, debian/control: Fix libavcodec recommends..
- * debian/control*: Bump nss build dependency.
- 102.1.0esr-2 (Mon, 15 Aug 2022 15:46:49 +0900)
- * debian/rules: Remove old and now unnecessary workarounds.
- * intl/icu/source/common/unicode/std_string.h,
-   intl/icu/source/common/utypeinfo.h, intl/icu/source/io/unicode/ustream.h:
-   Remove workaround for old libstdc++ problem, which now causes problems with
-   GCC 12 on arm.
- * third_party/libwebrtc/moz.build: Add missing webrtc directory for ppc64el
-   (bz#1775202).
- 102.1.0esr-1 (Sun, 14 Aug 2022 16:59:19 +0900)
- * Fixes for mfsa2022-28, also known as: CVE-2022-36319, CVE-2022-36318,
-   CVE-2022-36315, CVE-2022-36316, CVE-2022-36320, CVE-2022-2505.
- * debian/rules: - Improve detection of known failing cases on armhf and
-   mipsel. - Use thinLTO for rust on armhf, to stay in the memory budget with
-   an armhf toolchain. - Use MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=none
-   instead of MACH_USE_SYSTEM_PYTHON=1.
- * debian/rules, debian/watch, debian/watch.in: Generate debian/watch and fix
-   it.
- * third_party/libwebrtc/moz.build: Work around bz#1775202 to fix FTBFS on
-   ppc64el.
- * config/makefiles/rust.mk: Allow to override rust LTO flag.
- 102.0-1 (Wed, 29 Jun 2022 07:41:32 +0900)
+ * Fixes for mfsa2021-38, also known as: CVE-2021-38491, CVE-2021-38493,
+   CVE-2021-38494
+ * Fixes for mfsa2021-43, also known as: CVE-2021-38496, CVE-2021-38497,
+   CVE-2021-38498, CVE-2021-32810, CVE-2021-38500, CVE-2021-38501,
+   CVE-2021-38499
+ * Fixes for mfsa2021-48, also known as: CVE-2021-38503, CVE-2021-38504,
+   CVE-2021-38506, CVE-2021-38507, CVE-2021-38508, MOZ-2021-0004,
+   CVE-2021-38509
+ * Fixes for mfsa2021-52, also known as: CVE-2021-43536, CVE-2021-43537,
+   CVE-2021-43538, CVE-2021-43539, CVE-2021-43540, CVE-2021-43541,
+   CVE-2021-43542, CVE-2021-43543, CVE-2021-43544, CVE-2021-43545,
+   CVE-2021-43546, MOZ-2021-0009
+ * Fixes for mfsa2022-13, also known as: CVE-2022-1097, CVE-2022-28281,
+   CVE-2022-28282, CVE-2022-28283, CVE-2022-28284, CVE-2022-28285,
+   CVE-2022-28286, CVE-2022-28287, CVE-2022-24713, CVE-2022-28289,
+   CVE-2022-28288
+ * Fixes for mfsa2022-01, also known as: CVE-2022-22743, CVE-2022-22742,
+   CVE-2022-22741, CVE-2022-22740, CVE-2022-22738, CVE-2022-22737,
+   CVE-2021-4140, CVE-2022-22748, CVE-2022-22745, CVE-2022-22747,
+   CVE-2022-22739, CVE-2022-22751, CVE-2022-22752
+ * Fixes for mfsa2022-04, also known as: CVE-2022-22754, CVE-2022-22755,
+   CVE-2022-22756, CVE-2022-22759, CVE-2022-22760, CVE-2022-22761,
+   CVE-2022-22764, CVE-2022-0511
+ * Fixes for mfsa2022-10, also known as: CVE-2022-26383, CVE-2022-26384,
+   CVE-2022-26387, CVE-2022-26381, CVE-2022-26382, CVE-2022-26385,
+   CVE-2022-0843
+ * Fixes for mfsa2022-09, also known as: CVE-2022-26485, CVE-2022-26486
+ * Fixes for mfsa2022-16, also known as: CVE-2022-29914, CVE-2022-29909,
+   CVE-2022-29916, CVE-2022-29911, CVE-2022-29912, CVE-2022-29915,
+   CVE-2022-29917, CVE-2022-29918
+ * Fixes for mfsa2022-20, also known as: CVE-2022-31736, CVE-2022-31737,
+   CVE-2022-31738, CVE-2022-31740, CVE-2022-31741, CVE-2022-31742,
+   CVE-2022-31743, CVE-2022-31744, CVE-2022-31745, CVE-2022-1919,
+   CVE-2022-31747, CVE-2022-31748
  * Fixes for mfsa2022-24, also known as: CVE-2022-34479, CVE-2022-34470,
    CVE-2022-34468, CVE-2022-34482, CVE-2022-34483, CVE-2022-34476,
    CVE-2022-34481, CVE-2022-34474, CVE-2022-34471, CVE-2022-34472,
    CVE-2022-2200, CVE-2022-34480, CVE-2022-34477, CVE-2022-34475,
-   CVE-2022-34473, CVE-2022-34484, CVE-2022-34485.
- * build/moz.configure/bindgen.configure,
-   gfx/webrender_bindings/webrender_ffi.h: Work around build failure with
-   newer cbindgen. bz#1773259
- 101.0.1-1 (Fri, 10 Jun 2022 06:24:01 +0900)
- * build/moz.configure/rust.configure, debian/control*: Allow to build with
-   cargo in unstable.
- 101.0-1 (Wed, 01 Jun 2022 06:07:37 +0900)
- * Fixes for mfsa2022-20, also known as: CVE-2022-31736, CVE-2022-31737,
-   CVE-2022-31738, CVE-2022-31740, CVE-2022-31741, CVE-2022-31742,
-   CVE-2022-31743, CVE-2022-31744, CVE-2022-31745, CVE-2022-1919,
-   CVE-2022-31747, CVE-2022-31748.
- * debian/rules: Fail the build early when building for armhf on armhf (only
-   works on arm64), and when building for mipsel on mipsel.
- * debian/control*: Bump rustc, cargo, cbindgen and nss build dependencies.
- 100.0.2-1 (Sat, 21 May 2022 07:32:04 +0900)
- * Fixes for mfsa2022-19, also known as CVE-2022-1802 and CVE-2022-1529.
- 100.0-1 (Wed, 04 May 2022 08:48:41 +0900)
- * Fixes for mfsa2022-16, also known as: CVE-2022-29914, CVE-2022-29909,
-   CVE-2022-29916, CVE-2022-29911, CVE-2022-29912, CVE-2022-29915,
-   CVE-2022-29917, CVE-2022-29918.
- 99.0-1 (Wed, 06 Apr 2022 09:04:22 +0900)
- * Fixes for mfsa2022-13, also known as: CVE-2022-1097, CVE-2022-28281,
-   CVE-2022-28282, CVE-2022-28283, CVE-2022-28284, CVE-2022-28285,
-   CVE-2022-28286, CVE-2022-28287, CVE-2022-24713, CVE-2022-28289,
-   CVE-2022-28288.
- 98.0-2 (Thu, 10 Mar 2022 09:09:43 +0900)
- * debian/rules: Install crash reporter files on arm64.
- * js/src/jit/GenerateAtomicOperations.py: Work around a GCC issue with
-   generated atomics. bz#1756347.
- 98.0-1 (Wed, 09 Mar 2022 07:09:27 +0900)
- * Fixes for mfsa2022-10, also known as: CVE-2022-26383, CVE-2022-26384,
-   CVE-2022-26387, CVE-2022-26381, CVE-2022-26382, CVE-2022-26385,
-   CVE-2022-0843.
- * Fixes for mfsa2022-09, also known as: CVE-2022-26485, CVE-2022-26486.
- * debian/control*: - Bump nss build dependency. - Downgrade rust dependency
-   to 1.56, and cargo to 0.57.
- * Cargo.lock, config/makefiles/rust.mk, python/mozboot/mozboot/util.py,
-   servo/components/style/Cargo.toml, servo/components/style/build.rs,
-   servo/components/style/lib.rs,
-   servo/components/style/stylesheets/page_rule.rs,
-   servo/components/style/stylist.rs,
-   third_party/rust/audioipc2-client/.cargo-checksum.json,
-   third_party/rust/audioipc2-client/Cargo.toml,
-   third_party/rust/audioipc2-client/build.rs,
-   third_party/rust/audioipc2-client/src/lib.rs,
-   third_party/rust/wgpu-hal/.cargo-checksum.json,
-   third_party/rust/wgpu-hal/src/gles/egl.rs: Relax minimum supported Rust
-   version to 1.56.0.
- 97.0-1 (Wed, 09 Feb 2022 07:53:42 +0900)
- * Fixes for mfsa2022-04, also known as: CVE-2022-22754, CVE-2022-22755,
-   CVE-2022-22756, CVE-2022-22759, CVE-2022-22760, CVE-2022-22761,
-   CVE-2022-22764, CVE-2022-0511.
- * debian/control*: Bump nss, rustc and cargo build dependencies.
- * debian/browser.install.in: Install libipcclientcerts.so.
- 96.0.3-1 (Mon, 31 Jan 2022 06:21:31 +0900)
- 96.0.1-1 (Sat, 15 Jan 2022 07:41:14 +0900)
- * modules/libpref/init/StaticPrefList.yaml: Disable cookie sameSite
-   schemeful. bz#1750264.
- * dom/media/webrtc/third_party_build/gn-configs/x64_*_arm_linux.json,
-   dom/media/webrtc/third_party_build/gn-configs/x64_*_ppc64_linux.json,
-   third_party/libwebrtc/**/moz.build: Add webrtc configs for arm and ppc64
-   linux. bz#1738845.
- 96.0-1 (Wed, 12 Jan 2022 08:03:30 +0900)
- * Fixes for mfsa2022-01, also known as: CVE-2022-22743, CVE-2022-22742,
-   CVE-2022-22741, CVE-2022-22740, CVE-2022-22738, CVE-2022-22737,
-   CVE-2021-4140, CVE-2022-22748, CVE-2022-22745, CVE-2022-22747,
-   CVE-2022-22739, CVE-2022-22751, CVE-2022-22752.
- * debian/rules: - Adjust preprocessor command to upstream changes. - Set an
-   objdir when using the preprocessor, and clean that up.
- 95.0.1-1 (Fri, 17 Dec 2021 07:05:23 +0900)
- * debian/control.in: Build against rustc-mozilla/cargo-mozilla on relevant
-   older releases.
- * modules/fdlibm/src/math_private.h: Fix FTBFS on i386. bz#1729459.
- 95.0-1 (Wed, 08 Dec 2021 06:38:07 +0900)
- * Fixes for mfsa2021-52, also known as: CVE-2021-43536, CVE-2021-43537,
-   CVE-2021-43538, CVE-2021-43539, CVE-2021-43540, CVE-2021-43541,
-   CVE-2021-43542, CVE-2021-43543, CVE-2021-43544, CVE-2021-43545,
-   CVE-2021-43546, MOZ-2021-0009.
- * debian/browser.mozconfig.in: Explicitly disable wasm sandboxing. We don't
-   have the necessary tools yet.
- 94.0.2-1 (Wed, 24 Nov 2021 06:57:55 +0900)
- 94.0-2 (Thu, 11 Nov 2021 16:32:50 +0900)
- * debian/firefox.in: Use `command -v` instead of `which`. Does not affect
-   this package, though.
- * .cargo/config.in, Cargo.lock, Cargo.toml,
-   third_party/rust/cc/.cargo-checksum.json, third_party/rust/cc/Cargo.toml,
-   third_party/rust/cc/src/lib.rs,
-   third_party/rust/cc/src/windows_registry.rs: Update cc crate to
-   b2f6b146b75299c444e05bbde50d03705c7c4b6e, aka 1.0.71 + GCC-11 fix for
-   armhf. bz#1739040.
- * .cargo/config.in, Cargo.lock,
-   third_party/rust/cubeb-pulse/.cargo-checksum.json,
-   third_party/rust/cubeb-pulse/src/backend/stream.rs,
-   toolkit/library/rust/shared/Cargo.toml: Upgrade cubeb-pulse to fix a race
-   condition that can lead to shutdown deadlock. bz#1735905. (suspected to).
- 94.0-1 (Wed, 03 Nov 2021 08:20:50 +0900)
- * Fixes for mfsa2021-48, also known as: CVE-2021-38503, CVE-2021-38504,
-   CVE-2021-38506, CVE-2021-38507, CVE-2021-38508, MOZ-2021-0004,
-   CVE-2021-38509, MOZ-2021-0005, MOZ-2021-0006, MOZ-2021-0007. (MOZ-* pending
-   CVE assignment)
- * Cargo.toml, Cargo.lock, third_party/rust/naga/.cargo-checksum.json,
-   third_party/rust/naga/Cargo.toml,
-   third_party/rust/wgpu-core/.cargo-checksum.json,
-   third_party/rust/wgpu-core/Cargo.toml, build/moz.configure/rust.configure:
-   Remove workaround to build with an old cargo, now that Debian has a recent
-   version.
- 93.0-1 (Wed, 06 Oct 2021 06:53:13 +0900)
- * Fixes for mfsa2021-43, also known as: CVE-2021-38496, CVE-2021-38497,
-   CVE-2021-38498, CVE-2021-32810, CVE-2021-38500, CVE-2021-38501,
-   CVE-2021-38499.
- * debian/rules: Set MOZBUILD_STATE_PATH.
- * Cargo.toml, Cargo.lock, third_party/rust/naga/.cargo-checksum.json,
-   third_party/rust/naga/Cargo.toml,
-   third_party/rust/wgpu-core/.cargo-checksum.json,
-   third_party/rust/wgpu-core/Cargo.toml: Work around the lack of resolver
-   feature in unstable's cargo.
- 92.0-1 (Wed, 08 Sep 2021 07:57:38 +0900)
- * Fixes for mfsa2021-38, also known as: CVE-2021-38491, CVE-2021-38493,
-   CVE-2021-38494.
- * debian/rules: Build against embedded nspr and nss on bullseye.
- * debian/upstream.mk: Add bookworm and trixie.
- * Content-Security-Policy base-uri bypass (CVE-2022-40956)
- * Incoherent instruction cache when building WASM on ARM64 (CVE-2022-40957)
- * Bypassing Secure Context restriction for cookies with __Host and __Secure
-   prefix (CVE-2022-40958)
- * Bypassing FeaturePolicy restrictions on transient pages (CVE-2022-40959)
- * Data-race when parsing non-UTF-8 URLs in threads (CVE-2022-40960)
- * Memory safety bugs fixed in Firefox 105 and Firefox ESR 102.3
-   (CVE-2022-40962)
+   CVE-2022-34473, CVE-2022-34484, CVE-2022-34485
+ * Fixes for mfsa2022-28, also known as: CVE-2022-36319, CVE-2022-36318,
+   CVE-2022-36315, CVE-2022-36316, CVE-2022-36320, CVE-2022-2505
+ * Fixes for mfsa2022-34, also known as: CVE-2022-38472, CVE-2022-38473,
+   CVE-2022-38477, CVE-2022-38478
 bug: [55221]
 cve:
 - CVE-2022-38472
@@ -211,8 +90,6 @@ cve:
 - CVE-2022-1919
 - CVE-2022-31747
 - CVE-2022-31748
-- CVE-2022-1802
-- CVE-2022-1529
 - CVE-2022-29914
 - CVE-2022-29909
 - CVE-2022-29916
@@ -289,9 +166,3 @@ cve:
 - CVE-2021-38491
 - CVE-2021-38493
 - CVE-2021-38494
-- CVE-2022-40956
-- CVE-2022-40957
-- CVE-2022-40958
-- CVE-2022-40959
-- CVE-2022-40960
-- CVE-2022-40962
