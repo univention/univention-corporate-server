@@ -2,6 +2,8 @@
 Description[de]=Der Detailgrad der Logmeldungen in /var/log/univention/directory-manager-rest.log. Mögliche Werte: 0-4/99 (0: nur Fehlermeldungen bis 4: alle Debugausgaben, mit 99 werden auch sensible Daten wie Klartext-Passwörter protokolliert).
 Description[en]=The verbosity of log messages in /var/log/univention/directory-manager-rest.log. Possible values: 0-4/99 (0: only error messages to 4: all debug statements, with = 99 sensitive data like cleartext passwords is logged as well).
 Type=int
+Min=0
+Max=99
 Default=2
 Categories=service-udm
 
@@ -35,21 +37,21 @@ Categories=service-udm
 [directory/manager/rest/server/address]
 Description[de]=Auf diesem Netzwerk-Interface wartet der UDM-REST-API-Server auf Anfragen.
 Description[en]=The UDM REST API server is listening on this network interface.
-Type=str
+Type=ipaddress
 Default=127.0.0.1
 Categories=service-udm
 
 [directory/manager/rest/server/port]
 Description[de]=Auf diesem Port wartet der UDM-REST-API-Server auf Anfragen.
 Description[en]=The UDM REST API server is listening on this port.
-Type=int
+Type=portnumber
 Default=9979
 Categories=service-udm
 
 [directory/manager/rest/processes]
 Description[de]=Anzahl paralleler Prozesse, die gestartet werden. Durch den Wert 0 wird die Anzahl an Prozessorkernen verwendet.
 Description[en]=Number of parallel processes that are started. The value 0 starts a processs for each CPU core.
-Type=int
+Type=uint
 Default=1
 Categories=service-udm
 
