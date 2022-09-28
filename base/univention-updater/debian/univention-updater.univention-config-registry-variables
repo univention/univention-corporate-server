@@ -40,7 +40,9 @@ Default=default
 [update/warning/tty]
 Description[de]=Ist die Update-Warnmeldung aktiviert (siehe 'update/warning'), wird die Update-Warnmeldung auf die hier konfigurierten Konsolen (Separiert durch Leerzeichen) ausgegeben.
 Description[en]=If the update warning message is activated (siehe 'update/warning'), the update warning is printed to the consoles (separated by spaces) configured here.
-Type=str
+Type=list
+Separator=[ ]
+Elementtype=str
 Categories=service-software-management
 Default=/dev/tty1 /dev/tty2 /dev/tty3 /dev/tty4 /dev/tty5 /dev/tty6 /dev/tty7
 
@@ -60,6 +62,8 @@ Categories=service-software-management
 Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention-updater.log. Mögliche Werte sind 0-4.
 Description[en]=Specifies the amount of debug information to be written to /var/log/univention/univention-updater.log. Possible values are 0-4.
 Type=int
+Min=0
+Max=4
 Categories=service-software-management
 Default=2
 
@@ -107,7 +111,9 @@ Categories=service-software-management
 [repository/online/component/.*/defaultpackages?]
 Description[de]=Ein Liste von Paketnamen der Komponente, die standardmäßig installiert werden sollen.
 Description[en]=A list of package names from the component, which should be installed by default.
-Type=str
+Type=list
+Separator=[ ,]+
+Elementtype=str
 Categories=service-software-management
 
 [repository/online/component/.*/description]
@@ -125,7 +131,9 @@ Categories=service-software-management
 [repository/online/component/.*/version]
 Description[de]=Komponenten können versioniert werden. Dies stellt sicher, dass nur zu einer UCS-Version kompatible Komponenten installiert werden. Ist die Variable leer oder nicht gesetzt, werden automatisch alle Versionen derselben Major-Version eingebunden. Ist z.B. aktuell UCS 3.2 installiert, so werden die Repositories für die Komponente in den Versionen 3.0, 3.1 und 3.2 eingebunden, sofern diese existieren. Steht die Variable auf 'current', werden ebenfalls alle Versionen der selben Major-Version eingebunden. Zusätzlich wird aber ein Release-Update des UCS-Systems solange verhindert, bis auch die so markierte Komponente für die neue Version verfügbar ist; Patchlevel- oder Errata-Updates sind davon nicht betroffen.
 Description[en]=Components can be versioned. This ensures that only components are installed that are compatible with a UCS version. If the variable is empty or unset, all versions of the same major number will be used. If for example UCS 3.2 is installed, all repositories of the component with version numbers 3.0, 3.1 and 3.2 will be used if available. If the variable is set to 'current' all versions of the same major version will be included. Additionally it will block all minor and major upgrades of the installed UCS system until the respective component is also available for the new release. Patch level and errata updates are not affected.
-Type=str
+Type=list
+Separator=[ ,]+
+Elementtype=str
 Categories=service-software-management
 
 [repository/online/component/.*/server]
@@ -150,6 +158,7 @@ Categories=service-software-management
 Description[de]=Das Layout der Paketstruktur der Komponente. Standard ist "arch", alternative ist "flat".
 Description[en]=The layout of the package repository of the component. Default is "arch", alternative is "flat".
 Type=str
+Regex=^(arch|flat)?$
 Categories=service-software-management
 
 [repository/online/component/.*/username]
@@ -192,7 +201,7 @@ Categories=service-software-management
 [repository/mirror/port]
 Description[de]=Der TCP-Port des Repository-Servers, von dem gespiegelt wird (siehe 'repository/mirror/server') kann hier konfiguriert werden.
 Description[en]=The TCP port of the repository server which is mirrored (see 'repository/mirror/server') can be configured here.
-Type=int
+Type=portnumber
 Categories=service-software-management
 Default=80
 
@@ -218,7 +227,7 @@ Default=/var/lib/univention-repository
 [repository/mirror/threads]
 Description[de]=Die maximale Anzahl der gleichzeitigen Downloads während der Repository-Spiegelung (siehe 'repository/mirror').
 Description[en]=The maximum amount of parallel downloads during repository mirroring (see 'repository/mirror').
-Type=int
+Type=pint
 Categories=service-software-management
 Default=10
 
@@ -252,7 +261,7 @@ Default=yes
 [update/check/cron/entry]
 Description[de]=Definiert das Intervall, in dem automatisch nach verfügbaren Updates für dieses System gesucht wird. Die Konfiguration erfolgt in Cron-Syntax, siehe 'man 5 crontab'.
 Description[en]=Defines the interval for checking whether updates are available for this system. The configuration is done in Cron syntax, see 'man 5 crontab'.
-Type=str
+Type=cron
 Categories=service-software-management
 Default=5 *  * * *
 
@@ -273,7 +282,7 @@ Default=no
 [update/check/boot/debug]
 Description[de]=Ist diese Variable auf 'yes' gesetzt, werden Debugausgaben bei der Update-Prüfung zum Systemstart (siehe 'update/check/boot/enabled') ausgegeben.
 Description[en]=If this variable is set to 'yes', debug output during the update check during startup (see 'update/check/boot/enabled') is generated.
-Type=str
+Type=bool
 Categories=service-software-management
 Default=no
 
@@ -411,33 +420,33 @@ Default=yes
 [repository/online/timeout]
 Description[de]=Diese Option legt das Zeitintervall in Sekunden fest, nach der eine inaktive HTTP-Verbindung zwangsweise beendet wird.
 Description[en]=This option sets the time interval in seconds, after which a stalled HTTP connection is forcibly closed.
-Type=int
+Type=uint
 Categories=service-software-management
 Default=30
 
 [repository/mirror/timeout]
 Description[de]=Diese Option legt das Zeitintervall in Sekunden fest, nach der eine inaktive HTTP-Verbindung zwangsweise beendet wird.
 Description[en]=This option sets the time interval in seconds, after which a stalled HTTP connection is forcibly closed.
-Type=int
+Type=uint
 Categories=service-software-management
 Default=30
 
 [repository/credentials/.*/uris]
 Description[de]=Der Zugriff auf das Univention Software Repository verlangen eine Authentifizierung. Diese Variable enthält eine mit Leerzeichen separierte Liste der Hostnamen, für welche diese Credentials gelten. '.*' muß dem 'Realm-Namen' entsprechen.
 Description[en]=Access to the Univention software repository require authentication. This variable contains a space separated list of host names, for which these credentials are used. '.*' must match the 'realm name'.
-Type=string
+Type=str
 Categories=service-software-management
 
 [repository/credentials/.*/username]
 Description[de]=Der Zugriff auf das Univention Software Repository verlangen eine Authentifizierung. Mit dieser Variable kann der Benutzername konfiguriert werden. Siehe auch 'repository/credentials/.*/password'.
 Description[en]=Access to the Univention software repository require authentication. The username can be configured with this variable. See also 'repository/credentials/.*/password'.
-Type=string
+Type=str
 Categories=service-software-management
 
 [repository/credentials/.*/password]
 Description[de]=Der Zugriff auf das Univention Software Repository verlangen eine Authentifizierung. Mit dieser Variable kann das Passwort konfiguriert werden. Siehe auch 'repository/credentials/.*/username'.
 Description[en]=Access to the Univention software repository require authentication. The password can be configured with this variable. See also 'repository/credentials/.*/username'.
-Type=string
+Type=str
 Categories=service-software-management
 
 [license/extended_maintenance/disable_warning]
