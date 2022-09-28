@@ -6,21 +6,21 @@ src: poppler
 fix: 0.71.0-5+deb10u1
 desc: |
  This update addresses the following issues:
- * memory leak in GfxColorSpace::setDisplayProfile in GfxState.cc
+ * Memory leak in `GfxColorSpace::setDisplayProfile` in `GfxState.cc`
    (CVE-2018-18897)
- * reachable abort in Object.h (CVE-2018-19058)
- * reachable Object::dictLookup assertion in FileSpec class in FileSpec.cc
-   (CVE-2018-20650)
- * stack consumption in function Dict::find() in Dict.cc (CVE-2019-9903)
- * integer overflow in JPXStream::init function leading to memory consumption
-   (CVE-2019-9959)
- * divide-by-zero in function SplashOutputDev::tilingPatternFill in
-   SplashOutputDev.cc (CVE-2019-14494)
+ * Reachable `abort()` in `Object.h` (CVE-2018-19058)
+ * Reachable `Object::dictLookup` assertion in `FileSpec` class in
+   `FileSpec.cc` (CVE-2018-20650)
+ * Stack consumption in function `Dict::find()` in `Dict.cc` (CVE-2019-9903)
+ * Integer overflow in `JPXStream::init` function leading to memory
+   consumption (CVE-2019-9959)
+ * Divide-by-zero in function `SplashOutputDev::tilingPatternFill` in
+   `SplashOutputDev.cc` (CVE-2019-14494)
  * pdftohtml: access to uninitialized pointer could lead to DoS
    (CVE-2020-27778)
- * A logic error in the Hints::Hints function can cause denial of service
+ * A logic error in the `Hints::Hints` function can cause denial of service
    (CVE-2022-27337)
- * integer overflow in JBIG2 decoder using malformed files (CVE-2022-38784)
+ * Integer overflow in JBIG2 decoder using malformed files (CVE-2022-38784)
 bug: [55220]
 cve:
 - CVE-2018-18897
