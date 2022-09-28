@@ -1,3 +1,9 @@
+ucs-test (10.0.8-1) unstable; urgency=medium
+
+  * Updating UCR type definitions: string -> str
+
+ -- Peter Stoll <stoll.extern@univention.de>  Thu, 02 Feb 2023 11:09:40 +0100
+
 ucs-test (10.0.7-34) unstable; urgency=medium
 
   * Bug #54986: revert rename test configuration file
