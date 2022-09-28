@@ -19,19 +19,25 @@ Categories=service-cups
 [cups/location/admin]
 Description[de]=Mit dieser Variable wird festgelegt, von wo auf das CUPS-interne Administrations-Webinterface auf Port 631 zugegriffen werden kann. Hier kann entweder eine Liste von Rechnernamen in FQDN-Form, eine Liste von Netzen (z.B. '192.168.1.*') oder der Sonderwert 'networks' angegeben werden. Mehrere Werte werden durch Leerzeichen getrennt. Bei 'networks' wird der Zugriff aus dem lokalen Netz des CUPS-Servers erlaubt.
 Description[en]=This variable configures from where the CUPS-internal administration web interface on port 631 can be accessed. It can be specified as a list of hostnames in FQDN format, a list of networks (e.g. '192.168.1.*') or as the special value 'networks'. Multiple values need to be separated by commas. If 'networks' is set, access is granted from the local network of the CUPS server.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-cups
 
 [cups/location/base]
 Description[de]=Mit dieser Variable wird festgelegt, von wo über den CUPS-Server gedruckt werden kann. Hier kann entweder eine Liste von Rechnernamen in FQDN-Form, eine Liste von Netzen (z.B. '192.168.1.*') oder der Sonderwert 'networks' angegeben werden. Mehrere Werte werden durch Leerzeichen getrennt. Bei 'networks' wird der Druck aus dem lokalen Netz des CUPS-Servers erlaubt.
 Description[en]=This variable configures from where the CUPS print server can be accessed. It can be specified as a list of hostnames in FQDN format, a list of networks (e.g. '192.168.1.*') or as the special value 'networks'. Multiple values need to be separated by commas. If 'networks' is set, printing is allowed from the local network of the CUPS server.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-cups
 
 [cups/systemgroup]
 Description[de]=Die hier angegebenen Gruppen haben Administrationszugriff auf die Drucker. Mehrere Werte müssen durch Komma getrennt werden.
 Description[en]=The groups specified here have printer administration access. Multiple values need to be separated by commas.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-cups
 
 [cups/printserver]
@@ -79,7 +85,9 @@ Categories=service-cups
 [cups/printmode/hosts/none]
 Description[de]=Eine durch Leerzeichen separierte Liste von IP Adressen, denen das Drucken verboten ist.
 Description[en]=A blank separated list of IP addresses which are forbidden to print.
-Type=str
+Type=list
+Separator=[ ]
+Elementtype=str
 Categories=service-cups
 
 [samba/force_printername]

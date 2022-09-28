@@ -1,3 +1,9 @@
+univention-printserver (13.0.6-1) unstable; urgency=medium
+
+  * Bug #55554: Fix UCR variable typing
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 27 Jan 2023 09:18:29 +0100
+
 univention-printserver (13.0.5-2) unstable; urgency=medium
 
   * Bug #55492: When removing or renaming a printer remove the
