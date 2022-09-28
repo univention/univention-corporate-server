@@ -1,3 +1,9 @@
+univention-pam (13.0.5-1) unstable; urgency=medium
+
+  * Bug #55554: Corrected UCR type definitions of auth/methods and pamaccess/maxent
+
+ -- Peter Stoll <stoll.extern@univention.de>  Tue, 19 Jul 2022 10:42:32 +0200
+
 univention-pam (13.0.4-1) unstable; urgency=medium
 
   * Bug #54273: Include debug script in univention-nscd and univention-libnss-ldap subscripts

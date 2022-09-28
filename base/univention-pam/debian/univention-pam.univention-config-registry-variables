@@ -19,55 +19,55 @@ Categories=system-base
 [nscd/hosts/size]
 Description[de]=Die Größe des NSCD-Caches für die Rechnerkonten. Der Wert sollte größer oder gleich der Anzahl aller im DNS registrieren Hosts sein.
 Description[en]=The size of the NSCD cache for the host accounts. The value should be greater or equal as the number of all hosts registered in DNS.
-Type=int
+Type=pint
 Categories=system-base
 
 [nscd/passwd/size]
 Description[de]=Die Größe des NSCD-Caches für die Benutzerkonten. Der Wert sollte größer oder gleich der Anzahl aller Benutzer sein.
 Description[en]=The size of the NSCD cache for the user accounts. The value should be greater or equal as the number of all users.
-Type=int
+Type=pint
 Categories=system-base
 
 [nscd/group/size]
 Description[de]=Die Größe des NSCD-Caches für die Gruppenkonten. Der empfohlene Wert ist (Anzahl aller  Gruppen * 2 + Anzahl aller Gruppenmitglieder) * 2.
 Description[en]=The size of the NSCD cache for the group data. The recommended value is (number of all groups * 2 + number of all groupmembers) * 2.
-Type=int
+Type=pint
 Categories=system-base
 
 [nscd/hosts/maxdbsize]
 Description[de]=Die Datenbankgröße des NSCD-Rechnerkonten-Caches in Byte. Wird die Variable nscd/hosts/size auf einen hohen Wert gesetzt, muss diese Variable ggf. erhöht werden.
 Description[en]=The size in bytes of the database of the NSCD host account cache. If the variable nscd/hosts/size is set to a high value, this variable may need to be expanded.
-Type=int
+Type=pint
 Categories=system-base
 
 [nscd/passwd/maxdbsize]
 Description[de]=Die Datenbankgröße des NSCD-Benutzer-Caches in Byte. Wird die Variable nscd/passwd/size auf einen hohen Wert gesetzt, muss diese Variable ggf. erhöht werden.
 Description[en]=The size in bytes of the database of the NSCD user cache. If the variable nscd/passwd/size is set to a high value, this variable may need to be expanded.
-Type=int
+Type=pint
 Categories=system-base
 
 [nscd/group/maxdbsize]
 Description[de]=Die Datenbankgröße des NSCD-Gruppen-Caches in Byte. Wird die Variable nscd/group/size auf einen hohen Wert gesetzt, muss diese Variable ggf. erhöht werden.
 Description[en]=The size in bytes of the database of the NSCD group cache. If the variable nscd/group/size is set to a high value, this variable may need to be expanded.
-Type=int
+Type=pint
 Categories=system-base
 
 [nscd/debug/level]
 Description[de]=Diese Variable konfiguriert den Detailgrad der NSCD-Logmeldungen. Ist die Variable auf einen Wert grösser als 0 gesetzt, werden Debugausgaben nach /var/log/nscd.log protokolliert.
 Description[en]=This variable configures the verbosity of the NSCD log messages. If the variable is set to a value higher than 0, debug messages are logged to /var/log/nscd.log.
-Type=int
+Type=uint
 Categories=system-base
 
 [nscd/.*/negative_time_to_live]
 Description[de]=Auch NSS-Fragen ohne Ergebnis werden im Cache vorgehalten (der gesuchte Eintrag wird dann als nicht existierend vermerkt). Diese Variable legt fest, wie viele Sekunden vergangen sein müssen, bis nach einem nicht gefundenen Eintrag erneut gesucht wird.
 Description[en]=NSS requests without a search result are caches as well (the entry, which was searched is marked as non-existant). This variable configures how many seconds need to have passed until the entry can be searched again.
-Type=int
+Type=uint
 Categories=system-base
 
 [nscd/.*/positive_time_to_live]
 Description[de]=Wird ein Eintrag bei einer NSS-Anfrage gefunden, wird er vom NSCD-Cache für die hier konfigurierte Anzahl von Sekunden im Cache vorgehalten.
 Description[en]=If an entry has been found during a NSS request, it is kept in the NSCD cache for the configured time frame in seconds.
-Type=int
+Type=uint
 Categories=system-base
 
 [nscd/logfile]
@@ -79,8 +79,9 @@ Categories=system-base
 [nscd/threads]
 Description[de]=Konfiguriert die Anzahl der zu startenden Programm-Threads für die Verarbeitung von NSCD-Anfragen. Ist kein Wert gesetzt, werden fünf Threads gestartet.
 Description[en]=Specifies the number of programs for processing NSCD requests. If no value is set, five threads are started.
-Type=int
+Type=pint
 Categories=system-base
+Default=5
 
 [nscd/.*/persistent]
 Description[de]=Konfiguriert, ob die Cache-Daten bei einem NSCD-Neustart erhalten bleiben sollen. Dies ist nötig, wenn nscd/restart aktiviert wurde. Mögliche Werte: (yes/no).
@@ -97,7 +98,7 @@ Categories=system-base
 [nscd/restart/interval]
 Description[de]=Wenn der automatische NSCD-Neustart mit der Variable nscd/restart aktiviert wurde, kann hier das Intervall in Sekunden festgelegt werden. Wird kein Wert konfiguriert, erfolgt der Neustart stündlich.
 Description[en]=If the automatic NSCD restart has been activated through the variable nscd/restart, the restart interval in seconds can be configured here. If no value is set, the restart occurs hourly.
-Type=int
+Type=uint
 Categories=system-base
 
 [nscd/group/invalidate_cache_on_changes]
@@ -109,7 +110,9 @@ Categories=system-base
 [auth/methods]
 Description[de]=Diese Variable legt fest, welche Authentifizierungsmethoden neben pam_unix in der PAM-Konfiguration verwendet werden. Die Liste muss durch Leerzeichen getrennt werden. Mögliche Werte sind 'ldap' (pam_ldap) , 'krb5' (pam_krb5.so), 'winbind' (pam_winbind.so).
 Description[en]=This variable configures which authentication methods should be used in the PAM configuration besides pam_unix. The list must be space-separated. Possible values are 'ldap' (pam_ldap), 'krb5' (pam_krb5.so), 'winbind' (pam_winbind.so).
-Type=bool
+Type=list
+Separator=[ ]
+Elementtype=str
 Categories=system-base
 
 [nsswitch/ldap]
@@ -133,7 +136,9 @@ Categories=system-base
 [nssldap/nss_initgroups_ignoreusers/users]
 Description[de]=Ist die LDAP-Gruppenauflösung für einzelne Benutzer deaktiviert (konfiguriert über die Variable nssldap/nss_initgroups_ignoreusers), wird mit dieser Variable eine Komma-separierte Liste von Benutzernamen angegeben, deren Gruppenmitgliedschaften nicht über LDAP aufgelöst werden. Ist die Variable nicht gesetzt, gilt die Einstellung für den Benutzer 'root'.
 Description[en]=If the LDAP group resolution has been disabled for some users (configurable through the variable nssldap/nss_initgroups_ignoreusers), this variable specifies a comma-separated list of user names, for which group memberships should not be resolved from the LDAP directory. If the variable isn't set, it applies to the user 'root'.
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=system-base
 
 [nssldap/auth]
@@ -151,13 +156,13 @@ Categories=system-base
 [nssldap/idle/timelimit]
 Description[de]=Konfiguriert die Zeit (in Sekunden) nachdem nss_ldap die Verbindung zum Directory-Server schließt. Standardmäßig werden keine Verbindungen durch eine Zeitüberschreitung geschlossen.
 Description[en]=Specifies the time (in seconds) after which nss_ldap will close connections to the directory server. The default is not to time out connections.
-Type=int
+Type=uint
 Categories=system-base
 
 [nssldap/timelimit]
 Description[de]=Konfiguriert das Zeitlimit (in Sekunden) für die Ausführung von Suchen. Bei einem Wert von Null (0), was der Standardwert ist, wird unendlich lange auf den Abschluss der Suche gewartet.
 Description[en]=Specifies the time limit (in seconds) to use when performing searches. A value of zero (0), which is the default, is to wait indefinitely for searches to be completed.
-Type=int
+Type=uint
 Categories=system-base
 
 [pamldap/auth]
@@ -169,14 +174,15 @@ Categories=system-base
 [pamaccess/maxent]
 Description[de]=Konfiguriert die maximale Hauptspeichergröße, die in pam_access für die Prüfung der Gruppenzugehörigkeit herangezogen wird. Der Standardgröße beträgt 0x40001 Byte.
 Description[en]=Specifies the maximum memory available for pam_access when checking group membership. The default value is 0x40001 byte.
-Type=int
+Type=str
 Categories=system-base
 
 [pam/krb5/minimum_uid]
-Description[de]=Diese Option führt dazu, dass einige PAM Module Benutzer ignoriert, deren numerische Benutzer-ID unter diesem spezifizierten Wert ist. Dies kann dazu benutzt werden, dass Passwortänderungen für lokale System-Benutzer nicht mittels Kerberos durchgeführt werden. Der Standardwert ist 1000.
-Description[en]=This option causes some PAM modules to ignore the user if the users numerical id is lower than the specified value. This can be used to bypass password changes using the Kerberos module for local system accounts. The default value is 1000.
-Type=int
+Description[de]=Diese Option führt dazu, dass einige PAM Module Benutzer ignoriert, deren numerische Benutzer-ID unter diesem spezifizierten Wert ist. Dies kann dazu benutzt werden, dass Passwortänderungen für lokale System-Benutzer nicht mittels Kerberos durchgeführt werden.
+Description[en]=This option causes some PAM modules to ignore the user if the users numerical id is lower than the specified value. This can be used to bypass password changes using the Kerberos module for local system accounts.
+Type=uint
 Categories=system-base
+Default=1000
 
 [pam/krb5/ticket_after_pwchange]
 Description[de]=In UCS hat sich das Verhalten des krb5 PAM Moduls geändert. Es wird nach einem Passwort-Wechsel nicht mehr versucht ein neues Ticket zu holen. Der Standard kann wiederhergestellt werden, in dem diese Variable auf true gesetzt wird.
@@ -235,8 +241,9 @@ Categories=system-base
 [auth/faillog/limit]
 Description[de]=Wenn automatische Anmeldesperren über die Variable auth/faillog aktiviert wurde, kann mit dieser Variable konfiguriert werden, ab wie vielen fehlerhaften Passworteingaben die Sperre in Kraft tritt. Ist die Variable nicht gesetzt, beträgt der Wert 5.
 Description[en]=If automatic user lockouts have been activated via the variable auth/faillog, this variable configures the number of failed password inputs, after which the lockout is activated. If the variable isn't set, the value 5 applies.
-Type=int
+Type=uint
 Categories=system-base
+Default=5
 
 [auth/faillog/root]
 Description[de]=In der Grundeinstellung ist das root-Konto von den automatischen Anmeldesperren ausgenommen. Wird diese Option aktiviert, gilt sie auch für root.
@@ -247,7 +254,7 @@ Categories=system-base
 [auth/faillog/unlock_time]
 Description[de]=Wird in dieser Variable ein Wert in Sekunden eingetragen, wird das Benutzerkonto nach Ablauf der angegebenen Zeit automatisch entsperrt. Ist die Variable nicht gesetzt oder auf 0 gesetzt, erfolgt keine automatische Entsperrung und das Benutzerkonto muss vom Administrator in der Univention Management Console entsperrt werden.
 Description[en]=If this variable is set to a time in seconds, the user account is automatically unlocked after the time interval has passed. If the variable isn't set or set to 0 no automatic unlocking occurs and the user account needs to be unlocked by an administrator in the Univention Management Console.
-Type=int
+Type=uint
 Categories=system-base
 
 [auth/faillog/lock_global]
@@ -295,7 +302,7 @@ Categories=system-base
 [nss/group/cachefile/invalidate_interval]
 Description[de]=Wird die Gruppen-Cachedatei verwendet (Variable: nss/group/cachefile), werden die Gruppeninformationen in dem hier konfigurierten Intervall in die Cachedatei exportiert. Die Angabe erfolgt im Cron-Format, siehe "man 5 crontab".
 Description[en]=If the group cache file is used (variable: nss/group/cachefile), the group data is exported to the cache file in the interval specified here. The interval is specified in Cron format, see "man 5 crontab".
-Type=str
+Type=cron
 Categories=system-base
 
 [nss/group/cachefile/check_member]
