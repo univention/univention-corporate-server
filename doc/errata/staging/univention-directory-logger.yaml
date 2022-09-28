@@ -5,8 +5,7 @@ scope: ucs_5.0-0-errata5.0-2
 src: univention-directory-logger
 fix: 11.0.3-5A~5.0.0.202209222130
 desc: |
- This update addresses the following issues:
- * The error handling of the univention-directory-logger
-   has been improved. Especially in regards to corrupted
-   files created by the dellog overlay.
+ This update addresses the following issue:
+ * The error handling of the directory logger has been improved. Especially in
+   regards to corrupted files created by the `dellog` overlay.
 bug: [51772]
