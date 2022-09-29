@@ -1134,6 +1134,18 @@ sa_bug54194 () {
 	sa-update
 }
 
+fake_initial_schema () {
+       [ "$(ucr get ldap/server/type)" = master ] && return
+       [ -s /var/lib/univention-ldap/schema.conf ] && return
+       local tmp=$(mktemp)
+       printf '# univention_dummy.conf\n\nldap/server/type: master' >"$tmp"
+       UNIVENTION_BASECONF="$tmp" univention-config-registry filter \
+               </etc/univention/templates/files/etc/ldap/slapd.conf.d/10univention-ldap-server_schema \
+               >/var/lib/univention-ldap/schema.conf
+       rm -f "$tmp"
+}
+
+
 online_fsresize () {
 	# cloud-initramfs-growroot doesn't always work (bug #49337)
 	# Try on-line resizing
@@ -1319,6 +1331,7 @@ log_call_stack () {
 log_execution_time () {
 	${LOGGER:-logger} "$BASH_EXECUTION_STRING needed $(( ($(date +%s%N) - START) / 1000000)) ms"
 }
+
 
 # trap log_execution_time EXIT
 
