@@ -11,3 +11,5 @@ desc: |
  * In case of a signature verification error, the App Center now shows the GPG
    error message
 bug: [52000, 54123]
+erratum: 437
+announced: 2022-09-29
