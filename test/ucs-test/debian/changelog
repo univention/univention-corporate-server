@@ -1,3 +1,9 @@
+ucs-test (10.0.7-25) unstable; urgency=low
+
+  * Bug #54502: Adapt 13_ldap_cache/conftest.py to changed internal API
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 29 Sep 2022 18:04:40 +0200
+
 ucs-test (10.0.7-24) unstable; urgency=medium
 
   * Bug #52000: Adjust App Center listener test - it is now a long running

@@ -412,7 +412,7 @@ Recommends:
 Depends:
  python3-pytest,
  ucs-test-libs (= ${source:Version}),
- univention-group-membership-cache,
+ univention-group-membership-cache (>= 2.0.0-12),
  ${misc:Depends},
 Provides:
  ucs-test-module,

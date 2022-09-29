@@ -2,7 +2,7 @@ import subprocess
 
 import pytest
 
-from univention.ldap_cache.cache import get_cache as lib_get_cache
+import univention.ldap_cache.cache
 from univention.lib.misc import custom_groupname
 from univention.testing.strings import random_name
 
@@ -72,8 +72,8 @@ def group_with_users(udm, group1, user1, user2, user3):
 
 @pytest.fixture
 def get_cache():
-	yield lib_get_cache
-	lib_get_cache._cache = None
+	yield univention.ldap_cache.cache.get_cache
+	univention.ldap_cache.cache._cache = None
 
 
 @pytest.fixture
