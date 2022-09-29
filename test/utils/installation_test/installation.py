@@ -283,10 +283,10 @@ class UCSInstallation(object):
 		# since a firefox update dark theme strings are not recognized any more
 		sleep(20)
 		sleep(1)
+		self.client.keyDown('alt')
 		self.client.keyDown('ctrl')
-		sleep(1)
-		self.client.keyPress('q')
-		sleep(2)
+		self.client.keyPress('f1')
+		self.client.keyUp('alt')
 		self.client.keyUp('ctrl')
 		sleep(3)
 		self.client.keyPress('enter')
