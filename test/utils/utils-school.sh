@@ -264,9 +264,9 @@ EOF
 	sed -i 's/"record_uid": "<firstname>.<lastname>"/"record_uid": "<firstname>.<lastname>.<username>"/' \
 		/usr/share/ucs-school-import/configs/ucs-school-testuser-import.json
 	# create school users
-	school_count=100
+	school_count=350
 	classes_count=40000
-	students_count=120000
+	students_count=220000
 	teachers_count=15000
 	staff_count=1000
 	schools=()
