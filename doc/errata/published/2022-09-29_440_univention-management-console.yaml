@@ -9,3 +9,5 @@ desc: |
  * SAML Logouts using the `HTTP-POST` SAML binding is now supported. This is
    required for the use of UMC with e.g. Keycloak as an identity provider.
 bug: [55229]
+erratum: 440
+announced: 2022-09-29
