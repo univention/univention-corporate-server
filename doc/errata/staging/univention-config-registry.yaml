@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-config-registry
-fix: 15.0.7-20
+fix: 15.0.7-20A~5.0.0.202209291831
 desc: |
  This update addresses the following issue:
  * Add validation for values of UCR variables. By default only a warning is
