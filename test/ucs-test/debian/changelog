@@ -1,3 +1,10 @@
+ucs-test (10.0.7-26) unstable; urgency=medium
+
+  * Bug #55232: Added tests for password history synchronization
+    without when pwhistorylength policy is not defined
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Thu, 29 Sep 2022 20:05:51 +0200
+
 ucs-test (10.0.7-25) unstable; urgency=low
 
   * Bug #54502: Adapt 13_ldap_cache/conftest.py to changed internal API

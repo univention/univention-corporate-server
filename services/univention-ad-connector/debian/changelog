@@ -1,3 +1,10 @@
+univention-ad-connector (14.0.10-7) unstable; urgency=medium
+
+  * Bug #55232: Set pwhistory_length to 0 when pwhistorylength
+    policy is not defined in password history synchronization
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Thu, 29 Sep 2022 20:10:20 +0200
+
 univention-ad-connector (14.0.10-6) unstable; urgency=medium
 
   * Bug #55150: Adjust sync_to_ucs to only apply the ignore_filter to the old
