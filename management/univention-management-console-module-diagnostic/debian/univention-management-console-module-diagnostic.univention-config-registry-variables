@@ -4,3 +4,11 @@ Description[en]=This variable disables the diagnostic-check 59_ldap_server_name 
 Type=bool
 Categories=management-module-diagnostic
 
+[diagnostic/check/64_check_ucr_types/ignore]
+Description[de]=Eine Komma-separierte Liste von UCR Variablen Typen, die nicht validiert werden.
+Description[en]=A comma-separated list of UCR variable types, which are not validated.
+Type=list
+Separator=,
+Elementtype=str
+Categories=system-base
+Default=int,bool

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2022-06-21 17:47+0200\n"
-"PO-Revision-Date: 2020-07-04 15:50+0200\n"
+"POT-Creation-Date: 2022-09-29 16:29+0200\n"
+"PO-Revision-Date: 2022-09-29 16:33+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -127,6 +127,10 @@ msgstr ""
 #: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:53
 msgid "Check Samba replication status for errors"
 msgstr "Überprüfe den Samba Replikations Status"
+
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:44
+msgid "Check UCR variable values for correctness"
+msgstr "Überprüfe Werte der UCR Variablen auf Korrektheit"
 
 #: umc/python/diagnostic/plugins/54_sources_list_check.py:43
 msgid "Check errors in sources.list files"
@@ -342,6 +346,11 @@ msgid "Inbound {nc!r}: error during DRS replication from {source} ({estring})"
 msgstr ""
 "In eingehend {nc!r}: Fehler während der DRS Replikation von {source} "
 "({estring})."
+
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:62
+#, python-format
+msgid "Invalid type %(type)s defined for variable %(variable)s"
+msgstr "Ungültiger Typ %(type)s für Variable %(variable)s definiert"
 
 #: umc/python/diagnostic/plugins/32_security_limits.py:19
 #, python-brace-format
@@ -682,6 +691,14 @@ msgid ""
 msgstr ""
 "Verschiedene Dienste vertrauen auf das Attribut \"univentionServerRole\", um "
 "nach Objekten in OpenLDAP zu suchen oder diese zu identifizieren."
+
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:50
+msgid ""
+"Some UCR variables currently have values, which are incompatible with their "
+"types."
+msgstr ""
+"Einige UCR-Variablen haben momentan Werte, die inkompatibel mit ihrem Typ "
+"sind."
 
 #: umc/python/diagnostic/plugins/30_disk_usage.py:130
 msgid "Some disks are nearly full:"
@@ -1050,6 +1067,11 @@ msgstr "Univention Support Database - Listener-/Notifier-Fehlersuche"
 msgid "Updated versions will be named FILENAME.dpkg-*."
 msgstr "Aktualisierte Versionen werden DATEINAME.dpkg-* genannt."
 
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:51
+#, python-brace-format
+msgid "Use the module {ucr} to correct their values."
+msgstr "Benutzen Sie das Modul {ucr}, um diese Werte zu korrigieren."
+
 #: umc/python/diagnostic/plugins/55_user_migration.py:12
 msgid "User objects which are not migrated"
 msgstr "Noch nicht migrierte Nutzer Objekte"
@@ -1071,6 +1093,15 @@ msgstr ""
 #: umc/python/diagnostic/plugins/62_check_slapschema.py:43
 msgid "Validating the LDAP configuration and schema files."
 msgstr "Validierung der LDAP-Konfigurations und Schema Dateien."
+
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:68
+#, python-format
+msgid ""
+"Value: %(value)s not compatible with type: %(type)s for variable: "
+"%(variable)s"
+msgstr ""
+"Wert: %(value)s ist inkompatibel mit Typ: %(type)s für die Variable "
+"%(variable)s"
 
 #: umc/python/diagnostic/plugins/55_user_migration.py:15
 msgid ""
