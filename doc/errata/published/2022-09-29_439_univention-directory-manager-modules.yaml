@@ -12,3 +12,5 @@ desc: |
    unmapped in case it was not set. This caused the UDM REST API to wrongly
    represent it as `None` instead of `False`.
 bug: [55189, 55226]
+erratum: 439
+announced: 2022-09-29
