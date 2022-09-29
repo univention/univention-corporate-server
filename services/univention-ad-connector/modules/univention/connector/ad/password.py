@@ -559,7 +559,8 @@ def password_sync(connector, key, ucs_object):
 
 			ucs_object_ = connector.get_ucs_object("user", ucs_object['dn'])
 			pwhistoryPolicy = ucs_object_.loadPolicyObject('policies/pwhistory')
-			pwhistory_length = int(pwhistoryPolicy['length'])
+			pwhistory_length = pwhistoryPolicy['length']
+			pwhistory_length = int(pwhistory_length) if pwhistory_length else 0
 
 			msDSResultantPSO = res[0][1].get('msDS-ResultantPSO', [None])[0]
 

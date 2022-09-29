@@ -605,7 +605,8 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 				if pwdHistoryLength:
 					userobject = s4connector.get_ucs_object(key, ucs_object['dn'])
 					pwhistoryPolicy = userobject.loadPolicyObject('policies/pwhistory')
-					pwhistory_length = int(pwhistoryPolicy['length'])
+					pwhistory_length = pwhistoryPolicy['length']
+					pwhistory_length = int(pwhistory_length) if pwhistory_length else 0
 					if pwhistory_length != pwdHistoryLength:
 						ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs_to_s4: Mismatch between UCS pwhistoryPolicy (%s) and S4 pwhistoryPolicy (%s). Using the larger one." % (pwhistory_length, pwdHistoryLength))
 					des_len = max(pwdHistoryLength, pwhistory_length) * 16
@@ -770,7 +771,8 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 				pwhistoryPolicy = None
 				if userobject:
 					pwhistoryPolicy = userobject.loadPolicyObject('policies/pwhistory')
-					pwhistory_length = int(pwhistoryPolicy['length'])
+					pwhistory_length = pwhistoryPolicy['length']
+					pwhistory_length = int(pwhistory_length) if pwhistory_length else 0
 					if pwhistory_length > 0:
 						msDSResultantPSO = s4_search_attributes.get('msDS-ResultantPSO', [None])[0]
 
