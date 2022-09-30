@@ -910,7 +910,7 @@ class Instance(Base):
 			txt = fp.read()
 		txt = txt.format(username=username)
 		msg = MIMENonMultipart('text', 'plain', charset='utf-8')
-		msg["Subject"] = self.ucr.get("umc/self-service/account-deregistration/email/subject", "Account deletion")
+		msg["Subject"] = ucr.get("umc/self-service/account-deregistration/email/subject", "Account deletion")
 		msg["Date"] = formatdate(localtime=True)
 		msg["From"] = ucr.get("umc/self-service/account-deregistration/email/sender_address", "Password Reset Service <noreply@{}>".format(".".join([ucr["hostname"], ucr["domainname"]])))
 		msg["To"] = mail
@@ -1133,7 +1133,7 @@ class Instance(Base):
 			txt = fp.read()
 		txt = txt.format(username=username, old_email=old_email, new_email=new_email)
 		msg = MIMENonMultipart('text', 'plain', charset='utf-8')
-		msg["Subject"] = self.ucr.get("umc/self-service/email-change-notification/email/subject", "Account recovery email changed")
+		msg["Subject"] = ucr.get("umc/self-service/email-change-notification/email/subject", "Account recovery email changed")
 		msg["Date"] = formatdate(localtime=True)
 		msg["From"] = ucr.get("umc/self-service/passwordreset/email/sender_address", "Password Reset Service <noreply@{}>".format(".".join([ucr["hostname"], ucr["domainname"]])))
 		msg["To"] = old_email
