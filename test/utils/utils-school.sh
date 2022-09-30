@@ -267,7 +267,7 @@ EOF
 	school_count=350
 	classes_count=40000
 	students_count=220000
-	teachers_count=15000
+	teachers_count=25000
 	staff_count=1000
 	schools=()
 	for i in $(seq 1 "$school_count"); do
@@ -278,6 +278,7 @@ EOF
 		--classes "$classes_count" \
 		--students "$students_count" \
 		--teachers "$teachers_count" \
+		--inclasses 10 \
 		--staff "$staff_count" \
 		"${schools[@]}" >/tmp/import.log 2>&1 || return 1
 	rm -f /tmp/import.log
