@@ -65,7 +65,7 @@ def _get_config_registry_info() -> cri.ConfigRegistryInfo:
 
 
 def run(_umc_instance: Instance) -> None:
-	error_descriptions: List[str] = []
+	error_descriptions: List[str] = [description]
 
 	ucr.load()
 

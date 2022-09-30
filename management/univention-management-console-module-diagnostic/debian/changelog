@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.2-5) unstable; urgency=low
+
+  * Bug #54495: Added type checking for all ucr defined types and values
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 30 Sep 2022 12:38:26 +0200
+
 univention-management-console-module-diagnostic (6.0.2-4) unstable; urgency=low
 
   * Bug #54495: Added type checking for all ucr defined types and values
