@@ -204,13 +204,13 @@ class TestHandler(object):
 
 	@pytest.mark.parametrize("arg, ignore_check, ucr_check, changed, out, err", [
 		("bar=1", True, False, {"bar": ("NORMAL", "1")}, "Setting bar\n", ""),
-		("bar=text", True, False, {"bar": ("NORMAL", "text")}, "Setting bar\n", "W: Value 'text' incompatible with type 'int' of 'bar', but set anyway\n"),
+		("bar=text", True, False, {"bar": ("NORMAL", "text")}, "Setting bar\n", "W: Value 'text' incompatible for 'bar', but setting anyway\n"),
 		("bar=1", False, False, {"bar": ("NORMAL", "1")}, "Setting bar\n", ""),
-		("bar=text", False, False, {"bar": ("NORMAL", "text")}, "Setting bar\n", "W: Value 'text' incompatible with type 'int' of 'bar', but set anyway\n"),
+		("bar=text", False, False, {"bar": ("NORMAL", "text")}, "Setting bar\n", "W: Value 'text' incompatible for 'bar', but setting anyway\n"),
 		("bar=1", True, True, {"bar": ("NORMAL", "1")}, "Setting bar\n", ""),
-		("bar=text", True, True, {"bar": ("NORMAL", "text")}, "Setting bar\n", "W: Value 'text' incompatible with type 'int' of 'bar', but set anyway\n"),
+		("bar=text", True, True, {"bar": ("NORMAL", "text")}, "Setting bar\n", "W: Value 'text' incompatible for 'bar', but setting anyway\n"),
 		("bar=1", False, True, {"bar": ("NORMAL", "1")}, "Setting bar\n", ""),
-		("bar=text", False, True, {}, "Setting bar\n", "E: Error validating value 'text' for type 'int' of 'bar'\n"),
+		("bar=text", False, True, {}, "Setting bar\n", "E: Value 'text' incompatible for 'bar'\n"),
 	])
 	@pytest.mark.vtype("int")
 	def test_handler_set_value_checking(self, arg, ignore_check, ucr_check, changed, out, err, rinfo, run, mocker, capsys):

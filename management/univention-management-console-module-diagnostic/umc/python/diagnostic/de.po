@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2022-09-29 16:29+0200\n"
-"PO-Revision-Date: 2022-09-29 16:33+0200\n"
+"POT-Creation-Date: 2022-09-30 12:09+0200\n"
+"PO-Revision-Date: 2022-09-30 12:12+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -349,8 +349,8 @@ msgstr ""
 
 #: umc/python/diagnostic/plugins/64_check_ucr_types.py:62
 #, python-format
-msgid "Invalid type %(type)s defined for variable %(variable)s"
-msgstr "Ungültiger Typ %(type)s für Variable %(variable)s definiert"
+msgid "Invalid type %(type)r defined for variable %(variable)r."
+msgstr "Ungültiger Typ %(type)r für Variable %(variable)r definiert."
 
 #: umc/python/diagnostic/plugins/32_security_limits.py:19
 #, python-brace-format
@@ -546,6 +546,11 @@ msgstr ""
 msgid "Please check the files for more details."
 msgstr "Überprüfen Sie die Dateien für mehr Details."
 
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:52
+msgid "Please investigate them if you experience any problems on this system."
+msgstr ""
+"Bitte untersuchen Sie diese wenn Sie auf diesem System Probleme beobachten."
+
 #: umc/python/diagnostic/plugins/11_nameserver.py:16
 msgid ""
 "Please make sure the DNS settings in the {setup:network} are correctly set "
@@ -693,12 +698,8 @@ msgstr ""
 "nach Objekten in OpenLDAP zu suchen oder diese zu identifizieren."
 
 #: umc/python/diagnostic/plugins/64_check_ucr_types.py:50
-msgid ""
-"Some UCR variables currently have values, which are incompatible with their "
-"types."
-msgstr ""
-"Einige UCR-Variablen haben momentan Werte, die inkompatibel mit ihrem Typ "
-"sind."
+msgid "Some UCR variables currently have invalid values."
+msgstr "Einige UCR-Variablen haben momentan ungültige Werte."
 
 #: umc/python/diagnostic/plugins/30_disk_usage.py:130
 msgid "Some disks are nearly full:"
@@ -918,6 +919,11 @@ msgstr ""
 msgid "The value notifier/protocol/version has an invalid value."
 msgstr "Die UCR-Variable “notifier/protocol/version” hat einen ungültigen Wert"
 
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:68
+#, python-format
+msgid "The variable %(variable)r has the invalid value %(value)r."
+msgstr "Die Variable %(variable)r hat den ungültigen Wert %(value)r."
+
 #: umc/python/diagnostic/plugins/10_gateway.py:31
 msgid "There is no gateway configured."
 msgstr "Es ist kein Gateway eingerichtet."
@@ -960,6 +966,12 @@ msgstr ""
 "Dies kann mehrere verschiedene ernsthafte Probleme verursachen (z.B. Login "
 "an Samba-Servern unmöglich, Dateioperationen (Kopieren, Verschieben) auf "
 "Freigaben kann fehlschlagen, uvm.)"
+
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:51
+msgid "This check has been added recently; some warning may be unproblematic."
+msgstr ""
+"Dieser Test wurde erst kürzlich hinzugefügt; einige Warnungen können "
+"unproblematisch sein."
 
 #: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:77
 msgid ""
@@ -1093,15 +1105,6 @@ msgstr ""
 #: umc/python/diagnostic/plugins/62_check_slapschema.py:43
 msgid "Validating the LDAP configuration and schema files."
 msgstr "Validierung der LDAP-Konfigurations und Schema Dateien."
-
-#: umc/python/diagnostic/plugins/64_check_ucr_types.py:68
-#, python-format
-msgid ""
-"Value: %(value)s not compatible with type: %(type)s for variable: "
-"%(variable)s"
-msgstr ""
-"Wert: %(value)s ist inkompatibel mit Typ: %(type)s für die Variable "
-"%(variable)s"
 
 #: umc/python/diagnostic/plugins/55_user_migration.py:15
 msgid ""

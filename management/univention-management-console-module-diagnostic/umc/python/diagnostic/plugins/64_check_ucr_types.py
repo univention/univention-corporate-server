@@ -47,7 +47,9 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 run_desc = ["Checking UCR variable values for correctness."]
 title = _('Check UCR variable values for correctness')
 description = "\n".join((
-	_("Some UCR variables currently have values, which are incompatible with their types."),
+	_("Some UCR variables currently have invalid values."),
+	_("This check has been added recently; some warning may be unproblematic."),
+	_("Please investigate them if you experience any problems on this system."),
 	_("Use the module {ucr} to correct their values."),
 ))
 umc_modules: List[Dict[str, str]] = [
@@ -65,6 +67,8 @@ def _get_config_registry_info() -> cri.ConfigRegistryInfo:
 def run(_umc_instance: Instance) -> None:
 	error_descriptions: List[str] = []
 
+	ucr.load()
+
 	info = _get_config_registry_info()
 	ignore = {typ for typ in (typ.strip() for typ in ucr.get("diagnostic/check/64_check_ucr_types/ignore", "").split(",")) if typ}
 	for name, var in info.variables.items():
@@ -73,13 +77,13 @@ def run(_umc_instance: Instance) -> None:
 			if validator.vtype in ignore:
 				continue
 		except (TypeError, ValueError):
-			msg = _('Invalid type %(type)s defined for variable %(variable)s') % {'type': var.get('type'), 'variable': name}
+			msg = _('Invalid type %(type)r defined for variable %(variable)r.') % {'type': var.get('type'), 'variable': name}
 			MODULE.error(msg)
 			error_descriptions.append(msg)
 		else:
 			value = ucr.get(name)
 			if value is not None and not validator.check(value):
-				msg = _('Value: %(value)s not compatible with type: %(type)s for variable: %(variable)s') % {'value': value, 'type': var.get('type'), 'variable': name}
+				msg = _('The variable %(variable)r has the invalid value %(value)r.') % {'value': value, 'variable': name}
 				MODULE.error(msg)
 				error_descriptions.append(msg)
 

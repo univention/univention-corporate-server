@@ -1,7 +1,12 @@
+univention-config-registry (15.0.7-21) unstable; urgency=low
+
+  *  Bug #54495: fix validation of UCR variables using UCR type definitions
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 30 Sep 2022 12:02:45 +0200
+
 univention-config-registry (15.0.7-20) unstable; urgency=medium
 
-  *  Bug #54495: Invalid UCR proxy configuration issue
-     Introduce enhanced type checking
+  *  Bug #54495: add validation of UCR variables using UCR type definitions
 
  -- Peter Stoll <stoll.extern@univention.de>  Mon, 26 Sep 2022 14:36:41 +0200
 

@@ -187,9 +187,9 @@ def handler_set(args, opts={}, quiet=False):
 					else:
 						if not validator.check(value):
 							if ignore_check:
-								print('W: Value %r incompatible with type %r of %r, but set anyway' % (value, vinfo.get('type'), key), file=sys.stderr)
+								print('W: Value %r incompatible for %r, but setting anyway' % (value, key), file=sys.stderr)
 							else:
-								print('E: Error validating value %r for type %r of %r' % (value, vinfo.get('type'), key), file=sys.stderr)
+								print('E: Value %r incompatible for %r' % (value, key), file=sys.stderr)
 								opts['exit_code'] = 1
 								continue  # do not set value and continue with next element of for loop to be set
 				changes[key] = value
