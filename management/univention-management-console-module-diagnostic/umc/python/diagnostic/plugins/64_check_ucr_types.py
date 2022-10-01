@@ -65,7 +65,7 @@ def _get_config_registry_info() -> cri.ConfigRegistryInfo:
 
 
 def run(_umc_instance: Instance) -> None:
-	error_descriptions: List[str] = [description]
+	error_descriptions: List[str] = []
 
 	ucr.load()
 
@@ -88,7 +88,7 @@ def run(_umc_instance: Instance) -> None:
 				error_descriptions.append(msg)
 
 	if error_descriptions:
-		raise Warning(description='\n'.join(error_descriptions))
+		raise Warning(description + '\n' + '\n'.join(error_descriptions))
 
 
 if __name__ == '__main__':
