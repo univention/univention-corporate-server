@@ -292,7 +292,6 @@ def test_send_verification_token(umc_client, mails, ucr, udm, get_registration_i
 	_, username = udm.create_user(**{'PasswordRecoveryEmail': mail})
 	res = umc_client.umc_command('passwordreset/send_verification_token', {'username': username})
 	assert res.result['data']['username'] == username
-	assert res.result['data']['email'] == mail
 	mail = _get_mail(mails)
 	assert mail['verify_data']['username'] == username
 
@@ -336,7 +335,7 @@ def test_deregistration(umc_client, mails, udm, readudm):
 	assert user.props.DeregisteredThroughSelfService == 'TRUE'
 	assert user.props.DeregistrationTimestamp.startswith(timestamp[:3])  # checking seconds from the timestamp is too flaky
 	mail = _get_mail(mails)
-	with open('/usr/lib/python2.7/dist-packages/univention/management/console/modules/passwordreset/deregistration_notification_email_body.txt', 'r') as fd:
+	with open('/usr/share/univention-self-service/email_bodies/deregistration_notification_email_body.txt', 'r') as fd:
 		expected_body = fd.read().format(username=username)
 	assert mail['body'].strip() == expected_body.strip()
 
