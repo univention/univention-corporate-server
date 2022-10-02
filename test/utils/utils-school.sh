@@ -265,7 +265,7 @@ EOF
 		/usr/share/ucs-school-import/configs/ucs-school-testuser-import.json
 	# create school users
 	school_count=350
-	classes_count=40000
+	classes_count=50000
 	students_count=220000
 	teachers_count=25000
 	staff_count=1000
@@ -278,7 +278,7 @@ EOF
 		--classes "$classes_count" \
 		--students "$students_count" \
 		--teachers "$teachers_count" \
-		--inclasses 10 \
+		--inclasses 50 \
 		--staff "$staff_count" \
 		"${schools[@]}" >/tmp/import.log 2>&1 || return 1
 	rm -f /tmp/import.log
