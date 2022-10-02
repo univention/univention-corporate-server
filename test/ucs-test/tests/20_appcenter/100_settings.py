@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner /usr/bin/py.test
 ## desc: App Settings
-## tags: [basic, coverage, skip_admember]
+## tags: [basic, coverage, skip_admember, SKIP]
 ## packages:
 ##   - univention-appcenter-dev
 ## exposure: dangerous

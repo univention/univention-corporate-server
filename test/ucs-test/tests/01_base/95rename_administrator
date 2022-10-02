@@ -82,7 +82,7 @@ def wait_for_ucr(iterations, admin_name, ucr_test):
 			if i == iterations - 1:
 				break
 			# ucr commit for the slapd.conf takes a long time in ucs4 bug #34003
-			time.sleep(60)
+			time.sleep(100)
 		else:
 			print('UCR variable users/default/administrator is set correctly to %s' % (ucr_name,))
 			success = True
