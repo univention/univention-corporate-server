@@ -97,6 +97,12 @@ export default defineComponent({
     color: #fff
     text-decoration: none
 
+  .close-link
+    padding: .4rem
+    font-size: 1.2rem
+    color: #fff
+    text-decoration: none
+
   .announcement-message
     margin-right: .5rem
 
