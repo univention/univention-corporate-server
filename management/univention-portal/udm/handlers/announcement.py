@@ -37,6 +37,7 @@ import univention.admin.handlers
 translation = univention.admin.localization.translation('univention.admin.handlers.portals-portal')
 _ = translation.translate
 
+superordinate = 'settings/cn'
 module = 'portals/announcement'
 default_containers = ['cn=announcement,cn=portals,cn=univention']
 childs = False
@@ -168,4 +169,5 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 lookup = object.lookup
+lookup_filter = object.lookup_filter
 identify = object.identify
