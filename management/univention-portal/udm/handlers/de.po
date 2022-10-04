@@ -384,12 +384,6 @@ msgstr "Endzeit"
 msgid "If one or more groups are selected then the portal announcement will only be visible to logged in users that are in any of the selected groups. If no groups are selected then the portal entry is always visible."
 msgstr "Falls ein oder mehrere Gruppen ausgewählt sind, wird die Ansage nur für angemeldete Benutzer sichtbar sein, die in einer der ausgewählten Gruppen Mitglied sind. Wenn keine Gruppe ausgewählt wird, ist die Ansage für alle sichtbar."
 
-msgid "If true, the announcement can't be closed and will persist until the time ends (or never)."
-msgstr "When aktiv kann die Ansage nicht geschlossen werden und wird erst nach der Endzeit verschwinden (oder niemals)."
-
-msgid "If true, the user will see a \"Confirm\" button and the announcement will persist until it is clicked."
-msgstr "Wenn aktiv wird der User die Ansage mit einem \"Bestätigen\"-Knopf bestätigen müssen bevor die Nachricht verschwindet."
-
 msgid "Info"
 msgstr "Info"
 
@@ -403,11 +397,6 @@ msgstr "Nachricht"
 
 msgid "Needs Confirmation"
 msgstr "Benötigt Bestätigung"
-
-
-msgid "One folder in https://fqdn/univention/portal which holds one or more portals/announcement objects. Belongs to one or more portals/portal objects"
-msgstr "Ein Ordner in https://fqdn/univention/portal der ein oder mehr portals/announcement Objekte enthält. Gehört zu einem oder mehreren portal/portal Objekten."
-
 
 msgid "Options"
 msgstr "Optionen"
@@ -456,3 +445,9 @@ msgstr "Titel"
 
 msgid "Warning"
 msgstr "Warnung"
+
+msgid "If enabled, the announcement can't be closed and will persist until the time ends (or never)."
+msgstr "When aktiv kann die Ansage nicht geschlossen werden und wird erst nach der Endzeit verschwinden (oder niemals)."
+
+msgid "If enabled, the user will see a \"Confirm\" button and the announcement will persist until it is clicked."
+msgstr "Wenn aktiv wird der User die Ansage mit einem \"Bestätigen\"-Knopf bestätigen müssen bevor die Nachricht verschwindet."
