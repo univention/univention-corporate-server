@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: mariadb-10.3
-fix: 1:10.3.36-0+deb10u1
+fix: 1:10.3.36-0+deb10u2
 desc: |
  This update fixes a minor regression from erratum 427:
  * MariaDB allows attackers to trigger a `convert_const_to_int` use-after-free
