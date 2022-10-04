@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: univention-directory-notifier
+fix: 13.0.3-10
+desc: |
+ This update addresses the following issue:
+ * The Notifier sometimes failed to process all transaction in bulk and
+   aborted. This lead to the Notifier making no progress and filled the log
+   file with the same error messages again and again. Transactions are now
+   processes incrementally.
+ * Several memory issues where fixed as well.
+bug: [55235]
