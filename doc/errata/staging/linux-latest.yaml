@@ -2,8 +2,8 @@ product: ucs
 release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
-src: linux-signed-amd64
-fix: 4.19.260+1
+src: linux-latest
+fix: 105+deb10u17
 desc: |
  This updates the Linux kernel to version 4.19.260, which addresses (among
  others) the following security issues:
@@ -43,7 +43,7 @@ desc: |
    (CVE-2022-39188)
  * efi: capsule-loader: Fix use-after-free in `efi_capsule_write`
    (CVE-2022-40307)
-note: This is the 2nd of three parts.
+note: This is the 3rd of three parts.
 bug: [55238]
 cve:
 - CVE-2021-33656
