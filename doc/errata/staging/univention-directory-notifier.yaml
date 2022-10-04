@@ -3,7 +3,7 @@ release: "4.4"
 version: [9]
 scope: ucs_4.4-0-errata4.4-9
 src: univention-directory-notifier
-fix: 13.0.3-10
+fix: 13.0.3-10A~4.4.0.202210041739
 desc: |
  This update addresses the following issue:
  * The Notifier sometimes failed to process all transaction in bulk and
