@@ -219,7 +219,7 @@ are forwarded to the :program:`Self Service Backend`.
    |UCSUCRV| :envvar:`self-service/backend-server` since this |UCSUCRV| is
    evaluated there.
 
-.. envvar:: umc/self-service/account-verification/email/sender_address`
+.. envvar:: umc/self-service/account-verification/email/sender_address
 
    Defines the sender address of the verification email. Default is :samp:`Account
    Verification Service <noreply@{FQDN}>`.
