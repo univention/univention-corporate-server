@@ -253,11 +253,11 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
         return len(merge)
 
     @overload  # type: ignore
-    def get(self, key: str, default: _VT, getscope: Literal[True]) -> tuple[int, str] | _VT:  # pragma: no cover
+    def get(self, key: str, default: _VT, getscope: Literal[True]) -> tuple[int, str] | _VT:
         pass
 
     @overload
-    def get(self, key: str, default: _VT | None = None) -> str | _VT:  # pragma: no cover
+    def get(self, key: str, default: _VT | None = None) -> str | _VT:
         pass
 
     def get(self, key: str, default: _VT | None = None, getscope: bool = False) -> str | tuple[int, str] | _VT | None:
@@ -280,11 +280,11 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
         return default
 
     @overload
-    def get_int(self, key: str) -> int | None:  # pragma: no cover
+    def get_int(self, key: str) -> int | None:
         pass
 
     @overload  # type: ignore
-    def get_int(self, key: str, default: _VT) -> int | _VT:  # pragma: no cover
+    def get_int(self, key: str, default: _VT) -> int | _VT:
         pass
 
     def get_int(self, key: str, default: _VT | None = None) -> int | _VT | None:

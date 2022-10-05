@@ -1,17 +1,15 @@
-"""Univention Configuration Registry output filters."""
 #  main configuration registry classes
 #
 # SPDX-FileCopyrightText: 2004-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+"""Univention Configuration Registry output filters."""
+
+from typing import Any
+from collections.abc import Iterable
+
 from univention.config_registry.misc import escape_value, key_shell_escape
 
-
-try:
-    from collections.abc import Iterable
-    from typing import Any
-except ImportError:  # pragma: no cover
-    pass
 
 __all__ = ['filter_keys_only', 'filter_shell', 'filter_sort']
 

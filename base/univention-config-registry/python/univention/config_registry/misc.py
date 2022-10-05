@@ -1,9 +1,9 @@
-"""Univention Configuration Registry helper functions."""
 #  main configuration registry classes
 #
 # SPDX-FileCopyrightText: 2004-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+"""Univention Configuration Registry helper functions."""
 
 import os
 import re

@@ -27,13 +27,13 @@ from univention.config_registry.misc import asciify, directory_files
 from univention.debhelper import parseRfc822  # pylint: disable-msg=W0403
 
 
+__all__ = ['ConfigHandlers']
+
 _OPT = Mapping[str, Any]
 _UCR = Mapping[str, str]
 _CHANGES = Mapping[str, tuple[str | None, str | None]]
 _ARG = tuple[_UCR, _CHANGES]
 _INFO = Mapping[str, list[str]]
-
-__all__ = ['ConfigHandlers']
 
 VARIABLE_PATTERN = re.compile('@%@([^@]+)@%@')
 VARIABLE_TOKEN = re.compile('@%@')

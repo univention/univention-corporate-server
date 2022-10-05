@@ -4,10 +4,9 @@
 #
 # SPDX-FileCopyrightText: 2010-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
+# pylint: disable-msg=W0142,C0103,R0201,R0904
 
 """Handle UCR network configuration."""
-
-# pylint: disable-msg=W0142,C0103,R0201,R0904
 
 import re
 from collections.abc import Callable, Iterator, Mapping

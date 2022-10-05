@@ -1,4 +1,3 @@
-"""Univention Configuration Registry command line implementation."""
 #  main configuration registry classes
 #
 # SPDX-FileCopyrightText: 2004-2025 Univention GmbH
@@ -6,6 +5,8 @@
 #
 # API stability :pylint: disable-msg=W0613
 # Rewrite       :pylint: disable-msg=R0912,R0914,R0915
+
+"""Univention Configuration Registry command line implementation."""
 
 import os
 import re
