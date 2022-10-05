@@ -44,7 +44,3 @@ rules. For example:
 .. code-block:: console
 
    $ ucr set mail/postfix/smtpd/restrictions/recipient/80="reject_rbl_client ix.dnsbl.manitu.net"
-
-.. spelling::
-
-   Blackhole

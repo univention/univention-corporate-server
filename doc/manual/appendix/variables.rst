@@ -815,10 +815,6 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
    For more information, see :ref:`mail-dnsbl`.
 
-   .. spelling::
-
-      Blackhole
-
 
 .. envvar:: mail/postfix/softbounce
 

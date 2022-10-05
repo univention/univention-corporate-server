@@ -192,13 +192,6 @@ DNS UMC module forward lookup - General tab
        relative domain name of the responsible name server. The first entry in
        the line is the primary name server for the zone.
 
-.. For German spell checker only relevant in this section.
-
-.. spelling::
-
-   Time
-   to
-
 .. _networks-dns-forwardzone-start-of-authority-tab:
 
 DNS UMC module forward lookup - Start of authority tab

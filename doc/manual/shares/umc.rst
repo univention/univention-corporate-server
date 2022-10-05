@@ -547,9 +547,3 @@ Shares UMC module - Options tab
 
    * - Export for NFS clients
      - This option defines whether the share is to be exported for NFS clients.
-
-
-.. spelling::
-
-   Subtree
-
