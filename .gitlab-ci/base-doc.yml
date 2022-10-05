@@ -4,17 +4,6 @@ stages:
   - staging
   - production
 
-.doc:
-  stage: build
-  image: $DOC
-  script:
-    - make -C $base check install DESTDIR=$CI_PROJECT_DIR/public
-  artifacts:
-    paths:
-      - public
-    reports:
-      codequality: $base/codeclimate.json
-
 .sphinx-doc:
   stage: build
   image: $SPHINX_BASE
