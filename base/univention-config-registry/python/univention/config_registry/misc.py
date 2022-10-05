@@ -41,7 +41,7 @@ import re
 import string  # pylint: disable-msg=W0402
 import sys
 from pipes import quote as escape_value
-from typing import IO, Dict, List, Text  # noqa: F401
+from typing import IO, Dict, Iterator, Text  # noqa: F401
 
 
 __all__ = [
@@ -152,18 +152,19 @@ def validate_key(key, out=sys.stderr):
 INVALID_KEY_CHARS = re.compile('[][\r\n!"#$%&\'()+,;<=>?\\\\`{}§]')
 
 
-def directory_files(directory):
-    # type: (str) -> List[str]
+def directory_files(directory, suffix=".info"):
+    # type: (str, str) -> Iterator[str]
     """
     Return a list of all files below the given directory.
 
     :param directory: Base directory path.
+    :param suffix: Filter for file suffix.
     :returns: List of absolute file names.
     """
-    result = []
     for dirpath, _dirnames, filenames in os.walk(directory):
         for filename in filenames:
+            if not filename.endswith(suffix):
+                continue
             filename = os.path.join(dirpath, filename)
             if os.path.isfile(filename):
-                result.append(filename)
-    return result
+                yield filename

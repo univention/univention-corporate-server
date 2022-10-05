@@ -74,9 +74,10 @@ def test_validate_key(key, out):
 def test_directory_files(tmpdir):
     base = tmpdir.mkdir("test")
     files = [
-        base.ensure("file"),
-        base.mkdir("sub").ensure("file"),
+        base.ensure("file.info"),
+        base.mkdir("sub").ensure("file.info"),
     ]
+    base.ensure("wrong")
     broken = base.ensure("broken")
     base.join("link").mksymlinkto(broken)
     broken.remove()
