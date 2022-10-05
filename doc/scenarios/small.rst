@@ -194,9 +194,3 @@ References
 
 * `SEP sesam Backup Server
   <https://www.univention.com/products/univention-app-center/app-catalog/sep-sesam/>`_
-
-
-
-.. spelling::
-
-   Munich

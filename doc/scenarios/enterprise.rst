@@ -263,8 +263,3 @@ References
 
 * `SuiteCRM
   <https://www.univention.com/products/univention-app-center/app-catalog/digitec-suitecrm/>`_
-
-.. spelling::
-
-   checksums
-   protocolized
