@@ -657,9 +657,9 @@ class ConfigHandlers:
     VERSION = 3
     VERSION_MIN = 3
     VERSION_MAX = 3
-    VERSION_TEXT = 'univention-config cache, version'
-    VERSION_NOTICE = '%s %s\n' % (VERSION_TEXT, VERSION)
-    VERSION_RE = re.compile('^%s (?P<version>[0-9]+)$' % VERSION_TEXT)
+    VERSION_TEXT = b'univention-config cache, version'
+    VERSION_NOTICE = b'%s %d\n' % (VERSION_TEXT, VERSION)
+    VERSION_RE = re.compile(b'^%s (?P<version>[0-9]+)$' % VERSION_TEXT)
 
     _handlers = {}    # type: Dict[str, Set[ConfigHandler]] # variable -> set(handlers)
     _multifiles = {}  # type: Dict[str, ConfigHandlerMultifile] # multifile -> handler
@@ -671,7 +671,7 @@ class ConfigHandlers:
 
     @staticmethod
     def _get_cache_version(cache_file):
-        # type: (IO) -> int
+        # type: (IO[bytes]) -> int
         """
         Read cached `.info` data.
 
@@ -976,7 +976,7 @@ class ConfigHandlers:
         """Write cache file."""
         try:
             with open(ConfigHandlers.CACHE_FILE, 'wb') as cache_file:
-                cache_file.write(ConfigHandlers.VERSION_NOTICE.encode('utf-8'))
+                cache_file.write(ConfigHandlers.VERSION_NOTICE)
                 pickler = pickle.Pickler(cache_file)
                 pickler.dump(self._handlers)
                 pickler.dump(self._subfiles)

@@ -4,14 +4,9 @@
 # pylint: disable-msg=C0103,E0611,R0904
 import sys
 from argparse import Namespace
+from io import BytesIO
 from os import stat_result
 from os.path import dirname
-
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO  # type: ignore
 
 import pytest
 
@@ -386,14 +381,14 @@ class TestConfigHandlers():
             assert isinstance(handler, typ)
 
     @pytest.mark.parametrize("data,version", [
-        ("", 0),
-        ("invalid", 0),
-        ("univention-config cache, version 1\n", 1),
-        ("univention-config cache, version 2\n", 2),
-        ("univention-config cache, version 3\n", 3),
+        (b"", 0),
+        (b"invalid", 0),
+        (b"univention-config cache, version 1\n", 1),
+        (b"univention-config cache, version 2\n", 2),
+        (b"univention-config cache, version 3\n", 3),
     ])
     def test_get_cache_version(self, data, version):
-        cache = StringIO(data)
+        cache = BytesIO(data)
         assert version == ucrh.ConfigHandlers._get_cache_version(cache)
 
     def test_cache(self, handlers):
