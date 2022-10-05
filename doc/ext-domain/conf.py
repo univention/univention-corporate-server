@@ -84,7 +84,7 @@ html_theme_options = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = []
 html_last_updated_fmt = "%a, %d. %b %Y at %H:%M (UTC%z)"
 
 # https://github.com/mgeier/sphinx-last-updated-by-git
@@ -116,7 +116,6 @@ rst_epilog = """
 latex_engine = 'lualatex'
 latex_show_pagerefs = True
 latex_show_urls = "footnote"
-latex_logo = "_static/univention_logo.pdf"
 latex_documents = [
     (root_doc, f'{pdf_doc_base}.tex', "", author, "manual", False)
 ]
