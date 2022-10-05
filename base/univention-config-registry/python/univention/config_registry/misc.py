@@ -120,17 +120,18 @@ def validate_key(key: str, out: IO = sys.stderr) -> bool:
 INVALID_KEY_CHARS = re.compile('[][\r\n!"#$%&\'()+,;<=>?\\\\`{}§]')
 
 
-def directory_files(directory: str) -> list[str]:
+def directory_files(directory: str, suffix: str = ".info") -> list[str]:
     """
     Return a list of all files below the given directory.
 
     :param directory: Base directory path.
+    :param suffix: Filter for file suffix.
     :returns: List of absolute file names.
     """
-    result = []
     for dirpath, _dirnames, filenames in os.walk(directory):
         for filename in filenames:
+            if not filename.endswith(suffix):
+                continue
             filename = os.path.join(dirpath, filename)
             if os.path.isfile(filename):
-                result.append(filename)
-    return result
+                yield filename

@@ -844,8 +844,6 @@ class ConfigHandlers:
 
         handlers: set[ConfigHandler] = set()
         for info in directory_files(INFO_DIR):
-            if not info.endswith('.info'):
-                continue
             for section in self._parse_rfc822_file(info):
                 handler = self.get_handler(section)
                 if handler:
@@ -1036,8 +1034,6 @@ class ConfigHandlers:
         # find handlers
         pending_handlers = set()
         for fname in directory_files(INFO_DIR):
-            if not fname.endswith('.info'):
-                continue
             for section in self._parse_rfc822_file(fname):
                 if not section.get('Type'):
                     continue
