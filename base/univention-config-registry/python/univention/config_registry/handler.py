@@ -894,16 +894,25 @@ class ConfigHandlers:
 
     def _save_cache(self) -> None:
         """Write cache file."""
+        dirname, basename = os.path.split(ConfigHandlers.CACHE_FILE)
+        tmp = os.path.join(dirname, ".%s.%d" % (basename, os.getpid()))
         try:
-            with open(ConfigHandlers.CACHE_FILE, 'wb') as cache_file:
+            with open(tmp, 'wb') as cache_file:
                 cache_file.write(ConfigHandlers.VERSION_NOTICE)
                 pickler = pickle.Pickler(cache_file)
                 pickler.dump(self._handlers)
                 pickler.dump(self._subfiles)
                 pickler.dump(self._multifiles)
+
+            os.rename(tmp, ConfigHandlers.CACHE_FILE)
         except OSError as ex:
             if ex.errno != errno.EACCES:
                 raise
+        finally:
+            try:
+                os.unlink(tmp)
+            except OSError:
+                pass
 
     def register(self, package: str, ucr: _UCR) -> set[ConfigHandler]:
         """
