@@ -451,8 +451,3 @@ Bibliography
 ************
 
 .. bibliography::
-
-
-.. spelling::
-
-   unswappable
