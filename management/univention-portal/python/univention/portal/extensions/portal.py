@@ -141,7 +141,7 @@ class Portal(metaclass=Plugin):
                 ],
             ) > 0
         ]
-        visible_announcements = [announcement for announcement in announcements if self._announcement_visible(announcement)]
+        visible_announcements = [announcement for announcement in announcements if self._announcement_visible(user, announcement)]
         return {
             "entry_dns": visible_entry_dns,
             "folder_dns": visible_folder_dns,
@@ -206,6 +206,9 @@ class Portal(metaclass=Plugin):
         ]
         return portal
 
+    def _announcement_visible(self, user, announcement: dict) -> bool:
+        return self._announcement_matches_time(announcement) and self._announcement_matches_group(user, announcement)
+
     def _announcement_matches_time(self, announcement: dict):
         start_time = None
         end_time = None
@@ -215,8 +218,18 @@ class Portal(metaclass=Plugin):
             end_time = announcement['endTime']
         return in_range(start_time, end_time)
 
-    def _announcement_visible(self, announcement: dict) -> bool:
-        return self._announcement_matches_time(announcement)
+    def _announcement_matches_group(self, user, announcement: dict):
+        visible = False
+        if "allowedGroups" in announcement:
+            if announcement["allowedGroups"] is None or announcement["allowedGroups"] == []:
+                visible = True
+            else:
+                for group in announcement["allowedGroups"]:
+                    if user.is_member_of(group):
+                        visible = True
+        else:
+            visible = True
+        return visible
 
     def get_announcements(self, content):
         return content["announcements"]

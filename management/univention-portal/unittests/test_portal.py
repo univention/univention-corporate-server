@@ -40,6 +40,8 @@ import json
 import tempfile
 import pytest
 
+from univentionunittests import import_module
+
 from univention.portal.extensions.reloader import MtimeBasedLazyFileReloader
 from univention.portal.extensions.portal import Portal
 
@@ -110,6 +112,10 @@ class TestPortal:
         authenticator.login_user = mocker.MagicMock()
         authenticator.login_request = mocker.MagicMock()
         return Portal(scorer, portal_cache, authenticator)
+
+    @pytest.fixture
+    def user_module(request):
+        return import_module("univention.portal.user", "python/", "univention.portal.user", use_installed=False)
 
     def test_user(self, mocked_portal, mocker):
         request = "request"
@@ -287,3 +293,73 @@ class TestPortal:
         assert mocked_portal.score(request) == 5
         mocked_portal.scorer.score.assert_called_once()
         mocked_portal.scorer.score.assert_called_with(request)
+
+    def test_announcement_groups(self, user_module, portal_data, standard_portal):
+        test_user = user_module.User(
+            username="hindenkampp",
+            display_name="Hans Hindenkampp",
+            groups=["public_society"],
+            headers={})
+
+        visible_announcement_1 = {
+            "allowedGroups": [],
+            "dn": "cn=Testannouncment1,cn=announcement,cn=portals,cn=univention,dc=some-testenv,dc=intranet",
+            "isSticky": False,
+            "message": {
+                "de_DE": "Testannouncement",
+            },
+            "name": "Testannouncment",
+            "needsConfirmation": False,
+            "severity": "info",
+            "startTime": None,
+            "endTime": None,
+            "title": {
+                "de_DE": "Öffentliches Announcement",
+            }
+        }
+        visible_announcement_2 = {
+            "allowedGroups": ["public_society"],
+            "dn": "cn=Testannouncment1,cn=announcement,cn=portals,cn=univention,dc=some-testenv,dc=intranet",
+            "isSticky": False,
+            "message": {
+                "de_DE": "Testannouncement",
+            },
+            "name": "Testannouncment",
+            "needsConfirmation": False,
+            "severity": "info",
+            "startTime": None,
+            "endTime": None,
+            "title": {
+                "de_DE": "Öffentliches Announcement",
+            }
+        }
+        invisible_announcement = {
+            "allowedGroups": ["secret_society"],
+            "dn": "cn=Testannouncment2,cn=announcement,cn=portals,cn=univention,dc=some-testenv,dc=intranet",
+            "isSticky": False,
+            "message": {
+                "de_DE": "Testannouncement",
+            },
+            "name": "Testannouncment",
+            "needsConfirmation": False,
+            "severity": "info",
+            "startTime": None,
+            "endTime": None,
+            "title": {
+                "de_DE": "Öffentliches Announcement",
+            }
+        }
+        input_announcements = [
+            visible_announcement_1,
+            visible_announcement_2,
+            invisible_announcement,
+           ]
+        modifiable_data = portal_data.get_portal_cache_json()
+        modifiable_data['announcements'] = input_announcements
+
+        portal_data.update_portal_cache(modifiable_data)
+        content = standard_portal.get_visible_content(test_user, False)
+
+        assert visible_announcement_1 in content['announcements']
+        assert visible_announcement_2 in content['announcements']
+        assert invisible_announcement not in content['announcements']
