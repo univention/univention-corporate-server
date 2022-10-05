@@ -759,7 +759,3 @@ after the installation has finished. Otherwise the computer will be reinstalled
 every time the host is booted! If the package
 :program:`univention-net-installer-daemon` is installed on the server, the flag
 can be reset automatically.
-
-.. spelling::
-
-   preseed
