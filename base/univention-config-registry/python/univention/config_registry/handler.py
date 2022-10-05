@@ -49,6 +49,7 @@ import subprocess
 import sys
 from grp import getgrnam
 from pwd import getpwnam
+from typing import IO, Any, Dict, Iterable, List, Mapping, Optional, Set, Tuple, Union  # noqa: F401
 
 import six
 
@@ -58,17 +59,14 @@ from univention.debhelper import parseRfc822  # pylint: disable-msg=W0403
 
 if six.PY2:
     from io import open
-try:
-    from typing import IO, Any, Dict, Iterable, List, Mapping, Optional, Set, Tuple, Union  # noqa: F401
-    _OPT = Mapping[str, Any]
-    _UCR = Mapping[str, str]
-    _CHANGES = Mapping[str, Tuple[Optional[str], Optional[str]]]
-    _ARG = Tuple[_UCR, _CHANGES]
-    _INFO = Mapping[str, List[str]]
-except ImportError:
-    pass
 
 __all__ = ['ConfigHandlers']
+
+_OPT = Mapping[str, Any]
+_UCR = Mapping[str, str]
+_CHANGES = Mapping[str, Tuple[str | None, str | None]]
+_ARG = Tuple[_UCR, _CHANGES]
+_INFO = Mapping[str, List[str]]
 
 VARIABLE_PATTERN = re.compile('@%@([^@]+)@%@')
 VARIABLE_TOKEN = re.compile('@%@')

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-"""Univention Configuration Registry helper functions."""
 #  main configuration registry classes
 #
 # Like what you see? Join us!
@@ -33,6 +32,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""Univention Configuration Registry helper functions."""
+
 from __future__ import print_function
 
 import os
@@ -40,12 +41,8 @@ import re
 import string  # pylint: disable-msg=W0402
 import sys
 from pipes import quote as escape_value
+from typing import IO, Dict, List, Text  # noqa: F401
 
-
-try:
-    from typing import IO, Dict, List, Text  # noqa: F401
-except ImportError:  # pragma: no cover
-    pass
 
 __all__ = [
     'replace_dict', 'replace_umlaut', 'directory_files',

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-"""Univention Configuration Registry command line implementation."""
 #  main configuration registry classes
 #
 # Like what you see? Join us!
@@ -35,12 +34,16 @@
 #
 # API stability :pylint: disable-msg=W0613
 # Rewrite       :pylint: disable-msg=R0912,R0914,R0915
+
+"""Univention Configuration Registry command line implementation."""
+
 from __future__ import print_function
 
 import os
 import re
 import sys
 import time
+from typing import IO, Any, Callable, Dict, Iterator, List, NoReturn, Optional, Tuple  # noqa: F401
 
 import six
 
@@ -54,10 +57,6 @@ from univention.config_registry.validation import Type
 
 if six.PY2:
     from io import open
-try:
-    from typing import IO, Any, Callable, Dict, Iterator, List, NoReturn, Optional, Tuple  # noqa: F401
-except ImportError:  # pragma: no cover
-    pass
 
 __all__ = [
     'REPLOG_FILE',

@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Common Python Library
-"""Handle UCR network configuration."""
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -35,21 +34,20 @@
 # <https://www.gnu.org/licenses/>.
 
 # pylint: disable-msg=W0142,C0103,R0201,R0904
+
+"""Handle UCR network configuration."""
+
 from __future__ import absolute_import
 
 import re
 from functools import wraps
+from ipaddress import _IPAddressBase  # noqa: F401
 from ipaddress import IPv4Address, IPv4Interface, IPv6Address, IPv6Interface
 from sys import maxsize
+from typing import Any, Callable, Dict, Iterator, Optional, Tuple, Type, Union  # noqa: F401
 
 from univention.config_registry.backend import ConfigRegistry
 
-
-try:
-    from ipaddress import _IPAddressBase  # noqa: F401
-    from typing import Any, Callable, Dict, Iterator, Optional, Tuple, Type, Union  # noqa: F401
-except ImportError:  # pragma: no cover
-    pass
 
 __all__ = ['RE_IFACE', 'forgiving', 'cmp_alnum', 'Interfaces']
 

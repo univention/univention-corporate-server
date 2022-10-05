@@ -34,17 +34,13 @@
 # <https://www.gnu.org/licenses/>.
 
 import re
+from typing import Dict, Optional, TypeVar, Union, overload  # noqa: F401
 
 import six
 from six.moves import configparser
 
 
-try:
-    from typing import Dict, Optional, TypeVar, Union, overload  # noqa: F401
-    _VT = TypeVar('_VT')
-except ImportError:
-    def overload(f):
-        pass
+_VT = TypeVar('_VT')
 
 # default locale
 _locale = 'de'
@@ -134,16 +130,16 @@ class LocalizedDictionary(__LD):
         return dict.__getitem__(self, key).get(lang)  # type: ignore
 
     @overload
-    def get(self, key):  # pragma: no cover
+    def get(self, key):
         # type: (str) -> Optional[str]
         pass
 
-    @overload  # noqa: F811
-    def get(self, key, default):  # noqa: F811 # pragma: no cover
+    @overload
+    def get(self, key, default):
         # type: (str, _VT) -> Union[str, _VT]
         pass
 
-    def get(self, key, default=None):  # noqa: F811
+    def get(self, key, default=None):
         # type: (str, _VT) -> Union[str, _VT]
         try:
             value = self.__getitem__(key) or default

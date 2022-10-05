@@ -44,6 +44,10 @@ import sys
 import time
 from enum import IntEnum
 from stat import S_ISREG
+from types import TracebackType  # noqa: F401
+from typing import (  # noqa: F401
+    IO, Any, Dict, ItemsView, Iterator, List, NoReturn, Optional, Set, Tuple, Type, TypeVar, Union, overload,
+)
 
 
 try:
@@ -59,24 +63,17 @@ from univention.config_registry.handler import run_filter
 if six.PY2:
     from io import open
 
-    def overload(f):  # type ignore
-        pass
 try:
-    from types import TracebackType  # noqa: F401
-    from typing import overload  # noqa: F811
-    from typing import (  # noqa: F401
-        IO, Any, Dict, ItemsView, Iterator, List, NoReturn, Optional, Set, Tuple, Type, TypeVar, Union,
-    )
-
     from typing_extension import Literal  # noqa: F401
-    _T = TypeVar('_T', bound='ReadOnlyConfigRegistry')
-    _VT = TypeVar('_VT')
 except ImportError:  # pragma: no cover
     pass
 
 __all__ = ['StrictModeException', 'exception_occured', 'SCOPE', 'ConfigRegistry']
+
 MYPY = False
 INVALID_VALUE_CHARS = '\r\n'
+_T = TypeVar('_T', bound='ReadOnlyConfigRegistry')
+_VT = TypeVar('_VT')
 
 
 class StrictModeException(Exception):
@@ -320,12 +317,12 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
         return len(merge)
 
     @overload  # type: ignore
-    def get(self, key, default, getscope):  # pragma: no cover
+    def get(self, key, default, getscope):
         # type: (str, _VT, Literal[True]) -> Union[Tuple[int, str], _VT]
         pass
 
     @overload
-    def get(self, key, default=None):  # pragma: no cover
+    def get(self, key, default=None):
         # type: (str, _VT) -> Union[str, _VT]
         pass
 
@@ -349,13 +346,12 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
             return (reg, value) if getscope else value
         return default
 
-    @overload
-    def get_int(self, key):  # pragma: no cover
+    def get_int(self, key):
         # type: (str) -> Optional[int]
         pass
 
-    @overload  # type: ignore
-    def get_int(self, key, default):  # pragma: no cover
+    @overload
+    def get_int(self, key, default):
         # type: (str, _VT) -> Union[int, _VT]
         pass
 

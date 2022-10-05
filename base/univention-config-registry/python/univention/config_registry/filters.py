@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-"""Univention Configuration Registry output filters."""
 #  main configuration registry classes
 #
 # Like what you see? Join us!
@@ -33,13 +32,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""Univention Configuration Registry output filters."""
+
+from typing import Any, Iterable  # noqa: F401
+
 from univention.config_registry.misc import escape_value, key_shell_escape
 
-
-try:
-    from typing import Any, Iterable  # noqa: F401
-except ImportError:  # pragma: no cover
-    pass
 
 __all__ = ['filter_shell', 'filter_keys_only', 'filter_sort']
 

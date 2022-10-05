@@ -38,14 +38,9 @@ import os
 import shlex
 import subprocess
 from logging import getLogger
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Sequence, Set, Tuple  # noqa: F401
 
 import six
-
-
-try:
-    from typing import Any, Dict, Iterable, Iterator, List, Optional, Sequence, Set, Tuple  # noqa: F401
-except ImportError:  # pragma: no cache
-    pass
 
 import univention.info_tools as uit
 
