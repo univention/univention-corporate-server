@@ -62,7 +62,7 @@ _properties = {
 		syntax=univention.admin.syntax.TextArea,
 		multivalue=True,
 		options=['options'],
-	)
+	),
 }
 _options = {
 	'options': univention.admin.option(

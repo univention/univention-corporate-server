@@ -141,7 +141,7 @@ property_descriptions = {
 		short_description=_('Sunday'),
 		long_description=_('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
 		syntax=syntax_timeperiod,
-	)
+	),
 }
 
 

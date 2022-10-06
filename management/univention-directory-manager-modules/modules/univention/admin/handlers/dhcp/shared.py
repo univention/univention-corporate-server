@@ -69,7 +69,7 @@ property_descriptions = {
 		required=True,
 		may_change=False,
 		identifies=True
-	)
+	),
 }
 
 layout = [

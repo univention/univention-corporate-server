@@ -75,7 +75,7 @@ options = {
 		short_description=_('Samba group'),
 		default=1,
 		objectClasses=('sambaGroupMapping',),
-	)
+	),
 }
 
 property_descriptions = {

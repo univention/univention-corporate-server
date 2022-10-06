@@ -183,7 +183,7 @@ property_descriptions = {
 		long_description=_('Check services on these hosts'),
 		syntax=univention.admin.syntax.nagiosHostsEnabledDn,
 		multivalue=True,
-	)
+	),
 }
 
 

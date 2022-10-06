@@ -99,7 +99,7 @@ property_descriptions = {
 		syntax=univention.admin.syntax.GroupDN,
 		multivalue=True,
 		dontsearch=True,
-	)
+	),
 }
 
 layout = [

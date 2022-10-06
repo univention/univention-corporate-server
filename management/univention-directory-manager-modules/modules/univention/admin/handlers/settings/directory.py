@@ -142,7 +142,7 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-	)
+	),
 }
 
 layout = [

@@ -58,7 +58,7 @@ options = {
 		short_description=short_description,
 		default=True,
 		objectClasses=['top', 'organizationalRole']
-	)
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(

@@ -83,7 +83,7 @@ property_descriptions = {
 		multivalue=True,
 		required=True,
 		size='Two',
-	)
+	),
 }
 
 layout = [

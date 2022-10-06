@@ -84,7 +84,7 @@ property_descriptions = {
 		syntax=univention.admin.syntax.dnsHostname,
 		multivalue=True,
 		required=True,
-	)
+	),
 }
 
 layout = [

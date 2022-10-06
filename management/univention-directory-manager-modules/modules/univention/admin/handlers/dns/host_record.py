@@ -95,7 +95,7 @@ property_descriptions = {
 		long_description=_('One or more arbitrary text strings.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-	)
+	),
 }
 
 layout = [

@@ -74,7 +74,7 @@ property_descriptions = {
 		include_in_default_search=True,
 		required=True,
 		identifies=True,
-	)
+	),
 }
 layout = [Tab(_('General'), _('Basic settings'), layout=["name"])]
 mapping = univention.admin.mapping.mapping()

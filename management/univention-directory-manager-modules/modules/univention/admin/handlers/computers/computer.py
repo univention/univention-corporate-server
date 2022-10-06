@@ -107,7 +107,7 @@ property_descriptions = {
 		include_in_default_search=True,
 		may_change=False,
 		dontsearch=True
-	)
+	),
 }
 
 mapping = univention.admin.mapping.mapping()
