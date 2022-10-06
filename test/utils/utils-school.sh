@@ -278,7 +278,7 @@ EOF
 		--classes "$classes_count" \
 		--students "$students_count" \
 		--teachers "$teachers_count" \
-		--inclasses 50 \
+		--inclasses 60 \
 		--staff "$staff_count" \
 		"${schools[@]}" >/tmp/import.log 2>&1 || return 1
 	rm -f /tmp/import.log
