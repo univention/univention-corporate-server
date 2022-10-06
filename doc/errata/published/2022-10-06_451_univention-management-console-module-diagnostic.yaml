@@ -11,3 +11,5 @@ desc: |
     wrong, types `int` and `bool` are ignored for now and will be fixed by
     future updates.
 bug: [54495]
+erratum: 451
+announced: 2022-10-06
