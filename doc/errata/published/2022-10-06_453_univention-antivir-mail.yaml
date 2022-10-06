@@ -10,3 +10,5 @@ desc: |
    UCRV `clamav/proxy/http` is now checked for validity as specifying a URL
    with a path, query or fragment will break ClamAV.
 bug: [54495]
+erratum: 453
+announced: 2022-10-06
