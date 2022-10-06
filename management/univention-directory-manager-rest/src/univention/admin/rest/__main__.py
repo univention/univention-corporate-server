@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  Univention Directory Manager Module
@@ -34,10 +33,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
 
 import os
 import atexit
@@ -71,7 +66,7 @@ except ImportError:
 proctitle = getproctitle()
 
 
-class Server(object):
+class Server:
 
 	child_id = None
 
@@ -124,7 +119,7 @@ class Server(object):
 			try:
 				child_id = tornado.process.fork_processes(args.processes, 0)
 			except RuntimeError as exc:  # tornados way to exit from multiprocessing on failures
-				CORE.info('Stopped process: %s' % (exc,))
+				CORE.info(f'Stopped process: {exc}')
 				self.signal_handler_stop(None, signal.SIGTERM, None)
 			else:
 				self.start_child(child_id)
@@ -133,9 +128,9 @@ class Server(object):
 			self.run_server(socks)
 
 	def start_child(self, child_id):
-		setproctitle(proctitle + '   # child %s' % (child_id,))
+		setproctitle(proctitle + f'   # child {child_id}')
 		self.child_id = child_id
-		CORE.info('Started child %s' % (self.child_id,))
+		CORE.info(f'Started child {self.child_id}')
 		shared_memory.children[self.child_id] = os.getpid()
 		self.run_server(self.socks)
 
@@ -164,7 +159,7 @@ class Server(object):
 				children_pids = list(shared_memory.children.values())
 			except Exception:  # multiprocessing failure
 				children_pids = []
-			CORE.info('stopping children: %r' % (children_pids,))
+			CORE.info(f'stopping children: {children_pids!r}')
 			for pid in children_pids:
 				self.safe_kill(pid, sig)
 
@@ -200,8 +195,8 @@ class Server(object):
 	def safe_kill(self, pid, signo):
 		try:
 			os.kill(pid, signo)
-		except EnvironmentError as exc:
-			CORE.error('Could not kill(%s) %s: %s' % (signo, pid, exc))
+		except OSError as exc:
+			CORE.error(f'Could not kill({signo}) {pid}: {exc}')
 		else:
 			os.waitpid(pid, os.WNOHANG)
 

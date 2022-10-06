@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  Univention Directory Manager Module
@@ -34,10 +33,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
 
 import io
 import os
@@ -46,7 +41,6 @@ import json
 import locale
 import argparse
 
-import six
 import ldap
 import ldap.dn
 
@@ -57,7 +51,7 @@ ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
 
-class CLIClient(object):
+class CLIClient:
 
 	def init(self, parser, args):
 		self.parser = parser
@@ -73,7 +67,7 @@ class CLIClient(object):
 
 	def show_modules(self, args):
 		self.print_line('All modules')
-		for mod, modtitle in sorted(set((x.name, x.title) for x in self.get_modules())):
+		for mod, modtitle in sorted({(x.name, x.title) for x in self.get_modules()}):
 			self.print_line(mod, modtitle, prefix='  ')
 
 	def get_module(self, object_type):
@@ -179,8 +173,8 @@ class CLIClient(object):
 		if value.startswith('@'):
 			try:
 				value = open(value[1:], 'rb').read().decode('UTF-8')
-			except (IOError, ValueError) as exc:
-				self.print_error('%s: %s' % (key, exc))
+			except (OSError, ValueError) as exc:
+				self.print_error(f'{key}: {exc}')
 				raise SystemExit(2)
 		if convert:
 			if type_ in ('array', 'object', 'list', 'string', 'str'):
@@ -210,7 +204,7 @@ class CLIClient(object):
 			for key, value in sorted(entry.properties.items()):
 				if isinstance(value, list):
 					for item in value:
-						if isinstance(item, (six.text_type, six.binary_type, int, float)):
+						if isinstance(item, (str, bytes, int, float)):
 							self.print_line(key, item, '  ')
 						else:
 							self.print_line(key, json.dumps(item, ensure_ascii=False), '  ')
@@ -218,7 +212,7 @@ class CLIClient(object):
 					self.print_line(key, '', '  ')
 				elif isinstance(value, (bool, int, float)):
 					self.print_line(key, str(value), '  ')
-				elif isinstance(value, (six.text_type, six.binary_type, int, float)):
+				elif isinstance(value, (str, bytes, int, float)):
 					if set(value) & set('\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0b\x0c\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x7f'):
 						key = key + ':'
 						value = value.encode('base64').rstrip()
@@ -273,9 +267,9 @@ class CLIClient(object):
 	def print_line(self, key, value='', prefix='', stream=sys.stdout):
 		# prints and makes sure that no ANSI escape sequences or binary data is printed
 		if key:
-			key = '%s: ' % (key,)
-		value = '%s%s%s' % (prefix, key, value)
-		value = value.replace('\n', '\n%s' % (prefix,))
+			key = f'{key}: '
+		value = f'{prefix}{key}{value}'
+		value = value.replace('\n', f'\n{prefix}')
 		print(''.join(v for v in value if v not in '\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x7f'), file=stream)
 
 	def print_warning(self, value='', prefix='Warning'):
@@ -379,7 +373,7 @@ def argparse_module_help(client, parser, known_args, subparsers):
 	class FormatModule(argparse.RawTextHelpFormatter):
 
 		def format_help(self):
-			help_string = super(FormatModule, self).format_help()
+			help_string = super().format_help()
 			if known_args:
 				known_args.subparsers = subparsers
 				try:
@@ -392,7 +386,7 @@ def argparse_module_help(client, parser, known_args, subparsers):
 			return help_string
 
 		def start_section(self, section):
-			super(FormatModule, self).start_section(section)
+			super().start_section(section)
 			if section == 'actions':
 				for sub in subparsers.choices.values():
 					self.add_text(sub.format_help())
@@ -461,7 +455,7 @@ def add_object_action_arguments(parser, client):
 		kwargs.setdefault('add_help', False)
 		return subparsers.add_parser(name, *args, **kwargs)
 
-	create = add_subparser(str('create'), help='Create a new object', usage=argparse.SUPPRESS)
+	create = add_subparser('create', help='Create a new object', usage=argparse.SUPPRESS)
 	create.set_defaults(func=client.create_object)
 	create.add_argument('--position', help='Set position in tree', type=Unicode)
 	# create.add_argument('--default-position', action='store_true', help='Create in the default position')  # TODO: probably better make this the default?
@@ -476,7 +470,7 @@ def add_object_action_arguments(parser, client):
 	create.add_argument('--policy-reference', action='append', help='Reference to policy given by DN', default=[], type=Unicode)
 	create.add_argument('--ignore-exists', action='store_true', help='ignore if object already exists')
 
-	modify = add_subparser(str('modify'), help='Modify an existing object', usage=argparse.SUPPRESS)
+	modify = add_subparser('modify', help='Modify an existing object', usage=argparse.SUPPRESS)
 	modify.set_defaults(func=client.modify_object)
 	modify.add_argument('--dn', help='Edit object with DN', type=Unicode)
 	modify.add_argument('--set', action='append', help='Set property to value, e.g. foo=bar', default=[], type=Unicode)
@@ -489,7 +483,7 @@ def add_object_action_arguments(parser, client):
 	modify.add_argument('--policy-dereference', action='append', help='Remove reference to policy given by DN', default=[], type=Unicode)
 	modify.add_argument('--ignore-not-exists', action='store_true', help='ignore if object does not exists')
 
-	remove = add_subparser(str('remove'), help='Remove an existing object', usage=argparse.SUPPRESS)
+	remove = add_subparser('remove', help='Remove an existing object', usage=argparse.SUPPRESS)
 	remove.set_defaults(func=client.remove_object)
 	remove.add_argument('--dn', help='Remove object with DN', type=Unicode)
 	# remove.add_argument('--superordinate', help='Use superordinate', type=Unicode)  # not required
@@ -497,7 +491,7 @@ def add_object_action_arguments(parser, client):
 	remove.add_argument('--remove-referring', action='store_true', help='remove referring objects', default=False)
 	remove.add_argument('--ignore-not-exists', action='store_true', help='ignore if object does not exists')
 
-	list_ = add_subparser(str('list'), help='List objects', usage=argparse.SUPPRESS)
+	list_ = add_subparser('list', help='List objects', usage=argparse.SUPPRESS)
 	list_.set_defaults(func=client.list_objects)
 	list_.add_argument('--filter', help='Lookup filter e.g. foo=bar', default='', type=Unicode)
 	list_.add_argument('--position', help='Search underneath of position in tree', type=Unicode)
@@ -505,39 +499,39 @@ def add_object_action_arguments(parser, client):
 	list_.add_argument('--policies', help='List policy-based settings: 0:short, 1:long (with policy-DN)', type=Unicode)
 	list_.add_argument('--as-json', help='Print JSON (developer mode)', action='store_true')
 
-	get = add_subparser(str('get'), help='Get object', usage=argparse.SUPPRESS)
+	get = add_subparser('get', help='Get object', usage=argparse.SUPPRESS)
 	get.set_defaults(func=client.get_object)
 	get.add_argument('position', metavar='dn', help='The object LDAP DN', type=Unicode)
 	get.add_argument('--filter', help='Lookup filter e.g. foo=bar', default='', type=Unicode)
 	get.add_argument('--policies', help='List policy-based settings: 0:short, 1:long (with policy-DN)', type=Unicode)
 	get.add_argument('--as-json', help='Print JSON (developer mode)', action='store_true')
 
-	move = add_subparser(str('move'), help='Move object in directory tree', usage=argparse.SUPPRESS)
+	move = add_subparser('move', help='Move object in directory tree', usage=argparse.SUPPRESS)
 	move.set_defaults(func=client.move_object)
 	move.add_argument('--dn', help='Move object with DN', type=Unicode)
 	move.add_argument('--position', help='Move to position in tree', type=Unicode)
 
-	copy = add_subparser(str('copy'), help='Copy object in directory tree', usage=argparse.SUPPRESS)
+	copy = add_subparser('copy', help='Copy object in directory tree', usage=argparse.SUPPRESS)
 	copy.set_defaults(func=client.copy_object)
 
-	list_choices = add_subparser(str('list-choices'), help='List all possible choices for the selected property', usage=argparse.SUPPRESS)
+	list_choices = add_subparser('list-choices', help='List all possible choices for the selected property', usage=argparse.SUPPRESS)
 	list_choices.set_defaults(func=client.list_choices)
 	list_choices.add_argument('property', help='The property to list choices for')
 
-	policy_result = add_subparser(str('policy-result'), help='List all possible choices for the selected property', usage=argparse.SUPPRESS)
+	policy_result = add_subparser('policy-result', help='List all possible choices for the selected property', usage=argparse.SUPPRESS)
 	policy_result.set_defaults(func=client.policy_result)
 	policy_result.add_argument('dn')
 
-	list_reports = add_subparser(str('list-reports'), help='List all possible report types for selected object type', usage=argparse.SUPPRESS)
+	list_reports = add_subparser('list-reports', help='List all possible report types for selected object type', usage=argparse.SUPPRESS)
 	list_reports.set_defaults(func=client.list_reports)
 
-	reports = add_subparser(str('create-report'), help='Create report for selected objects', usage=argparse.SUPPRESS)
+	reports = add_subparser('create-report', help='Create report for selected objects', usage=argparse.SUPPRESS)
 	reports.set_defaults(func=client.create_report)
 	reports.add_argument('-o', '--output', type=argparse.FileType('w'), default='-', help='Filename to write report to')
 	reports.add_argument('report_type')
 	reports.add_argument('dns', nargs='*')
 
-	info = add_subparser(str('info'), help='Print information about the object type', usage=argparse.SUPPRESS)
+	info = add_subparser('info', help='Print information about the object type', usage=argparse.SUPPRESS)
 	info.set_defaults(func=client.get_info)
 
 	return subparsers

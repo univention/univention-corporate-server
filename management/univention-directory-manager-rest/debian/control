@@ -45,7 +45,6 @@ Depends:
  python3-mimeparse,
  python3-pycurl,
  python3-setproctitle,
- python3-six,
  python3-tornado,
  python3-univention-directory-manager (>= 15.0.11-54),
  python3-univention-directory-reports,
@@ -69,7 +68,6 @@ Breaks:
 Replaces:
  python3-univention-directory-manager-rest (<< 10.0.4-1),
 Depends:
- python3-six,
  python3-uritemplate,
  ${misc:Depends},
  ${python3:Depends},

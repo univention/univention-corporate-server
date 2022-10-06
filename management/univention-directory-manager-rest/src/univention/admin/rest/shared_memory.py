@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -49,7 +48,7 @@ class _SharedMemory(managers.SyncManager):
 	def start(self, *args, **kwargs):
 		setproctitle(proctitle + '   # multiprocessing manager')
 		try:
-			super(_SharedMemory, self).start(*args, **kwargs)
+			super().start(*args, **kwargs)
 		finally:
 			setproctitle(proctitle)
 
@@ -70,4 +69,4 @@ class JsonEncoder(json.JSONEncoder):
 			return dict(o)
 		if isinstance(o, managers.ListProxy):
 			return list(o)
-		raise TypeError('Object of type {} is not JSON serializable'.format(type(o).__name__))
+		raise TypeError(f'Object of type {type(o).__name__} is not JSON serializable')

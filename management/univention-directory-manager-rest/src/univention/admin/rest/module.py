@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  Univention Directory Manager Module
@@ -34,9 +33,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 import os
 import re
@@ -53,10 +49,8 @@ import datetime
 import traceback
 import functools
 from email.utils import parsedate
-
-import six
-from six.moves.urllib.parse import urljoin, urlparse, urlencode, urlunparse, parse_qs, quote, unquote
-from six.moves.http_client import responses
+from http.client import responses
+from urllib.parse import urljoin, urlparse, urlencode, urlunparse, parse_qs, quote, unquote
 
 import tornado.web
 import tornado.gen
@@ -74,7 +68,7 @@ from ldap.dn import explode_rdn
 from ldap.controls import SimplePagedResultsControl
 from ldap.controls.readentry import PostReadControl
 from ldap.controls.sss import SSSRequestControl
-import xml.etree.cElementTree as ET
+import xml.etree.ElementTree as ET
 import xml.dom.minidom
 from genshi import XML
 from genshi.output import HTMLSerializer
@@ -136,14 +130,14 @@ class RequestSanitizer(DictSanitizer):
 
 	def __init__(self, resource):
 		sanitizers = getattr(getattr(resource, resource.request.method.lower()), 'sanitizers', {})
-		super(RequestSanitizer, self).__init__({
+		super().__init__({
 			'query_string': QueryStringSanitizer(sanitizers.get('query', {}), required=True, further_arguments=['resource'], _copy_value=False),
 			'body_arguments': DictSanitizer(sanitizers.get('body', {}), required=True, further_arguments=['resource'], _copy_value=False)
 		}, further_arguments=['resource'], _copy_value=False)
 
 	def sanitize(self, resource, *args, **kwargs):
 		payload = {
-			'query_string': dict((k, [v.decode('UTF-8') for v in val]) for k, val in resource.request.query_arguments.items()) if resource.request.query_arguments else {},
+			'query_string': {k: [v.decode('UTF-8') for v in val] for k, val in resource.request.query_arguments.items()} if resource.request.query_arguments else {},
 			'body_arguments': resource.request.body_arguments or {},
 			'__resource': resource,
 			'__args': args,
@@ -153,13 +147,13 @@ class RequestSanitizer(DictSanitizer):
 			payload['query_string']['__resource'] = resource
 		if isinstance(payload['body_arguments'], dict):
 			payload['body_arguments']['__resource'] = resource
-		value = super(RequestSanitizer, self).sanitize('request.arguments', {'request.arguments': payload, 'resource': resource})
+		value = super().sanitize('request.arguments', {'request.arguments': payload, 'resource': resource})
 		resource.request.decoded_query_arguments = value['query_string']
 		resource.request.body_arguments = value['body_arguments']
 		return value
 
 	def _sanitize(self, value, name, further_arguments):
-		return super(RequestSanitizer, self)._sanitize(value, name, further_arguments)
+		return super()._sanitize(value, name, further_arguments)
 
 
 class DictSanitizer(DictSanitizer):
@@ -167,7 +161,7 @@ class DictSanitizer(DictSanitizer):
 	def __init__(self, sanitizers, allow_other_keys=True, **kwargs):
 		self.default_sanitizer = kwargs.get('default_sanitizer', None)
 		self.key_sanitizer = kwargs.get('key_sanitizer', None)
-		super(DictSanitizer, self).__init__(sanitizers, allow_other_keys=allow_other_keys, **kwargs)
+		super().__init__(sanitizers, allow_other_keys=allow_other_keys, **kwargs)
 
 	def _sanitize(self, value, name, further_arguments):
 		if not isinstance(value, dict):
@@ -203,10 +197,10 @@ class QueryStringSanitizer(DictSanitizer):
 				if len(value.get(key, [])) == 1 and not isinstance(sanitizer, ListSanitizer):
 					value[key] = value[key][0]
 				elif isinstance(sanitizer, DictSanitizer):
-					value[key] = dict((k[len(key) + 1:-1], v[0]) for k, v in value.items() if k.startswith(key + '[') and k.endswith(']'))
+					value[key] = {k[len(key) + 1:-1]: v[0] for k, v in value.items() if k.startswith(key + '[') and k.endswith(']')}
 					#value[key] = QueryStringSanitizer(sanitizer.sanitizers).sanitize(key, {key: value[key]})
 
-		return super(QueryStringSanitizer, self)._sanitize(value, name, further_arguments)
+		return super()._sanitize(value, name, further_arguments)
 
 
 class ObjectPropertySanitizer(StringSanitizer):
@@ -230,7 +224,7 @@ class ObjectPropertySanitizer(StringSanitizer):
 class PropertiesSanitizer(DictSanitizer):
 
 	def __init__(self, *args, **kwargs):
-		super(PropertiesSanitizer, self).__init__({}, *args, default_sanitizer=PropertySanitizer(), **kwargs)
+		super().__init__({}, *args, default_sanitizer=PropertySanitizer(), **kwargs)
 
 	def sanitize(self, resource, module, obj):
 		# FIXME: for the automatic IP address assignment, we need to make sure that
@@ -250,7 +244,7 @@ class PropertiesSanitizer(DictSanitizer):
 		self.default_sanitizer._module = module
 		self.default_sanitizer._obj = obj
 		try:
-			properties = super(PropertiesSanitizer, self).sanitize('properties', {'properties': properties})
+			properties = super().sanitize('properties', {'properties': properties})
 		finally:
 			self.default_sanitizer._module = None
 			self.default_sanitizer._obj = None
@@ -258,9 +252,9 @@ class PropertiesSanitizer(DictSanitizer):
 		password_properties = module.password_properties
 		for property_name, value in sorted(properties.items(), key=_tmp_cmp):
 			if property_name in password_properties:
-				MODULE.info('Setting password property %s' % (property_name,))
+				MODULE.info(f'Setting password property {property_name}')
 			else:
-				MODULE.info('Setting property %s to %r' % (property_name, value))
+				MODULE.info(f'Setting property {property_name} to {value!r}')
 
 			try:
 				try:
@@ -278,10 +272,10 @@ class PropertiesSanitizer(DictSanitizer):
 						# "password" of users/user: because password is required but on modify() None is send, which must not alter the current password
 						# "unixhome" of users/user: is required, set to None in the request, the default value is set afterwards in create(). Bug #50053
 						if property_name in password_properties:
-							MODULE.info('Ignore unsetting password property %s' % (property_name,))
+							MODULE.info(f'Ignore unsetting password property {property_name}')
 						else:
 							current_value = obj.info.pop(property_name, None)
-							MODULE.info('Unsetting property %s value %r' % (property_name, current_value))
+							MODULE.info(f'Unsetting property {property_name} value {current_value!r}')
 						continue
 					raise
 			except (udm_errors.valueInvalidSyntax, udm_errors.valueError, udm_errors.valueMayNotChange, udm_errors.valueRequired, udm_errors.noProperty) as exc:
@@ -301,7 +295,7 @@ class PropertySanitizer(Sanitizer):
 	def __init__(self, *args, **kwargs):
 		self._module = None
 		self._obj = None
-		super(PropertySanitizer, self).__init__(*args, **kwargs)
+		super().__init__(*args, **kwargs)
 
 	def _sanitize(self, value, name, further_arguments):
 		property_obj = self._module.get_property(name)
@@ -324,16 +318,16 @@ class PropertySanitizer(Sanitizer):
 class BoolSanitizer(ChoicesSanitizer):
 
 	def __init__(self, **kwargs):
-		super(BoolSanitizer, self).__init__(choices=['1', 'on', 'true', 'false', '0', 'off', '', None, True, False], **kwargs)
+		super().__init__(choices=['1', 'on', 'true', 'false', '0', 'off', '', None, True, False], **kwargs)
 
 	def _sanitize(self, value, name, further_arguments):
-		return super(BoolSanitizer, self)._sanitize(value, name, further_arguments) in ('1', 'on', 'true', True)
+		return super()._sanitize(value, name, further_arguments) in ('1', 'on', 'true', True)
 
 
 class LDAPFilterSanitizer(StringSanitizer):
 
 	def _sanitize(self, value, name, further_arguments):
-		value = super(LDAPFilterSanitizer, self)._sanitize(value, name, further_arguments)
+		value = super()._sanitize(value, name, further_arguments)
 		try:
 			return udm_syntax.ldapFilter.parse(value)
 		except udm_errors.valueError as exc:
@@ -346,7 +340,7 @@ class DNSanitizer(DNSanitizer):
 	baselen = len(base)
 
 	def _sanitize(self, value, name, further_arguments):
-		value = super(DNSanitizer, self)._sanitize(value, name, further_arguments)
+		value = super()._sanitize(value, name, further_arguments)
 		if value and ldap.dn.str2dn(value.lower())[-self.baselen:] != self.base:
 			self.raise_validation_error(_('The ldap base is invalid. Use %(details)s.'), details=ldap.dn.dn2str(self.base))
 		return value
@@ -355,7 +349,7 @@ class DNSanitizer(DNSanitizer):
 class NotFound(HTTPError):
 
 	def __init__(self, object_type=None, dn=None):
-		super(NotFound, self).__init__(404, None, '%r %r' % (object_type, dn or ''))  # FIXME: create error message
+		super().__init__(404, None, '%r %r' % (object_type, dn or ''))  # FIXME: create error message
 
 
 def superordinate_names(module):
@@ -365,7 +359,7 @@ def superordinate_names(module):
 	return superordinates
 
 
-class ResourceBase(object):
+class ResourceBase:
 
 	pool = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
@@ -501,12 +495,12 @@ class ResourceBase(object):
 	def get_body_argument(self, name, *args):
 		if self.request.headers.get('Content-Type', '').startswith('application/json'):
 			return self.request.body_arguments.get(name)
-		return super(ResourceBase, self).get_body_argument(name, *args)
+		return super().get_body_argument(name, *args)
 
 	def get_body_arguments(self, name, *args):
 		if self.request.headers.get('Content-Type', '').startswith('application/json'):
 			return self.request.body_arguments.get(name)
-		return super(ResourceBase, self).get_body_arguments(name, *args)
+		return super().get_body_arguments(name, *args)
 
 	def sanitize_arguments(self, sanitizer, *args, **kwargs):
 		try:
@@ -531,8 +525,8 @@ class ResourceBase(object):
 	def content_negotiation(self, response):
 		self.add_header('Vary', ', '.join(self.vary()))
 		lang = self.request.content_negotiation_lang
-		formatter = getattr(self, '%s_%s' % (self.request.method.lower(), lang), getattr(self, 'get_%s' % (lang,)))
-		codec = getattr(self, 'content_negotiation_%s' % (lang,))
+		formatter = getattr(self, f'{self.request.method.lower()}_{lang}', getattr(self, f'get_{lang}'))
+		codec = getattr(self, f'content_negotiation_{lang}')
 		self.finish(codec(formatter(response)))
 
 	def content_negotiation_json(self, response):
@@ -540,7 +534,7 @@ class ResourceBase(object):
 		try:
 			return json.dumps(response, cls=JsonEncoder)
 		except TypeError:
-			MODULE.error('Cannot JSON serialize: %r' % (response,))
+			MODULE.error(f'Cannot JSON serialize: {response!r}')
 			raise
 
 	def content_negotiation_hal_json(self, response):
@@ -578,7 +572,7 @@ class ResourceBase(object):
 			link = link.strip().lstrip('<').rstrip('>')
 			params = {}
 			if _params.strip():
-				params = dict((x.strip(), y.strip().strip('"').replace('\\"', '"').replace('\\\\', '\\')) for x, y in ((param.split('=', 1) + [''])[:2] for param in _params.split(';')))
+				params = {x.strip(): y.strip().strip('"').replace('\\"', '"').replace('\\\\', '\\') for x, y in ((param.split('=', 1) + [''])[:2] for param in _params.split(';'))}
 			ET.SubElement(head, "link", href=link, **params)
 			_links[params.get('rel')] = dict(params, href=link)
 			if params.get('rel') == 'self':
@@ -612,7 +606,7 @@ class ResourceBase(object):
 
 		if not ajax:
 			stream = XML(xml.dom.minidom.parseString(ET.tostring(root, encoding='utf-8', method='xml')).toprettyxml())
-			self.write(''.join((HTMLSerializer('html5')(stream))))
+			self.write(''.join(HTMLSerializer('html5')(stream)))
 		else:
 			self.write('<!DOCTYPE html>\n')
 			tree = ET.ElementTree(main if ajax else root)
@@ -684,7 +678,7 @@ class ResourceBase(object):
 					ET.SubElement(sub_fieldset, 'h2').text = elem['description']
 				self.render_layout(elem['layout'], sub_fieldset, properties)
 				continue
-			elements = [elem] if isinstance(elem, six.string_types) else elem
+			elements = [elem] if isinstance(elem, str) else elem
 			for elem in elements:
 				for field in properties:
 					if field['name'] in (elem, 'properties.%s' % elem):
@@ -693,7 +687,7 @@ class ResourceBase(object):
 				ET.SubElement(fieldset, 'br')
 
 	def get_html_form(self, _form, response):
-		form = ET.Element('form', **dict((p, _form[p]) for p in ('id', 'class', 'name', 'method', 'action', 'rel', 'enctype', 'accept-charset', 'novalidate') if _form.get(p)))
+		form = ET.Element('form', **{p: _form[p] for p in ('id', 'class', 'name', 'method', 'action', 'rel', 'enctype', 'accept-charset', 'novalidate') if _form.get(p)})
 		if _form.get('layout'):
 			layout = self.get_resource(response, 'udm:layout', name=_form['layout'])
 			self.get_html_layout(form, layout['layout'], _form.get('fields'))
@@ -718,7 +712,7 @@ class ResourceBase(object):
 		multivalue = field.get('data-multivalue') == '1'
 		values = field['value'] or [''] if multivalue else [field['value']]
 		for value in values:
-			elemattrs = dict((p, field[p]) for p in ('id', 'disabled', 'form', 'multiple', 'required', 'size', 'type', 'placeholder', 'accept', 'alt', 'autocomplete', 'checked', 'max', 'min', 'minlength', 'pattern', 'readonly', 'src', 'step', 'style', 'alt', 'autofocus', 'class', 'cols', 'href', 'rel', 'title', 'list') if field.get(p))
+			elemattrs = {p: field[p] for p in ('id', 'disabled', 'form', 'multiple', 'required', 'size', 'type', 'placeholder', 'accept', 'alt', 'autocomplete', 'checked', 'max', 'min', 'minlength', 'pattern', 'readonly', 'src', 'step', 'style', 'alt', 'autofocus', 'class', 'cols', 'href', 'rel', 'title', 'list') if field.get(p)}
 			elemattrs.setdefault('type', 'text')
 			elemattrs.setdefault('placeholder', name)
 			if field.get('type') == 'checkbox' and field.get('checked'):
@@ -761,8 +755,8 @@ class ResourceBase(object):
 		query_string = ''
 		if query:
 			qs = parse_qs(base.query)
-			qs.update(dict((key, val if isinstance(val, (list, tuple)) else [val]) for key, val in query.items()))
-			query_string = '?%s' % (urlencode(qs, True),)
+			qs.update({key: val if isinstance(val, (list, tuple)) else [val] for key, val in query.items()})
+			query_string = f'?{urlencode(qs, True)}'
 		scheme = base.scheme
 		for _scheme in self.request.headers.get_list('X-Forwarded-Proto'):
 			if _scheme == 'https':
@@ -783,7 +777,7 @@ class ResourceBase(object):
 			return
 
 		def quote_param(s):
-			for char in u'\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f':  # remove non printable characters
+			for char in '\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f':  # remove non printable characters
 				s = s.replace(char, '')
 			return s.replace('\\', '\\\\').replace('"', '\\"')
 		kwargs['rel'] = relation
@@ -839,11 +833,11 @@ class ResourceBase(object):
 	def log_exception(self, typ, value, tb):
 		if isinstance(value, UMC_Error):
 			return
-		super(ResourceBase, self).log_exception(typ, value, tb)
+		super().log_exception(typ, value, tb)
 
 	def write_error(self, status_code, exc_info=None, **kwargs):
 		if not exc_info:  # or isinstance(exc_info[1], HTTPError):
-			return super(ResourceBase, self).write_error(status_code, exc_info=exc_info, **kwargs)
+			return super().write_error(status_code, exc_info=exc_info, **kwargs)
 
 		etype, exc, etraceback = exc_info
 		if isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), (ldap.SERVER_DOWN, ldap.CONNECT_ERROR, ldap.INVALID_CREDENTIALS)):
@@ -878,7 +872,7 @@ class ResourceBase(object):
 						error += formatter % (k, v)
 				else:
 					error += formatter % (key, value)
-			message = '%s:\n%s' % (message, error)
+			message = f'{message}:\n{error}'
 
 		if not isinstance(exc, (UDM_Error, UMC_Error)) and status_code >= 500:
 			_traceback = ''.join(traceback.format_exception(etype, exc, etraceback))
@@ -1026,7 +1020,7 @@ class Resource(ResourceBase, RequestHandler):
 class Nothing(Resource):
 
 	def prepare(self, *args, **kwargs):
-		super(Nothing, self).prepare(*args, **kwargs)
+		super().prepare(*args, **kwargs)
 		raise NotFound()
 
 
@@ -1039,7 +1033,7 @@ class Favicon(ResourceBase, tornado.web.StaticFileHandler):
 			return root
 		if not value.replace('-', '').replace('_', '').isalpha():
 			raise NotFound(object_type)
-		return os.path.join(root, 'udm-%s.png' % (value,))
+		return os.path.join(root, f'udm-{value}.png')
 
 
 class Relations(Resource):
@@ -1119,7 +1113,7 @@ class OpenAPI(Resource):
 	requires_authentication = ucr.is_true('directory/manager/rest/require-auth', True)
 
 	def prepare(self):
-		super(OpenAPI, self).prepare()
+		super().prepare()
 		self.request.content_negotiation_lang = 'json'
 		self.ldap_connection, self.ldap_position = get_machine_connection(write=False)
 
@@ -1146,10 +1140,10 @@ class OpenAPI(Resource):
 		}
 
 		def global_response_headers(responses={}):
-			return dict(_global_response_headers, **dict((str(k), v) for k, v in responses.items()))
+			return dict(_global_response_headers, **{str(k): v for k, v in responses.items()})
 
 		def global_responses(responses):
-			return dict(_global_responses, **dict((str(k), v) for k, v in responses.items()))
+			return dict(_global_responses, **{str(k): v for k, v in responses.items()})
 
 		base_object_definition = {
 			"dn": {
@@ -1214,9 +1208,9 @@ class OpenAPI(Resource):
 			tag = name
 			model_name = name.replace('/', '-')
 			model_name_escaped = model_name.replace('~', '~0').replace('/', '~1')
-			schema_definition = "#/components/schemas/%s" % (model_name_escaped,)
+			schema_definition = f"#/components/schemas/{model_name_escaped}"
 			tag_description = {
-				'description': '%s objects' % (module.title,),
+				'description': f'{module.title} objects',
 				'name': name,
 			}
 			if module.help_text and module.help_link:
@@ -1232,9 +1226,9 @@ class OpenAPI(Resource):
 				"properties": {},
 			}
 			model = models[model_name]['properties']
-			paths['/%s/' % (name,)] = objects_pathes = {}
-			paths['/%s/add' % (name,)] = object_template_pathes = {}
-			paths['/%s/{dn}' % (name,)] = object_pathes = {}
+			paths[f'/{name}/'] = objects_pathes = {}
+			paths[f'/{name}/add'] = object_template_pathes = {}
+			paths[f'/{name}/{{dn}}'] = object_pathes = {}
 			object_pathes["parameters"] = [
 				{
 					"description": "The objects DN (urlencoded)",
@@ -1247,7 +1241,7 @@ class OpenAPI(Resource):
 					},
 				}
 			]
-			models['%s-list' % (model_name,)] = {
+			models[f'{model_name}-list'] = {
 				"type": "object",
 				"properties": {
 					"_embedded": {
@@ -1276,12 +1270,12 @@ class OpenAPI(Resource):
 				'content': content_schema(),
 				'required': True,
 			}
-			schema_request_body = "#/components/requestBodies/%s" % (model_name_escaped,)
+			schema_request_body = f"#/components/requestBodies/{model_name_escaped}"
 			if 'search' in module.operations:
 				objects_pathes['get'] = {
-					"summary": "Search for %s" % (module.object_name_plural,),
+					"summary": f"Search for {module.object_name_plural}",
 					"description": "Information about the object type and links to search for objects. The found objects are either referenced as HAL links or embedded via HAL embedded resources.",
-					"operationId": "udm:%s/object/search" % (name,),
+					"operationId": f"udm:{name}/object/search",
 					"parameters": [
 						{'$ref': '#/components/parameters/search.filter'},
 						{'$ref': '#/components/parameters/search.position'},
@@ -1296,16 +1290,16 @@ class OpenAPI(Resource):
 					"responses": global_responses({
 						200: {
 							"description": "Success",
-							"content": content_schema("#/components/schemas/%s-list" % (model_name_escaped,)),
+							"content": content_schema(f"#/components/schemas/{model_name_escaped}-list"),
 							"headers": global_response_headers(),
 							"links": {
 								"search": {
 									"description": "Search for objects of this object type",
-									"operationId": "udm:%s/object/search" % (name,)
+									"operationId": f"udm:{name}/object/search"
 								},
 								"create-form": {
 									"description": "get a template for creating an object",
-									"operationId": "udm:%s/object/template" % (name,),
+									"operationId": f"udm:{name}/object/template",
 								},
 							},
 						}
@@ -1316,7 +1310,7 @@ class OpenAPI(Resource):
 					objects_pathes['get']['parameters'].append({'$ref': '#/components/parameters/search.superordinate'})
 			if 'add' in module.operations:
 				object_template_pathes['get'] = {
-					"operationId": "udm:%s/object/template" % (name,),
+					"operationId": f"udm:{name}/object/template",
 					"summary": "Get a template for creating an object. Contains all properties and their default values.",
 					"parameters": [] + global_parameters,
 					"responses": global_responses({
@@ -1329,7 +1323,7 @@ class OpenAPI(Resource):
 					"tags": [tag],
 				}
 				objects_pathes['post'] = {
-					"operationId": "udm:%s/object/create" % (name,),
+					"operationId": f"udm:{name}/object/create",
 					"requestBody": {
 						"$ref": schema_request_body,
 					},
@@ -1340,11 +1334,11 @@ class OpenAPI(Resource):
 							"headers": global_response_headers(),
 						}
 					}),
-					"summary": "Create a new %s object" % (module.object_name,),
+					"summary": f"Create a new {module.object_name} object",
 					"tags": [tag],
 				}
 			object_pathes["get"] = {
-				"operationId": "udm:%s/object" % (name,),
+				"operationId": f"udm:{name}/object",
 				"responses": global_responses({
 					"200": {
 						"description": "Success",
@@ -1358,12 +1352,12 @@ class OpenAPI(Resource):
 						"description": "Object not found"
 					}
 				}),
-				"summary": "Get a representation of the %s object" % (module.object_name,),
+				"summary": f"Get a representation of the {module.object_name} object",
 				"tags": [tag]
 			}
 			if 'remove' in module.operations:
 				object_pathes["delete"] = {
-					"operationId": "udm:%s/object/remove" % (name,),
+					"operationId": f"udm:{name}/object/remove",
 					"parameters": [
 						{'$ref': '#/components/parameters/remove.cleanup'},
 						{'$ref': '#/components/parameters/remove.recursive'},
@@ -1378,12 +1372,12 @@ class OpenAPI(Resource):
 							"headers": global_response_headers(),
 						}
 					}),
-					"summary": "Remove a %s object" % (module.object_name_plural,),
+					"summary": f"Remove a {module.object_name_plural} object",
 					"tags": [tag],
 				}
 			if set(module.operations) & {'edit', 'move', 'move_subtree'}:
 				object_pathes["put"] = {
-					"operationId": "udm:%s/object/modify" % (name,),
+					"operationId": f"udm:{name}/object/modify",
 					"requestBody": {
 						"$ref": schema_request_body,
 					},
@@ -1412,11 +1406,11 @@ class OpenAPI(Resource):
 							"headers": global_response_headers(),
 						}
 					}),
-					"summary": "Modify or move an %s object" % (module.object_name,),
+					"summary": f"Modify or move an {module.object_name} object",
 					"tags": [tag],
 				}
 				object_pathes['patch'] = object_pathes['put'].copy()
-				object_pathes['patch']['operationId'] = 'udm:%s/object/update' % (name,)
+				object_pathes['patch']['operationId'] = f'udm:{name}/object/update'
 
 			model.update(dict(base_object_definition, **{
 				"properties": {
@@ -1431,17 +1425,17 @@ class OpenAPI(Resource):
 				},
 				"options": {
 					"description": "Object type specific options.",
-					"properties": dict((oname, {
+					"properties": {oname: {
 						"description": opt.short_description,
 						"type": "boolean",
 						"default": bool(opt.default),
 						"example": bool(opt.default),
-					}) for oname, opt in module.options.items()),
+					} for oname, opt in module.options.items()},
 					"type": "object"
 				},
 				"policies": {
 					"description": "Policies which apply for this object.",
-					"properties": dict((pol['objectType'], {
+					"properties": {pol['objectType']: {
 						"type": "array",
 						"items": {
 							"type": "string",
@@ -1449,7 +1443,7 @@ class OpenAPI(Resource):
 							"example": ucr['ldap/base'],
 						},
 						"description": pol['label'],
-					}) for pol in module.policies),
+					} for pol in module.policies},
 					"type": "object"
 				},
 			}))
@@ -1745,7 +1739,7 @@ class OpenAPI(Resource):
 		self.content_negotiation(specs)
 
 	def get_json(self, response):
-		response = super(OpenAPI, self).get_json(response)
+		response = super().get_json(response)
 		response.pop('_links', None)
 		response.pop('_embedded', None)
 		return response
@@ -1880,7 +1874,7 @@ class SubObjectTypes(Resource):
 
 		# create a list of modules that can be created
 		# ... all container types except container/dc
-		allowed_modules = set([m for m in udm_modules.containers if udm_modules.name(m) != 'container/dc'])
+		allowed_modules = {m for m in udm_modules.containers if udm_modules.name(m) != 'container/dc'}
 
 		# the container may be a superordinate or have one as its parent
 		# (or grandparent, ....)
@@ -1957,7 +1951,7 @@ class ObjectByUiid(ObjectLink):
 			dn = self.ldap_connection.searchDn(filter_format('entryUUID=%s', [uuid]))[0]
 		except IndexError:
 			raise NotFound()
-		return super(ObjectByUiid, self).get(dn)
+		return super().get(dn)
 
 
 class ContainerQueryBase(Resource):
@@ -2054,7 +2048,7 @@ class MoveDestinations(ContainerQueryBase):
 		if not container:
 			scope = 'base'
 
-		containers = yield self._container_query(object_type, container, modules, scope)
+		containers = yield self._container_query(object_type or 'navigation', container, modules, scope)
 		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation(containers)
 
@@ -2076,7 +2070,7 @@ class Properties(Resource):
 		properties = self.get_properties(module, dn)
 		searchable = self.request.decoded_query_arguments['searchable']
 		if searchable:
-			properties = dict((name, prop) for name, prop in properties.items() if prop.get('searchable', False))
+			properties = {name: prop for name, prop in properties.items() if prop.get('searchable', False)}
 		result['properties'] = properties
 
 		for propname, prop in properties.items():
@@ -2112,7 +2106,7 @@ class Properties(Resource):
 			prop.setdefault('searchable', False)
 			prop.setdefault('multivalue', False)
 			prop.setdefault('show_in_lists', True)
-		return dict((prop['id'], prop) for prop in properties if not prop['id'].startswith('$'))
+		return {prop['id']: prop for prop in properties if not prop['id'].startswith('$')}
 
 
 class Layout(Resource):
@@ -2249,7 +2243,7 @@ class NextFreeIpAddress(Resource):
 			obj.modify()
 
 
-class FormBase(object):
+class FormBase:
 
 	def add_property_form_elements(self, module, form, properties, values):
 		password_properties = module.password_properties
@@ -2272,7 +2266,7 @@ class FormBase(object):
 				kwargs['type'] = 'password'
 			if prop['type'] == 'ComboBox' and prop.get('staticValues'):
 				kwargs['type']
-				kwargs['list'] = 'list-%s' % (key,)
+				kwargs['list'] = f'list-{key}'
 				kwargs['datalist'] = [{'value': s['id'], 'label': s['label']} for s in prop['staticValues']]
 			elif prop['type'] == 'DateBox':
 				kwargs['type'] = 'date'
@@ -2294,7 +2288,7 @@ class FormBase(object):
 			kwargs['data-syntax'] = prop['syntax']
 			kwargs['title'] = prop['description']
 			# TODO: size, type, options, treshold, staticValues, editable, nonempty_is_default
-			self.add_form_element(form, 'properties.%s' % (key,), value, label=prop['label'], placeholder=prop['label'], **kwargs)
+			self.add_form_element(form, f'properties.{key}', value, label=prop['label'], placeholder=prop['label'], **kwargs)
 
 	def decode_form_arguments(self):
 		# TODO: add files
@@ -2302,13 +2296,13 @@ class FormBase(object):
 		# TODO: the types should be converted, e.g. type=checkbox to boolean, number to int
 		for key in list(self.request.body_arguments.keys()):
 			for name in ('properties', 'policies'):
-				if key.startswith('%s.' % (name,)):
+				if key.startswith(f'{name}.'):
 					properties = self.request.body_arguments.setdefault(name, {})
-					prop = key[len('%s.' % (name,)):]
+					prop = key[len(f'{name}.'):]
 					properties.setdefault(prop, []).append(self.request.body_arguments.pop(key))
-				elif key.startswith('%s[' % (name,)) and key.endswith(']'):
+				elif key.startswith(f'{name}[') and key.endswith(']'):
 					properties = self.request.body_arguments.setdefault(name, {})
-					prop = key[len('%s[' % (name,)):-1]
+					prop = key[len(f'{name}['):-1]
 					properties.setdefault(prop, []).append(self.request.body_arguments.pop(key))
 
 	def superordinate_dn_to_object(self, module, superordinate):
@@ -2317,7 +2311,7 @@ class FormBase(object):
 		if superordinate:
 			mod = get_module(module.name, superordinate, self.ldap_connection)
 			if not mod:
-				MODULE.error('Superordinate module not found: %s' % (superordinate,))
+				MODULE.error(f'Superordinate module not found: {superordinate}')
 				raise SuperordinateDoesNotExist(superordinate)
 			MODULE.info('Found UDM module for superordinate')
 			superordinate = mod.get(superordinate)
@@ -2362,7 +2356,7 @@ class Objects(FormBase, ReportingBase):
 		if not ldap_filter:
 			filters = filter(None, [(module._object_property_filter(attribute or property_ or None, value, hidden)) for attribute, value in self.request.decoded_query_arguments['query'].items()])
 			if filters:
-				ldap_filter = six.text_type(univention.admin.filter.conjunction('&', [univention.admin.filter.parse(fil) for fil in filters]))
+				ldap_filter = str(univention.admin.filter.conjunction('&', [univention.admin.filter.parse(fil) for fil in filters]))
 
 		# TODO: replace the superordinate concept with container
 		superordinate = self.superordinate_dn_to_object(module, self.request.decoded_query_arguments['superordinate'])
@@ -2451,7 +2445,7 @@ class Objects(FormBase, ReportingBase):
 			self.add_link(result, 'udm:properties', self.urljoin('properties'), title=_('Module properties'))
 			for policy_module in module.policies:
 				policy_module = policy_module['objectType']
-				self.add_link(result, 'udm:policy-result', self.urljoin('%s/{?policy,position}' % (policy_module,)), name=policy_module, title=_('Evaluate referenced %s policies') % (policy_module,), templated=True)
+				self.add_link(result, 'udm:policy-result', self.urljoin(f'{policy_module}/{{?policy,position}}'), name=policy_module, title=_('Evaluate referenced %s policies') % (policy_module,), templated=True)
 
 		self.add_caching(public=False, no_cache=True, no_store=True, max_age=1, must_revalidate=True)
 		self.content_negotiation(result)
@@ -2493,9 +2487,9 @@ class Objects(FormBase, ReportingBase):
 		if self.request.method in ('GET', 'HEAD'):
 			r = response.copy()
 			r.pop('entries', None)
-			root = super(Objects, self).get_html(r)
+			root = super().get_html(r)
 		else:
-			root = super(Objects, self).get_html(response)
+			root = super().get_html(response)
 		if self.request.method in ('GET', 'HEAD'):
 			for thing in response.get('entries', self.get_resources(response, 'udm:object')):
 				if isinstance(thing, dict) and thing.get('uri'):
@@ -2677,7 +2671,7 @@ class Object(FormBase, Resource):
 		self.add_link(props, 'udm:layout', self.urljoin(quote_dn(obj.dn), 'layout'), title=_('Module layout'))
 		self.add_link(props, 'udm:properties', self.urljoin(quote_dn(obj.dn), 'properties'), title=_('Module properties'))
 		for policy_module in props.get('policies', {}).keys():
-			self.add_link(props, 'udm:policy-result', self.urljoin(quote_dn(obj.dn), '%s/{?policy}' % (policy_module,)), name=policy_module, title=_('Evaluate referenced %s policies') % (policy_module,), templated=True)
+			self.add_link(props, 'udm:policy-result', self.urljoin(quote_dn(obj.dn), f'{policy_module}/{{?policy}}'), name=policy_module, title=_('Evaluate referenced %s policies') % (policy_module,), templated=True)
 
 		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation(props)
@@ -2738,7 +2732,7 @@ class Object(FormBase, Resource):
 		etag.update(b''.join(obj.oldattr.get('entryCSN', [])))
 		etag.update((obj.entry_uuid or '').encode('utf-8'))
 		etag.update(json.dumps(obj.info, sort_keys=True).encode('utf-8'))
-		return u'"%s"' % etag.hexdigest()
+		return '"%s"' % etag.hexdigest()
 
 	@classmethod
 	def get_representation(cls, module, obj, properties, ldap_connection, copy=False, add=False):
@@ -2758,9 +2752,9 @@ class Object(FormBase, Resource):
 		values = {}
 		if properties:
 			if '*' not in properties:
-				values = dict((key, value) for (key, value) in obj.info.items() if (key in properties) and obj.descriptions[key].show_in_lists)
+				values = {key: value for (key, value) in obj.info.items() if (key in properties) and obj.descriptions[key].show_in_lists}
 			else:
-				values = dict((key, obj[key]) for key in obj.descriptions if (add or obj.has_property(key)) and obj.descriptions[key].show_in_lists)
+				values = {key: obj[key] for key in obj.descriptions if (add or obj.has_property(key)) and obj.descriptions[key].show_in_lists}
 
 			for passwd in module.password_properties:
 				values[passwd] = None
@@ -2773,7 +2767,7 @@ class Object(FormBase, Resource):
 				regex = re.compile(r'<(?P<key>[^>]+)>(?P<ext>\[[\d:]+\])?')  # from univention.admin.pattern_replace()
 				if name not in obj.info or name not in values:
 					continue
-				if isinstance(p.base_default, six.string_types) and regex.search(p.base_default):
+				if isinstance(p.base_default, str) and regex.search(p.base_default):
 					values[name] = None
 
 		props = {}
@@ -2785,7 +2779,7 @@ class Object(FormBase, Resource):
 		#props['path'] = ldap_dn2path(obj.dn, include_rdn=False)
 		props['position'] = ldap_connection.parentDn(obj.dn) if obj.dn else obj.position.getDn()
 		props['properties'] = values
-		props['options'] = dict((opt['id'], opt['value']) for opt in module.get_options(udm_object=obj))
+		props['options'] = {opt['id']: opt['value'] for opt in module.get_options(udm_object=obj)}
 		props['policies'] = {}
 		if '*' in properties or add:
 			for policy in module.policies:
@@ -2937,7 +2931,7 @@ class Object(FormBase, Resource):
 			try:
 				return action(*args, **kwargs)
 			except udm_errors.objectExists as exc:
-				exists_msg = 'dn: %s' % (exc.args[0],)
+				exists_msg = f'dn: {exc.args[0]}'
 				error = exc
 			except udm_errors.uidAlreadyUsed as exc:
 				exists_msg = '(uid)'
@@ -2983,8 +2977,8 @@ class Object(FormBase, Resource):
 
 	def set_properties(self, module, obj):
 		options = self.request.body_arguments['options'] or {}  # TODO: AppAttributes.data_for_module(self.name).iteritems() ?
-		options_enable = set(opt for opt, enabled in options.items() if enabled)
-		options_disable = set(opt for opt, enabled in options.items() if enabled is False)  # ignore None!
+		options_enable = {opt for opt, enabled in options.items() if enabled}
+		options_disable = {opt for opt, enabled in options.items() if enabled is False}  # ignore None!
 		obj.options = list(set(obj.options) - options_disable | options_enable)
 		if self.request.body_arguments['policies']:
 			obj.policies = functools.reduce(lambda x, y: x + y, self.request.body_arguments['policies'].values())
@@ -3121,7 +3115,7 @@ class UserPhoto(Resource):
 		if not obj.has_property('jpegPhoto'):
 			raise NotFound(object_type, dn)
 
-		data = base64.b64decode(obj.info.get('jpegPhoto', u'').encode('ASCII'))
+		data = base64.b64decode(obj.info.get('jpegPhoto', '').encode('ASCII'))
 		modified = self.modified_from_timestamp(self.ldap_connection.getAttr(obj.dn, 'modifyTimestamp')[0].decode('utf-8'))
 		if modified:
 			self.add_header('Last-Modified', last_modified(modified))
@@ -3551,7 +3545,7 @@ class Operations(Resource):
 		self.content_negotiation(result)
 
 	def get_html(self, response):
-		root = super(Operations, self).get_html(response)
+		root = super().get_html(response)
 		if isinstance(response, dict):
 			if 'value' in response and 'max' in response:
 				h1 = ET.Element('h1')
@@ -3638,7 +3632,7 @@ class License(Resource):
 					license_data[item] = {}
 					for lic_type in ('CLIENT', 'ACCOUNT', 'DESKTOP', 'GROUPWARE'):
 						count = getattr(udm_license._license, item)[udm_license._license.version][getattr(udm_license.License, lic_type)]
-						if isinstance(count, six.string_types):
+						if isinstance(count, str):
 							try:
 								count = int(count)
 							except ValueError:
@@ -3652,7 +3646,7 @@ class License(Resource):
 					license_data[item] = {}
 					for lic_type in ('SERVERS', 'USERS', 'MANAGEDCLIENTS', 'CORPORATECLIENTS'):
 						count = getattr(udm_license._license, item)[udm_license._license.version][getattr(udm_license.License, lic_type)]
-						if isinstance(count, six.string_types):
+						if isinstance(count, str):
 							try:
 								count = int(count)
 							except ValueError:
@@ -3693,7 +3687,7 @@ objectClass: univentionObject
 univentionObjectType: settings/license
 ''' % ucr
 		for line in zlib.decompress(base64.b64decode(self.request.query_arguments['license'].encode('ASCII')), -15).decode('UTF-8').splitlines():
-			text += 'univentionLicense%s\n' % (line.strip(),)
+			text += f'univentionLicense{line.strip()}\n'
 
 		self.import_license(io.BytesIO(text.encode('UTF-8')))
 
@@ -3761,7 +3755,7 @@ def encode_properties(module, obj, properties):
 
 
 def quote_dn(dn):
-	if isinstance(dn, six.text_type):
+	if isinstance(dn, str):
 		dn = dn.encode('utf-8')
 	# duplicated slashes in URI path's can be normalized to one slash. Therefore we need to escape the slashes.
 	return quote(dn.replace(b'//', b',/=/,'))  # .replace('/', quote('/', safe=''))
@@ -3769,7 +3763,7 @@ def quote_dn(dn):
 
 def unquote_dn(dn):
 	# tornado already decoded it (UTF-8)
-	return dn.replace(u',/=/,', u'//')
+	return dn.replace(',/=/,', '//')
 
 
 def last_modified(date):
@@ -3819,49 +3813,49 @@ class Application(tornado.web.Application):
 		# Note: the ldap base is part of the url to support "/" as part of the DN. otherwise we can use: '([^/]+(?:=|%3d|%3D)[^/]+)'
 		# Note: we cannot use .replace('/', '%2F') for the dn part as url-normalization could replace this and apache doesn't pass URLs with %2F to the ProxyPass without http://httpd.apache.org/docs/current/mod/core.html#allowencodedslashes
 		property_ = '([^/]+)'
-		super(Application, self).__init__([
-			(r"/(?:udm/)?(favicon).ico", Favicon, {"path": "/var/www/favicon.ico"}),
-			(r"/udm/(?:index.html)?", Modules),
-			(r"/udm/openapi.json", OpenAPI),
-			(r"/udm/relation/(.*)", Relations),
-			(r"/udm/license/", License),
-			(r"/udm/license/import", LicenseImport),
-			(r"/udm/license/check", LicenseCheck),
-			(r"/udm/license/request", LicenseRequest),
-			(r"/udm/ldap/base/", LdapBase),
-			(r"/udm/object/%s" % (dn,), ObjectLink),
-			(r"/udm/object/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", ObjectByUiid),
-			(r"/udm/%s/" % (module_type,), ObjectTypes),
-			(r"/udm/(navigation)/tree", Tree),
-			(r"/udm/(%s|navigation)/move-destinations/" % (object_type,), MoveDestinations),
-			(r"/udm/navigation/children-types/", SubObjectTypes),
-			(r"/udm/%s/" % (object_type,), Objects),
-			(r"/udm/%s/openapi.json" % (object_type,), OpenAPI),
-			(r"/udm/%s/add" % (object_type,), ObjectAdd),
-			(r"/udm/%s/copy" % (object_type,), ObjectCopy),
-			(r"/udm/%s/move" % (object_type,), ObjectsMove),
-			(r"/udm/%s/multi-edit" % (object_type,), ObjectMultiEdit),
-			(r"/udm/%s/tree" % (object_type,), Tree),
-			(r"/udm/%s/properties" % (object_type,), Properties),
-			(r"/udm/%s/()properties/%s/choices" % (object_type, property_), PropertyChoices),
-			(r"/udm/%s/layout" % (object_type,), Layout),
-			(r"/udm/%s/favicon.ico" % (object_type,), Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
-			(r"/udm/%s/%s" % (object_type, dn), Object),
-			(r"/udm/%s/%s/edit" % (object_type, dn), ObjectEdit),
-			(r"/udm/%s/%s/children-types/" % (object_type, dn), SubObjectTypes),
-			(r"/udm/%s/report/([^/]+)" % (object_type,), Report),
-			(r"/udm/%s/%s/%s/" % (object_type, dn, policies_object_type), PolicyResult),
-			(r"/udm/%s/%s/" % (object_type, policies_object_type), PolicyResultContainer),
-			(r"/udm/%s/%s/layout" % (object_type, dn), Layout),
-			(r"/udm/%s/%s/properties" % (object_type, dn), Properties),
-			(r"/udm/%s/%s/properties/%s/choices" % (object_type, dn, property_), PropertyChoices),
-			(r"/udm/%s/%s/properties/jpegPhoto.jpg" % (object_type, dn), UserPhoto),
-			(r"/udm/(networks/network)/%s/next-free-ip-address" % (dn,), NextFreeIpAddress),
-			(r"/udm/(users/user)/%s/service-specific-password" % (dn,), ServiceSpecificPassword),
-			(r"/udm/progress/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", Operations),
+		super().__init__([
+			("/(?:udm/)?(favicon).ico", Favicon, {"path": "/var/www/favicon.ico"}),
+			("/udm/(?:index.html)?", Modules),
+			("/udm/openapi.json", OpenAPI),
+			("/udm/relation/(.*)", Relations),
+			("/udm/license/", License),
+			("/udm/license/import", LicenseImport),
+			("/udm/license/check", LicenseCheck),
+			("/udm/license/request", LicenseRequest),
+			("/udm/ldap/base/", LdapBase),
+			(f"/udm/object/{dn}", ObjectLink),
+			("/udm/object/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", ObjectByUiid),
+			(f"/udm/{module_type}/", ObjectTypes),
+			("/udm/(navigation)/tree", Tree),
+			(f"/udm/(?:{object_type}|navigation)/move-destinations/", MoveDestinations),
+			("/udm/navigation/children-types/", SubObjectTypes),
+			(f"/udm/{object_type}/", Objects),
+			(f"/udm/{object_type}/openapi.json", OpenAPI),
+			(f"/udm/{object_type}/add", ObjectAdd),
+			(f"/udm/{object_type}/copy", ObjectCopy),
+			(f"/udm/{object_type}/move", ObjectsMove),
+			(f"/udm/{object_type}/multi-edit", ObjectMultiEdit),
+			(f"/udm/{object_type}/tree", Tree),
+			(f"/udm/{object_type}/properties", Properties),
+			(f"/udm/{object_type}/()properties/{property_}/choices", PropertyChoices),
+			(f"/udm/{object_type}/layout", Layout),
+			(f"/udm/{object_type}/favicon.ico", Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
+			(f"/udm/{object_type}/{dn}", Object),
+			(f"/udm/{object_type}/{dn}/edit", ObjectEdit),
+			(f"/udm/{object_type}/{dn}/children-types/", SubObjectTypes),
+			(f"/udm/{object_type}/report/([^/]+)", Report),
+			(f"/udm/{object_type}/{dn}/{policies_object_type}/", PolicyResult),
+			(f"/udm/{object_type}/{policies_object_type}/", PolicyResultContainer),
+			(f"/udm/{object_type}/{dn}/layout", Layout),
+			(f"/udm/{object_type}/{dn}/properties", Properties),
+			(f"/udm/{object_type}/{dn}/properties/{property_}/choices", PropertyChoices),
+			(f"/udm/{object_type}/{dn}/properties/jpegPhoto.jpg", UserPhoto),
+			(f"/udm/(networks/network)/{dn}/next-free-ip-address", NextFreeIpAddress),
+			(f"/udm/(users/user)/{dn}/service-specific-password", ServiceSpecificPassword),
+			("/udm/progress/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", Operations),
 			# TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
 		], default_handler_class=Nothing, **kwargs)
 
 	def multi_regex(self, chars):
 		# Bug in tornado: requests go against the raw url; https://github.com/tornadoweb/tornado/issues/2548, therefore we must match =, %3d, %3D
-		return ''.join('(?:%s|%s|%s)' % (re.escape(c), re.escape(quote(c).lower()), re.escape(quote(c).upper())) if c in '=,' else re.escape(c) for c in chars)
+		return ''.join(f'(?:{re.escape(c)}|{re.escape(quote(c).lower())}|{re.escape(quote(c).upper())})' if c in '=,' else re.escape(c) for c in chars)

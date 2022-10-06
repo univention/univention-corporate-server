@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  Univention Directory Manager Module
@@ -34,10 +33,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
 
 import os
 import sys
@@ -113,7 +108,7 @@ class Gateway(tornado.web.RequestHandler):
 		try:
 			response = yield client.fetch(request, raise_error=True)
 		except tornado.curl_httpclient.CurlError as exc:
-			ud.debug(ud.MAIN, ud.WARN, 'Reaching service failed: %s' % (exc,))
+			ud.debug(ud.MAIN, ud.WARN, f'Reaching service failed: {exc}')
 			# happens during starting the service and subprocesses when the UNIX sockets aren't available yet
 			self.set_status(503)
 			self.add_header('Retry-After', '3')  # Tell clients, we are ready in 3 seconds
@@ -183,7 +178,7 @@ class Gateway(tornado.web.RequestHandler):
 
 	@classmethod
 	def main(cls):
-		parser = argparse.ArgumentParser(prog='%s -m univention.admin.rest.server' % (sys.executable,))
+		parser = argparse.ArgumentParser(prog=f'{sys.executable} -m univention.admin.rest.server')
 		parser.add_argument('-d', '--debug', type=int, default=2)
 		parser.add_argument('-p', '--port', help='Bind to a TCP port (%(default)s)', type=int, default=ucr.get_int('directory/manager/rest/server/port'))
 		parser.add_argument('-i', '--interface', help='Bind to specified interface address (%(default)s)', default=ucr['directory/manager/rest/server/address'])
@@ -233,7 +228,7 @@ class Gateway(tornado.web.RequestHandler):
 			try:
 				child_id = tornado.process.fork_processes(args.processes, 0)
 			except RuntimeError as exc:
-				logger.info('Stopped process %s' % (exc,))
+				logger.info(f'Stopped process {exc}')
 				cls.signal_handler_stop(signal.SIGTERM, None)
 			else:
 				cls.start_child(child_id)
@@ -242,7 +237,7 @@ class Gateway(tornado.web.RequestHandler):
 
 	@classmethod
 	def start_child(cls, child_id):
-		setproctitle(proctitle + '   # gateway proxy %s' % (child_id,))
+		setproctitle(proctitle + f'   # gateway proxy {child_id}')
 		cls.child_id = child_id
 		logger = logging.getLogger()
 		logger.info('Started child %s', cls.child_id)
@@ -273,7 +268,7 @@ class Gateway(tornado.web.RequestHandler):
 	@classmethod
 	def get_socket_for_locale(cls, language):
 		language, territory = cls.get_locale(language)
-		return '/var/run/univention-directory-manager-rest-%s-%s.socket' % (language, territory.lower())
+		return f'/var/run/univention-directory-manager-rest-{language}-{territory.lower()}.socket'
 
 	@classmethod
 	def start_processes(cls, num_processes=1, start_port=9979):
@@ -337,7 +332,7 @@ class Gateway(tornado.web.RequestHandler):
 	def safe_kill(cls, pid, signo):
 		try:
 			os.kill(pid, signo)
-		except EnvironmentError as exc:
-			logging.getLogger().error('Could not kill(%s) %s: %s' % (signo, pid, exc))
+		except OSError as exc:
+			logging.getLogger().error(f'Could not kill({signo}) {pid}: {exc}')
 		else:
 			os.waitpid(pid, os.WNOHANG)
