@@ -12,10 +12,10 @@ doc_job () { # <extends> [<suffix> [<language>]]
 	echo '  variables:'
 	echo "    base: $path"
 	echo "    DOC_NAME: ${path##*/}"
-    if [ "${pkg}" = "changelog" ] || [ "${pkg}" = "release-notes" ]
-    then
-        echo '    DOC_TARGET_VERSION: $CHANGELOG_TARGET_VERSION'
-    fi
+	if [ "${pkg}" = "changelog" ] || [ "${pkg}" = "release-notes" ]
+	then
+		echo '    DOC_TARGET_VERSION: $CHANGELOG_TARGET_VERSION'
+	fi
 	[ -n "${3+empty}" ] && echo "    language: $3"
 	echo "  extends: ${1:?extends}"
 	echo '  rules:'
