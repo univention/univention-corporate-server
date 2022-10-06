@@ -11,3 +11,5 @@ desc: |
    specifying a URL with a path, query or fragment will break several
    programs.
 bug: [54495]
+erratum: 454
+announced: 2022-10-06
