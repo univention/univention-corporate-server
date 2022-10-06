@@ -1915,7 +1915,7 @@ class LdapBase(Resource):
 	def get(self):
 		result = {}
 		url = self.abspath('container/dc', quote_dn(ucr['ldap/base']))
-		self.add_link(result, '', url)
+		self.add_link(result, 'self', url)
 		self.set_header('Location', url)
 		self.set_status(301)
 		self.add_caching(public=True, must_revalidate=True)
@@ -1937,11 +1937,14 @@ class ObjectLink(Resource):
 				break
 		else:
 			raise NotFound(None, dn)
+
+		result = {}
 		url = self.abspath(module.name, quote_dn(dn))
+		self.add_link(result, 'self', url)
 		self.set_header('Location', url)
 		self.set_status(301)
 		self.add_caching(public=True, must_revalidate=True)
-		self.content_negotiation({})
+		self.content_negotiation(result)
 
 
 class ObjectByUiid(ObjectLink):
@@ -2708,7 +2711,7 @@ class Object(FormBase, Resource):
 				methods.extend(['PUT', 'PATCH'])
 			if can_remove:
 				methods.append('DELETE')
-			self.add_link(props, 'edit-form', self.urljoin(quote_dn(dn), 'edit'), title=_('Modify, move or remove this %s' % (module.object_name,)))
+			self.add_link(props, 'edit-form', self.urljoin(quote_dn(dn), 'edit'), title=_('Modify, move or remove this %s') % (module.object_name,))
 
 		self.set_header('Allow', ', '.join(methods))
 		if 'PATCH' in methods:
