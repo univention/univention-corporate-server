@@ -11,3 +11,5 @@ desc: |
    `umc/self-service/account-verification/email/subject`. and
    `umc/self-service/email-change-notification/email/subject`.
 bug: [55028]
+erratum: 445
+announced: 2022-10-06
