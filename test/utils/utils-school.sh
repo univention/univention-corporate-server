@@ -283,3 +283,52 @@ EOF
 		"${schools[@]}" >/tmp/import.log 2>&1 || return 1
 	rm -f /tmp/import.log
 }
+
+
+create_test_data_cache () {
+	univention-install -y python3-pip
+	pip3 install diskcache
+	python3 - <<"EOF"
+from ucsschool.lib.models import School, User, Group
+from univention.admin.uldap import getAdminConnection
+from diskcache import Index
+
+CACHE_PATH = "/var/lib/test-data"
+
+lo, po = getAdminConnection()
+schools = [school.name for school in School.get_all(lo)]
+db = Index(str(CACHE_PATH))
+db["schools"] = schools
+
+for school in schools:
+    print(school)
+    data = {
+        "users": {},
+        "groups": {},
+        "students": [],
+        "teachers": [],
+        "staff": [],
+        "admins": [],
+        "classes": [],
+        "workgroups": [],
+    }
+    for user in User.get_all(lo, school):
+        data["users"][user.name] = user.to_dict()
+        if user.is_student(lo):
+            data["students"].append(user.name)
+        elif user.is_teacher(lo):
+            data["teachers"].append(user.name)
+        elif user.is_staff(lo):
+            data["staff"].append(user.name)
+        elif user.is_administrator(lo):
+            data["admins"].append(user.name)
+    for group in Group.get_all(lo, school):
+        data["groups"][group.name] = group.to_dict()
+        if group.self_is_workgroup():
+            data["workgroups"].append(group.name)
+        elif group.self_is_class():
+            data["classes"].append(group.name)
+    db[school] = data
+db.cache.close()
+EOF
+}
