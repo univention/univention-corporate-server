@@ -1,8 +1,16 @@
 #!/usr/bin/make -f
-GREP := $(SHELL) -c '! grep -n "$$0" "$$@"'
-FGREP := $(SHELL) -c '! grep -n -F "$$0" "$$@"'
-Q := @
-DIRS := $(filter-out doc-common/,$(dir $(wildcard */Makefile)))
+mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+mkfile_dir := $(dir $(mkfile_path))
+DIRS := $(dir $(wildcard */Makefile))
+PO_DIRS := $(dir $(wildcard */locales))
+USER_ID := $(shell id -u)
+LANGUAGE ?= de
+SPHINXOPTS ?= "-q -W --keep-going"
+DOCKER_REGISTRY := docker-registry.knut.univention.de
+SPHINX_DOCKER_BASE = $(DOCKER_REGISTRY)/knut/sphinx-base:latest
+SPHINX_DOCKER_FULL = $(DOCKER_REGISTRY)/sphinx:latest
+DOCKER_USER_CMD := docker run --rm -v "$(mkfile_dir)/..:/project" -w /project/doc --network=host -u "$(USER_ID)"
+DOCKER_CMD := docker run --rm -v "$(mkfile_dir)/..:/project" -w /project/doc --network=host
 
 .PHONY: fast
 fast::
@@ -22,6 +30,25 @@ fast::
 
 check: fast
 
+# Uses the default Sphinx environment in a Docker image to run the needed tools for Sphinx.
+# Use this make target, when you want to update all po files in the documentation.
+update-po:
+	$(DOCKER_USER_CMD) $(SPHINX_DOCKER_BASE) make -e LANGUAGE="$(LANGUAGE)" update-po-nodocker
+
+# Loop over all documents and update the PO files. Requires an environment with the Sphinx toolchain.
+update-po-nodocker:
+	set -e; for d in $(PO_DIRS); do d="$$d" sh -c 'cd "$$d" && make -e SPHINXOPTS="-q" gettext && sphinx-intl update -p _build/gettext -l "$(LANGUAGE)"'; done
+
+stat-po:
+	$(DOCKER_USER_CMD) $(SPHINX_DOCKER_BASE) make -e LANGUAGE="$(LANGUAGE)" stat-po-nodocker
+
+stat-po-nodocker:
+	set -e; for d in $(PO_DIRS); do d="$$d" sh -c 'cd "$$d" && echo "doc/$$d:" && sphinx-intl stat -l "$(LANGUAGE)"'; done
+
+latexpdf:
+	$(DOCKER_CMD) $(SPHINX_DOCKER_FULL) /bin/bash -c 'for d in $(DIRS);do make -C "$$d" -e SPHINXOPTS="$(SPHINXOPTS)" "$@"; done'
+
 %:
-	for d in $(DIRS);do make -C "$$d" $@; done
+	$(DOCKER_USER_CMD) $(SPHINX_DOCKER_BASE) /bin/bash -c 'for d in $(DIRS);do make -C "$$d" -e SPHINXOPTS="$(SPHINXOPTS)" "$@";done'
+
 # vim:set bkc=auto:
