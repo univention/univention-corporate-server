@@ -10,3 +10,5 @@ desc: |
     Listener modules set with UCS 5.0-2, which deprecated the method
     `ListenerModuleConfiguration.get_configuration()`.
 bug: [54502]
+erratum: 444
+announced: 2022-10-06
