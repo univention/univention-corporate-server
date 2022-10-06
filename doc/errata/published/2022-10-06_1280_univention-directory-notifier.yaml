@@ -12,3 +12,5 @@ desc: |
    processes incrementally.
  * Several memory issues where fixed as well.
 bug: [55235]
+erratum: 1280
+announced: 2022-10-06
