@@ -9,3 +9,5 @@ desc: |
  * The password history synchronization now works when the
    pwdhistory_length policy is not defined.
 bug: [55232]
+erratum: 447
+announced: 2022-10-06
