@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-directory-manager-modules
-fix:
+fix: 15.0.13-9A~5.0.0.202210061342
 desc: |
  This update addresses the following issues:
  * The `users/ldap` and various computer UDM object types have been extended to
