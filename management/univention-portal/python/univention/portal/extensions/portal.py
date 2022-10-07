@@ -209,6 +209,10 @@ class Portal(metaclass=Plugin):
         announcements = self.portal_cache.get_announcements()
         return announcements
 
+    def get_announcements(self, visible_content):
+        announcements = self.portal_cache.get_announcements()
+        return announcements
+
     def _filter_entry_dns(self, entry_dns, entries, user, admin_mode):
         filtered_dns = []
         for entry_dn in entry_dns:
