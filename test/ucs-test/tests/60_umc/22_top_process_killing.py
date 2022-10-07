@@ -44,17 +44,17 @@ class Test_UMCProcessKilling():
         Kills process with SIGKILL signal via psutil if not yet terminated.
         That is a clean-up action.
         """
-        if self.proc and self.proc.is_running():
+        if self.PROC and self.PROC.is_running():
             print("Created process with pid '%s' was not terminated, "
-                  "forcing kill using psutil" % self.proc.pid)
-            self.proc.kill()
+                  "forcing kill using psutil" % self.PROC.pid)
+            self.PROC.kill()
 
             try:
                 # wait a bit for process to be killed
-                self.proc.wait(timeout=5)
+                self.PROC.wait(timeout=5)
             except TimeoutExpired as exc:
                 print("Process with pid '%s' did not exit after forced KILL "
-                      "via psutil: %r" % (self.proc.pid, exc))
+                      "via psutil: %r" % (self.PROC.pid, exc))
 
     def create_process(self, ignore_sigterm=False):
         """
@@ -64,7 +64,7 @@ class Test_UMCProcessKilling():
         """
         pid = fork()
         if pid:  # parent
-            self.proc = Process(pid)
+            Test_UMCProcessKilling.PROC = Process(pid)
             return pid
         else:  # child under test
             if ignore_sigterm:
