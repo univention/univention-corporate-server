@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-directory-manager-rest
+fix:
+desc: |
+ This update addresses the following issues:
+ * For request tracing a unique ID has been added to each request via the
+  `X-Request-Id` HTTP header which is accepted as request header (or if not
+  given uniquely created) and returned in the response headers.
+bug: [55186]

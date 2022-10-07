@@ -104,6 +104,7 @@ from univention.lib.i18n import Translation
 
 _ = Translation('univention-directory-manager-rest').translate
 
+RE_UUID = re.compile('[^A-Fa-f0-9-]')
 MAX_WORKERS = ucr.get('directory/manager/rest/max-worker-threads', 35)
 
 if 422 not in tornado.httputil.responses:
@@ -378,8 +379,11 @@ class ResourceBase:
 
 	def set_default_headers(self):
 		self.set_header('Server', 'Univention/1.0')  # TODO:
+		self.set_header('Access-Control-Expose-Headers', '*, Authorization, X-Request-Id')
 
 	def prepare(self):
+		self.request.x_request_id = RE_UUID.sub('', self.request.headers.get('X-Request-Id', str(uuid.uuid4())))[:36]
+		self.set_header('X-Request-Id', self.request.x_request_id)
 		self.request.content_negotiation_lang = 'html'
 		self.request.path_decoded = unquote(self.request.path)
 		self.request.decoded_query_arguments = self.request.query_arguments.copy()
@@ -395,6 +399,9 @@ class ResourceBase:
 			self.request.content_negotiation_lang = self.check_acceptable()
 			self.decode_request_arguments()
 			self.sanitize_arguments(RequestSanitizer(self), self)
+
+	def _request_summary(self):
+		return '%s: %s' % (self.request.x_request_id[:10], super()._request_summary())
 
 	def parse_authorization(self, authorization):
 		if authorization in self.authenticated_connections:
@@ -841,6 +848,7 @@ class ResourceBase:
 		super().log_exception(typ, value, tb)
 
 	def write_error(self, status_code, exc_info=None, **kwargs):
+		self.set_header('X-Request-Id', self.request.x_request_id)
 		if not exc_info:  # or isinstance(exc_info[1], HTTPError):
 			return super().write_error(status_code, exc_info=exc_info, **kwargs)
 
@@ -1133,6 +1141,7 @@ class OpenAPI(Resource):
 			{'$ref': '#/components/parameters/accept-language'},
 			{'$ref': '#/components/parameters/if-none-match'},
 			{'$ref': '#/components/parameters/if-modified-since'},
+			{'$ref': '#/components/parameters/request-id'},
 		]
 		_global_responses = {
 		}
@@ -1142,6 +1151,7 @@ class OpenAPI(Resource):
 			'Vary': {'$ref': '#/components/headers/Vary'},
 			'Content-Language': {'$ref': '#/components/headers/Content-Language'},
 			'Link': {'$ref': '#/components/headers/Link'},
+			'X-Request-Id': {'$ref': '#/components/headers/X-Request-Id'},
 		}
 
 		def global_response_headers(responses={}):
@@ -1633,7 +1643,7 @@ class OpenAPI(Resource):
 						"name": "User-Agent",
 						"schema": {"type": "string"},
 						"description": "The user agent",
-						"example": "UCS 4.4-1-errata241",
+						"example": "UCS 5.0-2-errata339",
 					},
 					'accept-language': {
 						"in": "header",
@@ -1669,6 +1679,13 @@ class OpenAPI(Resource):
 						"schema": {"type": "string"},
 						"description": "",
 						"example": "",
+					},
+					'request-id': {
+						"in": "header",
+						"name": "X-Request-Id",
+						"schema": {"type": "string", "format": "uuid"},
+						"description": "A request-ID used for logging and tracing.",
+						"example": "218d9124-c0dc-415e-8417-a0fa197ee099",
 					},
 				},
 				'responses': {  # Reusable responses, such as 401 Unauthorized or 400 Bad Request
@@ -1725,6 +1742,7 @@ class OpenAPI(Resource):
 					'Accept-Patch': {"schema": {"type": "string"}, "description": "The accepted Content-Types for a PATCH request"},
 					'Location': {"schema": {"type": "string"}, "description": "The location which should be followed."},
 					'Link': {"schema": {"type": "string"}, "description": "A hypermedia link."},
+					'X-Request-Id': {"schema": {"type": "string", "format": "uuid"}, "description": "The response of the request-ID used for logging and tracing."},
 				},
 				'examples': {},  # Reusable examples
 				'links': {},  # Reusable links

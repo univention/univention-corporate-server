@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.4-5) unstable; urgency=medium
+
+  * Bug #55186: set X-Request-Id header for traceability
+
+ -- Florian Best <best@univention.de>  Wed, 19 Oct 2022 10:22:35 +0200
+
 univention-directory-manager-rest (10.0.4-4) unstable; urgency=medium
 
   * Bug #55224: fix translation of UDM messages
