@@ -1,3 +1,9 @@
+univention-portal (4.0.10-1) unstable; urgency=medium
+
+  * Bug #55176: implemented announcement udm module
+
+ -- Torben Köhn <torben.koehn.extern@univention.de>  Mon, 05 Jun 2023 21:51:41 +0200
+
 univention-portal (4.0.9-7) unstable; urgency=medium
 
   * Bug #56113: Use the option to connect to the local slapd, thus removing a

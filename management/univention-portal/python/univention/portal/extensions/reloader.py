@@ -150,7 +150,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
             return False
         if reason_args[0] != "ldap":
             return False
-        return reason_args[1] in ["portal", "category", "entry", "folder"]
+        return reason_args[1] in ["portal", "category", "entry", "folder", "announcement"]
 
     def _refresh(self):
         udm_lib = importlib.import_module("univention.udm")
@@ -173,6 +173,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
         menu_links = portal_data.props.menuLinks
         folders = self._extract_folders(udm, portal_data, list(categories.values()))
         entries = self._extract_entries(udm, portal_data, list(categories.values()), list(folders.values()))
+        announcements = self._extract_announcements(udm, portal_data)
 
         with tempfile.NamedTemporaryFile(mode="w", delete=False) as fd:
             json.dump(
@@ -183,6 +184,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
                     "entries": entries,
                     "user_links": user_links,
                     "menu_links": menu_links,
+                    "announcements": announcements,
                 },
                 fd,
                 sort_keys=True,
@@ -276,6 +278,31 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
             }
 
         return entries
+
+    @classmethod
+    def _extract_announcements(cls, udm, portal):
+        announcements = {}
+
+        announcement_module = udm.get("portals/announcement")
+        if not announcement_module:
+            get_logger("cache").warning("UDM not up to date? Announcement module not found.")
+            return announcements
+
+        for announcement in announcement_module.search():
+            announcements[announcement.dn] = {
+                "dn": announcement.dn,
+                "allowedGroups": announcement.props.allowedGroups,
+                "name": announcement.props.name,
+                "message": announcement.props.message,
+                "title": announcement.props.title,
+                "visibleFrom": announcement.props.visibleFrom,
+                "visibleUntil": announcement.props.visibleUntil,
+                "isSticky": announcement.props.isSticky,
+                "needsConfirmation": announcement.props.needsConfirmation,
+                "severity": announcement.props.severity,
+            }
+
+        return announcements
 
     @classmethod
     def _write_image(cls, image, name, dirname):

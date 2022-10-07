@@ -1,4 +1,24 @@
 {
+  "announcements": {
+    "cn=Testannouncment,cn=announcement,cn=portals,cn=univention,dc=some-testenv,dc=intranet": {
+      "allowedGroups": [],
+      "dn": "cn=Testannouncment,cn=announcement,cn=portals,cn=univention,dc=some-testenv,dc=intranet",
+      "endTime": null,
+      "isSticky": false,
+      "message": {
+        "de_DE": "Dies ist ein Testannouncement das für jeden User, d.h. auch ohne Login sichtbar sein sollte.",
+        "en_US": "This is a test announcement that should be visible for all users, as no group restriction is set."
+      },
+      "name": "Testannouncment",
+      "needsConfirmation": false,
+      "severity": "info",
+      "startTime": null,
+      "title": {
+        "de_DE": "Öffentliches Announcement",
+        "en_US": "Public Announcement"
+      }
+    }
+  },
   "categories": {
     "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
       "display_name": {

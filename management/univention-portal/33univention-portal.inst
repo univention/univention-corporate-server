@@ -35,7 +35,7 @@
 # <https://www.gnu.org/licenses/>.
 ## joinscript api: bindpwdfile
 
-VERSION=27
+VERSION=28
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -84,6 +84,11 @@ ucs_registerLDAPExtension "$@" \
 ucs_registerLDAPExtension "$@" \
 	--ucsversionstart 5.0-0 \
 	--ucsversionend 5.99-0 \
+	--udm_module /usr/lib/univention-portal/udm/announcement.py || die
+
+ucs_registerLDAPExtension "$@" \
+	--ucsversionstart 5.0-0 \
+	--ucsversionend 5.99-0 \
 	--udm_module /usr/lib/univention-portal/udm/all.py || die
 
 umc_operation_create "udm-new-portal" "UDM - Portal" "portals/all" \
@@ -115,6 +120,10 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position "cn=portals,cn=univention,$ldap_base" \
 	--set name=config || die
+
+univention-directory-manager container/cn create "$@" --ignore_exists \
+	--position "cn=portals,cn=univention,$ldap_base" \
+	--set name=announcement || die
 
 if [ $JS_LAST_EXECUTED_VERSION -lt 8 ]; then
 	/usr/lib/univention-portal/migrate-to-new-portal "$@"

@@ -893,10 +893,6 @@ msgstr ""
 msgid "This URL does not exist (anymore)."
 msgstr "Diese URL existiert nicht (mehr)."
 
-#: src/jsHelper/forms.ts:158
-msgid "This value is required"
-msgstr "Dieser Wert ist erforderlich"
-
 #: src/store/modules/portalData/portalData.helper.ts:55
 msgid ""
 "Tile in Folder moved into position %(newPositionInArray)s of "
@@ -1106,3 +1102,6 @@ msgid ""
 msgstr ""
 "wir haben Ihnen eine E-Mail an %(email)s gesendet. Bitte folgen Sie den "
 "Anweisungen in der E-Mail, um Ihr Konto zu verifizieren."
+
+msgid "Portal"
+msgstr "Portal"

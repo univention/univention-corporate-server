@@ -1,4 +1,4 @@
-access to dn.children="cn=portals,cn=univention,@%@ldap/base@%@" attrs=entry,children,@univentionObject,@univentionNewPortal,@univentionNewPortalEntry,@univentionNewPortalCategory,@univentionData
+access to dn.children="cn=portals,cn=univention,@%@ldap/base@%@" attrs=entry,children,@univentionObject,@univentionNewPortal,@univentionNewPortalEntry,@univentionNewPortalCategory,@univentionNewPortalAnnouncement,@univentionData
 	by set="user/univentionObjectType & [computers/domaincontroller_master]" write
 	by set="user/univentionObjectType & [computers/domaincontroller_backup]" write
 	by set="user/univentionObjectType & [computers/domaincontroller_slave]" write

@@ -35,7 +35,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from ..encoders import (
-    Base64BinaryPropertyEncoder, BaseEncoder, ListOfListOflTextToDictPropertyEncoder,
+    Base64BinaryPropertyEncoder, BaseEncoder, DatePropertyEncoder, ListOfListOflTextToDictPropertyEncoder,
     StringCaseInsensitiveResultUpperBooleanPropertyEncoder, dn_list_property_encoder_for,
 )
 from .generic import GenericModule, GenericObject, GenericObjectProperties
@@ -71,6 +71,7 @@ class PortalsPortalObjectProperties(GenericObjectProperties):
         'userLinks': dn_list_property_encoder_for("auto"),
         'menuLinks': dn_list_property_encoder_for("auto"),
         'categories': dn_list_property_encoder_for("portals/category"),
+        'announcements': dn_list_property_encoder_for("portals/announcement"),
     }
 
 
@@ -170,3 +171,33 @@ class PortalsPortalFolderModule(GenericModule):
     class Meta:
         supported_api_versions = [1, 2, 3]
         suitable_for = ['portals/folder']
+
+
+class PortalsPortalAnnouncementObjectProperties(GenericObjectProperties):
+    """portals/announcement UDM properties."""
+
+    _encoders = {
+        'allowedGroups': dn_list_property_encoder_for('groups/group'),
+        'needsConfirmation': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
+        'isSticky': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
+        'title': ListOfListOflTextToDictPropertyEncoder,
+        'message': ListOfListOflTextToDictPropertyEncoder,
+        'visibleFrom': DatePropertyEncoder,
+        'visibleUntil': DatePropertyEncoder,
+    }
+
+
+class PortalsPortalAnnouncementObject(GenericObject):
+    """Better representation of portals/announcement properties."""
+
+    udm_prop_class = PortalsPortalAnnouncementObjectProperties
+
+
+class PortalsPortalAnnouncementModule(GenericModule):
+    """PortalsPortalAnnouncementObject factory"""
+
+    _udm_object_class = PortalsPortalAnnouncementObject
+
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        suitable_for = ['portals/announcement']

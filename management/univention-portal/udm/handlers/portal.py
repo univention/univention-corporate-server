@@ -42,6 +42,7 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 module = 'portals/portal'
+superordinate = 'settings/cn'
 default_containers = ['cn=portal,cn=portals,cn=univention']
 childs = False
 operations = ['add', 'edit', 'remove', 'search']
@@ -111,6 +112,12 @@ property_descriptions = {
     'categories': univention.admin.property(
         short_description=_('Categories'),
         syntax=univention.admin.syntax.NewPortalCategories,
+        multivalue=True,
+    ),
+    'announcements': univention.admin.property(
+        short_description=_('Announcements'),
+        long_description=_('List of announcements that are shown in the portal'),
+        syntax=univention.admin.syntax.NewPortalAnnouncements,
         multivalue=True,
     ),
     'defaultLinkTarget': univention.admin.property(
@@ -188,4 +195,5 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 lookup = object.lookup
+lookup_filter = object.lookup_filter
 identify = object.identify

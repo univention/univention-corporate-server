@@ -6,6 +6,7 @@ objectIdentifier univentionNewPortalCategory univentionNewPortalBase:2
 objectIdentifier univentionNewPortalEntry univentionNewPortalBase:3
 objectIdentifier univentionNewPortalComputer univentionNewPortalBase:4
 objectIdentifier univentionNewPortalFolder univentionNewPortalBase:5
+objectIdentifier univentionNewPortalAnnouncement univentionNewPortalBase:6
 
 objectIdentifier univentionNewPortalAttributeType univentionNewPortal:1
 objectIdentifier univentionNewPortalObjectClass univentionNewPortal:2
@@ -18,6 +19,9 @@ objectIdentifier univentionNewPortalEntryObjectClass univentionNewPortalEntry:2
 
 objectIdentifier univentionNewPortalFolderAttributeType univentionNewPortalFolder:1
 objectIdentifier univentionNewPortalFolderObjectClass univentionNewPortalFolder:2
+
+objectIdentifier univentionNewPortalAnnouncementAttributeType univentionNewPortalAnnouncement:1
+objectIdentifier univentionNewPortalAnnouncementObjectClass univentionNewPortalAnnouncement:2
 
 
 # <http://www.openldap.org/doc/admin24/schema.html>
@@ -282,3 +286,72 @@ objectclass ( univentionNewPortalFolderObjectClass:1 NAME 'univentionNewPortalFo
 		)
 	)
 
+
+### Definition for univentionNewPortalAnnouncement
+
+attributetype ( univentionNewPortalAnnouncementAttributeType:1 NAME 'univentionNewPortalAnnouncementAllowedGroups'
+	DESC 'Portal announcement allowed group DNs'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionNewPortalAnnouncementAttributeType:2 NAME 'univentionNewPortalAnnouncementNeedsConfirmation'
+	DESC 'Portal announcement needs confirmation'
+	SINGLE-VALUE
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+attributetype ( univentionNewPortalAnnouncementAttributeType:3 NAME 'univentionNewPortalAnnouncementIsSticky'
+	DESC 'Portal announcement is sticky'
+	SINGLE-VALUE
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+attributetype ( univentionNewPortalAnnouncementAttributeType:4 NAME 'univentionNewPortalAnnouncementSeverity'
+	DESC 'Portal announcement severity'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionNewPortalAnnouncementAttributeType:5 NAME 'univentionNewPortalAnnouncementTitle'
+	DESC 'Portal announcement title'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionNewPortalAnnouncementAttributeType:6 NAME 'univentionNewPortalAnnouncementMessage'
+	DESC 'Portal announcement message'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionNewPortalAnnouncementAttributeType:7 NAME 'univentionNewPortalAnnouncementVisibleFrom'
+	DESC 'Portal announcement visible from'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionNewPortalAnnouncementAttributeType:8 NAME 'univentionNewPortalAnnouncementVisibleUntil'
+	DESC 'Portal announcement visible until'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( univentionNewPortalAnnouncementObjectClass:1 NAME 'univentionNewPortalAnnouncement'
+	DESC 'Portal Announcement data'
+	SUP top
+	MUST ( cn )
+	MAY (
+			  univentionNewPortalAnnouncementAllowedGroups
+			$ univentionNewPortalAnnouncementNeedsConfirmation
+			$ univentionNewPortalAnnouncementIsSticky
+			$ univentionNewPortalAnnouncementSeverity
+			$ univentionNewPortalAnnouncementTitle
+			$ univentionNewPortalAnnouncementMessage
+			$ univentionNewPortalAnnouncementVisibleFrom
+			$ univentionNewPortalAnnouncementVisibleUntil
+		)
+	)

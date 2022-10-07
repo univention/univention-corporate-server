@@ -123,9 +123,18 @@ License with the Debian GNU/Linux or Univention distribution in file
       <portal-search />
     </template>
   </region>
-  <choose-tabs
-    v-if="activeButton === 'copy'"
-  />
+  <choose-tabs v-if="activeButton === 'copy'" />
+  <div id="announcement-container">
+    <announcement
+      v-for="announcement in portalAnnouncements"
+      :key="announcement.name"
+      :title="announcement.title"
+      :message="announcement.message"
+      :severity="announcement.severity"
+      :name="announcement.name"
+      :sticky="announcement.isSticky"
+    />
+  </div>
 </template>
 
 <script lang="ts">
@@ -142,6 +151,7 @@ import PortalTitle from '@/components/header/PortalTitle.vue';
 import IconButton from '@/components/globals/IconButton.vue';
 
 import getScrollbarWidth from '@/jsHelper/getScrollbar';
+import Announcement from '@/components/widgets/Announcement.vue';
 
 interface PortalHeaderData {
   tabsOverflow: boolean,
@@ -151,6 +161,7 @@ interface PortalHeaderData {
 export default defineComponent({
   name: 'PortalHeader',
   components: {
+    Announcement,
     HeaderButton,
     HeaderTab,
     PortalSearch,
@@ -176,6 +187,7 @@ export default defineComponent({
       editMode: 'portalData/editMode',
       activeButton: 'navigation/getActiveButton',
       numNotifications: 'notifications/numNotifications',
+      portalAnnouncements: 'portalData/portalAnnouncements',
     }),
     showTabButton(): boolean {
       return this.numTabs > 0 && this.tabsOverflow;
@@ -312,4 +324,7 @@ export default defineComponent({
       visibility: hidden
   #header-button-copy
       display: flex
+
+#announcement-container
+  width: 100%
 </style>

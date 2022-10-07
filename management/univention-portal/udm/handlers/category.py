@@ -43,6 +43,7 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 module = 'portals/category'
+superordinate = 'settings/cn'
 default_containers = ['cn=category,cn=portals,cn=univention']
 childs = False
 operations = ['add', 'edit', 'remove', 'search']
@@ -131,4 +132,5 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 lookup = object.lookup
+lookup_filter = object.lookup_filter
 identify = object.identify

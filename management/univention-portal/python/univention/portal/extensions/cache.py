@@ -101,6 +101,7 @@ class PortalFileCache(Cache):
     `get_portal`
     `get_categories`
     `get_menu_links`
+    `get_announcements`
     """
 
     def get_user_links(self):
@@ -120,6 +121,9 @@ class PortalFileCache(Cache):
 
     def get_menu_links(self):
         return deepcopy(self.get()["menu_links"])
+
+    def get_announcements(self):
+        return deepcopy(self.get()["announcements"])
 
 
 class GroupFileCache(Cache):

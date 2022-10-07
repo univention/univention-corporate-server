@@ -42,6 +42,7 @@ import requests.exceptions
 
 from univention.portal import Plugin, config
 from univention.portal.log import get_logger
+from univention.portal.util import is_current_time_between as is_announcement_visible_now
 
 
 class Portal(metaclass=Plugin):
@@ -117,6 +118,7 @@ class Portal(metaclass=Plugin):
         entries = self.portal_cache.get_entries()
         folders = self.portal_cache.get_folders()
         categories = self.portal_cache.get_categories()
+        announcements = self.portal_cache.get_announcements()
         visible_entry_dns = self._filter_entry_dns(entries.keys(), entries, user, admin_mode)
         visible_folder_dns = [
             folder_dn
@@ -140,10 +142,16 @@ class Portal(metaclass=Plugin):
                 ],
             ) > 0
         ]
+        visible_announcement_dns = [
+            announcement_dn
+            for announcement_dn, announcement in announcements.items()
+            if self._announcement_visible(user, announcement)
+        ]
         return {
             "entry_dns": visible_entry_dns,
             "folder_dns": visible_folder_dns,
             "category_dns": visible_category_dns,
+            "announcement_dns": visible_announcement_dns,
         }
 
     def get_user_links(self, content):
@@ -202,6 +210,30 @@ class Portal(metaclass=Plugin):
             for category_dn in portal["categories"]
         ]
         return portal
+
+    def _announcement_visible(self, user, announcement: dict) -> bool:
+        return self._announcement_matches_time(announcement) and self._announcement_matches_group(user, announcement)
+
+    def _announcement_matches_time(self, announcement: dict):
+        return is_announcement_visible_now(
+            announcement.get('visibleFrom'),
+            announcement.get('visibleUntil'),
+        )
+
+    def _announcement_matches_group(self, user, announcement: dict):
+        visible = False
+        allowed_groups = announcement.get("allowedGroups")
+        if not allowed_groups or allowed_groups == []:
+            visible = True
+        else:
+            for group in allowed_groups:
+                if user.is_member_of(group):
+                    visible = True
+        return visible
+
+    def get_announcements(self, content):
+        announcements = self.portal_cache.get_announcements()
+        return [announcements[announcement_dn] for announcement_dn in content["announcement_dns"]]
 
     def _filter_entry_dns(self, entry_dns, entries, user, admin_mode):
         filtered_dns = []
