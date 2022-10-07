@@ -263,32 +263,57 @@ EOF
 	# fix record_uid
 	sed -i 's/"record_uid": "<firstname>.<lastname>"/"record_uid": "<firstname>.<lastname>.<username>"/' \
 		/usr/share/ucs-school-import/configs/ucs-school-testuser-import.json
-	# create school users
+	# add import hook
+	car <<EOF > /usr/share/ucs-school-import/pyhooks/testimport.py
+from ucsschool.importer.utils.user_pyhook import UserPyHook
+
+class MyHook(UserPyHook):
+
+    priority = {
+        "pre_create": 1,
+    }
+
+    def pre_create(self, user):
+        user.password = "univention"
+
+EOF
+	# create schools
 	school_count=350
-	classes_count=50000
-	students_count=220000
-	teachers_count=25000
-	staff_count=1000
-	schools=()
+	schools_big=()
+	schools_normal=()
 	for i in $(seq 1 "$school_count"); do
-		/usr/share/ucs-school-import/scripts/create_ou "--verbose" "school$i" "replica$i" || return 1
-		schools+=("school$i")
+		/usr/share/ucs-school-import/scripts/create_ou "--verbose" "school$i" "replica$i" >/tmp/import.log 2>&1 || return 1
+		if [ "$i" -le 50 ]; then
+			schools_big+=("school$i")
+		else
+			schools_normal+=("school$i")
+		fi
 	done
+	# big schools
 	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import \
-		--classes "$classes_count" \
-		--students "$students_count" \
-		--teachers "$teachers_count" \
+		--classes 10000 \
+		--students 150000 \
+		--teachers 15000 \
+		--staff 1500 \
+		--inclasses 40 \
+		"${schools_big[@]}" >/tmp/import.log 2>&1 || return 1
+	# normal schools
+	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import \
+		--classes 15000 \
+		--students 75000 \
+		--teachers 15000 \
+		--staff 750 \
 		--inclasses 60 \
-		--staff "$staff_count" \
-		"${schools[@]}" >/tmp/import.log 2>&1 || return 1
+		"${schools_normal[@]}" >/tmp/import.log 2>&1 || return 1
 	rm -f /tmp/import.log
+	# TODO workgroups
 }
 
 
-create_test_data_cache () {
-	univention-install -y python3-pip
+create_and_copy_test_data_cache () {
+	univention-install -y python3-pip sshpass
 	pip3 install diskcache
-	python3 - <<"EOF"
+	python3 - <<"EOF" || return 1
 from ucsschool.lib.models import School, User, Group
 from univention.admin.uldap import getAdminConnection
 from diskcache import Index
@@ -331,4 +356,10 @@ for school in schools:
     db[school] = data
 db.cache.close()
 EOF
+
+	local root_password="${1:?missing root password}"
+	shift
+	for ip in "$@"; do
+		sshpass -p "$root_password" scp -r  -o StrictHostKeyChecking=no -o UpdateHostKeys=no /var/lib/test-data root@"$ip":/var/lib/ || return 1
+	done
 }
