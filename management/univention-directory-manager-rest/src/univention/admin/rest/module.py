@@ -110,6 +110,8 @@ from univention.password import generate_password, password_config
 # TODO: 0f77c317e03844e8a16c484dde69abbcd2d2c7e3 is not integrated
 # TODO: loading the policies probably unnecessarily slows down things
 
+univention.admin.handlers.simpleLdap._static_ldap_attributes.update({"entryCSN", "modifyTimestamp"})
+
 _ = Translation('univention-directory-manager-rest').translate
 
 MAX_WORKERS = ucr.get('directory/manager/rest/max-worker-threads', 35)

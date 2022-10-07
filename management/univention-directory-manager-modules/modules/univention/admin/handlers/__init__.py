@@ -1981,7 +1981,7 @@ class simpleLdap:
     @classmethod
     def _ldap_attributes(cls):  # type: () -> list[str]
         """Get a list of additional (operational) LDAP attributes which needs to be fetched from the LDAP server when creating an instance of this object"""
-        return list({'*', 'entryUUID', 'entryCSN', 'modifyTimestamp'} | cls._static_ldap_attributes)
+        return list({"*", "entryUUID"} | cls._static_ldap_attributes)
 
 
 class simpleComputer(simpleLdap):
