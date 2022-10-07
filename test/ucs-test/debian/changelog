@@ -1,3 +1,11 @@
+ucs-test (10.0.7-27) unstable; urgency=medium
+
+  * Bug #20235: add
+    59_udm/68_test_udm_extendedattribute::test_extended_attribute_operat
+    ional_ldap_attribute
+
+ -- Florian Best <best@univention.de>  Thu, 13 Oct 2022 14:34:05 +0200
+
 ucs-test (10.0.7-26) unstable; urgency=medium
 
   * Bug #55232: Added tests for password history synchronization

@@ -1186,3 +1186,27 @@ class {hook_name}(univention.admin.hook.AttributeHook):
 			utils.verify_ldap_object(userB, {attr_name: [b'no']})
 			with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):
 				udm.modify_object('users/user', dn=userB, **{cli_name: 'not valid'})
+
+	@pytest.mark.tags('udm')
+	@pytest.mark.roles('domaincontroller_master')
+	@pytest.mark.exposure('careful')
+	def test_extended_attribute_operational_ldap_attribute(self, udm, ucr):
+		"""An operational LDAP attribute can be set as settings/extended_attribute"""
+		properties = {
+			'name': uts.random_name(),
+			'shortDescription': uts.random_string(),
+			'CLIName': uts.random_name(),
+			'module': 'users/user',
+			'objectClass': 'top',
+			'ldapMapping': 'creatorsName',
+			'mayChange': '0',
+			'notEditable': '1',
+			'copyable': '0',
+		}
+
+		udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+
+		user = udm.create_user()[0]
+		# udm.verify_udm_object('users/user', user, {properties['CLIName']: 'cn=admin,%(ldap/base)s' % ucr})  # doesn't load ext attrs
+		props = udm.list_objects('users/user', position=user)[0][1]
+		assert props[properties['CLIName']] == ['cn=admin,%(ldap/base)s' % ucr]

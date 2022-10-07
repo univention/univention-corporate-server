@@ -41,7 +41,7 @@ import os
 import copy
 import locale
 import importlib
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set, Text, Tuple, Union  # noqa: F401
+from typing import Any, Dict, List, Optional, Set, Text, Union  # noqa: F401
 
 import six
 import ldap
@@ -109,6 +109,14 @@ modules = {}  # type: Dict[str, UdmModule]
 _superordinates = set()  # type: Set[str]
 """List of all module names (strings) that are _superordinates."""
 containers = []  # type: List[UdmModule]
+
+
+@univention.admin._ldap_cache(ttl=3600)
+def _ldap_operational_attribute_names(lo):  # type: (univention.admin.uldap.access) -> Set[str]
+	schema = lo.get_schema()
+	attrs = [schema.get_obj(ldap.schema.models.AttributeType, x) for x in schema.listall(ldap.schema.models.AttributeType)]
+	usages = [ldap.schema.models.AttributeUsage[o] for o in ('directoryoperation', 'dsaoperation', 'distributedoperation')]
+	return {n.lower() for a in attrs for n in a.names if a.usage in usages}
 
 
 def update():
@@ -401,6 +409,7 @@ def update_extended_attributes(lo, module, position):
 		# get CLI name
 		pname = attrs['univentionUDMPropertyCLIName'][0].decode('UTF-8', 'replace')
 		object_class = attrs.get('univentionUDMPropertyObjectClass', [])[0].decode('UTF-8', 'replace')
+		ldap_attribute_name = attrs['univentionUDMPropertyLdapMapping'][0].decode('UTF-8', 'replace')
 		if name(module) == 'settings/usertemplate' and object_class == 'univentionMail' and b'settings/usertemplate' not in attrs.get('univentionUDMPropertyModule', []):
 			continue  # since "mail" is a default option, creating a usertemplate with any mail attribute would raise Object class violation: object class 'univentionMail' requires attribute 'uid'
 
@@ -492,10 +501,10 @@ def update_extended_attributes(lo, module, position):
 		)
 
 		# add LDAP mapping
-		if attrs['univentionUDMPropertyLdapMapping'][0].lower() != b'objectClass'.lower():
-			module.mapping.register(pname, attrs['univentionUDMPropertyLdapMapping'][0].decode('UTF-8', 'replace'), unmap_method, map_method)
+		if ldap_attribute_name.lower() != 'objectclass':
+			module.mapping.register(pname, ldap_attribute_name, unmap_method, map_method)
 		else:
-			module.mapping.register(pname, attrs['univentionUDMPropertyLdapMapping'][0].decode('UTF-8', 'replace'), univention.admin.mapping.nothing, univention.admin.mapping.nothing)
+			module.mapping.register(pname, ldap_attribute_name, univention.admin.mapping.nothing, univention.admin.mapping.nothing)
 
 		if hasattr(module, 'layout'):
 			tabname = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationTabName;entry-%s', 'univentionUDMPropertyLayoutTabName', _('Custom'))
@@ -563,11 +572,15 @@ def update_extended_attributes(lo, module, position):
 			module.extended_udm_attributes.append(univention.admin.extended_attribute(
 				name=pname,
 				objClass=object_class,
-				ldapMapping=attrs['univentionUDMPropertyLdapMapping'][0].decode('UTF-8', 'replace'),
+				ldapMapping=ldap_attribute_name,
 				deleteObjClass=deleteObjectClass,
 				syntax=propertySyntaxString,
 				hook=propertyHook
 			))
+
+			if ldap_attribute_name.lower() in _ldap_operational_attribute_names(lo):
+				module.object._static_ldap_attributes.add(ldap_attribute_name)
+
 	module.property_descriptions = new_property_descriptions
 
 	# overwrite tabs that have been added by UDM extended attributes

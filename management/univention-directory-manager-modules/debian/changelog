@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.13-10) unstable; urgency=medium
+
+  * Bug #20235: Make LDAP operational attributes available as extended
+    attribute
+
+ -- Florian Best <best@univention.de>  Thu, 13 Oct 2022 11:40:13 +0200
+
 univention-directory-manager-modules (15.0.13-9) unstable; urgency=medium
 
   * Bug #54987: add pki/userCertificate to users/ldap and computers/*

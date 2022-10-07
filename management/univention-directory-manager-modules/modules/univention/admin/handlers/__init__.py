@@ -1898,9 +1898,12 @@ class simpleLdap(object):
 		required_object_classes = univention.admin.modules.options(cls.module).get('default', univention.admin.option()).objectClasses - {'top', 'univentionPolicy', 'univentionObjectMetadata', 'person'}
 		return (ocs & required_object_classes) == required_object_classes
 
+	_static_ldap_attributes = set()  # type: Set[str]
+
 	@classmethod
-	def _ldap_attributes(cls):
-		return ['*', 'entryUUID', 'entryCSN', 'modifyTimestamp']
+	def _ldap_attributes(cls):  # type: () -> List[str]
+		"""Get a list of additional (operational) LDAP attributes which needs to be fetched from the LDAP server when creating an instance of this object"""
+		return list({'*', 'entryUUID', 'entryCSN', 'modifyTimestamp'} | cls._static_ldap_attributes)
 
 
 class simpleComputer(simpleLdap):
