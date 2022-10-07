@@ -354,7 +354,9 @@ else:
 		#
 #		disable_tlsv1_2 = no
 
-		#
+		# Disable tls v3 since it is not yet supported
+		# https://github.com/FreeRADIUS/freeradius-server/issues/2385
+		tls_max_version = "1.2"
 
 		#
 		#  Elliptical cryptography configuration
