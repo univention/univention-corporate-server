@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Test the UMC backend process killing
 ## bugs: [34593, 38174]
 ## exposure: dangerous
