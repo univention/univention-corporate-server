@@ -161,11 +161,6 @@ class TestGroupsReloaderLDAP(TestMtimeBasedLazyFileReloader):
 		self._os.stat.assert_called_once()
 		assert mocked_portal_reloader._cache_file == self._cache_file
 		assert mocked_portal_reloader._mtime == self._mtime
-		assert mocked_portal_reloader._ldap_uri == self._ldap_uri
-		assert mocked_portal_reloader._password_file == self._password_file
-		assert mocked_portal_reloader._bind_dn == self._bind_dn
-		assert mocked_portal_reloader._ldap_base == self._ldap_base
-		assert mocked_portal_reloader._cache_file == self._cache_file
 
 	def test_refresh(self, mocked_portal_reloader):
 		refreshed = mocked_portal_reloader.refresh()
