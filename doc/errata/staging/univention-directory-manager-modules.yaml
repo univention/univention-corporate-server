@@ -6,6 +6,6 @@ src: univention-directory-manager-modules
 fix: 15.0.13-9A~5.0.0.202210061342
 desc: |
  This update addresses the following issues:
- * The `users/ldap` and various computer UDM object types have been extended to
-   provide PKI user certificate properties.
+ * The `users/ldap` and various computer UDM object types have been extended
+   to provide PKI user certificate properties.
 bug: [54987]
