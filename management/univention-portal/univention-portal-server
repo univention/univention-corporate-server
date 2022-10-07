@@ -132,6 +132,7 @@ class PortalEntriesHandler(PortalResource):
         answer["user_displayname"] = user.display_name
         answer["auth_mode"] = portal.auth_mode(self)
         answer["may_edit_portal"] = portal.may_be_edited(user)
+        answer["announcements"] = portal.get_announcements(visible_content)
         self.write(answer)
 
 

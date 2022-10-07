@@ -113,6 +113,12 @@ property_descriptions = {
         syntax=univention.admin.syntax.NewPortalCategories,
         multivalue=True,
     ),
+    'announcements': univention.admin.property(
+        short_description=_('Announcements'),
+        long_description=_('List of announcements that are shown in the portal'),
+        syntax=univention.admin.syntax.NewPortalAnnouncements,
+        multivalue=True,
+    ),
     'defaultLinkTarget': univention.admin.property(
         short_description=_('Default browser tab for portal entries'),
         syntax=univention.admin.syntax.NewPortalDefaultLinkTarget,

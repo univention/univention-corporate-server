@@ -105,5 +105,20 @@
     },
     "showApps": false
   },
-  "user_links": []
+  "user_links": [],
+  "announcements": [
+    {
+      "announcement": {
+        "name": "",
+        "flags": [
+          "sticky"
+        ],
+        "severity": "info",
+        "title": "",
+        "message": "",
+        "startTime": "",
+        "endTime": ""
+      }
+    }
+  ]
 }

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-portal\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2022-06-22 13:49+0200\n"
+"POT-Creation-Date: 2022-09-30 22:57+0200\n"
 "PO-Revision-Date: 2020-05-01 00:20+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -359,3 +359,100 @@ msgstr "Benutzermenü"
 #: udm/syntax/univention-portal.py:91
 msgid "White"
 msgstr "Weiß"
+
+msgid "A color theme the announcement should appear in."
+msgstr "Ein Farbschema in dem die Ansagen erscheinen sollen."
+
+msgid "Announcement options"
+msgstr "Ansage Optionen"
+
+msgid "Announcements"
+msgstr "Ansagen"
+
+
+msgid "Content"
+msgstr "Inhalt"
+
+msgid "Danger"
+msgstr "Gefahr"
+
+
+msgid "End time"
+msgstr "Endzeit"
+
+
+msgid "If one or more groups are selected then the portal announcement will only be visible to logged in users that are in any of the selected groups. If no groups are selected then the portal entry is always visible."
+msgstr "Falls ein oder mehrere Gruppen ausgewählt sind, wird die Ansage nur für angemeldete Benutzer sichtbar sein, die in einer der ausgewählten Gruppen Mitglied sind. Wenn keine Gruppe ausgewählt wird, ist die Ansage für alle sichtbar."
+
+msgid "If true, the announcement can't be closed and will persist until the time ends (or never)."
+msgstr "When aktiv kann die Ansage nicht geschlossen werden und wird erst nach der Endzeit verschwinden (oder niemals)."
+
+msgid "If true, the user will see a \"Confirm\" button and the announcement will persist until it is clicked."
+msgstr "Wenn aktiv wird der User die Ansage mit einem \"Bestätigen\"-Knopf bestätigen müssen bevor die Nachricht verschwindet."
+
+msgid "Info"
+msgstr "Info"
+
+
+msgid "List of announcements that are shown in the portal"
+msgstr "Liste der Ansagen, die im Menü des Portals angezeigt werden"
+
+
+msgid "Message"
+msgstr "Nachricht"
+
+msgid "Needs Confirmation"
+msgstr "Benötigt Bestätigung"
+
+
+msgid "One folder in https://fqdn/univention/portal which holds one or more portals/announcement objects. Belongs to one or more portals/portal objects"
+msgstr "Ein Ordner in https://fqdn/univention/portal der ein oder mehr portals/announcement Objekte enthält. Gehört zu einem oder mehreren portal/portal Objekten."
+
+
+msgid "Options"
+msgstr "Optionen"
+
+
+msgid "Portal announcement"
+msgstr "Portalansage"
+
+msgid "Portal announcements"
+msgstr "Portalansagen"
+
+
+msgid "Portal: Announcement"
+msgstr "Portal: Ansage"
+
+
+msgid "Severity"
+msgstr "Schweregrad"
+
+msgid "Start time"
+msgstr "Startzeit"
+
+msgid "Sticky"
+msgstr "Feststehend"
+
+msgid "Success"
+msgstr "Erfolg"
+
+msgid "The message of the announcement, usually written in normal text below the title."
+msgstr "Die Nachricht der Ansage. Erscheint üblicherweise unter dem Titel."
+
+msgid "The time when the announcement will first appear. If no time is set, it will always appear."
+msgstr "Die Zeit zu der die Ansage initial erscheinen wird. Wenn keine Zeit gesetzt ist wird sie immer erscheinen."
+
+msgid "The time when the announcement will stop appearing. If no time is set, it will appear forever."
+msgstr "Die Zeit zu der die Ansage verschwinden wird. Wenn keine Zeit gesetzt ist, wird sie niemals verschwinden."
+
+msgid "The title of the announcement, usually written in bold above the message."
+msgstr "Der Titel der Ansage, üblicherweise fett über der Nachricht geschrieben."
+
+msgid "Time"
+msgstr "Zeit"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Warning"
+msgstr "Warnung"

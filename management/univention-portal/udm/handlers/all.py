@@ -32,6 +32,7 @@
 
 
 import univention.admin.handlers
+import univention.admin.handlers.portals.announcement
 import univention.admin.handlers.portals.category
 import univention.admin.handlers.portals.entry
 import univention.admin.handlers.portals.portal
@@ -49,10 +50,17 @@ default_containers = [
     'cn=entry,cn=portals,cn=univention',
     'cn=category,cn=portals,cn=univention',
     'cn=folder,cn=portals,cn=univention',
+    'cn=announcement,cn=portals,cn=univention',
 ]
 
 operations = ['search']
-childmodules = ['portals/portal', 'portals/entry', 'portals/category', 'portals/folder']
+childmodules = [
+    'portals/portal',
+    'portals/entry',
+    'portals/category',
+    'portals/folder',
+    'portals/announcement',
+]
 virtual = True
 property_descriptions = {
     'name': univention.admin.property(

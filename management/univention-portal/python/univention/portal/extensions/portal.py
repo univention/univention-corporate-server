@@ -116,6 +116,7 @@ class Portal(metaclass=Plugin):
         entries = self.portal_cache.get_entries()
         folders = self.portal_cache.get_folders()
         categories = self.portal_cache.get_categories()
+        announcements = self.portal_cache.get_announcements()
         visible_entry_dns = self._filter_entry_dns(entries.keys(), entries, user, admin_mode)
         visible_folder_dns = [
             folder_dn
@@ -139,10 +140,12 @@ class Portal(metaclass=Plugin):
                 ],
             ) > 0
         ]
+        visible_announcements = announcements
         return {
             "entry_dns": visible_entry_dns,
             "folder_dns": visible_folder_dns,
             "category_dns": visible_category_dns,
+            "announcements": visible_announcements
         }
 
     def get_user_links(self, content):
@@ -201,6 +204,10 @@ class Portal(metaclass=Plugin):
             for category_dn in portal["categories"]
         ]
         return portal
+
+    def get_announcements(self, visible_content):
+        announcements = self.portal_cache.get_announcements()
+        return announcements
 
     def _filter_entry_dns(self, entry_dns, entries, user, admin_mode):
         filtered_dns = []

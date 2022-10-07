@@ -105,6 +105,21 @@ class TestPortal:
             "category_dns": ["cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
             "entry_dns": ["cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
             "folder_dns": [],
+            "announcements": [
+                {
+                    "announcement": {
+                        "name": "",
+                        "flags": [
+                            "sticky"
+                        ],
+                        "severity": "info",
+                        "title": "",
+                        "message": "",
+                        "startTime": "",
+                        "endTime": ""
+                    }
+                }
+            ]
         }
         assert content == expected_content
 

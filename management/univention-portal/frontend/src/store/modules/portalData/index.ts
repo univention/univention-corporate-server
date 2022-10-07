@@ -179,7 +179,12 @@ const portalData: PortalModule<PortalDataState> = {
   state: {
     portal: {
       portal: {
-        name: { en_US: '' },
+        name: {
+          en: _('Portal'),
+          en_US: _('Portal'),
+          de_DE: _('Portal'),
+          fr_FR: _('Portal'),
+        },
         background: null,
         defaultLinkTarget: 'embedded',
         dn: 'default',
@@ -194,6 +199,7 @@ const portalData: PortalModule<PortalDataState> = {
       categories: [],
       menuLinks: [],
       userLinks: [],
+      announcements: [],
       baseLayout: {
         layout: [],
         categories: {},
@@ -217,12 +223,16 @@ const portalData: PortalModule<PortalDataState> = {
         c.virtual = c.virtual ?? false;
         return c;
       });
+      state.portal.announcements = portal.announcements;
       state.portal.menuLinks = portal.menu_links;
       state.portal.userLinks = portal.user_links;
       if (adminMode) {
         const menu = {
           display_name: {
+            en: _('Portal Menu'),
             en_US: _('Portal Menu'),
+            de_DE: _('Portal Menu'),
+            fr_FR: _('Portal Menu'),
           },
           test: 'Portal Menu',
           virtual: true,
@@ -232,7 +242,10 @@ const portalData: PortalModule<PortalDataState> = {
         };
         const userMenu = {
           display_name: {
+            en: _('User Menu'),
             en_US: _('User Menu'),
+            de_DE: _('User Menu'),
+            fr_FR: _('User Menu'),
           },
           test: 'User Menu',
           virtual: true,
@@ -289,10 +302,10 @@ const portalData: PortalModule<PortalDataState> = {
     CONTENT(state: PortalDataState, content: PortalContent): void {
       state.portal.portal.content = content;
     },
-    PORTALBACKGROUND(state: PortalDataState, data:PortalImageDataBlob): void {
+    PORTALBACKGROUND(state: PortalDataState, data: PortalImageDataBlob): void {
       state.portal.portal.background = data;
     },
-    SETLAYOUT(state: PortalDataState, payload: {layout: PortalLayout, baseLayout: PortalBaseLayout}): void {
+    SETLAYOUT(state: PortalDataState, payload: { layout: PortalLayout, baseLayout: PortalBaseLayout }): void {
       state.portal.baseLayout = payload.baseLayout;
       state.portal.layout = payload.layout;
     },
@@ -336,6 +349,7 @@ const portalData: PortalModule<PortalDataState> = {
     portalEntries: (state) => state.portal.entries,
     portalFolders: (state) => state.portal.folders,
     portalCategories: (state) => state.portal.categories,
+    portalAnnouncements: (state) => state.portal.announcements,
     portalCategoriesOnPortal: (state) => state.portal.portal.categories,
     portalDefaultLinkTarget: (state) => state.portal.portal.defaultLinkTarget,
     userLinks: (state) => state.portal.userLinks,
@@ -386,7 +400,7 @@ const portalData: PortalModule<PortalDataState> = {
     setPortalBackground({ commit }: PortalDataActionContext, data: PortalImageDataBlob): void {
       commit('PORTALBACKGROUND', data);
     },
-    setLayout({ commit, dispatch }: PortalDataActionContext, layout: {layout: PortalLayout, baseLayout: PortalBaseLayout}): void {
+    setLayout({ commit, dispatch }: PortalDataActionContext, layout: { layout: PortalLayout, baseLayout: PortalBaseLayout }): void {
       commit('SETLAYOUT', layout);
       dispatch('changeLayoutUpdateFolder');
     },
@@ -475,7 +489,7 @@ const portalData: PortalModule<PortalDataState> = {
 
       dispatch('changeLayoutUpdateFolder');
     },
-    changeLayoutDirection({ dispatch, getters }: PortalDataActionContext, payload: { fromId: string, direction: 'left' | 'right' | 'up' | 'down'}): void {
+    changeLayoutDirection({ dispatch, getters }: PortalDataActionContext, payload: { fromId: string, direction: 'left' | 'right' | 'up' | 'down' }): void {
       const fromId = payload.fromId;
       const direction = payload.direction;
 
