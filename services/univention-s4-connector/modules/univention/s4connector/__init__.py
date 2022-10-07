@@ -1181,7 +1181,6 @@ class ucs:
         if objectGUID:
             objectGUID = decode_guid(objectGUID)
 
-        entryUUID = self._get_entryUUID(object['dn'])
         if objectGUID and self.was_objectGUID_deleted_by_ucs(objectGUID):
             ud.debug(ud.LDAP, ud.PROCESS, "add_in_ucs: object %s already deleted in UCS, ignoring create" % object['dn'])
             return True
@@ -1307,7 +1306,7 @@ class ucs:
         objectGUID = object['attributes'].get('objectGUID', [None])[0]  # to compensate for __object_from_element
         if objectGUID:
             objectGUID = decode_guid(objectGUID)
-        entryUUID = self._get_entryUUID(object['dn'])
+        entryUUID = object["entryUUID"]
 
         if objectGUID and self.was_objectGUID_deleted_by_ucs(objectGUID):
             ud.debug(ud.LDAP, ud.PROCESS, "delete_in_ucs: object %s already deleted in UCS, ignoring delete" % object['dn'])
@@ -1440,9 +1439,8 @@ class ucs:
                 pass
 
         if old_object:
-            uuid = self.lo.getAttr(old_object.dn, 'entryUUID')
+            uuid = old_object.entry_uuid
             if uuid:
-                uuid = uuid[0].decode('ASCII')
                 if self.lockingdb.is_ucs_locked(uuid):
                     ud.debug(ud.LDAP, ud.PROCESS, "Unable to sync %r (UUID: %r). The object is currently locked." % (old_object.dn, uuid))
                     return False
@@ -1487,6 +1485,7 @@ class ucs:
                         self.context_log(property_type, object, "ignore, object to delete doesn't exists")
                         result = True
                     else:
+                        object["entryUUID"] = old_object.uuid
                         result = self.delete_in_ucs(property_type, object, module, position)
                     self._remove_dn_mapping(object['dn'], pre_mapped_s4_dn)
                     self.s4cache.remove_entry(guid)
