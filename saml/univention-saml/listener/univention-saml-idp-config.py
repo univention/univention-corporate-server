@@ -65,6 +65,6 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 				else:
 					handler_unset(['%s' % LDAP_UCR_MAPPING[key]])
 		else:
-			ud.debug(ud.LISTENER, ud.WARN, 'An IdP config object was modified, but it is not the object the listener is configured for (%s). Ignoring changes. DN of modified object: %r' % (idp_config_objectdn, new['entryDN'].decode('UTF-8')))
+			ud.debug(ud.LISTENER, ud.WARN, 'An IdP config object was modified, but it is not the object the listener is configured for (%s). Ignoring changes. DN of modified object: %r' % (idp_config_objectdn, new['entryDN'][0].decode('UTF-8')))
 	finally:
 		listener.unsetuid()

@@ -51,8 +51,8 @@ __initscript = '/etc/init.d/nagios-nrpe-server'
 __confdir = '/etc/nagios/nrpe.univention.d/'
 __pluginconfdir = '/etc/nagios-plugins/config/'
 
-__pluginconfdirstat = 0
-__pluginconfig = {}
+__pluginconfdirstat = 0.0
+__pluginconfig: Dict[str, str] = {}
 
 
 def readPluginConfig() -> None:
@@ -76,23 +76,23 @@ def readPluginConfig() -> None:
 						ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: read configline for plugin %r ==> %r' % (mcmdname.group(1), mcmdline.group(1)))
 
 
-def replaceArguments(cmdline: bytes, args: List[bytes]) -> bytes:
+def replaceArguments(cmdline: str, args: List[str]) -> str:
 	for i in range(9):
 		if i < len(args):
 			cmdline = re.sub(r'\$ARG%d\$' % (i + 1), args[i], cmdline)
 		else:
-			cmdline = re.sub(r'\$ARG%d\$' % (i + 1), b'', cmdline)
+			cmdline = re.sub(r'\$ARG%d\$' % (i + 1), '', cmdline)
 	return cmdline
 
 
-def writeConfig(fqdn: bytes, new: Dict[str, List[bytes]]) -> None:
+def writeConfig(fqdn: str, new: Dict[str, List[bytes]]) -> None:
 	readPluginConfig()
 
 	name = new['cn'][0].decode('UTF-8')
 	cmdline = 'PluginNameNotFoundError'
 
 	# if no univentionNagiosHostname is present or current host is no member then quit
-	if fqdn.encode('UTF-8') not in new.get('univentionNagiosHostname', []):
+	if fqdn.encode("UTF-8") not in new.get('univentionNagiosHostname', []):
 		return
 
 	nagios_check_command = new.get('univentionNagiosCheckCommand', [b''])[0].decode('UTF-8')
@@ -126,20 +126,21 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 	# ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: IN old=%r' % (old,))
 	# ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: IN new=%r' % (new,))
 
-	fqdn = ('%(hostname)s.%(domainname)s' % configRegistry).encode('UTF-8')
+	fqdn = '%(hostname)s.%(domainname)s' % configRegistry
+	fqdn_b = fqdn.encode('UTF-8')
 
 	if old and not new:
 		ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: service %r deleted' % (old['cn'][0],))
 		removeConfig(old['cn'][0].decode('UTF-8'))
 
 	if old and \
-		fqdn in old.get('univentionNagiosHostname', []) and \
-		fqdn not in new.get('univentionNagiosHostname', []):
+		fqdn_b in old.get('univentionNagiosHostname', []) and \
+		fqdn_b not in new.get('univentionNagiosHostname', []):
 		# object changed and
 		# local fqdn was in old object and
 		# local fqdn is not in new object
 		# ==> fqdn was deleted from list
-		ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: host removed from service %s' % (old['cn'][0],))
+		ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: host removed from service %r' % (old['cn'][0],))
 		removeConfig(old['cn'][0].decode('UTF-8'))
 	elif old and \
 		old.get('univentionNagiosUseNRPE', [b''])[0] == b'1' and \
@@ -158,7 +159,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 		# - this object is new
 		if 'univentionNagiosUseNRPE' in new and new['univentionNagiosUseNRPE'] and (new['univentionNagiosUseNRPE'][0] == b'1'):
 			ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: writing service %r' % (new['cn'][0],))
-			writeConfig(fqdn.decode('UTF-8'), new)
+			writeConfig(fqdn, new)
 
 
 @SetUID(0)
