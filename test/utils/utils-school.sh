@@ -39,11 +39,13 @@ install_bb_api () {
   python -c 'import json; fp = open("/var/lib/ucs-school-import/configs/user_import.json", "r+w"); config = json.load(fp); config["configuration_checks"] = ["defaults", "mapped_udm_properties"]; config["mapped_udm_properties"] = ["phone", "e-mail", "organisation"]; fp.seek(0); json.dump(config, fp, indent=4, sort_keys=True); fp.close()'
   echo -e "deb [trusted=yes] http://192.168.0.10/build2/ ucs_4.4-0-min-brandenburg/all/\ndeb [trusted=yes] http://192.168.0.10/build2/ ucs_4.4-0-min-brandenburg/amd64/" > /etc/apt/sources.list.d/30_BB.list
   univention-install -y ucs-school-http-api-bb
+  # shellcheck disable=SC2009
   ps aux | grep api-bb
 }
 
 install_kelvin_api () {
   # do not rename function: used as install_[ENV:TEST_API]_api in autotest-241-ucsschool-HTTP-API.cfg
+  # shellcheck disable=SC2015
   . utils.sh && switch_to_test_app_center || true
   echo -n univention > /tmp/univention
   # use brach image if given
@@ -210,11 +212,12 @@ add_pre_join_hook_to_install_from_test_appcenter () {
 	# reasons (dvd: errata-test univention-appcenter vs univention-appcenter-dev from release
 	# errata packages)
 	cat <<-'EOF' >"/tmp/appcenter-test.sh"
-#!/bin/bash
+#!/bin/sh
 ucr set repository/app_center/server='appcenter-test.software-univention.de' update/secure_apt='false' appcenter/index/verify='no'
 univention-app update
 exit 0
 EOF
+	# shellcheck source=/dev/null
 	. /usr/share/univention-lib/ldap.sh && ucs_registerLDAPExtension \
 		--binddn "cn=admin,$(ucr get ldap/base)" \
 		--bindpwdfile=/etc/ldap.secret \
@@ -227,10 +230,11 @@ EOF
 add_pre_join_hook_to_install_from_test_repository () {
 	# activate test repository for school-replica join
 	cat <<-'EOF' >"/tmp/repo-test.sh"
-#!/bin/bash
+#!/bin/sh
 ucr set repository/online/server='updates-test.knut.univention.de'
 exit 0
 EOF
+	# shellcheck source=/dev/null
 	. /usr/share/univention-lib/ldap.sh && ucs_registerLDAPExtension \
 		--binddn "cn=admin,$(ucr get ldap/base)" \
 		--bindpwdfile=/etc/ldap.secret \
@@ -243,7 +247,7 @@ EOF
 create_virtual_schools () {
 	local number_of_schools=${1:?missing number of schools to create}
 	local formated_school_number
-        rm -f ./virtual_schools.txt
+	rm -f ./virtual_schools.txt
 	for ((i=1; i <= number_of_schools; i++)); do
 		printf -v formated_school_number "%0${#number_of_schools}d" "$i"
 		/usr/share/ucs-school-import/scripts/create_ou --verbose "SchoolVirtual$formated_school_number" "r300-sV$formated_school_number" --displayName "SchuleVirtual$formated_school_number"
