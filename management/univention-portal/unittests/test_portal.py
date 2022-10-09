@@ -34,12 +34,36 @@
 #
 
 import asyncio
-
+from copy import deepcopy
+import json
+import tempfile
 import pytest
+
+from python.univention.portal.extensions.reloader import MtimeBasedLazyFileReloader
+from python.univention.portal.extensions.portal import Portal
 
 
 def test_imports(dynamic_class):
     assert dynamic_class("Portal")
+
+class TestReloader(MtimeBasedLazyFileReloader):
+
+    def __init__(self, portal_file):
+        super().__init__(portal_file) 
+        self.content = {}
+
+    def get_portal_cache_json(self) -> dict:
+        with open(self._cache_file, "r") as portal_cache:
+            return json.load(portal_cache)
+
+    def update_portal_cache(self, portal_data: dict):
+        self.content = portal_data
+        self.refresh("force")
+
+    def _refresh(self):  # pragma: no cover
+        with tempfile.NamedTemporaryFile(mode="w", delete=False) as fd:
+            json.dump(self.content, fd, sort_keys=True, indent=4)
+        return fd
 
 
 class TestPortal:
