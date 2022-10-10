@@ -1,0 +1,17 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: bind9
+fix: 1:9.11.5.P4+dfsg-5.1+deb10u8A~5.0.2.202210101801
+desc: |
+ This update addresses the following issues:
+ * processing large delegations may severely degrade resolver performance
+   (CVE-2022-2795)
+ * memory leak in ECDSA DNSSEC verification code (CVE-2022-38177)
+ * memory leaks in EdDSA DNSSEC verification code (CVE-2022-38178)
+bug: [55253]
+cve:
+- CVE-2022-2795
+- CVE-2022-38177
+- CVE-2022-38178
