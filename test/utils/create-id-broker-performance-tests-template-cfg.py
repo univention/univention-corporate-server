@@ -63,7 +63,7 @@ config.set(new_section, "command{recover_command}".format(recover_command=recove
 . utils-school-idbroker.sh && add_to_ssh_environment "UCS_ENV_SELF_DISCLOSURE_FQDN=self-disclosure1.[ENV:UCS_ENV_IDBROKER_DOMAIN]"
 . utils-school-idbroker.sh && add_to_ssh_environment "UCS_ENV_PROVISIONING_FQDN=provisioning1.[ENV:UCS_ENV_IDBROKER_DOMAIN]"
 . utils-school-idbroker.sh && add_to_ssh_environment "UCS_ENV_KEYCLOAK_FQDN=login.kc1.[ENV:UCS_ENV_IDBROKER_DOMAIN]"
-. utils-school-idbroker.sh && add_to_ssh_environment "UCS_ENV_BROKER_LDAPS=provisioning1.[ENV:UCS_ENV_IDBROKER_DOMAIN] self-disclosure1.[ENV:UCS_ENV_IDBROKER_DOMAIN] idbroker-primary.[ENV:UCS_ENV_IDBROKER_DOMAIN] kc1.[ENV:UCS_ENV_IDBROKER_DOMAIN]"
+. utils-school-idbroker.sh && add_to_ssh_environment "UCS_ENV_BROKER_LDAPS=provisioning1.[ENV:UCS_ENV_IDBROKER_DOMAIN] self-disclosure1.[ENV:UCS_ENV_IDBROKER_DOMAIN] idbroker-primary.[ENV:UCS_ENV_IDBROKER_DOMAIN] kc1.[ENV:UCS_ENV_IDBROKER_DOMAIN] kc2.[ENV:UCS_ENV_IDBROKER_DOMAIN]"
 . utils-school-idbroker.sh && add_to_ssh_environment "UCS_ENV_ANSIBLE_SSH_USER=root"
 . utils-school-idbroker.sh && add_to_ssh_environment "UCS_ENV_ANSIBLE_SSH_PRIVATE_KEY=/root/.ssh/tech.pem"
 #
