@@ -8,6 +8,9 @@ export DOCKER=true
 export REPLACE=true
 export UCS_TEST_RUN=false
 
+# TODO remove once 5.0-2 templates are available
+export UCS_VERSION=5.0-1
+
 # user specific instances "username_..."
 if [ -n "$BUILD_USER_ID" ]; then
 	export KVM_OWNER="$BUILD_USER_ID"
