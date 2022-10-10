@@ -209,7 +209,9 @@ class Gateway(tornado.web.RequestHandler):
     @classmethod
     def start_server(cls, socks):
         app = tornado.web.Application(
-            [(r'.*', cls)],
+            [
+                (r'.*', cls),
+            ],
             serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True),
             log_function=cls.log_function,
         )
