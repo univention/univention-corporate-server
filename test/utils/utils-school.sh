@@ -264,7 +264,7 @@ EOF
 	sed -i 's/"record_uid": "<firstname>.<lastname>"/"record_uid": "<firstname>.<lastname>.<username>"/' \
 		/usr/share/ucs-school-import/configs/ucs-school-testuser-import.json
 	# add import hook
-	car <<EOF > /usr/share/ucs-school-import/pyhooks/testimport.py
+	cat <<EOF > /usr/share/ucs-school-import/pyhooks/testimport.py
 from ucsschool.importer.utils.user_pyhook import UserPyHook
 
 class MyHook(UserPyHook):
@@ -289,28 +289,61 @@ EOF
 			schools_normal+=("school$i")
 		fi
 	done
-	# big schools
+	# 50 big schools with 3000 students and 50 classes
 	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import \
-		--classes 10000 \
+		--classes 2500 \
 		--students 150000 \
 		--teachers 15000 \
 		--staff 1500 \
-		--inclasses 40 \
 		"${schools_big[@]}" >/tmp/import.log 2>&1 || return 1
-	# normal schools
+	# 300 normal schools with 250 students and 25 classes
 	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import \
-		--classes 15000 \
+		--classes 3000 \
 		--students 75000 \
 		--teachers 15000 \
 		--staff 750 \
-		--inclasses 60 \
 		"${schools_normal[@]}" >/tmp/import.log 2>&1 || return 1
 	rm -f /tmp/import.log
-	# TODO workgroups
+	# add some more
+	# * workgroups, 10 work groups per school with 60 members each
+	# * class groups, 550 empty classes to the 50 big schools
+	python3 - <<"EOF" || return 1
+from ucsschool.lib.models import School, User
+from ucsschool.lib.models.group import SchoolClass, WorkGroup
+from univention.admin.uldap import getAdminConnection
+
+import random
+
+lo, po = getAdminConnection()
+schools = School.get_all(lo)
+
+for school in schools:
+    if school.name == "DEMOSCHOOL":
+        continue
+    users = [user.dn for user in User.get_all(lo, school.name)]
+    # add workgroups to every school
+    for i in range(1, 11):
+        wg_data = {
+            "name": f"{school.name}-workgroup{i}",
+            "school": school.name,
+            "users": random.sample(users, 60),
+        }
+        wg = WorkGroup(**wg_data)
+        wg.create(lo)
+    # add empty classes in big schools
+    if len(users)) > 2000:
+        for i in range(1, 551):
+            sc_data = {"name": f"{school.name}-empty-class{i}", "school": school.name}
+            sc = SchoolClass(**sc_data)
+            sc.create(lo)
+EOF
+
+
 }
 
-
+# get first 50 schools as python diskcache
 create_and_copy_test_data_cache () {
+	local root_password="${1:?missing root password}"
 	univention-install -y python3-pip sshpass
 	pip3 install diskcache
 	python3 - <<"EOF" || return 1
@@ -321,43 +354,46 @@ from diskcache import Index
 CACHE_PATH = "/var/lib/test-data"
 
 lo, po = getAdminConnection()
-schools = [school.name for school in School.get_all(lo)]
 db = Index(str(CACHE_PATH))
-db["schools"] = schools
+db["schools"] = []
 
-for school in schools:
+for i in range(1, 51):
+    school = School(f"school{i}")
+    db["schools"].append(school.name)
     print(school)
     data = {
         "users": {},
         "groups": {},
-        "students": [],
-        "teachers": [],
-        "staff": [],
-        "admins": [],
+        "students": {},
+        "teachers": {},
+        "staff": {},
+        "admins": {},
         "classes": [],
         "workgroups": [],
     }
-    for user in User.get_all(lo, school):
+    for user in User.get_all(lo, school.name):
         data["users"][user.name] = user.to_dict()
         if user.is_student(lo):
-            data["students"].append(user.name)
+            data["students"][user.name] = user.dn
         elif user.is_teacher(lo):
-            data["teachers"].append(user.name)
+            data["teachers"][user.name] = user.dn
         elif user.is_staff(lo):
-            data["staff"].append(user.name)
+            data["staff"][user.name] = user.dn
         elif user.is_administrator(lo):
-            data["admins"].append(user.name)
-    for group in Group.get_all(lo, school):
+            data["admins"][user.name] = user.dn
+    for group in Group.get_all(lo, school.name):
+        # only non-empty groups
+        if len(group.users) == 0:
+            continue
         data["groups"][group.name] = group.to_dict()
         if group.self_is_workgroup():
             data["workgroups"].append(group.name)
         elif group.self_is_class():
             data["classes"].append(group.name)
-    db[school] = data
+    db[school.name] = data
 db.cache.close()
 EOF
 
-	local root_password="${1:?missing root password}"
 	shift
 	for ip in "$@"; do
 		sshpass -p "$root_password" scp -r  -o StrictHostKeyChecking=no -o UpdateHostKeys=no /var/lib/test-data root@"$ip":/var/lib/ || return 1
