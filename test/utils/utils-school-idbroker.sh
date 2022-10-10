@@ -324,7 +324,8 @@ add_to_hosts () {
 prepare_jump_host () {
     apt-get -y update
     hostname jumphost
-    DEBIAN_FRONTEND=noninteractive apt-get -y install id-broker-performance-tests
+    ucr set repository/online=true
+    DEBIAN_FRONTEND=noninteractive univention-install -y id-broker-performance-tests
     echo 'root soft nofile 10240' >> /etc/security/limits.conf
     echo 'root hard nofile 10240' >> /etc/security/limits.conf
     echo "fs.file-max=1048576" > /etc/sysctl.d/99-file-max.conf
