@@ -41,6 +41,7 @@ import requests.exceptions
 
 from univention.portal import Plugin, config
 from univention.portal.log import get_logger
+from univention.portal.util import in_range
 
 
 class Portal(metaclass=Plugin):
@@ -140,7 +141,7 @@ class Portal(metaclass=Plugin):
                 ],
             ) > 0
         ]
-        visible_announcements = []
+        visible_announcements = [announcement for announcement in announcements if self._announcement_visible(announcement)]
         return {
             "entry_dns": visible_entry_dns,
             "folder_dns": visible_folder_dns,
@@ -205,9 +206,20 @@ class Portal(metaclass=Plugin):
         ]
         return portal
 
-    def get_announcements(self, visible_content):
-        announcements = self.portal_cache.get_announcements()
-        return [announcement for announcement in announcements if announcement in visible_content["announcements"]]
+    def _announcement_matches_time(self, announcement: dict):
+        start_time = None
+        end_time = None
+        if 'startTime' in announcement and announcement['startTime'] is not None:
+            start_time = announcement['startTime']
+        if 'endTime' in announcement and announcement['endTime'] is not None:
+            end_time = announcement['endTime']
+        return in_range(start_time, end_time)
+
+    def _announcement_visible(self, announcement: dict) -> bool:
+        return self._announcement_matches_time(announcement)
+
+    def get_announcements(self, content):
+        return content["announcements"]
 
     def get_announcements(self, visible_content):
         announcements = self.portal_cache.get_announcements()

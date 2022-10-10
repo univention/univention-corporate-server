@@ -34,22 +34,24 @@
 #
 
 import asyncio
-from copy import deepcopy
+from datetime import datetime
+from datetime import timedelta
 import json
 import tempfile
 import pytest
 
-from python.univention.portal.extensions.reloader import MtimeBasedLazyFileReloader
-from python.univention.portal.extensions.portal import Portal
+from univention.portal.extensions.reloader import MtimeBasedLazyFileReloader
+from univention.portal.extensions.portal import Portal
 
 
 def test_imports(dynamic_class):
     assert dynamic_class("Portal")
 
+
 class TestReloader(MtimeBasedLazyFileReloader):
 
     def __init__(self, portal_file):
-        super().__init__(portal_file) 
+        super().__init__(portal_file)
         self.content = {}
 
     def get_portal_cache_json(self) -> dict:
@@ -129,21 +131,24 @@ class TestPortal:
             "category_dns": ["cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
             "entry_dns": ["cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
             "folder_dns": [],
-            "announcements": [
-                {
-                    "announcement": {
-                        "name": "",
-                        "flags": [
-                            "sticky"
-                        ],
-                        "severity": "info",
-                        "title": "",
-                        "message": "",
-                        "startTime": "",
-                        "endTime": ""
-                    }
+            "announcements": [{
+                "allowedGroups": [],
+                "dn": "cn=Testannouncment,cn=announcement,cn=portals,cn=univention,dc=some-testenv,dc=intranet",
+                "endTime": None,
+                "isSticky": False,
+                "message": {
+                    "de_DE": "Dies ist ein Testannouncement das f\u00fcr jeden User, d.h. auch ohne Login sichtbar sein sollte.",
+                    "en_US": "This is a test announcement that should be visible for all users, as no group restriction is set."
+                },
+                "name": "Testannouncment",
+                "needsConfirmation": False,
+                "severity": "info",
+                "startTime": None,
+                "title": {
+                    "de_DE": "\u00d6ffentliches Announcement",
+                    "en_US": "Public Announcement"
                 }
-            ]
+            }]
         }
         assert content == expected_content
 
