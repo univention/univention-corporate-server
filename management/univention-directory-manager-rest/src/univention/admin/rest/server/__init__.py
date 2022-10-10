@@ -74,6 +74,13 @@ request_id_context = contextvars.ContextVar("request_id")
 logger = logging.getLogger('ADMIN')
 
 
+class ReloadAPI(tornado.web.RequestHandler):
+
+    def get(self):
+        self.application.signal_handler_reload(signal.SIGHUP, None)
+        self.finish({})
+
+
 class Gateway(tornado.web.RequestHandler):
     """
     A server which acts as proxy to multiple processes in different languages
@@ -241,6 +248,7 @@ class Gateway(tornado.web.RequestHandler):
     @classmethod
     def start_server(cls, socks):
         app = tornado.web.Application([
+            (r'/udm/-/reload', ReloadAPI),
             (r'.*', cls),
         ], serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True),
         )
