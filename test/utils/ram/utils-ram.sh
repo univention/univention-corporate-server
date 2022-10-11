@@ -15,13 +15,23 @@ set_udm_properties_for_kelvin () {
                 "ucsschoolPurgeTimestamp",
                 "uidNumber"
         ],
-        "workgroup": [
-            "divis_startdate",
-            "divis_enddate"
-        ],
         "school_class": [
-            "divis_startdate",
-            "divis_enddate"
+                "divis_startdate",
+                "divis_enddate",
+                "divis_classtype",
+                "idi_schoolyear",
+                "group_source-id",
+                "isIServGroup",
+                "isLMSGroup"
+        ],
+        "workgroup": [
+                "divis_startdate",
+                "divis_enddate",
+                "divis_classtype",
+                "idi_schoolyear",
+                "group_source-id",
+                "isIServGroup",
+                "isLMSGroup"
         ]
 }
 
