@@ -47,3 +47,41 @@ To reference the correct changelog document in the release notes, use the follow
 3. Adjust the URL value to the new changelog document location in the
    `intersphinx_mapping` variables (English and German language settings) in
    the release notes [conf.py](./release-notes/conf.py).
+
+## General Makefile
+
+In the documentation root directory `doc/` there is a Makefile. You can use it
+to run the Sphinx make targets over all documentation.
+
+Examples. Run the commands from the UCS repository `/doc` directory.
+
+* Cleanup all build artifacts: `make clean`
+
+* Build all HTML files: `make html`
+
+* Build all PDF files: `make latexpdf`. Build PDF files requires the
+  full Sphinx Docker image, which is about twice the size of the Sphinx base
+  image.
+
+
+### Translations
+
+All documents in this directory are written in English as their default
+language. Some documents also offer a German translation.
+
+To check, if your changes to the documentation needs an update of the
+translation, run `make update-po` from the repository `/doc` directory.
+The command downloads the Sphinx Docker image and updates the PO files for
+all documents with the translation.
+
+The default language for the update is German. To update the translation for
+another language, for example French, run `make -C doc -e LANGUAGE="fr"
+update-po`.
+
+Other translation related targets are the following:
+
+* `stat-po` to show translation statistics about translated, fuzzy and
+  untranslated strings.
+
+* `stat-po-nodocker`: Same as `stat-po` without running the commands in a
+  Docker container. This make target requires a Sphinx environment.
