@@ -164,18 +164,12 @@ def get_latest_docker_appbox_image():
 
 def docker_login(server='docker.software-univention.de'):
 	cmd = ['docker', 'login', '-u', 'ucs', '-p', 'readonly', server]
-	try:
-		subprocess.check_call(cmd)
-	except subprocess.CalledProcessError as exc:
-		raise UCSTest_Docker_LoginFailed(str(exc))
+	error_handling_call(cmd, exc=UCSTest_Docker_LoginFailed)
 
 
 def docker_pull(image, server='docker.software-univention.de'):
 	cmd = ['docker', 'pull', '%s/%s' % (server, image)]
-	try:
-		subprocess.check_call(cmd)
-	except subprocess.CalledProcessError as exc:
-		raise UCSTest_Docker_PullFailed(str(exc))
+	error_handling_call(cmd, exc=UCSTest_Docker_PullFailed)
 
 
 def docker_image_is_present(imgname):
@@ -231,6 +225,13 @@ def copy_package_to_appcenter(ucs_version, app_directory, package_name):
 	print('Creating packages in local repository:')
 	print(command)
 	print(subprocess.check_output(command, shell=True, text=True))
+
+
+def error_handling_call(*args, exc=Exception, **kwargs):
+	try:
+		print(subprocess.check_output(*args, **kwargs, stderr=subprocess.STDOUT).decode('UTF-8', 'replace'))
+	except subprocess.CalledProcessError as ex:
+		raise exc('%s: %s' % (ex, ex.output.decode('UTF-8', 'replace')))
 
 
 class App(object):
@@ -321,10 +322,7 @@ class App(object):
 		cmd.append('--pwdfile=%s' % self.admin_pwdfile)
 		cmd.append('%s=%s' % (self.app_name, self.app_version))
 		print(cmd)
-		try:
-			subprocess.check_call(' '.join(cmd), shell=True)
-		except subprocess.CalledProcessError as exc:
-			raise UCSTest_DockerApp_InstallationFailed(str(exc))
+		error_handling_call(' '.join(cmd), shell=True, exc=UCSTest_DockerApp_InstallationFailed)
 
 		self.reload_container_id()
 
@@ -353,10 +351,7 @@ class App(object):
 			cmd.extend(['--set'] + set_vars)
 		if unset_vars:
 			cmd.extend(['--unset'] + unset_vars)
-		try:
-			subprocess.check_call(cmd)
-		except subprocess.CalledProcessError as exc:
-			raise UCSTest_DockerApp_ConfigureFailed(str(exc))
+		error_handling_call(cmd, exc=UCSTest_DockerApp_ConfigureFailed)
 
 	def install_via_umc(self):
 		def _thread(event, options):
@@ -398,19 +393,13 @@ class App(object):
 			raise UCTTest_DockerApp_UMCInstallFailed(None, errors)
 
 	def _update(self):
-		try:
-			subprocess.check_call(['univention-app', 'update'])
-		except subprocess.CalledProcessError as exc:
-			raise UCSTest_DockerApp_UpdateFailed(str(exc))
+		error_handling_call(['univention-app', 'update'], exc=UCSTest_DockerApp_UpdateFailed)
 
 	def register(self):
 		print('App.register()')
 		cmd = ['univention-app', 'register', '--app']
 		print(cmd)
-		try:
-			subprocess.check_call(' '.join(cmd), shell=True)
-		except subprocess.CalledProcessError as exc:
-			raise UCSTest_DockerApp_RegisterFailed(str(exc))
+		error_handling_call(' '.join(cmd), shell=True, exc=UCSTest_DockerApp_RegisterFailed)
 
 	def upgrade(self):
 		print('App.upgrade()')
@@ -423,25 +412,16 @@ class App(object):
 		cmd.append('--pwdfile=%s' % self.admin_pwdfile)
 		cmd.append('%s=%s' % (self.app_name, self.app_version))
 		print(cmd)
-		try:
-			subprocess.check_call(' '.join(cmd), shell=True)
-		except subprocess.CalledProcessError as exc:
-			raise UCSTest_DockerApp_UpgradeFailed(str(exc))
+		error_handling_call(' '.join(cmd), shell=True, exc=UCSTest_DockerApp_UpgradeFailed)
 		self.reload_container_id()
 		self.installed = True
 
 	def verify(self, joined=True):
 		print('App.verify(%r)' % (joined,))
-		try:
-			subprocess.check_call('univention-app status %s=%s' % (self.app_name, self.app_version), shell=True)
-		except subprocess.CalledProcessError as exc:
-			raise UCSTest_DockerApp_VerifyFailed(str(exc))
+		error_handling_call('univention-app status %s=%s' % (self.app_name, self.app_version), shell=True, exc=UCSTest_DockerApp_VerifyFailed)
 
 		if joined:
-			try:
-				subprocess.check_call('docker exec %s univention-check-join-status' % self.container_id, stderr=subprocess.STDOUT, shell=True)
-			except subprocess.CalledProcessError as exc:
-				raise UCSTest_DockerApp_VerifyFailed(str(exc))
+			error_handling_call('docker exec %s univention-check-join-status' % self.container_id, shell=True, exc=UCSTest_DockerApp_VerifyFailed)
 
 		if self.package:
 			try:
@@ -464,10 +444,7 @@ class App(object):
 			cmd.append('--pwdfile=%s' % self.admin_pwdfile)
 			cmd.append('%s=%s' % (self.app_name, self.app_version))
 			print(cmd)
-			try:
-				subprocess.check_call(' '.join(cmd), shell=True)
-			except subprocess.CalledProcessError as exc:
-				raise UCSTest_DockerApp_RemoveFailed(str(exc))
+			error_handling_call(' '.join(cmd), shell=True, exc=UCSTest_DockerApp_RemoveFailed)
 
 	def execute_command_in_container(self, cmd):
 		print('Execute: %s' % cmd)
