@@ -515,7 +515,7 @@ class Test_ComputerAllRoles:
 		lastUsedValue_old = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
 		kwargs = {
 			'dn': computer_dn,
-			'description': 'modified at {}'.format(time.ctime()),
+			'description': f'modified at {time.ctime()}',
 			'wait_for_replication': False,
 		}
 		computer_dn = udm.modify_object(role, **kwargs)

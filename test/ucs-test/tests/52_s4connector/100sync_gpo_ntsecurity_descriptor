@@ -54,9 +54,9 @@ def set_ucr(ucr_set, ucr_unset=None, ucr=None):
 				continue
 
 			if old_val is not None:
-				previous_ucr_set.append(u'%s=%s' % (var, old_val))
+				previous_ucr_set.append('%s=%s' % (var, old_val))
 			else:
-				previous_ucr_unset.append(u'%s' % (var,))
+				previous_ucr_unset.append('%s' % (var,))
 
 		univention.config_registry.handler_set(ucr_set)
 
@@ -67,14 +67,14 @@ def set_ucr(ucr_set, ucr_unset=None, ucr=None):
 		for var in ucr_unset:
 			val = ucr.get(var)
 			if val is not None:
-				previous_ucr_set.append(u'%s=%s' % (var, val))
+				previous_ucr_set.append('%s=%s' % (var, val))
 
 		univention.config_registry.handler_unset(ucr_unset)
 
 	return (previous_ucr_set, previous_ucr_unset)
 
 
-class Testclass_GPO_Security_Descriptor(object):
+class Testclass_GPO_Security_Descriptor:
 
 	def __init__(self, udm, ucr=None):
 		self.SAM_LDAP_FILTER_GPO = "(&(objectclass=grouppolicycontainer)(cn=%s))"

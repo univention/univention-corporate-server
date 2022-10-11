@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3 -s
-# -*- coding: utf-8 -*-
 ## desc: Test various things in users/user
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
@@ -23,7 +22,7 @@ from univention.testing.udm import UCSTestUDM_NoModification
 from univention.testing.utils import wait_for_connector_replication
 
 
-class TestUsers(object):
+class TestUsers:
 	"""
 		# TODO: test open() method:
 

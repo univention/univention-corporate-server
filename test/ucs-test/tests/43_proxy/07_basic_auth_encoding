@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner python3
-# -*- coding: utf8 -*-
 ## desc: http-proxy-basic-auth-encoding-check
 ## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave, memberserver]
 ## exposure: dangerous
@@ -18,15 +17,15 @@ from essential.simplesquid import SimpleSquid
 
 
 def get_basic_auth_header(base64_encoded_creds):
-	return 'Proxy-Authorization: Basic {}'.format(base64_encoded_creds)
+	return f'Proxy-Authorization: Basic {base64_encoded_creds}'
 
 
 def get_base64_encoded_creds(username, password, encoding):
-	return base64.b64encode('{}:{}'.format(username, password).encode(encoding)).decode('ASCII')
+	return base64.b64encode(f'{username}:{password}'.encode(encoding)).decode('ASCII')
 
 
 def check_proxy(user, encoding):
-	print('Now checking encoding: {}'.format(encoding))
+	print(f'Now checking encoding: {encoding}')
 	print('Username: {}, Password: {}'.format(user['username'], user['password']))
 	url = 'http://www.univention.de/'
 	try:
@@ -37,7 +36,7 @@ def check_proxy(user, encoding):
 		print('##########################')
 		return
 	basic_auth_header = get_basic_auth_header(credentials)
-	print('Using credentials: {}'.format(credentials))
+	print(f'Using credentials: {credentials}')
 	subprocess.check_call([
 		'curl',
 		'--fail',

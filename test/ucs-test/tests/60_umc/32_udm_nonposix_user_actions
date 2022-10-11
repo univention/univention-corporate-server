@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner python3
-# -*- coding: utf-8 -*.
 ## desc: Test querying UDM with a non-posix UMC user
 ## bugs: [37178]
 ## roles:
@@ -20,7 +19,7 @@ class TestUMCUserAuthentication(UMCBase):
 
 	def __init__(self):
 		"""Test Class constructor"""
-		super(TestUMCUserAuthentication, self).__init__()
+		super().__init__()
 
 		self.UDM = None
 
@@ -32,7 +31,7 @@ class TestUMCUserAuthentication(UMCBase):
 		"""
 		Creates a group and a user in it for the test.
 		"""
-		print("\nCreating a user '%s' without posix" % (self.test_username,))
+		print(f"\nCreating a user '{self.test_username}' without posix")
 
 		self.test_user_dn = self.UDM.create_ldap_user(
 			password=self.test_password,
@@ -60,7 +59,7 @@ class TestUMCUserAuthentication(UMCBase):
 			assert response.status == 200
 			return True
 		except Exception as exc:
-			utils.fail("An exception while trying to authenticate to UMC with a 'username'=%s and 'password'=%s: %r" % (self.test_username, password, exc))
+			utils.fail(f"An exception while trying to authenticate to UMC with a 'username'={self.test_username} and 'password'={password}: {exc!r}")
 
 	def main(self):
 		"""

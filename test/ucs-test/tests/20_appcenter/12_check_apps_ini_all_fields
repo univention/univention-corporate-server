@@ -19,7 +19,7 @@ from univention.appcenter.app_cache import Apps
 failures = 0
 
 
-class AppCheck(object):
+class AppCheck:
 
     def __init__(self, pname):
         self.pname = pname
@@ -78,7 +78,7 @@ class Fatal(Exception):
         print("\nFATAL:", msg)
 
 
-class Value(object):
+class Value:
 
     DOMAIN = r'(?:[0-9A-Za-z]+(?:[0-9A-Za-z-]*[0-9A-Za-z])?\.)+[0-9A-Za-z-]+(?:[0-9A-Za-z-]*[0-9A-Za-z])?'
     PATH = r'/[!#$%&+,./0-9:;=?@A-Z_a-z-]*'
@@ -134,17 +134,17 @@ class Value(object):
         raise Error('No URL: "%s"' % self.value)
 
     def is_role(self):
-        ALLOWED = set(('domaincontroller_master',
+        ALLOWED = {'domaincontroller_master',
                        'domaincontroller_backup',
                        'domaincontroller_slave',
-                       'memberserver'))
+                       'memberserver'}
 
         values = map(str.strip, self.value.split(','))
         if set(values) - ALLOWED:
             raise Error('Invalid server role: "%s"' % self.value)
 
     def is_arch(self):
-        ALLOWED = set(('amd64', 'i386'))
+        ALLOWED = {'amd64', 'i386'}
         if set(re.split(r'\s*,\s*', self.value)) - ALLOWED:
             raise Error('Invalid architectures: "%s"' % self.value)
 
@@ -159,13 +159,13 @@ class Value(object):
                 raise Error('Should not have DefaultPackagesMaster!!')
 
     def is_category(self):
-        ALLOWED = set(('admin', 'service', 'False'))
+        ALLOWED = {'admin', 'service', 'False'}
         if self.value in ALLOWED:
             return
         raise Error('Not an allowed category: "%s"' % self.value)
 
 
-class Section(object):
+class Section:
 
     APPLICATION = {
         'ADMemberIssueHide': ('optional',),

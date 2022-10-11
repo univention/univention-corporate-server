@@ -42,17 +42,17 @@ def resolve_dns_entry(zoneName, resourceRecord, timeout=120, tries=3):
 		time.sleep(1)
 
 
-class Test_DNSResolve(object):
+class Test_DNSResolve:
 
 	def test_dns_forward_zone_check_resolve(self, udm):
 		"""Creates DNS forward zone entry and try to resolve it"""
-		zone = '%s.%s.' % (uts.random_name(), uts.random_name())
-		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
+		zone = f'{uts.random_name()}.{uts.random_name()}.'
+		pos = f'cn=dns,{udm.LDAP_BASE}'
 
 		forward_zone_properties = {
 			'zone': zone,
 			'nameserver': udm.FQHN,
-			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
+			'contact': f'{uts.random_name()}@{uts.random_name()}.{uts.random_name()}',
 			'serial': '%s' % (uts.random_int()),
 			'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
 			'refresh': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
@@ -65,11 +65,11 @@ class Test_DNSResolve(object):
 		utils.wait_for_replication_and_postrun()
 		answers = resolve_dns_entry(zone, 'SOA')
 		answer = answers.qname.to_text()
-		assert answer == zone, 'resolved name "%s" != created ldap-object "%s"' % (answer, zone)
+		assert answer == zone, f'resolved name "{answer}" != created ldap-object "{zone}"'
 
 	def test_dns_reverse_zone_check_resolve(self, udm):
 		"""Creates DNS reverse zone entry and try to resolve it"""
-		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
+		pos = f'cn=dns,{udm.LDAP_BASE}'
 
 		# IPv4
 		ipv4 = uts.random_ip().split('.')
@@ -77,7 +77,7 @@ class Test_DNSResolve(object):
 		reverse_zone_properties = {
 			'subnet': '.'.join(subnet),
 			'nameserver': udm.FQHN,
-			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
+			'contact': f'{uts.random_name()}@{uts.random_name()}.{uts.random_name()}',
 			'serial': '%s' % (uts.random_int()),
 			'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
 			'refresh': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
@@ -92,7 +92,7 @@ class Test_DNSResolve(object):
 		utils.wait_for_replication_and_postrun()
 		answers = resolve_dns_entry(zoneName, 'SOA')
 		answer = answers.qname.to_text()
-		assert answer == zoneName, 'IPv4: resolved name "%s" != created ldap-object "%s"' % (answer, zoneName)
+		assert answer == zoneName, f'IPv4: resolved name "{answer}" != created ldap-object "{zoneName}"'
 
 		# IPv6
 		ipv6 = '2011:06f8:13dc:0002:19b7:d592:09dd:1041'.split(':')  # create uts.random_ipV6()?
@@ -107,17 +107,17 @@ class Test_DNSResolve(object):
 		utils.wait_for_replication_and_postrun()
 		answers = resolve_dns_entry(zoneName, 'SOA')
 		answer = answers.qname.to_text()
-		assert answer == zoneName, 'IPv6: resolved name "%s" != created ldap-object "%s"' % (answer, zoneName)
+		assert answer == zoneName, f'IPv6: resolved name "{answer}" != created ldap-object "{zoneName}"'
 
 	def test_dns_host_record_check_resolve(self, udm):
 		"""Creates DNS host record entry and try to resolve it"""
-		zone = '%s.%s.' % (uts.random_name(), uts.random_name())
-		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
+		zone = f'{uts.random_name()}.{uts.random_name()}.'
+		pos = f'cn=dns,{udm.LDAP_BASE}'
 
 		forward_zone_properties = {
 			'zone': zone,
 			'nameserver': udm.FQHN,
-			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
+			'contact': f'{uts.random_name()}@{uts.random_name()}.{uts.random_name()}',
 			'serial': '%s' % (uts.random_int()),
 			'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
 			'refresh': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
@@ -139,10 +139,10 @@ class Test_DNSResolve(object):
 		}
 		udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
 
-		qname = '%s.%s' % (host, zone)
+		qname = f'{host}.{zone}'
 		answers = resolve_dns_entry(qname, 'A')
-		answer = [ip_address(u'%s' % (rdata.address,)) for rdata in answers]
-		assert answer == [ip_address(u'%s' % (ip,))], 'resolved name "%s" != created ldap-object "%s"' % (answer, [ip])
+		answer = [ip_address(f'{rdata.address}') for rdata in answers]
+		assert answer == [ip_address(f'{ip}')], f'resolved name "{answer}" != created ldap-object "{[ip]}"'
 
 		# IPv6
 		ip = '2011:06f8:13dc:0002:19b7:d592:09dd:1041'  # create random_ipv6()-method?
@@ -154,21 +154,21 @@ class Test_DNSResolve(object):
 		udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
 		utils.wait_for_replication_and_postrun()
 
-		qname = '%s.%s' % (host, zone)
+		qname = f'{host}.{zone}'
 		time.sleep(5)
 		answers = resolve_dns_entry(qname, 'AAAA')
-		answer = [ip_address(u'%s' % (rdata.address,)) for rdata in answers]
-		assert answer == [ip_address(u'%s' % (ip,))], 'resolved name "%s" != created ldap-object "%s"' % (answer, [ip])
+		answer = [ip_address(f'{rdata.address}') for rdata in answers]
+		assert answer == [ip_address(f'{ip}')], f'resolved name "{answer}" != created ldap-object "{[ip]}"'
 
 	def test_dns_alias_record_check_resolve(self, udm):
 		"""Creates DNS alias record and tries to resolve it"""
-		zone = '%s.%s.' % (uts.random_name(), uts.random_name())
-		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
+		zone = f'{uts.random_name()}.{uts.random_name()}.'
+		pos = f'cn=dns,{udm.LDAP_BASE}'
 
 		forward_zone_properties = {
 			'zone': zone,
 			'nameserver': udm.FQHN,
-			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
+			'contact': f'{uts.random_name()}@{uts.random_name()}.{uts.random_name()}',
 			'serial': '%s' % (uts.random_int()),
 			'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
 			'refresh': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
@@ -193,24 +193,24 @@ class Test_DNSResolve(object):
 		utils.wait_for_replication_and_postrun()
 
 		alias_name = uts.random_name()
-		fqhn = '%s.%s' % (host, zone)
+		fqhn = f'{host}.{zone}'
 		udm.create_object('dns/alias', superordinate=forward_zone, name=alias_name, cname=fqhn)
 
-		qname = '%s.%s' % (alias_name, zone)
+		qname = f'{alias_name}.{zone}'
 		time.sleep(5)
 		answers = resolve_dns_entry(qname, 'CNAME')
 		answer = [rdata.target.to_text() for rdata in answers]
-		assert answer == [fqhn], 'resolved name "%s" != created ldap-object "%s"' % (answer, [fqhn])
+		assert answer == [fqhn], f'resolved name "{answer}" != created ldap-object "{[fqhn]}"'
 
 	def test_dns_srv_record_check_resolve(self, udm):
 		"""Creates DNS srv record and try to resolve it"""
-		zone = '%s.%s.' % (uts.random_name(), uts.random_name())
-		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
+		zone = f'{uts.random_name()}.{uts.random_name()}.'
+		pos = f'cn=dns,{udm.LDAP_BASE}'
 
 		forward_zone_properties = {
 			'zone': zone,
 			'nameserver': udm.FQHN,
-			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
+			'contact': f'{uts.random_name()}@{uts.random_name()}.{uts.random_name()}',
 			'serial': '%s' % (uts.random_int()),
 			'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
 			'refresh': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
@@ -240,25 +240,25 @@ class Test_DNSResolve(object):
 		priority = 1
 		weight = 100
 		port = uts.random_int(top_end=65535)
-		fqhn = '%s.%s' % (host, zone)
+		fqhn = f'{host}.{zone}'
 		srv_record_properties = {
-			'name': '%s %s %s' % (service, protocol, extension),
+			'name': f'{service} {protocol} {extension}',
 			'location': '%d %d %s %s' % (priority, weight, port, fqhn),
 			'zonettl': '128'
 		}
 		udm.create_object('dns/srv_record', superordinate=forward_zone, **srv_record_properties)
 		utils.wait_for_replication_and_postrun()
 
-		zoneName = '_%s._%s.%s.%s' % (service, protocol, extension, zone)
+		zoneName = f'_{service}._{protocol}.{extension}.{zone}'
 		answers = resolve_dns_entry(zoneName, 'SRV')
 		answer = [rdata.target.to_text() for rdata in answers]
-		assert answer == [fqhn], 'resolved name "%s" != created ldap-object "%s"' % (answer, [fqhn])
+		assert answer == [fqhn], f'resolved name "{answer}" != created ldap-object "{[fqhn]}"'
 
 	def test_dns_pointer_record_check_resolve(self, udm):
 		"""Creates DNS pointer record entry and try to resolve it"""
-		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
+		pos = f'cn=dns,{udm.LDAP_BASE}'
 
-		ptr_record = '%s.%s.' % (uts.random_name(), uts.random_name())
+		ptr_record = f'{uts.random_name()}.{uts.random_name()}.'
 
 		# IPv4
 		ipv4 = uts.random_ip().split('.')
@@ -266,7 +266,7 @@ class Test_DNSResolve(object):
 		reverse_zone_properties = {
 			'subnet': '.'.join(subnet),
 			'nameserver': udm.FQHN,
-			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
+			'contact': f'{uts.random_name()}@{uts.random_name()}.{uts.random_name()}',
 			'serial': '%s' % (uts.random_int()),
 			'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
 			'refresh': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
@@ -284,7 +284,7 @@ class Test_DNSResolve(object):
 		)
 		answers = resolve_dns_entry(zoneName, 'PTR')
 		answer = [rdata.to_text() for rdata in answers]
-		assert answer == [ptr_record], 'resolved name "%s" != created ldap-object "%s"' % (answer, [ptr_record])
+		assert answer == [ptr_record], f'resolved name "{answer}" != created ldap-object "{[ptr_record]}"'
 
 		# IPv6
 		ipv6 = '2011:06f8:13dc:0002:19b7:d592:09dd:1041'.split(':')  # create uts.random_ipV6()?
@@ -303,18 +303,18 @@ class Test_DNSResolve(object):
 		utils.wait_for_replication_and_postrun()
 		answers = resolve_dns_entry(zoneName, 'PTR')
 		answer = [rdata.to_text() for rdata in answers]
-		assert answer == [ptr_record], 'resolved name "%s" != created ldap-object "%s"' % (answer, [ptr_record])
+		assert answer == [ptr_record], f'resolved name "{answer}" != created ldap-object "{[ptr_record]}"'
 
 	def test_dns_txt_record_check_resolve(self, udm):
 		"""Creates DNS pointer record entry and try to resolve it"""
-		zone = '%s.%s.' % (uts.random_name(), uts.random_name())
-		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
+		zone = f'{uts.random_name()}.{uts.random_name()}.'
+		pos = f'cn=dns,{udm.LDAP_BASE}'
 
 		txt = uts.random_string()
 		forward_zone_properties = {
 			'zone': zone,
 			'nameserver': udm.FQHN,
-			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
+			'contact': f'{uts.random_name()}@{uts.random_name()}.{uts.random_name()}',
 			'serial': '%s' % (uts.random_int()),
 			'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
 			'refresh': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
@@ -328,7 +328,7 @@ class Test_DNSResolve(object):
 		answers = resolve_dns_entry(zone, 'TXT')
 		# FIXME PMH-2017-01-14: returned TXT data is enclosed in "
 		answer = [rdata.to_text().strip('"') for rdata in answers]
-		assert answer == [txt], 'resolved name "%s" != created ldap-object "%s"' % (answer, [txt])
+		assert answer == [txt], f'resolved name "{answer}" != created ldap-object "{[txt]}"'
 
 	@pytest.mark.skipif(not utils.package_installed('univention-s4-connector'), reason="Univention S4 Connector is not installed.")
 	def test_dns_ns_record_check_resolve(self, udm, ucr):
@@ -351,12 +351,12 @@ class Test_DNSResolve(object):
 		}
 		udm.create_object('dns/ns_record', superordinate=forward_zone, **record_properties)
 		utils.wait_for_replication_and_postrun()
-		zone_fqdn = '%s.%s' % (zonename, partentzone)
+		zone_fqdn = f'{zonename}.{partentzone}'
 		p1 = subprocess.Popen(['dig', '+nocmd', '+noall', '+answer', '@localhost', zone_fqdn, 'ANY'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 		stdout, stderr = p1.communicate()
 		stdout = stdout.decode('UTF-8', 'replace')
 		assert p1.returncode == 0, "DNS dig query failed"
 
-		found = [x for x in nameservers if re.search("^%s\\.[ \t][0-9]+[ \t]IN\tNS\t%s\\." % (re.escape(zone_fqdn), re.escape(x)), stdout, re.MULTILINE)]
+		found = [x for x in nameservers if re.search(f"^{re.escape(zone_fqdn)}\\.[ \t][0-9]+[ \t]IN\tNS\t{re.escape(x)}\\.", stdout, re.MULTILINE)]
 
-		assert nameservers == found, "Record not found: %s" % ([set(nameservers) - set(found)],)
+		assert nameservers == found, f"Record not found: {[set(nameservers) - set(found)]}"

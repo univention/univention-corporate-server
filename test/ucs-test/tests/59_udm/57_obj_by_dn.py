@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3
-# -*- coding: utf-8 -*-
 ## desc: Test UDM APIs LDAP connection initialization feature
 ## exposure: dangerous
 ## roles: [domaincontroller_master]

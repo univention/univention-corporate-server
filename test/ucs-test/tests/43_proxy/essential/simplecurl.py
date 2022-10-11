@@ -14,7 +14,7 @@ import pycurl
 import univention.testing.utils as utils
 
 
-class SimpleCurl(object):
+class SimpleCurl:
 
 	"""pycurl simple class implementation\n
 	:param proxy: proxy for the http requests

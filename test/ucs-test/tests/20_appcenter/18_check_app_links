@@ -94,7 +94,7 @@ def findall_urls_from_readme(app):
         print("\nChecking file:", filename)
         parser = MyHTMLParser()
         try:
-            with open(filename, 'r') as fd:
+            with open(filename) as fd:
                 html = fd.read()
                 parser.feed(html)
                 for url in parser.href:
@@ -104,7 +104,7 @@ def findall_urls_from_readme(app):
                             all_urls[url].append(filename)
                         else:
                             all_urls[url] = [filename]
-        except (IOError, OSError) as exc:
+        except OSError as exc:
             utils.fail("An %r error occurred while working with %s" % (exc, filename))
     return all_urls
 
@@ -115,7 +115,7 @@ def findall_urls_from_ini(app):
     for filename in files_to_check:
         print("\nChecking file:", filename)
         try:
-            with open(filename, 'r') as ini_file:
+            with open(filename) as ini_file:
                 for line in ini_file:
                     if not line.startswith('#'):
                         url = url_re.findall(line)
@@ -126,7 +126,7 @@ def findall_urls_from_ini(app):
                                 all_urls[u].append(filename)
                             else:
                                 all_urls[u] = [filename]
-        except (IOError, OSError) as exc:
+        except OSError as exc:
             utils.fail("An %r error occurred while working with %s" % (exc, filename))
     return all_urls
 
@@ -156,12 +156,12 @@ def check_files():
                 r = requests.get(link, timeout=requests_timeout, verify=False, headers=headers)
             except Exception as exc:
                 print("Response code indicates a problem. %s" % str(exc))
-                bad_links.append('Link: {} App: {} File: {}'.format(link, app, links[app][link]))
+                bad_links.append(f'Link: {link} App: {app} File: {links[app][link]}')
                 continue
             print(r.status_code)
             if str(r.status_code).startswith(('4', '5')):
                 print("Response code indicates a problem.")
-                bad_links.append('Link: {} App: {} File: {}'.format(link, app, links[app][link]))
+                bad_links.append(f'Link: {link} App: {app} File: {links[app][link]}')
     return bad_links
 
 

@@ -27,7 +27,7 @@ TMPDIR = '/tmp'
 USERID = 'listener'
 
 
-class Environment(object):
+class Environment:
 
 	def __init__(self):
 		self.tmpdir = None
@@ -55,7 +55,7 @@ class Environment(object):
 		return path
 
 	def copy_handler(self):
-		with open(argv[0], 'r') as source:
+		with open(argv[0]) as source:
 			with open(join(self.mdir, 'filter.py'), 'w') as target:
 				for line in source:
 					if line.startswith('TMPDIR = '):
@@ -67,7 +67,7 @@ class Environment(object):
 		self.tmpdir = None
 
 
-class Listener(object):
+class Listener:
 
 	def __init__(self, ucr, env):
 		self.ucr = ucr
@@ -153,7 +153,7 @@ class Listener(object):
 
 	def get_local_transaction(self):
 		filename = join(self.env.cdir, 'notifier_id')
-		with open(filename, 'r') as nid_file:
+		with open(filename) as nid_file:
 			nid = nid_file.read()
 		return int(nid)
 
@@ -201,7 +201,7 @@ def unexpected_transactions(env, ucr):
 
 	dn = 'ou=%s,%s' % (UNIQUE, ucr['ldap/base'])
 
-	with open(join(env.tmpdir, UNIQUE), 'r') as log:
+	with open(join(env.tmpdir, UNIQUE)) as log:
 		for line in log:
 			line = line.strip()
 			if line == repr((dn, True, False, 'a')):
@@ -232,7 +232,7 @@ def is_not_in_cache(env, ucr):
 	print('I: %d = %r' % (proc.pid, cmd,))
 	proc.wait()
 
-	with open(dump, 'r') as cache:
+	with open(dump) as cache:
 		for line in cache:
 			line = line.strip()
 			if line == dn:

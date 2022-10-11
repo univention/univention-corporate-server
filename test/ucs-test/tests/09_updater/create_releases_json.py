@@ -54,8 +54,8 @@ def main():  # type: () -> None
             if not dirname.startswith('ucs'):
                 continue
             if len(dirname) != 6:
-                raise Exception('unexpected dirname length: {}'.format(dirname))
-            major, minor, patchlevel = [int(x) for x in dirname[3:]]
+                raise Exception(f'unexpected dirname length: {dirname}')
+            major, minor, patchlevel = (int(x) for x in dirname[3:])
             releases.append((major, minor, patchlevel))
 
     gen_releases(args.repodir, releases)

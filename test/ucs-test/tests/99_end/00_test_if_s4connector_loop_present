@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner python3
-# -*- coding: utf-8 -*
 ## desc: Check if a s4 loop is present after running all the tests
 ## roles:
 ##  - domaincontroller_master

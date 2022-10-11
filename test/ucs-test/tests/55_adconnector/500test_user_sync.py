@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3 -s
-# coding: utf-8
 ## desc: "Test the UCS<->AD sync in {read,write,sync} mode with users"
 ## exposure: dangerous
 ## packages:
@@ -134,7 +133,7 @@ def test_user_sync_from_ad_to_udm_with_move(user_class, sync_mode):
 		udm_user = user_class()
 		(basic_ad_user, ad_user_dn, udm_user_dn) = create_con_user(AD, udm_user, adconnector.wait_for_sync)
 
-		print("\nMove AD user {!r} to {!r}\n".format(ad_user_dn, udm_user.container))
+		print(f"\nMove AD user {ad_user_dn!r} to {udm_user.container!r}\n")
 		container_dn = AD.container_create(udm_user.container)
 		ad_user_dn = AD.rename_or_move_user_or_group(ad_user_dn, position=container_dn)
 		AD.set_attributes(ad_user_dn, **tcommon.map_udm_user_to_con(udm_user.basic))

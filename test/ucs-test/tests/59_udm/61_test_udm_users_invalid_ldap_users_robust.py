@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3 -s
-# -*- coding: utf-8 -*-
 ## desc: Test UDM cannot get broken by users with missing object classes
 ## exposure: dangerous
 ## roles: [domaincontroller_master]

@@ -21,7 +21,7 @@ from univention.testing.ucs_samba import wait_for_drs_replication
 samba4_installed = utils.package_installed('univention-samba4')
 
 
-class TestPwdChangeNextLogin(object):
+class TestPwdChangeNextLogin:
 	"""
 	Ensure that the UMC PAM configuration for pam_unix.so + pam_krb5.so is correct.
 	This is tested by UMC authenticating a user with pwdChangeNextLogin=1
@@ -34,7 +34,7 @@ class TestPwdChangeNextLogin(object):
 
 	@pytest.mark.parametrize('options', PWD_CHANGE_NEXT_LOGIN_OPTIONS)
 	def test_expired_password_detection_create_pwdchangenextlogin(self, options, udm, Client, random_string):
-		print('test_expired_password_detection_create_pwdchangenextlogin(%r)' % (options,))
+		print(f'test_expired_password_detection_create_pwdchangenextlogin({options!r})')
 		password = random_string()
 		userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
 		client = Client(language='en-US')
@@ -44,7 +44,7 @@ class TestPwdChangeNextLogin(object):
 
 	@pytest.mark.parametrize('options', PWD_CHANGE_NEXT_LOGIN_OPTIONS)
 	def test_expired_password_detection_modify_pwdchangenextlogin(self, options, udm, Client, random_string):
-		print('test_expired_password_detection_modify_pwdchangenextlogin(%r)' % (options,))
+		print(f'test_expired_password_detection_modify_pwdchangenextlogin({options!r})')
 		password = random_string()
 		userdn, username = udm.create_user(options=options, password=password)
 		client = Client(language='en-US')
@@ -59,14 +59,14 @@ class TestPwdChangeNextLogin(object):
 
 	def assert_password_expired(self, exc):
 		assert exc.status == 401
-		assert exc.result and exc.result.get('password_expired'), 'Password was not detected as expired: %s' % (exc.result,)
+		assert exc.result and exc.result.get('password_expired'), f'Password was not detected as expired: {exc.result}'
 		assert exc.message == "The password has expired and must be renewed."
 
 	@pytest.mark.parametrize('options', [
 		[],
 	])
 	def test_change_password(self, options, udm, Client, random_string, wait_for_replication):
-		print('test_change_password(%r)' % (options,))
+		print(f'test_change_password({options!r})')
 		password = random_string()
 		new_password = random_string(5) + random_string(5).upper() + '@99'
 		userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
@@ -80,7 +80,7 @@ class TestPwdChangeNextLogin(object):
 			client.umc_auth(username, password)
 
 		client = Client(language='en-US')
-		print('change password from %r to %r' % (password, new_password))
+		print(f'change password from {password!r} to {new_password!r}')
 		client.umc_auth(username, password, new_password=new_password)
 
 		wait_for_replication()
@@ -103,7 +103,7 @@ class TestPwdChangeNextLogin(object):
 			client.authenticate(username, password)
 
 
-class TestBasics(object):
+class TestBasics:
 
 	def test_login_invalid_user(self, udm, Client, random_string):
 		password = random_string()
@@ -125,7 +125,7 @@ class TestBasics(object):
 		client.authenticate('root', utils.UCSTestDomainAdminCredentials().bindpw)
 
 
-class TestLDAPUsers(object):
+class TestLDAPUsers:
 	"""Ensure pam_ldap.so works and the PAM configuration for LDAP users is not disturbed by pam_unix.so / pam_ldap.so)"""
 
 	def test_ldap_pwd_user_umc_authentication(self, udm, Client, random_string):

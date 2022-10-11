@@ -31,7 +31,7 @@ DEBUG_LEVEL = 1
 set_mail_forward_copy_to_self_ucrv('yes')
 
 
-class Bunch(object):
+class Bunch:
 	def __init__(self, **kwargs):
 		self.__dict__.update(kwargs)
 
@@ -186,7 +186,7 @@ def test_user_mail_alt_equals_shared_folder_mail_address():
 			imap_folder=folder_name, use_ssl=True
 		)
 		if not found:
-			utils.fail("Mail sent with token = {!r} to {} un-expectedly".format(token, folder_name))
+			utils.fail(f"Mail sent with token = {token!r} to {folder_name} un-expectedly")
 
 
 def test_group_mail_in_mailing_list():

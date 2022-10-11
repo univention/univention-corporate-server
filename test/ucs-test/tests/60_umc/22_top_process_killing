@@ -20,7 +20,7 @@ class TestUMCProcessKilling(UMCBase):
 
     def __init__(self):
         """Test Class constructor"""
-        super(TestUMCProcessKilling, self).__init__()
+        super().__init__()
         self.proc = None
 
     def make_kill_request(self, signal, pids):

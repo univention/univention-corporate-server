@@ -19,7 +19,7 @@ EXPECTED_ERROR_MSGS = (
 def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
 		fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
-		test_domain = '{}.com'.format(uts.random_name())
+		test_domain = f'{uts.random_name()}.com'
 		mail_address = '%s@%s' % (uts.random_name(), test_domain)
 		try:
 			udm.create_user(
@@ -29,12 +29,12 @@ def main():
 					'mailPrimaryAddress': mail_address
 				}
 			)
-			utils.fail('UDM accepted domain {!r}, which is not in the list of configured mail domains.'.format(test_domain))
+			utils.fail(f'UDM accepted domain {test_domain!r}, which is not in the list of configured mail domains.')
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed as exc:
 			if any(error_msg in str(exc) for error_msg in EXPECTED_ERROR_MSGS):
-				print("OK: expected error happened: {}".format(exc))
+				print(f"OK: expected error happened: {exc}")
 			else:
-				utils.fail('User creation failed because of unexpected error: {}'.format(exc))
+				utils.fail(f'User creation failed because of unexpected error: {exc}')
 
 
 if __name__ == '__main__':

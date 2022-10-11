@@ -45,7 +45,7 @@ def main():
 			# send email with a size of 70% of quota, should be accepted
 			#
 			msg1 = "Lorem ipsum dolor sit amet, consetetur sadipscing " * quota01 * 21000  # go a tiny bit over quota
-			print('Sending mail with body size {!r} KB.'.format(len(msg1) / 1024))
+			print(f'Sending mail with body size {len(msg1) / 1024!r} KB.')
 			send_mail(
 				recipients=[mail],
 				subject="41_dovecot_quota-status 1",
@@ -55,7 +55,7 @@ def main():
 			print('OK: Mail was received.')
 			time.sleep(10)
 			subprocess.call(["/usr/bin/doveadm", "quota", "recalc", "-u", mail])
-			print('Output of "doveadm quota get -u {}":'.format(mail))
+			print(f'Output of "doveadm quota get -u {mail}":')
 			subprocess.call(["/usr/bin/doveadm", "quota", "get", "-u", mail])
 
 			if not mail_delivered("Subject: 41_dovecot_quota-status 1", mail_address=mail):
@@ -81,7 +81,7 @@ def main():
 				rejected = True
 				print('OK: Mail was rejected.')
 			subprocess.call(["/usr/bin/doveadm", "quota", "recalc", "-u", mail])
-			print('Output of "doveadm quota get -u {}":'.format(mail))
+			print(f'Output of "doveadm quota get -u {mail}":')
 			subprocess.call(["/usr/bin/doveadm", "quota", "get", "-u", mail])
 			if not rejected or mail_delivered("Subject: 41_dovecot_quota-status 2", mail_address=mail):
 				utils.fail(

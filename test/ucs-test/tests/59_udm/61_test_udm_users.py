@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3
-# -*- coding: utf-8 -*-
 ## desc: Test users/user
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
@@ -47,7 +46,7 @@ def restart_slapd_after_test():
 	utils.restart_slapd()
 
 
-class Test_UserCreation(object):
+class Test_UserCreation:
 
 	def test_user_creation(self, udm):
 		"""Create users/user"""
@@ -91,7 +90,7 @@ class Test_UserCreation(object):
 			udm.create_user(uidNumber=uid_number)
 
 
-class Test_UserModification(object):
+class Test_UserModification:
 
 	def test_user_modification_set_pwdChangeNextLogin(self, udm):
 		"""Mark the password of a user to be altered on next login"""
@@ -331,7 +330,7 @@ def test_country_names_uptodate():  # TODO: move into package unit test
 
 	import univention.admin.syntax as udm_syntax
 
-	current_countries = sorted([(country.alpha_2, country.name) for country in pycountry.countries], key=lambda x: x[0])
+	current_countries = sorted(((country.alpha_2, country.name) for country in pycountry.countries), key=lambda x: x[0])
 	if dict(current_countries) != dict(udm_syntax.Country.choices):
 		set_cc = set(current_countries)
 		set_choices = set(udm_syntax.Country.choices)
@@ -650,7 +649,7 @@ def test_udm_users_user_bcrypt_password(restart_slapd_after_test, udm, ucr):
 		attr = dict(password='univention', username=name, lastname='test')
 		dn = udm.create_object(module, wait_for_replication=True, check_for_drs_replication=True, wait_for=True, **attr)
 
-		ldap_o = lo.search('uid={}'.format(name), attr=['userPassword', 'pwhistory'])[0]
+		ldap_o = lo.search(f'uid={name}', attr=['userPassword', 'pwhistory'])[0]
 		assert ldap_o[1]['userPassword'][0].startswith(b'{BCRYPT}'), ldap_o
 		assert ldap_o[1]['pwhistory'][0].split()[0].startswith(b'{BCRYPT}'), ldap_o
 
@@ -661,7 +660,7 @@ def test_udm_users_user_bcrypt_password(restart_slapd_after_test, udm, ucr):
 
 		# password change
 		udm.modify_object(module, dn=dn, password='univention1')
-		ldap_o = lo.search('uid={}'.format(name), attr=['userPassword', 'pwhistory'])[0]
+		ldap_o = lo.search(f'uid={name}', attr=['userPassword', 'pwhistory'])[0]
 		assert ldap_o[1]['userPassword'][0].startswith(b'{BCRYPT}'), ldap_o
 		assert ldap_o[1]['pwhistory'][0].split()[0].startswith(b'{BCRYPT}'), ldap_o
 		assert ldap_o[1]['pwhistory'][0].split()[1].startswith(b'{BCRYPT}'), ldap_o
@@ -676,7 +675,7 @@ def test_udm_users_user_bcrypt_password(restart_slapd_after_test, udm, ucr):
 		ucr.handler_set(['password/hashing/bcrypt=false'])
 		udm.stop_cli_server()
 		udm.modify_object(module, dn=dn, password='univention2')
-		ldap_o = lo.search('uid={}'.format(name), attr=['userPassword', 'pwhistory'])[0]
+		ldap_o = lo.search(f'uid={name}', attr=['userPassword', 'pwhistory'])[0]
 		assert not ldap_o[1]['userPassword'][0].startswith(b'{BCRYPT}'), ldap_o
 		assert ldap_o[1]['pwhistory'][0].split()[0].startswith(b'{BCRYPT}'), ldap_o
 		assert ldap_o[1]['pwhistory'][0].split()[1].startswith(b'{BCRYPT}'), ldap_o
@@ -692,7 +691,7 @@ def test_udm_users_user_bcrypt_password(restart_slapd_after_test, udm, ucr):
 		ucr.handler_set(['password/hashing/bcrypt=true'])
 		udm.stop_cli_server()
 		udm.modify_object(module, dn=dn, password='univention4')
-		ldap_o = lo.search('uid={}'.format(name), attr=['userPassword', 'pwhistory'])[0]
+		ldap_o = lo.search(f'uid={name}', attr=['userPassword', 'pwhistory'])[0]
 		assert ldap_o[1]['userPassword'][0].startswith(b'{BCRYPT}'), ldap_o
 
 		# disable
@@ -708,7 +707,7 @@ def test_udm_users_user_bcrypt_password(restart_slapd_after_test, udm, ucr):
 		ucr.handler_set(['password/hashing/bcrypt/cost_factor=7'])
 		udm.stop_cli_server()
 		udm.modify_object(module, dn=dn, password='univention5')
-		ldap_o = lo.search('uid={}'.format(name), attr=['userPassword', 'pwhistory'])[0]
+		ldap_o = lo.search(f'uid={name}', attr=['userPassword', 'pwhistory'])[0]
 		assert ldap_o[1]['userPassword'][0].startswith(b'{BCRYPT}$2a$07$'), ldap_o
 		univention.admin.uldap.access(binddn=dn, bindpw='univention5')
 
@@ -749,5 +748,5 @@ def test_user_username_case_modification(udm):
 	name = name[0].upper() + name[1:]
 
 	dn = udm.modify_object('users/user', dn=user, username=name)
-	assert dn.startswith("uid={}".format(name)), "The dn returned by `modify_object` does not contain the updated name"
+	assert dn.startswith(f"uid={name}"), "The dn returned by `modify_object` does not contain the updated name"
 	utils.verify_ldap_object(user, {'uid': [name]})

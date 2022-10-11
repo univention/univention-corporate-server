@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3 -s
-# -*- coding: utf-8 -*-
 ## desc: Test univention.password.Check()
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
@@ -12,7 +11,7 @@ from univention.password import Check, CheckFailed
 from univention.testing import ucr as _ucr, udm as _udm
 
 
-class Password(object):
+class Password:
 	'''Just a namespace for password providers'''
 
 	@staticmethod
@@ -78,7 +77,7 @@ class Password(object):
 		return word[:4] + username + word[4:]
 
 
-class PasswordType(object):
+class PasswordType:
 	'''Just a namespace for PasswordType providers
 	to avoid collision with parameter fixture names.
 	'''
@@ -256,7 +255,7 @@ def pytest_generate_tests(metafunc):
 			break
 
 
-class Test_PasswordPolicyCheck_default(object):
+class Test_PasswordPolicyCheck_default:
 	def test_not_conforming_to_cracklib(self, pwc_default, password_not_conforming_to_cracklib, existing_username):
 		with pytest.raises(CheckFailed):
 			pwc_default.check(password_not_conforming_to_cracklib)
@@ -265,7 +264,7 @@ class Test_PasswordPolicyCheck_default(object):
 		pwc_default.check(password_conforming_to_cracklib)
 
 
-class Test_PasswordPolicyCheck_with_mspolicy_only(object):
+class Test_PasswordPolicyCheck_with_mspolicy_only:
 	def test_not_conforming_to_mspolicy_only(self, pwc_with_mspolicy_only, password_not_conforming_to_mspolicy_with_username, existing_username):
 		with pytest.raises(CheckFailed):
 			pwc_with_mspolicy_only.check(password_not_conforming_to_mspolicy_with_username)
@@ -274,7 +273,7 @@ class Test_PasswordPolicyCheck_with_mspolicy_only(object):
 		pwc_with_mspolicy_only.check(password_conforming_to_mspolicy)
 
 
-class Test_PasswordPolicyCheck_with_mspolicy_plus_cracklib(object):
+class Test_PasswordPolicyCheck_with_mspolicy_plus_cracklib:
 	def test_not_conforming_to_mspolicy_plus_cracklib(self, pwc_with_mspolicy, password_not_conforming_to_mspolicy_plus_cracklib, existing_username):
 		with pytest.raises(CheckFailed):
 			pwc_with_mspolicy.check(password_not_conforming_to_mspolicy_plus_cracklib)
@@ -283,7 +282,7 @@ class Test_PasswordPolicyCheck_with_mspolicy_plus_cracklib(object):
 		pwc_with_mspolicy.check(password_conforming_to_mspolicy_plus_cracklib)
 
 
-class Test_PasswordPolicyCheck_with_mandatory_classes(object):
+class Test_PasswordPolicyCheck_with_mandatory_classes:
 	def test_not_conforming_to_cracklib_with_mandatory_classes(self, pwc_with_cracklib_mandatory_character_classes, password_not_conforming_to_cracklib_with_mandatory_UpperLowerDigitOther, existing_username):
 		with pytest.raises(CheckFailed):
 			pwc_with_cracklib_mandatory_character_classes.check(password_not_conforming_to_cracklib_with_mandatory_UpperLowerDigitOther)

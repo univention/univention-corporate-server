@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # UCS test
 #
@@ -60,7 +59,7 @@ from univention.testing.decorators import WaitForNonzeroResultOrTimeout
 COMMASPACE = ', '
 
 
-class Mail(object):
+class Mail:
 
 	def __init__(self, timeout=10):
 		self.timeout = timeout
@@ -183,7 +182,7 @@ class ImapMail(Mail):
 				break
 		assert separator is not None, 'Could not find parent folder.'
 		# create subfolder
-		subfolder_name = '{}{}{}'.format(parent, separator, child)
+		subfolder_name = f'{parent}{separator}{child}'
 		rv, data = self.connection.create(subfolder_name)
 		assert rv == "OK"
 		return subfolder_name
@@ -287,7 +286,7 @@ def restart_postfix():
 	cmd = ['/etc/init.d/postfix', 'restart']
 	try:
 		subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
-	except EnvironmentError as ex:
+	except OSError as ex:
 		print(ex, file=sys.stderr)
 
 
@@ -295,7 +294,7 @@ def reload_postfix():
 	cmd = ['/etc/init.d/postfix', 'force-reload']
 	try:
 		subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
-	except EnvironmentError as ex:
+	except OSError as ex:
 		print(ex, file=sys.stderr)
 
 
@@ -307,7 +306,7 @@ def reload_amavis_postfix():
 	):
 		try:
 			subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
-		except EnvironmentError as ex:
+		except OSError as ex:
 			print(ex, file=sys.stderr)
 
 
@@ -756,7 +755,7 @@ def check_sending_mail(
 	allowed=True,
 	local=True
 ):
-	token = 'The token is {}.'.format(time.time())
+	token = f'The token is {time.time()}.'
 	try:
 		ret_code = send_mail(
 			recipients=recipient_email,

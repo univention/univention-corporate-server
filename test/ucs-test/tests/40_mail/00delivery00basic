@@ -27,7 +27,7 @@ from essential.mail import file_search_mail, send_mail
 TIMEOUT = 120
 
 
-class Tester(object):
+class Tester:
 	def __init__(self):
 		self.udm = udm_test.UCSTestUDM()
 		self.ucr = ucr_test.UCSTestConfigRegistry()

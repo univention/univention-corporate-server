@@ -68,7 +68,7 @@ for info in os.listdir(BASE):
 	if not info.endswith('.info'):
 		continue
 	fn = os.path.join(BASE, info)
-	with open(fn, 'r') as f:
+	with open(fn) as f:
 		data = f.read()
 
 	for section in parseRfc822(data):
@@ -87,7 +87,7 @@ for fn in files:
 	if not os.path.exists(fn):
 		print('Warning: Files does not exist: %s' % fn)
 		continue
-	with open(fn, 'r') as f:
+	with open(fn) as f:
 		for line in f:
 			if RE_LINE.search(line):
 				break

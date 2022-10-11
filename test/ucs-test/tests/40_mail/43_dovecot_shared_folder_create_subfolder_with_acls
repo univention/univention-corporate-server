@@ -66,8 +66,8 @@ def main():
 
 			folder_path = get_dovecot_shared_folder_maildir(folder_name)
 			if not os.path.exists(folder_path):
-				utils.fail('Maildir {!r} for shared folder does not exist!'.format(folder_path))
-			print('*** OK: shared folder created in {!r}.'.format(folder_path))
+				utils.fail(f'Maildir {folder_path!r} for shared folder does not exist!')
+			print(f'*** OK: shared folder created in {folder_path!r}.')
 
 			# The list returned by connection.list is broken after loggin with user_addr1 again
 			# Since the reason for this is not clear yet the first instance of the ImapMail class
@@ -82,7 +82,7 @@ def main():
 					break
 				except AssertionError as exc:
 					if retry > 0:
-						print('*** Error, retrying ({}/{}): {}'.format(retry, TIMEOUT_MAIL, exc))
+						print(f'*** Error, retrying ({retry}/{TIMEOUT_MAIL}): {exc}')
 						time.sleep(5)
 						retry -= 5
 					else:

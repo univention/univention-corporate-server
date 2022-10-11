@@ -17,7 +17,7 @@ import univention.testing.utils as utils
 import univention.uldap
 
 
-class Bunch(object):
+class Bunch:
 	"""
 	>>> y = Bunch(foo=42, bar='TEST')
 	>>> print repr(y.foo), repr(y.bar)
@@ -95,7 +95,7 @@ def main():
 				check_virtual_server(ucr.get('ldap/hostdn'), use_master, attrs)
 
 				account = utils.UCSTestDomainAdminCredentials()
-				print('*** testing {} account against {}'.format(account.binddn, target_server))
+				print(f'*** testing {account.binddn} account against {target_server}')
 				lo = univention.admin.uldap.access(
 					host=target_server,
 					port=int(ucr.get('ldap/master/port', '7389')),
@@ -106,7 +106,7 @@ def main():
 				check_secret_is_readable(account.binddn, use_master, attrs)
 				check_virtual_server(account.binddn, use_master, attrs)
 
-				print('*** testing {} account against {}'.format(computer.dn, target_server))
+				print(f'*** testing {computer.dn} account against {target_server}')
 				lo = univention.admin.uldap.access(
 					host=target_server,
 					port=int(ucr.get('ldap/master/port', '7389')),
@@ -117,7 +117,7 @@ def main():
 				check_secret_is_unreadable(account.binddn, use_master, attrs)
 				check_virtual_server(account.binddn, use_master, attrs)
 
-				print('*** testing {} account against {}'.format(user.dn, target_server))
+				print(f'*** testing {user.dn} account against {target_server}')
 				lo = univention.admin.uldap.access(
 					host=target_server,
 					port=int(ucr.get('ldap/master/port', '7389')),

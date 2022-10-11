@@ -25,7 +25,7 @@ LIMIT_USER_HOUR = 'umc/self-service/passwordreset/limit/per_user/hour'
 LIMIT_USER_DAY = 'umc/self-service/passwordreset/limit/per_user/day'
 
 
-class Main(object):
+class Main:
 
 	def __init__(self):
 		handler_unset([LIMIT_TOTAL_MINUTE, LIMIT_TOTAL_HOUR, LIMIT_TOTAL_DAY, LIMIT_USER_MINUTE, LIMIT_USER_HOUR, LIMIT_USER_DAY])
@@ -64,7 +64,7 @@ def set_limits(total_minute=None, total_hour=None, total_day=None, user_minute=N
 		user_hour = (LIMIT_USER_HOUR, user_hour)
 		user_day = (LIMIT_USER_DAY, user_day)
 		args = [total_minute, total_hour, total_day, user_minute, user_hour, user_day]
-		handler_set(['%s=%s' % (key, val) for key, val in args if val is not None])
+		handler_set([f'{key}={val}' for key, val in args if val is not None])
 		handler_unset([key for key, val in args if val is None])
 		yield
 
@@ -79,7 +79,7 @@ def fail_after(user, x, retry_after):
 		print('We should fail now...')
 		user.send_token('email')
 	except ServiceUnavailable as exc:
-		retry_after = 'Please retry in %s.' % (retry_after,)
+		retry_after = f'Please retry in {retry_after}.'
 		assert str(exc)
 		print('Yippie, failed!')
 		return True

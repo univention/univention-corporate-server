@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner python3
-# -*- coding: utf-8 -*
 ## desc: ldapmodrdn / udm move replication tests
 ## tags:
 ##  - replication
@@ -109,9 +108,9 @@ for consider_listener in [False, True]:
 			dump_status(consider_listener, wait_after_each_step, name)
 			computer = udm.create_object(UDM_MODULE, name=name, position=source_ou, wait_for_replication=wait_after_each_step)
 			udm.move_object(UDM_MODULE, dn=computer, position=destination_ou1, wait_for_replication=wait_after_each_step)
-			computer_new = 'cn=%s,%s' % (name, destination_ou1)
+			computer_new = f'cn={name},{destination_ou1}'
 			udm.move_object(UDM_MODULE, dn=computer_new, position=destination_ou2, wait_for_replication=wait_after_each_step)
-			computer_new2 = 'cn=%s,%s' % (name, destination_ou2)
+			computer_new2 = f'cn={name},{destination_ou2}'
 			check_listener_start(consider_listener)
 			wait_for_replication()
 			utils.verify_ldap_object(computer, should_exist=False)
@@ -124,11 +123,11 @@ for consider_listener in [False, True]:
 			dump_status(consider_listener, wait_after_each_step, name)
 			computer = udm.create_object(UDM_MODULE, name=name, position=source_ou, wait_for_replication=wait_after_each_step)
 			udm.move_object(UDM_MODULE, dn=computer, position=destination_ou1, wait_for_replication=wait_after_each_step)
-			computer_new = 'cn=%s,%s' % (name, destination_ou1)
+			computer_new = f'cn={name},{destination_ou1}'
 			udm.move_object(UDM_MODULE, dn=computer_new, position=destination_ou2, wait_for_replication=wait_after_each_step)
-			computer_new2 = 'cn=%s,%s' % (name, destination_ou2)
+			computer_new2 = f'cn={name},{destination_ou2}'
 			udm.move_object(UDM_MODULE, dn=computer_new2, position=destination_ou3, wait_for_replication=wait_after_each_step)
-			computer_new3 = 'cn=%s,%s' % (name, destination_ou3)
+			computer_new3 = f'cn={name},{destination_ou3}'
 			check_listener_start(consider_listener)
 			wait_for_replication()
 			utils.verify_ldap_object(computer, should_exist=False)
@@ -147,7 +146,7 @@ for consider_listener in [False, True]:
 			check_listener_stop(consider_listener)
 			computer = udm.create_object(UDM_MODULE, name=name, position=source_ou, wait_for_replication=wait_after_each_step)
 			udm.move_object(UDM_MODULE, dn=computer, position=destination_ou1, wait_for_replication=wait_after_each_step)
-			computer_new = 'cn=%s,%s' % (name, destination_ou1)
+			computer_new = f'cn={name},{destination_ou1}'
 			check_listener_start(consider_listener)
 			wait_for_replication()
 			if not consider_listener:

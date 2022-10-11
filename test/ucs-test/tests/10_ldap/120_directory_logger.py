@@ -13,7 +13,7 @@
 import os
 
 
-class Test_DellogProcess(object):
+class Test_DellogProcess:
 	"""Tests regarding the delete log files in ldap/logging/dellogdir"""
 
 	def test_correct_files(self, udm, ucr):

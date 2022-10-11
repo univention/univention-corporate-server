@@ -75,6 +75,6 @@ if __name__ == '__main__':
 					udm.create_object(module, **attributes)
 					new_license_count = get_license_count(asset)
 					if new_license_count != license_count + 1:
-						utils.fail('License count for %r did not raise from %s to %s after creating a object of type %s' % (asset, license_count, license_count + 1, module))
+						utils.fail(f'License count for {asset!r} did not raise from {license_count} to {license_count + 1} after creating a object of type {module}')
 
 					license_count = new_license_count

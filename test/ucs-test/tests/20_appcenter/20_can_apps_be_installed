@@ -37,13 +37,13 @@ with UCSTestConfigRegistry():
 		p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1, close_fds=True)
 		(stdoutdata, stderrdata) = p.communicate()
 		if p.returncode:
-			print('apt-get update failed: {} {}'.format(stdoutdata, stderrdata))
+			print(f'apt-get update failed: {stdoutdata} {stderrdata}')
 
 	def _apt_get_simulate(app):
 		retcode = 0
 		for i in range(0, 3):
 			if not app.without_repository:
-				print('Register app {}'.format(app.id))
+				print(f'Register app {app.id}')
 				# de register app, otherwise a second register (in case of an error) would not do nothing
 				register.call(apps=[app], register_task=['component'])
 				register.call(apps=[app], register_task=['component'], do_it=True)
@@ -58,7 +58,7 @@ with UCSTestConfigRegistry():
 				break
 			for s in ['/etc/apt/sources.list.d/15_ucs-online-version.list', '/etc/apt/sources.list.d/20_ucs-online-component.list']:
 				print(s)
-				with open(s, 'r') as f:
+				with open(s) as f:
 					print(f.read())
 			print(stdoutdata, stderrdata)
 			print('failed, try again ...')
@@ -80,7 +80,7 @@ with UCSTestConfigRegistry():
 			continue
 		forbidden, warning = app.check('install')
 		if forbidden:
-			print('Ignoring app %r: requirements not met -> %r' % (app.id, forbidden))
+			print(f'Ignoring app {app.id!r}: requirements not met -> {forbidden!r}')
 			continue
 
 		print('Checking app: %s' % app.id)

@@ -1,8 +1,7 @@
-# vim:set noexpandtab fileencoding=utf-8:
 import re
 
 
-class LogMessage(object):
+class LogMessage:
 
 	def __init__(self, wanted=None, ignore=None):
 		self.wanted = self.recomp(self.wanted_list + (wanted or [])).match

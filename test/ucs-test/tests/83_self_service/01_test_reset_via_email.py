@@ -39,7 +39,7 @@ def test_reset_via_email(ucr, login_with_mail, subject):
 		subject = "Password reset"
 
 	ucr.handler_set(["umc/self-service/passwordreset/limit/per_user/minute=120"])
-	reset_mail_address = '%s@%s' % (random_username(), random_username())
+	reset_mail_address = f'{random_username()}@{random_username()}'
 	with self_service_user(mailPrimaryAddress=reset_mail_address) as user:
 		if login_with_mail:
 			user.username = reset_mail_address
@@ -63,7 +63,7 @@ def test_reset_via_email(ucr, login_with_mail, subject):
 			user.send_token('email')
 
 		mail = mails.data and mails.data[0]
-		assert mail, 'No email has been received in %s seconds' % (timeout,)
+		assert mail, f'No email has been received in {timeout} seconds'
 
 		# test configurable mail header
 		# decode special characters from MIME format to utf-8
@@ -72,7 +72,7 @@ def test_reset_via_email(ucr, login_with_mail, subject):
 
 		# test password change
 		token = mail.split('and enter the following token manually:')[-1].split('Greetings from your password self service system.')[0].strip()
-		assert token, 'Could not parse token from mail. Is there a token in it? %r' % (mail,)
+		assert token, f'Could not parse token from mail. Is there a token in it? {mail!r}'
 
 		user.password = random_string()
 		user.set_password(token, user.password)

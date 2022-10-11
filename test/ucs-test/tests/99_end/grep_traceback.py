@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -48,7 +47,7 @@ RE_APPCENTER = re.compile(r'^(\s+\d+ .*[\d \-:]+ \[(    INFO| WARNING|   DEBUG| 
 class Tracebacks(set):
 
 	def __init__(self, *args, **kwargs):
-		super(Tracebacks, self).__init__(*args, **kwargs)
+		super().__init__(*args, **kwargs)
 		self.occurred = 0
 		self.filenames = set()
 

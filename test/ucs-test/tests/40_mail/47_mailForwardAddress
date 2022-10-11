@@ -27,7 +27,7 @@ from essential.mail import check_delivery, send_mail, set_mail_forward_copy_to_s
 TIMEOUT = 600  # in seconds
 
 
-class Bunch(object):
+class Bunch:
 	"""
 	>>> y = Bunch(foo=42, bar='TEST')
 	>>> print(repr(y.foo), repr(y.bar))
@@ -76,7 +76,7 @@ def send_and_check(user, sink_files, in_mail_sink, in_local):
 		(user.mailAlternativeAddress, 'sending mail to mailAlternativeAddress')
 	):
 		print('*** %s' % (msg,))
-		token = 'token: {!r}'.format(str(time.time()))
+		token = f'token: {str(time.time())!r}'
 		send_mail(
 			recipients=addr,
 			msg=token,

@@ -87,7 +87,7 @@ class TestCase:
 
 	def __exit__(self, exc_type, exc_value, traceback):
 		if exc_type:
-			print('Cleanup after exception: %s %s' % (exc_type, exc_value))
+			print(f'Cleanup after exception: {exc_type} {exc_value}')
 		self.cleanup()
 
 

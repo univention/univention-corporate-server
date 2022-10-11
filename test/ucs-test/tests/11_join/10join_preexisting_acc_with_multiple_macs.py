@@ -60,6 +60,6 @@ def join_member_with_conflicting_mac(memberserver):
 				"-mac", mac,
 			]))
 
-		expected_error = "E: failed to create Managed Node (1) [E: Object exists: (mac) {}]".format(mac)
+		expected_error = f"E: failed to create Managed Node (1) [E: Object exists: (mac) {mac}]"
 		error_message = exc.value.output.decode('UTF-8')
 		assert expected_error in error_message

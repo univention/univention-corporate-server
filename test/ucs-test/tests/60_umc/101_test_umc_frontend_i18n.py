@@ -6,7 +6,7 @@
 import pytest
 
 
-class TestI18N(object):
+class TestI18N:
 
 	@pytest.mark.parametrize('path', [
 		'management/modules/i18n/de/udm.json',

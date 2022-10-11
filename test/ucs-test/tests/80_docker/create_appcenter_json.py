@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Create JSON app center index file
 #
@@ -55,7 +54,7 @@ DOCKER_READ_USER_CRED = {
 }
 
 
-class FileInfo(object):
+class FileInfo:
 
 	def __init__(self, app, name, url, filename):
 		self.name = name
@@ -63,10 +62,10 @@ class FileInfo(object):
 		self.filename = filename
 		self.md5 = md5sum(filename.encode('utf-8'))
 		self.sha256 = sha256sum(filename)
-		self.archive_filename = '%s.%s' % (app.name, name)
+		self.archive_filename = f'{app.name}.{name}'
 
 
-class DockerImageInfo(object):
+class DockerImageInfo:
 
 	def __init__(self, name, url, content):
 		self.name = name
@@ -74,7 +73,7 @@ class DockerImageInfo(object):
 		self.sha256 = sha256(content.encode('utf-8')).hexdigest()
 
 
-class App(object):
+class App:
 
 	def __init__(self, name, ucs_version, meta_inf_dir, components_dir, server):
 		self.name = name
@@ -86,10 +85,10 @@ class App(object):
 		self.server = server
 
 	def get_metainf_url(self):
-		return '%s/meta-inf/%s/' % (self.server, self.ucs_version)
+		return f'{self.server}/meta-inf/{self.ucs_version}/'
 
 	def get_repository_url(self):
-		return '%s/univention-repository/%s/maintained/component/%s/' % (self.server, self.ucs_version, self.name)
+		return f'{self.server}/univention-repository/{self.ucs_version}/maintained/component/{self.name}/'
 
 	def _meta_url(self, filename):
 		return urllib.parse.urljoin(self.get_metainf_url(), filename)
@@ -208,12 +207,12 @@ class App(object):
 				else:
 					docker_image_tag = 'latest'
 
-				docker_url = 'https://%s/v2/%s/manifests/%s' % (registry, docker_image_repo, docker_image_tag)
+				docker_url = f'https://{registry}/v2/{docker_image_repo}/manifests/{docker_image_tag}'
 				try:
 					response = requests.get(docker_url, auth=(DOCKER_READ_USER_CRED['username'], DOCKER_READ_USER_CRED['password']))
 				except requests.exceptions.RequestException as exc:
-					print('Error fetching DockerImage manifest for %s' % (self.name,), file=sys.stderr)
-					print('from %s' % (docker_url,), file=sys.stderr)
+					print(f'Error fetching DockerImage manifest for {self.name}', file=sys.stderr)
+					print(f'from {docker_url}', file=sys.stderr)
 					print(str(exc), file=sys.stderr)
 					sys.exit(1)
 

@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner python3
-## -*- coding: utf-8 -*-
 ## desc: New listener module API test
 ## tags: []
 ## roles: []
@@ -27,9 +26,9 @@ from univention.testing.codes import TestCodes
 from univention.testing.decorators import SetTimeout
 from univention.testing.ucs_samba import wait_for_drs_replication, wait_for_s4connector
 
-lm_name = 'test-{}'.format(uts.random_name())
-lm_file = os.path.join('/usr/lib/univention-directory-listener/system', '{}.py'.format(lm_name))
-log_file = os.path.join('/tmp', '{}.log'.format(uts.random_name()))
+lm_name = f'test-{uts.random_name()}'
+lm_file = os.path.join('/usr/lib/univention-directory-listener/system', f'{lm_name}.py')
+log_file = os.path.join('/tmp', f'{uts.random_name()}.log')
 uid_default_file = None
 uid_root_file = None
 verify_ldap_object = SetTimeout(utils.verify_ldap_object, 60)
@@ -37,10 +36,10 @@ verify_ldap_object = SetTimeout(utils.verify_ldap_object, 60)
 
 def cleanup():
 	for filename in (lm_file, log_file, uid_default_file, uid_root_file):
-		print('Deleting {!r}...'.format(filename))
+		print(f'Deleting {filename!r}...')
 		try:
 			os.remove(filename)
-		except (OSError, IOError) as exc:
+		except OSError as exc:
 			print(exc)
 	print('Restarting univention-directory-listener...')
 	subprocess.call(['systemctl', 'restart', 'univention-directory-listener.service'])
@@ -54,9 +53,9 @@ def main():
 	test_id = uts.random_name()
 	street = uts.random_name()
 	roomNumber = uts.random_name()
-	uid_default_file = os.path.join('/tmp', '{}.log'.format(uts.random_name()))
-	uid_root_file = os.path.join('/tmp', '{}'.format(uts.random_name()))
-	lm_logger_path = os.path.join('/var/log/univention/listener_modules', '{}.log'.format(lm_name))
+	uid_default_file = os.path.join('/tmp', f'{uts.random_name()}.log')
+	uid_root_file = os.path.join('/tmp', f'{uts.random_name()}')
+	lm_logger_path = os.path.join('/var/log/univention/listener_modules', f'{lm_name}.log')
 	text_replacements = {
 		'TEST_ID': test_id,
 		'MODULE_NAME': lm_name,
@@ -74,22 +73,22 @@ def main():
 		lm_txt = fp.read()
 
 	for k, v in text_replacements.items():
-		lm_txt = lm_txt.replace('@@{}@@'.format(k).encode('UTF-8'), v.encode('UTF-8'))
+		lm_txt = lm_txt.replace(f'@@{k}@@'.encode('UTF-8'), v.encode('UTF-8'))
 
 	with open(lm_file, 'wb') as fp:
 		fp.write(lm_txt)
-	print('Wrote listener module to {!r}.'.format(lm_file))
+	print(f'Wrote listener module to {lm_file!r}.')
 
-	print('test_id: {!r}'.format(test_id))
-	print('Listener module name: {!r}'.format(lm_name))
-	print('Action log file: {!r}'.format(log_file))
-	print('Listener module log file: {!r}'.format(lm_logger_path))
-	print('UID default (listener) file: {!r}'.format(uid_default_file))
-	print('UID root file: {!r}'.format(uid_root_file))
+	print(f'test_id: {test_id!r}')
+	print(f'Listener module name: {lm_name!r}')
+	print(f'Action log file: {log_file!r}')
+	print(f'Listener module log file: {lm_logger_path!r}')
+	print(f'UID default (listener) file: {uid_default_file!r}')
+	print(f'UID root file: {uid_root_file!r}')
 
 	# create, modify, move, modify
 	with udm_test.UCSTestUDM() as udm, ucr_test.UCSTestConfigRegistry() as ucr:
-		handler_set(['listener/module/{}/debug/level=4'.format(lm_name)])
+		handler_set([f'listener/module/{lm_name}/debug/level=4'])
 		print('Restarting univention-directory-listener...')
 		subprocess.call(['systemctl', 'restart', 'univention-directory-listener.service'])
 
@@ -107,11 +106,11 @@ def main():
 		lm_logger.info('*** Checking setuid()...')
 		file0_uid = os.stat(uid_root_file).st_uid
 		if file0_uid != 0:
-			utils.fail('File (root) {!r} has uid={!r}, expected 0.'.format(uid_root_file, file0_uid))
+			utils.fail(f'File (root) {uid_root_file!r} has uid={file0_uid!r}, expected 0.')
 		file_default_uid = os.stat(uid_default_file).st_uid
 		listener_uid = pwd.getpwnam('listener').pw_uid
 		if file_default_uid != listener_uid:
-			utils.fail('File (listener) {!r} has uid={!r}, expected {!r}.'.format(uid_default_file, file_default_uid, listener_uid))
+			utils.fail(f'File (listener) {uid_default_file!r} has uid={file_default_uid!r}, expected {listener_uid!r}.')
 
 		lm_logger.info('*** Modifying user (employeeType)...')
 		udm.modify_object(
@@ -162,9 +161,9 @@ def main():
 
 	logging.shutdown()
 
-	lm_logfile = '/var/log/univention/listener_modules/{}.log'.format(lm_name)
+	lm_logfile = f'/var/log/univention/listener_modules/{lm_name}.log'
 	print('*******************************************')
-	print('    {}'.format(lm_logfile))
+	print(f'    {lm_logfile}')
 	print('----------')
 	with open(lm_logfile, 'rb') as fp:
 		print(fp.read().decode('UTF-8', 'replace'))
@@ -174,15 +173,15 @@ def main():
 	with open(log_file, 'rb') as fp:
 		log_text = fp.read().decode('UTF-8', 'replace')
 		print('*******************************************')
-		print('    {}'.format(log_file))
+		print(f'    {log_file}')
 		print('----------')
 		print(log_text)
 		print('*******************************************')
 
 	lines = (line.strip() for line in log_text.split('\n') if line.strip())
-	operations = ('clean', 'initialize', 'pre_run', 'create', 'modify employeeType {}'.format(employeeType), 'move', 'move', 'modify roomNumber {}'.format(roomNumber), 'error_handler', 'remove', 'post_run')
+	operations = ('clean', 'initialize', 'pre_run', 'create', f'modify employeeType {employeeType}', 'move', 'move', f'modify roomNumber {roomNumber}', 'error_handler', 'remove', 'post_run')
 	for operation in operations:
-		exp = '{} {}'.format(test_id, operation)
+		exp = f'{test_id} {operation}'
 		try:
 			line = next(lines)
 		except StopIteration:
@@ -190,16 +189,16 @@ def main():
 				print('Ignoring missing "post_run" - probably to much going on...')
 				line = exp
 			else:
-				utils.fail('Missing operation(s). Expected: {!r}.'.format(operations))
+				utils.fail(f'Missing operation(s). Expected: {operations!r}.')
 		if not line.startswith(exp):
-			if line.startswith('{} post_run'.format(test_id)):
+			if line.startswith(f'{test_id} post_run'):
 				# probably waited so long for s4c to catch up, that post_run happened,
 				# next line should be "pre_run" and then "remove"
 				line2 = next(lines)
 				line3 = next(lines)
-				if line2.startswith('{} pre_run'.format(test_id)) and line3.startswith('{} {}'.format(test_id, operation)):
+				if line2.startswith(f'{test_id} pre_run') and line3.startswith(f'{test_id} {operation}'):
 					continue
-			utils.fail('Expected startswith({!r}) found {!r}.'.format(exp, line))
+			utils.fail(f'Expected startswith({exp!r}) found {line!r}.')
 	print('Test succeeded.')
 
 

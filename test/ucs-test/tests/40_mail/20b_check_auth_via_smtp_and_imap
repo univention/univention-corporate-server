@@ -17,7 +17,7 @@ import univention.testing.utils as utils
 from essential.mail import send_mail
 
 
-class AuthTests(object):
+class AuthTests:
 	def __init__(self, ucr, udm):
 		self.ucr = ucr
 		self.udm = udm
@@ -45,20 +45,20 @@ class AuthTests(object):
 				ssl=False,
 				username=self.email,
 				password=self.password)
-			print('>>> test_smtp_auth({}): successfully sent mail - auth is ok'.format(user))
+			print(f'>>> test_smtp_auth({user}): successfully sent mail - auth is ok')
 			return True
 		except Exception as exc:
-			print('>>> test_smtp_auth({}): sending mail failed - {}'.format(user, exc))
+			print(f'>>> test_smtp_auth({user}): sending mail failed - {exc}')
 			return False
 
 	def test_imap_auth(self, user):
 		try:
 			imapcon = imaplib.IMAP4_SSL(host='localhost')
 			print(imapcon.login(user, self.password))
-			print('>>> test_imap_auth({}): successful IMAP auth'.format(user))
+			print(f'>>> test_imap_auth({user}): successful IMAP auth')
 			return True
 		except Exception as exc:
-			print('>>> test_imap_auth({}): IMAP auth failed - {}'.format(user, exc))
+			print(f'>>> test_imap_auth({user}): IMAP auth failed - {exc}')
 			return False
 
 	def test_pop3_auth(self, user):
@@ -66,10 +66,10 @@ class AuthTests(object):
 			pop3con = poplib.POP3_SSL(host='localhost')
 			print(pop3con.user(user))
 			print(pop3con.pass_(self.password))
-			print('>>> test_pop3_auth({}): successful POP3 auth'.format(user))
+			print(f'>>> test_pop3_auth({user}): successful POP3 auth')
 			return True
 		except Exception as exc:
-			print('>>> test_pop3_auth({}): POP3 auth failed - {}'.format(user, exc))
+			print(f'>>> test_pop3_auth({user}): POP3 auth failed - {exc}')
 			return False
 
 	def test_saslauthd(self, user):
@@ -128,13 +128,13 @@ class AuthTests(object):
 		self.restart_services()
 
 		for (key, user, func) in checks:
-			result['pre_change_{}'.format(key)] = func(user)
+			result[f'pre_change_{key}'] = func(user)
 
 		self.set_userPassword('{K5KEY}')
 		self.restart_services()
 
 		for (key, user, func) in checks:
-			result['post_change_{}'.format(key)] = func(user)
+			result[f'post_change_{key}'] = func(user)
 
 		print('RESULT:')
 		print('=' * 55)

@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner python3
-# -*- coding: utf-8 -*-
 ## desc: Test appcenter listener/converter
 ## tags: [docker]
 ## exposure: dangerous
@@ -17,13 +16,13 @@ import univention.testing.udm as udm_test
 from dockertest import App, Appcenter
 
 APP_NAME = 'my-listener-test-app'
-DB_FILE = '/var/lib/univention-appcenter/apps/{0}/data/db.json'.format(APP_NAME)
-LISTENER_DIR = '/var/lib/univention-appcenter/apps/{0}/data/listener/'.format(APP_NAME)
+DB_FILE = f'/var/lib/univention-appcenter/apps/{APP_NAME}/data/db.json'
+LISTENER_DIR = f'/var/lib/univention-appcenter/apps/{APP_NAME}/data/listener/'
 LISTENER_TIMEOUT = 10
 
 
 def dump_db():
-	with open(DB_FILE, 'r') as f:
+	with open(DB_FILE) as f:
 		db = json.load(f)
 	return db
 
@@ -147,7 +146,7 @@ exit 0
 '''
 	store_data = '#!/bin/sh'
 	preinst = '''#!/bin/bash
-ucr set appcenter/apps/{0}/docker/params=' -t'
+ucr set appcenter/apps/{}/docker/params=' -t'
 exit 0
 '''.format(name)
 
@@ -213,7 +212,7 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 		assert 'stable' in images, images
 		very_old_con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
 		time.sleep(10)
-		with open('/var/lib/univention-directory-listener/handlers/%s' % name, 'r') as f:
+		with open('/var/lib/univention-directory-listener/handlers/%s' % name) as f:
 			status = f.readline()
 			assert status == '3'
 		test_listener()

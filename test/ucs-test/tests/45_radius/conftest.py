@@ -17,7 +17,7 @@ def rad_user(udm_session, ucr_session):
 
 	# unset variable again
 	if old_ucr:
-		ucr_set(['radius/use-service-specific-password=%s' % (old_ucr,)])
+		ucr_set([f'radius/use-service-specific-password={old_ucr}'])
 	else:
 		ucr_unset(['radius/use-service-specific-password'])
 

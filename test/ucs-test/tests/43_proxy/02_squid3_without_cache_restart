@@ -24,7 +24,7 @@ def main():
 	squid.restart()
 
 	if fail:
-		utils.fail('squid/cache=false, %s is not able to restart' % (squid.basename,))
+		utils.fail(f'squid/cache=false, {squid.basename} is not able to restart')
 
 
 if __name__ == '__main__':

@@ -21,7 +21,7 @@ class TestUMCExtendedAttributes(UDMModule):
 
     def __init__(self):
         """Test Class constructor"""
-        super(TestUMCExtendedAttributes, self).__init__()
+        super().__init__()
         self.ldap_base = ''
 
     def modify_check_user_attribute(self, user_dn, attribute_key,
@@ -46,7 +46,7 @@ class TestUMCExtendedAttributes(UDMModule):
             user = self.get_object([user_dn], "users/user")[0]
             assert user[attribute_key] in new_value
         except KeyError as exc:
-            utils.fail("A KeyError exception while trying to check and modify the user attribute '%s' value: '%s'" % (attribute_key, exc))
+            utils.fail(f"A KeyError exception while trying to check and modify the user attribute '{attribute_key}' value: '{exc}'")
 
     def modify_check_extended_attribute(self, attribute_name,
                                         attribute_key, new_value):

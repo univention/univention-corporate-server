@@ -33,8 +33,8 @@ def user():
 
 def test_put_a_file_on_sysvol_as_administrator(s4_domainname):
 	account = utils.UCSTestDomainAdminCredentials()
-	print('smbclient //localhost/sysvol -U"{}%{}" -c "put /etc/hosts {}/t1"'.format(account.username, account.bindpw, s4_domainname))
-	rc = call('smbclient //localhost/sysvol -U"{}%{}" -c "put /etc/hosts {}/t1"'.format(account.username, account.bindpw, s4_domainname), shell=True)
+	print(f'smbclient //localhost/sysvol -U"{account.username}%{account.bindpw}" -c "put /etc/hosts {s4_domainname}/t1"')
+	rc = call(f'smbclient //localhost/sysvol -U"{account.username}%{account.bindpw}" -c "put /etc/hosts {s4_domainname}/t1"', shell=True)
 	assert rc == 0, "Could not put file on sysvol as Administrator"
 
 

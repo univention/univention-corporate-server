@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3
-# -*- coding: utf-8 -*-
 ## desc: Test UDM API for users/user module
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
@@ -38,7 +37,7 @@ class TestUdmUsersBasic(TestCase):
 		obj.props.username = obj.props.lastname
 		obj.props.password = random_string()
 
-		jpg_content = open('%s/example_user_jpeg_photo.jpg' % (CWD,), 'rb').read()
+		jpg_content = open(f'{CWD}/example_user_jpeg_photo.jpg', 'rb').read()
 		obj.props.jpegPhoto = jpg_content
 		obj.save()
 		try:

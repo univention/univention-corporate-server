@@ -53,7 +53,7 @@ def doJobs(job, num):
 	os.write(1, b" %.2f\n" % (end - start,))
 
 
-class Job(object):
+class Job:
 
 	def __init__(self, ucr):
 		self.account = utils.UCSTestDomainAdminCredentials()
@@ -66,7 +66,7 @@ class Job(object):
 			c.setopt(pycurl.PROXY, self.host)
 			c.setopt(pycurl.PROXYPORT, 3128)
 			c.setopt(pycurl.PROXYAUTH, pycurl.HTTPAUTH_NTLM)
-			c.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (self.account.username, self.account.bindpw))
+			c.setopt(pycurl.PROXYUSERPWD, f"{self.account.username}:{self.account.bindpw}")
 			c.setopt(pycurl.URL, self.url)
 			c.setopt(pycurl.NOBODY, 1)
 			try:
@@ -112,7 +112,7 @@ def main():
 
 		end = time.time()
 		duration = end - start
-		print('Test took %.2f seconds' % (duration,))
+		print(f'Test took {duration:.2f} seconds')
 
 	MAX_DURATION = max_duration()
 	if duration > MAX_DURATION:

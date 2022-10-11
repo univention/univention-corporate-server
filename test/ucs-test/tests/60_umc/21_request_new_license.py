@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3
-# -*- coding: utf-8 -*-
 ## desc: Test UDM umc call to request a new license
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
@@ -28,7 +27,7 @@ class HTTPHandlerClass(BaseHTTPServer.BaseHTTPRequestHandler):
 		self.end_headers()
 
 
-class LicenseServer(object):
+class LicenseServer:
 
 	cert_basedir = '/etc/univention/ssl/license.univention.de/'
 
@@ -68,13 +67,13 @@ class LicenseServer(object):
 		httpd = ServerClass(server_address, HTTPHandlerClass)
 		httpd.socket = ssl.wrap_socket(
 			httpd.socket,
-			keyfile='{}private.key'.format(self.cert_basedir),
-			certfile='{}cert.pem'.format(self.cert_basedir),
+			keyfile=f'{self.cert_basedir}private.key',
+			certfile=f'{self.cert_basedir}cert.pem',
 			server_side=True,
 		)
 
 		sa = httpd.socket.getsockname()
-		print('Serving HTTP on "{}:{}"'.format(sa[0], sa[1]))
+		print(f'Serving HTTP on "{sa[0]}:{sa[1]}"')
 		httpd.serve_forever()
 
 
@@ -107,8 +106,8 @@ class TestRequestLicense(TestCase):
 		assert 'STATUS   : 200' in ans
 
 	def test_request_license_machine(self):
-		username = '{}$'.format(gethostname())
-		with open('/etc/machine.secret', 'r') as secret:
+		username = f'{gethostname()}$'
+		with open('/etc/machine.secret') as secret:
 			password = secret.read().strip()
 		ans = subprocess.check_output([
 			'/usr/sbin/umc-command',

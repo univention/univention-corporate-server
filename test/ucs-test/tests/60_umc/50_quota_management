@@ -19,7 +19,7 @@ class TestUMCQuotasManagement(UMCBase):
 
     def __init__(self):
         """Test Class constructor"""
-        super(TestUMCQuotasManagement, self).__init__()
+        super().__init__()
         self.quota_was_in_use = None
         self.test_mount_point = '/'
         self.partition_dev = ''

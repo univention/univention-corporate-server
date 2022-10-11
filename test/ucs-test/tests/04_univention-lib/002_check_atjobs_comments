@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner python3
-# -*- coding: utf-8 -*-
 ## desc: Test comments of atjobs
 ## tags: [basic]
 ## packages:
@@ -13,23 +12,23 @@ import univention.testing.utils as utils
 def main():
 	comments = {
 		'foo\nbar→baz': '\\ ä : \r \n \x00',
-		u'foo\nbar→': u'blub ä : \r \n \x00',
-		'test': u'foobär'.encode('latin1'),
+		'foo\nbar→': 'blub ä : \r \n \x00',
+		'test': 'foobär'.encode('latin1'),
 		1: 2,
 	}
 	expected_comments = {
-		u'foo\nbar→baz': u'\\ ä : \r \n \x00',
-		u'foo\nbar→': u'blub ä : \r \n \x00',
-		u'test': u'foobär',
-		u'1': u'2',
+		'foo\nbar→baz': '\\ ä : \r \n \x00',
+		'foo\nbar→': 'blub ä : \r \n \x00',
+		'test': 'foobär',
+		'1': '2',
 	}
 	job = atjobs.add('sleep 3', comments=comments)
 	for testjob in atjobs.list(extended=True):
 		if testjob.nr == job.nr:
-			assert testjob.comments == expected_comments, 'storing comments failed: %r != %r' % (testjob.comments, comments)
+			assert testjob.comments == expected_comments, f'storing comments failed: {testjob.comments!r} != {comments!r}'
 			break
 	else:
-		utils.fail('job %r not found in list' % (job.nr,))
+		utils.fail(f'job {job.nr!r} not found in list')
 
 
 if __name__ == '__main__':

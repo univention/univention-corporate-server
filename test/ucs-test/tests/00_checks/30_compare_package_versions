@@ -28,7 +28,7 @@ MINOR_VERSION_RE = re_compile(r'(\d+\.{0,1}-{0,1})+$')  # to match 3.2-4
 ERRATA_VERSION_RE = re_compile(r'(.*-errata)+$', IGNORECASE)  # to match 3.2-4-errata
 
 
-class PackageEntry(object):
+class PackageEntry:
 
     def __init__(self, package=None, version=None, filename=None, sourcepkg=None, ucs_version=None):
         self.package = package
@@ -99,7 +99,7 @@ def download_packages_file(url, version, arch, temp_directory):
               "Performing a new attempt in 10 seconds." % exc)
         sleep(10)
         urlretrieve(url, file_path)
-    except IOError as exc:
+    except OSError as exc:
         print("An %r Error occurred, probably the connection cannot be "
               "established or the url is incorrect. "
               "Skipping the url '%s'." % (exc, url))
@@ -121,10 +121,10 @@ def load_packages_file(filename, target_dict, ucs_version):
     try:
         # first try to open it as a .gzip
         packages_file = gzip_open(filename, 'r')
-    except IOError:
+    except OSError:
         # otherwise open it as a usual file
-        packages_file = open(filename, 'r')
-    except IOError as exc:
+        packages_file = open(filename)
+    except OSError as exc:
         utils.fail("An %r Error occurred, while trying to open a Packages file "
                    "'%s'" % (exc, filename))
 
@@ -135,7 +135,7 @@ def load_packages_file(filename, target_dict, ucs_version):
                        % filename)
 
         packages_file.close()
-    except (ValueError, IOError) as exc:
+    except (ValueError, OSError) as exc:
         utils.fail("An %r Error occurred while trying to read and close the "
                    "file '%s'" % (exc, filename))
 
@@ -195,8 +195,8 @@ def compare(old, new):
                     print('---------------------------------------------------------\n')
 
                 print(" Package: %s" % package)
-                print("   %s: %s" % (old[package].ucs_version, old[package].version))
-                print("   %s: %s" % (new[package].ucs_version, new[package].version))
+                print(f"   {old[package].ucs_version}: {old[package].version}")
+                print(f"   {new[package].ucs_version}: {new[package].version}")
 
                 src_package = new[package].sourcepkg
                 if not src_package:
@@ -226,7 +226,7 @@ def read_url(url):
     try:
         connection = urlopen(url)
         result = fromstring(connection.read())
-    except IOError as exc:
+    except OSError as exc:
         utils.fail("An %r Error occurred while trying to retrieve '%s' url"
                    % (exc, url))
     connection.close()

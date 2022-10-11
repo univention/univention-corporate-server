@@ -151,7 +151,7 @@ def verify_test_results_and_exit():
 	the names of all actions (install/upgrade/remove).
 	"""
 
-	with open(file_result, 'r') as f:
+	with open(file_result) as f:
 
 		# now check if all actions were executed and abort otherwise...
 		for action in actions:

@@ -327,17 +327,17 @@ def test_use_usertemplate_umlauts(udm):
 	mod_user = udm_modules.get(MOD_USER)
 	udm_modules.init(lo, po, mod_user, template_object=obj_tmpl)
 	usernames = [
-		(u"Pınar", u"Ağrı", "pinar", "agri"),
-		(u"ÇçĞğ", u"İıŞş", "ccgg", "iiss"),
-		(u"Fryderyk", u"Krępa", "fryderyk", "krepa"),
-		(u"Kübra", u"Gümuşay", "kuebra", "guemusay"),
-		(u"Зиновьев Селиверст", u"Терентьевич", "zinov'ev seliverst", "terent'evich"),
-		(u"Ýlang", u"Müstèrmánn", "ylang", "muestermann"),
-		(u"Öle", u"Mästèrmànn", "oele", "maestermann"),
-		(u"Nînä", u"Müstèrfräú", "ninae", "muesterfraeu"),
-		(u"Ǹanâ", u"Mästérfrâü", "nana", "maesterfraue"),
-		(u"Daniel", "Groß", "daniel", "gross"),
-		(u"Üwe", "Äpfelmann", "uewe", "aepfelmann"),
+		("Pınar", "Ağrı", "pinar", "agri"),
+		("ÇçĞğ", "İıŞş", "ccgg", "iiss"),
+		("Fryderyk", "Krępa", "fryderyk", "krepa"),
+		("Kübra", "Gümuşay", "kuebra", "guemusay"),
+		("Зиновьев Селиверст", "Терентьевич", "zinov'ev seliverst", "terent'evich"),
+		("Ýlang", "Müstèrmánn", "ylang", "muestermann"),
+		("Öle", "Mästèrmànn", "oele", "maestermann"),
+		("Nînä", "Müstèrfräú", "ninae", "muesterfraeu"),
+		("Ǹanâ", "Mästérfrâü", "nana", "maesterfraue"),
+		("Daniel", "Groß", "daniel", "gross"),
+		("Üwe", "Äpfelmann", "uewe", "aepfelmann"),
 	]
 	for firstname, lastname, expected_firstname, expected_lastname in usernames:
 		user_properties = {

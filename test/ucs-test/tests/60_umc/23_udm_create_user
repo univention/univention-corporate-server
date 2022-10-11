@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner python3
-# -*- coding: utf-8 -*.
 ## desc: Test the UMC user creation, modification and deletion
 ## bugs: [34791]
 ## roles:
@@ -20,7 +19,7 @@ class TestUMCUserCreation(UDMModule):
 
     def __init__(self):
         """Test Class constructor"""
-        super(TestUMCUserCreation, self).__init__()
+        super().__init__()
         self.ldap_base = None
 
     def get_user_by_uid(self, uid):
@@ -30,7 +29,7 @@ class TestUMCUserCreation(UDMModule):
         options = ["uid=" + uid + ",cn=users," + self.ldap_base]
         request_result = self.client.umc_command('udm/get', options, 'users/user').result
         if not request_result:
-            utils.fail("Request 'udm/get' with options '%s' failed, hostname '%s'" % (options, self.hostname))
+            utils.fail(f"Request 'udm/get' with options '{options}' failed, hostname '{self.hostname}'")
         return request_result
 
     def modify_user_groups(self, username, groupnames):
@@ -49,9 +48,9 @@ class TestUMCUserCreation(UDMModule):
         }]
         request_result = self.client.umc_command('udm/put', options, 'users/user').result
         if not request_result:
-            utils.fail("Request 'udm/put' to change user '%s' groups with options '%s' failed, hostname %s" % (username, options, self.hostname))
+            utils.fail(f"Request 'udm/put' to change user '{username}' groups with options '{options}' failed, hostname {self.hostname}")
         if not request_result[0].get('success'):
-            utils.fail("Request 'udm/put' to change user '%s' groups with options '%s' failed, no success = True in response, hostname %s" % (username, options, self.hostname))
+            utils.fail(f"Request 'udm/put' to change user '{username}' groups with options '{options}' failed, no success = True in response, hostname {self.hostname}")
 
     def create_user(self, username, password, groupname,
                     group_container="groups"):

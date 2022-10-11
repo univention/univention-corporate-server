@@ -60,7 +60,7 @@ def check_user_in_groups():
 
     for group in test_groups:
         if test_username not in get_members_in_group(group):
-            print("\nFAIL: the '%s' user is not a member of the '%s' group.\n" % (test_username, group))
+            print(f"\nFAIL: the '{test_username}' user is not a member of the '{group}' group.\n")
             increase_errors_counter()
 
 
@@ -151,7 +151,7 @@ if __name__ == '__main__':
     """
     test_username, test_groups = get_localized_translations()
     print("\nUser name to be tested:", test_username)
-    print("Groups where %s should be a member: %s" % (test_username, test_groups))
+    print(f"Groups where {test_username} should be a member: {test_groups}")
 
     check_user_in_groups()
     check_user_groups_sids()

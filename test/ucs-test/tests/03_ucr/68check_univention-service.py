@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3 -s
-# -*- coding: utf-8 -*-
 ## desc: Check the service info files for ucr and the umc services module
 ## exposure: careful
 ## tags: [apptest]
@@ -11,7 +10,7 @@ from univention.service_info import ServiceInfo
 def test_check_univention_service():
 	services_info = ServiceInfo()
 	service_problems = services_info.check_services()
-	print('Services with problems:\n{}'.format(service_problems))
+	print(f'Services with problems:\n{service_problems}')
 	assert len(service_problems) == 0
 
 

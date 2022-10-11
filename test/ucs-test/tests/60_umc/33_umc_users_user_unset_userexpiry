@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner python3
-# -*- coding: utf-8 -*.
 ## desc: Test unsetting userexpiry attribute via UMC
 ## bugs: [25279]
 ## roles:
@@ -19,7 +18,7 @@ class TestUMCUserAuthentication(UMCBase):
 
 	def __init__(self):
 		"""Test Class constructor"""
-		super(TestUMCUserAuthentication, self).__init__()
+		super().__init__()
 
 		self.UDM = None
 

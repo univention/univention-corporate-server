@@ -22,7 +22,7 @@ from essential.simplecurl import SimpleCurl
 from essential.simplesquid import SimpleSquid
 
 
-class kerberos_ticket(object):
+class kerberos_ticket:
 	def __init__(self, hostname):
 		self.hostname = hostname
 

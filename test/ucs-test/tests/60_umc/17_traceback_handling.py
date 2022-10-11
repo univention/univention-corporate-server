@@ -27,7 +27,7 @@ def test_umc_tracebacks(Client, path, expected_trace):
 	joinscript()
 	try:
 		umc_client = Client.get_test_connection()
-		print("checking: {}".format(path))
+		print(f"checking: {path}")
 		with pytest.raises(HTTPError) as exc:
 			umc_client.umc_command(path)
 		assert exc.value.status == 591, 'Wrong http return code'
@@ -45,7 +45,7 @@ def test_umc_errors(Client, path, expected_error):
 	joinscript()
 	try:
 		umc_client = Client.get_test_connection()
-		print("checking: {}".format(path))
+		print(f"checking: {path}")
 		with pytest.raises(HTTPError) as exc:
 			umc_client.umc_command(path)
 		assert exc.value.status == 400, 'Wrong http return code'

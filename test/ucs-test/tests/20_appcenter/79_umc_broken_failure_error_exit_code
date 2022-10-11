@@ -122,8 +122,8 @@ def cleanup(application):
 	subprocess.check_call(['univention-app', 'register', application, '--undo-it', '--noninteractive', '--username', username, '--pwdfile', pwdfile])
 	ext = application.split('-')[2]
 	try:
-		os.unlink('/var/lib/dpkg/info/%s.%s' % (application, ext))
-	except EnvironmentError:
+		os.unlink(f'/var/lib/dpkg/info/{application}.{ext}')
+	except OSError:
 		pass
 	else:
 		subprocess.check_call(['dpkg', '--remove', application])

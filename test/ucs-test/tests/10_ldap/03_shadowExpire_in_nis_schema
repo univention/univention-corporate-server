@@ -49,15 +49,15 @@ def run():
 			test_list.append(create_users(date_diff))
 
 		for username, passwd, date in test_list:
-			print('\nSearching LDAP filter=(&(objectClass=posixAccount)(shadowExpire>=%r)(shadowExpire<=%r))' % (date - 1, date + 1))
-			ldap_found = ldap_search('(&(objectClass=posixAccount)(shadowExpire>=%r)(shadowExpire<=%r))' % (date - 1, date + 1))
+			print(f'\nSearching LDAP filter=(&(objectClass=posixAccount)(shadowExpire>={date - 1!r})(shadowExpire<={date + 1!r}))')
+			ldap_found = ldap_search(f'(&(objectClass=posixAccount)(shadowExpire>={date - 1!r})(shadowExpire<={date + 1!r}))')
 			exclude_list = [(x[0], x[2]) for x in test_list]
 			exclude_list.remove((username, date))
 			if ldap_found:
-				print('Should be found: [(username, expirydate)] = [(\'%s\', \'%s\')]' % (username, date))
+				print(f'Should be found: [(username, expirydate)] = [(\'{username}\', \'{date}\')]')
 				print('Found in LDAP:   [(username, expirydate)] = %r' % ldap_found)
 				if ((username, str(date)) not in ldap_found or set(exclude_list).issubset(ldap_found)):
-					utils.fail("LDAP is not able to sort Objects with filter: (shadowExpire>=%r)(shadowExpire<=%r)" % (date - 1, date + 1))
+					utils.fail(f"LDAP is not able to sort Objects with filter: (shadowExpire>={date - 1!r})(shadowExpire<={date + 1!r})")
 
 
 def main():

@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3 -s
-# coding: utf-8
 ## desc: "Test the UCS<->AD sync in {read,write,sync} mode with groups"
 ## exposure: dangerous
 ## packages:
@@ -131,7 +130,7 @@ def test_group_sync_from_ad_to_udm_with_move(group_class, sync_mode):
 		udm_group = group_class()
 		(ad_group, ad_group_dn, udm_group_dn) = create_con_group(AD, udm_group, adconnector.wait_for_sync)
 
-		print("\nMove AD group {!r} to {!r}\n".format(ad_group_dn, udm_group.container))
+		print(f"\nMove AD group {ad_group_dn!r} to {udm_group.container!r}\n")
 		container_dn = AD.container_create(udm_group.container)
 		ad_group_dn = AD.rename_or_move_user_or_group(ad_group_dn, position=container_dn)
 		AD.set_attributes(ad_group_dn, **tcommon.map_udm_group_to_con(udm_group.group))

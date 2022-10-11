@@ -27,7 +27,7 @@ log_to_logfile()
 log_to_stream()
 
 
-class Configuring(object):
+class Configuring:
 	def __init__(self, app, revert='configure'):
 		self.settings = set()
 		self.app = app
@@ -279,7 +279,7 @@ Description = My Description 4.2
 
 			assert status_setting.get_value(app) == 'My Status'
 			assert os.path.exists(file_setting.filename)
-			assert open(file_setting.filename, 'r').read() == 'File content'
+			assert open(file_setting.filename).read() == 'File content'
 			assert file_setting.get_value(app) == 'File content'
 
 			config.set({file_setting.name: None})
@@ -292,7 +292,7 @@ Description = My Description 4.2
 	finally:
 		try:
 			os.unlink(file_setting.filename)
-		except EnvironmentError:
+		except OSError:
 			pass
 
 
@@ -316,7 +316,7 @@ Description = My Description 4
 
 			config.set({setting.name: 'Docker file content'})
 			assert os.path.exists(docker_file)
-			assert open(docker_file, 'r').read() == 'Docker file content'
+			assert open(docker_file).read() == 'Docker file content'
 			assert setting.get_value(app) == 'Docker file content'
 
 			config.set({setting.name: None})
@@ -325,7 +325,7 @@ Description = My Description 4
 	finally:
 		try:
 			os.unlink(setting.filename)
-		except EnvironmentError:
+		except OSError:
 			pass
 
 
@@ -356,12 +356,12 @@ Filename = /tmp/settingdir/setting6.password
 
 			assert password_setting.get_value(app) == 'MyPassword'
 			assert os.path.exists(password_file_setting.filename)
-			assert open(password_file_setting.filename, 'r').read() == 'FilePassword'
+			assert open(password_file_setting.filename).read() == 'FilePassword'
 			assert stat.S_IMODE(os.stat(password_file_setting.filename).st_mode) == 0o600
 	finally:
 		try:
 			os.unlink(password_file_setting.filename)
-		except EnvironmentError:
+		except OSError:
 			pass
 
 
@@ -395,7 +395,7 @@ Filename = /tmp/settingdir/setting6.password
 
 		assert password_setting.get_value(app) == 'MyPassword'
 		assert os.path.exists(password_file)
-		assert open(password_file, 'r').read() == 'FilePassword'
+		assert open(password_file).read() == 'FilePassword'
 		assert stat.S_IMODE(os.stat(password_file).st_mode) == 0o600
 
 		stop = get_action('stop')
@@ -407,7 +407,7 @@ Filename = /tmp/settingdir/setting6.password
 		start = get_action('start')
 		start.call(app=app)
 		assert password_setting.get_value(app) == 'MyPassword'
-		assert open(password_file, 'r').read() == 'FilePassword'
+		assert open(password_file).read() == 'FilePassword'
 
 
 def test_bool_setting(installed_component_app):

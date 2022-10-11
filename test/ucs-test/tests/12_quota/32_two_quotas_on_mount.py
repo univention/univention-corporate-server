@@ -11,7 +11,7 @@ from quota_test import QuotaCheck
 def test_nonzero():
 	print("Checking if setting of Quota works with two shares on a mountpoint, with none of the values being zero.")
 	for fs_type in ['ext4', 'xfs']:
-		print("Now checking fs type: {}".format(fs_type))
+		print(f"Now checking fs type: {fs_type}")
 		quotaCheck = QuotaCheck(quota_type="usrquota", fs_type=fs_type)
 		quota_policies = [{
 			'name': 'quota_policy1',
@@ -42,7 +42,7 @@ def test_nonzero():
 def test_zero():
 	print("Checking if setting of Quota works with two shares on a mountpoint, with some of the values being zero.")
 	for fs_type in ['ext4', 'xfs']:
-		print("Now checking fs type: {}".format(fs_type))
+		print(f"Now checking fs type: {fs_type}")
 		quotaCheck = QuotaCheck(quota_type="usrquota", fs_type=fs_type)
 		quota_policies = [{
 			'name': 'quota_policy1',
@@ -73,6 +73,6 @@ def test_zero():
 def test_one_policy():
 	print("Checking if setting of Quota works with two shares on a mountpoint, with only one of them having a quota policy attached.")
 	for fs_type in ['ext4', 'xfs']:
-		print("Now checking fs type: {}".format(fs_type))
+		print(f"Now checking fs type: {fs_type}")
 		quotaCheck = QuotaCheck(quota_type="usrquota", fs_type=fs_type)
 		quotaCheck.test_two_shares_on_one_mount_only_one_policy()

@@ -30,24 +30,24 @@ def test_ucr_register_api():
 	package_name = random_string()
 	package_version = random_version()
 	package = DebianPackage(name=package_name, version=package_version)
-	package.create_debian_file_from_buffer('/etc/univention/templates/modules/%s.py' % (package_name,), UCR_MODULE)
-	package.create_debian_file_from_buffer('/etc/univention/templates/info/%s.info' % (package_name,), UCR_INFO % (package_name, package_name))
+	package.create_debian_file_from_buffer(f'/etc/univention/templates/modules/{package_name}.py', UCR_MODULE)
+	package.create_debian_file_from_buffer(f'/etc/univention/templates/info/{package_name}.info', UCR_INFO % (package_name, package_name))
 	try:
 		package.build()
 		package.install()
 
 		with UCSTestConfigRegistry():
-			subprocess.call(['ucr', 'set', '%s/foo=bar' % (package_name,)])
+			subprocess.call(['ucr', 'set', f'{package_name}/foo=bar'])
 
 			changes = json.loads(subprocess.check_output(['ucr', 'register', package_name]).split(b'####')[1])
 			expected = {
-				'%s/.*$' % (package_name,): [None, None],
-				'%s/foo' % (package_name,): [None, 'bar'],
+				f'{package_name}/.*$': [None, None],
+				f'{package_name}/foo': [None, 'bar'],
 			}
 			assert changes == expected, changes
 
-			changes = json.loads(subprocess.check_output(['ucr', 'set', '%s/foo=blub' % (package_name,)]).split(b'####')[1])
-			expected = {'%s/foo' % (package_name,): ['bar', 'blub']}
+			changes = json.loads(subprocess.check_output(['ucr', 'set', f'{package_name}/foo=blub']).split(b'####')[1])
+			expected = {f'{package_name}/foo': ['bar', 'blub']}
 			assert changes == expected, changes
 	finally:
 		package.uninstall()

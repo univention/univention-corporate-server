@@ -71,14 +71,14 @@ def complex_syntax():
 
 	package_name = get_package_name()
 	package_version = get_package_version()
-	app_id = '%s-%s' % (random_name(), random_version())
+	app_id = f'{random_name()}-{random_version()}'
 	version_start = random_ucs_version(max_major=2)
 	version_end = random_ucs_version(min_major=5)
 
 	with UCSTestUDM() as udm:
 		udm.create_object(
 			'container/cn',
-			name='udm_%s' % (extension_type,),
+			name=f'udm_{extension_type}',
 			position=udm.UNIVENTION_CONTAINER,
 			ignore_exists=True
 		)
@@ -95,7 +95,7 @@ def complex_syntax():
 				ucsversionstart=version_start,
 				ucsversionend=version_end,
 				active='FALSE',
-				position='cn=udm_%s,%s' % (extension_type, udm.UNIVENTION_CONTAINER)
+				position=f'cn=udm_{extension_type},{udm.UNIVENTION_CONTAINER}'
 			)
 
 			udm.create_object(
@@ -146,9 +146,9 @@ class Test_ComplexSyntaxTypes():
 
 	def test_ComplexMultiValueKeyValueDictType(self):
 		expected_type_definition = {
-			u'additionalProperties': True,
-			u'type': u'object',
-			u'nullable': True
+			'additionalProperties': True,
+			'type': 'object',
+			'nullable': True
 		}
 		openapi_schema = get_openapi_schema()
 		user_props = openapi_schema["components"]["schemas"]["users-user"]["properties"]["properties"]["properties"]
@@ -157,9 +157,9 @@ class Test_ComplexSyntaxTypes():
 
 	def test_ComplexMultiValueDictType(self):
 		expected_type_definition = {
-			u'additionalProperties': True,
-			u'type': u'object',
-			u'nullable': True
+			'additionalProperties': True,
+			'type': 'object',
+			'nullable': True
 		}
 		openapi_schema = get_openapi_schema()
 		user_props = openapi_schema["components"]["schemas"]["users-user"]["properties"]["properties"]["properties"]
@@ -168,14 +168,14 @@ class Test_ComplexSyntaxTypes():
 
 	def test_ComplexListType(self):
 		expected_type_definition = {
-			u'uniqueItems': False,
-			u'items': {
-				u'oneOf': [
-					{u'type': u'string', u'nullable': True},
-					{u'type': u'integer', u'nullable': True}
+			'uniqueItems': False,
+			'items': {
+				'oneOf': [
+					{'type': 'string', 'nullable': True},
+					{'type': 'integer', 'nullable': True}
 				]},
-			u'type': u'array',
-			u'nullable': True
+			'type': 'array',
+			'nullable': True
 		}
 		openapi_schema = get_openapi_schema()
 		user_props = openapi_schema["components"]["schemas"]["users-user"]["properties"]["properties"]["properties"]

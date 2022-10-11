@@ -34,9 +34,9 @@ def main():
 	print("Request finished")
 
 	if end_time - start_time > max_time:
-		utils.fail("The appcenter answered too slow\nThreshold is %s sec; Appcenter replied in %s sec." % (max_time, end_time - start_time, ))
+		utils.fail(f"The appcenter answered too slow\nThreshold is {max_time} sec; Appcenter replied in {end_time - start_time} sec.")
 	else:
-		print("Success: The appcenter answered in %s sec." % (end_time - start_time, ))
+		print(f"Success: The appcenter answered in {end_time - start_time} sec.")
 
 
 if __name__ == '__main__':

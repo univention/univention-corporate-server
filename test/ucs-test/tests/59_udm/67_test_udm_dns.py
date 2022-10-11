@@ -17,7 +17,7 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 
-class Test_DNSForwardZone(object):
+class Test_DNSForwardZone:
 
 	def test_dns_forward_zone_check_soa_record(self, udm):
 		"""Check dns/forward_zone SOA record"""
@@ -205,7 +205,7 @@ class Test_DNSForwardZone(object):
 		utils.verify_ldap_object(forward_zone, {'mXRecord': mx_records[2:]})
 
 
-class Test_DNSServiceRecord(object):
+class Test_DNSServiceRecord:
 
 	def test_dns_srv_record_creation_with_all_attributes(self, udm):
 		"""Create dns/srv_record with all attributes set"""
@@ -291,7 +291,7 @@ class Test_DNSServiceRecord(object):
 		utils.verify_ldap_object(srv_record, {'sRVRecord': locations[2:]})
 
 
-class Test_DNSHostRecord(object):
+class Test_DNSHostRecord:
 
 	def test_dns_host_record_creation(self, udm):
 		"""Create dns/host"""
@@ -486,7 +486,7 @@ class Test_DNSHostRecord(object):
 		utils.verify_ldap_object(host_record, {'tXTRecord': txt_records[2:]})
 
 
-class Test_DNSAliasRecord(object):
+class Test_DNSAliasRecord:
 
 	def test_dns_alias_creation(self, udm):
 		"""Create dns/alias"""
@@ -524,7 +524,7 @@ class Test_DNSAliasRecord(object):
 		utils.verify_ldap_object(dns_alias, {'dNSTTL': [zonettl]})
 
 
-class Test_DNSReverseZone(object):
+class Test_DNSReverseZone:
 
 	@pytest.mark.parametrize('ip', [
 		uts.random_subnet(),
@@ -663,7 +663,7 @@ class Test_DNSReverseZone(object):
 		utils.verify_ldap_object(reverse_zone, {'nSRecord': ['%s' % ns_record for ns_record in ns_records[:2]]})
 
 
-class Test_DNSPointerRecord(object):
+class Test_DNSPointerRecord:
 
 	@pytest.mark.parametrize('ip', [
 		uts.random_subnet(),
@@ -749,7 +749,7 @@ class Test_DNSPointerRecord(object):
 		utils.verify_ldap_object(ptr, {'pTRRecord': ptr_records[2:]})
 
 
-class Test_DNSWrongSuperordinate(object):
+class Test_DNSWrongSuperordinate:
 
 	def test_dns_ptr_creation_with_wrong_superordinate(self, udm):
 		"""Create dns/ptr_record with wrong object type as superordinate"""
@@ -784,7 +784,7 @@ class Test_DNSWrongSuperordinate(object):
 			udm.create_object('dns/srv_record', name='%s tcp' % uts.random_name(), location='1 2 3 %s' % uts.random_name(), superordinate=reverse_zone)
 
 
-class Test_RFC1123(object):
+class Test_RFC1123:
 
 	def test_rfc1123_alias(self, udm):
 		forward_zone = udm.create_object('dns/forward_zone', zone='365.ucs', nameserver=uts.random_dns_record())

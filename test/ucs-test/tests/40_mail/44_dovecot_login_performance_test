@@ -24,7 +24,7 @@ MAX_GRP = 8000
 MAX_TESTS = 50
 
 
-class Bunch(object):
+class Bunch:
 
 	def __init__(self, **kwds):
 		self.__dict__.update(kwds)

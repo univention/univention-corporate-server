@@ -17,7 +17,7 @@ import univention.testing.utils as utils
 from essential.mail import set_mail_forward_copy_to_self_ucrv
 
 
-class Bunch(object):
+class Bunch:
 	"""
 	>>> y = Bunch(foo=42, bar='TEST')
 	>>> print repr(y.foo), repr(y.bar)

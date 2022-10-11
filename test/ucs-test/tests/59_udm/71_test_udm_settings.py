@@ -257,7 +257,7 @@ def test_filename_validation(udm, lo, modify, prefix, path, position, attr, ocs,
 		os.unlink(fullpath_modify + '.info')
 
 
-class Bunch(object):
+class Bunch:
 	"""
 	>>> y = Bunch(foo=42, bar='TEST')
 	>>> print repr(y.foo), repr(y.bar)
@@ -370,13 +370,13 @@ kwargs = dict(
 
 
 def run_cmd(cmd):
-	print('Running: {!r}'.format(cmd))
+	print(f'Running: {cmd!r}')
 	cmd_proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	cmd_out, cmd_err = cmd_proc.communicate()
 	cmd_out, cmd_err = cmd_out.decode('UTF-8', 'replace'), cmd_err.decode('UTF-8', 'replace')
-	print('exit code: {!r}'.format(cmd_proc.returncode))
-	print('stdout:-----\n{}\n-----'.format(cmd_out))
-	print('stderr:-----\n{}\n-----'.format(cmd_err))
+	print(f'exit code: {cmd_proc.returncode!r}')
+	print(f'stdout:-----\n{cmd_out}\n-----')
+	print(f'stderr:-----\n{cmd_err}\n-----')
 
 
 @pytest.mark.roles('domaincontroller_master')
@@ -386,7 +386,7 @@ def test_register_data(udm, ucr, remove_tmp_file):
 	"""Register a settings/data object"""
 	ldap_base = ucr['ldap/base']
 	# make sure object is remove at the end
-	dn = 'cn={},cn=data,cn=univention,{}'.format(file_name, ldap_base)
+	dn = f'cn={file_name},cn=data,cn=univention,{ldap_base}'
 	udm._cleanup.setdefault('settings/data', []).append(dn)
 	register_cmd = [
 		'ucs_registerLDAPExtension',
@@ -404,8 +404,8 @@ def test_register_data(udm, ucr, remove_tmp_file):
 	cmd = ['/bin/bash', '-c', 'source /usr/share/univention-lib/ldap.sh && {}'.format(' '.join([pipes.quote(x) for x in register_cmd]))]
 	run_cmd(cmd)
 
-	cmd = ['udm', 'settings/data', 'list', '--filter', 'cn={}'.format(file_name)]
-	print('Running {!r}...'.format(cmd))
+	cmd = ['udm', 'settings/data', 'list', '--filter', f'cn={file_name}']
+	print(f'Running {cmd!r}...')
 	subprocess.call(cmd)
 
 	with open(file_path) as fp:

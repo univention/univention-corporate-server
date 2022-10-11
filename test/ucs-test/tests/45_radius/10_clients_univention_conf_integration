@@ -14,9 +14,9 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 
-class DummyInterface(object):
+class DummyInterface:
 	def __init__(self, ip):
-		self.network = '{}/32'.format(ip)
+		self.network = f'{ip}/32'
 
 	def __enter__(self):
 		subprocess.check_output(['ip', 'link', 'add', 'eth99', 'type', 'dummy'])

@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -v
-# coding: utf-8
 ## desc: "Test the UCS<->S4 NT password history sync"
 ## exposure: dangerous
 ## packages:
@@ -35,7 +34,7 @@ configRegistry.load()
 class S4HistSync_Exception(Exception):
 	def __str__(self):
 		if self.args and len(self.args) == 1 and isinstance(self.args[0], dict):
-			return '\n'.join('%s=%s' % (key, value) for key, value in self.args[0].items())
+			return '\n'.join(f'{key}={value}' for key, value in self.args[0].items())
 		else:
 			return Exception.__str__(self)
 	__repr__ = __str__
@@ -61,7 +60,7 @@ def create_s4_user(username, password, **kwargs):
 		raise S4CreateUser_Exception({'module': 'users/user', 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
 
 	new_position = 'cn=users,%s' % configRegistry.get('connector/s4/ldap/base')
-	con_user_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(tcommon.to_unicode(username)), new_position)
+	con_user_dn = f'cn={ldap.dn.escape_dn_chars(tcommon.to_unicode(username))},{new_position}'
 
 	udm_user_dn = ldap.dn.dn2str([
 		[("uid", to_unicode(username), ldap.AVA_STRING)],
@@ -71,7 +70,7 @@ def create_s4_user(username, password, **kwargs):
 
 
 def modify_passwordpolicy_s4(key, value):
-	cmd = ["samba-tool", "domain", "passwordsettings", "set", "--%s=%s" % (key, value,)]
+	cmd = ["samba-tool", "domain", "passwordsettings", "set", f"--{key}={value}"]
 
 	child = subprocess.Popen(" ".join(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 	(stdout, stderr) = child.communicate()

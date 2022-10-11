@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3
-# -*- coding: utf-8 -*-
 ## desc: Test groups/group
 ## tags: [udm,udm-groups,apptest]
 ## roles: [domaincontroller_master]

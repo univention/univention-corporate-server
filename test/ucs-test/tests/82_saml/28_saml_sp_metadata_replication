@@ -81,7 +81,7 @@ def main():
 			udm.create_object('saml/serviceprovider', **new_service_provider)
 
 			utils.wait_for_replication()
-			if not os.path.exists('/etc/simplesamlphp/metadata.d/{}.php'.format(new_identifier)):
+			if not os.path.exists(f'/etc/simplesamlphp/metadata.d/{new_identifier}.php'):
 				raise ListenerError('Metadata was not written by the listener!')
 			# try to login
 			with samltest.GuaranteedIdP('127.0.0.1'):
@@ -96,11 +96,11 @@ def main():
 		utils.wait_for_replication()
 		if not os.path.exists(metadata_filename):
 			raise ListenerError('Metadata was not written by the listener!')
-		with open(metadata_filename, 'r') as metadata_file:
+		with open(metadata_filename) as metadata_file:
 			metadata_new = metadata_file.read()
 		if metadata_new != metadata:
-			print('old: {}'.format(metadata))
-			print('new: {}'.format(metadata_new))
+			print(f'old: {metadata}')
+			print(f'new: {metadata_new}')
 			print('##########################')
 			print('{}'.format('\n'.join(difflib.unified_diff(
 				metadata.splitlines(),

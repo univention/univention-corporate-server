@@ -36,7 +36,7 @@ def create_app():
 	package_name3 = get_app_name()
 
 	if ucr.get('server/role') == 'domaincontroller_master':
-		app.set_ini_parameter(AdditionalPackagesMaster='%s,%s' % (package_name1, package_name2))
+		app.set_ini_parameter(AdditionalPackagesMaster=f'{package_name1},{package_name2}')
 		app.set_ini_parameter(AdditionalPackagesMember='%s' % (package_name3))
 	elif ucr.get('server/role') == 'domaincontroller_backup':
 		app.set_ini_parameter(AdditionalPackagesMaster='%s' % (package_name2))

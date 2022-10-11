@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner python3
-# -*- coding: utf-8 -*
 ## desc: Modify and move an object while the listener is stopped
 ## tags:
 ##  - replication
@@ -36,7 +35,7 @@ ucr.load()
 
 def get_entryUUID(lo, dn):
 	result = lo.search(base=dn, scope=ldap.SCOPE_BASE, attr=['*', '+'])
-	print('DN: %s\n%s' % (dn, result))
+	print(f'DN: {dn}\n{result}')
 	return result[0][1].get('entryUUID')[0]
 
 
@@ -94,7 +93,7 @@ stop_listener()
 udm.modify_object('computers/linux', dn=computer, description=computer_name, wait_for_replication=False)
 
 # move container to the same position of the new container
-new_computer_dn = 'cn=%s,%s' % (computer_name, position)
+new_computer_dn = f'cn={computer_name},{position}'
 udm.move_object('computers/linux', dn=computer, position=position, wait_for_replication=False)
 
 start_listener()

@@ -22,7 +22,7 @@ from essential.mail import file_search_mail, get_dovecot_maildir, random_email, 
 timeout = 10
 
 
-class Bunch(object):
+class Bunch:
 
 	def __init__(self, **kwds):
 		self.__dict__.update(kwds)
@@ -46,7 +46,7 @@ def main():
 				admin_account = ucr.get("tests/domainadmin/account", "uid=Administrator,cn=users,{}".format(ucr["ldap/base"]))
 				pwd_file = ucr.get("tests/domainadmin/pwdfile")
 				if pwd_file:
-					with open(pwd_file, "r") as fp:
+					with open(pwd_file) as fp:
 						password = fp.read().strip()
 				else:
 					password = "univention"

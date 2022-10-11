@@ -13,7 +13,7 @@ _ = translator.translate
 
 class ScreenShooter(BaseScreenShooter):
 	def take_screenshots(self):
-		self.selenium.driver.get(self.selenium.base_url + 'univention/portal/?lang=%s' % (self.selenium.language,))
+		self.selenium.driver.get(self.selenium.base_url + f'univention/portal/?lang={self.selenium.language}')
 		self.selenium.wait_for_text(_("Administration"))
 		self.selenium.save_screenshot("portal")
 

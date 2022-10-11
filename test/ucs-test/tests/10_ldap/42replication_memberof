@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner python3
-# -*- coding: utf-8 -*
 ## desc: memberOf replication tests
 ## tags:
 ##  - replication
@@ -46,7 +45,7 @@ RETRY_COUNT = 20
 DELAY = 10
 
 
-class AutoStartStopListener(object):
+class AutoStartStopListener:
 	"""
 	Stops and starts listener automatically
 	"""
@@ -71,7 +70,7 @@ class AutoStartStopListener(object):
 			start_listener()
 
 
-class TestCases(object):
+class TestCases:
 	def __init__(self, udm, ucr):  # type: (udm_test.UCSTestUDM, ucr_test.UCSTestConfigRegistry) -> None
 		self.udm = udm
 		self.ucr = ucr

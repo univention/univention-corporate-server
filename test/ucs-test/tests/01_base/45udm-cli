@@ -24,7 +24,7 @@ import univention.testing.utils as utils
 import univention.uldap as uldap
 
 
-class cmd(object):
+class cmd:
 	def __init__(self, *args):
 		self.args = args
 		self.input = None
@@ -51,7 +51,7 @@ def test_ldap_connection(ucr, user_dn, password):
 	else:
 		access = uldap.access(ucr.get('ldap/master'), base=ucr.get('ldap/base'), binddn=user_dn, bindpw=password)
 	for (key, value) in access.get(user_dn, required=True).items():
-		print("{} = {}".format(key, value))
+		print(f"{key} = {value}")
 
 
 def test_samba_connection(ucr, username, password):
@@ -70,15 +70,15 @@ def test_samba_connection(ucr, username, password):
 	s4_installed = utils.package_installed("univention-samba4")
 	if utils.package_installed("univention-samba") or s4_installed:
 		host = 'localhost' if s4_installed else ucr.get('ldap/master')
-		print("Samba Logon with this new user against {}".format(host))
+		print(f"Samba Logon with this new user against {host}")
 
-		smbclient = cmd("smbclient", "-L", host, "-U", "{}%{}".format(username, password))
+		smbclient = cmd("smbclient", "-L", host, "-U", f"{username}%{password}")
 
 		if not smbclient.check():
 			print("First Samba login failed. Wait for 30 seconds and try again ...")
 			time.sleep(30)
 			if not smbclient.check():
-				utils.fail("Samba login failed for {} with {}".format(username, password))
+				utils.fail(f"Samba login failed for {username} with {password}")
 
 
 def test(password="univention"):

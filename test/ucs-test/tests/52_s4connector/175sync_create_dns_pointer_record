@@ -23,7 +23,7 @@ if __name__ == '__main__':
 		ptr_record = uts.random_name()
 		test_address = random.randrange(1, 254)
 		zone_ip_parts = revzone.split('.')
-		reverse_ip = '{2}.{1}.{0}.in-addr.arpa'.format(zone_ip_parts[0], zone_ip_parts[1], zone_ip_parts[2])
+		reverse_ip = f'{zone_ip_parts[2]}.{zone_ip_parts[1]}.{zone_ip_parts[0]}.in-addr.arpa'
 		test_zone_dn = udm.create_object('dns/reverse_zone', subnet=revzone, nameserver=test_nameserver)
 		# dnstests.check_ldap_object(test_zone_dn, 'Reverse Zone', '', '')
 		test_ptr_dn = udm.create_object('dns/ptr_record', address=test_address, superordinate=test_zone_dn, ptr_record=ptr_record)

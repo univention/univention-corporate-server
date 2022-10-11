@@ -86,7 +86,7 @@ def _replace_uid_with_cn(dn):
 
 
 def correct_cleanup(group_dn, groupname2, udm_test_instance, return_new_dn=False):
-	modified_group_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(groupname2), ldap.dn.dn2str(ldap.dn.str2dn(group_dn)[1:4]))
+	modified_group_dn = f'cn={ldap.dn.escape_dn_chars(groupname2)},{ldap.dn.dn2str(ldap.dn.str2dn(group_dn)[1:4])}'
 	udm_test_instance._cleanup['groups/group'].append(modified_group_dn)
 	if return_new_dn:
 		return modified_group_dn
@@ -124,7 +124,7 @@ def wait_for_sync(min_wait_time=0):
 	synctime = ((synctime + 3) * 2)
 	if min_wait_time > synctime:
 		synctime = min_wait_time
-	print("Waiting {0} seconds for sync...".format(synctime))
+	print(f"Waiting {synctime} seconds for sync...")
 	sleep(synctime)
 
 
@@ -147,7 +147,7 @@ def s4_in_sync_mode(sync_mode, configbase='connector'):
 	"""
 	Set the S4-Connector into the given `sync_mode` restart.
 	"""
-	ucr_set(['{}/s4/mapping/syncmode={}'.format(configbase, sync_mode)])
+	ucr_set([f'{configbase}/s4/mapping/syncmode={sync_mode}'])
 	restart_s4connector()
 
 

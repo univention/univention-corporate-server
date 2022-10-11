@@ -34,7 +34,7 @@ class WriteFail(Exception):
 	pass
 
 
-class BaseMailClient(object):
+class BaseMailClient:
 	"""BaseMailClient is a Base (interface) for imaplib.IMAP4_SSL and imaplib.IMAP4
 	Does not work alone, can be used only as a super class of other child class.
 	"""

@@ -24,22 +24,22 @@ def import_users(file):
 
 
 def import_users_new(args):
-	print('*** import_users_new({!r})'.format(args))
-	subprocess.call('/usr/share/ucs-school-import/scripts/ucs-school-testuser-import {}'.format(args), shell=True)
+	print(f'*** import_users_new({args!r})')
+	subprocess.call(f'/usr/share/ucs-school-import/scripts/ucs-school-testuser-import {args}', shell=True)
 	return 0
 
 
 def create_ous(names_of_ous):
 	res = 0
 	for school_name in names_of_ous:
-		res += subprocess.call('/usr/share/ucs-school-import/scripts/create_ou {}'.format(school_name), shell=True)
+		res += subprocess.call(f'/usr/share/ucs-school-import/scripts/create_ou {school_name}', shell=True)
 	return res
 
 
 def remove_ous(names_of_ous):
 	res = 0
 	for school_name in names_of_ous:
-		res += subprocess.call('udm container/ou remove --dn={}'.format(school_name), shell=True)
+		res += subprocess.call(f'udm container/ou remove --dn={school_name}', shell=True)
 	return res
 
 
@@ -116,7 +116,7 @@ def test_umc_admin_auth_udm_load():
 
 
 def s4_user_auth(username, password):
-	result = subprocess.call('smbclient -U %s //localhost/sysvol -c ls %s' % (username, password), shell=True)
+	result = subprocess.call(f'smbclient -U {username} //localhost/sysvol -c ls {password}', shell=True)
 	return result
 
 

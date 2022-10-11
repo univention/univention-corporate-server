@@ -41,7 +41,7 @@ exit 1
 			except UCTTest_DockerApp_UMCInstallFailed as exc:
 				progress, errors = exc.args
 				print(errors)
-				assert {u'message': u'This message goes to ERROR_FILE\n', u'level': u'CRITICAL'} in errors
+				assert {'message': 'This message goes to ERROR_FILE\n', 'level': 'CRITICAL'} in errors
 			else:
 				raise AssertionError('Should not have been installed successfully!')
 		finally:

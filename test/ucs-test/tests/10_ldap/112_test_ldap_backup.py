@@ -133,7 +133,7 @@ def test_run_custom_backup(owner, group, permissions, udm, ucr, cleanup):
     ucr.handler_set([
         "slapd/backup/group=%s" % (group),
         "slapd/backup/owner=%s" % (owner),
-        "slapd/backup/permissions=%o" % (permissions,),
+        f"slapd/backup/permissions={permissions:o}",
     ])
     print(f"** Creating custom backup with {owner}:{group} {permissions:04o}")
     exit_code = create_backup()
@@ -172,7 +172,7 @@ def test_non_existing_owner_group(owner, group, permissions, udm, ucr, cleanup):
     ucr.handler_set([
         "slapd/backup/group=%s" % (group),
         "slapd/backup/owner=%s" % (owner),
-        "slapd/backup/permissions=%o" % (permissions,),
+        f"slapd/backup/permissions={permissions:o}",
     ])
     exit_code = create_backup()
     check_backup_exists()

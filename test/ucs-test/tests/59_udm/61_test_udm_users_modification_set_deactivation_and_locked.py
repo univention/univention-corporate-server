@@ -40,11 +40,11 @@ def print_transitions():
 	print('    disabled         | locked   -> disabled         | locked')
 	print('------------------------------------------------------------')
 	print('\n'.join(transitions_log))
-	print('{} transitions tested.\n'.format(len(transitions_log)))
+	print(f'{len(transitions_log)} transitions tested.\n')
 
 
 def modify_and_check(udm, ldap_base, dn, disabled_state, locked_state):
-	print('*** disabled_state={!r} locked_state={!r}'.format(disabled_state, locked_state))
+	print(f'*** disabled_state={disabled_state!r} locked_state={locked_state!r}')
 	if dn:
 		locked = {}
 		if locked_state == '0':
@@ -55,7 +55,7 @@ def modify_and_check(udm, ldap_base, dn, disabled_state, locked_state):
 			subprocess.call(['python3', '-m', 'univention.lib.account', 'lock', '--dn', dn, '--lock-time', locktime])
 	else:
 		dn, username = udm.create_user(
-			position='cn=users,{}'.format(ldap_base),
+			position=f'cn=users,{ldap_base}',
 			disabled=disabled_state,
 		)
 		if locked_state == '1':
@@ -66,7 +66,7 @@ def modify_and_check(udm, ldap_base, dn, disabled_state, locked_state):
 	smb_disabled = disabled_state == '1' or 'windows' in disabled_state
 	smb_locked = locked_state in ('1')
 	if transitions_log:
-		transitions_log[-1] += ' -> {:16} | {:8}'.format(disabled_state, locked_state)
+		transitions_log[-1] += f' -> {disabled_state:16} | {locked_state:8}'
 
 	# length of whitespace in sambaAcctFlags varies. cannot use utils.verify_ldap_object() to test it
 
@@ -80,6 +80,6 @@ def modify_and_check(udm, ldap_base, dn, disabled_state, locked_state):
 	assert not ((disabled_state == '1' or 'posix' in disabled_state) and user['shadowExpire'][0] != b'1'), 'shadowExpire: expected {!r} found {!r}'.format(['1'], user['shadowExpire'])
 	print('*** OK.')
 	if transitions_log:
-		transitions_log[-1] = 'OK: {}'.format(transitions_log[-1])
-	transitions_log.append('{:16} | {:8}'.format(disabled_state, locked_state))
+		transitions_log[-1] = f'OK: {transitions_log[-1]}'
+	transitions_log.append(f'{disabled_state:16} | {locked_state:8}')
 	return dn

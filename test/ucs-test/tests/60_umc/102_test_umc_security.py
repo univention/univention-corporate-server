@@ -13,7 +13,7 @@ from univention.lib.umc import Unauthorized
 from univention.testing import network, utils
 
 
-class TestSecurityHeaders(object):
+class TestSecurityHeaders:
 
 	@pytest.mark.parametrize('path', [
 		'login/',

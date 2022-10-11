@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3 -s
-# coding: utf-8
 ## desc: "Test the UCS<->AD sync with ignorefilter in {read,write,sync} mode with users"
 ## exposure: dangerous
 ## packages:
@@ -38,7 +37,7 @@ def test_user_sync_from_ad_to_udm_with_ignorefilter(user_class, sync_mode):
 			(basic_ad_user, ad_user_dn, udm_user_dn) = create_con_user(AD, udm_user, adconnector.wait_for_sync)
 			with testing_ucr.UCSTestConfigRegistry():
 				ignorefilter = "(givenName={})".format(udm_user.user["firstname"].decode("utf-8"))
-				ucr_set(["connector/ad/mapping/user/ignorefilter={}".format(ignorefilter)])
+				ucr_set([f"connector/ad/mapping/user/ignorefilter={ignorefilter}"])
 				adconnector.restart_adconnector()
 				udm_user.user["firstname"] = udm_user.user["firstname"] + udm_user.user["lastname"]
 				print("\nModifying AD user\n")

@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3 -svv --tb=native
-# -*- coding: utf-8 -*-
 ## desc: Check Python 2 + 3 compatibility and idempotency of UCR templates
 ## tags: [apptest]
 ## exposure: safe
@@ -52,7 +51,7 @@ exec echo "$?" >{1[ret]}
 def tmpfile(request):
 	tmpdir = py.path.local(tempfile.mkdtemp())
 	request.addfinalizer(lambda: tmpdir.remove(rec=1))
-	return lambda pyver, suffix: tmpdir.join("ucr{0}.{1}".format(pyver, suffix))
+	return lambda pyver, suffix: tmpdir.join(f"ucr{pyver}.{suffix}")
 
 
 @pytest.fixture(scope="module")
@@ -106,10 +105,10 @@ def test_configfile_python_compatibility(ucr_config_file, python_versions, dpkg)
 		data = fn["out"].read_text('ISO8859-1').rstrip('\n')
 		ret = int(fn["ret"].read().strip())
 
-		cmd_ucr = ["python{0}".format(pyver), "-m", "coverage", "report"]
+		cmd_ucr = [f"python{pyver}", "-m", "coverage", "report"]
 		cov = subprocess.check_output(cmd_ucr).decode('UTF-8', 'replace')
 		try:
-			line, = [line for line in cov.splitlines() if str(fn["tmp"]) in line]
+			line, = (line for line in cov.splitlines() if str(fn["tmp"]) in line)
 			_name, _stmts, _miss, coverage = line.split()
 		except ValueError:
 			coverage = "?"

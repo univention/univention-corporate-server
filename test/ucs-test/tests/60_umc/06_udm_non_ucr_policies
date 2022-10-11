@@ -18,7 +18,7 @@ from umc import UMCBase
 class TestUMCnonUCRpolicies(UMCBase):
 
 	def __init__(self):
-		super(TestUMCnonUCRpolicies, self).__init__()
+		super().__init__()
 		self.UDM = None
 
 		self.base_container_dn = ''
@@ -214,7 +214,7 @@ class TestUMCnonUCRpolicies(UMCBase):
 		Asserts that 'in_fact' equals 'should_be'.
 		"""
 		if in_fact != should_be:
-			utils.fail("The user object policy was reported as '%s', while should be '%s'" % (in_fact, should_be))
+			utils.fail(f"The user object policy was reported as '{in_fact}', while should be '{should_be}'")
 
 	def check_policies(self, length, pw_length, user_dn, user_policy_dn=None):
 		"""
@@ -224,7 +224,7 @@ class TestUMCnonUCRpolicies(UMCBase):
 		(('length', value), ('pwLength', value)) named 'in_fact'.
 		Calls assertion method with 'should_be' and 'in_fact' sets.
 		"""
-		should_be = set((('length', length), ('pwLength', pw_length)))
+		should_be = {('length', length), ('pwLength', pw_length)}
 		obj_policy = self.get_user_policy(user_dn, user_policy_dn)
 
 		in_fact = set()

@@ -50,7 +50,7 @@ def missing_ini_file():
 	fname = '/tmp/missing.ini'
 	try:
 		os.unlink(fname)
-	except EnvironmentError:
+	except OSError:
 		pass
 	return fname
 

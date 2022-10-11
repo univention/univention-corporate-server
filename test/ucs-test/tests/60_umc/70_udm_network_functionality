@@ -21,7 +21,7 @@ class TestUMCNetworkFunctionality(UDMModule):
 
     def __init__(self):
         """Test Class constructor"""
-        super(TestUMCNetworkFunctionality, self).__init__()
+        super().__init__()
         self.ldap_base = ''
         self.test_network = ''
         self.test_network_dn = ''

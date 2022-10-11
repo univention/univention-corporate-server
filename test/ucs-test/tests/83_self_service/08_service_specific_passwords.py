@@ -25,7 +25,7 @@ test_lib = os.environ.get('UCS_TEST_LIB', 'univention.testing.apptest')
 try:
 	test_lib = importlib.import_module(test_lib)
 except ImportError:
-	print('Could not import {}. Maybe set $UCS_TEST_LIB'.format(test_lib))
+	print(f'Could not import {test_lib}. Maybe set $UCS_TEST_LIB')
 	sys.exit(1)
 
 

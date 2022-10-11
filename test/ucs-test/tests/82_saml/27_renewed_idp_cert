@@ -23,13 +23,13 @@ def renew_sso_cert():
 	subprocess.check_call(['univention-certificate', 'new', '-name', "ucs-sso." + domainname, '-days', '100'])
 	subprocess.check_call([
 		"cp",
-		"/etc/univention/ssl/ucs-sso.{domainname}/cert.pem".format(domainname=domainname),
-		"/etc/simplesamlphp/ucs-sso.{domainname}-idp-certificate.crt".format(domainname=domainname)
+		f"/etc/univention/ssl/ucs-sso.{domainname}/cert.pem",
+		f"/etc/simplesamlphp/ucs-sso.{domainname}-idp-certificate.crt"
 	])
 	subprocess.check_call([
 		"cp",
-		"/etc/univention/ssl/ucs-sso.{domainname}/private.key".format(domainname=domainname),
-		"/etc/simplesamlphp/ucs-sso.{domainname}-idp-certificate.key".format(domainname=domainname)
+		f"/etc/univention/ssl/ucs-sso.{domainname}/private.key",
+		f"/etc/simplesamlphp/ucs-sso.{domainname}-idp-certificate.key"
 	])
 	subprocess.check_call(["systemctl", "restart", "univention-saml"])
 
@@ -39,7 +39,7 @@ def reload_idp_metadata():
 	subprocess.check_call([
 		"ucr",
 		"set",
-		"umc/saml/idp-server={idp_metadata_umc}".format(idp_metadata_umc=idp_metadata_umc)
+		f"umc/saml/idp-server={idp_metadata_umc}"
 	])
 
 

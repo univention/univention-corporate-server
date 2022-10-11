@@ -35,8 +35,8 @@ def main():
 			)
 			lo = uldap.getMachineConnection()
 			krb5PrincipalName = lo.search(filter='(&(objectClass=univentionHost)(cn={}))'.format(ucr.get('hostname')))[0][1]['krb5PrincipalName'][0].decode('UTF-8')
-			print('\n\nkrb5PrincipalName = {}\n\n'.format(krb5PrincipalName))
-			radtest(krb5PrincipalName, open('/etc/machine.secret', 'r').read().strip())
+			print(f'\n\nkrb5PrincipalName = {krb5PrincipalName}\n\n')
+			radtest(krb5PrincipalName, open('/etc/machine.secret').read().strip())
 
 
 if __name__ == '__main__':

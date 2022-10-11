@@ -33,7 +33,7 @@ except ImportError:
 		pass
 
 
-class Test(object):
+class Test:
 
 	def __init__(self):
 		self.username = uts.random_username()
@@ -55,7 +55,7 @@ class Test(object):
 			udm.create_user(username=self.username, password=self.password)
 
 			print("Waiting for DRS replication...")
-			wait_for_drs_replication("(sAMAccountName=%s)" % (self.username,), attrs="objectSid")
+			wait_for_drs_replication(f"(sAMAccountName={self.username})", attrs="objectSid")
 
 			self.start_processes()
 			self.check_processes()
@@ -68,7 +68,7 @@ class Test(object):
 
 	def smbclient(self):
 		print("Forking %d processes..." % (len(self.innerDelay),))
-		cmd = ("/usr/bin/smbclient", "-U%s%%%s" % (self.username, self.password), "//localhost/netlogon")
+		cmd = ("/usr/bin/smbclient", f"-U{self.username}%{self.password}", "//localhost/netlogon")
 		with open(os.path.devnull, 'wb') as null:
 			for delay in self.innerDelay:
 				subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=null, stderr=null)
@@ -77,7 +77,7 @@ class Test(object):
 	def check_processes(self):
 		expectedResult = self.amountPerRound * self.totalRounds
 		result = Test.checkResult(expectedResult)
-		print("%s of %s have been successful." % (result, expectedResult))
+		print(f"{result} of {expectedResult} have been successful.")
 		if result == expectedResult:
 			sys.exit(0)
 		else:
@@ -124,7 +124,7 @@ class Test(object):
 		if not homedir_mount:
 			univention.config_registry.handler_unset(['homedir/mount'])
 		else:
-			univention.config_registry.handler_set(['homedir/mount=%s' % (homedir_mount,)])
+			univention.config_registry.handler_set([f'homedir/mount={homedir_mount}'])
 
 
 if __name__ == "__main__":

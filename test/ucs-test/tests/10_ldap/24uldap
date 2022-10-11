@@ -25,7 +25,7 @@ ucr = ConfigRegistry()
 ucr.load()
 
 
-class FakeUcr(object):
+class FakeUcr:
 
     def __init__(self, values, defaults=True):
         self.values = dict(ucr.items()) if defaults else {}
@@ -36,7 +36,7 @@ class FakeUcr(object):
         self.tmp = NamedTemporaryFile()
         self.tmp.write(b'# univention_ base.conf\n\n')
         for key, value in self.values.items():
-            self.tmp.write('\n{}: {}'.format(key, value).encode('UTF-8'))
+            self.tmp.write(f'\n{key}: {value}'.encode())
         self.tmp.flush()
         environ['UNIVENTION_BASECONF'] = self.tmp.name
 
@@ -121,7 +121,7 @@ class TestMachineConnection(TestCase):
             self.assertEqual(access.host, ucr_fake.get('ldap/server/addition'))
 
     def testAdditionDefaultUp(self):
-        alt_servers = ['127.0.0.{}'.format(i) for i in range(1, 200)]
+        alt_servers = [f'127.0.0.{i}' for i in range(1, 200)]
         with FakeUcr({'ldap/server/addition': ' '.join(alt_servers)}):
             ucr_fake = ConfigRegistry()
             ucr_fake.load()
@@ -134,7 +134,7 @@ class TestMachineConnection(TestCase):
         def __testRandomServer():
             for role in ('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'):
                 # test first server
-                alt_servers = ['127.0.0.{}'.format(i) for i in range(1, 200)]
+                alt_servers = [f'127.0.0.{i}' for i in range(1, 200)]
                 with FakeUcr({'server/role': role, 'ldap/server/addition': ' '.join(alt_servers)}):
                     ucr_fake = ConfigRegistry()
                     ucr_fake.load()
@@ -144,7 +144,7 @@ class TestMachineConnection(TestCase):
                         self.assertIn(access.host, [ucr_fake.get('ldap/server/name')])  # on DC systems, the local system is used first
 
                 # test other servers
-                alt_servers = ['127.0.0.{}'.format(i) for i in range(1, 200)]
+                alt_servers = [f'127.0.0.{i}' for i in range(1, 200)]
                 with FakeUcr({'server/role': role, 'ldap/server/name': 'does.not.exist', 'ldap/server/addition': ' '.join(alt_servers)}):
                     ucr_fake = ConfigRegistry()
                     ucr_fake.load()
@@ -159,7 +159,7 @@ class TestMachineConnection(TestCase):
                     self.assertNotIn(''.join(used_servers), ''.join(alt_servers))
 
             # test memberserver
-            alt_servers = ['127.0.0.{}'.format(i) for i in range(1, 20)]
+            alt_servers = [f'127.0.0.{i}' for i in range(1, 20)]
             with FakeUcr({'server/role': 'memberserver', 'ldap/server/name': 'does.not.exist', 'ldap/server/addition': ' '.join(alt_servers)}):
                 ucr_fake = ConfigRegistry()
                 ucr_fake.load()
@@ -182,7 +182,7 @@ class TestMachineConnection(TestCase):
     @skipUnless(exists('/var/run/slapd/ldapi'), 'Missing local LDAP server')
     def testNonRandomServer(self):
         expected_server = '127.1.1.1'
-        alt_servers = ['255.255.255.255'] * 2 + [expected_server] + ['127.0.0.{}'.format(i) for i in range(1, 200)]
+        alt_servers = ['255.255.255.255'] * 2 + [expected_server] + [f'127.0.0.{i}' for i in range(1, 200)]
         with FakeUcr({'ldap/server/name': '255.255.255.255', 'ldap/server/addition': ' '.join(alt_servers)}):
             ucr_fake = ConfigRegistry()
             ucr_fake.load()

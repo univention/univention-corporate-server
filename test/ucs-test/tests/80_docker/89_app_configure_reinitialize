@@ -14,7 +14,7 @@ def assert_content(app, expected):
 	configured_file = app.file('/tmp/configure.output')
 	print('Searching in', configured_file, 'for', expected)
 	content = open(configured_file).read()
-	assert content == expected, '%r != %r' % (content, expected)
+	assert content == expected, f'{content!r} != {expected!r}'
 
 
 if __name__ == '__main__':

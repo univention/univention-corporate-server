@@ -11,7 +11,7 @@ from univention.testing.umc import Client
 import quota_cache as qc
 
 
-class QuotaCheck(object):
+class QuotaCheck:
 
 	def __init__(self, quota_type="usrquota", fs_type="ext4"):
 		ucr = ucr_test.UCSTestConfigRegistry()
@@ -36,17 +36,17 @@ class QuotaCheck(object):
 		options = {"filter": "*", "partitionDevice": loop_dev}
 		user_quotas = self.umc_client.umc_command('quota/users/query', options).result
 		expected_user_quota = {
-			u'fileLimitHard': u'{}'.format(expected_values.get('fhard', 15)),
-			u'fileLimitSoft': u'{}'.format(expected_values.get('fsoft', 10)),
-			u'fileLimitTime': u'-',
-			u'fileLimitUsed': u'1',
-			u'id': u'{}@{}'.format(self.username, loop_dev),
-			u'partitionDevice': u'{}'.format(loop_dev),
-			u'sizeLimitHard': float(expected_values.get('bhard', 4)),
-			u'sizeLimitSoft': float(expected_values.get('bsoft', 1)),
-			u'sizeLimitTime': u'-',
-			u'sizeLimitUsed': float(0),
-			u'user': u'{}'.format(self.username),
+			'fileLimitHard': '{}'.format(expected_values.get('fhard', 15)),
+			'fileLimitSoft': '{}'.format(expected_values.get('fsoft', 10)),
+			'fileLimitTime': '-',
+			'fileLimitUsed': '1',
+			'id': f'{self.username}@{loop_dev}',
+			'partitionDevice': f'{loop_dev}',
+			'sizeLimitHard': float(expected_values.get('bhard', 4)),
+			'sizeLimitSoft': float(expected_values.get('bsoft', 1)),
+			'sizeLimitTime': '-',
+			'sizeLimitUsed': float(0),
+			'user': f'{self.username}',
 		}
 		print(expected_user_quota)
 		assert expected_user_quota in user_quotas, "Quota was not set through pam"
@@ -206,7 +206,7 @@ class QuotaCheck(object):
 			self._check_quota_settings(tfs.loop_dev)
 
 	def touch_file(self, mountpoint):
-		print("Write file on filesystem as user: {}".format(self.username))
+		print(f"Write file on filesystem as user: {self.username}")
 		subprocess.check_call([
 			"sudo",
 			"--user",
@@ -228,7 +228,7 @@ class QuotaCheck(object):
 		)
 
 
-class TempFilesystem(object):
+class TempFilesystem:
 
 	def __init__(self, quota_type, fs_type='ext4'):
 		self.filename = "/tmp/30_quota_pam.fs"
@@ -241,7 +241,7 @@ class TempFilesystem(object):
 		subprocess.check_call([
 			"dd",
 			"if=/dev/zero",
-			"of={}".format(self.filename),
+			f"of={self.filename}",
 			"bs=1M",
 			"count=20",
 		])

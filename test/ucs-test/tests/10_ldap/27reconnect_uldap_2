@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner python3
-## -*- coding: utf-8 -*-
 ## desc: test automatic reconnect of uldap.py
 ## tags: [skip_admember,reconnect]
 ## roles: [domaincontroller_master]
@@ -67,7 +66,7 @@ def main():
 			if isinstance(lo, tuple):
 				lo = lo[0]
 
-			print('Starting test set with connection %r' % (lo,))
+			print(f'Starting test set with connection {lo!r}')
 
 			print('Testing lo.search operation...')
 			restart_finished = False
@@ -89,11 +88,11 @@ def main():
 						if 'Server is unavailable'.lower() not in str(exc).lower():
 							raise
 						print('ignore univention.admin.uexceptions.ldapError Server is unavailable')
-				print('LDAP search finished successfully {} times.'.format(count))
+				print(f'LDAP search finished successfully {count} times.')
 			except Exception as exc:
-				print('LDAP modify failed after succeeding {} times.'.format(count))
+				print(f'LDAP modify failed after succeeding {count} times.')
 				print(traceback.format_exc())
-				utils.fail('lo.search() is not restart-safe with %r follow_referral=%r: %s' % (lo, follow_referral, exc,))
+				utils.fail(f'lo.search() is not restart-safe with {lo!r} follow_referral={follow_referral!r}: {exc}')
 
 			# test lo.modify operation
 			restart_finished = False
@@ -103,7 +102,7 @@ def main():
 				old_description = b''
 				while not restart_finished:
 					try:
-						new_description = 'Foo bar {0}'.format(uts.random_string(5)).encode('UTF-8')
+						new_description = f'Foo bar {uts.random_string(5)}'.encode()
 						res = lo.modify(user_dn, [['description', old_description, new_description]])
 						assert res == user_dn
 						old_description = new_description
@@ -116,13 +115,13 @@ def main():
 						if 'Server is unavailable'.lower() not in str(exc).lower():
 							raise
 						print('ignore univention.admin.uexceptions.ldapError Server is unavailable')
-				print('LDAP modify finished successfully {} times.'.format(count))
+				print(f'LDAP modify finished successfully {count} times.')
 			except (INSUFFICIENT_ACCESS, univention.admin.uexceptions.permissionDenied):
 				pass  # On DC Slaves no objects can be modified
 			except Exception as exc:
-				print('LDAP modify failed after succeeding {} times.'.format(count))
+				print(f'LDAP modify failed after succeeding {count} times.')
 				print(traceback.format_exc())
-				utils.fail('lo.modify() is not restart-safe with %r follow_referral=%r: %s' % (lo, follow_referral, exc,))
+				utils.fail(f'lo.modify() is not restart-safe with {lo!r} follow_referral={follow_referral!r}: {exc}')
 
 			# TODO: add a check for rename() and add()
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # UCS test
 #
@@ -50,8 +49,6 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from os.path import basename
 
-import six
-
 import univention.config_registry
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -62,7 +59,7 @@ from univention.testing.decorators import WaitForNonzeroResultOrTimeout
 COMMASPACE = ', '
 
 
-class Mail(object):
+class Mail:
 
 	def __init__(self, timeout=10):
 		self.timeout = timeout
@@ -77,7 +74,7 @@ class Mail(object):
 				if len(part) < buff_size:
 					break
 			return reply
-		except (EnvironmentError, EOFError):
+		except (OSError, EOFError):
 			return reply
 
 	def send_message(self, s, message):
@@ -185,7 +182,7 @@ class ImapMail(Mail):
 				break
 		assert separator is not None, 'Could not find parent folder.'
 		# create subfolder
-		subfolder_name = '{}{}{}'.format(parent, separator, child)
+		subfolder_name = f'{parent}{separator}{child}'
 		rv, data = self.connection.create(subfolder_name)
 		assert rv == "OK", (rv, data)
 		return subfolder_name
@@ -289,7 +286,7 @@ def restart_postfix():
 	cmd = ['/etc/init.d/postfix', 'restart']
 	try:
 		subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
-	except EnvironmentError as ex:
+	except OSError as ex:
 		print(ex, file=sys.stderr)
 
 
@@ -297,7 +294,7 @@ def reload_postfix():
 	cmd = ['/etc/init.d/postfix', 'force-reload']
 	try:
 		subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
-	except EnvironmentError as ex:
+	except OSError as ex:
 		print(ex, file=sys.stderr)
 
 
@@ -309,7 +306,7 @@ def reload_amavis_postfix():
 	):
 		try:
 			subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
-		except EnvironmentError as ex:
+		except OSError as ex:
 			print(ex, file=sys.stderr)
 
 
@@ -454,7 +451,7 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 	assert imap_user, "imap_search_mail: imap_user has not been specified"
 	imap_password = imap_password or "univention"
 	imap_folder = imap_folder or ""
-	assert isinstance(imap_folder, six.string_types), "imap_search_mail: imap_folder is no string"
+	assert isinstance(imap_folder, str), "imap_search_mail: imap_folder is no string"
 
 	if use_ssl:
 		conn = imaplib.IMAP4_SSL(host=server)
@@ -470,11 +467,11 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 			break
 		except AssertionError as exc:
 			if timeout > 0:
-				print("Failed reading folder {!r}. Retrying in 10s. AssertionError: {!s}".format(imap_folder, exc))
+				print(f"Failed reading folder {imap_folder!r}. Retrying in 10s. AssertionError: {exc!s}")
 				timeout -= 10
 				time.sleep(10)
 			else:
-				print("Failed reading folder {!r} for 60s. AssertionError: {!s}".format(imap_folder, exc))
+				print(f"Failed reading folder {imap_folder!r} for 60s. AssertionError: {exc!s}")
 				raise
 
 	foundcnt = 0
@@ -605,7 +602,7 @@ def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permiss
 		basedn = ucr.get('ldap/base')
 	name = uts.random_name()
 	folder_mailaddress = ''
-	if isinstance(mailAddress, six.string_types):
+	if isinstance(mailAddress, str):
 		folder_mailaddress = mailAddress
 	elif mailAddress:
 		folder_mailaddress = '%s@%s' % (name, domain)
@@ -680,7 +677,7 @@ Regards,
 	# use user values if defined
 	if sender:
 		m_sender = sender
-	if recipients and isinstance(recipients, six.string_types):
+	if recipients and isinstance(recipients, str):
 		m_recipients = [recipients]
 	elif recipients and isinstance(recipients, list):
 		m_recipients = recipients
@@ -774,7 +771,7 @@ def check_sending_mail(
 	allowed=True,
 	local=True
 ):
-	token = 'The token is {}.'.format(time.time())
+	token = f'The token is {time.time()}.'
 	try:
 		ret_code = send_mail(
 			recipients=recipient_email,
@@ -797,9 +794,9 @@ def check_sending_mail(
 def set_mail_forward_copy_to_self_ucrv(value):
 	handler_set(
 		[
-			"directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf={}".format(value),
-			"mail/postfix/activate_unionmap_in_virtual_alias_maps={}".format(value),
-			"mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps={}".format(value)
+			f"directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf={value}",
+			f"mail/postfix/activate_unionmap_in_virtual_alias_maps={value}",
+			f"mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps={value}"
 		]
 	)
 	reload_postfix()

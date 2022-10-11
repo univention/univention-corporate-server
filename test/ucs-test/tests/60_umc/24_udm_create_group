@@ -18,7 +18,7 @@ class TestUMCGroupsCreation(UMCBase):
 
     def __init__(self):
         """Test Class constructor"""
-        super(TestUMCGroupsCreation, self).__init__()
+        super().__init__()
         self.ldap_base = None
 
     def create_group(self, groupname, policynames={}):
@@ -58,9 +58,9 @@ class TestUMCGroupsCreation(UMCBase):
         try:
             request_result = self.client.umc_command('udm/put', options, 'groups/group').result
             if not request_result:
-                utils.fail("Request 'udm/put' to add policy to a group with options '%s' failed, hostname %s" % (options, self.hostname))
+                utils.fail(f"Request 'udm/put' to add policy to a group with options '{options}' failed, hostname {self.hostname}")
             if not request_result[0].get('success'):
-                utils.fail("Request 'udm/put' to add policy to a group with options '%s' failed, no success = True in response, hostname %s" % (options, self.hostname))
+                utils.fail(f"Request 'udm/put' to add policy to a group with options '{options}' failed, no success = True in response, hostname {self.hostname}")
         except Exception as exc:
             utils.fail("Exception while making 'udm/put' request: %s" % exc)
 
@@ -73,7 +73,7 @@ class TestUMCGroupsCreation(UMCBase):
         try:
             request_result = self.client.umc_command('udm/get', options, 'groups/group').result
             if not request_result:
-                utils.fail("Request 'udm/get' with options '%s' failed, hostname '%s'" % (options, self.hostname))
+                utils.fail(f"Request 'udm/get' with options '{options}' failed, hostname '{self.hostname}'")
             return request_result
         except Exception as exc:
             utils.fail("Exception while making 'udm/get' request: %s" % exc)
@@ -94,19 +94,19 @@ class TestUMCGroupsCreation(UMCBase):
             if not self.check_obj_exists(test_groupname, "groups/group"):
                 utils.fail("Failed to query the newly created group '%s'" % test_groupname)
 
-            print("Adding a '%s' policy to a test group '%s'" % (policyname, test_groupname))
+            print(f"Adding a '{policyname}' policy to a test group '{test_groupname}'")
             self.add_group_policy(test_groupname, policyname)
 
-            print("Checking test group '%s' policies for '%s'" % (test_groupname, policyname))
+            print(f"Checking test group '{test_groupname}' policies for '{policyname}'")
             group_policies = self.get_group_by_name(test_groupname)[0].get('$policies$')
             if not group_policies:
-                utils.fail("The group policies for '%s' are empty or not present after '%s' policy was applied to group" % (test_groupname, policyname))
+                utils.fail(f"The group policies for '{test_groupname}' are empty or not present after '{policyname}' policy was applied to group")
 
             group_policies = group_policies.get('policies/umc')
             if not group_policies:
-                utils.fail("The group 'policies/umc' field for '%s' is empty or not present after '%s' policy was applied to group" % (test_groupname, policyname))
+                utils.fail(f"The group 'policies/umc' field for '{test_groupname}' is empty or not present after '{policyname}' policy was applied to group")
             if not ('cn=' + policyname + ',cn=UMC,cn=policies,' + self.ldap_base in group_policies):
-                utils.fail("The policy '%s' is not in a group '%s' policies '%s'" % (policyname, test_groupname, group_policies))
+                utils.fail(f"The policy '{policyname}' is not in a group '{test_groupname}' policies '{group_policies}'")
         finally:
             print("Removing created test group if it exists")
             if self.check_obj_exists(test_groupname, "groups/group"):

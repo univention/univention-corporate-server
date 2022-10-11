@@ -40,7 +40,7 @@ if __name__ == '__main__':
 		students=8500,
 		classes=400,
 	)
-	school_names = ['School{:0>2}{}'.format(num, uts.random_name(5)) for num in range(test_user_kwargs['ous'])]
+	school_names = [f'School{num:0>2}{uts.random_name(5)}' for num in range(test_user_kwargs['ous'])]
 	cmd_args = '-v --teachers {teachers} --staff {staff} --staffteachers {staffteachers} --students {students} ' \
 		'--classes {classes} --csvfile {CSV_IMPORT_FILE} {school_names}'.format(school_names=' '.join(school_names), **test_user_kwargs)
 

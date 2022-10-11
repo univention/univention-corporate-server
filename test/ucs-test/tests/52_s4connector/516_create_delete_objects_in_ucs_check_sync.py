@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -vv
-# coding: utf-8
 ## desc: "Create and delete objects in ucs, check for leftovers or falsely removed objects"
 ## exposure: dangerous
 ## timeout: 7200
@@ -34,7 +33,7 @@ def stderr(msg):
     print(msg, file=sys.stderr)
 
 
-class Users(object):
+class Users:
 
     def __init__(self):
         configRegistry.load()  # why is this necessary? shouldn't modules.update or init be enough
@@ -122,7 +121,7 @@ def test_no_leftovers_after_delete_in_ucs():
         try:
             # create users
             for i in range(0, create_users):
-                username = "%s%s" % (name, i)
+                username = f"{name}{i}"
                 user_objects.create_user(username)
             # wait for the connector to pick up these changes
             time.sleep(5)
@@ -141,10 +140,10 @@ def test_no_leftovers_after_delete_in_ucs():
             if not user_objects.check_UCS_added_table_is_clean():
                 fail("some uuid were not removed from s4internal.sqlite->UCS added")
             # check if we really hit the problem (by checking for a specific log message)
-            logentry = 'uid=%s%s,.* sync ignored: does not exist in UCS but has already been added in the past' % (name, create_users - 1)
+            logentry = f'uid={name}{create_users - 1},.* sync ignored: does not exist in UCS but has already been added in the past'
             logfile = '/var/log/univention/connector-s4.log'
             if subprocess.call(['grep', '-q', logentry, logfile]) != 0:
-                fail('The log message that indicates that we really hit the problem is missing in %s: %s' % (logfile, logentry))
+                fail(f'The log message that indicates that we really hit the problem is missing in {logfile}: {logentry}')
         finally:
             # cleanup
             user_objects.delete_users()
@@ -173,7 +172,7 @@ def test_do_not_delete_objects_with_different_id():
         try:
             # create users
             for i in range(0, create_users):
-                username = "%s%s" % (name, i)
+                username = f"{name}{i}"
                 user_objects.create_user(username)
             # wait for the connector to pick up these changes
             wait_for_drs_replication(filter_format('(sAMAccountName=%s)', (username,)))
@@ -181,7 +180,7 @@ def test_do_not_delete_objects_with_different_id():
             # new delete everything and (re) create, without wait
             user_objects.delete_users()
             for i in range(0, create_users):
-                username = "%s%s" % (name, i)
+                username = f"{name}{i}"
                 user_objects.create_user(username)
             # wait for the connector to pick up these changes
             wait_for_drs_replication(filter_format('(sAMAccountName=%s)', (username,)))
@@ -190,10 +189,10 @@ def test_do_not_delete_objects_with_different_id():
             if not user_objects.check_every_user_is_exists():
                 fail("not all users (uid=%s*) exists, but should" % name)
             # check if we really hit the problem (by checking for a specific log message)
-            logentry = 'delete_in_ucs: object uid=%s%s,.* already deleted in UCS, ignoring delete' % (name, create_users - 1)
+            logentry = f'delete_in_ucs: object uid={name}{create_users - 1},.* already deleted in UCS, ignoring delete'
             logfile = '/var/log/univention/connector-s4.log'
             if subprocess.call(['grep', '-q', logentry, logfile]) != 0:
-                fail('The log message that indicates that we really hit the problem is missing in %s: %s' % (logfile, logentry))
+                fail(f'The log message that indicates that we really hit the problem is missing in {logfile}: {logentry}')
 
         finally:
             # cleanup

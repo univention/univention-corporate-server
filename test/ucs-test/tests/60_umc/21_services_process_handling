@@ -15,7 +15,7 @@ class TestUMCServiceProcessHandling(ServiceModule):
 
     def __init__(self, service_name):
         """Test Class constructor"""
-        super(TestUMCServiceProcessHandling, self).__init__()
+        super().__init__()
         self.service_name = service_name
         self.initial_service_state_running = None
 

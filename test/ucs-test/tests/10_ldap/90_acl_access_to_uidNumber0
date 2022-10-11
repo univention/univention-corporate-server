@@ -24,7 +24,7 @@ class Hacked(Exception):
 	pass
 
 
-class HackingAttempt(object):
+class HackingAttempt:
 
 	def __init__(self, ml, search_filter=None, exclude=None):
 		self.ml = ml
@@ -44,17 +44,17 @@ class HackingAttempt(object):
 class HackingAttemptAdd(HackingAttempt):
 
 	def __init__(self, ml, search_filter=None, exclude=None):
-		super(HackingAttemptAdd, self).__init__(ml, search_filter, exclude)
+		super().__init__(ml, search_filter, exclude)
 		self.uid = uts.random_username()
 
 	def modlists(self, basedn):
-		for basedn, ml in super(HackingAttemptAdd, self).modlists(basedn):
+		for basedn, ml in super().modlists(basedn):
 			for attr in ['cn', 'krb5PrincipalName', 'SAMLServiceProviderIdentifier', 'sambaDomainName', 'dc', 'univentionAppID', 'relativeDomainName', 'uid', 'ou', 'zoneName', 'univentionVirtualMachineUUID']:
 				if any(x[0] == attr for x in ml):
-					yield ('%s=%s,%s' % (attr, self.uid, basedn), ml + [('uid', b'', self.uid.encode("UTF-8")), ('cn', b'', self.uid.encode("UTF-8"))])
+					yield (f'{attr}={self.uid},{basedn}', ml + [('uid', b'', self.uid.encode("UTF-8")), ('cn', b'', self.uid.encode("UTF-8"))])
 
 
-class Hacking(object):
+class Hacking:
 
 	def __init__(self, creations=None, modifications=None):
 		self.creations = creations or _creations
@@ -64,17 +64,17 @@ class Hacking(object):
 	def __call__(self, lo):
 		failures = set()
 		lo_admin = utils.get_ldap_connection()
-		print('Testing for %r' % (lo.binddn,), file=sys.stderr)
+		print(f'Testing for {lo.binddn!r}', file=sys.stderr)
 
 		for dn, al in self.testcases(self.creations):
 			try:
 				lo.add(dn, al)
 			except ldap.INSUFFICIENT_ACCESS:
-				print("OK: ldapadd of %s denied" % (dn,))
+				print(f"OK: ldapadd of {dn} denied")
 			except (ldap.OBJECT_CLASS_VIOLATION, ldap.CONSTRAINT_VIOLATION, ldap.TYPE_OR_VALUE_EXISTS, ldap.NO_SUCH_OBJECT) as exc:
-				print('SKIP: %s: %s' % (dn, exc))
+				print(f'SKIP: {dn}: {exc}')
 			else:
-				print("FAIL: ldapadd of %s (al=%r) successful" % (dn, al), file=sys.stderr)
+				print(f"FAIL: ldapadd of {dn} (al={al!r}) successful", file=sys.stderr)
 				failures.add(dn)
 				lo_admin.delete(dn)
 
@@ -82,11 +82,11 @@ class Hacking(object):
 			try:
 				lo.modify(dn, ml)
 			except ldap.INSUFFICIENT_ACCESS:
-				print("OK: ldapmodify of %s denied" % (dn,))
+				print(f"OK: ldapmodify of {dn} denied")
 			except (ldap.OBJECT_CLASS_VIOLATION, ldap.CONSTRAINT_VIOLATION, ldap.TYPE_OR_VALUE_EXISTS, ldap.NO_SUCH_OBJECT, ldap.ALREADY_EXISTS) as exc:
-				print('SKIP: %s: %s' % (dn, exc))
+				print(f'SKIP: {dn}: {exc}')
 			else:
-				print("FAIL: ldapmodify of %s (ml=%r) successful" % (dn, ml), file=sys.stderr)
+				print(f"FAIL: ldapmodify of {dn} (ml={ml!r}) successful", file=sys.stderr)
 				failures.add(dn)
 				lo_admin.modify(dn, [(attr, new, old) for attr, old, new in ml])
 		print('')

@@ -50,7 +50,7 @@ def main():
 			if not return_code:
 				exit_code = RETURN_FAIL_CODE
 	except OSError as error:
-		print("An error occurred with: %s" % (error, ), file=sys.stderr)
+		print(f"An error occurred with: {error}", file=sys.stderr)
 		sys.exit(RETURN_FAIL_CODE)
 
 	sys.exit(exit_code)
@@ -65,10 +65,10 @@ def check_owner_groupname(filename, shouldowner, shouldgroup):
 	owner = pwd.getpwuid(uid)[0]  # get username/owner
 	group = grp.getgrgid(gid)[0]  # get groupname
 	if owner != shouldowner:
-		print("ERROR: '%s' has wrong owner '%s' but should be '%s'" % (filename, owner, shouldowner), file=sys.stderr)
+		print(f"ERROR: '{filename}' has wrong owner '{owner}' but should be '{shouldowner}'", file=sys.stderr)
 		return_code = False
 	if group != shouldgroup:
-		print("ERROR: '%s' has wrong group '%s' but should be '%s'" % (filename, group, shouldgroup), file=sys.stderr)
+		print(f"ERROR: '{filename}' has wrong group '{group}' but should be '{shouldgroup}'", file=sys.stderr)
 		return_code = False
 	return return_code
 
@@ -81,10 +81,10 @@ def check_permissions(filename):
 	if (stat.S_IRUSR & stat_info_stmode) and (stat.S_IWUSR & stat_info_stmode) and (stat.S_IRGRP & stat_info_stmode):
 		pass
 	elif (stat.S_IXUSR | stat.S_IWGRP | stat.S_IXGRP | stat.S_IRWXO) & stat_info_stmode:
-		print("ERROR: '%s' has wrong permissions %04o. Should be exactly -rw-r-----" % (filename, stat_info_stmode), file=sys.stderr)
+		print(f"ERROR: '{filename}' has wrong permissions {stat_info_stmode:04o}. Should be exactly -rw-r-----", file=sys.stderr)
 		return_code = False
 	else:
-		print("ERROR: '%s' has wrong permissions %04o. Should be exactly -rw-r-----" % (filename, stat_info_stmode), file=sys.stderr)
+		print(f"ERROR: '{filename}' has wrong permissions {stat_info_stmode:04o}. Should be exactly -rw-r-----", file=sys.stderr)
 		return_code = False
 	return return_code
 

@@ -37,7 +37,7 @@ def search_templates(old_admin_name, new_admin_name, server_role):
 
 	# find all template files by iterating over all referenced templates in the ucr *.info files
 	for template in templates:
-		with open(template, 'r') as content_file:
+		with open(template) as content_file:
 			# find all lines that start with File or Multifile and strip it to get the paths of the template files
 			file_content += ['/' + file_pattern.sub('', line).strip() for line in content_file.readlines() if file_pattern.match(line)]
 
@@ -61,18 +61,18 @@ def search_templates(old_admin_name, new_admin_name, server_role):
 		if not os.path.isfile(file) or file in ignore:
 			continue
 
-		print('Checking template %s' % (file,))
+		print(f'Checking template {file}')
 		with open(file, 'rb') as content_file:
 			content = content_file.read().decode('UTF-8', 'replace')
 
 		if file in should_contain_admin and new_admin_name not in content:
-			utils.fail('FAIL: New admin name %s not in %s' % (new_admin_name, file))
+			utils.fail(f'FAIL: New admin name {new_admin_name} not in {file}')
 
 		if old_admin_name in content:
 			lines_containing = [line for line in content.splitlines() if old_admin_name in line and 'Administrators' not in line]
 			if lines_containing:
 				print('\n'.join(lines_containing))
-				utils.fail('FAIL: Old group name %s still in file %s' % (old_admin_name, file))
+				utils.fail(f'FAIL: Old group name {old_admin_name} still in file {file}')
 
 
 def wait_for_ucr(iterations, admin_name, ucr_test):
@@ -85,7 +85,7 @@ def wait_for_ucr(iterations, admin_name, ucr_test):
 				break
 			time.sleep(15)
 		else:
-			print('UCR variable users/default/administrator is set correctly to %s' % (ucr_name,))
+			print(f'UCR variable users/default/administrator is set correctly to {ucr_name}')
 			success = True
 			break
 	return success, ucr_name
@@ -98,18 +98,18 @@ def test_rename_domain_users():
 		server_role = ucr_test.get('server/role')
 		ldap_base = ucr_test.get('ldap/base')
 		old_admin_name = ucr_test.get('users/default/administrator', 'Administrator')
-		old_admin_dn = "uid=%s,cn=users,%s" % (escape_dn_chars(old_admin_name), ldap_base)
+		old_admin_dn = f"uid={escape_dn_chars(old_admin_name)},cn=users,{ldap_base}"
 		if os.path.exists('/etc/ldap.secret'):
-			credentials = ['--binddn', 'cn=admin,%s' % (ldap_base,), '--bindpwdfile', '/etc/ldap.secret']
+			credentials = ['--binddn', f'cn=admin,{ldap_base}', '--bindpwdfile', '/etc/ldap.secret']
 		else:
-			second_admin = udm.create_user(append={'groups': ['cn=Domain Admins,cn=groups,%s' % (ldap_base,)]})[0]
+			second_admin = udm.create_user(append={'groups': [f'cn=Domain Admins,cn=groups,{ldap_base}']})[0]
 			credentials = ['--binddn', second_admin, '--bindpwd', 'univention']
 
 		new_admin_name = uts.random_name()
-		new_admin_dn = "uid=%s,cn=users,%s" % (escape_dn_chars(new_admin_name), ldap_base)
+		new_admin_dn = f"uid={escape_dn_chars(new_admin_name)},cn=users,{ldap_base}"
 		try:
 			print('\n##################################################################')
-			print('Renaming default administrator %s to %s' % (old_admin_name, new_admin_name))
+			print(f'Renaming default administrator {old_admin_name} to {new_admin_name}')
 			print('##################################################################\n')
 			print(old_admin_dn)
 			print(new_admin_name)
@@ -120,12 +120,12 @@ def test_rename_domain_users():
 
 			# Check UCR Variable
 			print('\n##################################################################')
-			print('Checking if UCR Variable users/default/administrator is set to %s' % (new_admin_name,))
+			print(f'Checking if UCR Variable users/default/administrator is set to {new_admin_name}')
 			print('##################################################################\n')
 
 			success, ucr_name = wait_for_ucr(3, new_admin_name, ucr_test)
 			if not success:
-				utils.fail('UCR variable users/default/administrator was set to %s instead of %s' % (old_admin_name, new_admin_name))
+				utils.fail(f'UCR variable users/default/administrator was set to {old_admin_name} instead of {new_admin_name}')
 
 			# Search templates
 			print('\n##################################################################')
@@ -152,7 +152,7 @@ def test_rename_domain_users():
 			success, ucr_name = wait_for_ucr(10, old_admin_name, ucr_test)
 			if not success:
 				univention.config_registry.handler_set(['users/default/administrator=Administrator'])
-				utils.fail('UCR variable users/default/administrator was set to %s instead of %s' % (ucr_name, old_admin_name))
+				utils.fail(f'UCR variable users/default/administrator was set to {ucr_name} instead of {old_admin_name}')
 
 
 if __name__ == '__main__':

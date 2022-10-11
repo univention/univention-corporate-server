@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -v
-# -*- coding: utf-8 -*-
 ## desc: Test users/user accountActivationDate
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -51,7 +50,7 @@ def test_disabled_user_creation_activation(disabled_cronjob, udm, ucr):
 	"""Check cron based activation of users/user with accountActivationDate"""
 
 	now = datetime.now()
-	with open("/etc/timezone", "r") as tzfile:
+	with open("/etc/timezone") as tzfile:
 		timezone = tzfile.read().strip()
 	ts_later = (now + timedelta(minutes=1)).strftime("%Y-%m-%d %H:%M " + timezone)
 	userdn, username = udm.create_user(accountActivationDate=ts_later)
@@ -82,7 +81,7 @@ def test_disabled_user_creation_activation(disabled_cronjob, udm, ucr):
 def test_disabled_user_creation(disabled_cronjob, udm):
 	"""Create users/user with accountActivationDate"""
 	now = datetime.now()
-	with open("/etc/timezone", "r") as tzfile:
+	with open("/etc/timezone") as tzfile:
 		timezone = tzfile.read().strip()
 	ts_earlier = now.strftime("%Y-%m-%d %H:%M " + timezone)
 	ts_later = (now + timedelta(minutes=2)).strftime("%Y-%m-%d %H:%M " + timezone)
@@ -122,7 +121,7 @@ def test_disabled_user_creation(disabled_cronjob, udm):
 def test_disabled_and_expired_user_creation(disabled_cronjob, udm):
 	"""Create users/user with accountActivationDate and userexpiry"""
 	now = datetime.now()
-	with open("/etc/timezone", "r") as tzfile:
+	with open("/etc/timezone") as tzfile:
 		timezone = tzfile.read().strip()
 	ts_earlier = now.strftime("%Y-%m-%d %H:%M " + timezone)
 	ts_later = (now + timedelta(minutes=2)).strftime("%Y-%m-%d %H:%M " + timezone)
@@ -182,7 +181,7 @@ def test_disabled_and_expired_user_creation(disabled_cronjob, udm):
 def test_access_to_accountActivationDate(disabled_cronjob, udm):
 	"""Check access to accountActivationDate"""
 	now = datetime.now()
-	with open("/etc/timezone", "r") as tzfile:
+	with open("/etc/timezone") as tzfile:
 		timezone = tzfile.read().strip()
 	ts_earlier = now.strftime("%Y-%m-%d %H:%M " + timezone)
 	ts_later = (now + timedelta(minutes=2)).strftime("%Y-%m-%d %H:%M " + timezone)

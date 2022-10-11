@@ -19,7 +19,7 @@ def restart_umc():
 	time.sleep(3)  # Wait for the umc to be ready to answer requests.
 
 
-class move_idp_metadata(object):
+class move_idp_metadata:
 
 	metadata_dir = "/usr/share/univention-management-console/saml/idp/"
 

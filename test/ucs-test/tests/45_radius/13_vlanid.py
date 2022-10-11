@@ -28,7 +28,7 @@ def default_vlan_id(vlan_id, restart_freeradius):
 	if not vlan_id:
 		ucr_unset(['freeradius/vlan-id'])
 	else:
-		ucr_set(['freeradius/vlan-id={}'.format(vlan_id)])
+		ucr_set([f'freeradius/vlan-id={vlan_id}'])
 	if restart_freeradius:
 		restart_service('freeradius')
 
@@ -57,14 +57,14 @@ def radius_auth(username, password, user_type, auth_method):
 		if auth_method in ('pap', 'mschap'):
 			p = subprocess.run(['radtest', '-x', '-t', auth_method, username, password, 'localhost', '0', 'testing123'], capture_output=True, text=True, check=True)
 		elif auth_method == 'eap':
-			credentials = 'user-name={username}, user-password={password}'.format(username=username, password=password)
+			credentials = f'user-name={username}, user-password={password}'
 			echo_username_password = subprocess.Popen(('echo', credentials), stdout=subprocess.PIPE)
 			p = subprocess.run(['radeapclient', '-x', 'localhost', 'auth', 'testing123'], stdin=echo_username_password.stdout, capture_output=True, text=True, check=True)
 			echo_username_password.wait()
 		else:
-			raise ValueError("Unexpected radius authmethod '{}'".format(auth_method))
+			raise ValueError(f"Unexpected radius authmethod '{auth_method}'")
 	else:
-		raise ValueError("Unexpected user_type '{}'".format(user_type))
+		raise ValueError(f"Unexpected user_type '{user_type}'")
 	return find_vlanid(p.stdout)
 
 

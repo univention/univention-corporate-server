@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-# -*- coding: utf-8 -*-
 ## desc: Create container/ou
 ## tags: [udm,apptest,udm-containers]
 ## roles: [domaincontroller_master]
@@ -18,7 +17,7 @@ import univention.testing.utils as utils
 from univention.testing.ucs_samba import wait_for_drs_replication
 
 
-class Test_ContainerOU(object):
+class Test_ContainerOU:
 
 	def test_container_ou_creation(self, udm):
 		"""Create container/ou"""
@@ -344,7 +343,7 @@ class Test_ContainerOU(object):
 			assert entry.get('ou')[0] == ou_name.encode('UTF-8'), 'ou = %s; expected: %s' % (entry.get('ou')[0], ou_name)
 
 
-class Test_ContainerCN(object):
+class Test_ContainerCN:
 
 	def test_container_cn_creation(self, udm):
 		"""Create container/cn"""
@@ -680,7 +679,7 @@ class Test_ContainerCN(object):
 			assert entry.get('cn')[0] == cn_name.encode('UTF-8'), 'cn = %s; expected: %s' % (entry.get('cn')[0], cn_name)
 
 
-class Test_StandardContainer(object):
+class Test_StandardContainer:
 
 	@pytest.mark.dangerous
 	def test_object_move_and_standard_container_modify(self, udm):

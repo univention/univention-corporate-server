@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from univention.admin import option, property
 from univention.admin.filter import conjunction, expression
 from univention.admin.handlers import simpleLdap

@@ -12,11 +12,11 @@ import univention.testing.utils as utils
 
 def check_file(basename, snippet):  # type: (str, str) -> None
 	fn_base = basename
-	fn_base_local = '%s.local' % (basename,)
+	fn_base_local = f'{basename}.local'
 	fn_moved_local = None
-	content = open(fn_base, 'r').read()
+	content = open(fn_base).read()
 	if snippet in content:
-		utils.fail('%r already contains the test snippet before starting the test' % (fn_base,))
+		utils.fail(f'{fn_base!r} already contains the test snippet before starting the test')
 
 	try:
 		# rescue existing main.cf.local
@@ -33,9 +33,9 @@ def check_file(basename, snippet):  # type: (str, str) -> None
 		# commit changes to main.cf.local
 		subprocess.call(['ucr', 'commit', fn_base])
 
-		content = open(fn_base, 'r').read()
+		content = open(fn_base).read()
 		if snippet not in content:
-			utils.fail('%r does not contain snippet!' % (fn_base,))
+			utils.fail(f'{fn_base!r} does not contain snippet!')
 
 	finally:
 		os.remove(fn_base_local)

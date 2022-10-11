@@ -15,7 +15,7 @@ class TestUMCServiceAutostart(ServiceModule):
 
     def __init__(self):
         """Test Class constructor"""
-        super(TestUMCServiceAutostart, self).__init__()
+        super().__init__()
         self.initial_service_config = None
 
     def restore_initial_configuration(self, service_name):

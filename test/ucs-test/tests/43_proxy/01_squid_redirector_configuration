@@ -23,7 +23,7 @@ def main():
 
 		redirector = "squidguard"
 		handler_set(['squid/redirect=%s' % redirector])
-		squid.redirector_is("%s -c %s" % (squid_guard_path, squid_guard_config))
+		squid.redirector_is(f"{squid_guard_path} -c {squid_guard_config}")
 
 
 if __name__ == '__main__':

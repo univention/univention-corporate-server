@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-# coding: utf-8
 ## desc: "Test the UCS<->AD sync in {read,write,sync} mode with groups"
 ## exposure: dangerous
 ## timeout: 7200
@@ -127,7 +126,7 @@ def test_group_sync_from_s4_to_udm_with_move(group_class, sync_mode):
 		udm_group = group_class()
 		(s4_group, s4_group_dn, udm_group_dn) = create_con_group(s4, udm_group, s4connector.wait_for_sync)
 
-		print("\nMove S4 group {!r} to {!r}\n".format(s4_group_dn, udm_group.container))
+		print(f"\nMove S4 group {s4_group_dn!r} to {udm_group.container!r}\n")
 		container_dn = s4.container_create(udm_group.container)
 		s4_group_dn = s4.rename_or_move_user_or_group(s4_group_dn, position=container_dn)
 		s4.set_attributes(s4_group_dn, **tcommon.map_udm_group_to_con(udm_group.group))

@@ -90,7 +90,7 @@ def test_update_check(a, b, c):
 	with mock.patch.object(univention.appcenter.actions.umc_update.Update, 'main', return_value=None):
 		# check apps
 		a = update_check.get_blocking_apps(ucs_version='5.0')
-		assert set(['package_no', 'component_no', 'docker_no']) == set(a.keys()), set(a.keys())
+		assert {'package_no', 'component_no', 'docker_no'} == set(a.keys()), set(a.keys())
 		# no check if "new" version is "older"
 		a = update_check.get_blocking_apps(ucs_version='3.0')
 		assert bool(a) is False, a

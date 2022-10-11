@@ -25,7 +25,7 @@ for app in Apps(locale='en').get_every_single_app():
 	if code:
 		if code in codes:
 			if codes[code] != app.id:
-				print(' FAIL: Code %r has already been taken by %r!' % (code, codes[code]))
+				print(f' FAIL: Code {code!r} has already been taken by {codes[code]!r}!')
 				returncode = 1
 		else:
 			codes[code] = app.id
@@ -42,7 +42,7 @@ for app in Apps(locale='en').get_every_single_app():
 				logo_name = ini_parser.get('Application', logo_attr)
 			except (NoSectionError, NoOptionError):
 				continue
-			url = '%s/meta-inf/%s/%s/%s' % (app.get_server(), app.get_ucs_version(), app.id, logo_name)
+			url = f'{app.get_server()}/meta-inf/{app.get_ucs_version()}/{app.id}/{logo_name}'
 			stdout = subprocess.check_output(['curl', '-Is', url])
 			if b'HTTP/1.1 200 OK' not in stdout.splitlines():
 				print('FAIL: Could not find %s' % url)

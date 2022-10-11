@@ -18,7 +18,7 @@ from univention.config_registry import handler_set
 import samltest
 
 
-class KerberosTicket(object):
+class KerberosTicket:
 	def __init__(self, hostname):
 		self.hostname = hostname
 

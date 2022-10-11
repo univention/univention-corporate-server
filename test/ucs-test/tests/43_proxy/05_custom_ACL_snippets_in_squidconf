@@ -23,7 +23,7 @@ from essential.simplecurl import SimpleCurl
 from essential.simplesquid import SimpleSquid
 
 
-class TestServer(object):
+class TestServer:
 	def __init__(self):
 		# start http server in a different thread on (127.0.0.1:60025)
 		p = Process(target=startHttpServer, kwargs={'port': 60025})

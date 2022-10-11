@@ -20,7 +20,7 @@ def _open_port(port):
 	try:
 		s.bind(('', port))
 	except OSError as msg:
-		print('Bind failed. Error Code : %s %s %s' % (msg, msg.errno, os.strerror(msg.errno)))
+		print(f'Bind failed. Error Code : {msg} {msg.errno} {os.strerror(msg.errno)}')
 		return
 	s.listen(10)
 	print('Opened socket on port %d' % port)

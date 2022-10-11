@@ -13,12 +13,12 @@ import logging
 import appcentertest as app_test
 
 
-class DebianMockPackage(object):
+class DebianMockPackage:
 
 	def __init__(self, name="testdeb", version="1.0"):
 		self.name = name
 		self.version = version
-		self.name_version = "{} (>= {})".format(name, version)
+		self.name_version = f"{name} (>= {version})"
 
 	def get_package_name(self):
 		return self.name

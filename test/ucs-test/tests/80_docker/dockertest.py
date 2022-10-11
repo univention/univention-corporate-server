@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # UCS test
 #
@@ -147,7 +146,7 @@ def get_docker_appbox_ucs():
 
 
 def get_docker_appbox_image():
-	image_name = 'docker-test.software-univention.de/ucs-appbox-amd64:{}-8'.format(get_docker_appbox_ucs())
+	image_name = f'docker-test.software-univention.de/ucs-appbox-amd64:{get_docker_appbox_ucs()}-8'
 	print('Using %s' % image_name)
 	return image_name
 
@@ -234,7 +233,7 @@ def error_handling_call(*args, exc=Exception, **kwargs):
 		raise exc('%s: %s' % (ex, ex.output.decode('UTF-8', 'replace')))
 
 
-class App(object):
+class App:
 
 	def __init__(self, name, version, container_version=None, app_directory_suffix=None, package_name=None, build_package=True, call_join_scripts=True):
 		self.app_name = name
@@ -294,7 +293,7 @@ class App(object):
 		print(repr(self))
 
 	def __repr__(self):
-		return '%s(app_name=%r, app_version=%r)' % (super(App, self).__repr__(), self.app_name, self.app_version)
+		return '%s(app_name=%r, app_version=%r)' % (super().__repr__(), self.app_name, self.app_version)
 
 	def set_ini_parameter(self, **kwargs):
 		for key, value in kwargs.items():
@@ -544,7 +543,7 @@ echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
 				)
 
 
-class Appcenter(object):
+class Appcenter:
 	def __init__(self, version=None):
 		self.meta_inf_created = False
 		self.univention_repository_created = False

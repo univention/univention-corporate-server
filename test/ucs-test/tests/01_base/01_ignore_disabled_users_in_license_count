@@ -29,12 +29,12 @@ if __name__ == '__main__':
 		new_license_user_count = get_current_license_user_count()
 
 		if new_license_user_count != license_user_count:
-			utils.fail('After creating a fully disabled user, the license user counter raised from %s to %s' % (license_user_count, new_license_user_count))
+			utils.fail(f'After creating a fully disabled user, the license user counter raised from {license_user_count} to {new_license_user_count}')
 
 		for disabled in ('0', '1', '0'):
 			udm.create_user(disabled=disabled)
 			new_license_user_count = get_current_license_user_count()
 			if disabled == '0':
 				if new_license_user_count != license_user_count + 1:
-					utils.fail('After creating a user with %r disabled, the license user counter did not raise from %s to %s' % (disabled, license_user_count, license_user_count + 1))
+					utils.fail(f'After creating a user with {disabled!r} disabled, the license user counter did not raise from {license_user_count} to {license_user_count + 1}')
 				license_user_count = new_license_user_count

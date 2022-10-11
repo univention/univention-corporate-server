@@ -23,7 +23,7 @@ opened_files = []
 
 
 def open_file(prefix, suffix):
-	path = '%s.%s' % (prefix, suffix)
+	path = f'{prefix}.{suffix}'
 	opened_files.append(path)
 	return open(path, 'w')
 
@@ -37,7 +37,7 @@ def cleanup():
 
 
 def get_temp_app_prefix(app_cache):
-	return '%s/testapp_%s' % (app_cache.get_cache_dir(), str_test.random_name())
+	return f'{app_cache.get_cache_dir()}/testapp_{str_test.random_name()}'
 
 
 def write_ini_file(app_prefix):
@@ -70,7 +70,7 @@ def test_ini_data(umc_data, lang):
 	}
 	for ikey, ival in expected_data.items():
 		expected_val = expected_data[ikey]
-		assert umc_data[ikey] == ival, 'Entry %s=%s does not match expected value %s!' % (ikey, ival, expected_val)
+		assert umc_data[ikey] == ival, f'Entry {ikey}={ival} does not match expected value {expected_val}!'
 	print('SUCCESS')
 
 
@@ -94,7 +94,7 @@ def write_readme_files(app_prefix):
 	print('Writing README files:')
 	for readme in README_TYPES:
 		for lang in ('EN', 'DE'):
-			filename = '%s_%s' % (readme, lang)
+			filename = f'{readme}_{lang}'
 			print('  %s' % filename)
 			write_readme_file(app_prefix, filename)
 
@@ -103,9 +103,9 @@ def test_readme_files(umc_data, lang):
 	sys.stdout.write('Testing README file entries for correctness... ')
 	sys.stdout.flush()
 	for readme in README_TYPES:
-		expected_val = '--%s_%s--' % (readme, lang)
+		expected_val = f'--{readme}_{lang}--'
 		val = umc_data[readme.lower()]
-		assert val == expected_val, 'Entry %s=%s does not match expected value %s!' % (readme, val, expected_val)
+		assert val == expected_val, f'Entry {readme}={val} does not match expected value {expected_val}!'
 	print('SUCCESS')
 
 
@@ -133,9 +133,9 @@ def get_ratings(umc_data):
 
 
 def test_ratings(umc_data, *keys):
-	sys.stdout.write('Testing rating %s in meta file for correctness... ' % (keys, ))
+	sys.stdout.write(f'Testing rating {keys} in meta file for correctness... ')
 	sys.stdout.flush()
-	assert set(keys) == get_ratings(umc_data), 'Ratings %s do not match expected value %s!' % (get_ratings(umc_data), set(keys))
+	assert set(keys) == get_ratings(umc_data), f'Ratings {get_ratings(umc_data)} do not match expected value {set(keys)}!'
 	print('SUCCESS')
 
 

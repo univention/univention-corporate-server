@@ -209,7 +209,7 @@ def main():
 
 def _assert(first, second, name):
 	if set(first) != set(second):
-		fail('ERROR: %s: %r != %r' % (name, set(first), set(second)))
+		fail(f'ERROR: {name}: {set(first)!r} != {set(second)!r}')
 	else:
 		print('OK: %s' % name)
 

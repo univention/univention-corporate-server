@@ -61,10 +61,10 @@ def main():  # type: () -> None
 							fqdn,
 							mailAddress=False,
 							user_permission=user_acls,
-							group_permission=['"{}" "{}"'.format(grpname, right) for grpname, right in group_acls]
+							group_permission=[f'"{grpname}" "{right}"' for grpname, right in group_acls]
 						)
 						utils.wait_for_replication()
-						print('*** Folder: {!r} --> {!r}'.format(folder_name, folder_dn))
+						print(f'*** Folder: {folder_name!r} --> {folder_dn!r}')
 
 						# read folder's ACLs
 						imap = MailClient_SSL(fqdn)
@@ -77,8 +77,8 @@ def main():  # type: () -> None
 
 						# verify that acls for groups are set
 						for grpname, right in group_acls:
-							assert '${}'.format(grpname) in acls, "'${}' not in ACL list".format(grpname)
-						assert user_address in acls, '{} not in ACL list'.format(user_address)
+							assert f'${grpname}' in acls, f"'${grpname}' not in ACL list"
+						assert user_address in acls, f'{user_address} not in ACL list'
 
 						udm.remove_object('mail/folder', dn=folder_dn)
 

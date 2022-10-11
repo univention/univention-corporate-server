@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3
-# -*- coding: utf-8 -*-
 ## desc: Test UDM API for users/user module
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
@@ -15,7 +14,6 @@ from subprocess import call
 from typing import List, Tuple  # noqa: F401
 
 import pytest
-from six import reraise, string_types
 from unittest import TestCase, main
 
 import univention.admin.modules
@@ -72,16 +70,16 @@ class TestUdmUsersBasic(TestCase):
 					wait_for_replication=True
 				)
 			except UCSTestUDM_CreateUDMObjectFailed as exc:
-				print('Creating mail domain {!r} failed: {}'.format(cls.mail_domain, exc))
+				print(f'Creating mail domain {cls.mail_domain!r} failed: {exc}')
 
 	@classmethod
 	def tearDownClass(cls):
 		for obj in cls.user_objects:
 			try:
 				obj.delete()
-				print('tearDownClass(): Deleted {!r}.'.format(obj))
+				print(f'tearDownClass(): Deleted {obj!r}.')
 			except DeleteError:
-				print('tearDownClass(): Already deleted: {!r}.'.format(obj))
+				print(f'tearDownClass(): Already deleted: {obj!r}.')
 		cls.ucr_test.revert_to_original_registry()
 		cls.udm_test.cleanup()
 
@@ -102,11 +100,11 @@ class TestUdmUsersBasic(TestCase):
 			'password': random_username(),
 		}
 		self._user0_attrs.update(attrs)
-		print('Creating user with attrs: {!r}'.format(attrs))
+		print(f'Creating user with attrs: {attrs!r}')
 		for k, v in attrs.items():
 			setattr(obj.props, k, v)
 		obj.save()
-		print('Created {!r}.'.format(obj))
+		print(f'Created {obj!r}.')
 		print('Verifying...')
 		assert obj.props.password != attrs['password'], 'Password was not hased or object not reloaded!'
 		utils.verify_ldap_object(
@@ -161,10 +159,10 @@ class TestUdmUsersBasic(TestCase):
 			'firstname': random_username(),
 			'lastname': random_username(),
 			'description': random_string(),
-			'mailPrimaryAddress': '{}@{}'.format(random_string(), self.mail_domain.lower()),
+			'mailPrimaryAddress': f'{random_string()}@{self.mail_domain.lower()}',
 			'departmentNumber': random_string(),
 		}
-		print('Modifying {!r} with attrs: {!r}'.format(obj, attrs))
+		print(f'Modifying {obj!r} with attrs: {attrs!r}')
 		for k, v in attrs.items():
 			setattr(obj.props, k, v)
 		obj.save()
@@ -235,7 +233,7 @@ class TestUdmUsersBasic(TestCase):
 
 	def test_read_user(self):
 		obj = self.user_objects[0]
-		print('Checking properties of previously created user {!r}...'.format(obj.props.username))
+		print(f'Checking properties of previously created user {obj.props.username!r}...')
 		expected_properties = deepcopy(self._user0_attrs)
 		del expected_properties['password']
 		expected_properties.update({
@@ -251,7 +249,7 @@ class TestUdmUsersBasic(TestCase):
 			expected_properties['mailUserQuota'] = 0
 		for k, v in expected_properties.items():
 			got = getattr(obj.props, k)
-			assert got == v, 'Expected for {!r}: {!r} got: {!r}'.format(k, v, got)
+			assert got == v, f'Expected for {k!r}: {v!r} got: {got!r}'
 		with self.assertRaises(UnknownProperty):
 			obj.props.unknown = 'Unknown'
 		with self.assertRaises(AttributeError):
@@ -266,7 +264,7 @@ class TestUdmUsersBasic(TestCase):
 			obj.delete()
 
 		obj = user_mod.get(self.user_objects[0].dn)
-		print('Deleting {!r}...'.format(obj))
+		print(f'Deleting {obj!r}...')
 		obj.delete()
 		print('Verifying...')
 		utils.verify_ldap_object(
@@ -291,44 +289,44 @@ class TestUdmGenericVariousModules(TestCase):
 		cls.udm = UDM.admin().version(0)
 		cls.udm._module_object_cache.clear()
 		univention.admin.modules.update()
-		cls.avail_modules = sorted([mod for mod in univention.admin.modules.modules.keys()])
+		cls.avail_modules = sorted(mod for mod in univention.admin.modules.modules.keys())
 
 	def get_new_obj(self, mod):
 		try:
 			return mod.new()
 		except NoSuperordinate as exc:
 			exc_thrown = exc
-		print('Module {!r} requires a superordinate, trying to find one...'.format(mod.name))
+		print(f'Module {mod.name!r} requires a superordinate, trying to find one...')
 		try:
 			sup_modules = mod._orig_udm_module.superordinate
 		except AttributeError:
-			print('Got NoSuperordinate exception ({}), but {!r} has no "superordinate" attribute!'.format(exc_thrown, mod.name))
-			reraise(NoSuperordinate, exc_thrown)
-		if isinstance(sup_modules, string_types):
+			print(f'Got NoSuperordinate exception ({exc_thrown}), but {mod.name!r} has no "superordinate" attribute!')
+			raise exc_thrown.with_traceback(None)
+		if isinstance(sup_modules, str):
 			sup_modules = [sup_modules]
 		for sup_module in sup_modules:
 			for obj in self.udm.get(sup_module).search():
 				print('Using {!r} object at {!r} as superordinate for model of {!r} object.'.format(
 					sup_module, obj.dn, mod.name))
 				return mod.new(obj)
-		reraise(NoSuperordinate, exc_thrown)
+		raise exc_thrown.with_traceback(None)
 
 	def test_load_modules(self):
 		print('Loading all modules...')
 		mail_and_ox_modules = self.ox_modules + self.mail_modules
 		for mod_name in self.avail_modules:
-			print('Loading {!r}...'.format(mod_name))
+			print(f'Loading {mod_name!r}...')
 			mod = self.udm.get(mod_name)
 			if mod_name in mail_and_ox_modules:
 				assert mod.__class__.__name__ == 'GenericModule', 'Wrong UDM module, expected {!r}, got {!r}.'.format(
 					'GenericModule', mod.__class__.__name__)
 		print('OK: all modules could be loaded.')
 		len_module_object_cache = len(UDM._module_object_cache)
-		assert len_module_object_cache == len(self.avail_modules), 'UDM._module_object_cache has {} entries (should be {}).'.format(len_module_object_cache, len(self.avail_modules))
+		assert len_module_object_cache == len(self.avail_modules), f'UDM._module_object_cache has {len_module_object_cache} entries (should be {len(self.avail_modules)}).'
 		print('OK: object cache is used.')
 		stats = defaultdict(int)
 		for mod_name in self.avail_modules:
-			print('Listing objects of type {!r}...'.format(mod_name))
+			print(f'Listing objects of type {mod_name!r}...')
 			mod = self.udm.get(mod_name)
 			if mod_name == 'users/self':
 				print('Skipping module "users/self" with broken mapping.')
@@ -338,17 +336,17 @@ class TestUdmGenericVariousModules(TestCase):
 					self.get_new_obj(mod)  # test whether a new object may be initialized
 				except NoSuperordinate:
 					# for now...
-					print('Cannot test "new" for {!r}. Requires superordinate'.format(mod_name))
+					print(f'Cannot test "new" for {mod_name!r}. Requires superordinate')
 			mod.meta.auto_open = False
 			num = -1
 			try:
 				for num, obj in enumerate(mod.search()):
-					print('{}: {}'.format(num, obj))
+					print(f'{num}: {obj}')
 			except WrongObjectType as exc:
 				if exc.module_name.startswith('oxmail/'):
 					# oxmail modules also loading non-ox objects
 					continue
-			print('OK: found {} objects of type {!r}.'.format(num + 1, mod_name))
+			print(f'OK: found {num + 1} objects of type {mod_name!r}.')
 			if num > 0:
 				stats['mods'] += 1
 				stats['objs'] += num
@@ -614,9 +612,9 @@ class TestEncoders(TestCase):
 		for obj in cls.user_objects:
 			try:
 				obj.delete()
-				print('tearDownClass(): Deleted {!r}.'.format(obj))
+				print(f'tearDownClass(): Deleted {obj!r}.')
 			except DeleteError:
-				print('tearDownClass(): Already deleted: {!r}.'.format(obj))
+				print(f'tearDownClass(): Already deleted: {obj!r}.')
 
 	def test_dn_list_property_encoder(self):
 		user_mod = self.udm.get('users/user')
@@ -628,7 +626,7 @@ class TestEncoders(TestCase):
 			'username': random_username(),
 			'password': random_username(),
 		}
-		print('Creating user with attrs: {!r}'.format(attrs))
+		print(f'Creating user with attrs: {attrs!r}')
 		for k, v in attrs.items():
 			setattr(obj.props, k, v)
 		obj.save()
@@ -642,7 +640,7 @@ class TestEncoders(TestCase):
 			'username': random_username(),
 			'password': random_username(),
 		}
-		print('Creating user with attrs: {!r}'.format(attrs))
+		print(f'Creating user with attrs: {attrs!r}')
 		for k, v in attrs.items():
 			setattr(obj2.props, k, v)
 		obj2.save()
@@ -678,13 +676,13 @@ def schedule_delete_udm_obj(simple_udm):
 		try:
 			udm_obj = mod.get(dn)
 		except NoObject:
-			print("UDM {!r} object {!r} does not exist (anymore).".format(udm_mod_name, dn))
+			print(f"UDM {udm_mod_name!r} object {dn!r} does not exist (anymore).")
 			continue
 		try:
 			udm_obj.delete(remove_childs=True)
-			print("Deleted UDM {!r} object {!r} through UDM.".format(udm_mod_name, dn))
+			print(f"Deleted UDM {udm_mod_name!r} object {dn!r} through UDM.")
 		except NotYetSavedError:
-			print("UDM {!r} object {!r} not deleted, it had not been saved.".format(udm_mod_name, dn))
+			print(f"UDM {udm_mod_name!r} object {dn!r} not deleted, it had not been saved.")
 
 
 def test_remove_children(ldap_base, schedule_delete_udm_obj, simple_udm):

@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -v
-# coding: utf-8
 ## desc: "Test the UCS<->AD NT password history sync"
 ## exposure: dangerous
 ## packages:
@@ -247,7 +246,7 @@ def create_ad_user(username, password, **kwargs):
 	#  use samba-tool
 	host = configRegistry.get("connector/ad/ldap/host")
 	admin = ldap.dn.explode_rdn(configRegistry.get("connector/ad/ldap/binddn"), notypes=True)[0]
-	passw = open(configRegistry.get("connector/ad/ldap/bindpw"), 'r').read()
+	passw = open(configRegistry.get("connector/ad/ldap/bindpw")).read()
 	cmd = ["samba-tool", "user", "create", "--use-username-as-cn", username.decode('UTF-8'), password, "--URL=ldap://%s" % host, "-U'%s'%%'%s'" % (admin, passw)]
 
 	print(" ".join(cmd))
@@ -271,7 +270,7 @@ def create_ad_user(username, password, **kwargs):
 def modify_password_ad(username, password):
 	host = configRegistry.get("connector/ad/ldap/host")
 	admin = ldap.dn.explode_rdn(configRegistry.get("connector/ad/ldap/binddn"), notypes=True)[0]
-	passw = open(configRegistry.get("connector/ad/ldap/bindpw"), 'r').read()
+	passw = open(configRegistry.get("connector/ad/ldap/bindpw")).read()
 	cmd = ["samba-tool", "user", "setpassword", "--newpassword='%s'" % password, username.decode('UTF-8'), "--URL=ldap://%s" % host, "-U'%s'%%'%s'" % (admin, passw)]
 
 	child = subprocess.Popen(" ".join(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)

@@ -29,8 +29,8 @@ class TestUMCDomainRejoin(JoinModule):
                 File = open(file_path, 'w')
             else:
                 utils.fail("Could not find the status file at the provided file_path '%s'" % file_path)
-        except (IOError, OSError) as exc:
-            utils.fail("An exception while clearing the status file at '%s': '%s'" % (file_path, exc))
+        except OSError as exc:
+            utils.fail(f"An exception while clearing the status file at '{file_path}': '{exc}'")
         finally:
             if File:
                 File.close()

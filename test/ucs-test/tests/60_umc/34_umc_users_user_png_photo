@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner python3
-# -*- coding: utf-8 -*.
 ## desc: Test setting of user photo via UMC
 ## bugs: [36273]
 ## roles:
@@ -22,7 +21,7 @@ class TestUMCUserAuthentication(UMCBase):
 
 	def __init__(self):
 		"""Test Class constructor"""
-		super(TestUMCUserAuthentication, self).__init__()
+		super().__init__()
 
 		self.UDM = None
 
@@ -57,7 +56,7 @@ class TestUMCUserAuthentication(UMCBase):
 			tempfile.flush()
 			p = subprocess.Popen(['/usr/bin/file', '-i', tempfile.name], stdout=subprocess.PIPE)
 			stdout, stderr = p.communicate()
-			assert b'image/jpeg' in stdout, "Failed to set PNG user photo (not converted to JPEG): %r" % (stdout,)
+			assert b'image/jpeg' in stdout, f"Failed to set PNG user photo (not converted to JPEG): {stdout!r}"
 
 	def unset_image(self):
 		assert not self.set_image(""), "Failed to unset user photo"

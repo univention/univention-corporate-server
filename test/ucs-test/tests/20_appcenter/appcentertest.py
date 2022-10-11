@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # UCS test
 #
@@ -74,7 +73,7 @@ def get_requested_apps():
 				else:
 					pass
 					# utils.fail('Error finding %s' % (line,))
-	except EnvironmentError:
+	except OSError:
 		pass
 		# utils.fail('Error reading %s: %s' % (APPCENTER_FILE, exc))
 	return ret
@@ -92,7 +91,7 @@ class AppCenterTestFailure(Exception):
 	pass
 
 
-class AppCenterOperations(object):
+class AppCenterOperations:
 
 	def __init__(self):
 		self.client = Client.get_test_connection()
@@ -239,7 +238,7 @@ class DebianPackage(debian_package.DebianPackage):
 
 	@property
 	def name_version(self):
-		return "{} (>= {})".format(self._package_name, self._package_version)
+		return f"{self._package_name} (>= {self._package_version})"
 
 	def create_file(self, name="", buffer=""):
 		path = os.path.join(self._package_tempdir, name)
@@ -280,7 +279,7 @@ Description: UCS - Test package
 		self.create_debian_file_from_buffer('control', control)
 
 
-class AppPackage(object):
+class AppPackage:
 	_CODES = itertools.combinations_with_replacement(string.ascii_uppercase, 2)
 	CODES = itertools.cycle("".join(code) for code in _CODES)
 	COMPONENT_IDS = itertools.count(100, 100)
@@ -296,10 +295,10 @@ class AppPackage(object):
 		self.app_code = my_ini_items.get("Code")
 		self.debian_name = self._package.name
 
-		svg_file = my_ini_items.setdefault("Logo", "{}_logo.svg".format(self.app_id))
+		svg_file = my_ini_items.setdefault("Logo", f"{self.app_id}_logo.svg")
 		self._svg_path = self._package.create_file(svg_file, svg_buffer)
 
-		ini_file = "{}.ini".format(self.app_id)
+		ini_file = f"{self.app_id}.ini"
 		ini_buffer = self._build_ini_buffer(my_ini_items)
 		self._ini_path = self._package.create_file(ini_file, ini_buffer)
 
@@ -309,7 +308,7 @@ class AppPackage(object):
 		def lines():
 			yield "[Application]"
 			for (key, value) in ini_items.items():
-				yield "{}={}".format(key, value)
+				yield f"{key}={value}"
 		return "\n".join(lines())
 
 	@classmethod
@@ -338,7 +337,7 @@ class AppPackage(object):
 	def build_and_publish(self, component_id=None):
 		self._package.build()
 		if component_id is None:
-			component_id = "{}_{}".format(self.app_id, next(AppPackage.COMPONENT_IDS))
+			component_id = f"{self.app_id}_{next(AppPackage.COMPONENT_IDS)}"
 
 		msg = "Publishing {} (code={}, version={}, component-id={})"
 		print(msg.format(self.app_id, self.app_code, self.app_version, component_id))
@@ -349,7 +348,7 @@ class AppPackage(object):
 		self._package.remove()
 
 
-class CheckOperations(object):
+class CheckOperations:
 
 	def __init__(self, application, info):
 		self.application = application
@@ -385,12 +384,10 @@ class CheckOperations(object):
 		return False
 
 	def _packages(self):
-		for package in self.info.get("default_packages", list()):
-			yield package
+		yield from self.info.get("default_packages", list())
 		master = ("domaincontroller_master", "domaincontroller_backup")
 		if self.ucr.get("server/role") in master:
-			for package in self.info.get("default_packages_master", list()):
-				yield package
+			yield from self.info.get("default_packages_master", list())
 
 	def _dpkg_status(self, package):
 		cmd = ["dpkg-query", "-f='${db:Status-Abbrev}xx'", "--show", package]
@@ -408,13 +405,13 @@ class CheckOperations(object):
 
 	def _check_url(self, protocol, port, interface):
 		fqdn = '{}.{}'.format(self.ucr.get("hostname"), self.ucr.get("domainname"))
-		url = "{}://{}:{}{}".format(protocol, fqdn, port, interface)
+		url = f"{protocol}://{fqdn}:{port}{interface}"
 		response = requests.get(url, timeout=30, verify=False)
 
 		try:
 			response.raise_for_status()
 		except requests.HTTPError:
-			return self._fail("webinterface at {} not reachable".format(url))
+			return self._fail(f"webinterface at {url} not reachable")
 
 		refresh = lxml.html.fromstring(response.text).cssselect('meta[http-equiv="refresh"]')
 
@@ -465,7 +462,7 @@ class CheckOperations(object):
 		port_https = self.info.get("web_interface_port_https")
 		scheme = self.info.get("ucs_overview_category", "service")
 
-		web_entries_base = "ucs/web/overview/entries/{}/{}".format(scheme, self.application)
+		web_entries_base = f"ucs/web/overview/entries/{scheme}/{self.application}"
 		pairs = (
 			("/link", interface), ("/port_http", str(port_http)),
 			("/port_https", str(port_https))
@@ -483,8 +480,8 @@ class CheckOperations(object):
 
 	def _check_ucr_variables_dont_exist(self):
 		repository = "repository/online/component/{}".format(self.info.get("component_id"))
-		web_entries = "ucs/web/overview/entries/(admin|service)/{}".format(self.application)
-		pattern = re.compile("{}|{}".format(repository, web_entries))
+		web_entries = f"ucs/web/overview/entries/(admin|service)/{self.application}"
+		pattern = re.compile(f"{repository}|{web_entries}")
 		active = [key for key in self.ucr.keys() if pattern.match(key)]
 		if active:
 			msg = "following UCR variables still active: {}"
@@ -520,7 +517,7 @@ class CheckOperations(object):
 		return True
 
 
-class TestOperations(object):
+class TestOperations:
 
 	def __init__(self, app_center, application):
 		self.app_center = app_center
@@ -562,11 +559,11 @@ class TestOperations(object):
 	def test_install(self, test_installed=True):
 		dry_run = self.app_center.install_dry_run([self.application])
 		if not self.dry_run_successful(dry_run):
-			raise AppCenterCheckError("Dry-install of {} failed.".format(self.application))
+			raise AppCenterCheckError(f"Dry-install of {self.application} failed.")
 
 		install = self.app_center.install([self.application])
 		if not self.operation_successfull(install):
-			raise AppCenterCheckError("install of {} failed.".format(self.application))
+			raise AppCenterCheckError(f"install of {self.application} failed.")
 
 		post_installed_info = self.app_center.get(self.application)
 		if test_installed:
@@ -591,11 +588,11 @@ class TestOperations(object):
 
 		dry_run = self.app_center.upgrade_dry_run([self.application])
 		if not self.dry_run_successful(dry_run):
-			raise AppCenterCheckError("Dry-upgrade of {} failed.".format(self.application))
+			raise AppCenterCheckError(f"Dry-upgrade of {self.application} failed.")
 
 		upgrade = self.app_center.upgrade([self.application])
 		if not self.operation_successfull(upgrade):
-			raise AppCenterCheckError("upgrade of {} failed.".format(self.application))
+			raise AppCenterCheckError(f"upgrade of {self.application} failed.")
 
 		post_upgraded_info = self.app_center.get(self.application)
 		if test_installed:
@@ -608,11 +605,11 @@ class TestOperations(object):
 	def test_remove(self, test_uninstalled=True):
 		dry_run = self.app_center.remove_dry_run([self.application])
 		if not self.dry_run_successful(dry_run):
-			raise AppCenterCheckError("Dry-remove of {} failed.".format(self.application))
+			raise AppCenterCheckError(f"Dry-remove of {self.application} failed.")
 
 		remove = self.app_center.remove([self.application])
 		if not self.operation_successfull(remove):
-			raise AppCenterCheckError("remove of {} failed.".format(self.application))
+			raise AppCenterCheckError(f"remove of {self.application} failed.")
 
 		post_uninstalled_info = self.app_center.get(self.application)
 		if test_uninstalled:
@@ -658,14 +655,14 @@ def local_appcenter():
 def test_case(function):
 	@functools.wraps(function)
 	def wrapper(*args, **kwargs):
-		print("Running {}{}".format(function.__name__, function.__doc__))
+		print(f"Running {function.__name__}{function.__doc__}")
 		app_center = AppCenterOperations()
 		try:
 			function(app_center, function.__name__.replace("_", "-"))
 		except Exception:
-			print("Error in {}{}".format(function.__name__, function.__doc__))
+			print(f"Error in {function.__name__}{function.__doc__}")
 			raise
-		print("Ok - {}{}".format(function.__name__, function.__doc__))
+		print(f"Ok - {function.__name__}{function.__doc__}")
 	return wrapper
 
 

@@ -40,13 +40,13 @@ def main():
 			with ucr_test.UCSTestConfigRegistry() as ucr:
 				domain = ucr.get('domainname')
 				host = ucr.get('hostname')
-				handler_set(['mail/alias/root=systemmail@%s.%s' % (host, domain)])
+				handler_set([f'mail/alias/root=systemmail@{host}.{domain}'])
 				reload_postfix()
 
-				mail = '%s@%s' % (uts.random_name(), domain)
+				mail = f'{uts.random_name()}@{domain}'
 				userdn, username = udm.create_user(
 					set={
-						'mailHomeServer': '%s.%s' % (host, domain),
+						'mailHomeServer': f'{host}.{domain}',
 						'mailPrimaryAddress': mail,
 					}
 				)

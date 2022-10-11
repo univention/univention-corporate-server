@@ -19,7 +19,7 @@ SUBNET_IP4 = '10.20.30.0'
 SUBNET_MASK_IP4 = '24'
 
 
-class Test_DHCPService(object):
+class Test_DHCPService:
 
 	@pytest.mark.tags('udm')
 	@pytest.mark.roles('domaincontroller_master')
@@ -40,7 +40,7 @@ class Test_DHCPService(object):
 		utils.verify_ldap_object(dhcp_service, should_exist=False)
 
 
-class Test_DHCPServer(object):
+class Test_DHCPServer:
 
 	@pytest.mark.tags('udm')
 	@pytest.mark.roles('domaincontroller_master')
@@ -65,7 +65,7 @@ class Test_DHCPServer(object):
 		utils.verify_ldap_object(dhcp_server, should_exist=False)
 
 
-class Test_DHCPSubnet(object):
+class Test_DHCPSubnet:
 	@pytest.mark.tags('udm')
 	@pytest.mark.roles('domaincontroller_master')
 	@pytest.mark.exposure('careful')
@@ -181,7 +181,7 @@ class Test_DHCPSubnet(object):
 		assert 'The subnet mask does not match the subnet.' in str(exc.value), exc.value
 
 
-class Test_DHCPPool(object):
+class Test_DHCPPool:
 
 	@pytest.mark.tags('udm')
 	@pytest.mark.roles('domaincontroller_master')
@@ -327,7 +327,7 @@ class Test_DHCPPool(object):
 			utils.fail('UDM did not report an error while trying to create a dhcp/pool with DHCP service as superordinate')
 
 
-class Test_DHCPHost(object):
+class Test_DHCPHost:
 
 	@pytest.mark.tags('udm')
 	@pytest.mark.roles('domaincontroller_master')
@@ -403,7 +403,7 @@ class Test_DHCPHost(object):
 		utils.verify_ldap_object(dhcp_host, {'univentionDhcpFixedAddress': fixed_addresses[2:]})
 
 
-class Test_DHCPSharednetwork(object):
+class Test_DHCPSharednetwork:
 
 	@pytest.mark.tags('udm')
 	@pytest.mark.roles('domaincontroller_master')
@@ -526,7 +526,7 @@ class Test_DHCPSharednetwork(object):
 		utils.verify_ldap_object(dhcp_shared_subnet, {'dhcpRange': [range]})
 
 
-class Test_DHCPSharedsubnet(object):
+class Test_DHCPSharedsubnet:
 	@pytest.mark.tags('udm')
 	@pytest.mark.roles('domaincontroller_master')
 	@pytest.mark.exposure('careful')

@@ -5,7 +5,7 @@ import univention.testing.selenium as selenium_test
 import univention.testing.udm as udm_test
 
 
-class BaseScreenShooter(object):
+class BaseScreenShooter:
 	def __init__(self, translator=None):
 		self.args = self.parse_args()
 		if translator is not None:

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # UCS test
 #
@@ -48,7 +47,7 @@ def get_requested_apps():
 				else:
 					pass
 					# utils.fail('Error finding %s' % (line,))
-	except EnvironmentError:
+	except OSError:
 		pass
 		# utils.fail('Error reading %s: %s' % (APPCENTER_FILE, exc))
 	return ret

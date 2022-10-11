@@ -20,7 +20,7 @@ def get_output(cmd):
 
 
 def print_job(job, msg=''):
-	print('%s%r\nNumber: %r\nCommand: %r\nComments: %r\nExecTime: %r\nOwner: %r' % (msg, job, job.nr, job.command, job.comments, job.execTime, job.owner))
+	print(f'{msg}{job!r}\nNumber: {job.nr!r}\nCommand: {job.command!r}\nComments: {job.comments!r}\nExecTime: {job.execTime!r}\nOwner: {job.owner!r}')
 
 
 def main():
@@ -42,27 +42,27 @@ def main():
 			if testjob.nr == job.nr:
 				print_job(testjob, '\nFound job ')
 				if testjob.command.strip() != job_command:
-					utils.fail('Jobs differ: %r  <==>  %r' % (testjob.command, job_command))
+					utils.fail(f'Jobs differ: {testjob.command!r}  <==>  {job_command!r}')
 				if testjob.comments != job_comments:
-					utils.fail('Jobs differ: %r  <==>  %r' % (testjob.comments, job_comments))
+					utils.fail(f'Jobs differ: {testjob.comments!r}  <==>  {job_comments!r}')
 				if testjob.execTime != job.execTime:
-					utils.fail('Jobs differ: %r  <==>  %r' % (testjob.execTime, job.execTime))
+					utils.fail(f'Jobs differ: {testjob.execTime!r}  <==>  {job.execTime!r}')
 				if testjob.owner != job.owner:
-					utils.fail('Jobs differ: %r  <==>  %r' % (testjob.owner, job.owner))
+					utils.fail(f'Jobs differ: {testjob.owner!r}  <==>  {job.owner!r}')
 
 				testjob2 = atjobs.load(testjob.nr, extended=True)
 				print_job(testjob2, '\nExplicitely loaded job ')
 				if testjob2.command.strip() != job_command:
-					utils.fail('Jobs differ: %r  <==>  %r' % (testjob2.command, job_command))
+					utils.fail(f'Jobs differ: {testjob2.command!r}  <==>  {job_command!r}')
 				if testjob2.comments != job_comments:
-					utils.fail('Jobs differ: %r  <==>  %r' % (testjob2.comments, job_comments))
+					utils.fail(f'Jobs differ: {testjob2.comments!r}  <==>  {job_comments!r}')
 				if testjob2.execTime != job.execTime:
-					utils.fail('Jobs differ: %r  <==>  %r' % (testjob2.execTime, job.execTime))
+					utils.fail(f'Jobs differ: {testjob2.execTime!r}  <==>  {job.execTime!r}')
 				if testjob2.owner != job.owner:
-					utils.fail('Jobs differ: %r  <==>  %r' % (testjob2.owner, job.owner))
+					utils.fail(f'Jobs differ: {testjob2.owner!r}  <==>  {job.owner!r}')
 				break
 		else:
-			utils.fail('job %r not found in list' % (job.nr,))
+			utils.fail(f'job {job.nr!r} not found in list')
 	finally:
 		atjobs.remove(job_number)
 

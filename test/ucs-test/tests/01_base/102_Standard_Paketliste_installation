@@ -21,7 +21,7 @@ def run_command(cmd):
 	out, err = popen_obj.communicate()
 	ret = popen_obj.returncode
 	if ret != 0:
-		print('Return code = %s,\nOut= %s' % (ret, out))
+		print(f'Return code = {ret},\nOut= {out}')
 		return 1
 	else:
 		return out

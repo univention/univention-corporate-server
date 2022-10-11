@@ -54,13 +54,13 @@ def user_info(udm):
 		unixhome='/home/username',
 		userCertificate=CERT,
 	)
-	copied_username = "testcopy_%s" % (username,)
+	copied_username = f"testcopy_{username}"
 	yield {
 		'orig_dn': dn,
 		'orig_username': username,
 		'copied_username': copied_username
 	}
-	for user in UDM.admin().version(1).get('users/user').search('username=%s' % (copied_username,)):
+	for user in UDM.admin().version(1).get('users/user').search(f'username={copied_username}'):
 		user.delete()
 
 

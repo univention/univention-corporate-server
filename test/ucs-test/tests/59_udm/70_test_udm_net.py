@@ -11,7 +11,7 @@ import univention.uldap as uldap
 from univention.testing import utils
 
 
-class Test_UDMNetwork(object):
+class Test_UDMNetwork:
 
 	def test_create_network(self, udm):
 		"""Test the base functionality to create and remove a network"""

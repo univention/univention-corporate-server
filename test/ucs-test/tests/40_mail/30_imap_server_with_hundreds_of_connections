@@ -78,7 +78,7 @@ def main():
 			time_start = time.time()
 			for i in range(MAX_CONNECTIONS):
 				if i % 20 == 0:
-					print('Open connections: {}/{}'.format(i, MAX_CONNECTIONS))
+					print(f'Open connections: {i}/{MAX_CONNECTIONS}')
 				imap = MailClient_SSL(host)
 				servers.append(imap)
 			print('%d IMAP connections are OK (took %f seconds)' % (i + 1, time.time() - time_start))

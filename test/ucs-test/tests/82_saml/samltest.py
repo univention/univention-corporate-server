@@ -29,7 +29,7 @@ class SamlLoginError(SamlError):
 		self.page = page.page
 		if not message and type(self) is SamlLoginError:
 			message = "Unknown error in SAML response.\nSAML response:\n%s" % (self.page.content.decode('UTF-8', 'replace'),)
-		super(SamlLoginError, self).__init__(message)
+		super().__init__(message)
 
 	def __new__(cls, saml):
 		message = saml.xpath('div[@id="umcLoginNotices"]')
@@ -70,7 +70,7 @@ class SamlPasswordChangeSuccess(SamlLoginError):
 	pass
 
 
-class GuaranteedIdP(object):
+class GuaranteedIdP:
 	def __init__(self, ip):
 		self.ip = ip
 		ucr = configRegistry.ConfigRegistry()
@@ -90,7 +90,7 @@ class GuaranteedIdP(object):
 		subprocess.call(['invoke-rc.d', 'nscd', 'restart'])
 
 
-class SPCertificate(object):
+class SPCertificate:
 
 	@staticmethod
 	def get_server_cert_folder():
@@ -119,7 +119,7 @@ class SPCertificate(object):
 			subprocess.check_call('/usr/share/univention-management-console/saml/update_metadata')
 
 
-class SamlTest(object):
+class SamlTest:
 	def __init__(self, username, password, use_kerberos=False):
 		self.ucr = configRegistry.ConfigRegistry()
 		self.ucr.load()

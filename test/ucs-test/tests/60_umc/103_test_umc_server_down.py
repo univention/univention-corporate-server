@@ -12,7 +12,7 @@ import pytest
 from univention.lib.umc import ConnectionError, ServiceUnavailable
 
 
-class Test_ServerDown_Messages(object):
+class Test_ServerDown_Messages:
 
 	def test_umc_webserver_down(self, Client):
 		try:

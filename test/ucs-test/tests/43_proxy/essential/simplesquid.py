@@ -17,7 +17,7 @@ def get_lines_containing(filename, string):
 		return [line for line in input_file if string in line]
 
 
-class SimpleSquid(object):
+class SimpleSquid:
 	"""
 	:param path: path for the executable squid
 	:type path: str
@@ -74,7 +74,7 @@ class SimpleSquid(object):
 			if config_lines:
 				# in config file the first line setting the redirector is activated
 				config_line = config_lines[0]
-				result = ('url_rewrite_program %s\n' % (expected_redirector,) == config_line)
+				result = (f'url_rewrite_program {expected_redirector}\n' == config_line)
 			else:
 				utils.fail("Squid config redirector line does not exist")
 		return result

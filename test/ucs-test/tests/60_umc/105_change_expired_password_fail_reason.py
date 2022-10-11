@@ -58,7 +58,7 @@ def enabled_password_quality_checks(ucr):
 		yield
 		return
 	ldap_base = ucr.get('ldap/base')
-	dn = 'cn=default-settings,cn=pwhistory,cn=users,cn=policies,%s' % (ldap_base,)
+	dn = f'cn=default-settings,cn=pwhistory,cn=users,cn=policies,{ldap_base}'
 	old = lo.getAttr(dn, 'univentionPWQualityCheck')
 	new = [b'TRUE']
 	lo.modify(dn, [('univentionPWQualityCheck', old, new)])
@@ -68,7 +68,7 @@ def enabled_password_quality_checks(ucr):
 
 @pytest.mark.parametrize('new_password,reason', [[y, reason] for reason, x in reasons.items() for y in x])
 def test_password_changing_failure_reason(new_password, reason, udm, Client, random_string, ucr):
-	print('test_password_changing_failure_reason(%r, %r)' % (new_password, reason))
+	print(f'test_password_changing_failure_reason({new_password!r}, {reason!r})')
 	with enabled_password_quality_checks(ucr):
 		_test_password_changing_failure_reason(new_password, reason, udm, Client, random_string)
 
@@ -79,7 +79,7 @@ def _test_password_changing_failure_reason(new_password, reason, udm, Client, ra
 	client = Client(language='en-US')
 	if samba4_installed:
 		utils.wait_for_connector_replication()
-	print('change password from %r to %r' % (password, new_password))
+	print(f'change password from {password!r} to {new_password!r}')
 	with pytest.raises(Unauthorized) as msg:
 		client.umc_auth(username, password, new_password=new_password)
-	assert reason == msg.value.message, 'Expected error %r but got %r' % (reason, msg.value.message)
+	assert reason == msg.value.message, f'Expected error {reason!r} but got {msg.value.message!r}'

@@ -37,11 +37,11 @@ class TestUMCUserModules(UMCBase):
 			# should be available to the user:
 			print("Checking if user '%s' has no access to umc modules" % test_username)
 			user_modules = self.list_umc_modules(test_username, test_password)
-			assert len(user_modules) == 0, "The newly created test user '%s' in test group '%s' has access to the following modules '%s', when should not have access to any" % (test_username, test_groupname, user_modules)
+			assert len(user_modules) == 0, f"The newly created test user '{test_username}' in test group '{test_groupname}' has access to the following modules '{user_modules}', when should not have access to any"
 
 			# case 2: create custom policy and add it to the test group,
 			# check available modules for the user:
-			print("Checking if user '%s' has access to only one module with custom test policy '%s' applied to group '%s'" % (test_username, test_policyname, test_groupname))
+			print(f"Checking if user '{test_username}' has access to only one module with custom test policy '{test_policyname}' applied to group '{test_groupname}'")
 			test_policy_dn = udm.create_object('policies/umc', name=test_policyname, allow=test_operation_set)
 			utils.verify_ldap_object(test_policy_dn)
 
@@ -50,7 +50,7 @@ class TestUMCUserModules(UMCBase):
 			user_modules = self.list_umc_modules(test_username, test_password)
 			assert len(user_modules) == 1, "Expected only the UCR module"
 
-			assert user_modules[0].get('id') == 'ucr', 'Wrong module returned, expected ID==ucr: %r' % (user_modules,)
+			assert user_modules[0].get('id') == 'ucr', f'Wrong module returned, expected ID==ucr: {user_modules!r}'
 
 	def list_umc_modules(self, username, password):
 		client = Client(None, username, password)

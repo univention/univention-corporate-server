@@ -242,7 +242,7 @@ def sysvol_sync():
 	because the special Domain DFS module dfs_server/dfs_server_ad.c
 	randomizes the DFS referral for the Windows client
 	"""
-	stdout, stderr = run_cmd(("/usr/share/univention-samba4/scripts/sysvol-sync.sh"))
+	stdout, stderr = run_cmd("/usr/share/univention-samba4/scripts/sysvol-sync.sh")
 	print(stdout)
 	if stderr:
 		print("\nAn Error occurred during sysvol sync:", stderr)
@@ -280,7 +280,7 @@ def sysvol_check_gpo_registry_value(gpo_name, reg_key, value_name, value):
 		# https://msdn.microsoft.com/en-us/library/aa374407%28v=vs.85%29.aspx
 		reg_policy_text = reg_policy.read()[8:].decode(encoding='utf-16')
 		reg_policy.close()
-	except (IOError, OSError) as exc:
+	except OSError as exc:
 		utils.fail("An Error occurred while opening '%s' file: %r" % (reg_pol_file, exc))
 
 	reg_key = reg_key[5:]  # the 'HKCU\' or 'HKLM\' are not included:

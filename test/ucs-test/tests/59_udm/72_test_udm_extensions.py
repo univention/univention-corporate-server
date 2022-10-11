@@ -302,7 +302,7 @@ class Test_UDMExtensionsJoinscript:
 		dn, username = udm.create_user(password=password)
 		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		self._test_extension(extension_type, dn, password)
-		self._test_extension(extension_type, ucr.get('ldap/hostdn'), open('/etc/machine.secret', 'r').read())
+		self._test_extension(extension_type, ucr.get('ldap/hostdn'), open('/etc/machine.secret').read())
 
 	def _test_extension(self, extension_type, dn, password):
 		package_name = get_package_name()

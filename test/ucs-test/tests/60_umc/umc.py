@@ -10,7 +10,7 @@ from univention.testing.codes import TestCodes
 from univention.testing.umc import Client
 
 
-class UMCBase(object):
+class UMCBase:
 	"""
 	A base class for testing UMC-system
 	"""

@@ -15,7 +15,7 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 
-class Bunch(object):
+class Bunch:
 	"""
 	>>> y = Bunch(foo=42, bar='TEST')
 	>>> print repr(y.foo), repr(y.bar)
@@ -96,7 +96,7 @@ def main():
 
 			def check_file_content(computers):
 				print('*** checking /etc/freeradius/3.0/clients.univention.conf')
-				with open('/etc/freeradius/3.0/clients.univention.conf', 'r') as fd:
+				with open('/etc/freeradius/3.0/clients.univention.conf') as fd:
 					content = fd.read()
 					print((
 						'Content of /etc/freeradius/3.0/clients.univention.conf\n'
@@ -107,20 +107,20 @@ def main():
 					content = re.sub(r'\s+', ' ', content)
 
 				def in_content(content, name, txt):
-					assert txt in content, 'cannot find "{}" for computer {}'.format(txt, name)
+					assert txt in content, f'cannot find "{txt}" for computer {name}'
 
 				def not_in_content(content, name, txt):
-					assert txt not in content, 'unexpectedly found "{}" for computer {}'.format(txt, name)
+					assert txt not in content, f'unexpectedly found "{txt}" for computer {name}'
 
 				for computer in computers:
 					func = not_in_content if computer.removed else in_content
-					func(content, computer.name, 'client {} {{'.format(computer.name))
-					func(content, computer.name, 'ipaddr = {}'.format(computer.addr))
-					func(content, computer.name, 'secret = {}'.format(computer.secret))
-					func(content, computer.name, 'nas_type = {}'.format(computer.nas_type))
+					func(content, computer.name, f'client {computer.name} {{')
+					func(content, computer.name, f'ipaddr = {computer.addr}')
+					func(content, computer.name, f'secret = {computer.secret}')
+					func(content, computer.name, f'nas_type = {computer.nas_type}')
 					if not computer.removed:
 						if computer.virtual_server:
-							func(content, computer.name, 'virtual_server = {}'.format(computer.virtual_server))
+							func(content, computer.name, f'virtual_server = {computer.virtual_server}')
 						else:
 							func(content, computer.name, '# virtual_server = ...not specified...')
 

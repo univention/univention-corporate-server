@@ -37,7 +37,7 @@ def ad_in_sync_mode(sync_mode, configbase='connector'):
 	"""
 	Set the AD-Connector into the given `sync_mode` restart.
 	"""
-	ucr_set(['{}/ad/mapping/syncmode={}'.format(configbase, sync_mode)])
+	ucr_set([f'{configbase}/ad/mapping/syncmode={sync_mode}'])
 	restart_adconnector()
 
 
@@ -46,7 +46,7 @@ def wait_for_sync(min_wait_time=0):
 	synctime = ((synctime + 3) * 2)
 	if min_wait_time > synctime:
 		synctime = min_wait_time
-	print("Waiting {0} seconds for sync...".format(synctime))
+	print(f"Waiting {synctime} seconds for sync...")
 	sleep(synctime)
 
 

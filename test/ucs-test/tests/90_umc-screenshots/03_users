@@ -167,11 +167,11 @@ if __name__ == '__main__':
 		screen_shooter.udm.create_user(username='anna', firstname='Anna', lastname='Alster', jpegPhoto=portraitPhoto)
 		screen_shooter.udm.create_object(
 			'settings/usertemplate', name=_('Developer'),
-			position="cn=templates,cn=univention,%s" % (screen_shooter.selenium.ldap_base,)
+			position=f"cn=templates,cn=univention,{screen_shooter.selenium.ldap_base}"
 		)
 		screen_shooter.udm.create_object(
 			'settings/usertemplate', name=_('Guest'),
-			position="cn=templates,cn=univention,%s" % (screen_shooter.selenium.ldap_base,)
+			position=f"cn=templates,cn=univention,{screen_shooter.selenium.ldap_base}"
 		)
 
 		screen_shooter.take_screenshots()

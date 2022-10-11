@@ -56,7 +56,7 @@ def check_all_servers_in_policies(ldap_servers, udm_backups):
 			ucr_backups = ucr[1].split()
 
 	if not all(map(lambda x: x in ucr_backups, udm_backups)):
-		utils.fail("UCR policy does not contain all DC backups. ucr_backups: {} udm_backups: {}".format(ucr_backups, udm_backups))
+		utils.fail(f"UCR policy does not contain all DC backups. ucr_backups: {ucr_backups} udm_backups: {udm_backups}")
 
 
 def situation_before_test():
@@ -93,12 +93,12 @@ def run_join_script():
 
 def add_dc_backup(udm):
 	name = uts.random_name()
-	fqdn = "{}.{}".format(name, domain)
+	fqdn = f"{name}.{domain}"
 
 	udm.create_object(
 		'computers/domaincontroller_backup',
 		set=dict(
-			position="cn=dc,cn=computers,{}".format(basedn),
+			position=f"cn=dc,cn=computers,{basedn}",
 			name=name,
 			domain=domain
 		)

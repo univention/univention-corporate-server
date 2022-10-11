@@ -25,7 +25,7 @@ from essential.mail import (
 TIMEOUT_MAIL = 120
 
 
-class Bunch(object):
+class Bunch:
 
 	def __init__(self, **kwds):
 		self.__dict__.update(kwds)
@@ -87,8 +87,8 @@ def main():
 			#
 			# send email to each shared folder with mail address
 			#
-			print('Sending with settings {}'.format(ucr_settings))
-			syslog.syslog(syslog.LOG_INFO, 'Sending with settings {}.'.format(ucr_settings))
+			print(f'Sending with settings {ucr_settings}')
+			syslog.syslog(syslog.LOG_INFO, f'Sending with settings {ucr_settings}.')
 			msgid = uts.random_name()
 			send_mail(recipients=[old_address], messageid=msgid, server=fqdn)
 			for _ in range(TIMEOUT_MAIL):
@@ -99,7 +99,7 @@ def main():
 					found = False
 				if found:
 					print('Found mail in shared folder sent to %r' % ('shared/%s' % (old_address,),))
-					syslog.syslog(syslog.LOG_INFO, 'Found mail in shared folder sent to shared/{}'.format(old_address))
+					syslog.syslog(syslog.LOG_INFO, f'Found mail in shared folder sent to shared/{old_address}')
 					break
 				time.sleep(1)
 			else:

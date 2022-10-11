@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner python3
-# -*- coding: utf-8 -*.
 ## desc: Test the UMC user authentication and password change
 ## bugs: [34369, 36901]
 ## roles:
@@ -26,7 +25,7 @@ class TestUMCUserAuthentication(UDMModule):
 
     def __init__(self):
         """Test Class constructor"""
-        super(TestUMCUserAuthentication, self).__init__()
+        super().__init__()
 
         self.UDM = None
 

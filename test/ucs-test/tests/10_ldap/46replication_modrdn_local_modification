@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner python3
-# -*- coding: utf-8 -*
 ## desc: Move an UDM computers object to a position which already exists local as container
 ## tags:
 ##  - replication
@@ -92,7 +91,7 @@ found_backup_subcontainer = False
 BACKUP_DIR = '/var/univention-backup/replication'
 if os.path.exists(BACKUP_DIR):
 	for f in os.listdir(BACKUP_DIR):
-		fd = open(os.path.join(BACKUP_DIR, f), 'r')
+		fd = open(os.path.join(BACKUP_DIR, f))
 		for line in fd.readlines():
 			if re.match('entryUUID: %s' % container_UUID, line):
 				found_backup_container = True

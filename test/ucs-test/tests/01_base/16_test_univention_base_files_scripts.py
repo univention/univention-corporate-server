@@ -119,7 +119,7 @@ def test_nfsmount(udm, ucr, lo, backup_fstab):
 			assert mt.find(mount_point=shared_dest, type='nfs4')
 
 			# Check that shared_path is in /etc/exports
-			expected_line = "\"{shared_path}\" -rw,root_squash,sync,subtree_check * # LDAP:{ldap_share}".format(ldap_share=share, shared_path=shared_path)
+			expected_line = f"\"{shared_path}\" -rw,root_squash,sync,subtree_check * # LDAP:{share}"
 			exports_lines = Path("/etc/exports").read_text().splitlines()
 			assert expected_line in exports_lines
 

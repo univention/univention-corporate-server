@@ -12,11 +12,11 @@ from test_self_service import SelfServiceUser
 from univention.lib.umc import HTTPError
 from univention.testing import utils
 
-error_get_contact = u'Either username or password is incorrect or you are not allowed to use this service.'
-error_set_contact = u'Either username or password is incorrect or you are not allowed to use this service.'
-error_get_reset_methods = u'No contact information is stored for this user. Resetting the password is not possible.'
-error_send_token = u'No address has been stored, where a password recovery token could be sent to.'
-error_set_password = u'The token you supplied is either expired or invalid. Please request a new one.'
+error_get_contact = 'Either username or password is incorrect or you are not allowed to use this service.'
+error_set_contact = 'Either username or password is incorrect or you are not allowed to use this service.'
+error_get_reset_methods = 'No contact information is stored for this user. Resetting the password is not possible.'
+error_send_token = 'No address has been stored, where a password recovery token could be sent to.'
+error_set_password = 'The token you supplied is either expired or invalid. Please request a new one.'
 
 
 def main():
@@ -39,7 +39,7 @@ def assert_raises(exc_type, message, callback, *args, **kwargs):
 			print(str(exc))
 			# assert str(exc) and message in str(exc), 'Exception %r does not contain %r' % (str(exc), message)
 	else:
-		assert False, 'did not raise %r' % (exc_type,)
+		assert False, f'did not raise {exc_type!r}'
 
 
 if __name__ == '__main__':

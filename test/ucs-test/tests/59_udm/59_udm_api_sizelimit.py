@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3
-# -*- coding: utf-8 -*-
 ## desc: Test sizelimit for UDM API
 ## exposure: safe
 ## roles: [domaincontroller_master]

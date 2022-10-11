@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import asyncore
 import contextlib
 import fcntl
@@ -14,7 +12,7 @@ import univention.testing.utils as utils
 from univention.testing.umc import Client
 
 
-class SelfServiceUser(object):
+class SelfServiceUser:
 
 	def __init__(self, username, password):
 		self._client = Client()
@@ -72,7 +70,7 @@ def capture_mails(timeout=5):
 			print(('receiving email with length=', len(data)))
 			self.data.append(data.decode('utf-8'))
 
-	class MailServer(object):
+	class MailServer:
 
 		def __init__(self):
 			print('Starting mail server')

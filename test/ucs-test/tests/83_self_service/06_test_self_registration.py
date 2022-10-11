@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-# -*- coding: utf-8 -*-
 ## desc: test self registration
 ## tags: [apptest]
 ## packages:
@@ -98,7 +97,7 @@ def get_registration_info(ucr):
 
 def _get_mail(mails, idx=-1):
 	assert mails.data, 'No mails have been captured in %s seconds' % (MAILS_TIMEOUT,)
-	assert idx < len(mails.data), 'Not enough mails have been captured to get mail of index: {}'.format(idx)
+	assert idx < len(mails.data), f'Not enough mails have been captured to get mail of index: {idx}'
 	mail = email.message_from_string(mails.data[idx])
 	body = mail.get_payload(decode=True).decode('utf-8')
 	verification_links = []
@@ -209,7 +208,7 @@ def test_usercontainer_ucr_var_not_existing(umc_client, get_registration_info):
 	with pytest.raises(HTTPError) as excinfo:
 		umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
 	container_dn = ','.join(info['dn'].split(',')[1:])
-	msg = 'The container "{}" set by the "umc/self-service/account-registration/usercontainer" UCR variable does not exist. A user account can not be created. Please contact your system administrator.'.format(container_dn)
+	msg = f'The container "{container_dn}" set by the "umc/self-service/account-registration/usercontainer" UCR variable does not exist. A user account can not be created. Please contact your system administrator.'
 	assert excinfo.value.message == msg
 
 
@@ -228,7 +227,7 @@ def test_usertemplate_ucr_var(umc_client, udm, ucr, get_registration_info):
 
 def test_usertemplate_ucr_var_not_existing(umc_client, ucr, get_registration_info):
 	usertemplate_dn = "cn=not_existing,dc=foo,dc=bar"
-	ucr.handler_set(['umc/self-service/account-registration/usertemplate={}'.format(usertemplate_dn)])
+	ucr.handler_set([f'umc/self-service/account-registration/usertemplate={usertemplate_dn}'])
 	info = get_registration_info()
 	with pytest.raises(HTTPError) as excinfo:
 		umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
@@ -337,7 +336,7 @@ def test_deregistration(umc_client, mails, udm, readudm):
 	assert user.props.DeregisteredThroughSelfService == 'TRUE'
 	assert user.props.DeregistrationTimestamp.startswith(timestamp[:3])  # checking seconds from the timestamp is too flaky
 	mail = _get_mail(mails)
-	with open('/usr/share/univention-self-service/email_bodies/deregistration_notification_email_body.txt', 'r') as fd:
+	with open('/usr/share/univention-self-service/email_bodies/deregistration_notification_email_body.txt') as fd:
 		expected_body = fd.read().format(username=username)
 	assert mail['body'].strip() == expected_body.strip()
 

@@ -17,14 +17,14 @@ from univention.config_registry import handler_set
 
 def get_ext_ip():
 	ifaces = netifaces.interfaces()
-	print('interfaces: {!r}'.format(ifaces))
+	print(f'interfaces: {ifaces!r}')
 	ifaces = [i for i in ifaces if i not in ('docker', 'docker0', 'lo') and not i.startswith('veth')]
 	# ignore ipv6 only
 	ifaces = [netifaces.ifaddresses(iface)[netifaces.AF_INET] for iface in ifaces if netifaces.AF_INET in netifaces.ifaddresses(iface)]
-	print('ifaces: {!r}'.format(ifaces))
+	print(f'ifaces: {ifaces!r}')
 	ifaces = ifaces[0]
 	addrs = [i['addr'] for i in ifaces]
-	print('addrs: {!r}'.format(addrs))
+	print(f'addrs: {addrs!r}')
 	return addrs[0]
 
 
@@ -74,7 +74,7 @@ def create_bad_mailheader(mailfrom, rcptto):
 		return reply
 
 	def send_message(s, message):
-		print('OUT: {!r}'.format(message))
+		print(f'OUT: {message!r}')
 		s.send(b'%s\r\n' % (message.encode('UTF-8'),))
 
 	def send_and_receive(s, message):
@@ -82,8 +82,8 @@ def create_bad_mailheader(mailfrom, rcptto):
 		reply = [reply.strip() for reply in get_reply(s).split('\n') if reply.strip()]
 		r = get_return_code(reply[-1])
 		for line in reply[:-1]:
-			print('IN : {!r}'.format(line))
-		print('IN : {!r} (return code: {!r})'.format(reply[-1], r))
+			print(f'IN : {line!r}')
+		print(f'IN : {reply[-1]!r} (return code: {r!r})')
 		return r
 
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -91,7 +91,7 @@ def create_bad_mailheader(mailfrom, rcptto):
 	s.settimeout(0.2)
 	reply = get_reply(s)
 	r = get_return_code(reply)
-	print('IN : {!r} (return code: {!r})'.format(reply, r))
+	print(f'IN : {reply!r} (return code: {r!r})')
 	send_and_receive(s, 'EHLO %s' % fqdn)
 	if mailfrom:
 		send_and_receive(s, 'MAIL FROM: %s' % mailfrom)

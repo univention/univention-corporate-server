@@ -15,7 +15,7 @@ test_lib = os.environ.get('UCS_TEST_LIB', 'univention.testing.apptest')
 try:
 	test_lib = importlib.import_module(test_lib)
 except ImportError:
-	print('Could not import {}. Maybe set $UCS_TEST_LIB'.format(test_lib))
+	print(f'Could not import {test_lib}. Maybe set $UCS_TEST_LIB')
 	sys.exit(1)
 
 
@@ -24,14 +24,14 @@ LINK_HASHES = ['profiledata', 'createaccount', 'verifyaccount', 'passwordchange'
 
 def get_visible_selfservice_links(chrome):
 	elements = chrome.find_all('div.umcHeaderPage a')
-	return sorted(set(elem.get_attribute('href').rsplit('/', 1)[1] for elem in elements))
+	return sorted({elem.get_attribute('href').rsplit('/', 1)[1] for elem in elements})
 
 
 def assert_link_hashes(links, without):
 	wanted_hashes = [link_hash for link_hash in LINK_HASHES if link_hash not in without]
 	assert len(links) == len(wanted_hashes)
 	for link_hash in wanted_hashes:
-		assert '#page={}'.format(link_hash) in links
+		assert f'#page={link_hash}' in links
 
 
 def goto_selfservice(chrome):

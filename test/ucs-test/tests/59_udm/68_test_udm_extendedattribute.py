@@ -73,7 +73,7 @@ def flatten(layout):
 	return result
 
 
-class Test_UDMExtension(object):
+class Test_UDMExtension:
 	@pytest.mark.tags('udm')
 	@pytest.mark.roles('domaincontroller_master')
 	@pytest.mark.exposure('careful')

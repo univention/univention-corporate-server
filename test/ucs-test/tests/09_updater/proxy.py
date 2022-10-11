@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 """Simple HTTP Proxy for ucs-test."""
 # Inspired by <http://effbot.org/librarybook/simplehttpserver.htm>
 
@@ -36,21 +35,21 @@ class Proxy(BaseHTTPServer.BaseHTTPRequestHandler):
 				username, password = auth.split(':', 1)
 				username, password = unquote(username), unquote(password)
 				if username != options.username:
-					msg = "Username: %s != %s" % (username, options.username)
+					msg = f"Username: {username} != {options.username}"
 					if options.verbose:
 						self.log_error(msg)
 					raise KeyError(msg)
 				if password != options.password:
-					msg = "Password: %s != %s" % (password, options.password)
+					msg = f"Password: {password} != {options.password}"
 					if options.verbose:
 						self.log_error(msg)
 					raise KeyError(msg)
 			except KeyError as exc:
 				self.send_response(http_client.PROXY_AUTHENTICATION_REQUIRED)
-				self.send_header('WWW-Authenticate', 'Basic realm="%s"' % (options.realm,))
+				self.send_header('WWW-Authenticate', f'Basic realm="{options.realm}"')
 				self.send_header('Content-type', 'text/html; charset=UTF-8')
 				self.end_headers()
-				self.wfile.write(('<html><body><h1>Error: Proxy authorization needed</h1>%s</body></html>' % (exc,)).encode('UTF-8'))
+				self.wfile.write((f'<html><body><h1>Error: Proxy authorization needed</h1>{exc}</body></html>').encode('UTF-8'))
 				return
 		# rewrite url
 		url = urlsplit(self.path)
@@ -68,7 +67,7 @@ class Proxy(BaseHTTPServer.BaseHTTPRequestHandler):
 			req = Request(url=url, headers=self.headers)
 			if options.verbose:
 				for k, v in self.headers.items():
-					self.log_message("> %s: %s" % (k, v))
+					self.log_message(f"> {k}: {v}")
 			fp = urlopen(req)
 		except HTTPError as exc:
 			fp = exc
@@ -76,17 +75,17 @@ class Proxy(BaseHTTPServer.BaseHTTPRequestHandler):
 				self.log_error("%d %s" % (fp.code, fp.msg))
 
 		self.send_response(fp.code)
-		via = '1.0 %s' % (httpd.server_name,)
+		via = f'1.0 {httpd.server_name}'
 		for k, v in fp.headers.items():
 			if k.lower() == 'via':
-				via = "%s, %s" % (via, v)
+				via = f"{via}, {v}"
 			elif k.lower() in ('server', 'date'):  # Std-Hrds by BaseHTTPReqHand
 				continue
 			elif k.lower() == 'transfer-encoding':
 				continue
 			else:
 				if options.verbose:
-					self.log_message("< %s: %s" % (k, v))
+					self.log_message(f"< {k}: {v}")
 				self.send_header(k, v)
 		self.send_header('Via', via)
 		self.end_headers()

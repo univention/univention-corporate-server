@@ -127,7 +127,7 @@ objectClass: univentionObject
 univentionObjectType: policies/dhcp_routing
 cn: p2
 univentionDhcpRouters: 192.168.0.1
-'''.encode('UTF-8'))
+'''.encode())
 	udm.modify_object('dhcp/service', dn=service, policy_reference=dhcp_routing)
 	result1 = policy_result(service)
 	udm.modify_object('dhcp/service', dn=service, policy_reference=dhcp_routing2)

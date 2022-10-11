@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -v
-# -*- coding: utf-8 -*-
 ## desc: Test ticket lifetime are changed successfully
 ## exposure: safe
 ## roles:
@@ -26,7 +25,7 @@ key = "kerberos/defaults/ticket-lifetime"
 
 def file_contain(file: str, text: str, no_exist_ignore: bool = True):
 	if os.path.exists(file):
-		with open(file, "r") as f:
+		with open(file) as f:
 			if text not in f.read():
 				return -1
 	elif not no_exist_ignore:

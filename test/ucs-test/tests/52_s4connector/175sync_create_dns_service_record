@@ -26,7 +26,7 @@ if __name__ == '__main__':
 		s4connector.start()
 		s4connector.wait_for_sync(30)
 		temp = test_srv_fields.split(' ')
-		test_string = '_{0}._{1}.{2}.{3}'.format(temp[0], temp[1], temp[2], test_zone_name)
+		test_string = f'_{temp[0]}._{temp[1]}.{temp[2]}.{test_zone_name}'
 		dnstests.test_dns_service_record(test_string, location)
 		dnstests.check_ldap_object(srv_record_dn, 'Modified Service Record', 'sRVRecord', location + '.')
 

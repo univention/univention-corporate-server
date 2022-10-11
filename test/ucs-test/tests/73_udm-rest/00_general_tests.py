@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner pytest-3 -s
-# -*- coding: utf-8 -*-
 ## desc: Test various functions in the UDM REST API
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
@@ -82,7 +81,7 @@ def test_etag_last_modified(udm):
 	# assert 'If-Unmodified-Since' in str(exc)
 
 
-@pytest.mark.parametrize('suffix', ['', u'ä'])
+@pytest.mark.parametrize('suffix', ['', 'ä'])
 def test_create_modify_move_remove(random_string, suffix, ucr):
 	if suffix:
 		handler_set(['directory/manager/web/modules/users/user/properties/username/syntax=string'])
@@ -118,7 +117,7 @@ def test_create_modify_move_remove(random_string, suffix, ucr):
 @pytest.mark.parametrize('name', [
 	'''a !"#$%&'"()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~z''',
 	'foo//bar',
-	u'foobär',
+	'foobär',
 ])
 def test_special_characters_in_dn(name):
 	with UDM() as udm:

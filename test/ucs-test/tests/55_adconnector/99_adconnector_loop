@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner python3
-# -*- coding: utf-8 -*
 ## desc: Fast add and delete an object, see if this creates an adconnector loop
 ## roles:
 ##  - domaincontroller_master
@@ -37,7 +36,7 @@ def check_if_looping():
 		print('ERROR: postrun never ran, ldap replication failed, most likely because of an adcon loop. Stopping the loop')
 		ignorelist = ucr.get('connector/ad/mapping/windowscomputer/ignorelist', '')
 		new_ignorelist = ignorelist + ','.join(object_names)
-		ucr_set(['connector/ad/mapping/windowscomputer/ignorelist=%s' % (new_ignorelist,)])
+		ucr_set([f'connector/ad/mapping/windowscomputer/ignorelist={new_ignorelist}'])
 		subprocess.check_call(["service", "univention-ad-connector", "restart"])
 		print('Trying to wait for postrun again, see if a loop was the reason for failure')
 		# wait a bit for things to settle..

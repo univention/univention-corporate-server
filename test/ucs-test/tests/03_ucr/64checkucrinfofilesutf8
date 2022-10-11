@@ -21,11 +21,11 @@ for dirname, dirnames, names in os.walk(D_INFO):
 					try:
 						line.decode('utf8')
 					except UnicodeDecodeError as E:
-						print('Error. Invalid UTF-8-character in file %s, line %s, at position %s' % (filename, i, E.end), file=sys.stderr)
+						print(f'Error. Invalid UTF-8-character in file {filename}, line {i}, at position {E.end}', file=sys.stderr)
 						exit_code = 111
 						break
 				else:
-					print("OK: %s" % (filename,))
+					print(f"OK: {filename}")
 
 sys.exit(exit_code)
 

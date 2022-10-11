@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner python3
-## -*- coding: utf-8 -*-
 ## desc: test automatic reconnect of uldap.py
 ## tags: [skip_admember,reconnect]
 ## roles: [domaincontroller_master]
@@ -35,7 +34,7 @@ def search_thread():
 			lo.search(filter="uid=Administrator", attr=["uid"])
 		except LDAPError:
 			failed = True
-	print("Searches per sec: {}".format(x / run_time))
+	print(f"Searches per sec: {x / run_time}")
 
 
 def main():

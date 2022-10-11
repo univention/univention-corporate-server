@@ -23,7 +23,7 @@ def capture_mails(timeout=5):
 			print('receiving email with length=', len(data))
 			self.data.append(data)
 
-	class MailServer(object):
+	class MailServer:
 
 		def __init__(self):
 			print('Starting mail server')

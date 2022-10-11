@@ -21,7 +21,7 @@ MATCH_ATTEMPTS = 17  # number of 'dig' attempts to be done, see Bug #38288
 
 
 def check_ldap_object(item, item_name, item_attribute=None, expected_values=None, should_exist=True):
-	print((" Testing Ldap object : {0}".format(item_name)), end=' ')
+	print((f" Testing Ldap object : {item_name}"), end=' ')
 	if not isinstance(expected_values, list):
 		expected_values = [expected_values]
 	try:
@@ -38,34 +38,34 @@ def check_ldap_object(item, item_name, item_attribute=None, expected_values=None
 
 
 def test_dns_ns(zone_name, test_object, should_exist=True):
-	re_test_object = re.compile(r'{0}\.*\s+\d+\s+IN\s+NS\s+\"*{1}\"*'.format(*map(re.escape, (zone_name, test_object))))
+	re_test_object = re.compile(r'{}\.*\s+\d+\s+IN\s+NS\s+\"*{}\"*'.format(*map(re.escape, (zone_name, test_object))))
 	match(re_test_object, zone_name, 'NS', should_exist=should_exist)
 
 
 def test_dns_txt(dns_name, test_object, should_exist=True):
-	re_test_object = re.compile(r'{0}\.*\s+\d+\s+IN\s+TXT\s+\"*{1}\"*'.format(*map(re.escape, (dns_name, test_object))))
+	re_test_object = re.compile(r'{}\.*\s+\d+\s+IN\s+TXT\s+\"*{}\"*'.format(*map(re.escape, (dns_name, test_object))))
 	match(re_test_object, dns_name, 'TXT', should_exist=should_exist)
 
 
 def test_dns_soa_ttl(dns_name, test_object, should_exist=True):
-	re_test_object = re.compile(r"{0}\.*\s+{1}\s+IN\s+SOA".format(*map(re.escape, (dns_name, test_object))))
+	re_test_object = re.compile(r"{}\.*\s+{}\s+IN\s+SOA".format(*map(re.escape, (dns_name, test_object))))
 	match(re_test_object, dns_name, 'SOA', should_exist=should_exist)
 
 
 def test_dns_reverse_zone(zone_name, test_object, should_exist=True):
 	temp = zone_name.split('.')
 	zone_namereverse = temp[2] + '.' + temp[1] + '.' + temp[0]
-	re_test_object = re.compile(r"{0}.in-addr.arpa.\s+\d+\s+IN\s+NS\s+{1}".format(*map(re.escape, (zone_namereverse, test_object))))
+	re_test_object = re.compile(r"{}.in-addr.arpa.\s+\d+\s+IN\s+NS\s+{}".format(*map(re.escape, (zone_namereverse, test_object))))
 	match(re_test_object, zone_name, 'NS', '-x', should_exist=should_exist)
 
 
 def test_dns_serial(zone_name, test_object, should_exist=True):
-	re_test_object = re.compile(r"{0}\.*\s+\d+\s+IN\s+SOA\s+.+\s+.+\s+{1}\s+".format(*map(re.escape, (zone_name, test_object))))
+	re_test_object = re.compile(r"{}\.*\s+\d+\s+IN\s+SOA\s+.+\s+.+\s+{}\s+".format(*map(re.escape, (zone_name, test_object))))
 	match(re_test_object, zone_name, 'SOA', should_exist=should_exist)
 
 
 def test_dns_a_record(dns_name, test_object, should_exist=True):
-	re_test_object = re.compile(r'{0}\.*\s+\d+\s+IN\s+A\s+\"*{1}\"*'.format(*map(re.escape, (dns_name, test_object))))
+	re_test_object = re.compile(r'{}\.*\s+\d+\s+IN\s+A\s+\"*{}\"*'.format(*map(re.escape, (dns_name, test_object))))
 	match(re_test_object, dns_name, 'A', should_exist=should_exist)
 
 
@@ -80,23 +80,23 @@ def test_dns_aaaa_record(dns_name, test_object, should_exist=True):
 		new_test_object_parts.append(part)
 	test_object = (':').join(new_test_object_parts)
 	print(test_object)
-	re_test_object = re.compile(r'{0}\.*\s+\d+\s+IN\s+AAAA\s+\"*{1}\"*'.format(*map(re.escape, (dns_name, test_object))))
+	re_test_object = re.compile(r'{}\.*\s+\d+\s+IN\s+AAAA\s+\"*{}\"*'.format(*map(re.escape, (dns_name, test_object))))
 	match(re_test_object, dns_name, 'AAAA', should_exist=should_exist)
 
 
 def test_dns_alias(dns_name, test_object, should_exist=True):
-	re_test_object = re.compile(r'{0}\.*\s+\d+\s+IN\s+CNAME\s+\"*{1}\"*'.format(*map(re.escape, (dns_name, test_object))))
+	re_test_object = re.compile(r'{}\.*\s+\d+\s+IN\s+CNAME\s+\"*{}\"*'.format(*map(re.escape, (dns_name, test_object))))
 	match(re_test_object, dns_name, 'CNAME', should_exist=should_exist)
 
 
 def test_dns_service_record(dns_name, test_object, should_exist=True):
-	re_test_object = re.compile(r'{0}\.*\s+\d+\s+IN\s+SRV\s+\"*{1}\"*'.format(*map(re.escape, (dns_name, test_object))))
+	re_test_object = re.compile(r'{}\.*\s+\d+\s+IN\s+SRV\s+\"*{}\"*'.format(*map(re.escape, (dns_name, test_object))))
 	match(re_test_object, dns_name, 'SRV', should_exist=should_exist)
 
 
 def test_dns_pointer_record(reverse_zone, ip, test_object, should_exist=True):
 	reverse_address = str(ip) + '.' + reverse_zone
-	re_test_object = re.compile(r'{0}\.*\s+\d+\s+IN\s+PTR\s+\"*{1}\"*'.format(*map(re.escape, (reverse_address, test_object))))
+	re_test_object = re.compile(r'{}\.*\s+\d+\s+IN\s+PTR\s+\"*{}\"*'.format(*map(re.escape, (reverse_address, test_object))))
 	match(re_test_object, reverse_address, 'PTR', should_exist=should_exist)
 
 
@@ -138,17 +138,17 @@ def get_hostname_of_ldap_master():
 
 
 def random_srv_fields():
-	random_name = '{0} tcp {1}'.format(uts.random_name(), uts.random_name())
+	random_name = f'{uts.random_name()} tcp {uts.random_name()}'
 	return random_name
 
 
 def random_zone():
-	random_zone = '{0}.{1}'.format(uts.random_string(), uts.random_string())
+	random_zone = f'{uts.random_string()}.{uts.random_string()}'
 	return random_zone
 
 
 def location():
-	location = '0 1 2 {0}.{1}'.format(uts.random_name(), uts.random_name())
+	location = f'0 1 2 {uts.random_name()}.{uts.random_name()}'
 	return location
 
 
@@ -167,7 +167,7 @@ def make_random_ip():
 	while True:
 		ip_parts = [str(random.randrange(1, 254)) for i in range(4)]
 		randomIP = '.'.join(ip_parts)
-		command = os.system('ping -c 1 {0} >/dev/null'.format(randomIP))
+		command = os.system(f'ping -c 1 {randomIP} >/dev/null')
 		if command == 0:
 			pass
 		else:

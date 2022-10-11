@@ -61,7 +61,7 @@ def check_app_version_ldap_registraton(new_version):
 
     try:
         utils.verify_ldap_object(app_dn,
-                                 {'univentionAppID': ['%s_%s' % (App.id, App.version)],
+                                 {'univentionAppID': [f'{App.id}_{App.version}'],
                                   'univentionAppVersion': [App.version]})
 
         print("\nRemoving the App object from LDAP:")
