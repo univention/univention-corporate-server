@@ -12,24 +12,6 @@ SPHINX_DOCKER_FULL = $(DOCKER_REGISTRY)/sphinx:latest
 DOCKER_USER_CMD := docker run --rm -v "$(mkfile_dir)/..:/project" -w /project/doc --network=host -u "$(USER_ID)"
 DOCKER_CMD := docker run --rm -v "$(mkfile_dir)/..:/project" -w /project/doc --network=host
 
-.PHONY: fast
-fast::
-	${Q}find -name doc-common -prune -o \
-		\( -name \*-de.xml -exec $(FGREP) '/macros-en.ent' {} + -o -true \) -o \
-		\( -name \*.xml -exec $(FGREP) '/macros-de.ent' {} + \)
-fast::
-	${Q}find -mindepth 1 -maxdepth 2 -name doc-common -prune -o -name \*.xml -exec $(FGREP) '"../../stylesheets/' {} +
-fast::
-	${Q}find -mindepth 3 -maxdepth 3 -name \*.xml -exec $(FGREP) '"../stylesheets/' {} +
-fast::
-	${Q}find -name doc-common -prune -o -name \*.xml -exec $(FGREP) 'https\?://forge.univention.org/bugzilla/show_bug.cgi' {} +
-fast::
-	${Q}find -name doc-common -prune -o -name \*.xml -exec $(GREP) 'url="https\?://sdb.univention.de/[1-9]' {} +
-fast::
-	${Q}find */illustrations?? -type f -printf '%f\n' | sort | uniq -d
-
-check: fast
-
 # Uses the default Sphinx environment in a Docker image to run the needed tools for Sphinx.
 # Use this make target, when you want to update all po files in the documentation.
 update-po:
