@@ -134,10 +134,12 @@ class Value:
         raise Error('No URL: "%s"' % self.value)
 
     def is_role(self):
-        ALLOWED = {'domaincontroller_master',
-                       'domaincontroller_backup',
-                       'domaincontroller_slave',
-                       'memberserver'}
+        ALLOWED = {
+            'domaincontroller_master',
+            'domaincontroller_backup',
+            'domaincontroller_slave',
+            'memberserver'
+        }
 
         values = map(str.strip, self.value.split(','))
         if set(values) - ALLOWED:
