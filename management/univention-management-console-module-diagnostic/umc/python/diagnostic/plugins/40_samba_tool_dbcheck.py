@@ -68,7 +68,7 @@ def run(_umc_instance, rerun=False, fix_log=''):
 	if not util.is_service_active('Samba 4'):
 		return
 
-	error_descriptions = list()
+	error_descriptions = []
 	if rerun and fix_log:
 		error_descriptions.append(fix_log)
 

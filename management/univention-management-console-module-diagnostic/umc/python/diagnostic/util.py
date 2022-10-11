@@ -61,7 +61,7 @@ def active_services(lo=None):
 
 
 def run_with_output(cmd):
-	output = list()
+	output = []
 	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	(stdout, stderr) = process.communicate()
 	if stdout:

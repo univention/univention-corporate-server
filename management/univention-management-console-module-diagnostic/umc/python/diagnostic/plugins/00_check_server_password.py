@@ -149,7 +149,7 @@ def run(_umc_instance, retest=False):
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
-	error_descriptions = list()
+	error_descriptions = []
 	buttons = [{
 		'action': 'fix_machine_password',
 		'label': _('Fix machine password'),

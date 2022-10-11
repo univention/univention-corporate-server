@@ -222,7 +222,7 @@ def run(_umc_instance):
 		_('Found errors in the nameserver entries of the following zones.'),
 		_('Please refer to {sdb} for further information.')
 	])]
-	modules = list()
+	modules = []
 	tmpl_forward = _('In forward zone {name} (see {{{link}}}):')
 	tmpl_reverse = _('In reverse zone {name} (see {{{link}}}):')
 	for (zone, group) in it.groupby(find_all_zone_problems(), lambda error: error.zone):

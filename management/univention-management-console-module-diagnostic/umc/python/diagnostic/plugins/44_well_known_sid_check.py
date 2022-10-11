@@ -50,11 +50,12 @@ description = _('All SIDs exist and names are consistent.')
 run_descr = ['Checks if all well known SIDs exist and if their names are consistent']
 
 
-NON_EXISTENT_SIDS = set((
+NON_EXISTENT_SIDS = {
 	'Power Users', 'Creator Group Server',
 	'Creator Owner Server', 'Local', 'Console Logon', 'All Services',
 	'Creator Authority', 'Local Authority', 'NT Authority',
-	'Non-unique Authority', 'Cloneable Domain Controllers'))
+	'Non-unique Authority', 'Cloneable Domain Controllers',
+}
 
 
 class CheckError(Exception):

@@ -72,13 +72,14 @@ def run(_umc_instance):
 	auth_info = _('Login to the remote server with the uid %(uid)s and the password from /etc/machine.secret failed. ')
 	auth_info += _('Please check /var/log/auth.log on the remote server for further information.')
 
-	bad = dict()
+	bad = {}
 	key_failed = False
 	auth_failed = False
-	data = dict(
-		fqdn=ucr['hostname'] + '.' + ucr['domainname'],
-		uid=ucr['hostname'] + '$',
-		hostname=ucr['hostname'])
+	data = {
+		"fqdn": ucr['hostname'] + '.' + ucr['domainname'],
+		"uid": ucr['hostname'] + '$',
+		"hostname": ucr['hostname']
+	}
 
 	for host in ucs_hosts:
 		client = paramiko.SSHClient()

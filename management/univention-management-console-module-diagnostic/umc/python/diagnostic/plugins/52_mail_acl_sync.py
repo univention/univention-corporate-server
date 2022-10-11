@@ -138,7 +138,7 @@ class ACL(object):
 		from identifier to right, where right is the highest right in the acl.
 		'''
 		def simplify(acl_list):
-			merged = dict()
+			merged = {}
 			for (identifier, right) in acl_list:
 				merged.setdefault(identifier, set()).add(right)
 			for (identifier, rights) in merged.items():
@@ -165,20 +165,20 @@ class ACL(object):
 
 class DovecotACL(ACL):
 	DOVECOT_RIGHT_TRANSLATION = (
-		('all', set(('lookup', 'read', 'write', 'write-seen', 'post', 'insert',
-			'write-deleted', 'expunge', 'admin'))),
-		('write', set(('lookup', 'read', 'write', 'write-seen', 'post', 'insert',
-			'write-deleted', 'expunge'))),
-		('append', set(('lookup', 'read', 'write', 'write-seen', 'post', 'insert'))),
-		('post', set(('lookup', 'read', 'write', 'write-seen', 'post'))),
-		('read', set(('lookup', 'read', 'write', 'write-seen'))),
+		('all', {'lookup', 'read', 'write', 'write-seen', 'post', 'insert',
+			'write-deleted', 'expunge', 'admin'}),
+		('write', {'lookup', 'read', 'write', 'write-seen', 'post', 'insert',
+			'write-deleted', 'expunge'}),
+		('append', {'lookup', 'read', 'write', 'write-seen', 'post', 'insert'}),
+		('post', {'lookup', 'read', 'write', 'write-seen', 'post'}),
+		('read', {'lookup', 'read', 'write', 'write-seen'}),
 		('none', set()),
 	)
 
 	@classmethod
 	def from_folder(cls, folder):
 		acl_list = cls._get_dovecot_acl(folder)
-		merged = dict()
+		merged = {}
 		for (identifier, rights) in acl_list.items():
 			acl_type = 'group' if identifier.startswith('group=') else 'user'
 			udm_id = identifier.replace('user=', '', 1) if identifier.startswith('user=') \
@@ -238,7 +238,7 @@ def run(_umc_instance):
 		_('This is not necessarily a problem, if the the ACL got changed via IMAP.')
 	])
 
-	modules = list()
+	modules = []
 	for (folder, group) in it.groupby(differences, lambda x: x[0]):
 		name = folder.common_name
 		ed.append('')

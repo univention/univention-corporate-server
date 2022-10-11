@@ -313,7 +313,7 @@ def resolve_kdc_record(protocol, domainname):
 	try:
 		result = dns.resolver.query(kerberos_dns_fqdn, 'SRV')
 	except dns.exception.DNSException:
-		result = list()
+		result = []
 
 	for record in result:
 		yield (record.target.to_text(True), record.port, protocol)
@@ -344,7 +344,7 @@ def run(_umc_instance, retest=False):
 		(kdc, port, protocol) for (reachable, (kdc, port, protocol))
 		in kdc_reachabe if not reachable]
 
-	error_descriptions = list()
+	error_descriptions = []
 
 	if unreachable_kdc:
 		error = _('The following KDCs were unreachable: {}')

@@ -286,10 +286,10 @@ class Plugin(object):
 			success = False
 			errors.update(exc.kwargs)
 
-		result = dict(
-			success=success,
-			type='success'
-		)
+		result = {
+			"success": success,
+			"type": 'success',
+		}
 		result.update(self.dict)
 		result.update(errors)
 		result.setdefault('buttons', []).insert(0, {'label': _('Test again')})
@@ -303,15 +303,15 @@ class Plugin(object):
 
 	@property
 	def dict(self):
-		return dict(
-			id=str(self),
-			plugin=str(self),
-			title=self.title,
-			description=self.description,
-			umc_modules=self.umc_modules,
-			links=self.links,
-			buttons=self.buttons,
-		)
+		return {
+			"id": str(self),
+			"plugin": str(self),
+			"title": self.title,
+			"description": self.description,
+			"umc_modules": self.umc_modules,
+			"links": self.links,
+			"buttons": self.buttons,
+		}
 
 
 def main():
