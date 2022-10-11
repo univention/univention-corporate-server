@@ -211,7 +211,7 @@ class App(object):
 				docker_url = 'https://%s/v2/%s/manifests/%s' % (registry, docker_image_repo, docker_image_tag)
 				try:
 					response = requests.get(docker_url, auth=(DOCKER_READ_USER_CRED['username'], DOCKER_READ_USER_CRED['password']))
-				except (requests.exceptions.HTTPError, requests.exceptions.URLError) as exc:
+				except requests.exceptions.RequestException as exc:
 					print('Error fetching DockerImage manifest for %s' % (self.name,), file=sys.stderr)
 					print('from %s' % (docker_url,), file=sys.stderr)
 					print(str(exc), file=sys.stderr)
