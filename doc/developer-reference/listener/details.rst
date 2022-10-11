@@ -369,6 +369,9 @@ In UCS 5 it would look like:
 
 .. code:: python
 
+   from typing import Dict, List
+
+
    def handler(
        dn: str,
        new: Dict[str, List[bytes]],
