@@ -27,7 +27,7 @@ run_descr = ['Checks if all nameservers are responsive']
 def run(_umc_instance):
 	ucr.load()
 	failed = []
-	fqdn = ".".join((ucr['hostname'], ucr['domainname']))
+	fqdn = "%(hostname)s.%(domainname)s" % ucr
 	hostnames = {
 		'www.univention.de': ('dns/forwarder1', 'dns/forwarder2', 'dns/forwarder3'),
 		fqdn: ('nameserver1', 'nameserver2', 'nameserver3')

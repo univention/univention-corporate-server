@@ -18,8 +18,8 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 title = _('SSH connection to UCS server failed!')
 
 ucr.load()
-fqdn = ".".join((ucr['hostname'], ucr['domainname']))
-run_descr = ['This can be checked by running:  univention-ssh /etc/machine.secret "%s$@%s" echo OK' % (ucr["hostname"], fqdn)]
+FQDN = "%(hostname)s.%(domainname)s" % ucr
+run_descr = ['This can be checked by running:  univention-ssh /etc/machine.secret "%s$@%s" echo OK' % (ucr["hostname"], FQDN)]
 
 
 class IgnorePolicy(paramiko.MissingHostKeyPolicy):
@@ -76,7 +76,7 @@ def run(_umc_instance):
 	key_failed = False
 	auth_failed = False
 	data = {
-		"fqdn": ucr['hostname'] + '.' + ucr['domainname'],
+		"fqdn": FQDN,
 		"uid": ucr['hostname'] + '$',
 		"hostname": ucr['hostname']
 	}

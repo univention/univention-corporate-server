@@ -111,10 +111,8 @@ def get_dns_server(config_registry, active_services):
 		ad_domain_info = univention.lib.admember.lookup_adds_dc()
 		server = ad_domain_info.get('DC IP')
 	else:
-		hostname = config_registry.get('hostname')
-		domainname = config_registry.get('domainname')
 		if set(active_services) >= {'Samba 4', 'DNS'}:
-			server = ".".join([hostname, domainname])
+			server = "%(hostname)s.%(domainname)s" % config_registry
 		else:
 			# TODO: Memberserver in Samba 4 domain
 			server = None

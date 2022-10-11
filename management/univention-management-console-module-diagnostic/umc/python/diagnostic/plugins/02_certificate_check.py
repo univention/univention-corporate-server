@@ -213,7 +213,7 @@ class CertificateVerifier(object):
 
 
 def certificates(configRegistry):
-	fqdn = '{}.{}'.format(configRegistry.get('hostname'), configRegistry.get('domainname'))
+	fqdn = "%(hostname)s.%(domainname)s" % configRegistry
 	default_certificate = '/etc/univention/ssl/{}/cert.pem'.format(fqdn)
 	yield configRegistry.get('apache2/ssl/certificate', default_certificate)
 
