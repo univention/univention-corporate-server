@@ -15,7 +15,7 @@ Build-Depends:
  python3-pil,
  univention-config-dev (>= 15.0.3),
  univention-l10n-dev (>= 7.0.1),
- univention-unittests,
+ univention-unittests (>= 2.0.2-1),
 
 Package: python-univention-lib
 Architecture: all

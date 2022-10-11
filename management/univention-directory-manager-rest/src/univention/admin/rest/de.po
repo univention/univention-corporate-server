@@ -201,7 +201,7 @@ msgstr "Versteckte Objekte anzeigen"
 #: src/univention/admin/rest/module.py:491
 #, python-format
 msgid "Invalid JSON document: %r"
-msgstr "Ungültiges JSON-Dokuments: %r"
+msgstr "Ungültiges JSON-Dokument: %r"
 
 #: src/univention/admin/rest/module.py:1794
 msgid "LDAP base"

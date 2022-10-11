@@ -128,3 +128,9 @@ class TestTranslation(object):
 			assert translation._translation is not None
 		else:
 			assert translation._translation is None
+
+	def test_set_all_language(self):
+		translation = i18n.Translation("univention-lib-unittest", localedir=dirname(__file__))
+		translation.set_language('en_US')
+		i18n.Translation.set_all_languages('de_DE')
+		assert str(translation.locale) == 'de_DE.UTF-8'

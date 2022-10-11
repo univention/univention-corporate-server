@@ -49,6 +49,7 @@ Depends:
  python3-tornado,
  python3-univention-directory-manager (>= 15.0.11-54),
  python3-univention-directory-reports,
+ python3-univention-lib (>= 9.0.12-2),
  python3-univention-management-console,
  univention-management-console-module-udm (>= 10.0.1-27),
  ${misc:Depends},

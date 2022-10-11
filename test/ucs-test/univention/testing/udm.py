@@ -58,7 +58,7 @@ import random
 import subprocess
 import sys
 import time
-from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Text, Tuple, Union  # noqa: F401
+from typing import Any, Dict, Iterable, List, Mapping, Optional, Text, Tuple, Union  # noqa: F401
 
 import ldap
 import ldap.filter
@@ -254,10 +254,13 @@ class UCSTestUDM(object):
 		# type: () -> str
 		return 'cn=temporary,cn=univention,%(ldap/base)s' % self._ucr
 
-	def __init__(self):
+	def __init__(self, language=None):
 		# type: () -> None
+		self._env = {}
 		self._cleanup = {}
 		self._cleanupLocks = {}
+		if language:
+			self._env['LANG'] = '%s.UTF-8' % (language.replace('-', '_'),)
 
 	@classmethod
 	def _build_udm_cmdline(cls, modulename, action, kwargs):
@@ -359,14 +362,10 @@ class UCSTestUDM(object):
 		dn = None
 		cmd = self._build_udm_cmdline(modulename, 'create', kwargs)
 		print('Creating %s object with %s' % (modulename, _prettify_cmd(cmd)))
-		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-		(stdout, stderr) = child.communicate()
+		returncode, stdout, stderr = self._execute_udm(cmd)
 
-		if six.PY3:
-			stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
-
-		if child.returncode:
-			raise UCSTestUDM_CreateUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
+		if returncode:
+			raise UCSTestUDM_CreateUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': returncode, 'stdout': stdout, 'stderr': stderr})
 
 		# find DN of freshly created object and add it to cleanup list
 		for line in stdout.splitlines():  # :pylint: disable-msg=E1103
@@ -824,14 +823,10 @@ class UCSTestUDM(object):
 
 		cmd = self._build_udm_cmdline(modulename, 'modify', kwargs)
 		print('Modifying %s object with %s' % (modulename, _prettify_cmd(cmd)))
-		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-		(stdout, stderr) = child.communicate()
+		returncode, stdout, stderr = self._execute_udm(cmd)
 
-		if six.PY3:
-			stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
-
-		if child.returncode:
-			raise UCSTestUDM_ModifyUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
+		if returncode:
+			raise UCSTestUDM_ModifyUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': returncode, 'stdout': stdout, 'stderr': stderr})
 
 		for line in stdout.splitlines():  # :pylint: disable-msg=E1103
 			if line.startswith('Object modified: '):
@@ -862,14 +857,10 @@ class UCSTestUDM(object):
 
 		cmd = self._build_udm_cmdline(modulename, 'move', kwargs)
 		print('Moving %s object %s' % (modulename, _prettify_cmd(cmd)))
-		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-		(stdout, stderr) = child.communicate()
+		returncode, stdout, stderr = self._execute_udm(cmd)
 
-		if six.PY3:
-			stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
-
-		if child.returncode:
-			raise UCSTestUDM_MoveUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
+		if returncode:
+			raise UCSTestUDM_MoveUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': returncode, 'stdout': stdout, 'stderr': stderr})
 
 		for line in stdout.splitlines():  # :pylint: disable-msg=E1103
 			if line.startswith('Object modified: '):
@@ -896,14 +887,10 @@ class UCSTestUDM(object):
 
 		cmd = self._build_udm_cmdline(modulename, 'remove', kwargs)
 		print('Removing %s object %s' % (modulename, _prettify_cmd(cmd)))
-		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-		(stdout, stderr) = child.communicate()
+		returncode, stdout, stderr = self._execute_udm(cmd)
 
-		if six.PY3:
-			stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
-
-		if child.returncode:
-			raise UCSTestUDM_RemoveUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
+		if returncode:
+			raise UCSTestUDM_RemoveUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': returncode, 'stdout': stdout, 'stderr': stderr})
 
 		if dn in self._cleanup.get(modulename, []):
 			self._cleanup[modulename].remove(dn)
@@ -1028,14 +1015,10 @@ class UCSTestUDM(object):
 		# type: (str, **Any) -> List[Tuple[str, Dict[str, Any]]]
 		cmd = self._build_udm_cmdline(modulename, 'list', kwargs)
 		print('Listing %s objects %s' % (modulename, _prettify_cmd(cmd)))
-		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-		(stdout, stderr) = child.communicate()
+		returncode, stdout, stderr = self._execute_udm(cmd)
 
-		if six.PY3:
-			stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
-
-		if child.returncode:
-			raise UCSTestUDM_ListUDMObjectFailed(child.returncode, stdout, stderr)
+		if returncode:
+			raise UCSTestUDM_ListUDMObjectFailed(returncode, stdout, stderr)
 
 		objects = []  # type: List[Tuple[str, Dict[str, Any]]]
 		dn = None
@@ -1094,11 +1077,8 @@ class UCSTestUDM(object):
 			cmd = ['/usr/sbin/udm-test', modulename, 'remove', '--dn', dn, '--remove_referring']
 
 			print('removing DN:', dn)
-			child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-			(stdout, stderr) = child.communicate()
-			if six.PY3:
-				stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
-			if child.returncode or 'Object removed:' not in stdout:
+			returncode, stdout, stderr = self._execute_udm(cmd)
+			if returncode or 'Object removed:' not in stdout:
 				failedObjects.setdefault(modulename, []).append(dn)
 			else:
 				removed.append((modulename, dn))
@@ -1109,12 +1089,9 @@ class UCSTestUDM(object):
 			for dn in objects:
 				cmd = ['/usr/sbin/udm-test', modulename, 'remove', '--dn', dn, '--remove_referring']
 
-				child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-				(stdout, stderr) = child.communicate()
-				if six.PY3:
-					stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
+				returncode, stdout, stderr = self._execute_udm(cmd)
 
-				if child.returncode or 'Object removed:' not in stdout:
+				if returncode or 'Object removed:' not in stdout:
 					print('Warning: Failed to remove %r object %r' % (modulename, dn), file=sys.stderr)
 					print('stdout=%r %r %r' % (stdout, stderr, self._lo.get(dn)), file=sys.stderr)
 				else:
@@ -1179,6 +1156,13 @@ class UCSTestUDM(object):
 		if exc_type:
 			print('Cleanup after exception: %s %s' % (exc_type, exc_value))
 		self.cleanup()
+
+	def _execute_udm(self, cmd):
+		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False, env=self._env)
+		(stdout, stderr) = child.communicate()
+		if six.PY3:
+			stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
+		return child.returncode, stdout, stderr
 
 
 class UDM(UCSTestUDM):

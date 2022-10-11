@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-lib
+fix:
+desc: |
+ This update addresses the following issue:
+ * `univention.lib.i18n` now provides a method to set the language of all
+   already instanciated `Translation` instances.
+bug: [55224]
