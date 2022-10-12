@@ -42,6 +42,7 @@ import univention.admin.uldap
 import univention.uldap
 from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation
+from univention.lib.misc import custom_username
 from univention.management.console.modules.diagnostic import MODULE, Warning, util
 
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -189,7 +190,8 @@ class DovecotACL(ACL):
 	@staticmethod
 	def _get_dovecot_acl(folder):
 		mailbox = 'shared/{pm}' if folder.mail_address else '{cn}/INBOX'
-		cmd = ('doveadm', 'acl', 'get', '-u', 'Administrator', mailbox.format(cn=folder.common_name, pm=folder.mail_address))
+		admin_user = custom_username("Administrator", configRegistry)
+		cmd = ('doveadm', 'acl', 'get', '-u', admin_user, mailbox.format(cn=folder.common_name, pm=folder.mail_address))
 		output = subprocess.check_output(cmd, stderr=subprocess.PIPE).decode('UTF-8', 'replace').splitlines()
 		return {identifier.strip(): set(rights.strip().split()) for (identifier, rights) in (line.rsplit('  ', 1) for line in output)}
 
