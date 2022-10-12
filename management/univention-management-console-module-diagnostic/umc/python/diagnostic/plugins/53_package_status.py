@@ -33,7 +33,7 @@
 from subprocess import PIPE, Popen
 
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import Critical, Warning
+from univention.management.console.modules.diagnostic import Critical, Instance, Warning
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -47,10 +47,10 @@ description = '\n'.join([
 run_descr = ['This can be checked by running: dpkg --audit']
 
 
-def run(_umc_instance):
+def run(_umc_instance: Instance) -> None:
 	proccess = Popen(['dpkg', '--audit'], stdout=PIPE, env={'LANG': 'C'})
-	stdout, stderr = proccess.communicate()
-	stdout = stdout.decode('UTF-8', 'replace')
+	stdout_, stderr = proccess.communicate()
+	stdout = stdout_.decode('UTF-8', 'replace')
 
 	if 'The following packages' in stdout:
 		num = len([line for line in stdout.splitlines() if line.startswith(' ')])

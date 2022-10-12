@@ -42,7 +42,7 @@ import univention.lib.misc
 import univention.uldap
 from univention.config_registry import handler_set as ucr_set, handler_unset as ucr_unset, ucr_live as configRegistry
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import MODULE, Critical, ProblemFixed
+from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, ProblemFixed
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 run_descr = ["Trying to authenticate with machine password against LDAP  Similar to running: univention-ldapsearch -LLLs base dn"]
@@ -55,7 +55,7 @@ links = [{
 }]
 
 
-def fix_machine_password(umc_instance):
+def fix_machine_password(umc_instance: Instance) -> None:
 	role = configRegistry.get('server/role')
 	valid_roles = ('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 	if role in valid_roles:
@@ -69,13 +69,13 @@ def fix_machine_password(umc_instance):
 	raise Critical(description=error_description)
 
 
-def reset_password_change(umc_instance):
+def reset_password_change(umc_instance: Instance) -> None:
 	MODULE.process('Resetting server/password/change')
 	ucr_unset(['server/password/change'])
 	return run(umc_instance, retest=True)
 
 
-def reset_password_interval(umc_instance):
+def reset_password_interval(umc_instance: Instance) -> None:
 	MODULE.process('Resetting server/password/interval=21')
 	ucr_set(['server/password/interval=21'])
 	return run(umc_instance, retest=True)
@@ -88,7 +88,7 @@ actions = {
 }
 
 
-def check_machine_password(master=True):
+def check_machine_password(master: bool = True) -> bool:
 	try:
 		univention.uldap.getMachineConnection(ldap_master=master)
 	except ldap.INVALID_CREDENTIALS:
@@ -96,7 +96,7 @@ def check_machine_password(master=True):
 	return True
 
 
-def change_server_password():
+def change_server_password() -> None:
 	interval = configRegistry.get_int('server/password/interval', 21)
 	ucr_set('server/password/interval=-1')
 	try:
@@ -116,7 +116,7 @@ def change_server_password():
 		ucr_set('server/password/interval={}'.format(interval))
 
 
-def restore_machine_password(role, ldap_connection):
+def restore_machine_password(role: str, ldap_connection: univention.admin.uldap.access) -> None:
 	with open('/etc/machine.secret') as fob:
 		password = fob.read().rstrip('\n')
 
@@ -136,7 +136,7 @@ def restore_machine_password(role, ldap_connection):
 		computer.modify()
 
 
-def run(_umc_instance, retest=False):
+def run(_umc_instance: Instance, retest: bool = False) -> None:
 	error_descriptions = []
 	buttons = [{
 		'action': 'fix_machine_password',

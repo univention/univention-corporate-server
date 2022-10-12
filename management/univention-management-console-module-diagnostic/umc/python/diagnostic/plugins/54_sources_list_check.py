@@ -33,9 +33,10 @@
 import glob
 import re
 import subprocess
+from typing import Iterator
 
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import MODULE, Warning
+from univention.management.console.modules.diagnostic import MODULE, Instance, Warning
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -49,7 +50,7 @@ TRACEBACK_REGEX = re.compile((
 	r'(?P=start)(?P<exception>[^\s].*)\n'))  # extract exception
 
 
-def run_ucr_commit(umc_instance):
+def run_ucr_commit(umc_instance: Instance) -> None:
 	cmd = [
 		'ucr', 'commit',
 		'/etc/apt/sources.list.d/15_ucs-online-version.list',
@@ -65,30 +66,30 @@ actions = {
 
 
 class TracebackFound(Exception):
-	def __init__(self, path, exception):
+	def __init__(self, path: str, exception: str) -> None:
 		super(TracebackFound, self).__init__(path, exception)
 		self.path = path
 		self.exception = exception
 
-	def __str__(self):
+	def __str__(self) -> str:
 		msg = _('Found exception in {path!r}: {exception}')
 		return msg.format(path=self.path, exception=self.exception)
 
 
-def find_tracebacks(path):
+def find_tracebacks(path: str) -> Iterator[str]:
 	with open(path) as fob:
 		content = fob.read()
 		for match in TRACEBACK_REGEX.finditer(content):
 			yield match.group('exception')
 
 
-def check_for_tracebacks():
+def check_for_tracebacks() -> Iterator[TracebackFound]:
 	for path in glob.glob('/etc/apt/sources.list.d/*'):
 		for exception in find_tracebacks(path):
 			yield TracebackFound(path, exception)
 
 
-def run(_umc_instance, rerun=False):
+def run(_umc_instance: Instance, rerun: bool = False) -> None:
 	error_descriptions = [str(exc) for exc in check_for_tracebacks()]
 
 	buttons = [{

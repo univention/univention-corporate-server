@@ -34,7 +34,7 @@ import socket
 
 from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import MODULE, Warning
+from univention.management.console.modules.diagnostic import MODULE, Instance, Warning
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 run_descr = ["Checks if the output of /usr/share/univention-directory-listener/get_notifier_id.py and the value in /var/lib/univention-directory-listener/notifier_id are the same"]
@@ -48,7 +48,7 @@ links = [{
 }]
 
 
-def get_id(master, cmd='GET_ID'):
+def get_id(master: str, cmd: str = 'GET_ID') -> str:
 	sock = socket.create_connection((master, 6669), 60.0)
 
 	sock.send(b'Version: 3\nCapabilities: \n\n')
@@ -61,7 +61,7 @@ def get_id(master, cmd='GET_ID'):
 	return notifier_id
 
 
-def run(_umc_instance):
+def run(_umc_instance: Instance) -> None:
 	try:
 		notifier_id = get_id(configRegistry.get('ldap/master'))
 	except socket.error:

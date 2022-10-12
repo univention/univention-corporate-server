@@ -33,11 +33,11 @@
 try:
 	from distutils.version import LooseVersion as parse
 except ImportError:  # Python 3
-	from packaging.version import parse
+	from packaging.version import parse  # type: ignore
 
 from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import MODULE, Critical, Warning
+from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, Warning
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -52,7 +52,7 @@ npversion_err_msg = _('There is no notifier/protocol/version configured.')
 int_cast_err_msg = _('The value notifier/protocol/version has an invalid value.')
 
 
-def run(_umc_instance):
+def run(_umc_instance: Instance) -> None:
 	np_version = ucr.get('notifier/protocol/version')
 	ucs_version = ucr.get('version/version')
 	ucs_patchlevel = ucr.get('version/patchlevel')

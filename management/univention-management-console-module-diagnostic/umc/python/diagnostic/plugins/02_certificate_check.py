@@ -37,6 +37,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+from typing import Iterator, Iterable
 
 import dateutil.tz
 import requests
@@ -44,7 +45,7 @@ from OpenSSL import crypto
 
 from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import MODULE, Critical, Warning
+from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, Warning
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 run_descr = ['This can be checked by running: ucr get server/role and ucr get ldap/master']
@@ -61,17 +62,17 @@ WARNING_PERIOD = datetime.timedelta(days=50)
 
 
 class CertificateWarning(Exception):
-	def __init__(self, path):
+	def __init__(self, path: str) -> None:
 		super(CertificateWarning, self).__init__(path)
 		self.path = path
 
 
 class CertificateWillExpire(CertificateWarning):
-	def __init__(self, path, remaining):
+	def __init__(self, path: str, remaining) -> None:
 		super(CertificateWillExpire, self).__init__(path)
 		self.remaining = remaining
 
-	def __str__(self):
+	def __str__(self) -> str:
 		msg = _('Certificate {path!r} will expire in {days} days.')
 		days = int(self.remaining.total_seconds() / 60 / 60 / 24)
 		return msg.format(path=self.path, days=days)
@@ -82,23 +83,23 @@ class CertificateError(CertificateWarning):
 
 
 class CertificateNotYetValid(CertificateError):
-	def __str__(self):
+	def __str__(self) -> str:
 		msg = _('Found not yet valid certificate {path!r}.')
 		return msg.format(path=self.path)
 
 
 class CertificateExpired(CertificateError):
-	def __str__(self):
+	def __str__(self) -> str:
 		msg = _('Found expired certificate {path!r}.')
 		return msg.format(path=self.path)
 
 
 class CertificateInvalid(CertificateError):
-	def __init__(self, path, message):
+	def __init__(self, path: str, message: str) -> None:
 		super(CertificateInvalid, self).__init__(path)
 		self.message = message
 
-	def __str__(self):
+	def __str__(self) -> str:
 		if self.message:
 			msg = _('Found invalid certificate {path!r}:\n{message}')
 		else:
@@ -107,27 +108,27 @@ class CertificateInvalid(CertificateError):
 
 
 class CertificateMalformed(CertificateError):
-	def __init__(self, path):
+	def __init__(self, path: str) -> None:
 		super(CertificateMalformed, self).__init__(path)
 
-	def __str__(self):
+	def __str__(self) -> str:
 		msg = _('Found malformed certificate {path!r}.')
 		return msg.format(path=self.path)
 
 
 class CertificateVerifier(object):
-	def __init__(self, root_cert_path, crl_path):
+	def __init__(self, root_cert_path: str, crl_path: str) -> None:
 		self.root_cert_path = root_cert_path
 		self.crl_path = crl_path
 
 	@staticmethod
-	def parse_generalized_time(generalized_time):
+	def parse_generalized_time(data: bytes) -> datetime.datetime:
 		# ASN.1 GeneralizedTime
 		# Local time only. ``YYYYMMDDHH[MM[SS[.fff]]]''
 		# Universal time (UTC time) only. ``YYYYMMDDHH[MM[SS[.fff]]]Z''.
 		# Difference between local and UTC times. ``YYYYMMDDHH[MM[SS[.fff]]]+-HHMM''.
 
-		generalized_time = generalized_time.decode('ASCII')
+		generalized_time = data.decode('ASCII')
 		sans_mircoseconds = re.sub(r'\.\d{3}', '', generalized_time)
 		sans_difference = re.sub(r'[+-]\d{4}', '', sans_mircoseconds)
 		date_format = {
@@ -159,21 +160,21 @@ class CertificateVerifier(object):
 		as_local = date.replace(tzinfo=dateutil.tz.tzlocal())
 		return as_local.astimezone(dateutil.tz.tzutc())
 
-	def _verify_timestamps(self, cert_path):
+	def _verify_timestamps(self, cert_path: str) -> Iterator[CertificateWarning]:
 		now = datetime.datetime.now(dateutil.tz.tzutc())
 
-		with open(cert_path) as fob:
+		with open(cert_path, "rb") as fob:
 			try:
 				cert = crypto.load_certificate(crypto.FILETYPE_PEM, fob.read())
 			except crypto.Error:
 				yield CertificateMalformed(cert_path)
 			else:
-				valid_from = self.parse_generalized_time(cert.get_notBefore())
+				valid_from = self.parse_generalized_time(cert.get_notBefore() or b'')
 
 				if now < valid_from:
 					yield CertificateNotYetValid(cert_path)
 
-				valid_until = self.parse_generalized_time(cert.get_notAfter())
+				valid_until = self.parse_generalized_time(cert.get_notAfter() or b'')
 				expires_in = valid_until - now
 
 				if expires_in < datetime.timedelta():
@@ -181,14 +182,14 @@ class CertificateVerifier(object):
 				elif expires_in < WARNING_PERIOD:
 					yield CertificateWillExpire(cert_path, expires_in)
 
-	def _openssl_verify(self, path):
+	def _openssl_verify(self, path: str) -> Iterator[CertificateWarning]:
 		# XXX It would be nice to do this in python. `python-openssl` has the
 		# capability to check against CRL since version 16.1.0, but
 		# unfortunately only version 0.14 is available in debian.
 		cmd = ('openssl', 'verify', '-CAfile', self.root_cert_path, '-CRLfile', self.crl_path, '-crl_check', path)
 		verify = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-		stdout, stderr = verify.communicate()
-		stdout = stdout.decode('UTF-8', 'replace')
+		stdout_, stderr = verify.communicate()
+		stdout = stdout_.decode('UTF-8', 'replace')
 		if verify.poll() != 0:
 			# `openssl` can not cope with both `-CAfile` and `-CApath` at the
 			# same time, so we need a second call. If omitted, `openssl` will
@@ -198,18 +199,18 @@ class CertificateVerifier(object):
 			if verify_sys.poll() != 0:
 				yield CertificateInvalid(path, stdout)
 
-	def verify_root(self):
+	def verify_root(self) -> Iterator[CertificateWarning]:
 		for error in self.verify(self.root_cert_path):
 			yield error
 
-	def verify(self, cert_path):
+	def verify(self, cert_path: str) -> Iterator[CertificateWarning]:
 		for error in self._verify_timestamps(cert_path):
 			yield error
 		for error in self._openssl_verify(cert_path):
 			yield error
 
 
-def certificates():
+def certificates() -> Iterator[str]:
 	fqdn = "%(hostname)s.%(domainname)s" % configRegistry
 	default_certificate = '/etc/univention/ssl/{}/cert.pem'.format(fqdn)
 	yield configRegistry.get('apache2/ssl/certificate', default_certificate)
@@ -235,7 +236,7 @@ def certificates():
 
 
 @contextlib.contextmanager
-def download_tempfile(url):
+def download_tempfile(url: str) -> Iterator[str]:
 	with tempfile.NamedTemporaryFile() as fob:
 		response = requests.get(url, stream=True)
 		shutil.copyfileobj(response.raw, fob)
@@ -244,14 +245,14 @@ def download_tempfile(url):
 
 
 @contextlib.contextmanager
-def convert_crl_to_pem(path):
+def convert_crl_to_pem(path: str) -> Iterator[str]:
 	with tempfile.NamedTemporaryFile() as fob:
 		convert = ('openssl', 'crl', '-inform', 'DER', '-in', path, '-outform', 'PEM', '-out', fob.name)
 		subprocess.check_call(convert)
 		yield fob.name
 
 
-def verify_local(all_certificates):
+def verify_local(all_certificates: Iterable[str]) -> Iterator[CertificateWarning]:
 	with convert_crl_to_pem('/etc/univention/ssl/ucsCA/crl/ucsCA.crl') as crl:
 		verifier = CertificateVerifier('/etc/univention/ssl/ucsCA/CAcert.pem', crl)
 		for error in verifier.verify_root():
@@ -261,7 +262,7 @@ def verify_local(all_certificates):
 				yield error
 
 
-def verify_from_master(master, all_certificates):
+def verify_from_master(master: str, all_certificates: Iterable[str]) -> Iterator[CertificateWarning]:
 	root_ca_uri = 'http://{}/ucs-root-ca.crt'.format(master)
 	crl_uri = 'http://{}/ucsCA.crl'.format(master)
 	with download_tempfile(root_ca_uri) as root_ca, download_tempfile(crl_uri) as crl:
@@ -274,7 +275,7 @@ def verify_from_master(master, all_certificates):
 					yield error
 
 
-def run(_umc_instance):
+def run(_umc_instance: Instance) -> None:
 	all_certificates = certificates()
 	is_local_check = configRegistry.get('server/role') in \
 		('domaincontroller_master', 'domaincontroller_backup')

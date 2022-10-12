@@ -35,7 +35,7 @@ from dns.exception import DNSException, Timeout
 
 from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import MODULE, Warning
+from univention.management.console.modules.diagnostic import MODULE, Instance, Warning
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -53,7 +53,7 @@ umc_modules = [{
 run_descr = ['Checks if all nameservers are responsive']
 
 
-def run(_umc_instance):
+def run(_umc_instance: Instance) -> None:
 	failed = []
 	fqdn = "%(hostname)s.%(domainname)s" % ucr
 	hostnames = {
@@ -83,7 +83,7 @@ def run(_umc_instance):
 		raise Warning('%s%s' % (description % (len(failed),), '\n'.join(failed)))
 
 
-def query_dns_server(nameserver, hostname):
+def query_dns_server(nameserver: str, hostname: str) -> None:
 	resolver = dns.resolver.Resolver()
 	resolver.lifetime = 10
 	resolver.nameservers = [nameserver]

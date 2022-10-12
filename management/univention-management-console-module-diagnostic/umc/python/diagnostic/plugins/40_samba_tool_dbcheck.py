@@ -31,7 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import MODULE, Critical, ProblemFixed, util
+from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, ProblemFixed, util
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -40,7 +40,7 @@ description = _('No errors found.'),
 run_descr = ['This can be checked by running: samba-tool dbcheck']
 
 
-def run_samba_tool_dbcheck_fix(umc_instance):
+def run_samba_tool_dbcheck_fix(umc_instance: Instance) -> None:
 	if not util.is_service_active('Samba 4'):
 		return
 
@@ -60,7 +60,7 @@ actions = {
 }
 
 
-def run(_umc_instance, rerun=False, fix_log=''):
+def run(_umc_instance: Instance, rerun: bool = False, fix_log: str = '') -> None:
 	if not util.is_service_active('Samba 4'):
 		return
 

@@ -35,7 +35,7 @@ import re
 from subprocess import PIPE, Popen
 
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import Warning
+from univention.management.console.modules.diagnostic import Instance, Warning
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -45,13 +45,13 @@ description = _('LDAP configuration files are valid.')
 RE_ERROR = re.compile("^[0-9a-f]{8} ")
 
 
-def run(_umc_instance):
+def run(_umc_instance: Instance) -> None:
 	if not os.path.exists('/usr/sbin/slapschema'):
 		return
 
 	process = Popen(['/usr/sbin/slapschema'], stdout=PIPE, stderr=PIPE, env={'LANG': 'C'}, shell=True)
-	stdout, stderr = process.communicate()
-	stderr = stderr.decode('UTF-8', 'replace')
+	stdout, stderr_ = process.communicate()
+	stderr = stderr_.decode('UTF-8', 'replace')
 
 	if not stderr:
 		return

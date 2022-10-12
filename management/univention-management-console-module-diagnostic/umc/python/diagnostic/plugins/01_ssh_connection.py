@@ -40,7 +40,7 @@ from univention.admin import modules, uldap
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
-from univention.management.console.modules.diagnostic import Critical, Warning
+from univention.management.console.modules.diagnostic import Critical, Instance, Warning
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -56,11 +56,11 @@ class IgnorePolicy(paramiko.MissingHostKeyPolicy):
 		pass
 
 
-def run(_umc_instance):
+def run(_umc_instance: Instance) -> None:
 	# Now a workaround for paramico logging to connector-s4.log
 	# because one of the diagnostic plugins instantiates s4connector.s4.s4()
 	# which initializes univention.debug2, which initializes logging.basicConfig
-	logger = paramiko.util.logging.getLogger()
+	logger = logging.getLogger("paramiko")
 	logger.setLevel(logging.CRITICAL)
 
 	try:
@@ -86,7 +86,7 @@ def run(_umc_instance):
 			host.open()
 			ucs_hosts.append(host['name'])
 
-	with open('/etc/machine.secret', 'rb') as fd:
+	with open('/etc/machine.secret', 'r') as fd:
 		password = fd.read().strip()
 
 	gen_msg = _('The ssh connection to at least one other UCS server failed. ')

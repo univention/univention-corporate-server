@@ -34,7 +34,7 @@ from subprocess import PIPE, STDOUT, Popen
 
 from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import MODULE, Critical, ProblemFixed
+from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, ProblemFixed
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -47,13 +47,13 @@ description = '\n'.join([
 run_descr = ['Checks user objects exist which are not migrated by using %s --check' % (SCRIPT,)]
 
 
-def run(_umc_instance):
+def run(_umc_instance: Instance) -> None:
 	if ucr.get('server/role') != 'domaincontroller_master':
 		return
 
 	process = Popen([SCRIPT, '--check'], stderr=STDOUT, stdout=PIPE)
-	stdout, stderr = process.communicate()
-	stdout = stdout.decode('UTF-8', 'replace')
+	stdout_, stderr = process.communicate()
+	stdout = stdout_.decode('UTF-8', 'replace')
 	if process.returncode:
 		MODULE.error(description + stdout)
 		raise Critical(description + stdout, buttons=[{
@@ -62,10 +62,10 @@ def run(_umc_instance):
 		}])
 
 
-def migrate_users(_umc_instance):
+def migrate_users(_umc_instance: Instance) -> None:
 	process = Popen([SCRIPT], stderr=STDOUT, stdout=PIPE)
-	stdout, stderr = process.communicate()
-	stdout = stdout.decode('UTF-8', 'replace')
+	stdout_, stderr = process.communicate()
+	stdout = stdout_.decode('UTF-8', 'replace')
 	if process.returncode:
 		MODULE.error('Error running univention-migrate-users-to-ucs4.3:\n%s' % (stdout,))
 		raise Critical(_('The migration failed: %s') % (stdout,))

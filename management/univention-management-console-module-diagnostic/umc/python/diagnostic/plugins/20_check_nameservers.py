@@ -32,16 +32,18 @@
 
 import itertools as it
 import socket
+from typing import Any, Dict, Iterator, Tuple
 
 import ldap.filter
 
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.uldap
+from univention.admin.handlers import simpleLdap
 from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
-from univention.management.console.modules.diagnostic import Warning
+from univention.management.console.modules.diagnostic import Instance, Warning
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -60,33 +62,33 @@ class RecordNotFound(Exception):
 
 
 class ZoneError(Exception):
-	def __init__(self, nameserver):
+	def __init__(self, nameserver: "NameServer") -> None:
 		self.nameserver = nameserver
 
 	@property
-	def zone(self):
+	def zone(self) -> "Zone":
 		return self.nameserver.zone
 
 
 class NoHostRecord(ZoneError):
-	def __str__(self):
+	def __str__(self) -> str:
 		msg = _('Found no host record (A/AAAA record) for nameserver {ns}.')
 		return msg.format(ns=self.nameserver.nameserver())
 
 
 class CnameAsNameServer(ZoneError):
-	def __str__(self):
+	def __str__(self) -> str:
 		msg = _('Found illegal alias record (CNAME record) for nameserver {ns}.')
 		return msg.format(ns=self.nameserver.nameserver())
 
 
 class Zone(object):
-	def __init__(self, udm_zone, domainname):
+	def __init__(self, udm_zone: simpleLdap, domainname: str) -> None:
 		self.udm_zone = udm_zone
 		self.domainname = domainname
 
 	@property
-	def kind(self):
+	def kind(self) -> str:
 		return self.udm_zone.module
 
 	@property
@@ -95,16 +97,16 @@ class Zone(object):
 			return self.udm_zone.get('zone')
 		return self.udm_zone.get('subnet')
 
-	def base(self):
+	def base(self) -> str:
 		if self.kind == 'dns/forward_zone':
 			return self.zone
 		return '{}.in-addr.arpa'.format(self.zone)
 
-	def nameserver(self):
+	def nameserver(self) -> Iterator:
 		for nameserver in self.udm_zone.get('nameserver'):
 			yield NameServer(self, nameserver)
 
-	def umc_link(self):
+	def umc_link(self) -> Tuple[str, Dict[str, Any]]:
 		text = 'udm:dns/dns'
 		link = {
 			'module': 'udm',
@@ -120,33 +122,33 @@ class Zone(object):
 
 
 class NameServer(object):
-	def __init__(self, zone, nameserver):
+	def __init__(self, zone: Zone, nameserver: str) -> None:
 		self.zone = zone
 		self._nameserver = nameserver
 
-	def is_qualified(self):
+	def is_qualified(self) -> bool:
 		return self._nameserver.endswith('.')
 
-	def nameserver(self):
+	def nameserver(self) -> str:
 		return self._nameserver.rstrip('.')
 
-	def fqdn(self):
+	def fqdn(self) -> str:
 		if self.is_qualified():
 			return self.nameserver()
 		return '{}.{}'.format(self.nameserver(), self.zone.base())
 
-	def is_in_zone(self):
+	def is_in_zone(self) -> bool:
 		return not self.is_qualified() or \
 			self.nameserver().endswith(self.zone.domainname)
 
-	def _generate_splits(self, fqdn):
+	def _generate_splits(self, fqdn: str) -> Iterator[Tuple[str, str]]:
 		zn = fqdn
 		while '.' in zn and zn != self.zone.domainname:
 			(rdn, zn) = zn.split('.', 1)
 			if rdn and zn:
 				yield (rdn, zn)
 
-	def build_filter(self):
+	def build_filter(self) -> str:
 		template = '(&(relativeDomainName=%s)(zoneName=%s))'
 		expressions = (ldap.filter.filter_format(template, (rdn, zn)) for (rdn, zn) in self._generate_splits(self.fqdn()))
 		return '(|{})'.format(''.join(expressions))
@@ -154,17 +156,17 @@ class NameServer(object):
 
 class UDM(object):
 
-	def __init__(self):
+	def __init__(self) -> None:
 		univention.admin.modules.update()
 		(self.ldap_connection, self.position) = univention.admin.uldap.getMachineConnection()
 
-	def lookup(self, module_name, filter_expression=''):
+	def lookup(self, module_name: str, filter_expression: str = '') -> Iterator[simpleLdap]:
 		module = udm_modules.get(module_name)
 		for instance in module.lookup(None, self.ldap_connection, filter_expression):
 			instance.open()
 			yield instance
 
-	def find(self, nameserver):
+	def find(self, nameserver: NameServer) -> simpleLdap:
 		filter_expression = nameserver.build_filter()
 		MODULE.process("Trying to find nameserver %s in UDM/LDAP" % (nameserver.fqdn()))
 		MODULE.process("Similar to running: univention-ldapsearch '%s'" % (filter_expression))
@@ -176,14 +178,14 @@ class UDM(object):
 					return record
 		raise RecordNotFound()
 
-	def all_zones(self):
+	def all_zones(self) -> Iterator[Zone]:
 		domainname = ucr.get('domainname')
 		for zone in self.lookup('dns/forward_zone'):
 			yield Zone(zone, domainname)
 		for zone in self.lookup('dns/reverse_zone'):
 			yield Zone(zone, domainname)
 
-	def check_zone(self, zone):
+	def check_zone(self, zone: Zone) -> Iterator[ZoneError]:
 		for nameserver in zone.nameserver():
 			try:
 				record = self.find(nameserver)
@@ -203,7 +205,7 @@ class UDM(object):
 					yield NoHostRecord(nameserver)
 
 
-def find_all_zone_problems():
+def find_all_zone_problems() -> Iterator[ZoneError]:
 	udm = UDM()
 	for zone in udm.all_zones():
 		for error in udm.check_zone(zone):
@@ -211,7 +213,7 @@ def find_all_zone_problems():
 			yield error
 
 
-def run(_umc_instance):
+def run(_umc_instance: Instance) -> None:
 	ed = [' '.join([
 		_('Found errors in the nameserver entries of the following zones.'),
 		_('Please refer to {sdb} for further information.')

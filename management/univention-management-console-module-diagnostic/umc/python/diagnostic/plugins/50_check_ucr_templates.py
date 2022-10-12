@@ -34,7 +34,7 @@
 import subprocess
 
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import MODULE, Warning
+from univention.management.console.modules.diagnostic import MODULE, Instance, Warning
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -43,7 +43,7 @@ description = _('No problems found with modified UCR templates')
 run_descr = ['This can be checked by running: univention-check-templates']
 
 
-def run(_umc_instance):
+def run(_umc_instance: Instance) -> None:
 	cmd = ['univention-check-templates']
 	try:
 		subprocess.check_output(cmd)

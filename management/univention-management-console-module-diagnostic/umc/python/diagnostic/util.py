@@ -32,13 +32,14 @@
 
 import socket
 import subprocess
+from typing import List, Optional, Tuple
 
 import ldap
 
 import univention.uldap
 
 
-def is_service_active(service, hostname=socket.gethostname()):
+def is_service_active(service: str, hostname: str = socket.gethostname()) -> bool:
 	lo = univention.uldap.getMachineConnection()
 	raw_filter = '(&(univentionService=%s)(cn=%s))'
 	filter_expr = ldap.filter.filter_format(raw_filter, (service, hostname))
@@ -48,7 +49,7 @@ def is_service_active(service, hostname=socket.gethostname()):
 	return False
 
 
-def active_services(lo=None):
+def active_services(lo: Optional[univention.uldap.access] = None) -> Optional[List[bytes]]:
 	if not lo:
 		lo = univention.uldap.getMachineConnection()
 	res = lo.search(base=lo.binddn, scope='base', attr=['univentionService'])
@@ -58,7 +59,7 @@ def active_services(lo=None):
 	return None
 
 
-def run_with_output(cmd):
+def run_with_output(cmd) -> Tuple[bool, str]:
 	output = []
 	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	(stdout, stderr) = process.communicate()

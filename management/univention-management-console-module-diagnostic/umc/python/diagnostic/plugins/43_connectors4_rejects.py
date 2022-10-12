@@ -30,10 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from typing import Iterator, Tuple
+
 import univention.uldap
 from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import MODULE, Critical, Warning, util
+from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, Warning, util
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -49,14 +51,14 @@ run_descr = ['Checking S4-Connector rejects. Similar to running: univention-s4co
 
 class MissingConfigurationKey(KeyError):
 	@property
-	def variable(self):
+	def variable(self) -> str:
 		return self.args[0]
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return '{}: {}'.format(self.__class__.__name__, super().__str__())
 
 
-def get_s4_connector(configbasename='connector'):
+def get_s4_connector(configbasename: str = 'connector'):
 	try:
 		s4 = univention.s4connector.s4.s4.main(configRegistry, configbasename)
 	except SystemExit as error:
@@ -67,19 +69,19 @@ def get_s4_connector(configbasename='connector'):
 		return s4
 
 
-def get_ucs_rejected(s4):
+def get_ucs_rejected(s4) -> Iterator[Tuple[str, str, str]]:
 	for (filename, dn) in s4.list_rejected_ucs():
 		s4_dn = s4.get_dn_by_ucs(dn)
 		yield (filename, dn.strip(), s4_dn.strip())
 
 
-def get_s4_rejected(s4):
+def get_s4_rejected(s4) -> Iterator[Tuple[object, str, str]]:
 	for (s4_id, dn) in s4.list_rejected():
 		ucs_dn = s4.get_dn_by_con(dn)
 		yield (s4_id, dn.strip(), ucs_dn.strip())
 
 
-def run(_umc_instance):
+def run(_umc_instance: Instance) -> None:
 	if not util.is_service_active('S4 Connector'):
 		return
 

@@ -35,7 +35,7 @@ import subprocess
 
 from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import MODULE, Critical, ProblemFixed, Warning
+from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, ProblemFixed, Warning
 from univention.udm import UDM, NoObject
 
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -79,7 +79,7 @@ SCHEMA_FILES = {
 }
 
 
-def udm_schema_obj_exists(name):
+def udm_schema_obj_exists(name: str) -> bool:
 	name = os.path.splitext(os.path.basename(name))[0]
 	udm = UDM.admin().version(1)
 	try:
@@ -90,11 +90,11 @@ def udm_schema_obj_exists(name):
 		return True
 
 
-def create_udm_schema_obj(pname, pversion, fname):
+def create_udm_schema_obj(pname: str, pversion: str, fname: str) -> None:
 	subprocess.check_call(['sh', '-c', '. /usr/share/univention-lib/ldap.sh && ucs_registerLDAPExtension --packagename "$1" --packageversion "$2" --schema "$3"', pname, pversion, fname])
 
 
-def run(_umc_instance):
+def run(_umc_instance: Instance) -> None:
 	if ucr.get('server/role') != 'domaincontroller_master':
 		return
 
@@ -113,7 +113,7 @@ def run(_umc_instance):
 		}])
 
 
-def register_schema(_umc_instance):
+def register_schema(_umc_instance: Instance) -> None:
 	for fname in sorted(SCHEMA_FILES):
 		if not os.path.exists(fname):
 			continue

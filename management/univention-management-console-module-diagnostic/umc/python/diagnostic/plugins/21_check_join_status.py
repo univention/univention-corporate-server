@@ -33,7 +33,7 @@
 from subprocess import PIPE, STDOUT, Popen
 
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import MODULE, Critical
+from univention.management.console.modules.diagnostic import MODULE, Critical, Instance
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -48,7 +48,7 @@ umc_modules = [{'module': 'join'}]
 run_descr = ['This can be checked by running: univention-check-join-status']
 
 
-def run(_umc_instance):
+def run(_umc_instance: Instance) -> None:
 	process = Popen(['univention-check-join-status'], stdout=PIPE, stderr=STDOUT)
 	(stdout, stderr) = process.communicate()
 	if process.returncode != 0:

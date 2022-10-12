@@ -31,10 +31,11 @@
 # <https://www.gnu.org/licenses/>.
 
 import psutil
+from typing import Dict, Iterator
 
 from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import MODULE, Critical, Warning
+from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, Warning
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -45,31 +46,31 @@ DISK_USAGE_THRESHOLD = 90
 run_descr = ['Checks if enough free disk space is available']
 
 
-def mount_points():
+def mount_points() -> Iterator[str]:
 	for dp in psutil.disk_partitions():
 		if dp.mountpoint != '/var/lib/docker/overlay' and 'iso' not in dp.fstype:
 			yield dp.mountpoint
 
 
-def high_disk_usage():
+def high_disk_usage() -> Dict[str, float]:
 	high = ((mp, psutil.disk_usage(mp).percent) for mp in mount_points())
 	return {mp: pc for (mp, pc) in high if pc > DISK_USAGE_THRESHOLD}
 
 
-def local_repository_exists():
+def local_repository_exists() -> bool:
 	return ucr.is_true('local/repository', False)
 
 
-def is_varlog_own_partition():
+def is_varlog_own_partition() -> bool:
 	mp = set(mount_points())
 	return '/var' in mp or '/var/log' in mp
 
 
-def high_log_levels():
-	def is_high(variable, default):
+def high_log_levels() -> bool:
+	def is_high(variable: str, default: int) -> bool:
 		return ucr.get_int(variable, default) > default
 
-	def is_on(variable):
+	def is_on(variable: str) -> bool:
 		return ucr.is_true(variable, False)
 
 	return any((
@@ -101,7 +102,7 @@ def high_log_levels():
 	))
 
 
-def solutions():
+def solutions() -> Iterator[str]:
 	yield _('You may want to uninstall software via {appcenter:appcenter}.')
 	if not is_varlog_own_partition():
 		yield _('You may want to move /var/log to another disk or storage.')
@@ -109,7 +110,7 @@ def solutions():
 		yield _('You may want to move the local repository to another server.')
 
 
-def run(_umc_instance):
+def run(_umc_instance: Instance) -> None:
 	high = high_disk_usage()
 	tmpl = _('- Disk for mountpoint %(mp)s is %(pc)s%% full.')
 	disk_errors = [tmpl % {'mp': mp, 'pc': pc} for (mp, pc) in high.items()]

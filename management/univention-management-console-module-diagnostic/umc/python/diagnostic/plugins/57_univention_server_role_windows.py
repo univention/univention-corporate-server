@@ -30,10 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.admin.uldap import getAdminConnection
+from typing import Dict, List
+
+from univention.admin.uldap import access, getAdminConnection
 from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import ProblemFixed, Warning
+from univention.management.console.modules.diagnostic import Instance, ProblemFixed, Warning
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -49,8 +51,8 @@ _WINDOWS_SERVER_ROLES = {
 }
 
 
-def udm_objects_without_ServerRole(lo):
-	objs = {}
+def udm_objects_without_ServerRole(lo: access) -> Dict[str, List[str]]:
+	objs: Dict[str, List[str]] = {}
 	result = lo.search('(&(objectClass=univentionWindows)(!(univentionServerRole=*)))', attr=['univentionObjectType'])
 	if result:
 		ldap_base = ucr.get('ldap/base')
@@ -62,19 +64,13 @@ def udm_objects_without_ServerRole(lo):
 			except KeyError:
 				univentionObjectType = None
 
-			try:
-				server_role = _WINDOWS_SERVER_ROLES[univentionObjectType]
-			except KeyError:
-				server_role = None
+			server_role = _WINDOWS_SERVER_ROLES.get(univentionObjectType, "")
+			objs.setdefault(server_role, []).append(dn)
 
-			try:
-				objs[server_role].append(dn)
-			except KeyError:
-				objs[server_role] = [dn]
 	return objs
 
 
-def run(_umc_instance):
+def run(_umc_instance: Instance) -> None:
 	if ucr.get('server/role') != 'domaincontroller_master':
 		return
 
@@ -103,7 +99,7 @@ def run(_umc_instance):
 			raise Warning(description + details, buttons=[])
 
 
-def migrate_objects(_umc_instance):
+def migrate_objects(_umc_instance: Instance) -> None:
 	lo, pos = getAdminConnection()
 	objs = udm_objects_without_ServerRole(lo)
 	for server_role in sorted(objs):

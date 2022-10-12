@@ -34,7 +34,7 @@ from subprocess import PIPE, STDOUT, Popen
 
 from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import MODULE, Critical
+from univention.management.console.modules.diagnostic import MODULE, Critical, Instance
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -53,14 +53,14 @@ umc_modules = [{
 run_descr = ['This can be checked by running: ping "$(ucr get gateway)"']
 
 
-def run(_umc_instance):
+def run(_umc_instance: Instance) -> None:
 	gateway = ucr.get('gateway')
 	if not gateway:
 		MODULE.error('There is no gateway configured.')
 		raise Critical(_('There is no gateway configured.'))
 	process = Popen(['/bin/ping', '-c3', '-w4', '-W4', gateway], stdout=PIPE, stderr=STDOUT)
-	stdout, stderr = process.communicate()
-	stdout = stdout.decode('UTF-8', 'replace')
+	stdout_, stderr = process.communicate()
+	stdout = stdout_.decode('UTF-8', 'replace')
 	if process.returncode:
 		MODULE.error('\n'.join(description))
 		raise Critical('\n'.join([description % (gateway,), '', stdout]))

@@ -30,11 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from typing import Any, Dict, List, Tuple
+
 from univention.admin.modules import identify, update
-from univention.admin.uldap import getAdminConnection
+from univention.admin.uldap import access, getAdminConnection
 from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import ProblemFixed, Warning
+from univention.management.console.modules.diagnostic import ProblemFixed, Instance, Warning
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -45,9 +47,10 @@ description = '\n'.join([
 ])
 
 _UPDATED = False
+UdmModule = Any  # FIXME
 
 
-def udm_objects_without_type(lo):
+def udm_objects_without_type(lo: access) -> List[Tuple[str, List[UdmModule], List[bytes]]]:
 	global _UPDATED
 	if not _UPDATED:
 		update()
@@ -67,14 +70,14 @@ def udm_objects_without_type(lo):
 	return objs
 
 
-def run(_umc_instance):
+def run(_umc_instance: Instance) -> None:
 	if ucr.get('server/role') != 'domaincontroller_master':
 		return
 
 	lo, pos = getAdminConnection()
 	objects = udm_objects_without_type(lo)
 	if len(objects):
-		counted_objects = {}
+		counted_objects: Dict[str, int] = {}
 		details = '\n\n' + _('These objects were found:')
 		for dn, modules, object_classes in objects:
 			for module in modules:
@@ -89,7 +92,7 @@ def run(_umc_instance):
 		}])
 
 
-def migrate_objects(_umc_instance):
+def migrate_objects(_umc_instance: Instance) -> None:
 	lo, pos = getAdminConnection()
 	objects = udm_objects_without_type(lo)
 	for dn, modules, object_classes in objects:

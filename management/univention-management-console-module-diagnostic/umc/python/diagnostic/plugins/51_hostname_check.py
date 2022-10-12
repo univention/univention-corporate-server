@@ -31,10 +31,11 @@
 # <https://www.gnu.org/licenses/>.
 
 import re
+from typing import Iterator
 
 import univention.uldap
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import MODULE, Warning
+from univention.management.console.modules.diagnostic import MODULE, Instance, Warning
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -50,7 +51,7 @@ VALID_HOSTNAME = re.compile(r"^(?!-)[A-Z0-9-]{1,63}(?<!-)$", re.IGNORECASE)
 run_descr = ['Checks for non-compliant hostnames. Check https://tools.ietf.org/html/rfc1123#section-2 for the syntax of hostnames']
 
 
-def univention_hostnames():
+def univention_hostnames() -> Iterator[str]:
 	lo = univention.uldap.getMachineConnection()
 	for (dn, attr) in lo.search('(objectClass=univentionHost)', attr=['cn']):
 		if dn is not None:
@@ -58,17 +59,17 @@ def univention_hostnames():
 				yield hostname.decode('UTF-8')
 
 
-def compliant_hostname(hostname):
+def compliant_hostname(hostname: str) -> bool:
 	return bool(VALID_HOSTNAME.match(hostname))
 
 
-def non_compliant_hostnames():
+def non_compliant_hostnames() -> Iterator[str]:
 	for hostname in univention_hostnames():
 		if not compliant_hostname(hostname):
 			yield hostname
 
 
-def run(_umc_instance):
+def run(_umc_instance: Instance) -> None:
 	hostnames = list(non_compliant_hostnames())
 	if hostnames:
 		invalid = _('The following non-compliant hostnames have been found: {hostnames}.')

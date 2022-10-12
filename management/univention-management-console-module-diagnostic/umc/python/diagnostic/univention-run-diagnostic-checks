@@ -35,6 +35,7 @@ import time
 import argparse
 import traceback
 from getpass import getpass
+from typing import Any, Dict, List
 
 from univention.config_registry import ucr
 from univention.lib.umc import Client, Unauthorized
@@ -43,7 +44,7 @@ from univention.lib.umc import Client, Unauthorized
 class CLIClient(object):
 
 	@classmethod
-	def main(cls):
+	def main(cls) -> int:
 		parser = argparse.ArgumentParser(description='Executes the diagnostic module checks')
 		parser.add_argument('--bindpwdfile', help='Path to a file that contains your password')
 		parser.add_argument('--username', help='Domain Admin username for authentication')
@@ -103,11 +104,11 @@ class CLIClient(object):
 
 		return cls(client, args).run()
 
-	def __init__(self, client, args):
+	def __init__(self, client: Client, args: argparse.Namespace):
 		self.client = client
 		self.args = args
 
-	def replace_links(self, description, links):
+	def replace_links(self, description: str, links: List[Dict[str, str]]) -> str:
 		for link in links:
 			placeholder = '{%s}' % (link['name'],)
 			link_text = '%s (%s)' % (link['label'], link['href'])
@@ -117,7 +118,7 @@ class CLIClient(object):
 				description += '\n%s' % link_text
 		return description
 
-	def run(self):
+	def run(self) -> int:
 		responses = self.run_diagnostic_checks(self.args.checks)
 
 		exit_code = 0
@@ -137,9 +138,9 @@ class CLIClient(object):
 				]))
 		return exit_code
 
-	def run_diagnostic_checks(self, plugins):
-		execution = {}
-		response = {}
+	def run_diagnostic_checks(self, plugins: List[str]) -> Dict[str, Any]:
+		execution: Dict[str, Any] = {}
+		response: Dict[str, Any] = {}
 		for plugin in plugins:
 			execution[plugin] = self.client.umc_command('diagnostic/run', {'plugin': plugin}).result
 

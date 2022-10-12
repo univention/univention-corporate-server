@@ -34,18 +34,19 @@ import ipaddress
 import random
 import socket
 import struct
+from typing import Callable, Iterator, Optional, Tuple, TypeVar
 
 import dns.exception
 import dns.resolver
 import pyasn1.codec.der.decoder
 import pyasn1.codec.der.encoder
 import pyasn1.error
-from pyasn1.type import char, namedtype, tag, univ, useful
+from pyasn1.type import base, char, namedtype, tag, univ, useful
 
 from univention.config_registry import handler_set as ucr_set, ucr_live as configRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import (
-	MODULE, Critical, ProblemFixed, Warning, util,
+	MODULE, Critical, Instance, ProblemFixed, Warning, util,
 )
 
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -53,6 +54,8 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 title = _('KDC service check')
 description = ['The check for the KDC reachability was successful.']
 run_descr = ["Performs a KDC reachability check"]
+
+_T = TypeVar("_T", bound="base.Asn1ItemBase")
 
 # This checks for the reachability of KDCs by sending a AS-REQ per TCP and UDP.
 # The AS-REQ is send with the fake user `kdc-reachability-check`. The KDCs will
@@ -79,7 +82,7 @@ run_descr = ["Performs a KDC reachability check"]
 # [2]: https://tools.ietf.org/html/rfc3244
 
 
-def add_lo_to_samba_interfaces(umc_instance):
+def add_lo_to_samba_interfaces(umc_instance: Instance) -> None:
 	interfaces = configRegistry.get('samba/interfaces', '').split()
 	interfaces.append('lo')
 	MODULE.process('Setting samba/interfaces')
@@ -87,7 +90,7 @@ def add_lo_to_samba_interfaces(umc_instance):
 	return run(umc_instance, retest=True)
 
 
-def reset_kerberos_kdc(umc_instance):
+def reset_kerberos_kdc(umc_instance: Instance) -> None:
 	MODULE.process('Resetting kerberos/kdc=127.0.0.1')
 	ucr_set(['kerberos/kdc=127.0.0.1'])
 	return run(umc_instance, retest=True)
@@ -100,12 +103,12 @@ actions = {
 }
 
 
-def _sequence_component(name, tag_value, type):
+def _sequence_component(name: str, tag_value: int, type: base.Asn1ItemBase) -> namedtype.NamedType:
 	return namedtype.NamedType(name, type.subtype(
 		explicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, tag_value),))
 
 
-def _sequence_optional_component(name, tag_value, type):
+def _sequence_optional_component(name: str, tag_value: int, type: base.Asn1ItemBase) -> namedtype.OptionalNamedType:
 	return namedtype.OptionalNamedType(name, type.subtype(
 		explicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, tag_value),))
 
@@ -181,12 +184,12 @@ class EmptyResponse(KerberosException):
 
 class Principal(object):
 
-	def __init__(self, name, realm, princ_type):
+	def __init__(self, name: str, realm: str, princ_type: base.Asn1ItemBase) -> None:
 		self.type = princ_type
 		self.realm = realm
 		self.components = [name, realm]
 
-	def components_to_asn1(self, name):
+	def components_to_asn1(self, name: _T) -> _T:
 		name.setComponentByName('name-type', int(self.type))
 		strings = name.setComponentByName('name-string').getComponentByName('name-string')
 		for i, c in enumerate(self.components):
@@ -194,7 +197,7 @@ class Principal(object):
 		return name
 
 
-def seq_set(seq, name, builder=None):
+def seq_set(seq: univ.Sequence, name: str, builder: Optional[Callable] = None) -> base.Asn1ItemBase:
 	component = seq.setComponentByName(name).getComponentByName(name)
 	if builder is not None:
 		seq.setComponentByName(name, builder(component))
@@ -203,7 +206,7 @@ def seq_set(seq, name, builder=None):
 	return seq.getComponentByName(name)
 
 
-def build_kerberos_request(target_realm, user_name):
+def build_kerberos_request(target_realm: str, user_name: str) -> bytes:
 
 	as_req = AsReq()
 	as_req['pvno'] = 5
@@ -225,7 +228,7 @@ def build_kerberos_request(target_realm, user_name):
 	return pyasn1.codec.der.encoder.encode(as_req)
 
 
-def send_and_receive(kdc, port, protocol, as_req):
+def send_and_receive(kdc: str, port: int, protocol: str, as_req: bytes) -> bytes:
 	socket_type = socket.SOCK_DGRAM if protocol == 'udp' else socket.SOCK_STREAM
 	sock = socket.socket(socket.AF_INET, socket_type)
 	sock.settimeout(1)
@@ -263,7 +266,7 @@ def send_and_receive(kdc, port, protocol, as_req):
 	return received
 
 
-def probe_kdc(kdc, port, protocol, target_realm, user_name):
+def probe_kdc(kdc: str, port: int, protocol: str, target_realm: str, user_name: str) -> bool:
 	request = build_kerberos_request(target_realm, user_name)
 	if protocol == 'udp':
 		MODULE.process("Trying to contact KDC %s on udp port %d Similar to running: nmap %s -sU -p %d" % (kdc, port, kdc, port))
@@ -298,7 +301,7 @@ def probe_kdc(kdc, port, protocol, target_realm, user_name):
 	return True
 
 
-def resolve_kdc_record(protocol, domainname):
+def resolve_kdc_record(protocol: str, domainname: str) -> Iterator[Tuple[str, int, str]]:
 	kerberos_dns_fqdn = '_kerberos._{}.{}'.format(protocol, domainname)
 	try:
 		result = dns.resolver.query(kerberos_dns_fqdn, 'SRV')
@@ -309,7 +312,7 @@ def resolve_kdc_record(protocol, domainname):
 		yield (record.target.to_text(True), record.port, protocol)
 
 
-def run(_umc_instance, retest=False):
+def run(_umc_instance: Instance, retest: bool = False) -> None:
 	target_realm = configRegistry.get('kerberos/realm')
 	user_name = 'kdc-reachability-check'
 

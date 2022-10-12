@@ -32,7 +32,7 @@
 
 from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import MODULE, Warning, util
+from univention.management.console.modules.diagnostic import MODULE, Instance, Warning, util
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -46,12 +46,11 @@ links = [{
 }]
 
 
-def run(_umc_instance):
+def run(_umc_instance: Instance) -> None:
 	if util.is_service_active('LDAP'):
 		if not ucr.is_true('ldap/overlay/memberof'):
 			MODULE.error(warning_message)
 			raise Warning(description=warning_message)
-	return
 
 
 if __name__ == '__main__':

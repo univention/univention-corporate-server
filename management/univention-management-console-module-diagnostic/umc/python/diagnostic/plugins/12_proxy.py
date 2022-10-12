@@ -38,7 +38,7 @@ from six.moves.urllib_parse import urlparse
 
 from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import MODULE, Critical, Warning
+from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, Warning
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -48,11 +48,10 @@ umc_modules = [{
 	'module': 'setup',
 	'flavor': 'network'
 }]
-actions = {}
 run_descr = ['Checks if the proxy server runs correctly']
 
 
-def run(_umc_instance, url='http://www.univention.de/', connecttimeout=30, timeout=30):
+def run(_umc_instance: Instance, url: str = 'http://www.univention.de/', connecttimeout: int = 30, timeout: int = 30) -> None:
 	proxy = ucr.get('proxy/http')
 	if not proxy:
 		return
