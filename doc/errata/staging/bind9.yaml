@@ -6,11 +6,13 @@ src: bind9
 fix: 1:9.11.5.P4+dfsg-5.1+deb10u8A~5.0.2.202210101801
 desc: |
  This update addresses the following issues:
- * processing large delegations may severely degrade resolver performance
+ * Processing large delegations may severely degrade resolver performance
    (CVE-2022-2795)
- * memory leak in ECDSA DNSSEC verification code (CVE-2022-38177)
- * memory leaks in EdDSA DNSSEC verification code (CVE-2022-38178)
-bug: [55253]
+ * Memory leak in ECDSA DNSSEC verification code (CVE-2022-38177)
+ * Memory leaks in EdDSA DNSSEC verification code (CVE-2022-38178)
+ * Backport fix from BIND9 version 9.13 to prevent excessive logging of
+   "resolver priming query complete".
+bug: [55253, 55163]
 cve:
 - CVE-2022-2795
 - CVE-2022-38177
