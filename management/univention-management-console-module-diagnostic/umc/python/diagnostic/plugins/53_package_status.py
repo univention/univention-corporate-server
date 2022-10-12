@@ -29,3 +29,8 @@ def run(_umc_instance):
 
 	if proccess.returncode:
 		raise Critical(description % _('some'))
+
+
+if __name__ == '__main__':
+	from univention.management.console.modules.diagnostic import main
+	main()
