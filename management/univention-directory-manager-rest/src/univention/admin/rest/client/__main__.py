@@ -402,7 +402,7 @@ def argparse_module_help(client, parser, known_args, subparsers):
 
 def main():
 	client = CLIClient()
-	locale.setlocale(locale.LC_ALL, os.environ['LANG'])
+	locale.setlocale(locale.LC_ALL, os.environ.get('LANG', 'C'))
 	description = '%(prog)s command line interface for managing UCS\ncopyright (c) 2001-2022 Univention GmbH, Germany\n\nUsage:\n %(prog)s module action [options]\n %(prog)s [--help] [--version]\n'
 	parser = argparse.ArgumentParser(
 		prog='univention-directory-manager',
@@ -419,7 +419,7 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 	parser.add_argument('--bindpwd', help='bind password', default='univention', type=Unicode)
 	parser.add_argument('--bindpwdfile', help='file containing bind password', type=Unicode)
 	parser.add_argument('--logfile', help='path and name of the logfile to be used', type=Unicode)
-	parser.add_argument('--language', default=locale.getlocale(locale.LC_MESSAGES)[0].replace('_', '-'), help=argparse.SUPPRESS)
+	parser.add_argument('--language', default=(locale.getlocale(locale.LC_MESSAGES)[0] or 'en_US').replace('_', '-'), help=argparse.SUPPRESS)
 	parser.add_argument('--tls', choices=['0', '1', '2'], default='2', help='0 (no); 1 (try); 2 (must)')
 	parser.add_argument('--version', action='version', version='%(prog)s VERSION TODO', help='print version information')  # FIXME: version number
 
