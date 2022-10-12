@@ -39,8 +39,8 @@ import subprocess
 
 import univention.admin.modules as udm_modules
 import univention.admin.uldap
-import univention.config_registry
 import univention.uldap
+from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Warning, util
 
@@ -221,9 +221,6 @@ def udm_mail_link(folder):
 def run(_umc_instance):
 	if not util.is_service_active('IMAP'):
 		return
-
-	configRegistry = univention.config_registry.ConfigRegistry()
-	configRegistry.load()
 
 	if configRegistry.is_true('mail/dovecot'):
 		acl_class = DovecotACL

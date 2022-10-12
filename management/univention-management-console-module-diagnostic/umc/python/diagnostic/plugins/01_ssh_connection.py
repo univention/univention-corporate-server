@@ -17,7 +17,6 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('SSH connection to UCS server failed!')
 
-ucr.load()
 FQDN = "%(hostname)s.%(domainname)s" % ucr
 run_descr = ['This can be checked by running:  univention-ssh /etc/machine.secret "%s$@%s" echo OK' % (ucr["hostname"], FQDN)]
 

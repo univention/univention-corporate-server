@@ -36,7 +36,7 @@
 
 import psutil
 
-import univention.config_registry
+from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Critical, Warning
 
@@ -61,9 +61,7 @@ def high_disk_usage():
 
 
 def local_repository_exists():
-	configRegistry = univention.config_registry.ConfigRegistry()
-	configRegistry.load()
-	return configRegistry.is_true('local/repository', False)
+	return ucr.is_true('local/repository', False)
 
 
 def is_varlog_own_partition():
@@ -73,12 +71,12 @@ def is_varlog_own_partition():
 
 def high_log_levels():
 	def is_high(variable, default):
-		return lambda ucr: int(ucr.get(variable, default)) > default
+		return ucr.get_int(variable, default) > default
 
 	def is_on(variable):
-		return lambda ucr: ucr.is_true(variable, False)
+		return ucr.is_true(variable, False)
 
-	checks = (
+	return any((
 		is_high('connector/debug/function', 0),
 		is_high('connector/debug/level', 2),
 		is_high('samba/debug/level', 33),
@@ -102,13 +100,9 @@ def high_log_levels():
 		is_on('saml/idp/log/debug/enabled'),
 		is_on('pdate/check/boot/debug'),
 		is_on('update/check/cron/debug'),
-		lambda ucr: ucr.get('apache2/loglevel', 'warn') in ('notice', 'info', 'debug'),
-		lambda ucr: ucr.get('ldap/debug/level', 'none') not in ('none', '0')
-	)
-
-	configRegistry = univention.config_registry.ConfigRegistry()
-	configRegistry.load()
-	return any(check(configRegistry) for check in checks)
+		ucr.get('apache2/loglevel', 'warn') in ('notice', 'info', 'debug'),
+		ucr.get('ldap/debug/level', 'none') not in ('none', '0')
+	))
 
 
 def solutions():

@@ -36,9 +36,9 @@ of all defined variables.
 from typing import Dict, List
 
 import univention.config_registry_info as cri
+from univention.config_registry import ucr_live as ucr
 from univention.config_registry.validation import Type
 from univention.lib.i18n import Translation
-from univention.management.console.config import ucr
 from univention.management.console.modules.diagnostic import MODULE, Instance, Warning, main
 
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -65,8 +65,6 @@ def _get_config_registry_info() -> cri.ConfigRegistryInfo:
 
 def run(_umc_instance: Instance) -> None:
 	error_descriptions: List[str] = []
-
-	ucr.load()
 
 	info = _get_config_registry_info()
 	ignore = {typ for typ in (typ.strip() for typ in ucr.get("diagnostic/check/64_check_ucr_types/ignore", "").split(",")) if typ}

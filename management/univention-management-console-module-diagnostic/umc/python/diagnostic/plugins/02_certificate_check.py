@@ -46,7 +46,7 @@ import dateutil.tz
 import requests
 from OpenSSL import crypto
 
-import univention.config_registry
+from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Critical, Warning
 
@@ -213,7 +213,7 @@ class CertificateVerifier(object):
 			yield error
 
 
-def certificates(configRegistry):
+def certificates():
 	fqdn = "%(hostname)s.%(domainname)s" % configRegistry
 	default_certificate = '/etc/univention/ssl/{}/cert.pem'.format(fqdn)
 	yield configRegistry.get('apache2/ssl/certificate', default_certificate)
@@ -279,10 +279,7 @@ def verify_from_master(master, all_certificates):
 
 
 def run(_umc_instance):
-	configRegistry = univention.config_registry.ConfigRegistry()
-	configRegistry.load()
-
-	all_certificates = certificates(configRegistry)
+	all_certificates = certificates()
 	is_local_check = configRegistry.get('server/role') in \
 		('domaincontroller_master', 'domaincontroller_backup')
 

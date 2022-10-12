@@ -42,7 +42,7 @@ import ldap.filter
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.uldap
-import univention.config_registry
+from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
 from univention.management.console.modules.diagnostic import Warning
@@ -161,8 +161,6 @@ class UDM(object):
 	def __init__(self):
 		univention.admin.modules.update()
 		(self.ldap_connection, self.position) = univention.admin.uldap.getMachineConnection()
-		self.configRegistry = univention.config_registry.ConfigRegistry()
-		self.configRegistry.load()
 
 	def lookup(self, module_name, filter_expression=''):
 		module = udm_modules.get(module_name)
@@ -183,7 +181,7 @@ class UDM(object):
 		raise RecordNotFound()
 
 	def all_zones(self):
-		domainname = self.configRegistry.get('domainname')
+		domainname = ucr.get('domainname')
 		for zone in self.lookup('dns/forward_zone'):
 			yield Zone(zone, domainname)
 		for zone in self.lookup('dns/reverse_zone'):

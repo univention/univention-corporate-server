@@ -46,8 +46,7 @@ import pyasn1.codec.der.encoder
 import pyasn1.error
 from pyasn1.type import char, namedtype, tag, univ, useful
 
-import univention.config_registry
-from univention.config_registry import handler_set as ucr_set
+from univention.config_registry import handler_set as ucr_set, ucr_live as configRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import (
 	MODULE, Critical, ProblemFixed, Warning, util,
@@ -85,9 +84,6 @@ run_descr = ["Performs a KDC reachability check"]
 
 
 def add_lo_to_samba_interfaces(umc_instance):
-	configRegistry = univention.config_registry.ConfigRegistry()
-	configRegistry.load()
-
 	interfaces = configRegistry.get('samba/interfaces', '').split()
 	interfaces.append('lo')
 	MODULE.process('Setting samba/interfaces')
@@ -318,9 +314,6 @@ def resolve_kdc_record(protocol, domainname):
 
 
 def run(_umc_instance, retest=False):
-	configRegistry = univention.config_registry.ConfigRegistry()
-	configRegistry.load()
-
 	target_realm = configRegistry.get('kerberos/realm')
 	user_name = 'kdc-reachability-check'
 

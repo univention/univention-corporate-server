@@ -34,8 +34,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
-from univention.management.console.config import ucr
 from univention.management.console.modules.diagnostic import MODULE, Warning, util
 
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -52,7 +52,6 @@ links = [{
 
 def run(_umc_instance):
 	if util.is_service_active('LDAP'):
-		ucr.load()
 		if not ucr.is_true('ldap/overlay/memberof'):
 			MODULE.error(warning_message)
 			raise Warning(description=warning_message)

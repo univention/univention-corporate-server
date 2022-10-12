@@ -41,7 +41,7 @@ import pwd
 import stat
 from collections import namedtuple
 
-import univention.config_registry
+from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
 from univention.management.console.modules.diagnostic import Warning
@@ -121,9 +121,6 @@ def check_file(path, owner, group, mode, must_exist=False):
 
 
 def file_and_permission_checks():
-	configRegistry = univention.config_registry.ConfigRegistry()
-	configRegistry.load()
-
 	is_primary = configRegistry.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup')
 	is_dc = configRegistry.get('server/role').startswith('domaincontroller_')
 	(host, domain) = (configRegistry.get('hostname'), configRegistry.get('domainname'))

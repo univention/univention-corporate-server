@@ -3,9 +3,8 @@
 
 import re
 
-from univention.config_registry import handler_set
+from univention.config_registry import handler_set, ucr_live as ucr
 from univention.lib.i18n import Translation
-from univention.management.console.config import ucr
 from univention.management.console.modules.diagnostic import MODULE, Critical, ProblemFixed
 
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -45,11 +44,7 @@ def run(_umc_instance):
 	except (OSError, IOError):
 		return  # logfile does not exists
 
-	ucr.load()
-	try:
-		max_open_files = int(ucr.get('samba/max_open_files', 32808))
-	except ValueError:
-		max_open_files = 0
+	max_open_files = ucr.get_int('samba/max_open_files', 32808)
 	MODULE.process("open files: %s , max open files: %s" % (counter, max_open_files))
 	if counter and max_open_files < suggested_max_open_files:
 		raise Critical(umc_modules=[{'module': 'ucr'}])

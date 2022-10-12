@@ -3,8 +3,8 @@
 
 from univention.admin.modules import identify, update
 from univention.admin.uldap import getAdminConnection
+from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
-from univention.management.console.config import ucr
 from univention.management.console.modules.diagnostic import ProblemFixed, Warning
 
 _ = Translation('univention-management-console-module-diagnostic').translate

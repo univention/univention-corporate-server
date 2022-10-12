@@ -36,8 +36,7 @@
 
 import psutil
 
-import univention.config_registry
-import univention.uldap
+from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Critical, util
 
@@ -69,8 +68,6 @@ def is_heimdal_kdc_running():
 
 
 def is_kerberos_autostart_disabled():
-	configRegistry = univention.config_registry.ConfigRegistry()
-	configRegistry.load()
 	return configRegistry.is_false('kerberos/autostart')
 
 

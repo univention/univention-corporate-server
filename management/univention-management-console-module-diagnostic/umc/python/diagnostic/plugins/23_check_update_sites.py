@@ -38,7 +38,7 @@ import socket
 
 import six.moves.urllib_parse as urlparse
 
-import univention.config_registry
+from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Warning
 
@@ -55,9 +55,6 @@ run_descr = ['Checks resolving repository servers']
 
 
 def repositories():
-	configRegistry = univention.config_registry.ConfigRegistry()
-	configRegistry.load()
-
 	if configRegistry.is_true('repository/online', True):
 		yield configRegistry.get('repository/online/server', 'updates.software-univention.de/')
 		yield configRegistry.get('repository/app_center/server', 'appcenter.software-univention.de')

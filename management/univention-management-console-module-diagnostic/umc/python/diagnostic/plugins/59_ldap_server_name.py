@@ -2,9 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import univention.uldap
-from univention.config_registry import handler_set as ucr_set
+from univention.config_registry import handler_set as ucr_set, ucr_live as ucr
 from univention.lib.i18n import Translation
-from univention.management.console.config import ucr
 from univention.management.console.modules.diagnostic import Critical, Warning
 
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -31,9 +30,6 @@ actions = {
 
 
 def run(_umc_instance):
-
-	ucr.load()
-
 	if ucr.is_true('diagnostic/check/disable/59_ldap_server_name') or ucr.get('server/role') != 'memberserver':
 		return
 

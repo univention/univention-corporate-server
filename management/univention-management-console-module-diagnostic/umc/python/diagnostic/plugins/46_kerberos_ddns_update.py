@@ -37,8 +37,8 @@
 import contextlib
 import subprocess
 
-import univention.config_registry
 import univention.lib.admember
+from univention.config_registry import ucr_live as config_registry
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Critical, util
 
@@ -105,7 +105,7 @@ def nsupdate(server, domainname):
 		raise NSUpdateError(server, domainname)
 
 
-def get_dns_server(config_registry, active_services):
+def get_dns_server(active_services):
 	if config_registry.is_true('ad/member'):
 		ad_domain_info = univention.lib.admember.lookup_adds_dc()
 		server = ad_domain_info.get('DC IP')
@@ -128,7 +128,7 @@ def check_dns_server_principal(hostname, domainname):
 		nsupdate(hostname, domainname)
 
 
-def check_nsupdate(config_registry, server):
+def check_nsupdate(server):
 	hostname = config_registry.get('hostname')
 	domainname = config_registry.get('domainname')
 
@@ -145,21 +145,18 @@ def check_nsupdate(config_registry, server):
 
 
 def run(_umc_instance):
-	config_registry = univention.config_registry.ConfigRegistry()
-	config_registry.load()
-
 	active_services = util.active_services()
 	if not set(active_services) & {'Samba 4', 'Samba 3'}:
 		return  # ddns updates are not possible
 
 	try:
-		server = get_dns_server(config_registry, active_services)
+		server = get_dns_server(active_services)
 		if not server:
 			return
 	except NSUpdateError:
 		return  # ddns updates are not possible
 
-	problems = list(check_nsupdate(config_registry, server))
+	problems = list(check_nsupdate(server))
 	if problems:
 		ed = [_('Errors occurred while running `kinit` or `nsupdate`.')]
 		ed.extend(str(error) for error in problems)

@@ -6,8 +6,8 @@ try:
 except ImportError:  # Python 3
 	from packaging.version import parse
 
+from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
-from univention.management.console.config import ucr
 from univention.management.console.modules.diagnostic import MODULE, Critical, Warning
 
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -24,7 +24,6 @@ int_cast_err_msg = _('The value notifier/protocol/version has an invalid value.'
 
 
 def run(_umc_instance):
-	ucr.load()
 	np_version = ucr.get('notifier/protocol/version')
 	ucs_version = ucr.get('version/version')
 	ucs_patchlevel = ucr.get('version/patchlevel')

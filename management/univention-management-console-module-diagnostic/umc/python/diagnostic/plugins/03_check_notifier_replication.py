@@ -36,7 +36,7 @@
 
 import socket
 
-import univention.config_registry
+from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Warning
 
@@ -66,9 +66,6 @@ def get_id(master, cmd='GET_ID'):
 
 
 def run(_umc_instance):
-	configRegistry = univention.config_registry.ConfigRegistry()
-	configRegistry.load()
-
 	try:
 		notifier_id = get_id(configRegistry.get('ldap/master'))
 	except socket.error:

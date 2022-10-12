@@ -45,7 +45,7 @@ import univention.admin.uldap
 import univention.config_registry
 import univention.lib.misc
 import univention.uldap
-from univention.config_registry import handler_set as ucr_set, handler_unset as ucr_unset
+from univention.config_registry import handler_set as ucr_set, handler_unset as ucr_unset, ucr_live as configRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Critical, ProblemFixed
 
@@ -61,16 +61,13 @@ links = [{
 
 
 def fix_machine_password(umc_instance):
-	configRegistry = univention.config_registry.ConfigRegistry()
-	configRegistry.load()
-
 	role = configRegistry.get('server/role')
 	valid_roles = ('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 	if role in valid_roles:
 		restore_machine_password(role, umc_instance.get_user_ldap_connection())
 
 		if configRegistry.is_true('server/password/change', True):
-			change_server_password(configRegistry)
+			change_server_password()
 		return run(umc_instance, retest=True)
 
 	error_description = _('Unable to fix machine password on {}'.format(role))
@@ -104,8 +101,8 @@ def check_machine_password(master=True):
 	return True
 
 
-def change_server_password(configRegistry):
-	interval = configRegistry.get('server/password/interval', '21')
+def change_server_password():
+	interval = configRegistry.get_int('server/password/interval', 21)
 	ucr_set('server/password/interval=-1')
 	try:
 		cmd = ['/usr/lib/univention-server/server_password_change']
@@ -145,9 +142,6 @@ def restore_machine_password(role, ldap_connection):
 
 
 def run(_umc_instance, retest=False):
-	configRegistry = univention.config_registry.ConfigRegistry()
-	configRegistry.load()
-
 	error_descriptions = []
 	buttons = [{
 		'action': 'fix_machine_password',
@@ -164,10 +158,7 @@ def run(_umc_instance, retest=False):
 		error_descriptions.append(error)
 
 	password_change = configRegistry.is_true('server/password/change', True)
-	try:
-		change_interval = int(configRegistry.get('server/password/interval', '21'))
-	except TypeError:
-		change_interval = 21
+	change_interval = configRegistry.get_int('server/password/interval', 21)
 
 	error_change = _('Note that password rotation is disabled via the UCR variable server/password/change.')
 	error_interval = _('Note that server/password/interval is set to {}.')

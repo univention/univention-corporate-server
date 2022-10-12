@@ -36,10 +36,10 @@
 
 import ldap
 
-import univention.config_registry
 import univention.lib.misc
 import univention.lib.s4 as s4
 import univention.uldap
+from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Warning, util
 
@@ -132,7 +132,7 @@ def all_sids_and_names(domain_sid):
 			yield ('{}-{}'.format(domain_sid, rid), name)
 
 
-def custom_name(name, ucr=None):
+def custom_name(name):
 	mapped_user = univention.lib.misc.custom_username(name, ucr)
 	if mapped_user != name:
 		return mapped_user
@@ -145,10 +145,8 @@ def custom_name(name, ucr=None):
 def check_existence_and_consistency():
 	ldap_connection = LDAPConnection()
 	domain_sid = ldap_connection.get_domain_sid()
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
 	for (sid, expected_name) in all_sids_and_names(domain_sid):
-		mapped_name = custom_name(expected_name, ucr)
+		mapped_name = custom_name(expected_name)
 		try:
 			# The user/group retrieved by SID should have the name as specified
 			# in the well-known-sid-mapping (or mapped as per

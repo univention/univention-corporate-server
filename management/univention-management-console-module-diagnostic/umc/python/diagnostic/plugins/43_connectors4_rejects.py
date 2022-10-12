@@ -35,6 +35,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import univention.uldap
+from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Critical, Warning, util
 
@@ -60,9 +61,6 @@ class MissingConfigurationKey(KeyError):
 
 
 def get_s4_connector(configbasename='connector'):
-	configRegistry = univention.config_registry.ConfigRegistry()
-	configRegistry.load()
-
 	try:
 		s4 = univention.s4connector.s4.s4.main(configRegistry, configbasename)
 	except SystemExit as error:

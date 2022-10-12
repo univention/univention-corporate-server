@@ -4,8 +4,8 @@
 import os.path
 import subprocess
 
+from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
-from univention.management.console.config import ucr
 from univention.management.console.modules.diagnostic import MODULE, Critical, ProblemFixed, Warning
 from univention.udm import UDM, NoObject
 
