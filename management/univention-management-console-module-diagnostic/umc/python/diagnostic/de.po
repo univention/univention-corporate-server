@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2022-09-30 12:09+0200\n"
-"PO-Revision-Date: 2022-09-30 12:12+0200\n"
+"POT-Creation-Date: 2022-10-13 20:54+0200\n"
+"PO-Revision-Date: 2022-10-17 19:54+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -227,7 +227,30 @@ msgstr "Es wurden Fehler durch `univention-check-templates` gefunden."
 msgid "Errors occurred while running `kinit` or `nsupdate`."
 msgstr "Fehler traten auf bei der Ausführung von `kinit` oder `nsupdate`."
 
-#: umc/python/diagnostic/plugins/31_file_permissions.py:60
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:175
+msgid "Failed to find any certificate in {cert!r}"
+msgstr "Konnte kein Zertifikat in {cert!r} finden"
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:246
+#, python-brace-format
+msgid "Failed to find any certificate in {{{link}}}"
+msgstr "Konnte kein Zertifikat in {{{link}}} finden"
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:167
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:187
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:222
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:231
+msgid "Failed to load certificate {cert!r}: {exc}"
+msgstr "Zerifikat {cert!r} konnte nicht geladen werden: {exc}"
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:146
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:156
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:259
+#, python-brace-format
+msgid "Failed to load certificate {{{link}}}: {exc}"
+msgstr "Zerifikat {{{link}}} konnte nicht geladen werden: {exc}"
+
+#: umc/python/diagnostic/plugins/31_file_permissions.py:61
 msgid "File {path!r} does not exist."
 msgstr "Datei {path!r} existiert nicht."
 
@@ -325,6 +348,15 @@ msgstr ""
 msgid "If these settings are correct the problem relies in the gateway itself:"
 msgstr ""
 "Wenn diese Einstellungen richtig sind liegt das Problem im Gateway selbst:"
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:88
+msgid ""
+"If you renewed your certificates please see {sdb-one} and {sdb-all} for more "
+"instructions. In that case the new certificate must be re-uploaded into LDAP."
+msgstr ""
+"Falls Sie die Zertifikate erneuert haben bitte {sdb-one} und {sdb-all} für "
+"weitere Anweisungen beachten. In diesem Fall muss das Zertifikat neu in LDAP "
+"geladen werden."
 
 #: umc/python/diagnostic/plugins/20_check_nameservers.py:223
 #, python-brace-format
@@ -601,6 +633,27 @@ msgstr "Proxy-Server-Fehler"
 msgid "RFC 1123 - 2.1 Host Names and Numbers"
 msgstr "RFC 1123 - 2.1 Rechernamen und Nummern"
 
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:71
+#, python-brace-format
+msgid ""
+"Re-execute the join-script <tt>92univention-management-console-web-server</"
+"tt> via {join} or execute <tt>univention-run-join-scripts --force --run-"
+"scripts 92univention-management-console-web-server</tt> on the command line "
+"as user <i>root</i>."
+msgstr ""
+"Führen Sie das Join-Skript <tt>92univention-management-console-web-server</"
+"tt> via {join} oder <tt>univention-run-join-scripts --force --run-scripts "
+"92univention-management-console-web-server</tt> auf der Befehlszeile as "
+"Benutzer <i>root</i> aus."
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:76
+msgid "Re-run join script"
+msgstr "Join-Skript ermeut ausführen."
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:106
+msgid "Re-upload certificate"
+msgstr "Zertifikat erneut hochladen"
+
 #: umc/python/diagnostic/plugins/54_sources_list_check.py:97
 msgid "Regenerate sources.list"
 msgstr "Source-Listen neu generieren"
@@ -635,7 +688,7 @@ msgstr "S4 DN: {s4}, UCS DN: {ucs}"
 msgid "S4 rejected:"
 msgstr "Nicht synchronisierte S4 Objekte:"
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:53
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:56
 msgid "SAML certificate verification failed!"
 msgstr "Überprüfung der SAML-Zertifikate fehlgeschlagen!"
 
@@ -735,22 +788,30 @@ msgstr ""
 #: umc/python/diagnostic/plugins/62_check_slapschema.py:67
 msgid ""
 "The LDAP schema validation failed with the following errors or warnings:\n"
-msgstr "Die LDAP-Schema-Validierung ist mit den folgenden Fehlern oder Warnungen fehlgeschlagen:\n"
+msgstr ""
+"Die LDAP-Schema-Validierung ist mit den folgenden Fehlern oder Warnungen "
+"fehlgeschlagen:\n"
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:101
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:195
+msgid ""
+"The SAML identity provider certificate {cert!r} is missing in {{{link}}}."
+msgstr "Das SAML Identity Providers Zertifikat {cert!r} fehlt in {{{link}}}."
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:268
+msgid ""
+"The SAML identity provider certificate {{{link}}} does not match the local "
+"certificate {loc!r}."
+msgstr ""
+"Das SAML Identity Provider Zertifikat {{{link}}} entspricht nicht dem lokalen "
+"Zertifikat {loc!r}."
+
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:99
+#, python-brace-format
 msgid ""
 "The UCR variable {variable!r} is unset, but necessary for the S4 Connector."
 msgstr ""
-"Die UCR Variable {variable!r} ist nicht gesetzt, aber notwendig für den S4 "
+"Die UCR-Variable {variable!r} ist nicht gesetzt, aber notwendig für den S4 "
 "Connector."
-
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:99
-msgid "The certificate of the SAML identity provider does not match."
-msgstr "Das Zertifikat des SAML Identity Providers stimmt nicht überein."
-
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:120
-msgid "The certificate of the SAML service provider does not match."
-msgstr "Das Zertifikat des SAML Service Providers stimmt nicht überein."
 
 #: umc/python/diagnostic/plugins/21_check_join_status.py:41
 msgid "The check for the join status was succsesful."
@@ -1067,9 +1128,16 @@ msgstr "Univention Support Database - Wie mit S4-Connector Konflikten umgehen"
 msgid "Univention Support Database - Manually trigger server password change"
 msgstr "Univention Support Database - Serverpasswortänderung manuell auslösen"
 
-#: umc/python/diagnostic/plugins/02_certificate_check.py:56
+#: umc/python/diagnostic/plugins/02_certificate_check.py:58
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:95
 msgid "Univention Support Database - Renewing the TLS/SSL certificates"
 msgstr "Univention Support Database - Erneuern der TLS/SSL-Zertifikate"
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:100
+msgid ""
+"Univention Support Database - Renewing the complete TLS/SSL certificate chain"
+msgstr ""
+"Univention Support Database - Erneuern der ganzen TLS/SSL-Zertifikat-Kette"
 
 #: umc/python/diagnostic/plugins/03_check_notifier_replication.py:47
 msgid "Univention Support Database - Troubleshooting: Listener-/Notifier"
@@ -1293,9 +1361,6 @@ msgstr "einigen"
 
 #~ msgid "Repair identity provider certificate"
 #~ msgstr "Identity Provider-Zertifikat wiederherstellen"
-
-#~ msgid "Repair service provider certificate"
-#~ msgstr "Service Provider-Zertifikat wiederherstellen"
 
 #~ msgid "Run `samba-tool ntacl sysvolreset`"
 #~ msgstr "Führe `samba-tool ntacl sysvolreset` aus"

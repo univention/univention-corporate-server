@@ -13,6 +13,7 @@ Standards-Version: 3.7.2
 Package: univention-management-console-module-diagnostic
 Architecture: all
 Depends:
+ python3-cryptography,
  python3-dateutil,
  python3-dnspython,
  python3-openssl,

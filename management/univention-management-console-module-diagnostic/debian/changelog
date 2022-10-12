@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.2-6) unstable; urgency=low
+
+  * Bug #49417: Fix 04_saml_certificate_check.py checking SAML certificates
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 12 Oct 2022 19:24:27 +0200
+
 univention-management-console-module-diagnostic (6.0.2-5) unstable; urgency=low
 
   * Bug #54495: Added type checking for all ucr defined types and values
