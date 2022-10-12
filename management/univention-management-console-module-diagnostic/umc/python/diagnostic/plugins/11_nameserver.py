@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from univention.management.console.config import ucr
-from univention.management.console.modules.diagnostic import Warning, MODULE
-
 import dns.resolver
 from dns.exception import DNSException, Timeout
 
 from univention.lib.i18n import Translation
+from univention.management.console.config import ucr
+from univention.management.console.modules.diagnostic import MODULE, Warning
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Nameserver(s) are not responsive')

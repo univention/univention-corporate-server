@@ -35,11 +35,13 @@
 # <https://www.gnu.org/licenses/>.
 
 import socket
-import six.moves.urllib_parse as urlparse
-import univention.config_registry
-from univention.management.console.modules.diagnostic import Warning, MODULE
 
+import six.moves.urllib_parse as urlparse
+
+import univention.config_registry
 from univention.lib.i18n import Translation
+from univention.management.console.modules.diagnostic import MODULE, Warning
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check resolving repository servers')

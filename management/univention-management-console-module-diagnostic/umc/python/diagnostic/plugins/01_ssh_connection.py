@@ -1,18 +1,18 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from univention.management.console.config import ucr
-from univention.management.console.modules.diagnostic import Critical
-from univention.management.console.modules.diagnostic import Warning
-from univention.admin import uldap
-from univention.admin import modules
-from univention.management.console.log import MODULE
-import paramiko
 import logging
-import socket
 import re
+import socket
 
+import paramiko
+
+from univention.admin import modules, uldap
 from univention.lib.i18n import Translation
+from univention.management.console.config import ucr
+from univention.management.console.log import MODULE
+from univention.management.console.modules.diagnostic import Critical, Warning
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('SSH connection to UCS server failed!')

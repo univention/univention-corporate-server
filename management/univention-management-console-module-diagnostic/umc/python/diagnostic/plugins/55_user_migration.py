@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from subprocess import Popen, PIPE, STDOUT
-from univention.management.console.config import ucr
-from univention.management.console.modules.diagnostic import Critical, ProblemFixed, MODULE
+from subprocess import PIPE, STDOUT, Popen
 
 from univention.lib.i18n import Translation
+from univention.management.console.config import ucr
+from univention.management.console.modules.diagnostic import MODULE, Critical, ProblemFixed
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 SCRIPT = '/usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3'

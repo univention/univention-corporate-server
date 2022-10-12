@@ -34,12 +34,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention
 import univention.uldap
-from univention.management.console.modules.diagnostic import Critical, Warning, MODULE
-from univention.management.console.modules.diagnostic import util
-
 from univention.lib.i18n import Translation
+from univention.management.console.modules.diagnostic import MODULE, Critical, Warning, util
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('S4 Connector rejects')

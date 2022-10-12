@@ -34,9 +34,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import ldap
 import socket
 import subprocess
+
+import ldap
+
 import univention.uldap
 
 

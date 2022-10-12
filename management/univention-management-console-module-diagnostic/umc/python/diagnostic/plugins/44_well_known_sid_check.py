@@ -36,13 +36,13 @@
 
 import ldap
 
-import univention.uldap
-import univention.lib.s4 as s4
-import univention.lib.misc
 import univention.config_registry
-from univention.management.console.modules.diagnostic import Warning, MODULE
-from univention.management.console.modules.diagnostic import util
+import univention.lib.misc
+import univention.lib.s4 as s4
+import univention.uldap
 from univention.lib.i18n import Translation
+from univention.management.console.modules.diagnostic import MODULE, Warning, util
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check well known SIDs')

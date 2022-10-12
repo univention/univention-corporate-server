@@ -43,14 +43,14 @@ from typing import Any, Callable, Dict, Iterator, List, Tuple
 import requests
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
-from ldap.filter import filter_format
 from defusedxml.ElementTree import fromstring, parse
+from ldap.filter import filter_format
 
 import univention.uldap
+from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, Problem
 
-from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 XML = "/usr/share/univention-management-console/saml/idp/*.xml"

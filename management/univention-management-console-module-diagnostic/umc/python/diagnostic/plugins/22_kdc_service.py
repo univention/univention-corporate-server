@@ -34,27 +34,25 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import struct
-import socket
-import random
-
 import ipaddress
-import dns.resolver
-import dns.exception
-from pyasn1.type import tag
-from pyasn1.type import char
-from pyasn1.type import univ
-from pyasn1.type import useful
-from pyasn1.type import namedtype
-import pyasn1.codec.der.encoder
-import pyasn1.codec.der.decoder
-import pyasn1.error
-from univention.config_registry import handler_set as ucr_set
-import univention.config_registry
-from univention.management.console.modules.diagnostic import Warning, Critical, ProblemFixed, MODULE
-from univention.management.console.modules.diagnostic import util
+import random
+import socket
+import struct
 
+import dns.exception
+import dns.resolver
+import pyasn1.codec.der.decoder
+import pyasn1.codec.der.encoder
+import pyasn1.error
+from pyasn1.type import char, namedtype, tag, univ, useful
+
+import univention.config_registry
+from univention.config_registry import handler_set as ucr_set
 from univention.lib.i18n import Translation
+from univention.management.console.modules.diagnostic import (
+	MODULE, Critical, ProblemFixed, Warning, util,
+)
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('KDC service check')

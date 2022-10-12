@@ -36,7 +36,7 @@
 
 import os
 import re
-from subprocess import Popen, PIPE
+from subprocess import PIPE, Popen
 
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import Warning

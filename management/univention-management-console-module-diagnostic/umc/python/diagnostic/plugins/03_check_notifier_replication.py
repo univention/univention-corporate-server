@@ -37,8 +37,9 @@
 import socket
 
 import univention.config_registry
-from univention.management.console.modules.diagnostic import Warning, MODULE
 from univention.lib.i18n import Translation
+from univention.management.console.modules.diagnostic import MODULE, Warning
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 run_descr = ["Checks if the output of /usr/share/univention-directory-listener/get_notifier_id.py and the value in /var/lib/univention-directory-listener/notifier_id are the same"]
 title = _('Check for problems with UDN replication')

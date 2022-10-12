@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import re
-from univention.management.console.modules.diagnostic import Critical, ProblemFixed, MODULE
-from univention.management.console.config import ucr
-from univention.config_registry import handler_set
 
+from univention.config_registry import handler_set
 from univention.lib.i18n import Translation
+from univention.management.console.config import ucr
+from univention.management.console.modules.diagnostic import MODULE, Critical, ProblemFixed
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 suggested_max_open_files = 32808

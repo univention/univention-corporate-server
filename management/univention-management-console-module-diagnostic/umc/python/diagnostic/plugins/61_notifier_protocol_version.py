@@ -5,10 +5,11 @@ try:
 	from distutils.version import LooseVersion as parse
 except ImportError:  # Python 3
 	from packaging.version import parse
-from univention.management.console.config import ucr
-from univention.management.console.modules.diagnostic import Critical, MODULE, Warning
 
 from univention.lib.i18n import Translation
+from univention.management.console.config import ucr
+from univention.management.console.modules.diagnostic import MODULE, Critical, Warning
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check of the protocol version of the Univention Directory Notifier')

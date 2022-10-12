@@ -34,9 +34,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.management.console.modules.diagnostic import MODULE, Warning, util
-from univention.management.console.config import ucr
 from univention.lib.i18n import Translation
+from univention.management.console.config import ucr
+from univention.management.console.modules.diagnostic import MODULE, Warning, util
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check LDAP attribute memberOf')

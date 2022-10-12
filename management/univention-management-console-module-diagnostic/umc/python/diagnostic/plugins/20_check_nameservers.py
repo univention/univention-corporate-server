@@ -34,19 +34,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import socket
-import ldap.filter
 import itertools as it
+import socket
 
-import univention.admin.uldap
+import ldap.filter
+
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
-from univention.management.console.log import MODULE
-
+import univention.admin.uldap
 import univention.config_registry
+from univention.lib.i18n import Translation
+from univention.management.console.log import MODULE
 from univention.management.console.modules.diagnostic import Warning
 
-from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check nameserver entries on DNS zones')

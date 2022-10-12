@@ -39,7 +39,6 @@ import univention.config_registry_info as cri
 from univention.config_registry.validation import Type
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
-
 from univention.management.console.modules.diagnostic import MODULE, Instance, Warning, main
 
 _ = Translation('univention-management-console-module-diagnostic').translate

@@ -34,13 +34,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import re
 import glob
+import re
 import subprocess
 
-from univention.management.console.modules.diagnostic import Warning, MODULE
-
 from univention.lib.i18n import Translation
+from univention.management.console.modules.diagnostic import MODULE, Warning
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check errors in sources.list files')

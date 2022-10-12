@@ -35,22 +35,22 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
+
 import ldap
 
 try:
-	import samba.param
 	import samba.credentials
-	from samba.dcerpc import drsuapi
+	import samba.param
 	from samba import drs_utils
+	from samba.dcerpc import drsuapi
 except ImportError:
 	SAMBA_AVAILABLE = False
 else:
 	SAMBA_AVAILABLE = True
 
-from univention.management.console.modules.diagnostic import Warning
-from univention.management.console.modules.diagnostic import util
-
 from univention.lib.i18n import Translation
+from univention.management.console.modules.diagnostic import Warning, util
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check Samba replication status for errors')

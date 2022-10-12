@@ -34,10 +34,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from subprocess import Popen, PIPE, STDOUT
-from univention.management.console.modules.diagnostic import Critical, MODULE
+from subprocess import PIPE, STDOUT, Popen
 
 from univention.lib.i18n import Translation
+from univention.management.console.modules.diagnostic import MODULE, Critical
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check join status')

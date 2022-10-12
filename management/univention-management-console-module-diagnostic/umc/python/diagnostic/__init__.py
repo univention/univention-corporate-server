@@ -34,9 +34,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, seGe
 # <https://www.gnu.org/licenses/>.
 
-from os import listdir
 import os.path
 import traceback
+from collections import OrderedDict
+from os import listdir
 
 # strptime import is not threadsafe
 # Workaround: import early
@@ -44,14 +45,15 @@ import traceback
 # UCS bug: https://forge.univention.org/bugzilla/show_bug.cgi?id=45585
 import _strptime
 
-from univention.management.console.modules import Base
-from univention.management.console.modules.decorators import simple_response, sanitize
-from univention.management.console.modules.sanitizers import PatternSanitizer, DictSanitizer, StringSanitizer
-from univention.management.console.modules.mixins import ProgressMixin
-from univention.management.console.log import MODULE
-from univention.management.console.modules.diagnostic import plugins
-from collections import OrderedDict
 from univention.lib.i18n import Translation
+from univention.management.console.log import MODULE
+from univention.management.console.modules import Base
+from univention.management.console.modules.decorators import sanitize, simple_response
+from univention.management.console.modules.diagnostic import plugins
+from univention.management.console.modules.mixins import ProgressMixin
+from univention.management.console.modules.sanitizers import (
+	DictSanitizer, PatternSanitizer, StringSanitizer,
+)
 
 _strptime
 _ = Translation('univention-management-console-module-diagnostic').translate

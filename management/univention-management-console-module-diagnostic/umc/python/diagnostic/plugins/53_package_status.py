@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from subprocess import Popen, PIPE
-
-from univention.management.console.modules.diagnostic import Critical, Warning
+from subprocess import PIPE, Popen
 
 from univention.lib.i18n import Translation
+from univention.management.console.modules.diagnostic import Critical, Warning
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Package status corrupt')

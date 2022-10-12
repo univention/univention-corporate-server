@@ -1,14 +1,16 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from univention.management.console.config import ucr
-from univention.management.console.modules.diagnostic import Warning, Critical, MODULE
-from six.moves.urllib_parse import urlparse
-import pycurl
 import io
 import traceback
 
+import pycurl
+from six.moves.urllib_parse import urlparse
+
 from univention.lib.i18n import Translation
+from univention.management.console.config import ucr
+from univention.management.console.modules.diagnostic import MODULE, Critical, Warning
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Proxy server failure')

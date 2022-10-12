@@ -34,9 +34,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.management.console.modules.diagnostic import Critical, ProblemFixed, MODULE
-from univention.management.console.modules.diagnostic import util
 from univention.lib.i18n import Translation
+from univention.management.console.modules.diagnostic import MODULE, Critical, ProblemFixed, util
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check local AD database for errors')

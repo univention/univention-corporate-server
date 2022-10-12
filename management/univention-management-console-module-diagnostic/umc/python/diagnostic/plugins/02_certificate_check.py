@@ -34,21 +34,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import contextlib
+import datetime
+import os.path
 import re
 import shutil
-import os.path
-import datetime
-import tempfile
 import subprocess
-import contextlib
+import tempfile
 
-import requests
 import dateutil.tz
+import requests
 from OpenSSL import crypto
-import univention.config_registry
-from univention.management.console.modules.diagnostic import Critical, Warning, MODULE
 
+import univention.config_registry
 from univention.lib.i18n import Translation
+from univention.management.console.modules.diagnostic import MODULE, Critical, Warning
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 run_descr = ['This can be checked by running: ucr get server/role and ucr get ldap/master']
 title = _('Check validity of SSL certificates')

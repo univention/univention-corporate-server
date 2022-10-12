@@ -34,15 +34,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import subprocess
 import contextlib
+import subprocess
 
-import univention.lib.admember
 import univention.config_registry
-from univention.management.console.modules.diagnostic import Critical, MODULE
-from univention.management.console.modules.diagnostic import util
-
+import univention.lib.admember
 from univention.lib.i18n import Translation
+from univention.management.console.modules.diagnostic import MODULE, Critical, util
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check kerberos authenticated DNS updates')

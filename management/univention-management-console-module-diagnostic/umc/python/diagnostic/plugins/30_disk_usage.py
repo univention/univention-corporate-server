@@ -37,9 +37,9 @@
 import psutil
 
 import univention.config_registry
-from univention.management.console.modules.diagnostic import Warning, Critical, MODULE
-
 from univention.lib.i18n import Translation
+from univention.management.console.modules.diagnostic import MODULE, Critical, Warning
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check free disk space')

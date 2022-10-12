@@ -37,10 +37,10 @@
 import pipes
 
 from univention.config_registry import ucr
-from univention.management.console.modules.diagnostic import Warning, ProblemFixed
-from univention.management.console.modules.diagnostic import util
-from univention.management.console.log import MODULE
 from univention.lib.i18n import Translation
+from univention.management.console.log import MODULE
+from univention.management.console.modules.diagnostic import ProblemFixed, Warning, util
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check LDAP database for inconsistencies in group memberships.')

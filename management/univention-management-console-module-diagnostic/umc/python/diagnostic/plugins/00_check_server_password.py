@@ -35,21 +35,20 @@
 # <https://www.gnu.org/licenses/>.
 
 
-import ldap
 import socket
 import subprocess
 
-import univention
-import univention.uldap
-import univention.lib.misc
-import univention.admin.uldap
-import univention.admin.modules as udm_modules
-import univention.config_registry
-from univention.config_registry import handler_set as ucr_set
-from univention.config_registry import handler_unset as ucr_unset
-from univention.management.console.modules.diagnostic import Critical, ProblemFixed, MODULE
+import ldap
 
+import univention.admin.modules as udm_modules
+import univention.admin.uldap
+import univention.config_registry
+import univention.lib.misc
+import univention.uldap
+from univention.config_registry import handler_set as ucr_set, handler_unset as ucr_unset
 from univention.lib.i18n import Translation
+from univention.management.console.modules.diagnostic import MODULE, Critical, ProblemFixed
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 run_descr = ["Trying to authenticate with machine password against LDAP  Similar to running: univention-ldapsearch -LLLs base dn"]
 title = _('Check machine password')
