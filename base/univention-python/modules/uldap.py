@@ -368,7 +368,7 @@ class access(object):
 			elif self.start_tls == 2:
 				self.__starttls()
 
-		if self.binddn and not self.uri.startswith('ldapi://'):
+		if self.binddn:  #  and not self.uri.startswith('ldapi://'):
 			self.bind(self.binddn, self.bindpw)
 
 		# Override referral handling

@@ -200,7 +200,7 @@ if configRegistry['ldap/database/type'] == 'bdb':
 	log_action_begin_msg "Starting ldap server(s): slapd "
 
 @!@
-uris=['ldapi:///']
+uris = ['ldapi:///', 'ldapi://%2Frun%2Fslapd%2Fother']
 for p in configRegistry.get('slapd/port', '7389').split(','):
 	uris.append('ldap://:%s/' % p)
 for p in configRegistry.get('slapd/port/ldaps', '7636').split(','):

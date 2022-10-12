@@ -42,6 +42,9 @@ class LDAP(object):
 		host = _ucr.get('ldap/master' if write else 'ldap/server/name')
 		port = int(_ucr.get('ldap/master/port' if write else 'ldap/server/port', '7389'))
 		base = _ucr.get('ldap/base')
+		host = None
+		port = None
+		#kwargs['uri'] = 'ldapi://%2Frun%2Fslapd%2Fother'
 		return self.connection(func, bind, host, port, base, loarg, poarg, no_cache, **kwargs)
 
 	def connection(self, func=None, bind=None, host=None, port=None, base=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):
@@ -56,7 +59,12 @@ class LDAP(object):
 
 	def machine_connection(self, func=None, write=True, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):
 		hash_ = ('machine', no_cache, bool(write), tuple(kwargs.items()))
-		kwargs.update({'ldap_master': write})
+		#kwargs.update({'ldap_master': write})
+
+#		kwargs['uri'] = 'ldapi://%2Frun%2Fslapd%2Fother'
+		kwargs['binddn'] = _ucr['ldap/hostdn']
+		kwargs['bindpw'] = open('/etc/machine.secret').read().strip()
+		return self.connection(func, None, None, None, _ucr['ldap/base'], loarg, poarg, no_cache, **kwargs)
 
 		def connection():
 			try:
