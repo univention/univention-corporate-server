@@ -6,6 +6,7 @@ from time import sleep
 import univention.testing.utils as utils
 from univention.config_registry import ConfigRegistry
 from univention.lib.umc import ConnectionError, HTTPError
+from univention.lib.misc import custom_groupname
 from univention.testing.codes import TestCodes
 from univention.testing.umc import Client
 
@@ -64,8 +65,7 @@ class UMCBase:
 		made with provided 'options' and 'flavor'
 		"""
 		request_result = self.client.umc_command('udm/get', options, flavor).result
-		if request_result is None:
-			utils.fail("Request 'udm/get' with options '%s' failed, hostname '%s'" % (options, self.hostname))
+		assert request_result is not None
 		return request_result
 
 	def modify_object(self, options, flavor):
@@ -74,10 +74,8 @@ class UMCBase:
 		UMC request 'udm/put', checks for 'success' in the response
 		"""
 		request_result = self.client.umc_command('udm/put', options, flavor).result
-		if not request_result:
-			utils.fail("Request 'udm/put' to modify an object with options '%s' failed, hostname %s" % (options, self.hostname))
-		if not request_result[0].get('success'):
-			utils.fail("Request 'udm/put' to modify an object with options '%s' failed, no success = True in response, hostname %s, response '%s'" % (options, self.hostname, request_result))
+		assert request_result
+		assert request_result[0].get('success')
 
 	def delete_obj(self, name, obj_type, flavor):
 		"""
@@ -109,10 +107,8 @@ class UMCBase:
 			}
 		}]
 		request_result = self.client.umc_command('udm/remove', options, flavor).result
-		if not request_result:
-			utils.fail("Request 'udm/remove' to delete object with options '%s' failed, hostname %s" % (options, self.hostname))
-		if not request_result[0].get('success'):
-			utils.fail("Request 'udm/remove' to delete object with options '%s' failed, no success = True in response, hostname '%s', response '%s'" % (options, self.hostname, request_result))
+		assert request_result
+		assert request_result[0].get('success')
 
 	def return_code_result_skip(self):
 		"""Method to stop the test with the code 77, RESULT_SKIP """
@@ -259,28 +255,9 @@ class UDMModule(UMCBase):
 		}]
 		return self.request("udm/add", options, "computers/computer")
 
-	def get_translation(self, obj_type, obj_name):
-		"""
-		Returns the translation taken from UCR for given 'obj_name' and
-		'obj_type'. If not translation found -> returns default English
-		name. If no English name available -> prints a message, returns None.
-		"""
-		translated = self.ucr.get(obj_type + '/default/' + obj_name, self._default_names.get(obj_name))
-		if not translated:
-			print("\nNo translation and no default English name can be found for object %s of %s type" % (obj_name, obj_type))
-
-		return translated
-
 	def get_groupname_translation(self, groupname):
 		"""
 		Returns the localized translation for the given 'groupname'.
 		Groupname should be the UCR variable name (e.g. domainadmins).
 		"""
-		return self.get_translation('groups', groupname)
-
-	def get_username_translation(self, username):
-		"""
-		Returns the localized translation for the given 'username'.
-		Username should be the UCR variable name (e.g. administrator).
-		"""
-		return self.get_translation('users', username)
+		return custom_groupname(self._default_names.get(groupname), self.ucr)
