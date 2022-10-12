@@ -24,24 +24,87 @@ Indexes
 =======
 
 Comparable with other database systems, OpenLDAP uses indexes about
-commonly requested attributes. For indexed attributes a search is not
-performed via the full database contents, but over an optimized
+commonly requested attributes. For indexed attributes a search isn't
+performed through the full database contents, but over an optimized
 subsection.
 
-With newer UCS versions, the indexes are occasionally expanded and
-automatically activated. The automatic activation can be deactivated
-using the UCR variable :envvar:`ldap/index/autorebuild`. In this
-case, the indexes should be set manually to ensure that there is no loss
-of performance as a result. The indexes are controlled by the UCR
-variables :envvar:`ldap/index/eq`,
-:envvar:`ldap/index/pres`, :envvar:`ldap/index/sub` and
-:envvar:`ldap/index/approx`. Once the variables have been
-changed, the OpenLDAP server must be stopped and the
-:command:`slapindex` command run.
+With recent UCS versions, the indexes are occasionally expanded and
+automatically activated. You can deactivate the automatic activation with the
+UCR variable :envvar:`ldap/index/autorebuild`. In this case, you must set the
+indexes manually to ensure that there is no loss of performance as a result.
 
-To determine whether not-indexed variables are used, you can activate
-OpenLDAP debug level ``-1`` and search for the string ``not indexed`` in the
-log file :file:`/var/log/syslog`. For example:
+Optimizing an LDAP index requires some thoughts before hand. It isn't
+recommended to add all wanted attributes to the LDAP index. The index requires
+maintenance and updating an index costs performance on write and sometimes also
+on read operations. Evaluate your frequent searches and add the frequent used
+search attributes to the LDAP index.
+
+.. seealso::
+
+   `Can more indexes improve performance? <https://www.openldap.org/faq/data/cache/42.html>`_ in the *OpenLDAP Faq-O-Matic*
+      for more information about indexes influence the performance in OpenLDAP
+
+To add LDAP attributes to an index, use the following steps:
+
+#. Stop the OpenLDAP server.
+
+#. Add or remove the LDAP attributes in the indexes by changing the respective
+   UCR variable.
+
+#. Run the command :command:`slapindex` to re-index the entries in the LDAP database.
+
+#. Start the OpenLDAP server.
+
+The UCR variables :envvar:`ldap/index/eq`, :envvar:`ldap/index/pres`,
+:envvar:`ldap/index/sub`, and :envvar:`ldap/index/approx` control the LDAP index
+configuration for the OpenLDAP server. After changing one of those variables,
+UCR rewrites the OpenLDAP server configuration file.
+
+Consider the following hints for your index:
+
+* Negations don't use an index and therefore negation searches suffer
+  performance.
+
+* Range comparisons like ``>=`` and ``<=`` only work for non-string syntaxes
+  like *integer* and *generalizedTime*. They use the :envvar:`eq
+  <ldap/index/eq>` index for equality tests.
+
+The following UCR variables control the LDAP index:
+
+.. envvar:: ldap/index/approx
+
+   This index tests for approximate matches. For example adding the ``uid``
+   attribute to the index, it corresponds to the LDAP filter
+   :samp:`uid~={value}` and finds all approximate objects.
+
+   .. seealso::
+
+      `Ldapwiki: ApproxMatch <https://ldapwiki.com/wiki/ApproxMatch>`_
+         Overview about approximate match in OpenLDAP search filters defined in
+         :rfc:`4511`.
+
+.. envvar:: ldap/index/eq
+
+   This index tests for equality. For example adding the ``uid`` attribute to
+   the index, it corresponds to the LDAP filter :samp:`uid={value}` and finds
+   all objects with exact that :samp:`{value}`. LDAP uses this index as fallback
+   for a missing presence index in :envvar:`ldap/index/pres`.
+
+.. envvar:: ldap/index/pres
+
+   This index tests for the presence. For example adding the ``uid`` attribute
+   to the index, it corresponds to the LDAP filter ``uid=*`` and finds all
+   objects that have something within the ``uid`` attribute.
+
+.. envvar:: ldap/index/sub
+
+   This index runs a sub string search. For example adding the ``uid`` attribute
+   to the index, it corresponds to the LDAP filter :samp:`uid={value}*` and
+   finds all objects that match with the filter including the wildcard.
+
+To determine whether OpenLDAP uses not-indexed variables, you can activate
+OpenLDAP debug level ``-1`` and search for the string ``not indexed`` in the log
+file :file:`/var/log/syslog`. For example:
 
 .. code-block:: console
 
