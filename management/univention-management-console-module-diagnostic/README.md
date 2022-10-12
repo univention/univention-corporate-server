@@ -45,7 +45,6 @@ buttons: List[Dict[str, str]] = [
 actions: Dict[str, Callable[[Instance], None] = {
 	"action": button_handler,
 }
-popups = []  # unused?
 
 
 def button_handler(umc_instance: Instance):

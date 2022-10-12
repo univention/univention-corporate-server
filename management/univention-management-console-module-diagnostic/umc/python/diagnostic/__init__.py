@@ -241,11 +241,6 @@ class Plugin(object):
 		return list(getattr(self.module, 'run_descr', []))
 
 	@property
-	def popups(self):
-		u"""Buttons with pop ups"""
-		return getattr(self.module, 'popups', [])
-
-	@property
 	def umc_modules(self):
 		u"""References to UMC modules which can help solving the problem.
 			(module, flavor, properties)
@@ -316,7 +311,6 @@ class Plugin(object):
 			umc_modules=self.umc_modules,
 			links=self.links,
 			buttons=self.buttons,
-			popups=self.popups,
 		)
 
 
