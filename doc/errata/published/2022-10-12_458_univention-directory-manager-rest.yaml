@@ -9,3 +9,5 @@ desc: |
  * The UDM REST API responses now respect the requested language so that e.g.
    error messages are correctly translated.
 bug: [55224]
+erratum: 458
+announced: 2022-10-12
