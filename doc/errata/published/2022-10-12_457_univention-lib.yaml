@@ -9,3 +9,5 @@ desc: |
  * `univention.lib.i18n` now provides a method to set the language of all
    already instanciated `Translation` instances.
 bug: [55224]
+erratum: 457
+announced: 2022-10-12
