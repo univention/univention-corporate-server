@@ -1,8 +1,4 @@
 #!/usr/bin/python3
-# coding: utf-8
-#
-# Univention Management Console module:
-#  System Diagnosis UMC module
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/

@@ -1,8 +1,4 @@
 #!/usr/bin/python3
-# coding: utf-8
-#
-# Univention Management Console module:
-#  System Diagnosis UMC module
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -33,7 +29,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-
 
 import socket
 import subprocess
