@@ -30,7 +30,7 @@ class WriteFail(Exception):
 	pass
 
 
-class BaseMailClient(object):
+class BaseMailClient:
 	"""BaseMailClient is a Base (interface) for imaplib.IMAP4_SSL and imaplib.IMAP4
 	Does not work alone, can be used only as a super class of other child class.
 	"""
@@ -38,9 +38,9 @@ class BaseMailClient(object):
 	def login_plain(self, user, password, authuser=None):
 		def plain_callback(response):
 			if authuser is None:
-				return "%s\x00%s\x00%s" % (user, user, password)
+				return f"{user}\x00{user}\x00{password}"
 			else:
-				return "%s\x00%s\x00%s" % (user, authuser, password)
+				return f"{user}\x00{authuser}\x00{password}"
 		return self.authenticate('PLAIN', plain_callback)
 
 	def log_in(self, usermail, password):  # type: (str, str) -> None
@@ -49,7 +49,7 @@ class BaseMailClient(object):
 		:usermail: string, user mail
 		:password: string, user password
 		"""
-		print('Logging in with username={!r} and password={!r}'.format(usermail, password))
+		print(f'Logging in with username={usermail!r} and password={password!r}')
 		try:
 			self.login(usermail, password)
 			self.owner = usermail
@@ -109,7 +109,7 @@ class BaseMailClient(object):
 		for token in acls[0].decode('UTF-8').split():
 			if merge:
 				# append to last token
-				tokens[-1] = '{} {}'.format(tokens[-1], token)
+				tokens[-1] = f'{tokens[-1]} {token}'
 				if token.endswith('"'):
 					merge = False
 					tokens[-1] = tokens[-1].strip('"')
@@ -164,7 +164,7 @@ class BaseMailClient(object):
 				set2 = set() if set2 is None else set(set2)
 
 				if not (who in current.get(mailbox).keys() or set1 == set2):
-					raise WrongAcls('\nExpected = %s\nCurrent = %s\n' % (
+					raise WrongAcls('\nExpected = {}\nCurrent = {}\n'.format(
 						expected_acls.get(mailbox).get(who), current.get(mailbox).get(who)))
 
 	def check_lookup(self, mailbox_owner, expected_result):
@@ -172,7 +172,7 @@ class BaseMailClient(object):
 
 		:expected_result: dict{mailbox : bool}
 		"""
-		print('check_lookup() mailbox_owner={!r} expected_result={!r}'.format(mailbox_owner, expected_result))
+		print(f'check_lookup() mailbox_owner={mailbox_owner!r} expected_result={expected_result!r}')
 		for mailbox, retcode in expected_result.items():
 			if mailbox_owner != self.owner:
 				mailbox = self.mail_folder(mailbox_owner, mailbox)
@@ -230,23 +230,23 @@ class BaseMailClient(object):
 			# actual Permissions are given to shared/owner/INBOX
 			# This is different than listing
 			if mailbox_owner != self.owner and mailbox == 'INBOX':
-				mailbox = 'shared/%s/INBOX' % (mailbox_owner,)
+				mailbox = f'shared/{mailbox_owner}/INBOX'
 			subname = uts.random_name()
-			typ, data = self.create('%s/%s' % (mailbox, subname))
+			typ, data = self.create(f'{mailbox}/{subname}')
 			print('Create Retcode:', typ, data)
 			if (typ == 'OK') != retcode:
 				raise WriteFail('Unexpected create sub result mailbox in %s' % mailbox)
 			if 'OK' in typ:
-				typ, data = self.delete('%s/%s' % (mailbox, subname))
+				typ, data = self.delete(f'{mailbox}/{subname}')
 				print('Delete Retcode:', typ, data)
 				if (typ == 'OK') != retcode:
 					raise WriteFail('Unexpected delete sub result mailbox in %s' % mailbox)
 
 	def mail_folder(self, mailbox_owner, mailbox):
 		if mailbox == 'INBOX':
-			return 'shared/%s' % (mailbox_owner,)
+			return f'shared/{mailbox_owner}'
 		if '/' not in mailbox:
-			return 'shared/%s/%s' % (mailbox_owner, mailbox)
+			return f'shared/{mailbox_owner}/{mailbox}'
 		return mailbox
 
 	def check_permissions(self, owner_user, mailbox, permission):
