@@ -369,6 +369,36 @@ fix_broker_dns_entries_on_traeger () {
 	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=$(ucr get domainname),cn=dns,$(ucr get ldap/base)" --set a="$(ucr get interfaces/eth0/address)"
 }
 
+fix_keycloak_container_in_template () {
+	local id ip cfg
+	id="$(docker inspect keycloak --format '{{ .Id }}')"
+	ip="$(ucr get interfaces/eth0/address)"
+	cfg="/var/lib/docker/containers/$id/config.v2.json"
+	docker stop keycloak
+	python3 - <<EOF || return 1
+import json
+new_env = []
+with open("$cfg", "r") as f:
+    data = json.load(f)
+for env in data["Config"]["Env"]:
+    # remove admin settings, otherwise container won't start
+    # with User with username 'admin' already added to
+    # '/opt/jboss/keycloak/standalone/configuration/keycloak-add-user.json'
+    if env.startswith("KEYCLOAK_PASSWORD="):
+        continue
+    # update ip
+    if env.startswith("JGROUPS_DISCOVERY_EXTERNAL_IP="):
+        env = "JGROUPS_DISCOVERY_EXTERNAL_IP=$ip"
+    new_env.append(env)
+data["Config"]["Env"] = new_env
+with open("$cfg", "w") as f:
+    json.dump(data, f)
+EOF
+	service docker restart
+	docker start keycloak
+	sleep 120
+}
+
 # make env file available in ssh session
 set_env_variables_from_env_file () {
 	local env_file="${1:?missing env file}"
