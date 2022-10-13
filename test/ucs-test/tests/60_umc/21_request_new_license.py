@@ -9,10 +9,10 @@
 import shutil
 import ssl
 import subprocess
+from http.server import BaseHTTPServer
 from multiprocessing import Process
 from socket import gethostname
 
-from six.moves import BaseHTTPServer
 from unittest import TestCase, main
 
 import univention.testing.utils as utils

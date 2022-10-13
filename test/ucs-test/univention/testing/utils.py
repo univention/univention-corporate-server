@@ -44,10 +44,9 @@ import traceback
 from itertools import chain
 from enum import IntEnum
 from types import TracebackType  # noqa: F401
-from typing import IO, Any, Callable, Dict, Iterable, List, NoReturn, Optional, Sequence, Text, Tuple, Type, TypeVar, Union  # noqa: F401
+from typing import IO, Any, Callable, Dict, Iterable, List, NoReturn, Optional, Sequence, Text, Tuple, Type, TypeVar  # noqa: F401
 
 import ldap
-import six
 
 import univention.uldap as uldap
 from univention.config_registry import ConfigRegistry
@@ -178,7 +177,7 @@ def retry_on_error(func, exceptions=(Exception,), retry_count=20, delay=10):
 			else:
 				print('Exception occurred: %s (%s). This was the last retry (retry %d/%d).\n' % (exc_info[0], exc_info[1], i, retry_count))
 	else:
-		six.reraise(*exc_info)
+		raise exc_info[1].with_traceback(exc_info[2])
 
 
 def verify_ldap_object(

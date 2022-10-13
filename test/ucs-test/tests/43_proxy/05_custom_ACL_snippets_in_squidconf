@@ -10,8 +10,7 @@ import time
 from multiprocessing import Process
 
 import pycurl
-from six.moves import BaseHTTPServer
-from six.moves.SimpleHTTPServer import SimpleHTTPRequestHandler
+from http.server import BaseHTTPServer, SimpleHTTPRequestHandler
 
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test

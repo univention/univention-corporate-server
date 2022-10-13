@@ -11,7 +11,7 @@ import xml.etree.ElementTree
 import defusedxml.ElementTree as ET
 import requests
 from requests_kerberos import OPTIONAL, HTTPKerberosAuth
-from six.moves.html_parser import HTMLParser
+from html.parser import HTMLParser
 
 import univention.config_registry as configRegistry
 import univention.testing.utils as utils

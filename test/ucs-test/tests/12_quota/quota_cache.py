@@ -1,7 +1,7 @@
 import os
+import pickle
 import time
 
-from six.moves import cPickle as pickle
 
 import univention.testing.utils as utils
 

@@ -58,7 +58,6 @@ import copy
 import requests
 from typing import Any, Callable, Dict, Iterator, List, Mapping, Optional, Text, Type, Union  # noqa: F401
 
-import six
 import uritemplate
 
 if sys.version_info.major > 2:
@@ -423,7 +422,7 @@ class Module(Client):
 		if isinstance(filter, dict):
 			for prop, val in filter.items():
 				data['query[%s]' % (prop,)] = val
-		elif isinstance(filter, six.string_types):
+		elif isinstance(filter, str):
 			data['filter'] = filter
 		if superordinate:
 			data['superordinate'] = superordinate

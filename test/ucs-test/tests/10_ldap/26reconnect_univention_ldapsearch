@@ -14,7 +14,7 @@ from subprocess import PIPE, Popen
 from time import sleep
 
 import psutil
-from six.moves.queue import Empty, Full
+from queue import Empty, Full
 
 from univention.config_registry import ConfigRegistry, handler_set
 from univention.testing.codes import TestCodes

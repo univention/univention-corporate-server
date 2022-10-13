@@ -5,12 +5,13 @@
 import base64
 import os
 import shutil
+import http.client
+from http.server import BaseHTTPServer
 from optparse import OptionParser
 
-from six.moves import BaseHTTPServer, http_client
-from six.moves.urllib.error import HTTPError
-from six.moves.urllib.parse import unquote, urlsplit, urlunsplit
-from six.moves.urllib.request import Request, urlopen
+from urllib.error import HTTPError
+from urllib.parse import unquote, urlsplit, urlunsplit
+from urllib.request import Request, urlopen
 
 PORT = 3128
 
@@ -45,7 +46,7 @@ class Proxy(BaseHTTPServer.BaseHTTPRequestHandler):
 						self.log_error(msg)
 					raise KeyError(msg)
 			except KeyError as exc:
-				self.send_response(http_client.PROXY_AUTHENTICATION_REQUIRED)
+				self.send_response(http.client.PROXY_AUTHENTICATION_REQUIRED)
 				self.send_header('WWW-Authenticate', f'Basic realm="{options.realm}"')
 				self.send_header('Content-type', 'text/html; charset=UTF-8')
 				self.end_headers()

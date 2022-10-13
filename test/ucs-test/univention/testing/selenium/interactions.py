@@ -41,7 +41,6 @@ import time
 from typing import Any, List, Union  # noqa: F401
 
 import selenium.common.exceptions as selenium_exceptions
-import six
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
@@ -317,9 +316,9 @@ class Interactions(object):
 		"""
 		Wrapper for selenium.webdriver.common.action_chains.drag_and_drop
 		"""
-		if isinstance(source, six.string_types):
+		if isinstance(source, str):
 			source = getattr(self.driver, 'find_element_by_%s' % find_by)(source)
-		if isinstance(target, six.string_types):
+		if isinstance(target, str):
 			target = getattr(self.driver, 'find_element_by_%s' % find_by)(target)
 		ActionChains(self.driver).drag_and_drop(source, target).perform()
 
@@ -328,6 +327,6 @@ class Interactions(object):
 		"""
 		Wrapper for selenium.webdriver.common.action_chains.drag_and_drop_by_offset
 		"""
-		if isinstance(source, six.string_types):
+		if isinstance(source, str):
 			source = getattr(self.driver, 'find_element_by_%s' % find_by)(source)
 		ActionChains(self.driver).drag_and_drop_by_offset(source, xoffset, yoffset).perform()

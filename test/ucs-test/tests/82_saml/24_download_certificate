@@ -7,7 +7,7 @@
 
 import re
 
-from six.moves.urllib.request import urlopen
+from urllib.request import urlopen
 
 from univention.config_registry import ConfigRegistry
 from univention.testing.utils import fail

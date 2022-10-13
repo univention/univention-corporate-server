@@ -40,8 +40,6 @@ import re
 import sys
 from typing import Any, Callable, Dict, Iterable, List, Tuple, Union  # noqa: F401
 
-import six
-
 __all__ = [
 	'TEST_BASE', 'LOG_BASE', 'setup_environment', 'setup_debug',
 	'strip_indent', 'get_sections', 'get_tests', 'UCSVersion',
@@ -245,7 +243,7 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 		raise ValueError('Unknown version match: "%s"' % (ver,))
 
 	def __init__(self, ver):  # type: (Union[str, Tuple[int, int, int, int]]) -> None
-		if isinstance(ver, six.string_types):
+		if isinstance(ver, str):
 			self.rel, self.ver = self._parse(ver)
 		elif isinstance(ver, tuple):
 			self.rel = operator.eq

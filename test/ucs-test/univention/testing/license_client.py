@@ -42,9 +42,9 @@ from os import path
 from sys import exit
 from typing import Any, Dict, Iterable, Optional, Tuple  # noqa: F401
 
-from six.moves.html_parser import HTMLParser
-from six.moves.http_client import HTTPSConnection, HTTPException, HTTPResponse  # noqa: F401
-from six.moves.urllib.parse import urlencode
+from html.parser import HTMLParser
+from http.client import HTTPSConnection, HTTPException, HTTPResponse  # noqa: F401
+from urllib.parse import urlencode
 
 
 class CredentialsMissing(Exception):

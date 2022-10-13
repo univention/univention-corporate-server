@@ -18,7 +18,7 @@ import email
 import pytest
 import selenium.common.exceptions as selenium_exceptions
 from selenium.common.exceptions import TimeoutException
-from six.moves.urllib_parse import parse_qs, urlparse
+from urllib.parse import parse_qs, urlparse
 from test_self_service import capture_mails
 
 import univention.testing.strings as uts

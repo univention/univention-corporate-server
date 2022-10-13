@@ -7,24 +7,15 @@ import errno
 import os
 import shutil
 import sys
-from codecs import encode as _encode
 from datetime import datetime
 from typing import IO, Any  # noqa: F401
 from xml.sax.saxutils import XMLGenerator
-
-import six
 
 from univention.testing.codes import TestCodes
 from univention.testing.data import TestCase, TestFormatInterface, TestResult  # noqa: F401
 from univention.testing.format.text import Raw
 
 __all__ = ['Junit']
-
-
-def encode(string, *args):  # type: (str, *Any) -> str
-	if six.PY2:
-		return _encode(string, *args)
-	return string
 
 
 class Junit(TestFormatInterface):
@@ -65,7 +56,7 @@ class Junit(TestFormatInterface):
 			errors = 1
 		else:
 			errors = 1
-		classname = encode(result.case.uid.replace("/", "."))
+		classname = result.case.uid.replace("/", ".")
 		if classname.endswith('.py'):
 			classname = classname[:-3]
 
@@ -123,7 +114,7 @@ class Junit(TestFormatInterface):
 			if result.case.description:
 				xml.startElement('property', {
 					'name': 'description',
-					'value': encode(result.case.description or result.case.uid),
+					'value': result.case.description or result.case.uid,
 				})
 				xml.endElement('property')
 			xml.endElement('properties')
@@ -185,7 +176,7 @@ class Junit(TestFormatInterface):
 		super(Junit, self).end_test(result)
 
 	def utf8(self, data):  # type: (Any) -> str
-		if isinstance(data, six.text_type):
+		if isinstance(data, str):
 			data = data.encode('utf-8', 'replace').decode('utf-8')
 		elif isinstance(data, bytes):
 			data = data.decode('utf-8', 'replace').encode('utf-8')

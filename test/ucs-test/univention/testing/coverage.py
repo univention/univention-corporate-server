@@ -11,8 +11,6 @@ import time
 from argparse import ArgumentParser, Namespace, _ArgumentGroup  # noqa: F401
 from typing import Any, Callable, List  # noqa: F401
 
-import six
-
 
 class MissingCoverage(Exception):
 	pass
@@ -20,7 +18,7 @@ class MissingCoverage(Exception):
 
 class Coverage(object):
 
-	COVERAGE_PTH = '/usr/lib/python2.7/dist-packages/ucstest-coverage.pth' if six.PY2 else '/usr/lib/python3/dist-packages/ucstest-coverage.pth'
+	COVERAGE_PTH = '/usr/lib/python3/dist-packages/ucstest-coverage.pth'
 	COVERAGE_PTH_CONTENT = '''import univention.testing.coverage; univention.testing.coverage.Coverage.startup()'''
 	COVERAGE_DEBUG_PATH = '/tmp/ucs-test-coverage'
 	COVERAGE_DEBUG = os.path.exists(COVERAGE_DEBUG_PATH)

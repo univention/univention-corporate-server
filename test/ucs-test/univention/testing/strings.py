@@ -35,8 +35,6 @@
 from random import choice, randint
 from typing import Iterator, Text, Optional, Tuple  # noqa: F401
 
-import six
-
 STR_NUMERIC = u'0123456789'
 STR_ALPHA = u'abcdefghijklmnopqrstuvwxyz'
 STR_ALPHANUM = STR_ALPHA + STR_NUMERIC
@@ -65,8 +63,6 @@ def random_string(length=10, alpha=True, numeric=True, charset=u"", encoding='ut
 			result += choice(STR_ALPHA)
 		elif numeric:
 			result += choice(STR_NUMERIC)
-	if six.PY2:
-		result = result.encode(encoding)
 	return result
 
 

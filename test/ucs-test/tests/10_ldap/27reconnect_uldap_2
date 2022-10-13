@@ -13,7 +13,7 @@ import traceback
 
 from ldap import INSUFFICIENT_ACCESS, UNAVAILABLE
 from ldap.filter import filter_format
-from six.moves._thread import start_new_thread
+from _thread import start_new_thread
 
 import univention.admin.uexceptions
 import univention.admin.uldap

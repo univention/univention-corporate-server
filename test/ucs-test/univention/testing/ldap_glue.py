@@ -77,8 +77,8 @@ class LDAPConnection(object):
 
 		try:
 			if self.protocol == 'ldapi':
-				from six.moves import urllib_parse
-				socket = urllib_parse.quote(self.socket, '')
+				import urllib.parse
+				socket = urllib.parse.quote(self.socket, '')
 				ldapuri = "%s://%s" % (self.protocol, socket)
 			else:
 				ldapuri = "%s://%s:%d" % (self.protocol, self.host, int(self.port))

@@ -7,7 +7,7 @@ import copy
 from collections import defaultdict
 
 import pytest
-from six.moves.http_client import HTTPConnection
+from http.client import HTTPConnection
 
 from univention.lib.umc import Unauthorized
 from univention.testing import network, utils

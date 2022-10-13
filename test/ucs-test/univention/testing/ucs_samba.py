@@ -9,22 +9,14 @@ import time
 from typing import Any, Dict, Iterator, List, Optional, Union  # noqa: F401
 
 import ldap
-import six
 
 import univention.config_registry as config_registry
 from univention.testing.utils import package_installed
 
-if not six.PY2:
-	import ldb
-	from samba.auth import system_session
-	from samba.samdb import SamDB
-	from samba.param import LoadParm
-else:
-	class ldb(object):
-		LdbError = None
-		SCOPE_SUBTREE = 2
-		ERR_NO_SUCH_OBJECT = 32
-		ERR_INVALID_DN_SYNTAX = 34
+import ldb
+from samba.auth import system_session
+from samba.samdb import SamDB
+from samba.param import LoadParm
 
 
 class DRSReplicationFailed(Exception):
@@ -52,32 +44,7 @@ def password_policy(complexity=False, minimum_password_age=0, maximum_password_a
 		subprocess.call(['samba-tool', 'domain', 'passwordsettings', 'set', '--min-pwd-age', min_pwd_age, '--max-pwd-age', max_pwd_age, '--complexity', pwd_complexity])
 
 
-def wait_for_drs_replication(*args, **kwargs):
-	# type: (*Any, **Any) -> None
-	if six.PY2:
-		process = subprocess.Popen(['/usr/bin/python3', '-'], stdin=subprocess.PIPE)
-		stdout, stderr = process.communicate(b'''
-import ldb
-import sys
-from univention.testing.ucs_samba import wait_for_drs_replication, DRSReplicationFailed
-try:
-	wait_for_drs_replication(*%s, **%s)
-except DRSReplicationFailed as exc:
-	print(repr(exc), file=sys.stderr)
-	sys.exit(2)
-except ldb.LdbError as exc:
-	print(repr(exc), file=sys.stderr)
-	sys.exit(3)
-		''' % (repr(args).encode('UTF-8'), repr(kwargs).encode('UTF-8')))
-		if process.returncode == 2:
-			raise DRSReplicationFailed((stderr or b'').decode('UTF-8', 'replace'))
-		elif process.returncode:
-			raise Exception((stderr or b'').decode('UTF-8', 'replace'))
-		return
-	return _wait_for_drs_replication(*args, **kwargs)
-
-
-def _wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1, verbose=True, should_exist=True, controls=None):
+def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1, verbose=True, should_exist=True, controls=None):
 	# type: (str, Union[List[str], None, str], Optional[str], int, Optional[LoadParm], int, int, bool, bool, Optional[List[str]]) -> None
 	if not package_installed('univention-samba4'):
 		if package_installed('univention-samba'):

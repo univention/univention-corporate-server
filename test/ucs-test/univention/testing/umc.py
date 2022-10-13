@@ -40,7 +40,7 @@ import sys
 from typing import Any, Iterable, Optional, Tuple  # noqa: F401
 
 import requests
-from six.moves.html_parser import HTMLParser
+from html.parser import HTMLParser
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.umc import Client as _Client

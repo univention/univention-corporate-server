@@ -63,7 +63,6 @@ from typing import Any, Dict, Iterable, List, Mapping, Optional, Text, Tuple, Un
 import ldap
 import ldap.filter
 import psutil
-import six
 
 import univention.admin.modules
 import univention.admin.objects
@@ -909,7 +908,7 @@ class UCSTestUDM(object):
 			wait_for_s4connector = True
 		drs_replication = wait_for_drs_replication
 		ad_ldap_search_args = self.ad_object_identifying_filter(modulename, dn)
-		if wait_for_drs_replication and not isinstance(wait_for_drs_replication, six.string_types):
+		if wait_for_drs_replication and not isinstance(wait_for_drs_replication, str):
 			drs_replication = False
 			if ad_ldap_search_args:
 				drs_replication = ad_ldap_search_args
@@ -1160,8 +1159,7 @@ class UCSTestUDM(object):
 	def _execute_udm(self, cmd):
 		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False, env=self._env)
 		(stdout, stderr) = child.communicate()
-		if six.PY3:
-			stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
+		stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
 		return child.returncode, stdout, stderr
 
 
@@ -1208,7 +1206,7 @@ def verify_udm_object(module, dn, expected_properties):
 		udm_value = udm_object.info.get(key, [])
 		if udm_value is None:
 			udm_value = []
-		if isinstance(udm_value, (bytes, six.string_types)):
+		if isinstance(udm_value, (bytes, str)):
 			udm_value = {udm_value}
 		if not isinstance(value, (tuple, list)):
 			value = {value}

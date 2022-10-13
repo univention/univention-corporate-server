@@ -20,7 +20,6 @@ from time import time
 from typing import IO, Any, Dict, Iterable, Iterator, List, Optional, Sequence, Set, Tuple, TypeVar  # noqa: F401
 
 import apt
-import six
 import yaml
 
 from univention.config_registry import ConfigRegistry
@@ -44,7 +43,7 @@ ILLEGAL_XML_UNICHR = (
 	(0xDFFFE, 0xDFFFF), (0xEFFFE, 0xEFFFF), (0xFFFFE, 0xFFFFF),
 	(0x10FFFE, 0x10FFFF),
 )
-RE_ILLEGAL_XML = re.compile(u'[%s]' % u''.join((u'%s-%s' % (six.unichr(low), six.unichr(high)) for (low, high) in ILLEGAL_XML_UNICHR if low < sys.maxunicode)))
+RE_ILLEGAL_XML = re.compile(u'[%s]' % u''.join((u'%s-%s' % (chr(low), chr(high)) for (low, high) in ILLEGAL_XML_UNICHR if low < sys.maxunicode)))
 
 
 def checked_set(values):  # type: (Optional[Iterable[T]]) -> Set[T]
@@ -647,10 +646,7 @@ class TestCase(object):
 
 				if fd in rlist:
 					data = os.read(fd, 1024)
-					if six.PY3:
-						out.buffer.write(data)  # type: ignore
-					else:
-						out.write(data)
+					out.buffer.write(data)  # type: ignore
 					buf += data
 					eof = data == b''
 				else:
