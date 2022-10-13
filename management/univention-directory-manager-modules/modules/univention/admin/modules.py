@@ -240,21 +240,20 @@ def init(lo, position, module, template_object=None, force_reload=False):
 
 		# add template defaults
 		for key, tmpl in template_object.items():
-			if key not in {"name", "description"}:  # these keys are part of the template itself
-				if key == '_options':
-					if tmpl != [''] and tmpl != []:
-						for option in module.options.keys():
-							module.options[option].default = option in tmpl
-				else:
-					if template_object.descriptions[key].multivalue:
-						if module.property_descriptions[key].multivalue:
-							module.property_descriptions[key].base_default = list(tmpl)
-						else:
-							ud.debug(ud.ADMIN, ud.INFO, 'modules.init: template and object values not both multivalue !!')
-
+			if key == '_options':
+				if tmpl != [''] and tmpl != []:
+					for option in module.options.keys():
+						module.options[option].default = option in tmpl
+			elif key not in {"name", "description"}:  # these keys are part of the template itself
+				if template_object.descriptions[key].multivalue:
+					if module.property_descriptions[key].multivalue:
+						module.property_descriptions[key].base_default = list(tmpl)
 					else:
-						module.property_descriptions[key].base_default = tmpl
-					module.property_descriptions[key].templates.append(template_object)
+						ud.debug(ud.ADMIN, ud.INFO, 'modules.init: template and object values not both multivalue !!')
+
+				else:
+					module.property_descriptions[key].base_default = tmpl
+				module.property_descriptions[key].templates.append(template_object)
 		ud.debug(ud.ADMIN, ud.INFO, 'modules_init: module.property_description after template: %s' % module.property_descriptions)
 	else:
 		ud.debug(ud.ADMIN, ud.INFO, 'modules_init: got no template')
