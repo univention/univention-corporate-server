@@ -389,6 +389,7 @@ class TestUMCLicenseManagement(UDMModule):
                 if line.startswith("univentionLicenseSignature: "):
                     line = "univentionLicenseSignature: pWvKcjqCoalaf1DtYjcvYPRpxRfopKsEUtxRa+1nIFKKtQ==\n"
                 junk_license.write(line)
+            junk_license.truncate()
 
     def prepare_licenses_for_test(self):
         """
