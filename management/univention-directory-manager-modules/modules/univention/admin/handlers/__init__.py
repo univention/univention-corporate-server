@@ -3604,7 +3604,7 @@ class simplePolicy(simpleLdap):
 			# if this attribute is of type boolean and the new value is equal to the default, than ignore this "change"
 			if isinstance(self.descriptions[key].syntax, univention.admin.syntax.boolean):
 				default = self.descriptions[key].base_default
-				if type(self.descriptions[key].base_default) in (tuple, list):
+				if isinstance(self.descriptions[key].base_default, (tuple, list)):
 					default = self.descriptions[key].base_default[0]
 				if (not default and newvalue == '0') or default == newvalue:
 					return
