@@ -26,7 +26,6 @@ links = [{
 	'label': _('Samba4 max open files - Univention Help')
 }]
 buttons = [{
-	'name': 'adjust',
 	'label': _('Adjust to suggested limits'),
 	'action': 'adjust'
 }]
