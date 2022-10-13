@@ -1219,7 +1219,10 @@ basic_setup_ucs_joined () {
 		ucr set "hosts/static/${masterip}=$(ucr get ldap/master)"
 		if [ "$(ucr get server/role)" = "memberserver" ]; then
 			ucr set nameserver1="$masterip"
+		else
+			ucr set ldap/server/ip="$(ucr get "interfaces/$(ucr get interfaces/primary)/address")"
 		fi
+		ucr unset nameserver2
 		systemctl restart univention-directory-listener || rv=1
 		univention-register-network-address || rv=1
 		service nscd restart || rv=1
