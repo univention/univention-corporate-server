@@ -24,3 +24,5 @@
 0017-4: tests/80_docker/87_docker_iptables
 # python3 only
 0009-3: univention/appcenter/testing/apptest.py
+# univention.testing python module is not a domain name
+0002-3: debian/ucs-test-framework.pyinstall
