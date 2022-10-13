@@ -150,26 +150,26 @@ ucr set appcenter/apps/{}/docker/params=' -t'
 exit 0
 '''.format(name)
 
-	listener_trigger = '''#!/usr/bin/python
+	listener_trigger = '''#!/usr/bin/python3
 
 import glob
 import os
 import json
 
-DATA_DIR='/var/lib/univention-appcenter/apps/%s/data/listener'
-DB='/var/lib/univention-appcenter/apps/%s/data/db.json'
+DATA_DIR = '/var/lib/univention-appcenter/apps/%s/data/listener'
+DB = '/var/lib/univention-appcenter/apps/%s/data/db.json'
 
 if not os.path.isfile(DB):
-	with open(DB, 'wb') as f:
-		json.dump({'users/user':dict(), 'groups/group':dict()}, f, sort_keys=True, indent=4)
+	with open(DB, 'w') as fd:
+		json.dump({'users/user': {}, 'groups/group': {}}, fd, sort_keys=True, indent=4)
 
 for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 
-	with open(DB, 'r') as f:
-		db = json.load(f)
+	with open(DB) as fd:
+		db = json.load(fd)
 
-	with open(i, 'r') as f:
-		dumped = json.load(f)
+	with open(i) as fd:
+		dumped = json.load(fd)
 		action = 'add/modify'
 		if dumped.get('object') is None:
 			action = 'delete'
@@ -184,8 +184,8 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 				obj=dumped.get('object'),
 			)
 
-	with open(DB, 'wb') as f:
-		json.dump(db, f, sort_keys=True, indent=4)
+	with open(DB, 'w') as fd:
+		json.dump(db, fd, sort_keys=True, indent=4)
 
 	os.remove(i)
 ''' % (name, name)
