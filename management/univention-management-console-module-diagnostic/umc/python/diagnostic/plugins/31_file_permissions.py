@@ -97,7 +97,7 @@ def get_actual_owner(uid: int, gid: int) -> Tuple[str, str]:
 def check_file(path: str, owner: str, group: str, mode: int, must_exist: bool = False) -> Iterator[CheckError]:
 	try:
 		file_stat = os.stat(path)
-	except EnvironmentError:
+	except OSError:
 		if must_exist:
 			MODULE.error("%s must exist, but does not" % (path))
 			yield DoesNotExist(path)
