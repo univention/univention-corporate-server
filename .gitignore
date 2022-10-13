@@ -14,6 +14,7 @@ build/
 !*/*/debian/source/
 !*/*/debian/po/
 .*.sw?
+.sw?
 *.mo
 !*/*/conffiles/**/*.mo
 *.pot
@@ -21,5 +22,7 @@ build/
 doc/*/*.xml.err.d
 doc/*/*.xml.err
 doc/*/*codeclimate.json
+doc/manual/_build/
 generated-config-*.yml
 .idea/
+.mypy_cache/
