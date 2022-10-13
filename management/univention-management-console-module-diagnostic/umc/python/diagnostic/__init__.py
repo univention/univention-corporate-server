@@ -36,12 +36,6 @@ from collections import OrderedDict
 from os import listdir
 from typing import Any, Callable, Dict, Iterator, List, Optional, Pattern, Match
 
-# strptime import is not threadsafe
-# Workaround: import early
-# Upstream bug: https://bugs.python.org/issue7980
-# UCS bug: https://forge.univention.org/bugzilla/show_bug.cgi?id=45585
-import _strptime
-
 from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
 from univention.management.console.modules import Base
@@ -52,7 +46,6 @@ from univention.management.console.modules.sanitizers import (
 	DictSanitizer, PatternSanitizer, StringSanitizer,
 )
 
-_strptime
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 
