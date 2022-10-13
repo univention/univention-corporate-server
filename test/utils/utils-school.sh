@@ -359,11 +359,10 @@ CACHE_PATH = "/var/lib/test-data"
 
 lo, po = getAdminConnection()
 db = Index(str(CACHE_PATH))
-db["schools"] = []
+db["schools"] = [ f"school{i}" for i in range(1, 51) ]
 
 for i in range(1, 51):
     school = School(f"school{i}")
-    db["schools"].append(school.name)
     print(school)
     data = {
         "users": {},
