@@ -39,6 +39,7 @@ html_title = project
 # ones.
 extensions = [
     "univention_sphinx_extension",
+    "univention_sphinx_changelog",
     "sphinxcontrib.spelling",
     "sphinx_last_updated_by_git",
     "sphinx_sitemap",
@@ -135,3 +136,7 @@ linkcheck_allowed_redirects = {
 }
 
 univention_use_doc_base = True
+
+# See README.md in this repository
+# https://git.knut.univention.de/univention/documentation/univention_sphinx_changelog#configuration-settings
+univention_changelog_previous_release = "5.0-1"
