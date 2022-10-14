@@ -117,6 +117,7 @@ Recommends:
  ucs-test-framework,
 Depends:
  lsb-release,
+ python-coverage,
  python3-coverage,
  python3-pexpect,
  python3-pytest,
