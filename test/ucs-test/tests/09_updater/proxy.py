@@ -6,7 +6,7 @@ import base64
 import os
 import shutil
 import http.client
-from http.server import BaseHTTPServer
+from http.server import BaseHTTPRequestHandler, HTTPServer
 from optparse import OptionParser
 
 from urllib.error import HTTPError
@@ -16,7 +16,7 @@ from urllib.request import Request, urlopen
 PORT = 3128
 
 
-class Proxy(BaseHTTPServer.BaseHTTPRequestHandler):
+class Proxy(BaseHTTPRequestHandler):
 	server_version = "UCSTestProxy/1.0"
 
 	def do_GET(self):
@@ -107,7 +107,7 @@ if __name__ == '__main__':
 	parser.add_option('-v', '--verbose', action='store_true', dest='verbose', default=False, help='Output verbose informations')
 	(options, arguments) = parser.parse_args()
 
-	httpd = BaseHTTPServer.HTTPServer(('', int(options.port)), Proxy)
+	httpd = HTTPServer(('', int(options.port)), Proxy)
 	if options.fork:
 		pid = os.fork()
 		if pid == 0:

@@ -10,7 +10,7 @@ import time
 from multiprocessing import Process
 
 import pycurl
-from http.server import BaseHTTPServer, SimpleHTTPRequestHandler
+from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -47,7 +47,7 @@ def startHttpServer(host='localhost', port=80):
 	"""Start a simple Http server in the working directory
 	"""
 	HandlerClass = SimpleHTTPRequestHandler
-	ServerClass = BaseHTTPServer.HTTPServer
+	ServerClass = HTTPServer
 	Protocol = "HTTP/1.0"
 	server_address = (host, port)
 

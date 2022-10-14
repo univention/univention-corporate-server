@@ -9,7 +9,7 @@
 import shutil
 import ssl
 import subprocess
-from http.server import BaseHTTPServer
+import http.server
 from multiprocessing import Process
 from socket import gethostname
 
@@ -20,7 +20,7 @@ from univention.config_registry import handler_set, handler_unset
 from univention.testing.network import NetworkRedirector
 
 
-class HTTPHandlerClass(BaseHTTPServer.BaseHTTPRequestHandler):
+class HTTPHandlerClass(http.server.BaseHTTPRequestHandler):
 
 	def do_POST(self):
 		self.send_response(200)
@@ -59,7 +59,7 @@ class LicenseServer:
 	def startHttpServer(self):
 		"""Start a simple Http server in the working directory
 		"""
-		ServerClass = BaseHTTPServer.HTTPServer
+		ServerClass = http.server.HTTPServer
 		Protocol = 'HTTP/1.1'
 		server_address = (self.host, self.port)
 
