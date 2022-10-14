@@ -1172,9 +1172,12 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 			self._unmapUnlockTime()
 			self._load_groups(loadGroups)
 			self._unmap_gid_number()
-		else:
-			self._set_default_group()
 		self.save()
+		# self.save() must not be called after this point in self.open()
+		# otherwise self.__primary_group doesn't add a new user to the
+		# univentionDefaultGroup because "not self.hasChanged('primaryGroup')"
+		if not self.exists():
+			self._set_default_group()
 
 	def _load_groups(self, loadGroups):
 		if loadGroups:  # this is optional because it can take much time on larger installations, default is true
