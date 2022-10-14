@@ -30,9 +30,6 @@ class TestUsers:
 		if self.exists():
 			self._unmap_mail_forward()
 
-		3.
-		self._load_groups(loadGroups)
-
 		# TODO: test pre_create() / pre_modify() / pre_ready() method:
 		primaryGroupWithoutSamba
 
