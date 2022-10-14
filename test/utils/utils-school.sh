@@ -300,7 +300,7 @@ EOF
 		--teachers 15000 \
 		--staff 1500 \
 		"${schools_big[@]}" >/tmp/import.log 2>&1 || return 1
-	# 300 normal schools with 250 students and 25 classes
+	# 300 normal schools with 250 students and 10 classes
 	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import \
 		--classes 3000 \
 		--students 75000 \
