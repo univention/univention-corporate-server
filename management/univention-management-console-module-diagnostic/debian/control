@@ -17,6 +17,7 @@ Depends:
  python3-dateutil,
  python3-dnspython,
  python3-openssl,
+ python3-packaging,
  python3-paramiko,
  python3-pexpect,
  python3-psutil,

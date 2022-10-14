@@ -30,10 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-try:
-	from distutils.version import LooseVersion as parse
-except ImportError:  # Python 3
-	from packaging.version import parse  # type: ignore
+from packaging.version import parse
 
 from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation

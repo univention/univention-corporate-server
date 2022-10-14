@@ -34,7 +34,7 @@ import io
 import traceback
 
 import pycurl
-from six.moves.urllib_parse import urlparse
+from urllib.parse import urlparse
 
 from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation

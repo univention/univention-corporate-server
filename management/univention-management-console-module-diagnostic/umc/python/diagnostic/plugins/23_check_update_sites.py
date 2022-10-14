@@ -33,7 +33,7 @@
 import socket
 from typing import Iterator
 
-import six.moves.urllib_parse as urlparse
+from urllib.parse import urlsplit
 
 from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation
@@ -58,7 +58,7 @@ def repositories() -> Iterator[str]:
 
 
 def test_resolve(url: str) -> bool:
-	parsed = urlparse.urlsplit(url if '//' in url else '//' + url)
+	parsed = urlsplit(url if '//' in url else '//' + url)
 	MODULE.process("Trying to resolve address of repository server %s" % (parsed.hostname))
 	MODULE.process("Similar to running: host %s" % (parsed.hostname))
 
