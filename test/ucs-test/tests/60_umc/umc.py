@@ -115,10 +115,6 @@ class UMCBase:
 		sys.exit(TestCodes.RESULT_SKIP)
 
 
-class TopModule(UMCBase):
-	pass
-
-
 class JoinModule(UMCBase):
 
 	def query_joinscripts(self):
