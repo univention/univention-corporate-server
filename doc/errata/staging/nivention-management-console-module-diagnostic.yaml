@@ -7,6 +7,9 @@ fix: 6.0.2-6
 desc: |
  This update addresses the following issue:
  * The diagnostics checks for SAML Identifier and Service Providers has been
-   fixed to work again. It now provides more information in case of errors
-   and provides automatic fixers to correct issues.
+   fixed to work again. It now provides more information in case of errors and
+   provides automatic fixers to correct issues.
+ * The diagnostics check for the Univention Directory Notifier Protocol
+   version has been extended to provide mot information in case of errors and
+   provides an automatic fixer to update the protocol version.
 bug: [49417]

@@ -760,11 +760,11 @@ msgstr "Einige Festplatten sind beinahe voll:"
 
 #: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:15
 msgid ""
-"Starting with UCS 4.3-3 Errata 428, the minimum protocol version should be "
-"set to 3."
+"Starting with UCS {ucs[0]}.{ucs[1]}-{ucs[2]} erratum {ucs[3]}, the minimum "
+"protocol version should be set to {udn}."
 msgstr ""
-"Ab UCS 4.3-3 Errata 428 sollte die minimale Protokollversion auf 3 angehoben "
-"sein."
+"Ab UCS {ucs[0]}.{ucs[1]}-{ucs[2]} Erratum {ucs[3]} sollte die minimale "
+"Protokollversion auf {udn} angehoben sein."
 
 #: umc/python/diagnostic/__init__.py:297
 msgid "Test again"
@@ -989,21 +989,10 @@ msgstr "Die Variable %(variable)r hat den ungültigen Wert %(value)r."
 msgid "There is no gateway configured."
 msgstr "Es ist kein Gateway eingerichtet."
 
-#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:21
-msgid "There is no notifier/protocol/version configured."
-msgstr "Die UCR-Variable notifier/protocol/version ist nicht konfiguriert."
-
-#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:20
-msgid "There is no version/erratalevel configured."
-msgstr "Die UCR-Variable version/erratalevel ist nicht konfiguriert."
-
-#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:19
-msgid "There is no version/patchlevel configured."
-msgstr "Die UCR-Variable version/patchlevel ist nicht konfiguriert."
-
-#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:18
-msgid "There is no version/version configured."
-msgstr "Die UCR-Variable version/version ist nicht konfiguriert."
+#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:45
+#, python-brace-format
+msgid "The UCR variable <tt>{ucr}</tt> is not configured or invalid."
+msgstr "Die UCR-Variable <tt>{ucr}</tt> ist nicht konfiguriert oder ungültig."
 
 #: umc/python/diagnostic/plugins/12_proxy.py:15
 msgid ""
@@ -1146,6 +1135,10 @@ msgstr "Univention Support Database - Listener-/Notifier-Fehlersuche"
 #: umc/python/diagnostic/plugins/50_check_ucr_templates.py:54
 msgid "Updated versions will be named FILENAME.dpkg-*."
 msgstr "Aktualisierte Versionen werden DATEINAME.dpkg-* genannt."
+
+#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:44
+msgid "Update protocol version"
+msgstr "Protokollversion anpassen"
 
 #: umc/python/diagnostic/plugins/64_check_ucr_types.py:51
 #, python-brace-format
