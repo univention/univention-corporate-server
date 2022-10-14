@@ -1158,12 +1158,16 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 			else:
 				self.options.append(opt)
 
+	def _post_unmap(self, info, values):
+		info = super(object, self)._post_unmap(info, values)
+		self._unmap_mail_forward(info, values)
+		self._unmap_pwd_change_next_login(info, values)
+		return info
+
 	def open(self, loadGroups=True):
 		univention.admin.handlers.simpleLdap.open(self)
 		self.pki_open()
 		if self.exists():
-			self._unmap_mail_forward()
-			self._unmap_pwd_change_next_login()
 			self._unmap_automount_information()
 			self._unmapUnlockTime()
 			self._load_groups(loadGroups)
@@ -1203,31 +1207,31 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 		if not self['primaryGroup']:
 			raise univention.admin.uexceptions.primaryGroup(self.dn)
 
-	def _unmap_pwd_change_next_login(self):
-		self['pwdChangeNextLogin'] = '0'
-		if self.oldattr.get('shadowLastChange', [b''])[0] == b'0':
-			self['pwdChangeNextLogin'] = '1'
-		elif self['passwordexpiry']:
+	def _unmap_pwd_change_next_login(self, info, oldattr):
+		info['pwdChangeNextLogin'] = '0'
+		if oldattr.get('shadowLastChange', [b''])[0] == b'0':
+			info['pwdChangeNextLogin'] = '1'
+		elif info['passwordexpiry']:
 			today = time.strftime('%Y-%m-%d').split('-')
-			expiry = self['passwordexpiry'].split('-')
+			expiry = info['passwordexpiry'].split('-')
 			# expiry.reverse()
 			# today.reverse()
 			if int(''.join(today)) >= int(''.join(expiry)):
-				self['pwdChangeNextLogin'] = '1'
+				info['pwdChangeNextLogin'] = '1'
 
-	def _unmap_mail_forward(self):
+	def _unmap_mail_forward(self, info, oldattr):
 		if configRegistry.is_true('directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf', False):
 			return
 		# mailForwardCopyToSelf is a "virtual" property. The boolean value is set to True, if
 		# the LDAP attribute mailForwardAddress contains the mailPrimaryAddress. The mailPrimaryAddress
 		# is removed from oldattr for correct display in CLI/UMC and for proper detection of changes.
 		# Remark: By setting the ucr-v the attribute is saved directly to LDAP.
-		if self.get('mailPrimaryAddress') in self.get('mailForwardAddress', []):
-			self.oldattr['mailForwardAddress'] = self.oldattr.get('mailForwardAddress', [])[:]
-			self['mailForwardAddress'].remove(self['mailPrimaryAddress'])
-			self['mailForwardCopyToSelf'] = '1'
+		if info.get('mailPrimaryAddress') in info.get('mailForwardAddress', []):
+			oldattr['mailForwardAddress'] = oldattr.get('mailForwardAddress', [])[:]
+			info['mailForwardAddress'].remove(info['mailPrimaryAddress'])
+			info['mailForwardCopyToSelf'] = '1'
 		else:
-			self['mailForwardCopyToSelf'] = '0'
+			info['mailForwardCopyToSelf'] = '0'
 
 	def _unmap_automount_information(self):
 		if 'automountInformation' not in self.oldattr:
