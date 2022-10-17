@@ -381,10 +381,41 @@ Join into an existing UCS domain
 
    Domain settings
 
+.. _installation-domain-hostname-naming:
+
+Naming convention for hostnames
+-------------------------------
+
+.. index::
+   single: hostname; naming convention
+   single: hostname
+   single: hostname; length
+   single: hostname; allowed characters
+
+During UCS installation, the domain setup asks for a hostname and a domain name
+as *fully qualified domain name*. For compatibility reasons with Samba 4 and
+Windows domains, the hostname must adhere to the following naming convention:
+
+* Length from 1 to 13 alpha numeric characters
+
+* Only lower case letters (``a-z``) and numerals (``0-9``)
+
+* Start and end with an alpha numeric character and can contain a hyphen (``-``)
+  in between.
+
+The naming convention has the following regular expression:
+
+.. code-block::
+
+   ^[a-z0-9][a-z0-9-]{0,11}[a-z0-9]?$
+
 .. _installation-domain-settings-new-domain:
 
-"Create a new UCS domain" mode
+*Create a new UCS domain* mode
 ------------------------------
+
+.. index::
+   single: hostname; Create new UCS domain
 
 Once the *Create a new UCS domain* mode has been selected, an *organization
 name*, an *email address*, a *fully qualified domain name* and an *LDAP base*
@@ -406,6 +437,9 @@ organization name entered in the previous step. It is recommended not to use a
 publicly available DNS domain, as this can result in problems during the name
 resolution.
 
+For the naming convention of the hostname, refer to
+:ref:`installation-domain-hostname-naming`.
+
 A LDAP base needs to be specified for the initialization of the directory
 service. A suggestion is also derived here automatically from the fully
 qualified domain name. This value can usually be adopted without any changes.
@@ -419,8 +453,11 @@ qualified domain name. This value can usually be adopted without any changes.
 
 .. _installation-domain-settings-ad-member:
 
-"Join an existing Active Directory domain" mode
+*Join an existing Active Directory domain* mode
 -----------------------------------------------
+
+.. index::
+   single: hostname; Join existing Active Directory domain
 
 If the DNS server of an Active Directory domain was specified during the network
 configuration, the name of the Active Directory domain controller is suggested
@@ -440,6 +477,9 @@ fully qualified domain name. The UCS system will join the Active Directory
 domain with the hostname specified here. Once set up, the domain name **cannot**
 be changed again once the configuration is completed.
 
+For the naming convention of the hostname, refer to
+:ref:`installation-domain-hostname-naming`.
+
 In a UCS domain, systems can be installed in different *system roles*. The first
 UCS system, that joins an Active Directory domain, is automatically installed
 with the |UCSPRIMARYDN| system role. If this mode is selected during
@@ -455,8 +495,11 @@ shown. The system roles are described within the following section.
 
 .. _installation-domain-settings-join-ucs-domain:
 
-"Join an existing UCS domain domain" mode
+*Join an existing UCS domain domain* mode
 -----------------------------------------
+
+.. index::
+   single: hostname; Join existing UCS domain
 
 In a UCS domain, systems can be installed in different *system roles*. The first
 system in a UCS domain is always installed with the |UCSPRIMARYDN_e| system role.
@@ -507,6 +550,9 @@ The domain name of the computer is derived automatically from the domain DNS
 server. In some scenarios (e.g., a public mail server) it can prove necessary to
 use a certain fully qualified domain name. Once set up, the domain name
 **cannot** be changed again once the configuration is completed.
+
+For the naming convention of the hostname, refer to
+:ref:`installation-domain-hostname-naming`.
 
 .. _installation-confirm-settings:
 
