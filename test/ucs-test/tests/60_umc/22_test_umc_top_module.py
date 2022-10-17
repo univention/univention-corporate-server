@@ -15,7 +15,7 @@ from psutil import Process, TimeoutExpired, pid_exists
 from univention.lib.umc import BadRequest
 
 
-class Test_UMCProcessKilling:
+class Test_UMCTopModule:
     max_process_time = 30  # seconds
     proc = None
 
@@ -115,3 +115,24 @@ class Test_UMCProcessKilling:
                 break
         with pytest.raises(BadRequest, match=r'No process found with PID'):
             self.kill_process('SIGKILL', pid)
+
+    @pytest.mark.parametrize('pattern,category', [
+        ('/sbin/init', 'all'),
+        ('/sbin/init', 'command'),
+        ('root', 'user'),
+        (1, 'pid')
+    ])
+    def test_process_query_single_process(self, pattern, category, Client):
+        client = Client.get_test_connection()
+        request = client.umc_command('top/query', {'pattern': pattern, 'category': category})
+        assert request.result
+        proc = request.result[0]
+        assert all(key in proc for key in ('user', 'pid', 'cpu', 'mem', 'command'))
+        assert proc['pid'] == 1 and proc['user'] == 'root' and proc['command'].startswith('/sbin/init')
+
+    def test_process_query_response_structure(self, Client):
+        client = Client.get_test_connection()
+        request = client.umc_command('top/query', {'category': 'all'})
+        assert request.result
+        assert len(request.result) > 1
+        assert all((key in result for key in ('user', 'pid', 'cpu', 'mem', 'command')) for result in request.result)
