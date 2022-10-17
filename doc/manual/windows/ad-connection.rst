@@ -489,9 +489,9 @@ diagnosis:
 
       $ univention-adsearch cn=administrator cn givenName
 
-.. _ad-connector-univention-adconnector-list-rejected:
+.. _ad-connector-univention-connector-list-rejected:
 
-:command:`univention-adconnector-list-rejected`
+:command:`univention-connector-list-rejected`
    This tool lists the DNs of non-synchronized objects. In addition, in so far
    as temporarily stored, the corresponding DN in the respective other LDAP
    directory will be displayed. In conclusion ``lastUSN`` shows the ID of the

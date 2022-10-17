@@ -1058,8 +1058,8 @@ msgid "$ univention-adsearch cn=administrator cn givenName"
 msgstr "$ univention-adsearch cn=administrator cn givenName"
 
 #: ../../windows/ad-connection.rst:501
-msgid ":command:`univention-adconnector-list-rejected`"
-msgstr ":command:`univention-adconnector-list-rejected`"
+msgid ":command:`univention-connector-list-rejected`"
+msgstr ":command:`univention-connector-list-rejected`"
 
 #: ../../windows/ad-connection.rst:495
 msgid ""
