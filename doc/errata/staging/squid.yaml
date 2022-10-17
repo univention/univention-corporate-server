@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: squid
+fix: 4.6-1+deb10u8A~5.0.2.202210170847
+desc: |
+ This update addresses the following issues:
+ * exposure of sensitive information in cache manager (CVE-2022-41317)
+ * buffer-over-read in SSPI and SMB authentication (CVE-2022-41318)
+bug: [55271]
+cve:
+- CVE-2022-41317
+- CVE-2022-41318
