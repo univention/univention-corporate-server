@@ -13,4 +13,6 @@ desc: |
    the case when the LDAP replication was not yet done or when the user had
    no permission to read it. The behaior is now postponed to actual
    modifications of the object.
-bug: [20235, 42080]
+ * The Python backend code to evaluate and apply template defaults has been
+   removed.
+bug: [20235, 42080, 55279]

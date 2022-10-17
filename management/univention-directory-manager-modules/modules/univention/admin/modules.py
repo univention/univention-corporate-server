@@ -233,45 +233,6 @@ def init(lo, position, module, template_object=None, force_reload=False):
 	update_extended_options(lo, module, position)
 	update_extended_attributes(lo, module, position)
 
-	# get defaults from template
-	if template_object:
-		ud.debug(ud.ADMIN, ud.INFO, 'modules_init: got template object %s' % template_object.dn)
-		template_object.open()
-
-		# add template ext. attr. defaults
-		if hasattr(template_object, 'property_descriptions'):
-			for property_name, property in template_object.property_descriptions.items():
-				if not (property_name == "name" or property_name == "description"):
-					default = property.base_default
-					if default and property_name in module.property_descriptions:
-						if property.multivalue:
-							if module.property_descriptions[property_name].multivalue:
-								module.property_descriptions[property_name].base_default = list(default)
-						else:
-							module.property_descriptions[property_name].base_default = default
-						ud.debug(ud.ADMIN, ud.INFO, "modules.init: added template default (%s) to property %s" % (property.base_default, property_name))
-
-		# add template defaults
-		for key in template_object.keys():
-			if not (key == "name" or key == "description"):  # these keys are part of the template itself
-				if key == '_options':
-					if template_object[key] != [''] and template_object[key] != []:
-						for option in module.options.keys():
-							module.options[option].default = option in template_object[key]
-				else:
-					if template_object.descriptions[key].multivalue:
-						if module.property_descriptions[key].multivalue:
-							module.property_descriptions[key].base_default = list(template_object[key])
-						else:
-							ud.debug(ud.ADMIN, ud.INFO, 'modules.init: template and object values not both multivalue !!')
-
-					else:
-						module.property_descriptions[key].base_default = template_object[key]
-					module.property_descriptions[key].templates.append(template_object)
-		ud.debug(ud.ADMIN, ud.INFO, 'modules_init: module.property_description after template: %s' % module.property_descriptions)
-	else:
-		ud.debug(ud.ADMIN, ud.INFO, 'modules_init: got no template')
-
 	# re-build layout if there any overwrites defined
 	univention.admin.ucr_overwrite_module_layout(module)
 
