@@ -1,0 +1,22 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: gnupg2
+fix: 2.1.18-8~deb9u5
+desc: |
+ This update addresses the following issues:
+ 2.1.18-8~deb9u5 (Mon, 11 Jul 2022 12:14:23 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * Fix CVE-2022-34903: GnuPG, in unusual situations where an attacker
+   possesses any secret-key information from a victim's keyring and other
+   constraints (e.g., use of GPGME) are met, allows signature forgery via
+   injection into the status line.
+ * Fix CVE-2018-9234: GnuPG does not enforce a configuration in which key
+   certification requires an offline master Certify key, which results in
+   apparently valid certifications that occurred only with access to a signing
+   subkey.
+bug: [55308]
+cve:
+- CVE-2022-34903
+- CVE-2018-9234
