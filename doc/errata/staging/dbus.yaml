@@ -1,0 +1,18 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: dbus
+fix: 1.10.32-0+deb9u2
+desc: |
+ This update addresses the following issues:
+ 1.10.32-0+deb9u2 (Mon, 10 Oct 2022 13:24:20 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * Fix several denial of service issues where an authenticated attacker can
+   crash the system bus by sending crafted messages (CVE-2022-42010,
+   CVE-2022-42011, CVE-2022-42012)
+bug: [55298]
+cve:
+- CVE-2022-42010
+- CVE-2022-42011
+- CVE-2022-42012
