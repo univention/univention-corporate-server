@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: exim4
+fix: 4.89-2+deb9u9A~4.4.9.202210182015
+desc: |
+ This update addresses the following issue:
+ 4.89-2+deb9u9 (Sat, 01 Oct 2022 17:40:53 +0530)
+ * Non-maintainer upload by the ELTS team.
+ * CVE-2022-37452: heap-based buffer overflow for the alias list in
+   host_name_lookup in host.c when sender_host_name is set.
+bug: [55288]
+cve:
+- CVE-2022-37452
