@@ -1,0 +1,40 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: curl
+fix: 7.52.1-5+deb9u17
+desc: |
+ This update addresses the following issues:
+ 7.52.1-5+deb9u17 (Sat, 20 Aug 2022 15:37:57 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * Fix CVE-2022-22576: An improper authentication vulnerability exists in curl
+   which might allow reuse OAUTH2-authenticated connections without properly
+   making sure that the connection was authenticated with the same credentials
+   as set for this transfer. This affects SASL-enabled protocols: SMPTP(S),
+   IMAP(S), POP3(S) and LDAP(S) (openldap only).
+ * Fix CVE-2022-27776: A insufficiently protected credentials vulnerability in
+   curl might leak authentication or cookie header data on HTTP redirects to
+   the same host but another port number.
+ * Fix CVE-2022-27781: libcurl provides the `CURLOPT_CERTINFO` option to allow
+   applications to request details to be returned about a server's certificate
+   chain. Due to an erroneous function, a malicious server could make libcurl
+   built withNSS get stuck in a never-ending busy-loop when trying to retrieve
+   thatinformation.
+ * Fix CVE-2022-27782: libcurl would reuse a previously created connection
+   even when a TLS or SSH related option had been changed that should have
+   prohibited reuse. libcurl keeps previously used connections in a connection
+   pool for subsequent transfers to reuse if one of them matches the setup.
+   However, several TLS and SSH settings were left out from the configuration
+   match checks, making them match too easily.
+ * Fix CVE-2022-32208: When curl < 7.84.0 does FTP transfers secured by krb5,
+   it handles message verification failures wrongly. This flaw makes it
+   possible for a Man-In-The-Middle attack to go unnoticed and even allows it
+   to inject data to the client.
+bug: [55317]
+cve:
+- CVE-2022-22576
+- CVE-2022-27776
+- CVE-2022-27781
+- CVE-2022-27782
+- CVE-2022-32208
