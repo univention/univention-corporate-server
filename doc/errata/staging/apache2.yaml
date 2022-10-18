@@ -1,0 +1,26 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: apache2
+fix: 2.4.25-3+deb9u14A~4.4.9.202210182015
+desc: |
+ This update addresses the following issues:
+ 2.4.25-3+deb9u14 (Sat, 18 Jun 2022 20:05:41 -0400)
+ * Non-maintainer upload by the LTS team.
+ * CVE-2022-26377: mod_proxy_ajp: Possible request smuggling.
+ * CVE-2022-28614: read beyond bounds via ap_rwrite().
+ * CVE-2022-28615: Read beyond bounds in ap_strcmp_match().
+ * CVE-2022-29404: Denial of service in mod_lua r:parsebody.
+ * CVE-2022-30522: mod_sed denial of service.
+ * CVE-2022-30556: Information Disclosure in mod_lua with websockets.
+ * CVE-2022-31813: mod_proxy X-Forwarded-For dropped by hop-by-hop mechanism.
+bug: [55289]
+cve:
+- CVE-2022-26377
+- CVE-2022-28614
+- CVE-2022-28615
+- CVE-2022-29404
+- CVE-2022-30522
+- CVE-2022-30556
+- CVE-2022-31813
