@@ -2,8 +2,8 @@ product: ucs
 release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
-src: nivention-management-console-module-diagnostic
-fix: 6.0.2-6
+src: univention-management-console-module-diagnostic
+fix: 6.0.2-6A~5.0.0.202210172052
 desc: |
  This update addresses the following issue:
  * The diagnostics checks for SAML Identifier and Service Providers has been
