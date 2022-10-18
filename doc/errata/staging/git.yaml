@@ -1,0 +1,23 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: git
+fix: 1:2.11.0-3+deb9u8
+desc: |
+ This update addresses the following issues:
+ 1:2.11.0-3+deb9u8 (Sun, 09 Oct 2022 22:03:52 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * Fix CVE-2021-40330: git_connect_git in connect.c in Git before 2.30.1
+   allows a repository path to contain a newline character, which may result
+   in unexpected cross-protocol requests, as demonstrated by the
+   git://localhost:1234/%0d%0a%0d%0aGET%20/%20HTTP/1.1 substring.
+ * Fix CVE-2021-21300: In affected versions of Git a specially crafted
+   repository that contains symbolic links as well as files using a
+   clean/smudge filter such as Git LFS, may cause just-checked out script to
+   be executed while cloning onto a case-insensitive file system such as NTFS,
+   HFS+ or APFS (i.e. the default file systems on Windows and macOS).
+bug: [55306]
+cve:
+- CVE-2021-40330
+- CVE-2021-21300
