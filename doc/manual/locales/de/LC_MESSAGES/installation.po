@@ -5,7 +5,7 @@ msgstr ""
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-18 16:15+0200\n"
-"PO-Revision-Date: 2022-10-18 16:19+0200\n"
+"PO-Revision-Date: 2022-10-18 16:29+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -753,7 +753,7 @@ msgstr ""
 
 #: ../../installation.rst:399
 msgid "Length from 1 to 13 alpha numeric characters"
-msgstr "Länge von 1 bis 13 alphanumersichen Zeichen"
+msgstr "Länge von 1 bis 13 alphanumerischen Zeichen"
 
 #: ../../installation.rst:401
 msgid "Only lower case letters (``a-z``) and numerals (``0-9``)"
@@ -764,7 +764,7 @@ msgid ""
 "Start and end with an alpha numeric character and can contain a hyphen "
 "(``-``) in between."
 msgstr ""
-"Anfang und Ende mit einem alphanumersichen Zeichen und kann dazwischen "
+"Anfang und Ende mit einem alphanumerischen Zeichen und kann dazwischen "
 "einen Bindestrich (``-``) enthalten."
 
 #: ../../installation.rst:406
