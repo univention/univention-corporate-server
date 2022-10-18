@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: http-parser
+fix: 2.1-2+deb9u1
+desc: |
+ This update addresses the following issue:
+ 2.1-2+deb9u1 (Wed, 31 Aug 2022 10:21:57 +0100)
+ * CVE-2020-8287: Prevent a potential HTTP request smuggling vulnerability
+   caused by http-parser allowing two copies of a header field in a HTTP
+   request.
+bug: [55313]
+cve:
+- CVE-2020-8287
