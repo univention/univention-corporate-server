@@ -1,0 +1,17 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: python-django
+fix: 1:1.10.7-2+deb9u18
+desc: |
+ This update addresses the following issue:
+ 1:1.10.7-2+deb9u18 (Wed, 13 Jul 2022 15:20:04 +0100)
+ * CVE-2022-34265: An issue was discovered in Django 3.2 before 3.2.14 and 4.0
+   before 4.0.6. The Trunc() and Extract() database functions are subject to
+   SQL injection if untrusted data is used as a kind/lookup_name value.
+   Applications that constrain the lookup name and kind choice to a known safe
+   list are unaffected.
+bug: [55309]
+cve:
+- CVE-2022-34265
