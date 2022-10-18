@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: zlib
+fix: 1:1.2.8.dfsg-5+deb9u2
+desc: |
+ This update addresses the following issue:
+ 1:1.2.8.dfsg-5+deb9u2 (Sun, 11 Sep 2022 10:53:29 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2022-37434: heap buffer overflow via large gzip header extra field.
+bug: [55311]
+cve:
+- CVE-2022-37434
