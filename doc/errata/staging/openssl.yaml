@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: openssl
+fix: 1.1.0l-1~deb9u7
+desc: |
+ This update addresses the following issues:
+ 1.1.0l-1~deb9u7 (Thu, 29 Sep 2022 17:32:08 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * Update expired certificates in the test suite.
+ * CVE-2022-2068: command injection in c_rehash.
+ * CVE-2022-2097: information leak.
+ * Apply c_rehash-compat.patch at the end, and update for the changes in
+   CVE-2022-2068. Also update patch for CVE-2022-1292.
+bug: [55303]
+cve:
+- CVE-2022-2068
+- CVE-2022-2097
+- CVE-2022-1292
