@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: bind9
+fix: 1:9.10.3.dfsg.P4-12.3+deb9u13A~4.4.9.202210182015
+desc: |
+ This update addresses the following issues:
+ 1:9.10.3.dfsg.P4-12.3+deb9u13 (Wed, 05 Oct 2022 12:05:48 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2022-2795: degraded performance when processing large delegations.
+ * CVE-2022-38177: memory leak in ECDSA verification.
+bug: [55291]
+cve:
+- CVE-2022-2795
+- CVE-2022-38177
