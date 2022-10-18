@@ -6,8 +6,8 @@ src: isc-dhcp
 fix: 4.4.1-2+deb10u2A~5.0.2.202210170847
 desc: |
  This update addresses the following issues:
- * option refcount overflow when leasequery is enabled leading to dhcpd abort
-   (CVE-2022-2928)
+ * Option reference count overflow when `leasequery` is enabled leading to
+   DHCPd abort (CVE-2022-2928)
  * DHCP memory leak (CVE-2022-2929)
 bug: [55270]
 cve:
