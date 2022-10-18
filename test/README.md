@@ -275,4 +275,5 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [scenarios/autotest-242-ucsschool-DL-MV.cfg](scenarios/autotest-242-ucsschool-DL-MV.cfg): DL MV
 * [scenarios/autotest-243-ucsschool-DL-SH.cfg](scenarios/autotest-243-ucsschool-DL-SH.cfg): DL SH
 * [scenarios/autotest-244-ucsschool-id-sync.cfg](scenarios/autotest-244-ucsschool-id-sync.cfg): UCSschool ID Connector
+* [scenarios/autotest-248-ram-rankine-performance.cfg](scenarios/autotest-248-ram-rankine-performance.cfg): UCS@School RAM performance tests
 * [scenarios/autotest-300-ucsschool-large.cfg](scenarios/autotest-300-ucsschool-large.cfg): Install U@S 5.0 Multiserver Large Env

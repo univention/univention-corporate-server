@@ -342,6 +342,12 @@ wait_for_setup_process () {
 	return 1
 }
 
+use_test_app_center() {
+    if [ "$UCS_TEST_APPCENTER" = "true" ]; then
+        switch_to_test_app_center
+    fi
+}
+
 switch_to_test_app_center () {
 	local app rv=0
 	have univention-app || return 1
