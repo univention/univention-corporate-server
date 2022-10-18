@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # UCS test
 #
@@ -32,7 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
 
 import os
 import pwd
@@ -43,7 +41,7 @@ from types import TracebackType  # noqa: F401
 from typing import Optional, Set, Type  # noqa: F401
 
 
-class MailSinkGuard(object):
+class MailSinkGuard:
 	"""
 	This class is a simple context manager that stops all attached mail sinks
 	if the context is left.
@@ -71,7 +69,7 @@ class MailSinkGuard(object):
 			mail_sink.stop()
 
 
-class MailSink(object):
+class MailSink:
 	"""
 	This class starts an SMTP sink on the specified address/port.
 	Each incoming mail will be written to a single file if target_dir is used.
@@ -111,7 +109,7 @@ class MailSink(object):
 
 	def start(self):
 		# type: () -> None
-		print('*** Starting SMTPSink at %s:%s' % (self.address, self.port))
+		print(f'*** Starting SMTPSink at {self.address}:{self.port}')
 		cmd = ['/usr/sbin/smtp-sink']  # use postfix' smtp-sink tool
 		if self.filename is not None:
 			cmd.extend(['-D', self.filename])
@@ -123,9 +121,9 @@ class MailSink(object):
 			cmd.extend(['-h', self.fqdn])
 		if os.geteuid() == 0:
 			cmd.extend(['-u', pwd.getpwuid(os.getuid()).pw_name])
-		cmd.append('{}:{}'.format(self.address, self.port))
+		cmd.append(f'{self.address}:{self.port}')
 		cmd.append('10')
-		print('*** {!r}'.format(cmd))
+		print(f'*** {cmd!r}')
 		self.process = subprocess.Popen(cmd, stderr=sys.stdout, stdout=sys.stdout)
 
 	def stop(self):
@@ -134,7 +132,7 @@ class MailSink(object):
 			self.process.terminate()
 			time.sleep(1)
 			self.process.kill()
-			print('*** SMTPSink at %s:%s stopped' % (self.address, self.port))
+			print(f'*** SMTPSink at {self.address}:{self.port} stopped')
 			self.process = None
 
 

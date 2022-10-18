@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 noet :
 """UCS Testrunner - run UCS test in sane environment."""
 
 import argparse
@@ -86,7 +85,7 @@ def parse_options(sections: Iterable[str]) -> Tuple[argparse.Namespace, List[str
 	return parser.parse_known_args()
 
 
-class TestSet(object):
+class TestSet:
 
 	"""Container for tests."""
 
@@ -103,7 +102,7 @@ class TestSet(object):
 
 	def set_format(self, format: str) -> None:
 		"""Select output format."""
-		formatter = getattr(univention.testing.format, 'format_%s' % (format,))
+		formatter = getattr(univention.testing.format, f'format_{format}')
 		self.format = formatter()
 
 	def set_prefix(self, prefix: bool) -> None:
@@ -132,7 +131,7 @@ class TestSet(object):
 							test_case.load()
 						except TestError as ex:
 							logger = logging.getLogger('test')
-							failed_message = 'Failed to load test "%s": %s' % (fname, ex)
+							failed_message = f'Failed to load test "{fname}": {ex}'
 							logger.critical(failed_message)
 							check = True
 						else:

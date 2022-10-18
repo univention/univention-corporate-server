@@ -34,13 +34,12 @@
 
 """pytest runner for ucs-test"""
 
-from __future__ import absolute_import
 
 import os
 import argparse
 
 
-class PytestRunner(object):
+class PytestRunner:
 
 	options = argparse.Namespace(inside=True)
 

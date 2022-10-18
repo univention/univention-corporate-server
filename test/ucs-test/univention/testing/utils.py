@@ -32,7 +32,6 @@
 Common functions used by tests.
 """
 
-from __future__ import print_function
 
 import functools
 import os
@@ -90,7 +89,7 @@ class LDAPObjectUnexpectedValue(LDAPError):
 	pass
 
 
-class UCSTestDomainAdminCredentials(object):
+class UCSTestDomainAdminCredentials:
 	"""
 	This class fetches the username, the LDAP bind DN and the password
 	for a domain admin user account from UCR. The account may be used for testing.
@@ -113,7 +112,7 @@ class UCSTestDomainAdminCredentials(object):
 		self.binddn = ucr.get('tests/domainadmin/account', 'uid=Administrator,cn=users,%(ldap/base)s' % ucr)
 		self.pwdfile = ucr.get('tests/domainadmin/pwdfile')
 		if self.pwdfile:
-			with open(self.pwdfile, 'r') as f:
+			with open(self.pwdfile) as f:
 				self.bindpw = f.read().strip('\n\r')
 		else:
 			self.bindpw = ucr.get('tests/domainadmin/pwd', 'univention')
@@ -275,14 +274,14 @@ def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=T
 			unexpected_values[attribute] = intersection
 
 	mixed = {key: (values_missing.get(key), unexpected_values.get(key)) for key in list(values_missing) + list(unexpected_values)}
-	msg = u'DN: %s\n%s\n' % (
+	msg = 'DN: %s\n%s\n' % (
 		baseDn,
-		u'\n'.join(
-			u"%s: %r, %s %s" % (
+		'\n'.join(
+			"%s: %r, %s %s" % (
 				attribute,
 				attr.get(attribute),
-				('missing: %r;' % u"', ".join(x.decode('UTF-8', 'replace') for x in difference_missing)) if difference_missing else '',
-				('unexpected: %r' % u"', ".join(x.decode('UTF-8', 'replace') for x in difference_unexpected)) if difference_unexpected else '',
+				('missing: %r;' % "', ".join(x.decode('UTF-8', 'replace') for x in difference_missing)) if difference_missing else '',
+				('unexpected: %r' % "', ".join(x.decode('UTF-8', 'replace') for x in difference_unexpected)) if difference_unexpected else '',
 			) for attribute, (difference_missing, difference_unexpected) in mixed.items())
 	)
 
@@ -364,7 +363,7 @@ def restart_firewall():
 	subprocess.call((FIREWALL_INIT_SCRIPT, 'restart'))
 
 
-class AutomaticListenerRestart(object):
+class AutomaticListenerRestart:
 	"""
 	Automatically restart Univention Directory Listener when leaving the "with" block::
 
@@ -383,7 +382,7 @@ class AutomaticListenerRestart(object):
 		restart_listener()
 
 
-class AutoCallCommand(object):
+class AutoCallCommand:
 
 	"""
 	Automatically call the given commands when entering/leaving the "with" block.
@@ -429,7 +428,7 @@ class AutoCallCommand(object):
 			subprocess.call(self.exit_cmd, stdout=self.pipe_stdout, stderr=self.pipe_stderr)
 
 
-class FollowLogfile(object):
+class FollowLogfile:
 
 	"""
 	Prints the contents of the listed files on exit of the with block if
@@ -467,7 +466,7 @@ class FollowLogfile(object):
 		# type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
 		if self.always or exc_type:
 			for logfile, pos in self.logfile_pos.items():
-				with open(logfile, "r") as log:
+				with open(logfile) as log:
 					log.seek(pos, 0)
 					print(logfile.center(79, "="))
 					sys.stdout.writelines(log)
@@ -573,7 +572,7 @@ def get_lid():
 	"""
 	get_lid() returns the last processed notifier ID of univention-directory-listener.
 	"""
-	with open("/var/lib/univention-directory-listener/notifier_id", "r") as notifier_id:
+	with open("/var/lib/univention-directory-listener/notifier_id") as notifier_id:
 		return int(notifier_id.readline())
 
 
@@ -613,7 +612,7 @@ def wait_for_s4connector_replication(verbose=True):
 		univention.testing.ucs_samba.wait_for_s4connector(17)
 	except OSError as exc:  # nagios not installed
 		if verbose:
-			print('Nagios not installed: %s' % (exc,), file=sys.stderr)
+			print(f'Nagios not installed: {exc}', file=sys.stderr)
 		time.sleep(16)
 	except univention.testing.ucs_samba.WaitForS4ConnectorTimeout:
 		if verbose:
@@ -662,7 +661,7 @@ def is_udp_port_open(port, ip=None):
 		os.write(udp_sock.fileno(), b'X')
 		return True
 	except OSError as ex:
-		print('is_udp_port_open({0}) failed: {1}'.format(port, ex))
+		print(f'is_udp_port_open({port}) failed: {ex}')
 	return False
 
 
@@ -686,8 +685,8 @@ def is_port_open(port, hosts=None, timeout=60):
 			connection = socket.create_connection(address, timeout)
 			connection.close()
 			return True
-		except EnvironmentError as ex:
-			print('is_port_open({0}) failed: {1}'.format(port, ex))
+		except OSError as ex:
+			print(f'is_port_open({port}) failed: {ex}')
 	return False
 
 

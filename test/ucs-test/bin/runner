@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 #
 """UCS Testrunner - run UCS test in sane environment."""
 #
@@ -66,7 +65,7 @@ def main():  # type: () -> int
 
 	del sys.argv[0:2]
 
-	formatter = getattr(univention.testing.format, 'format_%s' % (options.format,))
+	formatter = getattr(univention.testing.format, f'format_{options.format}')
 	format = formatter()
 	test_env = TestEnvironment(interactive=options.interactive)
 	if options.force:

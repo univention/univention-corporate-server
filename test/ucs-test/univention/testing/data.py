@@ -1,9 +1,7 @@
-# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Test case, environment, result and related classes."""
 
 # pylint: disable-msg=R0902,W0201,R0903,E1101,E0611
 
-from __future__ import print_function
 
 import errno
 import logging
@@ -43,7 +41,7 @@ ILLEGAL_XML_UNICHR = (
 	(0xDFFFE, 0xDFFFF), (0xEFFFE, 0xEFFFF), (0xFFFFE, 0xFFFFF),
 	(0x10FFFE, 0x10FFFF),
 )
-RE_ILLEGAL_XML = re.compile(u'[%s]' % u''.join((u'%s-%s' % (chr(low), chr(high)) for (low, high) in ILLEGAL_XML_UNICHR if low < sys.maxunicode)))
+RE_ILLEGAL_XML = re.compile('[%s]' % ''.join(f'{chr(low)}-{chr(high)}' for (low, high) in ILLEGAL_XML_UNICHR if low < sys.maxunicode))
 
 
 def checked_set(values):  # type: (Optional[Iterable[T]]) -> Set[T]
@@ -52,7 +50,7 @@ def checked_set(values):  # type: (Optional[Iterable[T]]) -> Set[T]
 	return set(values)
 
 
-class TestEnvironment(object):
+class TestEnvironment:
 
 	"""Test environment for running test cases.
 
@@ -139,7 +137,7 @@ class TestEnvironment(object):
 		if self.tags_prohibited is not None:
 			self.tags_prohibited -= set(ignore)
 			self.tags_prohibited |= set(prohibit)
-		TestEnvironment.logger.debug('tags_required=%r tags_prohibited=%r' % (self.tags_required, self.tags_prohibited))
+		TestEnvironment.logger.debug(f'tags_required={self.tags_required!r} tags_prohibited={self.tags_prohibited!r}')
 
 	def set_exposure(self, exposure):  # type: (str) -> None
 		"""Set maximum allowed exposure level."""
@@ -150,7 +148,7 @@ class TestEnvironment(object):
 		self.timeout = timeout
 
 
-class _TestReader(object):  # pylint: disable-msg=R0903
+class _TestReader:  # pylint: disable-msg=R0903
 
 	"""
 	Read test case header lines starting with ##.
@@ -172,7 +170,7 @@ class _TestReader(object):  # pylint: disable-msg=R0903
 					line = self.stream.readline(size)
 
 
-class Verdict(object):
+class Verdict:
 
 	"""
 	Result of a test, either successful or failed.
@@ -198,10 +196,10 @@ class Verdict(object):
 		return '%s: %s' % ('IWE'[self.level], self.message)
 
 	def __repr__(self):  # type: () -> str
-		return '%s(level=%r, message=%r)' % (self.__class__.__name__, self.level, self.message)
+		return f'{self.__class__.__name__}(level={self.level!r}, message={self.message!r})'
 
 
-class Check(object):
+class Check:
 
 	"""
 	Abstract check.
@@ -222,7 +220,7 @@ class CheckExecutable(Check):
 	"""
 
 	def __init__(self, filename):  # type: (str) -> None
-		super(CheckExecutable, self).__init__()
+		super().__init__()
 		self.filename = filename
 
 	def check(self, _environment):  # type: (TestEnvironment) -> Iterator[Verdict]
@@ -233,12 +231,12 @@ class CheckExecutable(Check):
 			elif self.filename.endswith('sh'):
 				self.filename = '/bin/' + self.filename
 			else:
-				yield Verdict(Verdict.ERROR, 'Unknown executable: %s' % (self.filename,), TestCodes.REASON_INSTALL)
+				yield Verdict(Verdict.ERROR, f'Unknown executable: {self.filename}', TestCodes.REASON_INSTALL)
 				return
 		if os.path.isfile(self.filename):
-			yield Verdict(Verdict.INFO, 'Executable: %s' % (self.filename,))
+			yield Verdict(Verdict.INFO, f'Executable: {self.filename}')
 		else:
-			yield Verdict(Verdict.ERROR, 'Missing executable: %s' % (self.filename,), TestCodes.REASON_INSTALL)
+			yield Verdict(Verdict.ERROR, f'Missing executable: {self.filename}', TestCodes.REASON_INSTALL)
 
 	def __str__(self):  # type: () -> str
 		return self.filename
@@ -253,7 +251,7 @@ class CheckVersion(Check):
 	STATES = frozenset(('found', 'fixed', 'skip', 'run'))
 
 	def __init__(self, versions):  # type: (Dict[str, str]) -> None
-		super(CheckVersion, self).__init__()
+		super().__init__()
 		self.versions = versions
 		self.state = 'run'
 
@@ -263,7 +261,7 @@ class CheckVersion(Check):
 		for version, state in self.versions.items():
 			ucs_version = UCSVersion(version)
 			if state not in CheckVersion.STATES:
-				yield Verdict(Verdict.WARNING, 'Unknown state "%s" for version "%s"' % (state, version))
+				yield Verdict(Verdict.WARNING, f'Unknown state "{state}" for version "{version}"')
 				continue
 			versions.append((ucs_version, state))
 		versions.sort()
@@ -271,7 +269,7 @@ class CheckVersion(Check):
 			if ucs_version <= environment.ucs_version:
 				self.state = state
 		if self.state == 'skip':
-			yield Verdict(Verdict.ERROR, 'Skipped for version %s' % (environment.ucs_version,), TestCodes.REASON_VERSION_MISMATCH)
+			yield Verdict(Verdict.ERROR, f'Skipped for version {environment.ucs_version}', TestCodes.REASON_VERSION_MISMATCH)
 
 
 class CheckTags(Check):
@@ -281,7 +279,7 @@ class CheckTags(Check):
 	"""
 
 	def __init__(self, tags):  # type: (Iterable[str]) -> None
-		super(CheckTags, self).__init__()
+		super().__init__()
 		self.tags = checked_set(tags)
 
 	def check(self, environment):  # type: (TestEnvironment) -> Iterator[Verdict]
@@ -329,7 +327,7 @@ class CheckRoles(Check):
 	))
 
 	def __init__(self, roles_required=(), roles_prohibited=()):  # type: (Iterable[str], Iterable[str]) -> None
-		super(CheckRoles, self).__init__()
+		super().__init__()
 		self.roles_required = checked_set(roles_required)
 		self.roles_prohibited = checked_set(roles_prohibited)
 
@@ -359,7 +357,7 @@ class CheckJoin(Check):
 	"""
 
 	def __init__(self, joined):  # type: (Optional[bool]) -> None
-		super(CheckJoin, self).__init__()
+		super().__init__()
 		self.joined = joined
 
 	def check(self, environment):  # type: (TestEnvironment) -> Iterator[Verdict]
@@ -371,7 +369,7 @@ class CheckJoin(Check):
 		elif not self.joined and environment.joined:
 			yield Verdict(Verdict.ERROR, 'Test requires system to be not joined', TestCodes.REASON_JOINED)
 		else:
-			yield Verdict(Verdict.INFO, 'Joined: %s' % (environment.joined,))
+			yield Verdict(Verdict.INFO, f'Joined: {environment.joined}')
 
 
 class CheckComponents(Check):
@@ -381,24 +379,24 @@ class CheckComponents(Check):
 	"""
 
 	def __init__(self, components):  # type: (Dict[str, str]) -> None
-		super(CheckComponents, self).__init__()
+		super().__init__()
 		self.components = components
 
 	def check(self, environment):  # type: (TestEnvironment) -> Iterator[Verdict]
 		"""Check environment for required / prohibited components."""
 		for component, required in self.components.items():
-			key = 'repository/online/component/%s' % (component,)
+			key = f'repository/online/component/{component}'
 			active = environment.ucr.is_true(key, False)
 			if required:
 				if active:
-					yield Verdict(Verdict.INFO, 'Required component %s active' % (component,))
+					yield Verdict(Verdict.INFO, f'Required component {component} active')
 				else:
-					yield Verdict(Verdict.ERROR, 'Required component %s missing' % (component,), TestCodes.REASON_INSTALL)
+					yield Verdict(Verdict.ERROR, f'Required component {component} missing', TestCodes.REASON_INSTALL)
 			else:  # not required
 				if active:
-					yield Verdict(Verdict.ERROR, 'Prohibited component %s active' % (component,), TestCodes.REASON_INSTALLED)
+					yield Verdict(Verdict.ERROR, f'Prohibited component {component} active', TestCodes.REASON_INSTALLED)
 				else:
-					yield Verdict(Verdict.INFO, 'Prohibited component %s not active' % (component,))
+					yield Verdict(Verdict.INFO, f'Prohibited component {component} not active')
 
 
 class CheckPackages(Check):
@@ -408,7 +406,7 @@ class CheckPackages(Check):
 	"""
 
 	def __init__(self, packages, packages_not):  # type: (Sequence[str], Sequence[str]) -> None
-		super(CheckPackages, self).__init__()
+		super().__init__()
 		self.packages = packages
 		self.packages_not = packages_not
 
@@ -420,16 +418,16 @@ class CheckPackages(Check):
 				try:
 					pkg = environment.apt[name]
 				except KeyError:
-					yield Verdict(Verdict.ERROR, 'Package %s not found' % (name,), TestCodes.REASON_INSTALL)
+					yield Verdict(Verdict.ERROR, f'Package {name} not found', TestCodes.REASON_INSTALL)
 					continue
 				ver = pkg.installed
 				if ver is None:
-					yield Verdict(Verdict.ERROR, 'Package %s not installed' % (name,), TestCodes.REASON_INSTALL)
+					yield Verdict(Verdict.ERROR, f'Package {name} not installed', TestCodes.REASON_INSTALL)
 					continue
 				if dep_version and not apt.apt_pkg.check_dep(ver.version, dep_op, dep_version):
-					yield Verdict(Verdict.ERROR, 'Package %s version mismatch' % (name,), TestCodes.REASON_INSTALL)
+					yield Verdict(Verdict.ERROR, f'Package {name} version mismatch', TestCodes.REASON_INSTALL)
 					continue
-				yield Verdict(Verdict.INFO, 'Package %s installed' % (name,))
+				yield Verdict(Verdict.INFO, f'Package {name} installed')
 				break
 
 		for dependency in self.packages:
@@ -451,7 +449,7 @@ class CheckPackages(Check):
 			except KeyError:
 				continue
 			if p.installed:
-				yield Verdict(Verdict.ERROR, 'Package %s is installed, but should not be' % (pkg,), TestCodes.REASON_INSTALLED)
+				yield Verdict(Verdict.ERROR, f'Package {pkg} is installed, but should not be', TestCodes.REASON_INSTALLED)
 				break
 
 
@@ -464,18 +462,18 @@ class CheckExposure(Check):
 	STATES = ['safe', 'careful', 'dangerous']
 
 	def __init__(self, exposure):  # type: (str) -> None
-		super(CheckExposure, self).__init__()
+		super().__init__()
 		self.exposure = exposure
 
 	def check(self, environment):  # type: (TestEnvironment) -> Iterator[Verdict]
 		"""Check environment for permitted exposure level."""
 		if self.exposure not in CheckExposure.STATES:
-			yield Verdict(Verdict.WARNING, 'Unknown exposure: %s' % (self.exposure,))
+			yield Verdict(Verdict.WARNING, f'Unknown exposure: {self.exposure}')
 			return
 		if CheckExposure.STATES.index(self.exposure) > CheckExposure.STATES.index(environment.exposure):
-			yield Verdict(Verdict.ERROR, 'Too dangerous: %s > %s' % (self.exposure, environment.exposure), TestCodes.REASON_DANGER)
+			yield Verdict(Verdict.ERROR, f'Too dangerous: {self.exposure} > {environment.exposure}', TestCodes.REASON_DANGER)
 		else:
-			yield Verdict(Verdict.INFO, 'Safe enough: %s <= %s' % (self.exposure, environment.exposure))
+			yield Verdict(Verdict.INFO, f'Safe enough: {self.exposure} <= {environment.exposure}')
 
 	def pytest_args(self, environment):  # type: (TestEnvironment) -> List[str]
 		args = []
@@ -485,12 +483,12 @@ class CheckExposure(Check):
 		return args
 
 
-class TestCase(object):
+class TestCase:
 
 	"""Test case."""
 
 	logger = logging.getLogger('test.case')
-	RE_NL = re.compile(r'[\r\n]+'.encode('utf-8'))
+	RE_NL = re.compile(br'[\r\n]+')
 
 	def __init__(self, filename):  # type: (str) -> None
 		self.filename = os.path.abspath(filename)
@@ -512,7 +510,7 @@ class TestCase(object):
 		"""
 		try:
 			header = self.load_meta()
-		except EnvironmentError as ex:
+		except OSError as ex:
 			TestCase.logger.critical(
 				'Failed to read "%s": %s',
 				self.filename, ex)
@@ -533,7 +531,7 @@ class TestCase(object):
 			try:
 				lang = args[1]
 			except IndexError:
-				lang = u''
+				lang = ''
 			self.exe = CheckExecutable(lang)
 			self.args = args[2:]
 
@@ -581,7 +579,7 @@ class TestCase(object):
 		"""
 		Check if the test case should run.
 		"""
-		TestCase.logger.info('Checking test %s' % (self.filename,))
+		TestCase.logger.info(f'Checking test {self.filename}')
 		if self.timeout is None:
 			self.timeout = environment.timeout
 		conditions = []
@@ -611,8 +609,8 @@ class TestCase(object):
 		assert proc.stdout
 		assert proc.stderr
 		channels = {
-			proc.stdout.fileno(): (proc.stdout, [], u'stdout', stdout, b'[]', bytearray()),
-			proc.stderr.fileno(): (proc.stderr, [], u'stderr', stderr, b'()', bytearray()),
+			proc.stdout.fileno(): (proc.stdout, [], 'stdout', stdout, b'[]', bytearray()),
+			proc.stderr.fileno(): (proc.stderr, [], 'stderr', stderr, b'()', bytearray()),
 		}  # type: Dict[int, Tuple[IO[str], List, str, IO[str], bytes, bytearray]]
 		combined = []
 		next_kill = next_read = 0.0
@@ -634,7 +632,7 @@ class TestCase(object):
 			delays = [max(0.0, t - current) for t in (next_kill, next_read) if t > 0.0]
 			try:
 				rlist, _wlist, _elist = select.select(list(channels), [], [], min(delays) if delays else None)
-			except select.error as ex:
+			except OSError as ex:
 				if ex.args[0] == errno.EINTR:
 					TestCase.logger.debug('select() interrupted by SIG%d rc=%r', self.signaled, proc.poll())
 					continue
@@ -665,7 +663,7 @@ class TestCase(object):
 						del buf[0:match.end()]
 
 					now = datetime.now().isoformat(' ')
-					entry = b'%s %s\n' % (u'{1[0]}{0}{1[1]}'.format(now, paren).encode('ascii'), line.rstrip(b'\r\n'))
+					entry = b'%s %s\n' % ('{1[0]}{0}{1[1]}'.format(now, paren).encode('ascii'), line.rstrip(b'\r\n'))
 					log.append(entry)
 					combined.append(entry)
 
@@ -704,7 +702,7 @@ class TestCase(object):
 		"""Attach content."""
 		text = b''.join(content)
 		dirty = text.decode(sys.getfilesystemencoding(), 'replace')
-		clean = RE_ILLEGAL_XML.sub(u'\uFFFD', dirty)
+		clean = RE_ILLEGAL_XML.sub('\uFFFD', dirty)
 		result.attach(part, 'text/plain', clean)
 
 	def _translate_result(self, result):  # type: (TestResult) -> None
@@ -821,7 +819,7 @@ class TestCase(object):
 		self.signaled = signal
 
 
-class TestResult(object):
+class TestResult:
 
 	"""Test result from running a test case."""
 
@@ -891,7 +889,7 @@ class TestResult(object):
 		return self
 
 
-class TestFormatInterface(object):  # pylint: disable-msg=R0921
+class TestFormatInterface:  # pylint: disable-msg=R0921
 
 	"""Format UCS Test result."""
 

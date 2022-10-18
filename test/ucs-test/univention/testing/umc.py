@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # UCS test connections to remote UMC Servers
 #
@@ -33,7 +32,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
 
 import pprint
 import sys
@@ -66,7 +64,7 @@ class Client(_Client):
 		self.print_request_data = kwargs.pop('print_request_data', True)
 		self.print_response = kwargs.pop('print_response', True)
 		try:
-			return super(Client, self).umc_command(*args, **kwargs)
+			return super().umc_command(*args, **kwargs)
 		finally:
 			self.print_request_data = True
 			self.print_response = True
@@ -76,15 +74,15 @@ class Client(_Client):
 		print('')
 		print('*** UMC request: "%s %s" %s' % (method, path, '(%s)' % (data.get('flavor'),) if isinstance(data, dict) else ''))
 		if self.print_request_data:
-			print('UMC request payload: \n%s' % (pprint.pformat(data), ))
+			print(f'UMC request payload: \n{pprint.pformat(data)}')
 		try:
-			response = super(Client, self).request(method, path, data, headers)
+			response = super().request(method, path, data, headers)
 		except Exception:
-			print('UMC request failed: %s' % (sys.exc_info()[1],))
+			print(f'UMC request failed: {sys.exc_info()[1]}')
 			print('')
 			raise
 		if self.print_response:
-			print('*** UMC response: \n%s\n***' % (pprint.pformat(response.data),))
+			print(f'*** UMC response: \n{pprint.pformat(response.data)}\n***')
 		else:
 			print('*** UMC response received')
 		print('')
@@ -95,14 +93,14 @@ class SamlLoginError(Exception):
 	pass
 
 
-class GetHtmlTagValue(HTMLParser, object):
+class GetHtmlTagValue(HTMLParser):
 	def __init__(self, tag, condition, value_name):
 		# type: (str, Tuple[str, str], str) -> None
 		self.tag = tag
 		self.condition = condition
 		self.value_name = value_name
 		self.value = None  # type: Optional[str]
-		super(GetHtmlTagValue, self).__init__()
+		super().__init__()
 
 	def handle_starttag(self, tag, attrs):
 		# type: (str, Iterable[Tuple[str, Optional[str]]]) -> None
@@ -150,7 +148,7 @@ class ClientSaml(Client):
 		saml_idp_login_ans = self.__samlSession.post(saml_login_page.url, data=data)
 		saml_idp_login_ans.raise_for_status()
 		if 'umcLoginWarning' in saml_idp_login_ans.text:
-			raise SamlLoginError('Login failed?:\n{}'.format(saml_idp_login_ans.text))
+			raise SamlLoginError(f'Login failed?:\n{saml_idp_login_ans.text}')
 		return saml_idp_login_ans
 
 	def _send_saml_response_to_sp(self, saml_idp_login_ans):

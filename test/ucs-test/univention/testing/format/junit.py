@@ -1,7 +1,5 @@
-# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Format UCS Test results as JUnit report."""
 
-from __future__ import print_function
 
 import errno
 import os
@@ -26,14 +24,14 @@ class Junit(TestFormatInterface):
 	"""
 
 	def __init__(self, stream=sys.stdout):  # type: (IO[str]) -> None
-		super(Junit, self).__init__(stream)
+		super().__init__(stream)
 		self.outdir = "test-reports"
 		self.now = datetime.today()
 		self.raw = Raw(stream)
 
 	def begin_test(self, case, prefix=''):  # type: (TestCase, str) -> None
 		"""Called before each test."""
-		super(Junit, self).begin_test(case, prefix)
+		super().begin_test(case, prefix)
 		self.now = datetime.today().replace(microsecond=0)
 		print('\r', end='', file=self.stream)
 		self.raw.begin_test(case, prefix)
@@ -60,7 +58,7 @@ class Junit(TestFormatInterface):
 		if classname.endswith('.py'):
 			classname = classname[:-3]
 
-		filename = os.path.join(self.outdir, '%s.xml' % (result.case.uid,))
+		filename = os.path.join(self.outdir, f'{result.case.uid}.xml')
 		if result.case.is_pytest and os.path.exists(filename):
 			return  # pytest itself already writes the junit file! create one if pytest did not
 
@@ -83,7 +81,7 @@ class Junit(TestFormatInterface):
 				'tests': '%d' % (1,),
 				'failures': '%d' % (failures,),
 				'errors': '%d' % (errors,),
-				'time': '%0.3f' % (result.duration / 1000.0,),
+				'time': f'{result.duration / 1000.0:0.3f}',
 				'disabled': '%d' % (disabled,),
 				'skipped': '%d' % (skipped,),
 				'timestamp': self.now.isoformat(),
@@ -108,7 +106,7 @@ class Junit(TestFormatInterface):
 			xml.endElement('property')
 			xml.startElement('property', {
 				'name': 'version',
-				'value': '%s' % (result.environment.ucs_version,),
+				'value': f'{result.environment.ucs_version}',
 			})
 			xml.endElement('property')
 			if result.case.description:
@@ -122,7 +120,7 @@ class Junit(TestFormatInterface):
 			xml.startElement('testcase', {
 				'name': result.environment.hostname,
 				# 'assertions': '%d' % (0,),
-				'time': '%0.3f' % (result.duration / 1000.0,),
+				'time': f'{result.duration / 1000.0:0.3f}',
 				'classname': classname,
 				# 'status': '???',
 			})
@@ -133,7 +131,7 @@ class Junit(TestFormatInterface):
 				except KeyError:
 					msg = ''
 				else:
-					msg = '\n'.join(['%s' % (c,) for c in content])
+					msg = '\n'.join([f'{c}' for c in content])
 				xml.startElement('skipped', {
 					'message': msg,
 				})
@@ -141,14 +139,14 @@ class Junit(TestFormatInterface):
 			elif errors:
 				xml.startElement('error', {
 					'type': 'TestError',
-					'message': '%s' % (result.result,),
+					'message': f'{result.result}',
 				})
 				xml.endElement('error')
 			elif failures:
 				msg = TestCodes.MESSAGE.get(result.reason, '')
 				xml.startElement('failure', {
 					'type': 'TestFailure',
-					'message': '{} ({})'.format(msg, result.case.description or result.case.uid),
+					'message': f'{msg} ({result.case.description or result.case.uid})',
 				})
 				xml.endElement('failure')
 
@@ -173,7 +171,7 @@ class Junit(TestFormatInterface):
 			xml.endElement('testcase')
 			xml.endElement('testsuite')
 			xml.endDocument()
-		super(Junit, self).end_test(result)
+		super().end_test(result)
 
 	def utf8(self, data):  # type: (Any) -> str
 		if isinstance(data, str):

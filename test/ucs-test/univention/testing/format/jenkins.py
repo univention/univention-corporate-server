@@ -1,7 +1,5 @@
-# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Format UCS Test results as Jenkins report."""
 
-from __future__ import print_function
 
 import sys
 from codecs import encode
@@ -21,7 +19,7 @@ class Jenkins(TestFormatInterface):
 	"""
 
 	def __init__(self, stream=sys.stdout):  # type: (IO[str]) -> None
-		super(Jenkins, self).__init__(stream)
+		super().__init__(stream)
 
 	def end_test(self, result):  # type: (TestResult) -> None
 		"""Called after each test."""
@@ -37,7 +35,7 @@ class Jenkins(TestFormatInterface):
 		print('<displayName>%s</displayName>' % (escape_xml(result.case.uid),), file=self.stream)
 		print('<description>%s</description>' % (escape_xml(result.case.description or ''),), file=self.stream)
 		print('</run>', file=self.stream)
-		super(Jenkins, self).end_test(result)
+		super().end_test(result)
 
 	def format(self, result):  # type: (TestResult) -> None
 		"""

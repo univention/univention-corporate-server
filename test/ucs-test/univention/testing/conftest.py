@@ -34,7 +34,6 @@
 
 """conftest plugin for pytest runner in ucs-test"""
 
-from __future__ import absolute_import
 
 import pytest
 from _pytest.config import Config  # noqa: F401
@@ -154,4 +153,4 @@ def check_exposure(item):
 	except StopIteration:
 		exposure = item.config.getoption("--ucs-test-default-exposure", "safe")
 	if CheckExposure.STATES.index(exposure) > CheckExposure.STATES.index(required_exposure):
-		pytest.skip('Too dangerous: %s > %s' % (exposure, required_exposure))
+		pytest.skip(f'Too dangerous: {exposure} > {required_exposure}')

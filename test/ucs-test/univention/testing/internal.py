@@ -31,7 +31,6 @@ Internal functions for test finding and setup.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
 
 import logging
 import operator
@@ -84,8 +83,8 @@ def strip_indent(text):  # type: (str) -> str
 		del lines[0]
 	while lines and not lines[-1].strip():
 		del lines[-1]
-	indent = min((len(line) - len(line.lstrip()) for line in lines if line.lstrip()))
-	return '\n'.join((line[indent:] for line in lines))
+	indent = min(len(line) - len(line.lstrip()) for line in lines if line.lstrip())
+	return '\n'.join(line[indent:] for line in lines)
 
 
 def get_sections():  # type: () -> Dict[str, str]
@@ -108,19 +107,19 @@ def get_tests(sections):  # type: (Iterable[str]) -> Dict[str, List[str]]
 
 	for section in sections:
 		dirname = all_sections[section]
-		logger.debug('Processing directory %s' % (dirname,))
+		logger.debug(f'Processing directory {dirname}')
 		tests = []
 
 		files = os.listdir(dirname)
 		for filename in sorted(files):
 			fname = os.path.join(dirname, filename)
 			if not RE_PREFIX.match(filename):
-				logger.debug('Skipped file %s' % (fname,))
+				logger.debug(f'Skipped file {fname}')
 				continue
 			if RE_SUFFIX.search(filename):
-				logger.debug('Skipped file %s' % (fname,))
+				logger.debug(f'Skipped file {fname}')
 				continue
-			logger.debug('Adding file %s' % (fname,))
+			logger.debug(f'Adding file {fname}')
 			tests.append(fname)
 
 		if tests:
@@ -128,7 +127,7 @@ def get_tests(sections):  # type: (Iterable[str]) -> Dict[str, List[str]]
 	return result
 
 
-class UCSVersion(object):  # pylint: disable-msg=R0903
+class UCSVersion:  # pylint: disable-msg=R0903
 
 	"""
 	UCS version.
@@ -227,9 +226,9 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 		"""
 		match = cls.RE_VERSION.match(ver)
 		if not match:
-			raise ValueError('Version does not match: "%s"' % (ver,))
+			raise ValueError(f'Version does not match: "{ver}"')
 		rel = match.group(1) or default_op
-		parts = tuple([int(_) if _ else INF for _ in match.groups()[1:]])  # type: Tuple[int, int, int, int] # type: ignore
+		parts = tuple(int(_) if _ else INF for _ in match.groups()[1:])  # type: Tuple[int, int, int, int] # type: ignore
 		if rel in ('<', '<<'):
 			return (operator.lt, parts)
 		if rel in ('<=',):
@@ -240,7 +239,7 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 			return (operator.ge, parts)
 		if rel in ('>', '>>'):
 			return (operator.gt, parts)
-		raise ValueError('Unknown version match: "%s"' % (ver,))
+		raise ValueError(f'Unknown version match: "{ver}"')
 
 	def __init__(self, ver):  # type: (Union[str, Tuple[int, int, int, int]]) -> None
 		if isinstance(ver, str):
@@ -267,10 +266,10 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 			if part != INF:
 				ver += '%s%d' % ('-' * skipped, part)
 				skipped = 0
-		return '%s%s' % (rel, ver)
+		return f'{rel}{ver}'
 
 	def __repr__(self):  # type: () -> str
-		return '%s(%r)' % (self.__class__.__name__, self.__str__(),)
+		return f'{self.__class__.__name__}({self.__str__()!r})'
 
 	def __lt__(self, other):  # type: (Any) -> object
 		return self.ver < other.ver if isinstance(other, UCSVersion) else NotImplemented

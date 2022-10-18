@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -47,7 +46,6 @@ WARNING2:
 The API is currently under heavy development and may/will change before next UCS release!
 """
 
-from __future__ import print_function
 
 import base64
 import copy
@@ -82,7 +80,7 @@ class UCSTestUDM_Exception(Exception):
 
 	def __str__(self):
 		if self.args and len(self.args) == 1 and isinstance(self.args[0], dict):
-			return '\n'.join('%s=%s' % (key, value) for key, value in self.args[0].items())
+			return '\n'.join(f'{key}={value}' for key, value in self.args[0].items())
 		else:
 			return Exception.__str__(self)
 	__repr__ = __str__
@@ -136,7 +134,7 @@ class UCSTestUDM_ListUDMObjectFailed(UCSTestUDM_Exception):
 	pass
 
 
-class UCSTestUDM(object):
+class UCSTestUDM:
 	PATH_UDM_CLI_SERVER = '/usr/share/univention-directory-manager-tools/univention-cli-server'
 	PATH_UDM_CLI_CLIENT = '/usr/sbin/udm'
 	PATH_UDM_CLI_CLIENT_WRAPPED = '/usr/sbin/udm-test'
@@ -201,17 +199,17 @@ class UCSTestUDM(object):
 			try:
 				res = self._lo.search(base=dn, filter=match_filter, scope='base', attr=[])
 			except ldap.NO_SUCH_OBJECT:
-				print("OpenLDAP object to check against S4-Connector match_filter doesn't exist: %s" % (dn, ))
+				print(f"OpenLDAP object to check against S4-Connector match_filter doesn't exist: {dn}")
 				res = None  # TODO: This happens during delete. By setting res=None here, we will not wait for DRS replication for deletes!
 			except Exception as ex:
-				print("OpenLDAP search with S4-Connector match_filter failed: %s" % (ex, ))
+				print(f"OpenLDAP search with S4-Connector match_filter failed: {ex}")
 				raise
 			if not res:
-				print("DRS wait not required, S4-Connector match_filter did not match the OpenLDAP object: %s" % (dn,))
+				print(f"DRS wait not required, S4-Connector match_filter did not match the OpenLDAP object: {dn}")
 				return
 
 		if attr:
-			filter_template = '(&(%s=%%s)%s)' % (attr, con_search_filter)
+			filter_template = f'(&({attr}=%s){con_search_filter})'
 			ad_ldap_search_args = {'ldap_filter': ldap.filter.filter_format(filter_template, (objname,)), 'controls': ad_ldap_controls}
 			return ad_ldap_search_args
 
@@ -316,14 +314,14 @@ class UCSTestUDM(object):
 		for key, value in args.pop('set', {}).items():
 			if isinstance(value, (list, tuple)):
 				for item in value:
-					cmd.extend(['--set', '%s=%s' % (key, item)])
+					cmd.extend(['--set', f'{key}={item}'])
 			else:
-				cmd.extend(['--set', '%s=%s' % (key, value)])
+				cmd.extend(['--set', f'{key}={value}'])
 
 		for operation in ('append', 'remove'):
 			for key, values in args.pop(operation, {}).items():
 				for value in values:
-					cmd.extend(['--%s' % operation, '%s=%s' % (key, value)])
+					cmd.extend(['--%s' % operation, f'{key}={value}'])
 
 		if args.pop('remove_referring', True) and action == 'remove':
 			cmd.append('--remove_referring')
@@ -338,9 +336,9 @@ class UCSTestUDM(object):
 		for key, value in args.items():
 			if isinstance(value, (list, tuple)):
 				for item in value:
-					cmd.extend(['--append', '%s=%s' % (key, item)])
+					cmd.extend(['--append', f'{key}={item}'])
 			elif value:
-				cmd.extend(['--set', '%s=%s' % (key, value)])
+				cmd.extend(['--set', f'{key}={value}'])
 
 		return cmd
 
@@ -360,7 +358,7 @@ class UCSTestUDM(object):
 
 		dn = None
 		cmd = self._build_udm_cmdline(modulename, 'create', kwargs)
-		print('Creating %s object with %s' % (modulename, _prettify_cmd(cmd)))
+		print(f'Creating {modulename} object with {_prettify_cmd(cmd)}')
 		returncode, stdout, stderr = self._execute_udm(cmd)
 
 		if returncode:
@@ -470,7 +468,7 @@ class UCSTestUDM(object):
 
 		def known_mail_address():
 			if len(known_mail_address.cache) >= 5:
-				return '%s@%s' % (uts.random_name(), random.choice(known_mail_address.cache))
+				return f'{uts.random_name()}@{random.choice(known_mail_address.cache)}'
 			email = uts.random_email()
 			domain = email.rsplit('@', 1)[-1]
 			self.create_with_defaults('mail/domain', name=domain)
@@ -560,9 +558,9 @@ class UCSTestUDM(object):
 			'Base64Bzip2Text': lambda: base64.b64encode(__import__('bz2').compress(uts.random_string().encode())).decode('ASCII'),
 			'Base64Upload': lambda: base64.b64encode(uts.random_string().encode()).decode('ASCII'),
 			'Base64BaseUpload': lambda: base64.b64encode(uts.random_string().encode()).decode('ASCII'),
-			'Base64Bzip2XML': lambda: base64.b64encode(__import__('bz2').compress(('<?xml?><foo>%s</foo>' % (uts.random_string(),)).encode())).decode('ASCII'),
+			'Base64Bzip2XML': lambda: base64.b64encode(__import__('bz2').compress((f'<?xml?><foo>{uts.random_string()}</foo>').encode())).decode('ASCII'),
 			'emailAddress': uts.random_email,
-			'emailAddressTemplate': lambda: '<username>@%s' % (uts.random_domain_name(),),
+			'emailAddressTemplate': lambda: f'<username>@{uts.random_domain_name()}',
 			'emailAddressValidDomain': known_mail_address,
 			'primaryEmailAddressValidDomain': known_mail_address,
 			'MailHomeServer': uts.random_domain_name,
@@ -572,28 +570,28 @@ class UCSTestUDM(object):
 			'v4netmask': lambda: uts.random_int(1, 31),
 			'netmask': lambda: uts.random_int(1, 31),
 			'printerName': lambda: uts.random_string(16),
-			'DHCP_HardwareAddress': lambda: 'ethernet %s' % (uts.random_mac(),),
+			'DHCP_HardwareAddress': lambda: f'ethernet {uts.random_mac()}',
 			'hostName': uts.random_string,
 			'policyName': uts.random_string,
-			'LocalizedDescription': lambda: '%s %s' % (random.choice(['de_DE', 'en_US']), uts.random_string()),
-			'LocalizedDisplayName': lambda: '%s %s' % (random.choice(['de_DE', 'en_US']), uts.random_string()),
-			'LocalizedLink': lambda: '%s %s://%s/%s' % (random.choice(['de_DE', 'en_US']), random.choice(['http', 'https']), uts.random_domain_name(), uts.random_string()),
+			'LocalizedDescription': lambda: '{} {}'.format(random.choice(['de_DE', 'en_US']), uts.random_string()),
+			'LocalizedDisplayName': lambda: '{} {}'.format(random.choice(['de_DE', 'en_US']), uts.random_string()),
+			'LocalizedLink': lambda: '{} {}://{}/{}'.format(random.choice(['de_DE', 'en_US']), random.choice(['http', 'https']), uts.random_domain_name(), uts.random_string()),
 			'reverseLookupSubnet': lambda: random_ip().rsplit('.', 1)[0],
 			'dnsPTR': lambda: random_ip().rsplit('.', 1)[1],
 			'dnsHostname': uts.random_domain_name,
 			'dnsName': uts.random_domain_name,
 			'dnsName_umlauts': uts.random_string,
-			'dnsSRVName': lambda: 'ldap tcp %s' % (uts.random_string(),),
-			'dnsSRVLocation': lambda: '%s %s %s %s' % (uts.random_int(), uts.random_int(), uts.random_int(), uts.random_domain_name()),
+			'dnsSRVName': lambda: f'ldap tcp {uts.random_string()}',
+			'dnsSRVLocation': lambda: f'{uts.random_int()} {uts.random_int()} {uts.random_int()} {uts.random_domain_name()}',
 			'mailinglist_name': uts.random_string,
 			'mail_folder_name': uts.random_string,
 			'date': uts.random_date,
 			'date2': uts.random_date,
 			'iso8601Date': uts.random_date,
 			'TimeString': lambda: uts.random_time().rsplit(':', 1)[0],  # Bug #53829
-			'phone': lambda: '+49 421 %s-%s' % (uts.random_int(10000, 99000), uts.random_int(0, 9)),
-			'postalAddress': lambda: '"%s street 1A" "%s" "%s"' % (uts.random_string(), uts.random_int(10000, 99999), uts.random_string()),
-			'keyAndValue': lambda: '%s %s' % (uts.random_string(), uts.random_string()),
+			'phone': lambda: f'+49 421 {uts.random_int(10000, 99000)}-{uts.random_int(0, 9)}',
+			'postalAddress': lambda: f'"{uts.random_string()} street 1A" "{uts.random_int(10000, 99999)}" "{uts.random_string()}"',
+			'keyAndValue': lambda: f'{uts.random_string()} {uts.random_string()}',
 			'SambaLogonHours': lambda: uts.random_int(0, 167),
 			'DebianPackageVersion': uts.random_version,
 			'UCSVersion': uts.random_ucs_version,
@@ -762,7 +760,7 @@ class UCSTestUDM(object):
 				continue
 			func = _func(func, prop)
 
-			value = list(set(func() for i in range(random.randint(int(prop.required or name in ('ip', 'range')), 4)))) if prop.multivalue else func()
+			value = list({func() for i in range(random.randint(int(prop.required or name in ('ip', 'range')), 4))}) if prop.multivalue else func()
 			if value is None or isinstance(value, list) and all(v is None for v in value):
 				continue
 			kwargs.setdefault(name, value)
@@ -776,11 +774,11 @@ class UCSTestUDM(object):
 		if modulename in ('dhcp/subnet', 'dhcp/sharedsubnet'):
 			import ipaddress
 			kwargs['subnetmask'] = str(min(29, int(kwargs['subnetmask'])))
-			iface = ipaddress.IPv4Interface(u'%(subnet)s/%(subnetmask)s' % kwargs)
+			iface = ipaddress.IPv4Interface('%(subnet)s/%(subnetmask)s' % kwargs)
 			kwargs['subnet'] = str(iface.network.network_address)
 		elif modulename in ('dhcp/pool',):
 			import ipaddress
-			iface = ipaddress.IPv4Interface(u'%(subnet)s/%(subnetmask)s' % superordinate_props)
+			iface = ipaddress.IPv4Interface('%(subnet)s/%(subnetmask)s' % superordinate_props)
 			if kwargs.get('dynamic_bootp_clients') != 'deny':
 				kwargs.pop('failover_peer')
 		if modulename in ('dhcp/subnet', 'dhcp/sharedsubnet', 'dhcp/pool'):
@@ -796,7 +794,7 @@ class UCSTestUDM(object):
 				except StopIteration:
 					pass
 				if first and first != last:
-					ranges.append('%s %s' % (first, last))
+					ranges.append(f'{first} {last}')
 				else:
 					break
 			kwargs['range'] = ranges
@@ -821,7 +819,7 @@ class UCSTestUDM(object):
 			raise UCSTestUDM_CannotModifyExistingObject(dn)
 
 		cmd = self._build_udm_cmdline(modulename, 'modify', kwargs)
-		print('Modifying %s object with %s' % (modulename, _prettify_cmd(cmd)))
+		print(f'Modifying {modulename} object with {_prettify_cmd(cmd)}')
 		returncode, stdout, stderr = self._execute_udm(cmd)
 
 		if returncode:
@@ -855,7 +853,7 @@ class UCSTestUDM(object):
 			raise UCSTestUDM_CannotModifyExistingObject(dn)
 
 		cmd = self._build_udm_cmdline(modulename, 'move', kwargs)
-		print('Moving %s object %s' % (modulename, _prettify_cmd(cmd)))
+		print(f'Moving {modulename} object {_prettify_cmd(cmd)}')
 		returncode, stdout, stderr = self._execute_udm(cmd)
 
 		if returncode:
@@ -885,7 +883,7 @@ class UCSTestUDM(object):
 			raise UCSTestUDM_CannotModifyExistingObject(dn)
 
 		cmd = self._build_udm_cmdline(modulename, 'remove', kwargs)
-		print('Removing %s object %s' % (modulename, _prettify_cmd(cmd)))
+		print(f'Removing {modulename} object {_prettify_cmd(cmd)}')
 		returncode, stdout, stderr = self._execute_udm(cmd)
 
 		if returncode:
@@ -967,7 +965,7 @@ class UCSTestUDM(object):
 		# type: (str, bool) -> None
 		"""Removes a user object from the ldap given it's username."""
 		kwargs = {
-			'dn': 'uid=%s,cn=users,%s' % (username, self.LDAP_BASE)
+			'dn': f'uid={username},cn=users,{self.LDAP_BASE}'
 		}
 		self.remove_object('users/user', wait_for_replication, **kwargs)
 
@@ -1013,7 +1011,7 @@ class UCSTestUDM(object):
 	def list_objects(self, modulename, **kwargs):
 		# type: (str, **Any) -> List[Tuple[str, Dict[str, Any]]]
 		cmd = self._build_udm_cmdline(modulename, 'list', kwargs)
-		print('Listing %s objects %s' % (modulename, _prettify_cmd(cmd)))
+		print(f'Listing {modulename} objects {_prettify_cmd(cmd)}')
 		returncode, stdout, stderr = self._execute_udm(cmd)
 
 		if returncode:
@@ -1091,21 +1089,21 @@ class UCSTestUDM(object):
 				returncode, stdout, stderr = self._execute_udm(cmd)
 
 				if returncode or 'Object removed:' not in stdout:
-					print('Warning: Failed to remove %r object %r' % (modulename, dn), file=sys.stderr)
-					print('stdout=%r %r %r' % (stdout, stderr, self._lo.get(dn)), file=sys.stderr)
+					print(f'Warning: Failed to remove {modulename!r} object {dn!r}', file=sys.stderr)
+					print(f'stdout={stdout!r} {stderr!r} {self._lo.get(dn)!r}', file=sys.stderr)
 				else:
 					removed.append((modulename, dn))
 		self._cleanup = {}
 
 		for lock_type, values in self._cleanupLocks.items():
 			for value in values:
-				lockDN = 'cn=%s,cn=%s,%s' % (value, lock_type, self.UNIVENTION_TEMPORARY_CONTAINER)
+				lockDN = f'cn={value},cn={lock_type},{self.UNIVENTION_TEMPORARY_CONTAINER}'
 				try:
 					self._lo.delete(lockDN)
 				except ldap.NO_SUCH_OBJECT:
 					pass
 				except Exception as ex:
-					print('Failed to remove locking object "%s" during cleanup: %r' % (lockDN, ex))
+					print(f'Failed to remove locking object "{lockDN}" during cleanup: {ex!r}')
 		self._cleanupLocks = {}
 
 		print('Cleanup: wait for replication and drs removal')
@@ -1134,9 +1132,9 @@ class UCSTestUDM(object):
 		for signal in (15, 9):
 			for proc in procs:
 				try:
-					print('sending signal %s to process %s (%r)' % (signal, proc.pid, proc.cmdline(),))
+					print(f'sending signal {signal} to process {proc.pid} ({proc.cmdline()!r})')
 					os.kill(proc.pid, signal)
-				except (psutil.NoSuchProcess, EnvironmentError):
+				except (psutil.NoSuchProcess, OSError):
 					print('process already terminated')
 					procs.remove(proc)
 			if signal == 15:
@@ -1153,7 +1151,7 @@ class UCSTestUDM(object):
 
 	def __exit__(self, exc_type, exc_value, traceback):
 		if exc_type:
-			print('Cleanup after exception: %s %s' % (exc_type, exc_value))
+			print(f'Cleanup after exception: {exc_type} {exc_value}')
 		self.cleanup()
 
 	def _execute_udm(self, cmd):
@@ -1170,7 +1168,7 @@ class UDM(UCSTestUDM):
 
 	def stop_cli_server(self):
 		# type: () -> None
-		super(UDM, self).stop_cli_server()
+		super().stop_cli_server()
 		subprocess.call(['systemctl', 'reload', 'univention-directory-manager-rest.service'])
 
 
@@ -1199,7 +1197,7 @@ def verify_udm_object(module, dn, expected_properties):
 		raise
 
 	if expected_properties is None:
-		raise AssertionError("UDM object {} should not exist".format(dn))
+		raise AssertionError(f"UDM object {dn} should not exist")
 
 	difference = {}
 	for (key, value) in expected_properties.items():
@@ -1220,7 +1218,7 @@ def verify_udm_object(module, dn, expected_properties):
 				pass
 		if udm_value != value:
 			difference[key] = (udm_value, value)
-	assert not difference, '\n'.join('{}: {} != expected {}'.format(key, udm_value, value) for key, (udm_value, value) in difference.items())
+	assert not difference, '\n'.join(f'{key}: {udm_value} != expected {value}' for key, (udm_value, value) in difference.items())
 
 
 def _prettify_cmd(cmd):

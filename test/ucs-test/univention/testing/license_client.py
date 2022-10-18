@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -86,7 +85,7 @@ class ShopParser(HTMLParser):
 			break
 
 
-class TestLicenseClient(object):
+class TestLicenseClient:
 
 	def __init__(self, parser=None):
 		# type: (Optional[ArgumentParser]) -> None
@@ -169,9 +168,9 @@ class TestLicenseClient(object):
 			self.log.critical("The '%s' secret file does not exist, cannot proceed without password", secret_file)
 			raise CredentialsMissing("The '%s' secret file does not exist" % secret_file)
 		try:
-			with open(secret_file, 'r') as password:
+			with open(secret_file) as password:
 				self.server_password = password.read()
-		except (IOError, ValueError) as exc:
+		except (OSError, ValueError) as exc:
 			self.log.exception("Failed to get the password from the '%s', an error occurred: %r", secret_file, exc)
 			exit(1)
 		if not self.server_password:
@@ -195,7 +194,7 @@ class TestLicenseClient(object):
 			"Accept": "text/plain",
 		}
 
-		response = self.make_post_request('/shop/%s/' % (self.license_shop,), urlencode(body), headers)
+		response = self.make_post_request(f'/shop/{self.license_shop}/', urlencode(body), headers)
 		self.log.debug("The response status is '%s', reason is '%s', headers are '%s'", response.status, response.reason, response.getheaders())
 
 		self.cookie = response.getheader('set-cookie')
@@ -265,7 +264,7 @@ class TestLicenseClient(object):
 			"Content-type": "application/x-www-form-urlencoded",
 		}
 
-		response = self.make_post_request('/shop/%s/order' % (self.license_shop,), urlencode(body), headers)
+		response = self.make_post_request(f'/shop/{self.license_shop}/order', urlencode(body), headers)
 		assert response.status == 202
 		return self.get_body(response)
 
@@ -288,13 +287,13 @@ class TestLicenseClient(object):
 			"Cookie": self.cookie,
 			"Accept": "text/plain",
 		}
-		response = self.make_get_request('/shop/%s/%s' % (self.license_shop, link_to_license), headers)
+		response = self.make_get_request(f'/shop/{self.license_shop}/{link_to_license}', headers)
 		try:
 			body = self.get_body(response)
 			with open(self.license_filename, 'w') as license_file:
 				license_file.write(body)
 			self.log.info("The license was written to file '%s'", self.license_filename)
-		except (IOError, ValueError) as exc:
+		except (OSError, ValueError) as exc:
 			self.log.exception("An error happened while writing the downloaded license to a file '%s': '%s'", self.license_filename, exc)
 			exit(1)
 

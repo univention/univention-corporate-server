@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import time
 from functools import wraps
 from typing import Any, Callable, TypeVar, cast  # noqa: F401
@@ -9,7 +7,7 @@ DEFAULT_TIMEOUT = 90  # seconds
 F = TypeVar('F', bound=Callable[..., None])
 
 
-class WaitForNonzeroResultOrTimeout(object):
+class WaitForNonzeroResultOrTimeout:
 
 	def __init__(self, func, timeout=DEFAULT_TIMEOUT):
 		# type: (Callable[..., Any], int) -> None
@@ -27,7 +25,7 @@ class WaitForNonzeroResultOrTimeout(object):
 		return result
 
 
-class SetTimeout(object):
+class SetTimeout:
 
 	def __init__(self, func, timeout=DEFAULT_TIMEOUT):
 		# type: (Callable[..., None], int) -> None

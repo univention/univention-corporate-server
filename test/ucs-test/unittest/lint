@@ -2,7 +2,6 @@
 """
 Find errors in tests/
 """
-from __future__ import print_function
 
 import os
 import re
@@ -13,7 +12,7 @@ RE_FUNCTION = re.compile(r'''^ *(?:function +)?([-0-9A-Z_a-z]+) *\(\)''')
 RE_SOURCE = re.compile(r'''^ *(?:source|\.) +((?:"(?:[^"\\]|\\.)+"|'[^']+'|\S+)+)\b''')
 
 
-class Lint(object):
+class Lint:
 	D_LIB = "lib/"
 	D_TEST = "tests/"
 
@@ -40,13 +39,13 @@ class Lint(object):
 
 	def process_lib(self, path):
 		libs = self.dependencies[path] = set()
-		with open(path, 'r') as lib:
+		with open(path) as lib:
 			for line in lib:
 				match = RE_FUNCTION.match(line)
 				if match:
 					func = match.group(1)
 					if func in self.functions:
-						print("'%s' re-defined from '%s' in '%s'" % (func, self.functions[func], path))
+						print(f"'{func}' re-defined from '{self.functions[func]}' in '{path}'")
 					else:
 						self.functions[func] = path
 					continue
@@ -80,7 +79,7 @@ class Lint(object):
 
 	def process_test(self, path):
 		libs = set()
-		with open(path, 'r') as test:
+		with open(path) as test:
 			for line in test:
 				if not RE_BASH.match(line):
 					return

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Selenium Tests
 #
@@ -33,7 +32,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
 
 import datetime
 import json
@@ -122,12 +120,12 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		if not os.path.exists(self.screenshot_path):
 			os.makedirs(self.screenshot_path)
 
-		self.driver.get(self.base_url + 'univention/login/?lang=%s' % (self.language,))
+		self.driver.get(self.base_url + f'univention/login/?lang={self.language}')
 		# FIXME: Workaround for Bug #44718.
 		try:
-			self.driver.execute_script('document.cookie = "UMCLang=%s; path=/univention/"' % (self.language,))
+			self.driver.execute_script(f'document.cookie = "UMCLang={self.language}; path=/univention/"')
 		except selenium_exceptions.WebDriverException as exc:
-			logger.warn('Setting language cookie failed: %s' % (exc,))
+			logger.warn(f'Setting language cookie failed: {exc}')
 
 		self.set_viewport_size(1200, 800)
 		return self
@@ -136,7 +134,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		# type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
 		try:
 			if exc_type:
-				logger.error('Exception: %s %s' % (exc_type, exc_value))
+				logger.error(f'Exception: {exc_type} {exc_value}')
 				self.save_screenshot(hide_notifications=False, append_timestamp=True)
 				self.save_browser_log()
 			self.driver.quit()
@@ -173,7 +171,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		if append_timestamp:
 			timestamp = '_%s' % (datetime.datetime.now().strftime("%Y%m%d%H%M%S"),)
 
-		filename = '%s/%s_%s%s.png' % (self.screenshot_path, name, self.language, timestamp)
+		filename = f'{self.screenshot_path}/{name}_{self.language}{timestamp}.png'
 		logger.warning('Saving screenshot %r', filename)
 		if os.environ.get('JENKINS_WS'):
 			logger.warning('Screenshot URL: %sws/test/selenium/selenium/%s' % (os.environ['JENKINS_WS'], os.path.basename(filename)))
@@ -211,15 +209,15 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		# type: (str, bool) -> None
 		timestamp = ''
 		if append_timestamp:
-			timestamp = '_%s' % (datetime.datetime.now().strftime("%Y%m%d%H%M%S"),)
+			timestamp = '_{}'.format(datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
 
-		filename = '%s/%s_%s_browserlog%s.txt' % (self.screenshot_path, name, self.language, timestamp)
+		filename = f'{self.screenshot_path}/{name}_{self.language}_browserlog{timestamp}.txt'
 		logger.info('Saving browser log %r', filename)
 		if os.environ.get('JENKINS_WS'):
-			logger.info('Browser Log URL: %sws/test/selenium/selenium/%s' % (os.environ['JENKINS_WS'], os.path.basename(filename)))
+			logger.info('Browser Log URL: {}ws/test/selenium/selenium/{}'.format(os.environ['JENKINS_WS'], os.path.basename(filename)))
 		with open(filename, 'w') as f:
 			for entry in self.driver.get_log('browser'):
-				f.write('%s\n' % (json.dumps(entry),))
+				f.write(f'{json.dumps(entry)}\n')
 
 	def show_notifications(self, show_notifications=True):
 		# type: (bool) -> None
@@ -252,7 +250,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		# 	self.driver.add_cookie({'name': 'hideSummit%sDialog' % (year,), 'value': 'true'})
 		# 	self.driver.add_cookie({'name': 'hideSummit%sNotification' % (year,), 'value': 'true'})
 		if not without_navigation:
-			self.driver.get(self.base_url + 'univention/login/?lang=%s' % (self.language if not language else language,))
+			self.driver.get(self.base_url + f'univention/login/?lang={self.language if not language else language}')
 
 		self.wait_until(
 			expected_conditions.presence_of_element_located(
@@ -305,7 +303,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 	def search_module(self, name, do_reload=True):
 		# type: (str, bool) -> None
 		if do_reload:
-			self.driver.get(self.base_url + 'univention/management/?lang=%s' % (self.language,))
+			self.driver.get(self.base_url + f'univention/management/?lang={self.language}')
 
 		input_field = self.wait_for_element_by_css_selector('.umcModuleSearch input.dijitInputInner')
 		if not input_field.is_displayed():

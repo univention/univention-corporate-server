@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Selenium Tests
 #
@@ -33,7 +32,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import, print_function
 
 import time
 from typing import Any, Dict, Mapping, Optional  # noqa: F401
@@ -50,7 +48,7 @@ translator = localization.translation('ucs-test-framework')
 _ = translator.translate
 
 
-class UDMBase(object):
+class UDMBase:
 
 	name = None
 
@@ -191,7 +189,7 @@ class Portals(UDMBase):
 
 	def __init__(self, selenium):
 		# type: (Any) -> None
-		super(Portals, self).__init__(selenium)
+		super().__init__(selenium)
 		self.ucr = ucr_test.UCSTestConfigRegistry()
 		self.ucr.load()
 
@@ -283,7 +281,7 @@ class Users(UDMBase):
 
 	def __init__(self, selenium):
 		# type: (Any) -> None
-		super(Users, self).__init__(selenium)
+		super().__init__(selenium)
 		self.ucr = ucr_test.UCSTestConfigRegistry()
 		self.ucr.load()
 

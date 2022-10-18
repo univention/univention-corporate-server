@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -97,7 +96,7 @@ class ConnectionError(Exception):
 
 	def __init__(self, msg, reason=None):
 		# type: (str, Exception) -> None
-		super(ConnectionError, self).__init__(msg, reason)
+		super().__init__(msg, reason)
 		self.reason = reason
 
 
@@ -150,7 +149,7 @@ class HTTPError(Exception):
 
 	def __new__(cls, request, response, hostname):
 		err = cls.codes.get(response.status, cls)
-		return super(HTTPError, cls).__new__(err, request, response, hostname)  # type: ignore
+		return super().__new__(err, request, response, hostname)  # type: ignore
 
 	def __init__(self, request, response, hostname):
 		self.request = request
@@ -158,10 +157,10 @@ class HTTPError(Exception):
 		self.response = response
 
 	def __repr__(self):
-		return '<HTTPError %s>' % (self,)
+		return f'<HTTPError {self}>'
 
 	def __str__(self):
-		return '%s on %s (%s): %s' % (self.status, self.hostname, self.request.path, self.response.body)
+		return f'{self.status} on {self.hostname} ({self.request.path}): {self.response.body}'
 
 
 class HTTPRedirect(HTTPError):
@@ -239,7 +238,7 @@ class ServiceUnavailable(HTTPError):
 	code = 503
 
 
-class Request(object):
+class Request:
 	"""
 	The |HTTP| request.
 
@@ -269,7 +268,7 @@ class Request(object):
 		return self.data
 
 
-class Response(object):
+class Response:
 	"""
 	The |HTTP| response.
 
@@ -336,7 +335,7 @@ class Response(object):
 			try:
 				data = json.loads(data.decode('utf-8'))
 			except ValueError as exc:
-				raise ConnectionError('Malformed response data: %r' % (data,), reason=exc)
+				raise ConnectionError(f'Malformed response data: {data!r}', reason=exc)
 		return data
 
 	@classmethod
@@ -351,7 +350,7 @@ class Response(object):
 		return cls(response.status, response.reason, data, response.getheaders(), response)
 
 
-class Client(object):
+class Client:
 	"""
 	A client capable to speak with a |UMC| server.
 
@@ -414,7 +413,7 @@ class Client(object):
 		:param str username: A user name.
 		:param str password: The password of the user.
 		"""
-		self._headers['Authorization'] = 'Basic %s' % ('%s:%s' % (username, password)).encode('base64').rstrip().decode('ascii')
+		self._headers['Authorization'] = 'Basic %s' % (f'{username}:{password}').encode('base64').rstrip().decode('ascii')
 
 	def authenticate_saml(self, username, password):
 		# type: (str, str) -> None
@@ -440,7 +439,7 @@ class Client(object):
 		try:
 			with open('/etc/machine.secret') as machine_file:
 				password = machine_file.readline().strip()
-		except EnvironmentError as exc:
+		except OSError as exc:
 			raise ConnectionError('Could not read /etc/machine.secret', reason=exc)
 		self.authenticate(username, password)
 
@@ -457,7 +456,7 @@ class Client(object):
 		:rtype: Response
 		"""
 		data = self.__build_data(options, flavor)
-		return self.request('POST', 'command/%s' % (path,), data, headers)
+		return self.request('POST', f'command/{path}', data, headers)
 
 	def umc_set(self, options, headers=None):
 		# type: (Optional[dict], Optional[dict]) -> Response
@@ -561,7 +560,7 @@ class Client(object):
 			request.headers['X-XSRF-Protection'] = self.cookies['UMCSessionId']
 		try:
 			response = self.__request(request)
-		except (HTTPException, EnvironmentError, ssl.CertificateError) as exc:
+		except (HTTPException, OSError, ssl.CertificateError) as exc:
 			raise ConnectionError('Could not send request.', reason=exc)
 		self._handle_cookies(response)
 		response = Response._from_httplib_response(response)
@@ -590,7 +589,7 @@ class Client(object):
 		:returns: The |HTTP| response.
 		:rtype: http.client.HTTPResponse
 		"""
-		uri = '%s%s' % (self._base_uri, request.path)
+		uri = f'{self._base_uri}{request.path}'
 		con = self._get_connection()
 		con.request(request.method, uri, request.get_body(), headers=request.headers)
 		response = con.getresponse()

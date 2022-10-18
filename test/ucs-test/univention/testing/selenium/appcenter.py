@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Selenium Tests
 #
@@ -33,7 +32,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
 
 from time import sleep
 from typing import Any  # noqa: F401
@@ -47,7 +45,7 @@ translator = localization.translation('ucs-test-framework')
 _ = translator.translate
 
 
-class AppCenter(object):
+class AppCenter:
 
 	def __init__(self, selenium):
 		# type: (Any) -> None
@@ -168,7 +166,7 @@ class AppCenter(object):
 
 	def click_app_tile(self, app_name):
 		# type: (str) -> None
-		self.selenium.click_element(expand_path('//*[@containsClass="umcTile__name"][text() = "%s"]' % (app_name,)))
+		self.selenium.click_element(expand_path(f'//*[@containsClass="umcTile__name"][text() = "{app_name}"]'))
 
 	def open(self, do_reload=True):
 		# type: (bool) -> None

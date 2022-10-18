@@ -1,7 +1,5 @@
-# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Format UCS Test results as Test Anything Protocol report."""
 
-from __future__ import print_function
 
 import sys
 from typing import IO, Any  # noqa: F401
@@ -20,11 +18,11 @@ class TAP(TestFormatInterface):
 	"""
 
 	def __init__(self, stream=sys.stdout):  # type: (IO[str]) -> None
-		super(TAP, self).__init__(stream)
+		super().__init__(stream)
 
 	def begin_run(self, environment, count=1):  # type: (TestEnvironment, int) -> None
 		"""Called before first test."""
-		super(TAP, self).begin_run(environment, count)
+		super().begin_run(environment, count)
 		print("1..%d" % (count,))
 
 	def end_test(self, result):  # type: (TestResult) -> None
@@ -38,8 +36,8 @@ class TAP(TestFormatInterface):
 		else:
 			prefix = 'not ok'
 			suffix = ''
-		print('%s %s%s' % (prefix, result.case.uid, suffix), file=self.stream)
-		super(TAP, self).end_test(result)
+		print(f'{prefix} {result.case.uid}{suffix}', file=self.stream)
+		super().end_test(result)
 
 	def format(self, result):  # type: (TestResult) -> None
 		"""

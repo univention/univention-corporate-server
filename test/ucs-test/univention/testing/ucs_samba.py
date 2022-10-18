@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import contextlib
 import re
 import socket
@@ -79,7 +77,7 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 		return
 
 	if verbose:
-		print("Waiting for DRS replication, filter: %r, base: %r, scope: %r, should_exist: %r" % (ldap_filter, base, scope, should_exist), end=' ')
+		print(f"Waiting for DRS replication, filter: {ldap_filter!r}, base: {base!r}, scope: {scope!r}, should_exist: {should_exist!r}", end=' ')
 	t = t0 = time.time()
 	while t < t0 + timeout:
 		try:
@@ -96,7 +94,7 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 				if verbose:
 					print("\nDRS replication took %d seconds" % (t - t0, ))
 				return
-			print("Error during samdb.search: %s" % (msg, ))
+			print(f"Error during samdb.search: {msg}")
 
 		print('.', end=' ')
 		time.sleep(delta_t)
@@ -231,7 +229,7 @@ def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=5):
 		else:
 			static_count += 1
 
-		print('Counter: {}; highestCommittedUSN: {!r}; lastUSN: {!r}'.format(static_count, highestCommittedUSN, lastUSN))
+		print(f'Counter: {static_count}; highestCommittedUSN: {highestCommittedUSN!r}; lastUSN: {lastUSN!r}')
 
 		if static_count * delta_t >= s4cooldown_t:
 			return 0
@@ -246,4 +244,4 @@ def append_dot(verify_list):
 	"""The S4-Connector appends dots to various dns records. Helper function to adjust a list."""
 	if not package_installed('univention-s4-connector'):
 		return verify_list
-	return ['%s.' % (x,) for x in verify_list]
+	return [f'{x}.' for x in verify_list]

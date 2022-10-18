@@ -1,11 +1,9 @@
 #!/usr/bin/python3
-# coding: utf-8
 
 """
 This program compares LDAP host entries with a local comparative ldif file.
 All differences will be displayed at the console.
 """
-from __future__ import print_function
 
 import base64
 import errno
@@ -24,7 +22,7 @@ try:
 except ImportError:
 	pass
 
-Entry = Dict[str, List[Text]]
+Entry = Dict[str, List[str]]
 
 USAGE = 'usage: %prog [option] <LDIF1> [[option] <LDIF2>]'
 DESCRIPTION = '''
@@ -47,7 +45,7 @@ class SlapError(Exception):
 	"""
 
 
-class Ldif(object):
+class Ldif:
 	"""
 	Abstract class for LDIF source.
 	"""
@@ -165,13 +163,13 @@ class Ldif(object):
 		Convert binary data to printable string.
 		"""
 		# Py2 has no str.isprintable()
-		return u''.join(
-			u'\\u%04x' % (ord(c),) if c != u' ' and unicodedata.category(c)[0] in 'CZ' else c
+		return ''.join(
+			f'\\u{ord(c):04x}' if c != ' ' and unicodedata.category(c)[0] in 'CZ' else c
 			for c in value
 		)
 
 
-class LdifSource(object):
+class LdifSource:
 	@classmethod
 	def create(cls, arg, options):
 		# type: (str, Values) -> LdifFile
@@ -185,7 +183,7 @@ class LdifSource(object):
 		raise NotImplementedError()
 
 
-class LdifFile(object):
+class LdifFile:
 	"""
 	LDIF source from local file.
 	"""
@@ -197,7 +195,7 @@ class LdifFile(object):
 
 	def __init__(self, filename):
 		# type: (str) -> None
-		super(LdifFile, self).__init__()
+		super().__init__()
 		self.filename = filename
 
 	def start_reading(self):
@@ -207,11 +205,11 @@ class LdifFile(object):
 		"""
 		try:
 			return Ldif(open(self.filename, 'rb'))
-		except IOError as ex:
+		except OSError as ex:
 			raise LdifError(ex)
 
 
-class LdifSlapcat(object):
+class LdifSlapcat:
 	"""
 	LDIF source from local LDAP.
 	"""
@@ -223,7 +221,7 @@ class LdifSlapcat(object):
 
 	def __init__(self):
 		# type: () -> None
-		super(LdifSlapcat, self).__init__()
+		super().__init__()
 		self.command = ['slapcat', '-d0']
 
 	def start_reading(self):
@@ -257,7 +255,7 @@ class LdifSlapcat(object):
 			try:
 				rlist, wlist, xlist = select.select(rlist, wlist, xlist)
 				break
-			except (OSError, select.error) as ex:
+			except OSError as ex:
 				if ex.errno == errno.EINTR:
 					continue
 				else:
@@ -280,7 +278,7 @@ class LdifSsh(LdifSlapcat):
 
 	def __init__(self, hostname, ssh='ssh'):
 		# type: (str, str) -> None
-		super(LdifSsh, self).__init__()
+		super().__init__()
 		self.command = [ssh, hostname] + self.command
 
 
@@ -311,9 +309,9 @@ def stream2object(ldif):
 			dname, = obj.pop('dn')
 			objects[dname] = obj  # type: ignore
 		except KeyError:
-			print('Missing dn: %r' % (obj,), file=sys.stderr)
+			print(f'Missing dn: {obj!r}', file=sys.stderr)
 		except ValueError:
-			print('Multiple dn: %r' % (obj,), file=sys.stderr)
+			print(f'Multiple dn: {obj!r}', file=sys.stderr)
 	return objects
 
 
@@ -364,18 +362,18 @@ def compare_ldif(lldif, rldif, options):
 		lk, rk = sort_dn(ldn), sort_dn(rdn)
 		if lk < rk:
 			diffs = list(compare_keys({}, rights[rdn]))
-			print('+dn: %s' % (rdn,))
+			print(f'+dn: {rdn}')
 			rdn = ""
 		elif lk > rk:
 			diffs = list(compare_keys(lefts[ldn], {}))
-			print('-dn: %s' % (ldn,))
+			print(f'-dn: {ldn}')
 			ldn = ""
 		else:
 			diffs = list(compare_keys(lefts[ldn], rights[rdn]))
 			if not options.objects and all(diff == 0 for diff, key, val in diffs):
 				ldn = rdn = ""
 				continue
-			print(' dn: %s' % (rdn,))
+			print(f' dn: {rdn}')
 			ldn = rdn = ""
 		for diff, key, val in diffs:
 			if options.attributes or diff:
@@ -418,16 +416,13 @@ def compare_keys(ldata, rdata):
 			break
 
 		if lkey < rkey:
-			for diff in compare_values(rkey, [], rdata[rkey]):
-				yield diff
+			yield from compare_values(rkey, [], rdata[rkey])
 			rkey = ""
 		elif lkey > rkey:
-			for diff in compare_values(lkey, ldata[lkey], []):
-				yield diff
+			yield from compare_values(lkey, ldata[lkey], [])
 			lkey = ""
 		else:
-			for diff in compare_values(lkey, ldata[lkey], rdata[rkey]):
-				yield diff
+			yield from compare_values(lkey, ldata[lkey], rdata[rkey])
 			lkey = rkey = ""
 
 
@@ -529,7 +524,7 @@ def parse_args():
 		if args:
 			parser.error("More than two LDIFs given.")
 	except LdifError as ex:
-		parser.error("Failed to parse LDIF: %s" % (ex,))
+		parser.error(f"Failed to parse LDIF: {ex}")
 
 	return ldif1, ldif2, options
 
@@ -570,14 +565,14 @@ def run_compare(ldif1, ldif2, options):
 	except KeyboardInterrupt:
 		signal.signal(signal.SIGINT, signal.SIG_DFL)
 		os.kill(os.getpid(), signal.SIGINT)
-	except EnvironmentError as ex:
+	except OSError as ex:
 		if ex.errno == errno.EPIPE:
 			signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 			os.kill(os.getpid(), signal.SIGPIPE)
 		else:
-			print('Error: %s' % (ex,), file=sys.stderr)
+			print(f'Error: {ex}', file=sys.stderr)
 	except LdifError as ex:
-		print('Invalid LDIF: %s' % (ex,), file=sys.stderr)
+		print(f'Invalid LDIF: {ex}', file=sys.stderr)
 	sys.exit(ret)
 
 

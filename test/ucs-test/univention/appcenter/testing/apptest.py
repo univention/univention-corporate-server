@@ -21,7 +21,7 @@ PROVIDER_PORTAL_JSON = 'https://provider-portal.software-univention.de/appcenter
 
 def run_test_file(fname):
 	with tempfile.NamedTemporaryFile(suffix='.py') as tmpfile:
-		logger.info('Copying file to {}'.format(tmpfile.name))
+		logger.info(f'Copying file to {tmpfile.name}')
 		shutil.copy2(fname, tmpfile.name)
 		with pip_modules(['pytest', 'selenium', 'xvfbwrapper', 'uritemplate']):
 			importlib.reload(sys.modules[__name__])
@@ -46,8 +46,8 @@ def pip_modules(modules):
 		mod, ver = line.decode('utf-8').strip().split()
 		if mod in modules:
 			modules.remove(mod)
-		if '{}=={}'.format(mod, ver) in modules:
-			modules.remove('{}=={}'.format(mod, ver))
+		if f'{mod}=={ver}' in modules:
+			modules.remove(f'{mod}=={ver}')
 	logger.info(modules)
 	if modules:
 		logger.info('Installing modules via pip3')
@@ -73,7 +73,7 @@ def xserver():
 
 
 def ffmpg_start(capture_video, display):
-	process = subprocess.Popen(['ffmpeg', '-y', '-video_size', '1920x1080', '-framerate', '30', '-f', 'x11grab', '-i', ':{}'.format(display), '-c:v', 'libx264', '-crf', '0', capture_video], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+	process = subprocess.Popen(['ffmpeg', '-y', '-video_size', '1920x1080', '-framerate', '30', '-f', 'x11grab', '-i', f':{display}', '-c:v', 'libx264', '-crf', '0', capture_video], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 	return process.pid
 
 
@@ -85,7 +85,7 @@ def is_local():
 	return os.path.exists('/usr/sbin/univention-upgrade')
 
 
-class Session(object):
+class Session:
 	def __init__(self, display_num, base_url, screenshot_path, driver):
 		self.display_num = display_num
 		self.base_url = base_url
@@ -102,7 +102,7 @@ class Session(object):
 		cert_store = os.path.join(os.environ['HOME'], '.pki', 'nssdb')
 		if not os.path.isdir(cert_store):
 			os.makedirs(cert_store)
-		import_cert = ['certutil', '-A', '-n', 'UCS root CA', '-t', 'TCu,Cu,Tu', '-i', self.ucs_root_ca, '-d', 'sql:{}'.format(cert_store)]
+		import_cert = ['certutil', '-A', '-n', 'UCS root CA', '-t', 'TCu,Cu,Tu', '-i', self.ucs_root_ca, '-d', f'sql:{cert_store}']
 		subprocess.check_output(import_cert)
 
 	def __enter__(self):
@@ -180,7 +180,7 @@ class Session(object):
 		from selenium.common.exceptions import NoSuchElementException
 		elements = self.find_all('.portal-tile__name')
 		for element in elements:
-			print('-%s- -> %s' % (element.text, name))
+			print(f'-{element.text}- -> {name}')
 			if element.text == name:
 				self.driver.execute_script("arguments[0].click();", element)
 				time.sleep(2)
@@ -192,7 +192,7 @@ class Session(object):
 					self.change_tab(-1)
 				break
 		else:
-			raise RuntimeError('Could not find {}'.format(name))
+			raise RuntimeError(f'Could not find {name}')
 
 	@contextmanager
 	def switched_frame(self, css):
@@ -228,12 +228,12 @@ class Session(object):
 
 	def assert_one(self, css):
 		elements = self.find_all(css)
-		assert len(elements) == 1, 'len(elements) == {}'.format(len(elements))
+		assert len(elements) == 1, f'len(elements) == {len(elements)}'
 		return elements[0]
 
 	def assert_one_below(self, element, css):
 		elements = self.find_all_below(element, css)
-		assert len(elements) == 1, 'len(elements) == {}'.format(len(elements))
+		assert len(elements) == 1, f'len(elements) == {len(elements)}'
 		return elements[0]
 
 	def click_element(self, css):
@@ -249,7 +249,7 @@ class Session(object):
 		self.driver.close()
 
 	def enter_input(self, input_name, value):
-		self.enter_input_element('[name={}]'.format(input_name), value)
+		self.enter_input_element(f'[name={input_name}]', value)
 
 	def enter_input_element(self, css, value):
 		from selenium.common.exceptions import InvalidElementStateException
@@ -291,7 +291,7 @@ class Session(object):
 	def _new_filename(self, name, ext):
 		timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 		os.makedirs(self.screenshot_path, exist_ok=True)
-		return os.path.join(self.screenshot_path, '%s_%s.%s' % (name, timestamp, ext))
+		return os.path.join(self.screenshot_path, f'{name}_{timestamp}.{ext}')
 
 	def save_screenshot(self, name):
 		filename = self._new_filename(name, 'png')
@@ -391,7 +391,7 @@ else:
 		try:
 			umc_lib = importlib.import_module(umc_lib)
 		except ImportError:
-			logger.critical('Could not import {}. Maybe set $UCS_TEST_UMC_CLIENT_LIB'.format(umc_lib))
+			logger.critical(f'Could not import {umc_lib}. Maybe set $UCS_TEST_UMC_CLIENT_LIB')
 			raise
 		Client = umc_lib.Client
 		scheme, hostname = hostname.split('//')
@@ -403,7 +403,7 @@ else:
 	@pytest.fixture
 	def ucs_call(fqdn):
 		def _run(args):
-			logger.info('Running: %r' % (args,))
+			logger.info(f'Running: {args!r}')
 			if is_local():
 				logger.info('... locally')
 				subprocess.run(args, check=True)
@@ -414,7 +414,7 @@ else:
 
 	@pytest.fixture
 	def ucr(umc):
-		class UCR(object):
+		class UCR:
 			def __init__(self, client):
 				self.client = client
 				self._old = {}
@@ -446,7 +446,7 @@ else:
 
 	@pytest.fixture(scope='session')
 	def appcenter(umc, fqdn):
-		class AppCenter(object):
+		class AppCenter:
 			def __init__(self, client):
 				self.client = client
 
@@ -498,7 +498,7 @@ else:
 				return app
 
 			def get_published_version(self, app_id):
-				logger.info('Retrieving published App {}'.format(app_id))
+				logger.info(f'Retrieving published App {app_id}')
 				r = requests.get(PROVIDER_PORTAL_JSON)
 				for app in r.json():
 					if app_id == app['id']:
@@ -506,7 +506,7 @@ else:
 				return None
 
 			def get(self, app_id):
-				logger.info('Retrieving App {}'.format(app_id))
+				logger.info(f'Retrieving App {app_id}')
 				response = self.client.umc_command('appcenter/get', {'application': app_id})
 				return response.result
 
@@ -519,7 +519,7 @@ else:
 		try:
 			rest_lib = importlib.import_module(rest_lib)
 		except ImportError:
-			logger.critical('Could not import {}. Maybe set $UCS_TEST_REST_CLIENT_LIB'.format(rest_lib))
+			logger.critical(f'Could not import {rest_lib}. Maybe set $UCS_TEST_REST_CLIENT_LIB')
 			raise
 		uri = os.environ.get('UCS_TEST_UDM_URI')
 		if not uri:
@@ -527,7 +527,7 @@ else:
 				hostname = 'https://{}'.format(config.get('ldap/master'))
 			else:
 				logger.warning('$UCS_TEST_UDM_URI not set')
-			uri = '{}/univention/udm/'.format(hostname)
+			uri = f'{hostname}/univention/udm/'
 		udm = rest_lib.UDM.http(uri, admin_username, admin_password)
 		return udm
 
@@ -554,7 +554,7 @@ else:
 				if user_id is None:
 					user_id = user_id_cache['X']
 					user_id_cache['X'] += 1
-				username = 'ucs-test-user-{}'.format(user_id)
+				username = f'ucs-test-user-{user_id}'
 			if username not in users:
 				user = user_mod.new()
 				user.properties.update(attrs)
@@ -608,7 +608,7 @@ else:
 		if ret is None:
 			logger.warning('$UCS_TEST_SELENIUM_BASE_URL not set')
 			ret = hostname
-			logger.warning('  using {}'.format(ret))
+			logger.warning(f'  using {ret}')
 		return ret
 
 	@pytest.fixture(scope='session')
@@ -618,7 +618,7 @@ else:
 		if ret is None:
 			logger.warning('$UCS_TEST_SELENIUM_SCREENSHOT_PATH not set')
 			ret = 'selenium'
-			logger.warning('  using {}'.format(ret))
+			logger.warning(f'  using {ret}')
 		return os.path.abspath(ret)
 
 	@pytest.fixture

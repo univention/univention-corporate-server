@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -44,7 +43,6 @@ file.
 .. warning:: The API is currently under development and may change before next UCS release!
 """
 
-from __future__ import print_function
 
 import copy
 from types import TracebackType  # noqa: F401
@@ -104,7 +102,7 @@ class UCSTestConfigRegistry(ConfigRegistry):
 
 			# add/revert existing variables
 			changes = [
-				'%s=%s' % (key, origval)
+				f'{key}={origval}'
 				for key, origval in self.__original_registry[regtype].items()
 				if origval != self._registry[regtype].get(key)
 			]

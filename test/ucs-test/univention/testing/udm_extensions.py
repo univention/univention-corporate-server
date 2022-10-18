@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -30,7 +29,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
 
 import subprocess
 import sys
@@ -87,7 +85,7 @@ def call_cmd(cmd, fail_on_error=True):
 	sys.stdout.flush()
 	exitcode = subprocess.call(cmd)
 	if fail_on_error and exitcode:
-		fail('EXITCODE of script %s: %r' % (cmd[0], exitcode))
+		fail(f'EXITCODE of script {cmd[0]}: {exitcode!r}')
 	return exitcode
 
 
@@ -159,7 +157,7 @@ def get_module_buffer(name=None, identifier=None):
 	a randomly generated name is used ('ucstest/%(randomstring)s').
 	"""
 	if name is None:
-		name = 'ucstest/%s' % (random_name(), )
+		name = f'ucstest/{random_name()}'
 	assert '/' in name
 	if identifier is None:
 		identifier = name

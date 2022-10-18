@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -91,7 +90,7 @@ class DebianPackage():
 
 	def get_binary_name(self):
 		# type: () -> str
-		deb_file = '%(package_name)s_%(package_version)s_all.deb' % {'package_name': self._package_name, 'package_version': self._package_version}
+		deb_file = f'{self._package_name}_{self._package_version}_all.deb'
 		deb_package = os.path.join(self._package_tempdir, deb_file)
 		return deb_package
 

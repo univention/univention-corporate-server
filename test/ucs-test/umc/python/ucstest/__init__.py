@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  module: ucs-test
@@ -50,7 +49,7 @@ class ThreadedError(Exception):
 	pass
 
 
-class FakeThread(object):
+class FakeThread:
 	def __init__(self):
 		self.exc_info = None
 		self.name = "Fake Thread"

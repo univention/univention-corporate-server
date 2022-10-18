@@ -1,7 +1,5 @@
-# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Format UCS Test results as simple text report."""
 
-from __future__ import print_function
 
 import curses
 import re
@@ -18,12 +16,12 @@ from univention.testing.data import TestCase, TestCodes, TestEnvironment, TestFo
 __all__ = ['Text', 'Raw']
 
 
-class _Term(object):  # pylint: disable-msg=R0903
+class _Term:  # pylint: disable-msg=R0903
 
 	"""Handle terminal formatting."""
 	__ANSICOLORS = "BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE".split()
 	# vt100.sgr0 contains a delay in the form of '$<2>'
-	__RE_DELAY = re.compile(r'\$<\d+>[/*]?'.encode('utf-8'))
+	__RE_DELAY = re.compile(br'\$<\d+>[/*]?')
 
 	def __init__(self, term_stream=sys.stdout):  # type: (IO[str]) -> None
 		self.COLS = 80  # pylint: disable-msg=C0103
@@ -55,7 +53,7 @@ class Text(TestFormatInterface):
 	__term = WeakValueDictionary()
 
 	def __init__(self, stream=sys.stdout):  # type: (IO[str]) -> None
-		super(Text, self).__init__(stream)
+		super().__init__(stream)
 		try:
 			self.term = Text.__term[self.stream]
 		except KeyError:
@@ -63,9 +61,9 @@ class Text(TestFormatInterface):
 
 	def begin_run(self, environment, count=1):  # type: (TestEnvironment, int) -> None
 		"""Called before first test."""
-		super(Text, self).begin_run(environment, count)
+		super().begin_run(environment, count)
 		now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-		print("Starting %s ucs-test at %s to %s" % (count, now, environment.log.name), file=self.stream)
+		print(f"Starting {count} ucs-test at {now} to {environment.log.name}", file=self.stream)
 		try:
 			ucs_test_version = subprocess.check_output(['/usr/bin/dpkg-query', '--showformat=${Version}', '--show', 'ucs-test-framework']).decode('UTF-8', 'replace')
 		except subprocess.CalledProcessError:
@@ -76,15 +74,15 @@ class Text(TestFormatInterface):
 
 	def begin_section(self, section):  # type: (str) -> None
 		"""Called before each section."""
-		super(Text, self).begin_section(section)
+		super().begin_section(section)
 		if section:
-			header = " Section '%s' " % (section,)
+			header = f" Section '{section}' "
 			line = header.center(self.term.COLS, '=')
 			print(line, file=self.stream)
 
 	def begin_test(self, case, prefix=''):  # type: (TestCase, str) -> None
 		"""Called before each test."""
-		super(Text, self).begin_test(case, prefix)
+		super().begin_test(case, prefix)
 		title = case.description or case.uid
 		title = prefix + title.splitlines()[0]
 
@@ -95,7 +93,7 @@ class Text(TestFormatInterface):
 			print(title[:cols], file=self.stream)
 			title = title[cols:]
 		ruler = '.' * (cols - len(title))
-		print('%s%s' % (title, ruler), end=' ', file=self.stream)
+		print(f'{title}{ruler}', end=' ', file=self.stream)
 		self.stream.flush()
 
 	def end_test(self, result):  # type: (TestResult) -> None
@@ -107,13 +105,13 @@ class Text(TestFormatInterface):
 		color = getattr(self.term, colorname.upper(), b'')
 
 		print('%s%s%s' % (color.decode('ASCII'), msg, self.term.NORMAL.decode('ASCII')), file=self.stream)
-		super(Text, self).end_test(result)
+		super().end_test(result)
 
 	def end_section(self):  # type: () -> None
 		"""Called after each section."""
 		if self.section:
 			print(file=self.stream)
-		super(Text, self).end_section()
+		super().end_section()
 
 	def format(self, result):  # type: (TestResult) -> None
 		"""
@@ -150,7 +148,7 @@ class Raw(Text):
 			print(title[:cols], file=self.stream)
 			title = title[cols:]
 		ruler = '.' * (cols - len(title))
-		print('%s %s' % (title, ruler), end=' ', file=self.stream)
+		print(f'{title} {ruler}', end=' ', file=self.stream)
 		self.stream.flush()
 
 

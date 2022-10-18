@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # UCS test
 #
@@ -35,17 +34,17 @@
 from random import choice, randint
 from typing import Iterator, Text, Optional, Tuple  # noqa: F401
 
-STR_NUMERIC = u'0123456789'
-STR_ALPHA = u'abcdefghijklmnopqrstuvwxyz'
+STR_NUMERIC = '0123456789'
+STR_ALPHA = 'abcdefghijklmnopqrstuvwxyz'
 STR_ALPHANUM = STR_ALPHA + STR_NUMERIC
 STR_ALPHANUMDOTDASH = STR_ALPHANUM + '.-'
 
-STR_SPECIAL_CHARACTER = u'!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ ´€Ω®½'
-STR_UMLAUT = u'äöüßâêôûŵẑŝĝĵŷĉ'
+STR_SPECIAL_CHARACTER = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ ´€Ω®½'
+STR_UMLAUT = 'äöüßâêôûŵẑŝĝĵŷĉ'
 STR_UMLAUTNUM = STR_UMLAUT + STR_NUMERIC
 
 
-def random_string(length=10, alpha=True, numeric=True, charset=u"", encoding='utf-8'):
+def random_string(length=10, alpha=True, numeric=True, charset="", encoding='utf-8'):
 	# type: (int, bool, bool, Text, str) -> str
 	"""
 	Get specified number of random characters (ALPHA, NUMERIC or ALPHANUMERIC).
@@ -53,7 +52,7 @@ def random_string(length=10, alpha=True, numeric=True, charset=u"", encoding='ut
 	may be defined via "charset" as string. The default encoding is UTF-8.
 	If length is 0 or negative, an empty string is returned.
 	"""
-	result = u''
+	result = ''
 	for _ in range(length):
 		if charset:
 			result += choice(charset)
@@ -117,7 +116,7 @@ def random_ucs_version(min_major=1, max_major=9, min_minor=0, max_minor=99, min_
 def random_mac():
 	# type: () -> str
 	return ':'.join(
-		"%02x" % (randint(0, 0x7f if i < 4 else 0xff),)
+		f"{randint(0, 0x7f if i < 4 else 0xff):02x}"
 		for i in range(6)
 	)
 
@@ -147,7 +146,7 @@ def random_ipv6_subnet():
 	# type: () -> str
 	"""Returns random six blocks of an ipv6 address """
 	m = 16**4
-	return ":".join(("%04x" % randint(0, m) for i in range(6)))
+	return ":".join("%04x" % randint(0, m) for i in range(6))
 
 
 def random_domain_name(length=10):
@@ -161,7 +160,7 @@ def random_domain_name(length=10):
 def random_dns_record():
 	# type: () -> str
 	# Bug #49679: the S4-Connector always appends a dot to nSRecord and ptrRecords without dot
-	return '%s.' % (random_string(),)
+	return f'{random_string()}.'
 
 
 def random_date():  # type: () -> str
@@ -173,4 +172,4 @@ def random_time(range_hour=(0, 23)):  # type: (Tuple[int, int]) -> str
 
 
 def random_email():  # type: () -> str
-	return '%s@%s' % (random_name(), random_domain_name())
+	return f'{random_name()}@{random_domain_name()}'

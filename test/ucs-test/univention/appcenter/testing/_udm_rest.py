@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  Univention Directory Manager Module
@@ -47,10 +46,6 @@ Sample Client for the UDM REST API.
 >>> print('Object {}'.format(obj))
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
 
 import sys
 import time
@@ -74,7 +69,7 @@ class HTTPError(Exception):
 		# type: (int, str, Optional[requests.Response]) -> None
 		self.code = code
 		self.response = response
-		super(HTTPError, self).__init__(message)
+		super().__init__(message)
 
 
 class BadRequest(HTTPError):
@@ -121,7 +116,7 @@ class _NoRelation(Exception):
 	pass
 
 
-class Response(object):
+class Response:
 
 	def __init__(self, response, data, uri):
 		# type: (requests.Response, Any, str) -> None
@@ -130,7 +125,7 @@ class Response(object):
 		self.uri = uri
 
 
-class Session(object):
+class Session:
 
 	def __init__(self, credentials, language='en-US', reconnect=True, user_agent='univention.lib/1.0', enable_caching=False):
 		# type: (UDM, str, bool, str, bool) -> None
@@ -212,7 +207,7 @@ class Session(object):
 	def eval_response(self, response, expect_json=False):
 		# type: (requests.Response, bool) -> Any
 		if response.status_code >= 299:
-			msg = '{} {}: {}'.format(response.request.method, response.url, response.status_code)
+			msg = f'{response.request.method} {response.url}: {response.status_code}'
 			try:
 				json = response.json()
 			except ValueError:
@@ -223,7 +218,7 @@ class Session(object):
 						server_message = json['error'].get('message')
 						# traceback = json['error'].get('traceback')
 						if server_message:
-							msg += '\n{}'.format(server_message)
+							msg += f'\n{server_message}'
 			errors = {400: BadRequest, 404: NotFound, 403: Forbidden, 401: Unauthorized, 412: PreconditionFailed, 422: UnprocessableEntity, 500: ServerError, 503: ServiceUnavailable}
 			cls = HTTPError
 			cls = errors.get(response.status_code, cls)
@@ -258,8 +253,7 @@ class Session(object):
 		# type: (Dict, str, Optional[str], Optional[Dict[str, Any]]) -> Iterator[Any]
 		embedded = entry.get('_embedded', {})
 		if isinstance(embedded, dict) and relation in embedded:
-			for x in embedded[relation]:
-				yield x
+			yield from embedded[relation]
 			return
 
 		for rel in self.get_relations(entry, relation, name, template):
@@ -270,7 +264,7 @@ class Session(object):
 		return next(self.resolve_relations(entry, relation, name, template))
 
 
-class Client(object):
+class Client:
 
 	def __init__(self, client):
 		# type: (Session) -> None
@@ -291,7 +285,7 @@ class UDM(Client):
 		self.password = password
 		self._api_version = None  # type: Optional[str]
 		self.entry = None  # type: Any # Optional[Dict]
-		super(UDM, self).__init__(Session(self, *args, **kwargs))
+		super().__init__(Session(self, *args, **kwargs))
 
 	def load(self):
 		# type: () -> None
@@ -339,14 +333,14 @@ class UDM(Client):
 
 	def __repr__(self):
 		# type: () -> str
-		return 'UDM(uri={}, username={}, password=****, version={})'.format(self.uri, self.username, self._api_version)
+		return f'UDM(uri={self.uri}, username={self.username}, password=****, version={self._api_version})'
 
 
 class Module(Client):
 
 	def __init__(self, udm, uri, name, title, *args, **kwargs):
 		# type: (UDM, str, str, str, *Any, **Any) -> None
-		super(Module, self).__init__(udm.client, *args, **kwargs)
+		super().__init__(udm.client, *args, **kwargs)
 		self.udm = udm
 		self.uri = uri
 		self.username = udm.username
@@ -363,7 +357,7 @@ class Module(Client):
 
 	def __repr__(self):
 		# type: () -> str
-		return 'Module(uri={}, name={})'.format(self.uri, self.name)
+		return f'Module(uri={self.uri}, name={self.name})'
 
 	def new(self, position=None, superordinate=None, template=None):
 		# type: (Optional[str], Optional[str], Optional[Dict[str, Any]]) -> Object
@@ -421,7 +415,7 @@ class Module(Client):
 		}
 		if isinstance(filter, dict):
 			for prop, val in filter.items():
-				data['query[%s]' % (prop,)] = val
+				data[f'query[{prop}]'] = val
 		elif isinstance(filter, str):
 			data['filter'] = filter
 		if superordinate:
@@ -430,15 +424,14 @@ class Module(Client):
 			data['properties'] = 'dn'
 		self.load_relations()
 		entries = self.client.resolve_relation(self.relations, 'search', template=data)
-		for obj in self.client.resolve_relations(entries, 'udm:object'):
-			yield obj
+		yield from self.client.resolve_relations(entries, 'udm:object')
 
 
 class ShallowObject(Client):
 
 	def __init__(self, udm, dn, uri, *args, **kwargs):
 		# type: (UDM, Optional[str], str, *Any, **Any) -> None
-		super(ShallowObject, self).__init__(udm.client, *args, **kwargs)
+		super().__init__(udm.client, *args, **kwargs)
 		self.dn = dn
 		self.udm = udm
 		self.uri = uri
@@ -449,10 +442,10 @@ class ShallowObject(Client):
 
 	def __repr__(self):
 		# type: () -> str
-		return 'ShallowObject(dn={})'.format(self.dn)
+		return f'ShallowObject(dn={self.dn})'
 
 
-class References(object):
+class References:
 
 	def __init__(self, obj=None):
 		# type: (Optional[Object]) -> None
@@ -465,12 +458,12 @@ class References(object):
 		assert self.udm
 		return [
 			ShallowObject(self.obj.udm, x['name'], x['href'])
-			for x in self.udm.client.get_relations(self.obj.hal, 'udm:object/property/reference/%s' % (item,))
+			for x in self.udm.client.get_relations(self.obj.hal, f'udm:object/property/reference/{item}')
 		]
 
 	def __getattribute__(self, key):
 		try:
-			return super(References, self).__getattribute__(key)
+			return super().__getattribute__(key)
 		except AttributeError:
 			return self[key]
 
@@ -557,7 +550,7 @@ class Object(Client):
 
 	def __init__(self, udm, representation, etag=None, last_modified=None, *args, **kwargs):
 		# type: (UDM, Dict, Optional[str], Optional[str], *Any, **Any) -> None
-		super(Object, self).__init__(udm.client, *args, **kwargs)
+		super().__init__(udm.client, *args, **kwargs)
 		self.udm = udm
 		self.representation = representation
 		self.hal = {
@@ -569,7 +562,7 @@ class Object(Client):
 
 	def __repr__(self):
 		# type: () -> str
-		return 'Object(module={}, dn={}, uri={})'.format(self.object_type, self.dn, self.uri)
+		return f'Object(module={self.object_type}, dn={self.dn}, uri={self.uri})'
 
 	def reload(self):
 		# type: () -> None

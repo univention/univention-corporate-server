@@ -1,7 +1,3 @@
-# coding: utf-8
-
-from __future__ import print_function
-
 import subprocess
 from typing import Text, Union  # noqa: F401
 
@@ -14,7 +10,7 @@ from univention.testing.udm import verify_udm_object
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
-UTF8_CHARSET = tstrings.STR_UMLAUT + u"КирилицаКириллицаĆirilicaЋирилица" + u"普通話普通话"
+UTF8_CHARSET = tstrings.STR_UMLAUT + "КирилицаКириллицаĆirilicaЋирилица" + "普通話普通话"
 # the CON sync can't # handle them (see bug #44373)
 SPECIAL_CHARSET = "".join(set(tstrings.STR_SPECIAL_CHARACTER) - set('\\#"?'))
 # We exclude '$' as it has special meaning . A '.' (dot) may not be the last
@@ -23,12 +19,12 @@ FORBIDDEN_SAMACCOUNTNAME = "\\/[]:;|=,+*?<>@ " + '$.'
 SPECIAL_CHARSET_USERNAME = "".join(set(SPECIAL_CHARSET) - set(FORBIDDEN_SAMACCOUNTNAME))
 
 
-def random_string(length=10, alpha=False, numeric=False, charset=u"", encoding='utf-8'):
+def random_string(length=10, alpha=False, numeric=False, charset="", encoding='utf-8'):
 	# type: (int, bool, bool, str, Text) -> str
 	return tstrings.random_string(length, alpha, numeric, charset, encoding)
 
 
-def random_bytestring(length=10, alpha=False, numeric=False, charset=u""):
+def random_bytestring(length=10, alpha=False, numeric=False, charset=""):
 	# type: (int, bool, bool, Text) -> bytes
 	string = random_string(length, alpha, numeric, charset)
 	if not isinstance(string, bytes):
@@ -61,7 +57,7 @@ def restart_univention_cli_server():
 	subprocess.call(["pkill", "-f", "univention-cli-server"])
 
 
-class TestUser(object):
+class TestUser:
 	def __init__(self, user, rename={}, container=None, selection=None):
 		selection = selection or ("username", "firstname", "lastname")
 		self.basic = {k: v for (k, v) in user.items() if k in selection}
@@ -81,7 +77,7 @@ class TestUser(object):
 
 class NormalUser(TestUser):
 	def __init__(self, selection=None):
-		super(NormalUser, self).__init__(
+		super().__init__(
 			user={
 				"username": tstrings.random_username().encode('UTF-8'),
 				"firstname": tstrings.random_name().encode('UTF-8'),
@@ -106,7 +102,7 @@ class NormalUser(TestUser):
 
 class Utf8User(TestUser):
 	def __init__(self, selection=None):
-		super(Utf8User, self).__init__(
+		super().__init__(
 			user={
 				"username": random_bytestring(charset=UTF8_CHARSET),
 				"firstname": random_bytestring(charset=UTF8_CHARSET),
@@ -131,7 +127,7 @@ class Utf8User(TestUser):
 
 class SpecialUser(TestUser):
 	def __init__(self, selection=None):
-		super(SpecialUser, self).__init__(
+		super().__init__(
 			user={
 				"username": random_bytestring(charset=SPECIAL_CHARSET_USERNAME),
 				"firstname": tstrings.random_name_special_characters().encode('UTF-8'),
@@ -154,7 +150,7 @@ class SpecialUser(TestUser):
 		)
 
 
-class TestGroup(object):
+class TestGroup:
 	def __init__(self, group, rename={}, container=None):
 		self.group = group
 		self.rename = dict(self.group)
@@ -172,7 +168,7 @@ class TestGroup(object):
 
 class NormalGroup(TestGroup):
 	def __init__(self):
-		super(NormalGroup, self).__init__(
+		super().__init__(
 			group={
 				"name": tstrings.random_groupname().encode('UTF-8'),
 				"description": random_bytestring(alpha=True, numeric=True),
@@ -184,7 +180,7 @@ class NormalGroup(TestGroup):
 
 class Utf8Group(TestGroup):
 	def __init__(self):
-		super(Utf8Group, self).__init__(
+		super().__init__(
 			group={
 				"name": random_bytestring(charset=UTF8_CHARSET),
 				"description": random_bytestring(charset=UTF8_CHARSET),
@@ -196,7 +192,7 @@ class Utf8Group(TestGroup):
 
 class SpecialGroup(TestGroup):
 	def __init__(self):
-		super(SpecialGroup, self).__init__(
+		super().__init__(
 			group={
 				"name": random_bytestring(charset=SPECIAL_CHARSET_USERNAME),
 				"description": random_bytestring(charset=SPECIAL_CHARSET),
@@ -245,7 +241,7 @@ def map_udm_group_to_con(group):
 
 
 def create_udm_user(udm, con, user, wait_for_sync):
-	print("\nCreating UDM user {}\n".format(user.basic))
+	print(f"\nCreating UDM user {user.basic}\n")
 	(udm_user_dn, username) = udm.create_user(**user.to_unicode(user.basic))
 	con_user_dn = ldap.dn.dn2str([
 		[("CN", to_unicode(username), ldap.AVA_STRING)],
@@ -265,7 +261,7 @@ def delete_udm_user(udm, con, udm_user_dn, con_user_dn, wait_for_sync):
 def create_con_user(con, udm_user, wait_for_sync):
 	basic_con_user = map_udm_user_to_con(udm_user.basic)
 
-	print("\nCreating CON user {}\n".format(basic_con_user))
+	print(f"\nCreating CON user {basic_con_user}\n")
 	username = udm_user.basic.get("username")
 	con_user_dn = con.createuser(username, **basic_con_user)
 	udm_user_dn = ldap.dn.dn2str([
@@ -284,7 +280,7 @@ def delete_con_user(con, con_user_dn, udm_user_dn, wait_for_sync):
 
 
 def create_udm_group(udm, con, group, wait_for_sync):
-	print("\nCreating UDM group {}\n".format(group))
+	print(f"\nCreating UDM group {group}\n")
 	(udm_group_dn, groupname) = udm.create_group(**group.to_unicode(group.group))
 	con_group_dn = ldap.dn.dn2str([
 		[("CN", to_unicode(groupname), ldap.AVA_STRING)],
@@ -304,7 +300,7 @@ def delete_udm_group(udm, con, udm_group_dn, con_group_dn, wait_for_sync):
 def create_con_group(con, udm_group, wait_for_sync):
 	con_group = map_udm_group_to_con(udm_group.group)
 
-	print("\nCreating CON group {}\n".format(con_group))
+	print(f"\nCreating CON group {con_group}\n")
 	groupname = to_unicode(udm_group.group.get("name"))
 	con_group_dn = con.group_create(groupname, **con_group)
 	udm_group_dn = ldap.dn.dn2str([

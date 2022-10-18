@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import os
 import sys
 import subprocess
@@ -51,7 +49,7 @@ def get_first(value):
 	return value
 
 
-class LDAPConnection(object):
+class LDAPConnection:
 	'''helper functions to modify LDAP-objects intended as glue for shell-scripts'''
 
 	def __init__(self, no_starttls=False):
@@ -72,14 +70,14 @@ class LDAPConnection(object):
 
 		login_pw = ""
 		if self.pw_file:
-			with open(self.pw_file, 'r') as fp:
+			with open(self.pw_file) as fp:
 				login_pw = fp.readline().rstrip('\n')
 
 		try:
 			if self.protocol == 'ldapi':
 				import urllib.parse
 				socket = urllib.parse.quote(self.socket, '')
-				ldapuri = "%s://%s" % (self.protocol, socket)
+				ldapuri = f"{self.protocol}://{socket}"
 			else:
 				ldapuri = "%s://%s:%d" % (self.protocol, self.host, int(self.port))
 
@@ -91,7 +89,7 @@ class LDAPConnection(object):
 			if tls_mode > 0:
 				self.lo.start_tls_s()
 		except Exception:
-			ex = 'LDAP Connection to "%s:%s" failed (TLS: %s, Certificate: %s)\n' % (self.host, self.port, not no_starttls, self.ca_file)
+			ex = f'LDAP Connection to "{self.host}:{self.port}" failed (TLS: {not no_starttls}, Certificate: {self.ca_file})\n'
 			import traceback
 			raise Exception(ex + traceback.format_exc())
 
@@ -107,10 +105,10 @@ class LDAPConnection(object):
 				self.lo.simple_bind_s(self.login_dn, login_pw)
 		except Exception:
 			if self.kerberos:
-				cred_msg = '%r with Kerberos password %r' % (self.principal, login_pw)
+				cred_msg = f'{self.principal!r} with Kerberos password {login_pw!r}'
 			else:
-				cred_msg = '%r with simplebind password %r' % (self.login_dn, login_pw)
-			ex = 'LDAP Bind as %s failed over connection to "%s:%s" (TLS: %s, Certificate: %s)\n' % (cred_msg, self.host, self.port, not no_starttls, self.ca_file)
+				cred_msg = f'{self.login_dn!r} with simplebind password {login_pw!r}'
+			ex = f'LDAP Bind as {cred_msg} failed over connection to "{self.host}:{self.port}" (TLS: {not no_starttls}, Certificate: {self.ca_file})\n'
 			import traceback
 			raise Exception(ex + traceback.format_exc())
 
@@ -156,12 +154,12 @@ class LDAPConnection(object):
 		"""Create LDAP object at 'dn' with attributes 'attrs'."""
 		# attrs = {key,:[value] if isinstance(value, (str, bytes)) else value for key, value in attrs.items()}
 		ldif = modlist.addModlist(attrs)
-		print('Creating %r with %r' % (dn, ldif), file=sys.stderr)
+		print(f'Creating {dn!r} with {ldif!r}', file=sys.stderr)
 		self.lo.add_ext_s(dn, ldif, serverctrls=self.serverctrls_for_add_and_modify)
 
 	def delete(self, dn):
 		"""Delete LDAP object at 'dn'."""
-		print('Deleting %r' % (dn,), file=sys.stderr)
+		print(f'Deleting {dn!r}', file=sys.stderr)
 		self.lo.delete_s(dn)
 
 	def move(self, dn, newdn):
@@ -171,15 +169,15 @@ class LDAPConnection(object):
 		parent2 = get_parent_dn(newdn)
 
 		if parent1 != parent2:
-			print('Moving %r as %r into %r' % (dn, newdn, parent2), file=sys.stderr)
+			print(f'Moving {dn!r} as {newdn!r} into {parent2!r}', file=sys.stderr)
 			self.lo.rename_s(dn, newrdn, parent2)
 		else:
-			print('Renaming %r to %r' % (dn, newrdn), file=sys.stderr)
+			print(f'Renaming {dn!r} to {newrdn!r}', file=sys.stderr)
 			self.lo.modrdn_s(dn, newrdn)
 
 	def set_attribute(self, dn, key, value):
 		"""Set attribute 'key' of LDAP object at 'dn' to 'value'."""
-		print('Replace %r=%r at %r' % (key, value, dn), file=sys.stderr)
+		print(f'Replace {key!r}={value!r} at {dn!r}', file=sys.stderr)
 		self.lo.modify_ext_s(dn, [(ldap.MOD_REPLACE, key, value)], serverctrls=self.serverctrls_for_add_and_modify)
 
 	def set_attributes(self, dn, **attributes):
@@ -188,7 +186,7 @@ class LDAPConnection(object):
 		ldif = modlist.modifyModlist(old_attributes, attributes)
 		comp_dn = dn
 		if ldif:
-			print('Modifying %r: %r' % (comp_dn, ldif), file=sys.stderr)
+			print(f'Modifying {comp_dn!r}: {ldif!r}', file=sys.stderr)
 			self.lo.modify_ext_s(comp_dn, ldif, serverctrls=self.serverctrls_for_add_and_modify)
 
 	def set_attribute_with_provision_ctrl(self, dn, key, value):
@@ -198,22 +196,22 @@ class LDAPConnection(object):
 			LDAPControl(LDB_CONTROL_PROVISION_OID, criticality=0),
 			LDAPControl(DSDB_CONTROL_REPLICATED_UPDATE_OID, criticality=0),
 		] + self.serverctrls_for_add_and_modify
-		print('Replace %r=%r at %r (with provision control)' % (key, value, dn), file=sys.stderr)
+		print(f'Replace {key!r}={value!r} at {dn!r} (with provision control)', file=sys.stderr)
 		self.lo.modify_ext_s(dn, [(ldap.MOD_REPLACE, key, value)], serverctrls=ctrls)
 
 	def delete_attribute(self, dn, key):
 		"""Delete attribute 'key' of LDAP object at 'dn'."""
-		print('Removing %r from %r' % (key, dn), file=sys.stderr)
+		print(f'Removing {key!r} from {dn!r}', file=sys.stderr)
 		self.lo.modify_ext_s(dn, [(ldap.MOD_DELETE, key, None)], serverctrls=self.serverctrls_for_add_and_modify)
 
 	def append_to_attribute(self, dn, key, value):
 		"""Add 'value' to attribute 'key' of LDAP object at 'dn'."""
-		print('Appending %r=%r to %r' % (key, value, dn), file=sys.stderr)
+		print(f'Appending {key!r}={value!r} to {dn!r}', file=sys.stderr)
 		self.lo.modify_ext_s(dn, [(ldap.MOD_ADD, key, value)], serverctrls=self.serverctrls_for_add_and_modify)
 
 	def remove_from_attribute(self, dn, key, value):
 		"""Remove 'value' from attribute 'key' of LDAP object at 'dn'."""
-		print('Removing %r=%r from %r' % (key, value, dn), file=sys.stderr)
+		print(f'Removing {key!r}={value!r} from {dn!r}', file=sys.stderr)
 		self.lo.modify_ext_s(dn, [(ldap.MOD_DELETE, key, value)], serverctrls=self.serverctrls_for_add_and_modify)
 
 
@@ -316,7 +314,7 @@ class ADConnection(LDAPConnection):
 		Returns the dn of the created group.
 		"""
 		new_position = position or 'cn=groups,%s' % self.adldapbase
-		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(groupname), new_position)
+		new_dn = f'cn={ldap.dn.escape_dn_chars(groupname)},{new_position}'
 
 		defaults = (('objectclass', [b'top', b'group']), ('sAMAccountName', to_bytes(groupname)))
 		new_attributes = dict(defaults)
@@ -362,7 +360,7 @@ class ADConnection(LDAPConnection):
 		if description:
 			attrs['description'] = to_bytes(description)
 
-		container_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(name), position)
+		container_dn = f'cn={ldap.dn.escape_dn_chars(name)},{position}'
 		self.create(container_dn, attrs)
 		return container_dn
 
@@ -377,7 +375,7 @@ class ADConnection(LDAPConnection):
 		if description:
 			attrs['description'] = to_bytes(description)
 
-		self.create('ou=%s,%s' % (ldap.dn.escape_dn_chars(name), position), attrs)
+		self.create(f'ou={ldap.dn.escape_dn_chars(name)},{position}', attrs)
 
 	def verify_object(self, dn, expected_attributes):
 		"""
@@ -389,19 +387,19 @@ class ADConnection(LDAPConnection):
 		This will throw an `AssertionError` in case of a mismatch.
 		"""
 		if expected_attributes is None:
-			assert not self.exists(dn), "AD object {} should not exist".format(dn)
+			assert not self.exists(dn), f"AD object {dn} should not exist"
 		else:
 			ad_object = self.get(dn)
 			for (key, value) in expected_attributes.items():
-				ad_value = set(tcommon.to_unicode(x).lower() for x in ad_object.get(key, []))
+				ad_value = {tcommon.to_unicode(x).lower() for x in ad_object.get(key, [])}
 				expected = set((tcommon.to_unicode(v).lower() for v in value) if isinstance(value, (list, tuple)) else (tcommon.to_unicode(value).lower(),))
 				if not expected.issubset(ad_value):
 					try:
-						ad_value = set(tcommon.normalize_dn(dn) for dn in ad_value)
-						expected = set(tcommon.normalize_dn(dn) for dn in expected)
+						ad_value = {tcommon.normalize_dn(dn) for dn in ad_value}
+						expected = {tcommon.normalize_dn(dn) for dn in expected}
 					except ldap.DECODING_ERROR:
 						pass
-				error_msg = '{}: {} not in {}, object {}'.format(key, expected, ad_value, ad_object)
+				error_msg = f'{key}: {expected} not in {ad_value}, object {ad_object}'
 				assert expected.issubset(ad_value), error_msg
 
 

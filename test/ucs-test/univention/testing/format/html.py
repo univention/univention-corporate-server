@@ -1,7 +1,5 @@
-# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Format UCS Test results as HTML."""
 
-from __future__ import print_function
 
 import sys
 from typing import IO  # noqa: F401
@@ -24,11 +22,11 @@ class HTML(TestFormatInterface):
 	"""
 
 	def __init__(self, stream=sys.stdout):  # type: (IO[str]) -> None
-		super(HTML, self).__init__(stream)
+		super().__init__(stream)
 
 	def begin_run(self, environment, count=1):  # type: (TestEnvironment, int) -> None
 		"""Called before first test."""
-		super(HTML, self).begin_run(environment, count)
+		super().begin_run(environment, count)
 		print('<html>', file=self.stream)
 		print('<head>', file=self.stream)
 		print('<title>ucs-test</title>', file=self.stream)
@@ -37,8 +35,8 @@ class HTML(TestFormatInterface):
 
 	def begin_section(self, section):  # type: (str) -> None
 		"""Called before each section."""
-		super(HTML, self).begin_section(section)
-		print('<h2>Section %s</h2>' % (escape_xml(section),), file=self.stream)
+		super().begin_section(section)
+		print(f'<h2>Section {escape_xml(section)}</h2>', file=self.stream)
 		print('<table>', file=self.stream)
 
 	def end_test(self, result):  # type: (TestResult) -> None
@@ -62,19 +60,19 @@ class HTML(TestFormatInterface):
 		colorname = TestCodes.COLOR.get(result.reason, 'BLACK')
 		msg = '<span style="color:%s;">%s</span>' % \
 			(colorname.lower(), escape_xml(msg))
-		print('<tr><td>%s</td><td>%s</td></tr>' % (title, msg), file=self.stream)
-		super(HTML, self).end_test(result)
+		print(f'<tr><td>{title}</td><td>{msg}</td></tr>', file=self.stream)
+		super().end_test(result)
 
 	def end_section(self):  # type: () -> None
 		"""Called after each section."""
 		print('</table>', file=self.stream)
-		super(HTML, self).end_section()
+		super().end_section()
 
 	def end_run(self):  # type: () -> None
 		"""Called after all test."""
 		print('</body>', file=self.stream)
 		print('</html>', file=self.stream)
-		super(HTML, self).end_run()
+		super().end_run()
 
 	def format(self, result):  # type: (TestResult) -> None
 		"""Format single test.

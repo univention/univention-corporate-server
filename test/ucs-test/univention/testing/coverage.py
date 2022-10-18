@@ -1,6 +1,5 @@
 """Code coverage measurement for ucs-test"""
 
-from __future__ import absolute_import, print_function
 
 import atexit
 import distutils.spawn
@@ -16,7 +15,7 @@ class MissingCoverage(Exception):
 	pass
 
 
-class Coverage(object):
+class Coverage:
 
 	COVERAGE_PTH = '/usr/lib/python3/dist-packages/ucstest-coverage.pth'
 	COVERAGE_PTH_CONTENT = '''import univention.testing.coverage; univention.testing.coverage.Coverage.startup()'''
@@ -109,11 +108,11 @@ directory = {directory}
 		for service in self.services:
 			try:
 				subprocess.call(['/usr/sbin/service', service, 'restart'])
-			except EnvironmentError:
+			except OSError:
 				pass
 		try:
 			subprocess.call(['pkill', '-f', 'python.*univention-cli-server'])
-		except EnvironmentError:
+		except OSError:
 			pass
 
 	def stop(self):
@@ -249,11 +248,11 @@ directory = {directory}
 		try:
 			with open(cls.COVERAGE_DEBUG_PATH, 'a') as fd:
 				fd.write('%s : %s: %s\n' % (os.getpid(), time.time(), ' '.join(repr(m) for m in messages),))
-		except EnvironmentError:
+		except OSError:
 			pass
 
 
-class StopCoverageDecorator(object):
+class StopCoverageDecorator:
 	inDecorator = False
 
 	def __init__(self, method):
@@ -273,4 +272,4 @@ class StopCoverageDecorator(object):
 
 	def __repr__(self):
 		# type: () -> str
-		return '<StopCoverageDecorator %r>' % (self.method,)
+		return f'<StopCoverageDecorator {self.method!r}>'

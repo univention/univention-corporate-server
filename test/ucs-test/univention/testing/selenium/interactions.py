@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Selenium Tests
 #
@@ -33,7 +32,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
 
 import json
 import logging
@@ -50,12 +48,12 @@ from univention.testing.selenium.utils import expand_path
 logger = logging.getLogger(__name__)
 
 
-class Interactions(object):
+class Interactions:
 
 	def click_text(self, text, **kwargs):
 		# type: (str, **Any) -> None
 		logger.info("Clicking the text %r", text)
-		self.click_element('//*[contains(text(), "%s")]' % (text,), **kwargs)
+		self.click_element(f'//*[contains(text(), "{text}")]', **kwargs)
 
 	def click_checkbox_of_grid_entry(self, name, **kwargs):
 		# type: (str, **Any) -> None
@@ -96,7 +94,7 @@ class Interactions(object):
 	def click_button(self, button_text, xpath_prefix='', **kwargs):
 		# type: (str, str, **Any) -> None
 		logger.info("Clicking the button %r", button_text)
-		xpath = '//*[@containsClass="dijitButtonText"][text() = "%s"]' % (button_text,)
+		xpath = f'//*[@containsClass="dijitButtonText"][text() = "{button_text}"]'
 		xpath = expand_path(xpath_prefix + xpath)
 		self.click_element(
 			xpath,
@@ -181,7 +179,7 @@ class Interactions(object):
 		Waits for the element to be clickable before attempting to click.
 		"""
 		elems = webdriver.support.ui.WebDriverWait(xpath, timeout).until(
-			self.get_all_enabled_elements, 'click_element(%r, scroll_into_view=%r, timeout=%r, right_click=%r)' % (xpath, scroll_into_view, timeout, right_click)
+			self.get_all_enabled_elements, f'click_element({xpath!r}, scroll_into_view={scroll_into_view!r}, timeout={timeout!r}, right_click={right_click!r})'
 		)
 
 		if len(elems) != 1:
@@ -229,12 +227,12 @@ class Interactions(object):
 
 	def enter_input_combobox(self, inputname, inputvalue, with_click=True):
 		# type: (str, str, bool) -> None
-		xpath = "//*[@role='combobox' and .//input[@name='{}']]//input[@role='textbox']".format(inputname)
+		xpath = f"//*[@role='combobox' and .//input[@name='{inputname}']]//input[@role='textbox']"
 		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
 			self.get_all_enabled_elements
 		)
 		if len(elems) != 1:
-			logger.warn("Found {!d} input elements instead of one. Try using the first one".format(len(elems)))
+			logger.warn(f"Found {len(elems):d} input elements instead of one. Try using the first one")
 		elems[0].clear()
 		elems[0].send_keys(inputvalue)
 		if with_click:
@@ -243,12 +241,12 @@ class Interactions(object):
 			self.click_element(xpath)
 
 	def enter_input_date(self, inputname, inputvalue):  # type: (str, str) -> None
-		xpath = "//*[@role='combobox' and .//input[@name='{}']]//input[@role='textbox']".format(inputname)
+		xpath = f"//*[@role='combobox' and .//input[@name='{inputname}']]//input[@role='textbox']"
 		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
 			self.get_all_enabled_elements
 		)
 		if len(elems) != 1:
-			logger.warn("Found {:d} input elements instead of one. Try using the first one".format(len(elems)))
+			logger.warn(f"Found {len(elems):d} input elements instead of one. Try using the first one")
 		elems[0].clear()
 		elems[0].send_keys(inputvalue)
 
@@ -257,7 +255,7 @@ class Interactions(object):
 		"""
 		Submit the input in an input-element with the tag inputname.
 		"""
-		logger.info('Submitting input field %r.' % (inputname,))
+		logger.info(f'Submitting input field {inputname!r}.')
 		elem = self.get_input(inputname)
 		# elem.submit() -> This doesn't work, when there is an html element
 		# named 'submit'.
@@ -268,7 +266,7 @@ class Interactions(object):
 		"""
 		Get an input-element with the tag inputname.
 		"""
-		xpath = '//input[@name= %s ]' % (json.dumps(inputname),)
+		xpath = f'//input[@name= {json.dumps(inputname)} ]'
 		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
 			self.get_all_enabled_elements
 		)
@@ -300,7 +298,7 @@ class Interactions(object):
 		Which ImageUploader widget is found can be isolated by specifying 'xpath_prefix'
 		which would be an xpath pointing to a specific container/section etc.
 		"""
-		uploader_button_xpath = '//*[contains(@id, "_ImageUploader_")]//*[text()="%s"]' % (button_label,)
+		uploader_button_xpath = f'//*[contains(@id, "_ImageUploader_")]//*[text()="{button_label}"]'
 		self.wait_until_element_visible(xpath_prefix + uploader_button_xpath)
 		uploader_xpath = '//*[contains(@id, "_ImageUploader_")]//input[@type="file"]'
 		logger.info("Getting the uploader with xpath: %s" % xpath_prefix + uploader_xpath)
