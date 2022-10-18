@@ -1,0 +1,23 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: poppler
+fix: 0.48.0-2+deb9u5
+desc: |
+ This update addresses the following issues:
+ 0.48.0-2+deb9u5 (Wed, 28 Sep 2022 22:25:20 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * Fix CVE-2018-13988, CVE-2018-18897, CVE-2019-10873, CVE-2020-27778,
+   CVE-2022-27337 and CVE-2022-38784. Several security vulnerabilities have
+   been discovered in Poppler, a PDF rendering library, that could lead to
+   denial of service or possibly other unspecified impact when processing
+   maliciously crafted documents.
+bug: [55300]
+cve:
+- CVE-2018-13988
+- CVE-2018-18897
+- CVE-2019-10873
+- CVE-2020-27778
+- CVE-2022-27337
+- CVE-2022-38784
