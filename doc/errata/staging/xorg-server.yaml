@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: xorg-server
+fix: 2:1.19.2-1+deb9u10
+desc: |
+ This update addresses the following issues:
+ 2:1.19.2-1+deb9u10 (Tue, 26 Jul 2022 14:11:22 +0200)
+ * CVE-2022-2319: out of bounds write in ProcXkbSetGeometry.
+ * CVE-2022-2320: out of bounds write in ProcXkbSetDeviceInfo.
+bug: [55297]
+cve:
+- CVE-2022-2319
+- CVE-2022-2320
