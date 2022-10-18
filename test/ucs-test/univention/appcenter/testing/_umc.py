@@ -40,6 +40,7 @@ Univention common Python library to manage connections to remote |UMC| servers.
 >>> umc.umc_logout()
 """
 
+import base64
 import json
 import locale
 import ssl
@@ -160,7 +161,13 @@ class HTTPError(Exception):
 		return f'<HTTPError {self}>'
 
 	def __str__(self):
-		return f'{self.status} on {self.hostname} ({self.request.path}): {self.response.body}'
+		# type: () -> str
+		traceback = ''
+		data = self.response.data
+		if self.status >= 500 and isinstance(self.response.data, dict) and isinstance(self.response.data.get('traceback'), str) and 'Traceback (most recent call last)' in self.response.data['traceback']:
+			data = data.copy()
+			traceback = '\n{}'.format(data.pop('traceback'))
+		return f'{self.status} on {self.hostname} ({self.request.path}): {data}{traceback}'
 
 
 class HTTPRedirect(HTTPError):
@@ -256,15 +263,15 @@ class Request:
 		self.headers = headers or {}
 
 	def get_body(self):
-		# type: () -> Union[str, dict, None]
+		# type: () -> Optional[bytes]
 		"""
 		Return the request data.
 
-		:returns: |JSON| data is returned as a dictionary, all other as raw.
-		:rtype: dict or str
+		:returns: encodes data in JSON if Content-Type wants it
+		:rtype: bytes
 		"""
 		if self.headers.get('Content-Type', '').startswith('application/json'):
-			return json.dumps(self.data)
+			return json.dumps(self.data).encode('ASCII')
 		return self.data
 
 
@@ -333,7 +340,7 @@ class Response:
 		data = self.body
 		if self.get_header('Content-Type', '').startswith('application/json'):
 			try:
-				data = json.loads(data.decode('utf-8'))
+				data = json.loads(data.decode('UTF-8'))
 			except ValueError as exc:
 				raise ConnectionError(f'Malformed response data: {data!r}', reason=exc)
 		return data
@@ -380,12 +387,13 @@ class Client:
 		self._raise_errors = True
 		self._automatic_reauthentication = automatic_reauthentication
 		self.cookies = {}  # type: Dict[str, str]
-		self.username = username
-		self.password = password
+		self.username = username or ''
+		self.password = password or ''
 		if username:
-			self.authenticate(username, password)
+			self.authenticate(self.username, self.password)
 
 	def authenticate(self, username, password):
+		# type: (str, str) -> Response
 		"""
 		Authenticate against the host and preserves the
 		cookie. Has to be done only once (but keep in mind that the
@@ -399,9 +407,9 @@ class Client:
 		return self.umc_auth(username, password)
 
 	def reauthenticate(self):
-		# type: () -> None
+		# type: () -> Response
 		"""
-		Re-authenticate using the stores username and password.
+		Re-authenticate using the stored username and password.
 		"""
 		return self.authenticate(self.username, self.password)
 
@@ -413,7 +421,7 @@ class Client:
 		:param str username: A user name.
 		:param str password: The password of the user.
 		"""
-		self._headers['Authorization'] = 'Basic %s' % (f'{username}:{password}').encode('base64').rstrip().decode('ascii')
+		self._headers['Authorization'] = 'Basic %s' % (base64.b64encode(b'%s:%s' % (username.encode('UTF-8'), password.encode('UTF-8'))).decode('ASCII'),)
 
 	def authenticate_saml(self, username, password):
 		# type: (str, str) -> None
@@ -617,7 +625,7 @@ class Client:
 		return self.ConnectionType(self.hostname, timeout=self._timeout)
 
 	def __build_data(self, data, flavor=None):
-		# type: (Optional[dict], Optional[str]) -> Dict[str, Any]
+		# type: (Optional[Dict[str, Any]], Optional[str]) -> Dict[str, Any]
 		"""
 		Create a dictionary as expected by the |UMC| Server.
 
