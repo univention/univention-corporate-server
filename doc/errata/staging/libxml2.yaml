@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libxml2
+fix: 2.9.4+dfsg1-2.2+deb9u8
+desc: |
+ This update addresses the following issue:
+ 2.9.4+dfsg1-2.2+deb9u8 (Wed, 03 Aug 2022 08:15:51 -0700)
+ * Non-maintainer upload by the ELTS team.
+ * CVE-2016-3709: Prevent a possible cross-site scripting vulnerability.
+bug: [55314]
+cve:
+- CVE-2016-3709
