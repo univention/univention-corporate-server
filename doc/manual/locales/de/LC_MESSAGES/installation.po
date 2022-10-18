@@ -5,7 +5,7 @@ msgstr ""
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-18 16:15+0200\n"
-"PO-Revision-Date: 2022-10-18 16:29+0200\n"
+"PO-Revision-Date: 2022-10-19 11:39+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -1279,38 +1279,11 @@ msgstr ""
 " die Synchronisation der Zeit auf dem Gastsystem mit dem "
 "Virtualisierungsserver)."
 
-#: ../../installation.rst:668
-msgid "Installation as Docker image"
-msgstr "Installation als Docker Image"
-
-#: ../../installation.rst:670
-msgid ""
-"Univention provides UCS as Docker images in the `Docker Hub <docker-hub-"
-"univention_>`_. The description of the Docker images explains how they "
-"can be configured."
-msgstr ""
-"Univention stellt UCS als Docker Images im `Docker Hub <docker-hub-"
-"univention_>`_ bereit. In der Beschreibung der jeweiligen Docker Images "
-"ist erklärt, wie diese in Betrieb genommen werden können."
-
-#: ../../installation.rst:674
-msgid ""
-"In a standard installation, the Docker images are used in a network that "
-"cannot be reached directly from outside the server. If multiple Docker "
-"images are used and they are executed on different Docker servers, a "
-"Software Defined Network or a VPN solution should be used."
-msgstr ""
-"Die Docker Images werden bei einer Standardinstallation in einem Netzwerk"
-" betrieben, welches von außerhalb des Servers nicht direkt erreicht "
-"werden kann. Sofern mehrere Docker Images eingesetzt werden und diese auf"
-" unterschiedlichen Docker Servern betrieben werden, sollte entsprechend "
-"ein *Software Defined Network* oder eine VPN Lösung eingesetzt werden."
-
-#: ../../installation.rst:682
+#: ../../installation.rst:622
 msgid "Installation in Citrix XenServer"
 msgstr "Installation in Citrix XenServer"
 
-#: ../../installation.rst:684
+#: ../../installation.rst:624
 msgid ""
 "The process for setting up a UCS instance in Citrix XenServer is "
 "documented in :cite:t:`xenserver-installation`."

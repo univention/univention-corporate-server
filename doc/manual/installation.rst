@@ -662,20 +662,6 @@ UCS. The tools can be installed using the ``open-vm-tools`` package (they are
 not required but do, for example, allow synchronization of the time on the
 virtualization server with the guest system).
 
-.. _installation-docker:
-
-Installation as Docker image
-============================
-
-Univention provides UCS as Docker images in the `Docker Hub
-<docker-hub-univention_>`_. The description of the Docker images explains how
-they can be configured.
-
-In a standard installation, the Docker images are used in a network that cannot
-be reached directly from outside the server. If multiple Docker images are used
-and they are executed on different Docker servers, a Software Defined Network or
-a VPN solution should be used.
-
 .. _installation-xenserver:
 
 Installation in Citrix XenServer
