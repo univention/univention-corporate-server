@@ -1,0 +1,18 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: ghostscript
+fix: 9.26a~dfsg-0+deb9u10
+desc: |
+ This update addresses the following issue:
+ 9.26a~dfsg-0+deb9u10 (Sat, 03 Sep 2022 19:39:26 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * Fix CVE-2020-27792: A heap-based buffer over write vulnerability was found
+   in GhostScript's lp8000_print_page() function in gdevlp8k.c file. An
+   attacker could trick a user to open a crafted PDF file, triggering the heap
+   buffer overflow that could lead to memory corruption or a denial of
+   service.
+bug: [55296]
+cve:
+- CVE-2020-27792
