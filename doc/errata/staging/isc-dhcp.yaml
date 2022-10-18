@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: isc-dhcp
+fix: 4.3.5-3+deb9u3A~4.4.9.202210182015
+desc: |
+ This update addresses the following issues:
+ 4.3.5-3+deb9u3 (Thu, 13 Oct 2022 19:36:51 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2022-2928: refcount overflow.
+ * CVE-2022-2929: memory leak.
+bug: [55290]
+cve:
+- CVE-2022-2928
+- CVE-2022-2929
