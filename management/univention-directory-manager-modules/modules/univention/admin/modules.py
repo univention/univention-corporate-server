@@ -245,14 +245,7 @@ def init(lo, position, module, template_object=None, force_reload=False):
 					for option in module.options.keys():
 						module.options[option].default = option in tmpl
 			elif key not in {"name", "description"}:  # these keys are part of the template itself
-				if template_object.descriptions[key].multivalue:
-					if module.property_descriptions[key].multivalue:
-						module.property_descriptions[key].base_default = list(tmpl)
-					else:
-						ud.debug(ud.ADMIN, ud.INFO, 'modules.init: template and object values not both multivalue !!')
-
-				else:
-					module.property_descriptions[key].base_default = tmpl
+				module.property_descriptions[key].base_default = list(tmpl) if template_object.descriptions[key].multivalue else tmpl
 				module.property_descriptions[key].templates.append(template_object)
 		ud.debug(ud.ADMIN, ud.INFO, 'modules_init: module.property_description after template: %s' % module.property_descriptions)
 	else:
