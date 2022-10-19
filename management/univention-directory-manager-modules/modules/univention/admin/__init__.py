@@ -225,7 +225,7 @@ class property:
 		may_change=True,  # type: bool
 		identifies=False,  # type: bool
 		unique=False,  # type: bool
-		default=None,  # type: Union[None, bool, int, str, Tuple[Any, List[str]], Tuple[Callable, List[str], Any]]
+		default=None,  # type: Union[None, bool, int, str, List[str], Tuple[Any, List[str]], Tuple[Callable, List[str], Any]]
 		prevent_umc_default_popup=False,  # type: bool
 		dontsearch=False,  # type: bool
 		show_in_lists=True,  # type: bool
@@ -312,7 +312,7 @@ class property:
 		return pattern_replace(copy.copy(res), object)
 
 	def default(self, object):
-		base_default = copy.copy(self.base_default)  # type: Union[None, bool, int, str, Tuple[Any, List[str]], Tuple[Callable, List[str], Any]]
+		base_default = copy.copy(self.base_default)  # type: Union[None, bool, int, str, List[str], Tuple[Any, List[str]], Tuple[Callable, List[str], Any]]
 		if not object.set_defaults:
 			return [] if self.multivalue else ''
 
