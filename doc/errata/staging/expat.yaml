@@ -6,12 +6,7 @@ src: expat
 fix: 2.2.0-2+deb9u6
 desc: |
  This update addresses the following issue:
- 2.2.0-2+deb9u6 (Sat, 24 Sep 2022 11:03:02 +0200)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2022-40674 heap use-after-free issue in doContent() (based on the
-   backport for Bullseye made by Laszlo Boszormenyi)
- * debian/rules: add run of testsuite (but leave it deactivated as I only
-   tested on amd64)
+ * CVE-2022-40674: heap use-after-free issue in `doContent()`.
 bug: [55315]
 cve:
 - CVE-2022-40674
