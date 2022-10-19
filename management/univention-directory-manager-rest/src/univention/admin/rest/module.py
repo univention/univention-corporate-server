@@ -1402,7 +1402,12 @@ class OpenAPI(Resource):
 							"headers": global_response_headers(),
 						},
 						"201": {
-							"description": "Success (on move and rename)",
+							"description": "Deprecated. Broken. Expect 202 in the future.",
+							"content": content_schema(),
+							"headers": global_response_headers(),
+						},
+						"202": {
+							"description": "Accepted: asynchronous move or rename operation started",
 							"content": content_schema(),
 							"headers": global_response_headers(),
 						},
@@ -2598,7 +2603,7 @@ class ObjectsMove(Resource):
 			shared_memory.queue[self.request.user_dn] = shared_memory.dict()
 		shared_memory.queue[self.request.user_dn][status_id] = status
 
-		self.set_status(201)
+		self.set_status(201)  # FIXME: must be 202
 		self.set_header('Location', self.abspath('progress', status['id']))
 		self.finish()
 		try:
@@ -2994,7 +2999,7 @@ class Object(FormBase, Resource):
 			shared_memory.queue[self.request.user_dn] = shared_memory.dict()
 		shared_memory.queue[self.request.user_dn][status_id] = status
 
-		self.set_status(201)
+		self.set_status(201)  # FIXME: must be 202
 		self.set_header('Location', self.abspath('progress', status['id']))
 		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation(dict(status))
