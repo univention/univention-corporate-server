@@ -648,7 +648,7 @@ msgstr ""
 
 #: umc/python/diagnostic/plugins/04_saml_certificate_check.py:76
 msgid "Re-run join script"
-msgstr "Join-Skript ermeut ausführen."
+msgstr "Join-Skript erneut ausführen."
 
 #: umc/python/diagnostic/plugins/04_saml_certificate_check.py:106
 msgid "Re-upload certificate"
