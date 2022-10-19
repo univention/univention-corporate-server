@@ -6,13 +6,11 @@ src: asterisk
 fix: 1:13.14.1~dfsg-2+deb9u7
 desc: |
  This update addresses the following issues:
- 1:13.14.1~dfsg-2+deb9u7 (Fri, 07 Oct 2022 23:21:38 +0200)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2022-26651: The func_odbc module provides possibly inadequate
+ * Fix CVE-2022-26651: The module `func_odbc` provides possibly inadequate
    escaping functionality for backslash characters in SQL queries, resulting
    in user-provided data creating a broken SQL query or possibly a SQL
    injection.
- * Fix CVE-2020-35776: A buffer overflow in res_pjsip_diversion.c allows
+ * Fix CVE-2020-35776: A buffer overflow in `res_pjsip_diversion.c` allows
    remote attackers to crash Asterisk by deliberately misusing SIP 181
    responses.
 bug: [55322]
