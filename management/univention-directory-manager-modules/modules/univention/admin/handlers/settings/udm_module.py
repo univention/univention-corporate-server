@@ -43,39 +43,6 @@ import univention.admin.password
 import univention.admin.syntax
 import univention.admin.localization
 
-try:
-	from univention.admin.syntax import UMCMessageCatalogFilename_and_GNUMessageCatalog
-except ImportError:
-	# workaround for errors during errata-updates. should be removable with UCS 5.0-1
-	class UMCMessageCatalogFilename(univention.admin.syntax.string):
-		"""
-		Syntax for a message catalog filename for UMC module translations`.
-
-		Must have a filename like <language code>-<umcmoduleid>`.
-		"""
-
-		@classmethod
-		def parse(self, text):
-			text = univention.admin.syntax.string.parse(text)
-			language_id, dash, module_id = text.partition('-')
-			if not dash:
-				raise univention.admin.uexceptions.valueError(_('Not a valid filename for umcmessagecatalog. It must match "$language-$moduleid.mo" (e.g. "de-udm-foo.mo")'))
-			return text
-	univention.admin.syntax.UMCMessageCatalogFilename = UMCMessageCatalogFilename
-
-	class UMCMessageCatalogFilename_and_GNUMessageCatalog(complex):
-		"""
-		Syntax for a message catalog and the corresponding UMCMessageCatalogFilename.
-
-		See :py:class:`GNUMessageCatalog` and :py:class:`UMCMessageCatalogFilename`.
-		"""
-		delimiter = ': '
-		subsyntaxes = [('UMCMessageCatalogFilename', univention.admin.syntax.UMCMessageCatalogFilename), ('GNU message catalog', univention.admin.syntax.GNUMessageCatalog)]
-		subsyntax_key_value = True
-		all_required = True
-		multivalue = True
-	univention.admin.syntax.UMCMessageCatalogFilename_and_GNUMessageCatalog = UMCMessageCatalogFilename_and_GNUMessageCatalog
-
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
 

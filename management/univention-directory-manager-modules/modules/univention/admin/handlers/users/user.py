@@ -72,22 +72,6 @@ from univention.admin.certificate import PKIIntegration, register_pki_integratio
 
 from typing import List  # noqa: F401
 
-try:
-	from univention.admin.syntax import ActivationDateTimeTimezone
-except ImportError:
-	# workaround for errors during errata-updates. should be removable with UCS 5.0-1
-	class ActivationDateTimeTimezone(univention.admin.syntax.complex):
-		"""
-		Syntax for YYYY-mm-dd HH:MM TZNAME
-		"""
-		delimiter = ' '
-		subsyntaxes = [('Date', univention.admin.syntax.iso8601Date), ('Time', univention.admin.syntax.TimeString), ('Timezone', univention.admin.syntax.string)]
-		subsyntax_names = ('date', 'time', 'timezone')
-		subsyntax_names = ('activation-date', 'activation-time', 'activation-timezone')
-		size = ('TwoThirds', 'TwoThirds', 'TwoThirds')
-		all_required = False
-		min_elements = 0
-	univention.admin.syntax.ActivationDateTimeTimezone = ActivationDateTimeTimezone
 
 if not six.PY2:
 	long = int
