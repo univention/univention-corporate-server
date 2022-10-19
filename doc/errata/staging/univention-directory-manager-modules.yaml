@@ -14,5 +14,5 @@ desc: |
    no permission to read it. The behaior is now postponed to actual
    modifications of the object.
  * The Python backend code to evaluate and apply template defaults has been
-   removed.
+   optimized.
 bug: [20235, 42080, 55279]
