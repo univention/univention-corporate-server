@@ -6,8 +6,8 @@ src: glib2.0
 fix: 2.50.3-2+deb9u4
 desc: |
  This update addresses the following issue:
- 2.50.3-2+deb9u4 (Thu, 15 Sep 2022 12:29:16 +0200)
- * CVE-2021-3800: information leak using CHARSETALIASDIR envvar.
+ * CVE-2021-3800: information leak using environment variable
+   `CHARSETALIASDIR`.
 bug: [55321]
 cve:
 - CVE-2021-3800
