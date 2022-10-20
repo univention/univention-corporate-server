@@ -6,13 +6,11 @@ src: libxslt
 fix: 1.1.29-2.1+deb9u3
 desc: |
  This update addresses the following issues:
- 1.1.29-2.1+deb9u3 (Fri, 05 Aug 2022 08:16:31 -0700)
- * CVE-2019-5815: Type confusion in xsltNumberFormatGetMultipleLevel prior to
-   libxslt 1.1.33 could allow attackers to potentially exploit heap corruption
-   via crafted XML data.
- * CVE-2021-30560: Use after free in Blink XSLT in Google Chrome prior to
-   91.0.4472.164 allowed a remote attacker to potentially exploit heap
-   corruption via a crafted HTML page.
+ * CVE-2019-5815: Type confusion in `xsltNumberFormatGetMultipleLevel` could
+   allow attackers to potentially exploit heap corruption via crafted XML
+   data.
+ * CVE-2021-30560: Use after free in Blink XSLT allowed a remote attacker to
+   potentially exploit heap corruption via a crafted HTML page.
 bug: [55299]
 cve:
 - CVE-2019-5815
