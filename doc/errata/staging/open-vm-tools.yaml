@@ -6,10 +6,8 @@ src: open-vm-tools
 fix: 2:10.1.5-5055683-4+deb9u3
 desc: |
  This update addresses the following issue:
- 2:10.1.5-5055683-4+deb9u3 (Wed, 21 Sep 2022 22:42:25 +0530)
- * Non-maintainer upload by the ELTS team.
- * Add patch to poperly check authorization on incoming guestOps requests.
-   (Fixes: CVE-2022-31676)
+ * Add patch to properly check authorization on incoming `guestOps` requests
+   (CVE-2022-31676)
 bug: [55320]
 cve:
 - CVE-2022-31676
