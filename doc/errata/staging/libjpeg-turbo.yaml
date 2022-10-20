@@ -6,12 +6,11 @@ src: libjpeg-turbo
 fix: 1:1.5.1-2+deb9u3
 desc: |
  This update addresses the following issue:
- 1:1.5.1-2+deb9u3 (Tue, 12 Jul 2022 13:21:18 +0200)
- * Non-maintainer upload by the ELTS team.
  * Fix CVE-2021-46822: The PPM reader in libjpeg-turbo mishandles use of
-   tjLoadImage for loading a 16-bit binary PPM file into a grayscale buffer
+   `tjLoadImage` for loading a 16-bit binary PPM file into a grayscale buffer
    and loading a 16-bit binary PGM file into an RGB buffer. This is related to
-   a heap-based buffer overflow in the get_word_rgb_row function in rdppm.c.
+   a heap-based buffer overflow in the function `get_word_rgb_row` in
+   `rdppm.c`.
 bug: [55301]
 cve:
 - CVE-2021-46822
