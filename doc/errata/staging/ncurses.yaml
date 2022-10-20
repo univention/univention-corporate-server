@@ -6,14 +6,12 @@ src: ncurses
 fix: 6.0+20161126-1+deb9u3
 desc: |
  This update addresses the following issues:
- 6.0+20161126-1+deb9u3 (Wed, 13 Jul 2022 22:03:02 +0200)
- * Non-maintainer upload by the LTS Team.
+ * CVE-2018-19211 Avoid NULL pointer dereference in `_nc_parse_entry`.
+ * CVE-2019-17594 Check for invalid hashcode in `_nc_find_type_entry` and
+   `nc_find_entry`.
+ * CVE-2019-17595 Check for missing character after backslash in `fmt_entry`.
  * CVE-2022-29458 Avoid out-of-bounds read in convert_strings in the terminfo
    library.
- * CVE-2019-17595 Check for missing character after backslash in fmt_entry.
- * CVE-2019-17594 Check for invalid hashcode in _nc_find_type_entry and
-   nc_find_entry.
- * CVE-2018-19211 Avoid NULL pointer dereference in _nc_parse_entry.
 bug: [55310]
 cve:
 - CVE-2022-29458
