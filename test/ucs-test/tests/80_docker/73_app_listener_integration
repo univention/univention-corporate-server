@@ -136,32 +136,32 @@ def systemd_service_enabled(service):
 if __name__ == '__main__':
 
 	name = APP_NAME
-	systemd_service = 'univention-appcenter-listener-converter@%s.service' % name
+	systemd_service = f'univention-appcenter-listener-converter@{name}.service'
 
 	setup = '''#!/bin/bash
 export DEBIAN_FRONTEND=noninteractive
 apt-get -y update
-apt-get -y install python
+apt-get -y install python3
 exit 0
 '''
 	store_data = '#!/bin/sh'
-	preinst = '''#!/bin/bash
-ucr set appcenter/apps/{}/docker/params=' -t'
+	preinst = f'''#!/bin/bash
+ucr set appcenter/apps/{name}/docker/params=' -t'
 exit 0
-'''.format(name)
+'''
 
-	listener_trigger = '''#!/usr/bin/python3
+	listener_trigger = f'''#!/usr/bin/python3
 
 import glob
 import os
 import json
 
-DATA_DIR = '/var/lib/univention-appcenter/apps/%s/data/listener'
-DB = '/var/lib/univention-appcenter/apps/%s/data/db.json'
+DATA_DIR = '/var/lib/univention-appcenter/apps/{name}/data/listener'
+DB = '/var/lib/univention-appcenter/apps/{name}/data/db.json'
 
 if not os.path.isfile(DB):
 	with open(DB, 'w') as fd:
-		json.dump({'users/user': {}, 'groups/group': {}}, fd, sort_keys=True, indent=4)
+		json.dump({{'users/user': {{}}, 'groups/group': {{}}}}, fd, sort_keys=True, indent=4)
 
 for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 
@@ -188,7 +188,7 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 		json.dump(db, fd, sort_keys=True, indent=4)
 
 	os.remove(i)
-''' % (name, name)
+'''
 
 	with Appcenter() as appcenter:
 		app = App(name=name, version='1', build_package=False, call_join_scripts=False)
