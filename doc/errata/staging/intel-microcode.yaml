@@ -6,118 +6,20 @@ src: intel-microcode
 fix: 3.20220510.1~deb9u1
 desc: |
  This update addresses the following issues:
- 3.20220510.1~deb9u1 (Mon, 19 Sep 2022 10:42:03 +0200)
- * Backport to stretch.
- 3.20220419.1 (Thu, 21 Apr 2022 17:25:05 -0300)
- * New upstream microcode datafile 20220419 * Fixes errata APLI-11 in Atom
-   E3900 series processors * Updated Microcodes: sig 0x000506ca, pf_mask 0x03,
-   2021-11-16, rev 0x0028, size 16384
- * source: update symlinks to reflect id of the latest release, 20220419
- 3.20220207.1~deb10u1 (Sun, 20 Mar 2022 18:19:10 -0300)
- * Backport for Debian oldstable (no changes)
- * Release manager: this is the same package already in bullseye-backports,
-   testing and unstable. It fixes several security issues, adds MSRs that can
-   be enabled by updated kernels for enhanced security mitigaton, and also
-   fixes several critical "functional issues" (i.e. processor errata). There
-   were no reports to date of regressions introduced by this microcode
-   drelease.
- 3.20220207.1 (Fri, 25 Feb 2022 05:36:55 -0300)
- * upstream changelog: new upstream datafile 20220207 * Mitigates (*only* when
-   loaded from UEFI firmware through the FIT) CVE-2021-0146, INTEL-SA-00528:
-   VT-d privilege escalation through debug port, on Pentium, Celeron and Atom
-   processors with signatures 0x506c9, 0x506ca, 0x506f1, 0x706a1, 0x706a8
-   https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/issues/57#issuecomment-1036363145
-   * Mitigates CVE-2021-0127, INTEL-SA-00532: an unexpected code breakpoint
-   may cause a system hang, on many processors. * Mitigates CVE-2021-0145,
-   INTEL-SA-00561: information disclosure due to improper sanitization of
-   shared resources (fast-store forward predictor), on many processors. *
-   Mitigates CVE-2021-33120, INTEL-SA-00589: out-of-bounds read on some Atom
-   Processors may allow information disclosure or denial of service via
-   network access. * Fixes critical errata (functional issues) on many
-   processors * Adds a MSR switch to enable RAPL filtering (default off, once
-   enabled it can only be disabled by poweroff or reboot). Useful to protect
-   SGX and other threads from side-channel info leak. Improves the mitigation
-   for CVE-2020-8694, CVE-2020-8695, INTEL-SA-00389 on many processors. *
-   Disables TSX in more processor models. * Fixes issue with WBINDV on
-   multi-socket (server) systems which could cause resets and unpredictable
-   system behavior. * Adds a MSR switch to 10th and 11th-gen (Ice Lake, Tiger
-   Lake, Rocket Lake) processors, to control a fix for (hopefully rare)
-   unpredictable processor behavior when HyperThreading is enabled. This MSR
-   switch is enabled by default on *server* processors. On other processors,
-   it needs to be explicitly enabled by an updated UEFI/BIOS (with added
-   configuration logic). An updated operating system kernel might also be able
-   to enable it. When enabled, this fix can impact performance. * Updated
-   Microcodes: sig 0x000306f2, pf_mask 0x6f, 2021-08-11, rev 0x0049, size
-   38912 sig 0x000306f4, pf_mask 0x80, 2021-05-24, rev 0x001a, size 23552 sig
-   0x000406e3, pf_mask 0xc0, 2021-04-28, rev 0x00ec, size 105472 sig
-   0x00050653, pf_mask 0x97, 2021-05-26, rev 0x100015c, size 34816 sig
-   0x00050654, pf_mask 0xb7, 2021-06-16, rev 0x2006c0a, size 43008 sig
-   0x00050656, pf_mask 0xbf, 2021-08-13, rev 0x400320a, size 35840 sig
-   0x00050657, pf_mask 0xbf, 2021-08-13, rev 0x500320a, size 36864 sig
-   0x0005065b, pf_mask 0xbf, 2021-06-04, rev 0x7002402, size 28672 sig
-   0x00050663, pf_mask 0x10, 2021-06-12, rev 0x700001c, size 28672 sig
-   0x00050664, pf_mask 0x10, 2021-06-12, rev 0xf00001a, size 27648 sig
-   0x00050665, pf_mask 0x10, 2021-09-18, rev 0xe000014, size 23552 sig
-   0x000506c9, pf_mask 0x03, 2021-05-10, rev 0x0046, size 17408 sig
-   0x000506ca, pf_mask 0x03, 2021-05-10, rev 0x0024, size 16384 sig
-   0x000506e3, pf_mask 0x36, 2021-04-29, rev 0x00ec, size 108544 sig
-   0x000506f1, pf_mask 0x01, 2021-05-10, rev 0x0036, size 11264 sig
-   0x000606a6, pf_mask 0x87, 2021-12-03, rev 0xd000331, size 291840 sig
-   0x000706a1, pf_mask 0x01, 2021-05-10, rev 0x0038, size 74752 sig
-   0x000706a8, pf_mask 0x01, 2021-05-10, rev 0x001c, size 75776 sig
-   0x000706e5, pf_mask 0x80, 2021-05-26, rev 0x00a8, size 110592 sig
-   0x000806a1, pf_mask 0x10, 2021-09-02, rev 0x002d, size 34816 sig
-   0x000806c1, pf_mask 0x80, 2021-08-06, rev 0x009a, size 109568 sig
-   0x000806c2, pf_mask 0xc2, 2021-07-16, rev 0x0022, size 96256 sig
-   0x000806d1, pf_mask 0xc2, 2021-07-16, rev 0x003c, size 101376 sig
-   0x000806e9, pf_mask 0x10, 2021-04-28, rev 0x00ec, size 104448 sig
-   0x000806e9, pf_mask 0xc0, 2021-04-28, rev 0x00ec, size 104448 sig
-   0x000806ea, pf_mask 0xc0, 2021-04-28, rev 0x00ec, size 103424 sig
-   0x000806eb, pf_mask 0xd0, 2021-04-28, rev 0x00ec, size 104448 sig
-   0x000806ec, pf_mask 0x94, 2021-04-28, rev 0x00ec, size 104448 sig
-   0x00090661, pf_mask 0x01, 2021-09-21, rev 0x0015, size 20480 sig
-   0x000906c0, pf_mask 0x01, 2021-08-09, rev 0x2400001f, size 20480 sig
-   0x000906e9, pf_mask 0x2a, 2021-04-29, rev 0x00ec, size 106496 sig
-   0x000906ea, pf_mask 0x22, 2021-04-28, rev 0x00ec, size 102400 sig
-   0x000906eb, pf_mask 0x02, 2021-04-28, rev 0x00ec, size 104448 sig
-   0x000906ec, pf_mask 0x22, 2021-04-28, rev 0x00ec, size 103424 sig
-   0x000906ed, pf_mask 0x22, 2021-04-28, rev 0x00ec, size 103424 sig
-   0x000a0652, pf_mask 0x20, 2021-04-28, rev 0x00ec, size 93184 sig
-   0x000a0653, pf_mask 0x22, 2021-04-28, rev 0x00ec, size 94208 sig
-   0x000a0655, pf_mask 0x22, 2021-04-28, rev 0x00ee, size 94208 sig
-   0x000a0660, pf_mask 0x80, 2021-04-28, rev 0x00ea, size 94208 sig
-   0x000a0661, pf_mask 0x80, 2021-04-29, rev 0x00ec, size 93184 sig
-   0x000a0671, pf_mask 0x02, 2021-08-29, rev 0x0050, size 102400 * Removed
-   Microcodes: sig 0x00080664, pf_mask 0x01, 2021-02-17, rev 0xb00000f, size
-   130048 sig 0x00080665, pf_mask 0x01, 2021-02-17, rev 0xb00000f, size 130048
- * update .gitignore and debian/.gitignore. Add some missing items from
-   .gitignore and debian/.gitignore.
- * ucode-blacklist: do not late-load 0x406e3 and 0x506e3. When the BIOS
-   microcode is older than revision 0x7f (and perhaps in some other cases as
-   well), the latest microcode updates for 0x406e3 and 0x506e3 must be applied
-   using the early update method. Otherwise, the system might hang. Also:
-   there must not be any other intermediate microcode update attempts [other
-   than the one done by the BIOS itself], either. It must go from the BIOS
-   microcode update directly to the latest microcode update.
- * source: update symlinks to reflect id of the latest release, 20220207
- 3.20210608.2~deb10u1 (Wed, 23 Jun 2021 17:52:40 -0300)
- * SECURITY UPDATE with known possible regressions
- * Refer to the changelog entry for 3.20210608.1 for the list of security
-   fixes in this release.
- * Possible regression: CoffeLake processors with signature 0x906ea *and*
-   Intel Wireless LAN on-board - The Intel WiFi firmware might stop working,
-   refer to:
-   https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/issues/56
- * Possible regression: Skylake R0/D0 (signatures 0x406e3 and 0x506e3), -
-   Motherboards with severely outdated firmware where the UEFI/BIOS microcode
-   revision is less than 0x80 may hang on boot. Refer to:
-   https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/issues/31
- * Reintroduces all fixes (including several security updates) to Skylake
-   D0/R0 that were temporarily disabled in past releases. Refer to changelog
-   entries since (and including) 3.20200609.1 for the list of security fixes.
- 3.20210608.2 (Wed, 23 Jun 2021 13:42:19 -0300)
- * Correct INTEL-SA-00442 CVE id to CVE-2020-24489 in changelog and
-   debian/changelog (3.20210608.1).
+ * Adds a MSR switch to enable RAPL filtering (default off, once enabled it
+   can only be disabled by poweroff or reboot). Useful to protect SGX and
+   other threads from side-channel info leak. Improves the mitigation for
+   CVE-2020-8694, CVE-2020-8695 on many processors.
+ * Mitigates CVE-2021-0127: an unexpected code breakpoint may cause a system
+   hang, on many processors.
+ * Mitigates CVE-2021-0145: information disclosure due to improper
+   sanitization of shared resources (fast-store forward predictor), on many
+   processors.
+ * Mitigates CVE-2021-0146: VT-d privilege escalation through debug port, on
+   Pentium, Celeron and Atom processors with signatures 0x506c9, 0x506ca,
+   0x506f1, 0x706a1, 0x706a8
+ * Mitigates CVE-2021-33120: out-of-bounds read on some Atom Processors may
+   allow information disclosure or denial of service via network access.
 bug: [55302]
 cve:
 - CVE-2021-0146
@@ -126,4 +28,3 @@ cve:
 - CVE-2021-33120
 - CVE-2020-8694
 - CVE-2020-8695
-- CVE-2020-24489
