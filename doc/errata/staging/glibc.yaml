@@ -1,6 +1,6 @@
 product: ucs
 release: "5.0"
-version: [1, 2]
+version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: glibc
 fix: 2.28-10+deb10u2
