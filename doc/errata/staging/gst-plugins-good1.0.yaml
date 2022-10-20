@@ -6,15 +6,15 @@ src: gst-plugins-good1.0
 fix: 1.10.4-1+deb9u2
 desc: |
  This update addresses the following issues:
- * CVE-2021-3497: oob write on matroska wavpack decoding.
- * Fix potential heap overwrite in the mkv demuxer when handling certain
+ * Out-of-bound write on Matroska `wavpack` decoding (CVE-2021-3497).
+ * Fix potential heap overwrite in the MKV demuxer when handling certain
    Matroska files (CVE-2022-1920).
- * Fix heap-based buffer overflow in the avi demuxer when handling certain AVI
+ * Fix heap-based buffer overflow in the AVI demuxer when handling certain AVI
    files (CVE-2022-1921).
- * Fix potential heap overwrite in the mkv demuxer when handling certain
+ * Fix potential heap overwrite in the MKV demuxer when handling certain
    Matroska/WebM files (CVE-2022-1922, CVE-2022-1923, CVE-2022-1924,
    CVE-2022-1925).
- * Fix potential heap overwrite in the qt demuxer when handling certain
+ * Fix potential heap overwrite in the Qt demuxer when handling certain
    QuickTime/MP4 files (CVE-2022-2122).
 bug: [55307]
 cve:
