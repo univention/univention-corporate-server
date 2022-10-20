@@ -17,7 +17,7 @@ Depends:
  python3-univention,
  python3-univention-group-membership-cache (= ${source:Version}),
  ${misc:Depends},
-Description: UCS - Group cache
+Description: UCS Group cache management tools
  This package holds a cache for user and group membership (including nested
  groups) so that software does not need to query the LDAP database.
  .
@@ -33,7 +33,7 @@ Depends:
  python3-six,
  python3-univention,
  ${python3:Depends},
-Description: UCS - Group cache
+Description: UCS Group cache Python library
  This package holds a cache for user and group membership (including nested
  groups) so that software does not need to query the LDAP database.
  .

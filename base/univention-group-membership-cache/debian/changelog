@@ -1,3 +1,9 @@
+univention-group-membership-cache (2.0.0-13) unstable; urgency=low
+
+  * Bug #55286: Fix GDBM file descriptor leak on reorganize()
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 20 Oct 2022 18:14:20 +0200
+
 univention-group-membership-cache (2.0.0-12) unstable; urgency=low
 
   * Bug #54502: Update UDN module API
