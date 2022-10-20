@@ -50,17 +50,17 @@ class GdbmCaches(Caches):
 		# type: (str, bool, bool) -> GdbmCache
 		db_file = os.path.join(self._directory, '%s.db' % name)
 		debug('Using GDBM %s', name)
-		cache = GdbmCache(name, single_value, reverse)
-		cache.db_file = db_file
+		cache = GdbmCache(name, single_value, reverse, db_file=db_file)
 		self._caches[name] = cache
 		return cache
 
 
 class GdbmCache(LdapCache):
-	def __init__(self, *args, **kwargs):
-		# type: (*Any, **Any) -> None
+	def __init__(self, name, single_value, reverse, db_file):
+		# type: (str, bool, bool, Any) -> None
+		super(GdbmCache, self).__init__(name, single_value, reverse)
 		self.fail_count = 0
-		super(GdbmCache, self).__init__(*args, **kwargs)
+		self.db_file = db_file
 		log('%s - Recreating!', self.name)
 
 	def _fix_permissions(self):

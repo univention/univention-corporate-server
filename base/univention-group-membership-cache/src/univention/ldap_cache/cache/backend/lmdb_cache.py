@@ -58,15 +58,19 @@ class LmdbCaches(Caches):
 
 	def _add_sub_cache(self, name, single_value, reverse):
 		# type: (str, bool, bool) -> LmdbCache
-		sub_db = self.env.open_db(name, dupsort=not single_value)
-		cache = LmdbCache(name, single_value, reverse)
-		cache.env = self.env
-		cache.sub_db = sub_db
+		sub_db = self.env.open_db(name.encode(), dupsort=not single_value)
+		cache = LmdbCache(name, single_value, reverse, env=self.env, sub_db=sub_db)
 		self._caches[name] = cache
 		return cache
 
 
 class LmdbCache(LdapCache):
+	def __init__(self, name, single_value, reverse, env, sub_db):
+		# type: (str, bool, bool, lmdb.Environment, lmdb._Database) -> None
+		super(LmdbCache, self).__init__(name, single_value, reverse)
+		self.env = env
+		self.sub_db = sub_db
+
 	@contextmanager
 	def writing(self, writer=None):
 		# type: (Optional[Any]) -> Iterator[Any]
