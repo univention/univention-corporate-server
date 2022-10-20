@@ -1055,24 +1055,23 @@ class Properties(Resource):
                 'label': policy['label'],
                 'description': policy['description'],
             })
-        for prop in properties[:]:
-            if prop['id'] == '$options$':
-                for option in prop['widgets']:
-                    option['id'] = 'options[%s]' % (option['id'],)
-                    properties.append(option)
+        for option in module.get_options():
+            option['id'] = 'options[%s]' % (option['id'],)
+            properties.append(option)
+
         for prop in properties:
             prop.setdefault('label', '')
             prop.setdefault('description', '')
             prop.setdefault('readonly', False)
             prop.setdefault('readonly_when_synced', False)
-            prop.setdefault('disabled', False)
+            # prop.setdefault('disabled', False)
             prop.setdefault('required', False)
             prop.setdefault('syntax', '')
             prop.setdefault('identifies', False)
             prop.setdefault('searchable', False)
             prop.setdefault('multivalue', False)
-            prop.setdefault('show_in_lists', True)
-        return {prop['id']: prop for prop in properties if not prop['id'].startswith('$')}
+            # prop.setdefault('show_in_lists', True)
+        return {prop['id']: prop for prop in properties}
 
 
 class Layout(Resource):

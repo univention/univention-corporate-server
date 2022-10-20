@@ -153,6 +153,13 @@ class UDM_Module(_UDM_Module):
                     value = read_syntax_choices(prop.syntax, ldap_connection=ldap_connection, ldap_position=ldap_position)
                 return value
 
+    def properties(self, position_dn):
+        props = [{'id': '$dn$', 'type': 'HiddenInput', 'label': '', 'searchable': False}]
+        props.extend(super().properties(position_dn))
+        props.append({'id': '$options$', 'type': 'WidgetGroup', 'widgets': self.get_options()})
+        props.append({'id': '$references$', 'type': 'umc/modules/udm/ReferencingObjects', 'readonly': True, 'size': 'Two'})
+        return props
+
 
 LDAP_ATTR_RE = re.compile(r'^%\(([^)]*)\)s$')  # '%(username)s' -> 'username'
 

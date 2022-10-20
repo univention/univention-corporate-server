@@ -899,8 +899,6 @@ class _OpenAPIBase:
             properties_schema = {}
             for prop in module.properties(None):
                 name = prop['id']
-                if name.startswith('$'):
-                    continue
                 property = module.get_property(name)
                 codec = udm_types.TypeHint.detect(property, name)
                 properties_schema[name] = codec.get_openapi_definition()

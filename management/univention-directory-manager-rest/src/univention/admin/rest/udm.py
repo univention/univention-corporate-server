@@ -894,7 +894,7 @@ class UDM_Module:
     def properties(self, position_dn):
         """All properties of the UDM module"""
         ldap_connection, ldap_position = self.get_ldap_connection()
-        props = [{'id': '$dn$', 'type': 'HiddenInput', 'label': '', 'searchable': False}]
+        props = []
         for key, prop in list(getattr(self.module, 'property_descriptions', {}).items()):
             if key == 'filler':
                 continue  # FIXME: should be removed from all UDM modules
@@ -966,8 +966,6 @@ class UDM_Module:
                     pass
 
             props.append(item)
-        props.append({'id': '$options$', 'type': 'WidgetGroup', 'widgets': self.get_options()})
-        props.append({'id': '$references$', 'type': 'umc/modules/udm/ReferencingObjects', 'readonly': True, 'size': 'Two'})
 
         return props
 
