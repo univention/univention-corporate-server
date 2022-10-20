@@ -46,7 +46,7 @@ desc: |-
 
   * Update to linux-4.19.260-1
 note: This is the 4th of five parts.
-bug: [55330, 50256]
+bug: [55330]
 cve:
 - CVE-2021-4159
 - CVE-2021-33655
