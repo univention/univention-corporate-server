@@ -6,10 +6,23 @@ src: libraw
 fix: 0.17.2-6+deb9u3
 desc: |
  This update addresses the following issues:
- 0.17.2-6+deb9u3 (Tue, 04 Oct 2022 13:30:58 +0200)
- * Non-maintainer upload by the ELTS Team.
- * Fix CVE-2018-5816, CVE-2018-10528, CVE-2018-10529, CVE-2020-35530,
-   CVE-2020-35531, CVE-2020-35532, CVE-2020-35533.
+ * An integer overflow error within the function `identify()` can be exploited
+   to trigger a division by zero via specially crafted NOKIARAW file
+   (CVE-2018-5816)
+ * A stack-based buffer overflow in the function `utf2char` in libraw_cxx.cpp
+   (CVE-2018-10528)
+ * An out-of-bounds read affecting the X3F property table list implementation
+   in `libraw_x3f.cpp` and `libraw_cxx.cpp` (CVE-2018-10529)
+ * An out-of-bounds write vulnerability within the function `new_node()` that
+   can be triggered via a crafted X3F file (CVE-2020-35530)
+ * An out-of-bounds read vulnerability exists within the function
+   `get_huffman_diff()` when reading data from an image file (CVE-2020-35531)
+ * An out-of-bounds read vulnerability exists within the function
+   `simple_decode_row()` which can be triggered via an image with a large
+   row_stride field (CVE-2020-35532)
+ * An out-of-bounds read vulnerability exists within the function
+   `LibRaw::adobe_copy_pixel()` when reading data from the image file
+   (CVE-2020-35533)
 bug: [55295]
 cve:
 - CVE-2018-5816
