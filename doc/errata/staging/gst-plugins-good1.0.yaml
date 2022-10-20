@@ -6,24 +6,16 @@ src: gst-plugins-good1.0
 fix: 1.10.4-1+deb9u2
 desc: |
  This update addresses the following issues:
- 1.10.4-1+deb9u2 (Wed, 24 Aug 2022 22:03:02 +0200)
- * Non-maintainer upload by the ELTS Team.
- * adapted patches from Sebastian Dröge for Buster
- * debian/patches/0001-avidemux-Fix-integer-overflow-resulting-in-heap-corr.patch:
-   + Fix heap-based buffer overflow in the avi demuxer when handling certain
-   AVI files (CVE-2022-1921).
- * debian/patches/0001-matroskademux-Avoid-integer-overflow-resulting-in-he.patch:
-   + Fix potential heap overwrite in the mkv demuxer when handling certain
+ * CVE-2021-3497: oob write on matroska wavpack decoding.
+ * Fix potential heap overwrite in the mkv demuxer when handling certain
    Matroska files (CVE-2022-1920).
- * debian/patches/0001-qtdemux-Fix-integer-overflows-in-zlib-decompression-.patch:
-   + Fix potential heap overwrite in the qt demuxer when handling certain
-   QuickTime/MP4 files (CVE-2022-2122).
- * debian/patches/0001-matroskademux-Fix-integer-overflows-in-zlib-bz2-etc-.patch:
-   + Fix potential heap overwrite in the mkv demuxer when handling certain
+ * Fix heap-based buffer overflow in the avi demuxer when handling certain AVI
+   files (CVE-2022-1921).
+ * Fix potential heap overwrite in the mkv demuxer when handling certain
    Matroska/WebM files (CVE-2022-1922, CVE-2022-1923, CVE-2022-1924,
    CVE-2022-1925).
- 1.10.4-1+deb9u1 (Fri, 23 Apr 2021 10:36:37 +0200)
- * CVE-2021-3497: oob write on matroska wavpack decoding.
+ * Fix potential heap overwrite in the qt demuxer when handling certain
+   QuickTime/MP4 files (CVE-2022-2122).
 bug: [55307]
 cve:
 - CVE-2022-1921
