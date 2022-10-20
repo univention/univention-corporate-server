@@ -12,7 +12,8 @@ desc: |
  * CVE-2022-29404: Denial of service in mod_lua `r:parsebody`.
  * CVE-2022-30522: `mod_sed` denial of service.
  * CVE-2022-30556: Information Disclosure in `mod_lua` with websockets.
- * CVE-2022-31813: `mod_proxy` `X-Forwarded-For` dropped by hop-by-hop mechanism.
+ * CVE-2022-31813: `mod_proxy` `X-Forwarded-For` dropped by hop-by-hop
+   mechanism.
 bug: [55289]
 cve:
 - CVE-2022-26377
