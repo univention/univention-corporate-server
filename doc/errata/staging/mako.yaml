@@ -6,8 +6,6 @@ src: mako
 fix: 1.0.6+ds1-2+deb9u1
 desc: |
  This update addresses the following issue:
- 1.0.6+ds1-2+deb9u1 (Mon, 19 Sep 2022 14:20:35 +0200)
- * Non-maintainer upload by the ELTS Team.
  * CVE-2022-40023: denial of service via crafted regex.
 bug: [55304]
 cve:
