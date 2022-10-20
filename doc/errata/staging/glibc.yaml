@@ -6,47 +6,28 @@ src: glibc
 fix: 2.28-10+deb10u2
 desc: |
  This update addresses the following issues:
- 2.28-10+deb10u1 (Tue, 15 Mar 2022 23:48:49 +0100)
- [ Aurelien Jarno ]
- * debian/patches/git-updates.diff: update from upstream stable branch
- : - Add more integrity check to malloc() function. - Fix crash in
- _IO_wfile_sync. - Fix bad free() in libdl if dlerror() is not used.. - Fix
- overflow in glibc.malloc.tcache_count tunable. - Fix old x86 applications crash
- on exit() under valgrind. - Remove copy_file_range emulation. The kernel
- interface has at evolved and the glibc emulation doesn't match it anymore, so
- it's better for it to return -ENOSYS. This only impacts Linux kernels << 4.8. -
- Avoid lazy binding of symbols that may follow a variant PCS on arm64, to
- support binaries using AdvSIMD and SVE vector calls. - Fix large mmap64 offset
- for the N32 ABI on mips/mipsel/mips64el. - Improve string functions
- performances on arm64.
- * debian/patches/any/git-libio-stdout-putc.diff: refresh.
- * debian/debhelper.in/libc.preinst: simplify the version comparison by only
-   comparing the two first parts, now that kernel 2.X are not supported
-   anymore..
- * debian/debhelper.in/libc.preinst: drop the check for kernel release > 255
-   now that glibc and preinstall script are fixed..
- * iconv program can hang when invoked with the -c option (CVE-2016-10228)
- * LD_PREFER_MAP_32BIT_EXEC not ignored in setuid binaries (CVE-2019-19126)
- * buffer over-read in iconv when processing invalid multi-byte input
+ * `iconv` program can hang when invoked with the option `-c` (CVE-2016-10228)
+ * `LD_PREFER_MAP_32BIT_EXEC` not ignored in setuid binaries (CVE-2019-19126)
+ * buffer over-read in `iconv` when processing invalid multi-byte input
    sequences in the EUC-KR encoding (CVE-2019-25013)
- * use-after-free in glob() function when expanding ~user (CVE-2020-1752)
- * signed comparison vulnerability in the ARMv7 memcpy function
+ * use-after-free in function `glob()` when expanding `~user` (CVE-2020-1752)
+ * signed comparison vulnerability in the ARMv7 function `memcpy()`
    (CVE-2020-6096)
- * stack corruption from crafted input in cosl, sinl, sincosl, and tanl
-   functions (CVE-2020-10029)
- * iconv when processing invalid multi-byte input sequences fails to advance
+ * stack corruption from crafted input in functions `cosl()`, `sinl()`,
+   `sincosl()`, and `tanl()` (CVE-2020-10029)
+ * `iconv` when processing invalid multi-byte input sequences fails to advance
    the input state, which could result in an infinite loop (CVE-2020-27618)
- * Assertion failure in ISO-2022-JP-3 gconv module related to combining
+ * Assertion failure in ISO-2022-JP-3 `gconv` module related to combining
    characters (CVE-2021-3326)
- * Off-by-one buffer overflow/underflow in getcwd() (CVE-2021-3999)
- * Use-after-free in addgetnetgrentX function in netgroupcache.c
+ * Off-by-one buffer overflow/underflow in `getcwd()` (CVE-2021-3999)
+ * Use-after-free in function `addgetnetgrentX()` in `netgroupcache.c`
    (CVE-2021-27645)
- * mq_notify does not handle separately allocated thread attributes
+ * `mq_notify()` does not handle separately allocated thread attributes
    (CVE-2021-33574)
- * Arbitrary read in wordexp() (CVE-2021-35942)
- * Stack-based buffer overflow in svcunix_create via long pathnames
+ * Arbitrary read in `wordexp()` (CVE-2021-35942)
+ * Stack-based buffer overflow in `svcunix_create()` via long pathnames
    (CVE-2022-23218)
- * Stack-based buffer overflow in sunrpc clnt_create via a long pathname
+ * Stack-based buffer overflow in SunRPC `clnt_create()` via a long pathname
    (CVE-2022-23219)
 bug: [55326]
 cve:
