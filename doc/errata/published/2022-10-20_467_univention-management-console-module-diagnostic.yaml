@@ -13,3 +13,5 @@ desc: |
    version has been extended to provide mot information in case of errors and
    provides an automatic fixer to update the protocol version.
 bug: [49417]
+erratum: 467
+announced: 2022-10-20
