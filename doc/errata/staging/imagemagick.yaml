@@ -10,12 +10,6 @@ desc: |
    (CVE-2021-3596)
  * Heap-buffer-overflow in `PushLongPixel()` of `quantum-private.h`
    (CVE-2022-28463)
- 8:6.9.7.4+dfsg-11+deb9u16 (Tue, 12 Jul 2022 15:26:56 +0200)
- * Non-maintainer upload by ELTS Security Team.
- * Fix distribution target to stretch
- 8:6.9.7.4+dfsg-11+deb9u15 (Mon, 04 Jul 2022 14:27:12 +0200)
- * Non-maintainer upload by the LTS Security Team.
- * Properly fix the patch for CVE-2021-3596
 bug: [54760]
 cve:
 - CVE-2021-3596
