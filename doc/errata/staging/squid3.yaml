@@ -6,17 +6,11 @@ src: squid3
 fix: 3.5.23-5+deb9u8A~4.4.9.202210182015
 desc: |
  This update addresses the following issues:
-
- Debian update 3.5.23-5+deb9u8
- 3.5.23-5+deb9u8 (Mon, 08 Aug 2022 07:42:43 -0700)
- * Non-maintainer upload by the Debian ELTS Team.
- * CVE-2021-28116: Squid through 4.14 and 5.x through 5.0.5, in some
-   configurations, allows information disclosure because of an out-of-bounds
-   read in WCCP protocol data. This can be leveraged as part of a chain for
-   remote code execution as nobody.
- * CVE-2021-46784: In Squid 3.x through 3.5.28, 4.x through 4.17, and 5.x
-   before 5.6, due to improper buffer management, a Denial of Service can
-   occur when processing long Gopher server responses.
+ * CVE-2021-28116: Squid in some configurations, allows information disclosure
+   because of an out-of-bounds read in WCCP protocol data. This can be
+   leveraged as part of a chain for remote code execution as user `nobody`.
+ * CVE-2021-46784: In Squid due to improper buffer management, a Denial of
+   Service can occur when processing long Gopher server responses.
 bug: [55292]
 cve:
 - CVE-2021-28116
