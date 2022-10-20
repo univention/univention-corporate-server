@@ -465,7 +465,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
             module = self.get_module(request.flavor, ldap_dn)
             if module is None:
                 if len(request.options) == 1:
-                    raise ObjectDoesNotExist(ldap_dn)
+                    raise ObjectDoesNotExist(self.get_ldap_connection()[0], ldap_dn)
                 result.append({'$dn$': ldap_dn, 'success': False, 'details': _('LDAP object does not exist.')})
                 continue
             MODULE.info('Modifying LDAP object %s' % (ldap_dn,))
@@ -544,7 +544,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
                 ldap_dn = request.user_dn
             obj, module = self.get_obj_module(request.flavor, ldap_dn)
             if module is None:
-                raise ObjectDoesNotExist(ldap_dn)
+                raise ObjectDoesNotExist(self.get_ldap_connection()[0], ldap_dn)
             else:
                 if obj:
                     _remove_uncopyable_properties(obj)
@@ -629,7 +629,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
                 if not request.options.get('container'):
                     request.options['container'] = superordinate.dn
             else:
-                raise SuperordinateDoesNotExist(superordinate)
+                raise SuperordinateDoesNotExist(self.get_ldap_connection()[0], superordinate)
 
         # overwrite base, blocklists are always in its module defined base
         if module.name == 'blocklists/list':
@@ -752,7 +752,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         obj = module.get(request.options['networkDN'])
 
         if not obj:
-            raise ObjectDoesNotExist(request.options['networkDN'])
+            raise ObjectDoesNotExist(self.get_ldap_connection()[0], request.options['networkDN'])
         try:
             obj.refreshNextIp()
         except udm_errors.nextFreeIp:
@@ -1201,7 +1201,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
                 raise UMC_Error('The given object type is not valid')
             _obj = _module.get(_dn)
             if _obj is None or (_dn and not _obj.exists()):
-                raise ObjectDoesNotExist(_dn)
+                raise ObjectDoesNotExist(self.get_ldap_connection()[0], _dn)
             return _obj
 
         def _get_object_parts(_options):

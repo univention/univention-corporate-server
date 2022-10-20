@@ -34,7 +34,6 @@
 # <https://www.gnu.org/licenses/>.
 
 import copy
-import functools
 import gc
 import inspect
 import locale
@@ -63,11 +62,10 @@ from univention.admin.authorization import (
 from univention.management.console import Translation
 from univention.management.console.config import ucr
 from univention.management.console.error import UMC_Error
-from univention.management.console.ldap import get_user_connection, user_connection
 from univention.management.console.log import MODULE
 
 
-_ = Translation('univention-management-console-module-udm').translate
+_ = Translation('univention-directory-manager-rest').translate
 
 udm_modules.update()
 
@@ -79,28 +77,6 @@ _licenseCheck = 0
 re_split_roles_and_contexts = re.compile(
     r"^((?P<role_app>[a-z0-9-_]+):(?P<role_namespace>[a-z0-9-_]+):(?P<role_name>[a-z0-9-_]+))(&(?P<context_app>[a-z0-9-_]+):(?P<context_namespace>[a-z0-9-_]+):(?P<context_name>[a-z0-9-_=,]+))?$",
 )  # FIXME: Why doesn't this allow at least "=" and "," at least in "context_name"? Basically it should allow everything valid in an LDAP DN!? I.e.  case insensitive UTF-8 see https://ldapwiki.com/wiki/Wiki.jsp?page=Distinguished%20Name%20Case%20Sensitivity and https://ldapwiki.com/wiki/Wiki.jsp?page=Ou
-
-
-def calculate_bind_hash(request):
-    return hash((request.username, request.password, request.auth_type))
-
-
-def set_bind_hash(hash):
-    global __bind_hash
-    __bind_hash = hash
-
-
-def get_bind_hash():
-    return __bind_hash
-
-
-def set_bind_function(connection_getter):
-    global __bind_function
-    __bind_function = connection_getter
-
-
-def get_bind_function():
-    return __bind_function
 
 
 def set_user_roles(user_dn: str) -> None:
@@ -130,25 +106,6 @@ def set_user_roles(user_dn: str) -> None:
 
 def get_user_roles():
     return __user_roles
-
-
-def LDAP_Connection(func):
-    """
-    Get a cached ldap connection bound to the user connection.
-
-    .. deprecated :: UCS 4.4
-            This must not be used in udm_ldap.py.
-            Use something explicit like self.get_ldap_connection() instead.
-
-    """
-    @functools.wraps(func)
-    def _decorated(*args, **kwargs):
-        method = user_connection(func, bind=get_bind_function(), write=True, bindhash=get_bind_hash())
-        try:
-            return method(*args, **kwargs)
-        except (LDAPError, udm_errors.ldapError):
-            return method(*args, **kwargs)
-    return _decorated
 
 
 class UMCError(UMC_Error):
@@ -306,46 +263,16 @@ class AppAttributes:
         return layout
 
 
-class UserWithoutDN(UMCError):
-
-    def __init__(self, username):
-        self._username = username
-        super().__init__()
-
-    def _error_msg(self):
-        yield _('The LDAP DN of the user %s could not be determined.') % (self._username,)
-        yield _('The following steps can help to solve this problem:')
-        yield ' * ' + _('Ensure that the LDAP server on this system is running and responsive')
-        yield ' * ' + _('Make sure the DNS settings of this server are correctly set up and the DNS server is responsive')
-        if not self._is_master:
-            yield ' * ' + _('Check the join status of this system by using the domain join UMC module')
-        yield ' * ' + _('Make sure all join scripts were successfully executed')
-        if self._updates_available:
-            yield ' * ' + _('Install the latest software updates')
-        yield _('If the problem persists additional hints about the cause can be found in the following log file(s):')
-        yield ' * /var/log/univention/management-console-module-udm.log'
-        yield ' * /var/log/univention/management-console-server.log'
-
-
-class LDAP_AuthenticationFailed(UMCError):
-
-    def __init__(self):
-        super().__init__(status=401)
-
-    def _error_msg(self):
-        yield _('Authentication failed')
-
-
 class ObjectDoesNotExist(UMCError):
 
-    def __init__(self, ldap_dn):
+    def __init__(self, lo, ldap_dn):
+        self.lo = lo
         self.ldap_dn = ldap_dn
         super().__init__()
 
-    @LDAP_Connection
-    def _ldap_object_exists(self, ldap_connection=None, ldap_position=None):
+    def _ldap_object_exists(self):
         try:
-            ldap_connection.get(self.ldap_dn, required=True)
+            self.lo.get(self.ldap_dn, required=True)
         except NO_SUCH_OBJECT:
             return False
         else:
@@ -453,15 +380,8 @@ class UDM_Module:
             AppAttributes._cache = None
 
     def get_ldap_connection(self, base=None):
-        if ucr.is_true("umc/udm/delegation"):
-            from univention.management.console.ldap import get_admin_connection
-            self.ldap_connection, _po = get_admin_connection()
-        elif get_bind_function():
-            try:
-                self.ldap_connection, _po = get_user_connection(bind=get_bind_function(), write=True, bindhash=get_bind_hash())
-            except (LDAPError, udm_errors.ldapError):
-                self.ldap_connection, _po = get_user_connection(bind=get_bind_function(), write=True, bindhash=get_bind_hash())
-            self.ldap_position = udm.uldap.position(self.ldap_connection.base)
+        # subclasses in UDM module to set the values if not present!
+        # therefore don't access self.ldap_connection directly!
         return self.ldap_connection, udm.uldap.position(base or self.ldap_connection.base)
 
     def load(self, module=None, template_object=None, force_reload=False):
@@ -492,20 +412,6 @@ class UDM_Module:
     def __getitem__(self, key):
         props = getattr(self.module, 'property_descriptions', {})
         return props[key]
-
-    def get_default_values(self, property_name):
-        """
-        Depending on the syntax of the given property a default
-        search pattern/value is returned
-        """
-        MODULE.info('Searching for property %s' % property_name)
-        ldap_connection, ldap_position = self.get_ldap_connection()
-        for key, prop in getattr(self.module, 'property_descriptions', {}).items():
-            if key == property_name:
-                value = prop.syntax.widget_default_search_pattern
-                if prop.syntax.search_widget in ('ComboBox', 'SuggestionBox'):
-                    value = read_syntax_choices(prop.syntax, ldap_connection=ldap_connection, ldap_position=ldap_position)
-                return value
 
     def _map_properties(self, obj, properties):
         # FIXME: for the automatic IP address assignment, we need to make sure that
@@ -572,12 +478,12 @@ class UDM_Module:
             try:
                 ldap_position.setDn(container)
             except udm_errors.noObject:
-                raise ObjectDoesNotExist(container)
+                raise ObjectDoesNotExist(ldap_connection, container)
         elif superordinate:
             try:
                 ldap_position.setDn(superordinate)
             except udm_errors.noObject:
-                raise SuperordinateDoesNotExist(superordinate)
+                raise SuperordinateDoesNotExist(ldap_connection, superordinate)
         else:
             if hasattr(self.module, 'policy_position_dn_prefix'):
                 container = '%s,cn=policies,%s' % (self.module.policy_position_dn_prefix, ldap_position.getBase())
@@ -592,7 +498,7 @@ class UDM_Module:
             _superordinate, mod = get_obj_module(self.name, superordinate, ldap_connection)
             if not mod:
                 MODULE.error('Superordinate module not found: %s' % (superordinate,))
-                raise SuperordinateDoesNotExist(superordinate)
+                raise SuperordinateDoesNotExist(ldap_connection, superordinate)
             MODULE.info('Found UDM module for superordinate')
             superordinate = _superordinate
 
@@ -749,9 +655,9 @@ class UDM_Module:
         except udm_errors.base as e:
             if isinstance(e, udm_errors.noObject):
                 if superordinate and not ldap_connection.get(superordinate):
-                    raise SuperordinateDoesNotExist(superordinate)
+                    raise SuperordinateDoesNotExist(ldap_connection, superordinate)
                 if container and not ldap_connection.get(container):
-                    raise ObjectDoesNotExist(container)
+                    raise ObjectDoesNotExist(ldap_connection, container)
             UDM_Error(e).reraise()
 
         if result:
@@ -782,7 +688,7 @@ class UDM_Module:
         except udm_errors.base as exc:
             MODULE.info('Failed to retrieve LDAP object: %s' % (exc,))
             if isinstance(exc, udm_errors.noObject) and superordinate and not ldap_connection.get(superordinate.dn):
-                raise SuperordinateDoesNotExist(superordinate)
+                raise SuperordinateDoesNotExist(ldap_connection, superordinate)
             UDM_Error(exc).reraise()
         obj = user_may_read(obj, get_user_roles)
         return obj
@@ -1313,7 +1219,7 @@ def list_objects(container, object_type=None, ldap_connection=None, ldap_positio
     except (LDAPError, udm_errors.ldapError):
         raise
     except udm_errors.noObject:
-        raise ObjectDoesNotExist(container)
+        raise ObjectDoesNotExist(ldap_connection, container)
     except udm_errors.ldapTimeout:
         raise SearchTimeoutError()
     except udm_errors.ldapSizelimitExceeded:
@@ -1348,53 +1254,10 @@ def list_objects(container, object_type=None, ldap_connection=None, ldap_positio
                 MODULE.error('Could not load object %r (%r) exception: %s' % (dn, module.module, traceback.format_exc()))
 
 
-LDAP_ATTR_RE = re.compile(r'^%\(([^)]*)\)s$')  # '%(username)s' -> 'username'
-
-
 def _get_syntax(syntax_name):
     if syntax_name not in udm_syntax.__dict__:
         return None
     return udm_syntax.__dict__[syntax_name]()
-
-
-def search_syntax_choices_by_key(syn, key, ldap_connection, ldap_position):
-    if issubclass(syn.__class__, udm_syntax.UDM_Objects):
-        if syn.key == 'dn':
-            try:
-                return read_syntax_choices(syn, {'scope': 'base', 'container': key}, ldap_connection=ldap_connection, ldap_position=ldap_position)
-            except udm_errors.base:  # TODO: which exception is raised here exactly?
-                # invalid DN
-                return []
-        if syn.key is not None:
-            match = LDAP_ATTR_RE.match(syn.key)
-            if match:
-                attr = match.groups()[0]
-                options = {'objectProperty': attr, 'objectPropertyValue': key, 'allow_asterisks': False}
-                return read_syntax_choices(syn, options, ldap_connection=ldap_connection, ldap_position=ldap_position)
-
-    MODULE.warn('Syntax %r: No fast search function' % syn.name)
-    # return them all, as there is no reason to filter after everything has loaded
-    # frontend will cache it.
-    return read_syntax_choices(syn, ldap_connection=ldap_connection, ldap_position=ldap_position)
-
-
-def info_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=None):
-    if issubclass(syn.__class__, udm_syntax.UDM_Objects):
-        size = 0
-        if syn.static_values is not None:
-            size += len(syn.static_values)
-        for udm_module in syn.udm_modules:
-            module = UDM_Module(udm_module, ldap_connection=ldap_connection, ldap_position=ldap_position)
-            if module.module is None:
-                continue
-            filter_s = syn._create_ldap_filter(options or {}, module)
-            if filter_s is not None:
-                try:
-                    size += len(module.search(filter=filter_s, simple=not syn.use_objects))
-                except (udm_errors.ldapSizelimitExceeded, SearchLimitReached):
-                    return {'performs_well': True, 'size_limit_exceeded': True}
-        return {'size': size, 'performs_well': True}
-    return {'size': 0, 'performs_well': False}
 
 
 def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=None):
@@ -1456,10 +1319,6 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
         if isinstance(e, udm_errors.noObject):
             container = options.get('base')
             if container and not ldap_connection.get(container):
-                raise ObjectDoesNotExist(container)
+                raise ObjectDoesNotExist(ldap_connection, container)
         UDM_Error(e).reraise()
     return choices
-
-
-if __name__ == '__main__':
-    set_bind_function(lambda lo: lo.bind('uid=Administrator,cn=users,%s' % (ucr['ldap/base'],), 'univention'))
