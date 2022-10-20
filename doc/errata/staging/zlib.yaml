@@ -6,8 +6,6 @@ src: zlib
 fix: 1:1.2.8.dfsg-5+deb9u2
 desc: |
  This update addresses the following issue:
- 1:1.2.8.dfsg-5+deb9u2 (Sun, 11 Sep 2022 10:53:29 +0200)
- * Non-maintainer upload by the ELTS Team.
  * CVE-2022-37434: heap buffer overflow via large gzip header extra field.
 bug: [55311]
 cve:
