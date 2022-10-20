@@ -6,13 +6,11 @@ src: systemd
 fix: 232-25+deb9u15A~4.4.9.202210182015
 desc: |
  This update addresses the following issue:
- 232-25+deb9u15 (Tue, 06 Sep 2022 13:42:01 +0200)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2022-2526: A use-after-free vulnerability was found in systemd.
-   This issue occurs due to the on_stream_io() function and
-   dns_stream_complete() function in 'resolved-dns-stream.c' not incrementing
-   the reference counting for the DnsStream object. Therefore, other functions
-   and callbacks called can dereference the DNSStream object, causing the
+ * Fix CVE-2022-2526: A use-after-free vulnerability was found in `systemd`.
+   This issue occurs due to the functions `on_stream_io()` and
+   `dns_stream_complete()` in `resolved-dns-stream.c` not incrementing the
+   reference counting for the DnsStream object. Therefore, other functions and
+   callbacks called can dereference the DNSStream object, causing the
    use-after-free when the reference is still used later.
 bug: [55287]
 cve:
