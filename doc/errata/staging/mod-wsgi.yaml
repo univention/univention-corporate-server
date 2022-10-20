@@ -6,8 +6,6 @@ src: mod-wsgi
 fix: 4.5.11-1+deb9u1
 desc: |
  This update addresses the following issue:
- 4.5.11-1+deb9u1 (Sat, 06 Aug 2022 23:03:02 +0200)
- * Non-maintainer upload by the ELTS Team.
  * CVE-2022-2255 drop X-Client-IP header when is not a trusted header
 bug: [55316]
 cve:
