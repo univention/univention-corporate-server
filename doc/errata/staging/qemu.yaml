@@ -1,0 +1,27 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: qemu
+fix: 1:2.8+dfsg-6+deb9u18A~4.4.9.202210200653
+desc: |
+ This update addresses the following issues:
+ 1:2.8+dfsg-6+deb9u18 (Mon, 17 Oct 2022 12:29:47 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * CVE-2021-4206: integer overflow leading to heap buffer overflow write in
+   the QXL display driver's cursor_alloc.
+ * CVE-2021-4207: heap buffer overflow write due to race condition when
+   requesting the cursor size in the QXL display driver.
+ * CVE-2022-0216: use after free in the LSI53C895A SCSI host bus adapter.
+ * CVE-2021-3507: heap buffer overflow in the floppy disk emulator.
+ * CVE-2020-35504: null pointer dereference in the SCSI emulation.
+ * CVE-2020-35505: null pointer dereference in the am53c974 SCSI host bus
+   adapter.
+bug: [55328]
+cve:
+- CVE-2021-4206
+- CVE-2021-4207
+- CVE-2022-0216
+- CVE-2021-3507
+- CVE-2020-35504
+- CVE-2020-35505
