@@ -6,8 +6,6 @@ src: unzip
 fix: 6.0-21+deb9u3
 desc: |
  This update addresses the following issues:
- 6.0-21+deb9u3 (Thu, 22 Sep 2022 18:38:25 +0200)
- * Non-maintainer upload by the ELTS Team.
  * CVE-2022-0530: segmentation fault on invalid input.
  * CVE-2022-0529: heap buffer overwrite..
 bug: [55294]
