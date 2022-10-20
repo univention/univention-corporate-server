@@ -6,12 +6,9 @@ src: net-snmp
 fix: 5.7.3+dfsg-1.7+deb9u4
 desc: |
  This update addresses the following issues:
- 5.7.3+dfsg-1.7+deb9u4 (Fri, 26 Aug 2022 22:03:02 +0200)
- * Non-maintainer upload by the ELTS Team.
- * snmpd_fix_bounds_checking: CVE-2022-24805, CVE-2022-24809
- * snmpd_recover_set_status: CVE-2022-24806, CVE-2022-24807, CVE-2022-24808,
+ * `snmpd_fix_bounds_checking`: CVE-2022-24805, CVE-2022-24809
+ * `snmpd_recover_set_status`: CVE-2022-24806, CVE-2022-24807, CVE-2022-24808,
    CVE-2022-24810
- * patches based on the backports of Craig Small to Bullseye
 bug: [55318]
 cve:
 - CVE-2022-24805
