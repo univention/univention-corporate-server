@@ -1,6 +1,7 @@
 univention-group-membership-cache (2.0.0-13) unstable; urgency=low
 
   * Bug #55286: Fix GDBM file descriptor leak on reorganize()
+  * Bug:#55256: Move group membership cache
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 20 Oct 2022 18:14:20 +0200
 

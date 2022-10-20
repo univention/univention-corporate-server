@@ -40,11 +40,11 @@ def test_listener(udm, ucr, base_user, group1, group2):
 
 
 def rebuild():
-	subprocess.call(['/usr/share/univention-group-membership-cache/univention-ldap-cache', 'rebuild', 'uniqueMembers'])
+	subprocess.call(['univention-ldap-cache', 'rebuild', 'uniqueMembers'])
 
 
 def cleanup():
-	subprocess.call(['/usr/share/univention-group-membership-cache/univention-ldap-cache', 'cleanup'])
+	subprocess.call(['univention-ldap-cache', 'cleanup'])
 
 
 def check_logs():

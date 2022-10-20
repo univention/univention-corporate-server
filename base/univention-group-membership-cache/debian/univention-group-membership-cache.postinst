@@ -32,8 +32,24 @@
 
 #DEBHELPER#
 
-/usr/share/univention-group-membership-cache/univention-ldap-cache add-cache memberUids dn memberUid "(univentionObjectType=groups/group)"
-/usr/share/univention-group-membership-cache/univention-ldap-cache add-cache uniqueMembers dn uniqueMember "(univentionObjectType=groups/group)"
-/usr/share/univention-group-membership-cache/univention-ldap-cache create-listener-modules
+case "$1" in
+configure)
+	NEW='/var/cache/univention-group-membership-cache'
+	install -o listener -g root -m 750 -d "$NEW"
+	OLD='/usr/share/univention-group-membership-cache/caches'
+	if [ -d "$OLD" ] && dpkg --compare-versions "$2" lt 2.0.0-13
+	then
+		for db in "$OLD"/*
+		do
+			[ -f "$db" ] && mv "$db" "$NEW"/
+		done
+		rmdir --ignore-fail-on-non-empty "$OLD"
+	fi
+
+	univention-ldap-cache add-cache memberUids dn memberUid "(univentionObjectType=groups/group)"
+	univention-ldap-cache add-cache uniqueMembers dn uniqueMember "(univentionObjectType=groups/group)"
+	univention-ldap-cache create-listener-modules
+	;;
+esac
 
 exit 0

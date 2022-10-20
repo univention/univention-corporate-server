@@ -35,7 +35,7 @@ from typing import Any, Dict, Iterator, List, Mapping, Optional, Sequence, Tuple
 
 from univention.ldap_cache.log import debug
 
-DB_DIRECTORY = '/usr/share/univention-group-membership-cache/caches'
+DB_DIRECTORY = '/var/cache/univention-group-membership-cache'
 
 
 class Caches(object):

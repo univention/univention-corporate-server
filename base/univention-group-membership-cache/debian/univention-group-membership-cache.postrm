@@ -32,7 +32,10 @@
 
 #DEBHELPER#
 
-mkdir -p /usr/share/univention-group-membership-cache/caches/
-chown listener:root /usr/share/univention-group-membership-cache/caches
+case "$1" in
+purge)
+	rm -rf /var/cache/univention-group-membership-cache
+	;;
+esac
 
 exit 0

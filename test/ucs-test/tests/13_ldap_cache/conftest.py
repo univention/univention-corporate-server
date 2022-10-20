@@ -81,11 +81,11 @@ def add_cache():
 	caches = []
 
 	def _add_cache(*cache):
-		subprocess.call(['/usr/share/univention-group-membership-cache/univention-ldap-cache', 'add-cache'] + list(cache))
-		subprocess.call(['/usr/share/univention-group-membership-cache/univention-ldap-cache', 'rebuild', cache[0]])
-		subprocess.call(['/usr/share/univention-group-membership-cache/univention-ldap-cache', 'create-listener-modules'])
+		subprocess.call(['univention-ldap-cache', 'add-cache'] + list(cache))
+		subprocess.call(['univention-ldap-cache', 'rebuild', cache[0]])
+		subprocess.call(['univention-ldap-cache', 'create-listener-modules'])
 		caches.append(cache)
 	yield _add_cache
 	for cache in caches:
-		subprocess.call(['/usr/share/univention-group-membership-cache/univention-ldap-cache', 'rm-cache'] + list(cache))
-	subprocess.call(['/usr/share/univention-group-membership-cache/univention-ldap-cache', 'create-listener-modules'])
+		subprocess.call(['univention-ldap-cache', 'rm-cache'] + list(cache))
+	subprocess.call(['univention-ldap-cache', 'create-listener-modules'])
