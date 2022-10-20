@@ -6,10 +6,6 @@ src: pjproject
 fix: 2.5.5~dfsg-6+deb9u6
 desc: |
  This update addresses the following issue:
-
- Debian update 2.5.5~dfsg-6+deb9u6
- 2.5.5~dfsg-6+deb9u6 (Fri, 15 Jul 2022 13:03:50 +0100)
- * Non-maintainer upload by the Debian ELTS Team.
  * CVE-2022-31031: Prevent a stack buffer overflow vulnerability by setting a
    maximum attribute count.
 bug: [55312]
