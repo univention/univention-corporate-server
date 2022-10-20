@@ -6,13 +6,20 @@ src: poppler
 fix: 0.48.0-2+deb9u5
 desc: |
  This update addresses the following issues:
- 0.48.0-2+deb9u5 (Wed, 28 Sep 2022 22:25:20 +0200)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2018-13988, CVE-2018-18897, CVE-2019-10873, CVE-2020-27778,
-   CVE-2022-27337 and CVE-2022-38784. Several security vulnerabilities have
-   been discovered in Poppler, a PDF rendering library, that could lead to
-   denial of service or possibly other unspecified impact when processing
-   maliciously crafted documents.
+ * An out of bounds read vulnerability due to an incorrect memory access that
+   is not mapped in its memory space (CVE-2018-13988)
+ * A memory leak in `GfxColorSpace::setDisplayProfile` in `GfxState.cc`
+   (CVE-2018-18897)
+ * A NULL pointer dereference in the function `SplashClip::clipAALine` at
+   `splash/SplashClip.cc` (CVE-2019-10873)
+ * A remote attacker could exploit a flaw by providing a malicious PDF file
+   that, when processed by the program `pdftohtml`, would crash the
+   application causing a denial of service (CVE-2020-27778)
+ * A logic error in the function `Hints::Hints` allows attackers to cause a
+   Denial of Service (DoS) via a crafted PDF file (CVE-2022-27337)
+ * An integer overflow in the JBIG2 decoder `JBIG2Stream::readTextRegionSeg()`
+   in `JBIGStream.cc`: Processing a specially crafted PDF file or JBIG2 image
+   could lead to a crash or the execution of arbitrary code (CVE-2022-38784)
 bug: [55300]
 cve:
 - CVE-2018-13988
