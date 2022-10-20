@@ -6,10 +6,8 @@ src: sqlite3
 fix: 3.16.2-5+deb9u4
 desc: |
  This update addresses the following issue:
- 3.16.2-5+deb9u4 (Thu, 15 Sep 2022 08:17:40 +0100)
- * Non-maintainer upload by the Freexian ELTS Team.
- * CVE-2020-35525: Prevent a potential null pointer deference issue in
-   INTERSEC query processing.
+ * CVE-2020-35525: Prevent a potential NULL pointer deference issue in
+   `INTERSEC` query processing.
 bug: [55319]
 cve:
 - CVE-2020-35525
