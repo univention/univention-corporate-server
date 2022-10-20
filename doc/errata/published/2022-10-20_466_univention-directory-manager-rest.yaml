@@ -10,3 +10,5 @@ desc: |
   `X-Request-Id` HTTP header which is accepted as request header (or if not
   given uniquely created) and returned in the response headers.
 bug: [55186]
+erratum: 466
+announced: 2022-10-20
