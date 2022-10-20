@@ -1,0 +1,69 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: linux
+fix: 4.19.260-1
+desc: |
+ This updates the Linux kernel to version 4.19.260, which addresses (among
+ others) the following security issues:
+ * bpf: Verifer, `adjust_scalar_min_max_vals` to always call
+   `update_reg_bounds()` (CVE-2021-4159)
+ * fbcon: Disallow setting font bigger than screen size (CVE-2021-33655)
+ * vt: drop old FONT ioctls (CVE-2021-33656)
+ * tty: use new `tty_insert_flip_string_and_push_buffer()` in `pty_write()`
+   (CVE-2022-1462)
+ * ath9k: fix use-after-free in `ath9k_hif_usb_rx_cb` (CVE-2022-1679)
+ * [x86] KVM: x86: Check `lapic_in_kernel()` before attempting to set a SynIC
+   irq (CVE-2022-2153)
+ * [x86] KVM: x86: Avoid theoretical NULL pointer dereference in
+   `kvm_irq_delivery_to_apic_fast()` (CVE-2022-2153)
+ * net: rose: fix use-after-free bugs caused by timer handler (CVE-2022-2318)
+ * netfilter: nf_tables: do not allow `SET_ID` to refer to another table
+   (CVE-2022-2586)
+ * net_sched: cls_route: remove from list when handle is 0 (CVE-2022-2588)
+ * netfilter: nf_conntrack_irc: Fix forged IP logic (CVE-2022-2663)
+ * netfilter: nf_conntrack_irc: Tighten matching on DCC message
+   (CVE-2022-2663)
+ * af_key: Do not call `xfrm_probe_algs` in parallel (CVE-2022-3028)
+ * xen/blkfront: fix leaking data in shared pages (CVE-2022-26365)
+ * [x86] speculation: Add RSB VM Exit protections (CVE-2022-26373)
+ * xen/netfront: fix leaking data in shared pages (CVE-2022-33740)
+ * xen/netfront: force data bouncing when backend is untrusted
+   (CVE-2022-33741)
+ * xen/blkfront: force data bouncing when backend is untrusted
+   (CVE-2022-33742)
+ * [arm64,armhf] xen/arm: Fix race in RB-tree based P2M accounting
+   (CVE-2022-33744)
+ * xfrm: xfrm_policy: fix a possible double `xfrm_pols_put()` in
+   `xfrm_bundle_lookup()` (CVE-2022-36879)
+ * netfilter: nf_queue: do not allow packet truncation below transport header
+   offset (CVE-2022-36946)
+ * mm: Force TLB flush for PFNMAP mappings before `unlink_file_vma()`
+   (CVE-2022-39188)
+ * efi: capsule-loader: Fix use-after-free in `efi_capsule_write`
+   (CVE-2022-40307)
+note: This is the 1st of five parts.
+bug: [55330]
+cve:
+- CVE-2021-4159
+- CVE-2021-33655
+- CVE-2021-33656
+- CVE-2022-1462
+- CVE-2022-1679
+- CVE-2022-2153
+- CVE-2022-2318
+- CVE-2022-2586
+- CVE-2022-2588
+- CVE-2022-2663
+- CVE-2022-3028
+- CVE-2022-26365
+- CVE-2022-26373
+- CVE-2022-33740
+- CVE-2022-33741
+- CVE-2022-33742
+- CVE-2022-33744
+- CVE-2022-36879
+- CVE-2022-36946
+- CVE-2022-39188
+- CVE-2022-40307
