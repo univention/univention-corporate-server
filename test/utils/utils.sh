@@ -343,9 +343,10 @@ wait_for_setup_process () {
 }
 
 use_test_app_center() {
-    if [ "$UCS_TEST_APPCENTER" = "true" ]; then
-        switch_to_test_app_center
-    fi
+	univention-install --yes univention-appcenter-dev
+	if [ "$UCS_TEST_APPCENTER" = "true" ]; then
+		switch_to_test_app_center
+	fi
 }
 
 switch_to_test_app_center () {
@@ -1142,14 +1143,15 @@ sa_bug54194 () {
 }
 
 fake_initial_schema () {
-       [ "$(ucr get ldap/server/type)" = master ] && return
-       [ -s /var/lib/univention-ldap/schema.conf ] && return
-       local tmp=$(mktemp)
-       printf '# univention_dummy.conf\n\nldap/server/type: master' >"$tmp"
-       UNIVENTION_BASECONF="$tmp" univention-config-registry filter \
-               </etc/univention/templates/files/etc/ldap/slapd.conf.d/10univention-ldap-server_schema \
-               >/var/lib/univention-ldap/schema.conf
-       rm -f "$tmp"
+	[ "$(ucr get ldap/server/type)" = master ] && return
+	[ -s /var/lib/univention-ldap/schema.conf ] && return
+	local tmp
+	tmp=$(mktemp)
+	printf '# univention_dummy.conf\n\nldap/server/type: master' >"$tmp"
+	UNIVENTION_BASECONF="$tmp" univention-config-registry filter \
+		</etc/univention/templates/files/etc/ldap/slapd.conf.d/10univention-ldap-server_schema \
+		>/var/lib/univention-ldap/schema.conf
+	rm -f "$tmp"
 }
 
 
@@ -1159,7 +1161,7 @@ online_fsresize () {
 	echo "Grow root partition"
 	root_device="$(readlink -f "$(df --output=source / | tail -n 1)")"
 	disk="${root_device%[0-9]}"
-	part_number="${root_device#${disk}}"
+	part_number="${root_device#"${disk}"}"
 	growpart "$disk" "$part_number"
 	resize2fs "$root_device"
 }
