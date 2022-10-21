@@ -1,3 +1,6 @@
+set -e
+set -x
+
 set_udm_properties_for_kelvin () {
     cat <<EOT > /etc/ucsschool/kelvin/mapped_udm_properties.json
 {
