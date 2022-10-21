@@ -52,6 +52,9 @@ from univention.management.console.log import MODULE
 
 _ = Translation('univention-management-console-module-udm').translate
 
+_UDM_Module.SIZELIMIT_UCR = 'directory/manager/web/sizelimit'
+_UDM_Module.SIZELIMIT = ucr.get_int('directory/manager/web/sizelimit', 2000)
+
 
 def calculate_bind_hash(request):
     return hash((request.username, request.password, request.auth_type))

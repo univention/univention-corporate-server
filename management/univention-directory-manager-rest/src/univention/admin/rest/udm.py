@@ -322,7 +322,7 @@ class SearchTimeoutError(UMC_Error):
 class SearchLimitReached(UMC_Error):
 
     def __init__(self):
-        super().__init__(_('The query you have entered yields too many matching entries. Please narrow down your search by specifying more query parameters. The current size limit of %s can be configured with the UCR variable directory/manager/web/sizelimit.') % ucr.get('directory/manager/web/sizelimit', '2000'))
+        super().__init__(_('The query you have entered yields too many matching entries. Please narrow down your search by specifying more query parameters. The current size limit of %(limit)s can be configured with the UCR variable %(ucrvar)s.') % {'limit': UDM_Module.SIZELIMIT, 'ucrvar': UDM_Module.SIZELIMIT_UCR})
 
 
 class UDM_Error(Exception):
@@ -368,6 +368,9 @@ _module_cache = UDM_ModuleCache()
 
 class UDM_Module:
     """Wraps UDM modules to provide a simple access to the properties and functions"""
+
+    SIZELIMIT_UCR = 'ldap/sizelimit'
+    SIZELIMIT = ucr.get_int(SIZELIMIT_UCR, 400000)
 
     def __init__(self, module, force_reload=False, ldap_connection=None, ldap_position=None):
         """Initializes the object"""
@@ -623,17 +626,16 @@ class UDM_Module:
         MODULE.info('Searching for LDAP objects: container = %s, filter = %s, superordinate = %s' % (container, filter_s, superordinate))
         result = None
         try:
-            sizelimit = int(ucr.get('directory/manager/web/sizelimit', '2000') or 2000)
             if simple and self.allows_simple_lookup():
                 lookup_filter = self.lookup_filter(filter, ldap_connection)
                 if lookup_filter is None:
                     result = []
                 else:
                     if simple_attrs is not None:
-                        result = ldap_connection.search(filter=str(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, attr=simple_attrs, serverctrls=serverctrls, response=response)
+                        result = ldap_connection.search(filter=str(lookup_filter), base=container, scope=scope, sizelimit=self.SIZELIMIT, attr=simple_attrs, serverctrls=serverctrls, response=response)
                     else:
-                        # result = ldap_connection.searchDn(filter=str(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, serverctrls=serverctrls, response=response)
-                        result = ldap_connection.search(filter=str(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, attr=['univentionObjectType'], serverctrls=serverctrls, response=response)
+                        # result = ldap_connection.searchDn(filter=str(lookup_filter), base=container, scope=scope, sizelimit=self.SIZELIMIT, serverctrls=serverctrls, response=response)
+                        result = ldap_connection.search(filter=str(lookup_filter), base=container, scope=scope, sizelimit=self.SIZELIMIT, attr=['univentionObjectType'], serverctrls=serverctrls, response=response)
                         result = [{'id': x[0], "module_name": x[1]["univentionObjectType"][0].decode("utf8")} for x in result]
             else:
                 if self.module:
@@ -641,7 +643,7 @@ class UDM_Module:
                     if serverctrls and 'serverctrls' in inspect.getfullargspec(self.module.lookup).args:  # not every UDM handler supports serverctrls
                         kwargs['serverctrls'] = serverctrls
                         kwargs['response'] = response
-                    result = self.module.lookup(None, ldap_connection, filter_s, base=container, superordinate=superordinate, scope=scope, sizelimit=sizelimit, **kwargs)
+                    result = self.module.lookup(None, ldap_connection, filter_s, base=container, superordinate=superordinate, scope=scope, sizelimit=self.SIZELIMIT, **kwargs)
                 else:
                     result = None
         except udm_errors.insufficientInformation:
@@ -1263,7 +1265,7 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
 
     options = options or {}
     options.setdefault('dependencies', {})
-    options['sizelimit'] = int(ucr.get('directory/manager/web/sizelimit', '2000') or 2000)
+    options['sizelimit'] = UDM_Module.SIZELIMIT
     if '$dn$' in options:
         options['dn'] = options.pop('$dn$')
 
