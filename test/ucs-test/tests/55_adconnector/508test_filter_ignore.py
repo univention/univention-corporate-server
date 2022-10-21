@@ -7,6 +7,7 @@
 ##  - 55150
 
 import pytest
+from ldap.filter import filter_format
 
 import adconnector
 from adconnector import connector_running_on_this_host, connector_setup
@@ -36,7 +37,7 @@ def test_user_sync_from_ad_to_udm_with_ignorefilter(user_class, sync_mode):
 			udm_user = user_class()
 			(basic_ad_user, ad_user_dn, udm_user_dn) = create_con_user(AD, udm_user, adconnector.wait_for_sync)
 			with testing_ucr.UCSTestConfigRegistry():
-				ignorefilter = "(givenName={})".format(udm_user.user["firstname"].decode("utf-8"))
+				ignorefilter = filter_format("(givenName=%s)", [udm_user.user["firstname"].decode("utf-8")])
 				ucr_set([f"connector/ad/mapping/user/ignorefilter={ignorefilter}"])
 				adconnector.restart_adconnector()
 				udm_user.user["firstname"] = udm_user.user["firstname"] + udm_user.user["lastname"]
