@@ -3,7 +3,7 @@ release: "4.4"
 version: [9]
 scope: ucs_4.4-0-errata4.4-9
 src: univention-s4-connector
-fix:
+fix: 13.0.2-91A~4.4.0.202210211253
 desc: |
  This update addresses the following issues:
  * Joining UCS@School replica servers into environments with many objects
