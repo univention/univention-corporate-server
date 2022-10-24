@@ -1196,6 +1196,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 		primary_group = get_primary_group_dn(self.lo, primaryGroupNumber)
 		if primary_group:
 			self['primaryGroup'] = primary_group
+			return
 
 		ud.debug(ud.ADMIN, ud.ERROR, 'No primary group was found with gidNumber=%s for %s as %s' % (primaryGroupNumber, self.dn, self.lo.binddn))
 
