@@ -2778,7 +2778,8 @@ class Object(FormBase, Resource):
 				values = {key: obj[key] for key in obj.descriptions if (add or obj.has_property(key)) and obj.descriptions[key].show_in_lists}
 
 			for passwd in module.password_properties:
-				values[passwd] = None
+				if passwd in values:
+					values[passwd] = None
 			values = dict(decode_properties(module, obj, values))
 
 		if add:
@@ -2815,7 +2816,8 @@ class Object(FormBase, Resource):
 			props['uuid'] = obj.entry_uuid
 		# TODO: objectFlag is available for every module. remove the extended attribute and always map it.
 		# alternative: add some other meta information to this object, e.g. is_hidden_object: True, is_synced_from_active_directory: True, ...
-		props['properties'].setdefault('objectFlag', [x.decode('utf-8', 'replace') for x in obj.oldattr.get('univentionObjectFlag', [])])
+		if '*' in properties or 'objectFlag' in properties:
+			props['properties'].setdefault('objectFlag', [x.decode('utf-8', 'replace') for x in obj.oldattr.get('univentionObjectFlag', [])])
 		if copy or add:
 			props.pop('dn', None)
 			props.pop('id', None)
