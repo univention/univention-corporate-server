@@ -241,6 +241,14 @@ else
 	ucr commit /etc/simplesamlphp/authsources.php
 fi
 
+if [ "$server_role" = "domaincontroller_master" ]; then
+	if [ -z "${keycloak_server_sso_certificate_generation}" ] || is_ucr_true keycloak/server/sso/certificate/generation; then
+		kc_server_sso_fqdn="${keycloak_server_sso_fqdn:-ucs-sso-ng.$domainname}"
+		univention-certificate new -name "$kc_server_sso_fqdn" -days "${ssl_default_days:-1825}" || die
+		ucr set keycloak/server/sso/certificate/generation='false'
+	fi
+fi
+
 # check if we need to create a new certificate
 if [ ! -e "${saml_idp_certificate_certificate}" ]; then
 	create_or_download=false
