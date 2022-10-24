@@ -47,6 +47,7 @@ install_frontend_app () {
 	local app="$1"
 	local main_image="$2"
 	local branch_image="$3"
+	univention-install --yes univention-appcenter-dev
 	if [ -n "$branch_image" ]; then
 		univention-app dev-set "$app" "DockerImage=$branch_image"
 	else

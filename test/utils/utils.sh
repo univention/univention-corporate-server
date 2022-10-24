@@ -343,7 +343,6 @@ wait_for_setup_process () {
 }
 
 use_test_app_center() {
-	univention-install --yes univention-appcenter-dev
 	if [ "$UCS_TEST_APPCENTER" = "true" ]; then
 		switch_to_test_app_center
 	fi
