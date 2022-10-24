@@ -115,8 +115,8 @@ class Value:
         raise Error('Over %d chars long:\n >%s<>%s<' % (length,
                     self.value[:length + 1], self.value[length + 1:]))
 
-    def is_90c(self):
-        return self.is_n_chars_long(90)
+    def is_180c(self):
+        return self.is_n_chars_long(180)
 
     def is_email(self):
         if self.RE_EMAIL.match(self.value):
@@ -179,7 +179,7 @@ class Section:
         'Contact': ('required', 'is_email',),
         'DefaultPackagesMaster': ('optional', 'deprecated_master_packages',),
         'DefaultPackages': ('optional',),
-        'Description': ('required', 'is_90c',),
+        'Description': ('required', 'is_180c',),
         'EmailRequired': ('optional',),
         'EndOfLife': ('optional', 'is_bool',),
         'ID': ('required',),
