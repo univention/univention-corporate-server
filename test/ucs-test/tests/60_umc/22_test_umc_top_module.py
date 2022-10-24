@@ -7,10 +7,12 @@ import signal
 import sys
 from os import WNOHANG, WTERMSIG, fork, wait4
 from time import sleep
+from random import randint
 import contextlib
 
 import pytest
-from psutil import Process, TimeoutExpired
+from psutil import Process, TimeoutExpired, pid_exists
+from univention.lib.umc import BadRequest
 
 
 class Test_UMCProcessKilling:
@@ -103,3 +105,13 @@ class Test_UMCProcessKilling:
             else:
                 assert exit_code == signum
                 assert not self.query_process_exists(pid)
+
+    def test_error_handling_of_not_existing_process_termination(self, Client):
+        self.client = Client.get_test_connection()
+        pid = 0
+        while True:
+            pid = randint(2, 4194304)
+            if not pid_exists(pid):
+                break
+        with pytest.raises(BadRequest, match=r'No process found with PID'):
+            self.kill_process('SIGKILL', pid)
