@@ -104,3 +104,8 @@ latex_documents = [(root_doc, f'{pdf_doc_base}.tex', project, author, "manual", 
 latex_elements = {
     "papersize": "a4paper",
 }
+
+# See Univention Sphinx Extension for its options and information about the
+# feedback link.
+# https://git.knut.univention.de/univention/documentation/univention_sphinx_extension
+univention_feedback = True

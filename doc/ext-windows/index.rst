@@ -4,8 +4,6 @@
 Univention Corporate Server - Extended Windows integration documentation
 ########################################################################
 
-.. contents::
-
 .. _samba:
 
 ****************************

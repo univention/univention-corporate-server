@@ -143,3 +143,8 @@ latex_elements = {
 univention_use_doc_base = True
 
 manpages_url = "https://manpages.debian.org/{path}"
+
+# See Univention Sphinx Extension for its options and information about the
+# feedback link.
+# https://git.knut.univention.de/univention/documentation/univention_sphinx_extension
+univention_feedback = True

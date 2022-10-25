@@ -117,3 +117,8 @@ linkcheck_ignore = [
 ]
 
 univention_use_doc_base = True
+
+# See Univention Sphinx Extension for its options and information about the
+# feedback link.
+# https://git.knut.univention.de/univention/documentation/univention_sphinx_extension
+univention_feedback = True

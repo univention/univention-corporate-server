@@ -141,3 +141,8 @@ univention_use_doc_base = True
 # https://git.knut.univention.de/univention/documentation/univention_sphinx_changelog#configuration-settings
 univention_changelog_previous_release = "5.0-1"
 univention_changelog_builder = "ucs"
+
+# See Univention Sphinx Extension for its options and information about the
+# feedback link.
+# https://git.knut.univention.de/univention/documentation/univention_sphinx_extension
+univention_feedback = True

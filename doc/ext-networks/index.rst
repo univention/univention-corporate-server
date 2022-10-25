@@ -4,8 +4,6 @@
 Univention Corporate Server - Extended IP and network management documentation
 ##############################################################################
 
-.. contents::
-
 .. _proxy:
 
 ****************************
