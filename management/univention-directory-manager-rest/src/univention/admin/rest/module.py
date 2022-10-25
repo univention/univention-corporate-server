@@ -75,7 +75,7 @@ from genshi.output import HTMLSerializer
 
 from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
-from univention.management.console.ldap import get_connection
+from univention.management.console.ldap import get_user_connection, get_machine_connection
 from univention.management.console.modules.udm.udm_ldap import get_module, UDM_Module, ldap_dn2path, container_modules, UDM_Error
 from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, ObjectDoesNotExist, NoIpLeft
 from univention.management.console.modules.udm.tools import check_license, LicenseError, LicenseImport as LicenseImporter, dump_license
@@ -109,34 +109,6 @@ MAX_WORKERS = ucr.get('directory/manager/rest/max-worker-threads', 35)
 
 if 422 not in tornado.httputil.responses:
 	tornado.httputil.responses[422] = 'Unprocessable Entity'  # Python 2 is missing this status code
-
-
-def get_user_ldap_write_connection(bind):
-	return get_ldap_connection(bind, 'user-write')
-
-
-def get_user_ldap_read_connection(bind):
-	return get_ldap_connection(bind, 'user-read')
-
-
-def get_machine_ldap_write_connection():
-	return get_ldap_connection(None, 'machine-write')
-
-
-def get_machine_ldap_read_connection():
-	return get_ldap_connection(None, 'machine-read')
-
-
-def get_ldap_connection(bind, type_):
-	def _bind(lo):
-		binddn = ucr.get(f'directory/manager/rest/ldap-connection/{type_}/binddn', ucr['ldap/hostdn'])
-		with open(ucr.get(f'directory/manager/rest/ldap-connection/{type_}/password-file', '/etc/machine.secret')) as fd:
-			password = fd.read().strip()
-		lo.bind(binddn, password)
-	default_uri = "ldap://%s:%d" % (ucr.get('ldap/master'), ucr.get_int('ldap/master/port', '7389'))
-	uri = ucr.get(f'directory/manager/rest/ldap-connection/{type_}/uri', default_uri)
-	start_tls = ucr.get_int('directory/manager/rest/ldap-connection/user-read/start-tls', 2)
-	return get_connection(bind or _bind, None, None, ucr['ldap/base'], start_tls=start_tls, uri=uri)
 
 
 def add_sanitizers(type_, sanitizers):
@@ -447,7 +419,7 @@ class ResourceBase:
 		self.request.username = username
 		try:
 			self.request.user_dn = self._auth_get_userdn(username)
-			self.ldap_connection, self.ldap_position = get_user_ldap_write_connection(bind=lambda lo: lo.bind(self.request.user_dn, password))
+			self.ldap_connection, self.ldap_position = get_user_connection(bind=lambda lo: lo.bind(self.request.user_dn, password), write=True)
 		except Exception:
 			return self.force_authorization()
 
@@ -466,7 +438,7 @@ class ResourceBase:
 	def _auth_get_userdn(self, username):
 		if username in ('cn=admin',):
 			return 'cn=admin,%(ldap/base)s' % ucr
-		lo, po = get_machine_ldap_read_connection()
+		lo, po = get_machine_connection(write=False)
 		return lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [username]), unique=True)[0]
 
 	def get_module(self, object_type):
@@ -1156,7 +1128,7 @@ class OpenAPI(Resource):
 	def prepare(self):
 		super().prepare()
 		self.request.content_negotiation_lang = 'json'
-		self.ldap_connection, self.ldap_position = get_machine_ldap_read_connection()
+		self.ldap_connection, self.ldap_position = get_machine_connection(write=False)
 
 	def get(self, object_type=None):
 		paths = {}  # defines all resources and methods they have
@@ -2573,7 +2545,6 @@ class Objects(FormBase, ReportingBase):
 		"""Create a {} object."""
 		obj = Object(self.application, self.request)
 		obj.ldap_connection, obj.ldap_position = self.ldap_connection, self.ldap_position
-		obj.ldap_write_connection = self.ldap_write_connection
 		serverctrls = [PostReadControl(True, ['entryUUID'])]
 		response = {}
 		obj = await obj.create(object_type, serverctrls=serverctrls, response=response)
@@ -2655,7 +2626,7 @@ class ObjectsMove(Resource):
 		self.finish()
 		try:
 			for i, dn in enumerate(dns, 1):
-				module = get_module(object_type, dn, self.ldap_write_connection)
+				module = get_module(object_type, dn, self.ldap_connection)
 				dn = await self.pool_submit(module.move, dn, position)
 				status['moved'].append(dn)
 				status['description'] = _('Moved %d of %d objects. Last object was: %s.') % (i, len(dns), dn)
@@ -2891,7 +2862,7 @@ class Object(FormBase, Resource):
 		self.set_entity_tags(obj)
 
 		position = self.request.body_arguments['position']
-		if position and not self.ldap_write_connection.compare_dn(self.ldap_write_connection.parentDn(dn), position):
+		if position and not self.ldap_connection.compare_dn(self.ldap_connection.parentDn(dn), position):
 			await self.move(module, dn, position)
 			return
 		else:
@@ -2911,7 +2882,7 @@ class Object(FormBase, Resource):
 	async def patch(self, object_type, dn):
 		"""Modify partial properties of the {} object {}."""
 		dn = unquote_dn(dn)
-		module = get_module(object_type, dn, self.ldap_write_connection)
+		module = get_module(object_type, dn, self.ldap_connection)
 		if not module:
 			raise NotFound(object_type)
 
@@ -2921,7 +2892,7 @@ class Object(FormBase, Resource):
 
 		self.set_entity_tags(obj)
 
-		entry = Object.get_representation(module, obj, ['*'], self.ldap_write_connection, False)
+		entry = Object.get_representation(module, obj, ['*'], self.ldap_connection, False)
 		if self.request.body_arguments['options'] is None:
 			self.request.body_arguments['options'] = entry['options']
 		if self.request.body_arguments['policies'] is None:
@@ -2941,7 +2912,7 @@ class Object(FormBase, Resource):
 		container = self.request.body_arguments['position']
 		superordinate = self.request.body_arguments['superordinate']
 		if dn:
-			container = self.ldap_write_connection.parentDn(dn)
+			container = self.ldap_connection.parentDn(dn)
 			# TODO: validate that properties are equal to rdn
 
 		ldap_position = univention.admin.uldap.position(self.ldap_position.getBase())
@@ -2954,11 +2925,11 @@ class Object(FormBase, Resource):
 
 		superordinate = self.superordinate_dn_to_object(module, superordinate)
 
-		obj = module.module.object(None, self.ldap_write_connection, ldap_position, superordinate=superordinate)
+		obj = module.module.object(None, self.ldap_connection, ldap_position, superordinate=superordinate)
 		obj.open()
 		self.set_properties(module, obj)
 
-		if dn and not self.ldap_write_connection.compare_dn(dn, obj._ldap_dn()):
+		if dn and not self.ldap_connection.compare_dn(dn, obj._ldap_dn()):
 			self.raise_sanitization_error('dn', _('Trying to create an object with wrong RDN.'))
 
 		dn = await self.pool_submit(self.handle_udm_errors, obj.create, **kwargs)
@@ -3068,7 +3039,7 @@ class Object(FormBase, Resource):
 	async def delete(self, object_type, dn):
 		"""Remove the {} object {}."""
 		dn = unquote_dn(dn)
-		module = get_module(object_type, dn, self.write_ldap_connection)
+		module = get_module(object_type, dn, self.ldap_connection)
 		if not module:
 			raise NotFound(object_type)
 
@@ -3168,7 +3139,7 @@ class UserPhoto(Resource):
 
 	async def post(self, object_type, dn):
 		dn = unquote_dn(dn)
-		module = get_module(object_type, dn, self.write_ldap_connection)
+		module = get_module(object_type, dn, self.ldap_connection)
 		if module is None:
 			raise NotFound(object_type, dn)
 
@@ -3734,7 +3705,7 @@ univentionObjectType: settings/license
 			# check license and write it to LDAP
 			importer = LicenseImporter(fd)
 			importer.check(ucr.get('ldap/base', ''))
-			importer.write(self.ldap_write_connection)
+			importer.write(self.ldap_connection)
 		except ldap.LDAPError as exc:
 			# LDAPError e.g. LDIF contained non existing attributes
 			raise HTTPError(400, _('Importing the license failed: LDAP error: %s.') % exc.args[0].get('info'))
@@ -3753,7 +3724,7 @@ class ServiceSpecificPassword(Resource):
 		service=StringSanitizer(required=True),
 	)
 	async def post(self, object_type, dn):
-		module = get_module(object_type, dn, self.ldap_write_connection)
+		module = get_module(object_type, dn, self.ldap_connection)
 		if module is None:
 			raise NotFound(object_type, dn)
 

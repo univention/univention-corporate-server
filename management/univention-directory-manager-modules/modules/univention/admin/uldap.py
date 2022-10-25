@@ -455,7 +455,7 @@ class access(object):
 		# type: () -> int
 		return self.lo.start_tls
 
-	def __init__(self, host='localhost', port=None, base=u'', binddn=u'', bindpw=u'', start_tls=2, lo=None, follow_referral=False, uri=None):
+	def __init__(self, host='localhost', port=None, base=u'', binddn=u'', bindpw=u'', start_tls=2, lo=None, follow_referral=False):
 		# type: (str, int, str, str, str, int, univention.uldap.access, bool) -> None
 		"""
 		:param str host: The hostname of the |LDAP| server.
@@ -466,7 +466,6 @@ class access(object):
 		:param int start_tls: Negotiate |TLS| with server. If `2` is given, the command will require the operation to be successful.
 		:param univention.uldap.access lo: |LDAP| connection.
 		:param:bool follow_referral: Follow |LDAP| referrals.
-		:param str uri: LDAP connection string.
 		"""
 		if lo:
 			self.lo = lo
@@ -474,7 +473,7 @@ class access(object):
 			if not port:
 				port = int(configRegistry.get('ldap/server/port', 7389))
 			try:
-				self.lo = univention.uldap.access(host, port, base, binddn, bindpw, start_tls, uri=uri, follow_referral=follow_referral)
+				self.lo = univention.uldap.access(host, port, base, binddn, bindpw, start_tls, follow_referral=follow_referral)
 			except ldap.INVALID_CREDENTIALS:
 				raise univention.admin.uexceptions.authFail(_("Authentication failed"))
 			except ldap.UNWILLING_TO_PERFORM:
