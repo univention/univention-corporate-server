@@ -11,3 +11,5 @@ desc: |
    taking up a huge amount of disk space until the Directory Listener was
    restarted.
 bug: [55286]
+erratum: 468
+announced: 2022-10-25
