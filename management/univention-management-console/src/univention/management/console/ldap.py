@@ -27,7 +27,7 @@ from univention.config_registry import ConfigRegistry
 _ucr = ConfigRegistry()
 _ucr.load()
 
-__all__ = ('user_connection', 'get_user_connection', 'machine_connection', 'get_machine_connection', 'admin_connection', 'get_admin_connection')
+__all__ = ('connection', 'get_connection', 'user_connection', 'get_user_connection', 'machine_connection', 'get_machine_connection', 'admin_connection', 'get_admin_connection')
 
 
 class LDAP(object):
@@ -87,6 +87,12 @@ class LDAP(object):
 			return _access(lo=lo), _position(lo.base)
 		return self._wrapped(func, hash_, connection, loarg, poarg, no_cache)
 
+	def get_connection(self, *args, **kwargs):
+		@self.connection(*args, **kwargs)
+		def connection(ldap_connection=None, ldap_position=None):
+			return ldap_connection, ldap_position
+		return connection()
+
 	def get_user_connection(self, *args, **kwargs):
 		@self.user_connection(*args, **kwargs)
 		def connection(ldap_connection=None, ldap_position=None):
@@ -132,7 +138,13 @@ class LDAP(object):
 
 		def getter():
 			try:
-				lo, po = self.__ldap_connections[hash_]
+				try:
+					lo, po = self.__ldap_connections[hash_]
+				except KeyError:
+					# security! it must not be possible to get a traceback with the hash
+					# e.g. when the new connection could not be established.
+					# Since Python 3 tracebacks contain the whole exception chain
+					lo, po = None, None
 				if lo is None:
 					raise KeyError()
 			except KeyError:
@@ -171,5 +183,7 @@ backup_connection = _LDAP.backup_connection
 get_backup_connection = _LDAP.get_backup_connection
 user_connection = _LDAP.user_connection
 get_user_connection = _LDAP.get_user_connection
+connection = _LDAP.connection
+get_connection = _LDAP.get_connection
 reset_cache = _LDAP.reset_cache
 del _LDAP

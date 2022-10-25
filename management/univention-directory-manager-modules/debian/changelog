@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.13-25) unstable; urgency=medium
+
+  * Bug #54623: allow passing a LDAP URI to
+    univention.admin.uldap.access()
+
+ -- Florian Best <best@univention.de>  Tue, 15 Nov 2022 13:09:53 +0100
+
 univention-directory-manager-modules (15.0.13-24) unstable; urgency=medium
 
   * Bug #50167: Simple UDM API: change list of policy DNs to mapping of

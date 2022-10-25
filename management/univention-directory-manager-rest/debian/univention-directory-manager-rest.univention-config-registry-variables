@@ -52,3 +52,28 @@ Description[en]=Number of parallel processes that are started. The value 0 start
 Type=int
 Default=1
 Categories=service-udm
+
+[directory/manager/rest/ldap-connection/.*/uri]
+Description[de]=Ein LDAP-URI, der für die Verbindung mit dem LDAP-Server verwendet wird. Platzhalter sind "user-read", "user-write", "machine-read", "machine-write".
+Description[en]=A LDAP URI used for connecting to the LDAP server. Placeholders are "user-read", "user-write", "machine-read", "machine-write".
+Type=str
+Categories=service-udm
+
+[directory/manager/rest/ldap-connection/.*/start-tls]
+Description[de]=Spezifiziert, ob STARTTLS für die LDAP-Verbindungstypen "user-read", "user-write", "machine-read", "machine-write" aktiviert werden soll (0=deaktiviert, 1=versuchen, 2=erzwingen).
+Description[en]=Specifies if STARTTLS should be enabled (0=disabled, 1=try, 2=enforce) for the LDAP connection types "user-read", "user-write", "machine-read", "machine-write".
+Type=int
+Default=2
+Categories=service-udm
+
+[directory/manager/rest/ldap-connection/.*/binddn]
+Description[de]=Gibt den binddn für die LDAP-Verbindungstypen "machine-read", "machine-write" an.
+Description[en]=Specifies the binddn for the LDAP connection types "machine-read", "machine-write".
+Type=str
+Categories=service-udm
+
+[directory/manager/rest/ldap-connection/.*/password-file]
+Description[de]=Gibt die Passwortdatei an, die das bind-Passwort für die LDAP-Verbindungstypen "machine-read", "machine-write" enthält.
+Description[en]=Specifies the password file containing the bind password for the LDAP connection types "machine-read", "machine-write".
+Type=str
+Categories=service-udm

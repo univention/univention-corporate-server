@@ -1,3 +1,10 @@
+univention-directory-manager-rest (10.0.4-9) unstable; urgency=medium
+
+  * Bug #54623: separate LDAP connections for read and write operations,
+    make them individually configurable
+
+ -- Florian Best <best@univention.de>  Thu, 17 Nov 2022 13:53:39 +0100
+
 univention-directory-manager-rest (10.0.4-8) unstable; urgency=medium
 
   * Bug #55430: prevent duplicated LDAP object receival

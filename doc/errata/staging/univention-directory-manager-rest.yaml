@@ -9,4 +9,7 @@ desc: |
  * The performance of the UDM REST API has been improoved:
    A duplicated LDAP search has been eliminated for `GET`, `PATCH` and
    `DELETE` operations on a object.
-bug: [55430]
+ * The LDAP connections for read and write operations have been separated and
+   are now individually configurable via the UCR variables
+   `directory/manager/rest/ldap-connection/.*/.*`.
+bug: [55430, 54623]
