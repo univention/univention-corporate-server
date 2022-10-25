@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: samba
+fix: 2:4.16.2-1A~5.0.0.202210171146
+desc: |
+ This update addresses the following issue:
+ * This update fixes a limited write heap buffer overflow in the GSSAPI
+   `unwrap_des()` and `unwrap_des3()` routines of Heimdal Kerberos included
+   in Samba.
+bug: [55275]
+cve:
+ - CVE-2022-3437
