@@ -1,0 +1,30 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: bluez
+fix: 5.50-1.2~deb10u3
+desc: |
+ This update addresses the following issues:
+ * information leak in service_attr_req() in sdpd-request.c via a crafted
+   CSTATE (CVE-2019-8921)
+ * heap-based buffer overflow via crafted request (CVE-2019-8922)
+ * memory leak in the SDP protocol (CVE-2021-41229)
+ * use-after-free in gatt-database.c (CVE-2021-43400)
+ * heap-based buffer overflow in the implementation of the gatt protocol
+   (CVE-2022-0204)
+ * BlueZ allows physically proximate attackers to obtain sensitive information
+   because profiles/audio/avrcp.c does not validate params_len
+   (CVE-2022-39176)
+ * BlueZ allows physically proximate attackers to cause a denial of service
+   because malformed and invalid capabilities can be processed in
+   profiles/audio/avdtp.c (CVE-2022-39177)
+bug: [55340]
+cve:
+- CVE-2019-8921
+- CVE-2019-8922
+- CVE-2021-41229
+- CVE-2021-43400
+- CVE-2022-0204
+- CVE-2022-39176
+- CVE-2022-39177
