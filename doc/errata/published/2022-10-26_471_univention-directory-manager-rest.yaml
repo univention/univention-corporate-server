@@ -9,3 +9,5 @@ desc: |
  * The URI template for nested search queries was invalid and has been
    adjusted.
 bug: [55115]
+erratum: 471
+announced: 2022-10-26
