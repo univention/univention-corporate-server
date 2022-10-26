@@ -1,0 +1,5 @@
+.. |APT| replace:: :abbr:`APT (advanced package tool)`
+.. |CA| replace:: :abbr:`CA (certificate authority)`
+.. |IT| replace:: :abbr:`IT (information technology)`
+.. |TLS| replace:: :abbr:`TLS (Transport Layer Security)`
+.. |UCS| replace:: :abbr:`UCS (Univention Corporate Server)`

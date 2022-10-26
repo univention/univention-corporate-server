@@ -60,6 +60,8 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 rst_epilog = """
 .. include:: /links.txt
+
+.. include:: /../abbreviations.txt
 """
 
 rediraffe_redirects = "redirects.txt"
