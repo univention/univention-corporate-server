@@ -37,12 +37,10 @@ import copy
 import gc
 import inspect
 import locale
-import operator
 import re
 import sys
 import threading
 import traceback
-from functools import reduce
 from json import load
 
 from ldap import NO_SUCH_OBJECT, LDAPError
@@ -56,9 +54,7 @@ import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.syntax as udm_syntax
 import univention.admin.uexceptions as udm_errors
-from univention.admin.authorization import (
-    user_may_create, user_may_delete, user_may_modify, user_may_move, user_may_read,
-)
+from univention.admin.authorization import user_may_delete, user_may_move, user_may_read
 from univention.management.console import Translation
 from univention.management.console.config import ucr
 from univention.management.console.error import UMC_Error
@@ -416,121 +412,6 @@ class UDM_Module:
         props = getattr(self.module, 'property_descriptions', {})
         return props[key]
 
-    def _map_properties(self, obj, properties):
-        # FIXME: for the automatic IP address assignment, we need to make sure that
-        # the network is set before the IP address (see Bug #24077, comment 6)
-        # The following code is a workaround to make sure that this is the
-        # case, however, this should be fixed correctly.
-        # This workaround has been documented as Bug #25163.
-        def _tmp_cmp(i):
-            if i[0] == 'mac':  # must be set before network, dhcpEntryZone
-                return ("\x00", i[1])
-            if i[0] == 'network':  # must be set before ip, dhcpEntryZone, dnsEntryZoneForward, dnsEntryZoneReverse
-                return ("\x01", i[1])
-            if i[0] in ('ip', 'mac'):  # must be set before dnsEntryZoneReverse, dnsEntryZoneForward
-                return ("\x02", i[1])
-            return i
-
-        password_properties = self.password_properties
-        for property_name, value in sorted(properties.items(), key=_tmp_cmp):
-            if property_name in password_properties:
-                MODULE.info('Setting password property %s' % (property_name,))
-            else:
-                MODULE.info('Setting property %s to %s' % (property_name, value))
-
-            property_obj = self.get_property(property_name)
-            if property_obj is None:
-                raise UMC_Error(_('Property %s not found') % property_name)
-
-            # check each element if 'value' is a list
-            if isinstance(value, tuple | list) and property_obj.multivalue:
-                if not value and not property_obj.required:
-                    MODULE.info('Setting of property ignored (is empty)')
-                    if property_name in obj.info:
-                        del obj.info[property_name]
-                    continue
-                subResults = []
-                for ival in value:
-                    try:
-                        subResults.append(property_obj.syntax.parse(ival))
-                    except TypeError as exc:
-                        raise UMC_Error(_('The property %(property)s has an invalid value: %(value)s') % {'property': property_obj.short_description, 'value': exc})
-                if subResults:  # empty list represents removing of the attribute (handlers/__init__.py def diff)
-                    MODULE.info('Setting of property ignored (is empty)')
-                    obj[property_name] = subResults
-            # otherwise we have a single value
-            else:
-                # None and empty string represents removing of the attribute (handlers/__init__.py def diff)
-                if (value is None or value == '') and not property_obj.required:
-                    if property_name in obj.info:
-                        del obj.info[property_name]
-                    continue
-                try:
-                    obj[property_name] = property_obj.syntax.parse(value)
-                except TypeError as exc:
-                    raise UMC_Error(_('The property %(property)s has an invalid value: %(value)s') % {'property': property_obj.short_description, 'value': exc})
-
-        return obj
-
-    def create(self, ldap_object, container=None, superordinate=None):
-        """Creates a LDAP object"""
-        ldap_connection, ldap_position = self.get_ldap_connection(base=self.module.object.ldap_base)
-        if superordinate == 'None':
-            superordinate = None
-        if container:
-            try:
-                ldap_position.setDn(container)
-            except udm_errors.noObject:
-                raise ObjectDoesNotExist(ldap_connection, container)
-        elif superordinate:
-            try:
-                ldap_position.setDn(superordinate)
-            except udm_errors.noObject:
-                raise SuperordinateDoesNotExist(ldap_connection, superordinate)
-        else:
-            if hasattr(self.module, 'policy_position_dn_prefix'):
-                container = '%s,cn=policies,%s' % (self.module.policy_position_dn_prefix, ldap_position.getBase())
-            elif hasattr(self.module, 'default_containers') and self.module.default_containers:
-                container = '%s,%s' % (self.module.default_containers[0], ldap_position.getBase())
-            else:
-                container = ldap_position.getBase()
-
-            ldap_position.setDn(container)
-
-        if superordinate:
-            _superordinate, mod = get_obj_module(self.name, superordinate, ldap_connection)
-            if not mod:
-                MODULE.error('Superordinate module not found: %s' % (superordinate,))
-                raise SuperordinateDoesNotExist(ldap_connection, superordinate)
-            MODULE.info('Found UDM module for superordinate')
-            superordinate = _superordinate
-
-        obj = self.module.object(None, ldap_connection, ldap_position, superordinate=superordinate)
-        try:
-            obj.open()
-            MODULE.info('Creating LDAP object')
-            if '$options$' in ldap_object:
-                options = [option for option in ldap_object['$options$'].keys() if ldap_object['$options$'][option] is True]
-                for option_name, option_def in AppAttributes.data_for_module(self.name).items():
-                    if option_name in options:
-                        options.remove(option_name)
-                        ldap_object[option_def['attribute_name']] = option_def['boolean_values'][0]
-                obj.options = options
-                del ldap_object['$options$']
-            if '$policies$' in ldap_object:
-                obj.policies = reduce(operator.add, ldap_object['$policies$'].values(), [])
-                del ldap_object['$policies$']
-
-            self._map_properties(obj, ldap_object)
-
-            user_may_create(obj, get_user_roles)
-            obj.create()
-        except udm_errors.base as e:
-            MODULE.warn('Failed to create LDAP object: %s: %s' % (e.__class__.__name__, str(e)))
-            UDM_Error(e, obj.dn).reraise()
-
-        return obj.dn
-
     def move(self, ldap_dn, container):
         """Moves an LDAP object"""
         ldap_connection, ldap_position = self.get_ldap_connection()
@@ -563,52 +444,6 @@ class UDM_Module:
                 udm_objects.performCleanup(obj)
         except udm_errors.base as e:
             MODULE.warn('Failed to remove LDAP object %s: %s: %s' % (ldap_dn, e.__class__.__name__, str(e)))
-            UDM_Error(e).reraise()
-
-    def modify(self, ldap_object):
-        """Modifies a LDAP object"""
-        ldap_connection, ldap_position = self.get_ldap_connection()
-        superordinate = udm_objects.get_superordinate(self.module, None, ldap_connection, ldap_object['$dn$'])
-        MODULE.info('Modifying object %s with superordinate %s' % (ldap_object['$dn$'], superordinate))
-        obj = self.module.object(None, ldap_connection, ldap_position, dn=ldap_object.get('$dn$'), superordinate=superordinate)
-        del ldap_object['$dn$']
-
-        try:
-            obj.open()
-            if '$options$' in ldap_object:
-                options = obj.options[:]
-                app_data = AppAttributes.data_for_module(self.name)
-                for option_name, enabled in ldap_object['$options$'].items():
-                    if enabled is None:
-                        continue
-                    # handle AppAttributes
-                    if option_name in app_data:
-                        option_def = app_data[option_name]
-                        # use 'not enabled' since a truthy value as integer is 1 but 'boolean_values' stores the truthy value at index 0
-                        ldap_object[option_def['attribute_name']] = option_def['boolean_values'][int(not enabled)]
-                        continue
-                    # handle normal options
-                    if enabled:
-                        options.append(option_name)
-                    else:
-                        try:
-                            options.remove(option_name)
-                        except ValueError:
-                            pass
-                obj.options = options
-                MODULE.info('Setting new options to %s' % str(obj.options))
-                del ldap_object['$options$']
-            MODULE.info('Modifying LDAP object %s' % obj.dn)
-            if '$policies$' in ldap_object:
-                obj.policies = reduce(operator.add, ldap_object['$policies$'].values(), [])
-                del ldap_object['$policies$']
-
-            self._map_properties(obj, ldap_object)
-
-            user_may_modify(obj, get_user_roles)
-            obj.modify()
-        except udm_errors.base as e:
-            MODULE.warn('Failed to modify LDAP object %s: %s: %s' % (obj.dn, e.__class__.__name__, str(e)))
             UDM_Error(e).reraise()
 
     def search(self, container=None, attribute=None, value=None, superordinate=None, scope='sub', filter='', simple=False, simple_attrs=None, hidden=True, serverctrls=None, response=None, allow_asterisks=True):
