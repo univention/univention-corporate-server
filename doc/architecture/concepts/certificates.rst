@@ -3,18 +3,17 @@
 Certificate infrastructure
 ==========================
 
-The certificate infrastructure in a domain operated with Univention Corporate
-Server (UCS) ensures the trust context between all participants. The first
-domain node creates its own certificate authority (CA) for the domain. For
-more information see the `Wikipedia article Certificate authority
-<w-certificate-authority_>`_.
+The certificate infrastructure in a domain operated with |UCS| ensures the trust
+context between all participants. The first domain node creates its own |CA| for
+the domain. For more information, see the `Wikipedia article Certificate
+authority <w-certificate-authority_>`_.
 
-UCS uses Transport Layer Security (TLS). The UCS Primary Directory Node creates
-the CA on behalf of the domain during its installation and signs certificates
-for other systems that join the domain. All certificates have an expiration
-date. Backup Directory Nodes in the domain repeatedly pull all certificates from
-the Primary Domain Controller to allow administrators to promote one of them to a
-Primary Directory Node any time, if needed.
+UCS uses |TLS|. The UCS Primary Directory Node creates the CA on behalf of the
+domain during its installation and signs certificates for other systems that
+join the domain. All certificates have an expiration date. Backup Directory
+Nodes in the domain repeatedly pull all certificates from the Primary Domain
+Controller to allow administrators to promote one of them to a Primary Directory
+Node any time, if needed.
 
 Services in the UCS domain also use the certificates created by UCS.
 Administrators can configure alternative certificates for end-user or internet

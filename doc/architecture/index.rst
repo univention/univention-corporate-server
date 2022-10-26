@@ -4,11 +4,11 @@
 Introduction
 ************
 
-Welcome to the architecture documentation of Univention Corporate Server (UCS).
+Welcome to the architecture documentation of |UCS|.
 
-This document does not cover installation, the usage of UCS or parts of the
-product. For instructions about how to install and use UCS, see the `UCS manual
-<univention-ucs-manual_>`_.
+This document doesn't cover installation, the usage of UCS or parts of the
+product. For instructions about how to install and use UCS, see
+:cite:t:`ucs-manual`.
 
 .. TODO Remove this sentence once the whole document is done.
 
@@ -19,6 +19,9 @@ Your feedback is welcome and highly appreciated. If you have comments, suggestio
 or criticism, please `send your feedback
 <https://www.univention.com/feedback/?architecture=generic>`_ for document
 improvement.
+
+For feedback on single sections, use the feedback link next to the section
+title.
 
 Audience
 ========
@@ -35,13 +38,13 @@ computer network building blocks and software.
 
 .. TODO : Enable the references, once the sections are written:
    """covers the :ref:`product components <product-components>` and the :ref:`numerous
-   services <services>` UCS offers to IT infrastructures.  Software developers and"""
+   services <services>` UCS offers to IT infrastructures. Software developers and"""
 
 The second, medium level, is for administrators and solution architects. It
 covers the product components and the numerous services UCS offers to IT
 infrastructures. You read about the user facing product components and what
 services UCS runs. You learn what open source software contributes to the
-functionality of UCS and how it interoperates together.
+capability of UCS and how it interoperates together.
 
 Software developers and system engineers get an overview of the technical parts.
 
@@ -64,6 +67,6 @@ Learning objectives
 ===================
 
 After reading this document you have a broad understanding of the UCS
-architecture. It equips consultants, administrators and solution architects to
+architecture. It equips consultants, administrators, and solution architects to
 better plan their IT environment with UCS. It enables software developers and
-system engineers to quicker dive into software development for UCS.
+system engineers to get familiar with software development for UCS.

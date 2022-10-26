@@ -4,9 +4,8 @@
 Positioning in the IT world
 ***************************
 
-To comprehend the architecture of Univention Corporate Server (UCS), it is
-important to understand the origin and where it is located in the world of
-information technology (IT).
+To comprehend the architecture of |UCS|, it's important to understand the
+origin and where it locates in the world of |IT|.
 
 .. _positioning-origin:
 
@@ -27,7 +26,7 @@ History
 -------
 
 Univention started UCS in 2002 as a collection of scripts that turn a Debian
-system into a Linux server that offers Windows domain functionality. The goal
+system into a Linux server that offers Windows domain capability. The goal
 was to offer companies and organizations a standardized Linux server as
 alternative to Microsoft Windows Server that implements Microsoft's domain
 concept. Over the time it developed to an enterprise Linux distribution with
@@ -39,15 +38,15 @@ Packages
 --------
 
 On UCS software is managed in software packages. The packages on UCS use the deb
-file format. For more information on the deb file format, see the Wikipedia
-article `deb (file format) <w-deb-file-format_>`_ and `Basics of the Debian
+file format. For more information on the deb file format, see Wikipedia
+about `deb (file format) <w-deb-file-format_>`_ and `Basics of the Debian
 package management system in the Debian FAQ <debian-faq-pkg-basics_>`_.
 
 UCS—like Debian—uses a package manager, which is a collection of software tools,
-to automate the process of installation, upgrade, configuration and removal of
+to automate the process of installation, upgrade, configuration, and removal of
 computer programs. Packages organize such computer programs on UCS. In UCS the
-package manager is the advanced package tool (APT). For more information about
-APT, see the `Debian package management chapter in the Debian reference
+package manager is |APT|. For more information about |APT|, see the `Debian
+package management chapter in the Debian reference
 <debian-ref-package-mngmt_>`_.
 
 Univention distributes most packages from Debian GNU/Linux for the *amd64* and *all*
@@ -62,11 +61,11 @@ packages:
 * A later software version of a package is needed for UCS than Debian offers.
 * Bug fixes or backports of a specific software are needed for a package.
 
-Additionally, Univention develops own software responsible for UCS functionality
+Additionally, Univention develops own software responsible for UCS capability
 that is distributed as Debian package.
 
 Nevertheless, UCS doesn't include packages from the Debian games section,
-because it would require a content rating for video games. Univention does not
+because it would require a content rating for video games. Univention doesn't
 see added value in the distribution of video games with UCS for the product
 audience.
 
@@ -84,12 +83,12 @@ Identity management
 The most important functional pillar of UCS is identity management.
 
 Simplified, an IT environment consists of services and users. Services offer
-functionality. Users use functionality. Services can also behave as users
-when they use the functionality of another service. Users identify themselves
-against services to proof that they are eligible to use the functionality.
+capability. Users use capability. Services can also behave as users
+when they use the capability of another service. Users identify themselves
+against services to proof that they're eligible to use the capability.
 
 The identification is done with *user accounts* to represent users. User
-accounts typically have properties like for example username, password and email
+accounts typically have properties like for example username, password, and email
 address. User accounts that digitally represent a person additionally have for
 example first name and last name.
 
@@ -102,7 +101,7 @@ increases with the number of systems that need to know user accounts.
 With a central identity management, one service holds the information about the
 user accounts. All other services have access to that information. An
 administrator only has to maintain the user accounts on one system. The
-maintenance effort for the user accounts does not anymore multiply with the
+maintenance effort for the user accounts doesn't anymore multiply with the
 number of systems that need to know the user accounts. The slope of this linear
 function is less steep.
 
@@ -120,17 +119,17 @@ Infrastructure management
 The second important functional pillar of UCS is IT infrastructure management.
 
 IT infrastructure is a set of IT components like computer and networking
-hardware, various software and network components. It is the foundation of an
+hardware, various software and network components. It's the foundation of an
 organization's technology system and drives the organization's success.
 
 UCS provides important infrastructure services to create an IT network
 infrastructure and connect IT components. For example UCS assigns addresses to
 computers and other network components through `DHCP <w-dhcp_>`_ and resolves
-hostnames through `DNS <w-dns_>`_, and much more.  Administrators manage various
-IT components in their IT environment, like different kind of hosts, clients and
+hostnames through `DNS <w-dns_>`_, and much more. Administrators manage various
+IT components in their IT environment, like different kind of hosts, clients, and
 printers.
 
-.. TODO  Enable, once the services section is written.
+.. TODO Enable, once the services section is written.
    """For more information about the different infrastructure services in UCS, see
    :ref:`services`."""
 
@@ -140,7 +139,7 @@ Connection to the world around
 ==============================
 
 As an operating system that offers many services, UCS interacts with its
-surrounding peers. Users access the functionality of UCS through the following
+surrounding peers. Users access the capability of UCS through the following
 ways:
 
 Web

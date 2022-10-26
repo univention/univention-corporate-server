@@ -4,10 +4,10 @@
 Concepts
 ********
 
-Univention Corporate Server (UCS) unites numerous concepts to support
-administrators with their identity and infrastructure management tasks.
+|UCS| unites numerous concepts to support administrators with their identity and
+infrastructure management tasks.
 
-The following concepts explain how UCS uses them and are organized top-down:
+The following concepts explain how UCS uses them:
 
 #. :ref:`concept-domain`
 #. :ref:`concept-replication`
