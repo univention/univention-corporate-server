@@ -12,6 +12,8 @@ Welcome to Univention Corporate Server architecture!
    positioning
    concepts/index
 
+   bibliography
+
 .. only:: html
 
    .. toctree::
