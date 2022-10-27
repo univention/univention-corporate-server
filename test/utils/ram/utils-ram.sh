@@ -78,18 +78,26 @@ install_frontend_packages () {
 }
 
 install_all_attributes_primary () {
-    # get APT customer repo $username and @password from the RAM secrets
-    export $(grep -v '^#' /etc/ram.secrets| xargs)
+	# get APT customer repo $username and @password from the RAM secrets
+	# shellcheck disable=SC2046
+	export $(grep -v '^#' /etc/ram.secrets| xargs)
 	echo -n univention > /tmp/univention
 
-    /usr/sbin/univention-config-registry set \
-      repository/online/component/fhh-bsb-iam=yes \
-      repository/online/component/fhh-bsb-iam/server='service.knut.univention.de' \
-      repository/online/component/fhh-bsb-iam/prefix="apt/$username" \
-      repository/online/component/fhh-bsb-iam/parts='maintained' \
-      repository/online/component/fhh-bsb-iam/username="$username" \
-      repository/online/component/fhh-bsb-iam/password="$password"
+	# shellcheck disable=SC2154
+	/usr/sbin/univention-config-registry set \
+		repository/online/component/fhh-bsb-iam=yes \
+		repository/online/component/fhh-bsb-iam/server='service.knut.univention.de' \
+		repository/online/component/fhh-bsb-iam/prefix="apt/$username" \
+		repository/online/component/fhh-bsb-iam/parts='maintained' \
+		repository/online/component/fhh-bsb-iam/username="$username" \
+		repository/online/component/fhh-bsb-iam/password="$password"
 
-    univention-install -y ucsschool-divis-custom-ldap-extension ucsschool-iserv-custom-ldap-extension ucsschool-moodle-custom-ldap-extension univention-saml
-    systemctl restart univention-directory-manager-rest.service
+	# also add internal repo
+	cat <<"EOF" > "/etc/apt/sources.list.d/99_bsb.list"
+deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-fhh-bsb-iam-dev/all/
+deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-fhh-bsb-iam-dev/$(ARCH)/
+EOF
+
+	univention-install -y ucsschool-divis-custom-ldap-extension ucsschool-iserv-custom-ldap-extension ucsschool-moodle-custom-ldap-extension univention-saml
+	systemctl restart univention-directory-manager-rest.service
 }
