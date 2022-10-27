@@ -10,8 +10,7 @@ desc: |
    (CVE-2022-42927)
  * Memory Corruption in JS Engine (CVE-2022-42928)
  * Denial of Service via window.print (CVE-2022-42929)
- * Memory safety bugs fixed in Firefox ESR 102.4 and Thunderbird 102.4
-   (CVE-2022-42932)
+ * Memory safety bugs fixed (CVE-2022-42932)
 bug: [55349]
 cve:
 - CVE-2022-42927
