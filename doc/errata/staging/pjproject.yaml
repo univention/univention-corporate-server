@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: pjproject
+fix: 2.5.5~dfsg-6+deb9u7
+desc: |
+ This update addresses the following issue:
+
+ Debian update 2.5.5~dfsg-6+deb9u7
+ 2.5.5~dfsg-6+deb9u7 (Wed, 26 Oct 2022 14:20:31 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * Fix CVE-2022-39244: PJSIP is a free and open source multimedia
+   communication library written in C. The PJSIP parser, PJMEDIA RTP decoder,
+   and PJMEDIA SDP parser are affeced by a buffer overflow vulnerability.
+   Users connecting to untrusted clients are at risk.
+bug: [55351]
+cve:
+- CVE-2022-39244
