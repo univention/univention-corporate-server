@@ -6,36 +6,29 @@ src: openjdk-8
 fix: 8u352-ga-1~deb9u1
 desc: |
  This update addresses the following issues:
- 8u342-b07-1~deb9u1 (Sat, 23 Jul 2022 02:12:28 +0200)
- * Disable tests (fail on old releases, cf. debian/README.source)
- * Build for (wtf) wheezy, (ELTS) jessie, stretch, (wtf) buster, bullseye and
-   (PPA) trusty, xenial, bionic, focal, jammy
- * Effort sponsored by ⮡ tarent
- 8u342~b06-1 (Tue, 12 Jul 2022 23:13:34 +0200)
- * Upload 8u342-b06 for pre-release testing (b05 for hotspot-aarch32 but the
-   only difference is elsewhere)
- 8u332-ga-1 (Sun, 24 Apr 2022 20:43:30 +0200)
- * Upload to unstable: final tested release
- * Otherwise, see below for diff from 8u312/8u322
- * Upload sponsored by ⮡ tarent
- 8u352-ga-1~deb9u1 (Thu, 20 Oct 2022 22:23:52 +0200) * Disable tests (fail on
- old releases, cf. debian/README.source) * Build for (wtf) wheezy, (ELTS)
- jessie, stretch, (wtf) buster, bullseye and (PPA) trusty, xenial, bionic,
- focal, jammy * Effort sponsored by ⮡ tarent
- 8u342-b07-1 (Sat, 23 Jul 2022 01:34:54 +0200)
- * New upstream release
- * Security fixes: - JDK-8272243: Improve DER parsing - JDK-8272249: Better
-   properties of loaded Properties - JDK-8277608: Address IP Addressing -
-   JDK-8281859, CVE-2022-21540: Improve class compilation - JDK-8281866,
-   CVE-2022-21541: Enhance MethodHandle invocations - JDK-8283190: Improve
-   MIDI processing - JDK-8284370: Improve zlib usage - JDK-8285407,
-   CVE-2022-34169: Improve Xalan supports
- * Other changes see
-   https://mail.openjdk.org/pipermail/jdk8u-dev/2022-July/015254.html
- * Add patch to undo user.dir change prohibition; this breaks legacy software
-   like Gradle
+ * JDK-8282252: Improve BigInteger/Decimal validation
+ * JDK-8285662: Better permission resolution
+ * JDK-8286511: Improve macro allocation
+ * JDK-8286519: Better memory handling
+ * JDK-8286526, CVE-2022-21619: Improve NTLM support
+ * JDK-8286910, CVE-2022-21624: Improve JNDI lookups
+ * JDK-8286533, CVE-2022-21626: Key X509 usages
+ * JDK-8286918, CVE-2022-21628: Better HttpServer service
+ * JDK-8286918, CVE-2022-21628: Better HttpServer service
+ * JDK-8272243: Improve DER parsing
+ * JDK-8272249: Better properties of loaded Properties
+ * JDK-8277608: Address IP Addressing
+ * JDK-8281859, CVE-2022-21540: Improve class compilation
+ * JDK-8281866, CVE-2022-21541: Enhance MethodHandle invocations
+ * JDK-8281866, CVE-2022-21541: Enhance MethodHandle invocations
+ * JDK-8284370: Improve zlib usage
+ * JDK-8285407, CVE-2022-34169: Improve Xalan supports
 bug: [55350]
 cve:
 - CVE-2022-21540
 - CVE-2022-21541
 - CVE-2022-34169
+- CVE-2022-21619
+- CVE-2022-21626
+- CVE-2022-21624
+- CVE-2022-21628
