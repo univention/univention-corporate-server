@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: expat
+fix: 2.2.0-2+deb9u7
+desc: |
+ This update addresses the following issue:
+ 2.2.0-2+deb9u7 (Fri, 28 Oct 2022 06:07:08 +0530)
+ * Non-maintainer upload by the ELTS Team.
+ * Add patch to fix heap use-after-free after overeager destruction of a
+   shared DTD in function XML_ExternalEntityParserCreate in out-of-memory
+   situations. (Fixes: CVE-2022-43680)
+bug: [55359]
+cve:
+- CVE-2022-43680
