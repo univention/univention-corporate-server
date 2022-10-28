@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: expat
+fix: 2.2.6-2+deb10u6
+desc: |
+ This update addresses the following issue:
+ * In libexpat through 2.4.9, there is a use-after free caused by overeager
+   destruction of a shared DTD in XML_ExternalEntityParserCreate in
+   out-of-memory situations. (CVE-2022-43680)
+bug: [55358]
+cve:
+- CVE-2022-43680
