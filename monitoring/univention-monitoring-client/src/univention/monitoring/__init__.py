@@ -38,6 +38,7 @@ import logging
 import os.path
 import subprocess
 import sys
+import time
 
 from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
 
@@ -45,6 +46,22 @@ from univention.config_registry import ucr
 
 
 NODE_EXPORTER_DIR = '/var/lib/prometheus/node-exporter/'
+
+
+class TimestampedGauge(Gauge):
+
+    def __init__(self, *args, timestamp=None, **kwargs):
+        self._timestamp = timestamp
+        super().__init__(*args, **kwargs)
+
+    def collect(self):
+        metrics = super().collect()
+        for metric in metrics:
+            metric.samples = [
+                type(sample)(sample.name, sample.labels, sample.value, self._timestamp, sample.exemplar)
+                for sample in metric.samples
+            ]
+        return metrics
 
 
 class Alert(object):
@@ -55,6 +72,7 @@ class Alert(object):
         self.log = logging.getLogger(self.args.prog)
         self.default_labels = {'instance': '%(hostname)s.%(domainname)s' % ucr}
         self._registry = CollectorRegistry()
+        self._timestamp = time.time()
 
     @classmethod
     def main(cls):
@@ -78,7 +96,7 @@ class Alert(object):
 
     def write_metric(self, metric_name, value, doc=None, **labels):
         labels = dict(self.default_labels, **labels)
-        g = Gauge(metric_name, doc or self.__doc__ or '', labelnames=list(labels), registry=self._registry)
+        g = TimestampedGauge(metric_name, doc or self.__doc__ or '', labelnames=list(labels), timestamp=self._timestamp, registry=self._registry)
         g.labels(**labels).set(value)
 
     def exec_command(self, *args, **kwargs):
