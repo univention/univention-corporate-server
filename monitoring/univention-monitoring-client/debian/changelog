@@ -1,3 +1,9 @@
+univention-monitoring-client (1.0.2-4) unstable; urgency=medium
+
+  * Bug #55367: use prometheus library to write metrics to disk
+
+ -- Florian Best <best@univention.de>  Mon, 17 Jul 2023 14:06:05 +0200
+
 univention-monitoring-client (1.0.2-3) unstable; urgency=medium
 
   * Bug #56324: prevent machine.secret content to appear in the process

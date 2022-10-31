@@ -3,9 +3,12 @@ release: "5.0"
 version: [4]
 scope: ucs_5.0-0-errata5.0-4
 src: univention-monitoring-client
-fix: 1.0.2-3
+fix: 1.0.2-4
 desc: |
  This update addresses the following issues:
  * The "check_univention_joinstatus" called "ldapsearch" with the machine
    credentials, which then were visible in the process list.
-bug: [56324]
+ * The metrics are now written with a timestamp so that information are more
+    accurate. They are now written using the official
+    `python3-prometheus-client` library.
+bug: [56324, 55367]

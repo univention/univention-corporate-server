@@ -16,6 +16,7 @@ Package: univention-monitoring-client
 Architecture: any
 Depends:
  cron,
+ python3-prometheus-client,
  python3-requests,
  python3-yaml,
  univention-monitoring-plugins (=${source:Version}),

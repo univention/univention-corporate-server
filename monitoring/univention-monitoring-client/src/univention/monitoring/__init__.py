@@ -36,19 +36,15 @@
 import argparse
 import logging
 import os.path
-import re
 import subprocess
 import sys
+
+from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
 
 from univention.config_registry import ucr
 
 
 NODE_EXPORTER_DIR = '/var/lib/prometheus/node-exporter/'
-RE_INVALID_LABEL = re.compile('[{"=}]')
-
-
-def quote(string):
-    return string.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n')
 
 
 class Alert(object):
@@ -58,7 +54,7 @@ class Alert(object):
         self.args = args
         self.log = logging.getLogger(self.args.prog)
         self.default_labels = {'instance': '%(hostname)s.%(domainname)s' % ucr}
-        self._fd = None
+        self._registry = CollectorRegistry()
 
     @classmethod
     def main(cls):
@@ -74,21 +70,16 @@ class Alert(object):
             return
 
         self = cls(args)
-        with open(os.path.join(NODE_EXPORTER_DIR, '%s.prom' % (plugin,)), 'w') as self._fd:
-            self.write_metrics()
+        self.write_metrics()
+        write_to_textfile(os.path.join(NODE_EXPORTER_DIR, '%s.prom' % (plugin,)), self._registry)
 
     def write_metrics(self):
         pass
 
-    def write_metric(self, metric_name, value, **labels):
+    def write_metric(self, metric_name, value, doc=None, **labels):
         labels = dict(self.default_labels, **labels)
-        label_str = '{%s}' % ','.join(
-            '%s="%s"' % (RE_INVALID_LABEL.sub('', key), quote(val))
-            for key, val in labels.items()
-        ) if labels else ''
-
-        value = '%d' % (value,) if isinstance(value, int) else '%f' % (value,)
-        self._fd.write('%s%s %s\n' % (metric_name, label_str, value))
+        g = Gauge(metric_name, doc or self.__doc__ or '', labelnames=list(labels), registry=self._registry)
+        g.labels(**labels).set(value)
 
     def exec_command(self, *args, **kwargs):
         kwargs.setdefault('stdout', subprocess.PIPE)
