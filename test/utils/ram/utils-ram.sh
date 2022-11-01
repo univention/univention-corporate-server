@@ -70,7 +70,7 @@ install_frontend_apps () {
 
 install_frontend_packages () {
 	univention-install -y ucs-school-ui-users-frontend
-	# univention-install -y ucs-school-ui-groups-frontend
+	univention-install -y ucs-school-ui-groups-frontend
 
 	# create dev clients for easier testing
 	/usr/share/ucs-school-ui-common/scripts/univention-create-keycloak-clients --admin-password univention --client-id school-ui-users-dev --direct-access
