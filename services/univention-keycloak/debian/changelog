@@ -1,0 +1,5 @@
+univention-keycloak (1.0.0) unstable; urgency=medium
+
+  * Bug #55383: Add univention-keycloak package
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 04 Nov 2022 09:00:19 +0100
