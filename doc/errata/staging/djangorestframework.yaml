@@ -4,14 +4,11 @@ version: [9]
 scope: ucs_4.4-0-errata4.4-9
 src: djangorestframework
 fix: 3.4.0-2+deb9u1
-desc: |+
+desc: |
  This update addresses the following issues:
- 3.4.0-2+deb9u1 (Fri, 28 Oct 2022 08:34:01 +0530)
- * Non-maintainer upload by the ELTS team.
- * Add patch to fix XSS caused by disabled autoescaping in the default DRF
-   Browsable API view templates. (Fixes: CVE-2018-25045)
- * Add patch to drop urlize_quoted_links. (Fixes: CVE-2020-25626)
-
+ * Add patch to fix XSS caused by disabled auto-escaping in the default DRF
+   browsable API view templates (CVE-2018-25045)
+ * Add patch to drop `urlize_quoted_links` (CVE-2020-25626)
 bug: [55373]
 cve:
 - CVE-2018-25045
