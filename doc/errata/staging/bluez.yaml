@@ -1,0 +1,25 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: bluez
+fix: 5.43-2+deb9u6
+desc: |
+ This update addresses the following issues:
+ 5.43-2+deb9u6 (Sun, 30 Oct 2022 11:03:02 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * patches based on the work of Sylvain Beucler for Buster
+ * CVE-2022-0204: a heap overflow vulnerability was found in bluez. An
+   attacker with local network access could pass specially crafted files
+   causing an application to halt or crash, leading to a denial of service.
+ * CVE-2022-39176: BlueZ allows physically proximate attackers to obtain
+   sensitive information because profiles/audio/avrcp.c does not validate
+   params_len.
+ * CVE-2022-39177: BlueZ allows physically proximate attackers to cause a
+   denial of service because malformed and invalid capabilities can be
+   processed in profiles/audio/avdtp.c.
+bug: [55372]
+cve:
+- CVE-2022-0204
+- CVE-2022-39176
+- CVE-2022-39177
