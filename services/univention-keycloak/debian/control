@@ -1,0 +1,24 @@
+Source: univention-keycloak
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends:
+ debhelper,
+Standards-Version: 4.3.0.3
+
+Package: univention-keycloak-client
+Architecture: all
+Depends:
+ python3-keycloak,
+ python3-ldap,
+ python3-univention-config-registry,
+ univention-config,
+ ${misc:Depends},
+ ${shlib:Depends},
+Description: UCS keycloak
+ This package installs the univention-keycloak scripts
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
