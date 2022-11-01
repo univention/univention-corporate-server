@@ -6,18 +6,14 @@ src: freerdp
 fix: 1.1.0~git20140921.1.440916e+dfsg1-13+deb9u5
 desc: |
  This update addresses the following issues:
-
- Debian update 1.1.0~git20140921.1.440916e+dfsg1-13+deb9u5
- 1.1.0~git20140921.1.440916e+dfsg1-13+deb9u5 (Fri, 28 Oct 2022 19:21:40 +0200)
- * Security upload by the Freexian ELTS team.
- * CVE-2020-4030: out-of-bound read in TrioParse
- * CVE-2020-4033: out-of-bound read in RLEDECOMPRESS
- * CVE-2020-11086: out-of-bound read in ntlm_read_ntlm_v2_client_challenge
- * CVE-2020-11088: out-of-bound read in ntlm_read_NegotiateMessage
- * CVE-2020-11089: out-of-bound read in irp functions
- * CVE-2020-11095: out-of-bound read on PRIMARY_DRAWING_ORDER_FIELD_BYTES
- * CVE-2020-11096: out-of-bound read in update_read_cache_bitmap_v3_order
- * CVE-2020-11089: out-of-bound read in glyph_cache_put
+ * CVE-2020-4030: out-of-bound read in `TrioParse`
+ * CVE-2020-4033: out-of-bound read in `RLEDECOMPRESS`
+ * CVE-2020-11086: out-of-bound read in `ntlm_read_ntlm_v2_client_challenge`
+ * CVE-2020-11088: out-of-bound read in `ntlm_read_NegotiateMessage`
+ * CVE-2020-11089: out-of-bound read in `irp` functions
+ * CVE-2020-11089: out-of-bound read in `glyph_cache_put`
+ * CVE-2020-11095: out-of-bound read on `PRIMARY_DRAWING_ORDER_FIELD_BYTES`
+ * CVE-2020-11096: out-of-bound read in `update_read_cache_bitmap_v3_order`
  * CVE-2021-41160: out-of-bound write in license check
 bug: [55375]
 cve:
