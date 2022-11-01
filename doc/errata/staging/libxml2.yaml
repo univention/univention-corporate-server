@@ -6,13 +6,11 @@ src: libxml2
 fix: 2.9.4+dfsg1-2.2+deb9u9
 desc: |
  This update addresses the following issues:
- 2.9.4+dfsg1-2.2+deb9u9 (Sun, 30 Oct 2022 14:10:19 +0100)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2022-40303: Parsing a XML document with the XML_PARSE_HUGE option
+ * CVE-2022-40303: Parsing a XML document with the option `XML_PARSE_HUGE`
    enabled can result in an integer overflow because safety checks were
-   missing in some functions. Also, the xmlParseEntityValue function didn't
+   missing in some functions. Also, the function `xmlParseEntityValue` didn't
    have any length limitation.
- * Fix CVE-2022-40304: When a reference cycle is detected in the XML entity
+ * CVE-2022-40304: When a reference cycle is detected in the XML entity
    cleanup function the XML entity data can be stored in a dictionary. In this
    case, the dictionary becomes corrupted resulting in logic errors, including
    memory errors like double free.
