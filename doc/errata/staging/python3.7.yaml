@@ -6,10 +6,8 @@ src: python3.7
 fix: 3.7.3-2+deb10u4
 desc: |
  This update addresses the following issue:
- 3.7.3-2+deb10u4 (Mon, 31 Oct 2022 16:04:00 +0200)
- * Non-maintainer upload by the LTS Security Team.
- * Resolve CVE-2022-37454, a buffer overflow it the SHA-3 implementation in
-   the _sha3 (and thus hashlib) module.
+ * Buffer overflow it the SHA-3 implementation in module `_sha3` and thus
+   `hashlib` (CVE-2022-37454)
 bug: [55370]
 cve:
 - CVE-2022-37454
