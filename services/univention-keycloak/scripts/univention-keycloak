@@ -10,9 +10,17 @@ from xml.etree import ElementTree
 import json
 from subprocess import Popen, PIPE
 from base64 import b64decode
+from os.path import exists
+from ldap.dn import explode_dn
 
-PEM_CERT_HEADER = "-----BEGIN CERTIFICATE-----\n"
-PEM_CERT_FOOTER = "-----END CERTIFICATE-----\n"
+ucr = ConfigRegistry()
+ucr.load()
+
+DEFAULT_REALM = "master"
+LDAP_BASE = ucr.get("ldap/base")
+HOSTNAME = ucr.get("hostname")
+DOMAINNAME = ucr.get("domainname")
+SERVER_URL = "https://{}.{}".format(HOSTNAME, DOMAINNAME)
 
 
 def check_and_create_component(kc_client, name, prov_id, payload_):
@@ -34,8 +42,8 @@ def get_realm_id(kc_client, name):
 	return realm_info[0]["id"]
 
 
-def extract_endpoints_xml(metadata_url):
-	xml_content = requests.get(metadata_url, verify=False).content  # FIXME: remove verify False
+def extract_endpoints_xml(metadata_url, no_ssl_verify):
+	xml_content = requests.get(metadata_url, verify=no_ssl_verify).content  # FIXME: remove verify False
 	saml_descriptor_xml = ElementTree.fromstring(xml_content)
 	logout_endpoint = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}SingleLogoutService').attrib["Location"]
 	acs_endpoint = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}AssertionConsumerService').attrib["Location"]
@@ -46,33 +54,14 @@ def extract_endpoints_xml(metadata_url):
 
 def create_SAML_client(opt):
 	print("CREATING KEYCLOAK SAML CLIENT.....")
-	ucr = ConfigRegistry()
-	ucr.load()
-	hostname = ucr.get("hostname")
-	domain = ucr.get("domainname")
 
-	# derived composite vars #
-	if hostname and not hostname == "unassigned-hostname":
-		server_fqdn_without_subdomain = "https://{}.{}".format(hostname, domain)
-	else:
-		server_fqdn_without_subdomain = "https://{}".format(domain)
-
-	# guess default urls #
-	# TODO: how useful/generically valid is this?
-	client_id = server_fqdn_without_subdomain + "/{}/apps/user_saml/saml/metadata".format(opt.app)
-	valid_redirect_urls = [server_fqdn_without_subdomain + "/{}/apps/user_saml/saml/*".format(opt.app)]
-	single_logout_service_url_post = server_fqdn_without_subdomain + "/{}/apps/user_saml/saml/sls".format(opt.app)
-	single_logout_service_url_redirect = server_fqdn_without_subdomain + "/{}/apps/user_saml/saml/sls".format(opt.app)
-	assertion_consumer_url_post = server_fqdn_without_subdomain + "/{}/apps/user_saml/saml/acs".format(opt.app)
-
-	if opt.metadata_url:  # FIXME: Cleanup in the future
-		client_id = opt.metadata_url
-		valid_redirect_urls = [client_id[:client_id.rfind("/") + 1:] + "*"]
-		endpoints = extract_endpoints_xml(client_id)
-		# build urls #
-		single_logout_service_url_post = endpoints["logout"]
-		single_logout_service_url_redirect = endpoints["logout"]
-		assertion_consumer_url_post = endpoints["acs"]
+	client_id = opt.metadata_url
+	valid_redirect_urls = [client_id[:client_id.rfind("/") + 1:] + "*"]
+	endpoints = extract_endpoints_xml(client_id, opt.no_ssl_verify)
+	# build urls #
+	single_logout_service_url_post = endpoints["logout"]
+	single_logout_service_url_redirect = endpoints["logout"]
+	assertion_consumer_url_post = endpoints["acs"]
 
 	client_payload_saml = {
 		"clientId": client_id,
@@ -165,53 +154,20 @@ def create_SAML_client(opt):
 		}
 	}
 
-	if opt.client_signature_required:
+	if opt.command == "saml/sp" and opt.client_signature_required:
 		client_payload_saml["attributes"]["saml.client.signature"] = "true"
 
-	# build kc admin session #
-	if opt.keycloak:
-		kc_admin_auth_url = opt.keycloak
-		kc_admin_auth_url.replace("https", "http")
-	else:
-		kc_admin_auth_url = "http://127.0.0.1:8180"
-
-	kc_admin_user = "admin"
-	if opt.keycloak_pwd == "":
-		pwdfile = "/etc/keycloak.secret"
-		with open(pwdfile, 'r') as fd:
-			kc_admin_pass = fd.read().strip()
-	else:
-		#kc_admin_pass = opt.keycloak_pwd
-		with open(opt.keycloak_pwd, 'r') as fd:
-			kc_admin_pass = fd.read().strip()
-
-	# realm config #
-	realm_name = "ucs"
-	default_realm = "master"
-
-	print("Using KC_URL: {}".format(kc_admin_auth_url))
-
 	# log into default realm in case UCS realm doesn't exist yet #
-	kc_admin = KeycloakAdmin(server_url=kc_admin_auth_url, username=kc_admin_user, password=kc_admin_pass, realm_name=realm_name, user_realm_name=default_realm, verify=True)
+	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name="master", verify=opt.no_ssl_verify)
 
 	kc_admin.create_client(payload=client_payload_saml, skip_exists=True)
 
 
 def create_oidc_client(opt):
 	print("CREATING KEYCLOAK OIDC CLIENT.....")
-	ucr = ConfigRegistry()
-	ucr.load()
-	hostname = ucr.get("hostname")
-	domain = ucr.get("domainname")
-
-	# derived composite vars #
-	if hostname and not hostname == "unassigned-hostname":
-		server_fqdn_without_subdomain = "https://{}.{}".format(hostname, domain)
-	else:
-		server_fqdn_without_subdomain = "https://{}".format(domain)
 
 	# build urls #
-	valid_redirect_urls = [opt.app_url, server_fqdn_without_subdomain]
+	valid_redirect_urls = [opt.app_url, SERVER_URL]
 
 	client_payload_oidc = {
 		"clientId": opt.client_id,
@@ -334,65 +290,22 @@ def create_oidc_client(opt):
 	if opt.client_secret:
 		client_payload_oidc["secret"] = opt.client_secret
 
-	# build kc admin session #
-	if opt.keycloak:
-		kc_admin_auth_url = opt.keycloak
-		kc_admin_auth_url.replace("https", "http")
-	else:
-		kc_admin_auth_url = "http://127.0.0.1:8180"
-
-	kc_admin_user = "admin"
-	if opt.keycloak_pwd == "":
-		pwdfile = "/etc/keycloak.secret"
-		with open(pwdfile, 'r') as fd:
-			kc_admin_pass = fd.read().strip()
-	else:
-		# kc_admin_pass = opt.keycloak_pwd
-		with open(opt.keycloak_pwd, 'r') as fd:
-			kc_admin_pass = fd.read().strip()
-
 	# realm config #
-	realm_name = "ucs"
-	default_realm = "master"
-
-	print("Using KC_URL: {}".format(kc_admin_auth_url))
 
 	# log into default realm in case UCS realm doesn't exist yet #
-	kc_admin = KeycloakAdmin(server_url=kc_admin_auth_url, username=kc_admin_user, password=kc_admin_pass, realm_name=realm_name, user_realm_name=default_realm, verify=True)
-
+	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 	kc_admin.create_client(payload=client_payload_oidc, skip_exists=True)
 
 
 def modify_client_scope_mapper(opt):
-	if opt.keycloak:
-		kc_admin_auth_url = opt.keycloak
-		kc_admin_auth_url.replace("https", "http")
-	else:
-		kc_admin_auth_url = "http://127.0.0.1:8180"
-
-	kc_admin_user = "admin"
-	if opt.keycloak_pwd == "":
-		pwdfile = "/etc/keycloak.secret"
-		with open(pwdfile, 'r') as fd:
-			kc_admin_pass = fd.read().strip()
-	else:
-		# kc_admin_pass = opt.keycloak_pwd
-		with open(opt.keycloak_pwd, 'r') as fd:
-			kc_admin_pass = fd.read().strip()
-
-	# realm config #
-	realm_name = "ucs"
-	default_realm = "master"
-
-	print("Using KC_URL: {}".format(kc_admin_auth_url))
 
 	# log into default realm in case UCS realm doesn't exist yet #
-	kc_admin = KeycloakAdmin(server_url=kc_admin_auth_url, username=kc_admin_user, password=kc_admin_pass, realm_name=realm_name, user_realm_name=default_realm, verify=True)
+	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 
 	scopes = kc_admin.get_client_scopes()
 	id_role_list = [scope["id"] for scope in scopes if scope["name"] == "role_list"][0]
 
-	params_path = {"realm-name": realm_name, "scope-id": id_role_list}
+	params_path = {"realm-name": opt.realm, "scope-id": id_role_list}
 	data_raw = kc_admin.raw_get(
 		"admin/realms/{realm-name}/client-scopes/{scope-id}/protocol-mappers/models".format(**params_path)
 	)
@@ -403,7 +316,7 @@ def modify_client_scope_mapper(opt):
 
 	mapper_test["config"]["single"] = True
 	params_path = {
-		"realm-name": realm_name,
+		"realm-name": opt.realm,
 		"scope-id": id_role_list,
 		"protocol-mapper-id": id_mapper_role_list,
 	}
@@ -467,29 +380,10 @@ def download_cert_saml(opt):
 def get_client_secret(opt):
 	print("Obtaining secret for client ...")
 
-	kc_admin_user = "admin"
-	if opt.keycloak_pwd == "":  # TODO: pass pwd file ?
-		pwdfile = "/etc/keycloak.secret"
-		with open(pwdfile, 'r') as fd:
-			kc_admin_pass = fd.read().strip()
-	else:
-		#kc_admin_pass = opt.remotePwd
-		#kc_admin_pass = opt.keycloak_pwd
-		with open(opt.keycloak_pwd, 'r') as fd:
-			kc_admin_pass = fd.read().strip()
-
-	if opt.keycloak:
-		kc_admin_auth_url = opt.keycloak
-		kc_admin_auth_url.replace("https", "http")
-	else:
-		kc_admin_auth_url = "http://127.0.0.1:8180"
-	print("Using KC_URL: {}".format(kc_admin_auth_url))
-
 	# realm config #
-	realm_name = "ucs"
-	default_realm = "master"
+	DEFAULT_REALM = "master"
 
-	kc_admin = KeycloakAdmin(server_url=kc_admin_auth_url, username=kc_admin_user, password=kc_admin_pass, realm_name=realm_name, user_realm_name=default_realm, verify=True)
+	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 	kc_admin.realm_name = "ucs"
 
 	print(kc_admin.get_client_secrets(kc_admin.get_client_id(opt.client_name)))
@@ -505,19 +399,22 @@ def parse_args(args=None):
 	"""
 
 	parser = ArgumentParser(description=__doc__)
-	parser.add_argument("--binddn", default="Administrator")
-	parser.add_argument("--bindpwdfile", default="univention")
+	parser.add_argument("--binddn", default="")
+	parser.add_argument("--binduser", default="admin")
+	parser.add_argument("--bindpwd", default="")
+	parser.add_argument("--bindpwdfile", default="/etc/keycloak.secret")
+	parser.add_argument("--realm", default="ucs")
 	parser.add_argument("--keycloak-pwd", default="")
-	parser.add_argument("--keycloak", default="")
-	parser.add_argument("--remotePwd", default="")
+	parser.add_argument("--keycloak-url", default="https://ucs-sso-ng.{}:443".format(DOMAINNAME))
+	parser.add_argument("--no-ssl-verify", action='store_false')
 	subparsers = parser.add_subparsers(title="subcommands", description="valid subcommands", required=True, dest="command")
 
 	parser_saml = subparsers.add_parser("saml/sp", help="configure a SAML SP")
 	operation_subparsers = parser_saml.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
 	create_saml_parser = operation_subparsers.add_parser("create", help="create a new SAML SP in Keycloak")
-	create_saml_parser.add_argument("app", metavar='APPNAME')
+	#create_saml_parser.add_argument("app", metavar='APPNAME')
 	create_saml_parser.add_argument("--client-signature-required", action="store_true")
-	create_saml_parser.add_argument("--metadata-url", default="")
+	create_saml_parser.add_argument("--metadata-url", required=True)
 	create_saml_parser.set_defaults(func=create_SAML_client)
 
 	parser_oidc = subparsers.add_parser("oidc/rp", help="configure a OIDC RP")
@@ -551,9 +448,9 @@ def parse_args(args=None):
 	init_parser = subparsers.add_parser("init", help="configure a Keycloak app")
 	init_parser.add_argument("--reverse-proxy-url", default="")
 	init_parser.add_argument("--ldap", default="")
-	init_parser.add_argument("--bind-user", default="")
-	init_parser.add_argument("--bind-pwd", default="")
-	init_parser.set_defaults(func=config)
+	init_parser.add_argument("--ldap-system-user-dn", default=f"uid=sys-idp-user,cn=users,{LDAP_BASE}")
+	init_parser.add_argument("--ldap-system-user-pwdfile", default="/etc/idp-ldap-user.secret")
+	init_parser.set_defaults(func=init_keycloak_ucs)
 
 	adhoc_parser = subparsers.add_parser("ad-hoc", help="configure the ad-hoc federation login flow")
 	operation_subparsers = adhoc_parser.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
@@ -564,7 +461,7 @@ def parse_args(args=None):
 	adhoc_parser_opp = operation_subparsers.add_parser("create", help="create and configure an Identity Provider")
 	adhoc_parser_opp.add_argument("--alias", default="ADFS", required=True)
 	adhoc_parser_opp.add_argument("--metadata-url", required=True)
-	adhoc_parser_opp.set_defaults(func=create_IdP)
+	adhoc_parser_opp.set_defaults(func=create_adhoc_idp)
 
 	fa_parser = subparsers.add_parser("2fa", help="configure 2FA on a group given by --group-2fa (default: \"2FA group\")")
 	operation_subparsers = fa_parser.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
@@ -573,41 +470,39 @@ def parse_args(args=None):
 	adhoc_parser_opp.set_defaults(func=enable_2fa)
 
 	opt = parser.parse_args(args)
-
+	if opt.binddn:
+		opt.binduser = explode_dn(opt.binddn, 1)[0]
+	if not exists(opt.bindpwdfile):
+		if not opt.bindpwd:
+			print("Passwordfile %s for user %s does not exist." % (opt.bindpwdfile, opt.binduser))
+			exit(1)
+	else:
+		with open(opt.bindpwdfile, 'r') as fd:
+			opt.bindpwd = fd.read().strip()
+	print(opt)
+	if opt.command == "init":
+		if not exists(opt.ldap_system_user_pwdfile):
+			if not opt.ldap_system_user_pwdfile:
+				print("Passwordfile %s for user %s does not exist." % (opt.ldap_system_user_pwdfile, opt.ldap_system_user_dn))
+				exit(1)
+		else:
+			with open(opt.ldap_system_user_pwdfile, 'r') as fd:
+				opt.ldap_system_user_pwd = fd.read().strip()
 	return opt
 
 
-def create_IdP(opt):
+def create_adhoc_idp(opt):
 	print("Creating ad hoc federation identity provider...")
 	ucr = ConfigRegistry()
 	ucr.load()
 
-	kc_admin_user = "admin"
-	if opt.keycloak_pwd == "":  # TODO: pass pwd file ?
-		pwdfile = "/etc/keycloak.secret"
-		with open(pwdfile, 'r') as fd:
-			kc_admin_pass = fd.read().strip()
-	else:
-		kc_admin_pass = opt.remotePwd
-		#kc_admin_pass = opt.keycloak_pwd
-		with open(opt.keycloak_pwd, 'r') as fd:
-			kc_admin_pass = fd.read().strip()
-
-	if opt.keycloak:
-		kc_admin_auth_url = opt.keycloak
-		kc_admin_auth_url.replace("https", "http")
-	else:
-		kc_admin_auth_url = "http://127.0.0.1:8180"
-	print("Using KC_URL: {}".format(kc_admin_auth_url))
-
 	# realm config #
-	realm_name = "ucs"
-	default_realm = "master"
+	DEFAULT_REALM = "master"
 
-	kc_admin = KeycloakAdmin(server_url=kc_admin_auth_url, username=kc_admin_user, password=kc_admin_pass, realm_name=realm_name, user_realm_name=default_realm, verify=True)
+	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 	kc_admin.realm_name = "ucs"
 
-	metadata_info = extract_metadata(opt.metadata_url)
+	metadata_info = extract_metadata(opt.metadata_url, opt.no_ssl_verify)
 
 	idp_payload = {
 		"addReadTokenRoleOnCreate": False,
@@ -738,8 +633,8 @@ def create_IdP(opt):
 	kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
 
 
-def extract_metadata(metadata_url):
-	xml_content = requests.get(metadata_url, verify=False).content  # FIXME: remove verify False
+def extract_metadata(metadata_url, no_ssl_verify):
+	xml_content = requests.get(metadata_url, verify=no_ssl_verify).content  # FIXME: remove verify False
 	saml_descriptor_xml = ElementTree.fromstring(xml_content)
 	signing_cert = saml_descriptor_xml.find('.//{http://www.w3.org/2000/09/xmldsig#}X509Certificate').text
 	encryption_cert = saml_descriptor_xml.findall(".//{http://www.w3.org/2000/09/xmldsig#}X509Certificate")[1].text
@@ -751,60 +646,38 @@ def extract_metadata(metadata_url):
 
 def enable_2fa(opt):
 	print("Enabling 2FA ...")
-	# load UCR
-	ucr = ConfigRegistry()
-	ucr.load()
-	ldap_base = ucr.get("ldap/base")
-
-	kc_admin_user = "admin"
-	if opt.keycloak_pwd == "":  # TODO: pass pwd file ?
-		pwdfile = "/etc/keycloak.secret"
-		with open(pwdfile, 'r') as fd:
-			kc_admin_pass = fd.read().strip()
-	else:
-		kc_admin_pass = opt.remotePwd
-		#kc_admin_pass = opt.keycloak_pwd
-		with open(opt.keycloak_pwd, 'r') as fd:
-			kc_admin_pass = fd.read().strip()
-
-	if opt.keycloak:
-		kc_admin_auth_url = opt.keycloak
-		kc_admin_auth_url.replace("https", "http")
-	else:
-		kc_admin_auth_url = "http://127.0.0.1:8180"
-	print("Using KC_URL: {}".format(kc_admin_auth_url))
+	print("Using KC_URL: {}".format(opt.keycloak_url))
 
 	# realm config #
-	realm_name = "ucs"
-	default_realm = "master"
+	DEFAULT_REALM = "master"
 
-	kc_admin = KeycloakAdmin(server_url=kc_admin_auth_url, username=kc_admin_user, password=kc_admin_pass, realm_name=realm_name, user_realm_name=default_realm, verify=True)
+	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.binduser, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 	kc_admin.realm_name = "ucs"
 	realm_2fa_role = "2FA role"
-	ldap_2fa_group = opt.group_2fa   # FIXME: Check group to use for 2FA
+	ldap_2fa_group = opt.group_2fa	 # FIXME: Check group to use for 2FA
 
 	ldap_component_filter = {'name': 'ldap-provider', 'providerId': 'ldap'}
 	ldap_component_list = kc_admin.get_components(ldap_component_filter)
 	provider = ldap_component_list.pop()
-	mapper_id = add_or_replace_ldap_group_mapper(kc_admin, provider, "univention-groups", ldap_2fa_group, ldap_base)
+	mapper_id = add_or_replace_ldap_group_mapper(kc_admin, provider, "univention-groups", ldap_2fa_group, LDAP_BASE)
 
 	# Synchronize LDAP groups to Keycloak
 	param_path = {"ldap-provider-id": provider["id"], "id-mapper": mapper_id}
 	kc_admin.raw_post("/admin/realms/ucs/user-storage/{ldap-provider-id}/mappers/{id-mapper}/sync?direction=fedToKeycloak".format(**param_path), {})
 
-	create_realm_role(kc_admin, realm_name, realm_2fa_role)
-	create_realm_group(kc_admin, realm_name, ldap_2fa_group)  # FIXME: This could be removed if we only use UDM groups
-	assign_group_realm_role_by_group_name(kc_admin, realm_name, ldap_2fa_group, realm_2fa_role)
+	create_realm_role(kc_admin, opt.realm, realm_2fa_role)
+	create_realm_group(kc_admin, opt.realm, ldap_2fa_group)  # FIXME: This could be removed if we only use UDM groups
+	assign_group_realm_role_by_group_name(kc_admin, opt.realm, ldap_2fa_group, realm_2fa_role)
 
 	# switch to default flow before changing anything #
 	flow_name = "2fa-browser"
-	kc_admin.update_realm(realm_name, {"browserFlow": "browser"})
+	kc_admin.update_realm(opt.realm, {"browserFlow": "browser"})
 
 	# create browser flow #
-	create_conditional_2fa_flow(kc_admin, realm_name, realm_2fa_role, flow_name)
+	create_conditional_2fa_flow(kc_admin, opt.realm, realm_2fa_role, flow_name)
 
 	# change authentication binding to conditional 2fa flow #
-	kc_admin.update_realm(realm_name, {"browserFlow": flow_name})
+	kc_admin.update_realm(opt.realm, {"browserFlow": flow_name})
 
 
 def create_or_replace_realm_role(kc_admin, realm, role):
@@ -937,14 +810,14 @@ def assign_group_realm_role_by_group_name(kc_admin, realm, group_name, role):
 	return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204])
 
 
-def add_or_replace_ldap_group_mapper(kc_admin, ldap_sp, name, ldap_group, ldap_base):
+def add_or_replace_ldap_group_mapper(kc_admin, ldap_sp, name, ldap_group, LDAP_BASE):
 	"""
 	Add or replace if exists component mapper of type ldap-attribute-mapper
 	:param kc_admin: Keycloak client
 	:param ldap_sp: KeycloakREST_LDAPComponentRepresentation
 	:param name: String
 	:param ldap_group: String
-	:param ldap_base: String
+	:param LDAP_BASE: String
 	:return: Keycloak server response (RealmRepresentation)
 	"""
 	LDAP_GROUP_MAPPER = {
@@ -998,7 +871,7 @@ def add_or_replace_ldap_group_mapper(kc_admin, ldap_sp, name, ldap_group, ldap_b
 	payload = LDAP_GROUP_MAPPER
 	payload["parentId"] = ldap_sp["id"]
 	payload["name"] = name
-	payload["config"]["groups.dn"] = ["cn=groups,{}".format(ldap_base)]
+	payload["config"]["groups.dn"] = ["cn=groups,{}".format(LDAP_BASE)]
 
 	add_or_replace_mapper(kc_admin, component=payload)
 
@@ -1142,29 +1015,12 @@ def execution_raise_priority(kc_admin, execution_id):
 def create_adhoc_flow(opt):
 	print("Creating ad hoc federation authentication flow...")
 
-	kc_admin_user = "admin"
-	if opt.keycloak_pwd == "":  # TODO: pass pwd file ?
-		pwdfile = "/etc/keycloak.secret"
-		with open(pwdfile, 'r') as fd:
-			kc_admin_pass = fd.read().strip()
-	else:
-		kc_admin_pass = opt.remotePwd
-		#kc_admin_pass = opt.keycloak_pwd
-		with open(opt.keycloak_pwd, 'r') as fd:
-			kc_admin_pass = fd.read().strip()
-
-	if opt.keycloak:
-		kc_admin_auth_url = opt.keycloak
-		kc_admin_auth_url.replace("https", "http")
-	else:
-		kc_admin_auth_url = "http://127.0.0.1:8180"
-	print("Using KC_URL: {}".format(kc_admin_auth_url))
+	print("Using KC_URL: {}".format(opt.keycloak_url))
 
 	# realm config #
-	realm_name = "ucs"
-	default_realm = "master"
+	DEFAULT_REALM = "master"
 
-	kc_admin = KeycloakAdmin(server_url=kc_admin_auth_url, username=kc_admin_user, password=kc_admin_pass, realm_name=realm_name, user_realm_name=default_realm, verify=True)
+	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 	kc_admin.realm_name = "ucs"
 	# load UCR
 	ucr = ConfigRegistry()
@@ -1226,97 +1082,33 @@ def create_adhoc_flow(opt):
 	print("Response code from config Univention-Authenticator: ", data_raw.status_code)
 
 
-def config(opt):
+def keycloak_ucs_init(opt):
 	# load UCR
 	ucr = ConfigRegistry()
 	ucr.load()
-	hostname = ucr.get("hostname")
-	domain = ucr.get("domainname")
 	locales_ucr = ucr.get("locale").split()
 	locales_format = [locale[:locale.index("_")] for locale in locales_ucr]
 	default_locale_ucr = ucr.get("locale/default")
 	default_locale = default_locale_ucr[:default_locale_ucr.index("_")]
-
-	ldap_hostdn = ucr.get("ldap/hostdn")
-	user_dn = ldap_hostdn[ldap_hostdn.index(",dc="):][1:]
-
-	role = ucr.get("server/role")
-	if role == "domaincontroller_master":
-		pwdfile = "/etc/idp-ldap-user.secret"
-		with open(pwdfile, 'r') as fd:
-			kc_service_pass = fd.read().strip()
-		kc_service_user = "sys-idp-user"
-
-		bind_dn = "uid={udm_service_user},cn=users,{user_dn}".format(udm_service_user=kc_service_user, user_dn=user_dn)
-
-	else:
-		bind_dn = opt.binddn
-		with open(opt.bindpwdfile, 'r') as fd:
-			kc_service_pass = fd.read().strip()
-
-	if opt.bind_user:
-		kc_service_user = opt.bind_user
-
-	if opt.bind_pwd:
-		kc_service_pass = opt.bind_pwd
-
-	kc_admin_user = "admin"
-	if opt.keycloak_pwd == "":  # TODO: pass pwd file ?
-		pwdfile = "/etc/keycloak.secret"
-		with open(pwdfile, 'r') as fd:
-			kc_admin_pass = fd.read().strip()
-	else:
-		kc_admin_pass = opt.remotePwd
-		#kc_admin_pass = opt.keycloak_pwd
-		with open(opt.keycloak_pwd, 'r') as fd:
-			kc_admin_pass = fd.read().strip()
-
-	# realm config #
-	realm_name = "ucs"
-	default_realm = "master"
-
-	# client config #
-	client_id_location = "/univention/saml/metadata"
-	valid_redirect_urls = ""
+	if opt.reverse_proxy_url:
+		opt.keycloak_url = opt.reverse_proxy_url
 
 	# user federation
 	if opt.ldap:
 		ucs_ldap_url = opt.ldap
 	else:
-		ucs_ldap_url = "ldap://{}.{}:7389".format(hostname, domain)  # "ldap://{FQDN}:{port}"
+		ucs_ldap_url = "ldap://{}.{}:7389".format(HOSTNAME, DOMAINNAME)  # "ldap://{FQDN}:{port}"
 
-	print("Using bind-dn: {}".format(bind_dn))
-
-	# derived composite vars #
-	if hostname and not hostname == "unassigned-hostname":
-		server_fdnq_without_subdomain = "https://{}.{}".format(hostname, domain)
-	else:
-		server_fdnq_without_subdomain = "https://{}".format(domain)
-
-	if opt.reverse_proxy_url and opt.keycloak:
-		server_fdnq_without_subdomain = opt.reverse_proxy_url
-
-	# valid redirect uris #
-	if valid_redirect_urls:
-		valid_redirect_urls = valid_redirect_urls
-	else:
-		valid_redirect_urls = [server_fdnq_without_subdomain + "/univention/saml/"]
-
-	# build kc admin session #
-	if opt.keycloak:
-		kc_admin_auth_url = opt.keycloak
-		kc_admin_auth_url.replace("https", "http")
-	else:
-		kc_admin_auth_url = "http://127.0.0.1:8180"
-	print("Using KC_URL: {}".format(kc_admin_auth_url))
+	print("Using bind-dn: {}".format(opt.binddn))
 
 	# log into default realm in case UCS realm doesn't exist yet #
-	kc_admin = KeycloakAdmin(server_url=kc_admin_auth_url, username=kc_admin_user, password=kc_admin_pass, realm_name=realm_name, user_realm_name=default_realm, verify=True)
+	print(opt.binduser, opt.bindpwd)
+	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 
 	# set locale languages #
 	realm_payload = {
-		"id": default_realm,
-		"realm": default_realm,
+		"id": DEFAULT_REALM,
+		"realm": DEFAULT_REALM,
 		"enabled": True,
 		"internationalizationEnabled": True,
 		"supportedLocales": locales_format,
@@ -1330,126 +1122,41 @@ def config(opt):
 			"xContentTypeOptions": "nosniff",
 			"xRobotsTag": "none",
 			"xFrameOptions": "",
-			"contentSecurityPolicy": "frame-src 'self'; frame-ancestors 'self' {}/univention; object-src 'none';".format(server_fdnq_without_subdomain),
+			"contentSecurityPolicy": "frame-src 'self'; frame-ancestors 'self' {}/univention; object-src 'none';".format(SERVER_URL),
 			"xXSSProtection": "1; mode=block",
 			"strictTransportSecurity": "max-age=31536000; includeSubDomains"
 		}
 	}
-	kc_admin.update_realm(default_realm, payload=realm_payload)
+	kc_admin.update_realm(DEFAULT_REALM, payload=realm_payload)
 
 	# create ucs realm #
-	realm_payload["id"] = realm_name
-	realm_payload["realm"] = realm_name
+	realm_payload["id"] = opt.realm
+	realm_payload["realm"] = opt.realm
 	kc_admin.create_realm(payload=realm_payload, skip_exists=True)
 
-	# create client #
-	client_id = server_fdnq_without_subdomain + client_id_location
-	print("Client ID: {}".format(client_id))
-
-	# build urls #
-	single_logout_service_url_post = server_fdnq_without_subdomain + "/univention/saml/slo/"
-	single_logout_service_url_redirect = server_fdnq_without_subdomain + "/univention/saml/slo/"
-	assertion_consumer_url_post = server_fdnq_without_subdomain + "/univention/saml/"
-
-	client_payload_portal = {
-		"clientId": client_id,
-		"surrogateAuthRequired": False,
-		"enabled": True,
-		"alwaysDisplayInConsole": False,
-		"clientAuthenticatorType": "client-secret",
-		"redirectUris": valid_redirect_urls,
-		"webOrigins": [],
-		"notBefore": 0,
-		"bearerOnly": False,
-		"consentRequired": False,
-		"standardFlowEnabled": True,
-		"implicitFlowEnabled": False,
-		"directAccessGrantsEnabled": True,
-		"serviceAccountsEnabled": False,
-		"publicClient": True,
-		"frontchannelLogout": True,
-		"protocol": "saml",
-		"attributes": {
-			"saml.multivalued.roles": "false",
-			"saml.force.post.binding": "true",
-			"oauth2.device.authorization.grant.enabled": "false",
-			"backchannel.logout.revoke.offline.tokens": "false",
-			"saml.server.signature.keyinfo.ext": "false",
-			"use.refresh.tokens": "true",
-			"oidc.ciba.grant.enabled": "false",
-			"backchannel.logout.session.required": "true",
-			"client_credentials.use_refresh_token": "false",
-			"saml.signature.algorithm": "RSA_SHA256",
-			"saml.client.signature": "false",
-			"require.pushed.authorization.requests": "false",
-			"id.token.as.detached.signature": "false",
-			"saml.assertion.signature": "true",
-			"saml_single_logout_service_url_post": single_logout_service_url_post,
-			"saml.encrypt": "false",
-			"saml_assertion_consumer_url_post": assertion_consumer_url_post,
-			"saml.server.signature": "true",
-			"exclude.session.state.from.auth.response": "false",
-			"saml.artifact.binding.identifier": "JOtItQNol3ThXjMMWI3gcbW92sU=",
-			"saml.artifact.binding": "false",
-			"saml_single_logout_service_url_redirect": single_logout_service_url_redirect,
-			"saml_force_name_id_format": "false",
-			"tls.client.certificate.bound.access.tokens": "false",
-			"acr.loa.map": "{}",
-			"saml.authnstatement": "true",
-			"display.on.consent.screen": "false",
-			"saml.assertion.lifespan": "300",
-			"token.response.type.bearer.lower-case": "false",
-			"saml.onetimeuse.condition": "false",
-			"saml_signature_canonicalization_method": "http://www.w3.org/2001/10/xml-exc-c14n#"
-		},
-		"authenticationFlowBindingOverrides": {},
-		"fullScopeAllowed": True,
-		"nodeReRegistrationTimeout": -1,
-		"protocolMappers": [
-			{
-				"name": "userid_mapper",
-				"protocol": "saml",
-				"protocolMapper": "saml-user-attribute-mapper",
-				"consentRequired": False,
-				"config": {
-					"attribute.nameformat": "URI Reference",
-					"user.attribute": "uid",
-					"friendly.name": "uid",
-					"attribute.name": "urn:oid:0.9.2342.19200300.100.1.1"
-				}
-			}
-		],
-		"defaultClientScopes": [
-			"role_list"
-		],
-		"optionalClientScopes": [],
-		"access": {
-			"view": True,
-			"configure": True,
-			"manage": True
-		}
-	}
-	kc_admin.create_client(payload=client_payload_portal, skip_exists=True)
+	# create portal saml client
+	opt.metadata_url = SERVER_URL + "/univention/saml/metadata"
+	create_SAML_client(opt)
 
 	# user federation ldap provider payload#
 	ldap_federation_payload = {
 		"name": "ldap-provider",
 		"providerId": "ldap",
 		"providerType": "org.keycloak.storage.UserStorageProvider",
-		"parentId": get_realm_id(kc_admin, realm_name),
+		"parentId": get_realm_id(kc_admin, opt.realm),
 		"config": {
 			"pagination": ["true"],
 			"fullSyncPeriod": ["-1"],
 			"startTls": ["false"],
 			"connectionPooling": ["true"],
-			"usersDn": [user_dn],
+			"usersDn": [LDAP_BASE],
 			"cachePolicy": ["MAX_LIFESPAN"],
 			"maxLifespan": ["300000"],
 			"useKerberosForPasswordAuthentication": ["false"],
 			"importEnabled": ["false"],
 			"enabled": ["true"],
-			"bindCredential": [kc_service_pass],
-			"bindDn": [bind_dn],
+			"bindCredential": [opt.ldap_system_user_pwd],
+			"bindDn": [opt.ldap_system_user_dn],
 			"changedSyncPeriod": ["-1"],
 			"usernameLDAPAttribute": ["uid"],
 			"vendor": ["other"],
@@ -1503,12 +1210,12 @@ def config(opt):
 
 	# Setting admin level to all Domain Admins #
 	# Change realm to master
-	kc_admin.realm_name = default_realm
+	kc_admin.realm_name = DEFAULT_REALM
 
 	# Admins federation ldap provider payload #
 	ldap_federation_payload["name"] = "ldap-master-admin"
-	ldap_federation_payload["parentId"] = get_realm_id(kc_admin, default_realm)
-	ldap_federation_payload["config"]["customUserSearchFilter"] = ["(memberOf=cn=Domain Admins,cn=groups,{dn})".format(dn=user_dn)]
+	ldap_federation_payload["parentId"] = get_realm_id(kc_admin, DEFAULT_REALM)
+	ldap_federation_payload["config"]["customUserSearchFilter"] = ["(memberOf=cn=Domain Admins,cn=groups,{LDAP_BASE})".format(LDAP_BASE=LDAP_BASE)]
 
 	# find existing ldap provider or just create if none exists #
 	ldap_component_id = check_and_create_component(kc_admin, ldap_federation_payload["name"], ldap_federation_payload["providerId"], ldap_federation_payload)
@@ -1531,10 +1238,7 @@ def main():
 	"""
 	opt = parse_args()
 
-	#try:
 	return opt.func(opt) or 0
-	#except Exception:
-	#	return 1
 
 
 if __name__ == "__main__":
