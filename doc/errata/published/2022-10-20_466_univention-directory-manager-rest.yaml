@@ -7,8 +7,8 @@ fix: 10.0.4-5A~5.0.0.202210191446
 desc: |
  This update addresses the following issues:
  * For request tracing a unique ID has been added to each request via the
-  `X-Request-Id` HTTP header which is accepted as request header (or if not
-  given uniquely created) and returned in the response headers.
+   `X-Request-Id` HTTP header which is accepted as request header (or if not
+   given uniquely created) and returned in the response headers.
 bug: [55186]
 erratum: 466
 announced: 2022-10-20
