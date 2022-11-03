@@ -92,13 +92,15 @@ install_all_attributes_primary () {
 		repository/online/component/fhh-bsb-iam/username="$username" \
 		repository/online/component/fhh-bsb-iam/password="$password"
 
-# disabled because of prugeDate problem https://chat.univention.de/channel/ucsschool-dev/thread/x9DxBCM2LixfuEiY2
-#	# also add internal repo
-#	cat <<"EOF" > "/etc/apt/sources.list.d/99_bsb.list"
-#deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-fhh-bsb-iam-dev/all/
-#deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-fhh-bsb-iam-dev/$(ARCH)/
-#EOF
+	# also add internal repo
+	cat <<"EOF" > "/etc/apt/sources.list.d/99_bsb.list"
+deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-fhh-bsb-iam-dev/all/
+deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-fhh-bsb-iam-dev/$(ARCH)/
+EOF
 
 	univention-install -y ucsschool-divis-custom-ldap-extension ucsschool-iserv-custom-ldap-extension ucsschool-moodle-custom-ldap-extension univention-saml
+	# workaround for broken ext. attr. purgeDate: sets the default "0" which conflicts with the syntax iso8601Date
+	# has to be fixed by prof services in ucsschool-divis-custom-ldap-extension  (50ucsschool-divis-custom-ldap-extension.inst)
+	udm settings/extended_attribute modify --dn cn="purgeDate,cn=DiViS,cn=custom attributes,cn=univention,$(ucr get ldap/base)" --set default=""
 	systemctl restart univention-directory-manager-rest.service
 }
