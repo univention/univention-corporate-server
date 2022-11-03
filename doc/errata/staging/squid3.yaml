@@ -1,0 +1,18 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: squid3
+fix: 3.5.23-5+deb9u9A~4.4.9.202211032055
+desc: |
+ This update addresses the following issues:
+
+ Debian update 3.5.23-5+deb9u9
+ 3.5.23-5+deb9u9 (Tue, 01 Nov 2022 20:58:33 +0530)
+ * Non-maintainer upload by the Debian ELTS Team.
+ * CVE-2022-41317: Exposure of Sensitive Information in Cache Manager
+ * CVE-2022-41318: Buffer Over Read in SSPI and SMB Authentication
+bug: [55381]
+cve:
+- CVE-2022-41317
+- CVE-2022-41318
