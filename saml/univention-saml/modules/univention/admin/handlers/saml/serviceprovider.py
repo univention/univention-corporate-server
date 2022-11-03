@@ -179,12 +179,14 @@ layout = [
 ]
 
 
-def mapKeyAndValue(old, encoding=()):
-	return [entry[0].encode(*encoding) + b'=' + entry[1].encode(*encoding) if len(entry) > 1 and entry[0] and entry[1] else entry[0].encode(*encoding) for entry in old]
+def mapLDAPAttributeMapping(old, encoding=()):
+	attributes = (entry if len(entry) > 1 and entry[0] and entry[1] else (entry[0], entry[0]) for entry in old)
+	return [entry[0].encode(*encoding) + b'=' + entry[1].encode(*encoding) for entry in attributes]
 
 
-def unmapKeyAndValue(old, encoding=()):
-	return [entry.decode(*encoding).split(u'=', 1) for entry in old]
+def unmapLDAPAttributeMapping(old, encoding=()):
+	attributes = (entry.decode(*encoding).split(u'=', 1) for entry in old)
+	return [attr if len(attr) > 1 else [attr[0], attr[0]] for attr in attributes]
 
 
 mapping = univention.admin.mapping.mapping()
@@ -194,7 +196,7 @@ mapping.register('AssertionConsumerService', 'AssertionConsumerService')
 mapping.register('NameIDFormat', 'NameIDFormat', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('simplesamlNameIDAttribute', 'simplesamlNameIDAttribute', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('simplesamlAttributes', 'simplesamlAttributes', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('LDAPattributes', 'simplesamlLDAPattributes', mapKeyAndValue, unmapKeyAndValue, encoding='ASCII')
+mapping.register('LDAPattributes', 'simplesamlLDAPattributes', mapLDAPAttributeMapping, unmapLDAPAttributeMapping, encoding='ASCII')
 mapping.register('serviceproviderdescription', 'serviceproviderdescription', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('serviceProviderOrganizationName', 'serviceProviderOrganizationName', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('privacypolicyURL', 'privacypolicyURL', None, univention.admin.mapping.ListToString, encoding='ASCII')

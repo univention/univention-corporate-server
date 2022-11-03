@@ -122,7 +122,7 @@ register_idbroker_as_sp_in_ucs () {
 		--set simplesamlNameIDAttribute=entryUUID \
 		--set simplesamlAttributes=TRUE \
 		--set attributesNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" \
-		--set LDAPattributes=entryUUID || rv=$?
+		--set LDAPattributes='entryUUID entryUUID' || rv=$?
 	return $rv
 
 }

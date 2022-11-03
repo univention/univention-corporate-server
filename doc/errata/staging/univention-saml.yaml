@@ -7,4 +7,7 @@ fix: 7.0.5-4A~5.0.0.202211070920
 desc: |
  This update addresses the following issues:
  * Creation of certificate for Keycloak App on UCS Primary Directory Node
-bug: [55331]
+ * The unmapping of the LDAP attribute `LDAPAttributes` in the
+   `saml/serviceprovider` UDM module now always unmap the value in the new
+   mappable format to support a representation in the UDM REST API.
+bug: [55331, 55348]

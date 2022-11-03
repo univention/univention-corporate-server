@@ -85,7 +85,7 @@ udm saml/serviceprovider create "$@" --ignore_exists --position "cn=saml-service
 	--set simplesamlAttributes=TRUE \
 	--set attributesNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" \
 	--set assertionLifetime="${umc_saml_assertion_lifetime:-300}" \
-	--append LDAPattributes=uid || die
+	--append LDAPattributes='uid uid' || die
 
 /usr/share/univention-management-console/saml/update_metadata "$@" || die
 
