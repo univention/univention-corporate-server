@@ -940,94 +940,91 @@ class ResourceBase:
 		return ('udm:object-modules', 'udm:object-module', 'type', 'up', 'self')
 
 
+def _sanitizer_to_openapi(san):
+	type_ = ''
+	definition = {}
+	schema = {}
+	if isinstance(san, DictSanitizer):
+		type_ = 'object'
+		schema['additionalProperties'] = san.allow_other_keys
+		schema['properties'] = {
+			prop: _sanitizer_to_openapi(s or san.default_sanitizer)['schema']
+			for prop, s in san.sanitizers.items()
+			if s or san.default_sanitizer
+		}
+	elif isinstance(san, ListSanitizer):
+		type_ = 'array'
+		if san.min_elements is not None:
+			schema['minItems'] = san.min_elements
+		if san.max_elements is not None:
+			schema['maxItems'] = san.max_elements
+		if san.sanitizer:
+			schema['items'] = _sanitizer_to_openapi(san.sanitizer)['schema']
+	elif isinstance(san, DNSanitizer):
+		type_ = 'string'
+		schema['format'] = 'dn'
+	elif isinstance(san, BooleanSanitizer):
+		type_ = 'boolean'
+	elif isinstance(san, BoolSanitizer):
+		type_ = 'boolean'
+		#type_ = 'string'
+		#definition['examples'] = {choice: {'value': choice, 'summary': choice} for choice in san.choices}
+	elif isinstance(san, ChoicesSanitizer):
+		type_ = 'string'
+		definition['examples'] = {choice: {'value': choice, 'summary': choice} for choice in san.choices}
+		schema['pattern'] = '^(%s)$' % ('|'.join(re.escape(choice) for choice in san.choices))
+	elif isinstance(san, IntegerSanitizer):
+		type_ = 'integer'
+		if san.minimum is not None:
+			schema['minimum'] = san.minimum
+			if san.minimum_strict is True:
+				schema['exclusiveMinimum'] = True
+		if san.maximum is not None:
+			schema['maximum'] = san.maximum
+			if san.maximum_strict is True:
+				schema['exclusiveMaximum'] = True
+	elif isinstance(san, StringSanitizer):
+		type_ = 'string'
+		if san.minimum is not None:
+			schema['minLength'] = san.minimum
+		if san.maximum is not None:
+			schema['maxLength'] = san.maximum
+		if san.regex_pattern:
+			schema['regex'] = san.regex_pattern.pattern
+	else:
+		raise TypeError(type(san))
+	#if san.required is not None:
+	#	schema['required'] = san.required
+	if san.default or san.allow_none:
+		schema['default'] = san.default
+	if san.allow_none:
+		schema['nullable'] = True
+	schema['type'] = type_
+	definition['schema'] = schema
+	return definition
+
+
 class Resource(ResourceBase, RequestHandler):
 
 	def options(self, *args, **kwargs):
 		"""Display API descriptions."""
 		result = self._options(*args, **kwargs)
+		result.update(self.get_openapi_schema(args and args[0]))
 
-		def docstring(obj, *args, **kwargs):
-			return '\n'.join(x.strip() for x in (obj.__doc__ or '').split('\n')).format(*args, **kwargs)
-
-		def inspect_sanitizers(sans):
-			props = {}
-			for key, san in sans.items():
-				description = ''
-				type_ = ''
-				kwargs = {}
-				if isinstance(san, DictSanitizer):
-					type_ = 'object'
-				elif isinstance(san, ListSanitizer):
-					type_ = 'array'
-				elif isinstance(san, DNSanitizer):
-					type_ = 'string'
-					description = 'LDAP DN'
-				elif isinstance(san, BooleanSanitizer):
-					type_ = 'boolean'
-				elif isinstance(san, BoolSanitizer):
-					description = 'boolean value'
-					type_ = 'string'
-					kwargs['choices'] = san.choices
-				elif isinstance(san, ChoicesSanitizer):
-					type_ = 'string'
-					kwargs['choices'] = san.choices
-				elif isinstance(san, IntegerSanitizer):
-					type_ = 'number'
-				props[key] = dict({
-					'type': type_,
-					'description': description,
-					'required': san.required,
-					'default': san.default,
-				}, **kwargs)
-			return props
-		result['methods'] = methods = {}
-		result['description'] = docstring(self)
-		for method in self._headers.get('Allow', '').split(', '):
-			func = getattr(self, method.lower())
-			sanitizers = getattr(func, 'sanitizers', {})
-			methods[method] = {
-				'summary': docstring(func, *args, **kwargs),
-				'query': inspect_sanitizers(sanitizers.get('query', {})),
-				'payload': inspect_sanitizers(sanitizers.get('body', {})),
-				'headers': {
-					'Accept': ['application/json', 'text/html'],
-					'Accept-Language': ['en-US', 'en', 'de-DE', 'de'],
-					'If-None-Match': ['etag'],
-					'If-Match': ['etag'],
-					'If-Unmodified-Since': ['last_modified'],
-					'If-Modified-Since': ['last_modified'],
-					'Content-Type': ['application/json', 'application/x-www-form-urlencoded', 'multipart/form-data'],
-					'Authorization': ['basic'],
-				},
-				'responses': {
-					200: {
-						'description': 'Everything OK'
-					},
-					400: {
-						'description': 'Bad request syntax (e.g. wrong content type)'
-					},
-					401: {
-						'description': 'Unauthorized. No Authorization provided or wrong credentials'
-					},
-					404: {
-						'description': 'Object not found'
-					},
-					422: {
-						'description': 'Validation of input parameters failed'
-					},
-					500: {
-						'description': 'Internal server errror'
-					},
-					502: {
-						'description': '(LDAP) Server not available'
-					},
-					599: {
-						'description': 'Error in Tornado web server'  # proxy server not reachable
-					},
-				},
-			}
 		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation(result)
+
+	def _options(self, *args, **kwargs):
+		return {}
+
+	def get_openapi_schema(self, object_type=None):
+		return {}
+
+	def options_json(self, response):
+		response = super().get_json(response)
+		response.pop('_links', None)
+		response.pop('_embedded', None)
+		return response
 
 
 class Nothing(Resource):
@@ -1121,21 +1118,12 @@ class Relations(Resource):
 		self.content_negotiation(result)
 
 
-class OpenAPI(Resource):
+class _OpenAPIBase:
 
-	requires_authentication = ucr.is_true('directory/manager/rest/require-auth', True)
-
-	def prepare(self):
-		super().prepare()
-		self.request.content_negotiation_lang = 'json'
-		self.ldap_connection, self.ldap_position = get_machine_connection(write=False)
-
-	def get(self, object_type=None):
-		paths = {}  # defines all resources and methods they have
-		tags = []  # defines the basic structure, a group of pathes builds a tag, the pathes must include a reference to the tag name
-		models = {}  # defines "models" (and can be referenced)
-		request_bodies = {}
-
+	def get_openapi_schema(self, object_type=None):
+		ldap_base = ucr['ldap/base'] if self.requires_authentication else "dc=example,dc=net"
+		openapi_paths = {}  # defines all resources and methods they have
+		openapi_tags = []  # defines the basic structure, a group of pathes builds a tag, the pathes must include a reference to the tag name
 		global_parameters = [
 			{'$ref': '#/components/parameters/user-agent'},
 			{'$ref': '#/components/parameters/accept-language'},
@@ -1144,6 +1132,14 @@ class OpenAPI(Resource):
 			{'$ref': '#/components/parameters/request-id'},
 		]
 		_global_responses = {
+			400: {'$ref': '#/components/responses/BadRequest'},
+			401: {'$ref': '#/components/responses/Unauthorized'},
+			403: {'$ref': '#/components/responses/Forbidden'},
+			422: {'$ref': '#/components/responses/UnprocessableEntity'},
+			500: {'$ref': '#/components/responses/ServerError'},
+			503: {'$ref': '#/components/responses/ServiceUnavailable'},
+			502: {'$ref': '#/components/responses/ServiceUnavailable'},
+			504: {'$ref': '#/components/responses/ServiceUnavailable'},
 		}
 		_global_response_headers = {
 			'Cache-Control': {'$ref': '#/components/headers/Cache-Control'},
@@ -1160,38 +1156,67 @@ class OpenAPI(Resource):
 		def global_responses(responses):
 			return dict(_global_responses, **{str(k): v for k, v in responses.items()})
 
-		base_object_definition = {
-			"dn": {
-				"description": "LDAP DN (Distinguished Name)",
+		def content_schema(schema_definition):
+			return {
+				'application/json': {'schema': schema_definition},
+				'application/hal+json': {'schema': schema_definition},
+				'text/html': {'schema': {'$ref': '#/components/schemas/html-response'}},
+			}
+
+		openapi_request_bodies = {}
+		openapi_schemas = {
+			"html-response": {
+				"description": "**Experimental**: HTML response where developer can interactively navigate through objects. This will be replaced with a real frontend in the future.",
+				"deprecated": True,
 				"type": "string",
-				"format": "dn",
-				"example": "dc=example,dc=net",
+				"format": "html",
+				"example": "<html/>",
 				"readOnly": True,
 			},
-			"uuid": {
-				"description": "LDAP Entry-UUID",
+			"dn": {
+				"description": "The LDAP Distinguished Name (DN).",
 				"type": "string",
-				"format": "uuid"
+				"format": "dn",
+				"pattern": "^.+=.+$",
+				"minLength": 3,
+				"example": ldap_base,
+				"readOnly": True,
 			},
-			# "id": {},
+			#"id": {
+			#	"description": "The (not unique!) relative LDAP Distinguished Name (RDN).",
+			#	"type": "string",
+			#	"readOnly": True,
+			#},
+			"uuid": {
+				"description": "The LDAP Entry-UUID.",
+				"type": "string",
+				"format": "uuid",
+				"pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+				"minLength": 36,
+				"maxLength": 36,
+				"readOnly": True,
+			},
 			"objectType": {
-				"description": "UDM Object-Type",
+				"description": "The UDM Object-Type.",
 				"type": "string",
 				"example": "users/user",
 				"readOnly": True,
+				"pattern": "^.+/.+$",
+				"minLength": 3,
 			},
 			"_links": {
-				"description": "Hypertext Application Language (HAL) links",
+				"description": "Hypertext Application Language (HAL) links.",
 				"type": "object",
 				"properties": {
 					"self": {
 						"type": "array",
+						"minItems": 0,
 						"items": {
 							"type": "object",
 							"properties": {
 								"href": {
 									"type": "string",
-									"description": "The URL",
+									"description": "The URL.",
 								}
 							},
 							"additionalProperties": True,
@@ -1202,30 +1227,416 @@ class OpenAPI(Resource):
 				"additionalProperties": True,
 			},
 			"_embedded": {
-				"description": "Hypertext Application Language (HAL) embedded resources",
+				"description": "Hypertext Application Language (HAL) embedded resources.",
 				"type": "object",
 				"properties": {},
 				"readOnly": True,
 				"additionalProperties": True,
 			},
 			"position": {
-				"description": "DN of LDAP node below which the object is located. Changing this causes a move of the object. When chaning no other changes are applied.",
+				"description": "DN of LDAP node below which the object is located. Changing this causes a move of the object. When changing no other changes are applied.",
 				"type": "string",
 				"format": "dn",
-				"example": "cn=position,dc=example,dc=net",
+				"example": f"cn=position,{ldap_base}",
+			},
+			"superordinate": {
+				"description": "The superordinate DN of the object.",
+				"type": "string",
+				"format": "dn",
+				"example": ldap_base,
 			},
 		}
+		openapi_parameters = {
+			"dn-path": {
+				"description": "The (urlencoded) LDAP Distinguished Name (DN).",
+				"in": "path",
+				"name": "dn",
+				"required": True,
+				"schema": {
+					'$ref': '#/components/schemas/dn'
+				},
+			},
+			'template.get.query.position': {
+				"in": "query",
+				"name": "position",
+				"description": "Position which is used as search base.",
+			},
+			'template.get.query.superordinate': {
+				"in": "query",
+				"name": "superordinate",
+				"description": "The superordinate DN of the object to create. `position` is sufficient.",
+				# "example": f"cn=superordinate,{ldap_base}",
+			},
+			'template.get.query.template': {
+				"in": "query",
+				"name": "template",
+				"deprecated": True,
+				"description": "**Experimental**: A |UDM| template object.",
+			},
+			'objects.get.query.position': {
+				"in": "query",
+				"name": "position",
+				"description": "Position which is used as search base.",
+			},
+			'objects.get.query.scope': {
+				"in": "query",
+				"name": "scope",
+				"description": "The LDAP search scope (sub, base, one).",
+			},
+			'objects.get.query.filter': {
+				"in": "query",
+				"name": "filter",
+				"description": "A LDAP filter which may contain `UDM` property names instead of `LDAP` attribute names.",
+				"examples": {
+					"any-object": {
+						"value": "(objectClass=*)",
+					},
+					"admin-user": {
+						"value": "(|(username=Administrator)(username=Admin*))",
+					},
+				},
+			},
+			'objects.get.query.query': {
+				"in": "query",
+				"name": "query",
+				"style": "deepObject",
+				"description": "The values to search for (propertyname and search filter value). Alternatively with `filter` a raw LDAP filter can be given.",
+				"examples": {
+					'nothing': {
+						'value': None,
+					},
+					'property': {
+						'value': {'': '*'},
+					},
+				},
+			},
+			'objects.get.query.hidden': {
+				"in": "query",
+				"name": "hidden",
+				"description": "Include hidden/system objects in the response.",
+				"example": True,
+			},
+			'objects.get.query.superordinate': {
+				"in": "query",
+				"name": "superordinate",
+				"description": "The superordinate DN of the objects to find. `position` is sufficient.",
+				# "example": f"cn=superordinate,{ldap_base}",
+			},
+			'objects.get.query.properties': {
+				"in": "query",
+				"name": "properties",
+				"style": "form",
+				"explode": True,
+				"description": "The properties which should be returned, if not given all properties are returned.",
+				'examples': {
+					'no restrictions': {'value': None},
+					'only small subset': {'value': ['username', 'firstname', 'lastname']},
+				}
+			},
+			'objects.get.query.limit': {
+				"in": "query",
+				"name": "limit",
+				"deprecated": True,
+				"description": "**Broken/Experimental**: How many results should be shown per page.",
+				"examples": {
+					"no limit": {"value": "", "summary": "get all entries"},
+					"limit to 50": {"value": 50, "summary": "limit to 50 entries"},
+				},
+			},
+			'objects.get.query.page': {
+				"in": "query",
+				"name": "page",
+				"deprecated": True,
+				"description": "**Broken/Experimental**: The search page, starting at one.",
+				"example": 1,
+			},
+			'objects.get.query.dir': {
+				"in": "query",
+				"name": "dir",
+				"deprecated": True,
+				"description": "**Broken/Experimental**: The Sort direction (ASC or DESC).",
+			},
+			'objects.get.query.by': {
+				"in": "query",
+				"name": "by",
+				"deprecated": True,
+				"description": "**Broken/Experimental**: Sort the search result by the specified property.",
+				#"example": "username",
+			},
+			'object.delete.query.cleanup': {
+				"in": "query",
+				"name": "cleanup",
+				"description": "Whether to perform a cleanup (e.g. of temporary objects, locks, etc).",
+				"example": True,
+			},
+			'object.delete.query.recursive': {
+				"in": "query",
+				"name": "recursive",
+				"description": "Whether to remove referring objects (e.g. DNS or DHCP references).",
+				"example": True,
+			},
+			'user-agent': {
+				"in": "header",
+				"name": "User-Agent",
+				"schema": {"type": "string"},
+				"description": "The user agent.",
+				"examples": {
+					"none": {"value": "", "summary": "none"},
+					"UCS version": {"value": "UCS 5.0-2-errata339", "summary": "UCS 5.0-2-errata339"},
+				},
+			},
+			'accept-language': {
+				"in": "header",
+				"name": "Accept-Language",
+				"schema": {"type": "string"},
+				"description": "The accepted response languages.",
+				"examples": {
+					"none": {"value": "", "summary": "Let server decide"},
+					"english": {"value": "en-US; q=1.0", "summary": "english"},
+					"german": {"value": "de-DE; q=1.0, en-US; q=0.9", "summary": "Prefer german"},
+				},
+			},
+			"if-match": {
+				"in": "header",
+				"name": "If-Match",
+				"schema": {"type": "string"},
+				"description": "Provide entity tag to make a conditional request to not overwrite any values in a race condition.",
+				"example": "",
+			},
+			"if-none-match": {
+				"in": "header",
+				"name": "If-None-Match",
+				"schema": {"type": "string", "format": "etag"},
+				"description": "Use request from cache by using the E-Tag entity tag if it matches.",
+				"example": "",
+			},
+			"if-unmodified-since": {
+				"in": "header",
+				"name": "If-Unmodified-Since",
+				"schema": {"type": "string", "format": "last-modified-date"},
+				"description": "Provide last modified time to make a conditional request to not overwrite any values in a race condition.",
+				# "example": "Wed, 21 Oct 2015 07:28:00 GMT",
+			},
+			"if-modified-since": {
+				"in": "header",
+				"name": "If-Modified-Since",
+				"schema": {"type": "string"},
+				"description": "Use request from cache by using the Last-Modified date if it matches.",
+				"example": "",
+			},
+			'request-id': {
+				"in": "header",
+				"name": "X-Request-Id",
+				"schema": {"type": "string", "format": "uuid"},
+				"description": "A request-ID used for logging and tracing.",
+				"examples": {
+					'unset': {'value': ''},
+					'uuid4': {'value': "218d9124-c0dc-415e-8417-a0fa197ee099"},
+				},
+			},
+		}
+		openapi_responses = {
+			'objects.post.response.created': {
+				'$ref': '#/components/responses/ObjectCreated',
+			},
+			'object.get.response.notfound': {
+				'$ref': '#/components/responses/ObjectNotFound',
+			},
+			'object.delete.response.nocontent': {
+				'$ref': '#/components/responses/ObjectDeleted',
+			},
+			'object.delete.response.notfound': {
+				'$ref': '#/components/responses/ObjectNotFound',
+			},
+			'object.put.response.created': {
+				'$ref': '#/components/responses/PUTObjectCreated',
+			},
+			'object.put.response.accepted': {
+				'$ref': '#/components/responses/MoveStarted',
+			},
+			'object.put.response.nocontent': {
+				'$ref': '#/components/responses/SuccessNoDataRedirect',
+			},
+			'object.put.response.notfound': {
+				'$ref': '#/components/responses/ObjectNotFound',
+			},
+			'object.patch.response.nocontent': {
+				'$ref': '#/components/responses/SuccessNoDataRedirect',
+			},
+			'object.patch.response.notfound': {
+				'$ref': '#/components/responses/ObjectNotFound',
+			},
+			"ObjectCreated": {  # 201
+				"description": "Object created",
+				"content": content_schema({
+					"type": "object",
+					"properties": {
+						"dn": {'$ref': '#/components/schemas/dn'},
+						"uuid": {'$ref': '#/components/schemas/uuid'},
+					},
+				}),
+				"headers": global_response_headers(),
+			},
+			"PUTObjectCreated": {  # 201
+				"description": "Created: The object did not exist and has been created. Deprecated: a move operation started, expect 202 in the future!",
+				"content": content_schema({
+					"type": "object",
+					"properties": {
+						"dn": {'$ref': '#/components/schemas/dn'},
+						"uuid": {'$ref': '#/components/schemas/uuid'},
+					},
+				}),
+				"headers": global_response_headers(),
+			},
+			'MoveStarted': {  # 202 (actually still 201)
+				"description": "Accepted: asynchronous move or rename operation started.",
+				'headers': global_response_headers({
+					'Location': {'$ref': '#/components/headers/Location'},
+				}),
+				"content": content_schema({
+					"type": "object",
+					"additionalProperties": True,
+				}),
+			},
+			'SuccessNoDataRedirect': {  # 204
+				"description": "Success. No response data. A link to the modified resource in the `Location` header.",
+				'headers': global_response_headers({
+					'Location': {'$ref': '#/components/headers/Location'},
+				}),
+			},
+			'ObjectDeleted': {  # 204
+				"description": "Object deleted",
+				"headers": global_response_headers(),
+			},
+			'MoveProgress': {  # 301
+				'description': 'Gives information about the progress of a move operation.',
+				'headers': global_response_headers({
+					'Retry-After': {'$ref': '#/components/headers/Retry-After'},
+					'Location': {'$ref': '#/components/headers/Location'},
+				}),
+				"content": content_schema({
+					"type": "object",
+					"additionalProperties": True,
+				}),
+			},
+			'MoveSuccess': {  # 303
+				'description': 'Redirects to the result of the move operation, i.e. the new object.',
+				'headers': global_response_headers({'Location': {'$ref': '#/components/headers/Location'}}),
+				"content": content_schema({
+					"type": "object",
+					"additionalProperties": True,
+				}),
+			},
+			"BadRequest": {  # 400
+				"description": 'Bad request syntax.',
+				'headers': global_response_headers({}),
+				"content": content_schema({
+					"type": "object",
+					"additionalProperties": True,
+				}),
+			},
+			"Forbidden": {  # 403, e.g. unsupported operation, or GET users/self/$wrong_dn
+				"description": 'Forbidden (e.g. unsupported operation)',
+				'headers': global_response_headers({}),
+				"content": content_schema({
+					"type": "object",
+					"additionalProperties": True,
+				}),
+			},
+			"ObjectNotFound": {  # 404
+				"description": "Object not found.",
+				'headers': global_response_headers({}),
+				"content": content_schema({
+					"type": "object",
+					"additionalProperties": True,
+				}),
+			},
+			"ObjectGone": {  # 410
+				"description": "Object has recently been removed.",
+				'headers': global_response_headers({}),
+				"content": content_schema({
+					"type": "object",
+					"additionalProperties": True,
+				}),
+			},
+			"Unauthorized": {  # 401
+				'description': 'Unauthorized. No Authorization provided or wrong credentials.',
+				'headers': global_response_headers({}),
+				"content": content_schema({
+					"type": "object",
+					"additionalProperties": True,
+				}),
+			},
+			"UnprocessableEntity": {  # 422
+				'description': 'Validation of input parameters failed.',
+				'headers': global_response_headers({}),
+				"content": content_schema({
+					"type": "object",
+					"additionalProperties": True,
+				}),
+			},
+			"ServerError": {  # 500
+				'description': 'Internal server errror.',
+				'headers': global_response_headers({}),
+				"content": content_schema({
+					"type": "object",
+					"additionalProperties": True,
+				}),
+			},
+			"ServiceUnavailable": {  # 503 (+502 +504 +599)
+				'description': '(LDAP) Server not available.',
+				'headers': global_response_headers({
+					'Retry-After': {'$ref': '#/components/headers/Retry-After'}
+				}),
+				"content": content_schema({
+					"type": "object",
+					"additionalProperties": True,
+				}),
+			},
+		}
+		openapi_headers = {
+			'Cache-Control': {"schema": {"type": "string"}, "description": "Controling directives for caching."},
+			'Expires': {"schema": {"type": "string"}, "description": "An expiration time, when the response is stale and should not be used from cache anymore."},
+			'Vary': {"schema": {"type": "string"}, "description": "The response headers which need to be considered when caching the response."},
+			'E-Tag': {"schema": {"type": "string"}, "description": "An entity tag of the resource, which should be used for conditional PUT requests."},
+			'Last-Modified': {"schema": {"type": "string"}, "description": "The time the resource was modified the last time, which should be used for conditional PUT requests."},
+			'Allow': {"schema": {"type": "string"}, "description": "The allowed HTTP request methods for this resource."},
+			'Content-Language': {"schema": {"type": "string"}, "description": "The language of the response"},
+			'Retry-After': {"schema": {"type": "string"}, "description": "The time which should be waited before requesting the resource from the Location header."},
+			'Accept-Patch': {"schema": {"type": "string"}, "description": "The accepted Content-Types for a PATCH request."},
+			'Location': {"schema": {"type": "string"}, "description": "The location which should be followed."},
+			'Link': {"schema": {"type": "string"}, "description": "A hypermedia link."},
+			'X-Request-Id': {"schema": {"type": "string", "format": "uuid"}, "description": "The response of the request-ID used for logging and tracing."},
+		}
+
+		def _openapi_quote(string):
+			return string.replace('~', '~0').replace('/', '~1')
+
+		classes = {'object': Object, 'objects': Objects, 'template': ObjectAdd}
+		for name, klass in classes.items():
+			for method in ('get', 'post', 'put', 'delete'):
+				func = getattr(klass, method, None)
+				if not hasattr(func, 'sanitizers'):
+					continue
+				for param, san in func.sanitizers.get('query', {}).items():
+					key = '%s.%s.query.%s' % (name, method, param)
+					if key in openapi_parameters:
+						openapi_parameters[key].update(_sanitizer_to_openapi(san))
+
+		def docstring(key, method, module):
+			obj = getattr(classes[key], method)
+			return '\n'.join(x.strip() for x in (obj.__doc__ or '').split('\n')).format(module=module)
 
 		for name, mod in sorted(udm_modules.modules.items()):
 			if object_type and name != object_type:
 				continue
+
 			module = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 			tag = name
-			model_name = name.replace('/', '-')
-			model_name_escaped = model_name.replace('~', '~0').replace('/', '~1')
-			schema_definition = f"#/components/schemas/{model_name_escaped}"
+			model_name = name.replace('/', '-')  # for better look in swaggerUI, as they have a bug with showing the escaped variant
+			schema_definition = f"#/components/schemas/{_openapi_quote(model_name)}"
 			tag_description = {
-				'description': f'{module.title} objects',
+				'description': f'{module.title} objects.',
 				'name': name,
 			}
 			if module.help_text and module.help_link:
@@ -1235,164 +1646,164 @@ class OpenAPI(Resource):
 						'url': module.help_link,
 					}
 				})
-			tags.append(tag_description)
-			models[model_name] = {
-				"type": "object",
-				"properties": {},
-			}
-			model = models[model_name]['properties']
-			paths[f'/{name}/'] = objects_pathes = {}
-			paths[f'/{name}/add'] = object_template_pathes = {}
-			paths[f'/{name}/{{dn}}'] = object_pathes = {}
-			object_pathes["parameters"] = [
-				{
-					"description": "The objects DN (urlencoded)",
-					"in": "path",
-					"name": "dn",
-					"required": True,
-					"schema": {
-						"type": "string",
-						"format": "dn",
-					},
-				}
-			]
-			models[f'{model_name}-list'] = {
-				"type": "object",
-				"properties": {
-					"_embedded": {
-						"type": "object",
-						"properties": {
-							"udm:object": {
-								"type": "array",
-								"items": {
-									"$ref": schema_definition,
-								}
-							}
-						}
-					},
+			openapi_tags.append(tag_description)
+			template_path = f'/{name}/add'
+			objects_path = f'/{name}/'
+			object_path = f'/{name}/{{dn}}'
 
-				}
+			openapi_paths[objects_path] = {}
+			openapi_paths[template_path] = {}
+			openapi_paths[object_path] = {
+				"parameters": [{"$ref": '#/components/parameters/dn-path'}]
 			}
 
-			def content_schema(schema_definition=schema_definition):
-				return {
-					'application/json': {'schema': {'$ref': schema_definition}},
-					'application/hal+json': {'schema': {'$ref': schema_definition}},
-					'text/html': {'schema': {'$ref': schema_definition}},  # TODO: describe as NON-API
-				}
+			def content_schema_ref(schema_definition=schema_definition):
+				return content_schema({'$ref': schema_definition})
 
-			request_bodies[model_name] = {
-				'content': content_schema(),
+			openapi_request_bodies[model_name] = {
+				'content': {
+					'application/json': {'schema': {'$ref': schema_definition}}  # + _openapi_quote('.request')}}
+				},
 				'required': True,
 			}
-			schema_request_body = f"#/components/requestBodies/{model_name_escaped}"
+			openapi_request_bodies[model_name + '.patch'] = {
+				'content': {
+					'application/json': {'schema': {'$ref': schema_definition}}  # + _openapi_quote('.patch')}}
+				},
+				'required': True,
+			}
+			schema_request_body = f"#/components/requestBodies/{_openapi_quote(model_name)}"
 			if 'search' in module.operations:
-				objects_pathes['get'] = {
-					"summary": f"Search for {module.object_name_plural}",
+				_search_links = {
+					"search": {
+						"description": "Search for objects of this object type.",
+						"operationId": f"udm:{name}/object/search"
+					},
+					"create-form": {
+						"description": "Get a template for creating an object.",
+						"operationId": f"udm:{name}/object/template",
+					},
+				}
+				if 'add' not in module.operations:
+					_search_links.pop('create-form')
+				pagination_parameters = []
+				if not module.virtual:
+					pagination_parameters = [
+						# currently not supported by all modules:
+						{'$ref': '#/components/parameters/objects.get.query.limit'},
+						{'$ref': '#/components/parameters/objects.get.query.page'},
+						{'$ref': '#/components/parameters/objects.get.query.dir'},
+						{'$ref': '#/components/parameters/objects.get.query.by'},
+					]
+
+				openapi_paths[objects_path]['get'] = {
+					"summary": docstring('objects', 'get', module),
 					"description": "Information about the object type and links to search for objects. The found objects are either referenced as HAL links or embedded via HAL embedded resources.",
 					"operationId": f"udm:{name}/object/search",
 					"parameters": [
-						{'$ref': '#/components/parameters/search.filter'},
-						{'$ref': '#/components/parameters/search.position'},
-						{'$ref': '#/components/parameters/search.scope'},
-						{'$ref': '#/components/parameters/search.query'},
-						{'$ref': '#/components/parameters/search.hidden'},
-						#{'$ref': '#/components/parameters/search.limit'},  # currently not supported by all modules
-						#{'$ref': '#/components/parameters/search.page'},
-						#{'$ref': '#/components/parameters/search.dir'},
-						#{'$ref': '#/components/parameters/search.by'},
+						{'$ref': '#/components/parameters/objects.get.query.filter'},
+						{'$ref': '#/components/parameters/objects.get.query.position'},
+						{'$ref': '#/components/parameters/objects.get.query.scope'},
+						{'$ref': '#/components/parameters/objects.get.query.query'},
+						{'$ref': '#/components/parameters/objects.get.query.hidden'},
+						{'$ref': '#/components/parameters/objects.get.query.properties'},
+					] + pagination_parameters + global_parameters,
+					"responses": global_responses({
+						200: {
+							'$ref': '#/components/responses/objects.%s.get.response.success' % (_openapi_quote(model_name),),
+						}
+					}),
+					"tags": [tag],
+				}
+				openapi_responses['objects.%s.get.response.success' % (model_name,)] = {
+					"description": "Successfull search (if query parameters were given) or a object type overview.",
+					"content": content_schema_ref(f"#/components/schemas/{_openapi_quote(model_name)}.list"),
+					"headers": global_response_headers(),
+					"links": _search_links,
+				}
+				if superordinate_names(module):
+					openapi_paths[objects_path]['get']['parameters'].append({'$ref': '#/components/parameters/objects.get.query.superordinate'})
+
+			if 'add' in module.operations:
+				openapi_paths[template_path]['get'] = {
+					"operationId": f"udm:{name}/object/template",
+					"summary": docstring('template', 'get', module),
+					"parameters": [
+						{'$ref': '#/components/parameters/template.get.query.position'},
+						{'$ref': '#/components/parameters/template.get.query.superordinate'},
+						{'$ref': '#/components/parameters/template.get.query.template'},
 					] + global_parameters,
 					"responses": global_responses({
 						200: {
-							"description": "Success",
-							"content": content_schema(f"#/components/schemas/{model_name_escaped}-list"),
-							"headers": global_response_headers(),
-							"links": {
-								"search": {
-									"description": "Search for objects of this object type",
-									"operationId": f"udm:{name}/object/search"
-								},
-								"create-form": {
-									"description": "get a template for creating an object",
-									"operationId": f"udm:{name}/object/template",
-								},
-							},
+							'$ref': '#/components/responses/template.%s.get.response.success' % (_openapi_quote(model_name),),
 						}
 					}),
 					"tags": [tag],
 				}
-				if superordinate_names(module):
-					objects_pathes['get']['parameters'].append({'$ref': '#/components/parameters/search.superordinate'})
-			if 'add' in module.operations:
-				object_template_pathes['get'] = {
-					"operationId": f"udm:{name}/object/template",
-					"summary": "Get a template for creating an object. Contains all properties and their default values.",
-					"parameters": [] + global_parameters,
-					"responses": global_responses({
-						200: {
-							"description": "Success",
-							"content": content_schema(),
-							"headers": global_response_headers(),
-						}
-					}),
-					"tags": [tag],
+				openapi_responses['template.%s.get.response.success' % (model_name,)] = {
+					"description": f"Successfully received a template suitable for creation of a new {module.object_name}.",
+					"content": content_schema_ref(f"#/components/schemas/{_openapi_quote(model_name)}"),
+					"headers": global_response_headers(),
 				}
-				objects_pathes['post'] = {
+				openapi_paths[objects_path]['post'] = {
 					"operationId": f"udm:{name}/object/create",
+					"summary": docstring('objects', 'post', module),
 					"requestBody": {
 						"$ref": schema_request_body,
 					},
+					"parameters": [] + global_parameters,
 					"responses": global_responses({
 						201: {
-							"description": "Success",
-							"content": content_schema(),
-							"headers": global_response_headers(),
-						}
+							'$ref': '#/components/responses/objects.post.response.created',
+						},
 					}),
-					"summary": f"Create a new {module.object_name} object",
 					"tags": [tag],
 				}
-			object_pathes["get"] = {
+			openapi_paths[object_path]["get"] = {
 				"operationId": f"udm:{name}/object",
+				"summary": docstring('object', 'get', module),
+				"parameters": [] + global_parameters,
 				"responses": global_responses({
 					"200": {
-						"description": "Success",
-						"content": content_schema(),
-						"headers": global_response_headers({
-							'E-Tag': {'$ref': '#/components/headers/E-Tag'},
-							'Last-Modified': {'$ref': '#/components/headers/Last-Modified'},
-						}),
+						'$ref': '#/components/responses/object.%s.get.response.success' % (_openapi_quote(model_name),),
 					},
 					"404": {
-						"description": "Object not found"
+						'$ref': '#/components/responses/object.get.response.notfound',
 					}
 				}),
-				"summary": f"Get a representation of the {module.object_name} object",
 				"tags": [tag]
 			}
+			openapi_responses['object.%s.get.response.success' % (model_name,)] = {
+				"description": "Success",
+				"content": content_schema_ref(f"#/components/schemas/{_openapi_quote(model_name)}"),
+				"headers": global_response_headers({
+					'E-Tag': {'$ref': '#/components/headers/E-Tag'},
+					'Last-Modified': {'$ref': '#/components/headers/Last-Modified'},
+					# Caching
+				}),
+			}
 			if 'remove' in module.operations:
-				object_pathes["delete"] = {
+				openapi_paths[object_path]["delete"] = {
 					"operationId": f"udm:{name}/object/remove",
+					"summary": docstring('object', 'delete', module),
 					"parameters": [
-						{'$ref': '#/components/parameters/remove.cleanup'},
-						{'$ref': '#/components/parameters/remove.recursive'},
+						{'$ref': '#/components/parameters/object.delete.query.cleanup'},
+						{'$ref': '#/components/parameters/object.delete.query.recursive'},
 					] + global_parameters,
 					"responses": global_responses({
 						"204": {
-							"description": "Object deleted",
-							"headers": global_response_headers(),
+							'$ref': '#/components/responses/object.delete.response.nocontent',
 						},
 						"404": {
-							"description": "Object not found",
-							"headers": global_response_headers(),
-						}
+							'$ref': '#/components/responses/object.delete.response.notfound',
+						},
 					}),
-					"summary": f"Remove a {module.object_name_plural} object",
 					"tags": [tag],
 				}
 			if set(module.operations) & {'edit', 'move', 'move_subtree'}:
-				object_pathes["put"] = {
+				openapi_paths[object_path]["put"] = {
 					"operationId": f"udm:{name}/object/modify",
+					"summary": docstring('object', 'put', module),
 					"requestBody": {
 						"$ref": schema_request_body,
 					},
@@ -1406,81 +1817,176 @@ class OpenAPI(Resource):
 						},
 					},
 					"responses": global_responses({
-						"200": {
-							"description": "Success",
-							"content": content_schema(),
-							"headers": global_response_headers(),
-						},
 						"201": {
-							"description": "Deprecated. Broken. Expect 202 in the future.",
-							"content": content_schema(),
-							"headers": global_response_headers(),
+							'$ref': '#/components/responses/object.put.response.created',
 						},
 						"202": {
-							"description": "Accepted: asynchronous move or rename operation started",
-							"content": content_schema(),
-							"headers": global_response_headers(),
+							'$ref': '#/components/responses/object.put.response.accepted',
+						},
+						"204": {
+							'$ref': '#/components/responses/object.put.response.nocontent',
 						},
 						"404": {
-							"description": "Object not found",
-							"headers": global_response_headers(),
+							'$ref': '#/components/responses/object.put.response.notfound',
 						}
 					}),
-					"summary": f"Modify or move an {module.object_name} object",
 					"tags": [tag],
 				}
-				object_pathes['patch'] = object_pathes['put'].copy()
-				object_pathes['patch']['operationId'] = f'udm:{name}/object/update'
-
-			model.update(dict(base_object_definition, **{
-				"properties": {
-					"type": "object",
-					"properties": {},
-					"additionalProperties": True,  # not yet installed extended attributes
-				},
-				"uri": {
-					"type": "string",
-					"format": "uri",
-					"example": self.abspath(module.name) + '/%s=foo,dc=example,dc=net' % (module.mapping.mapName(module.identifies) or 'cn',),
-				},
-				"options": {
-					"description": "Object type specific options.",
-					"properties": {oname: {
-						"description": opt.short_description,
-						"type": "boolean",
-						"default": bool(opt.default),
-						"example": bool(opt.default),
-					} for oname, opt in module.options.items()},
-					"type": "object"
-				},
-				"policies": {
-					"description": "Policies which apply for this object.",
-					"properties": {pol['objectType']: {
-						"type": "array",
-						"items": {
-							"type": "string",
-							"format": "dn",
-							"example": ucr['ldap/base'],
+				openapi_paths[object_path]["patch"] = {
+					"operationId": f'udm:{name}/object/update',
+					"summary": docstring('object', 'patch', module),
+					"requestBody": {
+						"$ref": schema_request_body + '.patch',
+					},
+					"parameters": [
+						{'$ref': '#/components/parameters/if-match'},
+						{'$ref': '#/components/parameters/if-unmodified-since'},
+					] + global_parameters,
+					"responses": global_responses({
+						"204": {
+							'$ref': '#/components/responses/object.patch.response.nocontent',
 						},
-						"description": pol['label'],
-					} for pol in module.policies},
-					"type": "object"
-				},
-			}))
-			model_properties = model['properties']['properties']
-			if superordinate_names(module):
-				model['superordinate'] = {
-					"type": "string",
-					"format": "dn",
-					"example": "dc=example,dc=net",
+						"404": {
+							'$ref': '#/components/responses/object.patch.response.notfound',
+						}
+					}),
+					"tags": [tag],
 				}
+
+			properties_schema = {}
 			for prop in module.properties(None):
 				name = prop['id']
 				if name.startswith('$'):
 					continue
 				property = module.get_property(name)
 				codec = udm_types.TypeHint.detect(property, name)
-				model_properties[name] = codec.get_openapi_definition()
+				properties_schema[name] = codec.get_openapi_definition()
+
+			request_model_patch = {
+				"dn": {
+					"$ref": '#/components/schemas/dn',
+				},
+				"properties": {
+					# must not be a reference as it breaks udm-rest-api-client
+					# which relies on implementation details of openapitools/openapi-generator-cli:v5.0.0!
+					'type': 'object',
+					"description": "Object type specific `UDM` properties.",
+					'properties': properties_schema,
+					"additionalProperties": True,  # not yet installed extended attributes
+				},
+				"options": {
+					"$ref": f'#/components/schemas/{_openapi_quote(model_name + ".options")}',
+				},
+				"policies": {
+					"$ref": f'#/components/schemas/{_openapi_quote(model_name + ".policies")}',
+				},
+			}
+			if superordinate_names(module):
+				request_model_patch['superordinate'] = {
+					"$ref": '#/components/schemas/superordinate',
+				}
+			openapi_schemas[f'{model_name}.request-patch'] = {
+				"type": "object",
+				"properties": request_model_patch,
+			}
+			openapi_schemas[f'{model_name}.request'] = {
+				"allOf": [{
+					'$ref': f'#/components/schemas/{_openapi_quote(model_name + ".request-patch")}',
+				}, {
+					'type': 'object',
+					'properties': {
+						"position": {
+							"$ref": '#/components/schemas/position',
+						},
+					}
+				}]
+			}
+			openapi_schemas[f'{model_name}.response-mixin'] = {
+				"type": "object",
+				"properties": {
+					"_links": {
+						"$ref": '#/components/schemas/_links',
+					},
+					"_embedded": {
+						"$ref": '#/components/schemas/_embedded',
+					},
+					"uuid": {
+						"$ref": '#/components/schemas/uuid',
+					},
+					"objectType": {
+						"$ref": '#/components/schemas/objectType',
+					},
+					# "id": {"$ref": '#/components/schemas/id',},
+					"uri": {
+						"$ref": f'#/components/schemas/{_openapi_quote(model_name + ".uri")}',
+					},
+				},
+			}
+			# we can't deploy this as it breaks older udm-rest-api-client
+			#openapi_schemas[f"{model_name}.properties"] = {
+			#	"description": "Object type specific `UDM` properties.",
+			#	"type": "object",
+			#	"properties": {},
+			#	"additionalProperties": True,  # not yet installed extended attributes
+			#}
+			openapi_schemas[f"{model_name}.uri"] = {
+				"type": "string",
+				"format": "uri",
+				"example": self.abspath(module.name) + '/%s={value},%s' % (module.mapping.mapName(module.identifies) or 'cn', module.get_default_container() if self.requires_authentication else ldap_base),
+			}
+			openapi_schemas[f"{model_name}.options"] = {
+				"description": "Object type specific `UDM` options.",
+				"type": "object",
+				"properties": {oname: {
+					"description": opt.short_description,
+					"type": "boolean",
+					"default": bool(opt.default),
+					"example": bool(opt.default),
+				} for oname, opt in module.options.items()},
+				"additionalProperties": True,  # not yet installed extended options
+			}
+			openapi_schemas[f"{model_name}.policies"] = {
+				"description": "Policies which apply for this object.",
+				"type": "object",
+				"properties": {pol['objectType']: {
+					"type": "array",
+					"minItems": 0,
+					"maxItems": 1,
+					"items": {
+						"type": "string",
+						"format": "dn",
+						"example": ldap_base,
+					},
+					"description": pol['label'],
+				} for pol in module.policies},
+				"additionalProperties": True,  # possitibility for future aditions
+			}
+			openapi_schemas[model_name] = {
+				'allOf': [
+					{
+						'$ref': f'#/components/schemas/{_openapi_quote(model_name)}.request',
+					}, {
+						'$ref': f'#/components/schemas/{_openapi_quote(model_name)}.response-mixin',
+					},
+				]
+			}
+			openapi_schemas[f'{model_name}.list'] = {
+				"type": "object",
+				"properties": {
+					"_embedded": {
+						"type": "object",
+						"properties": {
+							"udm:object": {
+								"type": "array",
+								"minItems": 0,
+								"items": {
+									"$ref": schema_definition,
+								}
+							}
+						}
+					},
+				}
+			}
 
 		url = list(urlparse(self.abspath('')))
 		fqdn = '%(hostname)s.%(domainname)s' % ucr
@@ -1490,268 +1996,37 @@ class OpenAPI(Resource):
 			for _scheme in ('https', 'http')
 		]
 		specs = {
-			'openapi': '3.0.0',
-			'paths': paths,
+			'openapi': '3.0.3',
+			'paths': openapi_paths,
 			'info': {
-				'description': 'Schema definition for the objects in the Univention Directory Manager REST interface',
+				'description': 'Schema definition for the objects in the Univention Directory Manager REST interface.',
 				'title': 'Univention Directory Manager REST interface',
-				'version': '1.0.0',
+				'version': '1.0.1',
 			},
 			'security': [{
 				"basic": []
 			}],
-			'tags': tags,
+			'tags': openapi_tags,
 			'components': {
-				'schemas': models,  # Reusable schemas (data models)
-				'requestBodies': request_bodies,  # Reusable request bodies
-				'securitySchemes': {  # Security scheme definitions (see Authentication)
+				'schemas': openapi_schemas,  # Reusable data models
+				'requestBodies': openapi_request_bodies,
+				'securitySchemes': {
 					'basic': {
 						'scheme': 'basic',
 						'type': 'http',
 					}
 				},
-				'parameters': {  # Reusable path, query, header and cookie parameters
-					'search.position': {
-						"in": "query",
-						"name": "position",
-						"schema": {
-							"type": "string",
-							"format": "dn",
-							"nullable": True,
-							"default": None,
-						},
-						"description": "Position which is used as search base.",
-					},
-					'search.scope': {
-						"in": "query",
-						"name": "scope",
-						"schema": {
-							"type": "string",
-							"default": "sub",
-						},
-						"description": "The `LDAP` search scope (sub, base, one).",
-						"examples": {
-							"sub": {"value": "sub", "summary": "sub-scope"},
-							"base": {"value": "base", "summary": "base-scope"},
-							"one": {"value": "one", "summary": "one-scope"},
-						},
-					},
-					'search.filter': {
-						"in": "query",
-						"name": "filter",
-						"schema": {"type": "string", "default": ""},
-						"description": "A ldap filter which may contain `UDM` property names instead of `LDAP` attribute names.",
-						"examples": {
-							"any-object": {
-								"value": "(objectClass=*)",
-							},
-							"admin-user": {
-								"value": "(|(username=Administrator)(username=Admin*))",
-							},
-						},
-					},
-					'search.query': {
-						"in": "query",
-						"name": "query",
-						"style": "deepObject",
-						"schema": {"type": "object"},
-						"description": "The values to search for (propertyname and search filter value). Alternatively with `filter` a raw ldap filter can be given.",
-						"example": {'': '*'},
-					},
-					'search.hidden': {
-						"in": "query",
-						"name": "hidden",
-						"schema": {
-							"type": "boolean",
-							"default": True,
-						},
-						"description": "Include hidden/system objects in the response.",
-						"example": True,
-					},
-					'search.superordinate': {
-						"in": "query",
-						"name": "superordinate",
-						"schema": {
-							"type": "string",
-							"format": "dn",
-							"nullable": True,
-							"default": None,
-						},
-						"description": "The superordinate DN of the objects to find. `position` is sufficient.",
-						# "example": "cn=superordinate,dc=example,dc=net",
-					},
-					'search.limit': {
-						"in": "query",
-						"name": "limit",
-						"schema": {
-							"type": "integer",
-							"nullable": True,
-							"default": None,
-						},
-						"description": "How many results should be shown per page.",
-						"example": 50,
-					},
-					'search.page': {
-						"in": "query",
-						"name": "page",
-						"schema": {
-							"type": "integer",
-							"default": 1,
-						},
-						"description": "The search page, starting at one.",
-						"example": 1,
-					},
-					'search.dir': {
-						"in": "query",
-						"name": "dir",
-						"schema": {
-							"type": "string",
-							"default": "ASC",
-						},
-						"description": "The Sort direction (ASC or DESC).",
-						"example": "ASC",
-					},
-					'search.by': {
-						"in": "query",
-						"name": "by",
-						"schema": {"type": "string"},
-						"description": "Sort the search result by the specified property.",
-						#"example": "username",
-					},
-					'remove.cleanup': {
-						"in": "query",
-						"name": "cleanup",
-						"schema": {
-							"type": "boolean",
-							"default": True,
-						},
-						"description": "Whether to perform a cleanup (e.g. of temporary objects, locks, etc).",
-						"example": True,
-					},
-					'remove.recursive': {
-						"in": "query",
-						"name": "recursive",
-						"schema": {
-							"type": "boolean",
-							"default": True,
-						},
-						"description": "Whether to remove referring objects (e.g. DNS or DHCP references).",
-						"example": True,
-					},
-					'user-agent': {
-						"in": "header",
-						"name": "User-Agent",
-						"schema": {"type": "string"},
-						"description": "The user agent",
-						"example": "UCS 5.0-2-errata339",
-					},
-					'accept-language': {
-						"in": "header",
-						"name": "Accept-Language",
-						"schema": {"type": "string"},
-						"description": "The accepted response languages",
-						"example": "de-DE; q=1.0, en-US; q=0.9",
-					},
-					"if-match": {
-						"in": "header",
-						"name": "If-Match",
-						"schema": {"type": "string"},
-						"description": "provide entity tag to make a condition request to not overwrite any values in a race condition",
-						"example": "",
-					},
-					"if-none-match": {
-						"in": "header",
-						"name": "If-None-Match",
-						"schema": {"type": "string", "format": "etag"},
-						"description": "",
-						"example": "",
-					},
-					"if-unmodified-since": {
-						"in": "header",
-						"name": "If-Unmodified-Since",
-						"schema": {"type": "string", "format": "last-modified-date"},
-						"description": "provide last modified time to make a condition request to not overwrite any values in a race condition",
-						# "example": "Wed, 21 Oct 2015 07:28:00 GMT",
-					},
-					"if-modified-since": {
-						"in": "header",
-						"name": "If-Modified-Since",
-						"schema": {"type": "string"},
-						"description": "",
-						"example": "",
-					},
-					'request-id': {
-						"in": "header",
-						"name": "X-Request-Id",
-						"schema": {"type": "string", "format": "uuid"},
-						"description": "A request-ID used for logging and tracing.",
-						"example": "218d9124-c0dc-415e-8417-a0fa197ee099",
-					},
-				},
-				'responses': {  # Reusable responses, such as 401 Unauthorized or 400 Bad Request
-					'Errors': {
-						'description': 'Error format',
-					},
-					'MoveProgress': {  # 301
-						'description': 'Gives information about the progress of a move operation',
-						'headers': global_response_headers({
-							'Retry-After': {'$ref': '#/components/headers/Retry-After'},
-							'Location': {'$ref': '#/components/headers/Location'},
-						}),
-						"content": {},
-					},
-					'MoveSuccess': {  # 303
-						'description': 'Redirects to the result of the move operation, i.e. the new object',
-						'headers': global_response_headers({'Location': {'$ref': '#/components/headers/Location'}}),
-						"content": {},
-					},
-					"BadRequest": {  # 400
-						"description": 'Bad request syntax',
-					},
-					"ObjectNotFound": {  # 404
-						"description": "Object not found."
-					},
-					"ObjectGone": {  # 410
-						"description": "Object has recently been removed.",
-					},
-					"Unauthorized": {  # 401
-						'description': 'Unauthorized. No Authorization provided or wrong credentials'
-					},
-					"UnprocessableEntity": {  # 422
-						'description': 'Validation of input parameters failed'
-					},
-					"ServerError": {  # 500
-						'description': 'Internal server errror'
-					},
-					"ServiceUnavailable": {  # 503 (+502 +504)
-						'description': '(LDAP) Server not available',
-						'headers': global_response_headers({
-							'Retry-After': {'$ref': '#/components/headers/Retry-After'}
-						}),
-					},
-				},
-				'headers': {  # Reusable response headers
-					'Cache-Control': {"schema": {"type": "string"}, "description": "Controling directives for caching."},
-					'Expires': {"schema": {"type": "string"}, "description": "An expiration time, when the response is stale and should not be used from cache anymore."},
-					'Vary': {"schema": {"type": "string"}, "description": "The response headers which need to be considered when caching the response."},
-					'E-Tag': {"schema": {"type": "string"}, "description": "An entity tag of the resource, which should be used for conditional PUT requests."},
-					'Last-Modified': {"schema": {"type": "string"}, "description": "The time the resource was modified the last time, which should be used for conditional PUT requests."},
-					'Allow': {"schema": {"type": "string"}, "description": "The allowed HTTP request methods for this resource"},
-					'Content-Language': {"schema": {"type": "string"}, "description": "The language of the response"},
-					'Retry-After': {"schema": {"type": "string"}, "description": "The time which should be waited before requesting the resource from the Location header"},
-					'Accept-Patch': {"schema": {"type": "string"}, "description": "The accepted Content-Types for a PATCH request"},
-					'Location': {"schema": {"type": "string"}, "description": "The location which should be followed."},
-					'Link': {"schema": {"type": "string"}, "description": "A hypermedia link."},
-					'X-Request-Id': {"schema": {"type": "string", "format": "uuid"}, "description": "The response of the request-ID used for logging and tracing."},
-				},
-				'examples': {},  # Reusable examples
-				'links': {},  # Reusable links
-				'callbacks': {  # Reusable callbacks
+				'parameters': openapi_parameters,  # Reusable path, query, header and cookie parameters
+				'responses': openapi_responses,
+				'headers': openapi_headers,
+				'examples': {},
+				'links': {},
+				'callbacks': {
 					'moveProgress': {
 						'{$response.header.Location}': {
 							'get': {
 								'requestBody': {
-									"content": {},
+									"content": {'application/json': {'schema': {'type': 'object', 'additionalProperties': True}}},
 								},
 								'responses': {
 									'301': {'$ref': '#/components/responses/MoveProgress'},
@@ -1762,8 +2037,22 @@ class OpenAPI(Resource):
 					},
 				},
 			},
-			'servers': [{'url': _url} for _url in urls],
+			'servers': [{'url': _url.rstrip('/')} for _url in urls],
 		}
+		return specs
+
+
+class OpenAPI(_OpenAPIBase, Resource):
+
+	requires_authentication = ucr.is_true('directory/manager/rest/require-auth', True)
+
+	def prepare(self):
+		super().prepare()
+		self.request.content_negotiation_lang = 'json'
+		self.ldap_connection, self.ldap_position = get_machine_connection(write=False)
+
+	def get(self, object_type=None):
+		specs = self.get_openapi_schema(object_type)
 		self.content_negotiation(specs)
 
 	def get_json(self, response):
@@ -2193,13 +2482,13 @@ class Layout(Resource):
 				return x
 
 
-class ReportingBase(Resource):
+class ReportingBase:
 
 	def initialize(self):
 		self.reports_cfg = udr.Config()
 
 
-class Report(ReportingBase):
+class Report(ReportingBase, Resource):
 	"""GET udm/users/user/report/$report_type?dn=...&dn=... (create a report of users)"""
 
 	# i18n: translation for univention-directory-reports
@@ -2343,24 +2632,24 @@ class FormBase:
 		return superordinate
 
 
-class Objects(FormBase, ReportingBase):
+class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
 
 	@sanitize_query_string(
-		position=DNSanitizer(required=False, default=None),
-		filter=LDAPFilterSanitizer(required=False, default=None, allow_none=True),
+		position=DNSanitizer(required=False, default=None, allow_none=True),
+		filter=LDAPFilterSanitizer(required=False, default="", allow_none=True),
 		query=DictSanitizer({}, default_sanitizer=LDAPSearchSanitizer(required=False, default='*', add_asterisks=False, use_asterisks=True), key_sanitizer=ObjectPropertySanitizer()),
 		property=ObjectPropertySanitizer(required=False, default=None),
 		scope=ChoicesSanitizer(choices=['sub', 'one', 'base', 'base+one'], default='sub'),
 		hidden=BoolSanitizer(default=True),
-		properties=ListSanitizer(required=False, default=['*']),
+		properties=ListSanitizer(StringSanitizer(), required=False, default=['*'], allow_none=True, min_elements=0),
 		superordinate=DNSanitizer(required=False, default=None, allow_none=True),
 		dir=ChoicesSanitizer(choices=['ASC', 'DESC'], default='ASC'),
 		by=StringSanitizer(required=False),
 		page=IntegerSanitizer(required=False, default=1, minimum=1),
-		limit=IntegerSanitizer(required=False, default=None, minimum=0),
+		limit=IntegerSanitizer(required=False, default=None, allow_none=True, minimum=0),
 	)
 	async def get(self, object_type):
-		"""Search for {} objects."""
+		"""Search for {module.object_name_plural} objects"""
 		module = self.get_module(object_type)
 		result = self._options(object_type)
 
@@ -2542,7 +2831,7 @@ class Objects(FormBase, ReportingBase):
 		properties=DictSanitizer({}, required=True),
 	)
 	async def post(self, object_type):
-		"""Create a {} object."""
+		"""Create a new {module.object_name} object"""
 		obj = Object(self.application, self.request)
 		obj.ldap_connection, obj.ldap_position = self.ldap_connection, self.ldap_position
 		serverctrls = [PostReadControl(True, ['entryUUID'])]
@@ -2642,10 +2931,10 @@ class ObjectsMove(Resource):
 			status['finished'] = True
 
 
-class Object(FormBase, Resource):
+class Object(FormBase, _OpenAPIBase, Resource):
 
 	async def get(self, object_type, dn):
-		"""Get a representation of the {} object {} with all its properties, policies, options, metadata and references.
+		"""Get a representation of the {module.object_name} object with all its properties, policies, options, metadata and references.
 		Includes also instructions how to modify, remove or move the object.
 		"""
 		dn = unquote_dn(dn)
@@ -2831,7 +3120,7 @@ class Object(FormBase, Resource):
 		properties=DictSanitizer({}, required=True),
 	)
 	async def put(self, object_type, dn):
-		"""Modify or move the {} object {}."""
+		"""Modify or move an {module.object_name} object"""
 		dn = unquote_dn(dn)
 		module = self.get_module(object_type)
 		if not module:
@@ -2882,7 +3171,7 @@ class Object(FormBase, Resource):
 		properties=DictSanitizer({}),
 	)
 	async def patch(self, object_type, dn):
-		"""Modify partial properties of the {} object {}."""
+		"""Modify an {module.object_name} object (moving is currently not possible)"""
 		dn = unquote_dn(dn)
 		module = get_module(object_type, dn, self.ldap_connection)
 		if not module:
@@ -3039,7 +3328,7 @@ class Object(FormBase, Resource):
 		recursive=BoolSanitizer(default=True),
 	)
 	async def delete(self, object_type, dn):
-		"""Remove the {} object {}."""
+		"""Remove a {module.object_name_plural} object"""
 		dn = unquote_dn(dn)
 		module = get_module(object_type, dn, self.ldap_connection)
 		if not module:
@@ -3163,15 +3452,16 @@ class UserPhoto(Resource):
 		raise Finish()
 
 
-class ObjectAdd(FormBase, Resource):
+class ObjectAdd(FormBase, _OpenAPIBase, Resource):
 	"""GET a form containing information about all properties, methods, URLs to create a specific object"""
 
 	@sanitize_query_string(
-		position=DNSanitizer(required=False),
-		superordinate=DNSanitizer(required=False),
-		template=DNSanitizer(required=False),
+		position=DNSanitizer(required=False, allow_none=True),
+		superordinate=DNSanitizer(required=False, allow_none=True),
+		template=DNSanitizer(required=False, allow_none=True),
 	)
 	async def get(self, object_type):
+		"""Get a template for creating an {module.object_name} object (contains all properties and their default values)"""
 		module = self.get_module(object_type)
 		if 'add' not in module.operations:
 			raise NotFound(object_type)

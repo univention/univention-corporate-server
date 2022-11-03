@@ -15,4 +15,5 @@ desc: |
    modifications of the object.
  * The Python backend code to evaluate and apply template defaults has been
    optimized.
-bug: [20235, 42080, 55279]
+ * The OpenAPI schema of the UDM REST API has been improved.
+bug: [20235, 42080, 55279, 55096]
