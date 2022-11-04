@@ -25,7 +25,13 @@ set_udm_properties_for_kelvin () {
                 "idi_schoolyear",
                 "group_source-id",
                 "isIServGroup",
-                "isLMSGroup"
+                "isLMSGroup",
+                "disabled",
+                "divis_coursetype",
+                "recordUID",
+                "idi_schoolyear",
+                "purgeDate",
+                "serviceprovidergroup"
         ],
         "workgroup": [
                 "divis_startdate",
@@ -34,7 +40,13 @@ set_udm_properties_for_kelvin () {
                 "idi_schoolyear",
                 "group_source-id",
                 "isIServGroup",
-                "isLMSGroup"
+                "isLMSGroup",
+                "disabled",
+                "divis_coursetype",
+                "recordUID",
+                "idi_schoolyear",
+                "purgeDate",
+                "serviceprovidergroup"
         ]
 }
 
