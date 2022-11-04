@@ -1,0 +1,4 @@
+.. _services-samba:
+
+Samba
+=====
