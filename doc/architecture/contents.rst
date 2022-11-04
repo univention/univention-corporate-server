@@ -11,6 +11,7 @@ Welcome to Univention Corporate Server architecture!
    index
    positioning
    concepts/index
+   components/index
 
    bibliography
 
