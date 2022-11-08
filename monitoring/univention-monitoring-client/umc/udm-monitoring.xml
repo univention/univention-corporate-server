@@ -9,6 +9,18 @@
       <categories>
          <category name="devices"/>
       </categories>
+      <requiredCommands>
+        <requiredCommand name="udm/reports/query"/>
+        <requiredCommand name="udm/meta_info"/>
+        <requiredCommand name="udm/containers"/>
+        <requiredCommand name="udm/types"/>
+        <requiredCommand name="udm/properties"/>
+        <requiredCommand name="udm/layout"/>
+        <requiredCommand name="udm/policies"/>
+        <requiredCommand name="udm/query"/>
+        <requiredCommand name="udm/syntax/choices/info"/>
+        <requiredCommand name="udm/syntax/choices"/>
+      </requiredCommands>
     </flavor>
   </module>
 </umc>
