@@ -80,6 +80,8 @@ except ImportError:
 	ud.debug(ud.ADMIN, ud.WARN, "Failed to import univention.lib.admember")
 	_prevent_to_change_ad_properties = False
 
+getfullargspec = getattr(inspect, 'getfullargspec', inspect.getargspec)
+
 _Attributes = Dict[Text, Union[bytes, List[bytes]]]
 _Properties = Dict[Text, Union[Text, List[Text]]]
 
@@ -1713,14 +1715,17 @@ class simpleLdap(object):
 	def _call_checkLdap_on_all_property_syntaxes(self):  # type: () -> None
 		"""Calls checkLdap() method on every property if present.
 			checkLdap() may raise an exception if the value does not match the constraints of the underlying syntax.
+
+			.. deprecated:: 5.0-2
+				Univention internal use only!
 		"""
-		properties = {}  # type: Dict[str, univention.admin.property]
-		if hasattr(self, 'descriptions'):
-			properties = self.descriptions
-		for pname, prop in properties.items():
+		for pname, prop in self.descriptions.items():
 			if hasattr(prop.syntax, 'checkLdap'):
 				if not self.exists() or self.hasChanged(pname):
-					prop.syntax.checkLdap(self.lo, self.info.get(pname))
+					if len(getfullargspec(prop.syntax.checkLdap).args) > 3:
+						prop.syntax.checkLdap(self.lo, self.info.get(pname), pname)
+					else:
+						prop.syntax.checkLdap(self.lo, self.info.get(pname))
 
 	def __prevent_ad_property_change(self):  # type: () -> None
 		if not _prevent_to_change_ad_properties or not self._is_synced_object():

@@ -16,4 +16,6 @@ desc: |
  * The Python backend code to evaluate and apply template defaults has been
    optimized.
  * The OpenAPI schema of the UDM REST API has been improved.
-bug: [20235, 42080, 55279, 55096]
+ * The error format of the UDM REST API now contains property information
+   about email address validation failures.
+bug: [20235, 42080, 55279, 55096, 55394]

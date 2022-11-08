@@ -370,8 +370,8 @@ class simple(ISyntax):
 			raise univention.admin.uexceptions.valueError(self.error_message)
 
 	@classmethod
-	def checkLdap(self, lo, value):
-		# type: (access, Any) -> Any
+	def checkLdap(self, lo, value, property=''):
+		# type: (access, Any, Optional[str]) -> Any
 		"""
 		Check the given value against the current LDAP state by
 		reading directly from LDAP directory. The function returns nothing
@@ -380,8 +380,12 @@ class simple(ISyntax):
 
 		:param lo: LDAP connection.
 		:param value: The value to check.
+		:param property: The property name
 		:returns: None on errors.
 		:raises Exception: on errors.
+
+		.. deprecated :: 5.0-2
+			Univention internal use only!
 		"""
 
 
@@ -2645,7 +2649,7 @@ class emailAddressValidDomain(UDM_Objects, emailAddress):
 		return 'MailBox'
 
 	@classmethod
-	def checkLdap(self, lo, mailaddresses):
+	def checkLdap(self, lo, mailaddresses, property='mailPrimaryAddress'):
 		# convert mailaddresses to array if necessary
 		mailaddresses = copy.deepcopy(mailaddresses)
 		if isinstance(mailaddresses, str):
@@ -2669,7 +2673,7 @@ class emailAddressValidDomain(UDM_Objects, emailAddress):
 					ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.%s: address=%r   domain=%r' % (self.name, mailaddress, domain))
 
 		if faillist:
-			raise univention.admin.uexceptions.valueError(self.errMsgDomain % (', '.join(faillist),))
+			raise univention.admin.uexceptions.valueError(self.errMsgDomain % (', '.join(faillist),), property=property)
 
 
 class primaryEmailAddressValidDomain(emailAddressValidDomain):
