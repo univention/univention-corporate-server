@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: sudo
+fix: 1.8.27-1+deb10u4
+desc: |
+ This update addresses the following issue:
+ * possible directory existence test due to race condition in sudoedit
+   (CVE-2021-23239)
+bug: [55397]
+cve:
+- CVE-2021-23239
