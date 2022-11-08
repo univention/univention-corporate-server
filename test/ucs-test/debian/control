@@ -488,6 +488,7 @@ Depends:
  python3-pytest,
  python3-unidecode,
  python3-univention-directory-manager,
+ python3-venv,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Breaks:
