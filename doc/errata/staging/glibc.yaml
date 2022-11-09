@@ -6,26 +6,23 @@ src: glibc
 fix: 2.24-11+deb9u5
 desc: |
  This update addresses the following issues:
- 2.24-11+deb9u5 (Mon, 10 Oct 2022 10:20:38 +0200)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2016-10228 iconv option parsing + Tighten libc-bin <-> libc6 version
-   restrictions. (Addresses: #1021973)
- * CVE-2017-12132 dns spoofing via fragmentation
- * CVE-2018-6485 and CVE-2018-6551 posix_memalign integer overflow
-
- * CVE-2018-1000001 getcwd could return a relative path
+ * CVE-2016-10228 `iconv` option parsing and tighten dependency restrictions
+   for `libc-bin` and `libc6` version.
+ * CVE-2017-12132 DNS spoofing via fragmentation
+ * CVE-2018-6485, CVE-2018-6551 `posix_memalign` integer overflow
+ * CVE-2018-1000001 `getcwd` could return a relative path
  * CVE-2019-9169 regex out of bounds read
- * CVE-2019-19126 setuid environment filtering
- * CVE-2019-25013 oob read in iconv
+ * CVE-2019-19126 SETUID environment filtering
+ * CVE-2019-25013 out-of-bound read in `iconv`
  * CVE-2020-1752 use after free in glob
- * CVE-2020-10029 sinl buffer overflow
- * CVE-2020-27618 iconv infinite loop
- * CVE-2021-3326 iconv abort
- * CVE-2021-3999 oob write for getcwd size 1
- * CVE-2021-33574 mq_notify use after free
- * CVE-2021-35942 wordexp input validation
- * CVE-2022-23218 svcunix_create buffer overflow
- * CVE-2022-23219 clnt_create buffer overflow
+ * CVE-2020-10029 `sinl` buffer overflow
+ * CVE-2020-27618 `iconv` infinite loop
+ * CVE-2021-3326 `iconv` abort
+ * CVE-2021-3999 out-of-bound write for `getcwd` size 1
+ * CVE-2021-33574 `mq_notify` use after free
+ * CVE-2021-35942 `wordexp` input validation
+ * CVE-2022-23218 `svcunix_create` buffer overflow
+ * CVE-2022-23219 `clnt_create` buffer overflow
 bug: [55398]
 cve:
 - CVE-2016-10228
