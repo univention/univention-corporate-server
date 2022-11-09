@@ -10,4 +10,5 @@ desc: |
    can be changed to the filesystem database by setting the UCR variable
    `umc/saml/in-memory-identity-cache` to `false`. This is done automatically
    for servers with enabled multiprocessing.
-bug: [55424]
+ * The error handling of the `pysaml2` usage has been improved.
+bug: [55424, 55248]
