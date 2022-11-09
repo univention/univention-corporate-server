@@ -1,0 +1,19 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-directory-manager-modules
+fix:
+desc: |
+ This update addresses the following issues:
+ * The `groups` property of `users/user` UDM objects are now resolved via
+   the `memberOf` attribute instead of a manual search for group memberships
+   to increase performance.
+   Using the group memberships via `memberOf` adds all groups to the user
+   which he is assigned to, even if the reading user cannot read the
+   specific groups of if the memberships are no groups/group objects.
+   As there might be code which relies on this beehavior and don't do proper
+   error handling when iterating over group memberships the new UCR variable
+   `directory/manager/user/group-memberships-via-memberof` can be used to
+   restore the old behavior. The variable is going to be removed in UCS 5.1.
+bug: [55269]
