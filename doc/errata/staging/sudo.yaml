@@ -6,7 +6,7 @@ src: sudo
 fix: 1.8.27-1+deb10u4
 desc: |
  This update addresses the following issue:
- * possible directory existence test due to race condition in sudoedit
+ * Possible directory existence test due to race condition in `sudoedit`
    (CVE-2021-23239)
 bug: [55397]
 cve:
