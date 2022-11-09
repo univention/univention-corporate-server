@@ -53,6 +53,9 @@ except ImportError:
 
 log = logging.getLogger('LDAP')
 
+_CASE_INSENSITIVE_ATTRIBUTES = {'cn', 'uid', 'dc', 'ou', 'c', 'l', 'o'}
+__ORG_CASE_INSENSITIVE_ATTRIBUTES = _CASE_INSENSITIVE_ATTRIBUTES.copy()
+
 
 def parentDn(dn, base=''):
     # type: (str, str) -> Optional[str]
@@ -280,6 +283,17 @@ class access:
         self.client_connection_attempt = client_retry_count + 1
 
         self.__open(ca_certfile)
+        self.__get_case_insensitive_attributes()
+
+    def __get_case_insensitive_attributes(self):
+        def _is_case_sensitive(attr):
+            return attr is not None and attr.equality and attr.equality.startswith('caseIgnore')
+        if _CASE_INSENSITIVE_ATTRIBUTES == __ORG_CASE_INSENSITIVE_ATTRIBUTES:
+            schema = self.get_schema()
+            for oid in schema.listall(ldap.schema.AttributeType):
+                attr = schema.get_obj(ldap.schema.AttributeType, oid)
+                if _is_case_sensitive(attr) or attr.equality is None and attr.sup and _is_case_sensitive(schema.get_obj(ldap.schema.models.AttributeType, attr.sup[0])):
+                    _CASE_INSENSITIVE_ATTRIBUTES.update(attr.lower() for attr in attr.names)
 
     @_fix_reconnect_handling
     def bind(self, binddn, bindpw):
@@ -924,8 +938,16 @@ class access:
         True
         >>> compare_dn(r'foo=\31', r'foo=1')
         True
+        >>> compare_dn(r'Uid=Foo', r'uid=foo')
+        True
+        >>> compare_dn(r'univentionAppID=Foo', r'univentionAppID=foo')
+        False
         """
-        return [sorted((x.lower(), y, z) for x, y, z in rdn) for rdn in ldap.dn.str2dn(a)] == [sorted((x.lower(), y, z) for x, y, z in rdn) for rdn in ldap.dn.str2dn(b)]
+        def normalize(attr, value):
+            if attr.lower() in _CASE_INSENSITIVE_ATTRIBUTES:
+                value = value.lower()
+            return value
+        return [sorted((x.lower(), normalize(x, y), z) for x, y, z in rdn) for rdn in ldap.dn.str2dn(a)] == [sorted((x.lower(), normalize(x, y), z) for x, y, z in rdn) for rdn in ldap.dn.str2dn(b)]
 
     def __getstate__(self):
         """Return state for pickling."""
