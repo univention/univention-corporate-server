@@ -26,11 +26,11 @@ _[TOC]_
 - **Example:** -
 - **Base template:** current DVD
 ### ucs-master|ucs-backup|ucs-slave|ucs-member
-- **Description:** master, backup, slave and member, all DHCP, domain: autotest.local, master is joined, all other systems provisioned (but not joined)
+- **Description:** master, backup, slave and member, all DHCP, domain: ucs.test, master is joined, all other systems provisioned (but not joined)
 - **Example:** [scenarios/base/ucs-master-backup.cfg](../base/ucs-master-backup.cfg)
 - **Base template:** generic-unsafe
 ### ucs-joined-master|ucs-joined-backup|ucs-joined-slave|ucs-joined-member
-- **Description:**  master, backup, slave and member, all DHCP, domain: autotest.local, all systems joined
+- **Description:**  master, backup, slave and member, all DHCP, domain: ucs.test, all systems joined
 - **Example:** [scenarios/base/ucs-master-backup-joined.cfg](../base/ucs-master-backup-joined.cfg)
 - **Base template:** generic-unsafe
 ### ucs-school-singleserver-joined TODO
