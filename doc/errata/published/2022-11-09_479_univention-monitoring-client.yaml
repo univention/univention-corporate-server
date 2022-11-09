@@ -9,3 +9,5 @@ desc: |
  * It is now possible to disable the UDM `monitoring/alert` UMC module with
    specific UMC ACL's.
 bug: [55341]
+erratum: 479
+announced: 2022-11-09
