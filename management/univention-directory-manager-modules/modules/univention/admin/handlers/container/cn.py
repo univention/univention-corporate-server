@@ -212,7 +212,7 @@ class object(univention.admin.handlers.simpleLdap):
         for (prop, attr) in self.PATH_KEYS.items():
             if self.oldinfo.get(prop) != self.info.get(prop):
                 entries = self.lo.getAttr(self.default_dn, attr)
-                if self.info[prop] == '0':
+                if self.info.get(prop, '0') == '0':
                     if dn_bytes in entries:
                         changes.append((attr, dn_bytes, b''))
                 else:
@@ -250,7 +250,7 @@ class object(univention.admin.handlers.simpleLdap):
         dn_bytes = self.dn.encode('UTF-8')
         for prop, attr in self.PATH_KEYS.items():
             if self.oldinfo.get(prop) != self.info.get(prop):
-                if self.info[prop] == '0':
+                if self.info.get(prop, '0') == '0':
                     changes.append((attr, dn_bytes, b''))
                 else:
                     changes.append((attr, b'', dn_bytes))
