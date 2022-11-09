@@ -488,7 +488,6 @@ Depends:
  python3-pytest,
  python3-unidecode,
  python3-univention-directory-manager,
- python3-venv,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Breaks:
@@ -669,8 +668,10 @@ Description: Test scripts to check cryptography software in UCS
 Package: ucs-test-udm-rest
 Architecture: all
 Depends:
+ git,
  python3-pip,
  python3-pytest,
+ python3-venv,
  ucs-test-libs (= ${source:Version}),
  ucs-test-udm,
  ${misc:Depends},
