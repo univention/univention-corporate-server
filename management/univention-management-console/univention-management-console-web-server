@@ -1392,6 +1392,9 @@ class SAML(Ressource):
 				message = self.sp.artifact2message(message, 'spsso')
 				binding = BINDING_HTTP_ARTIFACT
 
+		if isinstance(message, list):
+			message = message[0]
+
 		return binding, message, relay_state
 
 	def acs(self, message, binding):  # attribute consuming service  # TODO: rename into parse
@@ -1400,6 +1403,7 @@ class SAML(Ressource):
 		except (UnknownPrincipal, UnsupportedBinding, VerificationError, UnsolicitedResponse, StatusError, MissingKey, SignatureError, ResponseLifetimeExceed, DefusedXmlException):
 			raise SamlError().from_exception(*sys.exc_info())
 		if response is None:
+			CORE.warn('The SAML message could not be parsed with binding %r: %r' % (binding, message))
 			raise SamlError().unparsed_saml_response()
 		self.outstanding_queries.pop(response.in_response_to, None)
 		return response
