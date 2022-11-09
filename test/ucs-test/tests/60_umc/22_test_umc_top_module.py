@@ -113,7 +113,7 @@ class Test_UMCTopModule:
             pid = randint(2, 4194304)
             if not pid_exists(pid):
                 break
-        with pytest.raises(BadRequest, match=r'No process found with PID'):
+        with pytest.raises(BadRequest, match=r'No process found with PID|Kein Prozess mit der PID'):
             self.kill_process('SIGKILL', pid)
 
     @pytest.mark.parametrize('pattern,category', [
