@@ -1,3 +1,9 @@
+generate-appliance (6.0.0-2) unstable; urgency=low
+
+  * Bug #45426: Cleanup implementation
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 09 Nov 2022 15:04:06 +0100
+
 generate-appliance (6.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
