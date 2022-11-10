@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.13-16) unstable; urgency=medium
+
+  * Bug #55413: Add python library to validate emailAddress syntax
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 10 Nov 2022 20:01:32 +0100
+
 univention-directory-manager-modules (15.0.13-15) unstable; urgency=medium
 
   * Bug #54064: fix missing call to open() in nagios/service
