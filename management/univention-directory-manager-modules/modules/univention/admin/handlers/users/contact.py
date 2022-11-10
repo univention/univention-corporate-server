@@ -148,7 +148,6 @@ property_descriptions = {
 		short_description=_('Employee number'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		include_in_default_search=True,
 		copyable=True,
 	),
 	'employeeType': univention.admin.property(
