@@ -84,7 +84,7 @@ property_descriptions = {
 	'contact': univention.admin.property(
 		short_description=_('Contact person'),
 		long_description=_('The email address of the person responsible for this zone.'),
-		syntax=univention.admin.syntax.emailAddress,
+		syntax=univention.admin.syntax.emailAddressThatMayEndWithADot,
 		required=True,
 		default=('root@%s' % configRegistry.get('domainname'), []),
 	),

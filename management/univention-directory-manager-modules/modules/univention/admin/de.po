@@ -933,7 +933,7 @@ msgstr "Keine gültige E-Mail-Adresse"
 #: modules/univention/admin/syntax.py:2603
 #: modules/univention/admin/syntax.py:2638
 msgid "Not a valid email address!"
-msgstr "Keine gültige E-Mail-Adresse"
+msgstr "Keine gültige E-Mail-Adresse!"
 
 #: modules/univention/admin/syntax.py:1562
 msgid ""

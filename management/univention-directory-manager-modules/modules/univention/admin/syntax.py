@@ -69,7 +69,7 @@ import univention.admin.modules
 import univention.admin.types
 import univention.admin.uexceptions
 import univention.debug as ud
-from univention.admin import localization
+from univention.admin import localization, configRegistry
 from univention.lib.ucs import UCS_Version
 from univention.lib.umc_module import get_mime_type, get_mime_description, image_mime_type_of_buffer
 from univention.uldap import getMachineConnection
@@ -2600,20 +2600,27 @@ class emailAddress(simple):
 	@classmethod
 	def parse(self, text):
 		if six.PY3:
-			from univention.config_registry import ucr
-			if ucr.is_true('directory/manager/mail-address/extra-validation'):
+			if configRegistry.is_true('directory/manager/mail-address/extra-validation'):
 				from email_validator import validate_email, EmailNotValidError
 				try:
 					validate_email(text, allow_smtputf8=False, check_deliverability=False)
-				except EmailNotValidError:
-					# the exception actually holds a nice message. but it is untranslatable
-					raise univention.admin.uexceptions.valueError(_("Not a valid email address!"))
+				except EmailNotValidError as exc:
+					raise univention.admin.uexceptions.valueError(_("Not a valid email address!") + " " + str(exc))
 		if not text.startswith('@') and \
 			'@' in text and \
 			not text.endswith('@') and \
 			' ' not in text:
 			return text
 		raise univention.admin.uexceptions.valueError(_("Not a valid email address!"))
+
+
+class emailAddressThatMayEndWithADot(emailAddress):
+	@classmethod
+	def parse(self, text):
+		if text and text.endswith("."):
+			return emailAddress.parse(text[:-1]) + "."
+		else:
+			return emailAddress.parse(text)
 
 
 class emailAddressTemplate(emailAddress):
