@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-server
+fix: 15.0.5-3A~5.0.0.202211101930
+desc: |
+ This update addresses the following issues:
+ * The univention-keycloak package has been added as a dependency
+   to the univention-server-common package.
+   It contains a cli-tool used by the Univention Keycloak app.
+bug: [55383]
