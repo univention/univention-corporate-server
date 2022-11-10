@@ -146,17 +146,6 @@ def create_SAML_client(opt):
 					"user.attribute": "uid"
 				}
 			},
-			{
-				"config": {
-					"attribute.name": "Role",
-					"attribute.nameformat": "Basic",
-					"friendly.name": "role list mapper",
-					"single": "true"
-				},
-				"name": "role_list_mapper",
-				"protocol": "saml",
-				"protocolMapper": "saml-role-list-mapper"
-			}
 		],
 		"defaultClientScopes": [
 		],
@@ -167,6 +156,20 @@ def create_SAML_client(opt):
 			"manage": True
 		}
 	}
+
+	role_mapper_single = {"config": {
+		"attribute.name": "Role",
+		"attribute.nameformat": "Basic",
+		"friendly.name": "role list mapper",
+		"single": "true"
+	},
+		"name": "role_list_mapper",
+		"protocol": "saml",
+		"protocolMapper": "saml-role-list-mapper"
+	}
+
+	if opt.command == "saml/sp" and opt.role_mapping_single_value:
+		client_payload_saml["protocolMappers"].append(role_mapper_single)
 
 	if opt.command == "saml/sp" and opt.client_signature_required:
 		client_payload_saml["attributes"]["saml.client.signature"] = "true"
@@ -426,6 +429,7 @@ def parse_args(args=None):
 	#create_saml_parser.add_argument("app", metavar='APPNAME')
 	create_saml_parser.add_argument("--client-signature-required", action="store_true")
 	create_saml_parser.add_argument("--metadata-url", required=True)
+	create_saml_parser.add_argument("--role-mapping-single-value", action="store_true")
 	create_saml_parser.set_defaults(func=create_SAML_client)
 
 	parser_oidc = subparsers.add_parser("oidc/rp", help="configure a OIDC RP")
