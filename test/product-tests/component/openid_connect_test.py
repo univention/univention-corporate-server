@@ -193,7 +193,7 @@ def create_random_user(users):
 	username += ''.join(random.choice(string.ascii_uppercase) for _ in range(4))
 	return users(username, {
 		"owncloudEnabled": True,
-		"mailPrimaryAddress": username + "@autotest.local"})
+		"mailPrimaryAddress": username + "@autotest.test"})
 
 
 # tests ------------------------------------------------------------------------
@@ -232,7 +232,7 @@ def test_owncloud_with_portal_login(chrome, users):
 		owncloud_close_welcome_screen(chrome)
 		owncloud_logout(chrome)
 
-		assert "https://backup.autotest.local/univention/portal/" \
+		assert "https://backup.autotest.test/univention/portal/" \
 			== chrome.driver.current_url
 
 		# assert "LOGOUT" \ # it is logout for some reason :/
@@ -274,7 +274,7 @@ def test_owncloud_with_openid_login(chrome, users):
 
 		owncloud_logout(chrome)
 
-		assert "https://backup.autotest.local/univention/portal/" \
+		assert "https://backup.autotest.test/univention/portal/" \
 			== chrome.driver.current_url
 
 
@@ -304,7 +304,7 @@ def test_owncloud_with_owncloud_login(chrome, users):
 		owncloud_close_welcome_screen(chrome)
 		owncloud_logout(chrome)
 
-		assert "https://master.autotest.local/owncloud/login" \
+		assert "https://master.autotest.test/owncloud/login" \
 			== chrome.driver.current_url
 
 
@@ -387,7 +387,7 @@ def test_owncloud_in_tab_logout_in_portal(chrome, users):
 		portal_wait_for_tiles(chrome)
 
 		assert chrome.driver.current_url.startswith(
-			"https://backup.autotest.local/univention/portal/")
+			"https://backup.autotest.test/univention/portal/")
 
 
 # main -------------------------------------------------------------------------

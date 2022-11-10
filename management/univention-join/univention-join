@@ -74,17 +74,17 @@ display_help() {
 	  univention-join [options]
 
 	Options:
-	  -dcname <fqdn>:                Primary Directory Node fqdn
+	  -dcname <fqdn>:                Primary Directory Node FQDN
 	  -dcaccount <account>:          Name of Primary Directory Node account
 	  -dcpwd <password file>:        File with Primary Directory Node password
 	  -type <type>:                  Type of computer, e.g. "client"
-	  -ldapbase <ldap base>:         LDAP Base DN, e.g. dc=test,dc=local
-	  -realm <kerberos realm>:       Kerberos realm, e.g. TEST.LOCAL
-	  -windom <windows domain name>: Name of the windows (samba) domain
+	  -ldapbase <ldap base>:         LDAP Base DN, e.g. dc=ucs,dc=example
+	  -realm <kerberos realm>:       Kerberos realm, e.g. UCS.EXAMPLE
+	  -windom <windows domain name>: Name of the windows (Samba) domain, e.g. UCS
 	  -disableVersionCheck           Disable version check against _dcname_
 	  -checkPrerequisites            Just perform some tests without changing anything
 	  -skipIpMac                     Do not register IP and MAC in machine account
-	  -skipAdMemberMode              Do not activate ad member mode during join
+	  -skipAdMemberMode              Do not activate AD member mode during join
 	  -containerAdMemberMode         Configure ad member in container mode
 	  -verbose                       Enable verbose logging (/var/log/univention/join.log)
 

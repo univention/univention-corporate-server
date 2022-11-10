@@ -48,9 +48,9 @@ def handle(name, cfg, cloud, log, args):
 	# read config options and write them to a profile
 	p = dict((k, v) for k, v in cfg["ucs_setup"].items() if v is not None)
 	hostname = p.get('hostname', 'ucs')
-	domainname = p.get('domainname', 'ucs.local')
+	domainname = p.get('domainname', 'ucs.test')
 	windowsdomain = p.get('windowsdomain', 'UCS')
-	ldap_base = p.get('ldap_base', 'dc=ucs,dc=local')
+	ldap_base = p.get('ldap_base', 'dc=ucs,dc=test')
 	rootpassword = p.get('rootpassword', 'univention')
 	role = p.get('role', 'domaincontroller_master')
 	defaultlocale = p.get('defaultlocale', 'de_DE.UTF-8:UTF-8')

@@ -23,8 +23,8 @@ check_trust () {
 
 	# create some GPO's
 	# in AD
-	create_gpo UserGPO1 "dc=adtest,dc=local" User 'HKCU\Environment'
-	create_gpo MachineGPO1 "dc=adtest,dc=local" Computer 'HKLM\Environment'
+	create_gpo UserGPO1 "dc=adtest,dc=test" User 'HKCU\Environment'
+	create_gpo MachineGPO1 "dc=adtest,dc=test" Computer 'HKLM\Environment'
 	# in UCS
 	create_gpo UCSUserGPO1 "$ldap_base" User 'HKCU\Environment' --client "$WINCLIENT_UCS" --domain "$domainname"
 	create_gpo UCSMachineGPO1 "$ldap_base" Computer 'HKLM\Environment' --client "$WINCLIENT_UCS" --domain "$domainname"
@@ -70,8 +70,8 @@ forwarders { $WINRM_CLIENT; };
 	ucs-winrm domain-user-validate-password --domain "$WINRM_DOMAIN" --domainpassword univention --domainuser "ucs1@${domainname}"
 
 	# new GPO's in AD
-	create_gpo UserGPO2 "dc=adtest,dc=local" User 'HKCU\Environment'
-	create_gpo MachineGPO2 "dc=adtest,dc=local" Computer 'HKLM\Environment'
+	create_gpo UserGPO2 "dc=adtest,dc=test" User 'HKCU\Environment'
+	create_gpo MachineGPO2 "dc=adtest,dc=test" Computer 'HKLM\Environment'
 
 	# new GPO's in UCS
 	create_gpo UCSUserGPO2 "$ldap_base" User 'HKCU\Environment' --client "$WINCLIENT_UCS" --domain "$domainname"

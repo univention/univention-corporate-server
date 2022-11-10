@@ -246,21 +246,23 @@ class LicenseInsufficient(TakeoverError):
 	default_error_message = _('Insufficient License.')
 
 
-def count_domain_objects_on_server(hostname_or_ip, username, password, progress):
-	'''Connects to the hostname_or_ip with username/password credentials
+def count_domain_objects_on_server(hostname_or_ip, username, password, progress):  # type: (str, str, str, Progress) -> dict
+	'''Connects to the hostname_or_ip with username/password credentials.
+
 	Expects to find a Windows Domain Controller.
-	Gets str, str, str, Progress
-	Returns {
+
+	:return: ``{
 		'ad_hostname' : hostname,
 		'ad_ip' : hostname_or_ip,
 		'ad_os' : version_of_the_ad, # "Windows 2008 R2"
-		'ad_domain' : domain_of_the_ad, # "mydomain.local"
+		'ad_domain' : domain_of_the_ad, # "mydomain.example"
 		'users' : number_of_users_in_domain,
 		'groups' : number_of_groups_in_domain,
 		'computers' : number_of_computers_in_domain,
 		'license_error' : error_message_from_validating_license,
-	}
-	Raises ComputerUnreachable, AuthenticationFailed
+	}``
+	:raises ComputerUnreachable:
+	:raises AuthenticationFailed:
 	'''
 
 	ucs_license = UCS_License_detection(ucr)

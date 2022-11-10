@@ -1100,7 +1100,7 @@ def ucs_srv_record_create(s4connector, object):
 	# unpack the host record
 	srv = __unpack_sRVrecord(object)
 
-	# ucr set connector/s4/mapping/dns/srv_record/_ldap._tcp.test.local/location='100 0 389 foobar.test.local. 100 0 389 foobar2.test.local.'
+	# ucr set connector/s4/mapping/dns/srv_record/_ldap._tcp.test.example/location='100 0 389 foobar.test.example. 100 0 389 foobar2.test.example.'
 	ucr_locations = s4connector.configRegistry.get('connector/s4/mapping/dns/srv_record/%s.%s/location' % (relativeDomainName.lower(), zoneName.lower()))
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: ucr_locations for connector/s4/mapping/dns/srv_record/%s.%s/location: %s' % (relativeDomainName.lower(), zoneName.lower(), ucr_locations))
 
@@ -1172,8 +1172,8 @@ def s4_srv_record_create(s4connector, object):
 	zoneName = object['attributes']['zoneName'][0].decode('UTF-8')
 	relativeDomainName = object['attributes']['relativeDomainName'][0].decode('UTF-8')
 
-	# ucr set connector/s4/mapping/dns/srv_record/_ldap._tcp.test.local/location='100 0 389 foobar.test.local.'
-	# ucr set connector/s4/mapping/dns/srv_record/_ldap._tcp.test.local/location='100 0 389 foobar.test.local. 100 0 389 foobar2.test.local.'
+	# ucr set connector/s4/mapping/dns/srv_record/_ldap._tcp.test.example/location='100 0 389 foobar.test.example.'
+	# ucr set connector/s4/mapping/dns/srv_record/_ldap._tcp.test.example/location='100 0 389 foobar.test.example. 100 0 389 foobar2.test.example.'
 	ucr_locations = s4connector.configRegistry.get('connector/s4/mapping/dns/srv_record/%s.%s/location' % (relativeDomainName.lower(), zoneName.lower()))
 	ud.debug(ud.LDAP, ud.INFO, 's4_srv_record_create: ucr_locations for connector/s4/mapping/dns/srv_record/%s.%s/location: %s' % (relativeDomainName.lower(), zoneName.lower(), ucr_locations))
 	if ucr_locations:

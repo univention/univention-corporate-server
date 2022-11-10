@@ -1,4 +1,4 @@
- dn: cn=samba2,dc=liam,dc=local
+ dn: cn=samba2,dc=liam,dc=test
  univentionObjectType: container/cn
  objectClass: univentionObject1234567
 -objectClass: univentionObject1234
@@ -6,7 +6,7 @@
  objectClass: top
  cn: samba
 
- dn: cn=samba,dc=liam,dc=local
+ dn: cn=samba,dc=liam,dc=test
  univentionObjectType: container/cn
 -objectClass: univentionObject1234567
  objectClass: univentionObject1234
@@ -14,11 +14,11 @@
  objectClass: top
 -cn: samba
 
- dn: dc=liam,dc=local
- univentionPolicyReference: cn=default-settings,cn=routing,cn=dhcp,cn=policies,dc=liam,dc=local
--univentionPolicyReference: cn=default-settings,cn=pwhistory,cn=users,cn=policies,dc=liam,dc=local
- univentionPolicyReference: cn=default-settings,cn=dns,cn=dhcp,cn=policies,dc=liam,dc=local
- univentionPolicyReference: cn=default-settings,cn=boot,cn=dhcp,cn=policies,dc=liam,dc=local
+ dn: dc=liam,dc=test
+ univentionPolicyReference: cn=default-settings,cn=routing,cn=dhcp,cn=policies,dc=liam,dc=test
+-univentionPolicyReference: cn=default-settings,cn=pwhistory,cn=users,cn=policies,dc=liam,dc=test
+ univentionPolicyReference: cn=default-settings,cn=dns,cn=dhcp,cn=policies,dc=liam,dc=test
+ univentionPolicyReference: cn=default-settings,cn=boot,cn=dhcp,cn=policies,dc=liam,dc=test
  univentionObjectType: container/dc
 -objectClass: univentionPolicyReference
  objectClass: univentionObject
@@ -27,9 +27,9 @@
  objectClass: msGPO
  objectClass: domainRelatedObject
  objectClass: domain
- nisDomain: liam.local
+ nisDomain: liam.test
  msGPOLink: [LDAP://CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System,DC=liam,DC=local;0]
  krb5RealmName: LIAM.LOCAL
 -dc: liam
- associatedDomain: liam.local
+ associatedDomain: liam.test
 

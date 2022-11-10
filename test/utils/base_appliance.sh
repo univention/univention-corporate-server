@@ -313,7 +313,7 @@ prepare_docker_app () {  # <app_id> <counter>
 			# update to latest version
 			v=$(docker exec "$container_id" ucr get version/version)
 			# update is broken (empty domainname breaks postfix upgrade)
-			docker exec "$container_id" ucr set domainname='test.test'
+			docker exec "$container_id" ucr set domainname='ucs.test'
 			docker exec "$container_id" univention-upgrade --ignoressh --ignoreterm --noninteractive --disable-app-updates --updateto="${v}-99"
 			docker exec "$container_id" ucr unset domainname
 			docker exec "$container_id" ucr set repository/online/server="$(ucr get repository/online/server)" \

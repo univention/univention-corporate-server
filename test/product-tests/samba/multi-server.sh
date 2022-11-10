@@ -89,13 +89,13 @@ test_master () {
 	udm users/user create --position "cn=users,$ldap_base" --set username="newuser03" --set firstname="Random" --set lastname="User" --set password="Univention.99"
 	udm users/user create --position "cn=users,$ldap_base" --set username="newuser04" --set firstname="Random" --set lastname="User" --set password="Univention.99"
 	udm users/user create --position "cn=users,$ldap_base" --set username="newuser05" --set firstname="Random" --set lastname="User" --set password="Univention.99"
-	udm groups/group modify --dn "cn=Domain Admins,cn=groups,dc=sambatest,dc=local" --append users="uid=newuser01,cn=users,dc=sambatest,dc=local"
-	udm shares/share create --position "cn=shares,$ldap_base" --set name="testshare" --set host="ucs-master.sambatest.local" --set path="/home/testshare"
-	udm shares/share create --position "cn=shares,$ldap_base" --set name="testshareMember" --set host="ucs-member.sambatest.local" --set path="/home/testshare"
-	udm shares/share create --position "cn=shares,$ldap_base" --set name="testshareSlave" --set host="ucs-slave.sambatest.local" --set path="/home/testshare"
-	udm shares/printer create --position "cn=printers,$ldap_base" --set name="Memberprinter" --set spoolHost="ucs-member.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
-	udm shares/printer create --position "cn=printers,$ldap_base" --set name="Masterprinter" --set spoolHost="ucs-master.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
-	udm shares/printer create --position "cn=printers,$ldap_base" --set name="Slaveprinter" --set spoolHost="ucs-slave.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
+	udm groups/group modify --dn "cn=Domain Admins,cn=groups,dc=sambatest,dc=test" --append users="uid=newuser01,cn=users,dc=sambatest,dc=test"
+	udm shares/share create --position "cn=shares,$ldap_base" --set name="testshare" --set host="ucs-master.sambatest.test" --set path="/home/testshare"
+	udm shares/share create --position "cn=shares,$ldap_base" --set name="testshareMember" --set host="ucs-member.sambatest.test" --set path="/home/testshare"
+	udm shares/share create --position "cn=shares,$ldap_base" --set name="testshareSlave" --set host="ucs-slave.sambatest.test" --set path="/home/testshare"
+	udm shares/printer create --position "cn=printers,$ldap_base" --set name="Memberprinter" --set spoolHost="ucs-member.sambatest.test" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
+	udm shares/printer create --position "cn=printers,$ldap_base" --set name="Masterprinter" --set spoolHost="ucs-master.sambatest.test" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
+	udm shares/printer create --position "cn=printers,$ldap_base" --set name="Slaveprinter" --set spoolHost="ucs-slave.sambatest.test" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
 
 	# join windows clients
 	# Uhrzeit prüfen: Sollte synchron zum DC Master sein (automatischer Abgleich per NTP)
@@ -166,10 +166,10 @@ test_master () {
 		--computergpo 'GPO4' --computergpo 'Default Domain Policy'
 	# Vergleich /var/lib/samba/sysvol/$domainname/Policies auf DC Master und DC Backup mit dem DC Slave
 	local sysvol
-	sysvol="$(find /var/lib/samba/sysvol/sambatest.local/ | md5sum | awk '{print $1}')"
-	test "$sysvol" = "$(run_on_ucs_hosts "$SLAVE" "find /var/lib/samba/sysvol/sambatest.local/ | md5sum | awk '{print \$1}'")"
-	test "$sysvol" = "$(run_on_ucs_hosts "$BACKUP" "find /var/lib/samba/sysvol/sambatest.local/ | md5sum | awk '{print \$1}'")"
-	test "$sysvol" = "$(run_on_ucs_hosts "$SLAVE_RODC" "find /var/lib/samba/sysvol/sambatest.local/ | md5sum | awk '{print \$1}'")"
+	sysvol="$(find /var/lib/samba/sysvol/sambatest.test/ | md5sum | awk '{print $1}')"
+	test "$sysvol" = "$(run_on_ucs_hosts "$SLAVE" "find /var/lib/samba/sysvol/sambatest.test/ | md5sum | awk '{print \$1}'")"
+	test "$sysvol" = "$(run_on_ucs_hosts "$BACKUP" "find /var/lib/samba/sysvol/sambatest.test/ | md5sum | awk '{print \$1}'")"
+	test "$sysvol" = "$(run_on_ucs_hosts "$SLAVE_RODC" "find /var/lib/samba/sysvol/sambatest.test/ | md5sum | awk '{print \$1}'")"
 
 	# Freigaben
 
@@ -186,9 +186,9 @@ test_master () {
 	#	Rechtevergabe prüfen DONE (simuliert durch Zugriff mit anderen Benutzer)
 	run_on_ucs_hosts "$MEMBER" "touch /home/testshare/test.txt"
 	run_on_ucs_hosts "$SLAVE" "touch /home/testshare/test.txt"
-	udm shares/share modify --dn "cn=testshareMember,cn=shares,dc=sambatest,dc=local" --set group=5000 --set directorymode=0770 --set sambaDirectoryMode=0770
-	udm shares/share modify --dn "cn=testshareSlave,cn=shares,dc=sambatest,dc=local" --set group=5000 --set directorymode=0770 --set sambaDirectoryMode=0770
-	udm shares/share modify --dn "cn=testshare,cn=shares,dc=sambatest,dc=local" --set group=5000 --set directorymode=0770 --set sambaDirectoryMode=0770
+	udm shares/share modify --dn "cn=testshareMember,cn=shares,dc=sambatest,dc=test" --set group=5000 --set directorymode=0770 --set sambaDirectoryMode=0770
+	udm shares/share modify --dn "cn=testshareSlave,cn=shares,dc=sambatest,dc=test" --set group=5000 --set directorymode=0770 --set sambaDirectoryMode=0770
+	udm shares/share modify --dn "cn=testshare,cn=shares,dc=sambatest,dc=test" --set group=5000 --set directorymode=0770 --set sambaDirectoryMode=0770
 	ucs-winrm check-share --server ucs-member --sharename "testshareMember" --driveletter R --filename "test.txt" --username 'Administrator' --userpwd "$ADMIN_PASSWORD"
 	ucs-winrm check-share --server ucs-slave --sharename "testshareSlave" --driveletter Q --filename "test.txt" --username 'Administrator' --userpwd "$ADMIN_PASSWORD"
 	ucs-winrm create-share-file --server ucs-member --filename test-admin01.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --share testshareMember
@@ -204,15 +204,15 @@ test_master () {
 	ucs-winrm create-share-file --server "$MASTER" --filename test-admin.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --share Administrator
 	stat /home/Administrator/test-admin.txt
 	getfacl /home/Administrator/test-admin.txt | grep "Domain.*Admin"
-	ucs-winrm create-share-file --server ucs-master.sambatest.local --filename test-newuser02.txt --username 'newuser02' --userpwd "Univention.99" --share newuser02 --client "$WIN2016"
+	ucs-winrm create-share-file --server ucs-master.sambatest.test --filename test-newuser02.txt --username 'newuser02' --userpwd "Univention.99" --share newuser02 --client "$WIN2016"
 	stat /home/newuser02/test-newuser02.txt
 	getfacl /home/newuser02/test-newuser02.txt | grep "Domain.*Users"
-	ucs-winrm create-share-file --server ucs-master.sambatest.local --filename test-admin.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --share testshare --client "$WIN2016"
+	ucs-winrm create-share-file --server ucs-master.sambatest.test --filename test-admin.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --share testshare --client "$WIN2016"
 	stat /home/testshare/test-admin.txt
 	# this should fail
-	ucs-winrm create-share-file --server ucs-master.sambatest.local --filename test-newuser02.txt --username 'newuser02' --userpwd "Univention.99" \
+	ucs-winrm create-share-file --server ucs-master.sambatest.test --filename test-newuser02.txt --username 'newuser02' --userpwd "Univention.99" \
 		--share testshare --client "$WIN2016" --debug 2>&1 | grep -i PermissionDenied
-	ucs-winrm create-share-file --server ucs-master.sambatest.local --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention.99" \
+	ucs-winrm create-share-file --server ucs-master.sambatest.test --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention.99" \
 		--share Administrator --client "$WIN2016" --debug 2>&1 | grep -i PermissionDenied
 	# check windows acl's
 	#  ACL-Vergabe unter Windows testen(rechte Maustaste/Eigenschaften.. Hinzufügen und Entfernen von ACLs) DONE

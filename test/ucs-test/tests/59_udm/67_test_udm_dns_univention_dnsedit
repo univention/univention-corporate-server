@@ -17,7 +17,7 @@
 
 eval "$(ucr shell)"
 
-zonename="$(random_chars).local"
+zonename="$(random_chars).test"
 host="$(random_chars)"
 
 IP="1.10.20.30"

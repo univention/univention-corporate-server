@@ -49,9 +49,9 @@ def policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None):
 	Return a tuple of hash-lists, mapping attributes to a list of values and
 	mapping attributes to the matching Policy-DN.
 
-	>>> (results, policies) = policy_result('dc=univention,dc=local')
+	>>> (results, policies) = policy_result('dc=univention,dc=example')
 	>>> policies['univentionDhcpDomainNameServers']
-	'cn=default-settings,cn=dns,cn=dhcp,cn=policies,dc=univention,dc=local'
+	'cn=default-settings,cn=dns,cn=dhcp,cn=policies,dc=univention,dc=example'
 	results['univentionDhcpDomainNameServers']
 	['192.168.0.111']
 	"""

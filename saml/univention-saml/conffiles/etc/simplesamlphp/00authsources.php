@@ -105,7 +105,7 @@ print("	'search.password'	=> '%s'," % password)
 		//
 		// This option is not used if the search.enable option is set to TRUE.
 		//'dnpattern' => 'uid=%username%,ou=people,dc=example,dc=org',
-		//'dnpattern' => 'uid=%username%,cn=users,dc=intra,dc=local',
+		//'dnpattern' => 'uid=%username%,cn=users,dc=intra,dc=example',
 		// As an alternative to specifying a pattern for the users DN, it is possible to
 		// search for the username in a set of attributes. This is enabled by this option.
 		'search.enable' => TRUE,
@@ -113,7 +113,7 @@ print("	'search.password'	=> '%s'," % password)
 		// The DN which will be used as a base for the search.
 		// This can be a single string, in which case only that DN is searched, or an
 		// array of strings, in which case they will be searched in the order given.
-		//'search.base' => 'cn=users,dc=intra,dc=local',
+		//'search.base' => 'cn=users,dc=intra,dc=example',
 		// The attribute(s) the username should match against.
 		//
 		// This is an array with one or more attribute names. Any of the attributes in

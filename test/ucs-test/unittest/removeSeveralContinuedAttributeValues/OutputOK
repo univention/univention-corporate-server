@@ -1,4 +1,4 @@
- dn: cn=samba2,dc=liam,dc=local
+ dn: cn=samba2,dc=liam,dc=test
  univentionObjectType: container/cn
 -objectClass: univentionObjectuniventionObject1univentionObject2univentionObject3
 +objectClass: univentionObjectuniventionObject1
@@ -7,7 +7,7 @@
  objectClass: top
  cn: samba
 
- dn: cn=samba,dc=liam,dc=local
+ dn: cn=samba,dc=liam,dc=test
  univentionObjectType: container/cn
 -objectClass2: univentionObjectuniventionObject2ctuniventionObject3
 +objectClass2: univentionObjectuniventionObject2

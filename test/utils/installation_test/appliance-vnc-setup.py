@@ -228,7 +228,7 @@ def main():  # type: () -> None
 	group = parser.add_argument_group("Virtual machine settings")
 	group.add_argument('--vnc', required=True, help="VNC screen to connect to")
 	group = parser.add_argument_group("Host settings")
-	group.add_argument('--fqdn', default='master.ucs.local', help="Fully qualified host name to use")
+	group.add_argument('--fqdn', default='master.ucs.test', help="Fully qualified host name to use")
 	group.add_argument('--password', default='univention', help="Password to setup for user 'root' and/or 'Administrator'")
 	group.add_argument('--organisation', default='ucs', help="Oranisation name to setup")
 	group.add_argument('--role', default='master', choices=['master', 'admember', 'fast', 'slave'], help="UCS system role")

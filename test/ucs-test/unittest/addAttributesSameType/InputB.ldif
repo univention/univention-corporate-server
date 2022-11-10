@@ -1,4 +1,4 @@
-dn: cn=samba,dc=liam,dc=local
+dn: cn=samba,dc=liam,dc=test
 cn: samba
 objectClass: top
 objectClass: tops

@@ -197,25 +197,25 @@ installed:
 .. code-block:: console
 
    root@primary211:~# univention-radius-check-access --username=stefan
-   DENY 'uid=stefan,cn=users,dc=ucs,dc=local'
-   'uid=stefan,cn=users,dc=ucs,dc=local'
-   -> DENY 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
-   -> 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
-   -> -> DENY 'cn=Users,cn=Builtin,dc=ucs,dc=local'
-   -> -> 'cn=Users,cn=Builtin,dc=ucs,dc=local'
+   DENY 'uid=stefan,cn=users,dc=ucs,dc=example'
+   'uid=stefan,cn=users,dc=ucs,dc=example'
+   -> DENY 'cn=Domain Users,cn=groups,dc=ucs,dc=example'
+   -> 'cn=Domain Users,cn=groups,dc=ucs,dc=example'
+   -> -> DENY 'cn=Users,cn=Builtin,dc=ucs,dc=example'
+   -> -> 'cn=Users,cn=Builtin,dc=ucs,dc=example'
    Thus access is DENIED.
 
 .. code-block:: console
 
    root@primary211:~# univention-radius-check-access --username=janek
-   DENY 'uid=janek,cn=users,dc=ucs,dc=local'
-   'uid=janek,cn=users,dc=ucs,dc=local'
-   -> DENY 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
-   -> ALLOW 'cn=Network Access,cn=groups,dc=ucs,dc=local'
-   -> 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
-   -> -> DENY 'cn=Users,cn=Builtin,dc=ucs,dc=local'
-   -> -> 'cn=Users,cn=Builtin,dc=ucs,dc=local'
-   -> 'cn=Network Access,cn=groups,dc=ucs,dc=local'
+   DENY 'uid=janek,cn=users,dc=ucs,dc=example'
+   'uid=janek,cn=users,dc=ucs,dc=example'
+   -> DENY 'cn=Domain Users,cn=groups,dc=ucs,dc=example'
+   -> ALLOW 'cn=Network Access,cn=groups,dc=ucs,dc=example'
+   -> 'cn=Domain Users,cn=groups,dc=ucs,dc=example'
+   -> -> DENY 'cn=Users,cn=Builtin,dc=ucs,dc=example'
+   -> -> 'cn=Users,cn=Builtin,dc=ucs,dc=example'
+   -> 'cn=Network Access,cn=groups,dc=ucs,dc=example'
    Thus access is ALLOWED.
    root@primary211:~#
 

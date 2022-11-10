@@ -1,8 +1,8 @@
 "instance";"profile";"command1";"command2";"command3";"command4";"command5";"command6";"command7";"command8";"command9";"command10";"files"
 "ptimaster";"hostname=""ptimaster""
- domainname=""autotestpti.local""
+ domainname=""autotestpti.test""
  windows/domain=""AUTOTESTPTI""
- ldap/base=""dc=autotestpti,dc=local""
+ ldap/base=""dc=autotestpti,dc=test""
  root_password=""univention""
  locale/default=""de_DE.UTF-8:UTF-8""
  packages_install=""univention-samba4 univention-s4-connector""
@@ -40,7 +40,7 @@
  ~/ec2/scripts/activate-errata-test-scope.sh /root/
 "
 "ptibackup1";" hostname=ptibackup1
- domainname=autotestpti.local
+ domainname=autotestpti.test
  windows/domain=AUTOTESTPTI
  server/role=""domaincontroller_backup""
  root_password=univention
@@ -73,7 +73,7 @@
  ~/ec2/scripts/activate-errata-test-scope.sh /root/
 "
 "ptibackup2";" hostname=ptibackup2
- domainname=autotestpti.local
+ domainname=autotestpti.test
  windows/domain=AUTOTESTPTI
  server/role=""domaincontroller_backup""
  root_password=univention
@@ -105,7 +105,7 @@
  ~/ec2/scripts/activate-errata-test-scope.sh /root/
 "
 "ptislave1";"hostname=ptislave1
- domainname=autotestpti.local
+ domainname=autotestpti.test
  windows/domain=AUTOTESTPTI
  server/role=""domaincontroller_slave""
  root_password=univention
@@ -137,7 +137,7 @@
  ~/ec2/scripts/activate-errata-test-scope.sh /root/
 "
 "ptislave2";"hostname=ptislave2
- domainname=autotestpti.local
+ domainname=autotestpti.test
  windows/domain=AUTOTESTPTI
  server/role=""domaincontroller_slave""
  root_password=univention
@@ -168,7 +168,7 @@
  ~/ec2/scripts/activate-errata-test-scope.sh /root/
 "
 "ptiedu1";"hostname=ptiedu1
- domainname=autotestpti.local
+ domainname=autotestpti.test
  windows/domain=AUTOTESTPTI
  server/role=""domaincontroller_slave""
  root_password=univention
@@ -199,7 +199,7 @@
  ~/ec2/scripts/activate-errata-test-scope.sh /root/
 "
 "ptiadm1";"hostname=ptiadm1
- domainname=autotestpti.local
+ domainname=autotestpti.test
  windows/domain=AUTOTESTPTI
  server/role=""domaincontroller_slave""
  root_password=univention
@@ -230,7 +230,7 @@
  ~/ec2/scripts/activate-errata-test-scope.sh /root/
 "
 "ptiedu2";"hostname=ptiedu2
- domainname=autotestpti.local
+ domainname=autotestpti.test
  windows/domain=AUTOTESTPTI
  server/role=""domaincontroller_slave""
  root_password=univention

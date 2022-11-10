@@ -53,7 +53,7 @@ ansible_preperation () {
 	cp /root/id-broker-TESTING.key id-broker.key
 	# shellcheck disable=SC1091
 	source /root/id-broker-secrets.sh
-	sed -i "s/broker.local/$(hostname -d)/g" environments/jenkins/hosts
+	sed -i "s/broker.test/$(hostname -d)/g" environments/jenkins/hosts
 	sed -i "s/CLIENT_SECRET=CLIENT_SECRET/CLIENT_SECRET=$UTA_CLIENT_SECRET/g" /etc/univention-test-app.conf
 	sed -i "s/ID_BROKER_KEYCLOAK_FQDN=ID_BROKER_KEYCLOAK_FQDN/ID_BROKER_KEYCLOAK_FQDN=kc.$(hostname -d)/g" /etc/univention-test-app.conf
 	sed -i "s/ID_BROKER_SDAPI_FQDN=ID_BROKER_SDAPI_FQDN/ID_BROKER_SDAPI_FQDN=self-disclosure1.$(hostname -d)/g" /etc/univention-test-app.conf
@@ -64,7 +64,7 @@ ansible_preperation () {
 }
 
 create_certificate_kc_vhost () {
-	univention-certificate new -name kc.broker.local -id 658b0aaf-48dc-4a32-991f-db46648b22a5 -days 365 || return 1
+	univention-certificate new -name kc.broker.test -id 658b0aaf-48dc-4a32-991f-db46648b22a5 -days 365 || return 1
 	return 0
 }
 
@@ -72,7 +72,7 @@ wait_for_certificate_replication () {
 	local end=$(($(date +%s)+300))
 	while [ "$(date +%s)" -lt "$end" ]
 	do
-		if [ -d "/etc/univention/ssl/kc.broker.local/" ]; then
+		if [ -d "/etc/univention/ssl/kc.broker.test/" ]; then
 			return 0
 		fi
 		sleep 5
@@ -83,7 +83,7 @@ wait_for_certificate_replication () {
 apache_custom_vhosts () {
 	local keycloak2_ip="${1:?missing keycloak2_ip}"
 	local domain="${2:?missing domain}"
-	univention-add-vhost --conffile /var/lib/keycloak/keycloak_ProxyPass.conf kc.broker.local 443
+	univention-add-vhost --conffile /var/lib/keycloak/keycloak_ProxyPass.conf kc.broker.test 443
 	cd /etc/apache2/sites-available/ || return 1
 	cp /root/univention-vhosts.conf.example univention-vhosts.conf
 	sed -i "s/KEYCLOAK2_IP/$keycloak2_ip/g" univention-vhosts.conf
@@ -348,10 +348,10 @@ install_ansible () {
 fix_traeger_dns_entries_in_broker_domain () {
 	local traeger1_ip="${1:?missing ip}"
 	local traeger2_ip="${2:?missing ip}"
-	udm dns/host_record modify --dn "relativeDomainName=traeger1,zoneName=traeger1.local,cn=dns,dc=idbroker,dc=local" --set a="$traeger1_ip"
-	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=traeger1.local,cn=dns,dc=idbroker,dc=local" --set a="$traeger1_ip"
-	udm dns/host_record modify --dn "relativeDomainName=traeger2,zoneName=traeger2.local,cn=dns,dc=idbroker,dc=local" --set a="$traeger2_ip"
-	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=traeger2.local,cn=dns,dc=idbroker,dc=local" --set a="$traeger2_ip"
+	udm dns/host_record modify --dn "relativeDomainName=traeger1,zoneName=traeger1.test,cn=dns,dc=idbroker,dc=test" --set a="$traeger1_ip"
+	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=traeger1.test,cn=dns,dc=idbroker,dc=test" --set a="$traeger1_ip"
+	udm dns/host_record modify --dn "relativeDomainName=traeger2,zoneName=traeger2.test,cn=dns,dc=idbroker,dc=test" --set a="$traeger2_ip"
+	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=traeger2.test,cn=dns,dc=idbroker,dc=test" --set a="$traeger2_ip"
 	# ucs sso TODO add other systems
 	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=$(ucr get domainname),cn=dns,$(ucr get ldap/base)" --set a="$(ucr get interfaces/eth0/address)"
 }
@@ -360,11 +360,11 @@ fix_broker_dns_entries_on_traeger () {
 	local kc1_ip="${1:?missing ip}"
 	local provisioning1_ip="${2:?missing ip}"
 	# kc1
-	ucr search --value --brief login.kc1.broker.local | awk -F : '{print $1}' | xargs  ucr unset
+	ucr search --value --brief login.kc1.broker.test | awk -F : '{print $1}' | xargs  ucr unset
 	# shellcheck disable=SC2140
-	ucr set "hosts/static/$kc1_ip"="login.kc1.broker.local"
+	ucr set "hosts/static/$kc1_ip"="login.kc1.broker.test"
 	# provisioning1
-	udm dns/host_record modify --dn "relativeDomainName=provisioning1,zoneName=broker.local,cn=dns,$(ucr get ldap/base)" --set a="$provisioning1_ip"
+	udm dns/host_record modify --dn "relativeDomainName=provisioning1,zoneName=broker.test,cn=dns,$(ucr get ldap/base)" --set a="$provisioning1_ip"
 	# ucs sso
 	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=$(ucr get domainname),cn=dns,$(ucr get ldap/base)" --set a="$(ucr get interfaces/eth0/address)"
 }

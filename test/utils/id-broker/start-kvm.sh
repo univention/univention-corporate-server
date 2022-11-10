@@ -6,9 +6,9 @@ set -e
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=ranarp.knut.univention.de}"
 export HALT=false
 export DOCKER=true
-export UCS_ENV_IDBROKER_DOMAIN=broker.local
-export UCS_ENV_TRAEGER1_DOMAIN=traeger1.local
-export UCS_ENV_TRAEGER2_DOMAIN=traeger2.local
+export UCS_ENV_IDBROKER_DOMAIN=broker.test
+export UCS_ENV_TRAEGER1_DOMAIN=traeger1.test
+export UCS_ENV_TRAEGER2_DOMAIN=traeger2.test
 export KVM_KEYPAIR_PASSPHRASE=univention
 export UCS_ENV_PASSWORD=univention
 export UCS_TEST_RUN=false

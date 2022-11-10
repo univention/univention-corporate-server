@@ -190,8 +190,8 @@ class ipphonetool(object):
 
 if __name__ == '__main__':
 	description = _(
-		"""e.g. ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local
-	or   ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local --redirect sip:otheruser@dom.local
+		"""e.g. ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.example
+	or   ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.example --redirect sip:otheruser@dom.example
 	or   ip-phone-tool clear_redirect voip1
 	or   ip-phone-tool remove voip1"""
 	)

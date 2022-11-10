@@ -26,7 +26,7 @@ test_single_server () {
 	# In der UMC anlegen: Benutzer, Drucker, Dateifreigabe
 	udm users/user create --position "cn=users,$ldap_base" --set username="newuser01" \
 		--set lastname="newuser01" --set password="Univention.99"
-	#udm groups/group modify --dn "cn=Domain Admins,cn=groups,$ldap_base" --append users="uid=newuser01,cn=users,dc=sambatest,dc=local"
+	#udm groups/group modify --dn "cn=Domain Admins,cn=groups,$ldap_base" --append users="uid=newuser01,cn=users,dc=sambatest,dc=test"
 	udm shares/share create --position "cn=shares,$ldap_base" --set name="testshare" \
 		--set host="$(hostname -f)" --set path="/home/testshare"
 	udm shares/printer create --position "cn=printers,$ldap_base" --set name="printer1" \

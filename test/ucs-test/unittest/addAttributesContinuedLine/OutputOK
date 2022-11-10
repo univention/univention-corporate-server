@@ -1,4 +1,4 @@
- dn: cn=samba,dc=liam,dc=local
+ dn: cn=samba,dc=liam,dc=test
  univentionObjectType: container/cn
 +objectClass: univentionObjectuniventionObjectuniventionObject
  objectClass: univentionObject1234567

@@ -69,7 +69,7 @@ check_ad_takeover () {
 	check_admin_umc benutzer2 "Univention@99"
 
 	# Anlegen eines neuen Benutzers per UMC, Anmeldung mit dem neuen Benutzer am Windows Client
-	udm users/user create --position "cn=users,dc=adtakeover,dc=local" --set username="newuser01" --set firstname="Random" --set lastname="User" --set password="Univention.99"
+	udm users/user create --position "cn=users,dc=adtakeover,dc=test" --set username="newuser01" --set firstname="Random" --set lastname="User" --set password="Univention.99"
 	ucs-winrm check-applied-gpos --client "$WIN1" --username 'newuser01' --userpwd "Univention.99" \
 		--usergpo 'TestGPOUser' --usergpo 'Default Domain Policy' --usergpo 'NewGPO' \
 		--computergpo 'TestGPOMachine' --computergpo 'Default Domain Policy'

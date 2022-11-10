@@ -241,9 +241,9 @@ file :file:`/var/cache/univention-system-setup/profile`. Example configuration:
 ::
 
    hostname="ucs"
-   domainname="testdom.local"
+   domainname="testdom.example"
    windows/domain="TESTDOM"
-   ldap/base="dc=testdom,dc=local"
+   ldap/base="dc=testdom,dc=example"
    root_password="univention"
 
    locale/default="de_DE.UTF-8:UTF-8"
@@ -308,9 +308,9 @@ external service that the provisioning of the instance is done.
    #
    ucs_setup:
      hostname: myucsprimary
-     domainname: ucs.local
+     domainname: ucs.example
      windowsdomain: UCS
-     ldap_base: dc=ucs,dc=local
+     ldap_base: dc=ucs,dc=example
      rootpassword: univention
      defaultlocale: de_DE.UTF-8:UTF-8
      components:
@@ -318,7 +318,7 @@ external service that the provisioning of the instance is done.
      packages_remove:
    write_files:
    -   content: |
-         dn: cn=admin,cn=license,cn=univention,dc=ucs,dc=local
+         dn: cn=admin,cn=license,cn=univention,dc=ucs,dc=example
          objectClass: top
          objectClass: univentionLicense
          objectClass: univentionObject

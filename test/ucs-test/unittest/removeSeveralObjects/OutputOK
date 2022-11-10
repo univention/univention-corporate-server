@@ -1,4 +1,4 @@
--dn: cn=samba3add,dc=liam,dc=local
+-dn: cn=samba3add,dc=liam,dc=test
 -univentionObjectType: container/cn
 -objectClass: univentionObject1234567
 -objectClass: univentionObject1234
@@ -6,7 +6,7 @@
 -objectClass: top
 -cn: samba
 
--dn: cn=samba2add,dc=liam,dc=local
+-dn: cn=samba2add,dc=liam,dc=test
 -univentionObjectType: container/cn
 -objectClass: univentionObject1234567
 -objectClass: univentionObject1234

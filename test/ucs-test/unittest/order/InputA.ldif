@@ -1,4 +1,4 @@
-dn: cn=samba,dc=liam,dc=local
+dn: cn=samba,dc=liam,dc=test
 cn: samba
 objectClass: top
 objectClass: univentionObject
@@ -13,7 +13,7 @@ entryCSN: 20121001084128.377790Z#000000#000#000000
 modifiersName:
 modifyTimestamp: 20121001084128Z
 
-dn: cn=samba2,dc=liam,dc=local
+dn: cn=samba2,dc=liam,dc=test
 cn: samba
 objectClass: top
 objectClass: univentionObject

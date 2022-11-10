@@ -1,4 +1,4 @@
-+dn: cn=addedobject,dc=liam,dc=local
++dn: cn=addedobject,dc=liam,dc=test
 +univentionObjectType: container/cn
 +objectClass: univentionObject1234567
 +objectClass: univentionObject1234
