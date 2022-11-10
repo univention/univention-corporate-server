@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.4-7) unstable; urgency=medium
+
+  * Bug #55096: enhance OpenAPI schema
+
+ -- Florian Best <best@univention.de>  Thu, 10 Nov 2022 09:44:04 +0100
+
 univention-directory-manager-rest (10.0.4-6) unstable; urgency=medium
 
   * Bug #55115: fix URI template for search query

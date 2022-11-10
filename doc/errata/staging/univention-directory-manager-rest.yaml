@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issues:
  * The OpenAPI schema of the UDM REST API has been improved:
    Nested properties are now described more detailed while they previously
-   were only descrived as free form objects. Data deduplication has been
+   were only described as free form objects. Data de-duplication has been
    made by referencing global data instead of including them. All possible
    HTTP errors are listed in the responses. Experimental features like
    pagination during search have been added as deprecated so that they
