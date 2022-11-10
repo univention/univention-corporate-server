@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-directory-manager-modules
-fix: 15.0.13-12A~5.0.0.202210261206
+fix: 15.0.13-16A~5.0.0.202211102004
 desc: |
  This update addresses the following issues:
  * It is now possible to create extended attributes for LDAP operational
@@ -21,4 +21,7 @@ desc: |
  * A missing call to the super method `open()` has been added in the
    `nagios/service` UDM module so that it is available in the UDM REST API
    again.
-bug: [20235, 42080, 55279, 55096, 55394, 54064]
+ * The syntax `emailAddress` (and its children) are now checked against the
+   external library python-email-validator by default. This can be disabled
+   with the new UCRV `directory/manager/mail-address/extra-validation`.
+bug: [20235, 42080, 55279, 55096, 55394, 54064, 55413]
