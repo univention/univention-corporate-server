@@ -172,7 +172,7 @@ def create_SAML_client(opt):
 		client_payload_saml["attributes"]["saml.client.signature"] = "true"
 
 	# log into default realm in case UCS realm doesn't exist yet #
-	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name="master", verify=opt.no_ssl_verify)
+	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 
 	kc_admin.create_client(payload=client_payload_saml, skip_exists=True)
 
@@ -394,9 +394,6 @@ def download_cert_saml(opt):
 def get_client_secret(opt):
 	print("Obtaining secret for client ...")
 
-	# realm config #
-	DEFAULT_REALM = "master"
-
 	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 	kc_admin.realm_name = "ucs"
 
@@ -493,7 +490,6 @@ def parse_args(args=None):
 	else:
 		with open(opt.bindpwdfile, 'r') as fd:
 			opt.bindpwd = fd.read().strip()
-	print(opt)
 	if opt.command == "init":
 		if not exists(opt.ldap_system_user_pwdfile):
 			if not opt.ldap_system_user_pwdfile:
@@ -511,8 +507,6 @@ def create_adhoc_idp(opt):
 	ucr.load()
 
 	# realm config #
-	DEFAULT_REALM = "master"
-
 	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 	kc_admin.realm_name = "ucs"
 
@@ -663,8 +657,6 @@ def enable_2fa(opt):
 	print("Using KC_URL: {}".format(opt.keycloak_url))
 
 	# realm config #
-	DEFAULT_REALM = "master"
-
 	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.binduser, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 	kc_admin.realm_name = "ucs"
 	realm_2fa_role = "2FA role"
@@ -824,14 +816,13 @@ def assign_group_realm_role_by_group_name(kc_admin, realm, group_name, role):
 	return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204])
 
 
-def add_or_replace_ldap_group_mapper(kc_admin, ldap_sp, name, ldap_group, LDAP_BASE):
+def add_or_replace_ldap_group_mapper(kc_admin, ldap_sp, name, ldap_group):
 	"""
 	Add or replace if exists component mapper of type ldap-attribute-mapper
 	:param kc_admin: Keycloak client
 	:param ldap_sp: KeycloakREST_LDAPComponentRepresentation
 	:param name: String
 	:param ldap_group: String
-	:param LDAP_BASE: String
 	:return: Keycloak server response (RealmRepresentation)
 	"""
 
@@ -1033,8 +1024,6 @@ def create_adhoc_flow(opt):
 	print("Using KC_URL: {}".format(opt.keycloak_url))
 
 	# realm config #
-	DEFAULT_REALM = "master"
-
 	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 	kc_admin.realm_name = "ucs"
 	# load UCR
@@ -1117,7 +1106,6 @@ def init_keycloak_ucs(opt):
 	print("Using bind-dn: {}".format(opt.binddn))
 
 	# log into default realm in case UCS realm doesn't exist yet #
-	print(opt.binduser, opt.bindpwd)
 	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 
 	# set locale languages #
