@@ -43,7 +43,7 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 module = 'settings/portal_all'
-short_description = _('Portal: Settings')
+short_description = _('Deprecated Portal: Settings')
 long_description = _('Management of portals and their entries')
 
 operations = ['search']

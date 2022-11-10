@@ -356,6 +356,9 @@ Univention Portal
 * The Portal is now able to display announcements, which are realized via a
   new UDM module **portals/announcement** (:uv:bug:`55175`).
 
+* The old UDM modules for the UCS 4.4 Portal have been renamed to better distinguish between
+  them in the web user interface (:uv:bug:`55409`).
+
 * The documentation wasn't specific enough about what command to run, after the
   |UCSUCRV| :envvar:`portal/default-dn` changed. Running :command:`univention-portal update`
   after changing the |UCSUCRV| is enough (:uv:bug:`55871`).

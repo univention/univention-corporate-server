@@ -132,7 +132,7 @@ def update_choices():
     >>> import univention.admin.modules
     >>> univention.admin.modules.update()
     >>> update_choices()
-    >>> ('settings/portal', 'Portal: Portal') in univentionAdminModules.choices
+    >>> ('settings/portal', 'Deprecated Portal: Portal') in univentionAdminModules.choices
     True
     """
     for func in choice_update_functions:

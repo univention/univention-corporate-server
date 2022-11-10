@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.22-1) unstable; urgency=medium
+
+  * Bug #55409: rename old portal modules, which are not in use anymore,
+    so that no conflict in the UI happens
+
+ -- Florian Best <best@univention.de>  Fri, 09 Jun 2023 14:37:32 +0200
+
 univention-directory-manager-modules (15.0.21-1) unstable; urgency=medium
 
   * Bug #44997: move "VFS objects" into "Samba options"
