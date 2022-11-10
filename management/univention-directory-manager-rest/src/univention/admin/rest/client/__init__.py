@@ -65,10 +65,11 @@ else:
 
 class HTTPError(Exception):
 
-	def __init__(self, code, message, response):
-		# type: (int, str, Optional[requests.Response]) -> None
+	def __init__(self, code, message, response, error_details=None):
+		# type: (int, str, Optional[requests.Response], Optional[dict]) -> None
 		self.code = code
 		self.response = response
+		self.error_details = error_details
 		super().__init__(message)
 
 
@@ -208,21 +209,27 @@ class Session:
 		# type: (requests.Response, bool) -> Any
 		if response.status_code >= 399:
 			msg = f'{response.request.method} {response.url}: {response.status_code}'
+			error_details = None
 			try:
 				json = response.json()
 			except ValueError:
 				pass
 			else:
 				if isinstance(json, dict):
-					if 'error' in json:
-						server_message = json['error'].get('message')
-						# traceback = json['error'].get('traceback')
+					error_details = json.get('error', {})
+					try:
+						error_details['error'] = list(self.resolve_relations(json, 'udm:error'))
+					except _NoRelation:
+						pass
+					if error_details:
+						server_message = error_details.get('message')
+						# traceback = error_details.get('traceback')
 						if server_message:
 							msg += f'\n{server_message}'
 			errors = {400: BadRequest, 404: NotFound, 403: Forbidden, 401: Unauthorized, 412: PreconditionFailed, 422: UnprocessableEntity, 500: ServerError, 503: ServiceUnavailable}
 			cls = HTTPError
 			cls = errors.get(response.status_code, cls)
-			raise cls(response.status_code, msg, response)
+			raise cls(response.status_code, msg, response, error_details=error_details)
 		if response.headers.get('Content-Type') in ('application/json', 'application/hal+json'):
 			return response.json()
 		elif expect_json:
@@ -261,7 +268,10 @@ class Session:
 
 	def resolve_relation(self, entry, relation, name=None, template=None):
 		# type: (Dict, str, Optional[str], Optional[Dict[str, Any]]) -> Any
-		return next(self.resolve_relations(entry, relation, name, template))
+		try:
+			return next(self.resolve_relations(entry, relation, name, template))
+		except StopIteration:
+			raise _NoRelation(relation)
 
 
 class Client:

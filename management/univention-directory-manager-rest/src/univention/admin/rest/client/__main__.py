@@ -44,11 +44,8 @@ import argparse
 import ldap
 import ldap.dn
 
-import univention.config_registry
-from univention.admin.rest.client import UDM, ConnectionError, HTTPError, Unauthorized, NotFound, UnprocessableEntity, ServiceUnavailable
-
-ucr = univention.config_registry.ConfigRegistry()
-ucr.load()
+from univention.admin.rest.client import UDM, ConnectionError, HTTPError, Unauthorized, NotFound, UnprocessableEntity, ServerError, ServiceUnavailable
+from univention.config_registry import ucr
 
 
 class CLIClient:
@@ -129,7 +126,7 @@ class CLIClient:
 		try:
 			obj.save()
 		except UnprocessableEntity as exc:
-			self.print_error(str(exc))
+			self.handle_unprocessible_entity(exc.error_details)
 			raise SystemExit(2)
 
 	def set_properties(self, obj, args):
@@ -190,7 +187,15 @@ class CLIClient:
 		self.list_objects(args)
 
 	def list_objects(self, args):
+		try:
+			return self._list_objects(args)
+		except UnprocessableEntity as exc:
+			self.handle_unprocessible_entity(exc.error_details)
+			raise SystemExit(2)
+
+	def _list_objects(self, args):
 		module = self.get_module(args.object_type)
+
 		for entry in module.search(args.filter, args.position, opened=True, superordinate=args.superordinate):
 			self.print_line('')
 			self.print_line('DN', entry.dn)
@@ -273,7 +278,7 @@ class CLIClient:
 		print(''.join(v for v in value if v not in '\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x7f'), file=stream)
 
 	def print_warning(self, value='', prefix='Warning'):
-		self.print_line('', value, prefix, stream=sys.stderr)
+		self.print_line(prefix, value, '', stream=sys.stderr)
 
 	def print_error(self, value='', prefix='Error'):
 		self.print_line(prefix, value, '', stream=sys.stderr)
@@ -335,6 +340,17 @@ class CLIClient:
 
 	def license(self, args):
 		pass
+
+	def handle_unprocessible_entity(self, error):
+		for err in error['error']:
+			location = '.'.join(err['location'][1:])
+			self.print_error(f"{location}({err['type']}): {err['message']}")
+
+	def handle_server_error(self, error):
+		for e in ('title', 'message', 'traceback'):
+			error.setdefault(e, '')
+		self.print_error('%(title)s: %(message)s\n%(traceback)s' % error)
+		self.handle_unprocessible_entity(error)
 
 
 def Unicode(bytestring):
@@ -442,6 +458,11 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 		parser.error('The connection to the service failed. Retry again later.')
 	except Unauthorized:
 		parser.error('The authentication has failed.')
+	except ServerError as exc:
+		error = exc.error_details
+		if error:
+			client.handle_server_error(error)
+		parser.error(str(exc))
 	except ServiceUnavailable:
 		parser.error('The service is currently unavailable. Retry again later.')
 
