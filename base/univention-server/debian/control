@@ -145,6 +145,7 @@ Depends:
  univention-directory-listener,
  univention-directory-manager-tools,
  univention-home-mounter,
+ univention-keycloak-client,
  univention-network-common,
  univention-ldap-client,
  univention-initrd,
