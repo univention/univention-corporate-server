@@ -75,13 +75,20 @@ Add a new file to **ucs/test/scenarios/kvm-templates**. In this scenario you can
 
 To create the template add the following steps for every system in the scenario file:
 ```
+recover: 9
+…
+[section]
+…
+command8:
  . utils.sh && create_version_file_tmp_ucsver "[ENV:TESTING]"
- GET /tmp/ucs.ver ucs.ver
+ GET /tmp/ucs.ver ucs_[SELF].ver
  . base_appliance.sh && appliance_poweroff
  SSH_DISCONNECT
  SERVER id=$(virsh domid SELF_KVM_NAME) && [ -n "${id#-}" ] && virsh event --domain "$id" --event lifecycle --timeout 120 --timestamp || :
- SOURCE ucs.ver
+ SOURCE ucs_[SELF].ver
  SERVER ucs-kt-put -C single -O Others -c "[SELF_KVM_NAME]" "[ucsver]_ucs-samba-replica_amd64" --remove-old-templates='[ENV:TARGET_VERSION]+e*_ucs-samba-replica_amd64.tar.gz' --keep-last-templates=1
+command9:
+ LOCAL rm -f ucs_[SELF].ver
 ```
 A naming convention is that the template name should start with the UCS version (including errata level, e.g. 5.0-0+e152). This is the first part in the example above.
 

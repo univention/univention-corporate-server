@@ -30,13 +30,14 @@ ucr set internal/kvm/template/old/ip="$(ucr get interfaces/eth0/address)"
 apt-get -y remove firefox-esr
 apt-get clean
 echo -e "version=@%@version/version@%@-@%@version/patchlevel@%@-$(date +%Y-%m-%d)\\nversion_version=@%@version/version@%@" | ucr filter>/tmp/ucs.ver
-GET /tmp/ucs.ver ucs.ver
+GET /tmp/ucs.ver ucs_[SELF].ver
 . base_appliance.sh && appliance_poweroff
 SSH_DISCONNECT
-LOCAL sleep 60
-SOURCE ucs.ver
-SERVER ucs-kt-put -C single -O Others -c "[{section}_KVM_NAME]" "[version]_{template_name}_amd64" --remove-old-templates='[version_version]-*_{template_name}_amd64.tar.gz' --keep-last-templates=1
-""".format(section=section, template_name=template_name),
+SERVER id=$(virsh domid SELF_KVM_NAME) && [ -n "${{id#-}}" ] && virsh event --domain "$id" --event lifecycle --timeout 120 --timestamp || :
+SOURCE ucs_[SELF].ver
+SERVER ucs-kt-put -C single -O Others -c "[SELF_KVM_NAME]" "[version]_{template_name}_amd64" --remove-old-templates='[version_version]-*_{template_name}_amd64.tar.gz' --keep-last-templates=1
+LOCAL rm -f ucs_[SELF].ver
+""".format(template_name=template_name),
     )
     config.set(section, "command{new_recover_command}".format(new_recover_command=new_recover_command), "")
 
