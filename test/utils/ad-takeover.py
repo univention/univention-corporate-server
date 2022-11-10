@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
@@ -31,36 +31,31 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import subprocess
 import socket
-import univention.lib.umc
+import subprocess
 import sys
 import traceback
-
-from optparse import OptionParser
-from univention.lib.umc import Client
+from argparse import ArgumentParser
 from time import sleep
-from univention.config_registry import ConfigRegistry
 
-ucr = ConfigRegistry()
+import univention.lib.umc
+from univention.lib.umc import Client
+
 client = None
 finished = False
 
-parser = OptionParser()
-parser.add_option('-H', '--host', dest='host', default='localhost', help='host to connect to', metavar='HOST')
-parser.add_option('-u', '--user', dest='username', help='username', metavar='UID', default='Administrator')
-parser.add_option('-p', '--password', dest='password', default='univention', help='password', metavar='PASSWORD')
-parser.add_option('-D', '--domain_host', dest='domain_host', default=None, help='domain controller to connect to', metavar='DOMAIN_HOST')
-parser.add_option('-A', '--domain_admin', dest='domain_admin', help='domain admin username', metavar='DOMAIN_UID', default='administrator')
-parser.add_option('-P', '--domain_password', dest='domain_password', default='Univention@99', help='domain admin password', metavar='DOMAIN_PASSWORD')
+parser = ArgumentParser()
+parser.add_argument('-H', '--host', default='localhost', help='host to connect to')
+parser.add_argument('-u', '--user', dest='username', help='username', metavar='UID', default='Administrator')
+parser.add_argument('-p', '--password', default='univention', help='password')
+parser.add_argument('-D', '--domain_host', default=None, help='domain controller to connect to', required=True)
+parser.add_argument('-A', '--domain_admin', help='domain admin username', metavar='DOMAIN_UID', default='administrator')
+parser.add_argument('-P', '--domain_password', default='Univention@99', help='domain admin password')
 
-(options, args) = parser.parse_args()
-
-if not options.domain_host:
-	parser.error('Please specify an AD DC host address!')
+options = parser.parse_args()
 
 
-def domainhost_unreachable(client):
+def domainhost_unreachable(client: Client) -> bool:
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	s.settimeout(2)
 	try:
@@ -70,13 +65,13 @@ def domainhost_unreachable(client):
 		return True
 
 
-def get_progress(client):
+def get_progress(client: Client) -> None:
 	while not finished:
 		client.umc_command('adtakeover/progress')
 		sleep(1)
 
 
-def wait(client):
+def wait(client: Client) -> None:
 	path = 'adtakeover/progress'
 	waited = 0
 	result = None

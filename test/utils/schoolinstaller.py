@@ -32,81 +32,111 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-from argparse import ArgumentParser
+
 import sys
 import time
 import traceback
+from argparse import ArgumentParser, Namespace
+from typing import Any, Dict
 
+from univention.config_registry import ucr
 from univention.lib.umc import Client, ConnectionError, HTTPError
 
-from univention.config_registry import ConfigRegistry
-ucr = ConfigRegistry()
-ucr.load()
 
-parser = ArgumentParser()
-parser.add_argument(
-	'-H', '--host', default='%s.%s' % (ucr.get('hostname'), ucr.get('domainname')),
-	help='host to connect to', metavar='HOST')
-parser.add_argument(
-	'-u', '--user', dest='username',
-	help='username', metavar='UID', default='Administrator')
-parser.add_argument(
-	'-p', '--password',
-	help='password', metavar='PASSWORD')
-parser.add_argument(
-	'-o', '--ou',
-	help='ou name of the school', metavar='OU')
-parser.add_argument(
-	'-S', '--single-server', dest='setup',
-	action='store_const', const='singlemaster',
-	help='install a single server setup on a master')
-parser.add_argument(
-	'-M', '--multi-server', dest='setup',
-	action='store_const', const='multiserver',
-	help='install a multi server setup')
-parser.add_argument(
-	'-E', '--educational-server-name', dest='name_edu_server',
-	help='name of the educational server', metavar='NAME_EDU_SLAVE')
-parser.add_argument(
-	'-e', '--educational-server', dest='server_type',
-	action='store_const', const='educational',
-	help='install a dc slave in educational network (DEFAULT)')
-parser.add_argument(
-	'-a', '--administrative-server', dest='server_type',
-	action='store_const', const='administrative',
-	help='install a dc slave in administrative network')
-parser.add_argument(
-	'-m', '--master-host', dest='master', default=ucr['ldap/master'],
-	help='on a slave the master host needs to be specified', metavar='HOST')
-parser.add_argument(
-	'-s', '--samba-version', dest='samba', default='4',
-	help='the version of samba, either 3 or 4', metavar='HOST')
+def parse_args() -> Namespace:
+	parser = ArgumentParser()
+	parser.add_argument(
+		'-H', '--host',
+		default='%(hostname)s.%(domainname)s' % ucr,
+		help='UMC host to connect to',
+	)
+	parser.add_argument(
+		'-u', '--user',
+		dest='username',
+		required=True,
+		help='UMC username',
+		metavar='UID',
+		default='Administrator',
+	)
+	parser.add_argument(
+		'-p', '--password',
+		required=True,
+		help='UMC password',
+	)
+	parser.add_argument(
+		'-o', '--ou',
+		help='OU name of the school',
+	)
 
-options = parser.parse_args()
+	group = parser.add_mutually_exclusive_group(required=True)
+	group.add_argument(
+		'-S', '--single-server',
+		dest='setup',
+		action='store_const',
+		const='singlemaster',
+		help='install a single server setup on a Primary',
+	)
+	group.add_argument(
+		'-M', '--multi-server',
+		dest='setup',
+		action='store_const',
+		const='multiserver',
+		help='install a multi server setup',
+	)
 
-if ucr['server/role'] == 'domaincontroller_slave' and not options.server_type:
-	parser.error('Please specify the slave type (--educational-server or --administrative-server)!')
+	parser.add_argument(
+		'-E', '--educational-server-name',
+		dest='name_edu_server',
+		help='name of the educational server',
+		metavar='EDU-HOST',
+	)
 
-if ucr['server/role'] == 'domaincontroller_slave' and options.server_type == 'administrative' and not options.name_edu_server:
-	parser.error('Please specify the name of the educational slave when installing an administrative slave (-E)!')
+	group = parser.add_mutually_exclusive_group(required=ucr['server/role'] == 'domaincontroller_slave')
+	parser.add_argument(
+		'-e', '--educational-server',
+		dest='server_type',
+		action='store_const',
+		const='educational',
+		help='install a DC Replica in educational network (DEFAULT)',
+	)
+	parser.add_argument(
+		'-a', '--administrative-server',
+		dest='server_type',
+		action='store_const',
+		const='administrative',
+		help='install a DC Replica in administrative network',
+	)
 
-if not options.setup:
-	parser.error('Please specify a setup type: multi server (-M) or single server (-S)!')
+	parser.add_argument(
+		'-m', '--master-host',
+		dest='master',
+		default=ucr['ldap/master'],
+		required=ucr['server/role'] != 'domaincontroller_master',
+		help='on a Replica the Primary host needs to be specified',
+		metavar='HOST',
+	)
+	parser.add_argument(
+		'-s', '--samba-version',
+		dest='samba',
+		default='4',
+		choices=("3", "4"),
+		help='the version of Samba, either 3 or 4',
+	)
 
-if options.samba not in ('3', '4'):
-	parser.error('Samba version needs to be either 3 or 4!')
+	options = parser.parse_args()
 
-if ucr['server/role'] != 'domaincontroller_master' and not options.master:
-	parser.error('Please specify a master host (-m)!')
+	if ucr['server/role'] == 'domaincontroller_slave' and options.server_type == 'administrative' and not options.name_edu_server:
+		parser.error('Please specify the name of the educational slave when installing an administrative slave (-E)!')
 
-if not options.username or not options.password:
-	parser.error('Please specify username (-u) and password (-p)!')
+	if not options.ou:
+		if ucr['server/role'] == 'domaincontroller_slave' or options.setup == 'singlemaster':
+			parser.error('Please specify a school OU (-o)!')
+		options.ou = ''
 
-if not options.ou:
-	if ucr['server/role'] == 'domaincontroller_slave' or options.setup == 'singlemaster':
-		parser.error('Please specify a school OU (-o)!')
-	options.ou = ''
+	return options
 
+
+options = parse_args()
 client = Client(options.host, options.username, options.password, language='en-US')
 
 params = {
@@ -130,7 +160,7 @@ if result and not result.get('success', True):  # backwards compatibility
 	sys.exit(1)
 
 print('=== INSTALLATION STARTED ===')
-status = {'finished': False}
+status: Dict[str, Any] = {'finished': False}
 failcount = 0
 last_message = None
 while not status['finished']:

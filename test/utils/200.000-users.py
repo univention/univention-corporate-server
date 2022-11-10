@@ -1,14 +1,14 @@
-#!/usr/bin/python
+#!/usr/bin/python3
+
+from typing import Dict, List
 
 import univention.admin.modules as modules
 import univention.admin.uldap as uldap
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 
 
 lo, position = uldap.getAdminConnection()
-ucr = ConfigRegistry()
-ucr.load()
-base = ucr.get('ldap/base')
+base = ucr['ldap/base']
 number_of_users = 200000
 # every 200th group is a big group containing all users -> 100
 # every 350th group is a group that contains 3 nested groups -> 57
@@ -22,12 +22,13 @@ users = modules.get('users/user')
 modules.init(lo, position, users)
 groups = modules.get('groups/group')
 modules.init(lo, position, groups)
-all_users = []
-all_groups = []
-group_member = {}
+
+all_users: List[str] = []
+all_groups: List[str] = []
+group_member: Dict[int, List[str]] = {}
 
 position.setDn('cn=users,%s' % (base,))
-for i in range(0, number_of_users):
+for i in range(number_of_users):
 	name = "%s%s" % (username, i)
 	user = users.lookup(None, lo, "uid=%s" % name)
 	if not user:
@@ -41,15 +42,14 @@ for i in range(0, number_of_users):
 	else:
 		print('get user %s' % name)
 		dn = user[0].dn
-	group = i % number_of_groups
-	if not group_member.get(group):
-		group_member[group] = []
-	group_member[group].append(dn)
+
+	gid = i % number_of_groups
+	group_member.setdefault(gid, []).append(dn)
 	all_users.append(dn)
 
 position.setDn('cn=groups,%s' % (base,))
-has_nested_group = []
-for i in range(0, number_of_groups):
+has_nested_group: List[str] = []
+for i in range(number_of_groups):
 	name = "%s%s" % (groupname, i)
 	group = groups.lookup(None, lo, "cn=%s" % name)
 	new_members = group_member.get(i, [])

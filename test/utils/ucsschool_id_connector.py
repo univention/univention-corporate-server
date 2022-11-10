@@ -1,8 +1,8 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 
 import json
 
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 from univention.udm import UDM
 from univention.udm.exceptions import CreateError
 
@@ -23,7 +23,7 @@ MAPPED_UDM_PROPERTIES = [
 # if changed: check kelvin-api/tests/test_route_user.test_search_filter_udm_properties()
 
 
-def setup_kelvin_traeger():
+def setup_kelvin_traeger() -> None:
 	with open('/var/lib/ucs-school-import/configs/kelvin.json', 'r+w') as fp:
 		config = json.load(fp)
 		config['configuration_checks'] = ['defaults', 'class_overwrites', 'mapped_udm_properties']
@@ -32,11 +32,9 @@ def setup_kelvin_traeger():
 		json.dump(config, fp, indent=4, sort_keys=True)
 
 
-def create_extended_attr():
-	ucr = ConfigRegistry()
-	ucr.load()
+def create_extended_attr() -> None:
 	sea_mod = UDM.admin().version(1).get('settings/extended_attribute')
-	ldap_base = ucr.get('ldap/base')
+	ldap_base = ucr['ldap/base']
 	ucsschool_id_connector_last_update = sea_mod.new(superordinate='cn=univention,{}'.format(ldap_base))
 	ucsschool_id_connector_last_update.position = 'cn=custom attributes,cn=univention,{}'.format(ldap_base)
 	props = {
@@ -64,6 +62,7 @@ def create_extended_attr():
 	}
 	for key, value in props.items():
 		setattr(ucsschool_id_connector_last_update.props, key, value)
+
 	ucsschool_id_connector_last_update.options.extend(('ucsschoolStudent', 'ucsschoolTeacher', 'ucsschoolStaff', 'ucsschoolAdministrator'))
 	try:
 		ucsschool_id_connector_last_update.save()
@@ -92,6 +91,7 @@ def create_extended_attr():
 	}
 	for key, value in props.items():
 		setattr(ucsschool_id_connector_pw.props, key, value)
+
 	ucsschool_id_connector_pw.options.extend(('ucsschoolStudent', 'ucsschoolTeacher', 'ucsschoolStaff', 'ucsschoolAdministrator'))
 	try:
 		ucsschool_id_connector_pw.save()
