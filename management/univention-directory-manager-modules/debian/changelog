@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.13-18) unstable; urgency=medium
+
+  * Bug #55413: Top-level imports
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 11 Nov 2022 00:38:46 +0100
+
 univention-directory-manager-modules (15.0.13-17) unstable; urgency=medium
 
   * Bug #55413: Fixes for dns/forward_zone

@@ -77,6 +77,11 @@ from univention.uldap import getMachineConnection
 if TYPE_CHECKING:
 	from univention.admin.uldap import access  # noqa: F401
 
+try:
+	from email_validator import validate_email, EmailNotValidError
+except ImportError:  # Python 2.7
+	validate_email = EmailNotValidError = None
+
 translation = localization.translation('univention/admin')
 _ = translation.translate
 
@@ -2599,13 +2604,11 @@ class emailAddress(simple):
 
 	@classmethod
 	def parse(self, text):
-		if six.PY3:
-			if configRegistry.is_true('directory/manager/mail-address/extra-validation'):
-				from email_validator import validate_email, EmailNotValidError
-				try:
-					validate_email(text, allow_smtputf8=False, check_deliverability=False)
-				except EmailNotValidError as exc:
-					raise univention.admin.uexceptions.valueError(_("Not a valid email address!") + " " + str(exc))
+		if validate_email and configRegistry.is_true('directory/manager/mail-address/extra-validation'):
+			try:
+				validate_email(text, allow_smtputf8=False, check_deliverability=False)
+			except EmailNotValidError as exc:
+				raise univention.admin.uexceptions.valueError(_("Not a valid email address!") + " " + str(exc))
 		if not text.startswith('@') and \
 			'@' in text and \
 			not text.endswith('@') and \
