@@ -62,9 +62,11 @@ install_kelvin_api () {
 }
 
 install_mv_idm_gw_sender_ext_attrs () {
+  local lb
+  lb="$(ucr get ldap/base)"
   udm settings/extended_attribute create \
     --ignore_exists \
-    --position "cn=custom attributes,cn=univention,$(ucr get ldap/base)" \
+    --position "cn=custom attributes,cn=univention,${lb}" \
     --set name="mvDst" \
     --set CLIName="mvDst" \
     --set shortDescription="mvDst" \
@@ -83,7 +85,7 @@ install_mv_idm_gw_sender_ext_attrs () {
     --set disableUDMWeb=1
   udm settings/extended_attribute create \
     --ignore_exists \
-    --position "cn=custom attributes,cn=univention,$(ucr get ldap/base)" \
+    --position "cn=custom attributes,cn=univention,${lb}" \
     --set name="UUID" \
     --set CLIName="UUID" \
     --set shortDescription="UUID" \
@@ -102,7 +104,7 @@ install_mv_idm_gw_sender_ext_attrs () {
     --set disableUDMWeb=0
   udm settings/extended_attribute create \
     --ignore_exists \
-    --position "cn=custom attributes,cn=univention,$(ucr get ldap/base)" \
+    --position "cn=custom attributes,cn=univention,${lb}" \
     --set name="mvStaffType" \
     --set CLIName="mvStaffType" \
     --set shortDescription="mvStaffType" \
@@ -122,9 +124,11 @@ install_mv_idm_gw_sender_ext_attrs () {
 }
 
 install_mv_idm_gw_receiver_ext_attrs () {
+  local lb
+  lb="$(ucr get ldap/base)"
   udm settings/extended_attribute create \
     --ignore_exists \
-    --position "cn=custom attributes,cn=univention,$(ucr get ldap/base)" \
+    --position "cn=custom attributes,cn=univention,${lb}" \
     --set name="stamm_dienststelle" \
     --set CLIName="stamm_dienststelle" \
     --set shortDescription="Stammdienststelle" \
@@ -153,7 +157,7 @@ install_mv_idm_gw_receiver_ext_attrs () {
     --set disableUDMWeb=0
   udm settings/extended_attribute create \
     --ignore_exists \
-    --position "cn=custom attributes,cn=univention,$(ucr get ldap/base)" \
+    --position "cn=custom attributes,cn=univention,${lb}" \
     --set name="idm_gw_last_update" \
     --set CLIName="idm_gw_last_update" \
     --set shortDescription="Date of last update by the IDM GW" \
@@ -182,7 +186,7 @@ install_mv_idm_gw_receiver_ext_attrs () {
     --set disableUDMWeb=0
   udm settings/extended_attribute create \
     --ignore_exists \
-    --position "cn=custom attributes,cn=univention,$(ucr get ldap/base)" \
+    --position "cn=custom attributes,cn=univention,${lb}" \
     --set name="idm_gw_pw_sync" \
     --set CLIName="idm_gw_pw_sync" \
     --set shortDescription="IDM Gateway password sync" \

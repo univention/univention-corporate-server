@@ -326,7 +326,7 @@ wait_for_process () {
 }
 
 wait_for_slapd () {
-  wait_for_process 600 1 /usr/sbin/slapd
+	wait_for_process 600 1 /usr/sbin/slapd
 }
 
 wait_for_setup_process () {
@@ -455,13 +455,13 @@ wait_for_repo_server () {
 
 install_ucs_test () {
 	wait_for_repo_server || return 1
-	install_with_unmaintained ucs-test || return 1
+	install_with_unmaintained ucs-test
 }
 
 install_ucs_test_from_errata_test () {
 	wait_for_repo_server || return 1
 	bash /root/activate-errata-test-scope.sh || return 1
-	install_ucs_test || return 1
+	install_ucs_test
 }
 
 install_ucs_test_checks_from_errata_test () {
@@ -891,19 +891,21 @@ monkeypatch () {
 
 import_license () {
 	local users="${1:-50}"
+	local lb
+	lb="$(ucr get ldap/base)"
 	# wait for server
 	local server="license.univention.de" i
 	for i in $(seq 1 100); do
 		nc -w 3 -z "$server" 443 && break
 		sleep 1
 	done
-	python -m shared-utils/license_client "$(ucr get ldap/base)" -u "$users" "$(date -d '+6 month' '+%d.%m.%Y')"
+	python -m shared-utils/license_client "${lb}" -u "$users" "$(date -d '+6 month' '+%d.%m.%Y')"
 	# It looks like we have in some AD member setups problems with the DNS resolution. Try to use
 	# the static variante (Bug #46448)
 	if [ ! -e ./ValidTest.license ]; then
 		ucr set "hosts/static/85.184.250.151=$server"
 		nscd -i hosts
-		python -m shared-utils/license_client "$(ucr get ldap/base)" -u "$users" "$(date -d '+6 month' '+%d.%m.%Y')"
+		python -m shared-utils/license_client "${lb}" -u "$users" "$(date -d '+6 month' '+%d.%m.%Y')"
 		ucr unset hosts/static/85.184.250.151
 		nscd -i hosts
 	fi
@@ -999,7 +1001,7 @@ assert_app_is_installed () {
 	univention-app info
 	local rv=0 app
 	for app in "$@"; do
-		 univention-app info | grep -q "Installed: .*\b$app\b.*" || rv=$?
+		univention-app info | grep -q "Installed: .*\b$app\b.*" || rv=$?
 	done
 	return $rv
 }
@@ -1166,7 +1168,6 @@ fake_initial_schema () {
 	rm -f "$tmp"
 }
 
-
 online_fsresize () {
 	# cloud-initramfs-growroot doesn't always work (bug #49337)
 	# Try on-line resizing
@@ -1179,9 +1180,8 @@ online_fsresize () {
 }
 
 winrm_config () {
-	local domain=${1:?missing domain} password=${2:?missing password} user=${3:?missing user} client=${4:?missing client} rv=0
-	echo -e "[default]\ndomain = ${domain}\npassword = ${password}\nuser = ${user}\nclient = ${client}" > /root/.ucs-winrm.ini || rv=1
-	return $rv
+	local domain=${1:?missing domain} password=${2:?missing password} user=${3:?missing user} client=${4:?missing client}
+	echo -e "[default]\ndomain = ${domain}\npassword = ${password}\nuser = ${user}\nclient = ${client}" > /root/.ucs-winrm.ini
 }
 
 # setup for the ucs-$role kvm template (provisioned but not joined)
@@ -1209,7 +1209,7 @@ add_extra_apt_scope () {
 	if [ -n "$SCOPE" ]; then
 		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/all/" > /etc/apt/sources.list.d/99_extra_scope.list
 		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/\$(ARCH)/" >> /etc/apt/sources.list.d/99_extra_scope.list
-		apt-get update -y || true  # ignore failure, univention-upgrade will do this as well
+		apt-get update -q || true  # ignore failure, univention-upgrade will do this as well
 	fi
 }
 
@@ -1312,7 +1312,7 @@ add_to_ssh_environment () {
 
 # make env file available in ssh session
 set_env_variables_from_env_file () {
-	local env_file="${1:?missing env file}"
+	local env_file="${1:?missing env file}" entry
 	while read -r entry; do
 		add_to_ssh_environment "$entry"
 	done < "$env_file"

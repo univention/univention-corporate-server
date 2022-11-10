@@ -37,7 +37,6 @@ ansible_preperation () {
 	local traeger2_domain="${2:?missing traeger2_domain}"
 	local repo_user="${3:?missing repo_user}"
 	local repo_password_file="${4:?missing repo_password_file}"
-	local rv=0
 	# Setup passwordless ssh login for ansible
 	ssh-keygen -t rsa -b 4096 -f /root/.ssh/id_rsa -q -N ""
 	cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
@@ -45,14 +44,14 @@ ansible_preperation () {
 	# Download ansible scripts
 	#wget "http://service.knut.univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz"
 	wget --user "$repo_user" --password="$(< "$repo_password_file")" \
-		"https://service.software-univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz" || rv=$?
+		"https://service.software-univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz" || return $?
 	tar -xf ansible_playbook.tar.gz
-	cd deployment || rv=$?
+	cd deployment || return $?
 	# check the jenkins-data repo for the following files
 	cp /root/id-broker-TESTING.cert id-broker.cert
 	cp /root/id-broker-TESTING.key id-broker.key
 	# shellcheck disable=SC1091
-	source /root/id-broker-secrets.sh
+	. /root/id-broker-secrets.sh
 	sed -i "s/broker.test/$(hostname -d)/g" environments/jenkins/hosts
 	sed -i "s/CLIENT_SECRET=CLIENT_SECRET/CLIENT_SECRET=$UTA_CLIENT_SECRET/g" /etc/univention-test-app.conf
 	sed -i "s/ID_BROKER_KEYCLOAK_FQDN=ID_BROKER_KEYCLOAK_FQDN/ID_BROKER_KEYCLOAK_FQDN=kc.$(hostname -d)/g" /etc/univention-test-app.conf
@@ -60,21 +59,18 @@ ansible_preperation () {
 	echo "EXTERNAL_ROOT_URL=https://$(hostname -f)/univention-test-app/" >> /etc/univention-test-app.conf
 	curl -k "https://ucs-sso.$traeger1_domain/simplesamlphp/saml2/idp/metadata.php" > files/jenkins/univention_id_broker/idp_metadata/traeger1_metadata.xml
 	curl -k "https://ucs-sso.$traeger2_domain/simplesamlphp/saml2/idp/metadata.php" > files/jenkins/univention_id_broker/idp_metadata/traeger2_metadata.xml
-	return $rv
 }
 
 create_certificate_kc_vhost () {
-	univention-certificate new -name kc.broker.test -id 658b0aaf-48dc-4a32-991f-db46648b22a5 -days 365 || return 1
-	return 0
+	univention-certificate new -name kc.broker.test -id 658b0aaf-48dc-4a32-991f-db46648b22a5 -days 365
 }
 
 wait_for_certificate_replication () {
 	local end=$(($(date +%s)+300))
 	while [ "$(date +%s)" -lt "$end" ]
 	do
-		if [ -d "/etc/univention/ssl/kc.broker.test/" ]; then
+		[ -d "/etc/univention/ssl/kc.broker.test/" ] &&
 			return 0
-		fi
 		sleep 5
 	done
 	return 1
@@ -90,16 +86,13 @@ apache_custom_vhosts () {
 	sed -i "s/DOMAIN/$domain/g" univention-vhosts.conf
 	cp /root/keycloak_ProxyPass.conf.example /var/lib/keycloak/keycloak_ProxyPass.conf
 	sed -i "s/DOMAIN/$domain/g" /var/lib/keycloak/keycloak_ProxyPass.conf
-	service apache2 restart || return 1
-	return 0
+	service apache2 restart
 }
 
 ansible_run_keycloak_configuration () {
-	local rv=0
-	cd deployment || rv=$?
+	cd deployment || return $?
 	/usr/local/bin/ansible-galaxy install -r requirements.yml
-	/usr/local/bin/ansible-playbook site.yml --vault-password-file /root/idbroker_jenkins_ansible.password -i inventories/jenkins || rv=$?
-	return $rv
+	/usr/local/bin/ansible-playbook site.yml --vault-password-file /root/idbroker_jenkins_ansible.password -i inventories/jenkins
 }
 
 # register IDBroker as service in ucs IdP
@@ -107,14 +100,15 @@ register_idbroker_as_sp_in_ucs () {
 	local broker_fqdn="${1:?missing broker_fqdn}"
 	local broker_ip="${2:?missing broker_ip}"
 	local keycloak_identifier="${3:?missing keycloak_identifier=}"
-	local rv=0
+	local lb
+	lb="$(ucr get ldap/base)"
 	ucr set hosts/static/"$broker_ip"="$broker_fqdn"
 	udm saml/idpconfig modify \
-		--dn "id=default-saml-idp,cn=univention,$(ucr get ldap/base)" \
+		--dn "id=default-saml-idp,cn=univention,${lb}" \
 		--append LdapGetAttributes=entryUUID
 	curl -k "https://$broker_fqdn/auth/realms/ID-Broker/broker/$keycloak_identifier/endpoint/descriptor" > metadata.xml
 	udm saml/serviceprovider create \
-		--position "cn=saml-serviceprovider,cn=univention,$(ucr get ldap/base)" \
+		--position "cn=saml-serviceprovider,cn=univention,${lb}" \
 		--set serviceProviderMetadata="$(cat metadata.xml)" \
 		--set AssertionConsumerService="https://$broker_fqdn/auth/realms/ID-Broker/broker/$keycloak_identifier/endpoint" \
 		--set Identifier="https://$broker_fqdn/auth/realms/ID-Broker/broker/$keycloak_identifier/endpoint/descriptor" \
@@ -123,15 +117,14 @@ register_idbroker_as_sp_in_ucs () {
 		--set simplesamlAttributes=TRUE \
 		--set attributesNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" \
 		--set LDAPattributes='entryUUID entryUUID' || rv=$?
-	return $rv
-
 }
 
 add_bettermarks_app_portal_link () {
 	local keycloak_identifier="${1:?missing keycloak_identifier=}"
-	local rv=0
+	local lb
+	lb="$(ucr get ldap/base)"
 	udm settings/portal_entry create \
-		--position "cn=portal,cn=univention,$(ucr get ldap/base)" \
+		--position "cn=portal,cn=univention,${lb}" \
 		--set activated=TRUE \
 		--set authRestriction=anonymous \
 		--set category=service \
@@ -140,16 +133,17 @@ add_bettermarks_app_portal_link () {
 		--set link="https://acc.bettermarks.com/auth/univention/DE_univention?kc_idp_hint=$keycloak_identifier" \
 		--set linkTarget=useportaldefault \
 		--set name=bettermarks \
-		--set portal="cn=ucsschool_demo_portal,cn=portal,cn=univention,$(ucr get ldap/base)" \
-		--set icon="$(base64 bettermarks-logo.svg)" || rv=$?
+		--set portal="cn=ucsschool_demo_portal,cn=portal,cn=univention,${lb}" \
+		--set icon="$(base64 bettermarks-logo.svg)"
 }
 
 add_test_app_portal_link () {
 	local broker_fqdn="${1:?missing broker_fqdn}"
 	local keycloak_identifier="${2:?missing keycloak_identifier=}"
-	local rv=0
+	local lb
+	lb="$(ucr get ldap/base)"
 	udm settings/portal_entry create \
-		--position "cn=portal,cn=univention,$(ucr get ldap/base)" \
+		--position "cn=portal,cn=univention,${lb}" \
 		--set activated=TRUE \
 		--set authRestriction=anonymous \
 		--set category=service \
@@ -158,73 +152,74 @@ add_test_app_portal_link () {
 		--set link="https://$broker_fqdn/univention-test-app/?kc_idp_hint=$keycloak_identifier&pkce=y" \
 		--set linkTarget=useportaldefault \
 		--set name=univention-test-app \
-		--set portal="cn=ucsschool_demo_portal,cn=portal,cn=univention,$(ucr get ldap/base)" \
-		--set icon="$(base64 oidc-logo.svg)" || rv=$?
-	return $rv
+		--set portal="cn=ucsschool_demo_portal,cn=portal,cn=univention,${lb}" \
+		--set icon="$(base64 oidc-logo.svg)"
 }
 
 create_id_connector_school_authority_config () {
-  local domain_admin_password="${1:?missing domain_admin_password}"
-  local provisioning_fqdn="${2:?missing provisioning_fqdn}"
-  local config_name="${3:?missing config_name}"
-  local username="${4:?missing username}"
-  local password="${5:?missing password}"
+	local domain_admin_password="${1:?missing domain_admin_password}"
+	local provisioning_fqdn="${2:?missing provisioning_fqdn}"
+	local config_name="${3:?missing config_name}"
+	local username="${4:?missing username}"
+	local password="${5:?missing password}"
+	local token
 
-  token="$(curl -s -X POST "https://$(hostname -f)/ucsschool-id-connector/api/token" \
-    -H "accept: application/json" \
-    -H "Content-Type:application/x-www-form-urlencoded" \
-    -d "username=Administrator" \
-    -d "password=$domain_admin_password" \
-    | python -c "import json, sys; print(json.loads(sys.stdin.read())['access_token'])" \
-    )"
-  curl -X POST "https://$(hostname -f)/ucsschool-id-connector/api/v1/school_authorities" \
-    -H "accept: application/json" \
-    -H "Authorization: Bearer $token" \
-    -H "Content-Type: application/json" \
-    -d "{
-      \"name\": \"$config_name\",
-      \"active\": true,
-      \"url\": \"https://$provisioning_fqdn/\",
-      \"plugins\": [\"id_broker-users\", \"id_broker-groups\"],
-      \"plugin_configs\": {
-          \"id_broker\": {
-              \"password\": \"$password\",
-              \"username\": \"$username\",
-              \"version\": 1
-          }
-      }
-  }"
+	token="$(curl -s -X POST "https://$(hostname -f)/ucsschool-id-connector/api/token" \
+		-H 'accept: application/json' \
+		-H 'Content-Type:application/x-www-form-urlencoded' \
+		-d 'username=Administrator' \
+		-d "password=$domain_admin_password" |
+		python -c "import json, sys; print(json.loads(sys.stdin.read())['access_token'])")"
+	curl -X POST "https://$(hostname -f)/ucsschool-id-connector/api/v1/school_authorities" \
+		-H 'accept: application/json' \
+		-H "Authorization: Bearer $token" \
+		-H 'Content-Type: application/json' \
+		-d "{
+				\"name\": \"$config_name\",
+				\"active\": true,
+				\"url\": \"https://$provisioning_fqdn/\",
+				\"plugins\": [\"id_broker-users\", \"id_broker-groups\"],
+				\"plugin_configs\": {
+					\"id_broker\": {
+						\"password\": \"$password\",
+						\"username\": \"$username\",
+						\"version\": 1
+					}
+				}
+		}"
 }
 
 create_school_users_classes () {
-  local ou1="ou1"
-  local ou2="ou2"
+	local ou1="ou1"
+	local ou2="ou2"
+	local lb
+	lb="$(ucr get ldap/base)"
 
-  /usr/share/ucs-school-import/scripts/create_ou "$ou1"
-  /usr/share/ucs-school-import/scripts/create_ou "$ou2"
-  i=1; python -m ucsschool.lib.models create --name "stud${i}"  --set firstname "Traeger${i}" --set lastname "Student${i}" --set password univention --school DEMOSCHOOL Student
-  i=1; python -m ucsschool.lib.models create --name "teach${i}" --set firstname "Traeger${i}" --set lastname "Teacher${i}" --set password univention --school DEMOSCHOOL Teacher
-  i=2; python -m ucsschool.lib.models create --name "stud${i}"  --set firstname "Traeger${i}" --set lastname "Student${i}" --set password univention --school DEMOSCHOOL --append schools DEMOSCHOOL --append schools "$ou1" Student
-  i=2; python -m ucsschool.lib.models create --name "teach${i}" --set firstname "Traeger${i}" --set lastname "Teacher${i}" --set password univention --school DEMOSCHOOL --append schools DEMOSCHOOL --append schools "$ou1" Teacher
-  i=3; python -m ucsschool.lib.models create --name "stud${i}"  --set firstname "Traeger${i}" --set lastname "Student${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Student
-  i=3; python -m ucsschool.lib.models create --name "teach${i}" --set firstname "Traeger${i}" --set lastname "Teacher${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Teacher
-  python -m ucsschool.lib.models modify --dn "cn=DEMOSCHOOL-Democlass,cn=klassen,cn=schueler,cn=groups,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
-    --append users "uid=stud1,cn=schueler,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
-    --append users "uid=stud2,cn=schueler,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
-    --append users "uid=teach1,cn=lehrer,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
-    --append users "uid=teach2,cn=lehrer,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" SchoolClass
-  python -m ucsschool.lib.models create SchoolClass \
-    --name "${ou1}-1a" \
-    --school "$ou1" \
-    --append users "uid=stud2,cn=schueler,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
-    --append users "uid=stud3,cn=schueler,cn=users,ou=${ou1},$(ucr get ldap/base)" \
-    --append users "uid=teach2,cn=lehrer,cn=users,ou=DEMOSCHOOL,$(ucr get ldap/base)" \
-    --append users "uid=teach3,cn=lehrer,cn=users,ou=${ou1},$(ucr get ldap/base)"
-  python -m ucsschool.lib.models create SchoolClass \
-    --name "${ou2}-1a" \
-    --school "$ou2" \
-    --append users "uid=stud3,cn=schueler,cn=users,ou=${ou1},$(ucr get ldap/base)" \
-    --append users "uid=teach3,cn=lehrer,cn=users,ou=${ou1},$(ucr get ldap/base)"
+	/usr/share/ucs-school-import/scripts/create_ou "$ou1"
+	/usr/share/ucs-school-import/scripts/create_ou "$ou2"
+	i=1; python -m ucsschool.lib.models create --name "stud${i}"  --set firstname "Traeger${i}" --set lastname "Student${i}" --set password univention --school DEMOSCHOOL Student
+	i=1; python -m ucsschool.lib.models create --name "teach${i}" --set firstname "Traeger${i}" --set lastname "Teacher${i}" --set password univention --school DEMOSCHOOL Teacher
+	i=2; python -m ucsschool.lib.models create --name "stud${i}"  --set firstname "Traeger${i}" --set lastname "Student${i}" --set password univention --school DEMOSCHOOL --append schools DEMOSCHOOL --append schools "$ou1" Student
+	i=2; python -m ucsschool.lib.models create --name "teach${i}" --set firstname "Traeger${i}" --set lastname "Teacher${i}" --set password univention --school DEMOSCHOOL --append schools DEMOSCHOOL --append schools "$ou1" Teacher
+	i=3; python -m ucsschool.lib.models create --name "stud${i}"  --set firstname "Traeger${i}" --set lastname "Student${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Student
+	i=3; python -m ucsschool.lib.models create --name "teach${i}" --set firstname "Traeger${i}" --set lastname "Teacher${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Teacher
+	python -m ucsschool.lib.models modify --dn "cn=DEMOSCHOOL-Democlass,cn=klassen,cn=schueler,cn=groups,ou=DEMOSCHOOL,${lb}" \
+		--append users "uid=stud1,cn=schueler,cn=users,ou=DEMOSCHOOL,${lb}" \
+		--append users "uid=stud2,cn=schueler,cn=users,ou=DEMOSCHOOL,${lb}" \
+		--append users "uid=teach1,cn=lehrer,cn=users,ou=DEMOSCHOOL,${lb}" \
+		--append users "uid=teach2,cn=lehrer,cn=users,ou=DEMOSCHOOL,${lb}" SchoolClass
+	python -m ucsschool.lib.models create SchoolClass \
+		--name "${ou1}-1a" \
+		--school "$ou1" \
+		--append users "uid=stud2,cn=schueler,cn=users,ou=DEMOSCHOOL,${lb}" \
+		--append users "uid=stud3,cn=schueler,cn=users,ou=${ou1},${lb}" \
+		--append users "uid=teach2,cn=lehrer,cn=users,ou=DEMOSCHOOL,${lb}" \
+		--append users "uid=teach3,cn=lehrer,cn=users,ou=${ou1},${lb}"
+	python -m ucsschool.lib.models create SchoolClass \
+		--name "${ou2}-1a" \
+		--school "$ou2" \
+		--append users "uid=stud3,cn=schueler,cn=users,ou=${ou1},${lb}" \
+		--append users "uid=teach3,cn=lehrer,cn=users,ou=${ou1},${lb}"
 
 	# wait for id connector "replication"
 	# TODO find a better way
@@ -241,7 +236,6 @@ create_school_users_classes () {
 
 # install letsencrypt and copy certificate files from local
 setup_letsencrypt () {
-
 	# only for EC2
 	test "$KVM_BUILD_SERVER" = "EC2" ||  return 0
 
@@ -275,9 +269,7 @@ setup_letsencrypt () {
 	# 		apache2/vhosts/login.kc2.broker0.dev.univention-id-broker.com/443/ssl/key="/etc/univention/letsencrypt/domain.key"
 	fi
 
-	service apache2 restart || return 1
-
-	return 0
+	service apache2 restart
 }
 
 install_id_connector_broker_plugin () {
@@ -285,7 +277,7 @@ install_id_connector_broker_plugin () {
 	# broker plugin from the 5.0 test repo
 	echo "deb http://updates-test.software-univention.de/5.0/maintained/component/ idbroker_DEVEL/all/" > /etc/apt/sources.list.d/broker.list
 	echo "deb http://updates-test.software-univention.de/5.0/maintained/component/ idbroker_DEVEL/amd64/" >> /etc/apt/sources.list.d/broker.list
-	apt-get -y update || return 1
+	apt-get -q update || return 1
 	apt-get -y install id-broker-id-connector-plugin || return 1
 	univention-app configure ucsschool-id-connector --set 'ucsschool-id-connector/log_level'=DEBUG
 	univention-app restart ucsschool-id-connector
@@ -295,14 +287,16 @@ install_id_connector_broker_plugin () {
 kvm_setup_dns_entries_in_broker () {
 	# only for kvm
 	[ "$KVM_BUILD_SERVER" = "EC2" ] && return 0
-	udm dns/forward_zone create --set zone="${UCS_ENV_TRAEGER1_DOMAIN}" --set nameserver="$(hostname -f)." --position="cn=dns,$(ucr get ldap/base)" || return 1
+	local lb
+	lb="$(ucr get ldap/base)"
+	udm dns/forward_zone create --set zone="${UCS_ENV_TRAEGER1_DOMAIN}" --set nameserver="$(hostname -f)." --position="cn=dns,${lb}" || return 1
 	# shellcheck disable=SC2153
-	udm dns/host_record create --set a="${TRAEGER1_IP}" --set name=ucs-sso --position zoneName="${UCS_ENV_TRAEGER1_DOMAIN},cn=dns,$(ucr get ldap/base)" || return 1
-	udm dns/host_record create --set a="${TRAEGER1_IP}" --set name=traeger1 --position zoneName="${UCS_ENV_TRAEGER1_DOMAIN},cn=dns,$(ucr get ldap/base)" || return 1
-	udm dns/forward_zone create --set zone="${UCS_ENV_TRAEGER2_DOMAIN}" --set nameserver="$(hostname -f)." --position="cn=dns,$(ucr get ldap/base)" || return 1
+	udm dns/host_record create --set a="${TRAEGER1_IP}" --set name=ucs-sso --position zoneName="${UCS_ENV_TRAEGER1_DOMAIN},cn=dns,${lb}" || return 1
+	udm dns/host_record create --set a="${TRAEGER1_IP}" --set name=traeger1 --position zoneName="${UCS_ENV_TRAEGER1_DOMAIN},cn=dns,${lb}" || return 1
+	udm dns/forward_zone create --set zone="${UCS_ENV_TRAEGER2_DOMAIN}" --set nameserver="$(hostname -f)." --position="cn=dns,${lb}" || return 1
 	# shellcheck disable=SC2153
-	udm dns/host_record create --set a="${TRAEGER2_IP}" --set name=ucs-sso --position zoneName="${UCS_ENV_TRAEGER2_DOMAIN},cn=dns,$(ucr get ldap/base)" || return 1
-	udm dns/host_record create --set a="${TRAEGER2_IP}" --set name=traeger2 --position zoneName="${UCS_ENV_TRAEGER2_DOMAIN},cn=dns,$(ucr get ldap/base)" || return 1
+	udm dns/host_record create --set a="${TRAEGER2_IP}" --set name=ucs-sso --position zoneName="${UCS_ENV_TRAEGER2_DOMAIN},cn=dns,${lb}" || return 1
+	udm dns/host_record create --set a="${TRAEGER2_IP}" --set name=traeger2 --position zoneName="${UCS_ENV_TRAEGER2_DOMAIN},cn=dns,${lb}" || return 1
 }
 
 # add entry to ssh environment to pass variables via env
@@ -322,24 +316,24 @@ add_to_hosts () {
 
 # setup the jump host for the id broker performance tests
 prepare_jump_host () {
-    apt-get -y update
-    hostname jumphost
-    ucr set repository/online=true
-    DEBIAN_FRONTEND=noninteractive univention-install -y id-broker-performance-tests
-    echo 'root soft nofile 10240' >> /etc/security/limits.conf
-    echo 'root hard nofile 10240' >> /etc/security/limits.conf
-    echo "fs.file-max=1048576" > /etc/sysctl.d/99-file-max.conf
-    sysctl -p
+	apt-get -q update
+	hostname jumphost
+	ucr set repository/online=true
+	DEBIAN_FRONTEND=noninteractive univention-install -y id-broker-performance-tests
+	echo 'root soft nofile 10240' >> /etc/security/limits.conf
+	echo 'root hard nofile 10240' >> /etc/security/limits.conf
+	echo "fs.file-max=1048576" > /etc/sysctl.d/99-file-max.conf
+	sysctl -p
 }
 
 start_openvpn () {
-    apt-get -y update
+	apt-get -q update
 	apt-get -y install openvpn
 	openvpn --config /root/vpn/client.conf --daemon
 }
 
 install_ansible () {
-	apt-get -y update
+	apt-get -q update
 	apt-get -y install python3-pip
 	pip3 install ansible
 }
@@ -348,19 +342,21 @@ install_ansible () {
 fix_traeger_dns_entries_in_broker_domain () {
 	local traeger1_ip="${1:?missing ip}"
 	local traeger2_ip="${2:?missing ip}"
-	udm dns/host_record modify --dn "relativeDomainName=traeger1,zoneName=traeger1.test,cn=dns,dc=idbroker,dc=test" --set a="$traeger1_ip"
-	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=traeger1.test,cn=dns,dc=idbroker,dc=test" --set a="$traeger1_ip"
-	udm dns/host_record modify --dn "relativeDomainName=traeger2,zoneName=traeger2.test,cn=dns,dc=idbroker,dc=test" --set a="$traeger2_ip"
-	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=traeger2.test,cn=dns,dc=idbroker,dc=test" --set a="$traeger2_ip"
+	local lb
+	lb="$(ucr get ldap/base)"
+	udm dns/host_record modify --dn "relativeDomainName=traeger1,zoneName=traeger1.test,cn=dns,${lb}" --set a="$traeger1_ip"
+	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=traeger1.test,cn=dns,${lb}" --set a="$traeger1_ip"
+	udm dns/host_record modify --dn "relativeDomainName=traeger2,zoneName=traeger2.test,cn=dns,${lb}" --set a="$traeger2_ip"
+	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=traeger2.test,cn=dns,${lb}" --set a="$traeger2_ip"
 	# ucs sso TODO add other systems
-	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=$(ucr get domainname),cn=dns,$(ucr get ldap/base)" --set a="$(ucr get interfaces/eth0/address)"
+	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=$(ucr get domainname),cn=dns,${lb}" --set a="$(ucr get interfaces/eth0/address)"
 }
 
 fix_broker_dns_entries_on_traeger () {
 	local kc1_ip="${1:?missing ip}"
 	local provisioning1_ip="${2:?missing ip}"
 	# kc1
-	ucr search --value --brief login.kc1.broker.test | awk -F : '{print $1}' | xargs  ucr unset
+	ucr search --value --brief login.kc1.broker.test | cut -d: -f1 | xargs -r ucr unset
 	# shellcheck disable=SC2140
 	ucr set "hosts/static/$kc1_ip"="login.kc1.broker.test"
 	# provisioning1
@@ -402,6 +398,7 @@ EOF
 # make env file available in ssh session
 set_env_variables_from_env_file () {
 	local env_file="${1:?missing env file}"
+	local entry
 	while read -r entry; do
 		add_to_ssh_environment "$entry"
 	done < "$env_file"
@@ -414,7 +411,7 @@ set_env_variables_from_env_file () {
 # this function makes proper env var from this
 set_locust_env_vars () {
 	local locust_vars="${1:-"LOCUST_LOGLEVEL=info:DELIM:LOCUST_RUN_TIME=5m:DELIM:LOCUST_SPAWN_RATE=0.03333:DELIM:LOCUST_STOP_TIMEOUT=60:DELIM:LOCUST_USERS=8"}"
-	local IFS=$'\n'
+	local IFS=$'\n' entry
 	for entry in ${locust_vars//:DELIM:/$'\n'}; do
 		add_to_ssh_environment "$entry"
 	done

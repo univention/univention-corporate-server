@@ -1,9 +1,10 @@
 #!/bin/bash
 set -x
 set -e
+
 export HALT=false
 export DOCKER=true
-export KVM_LABEL_SUFFIX="${Config}-${UCSRelease}"
+export KVM_LABEL_SUFFIX="${Config?:}-${UCSRelease?:}"
 export release_update="$UCSRelease"
 export errata_update="$UCSRelease"
 export RELEASE_UPDATE="$UCSRelease"
@@ -19,4 +20,5 @@ cfg="scenarios/autotest-201-ucsschool-singleserver-s4.cfg"
 if [ "${Config}" = "s4-all-components" ] ; then
   sed -i -re '/^ packages_install/s/"$/ univention-mail-server univention-dhcp univention-printserver cups univention-squid bsd-mailx univention-spamassassin univention-antivir-mail"/' "$cfg"
 fi
-exec utils/start-test.sh "$cfg"
+
+exec "${0%/}/start-test.sh" "$cfg"

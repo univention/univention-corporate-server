@@ -20,7 +20,7 @@ kvm_xml="$kvm_template_dir/appliance_ucsappliance_amd.xml"
 
 # check disk space
 stat=$(_ssh stat -f -c '%a*%S' /var/lib/libvirt)
-if [ "$((${stat}>>30))" -lt 20 ]; then
+if [ "$((stat>>30))" -lt 20 ]; then
 	echo "ERROR: Not enough Space on $KVM_SERVER! Aborting..."
 	exit 1
 fi

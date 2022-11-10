@@ -201,7 +201,7 @@ check_ucr () {
 	while IFS=': ' read -r key value
 	do
 		case "$key" in
-		repository/online/component/${version_version:-}-${version_patchlevel:-}-errata) expected=enabled ;;
+		"repository/online/component/${version_version:-}-${version_patchlevel:-}-errata") expected=enabled ;;
 		repository/online/component/[0-9].[0-9]-[0-9]-errata) expected=false ;;
 		*) continue ;;
 		esac

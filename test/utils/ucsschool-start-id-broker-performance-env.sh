@@ -13,4 +13,4 @@ if [ -n "$BUILD_USER_ID" ]; then
 	export KVM_OWNER="$BUILD_USER_ID"
 fi
 
-exec ./utils/start-test.sh ./scenarios/autotest-247-ucsschool-id-broker-perf-kvm.cfg
+exec "${0%/*}/start-test.sh" ./scenarios/autotest-247-ucsschool-id-broker-perf-kvm.cfg

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 set -x
 set -e
@@ -13,4 +13,4 @@ export UCS_TEST_RUN=false
 export KVM_OWNER="${BUILD_USER_ID:=$USER}"
 export JOB_BASE_NAME="${JOB_BASE_NAME:=ucs-school-multiserver-joined}"
 
-exec ./utils/start-test.sh scenarios/base/ucs-school-multiserver-joined-primary-school1.cfg
+exec "${0%/*}/start-test.sh" scenarios/base/ucs-school-multiserver-joined-primary-school1.cfg
