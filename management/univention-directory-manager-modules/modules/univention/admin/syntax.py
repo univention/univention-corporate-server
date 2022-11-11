@@ -78,7 +78,8 @@ if TYPE_CHECKING:
 	from univention.admin.uldap import access  # noqa: F401
 
 try:
-	from email_validator import validate_email, EmailNotValidError
+	from email_validator import validate_email, EmailNotValidError, SPECIAL_USE_DOMAIN_NAMES
+	SPECIAL_USE_DOMAIN_NAMES[:] = []
 except ImportError:  # Python 2.7
 	validate_email = EmailNotValidError = None
 
@@ -2606,7 +2607,7 @@ class emailAddress(simple):
 	def parse(self, text):
 		if validate_email and configRegistry.is_true('directory/manager/mail-address/extra-validation'):
 			try:
-				validate_email(text, allow_smtputf8=False, check_deliverability=False)
+				validate_email(text, allow_smtputf8=False, check_deliverability=False, globally_deliverable=False)
 			except EmailNotValidError as exc:
 				raise univention.admin.uexceptions.valueError(_("Not a valid email address!") + " " + str(exc))
 		if not text.startswith('@') and \

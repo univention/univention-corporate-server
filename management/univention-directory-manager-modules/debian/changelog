@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.13-19) unstable; urgency=medium
+
+  * Bug #55413: Less strict mail validation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 11 Nov 2022 11:37:37 +0100
+
 univention-directory-manager-modules (15.0.13-18) unstable; urgency=medium
 
   * Bug #55413: Top-level imports

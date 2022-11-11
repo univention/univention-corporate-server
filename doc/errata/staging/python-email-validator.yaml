@@ -3,10 +3,9 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: python-email-validator
-fix: 1.1.1-3~bpo10+1A~5.0.0.202211101737
+fix: 1.3.0-0~bpo10+1
 desc: |
  This update addresses the following issue:
- * The Debian package `python-email-validator` has been backported to be used
-   in univention-directory-manager-modules.
+ * The Debian package `python-email-validator` has been backported and updated
+   to be used in univention-directory-manager-modules.
 bug: [55413]
-maintained: true
