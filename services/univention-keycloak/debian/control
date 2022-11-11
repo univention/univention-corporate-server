@@ -9,6 +9,7 @@ Standards-Version: 4.3.0.3
 Package: univention-keycloak-client
 Architecture: all
 Depends:
+ python3-defusedxml,
  python3-keycloak,
  python3-ldap,
  python3-univention-config-registry,
