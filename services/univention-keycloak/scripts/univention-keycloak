@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Keycloak
-# Manage Univention Keycloak app
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -33,19 +32,21 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
+"""Manage Univention Keycloak app"""
 
-from keycloak import KeycloakAdmin
-from univention.config_registry import ucr
-from keycloak.exceptions import KeycloakError, raise_error_from_response, KeycloakGetError
-from argparse import ArgumentParser, Namespace
-import requests
-from defusedxml import ElementTree
 import json
-from subprocess import Popen, PIPE
+from argparse import ArgumentParser, Namespace
 from base64 import b64decode
 from os.path import exists
+from subprocess import PIPE, Popen
+
+import requests
+from defusedxml import ElementTree
+from keycloak import KeycloakAdmin
+from keycloak.exceptions import KeycloakError, KeycloakGetError, raise_error_from_response
 from ldap.dn import explode_rdn
+
+from univention.config_registry import ucr
 
 DEFAULT_REALM = "master"
 LDAP_BASE = ucr.get("ldap/base")
@@ -81,9 +82,7 @@ def modify_component(kc_client, payload_):
 
 def get_realm_id(kc_client, name):
 	ldap_realms_list = kc_client.get_realms()
-	# search for realm "name"
 	realm_info = [realm for realm in ldap_realms_list if realm['realm'] == name]
-	# return realm id
 	return realm_info[0]["id"]
 
 
@@ -337,15 +336,12 @@ def create_oidc_client(opt):
 	if opt.client_secret:
 		client_payload_oidc["secret"] = opt.client_secret
 
-	# realm config
-
 	# log into default realm in case UCS realm doesn't exist yet
 	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 	kc_admin.create_client(payload=client_payload_oidc, skip_exists=True)
 
 
 def modify_client_scope_mapper(opt):
-
 	# log into default realm in case UCS realm doesn't exist yet
 	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 
@@ -389,8 +385,8 @@ def download_cert_oidc(opt):
 		p = Popen(['openssl', 'x509', '-inform', 'DER', '-out', opt.output, '-outform', 'PEM'], stdin=PIPE)
 		p.communicate(input=cert_der)
 	else:
-		with open(opt.output, 'w') as f:
-			f.write(cert)
+		with open(opt.output, 'w') as fd:
+			fd.write(cert)
 
 
 def download_cert_saml(opt):
@@ -410,8 +406,8 @@ def download_cert_saml(opt):
 		p = Popen(['openssl', 'x509', '-inform', 'DER', '-out', opt.output, '-outform', 'PEM'], stdin=PIPE)
 		p.communicate(input=cert_der)
 	else:
-		with open(opt.output, 'w') as f:
-			f.write(cert)
+		with open(opt.output, 'w') as fd:
+			fd.write(cert)
 
 
 def get_client_secret(opt):
@@ -508,18 +504,16 @@ def parse_args(args=None):
 		opt.binduser = explode_rdn(opt.binddn, 1)[0]
 	if not exists(opt.bindpwdfile):
 		if not opt.bindpwd:
-			print("Passwordfile %s for user %s does not exist." % (opt.bindpwdfile, opt.binduser))
-			exit(1)
+			parser.error(f"Passwordfile {opt.bindpwdfile} for user {opt.binduser} does not exist.")
 	else:
-		with open(opt.bindpwdfile, 'r') as fd:
+		with open(opt.bindpwdfile) as fd:
 			opt.bindpwd = fd.read().strip()
 	if opt.command == "init":
 		if not exists(opt.ldap_system_user_pwdfile):
 			if not opt.ldap_system_user_pwdfile:
-				print("Passwordfile %s for user %s does not exist." % (opt.ldap_system_user_pwdfile, opt.ldap_system_user_dn))
-				exit(1)
+				parser.error(f"Passwordfile {opt.ldap_system_user_pwdfile} for user {opt.ldap_system_user_dn} does not exist.")
 		else:
-			with open(opt.ldap_system_user_pwdfile, 'r') as fd:
+			with open(opt.ldap_system_user_pwdfile) as fd:
 				opt.ldap_system_user_pwd = fd.read().strip()
 	return opt
 
@@ -674,13 +668,13 @@ def extract_metadata(metadata_url, no_ssl_verify):
 
 def enable_2fa(opt):
 	print("Enabling 2FA ...")
-	print("Using KC_URL: {}".format(opt.keycloak_url))
+	print(f"Using KC_URL: {opt.keycloak_url}")
 
 	# realm config
 	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.binduser, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 	kc_admin.realm_name = "ucs"
 	realm_2fa_role = "2FA role"
-	ldap_2fa_group = opt.group_2fa	 # FIXME: Check group to use for 2FA
+	ldap_2fa_group = opt.group_2fa  # FIXME: Check group to use for 2FA
 
 	ldap_component_filter = {'name': 'ldap-provider', 'providerId': 'ldap'}
 	ldap_component_list = kc_admin.get_components(ldap_component_filter)
@@ -794,25 +788,22 @@ def assign_group_realm_role_by_group_name(kc_admin, realm, group_name, role):
 	:return: Keycloak server response (RealmRepresentation)
 	"""
 
-	group_id = None
 	groups = kc_admin.get_groups()  # query={"name": group_name}
 	groups = [group for group in groups if group["name"] == group_name]
 
 	if not groups:
 		print("Warning: Groupname does not exist, realm role can not be linked")
 		return
-	for g in groups:
-		if g["name"] == group_name:
-			group_id = g["id"]
+	try:
+		group_id = [g["id"] for g in groups if g["name"] == group_name][0]
+	except IndexError:
+		group_id = None  # why is group ID allowed to be none?
 
 	# get role id
-	realm_role_id = None
-	for r in kc_admin.get_realm_roles():
-		if r["name"] == role:
-			realm_role_id = r["id"]
-			break
-	if not realm_role_id:
-		print("WARNING: role {} does not exist".format(role))
+	try:
+		realm_role_id = [r["id"] for r in kc_admin.get_realm_roles() if r["name"] == role][0]
+	except IndexError:
+		print(f"WARNING: role {role} does not exist")
 		return
 
 	payload = [
@@ -926,10 +917,10 @@ def create_conditional_2fa_flow(kc_admin, realm, conditional_role, flow_name):
 
 	# delete old flow/subflows
 	flows = kc_admin.get_authentication_flows()
-	for f in flows:
-		if f["alias"].startswith(flow_name):
-			delete_authentication_flow(kc_admin, f["id"])
-			print("Deleted: ", f["alias"])
+	for flow in flows:
+		if flow["alias"].startswith(flow_name):
+			delete_authentication_flow(kc_admin, flow["id"])
+			print("Deleted: ", flow["alias"])
 
 	# copy default browser flow
 	kc_admin.copy_authentication_flow(payload=json.dumps({"newName": flow_name}), flow_alias="browser")
@@ -961,7 +952,7 @@ def create_conditional_2fa_flow(kc_admin, realm, conditional_role, flow_name):
 		kc_admin.update_authentication_flow_executions(payload=json.dumps(payload_update_required_state), flow_alias=flow_name)
 	except KeycloakGetError as exc:
 		if exc.response_code != 202:
-			raise exc
+			raise
 	# FIXME end
 
 	# config role condition
@@ -1030,7 +1021,7 @@ def execution_raise_priority(kc_admin, execution_id):
 def create_adhoc_flow(opt):
 	print("Creating ad hoc federation authentication flow...")
 
-	print("Using KC_URL: {}".format(opt.keycloak_url))
+	print(f"Using KC_URL: {opt.keycloak_url}")
 
 	# realm config
 	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
@@ -1067,7 +1058,7 @@ def create_adhoc_flow(opt):
 	except KeycloakError as exc:
 		print(exc)
 		if exc.response_code != 202:  # FIXME: function expected 204 response it gets 202
-			raise exc
+			raise
 
 	# config_id from 'authenticationConfig' in get_authentication_flow_executions
 	config_ua = {
@@ -1120,7 +1111,7 @@ def init_keycloak_ucs(opt):
 			"xContentTypeOptions": "nosniff",
 			"xRobotsTag": "none",
 			"xFrameOptions": "",
-			"contentSecurityPolicy": "frame-src 'self'; frame-ancestors 'self' {}/univention; object-src 'none';".format(SERVER_URL),
+			"contentSecurityPolicy": f"frame-src 'self'; frame-ancestors 'self' {SERVER_URL}/univention; object-src 'none';",
 			"xXSSProtection": "1; mode=block",
 			"strictTransportSecurity": "max-age=31536000; includeSubDomains"
 		}
@@ -1179,7 +1170,7 @@ def init_keycloak_ucs(opt):
 
 	# find existing ldap provider or just create if none exists
 	ldap_component_id = check_and_create_component(kc_admin, ldap_federation_payload["name"], ldap_federation_payload["providerId"], ldap_federation_payload)
-	print("LDAP User Federation Added: {}".format(ucs_ldap_url))
+	print(f"LDAP User Federation Added: {ucs_ldap_url}")
 
 	# User federation mapper (LDAP)
 	payload_ldap_mapper = {
@@ -1277,7 +1268,7 @@ def init_keycloak_ucs(opt):
 
 	# find existing ldap provider or just create if none exists
 	ldap_component_id = check_and_create_component(kc_admin, ldap_federation_payload["name"], ldap_federation_payload["providerId"], ldap_federation_payload)
-	print("LDAP Domain Admins Federation Added: {}".format(ucs_ldap_url))
+	print(f"LDAP Domain Admins Federation Added: {ucs_ldap_url}")
 	print("Filter: {}".format(ldap_federation_payload["config"]["customUserSearchFilter"]))
 
 	payload_ldap_mapper["name"] = "admin-role"
