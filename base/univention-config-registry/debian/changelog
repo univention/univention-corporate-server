@@ -1,3 +1,9 @@
+univention-config-registry (15.0.7-22) unstable; urgency=low
+
+  *  Bug #55044: Adding validation for http/https URLs
+
+ -- Peter Stoll <stoll.extern@univention.de>  Fri, 11 Nov 2022 19:20:45 +0200
+
 univention-config-registry (15.0.7-21) unstable; urgency=low
 
   *  Bug #54495: fix validation of UCR variables using UCR type definitions

@@ -124,6 +124,20 @@ class String(BaseValidator):
 			return isinstance(value, str)
 
 
+class URLHttp(BaseValidator):
+	"""
+	Validator for |UCR| type "url_http".
+	"""
+
+	NAME = "url_http"
+
+	def validate(self, value):
+		# type: (str) -> object
+		o = urlsplit(value)
+		o.port  # may raise ValueError
+		return o.scheme in {"http", "https"}
+
+
 class URLProxy(BaseValidator):
 	"""
 	Validator for |UCR| type "url_proxy".

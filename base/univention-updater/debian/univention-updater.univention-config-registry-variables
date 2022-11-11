@@ -1,7 +1,7 @@
 [repository/online/server]
 Description[de]=Der Repository-Server, von dem Softwarepakete bezogen werden. Ist die Variable nicht gesetzt, wird <https://updates.software-univention.de/> verwendet. Wird statt einem Hostname eine URI angegeben, überschreibt diese '.../port' und '.../prefix'.
 Description[en]=The repository server from which software packages are retrieved. If the variable is unset, <https://updates.software-univention.de/> is used. If an URI is given instead on a hostname, this also overwrites '.../port' and '.../prefix'.
-Type=str
+Type=url_http
 Categories=service-software-management
 
 [repository/online/prefix]
@@ -80,7 +80,7 @@ Default=no
 [repository/online/port]
 Description[de]=DEPRECATED! Bitte benutzen sie stattdessen einen vollständigen URL String "http(s)://<username>:<password>@<server>:<port>/<path>" in der server Variablen. Diese Variable konfiguriert den TCP-Port, unter dem das Online-Repository erreichbar ist.
 Description[en]=DEPRECATED! Please specify a fully qualified URL string "http(s)://<username>:<password>@<server>:<port>/<path>" in the server variable instead. This variable configures the TCP port under which the online repository is reachable.
-Type=int
+Type=portnumber
 Categories=service-software-management
 Default=80
 
@@ -131,13 +131,13 @@ Categories=service-software-management
 [repository/online/component/.*/server]
 Description[de]=Der Repository-Server, von dem die Pakete der Komponente bezogen werden. Ist die Variable nicht gesetzt, wird der Wert aus 'repository/online/server' verwendet. Wird statt einem Hostname eine URI angegeben, überschreibt diese '.../port' und '.../prefix'.
 Description[en]=The repository server from which packages of the component are retrieved. If the variable is unset, the value from 'repository/online/server' is used. If an URI is given instead on a hostname, this also overwrites '.../port' and '.../prefix'.
-Type=str
+Type=url_http
 Categories=service-software-management
 
 [repository/online/component/.*/port]
 Description[de]=DEPRECATED! Bitte benutzen sie stattdessen einen vollständigen URL String "http(s)://<username>:<password>@<server>:<port>/<path>" in der server Variablen. Diese Variable konfiguriert den TCP-Port, unter dem der Server der Repository-Komponente erreichbar ist. Ist die Variable nicht gesetzt, wird '80' verwendet.
 Description[en]=DEPRECATED! Please specify a fully qualified URL string "http(s)://<username>:<password>@<server>:<port>/<path>" in the server variable instead. This variable configures the TCP port under which the server of the repository component is reachable. If the variable is unset, '80' is used.
-Type=int
+Type=portnumber
 Categories=service-software-management
 
 [repository/online/component/.*/prefix]
