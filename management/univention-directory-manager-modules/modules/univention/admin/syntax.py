@@ -2593,19 +2593,118 @@ class emailAddress(simple):
 
 	>>> emailAddress.parse('quite@an.email.address')
 	'quite@an.email.address'
+	>>> emailAddress.parse('simple@example.com')
+	'simple@example.com'
+	>>> emailAddress.parse('very.common@example.com')
+	'very.common@example.com'
+	>>> emailAddress.parse('disposable.style.email.with+symbol@example.com')
+	'disposable.style.email.with+symbol@example.com'
+	>>> emailAddress.parse('other.email-with-hyphen@example.com')
+	'other.email-with-hyphen@example.com'
+	>>> emailAddress.parse('fully-qualified-domain@example.com')
+	'fully-qualified-domain@example.com'
+	>>> emailAddress.parse('user.name+tag+sorting@example.com')
+	'user.name+tag+sorting@example.com'
+	>>> emailAddress.parse('x@example.com')
+	'x@example.com'
+	>>> emailAddress.parse('example-indeed@strange-example.com')
+	'example-indeed@strange-example.com'
+	>>> emailAddress.parse('test/test@test.com')
+	'test/test@test.com'
+	>>> emailAddress.parse('admin@mailserver1')
+	'admin@mailserver1'
+	>>> emailAddress.parse('example@s.example')
+	'example@s.example'
+	>>> emailAddress.parse('mailhost!username@example.org')
+	'mailhost!username@example.org'
+	>>> emailAddress.parse('user%example.com@example.org')
+	'user%example.com@example.org'
+	>>> emailAddress.parse('user-@example.org')
+	'user-@example.org'
 	>>> emailAddress.parse('not quite an email address') # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError:
+	>>> emailAddress.parse('Abc.example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> emailAddress.parse('this is"not\\allowed@example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> emailAddress.parse('this\\ still\\"not\\\\allowed@example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> import six
+	>>> if six.PY3:
+	...   emailAddress.parse('A@b@c@example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
+	... else:
+	...   raise univention.admin.uexceptions.valueError('py2 does not have validate_email') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> if six.PY3:
+	...   emailAddress.parse('a"b(c)d,e:f;g<h>i[j\\k]l@example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
+	... else:
+	...   raise univention.admin.uexceptions.valueError('py2 does not have validate_email') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> if six.PY3:
+	...   emailAddress.parse('just"not"right@example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
+	... else:
+	...   raise univention.admin.uexceptions.valueError('py2 does not have validate_email') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> if six.PY3:
+	...   emailAddress.parse('1234567890123456789012345678901234567890123456789012345678901234+x@example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
+	... else:
+	...   raise univention.admin.uexceptions.valueError('py2 does not have validate_email') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> if six.PY3:
+	...   emailAddress.parse('i_like_underscore@but_its_not_allowed_in_this_part.example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
+	... else:
+	...   raise univention.admin.uexceptions.valueError('py2 does not have validate_email') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> if six.PY3:
+	...   emailAddress.parse('QA[icon]CHOCOLATE[icon]@test.com') # doctest: +IGNORE_EXCEPTION_DETAIL
+	... else:
+	...   raise univention.admin.uexceptions.valueError('py2 does not have validate_email') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
+
+	"""
+	This does not work, although it should:
+	# >>> emailAddress.parse('" "@example.org')
+	# '" "@example.org'
+	# >>> emailAddress.parse('"john..doe"@example.org')
+	# '"john..doe"@example.org'
+	# >>> emailAddress.parse('"very.(),:;<>[]\".VERY.\"very@\\ \"very\".unusual"@strange.example.com')
+	# '"very.(),:;<>[]\".VERY.\"very@\\ \"very\".unusual"@strange.example.com'
+	# >>> emailAddress.parse('postmaster@[123.123.123.123]')
+	# 'postmaster@[123.123.123.123]'
+	# >>> emailAddress.parse('postmaster@[IPv6:2001:0db8:85a3:0000:0000:8a2e:0370:7334]')
+	# 'postmaster@[IPv6:2001:0db8:85a3:0000:0000:8a2e:0370:7334]'
+	"""
+
 	min_length = 3
 	max_length = 0
+	extra_validation = True
 
 	type_class = univention.admin.types.EMailAddressType
 
 	@classmethod
 	def parse(self, text):
-		if validate_email and configRegistry.is_true('directory/manager/mail-address/extra-validation'):
+		if self.extra_validation and validate_email and configRegistry.is_true('directory/manager/mail-address/extra-validation'):
 			try:
 				validate_email(text, allow_smtputf8=False, check_deliverability=False, globally_deliverable=False)
 			except EmailNotValidError as exc:
@@ -2631,7 +2730,7 @@ class emailAddressTemplate(emailAddress):
 	"""
 	Syntax class for an e-mail address in the |UDM| :py:class:`univention.admin.handlers.settings.usertemplate` module.
 	"""
-	pass
+	extra_validation = False
 
 
 class emailAddressValidDomain(UDM_Objects, emailAddress):

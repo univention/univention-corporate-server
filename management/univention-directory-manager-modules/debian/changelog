@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.13-22) unstable; urgency=medium
+
+  * Bug #55413: Fix emailAddressTemplate; add doctests
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 13 Nov 2022 00:19:45 +0100
+
 univention-directory-manager-modules (15.0.13-21) unstable; urgency=medium
 
   * Bug #55412: remove "employeeNumber" from default search properties
