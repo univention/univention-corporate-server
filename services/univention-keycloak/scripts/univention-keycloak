@@ -96,9 +96,8 @@ def extract_endpoints_xml(metadata_url, no_ssl_verify):
 	return endpoints
 
 
-def create_SAML_client(opt):
+def create_SAML_client(opt, umc_uid_mapper=None):
 	print("CREATING KEYCLOAK SAML CLIENT.....")
-
 	client_id = opt.metadata_url
 	valid_redirect_urls = [client_id[:client_id.rfind("/") + 1:] + "*"]
 	endpoints = extract_endpoints_xml(client_id, opt.no_ssl_verify)
@@ -161,21 +160,6 @@ def create_SAML_client(opt):
 		"authenticationFlowBindingOverrides": {},
 		"fullScopeAllowed": True,
 		"nodeReRegistrationTimeout": -1,
-		"protocolMappers": [
-			{
-				"name": "userid_mapper",
-				"protocol": "saml",
-				"protocolMapper": "saml-user-attribute-mapper",
-				"consentRequired": False,
-				"config": {
-					"aggregate.attrs": "",
-					"attribute.name": "uid",
-					"attribute.nameformat": "Basic",
-					"friendly.name": "uid",
-					"user.attribute": "uid"
-				}
-			},
-		],
 		"defaultClientScopes": [
 		],
 		"optionalClientScopes": [],
@@ -185,6 +169,22 @@ def create_SAML_client(opt):
 			"manage": True
 		}
 	}
+
+	default_uid_mapper = [
+		{
+			"name": "userid_mapper",
+			"protocol": "saml",
+			"protocolMapper": "saml-user-attribute-mapper",
+			"consentRequired": False,
+			"config": {
+				"aggregate.attrs": "",
+				"attribute.name": "uid",
+				"attribute.nameformat": "Basic",
+				"friendly.name": "uid",
+				"user.attribute": "uid"
+			}
+		},
+	],
 
 	role_mapper_single = {"config": {
 		"attribute.name": "Role",
@@ -196,7 +196,7 @@ def create_SAML_client(opt):
 		"protocol": "saml",
 		"protocolMapper": "saml-role-list-mapper"
 	}
-
+	client_payload_saml["protocolMappers"] = umc_uid_mapper or default_uid_mapper
 	if opt.command == "saml/sp" and opt.role_mapping_single_value:
 		client_payload_saml["protocolMappers"].append(role_mapper_single)
 
@@ -1089,7 +1089,7 @@ def init_keycloak_ucs(opt):
 	else:
 		ucs_ldap_url = f"ldap://{HOSTNAME}.{DOMAINNAME}:7389"  # "ldap://{FQDN}:{port}"
 
-	print("Using bind-dn: {opt.binddn}")
+	print(f"Using bind-dn: {opt.binddn}")
 
 	# log into default realm in case UCS realm doesn't exist yet
 	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
@@ -1125,7 +1125,19 @@ def init_keycloak_ucs(opt):
 
 	# create portal saml client
 	opt.metadata_url = SERVER_URL + "/univention/saml/metadata"
-	create_SAML_client(opt)
+	umc_uid_mapper = [{
+		"name": "userid_mapper",
+		"protocol": "saml",
+		"protocolMapper": "saml-user-attribute-mapper",
+		"consentRequired": False,
+		"config": {
+			"attribute.name": "urn:oid:0.9.2342.19200300.100.1.1",
+			"attribute.nameformat": "URI Reference",
+			"friendly.name": "uid",
+			"user.attribute": "uid"
+		}
+	}]
+	create_SAML_client(opt, umc_uid_mapper)
 
 	# user federation ldap provider payload
 	ldap_federation_payload = {
