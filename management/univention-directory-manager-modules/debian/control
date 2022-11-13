@@ -26,6 +26,7 @@ Build-Depends:
  python3-all,
  python3-bcrypt,
  python3-dateutil,
+ python3-email-validator,
  python3-ldap,
  python3-m2crypto,
  python3-passlib,
