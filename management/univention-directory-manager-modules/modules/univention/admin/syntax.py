@@ -2704,7 +2704,7 @@ class emailAddress(simple):
 
 	@classmethod
 	def parse(self, text):
-		if self.extra_validation and validate_email and configRegistry.is_true('directory/manager/mail-address/extra-validation'):
+		if self.extra_validation and validate_email and configRegistry.is_true('directory/manager/mail-address/extra-validation', True):
 			try:
 				validate_email(text, allow_smtputf8=False, check_deliverability=False, globally_deliverable=False)
 			except EmailNotValidError as exc:
