@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-directory-manager-modules
-fix: 15.0.13-19A~5.0.0.202211111143
+fix: 15.0.13-22A~5.0.0.202211131611
 desc: |
  This update addresses the following issues:
  * It is now possible to create extended attributes for LDAP operational
