@@ -160,7 +160,9 @@ class Test_ComplexSyntaxTypes():
 			'additionalProperties': False,
 			'properties': {
 				'priority': {'type': 'integer', 'nullable': True},
-				'mailserver': {'type': 'string', 'nullable': True}}
+				'mailserver': {'type': 'string', 'nullable': True},
+			},
+			'required': ['priority', 'mailserver'],
 		}
 		openapi_schema = get_openapi_schema()
 		user_props = openapi_schema["components"]["schemas"]["users-user.request-patch"]["properties"]["properties"]["properties"]
