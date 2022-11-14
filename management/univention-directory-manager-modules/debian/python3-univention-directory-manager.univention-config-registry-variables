@@ -105,7 +105,7 @@ Categories=management-udm
 Description[de]=Mail-Adressen werden durch eine weitergehende Bibliothek geprüft. Das kann zu falsch-positiven Ergenissen führen und es werden Adressen abgelehnt, die in dieser Domäne erlaubt sein sollten. Deshalb ist die erweiterte Prüfung durch das Setzen auf 'false' abstellbar.
 Description[en]=Mail addresses will be checked against an advanced library. This may lead to false positives and addresses get rejected that should be allowed in this domain. Therefore, the extra check can be disabled by setting the variable to 'false'.
 Type=bool
-Default=True
+Default=true
 Categories=management-udm
 
 [directory/manager/user/primarygroup/update]
