@@ -2764,6 +2764,11 @@ class emailAddressValidDomain(UDM_Objects, emailAddress):
 	search_widget = 'MailBox'
 
 	@classmethod
+	def parse(self, text):
+		text = super(emailAddressValidDomain, self).parse(text)
+		return emailAddress.parse(text)
+
+	@classmethod
 	def get_widget(cls, prop):
 		return 'MailBox'
 
