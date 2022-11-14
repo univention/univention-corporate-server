@@ -2,6 +2,7 @@ univention-management-console (12.0.13-3) unstable; urgency=medium
 
   * Bug #55424: make SAML identiy cache configurable
   * Bug #55248: improve error handling in `pysaml2` usage
+  * Bug #55423: log internal exception traces when error reporting is off
 
  -- Florian Best <best@univention.de>  Mon, 14 Nov 2022 13:26:54 +0100
 

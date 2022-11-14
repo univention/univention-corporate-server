@@ -1513,7 +1513,6 @@ def run_cherrypy(options):
 		'tools.fix_uri.on': True,
 		'tools.umcp_auth.on': True,
 		'error_page.default': default_error_page,
-		'request.show_tracebacks': ucr.is_true('umc/http/show_tracebacks', True),
 	})
 
 	cherrypy.quickstart(root=root)

@@ -11,4 +11,6 @@ desc: |
    `umc/saml/in-memory-identity-cache` to `false`. This is done automatically
    for servers with enabled multiprocessing.
  * The error handling of the `pysaml2` usage has been improved.
-bug: [55424, 55248]
+ * Exception stack traces are logged again when "umc/http/show_tracebacks" is
+   set to False.
+bug: [55424, 55248, 55423]
