@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: xorg-server
+fix: 2:1.19.2-1+deb9u11
+desc: |
+ This update addresses the following issues:
+ 2:1.19.2-1+deb9u11 (Thu, 10 Nov 2022 16:19:12 +0100)
+ * xkb: proof GetCountedString against request length attacks (CVE-2022-3550)
+ * xkb: fix some possible memleaks in XkbGetKbdByName (CVE-2022-3551)
+bug: [55418]
+cve:
+- CVE-2022-3550
+- CVE-2022-3551
