@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-management-console
+fix:
+desc: |
+ This update addresses the following issues:
+ * The SAML identity cache has been changed to an in-memory cache. This
+   can be changed to the filesystem database by setting the UCR variable
+   `umc/saml/in-memory-identity-cache` to `false`. This is done automatically
+   for servers with enabled multiprocessing.
+bug: [55424]

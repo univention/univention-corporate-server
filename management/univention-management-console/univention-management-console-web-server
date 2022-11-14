@@ -1215,7 +1215,7 @@ def get_ip_address():
 class SAML(Ressource):
 
 	SP = None
-	identity_cache = '/var/cache/univention-management-console/saml-%d.bdb'
+	identity_cache = '/var/cache/univention-management-console/saml-%d.bdb' if ucr.is_false('umc/saml/in-memory-identity-cache') else None
 	state_cache = None
 	configfile = '/usr/share/univention-management-console/saml/sp.py'
 	idp_query_param = "IdpQuery"
@@ -1235,8 +1235,9 @@ class SAML(Ressource):
 	def reload(cls):
 		CORE.info('Reloading SAML service provider configuration')
 		sys.modules.pop(os.path.splitext(os.path.basename(cls.configfile))[0], None)
+		identity_cache = cls.identity_cache % (PORT,) if cls.identity_cache else None
 		try:
-			cls.SP = Saml2Client(config_file=cls.configfile, identity_cache=cls.identity_cache % (PORT,), state_cache=cls.state_cache)
+			cls.SP = Saml2Client(config_file=cls.configfile, identity_cache=identity_cache, state_cache=cls.state_cache)
 			return True
 		except Exception:
 			CORE.warn('Startup of SAML2.0 service provider failed:\n%s' % (traceback.format_exc(),))
