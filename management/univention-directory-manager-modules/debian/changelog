@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.13-23) unstable; urgency=medium
+
+  * Bug #55410: added remove_a_record to univention-dnsedit and cleanup
+
+ -- Juan Pedro Torres <torres-munoz.extern@univention.de>  Mon, 14 Nov 2022 10:33:58 +0100
+
 univention-directory-manager-modules (15.0.13-22) unstable; urgency=medium
 
   * Bug #55413: Fix emailAddressTemplate; add doctests
