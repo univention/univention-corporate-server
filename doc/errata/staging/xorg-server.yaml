@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: xorg-server
+fix: 2:1.20.4-1+deb10u6
+desc: |
+ This update addresses the following issues:
+ 2:1.20.4-1+deb10u6 (Tue, 08 Nov 2022 13:39:13 +0100)
+ * xkb: proof GetCountedString against request length attacks (CVE-2022-3550)
+ * xkb: fix some possible memleaks in XkbGetKbdByName (CVE-2022-3551)
+bug: [55416]
+cve:
+- CVE-2022-3550
+- CVE-2022-3551
