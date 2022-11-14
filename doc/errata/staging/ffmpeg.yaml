@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: ffmpeg
+fix: 7:3.2.19-0+deb9u1
+desc: |
+ This update addresses the following issue:
+ 7:3.2.19-0+deb9u1 (Tue, 08 Nov 2022 18:36:14 +0100)
+ * New upstream release.
+ * Backport fix for CVE-2020-21697.
+bug: [55421]
+cve:
+- CVE-2020-21697
