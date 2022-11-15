@@ -9,3 +9,5 @@ desc: |
  * The ceckboxes in grids are now rendered in the correct state while
    scrolling.
 bug: [54451]
+erratum: 482
+announced: 2022-11-15
