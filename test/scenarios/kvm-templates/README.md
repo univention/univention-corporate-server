@@ -25,26 +25,37 @@ _[TOC]_
 - **Description:** base template for standard test, basically a UCS appliance, not provisioned/joined
 - **Example:** -
 - **Base template:** current DVD
+- **Template cfg:** [generic-kvm-template.cfg](./generic-kvm-template.cfg)
 ### ucs-master|ucs-backup|ucs-slave|ucs-member
 - **Description:** master, backup, slave and member, all DHCP, domain: ucs.test, master is joined, all other systems provisioned (but not joined)
 - **Example:** [scenarios/base/ucs-master-backup.cfg](../base/ucs-master-backup.cfg)
 - **Base template:** generic-unsafe
+- **Template cfg:** [role-kvm-templates.cfg](./role-kvm-templates.cfg)
 ### ucs-joined-master|ucs-joined-backup|ucs-joined-slave|ucs-joined-member
 - **Description:**  master, backup, slave and member, all DHCP, domain: ucs.test, all systems joined
 - **Example:** [scenarios/base/ucs-master-backup-joined.cfg](../base/ucs-master-backup-joined.cfg)
 - **Base template:** generic-unsafe
-### ucs-school-singleserver-joined TODO
-- **Description:** TODO
-- **Example:** TODO
-- **Base template:** TODO
+- **Template cfg:** [joined-kvm-templates.cfg](./joined-kvm-templates.cfg)
+### ucs-school-multiserver-primary|ucs-school-multiserver-backup1|ucs-school-multiserver-school1 (replica)
+- **Description:** school primary, backup and one school slave (school1), domain: school.test, all joined
+- **Example:** [scenarios/base/ucs-school-multiserver-joined-primary-school1.cfg](../base/ucs-school-multiserver-joined-primary-school1.cfg)
+- **Base template:** generic-unsafe
+- **Template cfg:** [ucs-school-multiserver-joined.cfg](./ucs-school-multiserver-joined.cfg)
 ### ucs-samba-env1-primary|ucs-samba-env1-replica
 - **Description:** Primary and replica, both samba DS's (primary is S4 connector), all DHCP, domain: samba.test
 - **Example:** [scenarios/base/ucs-samba-env1-primary-replica.cfg](../base/ucs-samba-env1-primary-replica.cfg)
 - **Base template:** generic-unsafe
-### primary-with-200000-users-kvm-template
-- **Description:** Primary with 200000 user objects and 200 groups, DHCP, FQDN: primary.ucs.test
+- **Template cfg:** [samba-primary-replica-kvm-templates.cfg](./samba-primary-replica-kvm-templates.cfg)
+### ucs-primary-with-200000-users
+- **Description:** Primary with 200000 user objects and 20000 groups (see utils/200.000-users.py for details), DHCP, FQDN: primary.ucs.test
 - **Example:** [scenarios/base/ucs-primary-with-200000-users.cfg](../base/ucs-primary-with-200000-users.cfg)
 - **Base template:** generic-unsafe
+- **Template cfg:** [primary-with-200000-users-kvm-template.cfg](./primary-with-200000-users-kvm-template.cfg)
+### ucs-school-performance-env1-primary|ucs-school-performance-env1-backup1
+- **Description:** School primary and backup with 250000 school users (see utils/utils-school.sh::create_users_in_template_job for details), domain: school.test
+- **Example:** TODO
+- **Base template:** generic-unsafe
+- **Template cfg:** [ucs-school-performance-env1.cfg](./ucs-school-performance-env1.cfg)
 
 ## Usage
 The normal use case is to start templates with start-test.sh. Some example cfg files can be found in [test/scenarios/base](../base/README.md)
