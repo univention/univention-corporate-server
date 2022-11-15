@@ -65,7 +65,7 @@ class MailAllObject(GenericObject):
 class MailAllModule(GenericModule):
 	"""MailAllObject factory"""
 	_udm_object_class = MailAllObject
-	supported_api_versions = [1, 2]
+	supported_api_versions = ()  # type: Iterable[int]
 
 	def _verify_univention_object_type(self, orig_udm_obj):  # type: (OriUdmHandlerTV) -> None
 		...

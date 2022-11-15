@@ -48,7 +48,7 @@ import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.config_registry
 
-from ..encoders import dn_list_property_encoder_for, dn_property_encoder_for, DnPropertyEncoder
+from ..encoders import dn_list_property_encoder_for, dn_property_encoder_for, DnPropertyEncoder, PoliciesEncoder
 from ..base import BaseModule, BaseModuleMetadata, BaseObject, BaseObjectProperties, LdapMapping, ModuleMeta
 from ..exceptions import (
 	CreateError, DeleteError, DeletedError, NotYetSavedError, ModifyError, MoveError, NoObject, NoSuperordinate,
@@ -263,7 +263,15 @@ class GenericObject(BaseObject):
 		self.dn = self._orig_udm_object.dn
 		self.entry_uuid = self._orig_udm_object.entry_uuid
 		self.options = self._orig_udm_object.options
-		if self._udm_module.meta.used_api_version > 0:
+		if self._udm_module.meta.used_api_version >= 3:
+			# policies is a mapping of policy-type to a list of referenced policy-dn
+			if not self._policies_encoder:
+				self.__class__._policies_encoder = self._init_encoder(
+					PoliciesEncoder, property_name='__policies', lo=self._lo, module_name=self._udm_module.name,
+				)
+			self.policies = self._policies_encoder.decode(self._orig_udm_object.policies)
+		elif self._udm_module.meta.used_api_version > 0:
+			# policies are a list of referenced policy DN's
 			# encoders exist from API version 1 on
 			if not self._policies_encoder:
 				# 'auto', because list contains policies/*
@@ -507,7 +515,7 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
 	_default_containers = {}
 
 	class Meta:
-		supported_api_versions = [0, 1, 2]
+		supported_api_versions = [0, 1, 2, 3]
 		suitable_for = ['*/*']
 
 	def __init__(self, name, connection, api_version):

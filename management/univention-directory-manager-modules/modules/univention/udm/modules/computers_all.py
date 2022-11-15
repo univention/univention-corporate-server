@@ -71,7 +71,7 @@ class ComputersAllModule(GenericModule):
 	_udm_object_class = ComputersAllObject
 
 	class Meta:
-		supported_api_versions = [1, 2]
+		supported_api_versions = [1, 2, 3]
 		default_positions_property = 'computers'
 		suitable_for = ['computers/*']
 
@@ -80,7 +80,7 @@ class ComputersDCModule(ComputersAllModule):
 	"""ComputersAllObject factory with an adjusted default position"""
 
 	class Meta:
-		supported_api_versions = [1, 2]
+		supported_api_versions = [1, 2, 3]
 		default_positions_property = 'domaincontroller'
 		suitable_for = ['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave']
 
@@ -100,6 +100,6 @@ class ComputersMemberModule(ComputersAllModule):
 		return ret
 
 	class Meta:
-		supported_api_versions = [1, 2]
+		supported_api_versions = [1, 2, 3]
 		default_positions_property = 'computers'
 		suitable_for = ['computers/memberserver']

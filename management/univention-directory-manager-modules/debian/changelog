@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.13-24) unstable; urgency=medium
+
+  * Bug #50167: Simple UDM API: change list of policy DNs to mapping of
+    policy type to list of policy DNs
+
+ -- Florian Best <best@univention.de>  Tue, 15 Nov 2022 09:16:51 +0100
+
 univention-directory-manager-modules (15.0.13-23) unstable; urgency=medium
 
   * Bug #55413: Fix parse in emailAddressValidDomain

@@ -58,5 +58,5 @@ class UsersLdapModule(GenericModule):
 	_udm_object_class = UsersLdapObject
 
 	class Meta:
-		supported_api_versions = [1, 2]
+		supported_api_versions = [1, 2, 3]
 		suitable_for = ['users/ldap']
