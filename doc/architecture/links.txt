@@ -1,5 +1,7 @@
+.. _bootstrap: https://getbootstrap.com/
 .. _debian-faq-pkg-basics: https://www.debian.org/doc/manuals/debian-faq/pkg-basics.en.html
 .. _debian-ref-package-mngmt: https://www.debian.org/doc/manuals/debian-reference/ch02.en.html
+.. _dojo-toolkit: https://dojotoolkit.org/
 .. _lets-encrypt: https://letsencrypt.org
 .. _univention-ucs-manual: https://docs.software-univention.de/manual-5.0.html
 .. _w-certificate-authority: https://en.wikipedia.org/wiki/Certificate_authority
