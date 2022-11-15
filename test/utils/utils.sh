@@ -926,11 +926,24 @@ umc_apps () {
 install_apps_via_umc () {
 	local username=${1:?missing username} password=${2:?missing password} rv=0 app
 	shift 2 || return $?
+	univention-app update || return $?
 	rm -f /var/cache/appcenter-installed.txt
 	for app in "$@"; do
 		umc_apps -U "$username" -p "$password" -a $app || rv=$?
 		echo "$app" >>/var/cache/appcenter-installed.txt
 	done
+	return $rv
+}
+
+install_apps_via_cmdline () {
+	local username=${1:?missing username} password=${2:?missing password} rv=0 app password_file
+	shift 2 || return $?
+	password_file="$(mktemp)"
+	echo "$password" > "$password_file"
+	for app in "$@"; do
+		univention-app install --noninteractive --username "$username" --pwdfile "$password_file" "$app" || rv=$?
+	done
+	rm -f "$password_file"
 	return $rv
 }
 
