@@ -10,3 +10,5 @@ desc: |
    to the univention-server-common package.
    It contains a CLI tool used by the Univention Keycloak app.
 bug: [55383]
+erratum: 484
+announced: 2022-11-15
