@@ -11,3 +11,5 @@ desc: |
    the collected archive to Univention and sending an email to the
    Univention support.
 bug: [26684]
+erratum: 481
+announced: 2022-11-15
