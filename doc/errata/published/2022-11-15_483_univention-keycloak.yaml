@@ -10,3 +10,5 @@ desc: |
    package contains a CLI tool that is used by the Univention
    Keycloak app.
 bug: [55383]
+erratum: 483
+announced: 2022-11-15
