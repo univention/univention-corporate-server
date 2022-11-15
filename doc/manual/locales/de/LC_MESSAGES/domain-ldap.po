@@ -5,7 +5,7 @@ msgstr ""
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-30 14:32+0000\n"
-"PO-Revision-Date: 2022-08-29 16:24+0200\n"
+"PO-Revision-Date: 2023-02-02 14:58+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -2293,6 +2293,14 @@ msgstr ""
 "ist, besteht die Möglichkeit, das Modul neu zu initialisieren. Dabei "
 "werden alle LDAP-Objekte mit denen das Listener-Modul arbeitet erneut "
 "übergeben."
+
+#: ../../domain-ldap/listener-notifier.rst:125
+msgid ""
+"This is a destructive operation. It removes some internal state of the "
+"listener. Use with care!"
+msgstr ""
+"Dies ist eine destruktive Operation. Sie entfernt internen Zustand des "
+"Listeners. Nur mit Vorsicht verwenden!"
 
 #: ../../domain-ldap/listener-notifier.rst:123
 msgid ""

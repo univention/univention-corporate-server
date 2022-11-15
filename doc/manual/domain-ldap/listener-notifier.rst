@@ -120,6 +120,12 @@ If there are problems in running a listener module, there is the option to
 reinitialize the module. In this case, all LDAP objects with which the
 listener module works are passed on again.
 
+.. warning::
+
+   This is a destructive operation.
+   It removes some internal state of the listener.
+   Use with care!
+
 The name of the listener module must be supplied to the command for the renewed
 initialization. The installed listener modules can be found in the
 :file:`/var/lib/univention-directory-listener/handlers/` directory.

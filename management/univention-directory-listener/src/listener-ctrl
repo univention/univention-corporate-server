@@ -51,7 +51,7 @@ main () {
 usage () {
 	echo "$0: command [args]"
 	echo "Commands:"
-	echo "  resync module1...     Resyncronize modules"
+	echo "  resync module1...     Resyncronize module(s) DANGEROUS!"
 	echo "  status                Show listener status"
 	echo "  modules               Show modules and their status"
 	exit "${1:-1}"
