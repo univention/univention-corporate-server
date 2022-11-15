@@ -83,6 +83,7 @@ from univention.management.console.modules.sanitizers import MultiValidationErro
 from univention.management.console.error import UMC_Error, LDAP_ServerDown, LDAP_ConnectionFailed, UnprocessableEntity
 
 import univention.directory.reports as udr
+import univention.admin.objects as udm_objects
 import univention.admin.uexceptions as udm_errors
 import univention.admin.modules as udm_modules
 import univention.admin.syntax as udm_syntax
@@ -446,6 +447,13 @@ class ResourceBase:
 		if not module or not module.module:
 			raise NotFound(object_type)
 		return module
+
+	def get_module_object(self, object_type, dn):
+		module = self.get_module(object_type)
+		obj = module.get(dn)
+		if not obj:
+			raise NotFound(object_type, dn)
+		return module, obj
 
 	def get_object(self, object_type, dn):
 		module = self.get_module(object_type)
@@ -2943,16 +2951,13 @@ class Object(FormBase, _OpenAPIBase, Resource):
 		if object_type == 'users/self' and not self.ldap_connection.compare_dn(dn, self.request.user_dn):
 			raise HTTPError(403)
 
-		module = get_module(object_type, dn, self.ldap_connection)
-		if module is None:
-			raise NotFound(object_type, dn)
-
-		obj = await self.pool_submit(module.get, dn)
-		if not obj:
+		try:
+			module, obj = await self.pool_submit(self.get_module_object, object_type, dn)
+		except NotFound:
 			# FIXME: return HTTP 410 Gone for removed objects
 			# if self.ldap_connection.searchDn(filter_format('(&(reqDN=%s)(reqType=d))', [dn]), base='cn=translog'):
 			# 	raise Gone(object_type, dn)
-			raise NotFound(object_type, dn)
+			raise
 		if object_type not in ('users/self', 'users/passwd') and not univention.admin.modules.recognize(object_type, obj.dn, obj.oldattr):
 			raise NotFound(object_type, dn)
 
@@ -3122,18 +3127,13 @@ class Object(FormBase, _OpenAPIBase, Resource):
 	async def put(self, object_type, dn):
 		"""Modify or move an {module.object_name} object"""
 		dn = unquote_dn(dn)
-		module = self.get_module(object_type)
-		if not module:
-			raise NotFound(object_type)
-
 		try:
-			obj = await self.pool_submit(module.get, dn)
-		except UDM_Error as exc:
-			if not isinstance(exc.exc, udm_errors.noObject):
-				raise
-			obj = None
+			module, obj = await self.pool_submit(self.get_module_object, object_type, dn)
+		except NotFound:
+			module, obj = None
 
 		if not obj:
+			module = self.get_module(object_type)
 			serverctrls = [PostReadControl(True, ['entryUUID'])]
 			response = {}
 
@@ -3173,13 +3173,7 @@ class Object(FormBase, _OpenAPIBase, Resource):
 	async def patch(self, object_type, dn):
 		"""Modify an {module.object_name} object (moving is currently not possible)"""
 		dn = unquote_dn(dn)
-		module = get_module(object_type, dn, self.ldap_connection)
-		if not module:
-			raise NotFound(object_type)
-
-		obj = await self.pool_submit(module.get, dn)
-		if not obj:
-			raise NotFound(object_type, dn)
+		module, obj = await self.pool_submit(self.get_module_object, object_type, dn)
 
 		self.set_entity_tags(obj)
 
@@ -3330,14 +3324,21 @@ class Object(FormBase, _OpenAPIBase, Resource):
 	async def delete(self, object_type, dn):
 		"""Remove a {module.object_name_plural} object"""
 		dn = unquote_dn(dn)
-		module = get_module(object_type, dn, self.ldap_connection)
-		if not module:
-			raise NotFound(object_type)
+		module, obj = await self.pool_submit(self.get_module_object, object_type, dn)
 
 		cleanup = bool(self.request.decoded_query_arguments['cleanup'])
 		recursive = bool(self.request.decoded_query_arguments['recursive'])
 		try:
-			await self.pool_submit(module.remove, dn, cleanup, recursive)
+			def remove():
+				try:
+					obj.open()
+					MODULE.info('Removing LDAP object %s' % (dn,))
+					obj.remove(remove_childs=recursive)
+					if cleanup:
+						udm_objects.performCleanup(obj)
+				except udm_errors.base as exc:
+					UDM_Error(exc).reraise()
+			await self.pool_submit(remove)
 		except udm_errors.primaryGroupUsed:
 			raise
 		self.add_caching(public=False, must_revalidate=True)

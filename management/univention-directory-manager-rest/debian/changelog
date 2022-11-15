@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.4-8) unstable; urgency=medium
+
+  * Bug #55430: prevent duplicated LDAP object receival
+
+ -- Florian Best <best@univention.de>  Wed, 16 Nov 2022 14:37:39 +0100
+
 univention-directory-manager-rest (10.0.4-7) unstable; urgency=medium
 
   * Bug #55096: enhance OpenAPI schema

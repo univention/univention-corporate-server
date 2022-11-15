@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-directory-manager-rest
+fix:
+desc: |
+ This update addresses the following issues:
+ * The performance of the UDM REST API has been improoved:
+   A duplicated LDAP search has been eliminated for `GET`, `PATCH` and
+   `DELETE` operations on a object.
+bug: [55430]
