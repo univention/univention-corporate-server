@@ -6,7 +6,9 @@ src: samba
 fix: 2:4.16.2-1A~5.0.0.202211091951
 desc: |
  This update addresses the following issues:
- * This update fixes TODO
+ * This update fixes a Samba buffer overflow vulnerability on 32-bit
+   systems.
+   For details see https://www.samba.org/samba/security/CVE-2022-42898.html
 bug: [55406]
 cve:
- - CVE-2022-TODO
+ - CVE-2022-42898
