@@ -49,16 +49,25 @@ class ShortNameFormatter(logging.Formatter):
 
 def setup_logger(logfile="/var/log/univention/portal.log", stream=True):
     logger = logging.getLogger("univention.portal")
+
+    if logfile is None and not stream:
+        logger.addHandler(logging.NullHandler())
+
+        return
+
+    log_format = "%(process)6d %(short_name)-12s %(asctime)s [%(levelname)8s]: %(message)s"
+    log_format_time = "%y-%m-%d %H:%M:%S"
+    formatter = ShortNameFormatter(log_format, log_format_time)
+
     logger.setLevel(logging.DEBUG)
+
     if logfile is not None:
-        log_format = "%(process)6d %(short_name)-12s %(asctime)s [%(levelname)8s]: %(message)s"
-        log_format_time = "%y-%m-%d %H:%M:%S"
-        formatter = ShortNameFormatter(log_format, log_format_time)
         handler = logging.FileHandler(logfile)
         handler.setFormatter(formatter)
         logger.addHandler(handler)
     if stream:
         handler = logging.StreamHandler(sys.stdout)
+        handler.setFormatter(formatter)
         logger.addHandler(handler)
 
 
