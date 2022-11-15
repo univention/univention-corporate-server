@@ -140,6 +140,57 @@ Usability
 System management
 -----------------
 
+System management covers all administrative tasks related to the underlying UCS
+system. The tasks are for example UCS system updates, management of apps like
+lifecycle and configuration and certificate handling. The purpose of system
+management is to simplify the administrators' daily jobs regarding the
+management of multiple UCS systems.
+
+The component *Univention Management Console (UMC)* provides the capabilities
+for system management on UCS and is part of the UCS management system. It offers
+the technology stack for the web interface of the UCS management system. |UMC|
+consists of modules for the different administration tasks. Apps and software
+packages can deploy their own custom UMC modules and extend the UCS management
+system.
+
+|UMC| is a central component in UCS for the following reasons:
+
+* Provides the technology stack for the web interface of the UCS management
+  system
+
+* Provides user authentication interface to the UCS management system and
+  :ref:`services-ucs-portal`
+
+* Allows extension of the UCS management system with custom UMC modules
+
+As component serving the web interface for the UCS management system, |UMC|
+involves a web front end and a back end as shown in
+:numref:`component-system-management-umc-model`.
+
+.. _component-system-management-umc-model:
+
+.. figure:: /images/UMC-architecture-product-component.*
+   :width: 250 px
+
+   *UMC web front end* and *UMC back end* realize Univention Management Console
+
+.. admonition:: Continue reading
+
+   :ref:`services-umc` for description of the architecture of UMC
+
+.. seealso::
+
+   :ref:`central-user-interface`
+      for details about |UMC| modules in :cite:t:`ucs-manual`
+
+   :ref:`central-extended-attrs`
+      for details about how to enhance with *extended attributes* in
+      :cite:t:`ucs-manual`
+
+   :ref:`chap-umc`
+      for technical details about |UMC| for software developers in
+      :cite:t:`developer-reference`
+
 .. _component-configuration-registry:
 
 Configuration management
