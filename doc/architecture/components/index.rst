@@ -20,14 +20,23 @@ architects. For software developers and system engineers it provides the context
 for the architectural details to UCS. Make sure you are familiar with the
 :ref:`concepts` behind UCS.
 
-The following product components introduce themselves in the order you most
-likely encounter them when you work with UCS:
+The following product components from :numref:`product-components-c4-model`
+introduce themselves in the order you most likely encounter them when you work
+with UCS:
 
 #. :ref:`component-portal`
 #. :ref:`component-management-system`
 #. :ref:`component-app-center`
 #. :ref:`component-file-print`
 #. :ref:`component-command-line`
+
+.. _product-components-c4-model:
+
+.. figure:: /images/product-components.*
+   :alt: UCS Product components with UCS Management System, UCS Portal, App
+         Center, File and Print, and Command-line
+
+   User facing product components of UCS
 
 .. toctree::
    :maxdepth: 2
