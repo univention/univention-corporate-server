@@ -6,11 +6,9 @@ src: sudo
 fix: 1.8.19p1-2.1+deb9u4
 desc: |
  This update addresses the following issue:
- 1.8.19p1-2.1+deb9u4 (Wed, 09 Nov 2022 08:21:29 +0000)
- * Non-maintainer upload by the Debian ELTS Team.
  * CVE-2021-23239: Prevent an issue where a local unprivileged user may have
    been able to perform arbitrary directory-existence tests by exploiting a
-   race condition in sudoedit by replacing a user-controlled directory by a
+   race condition in `sudoedit` by replacing a user-controlled directory by a
    symlink to an arbitrary path.
 bug: [55419]
 cve:
