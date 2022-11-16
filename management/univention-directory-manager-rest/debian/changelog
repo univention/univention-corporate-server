@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.4-10) unstable; urgency=medium
+
+  * Bug #50249: use HAL response error format
+
+ -- Florian Best <best@univention.de>  Tue, 22 Nov 2022 11:23:26 +0100
+
 univention-directory-manager-rest (10.0.4-9) unstable; urgency=medium
 
   * Bug #54623: separate LDAP connections for read and write operations,

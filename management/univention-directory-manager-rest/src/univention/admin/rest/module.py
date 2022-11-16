@@ -217,7 +217,12 @@ def sanitize(method):
 			},
 		}
 		payload['body_arguments'][content_type] = self.request.body_arguments
-		arguments = self.sanitize_arguments(method.sanitizer, 'request.arguments', {'request.arguments': payload, 'resource': self})
+
+		def _result_func(x):
+			if x.get('body_arguments', {}).get(content_type):
+				x['body_arguments'] = x['body_arguments'][content_type]
+			return x
+		arguments = self.sanitize_arguments(method.sanitizer, 'request.arguments', {'request.arguments': payload, 'resource': self}, _result_func=_result_func)
 		self.request.decoded_query_arguments = {
 			key: arguments['query_string'][param.alias or key]
 			for key, param in method.params['query'].items()
@@ -563,8 +568,9 @@ class ResourceBase:
 		return super().get_body_arguments(name, *args)
 
 	def sanitize_arguments(self, sanitizer, *args, **kwargs):
+		field = kwargs.pop('_fieldname', 'request.arguments')
+		result = kwargs.pop('_result_func', lambda x: x)
 		try:
-			field = kwargs.pop('_fieldname', 'request.arguments')
 			try:
 				return sanitizer.sanitize(*args, **kwargs)
 			except MultiValidationError:
@@ -574,13 +580,27 @@ class ResourceBase:
 				multi_error.add_error(exc, field)
 				raise multi_error
 		except MultiValidationError as e:
-			raise UnprocessableEntity(str(e), result=e.result())
+			raise UnprocessableEntity(str(e), result=result(e.result()))
 
-	def raise_sanitization_error(self, field, message):
+	def raise_sanitization_error(self, field, message, type='body'):
+		fields = field if isinstance(field, (list, tuple)) else (field,)
+		field = fields[-1]
+
+		def _result(x):
+			error = {type: {}}
+			err = error[type]
+			for f in fields:
+				if f == field:
+					break
+				err[f] = {}
+				err = err[f]
+			err.update(x)
+			return error
+
 		class FalseSanitizer(Sanitizer):
 			def sanitize(self):
 				self.raise_formatted_validation_error('%(message)s', field, None, message=message)
-		self.sanitize_arguments(FalseSanitizer(), _fieldname=field)
+		self.sanitize_arguments(FalseSanitizer(), _result_func=_result, _fieldname=field)
 
 	def content_negotiation(self, response):
 		self.add_header('Vary', ', '.join(self.vary()))
@@ -693,12 +713,15 @@ class ResourceBase:
 				root.insert(0, self.get_html_form(_form, response))
 
 			if isinstance(response.get('error'), dict) and response['error'].get('code', 0) >= 400:
+				error_response = response['error']
 				error = ET.Element('div')
 				root.append(error)
-				ET.SubElement(error, 'h1').text = _('HTTP-Error %d: %s') % (response['error']['code'], response['error']['title'])
-				ET.SubElement(error, 'p', style='white-space: pre').text = response['error']['message']
-				if response['error'].get('traceback'):
-					ET.SubElement(error, 'pre').text = response['error']['traceback']
+				ET.SubElement(error, 'h1').text = _('HTTP-Error %d: %s') % (error_response['code'], error_response['title'])
+				ET.SubElement(error, 'p', style='white-space: pre').text = error_response['message']
+				for error_detail in self.get_resources(response, 'udm:error'):
+					ET.SubElement(error, 'p', style='white-space: pre').text = '%s(%s): %s' % ('.'.join(error_detail['location']), error_detail['type'], error_detail['message'])
+				if error_response.get('traceback'):
+					ET.SubElement(error, 'pre').text = error_response['traceback']
 				response = None
 
 		if isinstance(response, (list, tuple)):
@@ -907,10 +930,12 @@ class ResourceBase:
 			exc = LDAP_ServerDown()
 		if isinstance(exc, ldap.CONNECT_ERROR):
 			exc = LDAP_ConnectionFailed(exc)
-		_traceback = None
 		message = str(exc)
 		title = ''
-		result = {}
+		error = {}
+		response = {
+			'error': {},
+		}
 		if isinstance(exc, UDM_Error):
 			status_code = 400
 		if isinstance(exc, UMC_Error):
@@ -921,32 +946,54 @@ class ResourceBase:
 			if title == message:
 				title = responses.get(status_code)
 			if isinstance(exc.result, dict):
-				result = exc.result
+				error = exc.result
+				if isinstance(exc, UnprocessableEntity) and error.get('body', {}).get('properties'):
+					error = error['body']['properties']
+				elif isinstance(exc, UnprocessableEntity) and error.get('query', {}):
+					error = error['query']
 		if isinstance(exc, UnprocessableEntity):
-			error = ''
+			error_summary = ''
+
+			def _append_error(key, message, location, formatter):
+				error_summary = ''
+				if isinstance(message, dict):
+					for k, v in message.items():
+						error_summary += _append_error(k, v, list(location) + [k], formatter)
+				else:
+					error_summary += formatter % (key, message)
+					self.add_resource(response, 'udm:error', {
+						'location': location,
+						'message': message,
+						'type': 'value_error',
+					})
+				return error_summary
+
 			for key, value in exc.result.items():
 				formatter = _('Request argument "%s" %s\n')
+				location = key
 				if key == 'query_string':
 					formatter = _('Query string "%s": %s\n')
-				if isinstance(value, dict):
-					for k, v in value.items():
-						error += formatter % (k, v)
-				else:
-					error += formatter % (key, value)
-			message = f'{message}:\n{error}'
+					location = 'query'
+				elif key == 'body_arguments':
+					formatter = _('Body data "%s": %s\n')
+					location = 'body'
+				error_summary += _append_error(key, value, (location,), formatter)
+			message = f'{message}:\n{error_summary}'
 
-		if not isinstance(exc, (UDM_Error, UMC_Error)) and status_code >= 500:
-			_traceback = ''.join(traceback.format_exception(etype, exc, etraceback))
+		if status_code >= 500:
+			_traceback = None
+			if not isinstance(exc, (UDM_Error, UMC_Error)):
+				_traceback = ''.join(traceback.format_exception(etype, exc, etraceback))
+			response['error']['traceback'] = _traceback if self.application.settings.get("serve_traceback", True) else None
 
-		response = {
-			'error': {
-				'title': title,
-				'code': status_code,
-				'message': message,
-				'traceback': _traceback if self.application.settings.get("serve_traceback", True) else None,
-				'error': result,
-			},
-		}
+		# backwards compatibility :'-(
+		response['error'].update({
+			'code': status_code,
+			'title': title,
+			'message': message,
+			'error': error,  # deprecated, use embedded udm:error instead
+		})
+
 		self.add_link(response, 'self', self.urljoin(''), title=_('HTTP-Error %d: %s') % (status_code, title))
 		self.set_status(status_code)
 		self.add_caching(public=False, no_store=True, no_cache=True, must_revalidate=True)
@@ -1155,6 +1202,8 @@ class Relations(Resource):
 			'license-check': 'Check if the license limits are reached',
 			'license-import': 'Import a new license in LDIF format',
 			'service-specific-password': 'Generate a new service specific password',
+			'error': 'Error',
+			'warning': 'Warning',
 		}
 		self.add_caching(public=True, must_revalidate=True)
 		result = {}
@@ -1218,6 +1267,9 @@ class _OpenAPIBase:
 				'application/hal+json': {'schema': schema_definition},
 				'text/html': {'schema': {'$ref': '#/components/schemas/html-response'}},
 			}
+
+		def content_schema_ref(schema_definition):
+			return content_schema({'$ref': schema_definition})
 
 		openapi_request_bodies = {}
 		openapi_schemas = {
@@ -1300,6 +1352,36 @@ class _OpenAPIBase:
 				"type": "string",
 				"format": "dn",
 				"example": ldap_base,
+			},
+			'embedded-error': {
+				"type": "object",
+				"additionalProperties": True,
+				"properties": {
+					"_embedded": {
+						"type": "object",
+						"additionalProperties": True,
+						"properties": {
+							"udm:error": {
+								'description': 'Additional error information.',
+								"type": "array",
+								"minItems": 0,
+								"items": {
+									"type": "object",
+									"additionalProperties": True,
+									"properties": {
+										'location': {'type': 'array', 'minItems': 1, 'items': {'type': 'string'}},
+										'message': {'type': 'string'},
+										'type': {'type': 'string'},
+									},
+								}
+							}
+						}
+					},
+					'code': {'type': 'integer', 'minimum': 400, 'maximum': 599, 'description': 'HTTP status code equivalent.'},
+					'message': {'type': 'string', 'description': 'A human readable error message.'},
+					'title': {'type': 'string', 'description': 'short title for the error.'},
+					'traceback': {'type': 'string', 'nullable': True, 'description': 'A stacktrace (if enabled and server error).'},
+				},
 			},
 		}
 		openapi_parameters = {
@@ -1539,18 +1621,12 @@ class _OpenAPIBase:
 			"UnprocessableEntity": {  # 422
 				'description': 'Validation of input parameters failed.',
 				'headers': global_response_headers({}),
-				"content": content_schema({
-					"type": "object",
-					"additionalProperties": True,
-				}),
+				"content": content_schema_ref('#/components/schemas/embedded-error'),
 			},
 			"ServerError": {  # 500
 				'description': 'Internal server errror.',
 				'headers': global_response_headers({}),
-				"content": content_schema({
-					"type": "object",
-					"additionalProperties": True,
-				}),
+				"content": content_schema_ref('#/components/schemas/embedded-error'),
 			},
 			"ServiceUnavailable": {  # 503 (+502 +504 +599)
 				'description': '(LDAP) Server not available.',
@@ -1626,9 +1702,6 @@ class _OpenAPIBase:
 			openapi_paths[object_path] = {
 				"parameters": [{"$ref": '#/components/parameters/dn-path'}]
 			}
-
-			def content_schema_ref(schema_definition=schema_definition):
-				return content_schema({'$ref': schema_definition})
 
 			openapi_request_bodies[model_name] = {
 				'content': {
@@ -1971,7 +2044,7 @@ class _OpenAPIBase:
 			'info': {
 				'description': 'Schema definition for the objects in the Univention Directory Manager REST interface.',
 				'title': 'Univention Directory Manager REST interface',
-				'version': '1.0.1',
+				'version': '1.0.2',
 			},
 			'security': [{
 				"basic": []
@@ -2712,9 +2785,9 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
 			try:
 				objects, last_page = await self.search(module, position, ldap_filter, superordinate, scope, hidden, items_per_page, page, by, reverse)
 			except ObjectDoesNotExist as exc:
-				self.raise_sanitization_error('position', str(exc))
+				self.raise_sanitization_error('position', str(exc), type='query')
 			except SuperordinateDoesNotExist as exc:
-				self.raise_sanitization_error('superordinate', str(exc))
+				self.raise_sanitization_error('superordinate', str(exc), type='query')
 
 		for obj in objects or []:
 			if obj is None:
@@ -3319,27 +3392,27 @@ class Object(FormBase, _OpenAPIBase, Resource):
 			if exists_msg and error:
 				self.raise_sanitization_error('dn', _('Object exists: %s: %s') % (exists_msg, str(UDM_Error(error))))
 		except (udm_errors.pwQuality, udm_errors.pwToShort, udm_errors.pwalreadyused) as exc:
-			self.raise_sanitization_error('password', str(UDM_Error(exc)))
+			self.raise_sanitization_error(('properties', 'password'), str(UDM_Error(exc)))
 		except udm_errors.invalidOptions as exc:
 			self.raise_sanitization_error('options', str(UDM_Error(exc)))
 		except (udm_errors.invalidOperation, udm_errors.invalidChild, udm_errors.insufficientInformation) as exc:
 			self.raise_sanitization_error('dn', str(UDM_Error(exc)))  # TODO: invalidOperation and invalidChild should be 403 Forbidden
 		except udm_errors.invalidDhcpEntry as exc:
-			self.raise_sanitization_error('dhcpEntryZone', str(UDM_Error(exc)))
+			self.raise_sanitization_error(('properties', 'dhcpEntryZone'), str(UDM_Error(exc)))
 		except udm_errors.circularGroupDependency as exc:
-			self.raise_sanitization_error('memberOf', str(UDM_Error(exc)))  # or "nestedGroup"
+			self.raise_sanitization_error(('properties', 'memberOf'), str(UDM_Error(exc)))  # or "nestedGroup"
 		except (udm_errors.valueError) as exc:  # valueInvalidSyntax, valueRequired, etc.
-			self.raise_sanitization_error(getattr(exc, 'property', 'properties'), str(UDM_Error(exc)))
+			self.raise_sanitization_error(('properties', getattr(exc, 'property', 'properties')), str(UDM_Error(exc)))
 		except udm_errors.prohibitedUsername as exc:
-			self.raise_sanitization_error('username', str(UDM_Error(exc)))
+			self.raise_sanitization_error(('properties', 'username'), str(UDM_Error(exc)))
 		except udm_errors.uidNumberAlreadyUsedAsGidNumber as exc:
-			self.raise_sanitization_error('uidNumber', str(UDM_Error(exc)))
+			self.raise_sanitization_error(('properties', 'uidNumber'), str(UDM_Error(exc)))
 		except udm_errors.gidNumberAlreadyUsedAsUidNumber as exc:
-			self.raise_sanitization_error('gidNumber', str(UDM_Error(exc)))
+			self.raise_sanitization_error(('properties', 'gidNumber'), str(UDM_Error(exc)))
 		except udm_errors.mailAddressUsed as exc:
-			self.raise_sanitization_error('mailPrimaryAddress', str(UDM_Error(exc)))
+			self.raise_sanitization_error(('properties', 'mailPrimaryAddress'), str(UDM_Error(exc)))
 		except (udm_errors.adGroupTypeChangeLocalToAny, udm_errors.adGroupTypeChangeDomainLocalToUniversal, udm_errors.adGroupTypeChangeToLocal) as exc:
-			self.raise_sanitization_error('adGroupType', str(UDM_Error(exc)))
+			self.raise_sanitization_error(('properties', 'adGroupType'), str(UDM_Error(exc)))
 		except udm_errors.base as exc:
 			UDM_Error(exc).reraise()
 
@@ -3378,7 +3451,7 @@ class Object(FormBase, _OpenAPIBase, Resource):
 			class FalseSanitizer(Sanitizer):
 				def sanitize(self):
 					raise multi_error
-			self.sanitize_arguments(FalseSanitizer())
+			self.sanitize_arguments(FalseSanitizer(), _result_func=lambda x: {'body': {'properties': x}}, _fieldname='properties')
 
 	def set_property(self, obj, property_name, value, result, multi_error, password_properties):
 		if property_name in password_properties:

@@ -8,10 +8,11 @@
 
 import subprocess
 import time
+from operator import itemgetter
 
 import pytest
 
-from univention.admin.rest.client import UDM as UDMClient, Forbidden, PreconditionFailed, Unauthorized
+from univention.admin.rest.client import UDM as UDMClient, Forbidden, PreconditionFailed, Unauthorized, UnprocessableEntity
 from univention.config_registry import ConfigRegistry, handler_set
 from univention.lib.misc import custom_groupname
 from univention.testing.udm import UDM, UCSTestUDM_CreateUDMObjectFailed
@@ -139,3 +140,57 @@ def test_translation(language, error_message):
 			userdn, user = udm.create_user(gecos='foobär')
 
 		assert error_message in str(exc.value)
+
+
+def test_error_handling(udm, ldap_base):
+	udm_client = UDMClient.test_connection()
+	users_user = udm_client.get('users/user')
+
+	# invalid query parameter
+	with pytest.raises(UnprocessableEntity) as exc:
+		list(users_user.search(position='cn=does,dc=not,dc=exists', scope='blah', filter='invalidone'))
+
+	assert sorted(exc.value.error_details['error'], key=itemgetter('location')) == sorted([
+		{'location': ['query', 'scope'], 'message': "Value has to be one of ['sub', 'one', 'base', 'base+one']", 'type': 'value_error'},
+		{'location': ['query', 'filter'], 'message': 'Not a valid LDAP search filter', 'type': 'value_error'},
+		{'location': ['query', 'position'], 'message': f'The ldap base is invalid. Use {ldap_base}.', 'type': 'value_error'},
+	], key=itemgetter('location'))
+
+	# not existing search base underneath of the real LDAP base
+	users_user = udm_client.get('users/user')  # FIXME: weird stuff is going on, the new search uses the old params
+	with pytest.raises(UnprocessableEntity) as exc:
+		list(users_user.search(position=f'cn=does,cn=not,cn=exists,{ldap_base}'))
+	assert exc.value.error_details['error'] == [{'location': ['query', 'position'], 'message': f'LDAP object cn=does,cn=not,cn=exists,{ldap_base} could not be found.\nIt possibly has been deleted or moved. Please update your search results and open the object again.', 'type': 'value_error'}]
+
+	users_user = udm_client.get('users/user')  # FIXME: weird stuff is going on, the new search uses the old params
+	userdn, username = udm.create_user(wait_for=False)
+	user = users_user.get(userdn)
+
+	# prohibited usernames
+	udm.create_object('settings/prohibited_username', name='udm-rest-test', usernames=['root2'])
+	user.properties['username'] = 'root2'
+	with pytest.raises(UnprocessableEntity) as exc:
+		user.save()
+	assert sorted(exc.value.error_details['error'], key=itemgetter('location')) == sorted([{'location': ['body', 'properties', 'username'], 'message': 'Prohibited username. root2', 'type': 'value_error'}], key=itemgetter('location'))
+
+	# two different layers of errors are combined (UDM syntax and UDM REST API type errors)
+	user.properties['description'] = ['foo']  # singlevalue
+	user.properties['e-mail'] = 'foo@example.com'  # multivalue
+	user.properties['gecos'] = 'foobär'  # invalid value
+	with pytest.raises(UnprocessableEntity) as exc:
+		user.save()
+	assert sorted(exc.value.error_details['error'], key=itemgetter('location')) == sorted([
+		{'location': ['body', 'properties', 'gecos'], 'message': 'The property gecos has an invalid value: Field must only contain ASCII characters!', 'type': 'value_error'},
+		{'location': ['body', 'properties', 'description'], 'message': 'The property description has an invalid value: Value must be of type string not list.', 'type': 'value_error'},  # should be type_error
+		{'location': ['body', 'properties', 'e-mail'], 'message': 'The property e-mail has an invalid value: Value must be of type array not str.', 'type': 'value_error'}  # should be type_error
+	], key=itemgetter('location'))
+
+	# broken / incomplete representation
+	user.representation.update({'properties': {}, 'policies': []})
+	user.representation.pop('position')
+	with pytest.raises(UnprocessableEntity) as exc:
+		user.save()
+	assert sorted(exc.value.error_details['error'], key=itemgetter('location')) == sorted([
+		{'location': ['body', 'position'], 'message': 'Argument required', 'type': 'value_error'},  # should be value_error.required
+		{'location': ['body', 'policies'], 'message': 'Not a "dict"', 'type': 'value_error'}  # should be type_error
+	], key=itemgetter('location'))

@@ -1,3 +1,9 @@
+ucs-test (10.0.7-29) unstable; urgency=medium
+
+  * Bug #50249: add error handling tests for UDM REST API
+
+ -- Florian Best <best@univention.de>  Thu, 08 Dec 2022 12:32:58 +0100
+
 ucs-test (10.0.7-28) unstable; urgency=medium
 
   * Bug #55269: adjust for "groups" availability in "users/user"
