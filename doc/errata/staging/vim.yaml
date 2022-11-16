@@ -6,14 +6,10 @@ src: vim
 fix: 2:8.0.0197-4+deb9u8
 desc: |
  This update addresses the following issues:
- 2:8.0.0197-4+deb9u8 (Mon, 14 Nov 2022 12:14:59 +0100)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2022-2285, CVE-2022-2304, CVE-2022-2946, CVE-2022-3099,
-   CVE-2022-3134, CVE-2022-3234, CVE-2022-3324.
- * Multiple security vulnerabilities have been discovered in vim, an enhanced
-   vi editor. Buffer overflows, out-of-bounds reads and use-after-free may
-   lead to a denial-of-service (application crash) or other unspecified
-   impact.
+ * Multiple security vulnerabilities have been discovered. Buffer overflows,
+   out-of-bounds reads and use-after-free may lead to a denial-of-service
+   (application crash) or other unspecified impact (CVE-2022-2285,
+   CVE-2022-2304, CVE-2022-2946, CVE-2022-3099)
 bug: [55428]
 cve:
 - CVE-2022-2285
