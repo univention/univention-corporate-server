@@ -9,3 +9,5 @@ desc: |
  * The Debian package `python-email-validator` has been backported and updated
    to be used in univention-directory-manager-modules.
 bug: [55413]
+erratum: 491
+announced: 2022-11-16
