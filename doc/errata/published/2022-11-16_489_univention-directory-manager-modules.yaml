@@ -33,3 +33,5 @@ desc: |
  * The Simple UDM API provides policies references as mapping in version 3 to
    conform with the UDM REST API responses.
 bug: [20235, 42080, 55279, 55096, 55394, 54064, 55413, 54568, 55412, 50167]
+erratum: 489
+announced: 2022-11-16
