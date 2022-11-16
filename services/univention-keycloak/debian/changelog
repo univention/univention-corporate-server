@@ -1,3 +1,9 @@
+univention-keycloak (1.0.0-1) unstable; urgency=medium
+
+  * Bug #55431: Specify specific uid mapper for the UMC
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 16 Nov 2022 18:12:37 +0100
+
 univention-keycloak (1.0.0) unstable; urgency=medium
 
   * Bug #55383: Add univention-keycloak package
