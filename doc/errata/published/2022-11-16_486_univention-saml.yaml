@@ -11,3 +11,5 @@ desc: |
    UDM module `saml/serviceprovider` now always unmaps the value in the new
    mappable format to support a representation in the UDM REST API.
 bug: [55331, 55348]
+erratum: 486
+announced: 2022-11-16
