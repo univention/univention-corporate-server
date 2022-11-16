@@ -3,13 +3,12 @@
 
 """UCS installation via VNC"""
 
-from __future__ import print_function
-
 import os
+import sys
 import time
 from argparse import ArgumentParser, Namespace  # noqa: F401
 
-from helper import verbose
+from helper import trace_calls, verbose
 from vncautomate import VNCConnection, init_logger
 from vncautomate.config import OCRConfig
 from vncdotool.api import VNCDoException
@@ -85,11 +84,17 @@ class VNCInstallation(object):
 
     def run(self):  # type: () -> None
         try:
+            tracing = not sys.gettrace()
+            if tracing:
+                sys.settrace(trace_calls)
             self.main()
         except Exception:
             self.connect()
             self.screenshot('error.png')
             raise
+        finally:
+            if tracing:
+                sys.settrace(None)
 
     def main(self):  # type: () -> None
         raise NotImplementedError()
