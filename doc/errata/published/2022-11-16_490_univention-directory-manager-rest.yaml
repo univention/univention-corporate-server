@@ -15,3 +15,5 @@ desc: |
    can be used more easily in the future when UCS supports them.
    Various parameters are now created via code introspection.
 bug: [55096]
+erratum: 490
+announced: 2022-11-16
