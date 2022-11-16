@@ -9,7 +9,8 @@ desc: |
  * Multiple security vulnerabilities have been discovered. Buffer overflows,
    out-of-bounds reads and use-after-free may lead to a denial-of-service
    (application crash) or other unspecified impact (CVE-2022-2285,
-   CVE-2022-2304, CVE-2022-2946, CVE-2022-3099)
+   CVE-2022-2304, CVE-2022-2946, CVE-2022-3099, CVE-2022-3134, CVE-2022-3234,
+   CVE-2022-3324)
 bug: [55428]
 cve:
 - CVE-2022-2285
