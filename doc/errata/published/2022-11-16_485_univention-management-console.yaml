@@ -14,3 +14,5 @@ desc: |
  * Exception stack traces are logged again when "umc/http/show_tracebacks" is
    set to False.
 bug: [55424, 55248, 55423]
+erratum: 485
+announced: 2022-11-16
