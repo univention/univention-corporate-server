@@ -6,9 +6,7 @@ src: sysstat
 fix: 11.4.3-2+deb9u1
 desc: |
  This update addresses the following issue:
- 11.4.3-2+deb9u1 (Mon, 14 Nov 2022 02:25:04 +0530)
- * Non-maintainer upload by the ELTS team.
- * Add patch to fix size_t overflow in sa_common.c. (Fixes: CVE-2022-39377)
+ * Add patch to fix `size_t` overflow in `sa_common.c` (Fixes: CVE-2022-39377)
 bug: [55422]
 cve:
 - CVE-2022-39377
