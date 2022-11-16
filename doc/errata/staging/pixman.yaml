@@ -6,7 +6,6 @@ src: pixman
 fix: 0.34.0-1+deb9u1
 desc: |
  This update addresses the following issue:
- 0.34.0-1+deb9u1 (Tue, 08 Nov 2022 10:10:10 +0100)
  * CVE-2022-44638: integer overflow leading to buffer overflow write.
 bug: [55420]
 cve:
