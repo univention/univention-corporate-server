@@ -3326,13 +3326,13 @@ class Object(FormBase, _OpenAPIBase, Resource):
 		"""Remove a {module.object_name_plural} object"""
 		dn = unquote_dn(dn)
 		module, obj = await self.pool_submit(self.get_module_object, object_type, dn)
+		assert obj._open
 
 		cleanup = bool(self.request.decoded_query_arguments['cleanup'])
 		recursive = bool(self.request.decoded_query_arguments['recursive'])
 		try:
 			def remove():
 				try:
-					obj.open()
 					MODULE.info('Removing LDAP object %s' % (dn,))
 					obj.remove(remove_childs=recursive)
 					if cleanup:
@@ -3632,7 +3632,7 @@ class ObjectEdit(FormBase, Resource):
 				self.add_form_element(form, 'policy', pol, label=policy['label'], title=policy['description'], placeholder=_('Policy DN'))
 				self.add_form_element(form, '', _('Policy result'), type='submit')
 
-			obj.open()
+			assert obj._open
 			layout = Layout.get_layout(module, dn if object_type != 'users/self' else None)
 			layout[0]['layout'].extend(['dn', 'jpegPhoto-preview', ''])
 			properties = Properties.get_properties(module, dn)
