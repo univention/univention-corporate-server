@@ -196,3 +196,34 @@ involves a web front end and a back end as shown in
 Configuration management
 ------------------------
 
+Configuration management is a collection of tasks to configure software systems.
+For example, changing the system's email relay server involves updates in
+various configuration text files. With configuration management an administrator
+changes the configuration setting in one place. The change then triggers the
+update of the related configuration files.
+
+The component *Univention Configuration Registry (UCR)* covers local
+configuration management on all Univention Corporate Server systems. Services,
+scripts, and apps use UCR as their central configuration store. And
+administrators use UCR to customize their UCS system to their needs.
+
+UCR consists of a non-hierarchical key-value store called *UCR variables*. It
+provides a common interface for system settings. UCR decouples configuration
+settings from specific file formats like for example plain text, XML, or JSON.
+Furthermore, UCR consists of a template system and mechanisms to generate
+configuration files from templates and UCR variables.
+
+UCS uses UCR variables for all configuration settings on a system. And UCS
+provides numerous templates for service configuration files.
+
+.. admonition:: Continue reading
+
+   :ref:`services-ucr` for description of the architecture of UCR
+
+.. seealso::
+
+   :ref:`computers-administration-of-local-system-configuration-with-univention-configuration-registry`
+      For information about how to use UCR in :cite:t:`ucs-manual`
+
+   :ref:`chap-umc`
+      For detailed information about UCR in :cite:t:`developer-reference`
