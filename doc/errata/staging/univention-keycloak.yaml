@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-keycloak
-fix: 1.0.0-1A~5.0.0.202211161831
+fix: 1.0.1A~5.0.0.202211161907
 desc: |
  This update addresses the following issues:
  * A new flag `--umc-uid-mapper` has been added to the `univention-keycloak`
