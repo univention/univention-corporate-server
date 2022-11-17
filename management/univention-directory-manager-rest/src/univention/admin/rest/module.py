@@ -450,17 +450,18 @@ class ResourceBase:
 
 	def get_module_object(self, object_type, dn):
 		module = self.get_module(object_type)
-		obj = module.get(dn)
+		try:
+			obj = module.get(dn)
+		except UDM_Error as exc:
+			if not isinstance(exc.exc, udm_errors.noObject):
+				raise
+			obj = None
 		if not obj:
 			raise NotFound(object_type, dn)
 		return module, obj
 
 	def get_object(self, object_type, dn):
-		module = self.get_module(object_type)
-		obj = module.get(dn)
-		if not obj:
-			raise NotFound(object_type, dn)
-		return obj
+		return self.get_module_object(object_type, dn)[1]
 
 	def check_acceptable(self):
 		accept = self.request.headers.get('Accept', 'text/html').split(',')
