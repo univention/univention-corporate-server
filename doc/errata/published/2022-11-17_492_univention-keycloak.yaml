@@ -9,3 +9,5 @@ desc: |
  * A new flag `--umc-uid-mapper` has been added to the `univention-keycloak`
    CLI tool. This makes it easier to create SAML serviceprovider for the UMC.
 bug: [55431]
+erratum: 492
+announced: 2022-11-17
